@@ -32,6 +32,8 @@
 				'Adresse' => array( 'numcomptt' => $listeCodesInseeLocalites ),
 				'Serviceinstructeur' => array( 'id' => $this->Orientstruct->Serviceinstructeur->find( 'list' ) )
 			);
+			$options = Set::merge( $options, $this->Relancenonrespectsanctionep93->Nonrespectsanctionep93->Dossierep->enums() );
+// debug( $options );
 
 			$this->set( compact( 'options' ) );
 		}

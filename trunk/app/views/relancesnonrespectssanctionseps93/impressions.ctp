@@ -113,7 +113,7 @@
 								h( $relance['Contratinsertion']['nbjours'] ),
 								$locale->date( 'Locale->date', $relance['Orientstruct']['date_impression'] ),
 								h( $relance['Orientstruct']['nbjours'] ),
-								h( $relance['Dossierep']['etapedossierep'] ),
+								h( Set::enum( $relance['Dossierep']['etapedossierep'], $options['Dossierep']['etapedossierep'] ) ),
 								$locale->date( 'Locale->date', $relance['Relancenonrespectsanctionep93']['daterelance'] ),
 								( ( $relance['Relancenonrespectsanctionep93']['numrelance'] < 2 ) ? '1ère relance' : "{$relance['Relancenonrespectsanctionep93']['numrelance']}ème relance" ),
 								$default2->button( 'view', array( 'controller' => 'relancesnonrespectssanctionseps93', 'action' => 'index', $relance['Personne']['id'] ), array( 'label' => 'Voir' ) ),
