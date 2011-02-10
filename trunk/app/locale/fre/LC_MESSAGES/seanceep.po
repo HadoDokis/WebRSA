@@ -64,6 +64,9 @@ msgstr "Supprimer la séance d'EP"
 msgid "Seanceseps::choose"
 msgstr "Choisir les dossiers à passer à la séance d'EP"
 
+msgid "Seanceseps::ordredujour"
+msgstr "4. Imprimer l'ordre du jour"
+
 msgid "Seanceseps::traiterep"
 msgstr "5. Emettre l'avis de l'EP"
 

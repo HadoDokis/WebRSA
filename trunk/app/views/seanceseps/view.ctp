@@ -8,6 +8,25 @@
 			array( 'controller' => 'seanceseps', 'action' => 'edit', $seanceep['Seanceep']['id'] )
 		).' </li>';
 
+		// FIXME: le faire dans le modèle
+		$reponsesComite = Set::extract( $membresepsseanceseps, '/MembreepSeanceep/reponse' );
+		$reponsesComite = Set::filter( $reponsesComite );
+		foreach( $reponsesComite as $i => $reponseComite ) {
+			if( $reponseComite == 'nonrenseigne' ) {
+				unset( $reponsesComite[$i] );
+			}
+		}
+
+		if( !empty( $reponsesComite ) && count( $reponsesComite ) == count( $membresepsseanceseps ) ) { // FIXME
+			echo '<li>'.$xhtml->link(
+				__d( 'seanceep','Seanceseps::ordredujour', true ),
+				array( 'controller' => 'seanceseps', 'action' => 'ordredujour', $seanceep['Seanceep']['id'] )
+			).' </li>';
+		}
+		else {
+			echo '<li><span class="disabled"> '.__d( 'seanceep','Seanceseps::ordredujour',true ).'</span></li>';
+		}
+
 		if( empty( $seanceep['Seanceep']['finalisee'] ) && $countDossiers > 0 && !empty($membresepsseanceseps) ) {
 			echo '<li>'.$xhtml->link(
 				__d( 'seanceep','Seanceseps::traiterep',true ),
@@ -28,6 +47,7 @@
 			echo '<li><span class="disabled"> '.__d( 'seanceep','Seanceseps::finaliserep',true ).'</span></li>';
 		}
 
+		// FIXME: le faire dans le modèle
 		$presencesComite = Set::extract( $membresepsseanceseps, '/MembreepSeanceep/presence' );
 		$presencesComite = Set::filter( $presencesComite );
 		if( !empty( $seanceep['Seanceep']['finalisee'] ) && !empty( $presencesComite ) && count( $presencesComite ) == count( $membresepsseanceseps ) ) {
