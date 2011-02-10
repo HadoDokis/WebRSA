@@ -784,14 +784,14 @@
         echo $default->subform(
             array(
                 'Traitementpdo.haspiecejointe' => array( 'type' => 'radio' ),
-//                 'Traitementpdo.cloreprev' => array( 'type' => 'label' )
+                'Traitementpdo.cloreprev' => array( 'type' => 'checkbox' )
             ),
             array(
                 'options' => $options
             )
         );
         
-       echo $xhtml->tag( 'span', 'Fermer un ou plusieurs traitement(s) associé(s) ?', array( 'class' => 'label' ) );
+//        echo $xhtml->tag( 'span', 'Fermer un ou plusieurs traitement(s) associé(s) ?', array( 'class' => 'label' ) );
         
         
         echo "<fieldset id='traitementprev' class='noborder invisible'><table>";
