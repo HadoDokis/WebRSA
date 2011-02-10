@@ -359,6 +359,8 @@
 	/**
 	* Calcule la clé pour un NIR donné
 	*
+	* FIXME: prendre les 2A/2B en compte
+	*
 	* @param string $nir NIR sur 13 caractères
 	* @return string Clé du NIR, sur 2 caractères
 	*/
@@ -374,6 +376,30 @@
 
 		$modulo = bcmod( $nir, 97 );
 		return str_pad( ( 97 - $modulo ), 2, '0', STR_PAD_LEFT);
+	}
+
+	/**
+	* Vérifie la validité d'un NIR sur 15 caractères
+	*
+	* @param string $nir NIR sur 15 caractères
+	* @return boolean
+	*/
+
+	function valid_nir( $nir ) {
+		return preg_match(
+			'/^(1|2|7|8)[0-9]{2}(0[1-9]|10|11|12|[2-9][0-9])((0[1-9]|[1-8][0-9]|9[0-5]|2A|2B)(00[1-9]|0[1-9][0-9]|[1-8][0-9][0-9]|9[0-8][0-9]|990)|(9[7-8][0-9])(0[1-9]|0[1-9]|[1-8][0-9]|90)|99(00[1-9]|0[1-9][0-9]|[1-8][0-9][0-9]|9[0-8][0-9]|990))(00[1-9]|0[1-9][0-9]|[1-9][0-9][0-9]|)(0[1-9]|[1-8][0-9]|9[0-7])$/i',
+			$nir
+		);
+		/*if( !preg_match( '/^[0-9]+$/', $nir ) ) {
+			trigger_error( sprintf( __( 'Le NIR suivant n\'est pas composé que de chiffres: %s', true ), $nir ), E_USER_WARNING );
+		}
+
+		if( strlen( $nir ) != 13 ) {
+			trigger_error( sprintf( __( 'Le NIR suivant n\'est pas composé de 13 caractères: %s', true ), $nir ), E_USER_WARNING );
+		}
+
+		$modulo = bcmod( $nir, 97 );
+		return str_pad( ( 97 - $modulo ), 2, '0', STR_PAD_LEFT);*/
 	}
 
     /** ************************************************************************
