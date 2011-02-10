@@ -231,18 +231,18 @@
 										<?php if( $permissions->check( 'bilansparcours66', 'index' ) ):?>
 											<li>
 												<?php
-													if( Configure::read( 'nom_form_bilan_cg' ) == 'cg93' ){
-														echo $xhtml->link(
-															'Fiche de saisine',
-															array( 'controller' => 'bilanparcours', 'action' => 'index', $personne['id'] )
-														);
-													}
-													else{
+													if( Configure::read( 'nom_form_bilan_cg' ) == 'cg66' ){
 														echo $xhtml->link(
 															'Bilan du parcours',
-															array( 'controller' => 'bilansparcours66', 'action' => 'index', $personne['id'] )
+                                                            array( 'controller' => 'bilansparcours66', 'action' => 'index', $personne['id'] )
 														);
 													}
+// 													else{
+// // 														echo $xhtml->link(
+// // 															'Fiche de saisine',
+// // 															array( 'controller' => 'bilanparcours', 'action' => 'index', $personne['id'] )
+// // 														);
+// 													}
 												?>
 											</li>
 										<?php endif;?>
