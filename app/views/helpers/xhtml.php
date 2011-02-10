@@ -4,6 +4,23 @@
 	class XhtmlHelper extends HtmlHelper
 	{
 		/**
+		* Ajout d'un paramètre "enabled" dans $htmlAttributes qui permet de marquer
+		* un lien comme "désactivé" (texte grisé) lorsque "enabled" vaut "false".
+		*/
+
+		public function link( $title, $url = null, $htmlAttributes = array(), $confirmMessage = false, $escapeTitle = true ) {
+			if( isset( $htmlAttributes['enabled'] ) && $htmlAttributes['enabled'] == false ) {
+				if( $escapeTitle ) {
+					$title = h( $title );
+				}
+				return "<span class=\"disabled\">{$title}</span>";
+			}
+			else {
+				return parent::link( $title, $url, $htmlAttributes, $confirmMessage, $escapeTitle );
+			}
+		}
+
+		/**
 		*
 		*/
 
@@ -841,7 +858,7 @@
 				return '<span class="disabled">'.$content.'</span>';
 			}
 		}
-		
+
 			/**
 		*
 		*/
@@ -862,7 +879,7 @@
 			else {
 				return '<span class="disabled">'.$content.'</span>';
 			}
-		}		
-		
+		}
+
 	}
 ?>
