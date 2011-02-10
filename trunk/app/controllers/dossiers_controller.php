@@ -4,7 +4,7 @@
 	class DossiersController extends AppController
 	{
 		public $name = 'Dossiers';
-		public $uses = array( 'Dossier', 'Option' );
+		public $uses = array( 'Dossier', 'Option', 'Informationpe' );
 		public $aucunDroit = array( 'menu' );
 		public $helpers = array( 'Csv' );
 
@@ -57,6 +57,7 @@
 			if( $this->action == 'view' ) {
 				$this->set( 'numcontrat', $this->Dossier->Foyer->Personne->Contratinsertion->allEnumLists() );
 				$this->set( 'enumcui', $this->Dossier->Foyer->Personne->Cui->allEnumLists() );
+				$this->set( 'etatpe', $this->Informationpe->Historiqueetatpe->allEnumLists() );
 			}
 			else if( $this->action == 'exportcsv' ) {
 				$typesorient = $this->Dossier->Foyer->Personne->Orientstruct->Typeorient->find( 'list', array( 'fields' => array( 'id', 'lib_type_orient' ) ) );
@@ -72,6 +73,7 @@
 				}
 				$this->set( 'typeservice', $typeservice );
 			}
+
 		}
 
 		/**
@@ -572,16 +574,18 @@
 						'Personne.id',
 						'Personne.nom',
 						'Personne.prenom',
+						'Personne.dtnai',
+						'Personne.nir',
 						'Dsp.id',
 						'Dossiercaf.ddratdos',
 						'Dossiercaf.dfratdos',
-						'Infopoleemploi.identifiantpe',
-						'Infopoleemploi.dateinscription',
-						'Infopoleemploi.categoriepe',
-						'Infopoleemploi.datecessation',
-						'Infopoleemploi.motifcessation',
-						'Infopoleemploi.dateradiation',
-						'Infopoleemploi.motifradiation',
+// 						'Infopoleemploi.identifiantpe',
+// 						'Infopoleemploi.dateinscription',
+// 						'Infopoleemploi.categoriepe',
+// 						'Infopoleemploi.datecessation',
+// 						'Infopoleemploi.motifcessation',
+// 						'Infopoleemploi.dateradiation',
+// 						'Infopoleemploi.motifradiation',
 						'Calculdroitrsa.toppersdrodevorsa',
 						'Prestation.rolepers',
 					),
@@ -594,7 +598,7 @@
 						'Prestation',
 						'Dossiercaf',
 						'Dsp',
-						'Infopoleemploi',
+// 						'Infopoleemploi',
 						'Calculdroitrsa',
 					),
 					'recursive' => 0
@@ -678,11 +682,47 @@
 				);
 				$personnesFoyer[$index]['Orientstruct']['derniere'] = $tOrientstruct;
 
+
+                /**
+                *   Utilisation des nouvelles tables de stockage des infos Pôle Emploi
+                */
+
+                $tInfope = $this->Informationpe->find(
+                    'first',
+                    array(
+                        'contain' => array(
+                            'Historiqueetatpe' => array(
+                                'order' => "Historiqueetatpe.date DESC",
+                                'limit' => 1
+                            )
+                        ),
+                        'conditions' => array(
+                            'OR' => array(
+                                array(
+                                    'Informationpe.nir' => Set::classicExtract( $personnesFoyer[$index], 'Personne.nir' ),
+                                    'Informationpe.nir IS NOT NULL',
+                                    'LENGTH(Informationpe.nir) = 15',
+                                    'Informationpe.dtnai' => Set::classicExtract( $personnesFoyer[$index], 'Personne.dtnai' ),
+                                ),
+                                array(
+                                    'Informationpe.nom' => Set::classicExtract( $personnesFoyer[$index], 'Personne.nom' ),
+                                    'Informationpe.prenom' => Set::classicExtract( $personnesFoyer[$index], 'Personne.prenom' ),
+                                    'Informationpe.dtnai' => Set::classicExtract( $personnesFoyer[$index], 'Personne.dtnai' ),
+                                )
+                            )
+
+                        )
+                    )
+                );
+                $personnesFoyer[$index]['Informationpe'] = $tInfope['Historiqueetatpe'];
+
 				$details[$role] = $personnesFoyer[$index];
+// debug($details);
 			}
 
 			$this->set( 'details', $details );
 			$this->_setOptions();
+
 		}
 
 		/**

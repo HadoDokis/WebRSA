@@ -3,8 +3,9 @@
 	{
 		public $name = 'Informationpe';
 
-		// FIXME: validation
+        public $recursive = -1;
 
+        // FIXME: validation
 		// FIXME ?
 		/*public $belongsTo = array(
 			'Personne' => array(
