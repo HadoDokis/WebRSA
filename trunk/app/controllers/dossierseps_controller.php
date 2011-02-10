@@ -60,7 +60,7 @@
 				array(
 					'conditions' => array(
 						'Seanceep.id' => $seanceep_id,
-						'Seanceep.finalisee IS NULL'
+						//'Seanceep.finalisee IS NULL'
 					),
 					'contain' => array(
 						'Ep' => array(
@@ -69,6 +69,12 @@
 					)
 				)
 			);
+
+			if( !empty( $seanceep['Seanceep']['finalisee'] ) ) {
+				$this->Session->setFlash( 'Impossible d\'attribuer des dossiers à une commission d\'EP lorsque celle-ci comporte déjà des avis ou des décisions.', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
+			}
+
 
 			$conditionsAdresses = array( 'OR' => array() );
 			// Début conditions zones géographiques CG 93

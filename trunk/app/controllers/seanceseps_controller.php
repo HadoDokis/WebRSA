@@ -141,6 +141,11 @@
 					)
 				);
 				$this->assert( !empty( $this->data ), 'error404' );
+
+				if( !empty( $this->data['Seanceep']['finalisee'] ) ) {
+					$this->Session->setFlash( 'Impossible de modifier une commission d\'EP lorsque celle-ci comporte déjà des avis ou des décisions.', 'default', array( 'class' => 'error' ) );
+					$this->redirect( $this->referer() );
+				}
 			}
 
 			$this->_setOptions();
@@ -191,6 +196,18 @@
 
 			$this->assert( !empty( $seanceep ), 'error404' );
 
+			// Etape OK ?
+			$etapePossible = (
+				( ( $niveauDecision == 'ep' ) && empty( $seanceep['Seanceep']['finalisee'] ) ) // OK
+				|| ( ( $niveauDecision == 'cg' ) && ( $seanceep['Seanceep']['finalisee'] == 'ep' ) ) // OK
+				|| ( $seanceep['Seanceep']['finalisee'] != 'cg' ) // OK
+			);
+
+			if( !$etapePossible ) {
+				$this->Session->setFlash( 'Impossible de traiter les dossiers d\'une commission d\'EP à une étape antérieure.', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
+			}
+
 			if( !empty( $this->data ) ) {
 // debug( $this->data );
 				$this->Seanceep->begin();
@@ -231,6 +248,30 @@
 		*/
 
 		protected function _finaliser( $seanceep_id, $niveauDecision ) {
+			$seanceep = $this->Seanceep->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Seanceep.id' => $seanceep_id,
+					),
+					'contain' =>false
+				)
+			);
+
+			$this->assert( !empty( $seanceep ), 'error404' );
+
+			// Etape OK ?
+			$etapePossible = (
+				( ( $niveauDecision == 'ep' ) && empty( $seanceep['Seanceep']['finalisee'] ) ) // OK
+				|| ( ( $niveauDecision == 'cg' ) && ( $seanceep['Seanceep']['finalisee'] == 'ep' ) ) // OK
+				|| ( $seanceep['Seanceep']['finalisee'] != 'cg' ) // OK
+			);
+
+			if( !$etapePossible ) {
+				$this->Session->setFlash( 'Impossible de finaliser les décisions des dossiers d\'une commission d\'EP à une étape antérieure.', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
+			}
+
 			$this->Seanceep->begin();
 			$success = $this->Seanceep->finaliser( $seanceep_id, $niveauDecision );
 
