@@ -226,14 +226,21 @@
 		*/
 
 		public function saveDecisions( $data, $niveauDecision ) {
-			$success = $this->Nvsepdpdo66->saveAll( Set::extract( $data, '/Nvsepdpdo66' ), array( 'atomic' => false ) );
+			// FIXME: filtrer les données
+			$themeData = Set::extract( $data, '/Nvsepdpdo66' );
+			if( empty( $themeData ) ) {
+				return true;
+			}
+			else {
+				$success = $this->Nvsepdpdo66->saveAll( $themeData, array( 'atomic' => false ) );
 
-			$this->Dossierep->updateAll(
-				array( 'Dossierep.etapedossierep' => '\'decision'.$niveauDecision.'\'' ),
-				array( '"Dossierep"."id"' => Set::extract( $data, '/Saisineepdpdo66/dossierep_id' ) )
-			);
+				$this->Dossierep->updateAll(
+					array( 'Dossierep.etapedossierep' => '\'decision'.$niveauDecision.'\'' ),
+					array( '"Dossierep"."id"' => Set::extract( $data, '/Saisineepdpdo66/dossierep_id' ) )
+				);
 
-			return $success;
+				return $success;
+			}
 		}
 
 		/**
