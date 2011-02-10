@@ -63,9 +63,19 @@
 				'code',
 				'nir2'
 			),
+			'stock' => array(
+				'nir',
+				'identifiantpe',
+				'nom',
+				'prenom',
+				'dtnai',
+				'date',
+				'code',
+				'nir2'
+			),
 		);
 
-		public $typesCsv = array( 'cessations', 'inscriptions', 'radiations' );
+		public $typesCsv = array( 'cessations', 'inscriptions', 'radiations', 'stock' );
 
 		public $fieldsInformationpe = array(
 			'nir',
@@ -105,7 +115,7 @@
 					$this->_stop( 1 );
 				}
 			}
-			else if( !( count( $this->args ) == 0 || ( count( $this->args ) == 1 && $this->args[0] == 'update' ) ) ) {
+			else if( !( count( $this->args ) == 0 ) ) {
 				$this->err( "Veuillez fournir deux paramètres au script: le type de fichier à intégrer et le chemin vers le fichier à intégrer (ex. {$this->shell} cessations /tmp/cessationspe-20101227.csv)" );
 
 				$this->_stop( 1 );
@@ -122,10 +132,7 @@
 			$this->out();
 			$this->out( 'Script d\'importation des flux venant de Pôle Emploi' );
 			$this->out();
-			if( $this->command == 'update' ) {
-				$this->out( "Mise à jour de la relation entre les personnes et les informations Pôle Emploi." );
-			}
-			else if( count( $this->args ) == 1 ) {
+			if( count( $this->args ) == 1 ) {
 				$this->out( "Fichier traité: {$this->csv->path}" );
 			}
 			$this->out();
@@ -368,6 +375,14 @@
 		}
 
 		/**
+		* Import des stock
+		*/
+
+		public function stock() {
+			$this->_import( 'inscription' );
+		}
+
+		/**
 		* Par défaut, on affiche l'aide
 		*/
 
@@ -390,7 +405,7 @@
 			$this->out("\n\t{$this->shell} cessations <fichier>\n\t\tImporte les informations Pôle Emploi de type cessation à partir du fichier CSV passé en second paramètre.");
 			$this->out("\n\t{$this->shell} inscriptions <fichier>\n\t\tImporte les informations Pôle Emploi de type inscriptions à partir du fichier CSV passé en second paramètre.");
 			$this->out("\n\t{$this->shell} radiations <fichier>\n\t\tImporte les informations Pôle Emploi de type radiations à partir du fichier CSV passé en second paramètre.");
-			$this->out("\n\t{$this->shell} update\n\t\tMise à jour de la relation entre les personnes et les informations Pôle Emploi.");
+			$this->out("\n\t{$this->shell} stock <fichier>\n\t\tImporte les informations Pôle Emploi de type stock à partir du fichier CSV passé en second paramètre.");
 			$this->out();
 			$this->out('Paramètres:');
 			$this->out("\t-separator <caractère>\n\t\tQuel est le séparateur utilisé dans le fichier CSV ?\n\t\tPar défaut: ".$this->_defaultToString( 'separator' )."\n");
