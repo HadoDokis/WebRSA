@@ -281,23 +281,38 @@
             </tr>
             <tr>
                 <td>
-                    <h2>Informations Pôle Emploi</h2>
+                    <h2>Dernière Information Pôle Emploi</h2>
                     <table>
                     <?php echo thead( 10 );?>
                         <tbody>
                             <tr class="even">
                                 <th>Identifiant pôle-emploi</th>
-                                <td><?php echo Set::extract( 'DEM.Infopoleemploi.identifiantpe', $details);?></td>
-                                <td><?php echo Set::extract( 'CJT.Infopoleemploi.identifiantpe', $details);?></td>
+                                <td><?php echo Set::extract( 'DEM.Informationpe.0.identifiantpe', $details);?></td>
+                                <td><?php echo Set::extract( 'CJT.Informationpe.0.identifiantpe', $details);?></td>
                             </tr>
                             <tr class="odd">
-                                <th>Date d'inscription</th>
-                                <td><?php echo date_short( Set::extract( 'DEM.Infopoleemploi.dateinscription', $details) );?></td>
-                                <td><?php echo date_short( Set::extract( 'CJT.Infopoleemploi.dateinscription', $details) );?></td>
+                                <th>Etat actuel Pôle Emploi</th>
+                                <td><?php echo Set::enum( Set::extract( 'DEM.Informationpe.0.etat', $details ), $etatpe['etat'] );?></td>
+                                <td><?php echo Set::enum( Set::extract( 'CJT.Informationpe.0.etat', $details ), $etatpe['etat'] );?></td>
                             </tr>
                             <tr class="even">
+                                <th>Dernière date</th>
+                                <td><?php echo date_short( Set::extract( 'DEM.Informationpe.0.date', $details) );?></td>
+                                <td><?php echo date_short( Set::extract( 'CJT.Informationpe.0.date', $details) );?></td>
+                            </tr>
+                            <tr class="odd">
+                                <th>Code état</th>
+                                <td><?php echo Set::extract( 'DEM.Informationpe.0.code', $details);?></td>
+                                <td><?php echo Set::extract( 'CJT.Informationpe.0.code', $details);?></td>
+                            </tr>
+                            <tr class="even">
+                                <th>Motif</th>
+                                <td><?php echo Set::extract( 'DEM.Informationpe.0.motif', $details);?></td>
+                                <td><?php echo Set::extract( 'CJT.Informationpe.0.motif', $details);?></td>
+                            </tr>
+                            <!--<tr class="even">
                                 <th>Catégorie</th>
-                                <td><?php echo isset( $categorie[Set::classicExtract( $details,  'DEM.Infopoleemploi.categoriepe' )] ) ? $categorie[Set::classicExtract( $details,  'DEM.Infopoleemploi.categoriepe' )] : '';?></td>
+                                <td><?php /*echo isset( $categorie[Set::classicExtract( $details,  'DEM.Infopoleemploi.categoriepe' )] ) ? $categorie[Set::classicExtract( $details,  'DEM.Infopoleemploi.categoriepe' )] : '';?></td>
                                 <td><?php echo isset( $categorie[Set::classicExtract( $details,  'CJT.Infopoleemploi.categoriepe' )] ) ? $categorie[Set::classicExtract( $details,  'CJT.Infopoleemploi.categoriepe' )] : '';?></td>
                             </tr>
                             <tr class="odd">
@@ -318,8 +333,8 @@
                             <tr class="even">
                                 <th>Motif de radiation</th>
                                 <td><?php echo Set::extract( 'DEM.Infopoleemploi.motifradiation', $details);?></td>
-                                <td><?php echo Set::extract( 'CJT.Infopoleemploi.motifradiation', $details);?></td>
-                            </tr>
+                                <td><?php echo Set::extract( 'CJT.Infopoleemploi.motifradiation', $details);*/?></td>
+                            </tr>-->
                         </tbody>
                     </table>
                 </td>
