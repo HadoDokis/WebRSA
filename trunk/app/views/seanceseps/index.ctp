@@ -113,24 +113,24 @@
 					<th>Actions</th>
 				</tr></thead><tbody>';
 			foreach( $seanceseps as $seanceep ) {
-				if( Configure::read( 'Cg.departement' ) != 93 ) {
+				/*if( Configure::read( 'Cg.departement' ) != 93 ) {
 					$lien = $xhtml->link( 'Voir', array( 'controller' => 'seanceseps', 'action' => 'view', $seanceep['Seanceep']['id'] ) );
 				}
-				else {
+				else {*/
 					switch( @$this->action ) {
 						case 'creationmodification':
-							$lien = $xhtml->link( 'Modification', array( 'controller' => 'seanceseps', 'action' => 'edit', $seanceep['Seanceep']['id'] ) );
+							$lien = $xhtml->link( 'Modification', array( 'controller' => 'seanceseps', 'action' => 'edit', $seanceep['Seanceep']['id'] ), array( 'enabled' => empty( $seanceep['Seanceep']['finalisee'] ) ) );
 							break;
 						case 'attributiondossiers':
-							$lien = $xhtml->link( 'Attribution des dossiers à une séance', array( 'controller' => 'dossierseps', 'action' => 'choose', $seanceep['Seanceep']['id'] ) );
+							$lien = $xhtml->link( 'Attribution des dossiers à une séance', array( 'controller' => 'dossierseps', 'action' => 'choose', $seanceep['Seanceep']['id'] ), array( 'enabled' => empty( $seanceep['Seanceep']['finalisee'] ) ) );
 							break;
 						case 'arbitrage':
-							$lien = $xhtml->link( 'Arbitrage', array( 'controller' => 'seanceseps', 'action' => 'view', $seanceep['Seanceep']['id'] ) );
+							$lien = $xhtml->link( 'Arbitrage', array( 'controller' => 'seanceseps', 'action' => 'view', $seanceep['Seanceep']['id'] ), array( 'enabled' => ( $seanceep['Seanceep']['finalisee'] != 'cg' ) ) );
 							break;
 						default:
 							$lien = $xhtml->link( 'Voir', array( 'controller' => 'seanceseps', 'action' => 'view', $seanceep['Seanceep']['id'] ) );
 					}
-				}
+				//}
 
 				echo '<tr>
 					<td>'.h( $seanceep['Ep']['identifiant'] ).'</td>
