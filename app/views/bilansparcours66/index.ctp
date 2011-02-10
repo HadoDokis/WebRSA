@@ -105,7 +105,7 @@
 					echo "</tr></thead><tbody>";
 
 					foreach($bilansparcours66 as $bilanparcour66) {
-
+// debug($bilanparcour66);
 						echo "<tr>";
 							echo $type2->format( $bilanparcour66, 'Bilanparcours66.datebilan', array( 'type' => 'date', 'tag' => 'td', 'options' => $options ) );
 							echo $type2->format( $bilanparcour66, 'Referent.Structurereferente.lib_struc', array( 'tag' => 'td', 'options' => $options ) );
@@ -128,8 +128,30 @@
 							else {
 								echo $type2->format( $bilanparcour66, 'Bilanparcours66.choixparcours', array( 'tag' => 'td', 'options' => $options ) );
 							}
-							echo $type2->format( $bilanparcour66, 'Saisineepbilanparcours66.typeorient_id', array( 'tag' => 'td', 'options' => $options ) );
-							echo $type2->format( $bilanparcour66, 'Saisineepbilanparcours66.structurereferente_id', array( 'tag' => 'td', 'options' => $options ) );
+							//Proposition du référent - Type orientation
+							if (Set::classicExtract( $bilanparcour66, 'Saisineepbilanparcours66.typeorient_id' )) {
+                                echo $xhtml->tag(
+                                    'td',
+                                    Set::classicExtract( $typesorients, Set::classicExtract( $bilanparcour66, 'Saisineepbilanparcours66.typeorient_id' ) )
+                                );
+                            }
+                            else {
+                                echo "<td></td>";
+                            }
+// 							echo $type2->format( $bilanparcour66, 'Saisineepbilanparcours66.typeorient_id', array( 'tag' => 'td', 'options' => $typesorients ) );
+// debug( isset(Set::classicExtract( $bilanparcour66, 'Saisineepbilanparcours66.structurereferente_id' )) );
+                            //Proposition du référent - structure referente
+                            if ( Set::classicExtract( $bilanparcour66, 'Saisineepbilanparcours66.structurereferente_id' )) {
+                                echo $xhtml->tag(
+                                    'td',
+                                    Set::classicExtract( $structuresreferentes, Set::classicExtract( $bilanparcour66, 'Saisineepbilanparcours66.structurereferente_id' ) )
+                                );
+                            }
+                            else {
+                                echo "<td></td>";
+                            }
+// 							echo $type2->format( $bilanparcour66, 'Saisineepbilanparcours66.structurereferente_id', array( 'tag' => 'td', 'options' => $structuresreferentes ) );
+							
 							if (Set::check($bilanparcour66, 'Saisineepbilanparcours66.Nvsrepreorient66.0.typeorient_id')) {
 								echo $xhtml->tag(
 									'td',
@@ -139,6 +161,7 @@
 							else {
 								echo "<td></td>";
 							}
+
 							if (Set::check( $bilanparcour66, 'Saisineepbilanparcours66.Nvsrepreorient66.0.structurereferente_id' )) {
 								echo $xhtml->tag(
 									'td',

@@ -234,7 +234,9 @@
 				$bilanparcours66 = $this->Bilanparcours66->find(
 					'first',
 					array(
-						'contain' => false,
+						'contain' => array(
+                            'Saisineepbilanparcours66'
+						),
 						'conditions' => array( 'Bilanparcours66.id' => $id )
 					)
 				);
@@ -242,6 +244,7 @@
 
 				$this->Bilanparcours66->Orientstruct->id = $bilanparcours66['Bilanparcours66']['orientstruct_id'];
 				$personne_id = $this->Bilanparcours66->Orientstruct->field( 'personne_id' );
+// debug($bilanparcours66);
 			}
 
 			// INFO: pour passer de 74 à 29 modèles utilisés lors du find count
