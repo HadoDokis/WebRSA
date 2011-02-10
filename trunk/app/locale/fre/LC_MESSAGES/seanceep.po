@@ -26,7 +26,7 @@ msgid "Seanceep.finalisee"
 msgstr "Décision finale"
 
 msgid "Seanceep.identifiant"
-msgstr "Identifiant"
+msgstr "Identifiant commission"
 
 msgid "Seanceep.name"
 msgstr "Intitulé"

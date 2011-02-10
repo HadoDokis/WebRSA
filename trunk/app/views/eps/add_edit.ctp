@@ -24,7 +24,7 @@
 
 	echo $default->subform(
 		array(
-			'Ep.identifiant' => array('required' => true),
+// 			'Ep.identifiant' => array('required' => true),
 			'Ep.name' => array('required' => true),
 			'Ep.regroupementep_id' => array('required' => true),
 		),

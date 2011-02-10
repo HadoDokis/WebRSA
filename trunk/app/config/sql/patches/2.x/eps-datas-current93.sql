@@ -24,18 +24,18 @@ SELECT pg_catalog.setval('regroupementseps_id_seq', 8, true);
 --
 
 INSERT INTO eps (id, name, identifiant, regroupementep_id, defautinsertionep66, saisineepbilanparcours66, saisineepdpdo66, nonrespectsanctionep93, saisineepreorientsr93) VALUES
-	(2, 'CLI 1 Equipe 1.2', 'EP1.2', 1, 'nontraite', 'nontraite', 'nontraite', 'cg', 'cg'),
-	(3, 'CLI 2 Equipe 2.1', 'EP2.1', 2, 'nontraite', 'nontraite', 'nontraite', 'cg', 'cg'),
-	(4, 'CLI 2 Equipe 2.2', 'EP2.2', 2, 'nontraite', 'nontraite', 'nontraite', 'cg', 'cg'),
-	(5, 'CLI 3 Equipe 3.1', 'EP3.1', 5, 'nontraite', 'nontraite', 'nontraite', 'cg', 'cg'),
-	(6, 'CLI 3 Equipe 3.2', 'EP3.2', 5, 'nontraite', 'nontraite', 'nontraite', 'cg', 'cg'),
-	(7, 'CLI 4 Equipe 4.1', 'EP4.1', 6, 'nontraite', 'nontraite', 'nontraite', 'cg', 'cg'),
-	(8, 'CLI 4 Equipe 4.2', 'EP4.2', 6, 'nontraite', 'nontraite', 'nontraite', 'cg', 'cg'),
-	(9, 'CLI 5 Equipe 5.1', 'EP5.1', 7, 'nontraite', 'nontraite', 'nontraite', 'cg', 'cg'),
-	(10, 'CLI 5 Equipe 5.2', 'EP5.2', 7, 'nontraite', 'nontraite', 'nontraite', 'cg', 'cg'),
-	(11, 'CLI 6 Equipe 6.1', 'EP6.1', 8, 'nontraite', 'nontraite', 'nontraite', 'cg', 'cg'),
-	(1, 'CLI 1, équipe 1.1', 'EP1.1', 1, 'nontraite', 'nontraite', 'nontraite', 'cg', 'cg'),
-	(12, 'CLI 6 Equipe 6.2', 'EP6.2', 8, 'nontraite', 'nontraite', 'nontraite', 'cg', 'cg');
+	(2, 'CLI 1 Equipe 1.2', 'EP2011020000000001', 1, 'nontraite', 'nontraite', 'nontraite', 'cg', 'cg'),
+	(3, 'CLI 2 Equipe 2.1', 'EP2011020000000002', 2, 'nontraite', 'nontraite', 'nontraite', 'cg', 'cg'),
+	(4, 'CLI 2 Equipe 2.2', 'EP2011020000000003', 2, 'nontraite', 'nontraite', 'nontraite', 'cg', 'cg'),
+	(5, 'CLI 3 Equipe 3.1', 'EP2011020000000004', 5, 'nontraite', 'nontraite', 'nontraite', 'cg', 'cg'),
+	(6, 'CLI 3 Equipe 3.2', 'EP2011020000000005', 5, 'nontraite', 'nontraite', 'nontraite', 'cg', 'cg'),
+	(7, 'CLI 4 Equipe 4.1', 'EP2011020000000006', 6, 'nontraite', 'nontraite', 'nontraite', 'cg', 'cg'),
+	(8, 'CLI 4 Equipe 4.2', 'EP2011020000000007', 6, 'nontraite', 'nontraite', 'nontraite', 'cg', 'cg'),
+	(9, 'CLI 5 Equipe 5.1', 'EP2011020000000008', 7, 'nontraite', 'nontraite', 'nontraite', 'cg', 'cg'),
+	(10, 'CLI 5 Equipe 5.2', 'EP2011020000000009', 7, 'nontraite', 'nontraite', 'nontraite', 'cg', 'cg'),
+	(11, 'CLI 6 Equipe 6.1', 'EP2011020000000010', 8, 'nontraite', 'nontraite', 'nontraite', 'cg', 'cg'),
+	(1, 'CLI 1, équipe 1.1', 'EP2011020000000011', 1, 'nontraite', 'nontraite', 'nontraite', 'cg', 'cg'),
+	(12, 'CLI 6 Equipe 6.2', 'EP2011020000000012', 8, 'nontraite', 'nontraite', 'nontraite', 'cg', 'cg');
 
 
 SELECT pg_catalog.setval('eps_id_seq', 12, true);
@@ -146,15 +146,15 @@ SELECT pg_catalog.setval('motifsreorients_id_seq', 2, true);
 	( 'COM1', 'Commission 1', 1, 104, '2010-10-28 10:00:00' );*/
 
 INSERT INTO seanceseps (id, identifiant, name, ep_id, structurereferente_id, dateseance, salle, observations, finalisee) VALUES
-	(3, 'tretr', 'tert', 2, 74, '2031-01-01 00:00:00', 'trert', NULL, NULL),
-	(4, 'p', 'p', 1, 74, '2024-01-01 00:00:00', 'trert', 'pppp', NULL),
-	(5, 'EP1.2', 'TEST DU 26 01', 2, 91, '2011-01-26 12:00:00', 'DFGDFGDFG', NULL, NULL),
-	(7, 'EP4.2', 'ERRRRRRRRRRRRRRRRRRRR', 8, 97, '2031-01-01 00:00:00', '111111111111111111', NULL, NULL),
-	(1, 'COM1', 'Commission 1', 1, 104, '2010-10-28 10:00:00', NULL, NULL, NULL),
-	(6, 'EP1.2', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 2, 67, '2017-01-01 00:00:00', NULL, NULL, NULL),
-	(8, 'EP6.2', 'TEST DU 27 01 2011', 12, 90, '2011-01-27 14:00:00', '111', NULL, NULL),
-	(2, 'Identifian', 'Intitulé', 1, 74, '2010-01-01 03:15:00', NULL, NULL, NULL),
-	(9, 'dfs', 'df', 1, 86, '2011-01-31 00:00:00', NULL, NULL, NULL);
+	(3, 'CO2011020000000003', 'tert', 2, 74, '2031-01-01 00:00:00', 'trert', NULL, NULL),
+	(4, 'CO2011020000000004', 'p', 1, 74, '2024-01-01 00:00:00', 'trert', 'pppp', NULL),
+	(5, 'CO2011020000000005', 'TEST DU 26 01', 2, 91, '2011-01-26 12:00:00', 'DFGDFGDFG', NULL, NULL),
+	(7, 'CO2011020000000007', 'ERRRRRRRRRRRRRRRRRRRR', 8, 97, '2031-01-01 00:00:00', '111111111111111111', NULL, NULL),
+	(1, 'CO2011020000000001', 'Commission 1', 1, 104, '2010-10-28 10:00:00', NULL, NULL, NULL),
+	(6, 'CO2011020000000006', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 2, 67, '2017-01-01 00:00:00', NULL, NULL, NULL),
+	(8, 'CO2011020000000008', 'TEST DU 27 01 2011', 12, 90, '2011-01-27 14:00:00', '111', NULL, NULL),
+	(2, 'CO2011020000000002', 'Intitulé', 1, 74, '2010-01-01 03:15:00', NULL, NULL, NULL),
+	(9, 'CO2011020000000009', 'df', 1, 86, '2011-01-31 00:00:00', NULL, NULL, NULL);
 
 SELECT pg_catalog.setval('seanceseps_id_seq', 9, true);
 

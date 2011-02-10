@@ -11,9 +11,11 @@
 		// FIXME: le faire dans le modèle
 		$reponsesComite = Set::extract( $membresepsseanceseps, '/MembreepSeanceep/reponse' );
 		$reponsesComite = Set::filter( $reponsesComite );
-		foreach( $reponsesComite as $i => $reponseComite ) {
-			if( $reponseComite == 'nonrenseigne' ) {
-				unset( $reponsesComite[$i] );
+		if( !empty( $reponsesComite ) ) {
+			foreach( $reponsesComite as $i => $reponseComite ) {
+				if( $reponseComite == 'nonrenseigne' ) {
+					unset( $reponsesComite[$i] );
+				}
 			}
 		}
 
@@ -85,26 +87,30 @@
 	<table>
 		<tbody>
 			<tr class="odd">
+				<th><?php echo "Identifiant de la séance";?></th>
+				<td><?php echo isset( $seanceep['Seanceep']['identifiant'] ) ? $seanceep['Seanceep']['identifiant'] : null ;?></td>
+			</tr>
+			<tr class="even">
 				<th><?php echo "Date de la séance";?></th>
 				<td><?php echo isset( $seanceep['Seanceep']['dateseance'] ) ? strftime( '%d/%m/%Y %H:%M', strtotime( $seanceep['Seanceep']['dateseance'])) : null ;?></td>
 			</tr>
-			<tr class="even">
+			<tr class="odd">
 				<th><?php echo "Nom de l'EP";?></th>
 				<td><?php echo isset( $seanceep['Ep']['name'] ) ? $seanceep['Ep']['name'] : null ;?></td>
 			</tr>
-			<tr class="odd">
+			<tr class="even">
 				<th><?php echo "Structure référente";?></th>
 				<td><?php echo isset( $seanceep['Structurereferente']['lib_struc'] ) ? $seanceep['Structurereferente']['lib_struc'] : null ;?></td>
 			</tr>
-			<tr class="even">
+			<tr class="odd">
 				<th><?php echo "Salle de la commision";?></th>
 				<td><?php echo isset( $seanceep['Seanceep']['salle'] ) ? $seanceep['Seanceep']['salle'] : null ;?></td>
 			</tr>
-			<tr class="odd">
+			<tr class="even">
 				<th><?php echo "Observations de la commision";?></th>
 				<td><?php echo isset( $seanceep['Seanceep']['observations'] ) ? $seanceep['Seanceep']['observations'] : null ;?></td>
 			</tr>
-			<tr class="even">
+			<tr class="odd">
 				<th><?php echo "Décision finale";?></th>
 				<td><?php echo isset( $seanceep['Seanceep']['finalisee'] ) ? $seanceep['Seanceep']['finalisee'] : null ;?></td>
 			</tr>

@@ -22,7 +22,7 @@ msgid "Ep.name"
 msgstr "Nom de l'EP"
 
 msgid "Ep.identifiant"
-msgstr "Identifiant"
+msgstr "Identifiant EP"
 
 msgid "Ep.regroupementep_id"
 msgstr "Regroupement de l'EP"
