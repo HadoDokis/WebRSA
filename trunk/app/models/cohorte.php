@@ -190,6 +190,7 @@
 		*/
 
 		function search( $statutOrientation, $mesCodesInsee, $filtre_zone_geo, $criteres, $lockedDossiers, $limit = PHP_INT_MAX ) {
+debug( array( $statutOrientation, $mesCodesInsee, $filtre_zone_geo, $criteres, $lockedDossiers, $limit ) );
 			/// Requête
 			$Situationdossierrsa = ClassRegistry::init( 'Situationdossierrsa' );
 
@@ -742,5 +743,6 @@
 
 			return $return;
 		}
+		
 	}
 ?>

@@ -102,6 +102,11 @@
 								</ul>
 							</li>
 						<?php endif; ?>
+						<?php if( $permissions->check( 'nonorientationspros', 'index' ) ): ?>
+							<li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
+								<?php echo $xhtml->link( 'Non orientation professionnelle', array( 'controller' => 'nonorientationspros', 'action' => 'index' ) );?>
+							</li>
+						<?php endif; ?>
 					</ul>
 				</li>
 			<?php endif;?>

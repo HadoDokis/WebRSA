@@ -360,6 +360,10 @@
 					$this->set( 'pageTitle', 'Demandes orientées' );
 					$this->render( $this->action, null, 'visualisation' );
 					break;
+				case 'Orienté': // FIXME: pas besoin de locker
+					$this->set( 'pageTitle', 'Demandes orientées' );
+					$this->render( $this->action, null, 'visualisation' );
+					break;
 			}
 		}
 
@@ -582,5 +586,6 @@
 				debug( $this->referer );
 			}
 		}
+		
 	}
 ?>

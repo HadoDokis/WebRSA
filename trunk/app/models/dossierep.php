@@ -102,6 +102,20 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			// Thèmes 58
+			'Nonorientationpro58' => array(
+				'className' => 'Nonorientationpro58',
+				'foreignKey' => 'dossierep_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 		);
 
 		/**

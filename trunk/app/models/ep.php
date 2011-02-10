@@ -13,10 +13,12 @@
 					// Thèmes 66
 					'saisineepbilanparcours66',
 					'saisineepdpdo66',
+					'defautinsertionep66',
 					// Thèmes 93
 					'nonrespectsanctionep93',
 					'saisineepreorientsr93',
-					'defautinsertionep66'
+					// Thèmes 58
+					'nonorientationpro58'
 				)
 			)
 		);
