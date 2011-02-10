@@ -173,23 +173,30 @@
 		*/
 
 		public function saveDecisions( $data, $niveauDecision ) {
-			$this->Decisiondefautinsertionep66->begin();
-
-			$success = $this->Decisiondefautinsertionep66->saveAll( Set::extract( $data, '/Decisiondefautinsertionep66' ), array( 'atomic' => false ) );
-
-			$this->Dossierep->updateAll(
-				array( 'Dossierep.etapedossierep' => '\'decision'.$niveauDecision.'\'' ),
-				array( '"Dossierep"."id"' => Set::extract( $data, '/Defautinsertionep66/dossierep_id' ) )
-			);
-
-			if( $success ) {
-				$this->Decisiondefautinsertionep66->commit();
+			// FIXME: filtrer les données
+			$themeData = Set::extract( $data, '/Decisiondefautinsertionep66' );
+			if( empty( $themeData ) ) {
+				return true;
 			}
 			else {
-				$this->Decisiondefautinsertionep66->rollback();
-			}
+				$this->Decisiondefautinsertionep66->begin();
 
-			return $success;
+				$success = $this->Decisiondefautinsertionep66->saveAll( $themeData, array( 'atomic' => false ) );
+
+				$this->Dossierep->updateAll(
+					array( 'Dossierep.etapedossierep' => '\'decision'.$niveauDecision.'\'' ),
+					array( '"Dossierep"."id"' => Set::extract( $data, '/Defautinsertionep66/dossierep_id' ) )
+				);
+
+				if( $success ) {
+					$this->Decisiondefautinsertionep66->commit();
+				}
+				else {
+					$this->Decisiondefautinsertionep66->rollback();
+				}
+
+				return $success;
+			}
 		}
 
 		/**
