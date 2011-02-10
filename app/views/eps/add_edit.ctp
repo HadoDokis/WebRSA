@@ -44,9 +44,8 @@
 			)
 		);
 	}
-
 	// On laisse la possibilité de choisir comme avant pour le CG 58
-	if( Configure::read( 'Cg.departement' ) == 58 ) {
+	elseif( Configure::read( 'Cg.departement' ) == 58 ) {
 		echo $xhtml->tag(
 			'fieldset',
 			$xhtml->tag(
@@ -57,6 +56,7 @@
 				array(
 					'Ep.saisineepreorientsr93' => array( 'required' => true ),
 					'Ep.nonrespectsanctionep93' => array( 'required' => true ),
+					'Ep.nonorientationpro58' => array( 'required' => true ),
 				),
 				array(
 					'options' => $options
@@ -67,9 +67,8 @@
 			)
 		);
 	}
-
 	// Le choix est également possible pour le CG 66
-	if( Configure::read( 'Cg.departement' ) == 66 ) {
+	elseif( Configure::read( 'Cg.departement' ) == 66 ) {
 		echo $xhtml->tag(
 			'fieldset',
 			$xhtml->tag(

@@ -28,6 +28,7 @@
 				$this->Seanceep->Dossierep->Nonrespectsanctionep93->Decisionnonrespectsanctionep93->enums(),
 				$this->Seanceep->Dossierep->Nonrespectsanctionep93->enums(),
 				$this->Seanceep->Dossierep->Defautinsertionep66->enums(),
+				$this->Seanceep->Dossierep->Nonorientationpro58->Decisionnonorientationpro58->enums(),
 				$this->Seanceep->Dossierep->enums(),
 				$this->Seanceep->enums(),
 				$this->Seanceep->MembreepSeanceep->enums(),
@@ -193,9 +194,9 @@
 					)
 				)
 			);
-
+			
 			$this->assert( !empty( $seanceep ), 'error404' );
-
+			
 			// Etape OK ?
 			$etapePossible = (
 				( ( $niveauDecision == 'ep' ) && empty( $seanceep['Seanceep']['finalisee'] ) ) // OK
@@ -212,7 +213,7 @@
 // debug( $this->data );
 				$this->Seanceep->begin();
 				$success = $this->Seanceep->saveDecisions( $seanceep_id, $this->data, $niveauDecision );
-
+				
 				$this->_setFlashResult( 'Save', $success );
 				if( $success ) {
 // 					$this->Seanceep->rollback();

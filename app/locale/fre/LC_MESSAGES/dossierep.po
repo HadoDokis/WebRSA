@@ -62,6 +62,9 @@ msgstr "Demande de suspension"
 msgid "ENUM::THEMEEP::defautsinsertionseps66"
 msgstr "Défaut d'insertion"
 
+msgid "ENUM::THEMEEP::nonorientationspros58"
+msgstr "Non orientation professionnelle"
+
 #
 
 msgid "ENUM::ETAPEDOSSIEREP::cree"

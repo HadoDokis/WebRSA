@@ -93,3 +93,18 @@ msgstr "Décision émise par l'EP"
 
 msgid "ENUM::NONRESPECTSANCTIONEP93::cg"
 msgstr "Décision émise par le CG"
+
+# Spécifique cg 58
+
+msgid "Ep.nonorientationpro58"
+msgstr "Dossier non réorienté vers le professionnel"
+
+msgid "ENUM::NONORIENTATIONPRO58::nontraite"
+msgstr "Décision non traitée"
+
+msgid "ENUM::NONORIENTATIONPRO58::ep"
+msgstr "Décision émise par l'EP"
+
+msgid "ENUM::NONORIENTATIONPRO58::cg"
+msgstr "Décision émise par le CG"
+

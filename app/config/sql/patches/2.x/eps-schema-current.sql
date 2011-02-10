@@ -87,6 +87,8 @@ DROP TABLE IF EXISTS nvsepdspdos66 CASCADE;
 DROP TABLE IF EXISTS nonrespectssanctionseps93 CASCADE;
 DROP TABLE IF EXISTS relancesnonrespectssanctionseps93 CASCADE;
 DROP TABLE IF EXISTS decisionsnonrespectssanctionseps93 CASCADE;
+DROP TABLE IF EXISTS nonorientationspros58 CASCADE;
+DROP TABLE IF EXISTS decisionsnonorientationspros58 CASCADE;
 
 DROP TYPE IF EXISTS TYPE_THEMEEP CASCADE;
 DROP TYPE IF EXISTS TYPE_DECISIONEP CASCADE;
@@ -105,6 +107,7 @@ DROP TYPE IF EXISTS TYPE_ORIGINEDEFAULTINSERTIONEP66 CASCADE;
 DROP TYPE IF EXISTS TYPE_DECISIONDEFAUTEP66 CASCADE;
 DROP TYPE IF EXISTS TYPE_PROPOSITIONBILANPARCOURS CASCADE;
 DROP TYPE IF EXISTS TYPE_SITFAMBILANPARCOURS CASCADE;
+DROP TYPE IF EXISTS TYPE_DECISIONNONORIENTATIONPRO58 CASCADE;
 
 -- -----------------------------------------------------------------------------
 
@@ -130,7 +133,9 @@ CREATE TABLE eps (
 	saisineepdpdo66				TYPE_NIVEAUDECISIONEP NOT NULL DEFAULT 'nontraite',
 	-- CG 66
 	nonrespectsanctionep93		TYPE_NIVEAUDECISIONEP NOT NULL DEFAULT 'nontraite',
-	saisineepreorientsr93		TYPE_NIVEAUDECISIONEP NOT NULL DEFAULT 'nontraite'
+	saisineepreorientsr93		TYPE_NIVEAUDECISIONEP NOT NULL DEFAULT 'nontraite',
+	-- CG 58
+	nonorientationpro58		TYPE_NIVEAUDECISIONEP NOT NULL DEFAULT 'nontraite'
 );
 
 CREATE UNIQUE INDEX eps_name_idx ON eps(name);
@@ -203,7 +208,7 @@ ALTER TABLE seanceseps OWNER TO webrsa;
 
 -- -----------------------------------------------------------------------------
 
-CREATE TYPE TYPE_THEMEEP AS ENUM ( 'saisinesepsreorientsrs93', 'saisinesepsbilansparcours66', /*'suspensionsreductionsallocations93',*/ 'saisinesepdspdos66', 'nonrespectssanctionseps93', 'defautsinsertionseps66' );
+CREATE TYPE TYPE_THEMEEP AS ENUM ( 'saisinesepsreorientsrs93', 'saisinesepsbilansparcours66', /*'suspensionsreductionsallocations93',*/ 'saisinesepdspdos66', 'nonrespectssanctionseps93', 'defautsinsertionseps66', 'nonorientationspros58' );
 CREATE TYPE TYPE_ETAPEDOSSIEREP AS ENUM ( 'cree', '...', 'seance', 'decisionep', 'decisioncg', 'traite' );
 
 CREATE TABLE dossierseps (
@@ -730,6 +735,7 @@ CREATE INDEX bilansparcours66_referent_id_idx ON bilansparcours66 (referent_id);
 -- -----------------------------------------------------------------------------
 -- 20110204
 -- -----------------------------------------------------------------------------
+
 SELECT alter_table_drop_column_if_exists( 'public', 'bilansparcours66', 'situationperso' );
 ALTER TABLE bilansparcours66 ADD COLUMN situationperso TEXT DEFAULT NULL;
 
@@ -741,6 +747,50 @@ ALTER TABLE bilansparcours66 ADD COLUMN bilanparcoursinsertion type_booleannumbe
 
 SELECT alter_table_drop_column_if_exists( 'public', 'bilansparcours66', 'motifep' );
 ALTER TABLE bilansparcours66 ADD COLUMN motifep type_booleannumber DEFAULT NULL;
+
+-- -----------------------------------------------------------------------------
+-- Ajout de la thématique des non-orientations pro pour le cg58
+-- -----------------------------------------------------------------------------
+
+CREATE TABLE nonorientationspros58 (
+	id      				SERIAL NOT NULL PRIMARY KEY,
+	dossierep_id			INTEGER NOT NULL REFERENCES dossierseps(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	orientstruct_id			INTEGER DEFAULT NULL REFERENCES orientsstructs(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	created					TIMESTAMP WITHOUT TIME ZONE,
+	modified				TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE nonorientationspros58 IS 'Saisines d''EPs créées lors d''une non orientation du social vers le professionel dans une délai de 6, 12 ou 24 mois (CG58)';
+
+DROP INDEX IF EXISTS nonorientationspros58_dossierep_id_idx;
+CREATE INDEX nonorientationspros58_dossierep_id_idx ON nonorientationspros58 (dossierep_id);
+
+DROP INDEX IF EXISTS nonorientationspros58_orientstruct_id_idx;
+CREATE INDEX nonorientationspros58_orientstruct_id_idx ON nonorientationspros58 (orientstruct_id);
+
+CREATE TYPE TYPE_DECISIONNONORIENTATIONPRO58 AS ENUM ( 'reorientation', 'maintienref' );
+COMMENT ON TYPE TYPE_DECISIONNONORIENTATIONPRO58 IS 'Type de décision pour la non orientation professionnelle dans les délais (CG58)';
+
+CREATE TABLE decisionsnonorientationspros58 (
+	id      					SERIAL NOT NULL PRIMARY KEY,
+	etape						TYPE_ETAPEDECISIONEP NOT NULL,
+	decision					TYPE_DECISIONNONORIENTATIONPRO58 DEFAULT NULL,
+	nonorientationpro58_id		INTEGER NOT NULL REFERENCES nonorientationspros58(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	typeorient_id				INTEGER DEFAULT NULL REFERENCES typesorients(id) ON UPDATE CASCADE ON DELETE SET NULL,
+	structurereferente_id		INTEGER DEFAULT NULL REFERENCES structuresreferentes(id) ON UPDATE CASCADE ON DELETE SET NULL,
+	commentaire					TEXT DEFAULT NULL,
+	created						TIMESTAMP WITHOUT TIME ZONE,
+	modified					TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE decisionsnonorientationspros58 IS 'Décisions de la saisine d''EP lors d''une non orientation du social vers le professionel dans une délai de 6, 12 ou 24 mois (CG58)';
+
+DROP INDEX IF EXISTS decisionsnonorientationspros58_nonorientationpro58_id_idx;
+CREATE INDEX decisionsnonorientationspros58_nonorientationpro58_id_idx ON decisionsnonorientationspros58 (nonorientationpro58_id);
+
+DROP INDEX IF EXISTS decisionsnonorientationspros58_typeorient_id_idx;
+CREATE INDEX decisionsnonorientationspros58_typeorient_id_idx ON decisionsnonorientationspros58 (typeorient_id);
+
+DROP INDEX IF EXISTS decisionsnonorientationspros58_structurereferente_id_idx;
+CREATE INDEX decisionsnonorientationspros58_structurereferente_id_idx ON decisionsnonorientationspros58 (structurereferente_id);
 
 -- *****************************************************************************
 -- Indexes liés aux EPs
