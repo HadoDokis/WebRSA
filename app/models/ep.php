@@ -117,5 +117,29 @@
 			$enums = $this->enums();
 			return array_keys( $enums['Ep'] );
 		}
+
+		/**
+		* Retourne une chaîne de 12 caractères formattée comme suit:
+		* EP, année sur 4 chiffres, mois sur 2 chiffres, nombre de commissions.
+		*/
+
+		public function identifiant() {
+			return 'EP'.date( 'Ym' ).sprintf( "%010s",  $this->find( 'count' ) + 1 );
+		}
+
+		/**
+		* Ajout de l'identifiant de la séance lors de la sauvegarde.
+		*/
+
+		public function beforeValidate( $options = array() ) {
+			$primaryKey = Set::classicExtract( $this->data, "{$this->alias}.{$this->primaryKey}" );
+			$identifiant = Set::classicExtract( $this->data, "{$this->alias}.identifiant" );
+
+			if( empty( $primaryKey ) && empty( $identifiant ) ) {
+				$this->data[$this->alias]['identifiant'] = $this->identifiant();
+			}
+
+			return true;
+		}
 	}
 ?>

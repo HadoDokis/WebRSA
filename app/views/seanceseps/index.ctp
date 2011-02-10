@@ -103,7 +103,9 @@
 		else {
 			echo '<table><thead>';
 				echo '<tr>
+					<th>'.$xpaginator->sort( __d( 'ep', 'Ep.identifiant', true ), 'Ep.identifiant' ).'</th>
 					<th>'.$xpaginator->sort( __d( 'ep', 'Ep.name', true ), 'Ep.name' ).'</th>
+					<th>'.$xpaginator->sort( __d( 'seanceep', 'Seanceep.identifiant', true ), 'Seanceep.identifiant' ).'</th>
 					<th>'.$xpaginator->sort( __d( 'structurereferente', 'Structurereferente.lib_struc', true ), 'Structurereferente.lib_struc' ).'</th>
 					<th>'.$xpaginator->sort( __d( 'seanceep', 'Seanceep.dateseance', true ), 'Seanceep.dateseance' ).'</th>
 					<th>'.$xpaginator->sort( __d( 'seanceep', 'Seanceep.finalisee', true ), 'Seanceep.finalisee' ).'</th>
@@ -131,7 +133,9 @@
 				}
 
 				echo '<tr>
+					<td>'.h( $seanceep['Ep']['identifiant'] ).'</td>
 					<td>'.h( $seanceep['Ep']['name'] ).'</td>
+					<td>'.h( $seanceep['Seanceep']['identifiant'] ).'</td>
 					<td>'.h( @$seanceep['Structurereferente']['lib_struc'] ).'</td>
 					<td>'.h( $locale->date( 'Date::short', $seanceep['Seanceep']['dateseance'] ) ).'</td>
 					<td>'.h( $seanceep['Seanceep']['finalisee'] ).'</td>

@@ -31,7 +31,7 @@
 	echo $default->subform(
 		array(
 			'Seanceep.id' => array('type'=>'hidden'),
-			'Seanceep.identifiant',
+// 			'Seanceep.identifiant',
 			'Seanceep.ep_id',
 			'Seanceep.name',
 			'Seanceep.dateseance' => array( 'dateFormat' => __( 'Locale->dateFormat', true ), 'timeFormat' => __( 'Locale->timeFormat', true ), 'interval'=>15 ), // TODO: à mettre par défaut dans Default2Helper
