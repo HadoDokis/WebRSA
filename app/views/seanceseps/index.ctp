@@ -132,7 +132,7 @@
 
 				echo '<tr>
 					<td>'.h( $seanceep['Ep']['name'] ).'</td>
-					<td>'.h( $seanceep['Structurereferente']['lib_struc'] ).'</td>
+					<td>'.h( @$seanceep['Structurereferente']['lib_struc'] ).'</td>
 					<td>'.h( $locale->date( 'Date::short', $seanceep['Seanceep']['dateseance'] ) ).'</td>
 					<td>'.h( $seanceep['Seanceep']['finalisee'] ).'</td>
 					<td>'.h( $seanceep['Seanceep']['observations'] ).'</td>
