@@ -147,6 +147,8 @@
 			$this->Informationpe->Historiqueetatpe->begin();
 
 			foreach( $lines as $numLine => $line ) {
+				$line = preg_replace( '/^"([^"]*)"$/', '\1', $line );
+
 				if( !( $numLine == 0 && $this->headers ) && trim( $line ) != '' ) {
 					$numLine++; // La numérotation des lignes commence à 1
 
