@@ -359,14 +359,14 @@
 	/**
 	* Calcule la clé pour un NIR donné
 	*
-	* FIXME: prendre les 2A/2B en compte
-	*
 	* @param string $nir NIR sur 13 caractères
 	* @return string Clé du NIR, sur 2 caractères
 	*/
 
 	function cle_nir( $nir ) {
-		if( !preg_match( '/^[0-9]+$/', $nir ) ) {
+		$nir = strtoupper( $nir );
+
+		if( !preg_match( '/^([0-9]+|[0-9]{5}2(A|B)[0-9]{6})$/', $nir ) ) {
 			trigger_error( sprintf( __( 'Le NIR suivant n\'est pas composé que de chiffres: %s', true ), $nir ), E_USER_WARNING );
 		}
 
@@ -374,7 +374,19 @@
 			trigger_error( sprintf( __( 'Le NIR suivant n\'est pas composé de 13 caractères: %s', true ), $nir ), E_USER_WARNING );
 		}
 
-		$modulo = bcmod( $nir, 97 );
+		$correction = 0;
+
+		if( preg_match( '/^([0-9]{5}2)(A|B)([0-9]{6})/', $nir, $matches ) ) {
+			if( $matches[2] == 'A' ) {
+				$correction = 1000000;
+			}
+			else {
+				$correction = 2000000;
+			}
+			$nir = preg_replace( '/(A|B)/', '0', $nir );
+		}
+
+		$modulo = bcmod( ( $nir - $correction ), 97 );
 		return str_pad( ( 97 - $modulo ), 2, '0', STR_PAD_LEFT);
 	}
 

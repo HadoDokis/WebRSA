@@ -147,6 +147,7 @@
 			$this->Informationpe->Historiqueetatpe->begin();
 
 			foreach( $lines as $numLine => $line ) {
+				$line = preg_replace( '/(,+)$/', '', trim( $line ) );
 				$line = preg_replace( '/^"(.*)"$/', '\1', trim( $line ) );
 
 				if( !( $numLine == 0 && $this->headers ) && trim( $line ) != '' ) {
@@ -199,104 +200,107 @@
 						$parts[0] = $parts[0].cle_nir( $parts[0] );
 						$parts[count($parts)-1] = $parts[count($parts)-1].cle_nir( $parts[count($parts)-1] );
 
-						// Si le NIR n'est pas valide, on met à NULL
+						// Si le NIR n'est pas valide, on rejette la ligne
 						if( !valid_nir( $parts[count($parts)-1] ) || !valid_nir( $parts[0] ) ) {
-							$parts[0] = $parts[count($parts)-1] = null;
-						}
-
-						// Recherche / remplissage des tables -> FIXME: en faire une fonction
-
-						// Table informationspe
-						$informationpe = array( 'Informationpe' => array( ) );
-						foreach( $this->fieldsInformationpe as $column ) {
-							$key = array_search( $column, $this->map[$etat] );
-
-							if( $column == 'dtnai' ) {
-								// Formattage de la date du format JJ/MM/AAAA au format SQL AAAA-MM-JJ
-								// Concerne le champ dtnai -- FIXME, function
-								$dateParts = explode( '/', $parts[$key] );
-								$parts[$key] = "{$dateParts[2]}-{$dateParts[1]}-{$dateParts[0]}";
-							}
-							$informationpe['Informationpe'][$column] = $parts[$key];
-						}
-
-						$oldInformationpe = $this->Informationpe->find(
-							'first',
-							array(
-								'conditions' => array(
-									'OR' => array(
-										'Informationpe.nir' => $informationpe['Informationpe']['nir'], // FIXME: not null ?
-										array(
-											'Informationpe.nom' => $informationpe['Informationpe']['nom'],
-											'Informationpe.prenom' => $informationpe['Informationpe']['prenom'],
-											'Informationpe.dtnai' => $informationpe['Informationpe']['dtnai']
-										)
-									)
-								),
-								'contain' => false
-							)
-						);
-
-						if( empty( $oldInformationpe ) ) {
-							$this->Informationpe->create( $informationpe );
-							$tmpSuccessInformationpe = $this->Informationpe->save();
-							$success =  $tmpSuccessInformationpe && $success;
-							$informationpe_id = $this->Informationpe->id;
+							$parts[0] = substr( $parts[0], 0, 13 );
+							$this->err( "Non traitement de la ligne {$numLine} du fichier {$this->csv->path} (le NIR \"{$parts[0]}\" n'est pas valide." );
+							$this->_rejects[] = $line;
 						}
 						else {
-							$tmpSuccessInformationpe = true;
-							$informationpe_id = $oldInformationpe['Informationpe']['id'];
-						}
+							// Recherche / remplissage des tables -> FIXME: en faire une fonction
 
-						// Tables historiquecessationspe, historiqueinscriptionspe, historiqueradiationspe
-						$record = array( 'Historiqueetatpe' => array( ) );
-						foreach( $this->map[$etat] as $key => $column ) {
-							// Formattage de la date du format JJ/MM/AAAA au format SQL AAAA-MM-JJ
-							// Concerne le champ date -- FIXME, function
-							if( !in_array( $column, $this->fieldsInformationpe ) ) {
-								if( $column == 'date' ) {
+							// Table informationspe
+							$informationpe = array( 'Informationpe' => array( ) );
+							foreach( $this->fieldsInformationpe as $column ) {
+								$key = array_search( $column, $this->map[$etat] );
+
+								if( $column == 'dtnai' ) {
+									// Formattage de la date du format JJ/MM/AAAA au format SQL AAAA-MM-JJ
+									// Concerne le champ dtnai -- FIXME, function
 									$dateParts = explode( '/', $parts[$key] );
 									$parts[$key] = "{$dateParts[2]}-{$dateParts[1]}-{$dateParts[0]}";
 								}
-								$record['Historiqueetatpe'][$column] = $parts[$key];
+								$informationpe['Informationpe'][$column] = $parts[$key];
 							}
-						}
-						$record['Historiqueetatpe']['informationpe_id'] = $informationpe_id;
-						$record['Historiqueetatpe']['etat'] = $etat;
 
-						$conditions = array(
-							'informationpe_id' => $informationpe_id,
-							'etat' => $etat,
-							'date' => $record['Historiqueetatpe']['date'],
-							'code' => $record['Historiqueetatpe']['code']
-						);
-						if( isset( $record['Historiqueetatpe']['motif'] ) ) {
-							$conditions['motif'] = $record['Historiqueetatpe']['motif'];
-						}
+							$oldInformationpe = $this->Informationpe->find(
+								'first',
+								array(
+									'conditions' => array(
+										'OR' => array(
+											'Informationpe.nir' => $informationpe['Informationpe']['nir'], // FIXME: not null ?
+											array(
+												'Informationpe.nom' => $informationpe['Informationpe']['nom'],
+												'Informationpe.prenom' => $informationpe['Informationpe']['prenom'],
+												'Informationpe.dtnai' => $informationpe['Informationpe']['dtnai']
+											)
+										)
+									),
+									'contain' => false
+								)
+							);
 
-						$oldRecord = $this->Informationpe->Historiqueetatpe->find(
-							'first',
-							array(
-								'conditions' => $conditions,
-								'contain' => false
-							)
-						);
-
-						if( empty( $oldRecord ) ) {
-							$this->Informationpe->Historiqueetatpe->create( $record );
-							$tmpSuccessModelClass = $this->Informationpe->Historiqueetatpe->save();
-							$success = $tmpSuccessModelClass && $success;
-
-							if( $tmpSuccessInformationpe && $tmpSuccessModelClass ) {
-								$this->out( "Enregistrement des données de la ligne {$numLine} du fichier {$this->csv->path} effectué." );
+							if( empty( $oldInformationpe ) ) {
+								$this->Informationpe->create( $informationpe );
+								$tmpSuccessInformationpe = $this->Informationpe->save();
+								$success =  $tmpSuccessInformationpe && $success;
+								$informationpe_id = $this->Informationpe->id;
 							}
 							else {
-								$this->out( "Erreur lors de l\'enregistrement des données de la ligne {$numLine} du fichier {$this->csv->path}." );
+								$tmpSuccessInformationpe = true;
+								$informationpe_id = $oldInformationpe['Informationpe']['id'];
 							}
-						}
-						else {
-							$this->out( "Non traitement de la ligne {$numLine} du fichier {$this->csv->path} (ligne déjà présente en base)." );
-							$lignespresentes++;
+
+							// Tables historiquecessationspe, historiqueinscriptionspe, historiqueradiationspe
+							$record = array( 'Historiqueetatpe' => array( ) );
+							foreach( $this->map[$etat] as $key => $column ) {
+								// Formattage de la date du format JJ/MM/AAAA au format SQL AAAA-MM-JJ
+								// Concerne le champ date -- FIXME, function
+								if( !in_array( $column, $this->fieldsInformationpe ) ) {
+									if( $column == 'date' ) {
+										$dateParts = explode( '/', $parts[$key] );
+										$parts[$key] = "{$dateParts[2]}-{$dateParts[1]}-{$dateParts[0]}";
+									}
+									$record['Historiqueetatpe'][$column] = $parts[$key];
+								}
+							}
+							$record['Historiqueetatpe']['informationpe_id'] = $informationpe_id;
+							$record['Historiqueetatpe']['etat'] = $etat;
+
+							$conditions = array(
+								'informationpe_id' => $informationpe_id,
+								'etat' => $etat,
+								'date' => $record['Historiqueetatpe']['date'],
+								'code' => $record['Historiqueetatpe']['code']
+							);
+							if( isset( $record['Historiqueetatpe']['motif'] ) ) {
+								$conditions['motif'] = $record['Historiqueetatpe']['motif'];
+							}
+
+							$oldRecord = $this->Informationpe->Historiqueetatpe->find(
+								'first',
+								array(
+									'conditions' => $conditions,
+									'contain' => false
+								)
+							);
+
+							if( empty( $oldRecord ) ) {
+								$this->Informationpe->Historiqueetatpe->create( $record );
+								$tmpSuccessModelClass = $this->Informationpe->Historiqueetatpe->save();
+								$success = $tmpSuccessModelClass && $success;
+
+								if( $tmpSuccessInformationpe && $tmpSuccessModelClass ) {
+									$this->out( "Enregistrement des données de la ligne {$numLine} du fichier {$this->csv->path} effectué." );
+								}
+								else {
+									$this->out( "Erreur lors de l\'enregistrement des données de la ligne {$numLine} du fichier {$this->csv->path}." );
+								}
+							}
+							else {
+								$this->out( "Non traitement de la ligne {$numLine} du fichier {$this->csv->path} (ligne déjà présente en base)." );
+								$lignespresentes++;
+							}
 						}
 					}
 				}
