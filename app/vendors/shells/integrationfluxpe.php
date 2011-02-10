@@ -147,7 +147,7 @@
 			$this->Informationpe->Historiqueetatpe->begin();
 
 			foreach( $lines as $numLine => $line ) {
-				$line = preg_replace( '/^"([^"]*)"$/', '\1', $line );
+				$line = preg_replace( '/^"(.*)"$/', '\1', trim( $line ) );
 
 				if( !( $numLine == 0 && $this->headers ) && trim( $line ) != '' ) {
 					$numLine++; // La numérotation des lignes commence à 1
@@ -198,6 +198,11 @@
 						// Ajout de la clé pour le NIR (on a le NIR sur 15 caractères d'habitude)
 						$parts[0] = $parts[0].cle_nir( $parts[0] );
 						$parts[count($parts)-1] = $parts[count($parts)-1].cle_nir( $parts[count($parts)-1] );
+
+						// Si le NIR n'est pas valide, on met à NULL
+						if( !valid_nir( $parts[count($parts)-1] ) || !valid_nir( $parts[0] ) ) {
+							$parts[0] = $parts[count($parts)-1] = null;
+						}
 
 						// Recherche / remplissage des tables -> FIXME: en faire une fonction
 
