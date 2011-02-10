@@ -36,12 +36,45 @@
 			$this->parameters = $parameters;
 		}
 
+		// Attention on surcharge la visibilite du parent
+		function _setOptions() {
+			return parent::_setOptions();
+		}
+
 	}
 
 	class ComitesapresParticipantscomitesControllerTest extends CakeAppControllerTestCase {
 
-		public function testFunction() {
-			
+		function test_setOptions() {
+			$this->assertNull($this->ComitesapresParticipantscomitesController->viewVars['participants']);
+			$this->assertNull($this->ComitesapresParticipantscomitesController->viewVars['options']);
+			$this->ComitesapresParticipantscomitesController->_setOptions();
+			$this->assertNotNull($this->ComitesapresParticipantscomitesController->viewVars['participants']);
+			$this->assertNotNull($this->ComitesapresParticipantscomitesController->viewVars['options']);
+	        }
+
+	        public function testAdd() {
+			$this->ComitesapresParticipantscomitesController->add();
+	        }
+
+	        public function testEdit() {
+			$this->ComitesapresParticipantscomitesController->edit();
+	        }
+
+	        function test_add_edit() {
+			$id = 1;
+			$this->ComitesapresParticipantscomitesController->_add_edit($id);
+		}
+
+	        function testRapport() {
+			$comiteapre_id = 1;
+			$this->assertNull($this->ComitesapresParticipantscomitesController->viewVars['comiteparticipant']);
+			$this->assertNull($this->ComitesapresParticipantscomitesController->viewVars['participants']);
+			$this->assertNull($this->ComitesapresParticipantscomitesController->viewVars['options']);
+			$this->ComitesapresParticipantscomitesController->rapport($comiteapre_id);
+			$this->assertNotNull($this->ComitesapresParticipantscomitesController->viewVars['comiteparticipant']);
+			$this->assertNotNull($this->ComitesapresParticipantscomitesController->viewVars['participants']);
+			$this->assertNotNull($this->ComitesapresParticipantscomitesController->viewVars['options']);
 		}
 
 	}

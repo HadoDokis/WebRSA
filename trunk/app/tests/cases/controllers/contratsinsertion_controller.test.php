@@ -36,14 +36,105 @@
 			$this->parameters = $parameters;
 		}
 
+		public function add() {
+			$this->action = 'add';
+			parent::add();
+		}
+
+		public function edit() {
+			$this->action = 'edit';
+			parent::edit();
+		}
+
+		public function _add_edit() {
+			$this->action = '_add_edit';
+			parent::_add_edit();
+		}
+ 
+		public function delete() {
+			$this->action = 'delete';
+			parent::delete($id);
+		}
+
+		// Attention on surcharge la visibilite du parent
+		function _setOptions() {
+			return parent::_setOptions();
+		}
+
+		// Attention on surcharge la visibilite du parent
+		function _libelleTypeorientNiv0($typeorient_id) {
+			return parent::_libelleTypeorientNiv0($typeorient_id);
+		}
+
+		// Attention on surcharge la visibilite du parent
+		function _referentStruct() {
+			return parent::_referentStruct();
+		}
+
+		// Attention on surcharge la visibilite du parent
+		function _getDsp($personne_id) {
+			return parent::_getDsp($personne_id);
+		}
 	}
 
 	class ContratsinsertionControllerTest extends CakeAppControllerTestCase {
+/*
+		protected function _setOptions() {
 
-		public function testFunction() {
-			
 		}
 
+		protected function _libelleTypeorientNiv0(  ) {
+			$typeorient_id
+		}
+
+		protected function _referentStruct(  ) {
+
+		}
+
+		public function ajaxref( $referent_id = null ) { // FIXME
+
+		}
+
+		public function ajaxstruct( $structurereferente_id = null ) { // FIXME
+
+		}
+
+		public function index( $personne_id = null ){
+
+		}
+
+		public function view( $contratinsertion_id = null ) {
+
+		}
+
+		public function add() {
+
+		}
+
+		public function edit() {
+
+		}
+
+		protected function _getDsp(  ) {
+			$personne_id
+		}
+
+		protected function _add_edit( $id = null ) {
+
+		}
+
+		public function valider( $contratinsertion_id = null ) {
+
+		}
+
+		public function delete( $id ) {
+
+		}
+
+		public function notificationsop( $id = null ) {
+
+		}
+*/
 	}
 
 ?>

@@ -9,10 +9,23 @@
 				'id' => '1',
 				'nonrespectsanctionep93_id' => '1',
 				'numrelance' => '1',
-				'dateecheance' => '2010-11-20',
 				'dateimpression' => null,
-				'daterelance' => '2010-10-5',
-			)
+				'daterelance' => '2010-11-04',
+			),
+			array(
+				'id' => '2',
+				'nonrespectsanctionep93_id' => '2',
+				'numrelance' => '1',
+				'dateimpression' => null,
+				'daterelance' => '2010-11-04',
+			),
+			array(
+				'id' => '8',
+				'nonrespectsanctionep93_id' => '9',
+				'numrelance' => '1',
+				'dateimpression' => null,
+				'daterelance' => '2010-10-15',
+			),
 		);
 	}
 

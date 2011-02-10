@@ -13,6 +13,14 @@
 		*/
 
 		public $fixtures = array (
+			'app.ep_membreep',
+			'app.ep_zonegeographique',
+			'app.membreep_seanceep',
+			'app.membreep',
+			'app.seanceep',
+			//'app.commissionep',
+			'app.nonrespectsanctionep93',
+			'app.propoorientationcov58',
 			'app.decisionnonrespectsanctionep93',
 			'app.relancenonrespectsanctionep93',
 			'app.dossierep',
@@ -209,7 +217,6 @@
 			'app.partenaire',
 			'app.periodeimmersion',
 			'app.tiersprestataireapre',
-			'app.nonrespectsanctionep93',
 		);
 
 		function startCase() { Cache::clear(); clearCache(); }

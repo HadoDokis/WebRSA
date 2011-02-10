@@ -20,6 +20,11 @@
 				'codeinsee' => '34080',
 				'libelle' => 'Pole Montpellier Ouest',
 			),
+			array(
+				'id' => '35',
+				'codeinsee' => '93066',
+				'libelle' => 'SAINT-DENIS',
+			),
 		);
 	}
 

@@ -65,6 +65,30 @@
 				'mtestrsa' => null,
 				'raisoctieelectdom' => null,
 			),
+			array(
+				'id' => '1001',
+				'dossier_id' => '6',
+				'sitfam' => null,
+				'ddsitfam' => null,
+				'typeocclog' => null,
+				'mtvallocterr' => null,
+				'mtvalloclog' => null,
+				'contefichliairsa' => null,
+				'mtestrsa' => null,
+				'raisoctieelectdom' => null,
+			),
+			array(
+				'id' => '1002',
+				'dossier_id' => '7',
+				'sitfam' => null,
+				'ddsitfam' => null,
+				'typeocclog' => null,
+				'mtvallocterr' => null,
+				'mtvalloclog' => null,
+				'contefichliairsa' => null,
+				'mtestrsa' => null,
+				'raisoctieelectdom' => null,
+			),
 		 );
 	}
 

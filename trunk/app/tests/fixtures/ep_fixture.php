@@ -6,12 +6,26 @@
 		var $import = array( 'table' => 'eps', 'connection' => 'default', 'records' => false);
 		var $records = array(
 			array(
-				'id' => '1',
-				'name' => 'name',
+				'id' => '2',
+				'name' => 'CLI 1 Equipe 1.2',
+				'identifiant' => 'EP1.2',
 				'regroupementep_id' => '1',
-				'saisineepreorientsr93' => 'nontraite',
+				'defautinsertionep66' => 'nontraite',
 				'saisineepbilanparcours66' => 'nontraite',
 				'saisineepdpdo66' => 'nontraite',
+				'nonrespectsanctionep93' => 'cg',
+				'saisineepreorientsr93' => 'cg',
+			),
+			array(
+				'id' => '3',
+				'name' => 'CLI 2 Equipe 2.1',
+				'identifiant' => 'EP2.1',
+				'regroupementep_id' => '2',
+				'defautinsertionep66' => 'nontraite',
+				'saisineepbilanparcours66' => 'nontraite',
+				'saisineepdpdo66' => 'nontraite',
+				'nonrespectsanctionep93' => 'cg',
+				'saisineepreorientsr93' => 'cg',
 			),
 		);
 	}

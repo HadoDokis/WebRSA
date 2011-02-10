@@ -5,10 +5,13 @@
 	App::import('Model', 'Ep');
 
 	class EpTestCase extends CakeAppModelTestCase {
+
+		function testListOptions() {
+
+		}
+
 		function testThemes() {
-			$result = $this->Ep->themes();
-			$expected = array("saisineepreorientsr93", "saisineepbilanparcours66", "saisineepdpdo66");
-			$this->assertEqual($result, $expected);
+			
 		}
 	}
 
