@@ -460,6 +460,9 @@
 						'foreignKey' => false,
 						'conditions' => array( "Dossierep.personne_id = Personne.id" ),
 					),
+				),
+				'conditions' => array(
+					'Dossierep.seanceep_id' => $seanceep_id
 				)
 			);
 
@@ -522,6 +525,121 @@
 					$presences
 				),
 				"{$this->alias}/pv.odt",
+				true,
+				$options
+			);
+		}
+
+		/**
+		*
+		*/
+
+		public function getPdfOrdreDuJour( $seanceep_id ) {
+ 			$seanceep_data = $this->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Seanceep.id' => $seanceep_id
+					),
+					'contain' => array(
+						'Structurereferente'
+					)
+				)
+			);
+
+			$queryData = array(
+				'fields' => array(
+					'Dossierep.id',
+					'Dossierep.personne_id',
+					'Dossierep.seanceep_id',
+					'Dossierep.etapedossierep',
+					'Dossierep.themeep',
+					'Dossierep.created',
+					'Dossierep.modified',
+					//
+					'Personne.id',
+					'Personne.foyer_id',
+					'Personne.qual',
+					'Personne.nom',
+					'Personne.prenom',
+					'Personne.nomnai',
+					'Personne.prenom2',
+					'Personne.prenom3',
+					'Personne.nomcomnai',
+					'Personne.dtnai',
+					'Personne.rgnai',
+					'Personne.typedtnai',
+					'Personne.nir',
+					'Personne.topvalec',
+					'Personne.sexe',
+					'Personne.nati',
+					'Personne.dtnati',
+					'Personne.pieecpres',
+					'Personne.idassedic',
+					'Personne.numagenpoleemploi',
+					'Personne.dtinscpoleemploi',
+					'Personne.numfixe',
+					'Personne.numport',
+				),
+				'joins' => array(
+					array(
+						'table'      => 'personnes',
+						'alias'      => 'Personne',
+						'type'       => 'INNER',
+						'foreignKey' => false,
+						'conditions' => array( "Dossierep.personne_id = Personne.id" ),
+					),
+				),
+				'conditions' => array(
+					'Dossierep.seanceep_id' => $seanceep_id
+				)
+			);
+
+			$options = array( 'Personne' => array( 'qual' => ClassRegistry::init( 'Option' )->qual() ) );
+			$options = Set::merge( $options, $this->enums() );
+			$options = Set::merge( $options, $this->Dossierep->enums() );
+			$options = Set::merge( $options, $this->Membreep->enums() );
+			$options = Set::merge( $options, $this->MembreepSeanceep->enums() );
+
+ 			$dossierseps = $this->Dossierep->find( 'all', $queryData );
+			// FIXME: faire la traduction des enums dans les modèles correspondants ?
+
+			// present, excuse, FIXME: remplace_par
+ 			$reponsesTmp = $this->MembreepSeanceep->find(
+				'all',
+				array(
+					'conditions' => array(
+						'MembreepSeanceep.seanceep_id' => $seanceep_id
+					),
+					'contain' => array(
+						'Membreep' => array(
+							'Fonctionmembreep'
+						)
+					)
+				)
+			);
+
+			// FIXME: presence -> obliger de prendre les présences avant d'imprimer le PV
+			$reponses = array();
+			foreach( $reponsesTmp as $reponse ) {
+				$reponses["Reponses_{$reponse['MembreepSeanceep']['reponse']}"][] = array( 'Membreep' => $reponse['Membreep'] );
+			}
+			foreach( $options['MembreepSeanceep']['reponse'] as $typereponse => $libelle ) {
+				if( !isset( $reponses["Reponses_{$typereponse}"] ) ) {
+					$reponses["Reponses_{$typereponse}"] = array();
+				}
+				$seanceep_data["reponses_{$typereponse}_count"] = count( $reponses["Reponses_{$typereponse}"] );
+			}
+
+			return $this->ged(
+				array_merge(
+					array(
+						$seanceep_data,
+						'Dossierseps' => $dossierseps,
+					),
+					$reponses
+				),
+				"{$this->alias}/ordedujour.odt",
 				true,
 				$options
 			);
