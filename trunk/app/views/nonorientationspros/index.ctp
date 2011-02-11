@@ -1,4 +1,4 @@
-<h1>Détection non réorienté</h1>
+<h1><?php echo $this->pageTitle = __d( 'nonorientationpro', 'Nonorientationspros::index', true ); ?></h1>
 
 <?php
 
