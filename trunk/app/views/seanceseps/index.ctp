@@ -138,7 +138,7 @@
 					<td>'.h( $seanceep['Seanceep']['identifiant'] ).'</td>
 					<td>'.h( @$seanceep['Structurereferente']['lib_struc'] ).'</td>
 					<td>'.h( $locale->date( 'Date::short', $seanceep['Seanceep']['dateseance'] ) ).'</td>
-					<td>'.h( $seanceep['Seanceep']['finalisee'] ).'</td>
+					<td>'.h( Set::enum( $seanceep['Seanceep']['finalisee'], $options['Seanceep']['finalisee'] ) ).'</td>
 					<td>'.h( $seanceep['Seanceep']['observations'] ).'</td>
 					<td>'.$lien.'</td>
 				</tr>';
