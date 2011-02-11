@@ -473,6 +473,8 @@
 				$model = Inflector::classify( $theme );
 
 				$options = Set::merge( $options, $this->Dossierep->{$model}->enums() );
+// debug($model);
+// die();
 				$modeleDecisions = array( 'Nonrespectsanctionep93' => 'Decisionnonrespectsanctionep93' );// FIXME: à supprimer après le renommage des tables
 				if( isset( $modeleDecisions[$model] ) ) {
 					$options = Set::merge( $options, $this->Dossierep->{$model}->{$modeleDecisions[$model]}->enums() );

@@ -74,13 +74,13 @@ msgid "Seanceseps::finaliserep"
 msgstr "6. Finaliser la séance d'EP"
 
 msgid "Seanceseps::impressionpv"
-msgstr "7. Imprimer le PV de la commission"
+msgstr "8. Imprimer le PV de la commission"
 
 msgid "Seanceseps::traitercg"
-msgstr "8. Emettre la décision du CG"
+msgstr "9. Emettre la décision du CG"
 
 msgid "Seanceseps::finalisercg"
-msgstr "9. Finaliser la décision CG"
+msgstr "10. Finaliser la décision CG"
 
 msgid "ENUM::FINALISEE::cg"
 msgstr "Décision CG"

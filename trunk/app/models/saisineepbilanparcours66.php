@@ -25,13 +25,13 @@
 					'structurereferente_id'
 				)
 			),
-// 			'Enumerable' => array(
-// 				'fields' => array(
-// 					'accordaccueil',
-// 					'accordallocataire',
-// 					'urgent',
-// 				)
-// 			)
+			'Enumerable'/* => array(
+				'fields' => array(
+					'accordaccueil',
+					'accordallocataire',
+					'urgent',
+				)
+			)*/
 		);
 
 		public $belongsTo = array(
