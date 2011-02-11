@@ -16,11 +16,12 @@
 			$seanceep_id = '3';
 			$niveauDecision = 'cg';
 			$return = $this->Nonrespectsanctionep93->qdDossiersParListe($seanceep_id, $niveauDecision);
+			debug($return);
 		}
 
 		function testPrepareFormData() {
-			$seanceep_id;
-			$datas;
+			$seanceep_id = '3';
+			$datas = ;
 			$niveauDecision;
 		}
 

@@ -85,6 +85,22 @@
 				'orientation' => 'O',
 				'pdo' => 'O',
 			),
+			array(
+				'id' => '6',
+				'typeorient_id' => '5',
+				'lib_struc' => 'CAF DE ROSNY SOUS BOIS',
+				'num_voie' => null,
+				'type_voie' => null,
+				'nom_voie' => null,
+				'code_postal' => '93110',
+				'ville' => 'ROSNY SOUS BOIS',
+				'code_insee' => '93064',
+				'filtre_zone_geo' => null,
+				'contratengagement' => 'O',
+				'apre' => 'O',
+				'orientation' => 'O',
+				'pdo' => 'O',
+			),
 		);
 	}
 
