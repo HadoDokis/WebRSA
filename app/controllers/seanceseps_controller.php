@@ -430,7 +430,7 @@
  			$pdf = $this->Seanceep->getPdfOrdreDuJour( $seanceep_id );
 
 			if( $pdf ) {
-				$this->Gedooo->sendPdfContentToClient( $pdf, 'pv' );
+				$this->Gedooo->sendPdfContentToClient( $pdf, 'OJ' );
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer l\'ordre du jour de la commission d\'EP', 'default', array( 'class' => 'error' ) );

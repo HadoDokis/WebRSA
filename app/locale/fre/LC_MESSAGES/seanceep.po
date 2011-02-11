@@ -81,3 +81,9 @@ msgstr "8. Emettre la décision du CG"
 
 msgid "Seanceseps::finalisercg"
 msgstr "9. Finaliser la décision CG"
+
+msgid "ENUM::FINALISEE::cg"
+msgstr "Décision CG"
+
+msgid "ENUM::FINALISEE::ep"
+msgstr "Avis de l'EP"
