@@ -20,6 +20,10 @@
 			)
 		);
 
+        public $actsAs = array(
+            'Enumerable'
+        );
+
 		public $hasMany = array(
 			'Decisionnonorientationpro58' => array(
 				'className' => 'Decisionnonorientationpro58',
