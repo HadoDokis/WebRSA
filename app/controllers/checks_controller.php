@@ -1,4 +1,8 @@
 <?php
+	/**
+	* Classe de vérification de l'installation et du paramétrage de WebRSA.
+	*/
+
 	class ChecksController extends AppController
 	{
 		public $name = 'Checks';
@@ -6,33 +10,23 @@
 		public $uses = array( 'Structurereferente', 'User' );
 
 		public function index() {
-			$this->set('webrsaIncExist', $this->_checkWebrsaInc( array( 'Cohorte.dossierTmpPdfs' ) ) );
-			$this->set('pdftkInstalled', $this->_checkMissingBinaries( array( 'pdftk' ) ) );
+			$this->set( 'webrsaIncExist', $this->_checkWebrsaInc( array( 'Cohorte.dossierTmpPdfs' ) ) );
+			$this->set( 'pdftkInstalled', $this->_checkMissingBinaries( array( 'pdftk' ) ) );
 			$this->_checkDecisionsStructures();
 			$this->_checkDonneesUtilisateursEtServices();
-			$this->set('donneesApreExist', $this->_checkDonneesApre() );
-			$this->set('checkWritePdfDirectory', $this->_checkTmpPdfDirectory( Configure::read( 'Cohorte.dossierTmpPdfs' ) ) );
-			$this->set('compressedAssets', $this->_compressedAssets() );
-			$this->set('checkEpNonrespectsanctionep93', $this->_checkEpNonrespectsanctionep93() );
+			$this->set( 'donneesApreExist', $this->_checkDonneesApre() );
+			$this->set( 'checkWritePdfDirectory', $this->_checkTmpPdfDirectory( Configure::read( 'Cohorte.dossierTmpPdfs' ) ) );
+			$this->set( 'compressedAssets', $this->_compressedAssets() );
+			$this->set( 'checkWebrsaIncEps', $this->_checkWebrsaIncEps() );
 		}
 
 		/**
-		* Vérification du paramétrage pour les EPs, thématique "Non respect et
-		* sanctions" pour le CG 93
+		*
 		*/
 
-		protected function _checkEpNonrespectsanctionep93() {
-			$keys = array(
-				'Nonrespectsanctionep93.montantReduction' => 'numeric',
-				'Nonrespectsanctionep93.montantReduction' => 'integer',
-				'Nonrespectsanctionep93.relanceOrientstructCer1' => 'integer',
-				'Nonrespectsanctionep93.relanceOrientstructCer2' => 'integer',
-				'Nonrespectsanctionep93.relanceOrientstructCer3' => 'integer',
-				'Nonrespectsanctionep93.relanceCerCer1' => 'integer',
-				'Nonrespectsanctionep93.relanceCerCer2' => 'integer',
-			);
-
+		private function __configureReadError( $keys ) {
 			$errors = array();
+
 			foreach( $keys as $key => $type ) {
 				$value = Configure::read( $key );
 
@@ -47,14 +41,20 @@
 							$errors[$key] = $type;
 						}
 						break;
+					case 'string':
+						if( is_null( $value ) || !is_string( $value ) ) {
+							$errors[$key] = $type;
+						}
+						break;
 				}
 			}
 
 			return $errors;
 		}
 
+
 		/**
-		* Vérifie la présence des
+		* Vérifie la présence des fichiers CSS et Javascript "compilés" et minifiés
 		*/
 
 		protected function _compressedAssets() {
@@ -229,6 +229,76 @@
 				return false;
 			else
 				return true;
+		}
+
+		/**
+		* Vérification du paramétrage des EPs
+		*/
+
+		protected function _checkWebrsaIncEps() { // FIXME
+			$keys = array( 'Cg.departement' => 'integer', );
+
+			$errors = $this->__configureReadError( $keys );
+
+			$departement = Configure::read( 'Cg.departement' );
+			$method = "_checkWebrsaIncEps{$departement}";
+
+			if( method_exists( $this, $method ) ) {
+				$errors = Set::merge( $errors, $this->{$method}() );
+			}
+			else {
+				$errors['Cg.departement'] = 'integer';
+			}
+
+			return $errors;
+		}
+
+		/**
+		* Vérification du paramétrage des EPs pour le CG 93
+		*/
+
+		protected function _checkWebrsaIncEps93() {
+			$keys = array(
+				'Nonrespectsanctionep93.relanceDecisionNonRespectSanctions' => 'integer',
+				'Nonrespectsanctionep93.relanceOrientstructCer1' => 'integer',
+				'Nonrespectsanctionep93.relanceOrientstructCer2' => 'integer',
+				'Nonrespectsanctionep93.relanceOrientstructCer3' => 'integer',
+				'Nonrespectsanctionep93.relanceCerCer1' => 'integer',
+				'Nonrespectsanctionep93.relanceCerCer2' => 'integer',
+				'Nonrespectsanctionep93.montantReduction' => 'numeric',
+				'Nonrespectsanctionep93.dureeSursis' => 'integer',
+			);
+
+			return $this->__configureReadError( $keys );
+		}
+
+		/**
+		* Vérification du paramétrage des EPs pour le CG 66
+		*/
+
+		protected function _checkWebrsaIncEps66() {
+			$keys = array(
+				'traitementResultatId' => 'integer',
+				'traitementEnCoursId' => 'integer',
+				'traitementClosId' => 'integer',
+				'Traitementpdo.fichecalcul_coefannee1' => 'numeric',// %
+				'Traitementpdo.fichecalcul_coefannee2' => 'numeric',// %
+				'Traitementpdo.fichecalcul_cavntmax' => 'numeric',
+				'Traitementpdo.fichecalcul_casrvmax' => 'numeric',
+				'Traitementpdo.fichecalcul_abattbicvnt' => 'numeric',// %
+				'Traitementpdo.fichecalcul_abattbicsrv' => 'numeric',// %
+				'Traitementpdo.fichecalcul_abattbncsrv' => 'numeric',// %
+			);
+
+			return $this->__configureReadError( $keys );
+		}
+
+		/**
+		* Vérification du paramétrage des EPs pour le CG 58
+		*/
+
+		protected function _checkWebrsaIncEps58() {
+			return array();
 		}
 	}
 ?>
