@@ -250,14 +250,21 @@
 		*/
 
 		public function saveDecisions( $data, $niveauDecision ) {
-			$success = $this->Nvsrepreorient66->saveAll( Set::extract( $data, '/Nvsrepreorient66' ), array( 'atomic' => false ) );
+			// FIXME: filtrer les données
+			$themeData = Set::extract( $data, '/Nvsrepreorient66' );
+			if( empty( $themeData ) ) {
+				return true;
+			}
+			else {
+				$success = $this->Nvsrepreorient66->saveAll( $themeData, array( 'atomic' => false ) );
 
-			$this->Dossierep->updateAll(
-				array( 'Dossierep.etapedossierep' => '\'decision'.$niveauDecision.'\'' ),
-				array( '"Dossierep"."id"' => Set::extract( $data, '/Saisineepbilanparcours66/dossierep_id' ) )
-			);
+				$this->Dossierep->updateAll(
+					array( 'Dossierep.etapedossierep' => '\'decision'.$niveauDecision.'\'' ),
+					array( '"Dossierep"."id"' => Set::extract( $data, '/Saisineepbilanparcours66/dossierep_id' ) )
+				);
 
-			return $success;
+				return $success;
+			}
 		}
 
 		/**
