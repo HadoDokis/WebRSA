@@ -128,3 +128,17 @@
     }
 ?>
 <?php echo $pagination;?>
+<ul class="actionMenu">
+    <li><?php
+        echo $xhtml->printLinkJs(
+            'Imprimer le tableau',
+            array( 'onclick' => 'printit(); return false;', 'class' => 'noprint' )
+        );
+    ?></li>
+    <li><?php
+        echo $xhtml->exportLink(
+            'Télécharger le tableau',
+            array( 'controller' => 'criteresbilansparcours66', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
+        );
+    ?></li>
+</ul>
