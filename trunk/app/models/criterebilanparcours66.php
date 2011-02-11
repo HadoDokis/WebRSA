@@ -48,6 +48,65 @@
                 }
             }
 
+
+            $joins = array(
+                array(
+                    'table'      => 'orientsstructs',
+                    'alias'      => 'Orientstruct',
+                    'type'       => 'INNER',
+                    'foreignKey' => false,
+                    'conditions' => array( 'Orientstruct.id = Bilanparcours66.orientstruct_id' ),
+                ),
+                array(
+                    'table'      => 'personnes',
+                    'alias'      => 'Personne',
+                    'type'       => 'INNER',
+                    'foreignKey' => false,
+                    'conditions' => array( 'Personne.id = Orientstruct.personne_id' ),
+                ),
+                array(
+                    'table'      => 'referents',
+                    'alias'      => 'Referent',
+                    'type'       => 'INNER',
+                    'foreignKey' => false,
+                    'conditions' => array( 'Referent.id = Bilanparcours66.referent_id' ),
+                ),
+                array(
+                    'table'      => 'structuresreferentes',
+                    'alias'      => 'Structurereferente',
+                    'type'       => 'INNER',
+                    'foreignKey' => false,
+                    'conditions' => array( 'Structurereferente.id = Referent.structurereferente_id' ),
+                ),
+                array(
+                    'table'      => 'defautsinsertionseps66',
+                    'alias'      => 'Defautinsertionep66',
+                    'type'       => 'LEFT OUTER',
+                    'foreignKey' => false,
+                    'conditions' => array( 'Bilanparcours66.id = Defautinsertionep66.bilanparcours66_id' ),
+                ),
+                array(
+                    'table'      => 'saisinesepsbilansparcours66',
+                    'alias'      => 'Saisineepbilanparcours66',
+                    'type'       => 'LEFT OUTER',
+                    'foreignKey' => false,
+                    'conditions' => array( 'Bilanparcours66.id = Saisineepbilanparcours66.bilanparcours66_id' ),
+                ),
+                array(
+                    'table'      => 'dossierseps',
+                    'alias'      => 'Dossierep',
+                    'type'       => 'LEFT OUTER',
+                    'foreignKey' => false,
+                    'conditions' => array(
+                        'OR' => array(
+                            'Defautinsertionep66.dossierep_id = Dossierep.id',
+                            'Saisineepbilanparcours66.dossierep_id = Dossierep.id',
+                        )
+                    ),
+                )
+            );
+
+
             $query = array(
                 'fields' => array(
                     'Bilanparcours66.id',
@@ -58,18 +117,18 @@
                     'Bilanparcours66.proposition',
                     'Bilanparcours66.examenaudition',
                     'Bilanparcours66.maintienorientation',
-                    'Bilanparcours66.saisineepparcours'
+                    'Bilanparcours66.saisineepparcours',
+                    'Personne.id',
+                    'Personne.qual',
+                    'Personne.nom',
+                    'Personne.prenom',
+                    'Referent.qual',
+                    'Referent.nom',
+                    'Referent.prenom',
+                    'Structurereferente.lib_struc',
+                    'Dossierep.etapedossierep',
                 ),
-                'contain'=>array(
-                    'Orientstruct' => array(
-                         'Personne' => array(
-                            'fields' => array( 'qual', 'nom', 'prenom' ),
-                        )
-                    ),
-                    'Referent' => array(
-                        'Structurereferente'
-                    )
-                ),
+                'joins' => $joins,
                 'order' => array( '"Bilanparcours66"."datebilan" ASC' ),
                 'conditions' => $conditions
             );
