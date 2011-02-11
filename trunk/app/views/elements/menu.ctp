@@ -76,7 +76,7 @@
 								</ul>
 							</li>
 						<?php endif;?>
-						<?php if( $permissions->check( 'relances', 'relance' ) || $permissions->check( 'relances', 'arelancer' )): ?>
+						<!--<?php if( $permissions->check( 'relances', 'relance' ) || $permissions->check( 'relances', 'arelancer' )): ?>
 							<li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
 								<?php echo $xhtml->link( 'Relances','#' );?>
 								<ul>
@@ -88,7 +88,7 @@
 									<?php endif;?>
 								</ul>
 							</li>
-						<?php endif; ?>
+						<?php endif; ?>-->
 						<?php if( $permissions->check( 'relancesnonrespectssanctionseps93', 'cohorte' ) || $permissions->check( 'relancesnonrespectssanctionseps93', 'impressions' ) ): ?>
 							<li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
 								<?php echo $xhtml->link( 'Relances (EP)','#' );?>
@@ -236,7 +236,7 @@
 					</ul>
 				</li>
 			<?php endif;?>
-			
+
 			<!-- Menu de gestion de la COV pour le cg 58-->
 			<?php if( Configure::read( 'Cg.departement' ) == 58 ): ?>
 				<?php if( $permissions->check( 'covs58', 'index' ) ): ?>
