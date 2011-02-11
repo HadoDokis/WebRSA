@@ -33,6 +33,7 @@
 <th>Orientation actuelle</th>
 <!--<th colspan="2">Flux PE</th>-->
 <th>Origine</th>
+<th>Motif saisine</th>
 <th>Date de radiation</th>
 <th>Motif de radiation</th>
 <!--<th colspan="3">Avis EPL</th>-->
@@ -92,6 +93,7 @@
 				$dossierep['Defautinsertionep66']['Orientstruct']['Typeorient']['lib_type_orient'],
 
 				Set::enum( $dossierep['Defautinsertionep66']['origine'], $options['Defautinsertionep66']['origine'] ),
+				Set::enum( $dossierep['Defautinsertionep66']['Bilanparcours66']['examenaudition'], $options['Defautinsertionep66']['type'] ),
 				$locale->date( __( 'Locale->date', true ), @$dossierep['Defautinsertionep66']['Historiqueetatpe']['date'] ),
 				@$dossierep['Defautinsertionep66']['Historiqueetatpe']['motif'],
 

@@ -41,3 +41,9 @@ msgstr "Non inscription à Pôle Emploi"
 
 msgid "ENUM::ORIGINE::radiationpe"
 msgstr "Radiation de Pôle Emploi"
+
+msgid "ENUM::TYPE::DOD"
+msgstr "Non conclusion"
+
+msgid "ENUM::TYPE::DRD"
+msgstr "Non respect"
