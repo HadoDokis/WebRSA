@@ -295,6 +295,9 @@
 				}
 
 				$outputFile = TMP.DS.'logs'.DS.__CLASS__.'__'.str_replace( '/', '__', str_replace( '.', '_', $document ) );
+
+				$oldMask = umask( 0 );
+
 				file_put_contents(
 					$outputFile,
 					var_export(
@@ -305,6 +308,8 @@
 						true
 					)
 				);
+
+				umask( $oldMask );
 			}
 
 			$bTemplate = $u->ReadFile($path_model);
