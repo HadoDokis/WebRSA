@@ -48,9 +48,9 @@
                     $bilansparcours66[$key]['Personne']['nom_complet'] = implode(
                         ' ',
                         array(
-                            @$bilansparcours66[$key]['Orientstruct']['Personne']['qual'],
-                            @$bilansparcours66[$key]['Orientstruct']['Personne']['nom'],
-                            @$bilansparcours66[$key]['Orientstruct']['Personne']['prenom']
+                            @$bilansparcours66[$key]['Personne']['qual'],
+                            @$bilansparcours66[$key]['Personne']['nom'],
+                            @$bilansparcours66[$key]['Personne']['prenom']
                         )
                     );
                     $bilansparcours66[$key]['Referent']['nom_complet'] = implode(

@@ -91,6 +91,11 @@
                 </tr></thead><tbody>';
             foreach( $bilansparcours66 as $bilanparcour66 ) {
 
+                $isSaisine = '0';
+                if( isset( $bilanparcour66['Dossierep']['etapedossierep'] ) ){
+                    $isSaisine = '1';
+                }
+
                 $motif = null;
                 if (empty($bilanparcour66['Bilanparcours66']['choixparcours']) && !empty($bilanparcour66['Bilanparcours66']['examenaudition'])) {
                     $motif = Set::classicExtract( $options['examenaudition'], $bilanparcour66['Bilanparcours66']['examenaudition'] );
@@ -107,16 +112,15 @@
                     $motif = Set::classicExtract( $options['choixparcours'], $bilanparcour66['Bilanparcours66']['choixparcours'] );
                 }
 
-
                 echo '<tr>
                     <td>'.h( $locale->date( 'Date::short', $bilanparcour66['Bilanparcours66']['datebilan'] ) ).'</td>
                     <td>'.h( $bilanparcour66['Personne']['nom_complet'] ).'</td>
-                    <td>'.h( $bilanparcour66['Referent']['Structurereferente']['lib_struc'] ).'</td>
+                    <td>'.h( $bilanparcour66['Structurereferente']['lib_struc'] ).'</td>
                     <td>'.h( $bilanparcour66['Referent']['nom_complet'] ).'</td>
                     <td>'.h( Set::classicExtract( $options['proposition'], $bilanparcour66['Bilanparcours66']['proposition'] ) ).'</td>
                     <td>'.h( $motif ).'</td>'.
-                    $default2->Type2->format( $bilanparcour66, 'Bilanparcours66.saisineepparcours', array( 'type' => 'boolean', 'tag' => 'td' ) ).
-                    '<td>'.$xhtml->link( 'Voir', array( 'controller' => 'bilansparcours66', 'action' => 'index', $bilanparcour66['Orientstruct']['personne_id'] ) ).'</td>
+                    $default2->Type2->format( $isSaisine, 'Dossierep.etapedossierep', array( 'type' => 'boolean', 'tag' => 'td' ) ).
+                    '<td>'.$xhtml->link( 'Voir', array( 'controller' => 'bilansparcours66', 'action' => 'index', $bilanparcour66['Personne']['id'] ) ).'</td>
                 </tr>';
             }
             echo '</tbody></table>';
