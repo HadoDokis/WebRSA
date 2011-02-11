@@ -112,7 +112,7 @@
 			</tr>
 			<tr class="odd">
 				<th><?php echo "Décision finale";?></th>
-				<td><?php echo /*debug($options);*/ Set::enum( $seanceep['Seanceep']['finalisee'], $options['Seanceep']['finalisee'] ) ;?></td>
+				<td><?php echo /*debug($options);*/ Set::enum( $seanceep['Seanceep']['finalisee'], $options['Seanceep']['finalisee'] );?></td>
 			</tr>
 		</tbody>
 	</table>
