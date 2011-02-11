@@ -20,7 +20,7 @@
 <?php echo $form->create( 'Filtre', array( 'url'=> Router::url( null, true ), 'id' => 'Filtre', 'class' => ( !empty( $this->data ) ? 'folded' : 'unfolded' ) ) );?>
 	<fieldset>
 		<legend>Durée de non orientation depuis le parcours social ou socioprofessionel vers le parcours professionnel</legend>
-		<?php echo $form->input( 'Filtre.dureenonreorientation', array( 'label' => 'Nombre de mois ', 'type' => 'select', 'options' => $nbmoisnonreorientation ) );?>
+		<?php echo $form->input( 'Filtre.dureenonreorientation', array( 'label' => 'Contrat pour l\'orientation sociale terminé depuis', 'type' => 'select', 'options' => $nbmoisnonreorientation ) );?>
 	</fieldset>
 	<div class="submit">
 		<?php echo $form->button( 'Filtrer', array( 'type' => 'submit' ) );?>
@@ -41,6 +41,7 @@
 					<th>Date de naissance</th>
 					<th>Code postal</th>
 					<th>Date de validation de l'orientation</th>
+					<th>Nombre de jours depuis la fin du contrat lié</th>
 					<th>Type d'orientation</th>
 					<th>Structure</th>
 					<th>Référent</th>
@@ -57,8 +58,9 @@
 							echo $xhtml->tag( 'td', $locale->date( __( 'Locale->date', true ), $orientstruct['Personne']['dtnai'] ) );
 							echo $xhtml->tag( 'td', $orientstruct['Adresse']['codepos'] );
 							echo $xhtml->tag( 'td', $locale->date( __( 'Locale->date', true ), $orientstruct['Orientstruct']['date_valid'] ) );
-							echo $xhtml->tag( 'td', $orientstruct['Typeorient']['lib_type_orient'] );
+							echo $xhtml->tag( 'td', $orientstruct['Contratinsertion']['nbjours'] );
 							echo $xhtml->tag( 'td', $orientstruct['Structurereferente']['lib_struc'] );
+							echo $xhtml->tag( 'td', $orientstruct['Typeorient']['lib_type_orient'] );
 							echo $xhtml->tag( 'td', implode( ' ', array( $orientstruct['Referent']['qual'], $orientstruct['Referent']['nom'], $orientstruct['Referent']['prenom'] ) ) );
 							echo $xhtml->tag(
 								'td',

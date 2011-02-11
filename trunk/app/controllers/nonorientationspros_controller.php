@@ -5,9 +5,10 @@
 	
 		public $helpers = array( 'Default2' );
 		
-		public $uses = array( 'Nonorientationpro58' );
+		public $uses = array( 'Nonorientationpro58', 'Nonorientationpro66', 'Nonorientationpro93' );
 		
 		public function beforeFilter() {
+			$this->modelClass = 'Nonorientationpro'.Configure::read( 'Cg.departement' );
 			parent::beforeFilter();
 		}
 		
@@ -28,7 +29,7 @@
 				}
 				$cohorte = $this->{$this->modelClass}->searchNonReoriente($this->data);
 			}
-			$this->set( 'nbmoisnonreorientation', array( 6 => '6 mois', 12 => '12 mois', 24 => '24 mois' ) );
+			$this->set( 'nbmoisnonreorientation', array( 0 => 'Aujourd\'hui', 6 => '6 mois', 12 => '12 mois', 24 => '24 mois' ) );
 			$this->set( compact( 'cohorte' ) );
 		}
 	}

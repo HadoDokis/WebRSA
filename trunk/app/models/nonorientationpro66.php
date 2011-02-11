@@ -1,0 +1,40 @@
+<?php
+    App::import( 'Model', array( 'Nonorientationpro' ) );
+
+	class Nonorientationpro66 extends Nonorientationpro {
+
+		public $belongsTo = array(
+			'Dossierep' => array(
+				'className' => 'Dossierep',
+				'foreignKey' => 'dossierep_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			'Orientstruct' => array(
+				'className' => 'Orientstruct',
+				'foreignKey' => 'orientstruct_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			)
+		);
+
+		public $hasMany = array(
+			'Decisionnonorientationpro66' => array(
+				'className' => 'Decisionnonorientationpro66',
+				'foreignKey' => 'nonorientationpro66_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			)
+		);
+		
+	}
+?>

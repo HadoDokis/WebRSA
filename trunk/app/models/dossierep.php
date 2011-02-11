@@ -75,6 +75,19 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Nonorientationpro66' => array(
+				'className' => 'Nonorientationpro66',
+				'foreignKey' => 'dossierep_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 			// Thèmes 93
 			'Saisineepreorientsr93' => array(
 				'className' => 'Saisineepreorientsr93',
@@ -91,6 +104,19 @@
 			),
 			'Nonrespectsanctionep93' => array(
 				'className' => 'Nonrespectsanctionep93',
+				'foreignKey' => 'dossierep_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Nonorientationpro93' => array(
+				'className' => 'Nonorientationpro93',
 				'foreignKey' => 'dossierep_id',
 				'dependent' => true,
 				'conditions' => '',

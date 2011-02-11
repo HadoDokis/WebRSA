@@ -266,6 +266,10 @@
 		'decisiondefautinsertionep66' => 'decisionsdefautsinsertionseps66',
 		'nonorientationpro58' => 'nonorientationspros58',
 		'decisionnonorientationpro58' => 'decisionsnonorientationspros58',
+		'nonorientationpro66' => 'nonorientationspros66',
+		'decisionnonorientationpro66' => 'decisionsnonorientationspros66',
+		'nonorientationpro93' => 'nonorientationspros93',
+		'decisionnonorientationpro93' => 'decisionsnonorientationspros93',
 		// Données flux Pôle Emploi
 		'informationpe' => 'informationspe',
 		'historiqueetatpe' => 'historiqueetatspe',

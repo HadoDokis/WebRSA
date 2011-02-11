@@ -102,7 +102,7 @@
 								</ul>
 							</li>
 						<?php endif; ?>
-						<?php if( $permissions->check( 'nonorientationspros', 'index' ) ): ?>
+						<?php if( $permissions->check( 'nonorientationspros', 'index' ) && Configure::read( 'Cg.departement' ) == 58 ): ?>
 							<li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
 								<?php echo $xhtml->link( 'Non orientation professionnelle', array( 'controller' => 'nonorientationspros', 'action' => 'index' ) );?>
 							</li>

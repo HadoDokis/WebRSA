@@ -36,10 +36,12 @@
 						'Personne.dtnai',
 						'Personne.nir',
 						'Dossier.numdemrsa',
-						'Adresse.codepos'
+						'Adresse.codepos',
+						'Contratinsertion.df_ci',
+						'( DATE( NOW() ) - "Contratinsertion"."df_ci" ) AS "Contratinsertion__nbjours"'
 					),
 					'conditions' => array(
-						'Orientstruct.date_valid <=' => date( 'Y-m-d', strtotime( '- '.$nbmois.' month', time() ) ),
+						'Contratinsertion.df_ci <=' => date( 'Y-m-d', strtotime( '- '.$nbmois.' month', time() ) ),
 						'Orientstruct.statut_orient' => 'Orienté',
 						'Orientstruct.id NOT IN (
 							SELECT "'.$modelTable.'"."orientstruct_id"
@@ -56,7 +58,7 @@
 							'type' => 'INNER',
 							'conditions' => array(
 								'Orientstruct.typeorient_id = Typeorient.id',
-								'Typeorient.lib_type_orient LIKE' => 'Emploi%'
+								'Typeorient.lib_type_orient NOT LIKE' => 'Emploi%'
 							)
 						),
 						array(
@@ -141,6 +143,16 @@
 							'type'       => 'INNER',
 							'foreignKey' => false,
 							'conditions' => array( 'Adressefoyer.adresse_id = Adresse.id' )
+						),
+						array(
+							'table'      => 'contratsinsertion',
+							'alias'      => 'Contratinsertion',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array(
+								'Contratinsertion.personne_id = Orientstruct.personne_id',
+								'Contratinsertion.structurereferente_id = Orientstruct.structurereferente_id'
+							)
 						)
 					),
 					'contain' => false
