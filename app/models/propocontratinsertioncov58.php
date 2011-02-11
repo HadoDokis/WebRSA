@@ -218,6 +218,7 @@
 		*/
 		
 		public function saveDecision($data, $cov58) {
+		debug($data);
 			$success = true;
 			$dossier = $this->find(
 				'first',
@@ -247,9 +248,9 @@
 					'forme_ci' => $dossier['Propocontratinsertioncov58']['forme_ci'],
 					'avisraison_ci' => $dossier['Propocontratinsertioncov58']['avisraison_ci'],
 					'rg_ci' => $dossier['Propocontratinsertioncov58']['rg_ci'],
-					'observ_ci' => $dossier['Propocontratinsertioncov58']['commentaire'],
+					'observ_ci' => $data['commentaire'],
 					'date_saisi_ci' => $dossier['Propocontratinsertioncov58']['datedemande'],
-					'datevalidation_ci' => $dossier['Propocontratinsertioncov58']['datevalidation'],
+					'datevalidation_ci' => $data['datevalidation'],
 					'decision_ci' => 'V'
 				)
 			);
