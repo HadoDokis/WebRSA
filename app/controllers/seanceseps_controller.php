@@ -194,9 +194,9 @@
 					)
 				)
 			);
-			
+
 			$this->assert( !empty( $seanceep ), 'error404' );
-			
+
 			// Etape OK ?
 			$etapePossible = (
 				( ( $niveauDecision == 'ep' ) && empty( $seanceep['Seanceep']['finalisee'] ) ) // OK
@@ -213,7 +213,7 @@
 // debug( $this->data );
 				$this->Seanceep->begin();
 				$success = $this->Seanceep->saveDecisions( $seanceep_id, $this->data, $niveauDecision );
-				
+
 				$this->_setFlashResult( 'Save', $success );
 				if( $success ) {
 // 					$this->Seanceep->rollback();
@@ -411,6 +411,39 @@
 		*/
 
 		public function impressionpv( $seanceep_id ) {
+			$seanceep = $this->Seanceep->find(
+				'first',
+				array(
+					'fields' => array(
+						'Seanceep.finalisee'
+					),
+					'conditions' => array(
+						'Seanceep.id' => $seanceep_id
+					)
+				)
+			);
+
+			$presencesNonIndiquees = $this->Seanceep->MembreepSeanceep->find(
+				'count',
+				array(
+					'conditions' => array(
+						'MembreepSeanceep.seanceep_id' => $seanceep_id,
+						'MembreepSeanceep.presence IS NULL'
+					)
+				)
+			);
+
+			if( empty( $seanceep['Seanceep']['finalisee'] ) || ( $presencesNonIndiquees > 0 ) ) {
+				if( empty( $seanceep['Seanceep']['finalisee'] ) ) {
+					$this->Session->setFlash( 'Impossible d\'imprimer le PV avant de finaliser la commission au niveau EP.', 'default', array( 'class' => 'error' ) );
+				}
+				else {
+					$this->Session->setFlash( 'Impossible d\'imprimer le PV avant d\'avoir pris les présences de la commission d\'EP.', 'default', array( 'class' => 'error' ) );
+				}
+
+				$this->redirect( $this->referer() );
+			}
+
  			$pdf = $this->Seanceep->getPdfPv( $seanceep_id );
 
 			if( $pdf ) {
@@ -427,6 +460,35 @@
 		*/
 
 		public function ordredujour( $seanceep_id ) {
+			$reponsesNonIndiquees = $this->Seanceep->MembreepSeanceep->find(
+				'count',
+				array(
+					'conditions' => array(
+						'MembreepSeanceep.seanceep_id' => $seanceep_id,
+						'MembreepSeanceep.reponse' => 'nonrenseigne'
+					)
+				)
+			);
+
+			$nombreDossierseps = $this->Seanceep->Dossierep->find(
+				'count',
+				array(
+					'conditions' => array(
+						'Dossierep.seanceep_id' => $seanceep_id
+					)
+				)
+			);
+
+			if( ( $reponsesNonIndiquees > 0 ) || ( $nombreDossierseps == 0 ) ) {
+				if( $reponsesNonIndiquees > 0 ) {
+					$this->Session->setFlash( 'Impossible d\'imprimer l\'ordre du jour avant d\'avoir indiqué la réponse des participants.', 'default', array( 'class' => 'error' ) );
+				}
+				if( $nombreDossierseps == 0 ) {
+					$this->Session->setFlash( 'Impossible d\'imprimer l\'ordre du jour avant d\'avoir attribué des dossiers.', 'default', array( 'class' => 'error' ) );
+				}
+				$this->redirect( $this->referer() );
+			}
+
  			$pdf = $this->Seanceep->getPdfOrdreDuJour( $seanceep_id );
 
 			if( $pdf ) {
