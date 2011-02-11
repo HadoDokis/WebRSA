@@ -36,7 +36,7 @@
 <th>Motif saisine</th>
 <th>Date de radiation</th>
 <th>Motif de radiation</th>
-<!--<th colspan="3">Avis EPL</th>-->
+<th>Avis EPL</th>
 <th colspan="3">Décision CG</th>
 <th class="innerTableHeader noprint">Avis de l\'EP</th>
 </tr>
@@ -102,6 +102,8 @@
 				$form->input( "Decisiondefautinsertionep66.{$i}.id", array( 'type' => 'hidden', 'value' => @$record['id'] ) ).
 				$form->input( "Decisiondefautinsertionep66.{$i}.etape", array( 'type' => 'hidden', 'value' => 'cg' ) ).
 				$form->input( "Decisiondefautinsertionep66.{$i}.defautinsertionep66_id", array( 'type' => 'hidden', 'value' => @$dossierep['Defautinsertionep66']['id'] ) ).
+
+                Set::enum($dossierep['Defautinsertionep66']['Decisiondefautinsertionep66'][$i]['decision'], $options['Decisiondefautinsertionep66']['decision'] ),
 
 				$form->input( "Decisiondefautinsertionep66.{$i}.decision", array( 'type' => 'select', 'label' => false, 'empty' => true, 'options' => $options['Decisiondefautinsertionep66']['decision'], 'value' => @$decisionsdefautsinsertionseps66[$i]['decision'] ) ),
 				$form->input( "Decisiondefautinsertionep66.{$i}.typeorient_id", array( 'label' => false, 'options' => @$options['Decisiondefautinsertionep66']['typeorient_id'], 'empty' => true, 'value' => @$decisionsdefautsinsertionseps66[$i]['typeorient_id'] ) ),
