@@ -364,25 +364,92 @@
 		*/
 
 		public function saveDecisions( $data, $niveauDecision ) {
-			foreach( $data['Decision'.Inflector::underscore( $this->alias )] as $key => $values ) {
-				$structurereferente = explode( '_', $values['structurereferente_id'] );
-				if ( isset( $structurereferente[1] ) && $values['decision'] == 'reorientation' ) {
-					$data['Decision'.Inflector::underscore( $this->alias )][$key]['structurereferente_id'] = $structurereferente[1];
+			$success = true;
+			if ( isset( $data[$this->alias] ) && !empty( $data[$this->alias] ) ) {
+				foreach( $data['Decision'.Inflector::underscore( $this->alias )] as $key => $values ) {
+					$structurereferente = explode( '_', $values['structurereferente_id'] );
+					if ( isset( $structurereferente[1] ) && $values['decision'] == 'reorientation' ) {
+						$data['Decision'.Inflector::underscore( $this->alias )][$key]['structurereferente_id'] = $structurereferente[1];
+					}
+					elseif ( $values['decision'] != 'reorientation' ) {
+						$data['Decision'.Inflector::underscore( $this->alias )][$key]['structurereferente_id'] = null;
+						$data['Decision'.Inflector::underscore( $this->alias )][$key]['typeorient_id'] = null;
+					}
+					$data['Decision'.Inflector::underscore( $this->alias )][$key][Inflector::underscore( $this->alias ).'_id'] = $data[$this->alias][$key]['id'];
 				}
-				elseif ( $values['decision'] != 'reorientation' ) {
-					$data['Decision'.Inflector::underscore( $this->alias )][$key]['structurereferente_id'] = null;
-					$data['Decision'.Inflector::underscore( $this->alias )][$key]['typeorient_id'] = null;
-				}
-				$data['Decision'.Inflector::underscore( $this->alias )][$key][Inflector::underscore( $this->alias ).'_id'] = $data[$this->alias][$key]['id'];
+				
+				$success = $this->{'Decision'.Inflector::underscore($this->alias)}->saveAll( Set::extract( $data, '/'.'Decision'.Inflector::underscore( $this->alias ) ), array( 'atomic' => false ) );
+				
+				$this->Dossierep->updateAll(
+					array( 'Dossierep.etapedossierep' => '\'decision'.$niveauDecision.'\'' ),
+					array( '"Dossierep"."id"' => Set::extract( $data, '/'.$this->alias.'/dossierep_id' ) )
+				);
 			}
 			
-			$success = $this->{'Decision'.Inflector::underscore($this->alias)}->saveAll( Set::extract( $data, '/'.'Decision'.Inflector::underscore( $this->alias ) ), array( 'atomic' => false ) );
-			
-			$this->Dossierep->updateAll(
-				array( 'Dossierep.etapedossierep' => '\'decision'.$niveauDecision.'\'' ),
-				array( '"Dossierep"."id"' => Set::extract( $data, '/'.$this->alias.'/dossierep_id' ) )
-			);
+			return $success;
+		}
 
+		/**
+		* 
+		*/
+
+		public function finaliser( $seanceep_id, $etape ) {
+			$seanceep = $this->Dossierep->Seanceep->find(
+				'first',
+				array(
+					'conditions' => array( 'Seanceep.id' => $seanceep_id ),
+					'contain' => array( 'Ep' )
+				)
+			);
+			
+			$niveauDecisionFinale = $seanceep['Ep'][Inflector::underscore( $this->alias )];
+			
+			$dossierseps = $this->find(
+				'all',
+				array(
+					'conditions' => array(
+						'Dossierep.seanceep_id' => $seanceep_id,
+						'Dossierep.themeep' => Inflector::tableize( $this->alias )
+					),
+					'contain' => array(
+						'Decisionnonorientationpro58' => array(
+							'conditions' => array(
+								'Decisionnonorientationpro58.etape' => $etape
+							)
+						),
+						'Dossierep'
+					)
+				)
+			);
+			
+			$success = true;
+			
+			if( $niveauDecisionFinale == $etape ) {
+				foreach( $dossierseps as $dossierep ) {
+					if( !isset( $dossierep['Decisionnonorientationpro58'][0]['decision'] ) ) {
+						$success = false;
+					}
+					elseif ( $dossierep['Decisionnonorientationpro58'][0]['decision'] == 'reorientation' ) {
+						list($date_propo, $heure_propo) = explode( ' ', $dossierep['Nonorientationpro58']['created'] );
+						list($date_valid, $heure_valid) = explode( ' ', $seanceep['Seanceep']['dateseance'] );
+						$orientstruct = array(
+							'Orientstruct' => array(
+								'personne_id' => $dossierep['Dossierep']['personne_id'],
+								'typeorient_id' => @$dossierep['Decisionnonorientationpro58'][0]['typeorient_id'],
+								'structurereferente_id' => @$dossierep['Decisionnonorientationpro58'][0]['structurereferente_id'],
+								'date_propo' => $date_propo,
+								'date_valid' => $date_valid,
+								'statut_orient' => 'Orienté',
+								'rgorient' => $this->Orientstruct->rgorientMax( $dossierep['Dossierep']['personne_id'] ) + 1
+							)
+						);
+						
+						$this->Orientstruct->create( $orientstruct );
+						$success = $this->Orientstruct->save() && $success;
+					}
+				}
+			}
+			
 			return $success;
 		}
 		
