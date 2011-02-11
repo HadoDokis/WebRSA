@@ -25,6 +25,16 @@
 				'qual' => 'M',
 				'fonction' => null,
 			),
+			array(
+				'id' => '3003',
+				'structurereferente_id' => '6',
+				'nom' => 'troismille',
+				'prenom' => 'troisenfant',
+				'numero_poste' => null,
+				'email' => null,
+				'qual' => 'M',
+				'fonction' => null,
+			)
 		);
 	}
 
