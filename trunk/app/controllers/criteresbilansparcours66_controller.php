@@ -10,9 +10,10 @@
 
     class Criteresbilansparcours66Controller extends AppController
     {
-        public $helpers = array( 'Default', 'Default2', 'Ajax', 'Locale' );
+        public $helpers = array( 'Default', 'Default2', 'Ajax', 'Locale', 'Csv' );
         public $uses = array(  'Criterebilanparcours66', 'Bilanparcours66', 'Option', 'Referent' );
         public $components = array( 'Prg' => array( 'actions' => array( 'index' ) ) );
+        public $aucunDroit = array( 'exportcsv' );
 
 
         /**
@@ -71,6 +72,43 @@
             $this->render( null, null, 'index' );
         }
 
+
+        /**
+        * Export du tableau en CSV
+        */
+
+        public function exportcsv() {
+//             $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+//             $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
+
+            $querydata = $this->Criterebilanparcours66->search( array_multisize( $this->params['named'] ) );
+            unset( $querydata['limit'] );
+            $bilansparcours66 = $this->Bilanparcours66->find( 'all', $querydata );
+
+            foreach( $bilansparcours66 as $key => $bilanparcours66 ) {
+                $bilansparcours66[$key]['Personne']['nom_complet'] = implode(
+                    ' ',
+                    array(
+                        @$bilansparcours66[$key]['Personne']['qual'],
+                        @$bilansparcours66[$key]['Personne']['nom'],
+                        @$bilansparcours66[$key]['Personne']['prenom']
+                    )
+                );
+                $bilansparcours66[$key]['Referent']['nom_complet'] = implode(
+                    ' ',
+                    array(
+                        @$bilansparcours66[$key]['Referent']['qual'],
+                        @$bilansparcours66[$key]['Referent']['nom'],
+                        @$bilansparcours66[$key]['Referent']['prenom']
+                    )
+                );
+
+            }
+
+            $this->_setOptions();
+            $this->layout = ''; // FIXME ?
+            $this->set( compact( 'bilansparcours66' ) );
+        }
 
     }
 ?>
