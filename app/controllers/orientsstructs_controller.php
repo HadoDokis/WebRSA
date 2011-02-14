@@ -259,28 +259,27 @@
 //                 $this->Structurereferente->set( $this->data );
 
 				$validates = $this->Orientstruct->validates();
-//                 $validates = $this->Typeorient->validates() && $validates;
-//                 $validates = $this->Structurereferente->validates() && $validates;
-
+//				$validates = $this->Typeorient->validates() && $validates;
+//				$validates = $this->Structurereferente->validates() && $validates;
 
 				if( $validates ) {
 					// Orientation
 					$this->Orientstruct->create();
-
+					
 					// Correction: si la personne n'a pas encore d'entrée dans calculdroitsrsa
 					$this->data['Calculdroitrsa']['personne_id'] = $personne_id;
-
+					
 					$this->data['Orientstruct']['personne_id'] = $personne_id;
 					$this->data['Orientstruct']['valid_cg'] = true;
 					$this->data['Orientstruct']['date_propo'] = date( 'Y-m-d' );
 					$this->data['Orientstruct']['date_valid'] = date( 'Y-m-d' );
 					$this->data['Orientstruct']['statut_orient'] = 'Orienté';
-
+					
 					$saved = $this->Orientstruct->Personne->Calculdroitrsa->save( $this->data );
 					$saved = $this->Orientstruct->save( $this->data['Orientstruct'] ) && $saved;
 					$mkOrientstructPdf = $this->Gedooo->mkOrientstructPdf( $this->Orientstruct->getLastInsertId() );
 					$saved = $mkOrientstructPdf && $saved;
-
+					
 					if( $saved ) {
 						$this->Jetons->release( $dossier_id );
 						$this->Orientstruct->commit();
@@ -293,6 +292,7 @@
 					}
 					else {
 						$this->Orientstruct->rollback();
+						$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 					}
 				}
 			}
