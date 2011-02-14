@@ -106,9 +106,11 @@
 						WHERE
 							has_schema_privilege( nspname, \'USAGE\' )
 							AND nspname NOT IN ( \'pg_catalog\', \'information_schema\' )
+							AND nspname NOT LIKE \'pg_%\'
 						ORDER BY nspname;';
 
 			$schemas = $this->connection->query( $sql );
+
 			if( empty( $schemas ) ) {
 				$this->_stop( 1 );
 			}
@@ -124,6 +126,7 @@
 
 				$tables = $this->connection->query( $sql );
 				$schemas[$i]['Table'] = Set::classicExtract( $tables, '{n}.Table' );
+
 				if( empty( $schemas[$i]['Table'] ) ) {
 					$this->_stop( 1 );
 				}
@@ -303,6 +306,7 @@
 
 		public function main() {
 			$this->out( "Démarrage à ".date( 'H:i:s' ) );
+
 			if( $this->verbose ) {
 				$this->hr();
 			}
@@ -314,6 +318,7 @@
 			}
 
 			$html = $this->_toHtml( $schemas );
+
 			file_put_contents( 'dictionnaire.html', $html );
 
 			if( $this->verbose ) {
