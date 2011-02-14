@@ -377,7 +377,7 @@
 
 		public function saveDecisions( $data, $niveauDecision ) {
 			$success = true;
-			if ( isset( $data[$this->alias] ) && !empty( $data[$this->alias] ) ) {
+			if ( isset( $data[$this->alias] ) && !empty( $data[$this->alias] ) && isset( $data['Decision'.Inflector::underscore( $this->alias )] ) && !empty( $data['Decision'.Inflector::underscore( $this->alias )] ) ) {
 				foreach( $data['Decision'.Inflector::underscore( $this->alias )] as $key => $values ) {
 					$structurereferente = explode( '_', $values['structurereferente_id'] );
 					if ( isset( $structurereferente[1] ) && $values['decision'] == 'reorientation' ) {
