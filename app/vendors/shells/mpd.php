@@ -112,6 +112,7 @@
 						WHERE
 							has_schema_privilege( nspname, \'USAGE\' )
 							AND nspname NOT IN ( \'pg_catalog\', \'information_schema\' )
+							AND nspname NOT LIKE \'pg_%\'
 						ORDER BY nspname;';
 
 			$schemas = $this->connection->query( $sql );
