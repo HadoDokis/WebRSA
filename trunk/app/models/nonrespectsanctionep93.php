@@ -200,8 +200,8 @@
 				$formData['Decisionnonrespectsanctionep93'][$key]['nonrespectsanctionep93_id'] = @$datas[$key]['Nonrespectsanctionep93']['id'];
 
 				// On modifie les enregistrements de cette étape
-				if( @$dossierep['Nonrespectsanctionep93']['Decisionnonrespectsanctionep93'][count(@$dossierep['Nonrespectsanctionep93']['Decisionnonrespectsanctionep93'])-1]['etape'] == $niveauDecision ) {
-					$formData['Decisionnonrespectsanctionep93'][$key] = @$dossierep['Nonrespectsanctionep93']['Decisionnonrespectsanctionep93'][count(@$dossierep['Nonrespectsanctionep93']['Decisionnonrespectsanctionep93'])-1];
+				if( @$dossierep['Nonrespectsanctionep93']['Decisionnonrespectsanctionep93'][0]['etape'] == $niveauDecision ) {
+					$formData['Decisionnonrespectsanctionep93'][$key] = @$dossierep['Nonrespectsanctionep93']['Decisionnonrespectsanctionep93'][0];
 				}
 				// On ajoute les enregistrements de cette étape -> FIXME: manque les id ?
 				else {

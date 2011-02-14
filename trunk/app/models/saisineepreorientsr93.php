@@ -319,8 +319,8 @@
 				$formData['Nvsrepreorientsr93'][$key]['saisineepreorientsr93_id'] = @$datas[$key]['Saisineepreorientsr93']['id'];
 
 				// On modifie les enregistrements de cette étape
-				if( @$dossierep['Saisineepreorientsr93']['Nvsrepreorientsr93'][count(@$dossierep['Saisineepreorientsr93']['Nvsrepreorientsr93'])-1]['etape'] == $niveauDecision ) {
-					$formData['Nvsrepreorientsr93'][$key] = @$dossierep['Saisineepreorientsr93']['Nvsrepreorientsr93'][count(@$dossierep['Saisineepreorientsr93']['Nvsrepreorientsr93'])-1];
+				if( @$dossierep['Saisineepreorientsr93']['Nvsrepreorientsr93'][0]['etape'] == $niveauDecision ) {
+					$formData['Nvsrepreorientsr93'][$key] = @$dossierep['Saisineepreorientsr93']['Nvsrepreorientsr93'][0];
 					$formData['Nvsrepreorientsr93'][$key]['structurereferente_id'] = implode(
 						'_',
 						array(

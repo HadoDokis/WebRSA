@@ -83,9 +83,9 @@
 					$decisionpropopdo = array(
 						'Decisionpropopdo' => array(
 							'propopdo_id' => $dossierep['Traitementpdo']['propopdo_id'],
-							'datedecisionpdo' => $dossierep['Nvsepdpdo66'][1]['datedecisionpdo'],
-							'decisionpdo_id' => $dossierep['Nvsepdpdo66'][1]['decisionpdo_id'],
-							'commentairepdo' => $dossierep['Nvsepdpdo66'][1]['commentaire']
+							'datedecisionpdo' => @$dossierep['Nvsepdpdo66'][1]['datedecisionpdo'],
+							'decisionpdo_id' => @$dossierep['Nvsepdpdo66'][1]['decisionpdo_id'],
+							'commentairepdo' => @$dossierep['Nvsepdpdo66'][1]['commentaire']
 						)
 					);
 					$success = $this->Traitementpdo->Propopdo->Decisionpropopdo->save($decisionpropopdo) && $success;

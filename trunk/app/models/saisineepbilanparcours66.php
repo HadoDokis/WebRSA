@@ -299,6 +299,8 @@
 			$formData = array();
 			if( $niveauDecision == 'ep' ) {
 				foreach( $datas as $key => $dossierep ) {
+					$formData[$this->alias][$key] = $dossierep[$this->alias];
+
 					if (isset($dossierep[$this->alias]['Nvsrepreorient66'][0]['id'])) {
 						$formData['Nvsrepreorient66'][$key]['id'] = $dossierep[$this->alias]['Nvsrepreorient66'][0]['id'];
 						$formData['Nvsrepreorient66'][$key]['typeorient_id'] = $dossierep[$this->alias]['Nvsrepreorient66'][0]['typeorient_id'];
@@ -325,6 +327,8 @@
 			}
 			else if( $niveauDecision == 'cg' ) {
 				foreach( $datas as $key => $dossierep ) {
+					$formData[$this->alias][$key] = $dossierep[$this->alias];
+
 					if (isset($dossierep[$this->alias]['Nvsrepreorient66'][1]['id'])) {
 						$formData['Nvsrepreorient66'][$key]['id'] = $dossierep[$this->alias]['Nvsrepreorient66'][1]['id'];
 						$formData['Nvsrepreorient66'][$key]['decision'] = $dossierep[$this->alias]['Nvsrepreorient66'][1]['decision'];
@@ -351,7 +355,7 @@
 					}
 				}
 			}
-
+// debug( $formData );
 			return $formData;
 		}
 
