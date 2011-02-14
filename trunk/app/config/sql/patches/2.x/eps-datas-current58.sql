@@ -14,8 +14,8 @@ BEGIN;
 INSERT INTO regroupementseps ( name ) VALUES
 	( 'CLI 1' );
 
-INSERT INTO eps ( name, identifiant, regroupementep_id, saisineepreorientsr93, nonrespectsanctionep93 ) VALUES
-	( 'CLI 1, équipe 1.1', 'EP2011020000000001', 1, 'ep', 'cg' );
+INSERT INTO eps ( name, identifiant, regroupementep_id, nonorientationpro58 ) VALUES
+	( 'CLI 1, équipe 1.1', 'EP2011020000000001', 1, 'ep' );
 
 INSERT INTO fonctionsmembreseps ( name ) VALUES
 	( 'Chef de projet de ville' ),
