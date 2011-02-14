@@ -77,7 +77,7 @@
     <?php echo $form->input( 'Orientstruct.date_propo', array(  'label' =>  required( __d( 'contratinsertion', 'Contratinsertion.date_propo', true ) ), 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' )+10, 'minYear' => ( date( 'Y' ) - 10 ), 'empty' => true ) );?>
     <?php echo $form->input( 'Orientstruct.date_valid', array(  'label' =>  required( __d( 'contratinsertion', 'Contratinsertion.date_valid', true ) ), 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' )+10, 'minYear' => ( date( 'Y' ) - 10 ), 'empty' => true ) );?>
     <?php
-        if( Configure::read( 'nom_form_ci_cg' ) == 'cg58' ) {
+        /*if( Configure::read( 'nom_form_ci_cg' ) == 'cg58' ) {
             echo $default->subform(
                 array(
                     'Orientstruct.etatorient' => array( 'legend' => required( __d( 'orientstruct', 'Orientstruct.etatorient', true )  ), 'type' => 'radio', 'options' => $options['etatorient'] )
@@ -87,6 +87,6 @@
                     'options' => $options
                 )
             );
-        }
+        }*/
     ?>
 </fieldset>
