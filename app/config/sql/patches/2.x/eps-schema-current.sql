@@ -789,6 +789,9 @@ CREATE TABLE decisionsnonorientationspros58 (
 );
 COMMENT ON TABLE decisionsnonorientationspros58 IS 'Décisions de la saisine d''EP lors d''une non orientation du social vers le professionel dans une délai de 6, 12 ou 24 mois (CG58)';
 
+DROP INDEX IF EXISTS decisionsnonorientationspros58_nonorientationpro58_id_etape_unique_idx;
+CREATE UNIQUE INDEX decisionsnonorientationspros58_nonorientationpro58_id_etape_unique_idx ON decisionsnonorientationspros58(nonorientationpro58_id,etape);
+
 DROP INDEX IF EXISTS decisionsnonorientationspros58_nonorientationpro58_id_idx;
 CREATE INDEX decisionsnonorientationspros58_nonorientationpro58_id_idx ON decisionsnonorientationspros58 (nonorientationpro58_id);
 
@@ -797,6 +800,8 @@ CREATE INDEX decisionsnonorientationspros58_typeorient_id_idx ON decisionsnonori
 
 DROP INDEX IF EXISTS decisionsnonorientationspros58_structurereferente_id_idx;
 CREATE INDEX decisionsnonorientationspros58_structurereferente_id_idx ON decisionsnonorientationspros58 (structurereferente_id);
+
+-- -----------------------------------------------------------------------------
 
 CREATE TABLE nonorientationspros66 (
 	id      				SERIAL NOT NULL PRIMARY KEY,
@@ -829,6 +834,9 @@ CREATE TABLE decisionsnonorientationspros66 (
 );
 COMMENT ON TABLE decisionsnonorientationspros66 IS 'Décisions de la saisine d''EP lors d''une non orientation du social vers le professionel dans une délai de 6, 12 ou 24 mois (CG66)';
 
+DROP INDEX IF EXISTS decisionsnonorientationspros66_nonorientationpro66_id_etape_unique_idx;
+CREATE UNIQUE INDEX decisionsnonorientationspros66_nonorientationpro66_id_etape_unique_idx ON decisionsnonorientationspros66(nonorientationpro66_id,etape);
+
 DROP INDEX IF EXISTS decisionsnonorientationspros66_nonorientationpro66_id_idx;
 CREATE INDEX decisionsnonorientationspros66_nonorientationpro66_id_idx ON decisionsnonorientationspros66 (nonorientationpro66_id);
 
@@ -837,6 +845,8 @@ CREATE INDEX decisionsnonorientationspros66_typeorient_id_idx ON decisionsnonori
 
 DROP INDEX IF EXISTS decisionsnonorientationspros66_structurereferente_id_idx;
 CREATE INDEX decisionsnonorientationspros66_structurereferente_id_idx ON decisionsnonorientationspros66 (structurereferente_id);
+
+-- -----------------------------------------------------------------------------
 
 CREATE TABLE nonorientationspros93 (
 	id      				SERIAL NOT NULL PRIMARY KEY,
@@ -868,6 +878,9 @@ CREATE TABLE decisionsnonorientationspros93 (
 	modified					TIMESTAMP WITHOUT TIME ZONE
 );
 COMMENT ON TABLE decisionsnonorientationspros93 IS 'Décisions de la saisine d''EP lors d''une non orientation du social vers le professionel dans une délai de 6, 12 ou 24 mois (CG93)';
+
+DROP INDEX IF EXISTS decisionsnonorientationspros93_nonorientationpro93_id_etape_unique_idx;
+CREATE UNIQUE INDEX decisionsnonorientationspros93_nonorientationpro93_id_etape_unique_idx ON decisionsnonorientationspros93(nonorientationpro93_id,etape);
 
 DROP INDEX IF EXISTS decisionsnonorientationspros93_nonorientationpro93_id_idx;
 CREATE INDEX decisionsnonorientationspros93_nonorientationpro93_id_idx ON decisionsnonorientationspros93 (nonorientationpro93_id);
