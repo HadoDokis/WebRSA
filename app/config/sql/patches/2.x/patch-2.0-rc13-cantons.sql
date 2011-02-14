@@ -41,8 +41,10 @@ $body$
 	BEGIN
 		SELECT 1 INTO v_row FROM zonesgeographiques
 			WHERE codeinsee LIKE '66%';
-		IF NOT FOUND THEN
+		IF FOUND THEN
 			INSERT INTO zonesgeographiques (codeinsee, libelle) VALUES ( '0000', 'HORS PO' );
+			RETURN 't';
+		ELSE
 			RETURN 't';
 		END IF;
 	END;
