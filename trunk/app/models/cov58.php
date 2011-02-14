@@ -104,7 +104,7 @@
 						'fields' => $fields,
 						'conditions' => array(
 							'Dossiercov58.cov58_id' => $cov58_id,
-							'Dossiercov58.etapecov' => 'traitement'
+							'Dossiercov58.etapecov NOT' => 'finalise'
 						),
 						'contain' => array(
 							'Personne' => array(
