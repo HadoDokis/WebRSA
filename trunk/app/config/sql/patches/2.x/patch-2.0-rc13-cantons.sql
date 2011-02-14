@@ -33,9 +33,24 @@ ALTER TABLE cantons
 	ON UPDATE CASCADE
 	ON DELETE CASCADE;
 
--- Ajout de la zone géographique "HORS PO"
-INSERT INTO zonesgeographiques (codeinsee, libelle)
-	VALUES ( '0000', 'HORS PO' );
+-- Ajout de la zone géographique "HORS PO" pour le CG 66 uniquement
+CREATE OR REPLACE FUNCTION public.ajout_zonegeographique_cg66() RETURNS bool AS
+$body$
+	DECLARE
+		v_row       record;
+	BEGIN
+		SELECT 1 INTO v_row FROM zonesgeographiques
+			WHERE codeinsee LIKE '66%';
+		IF NOT FOUND THEN
+			INSERT INTO zonesgeographiques (codeinsee, libelle) VALUES ( '0000', 'HORS PO' );
+			RETURN 't';
+		END IF;
+	END;
+$body$
+LANGUAGE plpgsql;
+
+SELECT public.ajout_zonegeographique_cg66();
+DROP FUNCTION public.ajout_zonegeographique_cg66();
 
 -- Nettoyage des intitulés (suppression des espaces devant et derrière le mot)
 UPDATE cantons
@@ -243,6 +258,15 @@ UPDATE zonesgeographiques
 	WHERE libelle = 'SAINT PAUL DE FENOUILLET';
 
 -- Maintenant que tout a été complété, on peut mettre une contrainte sur la colonne zonegeographique_id de la table cantons
+UPDATE cantons
+	SET zonegeographique_id = (
+		SELECT zonesgeographiques.id
+			FROM zonesgeographiques
+			WHERE zonesgeographiques.codeinsee = cantons.numcomptt
+			LIMIT 1
+	)
+	WHERE zonegeographique_id IS NULL;
+
 ALTER TABLE cantons ALTER COLUMN zonegeographique_id DROP DEFAULT;
 ALTER TABLE cantons ALTER COLUMN zonegeographique_id SET NOT NULL;
 

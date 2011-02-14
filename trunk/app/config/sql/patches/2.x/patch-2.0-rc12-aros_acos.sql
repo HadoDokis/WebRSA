@@ -40,6 +40,22 @@ SELECT COUNT(*)
 
 -- ---------------------------------------------------------------------------*/
 
+DELETE FROM aros_acos
+	WHERE aros_acos.aro_id IN(
+		SELECT aros.id
+			FROM aros
+			WHERE aros.model = 'Group'
+				AND aros.foreign_key NOT IN (
+					SELECT id FROM groups
+				)
+		);
+
+DELETE FROM aros
+	WHERE aros.model = 'Group'
+	AND aros.foreign_key NOT IN (
+		SELECT id FROM groups
+	);
+
 -- -----------------------------------------------------------------------------
 -- Remise en état de certaines données ayant une valeur bizarre
 -- -----------------------------------------------------------------------------
