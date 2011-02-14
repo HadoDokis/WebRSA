@@ -23,12 +23,6 @@
 					'message' => 'Champ obligatoire'
 				)
 			),
-			'referent_id' => array(
-				'notEmpty' => array(
-					'rule' => 'notEmpty',
-					'message' => 'Champ obligatoire'
-				)
-			),
 			'date_propo' => array(
 				'notEmpty' => array(
 					'rule' => 'date',
@@ -114,7 +108,7 @@
 				array(
 					'table' => 'referents',
 					'alias' => 'Referent',
-					'type' => 'INNER',
+					'type' => 'LEFT OUTER',
 					'conditions' => array(
 						'Propocontratinsertioncov58.referent_id = Referent.id'
 					)
