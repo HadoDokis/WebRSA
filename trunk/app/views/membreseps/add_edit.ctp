@@ -12,10 +12,10 @@
 <?php
 	echo $default2->form(
 		array(
-			'Membreep.fonctionmembreep_id' => array('type'=>'select'),
-			'Membreep.qual',
-			'Membreep.nom',
-			'Membreep.prenom',
+			'Membreep.fonctionmembreep_id' => array('type'=>'select', 'required' => true),
+			'Membreep.qual' => array( 'required' => true ),
+			'Membreep.nom' => array( 'required' => true ),
+			'Membreep.prenom' => array( 'required' => true ),
 			'Membreep.tel',
 			'Membreep.mail',
 			'Membreep.suppleant_id' => array('type'=>'select', 'options'=>$listeSuppleants)
