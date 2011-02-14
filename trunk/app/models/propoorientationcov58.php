@@ -256,7 +256,8 @@
 					'date_propo' => $dossier['Propoorientationcov58']['datedemande'],
 					'date_valid' => $dossier['Propoorientationcov58']['datevalidation'],
 					'rgorient' => $dossier['Propoorientationcov58']['rgorient'],
-					'statut_orient' => 'Orienté'
+					'statut_orient' => 'Orienté',
+					'etatorient' => 'decision'
 				)
 			);
 			$success = $this->Dossiercov58->Personne->Orientstruct->save($orientstruct) && $success;

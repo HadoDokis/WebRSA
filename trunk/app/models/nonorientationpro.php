@@ -452,7 +452,8 @@
 								'date_propo' => $date_propo,
 								'date_valid' => $date_valid,
 								'statut_orient' => 'Orienté',
-								'rgorient' => $this->Orientstruct->rgorientMax( $dossierep['Dossierep']['personne_id'] ) + 1
+								'rgorient' => $this->Orientstruct->rgorientMax( $dossierep['Dossierep']['personne_id'] ) + 1,
+								'etatorient' => 'decision'
 							)
 						);
 						
