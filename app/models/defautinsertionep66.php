@@ -229,6 +229,48 @@
 			}
 
 			$formData = array();
+
+			foreach( $datas as $key => $dossierep ) {
+				$formData[$this->alias][$key] = $dossierep[$this->alias];
+
+				if( $niveauDecision == 'ep' ) {
+					if( @$dossierep['Defautinsertionep66']['Decisiondefautinsertionep66'][count(@$dossierep['Defautinsertionep66']['Decisiondefautinsertionep66'])-1]['etape'] == 'ep' ) {
+						$record = @$dossierep['Defautinsertionep66']['Decisiondefautinsertionep66'][count(@$dossierep['Defautinsertionep66']['Decisiondefautinsertionep66'])-1];
+					}
+					else {
+						$record = @$dossierep['Defautinsertionep66']['Decisiondefautinsertionep66'][0];
+					}
+
+					if( $record['etape'] == $niveauDecision ) {
+						$formData['Decisiondefautinsertionep66'][$key]['id'] = $record['id'];
+						$formData['Decisiondefautinsertionep66'][$key]['etape'] = $record['etape'];
+					}
+
+					$formData['Decisiondefautinsertionep66'][$key]['defautinsertionep66_id'] = @$dossierep['Defautinsertionep66']['id'];
+					$formData['Decisiondefautinsertionep66'][$key]['decision'] = $record['decision'];
+					$formData['Decisiondefautinsertionep66'][$key]['typeorient_id'] = $record['typeorient_id'];
+					$formData['Decisiondefautinsertionep66'][$key]['structurereferente_id'] = implode( '_', array( $record['typeorient_id'], $record['structurereferente_id'] ) );
+				}
+				else {
+					if( @$dossierep['Defautinsertionep66']['Decisiondefautinsertionep66'][count(@$dossierep['Defautinsertionep66']['Decisiondefautinsertionep66'])-1]['etape'] == 'cg' ) {
+						$record = @$dossierep['Defautinsertionep66']['Decisiondefautinsertionep66'][count(@$dossierep['Defautinsertionep66']['Decisiondefautinsertionep66'])-1];
+					}
+					else {
+						$record = @$dossierep['Defautinsertionep66']['Decisiondefautinsertionep66'][0];
+					}
+
+					if( $record['etape'] == $niveauDecision ) {
+						$formData['Decisiondefautinsertionep66'][$key]['id'] = $record['id'];
+						$formData['Decisiondefautinsertionep66'][$key]['etape'] = $record['etape'];
+					}
+
+					$formData['Decisiondefautinsertionep66'][$key]['defautinsertionep66_id'] = @$dossierep['Defautinsertionep66']['id'];
+					$formData['Decisiondefautinsertionep66'][$key]['decision'] = $record['decision'];
+					$formData['Decisiondefautinsertionep66'][$key]['typeorient_id'] = $record['typeorient_id'];
+					$formData['Decisiondefautinsertionep66'][$key]['structurereferente_id'] = implode( '_', array( $record['typeorient_id'], $record['structurereferente_id'] ) );
+				}
+			}
+// debug( $formData );
 			/*if( $niveauDecision == 'ep' ) {
 				foreach( $datas as $key => $dossierep ) {
 					if (isset($dossierep[$this->alias]['Nvsrepreorient66'][0]['id'])) {

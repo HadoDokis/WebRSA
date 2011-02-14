@@ -81,9 +81,8 @@
 								WHERE
 									contratsinsertion.personne_id = Propopdo.personne_id
 									AND date_trunc( \'day\', contratsinsertion.datevalidation_ci ) >= Decisionpropopdo.datedecisionpdo
-									-- OK pour démo
-									--AND date_trunc( \'day\', contratsinsertion.datevalidation_ci ) <= ( Decisionpropopdo.datedecisionpdo + INTERVAL \'1 mons\' )
-						)', // FIXME: 1 mons -> paramétrage
+									AND date_trunc( \'day\', contratsinsertion.datevalidation_ci ) <= ( Decisionpropopdo.datedecisionpdo + INTERVAL \'1 mons\' )
+						)',
 						// Et qui ne sont pas en EP
 						'Propopdo.personne_id NOT IN (
 							SELECT dossierseps.personne_id

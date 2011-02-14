@@ -39,7 +39,7 @@
 				/// TODO: est-ce que ça a  du sens ?
 				$options['Seanceep']['typeorient_id'] = $this->Seanceep->Structurereferente->Typeorient->listOptions();
 				$options['Seanceep']['structurereferente_id'] = $this->Seanceep->Structurereferente->list1Options();
-				$options['Seanceep']['decisionpdo_id'] = $this->Seanceep->Dossierep->Saisineepdpdo66->Nvsepdpdo66->Decisionpdo->find('list');
+				$options['Nvsepdpdo66']['decisionpdo_id'] = $this->Seanceep->Dossierep->Saisineepdpdo66->Nvsepdpdo66->Decisionpdo->find('list');
 			}
 			else{
 				$options[$this->modelClass]['structurereferente_id'] = $this->{$this->modelClass}->Structurereferente->listOptions();
@@ -210,13 +210,11 @@
 			}
 
 			if( !empty( $this->data ) ) {
-// debug( $this->data );
 				$this->Seanceep->begin();
 				$success = $this->Seanceep->saveDecisions( $seanceep_id, $this->data, $niveauDecision );
 
 				$this->_setFlashResult( 'Save', $success );
-				if( $success ) {
-// 					$this->Seanceep->rollback();
+				if( /*false && */$success ) {
 					$this->Seanceep->commit();
 					$this->redirect( array( 'action' => 'view', $seanceep_id, '#dossiers' ) );
 				}
@@ -230,7 +228,7 @@
 			if( empty( $this->data ) ) {
 				$this->data = $this->Seanceep->prepareFormData( $seanceep_id, $dossiers, $niveauDecision );
 			}
-
+// debug( $this->data );
 			$this->set( compact( 'seanceep', 'dossiers' ) );
 			$this->set( 'seanceep_id', $seanceep_id);
 			$this->_setOptions();

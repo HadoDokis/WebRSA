@@ -38,7 +38,7 @@ foreach( $dossiers['Saisineepdpdo66']['liste'] as $key => $dossierep ) {
 				$locale->date( __( 'Locale->date', true ), $dossierep['Dossierep']['created'] ),
 				$formData['Saisineepdpdo66'][$i]['Situationpdo'],
 				$formData['Saisineepdpdo66'][$i]['Descriptionpdo'],
-				$form->input( "Nvsepdpdo66.{$i}.decisionpdo_id", array( 'label' => false, 'options' => @$options['Seanceep']['decisionpdo_id'], 'empty' => true ) ),
+				$form->input( "Nvsepdpdo66.{$i}.decisionpdo_id", array( 'label' => false, 'options' => @$options['Nvsepdpdo66']['decisionpdo_id'], 'empty' => true ) ),
 				$form->input( "Nvsepdpdo66.{$i}.commentaire", array( 'label' => false, 'type' => 'textarea', 'cols' => '25', 'rows' => '2' ) ).
 				$form->input( "Nvsepdpdo66.{$i}.id", array( 'type' => 'hidden', 'value' => @$this->data['Saisineepdpdo66']['Nvsepdpdo66'][$i]['id'] ) ).
 				$form->input( "Nvsepdpdo66.{$i}.saisineepdpdo66_id", array( 'type' => 'hidden', 'value' => @$dossierep['Saisineepdpdo66']['id'] ) ).
@@ -53,5 +53,4 @@ foreach( $dossiers['Saisineepdpdo66']['liste'] as $key => $dossierep ) {
 	echo '</tbody></table>';
 // 	echo $form->submit( 'Enregistrer' );
 // 	echo $form->end();
-
 ?>

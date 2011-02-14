@@ -57,21 +57,21 @@
 					'message' => 'La proposition du référent est obligatoire',
 					'allowEmpty' => false,
 					'required' => true,
-					'on' => 'insert'
+					'on' => 'create'
 				)
 			),
 			'datebilan' => array(
 				array(
 					'rule' => array('datePassee'),
 					'message' => 'Merci de choisir une date antérieure à la date du jour',
-                    'on' => 'insert'
+                    'on' => 'create'
 				),
 				array(
 					'rule' => 'date',
 					'message' => 'Merci de rentrer une date valide',
 					'allowEmpty' => false,
 					'required' => true,
-                    'on' => 'insert'
+                    'on' => 'create'
 				)
 			)
 		);
@@ -162,17 +162,17 @@
 				$data = $data['Pe'];
 // debug( $data );
 			//$data[$this->alias]['saisineepparcours'] = !isset($data[$this->alias]['maintienorientation']);
-			$data[$this->alias]['saisineepparcours'] = ( $data[$this->alias]['proposition'] == 'parcours' );
+			$data[$this->alias]['saisineepparcours'] = ( @$data[$this->alias]['proposition'] == 'parcours' );
 			// Recondution du contrat
 			//if( !empty( $data[$this->alias]['maintienorientation'] ) ) {
-			if( $data[$this->alias]['proposition'] == 'traitement' ) {
+			if( @$data[$this->alias]['proposition'] == 'traitement' ) {
 				$cleanedData = $data;
 				unset( $cleanedData['Saisineepbilanparcours66'] );
 				return $this->maintien( $cleanedData );
 			}
 			// Saisine de l'EP
 			else {
-			
+
 				return $this->saisine( $data );
 			}
 		}
@@ -277,7 +277,7 @@
 					$contratinsertion['Contratinsertion']['datevalidation_ci'] = null;
 					// La date de saisie du nouveau contrat est égale à la date du jour
 					$contratinsertion['Contratinsertion']['date_saisi_ci'] = date( 'Y-m-d' );
-					
+
 					unset($contratinsertion['Contratinsertion']['decision_ci']);
 					unset($contratinsertion['Contratinsertion']['datevalidation_ci']);
 

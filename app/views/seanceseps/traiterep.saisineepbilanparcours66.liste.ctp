@@ -23,8 +23,8 @@
 				implode( ' ', array( $dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['numvoie'], isset( $typevoie[$dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie']] ) ? $typevoie[$dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie']] : null, $dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['nomvoie'] ) ),
 				$locale->date( __( 'Locale->date', true ), $dossierep['Personne']['dtnai'] ),
 				$locale->date( __( 'Locale->date', true ), $dossierep['Dossierep']['created'] ),
-				$dossierep['Saisineepbilanparcours66']['Bilanparcours66']['Orientstruct']['Typeorient']['lib_type_orient'],
-				$dossierep['Saisineepbilanparcours66']['Bilanparcours66']['Orientstruct']['Structurereferente']['lib_struc'],
+				@$dossierep['Saisineepbilanparcours66']['Bilanparcours66']['Orientstruct']['Typeorient']['lib_type_orient'],
+				@$dossierep['Saisineepbilanparcours66']['Bilanparcours66']['Orientstruct']['Structurereferente']['lib_struc'],
 				(!empty($dossierep['Saisineepbilanparcours66']['Bilanparcours66']['reorientation'])) ? __d('bilanparcours66', 'ENUM::REORIENTATION::'.$dossierep['Saisineepbilanparcours66']['Bilanparcours66']['reorientation'], true) : '',
 				@$dossierep['Saisineepbilanparcours66']['Typeorient']['lib_type_orient'],
 				@$dossierep['Saisineepbilanparcours66']['Structurereferente']['lib_struc'],
@@ -53,7 +53,7 @@
 		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
 		dependantSelect( 'Nvsrepreorient66<?php echo $i?>StructurereferenteId', 'Nvsrepreorient66<?php echo $i?>TypeorientId' );
 		try { $( 'Nvsrepreorient66<?php echo $i?>StructurereferenteId' ).onchange(); } catch(id) { }
-		
+
 		$('Nvsrepreorient66<?php echo $i?>Checkcomm').observe( 'change', function() {
 			if ($('Nvsrepreorient66<?php echo $i?>Checkcomm').checked==true) {
 				$('Nvsrepreorient66<?php echo $i?>Commentaire').show();
@@ -62,9 +62,9 @@
 				$('Nvsrepreorient66<?php echo $i?>Commentaire').hide();
 			}
 		} );
-		
+
 		$('Nvsrepreorient66<?php echo $i?>Commentaire').hide();
-		
+
 		/*observeDisableFieldsOnValue(
 			'Nvsrepreorient66<?php echo $i;?>Decision',
 			[ 'Nvsrepreorient66<?php echo $i;?>TypeorientId', 'Nvsrepreorient66<?php echo $i;?>StructurereferenteId' ],
