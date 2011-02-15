@@ -4,6 +4,45 @@
 		var $name = 'User';
 		var $table = 'users';
 		var $import = array( 'table' => 'users', 'connection' => 'default', 'records' => false);
+
+		/**
+		* Création des champs "Enumerable" pour le modèle User
+		*
+		* @see http://www.tig12.net/downloads/apidocs/cakephp/cake/tests/lib/CakeTestFixture.class.html
+		*/
+
+		public function create( &$db ) {
+			$return = parent::create( $db );
+
+			if( $db->config['driver'] == 'postgres' ) {
+				$prefix = $db->config['prefix'];
+
+				// SELECT enum_range(null::type_no);
+
+				/*$masterDb = ConnectionManager::getDataSource( 'default' );
+				debug( $masterDb );*/
+
+				$queries = array(
+// 					"CREATE TYPE type_no AS ENUM ( 'N', 'O' );",// FIXME
+					// FIXME: passage de la valeur par défaut à NULL temporairement
+					"ALTER TABLE {$prefix}users ALTER COLUMN isgestionnaire SET DEFAULT NULL;",
+					"ALTER TABLE {$prefix}users ALTER COLUMN sensibilite SET DEFAULT NULL;",
+					"ALTER TABLE {$prefix}users ALTER COLUMN isgestionnaire TYPE type_no USING CAST(isgestionnaire AS type_no);",
+					"ALTER TABLE {$prefix}users ALTER COLUMN sensibilite TYPE type_no USING CAST(sensibilite AS type_no);"
+				);
+
+				foreach( $queries as $sql ) {
+					$db->query( $sql );
+				}
+			}
+
+			return $return;
+		}
+
+		/*
+			SELECT DISTINCT(table_name) FROM information_schema.columns WHERE data_type = 'USER-DEFINED' AND udt_name = 'type_no';
+		*/
+
 		var $records = array(
 			array(
 				'id' => '4',

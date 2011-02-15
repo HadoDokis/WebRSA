@@ -21,7 +21,7 @@
 				'natureimput' => 'a',
 				'typeapre' => 'a',
 				'operation' => 'a',
-				'objet' => 'a',
+// 				'objet' => 'a',
 				'datecloture' => null,
 				'montanttotalapre' => null,
 			)
