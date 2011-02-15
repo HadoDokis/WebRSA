@@ -4,6 +4,66 @@
 		var $name = 'User';
 		var $table = 'users';
 		var $import = array( 'table' => 'users', 'connection' => 'default', 'records' => false);
+		
+		var $masterDb = null;
+		var $testDb = null;
+
+		/**
+		*
+		*/
+
+		protected function _createTypeIfNotExists( $typeName, $values ) {
+			$existsType = $this->testDb->query( "SELECT count (*) FROM pg_catalog.pg_type where typname= '{$typeName}';" );
+			if( !empty( $values ) && $existsType[0][0]['count'] == 0 ) {
+				$patterns = array( '{', '}' );
+				$values = r( $patterns, '', Set::extract( $values, '0.0.enum_range' ) );
+				$values = explode( ',', $values );
+				
+				$this->testDb->query( "CREATE TYPE {$typeName} AS ENUM ( '".implode( "', '", $values )."' );" );
+			}
+		}
+
+		/**
+		*
+		*/
+
+		protected function _alterColumns( $typeName, $columnName ) {
+			$queries = array(
+				// FIXME: passage de la valeur par défaut à NULL temporairement
+				"ALTER TABLE {$this->table} ALTER COLUMN {$columnName} SET DEFAULT NULL;",
+				"ALTER TABLE {$this->table} ALTER COLUMN {$columnName} TYPE {$typeName} USING CAST(isgestionnaire AS {$typeName});"
+			);
+
+			foreach( $queries as $sql ) {
+				$this->testDb->query( $sql );
+			}
+		}
+
+		/**
+		*
+		*/
+
+		protected function _dropTypeIfLastTable( $tableName, $typeName ) {
+		}
+
+		/**
+		* Retourne les types ainsi que les champs pour une table particulière.
+		* ex. pour la table users: array( 'type_no' => array( 'isgestionnaire', 'sensibilite' ) )
+		*/
+
+		protected function _masterTableTypes( $tableName ) {
+			$results = $this->masterDb->query( "SELECT column_name, udt_name FROM information_schema.columns WHERE table_name = '{$this->table}' AND data_type = 'USER-DEFINED';" );
+			
+			$return = array();
+			foreach( $results as $key => $fields ) {
+				$column_name = $fields[0]['column_name'];
+				$udt_name = $fields[0]['udt_name'];
+				$return[$udt_name][] = $column_name;
+			}
+			
+			return $return;
+		}
+
 
 		/**
 		* Création des champs "Enumerable" pour le modèle User
@@ -16,23 +76,18 @@
 
 			if( $db->config['driver'] == 'postgres' ) {
 				$prefix = $db->config['prefix'];
-
-				// SELECT enum_range(null::type_no);
-
-				/*$masterDb = ConnectionManager::getDataSource( 'default' );
-				debug( $masterDb );*/
-
-				$queries = array(
-// 					"CREATE TYPE type_no AS ENUM ( 'N', 'O' );",// FIXME
-					// FIXME: passage de la valeur par défaut à NULL temporairement
-					"ALTER TABLE {$prefix}users ALTER COLUMN isgestionnaire SET DEFAULT NULL;",
-					"ALTER TABLE {$prefix}users ALTER COLUMN sensibilite SET DEFAULT NULL;",
-					"ALTER TABLE {$prefix}users ALTER COLUMN isgestionnaire TYPE type_no USING CAST(isgestionnaire AS type_no);",
-					"ALTER TABLE {$prefix}users ALTER COLUMN sensibilite TYPE type_no USING CAST(sensibilite AS type_no);"
-				);
-
-				foreach( $queries as $sql ) {
-					$db->query( $sql );
+				$this->testDb = $db;
+				
+				$this->masterDb = ConnectionManager::getDataSource( 'default' );
+				
+				$fieldsTypped = $this->_masterTableTypes( $this->table );
+				
+				foreach( $fieldsTypped as $type => $fields) {
+					$enumData = $this->masterDb->query( "SELECT enum_range(null::{$type});" );
+					$this->_createTypeIfNotExists( $type, $enumData );
+					foreach( $fields as $field ) {
+						$this->_alterColumns( $type, $field );
+					}
 				}
 			}
 
@@ -41,6 +96,7 @@
 
 		/*
 			SELECT DISTINCT(table_name) FROM information_schema.columns WHERE data_type = 'USER-DEFINED' AND udt_name = 'type_no';
+			SELECT DISTINCT( udt_name ) FROM information_schema.columns WHERE table_name = 'users' AND data_type = 'USER-DEFINED';
 		*/
 
 		var $records = array(
