@@ -6,32 +6,37 @@
 		var $import = array( 'table' => 'users', 'connection' => 'default', 'records' => false);
 		
 		var $masterDb = null;
+		var $masterDbPrefix = null;
 		var $testDb = null;
+		var $testDbPrefix = null;
 
 		/**
-		*
+		* À partir du nom du type, on vérifie s'il existe déjà dans le base de test ou non.
+		* S'il existe ou s'il n'a aucunes valeurs la fonction se termine.
+		* S'il n'existe pas, on va rechercher ses valeurs et on le crée.
 		*/
 
-		protected function _createTypeIfNotExists( $typeName, $values ) {
-			$existsType = $this->testDb->query( "SELECT count (*) FROM pg_catalog.pg_type where typname= '{$typeName}';" );
+		protected function _createTypeIfNotExists( $typeName ) {
+			$existsType = $this->testDb->query( "SELECT count (*) FROM pg_catalog.pg_type where typname= '{$this->testDbPrefix}{$typeName}';" );
+			$values = $this->masterDb->query( "SELECT enum_range(null::{$this->masterDbPrefix}{$typeName});" );
 			if( !empty( $values ) && $existsType[0][0]['count'] == 0 ) {
 				$patterns = array( '{', '}' );
 				$values = r( $patterns, '', Set::extract( $values, '0.0.enum_range' ) );
 				$values = explode( ',', $values );
 				
-				$this->testDb->query( "CREATE TYPE {$typeName} AS ENUM ( '".implode( "', '", $values )."' );" );
+				$this->testDb->query( "CREATE TYPE {$this->testDbPrefix}{$typeName} AS ENUM ( '".implode( "', '", $values )."' );" );
 			}
 		}
 
 		/**
-		*
+		* Met à null la valeur par défaut du champ passé en paramètre et le cast avec ce type.
 		*/
 
 		protected function _alterColumns( $typeName, $columnName ) {
 			$queries = array(
 				// FIXME: passage de la valeur par défaut à NULL temporairement
-				"ALTER TABLE {$this->table} ALTER COLUMN {$columnName} SET DEFAULT NULL;",
-				"ALTER TABLE {$this->table} ALTER COLUMN {$columnName} TYPE {$typeName} USING CAST(isgestionnaire AS {$typeName});"
+				"ALTER TABLE {$this->testDbPrefix}{$this->table} ALTER COLUMN {$columnName} SET DEFAULT NULL;",
+				"ALTER TABLE {$this->testDbPrefix}{$this->table} ALTER COLUMN {$columnName} TYPE {$this->testDbPrefix}{$typeName} USING CAST(isgestionnaire AS {$this->testDbPrefix}{$typeName});"
 			);
 
 			foreach( $queries as $sql ) {
@@ -40,10 +45,14 @@
 		}
 
 		/**
-		*
+		* Si la table est al dernière de la base à utiliser le type passé en paramètre, on supprime le type
 		*/
 
-		protected function _dropTypeIfLastTable( $tableName, $typeName ) {
+		protected function _dropTypeIfLastTable( $typeName ) {
+			$nbTableHaveType = $this->testDb->query( "SELECT COUNT( DISTINCT(table_name) ) FROM information_schema.columns WHERE data_type = 'USER-DEFINED' AND udt_name = '{$this->testDbPrefix}{$typeName}';" );
+			if ( $nbTableHaveType <= 1 ) {
+				$this->testDb->query( "DROP TYPE {$this->testDbPrefix}{$typeName} CASCADE" );
+			}
 		}
 
 		/**
@@ -52,7 +61,7 @@
 		*/
 
 		protected function _masterTableTypes( $tableName ) {
-			$results = $this->masterDb->query( "SELECT column_name, udt_name FROM information_schema.columns WHERE table_name = '{$this->table}' AND data_type = 'USER-DEFINED';" );
+			$results = $this->masterDb->query( "SELECT column_name, udt_name FROM information_schema.columns WHERE table_name = '{$this->masterDbPrefix}{$this->table}' AND data_type = 'USER-DEFINED';" );
 			
 			$return = array();
 			foreach( $results as $key => $fields ) {
@@ -73,25 +82,60 @@
 
 		public function create( &$db ) {
 			$return = parent::create( $db );
-
+			$this->_initEnum( $db );
+			return $return;
+		}
+		
+		/**
+		* Initialisation des enums
+		*/
+		protected function _initEnum( $db ) {
 			if( $db->config['driver'] == 'postgres' ) {
-				$prefix = $db->config['prefix'];
 				$this->testDb = $db;
+				$this->testDbPrefix = $db->config['prefix'];
 				
 				$this->masterDb = ConnectionManager::getDataSource( 'default' );
+				$this->masterDbPrefix = $this->masterDb->config['prefix'];
 				
 				$fieldsTypped = $this->_masterTableTypes( $this->table );
 				
 				foreach( $fieldsTypped as $type => $fields) {
-					$enumData = $this->masterDb->query( "SELECT enum_range(null::{$type});" );
-					$this->_createTypeIfNotExists( $type, $enumData );
+					$this->_createTypeIfNotExists( $type );
 					foreach( $fields as $field ) {
 						$this->_alterColumns( $type, $field );
 					}
 				}
 			}
-
+		}
+		
+		/**
+		*
+		*/
+		
+		public function drop( &$db ) {
+			$return = parent::drop( $db );
+			$this->_dropEnum( $db );
 			return $return;
+		}
+		
+		/**
+		* Suppression des enums
+		*/
+		
+		protected function _dropEnum( $db ) {
+			if( $db->config['driver'] == 'postgres' ) {
+				$this->testDb = $db;
+				$this->testDbPrefix = $db->config['prefix'];
+				
+				$this->masterDb = ConnectionManager::getDataSource( 'default' );
+				$this->masterDbPrefix = $this->masterDb->config['prefix'];
+				
+				$fieldsTypped = $this->_masterTableTypes( $this->table );
+				
+				foreach( $fieldsTypped as $type => $fields) {
+					$this->_dropTypeIfLastTable( $type );
+				}
+			}
 		}
 
 		/*

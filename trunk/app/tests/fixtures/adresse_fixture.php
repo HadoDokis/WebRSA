@@ -21,7 +21,7 @@
 				'canton' => null,
 				'typeres' => null,
 				'topresetr' => null,
-				'foyerid' => null,
+				// 'foyer_id' => null,
 			),
 			array(
 				'id' => '2',
@@ -39,7 +39,7 @@
 				'canton' => null,
 				'typeres' => null,
 				'topresetr' => null,
-				'foyerid' => null,
+				// 'foyer_id' => null,
 			),
 			array(
 				'id' => '1001',
@@ -57,7 +57,7 @@
 				'canton' => null,
 				'typeres' => null,
 				'topresetr' => null,
-				'foyerid' => 1001,
+				// 'foyer_id' => 1001,
 			),
 			array(
 				'id' => '2002',
@@ -75,7 +75,7 @@
 				'canton' => null,
 				'typeres' => null,
 				'topresetr' => null,
-				'foyerid' => '2002',
+				// 'foyer_id' => '2002',
 			),
 			array(
 				'id' => '3003',
@@ -93,7 +93,7 @@
 				'canton' => null,
 				'typeres' => null,
 				'topresetr' => null,
-				'foyerid' => '3003',
+				// 'foyer_id' => '3003',
 			),
 			array(
 				'id' => '4004',
@@ -111,7 +111,7 @@
 				'canton' => null,
 				'typeres' => null,
 				'topresetr' => null,
-				'foyerid' => '4004',
+				// 'foyer_id' => '4004',
 			),
 		);
 	}
