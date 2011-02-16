@@ -64,8 +64,9 @@
 				
 				$out = array();
 				$out[] = '<?php';
+				$out[] = '	require_once( TESTS.\'cake_app_test_fixture.php\' );';
 				$out[] = '';
-				$out[] = sprintf('	class %sFixture extends CakeTestFixture {', $name);
+				$out[] = sprintf('	class %sFixture extends CakeAppTestFixture {', $name);
 				$out[] = sprintf('		var $name = \'%s\';', $name);
 				$out[] = sprintf('		var $table = \'%s\';', $table);
 				$out[] = sprintf('		var $import = array( \'table\' => \'%s\', \'connection\' => \'default\', \'records\' => false);', $table);
