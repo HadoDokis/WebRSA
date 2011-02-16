@@ -1,6 +1,7 @@
 <?php
+	require_once( TESTS.'cake_app_test_fixture.php' );
 
-	class AvispcgpersonneFixture extends CakeTestFixture {
+	class AvispcgpersonneFixture extends CakeAppTestFixture {
 		var $name = 'Avispcgpersonne';
 		var $table = 'avispcgpersonnes';
 		var $import = array( 'table' => 'avispcgpersonnes', 'connection' => 'default', 'records' => false);

@@ -1,6 +1,7 @@
 <?php
+	require_once( TESTS.'cake_app_test_fixture.php' );
 
-	class DetaildroitrsaFixture extends CakeTestFixture {
+	class DetaildroitrsaFixture extends CakeAppTestFixture {
 		var $name = 'Detaildroitrsa';
 		var $table = 'detailsdroitsrsa';
 		var $import = array( 'table' => 'detailsdroitsrsa', 'connection' => 'default', 'records' => false);

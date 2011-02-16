@@ -1,6 +1,7 @@
 <?php
+	require_once( TESTS.'cake_app_test_fixture.php' );
 
-	class AcqmatprofFixture extends CakeTestFixture {
+	class AcqmatprofFixture extends CakeAppTestFixture {
 		var $name = 'Acqmatprof';
 		var $table = 'acqsmatsprofs';
 		var $import = array( 'table' => 'acqsmatsprofs', 'connection' => 'default', 'records' => false);

@@ -1,6 +1,7 @@
 <?php
+	require_once( TESTS.'cake_app_test_fixture.php' );
 
-	class ServiceinstructeurFixture extends CakeTestFixture {
+	class ServiceinstructeurFixture extends CakeAppTestFixture {
 		var $name = 'Serviceinstructeur';
 		var $table = 'servicesinstructeurs';
 		var $import = array( 'table' => 'servicesinstructeurs', 'connection' => 'default', 'records' => false);

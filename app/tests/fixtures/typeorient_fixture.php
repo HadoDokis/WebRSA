@@ -1,6 +1,7 @@
 <?php
+	require_once( TESTS.'cake_app_test_fixture.php' );
 
-	class TypeorientFixture extends CakeTestFixture {
+	class TypeorientFixture extends CakeAppTestFixture {
 		var $name = 'Typeorient';
 		var $table = 'typesorients';
 		var $import = array( 'table' => 'typesorients', 'connection' => 'default', 'records' => false);

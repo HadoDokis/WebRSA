@@ -1,6 +1,7 @@
 <?php
+	require_once( TESTS.'cake_app_test_fixture.php' );
 
-	class TransmissionfluxFixture extends CakeTestFixture {
+	class TransmissionfluxFixture extends CakeAppTestFixture {
 		var $name = 'Transmissionflux';
 		var $table = 'transmissionsflux';
 		var $import = array( 'table' => 'transmissionsflux', 'connection' => 'default', 'records' => false);

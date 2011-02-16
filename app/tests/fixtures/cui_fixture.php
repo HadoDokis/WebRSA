@@ -1,6 +1,7 @@
 <?php
+	require_once( TESTS.'cake_app_test_fixture.php' );
 
-	class CuiFixture extends CakeTestFixture {
+	class CuiFixture extends CakeAppTestFixture {
 		var $name = 'Cui';
 		var $table = 'cuis';
 		var $import = array( 'table' => 'cuis', 'connection' => 'default', 'records' => false);

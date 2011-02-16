@@ -1,6 +1,7 @@
 <?php
+	require_once( TESTS.'cake_app_test_fixture.php' );
 
-	class Relancenonrespectsanctionep93Fixture extends CakeTestFixture {
+	class Relancenonrespectsanctionep93Fixture extends CakeAppTestFixture {
 		var $name = 'Relancenonrespectsanctionep93';
 		var $table = 'relancesnonrespectssanctionseps93';
 		var $import = array( 'table' => 'relancesnonrespectssanctionseps93', 'connection' => 'default', 'records' => false);

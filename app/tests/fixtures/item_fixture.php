@@ -1,5 +1,6 @@
 <?php
-	class ItemFixture extends CakeTestFixture {
+	require_once( TESTS.'cake_app_test_fixture.php' );
+	class ItemFixture extends CakeAppTestFixture {
 		var $name = 'Item';
 
 		var $table = 'items';

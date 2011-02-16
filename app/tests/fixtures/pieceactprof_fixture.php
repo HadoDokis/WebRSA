@@ -1,6 +1,7 @@
 <?php
+	require_once( TESTS.'cake_app_test_fixture.php' );
 
-	class PieceactprofFixture extends CakeTestFixture {
+	class PieceactprofFixture extends CakeAppTestFixture {
 		var $name = 'Pieceactprof';
 		var $table = 'piecesactsprofs';
 		var $import = array( 'table' => 'piecesactsprofs', 'connection' => 'default', 'records' => false);

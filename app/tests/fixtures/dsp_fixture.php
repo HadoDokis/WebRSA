@@ -1,6 +1,7 @@
 <?php
+	require_once( TESTS.'cake_app_test_fixture.php' );
 
-	class DspFixture extends CakeTestFixture {
+	class DspFixture extends CakeAppTestFixture {
 		var $name = 'Dsp';
 		var $table = 'dsps';
 		var $import = array( 'table' => 'dsps', 'connection' => 'default', 'records' => false);

@@ -1,6 +1,7 @@
 <?php
+	require_once( TESTS.'cake_app_test_fixture.php' );
 
-	class EpFixture extends CakeTestFixture {
+	class EpFixture extends CakeAppTestFixture {
 		var $name = 'Ep';
 		var $table = 'eps';
 		var $import = array( 'table' => 'eps', 'connection' => 'default', 'records' => false);

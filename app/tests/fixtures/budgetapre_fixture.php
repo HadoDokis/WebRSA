@@ -1,6 +1,7 @@
 <?php
+	require_once( TESTS.'cake_app_test_fixture.php' );
 
-	class BudgetapreFixture extends CakeTestFixture {
+	class BudgetapreFixture extends CakeAppTestFixture {
 		var $name = 'Budgetapre';
 		var $table = 'budgetsapres';
 		var $import = array( 'table' => 'budgetsapres', 'connection' => 'default', 'records' => false);

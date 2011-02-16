@@ -1,6 +1,7 @@
 <?php
+	require_once( TESTS.'cake_app_test_fixture.php' );
 
-	class AllocationsoutienfamilialFixture extends CakeTestFixture {
+	class AllocationsoutienfamilialFixture extends CakeAppTestFixture {
 		var $name = 'Allocationsoutienfamilial';
 		var $table = 'allocationssoutienfamilial';
 		var $import = array( 'table' => 'allocationssoutienfamilial', 'connection' => 'default', 'records' => false);

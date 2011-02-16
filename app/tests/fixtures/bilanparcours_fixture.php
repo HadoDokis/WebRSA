@@ -1,6 +1,7 @@
 <?php
+	require_once( TESTS.'cake_app_test_fixture.php' );
 
-	class BilanparcoursFixture extends CakeTestFixture {
+	class BilanparcoursFixture extends CakeAppTestFixture {
 		var $name = 'Bilanparcours';
 		var $table = 'bilanparcours';
 		var $import = array( 'table' => 'bilanparcours', 'connection' => 'default', 'records' => false);

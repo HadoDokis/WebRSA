@@ -1,6 +1,7 @@
 <?php
+	require_once( TESTS.'cake_app_test_fixture.php' );
 
-	class DossierFixture extends CakeTestFixture {
+	class DossierFixture extends CakeAppTestFixture {
 
 		var $name = 'Dossier';
 

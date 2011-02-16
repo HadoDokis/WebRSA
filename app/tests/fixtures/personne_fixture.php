@@ -1,6 +1,7 @@
 <?php
+	require_once( TESTS.'cake_app_test_fixture.php' );
 
-	class PersonneFixture extends CakeTestFixture {
+	class PersonneFixture extends CakeAppTestFixture {
 		var $name = 'Personne';
 		var $table = 'personnes';
 		var $import = array( 'table' => 'personnes', 'connection' => 'default', 'records' => false);

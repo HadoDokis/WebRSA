@@ -1,6 +1,7 @@
 <?php
+	require_once( TESTS.'cake_app_test_fixture.php' );
 
-	class StructurereferenteFixture extends CakeTestFixture {
+	class StructurereferenteFixture extends CakeAppTestFixture {
 		var $name = 'Structurereferente';
 		var $table = 'structuresreferentes';
 		var $import = array( 'table' => 'structuresreferentes', 'connection' => 'default', 'records' => false);

@@ -1,6 +1,7 @@
 <?php
+	require_once( TESTS.'cake_app_test_fixture.php' );
 
-	class CondadminFixture extends CakeTestFixture {
+	class CondadminFixture extends CakeAppTestFixture {
 		var $name = 'Condadmin';
 		var $table = 'condsadmins';
 		var $import = array( 'table' => 'condsadmins', 'connection' => 'default', 'records' => false);

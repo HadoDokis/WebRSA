@@ -1,6 +1,7 @@
 <?php
+	require_once( TESTS.'cake_app_test_fixture.php' );
 
-	class RelanceapreFixture extends CakeTestFixture {
+	class RelanceapreFixture extends CakeAppTestFixture {
 		var $name = 'Relanceapre';
 		var $table = 'relancesapres';
 		var $import = array( 'table' => 'relancesapres', 'connection' => 'default', 'records' => false);

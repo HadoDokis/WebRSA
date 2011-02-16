@@ -1,6 +1,7 @@
 <?php
+	require_once( TESTS.'cake_app_test_fixture.php' );
 
-	class ComiteapreFixture extends CakeTestFixture {
+	class ComiteapreFixture extends CakeAppTestFixture {
 		var $name = 'Comiteapre';
 		var $table = 'comitesapres';
 		var $import = array( 'table' => 'comitesapres', 'connection' => 'default', 'records' => false);

@@ -1,6 +1,7 @@
 <?php
+	require_once( TESTS.'cake_app_test_fixture.php' );
 
-	class ApreEtatliquidatifFixture extends CakeTestFixture {
+	class ApreEtatliquidatifFixture extends CakeAppTestFixture {
 		var $name = 'ApreEtatliquidatif';
 		var $table = 'apres_etatsliquidatifs';
 		var $import = array( 'table' => 'apres_etatsliquidatifs', 'connection' => 'default', 'records' => false);

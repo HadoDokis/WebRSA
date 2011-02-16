@@ -1,6 +1,7 @@
 <?php
+	require_once( TESTS.'cake_app_test_fixture.php' );
 
-	class ApreComiteapreFixture extends CakeTestFixture {
+	class ApreComiteapreFixture extends CakeAppTestFixture {
 		var $name = 'ApreComiteapre';
 		var $table = 'apres_comitesapres';
 		var $import = array( 'table' => 'apres_comitesapres', 'connection' => 'default', 'records' => false);
@@ -11,7 +12,7 @@
 				'comiteapre_id' => '1',
 				'montantattribue' => 70,
 				'observationcomite' => null,
-				'decisioncomite' => 'non',
+				'decisioncomite' => 'REF',
 				'recoursapre' => null,
 				'observationrecours' => null,
 				'daterecours' => null,
@@ -23,7 +24,7 @@
 				'comiteapre_id' => '2',
 				'montantattribue' => 700,
 				'observationcomite' => null,
-				'decisioncomite' => 'non',
+				'decisioncomite' => 'REF',
 				'recoursapre' => null,
 				'observationrecours' => null,
 				'daterecours' => null,

@@ -1,6 +1,7 @@
 <?php
+	require_once( TESTS.'cake_app_test_fixture.php' );
 
-	class UserFixture extends CakeTestFixture {
+	class UserFixture extends CakeAppTestFixture {
 		var $name = 'User';
 		var $table = 'users';
 		var $import = array( 'table' => 'users', 'connection' => 'default', 'records' => false);
@@ -77,7 +78,7 @@
 		/**
 		* Création des champs "Enumerable" pour le modèle User
 		*
-		* @see http://www.tig12.net/downloads/apidocs/cakephp/cake/tests/lib/CakeTestFixture.class.html
+		* @see http://www.tig12.net/downloads/apidocs/cakephp/cake/tests/lib/CakeAppTestFixture.class.html
 		*/
 
 		public function create( &$db ) {
