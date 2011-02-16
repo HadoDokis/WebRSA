@@ -1,6 +1,7 @@
 <?php
+	require_once( TESTS.'cake_app_test_fixture.php' );
 
-	class ApreFixture extends CakeTestFixture {
+	class ApreFixture extends CakeAppTestFixture {
 		var $name = 'Apre';
 		var $table = 'apres';
 		var $import = array( 'table' => 'apres', 'connection' => 'default', 'records' => false);
@@ -9,7 +10,7 @@
 				'id' => '1',
 				'personne_id' => '1',
 				'numeroapre' => '1',
-				'typedemandeapre' => '1',
+				'typedemandeapre' => 'FO',
 				'datedemandeapre' => '2009-05-12',
 				'naturelogement' => null,
 				'precisionsautrelogement' => null,
@@ -39,7 +40,7 @@
 				'nbpaiementsouhait' => 2000,
 				'montantdejaverse' => 300,
 				// 'dureecontrat' => null,
-				'isdecision' => null,
+				'isdecision' => 'N',
 				'hasfrais' => null,
 			),
 			array(
@@ -76,7 +77,7 @@
 				'nbpaiementsouhait' => 2000,
 				'montantdejaverse' => 300,
 				// 'dureecontrat' => null,
-				'isdecision' => null,
+				'isdecision' => 'N',
 				'hasfrais' => null,
 			),
 		);

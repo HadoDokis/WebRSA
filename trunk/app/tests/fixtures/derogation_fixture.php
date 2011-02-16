@@ -1,6 +1,7 @@
 <?php
+	require_once( TESTS.'cake_app_test_fixture.php' );
 
-	class DerogationFixture extends CakeTestFixture {
+	class DerogationFixture extends CakeAppTestFixture {
 		var $name = 'Derogation';
 		var $table = 'derogations';
 		var $import = array( 'table' => 'derogations', 'connection' => 'default', 'records' => false);

@@ -1,6 +1,7 @@
 <?php
+	require_once( TESTS.'cake_app_test_fixture.php' );
 
-	class PropopdoFixture extends CakeTestFixture {
+	class PropopdoFixture extends CakeAppTestFixture {
 		var $name = 'Propopdo';
 		var $table = 'propospdos';
 		var $import = array( 'table' => 'propospdos', 'connection' => 'default', 'records' => false);

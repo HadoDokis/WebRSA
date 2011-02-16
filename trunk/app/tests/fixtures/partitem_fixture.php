@@ -1,5 +1,6 @@
 <?php
-	class PartitemFixture extends CakeTestFixture {
+	require_once( TESTS.'cake_app_test_fixture.php' );
+	class PartitemFixture extends CakeAppTestFixture {
 		var $name = 'Partitem';
 
 		var $table = 'partitems';

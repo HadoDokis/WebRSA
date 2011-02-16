@@ -1,6 +1,7 @@
 <?php
+	require_once( TESTS.'cake_app_test_fixture.php' );
 
-	class TiersprestataireapreFixture extends CakeTestFixture {
+	class TiersprestataireapreFixture extends CakeAppTestFixture {
 		var $name = 'Tiersprestataireapre';
 		var $table = 'tiersprestatairesapres';
 		var $import = array( 'table' => 'tiersprestatairesapres', 'connection' => 'default', 'records' => false);

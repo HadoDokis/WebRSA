@@ -1,6 +1,7 @@
 <?php
+	require_once( TESTS.'cake_app_test_fixture.php' );
 
-	class ZonegeographiqueFixture extends CakeTestFixture {
+	class ZonegeographiqueFixture extends CakeAppTestFixture {
 		var $name = 'Zonegeographique';
 		var $table = 'zonesgeographiques';
 		var $import = array( 'table' => 'zonesgeographiques', 'connection' => 'default', 'records' => false);

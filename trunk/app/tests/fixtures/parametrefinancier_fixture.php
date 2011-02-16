@@ -1,6 +1,7 @@
 <?php
+	require_once( TESTS.'cake_app_test_fixture.php' );
 
-	class ParametrefinancierFixture extends CakeTestFixture {
+	class ParametrefinancierFixture extends CakeAppTestFixture {
 		var $name = 'Parametrefinancier';
 		var $table = 'parametresfinanciers';
 		var $import = array( 'table' => 'parametresfinanciers', 'connection' => 'default', 'records' => false);

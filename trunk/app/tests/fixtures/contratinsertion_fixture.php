@@ -1,6 +1,7 @@
 <?php
+	require_once( TESTS.'cake_app_test_fixture.php' );
 
-	class ContratinsertionFixture extends CakeTestFixture {
+	class ContratinsertionFixture extends CakeAppTestFixture {
 		var $name = 'Contratinsertion';
 		var $table = 'contratsinsertion';
 		var $import = array( 'table' => 'contratsinsertion', 'connection' => 'default', 'records' => false);

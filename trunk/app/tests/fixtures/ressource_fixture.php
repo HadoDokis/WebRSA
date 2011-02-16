@@ -1,6 +1,7 @@
 <?php
+	require_once( TESTS.'cake_app_test_fixture.php' );
 
-	class RessourceFixture extends CakeTestFixture {
+	class RessourceFixture extends CakeAppTestFixture {
 		var $name = 'Ressource';
 		var $table = 'ressources';
 		var $import = array( 'table' => 'ressources', 'connection' => 'default', 'records' => false);

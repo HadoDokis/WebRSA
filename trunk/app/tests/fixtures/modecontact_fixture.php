@@ -1,6 +1,7 @@
 <?php
+	require_once( TESTS.'cake_app_test_fixture.php' );
 
-	class ModecontactFixture extends CakeTestFixture {
+	class ModecontactFixture extends CakeAppTestFixture {
 		var $name = 'Modecontact';
 		var $table = 'modescontact';
 		var $import = array( 'table' => 'modescontact', 'connection' => 'default', 'records' => false);

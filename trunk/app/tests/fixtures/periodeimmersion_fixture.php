@@ -1,6 +1,7 @@
 <?php
+	require_once( TESTS.'cake_app_test_fixture.php' );
 
-	class PeriodeimmersionFixture extends CakeTestFixture {
+	class PeriodeimmersionFixture extends CakeAppTestFixture {
 		var $name = 'Periodeimmersion';
 		var $table = 'periodesimmersion';
 		var $import = array( 'table' => 'periodesimmersion', 'connection' => 'default', 'records' => false);

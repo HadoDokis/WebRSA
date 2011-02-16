@@ -1,6 +1,7 @@
 <?php
+	require_once( TESTS.'cake_app_test_fixture.php' );
 
-	class TotalisationacompteFixture extends CakeTestFixture {
+	class TotalisationacompteFixture extends CakeAppTestFixture {
 		var $name = 'Totalisationacompte';
 		var $table = 'totalisationsacomptes';
 		var $import = array( 'table' => 'totalisationsacomptes', 'connection' => 'default', 'records' => false);

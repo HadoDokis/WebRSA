@@ -1,6 +1,7 @@
 <?php
+	require_once( TESTS.'cake_app_test_fixture.php' );
 
-	class DetaildifsocFixture extends CakeTestFixture {
+	class DetaildifsocFixture extends CakeAppTestFixture {
 		var $name = 'Detaildifsoc';
 		var $table = 'detailsdifsocs';
 		var $import = array( 'table' => 'detailsdifsocs', 'connection' => 'default', 'records' => false);
@@ -8,7 +9,7 @@
 			array(
 				'id' => '1',
 				'dsp_id' => '1',
-				'difsoc' => 'difspc',
+				'difsoc' => '0404',
 				'libautrdifsoc' => null,
 			)
 		);

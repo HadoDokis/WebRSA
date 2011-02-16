@@ -1,6 +1,7 @@
 <?php
+	require_once( TESTS.'cake_app_test_fixture.php' );
 
-	class TempcessationFixture extends CakeTestFixture {
+	class TempcessationFixture extends CakeAppTestFixture {
 		var $name = 'Tempcessation';
 		var $table = 'tempcessations';
 		var $import = array( 'table' => 'tempcessations', 'connection' => 'default', 'records' => false);

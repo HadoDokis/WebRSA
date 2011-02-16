@@ -1,6 +1,7 @@
 <?php
+	require_once( TESTS.'cake_app_test_fixture.php' );
 
-	class PieceacccreaentrFixture extends CakeTestFixture {
+	class PieceacccreaentrFixture extends CakeAppTestFixture {
 		var $name = 'Pieceacccreaentr';
 		var $table = 'piecesaccscreaentr';
 		var $import = array( 'table' => 'piecesaccscreaentr', 'connection' => 'default', 'records' => false);

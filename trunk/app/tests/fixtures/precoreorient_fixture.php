@@ -1,6 +1,7 @@
 <?php
+	require_once( TESTS.'cake_app_test_fixture.php' );
 
-	class PrecoreorientFixture extends CakeTestFixture {
+	class PrecoreorientFixture extends CakeAppTestFixture {
 		var $name = 'Precoreorient';
 		var $table = 'precosreorients';
 		var $import = array( 'table' => 'precosreorients', 'connection' => 'default', 'records' => false);
@@ -8,11 +9,11 @@
 			array(
 				'id' => '1',
 				'demandereorient_id' => '1',
-				'rolereorient' => 'roleorient?',
+				'rolereorient' => 'referent',
 				'typeorient_id' => '1',
 				'structurereferente_id' => '1',
 				'referent_id' => '1',
-				'accord' => null,
+				'accord' => 0,
 				'commentaire' => null,
 				'created' => null,
 				'dtconcertation' => null,

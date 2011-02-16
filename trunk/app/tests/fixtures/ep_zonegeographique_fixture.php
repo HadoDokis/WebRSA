@@ -1,6 +1,7 @@
 <?php
+	require_once( TESTS.'cake_app_test_fixture.php' );
 
-	class EpZonegeographiqueFixture extends CakeTestFixture {
+	class EpZonegeographiqueFixture extends CakeAppTestFixture {
 		var $name = 'EpZonegeographique';
 		var $table = 'eps_zonesgeographiques';
 		var $import = array( 'table' => 'eps_zonesgeographiques', 'connection' => 'default', 'records' => false);

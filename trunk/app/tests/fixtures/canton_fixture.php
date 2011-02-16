@@ -1,6 +1,7 @@
 <?php
+	require_once( TESTS.'cake_app_test_fixture.php' );
 
-	class CantonFixture extends CakeTestFixture {
+	class CantonFixture extends CakeAppTestFixture {
 		var $name = 'Canton';
 		var $table = 'cantons';
 		var $import = array( 'table' => 'cantons', 'connection' => 'default', 'records' => false);

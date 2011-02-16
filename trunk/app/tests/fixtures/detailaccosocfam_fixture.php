@@ -1,6 +1,7 @@
 <?php
+	require_once( TESTS.'cake_app_test_fixture.php' );
 
-	class DetailaccosocfamFixture extends CakeTestFixture {
+	class DetailaccosocfamFixture extends CakeAppTestFixture {
 		var $name = 'Detailaccosocfam';
 		var $table = 'detailsaccosocfams';
 		var $import = array( 'table' => 'detailsaccosocfams', 'connection' => 'default', 'records' => false);
@@ -8,7 +9,7 @@
 			array(
 				'id' => '1',
 				'dsp_id' => '1',
-				'nataccosocfam' => 'notnull',
+				'nataccosocfam' => '0411',
 				'libautraccosocfam' => null,
 			)
 		);

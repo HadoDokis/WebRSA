@@ -1,6 +1,7 @@
 <?php
+	require_once( TESTS.'cake_app_test_fixture.php' );
 
-	class PiecepdoFixture extends CakeTestFixture {
+	class PiecepdoFixture extends CakeAppTestFixture {
 		var $name = 'Piecepdo';
 		var $table = 'piecespdos';
 		var $import = array( 'table' => 'piecespdos', 'connection' => 'default', 'records' => false);

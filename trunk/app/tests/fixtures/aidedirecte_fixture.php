@@ -1,6 +1,7 @@
 <?php
+	require_once( TESTS.'cake_app_test_fixture.php' );
 
-	class AidedirecteFixture extends CakeTestFixture {
+	class AidedirecteFixture extends CakeAppTestFixture {
 		var $name = 'Aidedirecte';
 		var $table = 'aidesdirectes';
 		var $import = array( 'table' => 'aidesdirectes', 'connection' => 'default', 'records' => false);

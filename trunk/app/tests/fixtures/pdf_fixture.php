@@ -1,6 +1,7 @@
 <?php
+	require_once( TESTS.'cake_app_test_fixture.php' );
 
-	class PdfFixture extends CakeTestFixture {
+	class PdfFixture extends CakeAppTestFixture {
 		var $name = 'Pdf';
 		var $table = 'pdfs';
 		var $import = array( 'table' => 'pdfs', 'connection' => 'default', 'records' => false);

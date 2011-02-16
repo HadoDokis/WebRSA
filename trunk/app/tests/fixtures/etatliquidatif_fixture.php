@@ -1,6 +1,7 @@
 <?php
+	require_once( TESTS.'cake_app_test_fixture.php' );
 
-	class EtatliquidatifFixture extends CakeTestFixture {
+	class EtatliquidatifFixture extends CakeAppTestFixture {
 		var $name = 'Etatliquidatif';
 		var $table = 'etatsliquidatifs';
 		var $import = array( 'table' => 'etatsliquidatifs', 'connection' => 'default', 'records' => false);
@@ -19,7 +20,7 @@
 				'apreforfait' => 'a',
 				'aprecomplem' => null,
 				'natureimput' => 'a',
-				'typeapre' => 'a',
+				'typeapre' => 'forfaitaire',
 				'operation' => 'a',
 // 				'objet' => 'a',
 				'datecloture' => null,

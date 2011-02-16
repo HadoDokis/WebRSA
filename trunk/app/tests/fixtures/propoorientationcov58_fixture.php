@@ -1,6 +1,7 @@
 <?php
+	require_once( TESTS.'cake_app_test_fixture.php' );
 
-	class Propoorientationcov58Fixture extends CakeTestFixture {
+	class Propoorientationcov58Fixture extends CakeAppTestFixture {
 		var $name = 'Propoorientationcov58';
 		var $table = 'proposorientationscovs58';
 		var $import = array( 'table' => 'proposorientationscovs58', 'connection' => 'default', 'records' => false);

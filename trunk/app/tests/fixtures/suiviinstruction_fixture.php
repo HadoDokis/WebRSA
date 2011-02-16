@@ -1,6 +1,7 @@
 <?php
+	require_once( TESTS.'cake_app_test_fixture.php' );
 
-	class SuiviinstructionFixture extends CakeTestFixture {
+	class SuiviinstructionFixture extends CakeAppTestFixture {
 		var $name = 'Suiviinstruction';
 		var $table = 'suivisinstruction';
 		var $import = array( 'table' => 'suivisinstruction', 'connection' => 'default', 'records' => false);

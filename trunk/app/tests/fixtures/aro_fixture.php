@@ -1,6 +1,7 @@
 <?php
+	require_once( TESTS.'cake_app_test_fixture.php' );
 
-	class AroFixture extends CakeTestFixture {
+	class AroFixture extends CakeAppTestFixture {
 		var $name = 'Aro';
 		var $table = 'aros';
 		var $import = array( 'table' => 'aros', 'connection' => 'default', 'records' => false);

@@ -1,6 +1,7 @@
 <?php
+	require_once( TESTS.'cake_app_test_fixture.php' );
 
-	class DecisionpdoFixture extends CakeTestFixture {
+	class DecisionpdoFixture extends CakeAppTestFixture {
 		var $name = 'Decisionpdo';
 		var $table = 'decisionspdos';
 		var $import = array( 'table' => 'decisionspdos', 'connection' => 'default', 'records' => false);

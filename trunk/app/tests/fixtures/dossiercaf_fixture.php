@@ -1,6 +1,7 @@
 <?php
+	require_once( TESTS.'cake_app_test_fixture.php' );
 
-	class DossiercafFixture extends CakeTestFixture {
+	class DossiercafFixture extends CakeAppTestFixture {
 		var $name = 'Dossiercaf';
 		var $table = 'dossierscaf';
 		var $import = array( 'table' => 'dossierscaf', 'connection' => 'default', 'records' => false);

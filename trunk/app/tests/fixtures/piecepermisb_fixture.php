@@ -1,6 +1,7 @@
 <?php
+	require_once( TESTS.'cake_app_test_fixture.php' );
 
-	class PiecepermisbFixture extends CakeTestFixture {
+	class PiecepermisbFixture extends CakeAppTestFixture {
 		var $name = 'Piecepermisb';
 		var $table = 'piecespermisb';
 		var $import = array( 'table' => 'piecespermisb', 'connection' => 'default', 'records' => false);

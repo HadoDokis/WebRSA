@@ -1,6 +1,7 @@
 <?php
+	require_once( TESTS.'cake_app_test_fixture.php' );
 
-	class Aideapre66Fixture extends CakeTestFixture {
+	class Aideapre66Fixture extends CakeAppTestFixture {
 		var $name = 'Aideapre66';
 		var $table = 'aidesapres66';
 		var $import = array( 'table' => 'aidesapres66', 'connection' => 'default', 'records' => false);
