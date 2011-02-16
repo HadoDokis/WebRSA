@@ -147,7 +147,7 @@
 							)
 						),
 					),
-					'recursive' => -1
+					'contain' => false
 				)
 			);
 			
