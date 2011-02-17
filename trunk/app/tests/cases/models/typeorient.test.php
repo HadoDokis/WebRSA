@@ -8,9 +8,11 @@
 		function testListOptions() {
 			$result = $this->Typeorient->listOptions();
 			$expected = array(
-				'1' => 'Emploi',
-				'3' => 'Social',
-				'2' => 'Socioprofessionnelle',
+				'4' => 'A sélectionner',
+				'5' => 'CAF',
+				'3' => 'Emploi',
+				'2' => 'Social',
+				'1' => 'Socioprofessionnelle',
 			);
 			$this->assertEqual($result, $expected);
 		}
@@ -18,9 +20,11 @@
 		function testOccurences() {
 			$result = $this->Typeorient->occurences();
 			$expected = array(
-				'1' => '36',
-				'3' => '2',
-				'2' => '1',
+				'4' => 'A sélectionner',
+				'5' => 'CAF',
+				'3' => 'Emploi',
+				'2' => 'Social',
+				'1' => 'Socioprofessionnelle',
 			);
 			$this->assertEqual($result, $expected);
 		}
