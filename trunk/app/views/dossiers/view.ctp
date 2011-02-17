@@ -63,6 +63,10 @@
                                 <th>Service instructeur</th>
                                 <td><?php echo h( value( $typeserins, Set::extract( 'Suiviinstruction.typeserins', $details ) ) );?></td>
                             </tr>
+                            <tr class="odd">
+                                <th>Statut du demandeur</th>
+                                <td><?php echo value( $statudemrsa, Set::extract( 'Dossier.statudemrsa', $details ) );?></td>
+                            </tr>
                         </tbody>
                     </table>
                 </td>
@@ -196,10 +200,6 @@
                             <tr class="even">
                                 <th>Numéro CAF</th>
                                 <td><?php echo Set::extract( 'Dossier.matricule', $details );;?></td>
-                            </tr>
-                            <tr class="even">
-                                <th>Statut du demandeur</th>
-                                <td><?php echo value( $statudemrsa, Set::extract( 'Dossier.statudemrsa', $details ) );?></td>
                             </tr>
                             <tr class="odd">
                                 <th>Date d'ouverture des droits</th>
