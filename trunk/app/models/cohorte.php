@@ -418,6 +418,7 @@
 											'fields' => array(
 												'adressefoyer.id'
 											),
+											'alias' => 'adressefoyer',
 											'conditions' => array(
 												'adressefoyer.foyer_id = Adressefoyer.foyer_id'
 											),
@@ -461,7 +462,24 @@
 							'alias' => 'Contratinsertion',
 							'type' => 'LEFT OUTER',
 							'foreignKey' => false,
-							'conditions' => array( 'Contratinsertion.personne_id = Personne.id', )
+							'conditions' => array(
+								'Contratinsertion.personne_id = Personne.id',
+								'Contratinsertion.id IN (
+									'.ClassRegistry::init( 'Contratinsertion' )->sq(
+										array(
+											'fields' => array(
+												'contratsinsertion.id'
+											),
+											'alias' => 'contratsinsertion',
+											'conditions' => array(
+												'contratsinsertion.personne_id = Personne.id'
+											),
+											'order' => array( 'contratsinsertion.dd_ci DESC' ),
+											'limit' => 1
+										)
+									).'
+								)'
+							)
 						),
 						array(
 							'table' => 'detailsdroitsrsa',

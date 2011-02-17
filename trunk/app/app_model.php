@@ -4,7 +4,7 @@
 //     class AppModel extends Model
     {
         // début champs virtuels
-        public $actsAs = array( 'Containable' );
+        public $actsAs = array( 'Containable', 'Subquery' );
 
         public $virtualFields = array();
 
