@@ -36,26 +36,32 @@
 			if( !empty( $this->data ) ) {
 				$saved = true;
 				
-				$themecov58 = $this->Propoorientationcov58->Dossiercov58->Themecov58->find(
-					'first',
-					array(
-						'conditions' => array(
-							'Themecov58.name' => Inflector::tableize($this->Propoorientationcov58->alias)
-						),
-						'contain' => false
-					)
-				);
-				$dossiercov58['Dossiercov58']['themecov58_id'] = $themecov58['Themecov58']['id'];
-				$dossiercov58['Dossiercov58']['personne_id'] = $personne_id;
+				$this->data['Propoorientationcov58']['rgorient'] = $this->Propoorientationcov58->Dossiercov58->Personne->Orientstruct->rgorientMax( $personne_id );
 				
-				$saved = $this->Propoorientationcov58->Dossiercov58->save($dossiercov58) && $saved;
-				
-				$this->Propoorientationcov58->create();
-				
-				$this->data['Propoorientationcov58']['dossiercov58_id'] = $this->Propoorientationcov58->Dossiercov58->id;
-				$this->data['Propoorientationcov58']['rgorient'] = $this->Propoorientationcov58->Dossiercov58->Personne->Orientstruct->rgorientMax($personne_id);
-				
-				$saved = $this->Propoorientationcov58->save( $this->data['Propoorientationcov58'] ) && $saved;
+				if ( $this->Propoorientationcov58->Orientstruct->isRegression( $personne_id, $this->data['Propoorientationcov58']['typeorient_id'] ) ) {
+					debug('Régression !!!!!!');
+				}
+				else {
+					$themecov58 = $this->Propoorientationcov58->Dossiercov58->Themecov58->find(
+						'first',
+						array(
+							'conditions' => array(
+								'Themecov58.name' => Inflector::tableize($this->Propoorientationcov58->alias)
+							),
+							'contain' => false
+						)
+					);
+					$dossiercov58['Dossiercov58']['themecov58_id'] = $themecov58['Themecov58']['id'];
+					$dossiercov58['Dossiercov58']['personne_id'] = $personne_id;
+					
+					$saved = $this->Propoorientationcov58->Dossiercov58->save($dossiercov58) && $saved;
+					
+					$this->Propoorientationcov58->create();
+					
+					$this->data['Propoorientationcov58']['dossiercov58_id'] = $this->Propoorientationcov58->Dossiercov58->id;
+					
+					$saved = $this->Propoorientationcov58->save( $this->data['Propoorientationcov58'] ) && $saved;
+				}
 				
 				if( $saved ) {
 					$this->Jetons->release( $dossier_id );

@@ -10,6 +10,23 @@
 			'ValidateTranslate',
 			'Enumerable'
 		);
+
+		public $belongsTo = array(
+			'Dossierep' => array(
+				'className' => 'Dossierep',
+				'foreignKey' => 'dossierep_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			'Orientstruct' => array(
+				'className' => 'Orientstruct',
+				'foreignKey' => 'orientstruct_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			)
+		);
 		
 		public function searchNonReoriente($datas) {
 			$nbmois = Set::classicExtract($datas, 'Filtre.dureenonreorientation');
@@ -197,109 +214,10 @@
 			}
 
 			return array(
-				/*'fields' => array(
-					'Dossierep.id',
-					'Dossierep.personne_id',
-					'Dossierep.seanceep_id',
-					'Dossierep.etapedossierep',
-					'Dossierep.themeep',
-					'Dossierep.created',
-					'Dossierep.modified',
-					'Personne.qual',
-					'Personne.nom',
-					'Personne.prenom',
-					'Personne.dtnai',
-					'Adresse.numvoie',
-					'Adresse.typevoie',
-					'Adresse.nomvoie'
-				),*/
 				'conditions' => array(
 					'Dossierep.themeep' => Inflector::tableize( $this->alias ),
 					'Dossierep.seanceep_id' => $seanceep_id
 				),
-				/*'joins' => array(
-					array(
-						'table' => 'personnes',
-						'alias' => 'Personne',
-						'type' => 'INNER',
-						'conditions' => array(
-							'Dossierep.personne_id = Personne.id'
-						)
-					),
-					array(
-						'table' => 'foyers',
-						'alias' => 'Foyer',
-						'type' => 'INNER',
-						'conditions' => array(
-							'Personne.foyer_id = Foyer.id'
-						)
-					),
-					array(
-						'table' => 'adressesfoyers',
-						'alias' => 'Adressefoyer',
-						'type' => 'INNER',
-						'conditions' => array(
-							'Adressefoyer.foyer_id = Foyer.id',
-							'Adressefoyer.rgadr' => '01'
-						)
-					),
-					array(
-						'table' => 'adresses',
-						'alias' => 'Adresse',
-						'type' => 'INNER',
-						'conditions' => array(
-							'Adressefoyer.adresse_id = Adresse.id'
-						)
-					),
-					array(
-						'table' => Inflector::tableize( $this->alias ),
-						'alias' => $this->alias,
-						'type' => 'INNER',
-						'conditions' => array(
-							$this->alias.'.dossierep_id = Dossierep.id'
-						)
-					),
-					array(
-						'table' => 'decisions'.Inflector::tableize( $this->alias ),
-						'alias' => 'Decision'.Inflector::underscore( $this->alias ),
-						'type' => 'LEFT OUTER',
-						'conditions' => array(
-							'Decision'.Inflector::underscore( $this->alias ).'.'.Inflector::underscore( $this->alias ).'_id = '.$this->alias.'.id'
-						)
-					),
-					array(
-						'table' => 'orientsstructs',
-						'alias' => 'Orientstruct',
-						'type' => 'INNER',
-						'conditions' => array(
-							$this->alias.'.orientstruct_id = Orientstruct.id'
-						)
-					),
-					array(
-						'table' => 'typesorients',
-						'alias' => 'Typeorient',
-						'type' => 'INNER',
-						'conditions' => array(
-							'Orientstruct.typeorient_id = Typeorient.id'
-						)
-					),
-					array(
-						'table' => 'structuresreferentes',
-						'alias' => 'Structurereferente',
-						'type' => 'INNER',
-						'conditions' => array(
-							'Orientstruct.structurereferente_id = Structurereferente.id'
-						)
-					),
-					array(
-						'table' => 'referents',
-						'alias' => 'Referent',
-						'type' => 'LEFT OUTER',
-						'conditions' => array(
-							'Orientstruct.referent_id = Referent.id'
-						)
-					)
-				)*/
 				'contain' => array(
 					'Personne' => array(
 						'Foyer' => array(

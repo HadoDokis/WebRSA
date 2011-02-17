@@ -3,23 +3,6 @@
 
 	class Nonorientationpro58 extends Nonorientationpro {
 
-		public $belongsTo = array(
-			'Dossierep' => array(
-				'className' => 'Dossierep',
-				'foreignKey' => 'dossierep_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
-			),
-			'Orientstruct' => array(
-				'className' => 'Orientstruct',
-				'foreignKey' => 'orientstruct_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
-			)
-		);
-
 		public $hasMany = array(
 			'Decisionnonorientationpro58' => array(
 				'className' => 'Decisionnonorientationpro58',

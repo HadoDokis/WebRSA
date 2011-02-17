@@ -57,6 +57,7 @@
 					'Ep.saisineepreorientsr93' => array( 'required' => true ),
 					'Ep.nonrespectsanctionep93' => array( 'required' => true ),
 					'Ep.nonorientationpro58' => array( 'required' => true ),
+					'Ep.regressionorientationep58' => array( 'required' => true ),
 				),
 				array(
 					'options' => $options
