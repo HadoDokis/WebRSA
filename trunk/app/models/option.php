@@ -1386,7 +1386,17 @@
 			);
 		}
 
-	public function statut_contrat_insertion() {
+        public function statudemrsa() {
+            return array(
+                'N' => 'Non allocataire',
+                'C' => 'Allocataire de la CAF',
+                'A' => 'Allocataire d\'une autre CAF',
+                'M' => 'Allocataire de la MSA',
+                'S' => 'Allocataire d\'une autre MSA'
+            );
+        }
+
+        public function statut_contrat_insertion() {
 			return array(
 				'1' => 'Validé',
 				'2' => 'En attente',
