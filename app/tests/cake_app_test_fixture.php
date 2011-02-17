@@ -138,12 +138,6 @@
 		
 		protected function _dropEnum( $db ) {
 			if( $this->_pgsqlEnumTypes && $db->config['driver'] == 'postgres' ) {
-				/*$this->testDb = $db;
-				$this->testDbPrefix = $db->config['prefix'];
-				
-				$this->masterDb = ConnectionManager::getDataSource( 'default' );
-				$this->masterDbPrefix = $this->masterDb->config['prefix'];*/
-				
 				/// INFO: on estime qu'aucun enum ne sera modifié au cours des tests unitaires
 				//$fieldsTypped = $this->_masterTableTypes( $this->table );
 				
