@@ -181,7 +181,7 @@
 			$this->set( 'personne_id', $personne_id );
 
 			$this->set( 'rgorient_max', $this->Orientstruct->rgorientMax( $personne_id ) );
-			if (Configure::read('Cg.departement')==58) {
+			if ( Configure::read( 'Cg.departement' ) == 58 && $this->Orientstruct->rgorientMax( $personne_id ) <=1 ) {
 				$ajout_possible = $this->Orientstruct->Personne->Dossiercov58->ajoutPossible( $personne_id );
 				$nbdossiersnonfinalisescovs = $this->Orientstruct->Personne->Dossiercov58->find(
 					'count',
@@ -263,22 +263,47 @@
 //				$validates = $this->Structurereferente->validates() && $validates;
 
 				if( $validates ) {
-					// Orientation
-					$this->Orientstruct->create();
+					$saved = true;
 					
-					// Correction: si la personne n'a pas encore d'entrée dans calculdroitsrsa
-					$this->data['Calculdroitrsa']['personne_id'] = $personne_id;
-					
-					$this->data['Orientstruct']['personne_id'] = $personne_id;
-					$this->data['Orientstruct']['valid_cg'] = true;
-					$this->data['Orientstruct']['date_propo'] = date( 'Y-m-d' );
-					$this->data['Orientstruct']['date_valid'] = date( 'Y-m-d' );
-					$this->data['Orientstruct']['statut_orient'] = 'Orienté';
-					
-					$saved = $this->Orientstruct->Personne->Calculdroitrsa->save( $this->data );
-					$saved = $this->Orientstruct->save( $this->data['Orientstruct'] ) && $saved;
-					$mkOrientstructPdf = $this->Gedooo->mkOrientstructPdf( $this->Orientstruct->getLastInsertId() );
-					$saved = $mkOrientstructPdf && $saved;
+					/// FIXME: ne fonctionne que pour le cg58, à faire évoluer une fois la thématique mise en place
+					if ( $this->Orientstruct->isRegression( $personne_id, $this->data['Orientstruct']['typeorient_id'] ) && Configure::read( 'Cg.departement' ) == 58 ) {
+						$dossierep = array(
+							'Dossierep' => array(
+								'personne_id' => $personne_id,
+								'themeep' => 'regressionsorientationseps58',
+							)
+						);
+						$saved = $this->Orientstruct->Regressionorientationep58->Dossierep->save( $dossierep ) && $saved;
+						
+						$regressionorientationep58['Regressionorientationep58'] = $this->data['Orientstruct'];
+						$regressionorientationep58['Regressionorientationep58']['personne_id'] = $personne_id;
+						$regressionorientationep58['Regressionorientationep58']['dossierep_id'] = $this->Orientstruct->Regressionorientationep58->Dossierep->id;
+						
+						if ( isset($regressionorientationep58['Regressionorientationep58']['referent_id']) ) {
+							list( $structurereferente_id, $referent_id) = explode( '_', $regressionorientationep58['Regressionorientationep58']['referent_id'] );
+							$regressionorientationep58['Regressionorientationep58']['structurereferente_id'] = $structurereferente_id;
+							$regressionorientationep58['Regressionorientationep58']['referent_id'] = $referent_id;
+						}
+						
+						$regressionorientationep58['Regressionorientationep58']['datedemande'] = $regressionorientationep58['Regressionorientationep58']['date_propo'];
+						
+						$saved = $this->Orientstruct->Regressionorientationep58->save( $regressionorientationep58 ) && $saved;
+					}
+					else {
+						// Correction: si la personne n'a pas encore d'entrée dans calculdroitsrsa
+						$this->data['Calculdroitrsa']['personne_id'] = $personne_id;
+						
+						$this->data['Orientstruct']['personne_id'] = $personne_id;
+						$this->data['Orientstruct']['valid_cg'] = true;
+						$this->data['Orientstruct']['date_propo'] = date( 'Y-m-d' );
+						$this->data['Orientstruct']['date_valid'] = date( 'Y-m-d' );
+						$this->data['Orientstruct']['statut_orient'] = 'Orienté';
+						
+						$saved = $this->Orientstruct->Personne->Calculdroitrsa->save( $this->data );
+						$saved = $this->Orientstruct->save( $this->data['Orientstruct'] ) && $saved;
+						$mkOrientstructPdf = $this->Gedooo->mkOrientstructPdf( $this->Orientstruct->getLastInsertId() );
+						$saved = $mkOrientstructPdf && $saved;
+					}
 					
 					if( $saved ) {
 						$this->Jetons->release( $dossier_id );
@@ -286,7 +311,7 @@
 						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 						$this->redirect( array( 'controller' => 'orientsstructs', 'action' => 'index', $personne_id ) );
 					}
-					else if( !$mkOrientstructPdf ) {
+					elseif( isset( $mkOrientstructPdf ) && !$mkOrientstructPdf ) {
 						$this->Orientstruct->rollback();
 						$this->Session->setFlash( 'Erreur lors de la génération du document PDF (le serveur Gedooo est peut-être tombé ou mal configuré)', 'flash/error' );
 					}

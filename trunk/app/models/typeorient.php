@@ -194,5 +194,25 @@
 			}
 			return null;
 		}
+		
+		/**
+		* Vérifie si pour un id de type d'orientation donné il s'agit ou non d'une orientation vers le professionnel
+		*/
+		
+		public function isProOrientation( $typeorient_id ) {
+			$typeorient = $this->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Typeorient.id' => $typeorient_id,
+						'Typeorient.lib_type_orient LIKE' => 'Emploi%'
+					),
+					'contain' => false
+				)
+			);
+			
+			return ( !empty( $typeorient ) );
+		}
+		
 	}
 ?>

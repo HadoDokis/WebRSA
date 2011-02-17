@@ -18,7 +18,8 @@
 					'nonrespectsanctionep93',
 					'saisineepreorientsr93',
 					// Thèmes 58
-					'nonorientationpro58'
+					'nonorientationpro58',
+					'regressionorientationep58'
 				)
 			)
 		);

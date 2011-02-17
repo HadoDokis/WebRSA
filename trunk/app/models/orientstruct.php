@@ -170,6 +170,19 @@
 				'exclusive' => '',
 				'finderQuery' => '',
 				'counterQuery' => ''
+			),
+			'Regressionorientationep58' => array(
+				'className' => 'Regressionorientationep58',
+				'foreignKey' => 'orientstruct_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
 			)
 		);
 
@@ -416,17 +429,18 @@
 					'conditions' => array(
 						'Dossierep.personne_id' => $personne_id,
 						'Dossierep.etapedossierep <>' => 'traite',
-						'NOT' => array(
-							'Dossierep.themeep' => array(
-								'nonrespectssanctionseps93',
-								'saisinesepdspdos66'
-							)
+						'Dossierep.themeep' => array(
+							'saisinesepsreorientsrs93',
+							'defautsinsertionseps66',
+							'saisinesepsbilansparcours66',
+							'nonorientationspros58',
+							'regressionsorientationseps58'
 						)
 					),
 					'contain' => false
 				)
 			);
-
+			
 			$nbPersonnes = $this->Personne->find(
 				'count',
 				array(
@@ -485,6 +499,38 @@
 			);
 
 			return ( ( $nbDossiersep == 0 ) && ( $nbPersonnes == 1 ) );
+		}
+		
+		/**
+		* Vérifie si pour une personne donnée la nouvelle orientation est une régression ou nonrespectssanctionseps93
+		* Orientation du pro vers le social
+		*/
+		
+		public function isRegression( $personne_id, $newtypeorient_id ) {
+			$return = false;
+			
+			if( !$this->Typeorient->isProOrientation( $newtypeorient_id ) ) {
+				$lastOrient = $this->find(
+					'first',
+					array(
+						'conditions' => array(
+							'Orientstruct.personne_id' => $personne_id
+						),
+						'contain' => array(
+							'Typeorient'
+						),
+						'order' => array(
+							'date_valid DESC'
+						)
+					)
+				);
+				
+				if( strcmp( 'Emploi', $lastOrient['Typeorient']['lib_type_orient'] ) != -1 ) {
+					$return = true;
+				}
+			}
+			
+			return $return;
 		}
 
 		/**

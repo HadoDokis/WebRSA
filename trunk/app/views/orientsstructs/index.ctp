@@ -4,6 +4,10 @@
 <div class="with_treemenu">
 	<h1>Orientation</h1>
 
+	<?php if( !$ajout_possible ):?>
+		<p class="notice">Ce dossier est en attente d'un passage en EP.</p>
+	<?php endif;?>
+
 	<?php if( !empty( $en_procedure_relance ) ):?>
 		<p class="notice">Cette personne est en cours de procédure de relance.</p>
 	<?php endif;?>
@@ -147,6 +151,7 @@
 								$permissions->check( 'orientsstructs', 'edit' ) && ( $orientstruct['Orientstruct']['rgorient'] == $rgorient_max )
 								&& !( Configure::read( 'Cg.departement' ) == 93 && isset( $saisineepreorientsr93 ) && !empty( $saisineepreorientsr93 ) )
 								&& !( Configure::read( 'Cg.departement' ) == 58 && isset( $nbdossiersnonfinalisescovs ) && !empty( $nbdossiersnonfinalisescovs ) )
+								&& $ajout_possible
 							),
 							$xhtml->printLink(
 								'Imprimer la notification',

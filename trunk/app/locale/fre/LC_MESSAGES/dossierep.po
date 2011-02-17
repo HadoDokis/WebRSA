@@ -65,6 +65,9 @@ msgstr "Défaut d'insertion"
 msgid "ENUM::THEMEEP::nonorientationspros58"
 msgstr "Non orientation professionnelle"
 
+msgid "ENUM::THEMEEP::regressionsorientationseps58"
+msgstr "Orientation du professionnelle vers le social"
+
 #
 
 msgid "ENUM::ETAPEDOSSIEREP::cree"

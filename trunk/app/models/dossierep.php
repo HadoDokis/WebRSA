@@ -142,6 +142,19 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Regressionorientationep58' => array(
+				'className' => 'Regressionorientationep58',
+				'foreignKey' => 'dossierep_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 		);
 
 		/**
