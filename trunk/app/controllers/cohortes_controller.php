@@ -26,9 +26,9 @@
 			'Referent'
 		);
 
-		public $helpers = array( 'Csv', 'Paginator', 'Ajax', 'Default' );
+		public $helpers = array( 'Csv', 'Paginator', 'Ajax', 'Default', 'Xpaginator' );
 
-		public $components = array( 'Gedooo' );
+		public $components = array( 'Gedooo', 'Prg' => array( 'actions' => 'orientees' ) );
 
 		public $aucunDroit = array( 'progression' );
 
@@ -86,6 +86,165 @@
 		*/
 
 		protected function _index( $statutOrientation = null ) {
+			$this->assert( !empty( $statutOrientation ), 'invalidParameter' );
+
+			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
+
+
+			// Un des formulaires a été renvoyé
+			if( !empty( $this->data ) ) {
+				// -----------------------------------------------------------------
+				// Formulaire de cohorte
+				// -----------------------------------------------------------------
+				if( !empty( $this->data['Orientstruct'] ) ) {
+					$valid = $this->Dossier->Foyer->Personne->Orientstruct->saveAll( $this->data['Orientstruct'], array( 'validate' => 'only', 'atomic' => false ) );
+					$valid = ( count( $this->Dossier->Foyer->Personne->Orientstruct->validationErrors ) == 0 );
+					if( $valid ) {
+						$pdfs = true;
+						$this->Dossier->begin();
+						foreach( $this->data['Orientstruct'] as $key => $value ) {
+							// FIXME: date_valid et pas date_propo ?
+							if( $statutOrientation == 'Non orienté' ) {
+								$this->data['Orientstruct'][$key]['date_propo'] = date( 'Y-m-d' );
+							}
+							$this->data['Orientstruct'][$key]['structurereferente_id'] = preg_replace( '/^[0-9]+_([0-9]+)$/', '\1', $this->data['Orientstruct'][$key]['structurereferente_id'] );
+							$this->data['Orientstruct'][$key]['date_valid'] = date( 'Y-m-d' );
+						}
+						$saved = $this->Dossier->Foyer->Personne->Orientstruct->saveAll( $this->data['Orientstruct'], array( 'validate' => 'first', 'atomic' => false ) );
+
+						// Création des PDF pour les orientations effectives
+						if( $saved ) {
+							foreach( $this->data['Orientstruct'] as $element ) {
+								if( $element['statut_orient'] == 'Orienté' ) {
+									$pdfs = $this->Gedooo->mkOrientstructPdf( $element['id'] ) && $pdfs;
+									$saved =  $pdfs && $saved;
+								}
+							}
+						}
+
+						if( $saved ) {
+							$dossiersIds = Set::extract( $this->data, '/Orientstruct/dossier_id' );
+							$this->Jetons->releaseList( $dossiersIds ); // FIXME -> bien passé / mal passé
+
+							$this->Dossier->commit();
+							$this->data['Orientstruct'] = array();
+						}
+						else if( !$pdfs ) {
+							$this->Dossier->rollback();
+							$this->Session->setFlash( 'Erreur lors de la génération du document PDF (le serveur Gedooo est peut-être tombé ou mal configuré)', 'flash/error' );
+						}
+						else {
+							$this->Dossier->rollback();
+						}
+					}
+				}
+
+				// -----------------------------------------------------------------
+				// Filtre
+				// -----------------------------------------------------------------
+				if( isset( $this->data['Filtre'] ) ) {
+					$this->Cohorte->begin();
+
+					$queryData = $this->Cohorte->recherche(
+						$statutOrientation,
+						$mesCodesInsee,
+						$this->Session->read( 'Auth.User.filtre_zone_geo' ),
+						$this->data,
+						$this->Jetons->ids()
+					);
+
+					if( $statutOrientation == 'Orienté' ) {
+						$queryData['limit'] = 10;
+
+						$this->paginate = array( 'Personne' => $queryData );
+						$cohorte = $this->paginate( $this->Personne );
+
+						$this->set( compact( 'cohorte' ) );
+					}
+					else { // FIXME: jetons
+						$queryData['limit'] = 10;
+
+						$this->paginate = array( 'Personne' => $queryData );
+						$cohorte = $this->paginate( $this->Personne );
+
+						$this->set( compact( 'cohorte' ) );
+					}
+
+					// Acquisition des jetons si on a un formulaire de cohorte -> FIXME begin/commit/rollback
+					if( ( $statutOrientation == 'En attente' ) || ( $statutOrientation == 'Non orienté' ) ) {
+						$dossiersIds = Set::extract( $cohorte, '/Dossier/id' );
+						$this->Jetons->getList( $dossiersIds );
+					}
+
+					$this->Cohorte->commit();
+				}
+
+				// -----------------------------------------------------------------
+			}
+
+			// -----------------------------------------------------------------
+
+			$typesOrient = $this->Typeorient->find(
+				'list',
+				array(
+					'fields' => array(
+						'Typeorient.id',
+						'Typeorient.lib_type_orient'
+					),
+					'order' => 'Typeorient.lib_type_orient ASC'
+				)
+			);
+			$this->set( 'typesOrient', $typesOrient );
+			$this->set( 'structuresReferentes', $this->Structurereferente->list1Options() );
+
+			// -----------------------------------------------------------------
+
+			if( Configure::read( 'Zonesegeographiques.CodesInsee' ) ) {
+				$this->set( 'mesCodesInsee', $this->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) ) );
+			}
+			else {
+				$this->set( 'mesCodesInsee', $this->Dossier->Foyer->Adressefoyer->Adresse->listeCodesInsee() );
+			}
+
+			$this->set( 'oridemrsa', $this->Option->oridemrsa() );
+			$this->set( 'typeserins', $this->Option->typeserins() );
+			$this->set( 'printed', $this->Option->printed() );
+			$this->set( 'structuresAutomatiques', $this->Cohorte->structuresAutomatiques() );
+			if( Configure::read( 'CG.cantons' ) ) {
+				$this->set( 'cantons', $this->Canton->selectList() );
+			}
+
+			$this->set(
+				'modeles',
+				$this->Typeorient->find(
+					'list',
+					array(
+						'fields' => array( 'lib_type_orient' ),
+						'conditions' => array( 'Typeorient.parentid IS NULL' )
+					)
+				)
+			);
+
+			// -----------------------------------------------------------------
+
+			switch( $statutOrientation ) {
+				case 'En attente':
+					$this->set( 'pageTitle', 'Nouvelles demandes à orienter' );
+					$this->render( $this->action, null, 'formulaire' );
+					break;
+				case 'Non orienté':
+					$this->set( 'pageTitle', 'Demandes non orientées' );
+					$this->render( $this->action, null, 'formulaire' );
+					break;
+				case 'Orienté': // FIXME: pas besoin de locker
+					$this->set( 'pageTitle', 'Demandes orientées' );
+					$this->render( $this->action, null, 'visualisation' );
+					break;
+			}
+		}
+
+		/*protected function _index( $statutOrientation = null ) {
 			$this->assert( !empty( $statutOrientation ), 'invalidParameter' );
 			$this->set( 'oridemrsa', $this->Option->oridemrsa() );
 			$this->set( 'typeserins', $this->Option->typeserins() );
@@ -365,7 +524,7 @@
 					$this->render( $this->action, null, 'visualisation' );
 					break;
 			}
-		}
+		}*/
 
 		/**
 		* Export des données en Xls
@@ -536,11 +695,57 @@
 				$AuthZonegeographique = array();
 			}
 
-			$limit = Configure::read( 'nb_limit_print' );
+//			$cohorte = $this->Cohorte->search( 'Orienté', $AuthZonegeographique, $this->Session->read( 'Auth.User.filtre_zone_geo' ), array_multisize( $this->params['named'] ), $this->Jetons->ids(), $limit );
+			$queryData = $this->Cohorte->recherche( 'Orienté', $AuthZonegeographique, $this->Session->read( 'Auth.User.filtre_zone_geo' ), array_multisize( $this->params['named'] ), $this->Jetons->ids() );
 
-			$cohorte = $this->Cohorte->search( 'Orienté', $AuthZonegeographique, $this->Session->read( 'Auth.User.filtre_zone_geo' ), array_multisize( $this->params['named'] ), $this->Jetons->ids(), $limit );
+			if( $limit = Configure::read( 'nb_limit_print' ) ) {
+				$queryData['limit'] = $limit;
+			}
 
-			$qual = $this->Option->qual();
+			$queryData['fields'] = array(
+				'Orientstruct.id',
+				'Pdf.document',
+			);
+
+			$queryData['joins'][] = array(
+				'table'      => 'pdfs',
+				'alias'      => 'Pdf',
+				'type'       => 'INNER',
+				'foreignKey' => false,
+				'conditions' => array(
+					'Pdf.fk_value = Orientstruct.id',
+					'Pdf.modele' => 'Orientstruct',
+				)
+			);
+
+			if( !empty( $this->params['named']['sort'] ) && !empty( $this->params['named']['direction'] ) ) {
+				$queryData['order'] = array( "{$this->params['named']['sort']} {$this->params['named']['direction']}" );
+			}
+
+			$results = $this->Personne->find( 'all', $queryData );
+
+			$content = $this->Gedooo->concatPdfs( Set::extract( $results, '/Pdf/document' ), 'orientsstructs' );
+
+			$success = ( $content !== false ) && $this->Orientstruct->updateAll(
+				array( 'Orientstruct.date_impression' => date( "'Y-m-d'" ) ),
+				array(
+					'"Orientstruct"."id"' => Set::extract( $results, '/Orientstruct/id' ),
+					'"Orientstruct"."date_impression" IS NULL'
+				)
+			);
+
+			if( $content !== false ) { // date_impression
+				$this->Dossier->commit();
+				$this->Gedooo->sendPdfContentToClient( $content, sprintf( "cohorte-orientations-%s.pdf", date( "Ymd-H\hi" ) ) );
+				die();
+			}
+			else {
+				$this->Dossier->rollback();
+				// redirect referer
+				debug( $this->referer );
+			}
+
+			/*$qual = $this->Option->qual();
 			$typevoie = $this->Option->typevoie();
 
 			$cohorteDatas = array();
@@ -584,8 +789,67 @@
 				$this->Dossier->rollback();
 				// redirect referer
 				debug( $this->referer );
+			}*/
+
+// 			$this->Dossier->commit();
+		}
+
+
+		/**
+		*
+		*/
+
+		public function impression_individuelle( $id ) {
+			$this->assert( is_numeric( $id ), 'invalidParameter' );
+
+			$this->Orientstruct->begin();
+
+			$content = ClassRegistry::init( 'Pdf' )->find(
+				'first',
+				array(
+					'fields' => array(
+						'Pdf.document',
+						'Orientstruct.id',
+						'Orientstruct.date_impression',
+					),
+					'conditions' => array(
+						'Pdf.modele' => 'Orientstruct',
+						'Orientstruct.id' => $id
+					),
+					'joins' => array(
+						array(
+							'table'      => 'orientsstructs',
+							'alias'      => 'Orientstruct',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array(
+								'Pdf.fk_value = Orientstruct.id'
+							)
+						),
+					)
+				)
+			);
+
+			if( empty( $content ) ) {
+				$this->cakeError( 'invalidParameter' );
+			}
+
+			if( empty( $content['Orientstruct']['date_impression'] ) ) {
+				$this->Orientstruct->updateAll(
+					array( 'Orientstruct.date_impression' => date( "'Y-m-d'" ) ),
+					array( '"Orientstruct"."id"' => $content['Orientstruct']['id'] )
+				);
+			}
+
+			if( $content['Pdf']['document'] !== false ) {
+				$this->Orientstruct->commit();
+				$this->layout = '';
+				$this->Gedooo->sendPdfContentToClient( $content['Pdf']['document'], sprintf( "orientation-%s.pdf", date( "Ymd-H\hi" ) ) );
+			}
+			else {
+				$this->Orientstruct->rollback();
+				$this->cakeError( 'error500' );
 			}
 		}
-		
 	}
 ?>

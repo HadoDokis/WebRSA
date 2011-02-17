@@ -3,6 +3,7 @@
     {
         public $name = 'Adressefoyer';
         public $order = array( '"Adressefoyer"."rgadr" ASC' );
+        public $actsAs = array( 'Subquery' );
 
         //*********************************************************************
 

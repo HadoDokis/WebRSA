@@ -27,7 +27,8 @@
 			),
 			'Formattable' => array(
 				'suffix' => array( 'structurereferente_id', 'referent_id', 'structureorientante_id', 'referentorientant_id' ),
-			)
+			),
+			'Gedooo'
 		);
 
 		public $validate = array(
@@ -508,6 +509,41 @@
 			}
 
 			return true;
+		}
+
+		/**
+		*
+		*/
+
+		public function generatePdf( $id, $user_id ) {
+			$gedooo_data = $this->getDataForPdf( $id, $user_id );
+
+			$modele = $gedooo_data['Typeorient']['modele_notif'];
+			$modeledoc = 'Orientation/'.$modele.'.odt';
+
+			//$pdf = $this->getPdf( $gedooo_data, $modeledoc );
+			$pdf = $this->ged( $gedooo_data, $modeledoc );
+			$success = true;
+
+			if( $pdf ) {
+				$pdfModel = ClassRegistry::init( 'Pdf' );
+				$pdfModel->create(
+					array(
+						'Pdf' => array(
+							'modele' => $this->alias,
+							'modeledoc' => $modeledoc,
+							'fk_value' => $id,
+							'document' => $pdf
+						)
+					)
+				);
+				$success = $pdfModel->save() && $success;
+			}
+			else {
+				$success = false;
+			}
+
+			return $success;
 		}
 	}
 ?>
