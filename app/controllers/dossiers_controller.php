@@ -34,6 +34,7 @@
 			$this->set( 'natpf', $this->Option->natpf() );
 			$this->set( 'decision_ci', $this->Option->decision_ci() );
 			$this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
+			$this->set( 'statudemrsa', $this->Option->statudemrsa() );
 			$this->set( 'moticlorsa', $this->Option->moticlorsa() );
 			$this->set( 'typeserins', $this->Option->typeserins() );
 			$this->set( 'toppersdrodevorsa', $this->Option->toppersdrodevorsa() );
@@ -439,6 +440,7 @@
 						'Dossier.id',
 						'Dossier.matricule',
 						'Dossier.numdemrsa',
+						'Dossier.statudemrsa',
 						'Dossier.dtdemrsa',
 						'Foyer.id',
 						'Foyer.sitfam',
