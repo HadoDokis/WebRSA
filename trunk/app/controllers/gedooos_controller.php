@@ -396,13 +396,13 @@
             $contratinsertion['PersonneReferent'] = $personne_referent['PersonneReferent'];
 
             $referentId = null;
-            if( !empty( $personne_referent ) ){
-                $referentId = Set::classicExtract( $personne_referent, 'PersonneReferent.referent_id' );
-            }
-            else{
+//             if( !empty( $personne_referent ) ){
+//                 $referentId = Set::classicExtract( $personne_referent, 'PersonneReferent.referent_id' );
+//             }
+//             else{
                 /// Population du select référents liés aux structures
                 $referentId = Set::classicExtract( $contratinsertion, 'Contratinsertion.referent_id' );
-            }
+//             }
 
 			if( !empty( $referentId ) ) {
                 $referent = $this->Referent->findById( $referentId, null, null, -1 );
