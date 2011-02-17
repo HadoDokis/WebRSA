@@ -1,6 +1,6 @@
 <?php
 	/**
-	* TODO: faire un seul script (merge) avec le shell cohortepdfs
+	*
 	*/
 
     class GenerationpdfsShell extends AppShell
@@ -9,7 +9,8 @@
 			'log' => false,
 			'logpath' => LOGS,
 			'verbose' => true,
-			'limit' => null
+			'limit' => null,
+			'username' => null,
 		);
 
 		public $verbose;
@@ -77,12 +78,72 @@
 		*
 		*/
 
+		public function orientsstructs() {
+			// A-t-on spécifié l'identifiant d'un utilisateur (obligatoire dans ce cas-ci) ?
+			$this->username = $this->_getNamedValue( 'username', 'string' );
+			if( empty( $this->username ) ) {
+				$this->err( "Veuillez spécifier l'identifiant d'un utilisateur pour pouvoir générer les impressions d'orientations." );
+				$this->_stop( 1 );
+			}
+
+			// L'utilisateur existe-t'il
+			$this->User = ClassRegistry::init( 'User' );
+			$user = $this->User->find(
+				'first',
+				array(
+					'conditions' => array(
+						'User.username' => $this->username
+					),
+					'recursive' => -1,
+					'contain' => false,
+				)
+			);
+
+			if( empty( $user ) ) {
+				$this->err( "L'identifiant d'utilisateur spécifié n'existe pas." );
+				$this->_stop( 1 );
+			}
+
+
+			$this->Orientstruct = ClassRegistry::init( 'Orientstruct' );
+
+			$queryData = array(
+				'fields' => array( 'Orientstruct.id' ),
+				'conditions' => array(
+					'Orientstruct.statut_orient' => 'Orienté',
+					'Orientstruct.id NOT IN ( SELECT pdfs.fk_value FROM pdfs WHERE pdfs.modele = \'Orientstruct\' )'
+				),
+				'order' => array( 'Orientstruct.date_valid ASC' ),
+				'recursive' => -1
+			);
+
+			if( !empty( $this->limit ) && is_numeric( $this->limit ) ) {
+				$queryData['limit'] = $this->limit;
+			}
+
+			$orientsstructs = $this->Orientstruct->find( 'all', $queryData );
+
+			$this->out( sprintf( "%s impressions à générer", count( $orientsstructs ) ) );
+
+			$success = true;
+			foreach( $orientsstructs as $i => $orientstruct ) {
+				$this->out( sprintf( "Impression de l'orientation %s (id %s)", $i + 1, $orientstruct['Orientstruct']['id'] ) );
+				$success = $this->Orientstruct->generatePdf( $orientstruct['Orientstruct']['id'], $user['User']['id'] ) && $success;
+			}
+
+			$this->_stop( ( $success ? 0 : 1 ) );
+		}
+
+		/**
+		*
+		*/
+
 		public function main() {
 			$this->help();
 		}
 
 		/**
-		* Aide -> FIXME: un paramètre pour le type de pdf à générer
+		* Aide
 		*/
 
 		public function help() {
@@ -94,12 +155,14 @@
 			$this->out('Commandes:');
 			$this->out("\n\t{$this->shell}\n\t\tAffiche cette aide.");
 			$this->out("\n\t{$this->shell} relancenonrespectsanctionep93\n\t\tGénère les impressions des relances pour pour non respect et sanctions (CG 93).");
+			$this->out("\n\t{$this->shell} orientsstructs\n\t\tGénère les impressions des orientations.");
 			$this->out("\n\t{$this->shell} help\n\t\tAffiche cette aide.");
 			$this->out();
 			$this->out('Paramètres:');
 			$this->out("\t-connection <connexion>\n\t\tLe nom d'une connexion PostgreSQL défini dans app/config/database.php\n\t\tPar défaut: ".$this->_defaultToString( 'connection' )."\n");
 // 			$this->out("\t-log <booléen>\n\t\tDoit-on journaliser la sortie du programme ?\n\t\tPar défaut: ".$this->_defaultToString( 'log' )."\n");
 // 			$this->out("\t-logpath <répertoire>\n\t\tLe répertoire dans lequel enregistrer les fichiers de journalisation.\n\t\tPar défaut: ".$this->_defaultToString( 'logpath' )."\n");
+			$this->out("\t-username <string>\n\t\tL'identifiant de l'utilisateur qui sera utilisé pour la récupération d'informations lors de l'impression (pour les orientations seulement).\n\t\tPar défaut: ".$this->_defaultToString( 'verbose' )."\n");
 			$this->out("\t-verbose <booléen>\n\t\tDoit-on afficher les étapes de lecture / écriture ?\n\t\tPar défaut: ".$this->_defaultToString( 'verbose' )."\n");
 			$this->out("\t-limit <entier>\n\t\tLimite sur le nombre de tables à traiter.\n\t\tPar défaut: ".$this->_defaultToString( 'limit' )."\n");
 			$this->out();
