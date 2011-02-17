@@ -21,18 +21,18 @@
 
 		function testPrepareFormData() {
 			$seanceep_id = '3';
-			$datas = ;
-			$niveauDecision;
+			$datas = null;
+			$niveauDecision =  null;
 		}
 
 		function testSaveDecisions() {
-			$data;
-			$niveauDecision;
+			$data = null;
+			$niveauDecision = null;
 		}
 
 		function testFinaliser() {
-			$seanceep_id;
-			$etape;
+			$seanceep_id = null;
+			$etape = null;
 		}
 
 		function testContainPourPv() {

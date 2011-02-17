@@ -84,7 +84,8 @@ class DATABASE_CONFIG {
         'host'        => 'localhost',
         'login'       => 'webrsa',
         'password'    => 'webrsa',
-	'database'    => 'webrsatest1',
+//	'database'    => 'webrsa93',
+	'database'    => 'cg93_20110215_2203_eps',
         'prefix'      => ''
     );
 

@@ -172,8 +172,8 @@
 		function testListeApresEtatLiquidatif() {
 			$conditions = 'ici ma condition';
 			$etatliquidatif_id = '1';
-			$result = $this->Etatliquidatif->listeEtatLiquidatif($conditions, $etatliquidatif_id);
-			$this->assertFalse($result);
+			$result = $this->Etatliquidatif->listeApresEtatLiquidatif($conditions, $etatliquidatif_id);
+			$this->assertTrue($result);
 		}
 	
 		function testListeApresEtatLiquidatifNonTermine() {
@@ -192,7 +192,7 @@
 
 		function testListeApresSansEtatLiquidatif() {
 			$conditions = 'ici ma condition';
-			$result = $this->Etatliquidatif->listeApreSansEtatLiquidatif($conditions);
+			$result = $this->Etatliquidatif->listeApresSansEtatLiquidatif($conditions);
 			$this->assertTrue($result);
 		}
 

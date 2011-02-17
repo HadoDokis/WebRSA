@@ -11,7 +11,8 @@
 			$result=$this->Adresse->listeCodesInsee();
 			$expected=array(
 				'ighr8' => 'ighr8 Mont de Marsan',
-				'pokf2' => 'pokf2 Montpellier'
+				'pokf2' => 'pokf2 Montpellier',
+				'93066' => '93066 ST DENIS',
 			);
 			$this->assertEqual($result,$expected);
 		}

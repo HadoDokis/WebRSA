@@ -101,7 +101,8 @@
 					),
 			);
 			$this->ActionsController->add();
-			$this->assertEqual(array( 'controller' => 'actions', 'action' => 'index' ), $this->ActionsController->redirectUrl);
+			$this->assertEqual('default', $this->ActionsController->renderedLayout);
+			$this->assertEqual('add_edit', $this->ActionsController->renderedFile);
 		}
 	
 

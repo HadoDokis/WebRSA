@@ -8,6 +8,7 @@
 	class ActionTestCase extends CakeAppModelTestCase {
 
 		function testGrouplist() {
+/*
 			$expected = array(
     			0 => array(
 					'1P' => 'Soutien, suivi social, accompagnement personnel',
@@ -45,10 +46,29 @@
 					'59' => 'Autre forme d\'emploi: CDD, CNE'
 				)
 			);
+*/
+			$expected = array(
+				'Facilités offertes' => array(
+					'04' => 'Aide pour la garde des enfants',
+				),
+				'Autonomie sociale' => array(
+					'21' => 'Démarche liée à la santé',
+				),
+				'Logement' => array(
+					'31' => 'Recherche d\'un logement',
+				),
+				'Insertion professionnelle' => array(
+					'44' => 'Stage de conduite automobile (véhicules légers)',
+				),
+				'Emploi' => array(
+					'51' => 'Aide ou suivi pour une recherche d\'emploi',
+				),
+			);
 			$result = $this->Action->grouplist();
 			$this->assertEqual($expected, $result);
 			//FIXME la fonction grouplist renvoie un tableau vide quel que soit le paramètre d'entrée
 			//var_dump($this->Action->grouplist());
+/*
 			$expected = array(
 				0 => array(
 					'02' => '02 - Aide au retour d\'enfants placés',
@@ -60,10 +80,17 @@
 					'33' => 'Demande d\'intervention d\'un organisme ou d\'un fonds d\'aide'
 				)
 			);
+*/
+			$expected = array(
+				'Facilités offertes' => array(
+					'04' => 'Aide pour la garde des enfants',
+				),
+			);
 			$result = $this->Action->grouplist('aide');
 			$this->assertEqual($expected, $result);
 			//FIXME la fonction grouplist renvoie un tableau vide quel que soit le paramètre d'entrée
 			//var_dump($this->Action->grouplist('aide'));
+/*
 			$expected=array(
 				0 => array(
 					'1P' => 'Soutien, suivi social, accompagnement personnel',
@@ -85,6 +112,21 @@
 					'48' => 'Bilan professionnel et orientation (évaluation du niveau de compétences professionnelles, module d\'orientation approfondie, session d\'oientation approfondie, évaluation en milieu de travail, VAE, etc...)',
 					'51' => 'Aide ou suivi pour une recherche d\'emploi'
 				)
+			);
+*/
+			$expected = array(
+				'Autonomie sociale' => array(
+					'21' => 'Démarche liée à la santé',
+				),
+				'Logement' => array(
+					'31' => 'Recherche d\'un logement',
+				),
+				'Insertion professionnelle' => array(
+					'44' => 'Stage de conduite automobile (véhicules légers)',
+				),
+				'Emploi' => array(
+					'51' => 'Aide ou suivi pour une recherche d\'emploi',
+				),
 			);
 			$result = $this->Action->grouplist('prestation');
 			$this->assertEqual($expected, $result);
