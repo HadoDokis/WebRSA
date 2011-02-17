@@ -298,6 +298,124 @@
 		}
 
 		/**
+		*
+		*/
+
+		public function checkList( $params ) {
+			if( Configure::read( 'Jetons.disabled' ) ) {
+				return true;
+			}
+
+			$this->_clean();
+
+			$jetons = $this->Jeton->find(
+				'all',
+				array(
+					'conditions' => array(
+						'Jeton.dossier_id'  => $params,
+						'and NOT' => array(
+							'Jeton.php_sid'     => session_id(), // FIXME: ou pas -> config
+							'Jeton.user_id'     => $this->_userId
+						)
+					),
+					'recursive' => -1
+				)
+			);
+
+			if( !empty( $jetons ) ) {
+				$jeton = $jetons[0];
+				$lockingUser = $this->Jeton->User->find(
+					'first',
+					array(
+						'conditions' => array(
+							'User.id' => $jeton['Jeton']['user_id']
+						),
+						'recursive' => -1
+					)
+				);
+				$this->controller->assert( !empty( $lockingUser ), 'invalidParamForToken' );
+				$this->controller->cakeError(
+					'lockedDossier',
+					array(
+						'time' => ( strtotime( $jeton['Jeton']['modified'] ) + readTimeout() ),
+						'user' => $lockingUser['User']['username']
+					)
+				); // FIXME: paramètres ?
+			}
+
+			return empty( $jetons );
+		}
+
+		/**
+		* Obtient un jeton sur un ensemble de dossiers
+		*/
+
+		public function getList( $params ) {
+			if( Configure::read( 'Jetons.disabled' ) ) {
+				return true;
+			}
+
+			$this->_lock();
+
+			if( $this->checkList( $params ) ) {
+				$success = true;
+				foreach( $params as $dossier_id ) {
+					$jeton = array(
+						'Jeton' => array(
+							'dossier_id'    => $dossier_id,
+							'php_sid'       => session_id(), // FIXME: ou pas -> config
+							'user_id'       => $this->_userId
+						)
+					);
+
+					$vieuxJeton = $this->Jeton->find(
+						'first',
+						array(
+							'conditions' => array(
+								'Jeton.dossier_id'  => $dossier_id,
+								'Jeton.php_sid'     => session_id(), // FIXME: ou pas -> config
+								'Jeton.user_id'     => $this->_userId
+							),
+							'recursive' => -1
+						)
+					);
+
+					if( !empty( $vieuxJeton ) ) {
+						$jeton['Jeton']['id'] = $vieuxJeton['Jeton']['id'];
+						$jeton['Jeton']['created'] = $vieuxJeton['Jeton']['created'];
+					}
+
+					$this->Jeton->create( $jeton );
+					$success = ( $this->Jeton->save() !== false ) && $success;
+				}
+				return $success;
+			}
+			else {
+				return false;
+			}
+		}
+
+		/**
+		* Supprime le jeton sur un ensemble de dossiers
+		*/
+
+		public function releaseList( $params ) {
+			if( Configure::read( 'Jetons.disabled' ) ) {
+				return true;
+			}
+
+			$this->_lock();
+
+			return $this->Jeton->deleteAll(
+				array(
+					'Jeton.dossier_id'    => $params,
+					'Jeton.php_sid'       => session_id(), // FIXME: ou pas -> config
+					'Jeton.user_id'       => $this->_userId
+				)
+			);
+		}
+
+		/**
 		* Crée un verrou sur la table des jetons
 		*
 		* MODE						-> 										-> modif personne	-> cohorte
