@@ -25,5 +25,14 @@
 				'counterQuery' => ''
 			)
 		);
+
+		// INFO: le behavior Autovalidate ne trouve pas les contraintes UNIQUE (17/02/2011)
+		public $validate = array(
+			'name' => array(
+				array(
+					'rule' => array( 'isUnique' ),
+				)
+			)
+		);
 	}
 ?>

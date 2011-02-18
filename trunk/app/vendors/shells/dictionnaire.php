@@ -118,7 +118,7 @@
 			foreach( $schemas as $i => $schema ) {
 				$sql = "SELECT
 								information_schema.tables.table_name AS \"Table__name\",
-								( select obj_description(oid) from pg_class where relname = information_schema.tables.table_name ) AS \"Table__comment\"
+								( select obj_description(oid) from pg_class where relname = information_schema.tables.table_name LIMIT 1 ) AS \"Table__comment\"
 							FROM information_schema.tables
 							WHERE information_schema.tables.table_schema = '{$schema['Schema']['name']}'
 							ORDER BY table_name ASC".
@@ -143,7 +143,7 @@
 									( CASE WHEN information_schema.columns.data_type = 'USER-DEFINED' THEN UPPER( information_schema.columns.udt_name ) ELSE UPPER( information_schema.columns.data_type ) END ) AS \"Column__type\",
 									information_schema.columns.character_maximum_length AS \"Column__length\",
 									( CASE WHEN information_schema.constraint_column_usage.constraint_name LIKE '%_pkey' THEN 'PRIMARY KEY' ELSE ( ".$this->_sqForeignKeyDetails( $table['name'], 'information_schema.columns.column_name' )." ) END ) AS \"Column__key\",
-									( select col_description( ( select oid from pg_class where relname = '{$table['name']}' ), information_schema.columns.ordinal_position ) ) AS \"Column__comment\",
+									( select col_description( ( select oid from pg_class where relname = '{$table['name']}' LIMIT 1 ), information_schema.columns.ordinal_position ) ) AS \"Column__comment\",
 									( CASE WHEN information_schema.columns.data_type = 'USER-DEFINED' THEN information_schema.columns.udt_name ELSE NULL END ) AS \"Column__options\"
 								FROM information_schema.columns
 									LEFT OUTER JOIN information_schema.constraint_column_usage ON (
