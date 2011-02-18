@@ -9,26 +9,25 @@
 			array(
 				'id' => '1',
 				'name' => 'CLI 1',
-,
 			),
 			array(
 				'id' => '2',
 				'name' => 'CLI 2',
 			),
 			array(
-				'id' => '5',
+				'id' => '3',
 				'name' => 'CLI 3',
 			),
 			array(
-				'id' => '6',
+				'id' => '4',
 				'name' => 'CLI 4',
 			),
 			array(
-				'id' => '7',
+				'id' => '5',
 				'name' => 'CLI 5',
 			),
 			array(
-				'id' => '8',
+				'id' => '6',
 				'name' => ' CLI 6',
 			),
 		);

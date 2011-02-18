@@ -17,7 +17,7 @@
 			),
 			array(
 				'id' => '2',
-				'personne_id' => '1002',
+				'personne_id' => '2002',
 				'seanceep_id' => '6',
 				'etapedossierep' => 'cree',
 				'themeep' => 'nonrespectssanctionseps93',

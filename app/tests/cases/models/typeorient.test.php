@@ -20,11 +20,11 @@
 		function testOccurences() {
 			$result = $this->Typeorient->occurences();
 			$expected = array(
-				'4' => 'A sélectionner',
-				'5' => 'CAF',
-				'3' => 'Emploi',
-				'2' => 'Social',
-				'1' => 'Socioprofessionnelle',
+				'4' => '0',
+				'1' => '36',
+				'5' => '8',
+				'3' => '2',
+				'2' => '1',
 			);
 			$this->assertEqual($result, $expected);
 		}

@@ -102,6 +102,22 @@
 				'orientation' => 'O',
 				'pdo' => 'O',
 			),
+			array(
+				'id' => '7',
+				'typeorient_id' => '5',
+				'lib_struc' => 'CAF DE SAINT DENIS',
+				'num_voie' => '1',
+				'type_voie' => 'AV',
+				'nom_voie' => 'De la République',
+				'code_postal' => '93200',
+				'ville' => 'SAINT DENIS',
+				'code_insee' => '93066',
+				'filtre_zone_geo' => null,
+				'contratengagement' => 'O',
+				'apre' => 'O',
+				'orientation' => 'O',
+				'pdo' => 'O',
+			)
 		);
 	}
 
