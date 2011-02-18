@@ -13,6 +13,7 @@
 		*/
 
 		public $fixtures = array (
+			'app.regroupementep',
 			'app.ep_membreep',
 			'app.ep_zonegeographique',
 			'app.membreep_seanceep',
