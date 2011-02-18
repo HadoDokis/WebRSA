@@ -244,6 +244,7 @@
                 'first',
                 array(
                     'conditions' => array( 'Orientstruct.personne_id' => $personne_id ),
+                    'contain' => false,
                     'order' => 'Orientstruct.date_propo DESC'
                 )
             );
