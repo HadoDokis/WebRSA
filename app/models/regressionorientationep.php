@@ -25,13 +25,6 @@
 				'fields' => '',
 				'order' => ''
 			),
-			'Orientstruct' => array(
-				'className' => 'Orientstruct',
-				'foreignKey' => 'orientstruct_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
-			),
 			'Structurereferente' => array(
 				'className' => 'Structurereferente',
 				'foreignKey' => 'structurereferente_id',
