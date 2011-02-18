@@ -305,16 +305,17 @@ Plan:
 				)
 			);
 			
-			if ($cg=='cg58')
-			echo $default->subform(
-                                array(
-                                        'Dsp.statutoccupation'
-                                ),
-                                array(
-                                        'options' => $options
-                                )
-                        );
+			if ($cg=='cg58') {
+				echo $default->subform(
+					array(
+							'Dsp.statutoccupation'
+					),
+					array(
+							'options' => $options
+					)
+				);
 				echo $dsphm->fieldset( 'Detailconfort', 'confort', null, $dsp_id, null, $options['Detailconfort']['confort'] );
+			}
 			
 			echo $default->subform(
 				array(
