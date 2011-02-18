@@ -84,6 +84,13 @@
 				),
 				'contain' => array(
 					'Personne' => array(
+						///FIXME : ça marche pas !!!!
+						'Orientstruct' => array(
+							'order' => array( 'Orientstruct.date_valid DESC' ),
+							'limit' => 1,
+							'Typeorient',
+							'Structurereferente',
+						),
 						'Foyer' => array(
 							'Adressefoyer' => array(
 								'conditions' => array(
@@ -96,15 +103,10 @@
 					$this->alias => array(
 						'Typeorient',
 						'Structurereferente',
-						///FIXME : ça marche pas !!!!
-							'Orientstruct' => array(
-								'Typeorient',
-								'Structurereferente',
-							),
 						'Decision'.Inflector::underscore( $this->alias ) => array(
-								'Typeorient',
-								'Structurereferente',
-							),
+							'Typeorient',
+							'Structurereferente',
+						),
 					)
 				)
 			);
@@ -179,6 +181,53 @@
 			}
 // debug( $formData );
 			return $formData;
+		}
+
+		/**
+		*
+		*/
+
+		public function saveDecisions( $data, $niveauDecision ) {
+			// FIXME: filtrer les données
+			$themeData = Set::extract( $data, '/Decision'.Inflector::underscore( $this->alias ) );
+			if( empty( $themeData ) ) {
+				return true;
+			}
+			else {
+				foreach( $themeData as $key => $datas ) {
+					if ( !empty( $datas['Decision'.Inflector::underscore( $this->alias )]['structurereferente_id'] ) ) {
+						list( $typeorient_id, $structurereferente_id ) = explode( '_', $datas['Decision'.Inflector::underscore( $this->alias )]['structurereferente_id'] );
+						$themeData[$key]['Decision'.Inflector::underscore( $this->alias )]['typeorient_id'] = $typeorient_id;
+						$themeData[$key]['Decision'.Inflector::underscore( $this->alias )]['structurereferente_id'] = $structurereferente_id;
+						
+						$regressionorientation = $this->find(
+							'first',
+							array(
+								'conditions' => array(
+									$this->alias.'.id' => $datas['Decision'.Inflector::underscore( $this->alias )][Inflector::underscore( $this->alias ).'_id']
+								),
+								
+							)
+						);
+						
+						if ( $regressionorientation[$this->alias]['structurereferente_id'] == $structurereferente_id ) {
+							$themeData[$key]['Decision'.Inflector::underscore( $this->alias )]['referent_id'] = $regressionorientation[$this->alias]['referent_id'];
+						}
+						else {
+							$themeData[$key]['Decision'.Inflector::underscore( $this->alias )]['referent_id'] = null;
+						}
+					}
+				}
+				
+				$success = $this->{'Decision'.Inflector::underscore( $this->alias )}->saveAll( $themeData, array( 'atomic' => false ) );
+
+				$this->Dossierep->updateAll(
+					array( 'Dossierep.etapedossierep' => '\'decision'.$niveauDecision.'\'' ),
+					array( '"Dossierep"."id"' => Set::extract( $data, "/{$this->alias}/dossierep_id" ) )
+				);
+
+				return $success;
+			}
 		}
 		
 	}

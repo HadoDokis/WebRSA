@@ -14,7 +14,7 @@
 <th colspan="2">Avis EPL</th>
 </tr>
 </thead><tbody>';
-debug($dossiers[$theme]['liste']);
+// debug($dossiers[$theme]['liste']);
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
 		echo $xhtml->tableCells(
 			array(
@@ -23,8 +23,8 @@ debug($dossiers[$theme]['liste']);
 				implode( ' ', array( $dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['numvoie'], isset( $typevoie[$dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie']] ) ? $typevoie[$dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie']] : null, $dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['nomvoie'] ) ),
 				$locale->date( __( 'Locale->date', true ), $dossierep['Personne']['dtnai'] ),
 				$locale->date( __( 'Locale->date', true ), $dossierep['Dossierep']['created'] ),
-				@$dossierep['Regressionorientationep58']['Orientstruct']['Typeorient']['lib_type_orient'],
-				@$dossierep['Regressionorientationep58']['Orientstruct']['Structurereferente']['lib_struc'],
+				@$dossierep['Personne']['Orientstruct'][0]['Typeorient']['lib_type_orient'],
+				@$dossierep['Personne']['Orientstruct'][0]['Structurereferente']['lib_struc'],
 				@$dossierep['Regressionorientationep58']['Typeorient']['lib_type_orient'],
 				@$dossierep['Regressionorientationep58']['Structurereferente']['lib_struc'],
 				$form->input( "Decisionregressionorientationep58.{$i}.id", array( 'type' => 'hidden', 'value' => @$this->data['Decisionregressionorientationep58'][$i]['id'] ) ).
