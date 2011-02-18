@@ -1,4 +1,6 @@
 <?php
+    App::import( 'Model', array( 'Gedooo' ) );
+    
 	class Propoorientationcov58 extends AppModel
 	{
 		public $name = 'Propoorientationcov58';
@@ -261,6 +263,7 @@
 				)
 			);
 			$success = $this->Dossiercov58->Personne->Orientstruct->save($orientstruct) && $success;
+			$success = $this->Gedooo->mkOrientstructPdf( $this->Dossiercov58->Personne->Orientstruct->getLastInsertId() ) && $success;
 			
 			return $success;
 		}
