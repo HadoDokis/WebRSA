@@ -34,6 +34,7 @@
 			$this->set( 'natpf', $this->Option->natpf() );
 			$this->set( 'decision_ci', $this->Option->decision_ci() );
 			$this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
+			$this->set( 'rolepers', $this->Option->rolepers() );
 			$this->set( 'statudemrsa', $this->Option->statudemrsa() );
 			$this->set( 'moticlorsa', $this->Option->moticlorsa() );
 			$this->set( 'typeserins', $this->Option->typeserins() );
@@ -718,11 +719,73 @@
                 );
                 $personnesFoyer[$index]['Informationpe'] = $tInfope['Historiqueetatpe'];
 
-				$details[$role] = $personnesFoyer[$index];
-// debug($details);
+
+
+                /**
+                *   Liste des anciens dossiers par demandeurs et conjoints
+                *   TODO
+                */
+
+                $autreNumdemrsaParAllocataire = $this->Dossier->find(
+                    'all',
+                    array(
+                        'fields' => array(
+                            'DISTINCT Dossier.id',
+                            'Dossier.numdemrsa',
+                            'Dossier.dtdemrsa',
+//                             'Prestation.rolepers'
+                        ),
+                        'joins' => array(
+                            array(
+                                'table'      => 'foyers',
+                                'alias'      => 'Foyer',
+                                'type'       => 'INNER',
+                                'foreignKey' => false,
+                                'conditions' => array( 'Foyer.dossier_id = Dossier.id' )
+                            ),
+                            array(
+                                'table'      => 'personnes',
+                                'alias'      => 'Personne',
+                                'type'       => 'INNER',
+                                'foreignKey' => false,
+                                'conditions' => array( 'Personne.foyer_id = Foyer.id' )
+                            ),
+                            array(
+                                'table'      => 'prestations',
+                                'alias'      => 'Prestation',
+                                'type'       => 'INNER',
+                                'foreignKey' => false,
+                                'conditions' => array(
+                                    'Personne.id = Prestation.personne_id',
+                                    'Prestation.natprest = \'RSA\'',
+                                    'Prestation.rolepers' => array( 'DEM', 'CJT' )
+                                )
+                            ),
+                        ),
+                        'conditions' => array(
+                            'Personne.nir' => $personnesFoyer[$index]['Personne']['nir'],
+                            //FIXME
+                            'nir_correct( Personne.nir  ) IS NULL',
+                            'Personne.nir IS NOT NULL',
+                            'Dossier.id NOT' => $details['Dossier']['id']
+                        ),
+                        'contain' => false,
+                        'order' => 'Dossier.id DESC',
+                        'recursive' => -1
+                    )
+                );
+                $personnesFoyer[$index]['Dossiermultiple'] = $autreNumdemrsaParAllocataire;
+                //Fin Ajout Arnaud
+
+
+                $details[$role] = $personnesFoyer[$index];
+
 			}
 
-			$this->set( 'details', $details );
+// debug($details);
+// debug($details['DEM']['Dossiermultiple']);
+// debug($details['CJT']['Dossiermultiple']);
+            $this->set( 'details', $details );
 			$this->_setOptions();
 
 		}

@@ -9,6 +9,26 @@
             </thead>';
     }
 
+    function theadPastDossierDEM( $pct = 10 ) {
+        return '<thead>
+                <tr>
+                    <th>&nbsp;</th>
+                    <th style="width: '.$pct.'%;">Demandeur</th>
+                    <th style="width: '.$pct.'%;">Action</th>
+                </tr>
+            </thead>';
+    }
+
+    function theadPastDossierCJT( $pct = 10 ) {
+        return '<thead>
+                <tr>
+                    <th>&nbsp;</th>
+                    <th style="width: '.$pct.'%;">Conjoint</th>
+                    <th style="width: '.$pct.'%;">Action</th>
+                </tr>
+            </thead>';
+    }
+
     function linkedValue( $links, $details, $personne, $table, $field ) {
         $value = ( ( isset( $details[$personne][$table] ) && isset( $details[$personne][$table][$field] ) ) ? ( $details[$personne][$table][$field] ) : null );
         return ( isset( $links[$value] ) ? $links[$value] : null );
@@ -313,31 +333,83 @@
                                 <td><?php echo Set::extract( 'DEM.Informationpe.0.motif', $details);?></td>
                                 <td><?php echo Set::extract( 'CJT.Informationpe.0.motif', $details);?></td>
                             </tr>
-                            <!--<tr class="even">
-                                <th>Catégorie</th>
-                                <td><?php /*echo isset( $categorie[Set::classicExtract( $details,  'DEM.Infopoleemploi.categoriepe' )] ) ? $categorie[Set::classicExtract( $details,  'DEM.Infopoleemploi.categoriepe' )] : '';?></td>
-                                <td><?php echo isset( $categorie[Set::classicExtract( $details,  'CJT.Infopoleemploi.categoriepe' )] ) ? $categorie[Set::classicExtract( $details,  'CJT.Infopoleemploi.categoriepe' )] : '';?></td>
-                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+                <td>
+                    <h2>Historique des dossiers RSA</h2>
+                    <table>
+                    <?php echo theadPastDossierDEM( 10 );?>
+                        <tbody>
+
+                            <?php
+                                $nbdem = count( Set::extract( 'DEM.Dossiermultiple', $details ) );
+                                if( $nbdem == 0 ):
+                            ?>
                             <tr class="odd">
-                                <th>Date de cessation</th>
-                                <td><?php echo date_short( Set::extract( 'DEM.Infopoleemploi.datecessation', $details) );?></td>
-                                <td><?php echo date_short( Set::extract( 'CJT.Infopoleemploi.datecessation', $details) );?></td>
+                                <!-- Partie Demandeur-->
+                                <th>Autre N° de demande RSA</th>
+                                <td colspan="2"><?php
+                                        echo 'Aucun dossier passé pour le demandeur';
+                                    ?>
+                                </td>
                             </tr>
-                            <tr class="even">
-                                <th>Motif de cessation</th>
-                                <td><?php echo Set::extract( 'DEM.Infopoleemploi.motifcessation', $details);?></td>
-                                <td><?php echo Set::extract( 'CJT.Infopoleemploi.motifcessation', $details);?></td>
-                            </tr>
+                            <?php else:?>
+                            <?php for( $iteration = 0; $iteration <= $nbdem-1; $iteration++ ):?>
+                                <tr class="odd">
+                                    <!-- Partie Demandeur-->
+                                    <th>Autre N° de demande RSA</th>
+                                    <td><?php
+                                            echo Set::extract( 'DEM.Dossiermultiple.'.$iteration.'.Dossier.numdemrsa', $details ).' le '.date_short( Set::extract( 'DEM.Dossiermultiple.'.$iteration.'.Dossier.dtdemrsa', $details ) );
+                                        ?>
+                                    </td>
+                                    <td><?php 
+                                            echo $xhtml->viewLink(
+                                                'Voir',
+                                                array( 'controller' => 'dossiers', 'action' => 'view', Set::extract( 'DEM.Dossiermultiple.'.$iteration.'.Dossier.id', $details) )
+                                            );
+                                        ?>
+                                    </td>
+                                </tr>
+                                <?php endfor;?>
+                                <?php endif;?>
+                            </tbody>
+                        </table>
+                        <table>
+                        <?php echo theadPastDossierCJT( 10 );?>
+                        <tbody>
+
+                            <?php
+                                $nbcjt = count( Set::extract( 'CJT.Dossiermultiple', $details ) );
+                                if( $nbcjt == 0 ):
+                            ?>
                             <tr class="odd">
-                                <th>Date de radiation</th>
-                                <td><?php echo date_short( Set::extract( 'DEM.Infopoleemploi.dateradiation', $details) );?></td>
-                                <td><?php echo date_short( Set::extract( 'CJT.Infopoleemploi.dateradiation', $details) );?></td>
+                                <!-- Partie Demandeur-->
+                                <th>Autre N° de demande RSA</th>
+                                <td colspan="2"><?php
+                                        echo 'Aucun dossier passé pour le conjoint';
+                                    ?>
+                                </td>
                             </tr>
-                            <tr class="even">
-                                <th>Motif de radiation</th>
-                                <td><?php echo Set::extract( 'DEM.Infopoleemploi.motifradiation', $details);?></td>
-                                <td><?php echo Set::extract( 'CJT.Infopoleemploi.motifradiation', $details);*/?></td>
-                            </tr>-->
+                            <?php else:?>
+                            <?php for( $iteration = 0; $iteration <= $nbcjt-1; $iteration++ ):?>
+                            <tr class="odd">
+                                <!-- Partie Demandeur-->
+                                <th>Autre N° de demande RSA</th>
+                                <td><?php
+                                        echo Set::extract( 'CJT.Dossiermultiple.'.$iteration.'.Dossier.numdemrsa', $details ).' le '.date_short( Set::extract( 'CJT.Dossiermultiple.'.$iteration.'.Dossier.dtdemrsa', $details ) );
+                                    ?>
+                                </td>
+                                <td><?php 
+                                        echo $xhtml->viewLink(
+                                            'Voir',
+                                            array( 'controller' => 'dossiers', 'action' => 'view', Set::extract( 'CJT.Dossiermultiple.'.$iteration.'.Dossier.id', $details) )
+                                        );
+                                    ?>
+                                </td>
+                            </tr>
+                            <?php endfor;?>
+                            <?php endif;?>
                         </tbody>
                     </table>
                 </td>
