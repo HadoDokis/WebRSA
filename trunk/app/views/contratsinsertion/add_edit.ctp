@@ -358,22 +358,26 @@
             <tr>
                 <td class="noborder">
                     <?php
-                        $suspensiondroit_id = Set::classicExtract( $this->data, 'Suspensiondroit.id' );
-                        if( !empty( $suspensiondroit_id ) ) {
-                            echo $form->input( 'Suspensiondroit.id', array( 'type' => 'hidden' ) );
-                        }
+//                         $suspensiondroitId = Set::classicExtract( $this->data, 'Suspensiondroit.id' );
+//                         $situationdossierrsaId = Set::classicExtract( $this->data, 'Situationdossierrsa.id' );
+//                         if( $this->action == 'edit' && !empty( $suspensiondroitId ) ) {
+//                             echo $form->input( 'Suspensiondroit.id', array( 'type' => 'hidden' ) );
+//                             echo $form->input( 'Suspensiondroit.situationdossierrsa_id', array( 'type' => 'hidden', 'value' => $situationdossierrsaId ) );
+//                         }
 
-                        echo $form->input( 'Suspensiondroit.situationdossierrsa_id', array( 'type' => 'hidden', 'value' => $situationdossierrsa_id ) );
-
-                        echo $form->input( 'Suspensiondroit.ddsusdrorsa', array( 'label' => false, 'type' => 'date' , 'dateFormat' => 'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => true ) );
+                        echo $form->input( 'Contratinsertion.datesuspensionparticulier', array( 'label' => false, 'type' => 'date' , 'dateFormat' => 'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => true ) );
                     ?>
                 </td>
                 <td class="noborder">
                     <?php
-                        echo $form->input( 'Situationdossierrsa.id', array( 'type' => 'hidden', 'value' => $situationdossierrsa_id ) );
-                        echo $form->input( 'Situationdossierrsa.dossier_id', array( 'type' => 'hidden', 'value' => $dossier_id ) );
+//                         $situationdossierrsaId = Set::classicExtract( $this->data, 'Situationdossierrsa.id' );
+//                         $dossierId = Set::classicExtract( $this->data, 'Dossier.id' );
+//                         if( $this->action == 'edit' && !empty( $situationdossierrsaId ) ) {
+//                             echo $form->input( 'Situationdossierrsa.id', array( 'type' => 'hidden' ) );
+//                             echo $form->input( 'Situationdossierrsa.dossier_id', array( 'type' => 'hidden', 'value' => $dossierId ) );
+//                         }
 
-                        echo $form->input( 'Situationdossierrsa.dtclorsa', array( 'label' => false, 'type' => 'date' , 'dateFormat' => 'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => true ) );
+                        echo $form->input( 'Contratinsertion.dateradiationparticulier', array( 'label' => false, 'type' => 'date' , 'dateFormat' => 'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => true ) );
                     ?>
                 </td>
             </tr>

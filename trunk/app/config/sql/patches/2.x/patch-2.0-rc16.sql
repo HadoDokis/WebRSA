@@ -75,6 +75,16 @@ CREATE INDEX decisionsregressionsorientationseps58_typeorient_id_idx ON decision
 CREATE INDEX decisionsregressionsorientationseps58_structurereferente_id_idx ON decisionsregressionsorientationseps58 (structurereferente_id);
 CREATE INDEX decisionsregressionsorientationseps58_referent_id_idx ON decisionsregressionsorientationseps58 (referent_id);
 
+
+-- -----------------------------------------------------------------------------
+-- 20110221 
+-- -----------------------------------------------------------------------------
+ALTER TABLE contratsinsertion ADD COLUMN datesuspensionparticulier DATE DEFAULT NULL;
+ALTER TABLE contratsinsertion ADD COLUMN dateradiationparticulier DATE DEFAULT NULL;
+SELECT alter_table_drop_column_if_exists( 'public', 'contratsinsertion', 'datesuspensionparticulier' );
+SELECT alter_table_drop_column_if_exists( 'public', 'contratsinsertion', 'dateradiationparticulier' );
+
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
