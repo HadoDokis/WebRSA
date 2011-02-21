@@ -519,22 +519,6 @@
 			$this->set( 'dossier_id', $dossier_id );
 
 
-			$situationdossierrsa = $this->Contratinsertion->Personne->Foyer->Dossier->Situationdossierrsa->find(
-				'first',
-				array(
-					'fields' => array(
-						'Situationdossierrsa.id',
-						'Situationdossierrsa.dtclorsa'
-					),
-					'conditions' => array(
-						'Situationdossierrsa.dossier_id' => $dossier_id
-					),
-					'recursive' => -1
-				)
-			);
-			$this->assert( !empty( $situationdossierrsa ), 'error500' );
-			$this->set( 'situationdossierrsa_id', $situationdossierrsa['Situationdossierrsa']['id'] );
-
 			//On ajout l'ID de l'utilisateur connecté afind e récupérer son service instructeur
 			$personne = $this->Contratinsertion->Personne->newDetailsCi( $personne_id, $this->Session->read( 'Auth.User.id' ) );
 			$this->set( 'personne', $personne );
@@ -589,7 +573,8 @@
 						$success = $this->Contratinsertion->Personne->Dsp->save( array( 'Dsp' => $this->data['Dsp'] ) ) && $success;
 					}
 				}
-				
+
+
 				$models = array( 'Autreavissuspension', 'Autreavisradiation' );
 				foreach( $models as $model ) {
                     if( $this->action == 'add' ) {
@@ -639,7 +624,7 @@
                         $lastrdvorient['Rendezvous']['statutrdv_id'] = 1;
                         $saved = $this->Contratinsertion->Referent->Rendezvous->save($lastrdvorient) && $saved;
                     }
-
+// debug($this->data);
 					if( $saved ) {
 						$this->Jetons->release( $dossier_id );
 						$this->Contratinsertion->commit();
@@ -656,23 +641,6 @@
 				if( $this->action == 'edit' ) {
 
 					$this->data = $contratinsertion;
-// debug( $this->data );
-					$suspensiondroit = $this->Contratinsertion->Personne->Foyer->Dossier->Situationdossierrsa->Suspensiondroit->find(
-						'first',
-						array(
-							'fields' => array(
-								'Suspensiondroit.ddsusdrorsa'
-							),
-							'conditions' => array(
-								'Suspensiondroit.situationdossierrsa_id' => $situationdossierrsa['Situationdossierrsa']['id']
-							),
-							'recursive' => -1,
-							'order' => array( 'Suspensiondroit.ddsusdrorsa DESC' )
-						)
-					);
-					if( !empty( $suspensiondroit ) ) {
-						$contratinsertion = Set::merge( $contratinsertion, $suspensiondroit );
-					}
 
 					/// FIXME
 					$actioninsertion = $this->Contratinsertion->Actioninsertion->find(
@@ -696,30 +664,15 @@
 						$this->data['Contratinsertion']['avisraison_radiation_ci'] =  $this->data['Contratinsertion']['avisraison_ci'];
 					}
 
-					///Situation dossier rsa
-					$situationdossierrsa = $this->Contratinsertion->Personne->Foyer->Dossier->Situationdossierrsa->find(
-						'first',
-						array(
-							'fields' => array(
-								'Situationdossierrsa.dtclorsa'
-							),
-							'conditions' => array(
-								'Situationdossierrsa.dossier_id' => $dossier_id
-							),
-							'recursive' => -1
-						)
-					);
-					$this->data['Situationdossierrsa']['dtclorsa'] = Set::classicExtract( $situationdossierrsa, 'Situationdossierrsa.dtclorsa' );
 				}
 
 				$this->data = Set::merge( $this->data, $this->_getDsp( $personne_id ) );
-
 
 				/// Si on est en présence d'un deuxième contrat -> Alors renouvellement
 				$this->data['Contratinsertion']['rg_ci'] = $nbrCi + 1;
 
 			}
-
+// debug( $this->data );
 			// Doit-on setter les valeurs par défault ?
 			$dataStructurereferente_id = Set::classicExtract( $this->data, "{$this->Contratinsertion->alias}.structurereferente_id" );
 			$dataReferent_id = Set::classicExtract( $this->data, "{$this->Contratinsertion->alias}.referent_id" );
