@@ -138,6 +138,64 @@
 		}
 
 		/**
+		*
+		*/
+
+		public function discriminants() {
+			$this->Personne = ClassRegistry::init( 'Personne' );
+
+			$fields = array( 'qual', 'nom', 'prenom', 'nomnai', 'prenom2', 'prenom3', /*'nomcomnai',*/ 'dtnai', 'rgnai', 'typedtnai', 'nir' );
+			$qFields = array( 'p1.id AS "P1__id"', 'p2.id AS "P2__id"', 'p1.foyer_id AS "P1__foyer_id"', 'p2.foyer_id AS "P2__foyer_id"' );
+			foreach( $fields as $field ) {
+				$qFields[] = "p1.{$field} AS \"P1__{$field}\"";
+				$qFields[] = "p2.{$field} AS \"P2__{$field}\"";
+			}
+
+			$sql = "SELECT
+						".implode( ', ', $qFields )."
+					FROM personnes p1, personnes p2
+					WHERE
+						p1.id <> p2.id
+						AND p1.foyer_id = p2.foyer_id
+						AND (
+							( LENGTH(TRIM(p1.nir)) = 15 AND p1.nir = p2.nir AND p1.dtnai = p2.dtnai )
+							OR ( p1.nom = p2.nom AND p1.prenom = p2.prenom AND p1.dtnai = p2.dtnai )
+						)
+						LIMIT 100;";
+			$results = $this->Personne->query( $sql );
+
+			$thead = '<th>id</th><th>foyer_id</th>';
+			foreach( $fields as $field ) {
+				$thead .= "<th>{$field}</th>";
+			}
+			$thead = "<tr>{$thead}{$thead}</tr>";
+
+			$tbody = '';
+			foreach( $results as $key => $result ) {
+				$row = '';
+				for( $i = 1 ; $i <= 2 ; $i++ ) {
+					$key = "P{$i}";
+					$row .= "<td title=\"id\">{$result[$key]['id']}</td>";
+					$row .= "<td title=\"foyer_id\">{$result[$key]['foyer_id']}</td>";
+
+					foreach( $fields as $field ) {
+						$class = null;
+						if( $result['P1'][$field] != $result['P2'][$field] ) {
+							$class = ' class="high"';
+						}
+
+						$row .= "<td {$class} title=\"{$field}\">{$result[$key][$field]}</td>";
+					}
+				}
+
+				$tbody .= '<tr>'.$row.'</tr>';
+			}
+
+			$html = "<html><head><style type=\"text/css\" media=\"all\">table { border-collapse: collapse; } th, td { border: 1px solid silver; } td.high { background: yellow; } td.identifiant { background: #ffaaff; }</style></head><body><table><thead>$thead</thead><tbody>{$tbody}</tbody></table></body></html>";
+			file_put_contents( 'discriminants.html', $html );
+		}
+
+		/**
 		* Aide
 		*/
 
