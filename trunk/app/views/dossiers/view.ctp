@@ -360,7 +360,7 @@
                                     <!-- Partie Demandeur-->
                                     <th>Autre N° de demande RSA</th>
                                     <td><?php
-                                            echo Set::extract( 'DEM.Dossiermultiple.'.$iteration.'.Dossier.numdemrsa', $details ).' le '.date_short( Set::extract( 'DEM.Dossiermultiple.'.$iteration.'.Dossier.dtdemrsa', $details ) );
+                                            echo Set::extract( 'DEM.Dossiermultiple.'.$iteration.'.Dossier.numdemrsa', $details ).' en date du '.date_short( Set::extract( 'DEM.Dossiermultiple.'.$iteration.'.Dossier.dtdemrsa', $details ) );
                                         ?>
                                     </td>
                                     <td><?php 
@@ -397,7 +397,7 @@
                                 <!-- Partie Demandeur-->
                                 <th>Autre N° de demande RSA</th>
                                 <td><?php
-                                        echo Set::extract( 'CJT.Dossiermultiple.'.$iteration.'.Dossier.numdemrsa', $details ).' le '.date_short( Set::extract( 'CJT.Dossiermultiple.'.$iteration.'.Dossier.dtdemrsa', $details ) );
+                                        echo Set::extract( 'CJT.Dossiermultiple.'.$iteration.'.Dossier.numdemrsa', $details ).' en date du '.date_short( Set::extract( 'CJT.Dossiermultiple.'.$iteration.'.Dossier.dtdemrsa', $details ) );
                                     ?>
                                 </td>
                                 <td><?php 
