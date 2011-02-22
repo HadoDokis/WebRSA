@@ -28,3 +28,6 @@ msgstr "Radiation"
 
 msgid "ENUM::ETAT::cessation"
 msgstr "Cessation"
+
+msgid "Historiqueetatpe.date"
+msgstr "Date de radiation"
