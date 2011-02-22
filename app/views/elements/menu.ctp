@@ -285,6 +285,7 @@
 								<?php elseif( Configure::read( 'Cg.departement' ) == 93 ):?>
 									<li><?php echo $xhtml->link( 'Demandes de réorientation 93', array( 'controller' => 'saisinesepsreorientsrs93', 'action' => 'index' ) );?></li>
 									<li><?php echo $xhtml->link( 'Demande de suspension 93', array( 'controller' => 'nonrespectssanctionseps93', 'action' => 'index' ) );?></li>
+									<li><?php echo $xhtml->link( 'Sélection des allocataires radiés de Pôle Emploi', array( 'controller' => 'radiespoleemploieps93', 'action' => 'selectionradies' ) );?></li>
 								<?php endif;?>
 							</ul>
 						</li>
