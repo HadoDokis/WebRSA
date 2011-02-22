@@ -150,7 +150,7 @@
                 </tr>
                 <tr class="even">
                     <th><?php __d( 'grossesse', 'Grossesse.natfingro' );?></th>
-                    <td><?php echo isset( $personne['Grossesse'][0]['natfingro'] ) ? $personne['Grossesse'][0]['natfingro'] : null;?></td>
+                    <td><?php echo isset( $natfingro[$personne['Grossesse'][0]['natfingro']] ) ? $natfingro[$personne['Grossesse'][0]['natfingro']] : null;?></td>
                 </tr>
             </tbody>
         </table>

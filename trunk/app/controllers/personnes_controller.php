@@ -21,6 +21,7 @@
 			$this->set( 'pieecpres', $this->Option->pieecpres() );
 			$this->set( 'sexe', $this->Option->sexe() );
 			$this->set( 'sitfam', $this->Option->sitfam() );
+			$this->set( 'natfingro', $this->Option->natfingro() );
 
 		}
 
