@@ -5,7 +5,7 @@
     class GedooosController extends AppController
     {
         var $name = 'Gedooos';
-        var $uses = array( 'Cohorte', 'Contratinsertion', 'Typocontrat', 'Adressefoyer', 'Orientstruct', 'Structurereferente', 'Dossier', 'Option', 'Dsp', 'Detaildroitrsa', 'Identificationflux', 'Totalisationacompte', 'Relance', 'Rendezvous', 'Referent', 'Activite', 'Action', 'Permanence', 'Prestation', 'Infofinanciere', 'Modecontact', 'Apre', 'Relanceapre', 'PersonneReferent', 'Formqualif', 'Permisb', 'Comiteapre', 'Referent', 'Suspensiondroit', 'Personne', 'Foyer', 'Situationdossierrsa', 'Zonegeographique' );
+        var $uses = array( 'Cohorte', 'Contratinsertion', 'Typocontrat', 'Adressefoyer', 'Orientstruct', 'Structurereferente', 'Dossier', 'Option', 'Dsp', 'Detaildroitrsa', 'Identificationflux', 'Totalisationacompte', 'Relance', 'Rendezvous', 'Referent', 'Activite', 'Action', 'Permanence', 'Prestation', 'Infofinanciere', 'Modecontact', 'Apre', 'Relanceapre', 'PersonneReferent', 'Formqualif', 'Permisb', 'Comiteapre', 'Referent', 'Suspensiondroit', 'Personne', 'Foyer', 'Situationdossierrsa', 'Zonegeographique', 'Autreavissuspension', 'Autreavisradiation' );
         var $components = array( 'Jetons', 'Gedooo' );
         var $helpers = array( 'Locale' );
 
@@ -157,7 +157,12 @@
             $rolepers = $this->Option->rolepers();
             $this->set( 'rolepers', $rolepers );
 
-            $forme_ci = array( 'S' => 'Simple', 'C' => 'Complexe' );
+            if( Configure::read( 'nom_form_ci_cg' ) == 'cg93' ){
+                $forme_ci = array( 'S' => 'Simple', 'C' => 'Complexe' );
+            }
+            else if( Configure::read( 'nom_form_ci_cg' ) == 'cg66' ) {
+                $forme_ci = array( 'S' => 'Simple', 'C' => 'Particulier' );
+            }
 
             $act = $this->Option->act();
             $this->set( 'act', $act );
@@ -173,7 +178,16 @@
             $this->set( 'avisraison_ci', $avisraison_ci );
             $options = $this->Contratinsertion->allEnumLists();
             $this->set( 'options', $options );
-// debug($options);
+            $optionssuspension = $this->Autreavissuspension->allEnumLists();
+            $this->set( 'optionssuspension', $optionssuspension );
+
+            $optionsradiation = $this->Autreavisradiation->allEnumLists();
+            $this->set( 'optionsradiation', $optionsradiation );
+
+            $raison_ci = $this->Option->raison_ci();
+            $this->set( 'raison_ci', $raison_ci );
+
+
 
 
             $contratinsertion = $this->Contratinsertion->find(
@@ -348,7 +362,9 @@
                 $contratinsertion['Contratinsertion'][$varName] = ( isset( $contratinsertion['Contratinsertion'][$varName] ) ? ${$varName}[$contratinsertion['Contratinsertion'][$varName]] : null );
             }
 
-            $contratinsertion['Contratinsertion']['datevalidation_ci'] = strftime( '%d/%m/%Y', strtotime( $contratinsertion['Contratinsertion']['datevalidation_ci'] ) );
+            if( isset($contratinsertion['Contratinsertion']['datevalidation_ci']) ) {
+                $contratinsertion['Contratinsertion']['datevalidation_ci'] = strftime( '%d/%m/%Y', strtotime( $contratinsertion['Contratinsertion']['datevalidation_ci'] ) );
+            }
             $contratinsertion['Contratinsertion']['date_saisi_ci'] = strftime( '%d/%m/%Y', strtotime( $contratinsertion['Contratinsertion']['date_saisi_ci'] ) );
 //             $contratinsertion['Contratinsertion']['typocontrat_id'] = $tc[$contratinsertion['Contratinsertion']['typocontrat_id']];
             $contratinsertion['Contratinsertion']['actions_prev'] = ( $contratinsertion['Contratinsertion']['actions_prev']  ? 'Oui' : 'Non' );
@@ -370,6 +386,12 @@
 
             $contratinsertion['Contratinsertion']['dd_ci'] = strftime( '%d/%m/%Y', strtotime( $contratinsertion['Contratinsertion']['dd_ci'] ) );
             $contratinsertion['Contratinsertion']['df_ci'] = strftime( '%d/%m/%Y', strtotime( $contratinsertion['Contratinsertion']['df_ci'] ) );
+            if( isset( $contratinsertion['Contratinsertion']['datesuspensionparticulier'] ) ){
+                $contratinsertion['Contratinsertion']['datesuspensionparticulier'] = strftime( '%d/%m/%Y', strtotime( $contratinsertion['Contratinsertion']['datesuspensionparticulier'] ) );
+            }
+            if( isset( $contratinsertion['Contratinsertion']['dateradiationparticulier'] ) ){
+                $contratinsertion['Contratinsertion']['dateradiationparticulier'] = strftime( '%d/%m/%Y', strtotime( $contratinsertion['Contratinsertion']['dateradiationparticulier'] ) );
+            }
 
 
             /// Données Foyer récupérées
@@ -416,8 +438,7 @@
             else if ( Configure::read( 'nom_form_ci_cg' ) == 'cg93' ){
                 $codesaction = $this->Action->find( 'list', array( 'fields' => array( 'code', 'libelle' ) ) );
                 $this->set( 'codesaction', $codesaction );
-// debug($codesaction);
-// die();
+
                 $v = null;
                 if( isset( $codesaction[$contratinsertion['Contratinsertion']['engag_object']] ) ) {
                 $v = $codesaction[$contratinsertion['Contratinsertion']['engag_object']];
@@ -433,6 +454,8 @@
             ///Permet d'afficher le type de demande en cas de contrat Complexe
            $contratinsertion['Contratinsertion']['type_demande'] = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.type_demande' ), $options['type_demande'] );
            $contratinsertion['Contratinsertion']['avisraison_ci'] = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.avisraison_ci' ), $avisraison_ci );
+           $contratinsertion['Contratinsertion']['raison_ci'] = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.raison_ci' ), $raison_ci );
+           $contratinsertion['Contratinsertion']['forme_ci'] = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.forme_ci' ), $forme_ci );
 
 
             ///Utilisé pour savoir si le contrat est pour une insertion vers le social / emploi
@@ -475,7 +498,24 @@
 
 
 
-// debug( $contratinsertion );
+            /**
+            * Table pour les autres avis de suspension / radiation
+            */
+            $modelAutre = array( 'Autreavissuspension', 'Autreavisradiation' );
+
+            foreach( $modelAutre as $mod ) {
+                $contratinsertion['Contratinsertion'][$mod] = '';
+                if( isset($contratinsertion[$mod]) ){
+                    foreach(  $contratinsertion[$mod] as $i => $autrescas ) {
+                        if( !empty( $autrescas ) ) {
+                            $values = Set::enum( Set::classicExtract( $autrescas, strtolower( $mod ) ), $optionssuspension['autreavissuspension']);
+                            $contratinsertion['Contratinsertion'][$mod] .= "\n" .'  - '.implode( "\n  - ", array( $values ) )."\n";
+                        }
+                    }
+                }
+            }
+
+// debug($contratinsertion);
 // die();
             if( Configure::read( 'nom_form_ci_cg' ) == 'cg58' ) {
                 $this->_ged( $contratinsertion, 'Contratinsertion/contratinsertioncg58.odt' );
