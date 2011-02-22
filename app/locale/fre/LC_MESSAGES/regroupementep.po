@@ -19,6 +19,9 @@ msgstr ""
 
 ###############################################################################
 
+msgid "Regroupementep::index::empty"
+msgstr "Aucun regroupement d'équipes pluridisciplinaires n'a encore été créé."
+
 msgid "Regroupementep.name"
 msgstr "Nom du regroupement"
 

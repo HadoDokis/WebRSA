@@ -18,6 +18,10 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
 
 ###############################################################################
+
+msgid "Ep::index::empty"
+msgstr "Aucune équipe pluridisciplinaire n'a encore été créée."
+
 msgid "Ep.name"
 msgstr "Nom de l'EP"
 
