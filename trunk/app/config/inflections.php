@@ -272,6 +272,8 @@
 		'decisionnonorientationpro93' => 'decisionsnonorientationspros93',
 		'regressionorientationep58' => 'regressionsorientationseps58',
 		'decisionregressionorientationep58' => 'decisionsregressionsorientationseps58',
+		'radiepoleemploiep93' => 'radiespoleemploieps93',
+		'decisionradiepoleemploiep93' => 'decisionsradiespoleemploieps93',
 		// Données flux Pôle Emploi
 		'informationpe' => 'informationspe',
 		'historiqueetatpe' => 'historiqueetatspe',

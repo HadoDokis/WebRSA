@@ -13,6 +13,8 @@ BEGIN;
 
 DROP TABLE IF EXISTS regressionsorientationseps58 CASCADE;
 DROP TABLE IF EXISTS decisionsregressionsorientationseps58 CASCADE;
+DROP TABLE IF EXISTS radiespoleemploieps93 CASCADE;
+DROP TABLE IF EXISTS decisionsradiespoleemploieps93 CASCADE;
 
 DROP INDEX IF EXISTS dsps_personne_id_idx;
 CREATE INDEX dsps_personne_id_idx ON dsps(personne_id);
@@ -63,7 +65,6 @@ CREATE TABLE decisionsregressionsorientationseps58 (
 	structurereferente_id			INTEGER DEFAULT NULL REFERENCES structuresreferentes(id) ON UPDATE CASCADE ON DELETE SET NULL,
 	referent_id						INTEGER DEFAULT NULL REFERENCES referents(id) ON DELETE SET NULL ON UPDATE CASCADE,
 	etape							TYPE_ETAPEDECISIONEP NOT NULL,
-	decision						TYPE_DECISIONSANCTIONEP93 DEFAULT NULL,
 	commentaire						TEXT DEFAULT NULL,
 	created							TIMESTAMP WITHOUT TIME ZONE,
 	modified						TIMESTAMP WITHOUT TIME ZONE
@@ -84,6 +85,43 @@ SELECT alter_table_drop_column_if_exists( 'public', 'contratsinsertion', 'datera
 ALTER TABLE contratsinsertion ADD COLUMN datesuspensionparticulier DATE DEFAULT NULL;
 ALTER TABLE contratsinsertion ADD COLUMN dateradiationparticulier DATE DEFAULT NULL;
 
+-- -----------------------------------------------------------------------------
+-- 20110222
+-- -----------------------------------------------------------------------------
+CREATE TABLE radiespoleemploieps93 (
+	id      				SERIAL NOT NULL PRIMARY KEY,
+	dossierep_id			INTEGER DEFAULT NULL REFERENCES dossierseps(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	historiqueetatpe_id		INTEGER DEFAULT NULL REFERENCES historiqueetatspe(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	commentaire				TEXT DEFAULT NULL,
+	created					TIMESTAMP WITHOUT TIME ZONE,
+	modified				TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE radiespoleemploieps93 IS 'Thématique de détection des radiés de Pôle Emploi (CG93)';
+
+CREATE INDEX radiespoleemploieps93_historiqueetatpe_id_idx ON radiespoleemploieps93 (historiqueetatpe_id);
+
+SELECT add_missing_table_field ('public', 'eps', 'radiespoleemploieps93', 'TYPE_NIVEAUDECISIONEP');
+ALTER TABLE eps ALTER COLUMN radiespoleemploieps93 SET DEFAULT 'nontraite';
+UPDATE eps SET radiespoleemploieps93 = 'nontraite' WHERE radiespoleemploieps93 IS NULL;
+ALTER TABLE eps ALTER COLUMN radiespoleemploieps93 SET NOT NULL;
+
+ALTER TABLE dossierseps ALTER COLUMN themeep TYPE TEXT;
+DROP TYPE IF EXISTS TYPE_THEMEEP;
+CREATE TYPE TYPE_THEMEEP AS ENUM ( 'saisinesepsreorientsrs93', 'saisinesepsbilansparcours66', /*'suspensionsreductionsallocations93',*/ 'saisinesepdspdos66', 'nonrespectssanctionseps93', 'defautsinsertionseps66', 'nonorientationspros58', 'regressionsorientationseps58', 'radiespoleemploieps93' );
+ALTER TABLE dossierseps ALTER COLUMN themeep TYPE TYPE_THEMEEP USING CAST(themeep AS TYPE_THEMEEP);
+
+CREATE TABLE decisionsradiespoleemploieps93 (
+	id      						SERIAL NOT NULL PRIMARY KEY,
+	radiepoleemploiep93_id			INTEGER NOT NULL REFERENCES radiespoleemploieps93(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	etape							TYPE_ETAPEDECISIONEP NOT NULL,
+	decision						TYPE_DECISIONSANCTIONEP93 DEFAULT NULL,
+	commentaire						TEXT DEFAULT NULL,
+	created							TIMESTAMP WITHOUT TIME ZONE,
+	modified						TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE decisionsradiespoleemploieps93 IS 'Décisions pour la thématique de détection des radiés de Pôle Emploi (CG93)';
+
+CREATE INDEX decisionsradiespoleemploieps93_radiepoleemploiep93_id_idx ON decisionsradiespoleemploieps93 (radiepoleemploiep93_id);
 
 -- *****************************************************************************
 COMMIT;
