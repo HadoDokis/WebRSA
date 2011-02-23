@@ -38,8 +38,28 @@
 				
 				$this->data['Propoorientationcov58']['rgorient'] = $this->Propoorientationcov58->Dossiercov58->Personne->Orientstruct->rgorientMax( $personne_id );
 				
-				if ( $this->Propoorientationcov58->Orientstruct->isRegression( $personne_id, $this->data['Propoorientationcov58']['typeorient_id'] ) ) {
-					debug('Régression !!!!!!');
+				if ( $this->Propoorientationcov58->Structurereferente->Orientstruct->isRegression( $personne_id, $this->data['Propoorientationcov58']['typeorient_id'] ) ) {
+					$dossierep = array(
+						'Dossierep' => array(
+							'personne_id' => $personne_id,
+							'themeep' => 'regressionsorientationseps58',
+						)
+					);
+					$saved = $this->Propoorientationcov58->Structurereferente->Regressionorientationep58->Dossierep->save( $dossierep ) && $saved;
+					
+					$regressionorientationep58['Regressionorientationep58'] = $this->data['Propoorientationcov58'];
+					$regressionorientationep58['Regressionorientationep58']['personne_id'] = $personne_id;
+					$regressionorientationep58['Regressionorientationep58']['dossierep_id'] = $this->Propoorientationcov58->Structurereferente->Regressionorientationep58->Dossierep->id;
+					
+					if ( isset($regressionorientationep58['Regressionorientationep58']['referent_id']) ) {
+						list( $structurereferente_id, $referent_id) = explode( '_', $regressionorientationep58['Regressionorientationep58']['referent_id'] );
+						$regressionorientationep58['Regressionorientationep58']['structurereferente_id'] = $structurereferente_id;
+						$regressionorientationep58['Regressionorientationep58']['referent_id'] = $referent_id;
+					}
+					
+					$regressionorientationep58['Regressionorientationep58']['datedemande'] = $regressionorientationep58['Regressionorientationep58']['date_propo'];
+					
+					$saved = $this->Propoorientationcov58->Structurereferente->Regressionorientationep58->save( $regressionorientationep58 ) && $saved;
 				}
 				else {
 					$themecov58 = $this->Propoorientationcov58->Dossiercov58->Themecov58->find(
