@@ -3,22 +3,24 @@
 
 <div class="with_treemenu">
 	<h1>Orientation</h1>
-
-	<?php if( !$ajout_possible ):?>
-		<p class="notice">Ce dossier est en attente d'un passage en EP.</p>
-	<?php endif;?>
-
-	<?php if( !empty( $en_procedure_relance ) ):?>
-		<p class="notice">Cette personne est en cours de procédure de relance.</p>
-	<?php endif;?>
-
-	<?php if( isset( $nbdossiersnonfinalisescovs ) && !empty( $nbdossiersnonfinalisescovs ) ):?>
-		<p class="notice">Ce dossier va passer en COV.</p>
-	<?php endif;?>
-
-	<?php if( empty( $orientstructs ) ):?>
-		<p class="notice">Cette personne ne possède pas encore d'orientation.</p>
-	<?php endif;?>
+	
+	<?php
+		
+		if ( empty( $orientstructs ) ) {
+			echo '<p class="notice">Cette personne ne possède pas encore d\'orientation.</p>';
+		}
+		
+		if( isset( $nbdossiersnonfinalisescovs ) && !empty( $nbdossiersnonfinalisescovs ) ) {
+			echo '<p class="notice">Ce dossier va passer en COV.</p>';
+		}
+		elseif( !$ajout_possible ) {
+			echo '<p class="notice">Impossible d\'ajouter une nouvelle orientation à ce dossier (passage en EP ou dossier ne pouvant être orienté).</p>';
+		}
+		elseif( !empty( $en_procedure_relance ) ) {
+			echo '<p class="notice">Cette personne est en cours de procédure de relance.</p>';
+		}
+	
+	?>
 
 	<!-- Pour le CG 93, les orientations de rang >= 1 doivent passer en EP, donc il faut utiliser Saisinesepsreorientsrs93Controller::add -->
 	<?php if( Configure::read( 'Cg.departement' ) == 93 && $rgorient_max >= 1 ):?>
