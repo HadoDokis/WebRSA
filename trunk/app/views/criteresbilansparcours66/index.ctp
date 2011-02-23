@@ -71,13 +71,9 @@
 <?php echo $xform->end();?>
 <?php $pagination = $xpaginator->paginationBlock( 'Bilanparcours66', $this->passedArgs ); ?>
 <?php echo $pagination;?>
-<?php
-// debug($bilansparcours66 );
-    if( isset( $bilansparcours66 ) ) {
-        if( empty( $bilansparcours66 ) ) {
-            echo $xhtml->tag( 'p', 'Aucun résultat ne correspond aux critères choisis.', array( 'class' => 'notice' ) );
-        }
-        else {
+<?php if( isset( $bilansparcours66 ) ):?>
+    <?php if( is_array( $bilansparcours66 ) && count( $bilansparcours66 ) > 0  ):?>
+        <?php
             echo '<table><thead>';
                 echo '<tr>
                     <th>'.$xpaginator->sort( __d( 'bilanparcours66', 'Bilanparcours66.datebilan', true ), 'Bilanparcours66.datebilan' ).'</th>
@@ -124,21 +120,24 @@
                 </tr>';
             }
             echo '</tbody></table>';
-        }
-    }
-?>
+    ?>
+    <ul class="actionMenu">
+        <li><?php
+            echo $xhtml->printLinkJs(
+                'Imprimer le tableau',
+                array( 'onclick' => 'printit(); return false;', 'class' => 'noprint' )
+            );
+        ?></li>
+        <li><?php
+            echo $xhtml->exportLink(
+                'Télécharger le tableau',
+                array( 'controller' => 'criteresbilansparcours66', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
+            );
+        ?></li>
+    </ul>
 <?php echo $pagination;?>
-<ul class="actionMenu">
-    <li><?php
-        echo $xhtml->printLinkJs(
-            'Imprimer le tableau',
-            array( 'onclick' => 'printit(); return false;', 'class' => 'noprint' )
-        );
-    ?></li>
-    <li><?php
-        echo $xhtml->exportLink(
-            'Télécharger le tableau',
-            array( 'controller' => 'criteresbilansparcours66', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
-        );
-    ?></li>
-</ul>
+
+    <?php else:?>
+        <?php echo $xhtml->tag( 'p', 'Aucun résultat ne correspond aux critères choisis.', array( 'class' => 'notice' ) );?>
+    <?php endif;?>
+<?php endif;?>
