@@ -77,6 +77,7 @@ WHERE
 	AND Personne.id < Personne2.id
 	AND Personne.foyer_id = Foyer.id
 	AND Personne2.foyer_id = Foyer.id
+	AND
 	(
 		Prestation.personne_id = Personne.id
 	OR
