@@ -161,7 +161,7 @@
 							( LENGTH(TRIM(p1.nir)) = 15 AND p1.nir = p2.nir AND p1.dtnai = p2.dtnai )
 							OR ( p1.nom = p2.nom AND p1.prenom = p2.prenom AND p1.dtnai = p2.dtnai )
 						)
-						LIMIT 100;";
+						LIMIT 1000;";
 			$results = $this->Personne->query( $sql );
 
 			$thead = '<th>id</th><th>foyer_id</th>';
