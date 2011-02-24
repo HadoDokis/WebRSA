@@ -10,7 +10,7 @@
 				'id' => '3',
 				'identifiant' => 'tretr',
 				'name' => 'tert',
-				'ep_id' => '2',
+				'ep_id' => '1',
 				'structurereferente_id' => '7',
 				'dateseance' => '2031-01-01',
 				'salle' => 'tert',

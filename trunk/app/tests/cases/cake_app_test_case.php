@@ -13,6 +13,9 @@
 		*/
 
 		public $fixtures = array (
+			'app.motifreorient',
+			'app.nvsrepreorientsr93',
+			'app.saisineepreorientsr93',
 			'app.regroupementep',
 			'app.ep_membreep',
 			'app.ep_zonegeographique',
