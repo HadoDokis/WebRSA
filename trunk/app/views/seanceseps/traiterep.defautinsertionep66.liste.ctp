@@ -1,25 +1,3 @@
-<script type="text/javascript">
-	document.observe("dom:loaded", function() {
-		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
- 		dependantSelect( 'Decisiondefautinsertionep66<?php echo $i?>StructurereferenteId', 'Decisiondefautinsertionep66<?php echo $i?>TypeorientId' );
- 		try { $( 'Decisiondefautinsertionep66<?php echo $i?>StructurereferenteId' ).onchange(); } catch(id) { }
-
-		observeDisableFieldsOnValue(
-			'Decisiondefautinsertionep66<?php echo $i;?>Decision',
-			[
-				'Decisiondefautinsertionep66<?php echo $i;?>TypeorientId',
-				'Decisiondefautinsertionep66<?php echo $i;?>StructurereferenteId'
-			],
-			[
-				'reorientationprofverssoc',
-				'reorientationsocversprof'
-			],
-			false
-		);
-		<?php endfor;?>
-	});
-</script>
-
 <?php
 // 	echo $form->create( null, array( 'url' => Router::url( null, true ) ) );
 	echo '<table><thead>
@@ -94,3 +72,25 @@
 // debug( $dossiers[$theme]['liste'] );
 // debug( $options );
 ?>
+
+<script type="text/javascript">
+	document.observe("dom:loaded", function() {
+		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
+ 		dependantSelect( 'Decisiondefautinsertionep66<?php echo $i?>StructurereferenteId', 'Decisiondefautinsertionep66<?php echo $i?>TypeorientId' );
+ 		try { $( 'Decisiondefautinsertionep66<?php echo $i?>StructurereferenteId' ).onchange(); } catch(id) { }
+
+		observeDisableFieldsOnValue(
+			'Decisiondefautinsertionep66<?php echo $i;?>Decision',
+			[
+				'Decisiondefautinsertionep66<?php echo $i;?>TypeorientId',
+				'Decisiondefautinsertionep66<?php echo $i;?>StructurereferenteId'
+			],
+			[
+				'reorientationprofverssoc',
+				'reorientationsocversprof'
+			],
+			false
+		);
+		<?php endfor;?>
+	});
+</script>

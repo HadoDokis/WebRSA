@@ -68,6 +68,9 @@ msgstr "Non orientation professionnelle"
 msgid "ENUM::THEMEEP::regressionsorientationseps58"
 msgstr "Orientation du professionnelle vers le social"
 
+msgid "ENUM::THEMEEP::radiespoleemploieps93"
+msgstr "Radiation de Pôle Emploi"
+
 #
 
 msgid "ENUM::ETAPEDOSSIEREP::cree"

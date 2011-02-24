@@ -30,6 +30,13 @@ DROP INDEX IF EXISTS decisionsregressionsorientationseps58_referent_id_idx;
 
 -- *****************************************************************************
 
+ALTER TABLE dossierseps ALTER COLUMN themeep TYPE TEXT;
+DROP TYPE IF EXISTS TYPE_THEMEEP;
+CREATE TYPE TYPE_THEMEEP AS ENUM ( 'saisinesepsreorientsrs93', 'saisinesepsbilansparcours66', /*'suspensionsreductionsallocations93',*/ 'saisinesepdspdos66', 'nonrespectssanctionseps93', 'defautsinsertionseps66', 'nonorientationspros58', 'regressionsorientationseps58', 'radiespoleemploieps93' );
+ALTER TABLE dossierseps ALTER COLUMN themeep TYPE TYPE_THEMEEP USING CAST(themeep AS TYPE_THEMEEP);
+
+-- *****************************************************************************
+
 CREATE TABLE regressionsorientationseps58 (
 	id      				SERIAL NOT NULL PRIMARY KEY,
 	dossierep_id			INTEGER DEFAULT NULL REFERENCES dossierseps(id) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -52,11 +59,6 @@ SELECT add_missing_table_field ('public', 'eps', 'regressionorientationep58', 'T
 ALTER TABLE eps ALTER COLUMN regressionorientationep58 SET DEFAULT 'nontraite';
 UPDATE eps SET regressionorientationep58 = 'nontraite' WHERE regressionorientationep58 IS NULL;
 ALTER TABLE eps ALTER COLUMN regressionorientationep58 SET NOT NULL;
-
-ALTER TABLE dossierseps ALTER COLUMN themeep TYPE TEXT;
-DROP TYPE IF EXISTS TYPE_THEMEEP;
-CREATE TYPE TYPE_THEMEEP AS ENUM ( 'saisinesepsreorientsrs93', 'saisinesepsbilansparcours66', /*'suspensionsreductionsallocations93',*/ 'saisinesepdspdos66', 'nonrespectssanctionseps93', 'defautsinsertionseps66', 'nonorientationspros58', 'regressionsorientationseps58' );
-ALTER TABLE dossierseps ALTER COLUMN themeep TYPE TYPE_THEMEEP USING CAST(themeep AS TYPE_THEMEEP);
 
 CREATE TABLE decisionsregressionsorientationseps58 (
 	id      						SERIAL NOT NULL PRIMARY KEY,
@@ -100,15 +102,10 @@ COMMENT ON TABLE radiespoleemploieps93 IS 'Thématique de détection des radiés
 
 CREATE INDEX radiespoleemploieps93_historiqueetatpe_id_idx ON radiespoleemploieps93 (historiqueetatpe_id);
 
-SELECT add_missing_table_field ('public', 'eps', 'radiespoleemploieps93', 'TYPE_NIVEAUDECISIONEP');
-ALTER TABLE eps ALTER COLUMN radiespoleemploieps93 SET DEFAULT 'nontraite';
-UPDATE eps SET radiespoleemploieps93 = 'nontraite' WHERE radiespoleemploieps93 IS NULL;
-ALTER TABLE eps ALTER COLUMN radiespoleemploieps93 SET NOT NULL;
-
-ALTER TABLE dossierseps ALTER COLUMN themeep TYPE TEXT;
-DROP TYPE IF EXISTS TYPE_THEMEEP;
-CREATE TYPE TYPE_THEMEEP AS ENUM ( 'saisinesepsreorientsrs93', 'saisinesepsbilansparcours66', /*'suspensionsreductionsallocations93',*/ 'saisinesepdspdos66', 'nonrespectssanctionseps93', 'defautsinsertionseps66', 'nonorientationspros58', 'regressionsorientationseps58', 'radiespoleemploieps93' );
-ALTER TABLE dossierseps ALTER COLUMN themeep TYPE TYPE_THEMEEP USING CAST(themeep AS TYPE_THEMEEP);
+SELECT add_missing_table_field ('public', 'eps', 'radiepoleemploiep93', 'TYPE_NIVEAUDECISIONEP');
+ALTER TABLE eps ALTER COLUMN radiepoleemploiep93 SET DEFAULT 'nontraite';
+UPDATE eps SET radiepoleemploiep93 = 'nontraite' WHERE radiepoleemploiep93 IS NULL;
+ALTER TABLE eps ALTER COLUMN radiepoleemploiep93 SET NOT NULL;
 
 CREATE TABLE decisionsradiespoleemploieps93 (
 	id      						SERIAL NOT NULL PRIMARY KEY,
