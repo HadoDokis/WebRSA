@@ -41,6 +41,7 @@
 			array(
 				'Ep.saisineepreorientsr93' => array( 'type' => 'hidden', 'value' => 'cg' ),
 				'Ep.nonrespectsanctionep93' => array( 'type' => 'hidden', 'value' => 'cg' ),
+				'Ep.radiepoleemploiep93' => array( 'type' => 'hidden', 'value' => 'cg' ),
 			)
 		);
 	}

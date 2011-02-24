@@ -46,6 +46,7 @@
 				$this->_setFlashResult( 'Save', $success );
 				if( $success ) {
 					$this->Radiepoleemploiep93->commit();
+					$this->data = null;
 				}
 				else {
 					$this->Radiepoleemploiep93->rollback();
