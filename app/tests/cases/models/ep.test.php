@@ -56,7 +56,7 @@
 			);
 
 			$result = $this->Ep->beforeValidate($options);
-			$this->assertTrue($result, true);
+			$this->assertEqual($result, true);
 			$this->assertEqual($this->Ep->primaryKey, 'id');
 			$this->assertEqual($this->Ep->data['Ep']['identifiant'], 'EP1.1');
 		}

@@ -43,7 +43,11 @@
 		function testBeforeFilter() {
 			$this->ActionsController->beforeFilter();
 			$expected = array(
-				'1' => 'libellé',
+				'1' => 'Facilités offertes',
+				'2' => 'Autonomie sociale',
+				'3' => 'Logement',
+				'4' => 'Insertion professionnelle',
+				'5' => 'Emploi',
 			);
 			$this->assertEqual($expected, $this->ActionsController->viewVars['libtypaction']);
 		}
@@ -61,24 +65,60 @@
 						'Action' => array (
 							'id' => '1',
 							'typeaction_id' => '1',
-							'code' => null,
-							'libelle' => 'libellé',
+							'code' => '04',
+							'libelle' => 'Aide pour la garde des enfants',
 						),
 						'Typeaction' => array(
 							'id' => '1',
-                                    			'libelle' => 'libellé',
+                                    			'libelle' => 'Facilités offertes',
 						),
 					),
 					'1' => array(
 						'Action' => array (
 							'id' => '2',
-							'typeaction_id' => '1',
-							'code' => null,
-							'libelle' => 'libellé',
+							'typeaction_id' => '2',
+							'code' => '21',
+							'libelle' => 'Démarche liée à la santé',
 						),
 						'Typeaction' => array(
-							'id' => '1',
-                                    			'libelle' => 'libellé',
+							'id' => '2',
+                                    			'libelle' => 'Autonomie sociale',
+						),
+					),
+					'2' => array(
+						'Action' => array (
+							'id' => '3',
+							'typeaction_id' => '3',
+							'code' => '31',
+							'libelle' => 'Recherche d\'un logement',
+						),
+						'Typeaction' => array(
+							'id' => '3',
+                                    			'libelle' => 'Logement',
+						),
+					),
+					'3' => array(
+						'Action' => array (
+							'id' => '4',
+							'typeaction_id' => '4',
+							'code' => '44',
+							'libelle' => 'Stage de conduite automobile (véhicules légers)',
+						),
+						'Typeaction' => array(
+							'id' => '4',
+                                    			'libelle' => 'Insertion professionnelle',
+						),
+					),
+					'4' => array(
+						'Action' => array (
+							'id' => '5',
+							'typeaction_id' => '5',
+							'code' => '51',
+							'libelle' => 'Aide ou suivi pour une recherche d\'emploi',
+						),
+						'Typeaction' => array(
+							'id' => '5',
+                                    			'libelle' => 'Emploi',
 						),
 					),
 			);
@@ -113,54 +153,41 @@
 				'Action' => array (
 					'id' => '1',
 					'typeaction_id' => '1',
-					'code' => null,
-					'libelle' => 'libellé',
+					'code' => '04',
+					'libelle' => 'Aide pour la garde des enfants',
 				),
 				'Typeaction' => array(
 					'id' => '1',
-                        		'libelle' => 'libellé',
+                        		'libelle' => 'Facilités offertes',
 					'Action' => array(
 						'0' => array(
 							'id' => '1',
 							'typeaction_id' => '1',
-							'code' => null,
-							'libelle' => 'libellé',
-						),
-						'1' => array(
-							'id' => '2',
-							'typeaction_id' => '1',
-							'code' => null,
-							'libelle' => 'libellé',
+							'code' => '04',
+							'libelle' => 'Aide pour la garde des enfants',
 						),
 					),
 				),
 			);
 			$this->assertEqual($records, $this->ActionsController->data);
-
 			$action_id = '2';
 			$this->ActionsController->edit($action_id);
 			$records = array (
 				'Action' => array (
-					'id' => '1',
-					'typeaction_id' => '1',
-					'code' => null,
-					'libelle' => 'libellé',
+					'id' => '2',
+					'typeaction_id' => '2',
+					'code' => '21',
+					'libelle' => 'Démarche liée à la santé',
 				),
 				'Typeaction' => array(
-					'id' => '1',
-                        		'libelle' => 'libellé',
+					'id' => '2',
+                        		'libelle' => 'Autonomie sociale',
 					'Action' => array(
 						'0' => array(
-							'id' => '1',
-							'typeaction_id' => '1',
-							'code' => null,
-							'libelle' => 'libellé',
-						),
-						'1' => array(
 							'id' => '2',
-							'typeaction_id' => '1',
-							'code' => null,
-							'libelle' => 'libellé',
+							'typeaction_id' => '2',
+							'code' => '21',
+							'libelle' => 'Démarche liée à la santé',
 						),
 					),
 				),

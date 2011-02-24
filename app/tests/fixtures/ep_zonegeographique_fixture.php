@@ -8,7 +8,17 @@
 		var $records = array(
 			array(
 				'id' => '1',
+				'ep_id' => '1',
+				'zonegeographique_id' => '35',
+			),
+			array(
+				'id' => '2',
 				'ep_id' => '2',
+				'zonegeographique_id' => '35',
+			),
+			array(
+				'id' => '3',
+				'ep_id' => '3',
 				'zonegeographique_id' => '35',
 			),
 		);

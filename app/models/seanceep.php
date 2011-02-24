@@ -194,7 +194,6 @@
 				$model = Inflector::classify( $theme );
 				$success = $this->Dossierep->{$model}->saveDecisions( $data, $niveauDecision ) && $success;
 			}
-
 			return $success;
 		}
 
