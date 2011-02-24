@@ -43,19 +43,22 @@
 				
 				$fields = $Model->query("SELECT column_name FROM information_schema.columns WHERE table_name = '{$table}' AND column_name LIKE '%_id';");
 				
+				$this->out( sprintf( '-- Ajout des contraintes pour la table %s.', $table ) );
+				
 				foreach( $fields as $field ) {
 					$fieldName = $field[0]['column_name'];
 					$parentTable = Inflector::tableize( substr( $fieldName, 0, -3 ) );
-					$Model->query( "ALTER TABLE {$table} DROP CONSTRAINT {$table}_{$fieldName}_fkey;" );
+					$this->out( "ALTER TABLE {$table} DROP CONSTRAINT {$table}_{$fieldName}_fkey;" );
+// 					$Model->query( "ALTER TABLE {$table} DROP CONSTRAINT {$table}_{$fieldName}_fkey;" );
 					if( !$Model->_schema[$fieldName]['null'] ) {
-						$Model->query( "ALTER TABLE {$table} ADD CONSTRAINT {$table}_{$fieldName}_fkey FOREIGN KEY ({$fieldName}) REFERENCES {$parentTable}(id) ON DELETE CASCADE ON UPDATE CASCADE;" );
+						$this->out( "ALTER TABLE {$table} ADD CONSTRAINT {$table}_{$fieldName}_fkey FOREIGN KEY ({$fieldName}) REFERENCES {$parentTable}(id) ON DELETE CASCADE ON UPDATE CASCADE;" );
+// 						$Model->query( "ALTER TABLE {$table} ADD CONSTRAINT {$table}_{$fieldName}_fkey FOREIGN KEY ({$fieldName}) REFERENCES {$parentTable}(id) ON DELETE CASCADE ON UPDATE CASCADE;" );
 					}
 					else {
-						$Model->query( "ALTER TABLE {$table} ADD CONSTRAINT {$table}_{$fieldName}_fkey FOREIGN KEY ({$fieldName}) REFERENCES {$parentTable}(id) ON DELETE SET NULL ON UPDATE CASCADE;" );
+						$this->out( "ALTER TABLE {$table} ADD CONSTRAINT {$table}_{$fieldName}_fkey FOREIGN KEY ({$fieldName}) REFERENCES {$parentTable}(id) ON DELETE SET NULL ON UPDATE CASCADE;" );
+// 						$Model->query( "ALTER TABLE {$table} ADD CONSTRAINT {$table}_{$fieldName}_fkey FOREIGN KEY ({$fieldName}) REFERENCES {$parentTable}(id) ON DELETE SET NULL ON UPDATE CASCADE;" );
 					}
 				}
-				
-				$this->out( sprintf( 'Ajout des contraintes pour la table %s.', $table ) );
 			}
 		}
 	}
