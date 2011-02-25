@@ -241,48 +241,153 @@
 		}
 
 		function testPrepareFormData() {
-			$seanceep_id = '3';
-			$dossiers = array(
-				array(
-					'id' => '1',
-					'personne_id' => '1001',
-					'seanceep_id' => '3',
-					'etapedossierep' => 'cree',
-					'themeep' => 'nonrespectssanctionseps93',
-					'created' => null,
-					'modified' => null,
-				),
-				array(
-					'id' => '2',
-					'personne_id' => '2002',
-					'seanceep_id' => '6',
-					'etapedossierep' => 'cree',
-					'themeep' => 'nonrespectssanctionseps93',
-					'created' => null,
-					'modified' => null,
-				),
-			);
+			$seanceep_id = '3';			
 			$niveauDecision = 'cg';
-//			debug($this->Seanceep->prepareFormData($seanceep_id, $dossiers, $niveauDecision));
+			$dossiers = $this->Seanceep->dossiersParListe($seanceep_id, $niveauDecision);
+			$expected = array(
+				'Nonrespectsanctionep93' => array(
+            				'0' => array(
+                    				'id' => '1',
+                    				'dossierep_id' => '1',
+                			),
 
+        			),
+			    	'Decisionnonrespectsanctionep93' => array(
+			            	'0' => array(
+						'id' => '1',
+            				        'nonrespectsanctionep93_id' => '1',
+						'etape' => 'cg',
+						'decision' => null,
+						'montantreduction' => null,
+						'dureesursis' => null,
+						'commentaire' => null,
+						'created' => null,
+						'modified' => null,
+                			),
+       				 ),
+			);
+			$this->assertEqual($this->Seanceep->prepareFormData($seanceep_id, $dossiers, $niveauDecision), $expected);
+
+			$seanceep_id = '6';			
+			$niveauDecision = 'cg';
+			$dossiers = $this->Seanceep->dossiersParListe($seanceep_id, $niveauDecision);
+			$expected = array(
+				'Nonrespectsanctionep93' => array(
+            				'0' => array(
+                    				'id' => '2',
+                    				'dossierep_id' => '2',
+                			),
+
+        			),
+			    	'Decisionnonrespectsanctionep93' => array(
+			            	'0' => array(
+						'id' => '2',
+            				        'nonrespectsanctionep93_id' => '2',
+						'etape' => 'cg',
+						'decision' => null,
+						'montantreduction' => null,
+						'dureesursis' => null,
+						'commentaire' => null,
+						'created' => null,
+						'modified' => null,
+                			),
+       				 ),
+			);
+			$this->assertEqual($this->Seanceep->prepareFormData($seanceep_id, $dossiers, $niveauDecision), $expected);
 		}
-/*
+
 		function testFinaliser() {
-			$seanceep_id;
-			$niveauDecision;
+			$seanceep_id = '3';
+			$niveauDecision = 'cg';
+			$this->assertFalse($this->Seanceep->finaliser($seanceep_id, $niveauDecision));
+
+			$seanceep_id = '6';
+			$niveauDecision = 'cg';
+			$this->assertFalse($this->Seanceep->finaliser($seanceep_id, $niveauDecision));
+
+			$seanceep_id = '9';
+			$niveauDecision = 'cg';
+			$this->assertEqual($this->Seanceep->finaliser($seanceep_id, $niveauDecision), '1');
 		}
 
 		function testClotureSeance() {
-			$datas;
+			$datas = array(
+				'Seanceep' => array(
+					'id' => '6',
+					'identifiant' => 'EP1.2',
+					'name' => 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+					'ep_id' => '2',
+					'structurereferente_id' => '7',
+					'dateseance' => '2017-01-01',
+					'salle' => 'null',
+					'observations' => null,
+					'finalisee' => null,
+				),
+				'Ep' => array(
+					'id' => '2',
+					'name' => 'CLI 1 Equipe 1.2',
+					'identifiant' => 'EP1.2',
+					'regroupementep_id' => '1',
+					'defautinsertionep66' => 'nontraite',
+					'saisineepbilanparcours66' => 'nontraite',
+					'saisineepdpdo66' => 'nontraite',
+					'nonrespectsanctionep93' => 'cg',
+					'saisineepreorientsr93' => 'cg',
+					'nonorientationpro58' => 'nontraite',
+					'regressionorientationep58' => 'nontraite',
+					'radiepoleemploiep93' => 'nontraite',
+				),
+			);
+			$this->assertFalse($this->Seanceep->clotureSeance($datas));
+
+			$datas = array(
+				'Seanceep' => array(
+					'id' => '9',
+					'identifiant' => 'EP2.1',
+					'name' => 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+					'ep_id' => '3',
+					'structurereferente_id' => '7',
+					'dateseance' => '2017-01-01',
+					'salle' => 'null',
+					'observations' => null,
+					'finalisee' => 'cg',
+				),
+				'Ep' => array(
+					'id' => '3',
+					'name' => 'CLI 2 Equipe 2.1',
+					'identifiant' => 'EP2.1',
+					'regroupementep_id' => '2',
+					'defautinsertionep66' => 'nontraite',
+					'saisineepbilanparcours66' => 'nontraite',
+					'saisineepdpdo66' => 'nontraite',
+					'nonrespectsanctionep93' => 'cg',
+					'saisineepreorientsr93' => 'cg',
+					'nonorientationpro58' => 'nontraite',
+					'regressionorientationep58' => 'nontraite',
+					'radiepoleemploiep93' => 'nontraite',
+				),
+			);
+			$this->assertTrue($this->Seanceep->clotureSeance($datas));
 		}
 
 		function testGetPdfPv() {
-			$seanceep_id;
+			$seanceep_id = '3';
+			$this->Seanceep->getPdfPv($seanceep_id);
 		}
 
 		function testGetPdfOrdreDuJour() {
-			$seanceep_id;
+			$seanceep_id = '3';
+			$this->Seanceep->getPdfOrdreDuJour($seanceep_id);
 		}
-*/
+
+		function testIdentifiant() {
+			$this->Seanceep->identifiant(); // 'CO2011020000000004' ?
+				
+		}
+
+		function testBeforeValidate() {
+			$options = array();
+			$this->assertTrue($this->Seanceep->beforeValidate($options));
+		}
 	}
 ?>

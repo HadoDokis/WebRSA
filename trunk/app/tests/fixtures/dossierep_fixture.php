@@ -24,6 +24,15 @@
 				'created' => null,
 				'modified' => null,
 			),
+			array(
+				'id' => '3',
+				'personne_id' => '3003',
+				'seanceep_id' => '9',
+				'etapedossierep' => 'traite',
+				'themeep' => 'nonrespectssanctionseps93',
+				'created' => null,
+				'modified' => null,
+			),
 		);
 	}
 

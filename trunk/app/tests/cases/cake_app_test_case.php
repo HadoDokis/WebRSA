@@ -13,6 +13,7 @@
 		*/
 
 		public $fixtures = array (
+			'app.fonctionmembreep',
 			'app.motifreorient',
 			'app.nvsrepreorientsr93',
 			'app.saisineepreorientsr93',

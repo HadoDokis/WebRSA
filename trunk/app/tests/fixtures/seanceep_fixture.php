@@ -28,6 +28,17 @@
 				'observations' => null,
 				'finalisee' => null,
 			),
+			array(
+				'id' => '9',
+				'identifiant' => 'EP2.1',
+				'name' => 'CLI 2 Equipe 2.1',
+				'ep_id' => '3',
+				'structurereferente_id' => '7',
+				'dateseance' => '2017-01-01',
+				'salle' => null,
+				'observations' => null,
+				'finalisee' => 'cg',
+			),
 		);
 	}
 
