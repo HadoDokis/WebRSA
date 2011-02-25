@@ -43,7 +43,25 @@
 		}
 
 		/**
-		*
+		* Explications :
+			- personnes_count => comptage du nombre total de personnes en base
+			- personnes_demcjtrsa_count => comptage du nombre total de personnes demandeur ou conjoint RSA
+			- personnes_nondemcjtrsa_count => comptage du nombre total de personnes non-demandeur et non-conjoint RSA
+			- personnes_sansprestationrsa_count => comptage du nombre de personnes sans prestation pour le RSA
+			- personnes_plusieursprestationrsa_count => comptage du nombre de personnes ayant plusieurs prestations pour le RSA
+			
+			- demcjtdoublonsmemefoyer => demandeurs et conjoint en doublons dans le même foyer
+			- nondemcjtdoublonsmemefoyer => doublons dans les non-demandeurs et non-conjoints dans le même foyer
+			- demcjtdoublonsfoyerdiffouverts => demandeurs et conjoints en doublons dans des foyers différents dont les droits sont ouverts
+			- nondemcjtdoublonsfoyerdiffouverts => doublons dans les non-demandeurs et non-conjoints dans des foyers différents dont les droits sont ouverts
+			
+			- nirdtnai => nir correct, même nir et même date de naissance
+			- npdtnai => même nom, même prénom, même date de naissance
+			- noponnedtnaiergnai => même nom ou prénom ou nom de naissance et même date de naissance et même rang de naissance
+			
+			- total_demcjt => total des doublons sur les demandeurs et conjoints
+			- total_nondemcjt => total des doublons sur les non-demandeurs et non-conjoints
+			- total => total des doublons trouvés
 		*/
 
 		public function main() {
@@ -101,11 +119,6 @@
 			// Doublons personnes
 			$conditions = array(
 				'nirdtnai' => '( nir_correct( p1.nir ) AND p1.nir = p2.nir AND p1.dtnai = p2.dtnai )',
-				'npdtnai' => '(
-								TRIM( BOTH \' \' FROM p1.nom ) = TRIM( BOTH \' \' FROM p2.nom )
-								AND TRIM( BOTH \' \' FROM p1.prenom ) = TRIM( BOTH \' \' FROM p2.prenom )
-								AND p1.dtnai = p2.dtnai
-							)',
 				'npdtnai' => '(
 								TRIM( BOTH \' \' FROM p1.nom ) = TRIM( BOTH \' \' FROM p2.nom )
 								AND TRIM( BOTH \' \' FROM p1.prenom ) = TRIM( BOTH \' \' FROM p2.prenom )
