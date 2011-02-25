@@ -43,29 +43,59 @@
 		}
 
 		/**
+		*
+		*/
+
+		public $_traductions = array(
+			'personnes_count' => 'comptage du nombre total de personnes en base',
+			'personnes_demcjtrsa_count' => 'comptage du nombre total de personnes demandeur ou conjoint RSA',
+			'personnes_nondemcjtrsa_count' => 'comptage du nombre total de personnes non-demandeur et non-conjoint RSA',
+			'personnes_sansprestationrsa_count' => 'comptage du nombre de personnes sans prestation pour le RSA',
+			'personnes_plusieursprestationrsa_count' => 'comptage du nombre de personnes ayant plusieurs prestations pour le RSA',
+
+			'demcjtdoublonsmemefoyer' => 'demandeurs et conjoint en doublons dans le même foyer',
+			'nondemcjtdoublonsmemefoyer' => 'doublons dans les non-demandeurs et non-conjoints dans le même foyer',
+			'demcjtdoublonsfoyerdiffouverts' => 'demandeurs et conjoints en doublons dans des foyers différents dont les droits sont ouverts',
+			'nondemcjtdoublonsfoyerdiffouverts' => 'doublons dans les non-demandeurs et non-conjoints dans des foyers différents dont les droits sont ouverts',
+
+			'nirdtnai' => 'nir correct, même nir et même date de naissance',
+			'npdtnai' => 'même nom, même prénom, même date de naissance',
+			'noponnedtnaiergnai' => 'même nom ou prénom ou nom de naissance et même date de naissance et même rang de naissance',
+
+			'total' => 'total des doublons trouvés',
+			'demcjt' => 'sur les demandeurs et conjoints',
+			'nondemcjt' => 'sur les non-demandeurs et non-conjoints',
+		);
+
+		/**
 		* Explications :
 			- personnes_count => comptage du nombre total de personnes en base
 			- personnes_demcjtrsa_count => comptage du nombre total de personnes demandeur ou conjoint RSA
 			- personnes_nondemcjtrsa_count => comptage du nombre total de personnes non-demandeur et non-conjoint RSA
 			- personnes_sansprestationrsa_count => comptage du nombre de personnes sans prestation pour le RSA
 			- personnes_plusieursprestationrsa_count => comptage du nombre de personnes ayant plusieurs prestations pour le RSA
-			
+
 			- demcjtdoublonsmemefoyer => demandeurs et conjoint en doublons dans le même foyer
 			- nondemcjtdoublonsmemefoyer => doublons dans les non-demandeurs et non-conjoints dans le même foyer
 			- demcjtdoublonsfoyerdiffouverts => demandeurs et conjoints en doublons dans des foyers différents dont les droits sont ouverts
 			- nondemcjtdoublonsfoyerdiffouverts => doublons dans les non-demandeurs et non-conjoints dans des foyers différents dont les droits sont ouverts
-			
+
 			- nirdtnai => nir correct, même nir et même date de naissance
 			- npdtnai => même nom, même prénom, même date de naissance
 			- noponnedtnaiergnai => même nom ou prénom ou nom de naissance et même date de naissance et même rang de naissance
-			
+
 			- total_demcjt => total des doublons sur les demandeurs et conjoints
 			- total_nondemcjt => total des doublons sur les non-demandeurs et non-conjoints
 			- total => total des doublons trouvés
 		*/
 
 		public function main() {
+			$body = '';
+
+			// -----------------------------------------------------------------
 			// Initialisation
+			// -----------------------------------------------------------------
+
 			if( $this->count ) {
 				$counts = array();
 				$countQueries = array(
@@ -111,6 +141,14 @@
 				foreach( $countQueries as $key => $countQuery ) {
 					$results = $this->Personne->query( $countQuery );
 					$counts[$key] = Set::classicExtract( $results, '0.0.count' );
+				}
+
+				if( !empty( $counts ) ) {
+					$body .= "<table><tbody>";
+					foreach( $counts as $k => $count ) {
+						$body .= "<tr><th>".$this->_traductions[$k]."</th><td class=\"number\">{$count}</td></tr>";
+					}
+					$body .= "</tbody></table>";
 				}
 
 				debug( $counts );
@@ -248,9 +286,68 @@
 				$countsDoublonsPersonnes['total_demcjt'] = $totalDemCjt;
 				$countsDoublonsPersonnes['total_nondemcjt'] = $totalNonDemCjt;
 				$countsDoublonsPersonnes['total'] = $total;
+
+				//
+				$body .= "<table><tbody>";
+				foreach( $countsDoublonsPersonnes as $k => $count ) {
+					if( strstr( $k, '_' ) !== false ) {
+						list( $l, $m ) = explode( '_', $k );
+						$traduction = $this->_traductions[$l]." ".$this->_traductions[$m];
+					}
+					else {
+						$traduction = $this->_traductions[$k];
+					}
+
+					$body .= "<tr><th>".$traduction."</th><td class=\"number\">{$count}</td></tr>";
+				}
+				$body .= "</tbody></table>";
+			}
+			else {
+				foreach( $countsDoublonsPersonnes as $k => $details ) {
+					if( strstr( '_', $k ) !== false ) {
+						list( $l, $m ) = explode( '_', $k );
+						$traduction = $this->_traductions[$l]." ".$this->_traductions[$m];
+					}
+					else {
+						$traduction = $this->_traductions[$k];
+					}
+
+					if( empty( $traduction ) ) {
+						$traduction = $k;
+					}
+
+					$body .= "<h1>{$traduction}</h1><table><tbody>";
+					foreach( $details as $detail ) {
+						foreach( array( 'id', 'nir', 'dtnai', 'foyer_id' ) AS $field ) {
+							$body .= "<tr><th>{$field}</th><td>{$detail['P1'][$field]}</td><td>{$detail['P2'][$field]}</td></tr>";
+						}
+					}
+					$body .= "</tbody></table>";
+				}
 			}
 
 			debug( $countsDoublonsPersonnes );
+
+			// -----------------------------------------------------------------
+			// Écriture du fichier HTML
+			// -----------------------------------------------------------------
+			$html = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+					"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+					<html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr">
+						<head>
+							<title></title>
+							<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+							<style type="text/css" media="all">
+								body { font-size: 12px; }
+								table { border-collapse: collapse; margin: 0.5em 0; }
+								thead, tbody { border: 3px solid black; }
+								th, td { border: 1px solid black; padding: 0.125em 0.25em; text-align: left; }
+								tr.odd { background: #eee; }
+								td.number { text-align: right; }
+							</style>
+						</head><body>'.$body.'</body></html>';
+
+			file_put_contents( 'dev_doublons.html', $html );
 		}
 
 		/**
