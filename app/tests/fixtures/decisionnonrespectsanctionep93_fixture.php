@@ -16,7 +16,18 @@
 				'commentaire' => null,
 				'created' => null,
 				'modified' => null,
-			)
+			),
+			array(
+				'id' => '2',
+				'nonrespectsanctionep93_id' => '2',
+				'etape' => 'cg',
+				'decision' => null,
+				'montantreduction' => null,
+				'dureesursis' => null,
+				'commentaire' => null,
+				'created' => null,
+				'modified' => null,
+			),
 		);
 	}
 

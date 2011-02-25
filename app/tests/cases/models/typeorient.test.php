@@ -22,7 +22,7 @@
 			$expected = array(
 				'4' => '0',
 				'1' => '36',
-				'5' => '8',
+				'5' => '16',
 				'3' => '2',
 				'2' => '1',
 			);
@@ -38,6 +38,21 @@
 			$result = $this->Typeorient->getIdLevel0($typeorient_id);
 			$this->assertFalse($result);
 		}
+
+		function testIsProOrientation() {
+			$typeorient_id = null;
+			$this->assertFalse($this->Typeorient->isProOrientation($typeorient_id));
+
+			$typeorient_id = 1;
+			$this->assertFalse($this->Typeorient->isProOrientation($typeorient_id));
+
+			$typeorient_id = 2;
+			$this->assertFalse($this->Typeorient->isProOrientation($typeorient_id));
+
+			$typeorient_id = 3;
+			$this->assertTrue($this->Typeorient->isProOrientation($typeorient_id));
+		}
+
 	}
 
 ?>

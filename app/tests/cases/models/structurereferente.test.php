@@ -11,10 +11,12 @@
 			$conditions = null;
 			$expected =  array(
 					'1_2' => 'Assedic Nimes',
+					'5_6' => 'CAF DE ROSNY SOUS BOIS',
+					'5_7' => 'CAF DE SAINT DENIS',
 					'3_4' => 'Conseil Général de l\'Hérault',
 					'2_3' => 'MSA du Gard',
 					'3_5' => 'Organisme ACAL Vauvert',
-					'1_1' => 'Pole emploi Mont Sud',
+					'1_1' => 'Pole emploi Mont Sud',					
 			);
 			$result = $this->Structurereferente->list1Options($conditions);
 			$this->assertEqual($expected, $result);
@@ -23,16 +25,20 @@
 		function testListOptions() {
 			$result = $this->Structurereferente->listOptions();
 			$expected = array(
+				'CAF' => array(
+						'6' => 'CAF DE ROSNY SOUS BOIS',
+						'7' => 'CAF DE SAINT DENIS',
+				),
 				'Emploi' => array(
-						'2' => 'Assedic Nimes',
-						'1' => 'Pole emploi Mont Sud',
+						'4' => 'Conseil Général de l\'Hérault',
+						'5' => 'Organisme ACAL Vauvert',
 					), 
 				'Social' => array(
-						'4' => 'Conseil Général de l\'Hérault', 
-						'5' => 'Organisme ACAL Vauvert', 
+						'3' => 'MSA du Gard', 
 					),
 				'Socioprofessionnelle' => array(
-						'3' => 'MSA du Gard'
+						'1' => 'Pole emploi Mont Sud',
+						'2' => 'Assedic Nimes',
 					),
 				);
 			$this->assertEqual($expected, $result);

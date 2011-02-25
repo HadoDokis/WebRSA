@@ -18,6 +18,7 @@
 				'saisineepreorientsr93' => 'cg',
 				'nonorientationpro58' => 'nontraite',
 				'regressionorientationep58' => 'nontraite',
+				'radiepoleemploiep93' => 'nontraite',
 			),
 			array(
 				'id' => '2',
@@ -31,6 +32,7 @@
 				'saisineepreorientsr93' => 'cg',
 				'nonorientationpro58' => 'nontraite',
 				'regressionorientationep58' => 'nontraite',
+				'radiepoleemploiep93' => 'nontraite',
 			),
 			array(
 				'id' => '3',
@@ -44,6 +46,7 @@
 				'saisineepreorientsr93' => 'cg',
 				'nonorientationpro58' => 'nontraite',
 				'regressionorientationep58' => 'nontraite',
+				'radiepoleemploiep93' => 'nontraite',
 			),
 		);
 	}

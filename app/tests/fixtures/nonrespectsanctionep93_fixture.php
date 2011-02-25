@@ -22,6 +22,22 @@
 				'created' => '2010-11-04',
 				'modified' => '2010-11-04',
 			),
+			array(
+				'id' => '2',
+				'dossierep_id' => '2',
+				'propopdo_id' => null,
+				'orientstruct_id' => '2002',
+				'contratinsertion_id' => '11',
+				'origine' => 'orientstruct',
+				'decision' => null,
+				'rgpassage' => '1',
+				'montantreduction' => null,
+				'dureesursis' => null,
+				'sortienvcontrat' => 0,
+				'active' => 1,
+				'created' => '2010-11-04',
+				'modified' => '2010-11-04',
+			),
 		);
 	}
 
