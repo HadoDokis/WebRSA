@@ -80,7 +80,7 @@ CREATE INDEX decisionsregressionsorientationseps58_referent_id_idx ON decisionsr
 
 
 -- -----------------------------------------------------------------------------
--- 20110221 
+-- 20110221
 -- -----------------------------------------------------------------------------
 SELECT alter_table_drop_column_if_exists( 'public', 'contratsinsertion', 'datesuspensionparticulier' );
 SELECT alter_table_drop_column_if_exists( 'public', 'contratsinsertion', 'dateradiationparticulier' );
@@ -119,6 +119,42 @@ CREATE TABLE decisionsradiespoleemploieps93 (
 COMMENT ON TABLE decisionsradiespoleemploieps93 IS 'Décisions pour la thématique de détection des radiés de Pôle Emploi (CG93)';
 
 CREATE INDEX decisionsradiespoleemploieps93_radiepoleemploiep93_id_idx ON decisionsradiespoleemploieps93 (radiepoleemploiep93_id);
+
+-- -----------------------------------------------------------------------------
+-- 20110222
+-- -----------------------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION public.calcul_cle_nir( TEXT ) RETURNS TEXT AS
+$body$
+	DECLARE
+		p_nir text;
+		cle text;
+		correction BIGINT;
+
+	BEGIN
+		correction:=0;
+		p_nir:=$1;
+
+		IF NOT p_nir ~ '^[0-9]{6}(A|B|[0-9])[0-9]{6}$' THEN
+			RETURN NULL;
+		END IF;
+
+		IF p_nir ~ '^.{6}(A|B)' THEN
+			IF p_nir ~ '^.{6}A' THEN
+				correction:=1000000;
+			ELSE
+				correction:=2000000;
+			END IF;
+			p_nir:=regexp_replace( p_nir, '(A|B)', '0' );
+		END IF;
+
+		cle:=LPAD( CAST( 97 - ( ( CAST( p_nir AS BIGINT ) - correction ) % 97 ) AS VARCHAR(13)), 2, '0' );
+		RETURN cle;
+	END;
+$body$ LANGUAGE plpgsql;
+
+COMMENT ON FUNCTION public.calcul_cle_nir( TEXT ) IS
+	'Calcul de la clé d''un NIR. Retourne NULL si le NIR n''est pas sur 13 caractères (6 chiffres - A, B ou un chiffre - 6 chiffres) ou une chaîne de 2 caractères correspondant à la clé.';
 
 -- *****************************************************************************
 COMMIT;
