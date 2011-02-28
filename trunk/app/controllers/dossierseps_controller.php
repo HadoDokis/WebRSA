@@ -158,96 +158,105 @@
 			}
 
 			$themes = $this->Dossierep->Seanceep->themesTraites($seanceep_id);
-			$listeThemes['OR'] = array();
-			foreach($themes as $theme => $niveauDecision) {
-				$listeThemes['OR'][] = array( 'Dossierep.themeep' => Inflector::tableize( $theme ) );
-			}
-
-			if( empty( $conditionsAdresses['OR'] ) ) {
-				$conditionsAdresses = array();
-			}
-
-			$this->paginate = array(
-				'Dossierep' => array(
-					'fields' => array(
-						'Dossierep.id',
-						'Personne.qual',
-						'Personne.nom',
-						'Personne.prenom',
-						'Seanceep.dateseance',
-						'Dossierep.seanceep_id',
-						'Dossierep.created',
-						'Dossierep.themeep',
-					),
-					'contain' => array(
-						'Seanceep' => array(
-							'Ep'
-						)
-					),
-					'joins' => array(
-						array(
-							'table'      => 'personnes',
-							'alias'      => 'Personne',
-							'type'       => 'INNER',
-							'foreignKey' => false,
-							'conditions' => array( 'Dossierep.personne_id = Personne.id' )
-						),
-						array(
-							'table'      => 'foyers',
-							'alias'      => 'Foyer',
-							'type'       => 'INNER',
-							'foreignKey' => false,
-							'conditions' => array( 'Personne.foyer_id = Foyer.id' )
-						),
-						array(
-							'table'      => 'adressesfoyers',
-							'alias'      => 'Adressefoyer',
-							'type'       => 'INNER',
-							'foreignKey' => false,
-							'conditions' => array( 'Foyer.id = Adressefoyer.foyer_id', 'Adressefoyer.rgadr = \'01\'' )
-						),
-						array(
-							'table'      => 'adresses',
-							'alias'      => 'Adresse',
-							'type'       => 'INNER',
-							'foreignKey' => false,
-							'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
-						),
-					),
-					'conditions' => array(
-						'NOT' => array(
-							'Dossierep.etapedossierep = \'decisionep\'',
-							'Dossierep.etapedossierep = \'decisioncg\'',
-							'Dossierep.etapedossierep = \'traite\'',
-						),
-						$conditionsAdresses,
-						$listeThemes
-					),
-					'limit' => 100,
-					'order' => array( 'Dossierep.created ASC' )
-				)
-			);
-
-			$dossierseps = $this->paginate( $this->Dossierep );
-
-			// INFO: pour avoir le formulaire pré-rempli ... à mettre dans le modèle également ?
-			if( empty( $this->data ) ) {
-				foreach( $dossierseps as $key => $dossierep ) {
-					$dossierseps[$key]['Dossierep']['chosen'] =  ( ( $dossierep['Dossierep']['seanceep_id'] == $seanceep_id ) );
+			$listeThemes = null;
+			if( !empty( $themes ) ) {
+				$listeThemes['OR'] = array();
+				foreach($themes as $theme => $niveauDecision) {
+					$listeThemes['OR'][] = array( 'Dossierep.themeep' => Inflector::tableize( $theme ) );
 				}
-			}
+				$this->set( 'themeEmpty', false );
+				
+				if( empty( $conditionsAdresses['OR'] ) ) {
+					$conditionsAdresses = array();
+				}
 
-			$options = $this->Dossierep->enums();
-			$options['Dossierep']['seanceep_id'] = $this->Dossierep->Seanceep->find(
-				'list',
-				array(
-					'conditions' => array(
-						'Seanceep.finalisee' => null
+				$this->paginate = array(
+					'Dossierep' => array(
+						'fields' => array(
+							'Dossierep.id',
+							'Personne.qual',
+							'Personne.nom',
+							'Personne.prenom',
+							'Seanceep.dateseance',
+							'Dossierep.seanceep_id',
+							'Dossierep.created',
+							'Dossierep.themeep',
+						),
+						'contain' => array(
+							'Seanceep' => array(
+								'Ep'
+							)
+						),
+						'joins' => array(
+							array(
+								'table'      => 'personnes',
+								'alias'      => 'Personne',
+								'type'       => 'INNER',
+								'foreignKey' => false,
+								'conditions' => array( 'Dossierep.personne_id = Personne.id' )
+							),
+							array(
+								'table'      => 'foyers',
+								'alias'      => 'Foyer',
+								'type'       => 'INNER',
+								'foreignKey' => false,
+								'conditions' => array( 'Personne.foyer_id = Foyer.id' )
+							),
+							array(
+								'table'      => 'adressesfoyers',
+								'alias'      => 'Adressefoyer',
+								'type'       => 'INNER',
+								'foreignKey' => false,
+								'conditions' => array( 'Foyer.id = Adressefoyer.foyer_id', 'Adressefoyer.rgadr = \'01\'' )
+							),
+							array(
+								'table'      => 'adresses',
+								'alias'      => 'Adresse',
+								'type'       => 'INNER',
+								'foreignKey' => false,
+								'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
+							),
+						),
+						'conditions' => array(
+							'NOT' => array(
+								'Dossierep.etapedossierep = \'decisionep\'',
+								'Dossierep.etapedossierep = \'decisioncg\'',
+								'Dossierep.etapedossierep = \'traite\'',
+							),
+							$conditionsAdresses,
+							$listeThemes
+						),
+						'limit' => 100,
+						'order' => array( 'Dossierep.created ASC' )
 					)
-				)
-			);
+				);
+
+				$dossierseps = $this->paginate( $this->Dossierep );
+
+				// INFO: pour avoir le formulaire pré-rempli ... à mettre dans le modèle également ?
+				if( empty( $this->data ) ) {
+					foreach( $dossierseps as $key => $dossierep ) {
+						$dossierseps[$key]['Dossierep']['chosen'] =  ( ( $dossierep['Dossierep']['seanceep_id'] == $seanceep_id ) );
+					}
+				}
+
+				$options = $this->Dossierep->enums();
+				$options['Dossierep']['seanceep_id'] = $this->Dossierep->Seanceep->find(
+					'list',
+					array(
+						'conditions' => array(
+							'Seanceep.finalisee' => null
+						)
+					)
+				);
+				
+			}
+			else {
+				$this->set( 'themeEmpty', true );
+			}
 
 			$this->set( compact( 'options', 'dossierseps', 'seanceep' ) );
+			$this->set( 'seanceep_id', $seanceep_id);
 		}
 
 		public function decisioncg ( $dossierep_id ) {

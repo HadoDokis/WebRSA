@@ -70,6 +70,22 @@
         </div>
 
     <?php echo $xform->end( 'Enregistrer' );?>
+    
+    <?php
+
+		echo $default->button(
+			'back',
+			array(
+				'controller' => 'seanceseps',
+				'action'     => 'view',
+				$seance_id
+			),
+			array(
+				'id' => 'Back'
+			)
+		);
+    
+    ?>
 
 <script type="text/javascript">
     document.observe("dom:loaded", function() {

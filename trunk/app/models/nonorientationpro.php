@@ -320,6 +320,14 @@
 		}
 
 		/**
+		* INFO: Fonction inutile dans cette saisine donc elle retourne simplement true
+		*/
+
+		public function verrouiller( $seanceep_id, $etape ) {
+			return true;
+		}
+
+		/**
 		* 
 		*/
 

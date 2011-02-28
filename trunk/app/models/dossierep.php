@@ -168,6 +168,19 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Radiepoleemploiep58' => array(
+				'className' => 'Radiepoleemploiep58',
+				'foreignKey' => 'dossierep_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 		);
 
 		/**

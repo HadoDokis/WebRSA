@@ -71,6 +71,9 @@ msgstr "Orientation du professionnelle vers le social"
 msgid "ENUM::THEMEEP::radiespoleemploieps93"
 msgstr "Radiation de Pôle Emploi"
 
+msgid "ENUM::THEMEEP::radiespoleemploieps58"
+msgstr "Radiation de Pôle Emploi"
+
 #
 
 msgid "ENUM::ETAPEDOSSIEREP::cree"

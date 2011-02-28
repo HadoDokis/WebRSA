@@ -9,22 +9,40 @@
 </h1>
 
 <?php
-	echo $default->index(
-		$dossierseps,
-		array(
-			'Dossierep.chosen' => array( 'input' => 'checkbox' ),
-			'Personne.qual',
-			'Personne.nom',
-			'Personne.prenom',
-			'Dossierep.created',
-			'Dossierep.themeep',
-		),
-		array(
-			'cohorte' => true,
-			'options' => $options,
-			'hidden' => array( 'Dossierep.id' ),
-			'paginate' => 'Dossierep'
-		)
-	);
+		
+	if ( isset( $themeEmpty ) && $themeEmpty == true ) {
+		echo '<p class="notice">Veuillez attribuer des thème à l\'EP gérant la commission avant.</p>';
+	}
+	else {
+		echo $default->index(
+			$dossierseps,
+			array(
+				'Dossierep.chosen' => array( 'input' => 'checkbox' ),
+				'Personne.qual',
+				'Personne.nom',
+				'Personne.prenom',
+				'Dossierep.created',
+				'Dossierep.themeep',
+			),
+			array(
+				'cohorte' => true,
+				'options' => $options,
+				'hidden' => array( 'Dossierep.id' ),
+				'paginate' => 'Dossierep'
+			)
+		);
 // 	debug( $dossierseps );
+	}
+
+    echo $default->button(
+		'back',
+        array(
+        	'controller' => 'seanceseps',
+        	'action'     => 'view',
+        	$seanceep_id
+        ),
+        array(
+        	'id' => 'Back'
+        )
+	);
 ?>

@@ -281,7 +281,7 @@
 			//$modelName = Inflector::classify( Inflector::tableize( $name ) );
 			$modelName = Inflector::classify( Inflector::underscore( $name ) );
 			$cohorte = Set::classicExtract( $cohorteParams, 'cohorte' );
-			$domain = Inflector::singularize( Inflector::tableize( $modelName ) );
+			$domain = isset( $cohorteParams['domain'] ) ? $cohorteParams['domain'] : Inflector::singularize( Inflector::tableize( $modelName ) );
 			///
 
 			$cells = Set::normalize( $cells );

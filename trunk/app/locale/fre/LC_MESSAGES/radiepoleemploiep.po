@@ -25,5 +25,8 @@ msgstr ""
 msgid "Historiqueetatpe.chosen"
 msgstr "Sélectionné ?"
 
-msgid "Radiespoleemploieps93::selectionradies"
+msgid "Radiespoleemploieps::selectionradies"
 msgstr "Sélection des allocataires radiés de Pôle Emploi"
+
+msgid "Radiespoleemploiep::index::empty"
+msgstr "Aucun dossier ne peut actuellement passer en EP"
