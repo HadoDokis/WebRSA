@@ -3,6 +3,9 @@
 	*
 	*/
 
+	App::import( 'Core', 'Router' );
+	define( 'FULL_BASE_URL', Configure::read( 'FULL_BASE_URL' ) );
+
     class DevDoublonsShell extends AppShell
     {
 		public $defaultParams = array(
@@ -37,7 +40,7 @@
 			$database = $this->Personne->getDataSource( $this->Personne->useDbConfig )->config['database'];
 
 			$this->out();
-			$this->out( "Shell de vérification de doublons, {$database}" );
+			$this->out( "Shell de recherche des doublons développeurs 2011, {$database}" );
 			$this->out();
 			$this->hr();
 		}
@@ -66,6 +69,22 @@
 			'demcjt' => 'sur les demandeurs et conjoints',
 			'nondemcjt' => 'sur les non-demandeurs et non-conjoints',
 		);
+
+		/**
+		*
+		*/
+
+		protected function _translateKey( $key ) {
+			if( strstr( $key, '_' ) !== false ) {
+				list( $keyPart1, $keyPart2 ) = explode( '_', $key );
+				$translation = $this->_traductions[$keyPart1]." ".$this->_traductions[$keyPart2];
+			}
+			else {
+				$translation = $this->_traductions[$key];
+			}
+
+			return $translation;
+		}
 
 		/**
 		* Explications :
@@ -139,6 +158,7 @@
 				);
 
 				foreach( $countQueries as $key => $countQuery ) {
+					$this->out( sprintf( "Requête %s", $this->_translateKey( $key ) ) );
 					$results = $this->Personne->query( $countQuery );
 					$counts[$key] = Set::classicExtract( $results, '0.0.count' );
 				}
@@ -151,7 +171,7 @@
 					$body .= "</tbody></table>";
 				}
 
-				debug( $counts );
+// 				debug( $counts );
 			}
 
 			// Doublons personnes
@@ -258,6 +278,7 @@
 						$sql .= " LIMIT {$this->limit}";
 					}
 
+					$this->out( sprintf( "Requête %s", $this->_translateKey( "{$keyQuery}_$keyCondition" ) ) );
 					$results = $this->Personne->query( $sql );
 
 					if( $this->count ) {
@@ -304,29 +325,53 @@
 			}
 			else {
 				foreach( $countsDoublonsPersonnes as $k => $details ) {
-					if( strstr( '_', $k ) !== false ) {
-						list( $l, $m ) = explode( '_', $k );
-						$traduction = $this->_traductions[$l]." ".$this->_traductions[$m];
-					}
-					else {
-						$traduction = $this->_traductions[$k];
-					}
+					$traduction = $this->_translateKey( $k );
 
 					if( empty( $traduction ) ) {
 						$traduction = $k;
 					}
 
-					$body .= "<h1>{$traduction}</h1><table><tbody>";
-					foreach( $details as $detail ) {
-						foreach( array( 'id', 'nir', 'dtnai', 'foyer_id' ) AS $field ) {
-							$body .= "<tr><th>{$field}</th><td>{$detail['P1'][$field]}</td><td>{$detail['P2'][$field]}</td></tr>";
-						}
+					$personnes = array( 'P1', 'P2' );
+					$fields = array( 'id', 'nir', 'dtnai', 'foyer_id' );
+
+					$body .= "<h1>{$traduction}</h1>";
+					if( empty( $details ) ) {
+						$body .= "<p class=\"notice\">Aucun enregistrement détecté pour ce cas.</p>";
 					}
-					$body .= "</tbody></table>";
+					else {
+						$body .= "<table>";
+						$body .= "<thead><tr>";
+						foreach( $personnes AS $p ) {
+							foreach( $fields AS $field ) {
+								$body .= "<th>{$p}.{$field}</th>";
+							}
+						}
+						$body .= "</tr></thead>";
+						$body .= "<tbody>";
+						foreach( $details as $detail ) {
+							$body .= "<tr>";
+							foreach( $personnes AS $p ) {
+								foreach( $fields AS $field ) {
+									$value = $detail[$p][$field];
+
+									if( $field == 'id' ) {
+										$value = '<a href="'.Router::url( array( 'controller' => 'personnes', 'action' => 'view', $value ), true ).'">'.$value.'</a>';
+									}
+									else if( $field == 'foyer_id' ) {
+										$value = '<a href="'.Router::url( array( 'controller' => 'personnes', 'action' => 'index', $value ), true ).'">'.$value.'</a>';
+									}
+
+									$body .= "<td>{$value}</td>";
+								}
+							}
+							$body .= "</tr>";
+						}
+						$body .= "</tbody></table>";
+					}
 				}
 			}
 
-			debug( $countsDoublonsPersonnes );
+// 			debug( $countsDoublonsPersonnes );
 
 			// -----------------------------------------------------------------
 			// Écriture du fichier HTML
@@ -347,7 +392,15 @@
 							</style>
 						</head><body>'.$body.'</body></html>';
 
-			file_put_contents( 'dev_doublons.html', $html );
+			$filename = APP.'..'.DS.'dev_doublons_'.( $this->count ? 'count' : 'sample' ).'.html';
+			$filename = preg_replace( '/\/[^\/]+\/\.\.\//', '/', $filename );
+
+			if( file_put_contents( $filename, $html ) !== false ) {
+				$this->out( "Le fichier de rapport {$filename} vient d'être crée." );
+			}
+			else {
+				$this->err( "Le fichier de rapport {$filename} n'a pas pu être crée." );
+			}
 		}
 
 		/**

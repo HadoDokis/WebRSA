@@ -2,6 +2,13 @@
 // 	define( 'GEDOOO_WSDL', 'http://gedooo.rsa:8080/axis2/services/OfficeService?wsdl' );
 	define( 'GEDOOO_WSDL', 'http://gedooo.services.adullact.org:8080/axis2/services/OfficeService?wsdl' );
 
+	/**
+	* Le chemin complet vers la base de l'application (utilisé par certains shells)
+	*
+	* @default: null
+	*/
+	Configure::write( 'FULL_BASE_URL', 'http://localhost/webrsa/trunk' );
+
     Configure::write( 'Cg.departement', 58 );
     Configure::write( 'Utilisateurs.multilogin', false );
     Configure::write( 'with_parentid', false ); // true = cg66

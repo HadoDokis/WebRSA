@@ -5,7 +5,7 @@
 
 	App::import( 'Core', 'ConnectionManager' ); // CakePHP 1.2 fix
 	App::import( 'Core', 'Router' );
-	define( 'FULL_BASE_URL', 'http://localhost/adullact/webrsa/trunk' ); // FIXME -> à paramétrer
+	define( 'FULL_BASE_URL', Configure::read( 'FULL_BASE_URL' ) );
 
     class AnomaliesrShell extends AppShell
     {
