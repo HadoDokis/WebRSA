@@ -236,7 +236,7 @@
 							$dossier = $this->Apre->Personne->Foyer->Dossier->findByNumdemrsa( $numdemrsa, null, null, -1 );
 
 							if( $validRib && !empty( $dossier ) ) {
-								$foyer = $this->Apre->Personne->Foyer->findByDossierRsaId( $dossier['Dossier']['id'], null, null, -1 );
+								$foyer = $this->Apre->Personne->Foyer->findByDossierId( $dossier['Dossier']['id'], null, null, -1 );
 
 								if( !empty( $foyer ) ) {
 									$nom = strtoupper( replace_accents( trim( $parts[$this->fields['nomact']], '"' ) ) );
