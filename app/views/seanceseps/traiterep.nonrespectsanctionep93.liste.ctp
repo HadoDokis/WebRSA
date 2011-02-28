@@ -1,21 +1,3 @@
-<!-- <h2>Non respect des obligations et sanctions</h2> -->
-
-<!--<script type="text/javascript">
-	document.observe("dom:loaded", function() {
-		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
-		dependantSelect( 'Nvsrepreorientsr93<?php echo $i?>StructurereferenteId', 'Nvsrepreorientsr93<?php echo $i?>TypeorientId' );
-		try { $( 'Nvsrepreorientsr93<?php echo $i?>StructurereferenteId' ).onchange(); } catch(id) { }
-
-		observeDisableFieldsOnValue(
-			'Nvsrepreorientsr93<?php echo $i;?>Decision',
-			[ 'Nvsrepreorientsr93<?php echo $i;?>TypeorientId', 'Nvsrepreorientsr93<?php echo $i;?>StructurereferenteId' ],
-			'accepte',
-			false
-		);
-		<?php endfor;?>
-	});
-</script>-->
-
 <?php
 // 	echo $form->create( null, array( 'url' => Router::url( null, true ) ) );
 	echo '<table><thead>
@@ -102,3 +84,21 @@
 // 	debug( $seanceep );
 // 	debug( $options );
 ?>
+
+<!-- <h2>Non respect des obligations et sanctions</h2> -->
+
+<!--<script type="text/javascript">
+	document.observe("dom:loaded", function() {
+		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
+		dependantSelect( 'Nvsrepreorientsr93<?php echo $i?>StructurereferenteId', 'Nvsrepreorientsr93<?php echo $i?>TypeorientId' );
+		try { $( 'Nvsrepreorientsr93<?php echo $i?>StructurereferenteId' ).onchange(); } catch(id) { }
+
+		observeDisableFieldsOnValue(
+			'Nvsrepreorientsr93<?php echo $i;?>Decision',
+			[ 'Nvsrepreorientsr93<?php echo $i;?>TypeorientId', 'Nvsrepreorientsr93<?php echo $i;?>StructurereferenteId' ],
+			'accepte',
+			false
+		);
+		<?php endfor;?>
+	});
+</script>-->

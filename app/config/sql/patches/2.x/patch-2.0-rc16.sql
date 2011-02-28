@@ -15,6 +15,8 @@ DROP TABLE IF EXISTS regressionsorientationseps58 CASCADE;
 DROP TABLE IF EXISTS decisionsregressionsorientationseps58 CASCADE;
 DROP TABLE IF EXISTS radiespoleemploieps93 CASCADE;
 DROP TABLE IF EXISTS decisionsradiespoleemploieps93 CASCADE;
+DROP TABLE IF EXISTS radiespoleemploieps58 CASCADE;
+DROP TABLE IF EXISTS decisionsradiespoleemploieps58 CASCADE;
 
 DROP INDEX IF EXISTS dsps_personne_id_idx;
 CREATE INDEX dsps_personne_id_idx ON dsps(personne_id);
@@ -27,12 +29,16 @@ DROP INDEX IF EXISTS decisionsregressionsorientationseps58_regressionorientation
 DROP INDEX IF EXISTS decisionsregressionsorientationseps58_typeorient_id_idx;
 DROP INDEX IF EXISTS decisionsregressionsorientationseps58_structurereferente_id_idx;
 DROP INDEX IF EXISTS decisionsregressionsorientationseps58_referent_id_idx;
+DROP INDEX IF EXISTS radiespoleemploieps93_historiqueetatpe_id_idx;
+DROP INDEX IF EXISTS decisionsradiespoleemploieps93_radiepoleemploiep93_id_idx;
+DROP INDEX IF EXISTS radiespoleemploieps58_historiqueetatpe_id_idx;
+DROP INDEX IF EXISTS decisionsradiespoleemploieps58_radiepoleemploiep58_id_idx;
 
 -- *****************************************************************************
 
 ALTER TABLE dossierseps ALTER COLUMN themeep TYPE TEXT;
 DROP TYPE IF EXISTS TYPE_THEMEEP;
-CREATE TYPE TYPE_THEMEEP AS ENUM ( 'saisinesepsreorientsrs93', 'saisinesepsbilansparcours66', /*'suspensionsreductionsallocations93',*/ 'saisinesepdspdos66', 'nonrespectssanctionseps93', 'defautsinsertionseps66', 'nonorientationspros58', 'regressionsorientationseps58', 'radiespoleemploieps93' );
+CREATE TYPE TYPE_THEMEEP AS ENUM ( 'saisinesepsreorientsrs93', 'saisinesepsbilansparcours66', /*'suspensionsreductionsallocations93',*/ 'saisinesepdspdos66', 'nonrespectssanctionseps93', 'defautsinsertionseps66', 'nonorientationspros58', 'regressionsorientationseps58', 'radiespoleemploieps93', 'radiespoleemploieps58' );
 ALTER TABLE dossierseps ALTER COLUMN themeep TYPE TYPE_THEMEEP USING CAST(themeep AS TYPE_THEMEEP);
 
 -- *****************************************************************************
@@ -155,6 +161,39 @@ $body$ LANGUAGE plpgsql;
 
 COMMENT ON FUNCTION public.calcul_cle_nir( TEXT ) IS
 	'Calcul de la clé d''un NIR. Retourne NULL si le NIR n''est pas sur 13 caractères (6 chiffres - A, B ou un chiffre - 6 chiffres) ou une chaîne de 2 caractères correspondant à la clé.';
+
+-- -----------------------------------------------------------------------------
+-- 20110228
+-- -----------------------------------------------------------------------------
+CREATE TABLE radiespoleemploieps58 (
+	id      				SERIAL NOT NULL PRIMARY KEY,
+	dossierep_id			INTEGER DEFAULT NULL REFERENCES dossierseps(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	historiqueetatpe_id		INTEGER DEFAULT NULL REFERENCES historiqueetatspe(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	commentaire				TEXT DEFAULT NULL,
+	created					TIMESTAMP WITHOUT TIME ZONE,
+	modified				TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE radiespoleemploieps58 IS 'Thématique de détection des radiés de Pôle Emploi (CG58)';
+
+CREATE INDEX radiespoleemploieps58_historiqueetatpe_id_idx ON radiespoleemploieps58 (historiqueetatpe_id);
+
+SELECT add_missing_table_field ('public', 'eps', 'radiepoleemploiep58', 'TYPE_NIVEAUDECISIONEP');
+ALTER TABLE eps ALTER COLUMN radiepoleemploiep58 SET DEFAULT 'nontraite';
+UPDATE eps SET radiepoleemploiep58 = 'nontraite' WHERE radiepoleemploiep58 IS NULL;
+ALTER TABLE eps ALTER COLUMN radiepoleemploiep58 SET NOT NULL;
+
+CREATE TABLE decisionsradiespoleemploieps58 (
+	id      						SERIAL NOT NULL PRIMARY KEY,
+	radiepoleemploiep58_id			INTEGER NOT NULL REFERENCES radiespoleemploieps58(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	etape							TYPE_ETAPEDECISIONEP NOT NULL,
+	decision						TYPE_DECISIONSANCTIONEP93 DEFAULT NULL,
+	commentaire						TEXT DEFAULT NULL,
+	created							TIMESTAMP WITHOUT TIME ZONE,
+	modified						TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE decisionsradiespoleemploieps58 IS 'Décisions pour la thématique de détection des radiés de Pôle Emploi (CG58)';
+
+CREATE INDEX decisionsradiespoleemploieps58_radiepoleemploiep58_id_idx ON decisionsradiespoleemploieps58 (radiepoleemploiep58_id);
 
 -- *****************************************************************************
 COMMIT;

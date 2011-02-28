@@ -20,7 +20,8 @@
 					'radiepoleemploiep93',
 					// Thèmes 58
 					'nonorientationpro58',
-					'regressionorientationep58'
+					'regressionorientationep58',
+					'radiepoleemploiep58'
 				)
 			)
 		);

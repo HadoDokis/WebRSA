@@ -1,16 +1,16 @@
 <?php
 	App::import( 'Model', 'Radiepoleemploiep' );
 	
-	class Radiepoleemploiep93 extends Radiepoleemploiep
+	class Radiepoleemploiep58 extends Radiepoleemploiep
 	{
-		public $name = 'Radiepoleemploiep93';
+		public $name = 'Radiepoleemploiep58';
 		
-		public $decisionName = 'Decisonradiepoleemploiep93';
+		public $decisionName = 'Decisionradiepoleemploiep58';
 
 		public $hasMany = array(
-			'Decisionradiepoleemploiep93' => array(
-				'className' => 'Decisionradiepoleemploiep93',
-				'foreignKey' => 'radiepoleemploiep93_id',
+			'Decisionradiepoleemploiep58' => array(
+				'className' => 'Decisionradiepoleemploiep58',
+				'foreignKey' => 'radiepoleemploiep58_id',
 				'dependent' => true,
 				'conditions' => '',
 				'fields' => '',
@@ -22,6 +22,5 @@
 				'counterQuery' => ''
 			),
 		);
-		
 	}
 ?>

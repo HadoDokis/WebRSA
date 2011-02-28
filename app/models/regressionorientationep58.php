@@ -34,17 +34,26 @@
 					'conditions' => array(
 						'Seanceep.id' => $seanceep_id
 					),
+					'contain' => false
+				)
+			);
+			list( $dateseance, $heureseance ) = explode ( ' ', $seanceep['Seanceep']['dateseance'] );
+			
+			$dossierseps = $this->Dossierep->find(
+				'all',
+				array(
+					'conditions' => array(
+						'seanceep_id' => $seanceep_id,
+						'themeep' => 'regressionsorientationseps58'
+					),
 					'contain' => array(
-						'Dossierep' => array(
-							'Regressionorientationep58' => array(
-								'Decisionregressionorientationep58'
-							)
+						'Regressionorientationep58' => array(
+							'Decisionregressionorientationep58'
 						)
 					)
 				)
 			);
-			list( $dateseance, $heureseance ) = explode ( ' ', $seanceep['Seanceep']['dateseance'] );
-			foreach( $seanceep['Dossierep'] as $dossierep ) {
+			foreach( $dossierseps as $dossierep ) {
 				$orientstruct = array(
 					'Orientstruct' => array(
 						'personne_id' => $dossierep['personne_id'],

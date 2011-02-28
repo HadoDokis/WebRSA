@@ -30,6 +30,7 @@
 				$this->Seanceep->Dossierep->Defautinsertionep66->enums(),
 				$this->Seanceep->Dossierep->Nonorientationpro58->Decisionnonorientationpro58->enums(),
 				$this->Seanceep->Dossierep->Radiepoleemploiep93->Decisionradiepoleemploiep93->enums(),
+				$this->Seanceep->Dossierep->Radiepoleemploiep58->Decisionradiepoleemploiep58->enums(),
 				$this->Seanceep->Dossierep->enums(),
 				$this->Seanceep->enums(),
 				$this->Seanceep->MembreepSeanceep->enums(),
