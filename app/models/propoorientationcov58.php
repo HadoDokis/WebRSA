@@ -261,8 +261,8 @@
 					'etatorient' => 'decision'
 				)
 			);
-			$success = $this->Dossiercov58->Personne->Orientstruct->save($orientstruct) && $success;
-// 			$success = $this->Gedooo->mkOrientstructPdf( $this->Dossiercov58->Personne->Orientstruct->getLastInsertId() ) && $success;
+			$success = $this->Dossiercov58->Personne->Orientstruct->save( $orientstruct ) && $success;
+			$success = $this->Dossiercov58->Personne->Orientstruct->generatePdf( $this->Dossiercov58->Personne->Orientstruct->id, $dossier['Propoorientationcov58']['user_id'] ) && $success;
 			
 			return $success;
 		}

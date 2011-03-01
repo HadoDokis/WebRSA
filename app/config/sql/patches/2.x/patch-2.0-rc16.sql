@@ -33,6 +33,7 @@ DROP INDEX IF EXISTS radiespoleemploieps93_historiqueetatpe_id_idx;
 DROP INDEX IF EXISTS decisionsradiespoleemploieps93_radiepoleemploiep93_id_idx;
 DROP INDEX IF EXISTS radiespoleemploieps58_historiqueetatpe_id_idx;
 DROP INDEX IF EXISTS decisionsradiespoleemploieps58_radiepoleemploiep58_id_idx;
+DROP INDEX IF EXISTS regressionsorientationseps58_user_id_idx;
 
 -- *****************************************************************************
 
@@ -50,6 +51,7 @@ CREATE TABLE regressionsorientationseps58 (
 	structurereferente_id	INTEGER NOT NULL REFERENCES structuresreferentes(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	datedemande				DATE NOT NULL,
 	referent_id				INTEGER DEFAULT NULL REFERENCES referents(id) ON DELETE SET NULL ON UPDATE CASCADE,
+	user_id					INTEGER DEFAULT NULL REFERENCES users(id) ON DELETE SET NULL ON UPDATE CASCADE,
 	commentaire				TEXT DEFAULT NULL,
 	created					TIMESTAMP WITHOUT TIME ZONE,
 	modified				TIMESTAMP WITHOUT TIME ZONE
@@ -60,6 +62,7 @@ CREATE INDEX regressionsorientationseps58_dossierep_id_idx ON regressionsorienta
 CREATE INDEX regressionsorientationseps58_typeorient_id_idx ON regressionsorientationseps58 (typeorient_id);
 CREATE INDEX regressionsorientationseps58_structurereferente_id_idx ON regressionsorientationseps58 (structurereferente_id);
 CREATE INDEX regressionsorientationseps58_referent_id_idx ON regressionsorientationseps58 (referent_id);
+CREATE INDEX regressionsorientationseps58_user_id_idx ON regressionsorientationseps58 (user_id);
 
 SELECT add_missing_table_field ('public', 'eps', 'regressionorientationep58', 'TYPE_NIVEAUDECISIONEP');
 ALTER TABLE eps ALTER COLUMN regressionorientationep58 SET DEFAULT 'nontraite';
@@ -194,6 +197,14 @@ CREATE TABLE decisionsradiespoleemploieps58 (
 COMMENT ON TABLE decisionsradiespoleemploieps58 IS 'Décisions pour la thématique de détection des radiés de Pôle Emploi (CG58)';
 
 CREATE INDEX decisionsradiespoleemploieps58_radiepoleemploiep58_id_idx ON decisionsradiespoleemploieps58 (radiepoleemploiep58_id);
+
+-- -----------------------------------------------------------------------------
+-- 20110301
+-- -----------------------------------------------------------------------------
+SELECT add_missing_table_field ('public', 'proposorientationscovs58', 'user_id', 'integer');
+ALTER TABLE proposorientationscovs58 ADD CONSTRAINT proposorientationscovs58_user_id_fkey FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE;
+-- FIXME : à rendre not null !!!
+-- ALTER TABLE proposorientationscovs58 ALTER COLUMN user_id SET NOT NULL; 
 
 -- *****************************************************************************
 COMMIT;

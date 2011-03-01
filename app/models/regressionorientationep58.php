@@ -69,7 +69,7 @@
 				);
 				
 				$success = $this->Structurereferente->Orientstruct->save( $orientstruct ) && $success;
-// 				$success = $this->Gedooo->mkOrientstructPdf( $this->Dossiercov58->Personne->Orientstruct->getLastInsertId() ) && $success;
+				$success = $this->Structurereferente->Orientstruct->generatePdf( $this->Structurereferente->Orientstruct->id, $dossier['Regressionorientationep58']['user_id'] ) && $success;
 			}
 			
 			return $success;
