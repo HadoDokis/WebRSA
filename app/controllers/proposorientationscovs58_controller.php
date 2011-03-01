@@ -57,8 +57,6 @@
 						$regressionorientationep58['Regressionorientationep58']['referent_id'] = $referent_id;
 					}
 					
-					$regressionorientationep58['Regressionorientationep58']['datedemande'] = $regressionorientationep58['Regressionorientationep58']['date_propo'];
-					
 					$saved = $this->Propoorientationcov58->Structurereferente->Regressionorientationep58->save( $regressionorientationep58 ) && $saved;
 				}
 				else {
