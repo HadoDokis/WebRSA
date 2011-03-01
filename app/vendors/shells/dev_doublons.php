@@ -75,12 +75,20 @@
 		*/
 
 		protected function _translateKey( $key ) {
+			$translation = null;
 			if( strstr( $key, '_' ) !== false ) {
 				list( $keyPart1, $keyPart2 ) = explode( '_', $key );
-				$translation = $this->_traductions[$keyPart1]." ".$this->_traductions[$keyPart2];
+				if( isset( $this->_traductions[$keyPart1] ) && isset( $this->_traductions[$keyPart2] ) ) {
+					$translation = $this->_traductions[$keyPart1]." ".$this->_traductions[$keyPart2];
+				}
 			}
-			else {
+
+			if( empty( $translation ) ) {
 				$translation = $this->_traductions[$key];
+			}
+
+			if( empty( $translation ) ) {
+				$translation = $key;
 			}
 
 			return $translation;
