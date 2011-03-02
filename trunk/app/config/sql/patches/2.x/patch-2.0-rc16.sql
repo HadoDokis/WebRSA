@@ -206,6 +206,14 @@ ALTER TABLE proposorientationscovs58 ADD CONSTRAINT proposorientationscovs58_use
 -- FIXME : à rendre not null !!!
 -- ALTER TABLE proposorientationscovs58 ALTER COLUMN user_id SET NOT NULL; 
 
+
+
+-- -----------------------------------------------------------------------------
+-- 20110302
+-- -----------------------------------------------------------------------------
+SELECT alter_table_drop_column_if_exists( 'public', 'contratsinsertion', 'faitsuitea' );
+ALTER TABLE contratsinsertion ADD COLUMN faitsuitea type_booleannumber DEFAULT NULL;
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

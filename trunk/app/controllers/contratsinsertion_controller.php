@@ -183,6 +183,18 @@
 			// Recherche du nombre de référent lié au parcours de la personne
 			// Si aucun alors message d'erreur signalant l'absence de référent (cg66)
 			if( Configure::read( 'nom_form_ci_cg' ) ) {
+                $orientstruct = $this->Orientstruct->find(
+                    'count',
+                    array(
+                        'conditions' => array(
+                            'Orientstruct.personne_id' => $personne_id,
+                            'Orientstruct.statut_orient' => 'Orienté'
+                        ),
+                        'recursive' => -1
+                    )
+                );
+                $this->set( compact( 'orientstruct' ) );
+
 				$persreferent = $this->PersonneReferent->find(
 					'count',
 					array(
@@ -448,6 +460,7 @@
 				$tc = Set::classicExtract( $contratinsertion, 'Contratinsertion.num_contrat' );
 			}
 			$this->set( 'nbContratsPrecedents',  $nbContratsPrecedents );
+			
 			/**
 			*   Détails des précédents contrats
 			*/
@@ -473,7 +486,6 @@
 				)
 			);
 			$this->set( 'lastContrat',  $lastContrat );
-
 
 			/// Recherche du type d'orientation
 			$orientstruct = $this->Contratinsertion->Structurereferente->Orientstruct->find(
@@ -501,7 +513,6 @@
 					'recursive' => -1
 				)
 			);
-			//$this->set( 'personne_referent', $personne_referent );
 
 			$structures = $this->Structurereferente->listOptions();
 			$referents = $this->Referent->listOptions();
@@ -519,7 +530,41 @@
 			$this->set( 'dossier_id', $dossier_id );
 
 
-			//On ajout l'ID de l'utilisateur connecté afind e récupérer son service instructeur
+
+            /**
+            *   Utilisé pour les dates de suspension et de radiation
+            *   Si les dates ne sont pas présentes en base, elles ne seront pas affichées
+            *   Situation dossier rsa : dtclorsa -> date de radiation
+            *   Suspension droit : ddsusdrorsa -> date de suspension
+            */
+            $situationdossierrsa = $this->Contratinsertion->Personne->Foyer->Dossier->Situationdossierrsa->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Situationdossierrsa.dossier_id' => $dossier_id
+                    ),
+                    'recursive' => -1
+                )
+            );
+            $situationdossierrsa_id = Set::classicExtract( $situationdossierrsa, 'Situationdossierrsa.id' );
+            $suspension = $this->Contratinsertion->Personne->Foyer->Dossier->Situationdossierrsa->Suspensiondroit->find(
+                'all',
+                array(
+                    'fields' => array(
+                        'Suspensiondroit.ddsusdrorsa'
+                    ),
+                    'conditions' => array(
+                        'Suspensiondroit.situationdossierrsa_id' => $situationdossierrsa_id
+                    ),
+                    'recursive' => -1,
+                    'order' => 'Suspensiondroit.ddsusdrorsa DESC'
+                )
+            );
+            $this->set( compact( 'situationdossierrsa', 'suspension' ) );
+
+// debug($suspension);
+
+            //On ajout l'ID de l'utilisateur connecté afind e récupérer son service instructeur
 			$personne = $this->Contratinsertion->Personne->newDetailsCi( $personne_id, $this->Session->read( 'Auth.User.id' ) );
 			$this->set( 'personne', $personne );
 
@@ -559,6 +604,18 @@
 					}
 				}
 
+				/**
+                *   Utilisé pour les dates de suspension et de radiation
+                *   Si les dates ne sont pas présentes en base, elles ne seront pas affichées
+                *   Situation dossier rsa : dtclorsa -> date de radiation
+                *   Suspension droit : ddsusdrorsa -> date de suspension
+                */
+                if( isset( $situationdossierrsa ) ){
+                    $this->data['Contratinsertion']['dateradiationparticulier'] = $situationdossierrsa['Situationdossierrsa']['dtclorsa'];
+                }
+                if( isset( $suspension ) ){
+                    $this->data['Contratinsertion']['datesuspensionparticulier'] = $suspension[0]['Suspensiondroit']['ddsusdrorsa'];
+                }
 				$success = $this->Contratinsertion->save( $this->data );
 
 				if( Configure::read( 'nom_form_ci_cg' ) != 'cg66' ) {
@@ -753,7 +810,7 @@
 			}
 // debug($this->data);
 			$this->Contratinsertion->commit();
-			$this->_setOptions();
+            $this->_setOptions();
 			$this->set( compact( 'structures', 'referents' ) );
 
 			if( Configure::read( 'nom_form_ci_cg' ) == 'cg58' ) {
@@ -769,6 +826,7 @@
 		*/
 
 		public function valider( $contratinsertion_id = null ) {
+
 			$contratinsertion = $this->Contratinsertion->find(
 				'first',
 				array(
@@ -776,6 +834,7 @@
 						'Contratinsertion.id',
 						'Contratinsertion.personne_id',
 						'Contratinsertion.structurereferente_id',
+						'Contratinsertion.forme_ci',
 						'Contratinsertion.observ_ci',
 						'Contratinsertion.datevalidation_ci',
 						'Contratinsertion.decision_ci',
@@ -787,6 +846,7 @@
 				)
 			);
 			$this->assert( !empty( $contratinsertion ), 'invalidParameter' );
+			$this->set( 'contratinsertion', $contratinsertion );
 
 			$this->set( 'personne_id', $contratinsertion['Contratinsertion']['personne_id'] );
 

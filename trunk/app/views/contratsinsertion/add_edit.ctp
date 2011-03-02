@@ -33,12 +33,6 @@
             echo $form->create( 'Contratinsertion', array( 'type' => 'post', 'id' => 'testform', 'url' => Router::url( null, true ) ) );
             echo '<div>';
             echo $form->input( 'Contratinsertion.id', array( 'type' => 'hidden', 'value' => '' ) );
-//             if( empty( $orientstruct ) && empty( $personne_referent ) ) {
-//             echo $form->input( 'Contratinsertion.structurereferente_id', array( 'type' => 'hidden', 'id' => 'structId', 'value' => Set::classicExtract( $this->data, 'Structurereferente.id' ) ) );
-//             }
-//             else{
-//                 echo $form->input( 'Contratinsertion.structurereferente_id', array( 'type' => 'hidden', 'id' => 'structId', 'value' => Set::classicExtract( $struct, 'Structurereferente.id' ) ) );
-//             }
 
             echo $form->input( 'Contratinsertion.personne_id', array( 'type' => 'hidden', 'value' => Set::classicExtract( $personne, 'Personne.id' ) ) );
             echo $form->input( 'Contratinsertion.rg_ci', array( 'type' => 'hidden'/*, 'value' => '' */) );
@@ -51,8 +45,7 @@
             echo $form->input( 'Contratinsertion.id', array( 'type' => 'hidden' ) );
 
             echo $form->input( 'Contratinsertion.personne_id', array( 'type' => 'hidden', 'value' => Set::classicExtract( $personne, 'Personne.id' ) ) );
-            //echo $form->input( 'Suspensiondroit.id', array( 'type' => 'hidden' ) );
-//             echo $form->input( 'Suspensiondroit.dossier_id', array( 'type' => 'hidden', 'value' => $dossier_id ) );
+
             echo '</div>';
         }
 
@@ -116,6 +109,16 @@
             true
         );
 
+        // form, radioName, fieldsetId, value, condition, toggleVisibility
+        observeDisableFieldsetOnRadioValue(
+            'testform',
+            'data[Contratinsertion][forme_ci]',
+            $( 'faitsuitea' ),
+            'C',
+            false,
+            true
+        );
+
 
         //Autre cas de suspension / radiation
         observeDisableFieldsetOnRadioValue(
@@ -139,38 +142,62 @@
 
 
 
-        observeDisableFieldsOnRadioValue(
+        //Autre cas de suspension / radiation
+        observeDisableFieldsetOnRadioValue(
             'testform',
-            'data[Contratinsertion][raison_ci]',
-            [
-                'SituationdossierrsaDtclorsaDay',
-                'SituationdossierrsaDtclorsaMonth',
-                'SituationdossierrsaDtclorsaYear',
-                'SituationdossierrsaId',
-                'SituationdossierrsaDossierRsaId',
-                'ContratinsertionAvisraisonRadiationCiD',
-                'ContratinsertionAvisraisonRadiationCiN',
-                'ContratinsertionAvisraisonRadiationCiA'
-            ],
-            'R',
-            true
+             'data[Contratinsertion][raison_ci]',
+            $( 'Tablesuspension' ),
+            'S',
+            false,
+            false
         );
 
-        observeDisableFieldsOnRadioValue(
+
+        //Autre cas de suspension / radiation
+        observeDisableFieldsetOnRadioValue(
             'testform',
-            'data[Contratinsertion][raison_ci]',
-            [
-                'ContratinsertionAvisraisonSuspensionCiD',
-                'ContratinsertionAvisraisonSuspensionCiN',
-                'ContratinsertionAvisraisonRadiationCiA',
-                'SuspensiondroitDdsusdrorsaDay',
-                'SuspensiondroitDdsusdrorsaMonth',
-                'SuspensiondroitDdsusdrorsaYear',
-                'SuspensiondroitSituationdossierrsaId'
-            ],
-            'S',
-            true
+             'data[Contratinsertion][raison_ci]',
+            $( 'Tableradiation' ),
+            'R',
+            false,
+            false
         );
+//         observeDisableFieldsOnRadioValue(
+//             'testform',
+//             'data[Contratinsertion][raison_ci]',
+//             [
+//                 'ContratinsertionDateradiationparticulierDay',
+//                 'ContratinsertionDateradiationparticulierMonth',
+//                 'ContratinsertionDateradiationparticulierYear',
+//                 'ContratinsertionAvisraisonRadiationCiD',
+//                 'ContratinsertionAvisraisonRadiationCiN',
+//                 'ContratinsertionAvisraisonRadiationCiA',
+//                 'AutreavisradiationAutreavisradiationEND',
+//                 'AutreavisradiationAutreavisradiationRDC',
+//                 'AutreavisradiationAutreavisradiationMOA'
+//             ],
+//             'R',
+//             true
+//         );
+// 
+//         observeDisableFieldsOnRadioValue(
+//             'testform',
+//             'data[Contratinsertion][raison_ci]',
+//             [
+//                 'ContratinsertionAvisraisonSuspensionCiD',
+//                 'ContratinsertionAvisraisonSuspensionCiN',
+//                 'ContratinsertionAvisraisonSuspensionCiA',
+//                 'ContratinsertionDatesuspensionparticulierDay',
+//                 'ContratinsertionDatesuspensionparticulierMonth',
+//                 'ContratinsertionDatesuspensionparticulierYear',
+//                 'AutreavissuspensionAutreavissuspensionEND',
+//                 'AutreavissuspensionAutreavissuspensionRDC',
+//                 'AutreavissuspensionAutreavissuspensionMOA',
+//                 'AutreavissuspensionAutreavissuspensionSTE'
+//             ],
+//             'S',
+//             true
+//         );
 
 
 
@@ -330,113 +357,162 @@
             <?php endif;?>
         </table>
     </fieldset>
-    <fieldset id="Contratsuite">
-        <table class="wide noborder">
-            <tr>
-                <td colspan="2" class="noborder center" id="contrat">
-                    <em>Ce contrat est établi pour : </em>
-                </td>
-            </tr>
-            <?php /*if( Configure::read( 'nom_form_ci_cg' ) == 'cg66' ): */?>
+    <fieldset>
+        <fieldset class="noborder" id="Contratsuite">
+            <table class="wide noborder">
+                <tr>
+                    <td colspan="2" class="noborder center" id="contrat">
+                        <em>Ce contrat est établi pour : </em>
+                    </td>
+                </tr>
                 <tr>
                     <td colspan="2" class="noborder">
                         <div class="demi"><?php echo $form->input( 'Contratinsertion.type_demande', array( 'label' => 'Raison : ' , 'type' => 'radio', 'div' => false, 'separator' => '</div><div class="demi">', 'options' => $options['type_demande'], 'legend' => false ) );?></div>
                     </td>
                 </tr>
-            <?php /*endif;*/?>
+            </table>
+        </fieldset>
+        <fieldset class="noborder" id="faitsuitea">
+            <?php 
+                echo $html->tag(
+                    'span',
+                    $form->input(
+                        'Contratinsertion.faitsuitea',
+                        array(
+                            'type'=>'checkbox',
+                            'label'=> 'Ce contrat fait suite à'
+                        )
+                    )
+                );
+            ?>
+        </fieldset>
+        <fieldset class="noborder" id="Faitsuitea">
+            <div class="demi">
+                <?php echo $form->input( 'Contratinsertion.raison_ci', array( 'label' => 'Raison : ' , 'type' => 'radio', 'div' => false, 'separator' => '</div><div class="demi">', 'options' => $raison_ci, 'legend' => false ) );?>
+            </div>
+                <table class="wide noborder">
+                    <tr>
+                        <td class="noborder">
+                            <fieldset id="Tablesuspension" class="noborder">
+                                <table  class="wide noborder">
+                                    <tr>
+                                        <td class="noborder">
+                                            <?php
+                                                if( isset( $suspension ) && !empty( $suspension ) ) {
+                                                    echo $html->tag(
+                                                        'fieldset',
+                                                        'Date de suspension : '.$locale->date( '%d/%m/%Y', $suspension[0]['Suspensiondroit']['ddsusdrorsa']),
+                                                        array(
+                                                            'id' => 'dtsuspension',
+                                                            'class' => 'noborder'
+                                                        )
+                                                    );
+                                                }
+                                                else{
+                                                    echo 'Date de suspension : '.$form->input( 'Contratinsertion.datesuspensionparticulier', array( 'label' => false, 'type' => 'date' , 'dateFormat' => 'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => true ) );
+                                                }
+                                            ?>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="noborder">
+                                            <?php 
+                                                echo $form->input( 'Contratinsertion.avisraison_suspension_ci', array( 'type' => 'radio', 'separator' => '<br />', 'options' => $avisraison_ci, 'legend' => false,   ) );
+                                            ?>
+                                            <fieldset id="Suspensionautre" class="invisible">
+                                                <?php
 
-            <tr>
-                <td colspan="2" class="noborder center" id="contrat">
-                    <em>Ce contrat fait suite à : </em>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2" class="noborder">
-                    <div class="demi"><?php echo $form->input( 'Contratinsertion.raison_ci', array( 'label' => 'Raison : ' , 'type' => 'radio', 'div' => false, 'separator' => '</div><div class="demi">', 'options' => $raison_ci, 'legend' => false ) );?></div>
-                </td>
-            </tr>
-            <tr>
-                <td class="noborder">
-                    <?php
-//                         $suspensiondroitId = Set::classicExtract( $this->data, 'Suspensiondroit.id' );
-//                         $situationdossierrsaId = Set::classicExtract( $this->data, 'Situationdossierrsa.id' );
-//                         if( $this->action == 'edit' && !empty( $suspensiondroitId ) ) {
-//                             echo $form->input( 'Suspensiondroit.id', array( 'type' => 'hidden' ) );
-//                             echo $form->input( 'Suspensiondroit.situationdossierrsa_id', array( 'type' => 'hidden', 'value' => $situationdossierrsaId ) );
-//                         }
+                                                    $AutreavissuspensionId = Set::classicExtract( $this->data, 'Autreavissuspension.id' );
+                                                    $ContratinsertionId = Set::classicExtract( $this->data, 'Contratinsertion.id' );
+                                                    if( $this->action == 'edit' && !empty( $AutreavissuspensionId ) ) {
+                                                        echo $form->input( 'Autreavissuspension.id', array( 'type' => 'hidden' ) );
+                                                        echo $form->input( 'Autreavissuspension.contratinsertion_id', array( 'type' => 'hidden', 'value' => $ContratinsertionId ) );
+                                                    }
+                                                    $selected = Set::extract( $this->data, '/Autreavissuspension/autreavissuspension' );
+                                                    if( empty( $selected ) ){
+                                                        $selected = Set::extract( $this->data, '/Autreavissuspension/Autreavissuspension' );
+                                                    }
 
-                        echo $form->input( 'Contratinsertion.datesuspensionparticulier', array( 'label' => false, 'type' => 'date' , 'dateFormat' => 'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => true ) );
-                    ?>
-                </td>
-                <td class="noborder">
-                    <?php
-//                         $situationdossierrsaId = Set::classicExtract( $this->data, 'Situationdossierrsa.id' );
-//                         $dossierId = Set::classicExtract( $this->data, 'Dossier.id' );
-//                         if( $this->action == 'edit' && !empty( $situationdossierrsaId ) ) {
-//                             echo $form->input( 'Situationdossierrsa.id', array( 'type' => 'hidden' ) );
-//                             echo $form->input( 'Situationdossierrsa.dossier_id', array( 'type' => 'hidden', 'value' => $dossierId ) );
-//                         }
+                                                    echo $form->input( 'Autreavissuspension.Autreavissuspension', array( 'multiple' => 'checkbox', 'type' => 'select', 'separator' => '<br />', 'options' => $options['autreavissuspension'], 'selected' => $selected, 'label' => false,   ) );
+                                                ?>
+                                            </fieldset>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </fieldset>
+                        </td>
+                        <td class="noborder">
+                            <fieldset id="Tableradiation" class="noborder">
+                                <table class="wide noborder">
+                                    <tr>
+                                        <td class="noborder" id="dtradiation">
+                                            <?php
+                                                if( isset( $situationdossierrsa['Situationdossierrsa']['dtclorsa'] ) ) {
+                                                    echo $html->tag(
+                                                        'span',
+                                                        'Date de radiation : '.$locale->date( '%d/%m/%Y', $situationdossierrsa['Situationdossierrsa']['dtclorsa'] ),
+                                                        array(
+                                                            'id' => 'dtradiation'
+                                                        )
+                                                    );
+                                                }
+                                                else{
+                                                    echo 'Date de radiation'.$form->input( 'Contratinsertion.dateradiationparticulier', array( 'label' => false, 'type' => 'date' , 'dateFormat' => 'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => true ) );
+                                                }
+                                            ?>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="noborder">
+                                            <?php 
+                                                echo $form->input( 'Contratinsertion.avisraison_radiation_ci', array( 'type' => 'radio', 'separator' => '<br />', 'options' => $avisraison_ci, 'legend' => false ) );
+                                            ?>
+                                            <fieldset id="Radiationautre" class="invisible">
+                                                <?php
 
-                        echo $form->input( 'Contratinsertion.dateradiationparticulier', array( 'label' => false, 'type' => 'date' , 'dateFormat' => 'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => true ) );
-                    ?>
-                </td>
-            </tr>
-            <tr>
-                <td class="noborder">
-                    <?php 
-                        echo $form->input( 'Contratinsertion.avisraison_suspension_ci', array( 'type' => 'radio', 'separator' => '<br />', 'options' => $avisraison_ci, 'legend' => false,   ) );
-                    ?>
-                    <fieldset id="Suspensionautre" class="invisible">
-                        <?php
+                                                    $AutreavisradiationId = Set::classicExtract( $this->data, 'Autreavisradiation.id' );
+                                                    $ContratinsertionId = Set::classicExtract( $this->data, 'Contratinsertion.id' );
+                                                    if( $this->action == 'edit' && !empty( $AutreavisradiationId ) ) {
+                                                        echo $form->input( 'Autreavisradiation.id', array( 'type' => 'hidden' ) );
+                                                        echo $form->input( 'Autreavisradiation.contratinsertion_id', array( 'type' => 'hidden', 'value' => $ContratinsertionId ) );
+                                                    }
+                                                    $selected = Set::extract( $this->data, '/Autreavisradiation/autreavisradiation' );
+                                                    if( empty( $selected ) ){
+                                                        $selected = Set::extract( $this->data, '/Autreavisradiation/Autreavisradiation' );
+                                                    }
 
-                            $AutreavissuspensionId = Set::classicExtract( $this->data, 'Autreavissuspension.id' );
-                            $ContratinsertionId = Set::classicExtract( $this->data, 'Contratinsertion.id' );
-                            if( $this->action == 'edit' && !empty( $AutreavissuspensionId ) ) {
-                                echo $form->input( 'Autreavissuspension.id', array( 'type' => 'hidden' ) );
-                                echo $form->input( 'Autreavissuspension.contratinsertion_id', array( 'type' => 'hidden', 'value' => $ContratinsertionId ) );
-                            }
-                            $selected = Set::extract( $this->data, '/Autreavissuspension/autreavissuspension' );
-                            if( empty( $selected ) ){
-                                $selected = Set::extract( $this->data, '/Autreavissuspension/Autreavissuspension' );
-                            }
-
-                            echo $form->input( 'Autreavissuspension.Autreavissuspension', array( 'multiple' => 'checkbox', 'type' => 'select', 'separator' => '<br />', 'options' => $options['autreavissuspension'], 'selected' => $selected, 'label' => false,   ) );
-                        ?>
-                    </fieldset>
-                </td>
-                <td class="noborder">
-                    <?php 
-                        echo $form->input( 'Contratinsertion.avisraison_radiation_ci', array( 'type' => 'radio', 'separator' => '<br />', 'options' => $avisraison_ci, 'legend' => false ) );
-                    ?>
-                    <fieldset id="Radiationautre" class="invisible">
-                        <?php
-
-                            $AutreavisradiationId = Set::classicExtract( $this->data, 'Autreavisradiation.id' );
-                            $ContratinsertionId = Set::classicExtract( $this->data, 'Contratinsertion.id' );
-                            if( $this->action == 'edit' && !empty( $AutreavisradiationId ) ) {
-                                echo $form->input( 'Autreavisradiation.id', array( 'type' => 'hidden' ) );
-                                echo $form->input( 'Autreavisradiation.contratinsertion_id', array( 'type' => 'hidden', 'value' => $ContratinsertionId ) );
-                            }
-                            $selected = Set::extract( $this->data, '/Autreavisradiation/autreavisradiation' );
-                            if( empty( $selected ) ){
-                                $selected = Set::extract( $this->data, '/Autreavisradiation/Autreavisradiation' );
-                            }
-
-                            echo $form->input( 'Autreavisradiation.Autreavisradiation', array( 'multiple' => 'checkbox', 'type' => 'select', 'separator' => '<br />', 'options' => $options['autreavisradiation'], 'selected' => $selected, 'label' => false,   ) );
-                        ?>
-                    </fieldset>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2" class="noborder center">
-                    <em><strong>Lorsque le contrat conditionne l'ouverture du droit, il ne sera effectif qu'après décision du Président du Conseil Général</strong></em>
-                </td>
-            </tr>
-        </table>
-
-</fieldset>
+                                                    echo $form->input( 'Autreavisradiation.Autreavisradiation', array( 'multiple' => 'checkbox', 'type' => 'select', 'separator' => '<br />', 'options' => $options['autreavisradiation'], 'selected' => $selected, 'label' => false,   ) );
+                                                ?>
+                                            </fieldset>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </fieldset>
+                        </td>
+                    </tr>
+                </fieldset>
+            </table>
+            <table class="noborder">
+                <tr>
+                    <td colspan="2" class="noborder center">
+                        <em><strong>Lorsque le contrat conditionne l'ouverture du droit, il ne sera effectif qu'après décision du Président du Conseil Général</strong></em>
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
 
 
+<script type="text/javascript">
+    document.observe("dom:loaded", function() {
+
+        observeDisableFieldsetOnCheckbox(
+            'ContratinsertionFaitsuitea',
+            'Faitsuitea',
+            false,
+            true
+        );
+    } );
+</script>
 
 
 <fieldset>
