@@ -39,7 +39,7 @@ msgid "Orientstruct.nbjours"
 msgstr "Nombre de jours depuis l'orientation"
 
 msgid "Orientstruct.structureorientante_id"
-msgstr "Structure orientante"
+msgstr "Structure"
 
 msgid "Orientstruct.referentorientant_id"
-msgstr "Référent orientant"
+msgstr "Référent"

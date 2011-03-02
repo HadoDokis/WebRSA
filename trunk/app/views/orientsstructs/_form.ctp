@@ -8,7 +8,7 @@
 
 
 <?php if( Configure::read( 'nom_form_ci_cg' ) == 'cg66' ):?>
-<fieldset><legend></legend>
+<fieldset><legend>Orienté par</legend>
 <script type="text/javascript">
     document.observe("dom:loaded", function() {
         dependantSelect( 'OrientstructReferentorientantId', 'OrientstructStructureorientanteId' );
@@ -21,10 +21,19 @@
         if( $this->action == 'edit' ){
             $selected = preg_replace( '/^[^_]+_/', '', $this->data['Orientstruct']['structureorientante_id'] ).'_'.$this->data['Orientstruct']['referentorientant_id'];
         }
+
+//         echo $html->tag(
+//             'div',
+//             'Orienté par :'/*,
+//             array(
+//                 'class' => 'wide'
+//             )*/
+//         );
+
         echo $default2->subform(
             array(
-                'Orientstruct.structureorientante_id' => array( 'type' => 'select', 'options' => $structsorientantes/*, 'required' => true*/ ),
-                'Orientstruct.referentorientant_id' => array( 'type' => 'select', 'options' => $refsorientants, 'selected' => $selected/*, 'required' => true*/ )
+                'Orientstruct.structureorientante_id' => array( /*'label' => '', */'type' => 'select', 'options' => $structsorientantes/*, 'required' => true*/ ),
+                'Orientstruct.referentorientant_id' => array( /*'label' => '',*/ 'type' => 'select', 'options' => $refsorientants, 'selected' => $selected/*, 'required' => true*/ )
             ),
             array(
                 'options' => $options
