@@ -14,15 +14,20 @@ BEGIN;
 TRUNCATE informationspe CASCADE;
 TRUNCATE historiqueetatspe CASCADE;
 
+ALTER SEQUENCE informationspe_id_seq RESTART WITH 1;
+ALTER SEQUENCE historiqueetatspe_id_seq RESTART WITH 1;
+
 -- *****************************************************************************
 
-INSERT INTO informationspe ( id, nir, nom, prenom, dtnai ) VALUES
-	( 1, NULL, 'SEMENCE', 'BRUNO', '1962-12-19' ),
-	( 2, NULL, 'VRIGNAT', 'DOLORES', '1956-10-01' ),
-	( 3, NULL, 'CHATELET', 'SYLVIE', '1964-02-13' ),
-	( 4, NULL, 'VINADELLE', 'COLETTE', '1951-08-22' ),
-	( 5, NULL, 'DESBRANCHES', 'MARCEL', '1952-03-18' )
-;
+INSERT INTO informationspe ( nir, nom, prenom, dtnai )
+	SELECT
+		NULL AS nir,
+		nom,
+		prenom,
+		dtnai
+	FROM personnes
+	WHERE personnes.id IN ( 15, 92, 48, 74, 117 )
+	ORDER BY personnes.id;
 
 INSERT INTO historiqueetatspe ( informationpe_id, identifiantpe, date, etat ) VALUES
 	( 1, '0611044290Y', '2011-01-01', 'radiation' ),
