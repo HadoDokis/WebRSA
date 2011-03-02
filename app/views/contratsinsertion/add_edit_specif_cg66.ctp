@@ -97,6 +97,17 @@
     </table>
     <br />
         <?php echo $form->input( 'Contratinsertion.lieu_saisi_ci', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.lieu_saisi_ci', true ).REQUIRED_MARK, 'type' => 'text', 'maxlength' => 50 )  ); ?><br />
-        <?php echo $form->input( 'Contratinsertion.date_saisi_ci', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.date_saisi_ci', true ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 /*, 'empty' => true*/ )  ); ?>
+        <?php echo $form->input( 'Contratinsertion.date_saisi_ci', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.date_saisi_ci', true ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10, 'empty' => true )  ); ?>
 
 </fieldset>
+<script type="text/javascript">
+    Event.observe( $( 'ContratinsertionDdCiDay' ), 'change', function( event ) {
+        $( 'ContratinsertionDateSaisiCiDay' ).value = $F( 'ContratinsertionDdCiDay' );
+    } );
+    Event.observe( $( 'ContratinsertionDdCiMonth' ), 'change', function( event ) {
+        $( 'ContratinsertionDateSaisiCiMonth' ).value = $F( 'ContratinsertionDdCiMonth' );
+    } );
+    Event.observe( $( 'ContratinsertionDdCiYear' ), 'change', function( event ) {
+        $( 'ContratinsertionDateSaisiCiYear' ).value = $F( 'ContratinsertionDdCiYear' );
+    } );
+</script>

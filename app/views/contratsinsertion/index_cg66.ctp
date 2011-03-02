@@ -12,23 +12,26 @@
 ?>
 <div class="with_treemenu">
     <h1><?php  echo 'CER ';?></h1>
+        <?php if( empty( $orientstruct ) ) :?>
+            <p class="error">Cette personne ne possède pas d'orientation. Impossible de créer un CER.</p>
+        <?php else:?>
+            <?php if( empty( $persreferent ) ) :?>
+                <p class="error">Aucun référent n'est lié au parcours de cette personne.</p>
+            <?php endif;?>
+            <?php if( empty( $contratsinsertion ) ):?>
+                <p class="notice">Cette personne ne possède pas encore de CER.</p>
+            <?php endif;?>
 
-        <?php if( empty( $persreferent ) ) :?>
-            <p class="error">Aucun référent n'est lié au parcours de cette personne.</p>
-        <?php endif;?>
-        <?php if( empty( $contratsinsertion ) ):?>
-            <p class="notice">Cette personne ne possède pas encore de CER.</p>
-        <?php endif;?>
-
-        <?php if( $permissions->check( 'contratsinsertion', 'add' ) && !empty( $persreferent ) ):?>
-            <ul class="actionMenu">
-                <?php
-                    echo '<li>'.$xhtml->addLink(
-                        'Ajouter un CER',
-                        array( 'controller' => 'contratsinsertion', 'action' => 'add', $personne_id )
-                    ).' </li>';
-                ?>
-            </ul>
+            <?php if( $permissions->check( 'contratsinsertion', 'add' ) && !empty( $persreferent ) ):?>
+                <ul class="actionMenu">
+                    <?php
+                        echo '<li>'.$xhtml->addLink(
+                            'Ajouter un CER',
+                            array( 'controller' => 'contratsinsertion', 'action' => 'add', $personne_id )
+                        ).' </li>';
+                    ?>
+                </ul>
+            <?php endif;?>
         <?php endif;?>
 
     <!-- <?php /*if( !empty( $contratsinsertion ) ): */?> -->
@@ -40,7 +43,7 @@
                     <th>Rang contrat</th>
                     <th>Date début</th>
                     <th>Date fin</th>
-                    <th>Date de l'entretien</th>
+                    <th>Date de signature</th>
                     <th>Décision</th>
                     <th colspan="6" class="action">Actions</th>
                 </tr>
