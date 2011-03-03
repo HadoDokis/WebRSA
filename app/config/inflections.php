@@ -287,7 +287,8 @@
 		'cov58' => 'covs58',
 		'autreavissuspension' => 'autresavissuspension',
 		'autreavisradiation' => 'autresavisradiation',
-		'criterebilanparcours66' => 'criteresbilansparcours66'
+		'criterebilanparcours66' => 'criteresbilansparcours66',
+		'objetentretien' => 'objetsentretien'
 	);
 /**
  * This is a key => value array of regex used to match words.

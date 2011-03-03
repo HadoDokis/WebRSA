@@ -23,9 +23,12 @@
 			$options = Set::merge( $options,  $optionsdsps );
 
 			$options[$this->modelClass]['typerdv_id'] = $this->Entretien->Typerdv->find( 'list' );
+			$options[$this->modelClass]['objetentretien_id'] = $this->Entretien->Objetentretien->find( 'list' );
 			$options[$this->modelClass]['structurereferente_id'] = $this->Entretien->Structurereferente->listOptions();
-
-			$this->set( compact( 'options' ) );
+			
+			$typerdv = $this->Entretien->Rendezvous->Typerdv->find( 'list' );
+// debug($options);
+			$this->set( compact( 'options', 'typerdv' ) );
 		}
 
 		/**
