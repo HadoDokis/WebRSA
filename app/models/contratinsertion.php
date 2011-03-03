@@ -9,6 +9,7 @@
 					'type_demande' => array( 'type' => 'type_demande', 'domain' => 'contratinsertion' ),
 					'num_contrat' => array( 'type' => 'num_contrat', 'domain' => 'contratinsertion' ),
 					'typeinsertion' => array( 'type' => 'insertion', 'domain' => 'contratinsertion' ),
+					'positioncer' => array( 'domain' => 'contratinsertion' ),
 // 					'autreavissuspension',
 // 					'autreavisradiation'
                 )
@@ -413,6 +414,11 @@
 				}
 			}
 
+            
+            //  Calcul de la position du cER
+            if( Configure::read( 'Cg.departement' ) == '66' ) {
+                $this->data[$this->alias]['positioncer'] = $this->_calculPosition( $this->data );
+            }
 
 			return $return;
 		}
@@ -496,6 +502,28 @@
 
 			return $return;
 		}
+
+
+        protected function _calculPosition( $data ){
+
+            $formeCi = Set::classicExtract( $data, 'Contratinsertion.forme_ci' );
+            $sitproCi = Set::classicExtract( $data, 'Contratinsertion.sitpro_ci' );
+
+            $positioncer = null;
+            // 'encours', 'attvalid', 'annule', 'fincontrat', 'encoursbilan', 'attrenouv', 'perime'
+
+            if ( $formeCi == 'S' )
+                $positioncer = 'encours';
+            elseif ( $formeCi == 'C' )
+                $positioncer = 'attvalid';
+            elseif ( !empty( $sitproCi ) )
+                $positioncer = 'annule';
+
+
+            return $positioncer;
+
+        }
+
 
 	}
 ?>

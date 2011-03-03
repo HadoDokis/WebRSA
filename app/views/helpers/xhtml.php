@@ -199,6 +199,28 @@
 			);
 		}
 
+        /**
+        *
+        */
+
+        public function cancelLink( $title, $url, $enabled = true ) {
+            $content = $this->image(
+                    'icons/cancel.png',
+                    array( 'alt' => '' )
+                ).' Annuler';
+                if( $enabled ) {
+                    return $this->link(
+                        $content,
+                        $url,
+                        array( 'escape' => false, 'title' => $title ),
+                        $title.' ?'
+                    );
+                }
+                else{
+                    return '<span class="disabled">'.$content.'</span>';
+                }
+        }
+
 		/**
 		*
 		*/
