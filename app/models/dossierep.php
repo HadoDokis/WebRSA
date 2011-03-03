@@ -220,7 +220,7 @@
 		public function prepareFormDataUnique( $dossierep_id, $dossier, $niveauDecision ) {
 			$data = array();
 
-			foreach( $this->themeTraite( $dossierep_id ) as $theme => $decision ) {
+			foreach( $this->themeTraite( $dossierep_id ) as $theme => $niveauDecision ) {
 				$model = Inflector::classify( $theme );
 
 				$data = Set::merge(

@@ -15,7 +15,8 @@
 		}
 
 		function testJoinsAidesLiees() {
-			$result=$this->Apre->joinsAidesLiees();
+			$tiersprestataire = false;
+			$result=$this->Apre->joinsAidesLiees($tiersprestataire);
 			$expected=array(
 				0 => array(
 					'table' => 'formsqualifs',
@@ -97,9 +98,6 @@
 			$this->assertEqual(1,$this->Apre->dossierId(1));
 			$this->assertEqual(3,$this->Apre->dossierId(2));
 			$this->assertNull($this->Apre->dossierId(666));
-			// créer des exceptions, insére "toto" à la place d'un integer (id)
-			//$this->assertNull($this->Apre->dossierId("toto"));
-			$this->assertNull($this->Apre->dossierId(-42));
 		}
 
 		function test_nbrNormalPieces() {
@@ -139,11 +137,11 @@
 				'Piece' => array (
 					'Manquante' => array(
 						'Apre' => array(),
-						'Actprof' => array('2' => 'libellé2'),
-						'Permisb' => array('2' => 'libellé2'),
-						'Amenaglogt' => array('2' => 'libellé2'),
-						'Acccreaentr' => array('2' => 'libellé2'),
-						'Acqmatprof' => array('2' => 'libellé2'),
+						'Actprof' => array('2' => 'pieceactproflibelle2'),
+						'Permisb' => array('2' => 'piecepermisblibelle2'),
+						'Amenaglogt' => array('2' => 'pieceamenaglogtlibelle2'),
+						'Acccreaentr' => array('2' => 'pieceacccreaentrlibelle2'),
+						'Acqmatprof' => array('2' => 'pieceacqmatproflibelle2'),
 					)
 				),
 				'Natureaide' => array (
@@ -157,7 +155,8 @@
 					'Locvehicinsert' => 0
 				)
 			);
-			$result=$this->Apre->_details(1);
+			$apre_id = '1';
+			$result=$this->Apre->_details($apre_id);
 			$this->assertEqual($expected,$result);
 
 			$expected=array(
@@ -185,7 +184,8 @@
 					'Locvehicinsert' => 0
 				)
 			);
-			$result=$this->Apre->_details(2);
+			$apre_id = '2';
+			$result=$this->Apre->_details($apre_id);
 			$this->assertEqual($expected,$result);
 
 			$expected=array(
@@ -218,37 +218,225 @@
 		}
 
 		function testAfterFind() {
-			$results = null;
-			$result = $this->Apre->afterFind($results, $primary = false);
-			$this->assertNull($result);
+			$results = array(
+				'id' => '1',
+				'personne_id' => '1',
+				'numeroapre' => '1',
+				'typedemandeapre' => 'FO',
+				'datedemandeapre' => '2009-05-12',
+				'naturelogement' => null,
+				'precisionsautrelogement' => null,
+				'anciennetepoleemploi' => null,
+				'projetprofessionnel' => null,
+				'secteurprofessionnel' => null,
+				'activitebeneficiaire' => null,
+				'dateentreeemploi' => null,
+				'typecontrat' => null,
+				'precisionsautrecontrat' => null,
+				'nbheurestravaillees' => null,
+				'nomemployeur' => null,
+				'adresseemployeur' => null,
+				'quota' => null,
+				'derogation' => null,
+				'avistechreferent' => null,
+				'etatdossierapre' => null,
+				'eligibiliteapre' => null,
+				'mtforfait' => null,
+				'secteuractivite' => null,
+				'nbenf12' => null,
+				'statutapre' => 'C',
+				'justificatif' => null,
+				'structurereferente_id' => 1,
+				'referent_id' => 1,
+				'montantaverser' => 1000,
+				'nbpaiementsouhait' => 2000,
+				'montantdejaverse' => 300,
+				// 'dureecontrat' => null,
+				'isdecision' => 'N',
+				'hasfrais' => null,
+			);
+			$primary = false;
+			$result = $this->Apre->afterFind($results, $primary);
+			$this->assertEqual($result, $results);
 		}
 
 		function testBeforeSave() {
-			$options = null;
+			$options = array();
+			$this->Apre->data = array(
+				'Apre' => array(
+					'id' => '1',
+					'personne_id' => '1',
+					'numeroapre' => '1',
+					'typedemandeapre' => 'FO',
+					'datedemandeapre' => '2009-05-12',
+					'naturelogement' => null,
+					'precisionsautrelogement' => null,
+					'anciennetepoleemploi' => null,
+					'projetprofessionnel' => null,
+					'secteurprofessionnel' => null,
+					'activitebeneficiaire' => null,
+					'dateentreeemploi' => null,
+					'typecontrat' => null,
+					'precisionsautrecontrat' => null,
+					'nbheurestravaillees' => null,
+					'nomemployeur' => null,
+					'adresseemployeur' => null,
+					'quota' => null,
+					'derogation' => null,
+					'avistechreferent' => null,
+					'etatdossierapre' => null,
+					'eligibiliteapre' => null,
+					'mtforfait' => null,
+					'secteuractivite' => null,
+					'nbenf12' => null,
+					'statutapre' => 'C',
+					'justificatif' => null,
+					'structurereferente_id' => 1,
+					'referent_id' => 1,
+					'montantaverser' => 1000,
+					'nbpaiementsouhait' => 2000,
+					'montantdejaverse' => 300,
+					// 'dureecontrat' => null,
+					'isdecision' => 'N',
+					'hasfrais' => null,
+				),
+			);
 			$result = $this->Apre->beforeSave($options);
 			$this->assertTrue($result);
+			$this->assertEqual('COM', $this->Apre->data['Apre']['etatdossierapre']);
+
+			$this->Apre->data = array(
+				'Apre' => array(
+					'id' => '2',
+					'personne_id' => '5',
+					'numeroapre' => null,
+					'typedemandeapre' => null,
+					'datedemandeapre' => '2009-05-12',
+					'naturelogement' => null,
+					'precisionsautrelogement' => null,
+					'anciennetepoleemploi' => null,
+					'projetprofessionnel' => null,
+					'secteurprofessionnel' => null,
+					'activitebeneficiaire' => null,
+					'dateentreeemploi' => null,
+					'typecontrat' => null,
+					'precisionsautrecontrat' => null,
+					'nbheurestravaillees' => null,
+					'nomemployeur' => null,
+					'adresseemployeur' => null,
+					'quota' => null,
+					'derogation' => null,
+					'avistechreferent' => null,
+					'etatdossierapre' => null,
+					'eligibiliteapre' => null,
+					'mtforfait' => null,
+					'secteuractivite' => null,
+					'nbenf12' => null,
+					'statutapre' => 'F',
+					'justificatif' => null,
+					'structurereferente_id' => 1,
+					'referent_id' => 1,
+					'montantaverser' => 1000,
+					'nbpaiementsouhait' => 2000,
+					'montantdejaverse' => 300,
+					// 'dureecontrat' => null,
+					'isdecision' => 'N',
+					'hasfrais' => null,
+				),
+			);
+			$result = $this->Apre->beforeSave($options);
+			$this->assertTrue($result);
+			$this->assertEqual('COM', $this->Apre->data['Apre']['etatdossierapre']);
 		}
 
 		function testSupprimeFormationsObsoletes() {
-			$apre = null;
+			$apre = array(
+				'id' => '1',
+				'personne_id' => '1',
+				'numeroapre' => '1',
+				'typedemandeapre' => 'FO',
+				'datedemandeapre' => '2009-05-12',
+				'naturelogement' => null,
+				'precisionsautrelogement' => null,
+				'anciennetepoleemploi' => null,
+				'projetprofessionnel' => null,
+				'secteurprofessionnel' => null,
+				'activitebeneficiaire' => null,
+				'dateentreeemploi' => null,
+				'typecontrat' => null,
+				'precisionsautrecontrat' => null,
+				'nbheurestravaillees' => null,
+				'nomemployeur' => null,
+				'adresseemployeur' => null,
+				'quota' => null,
+				'derogation' => null,
+				'avistechreferent' => null,
+				'etatdossierapre' => null,
+				'eligibiliteapre' => null,
+				'mtforfait' => null,
+				'secteuractivite' => null,
+				'nbenf12' => null,
+				'statutapre' => 'C',
+				'justificatif' => null,
+				'structurereferente_id' => 1,
+				'referent_id' => 1,
+				'montantaverser' => 1000,
+				'nbpaiementsouhait' => 2000,
+				'montantdejaverse' => 300,
+				// 'dureecontrat' => null,
+				'isdecision' => 'N',
+				'hasfrais' => null,
+			);
 			$result = $this->Apre->supprimeFormationsObsoletes($apre);
-			$this->assertNull($result);
+			$this->assertFalse($result);
 		}
 
 		function testAfterSave() {
-			$created = null;
+			$created = array(
+				'id' => '1',
+				'personne_id' => '1',
+				'numeroapre' => '1',
+				'typedemandeapre' => 'FO',
+				'datedemandeapre' => '2009-05-12',
+				'naturelogement' => null,
+				'precisionsautrelogement' => null,
+				'anciennetepoleemploi' => null,
+				'projetprofessionnel' => null,
+				'secteurprofessionnel' => null,
+				'activitebeneficiaire' => null,
+				'dateentreeemploi' => null,
+				'typecontrat' => null,
+				'precisionsautrecontrat' => null,
+				'nbheurestravaillees' => null,
+				'nomemployeur' => null,
+				'adresseemployeur' => null,
+				'quota' => null,
+				'derogation' => null,
+				'avistechreferent' => null,
+				'etatdossierapre' => null,
+				'eligibiliteapre' => null,
+				'mtforfait' => null,
+				'secteuractivite' => null,
+				'nbenf12' => null,
+				'statutapre' => 'C',
+				'justificatif' => null,
+				'structurereferente_id' => 1,
+				'referent_id' => 1,
+				'montantaverser' => 1000,
+				'nbpaiementsouhait' => 2000,
+				'montantdejaverse' => 300,
+				// 'dureecontrat' => null,
+				'isdecision' => 'N',
+				'hasfrais' => null,
+			);
 			$result = $this->Apre->afterSave($created);
-			$this->assertNull($result);
+			$this->assertFalse($result);
 		}
 
 		function testCalculMontantsDejaVerses() {
-			$apre_ids = null;
+			$apre_ids = array('1', '2');
 			$result = $this->Apre->calculMontantsDejaVerses($apre_ids);
 			$this->assertTrue($result);
-			/*
-			$apre_ids = array(1, 2);
-			$result = $this->Apre->calculMontantsDejaVerses($apre_ids);
-			*/
 		}
 
 		function testDonneesForfaitaireGedooo() {
@@ -261,13 +449,16 @@
 			$etatliquidatif_id = 1;
 			$result = $this->Apre->donneesForfaitaireGedooo($apre_id, $etatliquidatif);
 			$this->assertTrue($result);
+			$this->assertNotNull($result['Apre']);
+			$this->assertNotNull($result['Referent']);
+			$this->assertNotNull($result['Personne']);
 
 			$apre_id = 1337;
 			$etatliquidatif_id = 1337;
 			$result = $this->Apre->donneesForfaitaireGedooo($apre_id, $etatliquidatif);
 			$this->assertFalse($result);
+			
 		}
-
 		
 	}
 ?>

@@ -241,7 +241,7 @@
 				'daterelance' => null,
 				'statutrelance' => 'E',
 				'date_impression_relance' => null,
-				'referent_id' => '3003',
+				'referent_id' => null,
 				'etatorient' => null,
 				'rgorient' => '1',
 				'structureorientante_id' => null,

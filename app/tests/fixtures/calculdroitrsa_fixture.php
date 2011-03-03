@@ -76,6 +76,27 @@
 				'mtpersabaneursa' => '0.00',
 				'toppersdrodevorsa' => '1',
 			),
+			array(
+				'id' => '12',
+				'personne_id' => '1001',
+				'mtpersressmenrsa' => '420.00',
+				'mtpersabaneursa' => '0.00',
+				'toppersdrodevorsa' => '1',
+			),
+			array(
+				'id' => '13',
+				'personne_id' => '2002',
+				'mtpersressmenrsa' => '420.00',
+				'mtpersabaneursa' => '0.00',
+				'toppersdrodevorsa' => '1',
+			),
+			array(
+				'id' => '14',
+				'personne_id' => '3003',
+				'mtpersressmenrsa' => '420.00',
+				'mtpersabaneursa' => '0.00',
+				'toppersdrodevorsa' => '1',
+			),
 		);
 	}
 
