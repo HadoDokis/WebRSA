@@ -44,6 +44,9 @@
     //@set_time_limit( 0 );
     @ini_set( 'memory_limit', '512M' );
 
+	// Branche de CakePHP que l'on utilise: 1.1, 1.2, 1.3
+	define( 'CAKE_BRANCH', preg_replace( '/^([0-9]+\.[0-9]+)(?![0-9]).*$/', '\1', Configure::version() ) );
+
     define( 'REQUIRED_MARK', '<abbr class="required" title="Champ obligatoire">*</abbr>' );
 
     // Messages en français
@@ -59,6 +62,12 @@
     mb_regex_encoding( Configure::read( 'App.encoding' ) );
 
 	require_once( APP.DS.'vendors'.DS.'money_format.php' );
+
+	// TODO: créer répertoire APP.'libs' + bouger les fichiers
+	if( CAKE_BRANCH == '1.2' ) {
+		// backport architecture et constantes 1.3
+		define( 'APPLIBS', APP.'config/' );
+	}
 
     function valid_int( $value ) {
         return !( !is_numeric( $value ) || !( (int)$value == $value ) );
@@ -567,9 +576,6 @@
 		require_once( APP.'/../cake/console/libs/shell.php' );
 		require_once( APP.'/app_shell.php' );
 	}
-
-	// Branche de CakePHP que l'on utilise: 1.1, 1.2, 1.3
-	define( 'CAKE_BRANCH', preg_replace( '/^([0-9]+\.[0-9]+)(?![0-9]).*$/', '\1', Configure::version() ) );
 
 	// -------------------------------------------------------------------------
 

@@ -203,4 +203,19 @@
 	 * Affiche ou non l'alerte de fin de session et exécute la redirection
 	 */
 	Configure::write( 'alerteFinSession', false );
+
+	/**
+	* Configuration pour le dialogue avec un CMS (système de gestion de contenu)
+	* comme Alfresco, servant à stocker les PDF
+	*/
+
+	Configure::write(
+		'Cmis',
+		array(
+			'url' => 'http://xxxxxx/alfresco/service/api/cmis',
+			'username' => 'user',
+			'password' => 'pass',
+			'prefix' => '/Sites/Webrsa',
+		)
+	);
 ?>
