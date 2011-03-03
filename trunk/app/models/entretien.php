@@ -44,6 +44,13 @@
 				'fields' => '',
 				'order' => ''
 			),
+            'Objetentretien' => array(
+                'className' => 'Objetentretien',
+                'foreignKey' => 'objetentretien_id',
+                'conditions' => '',
+                'fields' => '',
+                'order' => ''
+            ),
 			'Rendezvous' => array(
 				'className' => 'Rendezvous',
 				'foreignKey' => 'rendezvous_id',

@@ -232,6 +232,10 @@ CREATE TABLE objetsentretien(
 COMMENT ON TABLE objetsentretien IS 'Objets des entretiens';
 CREATE UNIQUE INDEX objetsentretien_name_idx ON objetsentretien (name);
 
+-- Ajout d'une clé étrangère entre la table objetsentretien et entretiens
+SELECT alter_table_drop_column_if_exists( 'public', 'entretiens', 'objetentretien_id' );
+ALTER TABLE entretiens ADD COLUMN objetentretien_id INTEGER NOT NULL REFERENCES objetsentretien (id) ON DELETE CASCADE ON UPDATE CASCADE;
+
 
 -- *****************************************************************************
 COMMIT;

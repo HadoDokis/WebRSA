@@ -44,7 +44,7 @@
                             'Entretien.referent_id',
                             'Entretien.dateentretien' => array( 'minYear' => date('Y')-2, 'maxYear' => date('Y')+2, 'empty' => false ),
                             'Entretien.typeentretien' => array( 'required' => true, 'options' => $options['Entretien']['typeentretien'], 'empty' => true ),
-                            'Entretien.typerdv_id' => array(  'empty' => true ),
+                            'Entretien.objetentretien_id' => array(  'empty' => true ),
                             'Entretien.commentaireentretien'
                         ),
                         array(
@@ -61,7 +61,8 @@
                             'Rendezvous.id' => array( 'type' => 'hidden' ),
                             'Rendezvous.personne_id' => array( 'value' => $personne_id, 'type' => 'hidden' ),
                             'Rendezvous.daterdv' => array( 'label' =>  'Rendez-vous fixé le ', 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 2, 'maxYear' => date( 'Y' ) + 2, 'empty' => true ),
-                            'Rendezvous.heurerdv' => array( 'label' => 'A ', 'type' => 'time', 'timeFormat' => '24', 'minuteInterval' => 5,  'empty' => true, 'hourRange' => array( 8, 19 ) )
+                            'Rendezvous.heurerdv' => array( 'label' => 'A ', 'type' => 'time', 'timeFormat' => '24', 'minuteInterval' => 5,  'empty' => true, 'hourRange' => array( 8, 19 ) ),
+                            'Rendezvous.typerdv_id' => array( 'label' => 'Type de rdv', 'type' => 'select', 'options' => $typerdv, 'empty' => true ),
                         ),
                         array(
                             'options' => $options
