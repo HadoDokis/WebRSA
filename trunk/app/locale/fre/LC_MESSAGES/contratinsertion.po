@@ -173,3 +173,26 @@ msgstr "Motifs administratifs"
 
 msgid "ENUM::AUTREAVISSUSPENSION::STE"
 msgstr "Statut Etudiant"
+
+#----- Position du CER ------------
+
+msgid "ENUM::POSITIONCER::encours"
+msgstr "En cours"
+
+msgid "ENUM::POSITIONCER::attvalid"
+msgstr "En attente de validation"
+
+msgid "ENUM::POSITIONCER::annule"
+msgstr "Annulé"
+
+msgid "ENUM::POSITIONCER::fincontrat"
+msgstr "Fin de contrat"
+
+msgid "ENUM::POSITIONCER::encoursbilan"
+msgstr "En cours : Bilan à réaliser"
+
+msgid "ENUM::POSITIONCER::attrenouv"
+msgstr "En attente de renouvellement"
+
+msgid "ENUM::POSITIONCER::perime"
+msgstr "Périmé"

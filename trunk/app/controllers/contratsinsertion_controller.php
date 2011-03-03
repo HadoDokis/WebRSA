@@ -31,7 +31,7 @@
 		*/
 		protected function _setOptions() {
 			$options = $this->Contratinsertion->allEnumLists();
-
+// debug($options);
 
 			if( in_array( $this->action, array( 'index', 'add', 'edit', 'view', 'valider' ) ) ) {
 				$this->set( 'decision_ci', $this->Option->decision_ci() );
@@ -182,7 +182,7 @@
 
 			// Recherche du nombre de référent lié au parcours de la personne
 			// Si aucun alors message d'erreur signalant l'absence de référent (cg66)
-			if( Configure::read( 'nom_form_ci_cg' ) ) {
+			if( Configure::read( 'nom_form_ci_cg' ) == 'cg66' ) {
                 $orientstruct = $this->Orientstruct->find(
                     'count',
                     array(
@@ -216,6 +216,7 @@
 						'Contratinsertion.decision_ci',
 						'Contratinsertion.num_contrat',
 						'Contratinsertion.dd_ci',
+						'Contratinsertion.positioncer',
 						'Contratinsertion.df_ci',
 						'Contratinsertion.date_saisi_ci',
 						'Contratinsertion.datevalidation_ci',
@@ -613,7 +614,7 @@
                 if( isset( $situationdossierrsa ) ){
                     $this->data['Contratinsertion']['dateradiationparticulier'] = $situationdossierrsa['Situationdossierrsa']['dtclorsa'];
                 }
-                if( isset( $suspension ) ){
+                if( isset( $suspension ) && !empty( $suspension ) ){
                     $this->data['Contratinsertion']['datesuspensionparticulier'] = $suspension[0]['Suspensiondroit']['ddsusdrorsa'];
                 }
 				$success = $this->Contratinsertion->save( $this->data );
@@ -878,6 +879,23 @@
 			$this->Default->delete( $id );
 		}
 
+
+        /**
+        *   Fonction pour annuler le CER pour le CG66
+        */
+
+        public function cancel( $id ) {
+            $contrat = $this->{$this->modelClass}->findById( $id, null, null, -1 );
+
+            $this->{$this->modelClass}->updateAll(
+                array( 'Contratinsertion.positioncer' => '\'annule\'' ),
+                array(
+                    '"Contratinsertion"."personne_id"' => $contrat['Contratinsertion']['personne_id'],
+                    '"Contratinsertion"."id"' => $contrat['Contratinsertion']['id']
+                )
+            );
+            $this->redirect( array( 'action' => 'index', $contrat['Contratinsertion']['personne_id'] ) );
+        }
 
 
 		/**

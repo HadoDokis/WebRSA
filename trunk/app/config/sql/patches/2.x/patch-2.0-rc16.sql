@@ -17,6 +17,7 @@ DROP TABLE IF EXISTS radiespoleemploieps93 CASCADE;
 DROP TABLE IF EXISTS decisionsradiespoleemploieps93 CASCADE;
 DROP TABLE IF EXISTS radiespoleemploieps58 CASCADE;
 DROP TABLE IF EXISTS decisionsradiespoleemploieps58 CASCADE;
+DROP TABLE IF EXISTS objetsentretien CASCADE;
 
 DROP INDEX IF EXISTS dsps_personne_id_idx;
 CREATE INDEX dsps_personne_id_idx ON dsps(personne_id);
@@ -237,6 +238,10 @@ SELECT alter_table_drop_column_if_exists( 'public', 'entretiens', 'objetentretie
 ALTER TABLE entretiens ADD COLUMN objetentretien_id INTEGER NOT NULL REFERENCES objetsentretien (id) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- -----------------------------------------------------------------------------
+
+DROP TYPE IF EXISTS TYPE_POSITIONCER CASCADE;
+CREATE TYPE TYPE_POSITIONCER AS ENUM ( 'encours', 'attvalid', 'annule', 'fincontrat', 'encoursbilan', 'attrenouv', 'perime' );
+SELECT add_missing_table_field ('public', 'contratsinsertion', 'positioncer', 'TYPE_POSITIONCER');
 
 SELECT alter_table_drop_column_if_exists( 'public', 'pdfs', 'cmspath' );
 ALTER TABLE pdfs ADD COLUMN cmspath VARCHAR(250) DEFAULT NULL;

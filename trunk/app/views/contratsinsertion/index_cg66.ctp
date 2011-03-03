@@ -45,6 +45,7 @@
                     <th>Date fin</th>
                     <th>Date de signature</th>
                     <th>Décision</th>
+                    <th>Position du CER</th>
                     <th colspan="6" class="action">Actions</th>
                 </tr>
             </thead>
@@ -56,6 +57,7 @@
                         *   la date du jour est comprise dans les .... (voir webrsa.inc)
                         */
                         $dateValidation = Set::classicExtract( $contratinsertion, 'Contratinsertion.datevalidation_ci' );
+                        $positioncer = Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' );
 
 
                         $innerTable = '<table id="innerTable'.$index.'" class="innerTable">
@@ -91,6 +93,12 @@
                             $blockImpression = true;
                         }
 
+                        $blockCancel = true;
+                        if( $positioncer == 'annule' ){
+                            $blockCancel = false;
+                        }
+
+
                         echo $xhtml->tableCells(
                             array(
                                 h( Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.forme_ci' ), $forme_ci ) ),
@@ -99,10 +107,11 @@
                                 h( date_short( isset( $contratinsertion['Contratinsertion']['df_ci'] ) ) ? date_short( $contratinsertion['Contratinsertion']['df_ci'] ) : null ),
                                 h( date_short( isset( $contratinsertion['Contratinsertion']['date_saisi_ci'] ) ) ? date_short( $contratinsertion['Contratinsertion']['dd_ci'] ) : null ),
                                 h( Set::enum( Set::extract( $contratinsertion, 'Contratinsertion.decision_ci' ), $decision_ci ).' '.$locale->date( 'Date::short', Set::extract( $contratinsertion, 'Contratinsertion.datevalidation_ci' ) ) ),
+                                h( Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ),  $options['positioncer'] ) ),
                                 $xhtml->validateLink(
                                     'Valider le CER ',
                                     array( 'controller' => 'contratsinsertion', 'action' => 'valider', $contratinsertion['Contratinsertion']['id'] ),
-                                    $blockValid
+                                    ( $blockValid && $blockCancel )
                                 ),
                                 $xhtml->viewLink(
                                     'Voir le CER',
@@ -112,24 +121,26 @@
                                 $xhtml->editLink(
                                     'Éditer le CER ',
                                     array( 'controller' => 'contratsinsertion', 'action' => 'edit', $contratinsertion['Contratinsertion']['id'] ),
-                                    $block,
+                                    ( $block && $blockCancel ),
                                     $permissions->check( 'contratsinsertion', 'edit' )
                                 ),
                                 $xhtml->notificationsCer66Link(
                                     'Notifier à l\'organisme payeur',
                                     array( 'controller' => 'contratsinsertion', 'action' => 'notificationsop', $contratinsertion['Contratinsertion']['id'] ),
-                                    $blockImpression,
+                                    ( $blockImpression && $blockCancel ),
                                     $permissions->check( 'contratsinsertion', 'notificationsop' )
                                 ),
                                 $xhtml->printLink(
                                     'Imprimer le CER',
                                     array( 'controller' => 'gedooos', 'action' => 'contratinsertion', $contratinsertion['Contratinsertion']['id'] ),
+                                    $blockCancel,
                                     $permissions->check( 'gedooos', 'contratinsertion' )
                                 ),
-                                $xhtml->deleteLink(
-                                    'Supprimer le CER ',
-                                    array( 'controller' => 'contratsinsertion', 'action' => 'delete', $contratinsertion['Contratinsertion']['id'] ),
-                                    $permissions->check( 'contratsinsertion', 'delete' )
+                                $xhtml->cancelLink(
+                                    'Annuler le CER ',
+                                    array( 'controller' => 'contratsinsertion', 'action' => 'cancel', $contratinsertion['Contratinsertion']['id'] ),
+                                    $blockCancel,
+                                    $permissions->check( 'contratsinsertion', 'cancel' )
                                 ),
                                 array( $innerTable, array( 'class' => 'innerTableCell noprint' ) ),
 
