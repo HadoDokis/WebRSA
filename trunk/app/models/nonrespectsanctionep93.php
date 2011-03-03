@@ -270,6 +270,14 @@
 		}
 
 		/**
+		*
+		*/
+
+		public function saveDecisionUnique( $data, $niveauDecision ) {
+			return true;
+		}
+
+		/**
 		* TODO: docs
 		*/
 
