@@ -204,7 +204,7 @@ CREATE INDEX decisionsradiespoleemploieps58_radiepoleemploiep58_id_idx ON decisi
 SELECT add_missing_table_field ('public', 'proposorientationscovs58', 'user_id', 'integer');
 ALTER TABLE proposorientationscovs58 ADD CONSTRAINT proposorientationscovs58_user_id_fkey FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE;
 -- FIXME : à rendre not null !!!
--- ALTER TABLE proposorientationscovs58 ALTER COLUMN user_id SET NOT NULL; 
+-- ALTER TABLE proposorientationscovs58 ALTER COLUMN user_id SET NOT NULL;
 
 
 
@@ -236,6 +236,10 @@ CREATE UNIQUE INDEX objetsentretien_name_idx ON objetsentretien (name);
 SELECT alter_table_drop_column_if_exists( 'public', 'entretiens', 'objetentretien_id' );
 ALTER TABLE entretiens ADD COLUMN objetentretien_id INTEGER NOT NULL REFERENCES objetsentretien (id) ON DELETE CASCADE ON UPDATE CASCADE;
 
+-- -----------------------------------------------------------------------------
+
+SELECT alter_table_drop_column_if_exists( 'public', 'pdfs', 'cmspath' );
+ALTER TABLE pdfs ADD COLUMN cmspath VARCHAR(250) DEFAULT NULL;
 
 -- *****************************************************************************
 COMMIT;

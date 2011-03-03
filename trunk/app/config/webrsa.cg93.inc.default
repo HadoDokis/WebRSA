@@ -251,4 +251,19 @@
 	* le thème "non respect et sanctions du CG 93"
 	*/
 	Configure::write( 'Nonrespectsanctionep93.dureeSursis', 31 );
+
+	/**
+	* Configuration pour le dialogue avec un CMS (système de gestion de contenu)
+	* comme Alfresco, servant à stocker les PDF
+	*/
+
+	Configure::write(
+		'Cmis',
+		array(
+			'url' => 'http://xxxxxx/alfresco/service/api/cmis',
+			'username' => 'user',
+			'password' => 'pass',
+			'prefix' => '/Sites/Webrsa',
+		)
+	);
 ?>
