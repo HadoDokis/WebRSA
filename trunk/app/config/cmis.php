@@ -167,13 +167,14 @@
 		}
 
 		/**
-		* Obtient un document et ses propriéts se trouvant sur le serveur CMIS suivant
-		* son chemin relatif.
+		* Obtient les propriétés d'un objet se trouvant sur le serveur CMS suivant
+		* son chemin absolu.
 		*
-		* FIXME: ou le contenu d'un répertoire
-		*
-		* @param string $path
-		* @return mixed array si le document a pu être obtenu, false sinon.
+		* @param string $path Le chemin absolu de l'objet sur le serveur CMIS
+		* @param boolean $deep Si l'objet est un dossier, retourne le contenu du dossier
+		* 	dans la clé content, si c'est un document, retourne le document en
+		*	lui-même dans la clé content.
+		* @return mixed array si le l'objet a pu être obtenu, false sinon.
 		*/
 
 		protected function _read( $path, $deep = false ) {
@@ -208,16 +209,14 @@
 		}
 
 		/**
-		* Obtient un document et ses propriéts se trouvant sur le serveur CMIS suivant
-		* son chemin absolu.
+		* Obtient les propriétés d'un objet se trouvant sur le serveur CMS suivant
+		* son chemin relatif.
 		*
-		* FIXME: ou le contenu d'un répertoire
-		*
-		* @param string $path
-		* @param boolean $deep Si c'est un dossier, retourne le contenu du dossier
+		* @param string $path Le chemin relatif de l'objet sur le serveur CMIS
+		* @param boolean $deep Si l'objet est un dossier, retourne le contenu du dossier
 		* 	dans la clé content, si c'est un document, retourne le document en
 		*	lui-même dans la clé content.
-		* @return mixed array si le document a pu être obtenu, false sinon.
+		* @return mixed array si le l'objet a pu être obtenu, false sinon.
 		*/
 
 		public function read( $path, $deep = false ) {
@@ -232,9 +231,9 @@
 		}
 
 		/**
-		* Crée un répertoire sur le serveur CMIS à partir de son chemin absolu.
+		* Crée un répertoire sur le serveur CMS à partir de son chemin absolu.
 		*
-		* @param string $path
+		* @param string $path Le chemin relatif du répertoire sur le serveur CMIS
 		* @return mixed boolean true si le répertoire a pu être créé, false sinon.
 		*/
 
@@ -262,14 +261,15 @@
 		}
 
 		/**
-		* Enregistre un document sur le serveur CMIS à partir de son chemin absolu.
+		* Enregistre un document sur le serveur CMS à partir de son chemin absolu.
 		*
 		* FIXME: replace / update
 		*
-		* @param string $path
-		* @param string $document
-		* @param string $mimetype
-		* @param string $replace
+		* @param string $path Le chemin absolu du document sur le serveur CMIS
+		* @param string $document Le contenu du document
+		* @param string $mimetype Le type MIME du document
+		* @param boolean $replace Si cette valeur vaut true et que le document existe déjà,
+		* 	une nouvelle version du document sera créée.
 		* @return boolean true le document s'il a pu être enregistré, false sinon.
 		*/
 
@@ -316,14 +316,15 @@
 		}
 
 		/**
-		* Enregistre un document sur le serveur CMIS à partir de son chemin relatif.
+		* Enregistre un document sur le serveur CMS à partir de son chemin relatif.
 		*
 		* FIXME: replace / update
 		*
-		* @param string $path
-		* @param string $document
-		* @param string $mimetype
-		* @param string $replace
+		* @param string $path Le chemin relatif du document sur le serveur CMIS
+		* @param string $document Le contenu du document
+		* @param string $mimetype Le type MIME du document
+		* @param boolean $replace Si cette valeur vaut true et que le document existe déjà,
+		* 	une nouvelle version du document sera créée.
 		* @return boolean true le document s'il a pu être enregistré, false sinon.
 		*/
 
@@ -339,15 +340,12 @@
 		}
 
 		/**
-		* Supprime un objet sur le serveur CMIS à partir de son chemin absolu.
-		* Si l'objet est un répertoire, le second paramètre permet de supprimer son
-		* contenu de manière récursive
+		* Supprime un objet sur le serveur CMS à partir de son chemin absolu.
 		*
-		* @param string $path
-		* @param string $document
-		* @param string $mimetype
-		* @param string $replace
-		* @return mixed boolean true si l'objet a pu être supprimé, false sinon.
+		* @param string $path Le chemin absolu du document sur le serveur CMIS
+		* @param boolean $recursive Si l'objet est un répertoire, la valeur true
+		* 	permet de supprimer celui-ci de manière récursive.
+		* @return boolean true si l'objet a pu être supprimé, false sinon.
 		*/
 
 		protected function _delete( $path, $recursive = false ) {
@@ -377,15 +375,13 @@
 		}
 
 		/**
-		* Supprime un objet sur le serveur CMIS à partir de son chemin relatif.
-		* Si l'objet est un répertoire, le second paramètre permet de supprimer son
-		* contenu de manière récursive
+		* Supprime un objet sur le serveur CMS à partir de son chemin relatif.
 		*
-		* @param string $path
-		* @param string $document
-		* @param string $mimetype
-		* @param string $replace
-		* @return mixed boolean true si l'objet a pu être supprimé, false sinon.
+		* @param string $path Le chemin relatif du document sur le serveur CMIS
+		* @param boolean $recursive Si l'objet est un répertoire, la valeur true
+		* 	permet de supprimer celui-ci de manière récursive.
+		* @return boolean true si l'objet a pu être supprimé, false sinon.
+
 		*/
 
 		public function delete( $path, $recursive = false ) {
