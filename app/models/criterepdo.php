@@ -32,6 +32,7 @@
 			$decisionpdo = Set::extract( $criterespdos, 'Search.Decisionpropopdo.decisionpdo_id' );
 			$motifpdo = Set::extract( $criterespdos, 'Search.Propopdo.motifpdo' );
 			$originepdo = Set::extract( $criterespdos, 'Search.Propopdo.originepdo_id' );
+            $etatdossierpdo = Set::extract( $criterespdos, 'Search.Propopdo.etatdossierpdo' );
 			$nir = Set::extract( $criterespdos, 'Search.Personne.nir' );
 			$nom = Set::extract( $criterespdos, 'Search.Personne.nom' );
 			$prenom = Set::extract( $criterespdos, 'Search.Personne.prenom' );
@@ -110,6 +111,12 @@
 			if( !empty( $decisionpdo ) ) {
 				$conditions[] = 'Decisionpropopdo.decisionpdo_id = \''.Sanitize::clean( $decisionpdo ).'\'';
 			}
+
+
+            // Etat du dossier PDO
+            if( !empty( $etatdossierpdo ) ) {
+                $conditions[] = 'Propopdo.etatdossierpdo = \''.Sanitize::clean( $etatdossierpdo ).'\'';
+            }
 
 
 			// Motif de la PDO
@@ -237,7 +244,7 @@
 			$matricule = Set::extract( $criterespdos, 'Search.Dossier.matricule' );
 			$numdemrsa = Set::extract( $criterespdos, 'Search.Dossier.numdemrsa' );
 			$gestionnaire = Set::extract( $criterespdos, 'Search.Propopdo.user_id' );
-
+            $etatdossierpdo = Set::extract( $criterespdos, 'Search.Propopdo.etatdossierpdo' );
 
 			/// Critères sur les PDOs - date de decisonde la PDO
 			if( isset( $criterespdos['Propopdo']['datedecisionpdo'] ) && !empty( $criterespdos['Propopdo']['datedecisionpdo'] ) ) {
@@ -307,6 +314,12 @@
 				$conditions[] = 'Propopdo.motifpdo = \''.Sanitize::clean( $motifpdo ).'\'';
 			}
 
+
+            // Etat du dossier PDO
+            if( !empty( $etatdossierpdo ) ) {
+                $conditions[] = 'Propopdo.etatdossierpdo = \''.Sanitize::clean( $etatdossierpdo ).'\'';
+            }
+
 			// Origine de la PDO
 			if( !empty( $originepdo ) ) {
 				$conditions[] = 'Propopdo.originepdo_id = \''.Sanitize::clean( $originepdo ).'\'';
@@ -330,6 +343,7 @@
 					'"Propopdo"."datereceptionpdo"',
 					'"Decisionpropopdo"."datedecisionpdo"',
 					'"Propopdo"."motifpdo"',
+					'"Propopdo"."etatdossierpdo"',
 					'"Propopdo"."originepdo_id"',
 					'"Propopdo"."user_id"',
 					'"Dossier"."id"',
@@ -352,7 +366,7 @@
 					array(
 						'table'      => 'decisionspropospdos',
 						'alias'      => 'Decisionpropopdo',
-						'type'       => 'INNER',
+						'type'       => 'LEFT OUTER',
 						'foreignKey' => false,
 						'conditions' => array( 'Decisionpropopdo.propopdo_id = Propopdo.id' )
 					),

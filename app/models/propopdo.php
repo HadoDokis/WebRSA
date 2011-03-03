@@ -12,7 +12,7 @@
 					'iscomplet' => array( 'domain' => 'propopdo' ),
 					//'validationdecision' => array( 'domain' => 'propopdo' ),
 					//'decisionop' => array( 'domain' => 'propopdo' ),
-					//'etatdossierpdo' => array( 'domain' => 'decisionpropopdo' )
+					'etatdossierpdo' => array( 'domain' => 'propopdo' )
 				)
 			),
 			'Formattable',
@@ -368,7 +368,7 @@
 				$iscomplet = Set::extract( $this->data, 'Propopdo.iscomplet' );
 				
 				if ($propopdo_id!=0) {
-				    $decisionporpopdo = $this->Decisionpropopdo->find(
+				    $decisionpropopdo = $this->Decisionpropopdo->find(
 				    	'first',
 				    	array(
 				    		'conditions' => array(
@@ -381,9 +381,9 @@
 				    	)
 		        	);
 				    
-				    $decisionpdo_id = Set::extract( $decisionporpopdo, 'Decisionpropopdo.decisionpdo_id' );
-				    
-				    $isvalidation = Set::extract( $decisionporpopdo, 'Decisionpropopdo.validationdecision' );
+				    $decisionpdo_id = Set::extract( $decisionpropopdo, 'Decisionpropopdo.decisionpdo_id' );
+                    $avistechnique = Set::extract( $decisionpropopdo, 'Decisionpropopdo.avistechnique' );
+                    $validationavis = Set::extract( $decisionpropopdo, 'Decisionpropopdo.validationdecision' );
 				}
 				
 				$etat = null;
@@ -395,11 +395,16 @@
 					$etat = 'attinstr';
 				elseif ( !empty($typepdo_id) && !empty($user_id) && !empty($iscomplet) && empty($decisionpdo_id) )
 					$etat = 'instrencours';
-				elseif ( !empty($typepdo_id) && !empty($user_id) && !empty($iscomplet) && $iscomplet=='COM' && isset($decisionpdo_id) && !empty($decisionpdo_id) && isset($isvalidation) && !empty($isvalidation) )
+                else if ( !empty($typepdo_id) && !empty($user_id) && !empty($iscomplet) && !empty($decisionpdo_id) && empty($avistechnique) )
+                    $etat = 'attavistech';
+                else if ( !empty($typepdo_id) && !empty($user_id) && !empty($iscomplet) && !empty($decisionpdo_id) && !empty($avistechnique) && empty( $validationavis ) )
+                    $etat = 'attval';
+				elseif ( !empty($typepdo_id) && !empty($user_id) && !empty($iscomplet) && !empty($decisionpdo_id) && !empty($avistechnique) && !empty($validationavis) && $iscomplet=='COM' )
 					$etat = 'dossiertraite';
-				elseif ( !empty($typepdo_id) && !empty($user_id) && !empty($iscomplet) && $iscomplet=='INC' && isset($decisionpdo_id) && !empty($decisionpdo_id) && isset($isvalidation) && !empty($isvalidation) )
+				elseif ( !empty($typepdo_id) && !empty($user_id) && !empty($iscomplet) && !empty($decisionpdo_id) && !empty($avistechnique)  && !empty($validationavis)&& $iscomplet=='INC' )
 					$etat = 'attpj';
-		
+// 	debug(empty($avistechnique) );	
+// 	die();
 				$this->data['Propopdo']['etatdossierpdo'] = $etat;
 			}
 

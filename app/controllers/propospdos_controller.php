@@ -50,38 +50,10 @@
             $options = $this->Propopdo->allEnumLists();
             $options = Set::insert( $options, 'Suiviinstruction.typeserins', $this->Option->typeserins() );
             $options = Set::insert( $options, 'Decisionpropopdo', $this->Propopdo->Decisionpropopdo->allEnumLists() );
-            $options = Set::insert( $options, 'etatdossierpdo', $options['Decisionpropopdo']['etatdossierpdo'] );
-            
+//             $options = Set::insert( $options, 'etatdossierpdo', $options['Decisionpropopdo']['etatdossierpdo'] );
+//             debug($options);
             $this->set( compact( 'options' ) );
         }
-
-
-//         function beforeFilter(){
-//             $return = parent::beforeFilter();
-//             $this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
-//             $this->set( 'pieecpres', $this->Option->pieecpres() );
-//             $this->set( 'commission', $this->Option->commission() );
-//             $this->set( 'motidempdo', $this->Option->motidempdo() );
-//             $this->set( 'motifpdo', $this->Option->motifpdo() );
-//             $this->set( 'categoriegeneral', $this->Option->sect_acti_emp() );
-//             $this->set( 'categoriedetail', $this->Option->emp_occupe() );
-//
-//             $this->set( 'typeserins', $this->Option->typeserins() );
-//             $this->set( 'typepdo', $this->Typepdo->find( 'list' ) );
-//             $this->set( 'typenotifpdo', $this->Typenotifpdo->find( 'list' ) );
-//             $this->set( 'decisionpdo', $this->Decisionpdo->find( 'list' ) );
-//             $this->set( 'originepdo', $this->Originepdo->find( 'list' ) );
-//
-//             $this->set( 'statutlist', $this->Statutpdo->find( 'list' ) );
-//             $this->set( 'situationlist', $this->Situationpdo->find( 'list' ) );
-// //             $this->set( 'statutdecisionlist', $this->Statutdecisionpdo->find( 'list' ) );
-//
-//             $options = $this->Propopdo->allEnumLists();
-// //             debug($options);
-//             $options = Set::insert( $options, 'Suiviinstruction.typeserins', $this->Option->typeserins() );
-//             $this->set( compact( 'options' ) );
-//             return $return;
-//         }
 
            function ajaxstruct( $structurereferente_id = null ) {
 
@@ -106,60 +78,60 @@
 //             $this->render( 'ajaxfichecalcul', 'ajax' );
 //         }
 
-        function ajaxetat1( $typepdo_id = null ) {
-
-            $dataTypepdo_id = Set::extract( $this->data, 'Propopdo.typepdo_id' );
-            $typepdo_id = ( empty( $typepdo_id ) && !empty( $dataTypepdo_id ) ? $dataTypepdo_id : $typepdo_id );
-            $this->Propopdo->etatPdo( $this->data );
-            $this->set( 'typepdo_id', $typepdo_id );
-            Configure::write( 'debug', 0 );
-            $this->render( 'ajaxetat1', 'ajax' );
-        }
-
-        function ajaxetat2( $iscomplet = null ) {
-            $dataIscomplet = Set::extract( $this->data, 'Propopdo.iscomplet' );
-
-            $iscomplet = ( empty( $iscomplet ) && !empty( $dataIscomplet ) ? $dataIscomplet : $iscomplet );
-
-
-            $this->set( 'iscomplet', $iscomplet );
-            Configure::write( 'debug', 0 );
-            $this->render( 'ajaxetat2', 'ajax' );
-        }
-
-        function ajaxetat3( $isvalidation = null ) {
-            $dataIsvalidation = Set::extract( $this->data, 'Propopdo.isvalidation' );
-            $isvalidation = ( empty( $isvalidation ) && !empty( $dataIsvalidation ) ? $dataIsvalidation : $isvalidation );
-            $this->set( 'isvalidation', $isvalidation );
-
-            Configure::write( 'debug', 0 );
-            $this->render( 'ajaxetat3', 'ajax' );
-        }
-
-        function ajaxetat4( $decisionpdo_id = null ) {
-            $dataDecisionpdo_id = Set::extract( $this->data, 'Propopdo.decisionpdo_id' );
-            $decisionpdo_id = ( empty( $decisionpdo_id ) && !empty( $dataDecisionpdo_id ) ? $dataDecisionpdo_id : $decisionpdo_id );
+//         function ajaxetat1( $typepdo_id = null ) {
+// 
+//             $dataTypepdo_id = Set::extract( $this->data, 'Propopdo.typepdo_id' );
+//             $typepdo_id = ( empty( $typepdo_id ) && !empty( $dataTypepdo_id ) ? $dataTypepdo_id : $typepdo_id );
 //             $this->Propopdo->etatPdo( $this->data );
-            $this->set( 'decisionpdo_id', $decisionpdo_id );
-            /*
-            if( $this->action == 'add' ) {
-                $value = Set::extract( $this->data, 'Propopdo.decisionpdo_id' );
-            }
-
-            $this->set( 'value', $value );*/
-            Configure::write( 'debug', 0 );
-            $this->render( 'ajaxetat4', 'ajax' );
-        }
-
-        function ajaxetat5( $isdecisionop = null ) {
-            $dataIsdecisionop = Set::extract( $this->data, 'Propopdo.isdecisionop' );
-            $isdecisionop = ( empty( $isdecisionop ) && !empty( $dataIsdecisionop ) ? $dataIsdecisionop : $isdecisionop );
-            $this->set( 'isdecisionop', $isdecisionop );
-            
-            Configure::write( 'debug', 0 );
-            $this->render( 'ajaxetat5', 'ajax' );
-        }
-        
+//             $this->set( 'typepdo_id', $typepdo_id );
+//             Configure::write( 'debug', 0 );
+//             $this->render( 'ajaxetat1', 'ajax' );
+//         }
+// 
+//         function ajaxetat2( $iscomplet = null ) {
+//             $dataIscomplet = Set::extract( $this->data, 'Propopdo.iscomplet' );
+// 
+//             $iscomplet = ( empty( $iscomplet ) && !empty( $dataIscomplet ) ? $dataIscomplet : $iscomplet );
+// 
+// 
+//             $this->set( 'iscomplet', $iscomplet );
+//             Configure::write( 'debug', 0 );
+//             $this->render( 'ajaxetat2', 'ajax' );
+//         }
+// 
+//         function ajaxetat3( $isvalidation = null ) {
+//             $dataIsvalidation = Set::extract( $this->data, 'Propopdo.isvalidation' );
+//             $isvalidation = ( empty( $isvalidation ) && !empty( $dataIsvalidation ) ? $dataIsvalidation : $isvalidation );
+//             $this->set( 'isvalidation', $isvalidation );
+// 
+//             Configure::write( 'debug', 0 );
+//             $this->render( 'ajaxetat3', 'ajax' );
+//         }
+// 
+//         function ajaxetat4( $decisionpdo_id = null ) {
+//             $dataDecisionpdo_id = Set::extract( $this->data, 'Propopdo.decisionpdo_id' );
+//             $decisionpdo_id = ( empty( $decisionpdo_id ) && !empty( $dataDecisionpdo_id ) ? $dataDecisionpdo_id : $decisionpdo_id );
+// //             $this->Propopdo->etatPdo( $this->data );
+//             $this->set( 'decisionpdo_id', $decisionpdo_id );
+//             /*
+//             if( $this->action == 'add' ) {
+//                 $value = Set::extract( $this->data, 'Propopdo.decisionpdo_id' );
+//             }
+// 
+//             $this->set( 'value', $value );*/
+//             Configure::write( 'debug', 0 );
+//             $this->render( 'ajaxetat4', 'ajax' );
+//         }
+// 
+//         function ajaxetat5( $isdecisionop = null ) {
+//             $dataIsdecisionop = Set::extract( $this->data, 'Propopdo.isdecisionop' );
+//             $isdecisionop = ( empty( $isdecisionop ) && !empty( $dataIsdecisionop ) ? $dataIsdecisionop : $isdecisionop );
+//             $this->set( 'isdecisionop', $isdecisionop );
+//             
+//             Configure::write( 'debug', 0 );
+//             $this->render( 'ajaxetat5', 'ajax' );
+//         }
+//         
         function ajaxetatpdo( $typepdo_id = null, $user_id = null, $complet = null, $incomplet = null ) {
             $dataTypepdo_id = Set::extract( $this->params, 'form.typepdo_id' );
             $this->set( 'typepdo_id', $dataTypepdo_id );
@@ -178,7 +150,7 @@
       		$this->set( 'iscomplet', $iscomplet );
             
             if (isset($this->params['form']['propopdo_id']) && $this->params['form']['propopdo_id']!=0) {
-		        $decisionporpopdo = $this->Propopdo->Decisionpropopdo->find(
+		        $decisionpropopdo = $this->Propopdo->Decisionpropopdo->find(
 		        	'first',
 		        	array(
 		        		'conditions' => array(
@@ -192,12 +164,14 @@
 		        	)
 		        );
 		        
-		        $dataDecisionpdo_id = Set::extract( $decisionporpopdo, 'Decisionpropopdo.decisionpdo_id' );
+		        $dataDecisionpdo_id = Set::extract( $decisionpropopdo, 'Decisionpropopdo.decisionpdo_id' );
 		        $this->set( 'decisionpdo_id', $dataDecisionpdo_id );
-		        
-		        $dataIsvalidation = Set::extract( $decisionporpopdo, 'Decisionpropopdo.validationdecision' );
-		        $this->set( 'isvalidation', $dataIsvalidation );
-		        
+
+		        $dataAvistech = Set::extract( $decisionpropopdo, 'Decisionpropopdo.avistechnique' );
+		        $this->set( 'avistechnique', $dataAvistech );
+
+                $dataAvisvalid = Set::extract( $decisionpropopdo, 'Decisionpropopdo.validationdecision' );
+                $this->set( 'validationavis', $dataAvisvalid );
 			}
 
             $this->Propopdo->etatPdo( $this->data );

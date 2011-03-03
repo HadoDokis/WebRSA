@@ -52,26 +52,48 @@
 		</fieldset>
 </fieldset>
 	<?php
-		///Formulaire de recherche pour les CUIs
+
+		///Formulaire de recherche pour les PDOs
 		echo $default->search(
 			array(
-				'Decisionpropopdo.decisionpdo_id' => array( 'label' => __d( 'propopdo', 'Decisionpropopdo.decisionpdo_id', true ), 'type' => 'select', 'options' => $decisionpdo, 'empty' => true ),
 				'Propopdo.datereceptionpdo' => array( 'label' => __d( 'propopdo', 'Propopdo.datereceptionpdo', true ), 'type' => 'date', 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 1, 'maxYear' => date( 'Y' ) + 1 ),
 				'Propopdo.originepdo_id' => array( 'label' => __d( 'propopdo', 'Propopdo.originepdo_id', true ), 'type' => 'select', 'options' => $originepdo, 'empty' => true ),
+				'Propopdo.etatdossierpdo' => array( 'label' => __d( 'propopdo', 'Propopdo.etatdossierpdo', true ), 'type' => 'select', 'options' => $options['etatdossierpdo'], 'empty' => true ),
 				'Propopdo.user_id' => array( 'label' => __d( 'propopdo', 'Propopdo.user_id', true ), 'type' => 'select', 'options' => $gestionnaire, 'empty' => true ),
 				'Propopdo.motifpdo' => array( 'label' => __d( 'propopdo', 'Propopdo.motifpdo', true ), 'type' => 'select', 'options' => $motifpdo, 'empty' => true  ),
 				'Personne.nom' => array( 'label' => __d( 'personne', 'Personne.nom', true ), 'type' => 'text' ),
 				'Personne.prenom' => array( 'label' => __d( 'personne', 'Personne.prenom', true ), 'type' => 'text' ),
 				'Personne.nir' => array( 'label' => __d( 'personne', 'Personne.nir', true ), 'type' => 'text', 'maxlength' => 15 ),
 				'Dossier.matricule' => array( 'label' => __d( 'dossier', 'Dossier.matricule', true ), 'type' => 'text', 'maxlength' => 15 ),
-				'Dossier.numdemrsa' => array( 'label' => __d( 'dossier', 'Dossier.numdemrsa', true ), 'type' => 'text', 'maxlength' => 15 )
+				'Dossier.numdemrsa' => array( 'label' => __d( 'dossier', 'Dossier.numdemrsa', true ), 'type' => 'text', 'maxlength' => 15 ),
+				'Decisionpropopdo.decisionpdo_id' => array( 'label' => __d( 'decisionpropopdo', 'Decisionpropopdo.decisionpdo_id', true ), 'type' => 'select', 'options' => $decisionpdo, 'empty' => true )
 			),
 			array(
+                'form' => false,
 				'options' => $options
 			)
 		);
+// echo $default->search(
+//             array(
+//                 'Propopdo.datereceptionpdo' => array( 'label' => __d( 'propopdo', 'Propopdo.datereceptionpdo', true ), 'type' => 'date', 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 1, 'maxYear' => date( 'Y' ) + 1 ),
+//                 'Propopdo.originepdo_id' => array( 'label' => __d( 'propopdo', 'Propopdo.originepdo_id', true ), 'type' => 'select', 'options' => $originepdo, 'empty' => true ),
+//                 'Propopdo.etatdossierpdo' => array( 'label' => __d( 'propopdo', 'Propopdo.etatdossierpdo', true ), 'type' => 'select', 'options' => $options['etatdossierpdo'], 'empty' => true ),
+//                 'Propopdo.user_id' => array( 'label' => __d( 'propopdo', 'Propopdo.user_id', true ), 'type' => 'select', 'options' => $gestionnaire, 'empty' => true ),
+//                 'Propopdo.motifpdo' => array( 'label' => __d( 'propopdo', 'Propopdo.motifpdo', true ), 'type' => 'select', 'options' => $motifpdo, 'empty' => true  ),
+//                 'Personne.nom' => array( 'label' => __d( 'personne', 'Personne.nom', true ), 'type' => 'text' ),
+//                 'Personne.prenom' => array( 'label' => __d( 'personne', 'Personne.prenom', true ), 'type' => 'text' ),
+//                 'Personne.nir' => array( 'label' => __d( 'personne', 'Personne.nir', true ), 'type' => 'text', 'maxlength' => 15 ),
+//                 'Dossier.matricule' => array( 'label' => __d( 'dossier', 'Dossier.matricule', true ), 'type' => 'text', 'maxlength' => 15 ),
+//                 'Dossier.numdemrsa' => array( 'label' => __d( 'dossier', 'Dossier.numdemrsa', true ), 'type' => 'text', 'maxlength' => 15 ),
+//                 'Decisionpropopdo.decisionpdo_id' => array( 'label' => __d( 'decisionpropopdo', 'Decisionpropopdo.decisionpdo_id', true ), 'type' => 'select', 'options' => $decisionpdo, 'empty' => true )
+//             ),
+//             array(
+//                 'form' => false,
+//                 'options' => $options
+//             )
+//         );
 	?>
-<?php echo $xform->end(); ?>
+<?php echo $xform->end( 'Rechercher' ); ?>
 <?php $pagination = $xpaginator->paginationBlock( 'Propopdo', $this->passedArgs ); ?>
 
 	<?php if( isset( $criterespdos ) ):?>
@@ -90,6 +112,7 @@
 					<th><?php echo $paginator->sort( 'Motif de la PDO', 'Propopdo.motifpdo' );?></th>
 					<th><?php echo $paginator->sort( 'Date du contrat', 'Propopdo.datereceptionpdo' );?></th>
 					<th><?php echo $paginator->sort( 'Gestionnaire', 'Propopdo.user_id' );?></th>
+					<th><?php echo $paginator->sort( 'Etat du dossier', 'Propopdo.etatdossierpdo' );?></th>
 					<th colspan="4" class="action">Actions</th>
 				</tr>
 			</thead>
@@ -134,6 +157,7 @@
 								h( Set::enum( Set::classicExtract( $criterepdo, 'Propopdo.motifpdo' ), $motifpdo ) ),
 								h( $locale->date( 'Locale->date',  Set::classicExtract( $criterepdo, 'Propopdo.datereceptionpdo' ) ) ),
 								h( Set::enum( Set::classicExtract( $criterepdo, 'Propopdo.user_id' ), $gestionnaire ) ),
+								h( Set::enum( Set::classicExtract( $criterepdo, 'Propopdo.etatdossierpdo' ), $options['etatdossierpdo'] ) ),
 								$xhtml->viewLink(
 									'Voir',
 									array( 'controller' => 'propospdos', 'action' => 'index', Set::classicExtract( $criterepdo, 'Propopdo.personne_id' ) )

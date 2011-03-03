@@ -214,6 +214,25 @@ ALTER TABLE proposorientationscovs58 ADD CONSTRAINT proposorientationscovs58_use
 SELECT alter_table_drop_column_if_exists( 'public', 'contratsinsertion', 'faitsuitea' );
 ALTER TABLE contratsinsertion ADD COLUMN faitsuitea type_booleannumber DEFAULT NULL;
 
+
+-- -----------------------------------------------------------------------------
+-- 20110303
+-- -----------------------------------------------------------------------------
+
+DROP TYPE IF EXISTS TYPE_ETATDOSSIERPDO CASCADE;
+CREATE TYPE TYPE_ETATDOSSIERPDO AS ENUM ( 'attaffect', 'attinstr', 'instrencours', 'attavistech', 'attval', 'dossiertraite', 'attpj' );
+SELECT add_missing_table_field ('public', 'propospdos', 'etatdossierpdo', 'TYPE_ETATDOSSIERPDO');
+
+-- Ajout d'une table objet de l'entretien pour paramétrer les types d'entretien existants
+CREATE TABLE objetsentretien(
+    id                      SERIAL NOT NULL PRIMARY KEY,
+    name                    VARCHAR(255) NOT NULL,
+    modeledocument          VARCHAR (50)
+);
+COMMENT ON TABLE objetsentretien IS 'Objets des entretiens';
+CREATE UNIQUE INDEX objetsentretien_name_idx ON objetsentretien (name);
+
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

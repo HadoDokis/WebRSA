@@ -120,22 +120,28 @@ msgid "ENUM::ETATDOSSIERPDO::instrencours"
 msgstr "Instruction en cours"
 
 msgid "ENUM::ETATDOSSIERPDO::attval"
-msgstr "En attente de validation"
+msgstr "En attente de validation de la proposition"
 
-msgid "ENUM::ETATDOSSIERPDO::decisionval"
-msgstr "Décision validée"
+msgid "ENUM::ETATDOSSIERPDO::attavistech"
+msgstr "En attente d'avis technique"
 
 msgid "ENUM::ETATDOSSIERPDO::dossiertraite"
 msgstr "Dossier traité"
 
 msgid "ENUM::ETATDOSSIERPDO::attpj"
-msgstr "En attente de pièces"
+msgstr "Dossier traité mais en attente de pièces"
 
 msgid "Propopdo.serviceinstructeur_id"
 msgstr "Service instructeur"
 
 msgid "Propopdo.orgpayeur"
 msgstr "Organisme payeur"
+
+msgid "Propopdo.etatdossierpdo"
+msgstr "Etat du dossier"
+
+msgid "Propopdo.user_id"
+msgstr "Gestionnaire du dossier (instructeur en charge du dossier)"
 
 ###############################################################################
 # Traduction pour les traitements
