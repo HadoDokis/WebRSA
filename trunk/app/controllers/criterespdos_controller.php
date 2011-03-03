@@ -56,47 +56,9 @@
 			$options = $this->Propopdo->allEnumLists();
 			$options = Set::insert( $options, 'Suiviinstruction.typeserins', $this->Option->typeserins() );
 			$this->set( compact( 'options' ) );
+// 			debug($options);
 		}
 
-/*
-		public function beforeFilter() {
-			$return = parent::beforeFilter();
-			$this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
-			$this->set( 'qual', $this->Option->qual() );
-			$this->set( 'pieecpres', $this->Option->pieecpres() );
-			$this->set( 'commission', $this->Option->commission() );
-			$this->set( 'motidempdo', $this->Option->motidempdo() );
-			$this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
-			$this->set( 'motifpdo', $this->Option->motifpdo() );
-			$this->set( 'typenotifpdo', $this->Typenotifpdo->find( 'list' ) );
-			$this->set( 'typeserins', $this->Option->typeserins() );
-			$this->set( 'typepdo', $this->Typepdo->find( 'list' ) );
-			$this->set( 'decisionpdo', $this->Decisionpdo->find( 'list' ) );
-			$this->set( 'originepdo', $this->Originepdo->find( 'list' ) );
-
-			$this->set( 'statutlist', $this->Statutpdo->find( 'list' ) );
-			$this->set( 'situationlist', $this->Situationpdo->find( 'list' ) );
-			$this->set( 'statutdecisionlist', $this->Statutdecisionpdo->find( 'list' ) );
-
-			$this->set( 'gestionnaire', $this->User->find(
-					'list',
-					array(
-						'fields' => array(
-							'User.nom_complet'
-						),
-						'conditions' => array(
-							'User.isgestionnaire' => 'O'
-						)
-					)
-				)
-			);
-
-			$options = $this->Propopdo->allEnumLists();
-			$options = Set::insert( $options, 'Suiviinstruction.typeserins', $this->Option->typeserins() );
-			$this->set( compact( 'options' ) );
-
-			return $return;
-		}*/
 
 
 		/**

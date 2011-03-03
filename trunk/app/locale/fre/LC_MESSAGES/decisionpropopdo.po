@@ -74,4 +74,4 @@ msgid "Decisionpropopdo.commentairedecision"
 msgstr "Commentaire"
 
 msgid "Decisionpropopdo.decisionpdo_id"
-msgstr "Proposition"
+msgstr "Type de proposition"

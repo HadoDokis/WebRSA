@@ -135,7 +135,7 @@
         <?php
             echo $default->subform(
                 array(
-                    'Propopdo.user_id' => array( 'label' =>  'Gestionnaire du dossier (instructeur en charge du dossier)', 'type' => 'select', 'options' => $gestionnaire )
+                    'Propopdo.user_id' => array( 'label' =>  ( __d( 'propopdo', 'Propopdo.user_id', true ) ), 'type' => 'select', 'options' => $gestionnaire )
                 ),
                 array(
                     'domain' => $domain,
