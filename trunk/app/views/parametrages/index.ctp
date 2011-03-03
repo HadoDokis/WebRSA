@@ -94,6 +94,17 @@
                 );
                 echo $xhtml->tableCells(
                     array(
+                        h( 'Objets de l\'entretien' ),
+                        $xhtml->viewLink(
+                            'Voir la table',
+                            array( 'controller' => 'objetsentretien', 'action' => 'index' )
+                        )
+                    ),
+                    array( 'class' => 'odd' ),
+                    array( 'class' => 'even' )
+                );
+                echo $xhtml->tableCells(
+                    array(
                         h( 'Objets du rendez-vous' ),
                         $xhtml->viewLink(
                             'Voir la table',

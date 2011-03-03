@@ -82,9 +82,6 @@ msgstr "Date de l'entretien"
 msgid "Entretien.typeentretien"
 msgstr "Type d'entretien"
 
-msgid "Entretien.typerdv_id"
-msgstr "Objet de l'entretien"
-
 msgid "Entretien.commentaireentretien"
 msgstr "Commentaire sur l'entretien"
 
@@ -93,3 +90,6 @@ msgstr "Date du prochain rendez-vous"
 
 msgid "Entretien.heureprochainrdv"
 msgstr "Heure du prochain rendez-vous"
+
+msgid "Entretien.objetentretien_id"
+msgstr "Objet de l'entretien"
