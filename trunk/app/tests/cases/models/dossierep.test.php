@@ -49,18 +49,66 @@
 				'organisme_id' => null
 			);
 			$niveauDecision = 'cg';
-			debug($this->Dossierep->prepareFormDataUnique($dossierep_id, $dossier, $niveauDecision));
+			$result = $this->Dossierep->prepareFormDataUnique($dossierep_id, $dossier, $niveauDecision);
+			$this->assertNotNull($result);
 		}
-/*
+
 		function testSauvegardeUnique() {
-			$dossierep_id;
-			$data;
-			$niveauDecision;
+			$dossierep_id = '1';
+			$dossier = array (
+				'id' => '1001',
+				'numdemrsa' => '13371001',
+				'dtdemrsa' => '2009-01-01',
+				'dtdemrmi' => null,
+				'numdepinsrmi' => null,
+				'typeinsrmi' => null,
+				'numcominsrmi' => null,
+				'numagrinsrmi' => null,
+				'numdosinsrmi' => null,
+				'numcli' => null,
+				'numorg' => 931,
+				'fonorg' => 'CAF',
+				'matricule' => '930100100000000',
+				'statudemrsa' => null,
+				'typeparte' => 'CG',
+				'ideparte' => '093',
+				'fonorgcedmut' => null,
+				'numorgcedmut' => null,
+				'matriculeorgcedmut' => null,
+				'ddarrmut' => null,
+				'codeposanchab' => null,
+				'fonorgprenmut' => null,
+				'numorgprenmut' => null,
+				'dddepamut' => null,
+				'detaildroitrsa_id' => null,
+				'avispcgdroitrsa_id' => null,
+				'organisme_id' => null
+			);
+			$niveauDecision = 'cg';
+			$result = $this->Dossierep->sauvegardeUnique($dossierep_id, $dossier, $niveauDecision);
+			$this->assertNotNull($result);
 		}
 
 		function testErreursCandidatePassage() {
-			$personne_id;
+			$personne_id = '1001';
+			$result = $this->Dossierep->erreursCandidatePassage($personne_id);
+			$expected = array();
+			$this->assertIdentical($result, $expected);
+
+			$personne_id = '2002';
+			$result = $this->Dossierep->erreursCandidatePassage($personne_id);
+			$expected = array(
+				'0' => 'Situationdossierrsa.etatdosrsa',
+			);// Situationdossierrsa -> droit clos sur l'etat dossier
+			$this->assertIdentical($result, $expected);
+
+			$personne_id = '3003';
+			$result = $this->Dossierep->erreursCandidatePassage($personne_id);
+			$expected = array(
+				'0' => 'Prestation.rolepers'
+			);// La personne n'est ni demandeur, ni conjoint, mais ENFant
+			$this->assertIdentical($result, $expected);
 		}
-*/
+
 	}
 ?>

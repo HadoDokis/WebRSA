@@ -51,6 +51,33 @@
 				'dtclorsa' => null,
 				'motirefursa' => null,
 			),
+			array(
+				'id' => '6',
+				'dossier_id' => '1001',
+				'etatdosrsa' => '2',
+				'dtrefursa' => null,
+				'moticlorsa' => null,
+				'dtclorsa' => null,
+				'motirefursa' => null,
+			),
+			array(
+				'id' => '7',
+				'dossier_id' => '2002',
+				'etatdosrsa' => '1',
+				'dtrefursa' => null,
+				'moticlorsa' => null,
+				'dtclorsa' => null,
+				'motirefursa' => null,
+			),
+			array(
+				'id' => '8',
+				'dossier_id' => '3003',
+				'etatdosrsa' => '2',
+				'dtrefursa' => null,
+				'moticlorsa' => null,
+				'dtclorsa' => null,
+				'motirefursa' => null,
+			),
 		);
 	}
 

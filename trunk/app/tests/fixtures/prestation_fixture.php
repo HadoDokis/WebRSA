@@ -83,6 +83,27 @@
 				'topchapers' => null,
 				'id' => '11',
 			),
+			array(
+				'personne_id' => '1001',
+				'natprest' => 'RSA',
+				'rolepers' => 'DEM',
+				'topchapers' => null,
+				'id' => '12',
+			),
+			array(
+				'personne_id' => '2002',
+				'natprest' => 'RSA',
+				'rolepers' => 'DEM',
+				'topchapers' => null,
+				'id' => '13',
+			),
+			array(
+				'personne_id' => '3003',
+				'natprest' => 'RSA',
+				'rolepers' => 'ENF',
+				'topchapers' => null,
+				'id' => '14',
+			),
 		);
 	}
 

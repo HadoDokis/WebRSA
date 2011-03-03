@@ -14,9 +14,30 @@
 
 		// test fonction valider()
 		function testValider() {
-			$data = null;
+			$data = array();
 			$result = $this->Contratinsertion->valider($data);
-			$this->assertFalse($result);
+			debug($result);
+
+			$data = array(
+				'Nonrespectsanctionep93' => array(
+					'id' => '1',
+					'dossierep_id' => '1',
+					'propopdo_id' => null,
+					'orientstruct_id' => '1001',
+					'contratinsertion_id' => '10',
+					'origine' => 'orientstruct',
+					'decision' => null,
+					'rgpassage' => '1',
+					'montantreduction' => null,
+					'dureesursis' => null,
+					'sortienvcontrat' => 0,
+					'active' => 1,
+					'created' => '2010-11-04',
+					'modified' => '2010-11-04',
+				),
+			);
+			$result = $this->Contratinsertion->valider($data);
+			debug($result);
 		}
  
 		// test fonction aftersave()
