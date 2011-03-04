@@ -55,7 +55,19 @@
 					'rule' => 'date',
 					'message' => 'Veuillez entrer une date valide'
 				)
-			)
+			),
+            'structureorientante_id' => array(
+                'notEmpty' => array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                )
+            ),
+            'referentorientant_id' => array(
+                'notEmpty' => array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                )
+            )
 		);
 
 		public $belongsTo = array(
