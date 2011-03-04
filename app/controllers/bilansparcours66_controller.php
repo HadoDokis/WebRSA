@@ -75,27 +75,27 @@
 			);
 
 			$this->paginate = array(
-				'fields' => array(
-					'Bilanparcours66.id',
-					'Bilanparcours66.referent_id',
-					'Bilanparcours66.orientstruct_id',
-					'Bilanparcours66.contratinsertion_id',
-					'Bilanparcours66.presenceallocataire',
-					'Bilanparcours66.situationallocataire',
-					'Bilanparcours66.saisineepparcours',
-					'Bilanparcours66.maintienorientation',
-					'Bilanparcours66.changereferent',
-					'Bilanparcours66.proposition',
-					'Bilanparcours66.choixparcours',
-					'Bilanparcours66.maintienorientation',
-					'Bilanparcours66.examenaudition',
-					'Bilanparcours66.datebilan',
-					'Bilanparcours66.created',
-					'Bilanparcours66.positionbilan',
-					'Saisineepbilanparcours66.id',
-					'Saisineepbilanparcours66.typeorient_id',
-					'Saisineepbilanparcours66.structurereferente_id'
-				),
+// 				'fields' => array(
+// // 					'Bilanparcours66.id',
+// // 					'Bilanparcours66.referent_id',
+// // 					'Bilanparcours66.orientstruct_id',
+// // 					'Bilanparcours66.contratinsertion_id',
+// // 					'Bilanparcours66.presenceallocataire',
+// // 					'Bilanparcours66.situationallocataire',
+// // 					'Bilanparcours66.saisineepparcours',
+// // 					'Bilanparcours66.maintienorientation',
+// // 					'Bilanparcours66.changereferent',
+// // 					'Bilanparcours66.proposition',
+// // 					'Bilanparcours66.choixparcours',
+// // 					'Bilanparcours66.maintienorientation',
+// // 					'Bilanparcours66.examenaudition',
+// // 					'Bilanparcours66.datebilan',
+// // 					'Bilanparcours66.created',
+// // 					'Bilanparcours66.positionbilan',
+// // 					'Saisineepbilanparcours66.id',
+// // 					'Saisineepbilanparcours66.typeorient_id',
+// // 					'Saisineepbilanparcours66.structurereferente_id'
+// 				),
 				'contain' => array(
 					'Orientstruct' => array(
 						'Typeorient',
@@ -140,7 +140,14 @@
 					),
 					'Referent' => array(
                         'Structurereferente'
-					)
+					),
+                    'Defautinsertionep66' => array(
+                        'Dossierep' => array(
+                            'fields' => array(
+                                'etapedossierep'
+                            )
+                        )
+                    )
 				),
 				'conditions' => $conditions,
 				'limit' => 10
@@ -170,7 +177,7 @@
 				);
 
 			}
-
+// debug($bilansparcours66);
 			$this->_setOptions();
 			$this->set( compact( 'bilansparcours66', 'nborientstruct', 'struct' )  );
 		}

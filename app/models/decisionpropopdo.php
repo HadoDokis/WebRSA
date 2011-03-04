@@ -16,12 +16,27 @@
 		);
 
 		public $validate = array(
+            'decisionpdo_id' => array(
+                'rule' => 'notEmpty',
+                'message' => 'champ obligatoire'
+            ),
 			'datedecisionpdo' => array(
 				'rule' => 'date',
 				'message' => 'Veuillez entrer une date valide.',
 				'allowEmpty' => true
-			)
+			),
+// 			'dateavistechnique' => array(
+//                 'rule' => array('dateSup'),
+//                 'message' => 'Merci de choisir une date supérieure à la date de proposition',
+//                 'on' => 'create'
+// 			),
+// 			'datevalidationdecision' => array(
+//                 'rule' => array('dateSup'),
+//                 'message' => 'Merci de choisir une date supérieure à la date de l\'avis technique',
+//                 'on' => 'create'
+// 			)
 		);
+
 
 		public $belongsTo = array(
 			'Propopdo' => array(
