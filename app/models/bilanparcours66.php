@@ -45,7 +45,8 @@
 					'typeformulaire',
 					'saisineepl',
 					'sitfam',
-					'proposition'
+					'proposition',
+					'positionbilan'
 				)
 			)
 		);
@@ -143,6 +144,49 @@
 				'order' => ''
 			),
 		);
+
+
+        public function beforeSave( $options = array() ) {
+            $return = parent::beforeSave( $options );
+
+            $this->data[$this->alias]['positionbilan'] = $this->_calculPositionBilan( $this->data );
+
+            return $return;
+        }
+
+
+        protected function _calculPositionBilan( $data ){
+
+            $traitement = Set::classicExtract( $data, 'Bilanparcours66.proposition' );
+
+            $positionbilan = null;
+            // 'eplaudit', 'eplparc', 'attcga', 'attct', 'ajourne', 'annule'
+
+            if ( $traitement == 'audition' )
+                $positionbilan = 'eplaudit';
+            elseif ( $traitement == 'parcours' )
+                $positionbilan = 'eplparc';
+// Une fois le traitement = audition et avis ep émis, alorspaser en attcga
+//             elseif( ( $traitement == 'audition' ) && ( !empty( $saisineep ) ) )
+//                 $positionbilan = 'attcga';
+
+// Une fois le traitement = parcours et avis ep émis, alorspaser en attct
+//                 $positionbilan = 'attct';
+
+// Si dossier incomplet -> ajourne
+//                 $positionbilan = 'ajourne';
+
+// Si bilan annulé -> annule
+//                 $positionbilan = 'annule';
+            return $positionbilan;
+
+        }
+
+
+
+
+
+
 
 		/**
 		* Sauvegarde du bilan de parcours d'un allocataire.

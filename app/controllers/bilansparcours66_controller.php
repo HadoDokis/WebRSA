@@ -91,6 +91,7 @@
 					'Bilanparcours66.examenaudition',
 					'Bilanparcours66.datebilan',
 					'Bilanparcours66.created',
+					'Bilanparcours66.positionbilan',
 					'Saisineepbilanparcours66.id',
 					'Saisineepbilanparcours66.typeorient_id',
 					'Saisineepbilanparcours66.structurereferente_id'
@@ -468,6 +469,35 @@
 			$this->_setOptions();
 			$this->render( null, null, 'add_edit' );
 		}
+
+
+        /**
+        *   Fonction pour annuler le CER pour le CG66
+        */
+
+        public function cancel( $id ) {
+            $bilan = $this->{$this->modelClass}->findById( $id, null, null, -1 );
+            $orientstruct_id = Set::classicExtract( $bilan, 'Bilanparcours66.orientstruct_id' );
+            $orientstruct = $this->{$this->modelClass}->Orientstruct->findById( $orientstruct_id, null, null, -1 );
+            $personne= $this->Bilanparcours66->Orientstruct->Personne->find(
+                'first',
+                array(
+                    'fields' => array( 'id' ),
+                    'conditions' => array(
+                        'Personne.id' => $orientstruct['Orientstruct']['personne_id']
+                    ),
+                    'recursive' => -1
+                )
+            );
+
+            $this->{$this->modelClass}->updateAll(
+                array( 'Bilanparcours66.positionbilan' => '\'annule\'' ),
+                array(
+                    '"Bilanparcours66"."id"' => $id
+                )
+            );
+            $this->redirect( array( 'action' => 'index', $personne['Personne']['id'] ) );
+        }
 
 		/**
 		* TODO: que supprime-t'on ? Dans quel cas peut-on supprimer ?
