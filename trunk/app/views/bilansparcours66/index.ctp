@@ -94,6 +94,7 @@
 
 					echo "<table><thead><tr>";
 						echo "<th>".__d('bilanparcours66', 'Bilanparcours66.datebilan', true)."</th>";
+						echo "<th>".__d('bilanparcours66', 'Bilanparcours66.positionbilan', true)."</th>";
 						echo "<th>".__d('structurereferente', 'Structurereferente.lib_struc',true)."</th>";
 						echo "<th>Nom du référent</th>";
 						echo "<th>".__d('bilanparcours66', 'Bilanparcours66.proposition', true)."</th>";
@@ -101,13 +102,20 @@
 						echo "<th colspan='2'>".__d('saisineepbilanparcours66', 'Saisineepbilanparcours66.propref', true)."</th>";
 						echo "<th colspan='2'>".__d('saisineepbilanparcours66', 'Saisineepbilanparcours66.avisep', true)."</th>";
 						echo "<th colspan='2'>".__d('saisineepbilanparcours66', 'Saisineepbilanparcours66.decisioncg', true)."</th>";
-						echo "<th colspan='2'>Actions</th>";
+						echo "<th colspan='3'>Actions</th>";
 					echo "</tr></thead><tbody>";
 
 					foreach($bilansparcours66 as $bilanparcour66) {
 // debug($bilanparcour66);
+                        $positionbilan = Set::classicExtract( $bilanparcour66, 'Bilanparcours66.positionbilan' );
+                        $block = true;
+                        if( $positionbilan == 'annule' ){
+                            $block = false;
+                        }
+
 						echo "<tr>";
 							echo $type2->format( $bilanparcour66, 'Bilanparcours66.datebilan', array( 'type' => 'date', 'tag' => 'td', 'options' => $options ) );
+							echo $type2->format( $bilanparcour66, 'Bilanparcours66.positionbilan', array(  'tag' => 'td', 'options' => $options ) );
 							echo $type2->format( $bilanparcour66, 'Referent.Structurereferente.lib_struc', array( 'tag' => 'td', 'options' => $options ) );
 							echo $type2->format( $bilanparcour66, 'Referent.nom_complet', array( 'type' => 'text', 'tag' => 'td', 'options' => $options ) );
 							echo $type2->format( $bilanparcour66, 'Bilanparcours66.proposition', array( 'tag' => 'td', 'options' => $options ) );
@@ -191,11 +199,15 @@
 							}
 							echo $html->tag(
 								'td',
-								$xhtml->editLink( 'Modifier', array( 'controller'=>'bilansparcours66', 'action'=>'edit', Set::classicExtract($bilanparcour66, 'Bilanparcours66.id') ) )
+								$xhtml->editLink( 'Modifier', array( 'controller'=>'bilansparcours66', 'action'=>'edit', Set::classicExtract($bilanparcour66, 'Bilanparcours66.id') ), $block )
 							);
 							echo $html->tag(
                                 'td',
-                                $xhtml->printLink( 'Imprimer', array( 'controller'=>'bilansparcours66', 'action'=>'gedooo', Set::classicExtract($bilanparcour66, 'Bilanparcours66.id') ), false  ) //FIXME: mise à false du bouton "Imprimer"
+                                $xhtml->printLink( 'Imprimer', array( 'controller'=>'bilansparcours66', 'action'=>'gedooo', Set::classicExtract($bilanparcour66, 'Bilanparcours66.id') ), $block  ) //FIXME: mise à false du bouton "Imprimer"
+                            );
+                            echo $html->tag(
+                                'td',
+                                $xhtml->cancelLink( 'Annuler ce bilan de parcours', array( 'controller'=>'bilansparcours66', 'action'=>'cancel', Set::classicExtract($bilanparcour66, 'Bilanparcours66.id') ), $block  ) //FIXME: mise à false du bouton "Imprimer"
                             );
 						echo "</tr>";
 					}

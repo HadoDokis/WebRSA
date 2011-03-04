@@ -255,6 +255,10 @@ SELECT alter_table_drop_column_if_exists( 'public', 'entretiens', 'arevoirle' );
 ALTER TABLE entretiens ADD COLUMN arevoirle DATE DEFAULT NULL;
 
 
+DROP TYPE IF EXISTS TYPE_POSITIONBILAN CASCADE;
+CREATE TYPE TYPE_POSITIONBILAN AS ENUM ( 'eplaudit', 'eplparc', 'attcga', 'attct', 'ajourne', 'annule' );
+SELECT add_missing_table_field ('public', 'bilansparcours66', 'positionbilan', 'TYPE_POSITIONBILAN');
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

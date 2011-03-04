@@ -399,3 +399,24 @@ msgstr "Situation professionnelle (préciser les avancées réalisées)"
 
 msgid "Bilanparcours66.motifep"
 msgstr "Motif de la saisine de l'équipe pluridisciplinaire"
+
+msgid "Bilanparcours66.positionbilan"
+msgstr "Position du bilan"
+
+msgid "ENUM::POSITIONBILAN::eplaudit"
+msgstr "En attente de l'avis de l'EPL Audition"
+
+msgid "ENUM::POSITIONBILAN::eplparc"
+msgstr "En attente de l'avis de l'EPL Parcours"
+
+msgid "ENUM::POSITIONBILAN::attcga"
+msgstr "En attente de décision de la CGA"
+
+msgid "ENUM::POSITIONBILAN::attct"
+msgstr "En attente de décision du Coordonnateur Technique"
+
+msgid "ENUM::POSITIONBILAN::ajourne"
+msgstr "Ajourné"
+
+msgid "ENUM::POSITIONBILAN::annule"
+msgstr "Annulé"
