@@ -6,6 +6,21 @@
 		var $table = 'creancesalimentaires';
 		var $import = array( 'table' => 'creancesalimentaires', 'connection' => 'default', 'records' => false);
 		var $records = array(
+			array(
+				'id' => '1',
+				'etatcrealim' => null,
+				'ddcrealim' => null,
+				'dfcrealim' => null,
+				'orioblalim' => null,
+				'motidiscrealim' =>  null,
+				'commcrealim' => null,
+				'mtsancrealim' => null,
+				'topdemdisproccrealim' => null,
+				'engproccrealim' => null,
+				'verspa' => null,
+				'topjugpa' => null,
+				'personne_id' => '1001',
+			),
 		);
 	}
 

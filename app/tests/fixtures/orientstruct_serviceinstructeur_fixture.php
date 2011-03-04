@@ -11,6 +11,16 @@
 				'serviceinstructeur_id' => '1',
 				'id' => '1',
 			),
+			array(
+				'orientstruct_id' => '2',
+				'serviceinstructeur_id' => '2',
+				'id' => '2',
+			),
+			array(
+				'orientstruct_id' => '1001',
+				'serviceinstructeur_id' => '3',
+				'id' => '3',
+			),
 		);
 	}
 

@@ -11,7 +11,7 @@
 			$id = '1';
 			$expected = array(
 				'nonrespectsanctionep93' => 'cg',
-				'saisineepreorientsr93' => 'cg',
+				//'saisineepreorientsr93' => 'cg',
 			);
 			$result = $this->Dossierep->themeTraite($id);
 			$this->assertEqual($result, $expected);
