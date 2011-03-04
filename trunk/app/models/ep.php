@@ -17,11 +17,10 @@
 					// Thèmes 93
 					'nonrespectsanctionep93',
 					'saisineepreorientsr93',
-					'radiepoleemploiep93',
 					// Thèmes 58
 					'nonorientationpro58',
 					'regressionorientationep58',
-					'radiepoleemploiep58'
+					'sanctionep58'
 				)
 			)
 		);

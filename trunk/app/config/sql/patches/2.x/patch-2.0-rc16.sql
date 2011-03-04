@@ -13,10 +13,11 @@ BEGIN;
 
 DROP TABLE IF EXISTS regressionsorientationseps58 CASCADE;
 DROP TABLE IF EXISTS decisionsregressionsorientationseps58 CASCADE;
-DROP TABLE IF EXISTS radiespoleemploieps93 CASCADE;
-DROP TABLE IF EXISTS decisionsradiespoleemploieps93 CASCADE;
-DROP TABLE IF EXISTS radiespoleemploieps58 CASCADE;
-DROP TABLE IF EXISTS decisionsradiespoleemploieps58 CASCADE;
+DROP TABLE IF EXISTS sanctionseps93 CASCADE;
+DROP TABLE IF EXISTS decisionssanctionseps93 CASCADE;
+DROP TABLE IF EXISTS listesanctionseps58 CASCADE;
+DROP TABLE IF EXISTS sanctionseps58 CASCADE;
+DROP TABLE IF EXISTS decisionssanctionseps58 CASCADE;
 DROP TABLE IF EXISTS objetsentretien CASCADE;
 
 DROP INDEX IF EXISTS dsps_personne_id_idx;
@@ -30,18 +31,66 @@ DROP INDEX IF EXISTS decisionsregressionsorientationseps58_regressionorientation
 DROP INDEX IF EXISTS decisionsregressionsorientationseps58_typeorient_id_idx;
 DROP INDEX IF EXISTS decisionsregressionsorientationseps58_structurereferente_id_idx;
 DROP INDEX IF EXISTS decisionsregressionsorientationseps58_referent_id_idx;
-DROP INDEX IF EXISTS radiespoleemploieps93_historiqueetatpe_id_idx;
-DROP INDEX IF EXISTS decisionsradiespoleemploieps93_radiepoleemploiep93_id_idx;
-DROP INDEX IF EXISTS radiespoleemploieps58_historiqueetatpe_id_idx;
-DROP INDEX IF EXISTS decisionsradiespoleemploieps58_radiepoleemploiep58_id_idx;
+DROP INDEX IF EXISTS sanctionseps58_historiqueetatpe_id_idx;
+DROP INDEX IF EXISTS decisionssanctionseps58_sanctionep58_id_idx;
+DROP INDEX IF EXISTS decisionssanctionseps58_listesanctionep58_id_idx;
 DROP INDEX IF EXISTS regressionsorientationseps58_user_id_idx;
 
 -- *****************************************************************************
 
+DROP TYPE IF EXISTS TYPE_ORIGINESANCTION CASCADE;
+DROP TYPE IF EXISTS TYPE_DECISIONSANCTIONEP58 CASCADE;
+
 ALTER TABLE dossierseps ALTER COLUMN themeep TYPE TEXT;
 DROP TYPE IF EXISTS TYPE_THEMEEP;
-CREATE TYPE TYPE_THEMEEP AS ENUM ( 'saisinesepsreorientsrs93', 'saisinesepsbilansparcours66', /*'suspensionsreductionsallocations93',*/ 'saisinesepdspdos66', 'nonrespectssanctionseps93', 'defautsinsertionseps66', 'nonorientationspros58', 'regressionsorientationseps58', 'radiespoleemploieps93', 'radiespoleemploieps58' );
+CREATE TYPE TYPE_THEMEEP AS ENUM ( 'saisinesepsreorientsrs93', 'saisinesepsbilansparcours66', /*'suspensionsreductionsallocations93',*/ 'saisinesepdspdos66', 'nonrespectssanctionseps93', 'defautsinsertionseps66', 'nonorientationspros58', 'regressionsorientationseps58', 'sanctionseps58' );
 ALTER TABLE dossierseps ALTER COLUMN themeep TYPE TYPE_THEMEEP USING CAST(themeep AS TYPE_THEMEEP);
+
+-- *****************************************************************************
+
+CREATE OR REPLACE FUNCTION public.add_missing_constraint (text, text, text, text, text)
+RETURNS bool as '
+DECLARE
+	p_namespace 		alias for $1;
+	p_table     		alias for $2;
+	p_constraintname	alias for $3;
+	p_foreigntable		alias for $4;
+	p_foreignkeyname	alias for $5;
+	v_row       		record;
+	v_query     		text;
+BEGIN
+	select 1 into v_row
+	from information_schema.table_constraints tc
+		left join information_schema.key_column_usage kcu on (
+			tc.constraint_catalog = kcu.constraint_catalog
+			and tc.constraint_schema = kcu.constraint_schema
+			and tc.constraint_name = kcu.constraint_name
+		)
+		left join information_schema.referential_constraints rc on (
+			tc.constraint_catalog = rc.constraint_catalog
+			and tc.constraint_schema = rc.constraint_schema
+			and tc.constraint_name = rc.constraint_name
+		)
+		left join information_schema.constraint_column_usage ccu on (
+			rc.unique_constraint_catalog = ccu.constraint_catalog
+			and rc.unique_constraint_schema = ccu.constraint_schema
+			and rc.unique_constraint_name = ccu.constraint_name
+		)
+	where tc.table_name = p_table
+		and tc.constraint_type = ''FOREIGN KEY''
+		and tc.constraint_name = p_constraintname;
+	if not found then
+		raise notice ''Upgrade table %.% - add constraint %'', p_namespace, p_table, p_constraintname;
+		v_query := ''alter table '' || p_namespace || ''.'' || p_table || '' add constraint '';
+		v_query := v_query || p_constraintname || '' FOREIGN KEY ('' || p_foreignkeyname || '') REFERENCES '' || p_foreigntable || ''(id) ON DELETE CASCADE ON UPDATE CASCADE;'';
+		execute v_query;
+		return ''t'';
+	else
+		return ''f'';
+	end if;
+END;' language plpgsql;
+
+COMMENT ON FUNCTION public.add_missing_constraint (text, text, text, text, text) IS 'Add a constraint to a table if it is missing';
 
 -- *****************************************************************************
 
@@ -100,39 +149,6 @@ ALTER TABLE contratsinsertion ADD COLUMN dateradiationparticulier DATE DEFAULT N
 -- -----------------------------------------------------------------------------
 -- 20110222
 -- -----------------------------------------------------------------------------
-CREATE TABLE radiespoleemploieps93 (
-	id      				SERIAL NOT NULL PRIMARY KEY,
-	dossierep_id			INTEGER DEFAULT NULL REFERENCES dossierseps(id) ON DELETE CASCADE ON UPDATE CASCADE,
-	historiqueetatpe_id		INTEGER DEFAULT NULL REFERENCES historiqueetatspe(id) ON DELETE CASCADE ON UPDATE CASCADE,
-	commentaire				TEXT DEFAULT NULL,
-	created					TIMESTAMP WITHOUT TIME ZONE,
-	modified				TIMESTAMP WITHOUT TIME ZONE
-);
-COMMENT ON TABLE radiespoleemploieps93 IS 'Thématique de détection des radiés de Pôle Emploi (CG93)';
-
-CREATE INDEX radiespoleemploieps93_historiqueetatpe_id_idx ON radiespoleemploieps93 (historiqueetatpe_id);
-
-SELECT add_missing_table_field ('public', 'eps', 'radiepoleemploiep93', 'TYPE_NIVEAUDECISIONEP');
-ALTER TABLE eps ALTER COLUMN radiepoleemploiep93 SET DEFAULT 'nontraite';
-UPDATE eps SET radiepoleemploiep93 = 'nontraite' WHERE radiepoleemploiep93 IS NULL;
-ALTER TABLE eps ALTER COLUMN radiepoleemploiep93 SET NOT NULL;
-
-CREATE TABLE decisionsradiespoleemploieps93 (
-	id      						SERIAL NOT NULL PRIMARY KEY,
-	radiepoleemploiep93_id			INTEGER NOT NULL REFERENCES radiespoleemploieps93(id) ON DELETE CASCADE ON UPDATE CASCADE,
-	etape							TYPE_ETAPEDECISIONEP NOT NULL,
-	decision						TYPE_DECISIONSANCTIONEP93 DEFAULT NULL,
-	commentaire						TEXT DEFAULT NULL,
-	created							TIMESTAMP WITHOUT TIME ZONE,
-	modified						TIMESTAMP WITHOUT TIME ZONE
-);
-COMMENT ON TABLE decisionsradiespoleemploieps93 IS 'Décisions pour la thématique de détection des radiés de Pôle Emploi (CG93)';
-
-CREATE INDEX decisionsradiespoleemploieps93_radiepoleemploiep93_id_idx ON decisionsradiespoleemploieps93 (radiepoleemploiep93_id);
-
--- -----------------------------------------------------------------------------
--- 20110222
--- -----------------------------------------------------------------------------
 
 CREATE OR REPLACE FUNCTION public.calcul_cle_nir( TEXT ) RETURNS TEXT AS
 $body$
@@ -167,47 +183,58 @@ COMMENT ON FUNCTION public.calcul_cle_nir( TEXT ) IS
 	'Calcul de la clé d''un NIR. Retourne NULL si le NIR n''est pas sur 13 caractères (6 chiffres - A, B ou un chiffre - 6 chiffres) ou une chaîne de 2 caractères correspondant à la clé.';
 
 -- -----------------------------------------------------------------------------
--- 20110228
+-- 20110301
 -- -----------------------------------------------------------------------------
-CREATE TABLE radiespoleemploieps58 (
+SELECT add_missing_table_field ('public', 'proposorientationscovs58', 'user_id', 'integer');
+SELECT add_missing_constraint ('public', 'proposorientationscovs58', 'proposorientationscovs58_user_id_fkey', 'users', 'user_id');
+-- FIXME : à rendre not null !!!
+-- ALTER TABLE proposorientationscovs58 ALTER COLUMN user_id SET NOT NULL; 
+
+-- -----------------------------------------------------------------------------
+-- 20110302
+-- -----------------------------------------------------------------------------
+CREATE TYPE TYPE_ORIGINESANCTION AS ENUM ( 'radiepe', 'noninscritpe' );
+CREATE TYPE TYPE_DECISIONSANCTIONEP58 AS ENUM ( 'maintien', 'sanction' );
+
+CREATE TABLE listesanctionseps58 (
+	id      				SERIAL NOT NULL PRIMARY KEY,
+	rang					INTEGER NOT NULL,
+	sanction				VARCHAR(20) NOT NULL,
+	duree					INTEGER NOT NULL
+);
+
+CREATE TABLE sanctionseps58 (
 	id      				SERIAL NOT NULL PRIMARY KEY,
 	dossierep_id			INTEGER DEFAULT NULL REFERENCES dossierseps(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	historiqueetatpe_id		INTEGER DEFAULT NULL REFERENCES historiqueetatspe(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	origine					TYPE_ORIGINESANCTION NOT NULL,
+	listesanctionep58_id	INTEGER NOT NULL REFERENCES listesanctionseps58(id) ON DELETE SET NULL ON UPDATE CASCADE,
 	commentaire				TEXT DEFAULT NULL,
 	created					TIMESTAMP WITHOUT TIME ZONE,
 	modified				TIMESTAMP WITHOUT TIME ZONE
 );
-COMMENT ON TABLE radiespoleemploieps58 IS 'Thématique de détection des radiés de Pôle Emploi (CG58)';
+COMMENT ON TABLE sanctionseps58 IS 'Thématique de détection des radiés et non inscrits à Pôle Emploi (CG58)';
 
-CREATE INDEX radiespoleemploieps58_historiqueetatpe_id_idx ON radiespoleemploieps58 (historiqueetatpe_id);
+CREATE INDEX sanctionseps58_historiqueetatpe_id_idx ON sanctionseps58 (historiqueetatpe_id);
 
-SELECT add_missing_table_field ('public', 'eps', 'radiepoleemploiep58', 'TYPE_NIVEAUDECISIONEP');
-ALTER TABLE eps ALTER COLUMN radiepoleemploiep58 SET DEFAULT 'nontraite';
-UPDATE eps SET radiepoleemploiep58 = 'nontraite' WHERE radiepoleemploiep58 IS NULL;
-ALTER TABLE eps ALTER COLUMN radiepoleemploiep58 SET NOT NULL;
+SELECT add_missing_table_field ('public', 'eps', 'sanctionep58', 'TYPE_NIVEAUDECISIONEP');
+ALTER TABLE eps ALTER COLUMN sanctionep58 SET DEFAULT 'nontraite';
+UPDATE eps SET sanctionep58 = 'nontraite' WHERE sanctionep58 IS NULL;
+ALTER TABLE eps ALTER COLUMN sanctionep58 SET NOT NULL;
 
-CREATE TABLE decisionsradiespoleemploieps58 (
+CREATE TABLE decisionssanctionseps58 (
 	id      						SERIAL NOT NULL PRIMARY KEY,
-	radiepoleemploiep58_id			INTEGER NOT NULL REFERENCES radiespoleemploieps58(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	sanctionep58_id					INTEGER NOT NULL REFERENCES sanctionseps58(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	etape							TYPE_ETAPEDECISIONEP NOT NULL,
-	decision						TYPE_DECISIONSANCTIONEP93 DEFAULT NULL,
+	decision						TYPE_DECISIONSANCTIONEP58 DEFAULT NULL,
 	commentaire						TEXT DEFAULT NULL,
 	created							TIMESTAMP WITHOUT TIME ZONE,
 	modified						TIMESTAMP WITHOUT TIME ZONE
 );
-COMMENT ON TABLE decisionsradiespoleemploieps58 IS 'Décisions pour la thématique de détection des radiés de Pôle Emploi (CG58)';
+COMMENT ON TABLE decisionssanctionseps58 IS 'Décisions pour la thématique de détection des radiés et non inscrits Pôle Emploi (CG58)';
 
-CREATE INDEX decisionsradiespoleemploieps58_radiepoleemploiep58_id_idx ON decisionsradiespoleemploieps58 (radiepoleemploiep58_id);
-
--- -----------------------------------------------------------------------------
--- 20110301
--- -----------------------------------------------------------------------------
-SELECT add_missing_table_field ('public', 'proposorientationscovs58', 'user_id', 'integer');
-ALTER TABLE proposorientationscovs58 ADD CONSTRAINT proposorientationscovs58_user_id_fkey FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE;
--- FIXME : à rendre not null !!!
--- ALTER TABLE proposorientationscovs58 ALTER COLUMN user_id SET NOT NULL;
-
-
+CREATE INDEX decisionssanctionseps58_sanctionep58_id_idx ON decisionssanctionseps58 (sanctionep58_id);
+CREATE INDEX decisionssanctionseps58_listesanctionep58_id_idx ON decisionssanctionseps58 (listesanctionep58_id);
 
 -- -----------------------------------------------------------------------------
 -- 20110302
@@ -246,14 +273,12 @@ SELECT add_missing_table_field ('public', 'contratsinsertion', 'positioncer', 'T
 SELECT alter_table_drop_column_if_exists( 'public', 'pdfs', 'cmspath' );
 ALTER TABLE pdfs ADD COLUMN cmspath VARCHAR(250) DEFAULT NULL;
 
-
 -- -----------------------------------------------------------------------------
 -- 20110304
 -- -----------------------------------------------------------------------------
 
 SELECT alter_table_drop_column_if_exists( 'public', 'entretiens', 'arevoirle' );
 ALTER TABLE entretiens ADD COLUMN arevoirle DATE DEFAULT NULL;
-
 
 DROP TYPE IF EXISTS TYPE_POSITIONBILAN CASCADE;
 CREATE TYPE TYPE_POSITIONBILAN AS ENUM ( 'eplaudit', 'eplparc', 'attcga', 'attct', 'ajourne', 'annule' );

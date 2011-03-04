@@ -48,11 +48,10 @@
 	// On laisse la possibilité de choisir comme avant pour le CG 58
 	elseif( Configure::read( 'Cg.departement' ) == 58 ) {
 		echo $default->subform(
-				array(
-					'Ep.nonorientationpro58' => array( 'type' => 'hidden', 'value' => 'ep' ),
-					'Ep.regressionorientationep58' => array( 'type' => 'hidden', 'value' => 'ep' ),
-					'Ep.radiepoleemploiep58' => array( 'type' => 'hidden', 'value' => 'ep' ),
-				)
+			array(
+				'Ep.nonorientationpro58' => array( 'type' => 'hidden', 'value' => 'ep' ),
+				'Ep.regressionorientationep58' => array( 'type' => 'hidden', 'value' => 'ep' ),
+				'Ep.sanctionep58' => array( 'type' => 'hidden', 'value' => 'ep' ),
 			)
 		);
 	}

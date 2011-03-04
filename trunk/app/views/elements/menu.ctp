@@ -284,9 +284,10 @@
 							<?php elseif( Configure::read( 'Cg.departement' ) == 93 ):?>
 								<li><?php echo $xhtml->link( 'Demandes de réorientation 93', array( 'controller' => 'saisinesepsreorientsrs93', 'action' => 'index' ) );?></li>
 								<li><?php echo $xhtml->link( 'Demande de suspension 93', array( 'controller' => 'nonrespectssanctionseps93', 'action' => 'index' ) );?></li>
-								<li><?php echo $xhtml->link( 'Sélection des allocataires radiés de Pôle Emploi', array( 'controller' => 'radiespoleemploieps', 'action' => 'selectionradies' ) );?></li>
+								<!--<li><?php //echo $xhtml->link( 'Sélection des allocataires radiés de Pôle Emploi', array( 'controller' => 'radiespoleemploieps', 'action' => 'selectionradies' ) );?></li>-->
 							<?php elseif( Configure::read( 'Cg.departement' ) == 58 ):?>
-								<li><?php echo $xhtml->link( 'Sélection des allocataires radiés de Pôle Emploi', array( 'controller' => 'radiespoleemploieps', 'action' => 'selectionradies' ) );?></li>
+								<li><?php echo $xhtml->link( 'Sélection des allocataires radiés de Pôle Emploi', array( 'controller' => 'sanctionseps58', 'action' => 'selectionradies' ) );?></li>
+								<li><?php echo $xhtml->link( 'Sélection des allocataires non inscrits à Pôle Emploi', array( 'controller' => 'sanctionseps58', 'action' => 'selectionnoninscrits' ) );?></li>
 							<?php endif;?>
 						</ul>
 					</li>

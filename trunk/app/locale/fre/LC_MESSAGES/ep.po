@@ -127,15 +127,15 @@ msgstr "Décision émise par le CG"
 msgid "Ep.regressionorientationep58"
 msgstr "Dossier orienté du professionnel vers le social"
 
-msgid "Ep.radiepoleemploiep58"
+msgid "Ep.sanctionep58"
 msgstr "Détection des radiés de Pôle-Emploi"
 
-msgid "ENUM::RADIEPOLEEMPLOIEP58::nontraite"
+msgid "ENUM::SANCTIONEP58::nontraite"
 msgstr "Décision non traitée"
 
-msgid "ENUM::RADIEPOLEEMPLOIEP58::ep"
+msgid "ENUM::SANCTIONEP58::ep"
 msgstr "Décision émise par l'EP"
 
-msgid "ENUM::RADIEPOLEEMPLOIEP58::cg"
+msgid "ENUM::SANCTIONEP58::cg"
 msgstr "Décision émise par le CG"
 

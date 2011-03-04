@@ -29,8 +29,7 @@
 				$this->Seanceep->Dossierep->Nonrespectsanctionep93->enums(),
 				$this->Seanceep->Dossierep->Defautinsertionep66->enums(),
 				$this->Seanceep->Dossierep->Nonorientationpro58->Decisionnonorientationpro58->enums(),
-				$this->Seanceep->Dossierep->Radiepoleemploiep93->Decisionradiepoleemploiep93->enums(),
-				$this->Seanceep->Dossierep->Radiepoleemploiep58->Decisionradiepoleemploiep58->enums(),
+				$this->Seanceep->Dossierep->Sanctionep58->Decisionsanctionep58->enums(),
 				$this->Seanceep->Dossierep->enums(),
 				$this->Seanceep->enums(),
 				$this->Seanceep->MembreepSeanceep->enums(),
@@ -52,6 +51,8 @@
 			$options['Decisiondefautinsertionep66']['structurereferente_id'] = $this->Seanceep->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->Structurereferente->list1Options();//listOptions
 			$this->set( compact( 'options' ) );
 			$this->set( 'typevoie', $this->Option->typevoie() );
+			
+			$this->set( 'listesanctionseps58', $this->Seanceep->Dossierep->Sanctionep58->Listesanctionep58->find( 'list' ) );
 		}
 
 		/**
@@ -217,6 +218,7 @@
 
 				$this->_setFlashResult( 'Save', $success );
 				if( /*false && */$success ) {
+// 					$this->Seanceep->rollback();
 					$this->Seanceep->commit();
 					$this->redirect( array( 'action' => 'view', $seanceep_id, '#dossiers' ) );
 				}
