@@ -92,6 +92,19 @@
                     array( 'class' => 'odd' ),
                     array( 'class' => 'even' )
                 );
+                if ( Configure::read( 'Cg.departement' ) == 58 ) {
+					echo $xhtml->tableCells(
+						array(
+							h( 'Liste des sanctions' ),
+							$xhtml->viewLink(
+								'Voir la table',
+								array( 'controller' => 'listesanctionseps58', 'action' => 'index' )
+							)
+						),
+						array( 'class' => 'odd' ),
+						array( 'class' => 'even' )
+					);
+				}
                 echo $xhtml->tableCells(
                     array(
                         h( 'Objets de l\'entretien' ),

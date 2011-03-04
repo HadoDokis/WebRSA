@@ -272,10 +272,9 @@
 		'decisionnonorientationpro93' => 'decisionsnonorientationspros93',
 		'regressionorientationep58' => 'regressionsorientationseps58',
 		'decisionregressionorientationep58' => 'decisionsregressionsorientationseps58',
-		'radiepoleemploiep93' => 'radiespoleemploieps93',
-		'decisionradiepoleemploiep93' => 'decisionsradiespoleemploieps93',
-		'radiepoleemploiep58' => 'radiespoleemploieps58',
-		'decisionradiepoleemploiep58' => 'decisionsradiespoleemploieps58',
+		'sanctionep58' => 'sanctionseps58',
+		'decisionsanctionep58' => 'decisionssanctionseps58',
+		'listesanctionep58' => 'listesanctionseps58',
 		// Données flux Pôle Emploi
 		'informationpe' => 'informationspe',
 		'historiqueetatpe' => 'historiqueetatspe',

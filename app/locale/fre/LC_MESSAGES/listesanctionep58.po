@@ -19,14 +19,14 @@ msgstr ""
 
 
 ###############################################################################
-
+# 
 ###############################################################################
 
-msgid "Historiqueetatpe.chosen"
-msgstr "Sélectionné ?"
+msgid "Listesanctionep58.rang"
+msgstr "Rang de la sanction"
 
-msgid "Radiespoleemploieps::selectionradies"
-msgstr "Sélection des allocataires radiés de Pôle Emploi"
+msgid "Listesanctionep58.sanction"
+msgstr "Sanction à appliquer"
 
-msgid "Radiespoleemploiep::index::empty"
-msgstr "Aucun dossier ne peut actuellement passer en EP"
+msgid "Listesanctionep58.duree"
+msgstr "Durée de la sanction (en mois)"
