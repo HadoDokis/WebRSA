@@ -32,7 +32,7 @@
         	'fieldset',
         	$default->subform(
 		        array(
-		            'Traitementpdo.datereception' => array( 'required' => true, 'empty' => true, 'maxYear' => date('Y') + 2, 'minYear' => date('Y' ) -2 )
+		            'Traitementpdo.datereception' => array( 'required' => true, 'empty' => false, 'maxYear' => date('Y') + 2, 'minYear' => date('Y' ) -2 )
 		        ),
 		        array(
 		            'options' => $options
@@ -567,11 +567,11 @@
         		).
         		$html->tag(
         			'td',
-        			$xform->_label('Traitementpdo.amortissements', array('domain'=>'traitementpdo', 'required'=>true))
+        			$xform->_label('Traitementpdo.ammortissements', array('domain'=>'traitementpdo', 'required'=>true))
         		).
         		$html->tag(
         			'td',
-        			$form->input('Traitementpdo.amortissements', array('label'=>false, 'type'=>'text')),
+        			$form->input('Traitementpdo.ammortissements', array('label'=>false, 'type'=>'text')),
         			array(
         				'colspan' => 2
         			)
@@ -733,25 +733,28 @@
         					'minYear' => date('Y') - 5,
         					'maxYear' => date('Y')
         				)
-        			)
-        		).
-        		$html->tag(
-        			'td',
-        			$xform->_label('Traitementpdo.dtecheance', array('domain'=>'traitementpdo', 'required'=>true))
-        		).
-        		$html->tag(
-        			'td',
-        			$form->input('Traitementpdo.dtecheance',
-        				array(
-        					'label'=>false,
-        					'type'=>'date',
-        					'empty'=>true,
-        					'dateFormat' => 'DMY',
-        					'minYear' => date('Y') - 5,
-        					'maxYear' => date('Y') + 1
-        				)
-        			)
-        		)
+        			),
+        			array(
+                        'colspan' => 3
+                    )
+        		)//.
+//         		$html->tag(
+//         			'td',
+//         			$xform->_label('Traitementpdo.dtecheance', array('domain'=>'traitementpdo', 'required'=>true))
+//         		).
+//         		$html->tag(
+//         			'td',
+//         			$form->input('Traitementpdo.dtecheance',
+//         				array(
+//         					'label'=>false,
+//         					'type'=>'date',
+//         					'empty'=>true,
+//         					'dateFormat' => 'DMY',
+//         					'minYear' => date('Y') - 5,
+//         					'maxYear' => date('Y') + 1
+//         				)
+//         			)
+//         		)
         	);
         
         echo "</table></fieldset>";

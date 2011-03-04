@@ -137,6 +137,20 @@
 					'message' => 'Veuillez entrer un nombre positif.'
 				)
 			),
+			'date_saisi_ci' => array(
+                array(
+                    'rule' => array('datePassee'),
+                    'message' => 'Merci de choisir une date antérieure à la date du jour',
+                    'on' => 'create'
+                ),
+                array(
+                    'rule' => 'date',
+                    'message' => 'Merci de rentrer une date valide',
+                    'allowEmpty' => false,
+                    'required' => true,
+                    'on' => 'create'
+                )
+            ),
 			/**
 			* Régle ajoutée suite à la demande du CG66
 			*/
@@ -157,16 +171,12 @@
 	//                     'rule' => array( 'maxLength', 500 ),
 	//                     'message' => '500 carac. max'
 	//                 )
-	//             ),
+	//            ),
 			'nature_projet' => array(
 				'notEmpty' => array(
 					'rule' => 'notEmpty',
 					'message' => 'Champ obligatoire'
-				)/*,
-				'maxLength' => array(
-					'rule' => array( 'maxLength', 500 ),
-					'message' => '500 carac. max'
-				)*/
+				)
 			)
 		);
 

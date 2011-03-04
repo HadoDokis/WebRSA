@@ -321,7 +321,7 @@
     
     <?php
     	if ($this->action=='edit') {
-    	
+
     		echo $html->tag(
     			'fieldset',
     			$html->tag(
@@ -334,12 +334,13 @@
 				        'Descriptionpdo.name',
 				        'Traitementpdo.datereception',
 				        'Traitementpdo.datedepart',
-				        'Traitementtypepdo.name'
+				        'Traitementtypepdo.name',
+				        'Traitementpdo.hasrevenu' => array( 'label' => 'Fiche de calcul ?', 'type' => 'boolean' )
 				    ),
 				    array(
 				        'actions' => array(
 				            'Traitementspdos::edit',
-				            'Traitementspdos::clore' => array( 'disabled' => '\'#Traitementpdo.clos#\' != 0' ),
+				            'Traitementspdos::clore' => array( 'disabled' => ( '\'#Traitementpdo.clos#\' != 0' ) ),
 				            'Traitementspdos::delete'
 				        ),
 				        'add' => array( 'Traitementpdo.add' => array( 'controller'=>'traitementspdos', 'action'=>'add', $pdo_id ) ),
