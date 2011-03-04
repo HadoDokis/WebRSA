@@ -135,8 +135,15 @@
 			$referents = $this->Entretien->Referent->listOptions();
 			$this->set( 'referents', $referents );
 
+
+
+            
+
+
 			if( !empty( $this->data ) ){
 
+
+// debug($this->data);
 				if( $this->Entretien->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
 					if( $this->Entretien->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
 

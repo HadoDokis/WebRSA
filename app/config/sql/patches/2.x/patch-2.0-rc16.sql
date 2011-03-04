@@ -246,6 +246,15 @@ SELECT add_missing_table_field ('public', 'contratsinsertion', 'positioncer', 'T
 SELECT alter_table_drop_column_if_exists( 'public', 'pdfs', 'cmspath' );
 ALTER TABLE pdfs ADD COLUMN cmspath VARCHAR(250) DEFAULT NULL;
 
+
+-- -----------------------------------------------------------------------------
+-- 20110304
+-- -----------------------------------------------------------------------------
+
+SELECT alter_table_drop_column_if_exists( 'public', 'entretiens', 'arevoirle' );
+ALTER TABLE entretiens ADD COLUMN arevoirle DATE DEFAULT NULL;
+
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
