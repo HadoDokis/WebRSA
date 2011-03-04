@@ -632,6 +632,10 @@ function observeDisableFieldsOnRadioValue( form, radioName, fieldsIds, value, co
 //*****************************************************************************
 
 function disableFieldsetOnRadioValue( form, radioName, fieldsetId, value, condition, toggleVisibility ) {
+    if( ( typeof value ) != 'object' ) {
+        value = [ value ];
+    }
+
     toggleVisibility = typeof(toggleVisibility) != 'undefined' ? toggleVisibility : false;
 
 //     var checked = ( ( $F( fieldset ) == null ) ? false : true );
@@ -647,7 +651,14 @@ function disableFieldsetOnRadioValue( form, radioName, fieldsetId, value, condit
         }
     } );
 
-    var disabled = !( ( currentValue == value ) == condition );
+    var disabled = false;
+    value.each( function( elmt ) {
+        if( !( ( currentValue == elmt ) == condition ) ) {
+            disabled = true;
+        }
+    } );
+
+    //var disabled = !( ( currentValue == value ) == condition );
 
 // if( radioName == 'data[Cui][isbeneficiaire]' && $( fieldsetId ).id == 'IsBeneficiaire' ) {
 // 	alert( currentValue == value );

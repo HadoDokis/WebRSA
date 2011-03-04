@@ -27,7 +27,7 @@
                 echo $default2->subform(
                     array(
                         'Decisionpropopdo.datedecisionpdo' => array( 'label' =>  ( __( 'Date de décision de la PDO', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => false ),
-                        'Decisionpropopdo.decisionpdo_id' => array( 'label' =>  ( __( 'Décision du Conseil Général', true ) ), 'type' => 'select', 'options' => $decisionpdo, 'empty' => true )
+                        'Decisionpropopdo.decisionpdo_id' => array( 'label' =>  ( __( 'Décision du Conseil Général', true ) ), 'type' => 'select', 'options' => $decisionpdo, 'required' => true, 'empty' => true )
                     ),
                     array(
                         'options' => $options
@@ -53,6 +53,16 @@
                 echo $default2->subform(
                     array(
                         'Decisionpropopdo.avistechnique' => array( 'label' => false, 'type' => 'radio', 'options' => $options['avistechnique'] ),
+                    ),
+                    array(
+                        'options' => $options
+                    )
+                );
+            ?>
+            <fieldset id="avistech" class="noborder">
+                <?php
+                    echo $default2->subform(
+                    array(
                         'Decisionpropopdo.commentaireavistechnique',
                         'Decisionpropopdo.dateavistechnique' => array( 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear' => date('Y')+5, 'minYear' => date('Y')-1, 'empty' => false )
                     ),
@@ -60,7 +70,8 @@
                         'options' => $options
                     )
                 );
-            ?>
+                ?>
+            </fieldset>
     </fieldset>
 
     <fieldset><legend>Validation de la proposition</legend>
@@ -68,6 +79,16 @@
                 echo $default2->subform(
                     array(
                         'Decisionpropopdo.validationdecision' => array( 'label' => false, 'type' => 'radio', 'options' => $options['validationdecision'] ),
+                    ),
+                    array(
+                        'options' => $options
+                    )
+                );
+            ?>
+            <fieldset id="validpropo" class="noborder">
+                <?php
+                    echo $default2->subform(
+                    array(
                         'Decisionpropopdo.commentairedecision',
                         'Decisionpropopdo.datevalidationdecision' => array( 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear' => date('Y')+5, 'minYear' => date('Y')-1, 'empty' => false )
                     ),
@@ -75,7 +96,8 @@
                         'options' => $options
                     )
                 );
-            ?>
+                ?>
+            </fieldset>
     </fieldset>
 	
 	<?php
@@ -89,3 +111,39 @@
 
     <?php echo $xform->end();?>
 </div>
+            
+<script type="text/javascript">
+    document.observe("dom:loaded", function() {
+
+
+        /*observeDisableFieldsOnRadioValue(
+            'decisionpropopdoform',
+            'data[Decisionpropopdo][avistechnique]',
+            [
+                'DecisionpropopdoCommentaireavistechnique'
+            ],
+            ['O','N'],
+            true,
+            true
+        );*/
+
+        observeDisableFieldsetOnRadioValue(
+            'decisionpropopdoform',
+            'data[Decisionpropopdo][avistechnique]',
+            $( 'avistech' ),
+            ['O','N'],
+            false,
+            true
+        );
+
+        observeDisableFieldsetOnRadioValue(
+            'decisionpropopdoform',
+            'data[Decisionpropopdo][validationdecision]',
+            $( 'validpropo' ),
+            ['O','N'],
+            false,
+            true
+        );
+
+    } );
+</script>
