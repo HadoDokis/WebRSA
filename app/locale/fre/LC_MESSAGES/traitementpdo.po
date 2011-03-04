@@ -204,8 +204,8 @@ msgstr "Bénéfice ou déficit"
 msgid "Traitementpdo.correction"
 msgstr "Correction (à réintégrer)"
 
-msgid "Traitementpdo.amortissements"
-msgstr "Ammortissements"
+msgid "Traitementpdo.ammortissements"
+msgstr "Amortissements"
 
 msgid "Traitementpdo.salaireexploitant"
 msgstr "Salaire de l'exploitant"
@@ -240,10 +240,10 @@ msgstr "Subvention 2"
 ###############################################################################
 
 msgid "Traitementpdo.dureedepart"
-msgstr "Ecart"
+msgstr "Délai avant échéance"
 
 msgid "Traitementpdo.dureeecheance"
-msgstr "Ecart"
+msgstr "Délai avant révision"
 
 msgid "ENUM::DUREEDEPART::1"
 msgstr "1 mois"
