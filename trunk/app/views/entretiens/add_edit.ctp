@@ -45,7 +45,8 @@
                             'Entretien.dateentretien' => array( 'minYear' => date('Y')-2, 'maxYear' => date('Y')+2, 'empty' => false ),
                             'Entretien.typeentretien' => array( 'required' => true, 'options' => $options['Entretien']['typeentretien'], 'empty' => true ),
                             'Entretien.objetentretien_id' => array(  'empty' => true ),
-                            'Entretien.commentaireentretien'
+                            'Entretien.commentaireentretien',
+                            'Entretien.arevoirle' => array( 'type' => 'date', 'dateformat' => 'DMY', 'minYear' => date('Y')-2, 'maxYear' => date('Y')+2 )
                         ),
                         array(
                             'options' => $options
