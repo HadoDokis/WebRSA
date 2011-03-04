@@ -238,6 +238,7 @@
 		public function saveDecisions( $data, $niveauDecision ) {
 			// FIXME: filtrer les données
 			$themeData = Set::extract( $data, '/Decisionnonrespectsanctionep93' );
+			debug($this->data['Dossierep']);
 			if( empty( $themeData ) ) {
 				return true;
 			}
@@ -265,6 +266,7 @@
 					array( 'Dossierep.etapedossierep' => '\'decision'.$niveauDecision.'\'' ),
 					array( '"Dossierep"."id"' => Set::extract( $data, '/Nonrespectsanctionep93/dossierep_id' ) )
 				);
+debug($this->data['Dossierep']);
 				return $success;
 			}
 		}

@@ -36,6 +36,21 @@
 				'numagrins' => null,
 				'type_voie' => 'ARC',
 			),
+			array(
+				'id' => '3',
+				'lib_service' => 'CCAS Saint Denis',
+				'num_rue' => '2',
+				'nom_rue' => 'du Caquet',
+				'complement_adr' => null,
+				'code_insee' => '93066',
+				'code_postal' => '93200',
+				'ville' => 'ST DENIS',
+				'numdepins' => '093',
+				'typeserins' => 'C',
+				'numcomins' => '066',
+				'numagrins' => '1',
+				'type_voie' => 'PL',
+			),
 		);
 	}
 
