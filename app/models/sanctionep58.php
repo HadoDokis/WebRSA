@@ -273,7 +273,7 @@
 			// FIXME: et qui ne sont pas passés dans une EP pour ce motif depuis au moins 1 mois (?)
 			$queryData = $this->_qdSelection( 'radiepe' );
 			$qdRadies = $this->Historiqueetatpe->Informationpe->qdRadies();
-			$queryData['fields'] = array_merge( $queryData['fields'] ,$qdNonInscrits['fields'] );
+			$queryData['fields'] = array_merge( $queryData['fields'] ,$qdRadies['fields'] );
 			$queryData['joins'] = array_merge( $queryData['joins'] ,$qdRadies['joins'] );
 			$queryData['conditions'] = array_merge( $queryData['conditions'] ,$qdRadies['conditions'] );
 			$queryData['order'] = $qdRadies['order'];
