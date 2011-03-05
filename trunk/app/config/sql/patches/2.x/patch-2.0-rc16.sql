@@ -216,6 +216,7 @@ CREATE TABLE sanctionseps58 (
 COMMENT ON TABLE sanctionseps58 IS 'Thématique de détection des radiés et non inscrits à Pôle Emploi (CG58)';
 
 CREATE INDEX sanctionseps58_historiqueetatpe_id_idx ON sanctionseps58 (historiqueetatpe_id);
+CREATE INDEX sanctionseps58_listesanctionep58_id_idx ON sanctionseps58 (listesanctionep58_id);
 
 SELECT add_missing_table_field ('public', 'eps', 'sanctionep58', 'TYPE_NIVEAUDECISIONEP');
 ALTER TABLE eps ALTER COLUMN sanctionep58 SET DEFAULT 'nontraite';
@@ -234,7 +235,6 @@ CREATE TABLE decisionssanctionseps58 (
 COMMENT ON TABLE decisionssanctionseps58 IS 'Décisions pour la thématique de détection des radiés et non inscrits Pôle Emploi (CG58)';
 
 CREATE INDEX decisionssanctionseps58_sanctionep58_id_idx ON decisionssanctionseps58 (sanctionep58_id);
-CREATE INDEX decisionssanctionseps58_listesanctionep58_id_idx ON decisionssanctionseps58 (listesanctionep58_id);
 
 -- -----------------------------------------------------------------------------
 -- 20110302
