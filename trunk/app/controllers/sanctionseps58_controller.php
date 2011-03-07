@@ -58,8 +58,7 @@
 							'count',
 							array(
 								'conditions' => array(
-									'Sanctionep58.origine' => $origine,
-									'Sanctionep58.historiqueetatpe_id' => $item['id']
+									'Sanctionep58.origine' => $origine
 								),
 								'joins' => array(
 									array(
@@ -89,7 +88,6 @@
 						$sanctionep58 = array(
 							'Sanctionep58' => array(
 								'dossierep_id' => $this->Sanctionep58->Dossierep->id,
-								'historiqueetatpe_id' => $item['id'],
 								'origine' => $origine,
 								'listesanctionep58_id' => $listesanctionep58['Listesanctionep58']['id']
 							)
