@@ -187,7 +187,7 @@ COMMENT ON FUNCTION public.calcul_cle_nir( TEXT ) IS
 SELECT add_missing_table_field ('public', 'proposorientationscovs58', 'user_id', 'integer');
 SELECT add_missing_constraint ('public', 'proposorientationscovs58', 'proposorientationscovs58_user_id_fkey', 'users', 'user_id');
 -- FIXME : à rendre not null !!!
--- ALTER TABLE proposorientationscovs58 ALTER COLUMN user_id SET NOT NULL; 
+-- ALTER TABLE proposorientationscovs58 ALTER COLUMN user_id SET NOT NULL;
 
 -- -----------------------------------------------------------------------------
 -- 20110302
@@ -267,6 +267,7 @@ DROP TYPE IF EXISTS TYPE_POSITIONCER CASCADE;
 CREATE TYPE TYPE_POSITIONCER AS ENUM ( 'encours', 'attvalid', 'annule', 'fincontrat', 'encoursbilan', 'attrenouv', 'perime' );
 SELECT add_missing_table_field ('public', 'contratsinsertion', 'positioncer', 'TYPE_POSITIONCER');
 
+ALTER TABLE pdfs ALTER COLUMN document DROP NOT NULL;
 SELECT alter_table_drop_column_if_exists( 'public', 'pdfs', 'cmspath' );
 ALTER TABLE pdfs ADD COLUMN cmspath VARCHAR(250) DEFAULT NULL;
 
@@ -280,6 +281,13 @@ ALTER TABLE entretiens ADD COLUMN arevoirle DATE DEFAULT NULL;
 DROP TYPE IF EXISTS TYPE_POSITIONBILAN CASCADE;
 CREATE TYPE TYPE_POSITIONBILAN AS ENUM ( 'eplaudit', 'eplparc', 'attcga', 'attct', 'ajourne', 'annule' );
 SELECT add_missing_table_field ('public', 'bilansparcours66', 'positionbilan', 'TYPE_POSITIONBILAN');
+
+-- -----------------------------------------------------------------------------
+-- 20110307
+-- -----------------------------------------------------------------------------
+
+SELECT alter_table_drop_column_if_exists( 'public', 'orientsstructs', 'user_id' );
+ALTER TABLE orientsstructs ADD COLUMN user_id INTEGER DEFAULT NULL REFERENCES users(id) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- *****************************************************************************
 COMMIT;
