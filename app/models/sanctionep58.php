@@ -343,7 +343,6 @@
 
 						),
 						'Listesanctionep58',
-						'Historiqueetatpe',
 						'Decisionsanctionep58' => array(
 							'order' => array( 'etape DESC' )
 						)
