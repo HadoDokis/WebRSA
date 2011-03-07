@@ -87,7 +87,7 @@
 					echo '<p class="error">Cette personne ne possède pas d\'orientation. Veuillez en saisir une pour pouvoir poursuivre.</p>';
 				}
 				else {
-// 					debug($bilansparcours66);
+//     debug($bilansparcours66);
 					echo "<ul class='actions'><li class='add'>";
 						echo $default2->button('add', array('controller'=>'bilansparcours66', 'action'=>'add', $personne_id));
 					echo "</li></ul>";
