@@ -48,7 +48,8 @@
 					'proposition',
 					'positionbilan'
 				)
-			)
+			),
+            'Gedooo'
 		);
 
 		public $validate = array(
@@ -183,10 +184,6 @@
             return $positionbilan;
 
         }
-
-
-
-
 
 
 
@@ -535,5 +532,167 @@
 
 			return $success;
 		}
+
+
+
+        /**
+        * Récupère les données pour le PDf
+        */
+
+        public function getDataForPdf( $id ) {
+            // TODO: error404/error500 si on ne trouve pas les données
+            $optionModel = ClassRegistry::init( 'Option' );
+            $qual = $optionModel->qual();
+            $typevoie = $optionModel->typevoie();
+            $conditions = array( 'Bilanparcours66.id' => $id );
+
+            $joins = array(
+                array(
+                    'table'      => 'orientsstructs',
+                    'alias'      => 'Orientstruct',
+                    'type'       => 'LEFT OUTER',
+                    'foreignKey' => false,
+                    'conditions' => array( 'Orientstruct.id = Bilanparcours66.orientstruct_id' )
+                ),
+                array(
+                    'table'      => 'contratsinsertion',
+                    'alias'      => 'Contratinsertion',
+                    'type'       => 'LEFT OUTER',
+                    'foreignKey' => false,
+                    'conditions' => array( 'Contratinsertion.id = Bilanparcours66.contratinsertion_id' )
+                ),
+                array(
+                    'table'      => 'personnes',
+                    'alias'      => 'Personne',
+                    'type'       => 'INNER',
+                    'foreignKey' => false,
+                    'conditions' => array(
+                        'OR' => array(
+                            'Personne.id = Orientstruct.personne_id',
+                            'Personne.id = Contratinsertion.personne_id'
+                        )
+                    )
+                ),
+                array(
+                    'table'      => 'foyers',
+                    'alias'      => 'Foyer',
+                    'type'       => 'INNER',
+                    'foreignKey' => false,
+                    'conditions' => array( 'Foyer.id = Personne.foyer_id' )
+                ),
+                array(
+                    'table'      => 'dossiers',
+                    'alias'      => 'Dossier',
+                    'type'       => 'INNER',
+                    'foreignKey' => false,
+                    'conditions' => array( 'Dossier.id = Foyer.dossier_id' )
+                ),
+                array(
+                    'table'      => 'adressesfoyers',
+                    'alias'      => 'Adressefoyer',
+                    'type'       => 'INNER',
+                    'foreignKey' => false,
+                    'conditions' => array(
+                        'Foyer.id = Adressefoyer.foyer_id',
+                        'Adressefoyer.rgadr' => '01'
+                    )
+                ),
+                array(
+                    'table'      => 'adresses',
+                    'alias'      => 'Adresse',
+                    'type'       => 'INNER',
+                    'foreignKey' => false,
+                    'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
+                ),
+                array(
+                    'table'      => 'pdfs',
+                    'alias'      => 'Pdf',
+                    'type'       => 'LEFT OUTER',
+                    'foreignKey' => false,
+                    'conditions' => array(
+                        'Pdf.modele' => $this->alias,
+                        'Pdf.fk_value = Bilanparcours66.id'
+                    )
+                ),
+            );
+
+            $queryData = array(
+                'fields' => array(
+                    'Dossier.matricule',
+                    'Adresse.numvoie',
+                    'Adresse.typevoie',
+                    'Adresse.nomvoie',
+                    'Adresse.complideadr',
+                    'Adresse.compladr',
+                    'Adresse.lieudist',
+                    'Adresse.numcomrat',
+                    'Adresse.numcomptt',
+                    'Adresse.codepos',
+                    'Adresse.locaadr',
+                    'Adresse.pays',
+                    'Personne.qual',
+                    'Personne.nom',
+                    'Personne.prenom',
+                    'Personne.nir',
+                    'Orientstruct.date_impression',
+                    'Contratinsertion.df_ci',
+                    'Contratinsertion.datevalidation_ci',
+                ),
+                'joins' => $joins,
+                'conditions' => $conditions,
+                'contain' => false
+            );
+
+            $data = $this->find( 'first', $queryData );
+// debug($data);
+// die();
+            $data['Personne']['qual'] = Set::enum( $data['Personne']['qual'], $qual );
+            $data['Adresse']['typevoie'] = Set::enum( $data['Adresse']['typevoie'], $typevoie );
+
+            return $data;
+        }
+
+        /**
+        *
+        */
+
+        public function generatePdf( $id ) {
+            $gedooo_data = $this->getDataForPdf( $id );
+
+            $modeledoc = "Bilanparcours/bilanparcours.odt";
+
+            $pdf = $this->ged( $gedooo_data, $modeledoc );
+            $success = true;
+
+            if( $pdf ) {
+                $pdfModel = ClassRegistry::init( 'Pdf' );
+                $pdfModel->create(
+                    array(
+                        'Pdf' => array(
+                            'modele' => 'Bilanparcours66',
+                            'modeledoc' => $modeledoc,
+                            'fk_value' => $id,
+                            'document' => $pdf
+                        )
+                    )
+                );
+                $success = $pdfModel->save() && $success;
+            }
+            else {
+                $success = false;
+            }
+
+            return $success;
+        }
+
+        /**
+        * Enregistrement du Pdf
+        */
+
+        public function afterSave( $created ) {
+            return $this->generatePdf( $this->id );
+        }
+
+
 	}
 ?>

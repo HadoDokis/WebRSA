@@ -15,7 +15,7 @@
 		echo $xform->input( 'Nonrespectsanctionep93.origine', array( 'domain' => 'nonrespectsanctionep93', 'type' => 'radio', 'options' => array( 'orientstruct' => 'Orientation non contractualisée', 'contratinsertion' => 'Non renouvellement du CER' ), 'value' => $origine ) );
 
 		echo $xform->input( 'Relancenonrespectsanctionep93.id', array( 'type' => 'hidden' ) );
-		echo $xform->input( 'Relancenonrespectsanctionep93.numrelance', array( 'domain' => 'relancenonrespectsanctionep93', 'type' => 'radio', 'options' => array( 1 => 'Première relance', 2 => 'Seconde relance', 3 => 'Troisième relance' ), 'value' => $numrelance ) );
+		echo $xform->input( 'Relancenonrespectsanctionep93.numrelance', array( 'domain' => 'relancenonrespectsanctionep93', 'type' => 'radio', 'options' => array( 1 => 'Première relance', 2 => 'Seconde relance', 3 => 'Confirmation passage en EP'/*'Troisième relance'*/ ), 'value' => $numrelance ) );
 		echo '<div class="input select"><span class="label">Date de relance minimale</span><span class="input">'.date_short( $daterelance_min ).'</span></div>';
 		echo $xform->input( 'Relancenonrespectsanctionep93.daterelance', array( 'domain' => 'relancenonrespectsanctionep93', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 1, 'empty' => true ) );
 
