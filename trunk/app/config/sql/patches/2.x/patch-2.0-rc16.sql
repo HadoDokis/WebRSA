@@ -31,7 +31,6 @@ DROP INDEX IF EXISTS decisionsregressionsorientationseps58_regressionorientation
 DROP INDEX IF EXISTS decisionsregressionsorientationseps58_typeorient_id_idx;
 DROP INDEX IF EXISTS decisionsregressionsorientationseps58_structurereferente_id_idx;
 DROP INDEX IF EXISTS decisionsregressionsorientationseps58_referent_id_idx;
-DROP INDEX IF EXISTS sanctionseps58_historiqueetatpe_id_idx;
 DROP INDEX IF EXISTS decisionssanctionseps58_sanctionep58_id_idx;
 DROP INDEX IF EXISTS decisionssanctionseps58_listesanctionep58_id_idx;
 DROP INDEX IF EXISTS regressionsorientationseps58_user_id_idx;
@@ -214,7 +213,6 @@ CREATE TABLE sanctionseps58 (
 );
 COMMENT ON TABLE sanctionseps58 IS 'Thématique de détection des radiés et non inscrits à Pôle Emploi (CG58)';
 
-CREATE INDEX sanctionseps58_historiqueetatpe_id_idx ON sanctionseps58 (historiqueetatpe_id);
 CREATE INDEX sanctionseps58_listesanctionep58_id_idx ON sanctionseps58 (listesanctionep58_id);
 
 SELECT add_missing_table_field ('public', 'eps', 'sanctionep58', 'TYPE_NIVEAUDECISIONEP');
