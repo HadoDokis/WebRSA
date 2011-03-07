@@ -12,7 +12,8 @@
 	{
 		public $helpers = array( 'Default', 'Default2', 'Ajax' );
 
-		public $uses = array( 'Bilanparcours66', 'Option' );
+		public $uses = array( 'Bilanparcours66', 'Option', 'Pdf'  );
+        var $components = array( 'Gedooo' );
 
 		public $aucunDroit = array( 'choixformulaire' );
 
@@ -73,6 +74,9 @@
 					'conditions' => $conditions
 				)
 			);
+
+
+
 
 			$this->paginate = array(
 // 				'fields' => array(
@@ -152,6 +156,9 @@
 				'conditions' => $conditions,
 				'limit' => 10
 			);
+
+
+
 
 			$this->set( 'options', $this->Bilanparcours66->Saisineepbilanparcours66->Dossierep->enums() );
 			$bilansparcours66 = $this->paginate( $this->Bilanparcours66 );
@@ -538,5 +545,44 @@
 			$this->_setFlashResult( 'Delete', $success );
 			$this->redirect( array( 'action' => 'index' ) );
 		}*/
+
+
+        /**
+        *
+        */
+
+        public function bilanparcoursGedooo( $id ) {
+            $this->assert( is_numeric( $id ), 'invalidParameter' );
+
+            $this->Bilanparcours66->begin();
+
+            $content = $this->Pdf->find(
+                'first',
+                array(
+                    'fields' => array(
+                        'Pdf.document'
+                    ),
+                    'conditions' => array(
+                        'Pdf.modele' => 'Bilanparcours66',
+                        'Pdf.fk_value' => $id
+                    ),
+                    'recursive' => -1
+                )
+            );
+
+// debug($content);
+// die();
+            if( $content['Pdf']['document'] !== false ) {
+                $this->Bilanparcours66->commit();
+                $this->layout = '';
+                $this->Gedooo->sendPdfContentToClient( $content['Pdf']['document'], sprintf( "bilanparcours-%s.pdf", date( "Ymd-H\hi" ) ) );
+            }
+            else {
+                $this->Bilanparcours66->rollback();
+                $this->cakeError( 'error500' );
+            }
+        }
+
+
 	}
 ?>

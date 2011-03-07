@@ -400,6 +400,27 @@
 				return '<span class="disabled">'.$content.'</span>';
 			}
 		}
+        /**
+        * Boutons à utiliser pour les courriers à envoyer aux allocataires
+        */
+
+        public function courrierLink( $title, $url, $enabled = true ) {
+            $content = $this->image(
+                'icons/page_white_text.png',
+                array( 'alt' => '' )
+            ).' Courrier d\'information';
+
+            if( $enabled ) {
+                return $this->link(
+                    $content,
+                    $url,
+                    array( 'escape' => false, 'title' => $title , 'class' => 'internal' )
+                );
+            }
+            else {
+                return '<span class="disabled">'.$content.'</span>';
+            }
+        }
 
 		/**
 		* Boutons à utiliser pour les Equipes pluridisciplinaires

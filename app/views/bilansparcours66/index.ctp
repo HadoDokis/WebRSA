@@ -102,7 +102,7 @@
 						echo "<th colspan='2'>".__d('saisineepbilanparcours66', 'Saisineepbilanparcours66.propref', true)."</th>";
 						echo "<th colspan='2'>".__d('saisineepbilanparcours66', 'Saisineepbilanparcours66.avisep', true)."</th>";
 						echo "<th colspan='2'>".__d('saisineepbilanparcours66', 'Saisineepbilanparcours66.decisioncg', true)."</th>";
-						echo "<th colspan='3'>Actions</th>";
+						echo "<th colspan='4'>Actions</th>";
 					echo "</tr></thead><tbody>";
 
 					foreach($bilansparcours66 as $bilanparcour66) {
@@ -203,7 +203,11 @@
 							);
 							echo $html->tag(
                                 'td',
-                                $xhtml->printLink( 'Imprimer', array( 'controller'=>'bilansparcours66', 'action'=>'gedooo', Set::classicExtract($bilanparcour66, 'Bilanparcours66.id') ), $block  ) //FIXME: mise à false du bouton "Imprimer"
+                                $xhtml->courrierLink( 'Courrier d\'information', array( 'controller'=>'bilansparcours66', 'action'=>'bilanparcoursGedooo', Set::classicExtract($bilanparcour66, 'Bilanparcours66.id') ), $block  ) //FIXME: mise à false du bouton "Imprimer"
+                            );
+							echo $html->tag(
+                                'td',
+                                $xhtml->printLink( 'Imprimer', array( 'controller'=>'bilansparcours66', 'action'=>'bilanparcoursGedooo', Set::classicExtract($bilanparcour66, 'Bilanparcours66.id') ), $block  ) //FIXME: mise à false du bouton "Imprimer"
                             );
                             echo $html->tag(
                                 'td',
