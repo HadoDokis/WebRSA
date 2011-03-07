@@ -283,6 +283,11 @@
 				$conditions[] = "Dossier.id IN ( SELECT detailsdroitsrsa.dossier_id FROM detailsdroitsrsa INNER JOIN detailscalculsdroitsrsa ON detailscalculsdroitsrsa.detaildroitrsa_id = detailsdroitsrsa.id WHERE detailscalculsdroitsrsa.natpf ILIKE '%".Sanitize::paranoid( $params['Detailcalculdroitrsa']['natpf'] )."%' )";
 			}
 
+            /// Critères sur Soumis à Droit et Devoir - toppersdrodevorsa
+            if( isset( $params['Calculdroitrsa']['toppersdrodevorsa'] ) && is_numeric( $params['Calculdroitrsa']['toppersdrodevorsa'] ) ) {
+                $conditions[] = array('Calculdroitrsa.toppersdrodevorsa'=>$params['Calculdroitrsa']['toppersdrodevorsa']);
+            }
+
 			/// Critères sur le dossier - date de demande
 			if( isset( $params['Dossier']['dtdemrsa'] ) && !empty( $params['Dossier']['dtdemrsa'] ) ) {
 				$valid_from = ( valid_int( $params['Dossier']['dtdemrsa_from']['year'] ) && valid_int( $params['Dossier']['dtdemrsa_from']['month'] ) && valid_int( $params['Dossier']['dtdemrsa_from']['day'] ) );
@@ -412,6 +417,16 @@
 							'Prestation.rolepers' => array( 'DEM', 'CJT' )
 						)
 					),
+					array(
+                        'table'      => 'calculsdroitsrsa',
+                        'alias'      => 'Calculdroitrsa',
+//                         'type'       => 'INNER',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array(
+                            'Personne.id = Calculdroitrsa.personne_id'
+                        )
+                    ),
 					array(
 						'table'      => 'situationsdossiersrsa',
 						'alias'      => 'Situationdossierrsa',
