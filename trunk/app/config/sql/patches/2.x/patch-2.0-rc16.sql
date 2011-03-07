@@ -289,6 +289,16 @@ SELECT add_missing_table_field ('public', 'bilansparcours66', 'positionbilan', '
 SELECT alter_table_drop_column_if_exists( 'public', 'orientsstructs', 'user_id' );
 ALTER TABLE orientsstructs ADD COLUMN user_id INTEGER DEFAULT NULL REFERENCES users(id) ON DELETE SET NULL ON UPDATE CASCADE;
 
+
+SELECT alter_table_drop_column_if_exists( 'public', 'contratsinsertion', 'created' );
+ALTER TABLE contratsinsertion ADD COLUMN created TIMESTAMP WITHOUT TIME ZONE;
+UPDATE contratsinsertion SET created = dd_ci WHERE created IS NULL;
+ALTER TABLE contratsinsertion ALTER COLUMN created SET NOT NULL;
+
+SELECT alter_table_drop_column_if_exists( 'public', 'contratsinsertion', 'modified' );
+ALTER TABLE contratsinsertion ADD COLUMN modified TIMESTAMP WITHOUT TIME ZONE;
+UPDATE contratsinsertion SET modified = dd_ci WHERE modified IS NULL;
+ALTER TABLE contratsinsertion ALTER COLUMN modified SET NOT NULL;
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
