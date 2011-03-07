@@ -252,7 +252,7 @@
 
 				$this->Bilanparcours66->Orientstruct->id = $bilanparcours66['Bilanparcours66']['orientstruct_id'];
 				$personne_id = $this->Bilanparcours66->Orientstruct->field( 'personne_id' );
-// debug($bilanparcours66);
+
 			}
 
 			// INFO: pour passer de 74 à 29 modèles utilisés lors du find count
@@ -268,6 +268,19 @@
 			);
 			$this->assert( ( $nPersonnes == 1 ), 'error404' );
 
+            $contrat = $this->Bilanparcours66->Contratinsertion->find(
+                'first',
+                array(
+                    'contain' => false,
+                    'conditions' => array(
+                        'Contratinsertion.personne_id' => $personne_id
+                    ),
+                    'recursive' => -1,
+                    'order' => 'Contratinsertion.date_saisi_ci DESC'
+                )
+            );
+// debug($contrat);
+
 			// Si le formulaire a été renvoyé
 			if( !empty( $this->data ) ) {
 				$this->Bilanparcours66->begin();
@@ -277,19 +290,29 @@
 				}
 				else {
 					$success = $this->Bilanparcours66->save( $this->data );
-//                 debug($this->Bilanparcours66->validationErrors);
-//                                 debug($this->data);
 				}
-// debug($this->Bilanparcours66->validationErrors);
+
 				$this->_setFlashResult( 'Save', $success );
 				if( $success ) {
 					$this->Bilanparcours66->commit();
+
+                    //Modification de la position du CER lorsque le bilan est créé
+                    $this->{$this->modelClass}->Contratinsertion->updateAll(
+                        array( 'Contratinsertion.positioncer' => '\'attrenouv\'' ),
+                        array(
+                            '"Contratinsertion"."personne_id"' => $contrat['Contratinsertion']['personne_id'],
+                            '"Contratinsertion"."id"' => $contrat['Contratinsertion']['id']
+                        )
+                    );
+
 					if ($this->data['Bilanparcours66']['proposition']=='traitement' && $this->data['Bilanparcours66']['maintienorientation']==1) {
+
 						$this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index', $personne_id ) );
 					}
 					else {
 						$this->redirect( array( 'controller' => 'bilansparcours66', 'action' => 'index', $personne_id ) );
 					}
+
 				}
 				else {
 					$this->Bilanparcours66->rollback();

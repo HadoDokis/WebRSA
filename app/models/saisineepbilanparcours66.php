@@ -175,6 +175,12 @@
 							'"PersonneReferent"."dfdesignation" IS NULL'
 						)
 					);
+					
+                    // Enregistrement de la position du bilan de parcours suite au passage en EP
+//                  $this->Bilanparcours66->updateAll(
+//                         array( 'Bilanparcours66.positionbilan' => '\'attcga\'' ),
+//                         array( '"Bilanparcours66"."id"' => $dossierep['Bilanparcours66']['id'] )
+//                     );
 				}
 			}
 

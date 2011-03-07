@@ -158,22 +158,24 @@
         protected function _calculPositionBilan( $data ){
 
             $traitement = Set::classicExtract( $data, 'Bilanparcours66.proposition' );
-
+// debug($data);
             $positionbilan = null;
             // 'eplaudit', 'eplparc', 'attcga', 'attct', 'ajourne', 'annule'
 
-            if ( $traitement == 'audition' )
+            if ( $traitement == 'audition' && empty( $saisineep ) )
                 $positionbilan = 'eplaudit';
-            elseif ( $traitement == 'parcours' )
+            elseif ( $traitement == 'parcours' && empty( $saisineep ) )
                 $positionbilan = 'eplparc';
-// Une fois le traitement = audition et avis ep émis, alorspaser en attcga
-//             elseif( ( $traitement == 'audition' ) && ( !empty( $saisineep ) ) )
+// // Une fois le traitement = audition et avis ep émis, alorspaser en attcga
+//             elseif( ( $traitement == 'audition' ) && !empty( $saisineep ) && ( $etapedossierep == 'traiterep' ) )
 //                 $positionbilan = 'attcga';
-
-// Une fois le traitement = parcours et avis ep émis, alorspaser en attct
+// 
+// // Une fois le traitement = parcours et avis ep émis, alorspaser en attct
+//             elseif( ( $traitement == 'parcours' ) &&  !empty( $saisineep ) && ( $etapedossierep == 'traiterep' ) )
 //                 $positionbilan = 'attct';
 
 // Si dossier incomplet -> ajourne
+//             elseif( ( $traitement == 'parcours' ) && ( !empty( $saisineep ) && ( $etapedossierep == 'traiterep' ) )
 //                 $positionbilan = 'ajourne';
 
 // Si bilan annulé -> annule
