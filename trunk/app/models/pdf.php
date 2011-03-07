@@ -20,5 +20,23 @@
 				),
 			),
 		);
+
+		/**
+		* Surcharge de la fonction de sauvegarde pour essayer d'enregistrer le PDF sur Alfresco.
+		*/
+
+		public function save( $data = null, $validate = true, $fieldList = array() ) {
+			require_once( APPLIBS.'cmis.php' );
+
+			$cmsPath = "/{$this->data[$this->alias]['modele']}/{$this->data[$this->alias]['fk_value']}.pdf";
+			$success = Cmis::write( $cmsPath, $this->data[$this->alias]['document'], 'application/pdf' );
+
+			if( $success ) {
+				$this->data[$this->alias]['cmspath'] = $cmsPath;
+				unset( $this->data[$this->alias]['document'] );
+			}
+
+			return parent::save( $data, $validate, $fieldList );
+		}
 	}
 ?>
