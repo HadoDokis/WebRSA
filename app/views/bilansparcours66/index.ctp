@@ -203,7 +203,7 @@
 							);
 							echo $html->tag(
                                 'td',
-                                $xhtml->courrierLink( 'Courrier d\'information', array( 'controller'=>'bilansparcours66', 'action'=>'bilanparcoursGedooo', Set::classicExtract($bilanparcour66, 'Bilanparcours66.id') ), $block  ) //FIXME: mise à false du bouton "Imprimer"
+                                $xhtml->courrierLink( 'Courrier d\'information', array( 'controller'=>'bilansparcours66', 'action'=>'courrier_information', Set::classicExtract($bilanparcour66, 'Bilanparcours66.id') ), $block  ) //FIXME: mise à false du bouton "Imprimer"
                             );
 							echo $html->tag(
                                 'td',
