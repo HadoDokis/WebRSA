@@ -694,5 +694,26 @@
         }
 
 
+
+        /**
+        *
+        */
+
+        public function getPdfCourrierInformation( $id ) {
+            $bilanparcours66_data = $this->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Bilanparcours66.id' => $id
+                    )
+                )
+            );
+
+            $gedooo_data = $this->getDataForPdf( $id );
+// debug($gedooo_data);
+// die();
+            return $this->ged( $gedooo_data, 'Bilanparcours/courrierinformationavantep.odt'/*, true, $options*/ );
+        }
+
 	}
 ?>
