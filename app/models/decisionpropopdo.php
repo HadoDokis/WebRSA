@@ -13,6 +13,7 @@
 			),
 			'Formattable',
 			'Autovalidate',
+            'Gedooo'
 		);
 
 		public $validate = array(
@@ -75,5 +76,155 @@
 
 			return $return;
 		}
+
+
+
+        /**
+        * Récupère les données pour le PDf
+        */
+
+        public function getDataForPdf( $id ) {
+            // TODO: error404/error500 si on ne trouve pas les données
+            $optionModel = ClassRegistry::init( 'Option' );
+            $qual = $optionModel->qual();
+            $typevoie = $optionModel->typevoie();
+            $conditions = array( 'Decisionpropopdo.id' => $id );
+
+            $joins = array(
+                array(
+                    'table'      => 'propospdos',
+                    'alias'      => 'Propopdo',
+                    'type'       => 'INNER',
+                    'foreignKey' => false,
+                    'conditions' => array( 'Propopdo.id = Decisionpropopdo.propopdo_id' )
+                ),
+                array(
+                    'table'      => 'personnes',
+                    'alias'      => 'Personne',
+                    'type'       => 'INNER',
+                    'foreignKey' => false,
+                    'conditions' => array(
+                        'Personne.id = Propopdo.personne_id',
+                    )
+                ),
+                array(
+                    'table'      => 'foyers',
+                    'alias'      => 'Foyer',
+                    'type'       => 'INNER',
+                    'foreignKey' => false,
+                    'conditions' => array( 'Foyer.id = Personne.foyer_id' )
+                ),
+                array(
+                    'table'      => 'dossiers',
+                    'alias'      => 'Dossier',
+                    'type'       => 'INNER',
+                    'foreignKey' => false,
+                    'conditions' => array( 'Dossier.id = Foyer.dossier_id' )
+                ),
+                array(
+                    'table'      => 'adressesfoyers',
+                    'alias'      => 'Adressefoyer',
+                    'type'       => 'INNER',
+                    'foreignKey' => false,
+                    'conditions' => array(
+                        'Foyer.id = Adressefoyer.foyer_id',
+                        'Adressefoyer.rgadr' => '01'
+                    )
+                ),
+                array(
+                    'table'      => 'adresses',
+                    'alias'      => 'Adresse',
+                    'type'       => 'INNER',
+                    'foreignKey' => false,
+                    'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
+                ),
+                array(
+                    'table'      => 'pdfs',
+                    'alias'      => 'Pdf',
+                    'type'       => 'LEFT OUTER',
+                    'foreignKey' => false,
+                    'conditions' => array(
+                        'Pdf.modele' => $this->alias,
+                        'Pdf.fk_value = Decisionpropopdo.id'
+                    )
+                ),
+            );
+
+            $queryData = array(
+                'fields' => array(
+                    'Adresse.numvoie',
+                    'Adresse.typevoie',
+                    'Adresse.nomvoie',
+                    'Adresse.complideadr',
+                    'Adresse.compladr',
+                    'Adresse.lieudist',
+                    'Adresse.numcomrat',
+                    'Adresse.numcomptt',
+                    'Adresse.codepos',
+                    'Adresse.locaadr',
+                    'Adresse.pays',
+                    'Personne.qual',
+                    'Personne.nom',
+                    'Personne.prenom',
+                    'Personne.nir'
+                ),
+                'joins' => $joins,
+                'conditions' => $conditions,
+                'contain' => false
+            );
+
+            $data = $this->find( 'first', $queryData );
+// debug($data);
+// die();
+            $data['Personne']['qual'] = Set::enum( $data['Personne']['qual'], $qual );
+            $data['Adresse']['typevoie'] = Set::enum( $data['Adresse']['typevoie'], $typevoie );
+
+            return $data;
+        }
+
+        /**
+        *
+        */
+
+        public function generatePdf( $id ) {
+            $gedooo_data = $this->getDataForPdf( $id );
+
+            $modeledoc = "PDO/propositiondecision.odt";
+
+            $pdf = $this->ged( $gedooo_data, $modeledoc );
+// debug($gedooo_data);
+// die();
+            $success = true;
+
+            if( $pdf ) {
+                $pdfModel = ClassRegistry::init( 'Pdf' );
+                $pdfModel->create(
+                    array(
+                        'Pdf' => array(
+                            'modele' => 'Decisionpropopdo',
+                            'modeledoc' => $modeledoc,
+                            'fk_value' => $id,
+                            'document' => $pdf
+                        )
+                    )
+                );
+                $success = $pdfModel->save() && $success;
+            }
+            else {
+                $success = false;
+            }
+
+            return $success;
+        }
+
+        /**
+        * Enregistrement du Pdf
+        */
+
+        public function afterSave( $created ) {
+            return $this->generatePdf( $this->id );
+        }
+
+
 	}
 ?>
