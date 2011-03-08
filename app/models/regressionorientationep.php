@@ -77,7 +77,6 @@
 				),
 				'contain' => array(
 					'Personne' => array(
-						///FIXME : ça marche pas !!!!
 						'Orientstruct' => array(
 							'order' => array( 'Orientstruct.date_valid DESC' ),
 							'limit' => 1,

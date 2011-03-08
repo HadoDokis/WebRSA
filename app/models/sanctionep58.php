@@ -140,7 +140,8 @@
 									AND dossierseps.themeep = \''.Inflector::tableize( $this->alias ).'\'
 								ORDER BY dossierseps.created DESC
 								LIMIT 1
-						)'
+						)',
+						'Decisionsanctionep58.decision' => 'sanction'
 					),
 					'joins' => array(
 						array(
@@ -157,6 +158,14 @@
 							'type' => 'INNER',
 							'conditions' => array(
 								'Sanctionep58.listesanctionep58_id = Listesanctionep58.id'
+							)
+						),
+						array(
+							'table' => 'decisionssanctionseps58',
+							'alias' => 'Decisionsanctionep58',
+							'type' => 'INNER',
+							'conditions' => array(
+								'Decisionsanctionep58.sanctionep58_id = Sanctionep58.id'
 							)
 						)
 					),

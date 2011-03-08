@@ -66,6 +66,7 @@
 								'td',
 								$form->input( 'Nonorientationpro.'.$key.'.orientstruct_id', array( 'type' => 'hidden', 'value' => $orientstruct['Orientstruct']['id'] ) ).
 								$form->input( 'Nonorientationpro.'.$key.'.personne_id', array( 'type' => 'hidden', 'value' => $orientstruct['Personne']['id'] ) ).
+								$form->input( 'Nonorientationpro.'.$key.'.user_id', array( 'type' => 'hidden', 'value' => $orientstruct['Orientstruct']['user_id'] ) ).
 								$form->input( 'Nonorientationpro.'.$key.'.passageep', array( 'type' => 'checkbox', 'label' => false ) )
 							);
 						echo "</tr>";

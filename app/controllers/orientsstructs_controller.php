@@ -280,19 +280,17 @@
 						$regressionorientationep58['Regressionorientationep58']['dossierep_id'] = $this->Orientstruct->Regressionorientationep58->Dossierep->id;
 						
 						if ( isset($regressionorientationep58['Regressionorientationep58']['referent_id']) ) {
-							list( $structurereferente_id, $referent_id) = explode( '_', $regressionorientationep58['Regressionorientationep58']['referent_id'] );
+							list( $structurereferente_id, $referent_id ) = explode( '_', $regressionorientationep58['Regressionorientationep58']['referent_id'] );
 							$regressionorientationep58['Regressionorientationep58']['structurereferente_id'] = $structurereferente_id;
 							$regressionorientationep58['Regressionorientationep58']['referent_id'] = $referent_id;
 						}
 						
 						$regressionorientationep58['Regressionorientationep58']['datedemande'] = $regressionorientationep58['Regressionorientationep58']['date_propo'];
-						
 						$saved = $this->Orientstruct->Regressionorientationep58->save( $regressionorientationep58 ) && $saved;
 					}
 					else {
 						// Correction: si la personne n'a pas encore d'entrée dans calculdroitsrsa
 						$this->data['Calculdroitrsa']['personne_id'] = $personne_id;
-						
 						$this->data['Orientstruct']['personne_id'] = $personne_id;
 						$this->data['Orientstruct']['valid_cg'] = true;
 						$this->data['Orientstruct']['date_propo'] = date( 'Y-m-d' );

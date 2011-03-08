@@ -14,8 +14,8 @@
 <th colspan="2">Avis EPL</th>
 </tr>
 </thead><tbody>';
-// debug($dossiers[$theme]['liste']);
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
+// debug($dossierep);
 		echo $xhtml->tableCells(
 			array(
 				$dossierep['Dossierep']['id'],

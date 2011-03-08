@@ -41,6 +41,7 @@
 					'fields' => array(
 						'Orientstruct.id',
 						'Orientstruct.date_valid',
+						'Orientstruct.user_id',
 						'Typeorient.lib_type_orient',
 						'Structurereferente.lib_struc',
 						'Referent.qual',
@@ -195,7 +196,8 @@
 					$nonorientationpro58 = array(
 						'Nonorientationpro58' => array(
 							'dossierep_id' => $this->Dossierep->id,
-							'orientstruct_id' => $dossier['orientstruct_id']
+							'orientstruct_id' => $dossier['orientstruct_id'],
+							'user_id' => $dossier['user_id']
 						)
 					);
 					$success = $this->save( $nonorientationpro58 ) && $success;
@@ -332,6 +334,8 @@
 		*/
 
 		public function finaliser( $seanceep_id, $etape ) {
+			$decisionModelName = 'Decisionnonorientationpro'.Configure::read( 'Cg.departement' );
+			
 			$seanceep = $this->Dossierep->Seanceep->find(
 				'first',
 				array(
@@ -350,9 +354,9 @@
 						'Dossierep.themeep' => Inflector::tableize( $this->alias )
 					),
 					'contain' => array(
-						'Decisionnonorientationpro58' => array(
+						$decisionModelName => array(
 							'conditions' => array(
-								'Decisionnonorientationpro58.etape' => $etape
+								$decisionModelName.'.etape' => $etape
 							)
 						),
 						'Dossierep'
@@ -364,28 +368,29 @@
 			
 			if( $niveauDecisionFinale == $etape ) {
 				foreach( $dossierseps as $dossierep ) {
-					if( !isset( $dossierep['Decisionnonorientationpro58'][0]['decision'] ) ) {
+					if( !isset( $dossierep[$decisionModelName][0]['decision'] ) ) {
 						$success = false;
 					}
-					elseif ( $dossierep['Decisionnonorientationpro58'][0]['decision'] == 'reorientation' ) {
-						list($date_propo, $heure_propo) = explode( ' ', $dossierep['Nonorientationpro58']['created'] );
+					elseif ( $dossierep[$decisionModelName][0]['decision'] == 'reorientation' ) {
+						list($date_propo, $heure_propo) = explode( ' ', $dossierep[$this->alias]['created'] );
 						list($date_valid, $heure_valid) = explode( ' ', $seanceep['Seanceep']['dateseance'] );
 						$orientstruct = array(
 							'Orientstruct' => array(
 								'personne_id' => $dossierep['Dossierep']['personne_id'],
-								'typeorient_id' => @$dossierep['Decisionnonorientationpro58'][0]['typeorient_id'],
-								'structurereferente_id' => @$dossierep['Decisionnonorientationpro58'][0]['structurereferente_id'],
+								'typeorient_id' => @$dossierep[$decisionModelName][0]['typeorient_id'],
+								'structurereferente_id' => @$dossierep[$decisionModelName][0]['structurereferente_id'],
 								'date_propo' => $date_propo,
 								'date_valid' => $date_valid,
 								'statut_orient' => 'Orienté',
 								'rgorient' => $this->Orientstruct->rgorientMax( $dossierep['Dossierep']['personne_id'] ) + 1,
-								'etatorient' => 'decision'
+								'etatorient' => 'decision',
+								'user_id' => $dossier['Nonorientationpro58']['user_id']
 							)
 						);
 						
 						$this->Orientstruct->create( $orientstruct );
 						$success = $this->Orientstruct->save() && $success;
-					}
+			}
 				}
 			}
 			
