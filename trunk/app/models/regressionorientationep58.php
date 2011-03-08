@@ -64,12 +64,13 @@
 						'statut_orient' => 'Orienté',
 						'referent_id' => $dossierep['Regressionorientationep58']['Decisionregressionorientationep58'][0]['referent_id'],
 						'etatorient' => 'decision',
-						'rgorient' => $this->Structurereferente->Orientstruct->rgorientMax( $dossierep['Dossierep']['personne_id'] )
+						'rgorient' => $this->Structurereferente->Orientstruct->rgorientMax( $dossierep['Dossierep']['personne_id'] ),
+						'user_id' => $dossierep['Regressionorientationep58']['user_id']
 					)
 				);
 				
 				$success = $this->Structurereferente->Orientstruct->save( $orientstruct ) && $success;
-				$success = $this->Structurereferente->Orientstruct->generatePdf( $this->Structurereferente->Orientstruct->id, $dossier['Regressionorientationep58']['user_id'] ) && $success;
+				$success = $this->Structurereferente->Orientstruct->generatePdf( $this->Structurereferente->Orientstruct->id, $dossierep['Regressionorientationep58']['user_id'] ) && $success;
 			}
 			
 			return $success;

@@ -73,6 +73,7 @@
 					$dossiercov58['Dossiercov58']['personne_id'] = $personne_id;
 					
 					$saved = $this->Propoorientationcov58->Dossiercov58->save($dossiercov58) && $saved;
+					debug($this->Propoorientationcov58->Dossiercov58->validationErrors);
 					
 					$this->Propoorientationcov58->create();
 					

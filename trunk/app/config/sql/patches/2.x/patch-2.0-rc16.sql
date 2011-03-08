@@ -289,6 +289,12 @@ SELECT add_missing_table_field ('public', 'bilansparcours66', 'positionbilan', '
 SELECT alter_table_drop_column_if_exists( 'public', 'orientsstructs', 'user_id' );
 ALTER TABLE orientsstructs ADD COLUMN user_id INTEGER DEFAULT NULL REFERENCES users(id) ON DELETE SET NULL ON UPDATE CASCADE;
 
+SELECT add_missing_table_field ('public', 'nonorientationspros58', 'user_id', 'integer');
+SELECT add_missing_constraint ('public', 'nonorientationspros58', 'nonorientationspros58_user_id_fkey', 'users', 'user_id');
+SELECT add_missing_table_field ('public', 'nonorientationspros66', 'user_id', 'integer');
+SELECT add_missing_constraint ('public', 'nonorientationspros66', 'nonorientationspros66_user_id_fkey', 'users', 'user_id');
+SELECT add_missing_table_field ('public', 'nonorientationspros93', 'user_id', 'integer');
+SELECT add_missing_constraint ('public', 'nonorientationspros93', 'nonorientationspros93_user_id_fkey', 'users', 'user_id');
 
 SELECT alter_table_drop_column_if_exists( 'public', 'contratsinsertion', 'created' );
 ALTER TABLE contratsinsertion ADD COLUMN created TIMESTAMP WITHOUT TIME ZONE;
@@ -299,6 +305,7 @@ SELECT alter_table_drop_column_if_exists( 'public', 'contratsinsertion', 'modifi
 ALTER TABLE contratsinsertion ADD COLUMN modified TIMESTAMP WITHOUT TIME ZONE;
 UPDATE contratsinsertion SET modified = dd_ci WHERE modified IS NULL;
 ALTER TABLE contratsinsertion ALTER COLUMN modified SET NOT NULL;
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
