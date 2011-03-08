@@ -182,7 +182,20 @@
 				'exclusive' => '',
 				'finderQuery' => '',
 				'counterQuery' => ''
-			)
+			),
+            'Regressionorientationep58' => array(
+                'className' => 'Regressionorientationep58',
+                'foreignKey' => 'orientstruct_id',
+                'dependent' => true,
+                'conditions' => '',
+                'fields' => '',
+                'order' => '',
+                'limit' => '',
+                'offset' => '',
+                'exclusive' => '',
+                'finderQuery' => '',
+                'counterQuery' => ''
+            )
 		);
 
 		public $hasAndBelongsToMany = array(
