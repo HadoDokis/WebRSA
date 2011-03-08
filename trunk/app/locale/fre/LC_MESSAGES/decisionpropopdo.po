@@ -26,7 +26,16 @@ msgid "Propospdos::add"
 msgstr "Ajouter une décision"
 
 msgid "Decisionspropospdos::edit"
-msgstr "Editer la décision"
+msgstr "Editer la proposition"
+
+msgid "Decisionspropospdos::print"
+msgstr "Imprimer la proposition"
+
+msgid "Decisionspropospdos::delete"
+msgstr "Supprimer la proposition"
+
+msgid "Decisionspropospdos::delete::confirm"
+msgstr "Etes-vous sûr de vouloir supprimer la proposition ?"
 
 msgid "Decisionpropopdo.validationdecision"
 msgstr "Validation de la proposition"
