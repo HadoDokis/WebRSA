@@ -348,6 +348,15 @@
 				    )
 				)
 		    );
+            $block = true;
+            foreach( $decisionspropospdos as $i => $decision ){
+                if( isset( $decision ) ){
+                    $block = false;
+                }
+                else{
+                    $block = true;
+                }
+            }
 
 		    echo $html->tag(
     			'fieldset',
@@ -368,13 +377,15 @@
 				    array(
 				        'actions' => array(
 				            'Decisionspropospdos::edit',
-				            'Decisionspropospdos::print' => array( 'disabled' => true ) //FIXME: impression à mettre en place
+				            'Decisionspropospdos::print' => array( 'label' => 'Imprimer', 'url' => array( 'controller' => 'decisionspropospdos', 'action'=>'decisionproposition' ), 'disabled' => $block ),
+				            'Decisionspropospdos::delete'
 				        ),
 				        'add' => array( 'Decisionpropopdo.add' => array( 'controller'=>'decisionspropospdos', 'action'=>'add', $pdo_id ) ),
 				        'options' => array_merge( $options, $decisionpdo)
 				    )
 			    )
 		    );
+
 		}
 	?>
 	

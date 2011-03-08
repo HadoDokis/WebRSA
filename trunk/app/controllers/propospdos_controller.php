@@ -3,7 +3,7 @@
     class PropospdosController extends AppController{
 
         var $name = 'Propospdos';
-        var $uses = array( 'Propopdo', 'Situationdossierrsa', 'Option', 'Typepdo', 'Typenotifpdo', 'Decisionpdo', 'Suiviinstruction', 'Piecepdo',  'Traitementpdo', 'Originepdo',  'Statutpdo', 'Statutdecisionpdo', 'Situationpdo', 'Referent', 'Personne', 'Dossier' );
+        var $uses = array( 'Propopdo', 'Situationdossierrsa', 'Option', 'Typepdo', 'Typenotifpdo', 'Decisionpdo', 'Suiviinstruction', 'Piecepdo',  'Traitementpdo', 'Originepdo',  'Statutpdo', 'Statutdecisionpdo', 'Situationpdo', 'Referent', 'Personne', 'Dossier', 'Pdf' );
 
         var $aucunDroit = array( 'ajaxstruct', 'ajaxetatpdo', 'ajaxetat1', 'ajaxetat2', 'ajaxetat3', 'ajaxetat4', 'ajaxetat5', 'ajaxfichecalcul' );
 
@@ -316,17 +316,59 @@
 		        );
 		        $this->set( compact( 'traitementspdos' ) );
 
+
+
+
+
+                $joins = array(
+                    array(
+                        'table'      => 'pdfs',
+                        'alias'      => 'Pdf',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array(
+                            'Pdf.modele' => 'Decisionpropopdo',
+                            'Pdf.fk_value = Decisionpropopdo.id'
+                        )
+                    ),
+                    array(
+                        'table'      => 'decisionspdos',
+                        'alias'      => 'Decisionpdo',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array(
+                            'Decisionpdo.id = Decisionpropopdo.decisionpdo_id'
+                        )
+                    )
+                );
+
+
 	            $decisionspropospdos = $this->{$this->modelClass}->Decisionpropopdo->find(
 		            'all',
 		            array(
+                        'fields' => array(
+                            'Decisionpdo.libelle',
+                            'Decisionpropopdo.id',
+                            'Decisionpropopdo.datedecisionpdo',
+                            'Decisionpropopdo.decisionpdo_id',
+                            'Decisionpropopdo.avistechnique',
+                            'Decisionpropopdo.dateavistechnique',
+                            'Decisionpropopdo.validationdecision',
+                            'Decisionpropopdo.datevalidationdecision',
+                            'Pdf.fk_value'
+                        ),
 		                'conditions' => array(
 		                    'propopdo_id' => $pdo_id
 		                ),
-		                'contain' => array(
+/*		                'contain' => array(
 		                	'Decisionpdo'
-		                )	
+		                ),*/
+		                'joins' => $joins,
+		                'recursive' => -1
+
 		            )
 		        );
+// debug($options);
 		        $this->set( compact( 'decisionspropospdos' ) );
 		        $this->set( 'pdo_id', $pdo_id );
             }
@@ -355,6 +397,29 @@
             $this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
 
             $this->set( 'referents', $this->Referent->find( 'list' ) );
+
+
+
+
+
+//             $pdf = $this->Pdf->find(
+//                 'all',
+//                 array(
+//                     'fields' => array(
+//                         'Pdf.document'
+//                     ),
+//                     'joins' => array(
+//                         
+//                     ),
+//                     'conditions' => array(
+//                         'Pdf.modele' => 'Decisionpropopdo',
+//                         'Pdf.fk_value' => $id
+//                     ),
+//                     'recursive' => -1
+//                 )
+//             );
+// debug($pdf);
+
 
             /**
             *   FIN
@@ -400,5 +465,7 @@
 			$this->set( 'structs', $this->Propopdo->Structurereferente->find( 'list' ) );
             $this->render( $this->action, null, 'add_edit_'.Configure::read( 'nom_form_pdo_cg' ) );
         }
+
+
     }
 ?>
