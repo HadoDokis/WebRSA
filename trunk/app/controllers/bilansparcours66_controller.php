@@ -570,8 +570,6 @@
                 )
             );
 
-// debug($content);
-// die();
             if( $content['Pdf']['document'] !== false ) {
                 $this->Bilanparcours66->commit();
                 $this->layout = '';
@@ -584,5 +582,21 @@
         }
 
 
+        /**
+        *   Courrier d'information à l'allocataire avant passage en EP
+        */
+
+        public function courrier_information( $id ) {
+
+            $pdf = $this->Bilanparcours66->getPdfCourrierInformation( $id );
+
+            if( $pdf ) {
+                $this->Gedooo->sendPdfContentToClient( $pdf, 'Courrier_Information' );
+            }
+            else {
+                $this->Session->setFlash( 'Impossible de générer le courrier d\'information', 'default', array( 'class' => 'error' ) );
+                $this->redirect( $this->referer() );
+            }
+        }
 	}
 ?>
