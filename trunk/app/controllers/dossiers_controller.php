@@ -60,6 +60,7 @@
 				$this->set( 'numcontrat', $this->Dossier->Foyer->Personne->Contratinsertion->allEnumLists() );
 				$this->set( 'enumcui', $this->Dossier->Foyer->Personne->Cui->allEnumLists() );
 				$this->set( 'etatpe', $this->Informationpe->Historiqueetatpe->allEnumLists() );
+				$this->set( 'relance', $this->Dossier->Foyer->Personne->Orientstruct->Nonrespectsanctionep93->allEnumLists() );
 			}
 			else if( $this->action == 'exportcsv' ) {
 				$typesorient = $this->Dossier->Foyer->Personne->Orientstruct->Typeorient->find( 'list', array( 'fields' => array( 'id', 'lib_type_orient' ) ) );
@@ -686,6 +687,63 @@
 				$personnesFoyer[$index]['Orientstruct']['derniere'] = $tOrientstruct;
 
 
+                // Dernière relance effective
+                $tRelance = $this->Dossier->Foyer->Personne->Contratinsertion->Nonrespectsanctionep93->find(
+                    'first',
+                    array(
+                        'fields' => array(
+                            'Nonrespectsanctionep93.created',
+                            'Nonrespectsanctionep93.origine'
+                        ),
+                        'contain' => false,
+                        'joins' => array(
+                            array(
+                                'table'      => 'orientsstructs',
+                                'alias'      => 'Orientstruct',
+                                'type'       => 'LEFT OUTER',
+                                'foreignKey' => false,
+                                'conditions' => array( 'Orientstruct.id = Nonrespectsanctionep93.orientstruct_id' )
+                            ),
+                            array(
+                                'table'      => 'contratsinsertion',
+                                'alias'      => 'Contratinsertion',
+                                'type'       => 'LEFT OUTER',
+                                'foreignKey' => false,
+                                'conditions' => array( 'Contratinsertion.id = Nonrespectsanctionep93.contratinsertion_id' )
+                            ),
+                            array(
+                                'table'      => 'personnes',
+                                'alias'      => 'Personne',
+                                'type'       => 'INNER',
+                                'foreignKey' => false,
+                                'conditions' => array(
+                                    'OR' => array(
+                                        array(
+                                            'Contratinsertion.personne_id = Personne.id'
+                                        ),
+                                        array(
+                                            'Orientstruct.personne_id = Personne.id'
+                                        )
+                                    )
+                                )
+                            )
+                        ),
+                        'conditions' => array(
+                            'OR' => array(
+                                array(
+                                    'Nonrespectsanctionep93.orientstruct_id IN ( '.$this->Dossier->Foyer->Personne->Orientstruct->sq( array( 'fields' => array( 'Orientstruct.id' ), 'conditions' => array( 'Orientstruct.personne_id' => $personnesFoyer[$index]['Personne']['id'] ) ) ).' )'
+                                ),
+                                array(
+                                    'Nonrespectsanctionep93.contratinsertion_id IN ( '.$this->Dossier->Foyer->Personne->Contratinsertion->sq( array( 'fields' => array( 'id' ), 'conditions' => array( 'personne_id' => $personnesFoyer[$index]['Personne']['id'] ) ) ).' )'
+                                )
+                            )
+                        ),
+                        'order' => "Nonrespectsanctionep93.created DESC",
+                    )
+                );
+                $personnesFoyer[$index]['Nonrespectsanctionep93']['derniere'] = $tRelance;
+
+// debug($tRelance);
                 /**
                 *   Utilisation des nouvelles tables de stockage des infos Pôle Emploi
                 */

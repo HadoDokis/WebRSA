@@ -414,6 +414,48 @@
                     </table>
                 </td>
             </tr>
+            <!-- Partie passage en EP-->
+            <?php if( Configure::read( 'Cg.departement' ) == 93 ):?>
+
+            <tr>
+                <td>
+                    <h2>Relances</h2>
+                    <table >
+                    <?php echo thead( 10 );?>
+                        <tbody>
+                            <tr class="even">
+                                <th>Type de relance</th>
+                                <td><?php echo Set::enum( Set::classicExtract( $details, 'DEM.Nonrespectsanctionep93.derniere.Nonrespectsanctionep93.origine' ), $relance['origine'] );?></td>
+                                <td><?php echo Set::enum( Set::classicExtract( $details, 'CJT.Nonrespectsanctionep93.derniere.Nonrespectsanctionep93.origine' ), $relance['origine'] );?></td>
+                            </tr>
+                            <tr class="odd">
+                                <th>Date de relance</th>
+                                <td><?php echo h( date_short( Set::extract( 'DEM.Nonrespectsanctionep93.derniere.Nonrespectsanctionep93.created', $details ) ) );?></td>
+                                <td><?php echo h( date_short( Set::extract( 'CJT.Nonrespectsanctionep93.derniere.Nonrespectsanctionep93.created', $details ) ) );?></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+                <td>
+                    <h2>Passage en EP</h2>
+                    <table>
+                    <?php echo thead( 10 );?>
+                        <tbody>
+                            <tr class="even">
+                                <th>Date de passage en EP</th>
+                                <td><?php echo Set::enum( Set::classicExtract( $details, 'DEM.Cui.convention' ), $enumcui['convention'] );?></td>
+                                <td><?php echo Set::enum( Set::classicExtract( $details, 'CJT.Cui.convention' ), $enumcui['convention'] );?></td>
+                            </tr>
+                            <tr class="odd">
+                                <th>Décision de l'EP</th>
+                                <td><?php echo Set::enum( Set::classicExtract( $details, 'DEM.Cui.secteur' ), $enumcui['secteur'] );?></td>
+                                <td><?php echo Set::enum( Set::classicExtract( $details, 'CJT.Cui.secteur' ), $enumcui['secteur'] );?></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <?php endif;?>
         </tbody>
     </table>
 </div>
