@@ -42,7 +42,7 @@
 		*
 		*/
 
-		function beforeFilter() {
+		public function beforeFilter() {
 			$return = parent::beforeFilter();
 			$options = array();
 			foreach( $this->{$this->modelClass}->allEnumLists() as $field => $values ) {
@@ -60,7 +60,7 @@
 		*
 		*/
 
-		function index( $personne_id = null ){
+		public function index( $personne_id = null ){
 			$this->assert( valid_int( $personne_id ), 'invalidParameter' );
 
 			$orientstructs = $this->Orientstruct->find(
@@ -217,7 +217,7 @@
 		*
 		*/
 
-		function add( $personne_id = null ) {
+		public function add( $personne_id = null ) {
 			$this->assert( valid_int( $personne_id ), 'invalidParameter' );
 
 			// Retour à l'index en cas d'annulation
@@ -253,7 +253,8 @@
 
 
 			if( !empty( $this->data ) ) {
-// debug( $this->data );
+				$this->data['Orientstruct']['user_id'] = $this->Session->read( 'Auth.User.id' );
+
 				$this->Orientstruct->set( $this->data );
 //                 $this->Typeorient->set( $this->data );
 //                 $this->Structurereferente->set( $this->data );
@@ -264,7 +265,7 @@
 
 				if( $validates ) {
 					$saved = true;
-					
+
 					/// FIXME: ne fonctionne que pour le cg58, à faire évoluer une fois la thématique mise en place
 					if ( $this->Orientstruct->isRegression( $personne_id, $this->data['Orientstruct']['typeorient_id'] ) && Configure::read( 'Cg.departement' ) == 58 ) {
 						$dossierep = array(
@@ -274,18 +275,19 @@
 							)
 						);
 						$saved = $this->Orientstruct->Regressionorientationep58->Dossierep->save( $dossierep ) && $saved;
-						
+
 						$regressionorientationep58['Regressionorientationep58'] = $this->data['Orientstruct'];
 						$regressionorientationep58['Regressionorientationep58']['personne_id'] = $personne_id;
 						$regressionorientationep58['Regressionorientationep58']['dossierep_id'] = $this->Orientstruct->Regressionorientationep58->Dossierep->id;
-						
+
 						if ( isset($regressionorientationep58['Regressionorientationep58']['referent_id']) ) {
 							list( $structurereferente_id, $referent_id ) = explode( '_', $regressionorientationep58['Regressionorientationep58']['referent_id'] );
 							$regressionorientationep58['Regressionorientationep58']['structurereferente_id'] = $structurereferente_id;
 							$regressionorientationep58['Regressionorientationep58']['referent_id'] = $referent_id;
 						}
-						
+
 						$regressionorientationep58['Regressionorientationep58']['datedemande'] = $regressionorientationep58['Regressionorientationep58']['date_propo'];
+
 						$saved = $this->Orientstruct->Regressionorientationep58->save( $regressionorientationep58 ) && $saved;
 					}
 					else {
@@ -296,13 +298,13 @@
 						$this->data['Orientstruct']['date_propo'] = date( 'Y-m-d' );
 						$this->data['Orientstruct']['date_valid'] = date( 'Y-m-d' );
 						$this->data['Orientstruct']['statut_orient'] = 'Orienté';
-						
+
 						$saved = $this->Orientstruct->Personne->Calculdroitrsa->save( $this->data );
 						$saved = $this->Orientstruct->save( $this->data['Orientstruct'] ) && $saved;
 						$mkOrientstructPdf = $this->Gedooo->mkOrientstructPdf( $this->Orientstruct->getLastInsertId() );
 						$saved = $mkOrientstructPdf && $saved;
 					}
-					
+
 					if( $saved ) {
 						$this->Jetons->release( $dossier_id );
 						$this->Orientstruct->commit();
@@ -333,11 +335,9 @@
 
 		/**
 		*
-		*
-		*
 		*/
 
-		function edit( $orientstruct_id = null ) {
+		public function edit( $orientstruct_id = null ) {
 			$this->assert( valid_int( $orientstruct_id ), 'invalidParameter' );
 
 			// Retour à l'index en cas d'annulation
@@ -347,18 +347,18 @@
 			}
 
 			$orientstruct = $this->Orientstruct->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Orientstruct.id' => $orientstruct_id
-                    ),
-                    'contain' => array(
-                        'Personne' => array(
-                            'Calculdroitrsa'
-                        )
-                    )
-                )
-            );
+				'first',
+				array(
+					'conditions' => array(
+						'Orientstruct.id' => $orientstruct_id
+					),
+					'contain' => array(
+						'Personne' => array(
+							'Calculdroitrsa'
+						)
+					)
+				)
+			);
 			$this->assert( !empty( $orientstruct ), 'invalidParameter' );
 
 			// Retour à l'index si on essaie de modifier une autre orientation que la dernière
@@ -383,6 +383,8 @@
 
 			// Essai de sauvegarde
 			if( !empty( $this->data ) ) {
+				$this->data['Orientstruct']['user_id'] = $this->Session->read( 'Auth.User.id' );
+
 				// Correction: si la personne n'a pas encore d'entrée dans calculdroitsrsa
 				$this->data['Calculdroitrsa']['personne_id'] = $orientstruct['Orientstruct']['personne_id'];
 				$this->data['Orientstruct']['personne_id'] = $orientstruct['Orientstruct']['personne_id'];
@@ -426,6 +428,46 @@
 			$this->_setOptions();
 			$this->set( 'personne_id', $orientstruct['Orientstruct']['personne_id'] );
 			$this->render( $this->action, null, 'add_edit' );
+		}
+
+		/**
+		* Impression d'une orientation simple
+		*
+		* - dans cohortes/orientees -> cohortes/impression_individuelle
+		* - dans orientsstructs/index -> gedooos/orientstruct
+		*/
+
+		public function impression( $orientstruct_id = null ) {
+			$this->assert( !empty( $orientstruct_id ), 'error404' );
+
+			$this->Orientstruct->updateAll(
+				array( 'Orientstruct.date_impression' => date( "'Y-m-d'" ) ),
+				array(
+					'"Orientstruct"."id"' => $orientstruct_id,
+					'Orientstruct.date_impression IS NULL'
+				)
+			);
+
+			$pdf = $this->Pdf->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Pdf.modele' => 'Orientstruct',
+						'Pdf.fk_value' => $orientstruct_id,
+					)
+				)
+			);
+
+			$this->assert( !empty( $pdf ), 'error404' );
+
+			if( empty( $pdf['Pdf']['document'] ) ) {
+				$cmisPdf = Cmis::read( "/Orientstruct/{$orientstruct_id}.pdf", true );
+				$pdf['Pdf']['document'] = $cmisPdf['content'];
+			}
+
+			$this->assert( !empty( $pdf['Pdf']['document'] ), 'error404' ); // FIXME: ou en faire l'impression ?
+
+			$this->Gedooo->sendPdfContentToClient( $pdf['Pdf']['document'], "{$orientstruct_id}.pdf" );
 		}
 	}
 ?>

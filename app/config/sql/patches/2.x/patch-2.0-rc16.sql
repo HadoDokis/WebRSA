@@ -319,6 +319,22 @@ ALTER TABLE decisionspdos ALTER COLUMN clos SET DEFAULT 'N';
 UPDATE decisionspdos SET clos = 'N' WHERE clos IS NULL;
 ALTER TABLE decisionspdos ALTER COLUMN clos SET NOT NULL;
 
+-- -----------------------------------------------------------------------------
+
+-- /gedooos/orientstruct/301764 -> /gedooos/orientstruct/301764
+-- /cohortes/impression_individuelle/78908 -> ???
+
+UPDATE acos
+	SET alias = 'Gedooos:orientstruct'
+	WHERE alias = 'Orientsstructs:impression';
+
+DELETE FROM aros_acos WHERE aco_id IN ( SELECT id FROM acos WHERE alias = 'Cohortes:impression_individuelle' );
+DELETE FROM acos WHERE alias = 'Cohortes:impression_individuelle';
+
+UPDATE acos
+	SET alias = 'Relancesnonrespectssanctionseps93:impression'
+	WHERE alias = 'Relancesnonrespectssanctionseps93:impression_individuelle';
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

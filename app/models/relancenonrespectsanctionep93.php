@@ -32,7 +32,8 @@
 			'Autovalidate',
 			'ValidateTranslate',
 			'Formattable',
-			'Gedooo'
+			'Gedooo',
+			'StorablePdf'
 		);
 
 		public $belongsTo = array(
@@ -1322,45 +1323,59 @@
 		}
 
 		/**
-		*
+		* Retourne le chemin relatif du modèle de document à utiliser pour l'enregistrement du PDF.
 		*/
 
-		public function generatePdf( $id ) {
-			$gedooo_data = $this->getDataForPdf( $id );
-
-			$modeledoc = "Relancenonrespectsanctionep93/notification_{$gedooo_data['Nonrespectsanctionep93']['origine']}_relance{$gedooo_data['Relancenonrespectsanctionep93']['numrelance']}.odt";
-
-			//$pdf = $this->getPdf( $gedooo_data, $modeledoc );
-			$pdf = $this->ged( $gedooo_data, $modeledoc/*, $section = false, $options = array()*/ );
-			$success = true;
-
-			if( $pdf ) {
-				$pdfModel = ClassRegistry::init( 'Pdf' );
-				$pdfModel->create(
-					array(
-						'Pdf' => array(
-							'modele' => 'Relancenonrespectsanctionep93',
-							'modeledoc' => $modeledoc,
-							'fk_value' => $id,
-							'document' => $pdf
-						)
-					)
-				);
-				$success = $pdfModel->save() && $success;
-			}
-			else {
-				$success = false;
-			}
-
-			return $success;
+		public function modeleOdt( $data ) {
+			return "{$this->alias}/notification_{$data['Nonrespectsanctionep93']['origine']}_relance{$data['Relancenonrespectsanctionep93']['numrelance']}.odt";
 		}
 
 		/**
-		* Enregistrement du Pdf
+		* FIXME:
+		*	- mettre dans AppModel / un behavior ?
+		*	- faire une interface pour les fonctions modeleOdt et generatePdf ?
 		*/
 
-		public function afterSave( $created ) {
-			return $this->generatePdf( $this->id );
-		}
+// 		public function generatePdf( $id ) {
+// 			$data = $this->getDataForPdf( $id );
+// 			$modeledoc = $this->modeleOdt( $data );
+//
+// 			$pdf = $this->ged( $data, $modeledoc );
+// 			$success = true;
+//
+// 			if( $pdf ) {
+// 				/*require_once( APPLIBS.'cmis.php' );
+// 				$cmsPath = "/{$this->alias}/{$id}.pdf";
+// 				$success = Cmis::write( $cmsPath, $pdf, 'application/pdf' ) && $success;*/
+//
+// 				$pdfModel = ClassRegistry::init( 'Pdf' );
+// 				$pdfModel->create(
+// 					array(
+// 						'Pdf' => array(
+// 							'modele' => $this->alias,
+// 							'modeledoc' => $modeledoc,
+// 							'fk_value' => $id,
+// 							'document' => $pdf
+// // 							'cmspath' => $cmsPath
+// 						)
+// 					)
+// 				);
+// 				$success = $pdfModel->save() && $success;
+// 			}
+// 			else {
+// 				$success = false;
+// 			}
+//
+// 			return $success;
+// 		}
+
+		/**
+		* Enregistrement du Pdf
+		* FIXME: le return ne sert à rien: même si on retourne false c'est comme si ça s'était bien passé
+		*/
+
+// 		public function afterSave( $created ) {
+// 			return $this->generatePdf( $this->id );
+// 		}
 	}
 ?>

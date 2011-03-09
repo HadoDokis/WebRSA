@@ -528,53 +528,53 @@
 //             $this->_ged( $contratinsertion, 'Contratinsertion/contratinsertion_'.$modele.'.odt' );
         }
 
-        function orientstruct( $orientstruct_id = null ) {
-			/*$this->Gedooo->sendCohortePdfToClient(
-				array(
-					'conditions' => array(
-						'Pdf.modele' => 'Orientstruct',
-						'Pdf.fk_value' => $orientstruct_id
-					)
-				)
-			);*/
-			$this->Dossier->begin();
-
-			$content = $this->Gedooo->getCohortePdfForClient(
-				array(
-					'conditions' => array(
-						'modele' => 'Orientstruct',
-						'Orientstruct.id' => $orientstruct_id
-					),
-					'joins' => array(
-						array(
-							'table'      => 'orientsstructs',
-							'alias'      => 'Orientstruct',
-							'type'       => 'INNER',
-							'foreignKey' => false,
-							'conditions' => array(
-								'Pdf.fk_value = Orientstruct.id'
-							)
-						)
-					)
-				)
-			);
-
-			$success = ( $content !== false ) && $this->Orientstruct->updateAll(
-				array( 'Orientstruct.date_impression' => date( "'Y-m-d'" ) ),
-				array( '"Orientstruct"."id"' => $orientstruct_id, '"Orientstruct"."date_impression" IS NULL' )
-			);
-
-			if( $content !== false ) { // date_impression
-				$this->Dossier->commit();
-				$this->Gedooo->sendPdfContentToClient( $content, sprintf( "orientations-%s.pdf", date( "Ymd-H\hi" ) ) );
-				die();
-			}
-			else {
-				$this->Dossier->rollback();
-				// redirect referer
-				debug( $this->referer() );
-			}
-        }
+//         function orientstruct( $orientstruct_id = null ) {
+// 			/*$this->Gedooo->sendCohortePdfToClient(
+// 				array(
+// 					'conditions' => array(
+// 						'Pdf.modele' => 'Orientstruct',
+// 						'Pdf.fk_value' => $orientstruct_id
+// 					)
+// 				)
+// 			);*/
+// 			$this->Dossier->begin();
+//
+// 			$content = $this->Gedooo->getCohortePdfForClient(
+// 				array(
+// 					'conditions' => array(
+// 						'modele' => 'Orientstruct',
+// 						'Orientstruct.id' => $orientstruct_id
+// 					),
+// 					'joins' => array(
+// 						array(
+// 							'table'      => 'orientsstructs',
+// 							'alias'      => 'Orientstruct',
+// 							'type'       => 'INNER',
+// 							'foreignKey' => false,
+// 							'conditions' => array(
+// 								'Pdf.fk_value = Orientstruct.id'
+// 							)
+// 						)
+// 					)
+// 				)
+// 			);
+//
+// 			$success = ( $content !== false ) && $this->Orientstruct->updateAll(
+// 				array( 'Orientstruct.date_impression' => date( "'Y-m-d'" ) ),
+// 				array( '"Orientstruct"."id"' => $orientstruct_id, '"Orientstruct"."date_impression" IS NULL' )
+// 			);
+//
+// 			if( $content !== false ) { // date_impression
+// 				$this->Dossier->commit();
+// 				$this->Gedooo->sendPdfContentToClient( $content, sprintf( "orientations-%s.pdf", date( "Ymd-H\hi" ) ) );
+// 				die();
+// 			}
+// 			else {
+// 				$this->Dossier->rollback();
+// 				// redirect referer
+// 				debug( $this->referer() );
+// 			}
+//         }
 
 		/******************************************************************************/
         /* Notification de relances
