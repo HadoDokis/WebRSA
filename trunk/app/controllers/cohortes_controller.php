@@ -98,30 +98,45 @@
 				// Formulaire de cohorte
 				// -----------------------------------------------------------------
 				if( !empty( $this->data['Orientstruct'] ) ) {
-					$valid = $this->Dossier->Foyer->Personne->Orientstruct->saveAll( $this->data['Orientstruct'], array( 'validate' => 'only', 'atomic' => false ) );
-					$valid = ( count( $this->Dossier->Foyer->Personne->Orientstruct->validationErrors ) == 0 );
-					if( $valid ) {
-						$pdfs = true;
-						$this->Dossier->begin();
-						foreach( $this->data['Orientstruct'] as $key => $value ) {
-							// FIXME: date_valid et pas date_propo ?
-							if( $statutOrientation == 'Non orienté' ) {
-								$this->data['Orientstruct'][$key]['date_propo'] = date( 'Y-m-d' );
-							}
+					// Sauvegarde de l'utilisateur orientant
+					foreach( array_keys( $this->data['Orientstruct'] ) as $key ) {
+						if( $this->data['Orientstruct'][$key]['statut_orient'] == 'Orienté' ) {
+							$this->data['Orientstruct'][$key]['user_id'] = $this->Session->read( 'Auth.User.id' );
 							$this->data['Orientstruct'][$key]['structurereferente_id'] = preg_replace( '/^[0-9]+_([0-9]+)$/', '\1', $this->data['Orientstruct'][$key]['structurereferente_id'] );
 							$this->data['Orientstruct'][$key]['date_valid'] = date( 'Y-m-d' );
 						}
-						$saved = $this->Dossier->Foyer->Personne->Orientstruct->saveAll( $this->data['Orientstruct'], array( 'validate' => 'first', 'atomic' => false ) );
+						else {
+							$this->data['Orientstruct'][$key]['user_id'] = null;
+							if( $this->data['Orientstruct'][$key]['statut_orient'] == 'Non orienté' ) {
+								$this->data['Orientstruct'][$key]['date_propo'] = date( 'Y-m-d' );
+							}
+						}
+					}
 
+					$valid = $this->Dossier->Foyer->Personne->Orientstruct->saveAll( $this->data['Orientstruct'], array( 'validate' => 'only', 'atomic' => false ) );
+					$valid = ( count( $this->Dossier->Foyer->Personne->Orientstruct->validationErrors ) == 0 );
+					if( $valid ) {
+// 						$pdfs = true;
+						$this->Dossier->begin();
+// 						foreach( $this->data['Orientstruct'] as $key => $value ) {
+							// FIXME: date_valid et pas date_propo ?
+// 							if( $statutOrientation == 'Non orienté' ) {
+// 								$this->data['Orientstruct'][$key]['date_propo'] = date( 'Y-m-d' );
+// 							}
+// 							$this->data['Orientstruct'][$key]['structurereferente_id'] = preg_replace( '/^[0-9]+_([0-9]+)$/', '\1', $this->data['Orientstruct'][$key]['structurereferente_id'] );
+// 							$this->data['Orientstruct'][$key]['date_valid'] = date( 'Y-m-d' );
+// 						}
+						$saved = $this->Dossier->Foyer->Personne->Orientstruct->saveAll( $this->data['Orientstruct'], array( 'validate' => 'first', 'atomic' => false ) );
+// debug( $saved );die();
 						// Création des PDF pour les orientations effectives
-						if( $saved ) {
+						/*if( $saved ) {
 							foreach( $this->data['Orientstruct'] as $element ) {
 								if( $element['statut_orient'] == 'Orienté' ) {
 									$pdfs = $this->Gedooo->mkOrientstructPdf( $element['id'] ) && $pdfs;
 									$saved =  $pdfs && $saved;
 								}
 							}
-						}
+								}*/
 
 						if( $saved ) {
 							$dossiersIds = Set::extract( $this->data, '/Orientstruct/dossier_id' );
@@ -130,12 +145,13 @@
 							$this->Dossier->commit();
 							$this->data['Orientstruct'] = array();
 						}
-						else if( !$pdfs ) {
-							$this->Dossier->rollback();
-							$this->Session->setFlash( 'Erreur lors de la génération du document PDF (le serveur Gedooo est peut-être tombé ou mal configuré)', 'flash/error' );
-						}
+// 						else if( !$pdfs ) {
+// 							$this->Dossier->rollback();
+// 							$this->Session->setFlash( 'Erreur lors de la génération du document PDF (le serveur Gedooo est peut-être tombé ou mal configuré)', 'flash/error' );
+// 						}
 						else {
 							$this->Dossier->rollback();
+							$this->Session->setFlash( 'Erreur lors de l\'enregistrement.', 'flash/error' );
 						}
 					}
 				}
@@ -799,7 +815,7 @@
 		*
 		*/
 
-		public function impression_individuelle( $id ) {
+		/*public function impression_individuelle( $id ) {
 			$this->assert( is_numeric( $id ), 'invalidParameter' );
 
 			$this->Orientstruct->begin();
@@ -850,6 +866,6 @@
 				$this->Orientstruct->rollback();
 				$this->cakeError( 'error500' );
 			}
-		}
+		}*/
 	}
 ?>

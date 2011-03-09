@@ -28,7 +28,8 @@
 			'Formattable' => array(
 				'suffix' => array( 'structurereferente_id', 'referent_id', 'structureorientante_id', 'referentorientant_id' ),
 			),
-			'Gedooo'
+			'Gedooo',
+			'StorablePdf'
 		);
 
 		public $validate = array(
@@ -56,18 +57,6 @@
 					'message' => 'Veuillez entrer une date valide'
 				)
 			),
-            'structureorientante_id' => array(
-                'notEmpty' => array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                )
-            ),
-            'referentorientant_id' => array(
-                'notEmpty' => array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                )
-            )
 		);
 
 		public $belongsTo = array(
@@ -98,7 +87,14 @@
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
-			)
+			),
+			'User' => array(
+				'className' => 'User',
+				'foreignKey' => 'user_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
 		);
 /*
 		public $hasMany = array(
@@ -144,7 +140,7 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
-			'Regressionorientationep58' => array(
+			/*'Regressionorientationep58' => array(
 				'className' => 'Nonorientationpro58',
 				'foreignKey' => 'orientstruct_id',
 				'dependent' => true,
@@ -156,7 +152,7 @@
 				'exclusive' => '',
 				'finderQuery' => '',
 				'counterQuery' => ''
-			),
+			),*/
 			'Nonorientationpro58' => array(
 				'className' => 'Nonorientationpro58',
 				'foreignKey' => 'orientstruct_id',
@@ -196,7 +192,7 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
-            'Regressionorientationep58' => array(
+            /*'Regressionorientationep58' => array(
                 'className' => 'Regressionorientationep58',
                 'foreignKey' => 'orientstruct_id',
                 'dependent' => true,
@@ -208,7 +204,7 @@
                 'exclusive' => '',
                 'finderQuery' => '',
                 'counterQuery' => ''
-            )
+            )*/
 		);
 
 		public $hasAndBelongsToMany = array(
@@ -236,6 +232,30 @@
 				'postgres'  => 'DATE_PART( \'day\', NOW() - "%s"."date_impression" )'
 			),
 		);
+
+		/**
+		* Surcharge du constructeur pour ajouter des règles de validation suivant le CG
+		*/
+
+		public function __construct( $id = false, $table = null, $ds = null ) {
+			parent::__construct( $id, $table, $ds );
+
+			if( Configure::read( 'Cg.departement' ) == 66 ) {
+				$this->validate['structureorientante_id'] = array(
+					'notEmpty' => array(
+						'rule' => 'notEmpty',
+						'message' => 'Champ obligatoire'
+					)
+				);
+
+				$this->validate['referentorientant_id'] = array(
+					'notEmpty' => array(
+						'rule' => 'notEmpty',
+						'message' => 'Champ obligatoire'
+					)
+				);
+			}
+		}
 
 		/**
 		*
@@ -281,83 +301,82 @@
 		}
 
 		/**
+		* Retourne le chemin relatif du modèle de document à utiliser pour l'enregistrement du PDF.
+		*/
+
+		public function modeleOdt( $data ) {
+			return "Orientation/{$data['Typeorient']['modele_notif']}.odt";
+		}
+
+		/**
 		* Récupère les données pour le PDf
 		*/
 
-		public function getDataForPdf( $id, $user_id ) {
+		public function getDataForPdf( $id/*, $user_id*/ ) {
 			// TODO: error404/error500 si on ne trouve pas les données
 			$optionModel = ClassRegistry::init( 'Option' );
 			$qual = $optionModel->qual();
 			$typevoie = $optionModel->typevoie();
-
 
 			$orientstruct = $this->find(
 				'first',
 				array(
 					'conditions' => array(
 						'Orientstruct.id' => $id
-					)
-				)
-			);
-
-			/*$typeorient = $this->Structurereferente->Typeorient->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Typeorient.id' => $orientstruct['Orientstruct']['typeorient_id'] // FIXME structurereferente_id
-					)
-				)
-			);*/
-
-			$this->Personne->Foyer->Adressefoyer->bindModel(
-				array(
-					'belongsTo' => array(
-						'Adresse' => array(
-							'className'     => 'Adresse',
-							'foreignKey'    => 'adresse_id'
-						)
-					)
-				)
-			);
-
-			$adresse = $this->Personne->Foyer->Adressefoyer->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Adressefoyer.foyer_id' => $orientstruct['Personne']['foyer_id'],
-						'Adressefoyer.rgadr' => '01',
-					)
-				)
-			);
-			$orientstruct['Adresse'] = $adresse['Adresse'];
-
-			// Récupération de l'utilisateur
-			$user = ClassRegistry::init( 'User' )->find(
-				'first',
-				array(
-					'conditions' => array(
-						'User.id' => $user_id
-					)
-				)
-			);
-			$orientstruct['User'] = $user['User'];
-
-			// Recherche des informations du dossier
-			$foyer = $this->Personne->Foyer->findById( $orientstruct['Personne']['foyer_id'], null, null, -1 );
-			$dossier = $this->Personne->Foyer->Dossier->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Dossier.id' => $foyer['Foyer']['dossier_id']
 					),
-					'recursive' => -1
+					'contain' => array(
+						'Personne' => array(
+							'Foyer' => array(
+								'Adressefoyer' => array(
+									'conditions' => array(
+										'rgadr' => '01'
+									),
+									'Adresse'
+								),
+								'Dossier'
+							),
+						),
+						'Typeorient',
+						'Structurereferente',
+						'Referent',
+						'User',
+					)
 				)
 			);
 
-			$orientstruct['Dossier'] = $dossier['Dossier'];
+			if( $orientstruct['Orientstruct']['statut_orient'] != 'Orienté' ) {
+				return false;
+			}
 
-			if( isset( $orientstruct[$this->alias]['statut_orient'] ) && $orientstruct[$this->alias]['statut_orient'] == 'Orienté' ) {
-				//Ajout pour le numéro de poste du référent de la structure
+			$orientstruct['Dossier'] = $orientstruct['Personne']['Foyer']['Dossier'];
+			$orientstruct['Adresse'] = $orientstruct['Personne']['Foyer']['Adressefoyer'][0]['Adresse'];
+			unset( $orientstruct['Personne']['Foyer'] );
+
+			$orientstruct['Personne']['qual'] = Set::classicExtract( $qual, Set::classicExtract( $orientstruct, 'Personne.qual' ) );
+			$orientstruct['Adresse']['typevoie'] = Set::classicExtract( $typevoie, Set::classicExtract( $orientstruct, 'Adresse.typevoie' ) );
+			$orientstruct['Structurereferente']['type_voie'] = Set::classicExtract( $typevoie, Set::classicExtract( $orientstruct, 'Structurereferente.type_voie' ) );
+
+			/// Recherche référent à tout prix ....
+			// Premère étape: référent du parcours.
+			$referent = Set::filter( $orientstruct['Referent'] );
+			if( empty( $referent ) ) {
+				$referent = $this->Personne->Referent->PersonneReferent->find(
+					'first',
+					array(
+						'conditions' => array(
+							'PersonneReferent.personne_id' => $orientstruct['Personne']['id']
+						),
+						'recursive' => -1
+					)
+				);
+				if( !empty( $referent ) ) {
+					$orientstruct['Referent'] = $referent['Referent'];
+				}
+			}
+
+			// Deuxième étape: premier référent renseigné pour la structure sélectionnée
+			$referent = Set::filter( $orientstruct['Referent'] );
+			if( empty( $referent ) && !empty( $orientstruct['Structurereferente']['id'] ) ) {
 				$referent = $this->Personne->Referent->find(
 					'first',
 					array(
@@ -367,29 +386,9 @@
 						'recursive' => -1
 					)
 				);
-
 				if( !empty( $referent ) ) {
 					$orientstruct['Referent'] = $referent['Referent'];
 				}
-			}
-
-			$orientstruct['Personne']['dtnai'] = strftime( '%d/%m/%Y', strtotime( $orientstruct['Personne']['dtnai'] ) );
-			$orientstruct['Personne']['qual'] = Set::classicExtract( $qual, Set::classicExtract( $orientstruct, 'Personne.qual' ) );
-			$orientstruct['Adresse']['typevoie'] = Set::classicExtract( $typevoie, Set::classicExtract( $orientstruct, 'Adresse.typevoie' ) );
-			$orientstruct['Structurereferente']['type_voie'] = Set::classicExtract( $typevoie, Set::classicExtract( $orientstruct, 'Structurereferente.type_voie' ) );
-
-
-			$personne_referent = $this->Personne->Referent->PersonneReferent->find(
-				'first',
-				array(
-					'conditions' => array(
-						'PersonneReferent.personne_id' => Set::classicExtract( $orientstruct, 'Personne.id' )
-					)
-				)
-			);
-
-			if( !empty( $personne_referent ) ){
-				$orientstruct = Set::merge( $orientstruct, $personne_referent );
 			}
 
 			return $orientstruct;
@@ -465,7 +464,7 @@
 					'contain' => false
 				)
 			);
-			
+
 			$nbPersonnes = $this->Personne->find(
 				'count',
 				array(
@@ -525,15 +524,15 @@
 
 			return ( ( $nbDossiersep == 0 ) && ( $nbPersonnes == 1 ) );
 		}
-		
+
 		/**
 		* Vérifie si pour une personne donnée la nouvelle orientation est une régression ou nonrespectssanctionseps93
 		* Orientation du pro vers le social
 		*/
-		
+
 		public function isRegression( $personne_id, $newtypeorient_id ) {
 			$return = false;
-			
+
 			if( !$this->Typeorient->isProOrientation( $newtypeorient_id ) ) {
 				$lastOrient = $this->find(
 					'first',
@@ -549,12 +548,12 @@
 						)
 					)
 				);
-				
+
 				if( !empty($lastOrient) && strcmp( 'Emploi', $lastOrient['Typeorient']['lib_type_orient'] ) != -1 ) {
 					$return = true;
 				}
 			}
-			
+
 			return $return;
 		}
 
@@ -580,41 +579,6 @@
 			}
 
 			return true;
-		}
-
-		/**
-		*
-		*/
-
-		public function generatePdf( $id, $user_id ) {
-			$gedooo_data = $this->getDataForPdf( $id, $user_id );
-
-			$modele = $gedooo_data['Typeorient']['modele_notif'];
-			$modeledoc = 'Orientation/'.$modele.'.odt';
-
-			//$pdf = $this->getPdf( $gedooo_data, $modeledoc );
-			$pdf = $this->ged( $gedooo_data, $modeledoc );
-			$success = true;
-
-			if( $pdf ) {
-				$pdfModel = ClassRegistry::init( 'Pdf' );
-				$pdfModel->create(
-					array(
-						'Pdf' => array(
-							'modele' => $this->alias,
-							'modeledoc' => $modeledoc,
-							'fk_value' => $id,
-							'document' => $pdf
-						)
-					)
-				);
-				$success = $pdfModel->save() && $success;
-			}
-			else {
-				$success = false;
-			}
-
-			return $success;
 		}
 	}
 ?>

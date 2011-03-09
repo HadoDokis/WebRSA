@@ -137,8 +137,10 @@
 								h( date_short( $personne['Contratinsertion']['dd_ci'] ) ),
 								$xhtml->printLink(
 									'Imprimer la notification',
-									array( 'controller' => 'cohortes', 'action' => 'impression_individuelle', $personne['Orientstruct']['id'] ),
-									$permissions->check( 'cohortes', 'impression_individuelle' )
+									array( 'controller' => 'orientsstructs', 'action' => 'impression', $personne['Orientstruct']['id'] ),
+									$permissions->check( 'orientsstructs', 'impression' )
+									/*array( 'controller' => 'cohortes', 'action' => 'impression_individuelle', $personne['Orientstruct']['id'] ),
+									$permissions->check( 'cohortes', 'impression_individuelle' )*/
 								),
 								array( $innerTable, array( 'class' => 'innerTableCell' ) ),
 							),

@@ -44,12 +44,12 @@
 		*/
 
 		protected function _transfertPdfs( $modele ) {
-			Cmis::config(
-				Configure::read( 'Cmis.url' ),
-				Configure::read( 'Cmis.username' ),
-				Configure::read( 'Cmis.password' ),
-				Configure::read( 'Cmis.prefix' )
-			);
+// 			Cmis::config(
+// 				Configure::read( 'Cmis.url' ),
+// 				Configure::read( 'Cmis.username' ),
+// 				Configure::read( 'Cmis.password' ),
+// 				Configure::read( 'Cmis.prefix' )
+// 			);
 
 			if( !Cmis::configured() ) {
 				$this->err( 'Veuillez configurer ...' ); // FIXME

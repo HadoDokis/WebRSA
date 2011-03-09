@@ -449,7 +449,7 @@
 		*
 		*/
 
-		public function impression_individuelle( $id ) {
+		public function impression( $id ) {
 			$this->assert( is_numeric( $id ), 'invalidParameter' );
 
 			$this->Relancenonrespectsanctionep93->begin();
@@ -459,6 +459,7 @@
 				array(
 					'fields' => array(
 						'Pdf.document',
+						'Pdf.cmspath',
 						'Relancenonrespectsanctionep93.id',
 						'Relancenonrespectsanctionep93.dateimpression',
 					),
@@ -496,7 +497,12 @@
 				);
 			}
 
-			if( $content['Pdf']['document'] !== false ) {
+			if( empty( $content['Pdf']['document'] ) ) {
+				$cmisPdf = Cmis::read( $content['Pdf']['cmspath'], true );
+				$content['Pdf']['document'] = $cmisPdf['content'];
+			}
+
+			if( !empty( $content['Pdf']['document'] ) ) {
 				$this->Relancenonrespectsanctionep93->commit();
 				$this->layout = '';
 				$this->Gedooo->sendPdfContentToClient( $content['Pdf']['document'], sprintf( "relance-%s.pdf", date( "Ymd-H\hi" ) ) );

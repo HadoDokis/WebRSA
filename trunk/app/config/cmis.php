@@ -141,7 +141,7 @@
 
 		protected function _check( $path ) {
 			try {
-				$node = self::$_connection->getObjectByPath( $path );
+				$node = @self::$_connection->getObjectByPath( $path );
 				return true;
 			} catch( Exception $e ) {
 				return false;
@@ -395,4 +395,11 @@
 			}
 		}
 	}
+
+	Cmis::config(
+		Configure::read( 'Cmis.url' ),
+		Configure::read( 'Cmis.username' ),
+		Configure::read( 'Cmis.password' ),
+		Configure::read( 'Cmis.prefix' )
+	);
 ?>

@@ -1,4 +1,6 @@
 <?php
+	require_once( APPLIBS.'cmis.php' );
+
 	class Pdf extends AppModel
 	{
 		public $name = 'Pdf';
@@ -26,17 +28,78 @@
 		*/
 
 		public function save( $data = null, $validate = true, $fieldList = array() ) {
-			require_once( APPLIBS.'cmis.php' );
-
 			$cmsPath = "/{$this->data[$this->alias]['modele']}/{$this->data[$this->alias]['fk_value']}.pdf";
-			$success = Cmis::write( $cmsPath, $this->data[$this->alias]['document'], 'application/pdf' );
+			$cmsSuccess = Cmis::write( $cmsPath, $this->data[$this->alias]['document'], 'application/pdf', true );
 
-			if( $success ) {
+			if( $cmsSuccess ) {
 				$this->data[$this->alias]['cmspath'] = $cmsPath;
 				unset( $this->data[$this->alias]['document'] );
 			}
 
-			return parent::save( $data, $validate, $fieldList );
+			$success = parent::save( $data, $validate, $fieldList );
+			if( !$success && $cmsSuccess ) {
+				$cmsSuccess = Cmis::delete( $cmsPath, true );
+			}
+
+			return ( $success && $cmsSuccess );
+		}
+
+		/**
+		*
+		*/
+
+		public function delete( $id = NULL, $cascade = true ) {
+			$conditions = array();
+			if( empty( $id ) && !empty( $this->id ) ) {
+				$conditions["{$this->alias}.{$this->primaryKey}"] = $this->id;
+			}
+			else {
+				$conditions["{$this->alias}.{$this->primaryKey}"] = $id;
+			}
+
+			$records = $this->find(
+				'all',
+				array(
+					'fields' => array( 'id', 'modele', 'fk_value', 'cmspath' ),
+					'conditions' => $conditions
+				)
+			);
+
+			$success = parent::delete( $id, $cascade );
+			$cmspaths = Set::filter( Set::extract( $records, "/{$this->alias}/cmspath" ) );
+
+			if( $success && !empty( $cmspaths ) ) {
+				foreach( $cmspaths as $cmspath ) {
+					$success = Cmis::delete( $cmspath, true ) && $success;
+				}
+			}
+
+			return $success;
+		}
+
+		/**
+		*
+		*/
+
+		public function deleteAll( $conditions, $cascade = true, $callbacks = false ) {
+			$records = $this->find(
+				'all',
+				array(
+					'fields' => array( 'id', 'modele', 'fk_value', 'cmspath' ),
+					'conditions' => $conditions
+				)
+			);
+
+			$success = parent::deleteAll( $conditions, $cascade, $callbacks );
+			$cmspaths = Set::filter( Set::extract( $records, "/{$this->alias}/cmspath" ) );
+
+			if( $success && !empty( $cmspaths ) ) {
+				foreach( $cmspaths as $cmspath ) {
+					$success = Cmis::delete( $cmspath, true ) && $success;
+				}
+			}
+
+			return $success;
 		}
 	}
 ?>

@@ -3,13 +3,13 @@
 
 <div class="with_treemenu">
 	<h1>Orientation</h1>
-	
+
 	<?php
-		
+
 		if ( empty( $orientstructs ) ) {
 			echo '<p class="notice">Cette personne ne possède pas encore d\'orientation.</p>';
 		}
-		
+
 		if( isset( $nbdossiersnonfinalisescovs ) && !empty( $nbdossiersnonfinalisescovs ) ) {
 			echo '<p class="notice">Ce dossier va passer en COV.</p>';
 		}
@@ -19,7 +19,7 @@
 		elseif( !empty( $en_procedure_relance ) ) {
 			echo '<p class="notice">Cette personne est en cours de procédure de relance.</p>';
 		}
-	
+
 	?>
 
 	<!-- Pour le CG 93, les orientations de rang >= 1 doivent passer en EP, donc il faut utiliser Saisinesepsreorientsrs93Controller::add -->
@@ -157,8 +157,10 @@
 							),
 							$xhtml->printLink(
 								'Imprimer la notification',
-								array( 'controller' => 'gedooos', 'action' => 'orientstruct', $orientstruct['Orientstruct']['id'] ),
-								$permissions->check( 'gedooos', 'orientstruct' ) && $orientstruct['Orientstruct']['imprime']
+								array( 'controller' => 'orientsstructs', 'action' => 'impression', $orientstruct['Orientstruct']['id'] ),
+								$permissions->check( 'orientsstructs', 'impression' ) && $orientstruct['Orientstruct']['imprime']
+								/*array( 'controller' => 'gedooos', 'action' => 'orientstruct', $orientstruct['Orientstruct']['id'] ),
+								$permissions->check( 'gedooos', 'orientstruct' ) && $orientstruct['Orientstruct']['imprime']*/
 							)
 						);
 
