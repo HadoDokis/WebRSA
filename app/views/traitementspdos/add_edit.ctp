@@ -786,18 +786,14 @@
         
         echo $default->subform(
             array(
-                'Traitementpdo.haspiecejointe' => array( 'type' => 'radio' ),
-                'Traitementpdo.cloreprev' => array( 'type' => 'checkbox' )
+                'Traitementpdo.haspiecejointe' => array( 'type' => 'radio' )
             ),
             array(
                 'options' => $options
             )
         );
         
-//        echo $xhtml->tag( 'span', 'Fermer un ou plusieurs traitement(s) associé(s) ?', array( 'class' => 'label' ) );
-        
-        
-        echo "<fieldset id='traitementprev' class='noborder invisible'><table>";
+        echo "<table>";
         
 		echo $default2->thead(
 			array(
@@ -836,19 +832,20 @@
         			$form->input(
         				'Traitementpdo.traitmentpdoIdClore.'.Set::classicExtract($traitementpdoouvert, 'Traitementpdo.id'),
         				array(
-        					'type'=>'checkbox',
-        					'label'=>false
+        					'type'=>'radio',
+        					'legend'=>false,
+        					'options' => $cloture
         				)
         			)
         		)
         	);
         }
         
-        echo "</tbody></table></fieldset>";
+        echo "</tbody></table>";
         
         echo "<div class='submit'>";
-	    	$disabled = ($this->data['Traitementpdo']['clos']==1) ? 'disabled' : 'enabled';
-			echo $form->submit('Enregistrer', array('disabled'=>$disabled, 'div'=>false));
+	    	$disabled = ( isset( $this->data['Traitementpdo']['clos'] ) && $this->data['Traitementpdo']['clos'] == 1 ) ? 'disabled' : 'enabled';
+			echo $form->submit( 'Enregistrer', array( 'disabled'=>$disabled, 'div'=>false ) );
 			echo $form->button( 'Retour', array( 'type' => 'button', 'onclick'=>"location.replace('".Router::url( '/propospdos/edit/'.$propopdo_id, true )."')" ) );
         echo "</div>";
         
@@ -901,18 +898,11 @@
 				'TraitementpdoDaterevisionDay',
 				'TraitementpdoDaterevisionMonth',
 				'TraitementpdoDaterevisionYear',
-                 'TraitementpdoDureeecheance',
-                 'TraitementpdoDureedepart'
+				'TraitementpdoDureeecheance',
+				'TraitementpdoDureedepart'
 			],
 			'<?php echo Configure::read('traitementClosId') ?>',
 			true
-		);
-		
-		observeDisableFieldsetOnCheckbox(
-			'TraitementpdoCloreprev',
-			'traitementprev',
-			true,
-			false
 		);
 		
 		<?php
@@ -953,17 +943,6 @@
 			 true
 		 );
 		 <?php endif; ?>
-
-		 observeDisableFieldsOnValue(
-			 'TraitementpdoDescriptionpdoId',
-			 [
-				 'TraitementpdoDatedepartDay',
-				 'TraitementpdoDatedepartMonth',
-				 'TraitementpdoDatedepartYear'
-			 ],
-			 [ '2', '5' ],
-			 true
-		 );
 		 
 		<?php foreach ($options['Traitementpdo']['regime'] as $enumname=>$enumvalue): ?>
 			$$('tr.<?php echo $enumname; ?>').each(function (element) {

@@ -43,6 +43,8 @@
             
             $options[$this->modelClass]['listeDescription'] = $this->Descriptionpdo->find( 'all', array( 'contain' => false ) );
             
+            $this->set( 'cloture', array( 0 => 'Non', 1 => 'Oui' ) );
+            
             return $options;
         }
 
@@ -188,7 +190,7 @@
                     $saved = true;
                     
                     $saved = $this->Traitementpdo->sauvegardeTraitement( $this->data );
-
+                    
                     if( $saved ) {
                         $this->Jetons->release( $dossier_id );
                         $this->Traitementpdo->commit(); // FIXME

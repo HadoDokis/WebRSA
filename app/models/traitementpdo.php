@@ -264,9 +264,9 @@
 			}
 			$success = $this->saveAll( $data, array( 'validate' => 'first', 'atomic' => false ) ) && $success;
 
-			if ($data['Traitementpdo']['cloreprev']==1) {
-				foreach($data['Traitementpdo']['traitmentpdoIdClore'] as $id=>$clore) {
-					if ($clore==1) {
+			if ( isset( $data['Traitementpdo']['traitmentpdoIdClore'] ) && !empty( $data['Traitementpdo']['traitmentpdoIdClore'] ) ) {
+				foreach( $data['Traitementpdo']['traitmentpdoIdClore'] as $id => $clore ) {
+					if ( $clore==1 ) {
 						$success = $this->updateAll(array('Traitementpdo.clos'=>1),array('"Traitementpdo"."id"'=>$id)) && $success;
 					}
 				}
