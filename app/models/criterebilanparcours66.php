@@ -39,6 +39,10 @@
                 $conditions[] = array('Bilanparcours66.referent_id'=>$criteresbilansparcours66['Bilanparcours66']['referent_id']);
             }
 
+            if ( isset($criteresbilansparcours66['Bilanparcours66']['positionbilan']) && !empty($criteresbilansparcours66['Bilanparcours66']['positionbilan']) ) {
+                $conditions[] = array('Bilanparcours66.positionbilan'=>$criteresbilansparcours66['Bilanparcours66']['positionbilan']);
+            }
+
             /// Critères sur le Bilan - date du bilan
             if( isset( $criteresbilansparcours66['Bilanparcours66']['datebilan'] ) && !empty( $criteresbilansparcours66['Bilanparcours66']['datebilan'] ) ) {
                 $valid_from = ( valid_int( $criteresbilansparcours66['Bilanparcours66']['datebilan_from']['year'] ) && valid_int( $criteresbilansparcours66['Bilanparcours66']['datebilan_from']['month'] ) && valid_int( $criteresbilansparcours66['Bilanparcours66']['datebilan_from']['day'] ) );
@@ -118,6 +122,7 @@
                     'Bilanparcours66.examenaudition',
                     'Bilanparcours66.maintienorientation',
                     'Bilanparcours66.saisineepparcours',
+                    'Bilanparcours66.positionbilan',
                     'Personne.id',
                     'Personne.qual',
                     'Personne.nom',
