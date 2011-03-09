@@ -9,6 +9,12 @@
 		var $commeDroit = array(
 			'add' => 'Decisionspdos:edit'
 		);
+		
+		protected function _setOptions() {
+			$options = $this->Decisionpdo->enums();
+			
+			$this->set( compact( 'options' ) );
+		}
 
         function index() {
             // Retour à la liste en cas d'annulation
@@ -35,6 +41,7 @@
                     $this->redirect( array( 'controller' => 'decisionspdos', 'action' => 'index' ) );
                 }
             }
+            $this->_setOptions();
             $this->render( $this->action, null, 'add_edit' );
         }
 
@@ -60,7 +67,7 @@
                 );
                 $this->data = $decisionpdo;
             }
-
+            $this->_setOptions();
             $this->render( $this->action, null, 'add_edit' );
         }
 

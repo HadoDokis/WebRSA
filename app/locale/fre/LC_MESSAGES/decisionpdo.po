@@ -23,5 +23,13 @@ msgstr ""
 ###############################################################################
 
 msgid "Decisionpdo.libelle"
-msgstr "Proposition"
+msgstr "Libellé"
 
+msgid "Decisionpdo.clos"
+msgstr "Ce type clotûre-t-il le dossier ?"
+
+msgid "ENUM::CLOS::N"
+msgstr "Non"
+
+msgid "ENUM::CLOS::O"
+msgstr "Oui"
