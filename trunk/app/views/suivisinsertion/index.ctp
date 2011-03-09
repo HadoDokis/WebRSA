@@ -494,9 +494,60 @@
                 </tr>
             </tbody>
         </table>
+    <?php if( Configure::read( 'Cg.departement' ) == 93 ):?>
+        <!-- Etape 8 : Affichage des dernières relances -->
+        <h2>Etape 8: Dernière relance</h2>
+        <table>
+            <thead>
+                <tr class="odd">
+                    <th colspan="4">Parcours Demandeur</th>
+                    <th colspan="4">Parcours Conjoint</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="odd">
+                    <th>Type de relance</th>
+                    <th>Date de relance</th>
+                    <th>Réalisé</th>
+                    <th class="action">Action</th>
 
-        <!-- Etape 8 : Affichage des poursuites pour le droit -->
-        <h2>Etape 8: Poursuite du droit</h2>
+                    <th>Type de relance</th>
+                    <th>Date de relance</th>
+                    <th>Réalisé</th>
+                    <th class="action">Action</th>
+                </tr>
+                <tr>
+                    <td><?php echo Set::enum( Set::classicExtract( $details, 'DEM.Nonrespectsanctionep93.derniere.Nonrespectsanctionep93.origine' ), $relance['origine'] );?></td>
+                    <td><?php echo h( date_short( Set::extract( 'DEM.Nonrespectsanctionep93.derniere.Nonrespectsanctionep93.created', $details ) ) );?></td>
+                    <td><?php echo $xhtml->boolean( !empty( $details['DEM']['Nonrespectsanctionep93']['derniere']['Nonrespectsanctionep93']['origine'] ) );?></td>
+                    <td><?php
+                        if( !empty( $details['DEM']['Nonrespectsanctionep93']['derniere']['Nonrespectsanctionep93']['origine'] ) ){
+                            echo $xhtml->viewLink(
+                                'Voir le contrat',
+                                array( 'controller' => 'relancesnonrespectssanctionseps93', 'action' => 'index', Set::extract( 'DEM.Personne.id', $details ) )
+                            );
+                        }
+                        ?>
+                    </td>
+
+                    <td><?php echo Set::enum( Set::classicExtract( $details, 'CJT.Nonrespectsanctionep93.derniere.Nonrespectsanctionep93.origine' ), $relance['origine'] );?></td>
+                    <td><?php echo h( date_short( Set::extract( 'CJT.Nonrespectsanctionep93.derniere.Nonrespectsanctionep93.created', $details ) ) );?></td>
+                    <td><?php echo $xhtml->boolean( !empty( $details['CJT']['Nonrespectsanctionep93']['derniere']['Nonrespectsanctionep93']['origine'] ) );?></td>
+                    <td><?php
+                        if( !empty( $details['CJT']['Nonrespectsanctionep93']['derniere']['Nonrespectsanctionep93']['origine'] ) ){
+                            echo $xhtml->viewLink(
+                                'Voir le contrat',
+                                array( 'controller' => 'relancesnonrespectssanctionseps93', 'action' => 'index', Set::extract( 'CJT.Personne.id', $details ) )
+                            );
+                        }
+                        ?>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Etape 9 : Affichage des poursuites pour le droit -->
+        <h2>Etape 9: Poursuite du droit</h2>
         <table>
             <thead>
                 <tr class="odd">
@@ -545,6 +596,7 @@
                 </tr>
             </tbody>
         </table>
+    <?php endif;?>
     </div>
 </div>
 

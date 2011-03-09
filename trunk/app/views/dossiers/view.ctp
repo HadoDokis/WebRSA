@@ -419,7 +419,7 @@
 
             <tr>
                 <td>
-                    <h2>Relances</h2>
+                    <h2>Dernières relances</h2>
                     <table >
                     <?php echo thead( 10 );?>
                         <tbody>
@@ -437,7 +437,7 @@
                     </table>
                 </td>
                 <td>
-                    <h2>Passage en EP</h2>
+                    <h2>Dernier passage en EP</h2>
                     <table>
                     <?php echo thead( 10 );?>
                         <tbody>
