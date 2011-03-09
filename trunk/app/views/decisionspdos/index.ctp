@@ -17,14 +17,16 @@
         <thead>
             <tr>
                 <th>Libellé</th>
+                <th>Ce type clotûre-t-il le dossier ?</th>
                 <th colspan="2" class="action">Actions</th>
             </tr>
         </thead>
         <tbody>
-            <?php foreach( $decisionspdos as $decisionpdo ):?>
-                <?php echo $xhtml->tableCells(
+            <?php foreach( $decisionspdos as $decisionpdo ):
+                echo $xhtml->tableCells(
                             array(
                                 h( $decisionpdo['Decisionpdo']['libelle'] ),
+								( $decisionpdo['Decisionpdo']['clos'] == 'N' ) ? 'Non' : 'Oui',
                                 $xhtml->editLink(
                                     'Éditer la décision de PDO ',
                                     array( 'controller' => 'decisionspdos', 'action' => 'edit', $decisionpdo['Decisionpdo']['id'] )
@@ -37,9 +39,8 @@
                             array( 'class' => 'odd' ),
                             array( 'class' => 'even' )
                         );
-                ?>
-            <?php endforeach;?>
-            </tbody>
+            endforeach;?>
+		</tbody>
         </table>
 </div>
 </div>

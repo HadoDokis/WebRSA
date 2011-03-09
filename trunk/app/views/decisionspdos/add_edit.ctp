@@ -15,7 +15,19 @@
     ?>
 
     <fieldset>
-        <?php echo $form->input( 'Decisionpdo.libelle', array( 'label' => required( __( 'Décision de PDO', true ) ), 'type' => 'text' ) );?>
+        <?php //echo $form->input( 'Decisionpdo.libelle', array( 'label' => required( __( 'Décision de PDO', true ) ), 'type' => 'text' ) );?>
+        <?php //echo $form->input( 'Decisionpdo.clos', array( 'label' => required( __d( 'Decisionpdo.clos', 'decisionpdo', true ) ), 'type' => 'radio' ) );?>
+        <?php
+        	echo $default->subform(
+				array(
+					'Decisionpdo.libelle',
+					'Decisionpdo.clos' => array( 'type' => 'radio' )
+				),
+				array(
+					'options' => $options
+				)
+			);
+		?>
     </fieldset>
 
         <?php echo $form->submit( 'Enregistrer' );?>

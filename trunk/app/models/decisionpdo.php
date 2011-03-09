@@ -7,6 +7,15 @@
 
 		public $order = 'Decisionpdo.id ASC';
 
+		public $actsAs = array(
+			'Autovalidate',
+			'Enumerable' => array(
+				'fields' => array(
+					'clos'
+				)
+			)
+		);
+
 		public $hasMany = array(
 			/*'Propopdo' => array(
 				'className' => 'Propopdo',
