@@ -310,9 +310,9 @@ ALTER TABLE contratsinsertion ALTER COLUMN modified SET NOT NULL;
 -- 20110309
 -- -----------------------------------------------------------------------------
 
-SELECT add_missing_table_field ('public', 'decisionspdos', 'clos', 'integer');
-ALTER TABLE decisionspdos ALTER COLUMN clos SET DEFAULT 0;
-UPDATE decisionspdos SET clos = 0 WHERE clos IS NULL;
+SELECT add_missing_table_field ('public', 'decisionspdos', 'clos', 'TYPE_NO');
+ALTER TABLE decisionspdos ALTER COLUMN clos SET DEFAULT 'N';
+UPDATE decisionspdos SET clos = 'N' WHERE clos IS NULL;
 ALTER TABLE decisionspdos ALTER COLUMN clos SET NOT NULL;
 
 -- *****************************************************************************
