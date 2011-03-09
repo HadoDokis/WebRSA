@@ -41,6 +41,7 @@
                             'Bilanparcours66.maintienorientation' => array( 'type' => 'select', 'options' => $options['maintienorientation'] ),
                             'Bilanparcours66.structurereferente_id' => array( 'type' => 'select', 'options' => $struct ),
                             'Bilanparcours66.referent_id' => array( 'type' => 'select', 'options' => $referents ),
+                            'Bilanparcours66.positionbilan' => array( 'type' => 'select', 'options' => $options['positionbilan'] ),
                         ),
                         array(
                             'options' => $options
@@ -81,6 +82,7 @@
                     <th>'.$xpaginator->sort( __d( 'structurereferente', 'Structurereferente.lib_struc', true ), 'Structurereferente.lib_struc' ).'</th>
                     <th>'.$xpaginator->sort( __d( 'referent', 'Referent.nom_complet', true ), 'Referent.nom_complet' ).'</th>
                     <th>'.$xpaginator->sort( __d( 'bilanparcours66', 'Bilanparcours66.proposition', true ), 'Bilanparcours66.proposition' ).'</th>
+                    <th>'.$xpaginator->sort( __d( 'bilanparcours66', 'Bilanparcours66.positionbilan', true ), 'Bilanparcours66.positionbilan' ).'</th>
                     <th>'.$xpaginator->sort( __d( 'bilanparcours66', 'Bilanparcours66.choixparcours', true ), 'Bilanparcours66.choixparcours' ).'</th>
                     <th>Saisine EP</th>
                     <th>Actions</th>
@@ -114,6 +116,7 @@
                     <td>'.h( $bilanparcour66['Structurereferente']['lib_struc'] ).'</td>
                     <td>'.h( $bilanparcour66['Referent']['nom_complet'] ).'</td>
                     <td>'.h( Set::classicExtract( $options['proposition'], $bilanparcour66['Bilanparcours66']['proposition'] ) ).'</td>
+                    <td>'.h( Set::enum( Set::classicExtract( $bilanparcour66, 'Bilanparcours66.positionbilan' ),  $options['positionbilan'] ) ).'</td>
                     <td>'.h( $motif ).'</td>'.
                     $default2->Type2->format( $isSaisine, 'Dossierep.etapedossierep', array( 'type' => 'boolean', 'tag' => 'td' ) ).
                     '<td>'.$xhtml->link( 'Voir', array( 'controller' => 'bilansparcours66', 'action' => 'index', $bilanparcour66['Personne']['id'] ) ).'</td>

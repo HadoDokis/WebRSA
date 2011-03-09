@@ -306,9 +306,13 @@ ALTER TABLE contratsinsertion ADD COLUMN modified TIMESTAMP WITHOUT TIME ZONE;
 UPDATE contratsinsertion SET modified = dd_ci WHERE modified IS NULL;
 ALTER TABLE contratsinsertion ALTER COLUMN modified SET NOT NULL;
 
+
+
 -- -----------------------------------------------------------------------------
 -- 20110309
 -- -----------------------------------------------------------------------------
+SELECT alter_table_drop_column_if_exists( 'public', 'bilansparcours66', 'datecourrierimpression' );
+ALTER TABLE bilansparcours66 ADD COLUMN datecourrierimpression DATE DEFAULT NULL;
 
 SELECT add_missing_table_field ('public', 'decisionspdos', 'clos', 'TYPE_NO');
 ALTER TABLE decisionspdos ALTER COLUMN clos SET DEFAULT 'N';

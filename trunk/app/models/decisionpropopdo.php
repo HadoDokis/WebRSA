@@ -198,16 +198,24 @@
 
             if( $pdf ) {
                 $pdfModel = ClassRegistry::init( 'Pdf' );
-                $pdfModel->create(
+
+                $oldPdf = $pdfModel->find(
+                    'first',
                     array(
-                        'Pdf' => array(
+                        'fields' => array( 'id' ),
+                        'conditions' => array(
                             'modele' => 'Decisionpropopdo',
                             'modeledoc' => $modeledoc,
-                            'fk_value' => $id,
-                            'document' => $pdf
+                            'fk_value' => $id
                         )
                     )
                 );
+                $oldPdf['Pdf']['modele'] = $this->alias;
+                $oldPdf['Pdf']['modeledoc'] = $modeledoc;
+                $oldPdf['Pdf']['fk_value'] = $id;
+                $oldPdf['Pdf']['document'] = $pdf;
+
+                $pdfModel->create( $oldPdf );
                 $success = $pdfModel->save() && $success;
             }
             else {
