@@ -12,7 +12,7 @@
 //         }
 //     }
 
-    $csv->addRow( array( 'Date du bilan de parcours', 'Nom de la personne', 'Type de structure', 'Nom du prescripteur', 'Type de commission', 'Choix du parcours', 'Saisine EP' ) );
+    $csv->addRow( array( 'Date du bilan de parcours', 'Nom de la personne', 'Type de structure', 'Nom du prescripteur', 'Type de commission', 'Position du bilan', 'Choix du parcours', 'Saisine EP' ) );
 
     foreach( $bilansparcours66 as $bilanparcours66 ) {
         $isSaisine = 'Non';
@@ -44,6 +44,7 @@
             Set::classicExtract( $bilanparcours66, 'Structurereferente.lib_struc' ),
             Set::classicExtract( $bilanparcours66, 'Referent.nom_complet' ),
             Set::classicExtract( $options['proposition'], $bilanparcours66['Bilanparcours66']['proposition'] ),
+            Set::enum( Set::classicExtract( $bilanparcours66, 'Bilanparcours66.positionbilan' ), $options['positionbilan'] ),
             $motif,
             $isSaisine
         );
