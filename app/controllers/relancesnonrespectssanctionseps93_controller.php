@@ -103,6 +103,7 @@
 							'Orientstruct.date_valid',
 							'Contratinsertion.id',
 							'Contratinsertion.df_ci',
+							'Relancenonrespectsanctionep93.id',
 							'Relancenonrespectsanctionep93.numrelance',
 							'Relancenonrespectsanctionep93.daterelance',
 							'Pdf.id',
@@ -454,63 +455,22 @@
 
 			$this->Relancenonrespectsanctionep93->begin();
 
-			$content = $this->Pdf->find(
-				'first',
-				array(
-					'fields' => array(
-						'Pdf.document',
-						'Pdf.cmspath',
-						'Relancenonrespectsanctionep93.id',
-						'Relancenonrespectsanctionep93.dateimpression',
-					),
-					'conditions' => array(
-						'Pdf.modele' => 'Relancenonrespectsanctionep93',
-						'Pdf.id' => $id
-					),
-					'joins' => array(
-						array(
-							'table'      => 'relancesnonrespectssanctionseps93',
-							'alias'      => 'Relancenonrespectsanctionep93',
-							'type'       => 'INNER',
-							'foreignKey' => false,
-							'conditions' => array(
-								'Pdf.fk_value = Relancenonrespectsanctionep93.id'
-							)
-						),
-						array(
-							'table'      => 'nonrespectssanctionseps93',
-							'alias'      => 'Nonrespectsanctionep93',
-							'type'       => 'INNER',
-							'foreignKey' => false,
-							'conditions' => array(
-								'Nonrespectsanctionep93.id = Relancenonrespectsanctionep93.nonrespectsanctionep93_id'
-							)
-						),
-					)
-				)
-			);
+			$pdf = $this->Relancenonrespectsanctionep93->getStoredPdf( $id, 'dateimpression' );
 
-			if( empty( $content['Relancenonrespectsanctionep93']['dateimpression'] ) ) {
-				$this->Relancenonrespectsanctionep93->updateAll(
-					array( 'Relancenonrespectsanctionep93.dateimpression' => date( "'Y-m-d'" ) ),
-					array( '"Relancenonrespectsanctionep93"."id"' => $content['Relancenonrespectsanctionep93']['id'] )
-				);
+			if( empty( $pdf ) ) {
+				$this->Relancenonrespectsanctionep93->rollback();
+				$this->cakeError( 'error404' );
 			}
-
-			if( empty( $content['Pdf']['document'] ) ) {
-				$cmisPdf = Cmis::read( $content['Pdf']['cmspath'], true );
-				$content['Pdf']['document'] = $cmisPdf['content'];
-			}
-
-			if( !empty( $content['Pdf']['document'] ) ) {
+			else if( !empty( $pdf['Pdf']['document'] ) ) {
 				$this->Relancenonrespectsanctionep93->commit();
 				$this->layout = '';
-				$this->Gedooo->sendPdfContentToClient( $content['Pdf']['document'], sprintf( "relance-%s.pdf", date( "Ymd-H\hi" ) ) );
+				$this->Gedooo->sendPdfContentToClient( $pdf['Pdf']['document'], sprintf( "relance-%s.pdf", date( "Ymd-H\hi" ) ) );
 			}
 			else {
 				$this->Relancenonrespectsanctionep93->rollback();
 				$this->cakeError( 'error500' );
 			}
+
 		}
 
 		/**
@@ -521,6 +481,7 @@
 			$queryData = $this->Relancenonrespectsanctionep93->qdSearchRelances( Xset::bump( $this->params['named'], '__' ) );
 			$queryData['fields'] = array(
 				'Pdf.document',
+				'Pdf.cmspath',
 				'Relancenonrespectsanctionep93.id',
 				'Relancenonrespectsanctionep93.dateimpression',
 			);
@@ -528,6 +489,12 @@
 			$this->Relancenonrespectsanctionep93->begin();
 
 			$contents = $this->Relancenonrespectsanctionep93->find( 'all', $queryData );
+			foreach( $contents as $i => $content ) {
+				if( empty( $content['Pdf']['document'] ) && !empty( $content['Pdf']['cmspath'] ) ) {
+					$cmisPdf = Cmis::read( $content['Pdf']['cmspath'], true );
+					$contents[$i]['Pdf']['document'] = $cmisPdf['content'];
+				}
+			}
 
 			$ids = Set::extract( '/Relancenonrespectsanctionep93/id', $contents );
 			$pdfs = Set::extract( '/Pdf/document', $contents );

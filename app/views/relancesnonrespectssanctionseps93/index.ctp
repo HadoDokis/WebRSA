@@ -81,8 +81,8 @@
 						<td><?php echo $xhtml->viewLink( 'Voir', array( '#' ), false );?></td>
 						<td><?php echo $xhtml->printLink(
 								'Imprimer',
-								array( 'controller' => $this->params['controller'], 'action' => 'impression', $relance['Pdf']['id'] ),
-								/*$permissions->check( 'gedooos', 'orientstruct' ) && */$relance['Pdf']['id']
+								array( 'controller' => $this->params['controller'], 'action' => 'impression', $relance['Relancenonrespectsanctionep93']['id'] ),
+								$permissions->check( $this->params['controller'], 'impression' ) && $relance['Pdf']['id']
 						);?></td>
 					</tr>
 				<?php endforeach;?>

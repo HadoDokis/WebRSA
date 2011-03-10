@@ -440,32 +440,10 @@
 		public function impression( $orientstruct_id = null ) {
 			$this->assert( !empty( $orientstruct_id ), 'error404' );
 
-			$this->Orientstruct->updateAll(
-				array( 'Orientstruct.date_impression' => date( "'Y-m-d'" ) ),
-				array(
-					'"Orientstruct"."id"' => $orientstruct_id,
-					'Orientstruct.date_impression IS NULL'
-				)
-			);
-
-			$pdf = $this->Pdf->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Pdf.modele' => 'Orientstruct',
-						'Pdf.fk_value' => $orientstruct_id,
-					)
-				)
-			);
+			$pdf = $this->Orientstruct->getStoredPdf( $orientstruct_id, 'date_impression' );
 
 			$this->assert( !empty( $pdf ), 'error404' );
-
-			if( empty( $pdf['Pdf']['document'] ) ) {
-				$cmisPdf = Cmis::read( "/Orientstruct/{$orientstruct_id}.pdf", true );
-				$pdf['Pdf']['document'] = $cmisPdf['content'];
-			}
-
-			$this->assert( !empty( $pdf['Pdf']['document'] ), 'error404' ); // FIXME: ou en faire l'impression ?
+			$this->assert( !empty( $pdf['Pdf']['document'] ), 'error500' ); // FIXME: ou en faire l'impression ?
 
 			$this->Gedooo->sendPdfContentToClient( $pdf['Pdf']['document'], "{$orientstruct_id}.pdf" );
 		}

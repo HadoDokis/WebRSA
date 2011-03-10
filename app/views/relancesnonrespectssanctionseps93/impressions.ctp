@@ -117,7 +117,7 @@
 								$locale->date( 'Locale->date', $relance['Relancenonrespectsanctionep93']['daterelance'] ),
 								( ( $relance['Relancenonrespectsanctionep93']['numrelance'] < 2 ) ? '1ère relance' : "{$relance['Relancenonrespectsanctionep93']['numrelance']}ème relance" ),
 								$default2->button( 'view', array( 'controller' => 'relancesnonrespectssanctionseps93', 'action' => 'index', $relance['Personne']['id'] ), array( 'label' => 'Voir' ) ),
-								$default2->button( 'print', array( 'controller' => 'relancesnonrespectssanctionseps93', 'action' => 'impression', $relance['Pdf']['id'] ), array( 'enabled' => !empty( $relance['Pdf']['id'] ), 'label' => 'Imprimer' ) )
+								$default2->button( 'print', array( 'controller' => 'relancesnonrespectssanctionseps93', 'action' => 'impression', $relance['Relancenonrespectsanctionep93']['id'] ), array( 'enabled' => !empty( $relance['Pdf']['id'] ), 'label' => 'Imprimer' ) )
 							),
 							array( 'class' => 'odd' ),
 							array( 'class' => 'even' )
