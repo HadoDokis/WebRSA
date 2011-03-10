@@ -27,8 +27,6 @@
 				'5' => 'radiepoleemploiep93',
 				'6' => 'nonorientationpro58',
 				'7' => 'regressionorientationep58',
-				'8' => 'radiepoleemploiep58',
-				
 			);
 			$this->assertEqual($result, $expected);
 		}

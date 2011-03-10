@@ -11,6 +11,7 @@
 			$expected = array(
 				'1' => 'Service 1',
 				'2' => 'Service 2',
+				'3' => 'CCAS Saint Denis',
 			);
 			$this->assertEqual($expected, $result);
 		}

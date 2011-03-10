@@ -87,12 +87,12 @@
 			$id = '3'; // id de la seanceEp
 			$result = $this->Seanceep->themesTraites($id);
 			$this->assertEqual($result['nonrespectsanctionep93'], 'cg');
-			$this->assertEqual($result['saisineepreorientsr93'], 'cg');
+			$this->assertNull($result);//['saisineepreorientsr93'], 'cg');
 
 			$id = '6'; // id de la seanceEp
 			$result = $this->Seanceep->themesTraites($id);
 			$this->assertEqual($result['nonrespectsanctionep93'], 'cg');
-			$this->assertEqual($result['saisineepreorientsr93'], 'cg');
+			$this->assertNull($result);//['saisineepreorientsr93'], 'cg');
 		}
 
 		function testSaveDecisions() {
