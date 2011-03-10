@@ -20,10 +20,10 @@
 		);
 
 		/**
-		* 
+		*
 		*/
 
-		public function finaliser( $seanceep_id, $etape ) {
+		public function finaliser( $seanceep_id, $etape, $user_id ) {
 			$seanceep = $this->Dossierep->Seanceep->find(
 				'first',
 				array(
@@ -31,9 +31,9 @@
 					'contain' => array( 'Ep' )
 				)
 			);
-			
+
 			$niveauDecisionFinale = $seanceep['Ep'][Inflector::underscore( $this->alias )];
-			
+
 			$dossierseps = $this->find(
 				'all',
 				array(
@@ -51,9 +51,9 @@
 					)
 				)
 			);
-			
+
 			$success = true;
-			
+
 			if( $niveauDecisionFinale == $etape ) {
 				foreach( $dossierseps as $dossierep ) {
 					if( !isset( $dossierep['Decisionnonorientationpro58'][0]['decision'] ) ) {
@@ -75,16 +75,16 @@
 								'user_id' => $dossierep['Nonorientationpro58']['user_id']
 							)
 						);
-						
+
 						$this->Orientstruct->create( $orientstruct );
 						$success = $this->Orientstruct->save() && $success;
 						$success = $this->Orientstruct->generatePdf( $this->Orientstruct->id, $dossierep['Nonorientationpro58']['user_id'] ) && $success;
 			}
 				}
 			}
-			
+
 			return $success;
 		}
-		
+
 	}
 ?>

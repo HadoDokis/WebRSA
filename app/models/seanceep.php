@@ -274,7 +274,7 @@
 		* @access public
 		*/
 
-		public function finaliser( $seanceep_id, $niveauDecision ) {
+		public function finaliser( $seanceep_id, $niveauDecision, $user_id ) {
 			$success = true;
 			$themesTraites = $this->themesTraites( $seanceep_id );
 
@@ -334,7 +334,7 @@
 						if( $niveauDecisionTheme == $niveauDecision ) {
 							$themeTraite = Inflector::tableize( $themeTraite );
 							$model = Inflector::classify( $themeTraite );
-							$success = $this->Dossierep->{$model}->finaliser( $seanceep_id, $niveauDecisionTheme ) && $success;
+							$success = $this->Dossierep->{$model}->finaliser( $seanceep_id, $niveauDecisionTheme, $user_id ) && $success;
 						}
 					}
 				}
@@ -347,10 +347,10 @@
 							$themeTraite = Inflector::tableize( $themeTraite );
 							$model = Inflector::classify( $themeTraite );
 							if( $niveauDecisionTheme == $niveauDecision ) {
-								$success = $this->Dossierep->{$model}->finaliser( $seanceep_id, $niveauDecisionTheme ) && $success;
+								$success = $this->Dossierep->{$model}->finaliser( $seanceep_id, $niveauDecisionTheme, $user_id ) && $success;
 							}
 							else {
-								$success = $this->Dossierep->{$model}->verrouiller( $seanceep_id, $niveauDecision ) && $success;
+								$success = $this->Dossierep->{$model}->verrouiller( $seanceep_id, $niveauDecision, $user_id ) && $success;
 							}
 						}
 					}

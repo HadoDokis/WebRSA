@@ -27,7 +27,7 @@
 				'order' => ''
 			)
 		);
-		
+
 		public function searchNonReoriente($datas) {
 			$nbmois = Set::classicExtract($datas, 'Filtre.dureenonreorientation');
 			$this->Orientstruct = ClassRegistry::init( 'Orientstruct' );
@@ -178,10 +178,10 @@
 			);
 			return $cohorte;
 		}
-		
+
 		public function saveCohorte( $datas ) {
 			$success = true;
-			
+
 			foreach( $datas['Nonorientationpro'] as $dossier ) {
 				if ( $dossier['passageep'] == 1 ) {
 					$dossierep = array(
@@ -192,7 +192,7 @@
 						)
 					);
 					$success = $this->Dossierep->save( $dossierep ) && $success;
-					
+
 					$nonorientationpro58 = array(
 						'Nonorientationpro58' => array(
 							'dossierep_id' => $this->Dossierep->id,
@@ -203,7 +203,7 @@
 					$success = $this->save( $nonorientationpro58 ) && $success;
 				}
 			}
-			
+
 			return $success;
 		}
 
@@ -309,15 +309,15 @@
 					}
 					$data['Decision'.Inflector::underscore( $this->alias )][$key][Inflector::underscore( $this->alias ).'_id'] = $data[$this->alias][$key]['id'];
 				}
-				
+
 				$success = $this->{'Decision'.Inflector::underscore($this->alias)}->saveAll( Set::extract( $data, '/'.'Decision'.Inflector::underscore( $this->alias ) ), array( 'atomic' => false ) );
-				
+
 				$this->Dossierep->updateAll(
 					array( 'Dossierep.etapedossierep' => '\'decision'.$niveauDecision.'\'' ),
 					array( '"Dossierep"."id"' => Set::extract( $data, '/'.$this->alias.'/dossierep_id' ) )
 				);
 			}
-			
+
 			return $success;
 		}
 
@@ -330,12 +330,12 @@
 		}
 
 		/**
-		* 
+		*
 		*/
 
-		public function finaliser( $seanceep_id, $etape ) {
+		public function finaliser( $seanceep_id, $etape, $user_id = null ) {
 			$decisionModelName = 'Decisionnonorientationpro'.Configure::read( 'Cg.departement' );
-			
+
 			$seanceep = $this->Dossierep->Seanceep->find(
 				'first',
 				array(
@@ -343,9 +343,9 @@
 					'contain' => array( 'Ep' )
 				)
 			);
-			
+
 			$niveauDecisionFinale = $seanceep['Ep'][Inflector::underscore( $this->alias )];
-			
+
 			$dossierseps = $this->find(
 				'all',
 				array(
@@ -363,9 +363,9 @@
 					)
 				)
 			);
-			
+
 			$success = true;
-			
+
 			if( $niveauDecisionFinale == $etape ) {
 				foreach( $dossierseps as $dossierep ) {
 					if( !isset( $dossierep[$decisionModelName][0]['decision'] ) ) {
@@ -384,18 +384,18 @@
 								'statut_orient' => 'Orienté',
 								'rgorient' => $this->Orientstruct->rgorientMax( $dossierep['Dossierep']['personne_id'] ) + 1,
 								'etatorient' => 'decision',
-								'user_id' => $dossier['Nonorientationpro58']['user_id']
+								'user_id' => $user_id
 							)
 						);
-						
+
 						$this->Orientstruct->create( $orientstruct );
 						$success = $this->Orientstruct->save() && $success;
 			}
 				}
 			}
-			
+
 			return $success;
 		}
-		
+
 	}
 ?>

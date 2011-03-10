@@ -109,7 +109,7 @@
 		* TODO: comment finaliser l'orientation précédente ?
 		*/
 
-		public function finaliser( $seanceep_id, $etape ) {
+		public function finaliser( $seanceep_id, $etape, $user_id ) {
 			$dossierseps = $this->find(
 				'all',
 				array(
@@ -141,6 +141,7 @@
 							'date_propo' => date( 'Y-m-d' ),
 							'date_valid' => date( 'Y-m-d' ),
 							'statut_orient' => 'Orienté',
+							'user_id' => $user_id,
 						)
 					);
 

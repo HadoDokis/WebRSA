@@ -170,7 +170,7 @@
 // // Une fois le traitement = audition et avis ep émis, alorspaser en attcga
 //             elseif( ( $traitement == 'audition' ) && !empty( $saisineep ) && ( $etapedossierep == 'traiterep' ) )
 //                 $positionbilan = 'attcga';
-// 
+//
 // // Une fois le traitement = parcours et avis ep émis, alorspaser en attct
 //             elseif( ( $traitement == 'parcours' ) &&  !empty( $saisineep ) && ( $etapedossierep == 'traiterep' ) )
 //                 $positionbilan = 'attct';
@@ -283,6 +283,7 @@
 						'date_propo' => date( 'Y-m-d' ),
 						'date_valid' => date( 'Y-m-d' ),
 						'statut_orient' => 'Orienté',
+						'user_id' => $vxOrientstruct['Orientstruct']['user_id']
 					)
 				);
 				$this->Orientstruct->create( $orientstruct );

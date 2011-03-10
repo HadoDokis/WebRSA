@@ -88,11 +88,5 @@
 			$options = array();
 			$result = $this->Orientstruct->beforeSave($option);
 		}
-
-		function testGeneratePdf() {
-			$id = null;
-			$user_id = null;
-		}
-
 	}
 ?>

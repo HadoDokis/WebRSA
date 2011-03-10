@@ -1,0 +1,181 @@
+################################################################################
+# Terminé                                                                      #
+################################################################################
+
+Recherche des sauvegardes d'orientsstructs pour y ajouter le user_id si statut_orient = 'Orienté'
+
+> grep -nri "Orientstruct->save" app | grep -v "\.svn"
+OK -> app/controllers/ajoutdossiers_controller.php:402:                $saved = $this->Orientstruct->save( array( 'Orientstruct' => array( 'personne_id' => $demandeur_id, 'statut_orient' => 'Non orientÃ©' ) ) );
+OK -> app/controllers/ajoutdossiers_controller.php:419:                    $saved = $this->Orientstruct->save( array( 'Orientstruct' => array( 'personne_id' => $conjoint_id, 'statut_orient' => 'Non orientÃ©' ) ) );
+OK -> app/controllers/cohortes_controller.php:116:                                    $valid = $this->Dossier->Foyer->Personne->Orientstruct->saveAll( $this->data['Orientstruct'], array( 'validate' => 'only', 'atomic' => false ) );
+OK -> app/controllers/cohortes_controller.php:129:                                            $saved = $this->Dossier->Foyer->Personne->Orientstruct->saveAll( $this->data['Orientstruct'], array( 'validate' => 'first', 'atomic' => false ) );
+OK -> app/controllers/cohortes_controller.php:309:                                            $valid = $this->Dossier->Foyer->Personne->Orientstruct->saveAll( $this->data['Orientstruct'], array( 'validate' => 'only', 'atomic' => false ) );
+OK -> app/controllers/cohortes_controller.php:322:                                                    $saved = $this->Dossier->Foyer->Personne->Orientstruct->saveAll( $this->data['Orientstruct'], array( 'validate' => 'first', 'atomic' => false ) );
+?? -> app/controllers/relances_controller.php:65:                                     $valid = $this->Orientstruct->saveAll( $this->data['Orientstruct'], array( 'validate' => 'only', 'atomic' => false ) );
+?? -> app/controllers/relances_controller.php:68:                                             $saved = $this->Orientstruct->saveAll( $this->data['Orientstruct'], array( 'validate' => 'first', 'atomic' => false ) );
+OK -> app/controllers/dossierssimplifies_controller.php:201:                                $saved = $this->Orientstruct->save( $this->data['Orientstruct'][$key] ) && $saved;
+OK -> app/controllers/dossierssimplifies_controller.php:208:                                $saved = $this->Orientstruct->save( $this->data['Orientstruct'][$key] ) && $saved;
+OK -> app/controllers/gedooos_controller.php:113:                $this->Orientstruct->save( $orientstruct['Orientstruct'] );
+OK -> app/controllers/gedooos_controller.php:666:                $this->Orientstruct->save( $orientstruct['Orientstruct'] );
+OK -> app/controllers/gedooos_controller.php:739:                    $this->Orientstruct->save( $datas['Orientstruct'] );
+OK -> app/controllers/orientsstructs_controller.php:303:                                              $saved = $this->Orientstruct->save( $this->data['Orientstruct'] ) && $saved;
+OK -> app/controllers/orientsstructs_controller.php:399:                                              && $this->Orientstruct->save( $this->data )
+OK -> app/models/saisineepreorientsr93.php:160:                                       $success = $this->Orientstruct->save() && $success;
+OK -> app/models/nonorientationpro58.php:80:                                          $success = $this->Orientstruct->save() && $success;
+OK -> app/models/regressionorientationep58.php:72:                            $success = $this->Structurereferente->Orientstruct->save( $orientstruct ) && $success;
+OK -> app/models/saisineepbilanparcours66.php:153:                                    $success = $this->Bilanparcours66->Orientstruct->save() && $success;
+OK -> app/models/foyer.php:261:                                       $saved = $this->Personne->Orientstruct->save() && $saved;
+OK -> app/models/nonorientationpro.php:392:                                           $success = $this->Orientstruct->save() && $success;
+OK -> app/models/propoorientationcov58.php:265:                       $success = $this->Dossiercov58->Personne->Orientstruct->save( $orientstruct ) && $success;
+OK -> app/models/bilanparcours66.php:289:                             $success = $this->Orientstruct->save() && $success;
+OK -> app/vendors/shells/refresh.php:357:                                             $success = $this->Orientstruct->save() && $success;
+OK -> app/vendors/shells/preorientation.php:240:                              $tmpSuccess = $this->Orientstruct->save();
+
+> grep -nri "Orientstruct->update" app | grep -v "\.svn"
+OK -> app/controllers/cohortes_controller.php:745:                    $success = ( $content !== false ) && $this->Orientstruct->updateAll(
+OK -> app/controllers/cohortes_controller.php:791:                    $success = ( $content !== false ) && $this->Orientstruct->updateAll(
+OK -> app/controllers/cohortes_controller.php:854:                            $this->Orientstruct->updateAll(
+OK -> app/controllers/gedooos_controller.php:562://                   $success = ( $content !== false ) && $this->Orientstruct->updateAll(
+
+> grep -nri "statut_orient" app | grep -v "\.\(svn\|ctp\)"
+-- FIXME: tests unitaires
+OK -> app/tests/cases/models/option.test.php:1443:            function testStatut_orient() {
+OK -> app/tests/cases/models/option.test.php:1444:                    $result = $this->Option->statut_orient();
+OK -> app/tests/fixtures/orientstruct_fixture.php:19:                         'statut_orient' => 'OrientÃ©',
+OK -> app/tests/fixtures/orientstruct_fixture.php:39:                         'statut_orient' => 'OrientÃ©',
+OK -> app/tests/fixtures/orientstruct_fixture.php:59:                         'statut_orient' => 'OrientÃ©',
+OK -> app/tests/fixtures/orientstruct_fixture.php:79:                         'statut_orient' => 'OrientÃ©',
+OK -> app/tests/fixtures/orientstruct_fixture.php:99:                         'statut_orient' => 'OrientÃ©',
+OK -> app/tests/fixtures/orientstruct_fixture.php:119:                                'statut_orient' => 'OrientÃ©',
+OK -> app/tests/fixtures/orientstruct_fixture.php:139:                                'statut_orient' => 'OrientÃ©',
+OK -> app/tests/fixtures/orientstruct_fixture.php:159:                                'statut_orient' => 'OrientÃ©',
+OK -> app/tests/fixtures/orientstruct_fixture.php:179:                                'statut_orient' => 'OrientÃ©',
+OK -> app/tests/fixtures/orientstruct_fixture.php:199:                                'statut_orient' => 'OrientÃ©',
+OK -> app/tests/fixtures/orientstruct_fixture.php:219:                                'statut_orient' => 'OrientÃ©',
+OK -> app/tests/fixtures/orientstruct_fixture.php:239:                                'statut_orient' => 'OrientÃ©',
+OK -> app/tests/fixtures/orientstruct_fixture.php:259:                                'statut_orient' => 'OrientÃ©',
+OK -> app/controllers/proposcontratsinsertioncovs58_controller.php:198:                                               'Orientstruct.statut_orient' => 'OrientÃ©'
+OK -> app/controllers/contratsinsertion_controller.php:196:                            'Orientstruct.statut_orient' => 'OrientÃ©'
+OK -> app/controllers/contratsinsertion_controller.php:503:                                           'Orientstruct.statut_orient' => 'OrientÃ©'
+OK -> app/controllers/ajoutdossiers_controller.php:402:                $saved = $this->Orientstruct->save( array( 'Orientstruct' => array( 'personne_id' => $demandeur_id, 'statut_orient' => 'Non orientÃ©' ) ) );
+OK -> app/controllers/ajoutdossiers_controller.php:419:                    $saved = $this->Orientstruct->save( array( 'Orientstruct' => array( 'personne_id' => $conjoint_id, 'statut_orient' => 'Non orientÃ©' ) ) );
+OK -> app/controllers/cohortes_controller.php:103:                                            if( $this->data['Orientstruct'][$key]['statut_orient'] == 'OrientÃ©' ) {
+OK -> app/controllers/cohortes_controller.php:110:                                                    if( $this->data['Orientstruct'][$key]['statut_orient'] == 'Non orientÃ©' ) {
+OK -> app/controllers/cohortes_controller.php:134:                                                            if( $element['statut_orient'] == 'OrientÃ©' ) {
+OK -> app/controllers/cohortes_controller.php:327:                                                                    if( $element['statut_orient'] == 'OrientÃ©' ) {
+OK -> app/controllers/maintiensreorientseps_controller.php:46://                                                              AND orientsstructs.statut_orient = \'OrientÃ©\'
+OK -> app/controllers/bilanparcours_controller.php:78:                        'Orientstruct.statut_orient' => 'OrientÃ©'
+OK -> app/controllers/components/gedooo.php:29:                       $statut_orient = Set::classicExtract( $orientstruct, 'Orientstruct.statut_orient' );
+OK -> app/controllers/components/gedooo.php:31:                       if( $statut_orient == 'OrientÃ©' ) {
+OK -> app/controllers/apres_controller.php:384:                        'Orientstruct.statut_orient' => 'OrientÃ©'
+OK -> app/controllers/dossiers_controller.php:672:                                                    'Orientstruct.statut_orient',
+OK -> app/controllers/criteres_controller.php:61:            $this->set( 'statuts', $this->Option->statut_orient() );
+OK -> app/controllers/dossierssimplifies_controller.php:24:                   $this->set( 'statut_orient', $this->Option->statut_orient() );
+OK -> app/controllers/dossierssimplifies_controller.php:200://                                 $this->data['Orientstruct'][$key]['statut_orient'] = 'OrientÃ©';
+OK -> app/controllers/dossierssimplifies_controller.php:209://                                 $this->data['Orientstruct'][$key]['statut_orient'] = 'Non orientÃ©'; // FIXME ?
+OK -> app/controllers/dossierssimplifies_controller.php:278:                                  $this->data['Orientstruct'][0]['statut_orient'] = 'OrientÃ©';
+OK -> app/controllers/relancesnonrespectssanctionseps93_controller.php:222:                                                   'Orientstruct.statut_orient' => 'OrientÃ©',
+OK -> app/controllers/orientsstructs_controller.php:300:                                              $this->data['Orientstruct']['statut_orient'] = 'OrientÃ©';
+OK -> app/controllers/orientsstructs_controller.php:365:                      if( !empty( $orientstruct['Orientstruct']['date_valid'] ) && $orientstruct['Orientstruct']['statut_orient'] == 'OrientÃ©' && $orientstruct['Orientstruct']['rgorient'] != $this->Orientstruct->rgorientMax( $orientstruct['Orientstruct']['personne_id'] ) ) {
+OK -> app/models/relancenonrespectsanctionep93.php:343:                                       'Orientstruct.statut_orient',
+OK -> app/models/relancenonrespectsanctionep93.php:557:                               $conditions['Orientstruct.statut_orient'] = 'OrientÃ©';
+OK -> app/models/relancenonrespectsanctionep93.php:1110:                                                                      'Orientstruct.statut_orient' => 'OrientÃ©',
+OK -> app/models/saisineepreorientsr93.php:143:                                                       'statut_orient' => 'OrientÃ©',
+OK -> app/models/cohorte.php:200:                                     'Orientstruct.statut_orient = \''.Sanitize::clean( $statutOrientation ).'\''
+OK -> app/models/cohorte.php:364:                                             'Orientstruct.statut_orient',
+OK -> app/models/cohorte.php:518:                             'orientsstructs.statut_orient = \''.Sanitize::clean( $statutOrientation ).'\''
+OK -> app/models/cohorte.php:705:                             'Orientstruct.statut_orient = \''.Sanitize::clean( $statutOrientation ).'\''
+OK -> app/models/cohorte.php:865:                                     'Orientstruct.statut_orient',
+OK -> app/models/option.php:1411:             public function statut_orient() {
+OK -> app/models/indicateurmensuel.php:92:                                            WHERE orientsstructs.statut_orient = \'OrientÃ©\'
+OK -> app/models/indicateurmensuel.php:114:                                           WHERE orientsstructs.statut_orient = \'OrientÃ©\'
+OK -> app/models/nonorientationpro58.php:72:                                                          'statut_orient' => 'OrientÃ©',
+OK -> app/models/regressionorientationep58.php:64:                                            'statut_orient' => 'OrientÃ©',
+OK -> app/models/saisineepbilanparcours66.php:149:                                                    'statut_orient' => 'OrientÃ©',
+OK -> app/models/orientstruct.php:38:                                 'rule' => array( 'choixStructure', 'statut_orient' ),
+OK -> app/models/orientstruct.php:347:                        if( $orientstruct['Orientstruct']['statut_orient'] != 'OrientÃ©' ) {
+OK -> app/models/orientstruct.php:402:                        $sql = "INSERT INTO orientsstructs (personne_id, statut_orient)
+OK -> app/models/orientstruct.php:404:                                                SELECT DISTINCT personnes.id, 'Non orientÃ©' AS statut_orient
+OK -> app/models/orientstruct.php:424:                                                "{$this->alias}.statut_orient" => 'OrientÃ©',
+OK -> app/models/orientstruct.php:565:                        // Si on change le statut_orient de <> 'OrientÃ©' en 'OrientÃ©', alors, il faut changer le rang
+OK -> app/models/orientstruct.php:566:                        if( isset( $this->data[$this->alias]['statut_orient'] ) && ( $this->data[$this->alias]['statut_orient'] == 'OrientÃ©' ) ) {
+OK -> app/models/orientstruct.php:570:                                        if( $tuple_pcd[$this->alias]['statut_orient'] != 'OrientÃ©' ) {
+OK -> app/models/orientstruct.php:571:                                                //$rgprecedent = $this->find( 'count', array( 'conditions' => array( "{$this->alias}.statut_orient" => 'OrientÃ©', "{$this->alias}.personne_id" => $this->data[$this->alias]['personne_id'] ), 'contain' => false ) );
+OK -> app/models/foyer.php:257:                                                       'statut_orient' => 'Non orientÃ©'
+OK -> app/models/nonorientationpro.php:63:                                            'Orientstruct.statut_orient' => 'OrientÃ©',
+OK -> app/models/nonorientationpro.php:384:                                                           'statut_orient' => 'OrientÃ©',
+OK -> app/models/defautinsertionep66.php:392:                                                                 'Orientstruct.statut_orient' => 'OrientÃ©',
+OK -> app/models/referent.php:332:                                                    'statut_orient' => 'OrientÃ©',
+OK -> app/models/relance.php:38:                                      '"Orientstruct"."statut_orient"',
+OK -> app/models/relance.php:156:                                     'Orientstruct.statut_orient = \'OrientÃ©\'',
+OK -> app/models/relance.php:213:                                     $conditions[] = 'Orientstruct.statut_orient = \'OrientÃ©\'';
+OK -> app/models/relance.php:222:                                     $conditions[] = 'Orientstruct.statut_orient = \'OrientÃ©\'';
+OK -> app/models/relance.php:332:                                     '"Orientstruct"."statut_orient"',
+OK -> app/models/critere.php:33:            $statut_orient = Set::extract( $criteres, 'Critere.statut_orient' );
+OK -> app/models/critere.php:102:            if( !empty( $statut_orient ) ) {
+OK -> app/models/critere.php:103:                $conditions[] = 'Orientstruct.statut_orient = \''.Sanitize::clean( $statut_orient ).'\'';
+OK -> app/models/critere.php:105:                             if( $statut_orient == 'OrientÃ©' ) {
+OK -> app/models/critere.php:169:                    '"Orientstruct"."statut_orient"',
+OK -> app/models/propoorientationcov58.php:18:                                        'rule' => array( 'choixStructure', 'statut_orient' ),
+OK -> app/models/propoorientationcov58.php:260:                                       'statut_orient' => 'OrientÃ©',
+OK -> app/models/propocontratinsertioncov58.php:22:                                   'rule' => array( 'choixStructure', 'statut_orient' ),
+OK -> app/models/bilanparcours66.php:285:                                             'statut_orient' => 'OrientÃ©',
+OK -> app/vendors/shells/cohortepdfs.php:167:                                 'Orientstruct.statut_orient' => 'OrientÃ©',
+OK -> app/vendors/shells/generationpdfs.php:113:                                      'Orientstruct.statut_orient' => 'OrientÃ©',
+OK -> app/vendors/shells/anomaliesbdd.php:241:                                        if( Set::classicExtract( $orientstruct, 'statut_orient' ) == 'Non orientÃ©' ) {
+OK -> app/vendors/shells/refresh.php:192:                                                             AND statut_orient <> 'OrientÃ©';";
+OK -> app/vendors/shells/refresh.php:311:                                                             'Orientstruct.statut_orient',
+OK -> app/vendors/shells/refresh.php:336:                                                                             'Orientstruct.statut_orient <> \'OrientÃ©\'',
+OK -> app/vendors/shells/anomaliesr.php:253:                                                          WHERE orientsstructs.statut_orient = \'OrientÃ©\'
+OK -> app/vendors/shells/doublons2011.php:70:                                                 $fields[] = "( SELECT COUNT({$table[0]['table_name']}.*) FROM {$table[0]['table_name']} WHERE {$table[0]['table_name']}.personne_id = p{$i}.id AND {$table[0]['table_name']}.statut_orient = 'OrientÃ©' ) AS \"P{$i}__{$table[0]['table_name']}\"";
+OK -> app/vendors/shells/anomalies.php:177:                                                                           WHERE orientsstructs.statut_orient = \'OrientÃ©\'
+OK -> app/vendors/shells/anomalies.php:190://                                                                 orientsstructs.statut_orient = \'OrientÃ©\'
+OK -> app/vendors/shells/preorientation.php:177:                                                      WHERE statut_orient <> 'OrientÃ©'";
+OK -> app/vendors/shells/preorientation.php:198:                                              AND orientsstructs.statut_orient <> 'OrientÃ©'
+OK -> app/vendors/shells/detectionparcours.php:127:                                           AND orientsstructs.statut_orient = \'OrientÃ©\'
+OK -> app/vendors/shells/detectionparcours.php:141:                                                                   AND orientsstructs.statut_orient = \'OrientÃ©\'
+
+> grep -nri "mkOrientstructPdf" app | grep -v "\.\(svn\|txt\)"
+OK
+
+################################################################################
+# A faire                                                                      #
+################################################################################
+
+GedoooComponent
+	- OK -> concatPdfs / getCohortePdfForClient (simplifier, faire utiliser l'un par l'autre)
+	- getPdf, generate, generateCohorte (à supprimer en faveur du GedoooBehavior::ged)
+
+> grep -nri "\(concatPdfs\|getCohortePdfForClient\)" app | grep -v "\.\(svn\|txt\)"
+OK -> app/controllers/cohortes_controller.php:301:                    $content = $this->Gedooo->concatPdfs( Set::extract( $results, '/Pdf/document' ), 'orientsstructs' );
+OK -> app/controllers/components/gedooo.php:24:               public function concatPdfs( $pdfs, $modelName ) {
+OK -> app/controllers/relancesnonrespectssanctionseps93_controller.php:509:                   $pdfs = $this->Gedooo->concatPdfs( $pdfs, 'Relancenonrespectsanctionep93' );
+
+> grep -nri "\(getPdf\|generate\|generateCohorte\)(" app | grep -v "\.\(svn\|txt\)" | grep -v "\/vendors\/"
+app/controllers/apres66_controller.php:705:                             $this->Gedooo->generate( $apre, 'APRE/accordaide.odt');
+app/controllers/apres66_controller.php:707:                             $this->Gedooo->generate( $apre, 'APRE/refusaide.odt');
+app/controllers/contratsinsertion_controller.php:1019:                  $this->Gedooo->generate( $contratinsertion, 'Contratinsertion/notificationop.odt' );
+app/controllers/cohortescomitesapres_controller.php:412:                                $this->Gedooo->generate( $apre, 'APRE/DecisionComite/Refus/Refus'.$dest.'.odt' );
+app/controllers/cohortescomitesapres_controller.php:415:                                $this->Gedooo->generate( $apre, 'APRE/DecisionComite/'.$typedecision.'/'.$typedecision.''.$typeformation.''.$dest.'.odt' );
+app/controllers/cohortescomitesapres_controller.php:418:                                $this->Gedooo->generate( $apre, 'APRE/DecisionComite/'.$typedecision.'/'.$typedecision.''.$dest.'.odt' );
+app/controllers/cohortescomitesapres_controller.php:421:                                $this->Gedooo->generate( $apre, 'APRE/DecisionComite/'.$typedecision.'/'.$typedecision.''.$typepaiement.''.$dest.'.odt' );
+app/controllers/actionscandidats_personnes_controller.php:589:                  $this->Gedooo->generate( $actioncandidat_personne, 'Candidature/fichecandidature.odt' );
+app/controllers/components/gedooo.php:65:               public function getPdf( $datas, $model ) {
+app/controllers/components/gedooo.php:133:              public function generate( $datas, $model ) {
+app/controllers/components/gedooo.php:196:              public function generateCohorte( $sectionName, $sectionDatas, $model, $datas = null ) {
+app/controllers/cuis_controller.php:304://             $this->Gedooo->generate( $cui, 'CUI/cui.odt' );
+app/controllers/rendezvous_controller.php:353:            $this->Gedooo->generate( $rdv, 'RDV/'.$modele.'.odt' );
+app/controllers/etatsliquidatifs_controller.php:366:                $this->Gedooo->generate( $apre, 'APRE/apreforfaitaire.odt' );
+app/controllers/etatsliquidatifs_controller.php:373:                $this->Gedooo->generate( $apre, 'APRE/Paiement/paiement_'.$dest.'.odt' );
+app/controllers/etatsliquidatifs_controller.php:380:                $this->Gedooo->generate( $apre, 'APRE/Paiement/paiement_'.$typeformation.'_'.$dest.'.odt' );
+app/controllers/etatsliquidatifs_controller.php:481:                $this->Gedooo->generateCohorte( 'forfaitaire', $apres, 'APRE/apreforfaitaire.odt', null );
+app/controllers/etatsliquidatifs_controller.php:485:                    $this->Gedooo->generateCohorte( 'etatliquidatif_tiers', $apres, 'APRE/Paiement/paiement_'.$dest.'.odt', null );
+app/controllers/etatsliquidatifs_controller.php:488:                    $this->Gedooo->generateCohorte( 'apreforfaitaire', $apres, 'APRE/Paiement/paiement_'.$dest.'.odt', null );
+app/controllers/recoursapres_controller.php:234:                $this->Gedooo->generate( $apre, 'APRE/DecisionComite/Recours/recours'.$recoursapre.''.$dest.'.odt' );
+app/controllers/recoursapres_controller.php:237:                $this->Gedooo->generate( $apre, 'APRE/DecisionComite/Recours/recours'.$dest.'.odt' );
+app/controllers/periodesimmersion_controller.php:236://             $this->Gedooo->generate( $periodeimmersion, 'CUI/periodeimmersion.odt' );
+app/controllers/gedooos_controller.php:31:                      $this->Gedooo->generate( $datas, $model );
+app/controllers/relancesnonrespectssanctionseps93_controller.php:381:                                           $pdf = $this->Gedooo->getPdf( $gedooo_data, $modeledoc );
+app/models/saisineepreorientsr93.php:500:                       $pdf = $this->getPdf( $gedooo_data, $modeledoc );
+app/models/behaviors/gedooo.php:4:              public function getPdf( &$model, $datas, $modeleodt ) {
+app/models/behaviors/gedooo.php:71:             public function generateCohorte( &$model, $sectionName, $sectionDatas, $model, $datas = null ) {

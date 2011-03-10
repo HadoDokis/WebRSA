@@ -25,6 +25,7 @@
 				'etatorient' => null,
 				'rgorient' => null,
 				'structureorientante_id' => null,
+				'user_id' => 1,
 				'referentorientant_id' => null,
 			),
 			array(
@@ -45,7 +46,8 @@
 				'etatorient' => null,
 				'rgorient' => null,
 				'structureorientante_id' => null,
-				'referentorientant_id' => null,			
+				'user_id' => 1,
+				'referentorientant_id' => null,
 			),
 			array(
 				'id' => '3',
@@ -65,6 +67,7 @@
 				'etatorient' => null,
 				'rgorient' => null,
 				'structureorientante_id' => null,
+				'user_id' => 1,
 				'referentorientant_id' => null,
 			),
 			array(
@@ -85,6 +88,7 @@
 				'etatorient' => null,
 				'rgorient' => null,
 				'structureorientante_id' => null,
+				'user_id' => 1,
 				'referentorientant_id' => null,
 			),
 			array(
@@ -105,6 +109,7 @@
 				'etatorient' => null,
 				'rgorient' => null,
 				'structureorientante_id' => null,
+				'user_id' => 1,
 				'referentorientant_id' => null,
 			),
 			array(
@@ -125,6 +130,7 @@
 				'etatorient' => null,
 				'rgorient' => null,
 				'structureorientante_id' => null,
+				'user_id' => 1,
 				'referentorientant_id' => null,
 			),
 			array(
@@ -145,6 +151,7 @@
 				'etatorient' => null,
 				'rgorient' => null,
 				'structureorientante_id' => null,
+				'user_id' => 1,
 				'referentorientant_id' => null,
 			),
 			array(
@@ -165,6 +172,7 @@
 				'etatorient' => null,
 				'rgorient' => null,
 				'structureorientante_id' => null,
+				'user_id' => 1,
 				'referentorientant_id' => null,
 			),
 			array(
@@ -185,6 +193,7 @@
 				'etatorient' => null,
 				'rgorient' => null,
 				'structureorientante_id' => null,
+				'user_id' => 1,
 				'referentorientant_id' => null,
 			),
 			array(
@@ -205,6 +214,7 @@
 				'etatorient' => null,
 				'rgorient' => '1',
 				'structureorientante_id' => null,
+				'user_id' => 1,
 				'referentorientant_id' => null,
 			),
 			array(
@@ -225,6 +235,7 @@
 				'etatorient' => null,
 				'rgorient' => '1',
 				'structureorientante_id' => null,
+				'user_id' => 1,
 				'referentorientant_id' => null,
 			),
 			array(
@@ -245,6 +256,7 @@
 				'etatorient' => null,
 				'rgorient' => '1',
 				'structureorientante_id' => null,
+				'user_id' => 1,
 				'referentorientant_id' => null,
 			),
 			array(
@@ -265,6 +277,7 @@
 				'etatorient' => null,
 				'rgorient' => '1',
 				'structureorientante_id' => null,
+				'user_id' => 1,
 				'referentorientant_id' => null,
 			),
 		);

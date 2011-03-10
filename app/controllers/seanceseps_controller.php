@@ -51,7 +51,7 @@
 			$options['Decisiondefautinsertionep66']['structurereferente_id'] = $this->Seanceep->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->Structurereferente->list1Options();//listOptions
 			$this->set( compact( 'options' ) );
 			$this->set( 'typevoie', $this->Option->typevoie() );
-			
+
 			$this->set( 'listesanctionseps58', $this->Seanceep->Dossierep->Sanctionep58->Listesanctionep58->find( 'list' ) );
 		}
 
@@ -276,7 +276,7 @@
 			}
 
 			$this->Seanceep->begin();
-			$success = $this->Seanceep->finaliser( $seanceep_id, $niveauDecision );
+			$success = $this->Seanceep->finaliser( $seanceep_id, $niveauDecision, $this->Session->read( 'Auth.User.id' ) );
 
 			$this->_setFlashResult( 'Save', $success );
 			if( $success ) {

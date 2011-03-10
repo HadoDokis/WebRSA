@@ -33,7 +33,7 @@
 
 			if( $cmsSuccess ) {
 				$this->data[$this->alias]['cmspath'] = $cmsPath;
-				unset( $this->data[$this->alias]['document'] );
+				$this->data[$this->alias]['document'] = null;
 			}
 
 			$success = parent::save( $data, $validate, $fieldList );

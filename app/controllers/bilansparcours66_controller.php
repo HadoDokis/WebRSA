@@ -49,7 +49,7 @@
 			$options['Saisineepbilanparcours66']['typeorient_id'] = $this->Bilanparcours66->Typeorient->listOptions();
 			$options['Saisineepbilanparcours66']['structurereferente_id'] = $this->Bilanparcours66->Structurereferente->list1Options( array( 'orientation' => 'O' ) );
 			$options['Bilanparcours66']['duree_engag'] = $this->Option->duree_engag_cg66();
-			
+
 			$typesorients = $this->Bilanparcours66->Typeorient->find('list');
 			$this->set(compact('typesorients'));
 			$structuresreferentes = $this->Bilanparcours66->Structurereferente->find('list');
@@ -291,7 +291,7 @@
 			// Si le formulaire a été renvoyé
 			if( !empty( $this->data ) ) {
 				$this->Bilanparcours66->begin();
-				
+
 				if ($this->action=='add') {
 					$success = $this->Bilanparcours66->sauvegardeBilan( $this->data );
 				}
@@ -303,14 +303,16 @@
 				if( $success ) {
 					$this->Bilanparcours66->commit();
 
-                    //Modification de la position du CER lorsque le bilan est créé
-                    $this->{$this->modelClass}->Contratinsertion->updateAll(
-                        array( 'Contratinsertion.positioncer' => '\'attrenouv\'' ),
-                        array(
-                            '"Contratinsertion"."personne_id"' => $contrat['Contratinsertion']['personne_id'],
-                            '"Contratinsertion"."id"' => $contrat['Contratinsertion']['id']
-                        )
-                    );
+					if( !empty( $contrat['Contratinsertion'] ) ) {
+						//Modification de la position du CER lorsque le bilan est créé et que le CER existe
+						$this->{$this->modelClass}->Contratinsertion->updateAll(
+							array( 'Contratinsertion.positioncer' => '\'attrenouv\'' ),
+							array(
+								'"Contratinsertion"."personne_id"' => $contrat['Contratinsertion']['personne_id'],
+								'"Contratinsertion"."id"' => $contrat['Contratinsertion']['id']
+							)
+						);
+					}
 
 					if ($this->data['Bilanparcours66']['proposition']=='traitement' && $this->data['Bilanparcours66']['maintienorientation']==1) {
 
@@ -329,7 +331,7 @@
 			else {
 				if( $this->action == 'edit' ) {
 					$this->data = $bilanparcours66;
-				
+
 					$referent = $this->{$this->modelClass}->Referent->find(
 						'first',
 						array(
@@ -385,14 +387,14 @@
 // 							)
 // 						)
 // 					);
-// 					
+//
 // 					$this->data['Bilanparcours66']['structurereferente_id'] = $contratinsertion['Structurereferente']['id'];
 // 					$this->data['Bilanparcours66']['referent_id'] = $contratinsertion['Structurereferente']['id'].'_'.$contratinsertion['Referent']['id'];
 				}
-				
+
 				$this->data = Set::insert($this->data, 'Pe', $this->data);
 			}
-			
+
 			if (!isset($this->data['Bilanparcours66']['sitfam']) || empty($this->data['Bilanparcours66']['sitfam'])) {
 				$sitfam = $this->Bilanparcours66->Orientstruct->Personne->Foyer->find(
 					'first',

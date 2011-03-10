@@ -115,7 +115,7 @@
 		* FIXME: à ne faire que quand le cg valide sa décision
 		*/
 
-		public function finaliser( $seanceep_id, $etape ) {
+		public function finaliser( $seanceep_id, $etape, $user_id ) {
 			$dossierseps = $this->find(
 				'all',
 				array(
@@ -147,6 +147,7 @@
 							'date_propo' => date( 'Y-m-d' ),
 							'date_valid' => date( 'Y-m-d' ),
 							'statut_orient' => 'Orienté',
+							'user_id' => $user_id
 						)
 					);
 					$this->Bilanparcours66->Orientstruct->create( $orientstruct );
@@ -175,7 +176,7 @@
 							'"PersonneReferent"."dfdesignation" IS NULL'
 						)
 					);
-					
+
                     // Enregistrement de la position du bilan de parcours suite au passage en EP
 //                  $this->Bilanparcours66->updateAll(
 //                         array( 'Bilanparcours66.positionbilan' => '\'attcga\'' ),
