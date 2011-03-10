@@ -358,25 +358,24 @@
 		public function beforeSave( $options = array() ) {
 			$return = parent::beforeSave( $options );
 
-			if( Configure::read( 'nom_form_pdo_cg' ) == 'cg66' ) {
-				if (isset($this->data['Propopdo']['id']))
-					$propopdo_id = Set::extract( $this->data, 'Propopdo.id' );
-				else
-					$propopdo_id = 0;
+			if( Configure::read( 'nom_form_pdo_cg' ) == 'cg66' && isset( $this->data['Propopdo']['originepdo_id'] ) ) {
+			
 				$typepdo_id = Set::extract( $this->data, 'Propopdo.typepdo_id' );
 				$user_id = Set::extract( $this->data, 'Propopdo.user_id' );
 				$iscomplet = Set::extract( $this->data, 'Propopdo.iscomplet' );
+				$decisionpdo_id = null;
+				$avistechnique = null;
+				$validationavis = null;
 				
-				if ($propopdo_id!=0) {
+				if ( isset( $this->data['Propopdo']['id'] ) ) {
 				    $decisionpropopdo = $this->Decisionpropopdo->find(
 				    	'first',
 				    	array(
 				    		'conditions' => array(
-				    			'Decisionpropopdo.propopdo_id' => $propopdo_id
+				    			'Decisionpropopdo.propopdo_id' => $this->data['Propopdo']['id']
 				    		),
 				    		'order' => array(
-				    			'Decisionpropopdo.datedecisionpdo DESC',
-				    			'Decisionpropopdo.id DESC'
+				    			'Decisionpropopdo.created DESC'
 				    		)
 				    	)
 		        	);
@@ -384,30 +383,92 @@
 				    $decisionpdo_id = Set::extract( $decisionpropopdo, 'Decisionpropopdo.decisionpdo_id' );
                     $avistechnique = Set::extract( $decisionpropopdo, 'Decisionpropopdo.avistechnique' );
                     $validationavis = Set::extract( $decisionpropopdo, 'Decisionpropopdo.validationdecision' );
+                    
+					$this->data['Propopdo']['etatdossierpdo'] = $this->etatDossierPdo( $typepdo_id, $user_id, $decisionpdo_id, $avistechnique, $validationavis, $iscomplet, $this->data['Propopdo']['id'] );
 				}
-				
-				$etat = null;
-				//'attaffect', 'attinstr', 'instrencours', 'attval', 'decisionval', 'dossiertraite', 'attpj'
-
-				if ( !empty($typepdo_id) && empty($user_id) )
-					$etat = 'attaffect';
-				elseif ( !empty($typepdo_id) && !empty($user_id) && empty($iscomplet) )
-					$etat = 'attinstr';
-				elseif ( !empty($typepdo_id) && !empty($user_id) && !empty($iscomplet) && empty($decisionpdo_id) )
-					$etat = 'instrencours';
-                else if ( !empty($typepdo_id) && !empty($user_id) && !empty($iscomplet) && !empty($decisionpdo_id) && empty($avistechnique) )
-                    $etat = 'attavistech';
-                else if ( !empty($typepdo_id) && !empty($user_id) && !empty($iscomplet) && !empty($decisionpdo_id) && !empty($avistechnique) && empty( $validationavis ) )
-                    $etat = 'attval';
-				elseif ( !empty($typepdo_id) && !empty($user_id) && !empty($iscomplet) && !empty($decisionpdo_id) && !empty($avistechnique) && !empty($validationavis) && $iscomplet=='COM' )
-					$etat = 'dossiertraite';
-				elseif ( !empty($typepdo_id) && !empty($user_id) && !empty($iscomplet) && !empty($decisionpdo_id) && !empty($avistechnique)  && !empty($validationavis)&& $iscomplet=='INC' )
-					$etat = 'attpj';
-// 	debug(empty($avistechnique) );	
-// 	die();
-				$this->data['Propopdo']['etatdossierpdo'] = $etat;
+				else {
+					$this->data['Propopdo']['etatdossierpdo'] = $this->etatDossierPdo( $typepdo_id, $user_id, $decisionpdo_id, $avistechnique, $validationavis, $iscomplet );
+				}
 			}
 
+			return $return;
+		}
+		
+		public function etatDossierPdo( $typepdo_id = null, $user_id = null, $decisionpdo_id = null, $avistechnique = null, $validationavis = null, $iscomplet = null, $propopdo_id = null ) {
+			//'attaffect', 'attinstr', 'instrencours', 'attval', 'decisionval', 'dossiertraite', 'attpj', 'attavistech'
+			$etat = null;
+			
+			if ( !empty( $propopdo_id ) ) {
+				$decisionpropopdo = $this->Decisionpropopdo->find(
+					'first',
+					array(
+						'conditions' => array(
+							'Decisionpropopdo.propopdo_id' => $propopdo_id
+						),
+						'order' => array(
+							'Decisionpropopdo.created DESC'
+						),
+						'contain' => false
+					)
+				);
+				
+				$traitementspdos = $this->Traitementpdo->find(
+					'all',
+					array(
+						'fields' => array(
+							'Traitementpdo.id'
+						),
+						'conditions' => array(
+							'Traitementpdo.propopdo_id' => $propopdo_id,
+							'Traitementpdo.clos' => 0,
+							'Traitementpdo.daterevision >' => date( 'Y-m-d' )
+						),
+						'contain' => false
+					)
+				);
+			}
+			
+			if ( isset( $decisionpropopdo['Decisionpropopdo']['etatdossierpdo'] ) && $decisionpropopdo['Decisionpropopdo']['etatdossierpdo'] == 'instrencours' )
+				$etat = 'instrencours';
+			elseif ( isset( $traitementspdos ) && count( $traitementspdos ) > 0  && isset( $decisionpropopdo['Decisionpropopdo']['etatdossierpdo'] ) && $decisionpropopdo['Decisionpropopdo']['etatdossierpdo'] == 'decisionval' )
+				$etat = 'attpj';
+			elseif ( !empty($typepdo_id) && empty($user_id) )
+				$etat = 'attaffect';
+			elseif ( !empty($typepdo_id) && !empty($user_id) && empty($iscomplet) )
+				$etat = 'attinstr';
+			elseif ( !empty($typepdo_id) && !empty($user_id) && !empty($iscomplet) && empty($decisionpdo_id) )
+				$etat = 'instrencours';
+			else if ( !empty($typepdo_id) && !empty($user_id) && !empty($iscomplet) && !empty($decisionpdo_id) && empty($avistechnique) )
+				$etat = 'attavistech';
+			else if ( !empty($typepdo_id) && !empty($user_id) && !empty($iscomplet) && !empty($decisionpdo_id) && !empty($avistechnique) && empty( $validationavis ) )
+				$etat = 'attval';
+			elseif ( !empty($typepdo_id) && !empty($user_id) && !empty($iscomplet) && !empty($decisionpdo_id) && !empty($avistechnique) && !empty($validationavis) && $validationavis == 'N' )
+				$etat = 'instrencours';
+			elseif ( !empty($typepdo_id) && !empty($user_id) && !empty($iscomplet) && !empty($decisionpdo_id) && !empty($avistechnique) && !empty($validationavis) && $validationavis == 'O' && $iscomplet=='COM' )
+				$etat = 'dossiertraite';
+			elseif ( !empty($typepdo_id) && !empty($user_id) && !empty($iscomplet) && !empty($decisionpdo_id) && !empty($avistechnique) && !empty($validationavis) && $validationavis == 'O' && $iscomplet=='INC' )
+				$etat = 'attpj';
+			
+			return $etat;
+		}
+		
+		public function updateEtat( $decisionpropopdo_id ) {
+			$decisionpropopdo = $this->Decisionpropopdo->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Decisionpropopdo.id' => $decisionpropopdo_id
+					),
+					'contain' => array(
+						'Propopdo'
+					)
+				)
+			);
+			
+			$etat = $this->etatDossierPdo( $decisionpropopdo['Propopdo']['typepdo_id'], $decisionpropopdo['Propopdo']['user_id'], $decisionpropopdo['Decisionpropopdo']['decisionpdo_id'], $decisionpropopdo['Decisionpropopdo']['avistechnique'], $decisionpropopdo['Decisionpropopdo']['validationdecision'], $decisionpropopdo['Propopdo']['iscomplet'], $decisionpropopdo['Decisionpropopdo']['propopdo_id'] );
+			$this->id = $decisionpropopdo['Decisionpropopdo']['propopdo_id'];
+			$return = $this->saveField( 'etatdossierpdo', $etat );
+			
 			return $return;
 		}
 
