@@ -52,7 +52,12 @@
 			if( in_array( $this->action, array( 'add', 'edit'/*, 'view'*/ ) ) ) {
 				$this->set( 'qual', $this->Option->qual() );
 				$this->set( 'raison_ci', $this->Option->raison_ci() );
-				$this->set( 'avisraison_ci', $this->Option->avisraison_ci() );
+				if( Configure::read( 'Cg.departement' ) == 66 ){
+                    $this->set( 'avisraison_ci', $this->Option->avisraison_ci() );
+                }
+                else if( Configure::read( 'Cg.departement' ) == 93 ){
+                    $this->set( 'avisraison_ci', array( 'D' => 'Defaut de conclusion', 'N' => 'Non respect du contrat' ) );
+                }
 				$this->set( 'aviseqpluri', $this->Option->aviseqpluri() );
 				$this->set( 'sect_acti_emp', $this->Option->sect_acti_emp() );
 				$this->set( 'emp_occupe', $this->Option->emp_occupe() );
@@ -660,6 +665,21 @@
                     }
                 }
 
+                if( isset( $this->data['Actioninsertion'] ) ) {
+                    $isActioninsertion = Set::filter( $this->data['Actioninsertion'] );
+                    if( $this->action == 'add' ) {
+                        $this->{$this->modelClass}->Actioninsertion->set( 'contratinsertion_id', $this->{$this->modelClass}->id );
+                    }
+
+                    if( !empty( $isActioninsertion ) ){
+                        $success = $this->Contratinsertion->Actioninsertion->save( array( 'Actioninsertion' => $this->data['Actioninsertion'] ) ) && $success;
+                    }
+                }
+
+
+
+// debug($this->data);
+// debug($success);
 
 				if( $success ) {
 					$saved = true;
@@ -682,7 +702,7 @@
                         $lastrdvorient['Rendezvous']['statutrdv_id'] = 1;
                         $saved = $this->Contratinsertion->Referent->Rendezvous->save($lastrdvorient) && $saved;
                     }
-// debug($this->data);
+
 					if( $saved ) {
 						$this->Jetons->release( $dossier_id );
 						$this->Contratinsertion->commit();
