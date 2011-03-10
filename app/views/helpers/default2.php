@@ -445,21 +445,21 @@
 					foreach( $actions as $text => $actionParams ) {
 						$url = $actionParams;
 					}
-					if (empty($url))
+					if ( empty( $url ) )
 						$url = array( 'controller' => $this->params['controller'], 'action' => 'add' );
-					$actions = array(
-						"{$controllerName}::add" => array( 'url' => $url )
-					);
+						$actions = array(
+							"{$controllerName}::add" => array( 'url' => $url )
+						);
 				}
 
 				$lis = array();
 				foreach( $actions as $text => $actionParams ) {
-						$lis[] = $this->Html->tag(
+					$lis[] = $this->Html->tag(
 						'li',
 						$this->button(
 							$actionParams['url']['action'],
 							$actionParams['url'],
-							array( 'title' => __d( $domain, $text, true ) )
+							array( 'title' => __d( $domain, $text, true ), 'enabled' => ( isset( $actionParams['url']['disabled'] ) ) ? $actionParams['url']['disabled'] : true )
 						),
 						array( 'class' => $actionParams['url']['action'] )
 					);
