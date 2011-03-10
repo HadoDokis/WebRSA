@@ -87,5 +87,48 @@
 		public function afterDelete( &$model ) {
 			return ClassRegistry::init( 'Pdf' )->deleteAll( array( 'modele' => $model->alias, 'fk_value' => $model->id ) );
 		}
+
+		/**
+		* Retourne l'enregistrement de la table PDF correspondant au modèle et
+		* à la clé primaire donnés. Si le document PDF n'est pas dans l'enregistrement,
+		* on essaie de le récupérer sur le serveur CMS.
+		* Il est possible de mettre à jour la date d'impression dans la table liée
+		* au modèle.
+		*
+		* @param &$model AppModel Le modèle auquel ce behavior est attaché.
+		* @param $id integer La valeur de la clé primaire de l'enregistrement recherché.
+		* @param $printDateColumn string La colonne qui contient la date d'impression
+		*        devant être mise à jour, null sinon.
+		* @return array
+		*/
+
+		public function getStoredPdf( &$model, $id, $printDateColumn = null  ) {
+			if( !empty( $printDateColumn ) ) {
+				$model->updateAll(
+					array( "{$model->alias}.{$printDateColumn}" => date( "'Y-m-d'" ) ),
+					array(
+						"\"{$model->alias}\".\"{$model->primaryKey}\"" => $id,
+						"\"{$model->alias}\".\"{$printDateColumn}\" IS NULL"
+					)
+				);
+			}
+
+			$pdf = ClassRegistry::init( 'Pdf' )->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Pdf.modele' => $model->alias,
+						'Pdf.fk_value' => $id,
+					)
+				)
+			);
+
+			if( !empty( $pdf ) && empty( $pdf['Pdf']['document'] ) ) {
+				$cmisPdf = Cmis::read( "/{$model->alias}/{$id}.pdf", true );
+				$pdf['Pdf']['document'] = $cmisPdf['content'];
+			}
+
+			return $pdf;
+		}
 	}
 ?>
