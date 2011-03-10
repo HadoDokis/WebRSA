@@ -61,17 +61,34 @@
 
 			if( Configure::read( 'nom_form_pdo_cg' ) == 'cg66' ) {
 				$decisionpdo_id = Set::extract( $this->data, 'Decisionpropopdo.decisionpdo_id' );
-				$isvalidation = Set::extract( $this->data, 'Decisionpropopdo.isvalidation' );
+				$validationdecision = Set::extract( $this->data, 'Decisionpropopdo.validationdecision' );
 				
 				$etat = null;
 				//'attaffect', 'attinstr', 'instrencours', 'attval', 'decisionval', 'dossiertraite', 'attpj'
-
-				if ( !empty($decisionpdo_id) && empty($decisionpdo_id) )
-					$etat = 'attval';
-				elseif ( !empty($decisionpdo_id) && !empty($isvalidation) )
-					$etat = 'decisionval';
 				
-				$this->data['Decisionpropopdo']['etatdossierpdo'] = $etat;
+				$decisionpdo = $this->Decisionpdo->find(
+					'first',
+					array(
+						'conditions' => array(
+							'Decisionpdo.id' => $decisionpdo_id
+						),
+						'contain' => false
+					)
+				);
+				
+				if ( isset( $decisionpdo['Decisionpdo']['clos'] ) ) {
+					if ( !empty( $decisionpdo_id ) && empty( $validationdecision ) )
+						$etat = 'attval';
+					elseif ( !empty( $decisionpdo_id ) && !empty( $validationdecision ) && $validationdecision == 'O' && $decisionpdo['Decisionpdo']['clos'] == 'O' )
+						$etat = 'decisionval';
+					elseif ( !empty( $decisionpdo_id ) && !empty( $validationdecision ) && ( $validationdecision == 'N' || $decisionpdo['Decisionpdo']['clos'] == 'N' ) )
+						$etat = 'instrencours';
+					
+					$this->data['Decisionpropopdo']['etatdossierpdo'] = $etat;
+				}
+				else {
+					$return = false;
+				}
 			}
 
 			return $return;
@@ -230,7 +247,7 @@
         */
 
         public function afterSave( $created ) {
-            return $this->generatePdf( $this->id );
+//             return $this->generatePdf( $this->id );
         }
 
 

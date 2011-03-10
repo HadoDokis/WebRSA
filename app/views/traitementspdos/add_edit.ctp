@@ -1,377 +1,369 @@
 <?php
-    echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
 
-    echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
+	echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
 ?>
 <div class="with_treemenu">
-    <?php
-        echo $xhtml->tag(
-            'h1',
-            $this->pageTitle = __d( 'traitementpdo', "Traitementspdos::{$this->action}", true )
-        );
+	<?php
+		echo $xhtml->tag(
+			'h1',
+			$this->pageTitle = __d( 'traitementpdo', "Traitementspdos::{$this->action}", true )
+		);
 
-    ?>
-    <?php   
-        echo $xform->create( 'Traitementpdo', array( 'id' => 'traitementpdoform' ) );
-        if( Set::check( $this->data, 'Traitementpdo.id' ) ){
-            echo $xform->input( 'Traitementpdo.id', array( 'type' => 'hidden' ) );
-        }
+	?>
+	<?php   
+		echo $xform->create( 'Traitementpdo', array( 'id' => 'traitementpdoform' ) );
+		if( Set::check( $this->data, 'Traitementpdo.id' ) ){
+			echo $xform->input( 'Traitementpdo.id', array( 'type' => 'hidden' ) );
+		}
 
-        echo $default->subform(
-            array(
-                'Traitementpdo.propopdo_id' => array( 'type' => 'hidden', 'value' => $propopdo_id ),
-                'Traitementpdo.descriptionpdo_id',
-                'Traitementpdo.traitementtypepdo_id'
-            ),
-            array(
-                'options' => $options
-            )
-        );
-        
-        echo $xhtml->tag(
-        	'fieldset',
-        	$default->subform(
-		        array(
-		            'Traitementpdo.datereception' => array( 'required' => true, 'empty' => false, 'maxYear' => date('Y') + 2, 'minYear' => date('Y' ) -2 )
-		        ),
-		        array(
-		            'options' => $options
-		        )
+		echo $default->subform(
+			array(
+				'Traitementpdo.propopdo_id' => array( 'type' => 'hidden', 'value' => $propopdo_id ),
+				'Traitementpdo.descriptionpdo_id',
+				'Traitementpdo.traitementtypepdo_id'
+			),
+			array(
+				'options' => $options
+			)
+		);
+		
+		echo $xhtml->tag(
+			'fieldset',
+			$default->subform(
+				array(
+					'Traitementpdo.datereception' => array( 'required' => true, 'empty' => false, 'maxYear' => date('Y') + 2, 'minYear' => date('Y' ) -2 )
+				),
+				array(
+					'options' => $options
+				)
 			),
 			array(
 				'id'=>'dateReception',
 				'class'=>'noborder invisible'
 			)
-        );
-    ?>
+		);
+	?>
 
-    <?php
-        echo $xhtml->tag(
-        	'fieldset',
-        	$default->subform(
-		        array(
-		            'Traitementpdo.datedepart' => array( 'required' => true,/* 'empty' => false,*/ 'maxYear' => date('Y') + 2, 'minYear' => date('Y' ) -2 ),
-                    'Traitementpdo.dureedepart' => array( 'required' => true )
-		        ),
-		        array(
-		            'options' => $options
-		        )
+	<?php
+		echo $xhtml->tag(
+			'fieldset',
+			$default->subform(
+				array(
+					'Traitementpdo.datedepart' => array( 'required' => true,/* 'empty' => false,*/ 'maxYear' => date('Y') + 2, 'minYear' => date('Y' ) -2 ),
+					'Traitementpdo.dureedepart' => array( 'required' => true )
+				),
+				array(
+					'options' => $options
+				)
 			),
 			array(
 				'id'=>'dateDepart',
 				'class'=>'noborder invisible'
 			)
-        );
-    ?>
+		);
+	?>
 
 <script type="text/javascript">
 
-    //FIXME : Traiter les cas des 1,5 mois et 2,5 mois !!!!
+	//FIXME : Traiter les cas des 1,5 mois et 2,5 mois !!!!
 
-    function checkDatesToExpiration() {
-        var correspondances = new Array();
+	function checkDatesToExpiration() {
+		var correspondances = new Array();
 
-        <?php foreach( $options['Traitementpdo']['dureedepart'] as $index => $duree ):?>
-            correspondances[<?php echo $index;?>] = <?php echo str_replace( ' mois', '' ,$duree );?>;
-        <?php endforeach;?>
+		<?php foreach( $options['Traitementpdo']['dureedepart'] as $index => $duree ):?>
+			correspondances[<?php echo $index;?>] = <?php echo str_replace( ' mois', '' ,$duree );?>;
+		<?php endforeach;?>
 
-            setDateInterval2( 'TraitementpdoDatedepart', 'TraitementpdoDateecheance', correspondances[$F( 'TraitementpdoDureedepart' )], false );
-    }
-    
-        document.observe( "dom:loaded", function() {
-            Event.observe( $( 'TraitementpdoDatedepartDay' ), 'change', function() {
-                checkDatesToExpiration();
-            } );
-            Event.observe( $( 'TraitementpdoDatedepartMonth' ), 'change', function() {
-                checkDatesToExpiration();
-            } );
-            Event.observe( $( 'TraitementpdoDatedepartYear' ), 'change', function() {
-                checkDatesToExpiration();
-            } );
-
-            Event.observe( $( 'TraitementpdoDureedepart' ), 'change', function() {
-                checkDatesToExpiration();
-            } );
-        });
+		setDateInterval2( 'TraitementpdoDatedepart', 'TraitementpdoDateecheance', correspondances[$F( 'TraitementpdoDureedepart' )], false );
+	}
+	
+	document.observe( "dom:loaded", function() {
+		[ 'TraitementpdoDatedepartDay', 'TraitementpdoDatedepartMonth', 'TraitementpdoDatedepartYear', 'TraitementpdoDureedepart' ].each( function( id ) {
+			$( id ).observe( 'change', function() {
+				checkDatesToExpiration();
+			});
+		});
+	});
 </script>
 
-    <?php
-        echo $xhtml->tag(
-        	'fieldset',
-        	$default->subform(
-		        array(
-		            'Traitementpdo.dateecheance' => array( 'required' => true, 'empty' => true, 'maxYear' => date('Y') + 2, 'minYear' => date('Y' ) -2 ),
-                    'Traitementpdo.dureeecheance' => array( 'required' => true )
-		        ),
-		        array(
-		            'options' => $options
-		        )
+	<?php
+		echo $xhtml->tag(
+			'fieldset',
+			$default->subform(
+				array(
+					'Traitementpdo.dateecheance' => array( 'required' => true, 'empty' => true, 'maxYear' => date('Y') + 2, 'minYear' => date('Y' ) -2 ),
+					'Traitementpdo.dureeecheance' => array( 'required' => true )
+				),
+				array(
+					'options' => $options
+				)
 			),
 			array(
 				'class'=>'noborder invisible'
 			)
-        );
-    ?>
+		);
+	?>
 <script type="text/javascript">
 
-    //FIXME : Traiter les cas des 1,5 mois et 2,5 mois !!!!
+	//FIXME : Traiter les cas des 1,5 mois et 2,5 mois !!!!
 
-    function checkDatesToRevision() {
-        var correspondances = new Array();
+	function checkDatesToRevision() {
+		var correspondances = new Array();
 
-        <?php foreach( $options['Traitementpdo']['dureeecheance'] as $index2 => $duree2 ):?>
-            correspondances[<?php echo $index2;?>] = <?php echo str_replace( ' mois', '' ,$duree2 );?>;
-        <?php endforeach;?>
+		<?php foreach( $options['Traitementpdo']['dureeecheance'] as $index2 => $duree2 ):?>
+			correspondances[<?php echo $index2;?>] = <?php echo str_replace( ' mois', '' ,$duree2 );?>;
+		<?php endforeach;?>
 
-            setDateInterval2( 'TraitementpdoDateecheance', 'TraitementpdoDaterevision', correspondances[$F( 'TraitementpdoDureeecheance' )], false );
-    }
-    
-        document.observe( "dom:loaded", function() {
-            Event.observe( $( 'TraitementpdoDateecheanceDay' ), 'change', function() {
-                checkDatesToRevision();
-            } );
-            Event.observe( $( 'TraitementpdoDateecheanceMonth' ), 'change', function() {
-                checkDatesToRevision();
-            } );
-            Event.observe( $( 'TraitementpdoDateecheanceYear' ), 'change', function() {
-                checkDatesToRevision();
-            } );
+			setDateInterval2( 'TraitementpdoDateecheance', 'TraitementpdoDaterevision', correspondances[$F( 'TraitementpdoDureeecheance' )], false );
+	}
+	
+		document.observe( "dom:loaded", function() {
+			Event.observe( $( 'TraitementpdoDateecheanceDay' ), 'change', function() {
+				checkDatesToRevision();
+			} );
+			Event.observe( $( 'TraitementpdoDateecheanceMonth' ), 'change', function() {
+				checkDatesToRevision();
+			} );
+			Event.observe( $( 'TraitementpdoDateecheanceYear' ), 'change', function() {
+				checkDatesToRevision();
+			} );
 
-            Event.observe( $( 'TraitementpdoDureeecheance' ), 'change', function() {
-                checkDatesToRevision();
-            } );
-        });
+			Event.observe( $( 'TraitementpdoDureeecheance' ), 'change', function() {
+				checkDatesToRevision();
+			} );
+		});
 </script>
-    <?php
-        echo $xhtml->tag(
-        	'fieldset',
-        	$default->subform(
-		        array(
-		            'Traitementpdo.daterevision' => array( 'required' => true, 'empty' => true, 'maxYear' => date('Y') + 2, 'minYear' => date('Y' ) -2 )
-		        ),
-		        array(
-		            'options' => $options
-		        )
+	<?php
+		echo $xhtml->tag(
+			'fieldset',
+			$default->subform(
+				array(
+					'Traitementpdo.daterevision' => array( 'required' => true, 'empty' => true, 'maxYear' => date('Y') + 2, 'minYear' => date('Y' ) -2 )
+				),
+				array(
+					'options' => $options
+				)
 			),
 			array(
 				'class'=>'noborder invisible'
 			)
-        );
-        
-        echo $default->subform(
-            array(
-                'Traitementpdo.personne_id' => array( 'empty' => true, 'type' => 'select', 'options' => $listepersonnes, 'required' => true )
-            ),
-            array(
-                'options' => $options
-            )
-        );
-        
-        echo $ajax->observeField( 'TraitementpdoPersonneId', array( 'update' => 'statutPersonne', 'url' => Router::url( array( 'action' => 'ajaxstatutpersonne' ), true ) ) );
-        
-        ?><fieldset id="statutPersonne" class="invisible"></fieldset><?php
-        
-        echo $default->subform(
-            array(
-                'Traitementpdo.hascourrier' => array( 'type' => 'radio' )
-            ),
-            array(
-                'options' => $options
-            )
-        );
-        
-        echo $default->subform(
-            array(
-                'Traitementpdo.hasrevenu' => array( 'type' => 'radio' )
-            ),
-            array(
-                'options' => $options
-            )
-        );
-        
-        echo "<fieldset id='fichecalcul' class='noborder invisible'><table>";
-        
-		    echo $default->subform(
-		        array(
-		            'Traitementpdo.nbmoisactivite' => array( 'type' => 'hidden' ),
-		            'Traitementpdo.mnttotalpriscompte' => array( 'type' => 'hidden' ),
-		            'Traitementpdo.revenus' => array( 'type' => 'hidden' ),
-		            'Traitementpdo.benefpriscompte' => array( 'type' => 'hidden' )
-		        ),
-		        array(
-		            'options' => $options
-		        )
-		    );
-        
-        	echo $html->tag(
-        		'tr',
-        		$html->tag(
-        			'td',
-        			$xform->_label('Traitementpdo.regime', array('domain'=>'traitementpdo', 'required'=>true))
-        		).
-        		$html->tag(
-        			'td',
-        			$form->input('Traitementpdo.regime', array('label'=>false, 'type'=>'select', 'options'=>$options['Traitementpdo']['regime'], 'empty'=>true))
-        		).
-        		$html->tag(
-        			'td',
-        			$xform->_label('Traitementpdo.saisonnier', array('domain'=>'traitementpdo'))
-        		).
-        		$html->tag(
-        			'td',
-        			$form->input('Traitementpdo.saisonnier', array('label'=>false, 'type'=>'checkbox'))
-        		)
-        	);
-        	
-        	echo $html->tag(
-        		'tr',
-        		$html->tag(
-        			'td',
-        			$xform->_label('Traitementpdo.nrmrcs', array('domain'=>'traitementpdo', 'required'=>true))
-        		).
-        		$html->tag(
-        			'td',
-        			$form->input('Traitementpdo.nrmrcs', array('label'=>false, 'type'=>'text'))
-        		).
-        		$html->tag(
-        			'td',
-        			'',
-        			array(
-        				'colspan' => 2
-        			)
-        		)
-        	);
-        
-        	echo $html->tag(
-        		'tr',
-        		$html->tag(
-        			'td',
-        			$xform->_label('Traitementpdo.dtdebutactivite', array('domain'=>'traitementpdo', 'required'=>true))
-        		).
-        		$html->tag(
-        			'td',
-        			$form->input('Traitementpdo.dtdebutactivite',
-        				array(
-        					'label'=>false,
-        					'type'=>'date',
-        					'empty'=>true,
-        					'dateFormat' => 'DMY',
-        					'minYear' => date('Y') - 5,
-        					'maxYear' => date('Y')
-        				)
-        			)
-        		).
-        		$html->tag(
-        			'td',
-        			$xform->_label('Traitementpdo.raisonsocial', array('domain'=>'traitementpdo', 'required'=>true))
-        		).
-        		$html->tag(
-        			'td',
-        			$form->input('Traitementpdo.raisonsocial', array('label'=>false, 'type'=>'text'))
-        		)
-        	);
-        	
-        	echo $html->tag(
-        		'tr',
-        		$html->tag(
-        			'td',
-        			$xform->_label('Traitementpdo.dtdebutperiode', array('domain'=>'traitementpdo', 'required'=>true))
-        		).
-        		$html->tag(
-        			'td',
-        			$form->input('Traitementpdo.dtdebutperiode',
-        				array(
-        					'label'=>false,
-        					'type'=>'date',
-        					'empty'=>true,
-        					'dateFormat' => 'DMY',
-        					'minYear' => date('Y') - 5,
-        					'maxYear' => date('Y')
-        				)
-        			)
-        		).
-        		$html->tag(
-        			'td',
-        			$xform->_label('Traitementpdo.dtfinperiode', array('domain'=>'traitementpdo', 'required'=>true))
-        		).
-        		$html->tag(
-        			'td',
-        			$form->input('Traitementpdo.dtfinperiode',
-        				array(
-        					'label'=>false,
-        					'type'=>'date',
-        					'empty'=>true,
-        					'dateFormat' => 'DMY',
-        					'minYear' => date('Y') - 5,
-        					'maxYear' => date('Y') + 1
-        				)
-        			)
-        		)
-        	);
-        	
-        	echo $html->tag(
-        		'tr',
-        		$html->tag(
-        			'td',
-        			$xform->_label('Traitementpdo.nbmoisactivite', array('domain'=>'traitementpdo'))
-        		).
-        		$html->tag(
-        			'td',
-        			'',
-        			array(
-        				'id' => 'nbmoisactivite'
-        			)
-        		).
-        		$html->tag(
-        			'td',
-        			'',
-        			array(
-        				'colspan' => 2
-        			)
-        		)
-        	);
-        	
-        	echo $html->tag(
-        		'tr',
-        		$html->tag(
-        			'td',
-        			$xform->_label('Traitementpdo.forfait', array('domain'=>'traitementpdo'))
-        		).
-        		$html->tag(
-        			'td',
-        			$form->input('Traitementpdo.forfait', array('label'=>false, 'type'=>'text'))
-        		).
-        		$html->tag(
-        			'td',
-        			'',
-        			array(
-        				'colspan' => 2
-        			)
-        		),
-        		array(
-        			'class' => 'fagri'
-        		)
-        	);
-        	
-        	echo $html->tag(
-        		'tr',
-        		$html->tag(
-        			'td',
-        			$xform->_label('Traitementpdo.coefannee1', array('domain'=>'traitementpdo'))
-        		).
-        		$html->tag(
-        			'td',
-        			Configure::read('Traitementpdo.fichecalcul_coefannee1').' %',
-        			array(
-        				'id' => 'coefannee1'
-        			)
-        		).
-        		$html->tag(
-        			'td',
-        			$xform->_label('Traitementpdo.aidesubvreint', array('domain'=>'traitementpdo'))
-        		).
-        		$html->tag(
-        			'td',
+		);
+		
+		echo $default->subform(
+			array(
+				'Traitementpdo.personne_id' => array( 'empty' => true, 'type' => 'select', 'options' => $listepersonnes, 'required' => true )
+			),
+			array(
+				'options' => $options
+			)
+		);
+		
+		echo $ajax->observeField( 'TraitementpdoPersonneId', array( 'update' => 'statutPersonne', 'url' => Router::url( array( 'action' => 'ajaxstatutpersonne' ), true ) ) );
+		
+		?><fieldset id="statutPersonne" class="invisible"></fieldset><?php
+		
+		echo $default->subform(
+			array(
+				'Traitementpdo.hascourrier' => array( 'type' => 'radio' )
+			),
+			array(
+				'options' => $options
+			)
+		);
+		
+		echo $default->subform(
+			array(
+				'Traitementpdo.hasrevenu' => array( 'type' => 'radio' )
+			),
+			array(
+				'options' => $options
+			)
+		);
+		
+		echo "<fieldset id='fichecalcul' class='noborder invisible'><table>";
+		
+			echo $default->subform(
+				array(
+					'Traitementpdo.nbmoisactivite' => array( 'type' => 'hidden' ),
+					'Traitementpdo.mnttotalpriscompte' => array( 'type' => 'hidden' ),
+					'Traitementpdo.revenus' => array( 'type' => 'hidden' ),
+					'Traitementpdo.benefpriscompte' => array( 'type' => 'hidden' )
+				),
+				array(
+					'options' => $options
+				)
+			);
+		
+			echo $html->tag(
+				'tr',
+				$html->tag(
+					'td',
+					$xform->_label('Traitementpdo.regime', array('domain'=>'traitementpdo', 'required'=>true))
+				).
+				$html->tag(
+					'td',
+					$form->input('Traitementpdo.regime', array('label'=>false, 'type'=>'select', 'options'=>$options['Traitementpdo']['regime'], 'empty'=>true))
+				).
+				$html->tag(
+					'td',
+					$xform->_label('Traitementpdo.saisonnier', array('domain'=>'traitementpdo'))
+				).
+				$html->tag(
+					'td',
+					$form->input('Traitementpdo.saisonnier', array('label'=>false, 'type'=>'checkbox'))
+				)
+			);
+			
+			echo $html->tag(
+				'tr',
+				$html->tag(
+					'td',
+					$xform->_label('Traitementpdo.nrmrcs', array('domain'=>'traitementpdo', 'required'=>true))
+				).
+				$html->tag(
+					'td',
+					$form->input('Traitementpdo.nrmrcs', array('label'=>false, 'type'=>'text'))
+				).
+				$html->tag(
+					'td',
+					'',
+					array(
+						'colspan' => 2
+					)
+				)
+			);
+		
+			echo $html->tag(
+				'tr',
+				$html->tag(
+					'td',
+					$xform->_label('Traitementpdo.dtdebutactivite', array('domain'=>'traitementpdo', 'required'=>true))
+				).
+				$html->tag(
+					'td',
+					$form->input('Traitementpdo.dtdebutactivite',
+						array(
+							'label'=>false,
+							'type'=>'date',
+							'empty'=>true,
+							'dateFormat' => 'DMY',
+							'minYear' => date('Y') - 5,
+							'maxYear' => date('Y')
+						)
+					)
+				).
+				$html->tag(
+					'td',
+					$xform->_label('Traitementpdo.raisonsocial', array('domain'=>'traitementpdo', 'required'=>true))
+				).
+				$html->tag(
+					'td',
+					$form->input('Traitementpdo.raisonsocial', array('label'=>false, 'type'=>'text'))
+				)
+			);
+			
+			echo $html->tag(
+				'tr',
+				$html->tag(
+					'td',
+					$xform->_label('Traitementpdo.dtdebutperiode', array('domain'=>'traitementpdo', 'required'=>true))
+				).
+				$html->tag(
+					'td',
+					$form->input('Traitementpdo.dtdebutperiode',
+						array(
+							'label'=>false,
+							'type'=>'date',
+							'empty'=>true,
+							'dateFormat' => 'DMY',
+							'minYear' => date('Y') - 5,
+							'maxYear' => date('Y')
+						)
+					)
+				).
+				$html->tag(
+					'td',
+					$xform->_label('Traitementpdo.dtfinperiode', array('domain'=>'traitementpdo', 'required'=>true))
+				).
+				$html->tag(
+					'td',
+					$form->input('Traitementpdo.dtfinperiode',
+						array(
+							'label'=>false,
+							'type'=>'date',
+							'empty'=>true,
+							'dateFormat' => 'DMY',
+							'minYear' => date('Y') - 5,
+							'maxYear' => date('Y') + 1
+						)
+					)
+				)
+			);
+			
+			echo $html->tag(
+				'tr',
+				$html->tag(
+					'td',
+					$xform->_label('Traitementpdo.nbmoisactivite', array('domain'=>'traitementpdo'))
+				).
+				$html->tag(
+					'td',
+					'',
+					array(
+						'id' => 'nbmoisactivite'
+					)
+				).
+				$html->tag(
+					'td',
+					'',
+					array(
+						'colspan' => 2
+					)
+				)
+			);
+			
+			echo $html->tag(
+				'tr',
+				$html->tag(
+					'td',
+					$xform->_label('Traitementpdo.forfait', array('domain'=>'traitementpdo'))
+				).
+				$html->tag(
+					'td',
+					$form->input('Traitementpdo.forfait', array('label'=>false, 'type'=>'text'))
+				).
+				$html->tag(
+					'td',
+					'',
+					array(
+						'colspan' => 2
+					)
+				),
+				array(
+					'class' => 'fagri'
+				)
+			);
+			
+			echo $html->tag(
+				'tr',
+				$html->tag(
+					'td',
+					$xform->_label('Traitementpdo.coefannee1', array('domain'=>'traitementpdo'))
+				).
+				$html->tag(
+					'td',
+					Configure::read('Traitementpdo.fichecalcul_coefannee1').' %',
+					array(
+						'id' => 'coefannee1'
+					)
+				).
+				$html->tag(
+					'td',
+					$xform->_label('Traitementpdo.aidesubvreint', array('domain'=>'traitementpdo'))
+				).
+				$html->tag(
+					'td',
 					$default->subform(
 						array(
 							'Traitementpdo.aidesubvreint' => array( 'type' => 'select', 'label' => false, 'empty' => true )
@@ -380,364 +372,364 @@
 							'options' => $options
 						)
 					)
-        		),
-        		array(
-        			'class' => 'fagri'
-        		)
-        	);
-        
-        	echo $html->tag(
-        		'tr',
-        		$html->tag(
-        			'td',
-        			$xform->_label('Traitementpdo.coefannee2', array('domain'=>'traitementpdo'))
-        		).
-        		$html->tag(
-        			'td',
-        			Configure::read('Traitementpdo.fichecalcul_coefannee2').' %',
-        			array(
-        				'id' => 'coefannee2'
-        			)
-        		).
-        		$html->tag(
-        			'td',
-        			$xform->_label('Traitementpdo.mtaidesub', array('domain'=>'traitementpdo'))
-        		).
-        		$html->tag(
-        			'td',
-        			$form->input('Traitementpdo.mtaidesub', array('label'=>false, 'type'=>'text'))
-        		),
-        		array(
-        			'class' => 'fagri'
-        		)
-        	);
-        	
-        	echo $html->tag(
-        		'tr',
-        		$html->tag(
-        			'td',
-        			$xform->_label('Traitementpdo.chaffvnt', array('domain'=>'traitementpdo', 'required'=>true))
-        		).
-        		$html->tag(
-        			'td',
-        			$form->input('Traitementpdo.chaffvnt', array('label'=>false, 'type'=>'text')).
-        			$html->tag(
-        				'p',
-        				'Attention CA dépassant '.Configure::read('Traitementpdo.fichecalcul_cavntmax').' €',
-        				array(
-        					'class' => 'notice',
-        					'id' => 'infoChaffvnt'
-        				)
-	        		)
-        		).
-        		$html->tag(
-        			'td',
-        			$xform->_label('Traitementpdo.abattement', array('domain'=>'traitementpdo')),
-        			array(
-        				'class' => 'microbic microbicauto'
-        			)
-        		).
-        		$html->tag(
-        			'td',
-        			Configure::read('Traitementpdo.fichecalcul_abattbicvnt').' %',
-        			array(
-        				'class' => 'microbic microbicauto',
-        				'id' => 'abattbicvnt'
-        			)
-        		).
-        		$html->tag(
-        			'td',
-        			'',
-        			array(
-        				'colspan' => '2',
-        				'class' => 'fagri ragri reel microbnc'
-        			)
-        		),
-        		array(
-        			'class' => 'ragri reel microbic microbicauto'
-        		)
-        	);
-        	
-        	echo $html->tag(
-        		'tr',
-        		$html->tag(
-        			'td',
-        			$xform->_label('Traitementpdo.chaffsrv', array('domain'=>'traitementpdo', 'required'=>true))
-        		).
-        		$html->tag(
-        			'td',
-	        		$form->input('Traitementpdo.chaffsrv', array('label'=>false, 'type'=>'text')).
-        			$html->tag(
-        				'p',
-        				'Attention CA dépassant '.Configure::read('Traitementpdo.fichecalcul_casrvmax').' €',
-        				array(
-        					'class' => 'notice',
-        					'id' => 'infoChaffsrv'
-        				)
-	        		)
-        		).
-        		$html->tag(
-        			'td',
-        			$xform->_label('Traitementpdo.abattement', array('domain'=>'traitementpdo')),
-        			array(
-        				'class' => 'microbic microbicauto microbnc'
-        			)
-        		).
-        		$html->tag(
-        			'td',
-        			Configure::read('Traitementpdo.fichecalcul_abattbicsrv').' %',
-        			array(
-        				'class' => 'microbic microbicauto',
-        				'id' => 'abattbicsrv'
-        			)
-        		).
-        		$html->tag(
-        			'td',
-        			Configure::read('Traitementpdo.fichecalcul_abattbncsrv').' %',
-        			array(
-        				'class' => 'microbnc',
-        				'id' => 'abattbncsrv'
-        			)
-        		).
-        		$html->tag(
-        			'td',
-        			'',
-        			array(
-        				'colspan' => '2',
-        				'class' => 'fagri ragri reel'
-        			)
-        		),
-        		array(
-        			'class' => 'ragri reel microbic microbicauto microbnc'
-        		)
-        	);
-        	
-        	echo $html->tag(
-        		'tr',
-        		$html->tag(
-        			'td',
-        			$xform->_label('Traitementpdo.benefpriscompte', array('domain'=>'traitementpdo', 'required'=>true))
-        		).
-        		$html->tag(
-        			'td',
-        			'',
-        			array(
-        				'id' => 'benefpriscompte'
-        			)
-        		).
-        		$html->tag(
-        			'td',
-        			'',
-        			array(
-        				'colspan' => 2
-        			)
-        		),
-        		array(
-        			'class' => 'microbic microbicauto microbnc'
-        		)
-        	);
-        	
-        	echo $html->tag(
-        		'tr',
-        		$html->tag(
-        			'td',
-        			$xform->_label('Traitementpdo.benefoudef', array('domain'=>'traitementpdo', 'required'=>true))
-        		).
-        		$html->tag(
-        			'td',
-        			$form->input('Traitementpdo.benefoudef', array('label'=>false, 'type'=>'text'))
-        		).
-        		$html->tag(
-        			'td',
-        			'',
-        			array(
-        				'colspan' => 2
-        			)
-        		),
-        		array(
-        			'class' => 'ragri reel'
-        		)
-        	);
-        	
-        	echo $html->tag(
-        		'tr',
-        		$html->tag(
-        			'td',
-        			$xform->_label('Traitementpdo.correction', array('domain'=>'traitementpdo'))
-        		).
-        		$html->tag(
-        			'td',
-        			$xform->_label('Traitementpdo.ammortissements', array('domain'=>'traitementpdo', 'required'=>true))
-        		).
-        		$html->tag(
-        			'td',
-        			$form->input('Traitementpdo.ammortissements', array('label'=>false, 'type'=>'text')),
-        			array(
-        				'colspan' => 2
-        			)
-        		),
-        		array(
-        			'class' => 'ragri reel'
-        		)
-        	);
-        	
-        	echo $html->tag(
-        		'tr',
-        		$html->tag(
-        			'td',
-        			''
-        		).
-        		$html->tag(
-        			'td',
-        			$xform->_label('Traitementpdo.salaireexploitant', array('domain'=>'traitementpdo'))
-        		).
-        		$html->tag(
-        			'td',
-        			$form->input('Traitementpdo.salaireexploitant', array('label'=>false, 'type'=>'text')),
-        			array(
-        				'colspan' => 2
-        			)
-        		),
-        		array(
-        			'class' => 'ragri reel'
-        		)
-        	);
-        	
-        	echo $html->tag(
-        		'tr',
-        		$html->tag(
-        			'td',
-        			''
-        		).
-        		$html->tag(
-        			'td',
-        			$xform->_label('Traitementpdo.provisionsnonded', array('domain'=>'traitementpdo'))
-        		).
-        		$html->tag(
-        			'td',
-        			$form->input('Traitementpdo.provisionsnonded', array('label'=>false, 'type'=>'text')),
-        			array(
-        				'colspan' => 2
-        			)
-        		),
-        		array(
-        			'class' => 'ragri reel'
-        		)
-        	);
-        	
-        	echo $html->tag(
-        		'tr',
-        		$html->tag(
-        			'td',
-        			''
-        		).
-        		$html->tag(
-        			'td',
-        			$xform->_label('Traitementpdo.moinsvaluescession', array('domain'=>'traitementpdo'))
-        		).
-        		$html->tag(
-        			'td',
-        			$form->input('Traitementpdo.moinsvaluescession', array('label'=>false, 'type'=>'text')),
-        			array(
-        				'colspan' => 2
-        			)
-        		),
-        		array(
-        			'class' => 'ragri reel'
-        		)
-        	);
-        	
-        	echo $html->tag(
-        		'tr',
-        		$html->tag(
-        			'td',
-        			''
-        		).
-        		$html->tag(
-        			'td',
-        			$xform->_label('Traitementpdo.autrecorrection', array('domain'=>'traitementpdo', 'required'=>true))
-        		).
-        		$html->tag(
-        			'td',
-        			$form->input('Traitementpdo.autrecorrection', array('label'=>false, 'type'=>'text')),
-        			array(
-        				'colspan' => 2
-        			)
-        		),
-        		array(
-        			'class' => 'ragri reel'
-        		)
-        	);
-        	
-        	echo $html->tag(
-        		'tr',
-        		$html->tag(
-        			'td',
-        			$xform->_label('Traitementpdo.mnttotal', array('domain'=>'traitementpdo'))
-        		).
-        		$html->tag(
-        			'td',
-        			'',
-        			array(
-        				'id' => 'mnttotal'
-        			)
-        		).
-        		$html->tag(
-        			'td',
-        			'',
-        			array(
-        				'colspan' => 2
-        			)
-        		),
-        		array(
-        			'class' => 'fagri ragri reel'
-        		)
-        	);
-        	
-        	echo $html->tag(
-        		'tr',
-        		$html->tag(
-        			'td',
-        			$xform->_label('Traitementpdo.revenus', array('domain'=>'traitementpdo'))
-        		).
-        		$html->tag(
-        			'td',
-        			'',
-        			array(
-        				'id' => 'revenus'
-        			)
-        		).
-        		$html->tag(
-        			'td',
-        			'',
-        			array(
-        				'colspan' => 2
-        			)
-        		)
-        	);
-        	
-        	echo $html->tag(
-        		'tr',
-        		$html->tag(
-        			'td',
-        			$xform->_label('Traitementpdo.dtprisecompte', array('domain'=>'traitementpdo', 'required'=>true))
-        		).
-        		$html->tag(
-        			'td',
-        			$form->input('Traitementpdo.dtprisecompte',
-        				array(
-        					'label'=>false,
-        					'type'=>'date',
-        					'empty'=>true,
-        					'dateFormat' => 'DMY',
-        					'minYear' => date('Y') - 5,
-        					'maxYear' => date('Y')
-        				)
-        			),
-        			array(
-                        'colspan' => 3
-                    )
-        		)//.
+				),
+				array(
+					'class' => 'fagri'
+				)
+			);
+		
+			echo $html->tag(
+				'tr',
+				$html->tag(
+					'td',
+					$xform->_label('Traitementpdo.coefannee2', array('domain'=>'traitementpdo'))
+				).
+				$html->tag(
+					'td',
+					Configure::read('Traitementpdo.fichecalcul_coefannee2').' %',
+					array(
+						'id' => 'coefannee2'
+					)
+				).
+				$html->tag(
+					'td',
+					$xform->_label('Traitementpdo.mtaidesub', array('domain'=>'traitementpdo'))
+				).
+				$html->tag(
+					'td',
+					$form->input('Traitementpdo.mtaidesub', array('label'=>false, 'type'=>'text'))
+				),
+				array(
+					'class' => 'fagri'
+				)
+			);
+			
+			echo $html->tag(
+				'tr',
+				$html->tag(
+					'td',
+					$xform->_label('Traitementpdo.chaffvnt', array('domain'=>'traitementpdo', 'required'=>true))
+				).
+				$html->tag(
+					'td',
+					$form->input('Traitementpdo.chaffvnt', array('label'=>false, 'type'=>'text')).
+					$html->tag(
+						'p',
+						'Attention CA dépassant '.Configure::read('Traitementpdo.fichecalcul_cavntmax').' €',
+						array(
+							'class' => 'notice',
+							'id' => 'infoChaffvnt'
+						)
+					)
+				).
+				$html->tag(
+					'td',
+					$xform->_label('Traitementpdo.abattement', array('domain'=>'traitementpdo')),
+					array(
+						'class' => 'microbic microbicauto'
+					)
+				).
+				$html->tag(
+					'td',
+					Configure::read('Traitementpdo.fichecalcul_abattbicvnt').' %',
+					array(
+						'class' => 'microbic microbicauto',
+						'id' => 'abattbicvnt'
+					)
+				).
+				$html->tag(
+					'td',
+					'',
+					array(
+						'colspan' => '2',
+						'class' => 'fagri ragri reel microbnc'
+					)
+				),
+				array(
+					'class' => 'ragri reel microbic microbicauto'
+				)
+			);
+			
+			echo $html->tag(
+				'tr',
+				$html->tag(
+					'td',
+					$xform->_label('Traitementpdo.chaffsrv', array('domain'=>'traitementpdo', 'required'=>true))
+				).
+				$html->tag(
+					'td',
+					$form->input('Traitementpdo.chaffsrv', array('label'=>false, 'type'=>'text')).
+					$html->tag(
+						'p',
+						'Attention CA dépassant '.Configure::read('Traitementpdo.fichecalcul_casrvmax').' €',
+						array(
+							'class' => 'notice',
+							'id' => 'infoChaffsrv'
+						)
+					)
+				).
+				$html->tag(
+					'td',
+					$xform->_label('Traitementpdo.abattement', array('domain'=>'traitementpdo')),
+					array(
+						'class' => 'microbic microbicauto microbnc'
+					)
+				).
+				$html->tag(
+					'td',
+					Configure::read('Traitementpdo.fichecalcul_abattbicsrv').' %',
+					array(
+						'class' => 'microbic microbicauto',
+						'id' => 'abattbicsrv'
+					)
+				).
+				$html->tag(
+					'td',
+					Configure::read('Traitementpdo.fichecalcul_abattbncsrv').' %',
+					array(
+						'class' => 'microbnc',
+						'id' => 'abattbncsrv'
+					)
+				).
+				$html->tag(
+					'td',
+					'',
+					array(
+						'colspan' => '2',
+						'class' => 'fagri ragri reel'
+					)
+				),
+				array(
+					'class' => 'ragri reel microbic microbicauto microbnc'
+				)
+			);
+			
+			echo $html->tag(
+				'tr',
+				$html->tag(
+					'td',
+					$xform->_label('Traitementpdo.benefpriscompte', array('domain'=>'traitementpdo', 'required'=>true))
+				).
+				$html->tag(
+					'td',
+					'',
+					array(
+						'id' => 'benefpriscompte'
+					)
+				).
+				$html->tag(
+					'td',
+					'',
+					array(
+						'colspan' => 2
+					)
+				),
+				array(
+					'class' => 'microbic microbicauto microbnc'
+				)
+			);
+			
+			echo $html->tag(
+				'tr',
+				$html->tag(
+					'td',
+					$xform->_label('Traitementpdo.benefoudef', array('domain'=>'traitementpdo', 'required'=>true))
+				).
+				$html->tag(
+					'td',
+					$form->input('Traitementpdo.benefoudef', array('label'=>false, 'type'=>'text'))
+				).
+				$html->tag(
+					'td',
+					'',
+					array(
+						'colspan' => 2
+					)
+				),
+				array(
+					'class' => 'ragri reel'
+				)
+			);
+			
+			echo $html->tag(
+				'tr',
+				$html->tag(
+					'td',
+					$xform->_label('Traitementpdo.correction', array('domain'=>'traitementpdo'))
+				).
+				$html->tag(
+					'td',
+					$xform->_label('Traitementpdo.ammortissements', array('domain'=>'traitementpdo', 'required'=>true))
+				).
+				$html->tag(
+					'td',
+					$form->input('Traitementpdo.ammortissements', array('label'=>false, 'type'=>'text')),
+					array(
+						'colspan' => 2
+					)
+				),
+				array(
+					'class' => 'ragri reel'
+				)
+			);
+			
+			echo $html->tag(
+				'tr',
+				$html->tag(
+					'td',
+					''
+				).
+				$html->tag(
+					'td',
+					$xform->_label('Traitementpdo.salaireexploitant', array('domain'=>'traitementpdo'))
+				).
+				$html->tag(
+					'td',
+					$form->input('Traitementpdo.salaireexploitant', array('label'=>false, 'type'=>'text')),
+					array(
+						'colspan' => 2
+					)
+				),
+				array(
+					'class' => 'ragri reel'
+				)
+			);
+			
+			echo $html->tag(
+				'tr',
+				$html->tag(
+					'td',
+					''
+				).
+				$html->tag(
+					'td',
+					$xform->_label('Traitementpdo.provisionsnonded', array('domain'=>'traitementpdo'))
+				).
+				$html->tag(
+					'td',
+					$form->input('Traitementpdo.provisionsnonded', array('label'=>false, 'type'=>'text')),
+					array(
+						'colspan' => 2
+					)
+				),
+				array(
+					'class' => 'ragri reel'
+				)
+			);
+			
+			echo $html->tag(
+				'tr',
+				$html->tag(
+					'td',
+					''
+				).
+				$html->tag(
+					'td',
+					$xform->_label('Traitementpdo.moinsvaluescession', array('domain'=>'traitementpdo'))
+				).
+				$html->tag(
+					'td',
+					$form->input('Traitementpdo.moinsvaluescession', array('label'=>false, 'type'=>'text')),
+					array(
+						'colspan' => 2
+					)
+				),
+				array(
+					'class' => 'ragri reel'
+				)
+			);
+			
+			echo $html->tag(
+				'tr',
+				$html->tag(
+					'td',
+					''
+				).
+				$html->tag(
+					'td',
+					$xform->_label('Traitementpdo.autrecorrection', array('domain'=>'traitementpdo', 'required'=>true))
+				).
+				$html->tag(
+					'td',
+					$form->input('Traitementpdo.autrecorrection', array('label'=>false, 'type'=>'text')),
+					array(
+						'colspan' => 2
+					)
+				),
+				array(
+					'class' => 'ragri reel'
+				)
+			);
+			
+			echo $html->tag(
+				'tr',
+				$html->tag(
+					'td',
+					$xform->_label('Traitementpdo.mnttotal', array('domain'=>'traitementpdo'))
+				).
+				$html->tag(
+					'td',
+					'',
+					array(
+						'id' => 'mnttotal'
+					)
+				).
+				$html->tag(
+					'td',
+					'',
+					array(
+						'colspan' => 2
+					)
+				),
+				array(
+					'class' => 'fagri ragri reel'
+				)
+			);
+			
+			echo $html->tag(
+				'tr',
+				$html->tag(
+					'td',
+					$xform->_label('Traitementpdo.revenus', array('domain'=>'traitementpdo'))
+				).
+				$html->tag(
+					'td',
+					'',
+					array(
+						'id' => 'revenus'
+					)
+				).
+				$html->tag(
+					'td',
+					'',
+					array(
+						'colspan' => 2
+					)
+				)
+			);
+			
+			echo $html->tag(
+				'tr',
+				$html->tag(
+					'td',
+					$xform->_label('Traitementpdo.dtprisecompte', array('domain'=>'traitementpdo', 'required'=>true))
+				).
+				$html->tag(
+					'td',
+					$form->input('Traitementpdo.dtprisecompte',
+						array(
+							'label'=>false,
+							'type'=>'date',
+							'empty'=>true,
+							'dateFormat' => 'DMY',
+							'minYear' => date('Y') - 5,
+							'maxYear' => date('Y')
+						)
+					),
+					array(
+						'colspan' => 3
+					)
+				)//.
 //         		$html->tag(
 //         			'td',
 //         			$xform->_label('Traitementpdo.dtecheance', array('domain'=>'traitementpdo', 'required'=>true))
@@ -755,46 +747,46 @@
 //         				)
 //         			)
 //         		)
-        	);
-        
-        echo "</table></fieldset>";
-        
-        echo $default->subform(
-            array(
-                'Traitementpdo.hasficheanalyse' => array( 'type' => 'radio' )
-            ),
-            array(
-                'options' => $options
-            )
-        );
-        
-        echo $xhtml->tag(
-        	'fieldset',
-        	$default->subform(
-		        array(
-		            'Traitementpdo.ficheanalyse' => array( 'type' => 'textarea' ),
-		        ),
-		        array(
-		            'options' => $options
-		        )
+			);
+		
+		echo "</table></fieldset>";
+		
+		echo $default->subform(
+			array(
+				'Traitementpdo.hasficheanalyse' => array( 'type' => 'radio' )
+			),
+			array(
+				'options' => $options
+			)
+		);
+		
+		echo $xhtml->tag(
+			'fieldset',
+			$default->subform(
+				array(
+					'Traitementpdo.ficheanalyse' => array( 'type' => 'textarea' ),
+				),
+				array(
+					'options' => $options
+				)
 			),
 			array(
 				'id'=>'fieldsetficheanalyse',
 				'class'=>'noborder invisible'
 			)
-        );
-        
-        echo $default->subform(
-            array(
-                'Traitementpdo.haspiecejointe' => array( 'type' => 'radio' )
-            ),
-            array(
-                'options' => $options
-            )
-        );
-        
-        echo "<table>";
-        
+		);
+		
+		echo $default->subform(
+			array(
+				'Traitementpdo.haspiecejointe' => array( 'type' => 'radio' )
+			),
+			array(
+				'options' => $options
+			)
+		);
+		
+		echo "<table>";
+		
 		echo $default2->thead(
 			array(
 				'Traitementpdo.descriptionpdo_id' => array( 'type'=>'string' ),
@@ -806,58 +798,58 @@
 		);
 		
 		echo "<tbody>";
-        
-        foreach( $traitementspdosouverts as $traitementpdoouvert ) {
+		
+		foreach( $traitementspdosouverts as $traitementpdoouvert ) {
 
-        	echo $xhtml->tag(
-        		'tr',
-        		$xhtml->tag(
-        			'td',
-        			Set::classicExtract($traitementpdoouvert, 'Descriptionpdo.name')
-        		).
-        		$xhtml->tag(
-        			'td',
-        			$locale->date( 'Date::short', Set::classicExtract($traitementpdoouvert, 'Traitementpdo.datereception') )
-        		).
-        		$xhtml->tag(
-        			'td',
-        			$locale->date( 'Date::short', Set::classicExtract($traitementpdoouvert, 'Traitementpdo.datedepart') )
-        		).
-        		$xhtml->tag(
-        			'td',
-        			Set::classicExtract($traitementpdoouvert, 'Traitementtypepdo.name')
-        		).
-        		$xhtml->tag(
-        			'td',
-        			$form->input(
-        				'Traitementpdo.traitmentpdoIdClore.'.Set::classicExtract($traitementpdoouvert, 'Traitementpdo.id'),
-        				array(
-        					'type'=>'radio',
-        					'legend'=>false,
-        					'options' => $cloture
-        				)
-        			)
-        		)
-        	);
-        }
-        
-        echo "</tbody></table>";
-        
-        echo "<div class='submit'>";
-	    	$disabled = ( isset( $this->data['Traitementpdo']['clos'] ) && $this->data['Traitementpdo']['clos'] == 1 ) ? 'disabled' : 'enabled';
+			echo $xhtml->tag(
+				'tr',
+				$xhtml->tag(
+					'td',
+					Set::classicExtract($traitementpdoouvert, 'Descriptionpdo.name')
+				).
+				$xhtml->tag(
+					'td',
+					$locale->date( 'Date::short', Set::classicExtract($traitementpdoouvert, 'Traitementpdo.datereception') )
+				).
+				$xhtml->tag(
+					'td',
+					$locale->date( 'Date::short', Set::classicExtract($traitementpdoouvert, 'Traitementpdo.datedepart') )
+				).
+				$xhtml->tag(
+					'td',
+					Set::classicExtract($traitementpdoouvert, 'Traitementtypepdo.name')
+				).
+				$xhtml->tag(
+					'td',
+					$form->input(
+						'Traitementpdo.traitmentpdoIdClore.'.Set::classicExtract($traitementpdoouvert, 'Traitementpdo.id'),
+						array(
+							'type'=>'radio',
+							'legend'=>false,
+							'options' => $cloture
+						)
+					)
+				)
+			);
+		}
+		
+		echo "</tbody></table>";
+		
+		echo "<div class='submit'>";
+			$disabled = ( isset( $this->data['Traitementpdo']['clos'] ) && $this->data['Traitementpdo']['clos'] == 1 ) ? 'disabled' : 'enabled';
 			echo $form->submit( 'Enregistrer', array( 'disabled'=>$disabled, 'div'=>false ) );
 			echo $form->button( 'Retour', array( 'type' => 'button', 'onclick'=>"location.replace('".Router::url( '/propospdos/edit/'.$propopdo_id, true )."')" ) );
-        echo "</div>";
-        
-        echo $form->end();
+		echo "</div>";
+		
+		echo $form->end();
 
 ?>
 </div>
 <div class="clearer"><hr /></div>
 
 <script type="text/javascript">
-    document.observe("dom:loaded", function() {
-    
+	document.observe("dom:loaded", function() {
+	
 		<?php echo $ajax->remoteFunction(
 			array(
 				'url' => Router::url(
@@ -925,11 +917,11 @@
 				'TraitementpdoDatereceptionDay',
 				'TraitementpdoDatereceptionMonth',
 				'TraitementpdoDatereceptionYear'
-			 ],
-			 [ '<?php echo implode( "', '", $datesreception ); ?>' ],
-			 true
-		 );
-		 <?php endif; ?>
+			],
+			[ '<?php echo implode( "', '", $datesreception ); ?>' ],
+			true
+		);
+		<?php endif; ?>
 
 		<?php if( !empty( $datesdepart ) ): ?>
 		observeDisableFieldsOnValue(
@@ -938,12 +930,12 @@
 				'TraitementpdoDatedepartDay',
 				'TraitementpdoDatedepartMonth',
 				'TraitementpdoDatedepartYear'
-			 ],
-			 [ '<?php echo implode( "', '", $datesdepart ); ?>' ],
-			 true
-		 );
-		 <?php endif; ?>
-		 
+			],
+			[ '<?php echo implode( "', '", $datesdepart ); ?>' ],
+			true
+		);
+		<?php endif; ?>
+		
 		<?php foreach ($options['Traitementpdo']['regime'] as $enumname=>$enumvalue): ?>
 			$$('tr.<?php echo $enumname; ?>').each(function (element) {
 				element.hide();

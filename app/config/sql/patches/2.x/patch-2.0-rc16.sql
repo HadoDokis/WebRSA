@@ -45,6 +45,14 @@ DROP TYPE IF EXISTS TYPE_THEMEEP;
 CREATE TYPE TYPE_THEMEEP AS ENUM ( 'saisinesepsreorientsrs93', 'saisinesepsbilansparcours66', /*'suspensionsreductionsallocations93',*/ 'saisinesepdspdos66', 'nonrespectssanctionseps93', 'defautsinsertionseps66', 'nonorientationspros58', 'regressionsorientationseps58', 'sanctionseps58' );
 ALTER TABLE dossierseps ALTER COLUMN themeep TYPE TYPE_THEMEEP USING CAST(themeep AS TYPE_THEMEEP);
 
+ALTER TABLE propospdos ALTER COLUMN etatdossierpdo TYPE TEXT;
+ALTER TABLE decisionspropospdos ALTER COLUMN etatdossierpdo TYPE TEXT;
+DROP TYPE IF EXISTS TYPE_ETATDOSSIERPDO;
+--SELECT * FROM pg_catalog.pg_type where typname= 'TYPE_ETATDOSSIERPDO';
+CREATE TYPE TYPE_ETATDOSSIERPDO AS ENUM ( 'attaffect', 'attinstr', 'instrencours', 'attavistech', 'attval', 'decisionval', 'dossiertraite', 'attpj' );
+ALTER TABLE propospdos ALTER COLUMN etatdossierpdo TYPE TYPE_ETATDOSSIERPDO USING CAST(etatdossierpdo AS TYPE_ETATDOSSIERPDO);
+ALTER TABLE decisionspropospdos ALTER COLUMN etatdossierpdo TYPE TYPE_ETATDOSSIERPDO USING CAST(etatdossierpdo AS TYPE_ETATDOSSIERPDO);
+
 -- *****************************************************************************
 
 CREATE OR REPLACE FUNCTION public.add_missing_constraint (text, text, text, text, text)
@@ -244,10 +252,6 @@ ALTER TABLE contratsinsertion ADD COLUMN faitsuitea type_booleannumber DEFAULT N
 -- 20110303
 -- -----------------------------------------------------------------------------
 
-DROP TYPE IF EXISTS TYPE_ETATDOSSIERPDO CASCADE;
-CREATE TYPE TYPE_ETATDOSSIERPDO AS ENUM ( 'attaffect', 'attinstr', 'instrencours', 'attavistech', 'attval', 'dossiertraite', 'attpj' );
-SELECT add_missing_table_field ('public', 'propospdos', 'etatdossierpdo', 'TYPE_ETATDOSSIERPDO');
-
 -- Ajout d'une table objet de l'entretien pour paramétrer les types d'entretien existants
 CREATE TABLE objetsentretien(
     id                      SERIAL NOT NULL PRIMARY KEY,
@@ -316,8 +320,6 @@ ALTER TABLE contratsinsertion ADD COLUMN modified TIMESTAMP WITHOUT TIME ZONE;
 UPDATE contratsinsertion SET modified = dd_ci WHERE modified IS NULL;
 ALTER TABLE contratsinsertion ALTER COLUMN modified SET NOT NULL;
 
-
-
 -- -----------------------------------------------------------------------------
 -- 20110309
 -- -----------------------------------------------------------------------------
@@ -344,6 +346,23 @@ DELETE FROM acos WHERE alias = 'Cohortes:impression_individuelle';
 UPDATE acos
 	SET alias = 'Relancesnonrespectssanctionseps93:impression'
 	WHERE alias = 'Relancesnonrespectssanctionseps93:impression_individuelle';
+
+-- -----------------------------------------------------------------------------
+-- 20110310
+-- -----------------------------------------------------------------------------
+SELECT add_missing_table_field ('public', 'decisionspropospdos', 'created', 'TIMESTAMP WITHOUT TIME ZONE');
+SELECT add_missing_table_field ('public', 'decisionspropospdos', 'modified', 'TIMESTAMP WITHOUT TIME ZONE');
+
+SELECT add_missing_table_field( 'public', 'traitementspdos', 'dureedepart', 'TEXT' );
+SELECT add_missing_table_field( 'public', 'traitementspdos', 'dureeecheance', 'TEXT' );
+ALTER TABLE traitementspdos ALTER COLUMN dureedepart TYPE TEXT;
+ALTER TABLE traitementspdos ALTER COLUMN dureeecheance TYPE TEXT;
+DROP TYPE IF EXISTS TYPE_DUREE;
+CREATE TYPE TYPE_DUREE AS ENUM ( '1', '1.5', '2', '2.5', '3', '3.5', '4', '4.5', '5', '5.5', '6', '6.5', '7', '7.5', '8', '8.5', '9', '9.5', '10', '10.5', '11', '11.5', '12' );
+ALTER TABLE traitementspdos ALTER COLUMN dureedepart TYPE TYPE_DUREE USING CAST(dureedepart AS TYPE_DUREE);
+ALTER TABLE traitementspdos ALTER COLUMN dureedepart SET DEFAULT NULL;
+ALTER TABLE traitementspdos ALTER COLUMN dureeecheance TYPE TYPE_DUREE USING CAST(dureeecheance AS TYPE_DUREE);
+ALTER TABLE traitementspdos ALTER COLUMN dureeecheance SET DEFAULT NULL;
 
 -- *****************************************************************************
 COMMIT;
