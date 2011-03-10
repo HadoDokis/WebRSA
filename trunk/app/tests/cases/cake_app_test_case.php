@@ -13,6 +13,9 @@
 		*/
 
 		public $fixtures = array (
+			'app.nonorientationpro58',
+			'app.nonorientationpro66',
+			'app.nonorientationpro93',
 			'app.dossiercov58',
 			'app.pieceacqmatprof',
 			'app.fonctionmembreep',

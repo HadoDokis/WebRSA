@@ -23,22 +23,76 @@
 		}
 
 		function testChoixStructure() {
-			$field = null;
-			$compare_field = null;
+			$this->Orientstruct->data = array(
+				'Orientstruct' => array(
+					'id' => '1',
+					'personne_id' => '2',
+					'typeorient_id' => '1',
+					'structurereferente_id' => '1',
+					'propo_algo' => 1,
+					'valid_cg' => null,
+					'date_propo' => '2009-03-10',
+					'date_valid' => '2009-03-10',
+					'statut_orient' => 'Orienté',
+					'date_impression' => '2010-06-03',
+					'daterelance' => null,
+					'statutrelance' => 'E',
+					'date_impression_relance' => null,
+					'referent_id' => '1',
+					'etatorient' => null,
+					'rgorient' => null,
+					'structureorientante_id' => null,
+					'referentorientant_id' => null,
+				),
+			);
+			$field = $this->Orientstruct->data;
+			$compare_field = 'statutrelance';
 			$result = $this->Orientstruct->choixStructure($field, $compare_field);
 			$this->assertTrue($result);
 		}
 
-		function testGetDataPdf() {
+		function testModeleOdt() {
+			$data = null;
+			$this->Orientstruct->modeleOdt($data);
+		}
+
+		function testGetDataForPdf() {
 			$id = '1';
 			$user_id = '1';
-			$result = $this->Orientstruct->getDataPdf($id, $user_id);
-			$this->assertFalse($result);
+			$result = $this->Orientstruct->getDataForPdf($id/*, user_id*/);
+			debug($result);
 		}
 
 		function testFillAllocataire() {
 			$result = $this->Orientstruct->fillAllocataire();
 			$this->assertFalse($result);
 		}
+
+		function testRgorientMax() {
+			$personne_id = null;
+			$result = $this->Orientstruct->rgorientMax($personne_id);
+		}
+
+		function testAjoutPossible() {
+			$personne_id = null;
+			$result = $this->Orientstruct->ajoutPossible($personne_id);
+		}
+
+		function testIsRegression() {
+			$personne_id = null;
+			$newtypeorient_id = null;
+			$result = $this->Orientstruct->isRegression($personne_id, $newtypeorient_id);
+		}
+
+		function testBeforeSave() {
+			$options = array();
+			$result = $this->Orientstruct->beforeSave($option);
+		}
+
+		function testGeneratePdf() {
+			$id = null;
+			$user_id = null;
+		}
+
 	}
 ?>

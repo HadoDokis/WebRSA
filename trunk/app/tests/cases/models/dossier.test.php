@@ -4,6 +4,7 @@
 
 	// importation du modèle
 	App::import('Model', 'Dossier');
+	App::import('Core', 'Sanitize');
 
 	class DossierTestCase extends CakeAppModelTestCase {
 
@@ -13,31 +14,32 @@
 		}
 
 		function testFindByZones() {
-			//debug($this->Dossier->findByZones());
-			$zonegeo = array(
-				array(
-					'id' => '1',
-					'codeinsee' => '34090',
-					'libelle' => 'Pole Montpellier-Nord',
-				),
-				array(
-					'id' => '2',
-					'codeinsee' => '34070',
-					'libelle' => 'Pole Montpellier Sud-Est',
-				),
-				array(
-					'id' => '3',
-					'codeinsee' => '34080',
-					'libelle' => 'Pole Montpellier Ouest',
-				),
+			$zonegeo = array('ighr8');
+			$result = $this->Dossier->findByZones($zonegeo, false);
+			$expected = array(
+				  '0' => '1',
+  				  '1' => '2',
+   				  '2' => '3',
+  				  '3' => '4',
+  				  '4' => '5',
+  				  '5' => '1001',
+  				  '6' => '2002',
+  				  '7' => '3003',
+  				  '8' => '4004',
 			);
-			$result = $this->Dossier->findByZones($zonegeo, null);		
-			$this->assertTrue($result);
+			$this->assertEqual($result, $expected);
+
+			$zonegeo = array('ighr8');
+			$result = $this->Dossier->findByZones($zonegeo, true);
+			$expected = array(
+				  '0' => '1',
+			);
+			$this->assertEqual($result, $expected);
 		}
 
 		function testSearch() {
 
-			$params = array(/*
+			$params = array(
 				'Dossier' => array (
 						'id' => '1',
 						'numdemrsa' => '456807VH',
@@ -65,7 +67,7 @@
 						'dddepamut' => null,
 						'detaildroitrsa_id' => null,
 						'avispcgdroitrsa_id' => null,
-						'organisme_id' => null,
+						'organisme_id' => null
 					),
 				'Personne' => array(
 						'id' => '1',
@@ -108,7 +110,7 @@
 						'canton' => null,
 						'typeres' => null,
 						'topresetr' => null,
-						'foyerid' => null,
+						'foyerid' => '1',
 					),
 				'Canton' => array(
 						'id' => '1',
@@ -144,13 +146,14 @@
 						'numcomins' => '111',
 						'numagrins' => '11',
 						'type_voie' => 'ARC',
-					),*/
+					),
 			);
-			// Si $params est initialisé, la classe 'Sanitize' n'est pas trouvée
-			// Fatal error: Class 'Sanitize' not found in /home/localhost/www/webrsa/app/models/dossier.php on line 250 
-			$result = $this->Dossier->search(null, null, $params);
-			//var_dump($result);
-			//$result = $this->Dossier->search($zonegeo, null);
+			$filtre_zone_geo = false;
+			$result = $this->Dossier->search($mesCodesInsee, $filtre_zone_geo, $params);
+			$this->asserTrue($result);
+//			$mesCodesInsee = '34090';
+//			$result = $this->Dossier->search($mesCodesInsee, $filtre_zone_geo, $params);
 		}
+
 	}
 ?>

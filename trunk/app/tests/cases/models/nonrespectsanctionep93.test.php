@@ -81,7 +81,6 @@
 			$this->assertNotNull($return);
 		}
 
-
 		function testSaveDecisions() {
 			$data = array(
 				'Decisionnonrespectsanctionep93' => array(
@@ -112,23 +111,91 @@
 					'modified' => '2010-11-04',
 				),
 			);
-			$niveauDecision = 'ep';
+			$niveauDecision = 'cg';
 			$result = $this->Nonrespectsanctionep93->saveDecisions($data, $niveauDecision);
-			debug($result);
+			//debug($this->Decisionnonrespectsanctionep93);
+			$this->assertTrue($result);		
+		}
+
+		function testSaveDecisionUnique() {
+			$data = array();
+			$niveauDecision = 'cg';
+			$this->assertTrue($this->Nonrespectsanctionep93->saveDecisionUnique($data, $niveauDecision));
 		}
 
 		function testFinaliser() {
 			$seanceep_id = null;
 			$etape = null;
-			$this->Nonrespectsanctionep93->finaliser($seanceep_id, $etape);
+			$result = $this->Nonrespectsanctionep93->finaliser($seanceep_id, $etape);
+			$this->assertTrue($result);
 		}
 
 		function testContainPourPv() {
-			$this->Nonrespectsanctionep93->containPourPv();
+			$expected = array(
+				'Nonrespectsanctionep93' => array(
+					'Decisionnonrespectsanctionep93' => array(
+						/*'fields' => array(
+							'( CAST( decision AS TEXT ) || montantreduction ) AS avis'
+						),*/
+						'conditions' => array(
+							'etape' => 'ep'
+						),
+					)
+				),
+			);
+			$result = $this->Nonrespectsanctionep93->containPourPv();
+			$this->assertEqual($result, $expected);
 		}
 
 		function testQdProcesVerbal() {
-			$this->Nonrespectsanctionep93->qdProcesVerbal();
+			$expected = array(
+				'fields' => array(
+					'Nonrespectsanctionep93.id',
+					'Nonrespectsanctionep93.dossierep_id',
+					'Nonrespectsanctionep93.propopdo_id',
+					'Nonrespectsanctionep93.orientstruct_id',
+					'Nonrespectsanctionep93.contratinsertion_id',
+					'Nonrespectsanctionep93.origine',
+					'Nonrespectsanctionep93.decision',
+					'Nonrespectsanctionep93.rgpassage',
+					'Nonrespectsanctionep93.montantreduction',
+					'Nonrespectsanctionep93.dureesursis',
+					'Nonrespectsanctionep93.sortienvcontrat',
+					'Nonrespectsanctionep93.active',
+					'Nonrespectsanctionep93.created',
+					'Nonrespectsanctionep93.modified',
+					'Decisionnonrespectsanctionep93.id',
+					'Decisionnonrespectsanctionep93.nonrespectsanctionep93_id',
+					'Decisionnonrespectsanctionep93.etape',
+					'Decisionnonrespectsanctionep93.decision',
+					'Decisionnonrespectsanctionep93.montantreduction',
+					'Decisionnonrespectsanctionep93.dureesursis',
+					'Decisionnonrespectsanctionep93.commentaire',
+					'Decisionnonrespectsanctionep93.created',
+					'Decisionnonrespectsanctionep93.modified',
+				),
+				'joins' => array(
+					array(
+						'table'      => 'nonrespectssanctionseps93',
+						'alias'      => 'Nonrespectsanctionep93',
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array( 'Nonrespectsanctionep93.dossierep_id = Dossierep.id' ),
+					),
+					array(
+						'table'      => 'decisionsnonrespectssanctionseps93',
+						'alias'      => 'Decisionnonrespectsanctionep93',
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array(
+							'Decisionnonrespectsanctionep93.nonrespectsanctionep93_id = Nonrespectsanctionep93.id',
+							'Decisionnonrespectsanctionep93.etape' => 'ep'
+						),
+					),
+				)
+			);
+			$result = $this->Nonrespectsanctionep93->qdProcesVerbal();
+			$this->assertEqual($result, $expected);
 		}
 
 	}

@@ -8,7 +8,7 @@
 		var $records = array(
 			array(
 				'id' => '3',
-				'identifiant' => 'tretr',
+				'identifiant' => 'EP1.1',
 				'name' => 'tert',
 				'ep_id' => '1',
 				'structurereferente_id' => '7',
