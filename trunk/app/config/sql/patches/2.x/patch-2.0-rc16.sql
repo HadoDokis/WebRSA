@@ -259,7 +259,17 @@ CREATE UNIQUE INDEX objetsentretien_name_idx ON objetsentretien (name);
 
 -- Ajout d'une clé étrangère entre la table objetsentretien et entretiens
 SELECT alter_table_drop_column_if_exists( 'public', 'entretiens', 'objetentretien_id' );
-ALTER TABLE entretiens ADD COLUMN objetentretien_id INTEGER NOT NULL REFERENCES objetsentretien (id) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE entretiens ADD COLUMN objetentretien_id INTEGER DEFAULT NULL REFERENCES objetsentretien (id) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- Ajout d'un enregistrement à objetsentretiens pour pouvoir utiliser
+-- une clé étrangère NOT NULL si on a des enregistrements dans entretiens.
+INSERT INTO objetsentretien (name) VALUES ( 'Objet d''entretien 1' );
+
+UPDATE entretiens
+	SET objetentretien_id = ( SELECT id FROM objetsentretien WHERE name = 'Objet d''entretien 1' )
+	WHERE objetentretien_id IS NULL;
+
+ALTER TABLE entretiens ALTER COLUMN objetentretien_id SET NOT NULL;
 
 -- -----------------------------------------------------------------------------
 
