@@ -3,35 +3,35 @@
 	*
 	*/
 
-    class CohortepdfsShell extends Shell
-    {
-        var $uses = array( 'Pdf', 'Orientstruct', 'User' );
-		var $script = null;
+	class CohortepdfsShell extends Shell
+	{
+		public $uses = array( 'Pdf', 'Orientstruct', 'User' );
+		public $script = null;
 
 		/// Aide sur les paramètres
-		var $help = array(
+		public $help = array(
 			'username' => "L'identifiant de l'utilisateur qui sera utilisé pour la récupération d'informations lors de l'impression. Pas de défaut.",
 			'limit' => "Nombre d'enregistrements à traiter. Doit être un nombre entier positif. Par défaut: 10. Utiliser 0 ou null pour ne pas avoir de limite et traiter tous les enregistrements.",
 			'order' => "Permet de trier les enregistrements à traiter par date de validation de l'orentation (date_valid) en ordre ascendant ou descendant. Valeurs possibles: asc ou desc. Par défaut: asc."
 		);
 
-		var $possibleParams = array(
+		public $possibleParams = array(
 			'order' => array( 'asc', 'desc' )
 		);
 
-		var $outfile = null;
-		var $output = '';
-		var $limit = 10;
-		var $order = 'asc';
-		var $startTime = null;
-		var $username = null;
-		var $user_id = null;
+		public $outfile = null;
+		public $output = '';
+		public $limit = 10;
+		public $order = 'asc';
+		public $startTime = null;
+		public $username = null;
+		public $user_id = null;
 
-        /**
-        *
-        */
+		/**
+		*
+		*/
 
-        function err( $string ) {
+		public function err( $string ) {
 			parent::err( $string );
 
 			if( !empty( $this->outfile ) ) {
@@ -39,11 +39,11 @@
 			}
 		}
 
-        /**
-        *
-        */
+		/**
+		*
+		*/
 
-        function out( $string ) {
+		public function out( $string ) {
 			parent::out( $string );
 
 			if( !empty( $this->outfile ) ) {
@@ -51,11 +51,11 @@
 			}
 		}
 
-        /**
-        *
-        */
+		/**
+		*
+		*/
 
-        function exportlog() {
+		public function exportlog() {
 			file_put_contents( $this->outfile, $this->output );
 		}
 
@@ -64,7 +64,7 @@
 		* @access protected
 		*/
 
-		function _printHelpParam( $param ) {
+		protected function _printHelpParam( $param ) {
 			$message = $this->help[$param];
 			$this->out( "-{$param}" );
 			$this->out( "\t{$message}" );
@@ -77,7 +77,7 @@
 		* @access protected
 		*/
 
-		function _printHelp() {
+		protected function _printHelp() {
 			$this->out( "Paramètres possibles pour le script {$this->script}:" );
 			$this->hr();
 			$params = array();
@@ -93,12 +93,12 @@
 			exit( 0 );
 		}
 
-        /**
-        *
-        *
-        */
+		/**
+		*
+		*
+		*/
 
-        function startup() {
+		public function startup() {
 			$this->script = strtolower( preg_replace( '/Shell$/', '', $this->name ) );
 
 			/// Demande d'aide ?
@@ -144,13 +144,13 @@
 			/// Nom du fichier et titre de la page
 			$this->outfile = sprintf( '%s-%s.log', $this->script, date( 'Ymd-His' ) );
 			$this->outfile = APP_DIR.'/tmp/logs/'.$this->outfile;
-        }
+		}
 
-        /**
-        *
-        */
+		/**
+		*
+		*/
 
-        function main() {
+		public function main() {
 			$success = true;
 			$compteur = 0;
 			$nSuccess = 0;
@@ -180,7 +180,7 @@
 			$this->hr();
 
 			foreach( $orientsstructs_ids as $orientstruct_id ) {
-	 			$this->Orientstruct->begin();
+				$this->Orientstruct->begin();
 
 				$this->out( sprintf( "Génération du PDFs %d/%d (Orientstruct.id=%s)", ( $compteur + 1 ), count( $orientsstructs_ids ), $orientstruct_id ) );
 
@@ -230,16 +230,16 @@
 
 			$endTime = number_format( microtime( true ) - $this->startTime, 2 );
 
-            /// Fin de la transaction
+			/// Fin de la transaction
 			$message = "%s ({$compteur} pdfs d'orientation à générer, {$nSuccess} succès, {$nErrors} erreurs) en {$endTime} secondes";
-            if( $success ) {
-                $this->out( sprintf( $message, "Script terminé avec succès" ) );
+			if( $success ) {
+				$this->out( sprintf( $message, "Script terminé avec succès" ) );
 //                 $this->Orientstruct->commit();
-            }
-            else {
-                $this->out( sprintf( $message, "Script terminé avec erreurs" ) );
+			}
+			else {
+				$this->out( sprintf( $message, "Script terminé avec erreurs" ) );
 //                 $this->Orientstruct->rollback();
-            }
+			}
 
 			$this->exportlog();
 
@@ -247,6 +247,6 @@
 			$this->out( "Le fichier de log se trouve dans {$this->outfile}" );
 
 			exit( ( $success ? 0 : 1 ) );
-        }
-    }
+		}
+	}
 ?>

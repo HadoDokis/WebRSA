@@ -3,29 +3,29 @@
 	*
 	*/
 
-    class DetectionparcoursShell extends Shell
-    {
-        var $uses = array( 'Parcoursdetecte' );
-		var $script = null;
+	class DetectionparcoursShell extends Shell
+	{
+		public $uses = array( 'Parcoursdetecte' );
+		public $script = null;
 
 		/// Aide sur les paramètres
-		var $help = array(
+		public $help = array(
 			'type' => "Type de fichier CSV (inscription, cessation, radiation)."
 		);
 
 		/// Paramètres
-		var $possibleParams = array(
+		public $possibleParams = array(
 			'type' => array( 'inscription', 'cessation', 'radiation' )
 		);
 
-		var $outfile = null;
-		var $output = '';
+		public $outfile = null;
+		public $output = '';
 
-        /**
-        *
-        */
+		/**
+		*
+		*/
 
-        function err( $string ) {
+		public function err( $string ) {
 			parent::err( $string );
 
 			if( !empty( $this->outfile ) ) {
@@ -33,11 +33,11 @@
 			}
 		}
 
-        /**
-        *
-        */
+		/**
+		*
+		*/
 
-        function out( $string ) {
+		public function out( $string ) {
 			parent::out( $string );
 
 			if( !empty( $this->outfile ) ) {
@@ -45,11 +45,11 @@
 			}
 		}
 
-        /**
-        *
-        */
+		/**
+		*
+		*/
 
-        function exportlog() {
+		public function exportlog() {
 			file_put_contents( $this->outfile, $this->output );
 		}
 
@@ -58,7 +58,7 @@
 		* @access protected
 		*/
 
-		function _printHelpParam( $param ) {
+		protected function _printHelpParam( $param ) {
 			$message = $this->help[$param];
 			$this->out( "-{$param}" );
 			$this->out( "\t{$message}" );
@@ -71,7 +71,7 @@
 		* @access protected
 		*/
 
-		function _printHelp() {
+		protected function _printHelp() {
 			$this->out( "Paramètres possibles pour le script {$this->script}:" );
 			$this->hr();
 			$params = array();
@@ -87,12 +87,12 @@
 			exit( 0 );
 		}
 
-        /**
-        *
-        *
-        */
+		/**
+		*
+		*
+		*/
 
-        function startup() {
+		public function startup() {
 			$this->script = strtolower( preg_replace( '/Shell$/', '', $this->name ) );
 
 			/// Demande d'aide ?
@@ -104,13 +104,13 @@
 			/// Nom du fichier et titre de la page
 			$this->outfile = sprintf( '%s-%s.log', $this->script, date( 'Ymd-His' ) );
 			$this->outfile = APP_DIR.'/tmp/logs/'.$this->outfile;
-        }
+		}
 
-        /**
-        *
-        */
+		/**
+		*
+		*/
 
-        function main() {
+		public function main() {
 			$success = true;
 			$compteur = 0;
 			$this->Parcoursdetecte->begin();
@@ -180,16 +180,16 @@
 
 			$this->hr();
 
-            /// Fin de la transaction
+			/// Fin de la transaction
 			$message = "%s ({$compteur} parcours détectés)";
-            if( $success ) {
-                $this->out( sprintf( $message, "Script terminé avec succès" ) );
-                $this->Parcoursdetecte->commit();
-            }
-            else {
-                $this->out( sprintf( $message, "Script terminé avec erreurs" ) );
-                $this->Parcoursdetecte->rollback();
-            }
+			if( $success ) {
+				$this->out( sprintf( $message, "Script terminé avec succès" ) );
+				$this->Parcoursdetecte->commit();
+			}
+			else {
+				$this->out( sprintf( $message, "Script terminé avec erreurs" ) );
+				$this->Parcoursdetecte->rollback();
+			}
 
 			$this->exportlog();
 
@@ -197,6 +197,6 @@
 			$this->out( "Le fichier de log se trouve dans {$this->outfile}" );
 
 			exit( ( $success ? 0 : 1 ) );
-        }
-    }
+		}
+	}
 ?>

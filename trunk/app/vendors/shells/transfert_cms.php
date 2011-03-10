@@ -85,7 +85,7 @@
 					$this->out( sprintf( "Traitement du document %s (%s %s)", $i + 1, $modele, $pdf['Pdf']['fk_value'] ) );
 					$cmsPath = "/{$modele}/{$pdf['Pdf']['fk_value']}.pdf";
 
-					$tmpSuccess = Cmis::write( $cmsPath, $pdf['Pdf']['document'], 'application/pdf', false );
+					$tmpSuccess = Cmis::write( $cmsPath, $pdf['Pdf']['document'], 'application/pdf', true );
 
 					if( $tmpSuccess ) {
 						$pdf['Pdf']['cmspath'] = $cmsPath;

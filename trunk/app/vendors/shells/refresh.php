@@ -13,30 +13,30 @@
 
 	class RefreshShell extends Shell
 	{
-		var $uses = array( 'Foyer', 'Cohorte', 'Typeorient', 'Orientstruct' );
-		var $limit = PHP_INT_MAX; // FIXME: PHP_INT_MAX ? -> en paramètre
-		var $force = true;
-		var $ressources = true;
-		var $soumis = true;
-		var $preorientation = true;
-		var $help = array(
+		public $uses = array( 'Foyer', 'Cohorte', 'Typeorient', 'Orientstruct' );
+		public $limit = PHP_INT_MAX; // FIXME: PHP_INT_MAX ? -> en paramètre
+		public $force = true;
+		public $ressources = true;
+		public $soumis = true;
+		public $preorientation = true;
+		public $help = array(
 			'limit' => "Nombre de foyers à traiter. Doit être un nombre entier positif. Par défaut: pas de limite. Utiliser 0 ou null pour ne pas avoir de limite et traiter tous les foyers.",
 			'ressources' => 'Doit-on recalculer la moyenne des ressources mensuelles des demandeurs et des conjoints ?',
 			'soumis' => 'Doit-on recalculer si les demandeurs et les conjoints sont soumis à droits et devoirs ?',
 			'preorientation' => 'Doit-on calculer et sauvegarder une préorientation pour les demandeurs et les conjoints qui ne sont pas encore orientés ni préorientés ?',
 			'force' => 'Doit-on forcer le calcul de la préorientation même si une préorientation a déjà été calculée ?',
 		);
-		var $messageErreur = "\tVeuillez renseigner le paramètre -%s (soit true, soit false - valeur par défaut %s).";
+		public $messageErreur = "\tVeuillez renseigner le paramètre -%s (soit true, soit false - valeur par défaut %s).";
 
-		var $outfile = null;
-		var $output = '';
+		public $outfile = null;
+		public $output = '';
 
 		/**
 		*
 		*
 		*/
 
-		function err( $string ) {
+		public function err( $string ) {
 			parent::err( $string );
 
 			if( !empty( $this->outfile ) ) {
@@ -49,7 +49,7 @@
 		*
 		*/
 
-		function out( $string ) {
+		public function out( $string ) {
 			parent::out( $string );
 
 			if( !empty( $this->outfile ) ) {
@@ -62,7 +62,7 @@
 		*
 		*/
 
-		function exportlog() {
+		public function exportlog() {
 			file_put_contents( $this->outfile, $this->output );
 		}
 
@@ -71,7 +71,7 @@
 		* @access protected
 		*/
 
-		function _printHelp() {
+		protected function _printHelp() {
 			$this->out( "Paramètres possibles pour le script {$this->script}:" );
 			$this->hr();
 			$params = array();
@@ -90,7 +90,7 @@
 		*
 		*/
 
-		function startup() {
+		public function startup() {
 			$this->script = preg_replace( '/shell$/', '', strtolower( $this->name ) );
 
 			/// Demande d'aide ?
@@ -140,7 +140,7 @@
 		*
 		*/
 
-		function main() {
+		public function main() {
 			/// Démarrage du script
 
 			$this_start = microtime( true );

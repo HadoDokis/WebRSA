@@ -40,12 +40,6 @@
 		function _index($statutOrientation) {
 			return parent::_index($statutOrientation);
 		}
-
-		// Attention on surcharge la visibilite du parent
-		function _get($personne_id) {
-			return parent::_get($personne_id);
-		}
-
 	}
 
 	class CohortesControllerTest extends CakeAppControllerTestCase {
@@ -112,11 +106,6 @@
 			$this->assertNull($this->CohortesController->viewVars['cohortes']);
 			$this->CohortesController->exportcsv();
 			$this->assertNotNull($this->CohortesController->viewVars['cohortes']);
-		}
-
-		function test_get() {
-			$personne_id = 1;
-			$this->assertTrue($this->CohortesController->_get($personne_id));
 		}
 
 		public function testCohortegedooo() {

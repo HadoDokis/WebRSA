@@ -2,12 +2,12 @@
 	class OrientsstructsController extends AppController
 	{
 
-		var $name = 'Orientsstructs';
-		var $uses = array( 'Orientstruct',  'Option' , 'Dossier', 'Foyer', 'Adresse', 'Adressefoyer', 'Personne', 'Typeorient', 'Structurereferente', 'Pdf', 'Referent' );
-		var $helpers = array( 'Default', 'Default2' );
-		var $components = array( 'Gedooo' );
+		public $name = 'Orientsstructs';
+		public $uses = array( 'Orientstruct',  'Option' , 'Dossier', 'Foyer', 'Adresse', 'Adressefoyer', 'Personne', 'Typeorient', 'Structurereferente', 'Pdf', 'Referent' );
+		public $helpers = array( 'Default', 'Default2' );
+		public $components = array( 'Gedooo' );
 
-		var $commeDroit = array(
+		public $commeDroit = array(
 			'add' => 'Orientsstructs:edit'
 		);
 
@@ -23,15 +23,10 @@
 			$options = array();
 			$options = $this->Orientstruct->allEnumLists();
 			$this->set( compact( 'options' ) );
-//             $options = array();
-//             foreach( $this->{$this->modelClass}->allEnumLists() as $field => $values ) {
-//                 $options = Set::insert( $options, "{$this->modelClass}.{$field}", $values );
-//             }
-//             $this->set( compact( 'options' ) );
 
-            //Ajout des structures et référents orientants
-            $this->set( 'refsorientants', $this->Referent->listOptions() );
-            $this->set( 'structsorientantes', $this->Structurereferente->listOptions( array( 'orientation' => 'O' ) ) );
+			//Ajout des structures et référents orientants
+			$this->set( 'refsorientants', $this->Referent->listOptions() );
+			$this->set( 'structsorientantes', $this->Structurereferente->listOptions( array( 'orientation' => 'O' ) ) );
 
 		}
 
@@ -301,8 +296,6 @@
 
 						$saved = $this->Orientstruct->Personne->Calculdroitrsa->save( $this->data );
 						$saved = $this->Orientstruct->save( $this->data['Orientstruct'] ) && $saved;
-						$mkOrientstructPdf = $this->Gedooo->mkOrientstructPdf( $this->Orientstruct->getLastInsertId() );
-						$saved = $mkOrientstructPdf && $saved;
 					}
 
 					if( $saved ) {
@@ -310,10 +303,6 @@
 						$this->Orientstruct->commit();
 						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 						$this->redirect( array( 'controller' => 'orientsstructs', 'action' => 'index', $personne_id ) );
-					}
-					elseif( isset( $mkOrientstructPdf ) && !$mkOrientstructPdf ) {
-						$this->Orientstruct->rollback();
-						$this->Session->setFlash( 'Erreur lors de la génération du document PDF (le serveur Gedooo est peut-être tombé ou mal configuré)', 'flash/error' );
 					}
 					else {
 						$this->Orientstruct->rollback();
@@ -398,21 +387,14 @@
 					if( $this->Orientstruct->Personne->Calculdroitrsa->save( $this->data )
 						&& $this->Orientstruct->save( $this->data )
 					) {
-						$generationPdf = $this->Gedooo->mkOrientstructPdf( $this->Orientstruct->id );
+						$this->Jetons->release( $dossier_id );
+						$this->Orientstruct->commit();
+						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+						$this->redirect( array( 'controller' => 'orientsstructs', 'action' => 'index', $orientstruct['Orientstruct']['personne_id'] ) );
 
-						if( $generationPdf ) {
-							$this->Jetons->release( $dossier_id );
-							$this->Orientstruct->commit();
-							$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-							$this->redirect( array( 'controller' => 'orientsstructs', 'action' => 'index', $orientstruct['Orientstruct']['personne_id'] ) );
-						}
-						else {
-							$this->Orientstruct->rollback();
-							$this->Session->setFlash( 'Erreur lors de la génération du document PDF (le serveur Gedooo est peut-être tombé ou mal configuré)', 'flash/error' );
-						}
 					}
 					else {
-						$this->Orientstruct->commit();
+						$this->Orientstruct->rollback();
 						$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 					}
 				}

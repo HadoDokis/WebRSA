@@ -20,14 +20,14 @@
 				'counterQuery' => ''
 			)
 		);
-		
+
 		/**
 		* Finalisation de la décision pour le cg58
 		*/
-		
-		public function finaliser( $seanceep_id, $etape ) {
+
+		public function finaliser( $seanceep_id, $etape, $user_id ) {
 			$success = true;
-			
+
 			$seanceep = $this->Dossierep->Seanceep->find(
 				'first',
 				array(
@@ -38,7 +38,7 @@
 				)
 			);
 			list( $dateseance, $heureseance ) = explode ( ' ', $seanceep['Seanceep']['dateseance'] );
-			
+
 			$dossierseps = $this->Dossierep->find(
 				'all',
 				array(
@@ -68,14 +68,14 @@
 						'user_id' => $dossierep['Regressionorientationep58']['user_id']
 					)
 				);
-				
+
 				$success = $this->Structurereferente->Orientstruct->save( $orientstruct ) && $success;
 				$success = $this->Structurereferente->Orientstruct->generatePdf( $this->Structurereferente->Orientstruct->id, $dossierep['Regressionorientationep58']['user_id'] ) && $success;
 			}
-			
+
 			return $success;
 		}
-		
+
 	}
 
 ?>

@@ -50,6 +50,7 @@ function __clear() {
 	fi
 
 	rm -f $dir/tmp/logs/*.log
+	rm -f $dir/tmp/logs/*_odt
 
 # 	rm "$dir/webroot/js/webrsa.js">> /dev/null 2>&1
 # 	rm "$dir/webroot/css/webrsa.css" >> /dev/null 2>&1
