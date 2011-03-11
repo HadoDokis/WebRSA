@@ -171,7 +171,7 @@
                     )
                 );
                 $personnesFoyer[$index]['Dossierep']['derniere'] = $tEp;
-debug($tEp);
+// debug($tEp);
 
                 // Dernière relance effective
                 $tRelance = $this->Dossier->Foyer->Personne->Contratinsertion->Nonrespectsanctionep93->find(

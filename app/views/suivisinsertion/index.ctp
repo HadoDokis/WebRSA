@@ -582,39 +582,39 @@
                     <th>Décision</th>
                     <th>Date commission pluridisciplinaire</th>
                     <th>Réalisé</th>
-                    <th class="action">Action</th>
+<!--                     <th class="action">Action</th> -->
 
                     <th>Décision</th>
                     <th>Date commission pluridisciplinaire</th>
                     <th>Réalisé</th>
-                    <th class="action">Action</th>
+<!--                     <th class="action">Action</th> -->
                 </tr>
                 <tr>
                     <td><?php echo $decisionEpDEM;?></td>
                     <td><?php echo $dateEpDEM;?></td>
                     <td><?php echo $xhtml->boolean( !empty( $details['DEM']['Dossierep']['derniere']['Dossierep']['seanceep_id'] ) );?></td>
-                    <td><?php
-                        if( !empty( $details['DEM']['Dossierep']['derniere']['Dossierep']['seanceep_id'] ) ){
+<!--                    <td><?php
+                        /*if( !empty( $details['DEM']['Dossierep']['derniere']['Dossierep']['seanceep_id'] ) ){
                             echo $xhtml->viewLink(
                                 'Voir le contrat',
                                 array( 'controller' => 'contratsinsertion', 'action' => 'index', Set::extract( 'DEM.Personne.id', $details ) )
                             );
-                        }
+                        }*/
                         ?>
-                    </td>
+                    </td>-->
 
                     <td><?php echo $decisionEpCJT;?></td>
                     <td><?php echo $dateEpCJT;?></td>
                     <td><?php echo $xhtml->boolean( !empty( $details['CJT']['Dossierep']['derniere']['Dossierep']['seanceep_id'] ) );?></td>
-                    <td><?php
-                        if( !empty( $details['DEM']['Dossierep']['derniere']['Dossierep']['seanceep_id'] ) ){
+<!--                    <td><?php
+                        /*if( !empty( $details['DEM']['Dossierep']['derniere']['Dossierep']['seanceep_id'] ) ){
                             echo $xhtml->viewLink(
                                 'Voir le contrat',
                                 array( 'controller' => 'contratsinsertion', 'action' => 'index', Set::extract( 'CJT.Personne.id', $details ) )
                             );
-                        }
+                        }*/
                         ?>
-                    </td>
+                    </td>-->
                 </tr>
             </tbody>
         </table>
