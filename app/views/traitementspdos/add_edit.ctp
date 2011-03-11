@@ -62,29 +62,48 @@
 				'class'=>'noborder invisible'
 			)
 		);
-	?>
 
+?>
 <script type="text/javascript">
 
-	//FIXME : Traiter les cas des 1,5 mois et 2,5 mois !!!!
-
-	function checkDatesToExpiration() {
-		var correspondances = new Array();
-
-		<?php foreach( $options['Traitementpdo']['dureedepart'] as $index => $duree ):?>
-			correspondances[<?php echo $index;?>] = <?php echo str_replace( ' mois', '' ,$duree );?>;
-		<?php endforeach;?>
-
-		setDateInterval2( 'TraitementpdoDatedepart', 'TraitementpdoDateecheance', correspondances[$F( 'TraitementpdoDureedepart' )], false );
+	function checkDatesToExpiration( dateDonnee, dateAChanger, operateur ) {
+		var duree = $F( 'TraitementpdoDuree'+dateDonnee ).split( '.' );
+		var month = duree[0];
+		var day = duree[1];
+		if ( $F( 'TraitementpdoDate'+dateDonnee+'Day' ) != "" && $F( 'TraitementpdoDate'+dateDonnee+'Month' ) != "" && $F( 'TraitementpdoDate'+dateDonnee+'Year' ) != "" && $F( 'TraitementpdoDuree'+dateDonnee ) != "" ) {
+			var dateDepart = new Date( $F( 'TraitementpdoDate'+dateDonnee+'Year' ), $F( 'TraitementpdoDate'+dateDonnee+'Month' )-1, $F( 'TraitementpdoDate'+dateDonnee+'Day' ) );
+			if ( day != undefined ) {
+				if ( operateur == '+' ) {
+					dateDepart.setDate( 15 + dateDepart.getDate() );
+				}
+				else {
+					dateDepart.setDate( 15 - dateDepart.getDate() );
+				}
+			}
+			if ( operateur == '+' ) {
+				month = parseInt( dateDepart.getMonth() ) + parseInt( month );
+			}
+			else {
+				month = parseInt( dateDepart.getMonth() ) - parseInt( month );
+			}
+			dateDepart.setMonth( month );
+			var newday = dateDepart.getDate();
+			var newmonth = dateDepart.getMonth()+1;
+			var newyear = dateDepart.getFullYear();
+			$( 'TraitementpdoDate'+dateAChanger+'Day' ).value = ( newday < 10 ) ? '0' + newday : newday;
+			$( 'TraitementpdoDate'+dateAChanger+'Month' ).value = ( newmonth < 10 ) ? '0' + newmonth : newmonth;
+			$( 'TraitementpdoDate'+dateAChanger+'Year' ).value = newyear;
+		}
 	}
 	
 	document.observe( "dom:loaded", function() {
 		[ 'TraitementpdoDatedepartDay', 'TraitementpdoDatedepartMonth', 'TraitementpdoDatedepartYear', 'TraitementpdoDureedepart' ].each( function( id ) {
 			$( id ).observe( 'change', function() {
-				checkDatesToExpiration();
+				checkDatesToExpiration( 'depart', 'echeance', '+' );
 			});
 		});
 	});
+	
 </script>
 
 	<?php
@@ -105,34 +124,15 @@
 		);
 	?>
 <script type="text/javascript">
-
-	//FIXME : Traiter les cas des 1,5 mois et 2,5 mois !!!!
-
-	function checkDatesToRevision() {
-		var correspondances = new Array();
-
-		<?php foreach( $options['Traitementpdo']['dureeecheance'] as $index2 => $duree2 ):?>
-			correspondances[<?php echo $index2;?>] = <?php echo str_replace( ' mois', '' ,$duree2 );?>;
-		<?php endforeach;?>
-
-			setDateInterval2( 'TraitementpdoDateecheance', 'TraitementpdoDaterevision', correspondances[$F( 'TraitementpdoDureeecheance' )], false );
-	}
 	
-		document.observe( "dom:loaded", function() {
-			Event.observe( $( 'TraitementpdoDateecheanceDay' ), 'change', function() {
-				checkDatesToRevision();
-			} );
-			Event.observe( $( 'TraitementpdoDateecheanceMonth' ), 'change', function() {
-				checkDatesToRevision();
-			} );
-			Event.observe( $( 'TraitementpdoDateecheanceYear' ), 'change', function() {
-				checkDatesToRevision();
-			} );
-
-			Event.observe( $( 'TraitementpdoDureeecheance' ), 'change', function() {
-				checkDatesToRevision();
-			} );
+	document.observe( "dom:loaded", function() {
+		[ 'TraitementpdoDateecheanceDay', 'TraitementpdoDateecheanceMonth', 'TraitementpdoDateecheanceYear', 'TraitementpdoDureeecheance' ].each( function( id ) {
+			$( id ).observe( 'change', function() {
+				checkDatesToExpiration( 'echeance', 'revision', '-' );
+			});
 		});
+	});
+	
 </script>
 	<?php
 		echo $xhtml->tag(
