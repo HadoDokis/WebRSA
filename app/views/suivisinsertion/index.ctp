@@ -494,7 +494,7 @@
                 </tr>
             </tbody>
         </table>
-    <?php if( Configure::read( 'Cg.departement' ) == 93 ):?>
+        <?php if( Configure::read( 'Cg.departement' ) == 93 ):?>
         <!-- Etape 8 : Affichage des dernières relances -->
         <h2>Etape 8: Dernière relance</h2>
         <table>
@@ -545,9 +545,15 @@
                 </tr>
             </tbody>
         </table>
-
-        <!-- Etape 9 : Affichage du dernier passage en EP -->
-        <h2>Etape 9: Dernier passage en EP</h2>
+        <?php endif;?>
+        
+        <?php if( Configure::read( 'Cg.departement' ) == 93 ):?>
+            <!-- Etape 9 : Affichage du dernier passage en EP -->
+            <h2>Etape 9: Dernier passage en EP</h2>
+        <?php elseif( Configure::read( 'Cg.departement' ) == 66 ):?>
+            <!-- Etape 9 : Affichage du dernier passage en EP -->
+            <h2>Etape 8: Dernier passage en EP</h2>
+        <?php endif;?>
         <?php
             $dateEpDEM = null;
             $etapeEpDEM = null;
@@ -618,7 +624,6 @@
                 </tr>
             </tbody>
         </table>
-    <?php endif;?>
     </div>
 </div>
 
