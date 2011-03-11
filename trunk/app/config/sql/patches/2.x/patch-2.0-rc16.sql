@@ -364,6 +364,23 @@ ALTER TABLE traitementspdos ALTER COLUMN dureedepart SET DEFAULT NULL;
 ALTER TABLE traitementspdos ALTER COLUMN dureeecheance TYPE TYPE_DUREE USING CAST(dureeecheance AS TYPE_DUREE);
 ALTER TABLE traitementspdos ALTER COLUMN dureeecheance SET DEFAULT NULL;
 
+-- -----------------------------------------------------------------------------
+-- 20110310
+-- -----------------------------------------------------------------------------
+SELECT add_missing_table_field ('public', 'seanceseps', 'lieuseance', 'VARCHAR(50)');
+SELECT add_missing_table_field ('public', 'seanceseps', 'adresseseance', 'VARCHAR(100)');
+SELECT add_missing_table_field ('public', 'seanceseps', 'codepostalseance', 'CHAR(5)');
+SELECT add_missing_table_field ('public', 'seanceseps', 'villeseance', 'VARCHAR(100)');
+ALTER TABLE seanceseps ALTER COLUMN lieuseance SET NOT NULL;
+ALTER TABLE seanceseps ALTER COLUMN adresseseance SET NOT NULL;
+ALTER TABLE seanceseps ALTER COLUMN codepostalseance SET NOT NULL;
+ALTER TABLE seanceseps ALTER COLUMN villeseance SET NOT NULL;
+
+
+
+
+
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
