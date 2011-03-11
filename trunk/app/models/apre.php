@@ -34,7 +34,8 @@
 					'montantdejaverse'
 				)
 			),
-			'Formattable'
+			'Formattable',
+			'Gedooo'
 		);
 
 		public $validate = array(

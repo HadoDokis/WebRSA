@@ -9,7 +9,7 @@
         var $helpers = array( 'Default', 'Locale', 'Csv', 'Ajax', 'Xform' );
         var $components = array( 'RequestHandler', 'Gedooo' );
         var $aucunDroit = array( 'gedooo' );
-        
+
 		var $commeDroit = array(
 			'add' => 'Cuis:edit'
 		);
@@ -301,7 +301,9 @@
             $cui['Referent']['qual'] = Set::enum( Set::classicExtract( $cui, 'Referent.qual' ), $qual );
 
             $this->_setOptions();
-//             $this->Gedooo->generate( $cui, 'CUI/cui.odt' );
+
+			$pdf = $this->Cui->ged( $cui, 'CUI/cui.odt' );
+			$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'cui-%s.pdf', date( 'Y-m-d' ) ) );
         }
 
         /**

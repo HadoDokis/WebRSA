@@ -9,7 +9,7 @@
         var $components = array( 'Gedooo' );
 		var $helpers = array( 'Xform', 'Locale', 'Paginator', 'Apreversement' );
         var $aucunDroit = array( 'ajaxmontant' );
-        
+
 		var $commeDroit = array(
 			'add' => 'Etatsliquidatifs:edit'
 		);
@@ -357,27 +357,27 @@
             $etatliquidatif['Etatliquidatif']['datecloture'] = date_short( Set::classicExtract( $etatliquidatif, 'Etatliquidatif.datecloture' ) );
             $apre = Set::merge( $apre, $etatliquidatif );
 
-
-// debug( Set::flatten( $apre, '_' ) );
-
-
-
             if( $typeapre == 'F' ) {
-                $this->Gedooo->generate( $apre, 'APRE/apreforfaitaire.odt' );
+				$pdf = $this->Etatliquidatif->Apre->ged( $apre, 'APRE/apreforfaitaire.odt' );
+				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'apreforfaitaire-%s.pdf', date( 'Y-m-d' ) ) );
             }
             else if( $typeapre == 'C' && $dest == 'tiersprestataire' ) {
                 // FIXME: dans le modèle
                 $apre['Apre']['pourcentallocation'] = round( Set::classicExtract( $apre, 'Apre.allocation' ) / Set::classicExtract( $apre, 'Apre.montantaverser' ) * 100, 0 );
                 //$apre['Apre']['restantallocation'] = number_format( Set::classicExtract( $apre, 'Apre.montantaverser' ) - Set::classicExtract( $apre, 'Apre.allocation' ), 2 );
                 $apre['Apre']['restantallocation'] = number_format( Set::classicExtract( $apre, 'Apre.montantdejaverse' ) - Set::classicExtract( $apre, 'Apre.montantaverser' ), 2 );
-                $this->Gedooo->generate( $apre, 'APRE/Paiement/paiement_'.$dest.'.odt' );
+
+				$pdf = $this->Etatliquidatif->Apre->ged( $apre, 'APRE/Paiement/paiement_'.$dest.'.odt' );
+				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'paiement_'.$dest.'-%s.pdf', date( 'Y-m-d' ) ) );
             }
             else if( $typeapre == 'C' && $dest == 'beneficiaire' ) {
                 // FIXME: dans le modèle
                 $apre['Apre']['pourcentallocation'] = round( Set::classicExtract( $apre, 'Apre.allocation' ) / Set::classicExtract( $apre, 'Apre.montantaverser' ) * 100, 0 );
                 //$apre['Apre']['restantallocation'] = number_format( Set::classicExtract( $apre, 'Apre.montantaverser' ) - Set::classicExtract( $apre, 'Apre.allocation' ), 2 );
                 $apre['Apre']['restantallocation'] = number_format( Set::classicExtract( $apre, 'Apre.montantdejaverse' ) - Set::classicExtract( $apre, 'Apre.montantaverser' ), 2 );
-                $this->Gedooo->generate( $apre, 'APRE/Paiement/paiement_'.$typeformation.'_'.$dest.'.odt' );
+
+				$pdf = $this->Etatliquidatif->Apre->ged( $apre, 'APRE/Paiement/paiement_'.$typeformation.'_'.$dest.'.odt' );
+				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'paiement_'.$typeformation.'_'.$dest.'-%s.pdf', date( 'Y-m-d' ) ) );
             }
         }
 
@@ -478,14 +478,18 @@
 // debug($typeapre);
 // die();
             if( $typeapre  == 'F' ) {
-                $this->Gedooo->generateCohorte( 'forfaitaire', $apres, 'APRE/apreforfaitaire.odt', null );
+				$pdf = $this->Etatliquidatif->Apre->ged( array( 'forfaitaire' => $apres ), 'APRE/apreforfaitaire.odt', true );
+				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'apreforfaitaire-%s.pdf', date( 'Y-m-d' ) ) );
             }
             else if( $typeapre  == 'C' && !empty( $dest ) ) {
                 if( $dest == 'tiersprestataire' ) {
-                    $this->Gedooo->generateCohorte( 'etatliquidatif_tiers', $apres, 'APRE/Paiement/paiement_'.$dest.'.odt', null );
+					$pdf = $this->Etatliquidatif->Apre->ged( array( 'etatliquidatif_tiers' => $apres ), 'APRE/Paiement/paiement_'.$dest.'.odt', true );
+					$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'paiement_'.$dest.'-%s.pdf', date( 'Y-m-d' ) ) );
+
                 }
                 else if( $dest == 'beneficiaire' ) {
-                    $this->Gedooo->generateCohorte( 'apreforfaitaire', $apres, 'APRE/Paiement/paiement_'.$dest.'.odt', null );
+					$pdf = $this->Etatliquidatif->Apre->ged( array( 'apreforfaitaire' => $apres ), 'APRE/Paiement/paiement_'.$dest.'.odt', true );
+					$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'paiement_'.$dest.'-%s.pdf', date( 'Y-m-d' ) ) );
                 }
             }
         }

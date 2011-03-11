@@ -68,7 +68,8 @@
 					)
 				)
 			),
-			'Formattable'
+			'Formattable',
+			'Gedooo'
 		);
 
 

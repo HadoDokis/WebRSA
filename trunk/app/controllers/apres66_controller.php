@@ -472,7 +472,7 @@
 		                $valide = ( $nbpieces == $nbNormalPieces['Typeaideapre66'] );
 		            }
 				}
-		            
+
 	            $this->data['Apre66']['etatdossierapre'] = ( $valide ? 'COM' : 'INC' );
 
 // debug($this->data);
@@ -653,7 +653,7 @@
                     )
                 )
             );
-            
+
 			$piecesPresentes = Set::classicExtract($apre, 'Aideapre66.Piececomptable66.{n}.id');
 
 			$conditions = array();
@@ -698,14 +698,17 @@
 //             $apre['Personne']['dtnai'] = $this->Locale->date( 'Date::short', Set::classicExtract( $apre, 'Personne.dtnai' ) );
             $apre['Referent']['qual'] = Set::enum( Set::classicExtract( $apre, 'Referent.qual' ), $qual );
 //die();
-			
-			$apre['Structurereferente']['adresse'] = Set::classicExtract( $apre, 'Structurereferente.num_voie').' '.Set::enum( Set::classicExtract( $apre, 'Structurereferente.type_voie'), $typevoie ).' '.Set::classicExtract( $apre, 'Structurereferente.nom_voie').' '.Set::classicExtract( $apre, 'Structurereferente.code_postal').' '.Set::classicExtract( $apre, 'Structurereferente.ville');
-			
-			if ($apre['Aideapre66']['decisionapre']=='ACC')
-				$this->Gedooo->generate( $apre, 'APRE/accordaide.odt');
-			else
-				$this->Gedooo->generate( $apre, 'APRE/refusaide.odt');
-        }
 
+			$apre['Structurereferente']['adresse'] = Set::classicExtract( $apre, 'Structurereferente.num_voie').' '.Set::enum( Set::classicExtract( $apre, 'Structurereferente.type_voie'), $typevoie ).' '.Set::classicExtract( $apre, 'Structurereferente.nom_voie').' '.Set::classicExtract( $apre, 'Structurereferente.code_postal').' '.Set::classicExtract( $apre, 'Structurereferente.ville');
+
+			if ($apre['Aideapre66']['decisionapre']=='ACC') {
+				$pdf = $this->Apre66->ged( $apre, 'APRE/accordaide.odt' );
+				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'accordaide-%s.pdf', date( 'Y-m-d' ) ) );
+			}
+			else {
+				$pdf = $this->Apre66->ged( $apre, 'APRE/refusaide.odt' );
+				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'refusaide-%s.pdf', date( 'Y-m-d' ) ) );
+			}
+        }
     }
 ?>

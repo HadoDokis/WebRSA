@@ -1,5 +1,4 @@
 <?php
-
 	App::import('Sanitize');
 
 	class GedooosController extends AppController
@@ -28,7 +27,8 @@
 		}
 
 		protected function _ged( $datas, $model ) {
-			$this->Gedooo->generate( $datas, $model );
+			$pdf = $this->Cohorte->ged( $datas, $model );
+			$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( $this->action.'-%s.pdf', date( 'Y-m-d' ) ) );
 		}
 
 		public function notification_structure( $personne_id = null ) {

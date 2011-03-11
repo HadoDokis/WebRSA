@@ -228,13 +228,14 @@
 
             ///Pour la date du comité
             $apre['ApreComiteapre']['daterecours'] =  date_short( Set::classicExtract( $apre, 'ApreComiteapre.daterecours' ) );
-/*debug($apre);
-die();*/
+
             if( $dest == 'beneficiaire' ) {
-                $this->Gedooo->generate( $apre, 'APRE/DecisionComite/Recours/recours'.$recoursapre.''.$dest.'.odt' );
+				$pdf = $this->Apre->ged( $apre, 'APRE/DecisionComite/Recours/recours'.$recoursapre.$dest.'.odt' );
+				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'recours-%s.pdf', date( 'Y-m-d' ) ) );
             }
             else if( $dest == 'referent' ) {
-                $this->Gedooo->generate( $apre, 'APRE/DecisionComite/Recours/recours'.$dest.'.odt' );
+				$pdf = $this->Apre->ged( $apre, 'APRE/DecisionComite/Recours/recours'.$dest.'.odt' );
+				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'recours-%s.pdf', date( 'Y-m-d' ) ) );
             }
         }
 

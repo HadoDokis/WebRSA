@@ -400,28 +400,24 @@
 			///Paramètre nécessaire pour connaitre le type de paiement au tiers (total/ plusieurs versements )
 //             $typepaiement = array( 'Direct', 'Versement' ); //FIXME
 			$typepaiement = 'Versement';
-// debug($apre);
-// debug(Set::classicExtract( $apre, 'ApreComiteapre.decisioncomite' ));
 
-// debug($dest);
-// debug($typedecision);
-// debug($apre);
-// die();
 			$this->_setOptions();
 			if( ( $dest == 'beneficiaire' || $dest == 'referent' || $dest == 'tiers' ) && ( $typedecision == 'Refus' || $typedecision == 'Ajournement' ) ) {
-				$this->Gedooo->generate( $apre, 'APRE/DecisionComite/Refus/Refus'.$dest.'.odt' );
+				$pdf = $this->Apre->ged( $apre, 'APRE/DecisionComite/Refus/Refus'.$dest.'.odt' );
+				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'Refus'.$dest.'-%s.pdf', date( 'Y-m-d' ) ) );
 			}
 			else if( $dest == 'beneficiaire' && $typedecision == 'Accord' ) {
-				$this->Gedooo->generate( $apre, 'APRE/DecisionComite/'.$typedecision.'/'.$typedecision.''.$typeformation.''.$dest.'.odt' );
+				$pdf = $this->Apre->ged( $apre, 'APRE/DecisionComite/'.$typedecision.'/'.$typedecision.$typeformation.$dest.'.odt' );
+				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( $typedecision.$typeformation.$dest.'-%s.pdf', date( 'Y-m-d' ) ) );
 			}
 			else if( $dest == 'referent' && $typedecision == 'Accord' ) {
-				$this->Gedooo->generate( $apre, 'APRE/DecisionComite/'.$typedecision.'/'.$typedecision.''.$dest.'.odt' );
+				$pdf = $this->Apre->ged( $apre, 'APRE/DecisionComite/'.$typedecision.'/'.$typedecision.$dest.'.odt' );
+				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( $typedecision.$dest.'-%s.pdf', date( 'Y-m-d' ) ) );
 			}
 			else if( $dest == 'tiers' && !empty( $typedecision ) ) {
-				$this->Gedooo->generate( $apre, 'APRE/DecisionComite/'.$typedecision.'/'.$typedecision.''.$typepaiement.''.$dest.'.odt' );
+				$pdf = $this->Apre->ged( $apre, 'APRE/DecisionComite/'.$typedecision.'/'.$typedecision.$typepaiement.$dest.'.odt' );
+				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( $typedecision.$typepaiement.$dest.'-%s.pdf', date( 'Y-m-d' ) ) );
 			}
-
-
 		}
 	}
 ?>

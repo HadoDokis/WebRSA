@@ -497,7 +497,7 @@
 
 			$modeledoc = "{$this->alias}/decision_{$gedooo_data['Nvsrepreorientsr93']['decision']}.odt";
 
-			$pdf = $this->getPdf( $gedooo_data, $modeledoc );
+			$pdf = $this->ged( $gedooo_data, $modeledoc );
 			$success = true;
 
 			if( $pdf ) {
