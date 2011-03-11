@@ -419,7 +419,7 @@
 
             <tr>
                 <td>
-                    <h2>Dernières relances</h2>
+                    <h2>Dernière relance</h2>
                     <table >
                     <?php echo thead( 10 );?>
                         <tbody>
@@ -438,18 +438,45 @@
                 </td>
                 <td>
                     <h2>Dernier passage en EP</h2>
+                    <?php
+                        $dateEpDEM = null;
+                        $etapeEpDEM = null;
+                        $decisionEpDEM = null;
+
+                        $dateEpCJT = null;
+                        $etapeEpCJT = null;
+                        $decisionEpCJT = null;
+// debug($dossierep);
+                        if( isset( $details['DEM'] ) && ( $details['DEM']['Dossierep']['derniere']['Dossierep']['etapedossierep'] == 'traite' ) ){
+                            $dateEpDEM = h( date_short( Set::extract( 'DEM.Dossierep.derniere.Dossierep.created', $details ) ) );
+                            $etapeEpDEM =  Set::enum( Set::classicExtract( $details, 'DEM.Dossierep.derniere.Dossierep.etapedossierep' ), $dossierep['etapedossierep'] );
+                            $decisionEpDEM = Set::enum( Set::classicExtract( $details, 'DEM.Dossierep.derniere.Dossierep.themeep' ), $dossierep['themeep'] );
+
+                        }
+                        if( isset( $details['CJT'] ) && ( $details['CJT']['Dossierep']['derniere']['Dossierep']['etapedossierep'] == 'traite' ) ){
+                            $dateEpCJT = h( date_short( Set::extract( 'CJT.Dossierep.derniere.Dossierep.created', $details ) ) );
+                            $etapeEpCJT =  Set::enum( Set::classicExtract( $details, 'CJT.Dossierep.derniere.Dossierep.etapedossierep' ), $dossierep['etapedossierep'] );
+                            $decisionEpCJT = Set::enum( Set::classicExtract( $details, 'CJT.Dossierep.derniere.Dossierep.themeep' ), $dossierep['themeep'] );
+                        }
+
+                    ?>
                     <table>
                     <?php echo thead( 10 );?>
                         <tbody>
+                            <tr class="odd">
+                                <th>Date de l'EP</th>
+                                <td><?php echo $dateEpDEM;?></td>
+                                <td><?php echo$dateEpCJT;?></td>
+                            </tr>
                             <tr class="even">
-                                <th>Date de passage en EP</th>
-                                <td><?php echo Set::enum( Set::classicExtract( $details, 'DEM.Cui.convention' ), $enumcui['convention'] );?></td>
-                                <td><?php echo Set::enum( Set::classicExtract( $details, 'CJT.Cui.convention' ), $enumcui['convention'] );?></td>
+                                <th>Etape de passage en EP</th>
+                                <td><?php echo $etapeEpDEM;?></td>
+                                <td><?php echo $etapeEpCJT;?></td>
                             </tr>
                             <tr class="odd">
                                 <th>Décision de l'EP</th>
-                                <td><?php echo Set::enum( Set::classicExtract( $details, 'DEM.Cui.secteur' ), $enumcui['secteur'] );?></td>
-                                <td><?php echo Set::enum( Set::classicExtract( $details, 'CJT.Cui.secteur' ), $enumcui['secteur'] );?></td>
+                                <td><?php echo $decisionEpDEM;?></td>
+                                <td><?php echo $decisionEpCJT;?></td>
                             </tr>
                         </tbody>
                     </table>

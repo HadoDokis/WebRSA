@@ -61,6 +61,7 @@
 				$this->set( 'enumcui', $this->Dossier->Foyer->Personne->Cui->allEnumLists() );
 				$this->set( 'etatpe', $this->Informationpe->Historiqueetatpe->allEnumLists() );
 				$this->set( 'relance', $this->Dossier->Foyer->Personne->Orientstruct->Nonrespectsanctionep93->allEnumLists() );
+				$this->set( 'dossierep', $this->Dossier->Foyer->Personne->Dossierep->allEnumLists() );
 			}
 			else if( $this->action == 'exportcsv' ) {
 				$typesorient = $this->Dossier->Foyer->Personne->Orientstruct->Typeorient->find( 'list', array( 'fields' => array( 'id', 'lib_type_orient' ) ) );
@@ -583,7 +584,6 @@
 						'Dsp.id',
 						'Dossiercaf.ddratdos',
 						'Dossiercaf.dfratdos',
-// 						'Infopoleemploi.identifiantpe',
 // 						'Infopoleemploi.dateinscription',
 // 						'Infopoleemploi.categoriepe',
 // 						'Infopoleemploi.datecessation',
@@ -591,7 +591,7 @@
 // 						'Infopoleemploi.dateradiation',
 // 						'Infopoleemploi.motifradiation',
 						'Calculdroitrsa.toppersdrodevorsa',
-						'Prestation.rolepers',
+						'Prestation.rolepers'
 					),
 					'conditions' => array(
 						'Personne.foyer_id' => $details['Foyer']['id'],
@@ -602,7 +602,6 @@
 						'Prestation',
 						'Dossiercaf',
 						'Dsp',
-// 						'Infopoleemploi',
 						'Calculdroitrsa',
 					),
 					'recursive' => 0
@@ -744,6 +743,30 @@
                 $personnesFoyer[$index]['Nonrespectsanctionep93']['derniere'] = $tRelance;
 
 // debug($tRelance);
+
+
+                $tEp = $this->Dossier->Foyer->Personne->Dossierep->find(
+                    'first',
+                    array(
+                        'fields' => array(
+                            'etapedossierep',
+                            'created',
+                            'seanceep_id',
+                            'themeep',
+                        ),
+                        'conditions' => array(
+                            'Dossierep.personne_id' => $personnesFoyer[$index]['Personne']['id']
+                        ),
+                        'contain' => false,
+                        'order' => "Dossierep.created DESC",
+                        'recursive' => -1
+                    )
+                );
+                $personnesFoyer[$index]['Dossierep']['derniere'] = $tEp;
+// debug($tEp);
+
+
+
                 /**
                 *   Utilisation des nouvelles tables de stockage des infos Pôle Emploi
                 */
