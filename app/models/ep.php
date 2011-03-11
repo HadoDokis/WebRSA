@@ -137,7 +137,7 @@
 		*/
 
 		public function identifiant() {
-			return /*'EP'.date( 'Ym' ).sprintf( "%010s",  */($this->find( 'count' ) + 1 );
+			return 'EP'.date( 'Ym' ).sprintf( "%010s",  $this->find( 'count' ) + 1 );
 		}
 
 		/**
