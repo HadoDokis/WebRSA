@@ -267,7 +267,7 @@ msgid "ENUM::DUREEDEPART::4"
 msgstr "4 mois"
 
 msgid "ENUM::DUREEDEPART::4.5"
-msgstr "5,5 mois"
+msgstr "4,5 mois"
 
 msgid "ENUM::DUREEDEPART::5"
 msgstr "5 mois"
@@ -337,7 +337,7 @@ msgid "ENUM::DUREEECHEANCE::4"
 msgstr "4 mois"
 
 msgid "ENUM::DUREEECHEANCE::4.5"
-msgstr "5,5 mois"
+msgstr "4,5 mois"
 
 msgid "ENUM::DUREEECHEANCE::5"
 msgstr "5 mois"
