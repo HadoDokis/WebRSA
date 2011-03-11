@@ -9,7 +9,6 @@
 
 		function testSearch() {
 			$result = $this->Seanceep->search($criteresseanceep = null);
-			$this->assertNull($result['conditions']['0']);
 			$criteresseanceep = array(
 				'Ep' => array(
 					'id' => '1',
@@ -79,20 +78,13 @@
 		}
 
 		function testThemesTraites() {
-			$id = null; // id de la seanceEp
-			$result = $this->Seanceep->themesTraites($id);
-			$this->assertNull($result['nonrespectsanctionep93']);
-			$this->assertNull($result['saisineepreorientsr93']);
-
 			$id = '3'; // id de la seanceEp
 			$result = $this->Seanceep->themesTraites($id);
 			$this->assertEqual($result['nonrespectsanctionep93'], 'cg');
-			$this->assertNull($result);//['saisineepreorientsr93'], 'cg');
-
+			
 			$id = '6'; // id de la seanceEp
 			$result = $this->Seanceep->themesTraites($id);
 			$this->assertEqual($result['nonrespectsanctionep93'], 'cg');
-			$this->assertNull($result);//['saisineepreorientsr93'], 'cg');
 		}
 
 		function testSaveDecisions() {
@@ -299,15 +291,21 @@
 		function testFinaliser() {
 			$seanceep_id = '3';
 			$niveauDecision = 'cg';
-			$this->assertFalse($this->Seanceep->finaliser($seanceep_id, $niveauDecision));
+			$user_id = '6';
+			$result = $this->Seanceep->finaliser($seanceep_id, $niveauDecision, $user_id);
+			$this->assertFalse($result);
 
 			$seanceep_id = '6';
 			$niveauDecision = 'cg';
-			$this->assertFalse($this->Seanceep->finaliser($seanceep_id, $niveauDecision));
+			$user_id = '6';
+			$result = $this->Seanceep->finaliser($seanceep_id, $niveauDecision, $user_id);
+			$this->assertFalse($result);
 
 			$seanceep_id = '9';
 			$niveauDecision = 'cg';
-			$this->assertEqual($this->Seanceep->finaliser($seanceep_id, $niveauDecision), '1');
+			$user_id = '6';
+			$result = $this->Seanceep->finaliser($seanceep_id, $niveauDecision, $user_id);
+			$this->assertTrue($result);
 		}
 
 		function testClotureSeance() {

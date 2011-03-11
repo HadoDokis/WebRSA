@@ -51,62 +51,59 @@
 		}
 		
 		function testSoumisDroitsEtDevoirs() {
-			$personne_id = 1
+			$personne_id = 1;
 			$result = $this->Personne->soumisDroitsEtDevoirs($personne_id);
 			$this->assertTrue($result);
-			$personne_id = 1337
+			$personne_id = 1337;
 			$result = $this->Personne->soumisDroitsEtDevoirs($personne_id);
 			$this->assertFalse($result);
 		}
 		
 
 		function testFindByZones() {
-			$zonegeo = array(
-					array(
-						'id' => '1',
-						'codeinsee' => '34090',
-						'libelle' => 'Pole Montpellier-Nord',
-					),
-					array(
-						'id' => '2',
-						'codeinsee' => '34070',
-						'libelle' => 'Pole Montpellier Sud-Est',
-					),
-					array(
-						'id' => '3',
-						'codeinsee' => '34080',
-						'libelle' => 'Pole Montpellier Ouest',
-					)
-				);				
-			$result = $this->Personne->findByZones($zonegeo, null);
-			$expected = array("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "667");
+			$zonegeo = array('ighr8', 'pokf2');				
+			$result = $this->Personne->findByZones($zonegeo, true);
+			$expected = array(
+				'0' => '2',
+				'1' => '1',
+				'2' => '4',
+				'3' => '3',
+			);
+			$this->assertEqual($result, $expected);
+
+			$zonegeo = array('93066');
+			$result = $this->Personne->findByZones($zonegeo, true);
+			$expected = array(
+				'0' => '1001',
+				'1' => '2002',
+				'2' => '3003',
+				'3' => '4004',
+			);
 			$this->assertEqual($result, $expected);
 		}
 
 		
 		function testDetailsCi() {
-			//test personne_id == 1
-			$result = $this->Personne->detailsCi(1, null);
+			$personne_id = '1';
+			$user_id = null;
+			$result = $this->Personne->detailsCi($personne_id, $user_id);
 			$this->assertTrue($result);
 
-			//test personne_id == 2
-			$result = $this->Personne->detailsCi(2, null);
+			$personne_id = '2';
+			$user_id = null;
+			$result = $this->Personne->detailsCi($personne_id, $user_id);
 			$this->assertTrue($result);
-
-			//FIXME renvoi un array et engendre des erreurs avec personne_id = 1337
-			// test personne_id == 1337 (inexistant)
-			//$result = $this->Personne->detailsCi(1337, null);
-			//$this->assertFalse($result);
-			//$this->assertNull($result);
 		}
 
 		function testDetailsApre() {
-			//test personne_id == 1
-			$result = $this->Personne->detailsApre(1, null);
+			$personne_id = '1';
+			$user_id = null;
+			$result = $this->Personne->detailsApre($personne_id, $user_id);
 			$this->assertTrue($result);
 
-			//test personne_id == 2
-			$result = $this->Personne->detailsApre(2, null);
+			$personne_id = '2';
+			$user_id = null;
+			$result = $this->Personne->detailsApre($personne_id, $user_id);
 			$this->assertTrue($result);
 
 			//FIXME renvoi un array et engendre des erreurs avec personne_id = 1337
@@ -116,17 +113,22 @@
 			//$this->assertNull($result);
 		}
 
+		
+
 		function testNewDetailsCi() {
-			//test personne_id == 1
-			$result = $this->Personne->newDetailsCi(1, null);
+			$personne_id = '1';
+			$user_id = null;
+			$result = $this->Personne->newDetailsCi($personne_id, $user_id);
 			$this->assertTrue($result);
 
-			//test personne_id == 2
-			$result = $this->Personne->newDetailsCi(2, null);
+			$personne_id = '2';
+			$user_id = null;
+			$result = $this->Personne->newDetailsCi($personne_id, $user_id);
 			$this->assertFalse($result);
 
-			// test personne_id == 1337 (inexistant)
-			$result = $this->Personne->newDetailsCi(1337, null);
+			$personne_id = '1337'; //(inexistant)
+			$user_id = null;
+			$result = $this->Personne->newDetailsCi($personne_id, $user_id);
 			$this->assertFalse($result);
 		}
 		

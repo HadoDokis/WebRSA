@@ -14,6 +14,14 @@
 				'created' => null,
 				'modified' => null,
 			),
+			array(
+				'id' => '2',
+				'dossier_id' => '2',
+				'php_sid' => null,
+				'user_id' => '2',
+				'created' => null,
+				'modified' => null,
+			),
 		);
 	}
 

@@ -148,11 +148,10 @@
 						'type_voie' => 'ARC',
 					),
 			);
-			$filtre_zone_geo = false;
+			$filtre_zone_geo = true;
+			$mesCodesInsee = array('30900');
 			$result = $this->Dossier->search($mesCodesInsee, $filtre_zone_geo, $params);
-			$this->asserTrue($result);
-//			$mesCodesInsee = '34090';
-//			$result = $this->Dossier->search($mesCodesInsee, $filtre_zone_geo, $params);
+			$this->assertTrue($result);
 		}
 
 	}
