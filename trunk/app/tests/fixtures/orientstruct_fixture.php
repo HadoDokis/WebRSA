@@ -25,8 +25,8 @@
 				'etatorient' => null,
 				'rgorient' => null,
 				'structureorientante_id' => null,
-				'user_id' => 1,
 				'referentorientant_id' => null,
+				'user_id' => null,
 			),
 			array(
 				'id' => '2',
@@ -46,8 +46,8 @@
 				'etatorient' => null,
 				'rgorient' => null,
 				'structureorientante_id' => null,
-				'user_id' => 1,
 				'referentorientant_id' => null,
+				'user_id' => null,
 			),
 			array(
 				'id' => '3',
@@ -67,8 +67,8 @@
 				'etatorient' => null,
 				'rgorient' => null,
 				'structureorientante_id' => null,
-				'user_id' => 1,
 				'referentorientant_id' => null,
+				'user_id' => null,
 			),
 			array(
 				'id' => '4',
@@ -88,8 +88,8 @@
 				'etatorient' => null,
 				'rgorient' => null,
 				'structureorientante_id' => null,
-				'user_id' => 1,
 				'referentorientant_id' => null,
+				'user_id' => null,
 			),
 			array(
 				'id' => '5',
@@ -109,8 +109,8 @@
 				'etatorient' => null,
 				'rgorient' => null,
 				'structureorientante_id' => null,
-				'user_id' => 1,
 				'referentorientant_id' => null,
+				'user_id' => null,
 			),
 			array(
 				'id' => '6',
@@ -130,8 +130,8 @@
 				'etatorient' => null,
 				'rgorient' => null,
 				'structureorientante_id' => null,
-				'user_id' => 1,
 				'referentorientant_id' => null,
+				'user_id' => null,
 			),
 			array(
 				'id' => '7',
@@ -151,8 +151,8 @@
 				'etatorient' => null,
 				'rgorient' => null,
 				'structureorientante_id' => null,
-				'user_id' => 1,
 				'referentorientant_id' => null,
+				'user_id' => null,
 			),
 			array(
 				'id' => '8',
@@ -172,8 +172,8 @@
 				'etatorient' => null,
 				'rgorient' => null,
 				'structureorientante_id' => null,
-				'user_id' => 1,
 				'referentorientant_id' => null,
+				'user_id' => null,
 			),
 			array(
 				'id' => '9',
@@ -193,8 +193,8 @@
 				'etatorient' => null,
 				'rgorient' => null,
 				'structureorientante_id' => null,
-				'user_id' => 1,
 				'referentorientant_id' => null,
+				'user_id' => null,
 			),
 			array(
 				'id' => '1001',
@@ -214,8 +214,8 @@
 				'etatorient' => null,
 				'rgorient' => '1',
 				'structureorientante_id' => null,
-				'user_id' => 1,
 				'referentorientant_id' => null,
+				'user_id' => '5',
 			),
 			array(
 				'id' => '2002',
@@ -235,8 +235,8 @@
 				'etatorient' => null,
 				'rgorient' => '1',
 				'structureorientante_id' => null,
-				'user_id' => 1,
 				'referentorientant_id' => null,
+				'user_id' => null,
 			),
 			array(
 				'id' => '3003',
@@ -256,8 +256,8 @@
 				'etatorient' => null,
 				'rgorient' => '1',
 				'structureorientante_id' => null,
-				'user_id' => 1,
 				'referentorientant_id' => null,
+				'user_id' => null,
 			),
 			array(
 				'id' => '4004',
@@ -277,8 +277,8 @@
 				'etatorient' => null,
 				'rgorient' => '1',
 				'structureorientante_id' => null,
-				'user_id' => 1,
 				'referentorientant_id' => null,
+				'user_id' => null,
 			),
 		);
 	}

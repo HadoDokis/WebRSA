@@ -24,9 +24,9 @@
 				'2' => 'defautinsertionep66',
 				'3' => 'nonrespectsanctionep93',
 				'4' => 'saisineepreorientsr93',
-				'5' => 'radiepoleemploiep93',
-				'6' => 'nonorientationpro58',
-				'7' => 'regressionorientationep58',
+				'5' => 'nonorientationpro58',
+				'6' => 'regressionorientationep58',
+//				'7' => 'radiepoleemploiep93',
 			);
 			$this->assertEqual($result, $expected);
 		}

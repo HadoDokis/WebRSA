@@ -299,8 +299,9 @@
 			$expected = array(
 				'E' => 'En attente de décision',
 				'V' => 'Validation à compter du',
-				'A' => 'Ajournement',
-				'R' => 'Rejet'
+				//'A' => 'Ajournement',
+				//'R' => 'Rejet'
+				'N' => 'Non validé',
 			);
 			$this->assertEqual($result, $expected);
 		}
@@ -1427,7 +1428,19 @@
 			$this->assertEqual($result, $expected);
 		}
 
-	function testStatut_contrat_insertion() {
+		function testStatudemrsa() {
+			$result = $this->Option->soutdemarsoc();
+			$expected = array(
+	        	        'N' => 'Non allocataire',
+	        	        'C' => 'Allocataire de la CAF',
+	        	        'A' => 'Allocataire d\'une autre CAF',
+	        	        'M' => 'Allocataire de la MSA',
+	        	        'S' => 'Allocataire d\'une autre MSA'
+			);
+			$this->assertEqual($result, $expected);
+        	}
+
+		function testStatut_contrat_insertion() {
 			$result = $this->Option->statut_contrat_insertion();
 			$expected = array(
 				'1' => 'Validé',

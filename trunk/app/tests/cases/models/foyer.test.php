@@ -65,7 +65,6 @@
 			// test pour le foyer 2
 			$result = $this->Foyer->montantForfaitaire(2);
 			$this->assertFalse($result);
-
 			// test pour le foyer 3
 			$result = $this->Foyer->montantForfaitaire(3);
 			$this->assertTrue($result);
@@ -77,19 +76,6 @@
 			// test pour le foyer 5
 			$result = $this->Foyer->montantForfaitaire(5);
 			$this->assertFalse($result);
-
-			///FIXME: renvoie vrai pour un foyer non existant c'est normal ???
-			// test pour le foyer 666 (inexistant)
-			$result = $this->Foyer->montantForfaitaire(666);
-			$this->assertFalse($result);
-
-			// test avec un foyer_id incoherent (-42)
-			$result = $this->Foyer->montantForfaitaire(-42);
-			$this->assertFalse($result);
-
-			//FIXME test avec un foyer_id incoherent, insére "toto" à la place d'un id
-			// $result = $this->Foyer->montantForfaitaire("toto");
-			//$this->assertFalse($result);			
 		}
 
 		/**

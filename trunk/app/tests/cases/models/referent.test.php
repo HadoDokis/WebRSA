@@ -11,7 +11,8 @@
 			$result=$this->Referent->listOptions();
 			$expected=array(
 				'2_2' => 'M Deufs John',
-				'1_1' => 'M Némard Jean'
+				'7_3' => 'M Lereferent Dddddd',
+				'1_1' => 'M Némard Jean',
 			);
 			$this->assertEqual($result,$expected);
 		}
