@@ -49,7 +49,8 @@
 					'positionbilan'
 				)
 			),
-            'Gedooo'
+            'Gedooo',
+            'StorablePdf',
 		);
 
 		public $validate = array(
@@ -534,7 +535,13 @@
 			return $success;
 		}
 
+        /**
+        * Retourne le chemin relatif du modèle de document à utiliser pour l'enregistrement du PDF.
+        */
 
+        public function modeleOdt( $data ) {
+            return "Bilanparcours/bilanparcours.odt";
+        }
 
         /**
         * Récupère les données pour le PDf
@@ -657,62 +664,17 @@
         *
         */
 
-        public function generatePdf( $id ) {
-            $gedooo_data = $this->getDataForPdf( $id );
-
-            $modeledoc = "Bilanparcours/bilanparcours.odt";
-
-            $pdf = $this->ged( $gedooo_data, $modeledoc );
-            $success = true;
-
-            if( $pdf ) {
-                $pdfModel = ClassRegistry::init( 'Pdf' );
-                $pdfModel->create(
-                    array(
-                        'Pdf' => array(
-                            'modele' => 'Bilanparcours66',
-                            'modeledoc' => $modeledoc,
-                            'fk_value' => $id,
-                            'document' => $pdf
-                        )
-                    )
-                );
-                $success = $pdfModel->save() && $success;
-            }
-            else {
-                $success = false;
-            }
-
-            return $success;
-        }
-
-        /**
-        * Enregistrement du Pdf
-        */
-
-        public function afterSave( $created ) {
-            return $this->generatePdf( $this->id );
-        }
-
-
-
-        /**
-        *
-        */
-
         public function getPdfCourrierInformation( $id ) {
-            $bilanparcours66_data = $this->find(
-                'first',
+
+            $gedooo_data = $this->getDataForPdf( $id );
+            $this->updateAll(
+                array( 'Bilanparcours66.datecourrierimpression' => "'".date( 'Y-m-d' )."'" ),
                 array(
-                    'conditions' => array(
-                        'Bilanparcours66.id' => $id
-                    )
+                    '"Bilanparcours66"."datecourrierimpression" IS NULL',
+                    '"Bilanparcours66"."id"' => $id
                 )
             );
 
-            $gedooo_data = $this->getDataForPdf( $id );
-// debug($gedooo_data);
-// die();
             return $this->ged( $gedooo_data, 'Bilanparcours/courrierinformationavantep.odt'/*, true, $options*/ );
         }
 

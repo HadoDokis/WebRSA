@@ -554,33 +554,14 @@
         */
 
         public function bilanparcoursGedooo( $id ) {
-            $this->assert( is_numeric( $id ), 'invalidParameter' );
+            $this->assert( !empty( $id ), 'error404' );
 
-            $this->Bilanparcours66->begin();
+            $pdf = $this->Bilanparcours66->getStoredPdf( $id );
 
-            $content = $this->Pdf->find(
-                'first',
-                array(
-                    'fields' => array(
-                        'Pdf.document'
-                    ),
-                    'conditions' => array(
-                        'Pdf.modele' => 'Bilanparcours66',
-                        'Pdf.fk_value' => $id
-                    ),
-                    'recursive' => -1
-                )
-            );
+            $this->assert( !empty( $pdf ), 'error404' );
+            $this->assert( !empty( $pdf['Pdf']['document'] ), 'error500' ); // FIXME: ou en faire l'impression ?
 
-            if( $content['Pdf']['document'] !== false ) {
-                $this->Bilanparcours66->commit();
-                $this->layout = '';
-                $this->Gedooo->sendPdfContentToClient( $content['Pdf']['document'], sprintf( "bilanparcours-%s.pdf", date( "Ymd-H\hi" ) ) );
-            }
-            else {
-                $this->Bilanparcours66->rollback();
-                $this->cakeError( 'error500' );
-            }
+            $this->Gedooo->sendPdfContentToClient( $pdf['Pdf']['document'], "{$id}.pdf" );
         }
 
 
@@ -589,7 +570,7 @@
         */
 
         public function courrier_information( $id ) {
-
+            $this->assert( !empty( $id ), 'error404' );
             $pdf = $this->Bilanparcours66->getPdfCourrierInformation( $id );
 
             if( $pdf ) {
