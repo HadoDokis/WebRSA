@@ -550,7 +550,7 @@
         <?php if( Configure::read( 'Cg.departement' ) == 93 ):?>
             <!-- Etape 9 : Affichage du dernier passage en EP -->
             <h2>Etape 9: Dernier passage en EP</h2>
-        <?php elseif( Configure::read( 'Cg.departement' ) == 66 ):?>
+        <?php elseif( Configure::read( 'Cg.departement' ) != 93 ):?>
             <!-- Etape 9 : Affichage du dernier passage en EP -->
             <h2>Etape 8: Dernier passage en EP</h2>
         <?php endif;?>
