@@ -87,3 +87,16 @@ msgstr "Décision CG"
 
 msgid "ENUM::FINALISEE::ep"
 msgstr "Avis de l'EP"
+
+
+msgid "Seanceep.lieuseance"
+msgstr "Lieu de la séance"
+
+msgid "Seanceep.adresseseance"
+msgstr "Adresse de la séance"
+
+msgid "Seanceep.codepostalseance"
+msgstr "Code postal de la séance"
+
+msgid "Seanceep.villeseance"
+msgstr "Ville de la séance"

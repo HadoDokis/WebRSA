@@ -35,7 +35,11 @@
 			'Seanceep.ep_id',
 			'Seanceep.name',
 			'Seanceep.dateseance' => array( 'dateFormat' => __( 'Locale->dateFormat', true ), 'timeFormat' => __( 'Locale->timeFormat', true ), 'interval'=>15 ), // TODO: à mettre par défaut dans Default2Helper
-			'Seanceep.structurereferente_id' => array ('type'=>'select')
+// 			'Seanceep.structurereferente_id' => array ('type'=>'select'),
+			'Seanceep.lieuseance',
+			'Seanceep.adresseseance',
+			'Seanceep.codepostalseance',
+			'Seanceep.villeseance'
 		),
 		array(
 			'options' => $options
