@@ -433,7 +433,7 @@ msgid "Detailaccosocindi.nataccosocindi"
 msgstr "Dans quel domaine accompagnement individuel ?"
 
 msgid "Detailaccosocindi.libautraccosocindi"
-msgstr "Autre nature d'accompagnement individuel ?"
+msgstr "Autre nature d'accompagnement individuel ? (100 carac. max)"
 
 ###############################################################################
 
