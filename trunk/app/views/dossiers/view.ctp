@@ -415,10 +415,11 @@
                 </td>
             </tr>
             <!-- Partie passage en EP-->
-            <?php if( Configure::read( 'Cg.departement' ) == 93 ):?>
+
 
             <tr>
                 <td>
+                    <?php if( Configure::read( 'Cg.departement' ) == 93 ):?>
                     <h2>Dernière relance</h2>
                     <table >
                     <?php echo thead( 10 );?>
@@ -435,6 +436,7 @@
                             </tr>
                         </tbody>
                     </table>
+                <?php endif;?>
                 </td>
                 <td>
                     <h2>Dernier passage en EP</h2>
@@ -482,7 +484,7 @@
                     </table>
                 </td>
             </tr>
-            <?php endif;?>
+
         </tbody>
     </table>
 </div>
