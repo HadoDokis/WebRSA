@@ -463,16 +463,16 @@
                     <table>
                     <?php echo thead( 10 );?>
                         <tbody>
-                            <tr class="odd">
+                            <tr class="even">
                                 <th>Date de l'EP</th>
                                 <td><?php echo $dateEpDEM;?></td>
                                 <td><?php echo$dateEpCJT;?></td>
                             </tr>
-                            <tr class="even">
+<!--                            <tr class="odd">
                                 <th>Etape de passage en EP</th>
                                 <td><?php echo $etapeEpDEM;?></td>
                                 <td><?php echo $etapeEpCJT;?></td>
-                            </tr>
+                            </tr>-->
                             <tr class="odd">
                                 <th>Décision de l'EP</th>
                                 <td><?php echo $decisionEpDEM;?></td>
