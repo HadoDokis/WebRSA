@@ -27,13 +27,22 @@
 		observeDisableFieldsOnValue( 'DspNivetu', [ 'DspNivdipmaxobt', 'DspAnnobtnivdipmax' ], [ '', '1207' ], true );
 		
 		observeDisableFieldsOnValue( 'DspTopmoyloco', [ 'Detailmoytrans0Moytrans', 'Detailmoytrans1Moytrans', 'Detailmoytrans2Moytrans', 'Detailmoytrans3Moytrans', 'Detailmoytrans4Moytrans', 'Detailmoytrans5Moytrans', 'Detailmoytrans6Moytrans', 'Detailmoytrans7Moytrans' ], '1', false );
-		
+
 		observeDisableFieldsOnValue( 'DspTopprojpro', [ 'Detailprojpro0Projpro', 'Detailprojpro1Projpro', 'Detailprojpro2Projpro', 'Detailprojpro3Projpro', 'Detailprojpro4Projpro', 'Detailprojpro5Projpro', 'Detailprojpro6Projpro', 'Detailprojpro7Projpro', 'Detailprojpro8Projpro', 'Detailprojpro9Projpro', 'Detailprojpro10Projpro', 'Detailprojpro11Projpro', 'Detailprojpro12Projpro' ], '1', false );
 
 		observeDisableFieldsOnCheckbox( 'Detailnatmob0Natmob', [ 'Detailnatmob1Natmob', 'Detailnatmob2Natmob', 'Detailnatmob3Natmob' ], true );
 		observeDisableFieldsOnCheckbox( 'Detaildifdisp0Difdisp', [ 'Detaildifdisp1Difdisp', 'Detaildifdisp2Difdisp', 'Detaildifdisp3Difdisp', 'Detaildifdisp4Difdisp', 'Detaildifdisp5Difdisp' ], true );
 		observeDisableFieldsOnCheckbox( 'Detaildifsoc0Difsoc', [ 'Detaildifsoc1Difsoc', 'Detaildifsoc2Difsoc', 'Detaildifsoc3Difsoc', 'Detaildifsoc4Difsoc', 'Detaildifsoc5Difsoc', 'Detaildifsoc6Difsoc', 'Detaildifsoc6Libautrdifsoc' ], true );
 		observeDisableFieldsOnCheckbox( 'Detaildiflog0Diflog', [ 'Detaildiflog1Diflog', 'Detaildiflog2Diflog', 'Detaildiflog3Diflog', 'Detaildiflog4Diflog', 'Detaildiflog5Diflog', 'Detaildiflog6Diflog', 'Detaildiflog7Diflog', 'Detaildiflog8Diflog', 'Detaildiflog8Libautrdiflog' ], true );
+
+
+        Event.observe( $( 'Detailaccosocindi4Libautraccosocindi' ), 'keypress', function(event) {
+            textareaMakeItCount('Detailaccosocindi4Libautraccosocindi', 100, true );
+        } );
+
+        Event.observe( $( 'DspLibcooraccoemploi' ), 'keypress', function(event) {
+            textareaMakeItCount('DspLibcooraccoemploi', 10, true );
+        });
 	} );
 </script>
 
@@ -120,6 +129,8 @@ Plan:
 				echo $xform->enum( 'Dsp.soutdemarsoc', array( 'options' => $options['soutdemarsoc'] ) );*/
 			?>
 		</fieldset>
+
+
 
 		<?php
 			// SituationSociale - DetailDifficulteSituationSociale (0-n)
