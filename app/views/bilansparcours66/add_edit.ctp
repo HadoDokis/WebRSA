@@ -448,6 +448,28 @@
 		    ?>
 		</fieldset>
 	</fieldset>
+	
+	<!-- 
+        Ajout du nouveau thème de passage en EP à partir du bilan de parcours : "Radiés / Non inscrits à Pôle Emploi
+     <fieldset>
+        <?php /*
+            /// "Commission Audition": Examen du dossier par la commission EP Locale
+            $tmp = radioBilan( $this, 'Bilanparcours66.proposition', 'auditionpe', 'Saisine EP Locale Audition pour Défaut d\'insertion : Pôle emploi' );
+            echo $xhtml->tag( 'h3', $tmp );
+        ?>
+        <fieldset id="audition" class="invisible">
+            <?php
+                echo $default2->subform(
+                    array(
+                        'Bilanparcours66.examenauditionpe' => array( 'type' => 'radio', 'required' => true )
+                    ),
+                    array(
+                        'options' => $options
+                    )
+                ); */
+            ?>
+        </fieldset>
+    </fieldset> -->
 		<?php
 		    echo $default2->subform(
 		        array(
