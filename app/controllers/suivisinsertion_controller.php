@@ -14,6 +14,7 @@
             parent::beforeFilter();
             $this->set( 'decision_ci', $this->Option->decision_ci() );
             $this->set( 'relance', $this->Dossier->Foyer->Personne->Orientstruct->Nonrespectsanctionep93->allEnumLists() );
+            $this->set( 'dossierep', $this->Dossier->Foyer->Personne->Dossierep->allEnumLists() );
 
         }
 
@@ -149,6 +150,28 @@
                     )
                 );
                 $personnesFoyer[$index]['Orientstruct']['derniere'] = $tOrientstruct['Orientstruct'];
+
+
+                // Dernier passage en EP
+                $tEp = $this->Dossier->Foyer->Personne->Dossierep->find(
+                    'first',
+                    array(
+                        'fields' => array(
+                            'etapedossierep',
+                            'created',
+                            'seanceep_id',
+                            'themeep',
+                        ),
+                        'conditions' => array(
+                            'Dossierep.personne_id' => $personnesFoyer[$index]['Personne']['id']
+                        ),
+                        'contain' => false,
+                        'order' => "Dossierep.created DESC",
+                        'recursive' => -1
+                    )
+                );
+                $personnesFoyer[$index]['Dossierep']['derniere'] = $tEp;
+debug($tEp);
 
                 // Dernière relance effective
                 $tRelance = $this->Dossier->Foyer->Personne->Contratinsertion->Nonrespectsanctionep93->find(
