@@ -347,12 +347,9 @@ App::import( 'Helper', 'Locale' );
             if( !empty( $perm ) ){
                 $rdv['Permanence']['typevoie'] = Set::extract( $typevoie, Set::classicExtract( $rdv, 'Permanence.typevoie' ) );
             }
-// debug( $rdv  );
-// die();
 
-            $this->Gedooo->generate( $rdv, 'RDV/'.$modele.'.odt' );
+			$pdf = $this->Rendezvous->ged( $rdv, 'RDV/'.$modele.'.odt' );
+			$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'rendezvous-%s.pdf', date( 'Y-m-d' ) ) );
         }
-
-
 	}
 ?>

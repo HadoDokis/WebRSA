@@ -38,7 +38,6 @@ OK -> app/controllers/cohortes_controller.php:854:                            $t
 OK -> app/controllers/gedooos_controller.php:562://                   $success = ( $content !== false ) && $this->Orientstruct->updateAll(
 
 > grep -nri "statut_orient" app | grep -v "\.\(svn\|ctp\)"
--- FIXME: tests unitaires
 OK -> app/tests/cases/models/option.test.php:1443:            function testStatut_orient() {
 OK -> app/tests/cases/models/option.test.php:1444:                    $result = $this->Option->statut_orient();
 OK -> app/tests/fixtures/orientstruct_fixture.php:19:                         'statut_orient' => 'OrientÃ©',
@@ -135,47 +134,56 @@ OK -> app/vendors/shells/preorientation.php:198:                                
 OK -> app/vendors/shells/detectionparcours.php:127:                                           AND orientsstructs.statut_orient = \'OrientÃ©\'
 OK -> app/vendors/shells/detectionparcours.php:141:                                                                   AND orientsstructs.statut_orient = \'OrientÃ©\'
 
+--------------------------------------------------------------------------------
+- GedoooComponent                                                              -
+--------------------------------------------------------------------------------
+
 > grep -nri "mkOrientstructPdf" app | grep -v "\.\(svn\|txt\)"
 OK
+
+> grep -nri "getCohortePdfForClient" app | grep -v "\.\(svn\|txt\)"
+OK
+
+> grep -nri "Gedooo->getPdf(" app | grep -v "\.\(svn\|txt\)"
+OK
+
+> grep -nri "Gedooo->generate(" app | grep -v "\.\(svn\|txt\)"
+OK -> app/controllers/recoursapres_controller.php:234:                $this->Gedooo->generate( $apre, 'APRE/DecisionComite/Recours/recours'.$recoursapre.''.$dest.'.odt' );
+OK -> app/controllers/recoursapres_controller.php:237:                $this->Gedooo->generate( $apre, 'APRE/DecisionComite/Recours/recours'.$dest.'.odt' );
+OK -> app/controllers/apres66_controller.php:705:                             $this->Gedooo->generate( $apre, 'APRE/accordaide.odt');
+OK -> app/controllers/apres66_controller.php:707:                             $this->Gedooo->generate( $apre, 'APRE/refusaide.odt');
+OK -> app/controllers/contratsinsertion_controller.php:1019:                  $this->Gedooo->generate( $contratinsertion, 'Contratinsertion/notificationop.odt' );
+OK -> app/controllers/cuis_controller.php:304://             $this->Gedooo->generate( $cui, 'CUI/cui.odt' );
+OK -> app/controllers/etatsliquidatifs_controller.php:366:                $this->Gedooo->generate( $apre, 'APRE/apreforfaitaire.odt' );
+OK -> app/controllers/etatsliquidatifs_controller.php:373:                $this->Gedooo->generate( $apre, 'APRE/Paiement/paiement_'.$dest.'.odt' );
+OK -> app/controllers/etatsliquidatifs_controller.php:380:                $this->Gedooo->generate( $apre, 'APRE/Paiement/paiement_'.$typeformation.'_'.$dest.'.odt' );
+OK -> app/controllers/gedooos_controller.php:31:                      $this->Gedooo->generate( $datas, $model );
+OK -> app/controllers/cohortescomitesapres_controller.php:412:                                $this->Gedooo->generate( $apre, 'APRE/DecisionComite/Refus/Refus'.$dest.'.odt' );
+OK -> app/controllers/cohortescomitesapres_controller.php:415:                                $this->Gedooo->generate( $apre, 'APRE/DecisionComite/'.$typedecision.'/'.$typedecision.''.$typeformation.''.$dest.'.odt' );
+OK -> app/controllers/cohortescomitesapres_controller.php:418:                                $this->Gedooo->generate( $apre, 'APRE/DecisionComite/'.$typedecision.'/'.$typedecision.''.$dest.'.odt' );
+OK -> app/controllers/cohortescomitesapres_controller.php:421:                                $this->Gedooo->generate( $apre, 'APRE/DecisionComite/'.$typedecision.'/'.$typedecision.''.$typepaiement.''.$dest.'.odt' );
+OK -> app/controllers/actionscandidats_personnes_controller.php:589:                  $this->Gedooo->generate( $actioncandidat_personne, 'Candidature/fichecandidature.odt' );
+OK -> app/controllers/rendezvous_controller.php:353:            $this->Gedooo->generate( $rdv, 'RDV/'.$modele.'.odt' );
+
+> grep -nri "Gedooo->generateCohorte(" app | grep -v "\.\(svn\|txt\)"
+OK -> app/controllers/etatsliquidatifs_controller.php:481:                $this->Gedooo->generateCohorte( 'forfaitaire', $apres, 'APRE/apreforfaitaire.odt', null );
+OK -> app/controllers/etatsliquidatifs_controller.php:485:                    $this->Gedooo->generateCohorte( 'etatliquidatif_tiers', $apres, 'APRE/Paiement/paiement_'.$dest.'.odt', null );
+OK -> app/controllers/etatsliquidatifs_controller.php:488:                    $this->Gedooo->generateCohorte( 'apreforfaitaire', $apres, 'APRE/Paiement/paiement_'.$dest.'.odt', null );
+
+--------------------------------------------------------------------------------
+- GedoooBehavior                                                               -
+--------------------------------------------------------------------------------
+> grep -nri "\->\(getPdf\|generateCohorte\)(" app | grep -v "\.\(svn\|txt\)"
 
 ################################################################################
 # A faire                                                                      #
 ################################################################################
 
-GedoooComponent
-	- OK -> concatPdfs / getCohortePdfForClient (simplifier, faire utiliser l'un par l'autre)
-	- getPdf, generate, generateCohorte (à supprimer en faveur du GedoooBehavior::ged)
-
-> grep -nri "\(concatPdfs\|getCohortePdfForClient\)" app | grep -v "\.\(svn\|txt\)"
-OK -> app/controllers/cohortes_controller.php:301:                    $content = $this->Gedooo->concatPdfs( Set::extract( $results, '/Pdf/document' ), 'orientsstructs' );
-OK -> app/controllers/components/gedooo.php:24:               public function concatPdfs( $pdfs, $modelName ) {
-OK -> app/controllers/relancesnonrespectssanctionseps93_controller.php:509:                   $pdfs = $this->Gedooo->concatPdfs( $pdfs, 'Relancenonrespectsanctionep93' );
-
-> grep -nri "\(getPdf\|generate\|generateCohorte\)(" app | grep -v "\.\(svn\|txt\)" | grep -v "\/vendors\/"
-app/controllers/apres66_controller.php:705:                             $this->Gedooo->generate( $apre, 'APRE/accordaide.odt');
-app/controllers/apres66_controller.php:707:                             $this->Gedooo->generate( $apre, 'APRE/refusaide.odt');
-app/controllers/contratsinsertion_controller.php:1019:                  $this->Gedooo->generate( $contratinsertion, 'Contratinsertion/notificationop.odt' );
-app/controllers/cohortescomitesapres_controller.php:412:                                $this->Gedooo->generate( $apre, 'APRE/DecisionComite/Refus/Refus'.$dest.'.odt' );
-app/controllers/cohortescomitesapres_controller.php:415:                                $this->Gedooo->generate( $apre, 'APRE/DecisionComite/'.$typedecision.'/'.$typedecision.''.$typeformation.''.$dest.'.odt' );
-app/controllers/cohortescomitesapres_controller.php:418:                                $this->Gedooo->generate( $apre, 'APRE/DecisionComite/'.$typedecision.'/'.$typedecision.''.$dest.'.odt' );
-app/controllers/cohortescomitesapres_controller.php:421:                                $this->Gedooo->generate( $apre, 'APRE/DecisionComite/'.$typedecision.'/'.$typedecision.''.$typepaiement.''.$dest.'.odt' );
-app/controllers/actionscandidats_personnes_controller.php:589:                  $this->Gedooo->generate( $actioncandidat_personne, 'Candidature/fichecandidature.odt' );
-app/controllers/components/gedooo.php:65:               public function getPdf( $datas, $model ) {
-app/controllers/components/gedooo.php:133:              public function generate( $datas, $model ) {
-app/controllers/components/gedooo.php:196:              public function generateCohorte( $sectionName, $sectionDatas, $model, $datas = null ) {
-app/controllers/cuis_controller.php:304://             $this->Gedooo->generate( $cui, 'CUI/cui.odt' );
-app/controllers/rendezvous_controller.php:353:            $this->Gedooo->generate( $rdv, 'RDV/'.$modele.'.odt' );
-app/controllers/etatsliquidatifs_controller.php:366:                $this->Gedooo->generate( $apre, 'APRE/apreforfaitaire.odt' );
-app/controllers/etatsliquidatifs_controller.php:373:                $this->Gedooo->generate( $apre, 'APRE/Paiement/paiement_'.$dest.'.odt' );
-app/controllers/etatsliquidatifs_controller.php:380:                $this->Gedooo->generate( $apre, 'APRE/Paiement/paiement_'.$typeformation.'_'.$dest.'.odt' );
-app/controllers/etatsliquidatifs_controller.php:481:                $this->Gedooo->generateCohorte( 'forfaitaire', $apres, 'APRE/apreforfaitaire.odt', null );
-app/controllers/etatsliquidatifs_controller.php:485:                    $this->Gedooo->generateCohorte( 'etatliquidatif_tiers', $apres, 'APRE/Paiement/paiement_'.$dest.'.odt', null );
-app/controllers/etatsliquidatifs_controller.php:488:                    $this->Gedooo->generateCohorte( 'apreforfaitaire', $apres, 'APRE/Paiement/paiement_'.$dest.'.odt', null );
-app/controllers/recoursapres_controller.php:234:                $this->Gedooo->generate( $apre, 'APRE/DecisionComite/Recours/recours'.$recoursapre.''.$dest.'.odt' );
-app/controllers/recoursapres_controller.php:237:                $this->Gedooo->generate( $apre, 'APRE/DecisionComite/Recours/recours'.$dest.'.odt' );
-app/controllers/periodesimmersion_controller.php:236://             $this->Gedooo->generate( $periodeimmersion, 'CUI/periodeimmersion.odt' );
-app/controllers/gedooos_controller.php:31:                      $this->Gedooo->generate( $datas, $model );
-app/controllers/relancesnonrespectssanctionseps93_controller.php:381:                                           $pdf = $this->Gedooo->getPdf( $gedooo_data, $modeledoc );
-app/models/saisineepreorientsr93.php:500:                       $pdf = $this->getPdf( $gedooo_data, $modeledoc );
-app/models/behaviors/gedooo.php:4:              public function getPdf( &$model, $datas, $modeleodt ) {
-app/models/behaviors/gedooo.php:71:             public function generateCohorte( &$model, $sectionName, $sectionDatas, $model, $datas = null ) {
+GedooosController -> à bouger dans les contrôleurs respectifs -> TODO
+> grep -nr "=> '\(notification_structure\|contratinsertion\)'" app | grep -v "\.\(svn\|txt\|sql\)" | grep "\.ctp"
+	- notification_structure -> pas employé ?
+	- contratinsertion
+	- notification_relance
+	- notifications_relances
+	- apre
+	- relanceapre

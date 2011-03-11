@@ -9,7 +9,7 @@
         var $helpers = array( 'Default', 'Locale', 'Csv', 'Ajax', 'Xform' );
         var $components = array( 'RequestHandler', 'Gedooo' );
         var $aucunDroit = array( 'gedooo' );
-        
+
 		var $commeDroit = array(
 			'view' => 'Periodesimmersion:index',
 			'add' => 'Periodesimmersion:edit'
@@ -229,11 +229,6 @@
             $periodeimmersion['Personne']['dtnai'] = $LocaleHelper->date( 'Date::short', Set::classicExtract( $periodeimmersion, 'Personne.dtnai' ) );
 
             $periodeimmersion['Adresse']['typevoie'] = Set::enum( Set::classicExtract( $periodeimmersion, 'Adresse.typevoie' ), $typevoie );
-/*
-debug($periodeimmersion);
-die();*/
-
-//             $this->Gedooo->generate( $periodeimmersion, 'CUI/periodeimmersion.odt' );
         }
 
         /**

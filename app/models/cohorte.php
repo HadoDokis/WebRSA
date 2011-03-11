@@ -7,6 +7,8 @@
 
 		public $useTable = false;
 
+		public $actsAs = array( 'Gedooo' );
+
 		/**
 		* Dernière version des règles de préorientation:
 		*	- prise en compte des informations Pôle Emploi le 04/01/2011, par mail

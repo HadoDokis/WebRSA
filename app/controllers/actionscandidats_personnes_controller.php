@@ -122,7 +122,7 @@
 		*
   */
 
-		function indexparams(){
+		public function indexparams(){
 			// Retour à la liste en cas d'annulation
 			if( isset( $this->params['form']['Cancel'] ) ) {
 				$this->redirect( array( 'controller' => 'parametrages', 'action' => 'index' ) );
@@ -172,7 +172,7 @@
 		*   Ajax pour les partenaires fournissant les actions
   */
 
-		function ajaxpart( $actioncandidat_id = null ) { // FIXME
+		public function ajaxpart( $actioncandidat_id = null ) { // FIXME
 			Configure::write( 'debug', 0 );
 
 			$dataActioncandidat_id = Set::extract( $this->data, 'ActioncandidatPersonne.actioncandidat_id' );
@@ -198,7 +198,7 @@
 		*   Ajax pour les partenaires fournissant les actions
   */
 
-		function ajaxstruct( $referent_id = null ) { // FIXME
+		public function ajaxstruct( $referent_id = null ) { // FIXME
 			Configure::write( 'debug', 0 );
 
 // debug($referent_id);
@@ -230,7 +230,7 @@
 		*   Ajax pour les partenaires fournissant les actions
   */
 
-		function ajaxreffonct( $referent_id = null ) { // FIXME
+		public function ajaxreffonct( $referent_id = null ) { // FIXME
 			Configure::write( 'debug', 0 );
 // debug($referent_id);
 			if( !empty( $referent_id ) ) {
@@ -288,7 +288,7 @@
 		*
 		*/
 
-		function _add_edit( $id = null ) {
+		protected function _add_edit( $id = null ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
 
@@ -528,10 +528,10 @@
 		*
 		*/
 
-		function gedooo( $id = null ) {
+		public function gedooo( $id = null ) {
 			$qual = $this->Option->qual();
 			$typevoie = $this->Option->typevoie();
-			$mobilites = $this->Natmob->find( 'list' );
+			$mobilites = $this->Dsp->Detailnatmob->enumList( 'natmob' );
 
 			$actioncandidat_personne = $this->ActioncandidatPersonne->find(
 				'first',
@@ -565,15 +565,17 @@
 			);
 			$actioncandidat_personne['Adresse'] = $adresse['Adresse'];
 
-			$actioncandidat_id = Set::classicExtract( $actioncandidat_personne, 'Actioncandidat.id' );
-			$actioncandidatpartenaire = $this->ActioncandidatPartenaire->findByActioncandidatId( $actioncandidat_id, null, null, -1 );
-			$partenaire_id = Set::classicExtract( $actioncandidatpartenaire, 'ActioncandidatPartenaire.partenaire_id' );
-			$partenaire = $this->Partenaire->findById( $partenaire_id, null, null, -1 );
+			if( Configure::read( 'Cg.departement' ) == 66 ) {
+				$actioncandidat_id = Set::classicExtract( $actioncandidat_personne, 'Actioncandidat.id' );
+				$actioncandidatpartenaire = $this->ActioncandidatPartenaire->findByActioncandidatId( $actioncandidat_id, null, null, -1 );
+				$partenaire_id = Set::classicExtract( $actioncandidatpartenaire, 'ActioncandidatPartenaire.partenaire_id' );
+				$partenaire = $this->Partenaire->findById( $partenaire_id, null, null, -1 );
 
-			$actioncandidat_personne = Set::merge( $actioncandidat_personne, $partenaire );
+				$actioncandidat_personne = Set::merge( $actioncandidat_personne, $partenaire );
 
-			$contactpartenaire = $this->Contactpartenaire->findByPartenaireId( $partenaire_id, null, null, -1 );
-			$actioncandidat_personne = Set::merge( $actioncandidat_personne, $contactpartenaire );
+				$contactpartenaire = $this->Contactpartenaire->findByPartenaireId( $partenaire_id, null, null, -1 );
+				$actioncandidat_personne = Set::merge( $actioncandidat_personne, $contactpartenaire );
+			}
 
 			///Traduction pour les données de la Personne/Contact/Partenaire/Référent
 			$actioncandidat_personne['Personne']['qual'] = Set::enum( Set::classicExtract( $actioncandidat_personne, 'Personne.qual' ), $qual );
@@ -583,11 +585,8 @@
 			$actioncandidat_personne['Partenaire']['typevoie'] = Set::enum( Set::classicExtract( $actioncandidat_personne, 'Partenaire.typevoie' ), $typevoie );
 			$actioncandidat_personne['ActioncandidatPersonne']['naturemobile'] = Set::enum( Set::classicExtract( $actioncandidat_personne, 'ActioncandidatPersonne.naturemobile' ), $mobilites );
 
-// debug($partenaire);
-// debug($actioncandidat_personne);
-// die();
-			$this->Gedooo->generate( $actioncandidat_personne, 'Candidature/fichecandidature.odt' );
+			$pdf = $this->ActioncandidatPersonne->ged( $actioncandidat_personne, 'Candidature/fichecandidature.odt' );
+			$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'actioncandidat_personne-%s.pdf', date( 'Y-m-d' ) ) );
 		}
-
 	}
 ?>

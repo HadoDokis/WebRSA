@@ -8,7 +8,8 @@
 		public $actsAs = array(
 			'Formattable' => array(
 				'suffix' => array( 'referent_id', 'permanence_id' )
-			)
+			),
+			'Gedooo'
 		);
 
 		public $validate = array(

@@ -239,7 +239,7 @@
 			$this->_setOptions();
 			$this->set( compact( 'contratsinsertion' ) );
 			$this->set( 'personne_id', $personne_id );
-			
+
 			if ( Configure::read('Cg.departement') == 58 ) {
 				$nbdossiersnonfinalisescovs = $this->Contratinsertion->Personne->Dossiercov58->find(
 					'count',
@@ -262,7 +262,7 @@
 				);
 				$this->set( 'nbdossiersnonfinalisescovs', $nbdossiersnonfinalisescovs );
 			}
-			
+
 			///FIXME: pas propre, mais pr le moment ça marche afin d'eviter de tout renommer
 			$this->render( $this->action, null, '/contratsinsertion/index_'.Configure::read( 'nom_form_ci_cg' ) );
 		}
@@ -448,7 +448,7 @@
                         'conditions' => array(
                             'Contratinsertion.id' => $contratinsertion_id
                         ),
-                        'contain' => array( 
+                        'contain' => array(
                             'Autreavissuspension',
                             'Autreavisradiation'
                         )
@@ -466,7 +466,7 @@
 				$tc = Set::classicExtract( $contratinsertion, 'Contratinsertion.num_contrat' );
 			}
 			$this->set( 'nbContratsPrecedents',  $nbContratsPrecedents );
-			
+
 			/**
 			*   Détails des précédents contrats
 			*/
@@ -1013,11 +1013,11 @@
 			else if( $contratinsertion['Contratinsertion']['num_contrat'] == 'REN' ){
 				$contratinsertion['Contratinsertion']['renouvel'] = 'X';
 			}
-// debug($contratinsertion);
-// die();
-			$this->_setOptions();
-			$this->Gedooo->generate( $contratinsertion, 'Contratinsertion/notificationop.odt' );
-		}
 
+			$this->_setOptions();
+
+			$pdf = $this->Contratinsertion->ged( $contratinsertion, 'Contratinsertion/notificationop.odt' );
+			$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'notificationop-%s.pdf', date( 'Y-m-d' ) ) );
+		}
 	}
 ?>

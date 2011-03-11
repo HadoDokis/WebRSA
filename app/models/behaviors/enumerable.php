@@ -136,7 +136,7 @@
 		* @deprecated
 		*/
 
-		/*function _mysqlEnumOptions( $model, $field ) {
+		/*function _mysqlEnumOptions( &$model, $field ) {
 			$options = false;
 			$sql = "SHOW COLUMNS FROM `{$model->useTable}` LIKE '{$field}'";
 			$enumData = $model->query($sql);
@@ -158,7 +158,7 @@
 		* @deprecated
 		*/
 
-		/*function _postgresEnumOptions( $model, $field ) {
+		/*function _postgresEnumOptions( &$model, $field ) {
 			$options = false;
 			$sql = "SELECT udt_name FROM information_schema.columns WHERE table_name = '{$model->useTable}' AND column_name = '{$field}';";
 			$enumType = $model->query( $sql );
@@ -187,7 +187,7 @@
 		* @access public
 		*/
 
-		protected function _postgresEnums( $model ) {
+		protected function _postgresEnums( &$model ) {
 			if( !empty( $this->_options[$model->alias] ) ) {
 				$options = $this->_options[$model->alias];
 			}
@@ -237,7 +237,7 @@
 		* @access public
 		*/
 
-		protected function _mysqlEnums( $model ) {
+		protected function _mysqlEnums( &$model ) {
 			if( !empty( $this->_options[$model->alias] ) ) {
 				$options = $this->_options[$model->alias];
 			}
@@ -277,7 +277,7 @@
 		*
 		*/
 
-		protected function _readEnums( $model ) {
+		protected function _readEnums( &$model ) {
 			$conn = ConnectionManager::getInstance();
 			$driver = $conn->config->{$model->useDbConfig}['driver'];
 			switch( $driver ) {
@@ -304,7 +304,7 @@
 		* @access public
 		*/
 
-		function enumOptions( $model, $field ) {
+		function enumOptions( &$model, $field ) {
 			$options = $this->_readEnums( $model );
 			return @$options[$field];
 
@@ -345,7 +345,7 @@
 		* Fetches the enum translated list for a field
 		*/
 
-		function enumList( $model, $field ) {
+		function enumList( &$model, $field ) {
 			$options = array();
 			$tmpOptions = self::enumOptions( $model, $field );
 			if( !empty( $tmpOptions ) ) {
@@ -367,7 +367,7 @@
 		* 	Fetches the enum lists for all the $enumFields of the model
 		*/
 
-		function allEnumLists( $model ) {
+		function allEnumLists( &$model ) {
 			$options = array();
 			if( !empty( $this->settings[$model->alias]['fields'] ) ) {
 				foreach( $this->settings[$model->alias]['fields'] as $field => $data ) {
@@ -381,7 +381,7 @@
 		* 	Fetches the enum lists for all the $enumFields of the model
 		*/
 
-		function enums( $model ) {
+		function enums( &$model ) {
 			$options = array();
 			if( !empty( $this->settings[$model->alias]['fields'] ) ) {
 				foreach( $this->settings[$model->alias]['fields'] as $field => $data ) {

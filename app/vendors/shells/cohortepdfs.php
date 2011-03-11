@@ -184,35 +184,22 @@
 
 				$this->out( sprintf( "Génération du PDFs %d/%d (Orientstruct.id=%s)", ( $compteur + 1 ), count( $orientsstructs_ids ), $orientstruct_id ) );
 
-				$orientstruct = $this->Orientstruct->getDataForPdf( $orientstruct_id, $this->user_id );
-				$modele = $orientstruct['Typeorient']['modele_notif'];
+				$orientstruct = $this->Orientstruct->find(
+					'first',
+					array(
+						'conditions' => array(
+							'Orientstruct.id' => $orientstruct_id
+						),
+						'recursive' => -1,
+						'contain' => false
+					)
+				);
+				$orientstruct['Orientstruct']['user_id'] = $this->user_id;
 
-				$modeledoc = 'Orientation/'.$modele.'.odt';
-				$pdfContent = $this->Gedooo->getPdf( $orientstruct, $modeledoc );
-				if( !is_bool( $pdfContent ) ) {
-					$this->Pdf->create(
-						array(
-							$this->Pdf->alias => array(
-								'modele' => 'Orientstruct',
-								'modeledoc' => $modeledoc,
-								'fk_value' => $orientstruct_id,
-								'document' => $pdfContent
-							)
-						)
-					);
+				$this->Orientstruct->create( $orientstruct );
+				$tmpSuccess = $this->Orientstruct->save();
 
-					$tmpSuccess = $this->Pdf->save();
-					if( $tmpSuccess ) {
-						$nSuccess++;
-					}
-					else {
-						$nErrors++;
-					}
-
-					$success = $tmpSuccess && $success;
-				}
-				else {
-					$tmpSuccess = false;
+				if( !$tmpSuccess ) {
 					$nErrors++;
 				}
 

@@ -371,32 +371,6 @@
 					$this->Relancenonrespectsanctionep93->create( $this->data );
 					$success = $this->Relancenonrespectsanctionep93->save() && $success;
 
-					/*if( $success ) {
-						// Enregistrement du courrier de relance
-						$gedooo_data = $this->Relancenonrespectsanctionep93->getDataForPdf( $this->Relancenonrespectsanctionep93->id );
-
-						// -> en faire une fonction dans le modèle / le bahavior ?
-						$modeledoc = "Relancenonrespectsanctionep93/notification_{$gedooo_data['Nonrespectsanctionep93']['origine']}_relance{$gedooo_data['Relancenonrespectsanctionep93']['numrelance']}.odt";
-
-						$pdf = $this->Gedooo->getPdf( $gedooo_data, $modeledoc );
-						if( $pdf ) {
-							$this->Pdf->create(
-								array(
-									'Pdf' => array(
-										'modele' => 'Relancenonrespectsanctionep93',
-										'modeledoc' => $modeledoc,
-										'fk_value' => $this->Relancenonrespectsanctionep93->id,
-										'document' => $pdf
-									)
-								)
-							);
-							$success = $this->Pdf->save() && $success;
-						}
-						else {
-							$success = false;
-						}
-					}*/
-
 					$this->_setFlashResult( 'Save', $success );
 					if( $success ) {
 						$this->Relancenonrespectsanctionep93->commit();

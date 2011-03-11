@@ -16,7 +16,8 @@
 			),
 			'Formattable' => array(
 				'suffix' => array( 'structurereferente_id', 'referent_id' ),
-			)
+			),
+			'Gedooo'
 		);
 
 		public $validate = array(
@@ -424,7 +425,7 @@
 				}
 			}
 
-            
+
             //  Calcul de la position du cER
             if( Configure::read( 'Cg.departement' ) == '66' ) {
                 $this->data[$this->alias]['positioncer'] = $this->_calculPosition( $this->data );
@@ -531,9 +532,6 @@
 
 
             return $positioncer;
-
         }
-
-
 	}
 ?>
