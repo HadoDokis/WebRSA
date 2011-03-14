@@ -14,30 +14,11 @@
 <th>Motif saisine</th>
 <th>Date de radiation</th>
 <th>Motif de radiation</th>
-<th colspan="3">Avis EPL</th>
+<th colspan="4">Avis EPL</th>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
 // debug( $dossierep );
-		// Pré-remplissage avec les valeurs de l'avis EP -> FIXME prepareFormData
-		/*if( empty( $this->data ) ) {
-			if( @$dossierep['Defautinsertionep66']['Decisiondefautinsertionep66'][count(@$dossierep['Defautinsertionep66']['Decisiondefautinsertionep66'])-1]['etape'] == 'ep' ) {
-				$record = @$dossierep['Defautinsertionep66']['Decisiondefautinsertionep66'][count(@$dossierep['Defautinsertionep66']['Decisiondefautinsertionep66'])-1];
-			}
-			else {
-				$record = @$dossierep['Defautinsertionep66']['Decisiondefautinsertionep66'][0];
-			}
-
-			$decisionsdefautsinsertionseps66[$i]['decision'] = $record['decision'];
-			$decisionsdefautsinsertionseps66[$i]['typeorient_id'] = $record['typeorient_id'];
-			$decisionsdefautsinsertionseps66[$i]['structurereferente_id'] = implode( '_', array( $record['typeorient_id'], $record['structurereferente_id'] ) );
-		}
-		else {
-			@$decisionsdefautsinsertionseps66[$i]['decision'] = $this->data['Decisiondefautinsertionep66'][$i]['decision'];
-			$decisionsdefautsinsertionseps66[$i]['typeorient_id'] = @$this->data['Decisiondefautinsertionep66'][$i]['typeorient_id'];
-			$decisionsdefautsinsertionseps66[$i]['structurereferente_id'] = @$this->data['Decisiondefautinsertionep66'][$i]['structurereferente_id'];
-		}*/
-
 		echo $xhtml->tableCells(
 			array(
 				$dossierep['Dossierep']['id'],
@@ -60,7 +41,8 @@
 
 				$form->input( "Decisiondefautinsertionep66.{$i}.decision", array( 'type' => 'select', 'label' => false, 'empty' => true, 'options' => $options['Decisiondefautinsertionep66']['decision'], 'value' => @$decisionsdefautsinsertionseps66[$i]['decision'] ) ),
 				$form->input( "Decisiondefautinsertionep66.{$i}.typeorient_id", array( 'label' => false, 'options' => @$options['Decisiondefautinsertionep66']['typeorient_id'], 'empty' => true, 'value' => @$decisionsdefautsinsertionseps66[$i]['typeorient_id'] ) ),
-				$form->input( "Decisiondefautinsertionep66.{$i}.structurereferente_id", array( 'label' => false, 'options' => @$options['Decisiondefautinsertionep66']['structurereferente_id'], 'empty' => true, 'type' => 'select', 'value' => @$decisionsdefautsinsertionseps66[$i]['structurereferente_id'] ) )
+				$form->input( "Decisiondefautinsertionep66.{$i}.structurereferente_id", array( 'label' => false, 'options' => @$options['Decisiondefautinsertionep66']['structurereferente_id'], 'empty' => true, 'type' => 'select', 'value' => @$decisionsdefautsinsertionseps66[$i]['structurereferente_id'] ) ),
+				$form->input( "Decisiondefautinsertionep66.{$i}.referent_id", array( 'label' => false, 'options' => @$options['Decisiondefautinsertionep66']['referent_id'], 'empty' => true, 'type' => 'select', 'value' => @$decisionsdefautsinsertionseps66[$i]['referent_id'] ) )
 			)
 		);
 	}
@@ -78,12 +60,16 @@
 		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
  		dependantSelect( 'Decisiondefautinsertionep66<?php echo $i?>StructurereferenteId', 'Decisiondefautinsertionep66<?php echo $i?>TypeorientId' );
  		try { $( 'Decisiondefautinsertionep66<?php echo $i?>StructurereferenteId' ).onchange(); } catch(id) { }
+ 		
+ 		dependantSelect( 'Decisiondefautinsertionep66<?php echo $i?>ReferentId', 'Decisiondefautinsertionep66<?php echo $i?>StructurereferenteId' );
+ 		try { $( 'Decisiondefautinsertionep66<?php echo $i?>ReferentId' ).onchange(); } catch(id) { }
 
 		observeDisableFieldsOnValue(
 			'Decisiondefautinsertionep66<?php echo $i;?>Decision',
 			[
 				'Decisiondefautinsertionep66<?php echo $i;?>TypeorientId',
-				'Decisiondefautinsertionep66<?php echo $i;?>StructurereferenteId'
+				'Decisiondefautinsertionep66<?php echo $i;?>StructurereferenteId',
+				'Decisiondefautinsertionep66<?php echo $i;?>ReferentId'
 			],
 			[
 				'reorientationprofverssoc',

@@ -84,22 +84,22 @@
 				'exclusive' => '',
 				'finderQuery' => '',
 				'counterQuery' => ''
-			),
+			)
 		);
 
 		/**
 		*
 		*/
-		/*public function containQueryData() {
+		public function containQueryData() {
 			return array(
 				'Defautinsertionep66' => array(
-					'Nvsrepreorient66'=>array(
+					'Decisiondefautinsertionep66'=>array(
 						'Typeorient',
 						'Structurereferente'
 					),
 				)
 			);
-		}*/
+		}
 
 		/**
 		* INFO: Fonction inutile dans cette saisine donc elle retourne simplement true
@@ -250,6 +250,7 @@
 					$formData['Decisiondefautinsertionep66'][$key]['decision'] = $record['decision'];
 					$formData['Decisiondefautinsertionep66'][$key]['typeorient_id'] = $record['typeorient_id'];
 					$formData['Decisiondefautinsertionep66'][$key]['structurereferente_id'] = implode( '_', array( $record['typeorient_id'], $record['structurereferente_id'] ) );
+					$formData['Decisiondefautinsertionep66'][$key]['referent_id'] = implode( '_', array( $record['structurereferente_id'], $record['referent_id'] ) );
 				}
 				else {
 					if( @$dossierep['Defautinsertionep66']['Decisiondefautinsertionep66'][count(@$dossierep['Defautinsertionep66']['Decisiondefautinsertionep66'])-1]['etape'] == 'cg' ) {
@@ -268,6 +269,7 @@
 					$formData['Decisiondefautinsertionep66'][$key]['decision'] = $record['decision'];
 					$formData['Decisiondefautinsertionep66'][$key]['typeorient_id'] = $record['typeorient_id'];
 					$formData['Decisiondefautinsertionep66'][$key]['structurereferente_id'] = implode( '_', array( $record['typeorient_id'], $record['structurereferente_id'] ) );
+					$formData['Decisiondefautinsertionep66'][$key]['referent_id'] = implode( '_', array( $record['structurereferente_id'], $record['referent_id'] ) );
 				}
 			}
 // debug( $formData );
@@ -327,10 +329,10 @@
 			return $formData;
 		}
 
-		/*public function prepareFormDataUnique( $dossierep_id, $dossierep, $niveauDecision ) {
+		public function prepareFormDataUnique( $dossierep_id, $dossierep, $niveauDecision ) {
 			$formData = array();
 			return $formData;
-		}*/
+		}
 
 		/**
 		* TODO: docs

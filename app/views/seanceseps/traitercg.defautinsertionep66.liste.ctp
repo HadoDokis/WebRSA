@@ -1,25 +1,3 @@
-<script type="text/javascript">
-	document.observe("dom:loaded", function() {
-		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
-		dependantSelect( 'Decisiondefautinsertionep66<?php echo $i?>StructurereferenteId', 'Decisiondefautinsertionep66<?php echo $i?>TypeorientId' );
-		try { $( 'Decisiondefautinsertionep66<?php echo $i?>StructurereferenteId' ).onchange(); } catch(id) { }
-
-		observeDisableFieldsOnValue(
-			'Decisiondefautinsertionep66<?php echo $i;?>Decision',
-			[
-				'Decisiondefautinsertionep66<?php echo $i;?>TypeorientId',
-				'Decisiondefautinsertionep66<?php echo $i;?>StructurereferenteId'
-			],
-			[
-				'reorientationprofverssoc',
-				'reorientationsocversprof'
-			],
-			false
-		);
-		<?php endfor;?>
-	});
-</script>
-
 <?php
 // 	echo $form->create( null, array( 'url' => Router::url( null, true ) ) );
 	echo '<table class="tooltips"><thead>
@@ -37,12 +15,10 @@
 <th>Date de radiation</th>
 <th>Motif de radiation</th>
 <th>Avis EPL</th>
-<th colspan="3">Décision CG</th>
+<th colspan="4">Décision CG</th>
 <th class="innerTableHeader noprint">Avis de l\'EP</th>
 </tr>
 </thead><tbody>';
-	$decisionsdefautsinsertionseps66 = array();
-
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
 		$innerTable = '<table id="innerTable'.$i.'" class="innerTable">
 			<tbody>
@@ -89,6 +65,7 @@
 				$form->input( "Decisiondefautinsertionep66.{$i}.decision", array( 'type' => 'select', 'label' => false, 'empty' => true, 'options' => $options['Decisiondefautinsertionep66']['decision'] ) ),
 				$form->input( "Decisiondefautinsertionep66.{$i}.typeorient_id", array( 'label' => false, 'options' => @$options['Decisiondefautinsertionep66']['typeorient_id'], 'empty' => true ) ),
 				$form->input( "Decisiondefautinsertionep66.{$i}.structurereferente_id", array( 'label' => false, 'options' => @$options['Decisiondefautinsertionep66']['structurereferente_id'], 'empty' => true, 'type' => 'select' ) ),
+				$form->input( "Decisiondefautinsertionep66.{$i}.referent_id", array( 'label' => false, 'options' => @$options['Decisiondefautinsertionep66']['referent_id'], 'empty' => true, 'type' => 'select' ) ),
 				array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
 			)
 		);
@@ -102,3 +79,29 @@
 //debug( $dossiers[$theme]['liste'] );
 // debug( $options );
 ?>
+
+<script type="text/javascript">
+	document.observe("dom:loaded", function() {
+		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
+		dependantSelect( 'Decisiondefautinsertionep66<?php echo $i?>StructurereferenteId', 'Decisiondefautinsertionep66<?php echo $i?>TypeorientId' );
+		try { $( 'Decisiondefautinsertionep66<?php echo $i?>StructurereferenteId' ).onchange(); } catch(id) { }
+		
+		dependantSelect( 'Decisiondefautinsertionep66<?php echo $i?>ReferentId', 'Decisiondefautinsertionep66<?php echo $i?>StructurereferenteId' );
+		try { $( 'Decisiondefautinsertionep66<?php echo $i?>ReferentId' ).onchange(); } catch(id) { }
+
+		observeDisableFieldsOnValue(
+			'Decisiondefautinsertionep66<?php echo $i;?>Decision',
+			[
+				'Decisiondefautinsertionep66<?php echo $i;?>TypeorientId',
+				'Decisiondefautinsertionep66<?php echo $i;?>StructurereferenteId',
+				'Decisiondefautinsertionep66<?php echo $i;?>ReferentId'
+			],
+			[
+				'reorientationprofverssoc',
+				'reorientationsocversprof'
+			],
+			false
+		);
+		<?php endfor;?>
+	});
+</script>

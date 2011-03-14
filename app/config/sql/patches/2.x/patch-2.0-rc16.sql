@@ -378,7 +378,10 @@ ALTER TABLE seanceseps ALTER COLUMN villeseance SET NOT NULL;
 
 
 
-
+SELECT add_missing_table_field ('public', 'decisionsdefautsinsertionseps66', 'referent_id', 'integer');
+SELECT add_missing_constraint ('public', 'decisionsdefautsinsertionseps66', 'decisionsdefautsinsertionseps66_referent_id_fkey', 'referents', 'referent_id');
+SELECT add_missing_table_field ('public', 'nvsrsepsreorient66', 'referent_id', 'integer');
+SELECT add_missing_constraint ('public', 'nvsrsepsreorient66', 'nvsrsepsreorient66_referent_id_fkey', 'referents', 'referent_id');
 
 
 -- *****************************************************************************

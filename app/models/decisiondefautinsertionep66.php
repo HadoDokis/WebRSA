@@ -10,7 +10,8 @@
 			'ValidateTranslate',
 			'Formattable' => array(
 				'suffix' => array(
-					'structurereferente_id'
+					'structurereferente_id',
+					'referent_id'
 				)
 			),
 			'Enumerable' => array(
@@ -39,6 +40,13 @@
 			'Typeorient' => array(
 				'className' => 'Typeorient',
 				'foreignKey' => 'typeorient_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			'Referent' => array(
+				'className' => 'Referent',
+				'foreignKey' => 'referent_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
