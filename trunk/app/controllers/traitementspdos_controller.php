@@ -86,6 +86,14 @@
         }
 
 		/**
+		*
+		*/
+
+		protected function _dirTraitementpdo( $action, $id, $type ) {
+			return APP.'tmp'.DS.'files'.DS.session_id().DS.'Fichiertraitementpdo'.DS.$action.DS.$id.DS.$type;
+		}
+
+		/**
 		* http://valums.com/ajax-upload/
 		* http://doc.ubuntu-fr.org/modules_php
 		* increase post_max_size and upload_max_filesize to 10M
@@ -95,7 +103,7 @@
 		public function ajaxfileupload() {
 			$error = false;
 
-			$dir = APP.'tmp'.DS.'files'.DS.'fichierstraitementspdos'.DS.session_id().DS.$this->params['url']['action'].DS.$this->params['url']['primaryKey'];
+			$dir = $this->_dirTraitementpdo( $this->params['url']['action'], $this->params['url']['primaryKey'], $this->params['url']['type'] );
 			$path = $dir.DS.$this->params['url']['qqfile'];
 
 			$old = umask(0);
@@ -127,15 +135,32 @@
 		* http://doc.ubuntu-fr.org/modules_php
 		* increase post_max_size and upload_max_filesize to 10M
 		* debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
+		* FIXME: traiter les valeurs de retour
 		*/
 
 		public function ajaxfiledelete() {
-			$dir = APP.'tmp'.DS.'files'.DS.'fichierstraitementspdos'.DS.session_id().DS.$this->params['pass'][0].DS.$this->params['pass'][1];
-			$path = $dir.DS.$this->params['pass'][2];
+			$dir = $this->_dirTraitementpdo( $this->params['pass'][0], $this->params['pass'][1], $this->params['pass'][2] );
+			$path = $dir.DS.$this->params['pass'][3];
 			$error = false;
 
-			if( file_exists( $path ) ) {
+			if( file_exists( $path ) ) { // FIXME: il se pourrait que l'on en ait un en attente, et un déjà stocké
 				@unlink( $path );
+			}
+			else if( $this->params['pass'][0] == 'edit' ) { // Suppression d'un document se trouvant déjà enregistré -> SSI c'est un edit
+				$record = $this->Traitementpdo->Fichiertraitementpdo->find(
+					'first',
+					array(
+						'fields' => array( 'id' ),
+						'conditions' => array(
+							'traitementpdo_id' => $this->params['pass'][1],
+							'type' => $this->params['pass'][2],
+							'name' => $this->params['pass'][3],
+						)
+					)
+				);
+				if( !empty( $record ) ) {
+					$error = !$this->Traitementpdo->Fichiertraitementpdo->delete( $record['Fichiertraitementpdo']['id'] );
+				}
 			}
 
 			Configure::write( 'debug', false );
@@ -253,33 +278,36 @@
                     if( $saved ) {
 						// Début sauvegarde des fichiers attachés
 						App::import ('Core', 'File' );
-						$dir = APP.'tmp'.DS.'files'.DS.'fichierstraitementspdos'.DS.session_id().DS.$this->action.DS.$this->params['pass'][0];
-						$oFolder = new Folder( $dir, true );
-						$files = $oFolder->find();
-						if( !empty( $files ) ) {
-							foreach( $files as $file ) {
-								$record = array(
-									'Fichiertraitementpdo' => array(
-										'name' => $file,
-										'traitementpdo_id' => $this->Traitementpdo->id,
-										'type' => 'courrier',
-										'mime' => mime_content_type( $dir.DS.$file  ),
-										'document' => file_get_contents( $dir.DS.$file ),
-									)
-								);
-								$this->Traitementpdo->Fichiertraitementpdo->create( $record );
 
-								if( $tmpSaved = $this->Traitementpdo->Fichiertraitementpdo->save() ) {
-									$oFile = new File( $dir.DS.$file, true );
-									$tmpSaved = $oFile->delete() && $tmpSaved;
+						foreach( array( 'courrier', 'piecejointe' ) as $type ) {
+							$dir = $this->_dirTraitementpdo( $this->action, $this->params['pass'][0], $type );
+							$oFolder = new Folder( $dir, true );
+							$files = $oFolder->find();
+							if( !empty( $files ) ) {
+								foreach( $files as $file ) {
+									$record = array(
+										'Fichiertraitementpdo' => array(
+											'name' => $file,
+											'traitementpdo_id' => $this->Traitementpdo->id,
+											'type' => $type,
+											'mime' => mime_content_type( $dir.DS.$file  ),
+											'document' => file_get_contents( $dir.DS.$file ),
+										)
+									);
+									$this->Traitementpdo->Fichiertraitementpdo->create( $record );
+
+									if( $tmpSaved = $this->Traitementpdo->Fichiertraitementpdo->save() ) {
+										$oFile = new File( $dir.DS.$file, true );
+										$tmpSaved = $oFile->delete() && $tmpSaved;
+									}
+
+									$saved = $tmpSaved && $saved;
 								}
-
-								$saved = $tmpSaved && $saved;
 							}
-						}
 
-						if( $saved ) {
-							$saved = $oFolder->delete( $dir ) && $saved;
+							if( $saved ) {
+								$saved = $oFolder->delete( $dir ) && $saved;
+							}
 						}
 						// Fin sauvegarde des fichiers attachés
 					}
