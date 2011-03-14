@@ -176,21 +176,56 @@
 				'options' => $options
 			)
 		);
-
-		/*echo $default->subform(
-			array(
-				'Fichiertraitementpdo.traitementpdo_id' => array( 'type' => 'hidden' ),
-				'Fichiertraitementpdo.label',
-				'Fichiertraitementpdo.document' => array( 'type' => 'file' ),
-				'Fichiertraitementpdo.type' => array( 'type' => 'hidden', 'value' => 'courrier' ),
-			),
-			array(
-				'options' => $options
-			)
-		);*/
 ?>
 
-<div id="file-uploader-demo1">
+<?php
+	if( !empty( $this->data['Fichiertraitementpdo'] ) ) {
+		echo '<ul class="qq-upload-list">';
+		foreach( $this->data['Fichiertraitementpdo'] as $fichier ) {
+			if( $fichier['type'] == 'courrier' ) {
+				echo '<li class="qq-upload-success"><span class="qq-upload-file">'.$fichier['name'].'</span></li>';
+			}
+		}
+		echo '</ul>';
+	}
+?>
+
+<script type="text/javascript">
+	function addAjaxUploadedFileDeleteLink( elmt, type ) {
+		var link = new Element( 'a', { href: '<?php echo Router::url( array( 'action' => 'ajaxfiledelete', $this->action, $this->params['pass'][0] ), true );?>' + '/' + type + '/' + $( elmt ).innerHTML } ).update( "Supprimer" );
+		Event.observe( link, 'click', function(e){
+			Event.stop(e);
+			new Ajax.Request(
+				$(Event.element(e)).getAttribute('href'),
+				{
+					method: 'post',
+					onComplete: function( transport ) {
+						try {
+							response = eval( "(" + transport.responseText + ")" );
+						} catch(err){
+							response = {};
+						}
+
+						if( response.success && response.success == true ) {
+							$( elmt ).up( 'li.qq-upload-success' ).remove();
+						}
+						else {
+							alert( 'Erreur!' );
+						}
+					}
+				}
+			);
+		} );
+
+		$( elmt ).up( 'li.qq-upload-success' ).insert( { bottom: link } );
+	}
+
+	$$( '.qq-upload-file' ).each( function( elmt ) {
+		addAjaxUploadedFileDeleteLink( elmt, 'courrier' );
+	} );
+</script>
+
+<div id="file-uploader-courrier">
 	<noscript>
 		<p>Please enable JavaScript to use file uploader.</p>
 	</noscript>
@@ -199,7 +234,7 @@
 <script type="text/javascript">
 	function createUploader(){
 		var uploader = new qq.FileUploader( {
-			element: document.getElementById('file-uploader-demo1'),
+			element: document.getElementById('file-uploader-courrier'),
 			action: '<?php echo Router::url( array( 'action' => 'ajaxfileupload' ), true );?>',
 			debug: false,
 			multiple: false,
@@ -211,31 +246,16 @@
 			onComplete: function( id, fileName, responseJSON ) {
 				$$( '.qq-upload-file' ).each( function( elmt ) {
 					if( elmt.innerHTML == fileName ) {
-						var link = new Element( 'a', { href: '<?php echo Router::url( array( 'action' => 'ajaxfiledelete', $this->action, $this->params['pass'][0] ), true );?>' + '/' + fileName } ).update( "Supprimer" );
-						Event.observe( link, 'click', function(e){
-							Event.stop(e);
-							new Ajax.Request(
-								$(Event.element(e)).getAttribute('href'),
-								{
-									method: 'post',
-									onComplete: function( transport ) {
-										//alert( transport.responseText );
-										$( elmt ).up( 'li.qq-upload-success' ).remove(); // FIXME: retour true / false
-									}
-								}
-							);
-						} );
-
-						$( elmt ).up( 'li.qq-upload-success' ).insert( { bottom: link } );
+						addAjaxUploadedFileDeleteLink( elmt, 'courrier' );
 					}
 				} );
 			}
 		} );
 	}
 
-	// in your app create uploader as soon as the DOM is ready
-	// don't wait for the window to load
-	window.onload = createUploader;
+	document.observe( "dom:loaded", function() {
+		createUploader();
+	} );
 </script>
 
 <?php

@@ -43,7 +43,7 @@
 		*/
 
 		public function save( $data = null, $validate = true, $fieldList = array() ) {
-			$cmsPath = "/{$this->alias}/{$this->data[$this->alias]['traitementpdo_id']}/{$this->data[$this->alias]['name']}";
+			$cmsPath = "/{$this->alias}/{$this->data[$this->alias]['traitementpdo_id']}/{$this->data[$this->alias]['type']}/{$this->data[$this->alias]['name']}";
 			$cmsSuccess = Cmis::write( $cmsPath, $this->data[$this->alias]['document'], $this->data[$this->alias]['mime'], true );
 
 			if( $cmsSuccess ) {
