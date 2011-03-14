@@ -53,8 +53,8 @@
 						$backAllowed = false;
 					}
 				?>
-				<?php if( !$backAllowed ):?>
-// 				window.history.forward();
+				<?php if( !$backAllowed && Configure::read( 'debug' ) == 0 ):?>
+				window.history.forward();
 				<?php endif;?>
 
 				var baseUrl = '<?php echo Router::url( '/', true );?>';
