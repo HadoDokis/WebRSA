@@ -54,7 +54,7 @@
 					}
 				?>
 				<?php if( !$backAllowed ):?>
-				window.history.forward();
+// 				window.history.forward();
 				<?php endif;?>
 
 				var baseUrl = '<?php echo Router::url( '/', true );?>';

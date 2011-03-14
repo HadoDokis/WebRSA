@@ -191,7 +191,7 @@ function __minify() {
 	# CSS
 	CSSFILE="$CSSDIR/webrsa.tmp.css"
 	echo "@media all {" > "$CSSFILE"
-	cat "$CSSDIR/all.reset.css" "$CSSDIR/all.base.css" "$CSSDIR/all.form.css" >> "$CSSFILE"
+	cat "$CSSDIR/all.reset.css" "$CSSDIR/all.base.css" "$CSSDIR/all.form.css" "$CSSDIR/fileuploader.css" >> "$CSSFILE"
 	echo "}" >> "$CSSFILE"
 
 	echo "@media screen,presentation {" >> "$CSSFILE"
@@ -216,6 +216,7 @@ function __minify() {
 	"$JSDIR/tooltip.prototype.js" \
 	"$JSDIR/webrsa.common.prototype.js" \
 	"$JSDIR/dependantselect.js" \
+	"$JSDIR/fileuploader.js" \
 	"$JSDIR/droits.js" > "$JSFILE"
 
 	java -jar "$YUICOMPRESSOR" "$JSFILE" -o "$JSDIR/webrsa.js" --charset utf-8 --preserve-semi
