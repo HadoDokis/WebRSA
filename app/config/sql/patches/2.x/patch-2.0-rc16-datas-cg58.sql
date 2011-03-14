@@ -37,6 +37,14 @@ INSERT INTO historiqueetatspe ( informationpe_id, identifiantpe, date, etat ) VA
 	( 5, '0610905944X', '2011-01-01', 'radiation' )
 ;
 
+TRUNCATE listesanctionseps58 CASCADE;
+SELECT pg_catalog.setval('listesanctionseps58_id_seq', ( SELECT COALESCE( max(listesanctionseps58.id) + 1, 1 ) FROM listesanctionseps58 ), false);
+INSERT INTO listesanctionseps58 (rang, sanction, duree) VALUES
+    ('1', '-100€', '1'),
+    ('2', '-50%', '4'),
+    ('3', 'Suspension totale', '4')
+;
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
