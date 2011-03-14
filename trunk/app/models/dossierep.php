@@ -175,7 +175,7 @@
 		*/
 
 		public function themeTraite( $id ) {
-			$ep = $this->find(
+			$dossierep = $this->find(
 				'first',
 				array(
 					'conditions' => array(
@@ -188,13 +188,13 @@
 					)
 				)
 			);
-
+			
 			$themes = $this->Seanceep->Ep->themes();
 			$themesTraites = array();
 
-			foreach( $themes as $theme ) {
-				if( in_array( $ep['Seanceep']['Ep'][$theme], array( 'ep', 'cg' ) ) ) {
-					$themesTraites[$theme] = $ep['Seanceep']['Ep'][$theme];
+			foreach( $themes as $key => $theme ) {
+				if( Inflector::tableize( $theme ) == $dossierep['Dossierep']['themeep'] && in_array( $dossierep['Seanceep']['Ep'][$theme], array( 'ep', 'cg' ) ) ) {
+					$themesTraites[$theme] = $dossierep['Seanceep']['Ep'][$theme];
 				}
 			}
 			return $themesTraites;

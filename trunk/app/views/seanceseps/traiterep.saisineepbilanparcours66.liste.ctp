@@ -11,7 +11,7 @@
 <th>Structure référente actuelle</th>
 <th>Type de réorientation</th>
 <th colspan="2">Proposition référent</th>
-<th colspan="2">Avis EPL</th>
+<th colspan="3">Avis EPL</th>
 <th>Commentaire</th>
 </tr>
 </thead><tbody>';
@@ -35,6 +35,7 @@
 				$form->input( "Nvsrepreorient66.{$i}.saisineepbilanparcours66_id", array( 'type' => 'hidden', 'value' => @$dossierep['Saisineepbilanparcours66']['id'] ) ).
 				$form->input( "Nvsrepreorient66.{$i}.typeorient_id", array( 'label' => false, 'options' => @$options['Seanceep']['typeorient_id'], 'empty' => true ) ),
 				$form->input( "Nvsrepreorient66.{$i}.structurereferente_id", array( 'label' => false, 'options' => @$options['Seanceep']['structurereferente_id'], 'empty' => true, 'type' => 'select' ) ),
+				$form->input( "Nvsrepreorient66.{$i}.referent_id", array( 'label' => false, 'options' => @$options['Seanceep']['referent_id'], 'empty' => true, 'type' => 'select' ) ),
 				$form->input( "Nvsrepreorient66.{$i}.checkcomm", array( 'label' =>false, 'type' => 'checkbox', 'checked' => false ) ).
 				$form->input( "Nvsrepreorient66.{$i}.commentaire", array( 'label' =>false, 'type' => 'textarea' ) )
 			)
@@ -53,6 +54,9 @@
 		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
 		dependantSelect( 'Nvsrepreorient66<?php echo $i?>StructurereferenteId', 'Nvsrepreorient66<?php echo $i?>TypeorientId' );
 		try { $( 'Nvsrepreorient66<?php echo $i?>StructurereferenteId' ).onchange(); } catch(id) { }
+		
+		dependantSelect( 'Nvsrepreorient66<?php echo $i?>ReferentId', 'Nvsrepreorient66<?php echo $i?>StructurereferenteId' );
+		try { $( 'Nvsrepreorient66<?php echo $i?>ReferentId' ).onchange(); } catch(id) { }
 
 		$('Nvsrepreorient66<?php echo $i?>Checkcomm').observe( 'change', function() {
 			if ($('Nvsrepreorient66<?php echo $i?>Checkcomm').checked==true) {

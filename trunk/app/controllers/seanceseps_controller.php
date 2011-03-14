@@ -40,6 +40,7 @@
 				/// TODO: est-ce que ça a  du sens ?
 				$options['Seanceep']['typeorient_id'] = $this->Seanceep->Structurereferente->Typeorient->listOptions();
 				$options['Seanceep']['structurereferente_id'] = $this->Seanceep->Structurereferente->list1Options();
+				$options['Seanceep']['referent_id'] = $this->Seanceep->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->Referent->listOptions();
 				$options['Nvsepdpdo66']['decisionpdo_id'] = $this->Seanceep->Dossierep->Saisineepdpdo66->Nvsepdpdo66->Decisionpdo->find('list');
 			}
 			else{
@@ -49,6 +50,7 @@
 			$options['Ep']['regroupementep_id'] = $this->{$this->modelClass}->Ep->Regroupementep->find( 'list' );
 			$options['Decisiondefautinsertionep66']['typeorient_id'] = $this->Seanceep->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->Typeorient->listOptions();
 			$options['Decisiondefautinsertionep66']['structurereferente_id'] = $this->Seanceep->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->Structurereferente->list1Options();//listOptions
+			$options['Decisiondefautinsertionep66']['referent_id'] = $this->Seanceep->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->Referent->listOptions();
 			$this->set( compact( 'options' ) );
 			$this->set( 'typevoie', $this->Option->typevoie() );
 
