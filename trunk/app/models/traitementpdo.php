@@ -221,6 +221,22 @@
 			)
 		);
 
+		public $hasMany = array(
+			'Fichiertraitementpdo' => array(
+				'className' => 'Fichiertraitementpdo',
+				'foreignKey' => 'traitementpdo_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+		);
+
 		public function beforeSave($options = array()) {
 			if ((!isset($this->data['Traitementpdo']['daterevision']) || empty($this->data['Traitementpdo']['daterevision']) ) && (!isset($this->data['Traitementpdo']['dateecheance']) || empty($this->data['Traitementpdo']['dateecheance']))) {
 				$this->data['Traitementpdo']['clos'] = 1;

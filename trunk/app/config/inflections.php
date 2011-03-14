@@ -287,7 +287,8 @@
 		'autreavissuspension' => 'autresavissuspension',
 		'autreavisradiation' => 'autresavisradiation',
 		'criterebilanparcours66' => 'criteresbilansparcours66',
-		'objetentretien' => 'objetsentretien'
+		'objetentretien' => 'objetsentretien',
+		'fichiertraitementpdo' => 'fichierstraitementspdos',
 	);
 /**
  * This is a key => value array of regex used to match words.

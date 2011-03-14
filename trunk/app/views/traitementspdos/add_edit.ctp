@@ -1,8 +1,13 @@
 <?php
-	echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+		echo $xhtml->css( array( 'fileuploader' ), 'stylesheet', array( 'media' => 'all' ), false );
+		echo $javascript->link( 'fileuploader.js' );
+	}
 
 	echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
 ?>
+
 <div class="with_treemenu">
 	<?php
 		echo $xhtml->tag(
@@ -11,7 +16,7 @@
 		);
 
 	?>
-	<?php   
+	<?php
 		echo $xform->create( 'Traitementpdo', array( 'id' => 'traitementpdoform' ) );
 		if( Set::check( $this->data, 'Traitementpdo.id' ) ){
 			echo $xform->input( 'Traitementpdo.id', array( 'type' => 'hidden' ) );
@@ -27,7 +32,7 @@
 				'options' => $options
 			)
 		);
-		
+
 		echo $xhtml->tag(
 			'fieldset',
 			$default->subform(
@@ -95,7 +100,7 @@
 			$( 'TraitementpdoDate'+dateAChanger+'Year' ).value = newyear;
 		}
 	}
-	
+
 	document.observe( "dom:loaded", function() {
 		[ 'TraitementpdoDatedepartDay', 'TraitementpdoDatedepartMonth', 'TraitementpdoDatedepartYear', 'TraitementpdoDureedepart' ].each( function( id ) {
 			$( id ).observe( 'change', function() {
@@ -103,7 +108,7 @@
 			});
 		});
 	});
-	
+
 </script>
 
 	<?php
@@ -124,7 +129,7 @@
 		);
 	?>
 <script type="text/javascript">
-	
+
 	document.observe( "dom:loaded", function() {
 		[ 'TraitementpdoDateecheanceDay', 'TraitementpdoDateecheanceMonth', 'TraitementpdoDateecheanceYear', 'TraitementpdoDureeecheance' ].each( function( id ) {
 			$( id ).observe( 'change', function() {
@@ -132,7 +137,7 @@
 			});
 		});
 	});
-	
+
 </script>
 	<?php
 		echo $xhtml->tag(
@@ -149,7 +154,7 @@
 				'class'=>'noborder invisible'
 			)
 		);
-		
+
 		echo $default->subform(
 			array(
 				'Traitementpdo.personne_id' => array( 'empty' => true, 'type' => 'select', 'options' => $listepersonnes, 'required' => true )
@@ -158,11 +163,11 @@
 				'options' => $options
 			)
 		);
-		
+
 		echo $ajax->observeField( 'TraitementpdoPersonneId', array( 'update' => 'statutPersonne', 'url' => Router::url( array( 'action' => 'ajaxstatutpersonne' ), true ) ) );
-		
+
 		?><fieldset id="statutPersonne" class="invisible"></fieldset><?php
-		
+
 		echo $default->subform(
 			array(
 				'Traitementpdo.hascourrier' => array( 'type' => 'radio' )
@@ -171,7 +176,70 @@
 				'options' => $options
 			)
 		);
-		
+
+		/*echo $default->subform(
+			array(
+				'Fichiertraitementpdo.traitementpdo_id' => array( 'type' => 'hidden' ),
+				'Fichiertraitementpdo.label',
+				'Fichiertraitementpdo.document' => array( 'type' => 'file' ),
+				'Fichiertraitementpdo.type' => array( 'type' => 'hidden', 'value' => 'courrier' ),
+			),
+			array(
+				'options' => $options
+			)
+		);*/
+?>
+
+<div id="file-uploader-demo1">
+	<noscript>
+		<p>Please enable JavaScript to use file uploader.</p>
+	</noscript>
+</div>
+
+<script type="text/javascript">
+	function createUploader(){
+		var uploader = new qq.FileUploader( {
+			element: document.getElementById('file-uploader-demo1'),
+			action: '<?php echo Router::url( array( 'action' => 'ajaxfileupload' ), true );?>',
+			debug: false,
+			multiple: false,
+			params: {
+				action: '<?php echo $this->action;?>',
+				primaryKey: '<?php echo $this->params['pass'][0];?>',
+				type: 'courrier'
+			},
+			onComplete: function( id, fileName, responseJSON ) {
+				$$( '.qq-upload-file' ).each( function( elmt ) {
+					if( elmt.innerHTML == fileName ) {
+						var link = new Element( 'a', { href: '<?php echo Router::url( array( 'action' => 'ajaxfiledelete', $this->action, $this->params['pass'][0] ), true );?>' + '/' + fileName } ).update( "Supprimer" );
+						Event.observe( link, 'click', function(e){
+							Event.stop(e);
+							new Ajax.Request(
+								$(Event.element(e)).getAttribute('href'),
+								{
+									method: 'post',
+									onComplete: function( transport ) {
+										//alert( transport.responseText );
+										$( elmt ).up( 'li.qq-upload-success' ).remove(); // FIXME: retour true / false
+									}
+								}
+							);
+						} );
+
+						$( elmt ).up( 'li.qq-upload-success' ).insert( { bottom: link } );
+					}
+				} );
+			}
+		} );
+	}
+
+	// in your app create uploader as soon as the DOM is ready
+	// don't wait for the window to load
+	window.onload = createUploader;
+</script>
+
+<?php
+
 		echo $default->subform(
 			array(
 				'Traitementpdo.hasrevenu' => array( 'type' => 'radio' )
@@ -180,9 +248,9 @@
 				'options' => $options
 			)
 		);
-		
+
 		echo "<fieldset id='fichecalcul' class='noborder invisible'><table>";
-		
+
 			echo $default->subform(
 				array(
 					'Traitementpdo.nbmoisactivite' => array( 'type' => 'hidden' ),
@@ -194,7 +262,7 @@
 					'options' => $options
 				)
 			);
-		
+
 			echo $html->tag(
 				'tr',
 				$html->tag(
@@ -214,7 +282,7 @@
 					$form->input('Traitementpdo.saisonnier', array('label'=>false, 'type'=>'checkbox'))
 				)
 			);
-			
+
 			echo $html->tag(
 				'tr',
 				$html->tag(
@@ -233,7 +301,7 @@
 					)
 				)
 			);
-		
+
 			echo $html->tag(
 				'tr',
 				$html->tag(
@@ -262,7 +330,7 @@
 					$form->input('Traitementpdo.raisonsocial', array('label'=>false, 'type'=>'text'))
 				)
 			);
-			
+
 			echo $html->tag(
 				'tr',
 				$html->tag(
@@ -300,7 +368,7 @@
 					)
 				)
 			);
-			
+
 			echo $html->tag(
 				'tr',
 				$html->tag(
@@ -322,7 +390,7 @@
 					)
 				)
 			);
-			
+
 			echo $html->tag(
 				'tr',
 				$html->tag(
@@ -344,7 +412,7 @@
 					'class' => 'fagri'
 				)
 			);
-			
+
 			echo $html->tag(
 				'tr',
 				$html->tag(
@@ -377,7 +445,7 @@
 					'class' => 'fagri'
 				)
 			);
-		
+
 			echo $html->tag(
 				'tr',
 				$html->tag(
@@ -403,7 +471,7 @@
 					'class' => 'fagri'
 				)
 			);
-			
+
 			echo $html->tag(
 				'tr',
 				$html->tag(
@@ -449,7 +517,7 @@
 					'class' => 'ragri reel microbic microbicauto'
 				)
 			);
-			
+
 			echo $html->tag(
 				'tr',
 				$html->tag(
@@ -503,7 +571,7 @@
 					'class' => 'ragri reel microbic microbicauto microbnc'
 				)
 			);
-			
+
 			echo $html->tag(
 				'tr',
 				$html->tag(
@@ -528,7 +596,7 @@
 					'class' => 'microbic microbicauto microbnc'
 				)
 			);
-			
+
 			echo $html->tag(
 				'tr',
 				$html->tag(
@@ -550,7 +618,7 @@
 					'class' => 'ragri reel'
 				)
 			);
-			
+
 			echo $html->tag(
 				'tr',
 				$html->tag(
@@ -572,7 +640,7 @@
 					'class' => 'ragri reel'
 				)
 			);
-			
+
 			echo $html->tag(
 				'tr',
 				$html->tag(
@@ -594,7 +662,7 @@
 					'class' => 'ragri reel'
 				)
 			);
-			
+
 			echo $html->tag(
 				'tr',
 				$html->tag(
@@ -616,7 +684,7 @@
 					'class' => 'ragri reel'
 				)
 			);
-			
+
 			echo $html->tag(
 				'tr',
 				$html->tag(
@@ -638,7 +706,7 @@
 					'class' => 'ragri reel'
 				)
 			);
-			
+
 			echo $html->tag(
 				'tr',
 				$html->tag(
@@ -660,7 +728,7 @@
 					'class' => 'ragri reel'
 				)
 			);
-			
+
 			echo $html->tag(
 				'tr',
 				$html->tag(
@@ -685,7 +753,7 @@
 					'class' => 'fagri ragri reel'
 				)
 			);
-			
+
 			echo $html->tag(
 				'tr',
 				$html->tag(
@@ -707,7 +775,7 @@
 					)
 				)
 			);
-			
+
 			echo $html->tag(
 				'tr',
 				$html->tag(
@@ -748,9 +816,9 @@
 //         			)
 //         		)
 			);
-		
+
 		echo "</table></fieldset>";
-		
+
 		echo $default->subform(
 			array(
 				'Traitementpdo.hasficheanalyse' => array( 'type' => 'radio' )
@@ -759,7 +827,7 @@
 				'options' => $options
 			)
 		);
-		
+
 		echo $xhtml->tag(
 			'fieldset',
 			$default->subform(
@@ -775,7 +843,7 @@
 				'class'=>'noborder invisible'
 			)
 		);
-		
+
 		echo $default->subform(
 			array(
 				'Traitementpdo.haspiecejointe' => array( 'type' => 'radio' )
@@ -784,9 +852,9 @@
 				'options' => $options
 			)
 		);
-		
+
 		echo "<table>";
-		
+
 		echo $default2->thead(
 			array(
 				'Traitementpdo.descriptionpdo_id' => array( 'type'=>'string' ),
@@ -796,9 +864,9 @@
 				'Traitementpdo.questionclore' => array( 'type'=>'string' )
 			)
 		);
-		
+
 		echo "<tbody>";
-		
+
 		foreach( $traitementspdosouverts as $traitementpdoouvert ) {
 
 			echo $xhtml->tag(
@@ -832,15 +900,15 @@
 				)
 			);
 		}
-		
+
 		echo "</tbody></table>";
-		
+
 		echo "<div class='submit'>";
 			$disabled = ( isset( $this->data['Traitementpdo']['clos'] ) && $this->data['Traitementpdo']['clos'] == 1 ) ? 'disabled' : 'enabled';
 			echo $form->submit( 'Enregistrer', array( 'disabled'=>$disabled, 'div'=>false ) );
 			echo $form->button( 'Retour', array( 'type' => 'button', 'onclick'=>"location.replace('".Router::url( '/propospdos/edit/'.$propopdo_id, true )."')" ) );
 		echo "</div>";
-		
+
 		echo $form->end();
 
 ?>
@@ -849,7 +917,7 @@
 
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
-	
+
 		<?php echo $ajax->remoteFunction(
 			array(
 				'url' => Router::url(
@@ -862,7 +930,7 @@
 				'update' => 'statutPersonne'
 			)
 		); ?>;
-		
+
 		observeDisableFieldsetOnRadioValue(
 			'traitementpdoform',
 			'data[Traitementpdo][hasficheanalyse]',
@@ -871,7 +939,7 @@
 			false,
 			true
 		);
-		
+
 		observeDisableFieldsetOnRadioValue(
 			'traitementpdoform',
 			'data[Traitementpdo][hasrevenu]',
@@ -880,7 +948,7 @@
 			false,
 			true
 		);
-		
+
 		observeDisableFieldsOnValue(
 			'TraitementpdoTraitementtypepdoId',
 			[
@@ -896,7 +964,7 @@
 			'<?php echo Configure::read('traitementClosId') ?>',
 			true
 		);
-		
+
 		<?php
 			$datesreception = array();
 			$datesdepart = array();
@@ -935,7 +1003,7 @@
 			true
 		);
 		<?php endif; ?>
-		
+
 		<?php foreach ($options['Traitementpdo']['regime'] as $enumname=>$enumvalue): ?>
 			$$('tr.<?php echo $enumname; ?>').each(function (element) {
 				element.hide();
@@ -944,24 +1012,24 @@
 				element.hide();
 			});
 		<?php endforeach; ?>
-			
+
 		$('TraitementpdoRegime').observe( 'change', function (event) {
 			loadFiche();
 		});
 		loadFiche();
-		
+
 		[ $('TraitementpdoDtdebutperiodeDay'), $('TraitementpdoDtdebutperiodeMonth'), $('TraitementpdoDtdebutperiodeYear'), $('TraitementpdoDtfinperiodeDay'), $('TraitementpdoDtfinperiodeMonth'), $('TraitementpdoDtfinperiodeYear') ].each( function(element) {
 			element.observe( 'change', function (event) {
 				recalculnbmoisactivite();
 			});
 		});
-		
+
 		[ $('TraitementpdoForfait'), $('TraitementpdoMtaidesub'), $('TraitementpdoBenefoudef'), $('TraitementpdoAmortissements'), $('TraitementpdoSalaireexploitant'), $('TraitementpdoProvisionsnonded'), $('TraitementpdoMoinsvaluescession'), $('TraitementpdoAutrecorrection'),  ].each( function (element) {
 			element.observe( 'change', function (event) {
 				recalculmnttotal();
 			});
 		});
-		
+
 		$('TraitementpdoChaffvnt').observe( 'change', function (event) {
 			recalculbenefpriscompte();
 			// Infobulle
@@ -973,7 +1041,7 @@
 			infobulle('srv');
 		});
 	} );
-	
+
 	function loadFiche() {
 		var value = $F('TraitementpdoRegime');
 		$$('#fichecalcul tr').each(function (element) {
@@ -1014,7 +1082,7 @@
 		infobulle('vnt');
 		infobulle('srv');
 	}
-	
+
 	function recalculnbmoisactivite() {
 		var nbmois = 0;
 		if ($F('TraitementpdoDtfinperiodeYear') >= $F('TraitementpdoDtdebutperiodeYear')) {
@@ -1034,15 +1102,15 @@
 		}
 		if (nbmois < 0)
 			nbmois = 0;
-		
+
 		$('nbmoisactivite').innerHTML = ''+nbmois+' mois';
 		$('TraitementpdoNbmoisactivite').setValue(nbmois);
 		recalculrevenus();
 	}
-	
+
 	function recalculmnttotal() {
 		var mttotal = 0;
-		
+
 		if ($F('TraitementpdoRegime')=='fagri') {
 			var coefannee1 = $('coefannee1').innerHTML.split(' ');
 			var valuecoefannee1 = coefannee1[0].replace(',', '.');
@@ -1052,7 +1120,7 @@
 			valuecoefannee2 = parseFloat(valuecoefannee2)/100;
 			var forfait = parseFloat($F('TraitementpdoForfait').replace(',', '.'));
 			var mtaidesub = parseFloat($F('TraitementpdoMtaidesub').replace(',', '.'));
-			
+
 			if (!isNaN(valuecoefannee1) && !isNaN(valuecoefannee2) && !isNaN(forfait) && forfait!=0)
 				mttotal += Math.round( ( forfait + ( ( forfait + ( forfait * valuecoefannee1 ) ) * valuecoefannee2 ) ) * 100 ) / 100;
 			if (!isNaN(mtaidesub) && mtaidesub!=0)
@@ -1065,7 +1133,7 @@
 			var provisionsnonded = parseFloat($F('TraitementpdoProvisionsnonded').replace(',', '.'));
 			var moinsvaluescession = parseFloat($F('TraitementpdoMoinsvaluescession').replace(',', '.'));
 			var autrecorrection = parseFloat($F('TraitementpdoAutrecorrection').replace(',', '.'));
-			
+
 			if (!isNaN(benefoudef))
 				mttotal += Math.round( ( benefoudef ) * 100 ) / 100;
 			if (!isNaN(amortissements))
@@ -1079,16 +1147,16 @@
 			if (!isNaN(autrecorrection))
 				mttotal += Math.round( ( autrecorrection ) * 100 ) / 100;
 		}
-		
+
 		$('TraitementpdoMnttotalpriscompte').setValue(mttotal);
 		mttotal = mttotal.toString().replace('.', ',');
 		$('mnttotal').innerHTML = mttotal+' €';
 		recalculrevenus();
 	}
-	
+
 	function recalculbenefpriscompte() {
 		var benefpriscompte = 0;
-		
+
 		if ($F('TraitementpdoRegime')=='microbic' || $F('TraitementpdoRegime')=='microbicauto') {
 			var chaffvnt = parseFloat($F('TraitementpdoChaffvnt').replace(',', '.'));
 			var chaffsrv = parseFloat($F('TraitementpdoChaffsrv').replace(',', '.'));
@@ -1098,7 +1166,7 @@
 			var abattbicsrv = $('abattbicsrv').innerHTML.split(' ');
 			var valueabattbicsrv = abattbicsrv[0].replace(',', '.');
 			valueabattbicsrv = 1 - parseFloat(valueabattbicsrv)/100;
-			
+
 			if (!isNaN(chaffsrv) && !isNaN(valueabattbicsrv))
 				benefpriscompte += Math.round( (chaffsrv * valueabattbicsrv ) * 100 ) / 100;
 			if (!isNaN(chaffvnt) && !isNaN(valueabattbicvnt))
@@ -1109,17 +1177,17 @@
 			var abattbncsrv = $('abattbncsrv').innerHTML.split(' ');
 			var valueabattbncsrv = abattbncsrv[0].replace(',', '.');
 			valueabattbncsrv = 1 - parseFloat(valueabattbncsrv)/100;
-			
+
 			if (!isNaN(chaffsrv) && !isNaN(valueabattbncsrv))
 				benefpriscompte = Math.round( ( chaffsrv * valueabattbncsrv ) * 100 ) / 100;
 		}
-		
+
 		$('TraitementpdoBenefpriscompte').setValue(benefpriscompte);
 		benefpriscompte = benefpriscompte.toString().replace('.', ',');
 		$('benefpriscompte').innerHTML = benefpriscompte + ' €';
 		recalculrevenus();
 	}
-	
+
 	function infobulle(champ) {
 		var p = $('infoChaff'+champ);
 		if ($F('TraitementpdoRegime')=='reel' || $F('TraitementpdoRegime')=='microbic' || $F('TraitementpdoRegime')=='microbicauto' || $F('TraitementpdoRegime')=='microbnc') {
@@ -1136,17 +1204,17 @@
 		else
 			p.hide();
 	}
-	
+
 	function recalculrevenus() {
 		var revenus = 0;
-		
+
 		if ($F('TraitementpdoRegime')=='fagri' || $F('TraitementpdoRegime')=='ragri' || $F('TraitementpdoRegime')=='reel') {
 			var mnttotal = $('mnttotal').innerHTML.split(' ');
 			var valuemnttotal = mnttotal[0].replace(',', '.');
 			valuemnttotal = parseFloat(valuemnttotal);
 			var nbmois = $('nbmoisactivite').innerHTML.split(' ');
 			var valuenbmois = parseFloat(nbmois[0]);
-			
+
 			if (!isNaN(valuemnttotal) && !isNaN(valuenbmois) && valuemnttotal!=0 && valuenbmois!=0)
 				revenus = Math.round( parseFloat( valuemnttotal ) / parseFloat( valuenbmois ) * 100 ) / 100;
 		}
@@ -1156,11 +1224,11 @@
 			valuebenefpriscompte = parseFloat(valuebenefpriscompte);
 			var nbmois = $('nbmoisactivite').innerHTML.split(' ');
 			var valuenbmois = parseFloat(nbmois[0]);
-			
+
 			if (!isNaN(valuebenefpriscompte) && !isNaN(valuenbmois) && valuebenefpriscompte!=0 && valuenbmois!=0)
 				revenus = Math.round( parseFloat( valuebenefpriscompte ) / parseFloat( valuenbmois ) * 100 ) / 100;
 		}
-		
+
 		$('TraitementpdoRevenus').setValue(revenus);
 		revenus = revenus.toString().replace('.', ',');
 		$('revenus').innerHTML = revenus + ' € par mois';

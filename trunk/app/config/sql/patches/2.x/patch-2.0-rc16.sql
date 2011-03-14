@@ -383,6 +383,32 @@ SELECT add_missing_constraint ('public', 'decisionsdefautsinsertionseps66', 'dec
 SELECT add_missing_table_field ('public', 'nvsrsepsreorient66', 'referent_id', 'integer');
 SELECT add_missing_constraint ('public', 'nvsrsepsreorient66', 'nvsrsepsreorient66_referent_id_fkey', 'referents', 'referent_id');
 
+-- -----------------------------------------------------------------------------
+-- 20110314
+-- -----------------------------------------------------------------------------
+
+-- Ajout de la gestion des fichiers attachés aux PDOs
+DROP TABLE IF EXISTS fichierstraitementspdos;
+DROP TYPE IF EXISTS TYPE_TYPEFICHIERTRAITEMENTPDO CASCADE;
+
+CREATE TYPE TYPE_TYPEFICHIERTRAITEMENTPDO AS ENUM ( 'courrier', 'piecejointe' );
+CREATE TABLE fichierstraitementspdos (
+	id      				SERIAL NOT NULL PRIMARY KEY,
+	name					VARCHAR(255) NOT NULL,
+	traitementpdo_id		INTEGER NOT NULL REFERENCES traitementspdos ON UPDATE CASCADE ON DELETE CASCADE,
+	type					TYPE_TYPEFICHIERTRAITEMENTPDO NOT NULL,
+	document				BYTEA DEFAULT NULL,
+	cmspath					VARCHAR(255) DEFAULT NULL,
+	mime					VARCHAR(255) NOT NULL,-- FIXME ?
+	created					TIMESTAMP WITHOUT TIME ZONE,
+	modified				TIMESTAMP WITHOUT TIME ZONE
+);
+
+CREATE INDEX fichierstraitementspdos_name_idx ON fichierstraitementspdos( name );
+CREATE INDEX fichierstraitementspdos_traitementpdo_id_idx ON fichierstraitementspdos( traitementpdo_id );
+CREATE INDEX fichierstraitementspdos_type_idx ON fichierstraitementspdos( type );
+CREATE INDEX fichierstraitementspdos_mime_idx ON fichierstraitementspdos( mime );
+CREATE UNIQUE INDEX fichierstraitementspdos_cmspath_idx ON fichierstraitementspdos( cmspath );
 
 -- *****************************************************************************
 COMMIT;
