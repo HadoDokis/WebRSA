@@ -33,6 +33,28 @@
                     array( 'class' => 'odd' ),
                     array( 'class' => 'even' )
                 );
+                echo $xhtml->tableCells(
+                    array(
+                        h( 'Cantons' ),
+                        $xhtml->viewLink(
+                            'Voir la table',
+                            array( 'controller' => 'cantons', 'action' => 'index' )
+                        )
+                    ),
+                    array( 'class' => 'odd' ),
+                    array( 'class' => 'even' )
+                );
+                echo $xhtml->tableCells(
+                    array(
+                        h( 'Équipes pluridisciplinaires' ),
+                        $xhtml->viewLink(
+                            'Voir la table',
+                            array( 'controller' => 'gestionseps', 'action' => 'index' )
+                        )
+                    ),
+                    array( 'class' => 'odd' ),
+                    array( 'class' => 'even' )
+                );
                 if( Configure::read( 'ActioncandidatPersonne.suffixe' ) == 'cg66' ){
                     echo $xhtml->tableCells(
                         array(
@@ -59,28 +81,7 @@
                         array( 'class' => 'even' )
                     );
                 }
-                echo $xhtml->tableCells(
-                    array(
-                        h( 'Cantons' ),
-                        $xhtml->viewLink(
-                            'Voir la table',
-                            array( 'controller' => 'cantons', 'action' => 'index' )
-                        )
-                    ),
-                    array( 'class' => 'odd' ),
-                    array( 'class' => 'even' )
-                );
-                echo $xhtml->tableCells(
-                    array(
-                        h( 'Équipes pluridisciplinaires' ),
-                        $xhtml->viewLink(
-                            'Voir la table',
-                            array( 'controller' => 'gestionseps', 'action' => 'index' )
-                        )
-                    ),
-                    array( 'class' => 'odd' ),
-                    array( 'class' => 'even' )
-                );
+
                 echo $xhtml->tableCells(
                     array(
                         h( 'Groupes d\'utilisateurs' ),
