@@ -107,7 +107,7 @@
 			$queryData['fields'][] = 'Typeorient.lib_type_orient';
 			$queryData['fields'][] = 'Structurereferente.lib_struc';
 			
-			$queryData['conditions'][] = 'Orientstruct.date_valid > \''.date( 'Y-m-d', strtotime( '-2 month' ) ).'\'';
+			$queryData['conditions'][] = 'Orientstruct.date_valid < \''.date( 'Y-m-d', strtotime( '-2 month' ) ).'\'';
 			$queryData['conditions'][] = 'Personne.id NOT IN (
 				SELECT
 						personnes.id
