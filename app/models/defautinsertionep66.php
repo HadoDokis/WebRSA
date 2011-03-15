@@ -617,14 +617,14 @@
 			if ( !empty( $canton ) ) {
 				$queryData['conditions'][] = array( 'Adresse.canton' => $canton );
 			}
-
+			
 			return $queryData;
 		}
-
+		
 		/**
 		*
 		*/
-
+		
 		public function qdNonInscrits( $datas ) {
 			$queryData = $this->_qdSelection( $datas );
 			$qdNonInscrits = $this->Historiqueetatpe->Informationpe->qdNonInscrits();

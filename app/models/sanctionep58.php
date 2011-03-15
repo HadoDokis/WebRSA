@@ -267,7 +267,18 @@
 			$queryData = $this->_qdSelection( 'noninscritpe' );
 			$qdNonInscrits = $this->Historiqueetatpe->Informationpe->qdNonInscrits();
 			$queryData['fields'] = array_merge( $queryData['fields'] ,$qdNonInscrits['fields'] );
+			
+			$queryData['joins'][] = array(
+				'table'      => 'orientsstructs',
+				'alias'      => 'Orientstruct',
+				'type'       => 'INNER',
+				'foreignKey' => false,
+				'conditions' => array(
+					'Personne.id = Orientstruct.personne_id'
+				)
+			);
 			$queryData['joins'] = array_merge( $queryData['joins'] ,$qdNonInscrits['joins'] );
+			
 			$queryData['conditions'] = array_merge( $queryData['conditions'] ,$qdNonInscrits['conditions'] );
 			$queryData['order'] = $qdNonInscrits['order'];
 
