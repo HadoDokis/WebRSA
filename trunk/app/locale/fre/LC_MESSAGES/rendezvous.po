@@ -43,6 +43,14 @@ msgstr "Ajout d'un rendez-vous"
 msgid "Rendezvous::edit"
 msgstr "Modification du rendez-vous"
 
+msgid "Rendezvous::print"
+msgstr "Imprimer le rendez-vous"
+
+msgid "Rendezvous::delete"
+msgstr "Supprimer le rendez-vous"
+
+msgid "Rendezvous::delete::confirm"
+msgstr "Etes-vous sûr de vouloir supprimer le rendez-vous?"
 
 msgid "Rendezvous.daterdv"
 msgstr "Date de RDV"
