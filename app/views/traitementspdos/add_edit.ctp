@@ -168,98 +168,45 @@
 
 		?><fieldset id="statutPersonne" class="invisible"></fieldset><?php
 
-		echo $default->subform(
+		/*echo $default->subform(
 			array(
 				'Traitementpdo.hascourrier' => array( 'type' => 'radio' )
 			),
 			array(
 				'options' => $options
 			)
-		);
+		);*/
 ?>
 
-<?php
-	if( !empty( $this->data['Fichiertraitementpdo'] ) ) {
-		echo '<ul class="qq-upload-list">';
-		foreach( $this->data['Fichiertraitementpdo'] as $fichier ) {
-			if( $fichier['type'] == 'courrier' ) {
-				echo '<li class="qq-upload-success"><span class="qq-upload-file">'.$fichier['name'].'</span></li>';
-			}
-		}
-		echo '</ul>';
-	}
-?>
+<fieldset>
+	<legend><?php __d( 'traitementpdo', 'Traitementpdo.hascourrier' );?></legend>
 
-<script type="text/javascript">
-	function addAjaxUploadedFileDeleteLink( elmt, type ) {
-		var link = new Element( 'a', { href: '<?php echo Router::url( array( 'action' => 'ajaxfiledelete', $this->action, $this->params['pass'][0] ), true );?>' + '/' + type + '/' + $( elmt ).innerHTML } ).update( "Supprimer" );
-		Event.observe( link, 'click', function(e){
-			Event.stop(e);
-			new Ajax.Request(
-				$(Event.element(e)).getAttribute('href'),
-				{
-					method: 'post',
-					onComplete: function( transport ) {
-						try {
-							response = eval( "(" + transport.responseText + ")" );
-						} catch(err){
-							response = {};
-						}
-
-						if( response.success && response.success == true ) {
-							$( elmt ).up( 'li.qq-upload-success' ).remove();
-						}
-						else {
-							alert( 'Erreur!' );
-						}
-					}
-				}
+	<?php echo $form->input( 'Traitementpdo.hascourrier', array( 'type' => 'radio', 'options' => $options['Traitementpdo']['hascourrier'], 'legend' => false, 'fieldset' => false ) );?>
+	<fieldset id="filecontainer-courrier" class="noborder invisible">
+		<?php
+			echo $fileuploader->create(
+				'courrier',
+				$fichiers['courrier'],
+				Router::url( array( 'action' => 'courrier' ), true )
 			);
-		} );
-
-		$( elmt ).up( 'li.qq-upload-success' ).insert( { bottom: link } );
-	}
-
-	$$( '.qq-upload-file' ).each( function( elmt ) {
-		addAjaxUploadedFileDeleteLink( elmt, 'courrier' );
-	} );
-</script>
-
-<div id="file-uploader-courrier">
-	<noscript>
-		<p>Please enable JavaScript to use file uploader.</p>
-	</noscript>
-</div>
+		?>
+	</fieldset>
+</fieldset>
 
 <script type="text/javascript">
-	function createUploader(){
-		var uploader = new qq.FileUploader( {
-			element: document.getElementById('file-uploader-courrier'),
-			action: '<?php echo Router::url( array( 'action' => 'ajaxfileupload' ), true );?>',
-			debug: false,
-			multiple: false,
-			params: {
-				action: '<?php echo $this->action;?>',
-				primaryKey: '<?php echo $this->params['pass'][0];?>',
-				type: 'courrier'
-			},
-			onComplete: function( id, fileName, responseJSON ) {
-				$$( '.qq-upload-file' ).each( function( elmt ) {
-					if( elmt.innerHTML == fileName ) {
-						addAjaxUploadedFileDeleteLink( elmt, 'courrier' );
-					}
-				} );
-			}
-		} );
-	}
-
 	document.observe( "dom:loaded", function() {
-		createUploader();
+		observeDisableFieldsetOnRadioValue(
+			'traitementpdoform',
+			'data[Traitementpdo][hascourrier]',
+			$( 'filecontainer-courrier' ),
+			'1',
+			false,
+			true
+		);
 	} );
 </script>
 
 <?php
-
 		echo $default->subform(
 			array(
 				'Traitementpdo.hasrevenu' => array( 'type' => 'radio' )
@@ -864,15 +811,53 @@
 			)
 		);
 
-		echo $default->subform(
+		/*echo $default->subform(
 			array(
 				'Traitementpdo.haspiecejointe' => array( 'type' => 'radio' )
 			),
 			array(
 				'options' => $options
 			)
-		);
+		);*/
+?>
 
+<fieldset>
+	<legend><?php __d( 'traitementpdo', 'Traitementpdo.haspiecejointe' );?></legend>
+
+	<?php echo $form->input( 'Traitementpdo.haspiecejointe', array( 'type' => 'radio', 'options' => $options['Traitementpdo']['haspiecejointe'], 'legend' => false, 'fieldset' => false ) );?>
+	<fieldset id="filecontainer-piecejointe" class="noborder invisible">
+		<?php
+			echo $fileuploader->create(
+				'piecejointe',
+				$fichiers['piecejointe'],
+				Router::url( array( 'action' => 'piecejointe' ), true )
+			);
+		?>
+	</fieldset>
+</fieldset>
+
+<script type="text/javascript">
+	document.observe( "dom:loaded", function() {
+		observeDisableFieldsetOnRadioValue(
+			'traitementpdoform',
+			'data[Traitementpdo][haspiecejointe]',
+			$( 'filecontainer-piecejointe' ),
+			'1',
+			false,
+			true
+		);
+	} );
+</script>
+
+<!--<?php
+	echo $fileuploader->create(
+		'piecejointe',
+		$fichiers['piecejointe'],
+		Router::url( array( 'action' => 'ajaxfileupload' ), true )
+	);
+?>-->
+
+<?php
 		echo "<table>";
 
 		echo $default2->thead(
