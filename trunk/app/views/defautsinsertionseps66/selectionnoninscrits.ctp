@@ -1,22 +1,59 @@
+<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 <h1><?php echo $this->pageTitle = __d( 'defautinsertionep66', "{$this->name}::{$this->action}", true );?></h1>
 
+<ul class="actionMenu">
+    <?php
+		echo '<li>'.$xhtml->link(
+			$xhtml->image(
+				'icons/application_form_magnify.png',
+				array( 'alt' => '' )
+			).' Formulaire',
+			'#',
+			array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 'Search' ).toggle(); return false;" )
+		).'</li>';
+    ?>
+</ul>
+
+<?php echo $form->create( 'Defautinsertionep66', array( 'type' => 'post', 'action' => $this->action, 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );?>
+    <fieldset>
+        <legend>Recherche par personne</legend>
+        <?php echo $form->input( 'Personne.nom', array( 'label' => 'Nom ', 'type' => 'text' ) );?>
+        <?php echo $form->input( 'Personne.prenom', array( 'label' => 'Prénom ', 'type' => 'text' ) );?>
+        <?php echo $form->input( 'Personne.dtnai', array( 'label' => 'Date de naissance', 'type' => 'date', 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 80, 'maxYear' => date( 'Y' ), 'empty' => true ) );?>
+        <?php echo $form->input( 'Personne.nir', array( 'label' => 'NIR', 'maxlength' => 15 ) );?>
+        <?php echo $form->input( 'Dossier.matricule', array( 'label' => 'N° CAF', 'maxlength' => 15 ) );?>
+        <?php echo $form->input( 'Adresse.locaadr', array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );?>
+        <?php echo $form->input( 'Adresse.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );?>
+        <?php
+			if( Configure::read( 'CG.cantons' ) ) {
+				echo $form->input( 'Adresse.canton', array( 'label' => 'Canton', 'type' => 'select', 'options' => $cantons, 'empty' => true ) );
+			}
+		?>
+    </fieldset>
+
+    <div class="submit noprint">
+        <?php echo $form->button( 'Rechercher', array( 'type' => 'submit' ) );?>
+        <?php echo $form->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>
+    </div>
+<?php echo $form->end();?>
+
 <?php
-	echo $default2->index(
-		$personnes,
-		array(
-			'Orientstruct.chosen' => array( 'input' => 'checkbox', 'type' => 'boolean', 'domain' => 'defautinsertionep66' ),
-			'Personne.nom',
-			'Personne.prenom',
-			'Personne.dtnai',
-			'Orientstruct.date_valid',
-		),
-		array(
-			'cohorte' => true,
-			'hidden' => array(
-				'Orientstruct.personne_id',
-				'Orientstruct.id'
+	if ( !empty( $personnes ) ) {
+		echo $default2->index(
+			$personnes,
+			array(
+				'Personne.nom',
+				'Personne.prenom',
+				'Personne.dtnai',
+				'Orientstruct.date_valid'
 			),
-			'paginate' => 'Personne'
-		)
-	);
+			array(
+				'cohorte' => true,
+				'paginate' => 'Personne',
+				'actions' => array(
+					'Orientsstructs::index' => array( 'label' => 'Voir', 'url' => array( 'controller' => 'bilansparcours66', 'action' => 'add', '#Personne.id#', 'Bilanparcours66__examenauditionpe:'.$actionbp ) )
+				)
+			)
+		);
+	}
 ?>

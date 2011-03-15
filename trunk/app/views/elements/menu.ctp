@@ -154,13 +154,27 @@
 									</li>
 								</ul>
 							</li>
-
 						<?php endif;?>
 						<?php if( Configure::read( 'Cg.departement' ) == '66' ): ?>
-                            <?php if( $permissions->check( 'criteresbilansparcours66', 'index' ) ):?>
-                                <li><?php echo $xhtml->link( 'Par Bilans de parcours',  array( 'controller' => 'criteresbilansparcours66', 'action' => 'index'  ) );?></li>
-                            <?php endif;?>
-                        <?php endif;?>
+							<?php if( $permissions->check( 'criteresbilansparcours66', 'index' ) ):?>
+								<li><?php echo $xhtml->link( 'Par Bilans de parcours',  array( 'controller' => 'criteresbilansparcours66', 'action' => 'index'  ) );?></li>
+							<?php endif;?>
+							<!-- TODO : à faire !!! -->
+							<?php if( $permissions->check( 'defautsinsertionseps66', 'selectionnoninscrits' ) ):?>
+								<li>
+									<?php echo $xhtml->link( 'Pôle Emploi', '#' );?>
+									<ul>
+										<li>
+											<?php echo $xhtml->link( 'Non inscrits au Pôle Emploi',  array( 'controller' => 'defautsinsertionseps66', 'action' => 'selectionnoninscrits'  ) );?>
+										</li>
+
+										<li>
+											<?php echo $xhtml->link( 'Radiés de Pôle Emploi',  array( 'controller' => 'defautsinsertionseps66', 'action' => 'selectionradies'  ) );?>
+										</li>
+									</ul>
+								</li>
+							<?php endif;?>
+						<?php endif;?>
 					</ul>
 				</li>
 			<?php endif;?>
@@ -279,8 +293,6 @@
 						<ul>
 							<?php if( Configure::read( 'Cg.departement' ) == 66 ):?>
 								<li><?php echo $xhtml->link( 'Bilans de parcours 66', array( 'controller' => 'bilansparcours66', 'action' => 'index' ) );?></li>
-								<li><?php echo $xhtml->link( 'Sélection des allocataires non inscrits à Pôle Emploi', array( 'controller' => 'defautsinsertionseps66', 'action' => 'selectionnoninscrits' ) );?></li>
-								<li><?php echo $xhtml->link( 'Sélection des allocataires radiés de Pôle Emploi', array( 'controller' => 'defautsinsertionseps66', 'action' => 'selectionradies' ) );?></li>
 							<?php elseif( Configure::read( 'Cg.departement' ) == 93 ):?>
 								<li><?php echo $xhtml->link( 'Demandes de réorientation 93', array( 'controller' => 'saisinesepsreorientsrs93', 'action' => 'index' ) );?></li>
 								<li><?php echo $xhtml->link( 'Demande de suspension 93', array( 'controller' => 'nonrespectssanctionseps93', 'action' => 'index' ) );?></li>

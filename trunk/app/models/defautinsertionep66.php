@@ -469,9 +469,10 @@
 		* FIXME: et qui ne sont pas passés en EP pour ce motif dans un délai de moins de 1 mois (paramétrable)
 		*/
 
-		protected function _qdSelection() {
+		protected function _qdSelection( $datas ) {
 			$queryData = array(
 				'fields' => array(
+					'Personne.id',
 					'Personne.qual',
 					'Personne.nom',
 					'Personne.prenom',
@@ -579,6 +580,43 @@
 					)'
 				) // FIXME: paramétrage
 			);
+			
+			$nom = Set::classicExtract( $datas, 'Personne.nom' );
+			$prenom = Set::classicExtract( $datas, 'Personne.prenom' );
+			$dtnai = null;
+			if ( !empty( $datas['Personne']['dtnai']['day'] ) && !empty( $datas['Personne']['dtnai']['month'] ) && !empty( $datas['Personne']['dtnai']['year'] ) ) {
+				$dtnai = implode( '-', array( Set::classicExtract( $datas, 'Personne.dtnai.year' ), Set::classicExtract( $datas, 'Personne.dtnai.month' ), Set::classicExtract( $datas, 'Personne.dtnai.day' ) ) );
+			}
+			$nir = Set::classicExtract( $datas, 'Personne.nir' );
+			$matricule = Set::classicExtract( $datas, 'Dossier.matricule' );
+			$locaadr = Set::classicExtract( $datas, 'Adresse.locaadr' );
+			$numcomptt = Set::classicExtract( $datas, 'Adresse.numcomptt' );
+			$canton = Set::classicExtract( $datas, 'Adresse.canton' );
+			
+			if ( !empty( $nom ) ) {
+				$queryData['conditions'][] = array( 'Personne.nom' => $nom );
+			}
+			if ( !empty( $prenom ) ) {
+				$queryData['conditions'][] = array( 'Personne.prenom' => $prenom );
+			}
+			if ( !empty( $dtnai ) ) {
+				$queryData['conditions'][] = array( 'Personne.dtnai' => $dtnai );
+			}
+			if ( !empty( $nir ) ) {
+				$queryData['conditions'][] = array( 'Personne.nir' => $nir );
+			}
+			if ( !empty( $matricule ) ) {
+				$queryData['conditions'][] = array( 'Dossier.matricule' => $matricule );
+			}
+			if ( !empty( $locaadr ) ) {
+				$queryData['conditions'][] = array( 'Adresse.locaadr' => $locaadr );
+			}
+			if ( !empty( $numcomptt ) ) {
+				$queryData['conditions'][] = array( 'Adresse.numcomptt' => $numcomptt );
+			}
+			if ( !empty( $canton ) ) {
+				$queryData['conditions'][] = array( 'Adresse.canton' => $canton );
+			}
 
 			return $queryData;
 		}
@@ -587,8 +625,20 @@
 		*
 		*/
 
-		public function qdNonInscrits() {
-			$queryData = $this->_qdSelection();
+		public function qdNonInscrits( $datas ) {
+			$queryData = $this->_qdSelection( $datas );
+			$qdNonInscrits = $this->Historiqueetatpe->Informationpe->qdNonInscrits();
+			
+			$queryData['fields'] = array_merge( $queryData['fields'] ,$qdNonInscrits['fields'] );
+			$queryData['joins'] = array_merge( $queryData['joins'] ,$qdNonInscrits['joins'] );
+			$queryData['conditions'] = array_merge( $queryData['conditions'] ,$qdNonInscrits['conditions'] );
+			$queryData['order'] = $qdNonInscrits['order'];
+
+			return $queryData;
+		}
+
+		/*public function qdNonInscrits( $datas = array() ) {
+			$queryData = $this->_qdSelection( $datas );
 			// FIXME: à pouvoir paramétrer dans le webrsa.inc
 			// FIXME: et qui ne sont pas passés dans une EP pour ce motif depuis au moins 1 mois (?)
 			$queryData['conditions'][] = 'Orientstruct.date_valid > \''.date( 'Y-m-d', strtotime( '-2 month' ) ).'\'';
@@ -627,15 +677,27 @@
 			$queryData['order'] = array( 'Orientstruct.date_valid ASC' );
 
 			return $queryData;
-		}
+		}*/
 
 		/**
 		*
 		*/
-
-		public function qdRadies() {
+		
+		public function qdRadies( $datas ) {
 			// FIXME: et qui ne sont pas passés dans une EP pour ce motif depuis au moins 1 mois (?)
-			$queryData = $this->_qdSelection();
+			$queryData = $this->_qdSelection( $datas );
+			$qdRadies = $this->Historiqueetatpe->Informationpe->qdRadies();
+			$queryData['fields'] = array_merge( $queryData['fields'] ,$qdRadies['fields'] );
+			$queryData['joins'] = array_merge( $queryData['joins'] ,$qdRadies['joins'] );
+			$queryData['conditions'] = array_merge( $queryData['conditions'] ,$qdRadies['conditions'] );
+			$queryData['order'] = $qdRadies['order'];
+			
+			return $queryData;
+		}
+
+		/*public function qdRadies( $datas ) {
+			// FIXME: et qui ne sont pas passés dans une EP pour ce motif depuis au moins 1 mois (?)
+			$queryData = $this->_qdSelection( $datas );
 			$queryData['joins'][] = array(
 				'table'      => 'informationspe', // FIXME:
 				'alias'      => 'Informationpe',
@@ -676,9 +738,9 @@
 			// FIXME: seulement pour certains motifs
 			$queryData['conditions']['Historiqueetatpe.etat'] = 'radiation';
 			$queryData['order'] = array( 'Historiqueetatpe.date ASC' );
-
+			
 			return $queryData;
-		}
+		}*/
 
 		/**
 		*
