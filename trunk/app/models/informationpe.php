@@ -176,15 +176,7 @@
 					)'
 				)
 			);
-			$queryData['joins'][] = array(
-				'table'      => 'orientsstructs',
-				'alias'      => 'Orientstruct',
-				'type'       => 'INNER',
-				'foreignKey' => false,
-				'conditions' => array(
-					'Personne.id = Orientstruct.personne_id'
-				)
-			);
+			
 			$queryData['joins'][] = array(
 				'table'      => 'typesorients',
 				'alias'      => 'Typeorient',
