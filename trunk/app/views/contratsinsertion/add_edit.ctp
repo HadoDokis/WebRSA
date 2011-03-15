@@ -119,6 +119,13 @@
             true
         );
 
+        observeDisableFieldsetOnCheckbox(
+            'ContratinsertionFaitsuitea',
+            'Raisonfaitsuitea',
+            false,
+            true
+        );
+
 
         //Autre cas de suspension / radiation
         observeDisableFieldsetOnRadioValue(
@@ -386,7 +393,7 @@
                 );
             ?>
         </fieldset>
-        <fieldset class="noborder" id="Faitsuitea">
+        <fieldset class="noborder" id="Raisonfaitsuitea">
             <div class="demi">
                 <?php echo $form->input( 'Contratinsertion.raison_ci', array( 'label' => 'Raison : ' , 'type' => 'radio', 'div' => false, 'separator' => '</div><div class="demi">', 'options' => $raison_ci, 'legend' => false ) );?>
             </div>
@@ -507,7 +514,7 @@
 
         observeDisableFieldsetOnCheckbox(
             'ContratinsertionFaitsuitea',
-            'Faitsuitea',
+            'Raisonfaitsuitea',
             false,
             true
         );
