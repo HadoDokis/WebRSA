@@ -563,7 +563,7 @@
                     <?php
                         echo $default->subform(
                             array(
-                                'Cui.dureebenefaide' => array( 'label' => required( __d( 'cui', 'Cui.dureebenefaide', true )  ), 'type' => 'radio', 'options' => $options['dureebenefaide'] )
+                                'Cui.dureebenefaide' => array( 'label' => /*required*/( __d( 'cui', 'Cui.dureebenefaide', true )  ), 'type' => 'radio', 'options' => $options['dureebenefaide'] )
                             ),
                             array(
                                 'domain' => $domain,
@@ -576,7 +576,7 @@
                 <?php
                     echo $default->subform(
                         array(
-                            'Cui.handicap' => array( 'label' => required( __d( 'cui', 'Cui.handicap', true )  ), 'type' => 'radio', 'options' => $options['handicap'] )
+                            'Cui.handicap' => array( 'label' => /*required*/( __d( 'cui', 'Cui.handicap', true )  ), 'type' => 'radio', 'options' => $options['handicap'] )
                         ),
                         array(
                             'domain' => $domain,
@@ -593,7 +593,7 @@
         <?php
             echo $default->subform(
                 array(
-                    'Cui.typecontrat' => array( 'label' => required( __d( 'cui', 'Cui.typecontrat', true )  ), 'type' => 'radio', 'options' => $options['typecontrat'] )
+                    'Cui.typecontrat' => array( 'label' => /*required*/( __d( 'cui', 'Cui.typecontrat', true )  ), 'type' => 'radio', 'options' => $options['typecontrat'] )
                 ),
                 array(
                     'domain' => $domain,
@@ -678,7 +678,7 @@
                     <?php
                         echo $default->subform(
                             array(
-                                'Cui.modulation' => array( 'label' => required( __d( 'cui', 'Cui.modulation', true )  ), 'type' => 'radio', 'options' => $options['modulation'] )
+                                'Cui.modulation' => array( 'label' => /*required*/( __d( 'cui', 'Cui.modulation', true )  ), 'type' => 'radio', 'options' => $options['modulation'] )
                             ),
                             array(
                                 'domain' => $domain,
