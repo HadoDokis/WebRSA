@@ -139,7 +139,7 @@
 						AND historiqueetatspe.etat = \'inscription\'
 						AND historiqueetatspe.date >= Orientstruct.date_valid
 			)';
-			
+/*			
 			$queryData['joins'][] = array(
 				'table'      => 'informationspe', // FIXME:
 				'alias'      => 'Informationpe',
@@ -175,7 +175,7 @@
 									LIMIT 1
 					)'
 				)
-			);
+			);*/
 			
 			$queryData['joins'][] = array(
 				'table'      => 'typesorients',

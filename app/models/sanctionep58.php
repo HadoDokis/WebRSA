@@ -238,6 +238,32 @@
 							'Personne.id = Calculdroitrsa.personne_id',
 							'Calculdroitrsa.toppersdrodevorsa' => '1',
 						)
+					),
+					array(
+						'table'      => 'orientsstructs', // FIXME:
+						'alias'      => 'Orientstruct',
+						'type'       => 'INNER',
+						'foreignKey' => false,
+						'conditions' => array(
+							'Personne.id = Orientstruct.personne_id',
+							// La dernière
+							'Orientstruct.id IN (
+										SELECT o.id
+											FROM orientsstructs AS o
+											WHERE
+												o.personne_id = Personne.id
+												AND o.date_valid IS NOT NULL
+											ORDER BY o.date_valid DESC
+											LIMIT 1
+							)',
+							// en emploi
+							'Orientstruct.typeorient_id IN (
+								SELECT t.id
+									FROM typesorients AS t
+									WHERE /*t.parentid IS NULL
+										AND*/ t.lib_type_orient LIKE \'Emploi%\'
+							)'// FIXME
+						)
 					)
 				),
 				'conditions' => array(
@@ -268,7 +294,7 @@
 			$qdNonInscrits = $this->Historiqueetatpe->Informationpe->qdNonInscrits();
 			$queryData['fields'] = array_merge( $queryData['fields'] ,$qdNonInscrits['fields'] );
 			
-			$queryData['joins'][] = array(
+			/*$queryData['joins'][] = array(
 				'table'      => 'orientsstructs',
 				'alias'      => 'Orientstruct',
 				'type'       => 'INNER',
@@ -276,7 +302,7 @@
 				'conditions' => array(
 					'Personne.id = Orientstruct.personne_id'
 				)
-			);
+			);*/
 			$queryData['joins'] = array_merge( $queryData['joins'] ,$qdNonInscrits['joins'] );
 			
 			$queryData['conditions'] = array_merge( $queryData['conditions'] ,$qdNonInscrits['conditions'] );
