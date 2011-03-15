@@ -51,7 +51,7 @@ msgid "Rendezvous.heurerdv"
 msgstr "Heure du RDV"
 
 msgid "Rendezvous.objetrdv"
-msgstr "Objet du RDV"
+msgstr "Objectif du RDV"
 
 msgid "Rendezvous.commentairerdv"
 msgstr "Commentaire du RDV"
