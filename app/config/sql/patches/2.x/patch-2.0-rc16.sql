@@ -378,12 +378,49 @@ SELECT add_missing_table_field ('public', 'seanceseps', 'lieuseance', 'VARCHAR(5
 SELECT add_missing_table_field ('public', 'seanceseps', 'adresseseance', 'VARCHAR(100)');
 SELECT add_missing_table_field ('public', 'seanceseps', 'codepostalseance', 'CHAR(5)');
 SELECT add_missing_table_field ('public', 'seanceseps', 'villeseance', 'VARCHAR(100)');
+
+CREATE OR REPLACE FUNCTION updateLieuSeanceEp() RETURNS text AS
+$$
+DECLARE
+	v_row	record;
+BEGIN
+	SELECT 1 INTO v_row
+		FROM information_schema.columns
+		WHERE
+			information_schema.columns.table_catalog = current_database()
+			AND table_schema = 'public'
+			AND table_name = 'seanceseps'
+			AND column_name = 'structurereferente_id';
+
+	IF FOUND THEN
+		UPDATE seanceseps
+			SET
+				lieuseance = ( SELECT structuresreferentes.lib_struc FROM structuresreferentes WHERE structuresreferentes.id = structurereferente_id ),
+				adresseseance = ( SELECT structuresreferentes.num_voie || ' ' || structuresreferentes.type_voie || ' ' || structuresreferentes.nom_voie FROM structuresreferentes WHERE structuresreferentes.id = structurereferente_id ),
+				codepostalseance = ( SELECT structuresreferentes.code_postal FROM structuresreferentes WHERE structuresreferentes.id = structurereferente_id ),
+				villeseance = ( SELECT structuresreferentes.ville FROM structuresreferentes WHERE structuresreferentes.id = structurereferente_id )
+			WHERE
+				structurereferente_id IS NOT NULL
+				AND lieuseance IS NULL
+				AND adresseseance IS NULL
+				AND codepostalseance IS NULL
+				AND villeseance IS NULL;
+		ALTER TABLE seanceseps DROP COLUMN structurereferente_id;
+		RETURN 'Colonne structurereferente_id trouvée dans la table seanceseps et traitée';
+	ELSE
+		RETURN 'Colonne structurereferente_id non trouvée dans la table seanceseps';
+	END IF;
+END;
+$$
+LANGUAGE plpgsql;
+
+SELECT updateLieuSeanceEp();
+DROP FUNCTION updateLieuSeanceEp();
+
 ALTER TABLE seanceseps ALTER COLUMN lieuseance SET NOT NULL;
 ALTER TABLE seanceseps ALTER COLUMN adresseseance SET NOT NULL;
 ALTER TABLE seanceseps ALTER COLUMN codepostalseance SET NOT NULL;
 ALTER TABLE seanceseps ALTER COLUMN villeseance SET NOT NULL;
-
-
 
 SELECT add_missing_table_field ('public', 'decisionsdefautsinsertionseps66', 'referent_id', 'integer');
 SELECT add_missing_constraint ('public', 'decisionsdefautsinsertionseps66', 'decisionsdefautsinsertionseps66_referent_id_fkey', 'referents', 'referent_id');
