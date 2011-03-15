@@ -37,6 +37,7 @@
 					'changementrefparcours',
 					'reorientation',
 					'examenaudition',
+					'examenauditionpe',
 					'maintienorientavisep',
 					'changementrefeplocale',
 					'reorientationeplocale',
@@ -528,10 +529,48 @@
 					$success = $this->Defautinsertionep66->save() && $success;
 				}
 			}
+			// Saisine audition pôle emploi
+			else if( isset($data['Bilanparcours66']['proposition']) && $data['Bilanparcours66']['proposition'] == 'auditionpe' ) {
+				$data[$this->alias]['saisineepparcours'] = '0';
+				
+				$this->create( $data );
+				if( $success = $this->validates() ) {
+					$success = $this->save() && $success;
+					
+					$dossierep = array(
+						'Dossierep' => array(
+							'themeep' => 'defautsinsertionseps66',
+							'personne_id' => $data['Bilanparcours66']['personne_id']
+						)
+					);
+					$this->Defautinsertionep66->Dossierep->create( $dossierep );
+					$success = $this->Defautinsertionep66->Dossierep->save() && $success;
+					
+					$defautinsertionep66 = array(
+						'Defautinsertionep66' => array(
+							'dossierep_id' => $this->Defautinsertionep66->Dossierep->id,
+							'orientstruct_id' => $data['Bilanparcours66']['orientstruct_id'],
+							'bilanparcours66_id' => $this->id,
+							'origine' => $data['Bilanparcours66']['examenauditionpe']
+						)
+					);
+					
+					if( $data['Bilanparcours66']['examenauditionpe'] == 'radiationpe' ) {
+						$queryDataPersonne = $this->Defautinsertionep66->qdRadies( array() );
+						$queryDataPersonne['fields'][] = 'Historiqueetatpe.id';
+						$queryDataPersonne['conditions']['Personne.id'] = $data['Bilanparcours66']['personne_id'];
+						$historiqueetatpe = $this->Defautinsertionep66->Dossierep->Personne->find( 'first', $queryDataPersonne );
+						$defautinsertionep66['Defautinsertionep66']['historiqueetatpe_id'] = $historiqueetatpe['Historiqueetatpe']['id'];
+					}
+					
+					$this->Defautinsertionep66->create( $defautinsertionep66 );
+					$success = $this->Defautinsertionep66->save() && $success;
+				}
+			}
 			else {
 				$this->save($data);
 			}
-
+			
 			return $success;
 		}
 

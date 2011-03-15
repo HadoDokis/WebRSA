@@ -394,7 +394,7 @@ SELECT add_missing_constraint ('public', 'nvsrsepsreorient66', 'nvsrsepsreorient
 -- -----------------------------------------------------------------------------
 -- 20110314
 -- -----------------------------------------------------------------------------
-CREATE TYPE TYPE_TYPEAUDITIONPE AS ENUM ( 'noninscritpe', 'radiepe' );
+CREATE TYPE TYPE_TYPEAUDITIONPE AS ENUM ( 'noninscriptionpe', 'radiationpe' );
 SELECT add_missing_table_field ('public', 'bilansparcours66', 'examenauditionpe', 'TYPE_TYPEAUDITIONPE');
 
 -- Ajout de la gestion des fichiers attachés aux PDOs

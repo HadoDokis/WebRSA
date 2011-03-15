@@ -170,6 +170,15 @@ msgstr "Non conclusion"
 msgid "ENUM::EXAMENAUDITION::DRD"
 msgstr "Non respect"
 
+msgid "Bilanparcours66.examenauditionpe"
+msgstr "Raison d'examen du dossier"
+
+msgid "ENUM::EXAMENAUDITIONPE::noninscriptionpe"
+msgstr "Défaut de conclusion : Non inscrits PE"
+
+msgid "ENUM::EXAMENAUDITIONPE::radiationpe"
+msgstr "Non respect : Radiés PE"
+
 msgid "Bilanparcours66.infoscomplementaires"
 msgstr "Informations complémentaires en lien avec la proposition faite"
 
