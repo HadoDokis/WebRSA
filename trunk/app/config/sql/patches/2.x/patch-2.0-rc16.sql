@@ -39,6 +39,7 @@ DROP INDEX IF EXISTS regressionsorientationseps58_user_id_idx;
 
 DROP TYPE IF EXISTS TYPE_ORIGINESANCTION CASCADE;
 DROP TYPE IF EXISTS TYPE_DECISIONSANCTIONEP58 CASCADE;
+DROP TYPE IF EXISTS TYPE_TYPEAUDITIONPE CASCADE;
 
 ALTER TABLE dossierseps ALTER COLUMN themeep TYPE TEXT;
 DROP TYPE IF EXISTS TYPE_THEMEEP;
@@ -52,6 +53,12 @@ DROP TYPE IF EXISTS TYPE_ETATDOSSIERPDO;
 CREATE TYPE TYPE_ETATDOSSIERPDO AS ENUM ( 'attaffect', 'attinstr', 'instrencours', 'attavistech', 'attval', 'decisionval', 'dossiertraite', 'attpj' );
 ALTER TABLE propospdos ALTER COLUMN etatdossierpdo TYPE TYPE_ETATDOSSIERPDO USING CAST(etatdossierpdo AS TYPE_ETATDOSSIERPDO);
 ALTER TABLE decisionspropospdos ALTER COLUMN etatdossierpdo TYPE TYPE_ETATDOSSIERPDO USING CAST(etatdossierpdo AS TYPE_ETATDOSSIERPDO);
+
+ALTER TABLE bilansparcours66 ALTER COLUMN proposition TYPE TEXT;
+DROP TYPE IF EXISTS TYPE_PROPOSITIONBILANPARCOURS;
+CREATE TYPE TYPE_PROPOSITIONBILANPARCOURS AS ENUM ( 'audition', 'parcours', 'traitement', 'auditionpe' );
+SELECT add_missing_table_field ('public', 'bilansparcours66', 'proposition', 'TYPE_PROPOSITIONBILANPARCOURS');
+ALTER TABLE bilansparcours66 ALTER COLUMN proposition SET NOT NULL;
 
 -- *****************************************************************************
 
@@ -383,9 +390,12 @@ SELECT add_missing_constraint ('public', 'decisionsdefautsinsertionseps66', 'dec
 SELECT add_missing_table_field ('public', 'nvsrsepsreorient66', 'referent_id', 'integer');
 SELECT add_missing_constraint ('public', 'nvsrsepsreorient66', 'nvsrsepsreorient66_referent_id_fkey', 'referents', 'referent_id');
 
+
 -- -----------------------------------------------------------------------------
 -- 20110314
 -- -----------------------------------------------------------------------------
+CREATE TYPE TYPE_TYPEAUDITIONPE AS ENUM ( 'noninscritpe', 'radiepe' );
+SELECT add_missing_table_field ('public', 'bilansparcours66', 'examenauditionpe', 'TYPE_TYPEAUDITIONPE');
 
 -- Ajout de la gestion des fichiers attachés aux PDOs
 DROP TABLE IF EXISTS fichierstraitementspdos;
