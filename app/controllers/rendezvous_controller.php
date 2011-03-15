@@ -5,7 +5,7 @@ App::import( 'Helper', 'Locale' );
 
 		public $name = 'Rendezvous';
 		public $uses = array( 'Rendezvous', 'Option' );
-		public $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform' );
+		public $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Default2' );
         public $components = array( 'Gedooo' );
 		public $aucunDroit = array( 'ajaxreferent', 'ajaxreffonct', 'ajaxperm' );
 
@@ -101,7 +101,7 @@ App::import( 'Helper', 'Locale' );
 				)
 			);
 			$this->Rendezvous->forceVirtualFields = false;
-
+// debug($rdvs);
 			$this->set( compact( 'rdvs' ) );
 			$this->set( 'personne_id', $personne_id );
 		}
