@@ -550,8 +550,8 @@
 							'Orientstruct.typeorient_id IN (
 								SELECT t.id
 									FROM typesorients AS t
-									WHERE t.parentid IS NOT NULL
-										AND t.lib_type_orient LIKE \'Emploi %\'
+									WHERE /*t.parentid IS NOT NULL
+										AND*/ t.lib_type_orient LIKE \'Emploi %\'
 							)'// FIXME
 						)
 					),
