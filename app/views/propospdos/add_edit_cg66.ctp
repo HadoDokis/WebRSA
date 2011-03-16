@@ -1,11 +1,8 @@
 <?php
+	$this->pageTitle = 'Validation PDO';
 	$domain = 'pdo';
+
 	echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
-?>
-
-<?php  $this->pageTitle = 'Validation PDO';?>
-
-<?php
 	echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
 
 ?>
@@ -108,7 +105,7 @@
 				)
 			);
 		?>
-		
+
 		<!--<legend>Arrivée de la PDO</legend> -->
 		<?php
 			echo $default->subform(
@@ -125,11 +122,11 @@
 					'options' => $options
 				)
 			);
-			
+
 			//echo $ajax->observeField( 'PropopdoTypepdoId', array( 'update' => 'Etatpdo', 'url' => Router::url( array( 'action' => 'ajaxetatpdo' ), true ) ) );
 		?>
 	</fieldset>
-	
+
 	<fieldset>
 		<!--<legend>Prise de décision</legend>-->
 		<?php
@@ -252,7 +249,7 @@
 		</fieldset>
 
 	</fieldset>
-	
+
 	<fieldset>
 		<?php
 			echo $form->input( 'Propopdo.isvalidation', array( 'label' => 'Validation', 'type' => 'checkbox' ) );
@@ -312,13 +309,13 @@
 					'options' => $options
 				)
 			);
-			
+
 			//echo $ajax->observeForm( 'propopdoform', array( 'update' => 'Etatpdo6', 'url' => Router::url( array( 'action' => 'ajaxetatpdo' ), true ) ) );
 
 		?>
 		</fieldset>
 	</fieldset>-->
-	
+
 	<?php
 		if ($this->action=='edit') {
 
@@ -335,11 +332,15 @@
 						'Traitementpdo.datereception',
 						'Traitementpdo.datedepart',
 						'Traitementtypepdo.name',
-						'Traitementpdo.hasrevenu' => array( 'label' => 'Fiche de calcul ?', 'type' => 'boolean' )
+						'Traitementpdo.hascourrier' => array( 'label' => 'Courrier ?', 'type' => 'boolean' ),
+						'Traitementpdo.hasrevenu' => array( 'label' => 'Fiche de calcul ?', 'type' => 'boolean' ),
+						'Traitementpdo.haspiecejointe' => array( 'label' => 'Pièce jointe ?', 'type' => 'boolean' ),
+						'Traitementpdo.hasficheanalyse' => array( 'label' => 'Fiche d\'analyse ?', 'type' => 'boolean' ),
 					),
 					array(
 						'actions' => array(
-							'Traitementspdos::edit',
+							'Traitementspdos::view',
+							'Traitementspdos::edit' => array( 'disabled' => ( '\'#Traitementpdo.clos#\' != 0' ) ),
 							'Traitementspdos::clore' => array( 'disabled' => ( '\'#Traitementpdo.clos#\' != 0' ) ),
 							'Traitementspdos::delete'
 						),
@@ -357,7 +358,7 @@
 					$block = true;
 				}
 			}
-			
+
 			echo $html->tag(
 				'fieldset',
 				$html->tag(
@@ -388,9 +389,9 @@
 
 		}
 	?>
-	
+
 	<fieldset id="Etatpdo" class="invisible"></fieldset>
-	
+
 	</div>
 	<div class="submit">
 		<?php echo $form->submit( 'Enregistrer', array( 'div' => false ) ); ?>
@@ -407,10 +408,10 @@
 				fieldUpdater();
 			});
 		});
-		
+
 		fieldUpdater();
 	});
-	
+
 	function fieldUpdater() {
 		new Ajax.Updater(
 			'Etatpdo',

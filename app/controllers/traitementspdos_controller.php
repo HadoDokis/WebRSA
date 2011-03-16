@@ -81,15 +81,6 @@
 		*
 		*/
 
-		public function view( $id = null ) {
-			$this->{$this->modelClass}->recursive = -1;
-			$this->Default->view( $id );
-		}
-
-		/**
-		*
-		*/
-
 		protected function _dirTraitementpdo( $action, $id, $type ) {
 			return APP.'tmp'.DS.'files'.DS.session_id().DS.'Fichiertraitementpdo'.DS.$action.DS.$id.DS.$type;
 		}
@@ -256,6 +247,45 @@
 		*
 		*/
 
+		public function view( $id ) {
+			$this->assert( valid_int( $id ), 'invalidParameter' );
+
+			$traitementpdo = $this->Traitementpdo->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Traitementpdo.id' => $id,
+					),
+					'contain' => array(
+						'Descriptionpdo',
+						'Traitementtypepdo',
+						'Personne' => array(
+							'fields' => array(
+								'Personne.nom',
+								'Personne.prenom',
+							)
+						),
+						'Fichiertraitementpdo' => array(
+							'fields' => array(
+								'Fichiertraitementpdo.name',
+								'Fichiertraitementpdo.type',
+								'Fichiertraitementpdo.traitementpdo_id',
+							)
+						)
+					)
+				)
+			);
+
+			$this->assert( !empty( $traitementpdo ), 'invalidParameter' );
+
+			$options = $this->Traitementpdo->enums();
+			$this->set( compact( 'traitementpdo', 'options' ) );
+		}
+
+		/**
+		*
+		*/
+
 		public function add() {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
@@ -278,7 +308,7 @@
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
 			$this->Traitementpdo->begin();
-			$fichiers = array();
+			$fichiers = array( 'courrier' => array(), 'piecejointe' => array() );
 			$this->set( 'options', $this->_options() );
 
 			// Récupération des id afférents
@@ -379,46 +409,59 @@
 					if( $saved ) {
 						// Début sauvegarde des fichiers attachés
 						App::import ('Core', 'File' );
-
 						foreach( array( 'courrier', 'piecejointe' ) as $type ) {
 							$dir = $this->_dirTraitementpdo( $this->action, $this->params['pass'][0], $type );
 							$oFolder = new Folder( $dir, true );
-							$files = $oFolder->find();
-							if( !empty( $files ) ) {
-								foreach( $files as $file ) {
-									// Recherche de l'ancien enregistrement s'il existe
-									$oldrecord = array(
-										'Fichiertraitementpdo' => array(
-											'name' => $file,
-											'traitementpdo_id' => $this->Traitementpdo->id,
-											'type' => $type,
-											'mime' => mime_content_type( $dir.DS.$file  )
-										)
-									);
-									$oldrecord = $this->Traitementpdo->Fichiertraitementpdo->find( 'first', array( 'conditions' => Set::flatten( $oldrecord ) ) );
 
-									$record = array(
-										'Fichiertraitementpdo' => array(
-											'name' => $file,
-											'traitementpdo_id' => $this->Traitementpdo->id,
-											'type' => $type,
-											'mime' => mime_content_type( $dir.DS.$file  ),
-											'document' => file_get_contents( $dir.DS.$file ),
-										)
-									);
-									$record = Set::merge( $oldrecord, $record );
+							// Suppression des fichiers si besoin
+							if( !Set::classicExtract( $this->data, "Traitementpdo.has{$type}" ) ) {
+								$saved = $this->Traitementpdo->Fichiertraitementpdo->deleteAll(
+									array(
+										'Fichiertraitementpdo.traitementpdo_id' => $this->Traitementpdo->id,
+										'Fichiertraitementpdo.type' => $type
+									)
+								) && $saved;
+							}
+							// Enregistrement des fichiers si besoin
+							else {
+								$files = $oFolder->find();
+								if( !empty( $files ) ) {
+									foreach( $files as $file ) {
+										// Recherche de l'ancien enregistrement s'il existe
+										$oldrecord = array(
+											'Fichiertraitementpdo' => array(
+												'name' => $file,
+												'traitementpdo_id' => $this->Traitementpdo->id,
+												'type' => $type,
+												'mime' => mime_content_type( $dir.DS.$file  )
+											)
+										);
+										$oldrecord = $this->Traitementpdo->Fichiertraitementpdo->find( 'first', array( 'conditions' => Set::flatten( $oldrecord ) ) );
 
-									$this->Traitementpdo->Fichiertraitementpdo->create( $record );
+										$record = array(
+											'Fichiertraitementpdo' => array(
+												'name' => $file,
+												'traitementpdo_id' => $this->Traitementpdo->id,
+												'type' => $type,
+												'mime' => mime_content_type( $dir.DS.$file  ),
+												'document' => file_get_contents( $dir.DS.$file ),
+											)
+										);
+										$record = Set::merge( $oldrecord, $record );
 
-									if( $tmpSaved = $this->Traitementpdo->Fichiertraitementpdo->save() ) {
-										$oFile = new File( $dir.DS.$file, true );
-										$tmpSaved = $oFile->delete() && $tmpSaved;
+										$this->Traitementpdo->Fichiertraitementpdo->create( $record );
+
+										if( $tmpSaved = $this->Traitementpdo->Fichiertraitementpdo->save() ) {
+											$oFile = new File( $dir.DS.$file, true );
+											$tmpSaved = $oFile->delete() && $tmpSaved;
+										}
+
+										$saved = $tmpSaved && $saved;
 									}
-
-									$saved = $tmpSaved && $saved;
 								}
 							}
 
+							// Suppression des fichiers temporaires
 							if( $saved ) {
 								$saved = $oFolder->delete( $dir ) && $saved;
 							}

@@ -179,15 +179,15 @@
 ?>
 
 <fieldset>
-	<legend><?php __d( 'traitementpdo', 'Traitementpdo.hascourrier' );?></legend>
+	<legend><?php echo required( $default2->label( 'Traitementpdo.hascourrier' ) );?></legend>
 
-	<?php echo $form->input( 'Traitementpdo.hascourrier', array( 'type' => 'radio', 'options' => $options['Traitementpdo']['hascourrier'], 'legend' => false, 'fieldset' => false ) );?>
+	<?php echo $xform->input( 'Traitementpdo.hascourrier', array( 'type' => 'radio', 'options' => $options['Traitementpdo']['hascourrier'], 'legend' => false, 'fieldset' => false ) );?>
 	<fieldset id="filecontainer-courrier" class="noborder invisible">
 		<?php
 			echo $fileuploader->create(
 				'courrier',
 				$fichiers['courrier'],
-				Router::url( array( 'action' => 'courrier' ), true )
+				Router::url( array( 'action' => 'ajaxfileupload' ), true )
 			);
 		?>
 	</fieldset>
@@ -810,19 +810,10 @@
 				'class'=>'noborder invisible'
 			)
 		);
-
-		/*echo $default->subform(
-			array(
-				'Traitementpdo.haspiecejointe' => array( 'type' => 'radio' )
-			),
-			array(
-				'options' => $options
-			)
-		);*/
 ?>
 
 <fieldset>
-	<legend><?php __d( 'traitementpdo', 'Traitementpdo.haspiecejointe' );?></legend>
+	<legend><?php echo required( $default2->label( 'Traitementpdo.haspiecejointe' ) );?></legend>
 
 	<?php echo $form->input( 'Traitementpdo.haspiecejointe', array( 'type' => 'radio', 'options' => $options['Traitementpdo']['haspiecejointe'], 'legend' => false, 'fieldset' => false ) );?>
 	<fieldset id="filecontainer-piecejointe" class="noborder invisible">
@@ -830,7 +821,7 @@
 			echo $fileuploader->create(
 				'piecejointe',
 				$fichiers['piecejointe'],
-				Router::url( array( 'action' => 'piecejointe' ), true )
+				Router::url( array( 'action' => 'ajaxfileupload' ), true )
 			);
 		?>
 	</fieldset>

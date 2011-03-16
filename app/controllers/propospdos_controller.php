@@ -79,7 +79,7 @@
 //         }
 
 //         function ajaxetat1( $typepdo_id = null ) {
-// 
+//
 //             $dataTypepdo_id = Set::extract( $this->data, 'Propopdo.typepdo_id' );
 //             $typepdo_id = ( empty( $typepdo_id ) && !empty( $dataTypepdo_id ) ? $dataTypepdo_id : $typepdo_id );
 //             $this->Propopdo->etatPdo( $this->data );
@@ -87,27 +87,27 @@
 //             Configure::write( 'debug', 0 );
 //             $this->render( 'ajaxetat1', 'ajax' );
 //         }
-// 
+//
 //         function ajaxetat2( $iscomplet = null ) {
 //             $dataIscomplet = Set::extract( $this->data, 'Propopdo.iscomplet' );
-// 
+//
 //             $iscomplet = ( empty( $iscomplet ) && !empty( $dataIscomplet ) ? $dataIscomplet : $iscomplet );
-// 
-// 
+//
+//
 //             $this->set( 'iscomplet', $iscomplet );
 //             Configure::write( 'debug', 0 );
 //             $this->render( 'ajaxetat2', 'ajax' );
 //         }
-// 
+//
 //         function ajaxetat3( $isvalidation = null ) {
 //             $dataIsvalidation = Set::extract( $this->data, 'Propopdo.isvalidation' );
 //             $isvalidation = ( empty( $isvalidation ) && !empty( $dataIsvalidation ) ? $dataIsvalidation : $isvalidation );
 //             $this->set( 'isvalidation', $isvalidation );
-// 
+//
 //             Configure::write( 'debug', 0 );
 //             $this->render( 'ajaxetat3', 'ajax' );
 //         }
-// 
+//
 //         function ajaxetat4( $decisionpdo_id = null ) {
 //             $dataDecisionpdo_id = Set::extract( $this->data, 'Propopdo.decisionpdo_id' );
 //             $decisionpdo_id = ( empty( $decisionpdo_id ) && !empty( $dataDecisionpdo_id ) ? $dataDecisionpdo_id : $decisionpdo_id );
@@ -117,25 +117,25 @@
 //             if( $this->action == 'add' ) {
 //                 $value = Set::extract( $this->data, 'Propopdo.decisionpdo_id' );
 //             }
-// 
+//
 //             $this->set( 'value', $value );*/
 //             Configure::write( 'debug', 0 );
 //             $this->render( 'ajaxetat4', 'ajax' );
 //         }
-// 
+//
 //         function ajaxetat5( $isdecisionop = null ) {
 //             $dataIsdecisionop = Set::extract( $this->data, 'Propopdo.isdecisionop' );
 //             $isdecisionop = ( empty( $isdecisionop ) && !empty( $dataIsdecisionop ) ? $dataIsdecisionop : $isdecisionop );
 //             $this->set( 'isdecisionop', $isdecisionop );
-//             
+//
 //             Configure::write( 'debug', 0 );
 //             $this->render( 'ajaxetat5', 'ajax' );
 //         }
-//         
+//
 		function ajaxetatpdo( $typepdo_id = null, $user_id = null, $complet = null, $incomplet = null ) {
 			$dataTypepdo_id = Set::extract( $this->params, 'form.typepdo_id' );
 			$dataUser_id = Set::extract( $this->params, 'form.user_id' );
-			
+
 			$dataComplet = Set::extract( $this->params, 'form.complet' );
 			$dataIncomplet = Set::extract( $this->params, 'form.incomplet' );
 			if (!empty($dataComplet))
@@ -144,11 +144,11 @@
 				$iscomplet = 'INC';
 			else
 				$iscomplet = null;
-			
+
 			$dataDecisionpdo_id = null;
 			$dataAvistech = null;
 			$dataAvisvalid = null;
-			
+
 			if (isset($this->params['form']['propopdo_id']) && $this->params['form']['propopdo_id']!=0) {
 				$decisionpropopdo = $this->Propopdo->Decisionpropopdo->find(
 					'first',
@@ -163,17 +163,17 @@
 						)
 					)
 				);
-				
+
 				$dataDecisionpdo_id = Set::extract( $decisionpropopdo, 'Decisionpropopdo.decisionpdo_id' );
 				$dataAvistech = Set::extract( $decisionpropopdo, 'Decisionpropopdo.avistechnique' );
 				$dataAvisvalid = Set::extract( $decisionpropopdo, 'Decisionpropopdo.validationdecision' );
-				
+
 				$etatdossierpdo = $this->Propopdo->etatDossierPdo( $dataTypepdo_id, $dataUser_id, $dataDecisionpdo_id, $dataAvistech, $dataAvisvalid, $iscomplet, $this->params['form']['propopdo_id'] );
 			}
 			else {
 				$etatdossierpdo = $this->Propopdo->etatDossierPdo( $dataTypepdo_id, $dataUser_id, $dataDecisionpdo_id, $dataAvistech, $dataAvisvalid, $iscomplet );
 			}
-			
+
 			$this->Propopdo->etatPdo( $this->data );
 			$this->set( compact( 'etatdossierpdo' ) );
 			Configure::write( 'debug', 0 );
@@ -423,7 +423,7 @@
 //                         'Pdf.document'
 //                     ),
 //                     'joins' => array(
-//                         
+//
 //                     ),
 //                     'conditions' => array(
 //                         'Pdf.modele' => 'Decisionpropopdo',
