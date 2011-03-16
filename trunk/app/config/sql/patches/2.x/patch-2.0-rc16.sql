@@ -43,7 +43,7 @@ DROP TYPE IF EXISTS TYPE_TYPEAUDITIONPE CASCADE;
 
 ALTER TABLE dossierseps ALTER COLUMN themeep TYPE TEXT;
 DROP TYPE IF EXISTS TYPE_THEMEEP;
-CREATE TYPE TYPE_THEMEEP AS ENUM ( 'saisinesepsreorientsrs93', 'saisinesepsbilansparcours66', /*'suspensionsreductionsallocations93',*/ 'saisinesepdspdos66', 'nonrespectssanctionseps93', 'defautsinsertionseps66', 'nonorientationspros58', 'regressionsorientationseps58', 'sanctionseps58' );
+CREATE TYPE TYPE_THEMEEP AS ENUM ( 'saisinesepsreorientsrs93', 'saisinesepsbilansparcours66', /*'suspensionsreductionsallocations93',*/ 'saisinesepdspdos66', 'nonrespectssanctionseps93', 'defautsinsertionseps66', 'nonorientationspros58', 'nonorientationspros93', 'regressionsorientationseps58', 'sanctionseps58' );
 ALTER TABLE dossierseps ALTER COLUMN themeep TYPE TYPE_THEMEEP USING CAST(themeep AS TYPE_THEMEEP);
 
 ALTER TABLE propospdos ALTER COLUMN etatdossierpdo TYPE TEXT;
@@ -456,6 +456,14 @@ CREATE INDEX fichierstraitementspdos_traitementpdo_id_idx ON fichierstraitements
 CREATE INDEX fichierstraitementspdos_type_idx ON fichierstraitementspdos( type );
 CREATE INDEX fichierstraitementspdos_mime_idx ON fichierstraitementspdos( mime );
 CREATE UNIQUE INDEX fichierstraitementspdos_cmspath_idx ON fichierstraitementspdos( cmspath );
+
+-- -----------------------------------------------------------------------------
+-- 20110314
+-- -----------------------------------------------------------------------------
+SELECT add_missing_table_field ('public', 'eps', 'nonorientationpro93', 'TYPE_NIVEAUDECISIONEP');
+ALTER TABLE eps ALTER COLUMN nonorientationpro93 SET DEFAULT 'nontraite';
+UPDATE eps SET nonorientationpro93 = 'nontraite' WHERE nonorientationpro93 IS NULL;
+ALTER TABLE eps ALTER COLUMN nonorientationpro93 SET NOT NULL;
 
 -- -----------------------------------------------------------------------------
 -- 20110316
