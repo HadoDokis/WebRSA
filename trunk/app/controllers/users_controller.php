@@ -97,6 +97,8 @@
 					// Supprimer la vue cachée du menu
 					$this->_deleteCachedMenu();
 
+					$this->_deleteTemporaryFiles();
+
 					// Supprime les jetons si besoin
 					// FIXME: dans JetonsComponent ou dans le modèle Jeton
 					if( !Configure::read( 'Jetons.disabled' ) ) {
@@ -140,6 +142,16 @@
 			$file = TMP.'cache'.DS.'views'.DS.'element_'.$this->Session->read( 'Auth.User.username' ).'_menu';
 			if (file_exists($file))
 				unlink($file);
+		}
+
+		/**
+		*
+		*/
+
+		protected function _deleteTemporaryFiles() {
+			App::import ('Core', 'File' );
+			$oFolder = new Folder( TMP.'files'.DS.session_id(), true );
+			$oFolder->delete();
 		}
 
 		/**
@@ -377,11 +389,11 @@
 				$this->redirect( array( 'controller' => 'users', 'action' => 'index' ) );
 			}
 		}
-		
+
 		/**
 		 *
 		 */
-		 
+
 		public function changepass() {
 			if (!empty($this->data)) {
 				if (($this->User->validatesPassword($this->data)) && ($this->User->validOldPassword($this->data))) {

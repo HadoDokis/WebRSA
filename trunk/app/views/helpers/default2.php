@@ -751,6 +751,10 @@
 					$params['class'] = $columnOptions['class'];
 				}
 
+				/*if( Set::check( $options, "options.{$columnModel}.{$columnField}" ) && empty( $params['options'] ) ) {
+					$params['options'] = Set::classicExtract( $options, "options.{$columnModel}.{$columnField}" );
+				}*/
+
 				if( Set::check( $options, 'options' ) && !Set::check( $params, 'options' ) ) {
 					$params['options'] = $options['options'];
 				}

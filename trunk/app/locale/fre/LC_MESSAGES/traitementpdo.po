@@ -52,6 +52,9 @@ msgstr "Supprimer le traitement"
 msgid "Traitementspdos::edit"
 msgstr "Modification du traitement"
 
+msgid "Traitementspdos::view"
+msgstr "Visualisation d'un traitement"
+
 msgid "Traitementpdo::delete::confirm"
 msgstr "Confirmer la suppression ?"
 

@@ -214,6 +214,7 @@
 
 			if( Set::check( $params, 'value' ) ) {
 				$value = Set::classicExtract( $params, 'value' );
+				$value = dataTranslate( $data, $value );
 			}
 			else {
 				$value = Set::classicExtract( $data, $path );

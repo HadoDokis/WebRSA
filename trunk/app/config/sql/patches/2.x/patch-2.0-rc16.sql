@@ -457,6 +457,26 @@ CREATE INDEX fichierstraitementspdos_type_idx ON fichierstraitementspdos( type )
 CREATE INDEX fichierstraitementspdos_mime_idx ON fichierstraitementspdos( mime );
 CREATE UNIQUE INDEX fichierstraitementspdos_cmspath_idx ON fichierstraitementspdos( cmspath );
 
+-- -----------------------------------------------------------------------------
+-- 20110316
+-- -----------------------------------------------------------------------------
+
+ALTER TABLE traitementspdos ALTER COLUMN hascourrier SET DEFAULT '0'::TYPE_BOOLEANNUMBER;
+UPDATE traitementspdos SET hascourrier = '0'::TYPE_BOOLEANNUMBER WHERE hascourrier IS NULL;
+ALTER TABLE traitementspdos ALTER COLUMN hascourrier SET NOT NULL;
+
+ALTER TABLE traitementspdos ALTER COLUMN hasrevenu SET DEFAULT '0'::TYPE_BOOLEANNUMBER;
+UPDATE traitementspdos SET hasrevenu = '0'::TYPE_BOOLEANNUMBER WHERE hasrevenu IS NULL;
+ALTER TABLE traitementspdos ALTER COLUMN hasrevenu SET NOT NULL;
+
+ALTER TABLE traitementspdos ALTER COLUMN haspiecejointe SET DEFAULT '0'::TYPE_BOOLEANNUMBER;
+UPDATE traitementspdos SET haspiecejointe = '0'::TYPE_BOOLEANNUMBER WHERE haspiecejointe IS NULL;
+ALTER TABLE traitementspdos ALTER COLUMN haspiecejointe SET NOT NULL;
+
+ALTER TABLE traitementspdos ALTER COLUMN hasficheanalyse SET DEFAULT '0'::TYPE_BOOLEANNUMBER;
+UPDATE traitementspdos SET hasficheanalyse = '0'::TYPE_BOOLEANNUMBER WHERE hasficheanalyse IS NULL;
+ALTER TABLE traitementspdos ALTER COLUMN hasficheanalyse SET NOT NULL;
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

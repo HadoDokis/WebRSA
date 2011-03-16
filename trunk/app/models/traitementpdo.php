@@ -202,6 +202,13 @@
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
+			),
+			'Personne' => array(
+				'className' => 'Personne',
+				'foreignKey' => 'personne_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
 			)
 		);
 
