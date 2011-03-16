@@ -28,13 +28,10 @@
 
 
 <div class="with_treemenu">
+
     <h1><?php
     	echo $this->pageTitle;
-    	foreach($personnesFoyer as $personne) {
-    		if ($personne['Prestation']['rolepers']=='DEM') {
-    			echo ' de '.$personne['Personne']['nom'].'&nbsp;'.$personne['Personne']['prenom'];
-    		}
-    	}
+        echo ' de '.$details['DEM']['Personne']['nom_complet'];
     ?></h1>
 
     <div id="resumeDossier">
@@ -551,7 +548,6 @@
             <!-- Etape 9 : Affichage du dernier passage en EP -->
             <h2>Etape 9: Dernier passage en EP</h2>
         <?php elseif( Configure::read( 'Cg.departement' ) != 93 ):?>
-            <!-- Etape 9 : Affichage du dernier passage en EP -->
             <h2>Etape 8: Dernier passage en EP</h2>
         <?php endif;?>
         <?php
@@ -562,7 +558,7 @@
             $dateEpCJT = null;
             $etapeEpCJT = null;
             $decisionEpCJT = null;
-// debug($details['DEM']['Dossierep']['derniere']['Dossierep']);
+
             if( isset( $details['DEM'] ) && ( $details['DEM']['Dossierep']['derniere']['Dossierep']['etapedossierep'] == 'cree' ) ){
                 $dateEpDEM = h( date_short( Set::extract( 'DEM.Dossierep.derniere.Dossierep.created', $details ) ) );
                 $etapeEpDEM =  Set::enum( Set::classicExtract( $details, 'DEM.Dossierep.derniere.Dossierep.etapedossierep' ), $dossierep['etapedossierep'] );
@@ -588,12 +584,10 @@
                     <th>Décision</th>
                     <th>Date commission pluridisciplinaire</th>
                     <th>Réalisé</th>
-<!--                     <th class="action">Action</th> -->
 
                     <th>Décision</th>
                     <th>Date commission pluridisciplinaire</th>
                     <th>Réalisé</th>
-<!--                     <th class="action">Action</th> -->
                 </tr>
                 <tr>
                     <td><?php echo $decisionEpDEM;?></td>
