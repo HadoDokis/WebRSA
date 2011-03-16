@@ -610,7 +610,7 @@
 <fieldset class="aere">
     <legend><strong>Observations du référent</strong></legend>
     <?php
-        echo $xform->input(  "{$this->modelClass}.avistechreferent", array( 'domain' => 'apre', 'label' => false, 'type' => 'textarea' ) );
+        echo $xform->input(  "{$this->modelClass}.avistechreferent", array( 'domain' => 'apre', 'label' => false, 'type' => 'textarea', 'required' => true ) );
     ?>
 </fieldset>
 
@@ -645,7 +645,7 @@
                 array(
                     'Aideapre66.decisionapre' => array( 'legend' => false, 'type' => 'radio', 'options' => $options['decisionapre'], 'separator' => '<br />' ),
                     'Aideapre66.montantaccorde' => array( 'type' => 'text' ),
-                    'Aideapre66.motifrejetequipe' => array( 'type' => 'textarea', 'required'=>true ),
+                    'Aideapre66.motifrejetequipe' => array( 'type' => 'textarea'/*, 'required'=>true*/ ),
                     'Aideapre66.datemontantaccorde' => array( 'empty' => false )
                 ),
                 array(

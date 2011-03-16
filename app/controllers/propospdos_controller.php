@@ -375,10 +375,15 @@
 // debug($options);
 				$this->set( compact( 'decisionspropospdos' ) );
 				if ( !empty( $decisionspropospdos ) ) {
-					$this->set( 'lastDecisionId', $decisionspropospdos[0]['Decisionpropopdo']['id'] );
+					$lastDecisionId = $decisionspropospdos[0]['Decisionpropopdo']['id'];
 					( !empty( $decisionspropospdos[0]['Decisionpropopdo']['validationdecision'] ) ) ? $ajoutDecision = true : $ajoutDecision = false;
-					$this->set( compact( 'ajoutDecision' ) );
+
 				}
+				else{
+                    $lastDecisionId = null;
+                    $ajoutDecision = null;
+				}
+                $this->set( compact( 'ajoutDecision', 'lastDecisionId' ) );
 				$this->set( 'pdo_id', $pdo_id );
 			}
 
