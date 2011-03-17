@@ -355,7 +355,6 @@
 						}
 					}
 				}
-
 				$this->create( $seanceep );
 				$success = $this->save() && $success;
 			}

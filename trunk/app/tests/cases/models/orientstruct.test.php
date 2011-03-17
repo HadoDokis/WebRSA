@@ -59,20 +59,21 @@
 		function testGetDataForPdf() {
 			$id = '1';
 			$user_id = '1';
-			$result = $this->Orientstruct->getDataForPdf($id/*, user_id*/);
-			debug($result);
+			$result = $this->Orientstruct->getDataForPdf($id);
+			$this->assertTrue($result);
 		}
 
 		function testFillAllocataire() {
+			$this->Orientstruct->data = array();
 			$result = $this->Orientstruct->fillAllocataire();
 			$this->assertFalse($result);
 		}
 
 		function testRgorientMax() {
-			$personne_id = null;
+			$personne_id = '1';
 			$result = $this->Orientstruct->rgorientMax($personne_id);
 		}
-
+/*
 		function testAjoutPossible() {
 			$personne_id = null;
 			$result = $this->Orientstruct->ajoutPossible($personne_id);
@@ -88,5 +89,6 @@
 			$options = array();
 			$result = $this->Orientstruct->beforeSave($option);
 		}
+*/
 	}
 ?>

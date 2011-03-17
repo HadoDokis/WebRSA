@@ -28,7 +28,7 @@
 					'identifiant' => 'tretr',
 					'name' => 'tert',
 					'ep_id' => '1',
-					'structurereferente_id' => '7',
+					//'structurereferente_id' => '7',
 					'dateseance' => '2031-01-01',
 					'salle' => 'tert',
 					'observations' => null,
@@ -67,12 +67,12 @@
                 		),
 		            '3' => Array
                 		(
-                		    'Seanceep.structurereferente_id' => '7'
-                		),
-		            '4' => Array
-                		(
                 		    'Structurereferente.ville' => 'SAINT DENIS'
                 		),
+			    /*'4' => Array
+                		(
+                		    'Structurereferente.ville' => 'SAINT DENIS'
+                		),*/
 			);
 			$this->assertEqual($expected, $result['conditions']);
 		}
@@ -96,7 +96,7 @@
 					'identifiant' => 'tretr',
 					'name' => 'tert',
 					'ep_id' => '1',
-					'structurereferente_id' => '7',
+					//'structurereferente_id' => '7',
 					'dateseance' => '2031-01-01',
 					'salle' => 'tert',
 					'observations' => null,
@@ -145,7 +145,7 @@
 					'identifiant' => 'EP1.2',
 					'name' => 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
 					'ep_id' => '2',
-					'structurereferente_id' => '7',
+					//'structurereferente_id' => '7',
 					'dateseance' => '2017-01-01',
 					'salle' => 'null',
 					'observations' => null,
@@ -306,6 +306,7 @@
 			$user_id = '6';
 			$result = $this->Seanceep->finaliser($seanceep_id, $niveauDecision, $user_id);
 			$this->assertTrue($result);
+
 		}
 
 		function testClotureSeance() {
@@ -315,7 +316,7 @@
 					'identifiant' => 'EP1.2',
 					'name' => 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
 					'ep_id' => '2',
-					'structurereferente_id' => '7',
+					//'structurereferente_id' => '7',
 					'dateseance' => '2017-01-01',
 					'salle' => 'null',
 					'observations' => null,
@@ -344,7 +345,7 @@
 					'identifiant' => 'EP2.1',
 					'name' => 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
 					'ep_id' => '3',
-					'structurereferente_id' => '7',
+					//'structurereferente_id' => '7',
 					'dateseance' => '2017-01-01',
 					'salle' => 'null',
 					'observations' => null,
@@ -370,22 +371,25 @@
 
 		function testGetPdfPv() {
 			$seanceep_id = '3';
-			$this->Seanceep->getPdfPv($seanceep_id);
+			$result = $this->Seanceep->getPdfPv($seanceep_id);
+			$this->assertTrue($result);
 		}
 
 		function testGetPdfOrdreDuJour() {
 			$seanceep_id = '3';
-			$this->Seanceep->getPdfOrdreDuJour($seanceep_id);
+			$result = $this->Seanceep->getPdfOrdreDuJour($seanceep_id);
+			$this->assertTrue($result);
 		}
 
 		function testIdentifiant() {
-			$this->Seanceep->identifiant(); // 'CO2011020000000004' ?
-				
+			$result = $this->Seanceep->identifiant();
+			$this->assertEqual($result, 'CO2011034');
 		}
 
 		function testBeforeValidate() {
 			$options = array();
 			$this->assertTrue($this->Seanceep->beforeValidate($options));
 		}
+
 	}
 ?>

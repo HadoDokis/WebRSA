@@ -7,14 +7,14 @@
 		var $import = array( 'table' => 'prestations', 'connection' => 'default', 'records' => false);
 		var $records = array(
 			array(
-				'personne_id' => '1',
+				'personne_id' => '2',
 				'natprest' => 'RSA',
 				'rolepers' => 'DEM',
 				'topchapers' => null,
 				'id' => '1',
 			),
 			array(
-				'personne_id' => '2',
+				'personne_id' => '1',
 				'natprest' => 'RSA',
 				'rolepers' => 'ENF',
 				'topchapers' => null,
@@ -103,6 +103,13 @@
 				'rolepers' => 'ENF',
 				'topchapers' => null,
 				'id' => '14',
+			),
+			array(
+				'personne_id' => '4004',
+				'natprest' => 'RSA',
+				'rolepers' => 'DEM',
+				'topchapers' => null,
+				'id' => '15',
 			),
 		);
 	}
