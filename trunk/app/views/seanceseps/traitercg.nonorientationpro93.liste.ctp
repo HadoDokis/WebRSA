@@ -15,11 +15,18 @@
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
 // debug($dossierep);
-		if ( $dossierep['Nonorientationpro93']['Decisionnonorientationpro93'][1]['decision'] == 'maintienref' ) {
+		if ( isset( $dossierep['Nonorientationpro93']['Decisionnonorientationpro93'][1] ) ) {
+			$niveau = 1;
+		}
+		else {
+			$niveau = 0;
+		}
+		
+		if ( $dossierep['Nonorientationpro93']['Decisionnonorientationpro93'][$niveau]['decision'] == 'maintienref' ) {
 			$avisep = $dossierep['Nonorientationpro93']['Orientstruct']['Typeorient']['lib_type_orient'].' - '.$dossierep['Nonorientationpro93']['Orientstruct']['Structurereferente']['lib_struc'];
 		}
 		else {
-			$avisep = $dossierep['Nonorientationpro93']['Decisionnonorientationpro93'][1]['Typeorient']['lib_type_orient'].' - '.$dossierep['Nonorientationpro93']['Decisionnonorientationpro93'][1]['Structurereferente']['lib_struc'];
+			$avisep = $dossierep['Nonorientationpro93']['Decisionnonorientationpro93'][$niveau]['Typeorient']['lib_type_orient'].' - '.$dossierep['Nonorientationpro93']['Decisionnonorientationpro93'][$niveau]['Structurereferente']['lib_struc'];
 		}
 		
 		echo $xhtml->tableCells(
@@ -37,7 +44,7 @@
 
 				$form->input( "Nonorientationpro93.{$i}.id", array( 'type' => 'hidden', 'value' => $dossierep['Nonorientationpro93']['id'] ) ).
 				$form->input( "Nonorientationpro93.{$i}.dossierep_id", array( 'type' => 'hidden', 'value' => $dossierep['Dossierep']['id'] ) ).
-				$form->input( "Decisionnonorientationpro93.{$i}.id", array( 'type' => 'hidden', 'value' => @$this->data[$i]['id'] ) ).
+				$form->input( "Decisionnonorientationpro93.{$i}.id", array( 'type' => 'hidden', 'value' => ( isset( $this->data[$i]['id'] ) ) ? $this->data[$i]['id'] : null ) ).
 				$form->input( "Decisionnonorientationpro93.{$i}.etape", array( 'type' => 'hidden', 'value' => 'cg' ) ).
 				$form->input( "Decisionnonorientationpro93.{$i}.defautinsertionep66_id", array( 'type' => 'hidden', 'value' => @$dossierep['Nonorientationpro93']['id'] ) ).
 
