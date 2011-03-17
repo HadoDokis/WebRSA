@@ -201,7 +201,8 @@
 							'themeep' => Inflector::tableize( $this->alias )
 						)
 					);
-					$success = $this->Dossierep->save( $dossierep ) && $success;
+					$this->Dossierep->create( $dossierep );
+					$success = $this->Dossierep->save() && $success;
 
 					$nonorientationpro = array(
 						$this->alias => array(
@@ -210,7 +211,8 @@
 							'user_id' => ( isset( $dossier['user_id'] ) ) ? $dossier['user_id'] : null
 						)
 					);
-					$success = $this->save( $nonorientationpro ) && $success;
+					$this->create( $nonorientationpro );
+					$success = $this->save() && $success;
 				}
 			}
 
@@ -271,32 +273,25 @@
 				$formData[$this->alias][$key]['dossierep_id'] = @$datas[$key][$this->alias]['dossierep_id'];
 				$formData['Decision'.Inflector::underscore( $this->alias )][$key][Inflector::underscore( $this->alias ).'_id'] = @$datas[$key][$this->alias]['id'];
 
-				// On modifie les enregistrements de cette étape
-				if( @$dossierep[$this->alias]['Decision'.Inflector::underscore( $this->alias )][count(@$dossierep[$this->alias]['Decision'.Inflector::underscore( $this->alias )])-1]['etape'] == $niveauDecision ) {
-					$formData['Decision'.Inflector::underscore( $this->alias )][$key] = @$dossierep[$this->alias]['Decision'.Inflector::underscore( $this->alias )][count(@$dossierep[$this->alias]['Decision'.Inflector::underscore( $this->alias )])-1];
-				}
-				// On ajoute les enregistrements de cette étape -> FIXME: manque les id ?
-				else {
-					if( $niveauDecision == 'ep' ) {
-						if( !empty( $datas[$key][$this->alias]['Decision'.Inflector::underscore( $this->alias )][0] ) ) { // Modification
-							$formData['Decision'.Inflector::underscore( $this->alias )][$key]['id'] = @$datas[$key][$this->alias]['Decision'.Inflector::underscore( $this->alias )][0]['id'];
-							$formData['Decision'.Inflector::underscore( $this->alias )][$key]['decision'] = @$datas[$key][$this->alias]['Decision'.Inflector::underscore( $this->alias )][0]['decision'];
-							$formData['Decision'.Inflector::underscore( $this->alias )][$key]['structurereferente_id'] = @$datas[$key][$this->alias]['Decision'.Inflector::underscore( $this->alias )][0]['typeorient_id'].'_'.@$datas[$key][$this->alias]['Decision'.Inflector::underscore( $this->alias )][0]['structurereferente_id'];
-							$formData['Decision'.Inflector::underscore( $this->alias )][$key]['typeorient_id'] = @$datas[$key][$this->alias]['Decision'.Inflector::underscore( $this->alias )][0]['typeorient_id'];
-						}
+				if( $niveauDecision == 'ep' ) {
+					if( !empty( $datas[$key][$this->alias]['Decision'.Inflector::underscore( $this->alias )][0] ) ) { // Modification
+						$formData['Decision'.Inflector::underscore( $this->alias )][$key]['id'] = @$datas[$key][$this->alias]['Decision'.Inflector::underscore( $this->alias )][0]['id'];
+						$formData['Decision'.Inflector::underscore( $this->alias )][$key]['decision'] = @$datas[$key][$this->alias]['Decision'.Inflector::underscore( $this->alias )][0]['decision'];
+						$formData['Decision'.Inflector::underscore( $this->alias )][$key]['structurereferente_id'] = @$datas[$key][$this->alias]['Decision'.Inflector::underscore( $this->alias )][0]['typeorient_id'].'_'.@$datas[$key][$this->alias]['Decision'.Inflector::underscore( $this->alias )][0]['structurereferente_id'];
+						$formData['Decision'.Inflector::underscore( $this->alias )][$key]['typeorient_id'] = @$datas[$key][$this->alias]['Decision'.Inflector::underscore( $this->alias )][0]['typeorient_id'];
 					}
-					else if( $niveauDecision == 'cg' ) {
-						if( !empty( $datas[$key][$this->alias]['Decision'.Inflector::underscore( $this->alias )][0] ) ) { // Modification
-							$formData['Decision'.Inflector::underscore( $this->alias )][$key]['id'] = @$datas[$key][$this->alias]['Decision'.Inflector::underscore( $this->alias )][0]['id'];
-							$formData['Decision'.Inflector::underscore( $this->alias )][$key]['decision'] = @$datas[$key][$this->alias]['Decision'.Inflector::underscore( $this->alias )][0]['decision'];
-							$formData['Decision'.Inflector::underscore( $this->alias )][$key]['structurereferente_id'] = @$datas[$key][$this->alias]['Decision'.Inflector::underscore( $this->alias )][0]['typeorient_id'].'_'.@$datas[$key][$this->alias]['Decision'.Inflector::underscore( $this->alias )][0]['structurereferente_id'];
-							$formData['Decision'.Inflector::underscore( $this->alias )][$key]['typeorient_id'] = @$datas[$key][$this->alias]['Decision'.Inflector::underscore( $this->alias )][0]['typeorient_id'];
-						}
-						else {
-							$formData['Decision'.Inflector::underscore( $this->alias )][$key]['decision'] = $dossierep[$this->alias]['Decision'.Inflector::underscore( $this->alias )][1]['decision'];
-							$formData['Decision'.Inflector::underscore( $this->alias )][$key]['structurereferente_id'] = @$datas[$key][$this->alias]['Decision'.Inflector::underscore( $this->alias )][1]['typeorient_id'].'_'.@$datas[$key][$this->alias]['Decision'.Inflector::underscore( $this->alias )][1]['structurereferente_id'];
-							$formData['Decision'.Inflector::underscore( $this->alias )][$key]['typeorient_id'] = @$datas[$key][$this->alias]['Decision'.Inflector::underscore( $this->alias )][1]['typeorient_id'];
-						}
+				}
+				elseif( $niveauDecision == 'cg' ) {
+					if( !empty( $datas[$key][$this->alias]['Decision'.Inflector::underscore( $this->alias )][1] ) ) { // Modification
+						$formData['Decision'.Inflector::underscore( $this->alias )][$key]['id'] = @$datas[$key][$this->alias]['Decision'.Inflector::underscore( $this->alias )][0]['id'];
+						$formData['Decision'.Inflector::underscore( $this->alias )][$key]['decision'] = @$datas[$key][$this->alias]['Decision'.Inflector::underscore( $this->alias )][0]['decision'];
+						$formData['Decision'.Inflector::underscore( $this->alias )][$key]['structurereferente_id'] = @$datas[$key][$this->alias]['Decision'.Inflector::underscore( $this->alias )][0]['typeorient_id'].'_'.@$datas[$key][$this->alias]['Decision'.Inflector::underscore( $this->alias )][0]['structurereferente_id'];
+						$formData['Decision'.Inflector::underscore( $this->alias )][$key]['typeorient_id'] = @$datas[$key][$this->alias]['Decision'.Inflector::underscore( $this->alias )][0]['typeorient_id'];
+					}
+					else {
+						$formData['Decision'.Inflector::underscore( $this->alias )][$key]['decision'] = $dossierep[$this->alias]['Decision'.Inflector::underscore( $this->alias )][0]['decision'];
+						$formData['Decision'.Inflector::underscore( $this->alias )][$key]['structurereferente_id'] = @$datas[$key][$this->alias]['Decision'.Inflector::underscore( $this->alias )][0]['typeorient_id'].'_'.@$datas[$key][$this->alias]['Decision'.Inflector::underscore( $this->alias )][0]['structurereferente_id'];
+						$formData['Decision'.Inflector::underscore( $this->alias )][$key]['typeorient_id'] = @$datas[$key][$this->alias]['Decision'.Inflector::underscore( $this->alias )][0]['typeorient_id'];
 					}
 				}
 			}
@@ -323,7 +318,6 @@
 					}
 					$data['Decision'.Inflector::underscore( $this->alias )][$key][Inflector::underscore( $this->alias ).'_id'] = $data[$this->alias][$key]['id'];
 				}
-
 				$success = $this->{'Decision'.Inflector::underscore($this->alias)}->saveAll( Set::extract( $data, '/'.'Decision'.Inflector::underscore( $this->alias ) ), array( 'atomic' => false ) );
 
 				$this->Dossierep->updateAll(
