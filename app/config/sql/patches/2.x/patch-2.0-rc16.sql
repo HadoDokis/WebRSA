@@ -485,6 +485,20 @@ ALTER TABLE traitementspdos ALTER COLUMN hasficheanalyse SET DEFAULT '0'::TYPE_B
 UPDATE traitementspdos SET hasficheanalyse = '0'::TYPE_BOOLEANNUMBER WHERE hasficheanalyse IS NULL;
 ALTER TABLE traitementspdos ALTER COLUMN hasficheanalyse SET NOT NULL;
 
+
+-- -----------------------------------------------------------------------------
+-- 20110317
+-- -----------------------------------------------------------------------------
+ALTER TABLE detailsdifdisps ALTER COLUMN difdisp TYPE text;
+ALTER TABLE detailsdifdisps_revs ALTER COLUMN difdisp TYPE text;
+DROP TYPE IF EXISTS type_difdisp CASCADE;
+CREATE TYPE type_difdisp AS ENUM ( '0501', '0502', '0503', '0504', '0505', '0506', '0507', '0508', '0509', '0510', '0511', '0512', '0513', '0514' );
+
+ALTER TABLE detailsdifdisps ALTER COLUMN difdisp TYPE type_difdisp USING CAST(difdisp AS type_difdisp);
+ALTER TABLE detailsdifdisps_revs ALTER COLUMN difdisp TYPE type_difdisp USING CAST(difdisp AS type_difdisp);
+
+
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

@@ -500,6 +500,8 @@ msgstr "Qualification trop spécifique"
 msgid "ENUM::DIFDISP::0513"
 msgstr "Discrimination (âge-sexe-origine ethnique)"
 
+msgid "ENUM::DIFDISP::0514"
+msgstr "La garde d'enfant(s)"
 ###############################################################################
 # Detailaccosocindi
 ###############################################################################
