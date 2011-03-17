@@ -21,6 +21,9 @@
         <?php echo $form->input( 'Personne.prenom', array( 'label' => 'Prénom ', 'type' => 'text' ) );?>
         <?php echo $form->input( 'Personne.dtnai', array( 'label' => 'Date de naissance', 'type' => 'date', 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 80, 'maxYear' => date( 'Y' ), 'empty' => true ) );?>
         <?php echo $form->input( 'Personne.nir', array( 'label' => 'NIR', 'maxlength' => 15 ) );?>
+        <?php if( $this->action == 'selectionradies' ):?>
+            <?php echo $form->input( 'Historiqueetatpe.identifiantpe', array( 'label' => 'Identifiant Pôle Emploi', 'maxlength' => 15 ) );?>
+        <?php endif;?>
         <?php echo $form->input( 'Dossier.matricule', array( 'label' => 'N° CAF', 'maxlength' => 15 ) );?>
         <?php echo $form->input( 'Adresse.locaadr', array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );?>
         <?php echo $form->input( 'Adresse.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );?>
@@ -37,8 +40,10 @@
     </div>
 <?php echo $form->end();?>
 
+<?php if( isset( $personnes ) ):?>
 <?php
-	if ( !empty( $personnes ) ) {
+
+	if ( is_array( $personnes ) && count( $personnes ) > 0 ) {
 		echo $default2->index(
 			$personnes,
 			array(
@@ -48,7 +53,7 @@
 				'Orientstruct.date_valid'
 			),
 			array(
-				'cohorte' => true,
+				'cohorte' => false,
 				'paginate' => 'Personne',
 				'actions' => array(
 					'Orientsstructs::index' => array( 'label' => 'Voir', 'url' => array( 'controller' => 'bilansparcours66', 'action' => 'add', '#Personne.id#', 'Bilanparcours66__examenauditionpe:'.$actionbp ) )
@@ -56,4 +61,8 @@
 			)
 		);
 	}
+	else{
+        echo $xhtml->tag( 'p', 'Aucun résultat ne correspond aux critères choisis.', array( 'class' => 'notice' ) );
+	}
 ?>
+<?php endif;?>

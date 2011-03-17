@@ -28,7 +28,7 @@
 		*/
 
 		protected function _selectionPassageDefautinsertionep66( $qdName, $actionbp ) {
-			$personnes = array();
+// 			$personnes = array();
 			
 			if( !empty( $this->data ) ) {
 				$queryData = $this->Defautinsertionep66->{$qdName}($this->data);

@@ -593,6 +593,8 @@
 			$numcomptt = Set::classicExtract( $datas, 'Adresse.numcomptt' );
 			$canton = Set::classicExtract( $datas, 'Adresse.canton' );
 			
+			$identifiantpe = Set::classicExtract( $datas, 'Historiqueetatpe.identifiantpe' );
+			
 			if ( !empty( $nom ) ) {
 				$queryData['conditions'][] = array( 'Personne.nom' => $nom );
 			}
@@ -617,6 +619,9 @@
 			if ( !empty( $canton ) ) {
 				$queryData['conditions'][] = array( 'Adresse.canton' => $canton );
 			}
+			if ( !empty( $identifiantpe ) ) {
+                $queryData['conditions'][] = array( 'Historiqueetatpe.identifiantpe' => $identifiantpe );
+            }
 			
 			return $queryData;
 		}
