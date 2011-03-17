@@ -54,6 +54,7 @@
 			$queryData['fields'][] = 'Historiqueetatpe.id';
 			$queryData['fields'][] = 'Historiqueetatpe.informationpe_id';
 			$queryData['fields'][] = 'Historiqueetatpe.etat';
+			$queryData['fields'][] = 'Historiqueetatpe.identifiantpe';
 			$queryData['fields'][] = 'Historiqueetatpe.date';
 			
 			$queryData['joins'][] = array(
