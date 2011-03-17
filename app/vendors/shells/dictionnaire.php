@@ -15,7 +15,8 @@
 			'log' => false,
 			'logpath' => LOGS,
 			'verbose' => true,
-			'limit' => null
+			'limit' => null,
+			'schema' => null
 		);
 
 		public $verbose;
@@ -28,6 +29,7 @@
 		public function initialize() {
 			parent::initialize();
 
+			$this->schema = $this->_getNamedValue( 'schema', 'string' );
 			$this->verbose = $this->_getNamedValue( 'verbose', 'boolean' );
 			$this->limit = $this->_getNamedValue( 'limit', 'integer' );
 			$connectionName = $this->_getNamedValue( 'connection', 'string' );
@@ -107,6 +109,7 @@
 							has_schema_privilege( nspname, \'USAGE\' )
 							AND nspname NOT IN ( \'pg_catalog\', \'information_schema\' )
 							AND nspname NOT LIKE \'pg_%\'
+							'.( !empty( $this->schema ) ? "AND nspname = '{$this->schema}'" : '' ).'
 						ORDER BY nspname;';
 
 			$schemas = $this->connection->query( $sql );
@@ -343,6 +346,7 @@
 			$this->out();
 			$this->out('Paramètres:');
 			$this->out("\t-connection <connexion>\n\t\tLe nom d'une connexion PostgreSQL défini dans app/config/database.php\n\t\tPar défaut: ".$this->_defaultToString( 'connection' )."\n");
+			$this->out("\t-schema <string>\n\t\tLe schema à traiter.\n\t\tPar défaut: ".$this->_defaultToString( 'schema' )."\n");
 // 			$this->out("\t-log <booléen>\n\t\tDoit-on journaliser la sortie du programme ?\n\t\tPar défaut: ".$this->_defaultToString( 'log' )."\n");
 // 			$this->out("\t-logpath <répertoire>\n\t\tLe répertoire dans lequel enregistrer les fichiers de journalisation.\n\t\tPar défaut: ".$this->_defaultToString( 'logpath' )."\n");
 			$this->out("\t-verbose <booléen>\n\t\tDoit-on afficher les étapes de lecture / écriture ?\n\t\tPar défaut: ".$this->_defaultToString( 'verbose' )."\n");
