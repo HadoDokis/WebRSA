@@ -42,3 +42,14 @@
 		);
 	?>
 </fieldset>
+<?php if( Configure::read( 'Recherche.qdFilters.Serviceinstructeur' ) ):?>
+<fieldset>
+    <?php
+		echo $default->subform(
+			array(
+				'Serviceinstructeur.sqrecherche' => array( 'rows' => 40 ),
+			)
+		);
+	?>
+</fieldset>
+<?php endif;?>

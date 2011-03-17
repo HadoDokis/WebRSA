@@ -292,6 +292,8 @@
 			if( !empty( $params ) ) {
 				$this->paginate = $this->Dossier->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data );
 
+				$this->paginate = $this->_qdAddFilters( $this->paginate );
+
 				if( Configure::read( 'Optimisations.progressivePaginate' ) ) {
 					$dossiers = $this->progressivePaginate( 'Dossier' );
 				}
@@ -686,187 +688,187 @@
 				$personnesFoyer[$index]['Orientstruct']['derniere'] = $tOrientstruct;
 
 
-                // Dernière relance effective
-                $tRelance = $this->Dossier->Foyer->Personne->Contratinsertion->Nonrespectsanctionep93->find(
-                    'first',
-                    array(
-                        'fields' => array(
-                            'Nonrespectsanctionep93.created',
-                            'Nonrespectsanctionep93.origine'
-                        ),
-                        'contain' => false,
-                        'joins' => array(
-                            array(
-                                'table'      => 'orientsstructs',
-                                'alias'      => 'Orientstruct',
-                                'type'       => 'LEFT OUTER',
-                                'foreignKey' => false,
-                                'conditions' => array( 'Orientstruct.id = Nonrespectsanctionep93.orientstruct_id' )
-                            ),
-                            array(
-                                'table'      => 'contratsinsertion',
-                                'alias'      => 'Contratinsertion',
-                                'type'       => 'LEFT OUTER',
-                                'foreignKey' => false,
-                                'conditions' => array( 'Contratinsertion.id = Nonrespectsanctionep93.contratinsertion_id' )
-                            ),
-                            array(
-                                'table'      => 'personnes',
-                                'alias'      => 'Personne',
-                                'type'       => 'INNER',
-                                'foreignKey' => false,
-                                'conditions' => array(
-                                    'OR' => array(
-                                        array(
-                                            'Contratinsertion.personne_id = Personne.id'
-                                        ),
-                                        array(
-                                            'Orientstruct.personne_id = Personne.id'
-                                        )
-                                    )
-                                )
-                            )
-                        ),
-                        'conditions' => array(
-                            'OR' => array(
-                                array(
-                                    'Nonrespectsanctionep93.orientstruct_id IN ( '.$this->Dossier->Foyer->Personne->Orientstruct->sq( array( 'fields' => array( 'Orientstruct.id' ), 'conditions' => array( 'Orientstruct.personne_id' => $personnesFoyer[$index]['Personne']['id'] ) ) ).' )'
-                                ),
-                                array(
-                                    'Nonrespectsanctionep93.contratinsertion_id IN ( '.$this->Dossier->Foyer->Personne->Contratinsertion->sq( array( 'fields' => array( 'id' ), 'conditions' => array( 'personne_id' => $personnesFoyer[$index]['Personne']['id'] ) ) ).' )'
-                                )
-                            )
-                        ),
-                        'order' => "Nonrespectsanctionep93.created DESC",
-                    )
-                );
-                $personnesFoyer[$index]['Nonrespectsanctionep93']['derniere'] = $tRelance;
+				// Dernière relance effective
+				$tRelance = $this->Dossier->Foyer->Personne->Contratinsertion->Nonrespectsanctionep93->find(
+					'first',
+					array(
+						'fields' => array(
+							'Nonrespectsanctionep93.created',
+							'Nonrespectsanctionep93.origine'
+						),
+						'contain' => false,
+						'joins' => array(
+							array(
+								'table'      => 'orientsstructs',
+								'alias'      => 'Orientstruct',
+								'type'       => 'LEFT OUTER',
+								'foreignKey' => false,
+								'conditions' => array( 'Orientstruct.id = Nonrespectsanctionep93.orientstruct_id' )
+							),
+							array(
+								'table'      => 'contratsinsertion',
+								'alias'      => 'Contratinsertion',
+								'type'       => 'LEFT OUTER',
+								'foreignKey' => false,
+								'conditions' => array( 'Contratinsertion.id = Nonrespectsanctionep93.contratinsertion_id' )
+							),
+							array(
+								'table'      => 'personnes',
+								'alias'      => 'Personne',
+								'type'       => 'INNER',
+								'foreignKey' => false,
+								'conditions' => array(
+									'OR' => array(
+										array(
+											'Contratinsertion.personne_id = Personne.id'
+										),
+										array(
+											'Orientstruct.personne_id = Personne.id'
+										)
+									)
+								)
+							)
+						),
+						'conditions' => array(
+							'OR' => array(
+								array(
+									'Nonrespectsanctionep93.orientstruct_id IN ( '.$this->Dossier->Foyer->Personne->Orientstruct->sq( array( 'fields' => array( 'Orientstruct.id' ), 'conditions' => array( 'Orientstruct.personne_id' => $personnesFoyer[$index]['Personne']['id'] ) ) ).' )'
+								),
+								array(
+									'Nonrespectsanctionep93.contratinsertion_id IN ( '.$this->Dossier->Foyer->Personne->Contratinsertion->sq( array( 'fields' => array( 'id' ), 'conditions' => array( 'personne_id' => $personnesFoyer[$index]['Personne']['id'] ) ) ).' )'
+								)
+							)
+						),
+						'order' => "Nonrespectsanctionep93.created DESC",
+					)
+				);
+				$personnesFoyer[$index]['Nonrespectsanctionep93']['derniere'] = $tRelance;
 
 // debug($tRelance);
 
 
-                $tEp = $this->Dossier->Foyer->Personne->Dossierep->find(
-                    'first',
-                    array(
-                        'fields' => array(
-                            'etapedossierep',
-                            'created',
-                            'seanceep_id',
-                            'themeep',
-                        ),
-                        'conditions' => array(
-                            'Dossierep.personne_id' => $personnesFoyer[$index]['Personne']['id']
-                        ),
-                        'contain' => false,
-                        'order' => "Dossierep.created DESC",
-                        'recursive' => -1
-                    )
-                );
-                $personnesFoyer[$index]['Dossierep']['derniere'] = $tEp;
+				$tEp = $this->Dossier->Foyer->Personne->Dossierep->find(
+					'first',
+					array(
+						'fields' => array(
+							'etapedossierep',
+							'created',
+							'seanceep_id',
+							'themeep',
+						),
+						'conditions' => array(
+							'Dossierep.personne_id' => $personnesFoyer[$index]['Personne']['id']
+						),
+						'contain' => false,
+						'order' => "Dossierep.created DESC",
+						'recursive' => -1
+					)
+				);
+				$personnesFoyer[$index]['Dossierep']['derniere'] = $tEp;
 // debug($tEp);
 
 
 
-                /**
-                *   Utilisation des nouvelles tables de stockage des infos Pôle Emploi
-                */
+				/**
+				*   Utilisation des nouvelles tables de stockage des infos Pôle Emploi
+				*/
 
-                $tInfope = $this->Informationpe->find(
-                    'first',
-                    array(
-                        'contain' => array(
-                            'Historiqueetatpe' => array(
-                                'order' => "Historiqueetatpe.date DESC",
-                                'limit' => 1
-                            )
-                        ),
-                        'conditions' => array(
-                            'OR' => array(
-                                array(
-                                    'Informationpe.nir' => Set::classicExtract( $personnesFoyer[$index], 'Personne.nir' ),
-                                    'Informationpe.nir IS NOT NULL',
-                                    'LENGTH(Informationpe.nir) = 15',
-                                    'Informationpe.dtnai' => Set::classicExtract( $personnesFoyer[$index], 'Personne.dtnai' ),
-                                ),
-                                array(
-                                    'Informationpe.nom' => Set::classicExtract( $personnesFoyer[$index], 'Personne.nom' ),
-                                    'Informationpe.prenom' => Set::classicExtract( $personnesFoyer[$index], 'Personne.prenom' ),
-                                    'Informationpe.dtnai' => Set::classicExtract( $personnesFoyer[$index], 'Personne.dtnai' ),
-                                )
-                            )
+				$tInfope = $this->Informationpe->find(
+					'first',
+					array(
+						'contain' => array(
+							'Historiqueetatpe' => array(
+								'order' => "Historiqueetatpe.date DESC",
+								'limit' => 1
+							)
+						),
+						'conditions' => array(
+							'OR' => array(
+								array(
+									'Informationpe.nir' => Set::classicExtract( $personnesFoyer[$index], 'Personne.nir' ),
+									'Informationpe.nir IS NOT NULL',
+									'LENGTH(Informationpe.nir) = 15',
+									'Informationpe.dtnai' => Set::classicExtract( $personnesFoyer[$index], 'Personne.dtnai' ),
+								),
+								array(
+									'Informationpe.nom' => Set::classicExtract( $personnesFoyer[$index], 'Personne.nom' ),
+									'Informationpe.prenom' => Set::classicExtract( $personnesFoyer[$index], 'Personne.prenom' ),
+									'Informationpe.dtnai' => Set::classicExtract( $personnesFoyer[$index], 'Personne.dtnai' ),
+								)
+							)
 
-                        )
-                    )
-                );
-                $personnesFoyer[$index]['Informationpe'] = $tInfope['Historiqueetatpe'];
+						)
+					)
+				);
+				$personnesFoyer[$index]['Informationpe'] = $tInfope['Historiqueetatpe'];
 
 
 
-                /**
-                *   Liste des anciens dossiers par demandeurs et conjoints
-                *   TODO
-                */
+				/**
+				*   Liste des anciens dossiers par demandeurs et conjoints
+				*   TODO
+				*/
 
-                $autreNumdemrsaParAllocataire = $this->Dossier->find(
-                    'all',
-                    array(
-                        'fields' => array(
-                            'DISTINCT Dossier.id',
-                            'Dossier.numdemrsa',
-                            'Dossier.dtdemrsa',
+				$autreNumdemrsaParAllocataire = $this->Dossier->find(
+					'all',
+					array(
+						'fields' => array(
+							'DISTINCT Dossier.id',
+							'Dossier.numdemrsa',
+							'Dossier.dtdemrsa',
 //                             'Prestation.rolepers'
-                        ),
-                        'joins' => array(
-                            array(
-                                'table'      => 'foyers',
-                                'alias'      => 'Foyer',
-                                'type'       => 'INNER',
-                                'foreignKey' => false,
-                                'conditions' => array( 'Foyer.dossier_id = Dossier.id' )
-                            ),
-                            array(
-                                'table'      => 'personnes',
-                                'alias'      => 'Personne',
-                                'type'       => 'INNER',
-                                'foreignKey' => false,
-                                'conditions' => array( 'Personne.foyer_id = Foyer.id' )
-                            ),
-                            array(
-                                'table'      => 'prestations',
-                                'alias'      => 'Prestation',
-                                'type'       => 'INNER',
-                                'foreignKey' => false,
-                                'conditions' => array(
-                                    'Personne.id = Prestation.personne_id',
-                                    'Prestation.natprest = \'RSA\'',
-                                    'Prestation.rolepers' => array( 'DEM', 'CJT' )
-                                )
-                            ),
-                        ),
-                        'conditions' => array(
-                            'Personne.nir' => $personnesFoyer[$index]['Personne']['nir'],
-                            //FIXME
-                            'nir_correct( Personne.nir  ) IS NULL',
-                            'Personne.nir IS NOT NULL',
-                            'Dossier.id NOT' => $details['Dossier']['id']
-                        ),
-                        'contain' => false,
-                        'order' => 'Dossier.id DESC',
-                        'recursive' => -1
-                    )
-                );
-                $personnesFoyer[$index]['Dossiermultiple'] = $autreNumdemrsaParAllocataire;
-                //Fin Ajout Arnaud
+						),
+						'joins' => array(
+							array(
+								'table'      => 'foyers',
+								'alias'      => 'Foyer',
+								'type'       => 'INNER',
+								'foreignKey' => false,
+								'conditions' => array( 'Foyer.dossier_id = Dossier.id' )
+							),
+							array(
+								'table'      => 'personnes',
+								'alias'      => 'Personne',
+								'type'       => 'INNER',
+								'foreignKey' => false,
+								'conditions' => array( 'Personne.foyer_id = Foyer.id' )
+							),
+							array(
+								'table'      => 'prestations',
+								'alias'      => 'Prestation',
+								'type'       => 'INNER',
+								'foreignKey' => false,
+								'conditions' => array(
+									'Personne.id = Prestation.personne_id',
+									'Prestation.natprest = \'RSA\'',
+									'Prestation.rolepers' => array( 'DEM', 'CJT' )
+								)
+							),
+						),
+						'conditions' => array(
+							'Personne.nir' => $personnesFoyer[$index]['Personne']['nir'],
+							//FIXME
+							'nir_correct( Personne.nir  ) IS NULL',
+							'Personne.nir IS NOT NULL',
+							'Dossier.id NOT' => $details['Dossier']['id']
+						),
+						'contain' => false,
+						'order' => 'Dossier.id DESC',
+						'recursive' => -1
+					)
+				);
+				$personnesFoyer[$index]['Dossiermultiple'] = $autreNumdemrsaParAllocataire;
+				//Fin Ajout Arnaud
 
 
-                $details[$role] = $personnesFoyer[$index];
+				$details[$role] = $personnesFoyer[$index];
 
 			}
 
 // debug($details);
 // debug($details['DEM']['Dossiermultiple']);
 // debug($details['CJT']['Dossiermultiple']);
-            $this->set( 'details', $details );
+			$this->set( 'details', $details );
 			$this->_setOptions();
 
 		}
@@ -881,6 +883,7 @@
 
 			$querydata = $this->Dossier->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), array_multisize( $this->params['named'] ) );
 			unset( $querydata['limit'] );
+			$querydata = $this->_qdAddFilters( $querydata );
 
 			$dossiers = $this->Dossier->find( 'all', $querydata );
 

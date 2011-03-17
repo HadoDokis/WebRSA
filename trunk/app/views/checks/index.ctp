@@ -131,6 +131,29 @@
 					echo '<p>'.booleanIcon( $xhtml, empty( $checkWebrsaIncEps ) ).'Paramétrage correct.</p>';
 				}
 			?>
+
+			<?php if( Configure::read( 'Recherche.qdFilters.Serviceinstructeur' ) ):?>
+			<h3>Fragments SQL pour les moteurs de recherche ?</h3>
+			<?php
+				echo booleanIcon( $xhtml, empty( $checkSqrecherche ) );
+				if (empty($checkSqrecherche)) echo "Oui";
+				else {
+					echo "Non";
+					?><table>
+					<?php
+						foreach( $checkSqrecherche as $service ) {
+							echo $xhtml->tableCells(
+								array(
+									( $service['Serviceinstructeur']['lib_service'] ),
+									$xhtml->link( 'Modifier', array( 'controller' => 'servicesinstructeurs', 'action' => 'edit', $service['Serviceinstructeur']['id'] ) )
+								)
+							);
+						}
+					?>
+					</table><?php
+				}
+			?>
+			<?php endif;?>
         </table>
     </div>
 </div>

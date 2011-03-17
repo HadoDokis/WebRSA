@@ -497,7 +497,36 @@ CREATE TYPE type_difdisp AS ENUM ( '0501', '0502', '0503', '0504', '0505', '0506
 ALTER TABLE detailsdifdisps ALTER COLUMN difdisp TYPE type_difdisp USING CAST(difdisp AS type_difdisp);
 ALTER TABLE detailsdifdisps_revs ALTER COLUMN difdisp TYPE type_difdisp USING CAST(difdisp AS type_difdisp);
 
+-- -----------------------------------------------------------------------------
+-- 20110317: morceaux de conditions pour les moteurs de recherche (CG 58)
+-- -----------------------------------------------------------------------------
 
+-- FIXME: c'est dans servicesinstructeurs car users n'est pas lié à structuresreferentes
+SELECT add_missing_table_field ('public', 'servicesinstructeurs', 'sqrecherche', 'TEXT');
+ALTER TABLE servicesinstructeurs ALTER COLUMN sqrecherche SET DEFAULT NULL;
+
+-- Donner un exemple (cf. patch-2.0-rc16-datas-cg58.sql)
+
+-- Stocké dans la session -> déco / reco pour les changements
+-- Les requêtes sont vérifiées lors de l'ajoutt ou de la modification d'un service instructeur
+-- La partie "vérification de l'application" vérifie pour tous les services instructeurs
+
+-- Voir + commentaires:
+--	* Configure::write( 'Recherche.qdFilters.Serviceinstructeur' )
+-- 	* AppController::_qdAddFilters
+-- 	* Serviceinstructeur::sqrechercheErrors, _queryDataError, validateSqrecherche
+-- 	* ChecksController::_checkSqrecherche
+
+-- OK pour (FIXME: y-a-t-il d'autres endroits où ces fonctions search sont utilisées ?)
+-- 	* dossiers/index, dossiers/exportcsv (Dossier->search)
+-- 	* criteres/index, criteres/exportcsv (Critere->search)
+-- 	* criteresci/index, criteresci/exportcsv (Cohorteci->search)
+-- 	* criterescuis/index, criterescuis/exportcsv (Criterecui->search)
+-- 	* cohortesindus/index, cohortesindus/exportcsv (Cohorteindu->search)
+-- 	* criteresrdv/index, criteresrdv/exportcsv (Critererdv->search)
+-- 	* criterespdos/index, criterespdos/nouvelles, criterespdos/exportcsv ($this->Criterepdo->listeDossierPDO, Criterepdo->search)
+
+-- INFO: pas de vérification pour $this->Criterepdo->listeDossierPDO -> FIXME ?
 
 -- *****************************************************************************
 COMMIT;
