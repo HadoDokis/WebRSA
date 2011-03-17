@@ -26,7 +26,7 @@
 				'4' => 'saisineepreorientsr93',
 				'5' => 'nonorientationpro58',
 				'6' => 'regressionorientationep58',
-//				'7' => 'radiepoleemploiep93',
+				'7' => 'sanctionep58',
 			);
 			$this->assertEqual($result, $expected);
 		}
