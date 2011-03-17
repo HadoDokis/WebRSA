@@ -1,4 +1,4 @@
-<h1><?php echo $this->pageTitle = __d( 'nonorientationpro', 'Nonorientationspros::index', true ); ?></h1>
+<h1><?php echo $this->pageTitle = __d( 'nonorientationpro', 'Nonorientationspros'.Configure::read( 'Cg.departement' ).'::index', true ); ?></h1>
 
 <?php
 
@@ -27,12 +27,14 @@
 		<?php echo $form->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>
 	</div>
 <?php echo $form->end();?>
+<?php $pagination = $xpaginator->paginationBlock( 'Orientstruct', $this->passedArgs ); ?>
 
 <?php if( !empty( $this->data ) ):?>
 	<?php if( empty( $cohorte ) ):?>
 		<p class="notice"><?php echo 'Aucun allocataire ne correspond à vos critères de recherche.';?>
 	<?php else: ?>
 		<?php echo $form->create( 'Nonorientationpro', array( 'url'=> Router::url( null, true ) ) ); ?>
+		<?php echo $pagination;?>
 		<table class="tooltips">
 			<thead>
 				<tr>
@@ -74,6 +76,7 @@
 				<?php endforeach;?>
 			</tbody>
 		</table>
+		<?php echo $pagination;?>
 		<?php echo $form->end( 'Valider' );?>
 
 	<?php endif;?>

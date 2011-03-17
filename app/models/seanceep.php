@@ -101,9 +101,9 @@
 				$conditions[] = array('Seanceep.identifiant'=>$criteresseanceep['Seanceep']['identifiant']);
 			}
 
-			if ( isset($criteresseanceep['Seanceep']['structurereferente_id']) && !empty($criteresseanceep['Seanceep']['structurereferente_id']) ) {
+			/*if ( isset($criteresseanceep['Seanceep']['structurereferente_id']) && !empty($criteresseanceep['Seanceep']['structurereferente_id']) ) {
 				$conditions[] = array( 'Seanceep.structurereferente_id' => preg_replace( '/^([0-9]+_)*([0-9]+)$/', '\2', $criteresseanceep['Seanceep']['structurereferente_id'] ) );
-			}
+			}*/
 
 			if ( isset($criteresseanceep['Structurereferente']['ville']) && !empty($criteresseanceep['Structurereferente']['ville']) ) {
 				$conditions[] = array('Structurereferente.ville'=>$criteresseanceep['Structurereferente']['ville']);
@@ -123,13 +123,13 @@
 					'Seanceep.id',
 					'Seanceep.name',
 					'Seanceep.identifiant',
-					'Seanceep.structurereferente_id',
+					//'Seanceep.structurereferente_id',
 					'Seanceep.dateseance',
 					'Seanceep.finalisee',
 					'Seanceep.observations'
 				),
 				'contain'=>array(
-					'Structurereferente',
+					//'Structurereferente',
 					'Ep' => array(
 						'fields'=>array(
 							'id',

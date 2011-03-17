@@ -33,6 +33,20 @@
 				'fields' => '',
 				'order' => ''
 			),
+			'Typeorient' => array(
+				'className' => 'Typeorient',
+				'foreignKey' => 'typeorient_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			'Structurereferente' => array(
+				'className' => 'Structurereferente',
+				'foreignKey' => 'structurereferente_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
 		);
 	}
 ?>

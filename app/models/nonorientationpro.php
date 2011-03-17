@@ -35,146 +35,156 @@
 			$modelName = $this->alias;
 			$modelTable = Inflector::tableize( $modelName );
 
-			$cohorte = $this->Orientstruct->find(
-				'all',
-				array(
-					'fields' => array(
-						'Orientstruct.id',
-						'Orientstruct.date_valid',
-						'Orientstruct.user_id',
-						'Typeorient.lib_type_orient',
-						'Structurereferente.lib_struc',
-						'Referent.qual',
-						'Referent.nom',
-						'Referent.prenom',
-						'Personne.id',
-						'Personne.qual',
-						'Personne.nom',
-						'Personne.prenom',
-						'Personne.dtnai',
-						'Personne.nir',
-						'Dossier.numdemrsa',
-						'Adresse.codepos',
-						'Contratinsertion.df_ci',
-						'( DATE( NOW() ) - "Contratinsertion"."df_ci" ) AS "Contratinsertion__nbjours"'
-					),
-					'conditions' => array(
-						'Contratinsertion.df_ci <=' => date( 'Y-m-d', strtotime( '- '.$nbmois.' month', time() ) ),
-						'Orientstruct.statut_orient' => 'Orienté',
-						'Orientstruct.id NOT IN (
-							SELECT "'.$modelTable.'"."orientstruct_id"
-							FROM "'.$modelTable.'"
-								INNER JOIN "dossierseps" ON ( "dossierseps"."id" = "'.$modelTable.'"."dossierep_id" )
-							WHERE "dossierseps"."etapedossierep" != \'traite\'
-							AND "dossierseps"."themeep" = \''.$modelTable.'\'
-						)'
-					),
-					'joins' => array(
-						array(
-							'table' => 'typesorients',
-							'alias' => 'Typeorient',
-							'type' => 'INNER',
-							'conditions' => array(
-								'Orientstruct.typeorient_id = Typeorient.id',
-								'Typeorient.lib_type_orient NOT LIKE' => 'Emploi%'
-							)
-						),
-						array(
-							'table' => 'structuresreferentes',
-							'alias' => 'Structurereferente',
-							'type' => 'INNER',
-							'conditions' => array(
-								'Orientstruct.structurereferente_id = Structurereferente.id'
-							)
-						),
-						array(
-							'table' => 'referents',
-							'alias' => 'Referent',
-							'type' => 'LEFT OUTER',
-							'conditions' => array(
-								'Orientstruct.referent_id = Referent.id'
-							)
-						),
-						array(
-							'table' => 'personnes',
-							'alias' => 'Personne',
-							'type' => 'INNER',
-							'conditions' => array(
-								'Orientstruct.personne_id = Personne.id'
-							)
-						),
-						array(
-							'table'      => 'prestations',
-							'alias'      => 'Prestation',
-							'type'       => 'INNER',
-							'conditions' => array(
-								'Personne.id = Prestation.personne_id',
-								'Prestation.natprest' => 'RSA',
-								'Prestation.rolepers' => array( 'DEM', 'CJT' ),
-							)
-						),
-						array(
-							'table'      => 'calculsdroitsrsa',
-							'alias'      => 'Calculdroitrsa',
-							'type'       => 'INNER',
-							'conditions' => array(
-								'Personne.id = Calculdroitrsa.personne_id',
-								'Calculdroitrsa.toppersdrodevorsa' => 1
-							)
-						),
-						array(
-							'table'      => 'foyers',
-							'alias'      => 'Foyer',
-							'type'       => 'INNER',
-							'conditions' => array( 'Personne.foyer_id = Foyer.id' )
-						),
-						array(
-							'table'      => 'dossiers',
-							'alias'      => 'Dossier',
-							'type'       => 'INNER',
-							'foreignKey' => false,
-							'conditions' => array( 'Dossier.id = Foyer.dossier_id' )
-						),
-						array(
-							'table'      => 'situationsdossiersrsa',
-							'alias'      => 'Situationdossierrsa',
-							'type'       => 'INNER',
-							'foreignKey' => false,
-							'conditions' => array(
-								'Dossier.id = Situationdossierrsa.dossier_id',
-								'Situationdossierrsa.etatdosrsa' => $this->Orientstruct->Personne->Foyer->Dossier->Situationdossierrsa->etatOuvert()
-							)
-						),
-						array(
-							'table'      => 'adressesfoyers',
-							'alias'      => 'Adressefoyer',
-							'type'       => 'INNER',
-							'foreignKey' => false,
-							'conditions' => array(
-								'Adressefoyer.foyer_id = Foyer.id',
-								'Adressefoyer.rgadr' => '01'
-							)
-						),
-						array(
-							'table'      => 'adresses',
-							'alias'      => 'Adresse',
-							'type'       => 'INNER',
-							'foreignKey' => false,
-							'conditions' => array( 'Adressefoyer.adresse_id = Adresse.id' )
-						),
-						array(
-							'table'      => 'contratsinsertion',
-							'alias'      => 'Contratinsertion',
-							'type'       => 'INNER',
-							'foreignKey' => false,
-							'conditions' => array(
-								'Contratinsertion.personne_id = Orientstruct.personne_id',
-								'Contratinsertion.structurereferente_id = Orientstruct.structurereferente_id'
-							)
+			$cohorte = array(
+				'fields' => array(
+					'Orientstruct.id',
+					'Orientstruct.date_valid',
+					'Orientstruct.user_id',
+					'Typeorient.lib_type_orient',
+					'Structurereferente.lib_struc',
+					'Referent.qual',
+					'Referent.nom',
+					'Referent.prenom',
+					'Personne.id',
+					'Personne.qual',
+					'Personne.nom',
+					'Personne.prenom',
+					'Personne.dtnai',
+					'Personne.nir',
+					'Dossier.numdemrsa',
+					'Adresse.codepos',
+					'Contratinsertion.df_ci',
+					'( DATE( NOW() ) - "Contratinsertion"."df_ci" ) AS "Contratinsertion__nbjours"'
+				),
+				'conditions' => array(
+					'Contratinsertion.df_ci <=' => date( 'Y-m-d', strtotime( '- '.$nbmois.' month', time() ) ),
+					'Orientstruct.statut_orient' => 'Orienté',
+					'Orientstruct.id NOT IN (
+						SELECT "'.$modelTable.'"."orientstruct_id"
+						FROM "'.$modelTable.'"
+							INNER JOIN "dossierseps" ON ( "dossierseps"."id" = "'.$modelTable.'"."dossierep_id" )
+						WHERE "dossierseps"."etapedossierep" != \'traite\'
+						AND "dossierseps"."themeep" = \''.$modelTable.'\'
+					)',
+					'Orientstruct.id NOT IN (
+						SELECT '.Inflector::tableize( $this->alias ).'.orientstruct_id
+							FROM '.Inflector::tableize( $this->alias ).'
+								INNER JOIN dossierseps ON (
+									'.Inflector::tableize( $this->alias ).'.dossierep_id = dossierseps.id
+								)
+							WHERE
+								'.Inflector::tableize( $this->alias ).'.orientstruct_id = Orientstruct.id
+								AND dossierseps.etapedossierep = \'traite\'
+								AND ( DATE( NOW() ) - (
+									SELECT CAST( decisions'.Inflector::tableize( $this->alias ).'.modified AS DATE )
+										FROM decisions'.Inflector::tableize( $this->alias ).'
+										WHERE decisions'.Inflector::tableize( $this->alias ).'.'.Inflector::underscore( $this->alias ).'_id = '.Inflector::tableize( $this->alias ).'.id
+										ORDER BY modified DESC
+										LIMIT 1
+								) ) <= '.Configure::read( $this->alias.'.delaiCreationContrat' ).'
+					)'
+				),
+				'joins' => array(
+					array(
+						'table' => 'structuresreferentes',
+						'alias' => 'Structurereferente',
+						'type' => 'INNER',
+						'conditions' => array(
+							'Orientstruct.structurereferente_id = Structurereferente.id'
 						)
 					),
-					'contain' => false
-				)
+					array(
+						'table' => 'typesorients',
+						'alias' => 'Typeorient',
+						'type' => 'INNER',
+						'conditions' => array(
+							'Structurereferente.typeorient_id = Typeorient.id',
+							'Typeorient.lib_type_orient NOT LIKE' => 'Emploi%'
+						)
+					),
+					array(
+						'table' => 'referents',
+						'alias' => 'Referent',
+						'type' => 'LEFT OUTER',
+						'conditions' => array(
+							'Orientstruct.referent_id = Referent.id'
+						)
+					),
+					array(
+						'table' => 'personnes',
+						'alias' => 'Personne',
+						'type' => 'INNER',
+						'conditions' => array(
+							'Orientstruct.personne_id = Personne.id'
+						)
+					),
+					array(
+						'table'      => 'prestations',
+						'alias'      => 'Prestation',
+						'type'       => 'INNER',
+						'conditions' => array(
+							'Personne.id = Prestation.personne_id',
+							'Prestation.natprest' => 'RSA',
+							'Prestation.rolepers' => array( 'DEM', 'CJT' ),
+						)
+					),
+					array(
+						'table'      => 'calculsdroitsrsa',
+						'alias'      => 'Calculdroitrsa',
+						'type'       => 'INNER',
+						'conditions' => array(
+							'Personne.id = Calculdroitrsa.personne_id',
+							'Calculdroitrsa.toppersdrodevorsa' => 1
+						)
+					),
+					array(
+						'table'      => 'foyers',
+						'alias'      => 'Foyer',
+						'type'       => 'INNER',
+						'conditions' => array( 'Personne.foyer_id = Foyer.id' )
+					),
+					array(
+						'table'      => 'dossiers',
+						'alias'      => 'Dossier',
+						'type'       => 'INNER',
+						'conditions' => array( 'Dossier.id = Foyer.dossier_id' )
+					),
+					array(
+						'table'      => 'situationsdossiersrsa',
+						'alias'      => 'Situationdossierrsa',
+						'type'       => 'INNER',
+						'conditions' => array(
+							'Dossier.id = Situationdossierrsa.dossier_id',
+							'Situationdossierrsa.etatdosrsa' => $this->Orientstruct->Personne->Foyer->Dossier->Situationdossierrsa->etatOuvert()
+						)
+					),
+					array(
+						'table'      => 'adressesfoyers',
+						'alias'      => 'Adressefoyer',
+						'type'       => 'INNER',
+						'conditions' => array(
+							'Adressefoyer.foyer_id = Foyer.id',
+							'Adressefoyer.rgadr' => '01'
+						)
+					),
+					array(
+						'table'      => 'adresses',
+						'alias'      => 'Adresse',
+						'type'       => 'INNER',
+						'conditions' => array( 'Adressefoyer.adresse_id = Adresse.id' )
+					),
+					array(
+						'table'      => 'contratsinsertion',
+						'alias'      => 'Contratinsertion',
+						'type'       => 'INNER',
+						'conditions' => array(
+							'Contratinsertion.personne_id = Orientstruct.personne_id',
+							'Contratinsertion.structurereferente_id = Orientstruct.structurereferente_id'
+						)
+					)
+				),
+				'contain' => false,
+				'order' => array( 'Contratinsertion.nbjours DESC' )
 			);
 			return $cohorte;
 		}
@@ -193,14 +203,14 @@
 					);
 					$success = $this->Dossierep->save( $dossierep ) && $success;
 
-					$nonorientationpro58 = array(
-						'Nonorientationpro58' => array(
+					$nonorientationpro = array(
+						$this->alias => array(
 							'dossierep_id' => $this->Dossierep->id,
 							'orientstruct_id' => $dossier['orientstruct_id'],
-							'user_id' => $dossier['user_id']
+							'user_id' => ( isset( $dossier['user_id'] ) ) ? $dossier['user_id'] : null
 						)
 					);
-					$success = $this->save( $nonorientationpro58 ) && $success;
+					$success = $this->save( $nonorientationpro ) && $success;
 				}
 			}
 
@@ -233,6 +243,8 @@
 					),
 					$this->alias => array(
 						'Decision'.Inflector::underscore( $this->alias ) => array(
+							'Typeorient',
+							'Structurereferente',
 							'order' => array( 'etape DESC' )
 						),
 						'Orientstruct' => array(
@@ -252,40 +264,42 @@
 			if( ( $niveauFinal == 'ep' ) && ( $niveauDecision == 'cg' ) ) {
 				return array();
 			}
-
+			
 			$formData = array();
-			/*foreach( $datas as $key => $dossierep ) {
-				$formData['Nonrespectsanctionep93'][$key]['id'] = @$datas[$key]['Nonrespectsanctionep93']['id'];
-				$formData['Nonrespectsanctionep93'][$key]['dossierep_id'] = @$datas[$key]['Nonrespectsanctionep93']['dossierep_id'];
-				$formData['Decisionnonrespectsanctionep93'][$key]['nonrespectsanctionep93_id'] = @$datas[$key]['Nonrespectsanctionep93']['id'];
+			foreach( $datas as $key => $dossierep ) {
+				$formData[$this->alias][$key]['id'] = @$datas[$key][$this->alias]['id'];
+				$formData[$this->alias][$key]['dossierep_id'] = @$datas[$key][$this->alias]['dossierep_id'];
+				$formData['Decision'.Inflector::underscore( $this->alias )][$key][Inflector::underscore( $this->alias ).'_id'] = @$datas[$key][$this->alias]['id'];
 
 				// On modifie les enregistrements de cette étape
-				if( @$dossierep['Nonrespectsanctionep93']['Decisionnonrespectsanctionep93'][count(@$dossierep['Nonrespectsanctionep93']['Decisionnonrespectsanctionep93'])-1]['etape'] == $niveauDecision ) {
-					$formData['Decisionnonrespectsanctionep93'][$key] = @$dossierep['Nonrespectsanctionep93']['Decisionnonrespectsanctionep93'][count(@$dossierep['Nonrespectsanctionep93']['Decisionnonrespectsanctionep93'])-1];
+				if( @$dossierep[$this->alias]['Decision'.Inflector::underscore( $this->alias )][count(@$dossierep[$this->alias]['Decision'.Inflector::underscore( $this->alias )])-1]['etape'] == $niveauDecision ) {
+					$formData['Decision'.Inflector::underscore( $this->alias )][$key] = @$dossierep[$this->alias]['Decision'.Inflector::underscore( $this->alias )][count(@$dossierep[$this->alias]['Decision'.Inflector::underscore( $this->alias )])-1];
 				}
 				// On ajoute les enregistrements de cette étape -> FIXME: manque les id ?
 				else {
 					if( $niveauDecision == 'ep' ) {
-						if( !empty( $datas[$key]['Nonrespectsanctionep93']['Decisionnonrespectsanctionep93'][0] ) ) { // Modification
-							$formData['Decisionnonrespectsanctionep93'][$key]['decision'] = @$datas[$key]['Nonrespectsanctionep93']['Decisionnonrespectsanctionep93'][0]['decision'];
-						}
-						else {
-							if( ( $dossierep['Personne']['Foyer']['nbenfants'] > 0 ) || ( $dossierep['Personne']['Foyer']['sitfam'] == 'MAR' ) ) {
-								$formData['Decisionnonrespectsanctionep93'][$key]['decision'] = '1maintien';
-							}
-							// FIXME: autre cas ?
+						if( !empty( $datas[$key][$this->alias]['Decision'.Inflector::underscore( $this->alias )][0] ) ) { // Modification
+							$formData['Decision'.Inflector::underscore( $this->alias )][$key]['id'] = @$datas[$key][$this->alias]['Decision'.Inflector::underscore( $this->alias )][0]['id'];
+							$formData['Decision'.Inflector::underscore( $this->alias )][$key]['decision'] = @$datas[$key][$this->alias]['Decision'.Inflector::underscore( $this->alias )][0]['decision'];
+							$formData['Decision'.Inflector::underscore( $this->alias )][$key]['structurereferente_id'] = @$datas[$key][$this->alias]['Decision'.Inflector::underscore( $this->alias )][0]['typeorient_id'].'_'.@$datas[$key][$this->alias]['Decision'.Inflector::underscore( $this->alias )][0]['structurereferente_id'];
+							$formData['Decision'.Inflector::underscore( $this->alias )][$key]['typeorient_id'] = @$datas[$key][$this->alias]['Decision'.Inflector::underscore( $this->alias )][0]['typeorient_id'];
 						}
 					}
 					else if( $niveauDecision == 'cg' ) {
-						if( !empty( $datas[$key]['Nonrespectsanctionep93']['Decisionnonrespectsanctionep93'][1] ) ) { // Modification
-							$formData['Decisionnonrespectsanctionep93'][$key]['decision'] = @$datas[$key]['Nonrespectsanctionep93']['Decisionnonrespectsanctionep93'][1]['decision'];
+						if( !empty( $datas[$key][$this->alias]['Decision'.Inflector::underscore( $this->alias )][0] ) ) { // Modification
+							$formData['Decision'.Inflector::underscore( $this->alias )][$key]['id'] = @$datas[$key][$this->alias]['Decision'.Inflector::underscore( $this->alias )][0]['id'];
+							$formData['Decision'.Inflector::underscore( $this->alias )][$key]['decision'] = @$datas[$key][$this->alias]['Decision'.Inflector::underscore( $this->alias )][0]['decision'];
+							$formData['Decision'.Inflector::underscore( $this->alias )][$key]['structurereferente_id'] = @$datas[$key][$this->alias]['Decision'.Inflector::underscore( $this->alias )][0]['typeorient_id'].'_'.@$datas[$key][$this->alias]['Decision'.Inflector::underscore( $this->alias )][0]['structurereferente_id'];
+							$formData['Decision'.Inflector::underscore( $this->alias )][$key]['typeorient_id'] = @$datas[$key][$this->alias]['Decision'.Inflector::underscore( $this->alias )][0]['typeorient_id'];
 						}
 						else {
-							$formData['Decisionnonrespectsanctionep93'][$key]['decision'] = $dossierep['Nonrespectsanctionep93']['Decisionnonrespectsanctionep93'][0]['decision'];
+							$formData['Decision'.Inflector::underscore( $this->alias )][$key]['decision'] = $dossierep[$this->alias]['Decision'.Inflector::underscore( $this->alias )][1]['decision'];
+							$formData['Decision'.Inflector::underscore( $this->alias )][$key]['structurereferente_id'] = @$datas[$key][$this->alias]['Decision'.Inflector::underscore( $this->alias )][1]['typeorient_id'].'_'.@$datas[$key][$this->alias]['Decision'.Inflector::underscore( $this->alias )][1]['structurereferente_id'];
+							$formData['Decision'.Inflector::underscore( $this->alias )][$key]['typeorient_id'] = @$datas[$key][$this->alias]['Decision'.Inflector::underscore( $this->alias )][1]['typeorient_id'];
 						}
 					}
 				}
-			}*/
+			}
 // debug( $formData );
 
 			return $formData;
@@ -299,11 +313,11 @@
 			$success = true;
 			if ( isset( $data[$this->alias] ) && !empty( $data[$this->alias] ) && isset( $data['Decision'.Inflector::underscore( $this->alias )] ) && !empty( $data['Decision'.Inflector::underscore( $this->alias )] ) ) {
 				foreach( $data['Decision'.Inflector::underscore( $this->alias )] as $key => $values ) {
-					$structurereferente = explode( '_', $values['structurereferente_id'] );
+					if ( isset( $values['structurereferente_id'] ) ) $structurereferente = explode( '_', $values['structurereferente_id'] );
 					if ( isset( $structurereferente[1] ) && $values['decision'] == 'reorientation' ) {
 						$data['Decision'.Inflector::underscore( $this->alias )][$key]['structurereferente_id'] = $structurereferente[1];
 					}
-					elseif ( $values['decision'] != 'reorientation' ) {
+					elseif ( $values['decision'] == 'maintienref' ) {
 						$data['Decision'.Inflector::underscore( $this->alias )][$key]['structurereferente_id'] = null;
 						$data['Decision'.Inflector::underscore( $this->alias )][$key]['typeorient_id'] = null;
 					}
