@@ -263,6 +263,32 @@
 				'exclusive' => '',
 				'finderQuery' => '',
 				'counterQuery' => ''
+			),
+			'Decisionnonorientationpro58' => array(
+				'className' => 'Decisionnonorientationpro58',
+				'foreignKey' => 'structurereferente_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Decisionnonorientationpro93' => array(
+				'className' => 'Decisionnonorientationpro93',
+				'foreignKey' => 'structurereferente_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
 			)
 		);
 

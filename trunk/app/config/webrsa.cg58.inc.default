@@ -205,6 +205,12 @@
 	Configure::write( 'alerteFinSession', false );
 
 	/**
+	* Durée du délai (en jours) accordé pour la création d'un nouveau contrat pour
+	* le thème "non orientation professionelle"
+	*/
+	Configure::write( 'Nonorientationpro58.delaiCreationContrat', 60 );
+
+	/**
 	* Configuration pour le dialogue avec un CMS (système de gestion de contenu)
 	* comme Alfresco, servant à stocker les PDF
 	*/

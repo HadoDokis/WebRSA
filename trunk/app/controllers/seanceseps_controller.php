@@ -29,6 +29,7 @@
 				$this->Seanceep->Dossierep->Nonrespectsanctionep93->enums(),
 				$this->Seanceep->Dossierep->Defautinsertionep66->enums(),
 				$this->Seanceep->Dossierep->Nonorientationpro58->Decisionnonorientationpro58->enums(),
+				$this->Seanceep->Dossierep->Nonorientationpro93->Decisionnonorientationpro93->enums(),
 				$this->Seanceep->Dossierep->Sanctionep58->Decisionsanctionep58->enums(),
 				$this->Seanceep->Dossierep->enums(),
 				$this->Seanceep->enums(),
@@ -327,7 +328,7 @@
 				'first', array(
 					'conditions' => array( 'Seanceep.id' => $seanceep_id ),
 					'contain' => array(
-						'Structurereferente',
+	// 					'Structurereferente',
 	// 					'Dossierep' => array(
 	// 						'Personne'
 	// 					),

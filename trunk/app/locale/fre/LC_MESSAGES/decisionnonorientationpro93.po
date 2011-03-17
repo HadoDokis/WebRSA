@@ -19,8 +19,8 @@ msgstr ""
 
 ###############################################################################
 
-msgid "Nonorientationspros58::index"
-msgstr "Détection des non orientations professionnelles"
+msgid "ENUM::DECISION::reorientation"
+msgstr "Réorientation"
 
-msgid "Nonorientationspros93::index"
-msgstr "Détection des bénéficiaires en parcours social non réorientés vers le professionnel"
+msgid "ENUM::DECISION::maintienref"
+msgstr "Maintien du référent"

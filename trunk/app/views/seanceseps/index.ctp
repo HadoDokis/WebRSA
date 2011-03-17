@@ -68,7 +68,7 @@
 				<legend>Filtrer par adresse</legend>
 				<?php echo $default2->subform(
 					array(
-						'Seanceep.structurereferente_id'=>array('type'=>'select'),
+						//'Seanceep.structurereferente_id'=>array('type'=>'select'),
 						'Structurereferente.ville'
 					),
 					array(

@@ -253,6 +253,12 @@
 	Configure::write( 'Nonrespectsanctionep93.dureeSursis', 31 );
 
 	/**
+	* Durée du délai (en jours) accordé pour la création d'un nouveau contrat pour
+	* le thème "détection brsa en parcours social sans réorientation"
+	*/
+	Configure::write( 'Nonorientationpro93.delaiCreationContrat', 60 );
+
+	/**
 	* Configuration pour le dialogue avec un CMS (système de gestion de contenu)
 	* comme Alfresco, servant à stocker les PDF
 	*/
