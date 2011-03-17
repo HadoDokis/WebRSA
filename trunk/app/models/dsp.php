@@ -110,11 +110,15 @@
 
         public function filterOptions( $cg, $options ) {
         	if( $cg == 'cg58' ) {
+                $valuesDeleted = array( '0502', '0503', '0504' ); 
+                foreach( $valuesDeleted as $valueDeleted ){
+                    unset( $options['Detaildifdisp']['difdisp'][$valueDeleted] );
+                }
         		return $options;
         	}
         	
 			// Detaildifdisp.difdisp
-        	$values = array( '0507', '0508', '0509', '0510', '0511', '0512', '0513' );
+        	$values = array( '0507', '0508', '0509', '0510', '0511', '0512', '0513', '0514' );
         	foreach( $values as $value ) {
 	        	//$options = Set::remove( $options['Detaildifdisp']['difdisp'], $value );
 	        	unset( $options['Detaildifdisp']['difdisp'][$value] );
