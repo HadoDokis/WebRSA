@@ -546,3 +546,24 @@ form#cuiform dl.allocataire.cuis dt {
 #tableEditDroits td {
 	vertical-align: middle;
 }
+
+/*----------------------------------------------------------------------------*/
+
+.query h3 {
+	margin: 1em 0;
+}
+
+.query .errormessage {
+	border: 1px solid silver;
+	padding: 0.5em;
+	background: #fff000;
+	margin: 0 0 1em 0;
+	font-family: monospace;
+}
+
+.query .sql {
+	border: 1px solid silver;
+	padding: 0.5em;
+	margin: 0 0 1em 0;
+	font-family: monospace;
+}

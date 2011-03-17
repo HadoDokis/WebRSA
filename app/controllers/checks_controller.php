@@ -7,7 +7,7 @@
 	{
 		public $name = 'Checks';
 
-		public $uses = array( 'Structurereferente', 'User' );
+		public $uses = array( 'Structurereferente', 'User', 'Serviceinstructeur' );
 
 		public function index() {
 			$this->set( 'webrsaIncExist', $this->_checkWebrsaInc( array( 'Cohorte.dossierTmpPdfs' ) ) );
@@ -18,6 +18,40 @@
 			$this->set( 'checkWritePdfDirectory', $this->_checkTmpPdfDirectory( Configure::read( 'Cohorte.dossierTmpPdfs' ) ) );
 			$this->set( 'compressedAssets', $this->_compressedAssets() );
 			$this->set( 'checkWebrsaIncEps', $this->_checkWebrsaIncEps() );
+			$this->set( 'checkSqrecherche', $this->_checkSqrecherche() );
+		}
+
+		/**
+		*
+		*/
+
+		protected function _checkSqrecherche() {
+			$errors = array();
+
+			if( Configure::read( 'Recherche.qdFilters.Serviceinstructeur' ) ) {
+				$results = $this->Serviceinstructeur->find(
+					'all',
+					array(
+						'fields' => array( 'id', 'lib_service', 'sqrecherche' ),
+						'recursive' => -1,
+						'conditions' => array( 'Serviceinstructeur.sqrecherche IS NOT NULL' )
+					)
+				);
+
+				$debugLevel = Configure::read( 'debug' );
+				Configure::write( 'debug', 0 );
+
+				foreach( $results as $result ) {
+					$error = $this->Serviceinstructeur->sqrechercheErrors( $result['Serviceinstructeur']['sqrecherche'] );
+					if( !empty( $error ) ) {
+						$errors[] = $result;
+					}
+				}
+
+				Configure::write( 'debug', $debugLevel );
+			}
+
+			return $errors;
 		}
 
 		/**

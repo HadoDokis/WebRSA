@@ -46,5 +46,66 @@ INSERT INTO listesanctionseps58 (rang, sanction, duree) VALUES
 ;
 
 -- *****************************************************************************
+-- 20110317
+-- *****************************************************************************
+
+-- 2. Les utilisateurs du CCAS de Nevers ne doivent avoir accès qu'aux dossiers :
+--     - des couples sans enfants
+--     - des bénéficiaires seuls sans enfants
+
+UPDATE servicesinstructeurs
+	SET sqrecherche = '(
+		-- Couples sans enfants
+		(
+			(
+				SELECT COUNT(personnes.id)
+					FROM personnes
+						INNER JOIN prestations ON (
+							personnes.id = prestations.personne_id
+							AND prestations.natprest = ''RSA''
+							AND prestations.rolepers IN ( ''DEM'', ''CJT'' )
+						)
+					WHERE personnes.foyer_id = "Foyer"."id"
+			) = 2
+			AND
+			(
+				SELECT COUNT(personnes.id)
+					FROM personnes
+						INNER JOIN prestations ON (
+							personnes.id = prestations.personne_id
+							AND prestations.natprest = ''RSA''
+							AND prestations.rolepers NOT IN ( ''DEM'', ''CJT'' )
+						)
+					WHERE personnes.foyer_id = "Foyer"."id"
+			) = 0
+		)
+		OR
+		-- Bénéficiaires seuls sans enfants
+		(
+			(
+				SELECT COUNT(personnes.id)
+					FROM personnes
+						INNER JOIN prestations ON (
+							personnes.id = prestations.personne_id
+							AND prestations.natprest = ''RSA''
+							AND prestations.rolepers IN ( ''DEM'' )
+						)
+					WHERE personnes.foyer_id = Foyer.id
+			) = 1
+			AND
+			(
+				SELECT COUNT(personnes.id)
+					FROM personnes
+						INNER JOIN prestations ON (
+							personnes.id = prestations.personne_id
+							AND prestations.natprest = ''RSA''
+						)
+					WHERE personnes.foyer_id = Foyer.id
+			) = 1
+		)
+	)'
+	WHERE servicesinstructeurs.id = 13;
+
+-- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

@@ -8,7 +8,8 @@
 		public $order = 'Serviceinstructeur.lib_service ASC';
 
 		public $actsAs = array(
-			'Autovalidate'
+			'Autovalidate',
+			'Formattable'
 		);
 
 		public $validate = array(
@@ -81,6 +82,12 @@
 				array(
 					'rule' => 'notEmpty',
 					'message' => 'Champ obligatoire'
+				)
+			),
+			'sqrecherche' => array(
+				array(
+					'rule' => 'validateSqrecherche',
+					'message' => 'Erreur SQL'
 				)
 			)
 		);
@@ -203,6 +210,92 @@
 
 				return $querydata;
 			}
+		}
+
+		/**
+		*
+		*/
+
+		protected function _queryDataError( &$model, $querydata ) {
+			$querydata['limit'] = 1;
+			$sql = $model->sq( $querydata );
+			$ds = $model->getDataSource( $model->useDbConfig );
+
+			$result = false;
+			try {
+				$result = @$model->query( "EXPLAIN $sql" );
+			} catch( Exception $e ) {
+			}
+
+			if( $result === false ) {
+				return $sql;
+			}
+			else {
+				return false;
+			}
+		}
+
+		/**
+		*
+		*/
+
+		// 			$this->Serviceinstructeur->sqrechercheErrors( 'foo' );
+		// FIXME: criterespdos/index, criterespdos/nouvelles, criterespdos/exportcsv ($this->Criterepdo->listeDossierPDO, Criterepdo->search)
+		public function sqrechercheErrors( $condition ) {
+			$errors = array();
+
+			if( Configure::read( 'Recherche.qdFilters.Serviceinstructeur' ) ) {
+				$models = array(
+					'Dossier' => 'Dossier',
+					'Critere' => 'Orientstruct',
+					'Cohorteci' => 'Contratinsertion',
+					'Criterecui' => 'Cui',
+					'Cohorteindu' => 'Dossier',
+					'Critererdv' => 'Rendezvous',
+					'Criterepdo' => 'Propopdo',
+				);
+
+				foreach( $models as $modelSearch => $modelName ) {
+					$search = ClassRegistry::init( $modelSearch );
+					$model = ClassRegistry::init( $modelName );
+
+					$querydata = @$search->search( array(), array(), array(), array(), array() );
+
+					if( !empty( $condition ) ) {
+						$querydata['conditions'][] = $condition;
+					}
+
+					$error = $this->_queryDataError( $model, $querydata );
+
+					if( !empty( $error ) ) {
+						$ds = $model->getDataSource( $model->useDbConfig );
+						$errors[$model->alias] = array(
+							'sql' => $error,
+							'error' => ( ( $ds->config['driver'] == 'postgres' ) ? pg_last_error() : null )
+						);
+					}
+				}
+			}
+
+			return $errors;
+		}
+
+		/**
+		*
+		*/
+
+		public function validateSqrecherche( $check ) {
+			if( !is_array( $check ) ) {
+				return false;
+			}
+
+			// TODO: meilleure validation ?
+			$result = true;
+			foreach( Set::normalize( $check ) as $key => $condition ) {
+				$errors = $this->sqrechercheErrors( $condition );
+				$result = empty( $errors ) && $result;
+			}
+			return $result;
 		}
 	}
 ?>

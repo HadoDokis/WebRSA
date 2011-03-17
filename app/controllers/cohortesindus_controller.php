@@ -1,47 +1,53 @@
 <?php
-    App::import('Sanitize');
+	App::import('Sanitize');
 
-    class CohortesindusController extends AppController
-    {
-        var $name = 'Cohortesindus';
-        var $uses = array( 'Canton', 'Cohorteindu', 'Option',  'Structurereferente', 'Infofinanciere', 'Dossier', 'Zonegeographique' );
-        var $helpers = array( 'Csv', 'Paginator', 'Locale' );
+	class CohortesindusController extends AppController
+	{
+		public $name = 'Cohortesindus';
+		public $uses = array( 'Canton', 'Cohorteindu', 'Option',  'Structurereferente', 'Infofinanciere', 'Dossier', 'Zonegeographique' );
+		public $helpers = array( 'Csv', 'Paginator', 'Locale' );
 
-        var $paginate = array(
-            // FIXME
-            'limit' => 20,
-        );
+		public $paginate = array(
+			// FIXME
+			'limit' => 20,
+		);
 
-        /**
-        */
-        function __construct() {
-            $this->components = Set::merge( $this->components, array( 'Jetons', 'Prg' => array( 'actions' => array( 'index' ) ) ) );
-            parent::__construct();
-        }
+		/**
+		*
+		*/
 
-        function beforeFilter() {
-            $sr = $this->Structurereferente->find(
-                'list',
-                array(
-                    'fields' => array(
-                        'Structurereferente.lib_struc'
-                    ),
-                )
-            );
-            $this->set( 'sr', $sr );
+		public function __construct() {
+			$this->components = Set::merge( $this->components, array( 'Jetons', 'Prg' => array( 'actions' => array( 'index' ) ) ) );
+			parent::__construct();
+		}
+
+		public function beforeFilter() {
+			$sr = $this->Structurereferente->find(
+				'list',
+				array(
+					'fields' => array(
+						'Structurereferente.lib_struc'
+					),
+				)
+			);
+			$this->set( 'sr', $sr );
 
 
-            $return = parent::beforeFilter();
-                $this->set( 'natpfcre', $this->Option->natpfcre( 'autreannulation' ) );
-                $this->set( 'typeparte', $this->Option->typeparte() );
-                $this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
-                $this->set( 'natpf', $this->Option->natpf() );
-                $this->set( 'type_allocation', $this->Option->type_allocation() );
-                $this->set( 'dif', $this->Option->dif() );
-            return $return;
-        }
+			$return = parent::beforeFilter();
+				$this->set( 'natpfcre', $this->Option->natpfcre( 'autreannulation' ) );
+				$this->set( 'typeparte', $this->Option->typeparte() );
+				$this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
+				$this->set( 'natpf', $this->Option->natpf() );
+				$this->set( 'type_allocation', $this->Option->type_allocation() );
+				$this->set( 'dif', $this->Option->dif() );
+			return $return;
+		}
 
-        function index() {
+		/**
+		*
+		*/
+
+		public function index() {
 			if( Configure::read( 'CG.cantons' ) ) {
 				$this->set( 'cantons', $this->Canton->selectList() );
 			}
@@ -57,6 +63,8 @@
 
 				$this->paginate = $this->Cohorteindu->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
 				$this->paginate['limit'] = 10;
+				$this->paginate = $this->_qdAddFilters( $this->paginate );
+
 				$cohorteindu = $this->paginate( 'Dossier' );
 
 				$this->Dossier->commit();
@@ -72,21 +80,26 @@
 			}
 
 			$this->set( 'comparators', $comparators );
-        }
+		}
 
-        function exportcsv(){
-            $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-            $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
+		/**
+		*
+		*/
 
-            $_limit = 10;
-            $params = $this->Cohorteindu->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), array_multisize( $this->params['named'] ), $this->Jetons->ids() );
+		public function exportcsv(){
+			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
 
-            unset( $params['limit'] );
-            $indus = $this->Dossier->find( 'all', $params );
+			$_limit = 10;
+			$querydata = $this->Cohorteindu->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), array_multisize( $this->params['named'] ), $this->Jetons->ids() );
+			$querydata = $this->_qdAddFilters( $querydata );
+
+			unset( $querydata['limit'] );
+			$indus = $this->Dossier->find( 'all', $querydata );
 
 
-            $this->layout = ''; // FIXME ?
-            $this->set( compact( 'headers', 'indus' ) );
-        }
-    }
+			$this->layout = ''; // FIXME ?
+			$this->set( compact( 'headers', 'indus' ) );
+		}
+	}
 ?>

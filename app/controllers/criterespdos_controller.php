@@ -81,6 +81,8 @@
 
 					$this->paginate = $this->Criterepdo->search( /*$statutPdo,*/ $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
 					$this->paginate['limit'] = 10;
+					$this->paginate = $this->_qdAddFilters( $this->paginate );
+
 					$criterespdos = $this->paginate( 'Propopdo' );
 
 					$this->Dossier->commit();
@@ -125,12 +127,14 @@
 			if( !empty( $params ) ) {
 				$this->Dossier->begin(); // Pour les jetons
 
-					$queryData = $this->Criterepdo->listeDossierPDO( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
+					$querydata = $this->Criterepdo->listeDossierPDO( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
 
-					$queryData['limit'] = 10;
-					$this->paginate['Personne'] = $queryData;
+					$querydata['limit'] = 10;
+					$querydata = $this->_qdAddFilters( $querydata );
+					$this->paginate['Personne'] = $querydata;
+
 					$criterespdos = $this->paginate( 'Personne' );
-// debug($criterespdos);
+
 					$this->Dossier->commit();
 					$this->set( 'criterespdos', $criterespdos );
 			}
@@ -156,6 +160,8 @@
 
 			$querydata = $this->Criterepdo->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), array_multisize( $this->params['named'] ), $this->Jetons->ids() );
 			unset( $querydata['limit'] );
+			$querydata = $this->_qdAddFilters( $querydata );
+
 			$pdos = $this->Propopdo->find( 'all', $querydata );
 
 			$this->_setOptions();

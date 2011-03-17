@@ -8,6 +8,31 @@
 		//public $persistModel = true;
 
 		/**
+		* Permet de rajouter des conditions aux conditions de recherches suivant
+		* le paramétrage des service référent dont dépend l'utilisateur connecté.
+		*
+		* Nécessite la mise à true du paramètre 'Recherche.qdFilters.Serviceinstructeur'
+		* ainsi que l'ajout de conditions au service instructeur de l'utilisateur
+		* connecté.
+		*
+		* @param array $querydata Les querydata dans lesquelles rajouter les conditionss
+		* @return array
+		* @access protected
+		*/
+
+		protected function _qdAddFilters( $querydata ) {
+			if( Configure::read( 'Recherche.qdFilters.Serviceinstructeur' ) ) {
+				// Injection de conditions pour la confidentialité au CG 58
+				$sqrecherche = $this->Session->read( 'Auth.Serviceinstructeur.sqrecherche' );
+				if( !empty( $sqrecherche ) ) {
+					$querydata['conditions'][] = $sqrecherche;
+				}
+			}
+
+			return $querydata;
+		}
+
+		/**
 		* Chargement et mise en cache (session) des permissions de l'utilisateur
 		* INFO:
 		*	- n'est réellement exécuté que la première fois

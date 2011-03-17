@@ -224,4 +224,13 @@
 			'prefix' => '/Sites/Webrsa',
 		)
 	);
+
+	/**
+	* Permet de rajouter des conditions aux conditions de recherches suivant
+	* le paramétrage des service référent dont dépend l'utilisateur connecté.
+	*
+	* @default false
+	*/
+
+	Configure::write( 'Recherche.qdFilters.Serviceinstructeur', ( Configure::read( 'Cg.departement' ) == 58 ) );
 ?>
