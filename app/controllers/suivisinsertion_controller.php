@@ -156,81 +156,80 @@
                 $tEp = $this->Dossier->Foyer->Personne->Dossierep->find(
                     'first',
                     array(
-                        'fields' => array(
-                            'etapedossierep',
-                            'created',
-                            'seanceep_id',
-                            'themeep',
-                        ),
+//                         'fields' => array(
+//                             'id',
+//                             'etapedossierep',
+//                             'created',
+//                             'seanceep_id',
+//                             'themeep',
+//                         ),
                         'conditions' => array(
                             'Dossierep.personne_id' => $personnesFoyer[$index]['Personne']['id']
                         ),
                         'contain' => false,
-                        'order' => "Dossierep.created DESC",
+                        'order' => "Dossierep.created ASC", //FIXME
                         'recursive' => -1
                     )
                 );
                 $personnesFoyer[$index]['Dossierep']['derniere'] = $tEp;
-// debug($tEp);
 
-                // Dernière relance effective
-                $tRelance = $this->Dossier->Foyer->Personne->Contratinsertion->Nonrespectsanctionep93->find(
-                    'first',
-                    array(
-                        'fields' => array(
-                            'Nonrespectsanctionep93.created',
-                            'Nonrespectsanctionep93.origine'
-                        ),
-                        'contain' => false,
-                        'joins' => array(
-                            array(
-                                'table'      => 'orientsstructs',
-                                'alias'      => 'Orientstruct',
-                                'type'       => 'LEFT OUTER',
-                                'foreignKey' => false,
-                                'conditions' => array( 'Orientstruct.id = Nonrespectsanctionep93.orientstruct_id' )
+                if( Configure::read( 'Cg.departement' ) == 93 ) {
+                    // Dernière relance effective
+                    $tRelance = $this->Dossier->Foyer->Personne->Contratinsertion->Nonrespectsanctionep93->find(
+                        'first',
+                        array(
+                            'fields' => array(
+                                'Nonrespectsanctionep93.created',
+                                'Nonrespectsanctionep93.origine'
                             ),
-                            array(
-                                'table'      => 'contratsinsertion',
-                                'alias'      => 'Contratinsertion',
-                                'type'       => 'LEFT OUTER',
-                                'foreignKey' => false,
-                                'conditions' => array( 'Contratinsertion.id = Nonrespectsanctionep93.contratinsertion_id' )
-                            ),
-                            array(
-                                'table'      => 'personnes',
-                                'alias'      => 'Personne',
-                                'type'       => 'INNER',
-                                'foreignKey' => false,
-                                'conditions' => array(
-                                    'OR' => array(
-                                        array(
-                                            'Contratinsertion.personne_id = Personne.id'
-                                        ),
-                                        array(
-                                            'Orientstruct.personne_id = Personne.id'
+                            'contain' => false,
+                            'joins' => array(
+                                array(
+                                    'table'      => 'orientsstructs',
+                                    'alias'      => 'Orientstruct',
+                                    'type'       => 'LEFT OUTER',
+                                    'foreignKey' => false,
+                                    'conditions' => array( 'Orientstruct.id = Nonrespectsanctionep93.orientstruct_id' )
+                                ),
+                                array(
+                                    'table'      => 'contratsinsertion',
+                                    'alias'      => 'Contratinsertion',
+                                    'type'       => 'LEFT OUTER',
+                                    'foreignKey' => false,
+                                    'conditions' => array( 'Contratinsertion.id = Nonrespectsanctionep93.contratinsertion_id' )
+                                ),
+                                array(
+                                    'table'      => 'personnes',
+                                    'alias'      => 'Personne',
+                                    'type'       => 'INNER',
+                                    'foreignKey' => false,
+                                    'conditions' => array(
+                                        'OR' => array(
+                                            array(
+                                                'Contratinsertion.personne_id = Personne.id'
+                                            ),
+                                            array(
+                                                'Orientstruct.personne_id = Personne.id'
+                                            )
                                         )
                                     )
                                 )
-                            )
-                        ),
-                        'conditions' => array(
-                            'OR' => array(
-                                array(
-                                    'Nonrespectsanctionep93.orientstruct_id IN ( '.$this->Dossier->Foyer->Personne->Orientstruct->sq( array( 'fields' => array( 'Orientstruct.id' ), 'conditions' => array( 'Orientstruct.personne_id' => $personnesFoyer[$index]['Personne']['id'] ) ) ).' )'
-                                ),
-                                array(
-                                    'Nonrespectsanctionep93.contratinsertion_id IN ( '.$this->Dossier->Foyer->Personne->Contratinsertion->sq( array( 'fields' => array( 'id' ), 'conditions' => array( 'personne_id' => $personnesFoyer[$index]['Personne']['id'] ) ) ).' )'
+                            ),
+                            'conditions' => array(
+                                'OR' => array(
+                                    array(
+                                        'Nonrespectsanctionep93.orientstruct_id IN ( '.$this->Dossier->Foyer->Personne->Orientstruct->sq( array( 'fields' => array( 'Orientstruct.id' ), 'conditions' => array( 'Orientstruct.personne_id' => $personnesFoyer[$index]['Personne']['id'] ) ) ).' )'
+                                    ),
+                                    array(
+                                        'Nonrespectsanctionep93.contratinsertion_id IN ( '.$this->Dossier->Foyer->Personne->Contratinsertion->sq( array( 'fields' => array( 'id' ), 'conditions' => array( 'personne_id' => $personnesFoyer[$index]['Personne']['id'] ) ) ).' )'
+                                    )
                                 )
-                            )
-                        ),
-                        'order' => "Nonrespectsanctionep93.created DESC",
-                    )
-                );
-                $personnesFoyer[$index]['Nonrespectsanctionep93']['derniere'] = $tRelance;
-
-
-
+                            ),
+                            'order' => "Nonrespectsanctionep93.created DESC",
+                        )
+                    );
+                    $personnesFoyer[$index]['Nonrespectsanctionep93']['derniere'] = $tRelance;
+                }
 
 
                 $details[$role] = $personnesFoyer[$index];
