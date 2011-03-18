@@ -23,10 +23,10 @@ msgid "ENUM::DECISION::1maintien"
 msgstr "Maintien"
 
 msgid "ENUM::DECISION::1reduction"
-msgstr "Réduction"
+msgstr "Réduction de 100€"
 
 msgid "ENUM::DECISION::1sursis"
-msgstr "Sursis"
+msgstr "Report"
 
 msgid "ENUM::DECISION::2maintien"
 msgstr "Maintien"
