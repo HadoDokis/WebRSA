@@ -275,6 +275,8 @@
 		'sanctionep58' => 'sanctionseps58',
 		'decisionsanctionep58' => 'decisionssanctionseps58',
 		'listesanctionep58' => 'listesanctionseps58',
+		'sanctionep93' => 'sanctionseps93',
+		'decisionsanctionep93' => 'decisionssanctionseps93',
 		// Données flux Pôle Emploi
 		'informationpe' => 'informationspe',
 		'historiqueetatpe' => 'historiqueetatspe',
