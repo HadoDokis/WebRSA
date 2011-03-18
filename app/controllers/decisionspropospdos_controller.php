@@ -122,36 +122,46 @@
 		/**
 		*   Enregistrement du courrier de proposition lors de l'enregistrement de la proposition
 		*/
+        public function decisionproposition( $id ) {
+            $this->assert( !empty( $id ), 'error404' );
 
-		public function decisionproposition( $id ) {
-			$this->assert( is_numeric( $id ), 'invalidParameter' );
+            $pdf = $this->Decisionpropopdo->getStoredPdf( $id );
 
-			$this->Decisionpropopdo->begin();
+            $this->assert( !empty( $pdf ), 'error404' );
+            $this->assert( !empty( $pdf['Pdf']['document'] ), 'error500' ); // FIXME: ou en faire l'impression ?
 
-			$content = $this->Pdf->find(
-				'first',
-				array(
-					'fields' => array(
-						'Pdf.document'
-					),
-					'conditions' => array(
-						'Pdf.modele' => 'Decisionpropopdo',
-						'Pdf.fk_value' => $id
-					),
-					'recursive' => -1
-				)
-			);
+            $this->Gedooo->sendPdfContentToClient( $pdf['Pdf']['document'], "Proposition_decision.pdf" );
+        }
 
-			if( $content['Pdf']['document'] !== false ) {
-				$this->Decisionpropopdo->commit();
-				$this->layout = '';
-				$this->Gedooo->sendPdfContentToClient( $content['Pdf']['document'], sprintf( "proposition_decision-%s.pdf", date( "Ymd-H\hi" ) ) );
-			}
-			else {
-				$this->Decisionpropopdo->rollback();
-				$this->cakeError( 'error500' );
-			}
-		}
+// 		public function decisionproposition( $id ) {
+// 			$this->assert( is_numeric( $id ), 'invalidParameter' );
+// 
+// 			$this->Decisionpropopdo->begin();
+// 
+// 			$content = $this->Pdf->find(
+// 				'first',
+// 				array(
+// 					'fields' => array(
+// 						'Pdf.document'
+// 					),
+// 					'conditions' => array(
+// 						'Pdf.modele' => 'Decisionpropopdo',
+// 						'Pdf.fk_value' => $id
+// 					),
+// 					'recursive' => -1
+// 				)
+// 			);
+// 
+// 			if( $content['Pdf']['document'] !== false ) {
+// 				$this->Decisionpropopdo->commit();
+// 				$this->layout = '';
+// 				$this->Gedooo->sendPdfContentToClient( $content['Pdf']['document'], sprintf( "proposition_decision-%s.pdf", date( "Ymd-H\hi" ) ) );
+// 			}
+// 			else {
+// 				$this->Decisionpropopdo->rollback();
+// 				$this->cakeError( 'error500' );
+// 			}
+// 		}
 
 
 

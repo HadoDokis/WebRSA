@@ -10,11 +10,16 @@
 			if( preg_match( '/[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{4}/', $value ) ) {
 				$type = 'date';
 			}
+            else if( preg_match( '/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/', $value, $matches ) ) {
+                $type = 'date';
+                $value = "{$matches[3]}/{$matches[2]}/{$matches[1]}";
+            }
 			else if( preg_match( '/^([0-9]{4})-([0-9]{2})-([0-9]{2}) ([0-9]{2}:[0-9]{2}:[0-9]{2})$/', $value, $matches ) ) {
 				$type = 'date';
 				$value = "{$matches[3]}/{$matches[2]}/{$matches[1]}";
 				$oPart->addElement( new GDO_FieldType( strtolower( $key ).'_time', $matches[4], 'time' ) );
 			}
+
 
 			// Traduction des enums
 			if( preg_match( '/^([^_]+)_(.*)$/', $key, $matches ) ) {
