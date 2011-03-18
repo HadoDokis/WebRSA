@@ -3,6 +3,8 @@
 
 	class Nonorientationpro93 extends Nonorientationpro {
 
+		public $useTable = 'nonorientationspros93';
+
 		public $hasMany = array(
 			'Decisionnonorientationpro93' => array(
 				'className' => 'Decisionnonorientationpro93',
@@ -85,6 +87,6 @@
 
 			return $success;
 		}
-		
+
 	}
 ?>

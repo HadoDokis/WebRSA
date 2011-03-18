@@ -4,6 +4,8 @@
 	{
 		public $name = 'Regressionorientationep';
 
+		public $useTable = false;
+
 		public $recursive = -1;
 
 		public $actsAs = array(
@@ -191,17 +193,17 @@
 						list( $typeorient_id, $structurereferente_id ) = explode( '_', $datas['Decision'.Inflector::underscore( $this->alias )]['structurereferente_id'] );
 						$themeData[$key]['Decision'.Inflector::underscore( $this->alias )]['typeorient_id'] = $typeorient_id;
 						$themeData[$key]['Decision'.Inflector::underscore( $this->alias )]['structurereferente_id'] = $structurereferente_id;
-						
+
 						$regressionorientation = $this->find(
 							'first',
 							array(
 								'conditions' => array(
 									$this->alias.'.id' => $datas['Decision'.Inflector::underscore( $this->alias )][Inflector::underscore( $this->alias ).'_id']
 								),
-								
+
 							)
 						);
-						
+
 						if ( $regressionorientation[$this->alias]['structurereferente_id'] == $structurereferente_id ) {
 							$themeData[$key]['Decision'.Inflector::underscore( $this->alias )]['referent_id'] = $regressionorientation[$this->alias]['referent_id'];
 						}
@@ -210,7 +212,7 @@
 						}
 					}
 				}
-				
+
 				$success = $this->{'Decision'.Inflector::underscore( $this->alias )}->saveAll( $themeData, array( 'atomic' => false ) );
 
 				$this->Dossierep->updateAll(
@@ -229,6 +231,6 @@
 		public function verrouiller( $seanceep_id, $etape ) {
 			return true;
 		}
-		
+
 	}
 ?>

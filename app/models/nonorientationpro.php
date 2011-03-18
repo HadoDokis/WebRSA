@@ -3,6 +3,8 @@
 
 	class Nonorientationpro extends AppModel {
 
+		public $useTable = false;
+
 		public $recursive = -1;
 
 		public $actsAs = array(
@@ -266,7 +268,7 @@
 			if( ( $niveauFinal == 'ep' ) && ( $niveauDecision == 'cg' ) ) {
 				return array();
 			}
-			
+
 			$formData = array();
 			foreach( $datas as $key => $dossierep ) {
 				$formData[$this->alias][$key]['id'] = @$datas[$key][$this->alias]['id'];
