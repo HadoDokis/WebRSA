@@ -86,7 +86,7 @@ addAjaxUploadedFileLinks( $( li ).down( \'span.qq-upload-file\' ), \''.$type.'\'
 								},
 								template: \'<div class="qq-uploader">\' +
 										\'<div class="qq-upload-drop-area"><span>Drop files here to upload</span></div>\' +
-										\'<div class="qq-upload-button">Ajouter</div>\' +
+										\'<div class="qq-upload-button">Parcourir</div>\' +
 										\'<ul class="qq-upload-list"></ul>\' +
 									\'</div>\',
 							} );
