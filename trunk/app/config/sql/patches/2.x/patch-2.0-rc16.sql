@@ -19,7 +19,6 @@ DROP TABLE IF EXISTS listesanctionseps58 CASCADE;
 DROP TABLE IF EXISTS sanctionseps58 CASCADE;
 DROP TABLE IF EXISTS decisionssanctionseps58 CASCADE;
 DROP TABLE IF EXISTS objetsentretien CASCADE;
-DROP TABLE IF EXISTS sanctionseps93 CASCADE;
 
 DROP INDEX IF EXISTS dsps_personne_id_idx;
 CREATE INDEX dsps_personne_id_idx ON dsps(personne_id);
@@ -35,7 +34,6 @@ DROP INDEX IF EXISTS decisionsregressionsorientationseps58_referent_id_idx;
 DROP INDEX IF EXISTS decisionssanctionseps58_sanctionep58_id_idx;
 DROP INDEX IF EXISTS decisionssanctionseps58_listesanctionep58_id_idx;
 DROP INDEX IF EXISTS regressionsorientationseps58_user_id_idx;
-DROP INDEX IF EXISTS decisionssanctionseps93_sanctionep93_id_idx;
 
 -- *****************************************************************************
 
@@ -45,7 +43,7 @@ DROP TYPE IF EXISTS TYPE_TYPEAUDITIONPE CASCADE;
 
 ALTER TABLE dossierseps ALTER COLUMN themeep TYPE TEXT;
 DROP TYPE IF EXISTS TYPE_THEMEEP;
-CREATE TYPE TYPE_THEMEEP AS ENUM ( 'saisinesepsreorientsrs93', 'saisinesepsbilansparcours66', /*'suspensionsreductionsallocations93',*/ 'saisinesepdspdos66', 'nonrespectssanctionseps93', 'defautsinsertionseps66', 'nonorientationspros58', 'nonorientationspros93', 'regressionsorientationseps58', 'sanctionseps58', 'sanctionseps93' );
+CREATE TYPE TYPE_THEMEEP AS ENUM ( 'saisinesepsreorientsrs93', 'saisinesepsbilansparcours66', /*'suspensionsreductionsallocations93',*/ 'saisinesepdspdos66', 'nonrespectssanctionseps93', 'defautsinsertionseps66', 'nonorientationspros58', 'nonorientationspros93', 'regressionsorientationseps58', 'sanctionseps58' );
 ALTER TABLE dossierseps ALTER COLUMN themeep TYPE TYPE_THEMEEP USING CAST(themeep AS TYPE_THEMEEP);
 
 ALTER TABLE propospdos ALTER COLUMN etatdossierpdo TYPE TEXT;
@@ -529,46 +527,6 @@ ALTER TABLE servicesinstructeurs ALTER COLUMN sqrecherche SET DEFAULT NULL;
 -- 	* criterespdos/index, criterespdos/nouvelles, criterespdos/exportcsv ($this->Criterepdo->listeDossierPDO, Criterepdo->search)
 
 -- INFO: pas de vérification pour $this->Criterepdo->listeDossierPDO -> FIXME ?
-
--- -----------------------------------------------------------------------------
--- 20110318: morceaux de conditions pour les moteurs de recherche (CG 58)
--- -----------------------------------------------------------------------------
-
-CREATE TABLE sanctionseps93 (
-	id      				SERIAL NOT NULL PRIMARY KEY,
-	dossierep_id			INTEGER DEFAULT NULL REFERENCES dossierseps(id) ON DELETE CASCADE ON UPDATE CASCADE,
-	origine					TYPE_ORIGINESANCTION NOT NULL,
-	decision				TYPE_DECISIONSANCTIONEP93 DEFAULT NULL,
-	rgpassage				INTEGER NOT NULL,
-	montantreduction		FLOAT DEFAULT NULL,
-	dureesursis				INTEGER DEFAULT NULL,
-	sortienvcontrat			TYPE_BOOLEANNUMBER NOT NULL DEFAULT '0',
-	active					TYPE_BOOLEANNUMBER NOT NULL DEFAULT '1',
-	commentaire				TEXT DEFAULT NULL,
-	created					TIMESTAMP WITHOUT TIME ZONE,
-	modified				TIMESTAMP WITHOUT TIME ZONE
-);
-COMMENT ON TABLE sanctionseps93 IS 'Thématique de détection des radiés et non inscrits à Pôle Emploi (CG93)';
-
-SELECT add_missing_table_field ('public', 'eps', 'sanctionep93', 'TYPE_NIVEAUDECISIONEP');
-ALTER TABLE eps ALTER COLUMN sanctionep93 SET DEFAULT 'nontraite';
-UPDATE eps SET sanctionep93 = 'nontraite' WHERE sanctionep93 IS NULL;
-ALTER TABLE eps ALTER COLUMN sanctionep93 SET NOT NULL;
-
-CREATE TABLE decisionssanctionseps93 (
-	id      						SERIAL NOT NULL PRIMARY KEY,
-	sanctionep93_id					INTEGER NOT NULL REFERENCES sanctionseps93(id) ON DELETE CASCADE ON UPDATE CASCADE,
-	etape							TYPE_ETAPEDECISIONEP NOT NULL,
-	decision						TYPE_DECISIONSANCTIONEP93 DEFAULT NULL,
-	montantreduction				FLOAT DEFAULT NULL,
-	dureesursis						INTEGER DEFAULT NULL,
-	commentaire						TEXT DEFAULT NULL,
-	created							TIMESTAMP WITHOUT TIME ZONE,
-	modified						TIMESTAMP WITHOUT TIME ZONE
-);
-COMMENT ON TABLE decisionssanctionseps93 IS 'Décisions pour la thématique de détection des radiés et non inscrits Pôle Emploi (CG93)';
-
-CREATE INDEX decisionssanctionseps93_sanctionep93_id_idx ON decisionssanctionseps93 (sanctionep93_id);
 
 -- *****************************************************************************
 COMMIT;
