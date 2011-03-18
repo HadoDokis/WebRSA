@@ -7,6 +7,8 @@
 	* @package       app
 	* @subpackage    app.app.models
 	*/
+	
+	App::import( array( 'Model', 'Historiqueetatpe' ) );
 
 	class Nonrespectsanctionep93 extends AppModel
 	{
@@ -409,6 +411,122 @@
 					),
 				)
 			);
+		}
+
+		/**
+		*
+		*/
+
+		public function qdRadies() {
+			$queryData = array(
+				'fields' => array(
+					'Personne.id',
+					'Personne.qual',
+					'Personne.nom',
+					'Personne.prenom',
+					'Personne.dtnai',
+					'Personne.nir'
+				),
+				'contain' => false,
+				'joins' => array(
+					array(
+						'table'      => 'prestations', // FIXME:
+						'alias'      => 'Prestation',
+						'type'       => 'INNER',
+						'foreignKey' => false,
+						'conditions' => array(
+							'Personne.id = Prestation.personne_id',
+							'Prestation.natprest' => 'RSA',
+							'Prestation.rolepers' => array( 'DEM', 'CJT' ),
+						)
+					),
+					array(
+						'table'      => 'foyers',
+						'alias'      => 'Foyer',
+						'type'       => 'INNER',
+						'foreignKey' => false,
+						'conditions' => array( 'Personne.foyer_id = Foyer.id' )
+					),
+					array(
+						'table'      => 'dossiers',
+						'alias'      => 'Dossier',
+						'type'       => 'INNER',
+						'foreignKey' => false,
+						'conditions' => array( 'Dossier.id = Foyer.dossier_id' )
+					),
+					array(
+						'table'      => 'situationsdossiersrsa',
+						'alias'      => 'Situationdossierrsa',
+						'type'       => 'INNER',
+						'foreignKey' => false,
+						'conditions' => array(
+							'Situationdossierrsa.dossier_id = Dossier.id',
+							'Situationdossierrsa.etatdosrsa' => array( 'Z', '2', '3', '4' )
+						)
+					),
+					array(
+						'table'      => 'calculsdroitsrsa', // FIXME:
+						'alias'      => 'Calculdroitrsa',
+						'type'       => 'INNER',
+						'foreignKey' => false,
+						'conditions' => array(
+							'Personne.id = Calculdroitrsa.personne_id',
+							'Calculdroitrsa.toppersdrodevorsa' => '1',
+						)
+					),
+					array(
+						'table'      => 'orientsstructs', // FIXME:
+						'alias'      => 'Orientstruct',
+						'type'       => 'INNER',
+						'foreignKey' => false,
+						'conditions' => array(
+							'Personne.id = Orientstruct.personne_id',
+							// La dernière
+							'Orientstruct.id IN (
+										SELECT o.id
+											FROM orientsstructs AS o
+											WHERE
+												o.personne_id = Personne.id
+												AND o.date_valid IS NOT NULL
+											ORDER BY o.date_valid DESC
+											LIMIT 1
+							)',
+							// en emploi
+							'Orientstruct.typeorient_id IN (
+								SELECT t.id
+									FROM typesorients AS t
+									WHERE t.lib_type_orient LIKE \'Emploi%\'
+							)'// FIXME
+						)
+					)
+				),
+				'conditions' => array(
+					'Personne.id NOT IN (
+						SELECT
+								dossierseps.personne_id
+							FROM dossierseps
+							WHERE
+								dossierseps.personne_id = Personne.id
+								AND (
+									dossierseps.etapedossierep IN ( \'seance\', \'decisionep\', \'decisioncg\' )
+									OR (
+										dossierseps.etapedossierep = \'traite\'
+										AND ( DATE( NOW() ) - CAST( dossierseps.modified AS DATE ) ) <= '.Configure::read( $this->alias.'.delaiRegularisation' ).'
+									)
+								)
+					)'
+				)
+			);
+			
+			$this->Historiqueetatpe = ClassRegistry::init('Historiqueetatpe');
+			
+			$qdRadies = $this->Historiqueetatpe->Informationpe->qdRadies();
+			$queryData['fields'] = array_merge( $queryData['fields'] ,$qdRadies['fields'] );
+			$queryData['joins'] = array_merge( $queryData['joins'] ,$qdRadies['joins'] );
+			$queryData['conditions'] = array_merge( $queryData['conditions'] ,$qdRadies['conditions'] );
+			$queryData['order'] = $qdRadies['order'];
+			
+			return $queryData;
 		}
 	}
 ?>

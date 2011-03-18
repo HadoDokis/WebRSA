@@ -121,6 +121,145 @@
 		}
 
 		/**
+		*
+		*/
+
+		public function selectionradies() {
+// 			$this->_selectionPassageNonrespectsanctionep93( 'qdRadies', 'radiepe' );
+			
+			if( !empty( $this->data ) ) {
+				$success = true;
+				$this->Nonrespectsanctionep93->begin();
+
+				foreach( $this->data['Historiqueetatpe'] as $key => $item ) {
+					// La personne était-elle sélectionnée précédemment ?
+					$alreadyChecked = $this->Nonrespectsanctionep93->Dossierep->find(
+						'first',
+						array(
+							'conditions' => array(
+								'Dossierep.etapedossierep' => 'cree',
+								'Dossierep.themeep' => 'nonrespectssanctionseps93',
+								'Dossierep.personne_id' => $this->data['Personne'][$key]['id'],
+								'Nonrespectsanctionep93.origine' => 'radiepe'
+							),
+							'contain' => array(
+								'Nonrespectsanctionep93'
+							)
+						)
+					);
+
+					// Personnes non cochées que l'on sélectionne
+					if( empty( $alreadyChecked ) && !empty( $item['chosen'] ) ) {
+						$dossierep = array(
+							'Dossierep' => array(
+								'themeep' => 'nonrespectssanctionseps93',
+								'personne_id' => $this->data['Personne'][$key]['id']
+							)
+						);
+						$this->Nonrespectsanctionep93->Dossierep->create( $dossierep );
+						$success = $this->Nonrespectsanctionep93->Dossierep->save() && $success;
+						
+						$rgpassage = $this->Nonrespectsanctionep93->find(
+							'count',
+							array(
+								'conditions' => array(
+									'Nonrespectsanctionep93.origine' => 'radiepe'
+								),
+								'joins' => array(
+									array(
+										'table' => 'decisionssanctionseps58',
+										'alias' => 'Decisionsanctionep58',
+										'type' => 'INNER',
+										'conditions' => array(
+											'Nonrespectsanctionep93.id = Decisionsanctionep58.sanctionep58_id'
+										)
+									)
+								),
+								'contain' => false
+							)
+						);
+						
+						///FIXME : à corriger plus tard probablement
+						if ( $rgpassage >= 2 ) {
+							$rgpassage = 2;
+						}
+						else {
+							$rgpassage = 1;
+						}
+						
+						$nonrespectsanctionep93 = array(
+							'Nonrespectsanctionep93' => array(
+								'dossierep_id' => $this->Nonrespectsanctionep93->Dossierep->id,
+								'historiqueetatpe_id' => $item['id'],
+								'origine' => 'radiepe',
+								'rgpassage' => $rgpassage
+							)
+						);
+
+						$this->Nonrespectsanctionep93->create( $nonrespectsanctionep93 );
+						$success = $this->Nonrespectsanctionep93->save() && $success;
+					}
+					// Personnes précédemment sélectionnées, que l'on désélectionne
+					else if( !empty( $alreadyChecked ) && empty( $item['chosen'] ) ) {
+						$success = $this->Nonrespectsanctionep93->Dossierep->delete( $alreadyChecked['Dossierep']['id'], true ) && $success;
+					}
+					// Personnes précédemment sélectionnées, que l'on garde sélectionnées -> rien à faire
+				}
+
+				$this->_setFlashResult( 'Save', $success );
+				if( $success ) {
+					$this->Nonrespectsanctionep93->commit();
+				}
+				else {
+					$this->Nonrespectsanctionep93->rollback();
+				}
+			}
+
+			$queryData = $this->Nonrespectsanctionep93->qdRadies();
+			$queryData['limit'] = 10;
+
+			$this->paginate = array( 'Personne' => $queryData );
+			$personnes = $this->paginate( $this->Nonrespectsanctionep93->Dossierep->Personne );
+
+			if( empty( $this->data ) ) {
+				// Pré-remplissage des cases à cocher avec les dossiers sélectionnés,
+				// qui ne sont pas encore assocés à une séance. -> FIXME permettre jusqu'à l'étape avisep ?
+				$dossiers = $this->Nonrespectsanctionep93->Dossierep->find(
+					'all',
+					array(
+						'conditions' => array(
+							'Dossierep.etapedossierep' => 'cree',
+							'Dossierep.themeep' => 'nonrespectssanctionseps93',
+							///FIXME !!!!!!!!!!!!!!!!!
+							'Dossierep.personne_id' => Set::extract( '/Personne/id', $personnes ),
+							'Nonrespectsanctionep93.origine' => 'radiepe'
+						),
+						'contain' => array(
+							'Nonrespectsanctionep93'
+						)
+					)
+				);
+
+				if( !empty( $dossiers ) ) {
+					$checked = Set::extract( '/Dossierep/personne_id', $dossiers );
+
+					foreach( $personnes as $i => $personne ) {
+						$this->data['Historiqueetatpe'][$i]['id'] = $personne['Historiqueetatpe']['id'];
+						$this->data['Personne'][$i]['id'] = $personne['Personne']['id'];
+						if( in_array( $personne['Personne']['id'], $checked ) ) {
+							$this->data['Historiqueetatpe'][$i]['chosen'] = '1';
+						}
+						else {
+							$this->data['Historiqueetatpe'][$i]['chosen'] = '0';
+						}
+					}
+				}
+			}
+
+			$this->set( compact( 'personnes' ) );
+		}
+
+		/**
 		* Export du tableau en CSV
 		*/
 
