@@ -247,7 +247,7 @@
         */
 
         public function modeleOdt( $data ) {
-            return "PDO/propositiondecision2.odt";
+            return "PDO/propositiondecision.odt";
         }
 
 
