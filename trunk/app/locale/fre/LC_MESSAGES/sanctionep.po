@@ -25,13 +25,13 @@ msgstr ""
 msgid "Historiqueetatpe.chosen"
 msgstr "Sélectionné ?"
 
-msgid "Sanctionseps58::selectionradies"
+msgid "Sanctionseps::selectionradies"
 msgstr "Sélection des allocataires radiés de Pôle Emploi"
 
-msgid "Sanctionseps58::selectionnoninscrits"
+msgid "Sanctionseps::selectionnoninscrits"
 msgstr "Sélection des allocataires non inscrits à Pôle Emploi"
 
-msgid "Sanctionep58::index::empty"
+msgid "Sanctionep::index::empty"
 msgstr "Aucun dossier ne peut actuellement passer en EP"
 
 msgid "radiepe"
