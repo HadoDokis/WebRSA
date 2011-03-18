@@ -57,8 +57,14 @@ ALTER TABLE decisionspropospdos ALTER COLUMN etatdossierpdo TYPE TYPE_ETATDOSSIE
 ALTER TABLE bilansparcours66 ALTER COLUMN proposition TYPE TEXT;
 DROP TYPE IF EXISTS TYPE_PROPOSITIONBILANPARCOURS;
 CREATE TYPE TYPE_PROPOSITIONBILANPARCOURS AS ENUM ( 'audition', 'parcours', 'traitement', 'auditionpe' );
-SELECT add_missing_table_field ('public', 'bilansparcours66', 'proposition', 'TYPE_PROPOSITIONBILANPARCOURS');
+ALTER TABLE bilansparcours66 ALTER COLUMN proposition TYPE TYPE_PROPOSITIONBILANPARCOURS USING CAST(proposition AS TYPE_PROPOSITIONBILANPARCOURS);
 ALTER TABLE bilansparcours66 ALTER COLUMN proposition SET NOT NULL;
+
+ALTER TABLE nonrespectssanctionseps93 ALTER COLUMN origine TYPE TEXT;
+DROP TYPE IF EXISTS TYPE_ORIGINESANCTIONEP93;
+CREATE TYPE TYPE_ORIGINESANCTIONEP93 AS ENUM ( 'orientstruct', 'contratinsertion', 'pdo', 'radiepe' );
+ALTER TABLE nonrespectssanctionseps93 ALTER COLUMN origine TYPE TYPE_ORIGINESANCTIONEP93 USING CAST(origine AS TYPE_ORIGINESANCTIONEP93);
+ALTER TABLE nonrespectssanctionseps93 ALTER COLUMN origine SET NOT NULL;
 
 -- *****************************************************************************
 
