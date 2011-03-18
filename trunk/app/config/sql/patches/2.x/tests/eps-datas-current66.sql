@@ -62,21 +62,23 @@ INSERT INTO seanceseps ( identifiant, name, ep_id, structurereferente_id, datese
 
 -- =============================================================================
 
-INSERT INTO regroupementseps (id, name) VALUES (1, 'Équipe pluridisciplinaire locale, commission Parcours');
-INSERT INTO regroupementseps (id, name) VALUES (2, 'Équipe pluridisciplinaire départementale');
-INSERT INTO regroupementseps (id, name) VALUES (3, 'Équipe pluridisciplinaire locale, commission Audition');
-INSERT INTO regroupementseps (id, name) VALUES (4, 'EP MSP COTE VERMEILLE');
+INSERT INTO regroupementseps (id, name) VALUES
+	(1, 'Équipe pluridisciplinaire locale, commission Parcours'),
+	(2, 'Équipe pluridisciplinaire départementale'),
+	(3, 'Équipe pluridisciplinaire locale, commission Audition'),
+	(4, 'EP MSP COTE VERMEILLE');
 
 SELECT pg_catalog.setval('regroupementseps_id_seq', 5, true);
 
 -- -----------------------------------------------------------------------------
 
-INSERT INTO eps (id, name, identifiant, regroupementep_id, defautinsertionep66, saisineepbilanparcours66, saisineepdpdo66, nonrespectsanctionep93, saisineepreorientsr93) VALUES (2, 'EP départementale', 'EP2011020000000001', 2, 'nontraite', 'nontraite', 'cg', 'nontraite', 'nontraite');
-INSERT INTO eps (id, name, identifiant, regroupementep_id, defautinsertionep66, saisineepbilanparcours66, saisineepdpdo66, nonrespectsanctionep93, saisineepreorientsr93) VALUES (3, 'EP locale Audition, Perpignan 1', 'EP2011020000000002', 3, 'cg', 'nontraite', 'nontraite', 'nontraite', 'nontraite');
-INSERT INTO eps (id, name, identifiant, regroupementep_id, defautinsertionep66, saisineepbilanparcours66, saisineepdpdo66, nonrespectsanctionep93, saisineepreorientsr93) VALUES (4, 'EPL Parcours SUD ', 'EP2011020000000003 ', 1, 'cg', 'cg', 'cg', 'nontraite', 'nontraite');
-INSERT INTO eps (id, name, identifiant, regroupementep_id, defautinsertionep66, saisineepbilanparcours66, saisineepdpdo66, nonrespectsanctionep93, saisineepreorientsr93) VALUES (5, 'EP Locale Commission Parcours', 'EP2011020000000004', 4, 'cg', 'cg', 'cg', 'ep', 'ep');
-INSERT INTO eps (id, name, identifiant, regroupementep_id, defautinsertionep66, saisineepbilanparcours66, saisineepdpdo66, nonrespectsanctionep93, saisineepreorientsr93) VALUES (6, 'EP Locale Commission Audition', 'EP2011020000000005', 4, 'cg', 'cg', 'cg', 'ep', 'ep');
-INSERT INTO eps (id, name, identifiant, regroupementep_id, defautinsertionep66, saisineepbilanparcours66, saisineepdpdo66, nonrespectsanctionep93, saisineepreorientsr93) VALUES (1, 'EP locale Parcours, Perpignan 1', 'EP2011020000000006', 1, 'cg', 'cg', 'cg', 'nontraite', 'nontraite');
+INSERT INTO eps (id, name, identifiant, regroupementep_id, defautinsertionep66, saisineepbilanparcours66, saisineepdpdo66, nonrespectsanctionep93, saisineepreorientsr93) VALUES
+	(1, 'EP locale Parcours, Perpignan 1', 'EP2011020000000006', 1, 'cg', 'cg', 'cg', 'nontraite', 'nontraite'),
+	(2, 'EP départementale', 'EP2011020000000001', 2, 'nontraite', 'nontraite', 'cg', 'nontraite', 'nontraite'),
+	(3, 'EP locale Audition, Perpignan 1', 'EP2011020000000002', 3, 'cg', 'nontraite', 'nontraite', 'nontraite', 'nontraite'),
+	(4, 'EPL Parcours SUD ', 'EP2011020000000003 ', 1, 'cg', 'cg', 'cg', 'nontraite', 'nontraite'),
+	(5, 'EP Locale Commission Parcours', 'EP2011020000000004', 4, 'cg', 'cg', 'cg', 'ep', 'ep'),
+	(6, 'EP Locale Commission Audition', 'EP2011020000000005', 4, 'cg', 'cg', 'cg', 'ep', 'ep');
 
 SELECT pg_catalog.setval('eps_id_seq', 6, true);
 
@@ -235,19 +237,20 @@ SELECT pg_catalog.setval('motifsreorients_id_seq', 2, true);
 
 -- -----------------------------------------------------------------------------
 
-INSERT INTO seanceseps (id, identifiant, name, ep_id, structurereferente_id, dateseance, salle, observations, finalisee) VALUES (1, 'CO2011020000000001', 'Commission 1', 1, 22, '2010-10-28 10:00:00', NULL, NULL, NULL);
-INSERT INTO seanceseps (id, identifiant, name, ep_id, structurereferente_id, dateseance, salle, observations, finalisee) VALUES (2, 'CO2011020000000002', 'Commission 2', 2, 22, '2010-10-29 10:00:00', NULL, NULL, NULL);
-INSERT INTO seanceseps (id, identifiant, name, ep_id, structurereferente_id, dateseance, salle, observations, finalisee) VALUES (3, 'CO2011020000000003', 'Commission 3', 3, 22, '2010-10-30 10:00:00', NULL, NULL, NULL);
-INSERT INTO seanceseps (id, identifiant, name, ep_id, structurereferente_id, dateseance, salle, observations, finalisee) VALUES (4, 'CO2011020000000004', 'Test Adullact EPL Audition', 3, 21, '2031-01-01 00:00:00', NULL, NULL, NULL);
-INSERT INTO seanceseps (id, identifiant, name, ep_id, structurereferente_id, dateseance, salle, observations, finalisee) VALUES (5, 'CO2011020000000005', 'Pourquoi', 1, NULL, '2011-01-20 14:00:00', 'sdfsfs', 'sdfsdf', NULL);
-INSERT INTO seanceseps (id, identifiant, name, ep_id, structurereferente_id, dateseance, salle, observations, finalisee) VALUES (6, 'CO2011020000000006', 'dsfsdf', 4, 15, '2011-02-19 09:00:00', 'dfsdf', 'sdfsdf', NULL);
-INSERT INTO seanceseps (id, identifiant, name, ep_id, structurereferente_id, dateseance, salle, observations, finalisee) VALUES (7, 'CO2011020000000007', 'sdfdsf', 4, 15, '2011-01-19 18:00:00', 'dsf', 'dsf', NULL);
-INSERT INTO seanceseps (id, identifiant, name, ep_id, structurereferente_id, dateseance, salle, observations, finalisee) VALUES (8, 'CO2011020000000008', 'PERPIGNAN SUD', 3, 15, '2010-01-27 09:00:00', 'CANIGOU', 'PAZERUOPZEIUZOPERIAZOP', NULL);
-INSERT INTO seanceseps (id, identifiant, name, ep_id, structurereferente_id, dateseance, salle, observations, finalisee) VALUES (9, 'CO2011020000000009', 'pozeriuazp', 3, 5, '2011-01-27 10:00:00', 'canigou', NULL, NULL);
-INSERT INTO seanceseps (id, identifiant, name, ep_id, structurereferente_id, dateseance, salle, observations, finalisee) VALUES (10, 'CO2011020000000010', 'dfg', 4, 15, '2031-02-01 02:00:00', 'sfvsdfsdf', 'sdfsdf', NULL);
-INSERT INTO seanceseps (id, identifiant, name, ep_id, structurereferente_id, dateseance, salle, observations, finalisee) VALUES (11, 'CO2011020000000011', 'rbu', 1, 6, '2011-01-27 09:00:00', 'canigou', NULL, NULL);
-INSERT INTO seanceseps (id, identifiant, name, ep_id, structurereferente_id, dateseance, salle, observations, finalisee) VALUES (12, 'CO2011020000000012', 'rbu', 1, 6, '2011-02-19 09:00:00', 'canigou', NULL, NULL);
-INSERT INTO seanceseps (id, identifiant, name, ep_id, structurereferente_id, dateseance, salle, observations, finalisee) VALUES (13, 'CO2011020000000013', 'rbu', 3, 6, '2011-02-20 09:00:00', 'Canigou', 'aozeuaopruazop', NULL);
+INSERT INTO seanceseps (id, identifiant, name, ep_id, lieuseance, adresseseance, codepostalseance, villeseance, dateseance, salle, observations, finalisee) VALUES
+	(1, 'CO2011020000000001', 'Commission 1', 1, 'MSA','23 R FRANCOIS BROUSSAIS','66017','PERPIGNAN', '2010-10-28 10:00:00', NULL, NULL, NULL),
+	(2, 'CO2011020000000002', 'Commission 2', 2, 'MSA','23 R FRANCOIS BROUSSAIS','66017','PERPIGNAN', '2010-10-29 10:00:00', NULL, NULL, NULL),
+	(3, 'CO2011020000000003', 'Commission 3', 3, 'MSA','23 R FRANCOIS BROUSSAIS','66017','PERPIGNAN', '2010-10-30 10:00:00', NULL, NULL, NULL),
+	(4, 'CO2011020000000004', 'Test Adullact EPL Audition', 3, 'MSA','23 R FRANCOIS BROUSSAIS','66017','PERPIGNAN', '2031-01-01 00:00:00', NULL, NULL, NULL),
+	(5, 'CO2011020000000005', 'Pourquoi', 1, 'MSA','23 R FRANCOIS BROUSSAIS','66017','PERPIGNAN', '2011-01-20 14:00:00', 'sdfsfs', 'sdfsdf', NULL),
+	(6, 'CO2011020000000006', 'dsfsdf', 4, 'MSP COTE VERMEILLE PréPro','2 BD EDOUARD HERRIOT','66700','ARGELES SUR MER', '2011-02-19 09:00:00', 'dfsdf', 'sdfsdf', NULL),
+	(7, 'CO2011020000000007', 'sdfdsf', 4, 'MSP COTE VERMEILLE PréPro','2 BD EDOUARD HERRIOT','66700','ARGELES SUR MER', '2011-01-19 18:00:00', 'dsf', 'dsf', NULL),
+	(8, 'CO2011020000000008', 'PERPIGNAN SUD', 3, 'MSP COTE VERMEILLE PréPro','2 BD EDOUARD HERRIOT','66700','ARGELES SUR MER', '2010-01-27 09:00:00', 'CANIGOU', 'PAZERUOPZEIUZOPERIAZOP', NULL),
+	(9, 'CO2011020000000009', 'pozeriuazp', 3, 'MSP PERPIGNAN SUD PréPro','32 AV MARECHAL FOCH','66906','PERPIGNAN', '2011-01-27 10:00:00', 'canigou', NULL, NULL),
+	(10, 'CO2011020000000010', 'dfg', 4, 'MSP COTE VERMEILLE PréPro','2 BD EDOUARD HERRIOT','66700','ARGELES SUR MER', '2031-02-01 02:00:00', 'sfvsdfsdf', 'sdfsdf', NULL),
+	(11, 'CO2011020000000011', 'rbu', 1, 'MSP COTE VERMEILLE Social','2 BD EDOUARD HERRIOT','66700','ARGELES SUR MER', '2011-01-27 09:00:00', 'canigou', NULL, NULL),
+	(12, 'CO2011020000000012', 'rbu', 1, 'MSP COTE VERMEILLE Social','2 BD EDOUARD HERRIOT','66700','ARGELES SUR MER', '2011-02-19 09:00:00', 'canigou', NULL, NULL),
+	(13, 'CO2011020000000013', 'rbu', 3, 'MSP COTE VERMEILLE Social','2 BD EDOUARD HERRIOT','66700','ARGELES SUR MER', '2011-02-20 09:00:00', 'Canigou', 'aozeuaopruazop', NULL);
 
 SELECT pg_catalog.setval('seanceseps_id_seq', 13, true);
 
