@@ -534,6 +534,12 @@ ALTER TABLE servicesinstructeurs ALTER COLUMN sqrecherche SET DEFAULT NULL;
 
 -- INFO: pas de vérification pour $this->Criterepdo->listeDossierPDO -> FIXME ?
 
+
+ALTER TABLE nonrespectssanctionseps93 ALTER COLUMN decision TYPE text;
+DROP TYPE IF EXISTS TYPE_DECISIONSANCTIONEP93 CASCADE;
+CREATE TYPE TYPE_DECISIONSANCTIONEP93 AS ENUM ( '1reduction', '1maintien', '1sursis', '1pasavis', '1delai', '2suspensiontotale', '2suspensionpartielle', '2maintien', '2pasavis', '2report' );
+ALTER TABLE nonrespectssanctionseps93 ALTER COLUMN decision TYPE TYPE_DECISIONSANCTIONEP93 USING CAST(decision AS TYPE_DECISIONSANCTIONEP93);
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

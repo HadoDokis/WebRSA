@@ -252,7 +252,7 @@
 						$themeData[$key]['Decisionnonrespectsanctionep93']['montantreduction'] = null;
 						$themeData[$key]['Decisionnonrespectsanctionep93']['dureesursis'] = Configure::read( 'Nonrespectsanctionep93.dureeSursis' );
 					}
-					else if( $themeData[$key]['Decisionnonrespectsanctionep93']['decision'] == '1maintien' ) {
+					else if( in_array( $themeData[$key]['Decisionnonrespectsanctionep93']['decision'],  array( '1maintien', '1pasavis', '1delai' ) ) ) {
 						$themeData[$key]['Decisionnonrespectsanctionep93']['montantreduction'] = null;
 						$themeData[$key]['Decisionnonrespectsanctionep93']['dureesursis'] = null;
 					}
