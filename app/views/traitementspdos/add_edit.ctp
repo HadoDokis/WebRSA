@@ -157,7 +157,7 @@
 
 		echo $default->subform(
 			array(
-				'Traitementpdo.personne_id' => array( 'empty' => true, 'type' => 'select', 'options' => $listepersonnes, 'required' => true )
+				'Traitementpdo.personne_id' => array( 'empty' => true, 'type' => 'select', 'options' => $listepersonnes )
 			),
 			array(
 				'options' => $options

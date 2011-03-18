@@ -278,6 +278,8 @@
 
 			$this->assert( !empty( $traitementpdo ), 'invalidParameter' );
 
+			$this->set( 'dossier_id', $this->Traitementpdo->dossierId( $id ) );
+
 			$options = $this->Traitementpdo->enums();
 			$this->set( compact( 'traitementpdo', 'options' ) );
 		}

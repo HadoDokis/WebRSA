@@ -1,7 +1,7 @@
 <?php
 	$this->pageTitle =  __d( 'traitementpdo', "Traitementspdos::{$this->action}", true );
 
-	echo $this->element( 'dossier_menu', array( 'personne_id' => $traitementpdo['Traitementpdo']['personne_id'] ) );
+	echo $this->element( 'dossier_menu', array( 'id' => $dossier_id ) );
 ?>
 
 <div class="with_treemenu">
@@ -15,9 +15,9 @@
 				'Traitementtypepdo.name',
 				'Traitementpdo.datereception',
 				'Traitementpdo.datedepart',
-				'Traitementpdo.dureedepart' => array( 'type' => 'text', 'value' => $options['Traitementpdo']['dureedepart'][$traitementpdo['Traitementpdo']['dureedepart']] ),
+				'Traitementpdo.dureedepart' => array( 'type' => 'text', 'value' => @$options['Traitementpdo']['dureedepart'][$traitementpdo['Traitementpdo']['dureedepart']] ),
 				'Traitementpdo.dateecheance',
-				'Traitementpdo.dureeecheance' => array( 'type' => 'text', 'value' => $options['Traitementpdo']['dureeecheance'][$traitementpdo['Traitementpdo']['dureeecheance']] ),
+				'Traitementpdo.dureeecheance' => array( 'type' => 'text', 'value' => @$options['Traitementpdo']['dureeecheance'][$traitementpdo['Traitementpdo']['dureeecheance']] ),
 				'Traitementpdo.daterevision',
 				'Personne.nom_complet' => array( 'type' => 'string', 'value' => '#Personne.nom# #Personne.prenom#' ),
 			)
