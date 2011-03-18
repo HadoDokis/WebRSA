@@ -497,7 +497,7 @@ ALTER TABLE traitementspdos ALTER COLUMN hasficheanalyse SET NOT NULL;
 -- -----------------------------------------------------------------------------
 ALTER TABLE detailsdifdisps ALTER COLUMN difdisp TYPE text;
 ALTER TABLE detailsdifdisps_revs ALTER COLUMN difdisp TYPE text;
-DROP TYPE IF EXISTS type_difdisp CASCADE;
+DROP TYPE IF EXISTS type_difdisp;
 CREATE TYPE type_difdisp AS ENUM ( '0501', '0502', '0503', '0504', '0505', '0506', '0507', '0508', '0509', '0510', '0511', '0512', '0513', '0514' );
 
 ALTER TABLE detailsdifdisps ALTER COLUMN difdisp TYPE type_difdisp USING CAST(difdisp AS type_difdisp);
@@ -534,9 +534,20 @@ ALTER TABLE servicesinstructeurs ALTER COLUMN sqrecherche SET DEFAULT NULL;
 
 -- INFO: pas de vérification pour $this->Criterepdo->listeDossierPDO -> FIXME ?
 
+-- -----------------------------------------------------------------------------
+-- 20110317
+-- -----------------------------------------------------------------------------
+
+SELECT add_missing_table_field ('public', 'nonrespectssanctionseps93', 'historiqueetatpe_id', 'integer');
+SELECT add_missing_constraint ('public', 'nonrespectssanctionseps93', 'nonrespectssanctionseps93_historiqueetatpe_id_fkey', 'historiqueetatspe', 'historiqueetatpe_id');
+
+ALTER TABLE nonrespectssanctionseps93 DROP CONSTRAINT nonrespectssanctionseps93_valid_entry_chk;
+ALTER TABLE nonrespectssanctionseps93 ADD CONSTRAINT nonrespectssanctionseps93_valid_entry_chk CHECK (
+	( propopdo_id IS NOT NULL ) OR ( orientstruct_id IS NOT NULL ) OR ( contratinsertion_id IS NOT NULL ) OR ( historiqueetatpe_id IS NOT NULL )
+);
 
 ALTER TABLE nonrespectssanctionseps93 ALTER COLUMN decision TYPE text;
-DROP TYPE IF EXISTS TYPE_DECISIONSANCTIONEP93 CASCADE;
+DROP TYPE IF EXISTS TYPE_DECISIONSANCTIONEP93;
 CREATE TYPE TYPE_DECISIONSANCTIONEP93 AS ENUM ( '1reduction', '1maintien', '1sursis', '1pasavis', '1delai', '2suspensiontotale', '2suspensionpartielle', '2maintien', '2pasavis', '2report' );
 ALTER TABLE nonrespectssanctionseps93 ALTER COLUMN decision TYPE TYPE_DECISIONSANCTIONEP93 USING CAST(decision AS TYPE_DECISIONSANCTIONEP93);
 

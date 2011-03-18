@@ -66,3 +66,9 @@ msgstr "CER non renouvelé"
 
 msgid "ENUM::ORIGINE::orientstruct"
 msgstr "Orientation sans contrat"
+
+msgid "Nonrespectssanctionseps93::selectionradies"
+msgstr "Sélection des radiés de Pôle Emploi"
+
+msgid "Historiqueetatpe.chosen"
+msgstr "Sélectionné ?"
