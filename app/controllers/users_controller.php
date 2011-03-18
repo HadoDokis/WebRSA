@@ -150,8 +150,11 @@
 
 		protected function _deleteTemporaryFiles() {
 			App::import ('Core', 'File' );
-			$oFolder = new Folder( TMP.'files'.DS.session_id(), true );
-			$oFolder->delete();
+
+			foreach( array( 'files', 'pdf' ) as $subdir ) {
+				$oFolder = new Folder( TMP.$subdir.DS.session_id(), true );
+				$oFolder->delete();
+			}
 		}
 
 		/**
