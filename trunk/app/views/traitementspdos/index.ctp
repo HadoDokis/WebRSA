@@ -37,7 +37,7 @@
                 'options' => $options
             )
         );
-        
+
 		echo $default->button(
 		    'back',
 		    array(

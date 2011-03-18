@@ -340,7 +340,7 @@
 					array(
 						'actions' => array(
 							'Traitementspdos::view',
-							'Traitementspdos::edit' => array( 'disabled' => ( '\'#Traitementpdo.clos#\' != 0' ) ),
+// 							'Traitementspdos::edit' => array( 'disabled' => ( '\'#Traitementpdo.clos#\' != 0' ) ),
 							'Traitementspdos::clore' => array( 'disabled' => ( '\'#Traitementpdo.clos#\' != 0' ) ),
 							'Traitementspdos::delete'
 						),
