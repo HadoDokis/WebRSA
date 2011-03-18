@@ -5,6 +5,8 @@
 	{
 		public $name = 'Regressionorientationep58';
 
+		public $useTable = 'regressionsorientationseps58';
+
 		public $hasMany = array(
 			'Decisionregressionorientationep58' => array(
 				'className' => 'Decisionregressionorientationep58',
