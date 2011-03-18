@@ -19,6 +19,7 @@ DROP TABLE IF EXISTS listesanctionseps58 CASCADE;
 DROP TABLE IF EXISTS sanctionseps58 CASCADE;
 DROP TABLE IF EXISTS decisionssanctionseps58 CASCADE;
 DROP TABLE IF EXISTS objetsentretien CASCADE;
+DROP TABLE IF EXISTS sanctionseps93 CASCADE;
 
 DROP INDEX IF EXISTS dsps_personne_id_idx;
 CREATE INDEX dsps_personne_id_idx ON dsps(personne_id);
@@ -34,6 +35,7 @@ DROP INDEX IF EXISTS decisionsregressionsorientationseps58_referent_id_idx;
 DROP INDEX IF EXISTS decisionssanctionseps58_sanctionep58_id_idx;
 DROP INDEX IF EXISTS decisionssanctionseps58_listesanctionep58_id_idx;
 DROP INDEX IF EXISTS regressionsorientationseps58_user_id_idx;
+DROP INDEX IF EXISTS decisionssanctionseps93_sanctionep93_id_idx;
 
 -- *****************************************************************************
 

@@ -93,71 +93,6 @@
 				'counterQuery' => ''
 			),
 		);
-		
-		/**
-		*
-		*/
-		
-		public function saveCohorte( $datas ) {
-			$success = true;
-			
-			foreach($datas['Historiqueetatpe'] as $key => $item ) {
-				if( !empty( $item['chosen'] ) ) {
-					$dossierep = array(
-						'Dossierep' => array(
-							'themeep' => Inflector::tableize( $this->model ),
-							'personne_id' => $datas['Personne'][$key]['id']
-						)
-					);
-					$this->{$this->model}->Dossierep->create( $dossierep );
-					$success = $this->{$this->model}->Dossierep->save() && $success;
-					
-					$rgsanction = $this->{$this->model}->find(
-						'count',
-						array(
-							'conditions' => array(
-								$this->model.'.origine' => $origine
-							),
-							'joins' => array(
-								array(
-									'table' => 'decisions'.Inflector::tableize( $this->model ),
-									'alias' => 'Decision'.Inflector::underscore( $this->model ),
-									'type' => 'INNER',
-									'conditions' => array(
-										$this->model.'.id = Decision'.Inflector::underscore( $this->model ).'.'.Inflector::underscore( $this->model ).'_id',
-										'Decision'.Inflector::underscore( $this->model ).'.decision' => 'sanction'
-									)
-								)
-							),
-							'contain' => false
-						)
-					);
-					
-					$listesanctionep58 = $this->{$this->model}->Listesanctionep58->find(
-						'first',
-						array(
-							'conditions' => array(
-								'Listesanctionep58.rang' => $rgsanction+1
-							),
-							'contain' => false
-						)
-					);
-					
-					$sanctionep58 = array(
-						$this->model => array(
-							'dossierep_id' => $this->{$this->model}->Dossierep->id,
-							'origine' => $origine,
-							'listesanctionep58_id' => $listesanctionep58['Listesanctionep58']['id']
-						)
-					);
-
-					$this->{$this->model}->create( $sanctionep58 );
-					$success = $this->{$this->model}->save() && $success;
-				}
-			}
-			
-			return $success;
-		}
 
 		/**
 		*
@@ -325,7 +260,8 @@
 							'Orientstruct.typeorient_id IN (
 								SELECT t.id
 									FROM typesorients AS t
-									WHERE t.lib_type_orient LIKE \'Emploi%\'
+									WHERE /*t.parentid IS NULL
+										AND*/ t.lib_type_orient LIKE \'Emploi%\'
 							)'// FIXME
 						)
 					)
