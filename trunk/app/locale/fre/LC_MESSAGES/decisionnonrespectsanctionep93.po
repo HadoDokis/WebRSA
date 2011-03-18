@@ -28,6 +28,12 @@ msgstr "Réduction de 100€"
 msgid "ENUM::DECISION::1sursis"
 msgstr "Report"
 
+msgid "ENUM::DECISION::1pasavis"
+msgstr "Pas d'avis"
+
+msgid "ENUM::DECISION::1delai"
+msgstr "Délai supplémentaire d'1 mois"
+
 msgid "ENUM::DECISION::2maintien"
 msgstr "Maintien"
 
@@ -36,6 +42,12 @@ msgstr "Suspension totale"
 
 msgid "ENUM::DECISION::2suspensionpartielle"
 msgstr "Suspension partielle"
+
+msgid "ENUM::DECISION::2pasavis"
+msgstr "Pas d'avis"
+
+msgid "ENUM::DECISION::2report"
+msgstr "Report technique"
 
 msgid "ENUM::ETAPE::ep"
 msgstr "EP"
