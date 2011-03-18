@@ -13,7 +13,8 @@
 			),
 			'Formattable',
 			'Autovalidate',
-            'Gedooo'
+            'Gedooo',
+            'StorablePdf'
 		);
 
 		public $validate = array(
@@ -105,6 +106,9 @@
             $optionModel = ClassRegistry::init( 'Option' );
             $qual = $optionModel->qual();
             $typevoie = $optionModel->typevoie();
+            $services = $this->Propopdo->Serviceinstructeur->find( 'list' );
+            $typestraitements = $this->Propopdo->Traitementpdo->Traitementtypepdo->find( 'list' );
+            $descriptionspdos = $this->Propopdo->Traitementpdo->Descriptionpdo->find( 'list' );
             $conditions = array( 'Decisionpropopdo.id' => $id );
 
             $joins = array(
@@ -114,6 +118,28 @@
                     'type'       => 'INNER',
                     'foreignKey' => false,
                     'conditions' => array( 'Propopdo.id = Decisionpropopdo.propopdo_id' )
+                ),
+                array(
+                    'table'      => 'traitementspdos',
+                    'alias'      => 'Traitementpdo',
+                    'type'       => 'LEFT OUTER',
+                    'foreignKey' => false,
+                    'conditions' => array(
+                        'Propopdo.id = Traitementpdo.propopdo_id',
+                        'Traitementpdo.id IN(
+                            '.$this->Propopdo->Traitementpdo->sq(
+                                array(
+                                    'alias' => 'traitementspdos',
+                                    'fields' => array( 'traitementspdos.id' ),
+                                    'conditions' => array(
+                                        'traitementspdos.propopdo_id = Propopdo.id'
+                                    ),
+                                    'order' => array( 'traitementspdos.id ASC' ),
+                                    'limit' => 1
+                                )
+                            ).'
+                        )'
+                    )
                 ),
                 array(
                     'table'      => 'personnes',
@@ -180,10 +206,24 @@
                     'Adresse.codepos',
                     'Adresse.locaadr',
                     'Adresse.pays',
+                    'Dossier.numdemrsa',
+                    'Dossier.dtdemrsa',
+                    'Dossier.matricule',
                     'Personne.qual',
                     'Personne.nom',
                     'Personne.prenom',
-                    'Personne.nir'
+                    'Personne.dtnai',
+                    'Personne.nir',
+                    'Propopdo.referent_id',
+                    'Propopdo.orgpayeur',
+                    'Propopdo.datereceptionpdo',
+                    'Propopdo.serviceinstructeur_id',
+                    'Traitementpdo.traitementtypepdo_id',
+                    'Traitementpdo.datereception',
+                    'Traitementpdo.id',
+                    'Traitementpdo.datedepart',
+                    'Traitementpdo.descriptionpdo_id',
+                    'Traitementpdo.clos'
                 ),
                 'joins' => $joins,
                 'conditions' => $conditions,
@@ -191,64 +231,25 @@
             );
 
             $data = $this->find( 'first', $queryData );
-// debug($data);
-// die();
+
             $data['Personne']['qual'] = Set::enum( $data['Personne']['qual'], $qual );
             $data['Adresse']['typevoie'] = Set::enum( $data['Adresse']['typevoie'], $typevoie );
-
+            $data['Propopdo']['serviceinstructeur_id'] = Set::enum( $data['Propopdo']['serviceinstructeur_id'], $services );
+            $data['Traitementpdo']['traitementtypepdo_id'] = Set::enum( $data['Traitementpdo']['traitementtypepdo_id'], $typestraitements );
+            $data['Traitementpdo']['descriptionpdo_id'] = Set::enum( $data['Traitementpdo']['descriptionpdo_id'], $descriptionspdos );
+// debug($data);
+// die();
             return $data;
         }
 
         /**
-        *
+        * Retourne le chemin relatif du modèle de document à utiliser pour l'enregistrement du PDF.
         */
 
-        public function generatePdf( $id ) {
-            $gedooo_data = $this->getDataForPdf( $id );
-
-            $modeledoc = "PDO/propositiondecision.odt";
-
-            $pdf = $this->ged( $gedooo_data, $modeledoc );
-// debug($gedooo_data);
-// die();
-            $success = true;
-
-            if( $pdf ) {
-                $pdfModel = ClassRegistry::init( 'Pdf' );
-
-                $oldPdf = $pdfModel->find(
-                    'first',
-                    array(
-                        'fields' => array( 'id' ),
-                        'conditions' => array(
-                            'modele' => 'Decisionpropopdo',
-                            'modeledoc' => $modeledoc,
-                            'fk_value' => $id
-                        )
-                    )
-                );
-                $oldPdf['Pdf']['modele'] = $this->alias;
-                $oldPdf['Pdf']['modeledoc'] = $modeledoc;
-                $oldPdf['Pdf']['fk_value'] = $id;
-                $oldPdf['Pdf']['document'] = $pdf;
-
-                $pdfModel->create( $oldPdf );
-                $success = $pdfModel->save() && $success;
-            }
-            else {
-                $success = false;
-            }
-
-            return $success;
+        public function modeleOdt( $data ) {
+            return "PDO/propositiondecision2.odt";
         }
 
-        /**
-        * Enregistrement du Pdf
-        */
-
-        public function afterSave( $created ) {
-//             return $this->generatePdf( $this->id );
-        }
 
 
 	}
