@@ -250,6 +250,7 @@
 		public function view( $id ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
+
 			$traitementpdo = $this->Traitementpdo->find(
 				'first',
 				array(
@@ -279,6 +280,11 @@
 			$this->assert( !empty( $traitementpdo ), 'invalidParameter' );
 
 			$this->set( 'dossier_id', $this->Traitementpdo->dossierId( $id ) );
+
+            // Retour à la page d'édition de la PDO
+            if( isset( $this->params['form']['Cancel'] ) ) {
+                $this->redirect( array( 'controller' => 'propospdos', 'action' => 'edit', Set::classicExtract( $traitementpdo, 'Traitementpdo.propopdo_id' ) ) );
+            }
 
 			$options = $this->Traitementpdo->enums();
 			$this->set( compact( 'traitementpdo', 'options' ) );

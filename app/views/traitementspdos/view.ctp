@@ -7,6 +7,7 @@
 <div class="with_treemenu">
 	<?php
 		echo $xhtml->tag( 'h1', $this->pageTitle );
+        echo $form->create( 'Traitementpdo', array( 'type' => 'post', 'id' => 'traitementpdoform', 'url' => Router::url( null, true ) ) );
 
 		echo $default2->view(
 			$traitementpdo,
@@ -166,4 +167,11 @@
 		}
 	?>
 </div>
+    <div class="submit">
+        <?php
+
+            echo $form->submit( 'Retour', array( 'name' => 'Cancel', 'div' => false ) );
+        ?>
+    </div>
+    <?php echo $form->end();?>
 <div class="clearer"><hr /></div>
