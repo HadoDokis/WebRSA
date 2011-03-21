@@ -69,6 +69,9 @@ msgstr "Métiers ( général )"
 msgid "Propopdo.categoriedetail"
 msgstr "Métiers ( détaillé )"
 
+msgid "Propopdo.iscomplet"
+msgstr "Dossier complet ?"
+
 msgid "Criterespdos::nouvelles"
 msgstr "Liste des personnes pouvant bénéficier d'une PDO"
 

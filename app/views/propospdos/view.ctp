@@ -32,71 +32,100 @@
         ?>
     </ul>
 
-    <div id="fichePers">
-        <table>
-            <tbody>
-                <tr class="odd">
-                    <th><?php __d( 'propopdo', 'Propopdo.typepdo' );?></th>
-                    <td><?php echo value( $typepdo, Set::classicExtract( $pdo, 'Propopdo.typepdo_id' ) ) ;?></td>
-                </tr>
-                <tr class="even">
-                    <th><?php __( 'Décision du Conseil Général' );?></th>
-                    <td><?php echo value( $decisionpdo, Set::classicExtract( $pdo, 'Propopdo.decisionpdo_id' ) ) ;?></td>
-                </tr>
-                <tr class="odd">
-                    <th><?php __( 'Motif de la décision' );?></th>
-                    <td><?php echo Set::classicExtract( $motifpdo, Set::classicExtract( $pdo, 'Propopdo.motifpdo' ) );?></td>
-                </tr>
-                <tr class="even">
-                    <th><?php __( 'Date de la décision CG' );?></th>
-                    <td><?php echo date_short( Set::classicExtract( $pdo, 'Propopdo.datedecisionpdo' ) );?></td>
-                </tr>
-                <tr class="odd">
-                    <th><?php __( 'Type de notification' );?></th>
-                    <td><?php echo value( $typenotifpdo, Set::classicExtract( $pdo, 'Propopdo.typenotifpdo_id' ) );?></td>
-                </tr>
-                <tr class="even">
-                    <th><?php __( 'Date de notification' );?></th>
-                    <td><?php echo date_short( Set::classicExtract( $pdo, 'PropopdoTypenotifpdo.datenotif' ) );?></td>
-                </tr>
-                <tr class="odd">
-                    <th><?php __d( 'propopdo', 'Propopdo.commentairepdo' );?></th>
-                    <td><?php echo Set::classicExtract( $pdo, 'Propopdo.commentairepdo' );?></td>
-                </tr>
-            </tbody>
-        </table>
+
+<?php
+        echo $form->create( 'Propopdo', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
+// debug($pdo);
+        $etatdossierpdo = Set::enum( $pdo['Propopdo']['etatdossierpdo'], $options['etatdossierpdo'] );
+        $complet = Set::enum( $pdo['Propopdo']['iscomplet'], $options['iscomplet'] );
+        $categoriegeneral = Set::enum( $pdo['Propopdo']['categoriegeneral'], $categoriegeneral );
+        $categoriedetail = Set::enum( $pdo['Propopdo']['categoriedetail'], $categoriedetail );
+        $service = Set::enum( $pdo['Propopdo']['serviceinstructeur_id'], $serviceinstructeur );
+        $user = Set::enum( $pdo['Propopdo']['user_id'], $gestionnaire );
+        $origpdo = Set::enum( $pdo['Propopdo']['originepdo_id'], $originepdo );
+
+//         $statutlist = Set::enum( $pdo['Propopdo']['categoriegeneral'], $options['statutlist'] );
+//         $situationlist = Set::enum( $pdo['Propopdo']['categoriedetail'], $options['statutlist'] );
+        echo $default2->view(
+            $pdo,
+            array(
+                'Propopdo.etatdossierpdo' => array( 'type' => 'text', 'value' => $etatdossierpdo ),
+                'Typepdo.libelle',
+                'Propopdo.datereceptionpdo',
+                'Propopdo.originepdo_id' => array( 'type' => 'text', 'value' => $origpdo ),
+                'Propopdo.orgpayeur',
+                'Propopdo.serviceinstructeur_id'=> array( 'type' => 'text', 'value' => $service ),
+                'Propopdo.user_id' => array( 'type' => 'text', 'value' => $user ),
+                'Situationpdo.libelle',
+                'Statutpdo.libelle',
+                'Propopdo.categoriegeneral' => array( 'type' => 'text', 'value' => $categoriegeneral ),
+                'Propopdo.categoriedetail' => array( 'type' => 'text', 'value' => $categoriedetail ),
+                'Propopdo.iscomplet' => array( 'type' => 'text', 'value' => $complet ),
+            )
+        );
+?>
+
+
+<hr />
+   <div>
+        <?php
+            echo $xhtml->tag( 'h2', 'Traitements' );
+
+            echo $default2->index(
+                $traitements,
+                array(
+                    'Descriptionpdo.name',
+                    'Traitementtypepdo.name',
+                    'Traitementpdo.datereception' => array( 'type' => 'date' ),
+                    'Traitementpdo.datedepart' => array( 'type' => 'date' )
+                ),
+                array(
+                    'actions' => array(
+                        'Traitementspdos::view'
+                    ),
+                    'options' => $options,
+                    'id' => 'traitementpdoview'
+                )
+            );
+        ?>
     </div>
 
 <hr />
 
     <div>
-    <h1>Pièces jointes</h1>
-        <table class="aere">
-            <tbody>
-                <?php /*foreach( $pdo as $index => $i ):*/?>
-                    <tr class="even">
-                        <th>Type de la pièce</th>
-                        <th>Fournie</th>
-                        <th>Date d'ajout</th>
-                        <th class="action">Action</th>
-                    </tr>
-                    <tr>
-                        <td><?php echo value( $pieecpres, Set::extract( 'Personne.pieecpres', $pdo ) );?></td>
-                        <td><?php echo $xhtml->boolean( !empty( $pdo['Personne']['pieecpres'] ) );?></td>
-                        <td><?php echo '';?></td> <!-- FIXME: Voir pour la date à afficher pour les pièces jointes -->
-                        <td><?php
-                            if( !empty( $pdo['Personne']['pieecpres'] ) ){
-                                echo $xhtml->attachLink(
-                                    'Voir PDO',
-                                    array( 'controller' => 'propospdos', 'action' => 'view', $pdo['Propopdo']['id'] )
-                                );
-                            }
-                            ?>
-                        </td>
-                    </tr>
-                <?php /*endforeach;*/?>
-            </tbody>
-        </table>
+        <?php
+    //         $typeproposition = Set::enum( $propositions['Decisionpropopdo']['decisionpdo_id'], $decisionpdo );
+
+            echo $xhtml->tag( 'h2', 'Propositions de décisions' );
+
+            echo $default2->index(
+                $propositions,
+                array(
+                    'Decisionpdo.libelle',
+                    'Decisionpropopdo.datedecisionpdo',
+                    'Decisionpropopdo.avistechnique' => array( 'type' => 'boolean' ),
+                    'Decisionpropopdo.dateavistechnique' => array( 'type' => 'date' ),
+                    'Decisionpropopdo.commentaireavistechnique',
+                    'Decisionpropopdo.validationdecision' => array( 'type' => 'boolean' ),
+                    'Decisionpropopdo.datevalidationdecision' => array( 'type' => 'date' ),
+                    'Decisionpropopdo.commentairedecision'
+                ),
+                array(
+                    'actions' => array(
+                        'Decisionspropospdos::edit'
+                    ),
+                    'options' =>  $options,
+                    'id' => 'propositionpdoview'
+                )
+            );
+        ?>
     </div>
 </div>
+    <div class="submit">
+        <?php
+
+            echo $form->submit( 'Retour', array( 'name' => 'Cancel', 'div' => false ) );
+        ?>
+    </div>
+    <?php echo $form->end();?>
 <div class="clearer"><hr /></div>
