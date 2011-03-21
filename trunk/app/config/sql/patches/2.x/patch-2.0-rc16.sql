@@ -561,9 +561,13 @@ ALTER TABLE decisionsnonrespectssanctionseps93 ALTER COLUMN decision TYPE TYPE_D
 
 
 ALTER TABLE decisionspropospdos ALTER COLUMN avistechnique TYPE text;
+UPDATE decisionspropospdos SET avistechnique = '1' WHERE avistechnique = 'O';
+UPDATE decisionspropospdos SET avistechnique = '0' WHERE avistechnique = 'N';
 ALTER TABLE decisionspropospdos ALTER COLUMN avistechnique TYPE type_booleannumber USING CAST(avistechnique AS type_booleannumber);
 
 ALTER TABLE decisionspropospdos ALTER COLUMN validationdecision TYPE text;
+UPDATE decisionspropospdos SET validationdecision = '1' WHERE validationdecision = 'O';
+UPDATE decisionspropospdos SET validationdecision = '0' WHERE validationdecision = 'N';
 ALTER TABLE decisionspropospdos ALTER COLUMN validationdecision TYPE type_booleannumber USING CAST(validationdecision AS type_booleannumber);
 
 
