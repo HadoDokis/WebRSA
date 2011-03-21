@@ -78,11 +78,11 @@
 				);
 				
 				if ( isset( $decisionpdo['Decisionpdo']['clos'] ) ) {
-					if ( !empty( $decisionpdo_id ) && empty( $validationdecision ) )
+					if ( !empty( $decisionpdo_id ) && !is_numeric( $validationdecision ) )
 						$etat = 'attval';
-					elseif ( !empty( $decisionpdo_id ) && !empty( $validationdecision ) && $validationdecision == 'O' && $decisionpdo['Decisionpdo']['clos'] == 'O' )
+					elseif ( !empty( $decisionpdo_id ) && is_numeric( $validationdecision ) && $validationdecision == '1' && $decisionpdo['Decisionpdo']['clos'] == 'O' )
 						$etat = 'decisionval';
-					elseif ( !empty( $decisionpdo_id ) && !empty( $validationdecision ) && ( $validationdecision == 'N' || $decisionpdo['Decisionpdo']['clos'] == 'N' ) )
+					elseif ( !empty( $decisionpdo_id ) && is_numeric( $validationdecision ) && ( $validationdecision == '0' || $decisionpdo['Decisionpdo']['clos'] == 'N' ) )
 						$etat = 'instrencours';
 					
 					$this->data['Decisionpropopdo']['etatdossierpdo'] = $etat;
