@@ -163,24 +163,15 @@
 							'count',
 							array(
 								'conditions' => array(
-									'Nonrespectsanctionep93.origine' => 'radiepe'
-								),
-								'joins' => array(
-									array(
-										'table' => 'decisionssanctionseps58',
-										'alias' => 'Decisionsanctionep58',
-										'type' => 'INNER',
-										'conditions' => array(
-											'Nonrespectsanctionep93.id = Decisionsanctionep58.sanctionep58_id'
-										)
-									)
+									'Nonrespectsanctionep93.origine' => 'radiepe',
+									'historiqueetatpe_id' => $item['id']
 								),
 								'contain' => false
 							)
 						);
 						
 						///FIXME : à corriger plus tard probablement
-						if ( $rgpassage >= 2 ) {
+						if ( $rgpassage >= 1 ) {
 							$rgpassage = 2;
 						}
 						else {
