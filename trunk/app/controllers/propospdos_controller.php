@@ -27,8 +27,11 @@
 			$this->set( 'typepdo', $this->Typepdo->find( 'list' ) );
 			$this->set( 'typenotifpdo', $this->Typenotifpdo->find( 'list' ) );
 			$this->set( 'decisionpdo', $this->Decisionpdo->find( 'list' ) );
+// 			$this->set( 'decision', $this->Decisionpdo->Decisionpropopdo->allEnumLists() );
+// 			$this->set( 'description', $this->Propopdo->Traitementpdo->Descriptionpdo->find( 'list' ) );
+			$this->set( 'typetraitement', $this->Propopdo->Traitementpdo->Traitementtypepdo->find( 'list' ) );
 			$this->set( 'originepdo', $this->Originepdo->find( 'list' ) );
-
+// debug($this->Decisionpdo->Decisionpropopdo->allEnumLists());
 			$this->set( 'statutlist', $this->Statutpdo->find( 'list' ) );
 			$this->set( 'situationlist', $this->Situationpdo->find( 'list' ) );
 			$this->set( 'serviceinstructeur', $this->Propopdo->Serviceinstructeur->listOptions() );
@@ -49,7 +52,7 @@
 
 			$options = $this->Propopdo->allEnumLists();
 			$options = Set::insert( $options, 'Suiviinstruction.typeserins', $this->Option->typeserins() );
-			$options = Set::insert( $options, 'Decisionpropopdo', $this->Propopdo->Decisionpropopdo->allEnumLists() );
+// 			$options = Set::insert( $options, 'Decisionpropopdo', $this->Propopdo->Decisionpropopdo->allEnumLists() );
 //             $options = Set::insert( $options, 'etatdossierpdo', $options['Decisionpropopdo']['etatdossierpdo'] );
 //             debug($options);
 			$this->set( compact( 'options' ) );
@@ -246,8 +249,47 @@
 			$conditions = array( 'Propopdo.id' => $pdo_id );
 
 			$options = $this->Propopdo->prepare( 'propopdo', array( 'conditions' => $conditions ) );
-			$pdo = $this->Propopdo->find( 'first', $options );
 
+            $pdo = $this->Propopdo->find( 'first', $options );
+
+
+            // Afficahge des traitements liés à une PDO
+            $traitements = $this->{$this->modelClass}->Traitementpdo->find(
+                'all',
+                array(
+                    'conditions' => array(
+                        'propopdo_id' => $pdo_id
+                    ),
+                    'contain' => array(
+                        'Descriptionpdo',
+                        'Traitementtypepdo'
+                    )
+                )
+            );
+            $this->set( compact( 'traitements' ) );
+
+
+            // Afficahge des propositions de décisions liées à une PDO
+            $propositions = $this->{$this->modelClass}->Decisionpropopdo->find(
+                'all',
+                array(
+                    'conditions' => array(
+                        'propopdo_id' => $pdo_id
+                    ),
+                    'contain' => array(
+                        'Decisionpdo'
+                    )
+                )
+            );
+            $this->set( compact( 'propositions' ) );
+
+
+
+
+            // Retour à la apge d'index une fois que l'on clique sur Retour
+            if( isset( $this->params['form']['Cancel'] ) ) {
+                $this->redirect( array( 'controller' => 'propospdos', 'action' => 'index', Set::classicExtract( $pdo, 'Propopdo.personne_id') ) );
+            }
 			$this->set( 'pdo', $pdo );
 			$this->_setOptions();
 			$this->set( 'personne_id', $pdo['Propopdo']['personne_id'] );
@@ -372,7 +414,7 @@
 
 					)
 				);
-// debug($options);
+// debug(!empty( $decisionspropospdos[0]['Decisionpropopdo']['validationdecision'] ) );
 				$this->set( compact( 'decisionspropospdos' ) );
 				if ( !empty( $decisionspropospdos ) ) {
 					$lastDecisionId = $decisionspropospdos[0]['Decisionpropopdo']['id'];

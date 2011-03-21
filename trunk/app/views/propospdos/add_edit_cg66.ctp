@@ -358,7 +358,7 @@
 					$block = true;
 				}
 			}
-
+// debug($decisionspropospdos);
 			echo $html->tag(
 				'fieldset',
 				$html->tag(
@@ -370,9 +370,9 @@
 					array(
 						'Decisionpropopdo.datedecisionpdo',
 						'Decisionpdo.libelle',
-						'Decisionpropopdo.avistechnique',
+						'Decisionpropopdo.avistechnique' => array( 'type' => 'boolean' ),
 						'Decisionpropopdo.dateavistechnique',
-						'Decisionpropopdo.validationdecision',
+						'Decisionpropopdo.validationdecision' => array( 'type' => 'boolean' ),
 						'Decisionpropopdo.datevalidationdecision',
 					),
 					array(
@@ -382,7 +382,7 @@
 							'Decisionspropospdos::delete'
 						),
 						'add' => array( 'Decisionpropopdo.add' => array( 'controller'=>'decisionspropospdos', 'action'=>'add', $pdo_id, 'disabled' => $ajoutDecision ) ),
-						'options' => array_merge( $options, $decisionpdo)
+						'options' => $options
 					)
 				)
 			);

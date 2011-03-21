@@ -43,10 +43,10 @@ msgstr "Validation de la proposition"
 msgid "Decisionpropopdo.datevalidationdecision"
 msgstr "Date de validation de la proposition"
 
-msgid "ENUM::VALIDATIONDECISION::N"
+msgid "ENUM::VALIDATIONDECISION::0"
 msgstr "Non"
 
-msgid "ENUM::VALIDATIONDECISION::O"
+msgid "ENUM::VALIDATIONDECISION::1"
 msgstr "Oui"
 
 msgid "Decisionspropospdos::add"
@@ -67,10 +67,10 @@ msgstr "Etat du dossier"
 msgid "Decisionpropopdo.avistechnique"
 msgstr "Avis technique"
 
-msgid "ENUM::AVISTECHNIQUE::N"
+msgid "ENUM::AVISTECHNIQUE::0"
 msgstr "Non"
 
-msgid "ENUM::AVISTECHNIQUE::O"
+msgid "ENUM::AVISTECHNIQUE::1"
 msgstr "Oui"
 
 msgid "Decisionpropopdo.commentaireavistechnique"

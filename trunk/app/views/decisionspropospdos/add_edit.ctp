@@ -131,7 +131,7 @@
             'decisionpropopdoform',
             'data[Decisionpropopdo][avistechnique]',
             $( 'avistech' ),
-            ['O','N'],
+            ['1','0'],
             false,
             true
         );
@@ -140,7 +140,7 @@
             'decisionpropopdoform',
             'data[Decisionpropopdo][validationdecision]',
             $( 'validpropo' ),
-            ['O','N'],
+            ['1','0'],
             false,
             true
         );

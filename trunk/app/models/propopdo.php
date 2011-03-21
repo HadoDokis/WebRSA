@@ -216,20 +216,23 @@
 		public $_types = array(
 			'propopdo' => array(
 				'fields' => array(
-					'"Propopdo"."id"',
-					'"Propopdo"."personne_id"',
-					'"Propopdo"."typepdo_id"',
-					//'"Propopdo"."decisionpdo_id"',
-					'"Propopdo"."typenotifpdo_id"',
-					//'"Propopdo"."datedecisionpdo"',
-					'"Propopdo"."datereceptionpdo"',
-					'"Propopdo"."motifpdo"',
-					//'"Propopdo"."commentairepdo"',
-					'"Propopdo"."etatdossierpdo"',
-					//'"Decisionpdo"."libelle"',
-					'"Typenotifpdo"."id"',
-					'"Typenotifpdo"."libelle"',
-					'"Typepdo"."libelle"',
+                    '"Propopdo"."id"',
+                    '"Propopdo"."personne_id"',
+                    '"Propopdo"."typepdo_id"',
+                    '"Propopdo"."typenotifpdo_id"',
+                    '"Propopdo"."originepdo_id"',
+                    '"Propopdo"."datereceptionpdo"',
+                    '"Propopdo"."motifpdo"',
+                    '"Propopdo"."orgpayeur"',
+                    '"Propopdo"."serviceinstructeur_id"',
+                    '"Propopdo"."user_id"',
+                    '"Propopdo"."categoriegeneral"',
+                    '"Propopdo"."iscomplet"',
+                    '"Propopdo"."categoriedetail"',
+                    '"Propopdo"."etatdossierpdo"',
+/*                  '"Typenotifpdo"."id"',
+                    '"Typenotifpdo"."libelle"',*/
+                    '"Typepdo"."libelle"',
 
 					'"Personne"."id"',
 					'"Personne"."pieecpres"',
@@ -243,13 +246,13 @@
 						'foreignKey' => false,
 						'conditions' => array( 'Propopdo.personne_id = Personne.id' )
 					),
-					array(
-						'table'      => 'typesnotifspdos',
-						'alias'      => 'Typenotifpdo',
-						'type'       => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array( 'Propopdo.typenotifpdo_id = Typenotifpdo.id' )
-					),
+// 					array(
+// 						'table'      => 'typesnotifspdos',
+// 						'alias'      => 'Typenotifpdo',
+// 						'type'       => 'LEFT OUTER',
+// 						'foreignKey' => false,
+// 						'conditions' => array( 'Propopdo.typenotifpdo_id = Typenotifpdo.id' )
+// 					),
 					/*array(
 						'table'      => 'decisionspdos',
 						'alias'      => 'Decisionpdo',
@@ -442,11 +445,11 @@
 				$etat = 'attavistech';
 			else if ( !empty($typepdo_id) && !empty($user_id) && !empty($iscomplet) && !empty($decisionpdo_id) && !empty($avistechnique) && empty( $validationavis ) )
 				$etat = 'attval';
-			elseif ( !empty($typepdo_id) && !empty($user_id) && !empty($iscomplet) && !empty($decisionpdo_id) && !empty($avistechnique) && !empty($validationavis) && $validationavis == 'N' )
+			elseif ( !empty($typepdo_id) && !empty($user_id) && !empty($iscomplet) && !empty($decisionpdo_id) && !empty($avistechnique) && !empty($validationavis) && $validationavis == '0' )
 				$etat = 'instrencours';
-			elseif ( !empty($typepdo_id) && !empty($user_id) && !empty($iscomplet) && !empty($decisionpdo_id) && !empty($avistechnique) && !empty($validationavis) && $validationavis == 'O' && $iscomplet=='COM' )
+			elseif ( !empty($typepdo_id) && !empty($user_id) && !empty($iscomplet) && !empty($decisionpdo_id) && !empty($avistechnique) && !empty($validationavis) && $validationavis == '1' && $iscomplet=='COM' )
 				$etat = 'dossiertraite';
-			elseif ( !empty($typepdo_id) && !empty($user_id) && !empty($iscomplet) && !empty($decisionpdo_id) && !empty($avistechnique) && !empty($validationavis) && $validationavis == 'O' && $iscomplet=='INC' )
+			elseif ( !empty($typepdo_id) && !empty($user_id) && !empty($iscomplet) && !empty($decisionpdo_id) && !empty($avistechnique) && !empty($validationavis) && $validationavis == '1' && $iscomplet=='INC' )
 				$etat = 'attpj';
 			
 			return $etat;
