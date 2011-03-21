@@ -390,7 +390,7 @@
 				</li>
 			<?php endif;?>
 
-			<li id="menu7one"><?php echo $xhtml->link( 'Déconnexion '.$session->read( 'Auth.User.username' ), array( 'controller' => 'users', 'action' => 'logout' ) );?></li>
+			<li id="menu9one"><?php echo $xhtml->link( 'Déconnexion '.$session->read( 'Auth.User.username' ), array( 'controller' => 'users', 'action' => 'logout' ) );?></li>
 			<?php else: ?>
 				<li><?php echo $xhtml->link( 'Connexion', array( 'controller' => 'users', 'action' => 'login' ) );?></li>
 			<?php endif; ?>
