@@ -418,8 +418,7 @@
 				$this->set( compact( 'decisionspropospdos' ) );
 				if ( !empty( $decisionspropospdos ) ) {
 					$lastDecisionId = $decisionspropospdos[0]['Decisionpropopdo']['id'];
-					( !empty( $decisionspropospdos[0]['Decisionpropopdo']['validationdecision'] ) ) ? $ajoutDecision = true : $ajoutDecision = false;
-
+					( is_numeric( $decisionspropospdos[0]['Decisionpropopdo']['validationdecision'] ) ) ? $ajoutDecision = true : $ajoutDecision = false;
 				}
 				else{
                     $lastDecisionId = null;

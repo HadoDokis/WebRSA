@@ -400,7 +400,7 @@
 		public function etatDossierPdo( $typepdo_id = null, $user_id = null, $decisionpdo_id = null, $avistechnique = null, $validationavis = null, $iscomplet = null, $propopdo_id = null ) {
 			//'attaffect', 'attinstr', 'instrencours', 'attval', 'decisionval', 'dossiertraite', 'attpj', 'attavistech'
 			$etat = null;
-			
+
 			if ( !empty( $propopdo_id ) ) {
 				$decisionpropopdo = $this->Decisionpropopdo->find(
 					'first',
@@ -430,7 +430,7 @@
 					)
 				);
 			}
-			
+
 			if ( isset( $decisionpropopdo['Decisionpropopdo']['etatdossierpdo'] ) && $decisionpropopdo['Decisionpropopdo']['etatdossierpdo'] == 'instrencours' )
 				$etat = 'instrencours';
 			elseif ( isset( $traitementspdos ) && count( $traitementspdos ) > 0  && isset( $decisionpropopdo['Decisionpropopdo']['etatdossierpdo'] ) && $decisionpropopdo['Decisionpropopdo']['etatdossierpdo'] == 'decisionval' )
@@ -441,17 +441,18 @@
 				$etat = 'attinstr';
 			elseif ( !empty($typepdo_id) && !empty($user_id) && !empty($iscomplet) && empty($decisionpdo_id) )
 				$etat = 'instrencours';
-			else if ( !empty($typepdo_id) && !empty($user_id) && !empty($iscomplet) && !empty($decisionpdo_id) && empty($avistechnique) )
+			else if ( !empty($typepdo_id) && !empty($user_id) && !empty($iscomplet) && !empty($decisionpdo_id) && !is_numeric($avistechnique) )
 				$etat = 'attavistech';
-			else if ( !empty($typepdo_id) && !empty($user_id) && !empty($iscomplet) && !empty($decisionpdo_id) && !empty($avistechnique) && empty( $validationavis ) )
+			else if ( !empty($typepdo_id) && !empty($user_id) && !empty($iscomplet) && !empty($decisionpdo_id) && is_numeric($avistechnique) && !is_numeric( $validationavis ) )
 				$etat = 'attval';
-			elseif ( !empty($typepdo_id) && !empty($user_id) && !empty($iscomplet) && !empty($decisionpdo_id) && !empty($avistechnique) && !empty($validationavis) && $validationavis == '0' )
+			elseif ( !empty($typepdo_id) && !empty($user_id) && !empty($iscomplet) && !empty($decisionpdo_id) && is_numeric($avistechnique) && is_numeric($validationavis) && $validationavis == '0' )
 				$etat = 'instrencours';
-			elseif ( !empty($typepdo_id) && !empty($user_id) && !empty($iscomplet) && !empty($decisionpdo_id) && !empty($avistechnique) && !empty($validationavis) && $validationavis == '1' && $iscomplet=='COM' )
+			elseif ( !empty($typepdo_id) && !empty($user_id) && !empty($iscomplet) && !empty($decisionpdo_id) && is_numeric($avistechnique) && is_numeric($validationavis) && $validationavis == '1' && $iscomplet=='COM' )
 				$etat = 'dossiertraite';
-			elseif ( !empty($typepdo_id) && !empty($user_id) && !empty($iscomplet) && !empty($decisionpdo_id) && !empty($avistechnique) && !empty($validationavis) && $validationavis == '1' && $iscomplet=='INC' )
+			elseif ( !empty($typepdo_id) && !empty($user_id) && !empty($iscomplet) && !empty($decisionpdo_id) && is_numeric($avistechnique) && is_numeric($validationavis) && $validationavis == '1' && $iscomplet=='INC' )
 				$etat = 'attpj';
-			
+// debug(is_numeric($validationavis));
+// 			debug(( $decisionpropopdo['Decisionpropopdo']['etatdossierpdo']));
 			return $etat;
 		}
 		
@@ -467,8 +468,9 @@
 					)
 				)
 			);
-			
+
 			$etat = $this->etatDossierPdo( $decisionpropopdo['Propopdo']['typepdo_id'], $decisionpropopdo['Propopdo']['user_id'], $decisionpropopdo['Decisionpropopdo']['decisionpdo_id'], $decisionpropopdo['Decisionpropopdo']['avistechnique'], $decisionpropopdo['Decisionpropopdo']['validationdecision'], $decisionpropopdo['Propopdo']['iscomplet'], $decisionpropopdo['Decisionpropopdo']['propopdo_id'] );
+
 			$this->id = $decisionpropopdo['Decisionpropopdo']['propopdo_id'];
 			$return = $this->saveField( 'etatdossierpdo', $etat );
 			
