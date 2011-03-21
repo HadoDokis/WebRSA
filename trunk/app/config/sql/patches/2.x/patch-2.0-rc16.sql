@@ -546,10 +546,27 @@ ALTER TABLE nonrespectssanctionseps93 ADD CONSTRAINT nonrespectssanctionseps93_v
 	( propopdo_id IS NOT NULL ) OR ( orientstruct_id IS NOT NULL ) OR ( contratinsertion_id IS NOT NULL ) OR ( historiqueetatpe_id IS NOT NULL )
 );
 
+
+DROP TABLE IF EXISTS decisionsradiespoleemploieps58 CASCADE;
+DROP TABLE IF EXISTS decisionsradiespoleemploieps93 CASCADE;
+
 ALTER TABLE nonrespectssanctionseps93 ALTER COLUMN decision TYPE text;
+ALTER TABLE decisionsnonrespectssanctionseps93 ALTER COLUMN decision TYPE text;
 DROP TYPE IF EXISTS TYPE_DECISIONSANCTIONEP93;
 CREATE TYPE TYPE_DECISIONSANCTIONEP93 AS ENUM ( '1reduction', '1maintien', '1sursis', '1pasavis', '1delai', '2suspensiontotale', '2suspensionpartielle', '2maintien', '2pasavis', '2report' );
 ALTER TABLE nonrespectssanctionseps93 ALTER COLUMN decision TYPE TYPE_DECISIONSANCTIONEP93 USING CAST(decision AS TYPE_DECISIONSANCTIONEP93);
+ALTER TABLE decisionsnonrespectssanctionseps93 ALTER COLUMN decision TYPE TYPE_DECISIONSANCTIONEP93 USING CAST(decision AS TYPE_DECISIONSANCTIONEP93);
+
+
+
+
+ALTER TABLE decisionspropospdos ALTER COLUMN avistechnique TYPE text;
+ALTER TABLE decisionspropospdos ALTER COLUMN avistechnique TYPE type_booleannumber USING CAST(avistechnique AS type_booleannumber);
+
+ALTER TABLE decisionspropospdos ALTER COLUMN validationdecision TYPE text;
+ALTER TABLE decisionspropospdos ALTER COLUMN validationdecision TYPE type_booleannumber USING CAST(validationdecision AS type_booleannumber);
+
+
 
 -- *****************************************************************************
 COMMIT;
