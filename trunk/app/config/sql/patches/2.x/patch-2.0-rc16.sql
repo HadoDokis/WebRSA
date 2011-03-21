@@ -51,6 +51,7 @@ ALTER TABLE decisionspropospdos ALTER COLUMN etatdossierpdo TYPE TEXT;
 DROP TYPE IF EXISTS TYPE_ETATDOSSIERPDO;
 --SELECT * FROM pg_catalog.pg_type where typname= 'TYPE_ETATDOSSIERPDO';
 UPDATE propospdos SET etatdossierpdo = 'instrencours' WHERE etatdossierpdo = 'decisionval';
+UPDATE decisionspropospdos SET etatdossierpdo = 'instrencours' WHERE etatdossierpdo = 'decisionval';
 CREATE TYPE TYPE_ETATDOSSIERPDO AS ENUM ( 'attaffect', 'attinstr', 'instrencours', 'attavistech', 'attval'/*, 'decisionval'*/, 'dossiertraite', 'attpj' );
 ALTER TABLE propospdos ALTER COLUMN etatdossierpdo TYPE TYPE_ETATDOSSIERPDO USING CAST(etatdossierpdo AS TYPE_ETATDOSSIERPDO);
 ALTER TABLE decisionspropospdos ALTER COLUMN etatdossierpdo TYPE TYPE_ETATDOSSIERPDO USING CAST(etatdossierpdo AS TYPE_ETATDOSSIERPDO);
