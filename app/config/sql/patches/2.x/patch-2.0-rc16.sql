@@ -573,6 +573,13 @@ UPDATE decisionspropospdos SET validationdecision = '0' WHERE validationdecision
 ALTER TABLE decisionspropospdos ALTER COLUMN validationdecision TYPE type_booleannumber USING CAST(validationdecision AS type_booleannumber);
 
 
+-- -----------------------------------------------------------------------------
+-- 20110322
+-- -----------------------------------------------------------------------------
+
+SELECT add_missing_table_field ('public', 'decisionsdefautsinsertionseps66', 'decisionsup', 'TYPE_DECISIONDEFAUTEP66');
+ALTER TABLE decisionsdefautsinsertionseps66 ALTER COLUMN decisionsup SET DEFAULT NULL;
+
 
 -- *****************************************************************************
 COMMIT;
