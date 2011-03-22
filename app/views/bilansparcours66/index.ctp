@@ -3,7 +3,7 @@
 <?php if( empty( $personne_id ) ):?>
 	<h1> <?php echo $this->pageTitle = 'Écran de synthèse des bilans de parcours'; ?> </h1>
 	<?php
-        unset( $options['Bilanparcours66']['saisineepparcours'] );
+		unset( $options['Bilanparcours66']['saisineepparcours'] );
 	// 	require_once( 'index.ctp' );
 // debug($bilansparcours66);
 		echo $default2->index(
@@ -107,11 +107,11 @@
 
 					foreach($bilansparcours66 as $bilanparcour66) {
 // debug($bilanparcour66);
-                        $positionbilan = Set::classicExtract( $bilanparcour66, 'Bilanparcours66.positionbilan' );
-                        $block = true;
-                        if( $positionbilan == 'annule' ){
-                            $block = false;
-                        }
+						$positionbilan = Set::classicExtract( $bilanparcour66, 'Bilanparcours66.positionbilan' );
+						$block = true;
+						if( $positionbilan == 'annule' ){
+							$block = false;
+						}
 
 						echo "<tr>";
 							echo $type2->format( $bilanparcour66, 'Bilanparcours66.datebilan', array( 'type' => 'date', 'tag' => 'td', 'options' => $options ) );
@@ -119,12 +119,14 @@
 							echo $type2->format( $bilanparcour66, 'Referent.Structurereferente.lib_struc', array( 'tag' => 'td', 'options' => $options ) );
 							echo $type2->format( $bilanparcour66, 'Referent.nom_complet', array( 'type' => 'text', 'tag' => 'td', 'options' => $options ) );
 							echo $type2->format( $bilanparcour66, 'Bilanparcours66.proposition', array( 'tag' => 'td', 'options' => $options ) );
-
-
+							
 							if (empty($bilanparcour66['Bilanparcours66']['choixparcours']) && !empty($bilanparcour66['Bilanparcours66']['examenaudition'])) {
 								echo $type2->format( $bilanparcour66, 'Bilanparcours66.examenaudition', array( 'tag' => 'td', 'options' => $options ) );
 							}
-							elseif (empty($bilanparcour66['Bilanparcours66']['choixparcours']) && empty($bilanparcour66['Bilanparcours66']['examenaudition'])) {
+							elseif (empty($bilanparcour66['Bilanparcours66']['choixparcours']) && !empty($bilanparcour66['Bilanparcours66']['examenauditionpe'])) {
+								echo $type2->format( $bilanparcour66, 'Bilanparcours66.examenauditionpe', array( 'tag' => 'td', 'options' => $options ) );
+							}
+							elseif (empty($bilanparcour66['Bilanparcours66']['choixparcours']) && empty($bilanparcour66['Bilanparcours66']['examenaudition']) && empty($bilanparcour66['Bilanparcours66']['examenauditionpe'])) {
 								if ($bilanparcour66['Bilanparcours66']['maintienorientation']==0) {
 									$bilanparcour66['Bilanparcours66']['choixparcours']='reorientation';
 								}
@@ -136,83 +138,111 @@
 							else {
 								echo $type2->format( $bilanparcour66, 'Bilanparcours66.choixparcours', array( 'tag' => 'td', 'options' => $options ) );
 							}
-							//Proposition du référent - Type orientation
-							if (Set::classicExtract( $bilanparcour66, 'Saisineepbilanparcours66.typeorient_id' )) {
-                                echo $xhtml->tag(
-                                    'td',
-                                    Set::classicExtract( $typesorients, Set::classicExtract( $bilanparcour66, 'Saisineepbilanparcours66.typeorient_id' ) )
-                                );
-                            }
-                            else {
-                                echo "<td></td>";
-                            }
-// 							echo $type2->format( $bilanparcour66, 'Saisineepbilanparcours66.typeorient_id', array( 'tag' => 'td', 'options' => $typesorients ) );
-// debug( isset(Set::classicExtract( $bilanparcour66, 'Saisineepbilanparcours66.structurereferente_id' )) );
-                            //Proposition du référent - structure referente
-                            if ( Set::classicExtract( $bilanparcour66, 'Saisineepbilanparcours66.structurereferente_id' )) {
-                                echo $xhtml->tag(
-                                    'td',
-                                    Set::classicExtract( $structuresreferentes, Set::classicExtract( $bilanparcour66, 'Saisineepbilanparcours66.structurereferente_id' ) )
-                                );
-                            }
-                            else {
-                                echo "<td></td>";
-                            }
-// 							echo $type2->format( $bilanparcour66, 'Saisineepbilanparcours66.structurereferente_id', array( 'tag' => 'td', 'options' => $structuresreferentes ) );
-
-							if( Set::classicExtract( $bilanparcour66, 'Saisineepbilanparcours66.Nvsrepreorient66.0.typeorient_id') ) {
+							
+							if ( isset( $bilanparcour66['Saisineepbilanparcours66']['typeorient_id'] ) && !empty( $bilanparcour66['Saisineepbilanparcours66']['typeorient_id'] ) ) {
+								echo $xhtml->tag(
+									'td',
+									Set::classicExtract( $typesorients, Set::classicExtract( $bilanparcour66, 'Saisineepbilanparcours66.typeorient_id' ) )
+								);
+								echo $xhtml->tag(
+									'td',
+									Set::classicExtract( $structuresreferentes, Set::classicExtract( $bilanparcour66, 'Saisineepbilanparcours66.structurereferente_id' ) )
+								);
 								echo $xhtml->tag(
 									'td',
 									Set::classicExtract( $typesorients, Set::classicExtract( $bilanparcour66, 'Saisineepbilanparcours66.Nvsrepreorient66.0.typeorient_id' ) )
 								);
-							}
-							else {
-								echo "<td></td>";
-							}
-
-							if( Set::classicExtract( $bilanparcour66, 'Saisineepbilanparcours66.Nvsrepreorient66.0.structurereferente_id' ) ) {
 								echo $xhtml->tag(
 									'td',
 									Set::classicExtract( $structuresreferentes, Set::classicExtract( $bilanparcour66, 'Saisineepbilanparcours66.Nvsrepreorient66.0.structurereferente_id' ) )
 								);
-							}
-							else {
-								echo "<td></td>";
-							}
-							if( Set::classicExtract( $bilanparcour66, 'Saisineepbilanparcours66.Nvsrepreorient66.1.typeorient_id' ) ) {
 								echo $xhtml->tag(
 									'td',
 									Set::classicExtract( $typesorients, Set::classicExtract( $bilanparcour66, 'Saisineepbilanparcours66.Nvsrepreorient66.1.typeorient_id' ) )
 								);
-							}
-							else {
-								echo "<td></td>";
-							}
-							if( Set::classicExtract( $bilanparcour66, 'Saisineepbilanparcours66.Nvsrepreorient66.1.structurereferente_id' ) ) {
 								echo $xhtml->tag(
 									'td',
 									Set::classicExtract( $structuresreferentes, Set::classicExtract( $bilanparcour66, 'Saisineepbilanparcours66.Nvsrepreorient66.1.structurereferente_id' ) )
 								);
 							}
-							else {
-								echo "<td></td>";
+							elseif ( isset( $bilanparcour66['Defautinsertionep66']['Decisiondefautinsertionep66'][0]['decision'] ) && ( $bilanparcour66['Defautinsertionep66']['Decisiondefautinsertionep66'][0]['decision'] == 'suspensionnonrespect' || $bilanparcour66['Defautinsertionep66']['Decisiondefautinsertionep66'][0]['decision'] == 'suspensiondefaut' || $bilanparcour66['Defautinsertionep66']['Decisiondefautinsertionep66'][0]['decision'] == 'maintien' ) ) {
+								echo "<td colspan='2'></td>";
+								echo $xhtml->tag(
+									'td',
+									__d( 'decisiondefautinsertionep66', 'ENUM::DECISION::'.$bilanparcour66['Defautinsertionep66']['Decisiondefautinsertionep66'][0]['decision'], true ),
+									array(
+										'colspan' => 2
+									)
+								);
+								if ( isset( $bilanparcour66['Defautinsertionep66']['Decisiondefautinsertionep66'][1]['decision'] ) && ( $bilanparcour66['Defautinsertionep66']['Decisiondefautinsertionep66'][1]['decision'] == 'suspensionnonrespect' || $bilanparcour66['Defautinsertionep66']['Decisiondefautinsertionep66'][1]['decision'] == 'suspensiondefaut' || $bilanparcour66['Defautinsertionep66']['Decisiondefautinsertionep66'][1]['decision'] == 'maintien' ) ) {
+									echo $xhtml->tag(
+										'td',
+										__d( 'decisiondefautinsertionep66', 'ENUM::DECISION::'.$bilanparcour66['Defautinsertionep66']['Decisiondefautinsertionep66'][1]['decision'], true ),
+										array(
+											'colspan' => 2
+										)
+									);
+								}
+								else {
+									echo $xhtml->tag(
+										'td',
+										Set::classicExtract( $typesorients, Set::classicExtract( $bilanparcour66, 'Defautinsertionep66.Decisiondefautinsertionep66.1.typeorient_id' ) )
+									);
+									echo $xhtml->tag(
+										'td',
+										Set::classicExtract( $structuresreferentes, Set::classicExtract( $bilanparcour66, 'Defautinsertionep66.Decisiondefautinsertionep66.1.structurereferente_id' ) )
+									);
+								}
 							}
+							elseif ( isset( $bilanparcour66['Defautinsertionep66']['Decisiondefautinsertionep66'][0]['decision'] ) && ( $bilanparcour66['Defautinsertionep66']['Decisiondefautinsertionep66'][0]['decision'] == 'reorientationprofverssoc' || $bilanparcour66['Defautinsertionep66']['Decisiondefautinsertionep66'][0]['decision'] == 'reorientationsocversprof' ) ) {
+								echo $xhtml->tag(
+									'td',
+									Set::classicExtract( $typesorients, Set::classicExtract( $bilanparcour66, 'Defautinsertionep66.Decisiondefautinsertionep66.0.typeorient_id' ) )
+								);
+								echo $xhtml->tag(
+									'td',
+									Set::classicExtract( $structuresreferentes, Set::classicExtract( $bilanparcour66, 'Defautinsertionep66.Decisiondefautinsertionep66.0.structurereferente_id' ) )
+								);
+								if ( isset( $bilanparcour66['Defautinsertionep66']['Decisiondefautinsertionep66'][1]['decision'] ) && ( $bilanparcour66['Defautinsertionep66']['Decisiondefautinsertionep66'][1]['decision'] == 'suspensionnonrespect' || $bilanparcour66['Defautinsertionep66']['Decisiondefautinsertionep66'][1]['decision'] == 'suspensiondefaut' || $bilanparcour66['Defautinsertionep66']['Decisiondefautinsertionep66'][1]['decision'] == 'maintien' ) ) {
+									echo $xhtml->tag(
+										'td',
+										__d( 'decisiondefautinsertionep66', 'ENUM::DECISION::'.$bilanparcour66['Defautinsertionep66']['Decisiondefautinsertionep66'][1]['decision'], true ),
+										array(
+											'colspan' => 2
+										)
+									);
+								}
+								else {
+									echo $xhtml->tag(
+										'td',
+										Set::classicExtract( $typesorients, Set::classicExtract( $bilanparcour66, 'Defautinsertionep66.Decisiondefautinsertionep66.1.typeorient_id' ) )
+									);
+									echo $xhtml->tag(
+										'td',
+										Set::classicExtract( $structuresreferentes, Set::classicExtract( $bilanparcour66, 'Defautinsertionep66.Decisiondefautinsertionep66.1.structurereferente_id' ) )
+									);
+								}
+							}
+							else {
+								echo "<td colspan='6'></td>";
+							}
+							
 							echo $html->tag(
 								'td',
 								$xhtml->editLink( 'Modifier', array( 'controller'=>'bilansparcours66', 'action'=>'edit', Set::classicExtract($bilanparcour66, 'Bilanparcours66.id') ), $block )
 							);
 							echo $html->tag(
-                                'td',
-                                $xhtml->courrierLink( 'Courrier d\'information', array( 'controller'=>'bilansparcours66', 'action'=>'courrier_information', Set::classicExtract($bilanparcour66, 'Bilanparcours66.id') ), $block  ) //FIXME: mise à false du bouton "Imprimer"
-                            );
+								'td',
+								$xhtml->courrierLink( 'Courrier d\'information', array( 'controller'=>'bilansparcours66', 'action'=>'courrier_information', Set::classicExtract($bilanparcour66, 'Bilanparcours66.id') ), $block  ) //FIXME: mise à false du bouton "Imprimer"
+							);
 							echo $html->tag(
-                                'td',
-                                $xhtml->printLink( 'Imprimer', array( 'controller'=>'bilansparcours66', 'action'=>'bilanparcoursGedooo', Set::classicExtract($bilanparcour66, 'Bilanparcours66.id') ), $block  ) //FIXME: mise à false du bouton "Imprimer"
-                            );
-                            echo $html->tag(
-                                'td',
-                                $xhtml->cancelLink( 'Annuler ce bilan de parcours', array( 'controller'=>'bilansparcours66', 'action'=>'cancel', Set::classicExtract($bilanparcour66, 'Bilanparcours66.id') ), $block  ) //FIXME: mise à false du bouton "Imprimer"
-                            );
+								'td',
+								$xhtml->printLink( 'Imprimer', array( 'controller'=>'bilansparcours66', 'action'=>'bilanparcoursGedooo', Set::classicExtract($bilanparcour66, 'Bilanparcours66.id') ), $block  ) //FIXME: mise à false du bouton "Imprimer"
+							);
+							echo $html->tag(
+								'td',
+								$xhtml->cancelLink( 'Annuler ce bilan de parcours', array( 'controller'=>'bilansparcours66', 'action'=>'cancel', Set::classicExtract($bilanparcour66, 'Bilanparcours66.id') ), $block  ) //FIXME: mise à false du bouton "Imprimer"
+							);
 						echo "</tr>";
 					}
 					/*echo $default2->index(

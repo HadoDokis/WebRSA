@@ -48,7 +48,7 @@ msgid "ENUM::THEMEEP::saisinesepsreorientsrs93"
 msgstr "Demande de réorientation de la structure référente"
 
 msgid "ENUM::THEMEEP::saisinesepsbilansparcours66"
-msgstr "Défaut d'insertion CG"
+msgstr "Demande de réorientation"
 
 msgid "ENUM::THEMEEP::suspensionreductionallocations93"
 msgstr "Thème du dossier"
@@ -60,7 +60,7 @@ msgid "ENUM::THEMEEP::nonrespectssanctionseps93"
 msgstr "Demande de suspension"
 
 msgid "ENUM::THEMEEP::defautsinsertionseps66"
-msgstr "Défaut d'insertion PE"
+msgstr "Défaut d'insertion"
 
 msgid "ENUM::THEMEEP::nonorientationspros58"
 msgstr "Non orientation professionnelle"

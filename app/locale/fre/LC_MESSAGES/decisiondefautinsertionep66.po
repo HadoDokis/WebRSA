@@ -33,3 +33,12 @@ msgstr "Réorientation du PROFESSIONNEL vers le SOCIAL"
 
 msgid "ENUM::DECISION::reorientationsocversprof"
 msgstr "Réorientation du SOCIAL vers le PROFESSIONNEL"
+
+msgid "ENUM::DECISIONSUP::suspensionnonrespect"
+msgstr "Suspension suite à défaut de conclusion"
+
+msgid "ENUM::DECISIONSUP::suspensiondefaut"
+msgstr "Suspension suite à non respect du contrat"
+
+msgid "ENUM::DECISIONSUP::maintien"
+msgstr "Maintien du versement de l'allocation"

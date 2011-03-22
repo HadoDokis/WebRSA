@@ -380,6 +380,9 @@ msgstr "Compte rendu de l'audition (le cas échéant)"
 msgid "ENUM::PROPOSITION::audition"
 msgstr "EPL Audition"
 
+msgid "ENUM::PROPOSITION::auditionpe"
+msgstr "EPL Audition Pôle Emploi"
+
 msgid "ENUM::PROPOSITION::parcours"
 msgstr "EPL Parcours"
 
