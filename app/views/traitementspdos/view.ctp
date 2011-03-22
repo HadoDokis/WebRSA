@@ -36,7 +36,28 @@
 				echo '<p class="notice">Aucun élément.</p>';
 			}
 			else {
-				echo '<ul>';
+                echo '<table><tbody>';
+                    echo '<tr><th>Intitulé de la pièce</th><th>Date d\'ajout</th></tr>';
+                    foreach( $fichiers as $fichier ) {
+                        echo '<tr>';
+                            echo '<td>'.$xhtml->link(
+                                $fichier['name'],
+                                array(
+                                    'action' => 'fileview',
+                                    'edit',
+                                    $fichier['traitementpdo_id'],
+                                    $fichier['type'],
+                                    urlencode( $fichier['name'] )
+                                )
+                            ).'</td>';
+                            echo '<td>'.$fichier['created'].'</td>';
+                        echo '</tr>';
+                    }
+                echo '</tbody></table>';
+
+
+
+/*				echo '<ul>';
 				foreach( $fichiers as $fichier ) {
 					echo '<li>'.$xhtml->link(
 						$fichier['name'],
@@ -49,7 +70,7 @@
 						)
 					).'</li>';
 				}
-				echo '</ul>';
+				echo '</ul>';*/
 			}
 		}
 
