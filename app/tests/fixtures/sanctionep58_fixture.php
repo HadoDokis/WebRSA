@@ -6,6 +6,15 @@
 		var $table = 'sanctionseps58';
 		var $import = array( 'table' => 'sanctionseps58', 'connection' => 'default', 'records' => false);
 		var $records = array(
+			array(
+				'id' => '1',
+				'dossierep_id' => null,
+				'origine' => 'radiepe',
+				'listesanctionep58_id' => null,
+				'commentaire' => null,
+				'created' => null,
+				'modified' => null,
+			),
 		);
 	}
 

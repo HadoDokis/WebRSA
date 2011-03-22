@@ -5,7 +5,16 @@
 		var $name = 'Nonorientationpro66';
 		var $table = 'nonorientationspros66';
 		var $import = array( 'table' => 'nonorientationspros66', 'connection' => 'default', 'records' => false);
-		var $records = array();
+		var $records = array(
+			array(
+				'id' => '1',
+				'dossierep_id' => '1',
+				'orientstruct_id' => null,
+				'created' => null,
+				'modified' => null,
+				'user_id' => null,
+			),
+		);
 	}
 
 ?>

@@ -51,7 +51,8 @@
 				'natlog' => null,
 				'demarlog' => null,
 				'libformenv' => null,
-			)
+				'statutoccupation' => null,
+			),
 		);
 	}
 
