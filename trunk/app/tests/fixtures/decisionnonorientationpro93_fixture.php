@@ -8,14 +8,14 @@
 		var $records = array(
 			array(
 				'id' => '1',
-				'etape' => '',
-				'decision' => '',
-				'nonorientationpro93_id' => '',
-				'typeorient_id' => '',
-				'structurereferente_id' => '',
-				'commentaire' => '',
-				'created' => '',
-				'modified' => '',
+				'etape' => 'cg',
+				'decision' => null,
+				'nonorientationpro93_id' => '1',
+				'typeorient_id' => null,
+				'structurereferente_id' => null,
+				'commentaire' => null,
+				'created' => null,
+				'modified' => null,
 			),
 		);
 	}

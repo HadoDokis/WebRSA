@@ -6,6 +6,12 @@
 		var $table = 'listesanctionseps58';
 		var $import = array( 'table' => 'listesanctionseps58', 'connection' => 'default', 'records' => false);
 		var $records = array(
+			array(
+				'id' => '1',
+				'rand' => '1',
+				'sanction' => 'sanction1',
+				'duree' => '1',
+			),
 		);
 	}
 

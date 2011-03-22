@@ -9,10 +9,12 @@
 			array(
 				'id' => '1',
 				'libelle' => 'decisionpdolibelle1',
+				'clos' => 'N',
 			),
 			array(
 				'id' => '2',
 				'libelle' => 'decisionpdolibelle2',
+				'clos' => 'N',
 			),
 		);
 	}

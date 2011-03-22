@@ -13,7 +13,7 @@
 				'dtavisdestpairsa' => null,
 				'nomtie' => null,
 				'typeperstie' => null,
-			)
+			),
 		);
 	}
 

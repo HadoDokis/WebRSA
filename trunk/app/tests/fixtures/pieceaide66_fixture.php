@@ -8,11 +8,11 @@
 		var $records = array(
 			array(
 				'id' => '1',
-				'name' => 'pieceaide66libelle1',
+				'name' => 'pieceaide66n1',
 			),
 			array(
 				'id' => '2',
-				'name' => 'pieceaide66libelle2',
+				'name' => 'pieceaide66n2',
 			),
 		);
 	}
