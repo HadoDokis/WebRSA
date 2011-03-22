@@ -165,7 +165,7 @@
             $positionbilan = null;
             // 'eplaudit', 'eplparc', 'attcga', 'attct', 'ajourne', 'annule'
 
-            if ( $traitement == 'audition' && empty( $saisineep ) )
+            if ( ( $traitement == 'audition' || $traitement == 'auditionpe' ) && empty( $saisineep ) )
                 $positionbilan = 'eplaudit';
             elseif ( $traitement == 'parcours' && empty( $saisineep ) )
                 $positionbilan = 'eplparc';
