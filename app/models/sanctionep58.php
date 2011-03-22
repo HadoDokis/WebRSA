@@ -247,7 +247,7 @@
 						'conditions' => array(
 							'Personne.id = Orientstruct.personne_id',
 							// La dernière
-							'Orientstruct.id IN (
+							/*'Orientstruct.id IN (
 										SELECT o.id
 											FROM orientsstructs AS o
 											WHERE
@@ -260,9 +260,8 @@
 							'Orientstruct.typeorient_id IN (
 								SELECT t.id
 									FROM typesorients AS t
-									WHERE /*t.parentid IS NULL
-										AND*/ t.lib_type_orient LIKE \'Emploi%\'
-							)'// FIXME
+									WHERE t.lib_type_orient LIKE \'Emploi%\'
+							)'// FIXME*/
 						)
 					)
 				),
