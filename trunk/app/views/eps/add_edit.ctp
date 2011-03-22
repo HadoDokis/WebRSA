@@ -100,38 +100,55 @@
 	echo $form->button('Tout décocher', array('onclick' => "GereChkbox('listeZonesgeographiques','decocher');"));
 
 	if ($this->action == 'edit') {
-		echo "<fieldset><legend>Participants</legend>";
-			foreach($listeFonctionsMembres as $fonction_id => $fonction) {
-				echo $html->tag(
-					'p',
-					$fonction.' :'
-				);
-				$listeMembre = array();
-				foreach($this->data['Membreep'] as $membre) {
-					if ($membre['fonctionmembreep_id']==$fonction_id)
+// 	if ($this->action == 'add') {
+// 		$ep_id = 0;
+// 	}
+	
+	echo "<fieldset><legend>Participants</legend>";
+	
+		foreach( $listeFonctionsMembres as $fonction_id => $fonction ) {
+			echo $html->tag(
+				'p',
+				$fonction.' :'
+			);
+			$listeMembre = array();
+			if ( isset( $this->data['Membreep'] ) ) {
+				foreach( $this->data['Membreep'] as $membre ) {
+					if ( $membre['fonctionmembreep_id'] == $fonction_id ) {
 						$listeMembre[] = $membre;
+					}
 				}
-				if (!empty($listeMembre)) {
-					echo "<table>";
-						foreach ($listeMembre as $participant) {
-							echo $html->tag(
-								'tr',
-								$html->tag(
-									'td',
-									implode( ' ', array( $participant['qual'], $participant['nom'], $participant['prenom'] ) )
-								).
-								$html->tag(
-									'td',
-									$xhtml->deleteLink('Supprimer', array('controller'=>'eps', 'action'=> 'deleteparticipant', $ep_id, $participant['id']))
-								)
-							);
-						}
-					echo "</table>";
-				}
-
-				echo $xhtml->addLink('Ajouter', array('controller'=>'eps', 'action'=> 'addparticipant', $ep_id, $fonction_id));
 			}
-		echo "</fieldset>";
+			elseif ( isset( $this->data[0]['Membreep'] ) ) {
+				foreach( $this->data as $membre ) {
+					if ( $membre['Membreep']['fonctionmembreep_id'] == $fonction_id ) {
+						$listeMembre[] = $membre['Membreep'];
+					}
+				}
+			}
+			if ( !empty( $listeMembre ) ) {
+				echo "<table>";
+					foreach ( $listeMembre as $participant ) {
+						echo $html->tag(
+							'tr',
+							$html->tag(
+								'td',
+								implode( ' ', array( $participant['qual'], $participant['nom'], $participant['prenom'] ) )
+							).
+							$html->tag(
+								'td',
+								$xhtml->deleteLink( 'Supprimer', array( 'controller' => 'eps', 'action'=> 'deleteparticipant', $ep_id, $participant['id'] ) )
+							)
+						);
+					}
+				echo "</table>";
+			}
+
+			echo $xhtml->addLink( 'Ajouter', array( 'controller' => 'eps', 'action'=> 'addparticipant', $ep_id, $fonction_id ) );
+		}
+		
+	echo "</fieldset>";
+		
 	}
 
 	echo $xform->end( __( 'Save', true ) );
