@@ -40,6 +40,7 @@ DROP INDEX IF EXISTS regressionsorientationseps58_user_id_idx;
 DROP TYPE IF EXISTS TYPE_ORIGINESANCTION CASCADE;
 DROP TYPE IF EXISTS TYPE_DECISIONSANCTIONEP58 CASCADE;
 DROP TYPE IF EXISTS TYPE_TYPEAUDITIONPE CASCADE;
+DROP TYPE IF EXISTS TYPE_DECISIONSUPDEFAUTEP66 CASCADE;
 
 ALTER TABLE dossierseps ALTER COLUMN themeep TYPE TEXT;
 DROP TYPE IF EXISTS TYPE_THEMEEP;
@@ -577,7 +578,9 @@ ALTER TABLE decisionspropospdos ALTER COLUMN validationdecision TYPE type_boolea
 -- 20110322
 -- -----------------------------------------------------------------------------
 
-SELECT add_missing_table_field ('public', 'decisionsdefautsinsertionseps66', 'decisionsup', 'TYPE_DECISIONDEFAUTEP66');
+CREATE TYPE TYPE_DECISIONSUPDEFAUTEP66 AS ENUM ( 'suspensionnonrespect', 'suspensiondefaut', 'maintien' );
+
+SELECT add_missing_table_field ('public', 'decisionsdefautsinsertionseps66', 'decisionsup', 'TYPE_DECISIONSUPDEFAUTEP66');
 ALTER TABLE decisionsdefautsinsertionseps66 ALTER COLUMN decisionsup SET DEFAULT NULL;
 
 
