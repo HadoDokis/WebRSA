@@ -242,7 +242,7 @@
 					array(
 						'table'      => 'orientsstructs', // FIXME:
 						'alias'      => 'Orientstruct',
-						'type'       => 'INNER',
+						'type'       => 'LEFT OUTER',
 						'foreignKey' => false,
 						'conditions' => array(
 							'Personne.id = Orientstruct.personne_id',
