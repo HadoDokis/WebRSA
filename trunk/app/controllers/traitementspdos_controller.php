@@ -270,6 +270,7 @@
 							'fields' => array(
 								'Fichiertraitementpdo.name',
 								'Fichiertraitementpdo.type',
+								'Fichiertraitementpdo.created',
 								'Fichiertraitementpdo.traitementpdo_id',
 							)
 						)
