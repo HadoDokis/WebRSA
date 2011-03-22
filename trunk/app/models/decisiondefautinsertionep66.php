@@ -17,7 +17,8 @@
 			'Enumerable' => array(
 				'fields' => array(
 					'etape',
-					'decision'
+					'decision',
+					'decisionsup'
 				)
 			)
 		);

@@ -150,7 +150,8 @@
                             'fields' => array(
                                 'etapedossierep'
                             )
-                        )
+                        ),
+                        'Decisiondefautinsertionep66'
                     )
 				),
 				'conditions' => $conditions,

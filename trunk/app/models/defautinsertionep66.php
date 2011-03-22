@@ -248,6 +248,7 @@
 
 					$formData['Decisiondefautinsertionep66'][$key]['defautinsertionep66_id'] = @$dossierep['Defautinsertionep66']['id'];
 					$formData['Decisiondefautinsertionep66'][$key]['decision'] = $record['decision'];
+					$formData['Decisiondefautinsertionep66'][$key]['decisionsup'] = $record['decisionsup'];
 					$formData['Decisiondefautinsertionep66'][$key]['typeorient_id'] = $record['typeorient_id'];
 					$formData['Decisiondefautinsertionep66'][$key]['structurereferente_id'] = implode( '_', array( $record['typeorient_id'], $record['structurereferente_id'] ) );
 					$formData['Decisiondefautinsertionep66'][$key]['referent_id'] = implode( '_', array( $record['structurereferente_id'], $record['referent_id'] ) );
@@ -267,6 +268,7 @@
 
 					$formData['Decisiondefautinsertionep66'][$key]['defautinsertionep66_id'] = @$dossierep['Defautinsertionep66']['id'];
 					$formData['Decisiondefautinsertionep66'][$key]['decision'] = $record['decision'];
+					$formData['Decisiondefautinsertionep66'][$key]['decisionsup'] = $record['decisionsup'];
 					$formData['Decisiondefautinsertionep66'][$key]['typeorient_id'] = $record['typeorient_id'];
 					$formData['Decisiondefautinsertionep66'][$key]['structurereferente_id'] = implode( '_', array( $record['typeorient_id'], $record['structurereferente_id'] ) );
 					$formData['Decisiondefautinsertionep66'][$key]['referent_id'] = implode( '_', array( $record['structurereferente_id'], $record['referent_id'] ) );
