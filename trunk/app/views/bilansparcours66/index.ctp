@@ -224,7 +224,9 @@
 								}
 							}
 							else {
-								echo "<td colspan='6'></td>";
+								echo "<td colspan='2'></td>";
+								echo "<td colspan='2'></td>";
+								echo "<td colspan='2'></td>";
 							}
 							
 							echo $html->tag(
