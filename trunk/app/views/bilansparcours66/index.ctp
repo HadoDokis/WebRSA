@@ -148,22 +148,32 @@
 									'td',
 									Set::classicExtract( $structuresreferentes, Set::classicExtract( $bilanparcour66, 'Saisineepbilanparcours66.structurereferente_id' ) )
 								);
-								echo $xhtml->tag(
-									'td',
-									Set::classicExtract( $typesorients, Set::classicExtract( $bilanparcour66, 'Saisineepbilanparcours66.Nvsrepreorient66.0.typeorient_id' ) )
-								);
-								echo $xhtml->tag(
-									'td',
-									Set::classicExtract( $structuresreferentes, Set::classicExtract( $bilanparcour66, 'Saisineepbilanparcours66.Nvsrepreorient66.0.structurereferente_id' ) )
-								);
-								echo $xhtml->tag(
-									'td',
-									Set::classicExtract( $typesorients, Set::classicExtract( $bilanparcour66, 'Saisineepbilanparcours66.Nvsrepreorient66.1.typeorient_id' ) )
-								);
-								echo $xhtml->tag(
-									'td',
-									Set::classicExtract( $structuresreferentes, Set::classicExtract( $bilanparcour66, 'Saisineepbilanparcours66.Nvsrepreorient66.1.structurereferente_id' ) )
-								);
+								if ( isset( $bilanparcour66['Saisineepbilanparcours66']['Nvsrepreorient66'][0]['typeorient_id'] ) && !empty( $bilanparcour66['Saisineepbilanparcours66']['Nvsrepreorient66'][0]['typeorient_id'] ) ) {
+									echo $xhtml->tag(
+										'td',
+										Set::classicExtract( $typesorients, Set::classicExtract( $bilanparcour66, 'Saisineepbilanparcours66.Nvsrepreorient66.0.typeorient_id' ) )
+									);
+									echo $xhtml->tag(
+										'td',
+										Set::classicExtract( $structuresreferentes, Set::classicExtract( $bilanparcour66, 'Saisineepbilanparcours66.Nvsrepreorient66.0.structurereferente_id' ) )
+									);
+								}
+								else {
+									echo "<td colspan='2'></td>";
+								}
+								if ( isset( $bilanparcour66['Saisineepbilanparcours66']['Nvsrepreorient66'][1]['typeorient_id'] ) && !empty( $bilanparcour66['Saisineepbilanparcours66']['Nvsrepreorient66'][1]['typeorient_id'] ) ) {
+									echo $xhtml->tag(
+										'td',
+										Set::classicExtract( $typesorients, Set::classicExtract( $bilanparcour66, 'Saisineepbilanparcours66.Nvsrepreorient66.1.typeorient_id' ) )
+									);
+									echo $xhtml->tag(
+										'td',
+										Set::classicExtract( $structuresreferentes, Set::classicExtract( $bilanparcour66, 'Saisineepbilanparcours66.Nvsrepreorient66.1.structurereferente_id' ) )
+									);
+								}
+								else {
+									echo "<td colspan='2'></td>";
+								}
 							}
 							elseif ( isset( $bilanparcour66['Defautinsertionep66']['Decisiondefautinsertionep66'][0]['decision'] ) && ( $bilanparcour66['Defautinsertionep66']['Decisiondefautinsertionep66'][0]['decision'] == 'suspensionnonrespect' || $bilanparcour66['Defautinsertionep66']['Decisiondefautinsertionep66'][0]['decision'] == 'suspensiondefaut' || $bilanparcour66['Defautinsertionep66']['Decisiondefautinsertionep66'][0]['decision'] == 'maintien' ) ) {
 								echo "<td colspan='2'></td>";
