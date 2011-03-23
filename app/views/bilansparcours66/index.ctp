@@ -195,6 +195,7 @@
 								}
 							}
 							elseif ( isset( $bilanparcour66['Defautinsertionep66']['Decisiondefautinsertionep66'][0]['decision'] ) && ( $bilanparcour66['Defautinsertionep66']['Decisiondefautinsertionep66'][0]['decision'] == 'reorientationprofverssoc' || $bilanparcour66['Defautinsertionep66']['Decisiondefautinsertionep66'][0]['decision'] == 'reorientationsocversprof' ) ) {
+								echo "<td colspan='2'></td>";
 								echo $xhtml->tag(
 									'td',
 									Set::classicExtract( $typesorients, Set::classicExtract( $bilanparcour66, 'Defautinsertionep66.Decisiondefautinsertionep66.0.typeorient_id' ) )
