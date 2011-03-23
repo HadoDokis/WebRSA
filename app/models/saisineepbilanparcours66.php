@@ -318,6 +318,13 @@
 								$dossierep[$this->alias]['Nvsrepreorient66'][0]['structurereferente_id']
 							)
 						);
+						$formData['Nvsrepreorient66'][$key]['referent_id'] = implode(
+							'_',
+							array(
+								$dossierep[$this->alias]['Nvsrepreorient66'][0]['structurereferente_id'],
+								$dossierep[$this->alias]['Nvsrepreorient66'][0]['referent_id']
+							)
+						);
 						$formData['Nvsrepreorient66'][$key]['commentaire'] = $dossierep[$this->alias]['Nvsrepreorient66'][0]['commentaire'];
 					}
 					else {
@@ -327,6 +334,13 @@
 							array(
 								$dossierep[$this->alias]['typeorient_id'],
 								$dossierep[$this->alias]['structurereferente_id']
+							)
+						);
+						$formData['Nvsrepreorient66'][$key]['referent_id'] = implode(
+							'_',
+							array(
+								$dossierep[$this->alias]['structurereferente_id'],
+								$dossierep[$this->alias]['referent_id']
 							)
 						);
 					}
@@ -347,6 +361,13 @@
 								$dossierep[$this->alias]['Nvsrepreorient66'][1]['structurereferente_id']
 							)
 						);
+						$formData['Nvsrepreorient66'][$key]['referent_id'] = implode(
+							'_',
+							array(
+								$dossierep[$this->alias]['Nvsrepreorient66'][1]['structurereferente_id'],
+								$dossierep[$this->alias]['Nvsrepreorient66'][1]['referent_id']
+							)
+						);
 						$formData['Nvsrepreorient66'][$key]['commentaire'] = $dossierep[$this->alias]['Nvsrepreorient66'][0]['commentaire'];
 					}
 					else {
@@ -357,6 +378,13 @@
 							array(
 								$dossierep[$this->alias]['Nvsrepreorient66'][0]['typeorient_id'],
 								$dossierep[$this->alias]['Nvsrepreorient66'][0]['structurereferente_id']
+							)
+						);
+						$formData['Nvsrepreorient66'][$key]['referent_id'] = implode(
+							'_',
+							array(
+								$dossierep[$this->alias]['Nvsrepreorient66'][0]['structurereferente_id'],
+								$dossierep[$this->alias]['Nvsrepreorient66'][0]['referent_id']
 							)
 						);
 					}
