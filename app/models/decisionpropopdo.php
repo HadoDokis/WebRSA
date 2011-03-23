@@ -134,7 +134,7 @@
                                     'conditions' => array(
                                         'traitementspdos.propopdo_id = Propopdo.id'
                                     ),
-                                    'order' => array( 'traitementspdos.id ASC' ),
+                                    'order' => array( 'traitementspdos.id DESC' ),
                                     'limit' => 1
                                 )
                             ).'
