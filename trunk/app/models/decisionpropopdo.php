@@ -81,7 +81,7 @@
 					if ( !empty( $decisionpdo_id ) && !is_numeric( $validationdecision ) )
 						$etat = 'attval';
 					elseif ( !empty( $decisionpdo_id ) && is_numeric( $validationdecision ) && $validationdecision == '1' && $decisionpdo['Decisionpdo']['clos'] == 'O' )
-						$etat = 'decisionval';
+						$etat = 'dossiertraite';
 					elseif ( !empty( $decisionpdo_id ) && is_numeric( $validationdecision ) && ( $validationdecision == '0' || $decisionpdo['Decisionpdo']['clos'] == 'N' ) )
 						$etat = 'instrencours';
 					
