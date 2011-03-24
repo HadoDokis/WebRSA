@@ -119,6 +119,25 @@
             );
 
             $this->assert( !empty( $infofinanciere ), 'error404' );
+            $dossier_id = Set::classicExtract( $infofinanciere, 'Infofinanciere.dossier_id' );
+
+
+            $foyer = $this->Dossier->Foyer->findByDossierId( $dossier_id, null, null, -1 );
+
+            $personne = $this->Dossier->Foyer->Personne->find(
+                'first',
+                array(
+                    'conditions' => array( 'Personne.foyer_id' => $foyer['Foyer']['id'] ,
+//                     'Prestation.natprest = \'RSA\'',
+                        '( Prestation.natprest = \'RSA\' OR Prestation.natprest = \'PFA\' )',
+                            '( Prestation.rolepers = \'DEM\' )',
+                    ),
+                    'recursive' => 0
+                )
+            );
+
+            $this->assert( !empty( $personne ), 'invalidParameter' );
+            $this->set( 'personne', $personne );
 
             // Assignations à la vue
             $this->set( 'dossier_id', $infofinanciere['Infofinanciere']['dossier_id'] );
