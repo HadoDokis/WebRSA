@@ -247,15 +247,22 @@
 					$tmpPath .= "/{$crumb}";
 
 					if( !self::_check( $tmpPath ) && !empty( $prevNode ) ) {
-						@self::$_connection->createFolder( $prevNode->id, $crumb );
+						try {
+							@self::$_connection->createFolder( $prevNode->id, $crumb );
+						} catch( Exception $e ) {
+							debug( get_class( $e ) );die();
+						}
 					}
-					$node = self::$_connection->getObjectByPath( $tmpPath );
 
-					$prevNode = $node;
+					$prevNode = self::$_connection->getObjectByPath( $tmpPath );
+					if( empty( $prevNode ) ) {
+						return false;
+					}
 				}
 
 				return true;
 			} catch( Exception $e ) {
+				debug( get_class( $e ) );die();
 				return false;
 			}
 		}
