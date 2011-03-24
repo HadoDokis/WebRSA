@@ -116,7 +116,7 @@
 			'app.avispcgpersonne',
 			'app.statintegrationinstruction',
 			'app.defautinsertionep66',
-			'app.decisionradiepoleemploiep93',
+			//'app.decisionradiepoleemploiep93',
 			'app.evenement',
 			'app.calculdroitrsa',
 			'app.saisineepdpdo66',

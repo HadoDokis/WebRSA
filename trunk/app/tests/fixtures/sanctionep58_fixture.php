@@ -8,9 +8,9 @@
 		var $records = array(
 			array(
 				'id' => '1',
-				'dossierep_id' => null,
+				'dossierep_id' => '1',
 				'origine' => 'radiepe',
-				'listesanctionep58_id' => null,
+				'listesanctionep58_id' => '1',
 				'commentaire' => null,
 				'created' => null,
 				'modified' => null,

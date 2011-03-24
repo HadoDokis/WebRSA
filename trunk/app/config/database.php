@@ -85,7 +85,7 @@ class DATABASE_CONFIG {
         'login'       => 'webrsa',
         'password'    => 'webrsa',
 //	'database'    => 'webrsa93',
-	'database'    => 'cg93_20110215_2203_eps',
+	'database'    => 'webrsa_tu',
         'prefix'      => ''
     );
 
@@ -95,7 +95,7 @@ class DATABASE_CONFIG {
         'host'        => 'localhost',
         'login'       => 'webrsa',
         'password'    => 'webrsa',
-        'database'    => 'webrsatest',
+        'database'    => 'testunit',
     );
 }
 ?>

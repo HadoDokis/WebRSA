@@ -8,7 +8,7 @@
 		var $records = array(
 			array(
 				'id' => '1',
-				'rand' => '1',
+				'rang' => '1',
 				'sanction' => 'sanction1',
 				'duree' => '1',
 			),
