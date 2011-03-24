@@ -46,12 +46,16 @@
                             'Entretien.typeentretien' => array( 'required' => true, 'options' => $options['Entretien']['typeentretien'], 'empty' => true ),
                             'Entretien.objetentretien_id' => array(  'empty' => true ),
                             'Entretien.commentaireentretien',
-                            'Entretien.arevoirle' => array( 'type' => 'date', 'dateformat' => 'DMY', 'minYear' => date('Y')-2, 'maxYear' => date('Y')+2 )
+//                             'Entretien.arevoirle' => array( 'type' => 'date', 'dateformat' => 'DMY', 'minYear' => date('Y')-2, 'maxYear' => date('Y')+2 )
                         ),
                         array(
                             'options' => $options
                         )
                     );
+                ?>
+                <?php echo $xform->input( 'Entretien.arevoirle', array( 'label' => 'A revoir le ', 'type' => 'date', 'dateFormat' => 'MY', 'maxYear' => date('Y')+2, 'minYear' => date('Y')-2, 'empty' => true ) );?>
+                <?php if( Configure::read( 'Cg.departement' ) != 66):?>
+                <?
                     echo $xform->input( 'Entretien.rendezvousprevu', array( 'label' => 'Rendez-vous prévu', 'type' => 'checkbox' ) );
                 ?>
             <fieldset class="invisible" id="rendezvousprevu">
@@ -75,6 +79,7 @@
                     echo $xform->input( 'Rendezvous.referent_id', array( 'label' =>  ( 'Nom de l\'agent / du référent' ), 'type' => 'select', 'options' => $referents, 'empty' => true ) );
                 ?>
             </fieldset>
+            <?php endif;?>
         </fieldset>
 
     </div>
