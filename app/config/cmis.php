@@ -250,11 +250,11 @@
 						try {
 							@self::$_connection->createFolder( $prevNode->id, $crumb );
 						} catch( Exception $e ) {
-							debug( get_class( $e ) );die();
+							debug( array( get_class( $e ), $crumb ) );die();
 						}
 					}
 
-					$prevNode = self::$_connection->getObjectByPath( $tmpPath );
+					$prevNode = @self::$_connection->getObjectByPath( $tmpPath );
 					if( empty( $prevNode ) ) {
 						return false;
 					}
@@ -262,7 +262,7 @@
 
 				return true;
 			} catch( Exception $e ) {
-				debug( get_class( $e ) );die();
+				debug( array( get_class( $e ), $crumb ) );die();
 				return false;
 			}
 		}
