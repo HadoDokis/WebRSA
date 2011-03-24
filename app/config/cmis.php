@@ -250,12 +250,13 @@
 						try {
 							@self::$_connection->createFolder( $prevNode->id, $crumb );
 						} catch( Exception $e ) {
-							debug( array( get_class( $e ), $crumb ) );die();
+							CakeLog::write( LOG_DEBUG, var_export( array( __LINE__, get_class( $e ), $tmpPath, $crumb ), true ) );
 						}
 					}
 
 					$prevNode = @self::$_connection->getObjectByPath( $tmpPath );
 					if( empty( $prevNode ) ) {
+						CakeLog::write( LOG_DEBUG, var_export( array( __LINE__, get_class( $e ), $tmpPath, $crumb ), true ) );
 						return false;
 					}
 				}
