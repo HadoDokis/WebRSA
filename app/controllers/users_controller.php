@@ -152,7 +152,7 @@
 			App::import ('Core', 'File' );
 
 			foreach( array( 'files', 'pdf' ) as $subdir ) {
-				$oFolder = new Folder( TMP.$subdir.DS.session_id(), true );
+				$oFolder = new Folder( TMP.$subdir.DS.session_id(), true, 0777 );
 				$oFolder->delete();
 			}
 		}
