@@ -25,6 +25,9 @@ msgstr ""
 # msgid "Contratinsertion.df_ci"
 # msgstr "Date de fin du contrat ?"
 
+msgid "Contratsinsertion::view"
+msgstr "Vue du contrat"
+
 msgid "Contratinsertion.niv_etude"
 msgstr "Niveau d'études ? "
 
@@ -130,6 +133,20 @@ msgstr "Durée du contrat"
 msgid "Contratinsertion.date_saisi_ci"
 msgstr "Contrat signé le "
 
+msgid "Contratinsertion.sitfam_ci"
+msgstr "Situation personnelle et familiale"
+
+msgid "Contratinsertion.sitpro_ci"
+msgstr "Situation professionnelle"
+
+msgid "Contratinsertion.observ_benef"
+msgstr "Observation(s) éventuelle(s) du bénéficiaire du contrat"
+
+msgid "Contratinsertion.current_action"
+msgstr "Intitulé de ( ou des ) actions"
+
+
+
 #-------------------------------------------------------------------------------
 
 msgid "ENUM::TYPE_DEMANDE::DOD"
@@ -143,6 +160,9 @@ msgstr "Premier contrat"
 
 msgid "ENUM::NUM_CONTRAT::REN"
 msgstr "Renouvellement"
+
+msgid "Contratinsertion.num_contrat"
+msgstr "Type de contrat"
 
 msgid "Contratinsertion.typeinsertion"
 msgstr "Type d'insertion"

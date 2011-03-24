@@ -17,7 +17,7 @@
 
 		public $name = 'Contratsinsertion';
 		public $uses = array( 'Contratinsertion', 'Option', 'Action', 'Referent', 'Personne', 'Dossier', 'Structurereferente', 'Dsp', 'Typeorient', 'Orientstruct', 'Serviceinstructeur', 'Action', 'Adressefoyer', 'Actioninsertion', 'Prestform', 'Refpresta', 'PersonneReferent' );
-		public $helpers = array( 'Ajax' );
+		public $helpers = array( 'Default2', 'Ajax' );
 		public $components = array( 'RequestHandler', 'Gedooo' );
 		public $aucunDroit = array( 'ajax', 'ajaxref', 'ajaxstruct', 'ajaxraisonci', 'notificationsop' );
 
@@ -49,7 +49,7 @@
 				$this->set( 'formeci', $this->Option->formeci() );
 			}
 
-			if( in_array( $this->action, array( 'add', 'edit'/*, 'view'*/ ) ) ) {
+			if( in_array( $this->action, array( 'add', 'edit', 'view' ) ) ) {
 				$this->set( 'qual', $this->Option->qual() );
 				$this->set( 'raison_ci', $this->Option->raison_ci() );
 				if( Configure::read( 'Cg.departement' ) == 66 ){
@@ -272,11 +272,13 @@
 		*/
 
 		public function view( $contratinsertion_id = null ) {
+
 			// On a seulement besoin des modèles liés Structurereferente, Referent et Typeorient
 			$binds = array(
 				'belongsTo' => array(
 					'Structurereferente' => $this->Contratinsertion->belongsTo['Structurereferente'],
 					'Referent' => $this->Contratinsertion->belongsTo['Referent'],
+					'Personne' => $this->Contratinsertion->belongsTo['Personne'],
 					'Typeorient' => array(
 						'table'      => $this->Typeorient->getDataSource()->fullTableName( $this->Typeorient, false ),
 						'alias'      => 'Typeorient',
@@ -311,15 +313,24 @@
 						'Contratinsertion.sect_acti_emp',
 						'Contratinsertion.emp_occupe',
 						'Contratinsertion.duree_hebdo_emp',
+						'Contratinsertion.sitfam_ci',
+                        'Contratinsertion.sitpro_ci',
+                        'Contratinsertion.observ_benef',
+                        'Contratinsertion.nature_projet',
+                        'Contratinsertion.engag_object',
+                        'Contratinsertion.current_action',
 						'Contratinsertion.nat_cont_trav',
 						'Contratinsertion.duree_cdd',
 						'Contratinsertion.duree_engag',
 						'Contratinsertion.nature_projet',
 						'Contratinsertion.engag_object',
+						'Contratinsertion.date_saisi_ci',
+						'Contratinsertion.lieu_saisi_ci',
 						'Action.libelle',
 						'Structurereferente.lib_struc',
 						'Structurereferente.typeorient_id',
 						'Referent.nom_complet',
+						'Personne.nom_complet',
 						'Typeorient.lib_type_orient',
 					),
 					'conditions' => array(
@@ -344,6 +355,11 @@
 
 			$this->_setOptions();
 			$this->set( 'personne_id', $contratinsertion['Contratinsertion']['personne_id'] );
+
+            // Retour à la liste en cas d'annulation
+            if(  isset( $this->params['form']['Cancel'] ) ) {
+                $this->redirect( array( 'action' => 'index', $contratinsertion['Contratinsertion']['personne_id'] ) );
+            }
 		}
 
 		/**
