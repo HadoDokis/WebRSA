@@ -73,7 +73,7 @@
                         $block = true;
                         
                         $isSimple = Set::classicExtract( $contratinsertion, 'Contratinsertion.forme_ci' );
-                        if( $isValid == 'V' && $isSimple == 'S' && ( mktime() >= ( strtotime( $dateValidation ) + 3600 * Configure::read( 'Periode.modifiablecer.nbheure' ) ) ) ){
+                        if( $isValid == 'V' /*&& $isSimple == 'S'*/ && ( mktime() >= ( strtotime( $dateValidation ) + 3600 * Configure::read( 'Periode.modifiablecer.nbheure' ) ) ) ){
                             $block = false;
                         }
 
@@ -81,7 +81,7 @@
                         *   Règle de blocage du bouton valider si le contrat est simple
                         */
                         $blockValid = true;
-                        if( $isValid == 'V' && $isSimple == 'S' ){
+                        if( $isValid == 'V'/* && $isSimple == 'S'*/ ){
                             $blockValid = false;
                         }
 
