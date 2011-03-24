@@ -370,7 +370,7 @@
 					)
 				);
 				if( !empty( $referent ) ) {
-					$orientstruct['Referent'] = $referent['Referent'];
+					$orientstruct['Referent'] = $referent['PersonneReferent'];
 				}
 			}
 
