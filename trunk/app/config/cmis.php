@@ -263,7 +263,7 @@
 
 				return true;
 			} catch( Exception $e ) {
-				debug( array( get_class( $e ), $crumb ) );die();
+				CakeLog::write( LOG_DEBUG, var_export( array( __LINE__, get_class( $e ), $tmpPath, $crumb ), true ) );
 				return false;
 			}
 		}
