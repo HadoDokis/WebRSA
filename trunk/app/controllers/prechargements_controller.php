@@ -90,7 +90,7 @@
 
 			// Traductions
 			App::import( 'Core', 'Folder' );
-			$folder = new Folder();
+			$folder = new Folder( false, false, 0777 );
 			$folder->cd( APP.'locale/fre/LC_MESSAGES/' );
 			$files = $folder->find('.+\.po$');
 			$domaines = array();

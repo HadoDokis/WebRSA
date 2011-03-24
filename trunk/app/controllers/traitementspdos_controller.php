@@ -420,7 +420,7 @@
 						App::import ('Core', 'File' );
 						foreach( array( 'courrier', 'piecejointe' ) as $type ) {
 							$dir = $this->_dirTraitementpdo( $this->action, $this->params['pass'][0], $type );
-							$oFolder = new Folder( $dir, true );
+							$oFolder = new Folder( $dir, true, 0777 );
 
 							// Suppression des fichiers si besoin
 							if( !Set::classicExtract( $this->data, "Traitementpdo.has{$type}" ) ) {
@@ -495,7 +495,7 @@
 					// FIXME: Début ajout des fichiers stockés en attente
 					foreach( array( 'courrier', 'piecejointe' ) as $type ) {
 						$dir = $this->_dirTraitementpdo( $this->action, $this->params['pass'][0], $type );
-						$oFolder = new Folder( $dir, true );
+						$oFolder = new Folder( $dir, true, 0777 );
 						$files = $oFolder->find();
 						if( !empty( $files ) ) {
 							foreach( $files as $file ) {
