@@ -143,7 +143,11 @@
 			if( !empty( $this->data ) ){
 
 
-// debug($this->data);
+// // debug($this->data);
+                if( isset($this->data['Entretien']['arevoirle']) ){
+                    $this->data['Entretien']['arevoirle']['day'] = '01';
+                }
+
 				if( $this->Entretien->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
 					if( $this->Entretien->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
 
