@@ -84,8 +84,8 @@
 					$dateseance_from = Set::check( $this->data, 'Seanceep.dateseance_from' ) ? Set::extract( $this->data, 'Seanceep.datecomite_from' ) : strtotime( '-1 week' );
 					$dateseance_to = Set::check( $this->data, 'Seanceep.dateseance_to' ) ? Set::extract( $this->data, 'Seanceep.datecomite_to' ) : strtotime( 'now' );
 				?>
-				<?php echo $xform->input( 'Seanceep.dateseance_from', array( 'label' => 'Du', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 10, 'selected' => $dateseance_from ) );?>
-				<?php echo $xform->input( 'Seanceep.dateseance_to', array( 'label' => 'Au', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 10, 'selected' => $dateseance_to ) );?>
+				<?php echo $xform->input( 'Seanceep.dateseance_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 10, 'selected' => $dateseance_from ) );?>
+				<?php echo $xform->input( 'Seanceep.dateseance_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 10, 'selected' => $dateseance_to ) );?>
 			</fieldset>
 
 	</fieldset>

@@ -1,5 +1,14 @@
-<h1><?php echo $this->pageTitle = $pageTitle;?></h1>
-<?php require_once( 'filtre.ctp' );?>
+<h1><?php
+    if( Configure::read( 'Cg.departement') == 66 ){
+        $pageTitle = 'Contrats Particuliers validés';
+    }
+    else{
+        $pageTitle = 'Contrats Particuliers validés';
+    }
+
+    echo $this->pageTitle = $pageTitle;
+    ?>
+</h1><?php require_once( 'filtre.ctp' );?>
 
 <?php
     if( isset( $cohorteci ) ) {

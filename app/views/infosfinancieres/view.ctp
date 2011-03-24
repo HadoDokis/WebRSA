@@ -13,10 +13,14 @@
             ).' </li>';
         ?>
     </ul>-->
-
+<?php /*debug($personne);*/?>
     <div id="ficheInfoFina">
         <table>
             <tbody>
+                <tr class="odd">
+                    <th ><?php __d( 'personne', 'Personne.nom_complet' );?></th>
+                    <td><?php echo $personne['Personne']['nom_complet'];?></td>
+                </tr>
                 <tr class="even">
                     <th ><?php __d( 'infofinanciere', 'Infofinanciere.moismoucompta' );?></th>
                     <td><?php echo  h( strftime('%B %Y', strtotime( $infofinanciere['Infofinanciere']['moismoucompta'] ) ) );?></td>

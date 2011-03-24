@@ -65,8 +65,8 @@
 		$daterelance_from = Set::check( $this->data, 'Relancenonrespectsanctionep93.daterelance_from' ) ? Set::extract( $this->data, 'Relancenonrespectsanctionep93.daterelance_from' ) : strtotime( '-1 week' );
 		$daterelance_to = Set::check( $this->data, 'Relancenonrespectsanctionep93.daterelance_to' ) ? Set::extract( $this->data, 'Relancenonrespectsanctionep93.daterelance_to' ) : strtotime( 'now' );
 	?>
-	<?php echo $form->input( 'Relancenonrespectsanctionep93.daterelance_from', array( 'label' => 'Du', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $daterelance_from ) );?>
-	<?php echo $form->input( 'Relancenonrespectsanctionep93.daterelance_to', array( 'label' => 'Au', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 5, 'minYear' => date( 'Y' ) - 120, 'selected' => $daterelance_to ) );?>
+	<?php echo $form->input( 'Relancenonrespectsanctionep93.daterelance_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $daterelance_from ) );?>
+	<?php echo $form->input( 'Relancenonrespectsanctionep93.daterelance_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 5, 'minYear' => date( 'Y' ) - 120, 'selected' => $daterelance_to ) );?>
 </fieldset>
 
 <?php
