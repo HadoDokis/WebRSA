@@ -239,15 +239,15 @@
 
 			switch( $statutValidation ) {
 				case 'Decisionci::nonvalide':
-					$this->set( 'pageTitle', 'Contrats à valider' );
+// 					$this->set( 'pageTitle', 'Contrats à valider' );
 					$this->render( $this->action, null, 'formulaire' );
 					break;
 				case 'Decisionci::enattente':
-					$this->set( 'pageTitle', 'Contrats en attente' );
+// 					$this->set( 'pageTitle', 'Contrats en attente' );
 					$this->render( $this->action, null, 'formulaire' );
 					break;
 				case 'Decisionci::valides':
-					$this->set( 'pageTitle', 'Contrats validés' );
+// 					$this->set( 'pageTitle', 'Contrats validés' );
 					$this->render( $this->action, null, 'visualisation' );
 					break;
 			}
