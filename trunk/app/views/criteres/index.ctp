@@ -47,8 +47,8 @@
                 $dtdemrsa_from = Set::check( $this->data, 'Critere.dtdemrsa_from' ) ? Set::extract( $this->data, 'Critere.dtdemrsa_from' ) : strtotime( '-1 week' );
                 $dtdemrsa_to = Set::check( $this->data, 'Critere.dtdemrsa_to' ) ? Set::extract( $this->data, 'Critere.dtdemrsa_to' ) : strtotime( 'now' );
             ?>
-            <?php echo $form->input( 'Critere.dtdemrsa_from', array( 'label' => 'Du', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $dtdemrsa_from ) );?>
-            <?php echo $form->input( 'Critere.dtdemrsa_to', array( 'label' => 'Au', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120,  'maxYear' => date( 'Y' ) + 5, 'selected' => $dtdemrsa_to ) );?>
+            <?php echo $form->input( 'Critere.dtdemrsa_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $dtdemrsa_from ) );?>
+            <?php echo $form->input( 'Critere.dtdemrsa_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120,  'maxYear' => date( 'Y' ) + 5, 'selected' => $dtdemrsa_to ) );?>
         </fieldset>
     </fieldset>
     <fieldset>
@@ -77,8 +77,8 @@
                     $date_valid_from = Set::check( $this->data, 'Critere.date_valid_from' ) ? Set::extract( $this->data, 'Critere.date_valid_from' ) : strtotime( '-1 week' );
                     $date_valid_to = Set::check( $this->data, 'Critere.date_valid_to' ) ? Set::extract( $this->data, 'Critere.date_valid_to' ) : strtotime( 'now' );
                 ?>
-                <?php echo $form->input( 'Critere.date_valid_from', array( 'label' => 'Du', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $date_valid_from ) );?>
-                <?php echo $form->input( 'Critere.date_valid_to', array( 'label' => 'Au', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120,  'maxYear' => date( 'Y' ) + 5, 'selected' => $date_valid_to ) );?>
+                <?php echo $form->input( 'Critere.date_valid_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $date_valid_from ) );?>
+                <?php echo $form->input( 'Critere.date_valid_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120,  'maxYear' => date( 'Y' ) + 5, 'selected' => $date_valid_to ) );?>
             </fieldset>
 
         <?php echo $form->input( 'Critere.typeorient_id', array( 'label' =>  __d( 'structurereferente', 'Structurereferente.lib_type_orient', true ), 'type' => 'select' , 'options' => $typeorient, 'empty' => true ) );?>

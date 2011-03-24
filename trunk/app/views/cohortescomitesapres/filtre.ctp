@@ -32,8 +32,8 @@
                     $datecomite_from = Set::check( $this->data, 'Cohortecomiteapre.datecomite_from' ) ? Set::extract( $this->data, 'Cohortecomiteapre.datecomite_from' ) : strtotime( '-1 week' );
                     $datecomite_to = Set::check( $this->data, 'Cohortecomiteapre.datecomite_to' ) ? Set::extract( $this->data, 'Cohortecomiteapre.datecomite_to' ) : strtotime( 'now' );
                 ?>
-                <?php echo $xform->input( 'Cohortecomiteapre.datecomite_from', array( 'label' => 'Du', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $datecomite_from ) );?>
-                <?php echo $xform->input( 'Cohortecomiteapre.datecomite_to', array( 'label' => 'Au', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $datecomite_to ) );?>
+                <?php echo $xform->input( 'Cohortecomiteapre.datecomite_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $datecomite_from ) );?>
+                <?php echo $xform->input( 'Cohortecomiteapre.datecomite_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $datecomite_to ) );?>
             </fieldset>
     </fieldset>
     <div class="submit noprint">

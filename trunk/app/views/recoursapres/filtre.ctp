@@ -42,8 +42,8 @@
                     $datedemandeapre_from = Set::check( $this->data, 'Recoursapre.datedemandeapre_from' ) ? Set::extract( $this->data, 'Recoursapre.datedemandeapre_from' ) : strtotime( '-1 week' );
                     $datedemandeapre_to = Set::check( $this->data, 'Recoursapre.datedemandeapre_to' ) ? Set::extract( $this->data, 'Recoursapre.datedemandeapre_to' ) : strtotime( 'now' );
                 ?>
-                <?php echo $xform->input( 'Recoursapre.datedemandeapre_from', array( 'label' => 'Du', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $datedemandeapre_from ) );?>
-                <?php echo $xform->input( 'Recoursapre.datedemandeapre_to', array( 'label' => 'Au', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $datedemandeapre_to ) );?>
+                <?php echo $xform->input( 'Recoursapre.datedemandeapre_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $datedemandeapre_from ) );?>
+                <?php echo $xform->input( 'Recoursapre.datedemandeapre_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $datedemandeapre_to ) );?>
             </fieldset>
         </fieldset>
     </fieldset>

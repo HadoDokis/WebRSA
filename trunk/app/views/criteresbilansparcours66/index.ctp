@@ -58,8 +58,8 @@
                     $datebilan_from = Set::check( $this->data, 'Bilanparcours66.datebilan_from' ) ? Set::extract( $this->data, 'Bilanparcours66.datebilan_from' ) : strtotime( '-1 week' );
                     $datebilan_to = Set::check( $this->data, 'Bilanparcours66.datebilan_to' ) ? Set::extract( $this->data, 'Bilanparcours66.datebilan_to' ) : strtotime( 'now' );
                 ?>
-                <?php echo $xform->input( 'Bilanparcours66.datebilan_from', array( 'label' => 'Du', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 10, 'selected' => $datebilan_from ) );?>
-                <?php echo $xform->input( 'Bilanparcours66.datebilan_to', array( 'label' => 'Au', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 10, 'selected' => $datebilan_to ) );?>
+                <?php echo $xform->input( 'Bilanparcours66.datebilan_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 10, 'selected' => $datebilan_from ) );?>
+                <?php echo $xform->input( 'Bilanparcours66.datebilan_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 10, 'selected' => $datebilan_to ) );?>
             </fieldset>
 
     </fieldset>
