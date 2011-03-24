@@ -19,11 +19,7 @@
 		public $actsAs = array(
 			'Autovalidate',
 			'ValidateTranslate',
-			'Formattable' => array(
-				'suffix' => array(
-					'structurereferente_id'
-				)
-			),
+			'Formattable',
 			'Enumerable' => array(
 				'fields' => array(
 					'finalisee'
@@ -36,13 +32,6 @@
 			'Ep' => array(
 				'className' => 'Ep',
 				'foreignKey' => 'ep_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
-			),
-			'Structurereferente' => array(
-				'className' => 'Structurereferente',
-				'foreignKey' => 'structurereferente_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
@@ -101,12 +90,9 @@
 				$conditions[] = array('Seanceep.identifiant'=>$criteresseanceep['Seanceep']['identifiant']);
 			}
 
-			/*if ( isset($criteresseanceep['Seanceep']['structurereferente_id']) && !empty($criteresseanceep['Seanceep']['structurereferente_id']) ) {
-				$conditions[] = array( 'Seanceep.structurereferente_id' => preg_replace( '/^([0-9]+_)*([0-9]+)$/', '\2', $criteresseanceep['Seanceep']['structurereferente_id'] ) );
-			}*/
-
 			if ( isset($criteresseanceep['Structurereferente']['ville']) && !empty($criteresseanceep['Structurereferente']['ville']) ) {
-				$conditions[] = array('Structurereferente.ville'=>$criteresseanceep['Structurereferente']['ville']);
+				//$conditions[] = array('Structurereferente.ville'=>$criteresseanceep['Structurereferente']['ville']);
+				$conditions[] = array('Seanceep.villeseance'=>$criteresseanceep['Structurereferente']['ville']);
 			}
 
 			/// Critères sur le Comité - date du comité
@@ -412,9 +398,7 @@
 					'conditions' => array(
 						'Seanceep.id' => $seanceep_id
 					),
-					'contain' => array(
-						'Structurereferente'
-					)
+					'contain' => false
 				)
 			);
 
@@ -543,9 +527,7 @@
 					'conditions' => array(
 						'Seanceep.id' => $seanceep_id
 					),
-					'contain' => array(
-						'Structurereferente'
-					)
+					'contain' => false
 				)
 			);
 
