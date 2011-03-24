@@ -259,6 +259,12 @@
 	Configure::write( 'Nonorientationpro93.delaiCreationContrat', 60 );
 
 	/**
+	* Durée du délai (en jours) accordé pour la régularisation de l'état à Pôle Emploi
+	* pour le thème "non respect et sanctions du CG 93"
+	*/
+	Configure::write( 'Nonrespectsanctionep93.delaiRegularisation', 60 );
+
+	/**
 	* Configuration pour le dialogue avec un CMS (système de gestion de contenu)
 	* comme Alfresco, servant à stocker les PDF
 	*/
