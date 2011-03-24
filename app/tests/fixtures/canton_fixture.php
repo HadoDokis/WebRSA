@@ -42,6 +42,7 @@
 				'nomvoie' => 'CCAS Saint Denis',
 				'locaadr' => 'numcomptt',
 				'codepos' => '93200',
+				'numcomptt' => '93066',
 				'canton' => null,
 				'zonegeographique_id' => '35',
 			),

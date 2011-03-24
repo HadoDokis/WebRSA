@@ -6,9 +6,6 @@
 		var $table = 'decisionsdefautsinsertionseps66';
 		var $import = array( 'table' => 'decisionsdefautsinsertionseps66', 'connection' => 'default', 'records' => false);
 		var $records = array(
-			array(
-
-			),
 		);
 	}
 
