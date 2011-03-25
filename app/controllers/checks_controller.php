@@ -30,16 +30,20 @@
 			require_once( APPLIBS.'cmis.php' );
 
 			$cmis = array(
+				'curl' => extension_loaded( 'curl' ),
+				'dom' => extension_loaded( 'dom' ),
 				'connection' => false,
 				'version' => false
 			);
 
-			try {
-				$conn = Cmis::connect();
+			if( extension_loaded( 'curl' ) && extension_loaded( 'dom' ) ) {
+				try {
+					$conn = Cmis::connect();
 
-				$cmis['connection'] = ( is_a( $conn,'CMISService' ) && $conn->authenticated );
-				$cmis['version'] = Cmis::configured();
-			} catch( Exception $e ) {
+					$cmis['connection'] = ( is_a( $conn,'CMISService' ) && $conn->authenticated );
+					$cmis['version'] = Cmis::configured();
+				} catch( Exception $e ) {
+				}
 			}
 
 			return $cmis;

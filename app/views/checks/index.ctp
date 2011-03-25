@@ -155,11 +155,31 @@
 			?>
 			<?php endif;?>
 
-			<h3>Configuration de l'accès au système de gestion de contenu (Alfresco) ?</h3>
-			<ul>
-				<li>Connexion au serveur: <?php echo booleanIcon( $xhtml, $checkCmis['connection'] ).( $checkCmis['connection'] ? 'Oui' : 'Non' );?></li>
-				<li>Version 1.0 du protocole CMIS: <?php echo booleanIcon( $xhtml, $checkCmis['version'] ).( $checkCmis['version'] ? 'Oui' : 'Non' );?></li>
-			</ul>
+			<h3>Configuration de l'accès au système de gestion de contenu (Alfresco)</h3>
+			<table>
+				<tbody>
+					<tr>
+						<td>Librairie cURL</td>
+						<td><?php echo booleanIcon( $xhtml, $checkCmis['curl'] ).( $checkCmis['curl'] ? 'Oui' : 'Non' );?></td>
+					</tr>
+					<tr>
+						<td>Extension DOM</td>
+						<td><?php echo booleanIcon( $xhtml, $checkCmis['dom'] ).( $checkCmis['dom'] ? 'Oui' : 'Non' );?></td>
+					</tr>
+					<tr>
+						<td>Connexion au serveur</td>
+						<td><?php echo booleanIcon( $xhtml, $checkCmis['connection'] ).( $checkCmis['connection'] ? 'Oui' : 'Non' );?></td>
+					</tr>
+					<tr>
+						<td>Version 1.0 du protocole CMIS</td>
+						<td><?php echo booleanIcon( $xhtml, $checkCmis['version'] ).( $checkCmis['version'] ? 'Oui' : 'Non' );?></td>
+					</tr>
+				</tbody>
+			</table>
+
+			<?php if( !$checkCmis['curl'] ):?>
+				<p class="notice">Pour installer la librairie cURL sous Ubuntu: <code>sudo aptitude install php5-curl;/etc/init.d/apache2 restart</code></p>
+			<?php endif;?>
         </table>
     </div>
 </div>
