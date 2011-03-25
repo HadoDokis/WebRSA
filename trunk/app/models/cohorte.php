@@ -53,7 +53,6 @@
 					$propo_algo = 'Emploi';
 				}
 			}
-
 			// On ne peut pas préorienter à partir des informations Pôle Emploi
 			if( is_null( $propo_algo ) ) {
 				/// Dsp

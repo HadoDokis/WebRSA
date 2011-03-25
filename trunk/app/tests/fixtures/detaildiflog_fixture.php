@@ -6,6 +6,12 @@
 		var $table = 'detailsdiflogs';
 		var $import = array( 'table' => 'detailsdiflogs', 'connection' => 'default', 'records' => false);
 		var $records = array(
+			array(
+				'id' => '1',
+				'dsp_id' => '3',
+				'diflog' => '1006',
+				'libautrdiflog' => null,
+			),
 		);
 	}
 

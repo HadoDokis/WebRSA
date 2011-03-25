@@ -27,6 +27,34 @@
 				'prenom' => 'Qsdfgh',
 				'dtnai' => '1966-03-10',
 			),
+			array(
+				'id' => '4',
+				'nir' => null,
+				'nom' => 'Dupont',
+				'prenom' => 'Zsdfgh',
+				'dtnai' => '1968-11-02',
+			),
+			array(
+				'id' => '5',
+				'nir' => null,
+				'nom' => 'Poiuytr',
+				'prenom' => 'Mlkjhg',
+				'dtnai' => '1971-11-10',
+			),
+			array(
+				'id' => '6',
+				'nir' => null,
+				'nom' => 'Qsdfghjkl',
+				'prenom' => 'Wxcvbn',
+				'dtnai' => '1949-01-02',
+			),
+			array(
+				'id' => '7',
+				'nir' => null,
+				'nom' => 'Qsdfghjkl',
+				'prenom' => 'Poiut',
+				'dtnai' => '1980-05-07'
+			),
 		);
 	}
 ?>
