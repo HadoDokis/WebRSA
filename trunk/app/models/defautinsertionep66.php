@@ -505,6 +505,23 @@
 						'conditions' => array( 'Personne.foyer_id = Foyer.id' )
 					),
 					array(
+						'table'      => 'adressesfoyers',
+						'alias'      => 'Adressefoyer',
+						'type'       => 'INNER',
+						'foreignKey' => false,
+						'conditions' => array(
+							'Adressefoyer.foyer_id = Foyer.id',
+							'Adressefoyer.rgadr' => '01'
+						)
+					),
+					array(
+						'table'      => 'adresses',
+						'alias'      => 'Adresse',
+						'type'       => 'INNER',
+						'foreignKey' => false,
+						'conditions' => array( 'Adressefoyer.adresse_id = Adresse.id' )
+					),
+					array(
 						'table'      => 'dossiers',
 						'alias'      => 'Dossier',
 						'type'       => 'INNER',
@@ -581,7 +598,7 @@
 					)'
 				) // FIXME: paramétrage
 			);
-			
+
 			$nom = Set::classicExtract( $datas, 'Personne.nom' );
 			$prenom = Set::classicExtract( $datas, 'Personne.prenom' );
 			$dtnai = null;
@@ -593,9 +610,9 @@
 			$locaadr = Set::classicExtract( $datas, 'Adresse.locaadr' );
 			$numcomptt = Set::classicExtract( $datas, 'Adresse.numcomptt' );
 			$canton = Set::classicExtract( $datas, 'Adresse.canton' );
-			
+
 			$identifiantpe = Set::classicExtract( $datas, 'Historiqueetatpe.identifiantpe' );
-			
+
 			if ( !empty( $nom ) ) {
 				$queryData['conditions'][] = array( 'Personne.nom' => $nom );
 			}
@@ -623,18 +640,18 @@
 			if ( !empty( $identifiantpe ) ) {
                 $queryData['conditions'][] = array( 'Historiqueetatpe.identifiantpe' => $identifiantpe );
             }
-			
+
 			return $queryData;
 		}
-		
+
 		/**
 		*
 		*/
-		
+
 		public function qdNonInscrits( $datas ) {
 			$queryData = $this->_qdSelection( $datas );
 			$qdNonInscrits = $this->Historiqueetatpe->Informationpe->qdNonInscrits();
-			
+
 			$queryData['fields'] = array_merge( $queryData['fields'] ,$qdNonInscrits['fields'] );
 			$queryData['joins'] = array_merge( $queryData['joins'] ,$qdNonInscrits['joins'] );
 			$queryData['conditions'] = array_merge( $queryData['conditions'] ,$qdNonInscrits['conditions'] );
@@ -688,7 +705,7 @@
 		/**
 		*
 		*/
-		
+
 		public function qdRadies( $datas ) {
 			// FIXME: et qui ne sont pas passés dans une EP pour ce motif depuis au moins 1 mois (?)
 			$queryData = $this->_qdSelection( $datas );
@@ -697,7 +714,7 @@
 			$queryData['joins'] = array_merge( $queryData['joins'] ,$qdRadies['joins'] );
 			$queryData['conditions'] = array_merge( $queryData['conditions'] ,$qdRadies['conditions'] );
 			$queryData['order'] = $qdRadies['order'];
-			
+
 			return $queryData;
 		}
 
@@ -744,7 +761,7 @@
 			// FIXME: seulement pour certains motifs
 			$queryData['conditions']['Historiqueetatpe.etat'] = 'radiation';
 			$queryData['order'] = array( 'Historiqueetatpe.date ASC' );
-			
+
 			return $queryData;
 		}*/
 

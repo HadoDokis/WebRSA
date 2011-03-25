@@ -15,6 +15,7 @@
 </ul>
 
 <?php echo $form->create( 'Defautinsertionep66', array( 'type' => 'post', 'action' => $this->action, 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );?>
+	<?php echo $form->input( 'Defautinsertionep66.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
     <fieldset>
         <legend>Recherche par personne</legend>
         <?php echo $form->input( 'Personne.nom', array( 'label' => 'Nom ', 'type' => 'text' ) );?>
