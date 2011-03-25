@@ -39,8 +39,8 @@
 			//$options['Seanceep']['ep_id'] = $this->Seanceep->Ep->find( 'list' );
 			if( !in_array( $this->action, array( 'add', 'edit', 'index' ) ) ) {
 				/// TODO: est-ce que ça a  du sens ?
-				$options['Seanceep']['typeorient_id'] = $this->Seanceep->Structurereferente->Typeorient->listOptions();
-				$options['Seanceep']['structurereferente_id'] = $this->Seanceep->Structurereferente->list1Options();
+				$options['Seanceep']['typeorient_id'] = $this->Seanceep->Dossierep->Personne->Orientstruct->Typeorient->listOptions();
+// 				$options['Seanceep']['structurereferente_id'] = $this->Seanceep->Structurereferente->list1Options();
 				$options['Seanceep']['referent_id'] = $this->Seanceep->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->Referent->listOptions();
 				$options['Nvsepdpdo66']['decisionpdo_id'] = $this->Seanceep->Dossierep->Saisineepdpdo66->Nvsepdpdo66->Decisionpdo->find('list');
 			}
