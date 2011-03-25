@@ -840,14 +840,6 @@
 	} );
 </script>
 
-<!--<?php
-	echo $fileuploader->create(
-		'piecejointe',
-		$fichiers['piecejointe'],
-		Router::url( array( 'action' => 'ajaxfileupload' ), true )
-	);
-?>-->
-
 <?php
 		echo "<table>";
 

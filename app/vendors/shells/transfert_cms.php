@@ -11,11 +11,15 @@
 		public $defaultParams = array(
 			'log' => false,
 			'logpath' => LOGS,
-			'verbose' => true,
-			'limit' => 10
+// 			'verbose' => true,
+			'limit' => 10,
+			'modele' => 'Orientstruct',
+			'usleep' => 200000,
 		);
 
-		public $verbose;
+// 		public $verbose;
+		public $modele;
+		public $usleep;
 
 		/**
 		*
@@ -24,8 +28,30 @@
 		public function initialize() {
 			parent::initialize();
 
-			$this->verbose = $this->_getNamedValue( 'verbose', 'boolean' );
+// 			$this->verbose = $this->_getNamedValue( 'verbose', 'boolean' );
 			$this->limit = $this->_getNamedValue( 'limit', 'integer' );
+			$this->modele = $this->_getNamedValue( 'modele', 'string' );
+			$this->usleep = $this->_getNamedValue( 'usleep', 'integer' );
+
+			if( !Cmis::configured() ) {
+				$this->err( 'Veuillez configurer la connexion au serveur CMS dans votre fichier app/config/webrsa.inc' );
+				$this->_stop( 1 );
+			}
+
+			$this->Pdf = ClassRegistry::init( 'Pdf' );
+
+			$modeles = $this->Pdf->find(
+				'all',
+				array(
+					'fields' => array( 'DISTINCT( "Pdf"."modele" )' ),
+					'conditions' => array(
+						'Pdf.cmspath IS NULL',
+						'Pdf.document IS NOT NULL'
+					)
+				)
+			);
+
+			$this->modeles = Set::classicExtract( $modeles, '{n}.0.modele' );
 		}
 
 		/**
@@ -44,30 +70,16 @@
 		*/
 
 		protected function _transfertPdfs( $modele ) {
-// 			Cmis::config(
-// 				Configure::read( 'Cmis.url' ),
-// 				Configure::read( 'Cmis.username' ),
-// 				Configure::read( 'Cmis.password' ),
-// 				Configure::read( 'Cmis.prefix' )
-// 			);
-
-			if( !Cmis::configured() ) {
-				$this->err( 'Veuillez configurer ...' ); // FIXME
+			if( !in_array( $modele, $this->modeles ) ) {
+				$this->err( "Il n'existe aucun document à transférer pour le modèle {$modele}." );
 				$this->_stop( 1 );
 			}
 
-			$this->Pdf = ClassRegistry::init( 'Pdf' );
-			$conditions = array( 'Pdf.modele' => $modele );
-			$conditions[] = 'Pdf.cmspath IS NULL';//FIXME
-
-			/*$documentsPresents = Cmis::read( "/{$modele}", true );//FIXME: maximum 1000
-			if( !empty( $documentsPresents['content'] ) ) {
-				$conditions['NOT']['Pdf.fk_value'] = array();
-				foreach( $documentsPresents['content'] as $documentPresent ) {
-					$id = preg_replace( '/\.pdf$/i', '', $documentPresent['cmis:name'] );
-					$conditions['NOT']['Pdf.fk_value'][] = $id;
-				}
-			}*/
+			$conditions = array(
+				'Pdf.modele' => $modele,
+				'Pdf.cmspath IS NULL',
+				'Pdf.document IS NOT NULL'
+			);
 
 			$pdfs = $this->Pdf->find(
 				'all',
@@ -78,6 +90,7 @@
 			);
 
 			$this->out( sprintf( "%s documents (%s) à traiter", count( $pdfs ), $modele ) );
+			$this->out();
 
 			$success = true;
 			if( !empty( $pdfs ) ) {
@@ -103,10 +116,11 @@
 
 					$success = $tmpSuccess && $success;
 
-					usleep( 200000 ); // FIXME: param
+					usleep( $this->usleep ); // FIXME: param
 				}
 			}
 
+			$this->out();
 			$this->_stop( ( $success ? 0 : 1 ) );
 		}
 
@@ -115,7 +129,7 @@
 		*/
 
 		public function main() { // FIXME: fonctions ?
-			$this->_transfertPdfs( 'Orientstruct' );
+			$this->_transfertPdfs( $this->modele );
 		}
 
 		/**
@@ -132,8 +146,10 @@
 			$this->out("\n\t{$this->shell} help\n\t\tAffiche cette aide.");
 			$this->out();
 			$this->out('Paramètres:');
-			$this->out("\t-verbose <booléen>\n\t\tDoit-on afficher les étapes de lecture / écriture ?\n\t\tPar défaut: ".$this->_defaultToString( 'verbose' )."\n");
-			$this->out("\t-limit <entier>\n\t\tLimite sur le nombre de tables à traiter.\n\t\tPar défaut: ".$this->_defaultToString( 'limit' )."\n");
+// 			$this->out("\t-verbose <booléen>\n\t\tDoit-on afficher les étapes de lecture / écriture ?\n\t\tPar défaut: ".$this->_defaultToString( 'verbose' )."\n");
+			$this->out("\t-modele <chaîne>\n\t\tLe type de fichiers à déplacer.\n\t\tPar défaut: ".$this->_defaultToString( 'modele' )."\n\t\tModèles disponibls: ".implode( ', ', $this->modeles )."\n" );
+			$this->out("\t-usleep <entier>\n\t\tLe temps d'attente entre deux envois (en micro-secondes).\n\t\tPar défaut: ".$this->_defaultToString( 'usleep' )."\n");
+			$this->out("\t-limit <entier>\n\t\tLimite sur le nombre d\'enregistrements à traiter.\n\t\tPar défaut: ".$this->_defaultToString( 'limit' )."\n");
 			$this->out();
 
 			$this->_stop( 0 );
