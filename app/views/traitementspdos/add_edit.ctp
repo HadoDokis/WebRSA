@@ -1020,7 +1020,7 @@
 			});
 		});
 
-		[ $('TraitementpdoForfait'), $('TraitementpdoMtaidesub'), $('TraitementpdoBenefoudef'), $('TraitementpdoAmortissements'), $('TraitementpdoSalaireexploitant'), $('TraitementpdoProvisionsnonded'), $('TraitementpdoMoinsvaluescession'), $('TraitementpdoAutrecorrection'),  ].each( function (element) {
+		[ $('TraitementpdoForfait'), $('TraitementpdoMtaidesub'), $('TraitementpdoBenefoudef'), $('TraitementpdoAmmortissements'), $('TraitementpdoSalaireexploitant'), $('TraitementpdoProvisionsnonded'), $('TraitementpdoMoinsvaluescession'), $('TraitementpdoAutrecorrection'),  ].each( function (element) {
 			element.observe( 'change', function (event) {
 				recalculmnttotal();
 			});
@@ -1124,7 +1124,7 @@
 		}
 		else if ($F('TraitementpdoRegime')=='ragri' || $F('TraitementpdoRegime')=='reel') {
 			var benefoudef = parseFloat($F('TraitementpdoBenefoudef').replace(',', '.'));
-			var amortissements = parseFloat($F('TraitementpdoAmortissements').replace(',', '.'));
+			var ammortissements = parseFloat($F('TraitementpdoAmmortissements').replace(',', '.'));
 			var salaireexploitant = parseFloat($F('TraitementpdoSalaireexploitant').replace(',', '.'));
 			var provisionsnonded = parseFloat($F('TraitementpdoProvisionsnonded').replace(',', '.'));
 			var moinsvaluescession = parseFloat($F('TraitementpdoMoinsvaluescession').replace(',', '.'));
@@ -1132,8 +1132,8 @@
 
 			if (!isNaN(benefoudef))
 				mttotal += Math.round( ( benefoudef ) * 100 ) / 100;
-			if (!isNaN(amortissements))
-				mttotal += Math.round( ( amortissements ) * 100 ) / 100;
+			if (!isNaN(ammortissements))
+				mttotal += Math.round( ( ammortissements ) * 100 ) / 100;
 			if (!isNaN(salaireexploitant))
 				mttotal += Math.round( ( salaireexploitant ) * 100 ) / 100;
 			if (!isNaN(provisionsnonded))
