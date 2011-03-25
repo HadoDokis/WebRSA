@@ -19,10 +19,34 @@
 			$this->set( 'compressedAssets', $this->_compressedAssets() );
 			$this->set( 'checkWebrsaIncEps', $this->_checkWebrsaIncEps() );
 			$this->set( 'checkSqrecherche', $this->_checkSqrecherche() );
+			$this->set( 'checkCmis', $this->_checkCmis() );
 		}
 
 		/**
-		*
+		* Vérifie la configuration de l'accès au système de gestion de contenu (Alfresco)
+		*/
+
+		protected function _checkCmis() {
+			require_once( APPLIBS.'cmis.php' );
+
+			$cmis = array(
+				'connection' => false,
+				'version' => false
+			);
+
+			try {
+				$conn = Cmis::connect();
+
+				$cmis['connection'] = ( is_a( $conn,'CMISService' ) && $conn->authenticated );
+				$cmis['version'] = Cmis::configured();
+			} catch( Exception $e ) {
+			}
+
+			return $cmis;
+		}
+
+		/**
+		* Vérifie les sous-requêtes de filtres (conditions SQL) liées aux services instructeurs
 		*/
 
 		protected function _checkSqrecherche() {

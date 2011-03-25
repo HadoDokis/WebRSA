@@ -154,6 +154,12 @@
 				}
 			?>
 			<?php endif;?>
+
+			<h3>Configuration de l'accès au système de gestion de contenu (Alfresco) ?</h3>
+			<ul>
+				<li>Connexion au serveur: <?php echo booleanIcon( $xhtml, $checkCmis['connection'] ).( $checkCmis['connection'] ? 'Oui' : 'Non' );?></li>
+				<li>Version 1.0 du protocole CMIS: <?php echo booleanIcon( $xhtml, $checkCmis['version'] ).( $checkCmis['version'] ? 'Oui' : 'Non' );?></li>
+			</ul>
         </table>
     </div>
 </div>
