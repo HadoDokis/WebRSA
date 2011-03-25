@@ -100,12 +100,12 @@
 					'required' => false
 				)
 			),
-			'dateentreeemploi' => array(
-				array(
-					'rule' => array( 'notEmptyIf', 'activitebeneficiaire', true, array( 'E', 'F' ) ),
-					'message' => 'Champ obligatoire'
-				)
-			),
+// 			'dateentreeemploi' => array(
+// 				array(
+// 					'rule' => array( 'notEmptyIf', 'activitebeneficiaire', true, array( 'E', 'F' ) ),
+// 					'message' => 'Champ obligatoire'
+// 				)
+// 			),
 
 			'dureecontrat' => array(
 				array(
