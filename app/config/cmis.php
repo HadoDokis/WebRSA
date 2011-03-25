@@ -78,10 +78,18 @@
 		*/
 
 		public function configured() {
-			$connection = self::connect();
-			$infos = @self::$_connection->getRepositoryInfo()->repositoryInfo;
+			try {
+				$connection = self::connect();
 
-			return ( !empty( $connection ) && ( $infos['cmis:cmisVersionSupported'] == '1.0' ) );
+				if( is_a( $connection,'CMISService' ) && $connection->authenticated ) {
+					$infos = @self::$_connection->getRepositoryInfo()->repositoryInfo;
+
+					return ( !empty( $connection ) && ( $infos['cmis:cmisVersionSupported'] == '1.0' ) );
+				}
+				return false;
+			} catch( Exception $e ) {
+				return false;
+			}
 		}
 
 		/**
@@ -108,7 +116,7 @@
 					);
 				}
 			} catch( Exception $e ) {//throw error
-				debug( $e );
+// 				debug( $e );
 				return false;
 			}
 
