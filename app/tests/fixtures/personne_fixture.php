@@ -141,7 +141,7 @@
 				'prenom2' => null,
 				'prenom3' => null,
 				'nomcomnai' => null,
-				'dtnai' => '1979-01-02',
+				'dtnai' => '1949-01-02',
 				'rgnai' => '1',
 				'typedtnai' => null,
 				'nir' => null,

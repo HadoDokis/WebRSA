@@ -51,12 +51,18 @@
 		}
 		
 		function testSoumisDroitsEtDevoirs() {
-			$personne_id = 1;
-			$result = $this->Personne->soumisDroitsEtDevoirs($personne_id);
-			$this->assertTrue($result);
-			$personne_id = 1337;
+			$personne_id = 1;// prestation -> ENF (ni CJT, ni DEM);
 			$result = $this->Personne->soumisDroitsEtDevoirs($personne_id);
 			$this->assertFalse($result);
+
+			$personne_id = 5;
+			$result = $this->Personne->soumisDroitsEtDevoirs($personne_id);
+			$this->assertTrue($result);
+
+
+			$personne_id = 4;//2 personnes dans le foyer mais les ressources ne sont pas suffisantes
+			$result = $this->Personne->soumisDroitsEtDevoirs($personne_id);
+			$this->assertTrue($result);
 		}
 		
 
@@ -64,10 +70,10 @@
 			$zonegeo = array('ighr8', 'pokf2');				
 			$result = $this->Personne->findByZones($zonegeo, true);
 			$expected = array(
-				'0' => '2',
-				'1' => '1',
-				'2' => '4',
-				'3' => '3',
+				'0' => '1',
+				'1' => '2',
+				'2' => '3',
+				'3' => '4',
 			);
 			$this->assertEqual($result, $expected);
 
@@ -119,12 +125,12 @@
 			$personne_id = '1';
 			$user_id = null;
 			$result = $this->Personne->newDetailsCi($personne_id, $user_id);
-			$this->assertTrue($result);
+			$this->assertFalse($result['0']);
 
 			$personne_id = '2';
 			$user_id = null;
 			$result = $this->Personne->newDetailsCi($personne_id, $user_id);
-			$this->assertFalse($result);
+			$this->assertEqual($result['Personne']['nom'], 'Dupond');
 
 			$personne_id = '1337'; //(inexistant)
 			$user_id = null;
