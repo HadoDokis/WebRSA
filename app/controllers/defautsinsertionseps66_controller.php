@@ -1,6 +1,8 @@
 <?php
 	class Defautsinsertionseps66Controller extends AppController
 	{
+		public $components = array( 'Prg' => array( 'actions' => array( 'selectionnoninscrits', 'selectionradies' ) ) );
+
 		public $helpers = array( 'Default2' );
 
 		/**
@@ -29,7 +31,7 @@
 
 		protected function _selectionPassageDefautinsertionep66( $qdName, $actionbp ) {
 // 			$personnes = array();
-			
+
 			if( !empty( $this->data ) ) {
 				$queryData = $this->Defautinsertionep66->{$qdName}($this->data);
 				$queryData['limit'] = 10;
@@ -37,12 +39,12 @@
 				$this->paginate = array( 'Personne' => $queryData );
 				$personnes = $this->paginate( $this->Defautinsertionep66->Dossierep->Personne );
 			}
-			
+
 			$this->_setOptions();
 			$this->set( compact( 'personnes' ) );
-			
+
 			$this->set( compact( 'actionbp' ) );
-			
+
 			$this->render( $this->action, null, 'selectionnoninscrits' ); // FIXME: nom de la vue
 		}
 
