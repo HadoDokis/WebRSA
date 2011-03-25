@@ -258,20 +258,26 @@
 						try {
 							@self::$_connection->createFolder( $prevNode->id, $crumb );
 						} catch( Exception $e ) {
-							CakeLog::write( LOG_DEBUG, var_export( array( __LINE__, get_class( $e ), $tmpPath, $crumb ), true ) );
+							if( Configure::read( 'debug' ) > 0 ) {
+								CakeLog::write( LOG_DEBUG, var_export( array( __LINE__, get_class( $e ), $tmpPath, $crumb ), true ) );
+							}
 						}
 					}
 
 					$prevNode = @self::$_connection->getObjectByPath( $tmpPath );
 					if( empty( $prevNode ) ) {
-						CakeLog::write( LOG_DEBUG, var_export( array( __LINE__, get_class( $e ), $tmpPath, $crumb ), true ) );
+						if( Configure::read( 'debug' ) > 0 ) {
+							CakeLog::write( LOG_DEBUG, var_export( array( __LINE__, get_class( $e ), $tmpPath, $crumb ), true ) );
+						}
 						return false;
 					}
 				}
 
 				return true;
 			} catch( Exception $e ) {
-				CakeLog::write( LOG_DEBUG, var_export( array( __LINE__, get_class( $e ), $tmpPath, $crumb ), true ) );
+				if( Configure::read( 'debug' ) > 0 ) {
+					CakeLog::write( LOG_DEBUG, var_export( array( __LINE__, get_class( $e ), $tmpPath, $crumb ), true ) );
+				}
 				return false;
 			}
 		}
