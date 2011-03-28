@@ -54,7 +54,7 @@
     </div>
 
 <?php echo $xform->end();?>
-<?php $pagination = $xpaginator->paginationBlock( 'Criteredossiercov58', $this->passedArgs ); ?>
+<?php $pagination = $xpaginator->paginationBlock( 'Dossiercov58', $this->passedArgs ); ?>
 <?php echo $pagination;?>
 <?php if( isset( $dossierscovs58 ) ):?>
     <?php if( is_array( $dossierscovs58 ) && count( $dossierscovs58 ) > 0  ):?>
