@@ -115,7 +115,7 @@
                     'Dossiercov58.themecov58_id',
                     'Dossiercov58.cov58_id',
                     'Dossiercov58.etapecov',
-//                     'Personne.id',
+                    'Personne.id',
                     'Personne.qual',
                     'Personne.nom',
                     'Personne.prenom',
