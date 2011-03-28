@@ -64,7 +64,8 @@
                     <th>'.$xpaginator->sort( __d( 'dossier', 'Dossier.numdemrsa', true ), 'Dossier.numdemrsa' ).'</th>
                     <th>'.$xpaginator->sort( __d( 'personne', 'Personne.nom_complet', true ), 'Personne.nom_complet' ).'</th>
                     <th>'.$xpaginator->sort( __d( 'dossiercov58', 'Dossiercov58.themecov58_id', true ), 'Dossiercov58.themecov58_id' ).'</th>
-                    <th>'.$xpaginator->sort( __d( 'dossiercov58', 'Dossiercov58.etapecov', true ), 'Dossiercov58.etapecov').'</td>
+                    <th>'.$xpaginator->sort( __d( 'dossiercov58', 'Dossiercov58.etapecov', true ), 'Dossiercov58.etapecov').'</th>
+                    <th>Action</th>
                 </tr></thead><tbody>';
 
                 foreach( $dossierscovs58 as $dossiercov58 ) {
@@ -72,8 +73,8 @@
                         <td>'.h( $dossiercov58['Dossier']['numdemrsa'] ).'</td>
                         <td>'.h( $dossiercov58['Personne']['nom_complet'] ).'</td>
                         <td>'.__d( 'dossiercov58',  'ENUM::THEMECOV::'.$themes[$dossiercov58['Dossiercov58']['themecov58_id']], true ).'</td>
-                        <td>'.h( Set::enum( Set::classicExtract( $dossiercov58, 'Dossiercov58.etapecov' ),  $options['etapecov'] ) )./*
-                        '<td>'.$xhtml->link( 'Voir', array( 'controller' => 'bilansparcours66', 'action' => 'index', $dossiercov58['Personne']['id'] ) ).*/'</td>
+                        <td>'.h( Set::enum( Set::classicExtract( $dossiercov58, 'Dossiercov58.etapecov' ),  $options['etapecov'] ) ).
+                        '<td>'.$xhtml->link( 'Voir', array( 'controller' => 'personnes', 'action' => 'view', $dossiercov58['Personne']['id'] ) ).'</td>
                     </tr>';
                 }
             echo '</tbody></table>';
