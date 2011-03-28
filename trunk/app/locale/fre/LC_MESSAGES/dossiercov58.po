@@ -34,6 +34,9 @@ msgstr "Proposition du référent"
 msgid "Dossiercov58.choixcov"
 msgstr "Choix de la COV"
 
+msgid "Dossiercov58.themecov58_id"
+msgstr "Thème de la COV"
+
 msgid "ENUM::ETAPECOV::cree"
 msgstr "Créé"
 

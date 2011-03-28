@@ -291,6 +291,7 @@
 		'criterebilanparcours66' => 'criteresbilansparcours66',
 		'objetentretien' => 'objetsentretien',
 		'fichiertraitementpdo' => 'fichierstraitementspdos',
+        'criteredossiercov58' => 'criteresdossierscovs58',
 	);
 /**
  * This is a key => value array of regex used to match words.

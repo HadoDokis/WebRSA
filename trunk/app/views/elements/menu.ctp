@@ -161,6 +161,11 @@
 								</ul>
 							</li>
 						<?php endif;?>
+						<?php if( Configure::read( 'Cg.departement' ) == 58 ): ?>
+                            <?php if( $permissions->check( 'criteresdossierscovs58', 'index' ) ):?>
+                                <li> <?php echo $xhtml->link( 'Par Dossiers COV', array( 'controller' => 'criteresdossierscovs58', 'action' => 'index'  ) );?> </li>
+                            <?php endif;?>
+                        <?php endif;?>
 						<?php if( Configure::read( 'Cg.departement' ) == '66' ): ?>
 							<?php if( $permissions->check( 'criteresbilansparcours66', 'index' ) ):?>
 								<li><?php echo $xhtml->link( 'Par Bilans de parcours',  array( 'controller' => 'criteresbilansparcours66', 'action' => 'index'  ) );?></li>
