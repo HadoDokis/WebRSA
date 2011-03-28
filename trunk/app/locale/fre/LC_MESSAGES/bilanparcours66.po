@@ -174,10 +174,10 @@ msgid "Bilanparcours66.examenauditionpe"
 msgstr "Raison d'examen du dossier"
 
 msgid "ENUM::EXAMENAUDITIONPE::noninscriptionpe"
-msgstr "Défaut de conclusion : Non inscrits PE"
+msgstr "Non conclusion suite à la non inscription comme demandeur d'emploi"
 
 msgid "ENUM::EXAMENAUDITIONPE::radiationpe"
-msgstr "Non respect : Radiés PE"
+msgstr "Non respect suite à la radiation de la liste des demandeurs d'emploi"
 
 msgid "Bilanparcours66.infoscomplementaires"
 msgstr "Informations complémentaires en lien avec la proposition faite"
