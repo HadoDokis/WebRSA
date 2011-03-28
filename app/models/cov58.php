@@ -28,7 +28,7 @@
 				)
 			)
 		);
-		
+
 		public $hasMany = array(
 			'Dossiercov58' => array(
 				'className' => 'Dossiercov58',
@@ -51,7 +51,7 @@
 			$conditions = array();
 
 			if ( isset($criterescov58['Cov58']['name']) && !empty($criterescov58['Cov58']['name']) ) {
-				$conditions[] = array('Cov58.name'=>$criterescov58['Cov58']['name']);
+				$conditions[] = array( 'Cov58.name ILIKE' => $this->wildcard( $criterescov58['Cov58']['name'] ) );
 			}
 
 			if ( isset($criterescov58['Cov58']['lieu']) && !empty($criterescov58['Cov58']['lieu']) ) {
@@ -124,7 +124,7 @@
 			}
 			return $dossiers;
 		}
-		
+
 		public function saveDecisions( $cov58_id, $datas ) {
 			$success = true;
 			$cov58 = $this->find(
