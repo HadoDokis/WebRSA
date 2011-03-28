@@ -10,7 +10,7 @@
 			).' </li>';
 		?>
 	</ul>
-	
+
 <?php
 	echo '<ul class="actionMenu"><li>'.$xhtml->link(
 		$xhtml->image(
@@ -60,9 +60,26 @@
 		<?php echo $xform->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>
 	</div>
 
-<?php echo $xform->end();
+<?php echo $xform->end();?>
+
+<?php
 	if( isset( $covs58 ) ) {
-		if( empty( $covs58 ) ) {
+		echo $default2->index(
+			$covs58,
+			array(
+				'Cov58.name',
+				'Cov58.datecommission',
+				'Cov58.etatcov',
+				'Cov58.observation'
+			),
+			array(
+				'actions' => array(
+					'Covs58::view'
+				)
+			)
+		);
+
+		/*if( empty( $covs58 ) ) {
 			echo $xhtml->tag( 'p', 'Aucun résultat ne correspond aux critères choisis.', array( 'class' => 'notice' ) );
 		}
 		else {
@@ -84,6 +101,6 @@
 				</tr>';
 			}
 			echo '</tbody></table>';
-		}
+		}*/
 	}
 ?>

@@ -2,7 +2,14 @@
 	class Covs58Controller extends AppController
 	{
 		public $name = 'Covs58';
+
 		public $helpers = array( 'Default', 'Default2' );
+
+		public $components = array( 'Prg' => array( 'actions' => array( 'index' ) ) );
+
+		/**
+		*
+		*/
 
 		public function beforeFilter() {
 			return parent::beforeFilter();
@@ -14,14 +21,14 @@
 
 		protected function _setOptions() {
 			$themescovs58 = $this->Cov58->Dossiercov58->Themecov58->find('list');
-			
+
 			$options = $this->Cov58->enums();
 			$options = array_merge($options, $this->Cov58->Dossiercov58->enums());
 			$typesorients = $this->Cov58->Dossiercov58->Propoorientationcov58->Structurereferente->Typeorient->listOptions();
 			$structuresreferentes = $this->Cov58->Dossiercov58->Propoorientationcov58->Structurereferente->list1Options();
-			
+
 			$this->set(compact('options', 'typesorients', 'structuresreferentes'));
-			
+
 			$decisionscovs = array( 'accepte' => 'Accepté', 'refus' => 'Refusé', 'ajourne' => 'Ajourné' );
 			$this->set(compact('decisionscovs'));
 		}
@@ -94,11 +101,11 @@
 			$this->_setOptions();
 			$this->render( null, null, 'add_edit' );
 		}
-		
+
 		/**
 		*
 		*/
-		
+
 		public function view( $cov58_id = null ) {
 			$cov58 = $this->Cov58->find(
 				'first', array(
@@ -144,11 +151,11 @@
 			$this->set(compact('dossiers'));
 			$this->set(compact('countDossiers'));
 		}
-		
+
 		/**
 		*
 		*/
-		
+
 		public function decisioncov ( $cov58_id ) {
 			$cov58 = $this->Cov58->find(
 				'first',
@@ -213,6 +220,6 @@
 			$this->_setFlashResult( 'Delete', $success );
 			$this->redirect( array( 'action' => 'index' ) );
 		}
-		
+
 	}
 ?>
