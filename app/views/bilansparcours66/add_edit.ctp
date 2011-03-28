@@ -452,7 +452,7 @@
 	<fieldset>
 		<?php
 			/// "Commission Audition PE": Examen du dossier par la commission EP Locale
-			$tmp = radioBilan( $this, 'Bilanparcours66.proposition', 'auditionpe', 'Saisine EPL Audition pour Défaut d\'insertion : Pôle Emploi' );
+			$tmp = radioBilan( $this, 'Bilanparcours66.proposition', 'auditionpe', 'Saisine EPL Audition Défaut d\'insertion Public suivi par Pôle Emploi' );
 			echo $xhtml->tag( 'h3', $tmp );
 		?>
 		<fieldset id="auditionpe" class="invisible">
@@ -823,7 +823,7 @@
 		
 		<?php if ( isset( $this->params['named']['Bilanparcours66__examenauditionpe'] ) && in_array( $this->params['named']['Bilanparcours66__examenauditionpe'], array( 'radiationpe', 'noninscriptionpe' ) ) ) { ?>
 			$( 'Bilanparcours66TypeformulaireCg' ).click();
-			[ 'radiotraitement', 'radioparcours', 'radioaudition', 'Bilanparcours66TypeformulairePe' ].each( function ( elmt ) {
+			[ 'radiotraitement', 'radioparcours', 'radioaudition', 'Bilanparcours66TypeformulairePe', 'Bilanparcours66Bilanparcoursinsertion', 'Bilanparcours66Motifep' ].each( function ( elmt ) {
 				$( elmt ).writeAttribute( 'disabled', 'disabled');
 			} );
 			$( 'radioauditionpe' ).click();
