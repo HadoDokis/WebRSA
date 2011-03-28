@@ -12,6 +12,7 @@
     {
         public $helpers = array( 'Default', 'Default2', 'Ajax', 'Locale', 'Csv' );
         public $uses = array(  'Criteredossiercov58', 'Dossiercov58' );
+
         public $components = array( 'Prg' => array( 'actions' => array( 'index' ) ) );
 
 
