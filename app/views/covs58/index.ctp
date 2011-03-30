@@ -1,6 +1,6 @@
 <?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 
-<h1><?php echo 'Commision de COV'; ?></h1>
+<h1><?php echo 'Commision d\'orientation et de validation'; ?></h1>
 
 	<ul class="actionMenu">
 		<?php
