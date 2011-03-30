@@ -18,6 +18,19 @@ DROP TABLE IF EXISTS decisionsregressionsorientationseps93 CASCADE;
 
 -- *****************************************************************************
 
+DROP INDEX IF EXISTS regressionsorientationseps93_dossierep_id_idx;
+DROP INDEX IF EXISTS regressionsorientationseps93_typeorient_id_idx;
+DROP INDEX IF EXISTS regressionsorientationseps93_structurereferente_id_idx;
+DROP INDEX IF EXISTS regressionsorientationseps93_referent_id_idx;
+DROP INDEX IF EXISTS regressionsorientationseps93_user_id_idx;
+
+DROP INDEX IF EXISTS decisionsregressionsorientationseps93_regressionorientationep93_id_idx;
+DROP INDEX IF EXISTS decisionsregressionsorientationseps93_typeorient_id_idx;
+DROP INDEX IF EXISTS decisionsregressionsorientationseps93_structurereferente_id_idx;
+DROP INDEX IF EXISTS decisionsregressionsorientationseps93_referent_id_idx;
+
+-- *****************************************************************************
+
 SELECT add_missing_table_field ('public', 'contratsinsertion', 'current_action', 'TEXT');
 
 CREATE TABLE regressionsorientationseps93 (
@@ -63,46 +76,101 @@ CREATE INDEX decisionsregressionsorientationseps93_typeorient_id_idx ON decision
 CREATE INDEX decisionsregressionsorientationseps93_structurereferente_id_idx ON decisionsregressionsorientationseps93 (structurereferente_id);
 CREATE INDEX decisionsregressionsorientationseps93_referent_id_idx ON decisionsregressionsorientationseps93 (referent_id);
 
-ALTER TABLE membreseps_seanceseps RENAME TO commissionseps_membreseps;
+-- *****************************************************************************
 
-ALTER TABLE dossierseps RENAME COLUMN seanceep_id TO commissionep_id;
-ALTER TABLE commissionseps_membreseps RENAME COLUMN seanceep_id TO commissionep_id;
-ALTER TABLE seanceseps RENAME TO commissionseps;
+CREATE OR REPLACE FUNCTION public.alter_tablename_ifexists ( p_namespace text, p_namefrom text, p_nameto text ) RETURNS bool AS
+$$
+	DECLARE
+		v_row       		record;
+		v_query     		text;
+	BEGIN
+		select 1 into v_row
+		from information_schema.tables ta
+		where ta.table_name = p_namefrom;
+		if found then
+			raise notice 'Upgrade table %.% - rename to %', p_namespace, p_namefrom, p_nameto;
+			v_query := 'alter table ' || p_namespace || '.' || p_namefrom || ' rename to ' || p_nameto || ';';
+			execute v_query;
+			return 't';
+		else
+			raise notice 'Table %.% not found', p_namespace, p_namefrom;
+			return 'f';
+		end if;
+	END;
+$$
+LANGUAGE plpgsql;
 
-ALTER TABLE nvsrsepsreorientsrs93 RENAME TO decisionsreorientationseps93;
+COMMENT ON FUNCTION public.alter_tablename_ifexists ( p_namespace text, p_namefrom text, p_nameto text ) IS 'Renomage de table p_namefrom en p_nameto si elle existe';
 
-ALTER TABLE decisionsreorientationseps93 RENAME COLUMN saisineepreorientsr93_id TO reorientationep93_id;
-ALTER TABLE saisinesepsreorientsrs93 RENAME TO reorientationseps93;
+-- *****************************************************************************
 
-ALTER TABLE nvsepdspdos66 RENAME TO decisionssaisinespdoseps66;
+CREATE OR REPLACE FUNCTION public.alter_columnname_ifexists ( p_namespace text, p_tablename text, p_columnnamefrom text, p_columnnameto text ) RETURNS bool AS
+$$
+	DECLARE
+		v_row       		record;
+		v_query     		text;
+	BEGIN
+		select 1 into v_row
+		from information_schema.columns tc
+		where tc.table_name = p_tablename
+			and tc.column_name = p_columnnamefrom;
+		if found then
+			raise notice 'Upgrade table %.% - rename colum % to %', p_namespace, p_tablename, p_columnnamefrom, p_columnnameto;
+			v_query := 'alter table ' || p_namespace || '.' || p_tablename || ' rename column ' || p_columnnamefrom || ' to ' || p_columnnameto || ';';
+			execute v_query;
+			return 't';
+		else
+			raise notice 'Column % not found in table %.%', p_columnnamefrom, p_namespace, p_tablename;
+			return 'f';
+		end if;
+	END;
+$$
+LANGUAGE plpgsql;
 
-ALTER TABLE decisionssaisinespdoseps66 RENAME COLUMN saisineepdpdo66_id TO saisinepdoep66_id;
-ALTER TABLE saisinesepdspdos66 RENAME TO saisinespdoseps66;
+COMMENT ON FUNCTION public.alter_columnname_ifexists ( p_namespace text, p_tablename text, p_columnnamefrom text, p_columnnameto text ) IS 'Renomage de la colonne p_columnnamefrom en p_columnnameto de la table p_tablename si elle existe';
 
-ALTER TABLE nvsrsepsreorient66 RENAME TO decisionssaisinesbilansparcourseps66;
+-- *****************************************************************************
 
-ALTER TABLE decisionssaisinesbilansparcourseps66 RENAME COLUMN saisineepbilanparcours66_id TO saisinebilanparcoursep66_id;
-ALTER TABLE saisinesepsbilansparcours66 RENAME TO saisinesbilansparcourseps66;
+SELECT public.alter_tablename_ifexists( 'public', 'membreseps_seanceseps', 'commissionseps_membreseps' );
 
-ALTER TABLE reorientationseps93 RENAME COLUMN motifreorient_id TO motifreorientep93_id;
-ALTER TABLE motifsreorients RENAME TO motifsreorientseps93;
+SELECT public.alter_columnname_ifexists( 'public', 'dossierseps', 'seanceep_id', 'commissionep_id' );
+SELECT public.alter_columnname_ifexists( 'public', 'commissionseps_membreseps', 'seanceep_id', 'commissionep_id' );
+SELECT public.alter_tablename_ifexists( 'public', 'seanceseps', 'commissionseps' );
 
-ALTER TABLE decisionsnonorientationspros58 RENAME COLUMN nonorientationpro58_id TO nonorientationproep58_id;
-ALTER TABLE nonorientationspros58 RENAME TO nonorientationsproseps58;
-ALTER TABLE decisionsnonorientationspros66 RENAME COLUMN nonorientationpro66_id TO nonorientationproep66_id;
-ALTER TABLE nonorientationspros66 RENAME TO nonorientationsproseps66;
-ALTER TABLE decisionsnonorientationspros93 RENAME COLUMN nonorientationpro93_id TO nonorientationproep93_id;
-ALTER TABLE nonorientationspros93 RENAME TO nonorientationsproseps93;
+SELECT public.alter_tablename_ifexists( 'public', 'nvsrsepsreorientsrs93', 'decisionsreorientationseps93' );
 
-ALTER TABLE decisionsnonorientationspros58 RENAME TO decisionsnonorientationsproseps58;
-ALTER TABLE decisionsnonorientationspros66 RENAME TO decisionsnonorientationsproseps66;
-ALTER TABLE decisionsnonorientationspros93 RENAME TO decisionsnonorientationsproseps93;
+SELECT public.alter_columnname_ifexists( 'public', 'decisionsreorientationseps93', 'saisineepreorientsr93_id', 'reorientationep93_id' );
+SELECT public.alter_tablename_ifexists( 'public', 'saisinesepsreorientsrs93', 'reorientationseps93' );
 
-ALTER TABLE eps RENAME COLUMN saisineepbilanparcours66 TO saisinebilanparcoursep66;
-ALTER TABLE eps RENAME COLUMN saisineepdpdo66 TO saisinepdoep66;
-ALTER TABLE eps RENAME COLUMN saisineepreorientsr93 TO reorientationep93;
-ALTER TABLE eps RENAME COLUMN nonorientationpro58 TO nonorientationproep58;
-ALTER TABLE eps RENAME COLUMN nonorientationpro93 TO nonorientationproep93;
+SELECT public.alter_tablename_ifexists( 'public', 'nvsepdspdos66', 'decisionssaisinespdoseps66' );
+
+SELECT public.alter_columnname_ifexists( 'public', 'decisionssaisinespdoseps66', 'saisineepdpdo66_id', 'saisinepdoep66_id' );
+SELECT public.alter_tablename_ifexists( 'public', 'saisinesepdspdos66', 'saisinespdoseps66' );
+
+SELECT public.alter_tablename_ifexists( 'public', 'nvsrsepsreorient66', 'decisionssaisinesbilansparcourseps66' );
+
+SELECT public.alter_columnname_ifexists( 'public', 'decisionssaisinesbilansparcourseps66', 'saisineepbilanparcours66_id', 'saisinebilanparcoursep66_id' );
+SELECT public.alter_tablename_ifexists( 'public', 'saisinesepsbilansparcours66', 'saisinesbilansparcourseps66' );
+
+SELECT public.alter_columnname_ifexists( 'public', 'reorientationseps93', 'motifreorient_id', 'motifreorientep93_id' );
+SELECT public.alter_tablename_ifexists( 'public', 'motifsreorients', 'motifsreorientseps93' );
+
+SELECT public.alter_columnname_ifexists( 'public', 'decisionsnonorientationspros58', 'nonorientationpro58_id', 'nonorientationproep58_id' );
+SELECT public.alter_tablename_ifexists( 'public', 'nonorientationspros58', 'nonorientationsproseps58' );
+SELECT public.alter_columnname_ifexists( 'public', 'decisionsnonorientationspros66', 'nonorientationpro66_id', 'nonorientationproep66_id' );
+SELECT public.alter_tablename_ifexists( 'public', 'nonorientationspros66', 'nonorientationsproseps66' );
+SELECT public.alter_columnname_ifexists( 'public', 'decisionsnonorientationspros93', 'nonorientationpro93_id', 'nonorientationproep93_id' );
+SELECT public.alter_tablename_ifexists( 'public', 'nonorientationspros93', 'nonorientationsproseps93' );
+
+SELECT public.alter_tablename_ifexists( 'public', 'decisionsnonorientationspros58', 'decisionsnonorientationsproseps58' );
+SELECT public.alter_tablename_ifexists( 'public', 'decisionsnonorientationspros66', 'decisionsnonorientationsproseps66' );
+SELECT public.alter_tablename_ifexists( 'public', 'decisionsnonorientationspros93', 'decisionsnonorientationsproseps93' );
+
+SELECT public.alter_columnname_ifexists( 'public', 'eps', 'saisineepbilanparcours66', 'saisinebilanparcoursep66' );
+SELECT public.alter_columnname_ifexists( 'public', 'eps', 'saisineepdpdo66', 'saisinepdoep66' );
+SELECT public.alter_columnname_ifexists( 'public', 'eps', 'saisineepreorientsr93', 'reorientationep93' );
+SELECT public.alter_columnname_ifexists( 'public', 'eps', 'nonorientationpro58', 'nonorientationproep58' );
+SELECT public.alter_columnname_ifexists( 'public', 'eps', 'nonorientationpro93', 'nonorientationproep93' );
 
 ALTER TABLE dossierseps ALTER COLUMN themeep TYPE TEXT;
 UPDATE dossierseps SET themeep = 'saisinesbilansparcourseps66' WHERE themeep = 'saisinesepsbilansparcours66';
