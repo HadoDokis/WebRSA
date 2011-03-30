@@ -187,7 +187,7 @@
 
 			// Recherche du nombre de référent lié au parcours de la personne
 			// Si aucun alors message d'erreur signalant l'absence de référent (cg66)
-			if( Configure::read( 'nom_form_ci_cg' ) == 'cg66' ) {
+// 			if( Configure::read( 'Cg.departement' ) != 93 ) {
                 $orientstruct = $this->Orientstruct->find(
                     'count',
                     array(
@@ -210,7 +210,7 @@
 					)
 				);
 				$this->set( compact( 'persreferent' ) );
-			}
+// 			}
 
 			$contratsinsertion = $this->Contratinsertion->find(
 				'all',

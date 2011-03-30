@@ -13,13 +13,16 @@
 <div class="with_treemenu">
     <h1><?php  echo 'CER  ';?></h1>
 
-        <?php if( $nbdossiersnonfinalisescovs > 0 ):?>
-            <p class="notice">Cette personne possède un contrat d'engagement réciproque en attente de passage en COV.</p>
-        <?php endif;?>
-        
-        <?php if( empty( $contratsinsertion ) ):?>
-            <p class="notice">Cette personne ne possède pas encore de contrat d'engagement réciproque.</p>
-        <?php endif;?>
+         <?php if( empty( $orientstruct ) ) :?>
+            <p class="error">Cette personne ne possède pas d'orientation. Impossible de créer un CER.</p>
+        <?php else:?>
+            <?php if( $nbdossiersnonfinalisescovs > 0 ):?>
+                <p class="notice">Cette personne possède un contrat d'engagement réciproque en attente de passage en COV.</p>
+            <?php endif;?>
+            
+            <?php if( empty( $contratsinsertion ) ):?>
+                <p class="notice">Cette personne ne possède pas encore de contrat d'engagement réciproque.</p>
+            <?php endif;?>
 
         <?php if( $permissions->check( 'proposcontratsinsertioncovs58', 'add' ) && $nbdossiersnonfinalisescovs == 0 ):?>
             <ul class="actionMenu">
@@ -31,6 +34,7 @@
                 ?>
             </ul>
         <?php endif;?>
+    <?php endif;?>
 
     <!-- <?php /*if( !empty( $contratsinsertion ) ): */?> -->
     <?php if( !empty( $contratsinsertion ) ):?>
