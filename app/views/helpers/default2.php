@@ -224,17 +224,25 @@
 							);
 						}
 						else {
+                            $hParams = array(
+                                'label' => $label,
+                                'enabled' => $enabled,
+                                'title' => sprintf(
+                                    __d( $domain, "{$controller}::{$action}", true ),
+                                    $displayFieldValue
+                                )
+                            );
+
+                            foreach( array( 'onclick' ) as $h ) {
+                                if( isset( $actionParams[$h] ) ) {
+                                    $hParams[$h] = $actionParams[$h];
+                                }
+                            }
+
 							$value = $this->button(
 								$action,
 								$url,
-								array(
-									'label' => $label,
-									'enabled' => $enabled,
-									'title' => sprintf(
-										__d( $domain, "{$controller}::{$action}", true ),
-										$displayFieldValue
-									)
-								)
+								$hParams
 							);
 						}
 
