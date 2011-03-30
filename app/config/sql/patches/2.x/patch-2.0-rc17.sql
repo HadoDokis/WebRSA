@@ -13,14 +13,14 @@ BEGIN;
 
 -- *****************************************************************************
 
-/*DROP TABLE IF EXISTS regressionsorientationseps93 CASCADE;
-DROP TABLE IF EXISTS decisionsregressionsorientationseps93 CASCADE;*/
+DROP TABLE IF EXISTS regressionsorientationseps93 CASCADE;
+DROP TABLE IF EXISTS decisionsregressionsorientationseps93 CASCADE;
 
 -- *****************************************************************************
 
 SELECT add_missing_table_field ('public', 'contratsinsertion', 'current_action', 'TEXT');
 
-/*CREATE TABLE regressionsorientationseps93 (
+CREATE TABLE regressionsorientationseps93 (
 	id      				SERIAL NOT NULL PRIMARY KEY,
 	dossierep_id			INTEGER DEFAULT NULL REFERENCES dossierseps(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	typeorient_id			INTEGER NOT NULL REFERENCES typesorients(id) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -61,7 +61,7 @@ COMMENT ON TABLE decisionsregressionsorientationseps93 IS 'Décisions pour la th
 CREATE INDEX decisionsregressionsorientationseps93_regressionorientationep93_id_idx ON decisionsregressionsorientationseps93 (regressionorientationep93_id);
 CREATE INDEX decisionsregressionsorientationseps93_typeorient_id_idx ON decisionsregressionsorientationseps93 (typeorient_id);
 CREATE INDEX decisionsregressionsorientationseps93_structurereferente_id_idx ON decisionsregressionsorientationseps93 (structurereferente_id);
-CREATE INDEX decisionsregressionsorientationseps93_referent_id_idx ON decisionsregressionsorientationseps93 (referent_id);*/
+CREATE INDEX decisionsregressionsorientationseps93_referent_id_idx ON decisionsregressionsorientationseps93 (referent_id);
 
 ALTER TABLE membreseps_seanceseps RENAME TO commissionseps_membreseps;
 
