@@ -1061,9 +1061,15 @@ td.button.cancel a, td.action a.cancel, td span.button.cancel, table.default2 td
     background-image: url( ../img/icons/cancel.png );
 }
 
-td.button.validate a, td.action a.validate, td span.button.validate, table.default2 td a.button.validate {
+td.button.valider a, td.action a.valider, td span.button.valider, table.default2 td a.button.valider {
     background-image: url( ../img/icons/tick.png );
 }
+
+
+td.button.notifop a, td.action a.notifop, td span.button.notifop, table.default2 td a.button.notifop {
+    background-image: url( ../img/icons/application_view_list.png );
+}
+
 /**/
 
 td.boolean span, table tr:nth-child(2n) td.boolean span {

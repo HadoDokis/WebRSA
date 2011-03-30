@@ -22,53 +22,10 @@
                 <p class="notice">Cette personne ne possède pas encore de CER.</p>
             <?php endif;?>
 
-            <?php if( $permissions->check( 'contratsinsertion', 'add' ) && !empty( $persreferent ) ):?>
-                <ul class="actionMenu">
-                    <?php
-                        echo '<li>'.$xhtml->addLink(
-                            'Ajouter un CER',
-                            array( 'controller' => 'contratsinsertion', 'action' => 'add', $personne_id )
-                        ).' </li>';
-                    ?>
-                </ul>
-            <?php endif;?>
-        <?php endif;?>
-
     <!-- <?php /*if( !empty( $contratsinsertion ) ): */?> -->
     <?php /*if( !empty( $contratsinsertion ) ):*/?>
     <?php
         $block = true;
-//         foreach( $contratsinsertion as $i => $contratinsertion ){
-//             $dateValidation = Set::classicExtract( $contratinsertion, 'Contratinsertion.datevalidation_ci' );
-//             $positioncer = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ), $options['positioncer'] );
-//             $isValid = Set::classicExtract( $contratinsertion, 'Contratinsertion.decision_ci' );
-//             $formeci = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.forme_ci' ), $forme_ci );
-// //         }
-//         if( $isValid == 'V' && ( mktime() >= ( strtotime( $dateValidation ) + 3600 * Configure::read( 'Periode.modifiablecer.nbheure' ) ) ) ){
-//             $block = false;
-//         }
-// 
-//         //   Règle de blocage du bouton valider si le contrat est simple
-//         $blockValid = true;
-//         if( $isValid == 'V' ){
-//             $blockValid = false;
-//         }
-
-        // Règle de blocage du bouton valider si le contrat est simple
-//         $blockImpression = false;
-//         if( $isSimple == 'S' ){
-//             $blockImpression = true;
-//         }
-// 
-//         $blockCancel = true;
-//         if( $positioncer == 'annule' ){
-//             $blockCancel = false;
-//         }
-
-/*
-debug($options);
-debug($contratsinsertion);*/
-
         $options['forme_ci'] = $forme_ci;
         $options['decision_ci'] = $decision_ci;
 
@@ -81,21 +38,27 @@ debug($contratsinsertion);*/
                 'Contratinsertion.df_ci',
                 'Contratinsertion.date_saisi_ci',
                 'Contratinsertion.decision_ci',
+                'Contratinsertion.datevalidation_ci',
                 'Contratinsertion.positioncer'
             ),
             array(
                 'actions' => array(
-                    'Contratsinsertion::validate' => array(
-                        'disabled' => '( "'.$permissions->check( 'contratsinsertion', 'validate' ).'" != "1" ) || ( "#Contratinsertion.decision_ci#" == "V" ) || ( "#Contratinsertion.forme_ci#" == "S" ) || ( "#Contratinsertion.positioncer#" == "annule" )'
+                    'Contratsinsertion::valider' => array(
+                        'disabled' => '( "'.$permissions->check( 'contratsinsertion', 'valider' ).'" != "1" ) || ( "#Contratinsertion.decision_ci#" == "V" ) || ( "#Contratinsertion.forme_ci#" == "S" ) || ( "#Contratinsertion.positioncer#" == "annule" )'
                     ),
                     'Contratsinsertion::view',
-                    'Contratsinsertion::edit' => array( /*'disabled' => ( '\'Contratsinsertion.id#\' != '.$lastDecisionId.' || \''.$etatdossierpdo.'\' == \'attpj\' || \''.$etatdossierpdo.'\' == \'dossiertraite\' ' )*/ ),
+                    'Contratsinsertion::edit' => array( 'disabled' => '( "'.$permissions->check( 'contratsinsertion', 'edit' ).'" != "1" ) || ( "#Contratinsertion.decision_ci#" == "V" ) || ( "#Contratinsertion.forme_ci#" == "S" ) || ( "#Contratinsertion.positioncer#" == "annule" )' ),
+                    'Contratsinsertion::notifop' => array(
+                        'label' => 'Notification OP',
+                        'url' => array( 'controller' => 'contratsinsertion', 'action'=>'notificationsop' ),
+                        'disabled' => '( "'.$permissions->check( 'contratsinsertion', 'notificationsop' ).'" != "1" )  || ( "#Contratinsertion.positioncer#" == "annule" )'
+                    ),
                     'Contratsinsertion::print' => array(
                         'label' => 'Imprimer',
-                        'url' => array( 'controller' => 'contratsinsertion', 'action'=>'decisionproposition' ),
-                        'disabled' => $block
+                        'url' => array( 'controller' => 'gedooos', 'action'=>'contratinsertion' ),
+                        'disabled' => '( "'.$permissions->check( 'contratsinsertion', 'print' ).'" != "1" )  || ( "#Contratinsertion.positioncer#" == "annule" )'
                     ),
-                    'Contratsinsertion::cancel'
+                    'Contratsinsertion::cancel' => array( 'onclick' => "return confirm( 'Etes-vous sûr de vouloir annuler le CER ?' )", 'disabled' => '( "'.$permissions->check( 'contratsinsertion', 'cancel' ).'" != "1" ) ||  ( "#Contratinsertion.positioncer#" == "annule" )' ),
                 ),
                 'add' => array( 'Contratinsertion.add' => array( 'controller'=>'contratsinsertion', 'action'=>'add', $personne_id , 'disabled' =>  $block ) ),
                 'options' => array( 'Contratinsertion' => $options )
@@ -215,5 +178,8 @@ debug($contratsinsertion);*/
             </tbody>
         </table> -->
     <?php /* endif;*/?>
+    
+    <?php endif;?>
+
 </div>
 <div class="clearer"><hr /></div>

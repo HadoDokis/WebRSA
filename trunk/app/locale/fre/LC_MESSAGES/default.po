@@ -411,6 +411,9 @@ msgstr "Imprimer"
 msgid "Button::validate"
 msgstr "Valider"
 
+msgid "Button::valider"
+msgstr "Valider"
+
 msgid "Button::cancel"
 msgstr "Annuler"
 

@@ -24,12 +24,29 @@ msgstr ""
 
 # msgid "Contratinsertion.df_ci"
 # msgstr "Date de fin du contrat ?"
+msgid "Contratsinsertion::add"
+msgstr "Ajouter un CER"
+
+msgid "Contratsinsertion::edit"
+msgstr "Modifier le CER"
+
+msgid "Contratinsertion::index::empty"
+msgstr "Aucun CER présent"
 
 msgid "Contratsinsertion::view"
 msgstr "Vue du contrat"
 
+msgid "Contratsinsertion::cancel"
+msgstr "Annuler le CER"
+
 msgid "Contratinsertion.niv_etude"
 msgstr "Niveau d'études ? "
+
+msgid "Contratinsertion.positioncer"
+msgstr "Position du CER"
+
+msgid "Contratinsertion.datevalidation_ci"
+msgstr "Date décision"
 
 msgid "Contratinsertion.diplomes"
 msgstr "Diplômes (scolaires, universitaires et/ou professionnels)"
