@@ -23,7 +23,6 @@
                 'Typeorient.lib_type_orient',
                 'Structurereferente.lib_struc',
                 'Referent.nom_complet' => array( 'type' => 'text' ),
-//                 'Action.libelle',
                 'Contratinsertion.num_contrat' => array( 'value' => $num ),
                 'Contratinsertion.rg_ci' => array( 'type' => 'text' ),
                 'Contratinsertion.sitfam_ci',
@@ -31,14 +30,13 @@
                 'Contratinsertion.observ_benef',
                 'Contratinsertion.nature_projet',
                 'Contratinsertion.engag_object',
-//                 'Actioninsertion.dd_action',
-                'Contratinsertion.current_action',
                 'Contratinsertion.duree_engag' => array( 'type' => 'text', 'value' => $duree ),
                 'Contratinsertion.dd_ci',
                 'Contratinsertion.df_ci',
                 'Contratinsertion.lieu_saisi_ci' => array( 'type' => 'text' ),
                 'Contratinsertion.date_saisi_ci',
-            )
+            ),
+            array( 'id' => 'vueContrat' )
         );
     ?>
 </div>
