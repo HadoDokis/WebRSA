@@ -91,7 +91,7 @@
 		* INFO: Fonction inutile pour cette thématique donc elle retourne simplement true
 		*/
 
-		public function verrouiller( $seanceep_id, $etape ) {
+		public function verrouiller( $commissionep_id, $etape ) {
 			return true;
 		}
 
@@ -102,16 +102,16 @@
 		* TODO: une autre liste pour avoir un tableau permettant d'accéder à la fiche
 		* TODO: que ceux avec accord, les autres en individuel
 		*
-		* @param integer $seanceep_id L'id technique de la séance d'EP
+		* @param integer $commissionep_id L'id technique de la séance d'EP
 		* @param string $niveauDecision Le niveau de décision ('ep' ou 'cg') pour
 		*	lequel il faut les dossiers à passer par liste.
 		* @return array
 		* @access public
 		*/
 
-		public function qdDossiersParListe( $seanceep_id, $niveauDecision ) {
+		public function qdDossiersParListe( $commissionep_id, $niveauDecision ) {
 			// Doit-on prendre une décision à ce niveau ?
-			$themes = $this->Dossierep->Seanceep->themesTraites( $seanceep_id );
+			$themes = $this->Dossierep->Commissionep->themesTraites( $commissionep_id );
 			$niveauFinal = $themes[Inflector::underscore($this->alias)];
 			if( ( $niveauFinal == 'ep' ) && ( $niveauDecision == 'cg' ) ) {
 				return array();
@@ -120,7 +120,7 @@
 			return array(
 				'conditions' => array(
 					'Dossierep.themeep' => Inflector::tableize( $this->alias ),
-					'Dossierep.seanceep_id' => $seanceep_id
+					'Dossierep.commissionep_id' => $commissionep_id
 				),
 				'contain' => array(
 					'Personne' => array(
@@ -163,8 +163,8 @@
 						'Decisionnonrespectsanctionep93' => array(
 							'order' => array( 'etape DESC' )
 						),
-						/*'Nvsrepreorientsr93',
-						'Motifreorient',
+						/*'Decisionreorientationep93',
+						'Motifreorientep93',
 						'Typeorient',
 						'Structurereferente',*/
 						'Orientstruct' => array(
@@ -179,7 +179,7 @@
 		/**
 		* FIXME
 		*
-		* @param integer $seanceep_id L'id technique de la séance d'EP
+		* @param integer $commissionep_id L'id technique de la séance d'EP
 		* @param array $datas Les données des dossiers
 		* @param string $niveauDecision Le niveau de décision ('ep' ou 'cg') pour
 		*	lequel il faut préparer les données du formulaire
@@ -187,9 +187,9 @@
 		* @access public
 		*/
 
-		public function prepareFormData( $seanceep_id, $datas, $niveauDecision ) {
+		public function prepareFormData( $commissionep_id, $datas, $niveauDecision ) {
 			// Doit-on prendre une décision à ce niveau ?
-			$themes = $this->Dossierep->Seanceep->themesTraites( $seanceep_id );
+			$themes = $this->Dossierep->Commissionep->themesTraites( $commissionep_id );
 			$niveauFinal = $themes[Inflector::underscore($this->alias)];
 			if( ( $niveauFinal == 'ep' ) && ( $niveauDecision == 'cg' ) ) {
 				return array();
@@ -283,22 +283,22 @@
 		* TODO: docs
 		*/
 
-		public function finaliser( $seanceep_id, $etape ) {
-			$seanceep = $this->Dossierep->Seanceep->find(
+		public function finaliser( $commissionep_id, $etape ) {
+			$commissionep = $this->Dossierep->Commissionep->find(
 				'first',
 				array(
-					'conditions' => array( 'Seanceep.id' => $seanceep_id ),
+					'conditions' => array( 'Commissionep.id' => $commissionep_id ),
 					'contain' => array( 'Ep' )
 				)
 			);
 
-			$niveauDecisionFinale = $seanceep['Ep'][Inflector::underscore( $this->alias )];
+			$niveauDecisionFinale = $commissionep['Ep'][Inflector::underscore( $this->alias )];
 
 			$dossierseps = $this->find(
 				'all',
 				array(
 					'conditions' => array(
-						'Dossierep.seanceep_id' => $seanceep_id,
+						'Dossierep.commissionep_id' => $commissionep_id,
 						'Dossierep.themeep' => Inflector::tableize( $this->alias ),//FIXME: ailleurs aussi
 					),
 					'contain' => array(

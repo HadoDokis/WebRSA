@@ -19,13 +19,13 @@
 		function testThemes() {
 			$result = $this->Ep->themes();
 			$expected = array(
-				'0' => 'saisineepbilanparcours66',
-				'1' => 'saisineepdpdo66',
+				'0' => 'saisinebilanparcoursep66',
+				'1' => 'saisinepdoep66',
 				'2' => 'defautinsertionep66',
 				'3' => 'nonrespectsanctionep93',
-				'4' => 'saisineepreorientsr93',
-				'5' => 'nonorientationpro93',
-				'6' => 'nonorientationpro58',
+				'4' => 'reorientationep93',
+				'5' => 'nonorientationproep93',
+				'6' => 'nonorientationproep58',
 				'7' => 'regressionorientationep58',
 				'8' => 'sanctionep58',
 			);
@@ -47,11 +47,11 @@
 					'identifiant' => 'EP1.1',
 					'regroupementep_id' => '1',
 					'defautinsertionep66' => 'nontraite',
-					'saisineepbilanparcours66' => 'nontraite',
-					'saisineepdpdo66' => 'nontraite',
+					'saisinebilanparcoursep66' => 'nontraite',
+					'saisinepdoep66' => 'nontraite',
 					'nonrespectsanctionep93' => 'cg',
-					'saisineepreorientsr93' => 'cg',
-					'nonorientationpro58' => 'nontraite',
+					'reorientationep93' => 'cg',
+					'nonorientationproep58' => 'nontraite',
 					'regressionorientationep58' => 'nontraite',
 				),
 			);

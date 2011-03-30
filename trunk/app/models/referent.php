@@ -239,8 +239,8 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
-			'Nvsrepreorient66' => array(
-				'className' => 'Nvsrepreorient66',
+			'Decisionsaisinebilanparcoursep66' => array(
+				'className' => 'Decisionsaisinebilanparcoursep66',
 				'foreignKey' => 'referent_id',
 				'dependent' => true,
 				'conditions' => '',

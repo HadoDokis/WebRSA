@@ -7,41 +7,41 @@
 	class Nonrespectsanctionep93TestCase extends CakeAppModelTestCase {
 
 		function testVerrouiller() {
-			$seanceep_id = null;
+			$commissionep_id = null;
 			$etape = null;
-			$this->assertTrue($this->Nonrespectsanctionep93->verrouiller($seanceep_id, $etape));
+			$this->assertTrue($this->Nonrespectsanctionep93->verrouiller($commissionep_id, $etape));
 		}
 
 		function testQdDossiersParListe() {
-			$seanceep_id = '3';
+			$commissionep_id = '3';
 			$niveauDecision = 'cg';
-			$return = $this->Nonrespectsanctionep93->qdDossiersParListe($seanceep_id, $niveauDecision);
+			$return = $this->Nonrespectsanctionep93->qdDossiersParListe($commissionep_id, $niveauDecision);
 			$this->assertFalse(empty($return));
 			$this->assertEqual($return['conditions']['Dossierep.themeep'], 'nonrespectssanctionseps93');
-			$this->assertEqual($return['conditions']['Dossierep.seanceep_id'], $seanceep_id);
+			$this->assertEqual($return['conditions']['Dossierep.commissionep_id'], $commissionep_id);
 
 			$niveauDecision = 'ep';
-			$return = $this->Nonrespectsanctionep93->qdDossiersParListe($seanceep_id, $niveauDecision);
+			$return = $this->Nonrespectsanctionep93->qdDossiersParListe($commissionep_id, $niveauDecision);
 			$this->assertFalse(empty($return));
 			$this->assertEqual($return['conditions']['Dossierep.themeep'], 'nonrespectssanctionseps93');
-			$this->assertEqual($return['conditions']['Dossierep.seanceep_id'], $seanceep_id);
+			$this->assertEqual($return['conditions']['Dossierep.commissionep_id'], $commissionep_id);
 
-			$seanceep_id = '6';
+			$commissionep_id = '6';
 			$niveauDecision = 'cg';
-			$return = $this->Nonrespectsanctionep93->qdDossiersParListe($seanceep_id, $niveauDecision);
+			$return = $this->Nonrespectsanctionep93->qdDossiersParListe($commissionep_id, $niveauDecision);
 			$this->assertFalse(empty($return));
 			$this->assertEqual($return['conditions']['Dossierep.themeep'], 'nonrespectssanctionseps93');
-			$this->assertEqual($return['conditions']['Dossierep.seanceep_id'], $seanceep_id);
+			$this->assertEqual($return['conditions']['Dossierep.commissionep_id'], $commissionep_id);
 
 			$niveauDecision = 'ep';
-			$return = $this->Nonrespectsanctionep93->qdDossiersParListe($seanceep_id, $niveauDecision);
+			$return = $this->Nonrespectsanctionep93->qdDossiersParListe($commissionep_id, $niveauDecision);
 			$this->assertFalse(empty($return));
 			$this->assertEqual($return['conditions']['Dossierep.themeep'], 'nonrespectssanctionseps93');
-			$this->assertEqual($return['conditions']['Dossierep.seanceep_id'], $seanceep_id);
+			$this->assertEqual($return['conditions']['Dossierep.commissionep_id'], $commissionep_id);
 		}
 
 		function testPrepareFormData() {
-			$seanceep_id = '3';
+			$commissionep_id = '3';
 			$datas = array(
 				'1' => array(
 					'id' => '1',
@@ -77,7 +77,7 @@
 				),
 			);
 			$niveauDecision = 'ep';
-			$return = $this->Nonrespectsanctionep93->prepareFormData($seanceep_id, $datas, $niveauDecision);
+			$return = $this->Nonrespectsanctionep93->prepareFormData($commissionep_id, $datas, $niveauDecision);
 			$this->assertNotNull($return);
 		}
 
@@ -124,9 +124,9 @@
 		}
 
 		function testFinaliser() {
-			$seanceep_id = null;
+			$commissionep_id = null;
 			$etape = null;
-			$result = $this->Nonrespectsanctionep93->finaliser($seanceep_id, $etape);
+			$result = $this->Nonrespectsanctionep93->finaliser($commissionep_id, $etape);
 			$this->assertTrue($result);
 		}
 

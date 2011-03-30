@@ -113,7 +113,7 @@
 					'contain' => false
 				)
 			);
-// 			debug( $seanceep );
+// 			debug( $commissionep );
 			$this->set('cov58', $cov58);
 			$this->_setOptions();
 

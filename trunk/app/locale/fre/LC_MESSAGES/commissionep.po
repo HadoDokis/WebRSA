@@ -1,0 +1,102 @@
+# translation of messages.po to
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: messages\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-01-25 23:57+0100\n"
+"PO-Revision-Date: 2009-01-26 09:34+0100\n"
+"Last-Translator: \n"
+"Language-Team:  <fr@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms: nplurals=2; plural=(n>1);\n"
+
+###############################################################################
+
+msgid "Commissionep.dateseance"
+msgstr "Date de la séance"
+
+msgid "Commissionep.finalisee"
+msgstr "Décision finale"
+
+msgid "Commissionep.identifiant"
+msgstr "Identifiant commission"
+
+msgid "Commissionep.name"
+msgstr "Intitulé"
+
+msgid "Commissionep.salle"
+msgstr "Salle"
+
+msgid "Commissionep.observations"
+msgstr "Observations"
+
+msgid "Commissionep.ep_id"
+msgstr "Equipe dont dépend la séance"
+
+msgid "Commissionep.structurereferente_id"
+msgstr "Lieu de la séance"
+
+msgid "Commissionep.edit"
+msgstr "Modifier la liste des participants à l'EP"
+
+msgid "Commissionep.presence"
+msgstr "Noter les presences des participants à l'EP"
+
+msgid "Commissionep::index::empty"
+msgstr "Aucun participant présent pour la séance de l'EP."
+
+msgid "Commissionseps::add"
+msgstr "Ajouter une nouvelle séance d'EP"
+
+msgid "Commissionseps::edit"
+msgstr "Modifier la séance d'EP"
+
+msgid "Commissionseps::delete"
+msgstr "Supprimer la séance d'EP"
+
+msgid "Commissionseps::choose"
+msgstr "Choisir les dossiers à passer à la séance d'EP"
+
+msgid "Commissionseps::ordredujour"
+msgstr "4. Imprimer l'ordre du jour"
+
+msgid "Commissionseps::traiterep"
+msgstr "5. Emettre l'avis de l'EP"
+
+msgid "Commissionseps::finaliserep"
+msgstr "6. Finaliser la séance d'EP"
+
+msgid "Commissionseps::impressionpv"
+msgstr "8. Imprimer le PV de la commission"
+
+msgid "Commissionseps::traitercg"
+msgstr "9. Emettre la décision du CG"
+
+msgid "Commissionseps::finalisercg"
+msgstr "10. Finaliser la décision CG"
+
+msgid "ENUM::FINALISEE::cg"
+msgstr "Décision CG"
+
+msgid "ENUM::FINALISEE::ep"
+msgstr "Avis de l'EP"
+
+
+msgid "Commissionep.lieuseance"
+msgstr "Lieu de la séance"
+
+msgid "Commissionep.adresseseance"
+msgstr "Adresse de la séance"
+
+msgid "Commissionep.codepostalseance"
+msgstr "Code postal de la séance"
+
+msgid "Commissionep.villeseance"
+msgstr "Ville de la séance"

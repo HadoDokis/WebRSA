@@ -40,7 +40,7 @@ msgstr "Rang passage en EP"
 msgid "Search.Nonrespectsanctionep93.mode"
 msgstr "Type de dossiers à rechercher"
 
-msgid "Search.Dossierep.seanceep_id"
+msgid "Search.Dossierep.commissionep_id"
 msgstr "Date de la séance"
 
 msgid "Nonrespectsanctionep93::index::empty"

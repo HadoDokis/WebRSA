@@ -39,10 +39,10 @@
 	if( Configure::read( 'Cg.departement' ) == 93 ) {
 		echo $default->subform(
 			array(
-				'Ep.saisineepreorientsr93' => array( 'type' => 'hidden', 'value' => 'cg' ),
+				'Ep.reorientationep93' => array( 'type' => 'hidden', 'value' => 'cg' ),
 				'Ep.nonrespectsanctionep93' => array( 'type' => 'hidden', 'value' => 'cg' ),
 				'Ep.radiepoleemploiep93' => array( 'type' => 'hidden', 'value' => 'cg' ),
-				'Ep.nonorientationpro93' => array( 'type' => 'hidden', 'value' => 'cg' ),
+				'Ep.nonorientationproep93' => array( 'type' => 'hidden', 'value' => 'cg' ),
 			)
 		);
 	}
@@ -50,7 +50,7 @@
 	elseif( Configure::read( 'Cg.departement' ) == 58 ) {
 		echo $default->subform(
 			array(
-				'Ep.nonorientationpro58' => array( 'type' => 'hidden', 'value' => 'ep' ),
+				'Ep.nonorientationproep58' => array( 'type' => 'hidden', 'value' => 'ep' ),
 				'Ep.regressionorientationep58' => array( 'type' => 'hidden', 'value' => 'ep' ),
 				'Ep.sanctionep58' => array( 'type' => 'hidden', 'value' => 'ep' ),
 			)
@@ -66,8 +66,8 @@
 			).
 			$default->subform(
 				array(
-					'Ep.saisineepbilanparcours66' => array( 'required' => true ),
-					'Ep.saisineepdpdo66' => array( 'required' => true ),
+					'Ep.saisinebilanparcoursep66' => array( 'required' => true ),
+					'Ep.saisinepdoep66' => array( 'required' => true ),
 					'Ep.defautinsertionep66' => array( 'required' => true ),
 				),
 				array(

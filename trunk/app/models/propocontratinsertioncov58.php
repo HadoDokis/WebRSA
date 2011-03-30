@@ -120,11 +120,11 @@
 		* FIXME -> aucun dossier en cours, pour certains thèmes:
 		*		- CG 93
 		*			* Nonrespectsanctionep93 -> ne débouche pas sur une orientation: '1reduction', '1maintien', '1sursis', '2suspensiontotale', '2suspensionpartielle', '2maintien'
-		*			* Saisineepreorientsr93 -> peut déboucher sur une réorientation
+		*			* Reorientationep93 -> peut déboucher sur une réorientation
 		*		- CG 66
 		*			* Defautinsertionep66 -> peut déboucher sur une orientation: 'suspensionnonrespect', 'suspensiondefaut', 'maintien', 'reorientationprofverssoc', 'reorientationsocversprof'
-		*			* Saisineepbilanparcours66 -> peut déboucher sur une réorientation
-		*			* Saisineepdpdo66 -> 'CAN', 'RSP' -> ne débouche pas sur une orientation
+		*			* Saisinebilanparcoursep66 -> peut déboucher sur une réorientation
+		*			* Saisinepdoep66 -> 'CAN', 'RSP' -> ne débouche pas sur une orientation
 		* FIXME -> CG 93: s'il existe une procédure de relance, on veut faire signer un contrat,
 					mais on veut peut-être aussi demander une réorientation.
 		* FIXME -> doit-on vérifier si:

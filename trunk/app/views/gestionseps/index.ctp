@@ -62,7 +62,7 @@
                         h( 'Motifs de demandes de réorientation' ),
                         $xhtml->viewLink(
                             'Voir la table',
-                            array( 'controller' => 'motifsreorients', 'action' => 'index' )
+                            array( 'controller' => 'motifsreorientseps93', 'action' => 'index' )
                         )
                     ),
                     array( 'class' => 'odd' ),

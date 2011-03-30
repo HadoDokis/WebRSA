@@ -102,14 +102,14 @@
 								</ul>
 							</li>
 						<?php endif; ?>
-						<?php if( $permissions->check( 'nonorientationspros', 'index' ) ): ?>
+						<?php if( $permissions->check( 'nonorientationsproseps', 'index' ) ): ?>
 							<?php if ( Configure::read( 'Cg.departement' ) == 58 ): ?>
 								<li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
-									<?php echo $xhtml->link( 'Non orientation professionnelle', array( 'controller' => 'nonorientationspros', 'action' => 'index' ) );?>
+									<?php echo $xhtml->link( 'Non orientation professionnelle', array( 'controller' => 'nonorientationsproseps', 'action' => 'index' ) );?>
 								</li>
 							<?php elseif ( Configure::read( 'Cg.departement' ) == 93 ): ?>
 								<li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
-									<?php echo $xhtml->link( 'Détection brsa en parcours social sans réorientation', array( 'controller' => 'nonorientationspros', 'action' => 'index' ) );?>
+									<?php echo $xhtml->link( 'Détection brsa en parcours social sans réorientation', array( 'controller' => 'nonorientationsproseps', 'action' => 'index' ) );?>
 								</li>
 							<?php endif; ?>
 						<?php endif; ?>
@@ -279,7 +279,7 @@
 				<?php echo $xhtml->link( 'Eq. Pluri.', '#' );?>
 				<ul>
 				<!--
-					<li><?php echo $xhtml->link( 'Liste des séances', array( 'controller' => 'seanceseps', 'action' => 'index' ) );?></li>
+					<li><?php echo $xhtml->link( 'Liste des séances', array( 'controller' => 'commissionseps', 'action' => 'index' ) );?></li>
 					<li><?php echo $xhtml->link( 'Liste des dossiers', array( 'controller' => 'dossierseps', 'action' => 'index' ) );?></li>
 					<li><?php echo $xhtml->link( 'Liste des décisions', array( 'controller' => 'dossierseps', 'action' => 'decisions' ) );?></li>
 					<li><a href="#">CG 66</a>
@@ -291,21 +291,21 @@
 					</li>
 					<li><a href="#">CG 93</a>
 						<ul>
-							<li><?php echo $xhtml->link( 'Demandes de réorientation 93', array( 'controller' => 'saisinesepsreorientsrs93', 'action' => 'index' ) );?></li>
+							<li><?php echo $xhtml->link( 'Demandes de réorientation 93', array( 'controller' => 'reorientationseps93', 'action' => 'index' ) );?></li>
 							<li><?php echo $xhtml->link( 'Demande de suspension 93', array( 'controller' => 'nonrespectssanctionseps93', 'action' => 'index' ) );?></li>
 						</ul>
 					</li>
 				-->
-					<li><?php echo $xhtml->link( 'Création / modification', array( 'controller' => 'seanceseps', 'action' => 'creationmodification' ) );?></li>
-					<li><?php echo $xhtml->link( 'Attribution des dossiers à une séance', array( 'controller' => 'seanceseps', 'action' => 'attributiondossiers' ) );?></li>
-					<li><?php echo $xhtml->link( 'Arbitrage', array( 'controller' => 'seanceseps', 'action' => 'arbitrage' ) );?></li>
-					<li><?php echo $xhtml->link( 'Recherche', array( 'controller' => 'seanceseps', 'action' => 'recherche' ) );?></li>
+					<li><?php echo $xhtml->link( 'Création / modification', array( 'controller' => 'commissionseps', 'action' => 'creationmodification' ) );?></li>
+					<li><?php echo $xhtml->link( 'Attribution des dossiers à une séance', array( 'controller' => 'commissionseps', 'action' => 'attributiondossiers' ) );?></li>
+					<li><?php echo $xhtml->link( 'Arbitrage', array( 'controller' => 'commissionseps', 'action' => 'arbitrage' ) );?></li>
+					<li><?php echo $xhtml->link( 'Recherche', array( 'controller' => 'commissionseps', 'action' => 'recherche' ) );?></li>
 					<li><a href="#">Thématiques</a>
 						<ul>
 							<?php if( Configure::read( 'Cg.departement' ) == 66 ):?>
 								<li><?php echo $xhtml->link( 'Bilans de parcours 66', array( 'controller' => 'bilansparcours66', 'action' => 'index' ) );?></li>
 							<?php elseif( Configure::read( 'Cg.departement' ) == 93 ):?>
-								<li><?php echo $xhtml->link( 'Demandes de réorientation 93', array( 'controller' => 'saisinesepsreorientsrs93', 'action' => 'index' ) );?></li>
+								<li><?php echo $xhtml->link( 'Demandes de réorientation 93', array( 'controller' => 'reorientationseps93', 'action' => 'index' ) );?></li>
 								<li><?php echo $xhtml->link( 'Demande de suspension 93', array( 'controller' => 'nonrespectssanctionseps93', 'action' => 'index' ) );?></li>
 								<li><?php echo $xhtml->link( 'Sélection des allocataires radiés de Pôle Emploi', array( 'controller' => 'nonrespectssanctionseps93', 'action' => 'selectionradies' ) );?></li>
 							<?php elseif( Configure::read( 'Cg.departement' ) == 58 ):?>

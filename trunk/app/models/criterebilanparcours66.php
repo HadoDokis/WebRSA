@@ -90,11 +90,11 @@
                     'conditions' => array( 'Bilanparcours66.id = Defautinsertionep66.bilanparcours66_id' ),
                 ),
                 array(
-                    'table'      => 'saisinesepsbilansparcours66',
-                    'alias'      => 'Saisineepbilanparcours66',
+                    'table'      => 'saisinesbilansparcourseps66',
+                    'alias'      => 'Saisinebilanparcoursep66',
                     'type'       => 'LEFT OUTER',
                     'foreignKey' => false,
-                    'conditions' => array( 'Bilanparcours66.id = Saisineepbilanparcours66.bilanparcours66_id' ),
+                    'conditions' => array( 'Bilanparcours66.id = Saisinebilanparcoursep66.bilanparcours66_id' ),
                 ),
                 array(
                     'table'      => 'dossierseps',
@@ -104,7 +104,7 @@
                     'conditions' => array(
                         'OR' => array(
                             'Defautinsertionep66.dossierep_id = Dossierep.id',
-                            'Saisineepbilanparcours66.dossierep_id = Dossierep.id',
+                            'Saisinebilanparcoursep66.dossierep_id = Dossierep.id',
                         )
                     ),
                 )

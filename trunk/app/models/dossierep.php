@@ -18,9 +18,9 @@
 		);
 
 		public $belongsTo = array(
-			'Seanceep' => array(
-				'className' => 'Seanceep',
-				'foreignKey' => 'seanceep_id',
+			'Commissionep' => array(
+				'className' => 'Commissionep',
+				'foreignKey' => 'commissionep_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
@@ -36,8 +36,8 @@
 
 		public $hasOne = array(
 			// Thèmes 66
-			'Saisineepbilanparcours66' => array(
-				'className' => 'Saisineepbilanparcours66',
+			'Saisinebilanparcoursep66' => array(
+				'className' => 'Saisinebilanparcoursep66',
 				'foreignKey' => 'dossierep_id',
 				'dependent' => true,
 				'conditions' => '',
@@ -49,8 +49,8 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
-			'Saisineepdpdo66' => array(
-				'className' => 'Saisineepdpdo66',
+			'Saisinepdoep66' => array(
+				'className' => 'Saisinepdoep66',
 				'foreignKey' => 'dossierep_id',
 				'dependent' => true,
 				'conditions' => '',
@@ -75,8 +75,8 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
-			'Nonorientationpro66' => array(
-				'className' => 'Nonorientationpro66',
+			'Nonorientationproep66' => array(
+				'className' => 'Nonorientationproep66',
 				'foreignKey' => 'dossierep_id',
 				'dependent' => true,
 				'conditions' => '',
@@ -89,8 +89,8 @@
 				'counterQuery' => ''
 			),
 			// Thèmes 93
-			'Saisineepreorientsr93' => array(
-				'className' => 'Saisineepreorientsr93',
+			'Reorientationep93' => array(
+				'className' => 'Reorientationep93',
 				'foreignKey' => 'dossierep_id',
 				'dependent' => true,
 				'conditions' => '',
@@ -115,8 +115,8 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
-			'Nonorientationpro93' => array(
-				'className' => 'Nonorientationpro93',
+			'Nonorientationproep93' => array(
+				'className' => 'Nonorientationproep93',
 				'foreignKey' => 'dossierep_id',
 				'dependent' => true,
 				'conditions' => '',
@@ -129,8 +129,8 @@
 				'counterQuery' => ''
 			),
 			// Thèmes 58
-			'Nonorientationpro58' => array(
-				'className' => 'Nonorientationpro58',
+			'Nonorientationproep58' => array(
+				'className' => 'Nonorientationproep58',
 				'foreignKey' => 'dossierep_id',
 				'dependent' => true,
 				'conditions' => '',
@@ -182,19 +182,19 @@
 						"{$this->alias}.{$this->primaryKey}" => $id
 					),
 					'contain' => array(
-						'Seanceep' => array(
+						'Commissionep' => array(
 							'Ep'
 						)
 					)
 				)
 			);
 			
-			$themes = $this->Seanceep->Ep->themes();
+			$themes = $this->Commissionep->Ep->themes();
 			$themesTraites = array();
 
 			foreach( $themes as $key => $theme ) {
-				if( Inflector::tableize( $theme ) == $dossierep['Dossierep']['themeep'] && in_array( $dossierep['Seanceep']['Ep'][$theme], array( 'ep', 'cg' ) ) ) {
-					$themesTraites[$theme] = $dossierep['Seanceep']['Ep'][$theme];
+				if( Inflector::tableize( $theme ) == $dossierep['Dossierep']['themeep'] && in_array( $dossierep['Commissionep']['Ep'][$theme], array( 'ep', 'cg' ) ) ) {
+					$themesTraites[$theme] = $dossierep['Commissionep']['Ep'][$theme];
 				}
 			}
 			return $themesTraites;

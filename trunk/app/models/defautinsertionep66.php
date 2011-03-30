@@ -105,7 +105,7 @@
 		* INFO: Fonction inutile dans cette saisine donc elle retourne simplement true
 		*/
 
-		public function verrouiller( $seanceep_id, $etape ) {
+		public function verrouiller( $commissionep_id, $etape ) {
 			return true;
 		}
 
@@ -116,16 +116,16 @@
 		* TODO: une autre liste pour avoir un tableau permettant d'accéder à la fiche
 		* TODO: que ceux avec accord, les autres en individuel
 		*
-		* @param integer $seanceep_id L'id technique de la séance d'EP
+		* @param integer $commissionep_id L'id technique de la séance d'EP
 		* @param string $niveauDecision Le niveau de décision ('ep' ou 'cg') pour
 		*	lequel il faut les dossiers à passer par liste.
 		* @return array
 		* @access public
 		*/
 
-		public function qdDossiersParListe( $seanceep_id, $niveauDecision ) {
+		public function qdDossiersParListe( $commissionep_id, $niveauDecision ) {
 			// Doit-on prendre une décision à ce niveau ?
-			$themes = $this->Dossierep->Seanceep->themesTraites( $seanceep_id );
+			$themes = $this->Dossierep->Commissionep->themesTraites( $commissionep_id );
 			$niveauFinal = $themes[Inflector::underscore($this->alias)];
 			if( ( $niveauFinal == 'ep' ) && ( $niveauDecision == 'cg' ) ) {
 				return array();
@@ -134,7 +134,7 @@
 			return array(
 				'conditions' => array(
 					'Dossierep.themeep' => Inflector::tableize( $this->alias ),
-					'Dossierep.seanceep_id' => $seanceep_id,
+					'Dossierep.commissionep_id' => $commissionep_id,
 				),
 				'contain' => array(
 					'Personne' => array(
@@ -212,7 +212,7 @@
 		* en prenant en compte les données du bilan ou du niveau de décision
 		* précédent.
 		*
-		* @param integer $seanceep_id L'id technique de la séance d'EP
+		* @param integer $commissionep_id L'id technique de la séance d'EP
 		* @param array $datas Les données des dossiers
 		* @param string $niveauDecision Le niveau de décision pour lequel il
 		* 	faut préparer les données du formulaire
@@ -220,9 +220,9 @@
 		* @access public
 		*/
 
-		public function prepareFormData( $seanceep_id, $datas, $niveauDecision ) {
+		public function prepareFormData( $commissionep_id, $datas, $niveauDecision ) {
 			// Doit-on prendre une décision à ce niveau ?
-			$themes = $this->Dossierep->Seanceep->themesTraites( $seanceep_id );
+			$themes = $this->Dossierep->Commissionep->themesTraites( $commissionep_id );
 			$niveauFinal = $themes[Inflector::underscore($this->alias)];
 			if( ( $niveauFinal == 'ep' ) && ( $niveauDecision == 'cg' ) ) {
 				return array();
@@ -277,20 +277,20 @@
 // debug( $formData );
 			/*if( $niveauDecision == 'ep' ) {
 				foreach( $datas as $key => $dossierep ) {
-					if (isset($dossierep[$this->alias]['Nvsrepreorient66'][0]['id'])) {
-						$formData['Nvsrepreorient66'][$key]['id'] = $dossierep[$this->alias]['Nvsrepreorient66'][0]['id'];
-						$formData['Nvsrepreorient66'][$key]['typeorient_id'] = $dossierep[$this->alias]['Nvsrepreorient66'][0]['typeorient_id'];
-						$formData['Nvsrepreorient66'][$key]['structurereferente_id'] = implode(
+					if (isset($dossierep[$this->alias]['Decisionsaisinebilanparcoursep66'][0]['id'])) {
+						$formData['Decisionsaisinebilanparcoursep66'][$key]['id'] = $dossierep[$this->alias]['Decisionsaisinebilanparcoursep66'][0]['id'];
+						$formData['Decisionsaisinebilanparcoursep66'][$key]['typeorient_id'] = $dossierep[$this->alias]['Decisionsaisinebilanparcoursep66'][0]['typeorient_id'];
+						$formData['Decisionsaisinebilanparcoursep66'][$key]['structurereferente_id'] = implode(
 							'_',
 							array(
-								$dossierep[$this->alias]['Nvsrepreorient66'][0]['typeorient_id'],
-								$dossierep[$this->alias]['Nvsrepreorient66'][0]['structurereferente_id']
+								$dossierep[$this->alias]['Decisionsaisinebilanparcoursep66'][0]['typeorient_id'],
+								$dossierep[$this->alias]['Decisionsaisinebilanparcoursep66'][0]['structurereferente_id']
 							)
 						);
 					}
 					else {
-						$formData['Nvsrepreorient66'][$key]['typeorient_id'] = $dossierep[$this->alias]['typeorient_id'];
-						$formData['Nvsrepreorient66'][$key]['structurereferente_id'] = implode(
+						$formData['Decisionsaisinebilanparcoursep66'][$key]['typeorient_id'] = $dossierep[$this->alias]['typeorient_id'];
+						$formData['Decisionsaisinebilanparcoursep66'][$key]['structurereferente_id'] = implode(
 							'_',
 							array(
 								$dossierep[$this->alias]['typeorient_id'],
@@ -302,26 +302,26 @@
 			}
 			else if( $niveauDecision == 'cg' ) {
 				foreach( $datas as $key => $dossierep ) {
-					if (isset($dossierep[$this->alias]['Nvsrepreorient66'][1]['id'])) {
-						$formData['Nvsrepreorient66'][$key]['id'] = $dossierep[$this->alias]['Nvsrepreorient66'][1]['id'];
-						$formData['Nvsrepreorient66'][$key]['decision'] = $dossierep[$this->alias]['Nvsrepreorient66'][1]['decision'];
-						$formData['Nvsrepreorient66'][$key]['typeorient_id'] = $dossierep[$this->alias]['Nvsrepreorient66'][1]['typeorient_id'];
-						$formData['Nvsrepreorient66'][$key]['structurereferente_id'] = implode(
+					if (isset($dossierep[$this->alias]['Decisionsaisinebilanparcoursep66'][1]['id'])) {
+						$formData['Decisionsaisinebilanparcoursep66'][$key]['id'] = $dossierep[$this->alias]['Decisionsaisinebilanparcoursep66'][1]['id'];
+						$formData['Decisionsaisinebilanparcoursep66'][$key]['decision'] = $dossierep[$this->alias]['Decisionsaisinebilanparcoursep66'][1]['decision'];
+						$formData['Decisionsaisinebilanparcoursep66'][$key]['typeorient_id'] = $dossierep[$this->alias]['Decisionsaisinebilanparcoursep66'][1]['typeorient_id'];
+						$formData['Decisionsaisinebilanparcoursep66'][$key]['structurereferente_id'] = implode(
 							'_',
 							array(
-								$dossierep[$this->alias]['Nvsrepreorient66'][1]['typeorient_id'],
-								$dossierep[$this->alias]['Nvsrepreorient66'][1]['structurereferente_id']
+								$dossierep[$this->alias]['Decisionsaisinebilanparcoursep66'][1]['typeorient_id'],
+								$dossierep[$this->alias]['Decisionsaisinebilanparcoursep66'][1]['structurereferente_id']
 							)
 						);
 					}
 					else {
-						$formData['Nvsrepreorient66'][$key]['decision'] = $dossierep[$this->alias]['Nvsrepreorient66'][0]['decision'];
-						$formData['Nvsrepreorient66'][$key]['typeorient_id'] = $dossierep[$this->alias]['Nvsrepreorient66'][0]['typeorient_id'];
-						$formData['Nvsrepreorient66'][$key]['structurereferente_id'] = implode(
+						$formData['Decisionsaisinebilanparcoursep66'][$key]['decision'] = $dossierep[$this->alias]['Decisionsaisinebilanparcoursep66'][0]['decision'];
+						$formData['Decisionsaisinebilanparcoursep66'][$key]['typeorient_id'] = $dossierep[$this->alias]['Decisionsaisinebilanparcoursep66'][0]['typeorient_id'];
+						$formData['Decisionsaisinebilanparcoursep66'][$key]['structurereferente_id'] = implode(
 							'_',
 							array(
-								$dossierep[$this->alias]['Nvsrepreorient66'][0]['typeorient_id'],
-								$dossierep[$this->alias]['Nvsrepreorient66'][0]['structurereferente_id']
+								$dossierep[$this->alias]['Decisionsaisinebilanparcoursep66'][0]['typeorient_id'],
+								$dossierep[$this->alias]['Decisionsaisinebilanparcoursep66'][0]['structurereferente_id']
 							)
 						);
 					}
@@ -340,22 +340,22 @@
 		* TODO: docs
 		*/
 
-		public function finaliser( $seanceep_id, $etape ) {
-			$seanceep = $this->Dossierep->Seanceep->find(
+		public function finaliser( $commissionep_id, $etape ) {
+			$commissionep = $this->Dossierep->Commissionep->find(
 				'first',
 				array(
-					'conditions' => array( 'Seanceep.id' => $seanceep_id ),
+					'conditions' => array( 'Commissionep.id' => $commissionep_id ),
 					'contain' => array( 'Ep' )
 				)
 			);
 
-			$niveauDecisionFinale = $seanceep['Ep'][Inflector::underscore( $this->alias )];
+			$niveauDecisionFinale = $commissionep['Ep'][Inflector::underscore( $this->alias )];
 
 			$dossierseps = $this->find(
 				'all',
 				array(
 					'conditions' => array(
-						'Dossierep.seanceep_id' => $seanceep_id,
+						'Dossierep.commissionep_id' => $commissionep_id,
 						'Dossierep.themeep' => Inflector::tableize( $this->alias ),//FIXME: ailleurs aussi
 					),
 					'contain' => array(
@@ -424,7 +424,7 @@
 								'personne_id' => $dossierep['Dossierep']['personne_id'],
 								// FIXME: changer le nom du thème (reorientationsmaintiens66) ? 2 sous-thèmes: venant du bilan + veant réorientation suite décision commission audition
 								// FIXME: faire une nouvelle thématique
-								'themeep' => 'saisinesepsbilansparcours66'
+								'themeep' => 'saisinesbilansparcourseps66'
 							),*/
 							'Bilanparcours66' => array(
 								'personne_id' => $dossierep['Dossierep']['personne_id'],
@@ -446,7 +446,7 @@
 								//Rédigé par ???
 							),
 							// FIXME: bilan de parcours arrangé ? nouvelle thématique ?
-							'Saisineepbilanparcours66' => array(
+							'Saisinebilanparcoursep66' => array(
 								'typeorient_id' => @$dossierep['Decisiondefautinsertionep66'][0]['typeorient_id'],
 								'structurereferente_id' => @$dossierep['Decisiondefautinsertionep66'][0]['structurereferente_id'],
 							)
@@ -587,14 +587,14 @@
 						SELECT
 								dossierseps.personne_id
 							FROM dossierseps
-								INNER JOIN seanceseps ON (
-									dossierseps.seanceep_id = seanceseps.id
+								INNER JOIN commissionseps ON (
+									dossierseps.commissionep_id = commissionseps.id
 								)
 							WHERE
 								dossierseps.personne_id = Personne.id
 								AND dossierseps.etapedossierep = \'traite\'
 								AND dossierseps.themeep = \'defautsinsertionseps66\'
-								AND seanceseps.dateseance >= \''.date( 'Y-m-d', strtotime( '-2 mons' ) ).'\'
+								AND commissionseps.dateseance >= \''.date( 'Y-m-d', strtotime( '-2 mons' ) ).'\'
 					)'
 				) // FIXME: paramétrage
 			);

@@ -2,8 +2,8 @@
 	<?php
 		echo $this->pageTitle = sprintf(
 			'Dossiers à passer dans la séance de l\'EP « %s » du %s',
-			$seanceep['Ep']['name'],
-			$locale->date( 'Locale->datetime', $seanceep['Seanceep']['dateseance'] )
+			$commissionep['Ep']['name'],
+			$locale->date( 'Locale->datetime', $commissionep['Commissionep']['dateseance'] )
 		);
 	?>
 </h1>
@@ -37,9 +37,9 @@
     echo $default->button(
 		'back',
         array(
-        	'controller' => 'seanceseps',
+        	'controller' => 'commissionseps',
         	'action'     => 'view',
-        	$seanceep_id
+        	$commissionep_id
         ),
         array(
         	'id' => 'Back'

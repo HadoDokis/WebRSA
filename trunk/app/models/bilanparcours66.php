@@ -126,8 +126,8 @@
 		);
 
 		public $hasOne = array(
-			'Saisineepbilanparcours66' => array(
-				'className' => 'Saisineepbilanparcours66',
+			'Saisinebilanparcoursep66' => array(
+				'className' => 'Saisinebilanparcoursep66',
 				'foreignKey' => 'bilanparcours66_id',
 				'dependent' => true,
 				'conditions' => '',
@@ -193,7 +193,7 @@
 		* Sauvegarde du bilan de parcours d'un allocataire.
 		*
 		* Le bilan de parcours entraîne:
-		*	- pour le thème réorientation/saisinesepsbilansparcours66
+		*	- pour le thème réorientation/saisinesbilansparcourseps66
 		*		* soit un maintien de l'orientation, sans passage en EP
 		*		* soit une saisine de l'EP locale, commission parcours
 		*
@@ -212,7 +212,7 @@
 			//if( !empty( $data[$this->alias]['maintienorientation'] ) ) {
 			if( @$data[$this->alias]['proposition'] == 'traitement' ) {
 				$cleanedData = $data;
-				unset( $cleanedData['Saisineepbilanparcours66'] );
+				unset( $cleanedData['Saisinebilanparcoursep66'] );
 				return $this->maintien( $cleanedData );
 			}
 			// Saisine de l'EP
@@ -445,17 +445,17 @@
 					$dataDossierEp = array(
 						'Dossierep' => array(
 							'personne_id' => $vxOrientstruct['Orientstruct']['personne_id'],
-							'themeep' => 'saisinesepsbilansparcours66'
+							'themeep' => 'saisinesbilansparcourseps66'
 						)
 					);
-					$this->Saisineepbilanparcours66->Dossierep->create( $dataDossierEp );
-					$success = $this->Saisineepbilanparcours66->Dossierep->save() && $success;
+					$this->Saisinebilanparcoursep66->Dossierep->create( $dataDossierEp );
+					$success = $this->Saisinebilanparcoursep66->Dossierep->save() && $success;
 
 					// Sauvegarde de la saisine
-					$data['Saisineepbilanparcours66']['bilanparcours66_id'] = $this->id;
-					$data['Saisineepbilanparcours66']['dossierep_id'] = $this->Saisineepbilanparcours66->Dossierep->id;
-					$this->Saisineepbilanparcours66->create( $data );
-					$success = $this->Saisineepbilanparcours66->save() && $success;
+					$data['Saisinebilanparcoursep66']['bilanparcours66_id'] = $this->id;
+					$data['Saisinebilanparcoursep66']['dossierep_id'] = $this->Saisinebilanparcoursep66->Dossierep->id;
+					$this->Saisinebilanparcoursep66->create( $data );
+					$success = $this->Saisinebilanparcoursep66->save() && $success;
 				}
 			}
 			// Saisine audition

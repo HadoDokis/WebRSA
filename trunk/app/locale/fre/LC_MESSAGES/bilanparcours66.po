@@ -328,10 +328,10 @@ msgstr "Bilan du parcours"
 msgid "Pe.Bilanparcours66.observbenef"
 msgstr "Observations du bénéficiaire"
 
-msgid "Pe.Saisineepbilanparcours66.typeorient_id"
+msgid "Pe.Saisinebilanparcoursep66.typeorient_id"
 msgstr "Nouvelle orientation préconisée"
 
-msgid "Pe.Saisineepbilanparcours66.structurereferente_id"
+msgid "Pe.Saisinebilanparcoursep66.structurereferente_id"
 msgstr "Nouvelle structure préconisée"
 
 msgid "Pe.Bilanparcours66.datebilan"

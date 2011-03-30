@@ -2,7 +2,7 @@
 	echo $theme->index(
 		$motifsreorientation,
 		array(
-			'Motifreorientation.name',
+			'Motifreorientep93ation.name',
 		),
 		array(
 			'view',

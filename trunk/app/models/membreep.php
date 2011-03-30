@@ -47,11 +47,11 @@
 		);
 		
 		public $hasAndBelongsToMany = array(
-			'Seanceep' => array(
-				'className' => 'Seanceep',
-				'joinTable' => 'membreseps_seanceseps',
+			'Commissionep' => array(
+				'className' => 'Commissionep',
+				'joinTable' => 'commissionseps_membreseps',
 				'foreignKey' => 'membreep_id',
-				'associationForeignKey' => 'seanceep_id',
+				'associationForeignKey' => 'commissionep_id',
 				'unique' => true,
 				'conditions' => '',
 				'fields' => '',
@@ -61,7 +61,7 @@
 				'finderQuery' => '',
 				'deleteQuery' => '',
 				'insertQuery' => '',
-				'with' => 'MembreepSeanceep'
+				'with' => 'CommissionepMembreep'
 			),
 			'Ep' => array(
 				'className' => 'Ep',

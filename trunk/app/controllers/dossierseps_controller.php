@@ -34,13 +34,13 @@
 					'Personne.qual',
 					'Personne.nom',
 					'Personne.prenom',
-					'Seanceep.dateseance',
+					'Commissionep.dateseance',
 					'Dossierep.created',
 					'Dossierep.etapedossierep',
 					'Dossierep.themeep',
 				),
 				'contain' => array(
-					'Seanceep',
+					'Commissionep',
 					'Personne',
 				),
 				'limit' => 10
@@ -54,13 +54,13 @@
 		*
 		*/
 
-		public function choose( $seanceep_id ) {
-			$seanceep = $this->Dossierep->Seanceep->find(
+		public function choose( $commissionep_id ) {
+			$commissionep = $this->Dossierep->Commissionep->find(
 				'first',
 				array(
 					'conditions' => array(
-						'Seanceep.id' => $seanceep_id,
-						//'Seanceep.finalisee IS NULL'
+						'Commissionep.id' => $commissionep_id,
+						//'Commissionep.finalisee IS NULL'
 					),
 					'contain' => array(
 						'Ep' => array(
@@ -70,7 +70,7 @@
 				)
 			);
 
-			if( !empty( $seanceep['Seanceep']['finalisee'] ) ) {
+			if( !empty( $commissionep['Commissionep']['finalisee'] ) ) {
 				$this->Session->setFlash( 'Impossible d\'attribuer des dossiers à une commission d\'EP lorsque celle-ci comporte déjà des avis ou des décisions.', 'default', array( 'class' => 'error' ) );
 				$this->redirect( $this->referer() );
 			}
@@ -80,7 +80,7 @@
 			// Début conditions zones géographiques CG 93
 			if( Configure::read( 'CG.cantons' ) == false ) {
 				$zonesgeographiques = Set::extract(
-					$seanceep,
+					$commissionep,
 					'Ep.Zonegeographique.{n}.codeinsee'
 				);
 				if( !empty( $zonesgeographiques ) ) {
@@ -94,7 +94,7 @@
 			else {
 			/// Critères sur l'adresse - canton
 				$zonesgeographiques = Set::extract(
-					$seanceep,
+					$commissionep,
 					'Ep.Zonegeographique.{n}.id'
 				);
 
@@ -126,7 +126,7 @@
 				if( !empty( $notInEp ) ) {
 					$success = $this->Dossierep->updateAll(
 						array(
-							'Dossierep.seanceep_id' => null,
+							'Dossierep.commissionep_id' => null,
 							'Dossierep.etapedossierep' => '\'cree\''
 						),
 						array( '"Dossierep"."id" IN ( \''.implode( '\', \'', $notInEp ).'\' )' )
@@ -137,7 +137,7 @@
 				if( !empty( $inEp ) ) {
 					$success = $this->Dossierep->updateAll(
 						array(
-							'Dossierep.seanceep_id' => $seanceep_id,
+							'Dossierep.commissionep_id' => $commissionep_id,
 							'Dossierep.etapedossierep' => '\'seance\''
 						),
 						array( '"Dossierep"."id" IN ( \''.implode( '\', \'', $inEp ).'\' )' )
@@ -150,14 +150,14 @@
 
 				if( $success ) {
 					$this->Dossierep->commit();
-					$this->redirect( array( 'controller'=>'seanceseps', 'action'=>'view', $seanceep_id, '#dossiers' ) );
+					$this->redirect( array( 'controller'=>'commissionseps', 'action'=>'view', $commissionep_id, '#dossiers' ) );
 				}
 				else {
 					$this->Dossierep->rollback();
 				}
 			}
 
-			$themes = $this->Dossierep->Seanceep->themesTraites($seanceep_id);
+			$themes = $this->Dossierep->Commissionep->themesTraites($commissionep_id);
 			$listeThemes = null;
 			if( !empty( $themes ) ) {
 				$listeThemes['OR'] = array();
@@ -177,13 +177,13 @@
 							'Personne.qual',
 							'Personne.nom',
 							'Personne.prenom',
-							'Seanceep.dateseance',
-							'Dossierep.seanceep_id',
+							'Commissionep.dateseance',
+							'Dossierep.commissionep_id',
 							'Dossierep.created',
 							'Dossierep.themeep',
 						),
 						'contain' => array(
-							'Seanceep' => array(
+							'Commissionep' => array(
 								'Ep'
 							)
 						),
@@ -236,16 +236,16 @@
 				// INFO: pour avoir le formulaire pré-rempli ... à mettre dans le modèle également ?
 				if( empty( $this->data ) ) {
 					foreach( $dossierseps as $key => $dossierep ) {
-						$dossierseps[$key]['Dossierep']['chosen'] =  ( ( $dossierep['Dossierep']['seanceep_id'] == $seanceep_id ) );
+						$dossierseps[$key]['Dossierep']['chosen'] =  ( ( $dossierep['Dossierep']['commissionep_id'] == $commissionep_id ) );
 					}
 				}
 
 				$options = $this->Dossierep->enums();
-				$options['Dossierep']['seanceep_id'] = $this->Dossierep->Seanceep->find(
+				$options['Dossierep']['commissionep_id'] = $this->Dossierep->Commissionep->find(
 					'list',
 					array(
 						'conditions' => array(
-							'Seanceep.finalisee' => null
+							'Commissionep.finalisee' => null
 						)
 					)
 				);
@@ -255,8 +255,8 @@
 				$this->set( 'themeEmpty', true );
 			}
 
-			$this->set( compact( 'options', 'dossierseps', 'seanceep' ) );
-			$this->set( 'seanceep_id', $seanceep_id);
+			$this->set( compact( 'options', 'dossierseps', 'commissionep' ) );
+			$this->set( 'commissionep_id', $commissionep_id);
 		}
 
 		public function decisioncg ( $dossierep_id ) {
@@ -287,7 +287,7 @@
 					$this->_setFlashResult( 'Save', true );
 					//$this->Dossierep->rollback();
 					$this->Dossierep->commit();
-					$this->redirect(array('controller'=>'seanceseps', 'action'=>'traitercg', $dossierep['Dossierep']['seanceep_id']));
+					$this->redirect(array('controller'=>'commissionseps', 'action'=>'traitercg', $dossierep['Dossierep']['commissionep_id']));
 				}
 				else {
 					$this->_setFlashResult( 'Save', false );
@@ -313,13 +313,13 @@
 						'Personne.qual',
 						'Personne.nom',
 						'Personne.prenom',
-						'Seanceep.dateseance',
+						'Commissionep.dateseance',
 						'Dossierep.created',
 						'Dossierep.etapedossierep',
 						'Dossierep.themeep',
 					),*/
 					'contain' => array(
-						'Seanceep',
+						'Commissionep',
 						'Personne' => array(
 							'Foyer' => array(
 								'Adressefoyer' => array(
@@ -338,22 +338,22 @@
 								'limit' => 1
 							)
 						),
-						'Saisineepbilanparcours66' => array(
-							'Nvsrepreorient66' => array(
+						'Saisinebilanparcoursep66' => array(
+							'Decisionsaisinebilanparcoursep66' => array(
 								'order' => 'created DESC',
 								'limit' => 1
 							)
 						),
-						'Saisineepdpdo66' => array(
-							'Nvsepdpdo66' => array(
+						'Saisinepdoep66' => array(
+							'Decisionsaisinepdoep66' => array(
 								'order' => 'created DESC',
 								'limit' => 1,
 								'Decisionpdo'
 							)
 						),
 						// Thèmes 93
-						'Saisineepreorientsr93' => array(
-							'Nvsrepreorientsr93' => array(
+						'Reorientationep93' => array(
+							'Decisionreorientationep93' => array(
 								'order' => 'created DESC',
 								'limit' => 1
 							)
@@ -366,7 +366,7 @@
 						),
 					),
 					'conditions' => array(
-						'Dossierep.seanceep_id IS NOT NULL',
+						'Dossierep.commissionep_id IS NOT NULL',
 						'Dossierep.etapedossierep' => 'traite',
 					),
 					'limit' => 10
@@ -377,10 +377,10 @@
 			$decisions = array(
 				// CG 66
 				'Defautinsertionep66' => $this->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->enumList( 'decision' ),
-				'Saisineepbilanparcours66' => $this->Dossierep->Saisineepbilanparcours66->Nvsrepreorient66->enumList( 'decision' ),
+				'Saisinebilanparcoursep66' => $this->Dossierep->Saisinebilanparcoursep66->Decisionsaisinebilanparcoursep66->enumList( 'decision' ),
 				// CG 93
 				'Nonrespectsanctionep93' => $this->Dossierep->Nonrespectsanctionep93->Decisionnonrespectsanctionep93->enumList( 'decision' ),
-				'Saisineepreorientsr93' => $this->Dossierep->Saisineepreorientsr93->Nvsrepreorientsr93->enumList( 'decision' )
+				'Reorientationep93' => $this->Dossierep->Reorientationep93->Decisionreorientationep93->enumList( 'decision' )
 			);
 // debug( $decisions );
 			$this->set( compact( 'decisions' ) );

@@ -57,16 +57,16 @@
 		* TODO: une autre liste pour avoir un tableau permettant d'accéder à la fiche
 		* TODO: que ceux avec accord, les autres en individuel
 		*
-		* @param integer $seanceep_id L'id technique de la séance d'EP
+		* @param integer $commissionep_id L'id technique de la séance d'EP
 		* @param string $niveauDecision Le niveau de décision ('ep' ou 'cg') pour
 		*	lequel il faut les dossiers à passer par liste.
 		* @return array
 		* @access public
 		*/
 
-		public function qdDossiersParListe( $seanceep_id, $niveauDecision ) {
+		public function qdDossiersParListe( $commissionep_id, $niveauDecision ) {
 			// Doit-on prendre une décision à ce niveau ?
-			$themes = $this->Dossierep->Seanceep->themesTraites( $seanceep_id );
+			$themes = $this->Dossierep->Commissionep->themesTraites( $commissionep_id );
 			$niveauFinal = $themes[Inflector::underscore($this->alias)];
 			if( ( $niveauFinal == 'ep' ) && ( $niveauDecision == 'cg' ) ) {
 				return array();
@@ -75,7 +75,7 @@
 			return array(
 				'conditions' => array(
 					'Dossierep.themeep' => Inflector::tableize( $this->alias ),
-					'Dossierep.seanceep_id' => $seanceep_id,
+					'Dossierep.commissionep_id' => $commissionep_id,
 				),
 				'contain' => array(
 					'Personne' => array(
@@ -106,9 +106,9 @@
 			);
 		}
 
-		public function prepareFormData( $seanceep_id, $datas, $niveauDecision ) {
+		public function prepareFormData( $commissionep_id, $datas, $niveauDecision ) {
 			// Doit-on prendre une décision à ce niveau ?
-			$themes = $this->Dossierep->Seanceep->themesTraites( $seanceep_id );
+			$themes = $this->Dossierep->Commissionep->themesTraites( $commissionep_id );
 			$niveauFinal = $themes[Inflector::underscore($this->alias)];
 			if( ( $niveauFinal == 'ep' ) && ( $niveauDecision == 'cg' ) ) {
 				return array();
@@ -228,7 +228,7 @@
 		* INFO: Fonction inutile dans cette saisine donc elle retourne simplement true
 		*/
 
-		public function verrouiller( $seanceep_id, $etape ) {
+		public function verrouiller( $commissionep_id, $etape ) {
 			return true;
 		}
 

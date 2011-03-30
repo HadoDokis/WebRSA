@@ -256,7 +256,7 @@
 	* Durée du délai (en jours) accordé pour la création d'un nouveau contrat pour
 	* le thème "détection brsa en parcours social sans réorientation"
 	*/
-	Configure::write( 'Nonorientationpro93.delaiCreationContrat', 60 );
+	Configure::write( 'Nonorientationproep93.delaiCreationContrat', 60 );
 
 	/**
 	* Durée du délai (en jours) accordé pour la régularisation de l'état à Pôle Emploi
