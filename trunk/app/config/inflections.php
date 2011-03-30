@@ -272,6 +272,8 @@
 		'decisionnonorientationproep93' => 'decisionsnonorientationsproseps93',
 		'regressionorientationep58' => 'regressionsorientationseps58',
 		'decisionregressionorientationep58' => 'decisionsregressionsorientationseps58',
+		'regressionorientationep93' => 'regressionsorientationseps93',
+		'decisionregressionorientationep93' => 'decisionsregressionsorientationseps93',
 		'sanctionep58' => 'sanctionseps58',
 		'decisionsanctionep58' => 'decisionssanctionseps58',
 		'listesanctionep58' => 'listesanctionseps58',
