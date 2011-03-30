@@ -126,8 +126,8 @@
 
 					$conditions = array( "information_schema.tables.table_schema = '{$schema['Schema']['name']}'" );
 
-					if( $schema['Schema']['name'] == 'public' && $this->module == 'public.eps' ) {
-						$tables_eps = array(
+					if( $schema['Schema']['name'] == 'public' && $this->module == 'eps' ) {
+						/*$tables_eps = array(
 							'personnes',
 							// EPs
 							'dossierseps',
@@ -165,9 +165,11 @@
 							'commissionseps_membreseps',
 						);
 
-						$conditions[] = "information_schema.tables.table_name IN ( '".implode( "',\n'", $tables_eps )."' )\n";
+						$conditions[] = "information_schema.tables.table_name IN ( '".implode( "',\n'", $tables_eps )."' )\n";*/
+
+						$conditions[] = "( information_schema.tables.table_name ~ '.*eps[0-9]{0,2}$' ) OR ( information_schema.tables.table_name ~ '.*eps[0-9]{0,2}_.*$' )\n";
 					}
-					else if( $schema['Schema']['name'] == 'public' && $this->module == 'public.apres' ) {
+					else if( $schema['Schema']['name'] == 'public' && $this->module == 'apres' ) {
 						$tables_apres = array(
 							'personnes',
 							'aidesapres66_piecesaides66',
@@ -483,7 +485,7 @@
 // 			$this->out("\t-logpath <répertoire>\n\t\tLe répertoire dans lequel enregistrer les fichiers de journalisation.\n\t\tPar défaut: ".$this->_defaultToString( 'logpath' )."\n");
 			$this->out("\t-verbose <booléen>\n\t\tDoit-on afficher les étapes de lecture / écriture ?\n\t\tPar défaut: ".$this->_defaultToString( 'verbose' )."\n");
 			$this->out("\t-limit <entier>\n\t\tLimite sur le nombre de tables à traiter.\n\t\tPar défaut: ".$this->_defaultToString( 'limit' )."\n");
-			$this->out("\t-module <string>\n\t\tNom du module à traiter (disponible: public.apres, public.eps).\n\t\tPar défaut: ".$this->_defaultToString( 'module' )."\n");
+			$this->out("\t-module <string>\n\t\tNom du module à traiter (disponible: apres, eps).\n\t\tPar défaut: ".$this->_defaultToString( 'module' )."\n");
 			$this->out("\t-module <string>\n\t\tNom du schéma à traiter.\n\t\tPar défaut: ".$this->_defaultToString( 'schema' )."\n");
 			$this->out();
 
