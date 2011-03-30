@@ -62,6 +62,10 @@
             <?php echo $form->input( 'Dossier.dtdemrsa_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $dtdemrsa_from ) );?>
             <?php echo $form->input( 'Dossier.dtdemrsa_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'maxYear' => date( 'Y' ) + 5, 'selected' => $dtdemrsa_to ) );?>
         </fieldset>
+		<?php
+			$valueDossierDernier = isset( $this->data['Dossier']['dernier'] ) ? $this->data['Dossier']['dernier'] : true;
+			echo $form->input( 'Dossier.dernier', array( 'label' => 'Seulement les derniers dossiers', 'type' => 'checkbox', 'checked' => $valueDossierDernier ) );
+		?>
     </fieldset>
     <fieldset>
         <legend>Recherche par Adresse</legend>
