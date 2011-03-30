@@ -13,8 +13,8 @@
 				$options['Membreep']['fonctionmembreep_id'] = $this->Membreep->Fonctionmembreep->find( 'list' );
 				$options['Membreep']['ep_id'] = $this->Membreep->Ep->find( 'list' );
 			}
-			$enums = $this->Membreep->MembreepSeanceep->enums();
-			$options['MembreepSeanceep'] = $enums['MembreepSeanceep'];
+			$enums = $this->Membreep->CommissionepMembreep->enums();
+			$options['CommissionepMembreep'] = $enums['CommissionepMembreep'];
 			$this->set( compact( 'options' ) );
 		}
 
@@ -157,40 +157,40 @@
 		public function editliste( $ep_id, $seance_id ) {
 			if( !empty( $this->data ) ) {
 				$success = true;
-				$this->Membreep->MembreepSeanceep->begin();
-				foreach($this->data['MembreepSeanceep']['Membreep_id'] as $membreep_id => $reponse) {
-					$existeEnBase = $this->Membreep->MembreepSeanceep->find(
+				$this->Membreep->CommissionepMembreep->begin();
+				foreach($this->data['CommissionepMembreep']['Membreep_id'] as $membreep_id => $reponse) {
+					$existeEnBase = $this->Membreep->CommissionepMembreep->find(
 						'first',
 						array(
 							'conditions'=>array(
-								'MembreepSeanceep.membreep_id'=>$membreep_id,
-								'MembreepSeanceep.seanceep_id'=>$seance_id
+								'CommissionepMembreep.membreep_id'=>$membreep_id,
+								'CommissionepMembreep.commissionep_id'=>$seance_id
 							),
 							'contain' => false
 						)
 					);
 
 					if (!empty($existeEnBase)) {
-						$existeEnBase['MembreepSeanceep']['reponse'] = $reponse['reponse'];
-						$this->Membreep->MembreepSeanceep->create( $existeEnBase );
-						$success = $this->Membreep->MembreepSeanceep->save() && $success;
+						$existeEnBase['CommissionepMembreep']['reponse'] = $reponse['reponse'];
+						$this->Membreep->CommissionepMembreep->create( $existeEnBase );
+						$success = $this->Membreep->CommissionepMembreep->save() && $success;
 					}
 					else {
-						$nouvelleEntree['MembreepSeanceep']['seanceep_id'] = $seance_id;
-						$nouvelleEntree['MembreepSeanceep']['membreep_id'] = $membreep_id;
-						$nouvelleEntree['MembreepSeanceep']['reponse'] = $reponse['reponse'];
-						$this->Membreep->MembreepSeanceep->create($nouvelleEntree);
-						$success = $this->Membreep->MembreepSeanceep->save() && $success;
+						$nouvelleEntree['CommissionepMembreep']['commissionep_id'] = $seance_id;
+						$nouvelleEntree['CommissionepMembreep']['membreep_id'] = $membreep_id;
+						$nouvelleEntree['CommissionepMembreep']['reponse'] = $reponse['reponse'];
+						$this->Membreep->CommissionepMembreep->create($nouvelleEntree);
+						$success = $this->Membreep->CommissionepMembreep->save() && $success;
 					}
 				}
 				
 				$this->_setFlashResult( 'Save', $success );
 				if ($success) {
-					$this->Membreep->MembreepSeanceep->commit();
-					$this->redirect(array('controller'=>'seanceseps', 'action'=>'view', $seance_id));
+					$this->Membreep->CommissionepMembreep->commit();
+					$this->redirect(array('controller'=>'commissionseps', 'action'=>'view', $seance_id));
 				}
 				else {
-					$this->Membreep->MembreepSeanceep->rollback();
+					$this->Membreep->CommissionepMembreep->rollback();
 				}
 			}
 
@@ -206,7 +206,7 @@
 						'Membreep.mail',
 						'Membreep.fonctionmembreep_id',
 						'Membreep.suppleant_id',
-						'MembreepSeanceep.reponse',
+						'CommissionepMembreep.reponse',
 						'Suppleant.qual',
 						'Suppleant.nom',
 						'Suppleant.prenom'
@@ -222,22 +222,22 @@
 							)
 						),
 						array(
-							'table' => 'membreseps_seanceseps',
-							'alias' => 'MembreepSeanceep',
+							'table' => 'commissionseps_membreseps',
+							'alias' => 'CommissionepMembreep',
 							'type' => 'LEFT OUTER',
 							'foreignKey' => false,
 							'conditions' => array(
-								'Membreep.id = MembreepSeanceep.membreep_id',
-								'MembreepSeanceep.seanceep_id' => $seance_id
+								'Membreep.id = CommissionepMembreep.membreep_id',
+								'CommissionepMembreep.commissionep_id' => $seance_id
 							)
 						),
 						array(
-							'table' => 'seanceseps',
-							'alias' => 'Seanceep',
+							'table' => 'commissionseps',
+							'alias' => 'Commissionep',
 							'type' => 'LEFT OUTER',
 							'foreignKey' => false,
 							'conditions' => array(
-								'Seanceep.id = MembreepSeanceep.seanceep_id'
+								'Commissionep.id = CommissionepMembreep.commissionep_id'
 							)
 						),
 						array(
@@ -320,40 +320,40 @@
 		public function editpresence( $ep_id, $seance_id ) {
 			if( !empty( $this->data ) ) {
 				$success = true;
-				$this->Membreep->MembreepSeanceep->begin();
-				foreach($this->data['MembreepSeanceep']['Membreep_id'] as $membreep_id => $reponse) {
-					$existeEnBase = $this->Membreep->MembreepSeanceep->find(
+				$this->Membreep->CommissionepMembreep->begin();
+				foreach($this->data['CommissionepMembreep']['Membreep_id'] as $membreep_id => $reponse) {
+					$existeEnBase = $this->Membreep->CommissionepMembreep->find(
 						'first',
 						array(
 							'conditions'=>array(
-								'MembreepSeanceep.membreep_id'=>$membreep_id,
-								'MembreepSeanceep.seanceep_id'=>$seance_id
+								'CommissionepMembreep.membreep_id'=>$membreep_id,
+								'CommissionepMembreep.commissionep_id'=>$seance_id
 							),
 							'contain' => false
 						)
 					);
 
 					if (!empty($existeEnBase)) {
-						$existeEnBase['MembreepSeanceep']['presence'] = $reponse['presence'];
-						$this->Membreep->MembreepSeanceep->create( $existeEnBase );
-						$success = $this->Membreep->MembreepSeanceep->save() && $success;
+						$existeEnBase['CommissionepMembreep']['presence'] = $reponse['presence'];
+						$this->Membreep->CommissionepMembreep->create( $existeEnBase );
+						$success = $this->Membreep->CommissionepMembreep->save() && $success;
 					}
 					else {
-						$nouvelleEntree['MembreepSeanceep']['seanceep_id'] = $seance_id;
-						$nouvelleEntree['MembreepSeanceep']['membreep_id'] = $membreep_id;
-						$nouvelleEntree['MembreepSeanceep']['presence'] = $reponse['presence'];
-						$this->Membreep->MembreepSeanceep->create($nouvelleEntree);
-						$success = $this->Membreep->MembreepSeanceep->save() && $success;
+						$nouvelleEntree['CommissionepMembreep']['commissionep_id'] = $seance_id;
+						$nouvelleEntree['CommissionepMembreep']['membreep_id'] = $membreep_id;
+						$nouvelleEntree['CommissionepMembreep']['presence'] = $reponse['presence'];
+						$this->Membreep->CommissionepMembreep->create($nouvelleEntree);
+						$success = $this->Membreep->CommissionepMembreep->save() && $success;
 					}
 				}
 				
 				$this->_setFlashResult( 'Save', $success );
 				if ($success) {
-					$this->Membreep->MembreepSeanceep->commit();
-					$this->redirect(array('controller'=>'seanceseps', 'action'=>'view', $seance_id));
+					$this->Membreep->CommissionepMembreep->commit();
+					$this->redirect(array('controller'=>'commissionseps', 'action'=>'view', $seance_id));
 				}
 				else {
-					$this->Membreep->MembreepSeanceep->rollback();
+					$this->Membreep->CommissionepMembreep->rollback();
 				}
 			}
 
@@ -369,8 +369,8 @@
 						'Membreep.mail',
 						'Membreep.fonctionmembreep_id',
 						'Membreep.suppleant_id',
-						'MembreepSeanceep.reponse',
-						'MembreepSeanceep.presence',
+						'CommissionepMembreep.reponse',
+						'CommissionepMembreep.presence',
 						'Suppleant.qual',
 						'Suppleant.nom',
 						'Suppleant.prenom'
@@ -386,22 +386,22 @@
 							)
 						),
 						array(
-							'table' => 'membreseps_seanceseps',
-							'alias' => 'MembreepSeanceep',
+							'table' => 'commissionseps_membreseps',
+							'alias' => 'CommissionepMembreep',
 							'type' => 'LEFT OUTER',
 							'foreignKey' => false,
 							'conditions' => array(
-								'Membreep.id = MembreepSeanceep.membreep_id',
-								'MembreepSeanceep.seanceep_id' => $seance_id
+								'Membreep.id = CommissionepMembreep.membreep_id',
+								'CommissionepMembreep.commissionep_id' => $seance_id
 							)
 						),
 						array(
-							'table' => 'seanceseps',
-							'alias' => 'Seanceep',
+							'table' => 'commissionseps',
+							'alias' => 'Commissionep',
 							'type' => 'LEFT OUTER',
 							'foreignKey' => false,
 							'conditions' => array(
-								'Seanceep.id = MembreepSeanceep.seanceep_id'
+								'Commissionep.id = CommissionepMembreep.commissionep_id'
 							)
 						),
 						array(

@@ -40,13 +40,13 @@
 				        			$html->tag(
 				        				'td',
 				        				$form->input(
-				        					'MembreepSeanceep.Membreep_id.'.$membre['Membreep']['id'].'.reponse',
+				        					'CommissionepMembreep.Membreep_id.'.$membre['Membreep']['id'].'.reponse',
 				        					array(
 				        						'type'=>'select',
 				        						'label'=>false,
 				        						'default'=>'nonrenseigne',
-				        						'options'=>$options['MembreepSeanceep']['reponse'],
-				        						'value' => $membre['MembreepSeanceep']['reponse']
+				        						'options'=>$options['CommissionepMembreep']['reponse'],
+				        						'value' => $membre['CommissionepMembreep']['reponse']
 				        					)
 				        				),
 				        				array(
@@ -76,7 +76,7 @@
 		echo $default->button(
 			'back',
 			array(
-				'controller' => 'seanceseps',
+				'controller' => 'commissionseps',
 				'action'     => 'view',
 				$seance_id
 			),

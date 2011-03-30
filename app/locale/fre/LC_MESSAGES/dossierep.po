@@ -25,7 +25,7 @@ msgstr ""
 msgid "Dossierep::index::empty"
 msgstr "Aucun dossier présent"
 
-msgid "Dossierep.seanceep_id"
+msgid "Dossierep.commissionep_id"
 msgstr "Séance où passe le dossier"
 
 msgid "Dossierep.created"
@@ -44,16 +44,16 @@ msgstr "Thème du dossier"
 # Enums
 ###############################################################################
 
-msgid "ENUM::THEMEEP::saisinesepsreorientsrs93"
+msgid "ENUM::THEMEEP::reorientationseps93"
 msgstr "Demande de réorientation de la structure référente"
 
-msgid "ENUM::THEMEEP::saisinesepsbilansparcours66"
+msgid "ENUM::THEMEEP::saisinesbilansparcourseps66"
 msgstr "Demande de réorientation"
 
 msgid "ENUM::THEMEEP::suspensionreductionallocations93"
 msgstr "Thème du dossier"
 
-msgid "ENUM::THEMEEP::saisinesepdspdos66"
+msgid "ENUM::THEMEEP::saisinespdoseps66"
 msgstr "Saisine PDO"
 
 msgid "ENUM::THEMEEP::nonrespectssanctionseps93"
@@ -62,10 +62,10 @@ msgstr "Demande de suspension"
 msgid "ENUM::THEMEEP::defautsinsertionseps66"
 msgstr "Défaut d'insertion"
 
-msgid "ENUM::THEMEEP::nonorientationspros58"
+msgid "ENUM::THEMEEP::nonorientationsproseps58"
 msgstr "Non orientation professionnelle"
 
-msgid "ENUM::THEMEEP::nonorientationspros93"
+msgid "ENUM::THEMEEP::nonorientationsproseps93"
 msgstr "Détection brsa en parcours social sans réorientation"
 
 msgid "ENUM::THEMEEP::regressionsorientationseps58"

@@ -48,24 +48,24 @@
 				);
 				$datedecision = @$dossierep['Defautinsertionep66']['Decisiondefautinsertionep66'][0]['modified'];
 			}
-			else if( $dossierep['Dossierep']['themeep'] == 'saisinesepsbilansparcours66' ) {
+			else if( $dossierep['Dossierep']['themeep'] == 'saisinesbilansparcourseps66' ) {
 				$decision = Set::enum(
-					@$dossierep['Saisineepbilanparcours66']['Nvsrepreorient66'][0]['decision'],
-					$decisions['Saisineepbilanparcours66']
+					@$dossierep['Saisinebilanparcoursep66']['Decisionsaisinebilanparcoursep66'][0]['decision'],
+					$decisions['Saisinebilanparcoursep66']
 				);
-				$datedecision = @$dossierep['Saisineepbilanparcours66']['Nvsrepreorient66'][0]['modified'];
+				$datedecision = @$dossierep['Saisinebilanparcoursep66']['Decisionsaisinebilanparcoursep66'][0]['modified'];
 			}
-			else if( $dossierep['Dossierep']['themeep'] == 'saisinesepdspdos66' ) {
-				$decision = @$dossierep['Saisineepdpdo66']['Nvsepdpdo66'][0]['Decisionpdo']['libelle'];
-				$datedecision = @$dossierep['Saisineepdpdo66']['Nvsepdpdo66'][0]['modified'];
+			else if( $dossierep['Dossierep']['themeep'] == 'saisinespdoseps66' ) {
+				$decision = @$dossierep['Saisinepdoep66']['Decisionsaisinepdoep66'][0]['Decisionpdo']['libelle'];
+				$datedecision = @$dossierep['Saisinepdoep66']['Decisionsaisinepdoep66'][0]['modified'];
 			}
 			// CG 93
-			else if( $dossierep['Dossierep']['themeep'] == 'saisinesepsreorientsrs93' ) {
+			else if( $dossierep['Dossierep']['themeep'] == 'reorientationseps93' ) {
 				$decision = Set::enum(
-					@$dossierep['Saisineepreorientsr93']['Nvsrepreorientsr93'][0]['decision'],
-					$decisions['Saisineepreorientsr93']
+					@$dossierep['Reorientationep93']['Decisionreorientationep93'][0]['decision'],
+					$decisions['Reorientationep93']
 				);
-				$datedecision = @$dossierep['Saisineepreorientsr93']['Nvsrepreorientsr93'][0]['modified'];
+				$datedecision = @$dossierep['Reorientationep93']['Decisionreorientationep93'][0]['modified'];
 			}
 			else if( $dossierep['Dossierep']['themeep'] == 'nonrespectssanctionseps93' ) {
 				$decision = Set::enum(

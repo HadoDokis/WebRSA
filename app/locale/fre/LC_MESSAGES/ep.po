@@ -36,28 +36,28 @@ msgstr "Zones géographiques dont s'occupe l'EP"
 
 # Spécifique CG 66
 
-msgid "Ep.saisineepbilanparcours66"
+msgid "Ep.saisinebilanparcoursep66"
 msgstr "Prise de décision saisine bilan de parcours"
 
-msgid "ENUM::SAISINEEPBILANPARCOURS66::nontraite"
+msgid "ENUM::SAISINEBILANPARCOURSEP66::nontraite"
 msgstr "Décision non traitée"
 
-msgid "ENUM::SAISINEEPBILANPARCOURS66::ep"
+msgid "ENUM::SAISINEBILANPARCOURSEP66::ep"
 msgstr "Décision émise par l'EP"
 
-msgid "ENUM::SAISINEEPBILANPARCOURS66::cg"
+msgid "ENUM::SAISINEBILANPARCOURSEP66::cg"
 msgstr "Décision émise par le CG"
 
-msgid "Ep.saisineepdpdo66"
+msgid "Ep.saisinepdoep66"
 msgstr "Prise de décision saisine PDO"
 
-msgid "ENUM::SAISINEEPDPDO66::nontraite"
+msgid "ENUM::SAISINEPDOEP66::nontraite"
 msgstr "Décision non traitée"
 
-msgid "ENUM::SAISINEEPDPDO66::ep"
+msgid "ENUM::SAISINEPDOEP66::ep"
 msgstr "Décision émise par l'EP"
 
-msgid "ENUM::SAISINEEPDPDO66::cg"
+msgid "ENUM::SAISINEPDOEP66::cg"
 msgstr "Décision émise par le CG"
 
 msgid "Ep.defautinsertionep66"
@@ -74,19 +74,19 @@ msgstr "Décision émise par le CG"
 
 # Spécifique CG 93
 
-msgid "Ep.saisineepreorientsr93"
+msgid "Ep.reorientationep93"
 msgstr "Prise de décision saisine demandes de réorientation"
 
 msgid "Ep.nonrespectsanctionep93"
 msgstr "Prise de décision non respect des obligations / sanctions"
 
-msgid "ENUM::SAISINEEPREORIENTSR93::nontraite"
+msgid "ENUM::REORIENTATIONEP93::nontraite"
 msgstr "Décision non traitée"
 
-msgid "ENUM::SAISINEEPREORIENTSR93::ep"
+msgid "ENUM::REORIENTATIONEP93::ep"
 msgstr "Décision émise par l'EP"
 
-msgid "ENUM::SAISINEEPREORIENTSR93::cg"
+msgid "ENUM::REORIENTATIONEP93::cg"
 msgstr "Décision émise par le CG"
 
 msgid "ENUM::NONRESPECTSANCTIONEP93::nontraite"
@@ -100,19 +100,19 @@ msgstr "Décision émise par le CG"
 
 # Spécifique cg 58
 
-msgid "Ep.nonorientationpro58"
+msgid "Ep.nonorientationproep58"
 msgstr "Dossier non réorienté vers le professionnel"
 
-msgid "ENUM::NONORIENTATIONPRO58::nontraite"
+msgid "ENUM::NONORIENTATIONPROEP58::nontraite"
 msgstr "Décision non traitée"
 
-msgid "ENUM::NONORIENTATIONPRO58::ep"
+msgid "ENUM::NONORIENTATIONPROEP58::ep"
 msgstr "Décision émise par l'EP"
 
-msgid "ENUM::NONORIENTATIONPRO58::cg"
+msgid "ENUM::NONORIENTATIONPROEP58::cg"
 msgstr "Décision émise par le CG"
 
-msgid "Ep.nonorientationpro58"
+msgid "Ep.nonorientationproep58"
 msgstr "Dossier non réorienté vers le professionnel"
 
 msgid "ENUM::REGRESSIONORIENTATIONEP58::nontraite"

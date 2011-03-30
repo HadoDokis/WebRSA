@@ -46,8 +46,8 @@
 
 			$this->set( 'rsaSocle', $this->Option->natpf() );
 
-			$options['Saisineepbilanparcours66']['typeorient_id'] = $this->Bilanparcours66->Typeorient->listOptions();
-			$options['Saisineepbilanparcours66']['structurereferente_id'] = $this->Bilanparcours66->Structurereferente->list1Options( array( 'orientation' => 'O' ) );
+			$options['Saisinebilanparcoursep66']['typeorient_id'] = $this->Bilanparcours66->Typeorient->listOptions();
+			$options['Saisinebilanparcoursep66']['structurereferente_id'] = $this->Bilanparcours66->Structurereferente->list1Options( array( 'orientation' => 'O' ) );
 			$options['Bilanparcours66']['duree_engag'] = $this->Option->duree_engag_cg66();
 
 			$typesorients = $this->Bilanparcours66->Typeorient->find('list');
@@ -96,9 +96,9 @@
 // // 					'Bilanparcours66.datebilan',
 // // 					'Bilanparcours66.created',
 // // 					'Bilanparcours66.positionbilan',
-// // 					'Saisineepbilanparcours66.id',
-// // 					'Saisineepbilanparcours66.typeorient_id',
-// // 					'Saisineepbilanparcours66.structurereferente_id'
+// // 					'Saisinebilanparcoursep66.id',
+// // 					'Saisinebilanparcoursep66.typeorient_id',
+// // 					'Saisinebilanparcoursep66.structurereferente_id'
 // 				),
 				'contain' => array(
 					'Orientstruct' => array(
@@ -134,13 +134,13 @@
 							'Typeorient',
 						),
 					),
-					'Saisineepbilanparcours66' => array(
+					'Saisinebilanparcoursep66' => array(
 						'Dossierep' => array(
 							'fields' => array(
 								'etapedossierep'
 							)
 						),
-						'Nvsrepreorient66'
+						'Decisionsaisinebilanparcoursep66'
 					),
 					'Referent' => array(
                         'Structurereferente'
@@ -161,7 +161,7 @@
 
 
 
-			$this->set( 'options', $this->Bilanparcours66->Saisineepbilanparcours66->Dossierep->enums() );
+			$this->set( 'options', $this->Bilanparcours66->Saisinebilanparcoursep66->Dossierep->enums() );
 			$bilansparcours66 = $this->paginate( $this->Bilanparcours66 );
 
 			// INFO: containable ne permet pas de passer dans les virtualFields maison
@@ -212,7 +212,7 @@
 		* Ajout ou modification du bilan de parcours d'un allocataire.
 		*
 		* Le bilan de parcours entraîne:
-		*	- pour le thème réorientation/saisinesepsbilansparcours66
+		*	- pour le thème réorientation/saisinesbilansparcourseps66
 		*		* soit un maintien de l'orientation, avec reconduction du CER, sans passage en EP
 		*		* soit une saisine de l'EP locale, commission parcours
 		*
@@ -251,7 +251,7 @@
 					'first',
 					array(
 						'contain' => array(
-                            'Saisineepbilanparcours66'
+                            'Saisinebilanparcoursep66'
 						),
 						'conditions' => array( 'Bilanparcours66.id' => $id )
 					)

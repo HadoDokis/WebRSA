@@ -38,9 +38,9 @@
 			if( $searchMode == 'traite' ) {
 				$conditions[]['Dossierep.etapedossierep'] = 'traite';
 
-				$searchDossierepSeanceepId = Set::classicExtract( $searchData, 'Dossierep.seanceep_id' );
+				$searchDossierepSeanceepId = Set::classicExtract( $searchData, 'Dossierep.commissionep_id' );
 				if( !empty( $searchDossierepSeanceepId ) ) {
-					$conditions[]['Dossierep.seanceep_id'] = $searchDossierepSeanceepId;
+					$conditions[]['Dossierep.commissionep_id'] = $searchDossierepSeanceepId;
 				}
 			}
 			else {
@@ -59,7 +59,7 @@
 								)
 							)
 						),
-						'Seanceep'
+						'Commissionep'
 					),
 					'Orientstruct',
 					'Contratinsertion',
@@ -87,31 +87,31 @@
 			}
 
 			// INFO: containable ne fonctionne pas avec les find('list')
-			$seanceseps = array();
-			$tmpSeanceseps = $this->Nonrespectsanctionep93->Dossierep->Seanceep->find(
+			$commissionseps = array();
+			$tmpSeanceseps = $this->Nonrespectsanctionep93->Dossierep->Commissionep->find(
 				'all',
 				array(
 					'fields' => array(
-						'Seanceep.id',
-						'Seanceep.dateseance',
+						'Commissionep.id',
+						'Commissionep.dateseance',
 						'Ep.name'
 					),
 					'contain' => array(
 						'Ep'
 					),
-					'order' => array( 'Ep.name ASC', 'Seanceep.dateseance DESC' )
+					'order' => array( 'Ep.name ASC', 'Commissionep.dateseance DESC' )
 				)
 			);
 
 			if( !empty( $tmpSeanceseps ) ) {
-				foreach( $tmpSeanceseps as $key => $seanceep ) {
-					$seanceseps[$seanceep['Ep']['name']][$seanceep['Seanceep']['id']] = $seanceep['Seanceep']['dateseance'];
+				foreach( $tmpSeanceseps as $key => $commissionep ) {
+					$commissionseps[$commissionep['Ep']['name']][$commissionep['Commissionep']['id']] = $commissionep['Commissionep']['dateseance'];
 				}
 			}
 
 			$this->_setOptions();
 			$options = Set::merge(
-				array( 'Dossierep' => array( 'seanceep_id' => $seanceseps ) ),
+				array( 'Dossierep' => array( 'commissionep_id' => $commissionseps ) ),
 				$this->viewVars['options']
 			);
 			$this->set( compact( 'options' ) );

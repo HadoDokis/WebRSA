@@ -127,8 +127,8 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
-			'Saisineepreorientsr93' => array(
-				'className' => 'Saisineepreorientsr93',
+			'Reorientationep93' => array(
+				'className' => 'Reorientationep93',
 				'foreignKey' => 'orientstruct_id',
 				'dependent' => true,
 				'conditions' => '',
@@ -140,21 +140,8 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
-			/*'Regressionorientationep58' => array(
-				'className' => 'Nonorientationpro58',
-				'foreignKey' => 'orientstruct_id',
-				'dependent' => true,
-				'conditions' => '',
-				'fields' => '',
-				'order' => '',
-				'limit' => '',
-				'offset' => '',
-				'exclusive' => '',
-				'finderQuery' => '',
-				'counterQuery' => ''
-			),*/
-			'Nonorientationpro58' => array(
-				'className' => 'Nonorientationpro58',
+			'Nonorientationproep58' => array(
+				'className' => 'Nonorientationproep58',
 				'foreignKey' => 'orientstruct_id',
 				'dependent' => true,
 				'conditions' => '',
@@ -166,8 +153,8 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
-			'Nonorientationpro66' => array(
-				'className' => 'Nonorientationpro66',
+			'Nonorientationproep66' => array(
+				'className' => 'Nonorientationproep66',
 				'foreignKey' => 'orientstruct_id',
 				'dependent' => true,
 				'conditions' => '',
@@ -179,8 +166,8 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
-			'Nonorientationpro93' => array(
-				'className' => 'Nonorientationpro93',
+			'Nonorientationproep93' => array(
+				'className' => 'Nonorientationproep93',
 				'foreignKey' => 'orientstruct_id',
 				'dependent' => true,
 				'conditions' => '',
@@ -192,7 +179,7 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
-            /*'Regressionorientationep58' => array(
+            'Regressionorientationep58' => array(
                 'className' => 'Regressionorientationep58',
                 'foreignKey' => 'orientstruct_id',
                 'dependent' => true,
@@ -204,7 +191,7 @@
                 'exclusive' => '',
                 'finderQuery' => '',
                 'counterQuery' => ''
-            )*/
+            )
 		);
 
 		public $hasAndBelongsToMany = array(
@@ -433,11 +420,11 @@
 		* FIXME -> aucun dossier en cours, pour certains thèmes:
 		*		- CG 93
 		*			* Nonrespectsanctionep93 -> ne débouche pas sur une orientation: '1reduction', '1maintien', '1sursis', '2suspensiontotale', '2suspensionpartielle', '2maintien'
-		*			* Saisineepreorientsr93 -> peut déboucher sur une réorientation
+		*			* Reorientationep93 -> peut déboucher sur une réorientation
 		*		- CG 66
 		*			* Defautinsertionep66 -> peut déboucher sur une orientation: 'suspensionnonrespect', 'suspensiondefaut', 'maintien', 'reorientationprofverssoc', 'reorientationsocversprof'
-		*			* Saisineepbilanparcours66 -> peut déboucher sur une réorientation
-		*			* Saisineepdpdo66 -> 'CAN', 'RSP' -> ne débouche pas sur une orientation
+		*			* Saisinebilanparcoursep66 -> peut déboucher sur une réorientation
+		*			* Saisinepdoep66 -> 'CAN', 'RSP' -> ne débouche pas sur une orientation
 		* FIXME -> CG 93: s'il existe une procédure de relance, on veut faire signer un contrat,
 					mais on veut peut-être aussi demander une réorientation.
 		* FIXME -> doit-on vérifier si:
@@ -454,10 +441,10 @@
 						'Dossierep.personne_id' => $personne_id,
 						'Dossierep.etapedossierep <>' => 'traite',
 						'Dossierep.themeep' => array(
-							'saisinesepsreorientsrs93',
+							'reorientationseps93',
 							'defautsinsertionseps66',
-							'saisinesepsbilansparcours66',
-							'nonorientationspros58',
+							'saisinesbilansparcourseps66',
+							'nonorientationsproseps58',
 							'regressionsorientationseps58'
 						)
 					),

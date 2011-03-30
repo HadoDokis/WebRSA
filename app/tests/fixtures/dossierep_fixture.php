@@ -9,7 +9,7 @@
 			array(
 				'id' => '1',
 				'personne_id' => '1001',
-				'seanceep_id' => '3',
+				'commissionep_id' => '3',
 				'etapedossierep' => 'cree',
 				'themeep' => 'nonrespectssanctionseps93',
 				'created' => null,
@@ -18,7 +18,7 @@
 			array(
 				'id' => '2',
 				'personne_id' => '2002',
-				'seanceep_id' => '6',
+				'commissionep_id' => '6',
 				'etapedossierep' => 'cree',
 				'themeep' => 'nonrespectssanctionseps93',
 				'created' => null,
@@ -27,7 +27,7 @@
 			array(
 				'id' => '3',
 				'personne_id' => '3003',
-				'seanceep_id' => '9',
+				'commissionep_id' => '9',
 				'etapedossierep' => 'traite',
 				'themeep' => 'nonrespectssanctionseps93',
 				'created' => null,

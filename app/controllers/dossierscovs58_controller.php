@@ -165,11 +165,11 @@
 
 			$options = $this->Dossiercov58->Cov58->enums();
 			$options = array_merge($options, $this->Dossiercov58->enums());
-			/*$options['Dossierep']['seanceep_id'] = $this->Dossierep->Seanceep->find(
+			/*$options['Dossierep']['commissionep_id'] = $this->Dossierep->Commissionep->find(
 				'list',
 				array(
 					'conditions' => array(
-						'Seanceep.finalisee' => null
+						'Commissionep.finalisee' => null
 					)
 				)
 			);*/

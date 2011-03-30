@@ -22,15 +22,15 @@
 
 	?>
 
-	<!-- Pour le CG 93, les orientations de rang >= 1 doivent passer en EP, donc il faut utiliser Saisinesepsreorientsrs93Controller::add -->
+	<!-- Pour le CG 93, les orientations de rang >= 1 doivent passer en EP, donc il faut utiliser Reorientationseps93Controller::add -->
 	<?php if( Configure::read( 'Cg.departement' ) == 93 && $rgorient_max >= 1 ):?>
-		<?php if( $permissions->check( 'saisinesepsreorientsrs93', 'add' ) ):?>
+		<?php if( $permissions->check( 'reorientationseps93', 'add' ) ):?>
 			<ul class="actionMenu">
 				<?php
 					echo '<li>'.
 						$xhtml->addLink(
 							'Préconiser une orientation',
-							array( 'controller' => 'saisinesepsreorientsrs93', 'action' => 'add', $last_orientstruct_id ),
+							array( 'controller' => 'reorientationseps93', 'action' => 'add', $last_orientstruct_id ),
 							$ajout_possible
 						).
 					' </li>';
@@ -67,7 +67,7 @@
 		<?php endif;?>
 	<?php endif;?>
 
-	<?php if( Configure::read( 'Cg.departement' ) == 93 && isset( $saisineepreorientsr93 ) && !empty( $saisineepreorientsr93 ) ):?>
+	<?php if( Configure::read( 'Cg.departement' ) == 93 && isset( $reorientationep93 ) && !empty( $reorientationep93 ) ):?>
 		<h2>Réorientation par l'équipe pluridisciplinaire</h2>
 
 		<table>
@@ -85,15 +85,15 @@
 			</thead>
 			<tbody>
 				<tr>
-					<td><?php echo h( $saisineepreorientsr93['Dossierep']['Personne']['nom'] );?></td>
-					<td><?php echo h( $saisineepreorientsr93['Dossierep']['Personne']['prenom'] );?></td>
-					<td><?php echo $locale->date( __( 'Date::short', true ), $saisineepreorientsr93['Saisineepreorientsr93']['datedemande'] );?></td>
-					<td><?php echo h( $saisineepreorientsr93['Typeorient']['lib_type_orient'] );?></td>
-					<td><?php echo h( $saisineepreorientsr93['Structurereferente']['lib_struc'] );?></td>
-					<td class="number"><?php echo h( $saisineepreorientsr93['Orientstruct']['rgorient'] + 1 );?></td>
-					<td><?php echo h( Set::enum( $saisineepreorientsr93['Dossierep']['etapedossierep'], $optionsdossierseps['Dossierep']['etapedossierep'] ) );?></td>
-					<td><?php echo $default->button( 'edit', array( 'controller' => 'saisinesepsreorientsrs93', 'action' => 'edit', $saisineepreorientsr93['Saisineepreorientsr93']['id'] ), array( 'enabled' => ( $saisineepreorientsr93['Dossierep']['etapedossierep'] == 'cree' ) ) );?></td>
-					<td><?php echo $default->button( 'delete', array( 'controller' => 'saisinesepsreorientsrs93', 'action' => 'delete', $saisineepreorientsr93['Saisineepreorientsr93']['id'] ), array( 'enabled' => ( $saisineepreorientsr93['Dossierep']['etapedossierep'] == 'cree' ) ) );?></td>
+					<td><?php echo h( $reorientationep93['Dossierep']['Personne']['nom'] );?></td>
+					<td><?php echo h( $reorientationep93['Dossierep']['Personne']['prenom'] );?></td>
+					<td><?php echo $locale->date( __( 'Date::short', true ), $reorientationep93['Reorientationep93']['datedemande'] );?></td>
+					<td><?php echo h( $reorientationep93['Typeorient']['lib_type_orient'] );?></td>
+					<td><?php echo h( $reorientationep93['Structurereferente']['lib_struc'] );?></td>
+					<td class="number"><?php echo h( $reorientationep93['Orientstruct']['rgorient'] + 1 );?></td>
+					<td><?php echo h( Set::enum( $reorientationep93['Dossierep']['etapedossierep'], $optionsdossierseps['Dossierep']['etapedossierep'] ) );?></td>
+					<td><?php echo $default->button( 'edit', array( 'controller' => 'reorientationseps93', 'action' => 'edit', $reorientationep93['Reorientationep93']['id'] ), array( 'enabled' => ( $reorientationep93['Dossierep']['etapedossierep'] == 'cree' ) ) );?></td>
+					<td><?php echo $default->button( 'delete', array( 'controller' => 'reorientationseps93', 'action' => 'delete', $reorientationep93['Reorientationep93']['id'] ), array( 'enabled' => ( $reorientationep93['Dossierep']['etapedossierep'] == 'cree' ) ) );?></td>
 				</tr>
 			</tbody>
 		</table>
@@ -151,7 +151,7 @@
 								'Editer l\'orientation',
 								array( 'controller' => 'orientsstructs', 'action' => 'edit', $orientstruct['Orientstruct']['id'] ),
 								$permissions->check( 'orientsstructs', 'edit' ) && ( $orientstruct['Orientstruct']['rgorient'] == $rgorient_max )
-								&& !( Configure::read( 'Cg.departement' ) == 93 && isset( $saisineepreorientsr93 ) && !empty( $saisineepreorientsr93 ) )
+								&& !( Configure::read( 'Cg.departement' ) == 93 && isset( $reorientationep93 ) && !empty( $reorientationep93 ) )
 								&& !( Configure::read( 'Cg.departement' ) == 58 && isset( $nbdossiersnonfinalisescovs ) && !empty( $nbdossiersnonfinalisescovs ) )
 								&& $ajout_possible
 							),

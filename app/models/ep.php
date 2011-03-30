@@ -11,15 +11,15 @@
 			'Enumerable' => array(
 				'fields' => array(
 					// Thèmes 66
-					'saisineepbilanparcours66',
-					'saisineepdpdo66',
+					'saisinebilanparcoursep66',
+					'saisinepdoep66',
 					'defautinsertionep66',
 					// Thèmes 93
 					'nonrespectsanctionep93',
-					'saisineepreorientsr93',
-					'nonorientationpro93',
+					'reorientationep93',
+					'nonorientationproep93',
 					// Thèmes 58
-					'nonorientationpro58',
+					'nonorientationproep58',
 					'regressionorientationep58',
 					'sanctionep58'
 				)
@@ -37,8 +37,8 @@
 		);
 
 		public $hasMany = array(
-			'Seanceep' => array(
-				'className' => 'Seanceep',
+			'Commissionep' => array(
+				'className' => 'Commissionep',
 				'foreignKey' => 'ep_id',
 				'dependent' => true,
 				'conditions' => '',

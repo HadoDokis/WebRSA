@@ -38,7 +38,7 @@
 			( Set::extract( $dossier, 'Nonrespectsanctionep93.contratinsertion_id' ) != '' ? 'Oui' : 'Non' ),
 			date_short( Set::extract( $dossier, 'Contratinsertion.df_ci' ) ),
 			date_short( Set::extract( $dossier, 'Orientstruct.date_valid' ) ),
-			date_short( Set::extract( $dossier, 'Dossierep.Seanceep.dateseance' ) ),
+			date_short( Set::extract( $dossier, 'Dossierep.Commissionep.dateseance' ) ),
 			Set::extract( $dossier, 'Nonrespectsanctionep93.rgpassage' ),
 			Set::enum( Set::extract( $dossier, 'Nonrespectsanctionep93.decision' ), $options['Nonrespectsanctionep93']['decision'] ),
 			Set::extract( $dossier, 'Nonrespectsanctionep93.montantreduction' ),

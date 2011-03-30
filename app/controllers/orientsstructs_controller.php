@@ -137,7 +137,7 @@
 					) > 0
 				);
 
-				$saisineepreorientsr93 = $this->Orientstruct->Saisineepreorientsr93->find(
+				$reorientationep93 = $this->Orientstruct->Reorientationep93->find(
 					'first',
 					array(
 						'contain' => array(
@@ -159,14 +159,14 @@
 						),
 						'conditions' => array(
 							'Dossierep.personne_id' => $personne_id,
-							'Dossierep.themeep' => 'saisinesepsreorientsrs93',
+							'Dossierep.themeep' => 'reorientationseps93',
 							'Dossierep.etapedossierep <>' => 'traite'
 						),
-						'order' => array( 'Saisineepreorientsr93.created DESC' )
+						'order' => array( 'Reorientationep93.created DESC' )
 					)
 				);
-				$this->set( 'saisineepreorientsr93', $saisineepreorientsr93 );
-				$this->set( 'optionsdossierseps', $this->Orientstruct->Saisineepreorientsr93->Dossierep->enums() );
+				$this->set( 'reorientationep93', $reorientationep93 );
+				$this->set( 'optionsdossierseps', $this->Orientstruct->Reorientationep93->Dossierep->enums() );
 			}
 
 			$this->set( 'droitsouverts', $this->Dossier->Situationdossierrsa->droitsOuverts( $dossier_id ) );
@@ -226,7 +226,7 @@
 				$this->redirect( array( 'action' => 'index', $personne_id ) );
 			}
 
-			// Pour le CG 93, les orientations de rang > 1 doivent passer en EP, donc il faut utiliser Saisinesepsreorientsrs93Controller::add
+			// Pour le CG 93, les orientations de rang > 1 doivent passer en EP, donc il faut utiliser Reorientationseps93Controller::add
 			// FIXME
 			/*if( Configure::read( 'Cg.departement' ) == 93 && $this->Orientstruct->rgorientMax( $personne_id ) > 1 ) {
 				$this->Session->setFlash( 'L\'orientation de cette personne doit se faire via un passage en EP', 'flash/error' );
@@ -262,28 +262,30 @@
 					$saved = true;
 
 					/// FIXME: ne fonctionne que pour le cg58, à faire évoluer une fois la thématique mise en place
-					if ( $this->Orientstruct->isRegression( $personne_id, $this->data['Orientstruct']['typeorient_id'] ) && Configure::read( 'Cg.departement' ) == 58 ) {
+					if ( $this->Orientstruct->isRegression( $personne_id, $this->data['Orientstruct']['typeorient_id'] ) && /*( */Configure::read( 'Cg.departement' ) == 58 /*|| Configure::read( 'Cg.departement' ) == 93 )*/ ) {
+						$theme = 'Regressionorientationep'.Configure::read( 'Cg.departement' );
+						
 						$dossierep = array(
 							'Dossierep' => array(
 								'personne_id' => $personne_id,
-								'themeep' => 'regressionsorientationseps58',
+								'themeep' => Inflector::tableize( $theme )
 							)
 						);
-						$saved = $this->Orientstruct->Regressionorientationep58->Dossierep->save( $dossierep ) && $saved;
+						$saved = $this->Orientstruct->{$theme}->Dossierep->save( $dossierep ) && $saved;
 
-						$regressionorientationep58['Regressionorientationep58'] = $this->data['Orientstruct'];
-						$regressionorientationep58['Regressionorientationep58']['personne_id'] = $personne_id;
-						$regressionorientationep58['Regressionorientationep58']['dossierep_id'] = $this->Orientstruct->Regressionorientationep58->Dossierep->id;
+						$regressionorientationep[$theme] = $this->data['Orientstruct'];
+						$regressionorientationep[$theme]['personne_id'] = $personne_id;
+						$regressionorientationep[$theme]['dossierep_id'] = $this->Orientstruct->{$theme}->Dossierep->id;
 
-						if ( isset($regressionorientationep58['Regressionorientationep58']['referent_id']) ) {
-							list( $structurereferente_id, $referent_id ) = explode( '_', $regressionorientationep58['Regressionorientationep58']['referent_id'] );
-							$regressionorientationep58['Regressionorientationep58']['structurereferente_id'] = $structurereferente_id;
-							$regressionorientationep58['Regressionorientationep58']['referent_id'] = $referent_id;
+						if ( isset($regressionorientationep[$theme]['referent_id']) ) {
+							list( $structurereferente_id, $referent_id ) = explode( '_', $regressionorientationep[$theme]['referent_id'] );
+							$regressionorientationep[$theme]['structurereferente_id'] = $structurereferente_id;
+							$regressionorientationep[$theme]['referent_id'] = $referent_id;
 						}
 
-						$regressionorientationep58['Regressionorientationep58']['datedemande'] = $regressionorientationep58['Regressionorientationep58']['date_propo'];
+						$regressionorientationep[$theme]['datedemande'] = $regressionorientationep[$theme]['date_propo'];
 
-						$saved = $this->Orientstruct->Regressionorientationep58->save( $regressionorientationep58 ) && $saved;
+						$saved = $this->Orientstruct->{$theme}->save( $regressionorientationep ) && $saved;
 					}
 					else {
 						// Correction: si la personne n'a pas encore d'entrée dans calculdroitsrsa

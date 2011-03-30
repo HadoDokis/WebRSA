@@ -12,7 +12,7 @@
 			'Nonrespectsanctionep93.contratinsertion_id' => array( 'type' => 'boolean' ),
 			'Contratinsertion.df_ci',
 			'Orientstruct.date_valid',
-			'Dossierep.Seanceep.dateseance' => array( 'type' => 'date' ),
+			'Dossierep.Commissionep.dateseance' => array( 'type' => 'date' ),
 			'Nonrespectsanctionep93.rgpassage',
 			'Nonrespectsanctionep93.decision',
 			'Nonrespectsanctionep93.montantreduction',
@@ -28,10 +28,10 @@
 			'Typeorient.lib_type_orient',
 			'Structurereferente.lib_struc',
 			'Dossierep.etapedossierep',
-			'Nvsrepreorientsr93.0.decision',
-			'Nvsrepreorientsr93.0.Typeorient.lib_type_orient' => array( 'type' => 'text' ),
-			'Nvsrepreorientsr93.0.Structurereferente.lib_struc' => array( 'type' => 'text' ),
-			'Dossierep.Seanceep.dateseance' => array( 'type' => 'date' ),*/
+			'Decisionreorientationep93.0.decision',
+			'Decisionreorientationep93.0.Typeorient.lib_type_orient' => array( 'type' => 'text' ),
+			'Decisionreorientationep93.0.Structurereferente.lib_struc' => array( 'type' => 'text' ),
+			'Dossierep.Commissionep.dateseance' => array( 'type' => 'date' ),*/
 		),
 		array(
 			/*'groupColumns' => array(

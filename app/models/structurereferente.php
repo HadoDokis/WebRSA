@@ -264,8 +264,8 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
-			'Decisionnonorientationpro58' => array(
-				'className' => 'Decisionnonorientationpro58',
+			'Decisionnonorientationproep58' => array(
+				'className' => 'Decisionnonorientationproep58',
 				'foreignKey' => 'structurereferente_id',
 				'dependent' => true,
 				'conditions' => '',
@@ -277,8 +277,8 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
-			'Decisionnonorientationpro93' => array(
-				'className' => 'Decisionnonorientationpro93',
+			'Decisionnonorientationproep93' => array(
+				'className' => 'Decisionnonorientationproep93',
 				'foreignKey' => 'structurereferente_id',
 				'dependent' => true,
 				'conditions' => '',

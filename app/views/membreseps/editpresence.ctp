@@ -23,16 +23,16 @@
                 		);
                 		foreach($membres as $membre) {
                 			if ($membre['Membreep']['fonctionmembreep_id']==$fonction['Fonctionmembreep']['id']) {
-								if (empty($membre['MembreepSeanceep']['presence'])) {
-									if ($membre['MembreepSeanceep']['reponse']=='confirme')
+								if (empty($membre['CommissionepMembreep']['presence'])) {
+									if ($membre['CommissionepMembreep']['reponse']=='confirme')
 										$defaut='present';
-									elseif ($membre['MembreepSeanceep']['reponse']=='remplacepar')
+									elseif ($membre['CommissionepMembreep']['reponse']=='remplacepar')
 										$defaut='remplacepar';
 									else
 										$defaut='excuse';
 								}
 								else
-									$defaut = $membre['MembreepSeanceep']['presence'];
+									$defaut = $membre['CommissionepMembreep']['presence'];
 				        		echo $html->tag(
 				        			'tr',
 				        			$html->tag(
@@ -42,12 +42,12 @@
 				        			$html->tag(
 				        				'td',
 				        				$form->input(
-				        					'MembreepSeanceep.Membreep_id.'.$membre['Membreep']['id'].'.presence',
+				        					'CommissionepMembreep.Membreep_id.'.$membre['Membreep']['id'].'.presence',
 				        					array(
 				        						'type'=>'select',
 				        						'label'=>false,
 				        						'default'=>$defaut,
-				        						'options'=>$options['MembreepSeanceep']['presence']
+				        						'options'=>$options['CommissionepMembreep']['presence']
 				        					)
 				        				),
 				        				array(

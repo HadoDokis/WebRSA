@@ -213,8 +213,8 @@
 		);
 
 		public $hasOne = array(
-			'Saisineepdpdo66' => array(
-				'className' => 'Saisineepdpdo66',
+			'Saisinepdoep66' => array(
+				'className' => 'Saisinepdoep66',
 				'foreignKey' => 'traitementpdo_id',
 				'dependent' => true,
 				'conditions' => '',
@@ -256,11 +256,11 @@
 
 			$dossierep = 0;
 			if (isset($data['Traitementpdo']['id']))
-				$dossierep = $this->Saisineepdpdo66->find(
+				$dossierep = $this->Saisinepdoep66->find(
 					'count',
 					array(
 						'conditions'=>array(
-							'Saisineepdpdo66.traitementpdo_id'=>$data['Traitementpdo']['id']
+							'Saisinepdoep66.traitementpdo_id'=>$data['Traitementpdo']['id']
 						)
 					)
 				);
@@ -308,21 +308,21 @@
 				$dataDossierEp = array(
 					'Dossierep' => array(
 						'personne_id' => $propopdo['Propopdo']['personne_id'],
-						'themeep' => 'saisinesepdspdos66'
+						'themeep' => 'saisinespdoseps66'
 					)
 				);
 
-				$this->Saisineepdpdo66->Dossierep->create( $dataDossierEp );
-				$success = $this->Saisineepdpdo66->Dossierep->save() && $success;
+				$this->Saisinepdoep66->Dossierep->create( $dataDossierEp );
+				$success = $this->Saisinepdoep66->Dossierep->save() && $success;
 
 				$dataSaisineepdpdo66 = array(
-					'Saisineepdpdo66' => array(
+					'Saisinepdoep66' => array(
 						'traitementpdo_id' => $this->id,
-						'dossierep_id' => $this->Saisineepdpdo66->Dossierep->id
+						'dossierep_id' => $this->Saisinepdoep66->Dossierep->id
 					)
 				);
-				$this->Saisineepdpdo66->create( $dataSaisineepdpdo66 );
-				$success = $this->Saisineepdpdo66->save() && $success;
+				$this->Saisinepdoep66->create( $dataSaisineepdpdo66 );
+				$success = $this->Saisinepdoep66->save() && $success;
 			}
 			return $success;
 		}

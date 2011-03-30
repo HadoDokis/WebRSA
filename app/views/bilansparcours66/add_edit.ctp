@@ -418,8 +418,8 @@
 				<?php
 					echo $default->subform(
 						array(
-							'Saisineepbilanparcours66.typeorient_id',
-							'Saisineepbilanparcours66.structurereferente_id'
+							'Saisinebilanparcoursep66.typeorient_id',
+							'Saisinebilanparcoursep66.structurereferente_id'
 						),
 						array(
 							'options' => $options
@@ -626,8 +626,8 @@
 		<?php
 			echo $default->subform(
 				array(
-					'Pe.Saisineepbilanparcours66.typeorient_id' => array('domain'=>'bilanparcours66'),
-					'Pe.Saisineepbilanparcours66.structurereferente_id' => array('domain'=>'bilanparcours66')
+					'Pe.Saisinebilanparcoursep66.typeorient_id' => array('domain'=>'bilanparcours66'),
+					'Pe.Saisinebilanparcoursep66.structurereferente_id' => array('domain'=>'bilanparcours66')
 				),
 				array(
 					'options' => $options
@@ -660,13 +660,13 @@
 
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
-		dependantSelect( 'Saisineepbilanparcours66StructurereferenteId', 'Saisineepbilanparcours66TypeorientId' );
-		try { $( 'Saisineepbilanparcours66StructurereferenteId' ).onchange(); } catch(id) { }
+		dependantSelect( 'Saisinebilanparcoursep66StructurereferenteId', 'Saisinebilanparcoursep66TypeorientId' );
+		try { $( 'Saisinebilanparcoursep66StructurereferenteId' ).onchange(); } catch(id) { }
 
 		dependantSelect( 'Bilanparcours66ReferentId', 'Bilanparcours66StructurereferenteId' );
 
-		dependantSelect( 'PeSaisineepbilanparcours66StructurereferenteId', 'PeSaisineepbilanparcours66TypeorientId' );
-		try { $( 'PeSaisineepbilanparcours66StructurereferenteId' ).onchange(); } catch(id) { }
+		dependantSelect( 'PeSaisinebilanparcoursep66StructurereferenteId', 'PeSaisinebilanparcoursep66TypeorientId' );
+		try { $( 'PeSaisinebilanparcoursep66StructurereferenteId' ).onchange(); } catch(id) { }
 
 		dependantSelect( 'PeBilanparcours66ReferentId', 'PeBilanparcours66StructurereferenteId' );
 		
@@ -816,7 +816,7 @@
 					$( elmt ).writeAttribute('disabled', 'disabled');
 				} );
 			} );
-			['Bilanparcours66TypeformulaireCg', 'Bilanparcours66TypeformulairePe', 'Bilanparcours66DatebilanDay', 'Bilanparcours66DatebilanMonth', 'Bilanparcours66DatebilanYear', 'PeSaisineepbilanparcours66TypeorientId', 'PeSaisineepbilanparcours66StructurereferenteId', 'PeBilanparcours66DatebilanDay', 'PeBilanparcours66DatebilanMonth', 'PeBilanparcours66DatebilanYear'].each( function ( elmt ) {
+			['Bilanparcours66TypeformulaireCg', 'Bilanparcours66TypeformulairePe', 'Bilanparcours66DatebilanDay', 'Bilanparcours66DatebilanMonth', 'Bilanparcours66DatebilanYear', 'PeSaisinebilanparcoursep66TypeorientId', 'PeSaisinebilanparcoursep66StructurereferenteId', 'PeBilanparcours66DatebilanDay', 'PeBilanparcours66DatebilanMonth', 'PeBilanparcours66DatebilanYear'].each( function ( elmt ) {
 				$( elmt ).writeAttribute('disabled', 'disabled');
 			} );
 		<?php } ?>

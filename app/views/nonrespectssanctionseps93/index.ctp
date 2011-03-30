@@ -12,7 +12,7 @@
 					'traite' => 'Finalisés'
 				)
 			),
-			'Dossierep.seanceep_id' => array( 'empty' => true, 'domain' => 'nonrespectsanctionep93' )
+			'Dossierep.commissionep_id' => array( 'empty' => true, 'domain' => 'nonrespectsanctionep93' )
 		),
 		array(
 			'options' => $options

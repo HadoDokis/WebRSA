@@ -589,9 +589,9 @@
                     <tr>
                         <td><?php echo $decisionEpDEM;?></td>
                         <td><?php echo $dateEpDEM;?></td>
-                        <td><?php echo $xhtml->boolean( ( $details['CJT']['Dossierep']['derniere']['Dossierep']['seanceep_id'] ) == 'traite' );?></td>
+                        <td><?php echo $xhtml->boolean( ( $details['CJT']['Dossierep']['derniere']['Dossierep']['commissionep_id'] ) == 'traite' );?></td>
     <!--                    <td><?php
-                            /*if( !empty( $details['DEM']['Dossierep']['derniere']['Dossierep']['seanceep_id'] ) ){
+                            /*if( !empty( $details['DEM']['Dossierep']['derniere']['Dossierep']['commissionep_id'] ) ){
                                 echo $xhtml->viewLink(
                                     'Voir le contrat',
                                     array( 'controller' => 'contratsinsertion', 'action' => 'index', Set::extract( 'DEM.Personne.id', $details ) )
@@ -604,11 +604,11 @@
                         <td><?php echo $dateEpCJT;?></td>
                         <td>
                             <?php if( isset( $details['CJT'] ) ):?>
-                                <?php echo $xhtml->boolean( ( $details['CJT']['Dossierep']['derniere']['Dossierep']['seanceep_id'] ) == 'traite' );?>
+                                <?php echo $xhtml->boolean( ( $details['CJT']['Dossierep']['derniere']['Dossierep']['commissionep_id'] ) == 'traite' );?>
                             <?php endif;?>
                         </td>
     <!--                    <td><?php
-                            /*if( !empty( $details['DEM']['Dossierep']['derniere']['Dossierep']['seanceep_id'] ) ){
+                            /*if( !empty( $details['DEM']['Dossierep']['derniere']['Dossierep']['commissionep_id'] ) ){
                                 echo $xhtml->viewLink(
                                     'Voir le contrat',
                                     array( 'controller' => 'contratsinsertion', 'action' => 'index', Set::extract( 'CJT.Personne.id', $details ) )
@@ -684,7 +684,7 @@
                         <td><?php echo $dateEpDEM;?></td>
                         <td><?php echo $xhtml->boolean( ( $details['DEM']['Dossierep']['derniere']['Dossierep']['etapedossierep'] ) == 'traite' );?></td>
     <!--                    <td><?php
-                            /*if( !empty( $details['DEM']['Dossierep']['derniere']['Dossierep']['seanceep_id'] ) ){
+                            /*if( !empty( $details['DEM']['Dossierep']['derniere']['Dossierep']['commissionep_id'] ) ){
                                 echo $xhtml->viewLink(
                                     'Voir le contrat',
                                     array( 'controller' => 'contratsinsertion', 'action' => 'index', Set::extract( 'DEM.Personne.id', $details ) )
@@ -700,11 +700,11 @@
                         <td><?php echo $dateEpCJT;?></td>
                         <td>
                             <?php if( isset( $details['CJT'] ) ):?>
-                                <?php echo $xhtml->boolean( ( $details['CJT']['Dossierep']['derniere']['Dossierep']['seanceep_id'] ) == 'traite' );?>
+                                <?php echo $xhtml->boolean( ( $details['CJT']['Dossierep']['derniere']['Dossierep']['commissionep_id'] ) == 'traite' );?>
                             <?php endif;?>
                         </td>
     <!--                    <td><?php
-                            /*if( !empty( $details['DEM']['Dossierep']['derniere']['Dossierep']['seanceep_id'] ) ){
+                            /*if( !empty( $details['DEM']['Dossierep']['derniere']['Dossierep']['commissionep_id'] ) ){
                                 echo $xhtml->viewLink(
                                     'Voir le contrat',
                                     array( 'controller' => 'contratsinsertion', 'action' => 'index', Set::extract( 'CJT.Personne.id', $details ) )

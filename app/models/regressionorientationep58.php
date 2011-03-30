@@ -27,25 +27,25 @@
 		* Finalisation de la décision pour le cg58
 		*/
 
-		public function finaliser( $seanceep_id, $etape, $user_id ) {
+		public function finaliser( $commissionep_id, $etape, $user_id ) {
 			$success = true;
 
-			$seanceep = $this->Dossierep->Seanceep->find(
+			$commissionep = $this->Dossierep->Commissionep->find(
 				'first',
 				array(
 					'conditions' => array(
-						'Seanceep.id' => $seanceep_id
+						'Commissionep.id' => $commissionep_id
 					),
 					'contain' => false
 				)
 			);
-			list( $dateseance, $heureseance ) = explode ( ' ', $seanceep['Seanceep']['dateseance'] );
+			list( $dateseance, $heureseance ) = explode ( ' ', $commissionep['Commissionep']['dateseance'] );
 
 			$dossierseps = $this->Dossierep->find(
 				'all',
 				array(
 					'conditions' => array(
-						'seanceep_id' => $seanceep_id,
+						'commissionep_id' => $commissionep_id,
 						'themeep' => 'regressionsorientationseps58'
 					),
 					'contain' => array(

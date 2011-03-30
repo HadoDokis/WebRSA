@@ -7,7 +7,7 @@
 			'Personne.qual',
 			'Personne.nom',
 			'Personne.prenom',
-			'Seanceep.dateseance',
+			'Commissionep.dateseance',
 			'Dossierep.created',
 			'Dossierep.themeep',
 			'Dossierep.etapedossierep'

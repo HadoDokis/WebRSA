@@ -753,7 +753,7 @@
 						'fields' => array(
 							'etapedossierep',
 							'created',
-							'seanceep_id',
+							'commissionep_id',
 							'themeep',
 						),
 						'conditions' => array(

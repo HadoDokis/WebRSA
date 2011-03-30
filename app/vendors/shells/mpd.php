@@ -134,27 +134,27 @@
 							// Thèmes
 							'defautsinsertionseps66',
 							'nonrespectssanctionseps93',
-							'saisinesepdspdos66',
-							'saisinesepsbilansparcours66',
-							'saisinesepsreorientsrs93',
+							'saisinespdoseps66',
+							'saisinesbilansparcourseps66',
+							'reorientationseps93',
 							'saisinesepssignalementsnrscers93',
 							'saisineseps66',
 							// Autres informations
 							'relancesdetectionscontrats93',
 							'bilansparcours66',
 							// Paramétrage
-							'motifsreorients',
+							'motifsreorientseps93',
 							'maintiensreorientseps',
 							'relancesnonrespectssanctionseps93',
 							// Décisions
 							'decisionsdefautsinsertionseps66',
 							'decisionsnonrespectssanctionseps93',
-							'nvsepdspdos66',
-							'nvsrsepsreorient66',
-							'nvsrsepsreorientsrs93',
+							'decisionssaisinespdoseps66',
+							'decisionssaisinesbilansparcourseps66',
+							'decisionsreorientationseps93',
 							'avissrmreps93',
 							// Séances
-							'seanceseps', // FIXME: dossierseps_seanceseps ?
+							'commissionseps', // FIXME: dossierseps_seanceseps ?
 							// EPs
 							'regroupementseps',
 							'eps',
@@ -162,7 +162,7 @@
 							'eps_membreseps',
 							'membreseps',
 							'fonctionsmembreseps',
-							'membreseps_seanceseps',
+							'commissionseps_membreseps',
 						);
 
 						$conditions[] = "information_schema.tables.table_name IN ( '".implode( "',\n'", $tables_eps )."' )\n";
