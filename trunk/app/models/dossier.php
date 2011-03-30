@@ -324,9 +324,6 @@
 				//$conditions[] = 'Serviceinstructeur.id = \''.Sanitize::paranoid( $params['Serviceinstructeur']['id'] ).'\'';
 			}
 
-
-
-
 			///FIXME : tranche d'âge pour la recherche mais non finalisé
 			$trancheAge = Set::extract( $params, 'Personne.trancheAge' );
 			if( $trancheAge == 0 ) {
@@ -352,6 +349,43 @@
 
 			if( !empty( $trancheAge )  ) {
 				$conditions[] = '( EXTRACT ( YEAR FROM AGE( Personne.dtnai ) ) ) BETWEEN '.$ageMin.' AND '.$ageMax;
+			}
+
+			// Trouver la dernière demande RSA pour chacune des personnes du jeu de résultats
+			if( $params['Dossier']['dernier'] ) {
+				$conditions[] = 'Dossier.id IN (
+					SELECT
+							dossiers.id
+						FROM personnes
+							INNER JOIN prestations ON (
+								personnes.id = prestations.personne_id
+								AND prestations.natprest = \'RSA\'
+							)
+							INNER JOIN foyers ON (
+								personnes.foyer_id = foyers.id
+							)
+							INNER JOIN dossiers ON (
+								dossiers.id = foyers.dossier_id
+							)
+						WHERE
+							prestations.rolepers IN ( \'DEM\', \'CJT\' )
+							AND (
+								(
+									nir_correct( Personne.nir )
+									AND nir_correct( personnes.nir )
+									AND personnes.nir = Personne.nir
+									AND personnes.dtnai = Personne.dtnai
+								)
+								OR
+								(
+									personnes.nom = Personne.nom
+									AND personnes.prenom = Personne.prenom
+									AND personnes.dtnai = Personne.dtnai
+								)
+							)
+						ORDER BY dossiers.dtdemrsa DESC
+						LIMIT 1
+				)';
 			}
 
 			/**
