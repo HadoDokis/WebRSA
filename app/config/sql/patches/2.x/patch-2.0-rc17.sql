@@ -182,6 +182,22 @@ DROP TYPE IF EXISTS TYPE_THEMEEP;
 CREATE TYPE TYPE_THEMEEP AS ENUM ( 'reorientationseps93', 'saisinesbilansparcourseps66', 'saisinespdoseps66', 'nonrespectssanctionseps93', 'defautsinsertionseps66', 'nonorientationsproseps58', 'nonorientationsproseps93', 'regressionsorientationseps58', 'sanctionseps58' );
 ALTER TABLE dossierseps ALTER COLUMN themeep TYPE TYPE_THEMEEP USING CAST(themeep AS TYPE_THEMEEP);
 
+UPDATE acos SET alias = regexp_replace(alias, 'MembresepsSeanceseps', 'CommissionsepsMembreseps') WHERE alias LIKE '%MembresepsSeanceseps%';
+UPDATE acos SET alias = regexp_replace(alias, 'Seanceseps', 'Commissionseps') WHERE alias LIKE '%Seanceseps%';
+UPDATE acos SET alias = regexp_replace(alias, 'Nvsrsepsreorientsrs93', 'Decisionsreorientationseps93') WHERE alias LIKE '%Nvsrsepsreorientsrs93%';
+UPDATE acos SET alias = regexp_replace(alias, 'Saisinesepsreorientsrs93', 'Reorientationseps93') WHERE alias LIKE '%Saisinesepsreorientsrs93%';
+UPDATE acos SET alias = regexp_replace(alias, 'Nvsepdspdos66', 'Decisionssaisinespdoseps66') WHERE alias LIKE '%Nvsepdspdos66%';
+UPDATE acos SET alias = regexp_replace(alias, 'Saisinesepdspdos66', 'Saisinespdoseps66') WHERE alias LIKE '%Saisinesepdspdos66%';
+UPDATE acos SET alias = regexp_replace(alias, 'Nvsrsepsreorient66', 'Decisionssaisinesbilansparcourseps66') WHERE alias LIKE '%Nvsrsepsreorient66%';
+UPDATE acos SET alias = regexp_replace(alias, 'Saisinesepsbilansparcours66', 'Saisinesbilansparcourseps66') WHERE alias LIKE '%Saisinesepsbilansparcours66%';
+UPDATE acos SET alias = regexp_replace(alias, 'Motifsreorients', 'Motifsreorientseps93') WHERE alias LIKE '%Motifsreorients%';
+UPDATE acos SET alias = regexp_replace(alias, 'Nonorientationspros58', 'Nonorientationsproseps58') WHERE alias LIKE '%Nonorientationspros58%';
+UPDATE acos SET alias = regexp_replace(alias, 'Nonorientationspros66', 'Nonorientationsproseps66') WHERE alias LIKE '%Nonorientationspros66%';
+UPDATE acos SET alias = regexp_replace(alias, 'Nonorientationspros93', 'Nonorientationsproseps93') WHERE alias LIKE '%Nonorientationspros93%';
+UPDATE acos SET alias = regexp_replace(alias, 'Decisionsnonorientationspros58', 'Decisionsnonorientationsproseps58') WHERE alias LIKE '%Decisionsnonorientationspros58%';
+UPDATE acos SET alias = regexp_replace(alias, 'Decisionsnonorientationspros66', 'Decisionsnonorientationsproseps66') WHERE alias LIKE '%Decisionsnonorientationspros66%';
+UPDATE acos SET alias = regexp_replace(alias, 'Decisionsnonorientationspros93', 'Decisionsnonorientationsproseps93') WHERE alias LIKE '%Decisionsnonorientationspros93%';
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
