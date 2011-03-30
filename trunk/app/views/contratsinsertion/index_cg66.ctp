@@ -1,17 +1,17 @@
-<?php  $this->pageTitle = 'Dossier de la personne';?>
-<?php  echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );?>
-
 <?php
-    if( $this->action == 'add' ) {
-        $this->pageTitle = 'Ajout d\'un CER';
-    }
-    else {
-        $this->pageTitle = 'CER ';
-        $foyer_id = $this->data['Personne']['foyer_id'];
-    }
+    $this->pageTitle = 'CER';
+    $domain = 'contratinsertion';
+
+    echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+    echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
+
+?>
+
+<?php 
+
 ?>
 <div class="with_treemenu">
-    <h1><?php  echo 'CER ';?></h1>
+    <h1><?php  echo $this->pageTitle;?></h1>
         <?php if( empty( $orientstruct ) ) :?>
             <p class="error">Cette personne ne possède pas d'orientation. Impossible de créer un CER.</p>
         <?php else:?>
@@ -35,8 +35,74 @@
         <?php endif;?>
 
     <!-- <?php /*if( !empty( $contratsinsertion ) ): */?> -->
-    <?php if( !empty( $contratsinsertion ) ):?>
-        <table class="tooltips">
+    <?php /*if( !empty( $contratsinsertion ) ):*/?>
+    <?php
+        $block = true;
+//         foreach( $contratsinsertion as $i => $contratinsertion ){
+//             $dateValidation = Set::classicExtract( $contratinsertion, 'Contratinsertion.datevalidation_ci' );
+//             $positioncer = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ), $options['positioncer'] );
+//             $isValid = Set::classicExtract( $contratinsertion, 'Contratinsertion.decision_ci' );
+//             $formeci = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.forme_ci' ), $forme_ci );
+// //         }
+//         if( $isValid == 'V' && ( mktime() >= ( strtotime( $dateValidation ) + 3600 * Configure::read( 'Periode.modifiablecer.nbheure' ) ) ) ){
+//             $block = false;
+//         }
+// 
+//         //   Règle de blocage du bouton valider si le contrat est simple
+//         $blockValid = true;
+//         if( $isValid == 'V' ){
+//             $blockValid = false;
+//         }
+
+        // Règle de blocage du bouton valider si le contrat est simple
+//         $blockImpression = false;
+//         if( $isSimple == 'S' ){
+//             $blockImpression = true;
+//         }
+// 
+//         $blockCancel = true;
+//         if( $positioncer == 'annule' ){
+//             $blockCancel = false;
+//         }
+
+/*
+debug($options);
+debug($contratsinsertion);*/
+
+        $options['forme_ci'] = $forme_ci;
+        $options['decision_ci'] = $decision_ci;
+
+        echo $default2->index(
+            $contratsinsertion,
+            array(
+                'Contratinsertion.forme_ci',
+                'Contratinsertion.num_contrat'/* => array( 'type' => 'string', 'options' => $options['num_contrat'] )*/,
+                'Contratinsertion.dd_ci',
+                'Contratinsertion.df_ci',
+                'Contratinsertion.date_saisi_ci',
+                'Contratinsertion.decision_ci',
+                'Contratinsertion.positioncer'
+            ),
+            array(
+                'actions' => array(
+                    'Contratsinsertion::validate' => array(
+                        'disabled' => '( "'.$permissions->check( 'contratsinsertion', 'validate' ).'" != "1" ) || ( "#Contratinsertion.decision_ci#" == "V" ) || ( "#Contratinsertion.forme_ci#" == "S" ) || ( "#Contratinsertion.positioncer#" == "annule" )'
+                    ),
+                    'Contratsinsertion::view',
+                    'Contratsinsertion::edit' => array( /*'disabled' => ( '\'Contratsinsertion.id#\' != '.$lastDecisionId.' || \''.$etatdossierpdo.'\' == \'attpj\' || \''.$etatdossierpdo.'\' == \'dossiertraite\' ' )*/ ),
+                    'Contratsinsertion::print' => array(
+                        'label' => 'Imprimer',
+                        'url' => array( 'controller' => 'contratsinsertion', 'action'=>'decisionproposition' ),
+                        'disabled' => $block
+                    ),
+                    'Contratsinsertion::cancel'
+                ),
+                'add' => array( 'Contratinsertion.add' => array( 'controller'=>'contratsinsertion', 'action'=>'add', $personne_id , 'disabled' =>  $block ) ),
+                'options' => array( 'Contratinsertion' => $options )
+            )
+        );
+    ?>
+        <!-- <table class="tooltips">
             <thead>
                 <tr>
                     <th>Type Contrat</th> 
@@ -50,12 +116,11 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach( $contratsinsertion as $index => $contratinsertion ):?>
+                <?php /*foreach( $contratsinsertion as $index => $contratinsertion ):?>
                     <?php
-                        /**
-                        *   Règle de blocage du bouton modifier si le contrat est validé et que 
-                        *   la date du jour est comprise dans les .... (voir webrsa.inc)
-                        */
+                        //   Règle de blocage du bouton modifier si le contrat est validé et que 
+                        //   la date du jour est comprise dans les .... (voir webrsa.inc)
+
                         $dateValidation = Set::classicExtract( $contratinsertion, 'Contratinsertion.datevalidation_ci' );
                         $positioncer = Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' );
 
@@ -73,21 +138,18 @@
                         $block = true;
                         
                         $isSimple = Set::classicExtract( $contratinsertion, 'Contratinsertion.forme_ci' );
-                        if( $isValid == 'V' /*&& $isSimple == 'S'*/ && ( mktime() >= ( strtotime( $dateValidation ) + 3600 * Configure::read( 'Periode.modifiablecer.nbheure' ) ) ) ){
+                        if( $isValid == 'V' && ( mktime() >= ( strtotime( $dateValidation ) + 3600 * Configure::read( 'Periode.modifiablecer.nbheure' ) ) ) ){
                             $block = false;
                         }
 
-                        /**
-                        *   Règle de blocage du bouton valider si le contrat est simple
-                        */
+                        
+                        //   Règle de blocage du bouton valider si le contrat est simple
                         $blockValid = true;
-                        if( $isValid == 'V'/* && $isSimple == 'S'*/ ){
+                        if( $isValid == 'V' ){
                             $blockValid = false;
                         }
 
-                        /**
-                        *   Règle de blocage du bouton valider si le contrat est simple
-                        */
+                        // Règle de blocage du bouton valider si le contrat est simple
                         $blockImpression = false;
                         if( $isSimple == 'S' ){
                             $blockImpression = true;
@@ -149,9 +211,9 @@
                             array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
                         );
                     ?>
-                <?php endforeach;?>
+                <?php endforeach;*/?>
             </tbody>
-        </table>
-    <?php  endif;?>
+        </table> -->
+    <?php /* endif;*/?>
 </div>
 <div class="clearer"><hr /></div>
