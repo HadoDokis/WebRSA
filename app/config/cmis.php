@@ -120,6 +120,10 @@
 				return false;
 			}
 
+			if( empty( self::$_connection )  ) {
+				return false;
+			}
+
 			return self::$_connection;
 		}
 
@@ -148,6 +152,10 @@
 		*/
 
 		protected function _check( $path ) {
+			if( empty( self::$_connection )  ) {
+				return false;
+			}
+
 			try {
 				$node = @self::$_connection->getObjectByPath( $path );
 				return true;
@@ -186,6 +194,10 @@
 		*/
 
 		protected function _read( $path, $deep = false ) {
+			if( empty( self::$_connection )  ) {
+				return false;
+			}
+
 			try {
 				$obj = self::$_connection->getObjectByPath( $path );
 				// Document
@@ -246,6 +258,10 @@
 		*/
 
 		protected function _mkdir( $path ) {
+			if( empty( self::$_connection )  ) {
+				return false;
+			}
+
 			try {
 				$crumbs = Set::filter( preg_split( '/\//', $path ) );
 
@@ -296,6 +312,10 @@
 		*/
 
 		protected function _write( $path, $document, $mimetype, $replace = false ) {
+			if( empty( self::$_connection )  ) {
+				return false;
+			}
+
 			try {
 				$folderPath = dirname( $path );
 				$fileName = basename( $path );
@@ -371,6 +391,10 @@
 		*/
 
 		protected function _delete( $path, $recursive = false ) {
+			if( empty( self::$_connection )  ) {
+				return false;
+			}
+
 			try {
 				$obj = self::$_connection->getObjectByPath( $path );
 				$isFolder = ( @$obj->properties['cmis:objectTypeId'] == 'cmis:folder' );
