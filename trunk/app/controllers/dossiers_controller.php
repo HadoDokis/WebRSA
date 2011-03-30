@@ -846,11 +846,20 @@
 							),
 						),
 						'conditions' => array(
-							'Personne.nir' => $personnesFoyer[$index]['Personne']['nir'],
-							//FIXME
-							'nir_correct( Personne.nir  ) = true',
-							'Personne.nir IS NOT NULL',
-							'Dossier.id NOT' => $details['Dossier']['id']
+                            'OR' => array(
+                                array(
+                                    'Personne.nir' => $personnesFoyer[$index]['Personne']['nir'],
+                                    //FIXME
+                                    'nir_correct( Personne.nir  ) = true',
+                                    'Personne.nir IS NOT NULL',
+                                ),
+                                array(
+                                    'Personne.nom' => $personnesFoyer[$index]['Personne']['nom'],
+                                    'Personne.prenom' => $personnesFoyer[$index]['Personne']['prenom'],
+                                    'Personne.dtnai' => $personnesFoyer[$index]['Personne']['dtnai']
+                                )
+                            ),
+                            'Dossier.id NOT' => $details['Dossier']['id']
 						),
 						'contain' => false,
 						'order' => 'Dossier.id DESC',
