@@ -153,93 +153,11 @@
 	);
 	Configure::write( 'Typeable.email', array( 'rule' => 'email' ) );
 //EOF
-    /**
-        * ...
-        *
-        * @param array $array
-        * @param array $filterValues
-        * @return array $newArray
-    */
-
-    function array_filter_values( array $array, array $filterValues, $remove = false ) { // FIXME ?
-        $newArray = array();
-        foreach( $array as $key => $value) {
-            if( $remove && !in_array( $value, $filterValues ) ) {
-                $newArray[$key] = $value;
-            }
-            else if( !$remove && in_array( $value, $filterValues ) ) {
-                $newArray[$key] = $value;
-            }
-        }
-        return $newArray;
-    }
-
-	/**
-	* Classes manipulation
-	*/
-
-	/// SOURCE: http://www.php.net/manual/en/function.get-class-methods.php#51795
-	function get_overriden_methods($class) {
-		$rClass = new ReflectionClass($class);
-		$array = NULL;
-
-		foreach ($rClass->getMethods() as $rMethod)
-		{
-			try
-			{
-				// attempt to find method in parent class
-				new ReflectionMethod($rClass->getParentClass()->getName(),
-									$rMethod->getName());
-				// check whether method is explicitly defined in this class
-				if ($rMethod->getDeclaringClass()->getName()
-					== $rClass->getName())
-				{
-					// if so, then it is overriden, so add to array
-					$array[] .=  $rMethod->getName();
-				}
-			}
-			catch (exception $e)
-			{    /* was not in parent class! */    }
-		}
-
-		return $array;
-	}
-
-	/// SOURCE: http://www.php.net/manual/en/function.get-class-methods.php#43379
-	function get_this_class_methods($class){
-		$array1 = get_class_methods($class);
-		if($parent_class = get_parent_class($class)){
-			$array2 = get_class_methods($parent_class);
-			$array3 = array_diff($array1, $array2);
-		}else{
-			$array3 = $array1;
-		}
-		return($array3);
-	}
 
 	// Un shell ? On va charger la classe parente
 	if( defined( 'CAKEPHP_SHELL' ) && CAKEPHP_SHELL && file_exists( APP.'/app_shell.php' ) ) {
 		require_once( APP.'/../cake/console/libs/shell.php' );
 		require_once( APP.'/app_shell.php' );
-	}
-
-	// -------------------------------------------------------------------------
-
-	function is_behavior_name( $string ) {
-		return ( strpos( $string, '_behavior' ) !== false );
-	}
-
-	function is_model_name( $string ) {
-		return ( !is_behavior_name( $string ) && ( $string != 'view' ) );
-	}
-
-	function class_registry_models() {
-		$keys = ClassRegistry::keys();
-		return array_filter( $keys, 'is_model_name' );
-	}
-
-	function class_registry_models_count() {
-		return count( class_registry_models() );
 	}
 
 	// -------------------------------------------------------------------------
