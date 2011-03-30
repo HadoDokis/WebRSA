@@ -848,7 +848,7 @@
 						'conditions' => array(
 							'Personne.nir' => $personnesFoyer[$index]['Personne']['nir'],
 							//FIXME
-// 							'nir_correct( Personne.nir  ) IS NULL',
+							'nir_correct( Personne.nir  ) = true',
 							'Personne.nir IS NOT NULL',
 							'Dossier.id NOT' => $details['Dossier']['id']
 						),
