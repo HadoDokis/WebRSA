@@ -73,6 +73,12 @@
         ?>
     </fieldset>
     <fieldset>
+        <?php
+            $valueDossierDernier = isset( $this->data['Dossier']['dernier'] ) ? $this->data['Dossier']['dernier'] : true;
+            echo $form->input( 'Dossier.dernier', array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueDossierDernier ) );
+        ?>
+    </fieldset>
+    <fieldset>
         <?php echo $form->input( 'Filtre.typeorient', array( 'label' => __( 'Type d\'orientation', true ), 'type' => 'select', 'options' => $modeles, 'empty' => true ) );?>
     </fieldset>
     <div class="submit">

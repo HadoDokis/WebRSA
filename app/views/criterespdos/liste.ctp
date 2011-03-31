@@ -12,6 +12,18 @@
     });
 </script>
 <?php
+    function value( $array, $index ) {
+        $keys = array_keys( $array );
+        $index = ( ( $index == null ) ? '' : $index );
+        if( @in_array( $index, $keys ) && isset( $array[$index] ) ) {
+            return $array[$index];
+        }
+        else {
+            return null;
+        }
+    }
+
+
     if( is_array( $this->data ) ) {
         echo '<ul class="actionMenu"><li>'.$xhtml->link(
             $xhtml->image(
@@ -67,6 +79,9 @@
             )
         );
 
+        $valueDossierDernier = isset( $this->data['Dossier']['dernier'] ) ? $this->data['Dossier']['dernier'] : true;
+        echo $form->input( 'Dossier.dernier', array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueDossierDernier ) );
+
 		echo $xform->submit( __( 'Search', true ) );
 		echo $xform->end();
 ?>
@@ -84,7 +99,7 @@
                     <th><?php echo $paginator->sort( 'N° dossier', 'Dossier.numdemrsa' );?></th>
                     <th><?php echo $paginator->sort( 'Nom du demandeur', 'Personne.nom' );?></th>
                     <th><?php echo $paginator->sort( 'Etat du droit', 'Situationdossierrsa.etatdosrsa' );?></th>
-                    <th colspan="4" class="action">Actions</th>
+                    <th class="action">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -95,33 +110,35 @@
                             <tbody>
                                 <tr>
                                     <th>Commune de naissance</th>
-                                    <td>'. $criterepdo['Personne']['nomcomnai'].'</td>
+                                    <td>'.h( $criterepdo['Personne']['nomcomnai'] ).'</td>
                                 </tr>
                                 <tr>
                                     <th>Date de naissance</th>
-                                    <td>'.date_short( $criterepdo['Personne']['dtnai']).'</td>
+                                    <td>'.h( date_short( $criterepdo['Personne']['dtnai'] ) ).'</td>
                                 </tr>
                                 <tr>
                                     <th>Code INSEE</th>
-                                    <td>'.$criterepdo['Adresse']['numcomptt'].'</td>
+                                    <td>'.h( $criterepdo['Adresse']['numcomptt'] ).'</td>
                                 </tr>
                                 <tr>
                                     <th>NIR</th>
-                                    <td>'.$criterepdo['Personne']['nir'].'</td>
+                                    <td>'.h( $criterepdo['Personne']['nir'] ).'</td>
                                 </tr>
                                 <tr>
                                     <th>N° CAF</th>
-                                    <td>'.$criterepdo['Dossier']['matricule'].'</td>
+                                    <td>'.h( $criterepdo['Dossier']['matricule'] ).'</td>
                                 </tr>
 
                             </tbody>
                         </table>';
 
+
+// debug($etatdosrsa);
                         echo $xhtml->tableCells(
                             array(
                                 h( Set::classicExtract( $criterepdo, 'Dossier.numdemrsa' ) ),
                                 h( Set::enum( Set::classicExtract( $criterepdo, 'Personne.qual' ), $qual ).' '.Set::classicExtract( $criterepdo, 'Personne.nom' ).' '.Set::classicExtract( $criterepdo, 'Personne.prenom' ) ),
-                                h( Set::classicExtract( $etatdosrsa, Set::classicExtract( $criterepdo, 'Situationdossierrsa.etatdosrsa' ) ) ),
+                                h( value( $etatdosrsa, Set::classicExtract( $criterepdo, 'Situationdossierrsa.etatdosrsa' ) ) ),
                                 $xhtml->viewLink(
                                     'Voir',
                                     array( 'controller' => 'propospdos', 'action' => 'index', Set::classicExtract( $criterepdo, 'Personne.id' ) )

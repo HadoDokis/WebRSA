@@ -43,6 +43,10 @@
         <?php echo $form->input( 'Filtre.nir', array( 'label' => 'NIR ', 'maxlength' => 15 ) );?>
         <?php echo $form->input( 'Filtre.matricule', array( 'label' => 'N° CAF', 'maxlength' => 15 ) );?>
         <?php echo $form->input( 'Filtre.natpf', array( 'label' => 'Nature de la prestation', 'type' => 'select', 'options' => $natpf, 'empty' => true ) );?>
+        <?php
+            $valueDossierDernier = isset( $this->data['Dossier']['dernier'] ) ? $this->data['Dossier']['dernier'] : true;
+            echo $form->input( 'Dossier.dernier', array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueDossierDernier ) );
+        ?>
     </fieldset>
     <fieldset>
         <legend>Recherche par CER</legend>

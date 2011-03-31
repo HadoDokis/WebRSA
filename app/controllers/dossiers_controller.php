@@ -852,6 +852,7 @@
                                     //FIXME
                                     'nir_correct( Personne.nir  ) = true',
                                     'Personne.nir IS NOT NULL',
+                                    'Personne.dtnai' => $personnesFoyer[$index]['Personne']['dtnai']
                                 ),
                                 array(
                                     'Personne.nom' => $personnesFoyer[$index]['Personne']['nom'],

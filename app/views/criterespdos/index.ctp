@@ -93,6 +93,10 @@
 //             )
 //         );
 	?>
+	<?php
+        $valueDossierDernier = isset( $this->data['Dossier']['dernier'] ) ? $this->data['Dossier']['dernier'] : true;
+        echo $form->input( 'Dossier.dernier', array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueDossierDernier ) );
+    ?>
 <?php echo $xform->end( 'Rechercher' ); ?>
 <?php $pagination = $xpaginator->paginationBlock( 'Propopdo', $this->passedArgs ); ?>
 
@@ -113,41 +117,42 @@
 					<th><?php echo $paginator->sort( 'Date du contrat', 'Propopdo.datereceptionpdo' );?></th>
 					<th><?php echo $paginator->sort( 'Gestionnaire', 'Propopdo.user_id' );?></th>
 					<th><?php echo $paginator->sort( 'Etat du dossier', 'Propopdo.etatdossierpdo' );?></th>
-					<th colspan="4" class="action">Actions</th>
+					<th class="action">Actions</th>
 				</tr>
 			</thead>
 			<tbody>
 				<?php
 					foreach( $criterespdos as $index => $criterepdo ) {
-						$innerTable = '<table id="innerTable'.$index.'" class="innerTable">
-							<tbody>
-								<tr>
-									<th>Etat du droit</th>
-									<td>'.Set::enum( Set::classicExtract( $criterepdo, 'Situationdossierrsa.etatdosrsa' ),$criterepdo ).'</td>
-								</tr>
-								<tr>
-									<th>Commune de naissance</th>
-									<td>'. $criterepdo['Personne']['nomcomnai'].'</td>
-								</tr>
-								<tr>
-									<th>Date de naissance</th>
-									<td>'.date_short( $criterepdo['Personne']['dtnai']).'</td>
-								</tr>
-								<tr>
-									<th>Code INSEE</th>
-									<td>'.$criterepdo['Adresse']['numcomptt'].'</td>
-								</tr>
-								<tr>
-									<th>NIR</th>
-									<td>'.$criterepdo['Personne']['nir'].'</td>
-								</tr>
-								<tr>
-									<th>N° CAF</th>
-									<td>'.$criterepdo['Dossier']['matricule'].'</td>
-								</tr>
+                        $innerTable = '<table id="innerTable'.$index.'" class="innerTable">
+                            <tbody>
+                                <tr>
+                                    <th>Etat du droit</th>
+                                    <td>'.h( Set::enum( Set::classicExtract( $criterepdo, 'Situationdossierrsa.etatdosrsa' ),$criterepdo ) ).'</td>
+                                </tr>
+                                <tr>
+                                    <th>Commune de naissance</th>
+                                    <td>'.h( $criterepdo['Personne']['nomcomnai'] ).'</td>
+                                </tr>
+                                <tr>
+                                    <th>Date de naissance</th>
+                                    <td>'.h( date_short( $criterepdo['Personne']['dtnai'] ) ).'</td>
+                                </tr>
+                                <tr>
+                                    <th>Code INSEE</th>
+                                    <td>'.h( $criterepdo['Adresse']['numcomptt'] ).'</td>
+                                </tr>
+                                <tr>
+                                    <th>NIR</th>
+                                    <td>'.h( $criterepdo['Personne']['nir'] ).'</td>
+                                </tr>
+                                <tr>
+                                    <th>N° CAF</th>
+                                    <td>'.h( $criterepdo['Dossier']['matricule'] ).'</td>
+                                </tr>
 
-							</tbody>
-						</table>';
+                            </tbody>
+                        </table>';
+
 						echo $xhtml->tableCells(
 							array(
 								h( Set::classicExtract( $criterepdo, 'Dossier.numdemrsa' ) ),
