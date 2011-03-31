@@ -8,15 +8,29 @@
 	class UserTestCase extends CakeAppModelTestCase {
 
 		function testBeforeSave() {
+			$user_id = '4';
+			$this->User->data = $this->User->find('first', array(
+					'conditions' => array(
+						'id' => $user_id
+					)
+				)		
+			);
 			$result = $this->User->beforeSave();
 			$this->assertTrue($result);
 		}
-/*
+
 		function testBeforeDelete() {
+			$user_id = '4';
+			$this->User->data = $this->User->find('first', array(
+					'conditions' => array(
+						'id' => $user_id
+					)
+				)		
+			);
 			$result = $this->User->beforeDelete();
 			$this->assertFalse($result);
 		}
-*/
+
 		function testValidatesPassword() {
 			$data = array(
 				'User' => array(

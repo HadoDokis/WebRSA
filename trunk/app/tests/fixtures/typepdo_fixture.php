@@ -6,6 +6,14 @@
 		var $table = 'typespdos';
 		var $import = array( 'table' => 'typespdos', 'connection' => 'default', 'records' => false);
 		var $records = array(
+			array(
+				'id' => '1',
+				'libelle' => 'tyepdolibelle1'
+			),
+			array(
+				'id' => '2',
+				'libelle' => 'typepdolibelle2'
+			),
 		);
 	}
 
