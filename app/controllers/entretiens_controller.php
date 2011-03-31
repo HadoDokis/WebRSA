@@ -3,7 +3,7 @@
 	{
 		public $name = 'Entretiens';
 		public $uses = array( 'Entretien', 'Option' );
-		public $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform' );
+		public $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Default2' );
 
 		public $commeDroit = array(
 			'view' => 'Entretiens:index',
