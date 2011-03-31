@@ -15,22 +15,23 @@
         <div id="entretiens">
             <h2 class="title">Entretiens</h2>
             <?php
-                echo $default->index(
+                echo $default2->index(
                     $entretiens,
                     array(
-                        'Entretien.dateentretien',
+                        'Entretien.dateentretien' ,
                         'Structurereferente.lib_struc',
-                        'Referent.nom_complet'
+                        'Referent.nom_complet' => array( 'type' => 'text' )
                     ),
                     array(
                         'actions' => array(
-                            'Entretien.view',
-                            'Entretien.edit',
-                            'Entretien.delete'
+                            'Entretien::view',
+                            'Entretien::edit',
+                            'Entretien::delete' => array( 'disabled' => '( "'.$permissions->check( 'rendezvous', 'delete' ).'" != "1" ) ' )
                         ),
-                        'add' => array( 'Entretien.add' => $personne_id )
+                        'add' => array( 'Entretien.add' => array( 'controller'=>'entretiens', 'action'=>'add', $personne_id ) ),
                     )
                 );
+
             ?>
         </div><!-- Fin de div entretiens -->
 

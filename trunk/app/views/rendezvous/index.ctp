@@ -25,7 +25,7 @@
                     'Rendezvous::view',
                     'Rendezvous::edit',
                     'Rendezvous::print' => array( 'label' => 'Imprimer', 'url' => array( 'action' => 'gedooo' ) ),
-                    'Rendezvous::delete'
+                    'Rendezvous::delete' => array( 'disabled' => '( "'.$permissions->check( 'rendezvous', 'delete' ).'" != "1" ) ' )
                 ),
                 'add' => array( 'Rendezvous.add' => array( 'controller'=>'rendezvous', 'action'=>'add', $personne_id ) ),
 //                 'options' => $options
