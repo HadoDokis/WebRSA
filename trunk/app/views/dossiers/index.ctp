@@ -64,7 +64,7 @@
         </fieldset>
 		<?php
 			$valueDossierDernier = isset( $this->data['Dossier']['dernier'] ) ? $this->data['Dossier']['dernier'] : true;
-			echo $form->input( 'Dossier.dernier', array( 'label' => 'Seulement les derniers dossiers', 'type' => 'checkbox', 'checked' => $valueDossierDernier ) );
+			echo $form->input( 'Dossier.dernier', array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueDossierDernier ) );
 		?>
     </fieldset>
     <fieldset>

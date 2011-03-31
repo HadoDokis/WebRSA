@@ -44,6 +44,10 @@
         <?php echo $form->input( 'Cohorteindu.prenom', array( 'label' => 'Prénom ', 'type' => 'text' ) );?>
         <?php echo $form->input( 'Cohorteindu.nir', array( 'label' => 'NIR ', 'maxlength' => 15 ) );?>
         <?php echo $form->input( 'Cohorteindu.matricule', array( 'label' => 'N° CAF ', 'maxlength' => 15 ) );?>
+        <?php
+            $valueDossierDernier = isset( $this->data['Dossier']['dernier'] ) ? $this->data['Dossier']['dernier'] : true;
+            echo $form->input( 'Dossier.dernier', array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueDossierDernier ) );
+        ?>
     </fieldset>
     <fieldset>
         <legend>Recherche d'Indu</legend>

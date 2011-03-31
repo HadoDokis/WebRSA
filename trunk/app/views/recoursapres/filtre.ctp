@@ -31,6 +31,10 @@
             <?php echo $form->input( 'Recoursapre.matricule', array( 'label' => 'N° CAF ', 'type' => 'text'/*, 'maxlength' => 11*/ ) );?>
             <?php echo $xform->input( 'Recoursapre.prenom', array( 'label' => 'Prénom ', 'type' => 'text' ) );?>
             <?php echo $xform->input( 'Recoursapre.nir', array( 'label' => 'NIR ', 'maxlength' => 15 ) );?>
+            <?php
+                $valueDossierDernier = isset( $this->data['Dossier']['dernier'] ) ? $this->data['Dossier']['dernier'] : true;
+                echo $form->input( 'Dossier.dernier', array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueDossierDernier ) );
+            ?>
         </fieldset>
         <fieldset>
             <legend>Recherche par demande APRE</legend>
