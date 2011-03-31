@@ -39,8 +39,27 @@
 
 		//check_rib($cbanque = null, $cguichet = null, $nocompte = null, $clerib = null)
 		function testCheck_rib() {
+			$tierpresta_id = '1';
+			$this->Tiersprestataireapre->data = $this->Tiersprestataireapre->find('first', array(
+					'conditions' => array(
+						'id' => $tierpresta_id
+					)
+				)
+			);
 			$result = $this->Tiersprestataireapre->check_rib(null, null, null, null);
 			$this->assertFalse($result);
+
+			$tierpresta_id = '1';
+			$this->Tiersprestataireapre->data = $this->Tiersprestataireapre->find('first', array(
+					'conditions' => array(
+						'id' => $tierpresta_id
+					)
+				)
+			);
+			$this->Tiersprestataireapre->data['Tiersprestataireapre']['numcomptban'] = '12345678910';
+			$result = $this->Tiersprestataireapre->check_rib('970 000 000 000 000 000 000 ', null, null, null);
+			$this->assertTrue($result);
+
 		}
 
 	}

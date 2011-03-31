@@ -56,7 +56,7 @@
 			);
 			$this->assertEqual($result, $expected);
 
-			$personne_id = null;
+			$personne_id = '4004'; //personne non orientée
 			$result = $this->Referent->readByPersonneId($personne_id);
 			$this->assertNull($result);
 		}

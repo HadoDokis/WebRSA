@@ -8,7 +8,7 @@
 		var $records = array(
 			array(
 				'id' => '1',
-				'libelle' => 'libellé',
+				'libelle' => 'originepdolibellé1',
 			),
 		);
 	}

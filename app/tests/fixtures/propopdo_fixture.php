@@ -20,7 +20,7 @@
 				'dateenvoiop' => null,
 				'daterevision' => null,
 				'dateecheance' => null,
-				'decision' => null,
+				'decision' => '1',
 				'suivi' => null,
 				'autres' => null,
 				'referent_id' => 1,
@@ -41,7 +41,7 @@
 				'serviceinstructeur_id' => '1', //++
 				'created' => null, //++
 				'modified' => null, //++
-				'etatdossierpdo' => null,
+				'etatdossierpdo' => 'instrencours',
 				'orgpayeur' => null, //++
 			),
 		);
