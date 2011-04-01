@@ -218,10 +218,6 @@
 			)
 		);
 
-
-
-
-
         public function search( $criteresusers ) {
             /// Conditions de base
 
@@ -285,7 +281,6 @@
 		*/
 
 		public function beforeDelete() {
-			debug( $this->data );
 			die();
 		}
 

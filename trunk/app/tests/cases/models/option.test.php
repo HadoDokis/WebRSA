@@ -1429,7 +1429,7 @@
 		}
 
 		function testStatudemrsa() {
-			$result = $this->Option->soutdemarsoc();
+			$result = $this->Option->statutdemrsa();
 			$expected = array(
 	        	        'N' => 'Non allocataire',
 	        	        'C' => 'Allocataire de la CAF',

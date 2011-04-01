@@ -9,9 +9,10 @@
 	{
 
 		function testIdFromDossierId() {
-			$this->assertEqual(1,$this->Avispcgpersonne->idFromDossierId(1));
-			$this->assertNull($this->Avispcgpersonne->idFromDossierId(2));
-			$this->assertNull($this->Avispcgpersonne->idFromDossierId(1337));
+			$dossier_id = '4004';
+			$this->assertEqual(2, $this->Avispcgpersonne->idFromDossierId($dossier_id));
+			$dossier_id = '1';
+			$this->assertNull($this->Avispcgpersonne->idFromDossierId($dossier_id));
 		}
 
 	}
