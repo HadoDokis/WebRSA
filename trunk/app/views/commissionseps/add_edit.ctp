@@ -32,7 +32,7 @@
 		array(
 			'Commissionep.id' => array('type'=>'hidden'),
 // 			'Commissionep.identifiant',
-			'Commissionep.ep_id',
+			'Commissionep.ep_id' => array( 'type' => 'select' ),
 			'Commissionep.name',
 			'Commissionep.dateseance' => array( 'dateFormat' => __( 'Locale->dateFormat', true ), 'timeFormat' => __( 'Locale->timeFormat', true ), 'interval'=>15 ), // TODO: à mettre par défaut dans Default2Helper
 // 			'Commissionep.structurereferente_id' => array ('type'=>'select'),
