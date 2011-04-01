@@ -198,6 +198,16 @@ UPDATE acos SET alias = regexp_replace(alias, 'Decisionsnonorientationspros58', 
 UPDATE acos SET alias = regexp_replace(alias, 'Decisionsnonorientationspros66', 'Decisionsnonorientationsproseps66') WHERE alias LIKE '%Decisionsnonorientationspros66%';
 UPDATE acos SET alias = regexp_replace(alias, 'Decisionsnonorientationspros93', 'Decisionsnonorientationsproseps93') WHERE alias LIKE '%Decisionsnonorientationspros93%';
 
+
+
+
+-- 20110401
+ALTER TABLE apres ALTER COLUMN etatdossierapre TYPE TEXT;
+ALTER TABLE relancesapres ALTER COLUMN etatdossierapre TYPE TEXT;
+DROP TYPE IF EXISTS TYPE_ETATDOSSIERAPRE;
+CREATE TYPE TYPE_ETATDOSSIERAPRE AS ENUM ( 'COM', 'INC', 'VAL' );
+ALTER TABLE apres ALTER COLUMN etatdossierapre TYPE TYPE_ETATDOSSIERAPRE USING CAST(etatdossierapre AS TYPE_ETATDOSSIERAPRE);
+ALTER TABLE relancesapres ALTER COLUMN etatdossierapre TYPE TYPE_ETATDOSSIERAPRE USING CAST(etatdossierapre AS TYPE_ETATDOSSIERAPRE);
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
