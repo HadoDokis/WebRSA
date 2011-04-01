@@ -471,7 +471,7 @@
 		* FIXME: et qui ne sont pas passés en EP pour ce motif dans un délai de moins de 1 mois (paramétrable)
 		*/
 
-		protected function _qdSelection( $datas ) {
+		protected function _qdSelection( $datas, $mesCodesInsee, $filtre_zone_geo ) {
 			$queryData = array(
 				'fields' => array(
 					'Personne.id',
@@ -614,31 +614,41 @@
 			$identifiantpe = Set::classicExtract( $datas, 'Historiqueetatpe.identifiantpe' );
 
 			if ( !empty( $nom ) ) {
-				$queryData['conditions'][] = array( 'Personne.nom' => $nom );
+				$queryData['conditions'][] = array( 'Personne.nom ILIKE' => $this->wildcard( $nom ) );
 			}
 			if ( !empty( $prenom ) ) {
-				$queryData['conditions'][] = array( 'Personne.prenom' => $prenom );
+				$queryData['conditions'][] = array( 'Personne.prenom ILIKE' => $this->wildcard( $prenom ) );
 			}
 			if ( !empty( $dtnai ) ) {
 				$queryData['conditions'][] = array( 'Personne.dtnai' => $dtnai );
 			}
 			if ( !empty( $nir ) ) {
-				$queryData['conditions'][] = array( 'Personne.nir' => $nir );
+				$queryData['conditions'][] = array( 'Personne.nir' => $this->wildcard( $nir ) );
 			}
 			if ( !empty( $matricule ) ) {
-				$queryData['conditions'][] = array( 'Dossier.matricule' => $matricule );
+				$queryData['conditions'][] = array( 'Dossier.matricule' => $this->wildcard( $matricule ) );
 			}
 			if ( !empty( $locaadr ) ) {
-				$queryData['conditions'][] = array( 'Adresse.locaadr' => $locaadr );
+				$queryData['conditions'][] = array( 'Adresse.locaadr ILIKE' => $this->wildcard( $locaadr ) );
 			}
 			if ( !empty( $numcomptt ) ) {
-				$queryData['conditions'][] = array( 'Adresse.numcomptt' => $numcomptt );
+                $queryData['conditions'][] = array( 'Adresse.numcomptt' => $numcomptt );
 			}
-			if ( !empty( $canton ) ) {
-				$queryData['conditions'][] = array( 'Adresse.canton' => $canton );
+
+            /// Critères sur l'adresse - canton
+			if( Configure::read( 'CG.cantons' ) ) {
+				if( isset($canton ) && !empty( $canton ) ) {
+					$this->Canton = ClassRegistry::init( 'Canton' );
+					$queryData['conditions'][] = $this->Canton->queryConditions( $canton );
+				}
 			}
+			
 			if ( !empty( $identifiantpe ) ) {
                 $queryData['conditions'][] = array( 'Historiqueetatpe.identifiantpe' => $identifiantpe );
+            }
+            if( $filtre_zone_geo ) {
+                $mesCodesInsee = ( !empty( $mesCodesInsee ) ? $mesCodesInsee : '0' );
+                $queryData['conditions'][] = 'Adresse.numcomptt IN ( \''.implode( '\', \'', $mesCodesInsee ).'\' )';
             }
 
 			return $queryData;
@@ -648,8 +658,8 @@
 		*
 		*/
 
-		public function qdNonInscrits( $datas ) {
-			$queryData = $this->_qdSelection( $datas );
+		public function qdNonInscrits( $datas, $mesCodesInsee, $filtre_zone_geo ) {
+			$queryData = $this->_qdSelection( $datas, $mesCodesInsee, $filtre_zone_geo );
 			$qdNonInscrits = $this->Historiqueetatpe->Informationpe->qdNonInscrits();
 
 			$queryData['fields'] = array_merge( $queryData['fields'] ,$qdNonInscrits['fields'] );
@@ -706,9 +716,9 @@
 		*
 		*/
 
-		public function qdRadies( $datas ) {
+		public function qdRadies( $datas, $mesCodesInsee ) {
 			// FIXME: et qui ne sont pas passés dans une EP pour ce motif depuis au moins 1 mois (?)
-			$queryData = $this->_qdSelection( $datas );
+			$queryData = $this->_qdSelection( $datas, $mesCodesInsee, $filtre_zone_geo );
 			$qdRadies = $this->Historiqueetatpe->Informationpe->qdRadies();
 			$queryData['fields'] = array_merge( $queryData['fields'] ,$qdRadies['fields'] );
 			$queryData['joins'] = array_merge( $queryData['joins'] ,$qdRadies['joins'] );
