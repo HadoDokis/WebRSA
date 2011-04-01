@@ -18,10 +18,29 @@
 
 		//prepare( $type, $params = array())
 		function testPrepare( $type, $params = array()) {
-			$type = 'lol';//$this->Serviceinstructeur->find();
+			$type = null;//$this->Serviceinstructeur->find();
 			$params = null;
 			$result = $this->Serviceinstructeur->prepare($type, $params);
+			$this->assertFalse($result);
 		}
+/*
+		function testQueryDataError() {
+			$model = null;
+			$querydata = null;
+			$this->assertFalse($this->Serviceinstructeur->_queryDataError(&$model, $querydata));
+		}
+*/
+		function testSqrechercheErrors() {
+			$condition = null;
+			$result = $this->Serviceinstructeur->sqrechercheErrors($condition);
+		}
+
+		function testValidateSqrecherche() {
+			$check = null;
+			$result = $this->Serviceinstructeur->ValidateSqrecherche($check);
+			$this->assertFalse($result);
+		}
+
 	}
 
 ?>

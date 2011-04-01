@@ -56,8 +56,9 @@
 					)
 				)
 			);
-			$this->Tiersprestataireapre->data['Tiersprestataireapre']['numcomptban'] = '12345678910';
-			$result = $this->Tiersprestataireapre->check_rib('970 000 000 000 000 000 000 ', null, null, null);
+			$this->Tiersprestataireapre->data['Tiersprestataireapre']['numcomptban'] = '97000000000';
+			$this->Tiersprestataireapre->data['Tiersprestataireapre']['clerib'] = '9700000000';
+			$result = $this->Tiersprestataireapre->check_rib(null, null, null, null);
 			$this->assertTrue($result);
 
 		}

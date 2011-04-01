@@ -17,7 +17,17 @@
 				'ddexcl' => null,
 				'dfexcl' => null,
 			),
+			array(
+				'id' => '2',
+				'personne_id' => '4004',
+				'avisevaressnonsal' => null,
+				'dtsouressnonsal' => null,
+				'dtevaressnonsal' => null,
+				'mtevalressnonsal' => null,
+				'excl' => null,
+				'ddexcl' => null,
+				'dfexcl' => null,
+			),
 		);
 	}
-
 ?>

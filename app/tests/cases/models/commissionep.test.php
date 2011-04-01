@@ -368,7 +368,7 @@
 			);
 			$this->assertTrue($this->Commissionep->clotureSeance($datas));
 		}
-
+/*
 		function testGetPdfPv() {
 			$commissionep_id = '3';
 			$result = $this->Commissionep->getPdfPv($commissionep_id);
@@ -380,7 +380,7 @@
 			$result = $this->Commissionep->getPdfOrdreDuJour($commissionep_id);
 			$this->assertTrue($result);
 		}
-
+*/
 		//FIXME: Renvoi une string trop longue
 		function testIdentifiant() {
 			$result = $this->Commissionep->identifiant();
