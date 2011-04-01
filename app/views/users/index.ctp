@@ -1,41 +1,93 @@
+<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+
 <?php
 	$this->pageTitle = 'Paramétrage des utilisateurs';
 	$authUser = $session->read( 'Auth.User.id' );
 
-	$paginationBlock = $xpaginator->paginationBlock(
-		'User',
-		Set::merge(
-			$this->params['pass'],
-			$this->params['named']
-		)
-	);
+// 	$paginationBlock = $xpaginator->paginationBlock(
+// 		'User',
+// 		Set::merge(
+// 			$this->params['pass'],
+// 			$this->params['named']
+// 		)
+// 	);
 ?>
 <div>
     <h1><?php echo $this->pageTitle;?></h1>
 
-    <ul class="actionMenu">
+
+        <ul class="actionMenu">
+            <?php
+                echo '<li>'.$xhtml->addLink(
+                    'Ajouter',
+                    array( 'controller' => 'users', 'action' => 'add' )
+                ).' </li>';
+            ?>
+        </ul>
+<?php
+    echo '<ul class="actionMenu"><li>'.$xhtml->link(
+        $xhtml->image(
+            'icons/application_form_magnify.png',
+            array( 'alt' => '' )
+        ).' Formulaire',
+        '#',
+        array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 'Search' ).toggle(); return false;" )
+    ).'</li></ul>';
+?>
+
+<?php echo $xform->create( 'User', array( 'type' => 'post', 'action' => 'index', 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );?>
+
+        <fieldset>
+            <?php echo $xform->input( 'User.index', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
+
+            <legend>Filtrer par Utilisateur</legend>
+            <?php
+
+                echo $default2->subform(
+                    array(
+                        'User.username' => array( 'label' => __d( 'user', 'User.username', true ) ),
+                        'User.nom' => array( 'label' => __d( 'user', 'User.nom', true ) ),
+                        'User.prenom' => array( 'label' => __d( 'user', 'User.prenom', true ), 'type' => 'text' ),
+                        'Group.name' => array( 'label' => __d( 'user', 'Group.name', true ), 'options' => $options['Groups'] ),
+                        'Serviceinstructeur.lib_service' => array( 'label' => __d( 'serviceinstructeur', 'Serviceinstructeur.lib_service', true ), 'options' => $options['Serviceinstructeur'] )
+
+                    ),
+                    array(
+                        'options' => $options
+                    )
+                );
+            ?>
+        </fieldset>
+
+        <div class="submit noprint">
+            <?php echo $xform->button( 'Rechercher', array( 'type' => 'submit' ) );?>
+            <?php echo $xform->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>
+        </div>
+
+<?php echo $xform->end();?>
+
+<?php  if( isset( $users ) ): ?>
+    <?php if( empty( $users ) ):?>
         <?php
-            echo '<li>'.$xhtml->addLink(
-                'Ajouter',
-                array( 'controller' => 'users', 'action' => 'add' )
-            ).' </li>';
+            $message = 'Aucune utilisateur ne correspond à votre recherche';
         ?>
-    </ul>
-    <div>
+        <p class="notice"><?php echo $message;?></p>
+    <?php else:?>
+    <?php $pagination = $xpaginator->paginationBlock( 'User', $this->passedArgs ); ?>
+    <?php echo $pagination;?>
+    <table id="searchResults" class="tooltips">
         <h2>Table Utilisateur</h2>
-        <?php echo $paginationBlock;?>
-        <table>
         <thead>
             <tr>
-                <th><?php echo $paginator->sort( 'Nom', 'User.nom' );?></th>
-                <th><?php echo $paginator->sort( 'Prénom', 'User.prenom' );?></th>
-                <th><?php echo $paginator->sort( 'Login', 'User.username' );?></th>
-                <th><?php echo $paginator->sort( 'Date de naissance', 'User.date_naissance' );?></th>
-                <th><?php echo $paginator->sort( 'N° téléphone', 'User.numtel' );?></th>
-                <th><?php echo $paginator->sort( 'Date début habilitation', 'User.date_deb_hab' );?></th>
-                <th><?php echo $paginator->sort( 'Date fin habilitation', 'User.date_fin_hab' );?></th>
-                <th><?php echo $paginator->sort( 'Groupe d\'utilisateur', 'Group.name' );?></th>
-                <th><?php echo $paginator->sort( 'Service instructeur', 'Serviceinstructeur.lib_service' );?></th>
+                <th><?php echo $xpaginator->sort( 'Nom', 'User.nom' );?></th>
+                <th><?php echo $xpaginator->sort( 'Prénom', 'User.prenom' );?></th>
+                <th><?php echo $xpaginator->sort( 'Login', 'User.username' );?></th>
+                <th><?php echo $xpaginator->sort( 'Date de naissance', 'User.date_naissance' );?></th>
+                <th><?php echo $xpaginator->sort( 'N° téléphone', 'User.numtel' );?></th>
+                <th><?php echo $xpaginator->sort( 'Date début habilitation', 'User.date_deb_hab' );?></th>
+                <th><?php echo $xpaginator->sort( 'Date fin habilitation', 'User.date_fin_hab' );?></th>
+                <th><?php echo $xpaginator->sort( 'Groupe d\'utilisateur', 'Group.name' );?></th>
+                <th><?php echo $xpaginator->sort( 'Service instructeur', 'Serviceinstructeur.lib_service' );?></th>
                 <th colspan="2" class="action">Actions</th>
             </tr>
         </thead>
@@ -66,16 +118,21 @@
                         );
                 ?>
             <?php endforeach;?>
-            </tbody>
-        </table>
-		<?php echo $paginationBlock;?>
-	</div>
-</div>
-<div class="submit">
-	<?php
-		echo $xform->create( 'User' );
-		echo $xform->submit( 'Retour', array( 'name' => 'Cancel', 'div' => false ) );
-		echo $xform->end();
-	?>
-</div>
-<div class="clearer"><hr /></div>
+        </tbody>
+    </table>
+    <?php echo $pagination;?>
+<?php
+
+    echo $default->button(
+        'back',
+        array(
+            'controller' => 'parametrages',
+            'action'     => 'index'
+        ),
+        array(
+            'id' => 'Back'
+        )
+    );
+?>
+<?php endif;?>
+<?php endif;?>

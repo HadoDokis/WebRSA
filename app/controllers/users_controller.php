@@ -4,8 +4,9 @@
 		public $name = 'Users';
 		public $uses = array( 'User', 'Option' );
 		public $aucunDroit = array( 'login', 'logout' );
-		public $helpers = array( 'Xform' );
-		public $components = array( 'Menu','Dbdroits' );
+		public $helpers = array( 'Xform', 'Default2' );
+		public $components = array( 'Menu','Dbdroits', 'Prg' => array( 'actions' => array( 'index' ) ) );
+
 
 		public $commeDroit = array(
 			'add' => 'Users:edit'
@@ -20,6 +21,18 @@
 			ini_set('memory_limit', '1024M');
 			parent::beforeFilter();
 		}
+
+
+        /**
+        *
+        */
+        public function _setOptions() {
+            $options['Serviceinstructeur'] =  $this->User->Serviceinstructeur->listOptions();
+            $options['Groups'] = $this->User->Group->find( 'list' );
+            $this->set( compact( 'options' ) );
+        }
+
+
 
 		/**
 		*
@@ -167,26 +180,37 @@
 				$this->redirect( array( 'controller' => 'parametrages', 'action' => 'index' ) );
 			}
 
-			$this->paginate = array(
-				'User' => array(
-					'fields' => array(
-						'User.id',
-						'User.nom',
-						'User.prenom',
-						'User.username',
-						'User.date_naissance',
-						'User.numtel',
-						'User.date_deb_hab',
-						'User.date_fin_hab',
-						'Group.name',
-						'Serviceinstructeur.lib_service'
-					),
-					'recursive' => 0,
-					'limit' => 10
-				)
-			);
+            if( !empty( $this->data ) ) {
+                $queryData = $this->User->search( $this->data );
+                $queryData['limit'] = 10;
+                $this->paginate = $queryData;
+                $users = $this->paginate( 'User' );
+                $this->set( 'users', $users  );
+            }
+            $this->_setOptions();
+            $this->render( null, null, 'index' );
 
-			$this->set( 'users', $this->paginate( $this->User ) );
+
+// 			$this->paginate = array(
+// 				'User' => array(
+// 					'fields' => array(
+// 						'User.id',
+// 						'User.nom',
+// 						'User.prenom',
+// 						'User.username',
+// 						'User.date_naissance',
+// 						'User.numtel',
+// 						'User.date_deb_hab',
+// 						'User.date_fin_hab',
+// 						'Group.name',
+// 						'Serviceinstructeur.lib_service'
+// 					),
+// 					'recursive' => 0,
+// 					'limit' => 10
+// 				)
+// 			);
+
+
 		}
 
 		/**

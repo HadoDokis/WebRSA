@@ -38,3 +38,15 @@ msgstr "Non"
 
 msgid "ENUM::SENSIBILITE::O"
 msgstr "Oui"
+
+msgid "User.username"
+msgstr "Login"
+
+msgid "User.nom"
+msgstr "Nom"
+
+msgid "User.prenom"
+msgstr "Prénom"
+
+msgid "Group.name"
+msgstr "Groupe d'utilisateur"

@@ -96,9 +96,9 @@
         <table class="tooltips">
             <thead>
                 <tr>
-                    <th><?php echo $paginator->sort( 'N° dossier', 'Dossier.numdemrsa' );?></th>
-                    <th><?php echo $paginator->sort( 'Nom du demandeur', 'Personne.nom' );?></th>
-                    <th><?php echo $paginator->sort( 'Etat du droit', 'Situationdossierrsa.etatdosrsa' );?></th>
+                    <th><?php echo $xpaginator->sort( 'N° dossier', 'Dossier.numdemrsa' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Nom du demandeur', 'Personne.nom' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Etat du droit', 'Situationdossierrsa.etatdosrsa' );?></th>
                     <th class="action">Actions</th>
                 </tr>
             </thead>
