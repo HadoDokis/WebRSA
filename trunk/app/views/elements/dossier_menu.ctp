@@ -362,19 +362,19 @@
 													<?php endif;?>
 												</ul>
 											</li>-->
-											<li><span>Documents scannés</span>
+											<!--<li><span>Documents scannés</span>
 												<ul>
 													<li>
 														<?php
-															echo $xhtml->link(
-																'Courriers',
-																'#'
-//                                                                 array( 'controller' => 'apres'.Configure::read( 'Apre.suffixe' ), 'action' => 'index', $personne['id'] )
-															);
+// 															echo $xhtml->link(
+// 																'Courriers',
+// 																'#'
+// //                                                                 array( 'controller' => 'apres'.Configure::read( 'Apre.suffixe' ), 'action' => 'index', $personne['id'] )
+// 															);
 														?>
 													</li>
 												</ul>
-											</li>
+											</li>-->
 											<?php if( $permissions->check( 'memos', 'index' ) ):?>
 											<li>
 												<?php
