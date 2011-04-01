@@ -26,7 +26,11 @@
 					if (isset($histo['DspRev']['created'])) echo $histo['DspRev']['created'];
 					echo "</td><td>";
 					if (isset($histo['DspRev']['modified'])) echo $histo['DspRev']['modified'];
-					echo "</td><td>".$xhtml->link($xhtml->image('icons/zoom.png', array()).'Voir', '/dsps/view_revs/'.$histo['DspRev']['id'], array('escape'=>false))."</td><td>".$xhtml->link($xhtml->image('icons/pencil.png', array()).'Modifier', '/dsps/edit/'.$dsp['Personne']['id'].'/'.$histo['DspRev']['id'], array('escape'=>false))."</td><td>"./*$xhtml->link(*/$xhtml->image('icons/arrow_redo.png', array()).'Revenir à cette version'/*, '/dsps/revertTo/'.$histo['DspRev']['id'], array('escape'=>false))*/."</td><td>".$histo['diff'].'</td>';
+					echo "</td><td>".$xhtml->link($xhtml->image('icons/zoom.png', array()).'Voir', '/dsps/view_revs/'.$histo['DspRev']['id'], array('escape'=>false))."</td><td>".$xhtml->link($xhtml->image('icons/pencil.png', array()).'Modifier', '/dsps/edit/'.$dsp['Personne']['id'].'/'.$histo['DspRev']['id'], array('escape'=>false))."</td>";
+					if( Configure::read( 'Cg.departement' ) != 66 ){
+                        echo "<td>".$xhtml->link($xhtml->image('icons/arrow_redo.png', array()).'Revenir à cette version', '/dsps/revertTo/'.$histo['DspRev']['id'], array('escape'=>false))."</td>";
+                    }
+					echo "<td>".$histo['diff'].'</td>';
 					if ($histo['diff']>0)
 						echo '<td>'.$xhtml->link($xhtml->image('icons/style.png', array()).' Voir les différences', '/dsps/view_diff/'.$histo['DspRev']['id'], array('escape'=>false)).'</td>';
 					else
