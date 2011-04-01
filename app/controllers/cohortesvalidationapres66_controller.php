@@ -26,6 +26,7 @@
         public function _setOptions() {
             $this->set( 'options',  $this->Apre66->allEnumLists() );
             $this->set( 'optionsaideapre66',  $this->Aideapre66->allEnumLists() );
+            $this->set( 'referents',  $this->Apre->Referent->find( 'list' ) );
         }
 
 

@@ -1,4 +1,5 @@
 <?php
+App::import( 'Sanitize' );
     class Cohortevalidationapre66 extends AppModel
     {
         public $name = 'Cohortevalidationapre66';
@@ -26,7 +27,7 @@
                 }
             }
 
-            /// Filtre zone géographique
+            /// Cohortevalidationapre66 zone géographique
             if( $filtre_zone_geo ) {
                 $mesCodesInsee = ( !empty( $mesCodesInsee ) ? $mesCodesInsee : '0' );
                 $conditions[] = 'Adresse.numcomptt IN ( \''.implode( '\', \'', $mesCodesInsee ).'\' )';
@@ -38,33 +39,18 @@
             }
 
             /// Critères
-            $datedemandeapre = Set::extract( $criteresapres, 'Filtre.datedemandeapre' );
-            $daterelance = Set::extract( $criteresapres, 'Filtre.daterelance' );
-            $locaadr = Set::extract( $criteresapres, 'Filtre.locaadr' );
-            $numcomptt = Set::extract( $criteresapres, 'Filtre.numcomptt' );
-            $numdemrsa = Set::extract( $criteresapres, 'Filtre.numdemrsa' );
-            $matricule = Set::extract( $criteresapres, 'Filtre.matricule' );
-            $nir = Set::extract( $criteresapres, 'Filtre.nir' );
-            $typedemandeapre = Set::extract( $criteresapres, 'Filtre.typedemandeapre' );
-            $etatdossierapre = Set::extract( $criteresapres, 'Filtre.etatdossierapre' );
-
-
-            /// Critères sur la demande APRE - date de demande
-            if( isset( $criteresapres['Filtre']['datedemandeapre'] ) && !empty( $criteresapres['Filtre']['datedemandeapre'] ) ) {
-                $valid_from = ( valid_int( $criteresapres['Filtre']['datedemandeapre_from']['year'] ) && valid_int( $criteresapres['Filtre']['datedemandeapre_from']['month'] ) && valid_int( $criteresapres['Filtre']['datedemandeapre_from']['day'] ) );
-                $valid_to = ( valid_int( $criteresapres['Filtre']['datedemandeapre_to']['year'] ) && valid_int( $criteresapres['Filtre']['datedemandeapre_to']['month'] ) && valid_int( $criteresapres['Filtre']['datedemandeapre_to']['day'] ) );
-                if( $valid_from && $valid_to ) {
-                    $conditions[] = 'Apre.datedemandeapre BETWEEN \''.implode( '-', array( $criteresapres['Filtre']['datedemandeapre_from']['year'], $criteresapres['Filtre']['datedemandeapre_from']['month'], $criteresapres['Filtre']['datedemandeapre_from']['day'] ) ).'\' AND \''.implode( '-', array( $criteresapres['Filtre']['datedemandeapre_to']['year'], $criteresapres['Filtre']['datedemandeapre_to']['month'], $criteresapres['Filtre']['datedemandeapre_to']['day'] ) ).'\'';
-                }
-            }
-
+            $numeroapre = Set::extract( $criteresapres, 'Apre.numeroapre' );
+            $referent = Set::extract( $criteresapres, 'Apre.referent_id' );
+            $locaadr = Set::extract( $criteresapres, 'Adresse.locaadr' );
+            $numcomptt = Set::extract( $criteresapres, 'Adresse.numcomptt' );
+            $numdemrsa = Set::extract( $criteresapres, 'Dossier.numdemrsa' );
+            $matricule = Set::extract( $criteresapres, 'Dossier.matricule' );
 
 
             // Critères sur une personne du foyer - nom, prénom, nom de jeune fille -> FIXME: seulement demandeur pour l'instant
-            $filtersPersonne = array();
-            foreach( array( 'nom', 'prenom', 'nomnai' ) as $criterePersonne ) {
-                if( isset( $criteresapres['Filtre'][$criterePersonne] ) && !empty( $criteresapres['Filtre'][$criterePersonne] ) ) {
-                    $conditions[] = 'Personne.'.$criterePersonne.' ILIKE \''.$this->wildcard( $criteresapres['Filtre'][$criterePersonne] ).'\'';
+            foreach( array( 'nom', 'prenom', 'nomnai', 'nir' ) as $criterePersonne ) {
+                if( isset( $criteresapres['Personne'][$criterePersonne] ) && !empty( $criteresapres['Personne'][$criterePersonne] ) ) {
+                    $conditions[] = 'Personne.'.$criterePersonne.' ILIKE \''.$this->wildcard( $criteresapres['Personne'][$criterePersonne] ).'\'';
                 }
             }
 
@@ -73,39 +59,24 @@
                 $conditions[] = 'Adresse.locaadr ILIKE \'%'.Sanitize::clean( $locaadr ).'%\'';
             }
 
-            /// Critères sur l'adresse - canton
-            if( Configure::read( 'CG.cantons' ) ) {
-                if( isset( $criteresapres['Canton']['canton'] ) && !empty( $criteresapres['Canton']['canton'] ) ) {
-                    $this->Canton = ClassRegistry::init( 'Canton' );
-                    $conditions[] = $this->Canton->queryConditions( $criteresapres['Canton']['canton'] );
-                }
-            }
-
-            // NIR
-            if( !empty( $nir ) ) {
-                $conditions[] = 'Personne.nir ILIKE \'%'.Sanitize::clean( $nir ).'%\'';
-            }
 
             // Commune au sens INSEE
             if( !empty( $numcomptt ) ) {
                 $conditions[] = 'Adresse.numcomptt ILIKE \'%'.Sanitize::clean( $numcomptt ).'%\'';
             }
 
-            // N° Dossier RSA
-            if( !empty( $numdemrsa ) ) {
-                $conditions[] = 'Dossier.numdemrsa ILIKE \'%'.Sanitize::clean( $numdemrsa ).'%\'';
+            // Référent lié à l'APRE
+            if( !empty( $referent ) ) {
+                $conditions[] = 'Apre.referent_id = \''.Sanitize::clean( $referent ).'\'';
             }
 
-            // N° CAF
-            if( !empty( $matricule ) ) {
-                $conditions[] = 'Dossier.matricule ILIKE \'%'.Sanitize::clean( $matricule ).'%\'';
+            //Critères sur le dossier de l'allocataire - numdemrsa + matricule
+            foreach( array( 'numdemrsa', 'matricule' ) as $critereDossier ) {
+                if( isset( $criteresapres['Dossier'][$critereDossier] ) && !empty( $criteresapres['Dossier'][$critereDossier] ) ) {
+                    $conditions[] = 'Dossier.'.$critereDossier.' ILIKE \''.$this->wildcard( $criteresapres['Dossier'][$critereDossier] ).'\'';
+                }
             }
 
-
-            //Etat du dossier apre
-            if( !empty( $etatdossierapre ) ) {
-                $conditions[] = 'Apre.etatdossierapre = \''.Sanitize::clean( $etatdossierapre ).'\'';
-            }
 
 
 
