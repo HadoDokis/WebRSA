@@ -155,6 +155,10 @@
 								</ul>
 							</li>
 						<?php endif;?>
+						<?php if( $permissions->check( 'criteresentretiens', 'index' ) ): ?>
+                            <li><?php echo $xhtml->link( 'Par Entretiens', array( 'controller' => 'criteresentretiens', 'action' => 'index' ) );?>
+                            </li>
+                        <?php endif;?>
 						<?php if( $permissions->check( 'cohortesindus', 'index' ) ): ?>
 							<li><?php echo $xhtml->link( 'Par Indus', array( 'controller' => 'cohortesindus', 'action' => 'index' ) );?>
 							</li>
