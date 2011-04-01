@@ -294,7 +294,8 @@
 		'objetentretien' => 'objetsentretien',
 		'fichiertraitementpdo' => 'fichierstraitementspdos',
         'criteredossiercov58' => 'criteresdossierscovs58',
-        'cohortevalidationapre66' => 'cohortesvalidationapres66'
+        'cohortevalidationapre66' => 'cohortesvalidationapres66',
+        'critereentretien' => 'criteresentretiens'
 	);
 /**
  * This is a key => value array of regex used to match words.

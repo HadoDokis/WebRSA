@@ -74,6 +74,7 @@
             <?php echo $form->input( 'Filtre.referent_id', array( 'label' => __( 'Nom du référent', true ), 'type' => 'select', 'options' => $referents, 'empty' => true ) ); ?>
             <?php echo $ajax->observeField( 'FiltreStructurereferenteId', array( 'update' => 'FiltreReferentId', 'url' => Router::url( array( 'action' => 'ajaxreferent' ), true ) ) );?>
             <?php echo $form->input( 'Filtre.decision_ci', array( 'label' => 'Statut du contrat', 'type' => 'select', 'options' => $decision_ci, 'empty' => true ) ); ?>
+            <?php echo $form->input( 'Filtre.positioncer', array( 'label' => 'Position du contrat', 'type' => 'select', 'options' => $numcontrat['positioncer'], 'empty' => true ) ); ?>
             <?php echo $form->input( 'Filtre.datevalidation_ci', array( 'label' => 'Date de validation du contrat', 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true)  ); ?>
 
             <?php echo $form->input( 'Filtre.df_ci', array( 'label' => 'Date de fin du contrat', 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true)  ); ?>
@@ -100,13 +101,14 @@
         <table id="searchResults" class="tooltips">
             <thead>
                 <tr>
-                    <th><?php echo $paginator->sort( 'Nom de l\'allocataire', 'Personne.nom' );?></th>
-                    <th><?php echo $paginator->sort( 'Commune de l\'allocataire', 'Adresse.locaadr' );?></th>
-                    <th><?php echo $paginator->sort( 'Référent lié', 'PersonneReferent.referent_id' );?></th>
-                    <th><?php echo $paginator->sort( 'N° CAF', 'Dossier.matricule' );?></th>
-                    <th><?php echo $paginator->sort( 'Date de saisie du contrat', 'Contratinsertion.date_saisi_ci' );?></th>
-                    <th><?php echo $paginator->sort( 'Rang du contrat', 'Contratinsertion.rg_ci' );?></th>
-                    <th><?php echo $paginator->sort( 'Décision', 'Contratinsertion.decision_ci' ).$paginator->sort( ' ', 'Contratinsertion.datevalidation_ci' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Nom de l\'allocataire', 'Personne.nom' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Commune de l\'allocataire', 'Adresse.locaadr' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Référent lié', 'PersonneReferent.referent_id' );?></th>
+                    <th><?php echo $xpaginator->sort( 'N° CAF', 'Dossier.matricule' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Date de saisie du contrat', 'Contratinsertion.date_saisi_ci' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Rang du contrat', 'Contratinsertion.rg_ci' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Décision', 'Contratinsertion.decision_ci' ).$xpaginator->sort( ' ', 'Contratinsertion.datevalidation_ci' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Position du CER', 'Contratinsertion.positioncer' );?></th>
                     <th class="action noprint">Actions</th>
                     <th class="innerTableHeader noprint">Informations complémentaires</th>
                 </tr>
@@ -136,7 +138,7 @@
                                 </tr>
                             </tbody>
                         </table>';
-//                         debug( $contrat );
+//                         debug( $numcontrat );
                         echo $xhtml->tableCells(
                             array(
                                 h( $contrat['Personne']['nom'].' '.$contrat['Personne']['prenom'] ),
@@ -146,6 +148,7 @@
                                 h( $locale->date( 'Date::short', Set::extract( $contrat, 'Contratinsertion.date_saisi_ci' ) ) ),//date_short( $contrat['Contratinsertion']['date_saisi_ci'] ) ),
                                 h( $contrat['Contratinsertion']['rg_ci'] ),
                                 h( Set::extract( $decision_ci, Set::extract( $contrat, 'Contratinsertion.decision_ci' ) ).' '.$locale->date( 'Date::short', Set::extract( $contrat, 'Contratinsertion.datevalidation_ci' ) ) ),//date_short($contrat['Contratinsertion']['datevalidation_ci']) ),
+                                h( Set::enum( $contrat['Contratinsertion']['positioncer'], $numcontrat['positioncer'] ) ),
                                 array(
                                     $xhtml->viewLink(
                                         'Voir le dossier « '.$title.' »',

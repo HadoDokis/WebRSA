@@ -55,6 +55,7 @@
 			$structurereferente_id = Set::extract( $criteresci, 'Filtre.structurereferente_id' );
 			$referent_id = Set::extract( $criteresci, 'Filtre.referent_id' );
 			$matricule = Set::extract( $criteresci, 'Filtre.matricule' );
+			$positioncer = Set::extract( $criteresci, 'Filtre.positioncer' );
 
 
 			/// Critères sur le CI - date de saisi contrat
@@ -78,6 +79,11 @@
 			if( !empty( $decision_ci ) ) {
 				$conditions[] = 'Contratinsertion.decision_ci = \''.Sanitize::clean( $decision_ci ).'\'';
 			}
+
+            // ...
+            if( !empty( $positioncer ) ) {
+                $conditions[] = 'Contratinsertion.positioncer = \''.Sanitize::clean( $positioncer ).'\'';
+            }
 
 			// ...
 			if( !empty( $datevalidation_ci ) && dateComplete( $criteresci, 'Filtre.datevalidation_ci' ) ) {
@@ -224,6 +230,7 @@
 					'"Contratinsertion"."df_ci"',
 					'"Contratinsertion"."datevalidation_ci"',
 					'"Contratinsertion"."duree_engag"',
+					'"Contratinsertion"."positioncer"',
 					'"Contratinsertion"."date_saisi_ci"',
 					'"Contratinsertion"."pers_charg_suivi"',
 					'"Contratinsertion"."observ_ci"',
