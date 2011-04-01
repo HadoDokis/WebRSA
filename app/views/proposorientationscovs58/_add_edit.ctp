@@ -37,6 +37,7 @@
             echo $form->create( 'Propoorientationcov58', array( 'type' => 'post', 'url' => Router::url( null, true )  ) );
             echo '<div>';
             echo $form->input( 'Propoorientationcov58.id', array( 'type' => 'hidden' ) );
+            echo $form->input( 'Propoorientationcov58.dossiercov58_id', array( 'type' => 'hidden' ) );
             echo '</div>';
         }
     ?>

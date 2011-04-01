@@ -168,6 +168,79 @@
 				$this->set( 'reorientationep93', $reorientationep93 );
 				$this->set( 'optionsdossierseps', $this->Orientstruct->Reorientationep93->Dossierep->enums() );
 			}
+			elseif ( Configure::read( 'Cg.departement' ) == 58 ) {
+				$propoorientationcov58 = $this->Orientstruct->Personne->Dossiercov58->Propoorientationcov58->find(
+					'first',
+					array(
+						'fields' => array(
+							'Propoorientationcov58.id',
+							'Propoorientationcov58.dossiercov58_id',
+							'Propoorientationcov58.datedemande',
+							'Propoorientationcov58.rgorient',
+							'Propoorientationcov58.typeorient_id',
+							'Typeorient.lib_type_orient',
+							'Propoorientationcov58.structurereferente_id',
+							'Structurereferente.lib_struc',
+							'Dossiercov58.personne_id',
+							'Dossiercov58.etapecov',
+							'Personne.id',
+							'Personne.nom',
+							'Personne.prenom'
+						),
+						'conditions' => array(
+							'Dossiercov58.personne_id' => $personne_id,
+							'Themecov58.name' => 'proposorientationscovs58',
+							'Dossiercov58.etapecov <>' => 'finalise'
+						),
+						'joins' => array(
+							array(
+								'table' => 'dossierscovs58',
+								'alias' => 'Dossiercov58',
+								'type' => 'INNER',
+								'conditions' => array(
+									'Dossiercov58.id = Propoorientationcov58.dossiercov58_id'
+								)
+							),
+							array(
+								'table' => 'themescovs58',
+								'alias' => 'Themecov58',
+								'type' => 'INNER',
+								'conditions' => array(
+									'Dossiercov58.themecov58_id = Themecov58.id'
+								)
+							),
+							array(
+								'table' => 'personnes',
+								'alias' => 'Personne',
+								'type' => 'INNER',
+								'conditions' => array(
+									'Dossiercov58.personne_id = Personne.id'
+								)
+							),
+							array(
+								'table' => 'typesorients',
+								'alias' => 'Typeorient',
+								'type' => 'INNER',
+								'conditions' => array(
+									'Propoorientationcov58.typeorient_id = Typeorient.id'
+								)
+							),
+							array(
+								'table' => 'structuresreferentes',
+								'alias' => 'Structurereferente',
+								'type' => 'INNER',
+								'conditions' => array(
+									'Propoorientationcov58.structurereferente_id = Structurereferente.id'
+								)
+							)
+						),
+						'contain' => false,
+						'order' => array( 'Propoorientationcov58.rgorient DESC' )
+					)
+				);
+				$this->set( 'propoorientationcov58', $propoorientationcov58 );
+				$this->set( 'optionsdossierscovs58', $this->Orientstruct->Personne->Dossiercov58->enums() );
+			}
 
 			$this->set( 'droitsouverts', $this->Dossier->Situationdossierrsa->droitsOuverts( $dossier_id ) );
 			$this->set( 'orientstructs', $orientstructs );

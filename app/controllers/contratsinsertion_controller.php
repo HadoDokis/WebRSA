@@ -241,6 +241,60 @@
 			$this->set( 'personne_id', $personne_id );
 
 			if ( Configure::read('Cg.departement') == 58 ) {
+				$propocontratinsertioncov58 = $this->Contratinsertion->Personne->Dossiercov58->Propocontratinsertioncov58->find(
+					'first',
+					array(
+						'fields' => array(
+							'Propocontratinsertioncov58.id',
+							'Propocontratinsertioncov58.dossiercov58_id',
+							'Propocontratinsertioncov58.forme_ci',
+							'Propocontratinsertioncov58.num_contrat',
+							'Propocontratinsertioncov58.dd_ci',
+							'Propocontratinsertioncov58.df_ci',
+							'Dossiercov58.personne_id',
+							'Dossiercov58.etapecov',
+							'Personne.id',
+							'Personne.nom',
+							'Personne.prenom'
+						),
+						'conditions' => array(
+							'Dossiercov58.personne_id' => $personne_id,
+							'Themecov58.name' => 'proposcontratsinsertioncovs58',
+							'Dossiercov58.etapecov <>' => 'finalise'
+						),
+						'joins' => array(
+							array(
+								'table' => 'dossierscovs58',
+								'alias' => 'Dossiercov58',
+								'type' => 'INNER',
+								'conditions' => array(
+									'Dossiercov58.id = Propocontratinsertioncov58.dossiercov58_id'
+								)
+							),
+							array(
+								'table' => 'themescovs58',
+								'alias' => 'Themecov58',
+								'type' => 'INNER',
+								'conditions' => array(
+									'Dossiercov58.themecov58_id = Themecov58.id'
+								)
+							),
+							array(
+								'table' => 'personnes',
+								'alias' => 'Personne',
+								'type' => 'INNER',
+								'conditions' => array(
+									'Dossiercov58.personne_id = Personne.id'
+								)
+							)
+						),
+						'contain' => false,
+						'order' => array( 'Propocontratinsertioncov58.df_ci DESC' )
+					)
+				);
+				$this->set( 'propocontratinsertioncov58', $propocontratinsertioncov58 );
+				$this->set( 'optionsdossierscovs58', array_merge( $this->Orientstruct->Personne->Dossiercov58->enums(), $this->Orientstruct->Personne->Dossiercov58->Propocontratinsertioncov58->enums() ) );
+				
 				$nbdossiersnonfinalisescovs = $this->Contratinsertion->Personne->Dossiercov58->find(
 					'count',
 					array(

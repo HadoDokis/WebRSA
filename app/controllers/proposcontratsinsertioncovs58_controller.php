@@ -126,14 +126,11 @@
 		protected function _add_edit( $id = null ) {
 			// Retour à la liste en cas d'annulation
 			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
-				if( $this->action == 'edit' ) {
-					$id = $this->Propocontratinsertioncov58->Dossiercov58->Personne->Contratinsertion->field( 'personne_id', array( 'id' => $id ) );
-				}
 				$this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index', $id ) );
 			}
 
 			$valueFormeci = null;
-			if( $this->action == 'add' ) {
+			//if( $this->action == 'add' ) {
 				$contratinsertion_id = null;
 				$personne_id = $id;
 				$nbrPersonnes = $this->Propocontratinsertioncov58->Dossiercov58->Personne->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ), 'recursive' => -1 ) );
@@ -148,7 +145,7 @@
 					$tc = 'PRE';
 				}
 
-			}
+			/*}
 			else if( $this->action == 'edit' ) {
 				$contratinsertion_id = $id;
 				$contratinsertion = $this->Propocontratinsertioncov58->Dossiercov58->Personne->Contratinsertion->findById( $contratinsertion_id, null, null, -1 );
@@ -159,7 +156,7 @@
 				$nbContratsPrecedents = $this->Propocontratinsertioncov58->Dossiercov58->Personne->Contratinsertion->find( 'count', array( 'recursive' => -1, 'conditions' => array( 'Contratinsertion.personne_id' => $personne_id ) ) );
 
 				$tc = Set::classicExtract( $contratinsertion, 'Contratinsertion.num_contrat' );
-			}
+			}*/
 			$this->set( 'nbContratsPrecedents',  $nbContratsPrecedents );
 			/**
 			*   Détails des précédents contrats
@@ -263,20 +260,22 @@
 			
 				$success = true;
 				
-				$themecov58 = $this->Propocontratinsertioncov58->Dossiercov58->Themecov58->find(
-					'first',
-					array(
-						'conditions' => array(
-							'Themecov58.name' => Inflector::tableize($this->Propocontratinsertioncov58->alias)
-						),
-						'contain' => false
-					)
-				);
-				$dossiercov58['Dossiercov58']['themecov58_id'] = $themecov58['Themecov58']['id'];
-				$dossiercov58['Dossiercov58']['personne_id'] = $personne_id;
-				
-				$success = $this->Propocontratinsertioncov58->Dossiercov58->save($dossiercov58) && $success;
-				$this->data['Propocontratinsertioncov58']['dossiercov58_id'] = $this->Propocontratinsertioncov58->Dossiercov58->id;
+				if ( $this->action == 'add' ) {
+					$themecov58 = $this->Propocontratinsertioncov58->Dossiercov58->Themecov58->find(
+						'first',
+						array(
+							'conditions' => array(
+								'Themecov58.name' => Inflector::tableize($this->Propocontratinsertioncov58->alias)
+							),
+							'contain' => false
+						)
+					);
+					$dossiercov58['Dossiercov58']['themecov58_id'] = $themecov58['Themecov58']['id'];
+					$dossiercov58['Dossiercov58']['personne_id'] = $personne_id;
+					
+					$success = $this->Propocontratinsertioncov58->Dossiercov58->save($dossiercov58) && $success;
+					$this->data['Propocontratinsertioncov58']['dossiercov58_id'] = $this->Propocontratinsertioncov58->Dossiercov58->id;
+				}
 
 				$this->data['Propocontratinsertioncov58']['rg_ci'] = $nbrCi + 1;
 
@@ -334,64 +333,26 @@
 			else {
 				if( $this->action == 'edit' ) {
 
-					$this->data['Propocontratinsertioncov58'] = $contratinsertion['Contratinsertion'];
-					$suspensiondroit = $this->Propocontratinsertioncov58->Dossiercov58->Personne->Foyer->Dossier->Situationdossierrsa->Suspensiondroit->find(
+					$this->data = $this->Propocontratinsertioncov58->find(
 						'first',
 						array(
-							'fields' => array(
-								'Suspensiondroit.ddsusdrorsa'
+							'joins' => array(
+								array(
+									'table' => 'dossierscovs58',
+									'alias' => 'Dossiercov58',
+									'type' => 'INNER',
+									'conditions' => array(
+										'Dossiercov58.id = Propocontratinsertioncov58.dossiercov58_id',
+										'Dossiercov58.personne_id' => $personne_id,
+										'Dossiercov58.etapecov <>' => 'finalise'
+									)
+								)
 							),
-							'conditions' => array(
-								'Suspensiondroit.situationdossierrsa_id' => $situationdossierrsa['Situationdossierrsa']['id']
-							),
-							'recursive' => -1,
-							'order' => array( 'Suspensiondroit.ddsusdrorsa DESC' )
+							'contain' => false,
+							'order' => array( 'Propocontratinsertioncov58.df_ci DESC' )
 						)
 					);
-					if( !empty( $suspensiondroit ) ) {
-						$contratinsertion = Set::merge( $contratinsertion, $suspensiondroit );
-					}
-
-					/// FIXME
-					$actioninsertion = $this->Propocontratinsertioncov58->Dossiercov58->Personne->Contratinsertion->Actioninsertion->find(
-						'first',
-						array(
-							'conditions' => array(
-								'Actioninsertion.contratinsertion_id' => $contratinsertion['Contratinsertion']['id'],
-								'Actioninsertion.dd_action IS NOT NULL'
-							),
-							'recursive' => -1,
-							'order' => array( 'Actioninsertion.dd_action DESC' )
-						)
-					);
-					$this->data['Actioninsertion'] = $actioninsertion['Actioninsertion'];
-
-					///Suspension / Radiation
-					if( $this->data['Propocontratinsertioncov58']['raison_ci'] == 'S' ) {
-						$this->data['Propocontratinsertioncov58']['avisraison_suspension_ci'] = $this->data['Propocontratinsertioncov58']['avisraison_ci'];
-					}
-					else if( $this->data['Propocontratinsertioncov58']['raison_ci'] == 'R' ){
-						$this->data['Propocontratinsertioncov58']['avisraison_radiation_ci'] =  $this->data['Propocontratinsertioncov58']['avisraison_ci'];
-					}
-
-					///Situation dossier rsa
-					$situationdossierrsa = $this->Propocontratinsertioncov58->Dossiercov58->Personne->Foyer->Dossier->Situationdossierrsa->find(
-						'first',
-						array(
-							'fields' => array(
-								'Situationdossierrsa.dtclorsa'
-							),
-							'conditions' => array(
-								'Situationdossierrsa.dossier_id' => $dossier_id
-							),
-							'recursive' => -1
-						)
-					);
-					$this->data['Situationdossierrsa']['dtclorsa'] = Set::classicExtract( $situationdossierrsa, 'Situationdossierrsa.dtclorsa' );
 				}
-
-				/// Si on est en présence d'un deuxième contrat -> Alors renouvellement
-				$this->data['Propocontratinsertioncov58']['rg_ci'] = $nbrCi + 1;
 			}
 
 			// Doit-on setter les valeurs par défault ?
@@ -483,6 +444,40 @@
 			else {
 				$this->render( $this->action, null, 'add_edit' );
 			}
+		}
+		
+		public function delete( $personne_id ) {
+			$propocontratinsertioncov58 = $this->Propocontratinsertioncov58->find(
+				'first',
+				array(
+					'fields' => array(
+						'Propocontratinsertioncov58.id',
+						'Propocontratinsertioncov58.dossiercov58_id'
+					),
+					'joins' => array(
+						array(
+							'table' => 'dossierscovs58',
+							'alias' => 'Dossiercov58',
+							'type' => 'INNER',
+							'conditions' => array(
+								'Dossiercov58.id = Propocontratinsertioncov58.dossiercov58_id',
+								'Dossiercov58.personne_id' => $personne_id,
+								'Dossiercov58.etapecov <>' => 'finalise'
+							)
+						)
+					),
+					'contain' => false,
+					'order' => array( 'Propocontratinsertioncov58.df_ci DESC' )
+				)
+			);
+			
+			$success = true;
+			$success = $this->Propocontratinsertioncov58->delete( $propocontratinsertioncov58['Propocontratinsertioncov58']['id'] ) && $success;
+			$success = $this->Propocontratinsertioncov58->Dossiercov58->delete( $propocontratinsertioncov58['Propocontratinsertioncov58']['dossiercov58_id'] ) && $success;
+			
+			$this->_setFlashResult( 'Save', $success );
+			
+			$this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index', $personne_id ) );
 		}
 		
 	}

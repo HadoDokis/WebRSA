@@ -15,10 +15,61 @@
 		public function beforeFilter() {
 			return parent::beforeFilter();
 		}
-		
-		public function add( $personne_id = null ) {
-			$this->assert( valid_int( $personne_id ), 'invalidParameter' );
 
+		/**
+		*
+		*/
+
+		public function add() {
+			$args = func_get_args();
+			call_user_func_array( array( $this, '_add_edit' ), $args );
+		}
+
+		/**
+		*
+		*/
+
+		public function edit() {
+			$args = func_get_args();
+			call_user_func_array( array( $this, '_add_edit' ), $args );
+		}
+		
+		public function _add_edit( $personne_id = null ) {
+			$this->assert( valid_int( $personne_id ), 'invalidParameter' );
+			
+			if ( $this->action == 'edit' ) {
+				$propoorientationcov58 = $this->Propoorientationcov58->find(
+					'first',
+					array(
+						'fields' => array(
+							'Propoorientationcov58.id',
+							'Propoorientationcov58.dossiercov58_id',
+							'Propoorientationcov58.typeorient_id',
+							'Propoorientationcov58.structurereferente_id',
+							'Propoorientationcov58.referent_id',
+							'Propoorientationcov58.datedemande'
+						),
+						'joins' => array(
+							array(
+								'table' => 'dossierscovs58',
+								'alias' => 'Dossiercov58',
+								'type' => 'INNER',
+								'conditions' => array(
+									'Dossiercov58.id = Propoorientationcov58.dossiercov58_id',
+									'Dossiercov58.personne_id' => $personne_id,
+									'Dossiercov58.etapecov <>' => 'finalise'
+								)
+							)
+						),
+						'contain' => false,
+						'order' => array( 'Propoorientationcov58.rgorient DESC' )
+					)
+				);
+			}
+			else {
+				$personne_id = $id;
+			}
+			
 			// Retour à l'index en cas d'annulation
 			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
 				$this->redirect( array( 'controller' => 'orientsstructs', 'action' => 'index', $personne_id ) );
@@ -60,24 +111,26 @@
 					$saved = $this->Propoorientationcov58->Structurereferente->Regressionorientationep58->save( $regressionorientationep58 ) && $saved;
 				}
 				else {
-					$themecov58 = $this->Propoorientationcov58->Dossiercov58->Themecov58->find(
-						'first',
-						array(
-							'conditions' => array(
-								'Themecov58.name' => Inflector::tableize($this->Propoorientationcov58->alias)
-							),
-							'contain' => false
-						)
-					);
-					$dossiercov58['Dossiercov58']['themecov58_id'] = $themecov58['Themecov58']['id'];
-					$dossiercov58['Dossiercov58']['personne_id'] = $personne_id;
-					
-					$saved = $this->Propoorientationcov58->Dossiercov58->save($dossiercov58) && $saved;
-					debug($this->Propoorientationcov58->Dossiercov58->validationErrors);
-					
-					$this->Propoorientationcov58->create();
-					
-					$this->data['Propoorientationcov58']['dossiercov58_id'] = $this->Propoorientationcov58->Dossiercov58->id;
+					if ( $this->action == 'add' ) {
+						$themecov58 = $this->Propoorientationcov58->Dossiercov58->Themecov58->find(
+							'first',
+							array(
+								'conditions' => array(
+									'Themecov58.name' => Inflector::tableize($this->Propoorientationcov58->alias)
+								),
+								'contain' => false
+							)
+						);
+						$dossiercov58['Dossiercov58']['themecov58_id'] = $themecov58['Themecov58']['id'];
+						$dossiercov58['Dossiercov58']['personne_id'] = $personne_id;
+						
+						$saved = $this->Propoorientationcov58->Dossiercov58->save($dossiercov58) && $saved;
+	// 					debug($this->Propoorientationcov58->Dossiercov58->validationErrors);
+						
+						$this->Propoorientationcov58->create();
+						
+						$this->data['Propoorientationcov58']['dossiercov58_id'] = $this->Propoorientationcov58->Dossiercov58->id;
+					}
 					
 					$saved = $this->Propoorientationcov58->save( $this->data['Propoorientationcov58'] ) && $saved;
 				}
@@ -93,13 +146,48 @@
 					$this->Propoorientationcov58->rollback();
 				}
 			}
-			else {
-				$personne = $this->Propoorientationcov58->Dossiercov58->Personne->findByid( $personne_id, null, null, 0 );
+			elseif ( $this->action == 'edit' ) {
+// 				$personne = $this->Propoorientationcov58->Dossiercov58->Personne->findByid( $personne_id, null, null, 0 );
+				$this->data = $propoorientationcov58;
 			}
 
 			$this->_setOptions();
 			$this->set( 'personne_id', $personne_id );
-			$this->render( $this->action, null, 'add_edit' );
+			$this->render( $this->action, null, '_add_edit' );
+		}
+		
+		public function delete( $personne_id ) {
+			$propoorientationcov58 = $this->Propoorientationcov58->find(
+				'first',
+				array(
+					'fields' => array(
+						'Propoorientationcov58.id',
+						'Propoorientationcov58.dossiercov58_id'
+					),
+					'joins' => array(
+						array(
+							'table' => 'dossierscovs58',
+							'alias' => 'Dossiercov58',
+							'type' => 'INNER',
+							'conditions' => array(
+								'Dossiercov58.id = Propoorientationcov58.dossiercov58_id',
+								'Dossiercov58.personne_id' => $personne_id,
+								'Dossiercov58.etapecov <>' => 'finalise'
+							)
+						)
+					),
+					'contain' => false,
+					'order' => array( 'Propoorientationcov58.rgorient DESC' )
+				)
+			);
+			
+			$success = true;
+			$success = $this->Propoorientationcov58->delete( $propoorientationcov58['Propoorientationcov58']['id'] ) && $success;
+			$success = $this->Propoorientationcov58->Dossiercov58->delete( $propoorientationcov58['Propoorientationcov58']['dossiercov58_id'] ) && $success;
+			
+			$this->_setFlashResult( 'Save', $success );
+			
+			$this->redirect( array( 'controller' => 'orientsstructs', 'action' => 'index', $personne_id ) );
 		}
 		
 	}

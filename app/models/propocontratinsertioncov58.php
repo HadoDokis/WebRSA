@@ -38,13 +38,6 @@
 		);
 
 		public $belongsTo = array(
-			'Personne' => array(
-				'className' => 'Personne',
-				'foreignKey' => 'personne_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
-			),
 			'Structurereferente' => array(
 				'className' => 'Structurereferente',
 				'foreignKey' => 'structurereferente_id',

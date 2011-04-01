@@ -119,6 +119,8 @@
             echo $form->input( 'Propocontratinsertioncov58.id', array( 'type' => 'hidden' ) );
 
             echo $form->input( 'Propocontratinsertioncov58.personne_id', array( 'type' => 'hidden', 'value' => Set::classicExtract( $personne, 'Personne.id' ) ) );
+
+            echo $form->input( 'Propocontratinsertioncov58.dossiercov58_id', array( 'type' => 'hidden' ) );
             echo '</div>';
         }
     ?>
