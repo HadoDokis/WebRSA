@@ -23,3 +23,6 @@ msgstr ""
 
 msgid "Serviceinstructeur.sqrecherche"
 msgstr "Conditions supplémentaires pour les moteurs de recherche"
+
+msgid "Serviceinstructeur.lib_service"
+msgstr "Service instructeur"

@@ -109,14 +109,14 @@
 		<table class="tooltips">
 			<thead>
 				<tr>
-					<th><?php echo $paginator->sort( 'N° dossier', 'Dossier.numdemrsa' );?></th>
-					<th><?php echo $paginator->sort( 'Nom du demandeur', 'Personne.nom' );?></th>
-					<th><?php echo $paginator->sort( 'Proposition de décision', 'Decisionpropopdo.decisionpdo_id' );?></th>
-					<th><?php echo $paginator->sort( 'Origine de la PDO', 'Propopdo.originepdo_id' );?></th>
-					<th><?php echo $paginator->sort( 'Motif de la PDO', 'Propopdo.motifpdo' );?></th>
-					<th><?php echo $paginator->sort( 'Date du contrat', 'Propopdo.datereceptionpdo' );?></th>
-					<th><?php echo $paginator->sort( 'Gestionnaire', 'Propopdo.user_id' );?></th>
-					<th><?php echo $paginator->sort( 'Etat du dossier', 'Propopdo.etatdossierpdo' );?></th>
+					<th><?php echo $xpaginator->sort( 'N° dossier', 'Dossier.numdemrsa' );?></th>
+					<th><?php echo $xpaginator->sort( 'Nom du demandeur', 'Personne.nom' );?></th>
+					<th><?php echo $xpaginator->sort( 'Proposition de décision', 'Decisionpropopdo.decisionpdo_id' );?></th>
+					<th><?php echo $xpaginator->sort( 'Origine de la PDO', 'Propopdo.originepdo_id' );?></th>
+					<th><?php echo $xpaginator->sort( 'Motif de la PDO', 'Propopdo.motifpdo' );?></th>
+					<th><?php echo $xpaginator->sort( 'Date du contrat', 'Propopdo.datereceptionpdo' );?></th>
+					<th><?php echo $xpaginator->sort( 'Gestionnaire', 'Propopdo.user_id' );?></th>
+					<th><?php echo $xpaginator->sort( 'Etat du dossier', 'Propopdo.etatdossierpdo' );?></th>
 					<th class="action">Actions</th>
 				</tr>
 			</thead>

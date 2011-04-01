@@ -218,6 +218,55 @@
 			)
 		);
 
+
+
+
+
+        public function search( $criteresusers ) {
+            /// Conditions de base
+
+            $conditions = array();
+
+            // Critères sur une personne du foyer - nom, prénom, nom de jeune fille -> FIXME: seulement demandeur pour l'instant
+            $filtersPersonne = array();
+            foreach( array( 'nom', 'prenom', 'username' ) as $criterePersonne ) {
+                if( isset( $criteresusers['User'][$criterePersonne] ) && !empty( $criteresusers['User'][$criterePersonne] ) ) {
+                    $conditions[] = 'User.'.$criterePersonne.' ILIKE \''.$this->wildcard( $criteresusers['User'][$criterePersonne] ).'\'';
+                }
+            }
+
+            // Critère sur le nom du groupe d'utilisateur
+            if ( isset($criteresusers['Group']['name']) && !empty($criteresusers['Group']['name']) ) {
+                $conditions[] = array('Group.id'=>$this->wildcard( $criteresusers['Group']['name'] ));
+            }
+
+            // Critère sur le nom du serviceinstructeur de l'utilisateur
+            if ( isset($criteresusers['Serviceinstructeur']['lib_service']) && !empty($criteresusers['Serviceinstructeur']['lib_service']) ) {
+                $conditions[] = array('Serviceinstructeur.id'=>$this->wildcard( $criteresusers['Serviceinstructeur']['lib_service'] ));
+            }
+
+
+            $query = array(
+                'fields' => array(
+                    'User.nom',
+                    'User.prenom',
+                    'User.username',
+                    'User.date_deb_hab',
+                    'User.date_fin_hab',
+                    'User.date_naissance',
+                    'User.numtel',
+                    'Group.name',
+                    'Serviceinstructeur.lib_service'
+                ),
+//                 'joins' => $joins,
+                'order' => array( '"User"."username" ASC' ),
+                'conditions' => $conditions
+            );
+
+            return $query;
+        }
+
+
 		/**
 		*
 		*/
