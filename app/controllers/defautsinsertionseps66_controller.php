@@ -9,7 +9,7 @@
 		*
 		*/
 
-		protected function _setOptions() {
+		protected function _selectionPassageDefautinsertionep66( $qdName, $actionbp ) {
 			if( Configure::read( 'CG.cantons' ) ) {
 				$this->set( 'cantons', ClassRegistry::init( 'Canton' )->selectList() );
 			}
@@ -18,29 +18,21 @@
 			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
 
 			if( Configure::read( 'Zonesegeographiques.CodesInsee' ) ) {
-				$this->set( 'mesCodesInsee', ClassRegistry::init( 'Zonegeographique' )->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) ) );
+				$mesCodesInsee = ClassRegistry::init( 'Zonegeographique' )->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) );
 			}
 			else {
-				$this->set( 'mesCodesInsee', ClassRegistry::init( 'Adresse' )->listeCodesInsee() );
+				$mesCodesInsee = ClassRegistry::init( 'Adresse' )->listeCodesInsee();
 			}
-		}
-
-		/**
-		*
-		*/
-
-		protected function _selectionPassageDefautinsertionep66( $qdName, $actionbp ) {
-// 			$personnes = array();
+			$this->set( compact( 'mesCodesInsee' ) );
 
 			if( !empty( $this->data ) ) {
-				$queryData = $this->Defautinsertionep66->{$qdName}($this->data);
+				$queryData = $this->Defautinsertionep66->{$qdName}( $this->data, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) );
 				$queryData['limit'] = 10;
 
 				$this->paginate = array( 'Personne' => $queryData );
 				$personnes = $this->paginate( $this->Defautinsertionep66->Dossierep->Personne );
 			}
 
-			$this->_setOptions();
 			$this->set( compact( 'personnes' ) );
 
 			$this->set( compact( 'actionbp' ) );
