@@ -66,7 +66,11 @@ $pagination = $xpaginator->paginationBlock( 'Apre', $this->passedArgs );
         <legend>Recherche par demande APRE</legend>
             <?php echo $xform->input( 'Filtre.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
             <?php echo $xform->enum( 'Filtre.statutapre', array(  'label' => 'Statut de l\'APRE', 'options' => $options['statutapre'], 'empty' => false  ) );?>
-            <?php echo $xform->enum( 'Filtre.tiersprestataire', array(  'label' => 'Tiers prestataire', 'options' => $tiers, 'empty' => true  ) );?>
+            <?php
+                if( Configure::read( 'Cg.departement' ) == 93 ){
+                    echo $xform->enum( 'Filtre.tiersprestataire', array(  'label' => 'Tiers prestataire', 'options' => $tiers, 'empty' => true  ) );
+                }
+            ?>
             <?php echo $xform->input( 'Filtre.datedemandeapre', array( 'label' => 'Filtrer par date de demande APRE', 'type' => 'checkbox' ) );?>
             <fieldset>
                 <legend>Date de la saisie de la demande</legend>
