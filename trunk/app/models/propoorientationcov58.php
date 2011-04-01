@@ -40,13 +40,6 @@
 		);
 
 		public $belongsTo = array(
-			'Personne' => array(
-				'className' => 'Personne',
-				'foreignKey' => 'personne_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
-			),
 			'Typeorient' => array(
 				'className' => 'Typeorient',
 				'foreignKey' => 'typeorient_id',

@@ -69,7 +69,6 @@
 
 	<?php if( Configure::read( 'Cg.departement' ) == 93 && isset( $reorientationep93 ) && !empty( $reorientationep93 ) ):?>
 		<h2>Réorientation par l'équipe pluridisciplinaire</h2>
-
 		<table>
 			<thead>
 				<tr>
@@ -97,11 +96,41 @@
 				</tr>
 			</tbody>
 		</table>
+	<?php endif;?>
 
-		<h2>Orientations effectives</h2>
+	<?php if( Configure::read( 'Cg.departement' ) == 58 && isset( $propoorientationcov58 ) && !empty( $propoorientationcov58 ) ):?>
+		<h2>Réorientation en cours de validation par la commission d'orientation et de validation</h2>
+		<table>
+			<thead>
+				<tr>
+					<th>Nom</th>
+					<th>Prénom</th>
+					<th>Date de la demande</th>
+					<th>Type d'orientation</th>
+					<th>Type de structure</th>
+					<th>Rang d'orientation</th>
+					<th>État du dossier en COV</th>
+					<th colspan="2" class="action">Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><?php echo h( $propoorientationcov58['Personne']['nom'] );?></td>
+					<td><?php echo h( $propoorientationcov58['Personne']['prenom'] );?></td>
+					<td><?php echo $locale->date( __( 'Date::short', true ), $propoorientationcov58['Propoorientationcov58']['datedemande'] );?></td>
+					<td><?php echo h( $propoorientationcov58['Typeorient']['lib_type_orient'] );?></td>
+					<td><?php echo h( $propoorientationcov58['Structurereferente']['lib_struc'] );?></td>
+					<td class="number"><?php echo h( $propoorientationcov58['Propoorientationcov58']['rgorient'] );?></td>
+					<td><?php echo h( Set::enum( $propoorientationcov58['Dossiercov58']['etapecov'], $optionsdossierscovs58['Dossiercov58']['etapecov'] ) );?></td>
+					<td><?php echo $default->button( 'edit', array( 'controller' => 'proposorientationscovs58', 'action' => 'edit', $propoorientationcov58['Personne']['id'] ), array( 'enabled' => ( $propoorientationcov58['Dossiercov58']['etapecov'] == 'cree' ) ) );?></td>
+					<td><?php echo $default->button( 'delete', array( 'controller' => 'proposorientationscovs58', 'action' => 'delete', $propoorientationcov58['Personne']['id'] ), array( 'enabled' => ( $propoorientationcov58['Dossiercov58']['etapecov'] == 'cree' ) ), 'Confirmer ?' );?></td>
+				</tr>
+			</tbody>
+		</table>
 	<?php endif;?>
 
 	<?php if( !empty( $orientstructs ) ):?>
+		<h2>Orientations effectives</h2>
 		<table class="tooltips">
 			<thead>
 				<tr>
