@@ -555,7 +555,7 @@
 			?>
 		<?php endif;?>
 
-		<?php if( $permissions->check( 'dossierssimplifies', 'edit' ) ):?>
+		<?php if( $permissions->check( 'dossierssimplifies', 'edit' ) && Configure::read( 'Cg.departement' ) != 58 ):?>
 			<li><span>Préconisation d'orientation</span>
 				<ul>
 					<?php if( !empty( $dossier['Foyer']['Personne'] ) ):?>
