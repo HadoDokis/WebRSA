@@ -441,6 +441,8 @@ msgstr "Complet"
 msgid "ENUM::ETATDOSSIERAPRE::INC"
 msgstr "Incomplet"
 
+msgid "ENUM::ETATDOSSIERAPRE::VAL"
+msgstr "Validée"
 ###############################################################################
 # Enum Apre.eligibiliteapre
 ###############################################################################

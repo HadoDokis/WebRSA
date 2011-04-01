@@ -6,6 +6,20 @@
 				<li id="menu1one" onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
 					<?php echo $xhtml->link( 'Cohortes', '#' );?>
 					<ul>
+                        <?php if( ( Configure::read( 'Cg.departement' ) == 66 ) && ( $permissions->check( 'cohortesvalidationapres66', 'apresavalider' ) || $permissions->check( 'cohortesvalidationapres66', 'enattente' ) || $permissions->check( 'cohortesvalidationapres66', 'enattente' ) ) ):?>
+                            <!-- AJOUT POUR LA GESTION DES CONTRATS D'ENGAGEMENT RECIPROQUE (Cohorte) -->
+                            <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
+                                <?php  echo $xhtml->link( 'APRE ', '#' );?>
+                                    <ul>
+                                        <?php if( $permissions->check( 'cohortesvalidationapres66', 'apresavalider' ) ): ?>
+                                            <li><?php echo $xhtml->link( 'APREs à valider', array( 'controller' => 'cohortesvalidationapres66', 'action' => 'apresavalider' ), array( 'title' => 'APREs à valider' ) );?></li>
+                                        <?php endif; ?>
+                                        <?php if( $permissions->check( 'cohortesvalidationapres66', 'validees' ) ): ?>
+                                            <li><?php echo $xhtml->link( 'APREs validées', array( 'controller' => 'cohortesvalidationapres66', 'action' => 'validees' ), array( 'title' => 'APREs validées' ) );?></li>
+                                        <?php endif; ?>
+                                    </ul>
+                            </li>
+                        <?php endif;?>
 						<?php if( $permissions->check( 'cohortesci', 'nouveaux' ) || $permissions->check( 'cohortesci', 'valides' ) || $permissions->check( 'cohortesci', 'enattente' ) ):?>
 							<!-- AJOUT POUR LA GESTION DES CONTRATS D'ENGAGEMENT RECIPROQUE (Cohorte) -->
 							<li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
@@ -23,6 +37,7 @@
 									</ul>
 							</li>
 						<?php endif;?>
+
 						<?php if( $permissions->check( 'cohortescui', 'nouveaux' ) || $permissions->check( 'cohortescui', 'valides' ) || $permissions->check( 'cohortescui', 'enattente' ) ):?>
 							<!-- AJOUT POUR LA GESTION DES CONTRATS D'ENGAGEMENT RECIPROQUE (Cohorte) -->
 							<li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
@@ -200,7 +215,7 @@
 										<?php if( $permissions->check( 'criteresapres', 'index' ) ): ?>
 											<li><?php echo $xhtml->link( 'Toutes les APREs', array( 'controller' => 'criteresapres', 'action' => 'all' ) );?></li>
 										<?php endif;?>
-										<?php if( $permissions->check( 'criteresapres', 'index' ) ): ?>
+										<?php if( $permissions->check( 'criteresapres', 'index' ) && ( Configure::read( 'Cg.departement' ) != 66 ) ): ?>
 											<li><?php echo $xhtml->link( 'Eligibilité des APREs', array( 'controller' => 'criteresapres', 'action' => 'eligible' ) );?></li>
 										<?php endif;?>
 										<?php if( $permissions->check( 'recoursapres', 'index' ) ): ?>

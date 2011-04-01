@@ -270,6 +270,18 @@
 		public function afterSave( $created ) {
 			$return = parent::afterSave( $created );
 			$details = $this->_details( $this->id );
+
+            $aideapre = $this->findById( $this->id, null, null, -1 );
+            $decisionapre = Set::classicExtract( $aideapre, 'Aideapre66.decisionapre');
+
+            if( !empty( $decisionapre ) ){
+                $this->Apre66->updateAll(
+                    array(
+                        '"etatdossierapre"' =>  '\'VAL\'' ,
+                        '"isdecision"' =>  '\'O\'',
+                    )
+                );
+            }
 		}
 	}
 ?>
