@@ -155,7 +155,8 @@
                     )
 				),
 				'conditions' => $conditions,
-				'limit' => 10
+				'limit' => 10,
+				'order' => array( 'Bilanparcours66.datebilan DESC', 'Bilanparcours66.id DESC' )
 			);
 
 
