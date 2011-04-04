@@ -156,7 +156,7 @@
 				),
 				'conditions' => $conditions,
 				'limit' => 10,
-				'order' => array( 'Bilanparcours66.datebilan DESC', 'Bilanparcours66.id DESC' )
+				'order' => array( 'Bilanparcours66.created DESC'/*, 'Bilanparcours66.id DESC'*/ )
 			);
 
 
