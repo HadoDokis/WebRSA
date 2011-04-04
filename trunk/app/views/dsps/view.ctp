@@ -16,6 +16,9 @@
 		<?php
 			echo $xhtml->tag( 'h1', $this->pageTitle );
 
+            echo $form->create( 'Dsp', array( 'type' => 'post', 'id' => 'dspform', 'url' => Router::url( null, true ) ) );
+
+
 			function result( $data, $path, $type, $options = array() ) {
 				$result = Set::classicExtract( $data, $path );
 				if( $type == 'enum' ) {
@@ -493,6 +496,14 @@
 		?>
 	</div>
 </div>
+<?php if( $this->action == 'view_revs' ):?>
+    <div class="submit">
+            <?php
+                echo $form->submit( 'Retour', array( 'name' => 'Cancel', 'div' => false ) );
+            ?>
+        </div>
+        <?php echo $form->end();?>
+<?php endif;?>
 <div class="clearer"><hr /></div>
 
 <?php /*debug( $dsp );*/ ?>

@@ -151,6 +151,7 @@
 			}
 			$this->set( 'dsp', $dsp );
 			$this->set('rev', $rev);
+
         }
         
         /**
@@ -240,8 +241,14 @@
 			}
 			$this->assert( !empty( $dsp ), 'invalidParameter' );
 			$this->set( 'dsp', $dsp );
+
+            // Retour à la liste en cas d'annulation
+            if(  isset( $this->params['form']['Cancel'] ) ) {
+                $this->redirect( array( 'action' => 'histo', $dsprevs['DspRev']['personne_id'] ) );
+            }
 			$this->set( 'personne_id', $dsprevs['DspRev']['personne_id'] );
 			$this->render('view');
+
         }
         
         /**
@@ -340,6 +347,17 @@
 		function _add_edit( $personne_id = null, $version_id = null ) {
 			// Début de la transaction
 			$this->Dsp->begin();
+
+
+            // Retour à la liste en cas d'annulation
+            if(  isset( $this->params['form']['Cancel'] ) ) {
+                if( empty( $version_id ) ){
+                    $this->redirect( array( 'action' => 'view', $personne_id ) );
+                }
+                else{
+                    $this->redirect( array( 'action' => 'histo', $personne_id ) );
+                }
+            }
 
 			// On cherche soit la dsp directement, soit la personne liée
 			$dsp = null;

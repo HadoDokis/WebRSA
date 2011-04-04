@@ -346,9 +346,15 @@ Plan:
 		?>
 	</fieldset>
 
-	<?php
-		echo $xform->submit( 'Form::Save' );
-		echo $xform->end();
+    <div class="submit">
+        <?php echo $form->submit( 'Enregistrer', array( 'div' => false ) );?>
+        <?php echo $form->submit('Annuler', array( 'name' => 'Cancel', 'div' => false ) );?>
+    </div>
+    <?php echo $form->end();?>
+
+<?php
+// 		echo $xform->submit( 'Form::Save' );
+// 		echo $xform->end();
 	?>
 </div>
 <div class="clearer"><hr /></div>
