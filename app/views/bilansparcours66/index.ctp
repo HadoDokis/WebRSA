@@ -83,6 +83,7 @@
 // 					)
 // 				);
 
+
 				if( empty( $nborientstruct ) ) {
 					echo '<p class="error">Cette personne ne possède pas d\'orientation. Veuillez en saisir une pour pouvoir poursuivre.</p>';
 				}
@@ -91,6 +92,9 @@
 					echo "<ul class='actions'><li class='add'>";
 						echo $default2->button('add', array('controller'=>'bilansparcours66', 'action'=>'add', $personne_id));
 					echo "</li></ul>";
+
+                    $pagination = $xpaginator->paginationBlock( 'Bilanparcours66', $this->passedArgs );
+                    echo $pagination;
 
 					echo "<table><thead><tr>";
 						echo "<th>".__d('bilanparcours66', 'Bilanparcours66.datebilan', true)."</th>";
@@ -284,6 +288,7 @@
 					);*/
 					echo "</tbody></table>";
 				}
+                echo $pagination;
 			?>
 
 	</div>
