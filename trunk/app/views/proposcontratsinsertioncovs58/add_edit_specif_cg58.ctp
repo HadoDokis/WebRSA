@@ -166,7 +166,7 @@
         <?php echo $xform->input( 'Propocontratinsertioncov58.df_ci', array( 'label' => __d( 'propocontratinsertioncov58', 'Propocontratinsertioncov58.df_ci', true ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+2, 'minYear'=>date('Y')-2 , 'empty' => true ) ) ;?>
 
     </fieldset>
-        <?php echo $xform->input( 'Propocontratinsertioncov58.datedemande', array( 'label' => __d( 'propocontratinsertioncov58', 'Propocontratinsertioncov58.date_saisi_ci', true ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+2, 'minYear'=>date('Y')-2  ) ) ;?>
+        <?php echo $xform->input( 'Propocontratinsertioncov58.datedemande', array( 'label' => __d( 'propocontratinsertioncov58', 'Propocontratinsertioncov58.date_saisi_ci', true ), 'type' => 'hidden'/*, 'value' => $this->data['Propocontratinsertioncov58']['dd_ci'] */ ) ) ;?>
 </fieldset>
 
     <div class="submit">
@@ -177,3 +177,14 @@
 </div>
 
 <div class="clearer"><hr /></div>
+<script type="text/javascript">
+    Event.observe( $( 'Propocontratinsertioncov58DdCiDay' ), 'change', function( event ) {
+        $( 'Propocontratinsertioncov58DatedemandeDay' ).value = $F( 'Propocontratinsertioncov58DdCiDay' );
+    } );
+    Event.observe( $( 'Propocontratinsertioncov58DdCiMonth' ), 'change', function( event ) {
+        $( 'Propocontratinsertioncov58DatedemandeMonth' ).value = $F( 'Propocontratinsertioncov58DdCiMonth' );
+    } );
+    Event.observe( $( 'Propocontratinsertioncov58DdCiYear' ), 'change', function( event ) {
+        $( 'Propocontratinsertioncov58DatedemandeYear' ).value = $F( 'Propocontratinsertioncov58DdCiYear' );
+    } );
+</script>

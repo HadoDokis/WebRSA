@@ -280,6 +280,8 @@
 				$this->data['Propocontratinsertioncov58']['rg_ci'] = $nbrCi + 1;
 
 				$this->data['Propocontratinsertioncov58']['forme_ci'] = 'S';
+				
+				$this->data['Propocontratinsertioncov58']['datedemande'] = Set::classicExtract( $this->data, 'Propocontratinsertioncov58.dd_ci' );
 
 				$contratinsertionRaisonCi = Set::classicExtract( $this->data, 'Propocontratinsertioncov58.raison_ci' );
 				if( $contratinsertionRaisonCi == 'S' ) {

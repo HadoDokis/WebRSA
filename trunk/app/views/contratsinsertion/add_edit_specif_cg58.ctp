@@ -415,7 +415,7 @@
         <?php echo $xform->input( 'Contratinsertion.df_ci', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.df_ci', true ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+2, 'minYear'=>date('Y')-2 , 'empty' => true ) ) ;?>
 
     </fieldset>
-        <?php echo $xform->input( 'Contratinsertion.date_saisi_ci', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.date_saisi_ci', true ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+2, 'minYear'=>date('Y')-2  ) ) ;?>
+        <?php echo $xform->input( 'Contratinsertion.date_saisi_ci', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.date_saisi_ci', true ), 'type' => 'hidden'  ) ) ;?>
 </fieldset>
 
     <div class="submit">
@@ -426,3 +426,14 @@
 </div>
 
 <div class="clearer"><hr /></div>
+<script type="text/javascript">
+    Event.observe( $( 'ContratinsertionDdCiDay' ), 'change', function( event ) {
+        $( 'ContratinsertionDateSaisiCiDay' ).value = $F( 'ContratinsertionDdCiDay' );
+    } );
+    Event.observe( $( 'ContratinsertionDdCiMonth' ), 'change', function( event ) {
+        $( 'ContratinsertionDateSaisiCiMonth' ).value = $F( 'ContratinsertionDdCiMonth' );
+    } );
+    Event.observe( $( 'ContratinsertionDdCiYear' ), 'change', function( event ) {
+        $( 'ContratinsertionDateSaisiCiYear' ).value = $F( 'ContratinsertionDdCiYear' );
+    } );
+</script>
