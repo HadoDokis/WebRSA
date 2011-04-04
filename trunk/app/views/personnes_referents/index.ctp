@@ -80,7 +80,7 @@
                                 'Editer le référent',
                                 array( 'controller' => 'personnes_referents', 'action' => 'edit',
                                 $personne_referent['PersonneReferent']['id'] ),
-                                !$cloture
+                                ( !$cloture && ( $permissions->check( 'personnes_referents', 'edit' ) == 1 ) )
                             )
                         ),
                         array( 'class' => 'odd' ),
