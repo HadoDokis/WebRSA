@@ -242,22 +242,23 @@
 							
 							echo $html->tag(
 								'td',
-								$xhtml->editLink( 'Modifier', array( 'controller'=>'bilansparcours66', 'action'=>'edit', Set::classicExtract($bilanparcour66, 'Bilanparcours66.id') ), $block )
+								$xhtml->editLink( 'Modifier', array( 'controller'=>'bilansparcours66', 'action'=>'edit', Set::classicExtract($bilanparcour66, 'Bilanparcours66.id') ), ( $permissions->check( 'bilansparcours66', 'edit' ) == 1 && $block ) )
 							);
 							echo $html->tag(
 								'td',
-								$xhtml->courrierLink( 'Courrier d\'information', array( 'controller'=>'bilansparcours66', 'action'=>'courrier_information', Set::classicExtract($bilanparcour66, 'Bilanparcours66.id') ), $block  ) //FIXME: mise à false du bouton "Imprimer"
+								$xhtml->courrierLink( 'Courrier d\'information', array( 'controller'=>'bilansparcours66', 'action'=>'courrier_information', Set::classicExtract($bilanparcour66, 'Bilanparcours66.id') ), ( $permissions->check( 'bilansparcours66', 'courrier_information' ) == 1 && $block )  )
 							);
 							echo $html->tag(
 								'td',
-								$xhtml->printLink( 'Imprimer', array( 'controller'=>'bilansparcours66', 'action'=>'bilanparcoursGedooo', Set::classicExtract($bilanparcour66, 'Bilanparcours66.id') ), $block  ) //FIXME: mise à false du bouton "Imprimer"
+								$xhtml->printLink( 'Imprimer', array( 'controller'=>'bilansparcours66', 'action'=>'bilanparcoursGedooo', Set::classicExtract($bilanparcour66, 'Bilanparcours66.id') ), ( $permissions->check( 'bilansparcours66', 'bilanparcoursGedooo' ) == 1 && $block )  )
 							);
 							echo $html->tag(
 								'td',
-								$xhtml->cancelLink( 'Annuler ce bilan de parcours', array( 'controller'=>'bilansparcours66', 'action'=>'cancel', Set::classicExtract($bilanparcour66, 'Bilanparcours66.id') ), $block  ) //FIXME: mise à false du bouton "Imprimer"
+								$xhtml->cancelLink( 'Annuler ce bilan de parcours', array( 'controller'=>'bilansparcours66', 'action'=>'cancel', Set::classicExtract($bilanparcour66, 'Bilanparcours66.id') ), ( $permissions->check( 'bilansparcours66', 'cancel' ) == 1 && $block ) )
 							);
 						echo "</tr>";
 					}
+// 					debug($permissions->check( 'bilansparcours66', 'cancel'));
 					/*echo $default2->index(
 						$bilansparcours66,
 						array(
