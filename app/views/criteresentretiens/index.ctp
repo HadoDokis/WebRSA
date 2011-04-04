@@ -30,7 +30,7 @@
 
             <legend>Filtrer par APRE</legend>
             <?php
-
+                $valueDossierDernier = isset( $this->data['Dossier']['dernier'] ) ? $this->data['Dossier']['dernier'] : true;
                 echo $default2->subform(
                     array(
                         'Entretien.arevoirle' => array( 'label' => __d( 'entretien', 'Entretien.arevoirle', true ), 'type' => 'date', 'dateFormat' => 'MY', 'empty' => true, 'minYear' => date( 'Y' ) - 1, 'maxYear' => date( 'Y' ) + 1 ),
@@ -42,6 +42,7 @@
                         'Personne.nir' => array( 'label' => __d( 'personne', 'Personne.nir', true ), 'type' => 'text', 'maxlength' => 15 ),
                         'Dossier.matricule' => array( 'label' => __d( 'dossier', 'Dossier.matricule', true ), 'type' => 'text', 'maxlength' => 15 ),
                         'Dossier.numdemrsa' => array( 'label' => __d( 'dossier', 'Dossier.numdemrsa', true ), 'type' => 'text', 'maxlength' => 15 ),
+                        'Dossier.dernier' => array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueDossierDernier )
 
                     ),
                     array(
@@ -132,6 +133,20 @@
             <?php endforeach;?>
         </tbody>
     </table>
+    <ul class="actionMenu">
+            <li><?php
+                echo $xhtml->printLinkJs(
+                    'Imprimer le tableau',
+                    array( 'onclick' => 'printit(); return false;', 'class' => 'noprint' )
+                );
+            ?></li>
+            <li><?php
+                echo $xhtml->exportLink(
+                    'Télécharger le tableau',
+                    array( 'controller' => 'criteresentretiens', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
+                );
+            ?></li>
+        </ul>
     <?php echo $pagination;?>
 
 <?php endif?>
