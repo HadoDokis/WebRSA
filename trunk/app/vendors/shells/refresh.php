@@ -374,6 +374,7 @@
 			// Temps passé dans les différentes parties du script
 			$this->hr();
 			$tTotal = ( $tRefreshRessources + $tRefreshSoumis + $tPreorientation );
+			$tTotal = ( $tTotal == 0 ) ? 1 : $tTotal;
 			$this->out( "Temps ressources:\t\t".number_format( $tRefreshRessources / $tTotal * 100, 2 )." % =>\t".number_format( $tRefreshRessources, 2 ) );
 			$this->out( "Temps droits et devoirs:\t".number_format( $tRefreshSoumis / $tTotal * 100, 2 )." % =>\t".number_format( $tRefreshSoumis, 2 ) );
 			$this->out( "Temps préorientation:\t\t".number_format( $tPreorientation / $tTotal * 100, 2 )." % =>\t".number_format( $tPreorientation, 2 ) );
