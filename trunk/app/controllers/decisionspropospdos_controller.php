@@ -13,7 +13,8 @@
 
 		
 		public $commeDroit = array(
-			'add' => 'Traitementspdos:edit'
+            'view' => 'Decisionspropospdos:index',
+			'add' => 'Decisionspropospdos:edit'
 		);
 
 		/**
@@ -163,6 +164,40 @@
 // 			}
 // 		}
 
+        /**
+        *
+        */
+
+        public function view( $id ) {
+            $this->assert( valid_int( $id ), 'invalidParameter' );
+
+
+            $decisionpropopdo = $this->Decisionpropopdo->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Decisionpropopdo.id' => $id,
+                    ),
+                    'contain' => array(
+                        'Decisionpdo' => array(
+                            'fields' => array( 'libelle' )
+                        )
+                    )
+                )
+            );
+
+            $this->assert( !empty( $decisionpropopdo ), 'invalidParameter' );
+
+            $this->set( 'dossier_id', $this->Decisionpropopdo->dossierId( $id ) );
+
+            // Retour à la page d'édition de la PDO
+            if( isset( $this->params['form']['Cancel'] ) ) {
+                $this->redirect( array( 'controller' => 'propospdos', 'action' => 'edit', Set::classicExtract( $decisionpropopdo, 'Decisionpropopdo.propopdo_id' ) ) );
+            }
+
+            $options = $this->Decisionpropopdo->enums();
+            $this->set( compact( 'decisionpropopdo', 'options' ) );
+        }
 
 
 		/**

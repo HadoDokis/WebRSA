@@ -227,7 +227,7 @@
 							'Traitementspdos::view',
 // 							'Traitementspdos::edit' => array( 'disabled' => ( '\'#Traitementpdo.clos#\' != 0' ) ),
 							'Traitementspdos::clore' => array( 'disabled' => ( '\'#Traitementpdo.clos#\' != 0' ) ),
-							'Traitementspdos::delete'
+							'Traitementspdos::delete' => array( 'disabled' => '( "'.$permissions->check( 'traitementspdos', 'delete' ).'" != "1" )' )
 						),
 						'add' => array( 'Traitementpdo.add' => array( 'controller'=>'traitementspdos', 'action'=>'add', $pdo_id ) ),
 						'options' => $options
@@ -262,9 +262,10 @@
 					),
 					array(
 						'actions' => array(
-							'Decisionspropospdos::edit' => array( 'disabled' => ( '\'#Decisionpropopdo.id#\' != '.$lastDecisionId.' || \''.$etatdossierpdo.'\' == \'attpj\' || \''.$etatdossierpdo.'\' == \'dossiertraite\' ' ) ),
-							'Decisionspropospdos::print' => array( 'label' => 'Imprimer', 'url' => array( 'controller' => 'decisionspropospdos', 'action'=>'decisionproposition' ), 'disabled' => $block ),
-							'Decisionspropospdos::delete'
+							'Decisionspropospdos::view',
+							'Decisionspropospdos::edit' => array( 'disabled' => ( '\'#Decisionpropopdo.id#\' != '.$lastDecisionId.' || \''.$etatdossierpdo.'\' == \'attpj\' || \''.$etatdossierpdo.'\' == \'dossiertraite\' || \'#Decisionpropopdo.validationdecision#\' != NULL' ) ),
+							'Decisionspropospdos::print' => array( 'label' => 'Imprimer', 'url' => array( 'controller' => 'decisionspropospdos', 'action'=>'decisionproposition' ), 'disabled' => ( '\'#Decisionpropopdo.validationdecision#\' == NULL || ( "'.$permissions->check( 'decisionspropospdos', 'print' ).'" != "1" )' ) ),
+							'Decisionspropospdos::delete' => array( 'disabled' => '( "'.$permissions->check( 'decisionspropospdos', 'delete' ).'" != "1" )' )
 						),
 						'add' => array( 'Decisionpropopdo.add' => array( 'controller'=>'decisionspropospdos', 'action'=>'add', $pdo_id, 'disabled' => $ajoutDecision ) ),
 						'options' => $options

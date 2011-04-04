@@ -34,6 +34,9 @@ msgstr "Imprimer la proposition"
 msgid "Decisionspropospdos::delete"
 msgstr "Supprimer la proposition"
 
+msgid "Decisionspropospdos::view"
+msgstr "Vue de la proposition de décision"
+
 msgid "Decisionspropospdos::delete::confirm"
 msgstr "Etes-vous sûr de vouloir supprimer la proposition ?"
 
@@ -42,6 +45,10 @@ msgstr "Validation de la proposition"
 
 msgid "Decisionpropopdo.datevalidationdecision"
 msgstr "Date de validation de la proposition"
+
+msgid "Decisionpropopdo.commentairepdo"
+msgstr "Proposition"
+
 
 msgid "ENUM::VALIDATIONDECISION::0"
 msgstr "Non"
