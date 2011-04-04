@@ -25,7 +25,7 @@
 							echo $xhtml->tag( 'th', __d( 'personne', 'Personne.qual', true ) );
 							echo $xhtml->tag( 'th', __d( 'personne', 'Personne.nom', true ) );
 							echo $xhtml->tag( 'th', __d( 'personne', 'Personne.prenom', true ) );
-							echo $xhtml->tag( 'th', __d( Inflector::underscore($class), $class.'.datedemande', true ) );
+// 							echo $xhtml->tag( 'th', __d( Inflector::underscore($class), $class.'.datedemande', true ) );
 						echo "</tr></thead><tbody>";
 						foreach($dossierscovs[$class] as $key => $dossiercov) {
 							echo "<tr>";
@@ -34,7 +34,7 @@
 								echo $xhtml->tag( 'td', $dossiercov['Personne']['qual'] );
 								echo $xhtml->tag( 'td', $dossiercov['Personne']['nom'] );
 								echo $xhtml->tag( 'td', $dossiercov['Personne']['prenom'] );
-								echo $xhtml->tag( 'td', date_short( $dossiercov[$class]['datedemande'] ) );
+// 								echo $xhtml->tag( 'td', date_short( $dossiercov[$class]['datedemande'] ) );
 							echo "</tr>";
 						}
 						echo "</tbody></table>";
