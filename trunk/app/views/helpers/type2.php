@@ -52,7 +52,7 @@
 			$params = Set::merge( $typeInfos, $params );
 			// !isset( $params['type'] ) => error
 
-			if( in_array( $params['type'], array( 'date', 'datetime', 'timestamp' ) ) ) {
+			if( isset( $params['type'] ) && in_array( $params['type'], array( 'date', 'datetime', 'timestamp' ) ) ) {
 				if( !isset( $params['empty'] ) ) {
 					$params['empty'] = true;
 				}
@@ -62,7 +62,7 @@
 				}
 			}
 			else if( isset( $params['options'] ) ) {
-				if( $params['type'] != 'radio' ) {
+				if( !isset( $params['type'] ) || $params['type'] != 'radio' ) {
 					$params['type'] = 'select';
 				}
 				if( !isset( $params['empty'] ) ) {
