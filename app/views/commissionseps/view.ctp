@@ -208,8 +208,20 @@
 				<?php
 					foreach( $themes as $theme ) {
 // 						debug( Set::flatten( $dossiers[$theme] ) );
+// debug($theme);
+                        if( ( $theme == 'nonorientationproep58' ) || ( $theme == 'reorientationep93' ) || ( $theme == 'nonorientationproep93' ) || ( $theme == 'regressionorientationep58' ) || ( $theme == 'sanctionep58' ) ){
+                            $controller = 'orientsstructs';
+                        }
+                        else if( ( $theme == 'nonrespectsanctionep93' ) || ( $theme == 'saisinepdoep66' ) ){
+                            $controller = 'propospdos';
+                        }
+                        else if( ( $theme == 'defautinsertionep66' ) || ( $theme == 'saisinebilanparcoursep66' ) ){
+                            $controller = 'bilansparcours66';
+                        }
+
+
 						echo "<div id=\"$theme\"><h3 class=\"title\">".__d( 'dossierep',  'ENUM::THEMEEP::'.Inflector::tableize( $theme ), true )."</h3>";
-						echo $default->index(
+						echo $default2->index(
 							$dossiers[$theme],
 							array(
 								'Personne.qual',
@@ -221,9 +233,12 @@
 								'Dossierep.themeep',
 								'Dossierep.etapedossierep',
 							),
-							array(
-								'options' => $options
-							)
+                            array(
+                                'actions' => array(
+                                    'Dossierseps::view' => array( 'label' => 'Voir', 'url' => array( 'controller' => $controller, 'action' => 'index', '#Personne.id#' ), 'class' => 'external' )
+                                ),
+                                'options' => $options
+                            )
 						);
 						echo "</div>";
 					}
@@ -242,4 +257,9 @@
 <script type="text/javascript">
 	makeTabbed( 'tabbedWrapper', 2 );
 	makeTabbed( 'dossierseps', 3 );
+</script>
+<script type="text/javascript">
+    $$( 'td.action a' ).each( function( elmt ) {
+        $( elmt ).addClassName( 'external' );
+    } );
 </script>
