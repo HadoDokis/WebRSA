@@ -37,7 +37,7 @@
             <?php
                 echo $default2->subform(
                     array(
-                        'Decisionpropopdo.commentairepdo' => array( 'label' =>  'Observation : ', 'type' => 'textarea', 'rows' => 3 ),
+                        'Decisionpropopdo.commentairepdo' => array( 'label' =>  'Proposition : ', 'type' => 'textarea', 'rows' => 3 ),
                      ),
                     array(
                         'options' => $options

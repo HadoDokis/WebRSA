@@ -96,6 +96,52 @@
 		}
 
 
+        /**
+        * Retourne l'id technique du dossier RSA auquel ce traitement est lié.
+        */
+
+        public function dossierId( $decisionpropopdo_id ){
+            $result = $this->find(
+                'first',
+                array(
+                    'fields' => array( 'Foyer.dossier_id' ),
+                    'conditions' => array(
+                        'Decisionpropopdo.id' => $decisionpropopdo_id 
+                    ),
+                    'contain' => false,
+                    'joins' => array(
+                        array(
+                            'table'      => 'propospdos',
+                            'alias'      => 'Propopdo',
+                            'type'       => 'INNER',
+                            'foreignKey' => false,
+                            'conditions' => array( 'Propopdo.id = Decisionpropopdo.propopdo_id' )
+                        ),
+                        array(
+                            'table'      => 'personnes',
+                            'alias'      => 'Personne',
+                            'type'       => 'INNER',
+                            'foreignKey' => false,
+                            'conditions' => array( 'Propopdo.personne_id = Personne.id' )
+                        ),
+                        array(
+                            'table'      => 'foyers',
+                            'alias'      => 'Foyer',
+                            'type'       => 'INNER',
+                            'foreignKey' => false,
+                            'conditions' => array( 'Personne.foyer_id = Foyer.id' )
+                        ),
+                    )
+                )
+            );
+
+            if( !empty( $result ) ) {
+                return $result['Foyer']['dossier_id'];
+            }
+            else {
+                return null;
+            }
+        }
 
         /**
         * Récupère les données pour le PDf
