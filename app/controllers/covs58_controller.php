@@ -5,6 +5,8 @@
 
 		public $helpers = array( 'Default', 'Default2' );
 
+        public $uses = array( 'Cov58', 'Option' );
+
 		public $components = array( 'Prg' => array( 'actions' => array( 'index' ) ) );
 
 		/**
@@ -23,11 +25,12 @@
 			$themescovs58 = $this->Cov58->Dossiercov58->Themecov58->find('list');
 
 			$options = $this->Cov58->enums();
+			$typevoie = $this->Option->typevoie();
 			$options = array_merge($options, $this->Cov58->Dossiercov58->enums());
 			$typesorients = $this->Cov58->Dossiercov58->Propoorientationcov58->Structurereferente->Typeorient->listOptions();
 			$structuresreferentes = $this->Cov58->Dossiercov58->Propoorientationcov58->Structurereferente->list1Options();
 
-			$this->set(compact('options', 'typesorients', 'structuresreferentes'));
+			$this->set(compact('options', 'typesorients', 'structuresreferentes', 'typevoie'));
 
 			$decisionscovs = array( 'accepte' => 'Accepté', 'refus' => 'Refusé', 'ajourne' => 'Ajourné' );
 			$this->set(compact('decisionscovs'));

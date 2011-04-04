@@ -70,9 +70,15 @@
 		<div id="dossierscovs">
 			<?php
 				foreach( $themes as $theme ) {
+                    if( $theme == 'proposorientationscovs58' ){
+                        $controller = 'orientsstructs';
+                    }
+                    else if( $theme == 'proposcontratsinsertioncovs58' ){
+                        $controller = 'contratsinsertion';
+                    }
 					$class = Inflector::classify( $theme );
 					echo "<div id=\"$theme\"><h3 class=\"title\">".__d( 'dossiercov58', 'ENUM::THEMECOV::'.$theme, true )."</h3>";
-					echo $default->index(
+					echo $default2->index(
 						$dossiers[$class],
 						array(
 							'Personne.qual',
@@ -80,10 +86,13 @@
 							'Personne.prenom',
 							'Personne.dtnai',
 							'Personne.Foyer.Adressefoyer.0.Adresse.locaadr',
-							$class.'.0.datedemande',
+// 							$class.'.0.datedemande',
 							'Dossiercov58.etapecov'
 						),
 						array(
+                            'actions' => array(
+                                'Dossierscovs58::view' => array( 'label' => 'Voir', 'url' => array( 'controller' => $controller, 'action' => 'index', '#Personne.id#' ), 'class' => 'external' )
+                            ),
 							'options' => $options
 						)
 					);
@@ -93,6 +102,13 @@
 		</div>
 	</div>
 </div>
+
+<script type="text/javascript">
+    $$( 'td.action a' ).each( function( elmt ) {
+        $( elmt ).addClassName( 'external' );
+    } );
+</script>
+
 <?php
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $javascript->link( 'prototype.livepipe.js' );
