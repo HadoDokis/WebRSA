@@ -166,6 +166,13 @@
                     'conditions' => array( 'Propopdo.id = Decisionpropopdo.propopdo_id' )
                 ),
                 array(
+                    'table'      => 'decisionspdos',
+                    'alias'      => 'Decisionpdo',
+                    'type'       => 'INNER',
+                    'foreignKey' => false,
+                    'conditions' => array( 'Decisionpdo.id = Decisionpropopdo.decisionpdo_id' )
+                ),
+                array(
                     'table'      => 'traitementspdos',
                     'alias'      => 'Traitementpdo',
                     'type'       => 'LEFT OUTER',
@@ -264,6 +271,15 @@
                     'Propopdo.orgpayeur',
                     'Propopdo.datereceptionpdo',
                     'Propopdo.serviceinstructeur_id',
+                    'Decisionpropopdo.datedecisionpdo',
+                    'Decisionpdo.libelle',
+                    'Decisionpropopdo.commentairepdo',
+                    'Decisionpropopdo.avistechnique',
+                    'Decisionpropopdo.dateavistechnique',
+                    'Decisionpropopdo.commentaireavistechnique',
+                    'Decisionpropopdo.validationdecision',
+                    'Decisionpropopdo.datevalidationdecision',
+                    'Decisionpropopdo.commentairedecision',
                     'Traitementpdo.traitementtypepdo_id',
                     'Traitementpdo.datereception',
                     'Traitementpdo.id',
@@ -281,8 +297,9 @@
             $data['Personne']['qual'] = Set::enum( $data['Personne']['qual'], $qual );
             $data['Adresse']['typevoie'] = Set::enum( $data['Adresse']['typevoie'], $typevoie );
             $data['Propopdo']['serviceinstructeur_id'] = Set::enum( $data['Propopdo']['serviceinstructeur_id'], $services );
-            $data['Traitementpdo']['traitementtypepdo_id'] = Set::enum( $data['Traitementpdo']['traitementtypepdo_id'], $typestraitements );
-            $data['Traitementpdo']['descriptionpdo_id'] = Set::enum( $data['Traitementpdo']['descriptionpdo_id'], $descriptionspdos );
+            $data['Decisionpropopdo']['validationdecision'] = $data['Decisionpropopdo']['validationdecision'] ? 'Oui' : 'Non';
+//             $data['Decisionpropopdo']['traitementtypepdo_id'] = Set::enum( $data['Decisionpropopdo']['traitementtypepdo_id'], $typestraitements );
+//             $data['Decisionpropopdo']['descriptionpdo_id'] = Set::enum( $data['Decisionpropopdo']['descriptionpdo_id'], $descriptionspdos );
 // debug($data);
 // die();
             return $data;
