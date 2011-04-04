@@ -13,7 +13,7 @@
 		public $helpers = array( 'Default', 'Default2', 'Ajax' );
 
 		public $uses = array( 'Bilanparcours66', 'Option', 'Pdf'  );
-        var $components = array( 'Gedooo' );
+		var $components = array( 'Gedooo' );
 
 		public $aucunDroit = array( 'choixformulaire' );
 
@@ -63,7 +63,7 @@
 		*/
 
 		public function index( $personne_id = null ) {
-            $conditions = array( 'Orientstruct.date_valid IS NOT NULL' );
+			$conditions = array( 'Orientstruct.date_valid IS NOT NULL' );
 			if( !empty( $personne_id ) ) {
 				$conditions['Orientstruct.personne_id'] =  $personne_id;
 			}
@@ -74,9 +74,6 @@
 					'conditions' => $conditions
 				)
 			);
-
-
-
 
 			$this->paginate = array(
 // 				'fields' => array(
@@ -104,18 +101,18 @@
 					'Orientstruct' => array(
 						'Typeorient',
 						'Structurereferente',
-                        'Personne' => array(
-                            'fields' => array( 'qual', 'nom', 'prenom' ),
-                            'Foyer' => array(
-                                'Adressefoyer' => array(
-                                    'conditions' => array(
-                                        'Adressefoyer.rgadr' => '01',
-                                        'Adressefoyer.typeadr' => 'D'
-                                    ),
-                                    'Adresse'
-                                )
-                            )
-                        ),
+						'Personne' => array(
+							'fields' => array( 'qual', 'nom', 'prenom' ),
+							'Foyer' => array(
+								'Adressefoyer' => array(
+									'conditions' => array(
+										'Adressefoyer.rgadr' => '01',
+										'Adressefoyer.typeadr' => 'D'
+									),
+									'Adresse'
+								)
+							)
+						),
 					),
 					'Contratinsertion' => array(
 // 						'Personne' => array(
@@ -143,28 +140,25 @@
 						'Decisionsaisinebilanparcoursep66'
 					),
 					'Referent' => array(
-                        'Structurereferente'
+						'Structurereferente'
 					),
-                    'Defautinsertionep66' => array(
-                        'Dossierep' => array(
-                            'fields' => array(
-                                'etapedossierep'
-                            )
-                        ),
-                        'Decisiondefautinsertionep66'
-                    )
+					'Defautinsertionep66' => array(
+						'Dossierep' => array(
+							'fields' => array(
+								'etapedossierep'
+							)
+						),
+						'Decisiondefautinsertionep66'
+					)
 				),
 				'conditions' => $conditions,
 				'limit' => 10,
 				'order' => array( 'Bilanparcours66.created DESC'/*, 'Bilanparcours66.id DESC'*/ )
 			);
-
-
-
-
+			
 			$this->set( 'options', $this->Bilanparcours66->Saisinebilanparcoursep66->Dossierep->enums() );
 			$bilansparcours66 = $this->paginate( $this->Bilanparcours66 );
-
+			
 			// INFO: containable ne permet pas de passer dans les virtualFields maison
 			foreach( $bilansparcours66 as $key => $bilanparcours66 ) {
 				$bilansparcours66[$key]['Referent']['nom_complet'] = implode(
@@ -175,7 +169,7 @@
 						$bilansparcours66[$key]['Referent']['prenom']
 					)
 				);
-
+				
 				$bilansparcours66[$key]['Personne']['nom_complet'] = implode(
 					' ',
 					array(
@@ -252,7 +246,7 @@
 					'first',
 					array(
 						'contain' => array(
-                            'Saisinebilanparcoursep66'
+							'Saisinebilanparcoursep66'
 						),
 						'conditions' => array( 'Bilanparcours66.id' => $id )
 					)
@@ -277,17 +271,17 @@
 			);
 			$this->assert( ( $nPersonnes == 1 ), 'error404' );
 
-            $contrat = $this->Bilanparcours66->Contratinsertion->find(
-                'first',
-                array(
-                    'contain' => false,
-                    'conditions' => array(
-                        'Contratinsertion.personne_id' => $personne_id
-                    ),
-                    'recursive' => -1,
-                    'order' => 'Contratinsertion.date_saisi_ci DESC'
-                )
-            );
+			$contrat = $this->Bilanparcours66->Contratinsertion->find(
+				'first',
+				array(
+					'contain' => false,
+					'conditions' => array(
+						'Contratinsertion.personne_id' => $personne_id
+					),
+					'recursive' => -1,
+					'order' => 'Contratinsertion.date_saisi_ci DESC'
+				)
+			);
 // debug($contrat);
 
 			// Si le formulaire a été renvoyé
@@ -360,8 +354,8 @@
 								'Orientstruct.date_valid IS NOT NULL'
 							),
 							'contain' => array(
-                                'Structurereferente',
-                                'Referent'
+								'Structurereferente',
+								'Referent'
 							),
 							'order' => array( 'Orientstruct.date_valid DESC' )
 						)
@@ -450,15 +444,15 @@
 				array(
 					'conditions' => array( 'Personne.id' => $personne_id ),
 					'contain' => array(
-                        'Orientstruct' => array(
-                            'fields' => array( 'typeorient_id', 'date_valid' ),
-                                'Typeorient' => array(
-                                    'fields' => array(
-                                        'lib_type_orient'
-                                    )
-                                ),
-                            'order' => "Orientstruct.date_valid DESC",
-                        ),
+						'Orientstruct' => array(
+							'fields' => array( 'typeorient_id', 'date_valid' ),
+								'Typeorient' => array(
+									'fields' => array(
+										'lib_type_orient'
+									)
+								),
+							'order' => "Orientstruct.date_valid DESC",
+						),
 						'Foyer' => array(
 							'fields' => array(
 								'id'
@@ -511,34 +505,33 @@
 			$this->render( null, null, 'add_edit' );
 		}
 
+		/**
+		*   Fonction pour annuler le CER pour le CG66
+		*/
 
-        /**
-        *   Fonction pour annuler le CER pour le CG66
-        */
+		public function cancel( $id ) {
+			$bilan = $this->{$this->modelClass}->findById( $id, null, null, -1 );
+			$orientstruct_id = Set::classicExtract( $bilan, 'Bilanparcours66.orientstruct_id' );
+			$orientstruct = $this->{$this->modelClass}->Orientstruct->findById( $orientstruct_id, null, null, -1 );
+			$personne= $this->Bilanparcours66->Orientstruct->Personne->find(
+				'first',
+				array(
+					'fields' => array( 'id' ),
+					'conditions' => array(
+						'Personne.id' => $orientstruct['Orientstruct']['personne_id']
+					),
+					'recursive' => -1
+				)
+			);
 
-        public function cancel( $id ) {
-            $bilan = $this->{$this->modelClass}->findById( $id, null, null, -1 );
-            $orientstruct_id = Set::classicExtract( $bilan, 'Bilanparcours66.orientstruct_id' );
-            $orientstruct = $this->{$this->modelClass}->Orientstruct->findById( $orientstruct_id, null, null, -1 );
-            $personne= $this->Bilanparcours66->Orientstruct->Personne->find(
-                'first',
-                array(
-                    'fields' => array( 'id' ),
-                    'conditions' => array(
-                        'Personne.id' => $orientstruct['Orientstruct']['personne_id']
-                    ),
-                    'recursive' => -1
-                )
-            );
-
-            $this->{$this->modelClass}->updateAll(
-                array( 'Bilanparcours66.positionbilan' => '\'annule\'' ),
-                array(
-                    '"Bilanparcours66"."id"' => $id
-                )
-            );
-            $this->redirect( array( 'action' => 'index', $personne['Personne']['id'] ) );
-        }
+			$this->{$this->modelClass}->updateAll(
+				array( 'Bilanparcours66.positionbilan' => '\'annule\'' ),
+				array(
+					'"Bilanparcours66"."id"' => $id
+				)
+			);
+			$this->redirect( array( 'action' => 'index', $personne['Personne']['id'] ) );
+		}
 
 		/**
 		* TODO: que supprime-t'on ? Dans quel cas peut-on supprimer ?
@@ -550,38 +543,36 @@
 			$this->redirect( array( 'action' => 'index' ) );
 		}*/
 
+		/**
+		*
+		*/
 
-        /**
-        *
-        */
+		public function bilanparcoursGedooo( $id ) {
+			$this->assert( !empty( $id ), 'error404' );
 
-        public function bilanparcoursGedooo( $id ) {
-            $this->assert( !empty( $id ), 'error404' );
+			$pdf = $this->Bilanparcours66->getStoredPdf( $id );
 
-            $pdf = $this->Bilanparcours66->getStoredPdf( $id );
+			$this->assert( !empty( $pdf ), 'error404' );
+			$this->assert( !empty( $pdf['Pdf']['document'] ), 'error500' ); // FIXME: ou en faire l'impression ?
 
-            $this->assert( !empty( $pdf ), 'error404' );
-            $this->assert( !empty( $pdf['Pdf']['document'] ), 'error500' ); // FIXME: ou en faire l'impression ?
+			$this->Gedooo->sendPdfContentToClient( $pdf['Pdf']['document'], "{$id}.pdf" );
+		}
 
-            $this->Gedooo->sendPdfContentToClient( $pdf['Pdf']['document'], "{$id}.pdf" );
-        }
+		/**
+		*   Courrier d'information à l'allocataire avant passage en EP
+		*/
 
+		public function courrier_information( $id ) {
+			$this->assert( !empty( $id ), 'error404' );
+			$pdf = $this->Bilanparcours66->getPdfCourrierInformation( $id );
 
-        /**
-        *   Courrier d'information à l'allocataire avant passage en EP
-        */
-
-        public function courrier_information( $id ) {
-            $this->assert( !empty( $id ), 'error404' );
-            $pdf = $this->Bilanparcours66->getPdfCourrierInformation( $id );
-
-            if( $pdf ) {
-                $this->Gedooo->sendPdfContentToClient( $pdf, 'Courrier_Information' );
-            }
-            else {
-                $this->Session->setFlash( 'Impossible de générer le courrier d\'information', 'default', array( 'class' => 'error' ) );
-                $this->redirect( $this->referer() );
-            }
-        }
+			if( $pdf ) {
+				$this->Gedooo->sendPdfContentToClient( $pdf, 'Courrier_Information' );
+			}
+			else {
+				$this->Session->setFlash( 'Impossible de générer le courrier d\'information', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
+			}
+		}
 	}
 ?>
