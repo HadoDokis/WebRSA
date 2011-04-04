@@ -52,16 +52,17 @@
 
 // 2346 cbuffin         12201 23 sept. 2010 vendors/shells/anomalies.php => passe
 // 2998 gdumont          2407 24 févr., 09:52 vendors/shells/addconstraint.php => ne passe pas
-//   3088 cbuffin          6828 11 mars, 18:37 vendors/shells/cohortepdfs.php => ne passe pas
+// 3088 cbuffin          6828 11 mars, 18:37 vendors/shells/cohortepdfs.php => ne passe pas
 
 			if( $hasList ) {
 				foreach( $lines as $line ) {
 					$extract = preg_match(
-						'/^ *(?P<revision>[0-9]+) +(?P<user>[^ ]+) +(?P<size>[^ ]+) +(?P<date>.+ (([0-9]{4}){0,1})(, [0-9]+:[0-9]+){0,1}) +(?P<file>.+)$/i',
+// 						'/^ *(?P<revision>[0-9]+) +(?P<user>[^ ]+) +(?P<size>[^ ]+) +(?P<date>.+ [0-9]{4}(, [0-9]+:[0-9]+){0,1}) +(?P<file>.+)$/i',
+						'/^ *(?P<revision>[0-9]+) +(?P<user>[^ ]+) +(?P<size>[^ ]+) +(?P<date>.+ [0-9]{0,4}([0-9]+:[0-9]+){0,1}) +(?P<file>.+)$/i',
 						$line,
 						$matches
 					);
-
+					
 					if( $extract ) {
 						if( substr( $matches['file'], -1) != '/' ) {
 							// Controller
