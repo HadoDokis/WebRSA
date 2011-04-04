@@ -6,20 +6,20 @@
 				<li id="menu1one" onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
 					<?php echo $xhtml->link( 'Cohortes', '#' );?>
 					<ul>
-                        <?php if( ( Configure::read( 'Cg.departement' ) == 66 ) && ( $permissions->check( 'cohortesvalidationapres66', 'apresavalider' ) || $permissions->check( 'cohortesvalidationapres66', 'enattente' ) || $permissions->check( 'cohortesvalidationapres66', 'enattente' ) ) ):?>
-                            <!-- AJOUT POUR LA GESTION DES CONTRATS D'ENGAGEMENT RECIPROQUE (Cohorte) -->
-                            <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
-                                <?php  echo $xhtml->link( 'APRE ', '#' );?>
-                                    <ul>
-                                        <?php if( $permissions->check( 'cohortesvalidationapres66', 'apresavalider' ) ): ?>
-                                            <li><?php echo $xhtml->link( 'APREs à valider', array( 'controller' => 'cohortesvalidationapres66', 'action' => 'apresavalider' ), array( 'title' => 'APREs à valider' ) );?></li>
-                                        <?php endif; ?>
-                                        <?php if( $permissions->check( 'cohortesvalidationapres66', 'validees' ) ): ?>
-                                            <li><?php echo $xhtml->link( 'APREs validées', array( 'controller' => 'cohortesvalidationapres66', 'action' => 'validees' ), array( 'title' => 'APREs validées' ) );?></li>
-                                        <?php endif; ?>
-                                    </ul>
-                            </li>
-                        <?php endif;?>
+						<?php if( ( Configure::read( 'Cg.departement' ) == 66 ) && ( $permissions->check( 'cohortesvalidationapres66', 'apresavalider' ) || $permissions->check( 'cohortesvalidationapres66', 'enattente' ) || $permissions->check( 'cohortesvalidationapres66', 'enattente' ) ) ):?>
+							<!-- AJOUT POUR LA GESTION DES CONTRATS D'ENGAGEMENT RECIPROQUE (Cohorte) -->
+							<li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
+								<?php  echo $xhtml->link( 'APRE ', '#' );?>
+									<ul>
+										<?php if( $permissions->check( 'cohortesvalidationapres66', 'apresavalider' ) ): ?>
+											<li><?php echo $xhtml->link( 'APREs à valider', array( 'controller' => 'cohortesvalidationapres66', 'action' => 'apresavalider' ), array( 'title' => 'APREs à valider' ) );?></li>
+										<?php endif; ?>
+										<?php if( $permissions->check( 'cohortesvalidationapres66', 'validees' ) ): ?>
+											<li><?php echo $xhtml->link( 'APREs validées', array( 'controller' => 'cohortesvalidationapres66', 'action' => 'validees' ), array( 'title' => 'APREs validées' ) );?></li>
+										<?php endif; ?>
+									</ul>
+							</li>
+						<?php endif;?>
 						<?php if( $permissions->check( 'cohortesci', 'nouveaux' ) || $permissions->check( 'cohortesci', 'valides' ) || $permissions->check( 'cohortesci', 'enattente' ) ):?>
 							<!-- AJOUT POUR LA GESTION DES CONTRATS D'ENGAGEMENT RECIPROQUE (Cohorte) -->
 							<li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
@@ -104,18 +104,20 @@
 								</ul>
 							</li>
 						<?php endif; ?>-->
-						<?php if( $permissions->check( 'relancesnonrespectssanctionseps93', 'cohorte' ) || $permissions->check( 'relancesnonrespectssanctionseps93', 'impressions' ) ): ?>
-							<li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
-								<?php echo $xhtml->link( 'Relances (EP)','#' );?>
-								<ul>
-									<?php if( $permissions->check( 'relancesnonrespectssanctionseps93', 'cohorte' ) ): ?>
-										<li><?php echo $xhtml->link( __d( 'relancenonrespectsanctionep93', 'Relancesnonrespectssanctionseps93::cohorte', true ), array( 'controller' => 'relancesnonrespectssanctionseps93', 'action' => 'cohorte' ), array( 'title' => __d( 'relancenonrespectsanctionep93', 'Relancesnonrespectssanctionseps93::cohorte', true ) ) );?></li>
-									<?php endif;?>
-									<?php if( $permissions->check( 'relancesnonrespectssanctionseps93', 'impressions' ) ): ?>
-										<li><?php echo $xhtml->link( __d( 'relancenonrespectsanctionep93', 'Relancesnonrespectssanctionseps93::impressions', true ), array( 'controller' => 'relancesnonrespectssanctionseps93', 'action' => 'impressions' ), array( 'title' => __d( 'relancenonrespectsanctionep93', 'Relancesnonrespectssanctionseps93::impressions', true ) ) );?></li>
-									<?php endif;?>
-								</ul>
-							</li>
+						<?php if ( Configure::read( 'Cg.departement' ) == 93 ): ?>
+							<?php if( $permissions->check( 'relancesnonrespectssanctionseps93', 'cohorte' ) || $permissions->check( 'relancesnonrespectssanctionseps93', 'impressions' ) ): ?>
+								<li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
+									<?php echo $xhtml->link( 'Relances (EP)','#' );?>
+									<ul>
+										<?php if( $permissions->check( 'relancesnonrespectssanctionseps93', 'cohorte' ) ): ?>
+											<li><?php echo $xhtml->link( __d( 'relancenonrespectsanctionep93', 'Relancesnonrespectssanctionseps93::cohorte', true ), array( 'controller' => 'relancesnonrespectssanctionseps93', 'action' => 'cohorte' ), array( 'title' => __d( 'relancenonrespectsanctionep93', 'Relancesnonrespectssanctionseps93::cohorte', true ) ) );?></li>
+										<?php endif;?>
+										<?php if( $permissions->check( 'relancesnonrespectssanctionseps93', 'impressions' ) ): ?>
+											<li><?php echo $xhtml->link( __d( 'relancenonrespectsanctionep93', 'Relancesnonrespectssanctionseps93::impressions', true ), array( 'controller' => 'relancesnonrespectssanctionseps93', 'action' => 'impressions' ), array( 'title' => __d( 'relancenonrespectsanctionep93', 'Relancesnonrespectssanctionseps93::impressions', true ) ) );?></li>
+										<?php endif;?>
+									</ul>
+								</li>
+							<?php endif; ?>
 						<?php endif; ?>
 						<?php if( $permissions->check( 'nonorientationsproseps', 'index' ) ): ?>
 							<?php if ( Configure::read( 'Cg.departement' ) == 58 ): ?>
@@ -156,9 +158,9 @@
 							</li>
 						<?php endif;?>
 						<?php if( $permissions->check( 'criteresentretiens', 'index' ) ): ?>
-                            <li><?php echo $xhtml->link( 'Par Entretiens', array( 'controller' => 'criteresentretiens', 'action' => 'index' ) );?>
-                            </li>
-                        <?php endif;?>
+							<li><?php echo $xhtml->link( 'Par Entretiens', array( 'controller' => 'criteresentretiens', 'action' => 'index' ) );?>
+							</li>
+						<?php endif;?>
 						<?php if( $permissions->check( 'cohortesindus', 'index' ) ): ?>
 							<li><?php echo $xhtml->link( 'Par Indus', array( 'controller' => 'cohortesindus', 'action' => 'index' ) );?>
 							</li>
@@ -181,10 +183,10 @@
 							</li>
 						<?php endif;?>
 						<?php if( Configure::read( 'Cg.departement' ) == 58 ): ?>
-                            <?php if( $permissions->check( 'criteresdossierscovs58', 'index' ) ):?>
-                                <li> <?php echo $xhtml->link( 'Par Dossiers COV', array( 'controller' => 'criteresdossierscovs58', 'action' => 'index'  ) );?> </li>
-                            <?php endif;?>
-                        <?php endif;?>
+							<?php if( $permissions->check( 'criteresdossierscovs58', 'index' ) ):?>
+								<li> <?php echo $xhtml->link( 'Par Dossiers COV', array( 'controller' => 'criteresdossierscovs58', 'action' => 'index'  ) );?> </li>
+							<?php endif;?>
+						<?php endif;?>
 						<?php if( Configure::read( 'Cg.departement' ) == '66' ): ?>
 							<?php if( $permissions->check( 'criteresbilansparcours66', 'index' ) ):?>
 								<li><?php echo $xhtml->link( 'Par Bilans de parcours',  array( 'controller' => 'criteresbilansparcours66', 'action' => 'index'  ) );?></li>
