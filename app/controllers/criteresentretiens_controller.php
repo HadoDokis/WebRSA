@@ -62,5 +62,26 @@
             }
             $this->_setOptions();
         }
+
+
+        /**
+        * Export du tableau en CSV
+        */
+
+        public function exportcsv() {
+            $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+            $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
+
+            $querydata = $this->Critereentretien->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), array_multisize( $this->params['named'] ), $this->Jetons->ids() );
+            unset( $querydata['limit'] );
+            $querydata = $this->_qdAddFilters( $querydata );
+
+            $entretiens = $this->Entretien->find( 'all', $querydata );
+
+
+            $this->layout = ''; // FIXME ?
+            $this->set( compact( 'entretiens' ) );
+            $this->_setOptions();
+        }
     }
 ?>
