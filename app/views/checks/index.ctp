@@ -180,6 +180,67 @@
 			<?php if( !$checkCmis['curl'] ):?>
 				<p class="notice">Pour installer la librairie cURL sous Ubuntu: <code>sudo aptitude install php5-curl;/etc/init.d/apache2 restart</code></p>
 			<?php endif;?>
+
+			<br/>
+			<h3>Modèles de documents nécessaires pour les impressions</h3>
+			<p><?php echo booleanIcon( $xhtml, empty( $checkModelesOdtStatiques ) ).( empty( $checkModelesOdtStatiques ) ? 'Oui' : 'Non' );?></p>
+
+			<?php if( !empty( $checkModelesOdtStatiques ) ):?>
+				<p class="notice">Les modèles de documents suivants n'existent pas ou ne peuvent pas être lus.</p>
+			<?php endif;?>
+
+			<table>
+			<?php
+				foreach( $checkModelesOdtStatiques as $file ) {
+					echo $xhtml->tableCells( array( h( $file ) ) );
+				}
+			?>
+			</table>
+
+			<br/>
+			<h3>Paramétrages des modèles de document pour les impressions</h3>
+			<p><?php echo booleanIcon( $xhtml, empty( $checkModelesOdtParametrables ) ).( empty( $checkModelesOdtParametrables ) ? 'Oui' : 'Non' );?></p>
+
+			<?php if( !empty( $checkModelesOdtParametrables ) ):?>
+				<p class="notice">Les modèles de documents suivants n'existent pas ou ne peuvent pas être lus.</p>
+			<?php endif;?>
+
+			<?php foreach( array_keys( $checkModelesOdtParametrables ) as $typedoc ):?>
+				<h4><?php echo $typedoc;?></h4>
+				<table>
+				<?php
+					foreach( $checkModelesOdtParametrables[$typedoc] as $name => $file ) {
+						echo $xhtml->tableCells(
+							array(
+								h( $name ),
+								h( $file )
+							)
+						);
+					}
+				?>
+				</table>
+			<?php endforeach;?>
+
+			<!--<table>
+				<tbody>
+					<tr>
+						<td>Librairie cURL</td>
+						<td><?php echo booleanIcon( $xhtml, $checkCmis['curl'] ).( $checkCmis['curl'] ? 'Oui' : 'Non' );?></td>
+					</tr>
+					<tr>
+						<td>Extension DOM</td>
+						<td><?php echo booleanIcon( $xhtml, $checkCmis['dom'] ).( $checkCmis['dom'] ? 'Oui' : 'Non' );?></td>
+					</tr>
+					<tr>
+						<td>Connexion au serveur</td>
+						<td><?php echo booleanIcon( $xhtml, $checkCmis['connection'] ).( $checkCmis['connection'] ? 'Oui' : 'Non' );?></td>
+					</tr>
+					<tr>
+						<td>Version 1.0 du protocole CMIS</td>
+						<td><?php echo booleanIcon( $xhtml, $checkCmis['version'] ).( $checkCmis['version'] ? 'Oui' : 'Non' );?></td>
+					</tr>
+				</tbody>
+			</table>-->
         </table>
     </div>
 </div>

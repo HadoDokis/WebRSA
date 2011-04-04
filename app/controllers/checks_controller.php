@@ -20,6 +20,109 @@
 			$this->set( 'checkWebrsaIncEps', $this->_checkWebrsaIncEps() );
 			$this->set( 'checkSqrecherche', $this->_checkSqrecherche() );
 			$this->set( 'checkCmis', $this->_checkCmis() );
+			$this->set( 'checkModelesOdtParametrables', $this->_checkModelesOdtParametrables() );
+			$this->set( 'checkModelesOdtStatiques', $this->_checkModelesOdtStatiques() );
+		}
+
+		/**
+		*
+		*/
+
+		protected function _checkModelesOdtStatiques() {
+			$errors = array();
+
+			/// Modèles en dur -> FIXME: suivant le CG
+			$modeles = array(
+				'Contratinsertion/notificationop.odt',			// app/controllers/contratsinsertion_controller.php:1089
+				'CUI/cui.odt',									// app/controllers/cuis_controller.php:305
+				'Contratinsertion/contratinsertioncg58.odt',	// app/controllers/gedooos_controller.php:521
+				'Contratinsertion/contratinsertion.odt',		// app/controllers/gedooos_controller.php:524
+				'Relance/notifications_relances.odt',			// app/controllers/gedooos_controller.php:623 et app/controllers/gedooos_controller.php:645 (déprécié)
+				'APRE/apre.odt',								// app/controllers/gedooos_controller.php:889
+				'APRE/apreforfaitaire.odt',						// app/controllers/etatsliquidatifs_controller.php:481 et app/controllers/etatsliquidatifs_controller.php:361
+				'APRE/accordaide.odt',							// app/controllers/apres66_controller.php:705
+				'APRE/refusaide.odt',							// app/controllers/apres66_controller.php:709
+				'APRE/Relanceapre/relanceapre.odt',				// app/controllers/gedooos_controller.php:991
+				'Candidature/fichecandidature.odt',				// app/controllers/actionscandidats_personnes_controller.php:588
+				'PDO/propositiondecision.odt',					// app/models/decisionpropopdo.php:250
+				'Bilanparcours/courrierinformationavantep.odt',	// app/models/bilanparcours66.php:717
+				'Bilanparcours/bilanparcours.odt',				// app/models/bilanparcours66.php:582
+				'Commissionep/pv.odt',							// app/models/commissionep.php:513
+				'Commissionep/ordedujour.odt',					// app/models/commissionep.php:626
+			);
+
+			foreach( $modeles as $modele ) {
+				$modele_notif_file = APP.DS.'vendors'.DS.'modelesodt'.DS.$modele;
+
+				if( !file_exists( $modele_notif_file ) ) {
+					$errors[] = $modele_notif_file;
+				}
+			}
+
+			return $errors;
+		}
+
+		/**
+		* TODO, quand ce sera en place:
+		* 	- objetsentretien.modeledocument
+		* 	- descriptionspdos.modelenotification
+		* 	- objetsentretien.modeledocument
+		*/
+
+		/**
+			// Semi-paramétrables ?
+			app/models/reorientationep93.php:498:                   $modeledoc = "{$this->alias}/decision_{$gedooo_data['Decisionreorientationep93']['decision']}.odt";
+			app/models/relancenonrespectsanctionep93.php:1330:                      return "{$this->alias}/notification_{$data['Nonrespectsanctionep93']['origine']}_relance{$data['Relancenonrespectsanctionep93']['numrelance']}.odt";
+			app/controllers/recoursapres_controller.php:233:                                $pdf = $this->Apre->ged( $apre, 'APRE/DecisionComite/Recours/recours'.$recoursapre.$dest.'.odt' );
+			app/controllers/recoursapres_controller.php:237:                                $pdf = $this->Apre->ged( $apre, 'APRE/DecisionComite/Recours/recours'.$dest.'.odt' );
+			app/controllers/etatsliquidatifs_controller.php:370:                            $pdf = $this->Etatliquidatif->Apre->ged( $apre, 'APRE/Paiement/paiement_'.$dest.'.odt' );
+			app/controllers/etatsliquidatifs_controller.php:379:                            $pdf = $this->Etatliquidatif->Apre->ged( $apre, 'APRE/Paiement/paiement_'.$typeformation.'_'.$dest.'.odt' );
+			app/controllers/etatsliquidatifs_controller.php:486:                                    $pdf = $this->Etatliquidatif->Apre->ged( array( 'etatliquidatif_tiers' => $apres ), 'APRE/Paiement/paiement_'.$dest.'.odt', true );
+			app/controllers/etatsliquidatifs_controller.php:491:                                    $pdf = $this->Etatliquidatif->Apre->ged( array( 'apreforfaitaire' => $apres ), 'APRE/Paiement/paiement_'.$dest.'.odt', true );
+			app/controllers/cohortescomitesapres_controller.php:406:                                $pdf = $this->Apre->ged( $apre, 'APRE/DecisionComite/Refus/Refus'.$dest.'.odt' );
+			app/controllers/cohortescomitesapres_controller.php:410:                                $pdf = $this->Apre->ged( $apre, 'APRE/DecisionComite/'.$typedecision.'/'.$typedecision.$typeformation.$dest.'.odt' );
+			app/controllers/cohortescomitesapres_controller.php:414:                                $pdf = $this->Apre->ged( $apre, 'APRE/DecisionComite/'.$typedecision.'/'.$typedecision.$dest.'.odt' );
+			app/controllers/cohortescomitesapres_controller.php:418:                                $pdf = $this->Apre->ged( $apre, 'APRE/DecisionComite/'.$typedecision.'/'.$typedecision.$typepaiement.$dest.'.odt' );
+		*/
+
+		protected function _checkModelesOdtParametrables() {
+			$errors = array();
+
+			// Type de rendez-vous
+			$typesrdvs = ClassRegistry::init( 'Typerdv' )->find( 'all', array( 'recursive' => -1 ) );
+
+			foreach( $typesrdvs as $typerdv ) {
+				$modele_notif = trim( $typerdv['Typerdv']['modelenotifrdv'] );
+				$modele_notif_file = APP.DS.'vendors'.DS.'modelesodt'.DS.'RDV'.DS.$modele_notif.'.odt';
+
+				if( empty( $modele_notif ) || !file_exists( $modele_notif_file ) ) {
+					$errors['Typerdv'][$typerdv['Typerdv']['libelle']] = $modele_notif_file;
+				}
+			}
+
+			// Types d'orientation
+			$typesorients = $this->Structurereferente->Typeorient->find(
+				'all',
+				array(
+					'conditions' => array(
+						'Typeorient.parentid IS NULL'
+					),
+					'recursive' => -1
+				)
+			);
+
+			foreach( $typesorients as $typeorient ) {
+				$modele_notif = trim( $typeorient['Typeorient']['modele_notif'] );
+				// FIXME: apparemment, modele_notif_cohorte n'est plus utilisé
+				$modele_notif_file = APP.DS.'vendors'.DS.'modelesodt'.DS.'Orientation'.DS.$modele_notif.'.odt';
+
+				if( empty( $modele_notif ) || !file_exists( $modele_notif_file ) ) {
+					$errors['Orientstruct'][$typeorient['Typeorient']['lib_type_orient']] = $modele_notif_file;
+				}
+			}
+
+
+			return $errors;
 		}
 
 		/**
