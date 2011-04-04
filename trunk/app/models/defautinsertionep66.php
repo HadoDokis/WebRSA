@@ -405,18 +405,20 @@
 						// FIXME: referent_id -> champ obligatoire
 						// FIXME: si la structure ne possède pas de référent ???
 						if( empty( $orientsstruct['Orientstruct']['referent_id'] ) ) {
-							$referent = $oBilanparcours66->Orientstruct->Referent->find(
+							$bilanparcours66 = $oBilanparcours66->find(
 								'first',
 								array(
-									'fields' => array( 'Referent.id' ),
+									'fields' => array(
+										'Bilanparcours66.orientstruct_id',
+// 										'Bilanparcours66.structurereferente_id',
+										'Bilanparcours66.referent_id'
+									),
 									'conditions' => array(
-										'Referent.structurereferente_id' => $orientsstruct['Orientstruct']['structurereferente_id']
+										'Bilanparcours66.id' => $dossierep['Defautinsertionep66']['bilanparcours66_id']
 									),
 									'contain' => false
 								)
 							);
-
-							$orientsstruct['Orientstruct']['referent_id'] = $referent['Referent']['id'];
 						}
 
 						$nvdossierep = array(
@@ -429,9 +431,9 @@
 							'Bilanparcours66' => array(
 								'personne_id' => $dossierep['Dossierep']['personne_id'],
 								'typeformulaire' => 'cg',
-								'orientstruct_id' => $orientsstruct['Orientstruct']['id'],
-								'structurereferente_id' => $orientsstruct['Orientstruct']['structurereferente_id'],// FIXME: ?
-								'referent_id' => $orientsstruct['Orientstruct']['referent_id'],// FIXME: ?
+								'orientstruct_id' => $bilanparcours66['Bilanparcours66']['orientstruct_id'],
+// 								'structurereferente_id' => $bilanparcours66['Bilanparcours66']['structurereferente_id'],// FIXME: ?
+								'referent_id' => $bilanparcours66['Bilanparcours66']['referent_id'],// FIXME: ?
 								'presenceallocataire' => 1,// FIXME: vient des détails de la séance
 								'motifsaisine' => 'Proposition de réorientation suite à un passage en EP pour défaut d\'insertion',
 								'proposition' => 'parcours',
@@ -451,7 +453,7 @@
 								'structurereferente_id' => @$dossierep['Decisiondefautinsertionep66'][0]['structurereferente_id'],
 							)
 						);
-
+						
 						$success = $oBilanparcours66->sauvegardeBilan( $nvdossierep ) && $success;
 					}
 					/*// TODO Si maintien, alors, RDV référent
