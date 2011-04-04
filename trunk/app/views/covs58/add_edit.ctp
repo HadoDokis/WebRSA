@@ -20,7 +20,7 @@
 			'Cov58.id' => array( 'type'=>'hidden' ),
 			'Cov58.name' => array( 'required' => true ),
 			'Cov58.lieu',
-			'Cov58.datecommission' => array( 'dateFormat' => __( 'Locale->dateFormat', true ), 'timeFormat' => __( 'Locale->timeFormat', true ), 'interval' => 15, 'required' => true ),
+			'Cov58.datecommission' => array( 'dateFormat' => __( 'Locale->dateFormat', true ), 'timeFormat' => __( 'Locale->timeFormat', true ), 'interval' => 15, 'required' => true, 'maxYear' => date('Y') + 1, 'minYear' => date('Y') - 1 ),
 			'Cov58.observation' => array( 'type'=>'textarea' )
 		)
 	);

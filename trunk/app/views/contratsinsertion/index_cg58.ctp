@@ -38,7 +38,7 @@
 
 	<?php if( Configure::read( 'Cg.departement' ) == 58 && isset( $propocontratinsertioncov58 ) && !empty( $propocontratinsertioncov58 ) ):?>
 		<h2>Contrat en cours de validation par la commission d'orientation et de validation</h2>
-		<table>
+		<table class="aere">
 			<thead>
 				<tr>
 					<th>Nom</th>
@@ -66,6 +66,7 @@
 	<?php endif;?>
 
 	<?php if( !empty( $contratsinsertion ) ):?>
+		<h2>Contrats effectifs</h2>
 		<table class="tooltips">
 			<thead>
 				<tr>

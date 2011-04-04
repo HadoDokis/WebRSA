@@ -66,9 +66,9 @@
 					)
 				);
 			}
-			else {
-				$personne_id = $id;
-			}
+// 			else {
+// 				$personne_id = $id;
+// 			}
 			
 			// Retour à l'index en cas d'annulation
 			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
