@@ -220,27 +220,6 @@
 				?>
 				</table>
 			<?php endforeach;?>
-
-			<!--<table>
-				<tbody>
-					<tr>
-						<td>Librairie cURL</td>
-						<td><?php echo booleanIcon( $xhtml, $checkCmis['curl'] ).( $checkCmis['curl'] ? 'Oui' : 'Non' );?></td>
-					</tr>
-					<tr>
-						<td>Extension DOM</td>
-						<td><?php echo booleanIcon( $xhtml, $checkCmis['dom'] ).( $checkCmis['dom'] ? 'Oui' : 'Non' );?></td>
-					</tr>
-					<tr>
-						<td>Connexion au serveur</td>
-						<td><?php echo booleanIcon( $xhtml, $checkCmis['connection'] ).( $checkCmis['connection'] ? 'Oui' : 'Non' );?></td>
-					</tr>
-					<tr>
-						<td>Version 1.0 du protocole CMIS</td>
-						<td><?php echo booleanIcon( $xhtml, $checkCmis['version'] ).( $checkCmis['version'] ? 'Oui' : 'Non' );?></td>
-					</tr>
-				</tbody>
-			</table>-->
         </table>
     </div>
 </div>
