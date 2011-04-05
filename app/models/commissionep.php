@@ -281,6 +281,7 @@
 			}
 
 			if( empty( $totalErrors ) ) {
+				$niveauMax = 'ep';
 				foreach( $themesTraites as $themeTraite => $niveauDecisionTheme ) {
 					$themeTraite = Inflector::tableize( $themeTraite );
 
@@ -302,6 +303,10 @@
 							)
 						);
 					}
+					
+					if ( $niveauDecisionTheme == 'cg' ) {
+						$niveauMax = 'cg';
+					}
 				}
 
 				$commissionep = $this->find(
@@ -313,7 +318,7 @@
 					)
 				);
 
-				if( $niveauDecision == 'cg' ) {
+				if( $niveauDecision == 'cg' || ( $niveauMax == 'ep' && $niveauDecision == 'ep' ) ) {
 					$commissionep['Commissionep']['finalisee'] = 'cg';
 					// Finalisation de chacun des dossiers
 					foreach( $themesTraites as $themeTraite => $niveauDecisionTheme ) {
