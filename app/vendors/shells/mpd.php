@@ -486,7 +486,7 @@
 			$this->out("\t-verbose <booléen>\n\t\tDoit-on afficher les étapes de lecture / écriture ?\n\t\tPar défaut: ".$this->_defaultToString( 'verbose' )."\n");
 			$this->out("\t-limit <entier>\n\t\tLimite sur le nombre de tables à traiter.\n\t\tPar défaut: ".$this->_defaultToString( 'limit' )."\n");
 			$this->out("\t-module <string>\n\t\tNom du module à traiter (disponible: apres, eps).\n\t\tPar défaut: ".$this->_defaultToString( 'module' )."\n");
-			$this->out("\t-module <string>\n\t\tNom du schéma à traiter.\n\t\tPar défaut: ".$this->_defaultToString( 'schema' )."\n");
+			$this->out("\t-schema <string>\n\t\tNom du schéma à traiter.\n\t\tPar défaut: ".$this->_defaultToString( 'schema' )."\n");
 			$this->out();
 
 			$this->_stop( 0 );
