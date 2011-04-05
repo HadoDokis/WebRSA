@@ -4,6 +4,7 @@
 <div id="tabbedWrapper" class="tabs">
 	<?php
 		echo $form->create( null, array( 'url' => Router::url( null, true ) ) );
+		echo $form->input( 'Commissionep.save', array( 'type' => 'hidden', 'value' => true ) );
 
 		foreach( array_keys( $dossiers ) as $theme ) {
 			$file = sprintf( 'traitercg.%s.liste.ctp', Inflector::underscore( $theme ) );
