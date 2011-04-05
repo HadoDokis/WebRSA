@@ -167,6 +167,7 @@ App::import( 'Sanitize' );
                     'Aideapre66.apre_id',
                     'Aideapre66.decisionapre',
                     'Aideapre66.montantaccorde',
+                    'Aideapre66.montantpropose',
                     'Aideapre66.datedemande',
                     'Aideapre66.datemontantaccorde',
                     'Aideapre66.motifrejetequipe',

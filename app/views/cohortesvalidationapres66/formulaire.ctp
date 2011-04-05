@@ -63,6 +63,7 @@
                 <th>Nom de l'allocataire</th>
                 <th>Commune de l'allocataire</th>
                 <th>Date demande APRE</th>
+                <th>Montant proposé</th>
                 <th>Décision APRE</th>
                 <th>Montant accordé</th>
                 <th>Motif du rejet</th>
@@ -81,6 +82,7 @@
                         h( $validationapre['Personne']['nom'].' '.$validationapre['Personne']['prenom'] ),
                         h( $validationapre['Adresse']['locaadr'] ),
                         h( date_short( $validationapre['Aideapre66']['datedemande'] ) ),
+                        h( $validationapre['Aideapre66']['montantpropose'] ),
                     );
 
                     $array2 = array(
@@ -91,7 +93,7 @@
                         $form->input( 'Apre.'.$index.'.etatdossierapre', array( 'label' => false, 'type' => 'hidden', 'value' => $validationapre['Apre']['etatdossierapre'] ) ).
                         $form->input( 'Aideapre66.'.$index.'.id', array( 'label' => false, 'type' => 'hidden', 'value' => $validationapre['Aideapre66']['id'] ) ).
                         $form->input( 'Aideapre66.'.$index.'.apre_id', array( 'label' => false, 'type' => 'hidden', 'value' => $validationapre['Aideapre66']['apre_id'] ) ).
-                        $form->input( 'Aideapre66.'.$index.'.decisionapre', array( 'label' => false, 'empty' => true, 'type' => 'select', 'options' => $optionsaideapre66['decisionapre'], 'value' => $validationapre['Aideapre66']['proposition_decisionapre'] ) ),
+                        $form->input( 'Aideapre66.'.$index.'.decisionapre', array( 'label' => false, 'empty' => true, 'type' => 'select', 'options' => $optionsaideapre66['decisionapre'], 'value' => $validationapre['Aideapre66']['decisionapre'] ) ),
 
                         $form->input( 'Aideapre66.'.$index.'.montantaccorde', array( 'label' => false, 'type' => 'text', 'value' => $validationapre['Aideapre66']['montantaccorde'] ) ),
 
@@ -102,7 +104,7 @@
 
                         $xhtml->viewLink(
                             'Voir le contrat « '.$title.' »',
-                            array( 'controller' => 'apres66', 'action' => 'view', $validationapre['Apre']['id'] )
+                            array( 'controller' => 'apres66', 'action' => 'index', $validationapre['Apre']['personne_id'] )
                         )/*,
                         array( $innerTable, array( 'class' => 'innerTableCell' ) )*/
                     );

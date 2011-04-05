@@ -43,14 +43,16 @@
                     <th><?php __( 'Montant aide complémentaire demandée');?></th>
                     <td><?php echo Set::classicExtract( $apre, 'Apre.montantaverser' );?></td>
                 </tr>
-                <tr class="odd">
-                    <th><?php __( 'Avis du comité d\'examen' );?></th>
-                    <td><?php if( Set::classicExtract( $aprecomiteapre, 'ApreComiteapre.decisioncomite' ) ) { echo Set::enum( Set::classicExtract( $aprecomiteapre, 'ApreComiteapre.decisioncomite' ), $optionsaprecomite['decisioncomite']); }?></td>
-                </tr>
-                <tr class="even">
-                    <th><?php __( 'Montant aide complémentaire accordée' );?></th>
-                    <td><?php echo Set::classicExtract( $aprecomiteapre, 'ApreComiteapre.montantattribue' );?></td>
-                </tr>
+                <?php if( Configure::read( 'Cg.departement' ) != 66 ):?>
+                    <tr class="odd">
+                        <th><?php __( 'Avis du comité d\'examen' );?></th>
+                        <td><?php if( Set::classicExtract( $aprecomiteapre, 'ApreComiteapre.decisioncomite' ) ) { echo Set::enum( Set::classicExtract( $aprecomiteapre, 'ApreComiteapre.decisioncomite' ), $optionsaprecomite['decisioncomite']); }?></td>
+                    </tr>
+                    <tr class="even">
+                        <th><?php __( 'Montant aide complémentaire accordée' );?></th>
+                        <td><?php echo Set::classicExtract( $aprecomiteapre, 'ApreComiteapre.montantattribue' );?></td>
+                    </tr>
+                <?php endif;?>
                 <tr class="odd">
                     <th><?php __( 'Montant aide complémentaire déjà versé' );?></th>
                     <td><?php echo Set::classicExtract( $apre, 'Apre.montantdejaverse' );?></td>

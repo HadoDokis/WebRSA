@@ -75,10 +75,12 @@
                 // On a renvoyé  le formulaire de la cohorte
                 if( !empty( $this->data['Aideapre66'] ) ) {
 
-
-// debug($this->data);
+                    // Ajout des règles de validation
+                    $this->Apre66->Aideapre66->validationDecisionAllowEmpty( false );
 
                     $valid = $this->Apre66->Aideapre66->saveAll( $this->data['Aideapre66'], array( 'validate' => 'only', 'atomic' => false ) );
+
+
                     if( $valid ) {
                         $this->Aideapre66->begin();
                         $saved = $this->Apre66->Aideapre66->saveAll( $this->data['Aideapre66'], array( 'validate' => 'first', 'atomic' => false ) );
@@ -111,13 +113,13 @@
 
                     $this->Dossier->commit();
                     foreach( $cohortevalidationapre66 as $key => $value ) {
-
+/*
                         if( empty( $value['Aideapre66']['decisionapre'] ) ) {
                             $cohortevalidationapre66[$key]['Aideapre66']['proposition_decisionapre'] = '';
                         }
                         else {
                             $cohortevalidationapre66[$key]['Aideapre66']['proposition_decisionapre'] = $value['Aideapre66']['decisionapre'];
-                        }
+                        }*/
 
                         if( empty( $value['Aideapre66']['datemontantaccorde'] ) ) {
                             $cohortevalidationapre66[$key]['Aideapre66']['proposition_datemontantaccorde'] = date( 'Y-m-d' );
