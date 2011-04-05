@@ -21,3 +21,9 @@ msgstr ""
 
 msgid "Motifreorientep93.name"
 msgstr "Motif de la demande"
+
+msgid "Motifreorientep93::index::empty"
+msgstr "Aucun motif enregistré"
+
+msgid "Motifsreorientseps93::delete::confirm"
+msgstr "Êtes-vous sûr de vouloir supprimer le motif ?"
