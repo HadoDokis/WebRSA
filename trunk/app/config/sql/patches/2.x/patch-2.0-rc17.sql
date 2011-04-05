@@ -198,9 +198,6 @@ UPDATE acos SET alias = regexp_replace(alias, 'Decisionsnonorientationspros58', 
 UPDATE acos SET alias = regexp_replace(alias, 'Decisionsnonorientationspros66', 'Decisionsnonorientationsproseps66') WHERE alias LIKE '%Decisionsnonorientationspros66%';
 UPDATE acos SET alias = regexp_replace(alias, 'Decisionsnonorientationspros93', 'Decisionsnonorientationsproseps93') WHERE alias LIKE '%Decisionsnonorientationspros93%';
 
-
-
-
 -- 20110401
 ALTER TABLE apres ALTER COLUMN etatdossierapre TYPE TEXT;
 ALTER TABLE relancesapres ALTER COLUMN etatdossierapre TYPE TEXT;
@@ -208,6 +205,48 @@ DROP TYPE IF EXISTS TYPE_ETATDOSSIERAPRE;
 CREATE TYPE TYPE_ETATDOSSIERAPRE AS ENUM ( 'COM', 'INC', 'VAL' );
 ALTER TABLE apres ALTER COLUMN etatdossierapre TYPE TYPE_ETATDOSSIERAPRE USING CAST(etatdossierapre AS TYPE_ETATDOSSIERAPRE);
 ALTER TABLE relancesapres ALTER COLUMN etatdossierapre TYPE TYPE_ETATDOSSIERAPRE USING CAST(etatdossierapre AS TYPE_ETATDOSSIERAPRE);
+
+-- 20110405: réparation suite au renommage des tables: renommage des séquences
+CREATE OR REPLACE FUNCTION public.rename_sequence_ifexists( p_namespace text, p_namefrom text, p_nameto text ) RETURNS bool AS
+$$
+	DECLARE
+		v_row       		record;
+		v_query     		text;
+	BEGIN
+		select 1 into v_row
+		from information_schema.tables ta
+		where ta.table_name = p_namefrom;
+		if found then
+			raise notice 'Upgrade table %.%_id_seq - rename to %_id_seq', p_namespace, p_namefrom, p_nameto;
+			v_query := 'ALTER TABLE ' || p_namespace || '.' || p_namefrom || '_id_seq RENAME TO ' || p_nameto || '_id_seq;';
+			execute v_query;
+			return 't';
+		else
+			raise notice 'Table %.%_id_seq not found', p_namespace, p_namefrom;
+			return 'f';
+		end if;
+	END;
+$$
+LANGUAGE plpgsql;
+
+COMMENT ON FUNCTION public.rename_sequence_ifexists( p_namespace text, p_namefrom text, p_nameto text ) IS 'Renommage de la séquence p_namefrom en p_nameto si elle existe';
+
+SELECT rename_sequence_ifexists( 'public', 'membreseps_seanceseps', 'commissionseps_membreseps' );
+SELECT rename_sequence_ifexists( 'public', 'seanceseps', 'commissionseps' );
+SELECT rename_sequence_ifexists( 'public', 'nvsrsepsreorientsrs93', 'decisionsreorientationseps93' );
+SELECT rename_sequence_ifexists( 'public', 'saisinesepsreorientsrs93', 'reorientationseps93' );
+SELECT rename_sequence_ifexists( 'public', 'nvsepdspdos66', 'decisionssaisinespdoseps66' );
+SELECT rename_sequence_ifexists( 'public', 'saisinesepdspdos66', 'saisinespdoseps66' );
+SELECT rename_sequence_ifexists( 'public', 'nvsrsepsreorient66', 'decisionssaisinesbilansparcourseps66' );
+SELECT rename_sequence_ifexists( 'public', 'saisinesepsbilansparcours66', 'saisinesbilansparcourseps66' );
+SELECT rename_sequence_ifexists( 'public', 'motifsreorients', 'motifsreorientseps93' );
+SELECT rename_sequence_ifexists( 'public', 'nonorientationspros58', 'nonorientationsproseps58' );
+SELECT rename_sequence_ifexists( 'public', 'nonorientationspros66', 'nonorientationsproseps66' );
+SELECT rename_sequence_ifexists( 'public', 'nonorientationspros93', 'nonorientationsproseps93' );
+SELECT rename_sequence_ifexists( 'public', 'decisionsnonorientationspros58', 'decisionsnonorientationsproseps58' );
+SELECT rename_sequence_ifexists( 'public', 'decisionsnonorientationspros66', 'decisionsnonorientationsproseps66' );
+SELECT rename_sequence_ifexists( 'public', 'decisionsnonorientationspros93', 'decisionsnonorientationsproseps93' );
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
