@@ -1,4 +1,4 @@
-<h1><?php	echo $this->pageTitle = '1. Affichage séance d\'EP'; ?></h1>
+<h1><?php	echo $this->pageTitle = '1. Affichage d\'une commission d\'EP'; ?></h1>
 <div  id="ficheCI">
 	<ul class="actionMenu">
 	<?php
@@ -87,11 +87,11 @@
 	<table>
 		<tbody>
 			<tr class="odd">
-				<th><?php echo "Identifiant de la séance";?></th>
+				<th><?php echo "Identifiant de la commission";?></th>
 				<td><?php echo isset( $commissionep['Commissionep']['identifiant'] ) ? $commissionep['Commissionep']['identifiant'] : null ;?></td>
 			</tr>
 			<tr class="even">
-				<th><?php echo "Date de la séance";?></th>
+				<th><?php echo "Date de la commission";?></th>
 				<td><?php echo isset( $commissionep['Commissionep']['dateseance'] ) ? strftime( '%d/%m/%Y %H:%M', strtotime( $commissionep['Commissionep']['dateseance'])) : null ;?></td>
 			</tr>
 			<tr class="odd">
@@ -99,18 +99,30 @@
 				<td><?php echo isset( $commissionep['Ep']['name'] ) ? $commissionep['Ep']['name'] : null ;?></td>
 			</tr>
 			<tr class="even">
-				<th><?php echo "Structure référente";?></th>
-				<td><?php echo isset( $commissionep['Structurereferente']['lib_struc'] ) ? $commissionep['Structurereferente']['lib_struc'] : null ;?></td>
+				<th><?php echo "Lieu de la commission";?></th>
+				<td><?php echo isset( $commissionep['Commissionep']['lieuseance'] ) ? $commissionep['Commissionep']['lieuseance'] : null ;?></td>
 			</tr>
 			<tr class="odd">
-				<th><?php echo "Salle de la commision";?></th>
-				<td><?php echo isset( $commissionep['Commissionep']['salle'] ) ? $commissionep['Commissionep']['salle'] : null ;?></td>
+				<th><?php echo "Adresse de la commission";?></th>
+				<td><?php echo isset( $commissionep['Commissionep']['adresseseance'] ) ? $commissionep['Commissionep']['adresseseance'] : null ;?></td>
 			</tr>
 			<tr class="even">
+                <th><?php echo "Code postal de la commission";?></th>
+                <td><?php echo isset( $commissionep['Commissionep']['codepostalseance'] ) ? $commissionep['Commissionep']['codepostalseance'] : null ;?></td>
+            </tr>
+            <tr class="odd">
+                <th><?php echo "Ville de la commission";?></th>
+                <td><?php echo isset( $commissionep['Commissionep']['villeseance'] ) ? $commissionep['Commissionep']['villeseance'] : null ;?></td>
+            </tr>
+            <tr class="even">
+                <th><?php echo "Salle de la commision";?></th>
+                <td><?php echo isset( $commissionep['Commissionep']['salle'] ) ? $commissionep['Commissionep']['salle'] : null ;?></td>
+            </tr>
+			<tr class="odd">
 				<th><?php echo "Observations de la commision";?></th>
 				<td><?php echo isset( $commissionep['Commissionep']['observations'] ) ? $commissionep['Commissionep']['observations'] : null ;?></td>
 			</tr>
-			<tr class="odd">
+			<tr class="even">
 				<th><?php echo "Décision finale";?></th>
 				<td><?php echo /*debug($options);*/ Set::enum( $commissionep['Commissionep']['finalisee'], $options['Commissionep']['finalisee'] );?></td>
 			</tr>

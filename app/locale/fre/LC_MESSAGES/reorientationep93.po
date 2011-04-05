@@ -73,7 +73,7 @@ msgid "Search.Reorientationep93.mode"
 msgstr "Type de dossiers à rechercher"
 
 msgid "Search.Dossierep.commissionep_id"
-msgstr "Date de la séance"
+msgstr "Date de la commission"
 
 msgid "Reorientationep93::index::empty"
 msgstr "Aucune demande de réorientation étudiée en EP"

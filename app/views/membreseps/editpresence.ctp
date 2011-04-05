@@ -1,6 +1,6 @@
 <?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 
-<?php  $this->pageTitle = 'Présence des membres à la séance d\'EP';?>
+<?php  $this->pageTitle = 'Présence des membres à la commission d\'EP';?>
 
     <h1><?php echo $this->pageTitle;?></h1>
     

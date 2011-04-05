@@ -1,6 +1,6 @@
 <?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 
-<?php  $this->pageTitle = 'Ajout de participants à la séance d\'EP';?>
+<?php  $this->pageTitle = 'Ajout de participants à la commission d\'EP';?>
 
 <?php
     if( $this->action == 'add' ) {

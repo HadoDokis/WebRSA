@@ -41,7 +41,7 @@ msgid "Search.Nonrespectsanctionep93.mode"
 msgstr "Type de dossiers à rechercher"
 
 msgid "Search.Dossierep.commissionep_id"
-msgstr "Date de la séance"
+msgstr "Date de la commission"
 
 msgid "Nonrespectsanctionep93::index::empty"
 msgstr "Aucun dossier pour non respect / sanctions étudié en EP"

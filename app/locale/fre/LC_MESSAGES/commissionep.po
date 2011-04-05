@@ -20,7 +20,7 @@ msgstr ""
 ###############################################################################
 
 msgid "Commissionep.dateseance"
-msgstr "Date de la séance"
+msgstr "Date de la commission"
 
 msgid "Commissionep.finalisee"
 msgstr "Décision finale"
@@ -38,10 +38,10 @@ msgid "Commissionep.observations"
 msgstr "Observations"
 
 msgid "Commissionep.ep_id"
-msgstr "Equipe dont dépend la séance"
+msgstr "Equipe dont dépend la commission"
 
 msgid "Commissionep.structurereferente_id"
-msgstr "Lieu de la séance"
+msgstr "Lieu de la commission"
 
 msgid "Commissionep.edit"
 msgstr "Modifier la liste des participants à l'EP"
@@ -50,19 +50,19 @@ msgid "Commissionep.presence"
 msgstr "Noter les presences des participants à l'EP"
 
 msgid "Commissionep::index::empty"
-msgstr "Aucun participant présent pour la séance de l'EP."
+msgstr "Aucun participant présent pour la commission de l'EP."
 
 msgid "Commissionseps::add"
-msgstr "Ajouter une nouvelle séance d'EP"
+msgstr "Ajouter une nouvelle commission d'EP"
 
 msgid "Commissionseps::edit"
-msgstr "Modifier la séance d'EP"
+msgstr "Modifier la commission d'EP"
 
 msgid "Commissionseps::delete"
-msgstr "Supprimer la séance d'EP"
+msgstr "Supprimer la commission d'EP"
 
 msgid "Commissionseps::choose"
-msgstr "Choisir les dossiers à passer à la séance d'EP"
+msgstr "Choisir les dossiers à passer à la commission d'EP"
 
 msgid "Commissionseps::ordredujour"
 msgstr "4. Imprimer l'ordre du jour"
@@ -71,7 +71,7 @@ msgid "Commissionseps::traiterep"
 msgstr "5. Emettre l'avis de l'EP"
 
 msgid "Commissionseps::finaliserep"
-msgstr "6. Finaliser la séance d'EP"
+msgstr "6. Finaliser la commission d'EP"
 
 msgid "Commissionseps::impressionpv"
 msgstr "8. Imprimer le PV de la commission"
@@ -90,13 +90,13 @@ msgstr "Avis de l'EP"
 
 
 msgid "Commissionep.lieuseance"
-msgstr "Lieu de la séance"
+msgstr "Lieu de la commission"
 
 msgid "Commissionep.adresseseance"
-msgstr "Adresse de la séance"
+msgstr "Adresse de la commission"
 
 msgid "Commissionep.codepostalseance"
-msgstr "Code postal de la séance"
+msgstr "Code postal de la commission"
 
 msgid "Commissionep.villeseance"
-msgstr "Ville de la séance"
+msgstr "Ville de la commission"
