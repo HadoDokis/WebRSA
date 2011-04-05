@@ -238,7 +238,8 @@
 
 			foreach( $foyers as $foyer_id ) {
 				$tBoucle0 = $tRefreshRessources0 = microtime( true );
-
+				
+				$refreshRessources = null;
 				/// Rafraîchissement des ressources
 				if( $this->ressources == true ) {
 					$refreshRessources = $this->Foyer->refreshRessources( $foyer_id );
