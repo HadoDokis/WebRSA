@@ -210,20 +210,20 @@ ALTER TABLE relancesapres ALTER COLUMN etatdossierapre TYPE TYPE_ETATDOSSIERAPRE
 CREATE OR REPLACE FUNCTION public.rename_sequence_ifexists( p_namefrom text, p_nameto text ) RETURNS bool AS
 $$
 	DECLARE
-		v_row       		record;
-		v_query     		text;
+		v_row   record;
+		v_query text;
 	BEGIN
-		select 1 into v_row
-		from information_schema.tables ta
-		where ta.table_name = p_namefrom;
-		if found then
-			raise notice 'Upgrade table %_id_seq - rename to %_id_seq', p_namefrom, p_nameto;
+		SELECT 1 INTO v_row
+			FROM pg_class c
+			WHERE c.relname = p_namefrom || '_id_seq' AND c.relkind = 'S';
+		IF FOUND THEN
+			RAISE NOTICE 'Upgrade sequence %_id_seq - rename to %_id_seq', p_namefrom, p_nameto;
 			v_query := 'ALTER TABLE ' || p_namefrom || '_id_seq RENAME TO ' || p_nameto || '_id_seq;';
-			execute v_query;
+			EXECUTE v_query;
 			return 't';
 		else
-			raise notice 'Table %_id_seq not found', p_namefrom;
-			return 'f';
+			RAISE NOTICE 'Sequence %_id_seq not found', p_namefrom;
+			RETURN 'f';
 		end if;
 	END;
 $$
