@@ -165,7 +165,7 @@
 					$listeThemes['OR'][] = array( 'Dossierep.themeep' => Inflector::tableize( $theme ) );
 				}
 				$this->set( 'themeEmpty', false );
-				
+
 				if( empty( $conditionsAdresses['OR'] ) ) {
 					$conditionsAdresses = array();
 				}
@@ -218,6 +218,10 @@
 							),
 						),
 						'conditions' => array(
+							'OR' => array(
+								'Dossierep.commissionep_id IS NULL',
+								'Dossierep.commissionep_id' => $commissionep_id,
+							),
 							'NOT' => array(
 								'Dossierep.etapedossierep = \'decisionep\'',
 								'Dossierep.etapedossierep = \'decisioncg\'',
@@ -249,7 +253,7 @@
 						)
 					)
 				);
-				
+
 			}
 			else {
 				$this->set( 'themeEmpty', true );
