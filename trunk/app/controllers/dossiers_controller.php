@@ -664,6 +664,7 @@
 						'fields' => array(
 							'Orientstruct.date_valid',
 							'Orientstruct.statut_orient',
+							'Orientstruct.rgorient',
 							'Typeorient.lib_type_orient',
 							'Structurereferente.lib_struc'
 
