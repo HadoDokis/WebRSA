@@ -191,6 +191,17 @@
             }
 
 
+            $hasContrat  = Set::extract( $criteres, 'Critere.hascontrat' );
+
+            /// Statut contrat engagement reciproque
+            if( !empty( $hasContrat ) && in_array( $hasContrat, array( 'O', 'N' ) ) ) {
+                if( $hasContrat == 'O' ) {
+                    $conditions[] = '( SELECT COUNT(contratsinsertion.id) FROM contratsinsertion WHERE contratsinsertion.personne_id = "Personne"."id" ) > 0';
+                }
+                else {
+                    $conditions[] = '( SELECT COUNT(contratsinsertion.id) FROM contratsinsertion WHERE contratsinsertion.personne_id = "Personne"."id" ) = 0';
+                }
+            }
 
 
             /// Requête
@@ -245,6 +256,13 @@
                         'type'       => 'INNER',
                         'foreignKey' => false,
                         'conditions' => array( 'Personne.id = Orientstruct.personne_id' )
+                    ),
+                    array(
+                        'table'      => 'contratsinsertion',
+                        'alias'      => 'Contratinsertion',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Contratinsertion.personne_id = Personne.id' )
                     ),
                     array(
                         'table'      => 'prestations',
