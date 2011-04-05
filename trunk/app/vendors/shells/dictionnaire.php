@@ -16,6 +16,7 @@
 			'logpath' => LOGS,
 			'verbose' => true,
 			'limit' => null,
+			'module' => null,
 			'schema' => null
 		);
 
@@ -30,6 +31,7 @@
 			parent::initialize();
 
 			$this->schema = $this->_getNamedValue( 'schema', 'string' );
+			$this->module = $this->_getNamedValue( 'module', 'string' );
 			$this->verbose = $this->_getNamedValue( 'verbose', 'boolean' );
 			$this->limit = $this->_getNamedValue( 'limit', 'integer' );
 			$connectionName = $this->_getNamedValue( 'connection', 'string' );
@@ -124,6 +126,7 @@
 								( select obj_description(oid) from pg_class where relname = information_schema.tables.table_name LIMIT 1 ) AS \"Table__comment\"
 							FROM information_schema.tables
 							WHERE information_schema.tables.table_schema = '{$schema['Schema']['name']}'
+							".( empty( $this->module ) ? "" : "AND ( information_schema.tables.table_name ~ '.*{$this->module}[0-9]{0,2}$' ) OR ( information_schema.tables.table_name ~ '.*{$this->module}[0-9]{0,2}_.*$' )\n" )."
 							ORDER BY table_name ASC".
 							( empty( $this->limit ) ? null : " LIMIT {$this->limit}"  ).";";
 
@@ -347,6 +350,7 @@
 			$this->out('Paramètres:');
 			$this->out("\t-connection <connexion>\n\t\tLe nom d'une connexion PostgreSQL défini dans app/config/database.php\n\t\tPar défaut: ".$this->_defaultToString( 'connection' )."\n");
 			$this->out("\t-schema <string>\n\t\tLe schema à traiter.\n\t\tPar défaut: ".$this->_defaultToString( 'schema' )."\n");
+			$this->out("\t-module <string>\n\t\tNom du module à traiter (disponible: apres, eps).\n\t\tPar défaut: ".$this->_defaultToString( 'module' )."\n");
 // 			$this->out("\t-log <booléen>\n\t\tDoit-on journaliser la sortie du programme ?\n\t\tPar défaut: ".$this->_defaultToString( 'log' )."\n");
 // 			$this->out("\t-logpath <répertoire>\n\t\tLe répertoire dans lequel enregistrer les fichiers de journalisation.\n\t\tPar défaut: ".$this->_defaultToString( 'logpath' )."\n");
 			$this->out("\t-verbose <booléen>\n\t\tDoit-on afficher les étapes de lecture / écriture ?\n\t\tPar défaut: ".$this->_defaultToString( 'verbose' )."\n");
