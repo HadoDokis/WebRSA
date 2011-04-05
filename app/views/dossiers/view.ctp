@@ -114,7 +114,13 @@
                                 <th>Statut de l'orientation</th>
                                 <td><?php echo Set::classicExtract( $details, 'DEM.Orientstruct.derniere.Orientstruct.statut_orient' );?></td>
                                 <td><?php echo Set::classicExtract( $details, 'CJT.Orientstruct.derniere.Orientstruct.statut_orient' );?></td>
+                            </tr>
                             <tr class="odd">
+                                <th>Rang de l'orientation</th>
+                                <td><?php echo Set::classicExtract( $details, 'DEM.Orientstruct.derniere.Orientstruct.rgorient' );?></td>
+                                <td><?php echo Set::classicExtract( $details, 'CJT.Orientstruct.derniere.Orientstruct.rgorient' );?></td>
+                            </tr>
+                            <tr class="even">
                                 <th>Référent en cours</th>
                                 <?php foreach( array( 'DEM', 'CJT' ) as $rolepers ):?>
                                 <td><?php
