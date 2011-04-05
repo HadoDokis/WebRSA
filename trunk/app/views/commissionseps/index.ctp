@@ -3,16 +3,16 @@
 <?php
 	switch( @$this->action ) {
 		case 'creationmodification':
-			$this->pageTitle = 'Création / modification de séance d\'EP';
+			$this->pageTitle = 'Création / modification d\'une commission d\'EP';
 			break;
 		case 'attributiondossiers':
-			$this->pageTitle = 'Attribution des dossiers à une séance d\'EP';
+			$this->pageTitle = 'Attribution des dossiers à une commission d\'EP';
 			break;
 		case 'arbitrage':
-			$this->pageTitle = 'Arbitrage d\'une séance d\'EP';
+			$this->pageTitle = 'Arbitrage d\'une commission d\'EP';
 			break;
 		default:
-			$this->pageTitle = 'Liste des séances d\'EP';
+			$this->pageTitle = 'Liste des commissions d\'EP';
 	}
 ?>
 
@@ -77,7 +77,7 @@
 				); ?>
 			</fieldset>
 
-			<?php echo $xform->input( 'Commissionep.dateseance', array( 'label' => 'Filtrer par date de Séance', 'type' => 'checkbox' ) );?>
+			<?php echo $xform->input( 'Commissionep.dateseance', array( 'label' => 'Filtrer par date de Commission', 'type' => 'checkbox' ) );?>
 			<fieldset>
 				<legend>Filtrer par période</legend>
 				<?php
@@ -122,7 +122,7 @@
 							$lien = $xhtml->link( 'Modification', array( 'controller' => 'commissionseps', 'action' => 'edit', $commissionep['Commissionep']['id'] ), array( 'enabled' => empty( $commissionep['Commissionep']['finalisee'] ) ) );
 							break;
 						case 'attributiondossiers':
-							$lien = $xhtml->link( 'Attribution des dossiers à une séance', array( 'controller' => 'dossierseps', 'action' => 'choose', $commissionep['Commissionep']['id'] ), array( 'enabled' => empty( $commissionep['Commissionep']['finalisee'] ) ) );
+							$lien = $xhtml->link( 'Attribution des dossiers à une commission', array( 'controller' => 'dossierseps', 'action' => 'choose', $commissionep['Commissionep']['id'] ), array( 'enabled' => empty( $commissionep['Commissionep']['finalisee'] ) ) );
 							break;
 						case 'arbitrage':
 							$lien = $xhtml->link( 'Arbitrage', array( 'controller' => 'commissionseps', 'action' => 'view', $commissionep['Commissionep']['id'] ), array( 'enabled' => ( $commissionep['Commissionep']['finalisee'] != 'cg' ) ) );

@@ -21,7 +21,7 @@
 			'Présence contrat (oui/non)',
 			'Date de fin de contrat',
 			'Date d\'orientation',
-			'Date de la séance',
+			'Date de la commission',
 			'Rang passage en EP',
 			'Décision',
 			'Montant réduction',

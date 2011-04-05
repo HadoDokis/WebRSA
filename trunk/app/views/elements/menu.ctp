@@ -300,7 +300,7 @@
 				<?php echo $xhtml->link( 'Eq. Pluri.', '#' );?>
 				<ul>
 				<!--
-					<li><?php echo $xhtml->link( 'Liste des séances', array( 'controller' => 'commissionseps', 'action' => 'index' ) );?></li>
+					<li><?php echo $xhtml->link( 'Liste des commissions', array( 'controller' => 'commissionseps', 'action' => 'index' ) );?></li>
 					<li><?php echo $xhtml->link( 'Liste des dossiers', array( 'controller' => 'dossierseps', 'action' => 'index' ) );?></li>
 					<li><?php echo $xhtml->link( 'Liste des décisions', array( 'controller' => 'dossierseps', 'action' => 'decisions' ) );?></li>
 					<li><a href="#">CG 66</a>
@@ -318,7 +318,7 @@
 					</li>
 				-->
 					<li><?php echo $xhtml->link( 'Création / modification', array( 'controller' => 'commissionseps', 'action' => 'creationmodification' ) );?></li>
-					<li><?php echo $xhtml->link( 'Attribution des dossiers à une séance', array( 'controller' => 'commissionseps', 'action' => 'attributiondossiers' ) );?></li>
+					<li><?php echo $xhtml->link( 'Attribution des dossiers à une commission', array( 'controller' => 'commissionseps', 'action' => 'attributiondossiers' ) );?></li>
 					<li><?php echo $xhtml->link( 'Arbitrage', array( 'controller' => 'commissionseps', 'action' => 'arbitrage' ) );?></li>
 					<li><?php echo $xhtml->link( 'Recherche', array( 'controller' => 'commissionseps', 'action' => 'recherche' ) );?></li>
 					<li><a href="#">Thématiques</a>

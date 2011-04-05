@@ -437,14 +437,14 @@ msgid "Button::traiterep"
 msgstr "Avis EP"
 
 msgid "Button::finaliserep"
-msgstr "Valider la séance EP"
+msgstr "Valider la commission EP"
 
 
 msgid "Button::traitercg"
 msgstr "Décisions CG"
 
 msgid "Button::finalisercg"
-msgstr "Valider la séance CG"
+msgstr "Valider la commission CG"
 
 ###############################################################################
 # Pagination

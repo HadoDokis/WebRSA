@@ -3,10 +3,10 @@
 <h1>
 <?php
 	if( $this->action == 'add' ) {
-		echo $this->pageTitle = 'Ajout d\'une séance d\'EP';
+		echo $this->pageTitle = 'Ajout d\'une commission d\'EP';
 	}
 	else {
-		echo $this->pageTitle = 'Modification d\'une séance d\'EP';
+		echo $this->pageTitle = 'Modification d\'une commission d\'EP';
 	}
 ?>
 </h1>
@@ -34,7 +34,7 @@
 // 			'Commissionep.identifiant',
 			'Commissionep.ep_id' => array( 'type' => 'select' ),
 			'Commissionep.name',
-			'Commissionep.dateseance' => array( 'dateFormat' => __( 'Locale->dateFormat', true ), 'timeFormat' => __( 'Locale->timeFormat', true ), 'interval'=>15 ), // TODO: à mettre par défaut dans Default2Helper
+			'Commissionep.dateseance' => array( 'dateFormat' => __( 'Locale->dateFormat', true ), 'maxYear' => date('Y')+1, 'minYear' => date('Y')-1,  'timeFormat' => __( 'Locale->timeFormat', true ), 'interval'=>15 ), // TODO: à mettre par défaut dans Default2Helper
 // 			'Commissionep.structurereferente_id' => array ('type'=>'select'),
 			'Commissionep.lieuseance',
 			'Commissionep.adresseseance',

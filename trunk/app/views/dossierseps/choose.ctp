@@ -1,7 +1,7 @@
 <h1>
 	<?php
 		echo $this->pageTitle = sprintf(
-			'Dossiers à passer dans la séance de l\'EP « %s » du %s',
+			'Dossiers à passer dans la commission de l\'EP « %s » du %s',
 			$commissionep['Ep']['name'],
 			$locale->date( 'Locale->datetime', $commissionep['Commissionep']['dateseance'] )
 		);

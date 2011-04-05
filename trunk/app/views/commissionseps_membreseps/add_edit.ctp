@@ -1,10 +1,10 @@
 <h1>
 <?php
 	if( $this->action == 'add' ) {
-		echo $this->pageTitle = 'Ajout des participants à une séance d\'EP';
+		echo $this->pageTitle = 'Ajout des participants à une commission d\'EP';
 	}
 	else {
-		echo $this->pageTitle = 'Modification d\'un participant à une séance d\'EP';
+		echo $this->pageTitle = 'Modification d\'un participant à une commission d\'EP';
 	}
 ?>
 </h1>
@@ -24,7 +24,7 @@
 			<td><?php echo isset( $options['Structurereferente']['lib_struc'] ) ? $options['Structurereferente']['lib_struc'] : null ;?></td>
 		</tr>			
 		<tr class="odd">
-			<th><?php echo "Date de la séance";?></th>
+			<th><?php echo "Date de la commission";?></th>
 			<td><?php echo isset( $options['Commissionep']['dateseance'] ) ? strftime( '%d/%m/%Y %H:%M', strtotime( $options['Commissionep']['dateseance'])) : null ;?></td>
 		</tr>
 		<tr class="even">

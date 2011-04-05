@@ -26,7 +26,7 @@ msgid "Dossierep::index::empty"
 msgstr "Aucun dossier présent"
 
 msgid "Dossierep.commissionep_id"
-msgstr "Séance où passe le dossier"
+msgstr "Commission où passe le dossier"
 
 msgid "Dossierep.created"
 msgstr "Date de création du dossier"
@@ -83,7 +83,7 @@ msgstr "Dossier d'EP crée"
 # msgstr ""
 
 msgid "ENUM::ETAPEDOSSIEREP::seance"
-msgstr "Prévu pour passer en séance"
+msgstr "Prévu pour passer en commission"
 
 msgid "ENUM::ETAPEDOSSIEREP::decisionep"
 msgstr "En attente de décision EP"
