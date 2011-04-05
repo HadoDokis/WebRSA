@@ -101,6 +101,10 @@
 			echo $xhtml->tag( 'p', 'Aucun résultat ne correspond aux critères choisis.', array( 'class' => 'notice' ) );
 		}
 		else {
+			$pagination = $xpaginator->paginationBlock( 'Commissionep', $this->passedArgs );
+
+			echo '<p>'.$pagination.'</p>';
+
 			echo '<table><thead>';
 				echo '<tr>
 					<th>'.$xpaginator->sort( __d( 'ep', 'Ep.identifiant', true ), 'Ep.identifiant' ).'</th>
@@ -144,6 +148,8 @@
 				</tr>';
 			}
 			echo '</tbody></table>';
+
+			echo '<p>'.$pagination.'</p>';
 		}
 	}
 ?>
