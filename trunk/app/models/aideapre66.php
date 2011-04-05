@@ -178,7 +178,7 @@
 			)/*,
 			'decisionapre' => array(
 				array(
-					'rule' => 'notEmpty',
+					'rule' => 'date',
 					'message' => 'Champ obligatoire'
 				)
 			)*/
@@ -262,6 +262,23 @@
 			return $details;
 		}
 
+        /**
+        *
+        */
+        public function validationDecisionAllowEmpty( $allowEmpty ){
+            foreach( $this->validate['decisionapre'] as $i => $rule ){
+                foreach( $rule as $key => $value ){
+                    if( is_array( $value ) ){
+                        foreach( $value as $inList ){
+                            if( $inList == 'inList' ){
+                                $this->validate['decisionapre'][$i]['allowEmpty'] = $allowEmpty;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
 
 		/**
 		*
@@ -273,15 +290,23 @@
 
             $aideapre = $this->findById( $this->id, null, null, -1 );
             $decisionapre = Set::classicExtract( $aideapre, 'Aideapre66.decisionapre');
+// debug($aideapre);
+//     debug($this->data['Aideapre66']['decisionapre']);
 
             if( !empty( $decisionapre ) ){
                 $this->Apre66->updateAll(
                     array(
                         '"etatdossierapre"' =>  '\'VAL\'' ,
                         '"isdecision"' =>  '\'O\'',
+                    ),
+                    array(
+                        '"Apre66"."id"' => Set::classicExtract( $aideapre, 'Aideapre66.apre_id')
                     )
                 );
             }
+//             else{
+//                 debug( 'woot' );
+//             }
 		}
 	}
 ?>
