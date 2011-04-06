@@ -32,24 +32,24 @@
 
 
 <?php
-    if( isset( $comitesapres ) ) {
-        $paginator->options( array( 'url' => $this->params['named'] ) );
-        $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
-        $pagination = $xhtml->tag( 'p', $paginator->counter( $params ) );
-
-        $pages = $paginator->first( '<< ' );
-        $pages .= $paginator->prev( ' < ' );
-        $pages .= $paginator->numbers();
-        $pages .= $paginator->next( ' > ' );
-        $pages .= $paginator->last( ' >>' );
-
-        $pagination .= $xhtml->tag( 'p', $pages );
-    }
-    else {
-        $pagination = '';
-    }
+//     if( isset( $comitesapres ) ) {
+//         $xpaginator->options( array( 'url' => $this->params['named'] ) );
+//         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
+//         $pagination = $xhtml->tag( 'p', $xpaginator->counter( $params ) );
+// 
+//         $pages = $xpaginator->first( '<< ' );
+//         $pages .= $xpaginator->prev( ' < ' );
+//         $pages .= $xpaginator->numbers();
+//         $pages .= $xpaginator->next( ' > ' );
+//         $pages .= $xpaginator->last( ' >>' );
+// 
+//         $pagination .= $xhtml->tag( 'p', $pages );
+//     }
+//     else {
+//         $pagination = '';
+//     }
 ?>
-
+<?php     $pagination = $xpaginator->paginationBlock( 'Comiteapre', $this->passedArgs ); ?>
 <?php echo $xform->create( 'Comiteapre', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );?>
 
     <fieldset>
@@ -95,10 +95,10 @@
         <table id="searchResults" class="tooltips">
             <thead>
                 <tr>
-                    <th>Intitulé du comité</th>
-                    <th>Lieu du comité</th>
-                    <th>Date du comité</th>
-                    <th>Heure du comité</th>
+                    <th><?php echo $xpaginator->sort( 'Intitulé du comité', 'Comiteapre.intitulecomite' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Lieu du comité', 'Comiteapre.lieucomite' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Date du comité', 'Comiteapre.datecomite' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Heure du comité', 'Comiteapre.heurecomite' );?></th>
                     <th colspan="3" class="action">Actions</th>
                 </tr>
             </thead>
