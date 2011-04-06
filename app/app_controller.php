@@ -1,9 +1,9 @@
 <?php
 	class AppController extends Controller
 	{
-		var $components = array( 'Session', 'Auth', 'Acl', 'Droits', 'Cookie', 'Jetons'/*, 'Xcontroller'*/, 'Default' );
-		var $helpers = array( 'Xhtml', 'Form', 'Javascript', 'Permissions', 'Widget', 'Locale', 'Theme', 'Default', 'Number' );
-		var $uses = array( 'User', 'Connection', 'Avispcgdroitrsa' );
+		public $components = array( 'Session', 'Auth', 'Acl', 'Droits', 'Cookie', 'Jetons'/*, 'Xcontroller'*/, 'Default' );
+		public $helpers = array( 'Xhtml', 'Form', 'Javascript', 'Permissions', 'Widget', 'Locale', 'Theme', 'Default', 'Number' );
+		public $uses = array( 'User', 'Connection', 'Avispcgdroitrsa' );
 
 		//public $persistModel = true;
 
@@ -119,7 +119,7 @@
 		* @access protected
 		*/
 
-		function _checkHabilitations() {
+		protected function _checkHabilitations() {
 			$habilitations = array(
 				'date_deb_hab' => $this->Session->read( 'Auth.User.date_deb_hab' ),
 				'date_fin_hab' => $this->Session->read( 'Auth.User.date_fin_hab' ),
@@ -228,7 +228,7 @@
 		*
 		*/
 
-		function beforeFilter() {
+		public function beforeFilter() {
 			/*
 				Désactivation du cache du navigateur: (quand on revient en arrière
 				dans l'historique de navigation, la page n'est pas cachée du côté du
@@ -276,7 +276,7 @@
 		*   cake/libs/view/errors/
 		*/
 
-		function assert( $condition, $error = 'error500', $parameters = array() ) {
+		public function assert( $condition, $error = 'error500', $parameters = array() ) {
 			if( $condition !== true ) {
 				$calledFrom = debug_backtrace();
 				$calledFromFile = substr( str_replace( ROOT, '', $calledFrom[0]['file'] ), 1 );
@@ -311,10 +311,24 @@
 		}
 
 		/**
-		*
+		* Fait-on une pagination standard ou une pagination progressive ?
+		* @see Configure::write( 'Optimisations.progressivePaginate', true )
 		*/
 
-		function paginate( $object = null, $scope = array(), $whitelist = array() ) {
+		public function paginate( $object = null, $scope = array(), $whitelist = array() ) {
+			if( Configure::read( 'Optimisations.progressivePaginate' ) ) {
+				return $this->_progressivePaginate( $object, $scope, $whitelist );
+			}
+			else {
+				return $this->_paginate( $object, $scope, $whitelist );
+			}
+		}
+
+		/**
+		* Pagination progressive basée sur la pagination normale CakePHP avec tri possible sur les champs virtuels
+		*/
+
+		protected function _progressivePaginate( $object = null, $scope = array(), $whitelist = array() ) {
 			if (is_array($object)) {
 				$whitelist = $scope;
 				$scope = $object;
@@ -431,13 +445,212 @@
 				$type = $defaults[0];
 				unset($defaults[0]);
 			}
-			extract($options = array_merge(array('page' => 1, 'limit' => 20), $defaults, $options));
 
-			// made in gaëtan -> pour les tests unitaires
-			$options['limit'] = (empty($options['limit']) || !is_numeric($options['limit'])) ? 1 : $options['limit'];
+			$options = array_merge(array('page' => 1, 'limit' => 20), $defaults, $options);
+			$options['limit'] = (int) $options['limit'];
+			if (empty($options['limit']) || $options['limit'] < 1) {
+				$options['limit'] = 1;
+			}
+
 			extract($options);
-			// fin made in gaëtan
 
+			if (is_array($scope) && !empty($scope)) {
+				$conditions = array_merge($conditions, $scope);
+			} elseif (is_string($scope)) {
+				$conditions = array($conditions, $scope);
+			}
+			if ($recursive === null) {
+				$recursive = $object->recursive;
+			}
+
+			$extra = array_diff_key($defaults, compact(
+				'conditions', /*'fields',*/ 'order', 'limit', 'page', 'recursive'
+			));
+
+			if ($type !== 'all') {
+				$extra['type'] = $type;
+			}
+
+			/*$queryData = array(
+				'conditions' => $conditions,
+				'fields' => $fields,
+				'order' => $order,
+				'limit' => ( $limit + 1 ),
+				'offset' => ( max( 0, $page - 1 ) * $limit ),
+				'recursive' => $recursive,
+				'joins' => ( isset( $extra['joins'] ) ? $extra['joins'] : null ),
+				'contain' => ( isset( $extra['contain'] ) ? $extra['contain'] : null )
+			);*/
+
+			$parameters = compact('conditions');
+			if ($recursive != $object->recursive) {
+				$parameters['recursive'] = $recursive;
+			}
+
+			$parameters['order'] = $order;
+			$parameters['limit'] = ( $limit + 1 );
+			$parameters['offset'] = ( max( 0, $page - 1 ) * $limit );
+// debug( array( $type, array_merge($parameters, $extra ) ) );
+			$results = $object->find( $type, array_merge($parameters, $extra ) );
+
+			$count = count( $results ) + ( ( $page - 1 ) * $limit );
+			$pageCount = intval(ceil($count / $limit));
+
+			if ($page === 'last' || $page >= $pageCount) {
+				$options['page'] = $page = $pageCount;
+			} elseif (intval($page) < 1) {
+				$options['page'] = $page = 1;
+			}
+			$page = $options['page'] = (integer)$page;
+
+			$paging = array(
+				'page'      => $page,
+				'current'   => count($results),
+				'count'     => $count,
+				'prevPage'  => ($page > 1),
+				'nextPage'  => ($count > ($page * $limit)),
+				'pageCount' => $pageCount,
+				'defaults'  => array_merge(array('limit' => 20, 'step' => 1), $defaults),
+				'options'   => $options
+			);
+
+			$this->params['paging'][$object->alias] = $paging;
+
+			if (!in_array('Paginator', $this->helpers) && !array_key_exists('Paginator', $this->helpers)) {
+				$this->helpers[] = 'Paginator';
+			}
+			return array_slice( $results, 0, $limit );
+		}
+
+		/**
+		* Pagination normale CakePHP avec tri possible sur les champs virtuels
+		*/
+
+		protected function _paginate( $object = null, $scope = array(), $whitelist = array() ) {
+			if (is_array($object)) {
+				$whitelist = $scope;
+				$scope = $object;
+				$object = null;
+			}
+			$assoc = null;
+
+			if (is_string($object)) {
+				$assoc = null;
+
+				if (strpos($object, '.') !== false) {
+					list($object, $assoc) = explode('.', $object);
+				}
+
+				if ($assoc && isset($this->{$object}->{$assoc})) {
+					$object = $this->{$object}->{$assoc};
+				} elseif ($assoc && isset($this->{$this->modelClass}) && isset($this->{$this->modelClass}->{$assoc})) {
+					$object = $this->{$this->modelClass}->{$assoc};
+				} elseif (isset($this->{$object})) {
+					$object = $this->{$object};
+				} elseif (isset($this->{$this->modelClass}) && isset($this->{$this->modelClass}->{$object})) {
+					$object = $this->{$this->modelClass}->{$object};
+				}
+			} elseif (empty($object) || $object === null) {
+				if (isset($this->{$this->modelClass})) {
+					$object = $this->{$this->modelClass};
+				} else {
+					$className = null;
+					$name = $this->uses[0];
+					if (strpos($this->uses[0], '.') !== false) {
+						list($name, $className) = explode('.', $this->uses[0]);
+					}
+					if ($className) {
+						$object = $this->{$className};
+					} else {
+						$object = $this->{$name};
+					}
+				}
+			}
+
+			if (!is_object($object)) {
+				trigger_error(sprintf(__('Controller::paginate() - can\'t find model %1$s in controller %2$sController', true), $object, $this->name), E_USER_WARNING);
+				return array();
+			}
+			$options = array_merge($this->params, $this->params['url'], $this->passedArgs);
+
+			if (isset($this->paginate[$object->alias])) {
+				$defaults = $this->paginate[$object->alias];
+			} else {
+				$defaults = $this->paginate;
+			}
+
+			if (isset($options['show'])) {
+				$options['limit'] = $options['show'];
+			}
+
+			if (isset($options['sort'])) {
+				$direction = null;
+				if (isset($options['direction'])) {
+					$direction = strtolower($options['direction']);
+				}
+				if ($direction != 'asc' && $direction != 'desc') {
+					$direction = 'asc';
+				}
+				$options['order'] = array($options['sort'] => $direction);
+			}
+
+			if (!empty($options['order']) && is_array( $options['order'] ) ) {
+				$alias = $object->alias ;
+				$key = $field = key($options['order']);
+
+				if (strpos($key, '.') !== false) {
+					list($alias, $field) = explode('.', $key);
+				}
+				$value = $options['order'][$key];
+				unset($options['order'][$key]);
+
+				if( isset($object->{$alias}) && $object->{$alias}->hasField( $field ) ) {
+					$options['order'][$alias . '.' . $field] = $value;
+				} elseif( $object->hasField( $field ) ) {
+					$options['order'][$alias . '.' . $field] = $value;
+				} else {
+					// INFO: permet de trier sur d'autres champs que ceux du modèle que l'on pagine
+					$joinAliases = Set::extract( $defaults, '/joins/alias' );
+					if( in_array( $alias, $joinAliases ) ) {
+						$options['order'][$alias . '.' . $field] = $value;
+					}
+				}
+			}
+
+			$vars = array('fields', 'order', 'limit', 'page', 'recursive');
+			$keys = array_keys($options);
+			$count = count($keys);
+
+			for ($i = 0; $i < $count; $i++) {
+				if (!in_array($keys[$i], $vars, true)) {
+					unset($options[$keys[$i]]);
+				}
+				if (empty($whitelist) && ($keys[$i] === 'fields' || $keys[$i] === 'recursive')) {
+					unset($options[$keys[$i]]);
+				} elseif (!empty($whitelist) && !in_array($keys[$i], $whitelist)) {
+					unset($options[$keys[$i]]);
+				}
+			}
+			$conditions = $fields = $order = $limit = $page = $recursive = null;
+
+			if (!isset($defaults['conditions'])) {
+				$defaults['conditions'] = array();
+			}
+
+			$type = 'all';
+
+			if (isset($defaults[0])) {
+				$type = $defaults[0];
+				unset($defaults[0]);
+			}
+
+			$options = array_merge(array('page' => 1, 'limit' => 20), $defaults, $options);
+			$options['limit'] = (int) $options['limit'];
+			if (empty($options['limit']) || $options['limit'] < 1) {
+				$options['limit'] = 1;
+			}
+
+			extract($options);
 
 			if (is_array($scope) && !empty($scope)) {
 				$conditions = array_merge($conditions, $scope);

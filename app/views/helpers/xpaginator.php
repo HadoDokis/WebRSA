@@ -69,21 +69,31 @@
 		*/
 
 		function paginationBlock( $classname, $urlOptions, $format = 'Results %start% - %end% out of %count%.' ) {
+			if( ( $format == 'Results %start% - %end% out of %count%.' ) && Configure::read( 'Optimisations.progressivePaginate' ) ) {
+				$format = 'Résultats %start% - %end% sur au moins %count% résultats.';
+			}
+// 			else {
+// 				$format = 'Résultats %start% - %end% sur un total de %count%.';
+// 			}
+
 			$this->options( array( 'url' => $urlOptions ) );
 			$pagination = null;
-//             debug( $this->params );
+
 			if( Set::classicExtract( $this->params, "paging.{$classname}.pageCount" ) >= 1 ) {
 				$pagination = $this->Html->tag ( 'p', $this->counter( array( 'format' => __( $format, true ) ) ), array( 'class' => 'pagination counter' ) );
-				$links = implode(
-					' ',
-					array(
-						$this->first( __( '<<', true ) ),
-						$this->prev( __( '<', true ) ),
-						$this->numbers(),
-						$this->next( __( '>', true ) ),
-						$this->last( __( '>>', true ) )
-					)
+
+				$links = array(
+					$this->first( __( '<<', true ) ),
+					$this->prev( __( '<', true ) ),
+					$this->numbers(),
+					$this->next( __( '>', true ) )
 				);
+
+				if( !Configure::read( 'Optimisations.progressivePaginate' ) ) {
+					$links[] = $this->last( __( '>>', true ) );
+				}
+
+				$links = implode( ' ', $links );
 				$pagination .= $this->Html->tag( 'p', $links, array( 'class' => 'pagination links' ) );
 			}
 

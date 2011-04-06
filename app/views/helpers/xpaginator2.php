@@ -80,6 +80,10 @@
 		*/
 
 		function paginationBlock( $classname, $urlOptions, $format = 'Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%' ) {
+			if( ( $format == 'Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%' ) && Configure::read( 'Optimisations.progressivePaginate' ) ) {
+				$format = 'Résultats %start% - %end% sur au moins %count% résultats.';
+			}
+
 			$this->options( array( 'url' => $urlOptions ) );
 			$pagination = null;
 			$pageCount = Set::classicExtract( $this->params, "paging.{$classname}.pageCount" );
@@ -87,16 +91,18 @@
 				$pagination = $this->Html->tag ( 'p', $this->counter( array( 'format' => __( $format, true ) ) ), array( 'class' => 'pagination counter' ) );
 
 				if( $pageCount > 1 ) {
-					$links = implode(
-						' ',
-						array(
-							$this->first( __( '<<', true ) ),
-							$this->prev( __( '<', true ) ),
-							$this->numbers(),
-							$this->next( __( '>', true ) ),
-							$this->last( __( '>>', true ) )
-						)
+					$links = array(
+						$this->first( __( '<<', true ) ),
+						$this->prev( __( '<', true ) ),
+						$this->numbers(),
+						$this->next( __( '>', true ) )
 					);
+
+					if( !Configure::read( 'Optimisations.progressivePaginate' ) ) {
+						$links[] = $this->last( __( '>>', true ) );
+					}
+
+					$links = implode( ' ', $links );
 					$pagination .= $this->Html->tag( 'p', $links, array( 'class' => 'pagination links' ) );
 				}
 			}
