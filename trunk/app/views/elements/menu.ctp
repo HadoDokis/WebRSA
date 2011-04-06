@@ -74,7 +74,7 @@
 									</ul>
 							</li>
 						<?php endif;?>
-						<?php if( $permissions->check( 'cohortespdos', 'avisdemande' ) || $permissions->check( 'cohortespdos', 'valide' ) || $permissions->check( 'cohortespdos', 'enattente' ) ): ?>
+						<?php if( ( $permissions->check( 'cohortespdos', 'avisdemande' ) || $permissions->check( 'cohortespdos', 'valide' ) || $permissions->check( 'cohortespdos', 'enattente' ) ) && Configure::read( 'Cg.departement' ) == 93 ): ?>
 							<!-- AJOUT POUR LA GESTION DES PDOs (Cohorte) -->
 							<li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
 								<?php echo $xhtml->link( 'PDOs', '#' );?>
