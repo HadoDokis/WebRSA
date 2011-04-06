@@ -37,7 +37,7 @@ msgstr "Zones géographiques dont s'occupe l'EP"
 # Spécifique CG 66
 
 msgid "Ep.saisinebilanparcoursep66"
-msgstr "Prise de décision saisine bilan de parcours"
+msgstr "Demande de réorientation"
 
 msgid "ENUM::SAISINEBILANPARCOURSEP66::nontraite"
 msgstr "Décision non traitée"
@@ -49,7 +49,7 @@ msgid "ENUM::SAISINEBILANPARCOURSEP66::cg"
 msgstr "Décision émise par le CG"
 
 msgid "Ep.saisinepdoep66"
-msgstr "Prise de décision saisine PDO"
+msgstr "Saisine PDO"
 
 msgid "ENUM::SAISINEPDOEP66::nontraite"
 msgstr "Décision non traitée"
@@ -61,7 +61,7 @@ msgid "ENUM::SAISINEPDOEP66::cg"
 msgstr "Décision émise par le CG"
 
 msgid "Ep.defautinsertionep66"
-msgstr "Prise de décision défaut d'insertion"
+msgstr "Défaut d'insertion"
 
 msgid "ENUM::DEFAUTINSERTIONEP66::nontraite"
 msgstr "Décision non traitée"
