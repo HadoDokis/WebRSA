@@ -171,8 +171,7 @@
 	* d'enregistrements totaux, mais que l'on regarde seulement si la
 	* page suivante existe.
 	*
-	* Pour l'instant, celà concerne seulement la recherche par
-	* dossier/allocataire.
+	* Ce paramètre concerne toutes les paginations.
 	*
 	* @default: false (pagination normale)
 	*/
