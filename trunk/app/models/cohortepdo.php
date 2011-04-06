@@ -49,7 +49,7 @@
 			$matricule = Set::extract( $criterespdo, 'Cohortepdo.matricule' );
 			$numcomptt = Set::extract( $criterespdo, 'Cohortepdo.numcomptt' );
 			$gestionnaire = Set::extract( $criterespdo, 'Cohortepdo.user_id' );
-			
+
 			$daterevision = Set::extract( $criterespdo, 'Cohortepdo.daterevision' );
 			$traitementCheck = false;
 			if (!empty($daterevision)) {
@@ -60,7 +60,7 @@
 					$traitementCheck = true;
 				}
 			}
-			
+
 			$traitementtypepdo_id = Set::extract( $criterespdo, 'Cohortepdo.traitementtypepdo_id' );
 			if( !empty( $traitementtypepdo_id ) ) {
 				$conditions[] = 'Traitementpdo.traitementtypepdo_id = \''.$traitementtypepdo_id.'\'';
@@ -125,7 +125,7 @@
 
 
             // Trouver la dernière demande RSA pour chacune des personnes du jeu de résultats
-            if( $criterespdo['Dossier']['dernier'] ) {
+            if( isset( $criterespdo['Dossier']['dernier'] ) && $criterespdo['Dossier']['dernier'] ) {
                 $conditions[] = 'Dossier.id IN (
                     SELECT
                             dossiers.id
