@@ -6,7 +6,7 @@
 
 <?php
     if( isset( $recoursapres ) ) {
-        $paginator->options( array( 'url' => $this->params['named'] ) );
+        /*$paginator->options( array( 'url' => $this->params['named'] ) );
         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
         $pagination = $xhtml->tag( 'p', $paginator->counter( $params ) );
 
@@ -16,7 +16,8 @@
         $pages .= $paginator->next( '>' );
         $pages .= $paginator->last( '>>' );
 
-        $pagination .= $xhtml->tag( 'p', $pages );
+        $pagination .= $xhtml->tag( 'p', $pages );*/
+		$pagination = $xpaginator->paginationBlock( 'ApreComiteapre', $this->passedArgs );
     }
     else {
         $pagination = '';
@@ -35,12 +36,12 @@
         <table id="searchResults" class="tooltips">
             <thead>
                 <tr>
-                    <th><?php echo $paginator->sort( 'N° demande APRE', 'Apre.numeroapre' );?></th>
-                    <th><?php echo $paginator->sort( 'Nom de l\'allocataire', 'Personne.nom' );?></th>
-                    <th><?php echo $paginator->sort( 'Commune de l\'allocataire', 'Adresse.locaadr' );?></th>
-                    <th><?php echo $paginator->sort( 'Date demande APRE', 'Apre.datedemandeapre' );?></th>
+                    <th><?php echo $xpaginator->sort( 'N° demande APRE', 'Apre.numeroapre' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Nom de l\'allocataire', 'Personne.nom' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Commune de l\'allocataire', 'Adresse.locaadr' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Date demande APRE', 'Apre.datedemandeapre' );?></th>
                     <th>Décision comité examen</th>
-                    <th><?php echo $paginator->sort( 'Date décision comité', 'Comiteapre.datecomite' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Date décision comité', 'Comiteapre.datecomite' );?></th>
                     <th>Demande de recours</th>
                     <th>Date recours</th>
                     <th>Observations</th>

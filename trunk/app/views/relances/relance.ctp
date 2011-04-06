@@ -10,7 +10,7 @@
 
 <?php
     if( isset( $orientsstructs ) ) {
-        $paginator->options( array( 'url' => $this->passedArgs ) );
+        /*$paginator->options( array( 'url' => $this->passedArgs ) );
         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
         $pagination = $xhtml->tag( 'p', $paginator->counter( $params ) );
 
@@ -20,7 +20,8 @@
         $pages .= $paginator->next( '>' );
         $pages .= $paginator->last( '>>' );
 
-        $pagination .= $xhtml->tag( 'p', $pages );
+        $pagination .= $xhtml->tag( 'p', $pages );*/
+		$pagination = $xpaginator->paginationBlock( 'Orientstruct', $this->passedArgs );
     }
     else {
         $pagination = '';

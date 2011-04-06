@@ -46,14 +46,14 @@
         <table id="searchResults" class="tooltips">
             <thead>
                 <tr>
-                    <th><?php echo $paginator->sort( 'N° Dossier', 'Dossier.numdemrsa' );?></th>
-                    <th><?php echo $paginator->sort( 'N° CAF', 'Dossier.matricule' );?></th>
-                    <th><?php echo $paginator->sort( 'Nom/prénom du bénéficiaire', 'Personne.nom' );?></th>
-                    <th><?php echo $paginator->sort( 'Date de naissance du bénéficiaire', 'Personne.dtnai' );?></th>
+                    <th><?php echo $xpaginator->sort( 'N° Dossier', 'Dossier.numdemrsa' );?></th>
+                    <th><?php echo $xpaginator->sort( 'N° CAF', 'Dossier.matricule' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Nom/prénom du bénéficiaire', 'Personne.nom' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Date de naissance du bénéficiaire', 'Personne.dtnai' );?></th>
                     <th>Type d'allocation</th>
                     <th>Montant de l'allocation</th>
-                    <!-- <th><?php /*echo $paginator->sort( 'Type d\'allocation', 'Infofinanciere.type_allocation' );*/?></th>
-                    <th><?php /*echo $paginator->sort( 'Montant de l\'allocation', 'Infofinanciere.mtmoucompta' );*/?></th>
+                    <!-- <th><?php /*echo $xpaginator->sort( 'Type d\'allocation', 'Infofinanciere.type_allocation' );*/?></th>
+                    <th><?php /*echo $xpaginator->sort( 'Montant de l\'allocation', 'Infofinanciere.mtmoucompta' );*/?></th>
                     <th>N° Dossier</th>
                     <th>N° CAF</th>
                     <th>Nom/Prénom allocataire</th>

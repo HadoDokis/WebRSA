@@ -6,17 +6,18 @@
 	echo $xhtml->tag( 'h1', $this->pageTitle );
 
 	///
-	$paginator->options( array( 'url' => $this->passedArgs ) );
+	/*$paginator->options( array( 'url' => $this->passedArgs ) );
 	$params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
 
-	$paginationLinks = array(
+	$pagination = array(
 		$paginator->first( '<<' ),
 		$paginator->prev( '<' ),
 		$paginator->numbers(),
 		$paginator->next( '>' ),
 		$paginator->last( '>>' )
 	);
-	$paginationLinks = $xhtml->tag( 'p', implode( ' ', $paginationLinks ) );
+	$pagination = $xhtml->tag( 'p', implode( ' ', $pagination ) );*/
+	$pagination = $xpaginator->paginationBlock( 'Canton', $this->passedArgs );
 
 	if( true || $permissions->check( 'cantons', 'add' ) ) { // FIXME
 		echo $xhtml->tag( 'ul',
@@ -29,13 +30,13 @@
 
 	if( !empty( $cantons ) ) {
 		$headers = array(
-			$paginator->sort( 'Canton', 'Canton.canton' ),
-			$paginator->sort( 'Zone géographique', 'Zonegeographique.libelle' ),
-			$paginator->sort( 'Type de voie', 'Canton.typevoie' ),
-			$paginator->sort( 'Nom de voie', 'Canton.nomvoie' ),
-			$paginator->sort( 'Localité', 'Canton.locaadr' ),
-			$paginator->sort( 'Code postal', 'Canton.codepos' ),
-			$paginator->sort( 'Code INSEE', 'Canton.numcomptt' )
+			$xpaginator->sort( 'Canton', 'Canton.canton' ),
+			$xpaginator->sort( 'Zone géographique', 'Zonegeographique.libelle' ),
+			$xpaginator->sort( 'Type de voie', 'Canton.typevoie' ),
+			$xpaginator->sort( 'Nom de voie', 'Canton.nomvoie' ),
+			$xpaginator->sort( 'Localité', 'Canton.locaadr' ),
+			$xpaginator->sort( 'Code postal', 'Canton.codepos' ),
+			$xpaginator->sort( 'Code INSEE', 'Canton.numcomptt' )
 		);
 		$thead = $xhtml->tag( 'thead', $xhtml->tableHeaders( $headers ) );
 		$thead = str_replace( '</th></tr>', '</th><th colspan="2">Actions</th></tr>', $thead );
@@ -56,10 +57,10 @@
 		}
 		$tbody = $xhtml->tag( 'tbody', $xhtml->tableCells( $rows, array( 'class' => 'odd' ), array( 'class' => 'even' ) ) );
 
-		echo $xhtml->tag( 'p', $paginator->counter( $params ) );
-        echo $paginationLinks;
+// 		echo $xhtml->tag( 'p', $paginator->counter( $params ) );
+        echo $pagination;
 		echo $xhtml->tag( 'table', $thead.$tbody );
-        echo $paginationLinks;
+        echo $pagination;
 	}
 	else {
 		echo $xhtml->tag( 'p', 'Aucun canton n\'est renseigné pour l\'instant.', array( 'class' => 'notice' ) );

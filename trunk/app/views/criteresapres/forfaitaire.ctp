@@ -18,13 +18,13 @@
 //         $paginator->options( array( 'url' => $this->params['named'] ) );
 //         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
 //         $pagination = $xhtml->tag( 'p', $paginator->counter( $params ) );
-// 
+//
 //         $pages = $paginator->first( '<<' );
 //         $pages .= $paginator->prev( '<' );
 //         $pages .= $paginator->numbers();
 //         $pages .= $paginator->next( '>' );
 //         $pages .= $paginator->last( '>>' );
-// 
+//
 //         $pagination .= $xhtml->tag( 'p', $pages );
 //     }
 //     else {
@@ -123,13 +123,13 @@
         <table id="searchResults" class="tooltips">
             <thead>
                 <tr>
-                    <th><?php echo $paginator->sort( 'N° Dossier RSA', 'Dossier.numdemrsa' );?></th>
-                    <th><?php echo $paginator->sort( 'N° demande APRE', 'Apre.numeroapre' );?></th>
-                    <th><?php echo $paginator->sort( 'Nom de l\'allocataire', 'Personne.nom' );?></th>
-                    <th><?php echo $paginator->sort( 'Commune de l\'allocataire', 'Adresse.locaadr' );?></th>
-                    <th><?php echo $paginator->sort( 'Date de demande APRE', 'Apre.datedemandeapre' );?></th>
-                    <th><?php echo $paginator->sort( 'Montant', 'Apre.mtforfait' );?></th>
-                    <th><?php echo $paginator->sort( 'Nb enfant - 12', 'Apre.nbenf12' );?></th>
+                    <th><?php echo $xpaginator->sort( 'N° Dossier RSA', 'Dossier.numdemrsa' );?></th>
+                    <th><?php echo $xpaginator->sort( 'N° demande APRE', 'Apre.numeroapre' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Nom de l\'allocataire', 'Personne.nom' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Commune de l\'allocataire', 'Adresse.locaadr' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Date de demande APRE', 'Apre.datedemandeapre' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Montant', 'Apre.mtforfait' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Nb enfant - 12', 'Apre.nbenf12' );?></th>
 
                     <th class="action noprint">Actions</th>
                     <th class="innerTableHeader noprint">Informations complémentaires</th>

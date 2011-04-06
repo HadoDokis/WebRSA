@@ -5,7 +5,7 @@
 
 <?php
     if( isset( $comitesapres ) ) {
-        $paginator->options( array( 'url' => $this->passedArgs ) );
+        /*$paginator->options( array( 'url' => $this->passedArgs ) );
         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
         $pagination = $xhtml->tag( 'p', $paginator->counter( $params ) );
 
@@ -15,7 +15,8 @@
         $pages .= $paginator->next( '>' );
         $pages .= $paginator->last( '>>' );
 
-        $pagination .= $xhtml->tag( 'p', $pages );
+        $pagination .= $xhtml->tag( 'p', $pages );*/
+		$pagination = $xpaginator->paginationBlock( 'Comiteapre', $this->passedArgs );
     }
     else {
         $pagination = '';
@@ -36,12 +37,12 @@
         <table id="searchResults" class="tooltips">
             <thead>
                 <tr>
-                    <th><?php echo $paginator->sort( 'N° demande RSA', 'Dossier.numdemrsa' );?></th>
-                    <th><?php echo $paginator->sort( 'Nom de l\'allocataire', 'Personne.nom' );?></th>
-                    <th><?php echo $paginator->sort( 'Commune de l\'allocataire', 'Adresse.locaadr' );?></th>
-                    <th><?php echo $paginator->sort( 'Date de demande APRE', 'Apre.datedemandeapre' );?></th>
+                    <th><?php echo $xpaginator->sort( 'N° demande RSA', 'Dossier.numdemrsa' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Nom de l\'allocataire', 'Personne.nom' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Commune de l\'allocataire', 'Adresse.locaadr' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Date de demande APRE', 'Apre.datedemandeapre' );?></th>
                     <th>Décision comité examen</th>
-                    <th><?php echo $paginator->sort( 'Date de décision comité', 'Comiteapre.datecomite' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Date de décision comité', 'Comiteapre.datecomite' );?></th>
                     <th>Montant attribué</th>
                     <th>Observations</th>
 

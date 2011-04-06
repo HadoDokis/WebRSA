@@ -2,7 +2,7 @@
 	class AppController extends Controller
 	{
 		public $components = array( 'Session', 'Auth', 'Acl', 'Droits', 'Cookie', 'Jetons'/*, 'Xcontroller'*/, 'Default' );
-		public $helpers = array( 'Xhtml', 'Form', 'Javascript', 'Permissions', 'Widget', 'Locale', 'Theme', 'Default', 'Number' );
+		public $helpers = array( 'Xhtml', 'Form', 'Javascript', 'Permissions', 'Widget', 'Locale', 'Theme', 'Default', 'Number', 'Xpaginator' );
 		public $uses = array( 'User', 'Connection', 'Avispcgdroitrsa' );
 
 		//public $persistModel = true;

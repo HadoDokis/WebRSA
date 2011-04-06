@@ -12,16 +12,17 @@
 <?php require_once( 'filtre.ctp' );?>
 <?php
     if( isset( $cohorteci ) ) {
-        $paginator->options( array( 'url' => $this->passedArgs ) );
+		$pagination = $xpaginator->paginationBlock( 'Contratinsertion', $this->passedArgs );
+        /*$paginator->options( array( 'url' => $this->passedArgs ) );
         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
-        $pagination = $xhtml->tag( 'p', $paginator->counter( $params ) );
+        $pagination = $xhtml->tag( 'p', $paginator->counter( $params ) );*/
 
 //         $pages = $paginator->first( '<<' );
 //         $pages .= $paginator->prev( '<' );
 //         $pages .= $paginator->numbers();
 //         $pages .= $paginator->next( '>' );
 //         $pages .= $paginator->last( '>>' );
-// 
+//
 //         $pagination .= $xhtml->tag( 'p', $pages );
     }
     else {
@@ -44,7 +45,7 @@
             echo $form->input( 'Filtre.locaadr', array( 'type' => 'hidden', 'id' => 'FiltreLocaadr2' ) );
             echo $form->input( 'Filtre.numcomptt', array( 'type' => 'hidden', 'id' => 'FiltreNumcomptt2' ) );
             echo $form->input( 'Filtre.pers_charg_suivi', array( 'type' => 'hidden', 'id' => 'FiltrePersChargSuivi2' ) );
-            echo $form->input( 'Filtre.decision_ci', array( 'type' => 'hidden', 'id' => 'FiltreDecisionCi2' ) ); 
+            echo $form->input( 'Filtre.decision_ci', array( 'type' => 'hidden', 'id' => 'FiltreDecisionCi2' ) );
             echo $form->input( 'Filtre.datevalidation_ci', array( 'type' => 'hidden', 'id' => 'FiltreDatevalidationCi2' )  );
             echo $form->input( 'Filtre.forme_ci', array( 'type' => 'hidden', 'id' => 'FiltreFormeCi2' ) );
             echo '</div>';

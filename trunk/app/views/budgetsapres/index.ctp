@@ -21,7 +21,7 @@
 		echo $xhtml->tag( 'p', 'Aucun budget pour l\'instant.', array( 'class' => 'notice' ) );
 	}
 	else {
-		$paginator->options( array( 'url' => $this->passedArgs ) );
+		/*$paginator->options( array( 'url' => $this->passedArgs ) );
 		$params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
 		$pagination = $xhtml->tag( 'p', $paginator->counter( $params ) );
 
@@ -31,7 +31,8 @@
 		$pages .= $paginator->next( '>' );
 		$pages .= $paginator->last( '>>' );
 
-		$pagination .= $xhtml->tag( 'p', $pages );
+		$pagination .= $xhtml->tag( 'p', $pages );*/
+		$pagination = $xpaginator->paginationBlock( 'Budgetapre', $this->passedArgs );
 
 		//----------------------------------------------------------------------
 

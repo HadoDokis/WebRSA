@@ -22,7 +22,7 @@
 		*  key the returned link will sort by 'desc'.
 		*/
 
-		function sort( $title, $key = null, $options = array() ) {
+		public function sort( $title, $key = null, $options = array() ) {
 			$options = array_merge( array('url' => array(), 'model' => null), $options );
 			$url = $options['url'];
 			unset($options['url']);
@@ -68,8 +68,11 @@
 		* FIXME: docs
 		*/
 
-		function paginationBlock( $classname, $urlOptions, $format = 'Results %start% - %end% out of %count%.' ) {
-			if( ( $format == 'Results %start% - %end% out of %count%.' ) && Configure::read( 'Optimisations.progressivePaginate' ) ) {
+		public function paginationBlock( $classname, $urlOptions, $format = 'Results %start% - %end% out of %count%.' ) {
+			$count = Set::classicExtract( $this->params, "paging.{$classname}.count" );
+			$limit = Set::classicExtract( $this->params, "paging.{$classname}.options.limit" );
+
+			if( ( $count > $limit ) && ( $format == 'Results %start% - %end% out of %count%.' ) && Configure::read( 'Optimisations.progressivePaginate' ) ) {
 				$format = 'Résultats %start% - %end% sur au moins %count% résultats.';
 			}
 // 			else {

@@ -5,7 +5,7 @@
 
 <?php if( !empty( $integrationfichiersapre ) ):?>
 	<?php
-		$paginator->options( array( 'url' => $this->passedArgs ) );
+		/*$paginator->options( array( 'url' => $this->passedArgs ) );
 		$params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
 		$pagination = $xhtml->tag( 'p', $paginator->counter( $params ) );
 
@@ -21,18 +21,19 @@
 					$paginator->last( '>>' )
 				)
 			)
-		);
+		);*/
+		$pagination = $xpaginator->paginationBlock( 'Integrationfichierapre', $this->passedArgs );
 	?>
 
 	<?php echo $pagination;?>
     <table>
         <thead>
             <tr>
-                <th><?php echo $paginator->sort( 'Date d\'intégration', 'Integrationfichierapre.date_integration' );?></th>
-                <th><?php echo $paginator->sort( 'À traiter', 'Integrationfichierapre.nbr_atraiter' );?></th>
-                <th><?php echo $paginator->sort( 'Traité', 'Integrationfichierapre.nbr_succes' );?></th>
-                <th><?php echo $paginator->sort( 'En erreur', 'Integrationfichierapre.nbr_erreurs' );?></th>
-                <th><?php echo $paginator->sort( 'Fichier', 'Integrationfichierapre.fichier_in' );?></th>
+                <th><?php echo $xpaginator->sort( 'Date d\'intégration', 'Integrationfichierapre.date_integration' );?></th>
+                <th><?php echo $xpaginator->sort( 'À traiter', 'Integrationfichierapre.nbr_atraiter' );?></th>
+                <th><?php echo $xpaginator->sort( 'Traité', 'Integrationfichierapre.nbr_succes' );?></th>
+                <th><?php echo $xpaginator->sort( 'En erreur', 'Integrationfichierapre.nbr_erreurs' );?></th>
+                <th><?php echo $xpaginator->sort( 'Fichier', 'Integrationfichierapre.fichier_in' );?></th>
                 <th class="action">Actions</th>
             </tr>
         </thead>

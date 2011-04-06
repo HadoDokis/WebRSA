@@ -3,7 +3,7 @@
 
 <?php
     if( isset( $cohortecui ) ) {
-        $paginator->options( array( 'url' => $this->passedArgs ) );
+        /*$paginator->options( array( 'url' => $this->passedArgs ) );
         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
         $pagination = $xhtml->tag( 'p', $paginator->counter( $params ) );
 
@@ -13,7 +13,8 @@
         $pages .= $paginator->next( '>' );
         $pages .= $paginator->last( '>>' );
 
-        $pagination .= $xhtml->tag( 'p', $pages );
+        $pagination .= $xhtml->tag( 'p', $pages );*/
+		$pagination = $xpaginator->paginationBlock( 'Cui', $this->passedArgs );
     }
     else {
         $pagination = '';
@@ -36,12 +37,12 @@
         <table class="tooltips">
             <thead>
                 <tr>
-                    <th><?php echo $paginator->sort( 'N° Dossier', 'Dossier.numdemrsa' );?></th>
-                    <th><?php echo $paginator->sort( 'Nom de l\'allocataire', 'Personne.nom' );?></th>
-                    <th><?php echo $paginator->sort( 'Commune', 'Adresse.locaadr' );?></th>
-                    <th><?php echo $paginator->sort( 'Date du contrat', 'Cui.datecontrat' );?></th>
-                    <th><?php echo $paginator->sort( 'Décision', 'Cui.decisioncui' );?></th>
-                    <th><?php echo $paginator->sort( 'Observations', 'Cui.observcui' );?></th>
+                    <th><?php echo $xpaginator->sort( 'N° Dossier', 'Dossier.numdemrsa' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Nom de l\'allocataire', 'Personne.nom' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Commune', 'Adresse.locaadr' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Date du contrat', 'Cui.datecontrat' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Décision', 'Cui.decisioncui' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Observations', 'Cui.observcui' );?></th>
 
                     <!-- <th>N° Dossier</th>
                     <th>Nom de l'allocataire</th>

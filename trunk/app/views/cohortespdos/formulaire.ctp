@@ -17,16 +17,17 @@
     //
 
     if( isset( $cohortepdo ) ) {
-        $paginator->options( array( 'url' => $this->passedArgs ) );
+        /*$paginator->options( array( 'url' => $this->passedArgs ) );
         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
-        $pagination = $xhtml->tag( 'p', $paginator->counter( $params ) );
+        $pagination = $xhtml->tag( 'p', $paginator->counter( $params ) );*/
+		$pagination = $xpaginator->paginationBlock( 'Personne', $this->passedArgs );
 
 //         $pages = $paginator->first( '<<' );
 //         $pages .= $paginator->prev( '<' );
 //         $pages .= $paginator->numbers();
 //         $pages .= $paginator->next( '>' );
 //         $pages .= $paginator->last( '>>' );
-// 
+//
 //         $pagination .= $xhtml->tag( 'p', $pages );
     }
     else {
@@ -129,7 +130,7 @@
 
 //                             $form->input( 'Propopdo.'.$index.'.typepdo_id', array( 'label' => false,  'div' => false, 'value' => $typepdo_id, 'type' => 'hidden' ) ).
 //                             h( Set::classicExtract( $typepdo, Set::classicExtract( $pdo, 'Propopdo.typepdo_id' ) ) ),
-// 
+//
 //                             $form->input( 'Propopdo.'.$index.'.decisionpdo_id', array( 'label' => false,  'div' => false, 'value' => $decisionpdo_id, 'type' => 'hidden' ) ).
                             $form->input( 'Propopdo.'.$index.'.personne_id', array( 'label' => false, 'div' => false, 'value' => $personne_id, 'type' => 'hidden' ) ).
                             $form->input( 'Propopdo.'.$index.'.id', array( 'label' => false, 'div' => false, 'type' => 'hidden' ) ).
@@ -137,12 +138,12 @@
 
 //                             h( date_short( Set::classicExtract( $pdo, 'Propopdo.datedecisionpdo' ) ) ),
 //                             h( Set::classicExtract( $motifpdo, Set::classicExtract( $pdo, 'Propopdo.motifpdo' ) ) ),
-// 
+//
 //                             $form->input( 'Propopdo.'.$index.'.dossier_id', array( 'label' => false, 'type' => 'hidden', 'value' => $pdo['Dossier']['id'] ) ),
-// 
-// 
+//
+//
 //                             $form->input( 'Propopdo.'.$index.'.datedecisionpdo', array( 'label' => false, 'div' => false, 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 5, 'minYear' => date( 'Y' ) - 5 ) ),
-// 
+//
 //                             $form->input( 'Propopdo.'.$index.'.motifpdo', array( 'label' => false, 'type' => 'select', 'options' => $motifpdo, 'empty' => true ) ),
 
                             $form->input( 'Propopdo.'.$index.'.user_id', array('label' => false, 'type' => 'select', 'options' => $gestionnaire, 'empty' => true ) ),
