@@ -1,6 +1,20 @@
 Versions de CakePHP supportées:
     * version minimale requise / version recommandée: 1.2.9
 
+* Principales modifications 2.0rc16 -> 2.0rc17
+	1- Ajout d'un filtre, dans toutes les recherches multi-critères, afin de n'afficher que les dernières demandes de RSA pour un même allocataire. (Décocher la case afin de gagner en performance car la requête est coûteuse en temps)
+	2- Réparation de l'ajout/édition d'une orientation suite à la mise en place de la GED Alffresco -> le fichier app/config/cmis.php a été corrigé.
+	3- Renommage de l'ensemble des tables (et des attributs liés) du module EP, notamment "seanceseps" qui devient "commissionseps"
+	4- Réparation de l'ajout et de l'affichage des informations d'une commission d'EP
+	5- Corrections diverses sur la COV suite aux divers retours du CG58
+	6- Réparation de la gestion des droits sur les différents boutons des tableaux de résultats (modifier, supprimer, ...)
+	7- Ajout d'une recherche multi-critères dans la table de paramétrages des utilisateurs
+	8- Ajout d'une recherche multi-critères pour les Entretiens
+	9- Ajout d'une cohorte de validation des APREs pour le CG66
+	10- Mise en place de la pagination progressive pour l'ensemble des formulaires de recherche (à paramétrer dans webrsa.inc, Configure::write( 'Optimisations.progressivePaginate', true );) afin de gagner en performance
+	11- Correction: lors de la sélection des dossiers pour une commission d'EP, on ne voit plus les dossiers déjà associés à d'autres commissions d'EP
+	12- Amélioration: il n'est plus nécessaire de finaliser une commission d'EP au niveau CG si aucun des thèmes traité par la séance ne prend de décision au niveau CG (CG 58)
+
 * Version 1.3-rc5
     - Correctifs:
         * Nouvelle gestion des éditions de courrier pour les orientations ( édition simple ou en cohorte ). Lors de l'ajout ou de la modification d'une orientation, le PDF est généré directement et stocké en base en base, ce qui permet de ne plus solliciter le serveur gedooo qu'une seule fois.
