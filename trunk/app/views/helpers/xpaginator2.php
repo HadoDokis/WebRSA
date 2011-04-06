@@ -80,10 +80,11 @@
 		*/
 
 		public function paginationBlock( $classname, $urlOptions, $format = 'Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%' ) {
+			$page = Set::classicExtract( $this->params, "paging.{$classname}.page" );
 			$count = Set::classicExtract( $this->params, "paging.{$classname}.count" );
 			$limit = Set::classicExtract( $this->params, "paging.{$classname}.options.limit" );
 
-			if( ( $count > $limit ) && ( $format == 'Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%' ) && Configure::read( 'Optimisations.progressivePaginate' ) ) {
+			if( ( $count > ( $limit * $page ) ) && ( $format == 'Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%' ) && Configure::read( 'Optimisations.progressivePaginate' ) ) {
 				$format = 'Résultats %start% - %end% sur au moins %count% résultats.';
 			}
 // 			else {
