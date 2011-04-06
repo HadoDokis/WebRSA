@@ -67,7 +67,7 @@
 
 			echo '<div class="submit">';
 			echo $xform->submit( 'Enregistrer', array( 'div' => false ) );
-// 			echo $xform->submit( 'Annuler', array( 'name' => 'Cancel', 'div' => false ) );
+			echo $xform->submit( 'Annuler', array( 'name' => 'Cancel', 'div' => false ) );
 			echo '</div>';
 			echo $form->end();
 		?>
