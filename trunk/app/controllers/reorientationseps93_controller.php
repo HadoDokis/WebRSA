@@ -157,6 +157,21 @@
 		*/
 
 		protected function _add_edit( $id = null ) {
+
+            
+
+            // Retour à l'index en cas d'annulation
+            if( isset( $this->params['form']['Cancel'] ) ) {
+                if( $this->action == 'add' ){
+                    $persId = $this->Reorientationep93->Orientstruct->field( 'personne_id', array( 'Orientstruct.id' => $id ) );
+                }
+                else if( $this->action == 'edit' ){
+                    $persId = $this->Reorientationep93->Orientstruct->field( 'personne_id', array( 'Orientstruct.id' => $this->data['Reorientationep93']['orientstruct_id'] ) );
+                }
+                $this->redirect( array( 'controller' => 'orientsstructs', 'action' => 'index', $persId ) );
+            }
+
+
 			if( !empty( $this->data ) ) {
 				// FIXME: dans les contrôleurs des autres thèmes aussi
 				$this->Reorientationep93->begin();
