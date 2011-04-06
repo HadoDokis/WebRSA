@@ -165,7 +165,7 @@
 					}
 
 					// Acquisition des jetons si on a un formulaire de cohorte -> FIXME begin/commit/rollback
-					if( ( $statutOrientation == 'En attente' ) || ( $statutOrientation == 'Non orienté' ) ) {
+					if( ( ( $statutOrientation == 'En attente' ) || ( $statutOrientation == 'Non orienté' ) ) && !empty( $cohorte ) ) {
 						$dossiersIds = Set::extract( $cohorte, '/Dossier/id' );
 						$this->Jetons->getList( $dossiersIds );
 					}
