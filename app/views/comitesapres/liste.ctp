@@ -24,23 +24,25 @@
 </script>
 
 <?php
-    if( isset( $comitesapres ) ) {
-        $paginator->options( array( 'url' => $this->params['named'] ) );
-        $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
-        $pagination = $xhtml->tag( 'p', $paginator->counter( $params ) );
-
-        $pages = $paginator->first( '<< ' );
-        $pages .= $paginator->prev( ' < ' );
-        $pages .= $paginator->numbers();
-        $pages .= $paginator->next( ' > ' );
-        $pages .= $paginator->last( ' >>' );
-
-        $pagination .= $xhtml->tag( 'p', $pages );
-    }
-    else {
-        $pagination = '';
-    }
+//     if( isset( $comitesapres ) ) {
+//         $paginator->options( array( 'url' => $this->params['named'] ) );
+//         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
+//         $pagination = $xhtml->tag( 'p', $paginator->counter( $params ) );
+// 
+//         $pages = $paginator->first( '<< ' );
+//         $pages .= $paginator->prev( ' < ' );
+//         $pages .= $paginator->numbers();
+//         $pages .= $paginator->next( ' > ' );
+//         $pages .= $paginator->last( ' >>' );
+// 
+//         $pagination .= $xhtml->tag( 'p', $pages );
+//     }
+//     else {
+//         $pagination = '';
+//     }
 ?>
+<?php     $pagination = $xpaginator->paginationBlock( 'Comiteapre', $this->passedArgs ); ?>
+
 <?php echo $xform->create( 'Comiteapre', array( 'type' => 'post', 'action' => '/liste/', 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );?>
 
     <fieldset>
@@ -76,22 +78,23 @@
         <table id="searchResults" class="tooltips">
             <thead>
                 <tr>
-                    <th>Intitulé du comité</th>
-                    <th>Lieu du comité</th>
-                    <th>Date du comité</th>
-                    <th>Heure du comité</th>
-                    <th>Nb de participants</th>
-                    <th>Nb d'absents</th>
-                    <th>Nb de demandes à traiter</th>
-                    <th>Description</th>
+                    <th><?php echo $xpaginator->sort( 'Intitulé du comité', 'Comiteapre.intitulecomite' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Lieu du comité', 'Comiteapre.lieucomite' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Date du comité', 'Comiteapre.datecomite' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Heure du comité', 'Comiteapre.heurecomite' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Nb de participants', 'Participantpresent.Comiteapre' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Nb d\'absents', 'Participantabsent.Comiteapre' );?></th>
+<!--                     <th><?php /*echo $xpaginator->sort( 'Nb de demandes à traiter', 'Comiteapre.datecomite' );*/?></th> -->
+                    <th><?php echo $xpaginator->sort( 'Description', 'Comiteapre.observationcomite' );?></th>
                     <th colspan="3" class="action">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
                     foreach( $comitesapres as $comiteapre ) {
-// debug($comiteapre);
+debug($comiteapre);
                         $comiteapre = $comiteapre['Comiteapre'];
+
                         echo $xhtml->tableCells(
                             array(
                                 h( Set::classicExtract( $comiteapre, 'intitulecomite' ) ),
@@ -100,7 +103,7 @@
                                 h( $locale->date( 'Time::short', Set::classicExtract( $comiteapre, 'heurecomite' ) ) ),
                                 h( Set::classicExtract( $comiteapre, 'Participantpresent.Comiteapre' ) ),
                                 h( Set::classicExtract( $comiteapre, 'Participantabsent.Comiteapre' ) ),
-                                h( Set::classicExtract( $comiteapre, 'intitulecomite' ) ),
+//                                 h( Set::classicExtract( $comiteapre, 'intitulecomite' ) ),
                                 h( Set::classicExtract( $comiteapre, 'ApreComiteapre.observationcomite' ) ),
                                 $xhtml->viewLink(
                                     'Voir le comité',
