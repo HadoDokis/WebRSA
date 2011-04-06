@@ -13,13 +13,13 @@
         }
 
         if( $permissions->check( 'dossierssimplifies', 'add' ) ) {
-//        if( $session->read( 'Auth.User.username' ) == 'cg66' ) { // FIXME
+            if( Configure::read( 'Cg.departement' ) != 58 ) { // FIXME
 
-            echo '<li>'.$xhtml->addSimpleLink(
-                'Ajouter une préconisation d\'orientation',
-                array( 'controller' => 'dossierssimplifies', 'action' => 'add' )
-            ).' </li>';
-//        }
+                    echo '<li>'.$xhtml->addSimpleLink(
+                        'Ajouter une préconisation d\'orientation',
+                        array( 'controller' => 'dossierssimplifies', 'action' => 'add' )
+                    ).' </li>';
+            }
         }
 
         if( is_array( $this->data ) ) {

@@ -589,7 +589,7 @@
                     <tr>
                         <td><?php echo $decisionEpDEM;?></td>
                         <td><?php echo $dateEpDEM;?></td>
-                        <td><?php echo $xhtml->boolean( ( $details['CJT']['Dossierep']['derniere']['Dossierep']['commissionep_id'] ) == 'traite' );?></td>
+                        <td><?php echo $xhtml->boolean( ( $details['DEM']['Dossierep']['derniere']['Dossierep']['commissionep_id'] ) == 'traite' );?></td>
     <!--                    <td><?php
                             /*if( !empty( $details['DEM']['Dossierep']['derniere']['Dossierep']['commissionep_id'] ) ){
                                 echo $xhtml->viewLink(

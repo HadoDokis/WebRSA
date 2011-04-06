@@ -17,8 +17,8 @@
 
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
-		observeDisableFieldsetOnCheckbox( 'CohortepdoDatedecisionpdo', $( 'CohortepdoDatedecisionpdoFromDay' ).up( 'fieldset' ), false );
-		observeDisableFieldsetOnCheckbox( 'CohortepdoTraitement', $( 'CohortepdoTraitementtypepdoId' ).up( 'fieldset' ), false );
+        observeDisableFieldsetOnCheckbox( 'CohortepdoTraitement', $( 'CohortepdoTraitementtypepdoId' ).up( 'fieldset' ), false );
+        observeDisableFieldsetOnCheckbox( 'CohortepdoDatedecisionpdo', $( 'CohortepdoDatedecisionpdoFromDay' ).up( 'fieldset' ), false );
 	});
 </script>
 	<fieldset>
