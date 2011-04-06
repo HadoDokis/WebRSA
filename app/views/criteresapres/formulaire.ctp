@@ -17,15 +17,15 @@
 <?php
 
 //     if( isset( $apres ) ) {
-//         $paginator->options( array( 'url' => $this->params['named'] ) );
+//         $xpaginator->options( array( 'url' => $this->params['named'] ) );
 //         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
-//         $pagination = $xhtml->tag( 'p', $paginator->counter( $params ) );
+//         $pagination = $xhtml->tag( 'p', $xpaginator->counter( $params ) );
 // 
-//         $pages = $paginator->first( '<< ' );
-//         $pages .= $paginator->prev( '< ' );
-//         $pages .= $paginator->numbers();
-//         $pages .= $paginator->next( ' >' );
-//         $pages .= $paginator->last( ' >>' );
+//         $pages = $xpaginator->first( '<< ' );
+//         $pages .= $xpaginator->prev( '< ' );
+//         $pages .= $xpaginator->numbers();
+//         $pages .= $xpaginator->next( ' >' );
+//         $pages .= $xpaginator->last( ' >>' );
 // 
 //         $pagination .= $xhtml->tag( 'p', $pages );
 //     }
@@ -122,7 +122,7 @@ $pagination = $xpaginator->paginationBlock( 'Apre', $this->passedArgs );
 <?php if( isset( $apres ) ):?>
 
     <?php
-        $totalCount = Set::classicExtract( $paginator->params, 'paging.Apre.count' );
+        $totalCount = Set::classicExtract( $xpaginator->params, 'paging.Apre.count' );
     ?>
     <?php if( !empty( $totalCount ) ):?>
         <?php
@@ -138,15 +138,15 @@ $pagination = $xpaginator->paginationBlock( 'Apre', $this->passedArgs );
         <table id="searchResults" class="tooltips">
             <thead>
                 <tr>
-                    <th><?php echo $paginator->sort( 'N° Dossier RSA', 'Dossier.numdemrsa' );?></th>
-                    <th><?php echo $paginator->sort( 'N° demande APRE', 'Apre.numeroapre' );?></th>
-                    <th><?php echo $paginator->sort( 'Nom de l\'allocataire', 'Personne.nom' );?></th>
-                    <th><?php echo $paginator->sort( 'Commune de l\'allocataire', 'Adresse.locaadr' );?></th>
-                    <th><?php echo $paginator->sort( 'Date de demande APRE', 'Apre.datedemandeapre' );?></th>
+                    <th><?php echo $xpaginator->sort( 'N° Dossier RSA', 'Dossier.numdemrsa' );?></th>
+                    <th><?php echo $xpaginator->sort( 'N° demande APRE', 'Apre.numeroapre' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Nom de l\'allocataire', 'Personne.nom' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Commune de l\'allocataire', 'Adresse.locaadr' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Date de demande APRE', 'Apre.datedemandeapre' );?></th>
                     <th>Nature de l'aide</th>
-                    <th><?php echo $paginator->sort( 'Type de demande APRE', 'Apre.typedemandeapre' );?></th>
-                    <th><?php echo $paginator->sort( 'Activité du bénéficiaire', 'Apre.activitebeneficiaire' );?></th>
-                    <th><?php echo $paginator->sort( 'Etat du dossier APRE', 'Apre.etatdossierapre' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Type de demande APRE', 'Apre.typedemandeapre' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Activité du bénéficiaire', 'Apre.activitebeneficiaire' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Etat du dossier APRE', 'Apre.etatdossierapre' );?></th>
                     <th class="action noprint">Actions</th>
                     <th class="innerTableHeader noprint">Informations complémentaires</th>
                 </tr>

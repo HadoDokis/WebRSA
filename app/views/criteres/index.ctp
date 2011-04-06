@@ -33,7 +33,7 @@
         ).'</li></ul>';
     }
 ?>
-
+<?php $pagination = $xpaginator->paginationBlock( 'Orientstruct', $this->passedArgs );?>
 <?php echo $form->create( 'Critere', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );?>
     <fieldset>
         <legend>Recherche par dossier</legend>
@@ -111,19 +111,19 @@
 
     <?php if( is_array( $orients ) && count( $orients ) > 0  ):?>
 
-        <?php require( 'index.pagination.ctp' )?>
+        <?php echo $pagination;?>
         <table id="searchResults" class="tooltips">
             <thead>
                  <tr>
-                    <th><?php echo $paginator->sort( 'Numéro dossier', 'Dossier.numdemrsa' );?></th>
-                    <th><?php echo $paginator->sort( 'Allocataire', 'Personne.nom' );?></th>
-                    <th><?php echo $paginator->sort( 'N° Téléphone', 'Modecontact.numtel' );?></th>
-                    <th><?php echo $paginator->sort( 'Commune', 'Adresse.locaadr' );?></th>
-                    <th><?php echo $paginator->sort( 'Date d\'ouverture droits', 'Dossier.dtdemrsa' );?></th>
-                    <th><?php echo $paginator->sort( 'Date d\'orientation', 'Orientstruct.date_valid' );?></th>
-                    <th><?php echo $paginator->sort( 'Structure référente', 'Structurereferente.lib_struc' );?></th>
-                    <th><?php echo $paginator->sort( 'Statut orientation', 'Orientstruct.statut_orient' );?></th>
-                    <th><?php echo $paginator->sort( 'Soumis à droits et devoirs', 'Calculdroitrsa.toppersdrodevorsa' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Numéro dossier', 'Dossier.numdemrsa' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Allocataire', 'Personne.nom' );?></th>
+                    <th><?php echo $xpaginator->sort( 'N° Téléphone', 'Modecontact.numtel' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Commune', 'Adresse.locaadr' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Date d\'ouverture droits', 'Dossier.dtdemrsa' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Date d\'orientation', 'Orientstruct.date_valid' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Structure référente', 'Structurereferente.lib_struc' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Statut orientation', 'Orientstruct.statut_orient' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Soumis à droits et devoirs', 'Calculdroitrsa.toppersdrodevorsa' );?></th>
                     <th class="action noprint">Actions</th>
                     <th class="innerTableHeader noprint">Informations complémentaires</th>
                 </tr>
@@ -189,7 +189,7 @@
             </tbody>
         </table>
 
-        <?php if( Set::extract( $paginator, 'params.paging.Orientstruct.count' ) > 65000 ):?>
+        <?php if( Set::extract( $xpaginator, 'params.paging.Orientstruct.count' ) > 65000 ):?>
             <p class="noprint" style="border: 1px solid #556; background: #ffe;padding: 0.5em;"><?php echo $xhtml->image( 'icons/error.png' );?> <strong>Attention</strong>, il est possible que votre tableur ne puisse pas vous afficher les résultats au-delà de la 65&nbsp;000ème ligne.</p>
         <?php endif;?>
         <ul class="actionMenu">
@@ -206,7 +206,7 @@
                 );
             ?></li>
         </ul>
-        <?php require( 'index.pagination.ctp' )?>
+        <?php echo $pagination;?>
     <?php else:?>
         <p>Vos critères n'ont retourné aucun dossier.</p>
     <?php endif?>
