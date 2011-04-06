@@ -175,7 +175,7 @@
                                 array(
                                     $xhtml->viewLink(
                                         'Voir le dossier « '.$orient['Dossier']['numdemrsa'].' »',
-                                        array( 'controller' => 'personnes', 'action' => 'view', $orient['Personne']['id'] )
+                                        array( 'controller' => 'orientsstructs', 'action' => 'index', $orient['Personne']['id'] )
                                     ),
                                     array( 'class' => 'noprint' )
                                 ),
