@@ -7,10 +7,10 @@
         $( 'RelanceHasContrat' ).observe( 'change', function( ) {
 			changeFields($( 'RelanceHasContrat' ).getValue());
 		} );
-		
+
 		changeFields($( 'RelanceHasContrat' ).getValue());
 	} );
-        
+
     function changeFields(value) {
     	if (value=='O') {
     		$( 'datederniercontrat' ).show();
@@ -44,17 +44,18 @@
                     true
                 );
             <?php endforeach;?>
-            
+
         });
-        
+
     </script>
 <?php endif;?>
 
 <?php
     if( isset( $orientsstructs ) ) {
-        $paginator->options( array( 'url' => $this->passedArgs ) );
+        /*$paginator->options( array( 'url' => $this->passedArgs ) );
         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
-        $pagination = $xhtml->tag( 'p', $paginator->counter( $params ) );
+        $pagination = $xhtml->tag( 'p', $paginator->counter( $params ) );*/
+		$pagination = $xpaginator->paginationBlock( 'Orientstruct', $this->passedArgs );
 
 //         $pages = $paginator->first( '<<' );
 //         $pages .= $paginator->prev( '<' );

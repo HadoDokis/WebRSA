@@ -28,7 +28,7 @@
     //
 
     if( isset( $cohortepdo ) ) {
-        $paginator->options( array( 'url' => $this->passedArgs ) );
+        /*$paginator->options( array( 'url' => $this->passedArgs ) );
         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
         $pagination = $xhtml->tag( 'p', $paginator->counter( $params ) );
 
@@ -38,7 +38,8 @@
         $pages .= $paginator->next( '>' );
         $pages .= $paginator->last( '>>' );
 
-        $pagination .= $xhtml->tag( 'p', $pages );
+        $pagination .= $xhtml->tag( 'p', $pages );*/
+		$pagination = $xpaginator->paginationBlock( 'Personne', $this->passedArgs );
     }
     else {
         $pagination = '';
@@ -72,13 +73,13 @@
         <table id="searchResults" class="tooltips">
             <thead>
                 <tr>
-                    <th><?php echo $paginator->sort( 'N° PDO', 'Pdo.id' );?></th>
-                    <th><?php echo $paginator->sort( 'Nom de l\'allocataire', 'Personne.nom'.' '.'Personne.prenom' );?></th>
-                    <th><?php echo $paginator->sort( 'Suivi', 'Dossier.typeparte' );?></th>
-                    <th><?php echo $paginator->sort( 'Situation des droits', 'Situationdossierrsa.etatdosrsa' );?></th>
-                    <th><?php echo $paginator->sort( 'Type de PDO', 'Pdo.typepdo_id' );?></th>
-                    <th><?php echo $paginator->sort( 'Date de décision PDO', 'Pdo.decisionpdo_id' );?></th>
-                    <th><?php echo $paginator->sort( 'Décision PDO', 'Pdo.datedecisionpdo' );?></th>
+                    <th><?php echo $xpaginator->sort( 'N° PDO', 'Pdo.id' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Nom de l\'allocataire', 'Personne.nom'.' '.'Personne.prenom' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Suivi', 'Dossier.typeparte' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Situation des droits', 'Situationdossierrsa.etatdosrsa' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Type de PDO', 'Pdo.typepdo_id' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Date de décision PDO', 'Pdo.decisionpdo_id' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Décision PDO', 'Pdo.datedecisionpdo' );?></th>
                     <th class="action">Action</th>
                     <th class="innerTableHeader">Informations complémentaires</th>
                 </tr>

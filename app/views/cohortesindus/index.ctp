@@ -87,19 +87,19 @@
             <table id="searchResults" class="tooltips">
                 <thead>
                     <tr>
-                        <th><?php echo $paginator->sort( 'N° Dossier', 'Dossier.numdemrsa' );?></th>
-                        <th><?php echo $paginator->sort( 'Nom de l\'allocataire', 'Personne.nom' );?></th>
-                        <th><?php echo $paginator->sort( 'Suivi', 'Dossier.typeparte' );?></th>
-                        <th><?php echo $paginator->sort( 'Situation des droits', 'Situationdossierrsa.etatdosrsa' );?></th>
+                        <th><?php echo $xpaginator->sort( 'N° Dossier', 'Dossier.numdemrsa' );?></th>
+                        <th><?php echo $xpaginator->sort( 'Nom de l\'allocataire', 'Personne.nom' );?></th>
+                        <th><?php echo $xpaginator->sort( 'Suivi', 'Dossier.typeparte' );?></th>
+                        <th><?php echo $xpaginator->sort( 'Situation des droits', 'Situationdossierrsa.etatdosrsa' );?></th>
 
                         <th>Date indus</th><!-- FIXME -->
 
-                        <!-- <th><?php echo $paginator->sort( 'Allocation comptabilisée', 'AllocationsComptabilisees.mtmoucompta' );?></th> -->
-                        <th><?php echo $paginator->sort( 'Montant initial de l\'indu', 'IndusConstates.mtmoucompta' );?></th>
-                        <th><?php echo $paginator->sort( 'Montant transféré CG', 'IndusTransferesCG.mtmoucompta' );?></th>
-                        <th><?php echo $paginator->sort( 'Remise CG', 'RemisesIndus.mtmoucompta' );?></th>
-                        <!-- <th><?php echo $paginator->sort( 'Annulation faible montant', 'AnnulationsFaibleMontant.mtmoucompta' );?></th>
-                        <th><?php echo $paginator->sort( 'Autres montants', 'AutresAnnulations.mtmoucompta' );?></th> -->
+                        <!-- <th><?php echo $xpaginator->sort( 'Allocation comptabilisée', 'AllocationsComptabilisees.mtmoucompta' );?></th> -->
+                        <th><?php echo $xpaginator->sort( 'Montant initial de l\'indu', 'IndusConstates.mtmoucompta' );?></th>
+                        <th><?php echo $xpaginator->sort( 'Montant transféré CG', 'IndusTransferesCG.mtmoucompta' );?></th>
+                        <th><?php echo $xpaginator->sort( 'Remise CG', 'RemisesIndus.mtmoucompta' );?></th>
+                        <!-- <th><?php echo $xpaginator->sort( 'Annulation faible montant', 'AnnulationsFaibleMontant.mtmoucompta' );?></th>
+                        <th><?php echo $xpaginator->sort( 'Autres montants', 'AutresAnnulations.mtmoucompta' );?></th> -->
 
                         <th class="action">Action</th>
                         <th class="innerTableHeader">Informations complémentaires</th>

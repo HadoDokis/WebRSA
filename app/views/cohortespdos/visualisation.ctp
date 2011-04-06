@@ -28,7 +28,7 @@
     //
 
     if( isset( $cohortepdo ) ) {
-        $paginator->options( array( 'url' => $this->passedArgs ) );
+        /*$paginator->options( array( 'url' => $this->passedArgs ) );
         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
         $pagination = $xhtml->tag( 'p', $paginator->counter( $params ) );
 
@@ -38,7 +38,8 @@
         $pages .= $paginator->next( '>' );
         $pages .= $paginator->last( '>>' );
 
-        $pagination .= $xhtml->tag( 'p', $pages );
+        $pagination .= $xhtml->tag( 'p', $pages );*/
+		$pagination = $xpaginator->paginationBlock( 'Personne', $this->passedArgs );
     }
     else {
         $pagination = '';
@@ -55,19 +56,19 @@
 
     <?php if( is_array( $cohortepdo ) && count( $cohortepdo ) > 0 ):?>
         <?php echo $form->create( 'GestionPDO', array( 'url'=> Router::url( null, true ) ) );?>
-    <?php echo $pagination;?> 
+    <?php echo $pagination;?>
         <table id="searchResults" class="tooltips">
             <thead>
                 <tr>
-                    <th><?php echo $paginator->sort( 'Nom de l\'allocataire', 'Personne.nom' );?></th>
-                    <th><?php echo $paginator->sort( 'N° CAF/MSA', 'Dossier.matricule' );?></th>
-                    <th><?php echo $paginator->sort( 'Ville', 'Adresse.locaadr' );?></th>
-                    <th><?php echo $paginator->sort( 'Date de la demande RSA', 'Dossier.dtdemrsa' );?></th>
-                    <!--<th><?php echo $paginator->sort( 'Type de PDO', 'Propopdo.typepdo_id' );?></th>
-                    <th><?php echo $paginator->sort( 'Décision PDO', 'Propopdo.decisionpdo_id' );?></th>
-                    <th><?php echo $paginator->sort( 'Date de décision PDO', 'Propopdo.datedecisionpdo' );?></th>-->
-                    <th><?php echo $paginator->sort( 'Gestionnaire', 'Propopdo.user_id' );?></th>
-                    <th><?php echo $paginator->sort( 'Commentaire', 'Propopdo.commentairepdo' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Nom de l\'allocataire', 'Personne.nom' );?></th>
+                    <th><?php echo $xpaginator->sort( 'N° CAF/MSA', 'Dossier.matricule' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Ville', 'Adresse.locaadr' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Date de la demande RSA', 'Dossier.dtdemrsa' );?></th>
+                    <!--<th><?php echo $xpaginator->sort( 'Type de PDO', 'Propopdo.typepdo_id' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Décision PDO', 'Propopdo.decisionpdo_id' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Date de décision PDO', 'Propopdo.datedecisionpdo' );?></th>-->
+                    <th><?php echo $xpaginator->sort( 'Gestionnaire', 'Propopdo.user_id' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Commentaire', 'Propopdo.commentairepdo' );?></th>
 
                     <th class="action">Action</th>
                     <th class="innerTableHeader noprint">Informations complémentaires</th>

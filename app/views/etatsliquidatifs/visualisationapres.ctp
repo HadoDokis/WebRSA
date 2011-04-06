@@ -10,7 +10,7 @@
         echo $xhtml->tag( 'p', 'Aucune APRE à sélectionner.', array( 'class' => 'notice' ) );
     }
     else {
-        $paginator->options( array( 'url' => $this->passedArgs ) );
+        /*$paginator->options( array( 'url' => $this->passedArgs ) );
         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
         $pagination = $xhtml->tag( 'p', $paginator->counter( $params ) );
 
@@ -20,17 +20,19 @@
         $pages .= $paginator->next( '>' );
         $pages .= $paginator->last( '>>' );
 
-        $pagination .= $xhtml->tag( 'p', $pages );
+        $pagination .= $xhtml->tag( 'p', $pages );*/
+
+		$pagination = $xpaginator->paginationBlock( 'Apre', $this->passedArgs );
 
         $headers = array(
-            $paginator->sort( 'N° Dossier', 'Dossier.numdemrsa' ),
-            $paginator->sort( 'N° APRE', 'Apre.numeroapre' ),
-            $paginator->sort( 'Date de demande APRE', 'Apre.datedemandeapre' ),
-            $paginator->sort( 'Montant forfaitaire', 'Apre.mtforfait' ),
-            $paginator->sort( 'Nb enfant - 12ans', 'Apre.nbenf12' ),
-            $paginator->sort( 'Nom bénéficiaire', 'Personne.nom' ),
-            $paginator->sort( 'Prénom bénéficiaire', 'Personne.prenom' ),
-            $paginator->sort( 'Adresse', 'Adresse.locaadr' ),
+            $xpaginator->sort( 'N° Dossier', 'Dossier.numdemrsa' ),
+            $xpaginator->sort( 'N° APRE', 'Apre.numeroapre' ),
+            $xpaginator->sort( 'Date de demande APRE', 'Apre.datedemandeapre' ),
+            $xpaginator->sort( 'Montant forfaitaire', 'Apre.mtforfait' ),
+            $xpaginator->sort( 'Nb enfant - 12ans', 'Apre.nbenf12' ),
+            $xpaginator->sort( 'Nom bénéficiaire', 'Personne.nom' ),
+            $xpaginator->sort( 'Prénom bénéficiaire', 'Personne.prenom' ),
+            $xpaginator->sort( 'Adresse', 'Adresse.locaadr' ),
             'Formation',
             'Bénéficiaire',
             'Tiers prestataire',

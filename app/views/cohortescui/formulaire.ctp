@@ -2,10 +2,10 @@
 <?php require_once( 'filtre.ctp' );?>
 <?php
     if( isset( $cohortecui ) ) {
-        $paginator->options( array( 'url' => $this->passedArgs ) );
+        /*$paginator->options( array( 'url' => $this->passedArgs ) );
         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
-        $pagination = $xhtml->tag( 'p', $paginator->counter( $params ) );
-
+        $pagination = $xhtml->tag( 'p', $paginator->counter( $params ) );*/
+		$pagination = $xpaginator->paginationBlock( 'Cui', $this->passedArgs );
     }
     else {
         $pagination = '';
@@ -26,7 +26,7 @@
             echo $form->input( 'Filtre.datecontrat_to', array( 'type' => 'hidden', 'id' => 'FiltreDatecontratTo2' ) );
             echo $form->input( 'Filtre.locaadr', array( 'type' => 'hidden', 'id' => 'FiltreLocaadr2' ) );
             echo $form->input( 'Filtre.numcomptt', array( 'type' => 'hidden', 'id' => 'FiltreNumcomptt2' ) );
-            echo $form->input( 'Filtre.decisioncui', array( 'type' => 'hidden', 'id' => 'FiltreDecisioncui2' ) ); 
+            echo $form->input( 'Filtre.decisioncui', array( 'type' => 'hidden', 'id' => 'FiltreDecisioncui2' ) );
             echo $form->input( 'Filtre.datevalidationcui', array( 'type' => 'hidden', 'id' => 'FiltreDatevalidationcui2' )  );
             echo '</div>';
         ?>

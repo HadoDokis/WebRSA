@@ -4,7 +4,7 @@
 	<p class="notice">Il n'y a pas encore de décision visible.</p>
 <?php else:?>
 	<?php
-		$paginator->options( array( 'url' => $this->passedArgs ) );
+		/*$paginator->options( array( 'url' => $this->passedArgs ) );
 		$params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
 
 		$pagination = '<p>'.$paginator->counter( $params ).'</p>';
@@ -17,18 +17,19 @@
 				$paginator->next( '>' ),
 				$paginator->last( '>>' )
 			)
-		).'</p>';
+		).'</p>';*/
+		$pagination = $xpaginator->paginationBlock( 'Dossierep', $this->passedArgs );
 
 		echo $pagination;
 	?>
 	<table>
 		<thead>
 			<tr>
-				<th><?php echo $paginator->sort( 'Dossier EP', 'Dossierep.id' );?></th>
+				<th><?php echo $xpaginator->sort( 'Dossier EP', 'Dossierep.id' );?></th>
 				<th>Nom du demandeur</th>
 				<th>Adresse</th>
 				<th>Date de naissance</th>
-				<th><?php echo $paginator->sort( 'Thème du dossier EP', 'Dossierep.themeep' );?></th>
+				<th><?php echo $xpaginator->sort( 'Thème du dossier EP', 'Dossierep.themeep' );?></th>
 				<th>Date de décision</th>
 				<th>Décision</th>
 			</tr>

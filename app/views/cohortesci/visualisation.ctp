@@ -12,7 +12,7 @@
 
 <?php
     if( isset( $cohorteci ) ) {
-        $paginator->options( array( 'url' => $this->passedArgs ) );
+        /*$paginator->options( array( 'url' => $this->passedArgs ) );
         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
         $pagination = $xhtml->tag( 'p', $paginator->counter( $params ) );
 
@@ -22,7 +22,8 @@
         $pages .= $paginator->next( '>' );
         $pages .= $paginator->last( '>>' );
 
-        $pagination .= $xhtml->tag( 'p', $pages );
+        $pagination .= $xhtml->tag( 'p', $pages );*/
+		$pagination = $xpaginator->paginationBlock( 'Contratinsertion', $this->passedArgs );
     }
     else {
         $pagination = '';
@@ -45,13 +46,13 @@
         <table class="tooltips">
             <thead>
                 <tr>
-                    <th><?php echo $paginator->sort( 'N° Dossier', 'Dossier.numdemrsa' );?></th>
-                    <th><?php echo $paginator->sort( 'Nom de l\'allocataire', 'Personne.nom' );?></th>
-                    <th><?php echo $paginator->sort( 'Commune', 'Adresse.locaadr' );?></th>
-                    <th><?php echo $paginator->sort( 'Date de début contrat', 'Contratinsertion.dd_ci' );?></th>
-                    <th><?php echo $paginator->sort( 'Date de fin contrat', 'Contratinsertion.df_ci' );?></th>
-                    <th><?php echo $paginator->sort( 'Décision', 'Contratinsertion.decision_ci' );?></th>
-                    <th><?php echo $paginator->sort( 'Observations', 'Contratinsertion.observ_ci' );?></th>
+                    <th><?php echo $xpaginator->sort( 'N° Dossier', 'Dossier.numdemrsa' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Nom de l\'allocataire', 'Personne.nom' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Commune', 'Adresse.locaadr' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Date de début contrat', 'Contratinsertion.dd_ci' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Date de fin contrat', 'Contratinsertion.df_ci' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Décision', 'Contratinsertion.decision_ci' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Observations', 'Contratinsertion.observ_ci' );?></th>
 
                     <!-- <th>N° Dossier</th>
                     <th>Nom de l'allocataire</th>

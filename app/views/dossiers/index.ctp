@@ -104,12 +104,12 @@
         <table id="searchResults" class="tooltips">
             <thead>
                 <tr>
-                    <th><?php echo $paginator->sort( 'Numéro de dossier', 'Dossier.numdemrsa' );?></th>
-                    <th><?php echo $paginator->sort( 'Date de demande', 'Dossier.dtdemrsa' );?></th>
-                    <th><?php echo $paginator->sort( 'NIR', 'Personne.nir' );?></th>
-                    <th><?php echo $paginator->sort( 'Etat du droit', 'Situationdossierrsa.etatdosrsa' );?></th>
-                    <th><?php echo $paginator->sort( 'Allocataire', 'Personne.nom' );?></th><!-- FIXME: qual/nom/prénom -->
-                    <th><?php echo $paginator->sort( 'Commune de l\'allocataire', 'Adresse.locaadr' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Numéro de dossier', 'Dossier.numdemrsa' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Date de demande', 'Dossier.dtdemrsa' );?></th>
+                    <th><?php echo $xpaginator->sort( 'NIR', 'Personne.nir' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Etat du droit', 'Situationdossierrsa.etatdosrsa' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Allocataire', 'Personne.nom' );?></th><!-- FIXME: qual/nom/prénom -->
+                    <th><?php echo $xpaginator->sort( 'Commune de l\'allocataire', 'Adresse.locaadr' );?></th>
 
                     <!--
                     <th>Date de demande</th> -->
