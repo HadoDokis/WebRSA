@@ -34,7 +34,7 @@
     }
 
 ?>
-
+<?php $pagination = $xpaginator->paginationBlock( 'Contratinsertion', $this->passedArgs );?>
 <?php echo $form->create( 'Critereci', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );?>
     <fieldset>
         <legend>Recherche par personne</legend>
@@ -97,7 +97,7 @@
 
     <?php if( is_array( $contrats ) && count( $contrats ) > 0  ):?>
 
-        <?php require( 'index.pagination.ctp' )?>
+        <?php echo $pagination;?>
         <table id="searchResults" class="tooltips">
             <thead>
                 <tr>
@@ -179,7 +179,7 @@
                 );
             ?></li>
         </ul>
-    <?php  require( 'index.pagination.ctp' )  ?>
+    <?php echo $pagination;?>
 
     <?php else:?>
         <p>Vos critères n'ont retourné aucun dossier.</p>

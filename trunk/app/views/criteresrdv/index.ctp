@@ -17,15 +17,15 @@
 ?>
 <?php
 //     if( isset( $rdvs ) ) {
-//         $paginator->options( array( 'url' => $this->passedArgs ) );
+//         $xpaginator->options( array( 'url' => $this->passedArgs ) );
 //         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
-//         $pagination = $xhtml->tag( 'p', $paginator->counter( $params ) );
+//         $pagination = $xhtml->tag( 'p', $xpaginator->counter( $params ) );
 // 
-//         $pages = $paginator->first( '<<' );
-//         $pages .= $paginator->prev( '<' );
-//         $pages .= $paginator->numbers();
-//         $pages .= $paginator->next( '>' );
-//         $pages .= $paginator->last( '>>' );
+//         $pages = $xpaginator->first( '<<' );
+//         $pages .= $xpaginator->prev( '<' );
+//         $pages .= $xpaginator->numbers();
+//         $pages .= $xpaginator->next( '>' );
+//         $pages .= $xpaginator->last( '>>' );
 // 
 //         $pagination .= $xhtml->tag( 'p', $pages );
 //     }
@@ -120,14 +120,14 @@
         <table id="searchResults" class="tooltips">
             <thead>
                 <tr>
-                    <th><?php echo $paginator->sort( 'Nom de l\'allocataire', 'Personne.nom' );?></th>
-                    <th><?php echo $paginator->sort( 'Commune de l\'allocataire', 'Adresse.locaadr' );?></th>
-                    <th><?php echo $paginator->sort( 'Structure référente', 'Rendezvous.structurereferente_id' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Nom de l\'allocataire', 'Personne.nom' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Commune de l\'allocataire', 'Adresse.locaadr' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Structure référente', 'Rendezvous.structurereferente_id' );?></th>
                     <th>Référent</th>
-                    <th><?php echo $paginator->sort( 'Objet du RDV', 'Rendezvous.typerdv_id' );?></th>
-                    <th><?php echo $paginator->sort( 'Date du RDV', 'Rendezvous.daterdv' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Objet du RDV', 'Rendezvous.typerdv_id' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Date du RDV', 'Rendezvous.daterdv' );?></th>
                     <th>Heure du RDV</th>
-                    <th><?php echo $paginator->sort( 'Statut du RDV', 'Rendezvous.statutrdv_id' );?></th>
+                    <th><?php echo $xpaginator->sort( 'Statut du RDV', 'Rendezvous.statutrdv_id' );?></th>
 
                     <!--<th>Objet du RDV</th>
                     <th>Commentaire suite au RDV</th>-->

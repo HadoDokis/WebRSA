@@ -69,14 +69,14 @@
     <table id="searchResults" class="tooltips">
         <thead>
             <tr>
-                <th>Date de l'entretien</th>
-                <th>Nom de l'allocataire</th>
-                <th>Commune de l'allocataire</th>
-                <th>Structure référente</th>
-                <th>Référent</th>
-                <th>Type d'entretien</th>
-                <th>Objet de l'entretien</th>
-                <th>A revoir le</th>
+                <th><?php echo $xpaginator->sort( 'Date de l\'entretien', 'Entretien.dateentretien' );?></th>
+                <th><?php echo $xpaginator->sort( 'Nom de l\'allocataire', 'Personne.nom' );?></th>
+                <th><?php echo $xpaginator->sort( 'Commune de l\'allocataire', 'Adresse.locaadr' );?></th>
+                <th><?php echo $xpaginator->sort( 'Structure référente', 'Structurereferente.lib_struc' );?></th>
+                <th><?php echo $xpaginator->sort( 'Référent', 'Referent.nom' );?></th>
+                <th><?php echo $xpaginator->sort( 'Type d\'entretien', 'Entretien.typeentretien' );?></th>
+                <th><?php echo $xpaginator->sort( 'Objet de l\'entretien', 'Objetentretien.name' );?></th>
+                <th><?php echo $xpaginator->sort( 'A revoir le', 'Entretien.arevoirle' );?></th>
                 <th class="action">Action</th>
             </tr>
         </thead>
