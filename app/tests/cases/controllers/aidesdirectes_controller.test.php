@@ -41,10 +41,6 @@
 	class AidesdirectesControllerTest extends CakeAppControllerTestCase {
 
 		function testBeforeFilter() {
-			$this->assertNull($this->AidesdirectesController->viewVars['actions']);
-			$this->assertNull($this->AidesdirectesController->viewVars['typo_aide']);
-			$this->assertNull($this->AidesdirectesController->viewVars['etatdosrsa']);
-
 			$this->AidesdirectesController->beforeFilter();
 
 			$this->assertNotNull($this->AidesdirectesController->viewVars['etatdosrsa']);
@@ -54,10 +50,6 @@
 
 		function testAdd() {
 			$contratinsertion_id = 1;
-			$this->assertNull($this->AidesdirectesController->viewVars['personne_id']);
-			$this->assertNull($this->AidesdirectesController->renderedLayout);
-			$this->assertNull($this->AidesdirectesController->renderedFile);
-
 			$this->AidesdirectesController->add($contratinsertion_id);
 
 			$this->assertEqual('default', $this->AidesdirectesController->renderedLayout);
@@ -67,10 +59,6 @@
 
 		function testEdit(){
 			$aidedirecte_id = 1;
-			$this->assertNull($this->AidesdirectesController->viewVars['personne_id']);
-			$this->assertNull($this->AidesdirectesController->renderedLayout);
-			$this->assertNull($this->AidesdirectesController->renderedFile);
-
 			$this->AidesdirectesController->edit($aidedirecte_id);
 
 			$this->assertEqual('default', $this->AidesdirectesController->renderedLayout);

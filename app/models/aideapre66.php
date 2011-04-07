@@ -290,8 +290,6 @@
 
             $aideapre = $this->findById( $this->id, null, null, -1 );
             $decisionapre = Set::classicExtract( $aideapre, 'Aideapre66.decisionapre');
-// debug($aideapre);
-//     debug($this->data['Aideapre66']['decisionapre']);
 
             if( !empty( $decisionapre ) ){
                 $this->Apre66->updateAll(

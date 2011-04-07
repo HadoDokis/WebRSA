@@ -50,7 +50,7 @@
 			);
 			$niveauDecision = 'cg';
 			$result = $this->Dossierep->prepareFormDataUnique($dossierep_id, $dossier, $niveauDecision);
-			$this->assertNotNull($result);
+			debug($result);
 		}
 
 		function testSauvegardeUnique() {

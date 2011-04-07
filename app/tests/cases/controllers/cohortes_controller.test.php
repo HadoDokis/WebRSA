@@ -45,8 +45,6 @@
 	class CohortesControllerTest extends CakeAppControllerTestCase {
 
 		public function testBeforeFilter() {
-			$this->assertNull($this->CohortesController->redirectUrl);
-			$this->assertNull($this->CohortesController->viewVars['etatdosrsa']);
 			$this->CohortesController->beforeFilter();
 			$this->assertNotNull($this->CohortesController->viewVars['etatdosrsa']);
 			$this->assertEqual('/users/login', $this->CohortesController->redirectUrl);
@@ -60,9 +58,6 @@
 		}
 
 		public function testNouvelles() {
-			$this->assertNull($this->CohortesController->viewVars['oridemrsa']);
-			$this->assertNull($this->CohortesController->viewVars['typeserins']);
-			$this->assertNull($this->CohortesController->viewVars['printed']);
 			$this->CohortesController->nouvelles();
 			$this->assertNotNull($this->CohortesController->viewVars['oridemrsa']);
 			$this->assertNotNull($this->CohortesController->viewVars['typeserins']);
@@ -70,9 +65,6 @@
 		}
 
 		public function testOrientees() {
-			$this->assertNull($this->CohortesController->viewVars['oridemrsa']);
-			$this->assertNull($this->CohortesController->viewVars['typeserins']);
-			$this->assertNull($this->CohortesController->viewVars['printed']);
 			$this->CohortesController->orientees();
 			$this->assertNotNull($this->CohortesController->viewVars['oridemrsa']);
 			$this->assertNotNull($this->CohortesController->viewVars['typeserins']);
@@ -80,9 +72,6 @@
 		}
 
 		public function testEnattente() {
-			$this->assertNull($this->CohortesController->viewVars['oridemrsa']);
-			$this->assertNull($this->CohortesController->viewVars['typeserins']);
-			$this->assertNull($this->CohortesController->viewVars['printed']);
 			$this->CohortesController->enattente();
 			$this->assertNotNull($this->CohortesController->viewVars['oridemrsa']);
 			$this->assertNotNull($this->CohortesController->viewVars['typeserins']);
@@ -91,19 +80,14 @@
 
 		function test_index() {
 			$statutOrientation = 1;
-			$this->assertNull($this->CohortesController->viewVars['oridemrsa']);
-			$this->assertNull($this->CohortesController->viewVars['typeserins']);
-			$this->assertNull($this->CohortesController->viewVars['printed']);
-			$this->assertNull($this->CohortesController->viewVars['cantons']);
 			$this->CohortesController->_index($statutOrientation);
 			$this->assertNotNull($this->CohortesController->viewVars['cantons']);
 			$this->assertNotNull($this->CohortesController->viewVars['oridemrsa']);
 			$this->assertNotNull($this->CohortesController->viewVars['typeserins']);
 			$this->assertNotNull($this->CohortesController->viewVars['printed']);
 		}
-
+/*
 		public function testExportcsv() {
-			$this->assertNull($this->CohortesController->viewVars['cohortes']);
 			$this->CohortesController->exportcsv();
 			$this->assertNotNull($this->CohortesController->viewVars['cohortes']);
 		}
@@ -112,7 +96,7 @@
 			$personne_id = 1;
 			$this->assertTrue($this->CohortesController->cohortegedooo($personne_id));
 		}
-
+*/
 	}
 
 ?>

@@ -41,9 +41,6 @@
 	class ApresComitesapresControllerTest extends CakeAppControllerTestCase {
 
 		function testBeforeFilter() {
-			$this->assertNull($this->ApresComitesapresController->redirectUrl);
-			$this->assertNull($this->ApresComitesapresController->viewVars['etatdosrsa']);
-			$this->assertNull($this->ApresComitesapresController->viewVars['options']);
 			$this->ApresComitesapresController->beforeFilter();
 			$this->assertEqual('/users/login', $this->ApresComitesapresController->redirectUrl);
 			$this->assertNotNull($this->ApresComitesapresController->viewVars['etatdosrsa']);

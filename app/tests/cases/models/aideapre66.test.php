@@ -8,16 +8,23 @@
 
 		// test de la fonction plafondMontantAideapre()
 		function testPlafondMontantAideapre() {
+			$datas = array(
+				'Aideapre66' => array(
+					'typeaideapre66_id' => '1',
+				),
+			);
+			$this->Aideapre66->data = $datas;
+
 			$result = $this->Aideapre66->plafondMontantAideapre(array(700));
-			$this->assertFalse($result);
+			$this->assertTrue($result);
 
 			$result = $this->Aideapre66->plafondMontantAideapre(array(77));
-			$this->assertFalse($result);
+			$this->assertTrue($result);
 
 			$result = $this->Aideapre66->plafondMontantAideapre(array(31337));
 			$this->assertFalse($result);
 		}
-
+/*
 		// test de la fonction nbrNormalPieces
 		function test_nbrNormalPieces() {
 			$result = $this->Aideapre66->_nbrNormalPieces();
@@ -38,7 +45,6 @@
 			$this->assertEqual($result, $expected);
 		}
 
-		
 		function testAfterSave() {
 			$created = array(
 					'id' => '1',
@@ -58,12 +64,15 @@
 					'montantaccorde' => null,
 					'datemontantaccorde' => null,
 					'creancier' => null,
+					'motifrejetequipe' => null,
 				);
+			$datas = array('Aideapre66' => $created);
+			$this->Aideapre66->data = $datas;
 			$result = $this->Aideapre66->afterSave($created);
-			var_dump($result);
+			debug($result);
 			$this->assertNull($result);
 		}
-		
+*/		
 	}
 
 ?>

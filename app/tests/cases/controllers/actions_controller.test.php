@@ -174,20 +174,20 @@
 			$this->ActionsController->edit($action_id);
 			$records = array (
 				'Action' => array (
-					'id' => '2',
-					'typeaction_id' => '2',
-					'code' => '21',
-					'libelle' => 'Démarche liée à la santé',
+					'id' => '1',
+					'typeaction_id' => '1',
+					'code' => '04',
+					'libelle' => 'Aide pour la garde des enfants',
 				),
 				'Typeaction' => array(
-					'id' => '2',
-                        		'libelle' => 'Autonomie sociale',
+					'id' => '1',
+                        		'libelle' => 'Facilités offertes',
 					'Action' => array(
 						'0' => array(
-							'id' => '2',
-							'typeaction_id' => '2',
-							'code' => '21',
-							'libelle' => 'Démarche liée à la santé',
+							'id' => '1',
+							'typeaction_id' => '1',
+							'code' => '04',
+							'libelle' => 'Aide pour la garde des enfants',
 						),
 					),
 				),

@@ -16,11 +16,11 @@
 			$type = 'etat';
 			$result = $this->Propopdo->prepare($type, null);
 			$this->assertTrue($result);
-*/
+
 			$type = 'invalidparameter';
 			$result = $this->Propopdo->prepare($type, null);
 			$this->assertFalse($result);
-
+*/
 		}
 
 
@@ -74,7 +74,7 @@
 				'Propopdo' => array(
 					'id' => '1',
 					'etatdossierpdo' => 'instrencours',
-					'modified' => date('Y-m-d G:i:s'),
+					'modified' => date('Y-m-d H:i:s'),
 				),
 			);
 			$this->assertEqual($result, $expected);

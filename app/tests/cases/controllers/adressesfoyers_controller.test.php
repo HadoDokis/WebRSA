@@ -41,11 +41,6 @@
 	class AdressesfoyersControllerTest extends CakeAppControllerTestCase {
 
 		function testBeforeFilter() {			
-			$this->assertNull($this->AdressesfoyersController->viewVars['etatdosrsa']);
-			$this->assertNull($this->AdressesfoyersController->viewVars['pays']);
-			$this->assertNull($this->AdressesfoyersController->viewVars['rgadr']);
-			$this->assertNull($this->AdressesfoyersController->viewVars['typeadr']);
-			$this->assertNull($this->AdressesfoyersController->viewVars['typevoie']);
 
 			$this->AdressesfoyersController->beforeFilter();
 
@@ -59,9 +54,6 @@
 		function testIndex() {
 			$foyer_id = 1;
 
-			$this->assertNull($this->AdressesfoyersController->viewVars['foyer_id']);
-			$this->assertNull($this->AdressesfoyersController->viewVars['adresses']);
-
 			$this->AdressesfoyersController->index($foyer_id);
 
 			$this->assertNotNull($this->AdressesfoyersController->viewVars['foyer_id']);
@@ -71,8 +63,6 @@
 		function testView() {
 			$id = 1;
 
-			$this->assertNull($this->AdressesfoyersController->viewVars['adresse']);
-
 			$this->AdressesfoyersController->view($id);
 
 			$this->assertNotNull($this->AdressesfoyersController->viewVars['adresse']);
@@ -80,9 +70,6 @@
 
 		function testEdit() {
 			$id = 1;
-			$this->assertNull($this->AdressesfoyersController->renderedFile);
-			$this->assertNull($this->AdressesfoyersController->renderedLayout);
-
 			$this->AdressesfoyersController->edit($id);
 
 			$this->assertEqual('add_edit', $this->AdressesfoyersController->renderedFile);
@@ -92,10 +79,6 @@
 		function testAdd() {
 			$foyer_id = 1;
 			
-			$this->assertNull($this->AdressesfoyersController->renderedFile);
-			$this->assertNull($this->AdressesfoyersController->renderedLayout);
-			$this->assertNull($this->AdressesfoyersController->viewVars['foyer_id']);
-
 			$this->AdressesfoyersController->add($foyer_id);
 
 			$this->assertEqual('add_edit', $this->AdressesfoyersController->renderedFile);

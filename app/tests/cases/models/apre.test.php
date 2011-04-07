@@ -390,9 +390,9 @@
 			$result = $this->Apre->supprimeFormationsObsoletes($apre);
 			$this->assertFalse($result);
 		}
-
+/*
 		function testAfterSave() {
-			$this->Apre->data = array(
+			$datas = array(
 				'Apre' => array(
 					'id' => '1',
 					'personne_id' => '1',
@@ -432,10 +432,11 @@
 				),
 			);
 			$created = null;
+			$this->Apre->data = $datas;
 			$result = $this->Apre->afterSave($created);
 			debug($result);
 		}
-
+*/
 		function testCalculMontantsDejaVerses() {
 			$apre_ids = array('1', '2');
 			$result = $this->Apre->calculMontantsDejaVerses($apre_ids);
@@ -443,14 +444,9 @@
 		}
 
 		function testDonneesForfaitaireGedooo() {
-			$apre_id = null;
-			$etatliquidatif_id = null;
-			$result = $this->Apre->donneesForfaitaireGedooo($apre_id, $etatliquidatif);
-			$this->assertFalse($result);
-
 			$apre_id = 1;
 			$etatliquidatif_id = 1;
-			$result = $this->Apre->donneesForfaitaireGedooo($apre_id, $etatliquidatif);
+			$result = $this->Apre->donneesForfaitaireGedooo($apre_id, $etatliquidatif_id);
 			$this->assertTrue($result);
 			$this->assertNotNull($result['Apre']);
 			$this->assertNotNull($result['Referent']);
@@ -458,7 +454,7 @@
 
 			$apre_id = 1337;
 			$etatliquidatif_id = 1337;
-			$result = $this->Apre->donneesForfaitaireGedooo($apre_id, $etatliquidatif);
+			$result = $this->Apre->donneesForfaitaireGedooo($apre_id, $etatliquidatif_id);
 			$this->assertFalse($result);
 			
 		}

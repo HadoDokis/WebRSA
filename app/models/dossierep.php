@@ -208,7 +208,7 @@
 			$data = array();
 
 			foreach( $this->themeTraite( $dossierep_id ) as $theme => $niveauDecision ) {
-				$model = Inflector::classify( $theme );
+	//			$model = Inflector::classify( $theme );
 
 				$data = Set::merge(
 					$data,

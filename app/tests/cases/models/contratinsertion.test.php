@@ -83,7 +83,7 @@
 
 		// test fonction valider()
 		function testValider() {
-			$data = array(
+			$datas = array(
 				'Nonrespectsanctionep93' => array(
 					'id' => '1',
 					'dossierep_id' => '1',
@@ -153,9 +153,9 @@
 					'zonegeographique_id' => '35',
 				),
 			);
-			$this->Contratinsertion->data = $data;
-			$result = $this->Contratinsertion->valider($data);
-			debug($result);
+			$this->Contratinsertion->data = $datas;
+			$result = $this->Contratinsertion->valider($datas);
+			$this->assertFalse($result);
 		}
  
 		// test fonction aftersave()

@@ -67,7 +67,8 @@
 						'dddepamut' => null,
 						'detaildroitrsa_id' => null,
 						'avispcgdroitrsa_id' => null,
-						'organisme_id' => null
+						'organisme_id' => null,
+						'dernier' => '1',
 					),
 				'Personne' => array(
 						'id' => '1',

@@ -46,8 +46,6 @@
 	class ComitesapresParticipantscomitesControllerTest extends CakeAppControllerTestCase {
 
 		function test_setOptions() {
-			$this->assertNull($this->ComitesapresParticipantscomitesController->viewVars['participants']);
-			$this->assertNull($this->ComitesapresParticipantscomitesController->viewVars['options']);
 			$this->ComitesapresParticipantscomitesController->_setOptions();
 			$this->assertNotNull($this->ComitesapresParticipantscomitesController->viewVars['participants']);
 			$this->assertNotNull($this->ComitesapresParticipantscomitesController->viewVars['options']);
@@ -68,10 +66,6 @@
 
 	        function testRapport() {
 			$comiteapre_id = 1;
-			$this->assertNull($this->ComitesapresParticipantscomitesController->viewVars['comiteparticipant']);
-			$this->assertNull($this->ComitesapresParticipantscomitesController->viewVars['participants']);
-			$this->assertNull($this->ComitesapresParticipantscomitesController->viewVars['options']);
-			$this->ComitesapresParticipantscomitesController->rapport($comiteapre_id);
 			$this->assertNotNull($this->ComitesapresParticipantscomitesController->viewVars['comiteparticipant']);
 			$this->assertNotNull($this->ComitesapresParticipantscomitesController->viewVars['participants']);
 			$this->assertNotNull($this->ComitesapresParticipantscomitesController->viewVars['options']);

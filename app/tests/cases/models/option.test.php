@@ -1429,7 +1429,7 @@
 		}
 
 		function testStatudemrsa() {
-			$result = $this->Option->statutdemrsa();
+			$result = $this->Option->statudemrsa();
 			$expected = array(
 	        	        'N' => 'Non allocataire',
 	        	        'C' => 'Allocataire de la CAF',
