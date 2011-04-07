@@ -113,6 +113,12 @@
 			return $success;
 		}
 
+		/**
+		* Clôture du traitement PDO précédent (celui qui a déclenché le passage en EP) au
+		* niveau avis EP et ajout d'un nouveau traitement clos afin de signifier que
+		* l'action de passage en EP est terminée.
+		*/
+
 		public function verrouiller( $commissionep_id, $etape ) {
 			$success = true;
 

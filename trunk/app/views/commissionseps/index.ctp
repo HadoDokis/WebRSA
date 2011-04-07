@@ -20,7 +20,7 @@
 
 	<ul class="actionMenu">
 		<?php
-			if( Configure::read( 'Cg.departement' ) != 93 || @$this->action == 'creationmodification' ) {
+			if( @$this->action == 'creationmodification' ) {
 				echo '<li>'.$xhtml->addLink(
 					'Ajouter',
 					array( 'controller' => 'commissionseps', 'action' => 'add' )
