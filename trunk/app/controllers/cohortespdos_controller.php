@@ -82,7 +82,7 @@
             if( !empty( $this->data ) ) {
                 if( !empty( $this->data['Propopdo'] ) ) {
                     $valid = $this->Propopdo->saveAll( $this->data['Propopdo'], array( 'validate' => 'only', 'atomic' => false ) );
-// debug($this->data);
+ 
                     $personne_id = Set::extract(  $this->data, 'Propopdo.{n}.personne_id'  );
 
                     if( $valid ) {
@@ -166,7 +166,6 @@
 
             $this->layout = ''; // FIXME ?
             $this->set( compact( 'headers', 'pdos' ) );
-debug($this);
         }
     }
 ?>

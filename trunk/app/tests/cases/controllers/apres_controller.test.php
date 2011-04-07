@@ -59,9 +59,6 @@
 
 		function testIndex() {
 			$personne_id = 1;
-			$this->assertNull($this->ApresController->viewVars['personne']);
-			$this->assertNull($this->ApresController->viewVars['referents']);
-			$this->assertNull($this->ApresController->viewVars['apres']);
 			$this->ApresController->index($personne_id);
 			$this->assertNotNull($this->ApresController->viewVars['personne']);
 			$this->assertNotNull($this->ApresController->viewVars['referents']);
@@ -70,9 +67,6 @@
 
 		function testAjaxstruct() { // FIXME
 			$structurereferente_id = 1;
-			$this->assertNull($this->ApresController->viewVars['struct']);
-			$this->assertNull($this->ApresController->renderedAction);
-			$this->assertNull($this->ApresController->renderedLayout);
 			$this->ApresController->ajaxstruct($structurereferente_id);
 			$this->assertNotNull($this->ApresController->viewVars['struct']);
 			$this->assertEqual('ajaxstruct', $this->ApresController->renderedAction);
@@ -81,9 +75,6 @@
 
 		function testAjaxref() { // FIXME
 			$referent_id = 1;
-			$this->assertNull($this->ApresController->renderedAction);
-			$this->assertNull($this->ApresController->renderedLayout);
-			$this->assertNull($this->ApresController->viewVars['referent']);
 			$this->ApresController->ajaxref($referent_id);
 			$this->assertNotNull($this->ApresController->viewVars['referent']);
 			$this->assertEqual('ajaxref', $this->ApresController->renderedAction);
@@ -92,9 +83,6 @@
 
 		function testAjaxtiersprestaformqualif() { // FIXME
 			$tiersprestataireapre_id = 1;
-			$this->assertNull($this->ApresController->renderedAction);
-			$this->assertNull($this->ApresController->renderedLayout);
-			$this->assertNull($this->ApresController->viewVars['tiersprestataireapre']);
 			$this->ApresController->ajaxtiersprestaformqualif($tiersprestataireapre_id);
 			$this->assertNotNull($this->ApresController->viewVars['tiersprestataireapre']);
 			$this->assertEqual('ajaxtierspresta', $this->ApresController->renderedAction);
@@ -103,9 +91,6 @@
 
 		function testAjaxtiersprestaformpermfimo() { // FIXME
 			$tiersprestataireapre_id = 1;
-			$this->assertNull($this->ApresController->renderedAction);
-			$this->assertNull($this->ApresController->renderedLayout);
-			$this->assertNull($this->ApresController->viewVars['tiersprestataireapre']);
 			$this->ApresController->ajaxtiersprestaformpermfimo($tiersprestataireapre_id);
 			$this->assertNotNull($this->ApresController->viewVars['tiersprestataireapre']);
 			$this->assertEqual('ajaxtierspresta', $this->ApresController->renderedAction);
@@ -114,9 +99,6 @@
 
 		function testAjaxtiersprestaactprof() { // FIXME
 			$tiersprestataireapre_id = 1;
-			$this->assertNull($this->ApresController->renderedAction);
-			$this->assertNull($this->ApresController->renderedLayout);
-			$this->assertNull($this->ApresController->viewVars['tiersprestataireapre']);
 			$this->ApresController->ajaxtiersprestaactprof($tiersprestataireapre_id);
 			$this->assertNotNull($this->ApresController->viewVars['tiersprestataireapre']);
 			$this->assertEqual('ajaxtierspresta', $this->ApresController->renderedAction);
@@ -125,9 +107,6 @@
 
 		function testAjaxtiersprestapermisb() { // FIXME
 			$tiersprestataireapre_id = 1;
-			$this->assertNull($this->ApresController->renderedAction);
-			$this->assertNull($this->ApresController->renderedLayout);
-			$this->assertNull($this->ApresController->viewVars['tiersprestataireapre']);
 			$this->ApresController->ajaxtiersprestapermisb($tiersprestataireapre_id);
 			$this->assertNotNull($this->ApresController->viewVars['tiersprestataireapre']);
 			$this->assertEqual('ajaxtierspresta', $this->ApresController->renderedAction);
@@ -136,9 +115,6 @@
 
 		function testView(){
 			$apre_id = 1;
-			$this->assertNull($this->ApresController->viewVars['aprecomiteapre']);
-			$this->assertNull($this->ApresController->viewVars['referents']);
-			$this->assertNull($this->ApresController->viewVars['apre']);
 			$this->ApresController->view($apre_id);
 			$this->assertNotNull($this->ApresController->viewVars['aprecomiteapre']);
 			$this->assertNotNull($this->ApresController->viewVars['referents']);

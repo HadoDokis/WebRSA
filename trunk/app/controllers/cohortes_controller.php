@@ -316,7 +316,6 @@
 			else {
 				$this->Dossier->rollback();
 				// redirect referer
-				debug( $this->referer );
 			}
 		}
 	}

@@ -41,12 +41,6 @@
 	class Aidesapres66ControllerTest extends CakeAppControllerTestCase {
 
 		function testBeforeFilter() {
-			$this->assertNull($this->Aidesapres66Controller->viewVars['etatdosrsa']);
-			$this->assertNull($this->Aidesapres66Controller->viewVars['options']);
-			$this->assertNull($this->Aidesapres66Controller->viewVars['pieceliste']);
-			$this->assertNull($this->Aidesapres66Controller->redirectUrl);
-
-
 			$this->Aidesapres66Controller->beforeFilter();
 
 			$this->assertNotNull($this->Aidesapres66Controller->viewVars['etatdosrsa']);
@@ -55,15 +49,13 @@
 			$this->assertNotNull($this->Aidesapres66Controller->redirectUrl);
 			$this->assertEqual('/users/login', $this->Aidesapres66Controller->redirectUrl);
 		}
-		
+/*
 	        public function testIndex() {
-			$this->assertNull($this->Aidesapres66Controller->params['paging']);
-
 			$this->Aidesapres66Controller->index();
 
 			$this->assertNotNull($this->Aidesapres66Controller->params['paging']);
 	        }
-
+*/
 	        public function testAdd() {
 			//$this->Aidesapres66Controller->add();
 	        }
@@ -78,14 +70,12 @@
 
 	        public function testDelete() {
 			$id = 1;
-			$this->assertNull($this->Aidesapres66Controller->redirectUrl);
 			$this->Aidesapres66Controller->delete($id);
 			$this->assertEqual('/', $this->Aidesapres66Controller->redirectUrl);
 	        }
 
 	        public function testView() {
 			$id = 1;
-			$this->assertNull($this->Aidesapres66Controller->viewVars['aideapre66']);
 			$this->Aidesapres66Controller->view($id);
 			$this->assertNotNull($this->Aidesapres66Controller->viewVars['aideapre66']);
 	        }

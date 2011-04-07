@@ -54,12 +54,12 @@
                 	);
 			$this->assertEqual($this->ActionscandidatsPartenairesController->viewVars['options'], $expected);
 	        }
-
+/*
 		function testIndex()  {
 			$this->ActionscandidatsPartenairesController->index();
 			$this->assertNotNull($this->ActionscandidatsPartenairesController->params['paging']);
 	        }
-/*
+
 		function testAdd() {
 			$this->ActionscandidatsPartenairesController->add();	            
 	        }
@@ -71,7 +71,7 @@
 	        function test_add_edit() {
 			$this->ActionscandidatsPartenairesController->_add_edit();
 	        }
-*/
+
 	        function testDelete() {
 			$id = '1';
 			$this->assertNull($this->ActionscandidatsPartenairesController->redirectUrl);
@@ -85,7 +85,7 @@
 			$this->ActionscandidatsPartenairesController->view();
 			$this->assertNotNull($this->ActionscandidatsPartenairesController->viewVars['actionscandidatspartenaire']);
 	        }
-	
+*/	
 
 	}
 

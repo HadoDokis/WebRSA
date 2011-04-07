@@ -41,10 +41,6 @@
 	class ActionsinsertionControllerTest extends CakeAppControllerTestCase {
 
 		function testBeforeFilter() {
-			$this->assertNull($this->ActionsinsertionController->viewVars['etatdosrsa']);
-			$this->assertNull($this->ActionsinsertionController->viewVars['lib_action']);
-			$this->assertNull($this->ActionsinsertionController->viewVars['actions']);
-			$this->assertNull($this->ActionsinsertionController->viewVars['typo_aide']);			
 			
 			$this->ActionsinsertionController->beforeFilter();
 			
@@ -57,10 +53,6 @@
 	        function testIndex() {
 			$contratinsertion_id = 1;
 			
-			$this->assertNull($this->ActionsinsertionController->viewVars['actions']);
-			$this->assertNull($this->ActionsinsertionController->viewVars['actionsinsertion']);
-			$this->assertNull($this->ActionsinsertionController->viewVars['contratinsertion_id']);
-			$this->assertNull($this->ActionsinsertionController->viewVars['personne_id']);
 
 			$this->ActionsinsertionController->index($contratinsertion_id);
 

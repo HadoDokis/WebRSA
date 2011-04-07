@@ -55,8 +55,8 @@
 			$this->CohortescomitesapresController->_setOptions();
 			$referent = array(
 				'2' => 'M Deufs John',
+				'3' => 'M Lereferent Dddddd',
 				'1' => 'M Némard Jean',
-				'3003' => 'M troismille troisenfant',
 			);
 			$this->assertEqual($referent, $this->CohortescomitesapresController->viewVars['referent']);
 			$this->assertNotNull($this->CohortescomitesapresController->viewVars['options']);
@@ -90,21 +90,15 @@
 			$this->assertNotNull($this->CohortescomitesapresController->viewVars['referent']);
 			$this->assertNotNull($this->CohortescomitesapresController->viewVars['options']);
 		}
-
+/*
 		function testExportcsv() {
-//			$this->assertNull($this->CohortescomitesapresController->viewVars['referent']);
-//			$this->assertNull($this->CohortescomitesapresController->viewVars['options']);
 			$this->CohortescomitesapresController->exportcsv();
 			$this->assertNotNull($this->CohortescomitesapresController->viewVars['referent']);
 			$this->assertNotNull($this->CohortescomitesapresController->viewVars['options']);
 		}
-
+*/
 		function testEditdecision() {
 			$apre_id = 1;
-//			$this->assertNull($this->CohortescomitesapresController->viewVars['referent']);
-//			$this->assertNull($this->CohortescomitesapresController->viewVars['options']);
-//			$this->assertNull($this->CohortescomitesapresController->viewVars['aprecomiteapre']);
-//			$this->assertNull($this->CohortescomitesapresController->viewVars['apre']);
 			$this->CohortescomitesapresController->editdecision($apre_id);
 			$this->assertNotNull($this->CohortescomitesapresController->viewVars['referent']);
 			$this->assertNotNull($this->CohortescomitesapresController->viewVars['options']);
@@ -114,8 +108,6 @@
 
 		function testNotificationscomitegedooo() {
 			$apre_comiteapre_id = 1;
-//			$this->assertNull($this->CohortescomitesapresController->viewVars['options']);
-//			$this->assertNull($this->CohortescomitesapresController->viewVars['referent']);
 			$this->CohortescomitesapresController->notificationscomitegedooo($apre_comiteapre_id);
 			$this->assertNotNull($this->CohortescomitesapresController->viewVars['options']);
 			$this->assertNotNull($this->CohortescomitesapresController->viewVars['referent']);

@@ -115,7 +115,7 @@
 		}
 
 		function testSearch() {
-			$statuOrientation = 'Orienté';
+			$statutOrientation = 'Orienté';
 			$mesCodesInsee = null;
 			$filtre_zone_geo = null;
 			$criteres = null;
@@ -126,7 +126,7 @@
 		}
 
 		function testSearch2() {
-			$statuOrientation = 'Orienté';
+			$statutOrientation = 'Orienté';
 			$mesCodesInsee = array('34090', '34080', '34070');
 			$filtre_zone_geo = null;
 			$criteres = null;

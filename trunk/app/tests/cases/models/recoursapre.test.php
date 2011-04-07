@@ -10,9 +10,20 @@
 
 		function testSearch() {
 			$avisRecours = 'Recoursapre::demande';
-			$criteresrecours=array('Recoursapre'=>array('matricule','numeroapre'),'Cohortecomiteapre'=>array('id'=>1));
-			$result=$this->Recoursapre->search($avisRecours, $criteresrecours);
-			$expected=array(
+			$criteresrecours = array(
+				'Recoursapre' => array(
+					'datedemandeapre' => null,
+				),
+				'Cohortecomiteapre' => array(
+					'id' => '1'
+				),
+				'Dossier' => array(
+					'dernier' => '1',
+					'id' => '1',
+				),
+			);
+			$result = $this->Recoursapre->search($avisRecours, $criteresrecours);
+			$expected = array(
 				'fields' => array(
 					0 => '"Comiteapre"."id"',
 					1 => '"Comiteapre"."datecomite"',

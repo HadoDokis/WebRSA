@@ -39,24 +39,19 @@
 	}
 
 	class BudgetsapresControllerTest extends CakeAppControllerTestCase {
-
+/*
 		public function testIndex() {
-			$this->assertNull($this->BudgetsapresController->viewVars['budgetsapres']);
 			$this->BudgetsapresController->index();
 			$this->assertNotNull($this->BudgetsapresController->viewVars['budgetsapres']);
 		}
-
+*/
 		public function testAdd() {
-			$this->assertNull($this->BudgetsapresController->renderedLayout);
-			$this->assertNull($this->BudgetsapresController->renderedFile);
 			$this->BudgetsapresController->add();
 			$this->assertEqual('default', $this->BudgetsapresController->renderedLayout);
 			$this->assertEqual('add_edit', $this->BudgetsapresController->renderedFile);
 	        }
 
 	        public function testEdit() {
-			$this->assertNull($this->BudgetsapresController->renderedLayout);
-			$this->assertNull($this->BudgetsapresController->renderedFile);
 			$this->BudgetsapresController->edit();
 			$this->assertEqual('default', $this->BudgetsapresController->renderedLayout);
 			$this->assertEqual('add_edit', $this->BudgetsapresController->renderedFile);
@@ -64,8 +59,6 @@
 
 	        function test_add_edit() {
 			$id = 1;
-			$this->assertNull($this->BudgetsapresController->renderedLayout);
-			$this->assertNull($this->BudgetsapresController->renderedFile);
 			$this->BudgetsapresController->_add_edit($id);
 			$this->assertEqual('default', $this->BudgetsapresController->renderedLayout);
 			$this->assertEqual('add_edit', $this->BudgetsapresController->renderedFile);

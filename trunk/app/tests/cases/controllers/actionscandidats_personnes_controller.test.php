@@ -38,6 +38,10 @@
 		function _setOptions() {
 			return parent::_setOptions();
 		}
+
+		function _add_edit() {
+			return parent::_add_edit();
+		}
 	}
 
 	class ActionscandidatsPersonnesControllerTest extends CakeAppControllerTestCase {
@@ -53,8 +57,8 @@
 			$this->ActionscandidatsPersonnesController->indexparams();
 			$this->assertEqual(array('controller' =>'parametrages','action' =>'index'),$this->ActionscandidatsPersonnesController->redirectUrl);
 		}
-
-		public function testIndex() {
+/*
+		function testIndex() {
 
 			$personne_id = 1;
 			$dossier_id = 1;
@@ -127,7 +131,7 @@
 			$this->assertEqual(array('controller' =>'actionscandidats_personnes','action' =>'index', '0' => null), $this->ActionscandidatsPersonnesController->redirectUrl);
 			$this->assertNotEqual(array(), $this->ActionscandidatsPersonnesController->viewVars);
 		}
-/*
+
 		function testGedooo() {
 			$id = null;
 			var_dump($this->ActionscandidatsPersonnesController->Gedoo);

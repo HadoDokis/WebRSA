@@ -46,17 +46,12 @@
 	class ComitesapresControllerTest extends CakeAppControllerTestCase {
 
 		function test_setOptions() {
-			$this->assertNull($this->ComitesapresController->viewVars['options']);
-			$this->assertNull($this->ComitesapresController->viewVars['referent']);
 			$this->ComitesapresController->_setOptions();
 			$this->assertNotNull($this->ComitesapresController->viewVars['options']);
 			$this->assertNotNull($this->ComitesapresController->viewVars['referent']);
 	        }
 
 	        function testIndex() {
-			$this->assertNull($this->ComitesapresController->renderedLayout);
-			$this->assertNull($this->ComitesapresController->renderedFile);
-			$this->assertNull($this->ComitesapresController->viewVars['pageTitle']);
 			$this->ComitesapresController->index();
 			$this->assertEqual('default', $this->ComitesapresController->renderedLayout);
 			$this->assertEqual('index', $this->ComitesapresController->renderedFile);
@@ -64,9 +59,6 @@
 	        }
 
 	        function testListe() {
-			$this->assertNull($this->ComitesapresController->renderedLayout);
-			$this->assertNull($this->ComitesapresController->renderedFile);
-			$this->assertNull($this->ComitesapresController->viewVars['pageTitle']);
 			$this->ComitesapresController->liste();
 			$this->assertEqual('default', $this->ComitesapresController->renderedLayout);
 			$this->assertEqual('liste', $this->ComitesapresController->renderedFile);
@@ -84,7 +76,6 @@
 
 	        function testView(){
 			$comiteapre_id = 1;
-			$this->assertNull($this->ComitesapresController->viewVars['comiteapre']);
 			$this->ComitesapresController->view($comiteapre_id);
 			$this->assertNotNull($this->ComitesapresController->viewVars['comiteapre']);
 	        }
@@ -95,18 +86,12 @@
 
 	        function testRapport(){
 			$comiteapre_id = 1;
-			$this->assertNull($this->ComitesapresController->viewVars['comiteapre']);
-			$this->assertNull($this->ComitesapresController->viewVars['participants']);
 			$this->ComitesapresController->rapport($comiteapre_id);
 			$this->assertNotNull($this->ComitesapresController->viewVars['comiteapre']);
 			$this->assertNotNull($this->ComitesapresController->viewVars['participants']);
 	        }
 
 	        public function testAdd() {
-			$this->assertNull($this->ComitesapresController->viewVars['referent']);
-			$this->assertNull($this->ComitesapresController->viewVars['options']);
-			$this->assertNull($this->ComitesapresController->renderedLayout);
-			$this->assertNull($this->ComitesapresController->renderedFile);
 			$this->ComitesapresController->add();
 			$this->assertNotNull($this->ComitesapresController->viewVars['referent']);
 			$this->assertNotNull($this->ComitesapresController->viewVars['options']);
@@ -115,8 +100,6 @@
 	        }
 
 	        public function testEdit() {
-			$this->assertNull($this->ComitesapresController->renderedLayout);
-			$this->assertNull($this->ComitesapresController->renderedFile);
 			$this->ComitesapresController->edit();
 			$this->assertEqual('default', $this->ComitesapresController->renderedLayout);
 			$this->assertEqual('add_edit', $this->ComitesapresController->renderedFile);
@@ -124,27 +107,20 @@
 
 	        function test_add_edit() {
 			$id = 1;
-			$this->assertNull($this->ComitesapresController->viewVars['referent']);
-			$this->assertNull($this->ComitesapresController->viewVars['options']);
-			$this->assertNull($this->ComitesapresController->renderedLayout);
-			$this->assertNull($this->ComitesapresController->renderedFile);
 			$this->ComitesapresController->_add_edit($id);
 			$this->assertNotNull($this->ComitesapresController->viewVars['referent']);
 			$this->assertNotNull($this->ComitesapresController->viewVars['options']);
 			$this->assertEqual('default', $this->ComitesapresController->renderedLayout);
 			$this->assertEqual('add_edit', $this->ComitesapresController->renderedFile);
 	        }
-
+/*
 	        function testExportcsv() {
-			$this->assertNull($this->ComitesapresController->viewVars['referent']);
-			$this->assertNull($this->ComitesapresController->viewVars['options']);
-			$this->assertNull($this->ComitesapresController->viewVars['comitesapres']);
 			$this->ComitesapresController->exportcsv();
 			$this->assertNotNull($this->ComitesapresController->viewVars['referent']);
 			$this->assertNotNull($this->ComitesapresController->viewVars['options']);
 			$this->assertNotNull($this->ComitesapresController->viewVars['comitesapres']);
 	        }
-
+*/
 	}
 
 ?>

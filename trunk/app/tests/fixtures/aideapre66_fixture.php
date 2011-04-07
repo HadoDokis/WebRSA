@@ -24,6 +24,7 @@
 				'montantaccorde' => null,
 				'datemontantaccorde' => null,
 				'creancier' => null,
+				'motifrejetequipe' => null,
 			),
 			array(
 				'id' => '2',
@@ -43,6 +44,7 @@
 				'montantaccorde' => null,
 				'datemontantaccorde' => null,
 				'creancier' => null,
+				'motifrejetequipe' => null,
 			),
 			array(
 				'id' => '3',
@@ -62,6 +64,7 @@
 				'montantaccorde' => null,
 				'datemontantaccorde' => null,
 				'creancier' => null,
+				'motifrejetequipe' => null,
 			),
 		);
 	}

@@ -225,12 +225,12 @@
 			);
 			$this->assertEqual($this->ActionscandidatsController->viewVars['typevoie'], $expected);
 	        }
-
+/*
 		function testIndex()  {
 			$this->ActionscandidatsController->index();
 			$this->assertNotNull($this->ActionscandidatsController->params['paging']);
 	        }
-/*
+
 		function testAdd() {
 			$this->ActionscandidatsController->add();	            
 	        }
