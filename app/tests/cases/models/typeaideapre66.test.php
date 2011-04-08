@@ -8,7 +8,7 @@
 
 		function testListOptions() {
 			$result = $this->Typeaideapre66->listOptions();
-			$expected = array('1_1' => 'typesaidepar66name');
+			$expected = array('1_1' => 'typesaideapr66name');
 			$this->assertEqual($expected, $result);
 		}
 	}

@@ -66,6 +66,7 @@
 
 	        function testRapport() {
 			$comiteapre_id = 1;
+			$this->ComitesapresParticipantscomitesController->rapport($comiteapre_id);
 			$this->assertNotNull($this->ComitesapresParticipantscomitesController->viewVars['comiteparticipant']);
 			$this->assertNotNull($this->ComitesapresParticipantscomitesController->viewVars['participants']);
 			$this->assertNotNull($this->ComitesapresParticipantscomitesController->viewVars['options']);

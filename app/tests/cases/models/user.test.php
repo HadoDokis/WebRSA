@@ -28,11 +28,11 @@
 					'id' => '1',
 					'passwd' => 'c41d80854d210d5f7512ab216b53b2f2b8e742dc',
 					'newpasswd' => 'c41d80854d210d5f7512ab216b53b2f2b8e742dd',
-					'confnewpasswd' => 'c41d80854d210d5f7512ab216b53b2f2b8e742de',
+					'confnewpasswd' => 'c41d80854d210d5f7512ab216b53b2f2b8e742dd',
 				),
 			);
 			$result = $this->User->validatesPassword($data);
-			$this->assertFalse($result);
+			$this->assertTrue($result);
 		}
 
 		function testValidOldPassword() {
@@ -41,7 +41,7 @@
 					'id' => '1',
 					'passwd' => 'c41d80854d210d5f7512ab216b53b2f2b8e742dc',
 					'newpasswd' => 'c41d80854d210d5f7512ab216b53b2f2b8e742de',
-					'confnewpasswd' => 'c41d80854d210d5f7512ab216b53b2f2b8e742df',
+					'confnewpasswd' => 'c41d80854d210d5f7512ab216b53b2f2b8e742de',
 				),
 			);
 			$result = $this->User->validOldPassword($data);
