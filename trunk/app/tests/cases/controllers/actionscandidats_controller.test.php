@@ -228,6 +228,7 @@
 /*
 		function testIndex()  {
 			$this->ActionscandidatsController->index();
+			debug($this->ActionscandidatsController->params);
 			$this->assertNotNull($this->ActionscandidatsController->params['paging']);
 	        }
 

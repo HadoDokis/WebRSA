@@ -61,17 +61,17 @@
 			$this->CohortesciController->nouveaux();
 			$this->assertNotNull($this->CohortesciController->viewVars['cantons']);
 			$this->assertNotNull($this->CohortesciController->viewVars['personne_suivi']);
-			$this->assertNotNull($this->CohortesciController->viewVars['mesCodesInsee']);
-			$this->assertNotNull($this->CohortesciController->viewVars['referents']);
-			$this->assertTrue($this->CohortesciController->nouveaux());
+			$this->assertEqual('default', $this->CohortesciController->renderedLayout);
+			$this->assertEqual('formulaire', $this->CohortesciController->renderedFile);
+
 		}
 
 		public function testValides() {
-			$this->CohortesciController->nouveaux();
+			$this->CohortesciController->valides();
 			$this->assertNotNull($this->CohortesciController->viewVars['cantons']);
 			$this->assertNotNull($this->CohortesciController->viewVars['personne_suivi']);
 			$this->assertEqual('default', $this->CohortesciController->renderedLayout);
-			$this->assertEqual('formulaire', $this->CohortesciController->renderedFile);
+			$this->assertEqual('visualisation', $this->CohortesciController->renderedFile);
 		}
 
 		public function testEnattente() {
