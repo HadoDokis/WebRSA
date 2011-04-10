@@ -16,7 +16,9 @@
 					'dureeecheance'
 				)
 			),
-			'Autovalidate'
+			'Autovalidate',
+            'Gedooo',/*
+            'StorablePdf'*/
 		);
 
 		public $validate = array(
@@ -241,8 +243,33 @@
 				'exclusive' => '',
 				'finderQuery' => '',
 				'counterQuery' => ''
-			),
+			)
 		);
+
+
+
+
+        public $hasAndBelongsToMany = array(
+            'Courrierpdo' => array(
+                'className' => 'Courrierpdo',
+                'joinTable' => 'courrierspdos_traitementspdos',
+                'foreignKey' => 'traitementpdo_id',
+                'associationForeignKey' => 'courrierpdo_id',
+                'unique' => true,
+                'conditions' => '',
+                'fields' => '',
+                'order' => '',
+                'limit' => '',
+                'offset' => '',
+                'finderQuery' => '',
+                'deleteQuery' => '',
+                'insertQuery' => '',
+                'with' => 'CourrierpdoTraitementpdo'
+            ),
+        );
+
+
+
 
 		public function beforeSave($options = array()) {
 			if ((!isset($this->data['Traitementpdo']['daterevision']) || empty($this->data['Traitementpdo']['daterevision']) ) && (!isset($this->data['Traitementpdo']['dateecheance']) || empty($this->data['Traitementpdo']['dateecheance']))) {
@@ -253,6 +280,14 @@
 
 		public function sauvegardeTraitement($data) {
 			$passageEpd = false;
+
+            //Sauvegarde des couriers liés à un traitement si présents
+            if( isset( $data['Courrierpdo'] ) ){
+                $dataCourrierIds = Set::extract( $data, '/Courrierpdo[checked=1]/id' );
+                $dataContenutextareacourrierpdo = $data['Contenutextareacourrierpdo'];
+                unset( $data['Courrierpdo'], $data['Contenutextareacourrierpdo'] );
+            }
+
 
 			$dossierep = 0;
 			if (isset($data['Traitementpdo']['id']))
@@ -286,6 +321,25 @@
 					unset($data['Traitementpdo'][$field]);
 			}
 			$success = $this->saveAll( $data, array( 'validate' => 'first', 'atomic' => false ) ) && $success;
+
+            $traitementpdo_id = $this->id;
+            foreach( $dataCourrierIds as $dataCourrierId ){
+                $dataCourrierpdoTraitementpdo = array( 'CourrierpdoTraitementpdo' => array( 'courrierpdo_id' => $dataCourrierId, 'traitementpdo_id' => $traitementpdo_id ) );
+                $this->CourrierpdoTraitementpdo->create( $dataCourrierpdoTraitementpdo );
+                $success = $this->CourrierpdoTraitementpdo->save() && $success;
+                if( $success ){
+                    foreach( array_keys( $dataContenutextareacourrierpdo ) as $key ) {
+                        $dataContenutextareacourrierpdo[$key]['courrierpdo_traitementpdo_id'] = $this->CourrierpdoTraitementpdo->id;
+                    }
+                    $success = $this->CourrierpdoTraitementpdo->Contenutextareacourrierpdo->saveAll( $dataContenutextareacourrierpdo, array( 'atomic' => false ) ) && $success;
+
+//                     $dataContenutextarea = array( 'Contenutextareacourrierpdo' => array( 'courrierpdo_traitementpdo_id' => $dataCourrierId, 'traitementpdo_id' => $traitementpdo_id ) );
+//                     $this->CourrierpdoTraitementpdo->create( $dataCourrierpdoTraitementpdo );
+//                     $success = $this->CourrierpdoTraitementpdo->save() && $success;
+                }
+                
+                
+            }
 
 			if ( isset( $data['Traitementpdo']['traitmentpdoIdClore'] ) && !empty( $data['Traitementpdo']['traitmentpdoIdClore'] ) ) {
 				foreach( $data['Traitementpdo']['traitmentpdoIdClore'] as $id => $clore ) {
@@ -324,6 +378,7 @@
 				$this->Saisinepdoep66->create( $dataSaisineepdpdo66 );
 				$success = $this->Saisinepdoep66->save() && $success;
 			}
+
 			return $success;
 		}
 

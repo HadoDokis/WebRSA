@@ -184,28 +184,72 @@
 	<?php echo $xform->input( 'Traitementpdo.hascourrier', array( 'type' => 'radio', 'options' => $options['Traitementpdo']['hascourrier'], 'legend' => false, 'fieldset' => false ) );?>
 	<fieldset id="filecontainer-courrier" class="noborder invisible">
 		<?php
-			echo $fileuploader->create(
-				'courrier',
-				$fichiers['courrier'],
-				Router::url( array( 'action' => 'ajaxfileupload' ), true )
-			);
-		?>
+            $key = 0;
+            foreach( $listcourrier as $i => $list ){
+                $key++;
+                echo $xform->input( "Courrierpdo.{$i}.id", array( 'type' => 'hidden', 'value' => $list['Courrierpdo']['id'] ) );
+                echo $xform->input( "Courrierpdo.{$i}.checked", array( 'type' => 'checkbox', 'label' => $list['Courrierpdo']['name'] ) );
+
+                echo '<fieldset class="invisible" id="ZoneCommentaire'.$i.'">';
+                foreach( $list['Textareacourrierpdo'] as $j => $textarea ){
+                    $key++;
+                    echo $xform->input( "Contenutextareacourrierpdo.{$key}.contenu", array( 'label' => $textarea['name'], 'type' => 'textarea' ) );
+                    echo $xform->input( "Contenutextareacourrierpdo.{$key}.textareacourrierpdo_id", array( 'type' => 'hidden', 'value' => $textarea['id'] ) );
+                }
+                echo '</fieldset>';
+
+            }
+
+//             $nbtextarea = count( $values['Textareacourrierpdo'] );
+//             for ($i=0;$i<$nbtextarea;$i++) {
+//                 echo '<label>&nbsp;</label>'.$values['Textareacourrierpdo'][$i]['name'].'<br />';
+//                 echo $default->subform(
+//                     array(
+//                         "Contenutextareacourrierpdo.{$i}.textareacourrierpdo_id" => array( 'type' => 'hidden', 'value' => $values['Textareacourrierpdo'][$i]['id'] ),
+//                         "Contenutextareacourrierpdo.{$i}.contenu" => array( 'label' => false )
+//                     )
+//                 );
+//             }
+            
+        ?>
+
+        <?php /*foreach( $listcourrier as $key => $list ):?>
+            <?php echo $ajax->observeField( "CourrierpdoCourrierpdo{$key}", array( 'update' => 'nbtextarea', 'url' => Router::url( array( 'action' => 'ajaxnbtextareacourrier' ), true ) ) );?>
+        <?php endforeach;*/ ?>
 	</fieldset>
 </fieldset>
 
 <script type="text/javascript">
-	document.observe( "dom:loaded", function() {
-		observeDisableFieldsetOnRadioValue(
-			'traitementpdoform',
-			'data[Traitementpdo][hascourrier]',
-			$( 'filecontainer-courrier' ),
-			'1',
-			false,
-			true
-		);
-	} );
-</script>
 
+	document.observe( "dom:loaded", function() {
+        observeDisableFieldsetOnRadioValue(
+            'traitementpdoform',
+            'data[Traitementpdo][hascourrier]',
+            $( 'filecontainer-courrier' ),
+            '1',
+            false,
+            true
+        );
+
+        <?php foreach( $listcourrier as $i => $list ):?>
+            observeDisableFieldsetOnCheckbox(
+                'Courrierpdo<?php echo $i;?>Checked',
+                'ZoneCommentaire<?php echo $i;?>',
+                false,
+                true
+            );
+        <?php endforeach; ?>
+	} );
+
+
+
+//     $( 'CourrierpdoCourrierpdo<?php echo $key;?>' ).observe( "change", function() {
+//         alert( $( 'data[Courrierpdo][Courrierpdo][<?php echo $key;?>]' ));
+//     });
+
+
+
+</script>
 <?php
 		echo $default->subform(
 			array(
@@ -268,6 +312,7 @@
 					)
 				)
 			);
+
 
 			echo $html->tag(
 				'tr',

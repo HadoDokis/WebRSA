@@ -9,7 +9,7 @@
 		* @access public
 		*/
 
-		public $components = array( 'Default' );
+		public $components = array( 'Default', 'Gedooo' );
 
 		public $helpers = array( 'Default2', 'Ajax', 'Locale', 'Fileuploader' );
 
@@ -18,7 +18,7 @@
 			'add' => 'Traitementspdos:edit'
 		);
 
-		public $aucunDroit = array( 'ajaxstatutpersonne' );
+		public $aucunDroit = array( 'ajaxstatutpersonne', 'ajaxnbtextareacourrier' );
 
 		/**
 		*
@@ -26,6 +26,20 @@
 
 		protected function _options() {
 			$options = $this->{$this->modelClass}->enums();
+
+            $this->set(
+                'listcourrier',
+                $this->Traitementpdo->Courrierpdo->find(
+                    'all',
+                    array(
+                        'contain' => array(
+                            'Textareacourrierpdo' => array(
+                                'order' => 'Textareacourrierpdo.ordre ASC'
+                            )
+                        )
+                    )
+                )
+            );
 
 			$options[$this->modelClass]['descriptionpdo_id'] = $this->Descriptionpdo->find( 'list' );
 			$options[$this->modelClass]['traitementtypepdo_id'] = $this->Traitementtypepdo->find( 'list' );
@@ -273,11 +287,17 @@
 								'Fichiertraitementpdo.created',
 								'Fichiertraitementpdo.traitementpdo_id',
 							)
-						)
+						),
+						'Courrierpdo' => array(
+                            'fields' => array(
+                                'Courrierpdo.id',
+                                'Courrierpdo.name'
+                            )
+
+                        )
 					)
 				)
 			);
-
 			$this->assert( !empty( $traitementpdo ), 'invalidParameter' );
 
 			$this->set( 'dossier_id', $this->Traitementpdo->dossierId( $id ) );
@@ -290,6 +310,7 @@
 			$options = $this->Traitementpdo->enums();
 			$this->set( compact( 'traitementpdo', 'options' ) );
 		}
+
 
 		/**
 		*
@@ -304,10 +325,10 @@
 		*
 		*/
 
-		public function edit() {
-			$args = func_get_args();
-			call_user_func_array( array( $this, '_add_edit' ), $args );
-		}
+// 		public function edit() {
+// 			$args = func_get_args();
+// 			call_user_func_array( array( $this, '_add_edit' ), $args );
+// 		}
 
 		/**
 		* FIXME: traiter le bouton "Retour"
@@ -342,6 +363,7 @@
 							'Descriptionpdo',
 							'Traitementtypepdo',
 							'Saisinepdoep66',
+							'Courrierpdo'
 						)
 					)
 				);
@@ -480,7 +502,7 @@
 
 					if( $saved ) {
 						$this->Jetons->release( $dossier_id );
-						$this->Traitementpdo->commit(); // FIXME
+						$this->Traitementpdo->commit(); 
 						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 						$this->redirect( array( 'controller' => 'propospdos', 'action' => 'edit', $propopdo_id ) );
 					}
@@ -519,7 +541,7 @@
 					}
 					// Fin ajout des fichiers stockés en attente
 
-					$this->Traitementpdo->rollback();
+					$this->Traitementpdo->commit();
 					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 				}
 			}
@@ -528,7 +550,7 @@
 				$fichiers = $this->_fichiers( $id );
 			}
 
-			$this->Traitementpdo->commit();
+			$this->Traitementpdo->rollback();
 
 			$traitementspdosouverts = $this->{$this->modelClass}->find(
 				'all',
@@ -570,6 +592,35 @@
 			Configure::write( 'debug', 0 );
 			$this->render( 'statutpersonne', 'ajax' );
 		}
+
+        /**
+        *   Arnaud: Nombre de textarea à générer par courrier dans traitement PDO
+        */
+
+        public function ajaxnbtextareacourrier( $id = null ) {
+
+            $id = $this->data['Courrierpdo']['Courrierpdo'][0];
+            $courrier = $this->Traitementpdo->Courrierpdo->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Courrierpdo.id' => $id
+                    ),
+                    'contain' => array(
+                        'Textareacourrierpdo' => array(
+                            'order' => 'Textareacourrierpdo.ordre ASC'
+                        )
+                    )
+                )
+            );
+//             debug($courrier);
+
+            $this->set( 'values', $courrier );
+
+            Configure::write( 'debug', 0 );
+            $this->render( 'textareacourrierpdo', 'ajax' );
+
+        }
 
 		/**
 		*
@@ -617,5 +668,33 @@
 			$this->Traitementpdo->delete($id);
 			$this->redirect(array( 'controller'=> 'propospdos', 'action'=>'edit', $traitementpdo['Traitementpdo']['propopdo_id']));
 		}
+
+
+        /**
+        *   Enregistrement du courrier de proposition lors de l'enregistrement de la proposition
+        */
+        public function printCourrier( $courrierpdo_traitementpdo_id ) {
+
+            $this->assert( !empty( $courrierpdo_traitementpdo_id ), 'error404' );
+
+            $courrierpdotraitementpdo = $this->Traitementpdo->CourrierpdoTraitementpdo->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'CourrierpdoTraitementpdo.id' => $courrierpdo_traitementpdo_id
+                    )
+                )
+            );
+
+            $name = Set::classicExtract( $courrierpdotraitementpdo, 'Courrierpdo.modeleodt' );
+
+            $pdf = $this->Traitementpdo->CourrierpdoTraitementpdo->getStoredPdf( $courrierpdo_traitementpdo_id );
+
+            $this->assert( !empty( $pdf ), 'error404' );
+            $this->assert( !empty( $pdf['Pdf']['document'] ), 'error500' ); // FIXME: ou en faire l'impression ?
+
+            $this->Gedooo->sendPdfContentToClient( $pdf['Pdf']['document'], $name.".pdf" );
+
+        }
 	}
 ?>
