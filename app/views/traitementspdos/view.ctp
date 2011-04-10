@@ -8,7 +8,7 @@
 	<?php
 		echo $xhtml->tag( 'h1', $this->pageTitle );
         echo $form->create( 'Traitementpdo', array( 'type' => 'post', 'id' => 'traitementpdoform', 'url' => Router::url( null, true ) ) );
-
+// debug($traitementpdo);
 		echo $default2->view(
 			$traitementpdo,
 			array(
@@ -20,9 +20,35 @@
 				'Traitementpdo.dateecheance',
 				'Traitementpdo.dureeecheance' => array( 'type' => 'text', 'value' => @$options['Traitementpdo']['dureeecheance'][$traitementpdo['Traitementpdo']['dureeecheance']] ),
 				'Traitementpdo.daterevision',
-				'Personne.nom_complet' => array( 'type' => 'string', 'value' => '#Personne.nom# #Personne.prenom#' ),
-			)
+				'Personne.nom_complet' => array( 'type' => 'string', 'value' => '#Personne.nom# #Personne.prenom#' )
+			),
+			array(
+                'class' => 'aere'
+            )
 		);
+
+        // Ajout arnaud suite à la release rc17
+        echo "<h2>Liste de courriers liés au traitement</h2>";
+        if( !empty( $traitementpdo['Courrierpdo'] ) ){
+            $courriersLies = Set::extract( $traitementpdo, 'Traitementpdo/Courrierpdo' );
+            echo '<table><tbody>';
+                echo '<tr><th>Intitulé du courrier</th><th>Action</th></tr>';
+                if( isset( $courriersLies ) ){
+                    foreach( $courriersLies as $i => $courriers ){
+                        echo '<tr><td>'.$courriers['Courrierpdo']['name'].'</td>';
+                        echo '<td>'.$xhtml->link( 'Imprimer', array( 'action' => 'printCourrier', $courriers['Courrierpdo']['CourrierpdoTraitementpdo']['id']    ) ).'</td></tr>';
+                    }
+                }/*
+                else{
+                    echo '<p class="notice">Aucun élément.</p>';
+                }*/
+            echo '</tbody></table>';
+        }
+        else{
+            echo '<p class="notice">Aucun élément.</p>';
+        }
+        // Fin ajout arnaud suite à la release rc17
+
 
 		$fichiersParType = array(
 			'Courriers' => Set::extract( $traitementpdo['Fichiertraitementpdo'], '/.[type=courrier]' ),
@@ -30,13 +56,14 @@
 		);
 
 		foreach( $fichiersParType as $title => $fichiers ) {
+            echo '<div class="aere"></div>';
 			echo "<h2>{$title}</h2>";
 
 			if( empty( $fichiers ) ) {
 				echo '<p class="notice">Aucun élément.</p>';
 			}
 			else {
-                echo '<table><tbody>';
+                echo '<table class="aere"><tbody>';
                     echo '<tr><th>Intitulé de la pièce</th><th>Date d\'ajout</th></tr>';
                     foreach( $fichiers as $fichier ) {
                         echo '<tr>';

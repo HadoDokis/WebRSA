@@ -13,6 +13,18 @@
             <?php
                 echo $xhtml->tableCells(
                     array(
+                        h( 'Zones supplémentaires pour les courriers de traitements PDOs' ),
+                        $xhtml->viewLink(
+                            'Voir la table',
+                            array( 'controller' => 'textareascourrierspdos', 'action' => 'index' ),
+                            ( ( $compteurs['Courrierpdo'] > 0 ) )
+                        )
+                    ),
+                    array( 'class' => 'odd' ),
+                    array( 'class' => 'even' )
+                );
+                echo $xhtml->tableCells(
+                    array(
                         h( 'Décision PDOs' ),
                         $xhtml->viewLink(
                             'Voir la table',
@@ -28,6 +40,17 @@
                         $xhtml->viewLink(
                             'Voir la table',
                             array( 'controller' => 'descriptionspdos', 'action' => 'index' )
+                        )
+                    ),
+                    array( 'class' => 'odd' ),
+                    array( 'class' => 'even' )
+                );
+                echo $xhtml->tableCells(
+                    array(
+                        h( 'Liste des courriers pour un traitement de PDOs' ),
+                        $xhtml->viewLink(
+                            'Voir la table',
+                            array( 'controller' => 'courrierspdos', 'action' => 'index' )
                         )
                     ),
                     array( 'class' => 'odd' ),

@@ -295,7 +295,11 @@
 		'fichiertraitementpdo' => 'fichierstraitementspdos',
         'criteredossiercov58' => 'criteresdossierscovs58',
         'cohortevalidationapre66' => 'cohortesvalidationapres66',
-        'critereentretien' => 'criteresentretiens'
+        'critereentretien' => 'criteresentretiens',
+        'courrierpdo' => 'courrierspdos',
+        'courrierpdo_traitementpdo' => 'courrierspdos_traitementspdos',
+        'textareacourrierpdo' => 'textareascourrierspdos',
+        'contenutextareacourrierpdo' => 'contenustextareascourrierspdos',
 	);
 /**
  * This is a key => value array of regex used to match words.

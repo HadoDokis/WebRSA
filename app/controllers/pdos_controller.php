@@ -11,6 +11,11 @@
                 $this->redirect( array( 'controller' => 'parametrages', 'action' => 'index' ) );
             }
 
+            $compteurs = array(
+                'Courrierpdo' => ClassRegistry::init( 'Courrierpdo' )->find( 'count' )
+            );
+            $this->set( compact( 'compteurs' ) );
+
         }
 
 

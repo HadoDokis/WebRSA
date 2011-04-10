@@ -83,7 +83,7 @@ msgid "Traitementpdo.ficheanalyse"
 msgstr "Fiche d'analyse"
 
 msgid "Traitementpdo.hascourrier"
-msgstr "Courrier"
+msgstr "Courriers"
 
 msgid "Traitementpdo.hasrevenu"
 msgstr "Revenu"
