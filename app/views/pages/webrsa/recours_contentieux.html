@@ -1,0 +1,396 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xml:lang="fr" xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head>
+
+    
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">        <title>
+            Recours contentieux        </title>
+        
+	<link rel="stylesheet" type="text/css" href="recours_contentieux_fichiers/all_003.css" media="all">
+
+	<link rel="stylesheet" type="text/css" href="recours_contentieux_fichiers/all.css" media="all">
+
+	<link rel="stylesheet" type="text/css" href="recours_contentieux_fichiers/screen.css" media="screen,presentation">
+
+	<link rel="stylesheet" type="text/css" href="recours_contentieux_fichiers/print.css" media="print">
+
+	<link rel="stylesheet" type="text/css" href="recours_contentieux_fichiers/menu.css" media="all">
+<link rel="stylesheet" type="text/css" href="recours_contentieux_fichiers/all_002.css" media="all">        <script type="text/javascript" src="recours_contentieux_fichiers/prototype.js"></script><script type="text/javascript" src="recours_contentieux_fichiers/tooltip.js"></script><script type="text/javascript" src="recours_contentieux_fichiers/webrsa.js"></script>        <!-- TODO: à la manière de cake, dans les vues qui en ont besoin -->
+        <script type="text/javascript">
+            // prototype
+            document.observe("dom:loaded", function() {
+                window.history.forward();
+
+                var baseUrl = 'http://localhost/mhamzaoui/webrsa/';
+                make_treemenus( baseUrl );
+//                 make_table_tooltips();
+                make_folded_forms();
+                mkTooltipTables();
+
+                // External links
+                $$('a.external').each( function ( link ) {
+                    $( link ).onclick = function() {
+                        window.open( $( link ).href, 'external' ); return false;
+                    };
+                } );
+            });
+        </script>
+        <script type="text/javascript">
+        //<![CDATA[
+            function printit(){
+                if (window.print) {
+                window.print() ;
+                } else {
+                    var WebBrowser = '<object id="WebBrowser1" WIDTH=0 HEIGHT=0 CLASSID="CLSID:8856F961-340A-11D0-A96B-00C04FD705A2"></object>';
+                    document.body.insertAdjacentHTML('beforeEnd', WebBrowser);
+                        WebBrowser1.ExecWB(6, 2);//Use a 1 vs. a 2 for a prompting dialog box    WebBrowser1.outerHTML = "";
+                }
+            }
+        //]]>
+        </script>
+
+        <!--[if IE]>
+            <style type="text/css" media="screen, presentation">
+                .treemenu { position: relative; }
+                .treemenu, .treemenu *, #pageMenu, #pageWrapper { zoom: 1; }
+            </style>
+        <![endif]-->
+    </head><body>
+            <div id="pageWrapper">
+            <div id="pageHeader">
+    <!--        <div id="whois">&nbsp;</div>
+    -->
+    &nbsp;
+</div>            <div id="menu1Wrapper">
+    <div class="menu1">
+        <ul>
+                                    <li class="" id="menu1one" onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
+                    <a href="#">Gestion des cohortes</a>                    <ul>
+                    <!-- AJOUT POUR LA GESTION DES CONTRATS D'INSERTION (Cohorte) -->
+                        <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
+                            <a href="http://localhost/mhamzaoui/webrsa/cohortesci" title="Gestion des contrats">Contrat insertion</a>                        </li> 
+                    <!-- MODIF POUR LA GESTION DES ORIENTATIONS (Cohorte) -->
+                        <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
+                            <a href="#">Orientation</a>                                <ul>
+                                    <li><a href="http://localhost/mhamzaoui/webrsa/cohortes/nouvelles" title="Nouvelles demandes">Nouvelles demandes</a></li>
+                                    <li><a href="http://localhost/mhamzaoui/webrsa/cohortes/orientees" title="Demandes orientées">Demandes orientées</a></li>
+                                    <li><a href="http://localhost/mhamzaoui/webrsa/cohortes/enattente" title="Demandes en attente">En attente</a></li>
+                                    <!-- <li><a href="/mhamzaoui/webrsa/cohortes/exports_index" title="Fichiers exportés">Fichiers Exportés</a></li> -->
+                                    <!--<li><a href="#">Liste suivant critères</a></li>
+                                    <li><a href="#">Gestion des éditions</a></li> -->
+                                </ul>
+                        </li>
+                        <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
+                            <a href="http://localhost/mhamzaoui/webrsa/pages/display/recherche_indus">Indus</a>                        </li> 
+                    </ul>
+                </li> 
+                                        <li id="menu2one">
+                    <a href="#">Recherche multicritères</a>                    <ul>
+                        <li><a href="http://localhost/mhamzaoui/webrsa/">Par dossier / allocataire</a></li>
+                        <li><a href="http://localhost/mhamzaoui/webrsa/criteres">Par Orientation</a></li>
+                        <li><a href="http://localhost/mhamzaoui/webrsa/criteresci">Par Contrat insertion</a></li>
+                    </ul>
+                </li>
+                                        <li id="menu2one">
+                    <a href="#">Insertion</a>                    <ul>
+                        <li><a href="http://localhost/mhamzaoui/webrsa/pages/display/liste_appels_a_projet">Appels à projet</a></li>
+			<li><a href="http://localhost/mhamzaoui/webrsa/pages/display/recherche_suivi_stagiaire">Suivi des stagiaires</a></li>
+			<li><a href="http://localhost/mhamzaoui/webrsa/pages/display/demande_remboursement">Demande de remboursement</a></li>
+                    </ul>
+                </li>
+                                        <li id="menu2one">
+                    <a href="#">Tableaux de bord</a>                    <ul>
+			<li><a href="http://localhost/mhamzaoui/webrsa/pages/display/indicateurs_mensuels">Indicateurs mensuels</a></li>
+                    </ul>
+                </li>
+                                            <li id="menu3one">
+                        <a href="#">Administration</a>                        <ul>
+                            <li><a href="http://localhost/mhamzaoui/webrsa/droits/edit">Droits</a></li>
+                            <li><a href="http://localhost/mhamzaoui/webrsa/parametrages">Paramétrage</a></li>
+			    <li><a href="#">Moteur de règle</a>				<ul>
+				    <li><a href="http://localhost/mhamzaoui/webrsa/pages/display/moteur_regle_1">Orientation</a></li>
+				    <li><a href="http://localhost/mhamzaoui/webrsa/pages/display/moteur_regle_2">Recherche dossier/allocataire</a></li>
+				    <li><a href="http://localhost/mhamzaoui/webrsa/pages/display/moteur_regle_3">Recherche orientation</a></li>
+				    <li><a href="http://localhost/mhamzaoui/webrsa/pages/display/moteur_regle_4">Recherche contrat d'insertion</a></li>
+				 <!--   <li><a href="/mhamzaoui/webrsa/pages/display/moteur_regle_2">Contrat d&#039;insertion</a></li> -->
+				</ul>
+			    </li>
+			    <li><a href="#">Paiement allocation</a>				<ul>
+				    <li><a href="http://localhost/mhamzaoui/webrsa/pages/display/criteres_paiements_allocations">Listes nominatives</a></li>
+				    <li><a href="http://localhost/mhamzaoui/webrsa/pages/display/criteres_mandats_paiements">Mandats mensuels</a></li>
+				</ul>
+			    </li>
+                        <!--  <li><a href="#">Intégration flux</a></li>
+                            <li><a href="#">Gestion des logs</a></li>
+                            <li><a href="#">Gestion des éditions</a></li>-->
+                        </ul>
+                    </li>
+                        <li id="menu4one"><a href="http://localhost/mhamzaoui/webrsa/users/logout">Déconnexion webrsa</a></li>
+                    </ul>
+    </div>
+</div>
+
+
+              <!--  -->
+
+    <div id="pageCartouche">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Groupe</th>
+                    <th>Service instructeur</th>
+                    <!-- <th>Zones géographiques</th> -->
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td> Hamzaoui </td>
+                    <td> Michel </td>
+                    <td> Administrateurs </td>
+                    <td> Service Social Départemental </td>
+                    <!--<td>
+                        <ul>
+                                                    </ul>
+                    </td>-->
+                </tr>
+            </tbody>
+        </table>
+    </div>
+            <div id="pageContent">
+                                
+
+<div class="treemenu">
+    <h2><a href="http://localhost/mhamzaoui/webrsa/dossiers/view">Dossier RSA </a></h2>
+    <ul>
+        <li><a href="http://localhost/mhamzaoui/webrsa/personnes">Composition du foyer</a>            <a class="toggler" href="#"><img alt="Étendre" src="recours_contentieux_fichiers/bullet_toggle_plus.png"></a><ul style="display: none;">
+                            </ul>
+        </li>
+        <!-- TODO: permissions à partir d'ici et dans les fichiers concernés -->
+        <li><span>Informations foyer</span>
+            <a class="toggler" href="#"><img alt="Étendre" src="recours_contentieux_fichiers/bullet_toggle_plus.png"></a><ul style="display: none;">
+                                    <li><a href="http://localhost/mhamzaoui/webrsa/adressesfoyers">Adresses</a>                                            </li>
+                
+                                    <li>
+                        <a href="http://localhost/mhamzaoui/webrsa/modescontact">Modes de contact</a>                    </li>
+                
+                                    <li>
+                        <a href="http://localhost/mhamzaoui/webrsa/avispcgdroitrsa">Avis PCG droit rsa</a>                    </li>
+                
+                                    <li>
+                        <a href="http://localhost/mhamzaoui/webrsa/infosfinancieres">Informations financières</a>                    </li>
+                
+                                    <li><span>Situation dossier rsa</span>
+                        	  <a class="toggler" href="#"><img alt="Étendre" src="recours_contentieux_fichiers/bullet_toggle_plus.png"></a><ul style="display: none;">
+					<li>
+					    <a href="http://localhost/mhamzaoui/webrsa/detailsdroitsrsa">Détails du droit RSA</a>					</li>
+					<li>
+					  <a href="http://localhost/mhamzaoui/webrsa/pages/display/historique_du_droit">Historique du droit</a>					</li>
+					<li>
+					  <a href="http://localhost/mhamzaoui/webrsa/pages/display/liste_de_pdo">Consultation dossier PDO</a>					</li>
+				      
+				      <li>
+					  <a href="http://localhost/mhamzaoui/webrsa/pages/display/liste_des_indus">Liste des indus</a>				      </li>
+
+				  </ul>
+                    </li>
+                
+                                   <li>
+                        <a href="http://localhost/mhamzaoui/webrsa/suivisinstruction">Suivi instruction du dossier</a>                    </li>
+                                                   <li>
+                        <a href="http://localhost/mhamzaoui/webrsa/detailsdroitsrsa">Détails du droit RSA</a>                    </li>
+                            </ul>
+        </li>
+
+                    <li><a href="http://localhost/mhamzaoui/webrsa/dspfs/view">Données socio-professionnelles</a></li>        	<li>
+	    <a href="http://localhost/mhamzaoui/webrsa/pages/display/suivi_parcours_insertion">Suivi du parcours d'insertion</a>	</li>
+            </ul>
+</div>
+
+    <div class="with_treemenu">
+    <h1>Recours contentieux</h1><br>
+
+    <form method="post" action="visualisation_indu"> 
+      <h2>Généralités</h2>
+	<div class="input radio">
+	<label>Type de recours</label>
+	    Gracieux <input name="" value="E" type="radio">
+	    Contentieux <input name="" value="V" checked="checked" type="radio">
+	</div> 
+	<div class="input date">
+	    <label>Date du recours</label>
+	    <select>
+		  <option value=""></option>
+		  <option value="01">1</option>
+		  <option value="02">2</option>
+		  <option value="03">3</option>
+		  <option value="04">4</option>
+		  <option value="05">5</option>
+		  <option value="06">6</option>
+		  <option value="07">7</option>
+		  <option value="08">8</option>
+		  <option value="09">9</option>
+		  <option value="10">10</option>
+		  <option value="11">11</option>
+		  <option value="12">12</option>
+		  <option value="13">13</option>
+		  <option value="14">14</option>
+		  <option value="15">15</option>
+		  <option value="16">16</option>
+		  <option value="17">17</option>
+		  <option value="18">18</option>
+		  <option value="19">19</option>
+		  <option value="20">20</option>
+		  <option value="21">21</option>
+		  <option value="22">22</option>
+		  <option value="23">23</option>
+		  <option value="24">24</option>
+		  <option value="25">25</option>
+		  <option value="26">26</option>
+		  <option value="27">27</option>
+		  <option value="28">28</option>
+		  <option value="29">29</option>
+		  <option value="30">30</option>
+		  <option value="31">31</option>
+	      </select>-
+	      <select>
+		  <option value=""></option>
+		  <option value="01">janvier</option>
+		  <option value="02">février</option>
+		  <option value="03">mars</option>
+		  <option value="04">avril</option>
+		  <option value="05">mai</option>
+		  <option value="06">juin</option>
+		  <option value="07">juillet</option>
+		  <option value="08">août</option>
+		  <option value="09">septembre</option>
+		  <option value="10">octobre</option>
+		  <option value="11">novembre</option>
+		  <option value="12">décembre</option>
+	      </select>-
+	      <select>
+		  <option value=""></option>
+		  <option value="2010">2010</option>
+		  <option value="2009">2009</option>
+		  <option value="2008">2008</option>
+		  <option value="2007">2007</option>
+		  <option value="2006">2006</option>
+		  <option value="2005">2005</option>
+	      </select>
+	</div>
+	<div class="input text">
+	<label style="vertical-align: top;">Commentaires contentieux</label>
+	    <textarea cols="50" rows="3" type="textarea" maxlength="250"></textarea>
+	</div><hr>
+      <h2>Décision tribunal administratif</h2>
+	<div class="input date">
+	    <label>Date commission</label>
+	    <select>
+		  <option value=""></option>
+		  <option value="01">1</option>
+		  <option value="02">2</option>
+		  <option value="03">3</option>
+		  <option value="04">4</option>
+		  <option value="05">5</option>
+		  <option value="06">6</option>
+		  <option value="07">7</option>
+		  <option value="08">8</option>
+		  <option value="09">9</option>
+		  <option value="10">10</option>
+		  <option value="11">11</option>
+		  <option value="12">12</option>
+		  <option value="13">13</option>
+		  <option value="14">14</option>
+		  <option value="15">15</option>
+		  <option value="16">16</option>
+		  <option value="17">17</option>
+		  <option value="18">18</option>
+		  <option value="19">19</option>
+		  <option value="20">20</option>
+		  <option value="21">21</option>
+		  <option value="22">22</option>
+		  <option value="23">23</option>
+		  <option value="24">24</option>
+		  <option value="25">25</option>
+		  <option value="26">26</option>
+		  <option value="27">27</option>
+		  <option value="28">28</option>
+		  <option value="29">29</option>
+		  <option value="30">30</option>
+		  <option value="31">31</option>
+	      </select>-
+	      <select>
+		  <option value=""></option>
+		  <option value="01">janvier</option>
+		  <option value="02">février</option>
+		  <option value="03">mars</option>
+		  <option value="04">avril</option>
+		  <option value="05">mai</option>
+		  <option value="06">juin</option>
+		  <option value="07">juillet</option>
+		  <option value="08">août</option>
+		  <option value="09">septembre</option>
+		  <option value="10">octobre</option>
+		  <option value="11">novembre</option>
+		  <option value="12">décembre</option>
+	      </select>-
+	      <select>
+		  <option value=""></option>
+		  <option value="2010">2010</option>
+		  <option value="2009">2009</option>
+		  <option value="2008">2008</option>
+		  <option value="2007">2007</option>
+		  <option value="2006">2006</option>
+		  <option value="2005">2005</option>
+	      </select>
+	</div>
+	<div class="input radio">
+	<label>Décision</label>
+	    Pas de décision <input name="" value="E" checked="checked" type="radio">
+	    Validé <input name="" value="V" type="radio">
+	    Refusé <input name="" value="R" type="radio">
+	    Ajourné <input name="" value="A" type="radio">
+	</div> 
+	<div class="input select">
+	<label>Motif de la décision</label>
+	    <select>
+		<option value=""></option>
+		<option value="">Non admissible</option>
+		<option value="">Admissible</option>
+		<option value="">Pièces manquantes</option>
+	    </select>
+	</div> 
+	<div class="input text">
+	<label style="vertical-align: top;">Avis tribunal administratif</label>
+	    <textarea cols="50" rows="3" type="textarea" maxlength="250"></textarea>
+	</div>
+ 
+        <div class="submit"><input value="Enregistrer" type="submit"></div></form></div>
+    <div class="with_treemenu"><hr>
+	<h2>Listes des pièces</h2>
+            <table class="tooltips_oupas">
+            <thead>
+                <tr>
+                    <th>Type de la pièce</th>
+                    <th>Date enregistrement</th>
+		    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="odd dynamic" id="innerTableTrigger0">
+		    <td>Lettre de réclamation allocataire</td>
+		    <td>11/06/2009</td>
+		    <td><a href="" title=""><img src="recours_contentieux_fichiers/attach.png" alt=""> Visualiser</a></td>
+		</tr>
+            </tbody>
+        </table>
+    </div><br>            </div>
+           
+        </div>
+    
+            <div id="pageFooter">
+    webrsa v. 1.0.4.398 (CakePHP v. 1.2.2.8120) - 2009@Adullact.
+    Page construite en 0,37 secondes.    $LastChangedDate: 2009-07-27 17:51:26 +0200 (lun., 27 juil. 2009)$
+</div>
+        
+    <div style="display: none;" class="tooltip">innerTable0</div><div style="display: none;" class="tooltip">innerTable0</div><div style="display: none;" class="tooltip">innerTable0</div></body></html>

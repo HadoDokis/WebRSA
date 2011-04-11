@@ -1,0 +1,300 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xml:lang="fr" xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head>
+
+    
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">        <title>
+            Candidature appel à projet        </title>
+        
+	<link rel="stylesheet" type="text/css" href="candidature_appel_a_projet_fichiers/all_003.css" media="all">
+
+	<link rel="stylesheet" type="text/css" href="candidature_appel_a_projet_fichiers/all.css" media="all">
+
+	<link rel="stylesheet" type="text/css" href="candidature_appel_a_projet_fichiers/screen.css" media="screen,presentation">
+
+	<link rel="stylesheet" type="text/css" href="candidature_appel_a_projet_fichiers/print.css" media="print">
+
+	<link rel="stylesheet" type="text/css" href="candidature_appel_a_projet_fichiers/menu.css" media="all">
+<link rel="stylesheet" type="text/css" href="candidature_appel_a_projet_fichiers/all_002.css" media="all">        <script type="text/javascript" src="candidature_appel_a_projet_fichiers/prototype.js"></script><script type="text/javascript" src="candidature_appel_a_projet_fichiers/tooltip.js"></script><script type="text/javascript" src="candidature_appel_a_projet_fichiers/webrsa.js"></script>        <!-- TODO: à la manière de cake, dans les vues qui en ont besoin -->
+        <script type="text/javascript">
+            // prototype
+            document.observe("dom:loaded", function() {
+                window.history.forward();
+
+                var baseUrl = 'http://localhost/mhamzaoui/webrsa/';
+                make_treemenus( baseUrl );
+//                 make_table_tooltips();
+                make_folded_forms();
+                mkTooltipTables();
+
+                // External links
+                $$('a.external').each( function ( link ) {
+                    $( link ).onclick = function() {
+                        window.open( $( link ).href, 'external' ); return false;
+                    };
+                } );
+            });
+        </script>
+        <script type="text/javascript">
+        //<![CDATA[
+            function printit(){
+                if (window.print) {
+                window.print() ;
+                } else {
+                    var WebBrowser = '<object id="WebBrowser1" WIDTH=0 HEIGHT=0 CLASSID="CLSID:8856F961-340A-11D0-A96B-00C04FD705A2"></object>';
+                    document.body.insertAdjacentHTML('beforeEnd', WebBrowser);
+                        WebBrowser1.ExecWB(6, 2);//Use a 1 vs. a 2 for a prompting dialog box    WebBrowser1.outerHTML = "";
+                }
+            }
+        //]]>
+        </script>
+
+        <!--[if IE]>
+            <style type="text/css" media="screen, presentation">
+                .treemenu { position: relative; }
+                .treemenu, .treemenu *, #pageMenu, #pageWrapper { zoom: 1; }
+            </style>
+        <![endif]-->
+    </head><body>
+            <div id="pageWrapper">
+            <div id="pageHeader">
+    <!--        <div id="whois">&nbsp;</div>
+    -->
+    &nbsp;
+</div>            <div id="menu1Wrapper">
+    <div class="menu1">
+        <ul>
+                                    <li id="menu1one" onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
+                    <a href="#">Gestion des cohortes</a>                    <ul>
+                    <!-- AJOUT POUR LA GESTION DES CONTRATS D'INSERTION (Cohorte) -->
+                        <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
+                            <a href="http://localhost/mhamzaoui/webrsa/cohortesci" title="Gestion des contrats">Contrat insertion</a>                        </li> 
+                    <!-- MODIF POUR LA GESTION DES ORIENTATIONS (Cohorte) -->
+                        <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
+                            <a href="#">Orientation</a>                                <ul>
+                                    <li><a href="http://localhost/mhamzaoui/webrsa/cohortes/nouvelles" title="Nouvelles demandes">Nouvelles demandes</a></li>
+                                    <li><a href="http://localhost/mhamzaoui/webrsa/cohortes/orientees" title="Demandes orientées">Demandes orientées</a></li>
+                                    <li><a href="http://localhost/mhamzaoui/webrsa/cohortes/enattente" title="Demandes en attente">En attente</a></li>
+                                    <!-- <li><a href="/mhamzaoui/webrsa/cohortes/exports_index" title="Fichiers exportés">Fichiers Exportés</a></li> -->
+                                    <!--<li><a href="#">Liste suivant critères</a></li>
+                                    <li><a href="#">Gestion des éditions</a></li> -->
+                                </ul>
+                        </li>
+                        <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
+                            <a href="http://localhost/mhamzaoui/webrsa/pages/display/recherche_indus">Indus</a>                        </li> 
+                    </ul>
+                </li> 
+                                        <li id="menu2one">
+                    <a href="#">Recherche multicritères</a>                    <ul>
+                        <li><a href="http://localhost/mhamzaoui/webrsa/">Par dossier / allocataire</a></li>
+                        <li><a href="http://localhost/mhamzaoui/webrsa/criteres">Par Orientation</a></li>
+                        <li><a href="http://localhost/mhamzaoui/webrsa/criteresci">Par Contrat insertion</a></li>
+                    </ul>
+                </li>
+                                        <li id="menu2one">
+                    <a href="#">Insertion</a>                    <ul>
+                        <li><a href="http://localhost/mhamzaoui/webrsa/pages/display/liste_appels_a_projet">Appels à projet</a></li>
+			<li><a href="http://localhost/mhamzaoui/webrsa/pages/display/recherche_suivi_stagiaire">Suivi des stagiaires</a></li>
+			<li><a href="http://localhost/mhamzaoui/webrsa/pages/display/demande_remboursement">Demande de remboursement</a></li>
+                    </ul>
+                </li>
+                                        <li id="menu2one">
+                    <a href="#">Tableaux de bord</a>                    <ul>
+			<li><a href="http://localhost/mhamzaoui/webrsa/pages/display/indicateurs_mensuels">Indicateurs mensuels</a></li>
+                    </ul>
+                </li>
+                                            <li id="menu3one">
+                        <a href="#">Administration</a>                        <ul>
+                            <li><a href="http://localhost/mhamzaoui/webrsa/droits/edit">Droits</a></li>
+                            <li><a href="http://localhost/mhamzaoui/webrsa/parametrages">Paramétrage</a></li>
+			    <li><a href="#">Moteur de règle</a>				<ul>
+				    <li><a href="http://localhost/mhamzaoui/webrsa/pages/display/moteur_regle_1">Orientation</a></li>
+				    <li><a href="http://localhost/mhamzaoui/webrsa/pages/display/moteur_regle_2">Recherche dossier/allocataire</a></li>
+				    <li><a href="http://localhost/mhamzaoui/webrsa/pages/display/moteur_regle_3">Recherche orientation</a></li>
+				    <li><a href="http://localhost/mhamzaoui/webrsa/pages/display/moteur_regle_4">Recherche contrat d'insertion</a></li>
+				 <!--   <li><a href="/mhamzaoui/webrsa/pages/display/moteur_regle_2">Contrat d&#039;insertion</a></li> -->
+				</ul>
+			    </li>
+			    <li><a href="#">Paiement allocation</a>				<ul>
+				    <li><a href="http://localhost/mhamzaoui/webrsa/pages/display/criteres_paiements_allocations">Listes nominatives</a></li>
+				    <li><a href="http://localhost/mhamzaoui/webrsa/pages/display/criteres_mandats_paiements">Mandats mensuels</a></li>
+				</ul>
+			    </li>
+                        <!--  <li><a href="#">Intégration flux</a></li>
+                            <li><a href="#">Gestion des logs</a></li>
+                            <li><a href="#">Gestion des éditions</a></li>-->
+                        </ul>
+                    </li>
+                        <li id="menu4one"><a href="http://localhost/mhamzaoui/webrsa/users/logout">Déconnexion webrsa</a></li>
+                    </ul>
+    </div>
+</div>
+
+
+              <!--  -->
+
+    <div id="pageCartouche">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Groupe</th>
+                    <th>Service instructeur</th>
+                    <!-- <th>Zones géographiques</th> -->
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td> Hamzaoui </td>
+                    <td> Michel </td>
+                    <td> Administrateurs </td>
+                    <td> Service Social Départemental </td>
+                    <!--<td>
+                        <ul>
+                                                    </ul>
+                    </td>-->
+                </tr>
+            </tbody>
+        </table>
+    </div>
+            <div id="pageContent">
+                                
+
+<div class="">
+    <h1>Candidature appel à projet</h1><br>
+
+    <form method="post" action="liste_appels_a_projet.html"> 
+
+    <fieldset><legend>Détails candidature</legend>
+<div class="input date">
+	    <label>Date candidature</label>
+	    <select>
+		  <option value=""></option>
+		  <option value="01">1</option>
+		  <option value="02">2</option>
+		  <option value="03">3</option>
+		  <option value="04">4</option>
+		  <option value="05">5</option>
+		  <option value="06">6</option>
+		  <option value="07">7</option>
+		  <option value="08">8</option>
+		  <option value="09">9</option>
+		  <option value="10">10</option>
+		  <option value="11">11</option>
+		  <option value="12">12</option>
+		  <option value="13">13</option>
+		  <option value="14">14</option>
+		  <option value="15">15</option>
+		  <option value="16">16</option>
+		  <option value="17">17</option>
+		  <option value="18">18</option>
+		  <option value="19">19</option>
+		  <option value="20">20</option>
+		  <option value="21">21</option>
+		  <option value="22">22</option>
+		  <option value="23">23</option>
+		  <option value="24">24</option>
+		  <option value="25">25</option>
+		  <option value="26">26</option>
+		  <option value="27">27</option>
+		  <option value="28">28</option>
+		  <option value="29">29</option>
+		  <option value="30">30</option>
+		  <option value="31">31</option>
+	      </select>-
+	      <select>
+		  <option value=""></option>
+		  <option value="01">janvier</option>
+		  <option value="02">février</option>
+		  <option value="03">mars</option>
+		  <option value="04">avril</option>
+		  <option value="05">mai</option>
+		  <option value="06">juin</option>
+		  <option value="07">juillet</option>
+		  <option value="08">août</option>
+		  <option value="09">septembre</option>
+		  <option value="10">octobre</option>
+		  <option value="11">novembre</option>
+		  <option value="12">décembre</option>
+	      </select>-
+	      <select>
+		  <option value=""></option>
+		  <option value="2010">2010</option>
+		  <option value="2009">2009</option>
+		  <option value="2008">2008</option>
+		  <option value="2007">2007</option>
+		  <option value="2006">2006</option>
+		  <option value="2005">2005</option>
+	      </select>
+	</div>
+	<div class="input date">
+	    <label>Nombre de places proposées</label>
+	    <select>
+		  <option value=""></option>
+		  <option value="01">1</option>
+		  <option value="02">2</option>
+		  <option value="03">3</option>
+		  <option value="04">4</option>
+		  <option value="05">5</option>
+		  <option value="06">6</option>
+		  <option value="07">7</option>
+		  <option value="08">8</option>
+		  <option value="09">9</option>
+		  <option value="10">10</option>
+		  <option value="11">11</option>
+		  <option value="12">12</option>
+		  <option value="13">13</option>
+		  <option value="14">14</option>
+		  <option value="15">15</option>
+		  <option value="16">16</option>
+		  <option value="17">17</option>
+		  <option value="18">18</option>
+		  <option value="19">19</option>
+		  <option value="20">20</option>
+		  <option value="21">21</option>
+		  <option value="22">22</option>
+		  <option value="23">23</option>
+		  <option value="24">24</option>
+		  <option value="25">25</option>
+		  <option value="26">26</option>
+		  <option value="27">27</option>
+		  <option value="28">28</option>
+		  <option value="29">29</option>
+		  <option value="30">30</option>
+	      </select>
+	</div>
+	<div class="input text">
+	<label style="vertical-align: top;">N° agrément</label>
+	    <input typetype="text" maxlength="10">
+	</div>
+	<div class="input text">
+	<label style="vertical-align: top;">Commentaires</label>
+	    <textarea cols="50" rows="3" type="textarea" maxlength="250"></textarea>
+	</div>
+	<div class="input text">
+	<label style="vertical-align: top;">Programme pédagogique</label>
+	    <textarea cols="50" rows="3" type="textarea" maxlength="250"></textarea>
+	</div>
+	</fieldset>
+	<fieldset><legend>Informations à remettre aux stagiaires</legend>
+
+	<div class="">
+	<label>Le règlement intérieur applicable aux stagiaires</label><input checked="checked" style="position: absolute; left: 700px;" type="checkbox"><br><br>
+	<label>Le programme de stage</label><input checked="checked" style="position: absolute; left: 700px;" type="checkbox"><br><br>
+	<label>La liste des formateurs</label><input checked="checked" style="position: absolute; left: 700px;" type="checkbox"><br><br>
+	<label>Les horaires</label><input checked="checked" style="position: absolute; left: 700px;" type="checkbox"><br><br>
+	<label>Les procédures de validation des acquis de la formation</label><input checked="checked" style="position: absolute; left: 700px;" type="checkbox"><br><br>
+	</div>
+    </fieldset>
+        <div class="submit"><input value="Enregistrer" type="submit"></div>    </form></div>
+
+<div class="clearer"><hr></div>            </div>
+
+        </div>
+    
+            <div id="pageFooter">
+    webrsa v. 1.0.4.398 (CakePHP v. 1.2.2.8120) - 2009@Adullact.
+    Page construite en 0,36 secondes.    $LastChangedDate: 2009-07-27 17:51:26 +0200 (lun., 27 juil. 2009)$
+</div>
+        
+    </body></html>
