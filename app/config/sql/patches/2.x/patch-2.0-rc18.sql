@@ -83,6 +83,21 @@ SELECT public.alter_columnname_ifexists( 'public', 'traitementspdos', 'dtfinperi
 SELECT public.alter_columnname_ifexists( 'public', 'traitementspdos', 'dureeecheance', 'dureefinperiode' );
 DROP INDEX IF EXISTS traitementspdos_datefinperiode_idx;
 CREATE INDEX traitementspdos_datefinperiode_idx ON traitementspdos (datefinperiode);
+
+-- -----------------------------------------------------------------------------
+-- 20110411: renommage des séquences des tables renommées en 2.0rc12
+-- -----------------------------------------------------------------------------
+
+SELECT rename_sequence_ifexists( 'dossiers_rsa', 'dossiers' );
+SELECT rename_sequence_ifexists( 'adresses_foyers', 'adressesfoyers' );
+SELECT rename_sequence_ifexists( 'titres_sejour', 'titressejour' );
+SELECT rename_sequence_ifexists( 'avispcgdroitrsa', 'avispcgdroitsrsa' );
+SELECT rename_sequence_ifexists( 'ressourcesmensuelles_detailsressourcesmensuelles', 'detailsressourcesmensuelles_ressourcesmensuelles' );
+SELECT rename_sequence_ifexists( 'typesaidesapres66_piecesaides66', 'piecesaides66_typesaidesapres66' );
+SELECT rename_sequence_ifexists( 'typesaidesapres66_piecescomptables66', 'piecescomptables66_typesaidesapres66' );
+SELECT rename_sequence_ifexists( 'users_contratsinsertion', 'contratsinsertion_users' );
+SELECT rename_sequence_ifexists( 'zonesgeographiques_regroupementszonesgeo', 'regroupementszonesgeo_zonesgeographiques' );
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
