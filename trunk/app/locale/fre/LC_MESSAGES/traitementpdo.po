@@ -162,7 +162,7 @@ msgstr "Raison sociale"
 msgid "Traitementpdo.dtdebutperiode"
 msgstr "Début de période"
 
-msgid "Traitementpdo.dtfinperiode"
+msgid "Traitementpdo.datefinperiode"
 msgstr "Fin de période"
 
 msgid "Traitementpdo.nbmoisactivite"
@@ -245,7 +245,7 @@ msgstr "Subvention 2"
 msgid "Traitementpdo.dureedepart"
 msgstr "Délai avant échéance"
 
-msgid "Traitementpdo.dureeecheance"
+msgid "Traitementpdo.dureefinperiode"
 msgstr "Délai avant révision"
 
 msgid "ENUM::DUREEDEPART::1"
@@ -318,71 +318,71 @@ msgid "ENUM::DUREEDEPART::12"
 msgstr "12 mois"
 
 
-msgid "ENUM::DUREEECHEANCE::1"
+msgid "ENUM::DUREEFINPERIODE::1"
 msgstr "1 mois"
 
-msgid "ENUM::DUREEECHEANCE::1.5"
+msgid "ENUM::DUREEFINPERIODE::1.5"
 msgstr "1,5 mois"
 
-msgid "ENUM::DUREEECHEANCE::2"
+msgid "ENUM::DUREEFINPERIODE::2"
 msgstr "2 mois"
 
-msgid "ENUM::DUREEECHEANCE::2.5"
+msgid "ENUM::DUREEFINPERIODE::2.5"
 msgstr "2,5 mois"
 
-msgid "ENUM::DUREEECHEANCE::3"
+msgid "ENUM::DUREEFINPERIODE::3"
 msgstr "3 mois"
 
-msgid "ENUM::DUREEECHEANCE::3.5"
+msgid "ENUM::DUREEFINPERIODE::3.5"
 msgstr "3,5 mois"
 
-msgid "ENUM::DUREEECHEANCE::4"
+msgid "ENUM::DUREEFINPERIODE::4"
 msgstr "4 mois"
 
-msgid "ENUM::DUREEECHEANCE::4.5"
+msgid "ENUM::DUREEFINPERIODE::4.5"
 msgstr "4,5 mois"
 
-msgid "ENUM::DUREEECHEANCE::5"
+msgid "ENUM::DUREEFINPERIODE::5"
 msgstr "5 mois"
 
-msgid "ENUM::DUREEECHEANCE::5.5"
+msgid "ENUM::DUREEFINPERIODE::5.5"
 msgstr "5,5 mois"
 
-msgid "ENUM::DUREEECHEANCE::6"
+msgid "ENUM::DUREEFINPERIODE::6"
 msgstr "6 mois"
 
-msgid "ENUM::DUREEECHEANCE::6.5"
+msgid "ENUM::DUREEFINPERIODE::6.5"
 msgstr "6,5 mois"
 
-msgid "ENUM::DUREEECHEANCE::7"
+msgid "ENUM::DUREEFINPERIODE::7"
 msgstr "7 mois"
 
-msgid "ENUM::DUREEECHEANCE::7.5"
+msgid "ENUM::DUREEFINPERIODE::7.5"
 msgstr "7,5 mois"
 
-msgid "ENUM::DUREEECHEANCE::8"
+msgid "ENUM::DUREEFINPERIODE::8"
 msgstr "8 mois"
 
-msgid "ENUM::DUREEECHEANCE::8.5"
+msgid "ENUM::DUREEFINPERIODE::8.5"
 msgstr "8,5 mois"
 
-msgid "ENUM::DUREEECHEANCE::9"
+msgid "ENUM::DUREEFINPERIODE::9"
 msgstr "9 mois"
 
-msgid "ENUM::DUREEECHEANCE::9.5"
+msgid "ENUM::DUREEFINPERIODE::9.5"
 msgstr "9,5 mois"
 
-msgid "ENUM::DUREEECHEANCE::10"
+msgid "ENUM::DUREEFINPERIODE::10"
 msgstr "10 mois"
 
-msgid "ENUM::DUREEECHEANCE::10.5"
+msgid "ENUM::DUREEFINPERIODE::10.5"
 msgstr "10,5 mois"
 
-msgid "ENUM::DUREEECHEANCE::11"
+msgid "ENUM::DUREEFINPERIODE::11"
 msgstr "11 mois"
 
-msgid "ENUM::DUREEECHEANCE::11.5"
+msgid "ENUM::DUREEFINPERIODE::11.5"
 msgstr "11,5 mois"
 
-msgid "ENUM::DUREEECHEANCE::12"
+msgid "ENUM::DUREEFINPERIODE::12"
 msgstr "12 mois"

@@ -55,8 +55,7 @@
 			'fieldset',
 			$default->subform(
 				array(
-					'Traitementpdo.datedepart' => array( 'required' => true,/* 'empty' => false,*/ 'maxYear' => date('Y') + 2, 'minYear' => date('Y' ) -2 ),
-					'Traitementpdo.dureedepart' => array( 'required' => true )
+					'Traitementpdo.datedepart' => array( 'required' => true,/* 'empty' => false,*/ 'maxYear' => date('Y') + 2, 'minYear' => date('Y' ) -2 )
 				),
 				array(
 					'options' => $options
@@ -112,48 +111,20 @@
 </script>
 
 	<?php
-		echo $xhtml->tag(
-			'fieldset',
-			$default->subform(
-				array(
-					'Traitementpdo.dateecheance' => array( 'required' => true, 'empty' => true, 'maxYear' => date('Y') + 2, 'minYear' => date('Y' ) -2 ),
-					'Traitementpdo.dureeecheance' => array( 'required' => true )
-				),
-				array(
-					'options' => $options
-				)
-			),
-			array(
-				'class'=>'noborder invisible'
-			)
-		);
-	?>
-<script type="text/javascript">
-
-	document.observe( "dom:loaded", function() {
-		[ 'TraitementpdoDateecheanceDay', 'TraitementpdoDateecheanceMonth', 'TraitementpdoDateecheanceYear', 'TraitementpdoDureeecheance' ].each( function( id ) {
-			$( id ).observe( 'change', function() {
-				checkDatesToExpiration( 'echeance', 'revision', '-' );
-			});
-		});
-	});
-
-</script>
-	<?php
-		echo $xhtml->tag(
-			'fieldset',
-			$default->subform(
-				array(
-					'Traitementpdo.daterevision' => array( 'required' => true, 'empty' => true, 'maxYear' => date('Y') + 2, 'minYear' => date('Y' ) -2 )
-				),
-				array(
-					'options' => $options
-				)
-			),
-			array(
-				'class'=>'noborder invisible'
-			)
-		);
+// 		echo $xhtml->tag(
+// 			'fieldset',
+// 			$default->subform(
+// 				array(
+// 					'Traitementpdo.daterevision' => array( 'required' => true, 'empty' => true, 'maxYear' => date('Y') + 2, 'minYear' => date('Y' ) -2 )
+// 				),
+// 				array(
+// 					'options' => $options
+// 				)
+// 			),
+// 			array(
+// 				'class'=>'noborder invisible'
+// 			)
+// 		);
 
 		echo $default->subform(
 			array(
@@ -167,15 +138,6 @@
 		echo $ajax->observeField( 'TraitementpdoPersonneId', array( 'update' => 'statutPersonne', 'url' => Router::url( array( 'action' => 'ajaxstatutpersonne' ), true ) ) );
 
 		?><fieldset id="statutPersonne" class="invisible"></fieldset><?php
-
-		/*echo $default->subform(
-			array(
-				'Traitementpdo.hascourrier' => array( 'type' => 'radio' )
-			),
-			array(
-				'options' => $options
-			)
-		);*/
 ?>
 
 <fieldset>
@@ -200,22 +162,8 @@
 
             }
 
-//             $nbtextarea = count( $values['Textareacourrierpdo'] );
-//             for ($i=0;$i<$nbtextarea;$i++) {
-//                 echo '<label>&nbsp;</label>'.$values['Textareacourrierpdo'][$i]['name'].'<br />';
-//                 echo $default->subform(
-//                     array(
-//                         "Contenutextareacourrierpdo.{$i}.textareacourrierpdo_id" => array( 'type' => 'hidden', 'value' => $values['Textareacourrierpdo'][$i]['id'] ),
-//                         "Contenutextareacourrierpdo.{$i}.contenu" => array( 'label' => false )
-//                     )
-//                 );
-//             }
-            
         ?>
 
-        <?php /*foreach( $listcourrier as $key => $list ):?>
-            <?php echo $ajax->observeField( "CourrierpdoCourrierpdo{$key}", array( 'update' => 'nbtextarea', 'url' => Router::url( array( 'action' => 'ajaxnbtextareacourrier' ), true ) ) );?>
-        <?php endforeach;*/ ?>
 	</fieldset>
 </fieldset>
 
@@ -364,11 +312,11 @@
 				).
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpdo.dtfinperiode', array('domain'=>'traitementpdo', 'required'=>true))
+					$xform->_label('Traitementpdo.datefinperiode', array('domain'=>'traitementpdo', 'required'=>true))
 				).
 				$html->tag(
 					'td',
-					$form->input('Traitementpdo.dtfinperiode',
+					$form->input('Traitementpdo.datefinperiode',
 						array(
 							'label'=>false,
 							'type'=>'date',
@@ -807,27 +755,45 @@
 						)
 					),
 					array(
-						'colspan' => 3
+						'colspan' => 1
 					)
-				)//.
-//         		$html->tag(
-//         			'td',
-//         			$xform->_label('Traitementpdo.dtecheance', array('domain'=>'traitementpdo', 'required'=>true))
-//         		).
-//         		$html->tag(
-//         			'td',
-//         			$form->input('Traitementpdo.dtecheance',
-//         				array(
-//         					'label'=>false,
-//         					'type'=>'date',
-//         					'empty'=>true,
-//         					'dateFormat' => 'DMY',
-//         					'minYear' => date('Y') - 5,
-//         					'maxYear' => date('Y') + 1
-//         				)
-//         			)
-//         		)
+				).
+				$html->tag(
+                    'td',
+                    $xform->_label('Traitementpdo.dureefinperiode', array('domain'=>'traitementpdo', 'required'=>true))
+                ).
+				$html->tag(
+                    'td',
+                    $form->input('Traitementpdo.dureefinperiode', array('label'=>false, 'type'=>'select', 'options'=>$options['Traitementpdo']['dureefinperiode'], 'empty'=>true)),
+                    array(
+                        'colspan' => 1
+                    )
+                )
+            );
+            echo $html->tag(
+                'tr',
+        		$html->tag(
+        			'td',
+        			$xform->_label('Traitementpdo.daterevision', array('domain'=>'traitementpdo', 'required'=>true))
+        		).
+        		$html->tag(
+        			'td',
+        			$form->input('Traitementpdo.daterevision',
+        				array(
+        					'label'=>false,
+        					'type'=>'date',
+        					'empty'=>true,
+        					'dateFormat' => 'DMY',
+        					'minYear' => date('Y') - 2,
+        					'maxYear' => date('Y') + 2
+        				)
+        			),
+                    array(
+                        'colspan' => 3
+                    )
+        		)
 			);
+// dsvfdvsdvsvsvsvsvsvsv
 
 		echo "</table></fieldset>";
 
@@ -856,7 +822,17 @@
 			)
 		);
 ?>
+<script type="text/javascript">
 
+    document.observe( "dom:loaded", function() {
+        [ 'TraitementpdoDatefinperiodeDay', 'TraitementpdoDatefinperiodeMonth', 'TraitementpdoDatefinperiodeYear', 'TraitementpdoDureefinperiode' ].each( function( id ) {
+            $( id ).observe( 'change', function() {
+                checkDatesToExpiration( 'finperiode', 'revision', '-' );
+            });
+        });
+    });
+
+</script>
 <fieldset>
 	<legend><?php echo required( $default2->label( 'Traitementpdo.haspiecejointe' ) );?></legend>
 
@@ -884,6 +860,24 @@
 		);
 	} );
 </script>
+
+    <?php
+        echo $xhtml->tag(
+            'fieldset',
+            $default->subform(
+                array(
+                    'Traitementpdo.dureedepart' => array( 'required' => true ),
+                    'Traitementpdo.dateecheance' => array( 'required' => true, 'empty' => true, 'maxYear' => date('Y') + 2, 'minYear' => date('Y' ) -2 )
+                ),
+                array(
+                    'options' => $options
+                )
+            ),
+            array(
+                'class'=>'noborder invisible'
+            )
+        );
+    ?>
 
 <?php
 		echo "<table>";
@@ -988,10 +982,10 @@
 				'TraitementpdoDateecheanceDay',
 				'TraitementpdoDateecheanceMonth',
 				'TraitementpdoDateecheanceYear',
-				'TraitementpdoDaterevisionDay',
-				'TraitementpdoDaterevisionMonth',
-				'TraitementpdoDaterevisionYear',
-				'TraitementpdoDureeecheance',
+// 				'TraitementpdoDaterevisionDay',
+// 				'TraitementpdoDaterevisionMonth',
+// 				'TraitementpdoDaterevisionYear',
+// 				'TraitementpdoDureeecheance',
 				'TraitementpdoDureedepart'
 			],
 			'<?php echo Configure::read('traitementClosId') ?>',
@@ -1051,7 +1045,7 @@
 		});
 		loadFiche();
 
-		[ $('TraitementpdoDtdebutperiodeDay'), $('TraitementpdoDtdebutperiodeMonth'), $('TraitementpdoDtdebutperiodeYear'), $('TraitementpdoDtfinperiodeDay'), $('TraitementpdoDtfinperiodeMonth'), $('TraitementpdoDtfinperiodeYear') ].each( function(element) {
+		[ $('TraitementpdoDtdebutperiodeDay'), $('TraitementpdoDtdebutperiodeMonth'), $('TraitementpdoDtdebutperiodeYear'), $('TraitementpdoDatefinperiodeDay'), $('TraitementpdoDatefinperiodeMonth'), $('TraitementpdoDatefinperiodeYear') ].each( function(element) {
 			element.observe( 'change', function (event) {
 				recalculnbmoisactivite();
 			});
@@ -1118,19 +1112,19 @@
 
 	function recalculnbmoisactivite() {
 		var nbmois = 0;
-		if ($F('TraitementpdoDtfinperiodeYear') >= $F('TraitementpdoDtdebutperiodeYear')) {
-			nbmois += 12 * ($F('TraitementpdoDtfinperiodeYear') - $F('TraitementpdoDtdebutperiodeYear'));
+		if ($F('TraitementpdoDatefinperiodeYear') >= $F('TraitementpdoDtdebutperiodeYear')) {
+			nbmois += 12 * ($F('TraitementpdoDatefinperiodeYear') - $F('TraitementpdoDtdebutperiodeYear'));
 			if (
-				($F('TraitementpdoDtfinperiodeMonth') >= $F('TraitementpdoDtdebutperiodeMonth'))
+				($F('TraitementpdoDatefinperiodeMonth') >= $F('TraitementpdoDtdebutperiodeMonth'))
 				||
 				(
-					($F('TraitementpdoDtfinperiodeMonth') < $F('TraitementpdoDtdebutperiodeMonth'))
+					($F('TraitementpdoDatefinperiodeMonth') < $F('TraitementpdoDtdebutperiodeMonth'))
 					&&
-					($F('TraitementpdoDtfinperiodeYear') > $F('TraitementpdoDtdebutperiodeYear'))
+					($F('TraitementpdoDatefinperiodeYear') > $F('TraitementpdoDtdebutperiodeYear'))
 				)
 			)
-				nbmois += $F('TraitementpdoDtfinperiodeMonth') - $F('TraitementpdoDtdebutperiodeMonth');
-			if ($F('TraitementpdoDtfinperiodeDay') > $F('TraitementpdoDtdebutperiodeDay'))
+				nbmois += $F('TraitementpdoDatefinperiodeMonth') - $F('TraitementpdoDtdebutperiodeMonth');
+			if ($F('TraitementpdoDatefinperiodeDay') > $F('TraitementpdoDtdebutperiodeDay'))
 				nbmois++;
 		}
 		if (nbmois < 0)

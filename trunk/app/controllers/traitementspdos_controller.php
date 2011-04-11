@@ -434,7 +434,6 @@
 			if( !empty( $this->data ) ){
 				if( $this->Traitementpdo->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
 					$saved = true;
-
 					$saved = $this->Traitementpdo->sauvegardeTraitement( $this->data );
 
 					if( $saved ) {
@@ -502,7 +501,7 @@
 
 					if( $saved ) {
 						$this->Jetons->release( $dossier_id );
-						$this->Traitementpdo->commit(); 
+						$this->Traitementpdo->commit(); //FIXME 
 						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 						$this->redirect( array( 'controller' => 'propospdos', 'action' => 'edit', $propopdo_id ) );
 					}
@@ -541,7 +540,7 @@
 					}
 					// Fin ajout des fichiers stockés en attente
 
-					$this->Traitementpdo->commit();
+					$this->Traitementpdo->rollback();
 					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 				}
 			}
@@ -550,7 +549,7 @@
 				$fichiers = $this->_fichiers( $id );
 			}
 
-			$this->Traitementpdo->rollback();
+			$this->Traitementpdo->commit();
 
 			$traitementspdosouverts = $this->{$this->modelClass}->find(
 				'all',
