@@ -45,10 +45,12 @@
 						'Personne.prenom3',
 						'Personne.dtnai',
 						'Prestation.rolepers',
+						'Calculdroitrsa.toppersdrodevorsa',
 					),
 					'conditions' => array( 'Personne.foyer_id' => $foyer_id ),
 					'contain' => array(
-						'Prestation'
+						'Prestation',
+						'Calculdroitrsa'
 					)
 				)
 			);

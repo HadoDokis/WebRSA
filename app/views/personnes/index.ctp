@@ -25,6 +25,7 @@
                     <th>Nom</th>
                     <th>Prénom</th>
                     <th>Date de naissance</th>
+                    <th>Soumis à droit et devoir</th>
                     <th colspan="2" class="action">Actions</th>
                     <th class="innerTableHeader">Informations complémentaires</th>
                 </tr>
@@ -54,6 +55,7 @@
                                 h( $personne['Personne']['nom'] ),
                                 h( $personne['Personne']['prenom'] ),
                                 h( $locale->date( 'Date::short', $personne['Personne']['dtnai'] ) ),
+                                h( $personne['Calculdroitrsa']['toppersdrodevorsa'] ? 'Oui' : 'Non' ),
                                 $xhtml->viewLink(
                                     'Voir la personne « '.$title.' »',
                                     array( 'controller' => 'personnes', 'action' => 'view', $personne['Personne']['id'] ),
