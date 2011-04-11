@@ -13,7 +13,7 @@
 					'regime',
 					'aidesubvreint',
 					'dureedepart',
-					'dureeecheance'
+					'dureefinperiode'
 				)
 			),
 			'Autovalidate',
@@ -108,7 +108,7 @@
 					'message' => 'Merci de rentrer une date valide'
 				)
 			),
-			'dtfinperiode' => array(
+			'datefinperiode' => array(
 				'date' => array(
 					'rule' => 'date',
 					'required' => false,
@@ -323,22 +323,23 @@
 			$success = $this->saveAll( $data, array( 'validate' => 'first', 'atomic' => false ) ) && $success;
 
             $traitementpdo_id = $this->id;
-            foreach( $dataCourrierIds as $dataCourrierId ){
-                $dataCourrierpdoTraitementpdo = array( 'CourrierpdoTraitementpdo' => array( 'courrierpdo_id' => $dataCourrierId, 'traitementpdo_id' => $traitementpdo_id ) );
-                $this->CourrierpdoTraitementpdo->create( $dataCourrierpdoTraitementpdo );
-                $success = $this->CourrierpdoTraitementpdo->save() && $success;
-                if( $success ){
-                    foreach( array_keys( $dataContenutextareacourrierpdo ) as $key ) {
-                        $dataContenutextareacourrierpdo[$key]['courrierpdo_traitementpdo_id'] = $this->CourrierpdoTraitementpdo->id;
-                    }
-                    $success = $this->CourrierpdoTraitementpdo->Contenutextareacourrierpdo->saveAll( $dataContenutextareacourrierpdo, array( 'atomic' => false ) ) && $success;
+            if( !empty( $dataCourrierIds ) ){
+                foreach( $dataCourrierIds as $dataCourrierId ){
+                    $dataCourrierpdoTraitementpdo = array( 'CourrierpdoTraitementpdo' => array( 'courrierpdo_id' => $dataCourrierId, 'traitementpdo_id' => $traitementpdo_id ) );
+                    $this->CourrierpdoTraitementpdo->create( $dataCourrierpdoTraitementpdo );
+                    $success = $this->CourrierpdoTraitementpdo->save() && $success;
 
-//                     $dataContenutextarea = array( 'Contenutextareacourrierpdo' => array( 'courrierpdo_traitementpdo_id' => $dataCourrierId, 'traitementpdo_id' => $traitementpdo_id ) );
-//                     $this->CourrierpdoTraitementpdo->create( $dataCourrierpdoTraitementpdo );
-//                     $success = $this->CourrierpdoTraitementpdo->save() && $success;
+                    if( $success ){
+                        foreach( array_keys( $dataContenutextareacourrierpdo ) as $key ) {
+                            $dataContenutextareacourrierpdo[$key]['courrierpdo_traitementpdo_id'] = $this->CourrierpdoTraitementpdo->id;
+                        }
+                        $success = $this->CourrierpdoTraitementpdo->Contenutextareacourrierpdo->saveAll( $dataContenutextareacourrierpdo, array( 'atomic' => false ) ) && $success;
+
+    //                     $dataContenutextarea = array( 'Contenutextareacourrierpdo' => array( 'courrierpdo_traitementpdo_id' => $dataCourrierId, 'traitementpdo_id' => $traitementpdo_id ) );
+    //                     $this->CourrierpdoTraitementpdo->create( $dataCourrierpdoTraitementpdo );
+    //                     $success = $this->CourrierpdoTraitementpdo->save() && $success;
+                    }
                 }
-                
-                
             }
 
 			if ( isset( $data['Traitementpdo']['traitmentpdoIdClore'] ) && !empty( $data['Traitementpdo']['traitmentpdoIdClore'] ) ) {

@@ -77,8 +77,12 @@ CREATE INDEX contenustextareascourrierspdos_courrierpdo_id_idx ON contenustextar
 CREATE INDEX contenustextareascourrierspdos_courrierpdo_traitementpdo_id_idx ON contenustextareascourrierspdos( courrierpdo_traitementpdo_id );
 -- ************************************
 
-
-
+-- 20110411
+DROP INDEX IF EXISTS traitementspdos_dtfinperiode_idx;
+SELECT public.alter_columnname_ifexists( 'public', 'traitementspdos', 'dtfinperiode', 'datefinperiode' );
+SELECT public.alter_columnname_ifexists( 'public', 'traitementspdos', 'dureeecheance', 'dureefinperiode' );
+DROP INDEX IF EXISTS traitementspdos_datefinperiode_idx;
+CREATE INDEX traitementspdos_datefinperiode_idx ON traitementspdos (datefinperiode);
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
