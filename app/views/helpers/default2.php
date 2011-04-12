@@ -467,7 +467,7 @@
 						$this->button(
 							$actionParams['url']['action'],
 							$actionParams['url'],
-							array( 'title' => __d( $domain, $text, true ), 'enabled' => ( isset( $actionParams['url']['disabled'] ) ) ? $actionParams['url']['disabled'] : true )
+							array( 'title' => __d( $domain, $text, true ), 'enabled' => ( isset( $actionParams['url']['disabled'] ) ) ? !$actionParams['url']['disabled'] : true )
 						),
 						array( 'class' => $actionParams['url']['action'] )
 					);
