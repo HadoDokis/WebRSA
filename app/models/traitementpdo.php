@@ -280,12 +280,14 @@
 
 		public function sauvegardeTraitement($data) {
 			$passageEpd = false;
-
+debug($data);
             //Sauvegarde des couriers liés à un traitement si présents
             if( isset( $data['Courrierpdo'] ) ){
                 $dataCourrierIds = Set::extract( $data, '/Courrierpdo[checked=1]/id' );
-                $dataContenutextareacourrierpdo = $data['Contenutextareacourrierpdo'];
-                unset( $data['Courrierpdo'], $data['Contenutextareacourrierpdo'] );
+                if( count( $dataCourrierIds ) != 0 ){
+                    $dataContenutextareacourrierpdo = $data['Contenutextareacourrierpdo'];
+                    unset( $data['Courrierpdo'], $data['Contenutextareacourrierpdo'] );
+                }
             }
 
 
