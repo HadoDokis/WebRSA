@@ -501,7 +501,7 @@
 
 					if( $saved ) {
 						$this->Jetons->release( $dossier_id );
-						$this->Traitementpdo->commit(); //FIXME 
+						$this->Traitementpdo->commit();//FIXME -> arnaud
 						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 						$this->redirect( array( 'controller' => 'propospdos', 'action' => 'edit', $propopdo_id ) );
 					}
@@ -549,7 +549,7 @@
 				$fichiers = $this->_fichiers( $id );
 			}
 
-			$this->Traitementpdo->commit();
+			$this->Traitementpdo->commit();//FIXME -> arnaud
 
 			$traitementspdosouverts = $this->{$this->modelClass}->find(
 				'all',

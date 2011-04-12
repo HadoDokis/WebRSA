@@ -294,6 +294,7 @@ function mkTooltipTables() {
 //*****************************************************************************
 
 function disableFieldsOnCheckbox( cbId, fieldsIds, condition ) {
+
     var cb = $( cbId );
     var checked = ( ( $F( cb ) == null ) ? false : true );
     fieldsIds.each( function ( fieldId ) {
@@ -387,11 +388,9 @@ function disableFieldsetOnCheckbox( cbId, fieldsetId, condition, toggleVisibilit
 		if( toggleVisibility ) {
 			fieldset.show();
 		}
-
         $( fieldset ).getElementsBySelector( 'div.input', 'div.checkbox' ).each( function( elmt ) {
             elmt.removeClassName( 'disabled' );
         } );
-
         $( fieldset ).getElementsBySelector( 'input', 'select', 'button', 'textarea' ).each( function( elmt ) {
             elmt.enable();
         } );
@@ -401,11 +400,9 @@ function disableFieldsetOnCheckbox( cbId, fieldsetId, condition, toggleVisibilit
 		if( toggleVisibility ) {
 			fieldset.hide();
 		}
-
         $( fieldset ).getElementsBySelector( 'div.input', 'div.checkbox' ).each( function( elmt ) {
             elmt.addClassName( 'disabled' );
         } );
-
         $( fieldset ).getElementsBySelector( 'input', 'select', 'button', 'textarea' ).each( function( elmt ) {
             elmt.disable();
         } );
@@ -572,11 +569,11 @@ function setNbDayInterval( masterPrefix, slavePrefix, nDays ) {
 
 //==============================================================================
 
-function disableFieldsOnRadioValue( form, radioName, fieldsIds, value, condition ) {
+function disableFieldsOnRadioValue( form, radioName, fieldsIds, value, condition, toggleVisibility ) {
     if( ( typeof value ) != 'object' ) {
         value = [ value ];
     }
-
+    toggleVisibility = typeof(toggleVisibility) != 'undefined' ? toggleVisibility : false;
 	var v = $( form ).getInputs( 'radio', radioName );
 
 	var currentValue = undefined;
@@ -598,32 +595,49 @@ function disableFieldsOnRadioValue( form, radioName, fieldsIds, value, condition
 	fieldsIds.each( function ( fieldId ) {
 		var field = $( fieldId );
 		if( !disabled ) {
-			field.enable();
+
+
+            field.enable();
+
 			if( input = field.up( 'div.input' ) )
 				input.removeClassName( 'disabled' );
 			else if( input = field.up( 'div.checkbox' ) )
 				input.removeClassName( 'disabled' );
+
+            //Ajout suite aux modifs ds les traitements PDOs
+            if( toggleVisibility ) {
+                input.show();
+            }
 		}
 		else {
-			field.disable();
+
+            field.disable();
+
+
 			if( input = field.up( 'div.input' ) )
 				input.addClassName( 'disabled' );
 			else if( input = field.up( 'div.checkbox' ) )
 				input.addClassName( 'disabled' );
+
+            //Ajout suite aux modifs ds les traitements PDOs
+            if( toggleVisibility ) {
+                input.hide();
+            }
 		}
 	} );
 }
 
 //-----------------------------------------------------------------------------
 
-function observeDisableFieldsOnRadioValue( form, radioName, fieldsIds, value, condition ) {
-    disableFieldsOnRadioValue( form, radioName, fieldsIds, value, condition );
+function observeDisableFieldsOnRadioValue( form, radioName, fieldsIds, value, condition, toggleVisibility ) {
+    toggleVisibility = typeof(toggleVisibility) != 'undefined' ? toggleVisibility : false;
+    disableFieldsOnRadioValue( form, radioName, fieldsIds, value, condition, toggleVisibility );
 
 	var v = $( form ).getInputs( 'radio', radioName );
 	var currentValue = undefined;
 	$( v ).each( function( radio ) {
 		$( radio ).observe( 'change', function( event ) {
-			disableFieldsOnRadioValue( form, radioName, fieldsIds, value, condition );
+            disableFieldsOnRadioValue( form, radioName, fieldsIds, value, condition, toggleVisibility );
 		} );
 	} );
 }

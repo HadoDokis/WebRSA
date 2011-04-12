@@ -170,15 +170,6 @@
 <script type="text/javascript">
 
 	document.observe( "dom:loaded", function() {
-        observeDisableFieldsetOnRadioValue(
-            'traitementpdoform',
-            'data[Traitementpdo][hascourrier]',
-            $( 'filecontainer-courrier' ),
-            '1',
-            false,
-            true
-        );
-
         <?php foreach( $listcourrier as $i => $list ):?>
             observeDisableFieldsetOnCheckbox(
                 'Courrierpdo<?php echo $i;?>Checked',
@@ -186,16 +177,19 @@
                 false,
                 true
             );
+
+        observeDisableFieldsOnRadioValue(
+            'traitementpdoform',
+            'data[Traitementpdo][hascourrier]',
+            [ 'Courrierpdo<?php echo $i;?>Checked' ],
+            '1',
+            true,
+            true
+        );
+
         <?php endforeach; ?>
+
 	} );
-
-
-
-//     $( 'CourrierpdoCourrierpdo<?php echo $key;?>' ).observe( "change", function() {
-//         alert( $( 'data[Courrierpdo][Courrierpdo][<?php echo $key;?>]' ));
-//     });
-
-
 
 </script>
 <?php
