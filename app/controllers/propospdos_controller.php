@@ -414,7 +414,7 @@
 
 					)
 				);
-// debug(!empty( $decisionspropospdos[0]['Decisionpropopdo']['validationdecision'] ) );
+
 				$this->set( compact( 'decisionspropospdos' ) );
 				if ( !empty( $decisionspropospdos ) ) {
 					$lastDecisionId = $decisionspropospdos[0]['Decisionpropopdo']['id'];

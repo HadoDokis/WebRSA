@@ -91,3 +91,39 @@ msgstr "Commentaire"
 
 msgid "Decisionpropopdo.decisionpdo_id"
 msgstr "Type de proposition"
+
+msgid "Decisionpropopdo.hasreponseep"
+msgstr "Réponse à l'EP"
+
+msgid "Decisionpropopdo.decisionreponseep"
+msgstr "Suite à l'avis de l'EP Locale Commission Audition"
+
+msgid "Decisionpropopdo.accordepaudition"
+msgstr "En accord avec l'avis de l'EPL Commission Audition"
+
+msgid "Decisionpropopdo.commentairereponseep"
+msgstr "Commentaire"
+
+msgid "Decisionpropopdo.datereponseep"
+msgstr "Date"
+
+msgid "ENUM::ACCORDEPAUDITION::1"
+msgstr "Oui"
+
+msgid "ENUM::ACCORDEPAUDITION::0"
+msgstr "Non"
+
+msgid "ENUM::DECISIONREPONSEEP::suspensionnonrespect"
+msgstr "Suspension suite à non respect du contrat"
+
+msgid "ENUM::DECISIONREPONSEEP::suspensiondefaut"
+msgstr "Suspension suite à défaut de conclusion"
+
+msgid "ENUM::DECISIONREPONSEEP::maintien"
+msgstr "Maintien du versement de l'allocation"
+
+msgid "ENUM::DECISIONREPONSEEP::reorientationprofverssoc"
+msgstr "Réorientation du professionnel vers le social"
+
+msgid "ENUM::DECISIONREPONSEEP::reorientationsocversprof"
+msgstr "Réorientation du social vers le professionnel"
