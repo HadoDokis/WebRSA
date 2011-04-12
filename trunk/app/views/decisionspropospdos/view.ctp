@@ -9,12 +9,19 @@
         echo $xhtml->tag( 'h1', $this->pageTitle );
         echo $form->create( 'Decisionpropopdo', array( 'type' => 'post', 'id' => 'decisionpropopdoform', 'url' => Router::url( null, true ) ) );
 
+        $decisionreponseep = Set::enum( Set::classicExtract( $decisionpropopdo, 'Decisionpropopdo.decisionreponseep' ), $options['Decisionpropopdo']['decisionreponseep'] );
+
         echo $default2->view(
             $decisionpropopdo,
             array(
                 'Decisionpropopdo.datedecisionpdo',
                 'Decisionpdo.libelle',
                 'Decisionpropopdo.commentairepdo',
+                'Decisionpropopdo.hasreponseep' => array( 'type' => 'boolean' ),
+                'Decisionpropopdo.decisionreponseep' => array( 'value' => $decisionreponseep ),
+                'Decisionpropopdo.accordepaudition' => array( 'type' => 'boolean' ),
+                'Decisionpropopdo.commentairereponseep',
+                'Decisionpropopdo.datereponseep',
                 'Decisionpropopdo.avistechnique' => array( 'type' => 'boolean' ),
                 'Decisionpropopdo.dateavistechnique',
                 'Decisionpropopdo.commentaireavistechnique',

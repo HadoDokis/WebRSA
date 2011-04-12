@@ -98,6 +98,15 @@ SELECT rename_sequence_ifexists( 'typesaidesapres66_piecescomptables66', 'pieces
 SELECT rename_sequence_ifexists( 'users_contratsinsertion', 'contratsinsertion_users' );
 SELECT rename_sequence_ifexists( 'zonesgeographiques_regroupementszonesgeo', 'regroupementszonesgeo_zonesgeographiques' );
 
+-- -----------------------------------------------------------------------------------------------
+-- 20110412: ajout de nouveaux champs sur la table decisionspropospdos suite à l'avis de l'EP
+-- -----------------------------------------------------------------------------------------------
+SELECT add_missing_table_field ('public', 'decisionspropospdos', 'hasreponseep', 'type_booleannumber');
+SELECT add_missing_table_field ('public', 'decisionspropospdos', 'accordepaudition', 'type_booleannumber');
+SELECT add_missing_table_field ('public', 'decisionspropospdos', 'commentairereponseep', 'TEXT');
+SELECT add_missing_table_field ('public', 'decisionspropospdos', 'datereponseep', 'date');
+SELECT add_missing_table_field ('public', 'decisionspropospdos', 'decisionreponseep', 'type_decisiondefautep66' );
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

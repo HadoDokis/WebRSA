@@ -196,6 +196,7 @@
             }
 
             $options = $this->Decisionpropopdo->enums();
+//             debug($options);
             $this->set( compact( 'decisionpropopdo', 'options' ) );
         }
 

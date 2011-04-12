@@ -8,7 +8,9 @@
 				'fields' => array(
 	 				'validationdecision' => array( 'domain' => 'decisionpropopdo' ),
 	 				'etatdossierpdo' => array( 'domain' => 'propopdo' ),
-	 				'avistechnique' => array( 'domain' => 'decisionpropopdo' )
+	 				'avistechnique' => array( 'domain' => 'decisionpropopdo' ),
+	 				'decisionreponseep' => array( 'domain' => 'decisionpropopdo' ),
+	 				'accordepaudition' => array( 'domain' => 'decisionpropopdo' )
 				)
 			),
 			'Formattable',

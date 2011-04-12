@@ -44,6 +44,31 @@
                     )
                 );
             ?>
+            <?php
+                echo $default2->subform(
+                    array(
+                        'Decisionpropopdo.hasreponseep' => array( 'label' =>  '<strong>Réponse à l\'EP </strong>', 'type' => 'checkbox' ),
+                     ),
+                    array(
+                        'options' => $options
+                    )
+                );
+            ?>
+            <fieldset id="reponseep" class="invisible">
+                <?php
+                    echo $default2->subform(
+                    array(
+                        'Decisionpropopdo.decisionreponseep' => array( 'type' => 'radio', 'separator' => '<br />',  'options' => $options['decisionreponseep'] ),
+                        'Decisionpropopdo.accordepaudition' => array( 'type' => 'radio', 'options' => $options['accordepaudition'] ),
+                        'Decisionpropopdo.commentairereponseep',
+                        'Decisionpropopdo.datereponseep' => array( 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear' => date('Y')+5, 'minYear' => date('Y')-1, 'empty' => true )
+                     ),
+                    array(
+                        'options' => $options
+                    )
+                );
+                ?>
+            </fieldset>
         </fieldset>
 
     </fieldset>
@@ -116,16 +141,13 @@
     document.observe("dom:loaded", function() {
 
 
-        /*observeDisableFieldsOnRadioValue(
-            'decisionpropopdoform',
-            'data[Decisionpropopdo][avistechnique]',
-            [
-                'DecisionpropopdoCommentaireavistechnique'
-            ],
-            ['O','N'],
-            true,
+
+        observeDisableFieldsetOnCheckbox(
+            'DecisionpropopdoHasreponseep',
+            'reponseep',
+            false,
             true
-        );*/
+        );
 
         observeDisableFieldsetOnRadioValue(
             'decisionpropopdoform',
