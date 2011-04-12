@@ -86,7 +86,9 @@
         <?php echo $form->input( 'Personne.prenom', array( 'label' => 'Prénom' ) );?>
         <?php echo $form->input( 'Personne.nir', array( 'label' => 'NIR', 'maxlength' => 15 ) );?>
         <!-- FIXME -->
-        <?php echo $form->input( 'Personne.trancheAge', array( 'label' => 'Tranche d\'âge', 'options' => $trancheAge, 'empty' => true ) );?>
+        <?php echo $form->input( 'Personne.trancheAge', array( 'label' => 'Tranche d\'âge', 'options' => $trancheAge, 'empty' => true ) );
+            echo $form->input( 'Personne.hascontrat', array( 'label' => 'Possède un CER ? ', 'type' => 'select', 'options' => array( 'O' => 'Oui', 'N' => 'Non'), 'empty' => true ) );
+        ?>
     </fieldset>
 
     <div class="submit noprint">

@@ -351,6 +351,19 @@
 				$conditions[] = '( EXTRACT ( YEAR FROM AGE( Personne.dtnai ) ) ) BETWEEN '.$ageMin.' AND '.$ageMax;
 			}
 
+
+            $hasContrat  = Set::extract( $params, 'Personne.hascontrat' );
+            /// Statut de présence contrat engagement reciproque
+            if( !empty( $hasContrat ) && in_array( $hasContrat, array( 'O', 'N' ) ) ) {
+                if( $hasContrat == 'O' ) {
+                    $conditions[] = '( SELECT COUNT(contratsinsertion.id) FROM contratsinsertion WHERE contratsinsertion.personne_id = "Personne"."id" ) > 0';
+                }
+                else {
+                    $conditions[] = '( SELECT COUNT(contratsinsertion.id) FROM contratsinsertion WHERE contratsinsertion.personne_id = "Personne"."id" ) = 0';
+                }
+            }
+
+
 			// Trouver la dernière demande RSA pour chacune des personnes du jeu de résultats
 			if( $params['Dossier']['dernier'] ) {
 				$conditions[] = 'Dossier.id IN (
