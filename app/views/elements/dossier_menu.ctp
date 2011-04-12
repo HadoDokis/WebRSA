@@ -74,7 +74,11 @@
 ?>
 
 
-<p class="etatDossier"> <?php echo ( isset( $etatdosrsa[$etatdosrsaValue] ) ? $etatdosrsa[$etatdosrsaValue] : 'Non défini' );?> </p>
+<p class="etatDossier"> 
+<?php
+    $etatdosrsa = ClassRegistry::init( 'Option' )->etatdosrsa();
+//     debug($this->viewVars);
+    echo ( isset( $etatdosrsa[$etatdosrsaValue] ) ? $etatdosrsa[$etatdosrsaValue] : 'Non défini' );?> </p>
 
 	<ul>
 		<li><?php echo $xhtml->link( 'Composition du foyer', array( 'controller' => 'personnes', 'action' => 'index', $dossier['Foyer']['id'] ) );?>
