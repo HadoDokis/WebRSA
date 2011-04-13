@@ -246,7 +246,8 @@
 					array(
 						'conditions' => array(
 							'Orientstruct.id' => $data[$this->alias]['orientstruct_id'] // TODO: autre conditions ?
-						)
+						),
+						'contain' => false
 					)
 				);
 
