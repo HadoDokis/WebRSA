@@ -44,93 +44,56 @@
             }
 
 
-
-
 			$this->Orientstruct = ClassRegistry::init( 'Orientstruct' );
 
 			$modelName = $this->alias;
 			$modelTable = Inflector::tableize( $modelName );
 
             if( Configure::read( 'Cg.departement' ) == 58 ){
-                $conditions = array(
-                    $conditions,
-                    'Orientstruct.statut_orient' => 'Orienté',
-                    'Orientstruct.id NOT IN (
-                        SELECT "'.$modelTable.'"."orientstruct_id"
-                        FROM "'.$modelTable.'"
-                            INNER JOIN "dossierseps" ON ( "dossierseps"."id" = "'.$modelTable.'"."dossierep_id" )
-                        WHERE "dossierseps"."etapedossierep" != \'traite\'
-                        AND "dossierseps"."themeep" = \''.$modelTable.'\'
-                    )',
-                    'Orientstruct.id NOT IN (
-                        SELECT '.Inflector::tableize( $this->alias ).'.orientstruct_id
-                            FROM '.Inflector::tableize( $this->alias ).'
-                                INNER JOIN dossierseps ON (
-                                    '.Inflector::tableize( $this->alias ).'.dossierep_id = dossierseps.id
-                                )
-                            WHERE
-                                '.Inflector::tableize( $this->alias ).'.orientstruct_id = Orientstruct.id
-                                AND dossierseps.etapedossierep = \'traite\'
-                                AND ( DATE( NOW() ) - (
-                                    SELECT CAST( decisions'.Inflector::tableize( $this->alias ).'.modified AS DATE )
-                                        FROM decisions'.Inflector::tableize( $this->alias ).'
-                                        WHERE decisions'.Inflector::tableize( $this->alias ).'.'.Inflector::underscore( $this->alias ).'_id = '.Inflector::tableize( $this->alias ).'.id
-                                        ORDER BY modified DESC
-                                        LIMIT 1
-                                ) ) <= '.Configure::read( $this->alias.'.delaiCreationContrat' ).'
-                    )',
-                    // La dernière
-                    'Orientstruct.id IN (
-                                SELECT o.id
-                                    FROM orientsstructs AS o
-                                    WHERE
-                                        o.personne_id = Personne.id
-                                        AND o.date_valid IS NOT NULL
-                                    ORDER BY o.date_valid DESC
-                                    LIMIT 1
-                    )'
-                );
+                $conditionsContrat = $conditions;
             }
-            else{
-                $conditions = array(
-                    'Contratinsertion.df_ci <=' => date( 'Y-m-d', strtotime( '- '.$nbmois.' month', time() ) ),
-                    'Orientstruct.statut_orient' => 'Orienté',
-                    'Orientstruct.id NOT IN (
-                        SELECT "'.$modelTable.'"."orientstruct_id"
-                        FROM "'.$modelTable.'"
-                            INNER JOIN "dossierseps" ON ( "dossierseps"."id" = "'.$modelTable.'"."dossierep_id" )
-                        WHERE "dossierseps"."etapedossierep" != \'traite\'
-                        AND "dossierseps"."themeep" = \''.$modelTable.'\'
-                    )',
-                    'Orientstruct.id NOT IN (
-                        SELECT '.Inflector::tableize( $this->alias ).'.orientstruct_id
-                            FROM '.Inflector::tableize( $this->alias ).'
-                                INNER JOIN dossierseps ON (
-                                    '.Inflector::tableize( $this->alias ).'.dossierep_id = dossierseps.id
-                                )
-                            WHERE
-                                '.Inflector::tableize( $this->alias ).'.orientstruct_id = Orientstruct.id
-                                AND dossierseps.etapedossierep = \'traite\'
-                                AND ( DATE( NOW() ) - (
-                                    SELECT CAST( decisions'.Inflector::tableize( $this->alias ).'.modified AS DATE )
-                                        FROM decisions'.Inflector::tableize( $this->alias ).'
-                                        WHERE decisions'.Inflector::tableize( $this->alias ).'.'.Inflector::underscore( $this->alias ).'_id = '.Inflector::tableize( $this->alias ).'.id
-                                        ORDER BY modified DESC
-                                        LIMIT 1
-                                ) ) <= '.Configure::read( $this->alias.'.delaiCreationContrat' ).'
-                    )',
-                    // La dernière
-                    'Orientstruct.id IN (
-                                SELECT o.id
-                                    FROM orientsstructs AS o
-                                    WHERE
-                                        o.personne_id = Personne.id
-                                        AND o.date_valid IS NOT NULL
-                                    ORDER BY o.date_valid DESC
+            else {
+                $conditionsContrat = array( 'Contratinsertion.df_ci <=' => date( 'Y-m-d', strtotime( '- '.$nbmois.' month', time() ) ) );
+            }
+
+            $conditions = array(
+                $conditionsContrat,
+                'Orientstruct.statut_orient' => 'Orienté',
+                'Orientstruct.id NOT IN (
+                    SELECT "'.$modelTable.'"."orientstruct_id"
+                    FROM "'.$modelTable.'"
+                        INNER JOIN "dossierseps" ON ( "dossierseps"."id" = "'.$modelTable.'"."dossierep_id" )
+                    WHERE "dossierseps"."etapedossierep" != \'traite\'
+                    AND "dossierseps"."themeep" = \''.$modelTable.'\'
+                )',
+                'Orientstruct.id NOT IN (
+                    SELECT '.Inflector::tableize( $this->alias ).'.orientstruct_id
+                        FROM '.Inflector::tableize( $this->alias ).'
+                            INNER JOIN dossierseps ON (
+                                '.Inflector::tableize( $this->alias ).'.dossierep_id = dossierseps.id
+                            )
+                        WHERE
+                            '.Inflector::tableize( $this->alias ).'.orientstruct_id = Orientstruct.id
+                            AND dossierseps.etapedossierep = \'traite\'
+                            AND ( DATE( NOW() ) - (
+                                SELECT CAST( decisions'.Inflector::tableize( $this->alias ).'.modified AS DATE )
+                                    FROM decisions'.Inflector::tableize( $this->alias ).'
+                                    WHERE decisions'.Inflector::tableize( $this->alias ).'.'.Inflector::underscore( $this->alias ).'_id = '.Inflector::tableize( $this->alias ).'.id
+                                    ORDER BY modified DESC
                                     LIMIT 1
-                    )',
-                );
-        }
+                            ) ) <= '.Configure::read( $this->alias.'.delaiCreationContrat' ).'
+                )',
+                // La dernière
+                'Orientstruct.id IN (
+                            SELECT o.id
+                                FROM orientsstructs AS o
+                                WHERE
+                                    o.personne_id = Personne.id
+                                    AND o.date_valid IS NOT NULL
+                                ORDER BY o.date_valid DESC
+                                LIMIT 1
+                )'
+            );
 
 
 			$cohorte = array(
@@ -154,44 +117,7 @@
 					'Contratinsertion.df_ci',
 					'( DATE( NOW() ) - "Contratinsertion"."df_ci" ) AS "Contratinsertion__nbjours"'
 				),
-				'conditions' => $conditions/*array(
-					'Contratinsertion.df_ci <=' => date( 'Y-m-d', strtotime( '- '.$nbmois.' month', time() ) ),
-					'Orientstruct.statut_orient' => 'Orienté',
-					'Orientstruct.id NOT IN (
-						SELECT "'.$modelTable.'"."orientstruct_id"
-						FROM "'.$modelTable.'"
-							INNER JOIN "dossierseps" ON ( "dossierseps"."id" = "'.$modelTable.'"."dossierep_id" )
-						WHERE "dossierseps"."etapedossierep" != \'traite\'
-						AND "dossierseps"."themeep" = \''.$modelTable.'\'
-					)',
-					'Orientstruct.id NOT IN (
-						SELECT '.Inflector::tableize( $this->alias ).'.orientstruct_id
-							FROM '.Inflector::tableize( $this->alias ).'
-								INNER JOIN dossierseps ON (
-									'.Inflector::tableize( $this->alias ).'.dossierep_id = dossierseps.id
-								)
-							WHERE
-								'.Inflector::tableize( $this->alias ).'.orientstruct_id = Orientstruct.id
-								AND dossierseps.etapedossierep = \'traite\'
-								AND ( DATE( NOW() ) - (
-									SELECT CAST( decisions'.Inflector::tableize( $this->alias ).'.modified AS DATE )
-										FROM decisions'.Inflector::tableize( $this->alias ).'
-										WHERE decisions'.Inflector::tableize( $this->alias ).'.'.Inflector::underscore( $this->alias ).'_id = '.Inflector::tableize( $this->alias ).'.id
-										ORDER BY modified DESC
-										LIMIT 1
-								) ) <= '.Configure::read( $this->alias.'.delaiCreationContrat' ).'
-					)',
-					// La dernière
-					'Orientstruct.id IN (
-								SELECT o.id
-									FROM orientsstructs AS o
-									WHERE
-										o.personne_id = Personne.id
-										AND o.date_valid IS NOT NULL
-									ORDER BY o.date_valid DESC
-									LIMIT 1
-					)',
-				)*/,
+				'conditions' => $conditions,
 				'joins' => array(
 					array(
 						'table' => 'structuresreferentes',
