@@ -54,6 +54,8 @@
 			$this->set(compact('typesorients'));
 			$structuresreferentes = $this->Bilanparcours66->Structurereferente->find('list');
 			$this->set(compact('structuresreferentes'));
+			$autresstructuresreferentes = $this->{$this->modelClass}->Structurereferente->listOptions();
+			$this->set(compact('autresstructuresreferentes'));
 // debug($options);
 			$this->set( compact( 'options' ) );
 		}

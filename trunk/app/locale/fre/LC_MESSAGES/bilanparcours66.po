@@ -319,6 +319,9 @@ msgstr "MSP"
 msgid "Pe.Bilanparcours66.referent_id"
 msgstr "Rédigé par"
 
+msgid "Bilanparcours66.autrestructurereferente_id"
+msgstr "Structure référente"
+
 msgid "Pe.Bilanparcours66.presenceallocataire"
 msgstr "Allocataire est-il présent ?"
 
