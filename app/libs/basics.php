@@ -162,7 +162,7 @@
 		}
 		return $size;
 	}
-	
+
 	function valid_int( $value ) {
         return !( !is_numeric( $value ) || !( (int)$value == $value ) );
     }
@@ -573,7 +573,7 @@
 			$nir = preg_replace( '/(A|B)/', '0', $nir );
 		}
 
-		$modulo = bcmod( ( $nir - $correction ), 97 );
+		$modulo = bcmod( bcsub( $nir, $correction ), 97 );
 		return str_pad( ( 97 - $modulo ), 2, '0', STR_PAD_LEFT);
 	}
 
