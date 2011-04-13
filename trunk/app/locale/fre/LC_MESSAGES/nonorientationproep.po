@@ -20,7 +20,16 @@ msgstr ""
 ###############################################################################
 
 msgid "Nonorientationsproseps58::index"
-msgstr "Détection des non orientations professionnelles"
+msgstr "Demandes de maintien dans le social"
 
 msgid "Nonorientationsproseps93::index"
 msgstr "Détection des bénéficiaires en parcours social non réorientés vers le professionnel"
+
+msgid "Nonorientationsproseps93::legend"
+msgstr "Durée de non orientation depuis le parcours social ou socioprofessionel vers le parcours professionnel"
+
+msgid "Nonorientationsproseps66::legend"
+msgstr "Durée de non orientation depuis le parcours social ou socioprofessionel vers le parcours professionnel"
+
+msgid "Nonorientationsproseps58::legend"
+msgstr "Contrat arrivant à échéance entre "

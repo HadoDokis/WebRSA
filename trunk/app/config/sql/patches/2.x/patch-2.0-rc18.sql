@@ -107,6 +107,12 @@ SELECT add_missing_table_field ('public', 'decisionspropospdos', 'commentairerep
 SELECT add_missing_table_field ('public', 'decisionspropospdos', 'datereponseep', 'date');
 SELECT add_missing_table_field ('public', 'decisionspropospdos', 'decisionreponseep', 'type_decisiondefautep66' );
 
+-- -----------------------------------------------------------------------------------------------
+-- 20110413: ajout de la structure référente pour les bilans de parcours provenant des sites partenaires
+-- -----------------------------------------------------------------------------------------------
+SELECT add_missing_table_field ('public', 'bilansparcours66', 'autrestructurereferente_id', 'integer' );
+SELECT add_missing_constraint ('public', 'bilansparcours66', 'bilansparcours66_autrestructurereferente_id_fkey', 'structuresreferentes', 'autrestructurereferente_id');
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
