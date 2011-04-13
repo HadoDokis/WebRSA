@@ -19,8 +19,17 @@
 
 <?php echo $form->create( 'Filtre', array( 'url'=> Router::url( null, true ), 'id' => 'Filtre', 'class' => ( !empty( $this->data ) ? 'folded' : 'unfolded' ) ) );?>
 	<fieldset>
-		<legend>Durée de non orientation depuis le parcours social ou socioprofessionel vers le parcours professionnel</legend>
-		<?php echo $form->input( 'Filtre.dureenonreorientation', array( 'label' => 'Contrat pour l\'orientation sociale terminé depuis', 'type' => 'select', 'options' => $nbmoisnonreorientation ) );?>
+		<legend><?php  echo __d( 'nonorientationproep', 'Nonorientationsproseps'.Configure::read( 'Cg.departement' ).'::legend', true );?></legend>
+		<?php if( Configure::read( 'Cg.departement' ) == 58 ):?>
+        <?php
+            $df_ci_from = Set::check( $this->data, 'Filtre.df_ci_from' ) ? Set::extract( $this->data, 'Filtre.df_ci_from' ) : strtotime( '-1 week' );
+            $df_ci_to = Set::check( $this->data, 'Filtre.df_ci_to' ) ? Set::extract( $this->data, 'Filtre.df_ci_to' ) : strtotime( 'now' );
+        ?>
+        <?php echo $form->input( 'Filtre.df_ci_from', array( 'label' => 'Le (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $df_ci_from ) );?>
+        <?php echo $form->input( 'Filtre.df_ci_to', array( 'label' => 'Et le (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120,  'maxYear' => date( 'Y' ) + 5, 'selected' => $df_ci_to ) );?>
+        <?php else:?>
+            <?php echo $form->input( 'Filtre.dureenonreorientation', array( 'label' => 'Contrat pour l\'orientation sociale terminé depuis', 'type' => 'select', 'options' => $nbmoisnonreorientation ) );?>
+        <?php endif;?>
 	</fieldset>
 	<div class="submit">
 		<?php echo $form->button( 'Filtrer', array( 'type' => 'submit' ) );?>

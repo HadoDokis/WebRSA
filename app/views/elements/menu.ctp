@@ -120,11 +120,7 @@
 							<?php endif; ?>
 						<?php endif; ?>
 						<?php if( $permissions->check( 'nonorientationsproseps', 'index' ) ): ?>
-							<?php if ( Configure::read( 'Cg.departement' ) == 58 ): ?>
-								<li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
-									<?php echo $xhtml->link( 'Non orientation professionnelle', array( 'controller' => 'nonorientationsproseps', 'action' => 'index' ) );?>
-								</li>
-							<?php elseif ( Configure::read( 'Cg.departement' ) == 93 ): ?>
+							<?php if ( Configure::read( 'Cg.departement' ) == 93 ): ?>
 								<li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
 									<?php echo $xhtml->link( 'Détection brsa en parcours social sans réorientation', array( 'controller' => 'nonorientationsproseps', 'action' => 'index' ) );?>
 								</li>
@@ -407,7 +403,12 @@
 					<li><?php echo $xhtml->link( 'Attribution des dossiers à une commission', array( 'controller' => 'commissionseps', 'action' => 'attributiondossiers' ) );?></li>
 					<li><?php echo $xhtml->link( 'Arbitrage', array( 'controller' => 'commissionseps', 'action' => 'arbitrage' ) );?></li>
 					<li><?php echo $xhtml->link( 'Recherche', array( 'controller' => 'commissionseps', 'action' => 'recherche' ) );?></li>
-					<li><a href="#">Thématiques</a>
+					<li>
+                        <?php if( Configure::read( 'Cg.departement' ) == 58 ):?>
+                            <a href="#">Motifs de saisine</a>
+                        <?php else:?>
+                            <a href="#">Thématiques</a>
+                        <?php endif;?>
 						<ul>
 							<?php if( Configure::read( 'Cg.departement' ) == 66 ):?>
 								<li><?php echo $xhtml->link( 'Bilans de parcours 66', array( 'controller' => 'bilansparcours66', 'action' => 'index' ) );?></li>
@@ -416,8 +417,9 @@
 								<li><?php echo $xhtml->link( 'Demande de suspension 93', array( 'controller' => 'nonrespectssanctionseps93', 'action' => 'index' ) );?></li>
 								<li><?php echo $xhtml->link( 'Sélection des allocataires radiés de Pôle Emploi', array( 'controller' => 'nonrespectssanctionseps93', 'action' => 'selectionradies' ) );?></li>
 							<?php elseif( Configure::read( 'Cg.departement' ) == 58 ):?>
-								<li><?php echo $xhtml->link( 'Sélection des allocataires radiés de Pôle Emploi', array( 'controller' => 'sanctionseps58', 'action' => 'selectionradies' ) );?></li>
-								<li><?php echo $xhtml->link( 'Sélection des allocataires non inscrits à Pôle Emploi', array( 'controller' => 'sanctionseps58', 'action' => 'selectionnoninscrits' ) );?></li>
+								<li><?php echo $xhtml->link( 'Radiation de Pôle Emploi', array( 'controller' => 'sanctionseps58', 'action' => 'selectionradies' ) );?></li>
+								<li><?php echo $xhtml->link( 'Non inscription à Pôle Emploi', array( 'controller' => 'sanctionseps58', 'action' => 'selectionnoninscrits' ) );?></li>
+                                <li><?php echo $xhtml->link( 'Demande de maintien dans le social', array( 'controller' => 'nonorientationsproseps', 'action' => 'index' ) );?></li>
 							<?php endif;?>
 						</ul>
 					</li>
