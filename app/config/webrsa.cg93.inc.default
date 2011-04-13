@@ -286,4 +286,13 @@
 	*/
 
 	Configure::write( 'Recherche.qdFilters.Serviceinstructeur', ( Configure::read( 'Cg.departement' ) == 58 ) );
+	
+
+    /**
+    *   Permet de définir si on peut ou non ajouter une nouvelle orientation à un dossier
+    *   - toppersdrodevorsa     --> par défaut 1 (personne soumise à droit et devoir) 
+    *   - situationetatdosrsa   --> par défaut array( 'Z', 2, 3, 4) (dossier dans un droit ouvert et versable)
+    */
+    Configure::write( 'AjoutOrientationPossible.toppersdrodevorsa', 1 ); // aucune distincton sur le soumis à droit et devoir array( 0,1 )
+    Configure::write( 'AjoutOrientationPossible.situationetatdosrsa', array( 'Z', 2, 3, 4 ) );// on prend toutes les valeurs possibles de l'état du dossier RSA
 ?>

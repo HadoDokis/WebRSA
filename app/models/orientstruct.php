@@ -454,6 +454,17 @@
 					'contain' => false
 				)
 			);
+			
+			$toppersdrodevorsa = 1;
+			if( Configure::read( 'AjoutOrientationPossible.toppersdrodevorsa' ) != NULL ) {
+                $toppersdrodevorsa = Configure::read( 'AjoutOrientationPossible.toppersdrodevorsa' );
+			}
+
+            $situationetatdosrsa = array( 'Z', '2', '3', '4' );
+            if( Configure::read( 'AjoutOrientationPossible.situationetatdosrsa' )  != NULL ) {
+                $situationetatdosrsa = Configure::read( 'AjoutOrientationPossible.situationetatdosrsa' );
+            }
+
 
 			$nbPersonnes = $this->Personne->find(
 				'count',
@@ -480,7 +491,7 @@
 							'foreignKey' => false,
 							'conditions' => array(
 								'Personne.id = Calculdroitrsa.personne_id',
-								'Calculdroitrsa.toppersdrodevorsa' => 1
+								'Calculdroitrsa.toppersdrodevorsa' => $toppersdrodevorsa
 							)
 						),
 						array(
@@ -504,7 +515,7 @@
 							'foreignKey' => false,
 							'conditions' => array(
 								'Situationdossierrsa.dossier_id = Dossier.id',
-								'Situationdossierrsa.etatdosrsa' => array( 'Z', '2', '3', '4' )
+								'Situationdossierrsa.etatdosrsa' => $situationetatdosrsa
 							)
 						),
 					),
