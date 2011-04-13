@@ -20,4 +20,4 @@ msgstr ""
 
 ###############################################################################
 msgid "Typerdv.libelle"
-msgstr "Type de RDV"
+msgstr "Objet du RDV"
