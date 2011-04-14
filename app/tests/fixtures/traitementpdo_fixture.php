@@ -22,7 +22,7 @@
 				'dtdebutactivite' => null,
 				'raisonsocial' => null,
 				'dtdebutperiode' => null,
-				'dtfinperiode' => null,
+				'datefinperiode' => null,
 				'dtprisecompte' => null,
 				'dtecheance' => null,
 				'forfait' => null,
@@ -39,16 +39,14 @@
 				'mnttotalpriscompte' => null,
 				'revenus' => null,
 				'benefpriscompte' => null,
+				'aidesubvreint' => null,
+				'dureedepart' => null,
+				'dureefinperiode' => null,
 				'dateecheance' => null,
 				'daterevision' => null,
 				'personne_id' => null,
 				'ficheanalyse' => null,
-				'clos' => '0',
-				'regime' => null,
-				'aidesubvreint' => null,
-				'dureedepart' => null,
-				'dureeecheance' => null
-				
+				'clos' => '0'
 			)
 		);
 	}
