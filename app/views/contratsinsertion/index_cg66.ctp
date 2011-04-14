@@ -25,7 +25,7 @@
     <!-- <?php /*if( !empty( $contratsinsertion ) ): */?> -->
     <?php /*if( !empty( $contratsinsertion ) ):*/?>
     <?php
-        $block = true;
+        $block = false;
         $options['forme_ci'] = $forme_ci;
         $options['decision_ci'] = $decision_ci;
 
@@ -60,7 +60,7 @@
                     ),
                     'Contratsinsertion::cancel' => array( 'onclick' => "return confirm( 'Etes-vous sûr de vouloir annuler le CER ?' )", 'disabled' => '( "'.$permissions->check( 'contratsinsertion', 'cancel' ).'" != "1" ) ||  ( "#Contratinsertion.positioncer#" == "annule" )' ),
                 ),
-                'add' => array( 'Contratinsertion.add' => array( 'controller'=>'contratsinsertion', 'action'=>'add', $personne_id /*, 'disabled' =>  $block*/ ) ),
+                'add' => array( 'Contratinsertion.add' => array( 'controller'=>'contratsinsertion', 'action'=>'add', $personne_id , 'disabled' =>  $block ) ),
                 'options' => array( 'Contratinsertion' => $options )
             )
         );
