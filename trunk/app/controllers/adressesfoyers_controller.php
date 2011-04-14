@@ -47,7 +47,10 @@
 				'all',
 				array(
 					'conditions' => array( 'Adressefoyer.foyer_id' => $foyer_id ),
-					'recursive' => 2
+					'contain' => array(
+                        'Adresse'
+					)/*,
+					'recursive' => -1*/
 				)
 			);
 			// Assignations à la vue
@@ -67,8 +70,11 @@
 				'first',
 				array(
 					'conditions' => array( 'Adressefoyer.id' => $id ),
-					'recursive' => 2
-				)
+                    'contain' => array(
+                        'Adresse'
+                    )/*,
+                    'recursive' => -1*/
+                )
 			);
 
 			// Mauvais paramètre
@@ -122,8 +128,11 @@
 					'first',
 					array(
 						'conditions' => array( 'Adressefoyer.id' => $id ),
-						'recursive' => 2
-					)
+                        'contain' => array(
+                            'Adresse'
+                        )/*,
+                        'recursive' => -1*/
+                    )
 				);
 
 				// Mauvais paramètre
@@ -140,8 +149,11 @@
 		*
 		*/
 		function add( $foyer_id = null ) {
+
 			// Vérification du format de la variable
 			$this->assert( valid_int( $foyer_id ), 'invalidParameter' );
+
+
 
 			$dossier_id = $this->Adressefoyer->Foyer->dossierId( $foyer_id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
@@ -161,7 +173,7 @@
 				if( $this->Adressefoyer->saveAll( $this->data, array( 'validate' => 'only' ) ) ) {
 					$this->Adressefoyer->begin();
 
-					if( $this->Adressefoyer->saveAll( $this->data, array( 'atomic' => false ) ) ) {
+					if( $this->Adressefoyer->saveNouvelleAdresse( $this->data ) ) {
 						$this->Jetons->release( $dossier_id );
 						$this->Adressefoyer->commit();
 						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
