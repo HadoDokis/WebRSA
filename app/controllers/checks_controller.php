@@ -22,6 +22,36 @@
 			$this->set( 'checkCmis', $this->_checkCmis() );
 			$this->set( 'checkModelesOdtStatiques', Set::merge( $this->_checkModelesOdtStatiques(), $this->_checkModelesOdtVariables() ) );
 			$this->set( 'checkModelesOdtParametrables', $this->_checkModelesOdtParametrables() );
+			$this->set( 'checkExtensions', $this->_checkExtensions() );
+			$this->set( 'checkInis', $this->_checkInis() );
+		}
+
+		/**
+		*
+		*/
+
+		protected function _checkExtensions() {
+			$extensions = array(
+				'soap' => extension_loaded( 'soap' ),
+				'xml' => extension_loaded( 'xml' ),
+				'mbstring' => extension_loaded( 'mbstring' ),
+				'curl' => extension_loaded( 'curl' ),
+				'dom' => extension_loaded( 'dom' ),
+			);
+
+			return $extensions;
+		}
+
+		/**
+		*
+		*/
+
+		protected function _checkInis() {
+			$inis = array(
+				'date.timezone' => ini_get( 'date.timezone' ),
+			);
+
+			return $inis;
 		}
 
 		/**

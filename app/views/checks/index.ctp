@@ -13,6 +13,30 @@
 
     <div>
 		<table>
+			<h3>Paramétrage du php.ini ?</h3>
+			<table>
+				<tbody>
+					<?php foreach( $checkInis as $param => $value ):?>
+					<tr>
+						<td><?php echo $param;?></td>
+						<td><?php echo booleanIcon( $xhtml, $value ).( $value ? 'Oui' : 'Non' );?></td>
+					</tr>
+					<?php endforeach;?>
+				</tbody>
+			</table>
+
+			<h3>Extensions PHP chargées ?</h3>
+			<table>
+				<tbody>
+					<?php foreach( $checkExtensions as $param => $value ):?>
+					<tr>
+						<td><?php echo $param;?></td>
+						<td><?php echo booleanIcon( $xhtml, $value ).( $value ? 'Oui' : 'Non' );?></td>
+					</tr>
+					<?php endforeach;?>
+				</tbody>
+			</table>
+
 			<h3>Fichier webrsa.inc présent ?</h3>
 			<?php
 				echo booleanIcon( $xhtml, ( $webrsaIncExist == true ) );
