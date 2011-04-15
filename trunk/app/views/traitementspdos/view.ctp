@@ -49,57 +49,25 @@
         }
         // Fin ajout arnaud suite à la release rc17
 
+// debug($traitementpdo);
 
-		$fichiersParType = array(
-			'Courriers' => Set::extract( $traitementpdo['Fichiertraitementpdo'], '/.[type=courrier]' ),
-			'Pièces jointes' => Set::extract( $traitementpdo['Fichiertraitementpdo'], '/.[type=piecejointe]' )
-		);
-
-		foreach( $fichiersParType as $title => $fichiers ) {
-            echo '<div class="aere"></div>';
-			echo "<h2>{$title}</h2>";
-
-			if( empty( $fichiers ) ) {
-				echo '<p class="notice">Aucun élément.</p>';
-			}
-			else {
-                echo '<table class="aere"><tbody>';
-                    echo '<tr><th>Intitulé de la pièce</th><th>Date d\'ajout</th></tr>';
-                    foreach( $fichiers as $fichier ) {
-                        echo '<tr>';
-                            echo '<td>'.$xhtml->link(
-                                $fichier['name'],
-                                array(
-                                    'action' => 'fileview',
-                                    'edit',
-                                    $fichier['traitementpdo_id'],
-                                    $fichier['type'],
-                                    urlencode( $fichier['name'] )
-                                )
-                            ).'</td>';
-                            echo '<td>'.$fichier['created'].'</td>';
-                        echo '</tr>';
+        echo "<h2>Pièces jointes</h2>";
+        if( !empty( $traitementpdo['Fichiermodule'] ) ){
+            $fichiersLies = Set::extract( $traitementpdo, 'Traitementpdo/Fichiermodule' );
+            echo '<table class="aere"><tbody>';
+                echo '<tr><th>Nom de la pièce jointe</th><th>Action</th></tr>';
+                if( isset( $fichiersLies ) ){
+                    foreach( $fichiersLies as $i => $fichiers ){
+                        echo '<tr><td>'.$fichiers['Fichiermodule']['name'].'</td>';
+                        echo '<td>'.$xhtml->link( 'Télécharger', array( 'action' => 'download', $fichiers['Fichiermodule']['id']    ) ).'</td></tr>';
                     }
-                echo '</tbody></table>';
+                }
+            echo '</tbody></table>';
+        }
+        else{
+            echo '<p class="notice aere">Aucun élément.</p>';
+        }
 
-
-
-/*				echo '<ul>';
-				foreach( $fichiers as $fichier ) {
-					echo '<li>'.$xhtml->link(
-						$fichier['name'],
-						array(
-							'action' => 'fileview',
-							'edit',
-							$fichier['traitementpdo_id'],
-							$fichier['type'],
-							urlencode( $fichier['name'] )
-						)
-					).'</li>';
-				}
-				echo '</ul>';*/
-			}
-		}
 
 		echo '<h2>'.__d( 'traitementpdo', 'Traitementpdo.ficheanalyse', true ).'</h2>';
 		if( empty( $traitementpdo['Traitementpdo']['ficheanalyse'] ) ) {
@@ -111,7 +79,7 @@
 
 		echo '<h2>'.__d( 'traitementpdo', 'Traitementpdo.hasrevenu', true ).'</h2>';
 		if( empty( $traitementpdo['Traitementpdo']['hasrevenu'] ) ) {
-			echo '<p class="notice">Pas de revenu.</p>';
+			echo '<p class="notice aere">Pas de revenu.</p>';
 		}
 		else {
 			// FIXME: calculs intermédiaires, taux, ... + vérifier

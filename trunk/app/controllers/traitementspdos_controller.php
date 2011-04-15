@@ -3,13 +3,13 @@
 	{
 		public $name = 'Traitementspdos';
 
-		public $uses = array( 'Traitementpdo', 'Propopdo', 'Personne', 'Dossier', 'Descriptionpdo', 'Traitementtypepdo' );
+		public $uses = array( 'Traitementpdo', 'Propopdo', 'Personne', 'Dossier', 'Descriptionpdo', 'Traitementtypepdo', 'Fichiermodule' );
 
 		/**
 		* @access public
 		*/
 
-		public $components = array( 'Default', 'Gedooo' );
+		public $components = array( 'Default', 'Gedooo', 'Fileuploader' );
 
 		public $helpers = array( 'Default2', 'Ajax', 'Locale', 'Fileuploader' );
 
@@ -91,13 +91,6 @@
 			$this->set( 'options', $this->_options() );
 		}
 
-		/**
-		*
-		*/
-
-		protected function _dirTraitementpdo( $action, $id, $type ) {
-			return APP.'tmp'.DS.'files'.DS.session_id().DS.'Fichiertraitementpdo'.DS.$action.DS.$id.DS.$type;
-		}
 
 		/**
 		* http://valums.com/ajax-upload/
@@ -109,7 +102,7 @@
 		public function ajaxfileupload() {
 			$error = false;
 
-			$dir = $this->_dirTraitementpdo( $this->params['url']['action'], $this->params['url']['primaryKey'], $this->params['url']['type'] );
+			$dir = $this->Fileuploader->dirFichiersModule( $this->params['url']['action'], $this->params['url']['primaryKey'], $this->params['url']['type'] );
 			$path = $dir.DS.$this->params['url']['qqfile'];
 
 			$old = umask(0);
@@ -145,7 +138,7 @@
 		*/
 
 		public function ajaxfiledelete() {
-			$dir = $this->_dirTraitementpdo( $this->params['pass'][0], $this->params['pass'][1], $this->params['pass'][2] );
+            $dir = $this->Fileuploader->dirFichiersModule( $this->params['pass'][0], $this->params['pass'][1], $this->params['pass'][2] );
 			$path = $dir.DS.$this->params['pass'][3];
 			$error = false;
 
@@ -181,7 +174,8 @@
 		*/
 
 		public function fileview() {
-			$dir = $this->_dirTraitementpdo( $this->params['pass'][0], $this->params['pass'][1], $this->params['pass'][2] );
+            $dir = $this->Fileuploader->dirFichiersModule( $this->params['pass'][0], $this->params['pass'][1], $this->params['pass'][2] );
+			
 			$path = $dir.DS.$this->params['pass'][3];
 
 			$file = array();
@@ -264,7 +258,6 @@
 		public function view( $id ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
-
 			$traitementpdo = $this->Traitementpdo->find(
 				'first',
 				array(
@@ -272,8 +265,16 @@
 						'Traitementpdo.id' => $id,
 					),
 					'contain' => array(
-						'Descriptionpdo',
-						'Traitementtypepdo',
+						'Descriptionpdo'=> array(
+                            'fields' => array(
+                                'Descriptionpdo.name'
+                            )
+                        ),
+						'Traitementtypepdo' => array(
+                            'fields' => array(
+                                'Traitementtypepdo.name'
+                            )
+						),
 						'Personne' => array(
 							'fields' => array(
 								'Personne.nom',
@@ -294,11 +295,14 @@
                                 'Courrierpdo.name'
                             )
 
-                        )
+                        ),
+                        'Fichiermodule'
 					)
-				)
+                )
 			);
 			$this->assert( !empty( $traitementpdo ), 'invalidParameter' );
+// debug($traitementpdo);
+
 
 			$this->set( 'dossier_id', $this->Traitementpdo->dossierId( $id ) );
 
@@ -433,71 +437,15 @@
 
 			if( !empty( $this->data ) ){
 				if( $this->Traitementpdo->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
-					$saved = true;
 					$saved = $this->Traitementpdo->sauvegardeTraitement( $this->data );
 
 					if( $saved ) {
-						// Début sauvegarde des fichiers attachés
+						// Début sauvegarde des fichiers attachés, en utilisant le Component Fileuploader
 						App::import ('Core', 'File' );
-						foreach( array( 'courrier', 'piecejointe' ) as $type ) {
-							$dir = $this->_dirTraitementpdo( $this->action, $this->params['pass'][0], $type );
-							$oFolder = new Folder( $dir, true, 0777 );
-
-							// Suppression des fichiers si besoin
-							if( !Set::classicExtract( $this->data, "Traitementpdo.has{$type}" ) ) {
-								$saved = $this->Traitementpdo->Fichiertraitementpdo->deleteAll(
-									array(
-										'Fichiertraitementpdo.traitementpdo_id' => $this->Traitementpdo->id,
-										'Fichiertraitementpdo.type' => $type
-									)
-								) && $saved;
-							}
-							// Enregistrement des fichiers si besoin
-							else {
-								$files = $oFolder->find();
-								if( !empty( $files ) ) {
-									foreach( $files as $file ) {
-										// Recherche de l'ancien enregistrement s'il existe
-										$oldrecord = array(
-											'Fichiertraitementpdo' => array(
-												'name' => $file,
-												'traitementpdo_id' => $this->Traitementpdo->id,
-												'type' => $type,
-												'mime' => mime_content_type( $dir.DS.$file  )
-											)
-										);
-										$oldrecord = $this->Traitementpdo->Fichiertraitementpdo->find( 'first', array( 'conditions' => Set::flatten( $oldrecord ) ) );
-
-										$record = array(
-											'Fichiertraitementpdo' => array(
-												'name' => $file,
-												'traitementpdo_id' => $this->Traitementpdo->id,
-												'type' => $type,
-												'mime' => mime_content_type( $dir.DS.$file  ),
-												'document' => file_get_contents( $dir.DS.$file ),
-											)
-										);
-										$record = Set::merge( $oldrecord, $record );
-
-										$this->Traitementpdo->Fichiertraitementpdo->create( $record );
-
-										if( $tmpSaved = $this->Traitementpdo->Fichiertraitementpdo->save() ) {
-											$oFile = new File( $dir.DS.$file, true );
-											$tmpSaved = $oFile->delete() && $tmpSaved;
-										}
-
-										$saved = $tmpSaved && $saved;
-									}
-								}
-							}
-
-							// Suppression des fichiers temporaires
-							if( $saved ) {
-								$saved = $oFolder->delete( $dir ) && $saved;
-							}
-						}
-						// Fin sauvegarde des fichiers attachés
-					}
+                        foreach( array( 'courrier', 'piecejointe' ) as $type ) {
+                            $dir = $this->Fileuploader->dirFichiersModule( $this->action, $this->params['pass'][0], $type );
+                            $saved = $this->Fileuploader->saveFichiers( $dir, !Set::classicExtract( $this->data, "Traitementpdo.has{$type}" ) ) && $saved;
+                        }
 
 					if( $saved ) {
 						$this->Jetons->release( $dossier_id );
@@ -511,11 +459,12 @@
 					}
 				}
 				else {
-					$fichiers = $this->_fichiers( $id );
-
+// 					$fichiers = $this->_fichiers( $id );
+                    $fichiers = $this->_fichiers( $id );
+// debug($fichiers);
 					// FIXME: Début ajout des fichiers stockés en attente
 					foreach( array( 'courrier', 'piecejointe' ) as $type ) {
-						$dir = $this->_dirTraitementpdo( $this->action, $this->params['pass'][0], $type );
+                        $dir = $this->Fileuploader->dirFichiersModule( $this->action, $this->params['pass'][0],$type );
 						$oFolder = new Folder( $dir, true, 0777 );
 						$files = $oFolder->find();
 						if( !empty( $files ) ) {
@@ -684,7 +633,6 @@
                     )
                 )
             );
-
             $name = Set::classicExtract( $courrierpdotraitementpdo, 'Courrierpdo.modeleodt' );
 
             $pdf = $this->Traitementpdo->CourrierpdoTraitementpdo->getStoredPdf( $courrierpdo_traitementpdo_id );
@@ -693,6 +641,17 @@
             $this->assert( !empty( $pdf['Pdf']['document'] ), 'error500' ); // FIXME: ou en faire l'impression ?
 
             $this->Gedooo->sendPdfContentToClient( $pdf['Pdf']['document'], $name.".pdf" );
+
+        }
+
+
+        /**
+        *
+        */
+
+        public function download( $fichiermodule_id ) {
+            $this->assert( !empty( $fichiermodule_id ), 'error404' );
+            $this->Fileuploader->download( $fichiermodule_id );
 
         }
 	}
