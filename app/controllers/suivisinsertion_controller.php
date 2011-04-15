@@ -15,6 +15,7 @@
             $this->set( 'decision_ci', $this->Option->decision_ci() );
             $this->set( 'relance', $this->Dossier->Foyer->Personne->Orientstruct->Nonrespectsanctionep93->allEnumLists() );
             $this->set( 'dossierep', $this->Dossier->Foyer->Personne->Dossierep->allEnumLists() );
+            $this->set( 'typeserins', $this->Option->typeserins() );
 
         }
 
@@ -28,9 +29,61 @@
 
             $details = array();
 
-            $tDossier = $this->Dossier->findById( $dossier_id, null, null, -1 );
+            $tDossier = $this->Dossier->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Dossier.id' => $dossier_id
+                    ),
+                    'contain' => false,
+/*                    'joins' => array(
+                        array(
+                            'table'      => 'suivisinstruction',
+                            'alias'      => 'Suiviinstruction',
+                            'type'       => 'LEFT OUTER',
+                            'foreignKey' => false,
+                            'conditions' => array(
+                                'Suiviinstruction.dossier_id = Dossier.id',
+                                'Suiviinstruction.id IN (
+                                    '.ClassRegistry::init( 'Suiviinstruction' )->sqDerniere('Suiviinstruction.dossier_id').'
+                                )'
+                            )
+                        ),
+                        array(
+                            'table'      => 'servicesinstructeurs',
+                            'alias'      => 'Serviceinstructeur',
+                            'type'       => 'LEFT OUTER',
+                            'foreignKey' => false,
+                            'conditions' => array( 'Suiviinstruction.numdepins = Serviceinstructeur.numdepins AND Suiviinstruction.typeserins = Serviceinstructeur.typeserins AND Suiviinstruction.numcomins = Serviceinstructeur.numcomins AND Suiviinstruction.numagrins = Serviceinstructeur.numagrins' )
+                        )
+                    )*/
+                )
+            );
+
             $this->assert( !empty( $tDossier ), 'invalidParameter' );
             $details = Set::merge( $details, $tDossier );
+
+
+            $tSuiviinstruction = $this->Suiviinstruction->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Suiviinstruction.dossier_id' => $dossier_id
+                    ),
+                    'joins' => array(
+                        array(
+                            'table'      => 'servicesinstructeurs',
+                            'alias'      => 'Serviceinstructeur',
+                            'type'       => 'LEFT OUTER',
+                            'foreignKey' => false,
+                            'conditions' => array( 'Suiviinstruction.numdepins = Serviceinstructeur.numdepins AND Suiviinstruction.typeserins = Serviceinstructeur.typeserins AND Suiviinstruction.numcomins = Serviceinstructeur.numcomins AND Suiviinstruction.numagrins = Serviceinstructeur.numagrins' )
+                        )
+                    ),
+                    'order' => 'Suiviinstruction.date_etat_instruction DESC'
+                )
+            );
+            $details = Set::merge( $details, $tSuiviinstruction );
+
 
             $tFoyer = $this->Dossier->Foyer->findByDossierId( $dossier_id, null, null, -1 );
             $this->assert( !empty( $tFoyer ), 'invalidParameter' );

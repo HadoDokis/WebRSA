@@ -47,7 +47,7 @@
                     <th class="action">Action</th>
                 </tr>
                 <tr>
-                    <td><?php echo Set::extract( 'Serviceinstructeur.lib_service', $details );?></td>
+                    <td><?php echo value( $typeserins, Set::classicExtract( $details, 'Suiviinstruction.typeserins' ))?></td>
                     <td><?php echo date_short( $details['Dossier']['dtdemrsa'] );?></td>
                     <td><?php echo $xhtml->boolean( !empty( $details['Dossier']['dtdemrsa'] ) );?></td>
                     <td><?php echo $xhtml->viewLink(
