@@ -10,8 +10,7 @@
 				'id' => '1',
 				'themeapre66_id' => '1',
 				'name' => 'typesaideapr66name',
-				'plafond' => 1000,
- 				'objetaide' => null,
+				'plafond' => 1000
 			),
 		);
 	}
