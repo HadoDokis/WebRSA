@@ -113,6 +113,30 @@ SELECT add_missing_table_field ('public', 'decisionspropospdos', 'decisionrepons
 SELECT add_missing_table_field ('public', 'bilansparcours66', 'autrestructurereferente_id', 'integer' );
 SELECT add_missing_constraint ('public', 'bilansparcours66', 'bilansparcours66_autrestructurereferente_id_fkey', 'structuresreferentes', 'autrestructurereferente_id');
 
+
+-- -----------------------------------------------------------------------------------------------
+-- 20110415: Ajout d'uhne table générique pour le stockage des fichiers scannés
+-- -----------------------------------------------------------------------------------------------
+DROP TABLE IF EXISTS fichiersmodules;
+
+CREATE TABLE fichiersmodules (
+    id                      SERIAL NOT NULL PRIMARY KEY,
+    name                    VARCHAR(255) NOT NULL,
+    fk_value                INTEGER NOT NULL,
+    document                BYTEA DEFAULT NULL,
+    modele                  VARCHAR(255) NOT NULL,
+    cmspath                 VARCHAR(255) DEFAULT NULL,
+    mime                    VARCHAR(255) NOT NULL,
+    created                 TIMESTAMP WITHOUT TIME ZONE,
+    modified                TIMESTAMP WITHOUT TIME ZONE
+);
+
+CREATE INDEX fichiersmodules_name_idx ON fichiersmodules( name );
+CREATE INDEX fichiersmodules_fk_value_idx ON fichiersmodules( fk_value );
+CREATE INDEX fichiersmodules_mime_idx ON fichiersmodules( mime );
+CREATE UNIQUE INDEX fichiersmodules_cmspath_idx ON fichiersmodules( cmspath );
+
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

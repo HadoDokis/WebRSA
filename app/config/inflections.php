@@ -300,6 +300,7 @@
         'courrierpdo_traitementpdo' => 'courrierspdos_traitementspdos',
         'textareacourrierpdo' => 'textareascourrierspdos',
         'contenutextareacourrierpdo' => 'contenustextareascourrierspdos',
+        'fichiermodule' => 'fichiersmodules',
 	);
 /**
  * This is a key => value array of regex used to match words.
