@@ -247,7 +247,7 @@
 			'Fichiermodule' => array(
                 'className' => 'Fichiermodule',
                 'foreignKey' => false,
-                'dependent' => true,
+                'dependent' => false,
                 'conditions' => array(
                     'Fichiermodule.modele = \'Traitementpdo\'',
                     'Fichiermodule.fk_value = {$__cakeID__$}'

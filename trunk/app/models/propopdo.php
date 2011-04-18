@@ -162,7 +162,7 @@
             'Fichiermodule' => array(
                 'className' => 'Fichiermodule',
                 'foreignKey' => false,
-                'dependent' => true,
+                'dependent' => false,
                 'conditions' => array(
                     'Fichiermodule.modele = \'Propopdo\'',
                     'Fichiermodule.fk_value = {$__cakeID__$}'

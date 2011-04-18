@@ -184,7 +184,20 @@
 
 			$options = $this->Propopdo->prepare( 'propopdo', array( 'conditions' => $conditions ) );
 
-            $pdo = $this->Propopdo->find( 'first', $options );
+
+
+            $pdo = $this->Propopdo->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Propopdo.id' => $pdo_id
+                    ),
+                    'contain' => array(
+                        'Fichiermodule',
+                        'Typepdo'
+                    )
+                )
+            );
 
 
             // Afficahge des traitements liés à une PDO
@@ -218,7 +231,7 @@
             $this->set( compact( 'propositions' ) );
 
 
-
+// debug($pdo);
 
             // Retour à la apge d'index une fois que l'on clique sur Retour
             if( isset( $this->params['form']['Cancel'] ) ) {
@@ -428,29 +441,30 @@
 
 				$this->data['Propopdo'] = Set::merge( $defaults, $this->data['Propopdo'] );
 
-
+                $saved = $this->Propopdo->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) );
+                if( $saved ) {
                     // Sauvegarde des fichiers liés à une PDO
-//                 $dir = $this->Fileuploader->dirFichiersModule( $this->action, $this->params['pass'][0] );
-//                 $saved = $this->Fileuploader->saveFichiers( $dir, !Set::classicExtract( $this->data, "Propopdo.haspiece" ) );
+                    $dir = $this->Fileuploader->dirFichiersModule( $this->action, $this->params['pass'][0] );
+                    $saved = $this->Fileuploader->saveFichiers( $dir, !Set::classicExtract( $this->data, "Propopdo.haspiece" ), $id ) && $saved;
+                }
 
-                if( $saved ){
-                    if( $this->Propopdo->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
-                        $this->Jetons->release( $dossier_id );
-                        $this->Propopdo->commit();
-                        $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-                        $this->redirect( array(  'controller' => 'propospdos','action' => 'index', $personne_id ) );
-                    }
-                    else {
-                        $fichiers = $this->Fileuploader->fichiers( $id );
-                        $this->Propopdo->rollback();
-                        $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
-                    }
+                if( $saved ) {
+                    $this->Jetons->release( $dossier_id );
+                    $this->Propopdo->commit();
+                    $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+                    $this->redirect( array(  'controller' => 'propospdos','action' => 'index', $personne_id ) );
+                }
+                else {
+                    $fichiers = $this->Fileuploader->fichiers( $id );
+                    $this->Propopdo->rollback();
+                    $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
                 }
 			}
 			//Affichage des données
 			elseif( $this->action == 'edit' ) {
                 $this->data = $pdo;
-//                 $fichiers = $this->Fileuploader->fichiers( $id );
+                $fichiers = $this->Fileuploader->fichiers( $pdo['Propopdo']['id'] );
+
                 $this->set( 'etatdossierpdo', $pdo['Propopdo']['etatdossierpdo'] );
 			}
 			$this->Propopdo->commit();
@@ -462,6 +476,14 @@
 			$this->render( $this->action, null, 'add_edit_'.Configure::read( 'nom_form_pdo_cg' ) );
 		}
 
+        /**
+        *   Téléchargement des fichiers préalablement associés à un traitement donné
+        */
+
+        public function download( $fichiermodule_id ) {
+            $this->assert( !empty( $fichiermodule_id ), 'error404' );
+            $this->Fileuploader->download( $fichiermodule_id );
+        }
 
 	}
 ?>
