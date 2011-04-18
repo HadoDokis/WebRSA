@@ -155,4 +155,11 @@ msgstr "Aucun renseignement disponible actuellement"
 msgid "Propospdos::add"
 msgstr "Ajouter"
 
+msgid "Propopdo.haspiece"
+msgstr "Pièce jointe"
 
+msgid "ENUM::HASPIECE::0"
+msgstr "Non"
+
+msgid "ENUM::HASPIECE::1"
+msgstr "Oui"

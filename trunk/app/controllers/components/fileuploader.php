@@ -102,10 +102,11 @@
             return $saved;
         }
 
+        /**
+        *   Permet de supprimer les fichiers temporaire en cas d'annulation du formulaire
+        */
 
         public function deleteDir(){
-// debug( $this->controller->params );
-// die();
             $dir = $this->dirFichiersModule( $this->controller->action, $id );
             $oFolder = new Folder( $dir, true, 0777 );
             $oFolder->delete( $dir );
@@ -114,7 +115,7 @@
 
 
         /**
-        *
+        *   Permet de savoir si les fichiers à charger sont sur le disque où en base
         */
 
         public function fichiers( $id ){
@@ -127,7 +128,8 @@
         }
 
         /**
-        *
+        *   Récupération des fichiers chargés sur le disque mais non encore envoyé sur le serveur.
+        *   Permet de conserver les fichiers chargés dans le cas où le formulaire nous renvoie une erreur.
         */
 
         public function _fichiersSurDisque($id){
@@ -215,7 +217,7 @@
             stream_copy_to_stream( $temp, $target );
             fclose( $target );
 
-            Configure::write( 'debug', 2 );
+            Configure::write( 'debug', 0 );
             $this->controller->layout = false;
             echo htmlspecialchars( json_encode( ( empty( $error ) ? array( 'success' => true ) : array( 'error' => $error ) ) ), ENT_NOQUOTES );
             die();

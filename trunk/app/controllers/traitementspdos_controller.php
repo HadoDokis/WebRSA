@@ -101,33 +101,6 @@
 
 		public function ajaxfileupload() {
             $this->Fileuploader->ajaxfileupload();
-// 			$error = false;
-// 
-// 			$dir = $this->Fileuploader->dirFichiersModule( $this->params['url']['action'], $this->params['url']['primaryKey'], $this->params['url']['type'] );
-// 			$path = $dir.DS.$this->params['url']['qqfile'];
-// 
-// 			$old = umask(0);
-// 			@mkdir( $dir, 0777, true );
-// 			umask($old);
-// 
-// 			$input = fopen( "php://input", "r" );
-// 			$temp = tmpfile();
-// 			$realSize = stream_copy_to_stream( $input, $temp );
-// 			fclose( $input );
-// 
-// 			if( $realSize != (int)$_SERVER["CONTENT_LENGTH"] ){
-// 				$error = '$realSize != (int)$_SERVER["CONTENT_LENGTH"]';
-// 			}
-// 
-// 			$target = fopen( $path, "w" );
-// 			fseek( $temp, 0, SEEK_SET );
-// 			stream_copy_to_stream( $temp, $target );
-// 			fclose( $target );
-// 
-// 			Configure::write( 'debug', false );
-// 			$this->layout = false;
-// 			echo htmlspecialchars( json_encode( ( empty( $error ) ? array( 'success' => true ) : array( 'error' => $error ) ) ), ENT_NOQUOTES );
-// 			die();
 		}
 
 		/**
@@ -140,93 +113,14 @@
 
 		public function ajaxfiledelete() {
             $this->Fileuploader->ajaxfiledelete();
-            /*
-            $dir = $this->Fileuploader->dirFichiersModule( $this->params['pass'][0], $this->params['pass'][1], $this->params['pass'][2] );
-			$path = $dir.DS.$this->params['pass'][3];
-			$error = false;
-
-			if( file_exists( $path ) ) {
-				$error = !@unlink( $path );
-			}
-
-			if( $this->params['pass'][0] == 'edit' ) { // Suppression d'un document se trouvant déjà enregistré -> SSI c'est un edit
-				$record = $this->Traitementpdo->Fichiertraitementpdo->find(
-					'first',
-					array(
-						'fields' => array( 'id' ),
-						'conditions' => array(
-							'traitementpdo_id' => $this->params['pass'][1],
-							'type' => $this->params['pass'][2],
-							'name' => $this->params['pass'][3],
-						)
-					)
-				);
-				if( !empty( $record ) ) {
-					$error = !$this->Traitementpdo->Fichiertraitementpdo->delete( $record['Fichiertraitementpdo']['id'] ) && $error;
-				}
-			}
-
-			Configure::write( 'debug', false );
-			$this->layout = false;
-			echo htmlspecialchars( json_encode( ( empty( $error ) ? array( 'success' => true ) : array( 'error' => $error ) ) ), ENT_NOQUOTES );
-			die();*/
 		}
 
 		/**
-		*
+		*   Fonction permettant de visualiser les fichiers chargés dans la vue avant leur envoi sur le serveur
 		*/
 
 		public function fileview( $id ) {
             $this->Fileuploader->fileview( $id );
-//             $dir = $this->Fileuploader->dirFichiersModule( $this->params['pass'][0], $this->params['pass'][1], $this->params['pass'][2] );
-// 			
-// 			$path = $dir.DS.$this->params['pass'][3];
-// 
-// 			$file = array();
-// 
-// 			if( file_exists( $path ) ) {
-// 				$file = array(
-// 					'name' => basename( $path ),
-// 					'mime' => mime_content_type( $path ),
-// 					'document' => file_get_contents( $path ),
-// 					'length' => filesize( $path )
-// 				);
-// 			}
-// 			else if( $this->params['pass'][0] == 'edit' ) {
-//                 $record = $this->Traitementpdo->Fichiermodule->find(
-//                     'first',
-//                     array(
-//                         'conditions' => array(
-//                             'fk_value' => $this->params['pass'][1],
-//                             'type' => $this->params['pass'][2],
-//                             'name' => $this->params['pass'][3],
-//                         ),
-//                         'recursive' => -1,
-//                         'contain' => false
-//                     )
-//                 );
-// 				if( !empty( $record ) ) {
-// 					$file = $record['Fichiermodule'];
-// 					if( empty( $file['document'] ) && !empty( $file['cmspath'] ) ) {
-// 						$cmisFile = Cmis::read( $file['cmspath'], true );
-// 						$file['document'] = $cmisFile['content'];
-// 					}
-// 					$file['length'] = strlen( $file['document'] );
-// 				}
-// 			}
-// 
-// 			$this->assert( !empty( $file ), 'error404' );
-// 			$this->assert( !empty( $file['document'] ), 'error404' );
-// 
-// 			Configure::write( 'debug', false );
-// 			$this->layout = false;
-// 
-// 			header( "Content-type: {$file['mime']}" );
-// 			header( "Content-Length: {$file['length']}" );
-// 			header( "Content-Disposition: attachment; filename=\"{$file['name']}\"" );
-// 
-// 			echo $file['document'];
-// 			die();
 		}
 
 		/**

@@ -11,7 +11,7 @@
 					'nonadmis' => array( 'domain' => 'propopdo' ),
 					'iscomplet' => array( 'domain' => 'propopdo' ),
 					//'validationdecision' => array( 'domain' => 'propopdo' ),
-					//'decisionop' => array( 'domain' => 'propopdo' ),
+					'haspiece' => array( 'domain' => 'propopdo' ),
 					'etatdossierpdo' => array( 'domain' => 'propopdo' )
 				)
 			),
@@ -158,7 +158,23 @@
 				'exclusive' => '',
 				'finderQuery' => '',
 				'counterQuery' => ''
-			)
+			),
+            'Fichiermodule' => array(
+                'className' => 'Fichiermodule',
+                'foreignKey' => false,
+                'dependent' => true,
+                'conditions' => array(
+                    'Fichiermodule.modele = \'Propopdo\'',
+                    'Fichiermodule.fk_value = {$__cakeID__$}'
+                ),
+                'fields' => '',
+                'order' => '',
+                'limit' => '',
+                'offset' => '',
+                'exclusive' => '',
+                'finderQuery' => '',
+                'counterQuery' => ''
+            )
 		);
 
 
