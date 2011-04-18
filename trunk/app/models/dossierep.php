@@ -18,13 +18,13 @@
 		);
 
 		public $belongsTo = array(
-			'Commissionep' => array(
+			/*'Commissionep' => array(
 				'className' => 'Commissionep',
 				'foreignKey' => 'commissionep_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
-			),
+			),*/
 			'Personne' => array(
 				'className' => 'Personne',
 				'foreignKey' => 'personne_id',
@@ -170,6 +170,41 @@
 			),
 		);
 
+		public $hasMany = array(
+			'Passagecommissionep' => array(
+				'className' => 'Passagecommissionep',
+				'foreignKey' => 'dossierep_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			)
+		);
+
+		/*public $hasAndBelongsToMany = array(
+			'Commissionep' => array(
+				'className' => 'Commissionep',
+				'joinTable' => 'passagescommissionseps',
+				'foreignKey' => 'dossierep_id',
+				'associationForeignKey' => 'commissionep_id',
+				'unique' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'finderQuery' => '',
+				'deleteQuery' => '',
+				'insertQuery' => '',
+				'with' => 'Passagecommissionep'
+			)
+		);*/
+
 		/**
 		*
 		*/
@@ -208,7 +243,7 @@
 			$data = array();
 
 			foreach( $this->themeTraite( $dossierep_id ) as $theme => $niveauDecision ) {
-	//			$model = Inflector::classify( $theme );
+				$model = Inflector::classify( $theme );
 
 				$data = Set::merge(
 					$data,

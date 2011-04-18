@@ -31,7 +31,7 @@
 			$options['Reorientationep93']['typeorient_id'] = $this->Reorientationep93->Typeorient->listOptions();
 			$options['Reorientationep93']['structurereferente_id'] = $this->Reorientationep93->Structurereferente->list1Options( array( 'orientation' => 'O' ) );
 			$options['Reorientationep93']['motifreorientep93_id'] = $this->Reorientationep93->Motifreorientep93->find( 'list' );
-            $options['Reorientationep93']['referent_id'] = $this->Reorientationep93->Referent->listOptions();
+			$options['Reorientationep93']['referent_id'] = $this->Reorientationep93->Referent->listOptions();
 			$this->set( compact( 'options' ) );
 		}
 
@@ -47,16 +47,30 @@
 				$conditions = array( 'Dossierep.themeep' => 'reorientationseps93' );
 
 				if( $searchMode == 'traite' ) {
-					$conditions[]['Dossierep.etapedossierep'] = 'traite';
+					$conditions[]['passagescommissionseps.etatdossierep'] = array( 'traite', 'annule', 'reporte' );
 
 					$searchDossierepSeanceepId = Set::classicExtract( $searchData, 'Dossierep.commissionep_id' );
 					if( !empty( $searchDossierepSeanceepId ) ) {
-						$conditions[]['Dossierep.commissionep_id'] = $searchDossierepSeanceepId;
+						$conditions[]['passagescommissionseps.commissionep_id'] = $searchDossierepSeanceepId;
 					}
 				}
 				else {
-					$conditions[]['Dossierep.etapedossierep <>'] = 'traite';
+					$conditions[]['NOT']['passagescommissionseps.etatdossierep'] = array( 'traite', 'annule', 'reporte' );
 				}
+
+				$conditions = array(
+					'Dossierep.id IN ( '.$this->Reorientationep93->Dossierep->Passagecommissionep->sq(
+						array(
+							'alias' => 'passagescommissionseps',
+							'fields' => array(
+								'passagescommissionseps.dossierep_id'
+							),
+							'conditions' => array(
+								$conditions
+							)
+						)
+					).' )'
+				);
 
 				$this->paginate = array(
 					// FIXME: du mal à utiliser Containable pour prendre juste les champs que l'on veut,
@@ -84,12 +98,14 @@
 						'Motifreorientep93',
 						'Structurereferente',
 						'Dossierep' => array(
-							'Commissionep',
+							'Passagecommissionep' => array(
+								'Commissionep',
+								'Decisionreorientationep93' => array(
+									'Typeorient',
+									'Structurereferente',
+								),
+							),
 							'Personne',
-						),
-						'Decisionreorientationep93' => array(
-							'Typeorient',
-							'Structurereferente',
 						),
 					),
 					'conditions' => $conditions,
@@ -102,7 +118,7 @@
 
 			// INFO: containable ne fonctionne pas avec les find('list')
 			$commissionseps = array();
-			$tmpSeanceseps = $this->Reorientationep93->Dossierep->Commissionep->find(
+			$tmpSeanceseps = $this->Reorientationep93->Dossierep->Passagecommissionep->Commissionep->find(
 				'all',
 				array(
 					'fields' => array(
@@ -125,7 +141,7 @@
 
 			$options = Set::merge(
 				$this->Reorientationep93->Dossierep->enums(),
-				$this->Reorientationep93->Decisionreorientationep93->enums(),
+				$this->Reorientationep93->Dossierep->Passagecommissionep->Decisionreorientationep93->enums(),
 				array( 'Dossierep' => array( 'commissionep_id' => $commissionseps ) )
 			);
 			$this->set( compact( 'options' ) );
@@ -157,34 +173,35 @@
 		*/
 
 		protected function _add_edit( $id = null ) {
-
-            
-
-            // Retour à l'index en cas d'annulation
-            if( isset( $this->params['form']['Cancel'] ) ) {
-                if( $this->action == 'add' ){
-                    $persId = $this->Reorientationep93->Orientstruct->field( 'personne_id', array( 'Orientstruct.id' => $id ) );
-                }
-                else if( $this->action == 'edit' ){
-                    $persId = $this->Reorientationep93->Orientstruct->field( 'personne_id', array( 'Orientstruct.id' => $this->data['Reorientationep93']['orientstruct_id'] ) );
-                }
-                $this->redirect( array( 'controller' => 'orientsstructs', 'action' => 'index', $persId ) );
-            }
-
+			// Retour à l'index en cas d'annulation
+			if( isset( $this->params['form']['Cancel'] ) ) {
+				if( $this->action == 'add' ){
+					$persId = $this->Reorientationep93->Orientstruct->field( 'personne_id', array( 'Orientstruct.id' => $id ) );
+				}
+				else if( $this->action == 'edit' ){
+					$persId = $this->Reorientationep93->Orientstruct->field( 'personne_id', array( 'Orientstruct.id' => $this->data['Reorientationep93']['orientstruct_id'] ) );
+				}
+				$this->redirect( array( 'controller' => 'orientsstructs', 'action' => 'index', $persId ) );
+			}
 
 			if( !empty( $this->data ) ) {
 				// FIXME: dans les contrôleurs des autres thèmes aussi
+				$success = true;
 				$this->Reorientationep93->begin();
 				$this->data['Dossierep']['themeep'] = Inflector::tableize( $this->modelClass );
 				if( $this->action == 'add' ) {
 					$this->Reorientationep93->Orientstruct->id = $this->data['Reorientationep93']['orientstruct_id'];
 					$this->data['Dossierep']['personne_id'] = $this->Reorientationep93->Orientstruct->field( 'personne_id' );
-					$success = $this->Reorientationep93->saveAll( $this->data, array( 'atomic' => false ) );
+					$dossierep['Dossierep'] = $this->data['Dossierep'];
+					$this->Reorientationep93->Dossierep->create( $dossierep );
+					$success = $this->Reorientationep93->Dossierep->save();
+					$this->data['Reorientationep93']['dossierep_id'] = $this->Reorientationep93->Dossierep->id;
+// 					$success = $this->Reorientationep93->saveAll( $this->data, array( 'atomic' => false ) );
 				}
-				else {
-					$this->Reorientationep93->create( $this->data );
-					$success = $this->Reorientationep93->save();
-				}
+				
+				$reorientationep93['Reorientationep93'] = $this->data['Reorientationep93'];
+				$this->Reorientationep93->create( $reorientationep93 );
+				$success = $this->Reorientationep93->save() && $success;
 
 				$this->_setFlashResult( 'Save', $success );
 				if( $success ) {
@@ -258,7 +275,7 @@
 					)
 				);
 
-				if( !( empty( $reorientationep93['Dossierep']['etapedossierep'] ) || $reorientationep93['Dossierep']['etapedossierep'] == 'cree' ) ) {
+				if( !( empty( $reorientationep93['Dossierep']['etatdossierep'] ) || $reorientationep93['Dossierep']['etatdossierep'] == 'cree' ) ) {
 					$this->Session->setFlash( 'Cette demande de réorientation ne peut pas être modifiée', 'flash/error' );
 					$this->redirect( array( 'controller' => 'orientsstructs', 'action' => 'index', $reorientationep93['Orientstruct']['personne_id'] ) ); // FIXME
 				}
@@ -282,9 +299,7 @@
 			if( !empty( $reorientationep93['Reorientationep93']['dossierep_id'] ) ) {
 				$success = $this->Reorientationep93->Dossierep->delete( $reorientationep93['Reorientationep93']['dossierep_id'] );
 			}
-			else {
-				$success = $this->Reorientationep93->delete( $id );
-			}
+			$success = $this->Reorientationep93->delete( $id ) && $success;
 			$this->_setFlashResult( 'Delete', $success );
 			$this->Reorientationep93->commit();
 			$this->redirect( Router::url( $this->referer(), true ) );

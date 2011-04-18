@@ -1,12 +1,18 @@
 <h1><?php echo $this->pageTitle = h( __d( 'regroupementep', 'Regroupementep::index', true ) );?></h1>
 
 <?php
+	$fields = array(
+		// 'Regroupementep.id',
+		'Regroupementep.name'
+	);
+
+	foreach( $themes as $theme ) {
+		$fields[] = "Regroupementep.{$theme}";
+	}
+
 	echo $default2->index(
 		$regroupementeps,
-		array(
-// 			'Regroupementep.id',
-			'Regroupementep.name'
-		),
+		$fields,
 		array(
 			'actions' => array(
 				'Regroupementseps::edit',
@@ -17,14 +23,14 @@
 		)
 	);
 
-    echo $default->button(
-        'back',
-        array(
-            'controller' => 'gestionseps',
-            'action'     => 'index'
-        ),
-        array(
-            'id' => 'Back'
-        )
-    );
+	echo $default->button(
+		'back',
+		array(
+			'controller' => 'gestionseps',
+			'action'     => 'index'
+		),
+		array(
+			'id' => 'Back'
+		)
+	);
 ?>

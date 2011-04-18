@@ -1,5 +1,3 @@
-<!-- <h2>Demandes de réorientation 93 par liste</h2> -->
-
 <?php
 // 	echo $form->create( null, array( 'url' => Router::url( null, true ) ) );
 	echo '<table><thead>
@@ -14,23 +12,11 @@
 <th>Structure référente actuelle</th>
 <th>Orientation préconisée</th>
 <th>Structure référente préconisée</th>
-<th>Avis EP</th>
-<th>Orientation choisie</th>
-<th>Structure référente choisie</th>
+<th colspan=\'3\'>Avis EP</th>
 </tr>
 </thead><tbody>';
 // debug( $this->data );
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
-		// Pré-remplissage avec les valeurs de l'avis EP
-		// $this->data est peuplée avec prepareFormData, donc on utilise un autre moyen pour savoir si on a renvoyé le formulaire
-// 		if( empty( $_POST ) ) {
-// 			if( @$dossierep['Reorientationep93']['Decisionreorientationep93'][count(@$dossierep['Reorientationep93']['Decisionreorientationep93'])-1]['etape'] == 'cg' ) {
-// 				$record = @$dossierep['Reorientationep93']['Decisionreorientationep93'][count(@$dossierep['Reorientationep93']['Decisionreorientationep93'])-1];
-// 			}
-// 			else {
-// 				$record = @$dossierep['Reorientationep93']['Decisionreorientationep93'][0];
-// 			}
-// 		}
 		echo $xhtml->tableCells(
 			array(
 				$dossierep['Dossierep']['id'],
@@ -49,16 +35,19 @@
 				$form->input( "Reorientationep93.{$i}.id", array( 'type' => 'hidden'/*, 'value' => $dossierep['Reorientationep93']['id']*/ ) ).
 				$form->input( "Reorientationep93.{$i}.dossierep_id", array( 'type' => 'hidden'/*, 'value' => $dossierep['Dossierep']['id']*/ ) ).
 				$form->input( "Decisionreorientationep93.{$i}.id", array( 'type' => 'hidden'/*, 'value' => @$record['id']*/ ) ).
+				$form->input( "Decisionreorientationep93.{$i}.passagecommissionep_id", array( 'type' => 'hidden' ) ).
 
 				$form->input( "Decisionreorientationep93.{$i}.etape", array( 'type' => 'hidden', 'value' => 'ep' ) ).
-				$form->input( "Decisionreorientationep93.{$i}.reorientationep93_id", array( 'type' => 'hidden'/*, 'value' => @$dossierep['Reorientationep93']['id']*/ ) ).
-				$form->input( "Decisionreorientationep93.{$i}.decision", array( 'label' => false, 'options' => @$options['Decisionreorientationep93']['decision'], 'empty' => true ) ),
+// 				$form->input( "Decisionreorientationep93.{$i}.reorientationep93_id", array( 'type' => 'hidden'/*, 'value' => @$dossierep['Reorientationep93']['id']*/ ) ).
+				$form->input( "Decisionreorientationep93.{$i}.decision", array( 'label' => false, 'type' => 'select', 'options' => @$options['Decisionreorientationep93']['decision'], 'empty' => true ) ),
 				$form->input( "Decisionreorientationep93.{$i}.typeorient_id", array( 'label' => false, 'options' => @$options['Commissionep']['typeorient_id'], 'empty' => true ) ),
 				$form->input( "Decisionreorientationep93.{$i}.structurereferente_id", array( 'label' => false, 'options' => @$options['Commissionep']['structurereferente_id'], 'empty' => true ) ),
+				array( $form->input( "Decisionreorientationep93.{$i}.raisonnonpassage", array( 'label' => false, 'type' => 'textarea', 'empty' => true ) ), array( 'colspan' => '2' ) )
 			)
 		);
 	}
 	echo '</tbody></table>';
+// debug( $dossiers );
 // 	echo $form->submit( 'Enregistrer' );
 // 	echo $form->end();
 
@@ -69,15 +58,20 @@
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
 		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
-		dependantSelect( 'Decisionreorientationep93<?php echo $i?>StructurereferenteId', 'Decisionreorientationep93<?php echo $i?>TypeorientId' );
-		try { $( 'Decisionreorientationep93<?php echo $i?>StructurereferenteId' ).onchange(); } catch(id) { }
+			dependantSelect( 'Decisionreorientationep93<?php echo $i?>StructurereferenteId', 'Decisionreorientationep93<?php echo $i?>TypeorientId' );
+			try { $( 'Decisionreorientationep93<?php echo $i?>StructurereferenteId' ).onchange(); } catch(id) { }
 
-		observeDisableFieldsOnValue(
-			'Decisionreorientationep93<?php echo $i;?>Decision',
-			[ 'Decisionreorientationep93<?php echo $i;?>TypeorientId', 'Decisionreorientationep93<?php echo $i;?>StructurereferenteId' ],
-			'accepte',
-			false
-		);
+			observeDisableFieldsOnValue(
+				'Decisionreorientationep93<?php echo $i;?>Decision',
+				[ 'Decisionreorientationep93<?php echo $i;?>TypeorientId', 'Decisionreorientationep93<?php echo $i;?>StructurereferenteId' ],
+				'accepte',
+				false
+			);
+
+			$( 'Decisionreorientationep93<?php echo $i;?>Decision' ).observe( 'change', function() {
+				afficheRaisonpassage( 'Decisionreorientationep93<?php echo $i;?>Decision', [ 'Decisionreorientationep93<?php echo $i;?>TypeorientId', 'Decisionreorientationep93<?php echo $i;?>StructurereferenteId' ], 'Decisionreorientationep93<?php echo $i;?>Raisonnonpassage' );
+			});
+			afficheRaisonpassage( 'Decisionreorientationep93<?php echo $i;?>Decision', [ 'Decisionreorientationep93<?php echo $i;?>TypeorientId', 'Decisionreorientationep93<?php echo $i;?>StructurereferenteId' ], 'Decisionreorientationep93<?php echo $i;?>Raisonnonpassage' );
 		<?php endfor;?>
 	});
 </script>

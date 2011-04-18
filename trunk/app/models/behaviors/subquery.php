@@ -56,6 +56,8 @@
 		* Les fields sont échappés.
 		*
 		* INFO: http://book.cakephp.org/view/74/Complex-Find-Conditions (Sub-queries)
+		* FIXME: détecter si l'alias est un nom de modèle ou un nom de table et mettre entre
+		* côtes s'il s'agit du modèle
 		*
 		* @param AppModel $model
 		* @param array $queryData

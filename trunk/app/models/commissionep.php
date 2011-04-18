@@ -22,7 +22,7 @@
 			'Formattable',
 			'Enumerable' => array(
 				'fields' => array(
-					'finalisee'
+					'etatcommissionep'
 				)
 			),
 			'Gedooo'
@@ -38,7 +38,7 @@
 			),
 		);
 
-		public $hasMany = array(
+		/*public $hasMany = array(
 			'Dossierep' => array(
 				'className' => 'Dossierep',
 				'foreignKey' => 'commissionep_id',
@@ -52,9 +52,41 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+		);*/
+
+		public $hasMany = array(
+			'Passagecommissionep' => array(
+				'className' => 'Passagecommissionep',
+				'foreignKey' => 'commissionep_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			)
 		);
 
 		public $hasAndBelongsToMany = array(
+			/*'Dossierep' => array(
+				'className' => 'Dossierep',
+				'joinTable' => 'passagescommissionseps',
+				'foreignKey' => 'commissionep_id',
+				'associationForeignKey' => 'dossierep_id',
+				'unique' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'finderQuery' => '',
+				'deleteQuery' => '',
+				'insertQuery' => '',
+				'with' => 'Passagecommissionep'
+			),*/
 			'Membreep' => array(
 				'className' => 'Membreep',
 				'joinTable' => 'commissionseps_membreseps',
@@ -70,6 +102,17 @@
 				'deleteQuery' => '',
 				'insertQuery' => '',
 				'with' => 'CommissionepMembreep'
+			),
+		);
+		
+		public $validate = array(
+			'raisonannulation' => array(
+				array(
+					'rule' => 'notEmpty',
+					'message' => 'Ce champ est obligatoire.',
+					'allowEmpty' => false,
+					'required' => false
+				)
 			)
 		);
 
@@ -111,7 +154,7 @@
 					'Commissionep.identifiant',
 					//'Commissionep.structurereferente_id',
 					'Commissionep.dateseance',
-					'Commissionep.finalisee',
+					'Commissionep.etatcommissionep',
 					'Commissionep.observations'
 				),
 				'contain'=>array(
@@ -133,22 +176,42 @@
 		}
 
 		/**
-		* Renvoie un array associatif contenant les thèmes traités par l'équipe
+		* Renvoie un array associatif contenant les thèmes traités par la commission
 		* ainsi que le niveau de décision pour chacun de ces thèmes.
 		*
-		* @param integer $id L'id technique de la séance d'EP
+		* @param integer $id L'id technique de la commission d'EP
 		* @return array
 		* @access public
 		*/
 
 		public function themesTraites( $id ) {
-			$ep = $this->find(
+			$regroupementep = $this->Ep->Regroupementep->find(
 				'first',
 				array(
+					'contain' => false,
 					'conditions' => array(
-						"{$this->alias}.{$this->primaryKey}" => $id
-					),
-					'contain' => array( 'Ep' )
+						'Regroupementep.id IN ( '.
+							$this->Ep->sq(
+								array(
+									'alias' => 'eps',
+									'fields' => array( 'eps.regroupementep_id' ),
+									'conditions' => array(
+										'eps.id IN ( '.
+											$this->sq(
+												array(
+													'alias' => 'commissionseps',
+													'fields' => array( 'commissionseps.ep_id' ),
+													'conditions' => array(
+														'commissionseps.id' => $id
+													)
+												)
+											)
+										.' )'
+									)
+								)
+							)
+						.' )'
+					)
 				)
 			);
 
@@ -156,10 +219,11 @@
 			$themesTraites = array();
 
 			foreach( $themes as $theme ) {
-				if( in_array( $ep['Ep'][$theme], array( 'ep', 'cg' ) ) ) {
-					$themesTraites[$theme] = $ep['Ep'][$theme];
+				if( in_array( $regroupementep['Regroupementep'][$theme], array( 'decisionep', 'decisioncg' ) ) ) {
+					$themesTraites[$theme] = $regroupementep['Regroupementep'][$theme];
 				}
 			}
+
 			return $themesTraites;
 		}
 
@@ -174,12 +238,22 @@
 		*/
 
 		public function saveDecisions( $commissionep_id, $data, $niveauDecision ) {
-			$success = true;
+			$commissionep = $this->find( 'first', array( 'conditions' => array( 'Commissionep.id' => $commissionep_id ) ) );
 
+			if( empty( $commissionep ) ) {
+				return false;
+			}
+
+			$success = true;
 			foreach( $this->themesTraites( $commissionep_id ) as $theme => $decision ) {
 				$model = Inflector::classify( $theme );
-				$success = $this->Dossierep->{$model}->saveDecisions( $data, $niveauDecision ) && $success;
+				$success = $this->Passagecommissionep->Dossierep->{$model}->saveDecisions( $data, $niveauDecision ) && $success;
 			}
+
+			$this->id = $commissionep_id;
+			$this->set( 'etatcommissionep', "decision{$niveauDecision}" );
+			$success = $this->save() && $success;
+
 			return $success;
 		}
 
@@ -188,7 +262,7 @@
 		* pour les dossiers qui doivent passer par liste.
 		*
 		* @param integer $commissionep_id L'id technique de la séance d'EP
-		* @param string $niveauDecision Le niveau de décision ('ep' ou 'cg') pour
+		* @param string $niveauDecision Le niveau de décision ('decisionep' ou 'decisioncg') pour
 		*	lequel il faut les dossiers à passer par liste.
 		* @return array
 		* @access public
@@ -199,10 +273,10 @@
 
 			foreach( $this->themesTraites( $commissionep_id ) as $theme => $decision ) {
 				$model = Inflector::classify( $theme );
-				$queryData = $this->Dossierep->{$model}->qdDossiersParListe( $commissionep_id, $niveauDecision );
+				$queryData = $this->Passagecommissionep->Dossierep->{$model}->qdDossiersParListe( $commissionep_id, $niveauDecision );
 				$dossiers[$model]['liste'] = array();
 				if( !empty( $queryData ) ) {
-					$dossiers[$model]['liste'] = $this->Dossierep->find( 'all', $queryData );
+					$dossiers[$model]['liste'] = $this->Passagecommissionep->Dossierep->find( 'all', $queryData );
 				}
 			}
 
@@ -217,7 +291,7 @@
 		* @param integer $commissionep_id L'id technique de la séance d'EP
 		* @param array $dossiers Array de résultats de requêtes CakePHP pour
 		* 	chacun des thèmes, par liste.
-		* @param string $niveauDecision Le niveau de décision ('ep' ou 'cg')
+		* @param string $niveauDecision Le niveau de décision ('decisionep' ou 'decisioncg')
 		*	pour lequel on veut obtenir les données par défaut du formulaire de
 		*	traitement.
 		* @return array
@@ -232,7 +306,7 @@
 
 				$data = Set::merge(
 					$data,
-					$this->Dossierep->{$model}->prepareFormData(
+					$this->Passagecommissionep->Dossierep->{$model}->prepareFormData(
 						$commissionep_id,
 						$dossiers[$model]['liste'],
 						$niveauDecision
@@ -254,7 +328,7 @@
 		* thèmes.
 		*
 		* @param integer $commissionep_id L'id technique de la séance d'EP
-		* @param string $niveauDecision Le niveau de décision ('ep' ou 'cg')
+		* @param string $niveauDecision Le niveau de décision ('decisionep' ou 'decisioncg')
 		*	pour lequel on veut finaliser les décisions.
 		* @return boolean
 		* @access public
@@ -268,44 +342,88 @@
 			$totalErrors = 0;
 			foreach( $themesTraites as $themeTraite => $niveauDecisionTheme ) {
 				$themeTraite = Inflector::tableize( $themeTraite );
-				$conditions = array(
-					'Dossierep.commissionep_id' => $commissionep_id,
-					'Dossierep.themeep' => $themeTraite,
-					'Dossierep.etapedossierep NOT' => array(
-						"decision{$niveauDecision}",
-						"traite",
-					)
-				);
 
-				$totalErrors += $this->Dossierep->find( 'count', array( 'conditions' => $conditions ) );
+				// On est au niveau de décision final ou au niveau cg
+				if( ( $niveauDecisionTheme == "decision{$niveauDecision}" ) || $niveauDecisionTheme == 'decisioncg' ) {
+					$conditions = array(
+						'Dossierep.themeep' => $themeTraite,
+						'Dossierep.id IN ( '.$this->Passagecommissionep->sq(
+							array(
+								'alias' => 'passagescommissionseps',
+								'fields' => array(
+									'passagescommissionseps.dossierep_id'
+								),
+								'conditions' => array(
+									'passagescommissionseps.commissionep_id' => $commissionep_id,
+									'passagescommissionseps.etatdossierep <>' => "decision{$niveauDecision}",
+								)
+							)
+						).' )',
+					);
+					$totalErrors += $this->Passagecommissionep->Dossierep->find( 'count', array( 'conditions' => $conditions ) );
+				}
 			}
 
 			if( empty( $totalErrors ) ) {
-				$niveauMax = 'ep';
+				$niveauMax = 'decisionep';
 				foreach( $themesTraites as $themeTraite => $niveauDecisionTheme ) {
 					$themeTraite = Inflector::tableize( $themeTraite );
+					$tableDecisionTraite = "decisions".Inflector::underscore( $themeTraite );
+					$modelDecisionTraite = Inflector::classify( $tableDecisionTraite );
 
-					if( $niveauDecision == $niveauDecisionTheme ) {
-						$this->Dossierep->updateAll(
-							array( 'Dossierep.etapedossierep' => '\'traite\'' ),
+					if( "decision{$niveauDecision}" == $niveauDecisionTheme ) {
+						$this->Passagecommissionep->updateAll(
+							array( 'Passagecommissionep.etatdossierep' => '\'traite\'' ),
 							array(
-								'"Dossierep"."commissionep_id"' => $commissionep_id,
-								'"Dossierep"."themeep"' => $themeTraite
+								'"Passagecommissionep"."commissionep_id"' => $commissionep_id,
+								'"Passagecommissionep"."id" NOT IN ( '. $this->Passagecommissionep->{$modelDecisionTraite}->sq(
+									array(
+										'fields' => array(
+											"{$tableDecisionTraite}.passagecommissionep_id"
+										),
+										'alias' => "{$tableDecisionTraite}",
+										'conditions' => array(
+											"{$tableDecisionTraite}.decision" => array( 'reporte', 'annule' ),
+											"{$tableDecisionTraite}.etape" => $niveauDecision
+										)
+									)
+								).' )'
+							)
+						);
+
+						$listeDecisions = array( 'annule', 'reporte' );
+						foreach( $listeDecisions as $decision ) {
+							$this->Passagecommissionep->updateAll(
+								array( 'Passagecommissionep.etatdossierep' => "'{$decision}'" ),
+								array(
+									'"Passagecommissionep"."commissionep_id"' => $commissionep_id,
+									'"Passagecommissionep"."id" IN ( '. $this->Passagecommissionep->{$modelDecisionTraite}->sq(
+										array(
+											'fields' => array(
+												"{$tableDecisionTraite}.passagecommissionep_id"
+											),
+											'alias' => "{$tableDecisionTraite}",
+											'conditions' => array(
+												"{$tableDecisionTraite}.decision" => array( $decision ),
+													"{$tableDecisionTraite}.etape" => $niveauDecision
+											)
+										)
+									).' )'
+								)
+							);
+						}
+					}
+					elseif( $niveauDecisionTheme == 'decisioncg' && "decision{$niveauDecision}" == 'decisionep' ) {
+						$this->Passagecommissionep->updateAll(
+							array( 'Passagecommissionep.etatdossierep' => '\'decisioncg\'' ),
+							array(
+								'"Passagecommissionep"."commissionep_id"' => $commissionep_id
 							)
 						);
 					}
-					else if( $niveauDecisionTheme == 'cg' && $niveauDecision == 'ep' ) {
-						$this->Dossierep->updateAll(
-							array( 'Dossierep.etapedossierep' => '\'decisioncg\'' ),
-							array(
-								'"Dossierep"."commissionep_id"' => $commissionep_id,
-								'"Dossierep"."themeep"' => $themeTraite
-							)
-						);
-					}
-					
-					if ( $niveauDecisionTheme == 'cg' ) {
-						$niveauMax = 'cg';
+
+					if ( $niveauDecisionTheme == 'decisioncg' ) {
+						$niveauMax = 'decisioncg';
 					}
 				}
 
@@ -318,35 +436,36 @@
 					)
 				);
 
-				if( $niveauDecision == 'cg' || ( $niveauMax == 'ep' && $niveauDecision == 'ep' ) ) {
-					$commissionep['Commissionep']['finalisee'] = 'cg';
+				if( "decision{$niveauDecision}" == 'decisioncg' || ( $niveauMax == 'decisionep' && "decision{$niveauDecision}" == 'decisionep' ) ) {
+					$commissionep['Commissionep']['etatcommissionep'] = 'traite';
 					// Finalisation de chacun des dossiers
 					foreach( $themesTraites as $themeTraite => $niveauDecisionTheme ) {
-						if( $niveauDecisionTheme == $niveauDecision ) {
+						if( $niveauDecisionTheme == "decision{$niveauDecision}" ) {
 							$themeTraite = Inflector::tableize( $themeTraite );
 							$model = Inflector::classify( $themeTraite );
-							$success = $this->Dossierep->{$model}->finaliser( $commissionep_id, $niveauDecisionTheme, $user_id ) && $success;
+							$success = $this->Passagecommissionep->Dossierep->{$model}->finaliser( $commissionep_id, $niveauDecision, $user_id ) && $success;
 						}
 					}
 				}
 				else {
 					$niveauxDecisionsSeance = array_keys( $themesTraites );
-					$commissionep['Commissionep']['finalisee'] = 'ep';
-					if( !in_array( 'cg', $niveauxDecisionsSeance ) ) {
+					$commissionep['Commissionep']['etatcommissionep'] = 'traiteep';
+					if( !in_array( 'decisioncg', $niveauxDecisionsSeance ) ) {
 						// Finalisation de chacun des dossiers
 						foreach( $themesTraites as $themeTraite => $niveauDecisionTheme ) {
 							$themeTraite = Inflector::tableize( $themeTraite );
 							$model = Inflector::classify( $themeTraite );
-							if( $niveauDecisionTheme == $niveauDecision ) {
-								$success = $this->Dossierep->{$model}->finaliser( $commissionep_id, $niveauDecisionTheme, $user_id ) && $success;
+							if( $niveauDecisionTheme == "decision{$niveauDecision}" ) {
+								$success = $this->Passagecommissionep->Dossierep->{$model}->finaliser( $commissionep_id, $niveauDecisionTheme, $user_id ) && $success;
 							}
 							else {
-								$success = $this->Dossierep->{$model}->verrouiller( $commissionep_id, $niveauDecision, $user_id ) && $success;
+								$success = $this->Passagecommissionep->Dossierep->{$model}->verrouiller( $commissionep_id, $niveauDecision, $user_id ) && $success;
 							}
 						}
 					}
 				}
-				$this->create( $commissionep );
+				$this->id = $commissionep['Commissionep']['id'];
+				$this->set( 'etatcommissionep', $commissionep['Commissionep']['etatcommissionep'] );
 				$success = $this->save() && $success;
 			}
 
@@ -361,10 +480,120 @@
 			$cloture = true;
 
 			foreach( $this->themesTraites( $datas['Commissionep']['id'] ) as $theme => $decision ) {
-				$cloture = ($datas['Ep'][$theme]==$datas['Commissionep']['finalisee']) && $cloture;
+				$cloture = ($datas['Ep'][$theme]==$datas['Commissionep']['etatcommissionep']) && $cloture;
 			}
 
 			return $cloture;
+		}
+
+		/**
+		* Change l'état de la commission d'EP entre 'cree' et 'associe'
+		* S'il existe au moins un dossier associé et un membre ayant donné une réponse
+		* "Confirmé" ou "Remplacé par", l'état devient associé, sinon l'état devient 'cree'
+		*
+		* FIXME: il faudrait une réponse pour tous les membres ?
+		*
+		* @param integer $commissionep_id L'identifiant technique de la commission d'EP
+		* @return boolean
+		*/
+
+		public function changeEtatCreeAssocie( $commissionep_id ) {
+			$commissionep = $this->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Commissionep.id' => $commissionep_id
+					),
+					'contain' => false
+				)
+			);
+
+			if( empty( $commissionep ) || !in_array( $commissionep['Commissionep']['etatcommissionep'], array( 'cree', 'associe' ) ) ) {
+				return false;
+			}
+
+			$success = true;
+
+			$nbDossierseps = $this->Passagecommissionep->find(
+				'count',
+				array(
+					'conditions' => array(
+						'Passagecommissionep.commissionep_id' => $commissionep_id
+					)
+				)
+			);
+
+			$nbMembreseps = $this->CommissionepMembreep->find(
+				'count',
+				array(
+					'conditions' => array(
+						'CommissionepMembreep.commissionep_id' => $commissionep_id,
+						'CommissionepMembreep.reponse' => array( 'confirme', 'remplacepar' ),
+					)
+				)
+			);
+
+			$this->id = $commissionep_id;
+			if( !empty( $nbDossierseps ) && !empty( $nbMembreseps ) && $commissionep['Commissionep']['etatcommissionep'] == 'cree' ) {
+				$this->set( 'etatcommissionep', 'associe' );
+				$success = $this->save() && $success;
+			}
+			else if( ( empty( $nbDossierseps ) || empty( $nbMembreseps ) ) && $commissionep['Commissionep']['etatcommissionep'] == 'associe' ) {
+				$this->set( 'etatcommissionep', 'cree' );
+				$success = $this->save() && $success;
+			}
+
+			return $success;
+		}
+
+		/**
+		* Change l'état de la commission d'EP entre 'associe' et 'presence'
+		* S'il existe au moins un membre présent à la commission
+		*
+		* FIXME: à modifier lors de la mise en place du corum
+		*
+		* @param integer $commissionep_id L'identifiant technique de la commission d'EP
+		* @return boolean
+		*/
+
+		public function changeEtatAssociePresence( $commissionep_id ) {
+			$commissionep = $this->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Commissionep.id' => $commissionep_id
+					),
+					'contain' => false
+				)
+			);
+
+			if( empty( $commissionep ) || !in_array( $commissionep['Commissionep']['etatcommissionep'], array( 'associe', 'presence' ) ) ) {
+				return false;
+			}
+
+			$success = true;
+
+			$nbMembreseps = $this->CommissionepMembreep->find(
+				'count',
+				array(
+					'conditions' => array(
+						'CommissionepMembreep.commissionep_id' => $commissionep_id,
+						'CommissionepMembreep.presence' => array( 'present', 'remplacepar' ),
+					)
+				)
+			);
+
+			$this->id = $commissionep_id;
+			if( !empty( $nbMembreseps ) && $commissionep['Commissionep']['etatcommissionep'] == 'associe' ) {
+				$this->set( 'etatcommissionep', 'presence' );
+				$success = $this->save() && $success;
+			}
+			else if(  empty( $nbMembreseps ) && $commissionep['Commissionep']['etatcommissionep'] == 'presence' ) {
+				$this->set( 'etatcommissionep', 'associe' );
+				$success = $this->save() && $success;
+			}
+
+			return $success;
 		}
 
 		/**
@@ -381,7 +610,7 @@
 				commissionep_dateseance,
 				commissionep_salle,
 				commissionep_observations,
-				commissionep_finalisee,
+				commissionep_etatcommissionep,
 				structurereferente_id,
 				structurereferente_typeorient_id,
 				structurereferente_lib_struc,
@@ -411,8 +640,6 @@
 				'fields' => array(
 					'Dossierep.id',
 					'Dossierep.personne_id',
-					'Dossierep.commissionep_id',
-					'Dossierep.etapedossierep',
 					'Dossierep.themeep',
 					'Dossierep.created',
 					'Dossierep.modified',
@@ -443,15 +670,22 @@
 				),
 				'joins' => array(
 					array(
+						'table'      => 'passagescommissionseps',
+						'alias'      => 'Passagecommissionep',
+						'type'       => 'INNER',
+						'foreignKey' => false,
+						'conditions' => array(
+							'Passagecommissionep.dossierep_id = Dossierep.id',
+							'Passagecommissionep.commissionep_id' => $commissionep_id,
+						),
+					),
+					array(
 						'table'      => 'personnes',
 						'alias'      => 'Personne',
 						'type'       => 'INNER',
 						'foreignKey' => false,
 						'conditions' => array( "Dossierep.personne_id = Personne.id" ),
 					),
-				),
-				'conditions' => array(
-					'Dossierep.commissionep_id' => $commissionep_id
 				)
 			);
 
@@ -459,25 +693,25 @@
 			foreach( $this->themesTraites( $commissionep_id ) as $theme => $decision ) {
 				$model = Inflector::classify( $theme );
 
-				$options = Set::merge( $options, $this->Dossierep->{$model}->enums() );
+				$options = Set::merge( $options, $this->Passagecommissionep->Dossierep->{$model}->enums() );
 // debug($model);
 // die();
 				$modeleDecisions = array( 'Nonrespectsanctionep93' => 'Decisionnonrespectsanctionep93' );// FIXME: à supprimer après le renommage des tables
 				if( isset( $modeleDecisions[$model] ) ) {
-					$options = Set::merge( $options, $this->Dossierep->{$model}->{$modeleDecisions[$model]}->enums() );
+					$options = Set::merge( $options, $this->Passagecommissionep->Dossierep->{$model}->{$modeleDecisions[$model]}->enums() );
 				}
 
 				foreach( array( 'fields', 'joins' ) as $key ) {
-					$qdModele = $this->Dossierep->{$model}->qdProcesVerbal();
+					$qdModele = $this->Passagecommissionep->Dossierep->{$model}->qdProcesVerbal();
 					$queryData[$key] = array_merge( $queryData[$key], $qdModele[$key] );
 				}
 			}
 			$options = Set::merge( $options, $this->enums() );
-			$options = Set::merge( $options, $this->Dossierep->enums() );
+			$options = Set::merge( $options, $this->Passagecommissionep->Dossierep->enums() );
 			$options = Set::merge( $options, $this->Membreep->enums() );
 			$options = Set::merge( $options, $this->CommissionepMembreep->enums() );
 
- 			$dossierseps = $this->Dossierep->find( 'all', $queryData );
+ 			$dossierseps = $this->Passagecommissionep->Dossierep->find( 'all', $queryData );
 			// FIXME: faire la traduction des enums dans les modèles correspondants ?
 
 			// present, excuse, FIXME: remplace_par
@@ -540,8 +774,8 @@
 				'fields' => array(
 					'Dossierep.id',
 					'Dossierep.personne_id',
-					'Dossierep.commissionep_id',
-					'Dossierep.etapedossierep',
+					'Passagecommissionep.commissionep_id',
+					'Passagecommissionep.etatdossierep',
 					'Dossierep.themeep',
 					'Dossierep.created',
 					'Dossierep.modified',
@@ -572,6 +806,13 @@
 				),
 				'joins' => array(
 					array(
+						'table'      => 'passagescommissionseps',
+						'alias'      => 'Passagecommissionep',
+						'type'       => 'INNER',
+						'foreignKey' => false,
+						'conditions' => array( "Dossierep.id = Passagecommissionep.dossierep_id" ),
+					),
+					array(
 						'table'      => 'personnes',
 						'alias'      => 'Personne',
 						'type'       => 'INNER',
@@ -580,17 +821,18 @@
 					),
 				),
 				'conditions' => array(
-					'Dossierep.commissionep_id' => $commissionep_id
+					'Passagecommissionep.commissionep_id' => $commissionep_id
 				)
 			);
 
 			$options = array( 'Personne' => array( 'qual' => ClassRegistry::init( 'Option' )->qual() ) );
 			$options = Set::merge( $options, $this->enums() );
-			$options = Set::merge( $options, $this->Dossierep->enums() );
+			$options = Set::merge( $options, $this->Passagecommissionep->Dossierep->enums() );
 			$options = Set::merge( $options, $this->Membreep->enums() );
 			$options = Set::merge( $options, $this->CommissionepMembreep->enums() );
+			$options = Set::merge( $options, $this->Passagecommissionep->enums() );
 
- 			$dossierseps = $this->Dossierep->find( 'all', $queryData );
+ 			$dossierseps = $this->Passagecommissionep->Dossierep->find( 'all', $queryData );
 			// FIXME: faire la traduction des enums dans les modèles correspondants ?
 
 			// present, excuse, FIXME: remplace_par

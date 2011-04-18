@@ -27,3 +27,9 @@ msgstr "Accepté"
 
 msgid "ENUM::DECISION::refuse"
 msgstr "Refusé"
+
+msgid "ENUM::DECISION::annule"
+msgstr "Annulé"
+
+msgid "ENUM::DECISION::reporte"
+msgstr "Reporté"

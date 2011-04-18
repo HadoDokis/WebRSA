@@ -112,7 +112,7 @@
 					<th>'.$xpaginator->sort( __d( 'commissionep', 'Commissionep.identifiant', true ), 'Commissionep.identifiant' ).'</th>
 					<th>'.$xpaginator->sort( __d( 'structurereferente', 'Structurereferente.lib_struc', true ), 'Structurereferente.lib_struc' ).'</th>
 					<th>'.$xpaginator->sort( __d( 'commissionep', 'Commissionep.dateseance', true ), 'Commissionep.dateseance' ).'</th>
-					<th>'.$xpaginator->sort( __d( 'commissionep', 'Commissionep.finalisee', true ), 'Commissionep.finalisee' ).'</th>
+					<th>'.$xpaginator->sort( __d( 'commissionep', 'Commissionep.etatcommissionep', true ), 'Commissionep.etatcommissionep' ).'</th>
 					<th>'.$xpaginator->sort( __d( 'commissionep', 'Commissionep.observations', true ), 'Commissionep.observations' ).'</th>
 					<th>Actions</th>
 				</tr></thead><tbody>';
@@ -123,13 +123,13 @@
 				else {*/
 					switch( @$this->action ) {
 						case 'creationmodification':
-							$lien = $xhtml->link( 'Modification', array( 'controller' => 'commissionseps', 'action' => 'edit', $commissionep['Commissionep']['id'] ), array( 'enabled' => empty( $commissionep['Commissionep']['finalisee'] ) ) );
+							$lien = $xhtml->link( 'Modification', array( 'controller' => 'commissionseps', 'action' => 'edit', $commissionep['Commissionep']['id'] ) );
 							break;
 						case 'attributiondossiers':
-							$lien = $xhtml->link( 'Attribution des dossiers à une commission', array( 'controller' => 'dossierseps', 'action' => 'choose', $commissionep['Commissionep']['id'] ), array( 'enabled' => empty( $commissionep['Commissionep']['finalisee'] ) ) );
+							$lien = $xhtml->link( 'Attribution des dossiers à une commission', array( 'controller' => 'dossierseps', 'action' => 'choose', $commissionep['Commissionep']['id'] ) );
 							break;
 						case 'arbitrage':
-							$lien = $xhtml->link( 'Arbitrage', array( 'controller' => 'commissionseps', 'action' => 'view', $commissionep['Commissionep']['id'] ), array( 'enabled' => ( $commissionep['Commissionep']['finalisee'] != 'cg' ) ) );
+							$lien = $xhtml->link( 'Arbitrage', array( 'controller' => 'commissionseps', 'action' => 'view', $commissionep['Commissionep']['id'] ) );
 							break;
 						default:
 							$lien = $xhtml->link( 'Voir', array( 'controller' => 'commissionseps', 'action' => 'view', $commissionep['Commissionep']['id'] ) );
@@ -142,7 +142,7 @@
 					<td>'.h( $commissionep['Commissionep']['identifiant'] ).'</td>
 					<td>'.h( @$commissionep['Structurereferente']['lib_struc'] ).'</td>
 					<td>'.h( $locale->date( 'Date::short', $commissionep['Commissionep']['dateseance'] ) ).'</td>
-					<td>'.h( Set::enum( $commissionep['Commissionep']['finalisee'], $options['Commissionep']['finalisee'] ) ).'</td>
+					<td>'.h( Set::enum( $commissionep['Commissionep']['etatcommissionep'], $options['Commissionep']['etatcommissionep'] ) ).'</td>
 					<td>'.h( $commissionep['Commissionep']['observations'] ).'</td>
 					<td>'.$lien.'</td>
 				</tr>';

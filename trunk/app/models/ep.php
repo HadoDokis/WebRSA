@@ -8,7 +8,7 @@
 		public $actsAs = array(
 			'Autovalidate',
 			'ValidateTranslate',
-			'Enumerable' => array(
+			/*'Enumerable' => array(
 				'fields' => array(
 					// Thèmes 66
 					'saisinebilanparcoursep66',
@@ -23,7 +23,7 @@
 					'regressionorientationep58',
 					'sanctionep58'
 				)
-			)
+			)*/
 		);
 
 		public $belongsTo = array(
@@ -128,8 +128,7 @@
 		*/
 
 		public function themes() {
-			$enums = $this->enums();
-			return array_keys( $enums['Ep'] );
+			return $this->Regroupementep->themes();
 		}
 
 		/**

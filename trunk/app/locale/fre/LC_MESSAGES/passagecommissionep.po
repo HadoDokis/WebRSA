@@ -19,17 +19,23 @@ msgstr ""
 
 ###############################################################################
 
-msgid "Ep::index::empty"
-msgstr "Aucune équipe pluridisciplinaire n'a encore été créée."
+msgid "Passagecommissionep.etatdossierep"
+msgstr "État du dossier d'EP"
 
-msgid "Ep.name"
-msgstr "Nom de l'EP"
+msgid "ENUM::ETATDOSSIEREP::associe"
+msgstr "Associé"
 
-msgid "Ep.identifiant"
-msgstr "Identifiant EP"
+msgid "ENUM::ETATDOSSIEREP::decisionep"
+msgstr "En attente de validation de l'EP"
 
-msgid "Ep.regroupementep_id"
-msgstr "Regroupement de l'EP"
+msgid "ENUM::ETATDOSSIEREP::decisioncg"
+msgstr "En attente de validation du CG"
 
-msgid "Zonegeographique.Zonegeographique"
-msgstr "Zones géographiques dont s'occupe l'EP"
+msgid "ENUM::ETATDOSSIEREP::traite"
+msgstr "Traité"
+
+msgid "ENUM::ETATDOSSIEREP::annule"
+msgstr "Annulé"
+
+msgid "ENUM::ETATDOSSIEREP::reporte"
+msgstr "Reporté"

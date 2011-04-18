@@ -6,9 +6,9 @@
 		public function beforeFilter() {
 		}
 
-		
+
 		protected function _setOptions() {
-			$options = array();
+			$options = $this->Regroupementep->enums();
 			$this->set( compact( 'options' ) );
 		}
 
@@ -19,15 +19,12 @@
 					'Regroupementep.id',
 					'Regroupementep.name'
 				),
-//				'contain' => array(
-//					'Fonctionmembreep',
-//					'Ep'
-//				),
 				'limit' => 10
 			);
 
 			$this->_setOptions();
 			$this->set( 'regroupementeps', $this->paginate( $this->Regroupementep ) );
+			$this->set( 'themes', $this->Regroupementep->themes() );
 		}
 
 		/**
@@ -86,9 +83,5 @@
 			$this->_setFlashResult( 'Delete', $success );
 			$this->redirect( array( 'action' => 'index' ) );
 		}
-
-
-
-
 	}
 ?>

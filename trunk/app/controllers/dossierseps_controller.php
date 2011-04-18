@@ -36,7 +36,7 @@
 					'Personne.prenom',
 					'Commissionep.dateseance',
 					'Dossierep.created',
-					'Dossierep.etapedossierep',
+					'Dossierep.etatdossierep',
 					'Dossierep.themeep',
 				),
 				'contain' => array(
@@ -55,12 +55,11 @@
 		*/
 
 		public function choose( $commissionep_id ) {
-			$commissionep = $this->Dossierep->Commissionep->find(
+			$commissionep = $this->Dossierep->Passagecommissionep->Commissionep->find(
 				'first',
 				array(
 					'conditions' => array(
-						'Commissionep.id' => $commissionep_id,
-						//'Commissionep.finalisee IS NULL'
+						'Commissionep.id' => $commissionep_id
 					),
 					'contain' => array(
 						'Ep' => array(
@@ -70,7 +69,7 @@
 				)
 			);
 
-			if( !empty( $commissionep['Commissionep']['finalisee'] ) ) {
+			if( in_array( $commissionep['Commissionep']['etatcommissionep'], array( 'decisionep', 'decisioncg', 'annulee' ) ) ) {
 				$this->Session->setFlash( 'Impossible d\'attribuer des dossiers à une commission d\'EP lorsque celle-ci comporte déjà des avis ou des décisions.', 'default', array( 'class' => 'error' ) );
 				$this->redirect( $this->referer() );
 			}
@@ -107,44 +106,35 @@
 			// Fin conditions zones géographiques CG 66
 
 			if( !empty( $this->data ) ) {
-				// Début TODO: à déplacer dans le modèle ?
-				$this->Dossierep->begin();
-				$data = Set::extract( $this->data, '/Dossierep' );
-
-				$inEp = array();
-				$notInEp = array();
-				foreach( $data as $dossier ) {
-					if( !empty( $dossier['Dossierep']['chosen'] ) ) {
-						$inEp[] = $dossier['Dossierep']['id'];
+				$ajouts = array();
+				$suppressions = array();
+				foreach( $this->data['Dossierep'] as $key => $dossierep ) {
+					if( empty( $dossierep['chosen'] ) && !empty( $this->data['Passagecommissionep'][$key]['id'] ) ) {
+						$suppressions[] = $this->data['Passagecommissionep'][$key]['id'];
 					}
-					else {
-						$notInEp[] = $dossier['Dossierep']['id'];
+					else if( !empty( $dossierep['chosen'] ) && empty( $this->data['Passagecommissionep'][$key]['id'] ) ) {
+						$ajouts[] = array(
+// 							'etatdossierep' => 'cree',
+							'commissionep_id' => $commissionep_id,
+							'dossierep_id' => $dossierep['id'],
+						);
 					}
 				}
+
+				$this->Dossierep->begin();
 
 				$success = true;
-				if( !empty( $notInEp ) ) {
-					$success = $this->Dossierep->updateAll(
-						array(
-							'Dossierep.commissionep_id' => null,
-							'Dossierep.etapedossierep' => '\'cree\''
-						),
-						array( '"Dossierep"."id" IN ( \''.implode( '\', \'', $notInEp ).'\' )' )
-					) && $success;
 
+				if( !empty( $ajouts ) ) {
+					$success = $this->Dossierep->Passagecommissionep->saveAll( $ajouts, array( 'atomic' => false ) ) && $success;
 				}
 
-				if( !empty( $inEp ) ) {
-					$success = $this->Dossierep->updateAll(
-						array(
-							'Dossierep.commissionep_id' => $commissionep_id,
-							'Dossierep.etapedossierep' => '\'seance\''
-						),
-						array( '"Dossierep"."id" IN ( \''.implode( '\', \'', $inEp ).'\' )' )
-					) && $success;
-
+				if( !empty( $suppressions ) ) {
+					 $success = $this->Dossierep->Passagecommissionep->delete( $suppressions ) && $success;
 				}
-				// Fin TODO: à déplacer dans le modèle ?
+
+				// Changer l'état de la séance
+				$success = $this->Dossierep->Passagecommissionep->Commissionep->changeEtatCreeAssocie( $commissionep_id ) && $success;
 
 				$this->_setFlashResult( 'Save', $success );
 
@@ -157,7 +147,7 @@
 				}
 			}
 
-			$themes = $this->Dossierep->Commissionep->themesTraites($commissionep_id);
+			$themes = $this->Dossierep->Passagecommissionep->Commissionep->themesTraites( $commissionep_id );
 			$listeThemes = null;
 			if( !empty( $themes ) ) {
 				$listeThemes['OR'] = array();
@@ -178,16 +168,41 @@
 							'Personne.nom',
 							'Personne.prenom',
 							'Commissionep.dateseance',
-							'Dossierep.commissionep_id',
+							'Passagecommissionep.id',
+							'Passagecommissionep.commissionep_id',
+							'Passagecommissionep.dossierep_id',
 							'Dossierep.created',
 							'Dossierep.themeep',
 						),
-						'contain' => array(
-							'Commissionep' => array(
-								'Ep'
-							)
-						),
 						'joins' => array(
+							array(
+								'table'      => 'passagescommissionseps',
+								'alias'      => 'Passagecommissionep',
+								'type'       => 'LEFT OUTER',
+								'foreignKey' => false,
+								'conditions' => array(
+									'Dossierep.id = Passagecommissionep.dossierep_id',
+									'Passagecommissionep.commissionep_id' => $commissionep_id
+								)
+							),
+							array(
+								'table'      => 'commissionseps',
+								'alias'      => 'Commissionep',
+								'type'       => 'LEFT OUTER',
+								'foreignKey' => false,
+								'conditions' => array(
+									'Commissionep.id = Passagecommissionep.commissionep_id'
+								)
+							),
+							array(
+								'table'      => 'eps',
+								'alias'      => 'Ep',
+								'type'       => 'LEFT OUTER',
+								'foreignKey' => false,
+								'conditions' => array(
+									'Commissionep.ep_id = Ep.id'
+								)
+							),
 							array(
 								'table'      => 'personnes',
 								'alias'      => 'Personne',
@@ -218,17 +233,31 @@
 							),
 						),
 						'conditions' => array(
-							'OR' => array(
-								'Dossierep.commissionep_id IS NULL',
-								'Dossierep.commissionep_id' => $commissionep_id,
-							),
-							'NOT' => array(
-								'Dossierep.etapedossierep = \'decisionep\'',
-								'Dossierep.etapedossierep = \'decisioncg\'',
-								'Dossierep.etapedossierep = \'traite\'',
-							),
 							$conditionsAdresses,
-							$listeThemes
+							$listeThemes,
+							'Dossierep.id NOT IN ('.
+								$this->Dossierep->Passagecommissionep->sq(
+									array(
+										'fields' => array( 'passagescommissionseps.dossierep_id' ),
+										'alias' => 'passagescommissionseps',
+										'joins' => array(
+											array(
+												'table'      => 'commissionseps',
+												'alias'      => 'commissionseps',
+												'type'       => 'INNER',
+												'foreignKey' => false,
+												'conditions' => array( 'commissionseps.id = passagescommissionseps.commissionep_id' ),
+												'order'      => array( 'commissionseps.dateseance DESC' ),
+												'limit'      => 1,
+											),
+										),
+										'conditions' => array(
+											'commissionseps.id <> ' => $commissionep_id,
+											'passagescommissionseps.etatdossierep <>' => 'reporte'
+										)
+									)
+								)
+							.' )'
 						),
 						'limit' => 100,
 						'order' => array( 'Dossierep.created ASC' )
@@ -240,16 +269,16 @@
 				// INFO: pour avoir le formulaire pré-rempli ... à mettre dans le modèle également ?
 				if( empty( $this->data ) ) {
 					foreach( $dossierseps as $key => $dossierep ) {
-						$dossierseps[$key]['Dossierep']['chosen'] =  ( ( $dossierep['Dossierep']['commissionep_id'] == $commissionep_id ) );
+						$dossierseps[$key]['Dossierep']['chosen'] =  ( ( $dossierep['Passagecommissionep']['commissionep_id'] == $commissionep_id ) );
 					}
 				}
 
 				$options = $this->Dossierep->enums();
-				$options['Dossierep']['commissionep_id'] = $this->Dossierep->Commissionep->find(
+				$options['Dossierep']['commissionep_id'] = $this->Dossierep->Passagecommissionep->Commissionep->find(
 					'list',
 					array(
 						'conditions' => array(
-							'Commissionep.finalisee' => null
+							'Commissionep.etatcommissionep' => array( 'cree', 'associe', 'decisionep' )
 						)
 					)
 				);
@@ -319,7 +348,7 @@
 						'Personne.prenom',
 						'Commissionep.dateseance',
 						'Dossierep.created',
-						'Dossierep.etapedossierep',
+						'Dossierep.etatdossierep',
 						'Dossierep.themeep',
 					),*/
 					'contain' => array(
@@ -371,7 +400,7 @@
 					),
 					'conditions' => array(
 						'Dossierep.commissionep_id IS NOT NULL',
-						'Dossierep.etapedossierep' => 'traite',
+						'Dossierep.etatdossierep' => 'traite',
 					),
 					'limit' => 10
 				)

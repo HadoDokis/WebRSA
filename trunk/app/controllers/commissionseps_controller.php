@@ -19,43 +19,95 @@
 		*
 		*/
 
+		public $etatsActions = array(
+			'cree' => array(
+				'dossierseps::choose',
+				'membreseps::editliste',
+				'commissionseps::edit',
+				'commissionseps::delete',
+			),
+			'associe' => array(
+				'commissionseps::ordredujour',
+				'dossierseps::choose',
+				'membreseps::editliste',
+				'commissionseps::edit',
+				'membreseps::editpresence',
+				'commissionseps::delete',
+			),
+			'presence' => array(
+				'commissionseps::ordredujour',
+				'commissionseps::edit',
+				'membreseps::editpresence',
+				'commissionseps::traiterep',
+				'commissionseps::delete',
+			),
+			'decisionep' => array(
+				'commissionseps::ordredujour',
+				'commissionseps::edit',
+				'commissionseps::traiterep',
+				'commissionseps::finaliserep',
+				'commissionseps::delete',
+			),
+			'traiteep' => array(
+				'commissionseps::ordredujour',
+				'commissionseps::impressionpv',
+				'commissionseps::traitercg',
+			),
+			'decisioncg' => array(
+				'commissionseps::ordredujour',
+				'commissionseps::impressionpv',
+				'commissionseps::traitercg',
+				'commissionseps::finalisercg',
+			),
+			'traite' => array(
+				'commissionseps::ordredujour',
+				'commissionseps::impressionpv',
+			),
+			'annule' => array()
+		);
+
+		/**
+		*
+		*/
+
 		protected function _setOptions() {
 			/// TODO: plus générique - scinder les CG
 			$options = Set::merge(
-				$this->Commissionep->Dossierep->Reorientationep93->Decisionreorientationep93->enums(),
-				$this->Commissionep->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->enums(),
+				$this->Commissionep->Passagecommissionep->Decisionreorientationep93->enums(),
+				/*$this->Commissionep->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->enums(),
 				$this->Commissionep->Dossierep->Saisinebilanparcoursep66->Decisionsaisinebilanparcoursep66->enums(),
 				$this->Commissionep->Dossierep->Nonrespectsanctionep93->Decisionnonrespectsanctionep93->enums(),
 				$this->Commissionep->Dossierep->Nonrespectsanctionep93->enums(),
 				$this->Commissionep->Dossierep->Defautinsertionep66->enums(),
 				$this->Commissionep->Dossierep->Nonorientationproep58->Decisionnonorientationproep58->enums(),
 				$this->Commissionep->Dossierep->Nonorientationproep93->Decisionnonorientationproep93->enums(),
-				$this->Commissionep->Dossierep->Sanctionep58->Decisionsanctionep58->enums(),
-				$this->Commissionep->Dossierep->enums(),
+				$this->Commissionep->Dossierep->Sanctionep58->Decisionsanctionep58->enums(),*/
+				$this->Commissionep->Passagecommissionep->Dossierep->enums(),
 				$this->Commissionep->enums(),
 				$this->Commissionep->CommissionepMembreep->enums(),
+				$this->Commissionep->Passagecommissionep->enums(),
 				array( 'Foyer' => array( 'sitfam' => $this->Option->sitfam() ) )
 			);
 			//$options['Commissionep']['ep_id'] = $this->Commissionep->Ep->find( 'list' );
 			if( !in_array( $this->action, array( 'add', 'edit', 'index' ) ) ) {
 				/// TODO: est-ce que ça a  du sens ?
-				$options['Commissionep']['typeorient_id'] = $this->Commissionep->Dossierep->Personne->Orientstruct->Typeorient->listOptions();
-				$options['Commissionep']['structurereferente_id'] = $this->Commissionep->Dossierep->Personne->Orientstruct->Structurereferente->list1Options();
-				$options['Commissionep']['referent_id'] = $this->Commissionep->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->Referent->listOptions();
-				$options['Decisionsaisinepdoep66']['decisionpdo_id'] = $this->Commissionep->Dossierep->Saisinepdoep66->Decisionsaisinepdoep66->Decisionpdo->find('list');
+				$options['Commissionep']['typeorient_id'] = $this->Commissionep->Passagecommissionep->Dossierep->Personne->Orientstruct->Typeorient->listOptions();
+				$options['Commissionep']['structurereferente_id'] = $this->Commissionep->Passagecommissionep->Dossierep->Personne->Orientstruct->Structurereferente->list1Options();
+				$options['Commissionep']['referent_id'] = $this->Commissionep->Passagecommissionep->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->Referent->listOptions();
+				$options['Decisionsaisinepdoep66']['decisionpdo_id'] = $this->Commissionep->Passagecommissionep->Dossierep->Saisinepdoep66->Decisionsaisinepdoep66->Decisionpdo->find('list');
 			}/*
 			else{
 				$options[$this->modelClass]['structurereferente_id'] = $this->{$this->modelClass}->Dossierep->Personne->Orientstruct->Structurereferente->listOptions();
 			}*/
 			$options[$this->modelClass]['ep_id'] = $this->{$this->modelClass}->Ep->listOptions();
 			$options['Ep']['regroupementep_id'] = $this->{$this->modelClass}->Ep->Regroupementep->find( 'list' );
-			$options['Decisiondefautinsertionep66']['typeorient_id'] = $this->Commissionep->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->Typeorient->listOptions();
-			$options['Decisiondefautinsertionep66']['structurereferente_id'] = $this->Commissionep->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->Structurereferente->list1Options();//listOptions
-			$options['Decisiondefautinsertionep66']['referent_id'] = $this->Commissionep->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->Referent->listOptions();
+			$options['Decisiondefautinsertionep66']['typeorient_id'] = $this->Commissionep->Passagecommissionep->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->Typeorient->listOptions();
+			$options['Decisiondefautinsertionep66']['structurereferente_id'] = $this->Commissionep->Passagecommissionep->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->Structurereferente->list1Options();//listOptions
+			$options['Decisiondefautinsertionep66']['referent_id'] = $this->Commissionep->Passagecommissionep->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->Referent->listOptions();
 			$this->set( compact( 'options' ) );
 			$this->set( 'typevoie', $this->Option->typevoie() );
 
-			$this->set( 'listesanctionseps58', $this->Commissionep->Dossierep->Sanctionep58->Listesanctionep58->find( 'list' ) );
+			$this->set( 'listesanctionseps58', $this->Commissionep->Passagecommissionep->Dossierep->Sanctionep58->Listesanctionep58->find( 'list' ) );
 		}
 
 		/**
@@ -64,9 +116,21 @@
 
 		public function index( $etape = null ) {
 			if( !empty( $this->data ) ) {
-				$queryData = $this->Commissionep->search( $this->data );
-				$queryData['limit'] = 10;
-				$this->paginate = $queryData;
+				$this->paginate['Commissionep'] = $this->Commissionep->search( $this->data );
+				$this->paginate['Commissionep']['limit'] = 10;
+
+				switch( $etape ) {
+					case 'creationmodification':
+						$this->paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'cree', 'associe' );
+						break;
+					case 'attributiondossiers':
+						$this->paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'cree', 'associe' );
+						break;
+					case 'arbitrage':
+						$this->paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'associe', 'decisionep', 'decisioncg' );
+						break;
+				}
+
 				$commissionseps = $this->paginate( $this->Commissionep );
 				$this->set( 'commissionseps', $commissionseps );
 // 				$this->set( 'etape', $etape );
@@ -149,7 +213,7 @@
 				);
 				$this->assert( !empty( $this->data ), 'error404' );
 
-				if( !empty( $this->data['Commissionep']['finalisee'] ) ) {
+				if( in_array( $this->data['Commissionep']['etatcommissionep'], array( 'decisionep', 'decisioncg', 'annulee' ) ) ) {
 					$this->Session->setFlash( 'Impossible de modifier une commission d\'EP lorsque celle-ci comporte déjà des avis ou des décisions.', 'default', array( 'class' => 'error' ) );
 					$this->redirect( $this->referer() );
 				}
@@ -175,13 +239,43 @@
 		}
 
 		/**
-		*
+		* Fonction de suppression de la commission d'ep
+		* Passe tous ses dossiers liés dans l'état reporté et son état à annulé
 		*/
 
-		public function delete( $id ) {
-			$success = $this->Commissionep->delete( $id );
-			$this->_setFlashResult( 'Delete', $success );
-			$this->redirect( array( 'action' => 'index' ) );
+		public function delete( $commissionep_id ) {
+			if ( !empty( $this->data ) ) {
+				$success = true;
+				$this->Commissionep->begin();
+				$this->Commissionep->id = $commissionep_id;
+				
+				$commissionep = array(
+					'Commissionep' => array(
+						'id' => $commissionep_id,
+						'etatcommissionep' => 'annule',
+						'raisonannulation' => $this->data['Commissionep']['raisonannulation']
+					)
+				);
+				$this->Commissionep->create( $commissionep );
+				$success = $this->Commissionep->save() && $success;
+				
+				$this->Commissionep->Passagecommissionep->updateAll(
+					array( 'Passagecommissionep.etatdossierep' => '\'reporte\'' ),
+					array(
+						'"Passagecommissionep"."commissionep_id"' => $commissionep_id
+					)
+				);
+				
+				$this->_setFlashResult( 'Delete', $success );
+				if ( $success ) {
+					$this->Commissionep->commit();
+					$this->redirect( array( 'controller' => 'commissionseps', 'action' => 'view', $commissionep_id ) );
+				}
+				else {
+					$this->Commissionep->rollback();
+				}
+			}
+			$this->set( 'commissionep_id', $commissionep_id );
 		}
 
 		/**
@@ -205,9 +299,9 @@
 
 			// Etape OK ?
 			$etapePossible = (
-				( ( $niveauDecision == 'ep' ) && empty( $commissionep['Commissionep']['finalisee'] ) ) // OK
-				|| ( ( $niveauDecision == 'cg' ) && ( $commissionep['Commissionep']['finalisee'] == 'ep' ) ) // OK
-				|| ( $commissionep['Commissionep']['finalisee'] != 'cg' ) // OK
+				( ( $niveauDecision == 'ep' ) && empty( $commissionep['Commissionep']['etatcommissionep'] ) ) // OK
+				|| ( ( $niveauDecision == 'cg' ) && ( $commissionep['Commissionep']['etatcommissionep'] == 'ep' ) ) // OK
+				|| ( $commissionep['Commissionep']['etatcommissionep'] != 'cg' ) // OK
 			);
 
 			if( !$etapePossible ) {
@@ -220,8 +314,7 @@
 				$success = $this->Commissionep->saveDecisions( $commissionep_id, $this->data, $niveauDecision );
 
 				$this->_setFlashResult( 'Save', $success );
-				if( /*false && */$success ) {
-// 					$this->Commissionep->rollback();
+				if( $success ) {
 					$this->Commissionep->commit();
 					$this->redirect( array( 'action' => 'view', $commissionep_id, '#dossiers' ) );
 				}
@@ -235,7 +328,7 @@
 			if( empty( $this->data ) ) {
 				$this->data = $this->Commissionep->prepareFormData( $commissionep_id, $dossiers, $niveauDecision );
 			}
-// debug( $this->data );
+
 			$this->set( compact( 'commissionep', 'dossiers' ) );
 			$this->set( 'commissionep_id', $commissionep_id);
 			$this->_setOptions();
@@ -268,9 +361,9 @@
 
 			// Etape OK ?
 			$etapePossible = (
-				( ( $niveauDecision == 'ep' ) && empty( $commissionep['Commissionep']['finalisee'] ) ) // OK
-				|| ( ( $niveauDecision == 'cg' ) && ( $commissionep['Commissionep']['finalisee'] == 'ep' ) ) // OK
-				|| ( $commissionep['Commissionep']['finalisee'] != 'cg' ) // OK
+				( ( $niveauDecision == 'ep' ) && empty( $commissionep['Commissionep']['etatcommissionep'] ) ) // OK
+				|| ( ( $niveauDecision == 'cg' ) && ( $commissionep['Commissionep']['etatcommissionep'] == 'ep' ) ) // OK
+				|| ( $commissionep['Commissionep']['etatcommissionep'] != 'cg' ) // OK
 			);
 
 			if( !$etapePossible ) {
@@ -347,21 +440,23 @@
 			$countDossiers = 0;
 			foreach( $themes as $theme ) {
 				$class = Inflector::classify( $theme );
-				$dossiers[$theme] = $this->Commissionep->Dossierep->find(
+				$dossiers[$theme] = $this->Commissionep->Passagecommissionep->find(
 					'all',
 					array(
 						'conditions' => array(
-							'Dossierep.commissionep_id' => $commissionep_id,
+							'Passagecommissionep.commissionep_id' => $commissionep_id,
 							'Dossierep.themeep' => Inflector::tableize( $class )
 						),
 						'contain' => array(
-							'Personne' => array(
-								'Foyer' => array(
-									'Adressefoyer' => array(
-										'conditions' => array(
-											'Adressefoyer.rgadr' => '01'
-										),
-										'Adresse'
+							'Dossierep' => array(
+								'Personne' => array(
+									'Foyer' => array(
+										'Adressefoyer' => array(
+											'conditions' => array(
+												'Adressefoyer.rgadr' => '01'
+											),
+											'Adresse'
+										)
 									)
 								)
 							)
@@ -370,7 +465,7 @@
 				);
 				$countDossiers += count($dossiers[$theme]);
 			}
-//debug($dossiers);
+
 			$this->set(compact('dossiers'));
 			$this->set(compact('countDossiers'));
 
@@ -409,6 +504,7 @@
 				}
 			}
 			$this->set('membresepsseanceseps', $membresepsseanceseps);
+			$this->set('etatsActions', $this->etatsActions);
 		}
 
 		/**
@@ -420,7 +516,7 @@
 				'first',
 				array(
 					'fields' => array(
-						'Commissionep.finalisee'
+						'Commissionep.etatcommissionep'
 					),
 					'conditions' => array(
 						'Commissionep.id' => $commissionep_id
@@ -438,8 +534,8 @@
 				)
 			);
 
-			if( empty( $commissionep['Commissionep']['finalisee'] ) || ( $presencesNonIndiquees > 0 ) ) {
-				if( empty( $commissionep['Commissionep']['finalisee'] ) ) {
+			if( empty( $commissionep['Commissionep']['etatcommissionep'] ) || ( $presencesNonIndiquees > 0 ) ) {
+				if( empty( $commissionep['Commissionep']['etatcommissionep'] ) ) {
 					$this->Session->setFlash( 'Impossible d\'imprimer le PV avant de finaliser la commission au niveau EP.', 'default', array( 'class' => 'error' ) );
 				}
 				else {
@@ -475,11 +571,14 @@
 				)
 			);
 
-			$nombreDossierseps = $this->Commissionep->Dossierep->find(
+			$nombreDossierseps = $this->Commissionep->Passagecommissionep->find(
 				'count',
 				array(
+					'contain' => array(
+						'Dossierep'
+					),
 					'conditions' => array(
-						'Dossierep.commissionep_id' => $commissionep_id
+						'Passagecommissionep.commissionep_id' => $commissionep_id
 					)
 				)
 			);

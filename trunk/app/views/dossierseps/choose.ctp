@@ -9,7 +9,7 @@
 </h1>
 
 <?php
-		
+
 	if ( isset( $themeEmpty ) && $themeEmpty == true ) {
 		echo '<p class="notice">Veuillez attribuer des thème à l\'EP gérant la commission avant.</p>';
 	}
@@ -27,7 +27,7 @@
 			array(
 				'cohorte' => true,
 				'options' => $options,
-				'hidden' => array( 'Dossierep.id' ),
+				'hidden' => array( 'Dossierep.id', 'Passagecommissionep.id' ),
 				'paginate' => 'Dossierep'
 			)
 		);
