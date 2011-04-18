@@ -323,7 +323,7 @@
 					if( $saved ) {
 						// Début sauvegarde des fichiers attachés, en utilisant le Component Fileuploader
                         $dir = $this->Fileuploader->dirFichiersModule( $this->action, $this->params['pass'][0] );
-                        $saved = $this->Fileuploader->saveFichiers( $dir, !Set::classicExtract( $this->data, "Traitementpdo.haspiecejointe" ) ) && $saved;
+                        $saved = $this->Fileuploader->saveFichiers( $dir, !Set::classicExtract( $this->data, "Traitementpdo.haspiecejointe" ), $id ) && $saved;
 
                         if( $saved ) {
                             $this->Jetons->release( $dossier_id );
