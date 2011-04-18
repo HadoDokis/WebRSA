@@ -45,4 +45,19 @@
 
 <script type="text/javascript">
 	makeTabbed( 'tabbedWrapper', 2 );
+
+	function afficheRaisonpassage( decision, idsNonRaisonpassage, idRaisonpassage ) {
+		if ( $F( decision ) == 'reporte' || $F( decision ) == 'annule' ) {
+			idsNonRaisonpassage.each( function ( id ) {
+				$( id ).up(1).hide();
+			});
+			$( idRaisonpassage ).up(1).show();
+		}
+		else {
+			idsNonRaisonpassage.each( function ( id ) {
+				$( id ).up(1).show();
+			});
+			$( idRaisonpassage ).up(1).hide();
+		}
+	}
 </script>

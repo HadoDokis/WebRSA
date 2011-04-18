@@ -442,14 +442,24 @@
 				array(
 					'conditions' => array(
 						'Dossierep.personne_id' => $personne_id,
-						'Dossierep.etapedossierep <>' => 'traite',
 						'Dossierep.themeep' => array(
 							'reorientationseps93',
 							'defautsinsertionseps66',
 							'saisinesbilansparcourseps66',
 							'nonorientationsproseps58',
 							'regressionsorientationseps58'
-						)
+						),
+						'Dossierep.id NOT IN ( '.$this->Personne->Dossierep->Passagecommissionep->sq(
+							array(
+								'alias' => 'passagescommissionseps',
+								'fields' => array(
+									'passagescommissionseps.dossierep_id'
+								),
+								'conditions' => array(
+									'passagescommissionseps.etatdossierep' => array( 'traite', 'annule' )
+								)
+							)
+						).' )'
 					),
 					'contain' => false
 				)

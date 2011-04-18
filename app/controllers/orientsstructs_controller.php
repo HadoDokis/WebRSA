@@ -74,7 +74,7 @@
 						'Referent'
 					),
 					'order' => array(
-						'Orientstruct.rgorient DESC',
+						'COALESCE( Orientstruct.rgorient, \'0\') DESC',
 						'Orientstruct.date_valid DESC'
 					)
 				)
@@ -112,7 +112,17 @@
 								'OR' => array(
 									array(
 										'Dossierep.personne_id' => $personne_id,
-										'Dossierep.etapedossierep <>' => 'traite'
+										'Dossierep.id NOT IN ( '.$this->Personne->Dossierep->Passagecommissionep->sq(
+											array(
+												'alias' => 'passagescommissionseps',
+												'fields' => array(
+													'passagescommissionseps.dossierep_id'
+												),
+												'conditions' => array(
+													'passagescommissionseps.etatdossierep' => 'traite'
+												)
+											)
+										).' )'
 									),
 									array(
 										'Nonrespectsanctionep93.active' => 1,
@@ -139,34 +149,10 @@
 
 				$reorientationep93 = $this->Orientstruct->Reorientationep93->find(
 					'first',
-					array(
-						'contain' => array(
-							'Orientstruct' => array(
-								'fields' => array( 'rgorient' )
-							),
-							'Dossierep' => array(
-								'fields' => array( 'etapedossierep' ),
-								'Personne' => array(
-									'fields' => array( 'nom', 'prenom' )
-								)
-							),
-							'Typeorient' => array(
-								'fields' => array( 'lib_type_orient' )
-							),
-							'Structurereferente' => array(
-								'fields' => array( 'lib_struc' )
-							),
-						),
-						'conditions' => array(
-							'Dossierep.personne_id' => $personne_id,
-							'Dossierep.themeep' => 'reorientationseps93',
-							'Dossierep.etapedossierep <>' => 'traite'
-						),
-						'order' => array( 'Reorientationep93.created DESC' )
-					)
+					$this->Orientstruct->Reorientationep93->qdReorientationEnCours( $personne_id )
 				);
 				$this->set( 'reorientationep93', $reorientationep93 );
-				$this->set( 'optionsdossierseps', $this->Orientstruct->Reorientationep93->Dossierep->enums() );
+				$this->set( 'optionsdossierseps', $this->Orientstruct->Reorientationep93->Dossierep->Passagecommissionep->enums() );
 			}
 			elseif ( Configure::read( 'Cg.departement' ) == 58 ) {
 				$propoorientationcov58 = $this->Orientstruct->Personne->Dossiercov58->Propoorientationcov58->find(
@@ -337,7 +323,7 @@
 					/// FIXME: ne fonctionne que pour le cg58, à faire évoluer une fois la thématique mise en place
 					if ( $this->Orientstruct->isRegression( $personne_id, $this->data['Orientstruct']['typeorient_id'] ) && /*( */Configure::read( 'Cg.departement' ) == 58 /*|| Configure::read( 'Cg.departement' ) == 93 )*/ ) {
 						$theme = 'Regressionorientationep'.Configure::read( 'Cg.departement' );
-						
+
 						$dossierep = array(
 							'Dossierep' => array(
 								'personne_id' => $personne_id,

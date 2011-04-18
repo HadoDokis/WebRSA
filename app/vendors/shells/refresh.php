@@ -312,7 +312,8 @@
 								'Orientstruct.statut_orient',
 								'Orientstruct.date_impression',
 								'Orientstruct.daterelance',
-								'Orientstruct.statutrelance'
+								'Orientstruct.statutrelance',
+								'Orientstruct.rgorient'
 							),
 							'joins' => array(
 								array(
@@ -352,6 +353,7 @@
 						$orientstruct = array( 'Orientstruct' => Set::classicExtract( $personne, 'Orientstruct' ) );
 						$orientstruct['Orientstruct']['propo_algo_texte'] = $preOrientationTexte;
 						$orientstruct['Orientstruct']['propo_algo'] = $preOrientation;
+						( !empty( $orientstruct['Orientstruct']['rgorient'] ) ) ? $orientstruct['Orientstruct']['rgorient']++ : $orientstruct['Orientstruct']['rgorient'] = 1;
 
 						$this->Orientstruct->create( $orientstruct );
 						$this->Orientstruct->validate = array();

@@ -7,7 +7,23 @@
 
 		public $actsAs = array(
 			'Autovalidate',
-			'ValidateTranslate'
+			'ValidateTranslate',
+			'Enumerable' => array(
+				'fields' => array(
+					// Thèmes 66
+					'saisinebilanparcoursep66',
+					'saisinepdoep66',
+					'defautinsertionep66',
+					// Thèmes 93
+					'nonrespectsanctionep93',
+					'reorientationep93',
+					'nonorientationproep93',
+					// Thèmes 58
+					'nonorientationproep58',
+					'regressionorientationep58',
+					'sanctionep58'
+				)
+			)
 		);
 
 		public $hasMany = array(
@@ -34,5 +50,21 @@
 				)
 			)
 		);
+
+		/**
+		* Retourne la liste des thèmes traités par le regroupement
+		*/
+
+		public function themes() {
+			$enums = $this->enums();
+
+			foreach( array_keys( $enums[$this->alias] ) as $key ) {
+				if( $key != 'reorientationep93' ) {
+					unset( $enums[$this->alias][$key] );
+				}
+			}
+
+			return array_keys( $enums[$this->alias] );
+		}
 	}
 ?>

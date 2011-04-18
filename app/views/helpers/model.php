@@ -4,7 +4,8 @@
 	*/
 
 	function dataTranslate( $data, $string ) {
-		if( preg_match_all( '/#(?<!\w)(\w+)(\.|\.[0-9]+\.)(\w+)#/', $string, $matches, PREG_SET_ORDER ) ) {
+		//if( preg_match_all( '/#(?<!\w)(\w+)(\.|\.[0-9]+\.)(\w+)#/', $string, $matches, PREG_SET_ORDER ) ) {
+		if( preg_match_all( '/#(?<!\w)((\w+)(\.|\.[0-9]+\.))+(\w+)#/', $string, $matches, PREG_SET_ORDER ) ) {
 			$matches = Set::extract( $matches, '{n}.0' );
 
 			foreach( $matches as $match ) {

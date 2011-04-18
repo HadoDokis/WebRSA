@@ -100,3 +100,31 @@ msgstr "Code postal de la commission"
 
 msgid "Commissionep.villeseance"
 msgstr "Ville de la commission"
+
+
+msgid "ENUM::ETATCOMMISSIONEP::cree"
+msgstr "Créée"
+
+msgid "ENUM::ETATCOMMISSIONEP::associe"
+msgstr "Associée"
+
+msgid "ENUM::ETATCOMMISSIONEP::presence"
+msgstr "Présences prises"
+
+msgid "ENUM::ETATCOMMISSIONEP::decisionep"
+msgstr "En cours de décision niveau EP"
+
+msgid "ENUM::ETATCOMMISSIONEP::decisioncg"
+msgstr "En cours de décision niveau CG"
+
+msgid "ENUM::ETATCOMMISSIONEP::traiteep"
+msgstr "Traitée au niveau de l'EP"
+
+msgid "ENUM::ETATCOMMISSIONEP::traite"
+msgstr "Traitée"
+
+msgid "ENUM::ETATCOMMISSIONEP::annule"
+msgstr "Annulée"
+
+msgid "ENUM::ETATCOMMISSIONEP::reporte"
+msgstr "Reportée"

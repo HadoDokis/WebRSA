@@ -6,7 +6,7 @@
 		public function beforeFilter() {
 		}
 
-		
+
 		protected function _setOptions() {
 			$options = $this->Membreep->enums();
 			if( $this->action != 'index' ) {
@@ -43,7 +43,7 @@
 				if (isset($membreep['Suppleant']['id']) && !empty($membreep['Suppleant']['id']))
 					$membreep['Membreep']['nomcompletsuppleant'] = implode ( ' ', array( $membreep['Suppleant']['qual'], $membreep['Suppleant']['nom'], $membreep['Suppleant']['prenom']) );
 				$membreep['Membreep']['nomcomplet'] = implode ( ' ', array( $membreep['Membreep']['qual'], $membreep['Membreep']['nom'], $membreep['Membreep']['prenom']) );
-					
+
 			}
 
 			$this->_setOptions();
@@ -92,7 +92,7 @@
 				);
 				$this->assert( !empty( $this->data ), 'error404' );
 			}
-			
+
 			$listeSuppleants = array();
 			if( $this->action == 'add' ) {
 				$membres = array();
@@ -113,7 +113,7 @@
 				$listeSuppleants[$membre['Membreep']['id']] = implode(' ', array($membre['Membreep']['qual'], $membre['Membreep']['nom'], $membre['Membreep']['prenom']));
 			}
 			$this->set(compact('listeSuppleants'));
-			
+
 			$this->_setOptions();
 			$this->render( null, null, 'add_edit' );
 		}
@@ -183,7 +183,9 @@
 						$success = $this->Membreep->CommissionepMembreep->save() && $success;
 					}
 				}
-				
+
+				$success = $this->Membreep->CommissionepMembreep->Commissionep->changeEtatCreeAssocie( $seance_id ) && $success;
+
 				$this->_setFlashResult( 'Save', $success );
 				if ($success) {
 					$this->Membreep->CommissionepMembreep->commit();
@@ -310,13 +312,13 @@
 				)
 			);
 			$this->set('fonctionsmembres', $fonctionsmembres);
-			
+
 			$this->set('seance_id', $seance_id);
 			$this->set('ep_id', $ep_id);
 			$this->_setOptions();
 		}
-		
-		
+
+
 		public function editpresence( $ep_id, $seance_id ) {
 			if( !empty( $this->data ) ) {
 				$success = true;
@@ -346,7 +348,9 @@
 						$success = $this->Membreep->CommissionepMembreep->save() && $success;
 					}
 				}
-				
+
+				$success = $this->Membreep->CommissionepMembreep->Commissionep->changeEtatAssociePresence( $seance_id ) && $success;
+
 				$this->_setFlashResult( 'Save', $success );
 				if ($success) {
 					$this->Membreep->CommissionepMembreep->commit();
@@ -474,12 +478,12 @@
 				)
 			);
 			$this->set('fonctionsmembres', $fonctionsmembres);
-			
+
 			$this->set('seance_id', $seance_id);
 			$this->set('ep_id', $ep_id);
 			$this->_setOptions();
 		}
-		
+
 	}
-	
+
 ?>

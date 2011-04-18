@@ -1,43 +1,43 @@
 <?php
 /* SVN FILE: $Id$ */
 /**
- * Custom Inflected Words.
- *
- * This file is used to hold words that are not matched in the normail Inflector::pluralize() and
- * Inflector::singularize()
- *
- * PHP versions 4 and %
- *
- * CakePHP(tm) :  Rapid Development Framework (http://www.cakephp.org)
- * Copyright 2005-2008, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
- *
- * Licensed under The MIT License
- * Redistributions of files must retain the above copyright notice.
- *
- * @filesource
- * @copyright     Copyright 2005-2008, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
- * @link          http://www.cakefoundation.org/projects/info/cakephp CakePHP(tm) Project
- * @package       cake
- * @subpackage    cake.app.config
- * @since         CakePHP(tm) v 1.0.0.2312
- * @version       $Revision$
- * @modifiedby    $LastChangedBy$
- * @lastmodified  $Date$
- * @license       http://www.opensource.org/licenses/mit-license.php The MIT License
- */
+* Custom Inflected Words.
+*
+* This file is used to hold words that are not matched in the normail Inflector::pluralize() and
+* Inflector::singularize()
+*
+* PHP versions 4 and %
+*
+* CakePHP(tm) :  Rapid Development Framework (http://www.cakephp.org)
+* Copyright 2005-2008, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
+*
+* Licensed under The MIT License
+* Redistributions of files must retain the above copyright notice.
+*
+* @filesource
+* @copyright     Copyright 2005-2008, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
+* @link          http://www.cakefoundation.org/projects/info/cakephp CakePHP(tm) Project
+* @package       cake
+* @subpackage    cake.app.config
+* @since         CakePHP(tm) v 1.0.0.2312
+* @version       $Revision$
+* @modifiedby    $LastChangedBy$
+* @lastmodified  $Date$
+* @license       http://www.opensource.org/licenses/mit-license.php The MIT License
+*/
 /**
- * This is a key => value array of regex used to match words.
- * If key matches then the value is returned.
- *
- *  $pluralRules = array('/(s)tatus$/i' => '\1\2tatuses', '/^(ox)$/i' => '\1\2en', '/([m|l])ouse$/i' => '\1ice');
- */
+* This is a key => value array of regex used to match words.
+* If key matches then the value is returned.
+*
+*  $pluralRules = array('/(s)tatus$/i' => '\1\2tatuses', '/^(ox)$/i' => '\1\2en', '/([m|l])ouse$/i' => '\1ice');
+*/
 	$pluralRules = array();
 /**
- * This is a key only array of plural words that should not be inflected.
- * Notice the last comma
- *
- * $uninflectedPlural = array('.*[nrlm]ese', '.*deer', '.*fish', '.*measles', '.*ois', '.*pox');
- */
+* This is a key only array of plural words that should not be inflected.
+* Notice the last comma
+*
+* $uninflectedPlural = array('.*[nrlm]ese', '.*deer', '.*fish', '.*measles', '.*ois', '.*pox');
+*/
 // 	$uninflectedPlural = array(
 // 		// Tables
 // 		'bilanparcours' => 'bilanparcours',
@@ -46,23 +46,23 @@
 // 		'rendezvous' => 'rendezvous',
 // 	);
 
-    $uninflectedPlural = array(
-        'recours',
-        'rendezvous',
-        'parcours',
-        'permisb',
-        'avisref',
-        'bilanparcours',
-        //Harry
-        'rejet_historique',
-        //Fin harry
-    );
+	$uninflectedPlural = array(
+		'recours',
+		'rendezvous',
+		'parcours',
+		'permisb',
+		'avisref',
+		'bilanparcours',
+		//Harry
+		'rejet_historique',
+		//Fin harry
+	);
 /**
- * This is a key => value array of plural irregular words.
- * If key matches then the value is returned.
- *
- *  $irregularPlural = array('atlas' => 'atlases', 'beef' => 'beefs', 'brother' => 'brothers')
- */
+* This is a key => value array of plural irregular words.
+* If key matches then the value is returned.
+*
+*  $irregularPlural = array('atlas' => 'atlases', 'beef' => 'beefs', 'brother' => 'brothers')
+*/
 	$irregularPlural = array(
 		// Tables
 		'acccreaentr' => 'accscreaentr',
@@ -108,7 +108,7 @@
 		'controleadministratif' => 'controlesadministratifs',
 		'creancealimentaire' => 'creancesalimentaires',
 		'critereapre' => 'criteresapres',
-        'critereci' => 'criteresci',
+		'critereci' => 'criteresci',
 		'criterecui' => 'criterescuis',
 		'criterepdo' => 'criterespdos',
 		'critererdv' => 'criteresrdv',
@@ -123,30 +123,30 @@
 		'detaildifsoc' => 'detailsdifsocs',
 		'detaildroitrsa' => 'detailsdroitsrsa',
 		'detailnatmob' => 'detailsnatmobs',
-        /// Dsp CG
-        'detailmoytrans' => 'detailsmoytrans',
-        'detaildifsocpro' => 'detailsdifsocpros',
-        'detailprojpro' => 'detailsprojpros',
-        'detailfreinform' => 'detailsfreinforms',
-        'detailconfort' => 'detailsconforts',
-        'dsp_rev' => 'dsps_revs',
-        'detaildifsoc_rev' => 'detailsdifsocs_revs',
-        'detailaccosocfam_rev' => 'detailsaccosocfams_revs',
-        'detailaccosocindi_rev' => 'detailsaccosocindis_revs',
-        'detaildifdisp_rev' => 'detailsdifdisps_revs',
-        'detailnatmob_rev' => 'detailsnatmobs_revs',
-        'detaildiflog_rev' => 'detailsdiflogs_revs',
-        'detailmoytrans_rev' => 'detailsmoytrans_revs',
-        'detaildifsocpro_rev' => 'detailsdifsocpros_revs',
-        'detailprojpro_rev' => 'detailsprojpros_revs',
-        'detailfreinform_rev' => 'detailsfreinforms_revs',
-        'detailconfort_rev' => 'detailsconforts_revs',
-        /// Fin DSP CG
+		/// Dsp CG
+		'detailmoytrans' => 'detailsmoytrans',
+		'detaildifsocpro' => 'detailsdifsocpros',
+		'detailprojpro' => 'detailsprojpros',
+		'detailfreinform' => 'detailsfreinforms',
+		'detailconfort' => 'detailsconforts',
+		'dsp_rev' => 'dsps_revs',
+		'detaildifsoc_rev' => 'detailsdifsocs_revs',
+		'detailaccosocfam_rev' => 'detailsaccosocfams_revs',
+		'detailaccosocindi_rev' => 'detailsaccosocindis_revs',
+		'detaildifdisp_rev' => 'detailsdifdisps_revs',
+		'detailnatmob_rev' => 'detailsnatmobs_revs',
+		'detaildiflog_rev' => 'detailsdiflogs_revs',
+		'detailmoytrans_rev' => 'detailsmoytrans_revs',
+		'detaildifsocpro_rev' => 'detailsdifsocpros_revs',
+		'detailprojpro_rev' => 'detailsprojpros_revs',
+		'detailfreinform_rev' => 'detailsfreinforms_revs',
+		'detailconfort_rev' => 'detailsconforts_revs',
+		/// Fin DSP CG
 		'detailressourcemensuelle' => 'detailsressourcesmensuelles',
 		'detailressourcemensuelle_ressourcemensuelle' => 'detailsressourcesmensuelles_ressourcesmensuelles',
 		'domiciliationbancaire' => 'domiciliationsbancaires',
 		'dossiercaf' => 'dossierscaf',
-        'dossiersimplifie' => 'dossierssimplifies',
+		'dossiersimplifie' => 'dossierssimplifies',
 		'etatliquidatif' => 'etatsliquidatifs',
 		'formpermfimo' => 'formspermsfimo',
 		'formpermfimo_pieceformpermfimo' => 'formspermsfimo_piecesformspermsfimo',
@@ -155,7 +155,7 @@
 		'fraisdeplacement66' => 'fraisdeplacements66',
 		'grossesse' => 'grossesses',
 		'identificationflux' => 'identificationsflux',
-        'indicateurmensuel' => 'indicateursmensuels',
+		'indicateurmensuel' => 'indicateursmensuels',
 		'informationeti' => 'informationseti',
 		'infoagricole' => 'infosagricoles',
 		'infofinanciere' => 'infosfinancieres',
@@ -193,13 +193,13 @@
 		'propopdo_situationpdo' => 'propospdos_situationspdos',
 		'propopdo_statutdecisionpdo' => 'propospdos_statutsdecisionspdos',
 		'propopdo_statutpdo' => 'propospdos_statutspdos',
-        'recoursapre' => 'recoursapres',
+		'recoursapre' => 'recoursapres',
 		'reducrsa' => 'reducsrsa',
 		'refpresta' => 'refsprestas',
 		'regroupementzonegeo' => 'regroupementszonesgeo',
 		'regroupementzonegeo_zonegeographique' => 'regroupementszonesgeo_zonesgeographiques',
 		'relanceapre' => 'relancesapres',
-        'repddtefp' => 'repsddtefp',
+		'repddtefp' => 'repsddtefp',
 		'ressource_ressourcemensuelle' => 'ressources_ressourcesmensuelles',
 		'ressourcemensuelle' => 'ressourcesmensuelles',
 		'serviceinstructeur' => 'servicesinstructeurs',
@@ -247,12 +247,12 @@
 		'dossierep' => 'dossierseps',
 		'ep_zonegeographique' => 'eps_zonesgeographiques',
 		'membreep' => 'membreseps',
-        'presencemembreep' => 'presencesmembreseps',
+		'presencemembreep' => 'presencesmembreseps',
 		'fonctionmembreep' => 'fonctionsmembreseps',
 		'commissionep' => 'commissionseps',
 		'ep' => 'eps',
 		'regroupementep' => 'regroupementseps',
-        'gestionep' => 'gestionseps',
+		'gestionep' => 'gestionseps',
 		'motifreorientep93' => 'motifsreorientseps93',
 		'decisionsaisinebilanparcoursep66' => 'decisionssaisinesbilansparcourseps66',
 		'decisionsaisinepdoep66' => 'decisionssaisinespdoseps66',
@@ -293,34 +293,37 @@
 		'criterebilanparcours66' => 'criteresbilansparcours66',
 		'objetentretien' => 'objetsentretien',
 		'fichiertraitementpdo' => 'fichierstraitementspdos',
-        'criteredossiercov58' => 'criteresdossierscovs58',
-        'cohortevalidationapre66' => 'cohortesvalidationapres66',
-        'critereentretien' => 'criteresentretiens',
-        'courrierpdo' => 'courrierspdos',
-        'courrierpdo_traitementpdo' => 'courrierspdos_traitementspdos',
-        'textareacourrierpdo' => 'textareascourrierspdos',
-        'contenutextareacourrierpdo' => 'contenustextareascourrierspdos',
-        'fichiermodule' => 'fichiersmodules',
+		'criteredossiercov58' => 'criteresdossierscovs58',
+		'cohortevalidationapre66' => 'cohortesvalidationapres66',
+		'critereentretien' => 'criteresentretiens',
+		'courrierpdo' => 'courrierspdos',
+		'courrierpdo_traitementpdo' => 'courrierspdos_traitementspdos',
+		'textareacourrierpdo' => 'textareascourrierspdos',
+		'contenutextareacourrierpdo' => 'contenustextareascourrierspdos',
+		'fichiermodule' => 'fichiersmodules',
+		// EPs restructuration
+		'passagecommissionep' => 'passagescommissionseps',
+
 	);
 /**
- * This is a key => value array of regex used to match words.
- * If key matches then the value is returned.
- *
- *  $singularRules = array('/(s)tatuses$/i' => '\1\2tatus', '/(matr)ices$/i' =>'\1ix','/(vert|ind)ices$/i')
- */
+* This is a key => value array of regex used to match words.
+* If key matches then the value is returned.
+*
+*  $singularRules = array('/(s)tatuses$/i' => '\1\2tatus', '/(matr)ices$/i' =>'\1ix','/(vert|ind)ices$/i')
+*/
 	$singularRules = array();
 /**
- * This is a key only array of singular words that should not be inflected.
- * You should not have to change this value below if you do change it use same format
- * as the $uninflectedPlural above.
- */
+* This is a key only array of singular words that should not be inflected.
+* You should not have to change this value below if you do change it use same format
+* as the $uninflectedPlural above.
+*/
 	$uninflectedSingular = $uninflectedPlural;
 /**
- * This is a key => value array of singular irregular words.
- * Most of the time this will be a reverse of the above $irregularPlural array
- * You should not have to change this value below if you do change it use same format
- *
- * $irregularSingular = array('atlases' => 'atlas', 'beefs' => 'beef', 'brothers' => 'brother')
- */
+* This is a key => value array of singular irregular words.
+* Most of the time this will be a reverse of the above $irregularPlural array
+* You should not have to change this value below if you do change it use same format
+*
+* $irregularSingular = array('atlases' => 'atlas', 'beefs' => 'beef', 'brothers' => 'brother')
+*/
 	$irregularSingular = array_flip($irregularPlural);
 ?>

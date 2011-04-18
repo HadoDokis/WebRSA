@@ -552,9 +552,9 @@
 					'first',
 					array(
 						'fields' => array(
-							'etapedossierep',
+// 							'etapedossierep',
 							'created',
-							'commissionep_id',
+// 							'commissionep_id',
 							'themeep',
 						),
 						'conditions' => array(

@@ -12,11 +12,6 @@
 </h1>
 
 <?php
-	$EpDepartement = Configure::read( 'Cg.departement' );
-	if( empty( $EpDepartement ) || !in_array( $EpDepartement, array( 58, 66, 93 ) ) ) {
-		echo $xhtml->tag( 'p', 'Veuillez contacter votre adminitrateur afin qu\'il ajoute le paramètre de configuration Cg.departement dans le fichier webrsa.inc', array( 'class' => 'error' ) );
-	}
-
 	echo $xform->create( null, array( 'id' => 'EpAddEditForm' ) );
 
 	if (isset($this->data['Ep']['id']))
@@ -32,53 +27,6 @@
 			'options' => $options
 		)
 	);
-
-	// Le CG 93 ne souhaite pas voir ces choix: pour eux, tout se décide
-	// au niveau cg, et toutes les eps traitent potentiellement de tous
-	// les thèmes
-	if( Configure::read( 'Cg.departement' ) == 93 ) {
-		echo $default->subform(
-			array(
-				'Ep.reorientationep93' => array( 'type' => 'hidden', 'value' => 'cg' ),
-				'Ep.nonrespectsanctionep93' => array( 'type' => 'hidden', 'value' => 'cg' ),
-				'Ep.radiepoleemploiep93' => array( 'type' => 'hidden', 'value' => 'cg' ),
-				'Ep.nonorientationproep93' => array( 'type' => 'hidden', 'value' => 'cg' ),
-			)
-		);
-	}
-	// On laisse la possibilité de choisir comme avant pour le CG 58
-	elseif( Configure::read( 'Cg.departement' ) == 58 ) {
-		echo $default->subform(
-			array(
-				'Ep.nonorientationproep58' => array( 'type' => 'hidden', 'value' => 'ep' ),
-				'Ep.regressionorientationep58' => array( 'type' => 'hidden', 'value' => 'ep' ),
-				'Ep.sanctionep58' => array( 'type' => 'hidden', 'value' => 'ep' ),
-			)
-		);
-	}
-	// Le choix est également possible pour le CG 66
-	elseif( Configure::read( 'Cg.departement' ) == 66 ) {
-		echo $xhtml->tag(
-			'fieldset',
-			$xhtml->tag(
-				'legend',
-				'Thématiques 66'
-			).
-			$default->subform(
-				array(
-					'Ep.saisinebilanparcoursep66' => array( 'required' => true ),
-					'Ep.saisinepdoep66' => array( 'required' => true ),
-					'Ep.defautinsertionep66' => array( 'required' => true ),
-				),
-				array(
-					'options' => $options
-				)
-			),
-			array(
-				'label'=>'Thématiques 66'
-			)
-		);
-	}
 
 	echo $html->tag(
 		'div',
@@ -103,9 +51,9 @@
 // 	if ($this->action == 'add') {
 // 		$ep_id = 0;
 // 	}
-	
+
 	echo "<fieldset><legend>Participants</legend>";
-	
+
 		foreach( $listeFonctionsMembres as $fonction_id => $fonction ) {
 			echo $html->tag(
 				'p',
@@ -146,9 +94,9 @@
 
 			echo $xhtml->addLink( 'Ajouter', array( 'controller' => 'eps', 'action'=> 'addparticipant', $ep_id, $fonction_id ) );
 		}
-		
+
 	echo "</fieldset>";
-		
+
 	}
 
 	echo $xform->end( __( 'Save', true ) );

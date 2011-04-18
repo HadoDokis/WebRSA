@@ -81,21 +81,116 @@
 			),
 		);
 
-		public $hasMany = array(
-			'Decisionreorientationep93' => array(
-				'className' => 'Decisionreorientationep93',
-				'foreignKey' => 'reorientationep93_id',
-				'dependent' => true,
-				'conditions' => '',
-				'fields' => '',
-				'order' => '',
-				'limit' => '',
-				'offset' => '',
-				'exclusive' => '',
-				'finderQuery' => '',
-				'counterQuery' => ''
-			),
-		);
+// 		public $hasMany = array(
+// 			'Decisionreorientationep93' => array(
+// 				'className' => 'Decisionreorientationep93',
+// 				'foreignKey' => 'reorientationep93_id',
+// 				'dependent' => true,
+// 				'conditions' => '',
+// 				'fields' => '',
+// 				'order' => '',
+// 				'limit' => '',
+// 				'offset' => '',
+// 				'exclusive' => '',
+// 				'finderQuery' => '',
+// 				'counterQuery' => ''
+// 			),
+// 		);
+
+		/**
+		 * Retourne pour un personne_id donnée les queryDatas permettant de retrouver
+		 * ses réorientationseps93 si elle en a en cours
+		 */
+		
+		public function qdReorientationEnCours( $personne_id ) {
+			return array(
+				'fields' => array(
+					'Personne.nom',
+					'Personne.prenom',
+					'Reorientationep93.id',
+					'Reorientationep93.datedemande',
+					'Orientstruct.rgorient',
+					'Typeorient.lib_type_orient',
+					'Structurereferente.lib_struc',
+					'Passagecommissionep.etatdossierep'
+				),
+				'conditions' => array(
+					'Dossierep.personne_id' => $personne_id,
+					'Dossierep.themeep' => 'reorientationseps93',
+					'Dossierep.id NOT IN ( '.$this->Orientstruct->Personne->Dossierep->Passagecommissionep->sq(
+						array(
+							'alias' => 'passagescommissionseps',
+							'fields' => array(
+								'passagescommissionseps.dossierep_id'
+							),
+							'conditions' => array(
+								'passagescommissionseps.etatdossierep' => array( 'traite', 'annule' )
+							)
+						)
+					).' )'
+				),
+				'joins' => array(
+					array(
+						'table' => 'dossierseps',
+						'alias' => 'Dossierep',
+						'type' => 'INNER',
+						'conditions' => array(
+							'Reorientationep93.dossierep_id = Dossierep.id'
+						)
+					),
+					array(
+						'table' => 'orientsstructs',
+						'alias' => 'Orientstruct',
+						'type' => 'INNER',
+						'conditions' => array(
+							'Reorientationep93.orientstruct_id = Orientstruct.id'
+						)
+					),
+					array(
+						'table' => 'typesorients',
+						'alias' => 'Typeorient',
+						'type' => 'INNER',
+						'conditions' => array(
+							'Reorientationep93.typeorient_id = Typeorient.id'
+						)
+					),
+					array(
+						'table' => 'structuresreferentes',
+						'alias' => 'Structurereferente',
+						'type' => 'INNER',
+						'conditions' => array(
+							'Reorientationep93.structurereferente_id = Structurereferente.id'
+						)
+					),
+					array(
+						'table' => 'passagescommissionseps',
+						'alias' => 'Passagecommissionep',
+						'type' => 'LEFT OUTER',
+						'conditions' => array(
+							'Passagecommissionep.dossierep_id = Dossierep.id'
+						)
+					),
+					array(
+						'table' => 'commissionseps',
+						'alias' => 'Commissionep',
+						'type' => 'LEFT OUTER',
+						'conditions' => array(
+							'Passagecommissionep.commissionep_id = Commissionep.id'
+						)
+					),
+					array(
+						'table' => 'personnes',
+						'alias' => 'Personne',
+						'type' => 'INNER',
+						'conditions' => array(
+							'Dossierep.personne_id = Personne.id'
+						)
+					)
+				),
+				'contain' => false,
+				'order' => array( 'Commissionep.dateseance DESC', 'Commissionep.id DESC' )
+			);
+		}
 
 		/**
 		*
@@ -110,34 +205,75 @@
 		*/
 
 		public function finaliser( $commissionep_id, $etape, $user_id ) {
-			$dossierseps = $this->find(
+			$dossierseps = $this->Dossierep->Passagecommissionep->find(
 				'all',
 				array(
-					'conditions' => array(
-						'Dossierep.commissionep_id' => $commissionep_id
+					'fields' => array(
+						'Passagecommissionep.id',
+						'Passagecommissionep.commissionep_id',
+						'Passagecommissionep.dossierep_id',
+						'Passagecommissionep.etatdossierep',
+						'Dossierep.personne_id',
+						'Decisionreorientationep93.decision',
+						'Decisionreorientationep93.typeorient_id',
+						'Decisionreorientationep93.structurereferente_id',
+						'Reorientationep93.structurereferente_id',
+						'Reorientationep93.referent_id',
+						'Reorientationep93.datedemande'
 					),
-					'contain' => array(
-						'Decisionreorientationep93' => array(
+					'conditions' => array(
+						'Passagecommissionep.commissionep_id' => $commissionep_id
+					),
+					'joins' => array(
+						array(
+							'table' => 'dossierseps',
+							'alias' => 'Dossierep',
+							'type' => 'INNER',
 							'conditions' => array(
-								'Decisionreorientationep93.etape' => $etape
+								'Passagecommissionep.dossierep_id = Dossierep.id'
 							)
 						),
-						'Dossierep',
-						'Orientstruct',
-					)
+						array(
+							'table' => 'reorientationseps93',
+							'alias' => 'Reorientationep93',
+							'type' => 'INNER',
+							'conditions' => array(
+								'Reorientationep93.dossierep_id = Dossierep.id'
+							)
+						),
+						array(
+							'table' => 'decisionsreorientationseps93',
+							'alias' => 'Decisionreorientationep93',
+							'type' => 'INNER',
+							'conditions' => array(
+								'Decisionreorientationep93.passagecommissionep_id = Passagecommissionep.id',
+								'Decisionreorientationep93.etape' => $etape
+							)
+						)
+					),
+					'contain' => false /*array(
+						'Dossierep' => array(
+							'Decisionreorientationep93' => array(
+								'conditions' => array(
+									'Decisionreorientationep93.etape' => $etape
+								)
+							)
+						),
+						'Orientstruct'
+					)*/
 				)
 			);
-
+			
 			$success = true;
 			foreach( $dossierseps as $dossierep ) {
-				if( $dossierep['Decisionreorientationep93'][0]['decision'] == 'accepte' ) {
+				if( $dossierep['Decisionreorientationep93']['decision'] == 'accepte' ) {
 
 					// Nouvelle orientation
 					$orientstruct = array(
 						'Orientstruct' => array(
-							'personne_id' => $dossierep['Orientstruct']['personne_id'],
-							'typeorient_id' => $dossierep['Decisionreorientationep93'][0]['typeorient_id'],
-							'structurereferente_id' => $dossierep['Decisionreorientationep93'][0]['structurereferente_id'],
+							'personne_id' => $dossierep['Dossierep']['personne_id'],
+							'typeorient_id' => $dossierep['Decisionreorientationep93']['typeorient_id'],
+							'structurereferente_id' => $dossierep['Decisionreorientationep93']['structurereferente_id'],
 							'date_propo' => date( 'Y-m-d' ),
 							'date_valid' => date( 'Y-m-d' ),
 							'statut_orient' => 'Orienté',
@@ -148,7 +284,7 @@
 					// Si on avait choisi une personne référente et que le passage en EP
 					// valide la structure à laquelle cette personne est attachée, alors,
 					// on recopie cette personne -> FIXME: dans orientsstructs ou dans personnes_referents
-					if( !empty( $dossierep['Reorientationep93']['referent_id'] ) && $dossierep['Reorientationep93']['structurereferente_id'] == $dossierep['Decisionreorientationep93'][0]['structurereferente_id'] ) {
+					if( !empty( $dossierep['Reorientationep93']['referent_id'] ) && $dossierep['Reorientationep93']['structurereferente_id'] == $dossierep['Decisionreorientationep93']['structurereferente_id'] ) {
 						$orientstruct['Orientstruct']['referent_id'] = $dossierep['Reorientationep93']['referent_id'];
 					}
 
@@ -166,7 +302,7 @@
 						array(
 							'fields' => array( 'Contratinsertion.id' ),
 							'conditions' => array(
-								'Contratinsertion.personne_id' => $dossierep['Orientstruct']['personne_id']
+								'Contratinsertion.personne_id' => $dossierep['Dossierep']['personne_id']
 							),
 							array( 'Contratinsertion.df_ci DESC' )
 						)
@@ -188,7 +324,7 @@
 					$this->Orientstruct->Personne->PersonneReferent->updateAll(
 						array( 'PersonneReferent.dfdesignation' => "'".date( 'Y-m-d' )."'" ),
 						array(
-							'"PersonneReferent"."personne_id"' => $dossierep['Orientstruct']['personne_id'],
+							'"PersonneReferent"."personne_id"' => $dossierep['Dossierep']['personne_id'],
 							'"PersonneReferent"."dfdesignation" IS NULL'
 						)
 					);
@@ -225,23 +361,42 @@
 
 		public function qdDossiersParListe( $commissionep_id, $niveauDecision ) {
 			// Doit-on prendre une décision à ce niveau ?
-			$themes = $this->Dossierep->Commissionep->themesTraites( $commissionep_id );
+			$themes = $this->Dossierep->Passagecommissionep->Commissionep->themesTraites( $commissionep_id );
 			$niveauFinal = $themes[Inflector::underscore($this->alias)];
 			if( ( $niveauFinal == 'ep' ) && ( $niveauDecision == 'cg' ) ) {
 				return array();
 			}
 
 			return array(
+				/*'fields' => array(
+					'Personne.qual',
+					'Personne.nom',
+					'Personne.prenom',
+					'Personne.dtnai',
+					'Adresse.numvoie',
+					'Adresse.typevoie',
+					'Adresse.nomvoie',
+					'Dossierep.created',
+					'Decisionreorientationep93.id',
+					'Decisionreorientationep93.decision',
+					'Decisionreorientationep93.typeorient_id',
+					'Decisionreorientationep93.structurereferente_id',
+				),*/
 				'conditions' => array(
 					'Dossierep.themeep' => Inflector::tableize( $this->alias ),
-					'Dossierep.commissionep_id' => $commissionep_id,
-					'Dossierep.id IN (
-						SELECT reorientationseps93.dossierep_id
-							FROM reorientationseps93
-							/*WHERE reorientationseps93.accordaccueil = \'1\'
-								AND reorientationseps93.accordallocataire = \'1\'*/
-					)'
-
+					'Dossierep.id IN ( '.
+						$this->Dossierep->Passagecommissionep->sq(
+							array(
+								'fields' => array(
+									'passagescommissionseps.dossierep_id'
+								),
+								'alias' => 'passagescommissionseps',
+								'conditions' => array(
+									'passagescommissionseps.commissionep_id' => $commissionep_id
+								)
+							)
+						)
+					.' )'
 				),
 				'contain' => array(
 					'Personne' => array(
@@ -255,18 +410,75 @@
 						)
 					),
 					$this->alias => array(
-						'Decisionreorientationep93' => array(
-							'order' => array( 'etape DESC' )
-						),
 						'Motifreorientep93',
 						'Typeorient',
 						'Structurereferente',
 						'Orientstruct' => array(
+							'conditions' => array(
+								'Orientstruct.rgorient IS NOT NULL'
+							),
 							'Typeorient',
 							'Structurereferente',
 						)
 					),
-				)
+					'Passagecommissionep' => array(
+						'conditions' => array(
+							'Passagecommissionep.commissionep_id' => $commissionep_id
+						),
+						'Decisionreorientationep93' => array(
+							'order' => array( 'Decisionreorientationep93.etape DESC' ),
+							'Typeorient',
+							'Structurereferente',
+						)
+					)
+				),
+				/*'joins' => array(
+					array(
+						'table' => 'personnes',
+						'alias' => 'Personne',
+						'type' => 'INNER',
+						'foreignKey' => null,
+						'conditions' => array( 'Dossierep.personne_id = Personne.id' )
+					),
+					array(
+						'table' => 'foyers',
+						'alias' => 'Foyer',
+						'type' => 'INNER',
+						'foreignKey' => null,
+						'conditions' => array( 'Personne.foyer_id = Foyer.id' )
+					),
+					array(
+						'table' => 'adressesfoyers',
+						'alias' => 'Adressefoyer',
+						'type' => 'INNER',
+						'foreignKey' => null,
+						'conditions' => array( 'Adressefoyer.foyer_id = Foyer.id', 'Adressefoyer.rgadr' => '01' )
+					),
+					array(
+						'table' => 'adresses',
+						'alias' => 'Adresse',
+						'type' => 'INNER',
+						'foreignKey' => null,
+						'conditions' => array( 'Adressefoyer.adresse_id = Adresse.id' )
+					),
+					array(
+						'table' => 'passagescommissionseps',
+						'alias' => 'Passagecommissionep',
+						'type' => 'INNER',
+						'foreignKey' => null,
+						'conditions' => array( 'Passagecommissionep.dossierep_id = Dossierep.id' )
+					),
+					array(
+						'table' => 'decisionsreorientationseps93',
+						'alias' => 'Decisionreorientationep93',
+						'type' => 'LEFT OUTER',
+						'foreignKey' => null,
+						'conditions' => array(
+							'Passagecommissionep.id = Decisionreorientationep93.passagecommissionep_id',
+							'Decisionreorientationep93.etape' => $niveauDecision
+						)
+					)
+				)*/
 			);
 		}
 
@@ -281,11 +493,10 @@
 				return true;
 			}
 			else {
-				$success = $this->Decisionreorientationep93->saveAll( $themeData, array( 'atomic' => false ) );
-
-				$this->Dossierep->updateAll(
-					array( 'Dossierep.etapedossierep' => '\'decision'.$niveauDecision.'\'' ),
-					array( '"Dossierep"."id"' => Set::extract( $data, '/Reorientationep93/dossierep_id' ) )
+				$success = $this->Dossierep->Passagecommissionep->Decisionreorientationep93->saveAll( $themeData, array( 'atomic' => false ) );
+				$this->Dossierep->Passagecommissionep->updateAll(
+					array( 'Passagecommissionep.etatdossierep' => '\'decision'.$niveauDecision.'\'' ),
+					array( '"Passagecommissionep"."id"' => Set::extract( $data, '/Decisionreorientationep93/passagecommissionep_id' ) )
 				);
 
 				return $success;
@@ -307,7 +518,7 @@
 
 		public function prepareFormData( $commissionep_id, $datas, $niveauDecision ) {
 			// Doit-on prendre une décision à ce niveau ?
-			$themes = $this->Dossierep->Commissionep->themesTraites( $commissionep_id );
+			$themes = $this->Dossierep->Passagecommissionep->Commissionep->themesTraites( $commissionep_id );
 			$niveauFinal = $themes[Inflector::underscore($this->alias)];
 			if( ( $niveauFinal == 'ep' ) && ( $niveauDecision == 'cg' ) ) {
 				return array();
@@ -317,36 +528,55 @@
 			foreach( $datas as $key => $dossierep ) {
 				$formData['Reorientationep93'][$key]['id'] = @$datas[$key]['Reorientationep93']['id'];
 				$formData['Reorientationep93'][$key]['dossierep_id'] = @$datas[$key]['Reorientationep93']['dossierep_id'];
-				$formData['Decisionreorientationep93'][$key]['reorientationep93_id'] = @$datas[$key]['Reorientationep93']['id'];
+				$formData['Decisionreorientationep93'][$key]['passagecommissionep_id'] = @$datas[$key]['Passagecommissionep'][0]['id'];
+				if( $niveauDecision == 'ep' ) {
+					if( !empty( $datas[$key]['Passagecommissionep'][0]['Decisionreorientationep93'][0] ) ) { // Modification
+						$formData['Decisionreorientationep93'][$key]['id'] = @$datas[$key]['Passagecommissionep'][0]['Decisionreorientationep93'][0]['id'];
+						$formData['Decisionreorientationep93'][$key]['decision'] = @$datas[$key]['Passagecommissionep'][0]['Decisionreorientationep93'][0]['decision'];
+						$formData['Decisionreorientationep93'][$key]['raisonnonpassage'] = @$datas[$key]['Passagecommissionep'][0]['Decisionreorientationep93'][0]['raisonnonpassage'];
 
-				// On modifie les enregistrements de cette étape
-				if( @$dossierep['Reorientationep93']['Decisionreorientationep93'][0]['etape'] == $niveauDecision ) {
-					$formData['Decisionreorientationep93'][$key] = @$dossierep['Reorientationep93']['Decisionreorientationep93'][0];
-					$formData['Decisionreorientationep93'][$key]['structurereferente_id'] = implode(
-						'_',
-						array(
-							$formData['Decisionreorientationep93'][$key]['typeorient_id'],
-							$formData['Decisionreorientationep93'][$key]['structurereferente_id']
-						)
-					);
+						$formData['Decisionreorientationep93'][$key]['typeorient_id'] = @$datas[$key]['Passagecommissionep'][0]['Decisionreorientationep93'][0]['typeorient_id'];
+						$formData['Decisionreorientationep93'][$key]['structurereferente_id'] = implode(
+							'_',
+							array(
+								@$datas[$key]['Passagecommissionep'][0]['Decisionreorientationep93'][0]['typeorient_id'],
+								@$datas[$key]['Passagecommissionep'][0]['Decisionreorientationep93'][0]['structurereferente_id']
+							)
+						);
+					}
+					else {
+						$formData['Decisionreorientationep93'][$key]['typeorient_id'] = $dossierep[$this->alias]['typeorient_id'];
+						$formData['Decisionreorientationep93'][$key]['structurereferente_id'] = implode(
+							'_',
+							array(
+								$dossierep[$this->alias]['typeorient_id'],
+								$dossierep[$this->alias]['structurereferente_id']
+							)
+						);
+						// Si accords -> accepté par défaut, sinon, refusé par défaut
+						$accord = ( $dossierep[$this->alias]['accordaccueil'] && $dossierep[$this->alias]['accordallocataire'] );
+						$formData['Decisionreorientationep93'][$key]['decision'] = ( $accord ? 'accepte' : 'refuse' );
+					}
 				}
+				else if( $niveauDecision == 'cg' ) {
+					if( !empty( $datas[$key]['Passagecommissionep'][0]['Decisionreorientationep93'][1] ) ) { // Modification
+						$formData['Decisionreorientationep93'][$key]['id'] = @$datas[$key]['Passagecommissionep'][0]['Decisionreorientationep93'][0]['id'];
+						$formData['Decisionreorientationep93'][$key]['decision'] = @$datas[$key]['Passagecommissionep'][0]['Decisionreorientationep93'][0]['decision'];
+						$formData['Decisionreorientationep93'][$key]['raisonnonpassage'] = @$datas[$key]['Passagecommissionep'][0]['Decisionreorientationep93'][0]['raisonnonpassage'];
 
-				// On ajoute les enregistrements de cette étape -> FIXME: manque les id ?
-				else {
-					if( $niveauDecision == 'ep' ) {
-						if( !empty( $datas[$key]['Reorientationep93']['Decisionreorientationep93'][0] ) ) { // Modification
-							$formData['Decisionreorientationep93'][$key]['decision'] = @$datas[$key]['Reorientationep93']['Decisionreorientationep93'][0]['decision'];
-
-							$formData['Decisionreorientationep93'][$key]['typeorient_id'] = @$datas[$key]['Reorientationep93']['Decisionreorientationep93'][0]['typeorient_id'];
-							$formData['Decisionreorientationep93'][$key]['structurereferente_id'] = implode(
-								'_',
-								array(
-									@$datas[$key]['Reorientationep93']['Decisionreorientationep93'][0]['typeorient_id'],
-									@$datas[$key]['Reorientationep93']['Decisionreorientationep93'][0]['structurereferente_id']
-								)
-							);
-						}
-						else {
+						$formData['Decisionreorientationep93'][$key]['typeorient_id'] = @$datas[$key]['Passagecommissionep'][0]['Decisionreorientationep93'][0]['typeorient_id'];
+						$formData['Decisionreorientationep93'][$key]['structurereferente_id'] = implode(
+							'_',
+							array(
+								@$datas[$key]['Passagecommissionep'][0]['Decisionreorientationep93'][0]['typeorient_id'],
+								@$datas[$key]['Passagecommissionep'][0]['Decisionreorientationep93'][0]['structurereferente_id']
+							)
+						);
+					}
+					elseif( !empty( $datas[$key]['Passagecommissionep'][0]['Decisionreorientationep93'][0] ) ) { // Modification
+						$formData['Decisionreorientationep93'][$key]['decision'] = $dossierep['Passagecommissionep'][0]['Decisionreorientationep93'][0]['decision'];
+						$formData['Decisionreorientationep93'][$key]['raisonnonpassage'] = @$datas[$key]['Passagecommissionep'][0]['Decisionreorientationep93'][0]['raisonnonpassage'];
+						if( $formData['Decisionreorientationep93'][$key]['decision'] == 'refuse' ) {
 							$formData['Decisionreorientationep93'][$key]['typeorient_id'] = $dossierep[$this->alias]['typeorient_id'];
 							$formData['Decisionreorientationep93'][$key]['structurereferente_id'] = implode(
 								'_',
@@ -355,51 +585,21 @@
 									$dossierep[$this->alias]['structurereferente_id']
 								)
 							);
-							// Si accords -> accepté par défaut, sinon, refusé par défaut
-							$accord = ( $dossierep[$this->alias]['accordaccueil'] && $dossierep[$this->alias]['accordallocataire'] );
-							$formData['Decisionreorientationep93'][$key]['decision'] = ( $accord ? 'accepte' : 'refuse' );
 						}
-					}
-					else if( $niveauDecision == 'cg' ) {
-						if( !empty( $datas[$key]['Reorientationep93']['Decisionreorientationep93'][1] ) ) { // Modification
-							$formData['Decisionreorientationep93'][$key]['decision'] = @$datas[$key]['Reorientationep93']['Decisionreorientationep93'][1]['decision'];
-
-							$formData['Decisionreorientationep93'][$key]['typeorient_id'] = @$datas[$key]['Reorientationep93']['Decisionreorientationep93'][1]['typeorient_id'];
+						else {
+							$formData['Decisionreorientationep93'][$key]['typeorient_id'] = $dossierep['Passagecommissionep'][0]['Decisionreorientationep93'][0]['typeorient_id'];
 							$formData['Decisionreorientationep93'][$key]['structurereferente_id'] = implode(
 								'_',
 								array(
-									@$datas[$key]['Reorientationep93']['Decisionreorientationep93'][1]['typeorient_id'],
-									@$datas[$key]['Reorientationep93']['Decisionreorientationep93'][1]['structurereferente_id']
+									$dossierep['Passagecommissionep'][0]['Decisionreorientationep93'][0]['typeorient_id'],
+									$dossierep['Passagecommissionep'][0]['Decisionreorientationep93'][0]['structurereferente_id']
 								)
 							);
-						}
-						else {
-							$formData['Decisionreorientationep93'][$key]['decision'] = $dossierep[$this->alias]['Decisionreorientationep93'][0]['decision'];
-							if( $formData['Decisionreorientationep93'][$key]['decision'] == 'refuse' ) {
-								$formData['Decisionreorientationep93'][$key]['typeorient_id'] = $dossierep[$this->alias]['typeorient_id'];
-								$formData['Decisionreorientationep93'][$key]['structurereferente_id'] = implode(
-									'_',
-									array(
-										$dossierep[$this->alias]['typeorient_id'],
-										$dossierep[$this->alias]['structurereferente_id']
-									)
-								);
-							}
-							else {
-								$formData['Decisionreorientationep93'][$key]['typeorient_id'] = $dossierep[$this->alias]['Decisionreorientationep93'][0]['typeorient_id'];
-								$formData['Decisionreorientationep93'][$key]['structurereferente_id'] = implode(
-									'_',
-									array(
-										$dossierep[$this->alias]['Decisionreorientationep93'][0]['typeorient_id'],
-										$dossierep[$this->alias]['Decisionreorientationep93'][0]['structurereferente_id']
-									)
-								);
-							}
 						}
 					}
 				}
 			}
-// debug( $formData );
+
 			return $formData;
 		}
 
@@ -563,7 +763,7 @@
 					'Reorientationep93.created',
 					'Reorientationep93.modified',
 					'Decisionreorientationep93.id',
-					'Decisionreorientationep93.reorientationep93_id',
+// 					'Decisionreorientationep93.reorientationep93_id',
 					'Decisionreorientationep93.etape',
 					'Decisionreorientationep93.decision',
 					'Decisionreorientationep93.typeorient_id',
@@ -587,7 +787,7 @@
 						'type'       => 'LEFT OUTER',
 						'foreignKey' => false,
 						'conditions' => array(
-							'Decisionreorientationep93.reorientationep93_id = Reorientationep93.id',
+							'Decisionreorientationep93.passagecommissionep_id = Passagecommissionep.id',
 							'Decisionreorientationep93.etape' => 'ep'
 						),
 					)

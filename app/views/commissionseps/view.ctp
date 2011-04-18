@@ -2,24 +2,27 @@
 <div  id="ficheCI">
 	<ul class="actionMenu">
 	<?php
-
-		echo '<li>'.$xhtml->editLink(
-			__d('Commissionep','Commissionep.edit',true),
-			array( 'controller' => 'commissionseps', 'action' => 'edit', $commissionep['Commissionep']['id'] )
-		).' </li>';
-
-		// FIXME: le faire dans le modèle
-		$reponsesComite = Set::extract( $membresepsseanceseps, '/CommissionepMembreep/reponse' );
-		$reponsesComite = Set::filter( $reponsesComite );
-		if( !empty( $reponsesComite ) ) {
-			foreach( $reponsesComite as $i => $reponseComite ) {
-				if( $reponseComite == 'nonrenseigne' ) {
-					unset( $reponsesComite[$i] );
-				}
-			}
+		if( in_array( 'commissionseps::edit', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) ) {
+			echo '<li>'.$xhtml->editLink(
+				__d('Commissionep','Commissionep.edit',true),
+				array( 'controller' => 'commissionseps', 'action' => 'edit', $commissionep['Commissionep']['id'] )
+			).' </li>';
+		}
+		else {
+			echo '<li><span class="disabled"> '.__d( 'commissionep','Commissionseps::edit',true ).'</span></li>';
 		}
 
-		if( !empty( $reponsesComite ) && count( $reponsesComite ) == count( $membresepsseanceseps ) ) { // FIXME
+		if( in_array( 'commissionseps::delete', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) ) {
+			echo '<li>'.$xhtml->deleteLink(
+				__d( 'commissionep','Commissionseps::delete', true ),
+				array( 'controller' => 'commissionseps', 'action' => 'delete', $commissionep['Commissionep']['id'] )
+			).' </li>';
+		}
+		else {
+			echo '<li><span class="disabled"> '.__d( 'commissionep','Commissionseps::delete',true ).'</span></li>';
+		}
+
+		if( in_array( 'commissionseps::ordredujour', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) ) {
 			echo '<li>'.$xhtml->link(
 				__d( 'commissionep','Commissionseps::ordredujour', true ),
 				array( 'controller' => 'commissionseps', 'action' => 'ordredujour', $commissionep['Commissionep']['id'] )
@@ -29,7 +32,7 @@
 			echo '<li><span class="disabled"> '.__d( 'commissionep','Commissionseps::ordredujour',true ).'</span></li>';
 		}
 
-		if( empty( $commissionep['Commissionep']['finalisee'] ) && $countDossiers > 0 && !empty($membresepsseanceseps) ) {
+		if( in_array( 'commissionseps::traiterep', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) ) {
 			echo '<li>'.$xhtml->link(
 				__d( 'commissionep','Commissionseps::traiterep',true ),
 				array( 'controller' => 'commissionseps', 'action' => 'traiterep', $commissionep['Commissionep']['id'] )
@@ -39,7 +42,7 @@
 			echo '<li><span class="disabled"> '.__d( 'commissionep','Commissionseps::traiterep',true ).'</span></li>';
 		}
 
-		if( empty( $commissionep['Commissionep']['finalisee'] ) && $countDossiers > 0 && !empty($membresepsseanceseps) ) {
+		if( in_array( 'commissionseps::finaliserep', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) ) {
 			echo '<li>'.$xhtml->link(
 				__d( 'commissionep','Commissionseps::finaliserep',true ),
 				array( 'controller' => 'commissionseps', 'action' => 'finaliserep', $commissionep['Commissionep']['id'] )
@@ -49,10 +52,11 @@
 			echo '<li><span class="disabled"> '.__d( 'commissionep','Commissionseps::finaliserep',true ).'</span></li>';
 		}
 
-		// FIXME: le faire dans le modèle
-		$presencesComite = Set::extract( $membresepsseanceseps, '/CommissionepMembreep/presence' );
-		$presencesComite = Set::filter( $presencesComite );
-		if( !empty( $commissionep['Commissionep']['finalisee'] ) && !empty( $presencesComite ) && count( $presencesComite ) == count( $membresepsseanceseps ) ) {
+	?>
+	</ul><ul class="actionMenu">
+	<?php
+
+		if( in_array( 'commissionseps::impressionpv', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) ) {
 			echo '<li>'.$xhtml->link(
 				__d( 'commissionep','Commissionseps::impressionpv', true ),
 				array( 'controller' => 'commissionseps', 'action' => 'impressionpv', $commissionep['Commissionep']['id'] )
@@ -62,7 +66,7 @@
 			echo '<li><span class="disabled"> '.__d( 'commissionep','Commissionseps::impressionpv',true ).'</span></li>';
 		}
 
-		if( $commissionep['Commissionep']['finalisee'] == 'ep' ) {
+		if( in_array( 'commissionseps::traitercg', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) ) {
 			echo '<li>'.$xhtml->link(
 				__d( 'commissionep','Commissionseps::traitercg',true ),
 				array( 'controller' => 'commissionseps', 'action' => 'traitercg', $commissionep['Commissionep']['id'] )
@@ -72,7 +76,7 @@
 			echo '<li><span class="disabled"> '.__d( 'commissionep','Commissionseps::traitercg',true ).'</span></li>';
 		}
 
-		if( $commissionep['Commissionep']['finalisee'] == 'ep' ) {
+		if( in_array( 'commissionseps::finalisercg', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) ) {
 			echo '<li>'.$xhtml->link(
 				__d( 'commissionep','Commissionseps::finalisercg',true ),
 				array( 'controller' => 'commissionseps', 'action' => 'finalisercg', $commissionep['Commissionep']['id'] )
@@ -107,24 +111,24 @@
 				<td><?php echo isset( $commissionep['Commissionep']['adresseseance'] ) ? $commissionep['Commissionep']['adresseseance'] : null ;?></td>
 			</tr>
 			<tr class="even">
-                <th><?php echo "Code postal de la commission";?></th>
-                <td><?php echo isset( $commissionep['Commissionep']['codepostalseance'] ) ? $commissionep['Commissionep']['codepostalseance'] : null ;?></td>
-            </tr>
-            <tr class="odd">
-                <th><?php echo "Ville de la commission";?></th>
-                <td><?php echo isset( $commissionep['Commissionep']['villeseance'] ) ? $commissionep['Commissionep']['villeseance'] : null ;?></td>
-            </tr>
-            <tr class="even">
-                <th><?php echo "Salle de la commision";?></th>
-                <td><?php echo isset( $commissionep['Commissionep']['salle'] ) ? $commissionep['Commissionep']['salle'] : null ;?></td>
-            </tr>
+				<th><?php echo "Code postal de la commission";?></th>
+				<td><?php echo isset( $commissionep['Commissionep']['codepostalseance'] ) ? $commissionep['Commissionep']['codepostalseance'] : null ;?></td>
+			</tr>
+			<tr class="odd">
+				<th><?php echo "Ville de la commission";?></th>
+				<td><?php echo isset( $commissionep['Commissionep']['villeseance'] ) ? $commissionep['Commissionep']['villeseance'] : null ;?></td>
+			</tr>
+			<tr class="even">
+				<th><?php echo "Salle de la commision";?></th>
+				<td><?php echo isset( $commissionep['Commissionep']['salle'] ) ? $commissionep['Commissionep']['salle'] : null ;?></td>
+			</tr>
 			<tr class="odd">
 				<th><?php echo "Observations de la commision";?></th>
 				<td><?php echo isset( $commissionep['Commissionep']['observations'] ) ? $commissionep['Commissionep']['observations'] : null ;?></td>
 			</tr>
 			<tr class="even">
-				<th><?php echo "Décision finale";?></th>
-				<td><?php echo /*debug($options);*/ Set::enum( $commissionep['Commissionep']['finalisee'], $options['Commissionep']['finalisee'] );?></td>
+				<th><?php echo "État de la commission";?></th>
+				<td><?php echo /*debug($options);*/ Set::enum( $commissionep['Commissionep']['etatcommissionep'], $options['Commissionep']['etatcommissionep'] );?></td>
 			</tr>
 		</tbody>
 	</table>
@@ -140,13 +144,13 @@
 					echo '<li>'.$xhtml->editLink(
 						__d('Commissionep','Commissionep.edit',true),
 						array( 'controller' => 'membreseps', 'action' => 'editliste', $commissionep['Commissionep']['ep_id'], $commissionep['Commissionep']['id'] ),
-						( $commissionep['Commissionep']['finalisee'] == '' )
+						in_array( 'membreseps::editliste', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] )
 					).' </li>';
 
 					echo '<li>'.$xhtml->presenceLink(
 						__d('Commissionep','Commissionep::presence',true),
 						array( 'controller' => 'membreseps', 'action' => 'editpresence', $commissionep['Commissionep']['ep_id'], $commissionep['Commissionep']['id'] ),
-						( $commissionep['Commissionep']['finalisee'] == 'ep' )
+						in_array( 'membreseps::editpresence', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] )
 					).' </li>';
 				?>
 				</ul>
@@ -205,7 +209,7 @@
 			<h2 class="title">3. Liste des dossiers</h2>
 			<ul class="actionMenu">
 				<?php
-					if( empty( $commissionep['Commissionep']['finalisee'] ) ) {
+					if( in_array( 'dossierseps::choose', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) ) {
 						echo '<li>'.$xhtml->editLink(
 							'Modifier',
 							array( 'controller' => 'dossierseps', 'action' => 'choose', Set::classicExtract( $commissionep, 'Commissionep.id' ) )
@@ -221,36 +225,36 @@
 					foreach( $themes as $theme ) {
 // 						debug( Set::flatten( $dossiers[$theme] ) );
 // debug($theme);
-                        if( ( $theme == 'nonorientationproep58' ) || ( $theme == 'reorientationep93' ) || ( $theme == 'nonorientationproep93' ) || ( $theme == 'regressionorientationep58' ) || ( $theme == 'sanctionep58' ) ){
-                            $controller = 'orientsstructs';
-                        }
-                        else if( ( $theme == 'nonrespectsanctionep93' ) || ( $theme == 'saisinepdoep66' ) ){
-                            $controller = 'propospdos';
-                        }
-                        else if( ( $theme == 'defautinsertionep66' ) || ( $theme == 'saisinebilanparcoursep66' ) ){
-                            $controller = 'bilansparcours66';
-                        }
+						if( ( $theme == 'nonorientationproep58' ) || ( $theme == 'reorientationep93' ) || ( $theme == 'nonorientationproep93' ) || ( $theme == 'regressionorientationep58' ) || ( $theme == 'sanctionep58' ) ){
+							$controller = 'orientsstructs';
+						}
+						else if( ( $theme == 'nonrespectsanctionep93' ) || ( $theme == 'saisinepdoep66' ) ){
+							$controller = 'propospdos';
+						}
+						else if( ( $theme == 'defautinsertionep66' ) || ( $theme == 'saisinebilanparcoursep66' ) ){
+							$controller = 'bilansparcours66';
+						}
 
 
 						echo "<div id=\"$theme\"><h3 class=\"title\">".__d( 'dossierep',  'ENUM::THEMEEP::'.Inflector::tableize( $theme ), true )."</h3>";
 						echo $default2->index(
 							$dossiers[$theme],
 							array(
-								'Personne.qual',
-								'Personne.nom',
-								'Personne.prenom',
-								'Personne.dtnai',
-								'Personne.Foyer.Adressefoyer.0.Adresse.locaadr',
+								'Dossierep.Personne.qual',
+								'Dossierep.Personne.nom',
+								'Dossierep.Personne.prenom',
+								'Dossierep.Personne.dtnai',
+								'Dossierep.Personne.Foyer.Adressefoyer.0.Adresse.locaadr',
 								'Dossierep.created',
 								'Dossierep.themeep',
-								'Dossierep.etapedossierep',
+								'Passagecommissionep.etatdossierep',
 							),
-                            array(
-                                'actions' => array(
-                                    'Dossierseps::view' => array( 'label' => 'Voir', 'url' => array( 'controller' => $controller, 'action' => 'index', '#Personne.id#' ), 'class' => 'external' )
-                                ),
-                                'options' => $options
-                            )
+							array(
+								'actions' => array(
+									'Dossierseps::view' => array( 'label' => 'Voir', 'url' => array( 'controller' => $controller, 'action' => 'index', '#Dossierep.Personne.id#' ), 'class' => 'external' )
+								),
+								'options' => $options
+							)
 						);
 						echo "</div>";
 					}
@@ -271,7 +275,7 @@
 	makeTabbed( 'dossierseps', 3 );
 </script>
 <script type="text/javascript">
-    $$( 'td.action a' ).each( function( elmt ) {
-        $( elmt ).addClassName( 'external' );
-    } );
+	$$( 'td.action a' ).each( function( elmt ) {
+		$( elmt ).addClassName( 'external' );
+	} );
 </script>

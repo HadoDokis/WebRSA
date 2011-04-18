@@ -189,3 +189,22 @@ rename_files "decisionsnonorientationspros" "decisionsnonorientationsproseps"
 rename_files "decisionnonorientationpro" "decisionnonorientationproep"
 rename_files "nonorientationpro" "nonorientationproep"
 rename_files "nonorientationspros" "nonorientationsproseps"
+
+# ==============================================================================
+# nonorientationspros
+# -> nonorientationsproseps
+#
+# cake/console/cake rename_table commissionseps_dossierseps commissionep_dossierep passagescommissionseps passagecommissionep
+# ==============================================================================
+
+regexes=( \
+	"s/(?<!\w)CommissionsepsDossierseps(?<!W)/Passagescommissionseps/g" \
+	"s/(?<!\w)commissionseps_dossierseps(?<!W)/passagescommissionseps/g" \
+	"s/(?<!\w)CommissionepDossierep(?<!W)/Passagecommissionep/g" \
+	"s/(?<!\w)commissionep_dossierep(?<!W)/passagecommissionep/g" \
+	"s/(?<!\w)COMMISSIONEP_DOSSIEREP(?<!W)/PASSAGECOMMISSIONEP/g" \
+)
+rename_in_files "${regexes[@]}"
+
+rename_files "commissionseps_dossierseps" "passagescommissionseps"
+rename_files "commissionep_dossierep" "passagecommissionep"

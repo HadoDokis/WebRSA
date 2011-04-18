@@ -5,7 +5,7 @@
 	$myServiceinstructeur_id = $session->read( 'Auth.User.serviceinstructeur_id' );
 	$myGroup = $session->read( 'Auth.Group.name' );
 	$disabled = "(
-		'#Dossierep.etapedossierep#' != 'cree'
+		'#Dossierep.etatdossierep#' != 'cree'
 		|| (
 			'#Reorientationep93.structurereferente_id#' != '{$myServiceinstructeur_id}'
 			&& '{$myGroup}' != 'Administrateurs'
@@ -27,7 +27,7 @@
 			'Structurereferente.lib_struc',
 			'Reorientationep93.accordaccueil' => array( 'type' => 'boolean' ),
 			'Reorientationep93.accordallocataire' => array( 'type' => 'boolean' ),
-			'Dossierep.etapedossierep',
+			'Dossierep.Passagecommissionep.0.etatdossierep',
 		),
 		array(
 			'actions' => array(

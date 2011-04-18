@@ -84,15 +84,15 @@
 			</thead>
 			<tbody>
 				<tr>
-					<td><?php echo h( $reorientationep93['Dossierep']['Personne']['nom'] );?></td>
-					<td><?php echo h( $reorientationep93['Dossierep']['Personne']['prenom'] );?></td>
+					<td><?php echo h( $reorientationep93['Personne']['nom'] );?></td>
+					<td><?php echo h( $reorientationep93['Personne']['prenom'] );?></td>
 					<td><?php echo $locale->date( __( 'Date::short', true ), $reorientationep93['Reorientationep93']['datedemande'] );?></td>
 					<td><?php echo h( $reorientationep93['Typeorient']['lib_type_orient'] );?></td>
 					<td><?php echo h( $reorientationep93['Structurereferente']['lib_struc'] );?></td>
 					<td class="number"><?php echo h( $reorientationep93['Orientstruct']['rgorient'] + 1 );?></td>
-					<td><?php echo h( Set::enum( $reorientationep93['Dossierep']['etapedossierep'], $optionsdossierseps['Dossierep']['etapedossierep'] ) );?></td>
-					<td><?php echo $default->button( 'edit', array( 'controller' => 'reorientationseps93', 'action' => 'edit', $reorientationep93['Reorientationep93']['id'] ), array( 'enabled' => ( $reorientationep93['Dossierep']['etapedossierep'] == 'cree' ) ) );?></td>
-					<td><?php echo $default->button( 'delete', array( 'controller' => 'reorientationseps93', 'action' => 'delete', $reorientationep93['Reorientationep93']['id'] ), array( 'enabled' => ( $reorientationep93['Dossierep']['etapedossierep'] == 'cree' ) ) );?></td>
+					<td><?php echo h( Set::enum( $reorientationep93['Passagecommissionep']['etatdossierep'], $optionsdossierseps['Passagecommissionep']['etatdossierep'] ) );?></td>
+					<td><?php echo $default->button( 'edit', array( 'controller' => 'reorientationseps93', 'action' => 'edit', $reorientationep93['Reorientationep93']['id'] ), array( 'enabled' => ( empty( $reorientationep93['Passagecommissionep']['etatdossierep'] ) ) ) );?></td>
+					<td><?php echo $default->button( 'delete', array( 'controller' => 'reorientationseps93', 'action' => 'delete', $reorientationep93['Reorientationep93']['id'] ), array( 'enabled' => ( empty( $reorientationep93['Passagecommissionep']['etatdossierep'] ) ) ) );?></td>
 				</tr>
 			</tbody>
 		</table>

@@ -15,7 +15,8 @@
 		*/
 
 		protected function _setOptions() {
-			$options = $this->Ep->enums();
+// 			$options = $this->Ep->enums();
+			$options = array();
 			if( $this->action != 'index' ) {
 				$options['Ep']['regroupementep_id'] = $this->Ep->Regroupementep->find( 'list' );
 				$options['Zonegeographique']['Zonegeographique'] = $this->Ep->Zonegeographique->find( 'list' );
@@ -35,14 +36,6 @@
 				'Regroupementep.name'
 			);
 
-			$themes = array();
-			foreach( $this->Ep->themes() as $theme ) {
-				if( strstr( $theme, Configure::read( 'Cg.departement' ) ) ) {
-					$fields[] = "Ep.{$theme}";
-					$themes[] = $theme;
-				}
-			}
-
 			$this->paginate = array(
 				'fields' => $fields,
 				'contain' => array(
@@ -53,7 +46,6 @@
 
 			$this->_setOptions();
 			$this->set( 'eps', $this->paginate( $this->Ep ) );
-			$this->set( compact( 'themes' ) );
 		}
 
 		/**
@@ -83,12 +75,7 @@
 				$this->Ep->begin();
 				$this->Ep->create( $this->data );
 				$success = $this->Ep->save();
-				
-				/*if ( $this->Session->check( 'membreseps' ) ) {
-// 					debug('coucou');
-					$success = false;
-				}*/
-				
+
 				$this->_setFlashResult( 'Save', $success );
 				if( $success ) {
 					$this->Ep->commit();
@@ -114,21 +101,7 @@
 				$this->assert( !empty( $this->data ), 'error404' );
 				$this->set('ep_id', $id);
 			}
-			/*elseif ( $this->action == "add" && $this->Session->check( 'membreseps' ) ) {
-				$membreseps = $this->Session->read( 'membreseps' );
-				if ( !empty( $membreseps ) ) {
-					$this->data = $this->Ep->Membreep->find(
-						'all',
-						array(
-							'conditions' => array(
-								'Membreep.id' => $this->Session->read( 'membreseps' )
-							),
-							'contain' => false
-						)
-					);
-				}
-			}*/
-			
+
 			$listeFonctionsMembres = $this->Ep->Membreep->Fonctionmembreep->find(
 				'list'
 			);
@@ -147,41 +120,27 @@
 			$this->_setFlashResult( 'Delete', $success );
 			$this->redirect( array( 'action' => 'index' ) );
 		}
-		
+
 		/**
 		 *
 		 */
-		 
+
 		public function addparticipant( $ep_id, $fonction_id ) {
 			if ( !empty( $this->data ) ) {
-				/*if ( $ep_id == 0 ) {
-					$success = true;
-					$membres = array();
-					if ( $this->Session->check( 'membreseps' ) ) {
-						$membres = $this->Session->read( 'membreseps' );
-					}
-					$membres[] = $this->data['EpMembreep']['membreep_id'];
-					$this->Session->write( 'membreseps', $membres );
-					
-					$this->_setFlashResult( 'Save', $success );
-					$this->redirect( array( 'action' => 'add' ) );
-				}
-				else {*/
-					$this->Ep->EpMembreep->begin();
-					$this->Ep->EpMembreep->create( $this->data );
-					$success = $this->Ep->EpMembreep->save();
+				$this->Ep->EpMembreep->begin();
+				$this->Ep->EpMembreep->create( $this->data );
+				$success = $this->Ep->EpMembreep->save();
 
-					$this->_setFlashResult( 'Save', $success );
-					if ( $success ) {
-						$this->Ep->EpMembreep->commit();
-						$this->redirect( array( 'action' => 'edit', $ep_id ) );
-					}
-					else {
-						$this->Ep->EpMembreep->rollback();
-					}
-// 				}
+				$this->_setFlashResult( 'Save', $success );
+				if ( $success ) {
+					$this->Ep->EpMembreep->commit();
+					$this->redirect( array( 'action' => 'edit', $ep_id ) );
+				}
+				else {
+					$this->Ep->EpMembreep->rollback();
+				}
 			}
-			
+
 			$participants = $this->Ep->Membreep->find(
 				'all',
 				array(
@@ -191,31 +150,22 @@
 					'contain' => false
 				)
 			);
-			/*if ( $ep_id == 0 && $this->Session->check( 'membreseps' ) ) {
-				foreach( $this->Session->read( 'membreseps' ) as $membreep_id ) {
-					foreach ( $participants as $key => $participant ) {
-						if ( $participant['Membreep']['id'] == $membreep_id ) {
-							unset( $participants[$key] );
-						}
-					}
+
+			foreach( $participants as $key => $participant ) {
+				$count = $this->Ep->EpMembreep->find(
+					'count',
+					array(
+						'conditions'=>array(
+							'EpMembreep.membreep_id' => $participant['Membreep']['id'],
+							'EpMembreep.ep_id' => $ep_id
+						)
+					)
+				);
+				if ( $count > 0 ) {
+					unset( $participants[$key] );
 				}
 			}
-			else {*/
-				foreach( $participants as $key => $participant ) {
-					$count = $this->Ep->EpMembreep->find(
-						'count',
-						array(
-							'conditions'=>array(
-								'EpMembreep.membreep_id' => $participant['Membreep']['id'],
-								'EpMembreep.ep_id' => $ep_id
-							)
-						)
-					);
-					if ( $count > 0 ) {
-						unset( $participants[$key] );
-					}
-				}
-// 			}
+
 			$listeParticipants = array();
 			foreach( $participants as $participant ) {
 				$listeParticipants[$participant['Membreep']['id']] = implode( ' ', array( $participant['Membreep']['qual'], $participant['Membreep']['nom'], $participant['Membreep']['prenom'] ) );
@@ -223,35 +173,20 @@
 			$this->set( compact( 'listeParticipants' ) );
 			$this->set( 'ep_id', $ep_id );
 		}
-		
+
 		/**
 		 *
 		 */
-		 
+
 		public function deleteparticipant($ep_id, $participant_id) {
-			/*if ( $ep_id == 0 ) {
-				$success = true;
-				$liste = array();
-				foreach( $this->Session->read( 'membreseps' ) as $membreep_id ) {
-					if ( $membreep_id != $participant_id ) {
-						$liste[] = $membreep_id;
-					}
-				}
-				$this->Session->write( 'membreseps', $liste );
-				$this->_setFlashResult( 'Delete', $success );
-				$this->redirect( array( 'action' => 'add' ) );
-			}
-			else {*/
-				$success = $this->Ep->EpMembreep->deleteAll(
-					array(
-						'EpMembreep.ep_id'=>$ep_id,
-						'EpMembreep.membreep_id'=>$participant_id
-					)
-				);
-				$this->_setFlashResult( 'Delete', $success );
-				$this->redirect( array( 'action' => 'edit', $ep_id ) );
-// 			}
+			$success = $this->Ep->EpMembreep->deleteAll(
+				array(
+					'EpMembreep.ep_id'=>$ep_id,
+					'EpMembreep.membreep_id'=>$participant_id
+				)
+			);
+			$this->_setFlashResult( 'Delete', $success );
+			$this->redirect( array( 'action' => 'edit', $ep_id ) );
 		}
-		
 	}
 ?>

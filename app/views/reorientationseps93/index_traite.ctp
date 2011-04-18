@@ -15,11 +15,11 @@
 			// Orientation d'accueil
 			'Typeorient.lib_type_orient',
 			'Structurereferente.lib_struc',
-			'Dossierep.etapedossierep',
-			'Decisionreorientationep93.0.decision',
-			'Decisionreorientationep93.0.Typeorient.lib_type_orient' => array( 'type' => 'text' ),
-			'Decisionreorientationep93.0.Structurereferente.lib_struc' => array( 'type' => 'text' ),
-			'Dossierep.Commissionep.dateseance' => array( 'type' => 'date' ),
+			'Dossierep.Passagecommissionep.0.etatdossierep',
+			'Dossierep.Passagecommissionep.0.Decisionreorientationep93.0.decision',
+			'Dossierep.Passagecommissionep.0.Decisionreorientationep93.0.Typeorient.lib_type_orient' => array( 'type' => 'text' ),
+			'Dossierep.Passagecommissionep.0.Decisionreorientationep93.0.Structurereferente.lib_struc' => array( 'type' => 'text' ),
+			'Dossierep.Passagecommissionep.0.Commissionep.dateseance' => array( 'type' => 'date' ),
 		),
 		array(
 			'groupColumns' => array(

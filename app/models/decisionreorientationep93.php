@@ -29,16 +29,23 @@
 				'fields' => '',
 				'order' => ''
 			),
-			'Reorientationep93' => array(
-				'className' => 'Reorientationep93',
-				'foreignKey' => 'reorientationep93_id',
+// 			'Reorientationep93' => array(
+// 				'className' => 'Reorientationep93',
+// 				'foreignKey' => 'reorientationep93_id',
+// 				'conditions' => '',
+// 				'fields' => '',
+// 				'order' => ''
+// 			),
+			'Structurereferente' => array(
+				'className' => 'Structurereferente',
+				'foreignKey' => 'structurereferente_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
 			),
-			'Structurereferente' => array(
-				'className' => 'Structurereferente',
-				'foreignKey' => 'structurereferente_id',
+			'Passagecommissionep' => array(
+				'className' => 'Passagecommissionep',
+				'foreignKey' => 'passagecommissionep_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
