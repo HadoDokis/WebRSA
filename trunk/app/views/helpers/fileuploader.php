@@ -15,7 +15,7 @@
 		* uploadparams <--
 		*/
 
-		public function create( $type, $oldfiles, $ajaxurl ) {
+		public function create( $oldfiles, $ajaxurl ) {
 			$tmp = "\n";
 			if( !empty( $oldfiles ) ) {
 				foreach( $oldfiles as $oldfile ) {
@@ -23,19 +23,19 @@
 $( li ).insert( { bottom: new Element( \'span\', { class: \'qq-upload-file\' } ).update( "'.h( $oldfile ).'" ) } );
 $( li ).insert( { bottom: new Element( \'span\', { class: \'qq-upload-size\' } ) } );
 $( ul ).insert( { bottom: li } );
-addAjaxUploadedFileLinks( $( li ).down( \'span.qq-upload-file\' ), \''.$type.'\' );'."\n";
+addAjaxUploadedFileLinks( $( li ).down( \'span.qq-upload-file\' ) );'."\n";
 				}
 			}
 
-			return '<div id="file-uploader-'.$type.'">
+			return '<div id="file-uploader-piecejointe">
 						<noscript>
 							<p>Please enable JavaScript to use file uploader.</p>
 						</noscript>
 					</div>
 
 					<script type="text/javascript">
-						function addAjaxUploadedFileLinks( elmt, type ) {
-							var link = new Element( \'a\', { href: \''.Router::url( array( 'action' => 'ajaxfiledelete', $this->action, $this->params['pass'][0] ), true ).'\' + \'/\' + type + \'/\' + $( elmt ).innerHTML } ).update( "Supprimer" );
+						function addAjaxUploadedFileLinks( elmt ) {
+							var link = new Element( \'a\', { href: \''.Router::url( array( 'action' => 'ajaxfiledelete', $this->action, $this->params['pass'][0] ), true ).'\' + \'/\' + $( elmt ).innerHTML } ).update( "Supprimer" );
 							Event.observe( link, \'click\', function(e){
 								Event.stop(e);
 								new Ajax.Request(
@@ -62,11 +62,11 @@ addAjaxUploadedFileLinks( $( li ).down( \'span.qq-upload-file\' ), \''.$type.'\'
 
 							$( elmt ).up( \'li\' ).insert( { bottom: link } );
 
-							link = new Element( \'a\', { href: \''.Router::url( array( 'action' => 'fileview', $this->action, $this->params['pass'][0] ), true ).'\' + \'/\' + type + \'/\' + $( elmt ).innerHTML } ).update( "Voir" );
+							link = new Element( \'a\', { href: \''.Router::url( array( 'action' => 'fileview', $this->action, $this->params['pass'][0] ), true ).'\' + \'/\' + $( elmt ).innerHTML } ).update( "Voir" );
 							$( elmt ).up( \'li\' ).insert( { bottom: link } );
 						}
 
-						function createUploader( container, type ){
+						function createUploader( container ){
 							new qq.FileUploader( {
 								element: document.getElementById( container ),
 								action: \''.$ajaxurl.'\',
@@ -74,13 +74,12 @@ addAjaxUploadedFileLinks( $( li ).down( \'span.qq-upload-file\' ), \''.$type.'\'
 								multiple: false,
 								params: {
 									action: \''.$this->action.'\',
-									primaryKey: \''.$this->params['pass'][0].'\',
-									type: type
+									primaryKey: \''.$this->params['pass'][0].'\'
 								},
 								onComplete: function( id, fileName, responseJSON ) {
 									$$( \'.qq-upload-file\' ).each( function( elmt ) {
 										if( elmt.innerHTML == fileName ) {
-											addAjaxUploadedFileLinks( elmt, type );
+											addAjaxUploadedFileLinks( elmt );
 										}
 									} );
 								},
@@ -93,8 +92,8 @@ addAjaxUploadedFileLinks( $( li ).down( \'span.qq-upload-file\' ), \''.$type.'\'
 						}
 
 						document.observe( "dom:loaded", function() {
-							createUploader( \'file-uploader-'.$type.'\', \''.$type.'\' );
-							var ul = $( \'file-uploader-'.$type.'\' ).down( \'ul.qq-upload-list\' );
+							createUploader( \'file-uploader-piecejointe\' );
+							var ul = $( \'file-uploader-piecejointe\' ).down( \'ul.qq-upload-list\' );
 							'.$tmp.'
 						} );
 					</script>';

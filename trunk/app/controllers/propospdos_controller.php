@@ -7,6 +7,8 @@
 
 		var $aucunDroit = array( 'ajaxstruct', 'ajaxetatpdo', 'ajaxetat1', 'ajaxetat2', 'ajaxetat3', 'ajaxetat4', 'ajaxetat5', 'ajaxfichecalcul' );
 
+        var $components = array( 'Fileuploader' );
+
 		var $helpers = array( 'Default', 'Default2', 'Ajax' );
 
 		var $commeDroit = array(
@@ -319,6 +321,7 @@
 		function _add_edit( $id = null ) {
 			// Retour à la liste en cas d'annulation
 			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
+//                 $this->Fileuploader->deleteDir();
 
 				if( $this->action == 'edit' ) {
 					$id = $this->Propopdo->field( 'personne_id', array( 'id' => $id ) );

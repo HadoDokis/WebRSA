@@ -834,8 +834,7 @@
 	<fieldset id="filecontainer-piecejointe" class="noborder invisible">
 		<?php
 			echo $fileuploader->create(
-				'piecejointe',
-				$fichiers['piecejointe'],
+				$fichiers,
 				Router::url( array( 'action' => 'ajaxfileupload' ), true )
 			);
 		?>
@@ -927,7 +926,8 @@
 		echo "<div class='submit'>";
 			$disabled = ( isset( $this->data['Traitementpdo']['clos'] ) && $this->data['Traitementpdo']['clos'] == 1 ) ? 'disabled' : 'enabled';
 			echo $form->submit( 'Enregistrer', array( 'disabled'=>$disabled, 'div'=>false ) );
-			echo $form->button( 'Retour', array( 'type' => 'button', 'onclick'=>"location.replace('".Router::url( '/propospdos/edit/'.$propopdo_id, true )."')" ) );
+			echo $form->submit( 'Retour', array( 'name' => 'Cancel', 'div'=>false ) );
+// 			echo $form->button( 'Retour', array( 'type' => 'button', 'onclick'=>"location.replace('".Router::url( '/propospdos/edit/'.$propopdo_id, true )."')" ) );
 		echo "</div>";
 
 		echo $form->end();
