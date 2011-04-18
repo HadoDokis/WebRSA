@@ -1,6 +1,13 @@
 <?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 
-<?php  $this->pageTitle = 'PDO';?>
+<?php
+    if (Configure::read( 'nom_form_pdo_cg' ) == 'cg66'){
+        $this->pageTitle = 'Décision PCG';
+    }
+    else{
+        $this->pageTitle = 'PDO';
+    }
+?>
 
 <?php echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );?>
 
@@ -19,12 +26,10 @@
 
 <div class="with_treemenu">
 
-<h1>PDOs</h1>
-
+<h1><?php echo $this->pageTitle;?></h1>
+    <?php if (Configure::read( 'nom_form_pdo_cg' ) != 'cg66'):?>
         <h2>Détails PDO</h2>
-        <?php if( empty( $pdos ) ):?>
-            <p class="notice">Cette personne ne possède pas encore de PDO.</p>
-        <?php endif;?>
+    <?php endif;?>
 
         <?php if( $permissions->check( 'propospdos', 'add' ) ):?>
             <ul class="actionMenu">
@@ -35,6 +40,9 @@
                     ).' </li>';
                 ?>
             </ul>
+        <?php endif;?>
+        <?php if( empty( $pdos ) ):?>
+            <p class="notice">Cette personne ne possède pas encore de Proposition de Décision d'Opportunité.</p>
         <?php endif;?>
 
         <?php if( !empty( $pdos ) ):?>

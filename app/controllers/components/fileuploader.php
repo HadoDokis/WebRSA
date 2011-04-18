@@ -43,16 +43,17 @@
         }
 
 
-        public function saveFichiers( $dir, $delete = false ){
+        public function saveFichiers( $dir, $delete = false, $id ){
             $oFolder = new Folder( $dir, true, 0777 );
             $saved = true;
 
             if( $delete ){
                 $saved = ClassRegistry::init( $this->_modeleStockage )->deleteAll(
                     array(
-                        "{$this->_modeleStockage}.fk_value" => $this->controller->{$this->_colonneModele}->id,
+                        "{$this->_modeleStockage}.fk_value" => $id,
                         "{$this->_modeleStockage}.modele" => $this->_colonneModele
-                    )
+                    ),
+                    false
                 ) && $saved;
             }
             // Enregistrement des fichiers si besoin
@@ -64,7 +65,7 @@
                         $oldrecord = array(
                             "{$this->_modeleStockage}" => array(
                                 'name' => $file,
-                                'fk_value' => $this->controller->{$this->_colonneModele}->id,
+                                'fk_value' => $id,
                                 'mime' => mime_content_type( $dir.DS.$file  ),
                                 'modele' => $this->_colonneModele
                             )
@@ -74,7 +75,7 @@
                         $record = array(
                             "{$this->_modeleStockage}" => array(
                                 'name' => $file,
-                                'fk_value' => $this->controller->{$this->_colonneModele}->id,
+                                'fk_value' => $id,
                                 'mime' => mime_content_type( $dir.DS.$file  ),
                                 'document' => file_get_contents( $dir.DS.$file ),
                                 'modele' => $this->_colonneModele
@@ -179,7 +180,7 @@
                 )
             );
 
-            $fichiers = Set::extract( $tmpFiles, "{$this->_modeleStockage}.name" );
+            $fichiers = Set::extract( $tmpFiles, "/{$this->_modeleStockage}/name" );
 
             return $fichiers;
         }
@@ -242,22 +243,21 @@
                 $error = !@unlink( $path );
             }
 
-//             if( $this->params['pass'][0] == 'edit' ) { // Suppression d'un document se trouvant déjà enregistré -> SSI c'est un edit
-//                 $record = $this->Traitementpdo->Fichiertraitementpdo->find(
-//                     'first',
-//                     array(
-//                         'fields' => array( 'id' ),
-//                         'conditions' => array(
-//                             'traitementpdo_id' => $this->params['pass'][1],
-//                             'type' => $this->params['pass'][2],
-//                             'name' => $this->params['pass'][3],
-//                         )
-//                     )
-//                 );
-//                 if( !empty( $record ) ) {
-//                     $error = !$this->Traitementpdo->Fichiertraitementpdo->delete( $record['Fichiertraitementpdo']['id'] ) && $error;
-//                 }
-//             }
+            if( $this->controller->params['pass'][0] == 'edit' ) { // Suppression d'un document se trouvant déjà enregistré -> SSI c'est un edit
+                $record = ClassRegistry::init( $this->_modeleStockage)->find(
+                    'first',
+                    array(
+                        'fields' => array( 'id' ),
+                        'conditions' => array(
+                            'fk_value' => $this->controller->params['pass'][1],
+                            'name' => $this->controller->params['pass'][2]
+                        )
+                    )
+                );
+                if( !empty( $record ) ) {
+                    $error = !ClassRegistry::init( $this->_modeleStockage)->delete( $record[$this->_modeleStockage]['id'] ) && $error;
+                }
+            }
 
             Configure::write( 'debug', false );
             $this->layout = false;
@@ -281,28 +281,27 @@
                     'length' => filesize( $path )*/
                 );
             }
-            /*else if( $this->params['pass'][0] == 'edit' ) {
-                $record = $this->Traitementpdo->Fichiermodule->find(
+            else if( $this->controller->params['pass'][0] == 'edit' ) {
+                $record = ClassRegistry::init( $this->_modeleStockage)->find(
                     'first',
                     array(
                         'conditions' => array(
-                            'fk_value' => $this->params['pass'][1],
-                            'type' => $this->params['pass'][2],
-                            'name' => $this->params['pass'][3],
+                            'fk_value' => $this->controller->params['pass'][1],
+                            'name' => $this->controller->params['pass'][2]
                         ),
                         'recursive' => -1,
                         'contain' => false
                     )
                 );
                 if( !empty( $record ) ) {
-                    $file = $record['Fichiermodule'];
+                    $file = $record[$this->_modeleStockage];
                     if( empty( $file['document'] ) && !empty( $file['cmspath'] ) ) {
                         $cmisFile = Cmis::read( $file['cmspath'], true );
                         $file['document'] = $cmisFile['content'];
                     }
                     $file['length'] = strlen( $file['document'] );
                 }
-            }*/
+            }
 
             $this->controller->assert( !empty( $file ), 'error404' );
             $this->controller->assert( !empty( $file['document'] ), 'error404' );
