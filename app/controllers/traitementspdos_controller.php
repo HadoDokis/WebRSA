@@ -100,33 +100,34 @@
 		*/
 
 		public function ajaxfileupload() {
-			$error = false;
-
-			$dir = $this->Fileuploader->dirFichiersModule( $this->params['url']['action'], $this->params['url']['primaryKey'], $this->params['url']['type'] );
-			$path = $dir.DS.$this->params['url']['qqfile'];
-
-			$old = umask(0);
-			@mkdir( $dir, 0777, true );
-			umask($old);
-
-			$input = fopen( "php://input", "r" );
-			$temp = tmpfile();
-			$realSize = stream_copy_to_stream( $input, $temp );
-			fclose( $input );
-
-			if( $realSize != (int)$_SERVER["CONTENT_LENGTH"] ){
-				$error = '$realSize != (int)$_SERVER["CONTENT_LENGTH"]';
-			}
-
-			$target = fopen( $path, "w" );
-			fseek( $temp, 0, SEEK_SET );
-			stream_copy_to_stream( $temp, $target );
-			fclose( $target );
-
-			Configure::write( 'debug', false );
-			$this->layout = false;
-			echo htmlspecialchars( json_encode( ( empty( $error ) ? array( 'success' => true ) : array( 'error' => $error ) ) ), ENT_NOQUOTES );
-			die();
+            $this->Fileuploader->ajaxfileupload();
+// 			$error = false;
+// 
+// 			$dir = $this->Fileuploader->dirFichiersModule( $this->params['url']['action'], $this->params['url']['primaryKey'], $this->params['url']['type'] );
+// 			$path = $dir.DS.$this->params['url']['qqfile'];
+// 
+// 			$old = umask(0);
+// 			@mkdir( $dir, 0777, true );
+// 			umask($old);
+// 
+// 			$input = fopen( "php://input", "r" );
+// 			$temp = tmpfile();
+// 			$realSize = stream_copy_to_stream( $input, $temp );
+// 			fclose( $input );
+// 
+// 			if( $realSize != (int)$_SERVER["CONTENT_LENGTH"] ){
+// 				$error = '$realSize != (int)$_SERVER["CONTENT_LENGTH"]';
+// 			}
+// 
+// 			$target = fopen( $path, "w" );
+// 			fseek( $temp, 0, SEEK_SET );
+// 			stream_copy_to_stream( $temp, $target );
+// 			fclose( $target );
+// 
+// 			Configure::write( 'debug', false );
+// 			$this->layout = false;
+// 			echo htmlspecialchars( json_encode( ( empty( $error ) ? array( 'success' => true ) : array( 'error' => $error ) ) ), ENT_NOQUOTES );
+// 			die();
 		}
 
 		/**
@@ -138,6 +139,8 @@
 		*/
 
 		public function ajaxfiledelete() {
+            $this->Fileuploader->ajaxfiledelete();
+            /*
             $dir = $this->Fileuploader->dirFichiersModule( $this->params['pass'][0], $this->params['pass'][1], $this->params['pass'][2] );
 			$path = $dir.DS.$this->params['pass'][3];
 			$error = false;
@@ -166,89 +169,64 @@
 			Configure::write( 'debug', false );
 			$this->layout = false;
 			echo htmlspecialchars( json_encode( ( empty( $error ) ? array( 'success' => true ) : array( 'error' => $error ) ) ), ENT_NOQUOTES );
-			die();
+			die();*/
 		}
 
 		/**
 		*
 		*/
 
-		public function fileview() {
-            $dir = $this->Fileuploader->dirFichiersModule( $this->params['pass'][0], $this->params['pass'][1], $this->params['pass'][2] );
-			
-			$path = $dir.DS.$this->params['pass'][3];
-
-			$file = array();
-
-			if( file_exists( $path ) ) {
-				$file = array(
-					'name' => basename( $path ),
-					'mime' => mime_content_type( $path ),
-					'document' => file_get_contents( $path ),
-					'length' => filesize( $path )
-				);
-			}
-			else if( $this->params['pass'][0] == 'edit' ) {
-				$record = $this->Traitementpdo->Fichiertraitementpdo->find(
-					'first',
-					array(
-						'conditions' => array(
-							'traitementpdo_id' => $this->params['pass'][1],
-							'type' => $this->params['pass'][2],
-							'name' => $this->params['pass'][3],
-						),
-						'recursive' => -1,
-						'contain' => false
-					)
-				);
-				if( !empty( $record ) ) {
-					$file = $record['Fichiertraitementpdo'];
-					if( empty( $file['document'] ) && !empty( $file['cmspath'] ) ) {
-						$cmisFile = Cmis::read( $file['cmspath'], true );
-						$file['document'] = $cmisFile['content'];
-					}
-					$file['length'] = strlen( $file['document'] );
-				}
-			}
-
-			$this->assert( !empty( $file ), 'error404' );
-			$this->assert( !empty( $file['document'] ), 'error404' );
-
-			Configure::write( 'debug', false );
-			$this->layout = false;
-
-			header( "Content-type: {$file['mime']}" );
-			header( "Content-Length: {$file['length']}" );
-			header( "Content-Disposition: attachment; filename=\"{$file['name']}\"" );
-
-			echo $file['document'];
-			die();
-		}
-
-		/**
-		* Récupération des fichiers en base
-		*/
-
-		protected function _fichiers( $traitementpdo_id ) {
-			$fichiers = array();
-
-			foreach( array( 'courrier', 'piecejointe' ) as $type ) {
-				$tmpFiles = $this->Traitementpdo->Fichiertraitementpdo->find(
-					'all',
-					array(
-						'fields' => array( 'name' ),
-						'conditions' => array(
-							'Fichiertraitementpdo.traitementpdo_id' => $traitementpdo_id,
-							'Fichiertraitementpdo.type' => $type
-						),
-						'contain' => false
-					)
-				);
-
-				$fichiers[$type] = Set::extract( $tmpFiles, '/Fichiertraitementpdo/name' );
-			}
-
-			return $fichiers;
+		public function fileview( $id ) {
+            $this->Fileuploader->fileview( $id );
+//             $dir = $this->Fileuploader->dirFichiersModule( $this->params['pass'][0], $this->params['pass'][1], $this->params['pass'][2] );
+// 			
+// 			$path = $dir.DS.$this->params['pass'][3];
+// 
+// 			$file = array();
+// 
+// 			if( file_exists( $path ) ) {
+// 				$file = array(
+// 					'name' => basename( $path ),
+// 					'mime' => mime_content_type( $path ),
+// 					'document' => file_get_contents( $path ),
+// 					'length' => filesize( $path )
+// 				);
+// 			}
+// 			else if( $this->params['pass'][0] == 'edit' ) {
+//                 $record = $this->Traitementpdo->Fichiermodule->find(
+//                     'first',
+//                     array(
+//                         'conditions' => array(
+//                             'fk_value' => $this->params['pass'][1],
+//                             'type' => $this->params['pass'][2],
+//                             'name' => $this->params['pass'][3],
+//                         ),
+//                         'recursive' => -1,
+//                         'contain' => false
+//                     )
+//                 );
+// 				if( !empty( $record ) ) {
+// 					$file = $record['Fichiermodule'];
+// 					if( empty( $file['document'] ) && !empty( $file['cmspath'] ) ) {
+// 						$cmisFile = Cmis::read( $file['cmspath'], true );
+// 						$file['document'] = $cmisFile['content'];
+// 					}
+// 					$file['length'] = strlen( $file['document'] );
+// 				}
+// 			}
+// 
+// 			$this->assert( !empty( $file ), 'error404' );
+// 			$this->assert( !empty( $file['document'] ), 'error404' );
+// 
+// 			Configure::write( 'debug', false );
+// 			$this->layout = false;
+// 
+// 			header( "Content-type: {$file['mime']}" );
+// 			header( "Content-Length: {$file['length']}" );
+// 			header( "Content-Disposition: attachment; filename=\"{$file['name']}\"" );
+// 
+// 			echo $file['document'];
+// 			die();
 		}
 
 		/**
@@ -338,11 +316,19 @@
 		* FIXME: traiter le bouton "Retour"
 		*/
 
-		function _add_edit( $id = null ) {
+		public function _add_edit( $id = null ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
+            if( isset( $this->params['form']['Cancel'] ) ) {
+                $this->Fileuploader->deleteDir();
+                $this->redirect( array( 'controller' => 'propospdos', 'action' => 'edit', $id ) );
+            }
+
+
+
+
 			$this->Traitementpdo->begin();
-			$fichiers = array( 'courrier' => array(), 'piecejointe' => array() );
+			$fichiers = array(  );
 			$this->set( 'options', $this->_options() );
 
 			// Récupération des id afférents
@@ -353,6 +339,7 @@
 				$this->set( 'propopdo', $propopdo );
 				$personne_id = Set::classicExtract( $propopdo, 'Propopdo.personne_id' );
 				$dossier_id = $this->Personne->dossierId( $personne_id );
+				
 			}
 			else if( $this->action == 'edit' ) {
 				$traitement_id = $id;
@@ -441,61 +428,31 @@
 
 					if( $saved ) {
 						// Début sauvegarde des fichiers attachés, en utilisant le Component Fileuploader
-						App::import ('Core', 'File' );
-                        foreach( array( 'courrier', 'piecejointe' ) as $type ) {
-                            $dir = $this->Fileuploader->dirFichiersModule( $this->action, $this->params['pass'][0], $type );
-                            $saved = $this->Fileuploader->saveFichiers( $dir, !Set::classicExtract( $this->data, "Traitementpdo.has{$type}" ) ) && $saved;
+                        $dir = $this->Fileuploader->dirFichiersModule( $this->action, $this->params['pass'][0] );
+                        $saved = $this->Fileuploader->saveFichiers( $dir, !Set::classicExtract( $this->data, "Traitementpdo.haspiecejointe" ) ) && $saved;
+
+                        if( $saved ) {
+                            $this->Jetons->release( $dossier_id );
+                            $this->Traitementpdo->commit();//FIXME -> arnaud
+                            $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+                            $this->redirect( array( 'controller' => 'propospdos', 'action' => 'edit', $propopdo_id ) );
                         }
+                        else {
+                            $this->Traitementpdo->rollback();
+                            $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+                        }
+                    }
+                }
+                else {
+                    $fichiers = $this->Fileuploader->fichiers( $id );
 
-					if( $saved ) {
-						$this->Jetons->release( $dossier_id );
-						$this->Traitementpdo->commit();//FIXME -> arnaud
-						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-						$this->redirect( array( 'controller' => 'propospdos', 'action' => 'edit', $propopdo_id ) );
-					}
-					else {
-						$this->Traitementpdo->rollback();
-						$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
-					}
-				}
-				else {
-// 					$fichiers = $this->_fichiers( $id );
-                    $fichiers = $this->_fichiers( $id );
-// debug($fichiers);
-					// FIXME: Début ajout des fichiers stockés en attente
-					foreach( array( 'courrier', 'piecejointe' ) as $type ) {
-                        $dir = $this->Fileuploader->dirFichiersModule( $this->action, $this->params['pass'][0],$type );
-						$oFolder = new Folder( $dir, true, 0777 );
-						$files = $oFolder->find();
-						if( !empty( $files ) ) {
-							foreach( $files as $file ) {
-								$found = false;
-								if( !empty( $fichiers ) ) {
-									foreach( $fichiers[$type] as $i => $oldfile ) {
-										if( $oldfile == $file ) {
-											$found = $i;
-										}
-									}
-								}
-
-								if( $found !== false ) {
-									$fichiers[$type][$found] = $file;
-								}
-								else {
-									$fichiers[$type][] = $file;
-								}
-							}
-						}
-					}
-					// Fin ajout des fichiers stockés en attente
-
-					$this->Traitementpdo->rollback();
-					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
-				}
+                    $this->Traitementpdo->rollback();
+                    $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+                }
 			}
 			else if( $this->action == 'edit' ) {
 				$this->data = $traitement;
-				$fichiers = $this->_fichiers( $id );
+				$fichiers = $this->Fileuploader->fichiers( $id );
 			}
 
 			$this->Traitementpdo->commit();//FIXME -> arnaud
@@ -509,7 +466,7 @@
 					)
 				)
 			);
-
+// debug($fichiers);
 			$this->set( compact( 'traitementspdosouverts', 'fichiers' ) );
 
 			$this->render( $this->action, null, 'add_edit' );
@@ -541,34 +498,7 @@
 			$this->render( 'statutpersonne', 'ajax' );
 		}
 
-        /**
-        *   Arnaud: Nombre de textarea à générer par courrier dans traitement PDO
-        */
 
-        public function ajaxnbtextareacourrier( $id = null ) {
-
-            $id = $this->data['Courrierpdo']['Courrierpdo'][0];
-            $courrier = $this->Traitementpdo->Courrierpdo->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Courrierpdo.id' => $id
-                    ),
-                    'contain' => array(
-                        'Textareacourrierpdo' => array(
-                            'order' => 'Textareacourrierpdo.ordre ASC'
-                        )
-                    )
-                )
-            );
-//             debug($courrier);
-
-            $this->set( 'values', $courrier );
-
-            Configure::write( 'debug', 0 );
-            $this->render( 'textareacourrierpdo', 'ajax' );
-
-        }
 
 		/**
 		*
@@ -646,7 +576,7 @@
 
 
         /**
-        *
+        *   Téléchargement des fichiers préalablement associés à un traitement donné
         */
 
         public function download( $fichiermodule_id ) {
