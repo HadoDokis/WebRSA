@@ -1,4 +1,10 @@
 <?php
+    if( Configure::read( 'debug' ) > 0 ) {
+        echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+        echo $xhtml->css( array( 'fileuploader' ), 'stylesheet', array( 'media' => 'all' ), false );
+        echo $javascript->link( 'fileuploader.js' );
+    }
+
 	$this->pageTitle = 'Validation PDO';
 	$domain = 'pdo';
 
@@ -126,6 +132,33 @@
 			//echo $ajax->observeField( 'PropopdoTypepdoId', array( 'update' => 'Etatpdo', 'url' => Router::url( array( 'action' => 'ajaxetatpdo' ), true ) ) );
 		?>
 	</fieldset>
+<fieldset>
+    <legend><?php echo required( $default2->label( 'Propopdo.haspiece' ) );?></legend>
+
+    <?php echo $form->input( 'Propopdo.haspiece', array( 'type' => 'radio', 'options' => $options['haspiece'], 'legend' => false, 'fieldset' => false ) );?>
+    <fieldset id="filecontainer-piece" class="noborder invisible">
+        <?php
+            echo $fileuploader->create(
+                $fichiers,
+                Router::url( array( 'action' => 'ajaxfileupload' ), true )
+            );
+        ?>
+    </fieldset>
+</fieldset>
+
+<script type="text/javascript">
+    document.observe( "dom:loaded", function() {
+        observeDisableFieldsetOnRadioValue(
+            'propopdoform',
+            'data[Propopdo][haspiece]',
+            $( 'filecontainer-piece' ),
+            '1',
+            false,
+            true
+        );
+    } );
+</script>
+
 
 	<fieldset>
 		<!--<legend>Prise de décision</legend>-->

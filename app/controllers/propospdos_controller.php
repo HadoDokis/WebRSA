@@ -9,7 +9,7 @@
 
         var $components = array( 'Fileuploader' );
 
-		var $helpers = array( 'Default', 'Default2', 'Ajax' );
+		var $helpers = array( 'Default', 'Default2', 'Ajax', 'Fileuploader' );
 
 		var $commeDroit = array(
 			'view' => 'Propospdos:index',
@@ -73,70 +73,6 @@
 				$this->render( 'ajaxstruct', 'ajax' );
 		}
 
-
-//         function ajaxfichecalcul( $iscomplet = null ) {
-//
-//             $dataIscomplet = Set::extract( $this->data, 'Propopdo.iscomplet' );
-//             $iscomplet = ( empty( $iscomplet ) && !empty( $dataIscomplet ) ? $dataIscomplet : $iscomplet );
-//
-//             Configure::write( 'debug', 0 );
-//             $this->render( 'ajaxfichecalcul', 'ajax' );
-//         }
-
-//         function ajaxetat1( $typepdo_id = null ) {
-//
-//             $dataTypepdo_id = Set::extract( $this->data, 'Propopdo.typepdo_id' );
-//             $typepdo_id = ( empty( $typepdo_id ) && !empty( $dataTypepdo_id ) ? $dataTypepdo_id : $typepdo_id );
-//             $this->Propopdo->etatPdo( $this->data );
-//             $this->set( 'typepdo_id', $typepdo_id );
-//             Configure::write( 'debug', 0 );
-//             $this->render( 'ajaxetat1', 'ajax' );
-//         }
-//
-//         function ajaxetat2( $iscomplet = null ) {
-//             $dataIscomplet = Set::extract( $this->data, 'Propopdo.iscomplet' );
-//
-//             $iscomplet = ( empty( $iscomplet ) && !empty( $dataIscomplet ) ? $dataIscomplet : $iscomplet );
-//
-//
-//             $this->set( 'iscomplet', $iscomplet );
-//             Configure::write( 'debug', 0 );
-//             $this->render( 'ajaxetat2', 'ajax' );
-//         }
-//
-//         function ajaxetat3( $isvalidation = null ) {
-//             $dataIsvalidation = Set::extract( $this->data, 'Propopdo.isvalidation' );
-//             $isvalidation = ( empty( $isvalidation ) && !empty( $dataIsvalidation ) ? $dataIsvalidation : $isvalidation );
-//             $this->set( 'isvalidation', $isvalidation );
-//
-//             Configure::write( 'debug', 0 );
-//             $this->render( 'ajaxetat3', 'ajax' );
-//         }
-//
-//         function ajaxetat4( $decisionpdo_id = null ) {
-//             $dataDecisionpdo_id = Set::extract( $this->data, 'Propopdo.decisionpdo_id' );
-//             $decisionpdo_id = ( empty( $decisionpdo_id ) && !empty( $dataDecisionpdo_id ) ? $dataDecisionpdo_id : $decisionpdo_id );
-// //             $this->Propopdo->etatPdo( $this->data );
-//             $this->set( 'decisionpdo_id', $decisionpdo_id );
-//             /*
-//             if( $this->action == 'add' ) {
-//                 $value = Set::extract( $this->data, 'Propopdo.decisionpdo_id' );
-//             }
-//
-//             $this->set( 'value', $value );*/
-//             Configure::write( 'debug', 0 );
-//             $this->render( 'ajaxetat4', 'ajax' );
-//         }
-//
-//         function ajaxetat5( $isdecisionop = null ) {
-//             $dataIsdecisionop = Set::extract( $this->data, 'Propopdo.isdecisionop' );
-//             $isdecisionop = ( empty( $isdecisionop ) && !empty( $dataIsdecisionop ) ? $dataIsdecisionop : $isdecisionop );
-//             $this->set( 'isdecisionop', $isdecisionop );
-//
-//             Configure::write( 'debug', 0 );
-//             $this->render( 'ajaxetat5', 'ajax' );
-//         }
-//
 		function ajaxetatpdo( $typepdo_id = null, $user_id = null, $complet = null, $incomplet = null ) {
 			$dataTypepdo_id = Set::extract( $this->params, 'form.typepdo_id' );
 			$dataUser_id = Set::extract( $this->params, 'form.user_id' );
@@ -206,10 +142,6 @@
 			$this->assert( ( $nbrPersonnes >= 1 ), 'invalidParameter' );
 
 			$conditions = array( 'Propopdo.personne_id' => $personne_id );
-
-			/// Récupération de la situation du dossier
-//             $options = $this->Propopdo->prepare( 'etat', array( 'conditions' => $conditions ) );
-//             $details = $this->Situationdossierrsa->find( 'first', $options );
 
 			/// Récupération des listes des PDO
 			$options = $this->Propopdo->prepare( 'propopdo', array( 'conditions' => $conditions ) );
@@ -297,6 +229,36 @@
 			$this->set( 'personne_id', $pdo['Propopdo']['personne_id'] );
 		}
 
+        /**
+        * http://valums.com/ajax-upload/
+        * http://doc.ubuntu-fr.org/modules_php
+        * increase post_max_size and upload_max_filesize to 10M
+        * debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
+        */
+
+        public function ajaxfileupload() {
+            $this->Fileuploader->ajaxfileupload();
+        }
+
+        /**
+        * http://valums.com/ajax-upload/
+        * http://doc.ubuntu-fr.org/modules_php
+        * increase post_max_size and upload_max_filesize to 10M
+        * debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
+        * FIXME: traiter les valeurs de retour
+        */
+
+        public function ajaxfiledelete() {
+            $this->Fileuploader->ajaxfiledelete();
+        }
+
+        /**
+        *   Fonction permettant de visualiser les fichiers chargés dans la vue avant leur envoi sur le serveur
+        */
+
+        public function fileview( $id ) {
+            $this->Fileuploader->fileview( $id );
+        }
 
 
 		/** ********************************************************************
@@ -330,7 +292,7 @@
 
 			}
 
-//             $step = 0;
+            $fichiers = array();
 			if( $this->action == 'add' ) {
 				$personne_id = $id;
 				$dossier_id = $this->Personne->dossierId( $personne_id );
@@ -361,10 +323,6 @@
 					)
 				);
 				$this->set( compact( 'traitementspdos' ) );
-
-
-
-
 
 				$joins = array(
 					array(
@@ -457,39 +415,12 @@
 			$this->set( 'referents', $this->Referent->find( 'list' ) );
 
 
-
-
-
-//             $pdf = $this->Pdf->find(
-//                 'all',
-//                 array(
-//                     'fields' => array(
-//                         'Pdf.document'
-//                     ),
-//                     'joins' => array(
-//
-//                     ),
-//                     'conditions' => array(
-//                         'Pdf.modele' => 'Decisionpropopdo',
-//                         'Pdf.fk_value' => $id
-//                     ),
-//                     'recursive' => -1
-//                 )
-//             );
-// debug($pdf);
-
-
 			/**
 			*   FIN
 			*/
 			//Essai de sauvegarde
 			if( !empty( $this->data ) ) {
 
-// debug($this->data);
-				//FIXME: faire une fonction
-//                 $defaults = $this->Propopdo->nullify( array( 'exceptions' => 'id' ) );
-//                 debug( $defaults );
-//                 die();
 				// Nettoyage des Propopdos
 				$keys = array_keys( $this->Propopdo->schema() );
 				$defaults = array_combine( $keys, array_fill( 0, count( $keys ), null ) );
@@ -497,24 +428,35 @@
 
 				$this->data['Propopdo'] = Set::merge( $defaults, $this->data['Propopdo'] );
 
-				if( $this->Propopdo->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
-					$this->Jetons->release( $dossier_id );
-					$this->Propopdo->commit();
-					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-					$this->redirect( array(  'controller' => 'propospdos','action' => 'index', $personne_id ) );
-				}
-				else {
-					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
-				}
+
+                    // Sauvegarde des fichiers liés à une PDO
+//                 $dir = $this->Fileuploader->dirFichiersModule( $this->action, $this->params['pass'][0] );
+//                 $saved = $this->Fileuploader->saveFichiers( $dir, !Set::classicExtract( $this->data, "Propopdo.haspiece" ) );
+
+                if( $saved ){
+                    if( $this->Propopdo->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
+                        $this->Jetons->release( $dossier_id );
+                        $this->Propopdo->commit();
+                        $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+                        $this->redirect( array(  'controller' => 'propospdos','action' => 'index', $personne_id ) );
+                    }
+                    else {
+                        $fichiers = $this->Fileuploader->fichiers( $id );
+                        $this->Propopdo->rollback();
+                        $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+                    }
+                }
 			}
 			//Affichage des données
 			elseif( $this->action == 'edit' ) {
-					$this->data = $pdo;
-					$this->set( 'etatdossierpdo', $pdo['Propopdo']['etatdossierpdo'] );
+                $this->data = $pdo;
+//                 $fichiers = $this->Fileuploader->fichiers( $id );
+                $this->set( 'etatdossierpdo', $pdo['Propopdo']['etatdossierpdo'] );
 			}
 			$this->Propopdo->commit();
 
 			$this->set( 'personne_id', $personne_id );
+			$this->set( 'fichiers', $fichiers );
 			$this->_setOptions();
 			$this->set( 'structs', $this->Propopdo->Structurereferente->find( 'list' ) );
 			$this->render( $this->action, null, 'add_edit_'.Configure::read( 'nom_form_pdo_cg' ) );

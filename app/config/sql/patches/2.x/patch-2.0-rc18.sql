@@ -137,6 +137,13 @@ CREATE INDEX fichiersmodules_mime_idx ON fichiersmodules( mime );
 CREATE UNIQUE INDEX fichiersmodules_cmspath_idx ON fichiersmodules( cmspath );
 
 
+-- -----------------------------------------------------------------------------------------------
+-- 20110418: Ajout d'un champ pour sélectionner si on ajoute des fichiers ou non aux PDOs
+-- -----------------------------------------------------------------------------------------------
+SELECT add_missing_table_field ('public', 'propospdos', 'haspiece', 'type_booleannumber');
+ALTER TABLE propospdos ALTER COLUMN haspiece SET DEFAULT '0'::TYPE_BOOLEANNUMBER;
+UPDATE propospdos SET haspiece = '0'::TYPE_BOOLEANNUMBER WHERE haspiece IS NULL;
+ALTER TABLE propospdos ALTER COLUMN haspiece SET NOT NULL;
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

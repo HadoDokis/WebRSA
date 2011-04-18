@@ -45,6 +45,16 @@
                 'fields' => '',
                 'order' => ''
             ),
+            'Propopdo' => array(
+                'className' => 'Propopdo',
+                'foreignKey' => false,
+                'conditions' => array(
+                    'Fichiermodule.modele = \'Propopdo\'',
+                    'Fichiermodule.fk_value = {$__cakeID__$}'
+                ),
+                'fields' => '',
+                'order' => ''
+            ),
         );
 
         /**
