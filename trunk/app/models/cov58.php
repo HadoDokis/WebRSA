@@ -29,6 +29,16 @@
 			)
 		);
 
+        public $belongsTo = array(
+            'Sitecov58' => array(
+                'className' => 'Sitecov58',
+                'foreignKey' => 'sitecov58_id',
+                'conditions' => '',
+                'fields' => '',
+                'order' => ''
+            ),
+        );
+
 		public $hasMany = array(
 			'Dossiercov58' => array(
 				'className' => 'Dossiercov58',
@@ -42,7 +52,7 @@
 				'exclusive' => '',
 				'finderQuery' => '',
 				'counterQuery' => ''
-			),
+			)
 		);
 
 		public function search( $criterescov58 ) {
@@ -53,6 +63,10 @@
 			if ( isset($criterescov58['Cov58']['name']) && !empty($criterescov58['Cov58']['name']) ) {
 				$conditions[] = array( 'Cov58.name ILIKE' => $this->wildcard( $criterescov58['Cov58']['name'] ) );
 			}
+
+            if ( isset($criterescov58['Cov58']['sitecov58_id']) && !empty($criterescov58['Cov58']['sitecov58_id']) ) {
+                $conditions[] = array( 'Cov58.sitecov58_id' => $criterescov58['Cov58']['sitecov58_id'] );
+            }
 
 			if ( isset($criterescov58['Cov58']['lieu']) && !empty($criterescov58['Cov58']['lieu']) ) {
 				$conditions[] = array('Cov58.lieu'=>$criterescov58['Cov58']['lieu']);
@@ -75,7 +89,7 @@
 					'Cov58.etatcov',
 					'Cov58.observation'
 				),
-				'contain'=>false,
+				'contain'=> array( 'Sitecov58' => array( 'fields' => array( 'name' ) ) ),
 				'order' => array( '"Cov58"."datecommission" ASC' ),
 				'conditions' => $conditions
 			);

@@ -32,8 +32,8 @@
 				<td><?php echo isset( $cov58['Cov58']['datecommission'] ) ? strftime( '%d/%m/%Y à %H:%M', strtotime( $cov58['Cov58']['datecommission'])) : null ;?></td>
 			</tr>
 			<tr class="even">
-				<th><?php echo __d('cov58', 'Cov58.name', true);?></th>
-				<td><?php echo isset( $cov58['Cov58']['name'] ) ? $cov58['Cov58']['name'] : null ;?></td>
+				<th><?php echo __d('cov58', 'Cov58.sitecov58_id', true);?></th>
+				<td><?php echo isset( $cov58['Sitecov58']['name'] ) ? $cov58['Sitecov58']['name'] : null ;?></td>
 			</tr>
 			<tr class="odd">
 				<th><?php echo __d('cov58', 'Cov58.lieu', true);?></th>

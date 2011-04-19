@@ -1,7 +1,7 @@
 <h1>
 	<?php
 		echo $this->pageTitle = sprintf(
-			'Dossiers à passer dans la commission de la COV « %s » du %s',
+			'Dossiers à passer dans la COV « %s » du %s',
 			$cov58['Cov58']['name'],
 			$locale->date( 'Locale->datetime', $cov58['Cov58']['datecommission'] )
 		);
@@ -14,6 +14,12 @@
 	<div id="dossierscovs">
 		<?php
 			foreach( $themes as $theme ) {
+                    if( $theme == 'proposorientationscovs58' ){
+                        $controller = 'orientsstructs';
+                    }
+                    else if( $theme == 'proposcontratsinsertioncovs58' ){
+                        $controller = 'contratsinsertion';
+                    }
 				$class = Inflector::classify( $theme );
 				echo "<div id=\"$theme\"><h3 class=\"title\">".__d( 'dossiercov58',  'ENUM::THEMECOV::'.$theme, true )."</h3>";
 					if (empty($dossierscovs[$class])) {
@@ -25,7 +31,7 @@
 							echo $xhtml->tag( 'th', __d( 'personne', 'Personne.qual', true ) );
 							echo $xhtml->tag( 'th', __d( 'personne', 'Personne.nom', true ) );
 							echo $xhtml->tag( 'th', __d( 'personne', 'Personne.prenom', true ) );
-// 							echo $xhtml->tag( 'th', __d( Inflector::underscore($class), $class.'.datedemande', true ) );
+							echo $xhtml->tag( 'th', 'Action' );
 						echo "</tr></thead><tbody>";
 						foreach($dossierscovs[$class] as $key => $dossiercov) {
 							echo "<tr>";
@@ -34,7 +40,7 @@
 								echo $xhtml->tag( 'td', $dossiercov['Personne']['qual'] );
 								echo $xhtml->tag( 'td', $dossiercov['Personne']['nom'] );
 								echo $xhtml->tag( 'td', $dossiercov['Personne']['prenom'] );
-// 								echo $xhtml->tag( 'td', date_short( $dossiercov[$class]['datedemande'] ) );
+								echo $xhtml->tag( 'td', $xhtml->link( 'Voir', array( 'controller' => $controller, 'action' => 'index',  $dossiercov['Personne']['id'] ), array( 'class' => 'external' ) ) );
 							echo "</tr>";
 						}
 						echo "</tbody></table>";
