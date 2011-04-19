@@ -435,3 +435,15 @@ msgstr "Ajourné"
 
 msgid "ENUM::POSITIONBILAN::annule"
 msgstr "Annulé"
+
+msgid "Bilansparcours66::filelink"
+msgstr "Liste des fichiers liés"
+
+msgid "Bilanparcours66.haspiecejointe"
+msgstr "Ajouter une pièce jointe"
+
+msgid "ENUM::HASPIECEJOINTE::1"
+msgstr "Oui"
+
+msgid "ENUM::HASPIECEJOINTE::0"
+msgstr "Non"
