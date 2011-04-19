@@ -75,6 +75,16 @@
                 'fields' => '',
                 'order' => ''
             ),
+            'Bilanparcours66' => array(
+                'className' => 'Bilanparcours66',
+                'foreignKey' => false,
+                'conditions' => array(
+                    'Fichiermodule.modele = \'Bilanparcours66\'',
+                    'Fichiermodule.fk_value = {$__cakeID__$}'
+                ),
+                'fields' => '',
+                'order' => ''
+            ),
         );
 
         /**

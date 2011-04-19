@@ -44,7 +44,7 @@ msgstr "Structure"
 msgid "Orientstruct.referentorientant_id"
 msgstr "Référent"
 
-msgid "Orientsstructs::fileupload"
+msgid "Orientsstructs::filelink"
 msgstr "Liste des fichiers liés"
 
 msgid "Orientstruct.haspiecejointe"

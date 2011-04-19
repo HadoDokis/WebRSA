@@ -5,8 +5,9 @@ App::import( 'Helper', 'Locale' );
 
 		public $name = 'Rendezvous';
 		public $uses = array( 'Rendezvous', 'Option' );
-		public $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Default2' );
-        public $components = array( 'Gedooo' );
+		
+		public $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Default2', 'Fileuploader' );
+        public $components = array( 'Gedooo', 'Fileuploader' );
 		public $aucunDroit = array( 'ajaxreferent', 'ajaxreffonct', 'ajaxperm' );
 
 		public $commeDroit = array(
@@ -22,6 +23,8 @@ App::import( 'Helper', 'Locale' );
 			$this->set( 'struct', $this->Rendezvous->Structurereferente->listOptions() );
 			$this->set( 'permanences', $this->Rendezvous->Permanence->listOptions() );
 			$this->set( 'statutrdv', $this->Rendezvous->Statutrdv->find( 'list' ) );
+			$options = $this->Rendezvous->allEnumLists();
+			$this->set( 'options', $options );
 		}
 
 
@@ -47,6 +50,123 @@ App::import( 'Helper', 'Locale' );
 			$this->set( 'referent', $referent );
 			$this->render( 'ajaxreffonct', 'ajax' );
 		}
+
+
+
+        /**
+        * http://valums.com/ajax-upload/
+        * http://doc.ubuntu-fr.org/modules_php
+        * increase post_max_size and upload_max_filesize to 10M
+        * debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
+        */
+
+        public function ajaxfileupload() {
+            $this->Fileuploader->ajaxfileupload();
+        }
+
+        /**
+        * http://valums.com/ajax-upload/
+        * http://doc.ubuntu-fr.org/modules_php
+        * increase post_max_size and upload_max_filesize to 10M
+        * debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
+        * FIXME: traiter les valeurs de retour
+        */
+
+        public function ajaxfiledelete() {
+            $this->Fileuploader->ajaxfiledelete();
+        }
+
+        /**
+        *   Fonction permettant de visualiser les fichiers chargés dans la vue avant leur envoi sur le serveur
+        */
+
+        public function fileview( $id ) {
+            $this->Fileuploader->fileview( $id );
+        }
+
+        /**
+        *   Téléchargement des fichiers préalablement associés à un traitement donné
+        */
+
+        public function download( $fichiermodule_id ) {
+            $this->assert( !empty( $fichiermodule_id ), 'error404' );
+            $this->Fileuploader->download( $fichiermodule_id );
+        }
+
+        /**
+        *   Fonction permettant d'accéder à la page pour lier les fichiers à l'Orientation
+        */
+
+        public function filelink( $id ){
+            $this->assert( valid_int( $id ), 'invalidParameter' );
+
+            $fichiers = array();
+            $rendezvous = $this->Rendezvous->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Rendezvous.id' => $id
+                    ),
+                    'contain' => array(
+                        'Fichiermodule' => array(
+                            'fields' => array( 'name', 'id' )
+                        )
+                    )
+                )
+            );
+
+            $personne_id = $rendezvous['Rendezvous']['personne_id'];
+            $dossier_id = $this->Rendezvous->Personne->dossierId( $personne_id );
+            $this->assert( !empty( $dossier_id ), 'invalidParameter' );
+
+            $this->Rendezvous->begin();
+            if( !$this->Jetons->check( $dossier_id ) ) {
+                $this->Rendezvous->rollback();
+            }
+            $this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
+
+            // Retour à l'index en cas d'annulation
+            if( isset( $this->params['form']['Cancel'] ) ) {
+                $this->redirect( array( 'action' => 'index', $personne_id ) );
+            }
+
+            if( !empty( $this->data ) ) {
+
+                $saved = $this->Rendezvous->updateAll(
+                    array( 'Rendezvous.haspiecejointe' => '\''.$this->data['Rendezvous']['haspiecejointe'].'\'' ),
+                    array(
+                        '"Rendezvous"."personne_id"' => $personne_id,
+                        '"Rendezvous"."id"' => $id
+                    )
+                );
+
+                if( $saved ){
+                    // Sauvegarde des fichiers liés à une PDO
+                    $dir = $this->Fileuploader->dirFichiersModule( $this->action, $this->params['pass'][0] );
+                    $saved = $this->Fileuploader->saveFichiers( $dir, !Set::classicExtract( $this->data, "Rendezvous.haspiecejointe" ), $id ) && $saved;
+                }
+
+                if( $saved ) {
+                    $this->Jetons->release( $dossier_id );
+                    $this->Rendezvous->commit();
+                    $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+                    $this->redirect( array(  'controller' => 'rendezvous','action' => 'index', $personne_id ) );
+                }
+                else {
+                    $fichiers = $this->Fileuploader->fichiers( $id );
+                    $this->Rendezvous->commit();
+                    $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+                }
+            }
+
+            $this->_setOptions();
+//             $this->Rendezvous->commit();
+            $this->set( compact( 'dossier_id', 'personne_id', 'fichiers', 'rendezvous' ) );
+
+        }
+
+
+
 
 		/**
 		*

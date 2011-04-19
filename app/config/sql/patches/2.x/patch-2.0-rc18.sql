@@ -181,8 +181,22 @@ ALTER TABLE covs58 ALTER COLUMN name DROP NOT NULL;
 -- -----------------------------------------------------------------------------------------------
 SELECT add_missing_table_field ('public', 'orientsstructs', 'haspiecejointe', 'type_booleannumber');
 ALTER TABLE orientsstructs ALTER COLUMN haspiecejointe SET DEFAULT '0'::TYPE_BOOLEANNUMBER;
-UPDATE orientsstructs SET haspiecejointe = '0'::TYPE_BOOLEANNUMBER WHERE haspiece IS NULL;
+UPDATE orientsstructs SET haspiecejointe = '0'::TYPE_BOOLEANNUMBER WHERE haspiecejointe IS NULL;
 ALTER TABLE orientsstructs ALTER COLUMN haspiecejointe SET NOT NULL;
+-- -----------------------------------------------------------------------------------------------
+-- 20110419: Ajout d'un champ pour sélectionner si on ajoute des fichiers ou non aux Rendezvous
+-- -----------------------------------------------------------------------------------------------
+SELECT add_missing_table_field ('public', 'rendezvous', 'haspiecejointe', 'type_booleannumber');
+ALTER TABLE rendezvous ALTER COLUMN haspiecejointe SET DEFAULT '0'::TYPE_BOOLEANNUMBER;
+UPDATE rendezvous SET haspiecejointe = '0'::TYPE_BOOLEANNUMBER WHERE haspiecejointe IS NULL;
+ALTER TABLE rendezvous ALTER COLUMN haspiecejointe SET NOT NULL;
+-- -----------------------------------------------------------------------------------------------
+-- 20110419: Ajout d'un champ pour sélectionner si on ajoute des fichiers ou non aux Bilans de Parcours 66
+-- -----------------------------------------------------------------------------------------------
+SELECT add_missing_table_field ('public', 'bilansparcours66', 'haspiecejointe', 'type_booleannumber');
+ALTER TABLE bilansparcours66 ALTER COLUMN haspiecejointe SET DEFAULT '0'::TYPE_BOOLEANNUMBER;
+UPDATE bilansparcours66 SET haspiecejointe = '0'::TYPE_BOOLEANNUMBER WHERE haspiecejointe IS NULL;
+ALTER TABLE bilansparcours66 ALTER COLUMN haspiecejointe SET NOT NULL;
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

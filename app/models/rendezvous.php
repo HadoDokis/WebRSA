@@ -9,6 +9,11 @@
 			'Formattable' => array(
 				'suffix' => array( 'referent_id', 'permanence_id' )
 			),
+			'Enumerable' => array(
+                'fields' => array(
+                    'haspiecejointe'
+                )
+            ),
 			'Gedooo'
 		);
 
@@ -129,7 +134,23 @@
 				'exclusive' => '',
 				'finderQuery' => '',
 				'counterQuery' => ''
-			)
+			),
+            'Fichiermodule' => array(
+                'className' => 'Fichiermodule',
+                'foreignKey' => false,
+                'dependent' => false,
+                'conditions' => array(
+                    'Fichiermodule.modele = \'Rendezvous\'',
+                    'Fichiermodule.fk_value = {$__cakeID__$}'
+                ),
+                'fields' => '',
+                'order' => '',
+                'limit' => '',
+                'offset' => '',
+                'exclusive' => '',
+                'finderQuery' => '',
+                'counterQuery' => ''
+            )
 		);
 
 		/**
