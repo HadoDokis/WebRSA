@@ -55,6 +55,26 @@
                 'fields' => '',
                 'order' => ''
             ),
+            'Orientstruct' => array(
+                'className' => 'Orientstruct',
+                'foreignKey' => false,
+                'conditions' => array(
+                    'Fichiermodule.modele = \'Orientstruct\'',
+                    'Fichiermodule.fk_value = {$__cakeID__$}'
+                ),
+                'fields' => '',
+                'order' => ''
+            ),
+            'Rendezvous' => array(
+                'className' => 'Rendezvous',
+                'foreignKey' => false,
+                'conditions' => array(
+                    'Fichiermodule.modele = \'Rendezvous\'',
+                    'Fichiermodule.fk_value = {$__cakeID__$}'
+                ),
+                'fields' => '',
+                'order' => ''
+            ),
         );
 
         /**

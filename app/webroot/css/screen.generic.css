@@ -1080,11 +1080,13 @@ td.button.valider a, td.action a.valider, td span.button.valider, table.default2
     background-image: url( ../img/icons/tick.png );
 }
 
-
 td.button.notifop a, td.action a.notifop, td span.button.notifop, table.default2 td a.button.notifop {
     background-image: url( ../img/icons/application_view_list.png );
 }
 
+td.button.filelink a, td.action a.filelink, td span.button.filelink, table.default2 td a.button.filelink {
+    background-image: url( ../img/icons/link.png );
+}
 /**/
 
 td.boolean span, table tr:nth-child(2n) td.boolean span {
