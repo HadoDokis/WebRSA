@@ -147,6 +147,8 @@
 			</thead>
 			<tbody>
 				<?php
+//                     $block = null;
+
 					foreach( $orientstructs as $i => $orientstruct ) {
 						$isOrient = false;
 						if( isset( $orientstruct['Orientstruct']['date_propo'] ) ){
@@ -181,7 +183,7 @@
 								array( 'controller' => 'orientsstructs', 'action' => 'edit', $orientstruct['Orientstruct']['id'] ),
 								$permissions->check( 'orientsstructs', 'edit' ) && ( $orientstruct['Orientstruct']['rgorient'] == $rgorient_max )
 								&& !( Configure::read( 'Cg.departement' ) == 93 && isset( $reorientationep93 ) && !empty( $reorientationep93 ) )
-								&& !( Configure::read( 'Cg.departement' ) == 58 && isset( $nbdossiersnonfinalisescovs ) && !empty( $nbdossiersnonfinalisescovs ) )
+								&& !( Configure::read( 'Cg.departement' ) == 58 /*&& isset( $nbdossiersnonfinalisescovs ) && !empty( $nbdossiersnonfinalisescovs )*/ )
 								&& $ajout_possible
 							),
 							$xhtml->printLink(
