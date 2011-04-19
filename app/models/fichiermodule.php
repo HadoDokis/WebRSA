@@ -85,6 +85,16 @@
                 'fields' => '',
                 'order' => ''
             ),
+            'Contratinsertion' => array(
+                'className' => 'Contratinsertion',
+                'foreignKey' => false,
+                'conditions' => array(
+                    'Fichiermodule.modele = \'Contratinsertion\'',
+                    'Fichiermodule.fk_value = {$__cakeID__$}'
+                ),
+                'fields' => '',
+                'order' => ''
+            ),
         );
 
         /**

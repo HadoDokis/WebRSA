@@ -233,3 +233,15 @@ msgstr "En attente de renouvellement"
 
 msgid "ENUM::POSITIONCER::perime"
 msgstr "Périmé"
+
+msgid "Contratsinsertion::filelink"
+msgstr "Liste des fichiers liés"
+
+msgid "Contratinsertion.haspiecejointe"
+msgstr "Ajouter une pièce jointe"
+
+msgid "ENUM::HASPIECEJOINTE::1"
+msgstr "Oui"
+
+msgid "ENUM::HASPIECEJOINTE::0"
+msgstr "Non"

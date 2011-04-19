@@ -10,6 +10,7 @@
 					'num_contrat' => array( 'type' => 'num_contrat', 'domain' => 'contratinsertion' ),
 					'typeinsertion' => array( 'type' => 'insertion', 'domain' => 'contratinsertion' ),
 					'positioncer' => array( 'domain' => 'contratinsertion' ),
+					'haspiecejointe' => array( 'domain' => 'contratinsertion' ),
 // 					'autreavissuspension',
 // 					'autreavisradiation'
                 )
@@ -272,6 +273,22 @@
                 'finderQuery' => '',
                 'counterQuery' => ''
             ),
+            'Fichiermodule' => array(
+                'className' => 'Fichiermodule',
+                'foreignKey' => false,
+                'dependent' => false,
+                'conditions' => array(
+                    'Fichiermodule.modele = \'Contratinsertion\'',
+                    'Fichiermodule.fk_value = {$__cakeID__$}'
+                ),
+                'fields' => '',
+                'order' => '',
+                'limit' => '',
+                'offset' => '',
+                'exclusive' => '',
+                'finderQuery' => '',
+                'counterQuery' => ''
+            )
 		);
 
 
