@@ -89,6 +89,12 @@
         <?php echo $form->input( 'Personne.trancheAge', array( 'label' => 'Tranche d\'âge', 'options' => $trancheAge, 'empty' => true ) );
             echo $form->input( 'Personne.hascontrat', array( 'label' => 'Possède un CER ? ', 'type' => 'select', 'options' => array( 'O' => 'Oui', 'N' => 'Non'), 'empty' => true ) );
         ?>
+        <?php
+//             if( Configure::read( 'Cg.departement' ) == 58 ){
+                $valueSansOrientation = isset( $this->data['Orientstruct']['sansorientation'] ) ? $this->data['Orientstruct']['sansorientation'] : true;
+                echo $form->input( 'Orientstruct.sansorientation', array( 'label' => 'Personne sans orientation', 'type' => 'checkbox', 'checked' => $valueSansOrientation ) );
+//             }
+        ?>
     </fieldset>
 
     <div class="submit noprint">
