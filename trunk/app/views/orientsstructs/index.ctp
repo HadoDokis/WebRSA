@@ -195,8 +195,8 @@
 							),
 							$xhtml->fileLink(
                                 'Fichiers liés',
-                                array( 'controller' => 'orientsstructs', 'action' => 'fileupload', $orientstruct['Orientstruct']['id'] ),
-                                $permissions->check( 'orientsstructs', 'fileupload' )
+                                array( 'controller' => 'orientsstructs', 'action' => 'filelink', $orientstruct['Orientstruct']['id'] ),
+                                $permissions->check( 'orientsstructs', 'filelink' )
                             )
 						);
 
