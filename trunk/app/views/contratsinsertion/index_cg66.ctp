@@ -59,6 +59,7 @@
                         'disabled' => '( "'.$permissions->check( 'contratsinsertion', 'print' ).'" != "1" )  || ( "#Contratinsertion.positioncer#" == "annule" )'
                     ),
                     'Contratsinsertion::cancel' => array( 'onclick' => "return confirm( 'Etes-vous sûr de vouloir annuler le CER ?' )", 'disabled' => '( "'.$permissions->check( 'contratsinsertion', 'cancel' ).'" != "1" ) ||  ( "#Contratinsertion.positioncer#" == "annule" )' ),
+                    'Contratsinsertion::filelink' => array( 'disabled' => '( "'.$permissions->check( 'contratsinsertion', 'cancel' ).'" != "1" )' )
                 ),
                 'add' => array( 'Contratinsertion.add' => array( 'controller'=>'contratsinsertion', 'action'=>'add', $personne_id , 'disabled' =>  $block ) ),
                 'options' => array( 'Contratinsertion' => $options )

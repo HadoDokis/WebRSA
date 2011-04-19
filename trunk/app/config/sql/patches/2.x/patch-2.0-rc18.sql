@@ -197,6 +197,13 @@ SELECT add_missing_table_field ('public', 'bilansparcours66', 'haspiecejointe', 
 ALTER TABLE bilansparcours66 ALTER COLUMN haspiecejointe SET DEFAULT '0'::TYPE_BOOLEANNUMBER;
 UPDATE bilansparcours66 SET haspiecejointe = '0'::TYPE_BOOLEANNUMBER WHERE haspiecejointe IS NULL;
 ALTER TABLE bilansparcours66 ALTER COLUMN haspiecejointe SET NOT NULL;
+-- -----------------------------------------------------------------------------------------------
+-- 20110419: Ajout d'un champ pour sélectionner si on ajoute des fichiers ou non aux CER
+-- -----------------------------------------------------------------------------------------------
+SELECT add_missing_table_field ('public', 'contratsinsertion', 'haspiecejointe', 'type_booleannumber');
+ALTER TABLE contratsinsertion ALTER COLUMN haspiecejointe SET DEFAULT '0'::TYPE_BOOLEANNUMBER;
+UPDATE contratsinsertion SET haspiecejointe = '0'::TYPE_BOOLEANNUMBER WHERE haspiecejointe IS NULL;
+ALTER TABLE contratsinsertion ALTER COLUMN haspiecejointe SET NOT NULL;
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

@@ -17,8 +17,8 @@
 
 		public $name = 'Contratsinsertion';
 		public $uses = array( 'Contratinsertion', 'Option', 'Action', 'Referent', 'Personne', 'Dossier', 'Structurereferente', 'Dsp', 'Typeorient', 'Orientstruct', 'Serviceinstructeur', 'Action', 'Adressefoyer', 'Actioninsertion', 'Prestform', 'Refpresta', 'PersonneReferent' );
-		public $helpers = array( 'Default2', 'Ajax' );
-		public $components = array( 'RequestHandler', 'Gedooo' );
+		public $helpers = array( 'Default2', 'Ajax', 'Fileuploader' );
+		public $components = array( 'RequestHandler', 'Gedooo', 'Fileuploader' );
 		public $aucunDroit = array( 'ajax', 'ajaxref', 'ajaxstruct', 'ajaxraisonci', 'notificationsop' );
 
 		public $commeDroit = array(
@@ -31,7 +31,6 @@
 		*/
 		protected function _setOptions() {
 			$options = $this->Contratinsertion->allEnumLists();
-// debug($options);
 
 			if( in_array( $this->action, array( 'index', 'add', 'edit', 'view', 'valider' ) ) ) {
 				$this->set( 'decision_ci', $this->Option->decision_ci() );
@@ -168,6 +167,125 @@
 			$this->set( 'struct', $struct );
 			$this->render( 'ajaxstruct', 'ajax' );
 		}
+
+
+
+
+
+
+        /**
+        * http://valums.com/ajax-upload/
+        * http://doc.ubuntu-fr.org/modules_php
+        * increase post_max_size and upload_max_filesize to 10M
+        * debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
+        */
+
+        public function ajaxfileupload() {
+            $this->Fileuploader->ajaxfileupload();
+        }
+
+        /**
+        * http://valums.com/ajax-upload/
+        * http://doc.ubuntu-fr.org/modules_php
+        * increase post_max_size and upload_max_filesize to 10M
+        * debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
+        * FIXME: traiter les valeurs de retour
+        */
+
+        public function ajaxfiledelete() {
+            $this->Fileuploader->ajaxfiledelete();
+        }
+
+        /**
+        *   Fonction permettant de visualiser les fichiers chargés dans la vue avant leur envoi sur le serveur
+        */
+
+        public function fileview( $id ) {
+            $this->Fileuploader->fileview( $id );
+        }
+
+        /**
+        *   Téléchargement des fichiers préalablement associés à un traitement donné
+        */
+
+        public function download( $fichiermodule_id ) {
+            $this->assert( !empty( $fichiermodule_id ), 'error404' );
+            $this->Fileuploader->download( $fichiermodule_id );
+        }
+
+        /**
+        *   Fonction permettant d'accéder à la page pour lier les fichiers à l'Orientation
+        */
+
+        public function filelink( $id ){
+            $this->assert( valid_int( $id ), 'invalidParameter' );
+
+            $fichiers = array();
+            $contratinsertion = $this->Contratinsertion->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Contratinsertion.id' => $id
+                    ),
+                    'contain' => array(
+                        'Fichiermodule' => array(
+                            'fields' => array( 'name', 'id' )
+                        )
+                    )
+                )
+            );
+
+
+            $personne_id = $contratinsertion['Contratinsertion']['personne_id'];
+            $dossier_id = $this->Contratinsertion->Personne->dossierId( $personne_id );
+            $this->assert( !empty( $dossier_id ), 'invalidParameter' );
+
+            $this->Contratinsertion->begin();
+            if( !$this->Jetons->check( $dossier_id ) ) {
+                $this->Contratinsertion->rollback();
+            }
+            $this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
+
+            // Retour à l'index en cas d'annulation
+            if( isset( $this->params['form']['Cancel'] ) ) {
+                $this->redirect( array( 'action' => 'index', $personne_id ) );
+            }
+
+            if( !empty( $this->data ) ) {
+
+                $saved = $this->Contratinsertion->updateAll(
+                    array( 'Contratinsertion.haspiecejointe' => '\''.$this->data['Contratinsertion']['haspiecejointe'].'\'' ),
+                    array(
+                        '"Contratinsertion"."personne_id"' => $personne_id,
+                        '"Contratinsertion"."id"' => $id
+                    )
+                );
+
+                if( $saved ){
+                    // Sauvegarde des fichiers liés à une PDO
+                    $dir = $this->Fileuploader->dirFichiersModule( $this->action, $this->params['pass'][0] );
+                    $saved = $this->Fileuploader->saveFichiers( $dir, !Set::classicExtract( $this->data, "Contratinsertion.haspiecejointe" ), $id ) && $saved;
+                }
+
+                if( $saved ) {
+                    $this->Jetons->release( $dossier_id );
+                    $this->Contratinsertion->commit();
+                    $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+                    $this->redirect( array(  'controller' => 'contratsinsertion','action' => 'index', $personne_id ) );
+                }
+                else {
+                    $fichiers = $this->Fileuploader->fichiers( $id );
+                    $this->Contratinsertion->commit();
+                    $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+                }
+            }
+
+            $this->_setOptions();
+            $this->set( compact( 'dossier_id', 'personne_id', 'fichiers', 'contratinsertion' ) );
+
+        }
+
+
 
 		/**
 		*
