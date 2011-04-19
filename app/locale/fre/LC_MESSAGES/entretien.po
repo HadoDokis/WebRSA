@@ -28,7 +28,7 @@ msgstr "Ajouter un entretien"
 msgid "Entretiens::index"
 msgstr "Entretiens"
 
-msgid "Entretien::delete"
+msgid "Entretiens::delete"
 msgstr "Suppression d'un entretien"
 
 msgid "Entretiens::edit"
@@ -44,6 +44,9 @@ msgid "Entretien::view"
 msgstr "Voir le résumé de l'entretien"
 
 msgid "Entretien::delete::confirm"
+msgstr "Confirmer la suppression ?"
+
+msgid "Entretiens::delete::confirm"
 msgstr "Confirmer la suppression ?"
 
 msgid "Entretien::index::empty"
