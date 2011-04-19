@@ -72,3 +72,15 @@ msgstr "Objet du RDV"
 
 msgid "Rendezvous.commentairerdv"
 msgstr "Commentaires suite au RDV"
+
+msgid "Rendezvous::filelink"
+msgstr "Liste des fichiers liés"
+
+msgid "Rendezvous.haspiecejointe"
+msgstr "Ajouter une pièce jointe"
+
+msgid "ENUM::HASPIECEJOINTE::1"
+msgstr "Oui"
+
+msgid "ENUM::HASPIECEJOINTE::0"
+msgstr "Non"

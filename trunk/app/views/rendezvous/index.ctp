@@ -25,7 +25,8 @@
                     'Rendezvous::view' => array( 'disabled' => '( "'.$permissions->check( 'rendezvous', 'view' ).'" != "1" ) ' ),
                     'Rendezvous::edit' => array( 'disabled' => '( "'.$permissions->check( 'rendezvous', 'edit' ).'" != "1" ) ' ),
                     'Rendezvous::print' => array( 'label' => 'Imprimer', 'url' => array( 'action' => 'gedooo' ), 'disabled' =>  '( "'.$permissions->check( 'rendezvous', 'print' ).'" != "1" ) '  ),
-                    'Rendezvous::delete' => array( 'disabled' => '( "'.$permissions->check( 'rendezvous', 'delete' ).'" != "1" ) ' )
+                    'Rendezvous::delete' => array( 'disabled' => '( "'.$permissions->check( 'rendezvous', 'delete' ).'" != "1" ) ' ),
+                    'Rendezvous::filelink' => array( 'disabled' => '( "'.$permissions->check( 'rendezvous', 'filelink' ).'" != "1" ) ' )
                 ),
                 'add' => array( 'Rendezvous.add' => array( 'controller'=>'rendezvous', 'action'=>'add', $personne_id ) ),
 //                 'options' => $options
