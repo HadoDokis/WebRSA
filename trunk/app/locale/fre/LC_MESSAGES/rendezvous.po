@@ -74,7 +74,7 @@ msgid "Rendezvous.commentairerdv"
 msgstr "Commentaires suite au RDV"
 
 msgid "Rendezvous::filelink"
-msgstr "Liste des fichiers liés"
+msgstr "Liste des fichiers liés au RDV"
 
 msgid "Rendezvous.haspiecejointe"
 msgstr "Ajouter une pièce jointe"

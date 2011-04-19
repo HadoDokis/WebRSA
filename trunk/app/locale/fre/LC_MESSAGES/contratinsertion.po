@@ -235,7 +235,7 @@ msgid "ENUM::POSITIONCER::perime"
 msgstr "Périmé"
 
 msgid "Contratsinsertion::filelink"
-msgstr "Liste des fichiers liés"
+msgstr "Liste des fichiers liés au CER"
 
 msgid "Contratinsertion.haspiecejointe"
 msgstr "Ajouter une pièce jointe"

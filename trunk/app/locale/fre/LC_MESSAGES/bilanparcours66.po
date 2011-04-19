@@ -437,7 +437,7 @@ msgid "ENUM::POSITIONBILAN::annule"
 msgstr "Annulé"
 
 msgid "Bilansparcours66::filelink"
-msgstr "Liste des fichiers liés"
+msgstr "Liste des fichiers liés au bilan de parcours"
 
 msgid "Bilanparcours66.haspiecejointe"
 msgstr "Ajouter une pièce jointe"
