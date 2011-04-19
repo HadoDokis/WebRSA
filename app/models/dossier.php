@@ -401,6 +401,13 @@
 				)';
 			}
 
+
+            // Personne ne possédant pas d'orientation, ne possédant aucune entrée dans la table orientsstructs
+            if( $params['Orientstruct']['sansorientation'] ) {
+                $conditions[] = '( SELECT COUNT(orientsstructs.id) FROM orientsstructs WHERE orientsstructs.personne_id = "Personne"."id" ) = 0';
+            }
+
+
 			/**
 			*	FIXME: pour les tests de performance
 			*	'Z' => 'Non défini',
