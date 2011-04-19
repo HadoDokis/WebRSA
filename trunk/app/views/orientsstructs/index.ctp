@@ -142,7 +142,7 @@
 					<th>Structure référente</th>
 					<th>Rang d'orientation</th>
  					<!--<?php if( Configure::read( 'nom_form_ci_cg' ) == 'cg58' ):?><th>Etat de l'orientation</th><?php endif;?>-->
-					<th colspan="2" class="action">Actions</th>
+					<th colspan="3" class="action">Actions</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -192,7 +192,12 @@
 								$permissions->check( 'orientsstructs', 'impression' ) && $orientstruct['Orientstruct']['imprime']
 								/*array( 'controller' => 'gedooos', 'action' => 'orientstruct', $orientstruct['Orientstruct']['id'] ),
 								$permissions->check( 'gedooos', 'orientstruct' ) && $orientstruct['Orientstruct']['imprime']*/
-							)
+							),
+							$xhtml->fileLink(
+                                'Fichiers liés',
+                                array( 'controller' => 'orientsstructs', 'action' => 'fileupload', $orientstruct['Orientstruct']['id'] ),
+                                $permissions->check( 'orientsstructs', 'fileupload' )
+                            )
 						);
 
 						echo $xhtml->tableCells( $cells, array( 'class' => 'odd' ), array( 'class' => 'even' ) );

@@ -14,6 +14,7 @@
 						'values' => array( 0, 1 )
 					),
 					'etatorient' => array( 'domain' => 'orientstruct' ),
+					'haspiecejointe' => array( 'domain' => 'orientstruct' ),
 					/*'accordrefaccueil' => array(
 						'values' => array( 0, 1 )
 					),
@@ -179,11 +180,14 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
-            'Regressionorientationep58' => array(
-                'className' => 'Regressionorientationep58',
-                'foreignKey' => 'orientstruct_id',
-                'dependent' => true,
-                'conditions' => '',
+            'Fichiermodule' => array(
+                'className' => 'Fichiermodule',
+                'foreignKey' => false,
+                'dependent' => false,
+                'conditions' => array(
+                    'Fichiermodule.modele = \'Orientstruct\'',
+                    'Fichiermodule.fk_value = {$__cakeID__$}'
+                ),
                 'fields' => '',
                 'order' => '',
                 'limit' => '',

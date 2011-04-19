@@ -243,6 +243,27 @@
 			}
 		}
 
+        /**
+        *
+        */
+
+        public function fileLink( $title, $url, $enabled = true ) {
+            $content = $this->image(
+                'icons/link.png',
+                array( 'alt' => '' )
+            ).' Fichiers liés';
+
+            if( $enabled ) {
+                return $this->link(
+                    $content,
+                    $url,
+                    array( 'escape' => false, 'title' => $title )
+                );
+            }
+            else {
+                return '<span class="disabled">'.$content.'</span>';
+            }
+        }
 		/**
 		*
 		*/

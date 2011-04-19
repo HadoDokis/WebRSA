@@ -148,7 +148,7 @@ ALTER TABLE propospdos ALTER COLUMN haspiece SET NOT NULL;
 -- -----------------------------------------------------------------------------------------------
 -- 20110418: Ajout d'une table de paramétrage pour les COVs du CG58
 -- -----------------------------------------------------------------------------------------------
-DROP TABLE IF EXISTS sitescovs58;
+DROP TABLE IF EXISTS sitescovs58 CASCADE;
 CREATE TABLE sitescovs58(
     id                      SERIAL NOT NULL PRIMARY KEY,
     name                    VARCHAR(255) NOT NULL
@@ -159,6 +159,7 @@ SELECT add_missing_table_field ('public', 'covs58', 'sitecov58_id', 'INTEGER');
 SELECT add_missing_constraint ('public', 'covs58', 'covs58_sitecov58_id_fkey', 'sitescovs58', 'sitecov58_id');
 
 -- Récupération des anciens noms de sites pré-saisis
+-- FIXME; ne peut être passé qu'une fois pour le moment
 INSERT INTO sitescovs58 ( name )
     SELECT
             covs58.name AS name
@@ -173,6 +174,15 @@ UPDATE covs58
 
 ALTER TABLE covs58 ALTER COLUMN sitecov58_id SET NOT NULL;
 ALTER TABLE covs58 ALTER COLUMN name DROP NOT NULL;
+
+
+-- -----------------------------------------------------------------------------------------------
+-- 20110419: Ajout d'un champ pour sélectionner si on ajoute des fichiers ou non aux Orientations
+-- -----------------------------------------------------------------------------------------------
+SELECT add_missing_table_field ('public', 'orientsstructs', 'haspiecejointe', 'type_booleannumber');
+ALTER TABLE orientsstructs ALTER COLUMN haspiecejointe SET DEFAULT '0'::TYPE_BOOLEANNUMBER;
+UPDATE orientsstructs SET haspiecejointe = '0'::TYPE_BOOLEANNUMBER WHERE haspiece IS NULL;
+ALTER TABLE orientsstructs ALTER COLUMN haspiecejointe SET NOT NULL;
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
