@@ -15,10 +15,6 @@
 
 		public function index() {
 			$this->paginate = array(
-				'fields' => array(
-					'Regroupementep.id',
-					'Regroupementep.name'
-				),
 				'limit' => 10
 			);
 

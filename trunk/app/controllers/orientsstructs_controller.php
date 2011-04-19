@@ -443,13 +443,14 @@
 								'themeep' => Inflector::tableize( $theme )
 							)
 						);
-						$saved = $this->Orientstruct->{$theme}->Dossierep->save( $dossierep ) && $saved;
+						
+						$saved = $this->Orientstruct->Personne->Dossierep->save( $dossierep ) && $saved;
 
 						$regressionorientationep[$theme] = $this->data['Orientstruct'];
 						$regressionorientationep[$theme]['personne_id'] = $personne_id;
-						$regressionorientationep[$theme]['dossierep_id'] = $this->Orientstruct->{$theme}->Dossierep->id;
+						$regressionorientationep[$theme]['dossierep_id'] = $this->Orientstruct->Personne->Dossierep->id;
 
-						if ( isset($regressionorientationep[$theme]['referent_id']) ) {
+						if ( isset( $regressionorientationep[$theme]['referent_id'] ) && !empty( $regressionorientationep[$theme]['referent_id'] ) ) {
 							list( $structurereferente_id, $referent_id ) = explode( '_', $regressionorientationep[$theme]['referent_id'] );
 							$regressionorientationep[$theme]['structurereferente_id'] = $structurereferente_id;
 							$regressionorientationep[$theme]['referent_id'] = $referent_id;
@@ -457,7 +458,8 @@
 
 						$regressionorientationep[$theme]['datedemande'] = $regressionorientationep[$theme]['date_propo'];
 
-						$saved = $this->Orientstruct->{$theme}->save( $regressionorientationep ) && $saved;
+						$saved = $this->Orientstruct->Personne->Dossierep->{$theme}->save( $regressionorientationep ) && $saved;
+
 					}
 					else {
 						// Correction: si la personne n'a pas encore d'entrée dans calculdroitsrsa

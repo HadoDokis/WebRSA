@@ -26,30 +26,50 @@
 		*/
 
 		public function finaliser( $commissionep_id, $etape, $user_id ) {
-			$commissionep = $this->Dossierep->Commissionep->find(
+			$commissionep = $this->Dossierep->Passagecommissionep->Commissionep->find(
 				'first',
 				array(
 					'conditions' => array( 'Commissionep.id' => $commissionep_id ),
-					'contain' => array( 'Ep' )
+					'contain' => array(
+						'Ep' => array(
+							'Regroupementep'
+						)
+					)
 				)
 			);
 
-			$niveauDecisionFinale = $commissionep['Ep'][Inflector::underscore( $this->alias )];
+			$niveauDecisionFinale = $commissionep['Ep']['Regroupementep'][Inflector::underscore( $this->alias )];
 
 			$dossierseps = $this->find(
 				'all',
 				array(
 					'conditions' => array(
-						'Dossierep.commissionep_id' => $commissionep_id,
+						'Dossierep.id IN ( '.
+							$this->Dossierep->Passagecommissionep->sq(
+								array(
+									'fields' => array(
+										'passagescommissionseps.dossierep_id'
+									),
+									'alias' => 'passagescommissionseps',
+									'conditions' => array(
+										'passagescommissionseps.commissionep_id' => $commissionep_id
+									)
+								)
+							)
+						.' )',
 						'Dossierep.themeep' => Inflector::tableize( $this->alias )
 					),
 					'contain' => array(
-						'Decisionnonorientationproep58' => array(
-							'conditions' => array(
-								'Decisionnonorientationproep58.etape' => $etape
+						'Dossierep' => array(
+							'Passagecommissionep' => array(
+								'Decisionnonorientationproep58' => array(
+									'conditions' => array(
+										'Decisionnonorientationproep58.etape' => $etape
+									)
+								),
+								'Dossierep'
 							)
-						),
-						'Dossierep'
+						)
 					)
 				)
 			);

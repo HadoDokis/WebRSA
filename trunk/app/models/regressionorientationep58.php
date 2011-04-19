@@ -7,22 +7,6 @@
 
 		public $useTable = 'regressionsorientationseps58';
 
-		public $hasMany = array(
-			'Decisionregressionorientationep58' => array(
-				'className' => 'Decisionregressionorientationep58',
-				'foreignKey' => 'regressionorientationep58_id',
-				'dependent' => true,
-				'conditions' => '',
-				'fields' => '',
-				'order' => '',
-				'limit' => '',
-				'offset' => '',
-				'exclusive' => '',
-				'finderQuery' => '',
-				'counterQuery' => ''
-			)
-		);
-
 		/**
 		* Finalisation de la décision pour le cg58
 		*/
@@ -30,7 +14,7 @@
 		public function finaliser( $commissionep_id, $etape, $user_id ) {
 			$success = true;
 
-			$commissionep = $this->Dossierep->Commissionep->find(
+			$commissionep = $this->Dossierep->Passagecommissionep->Commissionep->find(
 				'first',
 				array(
 					'conditions' => array(
@@ -45,11 +29,24 @@
 				'all',
 				array(
 					'conditions' => array(
-						'commissionep_id' => $commissionep_id,
+						'Dossierep.id IN ( '.
+							$this->Dossierep->Passagecommissionep->sq(
+								array(
+									'fields' => array(
+										'passagescommissionseps.dossierep_id'
+									),
+									'alias' => 'passagescommissionseps',
+									'conditions' => array(
+										'passagescommissionseps.commissionep_id' => $commissionep_id
+									)
+								)
+							)
+						.' )',
 						'themeep' => 'regressionsorientationseps58'
 					),
 					'contain' => array(
-						'Regressionorientationep58' => array(
+						'Regressionorientationep58',
+						'Passagecommissionep' => array(
 							'Decisionregressionorientationep58'
 						)
 					)
@@ -59,12 +56,12 @@
 				$orientstruct = array(
 					'Orientstruct' => array(
 						'personne_id' => $dossierep['Dossierep']['personne_id'],
-						'typeorient_id' => $dossierep['Regressionorientationep58']['Decisionregressionorientationep58'][0]['typeorient_id'],
-						'structurereferente_id' => $dossierep['Regressionorientationep58']['Decisionregressionorientationep58'][0]['structurereferente_id'],
+						'typeorient_id' => $dossierep['Passagecommissionep'][0]['Decisionregressionorientationep58'][0]['typeorient_id'],
+						'structurereferente_id' => $dossierep['Passagecommissionep'][0]['Decisionregressionorientationep58'][0]['structurereferente_id'],
 						'date_propo' => $dossierep['Regressionorientationep58']['datedemande'],
 						'date_valid' => $dateseance,
 						'statut_orient' => 'Orienté',
-						'referent_id' => $dossierep['Regressionorientationep58']['Decisionregressionorientationep58'][0]['referent_id'],
+						'referent_id' => $dossierep['Passagecommissionep'][0]['Decisionregressionorientationep58'][0]['referent_id'],
 						'etatorient' => 'decision',
 						'rgorient' => $this->Structurereferente->Orientstruct->rgorientMax( $dossierep['Dossierep']['personne_id'] ),
 						'user_id' => $dossierep['Regressionorientationep58']['user_id']

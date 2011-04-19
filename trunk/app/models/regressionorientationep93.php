@@ -7,22 +7,6 @@
 
 		public $useTable = 'regressionsorientationseps93';
 
-		public $hasMany = array(
-			'Decisionregressionorientationep93' => array(
-				'className' => 'Decisionregressionorientationep93',
-				'foreignKey' => 'regressionorientationep93_id',
-				'dependent' => true,
-				'conditions' => '',
-				'fields' => '',
-				'order' => '',
-				'limit' => '',
-				'offset' => '',
-				'exclusive' => '',
-				'finderQuery' => '',
-				'counterQuery' => ''
-			)
-		);
-
 		/**
 		* Finalisation de la décision pour le cg93
 		*/
