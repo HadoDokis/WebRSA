@@ -174,6 +174,17 @@
                 );
                 echo $xhtml->tableCells(
                     array(
+                        h( 'Sites d\'actions médico-sociale COVs' ),
+                        $xhtml->viewLink(
+                            'Voir la table',
+                            array( 'controller' => 'sitescovs58', 'action' => 'index' )
+                        )
+                    ),
+                    array( 'class' => 'odd' ),
+                    array( 'class' => 'even' )
+                );
+                echo $xhtml->tableCells(
+                    array(
                         h( 'Statut des RDVs' ),
                         $xhtml->viewLink(
                             'Voir la table',
