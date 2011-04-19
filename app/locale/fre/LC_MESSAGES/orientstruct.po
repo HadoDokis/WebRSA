@@ -45,7 +45,7 @@ msgid "Orientstruct.referentorientant_id"
 msgstr "Référent"
 
 msgid "Orientsstructs::filelink"
-msgstr "Liste des fichiers liés"
+msgstr "Liste des fichiers liés à l'orientation"
 
 msgid "Orientstruct.haspiecejointe"
 msgstr "Ajouter une pièce jointe"

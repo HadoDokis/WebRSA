@@ -39,7 +39,7 @@
                     <th>Date début</th>
                     <th>Date fin</th>
                     <th>Décision</th>
-                    <th colspan="6" class="action">Actions</th>
+                    <th colspan="7" class="action">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -92,6 +92,11 @@
                                     'Supprimer le CER ',
                                     array( 'controller' => 'contratsinsertion', 'action' => 'delete', $contratinsertion['Contratinsertion']['id'] ),
                                     $permissions->check( 'contratsinsertion', 'delete' )
+                                ),
+                                $xhtml->fileLink(
+                                    'Fichiers liés',
+                                    array( 'controller' => 'contratsinsertion', 'action' => 'filelink', $contratinsertion['Contratinsertion']['id'] ),
+                                    $permissions->check( 'contratsinsertion', 'filelink' )
                                 )
 
                             ),
