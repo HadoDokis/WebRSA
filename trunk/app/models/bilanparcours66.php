@@ -47,7 +47,8 @@
 					'saisineepl',
 					'sitfam',
 					'proposition',
-					'positionbilan'
+					'positionbilan',
+					'haspiecejointe'
 				)
 			),
             'Gedooo',
@@ -147,6 +148,25 @@
 				'order' => ''
 			),
 		);
+
+        public $hasMany = array(
+            'Fichiermodule' => array(
+                'className' => 'Fichiermodule',
+                'foreignKey' => false,
+                'dependent' => false,
+                'conditions' => array(
+                    'Fichiermodule.modele = \'Bilanparcours66\'',
+                    'Fichiermodule.fk_value = {$__cakeID__$}'
+                ),
+                'fields' => '',
+                'order' => '',
+                'limit' => '',
+                'offset' => '',
+                'exclusive' => '',
+                'finderQuery' => '',
+                'counterQuery' => ''
+            )
+        );
 
 
         public function beforeSave( $options = array() ) {

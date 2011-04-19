@@ -10,10 +10,10 @@
 
 	class Bilansparcours66Controller extends AppController
 	{
-		public $helpers = array( 'Default', 'Default2', 'Ajax' );
+		public $helpers = array( 'Default', 'Default2', 'Ajax', 'Fileuploader' );
 
 		public $uses = array( 'Bilanparcours66', 'Option', 'Pdf'  );
-		var $components = array( 'Gedooo' );
+		var $components = array( 'Gedooo', 'Fileuploader' );
 
 		public $aucunDroit = array( 'choixformulaire' );
 
@@ -59,6 +59,137 @@
 // debug($options);
 			$this->set( compact( 'options' ) );
 		}
+
+
+
+
+
+
+        /**
+        * http://valums.com/ajax-upload/
+        * http://doc.ubuntu-fr.org/modules_php
+        * increase post_max_size and upload_max_filesize to 10M
+        * debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
+        */
+
+        public function ajaxfileupload() {
+            $this->Fileuploader->ajaxfileupload();
+        }
+
+        /**
+        * http://valums.com/ajax-upload/
+        * http://doc.ubuntu-fr.org/modules_php
+        * increase post_max_size and upload_max_filesize to 10M
+        * debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
+        * FIXME: traiter les valeurs de retour
+        */
+
+        public function ajaxfiledelete() {
+            $this->Fileuploader->ajaxfiledelete();
+        }
+
+        /**
+        *   Fonction permettant de visualiser les fichiers chargés dans la vue avant leur envoi sur le serveur
+        */
+
+        public function fileview( $id ) {
+            $this->Fileuploader->fileview( $id );
+        }
+
+        /**
+        *   Téléchargement des fichiers préalablement associés à un traitement donné
+        */
+
+        public function download( $fichiermodule_id ) {
+            $this->assert( !empty( $fichiermodule_id ), 'error404' );
+            $this->Fileuploader->download( $fichiermodule_id );
+        }
+
+        /**
+        *   Fonction permettant d'accéder à la page pour lier les fichiers à l'Orientation
+        */
+
+        public function filelink( $id ){
+            $this->assert( valid_int( $id ), 'invalidParameter' );
+
+            $fichiers = array();
+            $bilanparcours66 = $this->Bilanparcours66->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Bilanparcours66.id' => $id
+                    ),
+                    'contain' => array(
+                        'Fichiermodule' => array(
+                            'fields' => array( 'name', 'id' )
+                        ),
+                        'Orientstruct' => array(
+                            'fields' => array(
+                                'personne_id'
+                            )
+                        )
+                    )
+                )
+            );
+
+            $personne_id = Set::classicExtract( $bilanparcours66, 'Orientstruct.personne_id' );
+// debug($bilanparcours66);
+// debug($personne_id);
+//             $personne_id = $bilanparcours66['Bilanparcours66']['personne_id'];
+            $dossier_id = $this->Bilanparcours66->Orientstruct->Personne->dossierId( $personne_id );
+            $this->assert( !empty( $dossier_id ), 'invalidParameter' );
+
+            $this->Bilanparcours66->begin();
+            if( !$this->Jetons->check( $dossier_id ) ) {
+                $this->Bilanparcours66->rollback();
+            }
+            $this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
+
+            // Retour à l'index en cas d'annulation
+            if( isset( $this->params['form']['Cancel'] ) ) {
+                $this->redirect( array( 'action' => 'index', $personne_id ) );
+            }
+
+            if( !empty( $this->data ) ) {
+
+                $saved = $this->Bilanparcours66->updateAll(
+                    array( 'Bilanparcours66.haspiecejointe' => '\''.$this->data['Bilanparcours66']['haspiecejointe'].'\'' ),
+                    array(
+                        '"Bilanparcours66"."orientstruct_id"' => Set::classicExtract( $bilanparcours66, 'Bilanparcours66.orientstruct_id' ),
+                        '"Bilanparcours66"."id"' => $id
+                    )
+                );
+
+                if( $saved ){
+                    // Sauvegarde des fichiers liés à une PDO
+                    $dir = $this->Fileuploader->dirFichiersModule( $this->action, $this->params['pass'][0] );
+                    $saved = $this->Fileuploader->saveFichiers( $dir, !Set::classicExtract( $this->data, "Bilanparcours66.haspiecejointe" ), $id ) && $saved;
+                }
+
+                if( $saved ) {
+                    $this->Jetons->release( $dossier_id );
+                    $this->Bilanparcours66->commit();
+                    $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+                    $this->redirect( array(  'controller' => 'bilansparcours66','action' => 'index', $personne_id ) );
+                }
+                else {
+                    $fichiers = $this->Fileuploader->fichiers( $id );
+                    $this->Bilanparcours66->commit();
+                    $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+                }
+            }
+
+            $this->_setOptions();
+//             $this->Bilanparcours66->commit();
+            $this->set( compact( 'dossier_id', 'personne_id', 'fichiers', 'bilanparcours66' ) );
+
+        }
+
+
+
+
+
+
 
 		/**
 		*

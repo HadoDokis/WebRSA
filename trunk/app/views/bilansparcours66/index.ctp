@@ -56,34 +56,6 @@
 		<h1><?php echo $this->pageTitle;?></h1>
 
 			<?php
-// 				echo $default2->index(
-// 					$bilansparcours66,
-// 					array(
-// 						'Bilanparcours66.created' => array( 'type' => 'date' ),
-// 						// Orientation
-// 						/*'Orientstruct.date_valid',
-// 						'Orientstruct.Typeorient.lib_type_orient',*/
-// 						'Orientstruct.Structurereferente.lib_struc',
-// 						// Contrat d'insertion
-// 						'Contratinsertion.date_saisi_ci',
-// 						'Contratinsertion.Structurereferente.Typeorient.lib_type_orient',
-// 						'Contratinsertion.Structurereferente.lib_struc',
-// 						'Bilanparcours66.saisineepparcours' => array( 'type' => 'boolean' ),
-// 						'Saisinebilanparcoursep66.Dossierep.etapedossierep'
-// 					),
-// 					array(
-// 						/*'groupColumns' => array(
-// 							'Orientation' => array( 1, 2, 3 ),
-// 							'Contrat d\'insertion' => array( 4, 5, 6 ),
-// 							'Équipe pluridisciplinaire' => array( 7, 8 ),
-// 						),*/
-// 						'paginate' => 'Bilanparcours66',
-// 						'options' => $options,
-// 						'add' => true
-// 					)
-// 				);
-
-
 				if( empty( $nborientstruct ) ) {
 					echo '<p class="error">Cette personne ne possède pas d\'orientation. Veuillez en saisir une pour pouvoir poursuivre.</p>';
 				}
@@ -111,7 +83,7 @@
                             echo "<th colspan='2'>".__d('saisinebilanparcoursep66', 'Saisinebilanparcoursep66.propref', true)."</th>";
                             echo "<th colspan='2'>".__d('saisinebilanparcoursep66', 'Saisinebilanparcoursep66.avisep', true)."</th>";
                             echo "<th colspan='2'>".__d('saisinebilanparcoursep66', 'Saisinebilanparcoursep66.decisioncg', true)."</th>";
-                            echo "<th colspan='4'>Actions</th>";
+                            echo "<th colspan='5'>Actions</th>";
                         echo "</tr></thead><tbody>";
 
                         foreach($bilansparcours66 as $bilanparcour66) {
@@ -264,6 +236,10 @@
                                 echo $html->tag(
                                     'td',
                                     $xhtml->cancelLink( 'Annuler ce bilan de parcours', array( 'controller'=>'bilansparcours66', 'action'=>'cancel', Set::classicExtract($bilanparcour66, 'Bilanparcours66.id') ), ( $permissions->check( 'bilansparcours66', 'cancel' ) == 1 && $block ) )
+                                );
+                                echo $html->tag(
+                                    'td',
+                                    $xhtml->fileLink( 'Fichiers liés', array( 'controller'=>'bilansparcours66', 'action'=>'filelink', Set::classicExtract($bilanparcour66, 'Bilanparcours66.id') ), ( $permissions->check( 'bilansparcours66', 'filelink' ) == 1 && $block ) )
                                 );
                             echo "</tr>";
                         }
