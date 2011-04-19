@@ -57,13 +57,11 @@
 
 		public function themes() {
 			$enums = $this->enums();
-
 			foreach( array_keys( $enums[$this->alias] ) as $key ) {
-				if( $key != 'reorientationep93' ) {
+				if( substr( $key, -2 ) != Configure::read( 'Cg.departement' ) ) {
 					unset( $enums[$this->alias][$key] );
 				}
 			}
-
 			return array_keys( $enums[$this->alias] );
 		}
 	}

@@ -18,6 +18,9 @@
 	}
 
 	echo $xform->create( null );
+	if( $this->action == 'edit' ) {
+		echo $xform->input( 'Regroupementep.id', array( 'type' => 'hidden' ) );
+	}
 	echo $xform->input( 'Regroupementep.name', array( 'domain' => 'regroupementep' ) );
 
 	// Le CG 93 ne souhaite pas voir ces choix: pour eux, tout se décide

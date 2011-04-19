@@ -431,54 +431,7 @@
 							'Structurereferente',
 						)
 					)
-				),
-				/*'joins' => array(
-					array(
-						'table' => 'personnes',
-						'alias' => 'Personne',
-						'type' => 'INNER',
-						'foreignKey' => null,
-						'conditions' => array( 'Dossierep.personne_id = Personne.id' )
-					),
-					array(
-						'table' => 'foyers',
-						'alias' => 'Foyer',
-						'type' => 'INNER',
-						'foreignKey' => null,
-						'conditions' => array( 'Personne.foyer_id = Foyer.id' )
-					),
-					array(
-						'table' => 'adressesfoyers',
-						'alias' => 'Adressefoyer',
-						'type' => 'INNER',
-						'foreignKey' => null,
-						'conditions' => array( 'Adressefoyer.foyer_id = Foyer.id', 'Adressefoyer.rgadr' => '01' )
-					),
-					array(
-						'table' => 'adresses',
-						'alias' => 'Adresse',
-						'type' => 'INNER',
-						'foreignKey' => null,
-						'conditions' => array( 'Adressefoyer.adresse_id = Adresse.id' )
-					),
-					array(
-						'table' => 'passagescommissionseps',
-						'alias' => 'Passagecommissionep',
-						'type' => 'INNER',
-						'foreignKey' => null,
-						'conditions' => array( 'Passagecommissionep.dossierep_id = Dossierep.id' )
-					),
-					array(
-						'table' => 'decisionsreorientationseps93',
-						'alias' => 'Decisionreorientationep93',
-						'type' => 'LEFT OUTER',
-						'foreignKey' => null,
-						'conditions' => array(
-							'Passagecommissionep.id = Decisionreorientationep93.passagecommissionep_id',
-							'Decisionreorientationep93.etape' => $niveauDecision
-						)
-					)
-				)*/
+				)
 			);
 		}
 

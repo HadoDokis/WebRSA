@@ -63,7 +63,11 @@
                     SELECT "'.$modelTable.'"."orientstruct_id"
                     FROM "'.$modelTable.'"
                         INNER JOIN "dossierseps" ON ( "dossierseps"."id" = "'.$modelTable.'"."dossierep_id" )
-                    WHERE "dossierseps"."etapedossierep" != \'traite\'
+                    WHERE "dossierseps"."id" NOT IN (
+						SELECT "passagescommissionseps"."dossierep_id"
+						FROM passagescommissionseps
+						WHERE "passagescommissionseps"."etatdossierep" = \'traite\'
+                    )
                     AND "dossierseps"."themeep" = \''.$modelTable.'\'
                 )',
                 'Orientstruct.id NOT IN (
@@ -74,11 +78,16 @@
                             )
                         WHERE
                             '.Inflector::tableize( $this->alias ).'.orientstruct_id = Orientstruct.id
-                            AND dossierseps.etapedossierep = \'traite\'
+                            AND dossierseps.id IN (
+								SELECT "passagescommissionseps"."dossierep_id"
+								FROM passagescommissionseps
+								WHERE "passagescommissionseps"."etatdossierep" = \'traite\'
+							)
                             AND ( DATE( NOW() ) - (
                                 SELECT CAST( decisions'.Inflector::tableize( $this->alias ).'.modified AS DATE )
                                     FROM decisions'.Inflector::tableize( $this->alias ).'
-                                    WHERE decisions'.Inflector::tableize( $this->alias ).'.'.Inflector::underscore( $this->alias ).'_id = '.Inflector::tableize( $this->alias ).'.id
+										INNER JOIN passagescommissionseps ON ( decisions'.Inflector::tableize( $this->alias ).'.passagecommissionep_id = passagescommissionseps.id )
+										INNER JOIN dossierseps ON ( passagescommissionseps.dossierep_id = dossierseps.id )
                                     ORDER BY modified DESC
                                     LIMIT 1
                             ) ) <= '.Configure::read( $this->alias.'.delaiCreationContrat' ).'
@@ -255,7 +264,7 @@
 
 		public function qdDossiersParListe( $commissionep_id, $niveauDecision ) {
 			// Doit-on prendre une décision à ce niveau ?
-			$themes = $this->Dossierep->Commissionep->themesTraites( $commissionep_id );
+			$themes = $this->Dossierep->Passagecommissionep->Commissionep->themesTraites( $commissionep_id );
 			$niveauFinal = $themes[Inflector::underscore($this->alias)];
 			if( ( $niveauFinal == 'ep' ) && ( $niveauDecision == 'cg' ) ) {
 				return array();
@@ -264,7 +273,19 @@
 			return array(
 				'conditions' => array(
 					'Dossierep.themeep' => Inflector::tableize( $this->alias ),
-					'Dossierep.commissionep_id' => $commissionep_id
+					'Dossierep.id IN ( '.
+						$this->Dossierep->Passagecommissionep->sq(
+							array(
+								'fields' => array(
+									'passagescommissionseps.dossierep_id'
+								),
+								'alias' => 'passagescommissionseps',
+								'conditions' => array(
+									'passagescommissionseps.commissionep_id' => $commissionep_id
+								)
+							)
+						)
+					.' )'
 				),
 				'contain' => array(
 					'Personne' => array(
@@ -278,24 +299,29 @@
 						)
 					),
 					$this->alias => array(
-						'Decision'.Inflector::underscore( $this->alias ) => array(
-							'Typeorient',
-							'Structurereferente',
-							'order' => array( 'etape DESC' )
-						),
 						'Orientstruct' => array(
 							'Typeorient',
 							'Structurereferente',
 							'Referent'
 						)
 					),
+					'Passagecommissionep' => array(
+						'conditions' => array(
+							'Passagecommissionep.commissionep_id' => $commissionep_id
+						),
+						'Decision'.Inflector::underscore( $this->alias ) => array(
+							'Typeorient',
+							'Structurereferente',
+							'order' => array( 'etape DESC' )
+						)
+					)
 				)
 			);
 		}
 
 		public function prepareFormData( $commissionep_id, $datas, $niveauDecision ) {
 			// Doit-on prendre une décision à ce niveau ?
-			$themes = $this->Dossierep->Commissionep->themesTraites( $commissionep_id );
+			$themes = $this->Dossierep->Passagecommissionep->Commissionep->themesTraites( $commissionep_id );
 			$niveauFinal = $themes[Inflector::underscore($this->alias)];
 			if( ( $niveauFinal == 'ep' ) && ( $niveauDecision == 'cg' ) ) {
 				return array();

@@ -47,6 +47,13 @@
 				'fields' => '',
 				'order' => ''
 			),
+			'Passagecommissionep' => array(
+				'className' => 'Passagecommissionep',
+				'foreignKey' => 'passagecommissionep_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
 		);
 	}
 ?>

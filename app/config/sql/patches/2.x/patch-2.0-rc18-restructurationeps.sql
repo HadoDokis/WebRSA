@@ -231,6 +231,30 @@ ALTER TABLE eps DROP COLUMN regressionorientationep93;
 ALTER TABLE commissionseps ADD COLUMN raisonannulation TEXT DEFAULT NULL;
 ALTER TABLE decisionsreorientationseps93 ADD COLUMN raisonnonpassage TEXT DEFAULT NULL;
 
+-- regressionorientationep58
+ALTER TABLE decisionsregressionsorientationseps58 ADD COLUMN passagecommissionep_id INTEGER DEFAULT NULL REFERENCES passagescommissionseps(id) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE decisionsregressionsorientationseps58 DROP COLUMN regressionorientationep58_id;
+ALTER TABLE decisionsregressionsorientationseps58 ADD COLUMN decision TYPE_DECISIONEP NOT NULL;
+ALTER TABLE decisionsregressionsorientationseps58 ADD COLUMN raisonnonpassage TEXT DEFAULT NULL;
+
+-- nonorientationproep58
+ALTER TABLE decisionsnonorientationsproseps58 ADD COLUMN passagecommissionep_id INTEGER DEFAULT NULL REFERENCES passagescommissionseps(id) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE decisionsnonorientationsproseps58 DROP COLUMN nonorientationproep58_id;
+ALTER TABLE decisionsnonorientationsproseps58 ALTER COLUMN decision TYPE TEXT;
+DROP TYPE IF EXISTS TYPE_DECISIONNONORIENTATIONPRO58;
+CREATE TYPE TYPE_DECISIONNONORIENTATIONPRO58 AS ENUM ( 'reorientation', 'maintienref', 'annule', 'reporte' );
+ALTER TABLE decisionsnonorientationsproseps58 ALTER COLUMN decision TYPE TYPE_DECISIONNONORIENTATIONPRO58 USING CAST(decision AS TYPE_DECISIONNONORIENTATIONPRO58);
+ALTER TABLE decisionsnonorientationsproseps58 ADD COLUMN raisonnonpassage TEXT DEFAULT NULL;
+
+-- sanctionep58
+ALTER TABLE decisionssanctionseps58 ADD COLUMN passagecommissionep_id INTEGER DEFAULT NULL REFERENCES passagescommissionseps(id) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE decisionssanctionseps58 DROP COLUMN sanctionep58_id;
+ALTER TABLE decisionssanctionseps58 ALTER COLUMN decision TYPE TEXT;
+DROP TYPE IF EXISTS TYPE_DECISIONSANCTIONEP58;
+CREATE TYPE TYPE_DECISIONSANCTIONEP58 AS ENUM ( 'maintien', 'sanction', 'annule', 'reporte' );
+ALTER TABLE decisionssanctionseps58 ALTER COLUMN decision TYPE TYPE_DECISIONSANCTIONEP58 USING CAST(decision AS TYPE_DECISIONSANCTIONEP58);
+ALTER TABLE decisionssanctionseps58 ADD COLUMN raisonnonpassage TEXT DEFAULT NULL;
+
 -- Ajout de contraintes d'unicité
 CREATE UNIQUE INDEX passagescommissionseps_commissionep_id_dossierep_id_idx ON passagescommissionseps( commissionep_id, dossierep_id );
 

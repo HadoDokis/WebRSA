@@ -23,7 +23,14 @@
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
-			)
+			),
+			'Passagecommissionep' => array(
+				'className' => 'Passagecommissionep',
+				'foreignKey' => 'passagecommissionep_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
 		);
 
 		// TODO: lorsqu'on pourra reporter les dossiers,
