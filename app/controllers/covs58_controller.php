@@ -29,12 +29,14 @@
 			$options = array_merge($options, $this->Cov58->Dossiercov58->enums());
 			$typesorients = $this->Cov58->Dossiercov58->Propoorientationcov58->Structurereferente->Typeorient->listOptions();
 			$structuresreferentes = $this->Cov58->Dossiercov58->Propoorientationcov58->Structurereferente->list1Options();
+			$sitescovs58 = $this->Cov58->Sitecov58->find( 'list', array( 'fields' => array( 'name' ) ) );
 
-			$this->set(compact('options', 'typesorients', 'structuresreferentes', 'typevoie'));
+			$this->set(compact('options', 'typesorients', 'structuresreferentes', 'typevoie', 'sitescovs58' ));
 
 			$decisionscovs = array( 'accepte' => 'Accepté', 'refus' => 'Refusé', 'ajourne' => 'Ajourné' );
 			$this->set(compact('decisionscovs'));
 		}
+
 
 		/**
 		*
@@ -46,6 +48,7 @@
 				$queryData['limit'] = 10;
 				$this->paginate = $queryData;
 				$covs58 = $this->paginate( $this->Cov58 );
+// 				debug($covs58);
 				$this->set( 'covs58', $covs58 );
 // 				$this->set( 'etape', $etape );
 			}
@@ -113,7 +116,9 @@
 			$cov58 = $this->Cov58->find(
 				'first', array(
 					'conditions' => array( 'Cov58.id' => $cov58_id ),
-					'contain' => false
+					'contain' => array(
+                        'Sitecov58'
+					)
 				)
 			);
 // 			debug( $commissionep );

@@ -99,6 +99,7 @@
 					'fields' => array(
 						'Dossiercov58.id',
 						'Dossiercov58.cov58_id',
+						'Personne.id',
 						'Personne.qual',
 						'Personne.nom',
 						'Personne.prenom',

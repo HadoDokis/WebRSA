@@ -37,7 +37,7 @@
 				<legend>Filtrer par Commission</legend>
 				<?php echo $default2->subform(
 					array(
-						'Cov58.name'
+						'Cov58.sitecov58_id' => array( 'type' => 'select', 'option' => $sitescovs58, 'empty' => true )
 					)
 				); ?>
 			</fieldset>
@@ -66,8 +66,8 @@
 	if( isset( $covs58 ) ) {
 		echo $default2->index(
 			$covs58,
-			array(
-				'Cov58.name',
+			array( 
+                'Sitecov58.name',
 				'Cov58.datecommission',
 				'Cov58.etatcov',
 				'Cov58.observation'

@@ -304,6 +304,7 @@
 		// EPs restructuration
 		'passagecommissionep' => 'passagescommissionseps',
 
+        'sitecov58' => 'sitescovs58',
 	);
 /**
 * This is a key => value array of regex used to match words.

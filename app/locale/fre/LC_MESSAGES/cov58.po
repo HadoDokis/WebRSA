@@ -25,6 +25,9 @@ msgstr "Date de la commission"
 msgid "Cov58.name"
 msgstr "Intitulé"
 
+msgid "Cov58.sitecov58_id"
+msgstr "Sites d'action médico-sociale"
+
 msgid "Cov58.lieu"
 msgstr "Lieu"
 

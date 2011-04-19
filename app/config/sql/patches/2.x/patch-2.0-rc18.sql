@@ -144,6 +144,35 @@ SELECT add_missing_table_field ('public', 'propospdos', 'haspiece', 'type_boolea
 ALTER TABLE propospdos ALTER COLUMN haspiece SET DEFAULT '0'::TYPE_BOOLEANNUMBER;
 UPDATE propospdos SET haspiece = '0'::TYPE_BOOLEANNUMBER WHERE haspiece IS NULL;
 ALTER TABLE propospdos ALTER COLUMN haspiece SET NOT NULL;
+
+-- -----------------------------------------------------------------------------------------------
+-- 20110418: Ajout d'une table de paramétrage pour les COVs du CG58
+-- -----------------------------------------------------------------------------------------------
+DROP TABLE IF EXISTS sitescovs58;
+CREATE TABLE sitescovs58(
+    id                      SERIAL NOT NULL PRIMARY KEY,
+    name                    VARCHAR(255) NOT NULL
+);
+CREATE INDEX sitescovs58_name_idx ON sitescovs58( name );
+
+SELECT add_missing_table_field ('public', 'covs58', 'sitecov58_id', 'INTEGER');
+SELECT add_missing_constraint ('public', 'covs58', 'covs58_sitecov58_id_fkey', 'sitescovs58', 'sitecov58_id');
+
+-- Récupération des anciens noms de sites pré-saisis
+INSERT INTO sitescovs58 ( name )
+    SELECT
+            covs58.name AS name
+        FROM covs58
+        WHERE
+            covs58.name IS NOT NULL;
+
+UPDATE covs58
+    SET sitecov58_id = sitescovs58.id 
+            FROM sitescovs58
+            WHERE sitescovs58.name = covs58.name;
+
+ALTER TABLE covs58 ALTER COLUMN sitecov58_id SET NOT NULL;
+ALTER TABLE covs58 ALTER COLUMN name DROP NOT NULL;
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
