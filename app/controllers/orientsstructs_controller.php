@@ -93,7 +93,7 @@
         *   Fonction permettant d'accéder à la page pour lier les fichiers à l'Orientation
         */
 
-        public function fileupload( $id ){
+        public function filelink( $id ){
             $this->assert( valid_int( $id ), 'invalidParameter' );
 
             $fichiers = array();
