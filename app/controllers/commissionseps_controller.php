@@ -79,9 +79,9 @@
 				$this->Commissionep->Dossierep->Nonrespectsanctionep93->Decisionnonrespectsanctionep93->enums(),
 				$this->Commissionep->Dossierep->Nonrespectsanctionep93->enums(),
 				$this->Commissionep->Dossierep->Defautinsertionep66->enums(),
-				$this->Commissionep->Dossierep->Nonorientationproep58->Decisionnonorientationproep58->enums(),
 				$this->Commissionep->Dossierep->Nonorientationproep93->Decisionnonorientationproep93->enums(),
 				$this->Commissionep->Dossierep->Sanctionep58->Decisionsanctionep58->enums(),*/
+				$this->Commissionep->Passagecommissionep->Decisionnonorientationproep58->enums(),
 				$this->Commissionep->Passagecommissionep->Dossierep->enums(),
 				$this->Commissionep->enums(),
 				$this->Commissionep->CommissionepMembreep->enums(),
@@ -127,7 +127,7 @@
 						$this->paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'cree', 'associe' );
 						break;
 					case 'arbitrage':
-						$this->paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'associe', 'decisionep', 'decisioncg' );
+						$this->paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'associe', 'presence', 'decisionep', 'traiteep', 'decisioncg' );
 						break;
 				}
 
