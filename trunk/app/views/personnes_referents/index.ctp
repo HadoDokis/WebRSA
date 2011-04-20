@@ -81,6 +81,12 @@
                                 array( 'controller' => 'personnes_referents', 'action' => 'edit',
                                 $personne_referent['PersonneReferent']['id'] ),
                                 ( !$cloture && ( $permissions->check( 'personnes_referents', 'edit' ) == 1 ) )
+                            ),
+                            $xhtml->fileLink(
+                                'Lier des fichiers',
+                                array( 'controller' => 'personnes_referents', 'action' => 'filelink',
+                                $personne_referent['PersonneReferent']['id'] ),
+                                ( !$cloture && ( $permissions->check( 'personnes_referents', 'filelink' ) == 1 ) )
                             )
                         ),
                         array( 'class' => 'odd' ),

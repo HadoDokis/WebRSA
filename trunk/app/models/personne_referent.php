@@ -6,6 +6,11 @@
 		public $actsAs = array(
 			'Formattable' => array(
 				'suffix' => array( 'referent_id' )
+			),
+			'Enumerable' => array(
+                'fields' => array(
+                    'haspiecejointe'
+                )
 			)
 		);
 
@@ -25,6 +30,26 @@
 				)
 			)
 		);
+
+        public $hasMany = array(
+            'Fichiermodule' => array(
+                'className' => 'Fichiermodule',
+                'foreignKey' => false,
+                'dependent' => false,
+                'conditions' => array(
+                    'Fichiermodule.modele = \'PersonneReferent\'',
+                    'Fichiermodule.fk_value = {$__cakeID__$}'
+                ),
+                'fields' => '',
+                'order' => '',
+                'limit' => '',
+                'offset' => '',
+                'exclusive' => '',
+                'finderQuery' => '',
+                'counterQuery' => ''
+            )
+        );
+
 
 		public $belongsTo = array(
 			'Personne' => array(
