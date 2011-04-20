@@ -678,3 +678,17 @@ msgstr "Nom de l'employeur"
 msgid "Permisb.tiersprestataireapre_id"
 msgstr "Nom de l'auto-école"
 
+msgid "Apres::filelink"
+msgstr "Liste des fichiers liés à l'APRE"
+
+msgid "Apre.haspiecejointe"
+msgstr "Ajouter une pièce jointe"
+
+msgid "Apre66.haspiecejointe"
+msgstr "Ajouter une pièce jointe"
+
+msgid "ENUM::HASPIECEJOINTE::1"
+msgstr "Oui"
+
+msgid "ENUM::HASPIECEJOINTE::0"
+msgstr "Non"

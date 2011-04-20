@@ -50,7 +50,7 @@
                 <th>Etat du dossier</th>
                 <th>Montant demandé</th>
                 <th>Montant attribué</th>
-                <th colspan="4" class="action">Actions</th>
+                <th colspan="5" class="action">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -159,6 +159,12 @@
                                 array( 'controller' => 'gedooos', 'action' => 'apre', $apre[$this->modelClass]['id'] ),
                                 $buttonEnabled,
                                 $permissions->check( 'gedooos', 'apre' )
+                            ),
+                            $xhtml->fileLink(
+                                'Fichiers liés',
+                                array( 'controller' => 'apres'.Configure::read( 'Apre.suffixe' ), 'action' => 'filelink', $apre[$this->modelClass]['id'] ),
+                                $buttonEnabled,
+                                $permissions->check( 'apres'.Configure::read( 'Apre.suffixe' ), 'filelink' )
                             ),
 							array( $innerTable, array( 'class' => 'innerTableCell' ) )
                         ),

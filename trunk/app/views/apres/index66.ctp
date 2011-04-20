@@ -116,6 +116,12 @@
                                 $buttonEnabledInc,
                                 $permissions->check( 'gedooos', 'apre' )
                             ),
+                            $xhtml->fileLink(
+                                'Fichiers liés',
+                                array( 'controller' => 'apres'.Configure::read( 'Apre.suffixe' ), 'action' => 'filelink', $apre[$this->modelClass]['id'] ),
+                                $buttonEnabled,
+                                $permissions->check( 'apres'.Configure::read( 'Apre.suffixe' ), 'filelink' )
+                            ),
                             array( $innerTable, array( 'class' => 'innerTableCell' ) )
                         ),
                         array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),

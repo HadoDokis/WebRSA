@@ -24,7 +24,8 @@
 					'eligibiliteapre' => array( 'type' => 'eligibiliteapre', 'domain' => 'apre' ),
 // 					'presence' => array( 'type' => 'presence', 'domain' => 'apre' ),
 					'justificatif' => array( 'type' => 'justificatif', 'domain' => 'apre' ),
-					'isdecision' => array( 'domain' => 'apre' )
+					'isdecision' => array( 'domain' => 'apre' ),
+					'haspiecejointe' => array( 'domain' => 'apre' )
 				)
 			),
 			'Frenchfloat' => array(
@@ -221,6 +222,7 @@
 			)
 		);
 
+
 		public $hasMany = array(
 			'Montantconsomme' => array(
 				'className' => 'Montantconsomme',
@@ -248,6 +250,22 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Fichiermodule' => array(
+                'className' => 'Fichiermodule',
+                'foreignKey' => false,
+                'dependent' => false,
+                'conditions' => array(
+                    'Fichiermodule.modele = \'Apre\'',
+                    'Fichiermodule.fk_value = {$__cakeID__$}'
+                ),
+                'fields' => '',
+                'order' => '',
+                'limit' => '',
+                'offset' => '',
+                'exclusive' => '',
+                'finderQuery' => '',
+                'counterQuery' => ''
+            )
 		);
 
 
