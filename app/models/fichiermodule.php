@@ -115,6 +115,36 @@
                 'fields' => '',
                 'order' => ''
             ),
+            'Entretien' => array(
+                'className' => 'Entretien',
+                'foreignKey' => false,
+                'conditions' => array(
+                    'Fichiermodule.modele = \'Entretien\'',
+                    'Fichiermodule.fk_value = {$__cakeID__$}'
+                ),
+                'fields' => '',
+                'order' => ''
+            ),
+            'Apre' => array(
+                'className' => 'Apre',
+                'foreignKey' => false,
+                'conditions' => array(
+                    'Fichiermodule.modele = \'Apre\'',
+                    'Fichiermodule.fk_value = {$__cakeID__$}'
+                ),
+                'fields' => '',
+                'order' => ''
+            ),
+            'Apre66' => array(
+                'className' => 'Apre66',
+                'foreignKey' => false,
+                'conditions' => array(
+                    'Fichiermodule.modele = \'Apre66\'',
+                    'Fichiermodule.fk_value = {$__cakeID__$}'
+                ),
+                'fields' => '',
+                'order' => ''
+            ),
         );
 
         /**
@@ -132,10 +162,10 @@
 
             $success = parent::save( $data, $validate, $fieldList );
             if( !$success && $cmsSuccess ) {
-                $cmsSuccess = Cmis::delete( $cmsPath, true );
+                $success = Cmis::delete( $cmsPath, true ) && $success;
             }
 
-            return ( $success && $cmsSuccess );
+            return $success;
         }
 
         /**
