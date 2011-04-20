@@ -3,7 +3,8 @@
 	{
 		public $name = 'Entretiens';
 		public $uses = array( 'Entretien', 'Option' );
-		public $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Default2' );
+		public $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Default2', 'Fileuploader' );
+		public $components = array( 'Fileuploader' );
 
 		public $commeDroit = array(
 			'view' => 'Entretiens:index',
@@ -30,6 +31,123 @@
 // debug($options);
 			$this->set( compact( 'options', 'typerdv' ) );
 		}
+
+
+
+        /**
+        * http://valums.com/ajax-upload/
+        * http://doc.ubuntu-fr.org/modules_php
+        * increase post_max_size and upload_max_filesize to 10M
+        * debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
+        */
+
+        public function ajaxfileupload() {
+            $this->Fileuploader->ajaxfileupload();
+        }
+
+        /**
+        * http://valums.com/ajax-upload/
+        * http://doc.ubuntu-fr.org/modules_php
+        * increase post_max_size and upload_max_filesize to 10M
+        * debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
+        * FIXME: traiter les valeurs de retour
+        */
+
+        public function ajaxfiledelete() {
+            $this->Fileuploader->ajaxfiledelete();
+        }
+
+        /**
+        *   Fonction permettant de visualiser les fichiers chargés dans la vue avant leur envoi sur le serveur
+        */
+
+        public function fileview( $id ) {
+            $this->Fileuploader->fileview( $id );
+        }
+
+        /**
+        *   Téléchargement des fichiers préalablement associés à un traitement donné
+        */
+
+        public function download( $fichiermodule_id ) {
+            $this->assert( !empty( $fichiermodule_id ), 'error404' );
+            $this->Fileuploader->download( $fichiermodule_id );
+        }
+
+        /**
+        *   Fonction permettant d'accéder à la page pour lier les fichiers à l'Orientation
+        */
+
+        public function filelink( $id ){
+            $this->assert( valid_int( $id ), 'invalidParameter' );
+
+            $fichiers = array();
+            $entretien = $this->Entretien->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Entretien.id' => $id
+                    ),
+                    'contain' => array(
+                        'Fichiermodule' => array(
+                            'fields' => array( 'name', 'id', 'created', 'modified' )
+                        )
+                    )
+                )
+            );
+
+            $personne_id = $entretien['Entretien']['personne_id'];
+            $dossier_id = $this->Entretien->Personne->dossierId( $personne_id );
+            $this->assert( !empty( $dossier_id ), 'invalidParameter' );
+
+            $this->Entretien->begin();
+            if( !$this->Jetons->check( $dossier_id ) ) {
+                $this->Entretien->rollback();
+            }
+            $this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
+
+            // Retour à l'index en cas d'annulation
+            if( isset( $this->params['form']['Cancel'] ) ) {
+                $this->redirect( array( 'action' => 'index', $personne_id ) );
+            }
+
+            if( !empty( $this->data ) ) {
+
+                $saved = $this->Entretien->updateAll(
+                    array( 'Entretien.haspiecejointe' => '\''.$this->data['Entretien']['haspiecejointe'].'\'' ),
+                    array(
+                        '"Entretien"."personne_id"' => $personne_id,
+                        '"Entretien"."id"' => $id
+                    )
+                );
+
+                if( $saved ){
+                    // Sauvegarde des fichiers liés à une PDO
+                    $dir = $this->Fileuploader->dirFichiersModule( $this->action, $this->params['pass'][0] );
+                    $saved = $this->Fileuploader->saveFichiers( $dir, !Set::classicExtract( $this->data, "Entretien.haspiecejointe" ), $id ) && $saved;
+                }
+
+                if( $saved ) {
+                    $this->Jetons->release( $dossier_id );
+                    $this->Entretien->commit();
+                    $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+                    $this->redirect( array(  'controller' => 'entretiens','action' => 'index', $personne_id ) );
+                }
+                else {
+                    $fichiers = $this->Fileuploader->fichiers( $id );
+                    $this->Entretien->rollback();
+                    $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+                }
+            }
+
+            $this->_setOptions();
+//             $this->Entretien->commit();
+            $this->set( compact( 'dossier_id', 'personne_id', 'fichiers', 'entretien' ) );
+
+        }
+
+
+
 
 		/**
 		*
