@@ -147,7 +147,8 @@
             $this->assert( valid_int( $id ), 'invalidParameter' );
 
             $fichiers = array();
-            $dsp = $this->DspRev->find(
+
+            $dsprev = $this->DspRev->find(
                 'first',
                 array(
                     'conditions' => array(
@@ -160,10 +161,12 @@
                     )
                 )
             );
-//             $histos = $this->paginate('DspRev', array('DspRev.dsp_id'=>$dsp['Dsp']['id']));
-// debug($dsp);
-            $personne_id = $dsp['DspRev']['personne_id'];
-            $dsp_id = $dsp['DspRev']['dsp_id'];
+
+            $optionsrevs = $this->DspRev->allEnumlists();
+
+            $personne_id = $dsprev['DspRev']['personne_id'];
+            $dsp_id = $dsprev['DspRev']['dsp_id'];
+
             $dossier_id = $this->Dsp->Personne->dossierId( $personne_id );
             $this->assert( !empty( $dossier_id ), 'invalidParameter' );
 
@@ -185,14 +188,14 @@
                     array(
                         '"DspRev"."personne_id"' => $personne_id,
                         '"DspRev"."dsp_id"' => $dsp_id,
-                        '"Dsp"."id"' => $id
+                        '"DspRev"."id"' => $id
                     )
                 );
 
                 if( $saved ){
                     // Sauvegarde des fichiers liés à une PDO
                     $dir = $this->Fileuploader->dirFichiersModule( $this->action, $this->params['pass'][0] );
-                    $saved = $this->Fileuploader->saveFichiers( $dir, !Set::classicExtract( $this->data, "Dsp.haspiecejointe" ), $id ) && $saved;
+                    $saved = $this->Fileuploader->saveFichiers( $dir, !Set::classicExtract( $this->data, "DspRev.haspiecejointe" ), $id ) && $saved;
                 }
 
                 if( $saved ) {
@@ -209,8 +212,8 @@
             }
 
 //             $this->_setOptions();
-//             $this->Dsp->commit();
-            $this->set( compact( 'dossier_id', 'personne_id', 'fichiers', 'dsp' ) );
+// debug($optionsrevs);
+            $this->set( compact( 'dossier_id', 'personne_id', 'fichiers', 'optionsrevs', 'dsprev' ) );
 
         }
 
@@ -567,38 +570,37 @@
 				
 				$data2 = null;
 
-				if( $success = $this->Dsp->saveAll( $this->data, array( 'atomic' => false, 'validate' => 'first' ) ) && $success ) {
-					if( $success ) {
-					
-						foreach($this->data as $Model=>$values) {
-							$data2[$Model."Rev"] = $this->data[$Model];
-	
-							if ($Model!='Dsp' && $Model!='Personne') {
-								foreach($data2[$Model."Rev"] as $key=>$value) {
-									if (isset($data2[$Model."Rev"][$key]['dsp_id']))
-										$data2[$Model."Rev"][$key]['dsp_rev_id'] = $data2[$Model."Rev"][$key]['dsp_id'];
-									$data2 = Set::remove($data2,$Model."Rev.".$key.".dsp_id");
-									$data2 = Set::remove($data2,$Model."Rev.".$key.".id");
-								}
-							}
-						}
-						$data2['DspRev']['dsp_id'] = $this->Dsp->id;
-						$data2 = Set::remove($data2,'DspRev.id');
-						
-						$this->DspRev->saveAll($data2, array( 'atomic' => false, 'validate' => 'first' ));
-						
-						$this->Session->setFlash( __( 'Enregistrement effectué', true ), 'flash/success' );
-						// On enlève le jeton du dossier
-						$this->Jetons->release( array( 'Dossier.id' => $dossier_id ) ); // FIXME: if -> error
-						// Fin de la transaction
-						$this->Dsp->commit();
-						$this->redirect( array( 'action' => 'histo', Set::classicExtract( $this->data, 'Dsp.personne_id' ) ) );
-					}
-					else {
-						$this->Session->setFlash( __( 'Erreur lors de l\'enregistrement', true ), 'flash/error' );
-						$this->Dsp->rollback();
-					}
-				}
+                unset( $this->data['Dsp']['haspiecejointe'] );
+                if( $success = $this->Dsp->saveAll( $this->data, array( 'atomic' => false, 'validate' => 'first' ) ) && $success ) {		
+                    foreach($this->data as $Model=>$values) {
+                        $data2[$Model."Rev"] = $this->data[$Model];
+
+                        if ($Model!='Dsp' && $Model!='Personne') {
+                            foreach($data2[$Model."Rev"] as $key=>$value) {
+                                if (isset($data2[$Model."Rev"][$key]['dsp_id']))
+                                    $data2[$Model."Rev"][$key]['dsp_rev_id'] = $data2[$Model."Rev"][$key]['dsp_id'];
+                                $data2 = Set::remove($data2,$Model."Rev.".$key.".dsp_id");
+                                $data2 = Set::remove($data2,$Model."Rev.".$key.".id");
+                            }
+                        }
+                    }
+                    $data2['DspRev']['dsp_id'] = $this->Dsp->id;
+                    $data2 = Set::remove($data2,'DspRev.id');
+                    
+                    $this->DspRev->saveAll($data2, array( 'atomic' => false, 'validate' => 'first' ));
+                    
+                    $this->Session->setFlash( __( 'Enregistrement effectué', true ), 'flash/success' );
+                    // On enlève le jeton du dossier
+                    $this->Jetons->release( array( 'Dossier.id' => $dossier_id ) ); // FIXME: if -> error
+                    // Fin de la transaction
+                    $this->Dsp->commit();
+                    $this->redirect( array( 'action' => 'histo', Set::classicExtract( $this->data, 'Dsp.personne_id' ) ) );
+                }
+                else {
+                    $this->Session->setFlash( __( 'Erreur lors de l\'enregistrement', true ), 'flash/error' );
+                    $this->Dsp->rollback();
+                }
+
 			}
 			// Affectation au formulaire
 			else if( $this->action == 'edit' ) {

@@ -4,6 +4,14 @@
     {
         var $name = 'DspRev';
 
+        public $actsAs = array(
+            'Enumerable' => array(
+                'fields' => array(
+                    'haspiecejointe'
+                )
+            )
+        );
+
         var $hasMany = array(
 			'DetaildifsocRev',
 			'DetailaccosocfamRev',
@@ -15,13 +23,13 @@
 			'DetaildifsocproRev',
 			'DetailprojproRev',
 			'DetailfreinformRev',
-			'DetailconfortRev'/*,
+			'DetailconfortRev',
             'Fichiermodule' => array(
                 'className' => 'Fichiermodule',
                 'foreignKey' => false,
                 'dependent' => false,
                 'conditions' => array(
-                    'Fichiermodule.modele = \'DspRev\'',
+                    'Fichiermodule.modele = \'Dsp\'',
                     'Fichiermodule.fk_value = {$__cakeID__$}'
                 ),
                 'fields' => '',
@@ -31,7 +39,7 @@
                 'exclusive' => '',
                 'finderQuery' => '',
                 'counterQuery' => ''
-            )*/
+            )
 		);
     }
 ?>

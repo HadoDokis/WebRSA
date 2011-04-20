@@ -207,11 +207,6 @@ ALTER TABLE contratsinsertion ALTER COLUMN haspiecejointe SET NOT NULL;
 -- -----------------------------------------------------------------------------------------------
 -- 20110420: Ajout d'un champ pour sélectionner si on ajoute des fichiers ou non aux DSPs
 -- -----------------------------------------------------------------------------------------------
-SELECT add_missing_table_field ('public', 'dsps', 'haspiecejointe', 'type_booleannumber');
-ALTER TABLE dsps ALTER COLUMN haspiecejointe SET DEFAULT '0'::TYPE_BOOLEANNUMBER;
-UPDATE dsps SET haspiecejointe = '0'::TYPE_BOOLEANNUMBER WHERE haspiecejointe IS NULL;
-ALTER TABLE dsps ALTER COLUMN haspiecejointe SET NOT NULL;
-
 SELECT add_missing_table_field ('public', 'dsps_revs', 'haspiecejointe', 'type_booleannumber');
 ALTER TABLE dsps_revs ALTER COLUMN haspiecejointe SET DEFAULT '0'::TYPE_BOOLEANNUMBER;
 UPDATE dsps_revs SET haspiecejointe = '0'::TYPE_BOOLEANNUMBER WHERE haspiecejointe IS NULL;
@@ -239,6 +234,8 @@ SELECT add_missing_table_field ('public', 'apres', 'haspiecejointe', 'type_boole
 ALTER TABLE apres ALTER COLUMN haspiecejointe SET DEFAULT '0'::TYPE_BOOLEANNUMBER;
 UPDATE apres SET haspiecejointe = '0'::TYPE_BOOLEANNUMBER WHERE haspiecejointe IS NULL;
 ALTER TABLE apres ALTER COLUMN haspiecejointe SET NOT NULL;
+
+SELECT alter_table_drop_column_if_exists ('public', 'dsps', 'haspiecejointe');
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

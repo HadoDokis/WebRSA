@@ -114,8 +114,7 @@
 					'soutdemarsoc' => array( 'type' => 'nov', 'domain' => 'default' ),
 					'concoformqualiemploi' => array( 'type' => 'nos', 'domain' => 'default' ),
 					'drorsarmianta2' => array( 'type' => 'nos', 'domain' => 'default' ),
-					'statutoccupation' => array( 'values' => array('proprietaire', 'locataire') ),
-					'haspiecejointe' => array( 'domain' => 'dsp' )
+					'statutoccupation' => array( 'values' => array('proprietaire', 'locataire') )
                 )
             ),
 			'Revision' => array('auto' => false)

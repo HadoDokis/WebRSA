@@ -19,7 +19,7 @@
 			
 			if (!empty($histos[0]['DspRev'])) {
 				echo "<table>";
-				echo "<tr><th>Date de création</th><th>Date de modification</th><th class='action' colspan='3'>Actions</th><th colspan='2'>Différences</th></tr>";
+				echo "<tr><th>Date de création</th><th>Date de modification</th><th class='action' colspan='4'>Actions</th><th colspan='2'>Différences</th></tr>";
 			
 				foreach ($histos as $histo) {
 					echo "<tr><td>";
@@ -35,7 +35,7 @@
 						echo '<td>'.$xhtml->link($xhtml->image('icons/style.png', array()).' Voir les différences', '/dsps/view_diff/'.$histo['DspRev']['id'], array('escape'=>false)).'</td>';
 					else
 						echo '<td><span class="disabled">'.$xhtml->image('icons/style.png', array()).' Voir les différences</span></td>';
-//                     echo "</td><td>".$xhtml->link($xhtml->image('icons/link.png', array()).'Fichiers liés', '/dsps/filelink/'.$histo['DspRev']['id'], array('escape'=>false))."</td>";
+                    echo "</td><td>".$xhtml->link($xhtml->image('icons/link.png', array()).'Fichiers liés', '/dsps/filelink/'.$histo['DspRev']['id'], array('escape'=>false))."</td>";
 					echo "</tr>";
 				}
 			
