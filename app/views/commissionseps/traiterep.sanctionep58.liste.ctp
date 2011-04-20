@@ -8,7 +8,7 @@
 <th>Date de naissance</th>
 <th>Création du dossier EP</th>
 <th>Origine du dossier</th>
-<th>Avis EPL</th>
+<th id=\'colonneAvisEp\'>Avis EPL</th>
 <th>Si sanction</th>
 </tr>
 </thead><tbody>';
@@ -30,8 +30,8 @@
 				$form->input( "Decisionsanctionep58.{$i}.sanctionep58_id", array( 'type' => 'hidden', 'value' => $dossierep['Sanctionep58']['id'] ) ).
 
 				$form->input( "Decisionsanctionep58.{$i}.decision", array( 'type' => 'select', 'label' => false, 'empty' => true, 'options' => @$options['Decisionsanctionep58']['decision'], 'value' => @$dossierep['Sanctionep58']['Decisionsanctionep58'][0]['decision'] ) ),
-				$listesanctionseps58[$dossierep['Sanctionep58']['listesanctionep58_id']],
-				array( $form->input( "Decisionreorientationep93.{$i}.raisonnonpassage", array( 'label' => false, 'type' => 'textarea', 'empty' => true ) ), array( 'colspan' => '2' ) )
+				$form->input( "Decisionsanctionep58.{$i}.raisonnonpassage", array( 'label' => false, 'type' => 'textarea', 'empty' => true ) ),
+				$listesanctionseps58[$dossierep['Sanctionep58']['listesanctionep58_id']]
 			)
 		);
 	}
@@ -48,9 +48,19 @@
 	document.observe("dom:loaded", function() {
 		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
 			$( 'Decisionsanctionep58<?php echo $i;?>Decision' ).observe( 'change', function() {
-				afficheRaisonpassage( 'Decisionsanctionep58<?php echo $i;?>Decision', [ 'Decisionsanctionep58<?php echo $i;?>TypeorientId', 'Decisionsanctionep58<?php echo $i;?>StructurereferenteId' ], 'Decisionsanctionep58<?php echo $i;?>Raisonnonpassage' );
+				changeColspan( 'Decisionsanctionep58<?php echo $i;?>Decision', [ ], 'Decisionsanctionep58<?php echo $i;?>Raisonnonpassage' );
 			});
-			afficheRaisonpassage( 'Decisionsanctionep58<?php echo $i;?>Decision', [ 'Decisionsanctionep58<?php echo $i;?>TypeorientId', 'Decisionsanctionep58<?php echo $i;?>StructurereferenteId' ], 'Decisionsanctionep58<?php echo $i;?>Raisonnonpassage' );
+			changeColspan( 'Decisionsanctionep58<?php echo $i;?>Decision', [ ], 'Decisionsanctionep58<?php echo $i;?>Raisonnonpassage' );
 		<?php endfor;?>
 	});
+	
+	function changeColspan( decision, idsNonRaisonpassage, idRaisonpassage ) {
+		if ( $F( decision ) == 'reporte' || $F( decision ) == 'annule' ) {
+			$( 'colonneAvisEp' ).writeAttribute( "colspan", "2" );
+		}
+		else {
+			$( 'colonneAvisEp' ).writeAttribute( 'colspan', '1' );
+		}
+		afficheRaisonpassage( decision, idsNonRaisonpassage, idRaisonpassage );
+	}
 </script>
