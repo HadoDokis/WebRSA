@@ -121,7 +121,7 @@
                     ),
                     'contain' => array(
                         'Fichiermodule' => array(
-                            'fields' => array( 'name', 'id' )
+                            'fields' => array( 'name', 'id', 'created', 'modified' )
                         ),
                         'Orientstruct' => array(
                             'fields' => array(
@@ -174,7 +174,7 @@
                 }
                 else {
                     $fichiers = $this->Fileuploader->fichiers( $id );
-                    $this->Bilanparcours66->commit();
+                    $this->Bilanparcours66->rollback();
                     $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
                 }
             }

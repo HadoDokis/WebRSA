@@ -7,11 +7,11 @@
 	{
 		var $name = 'Dsps';
 
-		var $helpers = array( 'Xform', 'Xhtml', 'Dsphm' );
+		var $helpers = array( 'Xform', 'Xhtml', 'Dsphm', 'Default2', 'Fileuploader' );
 		
 		var $uses = array('Dsp', 'DspRev');
 
-		var $components = array( 'Jetons', 'Default' );
+		var $components = array( 'Jetons', 'Default', 'Fileuploader' );
 		
 		var $paginate = array(
 			'limit' => 10, 
@@ -97,6 +97,124 @@
 
 			return $return;
 		}
+
+
+        /**
+        * http://valums.com/ajax-upload/
+        * http://doc.ubuntu-fr.org/modules_php
+        * increase post_max_size and upload_max_filesize to 10M
+        * debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
+        */
+
+        public function ajaxfileupload() {
+            $this->Fileuploader->ajaxfileupload();
+        }
+
+        /**
+        * http://valums.com/ajax-upload/
+        * http://doc.ubuntu-fr.org/modules_php
+        * increase post_max_size and upload_max_filesize to 10M
+        * debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
+        * FIXME: traiter les valeurs de retour
+        */
+
+        public function ajaxfiledelete() {
+            $this->Fileuploader->ajaxfiledelete();
+        }
+
+        /**
+        *   Fonction permettant de visualiser les fichiers chargés dans la vue avant leur envoi sur le serveur
+        */
+
+        public function fileview( $id ) {
+            $this->Fileuploader->fileview( $id );
+        }
+
+        /**
+        *   Téléchargement des fichiers préalablement associés à un traitement donné
+        */
+
+        public function download( $fichiermodule_id ) {
+            $this->assert( !empty( $fichiermodule_id ), 'error404' );
+            $this->Fileuploader->download( $fichiermodule_id );
+        }
+
+        /**
+        *   Fonction permettant d'accéder à la page pour lier les fichiers à l'Orientation
+        */
+
+        public function filelink( $id ){
+            $this->assert( valid_int( $id ), 'invalidParameter' );
+
+            $fichiers = array();
+            $dsp = $this->DspRev->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'DspRev.id' => $id
+                    ),
+                    'contain' => array(
+                        'Fichiermodule' => array(
+                            'fields' => array( 'name', 'id' )
+                        )
+                    )
+                )
+            );
+//             $histos = $this->paginate('DspRev', array('DspRev.dsp_id'=>$dsp['Dsp']['id']));
+// debug($dsp);
+            $personne_id = $dsp['DspRev']['personne_id'];
+            $dsp_id = $dsp['DspRev']['dsp_id'];
+            $dossier_id = $this->Dsp->Personne->dossierId( $personne_id );
+            $this->assert( !empty( $dossier_id ), 'invalidParameter' );
+
+            $this->Dsp->begin();
+            if( !$this->Jetons->check( $dossier_id ) ) {
+                $this->Dsp->rollback();
+            }
+            $this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
+
+            // Retour à l'index en cas d'annulation
+            if( isset( $this->params['form']['Cancel'] ) ) {
+                $this->redirect( array( 'action' => 'histo', $personne_id ) );
+            }
+
+            if( !empty( $this->data ) ) {
+
+                $saved = $this->DspRev->updateAll(
+                    array( 'DspRev.haspiecejointe' => '\''.$this->data['DspRev']['haspiecejointe'].'\'' ),
+                    array(
+                        '"DspRev"."personne_id"' => $personne_id,
+                        '"DspRev"."dsp_id"' => $dsp_id,
+                        '"Dsp"."id"' => $id
+                    )
+                );
+
+                if( $saved ){
+                    // Sauvegarde des fichiers liés à une PDO
+                    $dir = $this->Fileuploader->dirFichiersModule( $this->action, $this->params['pass'][0] );
+                    $saved = $this->Fileuploader->saveFichiers( $dir, !Set::classicExtract( $this->data, "Dsp.haspiecejointe" ), $id ) && $saved;
+                }
+
+                if( $saved ) {
+                    $this->Jetons->release( $dossier_id );
+                    $this->Dsp->commit();
+                    $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+                    $this->redirect( array(  'controller' => 'dsps','action' => 'histo', $personne_id ) );
+                }
+                else {
+                    $fichiers = $this->Fileuploader->fichiers( $id );
+                    $this->Dsp->commit();
+                    $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+                }
+            }
+
+//             $this->_setOptions();
+//             $this->Dsp->commit();
+            $this->set( compact( 'dossier_id', 'personne_id', 'fichiers', 'dsp' ) );
+
+        }
+
+
 
         /**
         *

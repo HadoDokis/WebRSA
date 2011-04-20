@@ -109,7 +109,7 @@ App::import( 'Helper', 'Locale' );
                     ),
                     'contain' => array(
                         'Fichiermodule' => array(
-                            'fields' => array( 'name', 'id' )
+                            'fields' => array( 'name', 'id', 'created', 'modified' )
                         )
                     )
                 )
@@ -154,7 +154,7 @@ App::import( 'Helper', 'Locale' );
                 }
                 else {
                     $fichiers = $this->Fileuploader->fichiers( $id );
-                    $this->Rendezvous->commit();
+                    $this->Rendezvous->rollback();
                     $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
                 }
             }
