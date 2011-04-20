@@ -26,7 +26,8 @@
                         'actions' => array(
                             'Entretiens::view' => array( 'disabled' => '( "'.$permissions->check( 'entretiens', 'view' ).'" != "1" ) ' ),
                             'Entretiens::edit' => array( 'disabled' => '( "'.$permissions->check( 'entretiens', 'edit' ).'" != "1" ) ' ),
-                            'Entretiens::delete' => array( 'disabled' => '( "'.$permissions->check( 'entretiens', 'delete' ).'" != "1" ) ' )
+                            'Entretiens::delete' => array( 'disabled' => '( "'.$permissions->check( 'entretiens', 'delete' ).'" != "1" ) ' ),
+                            'Entretiens::filelink' => array( 'disabled' => '( "'.$permissions->check( 'entretiens', 'filelink' ).'" != "1" ) ' )
                         ),
                         'add' => array( 'Entretien.add' => array( 'controller'=>'entretiens', 'action'=>'add', $personne_id ) ),
                     )

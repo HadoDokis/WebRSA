@@ -223,6 +223,22 @@ SELECT add_missing_table_field ('public', 'personnes_referents', 'haspiecejointe
 ALTER TABLE personnes_referents ALTER COLUMN haspiecejointe SET DEFAULT '0'::TYPE_BOOLEANNUMBER;
 UPDATE personnes_referents SET haspiecejointe = '0'::TYPE_BOOLEANNUMBER WHERE haspiecejointe IS NULL;
 ALTER TABLE personnes_referents ALTER COLUMN haspiecejointe SET NOT NULL;
+
+-- -------------------------------------------------------------------------------------------------------------
+-- 20110420: Ajout d'un champ pour sélectionner si on ajoute des fichiers ou non aux Entretiens
+-- -------------------------------------------------------------------------------------------------------------
+SELECT add_missing_table_field ('public', 'entretiens', 'haspiecejointe', 'type_booleannumber');
+ALTER TABLE entretiens ALTER COLUMN haspiecejointe SET DEFAULT '0'::TYPE_BOOLEANNUMBER;
+UPDATE entretiens SET haspiecejointe = '0'::TYPE_BOOLEANNUMBER WHERE haspiecejointe IS NULL;
+ALTER TABLE entretiens ALTER COLUMN haspiecejointe SET NOT NULL;
+
+-- -------------------------------------------------------------------------------------------------------------
+-- 20110420: Ajout d'un champ pour sélectionner si on ajoute des fichiers ou non aux APREs
+-- -------------------------------------------------------------------------------------------------------------
+SELECT add_missing_table_field ('public', 'apres', 'haspiecejointe', 'type_booleannumber');
+ALTER TABLE apres ALTER COLUMN haspiecejointe SET DEFAULT '0'::TYPE_BOOLEANNUMBER;
+UPDATE apres SET haspiecejointe = '0'::TYPE_BOOLEANNUMBER WHERE haspiecejointe IS NULL;
+ALTER TABLE apres ALTER COLUMN haspiecejointe SET NOT NULL;
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

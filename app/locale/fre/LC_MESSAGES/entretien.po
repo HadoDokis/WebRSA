@@ -99,3 +99,16 @@ msgstr "Objet de l'entretien"
 
 msgid "Entretien.arevoirle"
 msgstr "A revoir le"
+
+
+msgid "Entretiens::filelink"
+msgstr "Liste des fichiers liés à l'entretien"
+
+msgid "Entretien.haspiecejointe"
+msgstr "Ajouter une pièce jointe"
+
+msgid "ENUM::HASPIECEJOINTE::1"
+msgstr "Oui"
+
+msgid "ENUM::HASPIECEJOINTE::0"
+msgstr "Non"
