@@ -91,7 +91,7 @@
         ?>
         <?php
 //             if( Configure::read( 'Cg.departement' ) == 58 ){
-                $valueSansOrientation = isset( $this->data['Orientstruct']['sansorientation'] ) ? $this->data['Orientstruct']['sansorientation'] : true;
+                $valueSansOrientation = isset( $this->data['Orientstruct']['sansorientation'] ) ? $this->data['Orientstruct']['sansorientation'] : false;
                 echo $form->input( 'Orientstruct.sansorientation', array( 'label' => 'Personne sans orientation', 'type' => 'checkbox', 'checked' => $valueSansOrientation ) );
 //             }
         ?>
