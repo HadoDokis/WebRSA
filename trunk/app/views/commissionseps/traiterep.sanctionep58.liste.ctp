@@ -30,7 +30,8 @@
 				$form->input( "Decisionsanctionep58.{$i}.sanctionep58_id", array( 'type' => 'hidden', 'value' => $dossierep['Sanctionep58']['id'] ) ).
 
 				$form->input( "Decisionsanctionep58.{$i}.decision", array( 'type' => 'select', 'label' => false, 'empty' => true, 'options' => @$options['Decisionsanctionep58']['decision'], 'value' => @$dossierep['Sanctionep58']['Decisionsanctionep58'][0]['decision'] ) ),
-				$listesanctionseps58[$dossierep['Sanctionep58']['listesanctionep58_id']]
+				$listesanctionseps58[$dossierep['Sanctionep58']['listesanctionep58_id']],
+				array( $form->input( "Decisionreorientationep93.{$i}.raisonnonpassage", array( 'label' => false, 'type' => 'textarea', 'empty' => true ) ), array( 'colspan' => '2' ) )
 			)
 		);
 	}
@@ -42,3 +43,14 @@
 // debug( $dossiers[$theme]['liste'] );
 // debug( $options );
 ?>
+
+<script type="text/javascript">
+	document.observe("dom:loaded", function() {
+		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
+			$( 'Decisionsanctionep58<?php echo $i;?>Decision' ).observe( 'change', function() {
+				afficheRaisonpassage( 'Decisionsanctionep58<?php echo $i;?>Decision', [ 'Decisionsanctionep58<?php echo $i;?>TypeorientId', 'Decisionsanctionep58<?php echo $i;?>StructurereferenteId' ], 'Decisionsanctionep58<?php echo $i;?>Raisonnonpassage' );
+			});
+			afficheRaisonpassage( 'Decisionsanctionep58<?php echo $i;?>Decision', [ 'Decisionsanctionep58<?php echo $i;?>TypeorientId', 'Decisionsanctionep58<?php echo $i;?>StructurereferenteId' ], 'Decisionsanctionep58<?php echo $i;?>Raisonnonpassage' );
+		<?php endfor;?>
+	});
+</script>

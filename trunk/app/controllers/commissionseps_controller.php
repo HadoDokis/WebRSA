@@ -79,9 +79,9 @@
 				$this->Commissionep->Dossierep->Nonrespectsanctionep93->Decisionnonrespectsanctionep93->enums(),
 				$this->Commissionep->Dossierep->Nonrespectsanctionep93->enums(),
 				$this->Commissionep->Dossierep->Defautinsertionep66->enums(),
-				$this->Commissionep->Dossierep->Nonorientationproep93->Decisionnonorientationproep93->enums(),
-				$this->Commissionep->Dossierep->Sanctionep58->Decisionsanctionep58->enums(),*/
+				$this->Commissionep->Dossierep->Nonorientationproep93->Decisionnonorientationproep93->enums(),*/
 				$this->Commissionep->Passagecommissionep->Decisionnonorientationproep58->enums(),
+				$this->Commissionep->Passagecommissionep->Decisionsanctionep58->enums(),
 				$this->Commissionep->Passagecommissionep->Dossierep->enums(),
 				$this->Commissionep->enums(),
 				$this->Commissionep->CommissionepMembreep->enums(),

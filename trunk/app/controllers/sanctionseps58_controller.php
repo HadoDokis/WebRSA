@@ -32,7 +32,17 @@
 						'first',
 						array(
 							'conditions' => array(
-								'Dossierep.etapedossierep' => 'cree',
+								'Dossierep.id NOT IN ( '.$this->Sanctionep58->Dossierep->Passagecommissionep->sq(
+									array(
+										'fields' => array(
+											'passagescommissionseps.dossierep_id'
+										),
+										'alias' => 'passagescommissionseps',
+										'conditions' => array(
+											'passagescommissionseps.etatdossierep' => array( 'associe', 'decisionep', 'decisioncg', 'reporte' )
+										)
+									)
+								).' )',
 								'Dossierep.themeep' => 'sanctionseps58',
 								'Dossierep.personne_id' => $this->data['Personne'][$key]['id'],
 								'Sanctionep58.origine' => $origine
@@ -53,7 +63,7 @@
 						);
 						$this->Sanctionep58->Dossierep->create( $dossierep );
 						$success = $this->Sanctionep58->Dossierep->save() && $success;
-						
+
 						$rgsanction = $this->Sanctionep58->find(
 							'count',
 							array(
@@ -62,11 +72,27 @@
 								),
 								'joins' => array(
 									array(
+										'table' => 'dossierseps',
+										'alias' => 'Dossierep',
+										'type' => 'INNER',
+										'conditions' => array(
+											'Dossierep.id = Sanctionep58.dossierep_id'
+										)
+									),
+									array(
+										'table' => 'passagescommissionseps',
+										'alias' => 'Passagecommissionep',
+										'type' => 'INNER',
+										'conditions' => array(
+											'Dossierep.id = Passagecommissionep.dossierep_id'
+										)
+									),
+									array(
 										'table' => 'decisionssanctionseps58',
 										'alias' => 'Decisionsanctionep58',
 										'type' => 'INNER',
 										'conditions' => array(
-											'Sanctionep58.id = Decisionsanctionep58.sanctionep58_id',
+											'Passagecommissionep.id = Decisionsanctionep58.passagecommissionep_id',
 											'Decisionsanctionep58.decision' => 'sanction'
 										)
 									)
@@ -74,7 +100,7 @@
 								'contain' => false
 							)
 						);
-						
+
 						$listesanctionep58 = $this->Sanctionep58->Listesanctionep58->find(
 							'first',
 							array(
@@ -92,15 +118,6 @@
 								'listesanctionep58_id' => $listesanctionep58['Listesanctionep58']['id']
 							)
 						);
-
-						/*if( $origine == 'radiepe' ) {
-							$queryDataPersonne = $this->Sanctionep58->qdRadies();
-							$queryDataPersonne['fields'][] = 'Historiqueetatpe.id';
-							$queryDataPersonne['conditions']['Personne.id'] = $item['personne_id'];
-							$historiqueetatpe = $this->Sanctionep58->Dossierep->Personne->find( 'first', $queryDataPersonne );
-
-							$sanctionep58['Sanctionep58']['historiqueetatpe_id'] = $historiqueetatpe['Historiqueetatpe']['id'];
-						}*/
 
 						$this->Sanctionep58->create( $sanctionep58 );
 						$success = $this->Sanctionep58->save() && $success;
@@ -128,41 +145,6 @@
 			$personnes = $this->paginate( $this->Sanctionep58->Dossierep->Personne );
 			
 			$this->data = null;
-
-			/*if( empty( $this->data ) ) {
-				// Pré-remplissage des cases à cocher avec les dossiers sélectionnés,
-				// qui ne sont pas encore assocés à une séance. -> FIXME permettre jusqu'à l'étape avisep ?
-				$dossiers = $this->Sanctionep58->Dossierep->find(
-					'all',
-					array(
-						'conditions' => array(
-							'Dossierep.etapedossierep' => 'cree',
-							'Dossierep.themeep' => 'sanctionseps58',
-							///FIXME !!!!!!!!!!!!!!!!!
-							'Dossierep.personne_id' => Set::extract( '/Orientstruct/personne_id', $personnes ),
-							'Sanctionep58.origine' => $origine
-						),
-						'contain' => array(
-							'Sanctionep58'
-						)
-					)
-				);
-
-				if( !empty( $dossiers ) ) {
-					$checked = Set::extract( '/Dossierep/personne_id', $dossiers );
-
-					foreach( $personnes as $i => $personne ) {
-						$this->data['Orientstruct'][$i]['id'] = $personne['Orientstruct']['id'];
-						$this->data['Orientstruct'][$i]['personne_id'] = $personne['Orientstruct']['personne_id'];
-						if( in_array( $personne['Orientstruct']['personne_id'], $checked ) ) {
-							$this->data['Orientstruct'][$i]['chosen'] = '1';
-						}
-						else {
-							$this->data['Orientstruct'][$i]['chosen'] = '0';
-						}
-					}
-				}
-			}*/
 
 			$this->set( compact( 'personnes' ) );
             $this->render( $origine ); // FIXME: nom de la vue
