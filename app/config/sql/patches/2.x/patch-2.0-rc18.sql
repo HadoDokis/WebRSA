@@ -204,6 +204,25 @@ SELECT add_missing_table_field ('public', 'contratsinsertion', 'haspiecejointe',
 ALTER TABLE contratsinsertion ALTER COLUMN haspiecejointe SET DEFAULT '0'::TYPE_BOOLEANNUMBER;
 UPDATE contratsinsertion SET haspiecejointe = '0'::TYPE_BOOLEANNUMBER WHERE haspiecejointe IS NULL;
 ALTER TABLE contratsinsertion ALTER COLUMN haspiecejointe SET NOT NULL;
+-- -----------------------------------------------------------------------------------------------
+-- 20110420: Ajout d'un champ pour sélectionner si on ajoute des fichiers ou non aux DSPs
+-- -----------------------------------------------------------------------------------------------
+SELECT add_missing_table_field ('public', 'dsps', 'haspiecejointe', 'type_booleannumber');
+ALTER TABLE dsps ALTER COLUMN haspiecejointe SET DEFAULT '0'::TYPE_BOOLEANNUMBER;
+UPDATE dsps SET haspiecejointe = '0'::TYPE_BOOLEANNUMBER WHERE haspiecejointe IS NULL;
+ALTER TABLE dsps ALTER COLUMN haspiecejointe SET NOT NULL;
+
+SELECT add_missing_table_field ('public', 'dsps_revs', 'haspiecejointe', 'type_booleannumber');
+ALTER TABLE dsps_revs ALTER COLUMN haspiecejointe SET DEFAULT '0'::TYPE_BOOLEANNUMBER;
+UPDATE dsps_revs SET haspiecejointe = '0'::TYPE_BOOLEANNUMBER WHERE haspiecejointe IS NULL;
+ALTER TABLE dsps_revs ALTER COLUMN haspiecejointe SET NOT NULL;
+-- -------------------------------------------------------------------------------------------------------------
+-- 20110420: Ajout d'un champ pour sélectionner si on ajoute des fichiers ou non aux Référent du parcours
+-- -------------------------------------------------------------------------------------------------------------
+SELECT add_missing_table_field ('public', 'personnes_referents', 'haspiecejointe', 'type_booleannumber');
+ALTER TABLE personnes_referents ALTER COLUMN haspiecejointe SET DEFAULT '0'::TYPE_BOOLEANNUMBER;
+UPDATE personnes_referents SET haspiecejointe = '0'::TYPE_BOOLEANNUMBER WHERE haspiecejointe IS NULL;
+ALTER TABLE personnes_referents ALTER COLUMN haspiecejointe SET NOT NULL;
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
