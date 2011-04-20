@@ -161,11 +161,19 @@
 							)
 						),
 						array(
+							'table' => 'passagescommissionseps',
+							'alias' => 'Passagecommissionep',
+							'type' => 'INNER',
+							'conditions' => array(
+								'Passagecommissionep.dossierep_id = Dossierep.id'
+							)
+						),
+						array(
 							'table' => 'decisionssanctionseps58',
 							'alias' => 'Decisionsanctionep58',
 							'type' => 'INNER',
 							'conditions' => array(
-								'Decisionsanctionep58.sanctionep58_id = Sanctionep58.id'
+								'Decisionsanctionep58.passagecommissionep_id = Passagecommissionep.id'
 							)
 						)
 					),
@@ -272,7 +280,20 @@
 							FROM dossierseps
 							WHERE
 								dossierseps.personne_id = Personne.id
-								AND dossierseps.etapedossierep IN ( \'cree\', \'seance\', \'decisionep\', \'decisioncg\' )
+								AND dossierseps.id NOT IN ( '.
+									$this->Dossierep->Passagecommissionep->sq(
+										array(
+											'fields' => array(
+												'passagescommissionseps.dossierep_id'
+											),
+											'alias' => 'passagescommissionseps',
+											'conditions' => array(
+												'passagescommissionseps.dossierep_id = dossierseps.id',
+												'passagescommissionseps.etatdossierep' => array( 'traite', 'annule' )
+											)
+										)
+									)
+								.' )
 					)'
 				)
 			);
