@@ -1,5 +1,5 @@
 <?php
-    App::import( 'Sanitize' );
+	App::import( 'Sanitize' );
 
 	class Nonorientationproep extends AppModel {
 
@@ -34,14 +34,14 @@
 			$conditions = array();
 			$nbmois = Set::classicExtract($datas, 'Filtre.dureenonreorientation');
 
-            /// Critères sur le CI - date de saisi contrat
-            if( isset( $datas['Filtre']['df_ci_from'] ) && !empty( $datas['Filtre']['df_ci_from'] ) ) {
-                $valid_from = ( valid_int( $datas['Filtre']['df_ci_from']['year'] ) && valid_int( $datas['Filtre']['df_ci_from']['month'] ) && valid_int( $datas['Filtre']['df_ci_from']['day'] ) );
-                $valid_to = ( valid_int( $datas['Filtre']['df_ci_to']['year'] ) && valid_int( $datas['Filtre']['df_ci_to']['month'] ) && valid_int( $datas['Filtre']['df_ci_to']['day'] ) );
-                if( $valid_from && $valid_to ) {
-                    $conditions[] = 'Contratinsertion.df_ci BETWEEN \''.implode( '-', array( $datas['Filtre']['df_ci_from']['year'], $datas['Filtre']['df_ci_from']['month'], $datas['Filtre']['df_ci_from']['day'] ) ).'\' AND \''.implode( '-', array( $datas['Filtre']['df_ci_to']['year'], $datas['Filtre']['df_ci_to']['month'], $datas['Filtre']['df_ci_to']['day'] ) ).'\'';
-                }
-            }
+			/// Critères sur le CI - date de saisi contrat
+			if( isset( $datas['Filtre']['df_ci_from'] ) && !empty( $datas['Filtre']['df_ci_from'] ) ) {
+				$valid_from = ( valid_int( $datas['Filtre']['df_ci_from']['year'] ) && valid_int( $datas['Filtre']['df_ci_from']['month'] ) && valid_int( $datas['Filtre']['df_ci_from']['day'] ) );
+				$valid_to = ( valid_int( $datas['Filtre']['df_ci_to']['year'] ) && valid_int( $datas['Filtre']['df_ci_to']['month'] ) && valid_int( $datas['Filtre']['df_ci_to']['day'] ) );
+				if( $valid_from && $valid_to ) {
+					$conditions[] = 'Contratinsertion.df_ci BETWEEN \''.implode( '-', array( $datas['Filtre']['df_ci_from']['year'], $datas['Filtre']['df_ci_from']['month'], $datas['Filtre']['df_ci_from']['day'] ) ).'\' AND \''.implode( '-', array( $datas['Filtre']['df_ci_to']['year'], $datas['Filtre']['df_ci_to']['month'], $datas['Filtre']['df_ci_to']['day'] ) ).'\'';
+				}
+			}
 
 
 			$this->Orientstruct = ClassRegistry::init( 'Orientstruct' );
@@ -49,60 +49,60 @@
 			$modelName = $this->alias;
 			$modelTable = Inflector::tableize( $modelName );
 
-            if( Configure::read( 'Cg.departement' ) == 58 ){
-                $conditionsContrat = $conditions;
-            }
-            else {
-                $conditionsContrat = array( 'Contratinsertion.df_ci <=' => date( 'Y-m-d', strtotime( '- '.$nbmois.' month', time() ) ) );
-            }
+			if( Configure::read( 'Cg.departement' ) == 58 ){
+				$conditionsContrat = $conditions;
+			}
+			else {
+				$conditionsContrat = array( 'Contratinsertion.df_ci <=' => date( 'Y-m-d', strtotime( '- '.$nbmois.' month', time() ) ) );
+			}
 
-            $conditions = array(
-                $conditionsContrat,
-                'Orientstruct.statut_orient' => 'Orienté',
-                'Orientstruct.id NOT IN (
-                    SELECT "'.$modelTable.'"."orientstruct_id"
-                    FROM "'.$modelTable.'"
-                        INNER JOIN "dossierseps" ON ( "dossierseps"."id" = "'.$modelTable.'"."dossierep_id" )
-                    WHERE "dossierseps"."id" NOT IN (
+			$conditions = array(
+				$conditionsContrat,
+				'Orientstruct.statut_orient' => 'Orienté',
+				'Orientstruct.id NOT IN (
+					SELECT "'.$modelTable.'"."orientstruct_id"
+					FROM "'.$modelTable.'"
+						INNER JOIN "dossierseps" ON ( "dossierseps"."id" = "'.$modelTable.'"."dossierep_id" )
+					WHERE "dossierseps"."id" NOT IN (
 						SELECT "passagescommissionseps"."dossierep_id"
 						FROM passagescommissionseps
 						WHERE "passagescommissionseps"."etatdossierep" = \'traite\'
-                    )
-                    AND "dossierseps"."themeep" = \''.$modelTable.'\'
-                )',
-                'Orientstruct.id NOT IN (
-                    SELECT '.Inflector::tableize( $this->alias ).'.orientstruct_id
-                        FROM '.Inflector::tableize( $this->alias ).'
-                            INNER JOIN dossierseps ON (
-                                '.Inflector::tableize( $this->alias ).'.dossierep_id = dossierseps.id
-                            )
-                        WHERE
-                            '.Inflector::tableize( $this->alias ).'.orientstruct_id = Orientstruct.id
-                            AND dossierseps.id IN (
+					)
+					AND "dossierseps"."themeep" = \''.$modelTable.'\'
+				)',
+				'Orientstruct.id NOT IN (
+					SELECT '.Inflector::tableize( $this->alias ).'.orientstruct_id
+						FROM '.Inflector::tableize( $this->alias ).'
+							INNER JOIN dossierseps ON (
+								'.Inflector::tableize( $this->alias ).'.dossierep_id = dossierseps.id
+							)
+						WHERE
+							'.Inflector::tableize( $this->alias ).'.orientstruct_id = Orientstruct.id
+							AND dossierseps.id IN (
 								SELECT "passagescommissionseps"."dossierep_id"
 								FROM passagescommissionseps
 								WHERE "passagescommissionseps"."etatdossierep" = \'traite\'
 							)
-                            AND ( DATE( NOW() ) - (
-                                SELECT CAST( decisions'.Inflector::tableize( $this->alias ).'.modified AS DATE )
-                                    FROM decisions'.Inflector::tableize( $this->alias ).'
+							AND ( DATE( NOW() ) - (
+								SELECT CAST( decisions'.Inflector::tableize( $this->alias ).'.modified AS DATE )
+									FROM decisions'.Inflector::tableize( $this->alias ).'
 										INNER JOIN passagescommissionseps ON ( decisions'.Inflector::tableize( $this->alias ).'.passagecommissionep_id = passagescommissionseps.id )
 										INNER JOIN dossierseps ON ( passagescommissionseps.dossierep_id = dossierseps.id )
-                                    ORDER BY modified DESC
-                                    LIMIT 1
-                            ) ) <= '.Configure::read( $this->alias.'.delaiCreationContrat' ).'
-                )',
-                // La dernière
-                'Orientstruct.id IN (
-                            SELECT o.id
-                                FROM orientsstructs AS o
-                                WHERE
-                                    o.personne_id = Personne.id
-                                    AND o.date_valid IS NOT NULL
-                                ORDER BY o.date_valid DESC
-                                LIMIT 1
-                )'
-            );
+									ORDER BY modified DESC
+									LIMIT 1
+							) ) <= '.Configure::read( $this->alias.'.delaiCreationContrat' ).'
+				)',
+				// La dernière
+				'Orientstruct.id IN (
+							SELECT o.id
+								FROM orientsstructs AS o
+								WHERE
+									o.personne_id = Personne.id
+									AND o.date_valid IS NOT NULL
+								ORDER BY o.date_valid DESC
+								LIMIT 1
+				)'
+			);
 
 
 			$cohorte = array(
@@ -326,19 +326,18 @@
 			if( ( $niveauFinal == 'ep' ) && ( $niveauDecision == 'cg' ) ) {
 				return array();
 			}
-
+// debug($datas);
 			$formData = array();
 			foreach( $datas as $key => $dossierep ) {
 				$formData[$this->alias][$key]['id'] = @$datas[$key][$this->alias]['id'];
-				$formData[$this->alias][$key]['dossierep_id'] = @$datas[$key][$this->alias]['dossierep_id'];
-				$formData['Decision'.Inflector::underscore( $this->alias )][$key][Inflector::underscore( $this->alias ).'_id'] = @$datas[$key][$this->alias]['id'];
-
+				$formData['Decision'.Inflector::underscore( $this->alias )][$key]['passagecommissionep_id'] = $dossierep['Passagecommissionep'][0]['id'];
 				if( $niveauDecision == 'ep' ) {
-					if( !empty( $datas[$key][$this->alias]['Decision'.Inflector::underscore( $this->alias )][0] ) ) { // Modification
-						$formData['Decision'.Inflector::underscore( $this->alias )][$key]['id'] = @$datas[$key][$this->alias]['Decision'.Inflector::underscore( $this->alias )][0]['id'];
-						$formData['Decision'.Inflector::underscore( $this->alias )][$key]['decision'] = @$datas[$key][$this->alias]['Decision'.Inflector::underscore( $this->alias )][0]['decision'];
-						$formData['Decision'.Inflector::underscore( $this->alias )][$key]['structurereferente_id'] = @$datas[$key][$this->alias]['Decision'.Inflector::underscore( $this->alias )][0]['typeorient_id'].'_'.@$datas[$key][$this->alias]['Decision'.Inflector::underscore( $this->alias )][0]['structurereferente_id'];
-						$formData['Decision'.Inflector::underscore( $this->alias )][$key]['typeorient_id'] = @$datas[$key][$this->alias]['Decision'.Inflector::underscore( $this->alias )][0]['typeorient_id'];
+					if( isset( $datas[$key]['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0] ) ) { // Modification
+						$formData['Decision'.Inflector::underscore( $this->alias )][$key]['id'] = @$datas[$key]['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0]['id'];
+						$formData['Decision'.Inflector::underscore( $this->alias )][$key]['decision'] = @$datas[$key]['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0]['decision'];
+						$formData['Decision'.Inflector::underscore( $this->alias )][$key]['raisonnonpassage'] = @$datas[$key]['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0]['raisonnonpassage'];
+						$formData['Decision'.Inflector::underscore( $this->alias )][$key]['structurereferente_id'] = @$datas[$key]['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0]['typeorient_id'].'_'.@$datas[$key]['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0]['structurereferente_id'];
+						$formData['Decision'.Inflector::underscore( $this->alias )][$key]['typeorient_id'] = @$datas[$key]['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0]['typeorient_id'];
 					}
 				}
 				elseif( $niveauDecision == 'cg' ) {
@@ -380,9 +379,9 @@
 				}
 				$success = $this->{'Decision'.Inflector::underscore($this->alias)}->saveAll( Set::extract( $data, '/'.'Decision'.Inflector::underscore( $this->alias ) ), array( 'atomic' => false ) );
 
-				$this->Dossierep->updateAll(
-					array( 'Dossierep.etapedossierep' => '\'decision'.$niveauDecision.'\'' ),
-					array( '"Dossierep"."id"' => Set::extract( $data, '/'.$this->alias.'/dossierep_id' ) )
+				$this->Dossierep->Passagecommissionep->updateAll(
+					array( 'Passagecommissionep.etatdossierep' => '\'decision'.$niveauDecision.'\'' ),
+					array( '"Passagecommissionep"."id"' => Set::extract( $data, '/Decision'.Inflector::underscore( $this->alias ).'/passagecommissionep_id' ) )
 				);
 			}
 

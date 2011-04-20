@@ -5,22 +5,6 @@
 
 		public $useTable = 'nonorientationsproseps58';
 
-		public $hasMany = array(
-			'Decisionnonorientationproep58' => array(
-				'className' => 'Decisionnonorientationproep58',
-				'foreignKey' => 'nonorientationproep58_id',
-				'dependent' => true,
-				'conditions' => '',
-				'fields' => '',
-				'order' => '',
-				'limit' => '',
-				'offset' => '',
-				'exclusive' => '',
-				'finderQuery' => '',
-				'counterQuery' => ''
-			)
-		);
-
 		/**
 		*
 		*/
@@ -66,8 +50,7 @@
 									'conditions' => array(
 										'Decisionnonorientationproep58.etape' => $etape
 									)
-								),
-								'Dossierep'
+								)
 							)
 						)
 					)
@@ -76,19 +59,20 @@
 
 			$success = true;
 
-			if( $niveauDecisionFinale == $etape ) {
+			if( $niveauDecisionFinale == "decision{$etape}" ) {
+
 				foreach( $dossierseps as $dossierep ) {
-					if( !isset( $dossierep['Decisionnonorientationproep58'][0]['decision'] ) ) {
+					if( !isset( $dossierep['Dossierep']['Passagecommissionep'][0]['Decisionnonorientationproep58'][0]['decision'] ) ) {
 						$success = false;
 					}
-					elseif ( $dossierep['Decisionnonorientationproep58'][0]['decision'] == 'reorientation' ) {
+					elseif ( $dossierep['Dossierep']['Passagecommissionep'][0]['Decisionnonorientationproep58'][0]['decision'] == 'reorientation' ) {
 						list($date_propo, $heure_propo) = explode( ' ', $dossierep['Nonorientationproep58']['created'] );
 						list($date_valid, $heure_valid) = explode( ' ', $commissionep['Commissionep']['dateseance'] );
 						$orientstruct = array(
 							'Orientstruct' => array(
 								'personne_id' => $dossierep['Dossierep']['personne_id'],
-								'typeorient_id' => @$dossierep['Decisionnonorientationproep58'][0]['typeorient_id'],
-								'structurereferente_id' => @$dossierep['Decisionnonorientationproep58'][0]['structurereferente_id'],
+								'typeorient_id' => @$dossierep['Dossierep']['Passagecommissionep'][0]['Decisionnonorientationproep58'][0]['typeorient_id'],
+								'structurereferente_id' => @$dossierep['Dossierep']['Passagecommissionep'][0]['Decisionnonorientationproep58'][0]['structurereferente_id'],
 								'date_propo' => $date_propo,
 								'date_valid' => $date_valid,
 								'statut_orient' => 'Orienté',
