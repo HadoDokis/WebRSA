@@ -21,7 +21,8 @@
 // 					'presence' => array( 'type' => 'presence', 'domain' => 'apre' ),
 					'justificatif' => array( 'type' => 'justificatif', 'domain' => 'apre' ),
 					'isdecision' => array( 'domain' => 'apre' ),
-					'etatdossierapre' => array( 'domain' => 'apre' )
+					'etatdossierapre' => array( 'domain' => 'apre' ),
+					'haspiecejointe' => array( 'domain' => 'apre' )
 				)
 			),
 			'Frenchfloat' => array(
@@ -173,6 +174,24 @@
 			)
 		);
 
+        public $hasMany = array(
+            'Fichiermodule' => array(
+                'className' => 'Fichiermodule',
+                'foreignKey' => false,
+                'dependent' => false,
+                'conditions' => array(
+                    'Fichiermodule.modele = \'Apre66\'',
+                    'Fichiermodule.fk_value = {$__cakeID__$}'
+                ),
+                'fields' => '',
+                'order' => '',
+                'limit' => '',
+                'offset' => '',
+                'exclusive' => '',
+                'finderQuery' => '',
+                'counterQuery' => ''
+            )
+        );
 	//         public $hasAndBelongsToMany = array(
 	//             'Pieceaide66' => array(
 	//                 'className'              => 'Pieceaide66',
