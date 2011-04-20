@@ -95,16 +95,16 @@
                 'fields' => '',
                 'order' => ''
             ),
-//             'DspRev' => array(
-//                 'className' => 'DspRev',
-//                 'foreignKey' => false,
-//                 'conditions' => array(
-//                     'Fichiermodule.modele = \'DspRev\'',
-//                     'Fichiermodule.fk_value = {$__cakeID__$}'
-//                 ),
-//                 'fields' => '',
-//                 'order' => ''
-//             ),
+            'DspRev' => array(
+                'className' => 'DspRev',
+                'foreignKey' => false,
+                'conditions' => array(
+                    'Fichiermodule.modele = \'Dsp\'',
+                    'Fichiermodule.fk_value = {$__cakeID__$}'
+                ),
+                'fields' => '',
+                'order' => ''
+            ),
             'PersonneReferent' => array(
                 'className' => 'PersonneReferent',
                 'foreignKey' => false,

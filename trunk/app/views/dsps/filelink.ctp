@@ -5,7 +5,7 @@
         echo $javascript->link( 'fileuploader.js' );
     }
 
-    $this->pageTitle =  __d( 'dsp', "Dsps::{$this->action}", true );
+    $this->pageTitle =  __d( 'dsp_rev', "DspsRevs::{$this->action}", true );
     echo $this->element( 'dossier_menu', array( 'personne_id' => $personneId ) );
 
 ?>
@@ -15,9 +15,9 @@
         echo $form->create( 'Dsp', array( 'type' => 'post', 'id' => 'dspform', 'url' => Router::url( null, true ) ) );
     ?>
         <fieldset>
-    <legend><?php echo required( $default2->label( 'Dsp.haspiecejointe' ) );?></legend>
+    <legend><?php echo required( $default2->label( 'DspRev.haspiecejointe' ) );?></legend>
 
-    <?php echo $form->input( 'Dsp.haspiecejointe', array( 'type' => 'radio', 'options' => $options['Dsp']['haspiecejointe'], 'legend' => false, 'fieldset' => false ) );?>
+    <?php echo $form->input( 'DspRev.haspiecejointe', array( 'type' => 'radio', 'options' => $optionsrevs['haspiecejointe'], 'legend' => false, 'fieldset' => false ) );?>
     <fieldset id="filecontainer-piecejointe" class="noborder invisible">
         <?php
             echo $fileuploader->create(
@@ -32,7 +32,7 @@
     document.observe( "dom:loaded", function() {
         observeDisableFieldsetOnRadioValue(
             'dspform',
-            'data[Dsp][haspiecejointe]',
+            'data[DspRev][haspiecejointe]',
             $( 'filecontainer-piecejointe' ),
             '1',
             false,
@@ -42,10 +42,10 @@
 </script>
 
 <?php
-
+// debug($dsprev);
         echo "<h2>Pièces déjà présentes</h2>";
-        if( !empty( $dsp['Fichiermodule'] ) ){
-            $fichiersLies = Set::extract( $dsp, 'Dsp/Fichiermodule' );
+        if( !empty( $dsprev['Fichiermodule'] ) ){
+            $fichiersLies = Set::extract( $dsprev, 'DspRev/Fichiermodule' );
             echo '<table class="aere"><tbody>';
                 echo '<tr><th>Nom de la pièce jointe</th><th>Action</th></tr>';
                 if( isset( $fichiersLies ) ){

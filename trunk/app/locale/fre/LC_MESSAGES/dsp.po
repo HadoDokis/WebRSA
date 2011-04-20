@@ -749,17 +749,3 @@ msgstr "Propriétaire"
 
 msgid "ENUM::STATUTOCCUPATION::locataire"
 msgstr "Locataire"
-
-###############################################################################
-
-msgid "Dsps::filelink"
-msgstr "Liste des fichiers liés au DSPs"
-
-msgid "Dsp.haspiecejointe"
-msgstr "Ajouter une pièce jointe"
-
-msgid "ENUM::HASPIECEJOINTE::1"
-msgstr "Oui"
-
-msgid "ENUM::HASPIECEJOINTE::0"
-msgstr "Non"
