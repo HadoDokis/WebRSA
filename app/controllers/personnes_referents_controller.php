@@ -83,7 +83,7 @@
                     ),
                     'contain' => array(
                         'Fichiermodule' => array(
-                            'fields' => array( 'name', 'id' )
+                            'fields' => array( 'name', 'id', 'created', 'modified' )
                         )
                     )
                 )
@@ -128,7 +128,7 @@
                 }
                 else {
                     $fichiers = $this->Fileuploader->fichiers( $id );
-                    $this->PersonneReferent->commit();
+                    $this->PersonneReferent->rollback();
                     $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
                 }
             }

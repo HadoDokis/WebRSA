@@ -105,7 +105,7 @@
                     ),
                     'contain' => array(
                         'Fichiermodule' => array(
-                            'fields' => array( 'name', 'id' )
+                            'fields' => array( 'name', 'id', 'created', 'modified' )
                         )
                     )
                 )
@@ -150,7 +150,7 @@
                 }
                 else {
                     $fichiers = $this->Fileuploader->fichiers( $id );
-                    $this->Orientstruct->commit();
+                    $this->Orientstruct->rollback();
                     $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
                 }
             }

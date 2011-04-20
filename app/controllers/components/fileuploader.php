@@ -56,6 +56,7 @@
                     false
                 ) && $saved;
             }
+
             // Enregistrement des fichiers si besoin
             else {
                 $files = $oFolder->find();
@@ -337,7 +338,7 @@
                 $document = Cmis::read( $item[$this->_modeleStockage]['cmspath'], true );
                 header( "Content-type: {$item[$this->_modeleStockage]['mime']}" );
                 header( 'Content-Length: '.strlen( $document['content'] ) ); // FIXME: length
-                header( "Content-Disposition: attachment; filename={$item[$this->_modeleStockage]['name']}" );
+                header( "Content-Disposition: attachment; filename=\"{$item[$this->_modeleStockage]['name']}\"" );
 
                 echo $document['content'];
                 die();
@@ -345,7 +346,7 @@
             else if( !empty( $item[$this->_modeleStockage]['document'] ) ) {
                 header( "Content-type: {$item[$this->_modeleStockage]['mime']}" );
                 header( 'Content-Length: '.strlen( $item[$this->_modeleStockage]['document'] ) ); // FIXME: length
-                header( "Content-Disposition: attachment; filename={$item[$this->_modeleStockage]['name']}" );
+                header( "Content-Disposition: attachment; filename=\"{$item[$this->_modeleStockage]['name']}\"" );
 
                 echo $item[$this->_modeleStockage]['document'];
                 die();

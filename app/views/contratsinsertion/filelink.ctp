@@ -47,10 +47,11 @@
         if( !empty( $contratinsertion['Fichiermodule'] ) ){
             $fichiersLies = Set::extract( $contratinsertion, 'Contratinsertion/Fichiermodule' );
             echo '<table class="aere"><tbody>';
-                echo '<tr><th>Nom de la pièce jointe</th><th>Action</th></tr>';
+                echo '<tr><th>Nom de la pièce jointe</th><th>Date d\'ajout</th><th>Action</th></tr>';
                 if( isset( $fichiersLies ) ){
                     foreach( $fichiersLies as $i => $fichiers ){
                         echo '<tr><td>'.$fichiers['Fichiermodule']['name'].'</td>';
+                        echo '<td>'.$locale->date( __( 'Locale->datetime', true ), $fichiers['Fichiermodule']['created'] ).'</td>';
                         echo '<td>'.$xhtml->link( 'Télécharger', array( 'action' => 'download', $fichiers['Fichiermodule']['id']    ) ).'</td></tr>';
                     }
                 }
