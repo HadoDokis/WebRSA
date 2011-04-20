@@ -603,11 +603,29 @@
 								WHERE
 									nonrespectssanctionseps93.active = \'0\'
 									AND nonrespectssanctionseps93.orientstruct_id = Orientstruct.id
-									AND dossierseps.etapedossierep = \'traite\'
+									AND dossierseps.id IN ( '.$this->Nonrespectsanctionep93->Decisionnonrespectsanctionep93->Passagecommissionep->sq(
+										// Les états traite et annule étant des états finaux, on est certains
+										// qu'il s'agit du dernier passage en commission pour ces dossiers
+										array(
+											'alias' => 'passagescommissionseps',
+											'fields' => array(
+												'passagescommissionseps.dossierep_id'
+											),
+											'conditions' => array(
+												'passagescommissionseps.dossierep_id = dossierseps.id',
+												'passagescommissionseps.etatdossierep' => array( 'traite', 'annule' )
+											),
+										)
+									).' )
 									AND ( DATE( NOW() ) - (
 										SELECT CAST( decisionsnonrespectssanctionseps93.modified AS DATE )
 											FROM decisionsnonrespectssanctionseps93
-											WHERE decisionsnonrespectssanctionseps93.nonrespectsanctionep93_id = nonrespectssanctionseps93.id
+												INNER JOIN passagescommissionseps ON (
+													decisionsnonrespectssanctionseps93.passagecommissionep_id = passagescommissionseps.id
+												)
+												INNER JOIN dossierseps ON (
+													nonrespectssanctionseps93.dossierep_id = dossierseps.id
+												)
 											ORDER BY modified DESC
 											LIMIT 1
 									) ) <= '.Configure::read( 'Nonrespectsanctionep93.relanceDecisionNonRespectSanctions' ).'
@@ -615,7 +633,6 @@
 						break;
 					case 2:
 					case 3:
-						/// FIXME: dateimpression plutôt que daterelance
 						$conditions[] = 'Orientstruct.id IN (
 							SELECT nonrespectssanctionseps93.orientstruct_id
 								FROM nonrespectssanctionseps93
@@ -719,11 +736,29 @@
 								WHERE
 									nonrespectssanctionseps93.active = \'0\'
 									AND nonrespectssanctionseps93.contratinsertion_id = Contratinsertion.id
-									AND dossierseps.etapedossierep = \'traite\'
+									AND dossierseps.id IN ( '.$this->Nonrespectsanctionep93->Decisionnonrespectsanctionep93->Passagecommissionep->sq(
+										// Les états traite et annule étant des états finaux, on est certains
+										// qu'il s'agit du dernier passage en commission pour ces dossiers
+										array(
+											'alias' => 'passagescommissionseps',
+											'fields' => array(
+												'passagescommissionseps.dossierep_id'
+											),
+											'conditions' => array(
+												'passagescommissionseps.dossierep_id = dossierseps.id',
+												'passagescommissionseps.etatdossierep' => array( 'traite', 'annule' )
+											),
+										)
+									).' )
 									AND ( DATE( NOW() ) - (
 										SELECT CAST( decisionsnonrespectssanctionseps93.modified AS DATE )
 											FROM decisionsnonrespectssanctionseps93
-											WHERE decisionsnonrespectssanctionseps93.nonrespectsanctionep93_id = nonrespectssanctionseps93.id
+												INNER JOIN passagescommissionseps ON (
+													decisionsnonrespectssanctionseps93.passagecommissionep_id = passagescommissionseps.id
+												)
+												INNER JOIN dossierseps ON (
+													nonrespectssanctionseps93.dossierep_id = dossierseps.id
+												)
 											ORDER BY modified DESC
 											LIMIT 1
 									) ) <= '.Configure::read( 'Nonrespectsanctionep93.relanceDecisionNonRespectSanctions' ).'
@@ -955,6 +990,18 @@
 				)
 			);
 
+			$joins[] = array(
+				'table'      => 'passagescommissionseps',
+				'alias'      => 'Passagecommissionep',
+				'type'       => 'LEFT OUTER',
+				'foreignKey' => false,
+				'conditions' => array(
+					'Passagecommissionep.dossierep_id = Dossierep.id',
+				),
+				'order' => array( 'Passagecommissionep.created DESC' ), // FIXME
+				'limit' => 1
+			);
+
 			$queryData = array(
 				'fields' => array(
 					'Dossier.matricule',
@@ -970,7 +1017,8 @@
 					'Contratinsertion.df_ci',
 					'Contratinsertion.nbjours',
 					'Contratinsertion.datevalidation_ci',
-					'Dossierep.etapedossierep',
+					'Dossierep.id',
+					'Passagecommissionep.etatdossierep',
 					'Relancenonrespectsanctionep93.id',
 					'Relancenonrespectsanctionep93.daterelance',
 					'Relancenonrespectsanctionep93.numrelance',
@@ -1037,7 +1085,21 @@
 					array(
 						'conditions' => array(
 							'Dossierep.personne_id' => $personne_id,
-							'Dossierep.etapedossierep <>' => 'traite',
+							//'Dossierep.etapedossierep <>' => 'traite',
+							'Dossierep.id NOT IN ( '.$this->Nonrespectsanctionep93->Decisionnonrespectsanctionep93->Passagecommissionep->sq(
+								// Les états traite et annule étant des états finaux, on est certains
+								// qu'il s'agit du dernier passage en commission pour ces dossiers
+								array(
+									'alias' => 'passagescommissionseps',
+									'fields' => array(
+										'passagescommissionseps.dossierep_id'
+									),
+									'conditions' => array(
+										'passagescommissionseps.dossierep_id = dossierseps.id',
+										'passagescommissionseps.etatdossierep' => array( 'traite', 'annule' )
+									),
+								)
+							).' )',
 							'Dossierep.themeep' => 'nonrespectssanctionseps93',
 						),
 						'contain' => false
@@ -1055,7 +1117,21 @@
 						array(
 							'conditions' => array(
 								'Dossierep.personne_id' => $personne_id,
-								'Dossierep.etapedossierep' => 'traite',
+								//'Dossierep.etapedossierep' => 'traite',
+								'Dossierep.id IN ( '.$this->Nonrespectsanctionep93->Decisionnonrespectsanctionep93->Passagecommissionep->sq(
+										// Les états traite et annule étant des états finaux, on est certains
+										// qu'il s'agit du dernier passage en commission pour ces dossiers
+										array(
+											'alias' => 'passagescommissionseps',
+											'fields' => array(
+												'passagescommissionseps.dossierep_id'
+											),
+											'conditions' => array(
+												'passagescommissionseps.dossierep_id = Dossier.id',
+												'passagescommissionseps.etatdossierep' => array( 'traite', 'annule' )
+											),
+										)
+								).' )',
 								'Dossierep.themeep' => 'nonrespectssanctionseps93',
 							),
 							'contain' => false,

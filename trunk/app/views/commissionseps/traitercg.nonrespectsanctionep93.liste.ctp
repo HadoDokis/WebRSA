@@ -37,9 +37,15 @@
 // 			}
 // 		}
 
+// 		$lineOptions = array();
+// 		foreach( $options['Decisionnonrespectsanctionep93']['decision'] as $key => $label ) {
+// 			if( $key[0] == min( 2, $dossierep['Nonrespectsanctionep93']['rgpassage'] ) ) {
+// 				$lineOptions[$key] = $label;
+// 			}
+// 		}
 		$lineOptions = array();
 		foreach( $options['Decisionnonrespectsanctionep93']['decision'] as $key => $label ) {
-			if( $key[0] == min( 2, $dossierep['Nonrespectsanctionep93']['rgpassage'] ) ) {
+			if( !in_array( $key[0], array( 1, 2 ) ) || ( $key[0] == min( 2, $dossierep['Nonrespectsanctionep93']['rgpassage'] ) ) ) {
 				$lineOptions[$key] = $label;
 			}
 		}
@@ -61,8 +67,9 @@
 				$form->input( "Nonrespectsanctionep93.{$i}.id", array( 'type' => 'hidden'/*, 'value' => $dossierep['Nonrespectsanctionep93']['id']*/ ) ).
 				$form->input( "Nonrespectsanctionep93.{$i}.dossierep_id", array( 'type' => 'hidden'/*, 'value' => $dossierep['Dossierep']['id']*/ ) ).
 				$form->input( "Decisionnonrespectsanctionep93.{$i}.id", array( 'type' => 'hidden'/*, 'value' => @$record['id']*/ ) ).
+				$form->input( "Decisionnonrespectsanctionep93.{$i}.passagecommissionep_id", array( 'type' => 'hidden' ) ).
 // 				$form->input( "Nonrespectsanctionep93.{$i}.dossierep_id", array( 'type' => 'hidden', 'value' => $dossierep['Dossierep']['id'] ) ).
-				$form->input( "Decisionnonrespectsanctionep93.{$i}.nonrespectsanctionep93_id", array( 'type' => 'hidden'/*, 'value' => $dossierep['Nonrespectsanctionep93']['id']*/ ) ).
+// 				$form->input( "Decisionnonrespectsanctionep93.{$i}.nonrespectsanctionep93_id", array( 'type' => 'hidden'/*, 'value' => $dossierep['Nonrespectsanctionep93']['id']*/ ) ).
 				$form->input( "Decisionnonrespectsanctionep93.{$i}.etape", array( 'type' => 'hidden', 'value' => 'cg' ) ).
 				$form->input( "Decisionnonrespectsanctionep93.{$i}.decision", array( 'type' => 'select', 'options' => $lineOptions, 'div' => false, 'label' => false ) )
 				/*$dossierep['Reorientationep93']['Motifreorientep93']['name'],

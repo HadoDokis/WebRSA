@@ -93,7 +93,7 @@
 					<th><?php echo $xpaginator->sort( 'Nbre jours depuis la fin du dernier contrat', 'Contratinsertion.nbjours' );?></th>
 					<th><?php echo $xpaginator->sort( 'Date d\'orientation', 'Orientstruct.date_impression' );?></th>
 					<th><?php echo $xpaginator->sort( 'Nbre jours depuis orientation', 'Orientstruct.nbjours' );?></th>
-					<th><?php echo $xpaginator->sort( 'Statut EP', 'Dossierep.etapedossierep' );?></th>
+					<th><?php echo $xpaginator->sort( 'Statut EP', 'Passagecommissionep.etatdossierep' );?></th>
 					<th><?php echo $xpaginator->sort( 'Date de relance', 'Relancenonrespectsanctionep93.daterelance' );?></th>
 					<th><?php echo $xpaginator->sort( 'Rang de relance', 'Relancenonrespectsanctionep93.numrelance' );?></th>
 					<th colspan="2">Actions</th>
@@ -102,6 +102,14 @@
 			<tbody>
 				<?php
 					foreach( $relances as $relance ) {
+						$etatdossierep = $relance['Passagecommissionep']['etatdossierep'];
+						if( empty( $etatdossierep ) && !empty( $relance['Dossierep']['id'] ) ) {
+							$etatdossierep = 'En attente';
+						}
+						else {
+							$etatdossierep = Set::enum( $relance['Passagecommissionep']['etatdossierep'], $options['Passagecommissionep']['etatdossierep'] );
+						}
+
 						echo $xhtml->tableCells(
 							array(
 								h( $relance['Dossier']['matricule'] ),
@@ -113,7 +121,7 @@
 								h( $relance['Contratinsertion']['nbjours'] ),
 								$locale->date( 'Locale->date', $relance['Orientstruct']['date_impression'] ),
 								h( $relance['Orientstruct']['nbjours'] ),
-								h( Set::enum( $relance['Dossierep']['etapedossierep'], $options['Dossierep']['etapedossierep'] ) ),
+								h( $etatdossierep ),
 								$locale->date( 'Locale->date', $relance['Relancenonrespectsanctionep93']['daterelance'] ),
 								( ( $relance['Relancenonrespectsanctionep93']['numrelance'] < 2 ) ? '1ère relance' : "{$relance['Relancenonrespectsanctionep93']['numrelance']}ème relance" ),
 								$default2->button( 'view', array( 'controller' => 'relancesnonrespectssanctionseps93', 'action' => 'index', $relance['Personne']['id'] ), array( 'label' => 'Voir' ) ),

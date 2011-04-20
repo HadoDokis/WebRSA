@@ -49,8 +49,14 @@ msgstr "Pas d'avis"
 msgid "ENUM::DECISION::2report"
 msgstr "Report technique"
 
-msgid "ENUM::ETAPE::ep"
-msgstr "EP"
+msgid "ENUM::DECISION::annule"
+msgstr "Annulé"
 
-msgid "ENUM::ETAPE::cg"
-msgstr "CG"
+msgid "ENUM::DECISION::reporte"
+msgstr "Reporté"
+
+# msgid "ENUM::ETAPE::ep"
+# msgstr "EP"
+#
+# msgid "ENUM::ETAPE::cg"
+# msgstr "CG"
