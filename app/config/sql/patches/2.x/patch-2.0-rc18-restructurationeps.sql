@@ -269,5 +269,20 @@ CREATE UNIQUE INDEX decisionsregressionsorientationseps58_passagecommissionep_id
 CREATE UNIQUE INDEX decisionssanctionseps58_passagecommissionep_id_etape_idx ON decisionssanctionseps58( passagecommissionep_id, etape );*/
 
 -- *****************************************************************************
+-- 20110420, nonrespectsanctionep93
+-- *****************************************************************************
+
+ALTER TABLE decisionsnonrespectssanctionseps93 ADD COLUMN passagecommissionep_id INTEGER DEFAULT NULL REFERENCES passagescommissionseps(id) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE decisionsnonrespectssanctionseps93 DROP COLUMN nonrespectsanctionep93_id;
+ALTER TABLE nonrespectssanctionseps93 ALTER COLUMN decision TYPE TEXT;
+ALTER TABLE decisionsnonrespectssanctionseps93 ALTER COLUMN decision TYPE TEXT;
+DROP TYPE IF EXISTS TYPE_DECISIONSANCTIONEP93;
+CREATE TYPE TYPE_DECISIONSANCTIONEP93 AS ENUM ( '1reduction', '1maintien', '1sursis', '1pasavis', '1delai', '2suspensiontotale', '2suspensionpartielle', '2maintien', '2pasavis', '2report', 'annule', 'reporte' );
+ALTER TABLE decisionsnonrespectssanctionseps93 ALTER COLUMN decision TYPE TYPE_DECISIONSANCTIONEP93 USING CAST(decision AS TYPE_DECISIONSANCTIONEP93);
+ALTER TABLE nonrespectssanctionseps93 ALTER COLUMN decision TYPE TYPE_DECISIONSANCTIONEP93 USING CAST(decision AS TYPE_DECISIONSANCTIONEP93);
+ALTER TABLE decisionsnonrespectssanctionseps93 ADD COLUMN raisonnonpassage TEXT DEFAULT NULL;
+CREATE UNIQUE INDEX decisionsnonrespectssanctionseps93_passagecommissionep_id_etape_idx ON decisionsnonrespectssanctionseps93( passagecommissionep_id, etape );
+
+-- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

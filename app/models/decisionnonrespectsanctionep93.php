@@ -25,14 +25,29 @@
 			'ValidateTranslate'
 		);
 
-		// TODO: lorsqu'on pourra reporter les dossiers,
-		// il faudra soit faire soit un report, soit les validations ci-dessous
-		// FIXME: dans ce cas, il faudra permettre au champ decision de prendre la valeur NULL
+		/**
+		*
+		*/
+
 		public $validate = array(
 			'decision' => array(
 				array(
 					'rule' => array( 'notEmpty' )
 				)
+			),
+		);
+
+		/**
+		*
+		*/
+
+		public $belongsTo = array(
+			'Passagecommissionep' => array(
+				'className' => 'Passagecommissionep',
+				'foreignKey' => 'passagecommissionep_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
 			),
 		);
 	}

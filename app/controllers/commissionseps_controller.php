@@ -80,6 +80,8 @@
 				$this->Commissionep->Dossierep->Nonrespectsanctionep93->enums(),
 				$this->Commissionep->Dossierep->Defautinsertionep66->enums(),
 				$this->Commissionep->Dossierep->Nonorientationproep93->Decisionnonorientationproep93->enums(),*/
+				$this->Commissionep->Passagecommissionep->Dossierep->Nonrespectsanctionep93->enums(),
+				$this->Commissionep->Passagecommissionep->Decisionnonrespectsanctionep93->enums(),
 				$this->Commissionep->Passagecommissionep->Decisionnonorientationproep58->enums(),
 				$this->Commissionep->Passagecommissionep->Decisionsanctionep58->enums(),
 				$this->Commissionep->Passagecommissionep->Dossierep->enums(),
@@ -88,6 +90,7 @@
 				$this->Commissionep->Passagecommissionep->enums(),
 				array( 'Foyer' => array( 'sitfam' => $this->Option->sitfam() ) )
 			);
+
 			//$options['Commissionep']['ep_id'] = $this->Commissionep->Ep->find( 'list' );
 			if( !in_array( $this->action, array( 'add', 'edit', 'index' ) ) ) {
 				/// TODO: est-ce que ça a  du sens ?
@@ -248,7 +251,7 @@
 				$success = true;
 				$this->Commissionep->begin();
 				$this->Commissionep->id = $commissionep_id;
-				
+
 				$commissionep = array(
 					'Commissionep' => array(
 						'id' => $commissionep_id,
@@ -258,14 +261,14 @@
 				);
 				$this->Commissionep->create( $commissionep );
 				$success = $this->Commissionep->save() && $success;
-				
+
 				$this->Commissionep->Passagecommissionep->updateAll(
 					array( 'Passagecommissionep.etatdossierep' => '\'reporte\'' ),
 					array(
 						'"Passagecommissionep"."commissionep_id"' => $commissionep_id
 					)
 				);
-				
+
 				$this->_setFlashResult( 'Delete', $success );
 				if ( $success ) {
 					$this->Commissionep->commit();

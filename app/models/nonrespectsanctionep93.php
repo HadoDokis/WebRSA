@@ -7,7 +7,7 @@
 	* @package       app
 	* @subpackage    app.app.models
 	*/
-	
+
 	App::import( array( 'Model', 'Historiqueetatpe' ) );
 
 	class Nonrespectsanctionep93 extends AppModel
@@ -72,19 +72,19 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
-			'Decisionnonrespectsanctionep93' => array(
-				'className' => 'Decisionnonrespectsanctionep93',
-				'foreignKey' => 'nonrespectsanctionep93_id',
-				'dependent' => true,
-				'conditions' => '',
-				'fields' => '',
-				'order' => '',
-				'limit' => '',
-				'offset' => '',
-				'exclusive' => '',
-				'finderQuery' => '',
-				'counterQuery' => ''
-			),
+// 			'Decisionnonrespectsanctionep93' => array(
+// 				'className' => 'Decisionnonrespectsanctionep93',
+// 				'foreignKey' => 'nonrespectsanctionep93_id',
+// 				'dependent' => true,
+// 				'conditions' => '',
+// 				'fields' => '',
+// 				'order' => '',
+// 				'limit' => '',
+// 				'offset' => '',
+// 				'exclusive' => '',
+// 				'finderQuery' => '',
+// 				'counterQuery' => ''
+// 			),
 		);
 
 		/**
@@ -111,7 +111,7 @@
 
 		public function qdDossiersParListe( $commissionep_id, $niveauDecision ) {
 			// Doit-on prendre une décision à ce niveau ?
-			$themes = $this->Dossierep->Commissionep->themesTraites( $commissionep_id );
+			$themes = $this->Dossierep->Passagecommissionep->Commissionep->themesTraites( $commissionep_id );
 			$niveauFinal = $themes[Inflector::underscore($this->alias)];
 			if( ( $niveauFinal == 'ep' ) && ( $niveauDecision == 'cg' ) ) {
 				return array();
@@ -120,7 +120,20 @@
 			return array(
 				'conditions' => array(
 					'Dossierep.themeep' => Inflector::tableize( $this->alias ),
-					'Dossierep.commissionep_id' => $commissionep_id
+					//'Dossierep.commissionep_id' => $commissionep_id
+					'Dossierep.id IN ( '.
+						$this->Dossierep->Passagecommissionep->sq(
+							array(
+								'fields' => array(
+									'passagescommissionseps.dossierep_id'
+								),
+								'alias' => 'passagescommissionseps',
+								'conditions' => array(
+									'passagescommissionseps.commissionep_id' => $commissionep_id
+								)
+							)
+						)
+					.' )'
 				),
 				'contain' => array(
 					'Personne' => array(
@@ -160,9 +173,9 @@
 							'modified'
 
 						),
-						'Decisionnonrespectsanctionep93' => array(
-							'order' => array( 'etape DESC' )
-						),
+// 						'Decisionnonrespectsanctionep93' => array(
+// 							'order' => array( 'etape DESC' )
+// 						),
 						/*'Decisionreorientationep93',
 						'Motifreorientep93',
 						'Typeorient',
@@ -172,6 +185,14 @@
 							'Structurereferente',
 						)
 					),
+					'Passagecommissionep' => array(
+						'conditions' => array(
+							'Passagecommissionep.commissionep_id' => $commissionep_id
+						),
+						'Decisionnonrespectsanctionep93' => array(
+							'order' => array( 'Decisionnonrespectsanctionep93.etape DESC' ),
+						)
+					)
 				)
 			);
 		}
@@ -189,7 +210,7 @@
 
 		public function prepareFormData( $commissionep_id, $datas, $niveauDecision ) {
 			// Doit-on prendre une décision à ce niveau ?
-			$themes = $this->Dossierep->Commissionep->themesTraites( $commissionep_id );
+			$themes = $this->Dossierep->Passagecommissionep->Commissionep->themesTraites( $commissionep_id );
 			$niveauFinal = $themes[Inflector::underscore($this->alias)];
 			if( ( $niveauFinal == 'ep' ) && ( $niveauDecision == 'cg' ) ) {
 				return array();
@@ -199,17 +220,18 @@
 			foreach( $datas as $key => $dossierep ) {
 				$formData['Nonrespectsanctionep93'][$key]['id'] = @$datas[$key]['Nonrespectsanctionep93']['id'];
 				$formData['Nonrespectsanctionep93'][$key]['dossierep_id'] = @$datas[$key]['Nonrespectsanctionep93']['dossierep_id'];
-				$formData['Decisionnonrespectsanctionep93'][$key]['nonrespectsanctionep93_id'] = @$datas[$key]['Nonrespectsanctionep93']['id'];
+				$formData['Decisionnonrespectsanctionep93'][$key]['passagecommissionep_id'] = @$datas[$key]['Passagecommissionep'][0]['id'];
+// 				$formData['Decisionnonrespectsanctionep93'][$key]['nonrespectsanctionep93_id'] = @$datas[$key]['Nonrespectsanctionep93']['id'];
 
 				// On modifie les enregistrements de cette étape
-				if( @$dossierep['Nonrespectsanctionep93']['Decisionnonrespectsanctionep93'][0]['etape'] == $niveauDecision ) {
-					$formData['Decisionnonrespectsanctionep93'][$key] = @$dossierep['Nonrespectsanctionep93']['Decisionnonrespectsanctionep93'][0];
+				if( @$dossierep['Passagecommissionep'][0]['Decisionnonrespectsanctionep93'][0]['etape'] == $niveauDecision ) {
+					$formData['Decisionnonrespectsanctionep93'][$key] = @$dossierep['Passagecommissionep'][0]['Decisionnonrespectsanctionep93'][0];
 				}
 				// On ajoute les enregistrements de cette étape -> FIXME: manque les id ?
 				else {
 					if( $niveauDecision == 'ep' ) {
-						if( !empty( $datas[$key]['Nonrespectsanctionep93']['Decisionnonrespectsanctionep93'][0] ) ) { // Modification
-							$formData['Decisionnonrespectsanctionep93'][$key]['decision'] = @$datas[$key]['Nonrespectsanctionep93']['Decisionnonrespectsanctionep93'][0]['decision'];
+						if( !empty( $datas[$key]['Passagecommissionep'][0]['Decisionnonrespectsanctionep93'][0] ) ) { // Modification
+							$formData['Decisionnonrespectsanctionep93'][$key]['decision'] = @$datas[$key]['Passagecommissionep'][0]['Decisionnonrespectsanctionep93'][0]['decision'];
 						}
 						else {
 							if( ( $dossierep['Personne']['Foyer']['nbenfants'] > 0 ) || ( $dossierep['Personne']['Foyer']['sitfam'] == 'MAR' ) ) {
@@ -219,16 +241,15 @@
 						}
 					}
 					else if( $niveauDecision == 'cg' ) {
-						if( !empty( $datas[$key]['Nonrespectsanctionep93']['Decisionnonrespectsanctionep93'][1] ) ) { // Modification
-							$formData['Decisionnonrespectsanctionep93'][$key]['decision'] = @$datas[$key]['Nonrespectsanctionep93']['Decisionnonrespectsanctionep93'][1]['decision'];
+						if( !empty( $datas[$key]['Passagecommissionep'][0]['Decisionnonrespectsanctionep93'][1] ) ) { // Modification
+							$formData['Decisionnonrespectsanctionep93'][$key]['decision'] = @$datas[$key]['Passagecommissionep'][0]['Decisionnonrespectsanctionep93'][1]['decision'];
 						}
 						else {
-							$formData['Decisionnonrespectsanctionep93'][$key]['decision'] = $dossierep['Nonrespectsanctionep93']['Decisionnonrespectsanctionep93'][0]['decision'];
+							$formData['Decisionnonrespectsanctionep93'][$key]['decision'] = $dossierep['Passagecommissionep'][0]['Decisionnonrespectsanctionep93'][0]['decision'];
 						}
 					}
 				}
 			}
-// debug( $formData );
 
 			return $formData;
 		}
@@ -261,12 +282,16 @@
 					// FIXME: la même chose pour l'étape 2
 				}
 
-				$success = $this->Decisionnonrespectsanctionep93->saveAll( $themeData, array( 'atomic' => false ) );
+				$success = $this->Dossierep->Passagecommissionep->Decisionnonrespectsanctionep93->saveAll( $themeData, array( 'atomic' => false ) );
+				$this->Dossierep->Passagecommissionep->updateAll(
+					array( 'Passagecommissionep.etatdossierep' => '\'decision'.$niveauDecision.'\'' ),
+					array( '"Passagecommissionep"."id"' => Set::extract( $data, '/Decisionnonrespectsanctionep93/passagecommissionep_id' ) )
+				);
 
-				$this->Dossierep->updateAll(
+				/*$this->Dossierep->updateAll(
 					array( 'Dossierep.etapedossierep' => '\'decision'.$niveauDecision.'\'' ),
 					array( '"Dossierep"."id"' => Set::extract( $data, '/Nonrespectsanctionep93/dossierep_id' ) )
-				);
+				);*/
 				return $success;
 			}
 		}
@@ -284,31 +309,76 @@
 		*/
 
 		public function finaliser( $commissionep_id, $etape ) {
-			$commissionep = $this->Dossierep->Commissionep->find(
+			$commissionep = $this->Dossierep->Passagecommissionep->Commissionep->find(
 				'first',
 				array(
 					'conditions' => array( 'Commissionep.id' => $commissionep_id ),
-					'contain' => array( 'Ep' )
+					'contain' => array(
+						'Ep' => array(
+							'Regroupementep'
+						)
+					)
 				)
 			);
 
-			$niveauDecisionFinale = $commissionep['Ep'][Inflector::underscore( $this->alias )];
+			$niveauDecisionFinale = $commissionep['Ep']['Regroupementep'][Inflector::underscore( $this->alias )];
 
-			$dossierseps = $this->find(
+			$dossierseps = $this->Dossierep->Passagecommissionep->find(
 				'all',
 				array(
-					'conditions' => array(
-						'Dossierep.commissionep_id' => $commissionep_id,
-						'Dossierep.themeep' => Inflector::tableize( $this->alias ),//FIXME: ailleurs aussi
+					'fields' => array(
+						'Passagecommissionep.id',
+						'Passagecommissionep.commissionep_id',
+						'Passagecommissionep.dossierep_id',
+						'Passagecommissionep.etatdossierep',
+						'Dossierep.personne_id',
+						'Decisionnonrespectsanctionep93.decision',
+						/*'Decisionreorientationep93.typeorient_id',
+						'Decisionreorientationep93.structurereferente_id',
+						'Reorientationep93.structurereferente_id',
+						'Reorientationep93.referent_id',
+						'Reorientationep93.datedemande'*/
 					),
-					'contain' => array(
+					'conditions' => array(
+						'Passagecommissionep.commissionep_id' => $commissionep_id
+						/*'Dossierep.commissionep_id' => $commissionep_id,
+						'Dossierep.themeep' => Inflector::tableize( $this->alias ),//FIXME: ailleurs aussi*/
+					),
+					'joins' => array(
+						array(
+							'table' => 'dossierseps',
+							'alias' => 'Dossierep',
+							'type' => 'INNER',
+							'conditions' => array(
+								'Passagecommissionep.dossierep_id = Dossierep.id'
+							)
+						),
+						array(
+							'table' => 'nonrespectssanctionseps93',
+							'alias' => 'Nonrespectsanctionep93',
+							'type' => 'INNER',
+							'conditions' => array(
+								'Nonrespectsanctionep93.dossierep_id = Dossierep.id'
+							)
+						),
+						array(
+							'table' => 'decisionsnonrespectssanctionseps93',
+							'alias' => 'Decisionnonrespectsanctionep93',
+							'type' => 'INNER',
+							'conditions' => array(
+								'Decisionnonrespectsanctionep93.passagecommissionep_id = Passagecommissionep.id',
+								'Decisionnonrespectsanctionep93.etape' => $etape
+							)
+						)
+					),
+					/*'contain' => array(
 						'Decisionnonrespectsanctionep93' => array(
 							'conditions' => array(
 								'Decisionnonrespectsanctionep93.etape' => $etape
 							)
 						),
 						'Dossierep'
-					)
+					)*/
 				)
 			);
 
@@ -517,15 +587,15 @@
 					)'
 				)
 			);
-			
+
 			$this->Historiqueetatpe = ClassRegistry::init('Historiqueetatpe');
-			
+
 			$qdRadies = $this->Historiqueetatpe->Informationpe->qdRadies();
 			$queryData['fields'] = array_merge( $queryData['fields'] ,$qdRadies['fields'] );
 			$queryData['joins'] = array_merge( $queryData['joins'] ,$qdRadies['joins'] );
 			$queryData['conditions'] = array_merge( $queryData['conditions'] ,$qdRadies['conditions'] );
 			$queryData['order'] = $qdRadies['order'];
-			
+
 			return $queryData;
 		}
 	}

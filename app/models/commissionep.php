@@ -104,7 +104,7 @@
 				'with' => 'CommissionepMembreep'
 			),
 		);
-		
+
 		public $validate = array(
 			'raisonannulation' => array(
 				array(
@@ -698,7 +698,7 @@
 // die();
 				$modeleDecisions = array( 'Nonrespectsanctionep93' => 'Decisionnonrespectsanctionep93' );// FIXME: à supprimer après le renommage des tables
 				if( isset( $modeleDecisions[$model] ) ) {
-					$options = Set::merge( $options, $this->Passagecommissionep->Dossierep->{$model}->{$modeleDecisions[$model]}->enums() );
+					$options = Set::merge( $options, $this->Passagecommissionep->{$modeleDecisions[$model]}->enums() );
 				}
 
 				foreach( array( 'fields', 'joins' ) as $key ) {
