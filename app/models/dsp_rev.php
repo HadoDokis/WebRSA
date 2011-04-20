@@ -15,7 +15,23 @@
 			'DetaildifsocproRev',
 			'DetailprojproRev',
 			'DetailfreinformRev',
-			'DetailconfortRev'
+			'DetailconfortRev'/*,
+            'Fichiermodule' => array(
+                'className' => 'Fichiermodule',
+                'foreignKey' => false,
+                'dependent' => false,
+                'conditions' => array(
+                    'Fichiermodule.modele = \'DspRev\'',
+                    'Fichiermodule.fk_value = {$__cakeID__$}'
+                ),
+                'fields' => '',
+                'order' => '',
+                'limit' => '',
+                'offset' => '',
+                'exclusive' => '',
+                'finderQuery' => '',
+                'counterQuery' => ''
+            )*/
 		);
     }
 ?>

@@ -23,7 +23,23 @@
 			'Detaildifsocpro',
 			'Detailprojpro',
 			'Detailfreinform',
-			'Detailconfort'
+			'Detailconfort'/*,
+            'Fichiermodule' => array(
+                'className' => 'Fichiermodule',
+                'foreignKey' => false,
+                'dependent' => false,
+                'conditions' => array(
+                    'Fichiermodule.modele = \'Dsp\'',
+                    'Fichiermodule.fk_value = {$__cakeID__$}'
+                ),
+                'fields' => '',
+                'order' => '',
+                'limit' => '',
+                'offset' => '',
+                'exclusive' => '',
+                'finderQuery' => '',
+                'counterQuery' => ''
+            )*/
 		);
 
         var $validate = array(
@@ -98,7 +114,8 @@
 					'soutdemarsoc' => array( 'type' => 'nov', 'domain' => 'default' ),
 					'concoformqualiemploi' => array( 'type' => 'nos', 'domain' => 'default' ),
 					'drorsarmianta2' => array( 'type' => 'nos', 'domain' => 'default' ),
-					'statutoccupation' => array( 'values' => array('proprietaire', 'locataire') )
+					'statutoccupation' => array( 'values' => array('proprietaire', 'locataire') ),
+					'haspiecejointe' => array( 'domain' => 'dsp' )
                 )
             ),
 			'Revision' => array('auto' => false)
