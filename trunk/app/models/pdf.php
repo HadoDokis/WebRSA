@@ -36,12 +36,12 @@
 				$this->data[$this->alias]['document'] = null;
 			}
 
-			$success = parent::save( $data, $validate, $fieldList );
-			if( !$success && $cmsSuccess ) {
-				$cmsSuccess = Cmis::delete( $cmsPath, true );
-			}
+            $success = parent::save( $data, $validate, $fieldList );
+            if( !$success && $cmsSuccess ) {
+                $success = Cmis::delete( $cmsPath, true ) && $success;
+            }
 
-			return ( $success && $cmsSuccess );
+            return $success;
 		}
 
 		/**
