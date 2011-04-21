@@ -36,15 +36,46 @@
 			$conditions = array( 'Dossierep.themeep' => 'nonrespectssanctionseps93' );
 
 			if( $searchMode == 'traite' ) {
-				$conditions[]['Dossierep.etapedossierep'] = 'traite';
+				$conditions[][] = 'Dossierep.id NOT IN ( '.$this->Nonrespectsanctionep93->Dossierep->Passagecommissionep->sq(
+					array(
+						'alias' => 'passagescommissionseps',
+						'fields' => array( 'passagescommissionseps.dossierep_id' ),
+						'conditions' => array(
+							'NOT' => array(
+								'passagescommissionseps.etatdossierep' => array( 'traite', 'annule' )
+							),
+							'passagescommissionseps.dossierep_id = Dossierep.id'
+						),
+					)
+				).' )';
 
 				$searchDossierepSeanceepId = Set::classicExtract( $searchData, 'Dossierep.commissionep_id' );
 				if( !empty( $searchDossierepSeanceepId ) ) {
-					$conditions[]['Dossierep.commissionep_id'] = $searchDossierepSeanceepId;
+					$conditions[][] = 'Dossierep.id IN ( '.$this->Nonrespectsanctionep93->Dossierep->Passagecommissionep->sq(
+						array(
+							'alias' => 'passagescommissionseps',
+							'fields' => array( 'passagescommissionseps.dossierep_id' ),
+							'conditions' => array(
+								'passagescommissionseps.commissionep_id' => $searchDossierepSeanceepId,
+								'passagescommissionseps.dossierep_id = Dossierep.id'
+							),
+						)
+					).' )';
 				}
 			}
 			else {
-				$conditions[]['Dossierep.etapedossierep <>'] = 'traite';
+				$conditions[][] = 'Dossierep.id IN ( '.$this->Nonrespectsanctionep93->Dossierep->Passagecommissionep->sq(
+					array(
+						'alias' => 'passagescommissionseps',
+						'fields' => array( 'passagescommissionseps.dossierep_id' ),
+						'conditions' => array(
+							'NOT' => array(
+								'passagescommissionseps.etatdossierep' => array( 'traite', 'annule' )
+							),
+							'passagescommissionseps.dossierep_id = Dossierep.id'
+						),
+					)
+				).' )';
 			}
 
 			return array(
@@ -59,7 +90,9 @@
 								)
 							)
 						),
-						'Commissionep'
+						'Passagecommissionep' => array(
+							'Commissionep'
+						)
 					),
 					'Orientstruct',
 					'Contratinsertion',
@@ -88,7 +121,7 @@
 
 			// INFO: containable ne fonctionne pas avec les find('list')
 			$commissionseps = array();
-			$tmpSeanceseps = $this->Nonrespectsanctionep93->Dossierep->Commissionep->find(
+			$tmpSeanceseps = $this->Nonrespectsanctionep93->Dossierep->Passagecommissionep->Commissionep->find(
 				'all',
 				array(
 					'fields' => array(
@@ -126,7 +159,7 @@
 
 		public function selectionradies() {
 // 			$this->_selectionPassageNonrespectsanctionep93( 'qdRadies', 'radiepe' );
-			
+
 			if( !empty( $this->data ) ) {
 				$success = true;
 				$this->Nonrespectsanctionep93->begin();
@@ -158,7 +191,7 @@
 						);
 						$this->Nonrespectsanctionep93->Dossierep->create( $dossierep );
 						$success = $this->Nonrespectsanctionep93->Dossierep->save() && $success;
-						
+
 						$rgpassage = $this->Nonrespectsanctionep93->find(
 							'count',
 							array(
@@ -169,7 +202,7 @@
 								'contain' => false
 							)
 						);
-						
+
 						///FIXME : à corriger plus tard probablement
 						if ( $rgpassage >= 1 ) {
 							$rgpassage = 2;
@@ -177,7 +210,7 @@
 						else {
 							$rgpassage = 1;
 						}
-						
+
 						$nonrespectsanctionep93 = array(
 							'Nonrespectsanctionep93' => array(
 								'dossierep_id' => $this->Nonrespectsanctionep93->Dossierep->id,

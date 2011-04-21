@@ -603,7 +603,7 @@
 								WHERE
 									nonrespectssanctionseps93.active = \'0\'
 									AND nonrespectssanctionseps93.orientstruct_id = Orientstruct.id
-									AND dossierseps.id IN ( '.$this->Nonrespectsanctionep93->Decisionnonrespectsanctionep93->Passagecommissionep->sq(
+									AND dossierseps.id IN ( '.$this->Nonrespectsanctionep93->Dossierep->Passagecommissionep->sq(
 										// Les états traite et annule étant des états finaux, on est certains
 										// qu'il s'agit du dernier passage en commission pour ces dossiers
 										array(
@@ -736,7 +736,7 @@
 								WHERE
 									nonrespectssanctionseps93.active = \'0\'
 									AND nonrespectssanctionseps93.contratinsertion_id = Contratinsertion.id
-									AND dossierseps.id IN ( '.$this->Nonrespectsanctionep93->Decisionnonrespectsanctionep93->Passagecommissionep->sq(
+									AND dossierseps.id IN ( '.$this->Nonrespectsanctionep93->Dossierep->Passagecommissionep->sq(
 										// Les états traite et annule étant des états finaux, on est certains
 										// qu'il s'agit du dernier passage en commission pour ces dossiers
 										array(
@@ -1086,7 +1086,7 @@
 						'conditions' => array(
 							'Dossierep.personne_id' => $personne_id,
 							//'Dossierep.etapedossierep <>' => 'traite',
-							'Dossierep.id NOT IN ( '.$this->Nonrespectsanctionep93->Decisionnonrespectsanctionep93->Passagecommissionep->sq(
+							'Dossierep.id NOT IN ( '.$this->Nonrespectsanctionep93->Dossierep->Passagecommissionep->sq(
 								// Les états traite et annule étant des états finaux, on est certains
 								// qu'il s'agit du dernier passage en commission pour ces dossiers
 								array(
@@ -1118,7 +1118,7 @@
 							'conditions' => array(
 								'Dossierep.personne_id' => $personne_id,
 								//'Dossierep.etapedossierep' => 'traite',
-								'Dossierep.id IN ( '.$this->Nonrespectsanctionep93->Decisionnonrespectsanctionep93->Passagecommissionep->sq(
+								'Dossierep.id IN ( '.$this->Nonrespectsanctionep93->Dossierep->Passagecommissionep->sq(
 										// Les états traite et annule étant des états finaux, on est certains
 										// qu'il s'agit du dernier passage en commission pour ces dossiers
 										array(
