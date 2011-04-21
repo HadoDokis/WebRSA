@@ -22,7 +22,8 @@
 				)
 			),
 			'Autovalidate',
-			'ValidateTranslate'
+			'ValidateTranslate',
+			'Formattable',
 		);
 
 		/**
