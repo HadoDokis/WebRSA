@@ -1,4 +1,17 @@
 <?php
+	define( 'PHPGEDOOO_DIR', APP.'vendors'.DS.'phpgedooo'.DS );
+
+	// Inclusion des fichiers nécessaires à GEDOOo
+	require_once( PHPGEDOOO_DIR.'GDO_Utility.class' );
+	require_once( PHPGEDOOO_DIR.'GDO_FieldType.class' );
+	require_once( PHPGEDOOO_DIR.'GDO_ContentType.class' );
+	require_once( PHPGEDOOO_DIR.'GDO_IterationType.class' );
+	require_once( PHPGEDOOO_DIR.'GDO_PartType.class' );
+	require_once( PHPGEDOOO_DIR.'GDO_FusionType.class' );
+	require_once( PHPGEDOOO_DIR.'GDO_MatrixType.class' );
+	require_once( PHPGEDOOO_DIR.'GDO_MatrixRowType.class' );
+	require_once( PHPGEDOOO_DIR.'GDO_AxisTitleType.class' );
+
 	class GedoooBehavior extends ModelBehavior
 	{
 		/**
@@ -42,23 +55,9 @@
 
 		public function ged( &$model, $datas, $document, $section = false, $options = array() ) {
 			// Définition des variables & maccros
-			// FIXME: chemins
-			$phpGedooDir = dirname( __FILE__ ).'/../../vendors/phpgedooo';
 			$sMimeType  = "application/pdf";
-			$path_model = $phpGedooDir.'/../modelesodt/'.$document;
-
-			// Inclusion des fichiers nécessaires à GEDOOo
-			// FIXME
-			$phpGedooDir = dirname( __FILE__ ).'/../../vendors/phpgedooo';
-			require_once( $phpGedooDir.DS.'GDO_Utility.class' );
-			require_once( $phpGedooDir.DS.'GDO_FieldType.class' );
-			require_once( $phpGedooDir.DS.'GDO_ContentType.class' );
-			require_once( $phpGedooDir.DS.'GDO_IterationType.class' );
-			require_once( $phpGedooDir.DS.'GDO_PartType.class' );
-			require_once( $phpGedooDir.DS.'GDO_FusionType.class' );
-			require_once( $phpGedooDir.DS.'GDO_MatrixType.class' );
-			require_once( $phpGedooDir.DS.'GDO_MatrixRowType.class' );
-			require_once( $phpGedooDir.DS.'GDO_AxisTitleType.class' );
+			// fixme: chemin ?
+			$path_model = PHPGEDOOO_DIR.'/../modelesodt/'.$document;
 
 			// Quel type de données a-t-on reçu ?
 			if( !$section ) {
