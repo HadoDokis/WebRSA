@@ -21,7 +21,8 @@
 		protected function _setOptions() {
 			$options = Set::merge(
 				$this->Nonrespectsanctionep93->enums(),
-				$this->Nonrespectsanctionep93->Dossierep->enums()
+				$this->Nonrespectsanctionep93->Dossierep->enums(),
+				$this->Nonrespectsanctionep93->Dossierep->Passagecommissionep->Decisionnonrespectsanctionep93->enums()
 			);
 			$this->set( compact( 'options' ) );
 		}
@@ -79,23 +80,120 @@
 			}
 
 			return array(
-				'contain' => array(
-					'Dossierep' => array(
-						'Personne' => array(
-							'Foyer' => array(
-								'Dossier',
-								'Adressefoyer' => array(
-									'conditions' => array( 'Adressefoyer.rgadr' => '01' ),
-									'Adresse'
-								)
-							)
-						),
-						'Passagecommissionep' => array(
-							'Commissionep'
-						)
+				'fields' => array(
+					'Dossier.matricule',
+					'Personne.nom',
+					'Personne.prenom',
+					'Personne.nir',
+					'Nonrespectsanctionep93.contratinsertion_id',
+					'Contratinsertion.df_ci',
+					'Orientstruct.date_valid',
+					'Commissionep.dateseance',
+					'Nonrespectsanctionep93.origine',
+					'Nonrespectsanctionep93.rgpassage',
+					'Nonrespectsanctionep93.decision',
+					'Nonrespectsanctionep93.montantreduction',
+					'Nonrespectsanctionep93.dureesursis',
+					'Decisionnonrespectsanctionep93.decision',
+					'Decisionnonrespectsanctionep93.montantreduction',
+					'Decisionnonrespectsanctionep93.dureesursis',
+				),
+				'joins' => array(
+					array(
+						'table'      => 'dossierseps',
+						'alias'      => 'Dossierep',
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array( 'Nonrespectsanctionep93.dossierep_id = Dossierep.id' ),
 					),
-					'Orientstruct',
-					'Contratinsertion',
+					array(
+						'table'      => 'personnes',
+						'alias'      => 'Personne',
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array( 'Dossierep.personne_id = Personne.id' ),
+					),
+					array(
+						'table'      => 'foyers',
+						'alias'      => 'Foyer',
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array( 'Personne.foyer_id = Foyer.id' ),
+					),
+					array(
+						'table'      => 'dossiers',
+						'alias'      => 'Dossier',
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array( 'Foyer.dossier_id = Dossier.id' ),
+					),
+					array(
+						'table'      => 'adressesfoyers',
+						'alias'      => 'Adressefoyer',
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array(
+							'Adressefoyer.foyer_id = Foyer.id',
+							'Adressefoyer.rgadr' => '01'
+						),
+					),
+					array(
+						'table'      => 'adresses',
+						'alias'      => 'Adresse',
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array( 'Adressefoyer.adresse_id = Adresse.id' ),
+					),
+					array(
+						'table'      => 'passagescommissionseps',
+						'alias'      => 'Passagecommissionep',
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array( 'Passagecommissionep.dossierep_id = Dossierep.id' ),
+					),
+					array(
+						'table'      => 'commissionseps',
+						'alias'      => 'Commissionep',
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array( 'Passagecommissionep.commissionep_id = Commissionep.id' ),
+					),
+					array(
+						'table'      => 'orientsstructs',
+						'alias'      => 'Orientstruct',
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array( 'Nonrespectsanctionep93.orientstruct_id = Orientstruct.id' ),
+					),
+					array(
+						'table'      => 'contratsinsertion',
+						'alias'      => 'Contratinsertion',
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array( 'Nonrespectsanctionep93.contratinsertion_id = Contratinsertion.id' ),
+					),
+					array(
+						'table'      => 'decisionsnonrespectssanctionseps93',
+						'alias'      => 'Decisionnonrespectsanctionep93',
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array(
+							'Decisionnonrespectsanctionep93.passagecommissionep_id = Passagecommissionep.id',
+							'Decisionnonrespectsanctionep93.etape = ( '
+								.$this->Nonrespectsanctionep93->Dossierep->Passagecommissionep->Decisionnonrespectsanctionep93->sq(
+									array(
+										'alias' => 'decisionsnonrespectssanctionseps93',
+										'fields' => array( 'decisionsnonrespectssanctionseps93.etape' ),
+										'conditions' => array(
+											'decisionsnonrespectssanctionseps93.passagecommissionep_id = Passagecommissionep.id',
+										),
+										'order' => ( 'decisionsnonrespectssanctionseps93.etape DESC' ),
+										'limit' => 1
+									)
+								)
+							.' )',
+						),
+					),
 				),
 				'conditions' => $conditions,
 				'order' => array( 'Nonrespectsanctionep93.created DESC' )
@@ -170,7 +268,19 @@
 						'first',
 						array(
 							'conditions' => array(
-								'Dossierep.etapedossierep' => 'cree',
+								// état 'cree' ?
+								'Dossierep.id NOT IN ( '
+									.$this->Nonrespectsanctionep93->Dossierep->Passagecommissionep->sq(
+										array(
+											'alias' => 'passagescommissionseps',
+											'fields' => array( 'passagescommissionseps.dossierep_id' ),
+											'conditions' => array(
+												'passagescommissionseps.dossierep_id = Dossierep.id',
+												'passagescommissionseps.etatdossierep <>' => 'reporte'
+											)
+										)
+									)
+								.' )',
 								'Dossierep.themeep' => 'nonrespectssanctionseps93',
 								'Dossierep.personne_id' => $this->data['Personne'][$key]['id'],
 								'Nonrespectsanctionep93.origine' => 'radiepe'
@@ -232,6 +342,7 @@
 
 				$this->_setFlashResult( 'Save', $success );
 				if( $success ) {
+					$this->data = array();
 					$this->Nonrespectsanctionep93->commit();
 				}
 				else {
@@ -252,7 +363,19 @@
 					'all',
 					array(
 						'conditions' => array(
-							'Dossierep.etapedossierep' => 'cree',
+							// état 'cree' ?
+							'Dossierep.id NOT IN ( '
+								.$this->Nonrespectsanctionep93->Dossierep->Passagecommissionep->sq(
+									array(
+										'alias' => 'passagescommissionseps',
+										'fields' => array( 'passagescommissionseps.dossierep_id' ),
+										'conditions' => array(
+											'passagescommissionseps.dossierep_id = Dossierep.id',
+											'passagescommissionseps.etatdossierep <>' => 'reporte'
+										)
+									)
+								)
+							.' )',
 							'Dossierep.themeep' => 'nonrespectssanctionseps93',
 							///FIXME !!!!!!!!!!!!!!!!!
 							'Dossierep.personne_id' => Set::extract( '/Personne/id', $personnes ),

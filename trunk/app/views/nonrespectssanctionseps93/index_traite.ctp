@@ -5,18 +5,20 @@
 	echo $default2->index(
 		$nonrespectssanctionseps93,
 		array(
-			'Dossierep.Personne.Foyer.Dossier.matricule',
-			'Dossierep.Personne.nom',
-			'Dossierep.Personne.prenom',
-			'Dossierep.Personne.nir',
+			'Dossier.matricule',
+			'Personne.nom',
+			'Personne.prenom',
+			'Personne.nir',
+			'Nonrespectsanctionep93.origine',
 			'Nonrespectsanctionep93.contratinsertion_id' => array( 'type' => 'boolean' ),
 			'Contratinsertion.df_ci',
 			'Orientstruct.date_valid',
-			'Dossierep.Commissionep.dateseance' => array( 'type' => 'date' ),
+			//'Dossierep.Commissionep.dateseance' => array( 'type' => 'date' ),
+			'Commissionep.dateseance' => array( 'type' => 'date' ),//FIXME: 0 ?
 			'Nonrespectsanctionep93.rgpassage',
-			'Nonrespectsanctionep93.decision',
-			'Nonrespectsanctionep93.montantreduction',
-			'Nonrespectsanctionep93.dureesursis',
+			'Decisionnonrespectsanctionep93.decision',
+			'Decisionnonrespectsanctionep93.montantreduction',
+			'Decisionnonrespectsanctionep93.dureesursis',
 			/*'Nonrespectsanctionep93.created' => array( 'type' => 'date' ),
 			// Allocataire
 			'Dossierep.Personne.nom',

@@ -290,10 +290,6 @@
 					array( '"Passagecommissionep"."id"' => Set::extract( $data, '/Decisionnonrespectsanctionep93/passagecommissionep_id' ) )
 				);
 
-				/*$this->Dossierep->updateAll(
-					array( 'Dossierep.etapedossierep' => '\'decision'.$niveauDecision.'\'' ),
-					array( '"Dossierep"."id"' => Set::extract( $data, '/Nonrespectsanctionep93/dossierep_id' ) )
-				);*/
 				return $success;
 			}
 		}
@@ -573,20 +569,45 @@
 					)
 				),
 				'conditions' => array(
-					'Personne.id NOT IN (
-						SELECT
-								dossierseps.personne_id
-							FROM dossierseps
-							WHERE
-								dossierseps.personne_id = Personne.id
-								AND (
-									dossierseps.etapedossierep IN ( \'seance\', \'decisionep\', \'decisioncg\' )
-									OR (
-										dossierseps.etapedossierep = \'traite\'
-										AND ( DATE( NOW() ) - CAST( dossierseps.modified AS DATE ) ) <= '.Configure::read( $this->alias.'.delaiRegularisation' ).'
+					'Personne.id NOT IN ( '.
+						$this->Dossierep->sq(
+							array(
+								'alias' => 'dossierseps',
+								'fields' => array( 'dossierseps.personne_id' ),
+								'conditions' => array(
+									'dossierseps.personne_id = Personne.id',
+									array(
+										'OR' => array(
+											'dossierseps.id NOT IN ( '.
+												$this->Dossierep->Passagecommissionep->sq(
+													array(
+														'alias' => 'passagescommissionseps',
+														'fields' => array( 'passagescommissionseps.dossierep_id' ),
+														'conditions' => array(
+															'NOT' => array(
+																'passagescommissionseps.etatdossierep' => array( 'traite', 'annule' )
+															)
+														)
+													)
+												)
+											.' )',
+											'dossierseps.id IN ( '.
+												$this->Dossierep->Passagecommissionep->sq(
+													array(
+														'alias' => 'passagescommissionseps',
+														'fields' => array( 'passagescommissionseps.dossierep_id' ),
+														'conditions' => array(
+															'passagescommissionseps.etatdossierep' => array( 'traite', 'annule' ),
+															'( DATE( NOW() ) - CAST( dossierseps.modified AS DATE ) ) <=' => Configure::read( $this->alias.'.delaiRegularisation' )
+														)
+													)
+												)
+											.' )',
+										)
 									)
 								)
-					)'
+							)
+						) .' )'
 				)
 			);
 

@@ -55,6 +55,15 @@ msgstr "Annulé"
 msgid "ENUM::DECISION::reporte"
 msgstr "Reporté"
 
+msgid "Decisionnonrespectsanctionep93.decision"
+msgstr "Décision"
+
+msgid "Decisionnonrespectsanctionep93.montantreduction"
+msgstr "Montant réduction"
+
+msgid "Decisionnonrespectsanctionep93.dureesursis"
+msgstr "Durée sursis"
+
 # msgid "ENUM::ETAPE::ep"
 # msgstr "EP"
 #
