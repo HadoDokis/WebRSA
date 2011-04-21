@@ -44,6 +44,16 @@
 
 <script type="text/javascript">
 	makeTabbed( 'tabbedWrapper', 2 );
+	
+	function changeColspan( idColumnToChangeColspan, decision, idsNonRaisonpassage, idRaisonpassage ) {
+		if ( $F( decision ) == 'reporte' || $F( decision ) == 'annule' ) {
+			$( idColumnToChangeColspan ).writeAttribute( "colspan", "1" );
+		}
+		else {
+			$( idColumnToChangeColspan ).writeAttribute( "colspan", "2" );
+		}
+		afficheRaisonpassage( decision, idsNonRaisonpassage, idRaisonpassage );
+	}
 
 	function afficheRaisonpassage( decision, idsNonRaisonpassage, idRaisonpassage ) {
 		if ( $F( decision ) == 'reporte' || $F( decision ) == 'annule' ) {

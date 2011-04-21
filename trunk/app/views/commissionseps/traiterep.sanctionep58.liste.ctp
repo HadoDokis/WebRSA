@@ -8,7 +8,7 @@
 <th>Date de naissance</th>
 <th>Création du dossier EP</th>
 <th>Origine du dossier</th>
-<th id=\'colonneAvisEp\'>Avis EPL</th>
+<th colspan=\'2\'>Avis EPL</th>
 <th>Si sanction</th>
 </tr>
 </thead><tbody>';
@@ -23,13 +23,16 @@
 				$locale->date( __( 'Locale->date', true ), $dossierep['Dossierep']['created'] ),
 				__d( 'sanctionep58', $dossierep['Sanctionep58']['origine'], true),
 
-				$form->input( "Sanctionep58.{$i}.id", array( 'type' => 'hidden', 'value' => $dossierep['Sanctionep58']['id'] ) ).
-				$form->input( "Sanctionep58.{$i}.dossierep_id", array( 'type' => 'hidden', 'value' => $dossierep['Dossierep']['id'] ) ).
-				$form->input( "Decisionsanctionep58.{$i}.id", array( 'type' => 'hidden', 'value' => @$dossierep['Sanctionep58']['Decisionsanctionep58'][0]['id'] ) ).
-				$form->input( "Decisionsanctionep58.{$i}.etape", array( 'type' => 'hidden', 'value' => 'ep' ) ).
-				$form->input( "Decisionsanctionep58.{$i}.sanctionep58_id", array( 'type' => 'hidden', 'value' => $dossierep['Sanctionep58']['id'] ) ).
+				array(
+					$form->input( "Sanctionep58.{$i}.id", array( 'type' => 'hidden', 'value' => $dossierep['Sanctionep58']['id'] ) ).
+					$form->input( "Sanctionep58.{$i}.dossierep_id", array( 'type' => 'hidden', 'value' => $dossierep['Dossierep']['id'] ) ).
+					$form->input( "Decisionsanctionep58.{$i}.id", array( 'type' => 'hidden', 'value' => @$dossierep['Sanctionep58']['Decisionsanctionep58'][0]['id'] ) ).
+					$form->input( "Decisionsanctionep58.{$i}.etape", array( 'type' => 'hidden', 'value' => 'ep' ) ).
+					$form->input( "Decisionsanctionep58.{$i}.sanctionep58_id", array( 'type' => 'hidden', 'value' => $dossierep['Sanctionep58']['id'] ) ).
 
-				$form->input( "Decisionsanctionep58.{$i}.decision", array( 'type' => 'select', 'label' => false, 'empty' => true, 'options' => @$options['Decisionsanctionep58']['decision'], 'value' => @$dossierep['Sanctionep58']['Decisionsanctionep58'][0]['decision'] ) ),
+					$form->input( "Decisionsanctionep58.{$i}.decision", array( 'type' => 'select', 'label' => false, 'empty' => true, 'options' => @$options['Decisionsanctionep58']['decision'], 'value' => @$dossierep['Sanctionep58']['Decisionsanctionep58'][0]['decision'] ) ),
+					array( 'id' => "Sanction{$i}Choose", 'colspan' => 2 )
+				),
 				$form->input( "Decisionsanctionep58.{$i}.raisonnonpassage", array( 'label' => false, 'type' => 'textarea', 'empty' => true ) ),
 				$listesanctionseps58[$dossierep['Sanctionep58']['listesanctionep58_id']]
 			)
@@ -48,19 +51,9 @@
 	document.observe("dom:loaded", function() {
 		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
 			$( 'Decisionsanctionep58<?php echo $i;?>Decision' ).observe( 'change', function() {
-				changeColspan( 'Decisionsanctionep58<?php echo $i;?>Decision', [ ], 'Decisionsanctionep58<?php echo $i;?>Raisonnonpassage' );
+				changeColspan( 'Sanction<?php echo $i;?>Choose', 'Decisionsanctionep58<?php echo $i;?>Decision', [ ], 'Decisionsanctionep58<?php echo $i;?>Raisonnonpassage' );
 			});
-			changeColspan( 'Decisionsanctionep58<?php echo $i;?>Decision', [ ], 'Decisionsanctionep58<?php echo $i;?>Raisonnonpassage' );
+			changeColspan( 'Sanction<?php echo $i;?>Choose', 'Decisionsanctionep58<?php echo $i;?>Decision', [ ], 'Decisionsanctionep58<?php echo $i;?>Raisonnonpassage' );
 		<?php endfor;?>
 	});
-	
-	function changeColspan( decision, idsNonRaisonpassage, idRaisonpassage ) {
-		if ( $F( decision ) == 'reporte' || $F( decision ) == 'annule' ) {
-			$( 'colonneAvisEp' ).writeAttribute( "colspan", "2" );
-		}
-		else {
-			$( 'colonneAvisEp' ).writeAttribute( 'colspan', '1' );
-		}
-		afficheRaisonpassage( decision, idsNonRaisonpassage, idRaisonpassage );
-	}
 </script>
