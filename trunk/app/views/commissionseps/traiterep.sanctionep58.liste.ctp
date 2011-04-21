@@ -31,7 +31,7 @@
 					$form->input( "Decisionsanctionep58.{$i}.sanctionep58_id", array( 'type' => 'hidden', 'value' => $dossierep['Sanctionep58']['id'] ) ).
 
 					$form->input( "Decisionsanctionep58.{$i}.decision", array( 'type' => 'select', 'label' => false, 'empty' => true, 'options' => @$options['Decisionsanctionep58']['decision'], 'value' => @$dossierep['Sanctionep58']['Decisionsanctionep58'][0]['decision'] ) ),
-					array( 'id' => "Sanction{$i}Choose", 'colspan' => 2 )
+					array( 'id' => "Decisionsanctionep58{$i}ColumnDecision", 'colspan' => 2 )
 				),
 				$form->input( "Decisionsanctionep58.{$i}.raisonnonpassage", array( 'label' => false, 'type' => 'textarea', 'empty' => true ) ),
 				$listesanctionseps58[$dossierep['Sanctionep58']['listesanctionep58_id']]
@@ -51,9 +51,9 @@
 	document.observe("dom:loaded", function() {
 		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
 			$( 'Decisionsanctionep58<?php echo $i;?>Decision' ).observe( 'change', function() {
-				changeColspan( 'Sanction<?php echo $i;?>Choose', 'Decisionsanctionep58<?php echo $i;?>Decision', [ ], 'Decisionsanctionep58<?php echo $i;?>Raisonnonpassage' );
+				changeColspanRaisonNonPassage( 'Decisionsanctionep58<?php echo $i;?>ColumnDecision', 'Decisionsanctionep58<?php echo $i;?>Decision', [ ], 'Decisionsanctionep58<?php echo $i;?>Raisonnonpassage' );
 			});
-			changeColspan( 'Sanction<?php echo $i;?>Choose', 'Decisionsanctionep58<?php echo $i;?>Decision', [ ], 'Decisionsanctionep58<?php echo $i;?>Raisonnonpassage' );
+			changeColspanRaisonNonPassage( 'Decisionsanctionep58<?php echo $i;?>ColumnDecision', 'Decisionsanctionep58<?php echo $i;?>Decision', [ ], 'Decisionsanctionep58<?php echo $i;?>Raisonnonpassage' );
 		<?php endfor;?>
 	});
 </script>
