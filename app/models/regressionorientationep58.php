@@ -52,26 +52,28 @@
 					)
 				)
 			);
+
 			foreach( $dossierseps as $dossierep ) {
-				$orientstruct = array(
-					'Orientstruct' => array(
-						'personne_id' => $dossierep['Dossierep']['personne_id'],
-						'typeorient_id' => $dossierep['Passagecommissionep'][0]['Decisionregressionorientationep58'][0]['typeorient_id'],
-						'structurereferente_id' => $dossierep['Passagecommissionep'][0]['Decisionregressionorientationep58'][0]['structurereferente_id'],
-						'date_propo' => $dossierep['Regressionorientationep58']['datedemande'],
-						'date_valid' => $dateseance,
-						'statut_orient' => 'Orienté',
-						'referent_id' => $dossierep['Passagecommissionep'][0]['Decisionregressionorientationep58'][0]['referent_id'],
-						'etatorient' => 'decision',
-						'rgorient' => $this->Structurereferente->Orientstruct->rgorientMax( $dossierep['Dossierep']['personne_id'] ),
-						'user_id' => $dossierep['Regressionorientationep58']['user_id']
-					)
-				);
+				if ( $dossierep['Passagecommissionep'][0]['Decisionregressionorientationep58'][0]['decision'] == 'accepte' ) {
+					$orientstruct = array(
+						'Orientstruct' => array(
+							'personne_id' => $dossierep['Dossierep']['personne_id'],
+							'typeorient_id' => $dossierep['Passagecommissionep'][0]['Decisionregressionorientationep58'][0]['typeorient_id'],
+							'structurereferente_id' => $dossierep['Passagecommissionep'][0]['Decisionregressionorientationep58'][0]['structurereferente_id'],
+							'date_propo' => $dossierep['Regressionorientationep58']['datedemande'],
+							'date_valid' => $dateseance,
+							'statut_orient' => 'Orienté',
+							'referent_id' => $dossierep['Passagecommissionep'][0]['Decisionregressionorientationep58'][0]['referent_id'],
+							'etatorient' => 'decision',
+							'rgorient' => $this->Structurereferente->Orientstruct->rgorientMax( $dossierep['Dossierep']['personne_id'] ),
+							'user_id' => $dossierep['Regressionorientationep58']['user_id']
+						)
+					);
 
-				$success = $this->Structurereferente->Orientstruct->save( $orientstruct ) && $success;
-				$success = $this->Structurereferente->Orientstruct->generatePdf( $this->Structurereferente->Orientstruct->id, $dossierep['Regressionorientationep58']['user_id'] ) && $success;
+					$success = $this->Structurereferente->Orientstruct->save( $orientstruct ) && $success;
+					$success = $this->Structurereferente->Orientstruct->generatePdf( $this->Structurereferente->Orientstruct->id, $dossierep['Regressionorientationep58']['user_id'] ) && $success;
+				}
 			}
-
 			return $success;
 		}
 

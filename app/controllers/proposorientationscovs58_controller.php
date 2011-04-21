@@ -102,7 +102,7 @@
 					$regressionorientationep58['Regressionorientationep58']['personne_id'] = $personne_id;
 					$regressionorientationep58['Regressionorientationep58']['dossierep_id'] = $this->Propoorientationcov58->Structurereferente->Regressionorientationep58->Dossierep->id;
 					
-					if ( isset($regressionorientationep58['Regressionorientationep58']['referent_id']) ) {
+					if ( isset( $regressionorientationep58['Regressionorientationep58']['referent_id'] ) && !empty( $regressionorientationep58['Regressionorientationep58']['referent_id'] ) ) {
 						list( $structurereferente_id, $referent_id) = explode( '_', $regressionorientationep58['Regressionorientationep58']['referent_id'] );
 						$regressionorientationep58['Regressionorientationep58']['structurereferente_id'] = $structurereferente_id;
 						$regressionorientationep58['Regressionorientationep58']['referent_id'] = $referent_id;

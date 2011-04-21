@@ -30,7 +30,6 @@
 				$form->input( "Decisionregressionorientationep58.{$i}.id", array( 'type' => 'hidden', 'value' => @$this->data['Decisionregressionorientationep58'][$i]['id'] ) ).
 				$form->input( "Decisionregressionorientationep58.{$i}.passagecommissionep_id", array( 'type' => 'hidden' ) ).
 // 				$form->input( "Dossierep.{$i}.id", array( 'type' => 'hidden', 'value' => $dossierep['Dossierep']['id'] ) ).
-				$form->input( "Regressionorientationep58.{$i}.id", array( 'type' => 'hidden' ) ).
 				$form->input( "Decisionregressionorientationep58.{$i}.etape", array( 'type' => 'hidden', 'value' => 'ep' ) ).
 // 				$form->input( "Decisionregressionorientationep58.{$i}.regressionorientationep58_id", array( 'type' => 'hidden', 'value' => @$dossierep['Regressionorientationep58']['id'] ) ).
 				$form->input( "Decisionregressionorientationep58.{$i}.decision", array( 'label' => false, 'type' => 'select', 'options' => @$options['Decisionreorientationep93']['decision'], 'empty' => true ) ),
