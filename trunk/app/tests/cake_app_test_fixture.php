@@ -16,14 +16,20 @@
 		*/
 
 		protected function _createTypeIfNotExists( $typeName ) {
-			$existsType = $this->testDb->query( "SELECT count (*) FROM pg_catalog.pg_type where typname= '{$this->testDbPrefix}{$typeName}';" );
+			$sql = "SELECT count (*) FROM pg_catalog.pg_type where typname = '{$this->testDbPrefix}{$typeName}';";
+			$existsType = $this->testDb->query( $sql );
+			//HERE
+			$this->log( sprintf( '%s (%s, %s), %s', $sql, __LINE__, $this->testDb->config['database'], $existsType[0][0]['count']), LOG_DEBUG);
 			$values = $this->masterDb->query( "SELECT enum_range(null::{$this->masterDbPrefix}{$typeName});" );
 			if( !empty( $values ) && $existsType[0][0]['count'] == 0 ) {
 				$patterns = array( '{', '}' );
 				$values = r( $patterns, '', Set::extract( $values, '0.0.enum_range' ) );
 				$values = explode( ',', $values );
-				
-				$this->testDb->query( "CREATE TYPE {$this->testDbPrefix}{$typeName} AS ENUM ( '".implode( "', '", $values )."' );" );
+
+				$sql = "CREATE TYPE {$this->testDbPrefix}{$typeName} AS ENUM ( '".implode( "', '", $values )."' );";
+				$this->testDb->query( $sql);
+				$this->log( sprintf( '%s (%s, %s)', $sql, __LINE__, $this->testDb->config['database']), LOG_DEBUG);
+
 			}
 		}
 
@@ -50,7 +56,9 @@
 			}
 
 			foreach( $queries as $sql ) {
+				//HERE
 				$this->testDb->query( $sql );
+				$this->log( sprintf( '%s (%s, %s)', $sql, __LINE__, $this->testDb->config['database']), LOG_DEBUG);
 			}
 			
 		}
@@ -60,9 +68,19 @@
 		*/
 
 		protected function _dropTypeIfLastTable( $typeName ) {
-			$nbTableHaveType = $this->testDb->query( "SELECT COUNT( DISTINCT(table_name) ) FROM information_schema.columns WHERE data_type = 'USER-DEFINED' AND udt_name = '{$this->testDbPrefix}{$typeName}';" );
+			//HERE
+			$sql = "SELECT COUNT( DISTINCT(table_name) ) FROM information_schema.columns WHERE data_type = 'USER-DEFINED' AND udt_name = '{$this->testDbPrefix}{$typeName}';";
+			//$nbTableHaveType = $this->testDb->query( "SELECT COUNT( DISTINCT(table_name) ) FROM information_schema.columns WHERE data_type = 'USER-DEFINED' AND udt_name = '{$this->testDbPrefix}{$typeName}';" );
+			$nbTableHaveType = $this->testDb->query( $sql );
+			$nbTableHaveType = $nbTableHaveType[0][0]['count'];
+			$this->log( sprintf( '%s (%s, %s), %s', $sql, __LINE__, $this->testDb->config['database'], $nbTableHaveType), LOG_DEBUG);
+
 			if ( $nbTableHaveType <= 1 ) {
-				$this->testDb->query( "DROP TYPE {$this->testDbPrefix}{$typeName} CASCADE" );
+				$sql = "DROP TYPE {$this->testDbPrefix}{$typeName} CASCADE";
+				$this->testDb->query( $sql );
+				$this->log( sprintf( '%s (%s, %s)', $sql, __LINE__, $this->testDb->config['database']), LOG_DEBUG);
+
+				//$this->testDb->query( "DROP TYPE {$this->testDbPrefix}{$typeName} CASCADE" );
 			}
 		}
 
@@ -140,7 +158,8 @@
 			if( $this->_pgsqlEnumTypes && $db->config['driver'] == 'postgres' ) {
 				/// INFO: on estime qu'aucun enum ne sera modifié au cours des tests unitaires
 				//$fieldsTypped = $this->_masterTableTypes( $this->table );
-				
+			
+				$this->_masterTableTypes = $this->_masterTableTypes( $this->table );
 				foreach( $this->_masterTableTypes as $type => $fields) {
 					$this->_dropTypeIfLastTable( $type );
 				}
