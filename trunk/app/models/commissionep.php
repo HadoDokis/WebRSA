@@ -245,11 +245,24 @@
 			}
 
 			$success = true;
+
+			foreach( $data as $thematique => $dossierseps ) {
+				foreach( $dossierseps as $key => $dossierep ) {
+					if( empty( $dossierep['decision'] ) ) {
+						unset( $dossierseps[$key] );
+					}
+				}
+				if( empty( $dossierseps ) ) {
+					unset( $data[$thematique] );
+				}
+			}
+
 			foreach( $this->themesTraites( $commissionep_id ) as $theme => $decision ) {
 				$model = Inflector::classify( $theme );
 				$success = $this->Passagecommissionep->Dossierep->{$model}->saveDecisions( $data, $niveauDecision ) && $success;
 			}
 
+			///FIXME : calculer si tous les dossiers ont bien une décision avant de chager l'état ?
 			$this->id = $commissionep_id;
 			$this->set( 'etatcommissionep', "decision{$niveauDecision}" );
 			$success = $this->save() && $success;
