@@ -45,7 +45,7 @@
 <script type="text/javascript">
 	makeTabbed( 'tabbedWrapper', 2 );
 	
-	function changeColspan( idColumnToChangeColspan, decision, idsNonRaisonpassage, idRaisonpassage ) {
+	function changeColspanRaisonNonPassage( idColumnToChangeColspan, decision, idsNonRaisonpassage, idRaisonpassage ) {
 		if ( $F( decision ) == 'reporte' || $F( decision ) == 'annule' ) {
 			$( idColumnToChangeColspan ).writeAttribute( "colspan", "1" );
 		}
