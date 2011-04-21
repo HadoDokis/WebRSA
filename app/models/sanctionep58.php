@@ -452,27 +452,20 @@
 			if( ( $niveauFinal == 'ep' ) && ( $niveauDecision == 'cg' ) ) {
 				return array();
 			}
-			
+
 			$formData = array();
 			foreach( $datas as $key => $dossierep ) {
-				$formData[$this->name][$key]['id'] = @$datas[$key][$this->name]['id'];
-				$formData[$this->name][$key]['dossierep_id'] = @$datas[$key][$this->name]['dossierep_id'];
-				$formData[$this->decisionName][$key][Inflector::underscore($this->name).'_id'] = @$datas[$key][$this->name]['id'];
+				$formData['Decisionsanctionep58'][$key]['passagecommissionep_id'] = @$datas[$key][Passagecommissionep][0]['id'];
 
-				// On modifie les enregistrements de cette étape
-				if( @$dossierep[$this->name][$this->decisionName][0]['etape'] == $niveauDecision ) {
-					$formData[$this->decisionName][$key] = @$dossierep[$this->name][$this->decisionName][0];
-				}
-				// On ajoute les enregistrements de cette étape -> FIXME: manque les id ?
-				else {
-					if( $niveauDecision == 'ep' ) {
-						if( isset( $datas[$key][$this->name][$this->decisionName][0] ) && !empty( $datas[$key][$this->name][$this->decisionName][0] ) ) { // Modification
-							$formData[$this->decisionName][$key]['decision'] = @$datas[$key][$this->name][$this->decisionName][0]['decision'];
-						}
+				if( $niveauDecision == 'ep' ) {
+					if( isset( $datas[$key]['Passagecommissionep'][0]['Decisionsanctionep58'][0] ) ) { // Modification
+						$formData['Decisionsanctionep58'][$key]['id'] = @$datas[$key]['Passagecommissionep'][0]['Decisionsanctionep58'][0]['id'];
+						$formData['Decisionsanctionep58'][$key]['decision'] = @$datas[$key]['Passagecommissionep'][0]['Decisionsanctionep58'][0]['decision'];
+						$formData['Decisionsanctionep58'][$key]['raisonnonpassage'] = @$datas[$key]['Passagecommissionep'][0]['Decisionsanctionep58'][0]['raisonnonpassage'];
 					}
 				}
 			}
-			
+
 			return $formData;
 		}
 
@@ -494,9 +487,9 @@
 				}
 				
 				$success = $this->Decisionsanctionep58->saveAll( $themeData, array( 'atomic' => false ) );
-				$this->Dossierep->updateAll(
-					array( 'Dossierep.etapedossierep' => '\'decision'.$niveauDecision.'\'' ),
-					array( '"Dossierep"."id"' => Set::extract( $data, '/'.$this->name.'/dossierep_id' ) )
+				$this->Dossierep->Passagecommissionep->updateAll(
+					array( 'Passagecommissionep.etatdossierep' => '\'decision'.$niveauDecision.'\'' ),
+					array( '"Passagecommissionep"."id"' => Set::extract( $data, '/Decisionsanctionep58/passagecommissionep_id' ) )
 				);
 				return $success;
 			}
@@ -515,6 +508,7 @@
 		*/
 
 		public function finaliser( $commissionep_id, $etape ) {
+			// Aucune action utile ?
 			/*$commissionep = $this->Dossierep->Commissionep->find(
 				'first',
 				array(
