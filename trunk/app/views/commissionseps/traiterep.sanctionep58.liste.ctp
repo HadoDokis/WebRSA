@@ -12,6 +12,7 @@
 <th>Si sanction</th>
 </tr>
 </thead><tbody>';
+// debug($this->data);
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
 // debug( $dossierep );
 		echo $xhtml->tableCells(
@@ -24,11 +25,10 @@
 				__d( 'sanctionep58', $dossierep['Sanctionep58']['origine'], true),
 
 				array(
-					$form->input( "Sanctionep58.{$i}.id", array( 'type' => 'hidden', 'value' => $dossierep['Sanctionep58']['id'] ) ).
-					$form->input( "Sanctionep58.{$i}.dossierep_id", array( 'type' => 'hidden', 'value' => $dossierep['Dossierep']['id'] ) ).
 					$form->input( "Decisionsanctionep58.{$i}.id", array( 'type' => 'hidden', 'value' => @$dossierep['Sanctionep58']['Decisionsanctionep58'][0]['id'] ) ).
 					$form->input( "Decisionsanctionep58.{$i}.etape", array( 'type' => 'hidden', 'value' => 'ep' ) ).
-					$form->input( "Decisionsanctionep58.{$i}.sanctionep58_id", array( 'type' => 'hidden', 'value' => $dossierep['Sanctionep58']['id'] ) ).
+					$form->input( "Decisionsanctionep58.{$i}.sanctionep58_id", array( 'type' => 'hidden' ) ).
+					$form->input( "Decisionsanctionep58.{$i}.passagecommissionep_id", array( 'type' => 'hidden' ) ).
 
 					$form->input( "Decisionsanctionep58.{$i}.decision", array( 'type' => 'select', 'label' => false, 'empty' => true, 'options' => @$options['Decisionsanctionep58']['decision'], 'value' => @$dossierep['Sanctionep58']['Decisionsanctionep58'][0]['decision'] ) ),
 					array( 'id' => "Decisionsanctionep58{$i}ColumnDecision", 'colspan' => 2 )
