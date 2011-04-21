@@ -12,7 +12,7 @@
 <th>Rang du passage en EP</th>
 <th>Situation familiale</th>
 <th>Nombre d\'enfants</th>
-<th>Avis EP</th>
+<th colspan="2">Avis EP</th>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
@@ -35,13 +35,16 @@
 				@$dossierep['Nonrespectsanctionep93']['rgpassage'],
 				Set::enum( @$dossierep['Personne']['Foyer']['sitfam'], $options['Foyer']['sitfam'] ),
 				@$dossierep['Personne']['Foyer']['nbenfants'],
-				$form->input( "Nonrespectsanctionep93.{$i}.id", array( 'type' => 'hidden'/*, 'value' => $dossierep['Nonrespectsanctionep93']['id']*/ ) ).
-				$form->input( "Nonrespectsanctionep93.{$i}.dossierep_id", array( 'type' => 'hidden'/*, 'value' => $dossierep['Dossierep']['id']*/ ) ).
-				$form->input( "Decisionnonrespectsanctionep93.{$i}.id", array( 'type' => 'hidden'/*, 'value' => @$record['id']*/ ) ).
-				$form->input( "Decisionnonrespectsanctionep93.{$i}.passagecommissionep_id", array( 'type' => 'hidden' ) ).
-				$form->input( "Decisionnonrespectsanctionep93.{$i}.etape", array( 'type' => 'hidden', 'value' => 'ep' ) ).
-				$form->input( "Decisionnonrespectsanctionep93.{$i}.decision", array( 'type' => 'select', 'options' => $lineOptions, 'div' => false, 'label' => false ) ),
-				$form->input( "Decisionnonrespectsanctionep93.{$i}.raisonnonpassage", array( 'label' => false, 'type' => 'textarea', 'empty' => true ) )
+				array(
+					$form->input( "Nonrespectsanctionep93.{$i}.id", array( 'type' => 'hidden'/*, 'value' => $dossierep['Nonrespectsanctionep93']['id']*/ ) ).
+					$form->input( "Nonrespectsanctionep93.{$i}.dossierep_id", array( 'type' => 'hidden'/*, 'value' => $dossierep['Dossierep']['id']*/ ) ).
+					$form->input( "Decisionnonrespectsanctionep93.{$i}.id", array( 'type' => 'hidden'/*, 'value' => @$record['id']*/ ) ).
+					$form->input( "Decisionnonrespectsanctionep93.{$i}.passagecommissionep_id", array( 'type' => 'hidden' ) ).
+					$form->input( "Decisionnonrespectsanctionep93.{$i}.etape", array( 'type' => 'hidden', 'value' => 'ep' ) ).
+					$form->input( "Decisionnonrespectsanctionep93.{$i}.decision", array( 'type' => 'select', 'options' => $lineOptions, 'div' => false, 'label' => false ) ),
+					array( 'id' => "Decisionnonrespectsanctionep93{$i}ColumnDecision", 'colspan' => 2 )
+				),
+				$form->input( "Decisionnonrespectsanctionep93.{$i}.raisonnonpassage", array( 'label' => false, 'type' => 'textarea', 'empty' => true ) ),
 			)
 		);
 	}
@@ -52,9 +55,9 @@
 	document.observe("dom:loaded", function() {
 		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
 			$( 'Decisionnonrespectsanctionep93<?php echo $i;?>Decision' ).observe( 'change', function() {
-				afficheRaisonpassage( 'Decisionnonrespectsanctionep93<?php echo $i;?>Decision', [], 'Decisionnonrespectsanctionep93<?php echo $i;?>Raisonnonpassage' );
+				changeColspanRaisonNonPassage( 'Decisionnonrespectsanctionep93<?php echo $i;?>ColumnDecision', 'Decisionnonrespectsanctionep93<?php echo $i;?>Decision', [], 'Decisionnonrespectsanctionep93<?php echo $i;?>Raisonnonpassage' );
 			});
-			afficheRaisonpassage( 'Decisionnonrespectsanctionep93<?php echo $i;?>Decision', [], 'Decisionnonrespectsanctionep93<?php echo $i;?>Raisonnonpassage' );
+			changeColspanRaisonNonPassage( 'Decisionnonrespectsanctionep93<?php echo $i;?>ColumnDecision', 'Decisionnonrespectsanctionep93<?php echo $i;?>Decision', [], 'Decisionnonrespectsanctionep93<?php echo $i;?>Raisonnonpassage' );
 		<?php endfor;?>
 	});
 </script>

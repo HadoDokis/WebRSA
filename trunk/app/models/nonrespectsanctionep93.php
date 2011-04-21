@@ -243,9 +243,11 @@
 					else if( $niveauDecision == 'cg' ) {
 						if( !empty( $datas[$key]['Passagecommissionep'][0]['Decisionnonrespectsanctionep93'][1] ) ) { // Modification
 							$formData['Decisionnonrespectsanctionep93'][$key]['decision'] = @$datas[$key]['Passagecommissionep'][0]['Decisionnonrespectsanctionep93'][1]['decision'];
+							$formData['Decisionnonrespectsanctionep93'][$key]['raisonnonpassage'] = @$datas[$key]['Passagecommissionep'][0]['Decisionnonrespectsanctionep93'][1]['raisonnonpassage'];
 						}
 						else {
 							$formData['Decisionnonrespectsanctionep93'][$key]['decision'] = $dossierep['Passagecommissionep'][0]['Decisionnonrespectsanctionep93'][0]['decision'];
+							$formData['Decisionnonrespectsanctionep93'][$key]['raisonnonpassage'] = $dossierep['Passagecommissionep'][0]['Decisionnonrespectsanctionep93'][0]['raisonnonpassage'];
 						}
 					}
 				}
@@ -452,7 +454,7 @@
 					'Nonrespectsanctionep93.created',
 					'Nonrespectsanctionep93.modified',
 					'Decisionnonrespectsanctionep93.id',
-					'Decisionnonrespectsanctionep93.nonrespectsanctionep93_id',
+// 					'Decisionnonrespectsanctionep93.nonrespectsanctionep93_id',
 					'Decisionnonrespectsanctionep93.etape',
 					'Decisionnonrespectsanctionep93.decision',
 					'Decisionnonrespectsanctionep93.montantreduction',
@@ -475,7 +477,7 @@
 						'type'       => 'LEFT OUTER',
 						'foreignKey' => false,
 						'conditions' => array(
-							'Decisionnonrespectsanctionep93.nonrespectsanctionep93_id = Nonrespectsanctionep93.id',
+							'Decisionnonrespectsanctionep93.passagecommissionep_id = Passagecommissionep.id',
 							'Decisionnonrespectsanctionep93.etape' => 'ep'
 						),
 					),
