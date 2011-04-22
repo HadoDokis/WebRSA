@@ -329,7 +329,6 @@
 // debug($datas);
 			$formData = array();
 			foreach( $datas as $key => $dossierep ) {
-				$formData[$this->alias][$key]['id'] = @$datas[$key][$this->alias]['id'];
 				$formData['Decision'.Inflector::underscore( $this->alias )][$key]['passagecommissionep_id'] = $dossierep['Passagecommissionep'][0]['id'];
 				if( $niveauDecision == 'ep' ) {
 					if( isset( $datas[$key]['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0] ) ) { // Modification
@@ -361,19 +360,18 @@
 
 		public function saveDecisions( $data, $niveauDecision ) {
 			$success = true;
-			if ( isset( $data[$this->alias] ) && !empty( $data[$this->alias] ) && isset( $data['Decision'.Inflector::underscore( $this->alias )] ) && !empty( $data['Decision'.Inflector::underscore( $this->alias )] ) ) {
+			if ( isset( $data['Decision'.Inflector::underscore( $this->alias )] ) && !empty( $data['Decision'.Inflector::underscore( $this->alias )] ) ) {
 				foreach( $data['Decision'.Inflector::underscore( $this->alias )] as $key => $values ) {
 					if ( isset( $values['structurereferente_id'] ) ) $structurereferente = explode( '_', $values['structurereferente_id'] );
 					if ( isset( $structurereferente[1] ) && $values['decision'] == 'reorientation' ) {
 						$data['Decision'.Inflector::underscore( $this->alias )][$key]['structurereferente_id'] = $structurereferente[1];
 					}
-					elseif ( $values['decision'] == 'maintienref' ) {
+					else {
 						$data['Decision'.Inflector::underscore( $this->alias )][$key]['structurereferente_id'] = null;
 						$data['Decision'.Inflector::underscore( $this->alias )][$key]['typeorient_id'] = null;
 					}
-					$data['Decision'.Inflector::underscore( $this->alias )][$key][Inflector::underscore( $this->alias ).'_id'] = $data[$this->alias][$key]['id'];
 				}
-				$success = $this->{'Decision'.Inflector::underscore($this->alias)}->saveAll( Set::extract( $data, '/'.'Decision'.Inflector::underscore( $this->alias ) ), array( 'atomic' => false ) );
+				$success = $this->Dossierep->Passagecommissionep->{'Decision'.Inflector::underscore($this->alias)}->saveAll( Set::extract( $data, '/'.'Decision'.Inflector::underscore( $this->alias ) ), array( 'atomic' => false ) );
 
 				$this->Dossierep->Passagecommissionep->updateAll(
 					array( 'Passagecommissionep.etatdossierep' => '\'decision'.$niveauDecision.'\'' ),

@@ -39,7 +39,6 @@
 					)
 				),
 
-				$form->input( "Nonorientationproep58.{$i}.id", array( 'type' => 'hidden' ) ).
 				$form->input( "Decisionnonorientationproep58.{$i}.id", array( 'type' => 'hidden' ) ).
 				$form->input( "Decisionnonorientationproep58.{$i}.passagecommissionep_id", array( 'type' => 'hidden' ) ).
 				$form->input( "Decisionnonorientationproep58.{$i}.etape", array( 'type' => 'hidden', 'value' => 'ep' ) ).
