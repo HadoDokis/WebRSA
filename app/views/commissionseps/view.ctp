@@ -142,13 +142,13 @@
 				<ul class="actionMenu">
 				<?php
 					echo '<li>'.$xhtml->editLink(
-						__d('Commissionep','Commissionep.edit',true),
+						__d('commissionep','Commissionep.edit',true),
 						array( 'controller' => 'membreseps', 'action' => 'editliste', $commissionep['Commissionep']['ep_id'], $commissionep['Commissionep']['id'] ),
 						in_array( 'membreseps::editliste', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] )
 					).' </li>';
 
 					echo '<li>'.$xhtml->presenceLink(
-						__d('Commissionep','Commissionep::presence',true),
+						__d('commissionep','Commissionep::presence',true),
 						array( 'controller' => 'membreseps', 'action' => 'editpresence', $commissionep['Commissionep']['ep_id'], $commissionep['Commissionep']['id'] ),
 						in_array( 'membreseps::editpresence', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] )
 					).' </li>';
