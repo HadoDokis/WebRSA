@@ -326,7 +326,8 @@
 								'dossierep_id' => $this->Nonrespectsanctionep93->Dossierep->id,
 								'historiqueetatpe_id' => $item['id'],
 								'origine' => 'radiepe',
-								'rgpassage' => $rgpassage
+								'rgpassage' => $rgpassage,
+								'active' => 0
 							)
 						);
 
