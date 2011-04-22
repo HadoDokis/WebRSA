@@ -263,10 +263,7 @@ CREATE UNIQUE INDEX decisionsreorientationseps93_passagecommissionep_id_etape_id
 CREATE UNIQUE INDEX decisionssaisinespdoseps66_passagecommissionep_id_etape_idx ON decisionssaisinespdoseps66( passagecommissionep_id, etape );
 CREATE UNIQUE INDEX decisionsdefautsinsertionseps66_passagecommissionep_id_etape_idx ON decisionsdefautsinsertionseps66( passagecommissionep_id, etape );
 CREATE UNIQUE INDEX decisionsnonrespectssanctionseps93_passagecommissionep_id_etape_idx ON decisionsnonrespectssanctionseps93( passagecommissionep_id, etape );
-CREATE UNIQUE INDEX decisionsnonorientationsproseps93_passagecommissionep_id_etape_idx ON decisionsnonorientationsproseps93( passagecommissionep_id, etape );
-CREATE UNIQUE INDEX decisionsnonorientationsproseps58_passagecommissionep_id_etape_idx ON decisionsnonorientationsproseps58( passagecommissionep_id, etape );
-CREATE UNIQUE INDEX decisionsregressionsorientationseps58_passagecommissionep_id_etape_idx ON decisionsregressionsorientationseps58( passagecommissionep_id, etape );
-CREATE UNIQUE INDEX decisionssanctionseps58_passagecommissionep_id_etape_idx ON decisionssanctionseps58( passagecommissionep_id, etape );*/
+CREATE UNIQUE INDEX decisionsnonorientationsproseps93_passagecommissionep_id_etape_idx ON decisionsnonorientationsproseps93( passagecommissionep_id, etape );*/
 
 -- *****************************************************************************
 -- 20110420, nonrespectsanctionep93
@@ -282,6 +279,14 @@ ALTER TABLE decisionsnonrespectssanctionseps93 ALTER COLUMN decision TYPE TYPE_D
 ALTER TABLE nonrespectssanctionseps93 ALTER COLUMN decision TYPE TYPE_DECISIONSANCTIONEP93 USING CAST(decision AS TYPE_DECISIONSANCTIONEP93);
 ALTER TABLE decisionsnonrespectssanctionseps93 ADD COLUMN raisonnonpassage TEXT DEFAULT NULL;
 CREATE UNIQUE INDEX decisionsnonrespectssanctionseps93_passagecommissionep_id_etape_idx ON decisionsnonrespectssanctionseps93( passagecommissionep_id, etape );
+
+-- *****************************************************************************
+-- 20110421, les thématiques du 58
+-- *****************************************************************************
+
+CREATE UNIQUE INDEX decisionsnonorientationsproseps58_passagecommissionep_id_etape_idx ON decisionsnonorientationsproseps58( passagecommissionep_id, etape );
+CREATE UNIQUE INDEX decisionsregressionsorientationseps58_passagecommissionep_id_etape_idx ON decisionsregressionsorientationseps58( passagecommissionep_id, etape );
+CREATE UNIQUE INDEX decisionssanctionseps58_passagecommissionep_id_etape_idx ON decisionssanctionseps58( passagecommissionep_id, etape );
 
 -- *****************************************************************************
 COMMIT;
