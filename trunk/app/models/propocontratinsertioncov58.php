@@ -205,7 +205,6 @@
 		*/
 		
 		public function saveDecision($data, $cov58) {
-		debug($data);
 			$success = true;
 			$dossier = $this->find(
 				'first',
@@ -241,7 +240,8 @@
 					'decision_ci' => 'V'
 				)
 			);
-			$success = $this->Dossiercov58->Personne->Contratinsertion->save($contratinsertion) && $success;
+			$this->Dossiercov58->Personne->Contratinsertion->create( $contratinsertion ) && $success;
+			$success = $this->Dossiercov58->Personne->Contratinsertion->save() && $success;
 			
 			return $success;
 		}
