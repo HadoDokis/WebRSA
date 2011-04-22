@@ -400,6 +400,17 @@
 											"{$tableDecisionTraite}.etape" => $niveauDecision
 										)
 									)
+								).' )',
+								'"Passagecommissionep"."dossierep_id" IN ( '. $this->Passagecommissionep->Dossierep->sq(
+									array(
+										'fields' => array(
+											'dossierseps.id'
+										),
+										'alias' => 'dossierseps',
+										'conditions' => array(
+											'dossierseps.themeep' => $themeTraite
+										)
+									)
 								).' )'
 							)
 						);
