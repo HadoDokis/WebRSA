@@ -26,7 +26,7 @@
                     <th>Prénom</th>
                     <th>Date de naissance</th>
                     <th>Soumis à droit et devoir</th>
-                    <th colspan="2" class="action">Actions</th>
+                    <th colspan="3" class="action">Actions</th>
                     <th class="innerTableHeader">Informations complémentaires</th>
                 </tr>
             </thead>
@@ -65,6 +65,11 @@
                                     'Éditer la personne « '.$title.' »',
                                     array( 'controller' => 'personnes', 'action' => 'edit', $personne['Personne']['id'] ),
                                     $permissions->check( 'personnes', 'edit' )
+                                ),
+                                $xhtml->fileLink(
+                                    'Lier des fichiers',
+                                    array( 'controller' => 'personnes', 'action' => 'filelink', $personne['Personne']['id'] ),
+                                    $permissions->check( 'personnes', 'filelink' )
                                 ),
                                 array( $innerTable, array( 'class' => 'innerTableCell' ) ),
                             ),

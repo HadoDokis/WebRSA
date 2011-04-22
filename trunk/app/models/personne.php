@@ -5,7 +5,14 @@
 
 		public $displayField = 'nom_complet';
 
-		public $actsAs = array( 'ValidateTranslate' );
+		public $actsAs = array(
+            'ValidateTranslate',
+            'Enumerable' => array(
+                'fields' => array(
+                    'haspiecejointe'
+                )
+            )
+        );
 
 		public $validate = array(
 			// Qualité
@@ -438,7 +445,23 @@
 				'exclusive' => '',
 				'finderQuery' => '',
 				'counterQuery' => ''
-			)
+			),
+			'Fichiermodule' => array(
+                'className' => 'Fichiermodule',
+                'foreignKey' => false,
+                'dependent' => false,
+                'conditions' => array(
+                    'Fichiermodule.modele = \'Personne\'',
+                    'Fichiermodule.fk_value = {$__cakeID__$}'
+                ),
+                'fields' => '',
+                'order' => '',
+                'limit' => '',
+                'offset' => '',
+                'exclusive' => '',
+                'finderQuery' => '',
+                'counterQuery' => ''
+            )
 		);
 
 

@@ -93,3 +93,16 @@ msgstr "N° de téléphone"
 
 msgid "Foyer.Dossier.matricule"
 msgstr "N° CAF"
+
+###############################################################################
+msgid "Personnes::filelink"
+msgstr "Liste des fichiers liés à la Personne"
+
+msgid "Personne.haspiecejointe"
+msgstr "Ajouter une pièce jointe"
+
+msgid "ENUM::HASPIECEJOINTE::1"
+msgstr "Oui"
+
+msgid "ENUM::HASPIECEJOINTE::0"
+msgstr "Non"
