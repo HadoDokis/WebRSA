@@ -236,6 +236,15 @@ UPDATE apres SET haspiecejointe = '0'::TYPE_BOOLEANNUMBER WHERE haspiecejointe I
 ALTER TABLE apres ALTER COLUMN haspiecejointe SET NOT NULL;
 
 SELECT alter_table_drop_column_if_exists ('public', 'dsps', 'haspiecejointe');
+
+-- -------------------------------------------------------------------------------------------------------------
+-- 20110420: Ajout d'un champ pour sélectionner si on ajoute des fichiers ou non aux Personnes
+-- -------------------------------------------------------------------------------------------------------------
+SELECT add_missing_table_field ('public', 'personnes', 'haspiecejointe', 'type_booleannumber');
+ALTER TABLE personnes ALTER COLUMN haspiecejointe SET DEFAULT '0'::TYPE_BOOLEANNUMBER;
+UPDATE personnes SET haspiecejointe = '0'::TYPE_BOOLEANNUMBER WHERE haspiecejointe IS NULL;
+ALTER TABLE personnes ALTER COLUMN haspiecejointe SET NOT NULL;
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
