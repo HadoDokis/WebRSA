@@ -41,7 +41,7 @@
         } );
 
         Event.observe( $( 'DspLibcooraccoemploi' ), 'keypress', function(event) {
-            textareaMakeItCount('DspLibcooraccoemploi', 10, true );
+            textareaMakeItCount('DspLibcooraccoemploi', 100, true );
         });
 	} );
 </script>
