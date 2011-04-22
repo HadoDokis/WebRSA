@@ -28,7 +28,7 @@
         <fieldset>
             <?php echo $xform->input( 'Critereentretien.index', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
 
-            <legend>Filtrer par APRE</legend>
+            <legend>Filtrer par Entretiens</legend>
             <?php
                 $valueDossierDernier = isset( $this->data['Dossier']['dernier'] ) ? $this->data['Dossier']['dernier'] : true;
                 echo $default2->subform(
@@ -61,7 +61,7 @@
 
 <?php if( isset( $entretiens ) ):?>
     <?php if( empty( $entretiens ) ):?>
-        <?php $message = 'Aucun entretien n\'a été trouvée.';?>
+        <?php $message = 'Aucun entretien n\'a été trouvé.';?>
         <p class="notice"><?php echo $message;?></p>
     <?php else:?>
 <?php $pagination = $xpaginator->paginationBlock( 'Entretien', $this->passedArgs ); ?>
