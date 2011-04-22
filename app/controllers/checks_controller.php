@@ -102,9 +102,9 @@
 				// app/controllers/cohortescomitesapres_controller.php:414
 				// app/controllers/cohortescomitesapres_controller.php:418
 				foreach( array( 'Versement' ) as $typepaiement ) {
-					foreach( array( 'formation', 'horsformation' ) as $typeformation ) {
+					foreach( array( 'Formation', 'HorsFormation' ) as $typeformation ) {
 						foreach( array( 'Refus', 'Ajournement', 'Accord' ) as $typedecision ) {
-							foreach( array( 'tiersprestataire', 'beneficiaire', 'tiers' ) as $dest ) {
+							foreach( array( 'referent', 'beneficiaire', 'tiers' ) as $dest ) {
 								if( ( $dest == 'beneficiaire' || $dest == 'referent' || $dest == 'tiers' ) && ( $typedecision == 'Refus' || $typedecision == 'Ajournement' ) ) {
 									$modeles[] = "APRE/DecisionComite/Refus/Refus{$dest}.odt";
 								}
@@ -124,7 +124,7 @@
 			}
 
 			if( Configure::read( 'Cg.departement' ) != 58 ) {
-				foreach( array( 'tiersprestataire', 'beneficiaire', 'tiers' ) as $dest ) {
+				foreach( array( 'referent', 'beneficiaire', 'tiers' ) as $dest ) {
 				// app/controllers/recoursapres_controller.php:233
 				foreach( array( 'Oui', 'Non' ) as $recoursapre ) {
 					$modeles[] = "APRE/DecisionComite/Recours/recours{$recoursapre}{$dest}.odt";
