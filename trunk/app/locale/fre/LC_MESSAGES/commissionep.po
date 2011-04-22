@@ -68,10 +68,10 @@ msgid "Commissionseps::ordredujour"
 msgstr "4. Imprimer l'ordre du jour"
 
 msgid "Commissionseps::traiterep"
-msgstr "5. Emettre l'avis de l'EP"
+msgstr "6. Emettre l'avis de l'EP"
 
 msgid "Commissionseps::finaliserep"
-msgstr "6. Finaliser la commission d'EP"
+msgstr "7. Finaliser la commission d'EP"
 
 msgid "Commissionseps::impressionpv"
 msgstr "8. Imprimer le PV de la commission"

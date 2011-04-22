@@ -421,6 +421,7 @@
 
 			$this->layout = '';
 			$this->set( compact( 'relances' ) );
+			$this->_setOptions();
 		}
 
 		/**

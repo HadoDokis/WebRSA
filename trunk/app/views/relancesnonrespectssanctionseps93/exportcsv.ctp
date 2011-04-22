@@ -19,6 +19,14 @@
 	);
 
 	foreach( $relances as $relance ) {
+		$etatdossierep = $relance['Passagecommissionep']['etatdossierep'];
+		if( empty( $etatdossierep ) && !empty( $relance['Dossierep']['id'] ) ) {
+			$etatdossierep = 'En attente';
+		}
+		else {
+			$etatdossierep = Set::enum( $relance['Passagecommissionep']['etatdossierep'], $options['Passagecommissionep']['etatdossierep'] );
+		}
+
 		$row = array(
 			h( $relance['Dossier']['matricule'] ),
 			h( "{$relance['Personne']['nom']} {$relance['Personne']['prenom']}" ),
@@ -29,7 +37,7 @@
 			h( $relance['Contratinsertion']['nbjours'] ),
 			$locale->date( 'Locale->date', $relance['Orientstruct']['date_impression'] ),
 			h( $relance['Orientstruct']['nbjours'] ),
-			h( $relance['Dossierep']['etapedossierep'] ),
+			h( $etatdossierep ),
 			$locale->date( 'Locale->date', $relance['Relancenonrespectsanctionep93']['daterelance'] ),
 			( ( $relance['Relancenonrespectsanctionep93']['numrelance'] < 2 ) ? '1ère relance' : "{$relance['Relancenonrespectsanctionep93']['numrelance']}ème relance" )
 		);
