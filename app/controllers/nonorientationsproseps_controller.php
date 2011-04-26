@@ -2,17 +2,17 @@
 	App::import('Sanitize');
 
 	class NonorientationsprosepsController extends AppController {
-	
+
 		public $helpers = array( 'Default2', 'Xpaginator' );
-		
+
 		public $uses = array( 'Nonorientationproep58',/* 'Nonorientationproep66',*/ 'Nonorientationproep93' );
-		
+
 		public function beforeFilter() {
 			ini_set('max_execution_time', 0);
 			$this->modelClass = 'Nonorientationproep'.Configure::read( 'Cg.departement' );
 			parent::beforeFilter();
 		}
-		
+
 		/**
 		*
 		*/
@@ -21,7 +21,7 @@
 			$this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'index' ) ) ) );
 			parent::__construct();
 		}
-		
+
 		public function index() {
 			$cohorte = array();
 			if ( !empty( $this->data ) ) {
@@ -31,12 +31,12 @@
 					$this->_setFlashResult( 'Save', $success );
 					if ( $success ) {
 						$this->{$this->modelClass}->commit();
-						$this->redirect( array( 'action' => 'index' ) );
 					}
 					else {
 						$this->{$this->modelClass}->rollback();
 					}
 				}
+
 				$this->paginate = $this->{$this->modelClass}->searchNonReoriente($this->data);
 				$this->paginate['limit'] = 10;
 				$cohorte = $this->paginate( $this->{$this->modelClass}->Orientstruct );
@@ -45,5 +45,5 @@
 			$this->set( compact( 'cohorte' ) );
 		}
 	}
-	
+
 ?>
