@@ -24,3 +24,9 @@ msgstr "Réorientation"
 
 msgid "ENUM::DECISION::maintienref"
 msgstr "Maintien du référent"
+
+msgid "ENUM::DECISION::annule"
+msgstr "Annulé"
+
+msgid "ENUM::DECISION::reporte"
+msgstr "Reporté"

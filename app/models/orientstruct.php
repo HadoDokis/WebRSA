@@ -428,10 +428,13 @@
 		*		- CG 93
 		*			* Nonrespectsanctionep93 -> ne débouche pas sur une orientation: '1reduction', '1maintien', '1sursis', '2suspensiontotale', '2suspensionpartielle', '2maintien'
 		*			* Reorientationep93 -> peut déboucher sur une réorientation
+		*			* Nonorientationproep93 -> peut déboucher sur une orientation
 		*		- CG 66
 		*			* Defautinsertionep66 -> peut déboucher sur une orientation: 'suspensionnonrespect', 'suspensiondefaut', 'maintien', 'reorientationprofverssoc', 'reorientationsocversprof'
 		*			* Saisinebilanparcoursep66 -> peut déboucher sur une réorientation
 		*			* Saisinepdoep66 -> 'CAN', 'RSP' -> ne débouche pas sur une orientation
+		*		- CG 58
+		*			* Nonorientationproep58 -> peut déboucher sur une orientation
 		* FIXME -> CG 93: s'il existe une procédure de relance, on veut faire signer un contrat,
 					mais on veut peut-être aussi demander une réorientation.
 		* FIXME -> doit-on vérifier si:
@@ -451,7 +454,9 @@
 							'defautsinsertionseps66',
 							'saisinesbilansparcourseps66',
 							'nonorientationsproseps58',
-							'regressionsorientationseps58'
+							'regressionsorientationseps58',
+							'nonorientationsproseps93',
+							'nonorientationsproseps58',
 						),
 						'Dossierep.id NOT IN ( '.$this->Personne->Dossierep->Passagecommissionep->sq(
 							array(
@@ -468,7 +473,7 @@
 					'contain' => false
 				)
 			);
-			
+
 			$toppersdrodevorsa = 1;
 			if( Configure::read( 'AjoutOrientationPossible.toppersdrodevorsa' ) != NULL ) {
                 $toppersdrodevorsa = Configure::read( 'AjoutOrientationPossible.toppersdrodevorsa' );

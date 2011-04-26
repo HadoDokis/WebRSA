@@ -10,7 +10,8 @@
 		public $actsAs = array(
 			'Autovalidate',
 			'ValidateTranslate',
-			'Enumerable'
+			'Enumerable',
+			'Formattable'
 		);
 
 		public $belongsTo = array(
@@ -340,7 +341,7 @@
 					}
 				}
 				elseif( $niveauDecision == 'cg' ) {
-					if( !empty( $datas[$key][$this->alias]['Decision'.Inflector::underscore( $this->alias )][1] ) ) { // Modification
+					if( !empty( $datas[$key]['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0] ) ) { // Modification
 						$formData['Decision'.Inflector::underscore( $this->alias )][$key]['id'] = @$datas[$key]['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0]['id'];
 					}
 					$formData['Decision'.Inflector::underscore( $this->alias )][$key]['decision'] = @$datas[$key]['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0]['decision'];
@@ -349,6 +350,7 @@
 					$formData['Decision'.Inflector::underscore( $this->alias )][$key]['typeorient_id'] = @$datas[$key]['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0]['typeorient_id'];
 				}
 			}
+// debug( $datas );
 // debug( $formData );
 
 			return $formData;
@@ -372,7 +374,6 @@
 					}
 				}
 				$success = $this->Dossierep->Passagecommissionep->{'Decision'.Inflector::underscore($this->alias)}->saveAll( Set::extract( $data, '/'.'Decision'.Inflector::underscore( $this->alias ) ), array( 'atomic' => false ) );
-
 				$this->Dossierep->Passagecommissionep->updateAll(
 					array( 'Passagecommissionep.etatdossierep' => '\'decision'.$niveauDecision.'\'' ),
 					array( '"Passagecommissionep"."id"' => Set::extract( $data, '/Decision'.Inflector::underscore( $this->alias ).'/passagecommissionep_id' ) )
@@ -458,5 +459,53 @@
 			return $success;
 		}
 
+		/**
+		*
+		*/
+
+		public function qdProcesVerbal() {
+			$modele = 'Nonorientationproep'.Configure::read( 'Cg.departement' );
+			$modeleDecisions = 'Decisionnonorientationproep'.Configure::read( 'Cg.departement' );
+
+			return array(
+				'fields' => array(
+					"{$modele}.id",
+					"{$modele}.dossierep_id",
+					"{$modele}.orientstruct_id",
+					"{$modele}.created",
+					"{$modele}.modified",
+					"{$modele}.user_id",
+					"{$modeleDecisions}.id",
+					"{$modeleDecisions}.etape",
+					"{$modeleDecisions}.decision",
+					"{$modeleDecisions}.typeorient_id",
+					"{$modeleDecisions}.structurereferente_id",
+					"{$modeleDecisions}.commentaire",
+					"{$modeleDecisions}.created",
+					"{$modeleDecisions}.modified",
+					"{$modeleDecisions}.passagecommissionep_id",
+					"{$modeleDecisions}.raisonnonpassage",
+				),
+				'joins' => array(
+					array(
+						'table'      => Inflector::tableize( $modele ),
+						'alias'      => $modele,
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array( "{$modele}.dossierep_id = Dossierep.id" ),
+					),
+					array(
+						'table'      => Inflector::tableize( $modeleDecisions ),
+						'alias'      => $modeleDecisions,
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array(
+							"{$modeleDecisions}.passagecommissionep_id = Passagecommissionep.id",
+							"{$modeleDecisions}.etape" => 'ep'
+						),
+					),
+				)
+			);
+		}
 	}
 ?>

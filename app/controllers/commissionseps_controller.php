@@ -78,8 +78,8 @@
 				$this->Commissionep->Dossierep->Saisinebilanparcoursep66->Decisionsaisinebilanparcoursep66->enums(),
 				$this->Commissionep->Dossierep->Nonrespectsanctionep93->Decisionnonrespectsanctionep93->enums(),
 				$this->Commissionep->Dossierep->Nonrespectsanctionep93->enums(),
-				$this->Commissionep->Dossierep->Defautinsertionep66->enums(),
-				$this->Commissionep->Dossierep->Nonorientationproep93->Decisionnonorientationproep93->enums(),*/
+				$this->Commissionep->Dossierep->Defautinsertionep66->enums(),*/
+				$this->Commissionep->Passagecommissionep->Decisionnonorientationproep93->enums(),
 				$this->Commissionep->Passagecommissionep->Dossierep->Nonrespectsanctionep93->enums(),
 				$this->Commissionep->Passagecommissionep->Decisionnonrespectsanctionep93->enums(),
 				$this->Commissionep->Passagecommissionep->Decisionnonorientationproep58->enums(),
