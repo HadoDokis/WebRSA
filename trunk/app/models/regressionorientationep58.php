@@ -70,7 +70,8 @@
 						)
 					);
 
-					$success = $this->Structurereferente->Orientstruct->save( $orientstruct ) && $success;
+					$this->Structurereferente->Orientstruct->create( $orientstruct );
+					$success = $this->Structurereferente->Orientstruct->save() && $success;
 					$success = $this->Structurereferente->Orientstruct->generatePdf( $this->Structurereferente->Orientstruct->id, $dossierep['Regressionorientationep58']['user_id'] ) && $success;
 				}
 			}
