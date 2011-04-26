@@ -60,9 +60,8 @@
 			$success = true;
 
 			if( $niveauDecisionFinale == "decision{$etape}" ) {
-
 				foreach( $dossierseps as $dossierep ) {
-					if( !isset( $dossierep['Dossierep']['Passagecommissionep'][0]['Decisionnonorientationproep58'][0]['decision'] ) ) {
+					if( !isset( $dossierep['Dossierep']['Passagecommissionep'][0]['Decisionnonorientationproep58'][0]['decision'] ) || empty( $dossierep['Dossierep']['Passagecommissionep'][0]['Decisionnonorientationproep58'][0]['decision'] ) ) {
 						$success = false;
 					}
 					elseif ( $dossierep['Dossierep']['Passagecommissionep'][0]['Decisionnonorientationproep58'][0]['decision'] == 'reorientation' ) {
@@ -81,11 +80,10 @@
 								'user_id' => $dossierep['Nonorientationproep58']['user_id']
 							)
 						);
-
 						$this->Orientstruct->create( $orientstruct );
 						$success = $this->Orientstruct->save() && $success;
 						$success = $this->Orientstruct->generatePdf( $this->Orientstruct->id, $dossierep['Nonorientationproep58']['user_id'] ) && $success;
-			}
+					}
 				}
 			}
 
