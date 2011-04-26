@@ -67,23 +67,13 @@
 		);
 
 		/**
-		*
+		* TODO:
+		* 	- plus générique - scinder les CG
+		*	- est-ce que ça a  du sens de mettre typeorient/structurereferente/referent dans $options['Commissionep']['xxxx']
 		*/
 
 		protected function _setOptions() {
-			/// TODO: plus générique - scinder les CG
 			$options = Set::merge(
-				$this->Commissionep->Passagecommissionep->Decisionreorientationep93->enums(),
-				/*$this->Commissionep->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->enums(),
-				$this->Commissionep->Dossierep->Saisinebilanparcoursep66->Decisionsaisinebilanparcoursep66->enums(),
-				$this->Commissionep->Dossierep->Nonrespectsanctionep93->Decisionnonrespectsanctionep93->enums(),
-				$this->Commissionep->Dossierep->Nonrespectsanctionep93->enums(),
-				$this->Commissionep->Dossierep->Defautinsertionep66->enums(),*/
-				$this->Commissionep->Passagecommissionep->Decisionnonorientationproep93->enums(),
-				$this->Commissionep->Passagecommissionep->Dossierep->Nonrespectsanctionep93->enums(),
-				$this->Commissionep->Passagecommissionep->Decisionnonrespectsanctionep93->enums(),
-				$this->Commissionep->Passagecommissionep->Decisionnonorientationproep58->enums(),
-				$this->Commissionep->Passagecommissionep->Decisionsanctionep58->enums(),
 				$this->Commissionep->Passagecommissionep->Dossierep->enums(),
 				$this->Commissionep->enums(),
 				$this->Commissionep->CommissionepMembreep->enums(),
@@ -91,26 +81,46 @@
 				array( 'Foyer' => array( 'sitfam' => $this->Option->sitfam() ) )
 			);
 
-			//$options['Commissionep']['ep_id'] = $this->Commissionep->Ep->find( 'list' );
+			$options[$this->modelClass]['ep_id'] = $this->{$this->modelClass}->Ep->listOptions();
+			$options['Ep']['regroupementep_id'] = $this->{$this->modelClass}->Ep->Regroupementep->find( 'list' );
+
+			// Ajout des enums pour les thématiques du CG uniquement
+			foreach( $this->Commissionep->Ep->Regroupementep->themes() as $theme ) {
+				$modeleDecision = Inflector::classify( "decision{$theme}" );
+				$options = Set::merge(
+					$options,
+					$this->Commissionep->Passagecommissionep->{$modeleDecision}->enums()
+				);
+			}
+
+			// Suivant l'action demandée
 			if( !in_array( $this->action, array( 'add', 'edit', 'index' ) ) ) {
-				/// TODO: est-ce que ça a  du sens ?
 				$options['Commissionep']['typeorient_id'] = $this->Commissionep->Passagecommissionep->Dossierep->Personne->Orientstruct->Typeorient->listOptions();
 				$options['Commissionep']['structurereferente_id'] = $this->Commissionep->Passagecommissionep->Dossierep->Personne->Orientstruct->Structurereferente->list1Options();
 				$options['Commissionep']['referent_id'] = $this->Commissionep->Passagecommissionep->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->Referent->listOptions();
-				$options['Decisionsaisinepdoep66']['decisionpdo_id'] = $this->Commissionep->Passagecommissionep->Dossierep->Saisinepdoep66->Decisionsaisinepdoep66->Decisionpdo->find('list');
-			}/*
-			else{
-				$options[$this->modelClass]['structurereferente_id'] = $this->{$this->modelClass}->Dossierep->Personne->Orientstruct->Structurereferente->listOptions();
-			}*/
-			$options[$this->modelClass]['ep_id'] = $this->{$this->modelClass}->Ep->listOptions();
-			$options['Ep']['regroupementep_id'] = $this->{$this->modelClass}->Ep->Regroupementep->find( 'list' );
-			$options['Decisiondefautinsertionep66']['typeorient_id'] = $this->Commissionep->Passagecommissionep->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->Typeorient->listOptions();
-			$options['Decisiondefautinsertionep66']['structurereferente_id'] = $this->Commissionep->Passagecommissionep->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->Structurereferente->list1Options();//listOptions
-			$options['Decisiondefautinsertionep66']['referent_id'] = $this->Commissionep->Passagecommissionep->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->Referent->listOptions();
+				if( Configure::read( 'Cg.departement' ) == 66 ) {
+					$options['Decisionsaisinepdoep66']['decisionpdo_id'] = $this->Commissionep->Passagecommissionep->Dossierep->Saisinepdoep66->Decisionsaisinepdoep66->Decisionpdo->find('list');
+				}
+			}
+
+			// Suivant le CG
+			if( Configure::read( 'Cg.departement' ) == 66 ) {
+				$options['Decisiondefautinsertionep66']['typeorient_id'] = $this->Commissionep->Passagecommissionep->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->Typeorient->listOptions();
+				$options['Decisiondefautinsertionep66']['structurereferente_id'] = $this->Commissionep->Passagecommissionep->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->Structurereferente->list1Options();//listOptions
+				$options['Decisiondefautinsertionep66']['referent_id'] = $this->Commissionep->Passagecommissionep->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->Referent->listOptions();
+			}
+			else if( Configure::read( 'Cg.departement' ) == 93 ) {
+				$options = Set::merge(
+					$options,
+					$this->Commissionep->Passagecommissionep->Dossierep->Nonrespectsanctionep93->enums()
+				);
+			}
+			else if( Configure::read( 'Cg.departement' ) == 58 ) {
+				$this->set( 'listesanctionseps58', $this->Commissionep->Passagecommissionep->Dossierep->Sanctionep58->Listesanctionep58->find( 'list' ) );
+			}
+
 			$this->set( compact( 'options' ) );
 			$this->set( 'typevoie', $this->Option->typevoie() );
-
-			$this->set( 'listesanctionseps58', $this->Commissionep->Passagecommissionep->Dossierep->Sanctionep58->Listesanctionep58->find( 'list' ) );
 		}
 
 		/**
