@@ -30,7 +30,8 @@
 					'origine',
 					'type'
 				)
-			)
+			),
+			'Formattable'
 		);
 
 		public $belongsTo = array(
@@ -453,7 +454,7 @@
 								'structurereferente_id' => @$dossierep['Decisiondefautinsertionep66'][0]['structurereferente_id'],
 							)
 						);
-						
+
 						$success = $oBilanparcours66->sauvegardeBilan( $nvdossierep ) && $success;
 					}
 					/*// TODO Si maintien, alors, RDV référent
@@ -644,7 +645,7 @@
 					$queryData['conditions'][] = $this->Canton->queryConditions( $canton );
 				}
 			}
-			
+
 			if ( !empty( $identifiantpe ) ) {
                 $queryData['conditions'][] = array( 'Historiqueetatpe.identifiantpe' => $identifiantpe );
             }

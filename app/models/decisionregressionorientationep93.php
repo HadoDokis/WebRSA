@@ -22,9 +22,10 @@
 				)
 			),
 			'Autovalidate',
-			'ValidateTranslate'
+			'ValidateTranslate',
+			'Formattable'
 		);
-		
+
 		public $belongsTo = array(
 			'Regressionorientationep93' => array(
 				'className' => 'Regressionorientationep93',

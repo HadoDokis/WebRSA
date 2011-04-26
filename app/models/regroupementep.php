@@ -23,7 +23,8 @@
 					'regressionorientationep58',
 					'sanctionep58'
 				)
-			)
+			),
+			'Formattable'
 		);
 
 		public $hasMany = array(

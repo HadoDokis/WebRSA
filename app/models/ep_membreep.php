@@ -2,8 +2,12 @@
 	class EpMembreep extends AppModel
 	{
 		public $name = 'EpMembreep';
-		
-		public $actsAs = array( 'Autovalidate' );
+
+		public $actsAs = array(
+			'Autovalidate',
+			'Formattable',
+			'ValidateTranslate'
+		);
 
 		public $belongsTo = array(
 			'Ep' => array(

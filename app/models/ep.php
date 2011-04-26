@@ -8,6 +8,7 @@
 		public $actsAs = array(
 			'Autovalidate',
 			'ValidateTranslate',
+			'Formattable'
 			/*'Enumerable' => array(
 				'fields' => array(
 					// Thèmes 66

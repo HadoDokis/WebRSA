@@ -1,15 +1,16 @@
 <?php
 
 	class Listesanctionep58 extends AppModel {
-		
+
 		public $name = 'Listesanctionep58';
-		
+
 		public $displayField = 'sanction';
-		
+
 		public $actsAs = array(
-			'Autovalidate'
+			'Autovalidate',
+			'Formattable'
 		);
-		
+
 		public $hasMany = array(
 			'Sanctionep58' => array(
 				'className' => 'Sanctionep58',
@@ -25,17 +26,17 @@
 				'counterQuery' => ''
 			),
 		);
-		
+
 		public function checkValideListe() {
 			$return = true;
-			
+
 			$sanctions = $this->find(
 				'all',
 				array(
 					'order' => array( 'Listesanctionep58.rang ASC' )
 				)
 			);
-			
+
 			if ( !empty( $sanctions ) ) {
 				$maxRang = 0;
 				foreach( $sanctions as $sanction ) {
@@ -47,21 +48,21 @@
 					$return = false;
 				}
 			}
-			
+
 			return $return;
 		}
-		
+
 		public function listOptions() {
 			$listesanctions = $this->find( 'all' );
-			
+
 			$return = array();
 			foreach( $listesanctions as $sanction ) {
 				$return[$sanction['Listesanctionep58']['rang']] = $sanction['Listesanctionep58']['sanction'];
 			}
-			
+
 			return $return;
 		}
-		
+
 	}
 
 ?>

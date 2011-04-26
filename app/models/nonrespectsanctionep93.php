@@ -24,7 +24,8 @@
 				)
 			),
 			'Autovalidate',
-			'ValidateTranslate'
+			'ValidateTranslate',
+			'Formattable'
 		);
 
 		public $belongsTo = array(
