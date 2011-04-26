@@ -12,10 +12,11 @@
 					'presence',
 					'suppleant' => array( 'domain' => 'default', 'type' => 'booleannumber' )
 				)
-			)
-		);		
-		
-		
+			),
+			'Formattable'
+		);
+
+
 		public $belongsTo = array(
 			'Membreep' => array(
 				'className' => 'Membreep',
@@ -32,6 +33,6 @@
 				'fields' => '',
 				'order' => ''
 			)
-		);		
-	}	
+		);
+	}
 ?>

@@ -30,7 +30,8 @@
 					'origine',
 					'type'
 				)
-			)
+			),
+			'Formattable'
 		);
 
 		public $belongsTo = array(
@@ -121,7 +122,7 @@
 					'contain' => false
 				)
 			);
-			
+
 			$personnesEnSanction = $this->Dossierep->find(
 				'all',
 				array(
@@ -180,7 +181,7 @@
 					'contain' => false
 				)
 			);
-			
+
 			$listePersonnes = array();
 			foreach( $personnesEnSanction as $personne ) {
 				///FIXME: mettre la date de début de sanction à un autre moment
@@ -190,7 +191,7 @@
 				}
 			}
 			$personnesEnSanction = implode( ', ', $listePersonnes );
-			
+
 			$queryData = array(
 				'fields' => array(
 					'Personne.id',
@@ -297,11 +298,11 @@
 					)'
 				)
 			);
-			
+
 			if ( !empty( $personnesEnSanction ) ) {
 				$queryData['conditions'][] = 'Personne.id NOT IN ( '.$personnesEnSanction.' )';
 			}
-			
+
 			return $queryData;
 		}
 
@@ -313,7 +314,7 @@
 			$queryData = $this->_qdSelection( 'noninscritpe' );
 			$qdNonInscrits = $this->Historiqueetatpe->Informationpe->qdNonInscrits();
 			$queryData['fields'] = array_merge( $queryData['fields'] ,$qdNonInscrits['fields'] );
-			
+
 			/*$queryData['joins'][] = array(
 				'table'      => 'orientsstructs',
 				'alias'      => 'Orientstruct',
@@ -324,7 +325,7 @@
 				)
 			);*/
 			$queryData['joins'] = array_merge( $queryData['joins'] ,$qdNonInscrits['joins'] );
-			
+
 			$queryData['conditions'] = array_merge( $queryData['conditions'] ,$qdNonInscrits['conditions'] );
 			$queryData['order'] = $qdNonInscrits['order'];
 
@@ -343,7 +344,7 @@
 			$queryData['joins'] = array_merge( $queryData['joins'] ,$qdRadies['joins'] );
 			$queryData['conditions'] = array_merge( $queryData['conditions'] ,$qdRadies['conditions'] );
 			$queryData['order'] = $qdRadies['order'];
-			
+
 			return $queryData;
 		}
 
@@ -485,7 +486,7 @@
 						unset( $themeData[$key] );
 					}
 				}
-				
+
 				$success = $this->Decisionsanctionep58->saveAll( $themeData, array( 'atomic' => false ) );
 				$this->Dossierep->Passagecommissionep->updateAll(
 					array( 'Passagecommissionep.etatdossierep' => '\'decision'.$niveauDecision.'\'' ),

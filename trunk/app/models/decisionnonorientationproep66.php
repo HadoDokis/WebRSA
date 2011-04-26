@@ -22,9 +22,10 @@
 				)
 			),
 			'Autovalidate',
-			'ValidateTranslate'
+			'ValidateTranslate',
+			'Formattable'
 		);
-		
+
 		public $belongsTo = array(
 			'Nonorientationproep66' => array(
 				'className' => 'Nonorientationproep66',

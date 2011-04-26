@@ -8,10 +8,11 @@
 			'ValidateTranslate',
 			'Enumerable' => array(
 				'fields' => array(
-					'qual'					
+					'qual'
 				)
-			)
-		);		
+			),
+			'Formattable'
+		);
 
 		public $belongsTo = array(
 			'Fonctionmembreep' => array(
@@ -45,7 +46,7 @@
 				'counterQuery' => ''
 			),
 		);
-		
+
 		public $hasAndBelongsToMany = array(
 			'Commissionep' => array(
 				'className' => 'Commissionep',
@@ -79,6 +80,6 @@
 				'insertQuery' => '',
 				'with' => 'EpMembreep' // TODO
 			),
-		);					
+		);
 	}
 ?>

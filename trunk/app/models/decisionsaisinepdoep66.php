@@ -12,7 +12,8 @@
 				'fields' => array(
 					'etape'
 				)
-			)
+			),
+			'Formattable'
 		);
 
 		public $belongsTo = array(

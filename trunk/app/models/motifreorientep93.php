@@ -5,7 +5,8 @@
 
 		public $actsAs = array(
 			'Autovalidate',
-			'ValidateTranslate'
+			'ValidateTranslate',
+			'Formattable'
 		);
 
 		public $hasMany = array(

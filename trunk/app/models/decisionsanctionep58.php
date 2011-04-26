@@ -13,7 +13,8 @@
 					'etape',
 					'decision'
 				)
-			)
+			),
+			'Formattable'
 		);
 
 		public $belongsTo = array(
