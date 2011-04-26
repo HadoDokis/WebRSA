@@ -24,7 +24,7 @@
 			'Autovalidate',
 			'ValidateTranslate'
 		);
-		
+
 		public $belongsTo = array(
 			'Nonorientationproep93' => array(
 				'className' => 'Nonorientationproep93',
@@ -43,6 +43,13 @@
 			'Structurereferente' => array(
 				'className' => 'Structurereferente',
 				'foreignKey' => 'structurereferente_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			'Passagecommissionep' => array(
+				'className' => 'Passagecommissionep',
+				'foreignKey' => 'passagecommissionep_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''

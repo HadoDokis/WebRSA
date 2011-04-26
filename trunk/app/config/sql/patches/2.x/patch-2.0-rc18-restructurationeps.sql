@@ -262,8 +262,7 @@ CREATE UNIQUE INDEX decisionsreorientationseps93_passagecommissionep_id_etape_id
 /*CREATE UNIQUE INDEX decisionssaisinesbilansparcourseps66_passagecommissionep_id_etape_idx ON decisionssaisinesbilansparcourseps66( passagecommissionep_id, etape );
 CREATE UNIQUE INDEX decisionssaisinespdoseps66_passagecommissionep_id_etape_idx ON decisionssaisinespdoseps66( passagecommissionep_id, etape );
 CREATE UNIQUE INDEX decisionsdefautsinsertionseps66_passagecommissionep_id_etape_idx ON decisionsdefautsinsertionseps66( passagecommissionep_id, etape );
-CREATE UNIQUE INDEX decisionsnonrespectssanctionseps93_passagecommissionep_id_etape_idx ON decisionsnonrespectssanctionseps93( passagecommissionep_id, etape );
-CREATE UNIQUE INDEX decisionsnonorientationsproseps93_passagecommissionep_id_etape_idx ON decisionsnonorientationsproseps93( passagecommissionep_id, etape );*/
+CREATE UNIQUE INDEX decisionsnonrespectssanctionseps93_passagecommissionep_id_etape_idx ON decisionsnonrespectssanctionseps93( passagecommissionep_id, etape );*/
 
 -- *****************************************************************************
 -- 20110420, nonrespectsanctionep93
@@ -287,6 +286,20 @@ CREATE UNIQUE INDEX decisionsnonrespectssanctionseps93_passagecommissionep_id_et
 CREATE UNIQUE INDEX decisionsnonorientationsproseps58_passagecommissionep_id_etape_idx ON decisionsnonorientationsproseps58( passagecommissionep_id, etape );
 CREATE UNIQUE INDEX decisionsregressionsorientationseps58_passagecommissionep_id_etape_idx ON decisionsregressionsorientationseps58( passagecommissionep_id, etape );
 CREATE UNIQUE INDEX decisionssanctionseps58_passagecommissionep_id_etape_idx ON decisionssanctionseps58( passagecommissionep_id, etape );
+
+-- *****************************************************************************
+-- 20110426- nonorientationproep93
+-- *****************************************************************************
+
+ALTER TABLE decisionsnonorientationsproseps93 ADD COLUMN passagecommissionep_id INTEGER DEFAULT NULL REFERENCES passagescommissionseps(id) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE decisionsnonorientationsproseps93 DROP COLUMN nonorientationproep93_id;
+ALTER TABLE decisionsnonorientationsproseps93 ALTER COLUMN decision TYPE TEXT;
+DROP TYPE IF EXISTS TYPE_DECISIONNONORIENTATIONPRO93;
+CREATE TYPE TYPE_DECISIONNONORIENTATIONPRO93 AS ENUM ( 'reorientation', 'maintienref', 'annule', 'reporte' );
+ALTER TABLE decisionsnonorientationsproseps93 ALTER COLUMN decision TYPE TYPE_DECISIONNONORIENTATIONPRO93 USING CAST(decision AS TYPE_DECISIONNONORIENTATIONPRO93);
+ALTER TABLE decisionsnonorientationsproseps93 ADD COLUMN raisonnonpassage TEXT DEFAULT NULL;
+
+CREATE UNIQUE INDEX decisionsnonorientationsproseps93_passagecommissionep_id_etape_idx ON decisionsnonorientationsproseps93( passagecommissionep_id, etape );
 
 -- *****************************************************************************
 COMMIT;

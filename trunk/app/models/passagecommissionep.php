@@ -111,6 +111,19 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Decisionnonorientationproep93' => array(
+				'className' => 'Decisionnonorientationproep93',
+				'foreignKey' => 'passagecommissionep_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 		);
 
 	}

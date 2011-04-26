@@ -58,7 +58,7 @@
 		public function themes() {
 			$enums = $this->enums();
 			foreach( array_keys( $enums[$this->alias] ) as $key ) {
-				if( $key == 'nonorientationproep93' || substr( $key, -2 ) != Configure::read( 'Cg.departement' ) ) { // FIXME
+				if( substr( $key, -2 ) != Configure::read( 'Cg.departement' ) ) {
 					unset( $enums[$this->alias][$key] );
 				}
 			}
