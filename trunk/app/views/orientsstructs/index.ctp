@@ -68,6 +68,12 @@
 	<?php endif;?>
 
 	<?php if( Configure::read( 'Cg.departement' ) == 93 && isset( $reorientationep93 ) && !empty( $reorientationep93 ) ):?>
+		<?php
+			$etatdossierep = Set::enum( $reorientationep93['Passagecommissionep']['etatdossierep'], $optionsdossierseps['Passagecommissionep']['etatdossierep'] );
+			if( empty( $etatdossierep ) ) {
+				$etatdossierep = 'En attente';
+			}
+		?>
 		<h2>Réorientation par l'équipe pluridisciplinaire</h2>
 		<table>
 			<thead>
@@ -90,7 +96,7 @@
 					<td><?php echo h( $reorientationep93['Typeorient']['lib_type_orient'] );?></td>
 					<td><?php echo h( $reorientationep93['Structurereferente']['lib_struc'] );?></td>
 					<td class="number"><?php echo h( $reorientationep93['Orientstruct']['rgorient'] + 1 );?></td>
-					<td><?php echo h( Set::enum( $reorientationep93['Passagecommissionep']['etatdossierep'], $optionsdossierseps['Passagecommissionep']['etatdossierep'] ) );?></td>
+					<td><?php echo h( $etatdossierep );?></td>
 					<td><?php echo $default->button( 'edit', array( 'controller' => 'reorientationseps93', 'action' => 'edit', $reorientationep93['Reorientationep93']['id'] ), array( 'enabled' => ( empty( $reorientationep93['Passagecommissionep']['etatdossierep'] ) ) ) );?></td>
 					<td><?php echo $default->button( 'delete', array( 'controller' => 'reorientationseps93', 'action' => 'delete', $reorientationep93['Reorientationep93']['id'] ), array( 'enabled' => ( empty( $reorientationep93['Passagecommissionep']['etatdossierep'] ) ) ) );?></td>
 				</tr>

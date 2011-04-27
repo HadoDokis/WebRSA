@@ -77,6 +77,9 @@ msgstr "Prise de décision saisine demandes de réorientation"
 msgid "Regroupementep.nonrespectsanctionep93"
 msgstr "Prise de décision non respect des obligations / sanctions"
 
+msgid "Regroupementep.nonorientationproep93"
+msgstr "Prise de décision pour non réorientation vers le professionnel"
+
 msgid "ENUM::REORIENTATIONEP93::nontraite"
 msgstr "Décision non traitée"
 
