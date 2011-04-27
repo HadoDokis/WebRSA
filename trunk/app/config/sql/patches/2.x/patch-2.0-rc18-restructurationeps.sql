@@ -302,5 +302,31 @@ ALTER TABLE decisionsnonorientationsproseps93 ADD COLUMN raisonnonpassage TEXT D
 CREATE UNIQUE INDEX decisionsnonorientationsproseps93_passagecommissionep_id_etape_idx ON decisionsnonorientationsproseps93( passagecommissionep_id, etape );
 
 -- *****************************************************************************
+-- 20110427- defautinsertionep66
+-- *****************************************************************************
+
+ALTER TABLE decisionsdefautsinsertionseps66 ADD COLUMN passagecommissionep_id INTEGER DEFAULT NULL REFERENCES passagescommissionseps(id) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE decisionsdefautsinsertionseps66 DROP COLUMN defautinsertionep66_id;
+ALTER TABLE decisionsdefautsinsertionseps66 ALTER COLUMN decision TYPE TEXT;
+ALTER TABLE decisionspropospdos ALTER COLUMN decisionreponseep TYPE TEXT;
+DROP TYPE IF EXISTS TYPE_DECISIONDEFAUTEP66;
+CREATE TYPE TYPE_DECISIONDEFAUTEP66 AS ENUM ( 'suspensionnonrespect', 'suspensiondefaut', 'maintien', 'reorientationprofverssoc', 'reorientationsocversprof', 'annule', 'reporte' );
+ALTER TABLE decisionsdefautsinsertionseps66 ALTER COLUMN decision TYPE TYPE_DECISIONDEFAUTEP66 USING CAST(decision AS TYPE_DECISIONDEFAUTEP66);
+ALTER TABLE decisionspropospdos ALTER COLUMN decisionreponseep TYPE TYPE_DECISIONDEFAUTEP66 USING CAST(decisionreponseep AS TYPE_DECISIONDEFAUTEP66);
+ALTER TABLE decisionsdefautsinsertionseps66 ADD COLUMN raisonnonpassage TEXT DEFAULT NULL;
+
+CREATE UNIQUE INDEX decisionsdefautsinsertionseps66_passagecommissionep_id_etape_idx ON decisionsdefautsinsertionseps66( passagecommissionep_id, etape );
+
+-- *****************************************************************************
+-- 20110427- saisinebilanparcoursep66
+-- *****************************************************************************
+
+ALTER TABLE decisionssaisinesbilansparcourseps66 ADD COLUMN passagecommissionep_id INTEGER DEFAULT NULL REFERENCES passagescommissionseps(id) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE decisionssaisinesbilansparcourseps66 DROP COLUMN saisinebilanparcoursep66_id;
+ALTER TABLE decisionssaisinesbilansparcourseps66 ADD COLUMN raisonnonpassage TEXT DEFAULT NULL;
+
+CREATE UNIQUE INDEX decisionssaisinesbilansparcourseps66_passagecommissionep_id_etape_idx ON decisionssaisinesbilansparcourseps66( passagecommissionep_id, etape );
+
+-- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

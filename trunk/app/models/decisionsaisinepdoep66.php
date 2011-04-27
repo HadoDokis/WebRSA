@@ -24,9 +24,9 @@
 				'fields' => '',
 				'order' => ''
 			),
-			'Saisinepdoep66' => array(
-				'className' => 'Saisinepdoep66',
-				'foreignKey' => 'saisinepdoep66_id',
+			'Passagecommissionep' => array(
+				'className' => 'Passagecommissionep',
+				'foreignKey' => 'passagecommissionep_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''

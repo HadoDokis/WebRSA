@@ -34,6 +34,12 @@ msgstr "Réorientation du PROFESSIONNEL vers le SOCIAL"
 msgid "ENUM::DECISION::reorientationsocversprof"
 msgstr "Réorientation du SOCIAL vers le PROFESSIONNEL"
 
+msgid "ENUM::DECISION::annule"
+msgstr "Annulé"
+
+msgid "ENUM::DECISION::reporte"
+msgstr "Reporté"
+
 msgid "ENUM::DECISIONSUP::suspensionnonrespect"
 msgstr "Suspension suite à défaut de conclusion"
 

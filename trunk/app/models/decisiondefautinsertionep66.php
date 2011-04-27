@@ -24,13 +24,6 @@
 		);
 
 		public $belongsTo = array(
-			'Defautinsertionep66' => array(
-				'className' => 'Defautinsertionep66',
-				'foreignKey' => 'defautinsertionep66_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
-			),
 			'Structurereferente' => array(
 				'className' => 'Structurereferente',
 				'foreignKey' => 'structurereferente_id',
@@ -48,6 +41,13 @@
 			'Referent' => array(
 				'className' => 'Referent',
 				'foreignKey' => 'referent_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			'Passagecommissionep' => array(
+				'className' => 'Passagecommissionep',
+				'foreignKey' => 'passagecommissionep_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''

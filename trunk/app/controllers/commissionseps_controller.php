@@ -91,6 +91,7 @@
 					$options,
 					$this->Commissionep->Passagecommissionep->{$modeleDecision}->enums()
 				);
+				$modeleTheme = Inflector::classify( $theme );
 			}
 
 			// Suivant l'action demandée
@@ -108,6 +109,11 @@
 				$options['Decisiondefautinsertionep66']['typeorient_id'] = $this->Commissionep->Passagecommissionep->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->Typeorient->listOptions();
 				$options['Decisiondefautinsertionep66']['structurereferente_id'] = $this->Commissionep->Passagecommissionep->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->Structurereferente->list1Options();//listOptions
 				$options['Decisiondefautinsertionep66']['referent_id'] = $this->Commissionep->Passagecommissionep->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->Referent->listOptions();
+				
+				$options = Set::merge(
+					$options,
+					$this->Commissionep->Passagecommissionep->Dossierep->Defautinsertionep66->enums()
+				);
 			}
 			else if( Configure::read( 'Cg.departement' ) == 93 ) {
 				$options = Set::merge(
@@ -327,7 +333,7 @@
 				$success = $this->Commissionep->saveDecisions( $commissionep_id, $this->data, $niveauDecision );
 
 				$this->_setFlashResult( 'Save', $success );
-				if( $success ) {
+				if( $success && false ) {
 					$this->Commissionep->commit();
 					$this->redirect( array( 'action' => 'view', $commissionep_id, '#dossiers' ) );
 				}

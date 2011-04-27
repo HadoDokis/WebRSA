@@ -23,13 +23,6 @@
 		);
 
 		public $belongsTo = array(
-			'Saisinebilanparcoursep66' => array(
-				'className' => 'Saisinebilanparcoursep66',
-				'foreignKey' => 'saisinebilanparcoursep66_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
-			),
 			'Typeorient' => array(
 				'className' => 'Typeorient',
 				'foreignKey' => 'typeorient_id',
@@ -47,6 +40,13 @@
 			'Referent' => array(
 				'className' => 'Referent',
 				'foreignKey' => 'referent_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			'Passagecommissionep' => array(
+				'className' => 'Passagecommissionep',
+				'foreignKey' => 'passagecommissionep_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
