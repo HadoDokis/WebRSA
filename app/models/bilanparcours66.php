@@ -577,7 +577,7 @@
 					);
 					
 					if( $data['Bilanparcours66']['examenauditionpe'] == 'radiationpe' ) {
-						$queryDataPersonne = $this->Defautinsertionep66->qdRadies( array() );
+						$queryDataPersonne = $this->Defautinsertionep66->qdRadies( array(), array(), array() );
 						$queryDataPersonne['fields'][] = 'Historiqueetatpe.id';
 						$queryDataPersonne['conditions']['Personne.id'] = $data['Bilanparcours66']['personne_id'];
 						$historiqueetatpe = $this->Defautinsertionep66->Dossierep->Personne->find( 'first', $queryDataPersonne );

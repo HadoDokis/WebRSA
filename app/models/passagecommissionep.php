@@ -124,6 +124,45 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Decisiondefautinsertionep66' => array(
+				'className' => 'Decisiondefautinsertionep66',
+				'foreignKey' => 'passagecommissionep_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Decisionsaisinebilanparcoursep66' => array(
+				'className' => 'Decisionsaisinebilanparcoursep66',
+				'foreignKey' => 'passagecommissionep_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Decisionsaisinepdoep66' => array(
+				'className' => 'Decisionsaisinepdoep66',
+				'foreignKey' => 'passagecommissionep_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 		);
 
 	}

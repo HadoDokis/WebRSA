@@ -178,7 +178,7 @@
 
 		public function qdDossiersParListe( $commissionep_id, $niveauDecision ) {
 			// Doit-on prendre une décision à ce niveau ?
-			$themes = $this->Dossierep->Commissionep->themesTraites( $commissionep_id );
+			$themes = $this->Dossierep->Passagecommissionep->Commissionep->themesTraites( $commissionep_id );
 			$niveauFinal = $themes[Inflector::underscore($this->alias)];
 			if( ( $niveauFinal == 'ep' ) && ( $niveauDecision == 'cg' ) ) {
 				return array();
@@ -187,7 +187,19 @@
 			return array(
 				'conditions' => array(
 					'Dossierep.themeep' => Inflector::tableize( $this->alias ),
-					'Dossierep.commissionep_id' => $commissionep_id,
+					'Dossierep.id IN ( '.
+						$this->Dossierep->Passagecommissionep->sq(
+							array(
+								'fields' => array(
+									'passagescommissionseps.dossierep_id'
+								),
+								'alias' => 'passagescommissionseps',
+								'conditions' => array(
+									'passagescommissionseps.commissionep_id' => $commissionep_id
+								)
+							)
+						)
+					.' )'
 				),
 				'contain' => array(
 					'Personne' => array(
@@ -201,14 +213,16 @@
 						)
 					),
 					$this->alias => array(
-						'Decisionsaisinepdoep66'=>array(
-							'Decisionpdo'
-						),
 						'Traitementpdo' => array(
 							'Descriptionpdo',
 							'Propopdo' => array(
 								'Situationpdo'
 							)
+						)
+					),
+					'Passagecommissionep' => array(
+						'Decisionsaisinepdoep66'=>array(
+							'Decisionpdo'
 						)
 					)
 				)
@@ -265,7 +279,7 @@
 
 		public function prepareFormData( $commissionep_id, $datas, $niveauDecision ) {
 			// Doit-on prendre une décision à ce niveau ?
-			$themes = $this->Dossierep->Commissionep->themesTraites( $commissionep_id );
+			$themes = $this->Dossierep->Passagecommissionep->Commissionep->themesTraites( $commissionep_id );
 			$niveauFinal = $themes[Inflector::underscore($this->alias)];
 			if( ( $niveauFinal == 'ep' ) && ( $niveauDecision == 'cg' ) ) {
 				return array();

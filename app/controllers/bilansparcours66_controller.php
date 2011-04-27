@@ -248,40 +248,32 @@
 						),
 					),
 					'Contratinsertion' => array(
-// 						'Personne' => array(
-// 							'fields' => array( 'qual', 'nom', 'prenom' ),
-// 							'Foyer' => array(
-// 								'Adressefoyer' => array(
-// 									'conditions' => array(
-// 										'Adressefoyer.rgadr' => '01',
-// 										'Adressefoyer.typeadr' => 'D'
-// 									),
-// 									'Adresse'
-// 								)
-// 							)
-// 						),
 						'Structurereferente' => array(
 							'Typeorient',
 						),
 					),
 					'Saisinebilanparcoursep66' => array(
 						'Dossierep' => array(
-							'fields' => array(
-								'etapedossierep'
+							'Passagecommissionep' => array(
+								'fields' => array(
+									'etatdossierep'
+								),
+								'Decisionsaisinebilanparcoursep66'
 							)
-						),
-						'Decisionsaisinebilanparcoursep66'
+						)
 					),
 					'Referent' => array(
 						'Structurereferente'
 					),
 					'Defautinsertionep66' => array(
 						'Dossierep' => array(
-							'fields' => array(
-								'etapedossierep'
+							'Passagecommissionep' => array(
+								'fields' => array(
+									'etatdossierep'
+								),
+								'Decisiondefautinsertionep66'
 							)
-						),
-						'Decisiondefautinsertionep66'
+						)
 					)
 				),
 				'conditions' => $conditions,

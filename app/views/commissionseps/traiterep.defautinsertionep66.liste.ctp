@@ -17,6 +17,7 @@
 <th colspan="4">Avis EPL</th>
 </tr>
 </thead><tbody>';
+// debug($this->data);
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
 // debug( $dossierep );
 		echo $xhtml->tableCells(
@@ -37,13 +38,14 @@
 				$form->input( "Defautinsertionep66.{$i}.dossierep_id", array( 'type' => 'hidden', 'value' => $dossierep['Dossierep']['id'] ) ).
 				$form->input( "Decisiondefautinsertionep66.{$i}.id", array( 'type' => 'hidden' ) ).
 				$form->input( "Decisiondefautinsertionep66.{$i}.etape", array( 'type' => 'hidden', 'value' => 'ep' ) ).
-				$form->input( "Decisiondefautinsertionep66.{$i}.defautinsertionep66_id", array( 'type' => 'hidden', 'value' ) ).
+				$form->input( "Decisiondefautinsertionep66.{$i}.passagecommissionep_id", array( 'type' => 'hidden', 'value' ) ).
 
 				$form->input( "Decisiondefautinsertionep66.{$i}.decision", array( 'type' => 'select', 'label' => false, 'empty' => true, 'options' => $options['Decisiondefautinsertionep66']['decision'], 'value' => @$decisionsdefautsinsertionseps66[$i]['decision'] ) ).
 				$form->input( "Decisiondefautinsertionep66.{$i}.decisionsup", array( 'type' => 'select', 'label' => false, 'empty' => true, 'options' => $options['Decisiondefautinsertionep66']['decisionsup'], 'value' => @$decisionsdefautsinsertionseps66[$i]['decisionsup'] ) ),
 				$form->input( "Decisiondefautinsertionep66.{$i}.typeorient_id", array( 'label' => false, 'options' => @$options['Decisiondefautinsertionep66']['typeorient_id'], 'empty' => true, 'value' => @$decisionsdefautsinsertionseps66[$i]['typeorient_id'] ) ),
 				$form->input( "Decisiondefautinsertionep66.{$i}.structurereferente_id", array( 'label' => false, 'options' => @$options['Decisiondefautinsertionep66']['structurereferente_id'], 'empty' => true, 'type' => 'select', 'value' => @$decisionsdefautsinsertionseps66[$i]['structurereferente_id'] ) ),
-				$form->input( "Decisiondefautinsertionep66.{$i}.referent_id", array( 'label' => false, 'options' => @$options['Decisiondefautinsertionep66']['referent_id'], 'empty' => true, 'type' => 'select', 'value' => @$decisionsdefautsinsertionseps66[$i]['referent_id'] ) )
+				$form->input( "Decisiondefautinsertionep66.{$i}.referent_id", array( 'label' => false, 'options' => @$options['Decisiondefautinsertionep66']['referent_id'], 'empty' => true, 'type' => 'select', 'value' => @$decisionsdefautsinsertionseps66[$i]['referent_id'] ) ),
+				array( $form->input( "Decisiondefautinsertionep66.{$i}.raisonnonpassage", array( 'label' => false, 'type' => 'textarea' ) ), array( 'colspan' => 3 ) )
 			)
 		);
 	}
@@ -94,6 +96,11 @@
 			else {
 				$( 'Decisiondefautinsertionep66<?php echo $i;?>Decisionsup' ).hide();
 			}
+
+			$( 'Decisiondefautinsertionep66<?php echo $i;?>Decision' ).observe( 'change', function() {
+				afficheRaisonpassage( 'Decisiondefautinsertionep66<?php echo $i;?>Decision', [ 'Decisiondefautinsertionep66<?php echo $i;?>TypeorientId', 'Decisiondefautinsertionep66<?php echo $i;?>StructurereferenteId', 'Decisiondefautinsertionep66<?php echo $i;?>ReferentId' ], 'Decisiondefautinsertionep66<?php echo $i;?>Raisonnonpassage' );
+			});
+			afficheRaisonpassage( 'Decisiondefautinsertionep66<?php echo $i;?>Decision', [ 'Decisiondefautinsertionep66<?php echo $i;?>TypeorientId', 'Decisiondefautinsertionep66<?php echo $i;?>StructurereferenteId', 'Decisiondefautinsertionep66<?php echo $i;?>ReferentId' ], 'Decisiondefautinsertionep66<?php echo $i;?>Raisonnonpassage' );
 		<?php endfor;?>
 	});
 </script>

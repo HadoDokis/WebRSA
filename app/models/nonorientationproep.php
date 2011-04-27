@@ -100,7 +100,8 @@
 								WHERE
 									o.personne_id = Personne.id
 									AND o.date_valid IS NOT NULL
-								ORDER BY o.date_valid DESC
+									AND o.rgorient IS NOT NULL
+								ORDER BY o.rgorient DESC
 								LIMIT 1
 				)'
 			);
@@ -395,7 +396,7 @@
 		*
 		*/
 
-		public function finaliser( $commissionep_id, $etape, $user_id = null ) {
+		/*public function finaliser( $commissionep_id, $etape, $user_id = null ) {
 			$decisionModelName = 'Decisionnonorientationproep'.Configure::read( 'Cg.departement' );
 
 			$commissionep = $this->Dossierep->Commissionep->find(
@@ -457,7 +458,7 @@
 			}
 
 			return $success;
-		}
+		}*/
 
 		/**
 		*

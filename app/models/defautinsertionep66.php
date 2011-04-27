@@ -126,7 +126,7 @@
 
 		public function qdDossiersParListe( $commissionep_id, $niveauDecision ) {
 			// Doit-on prendre une décision à ce niveau ?
-			$themes = $this->Dossierep->Commissionep->themesTraites( $commissionep_id );
+			$themes = $this->Dossierep->Passagecommissionep->Commissionep->themesTraites( $commissionep_id );
 			$niveauFinal = $themes[Inflector::underscore($this->alias)];
 			if( ( $niveauFinal == 'ep' ) && ( $niveauDecision == 'cg' ) ) {
 				return array();
@@ -135,7 +135,15 @@
 			return array(
 				'conditions' => array(
 					'Dossierep.themeep' => Inflector::tableize( $this->alias ),
-					'Dossierep.commissionep_id' => $commissionep_id,
+					'Dossierep.id IN ( '.$this->Dossierep->Passagecommissionep->sq(
+						array(
+							'fields' => array( 'passagescommissionseps.dossierep_id' ),
+							'alias' => 'passagescommissionseps',
+							'conditions' => array(
+								'passagescommissionseps.commissionep_id' => $commissionep_id
+							)
+						)
+					).' )'
 				),
 				'contain' => array(
 					'Personne' => array(
@@ -149,20 +157,15 @@
 						)
 					),
 					$this->alias => array(
-// 						'Typeorient',
-// 						'Structurereferente',
-						'Bilanparcours66' => array(
-// 							'Orientstruct' => array(
-// 								'Typeorient',
-// 								'Structurereferente',
-// 							),
-						),
+						'Bilanparcours66',
 						'Contratinsertion',
 						'Orientstruct' => array(
 							'Typeorient',
 							'Structurereferente',
 						),
-						'Historiqueetatpe',
+						'Historiqueetatpe'
+					),
+					'Passagecommissionep' => array(
 						'Decisiondefautinsertionep66'
 					)
 				)
@@ -184,9 +187,9 @@
 
 				$success = $this->Decisiondefautinsertionep66->saveAll( $themeData, array( 'atomic' => false ) );
 
-				$this->Dossierep->updateAll(
-					array( 'Dossierep.etapedossierep' => '\'decision'.$niveauDecision.'\'' ),
-					array( '"Dossierep"."id"' => Set::extract( $data, '/Defautinsertionep66/dossierep_id' ) )
+				$this->Dossierep->Passagecommissionep->updateAll(
+					array( 'Passagecommissionep.etatdossierep' => '\'decision'.$niveauDecision.'\'' ),
+					array( '"Passagecommissionep"."id"' => Set::extract( $data, '/Decision'.Inflector::underscore( $this->alias ).'/passagecommissionep_id' ) )
 				);
 
 				if( $success ) {
@@ -223,7 +226,7 @@
 
 		public function prepareFormData( $commissionep_id, $datas, $niveauDecision ) {
 			// Doit-on prendre une décision à ce niveau ?
-			$themes = $this->Dossierep->Commissionep->themesTraites( $commissionep_id );
+			$themes = $this->Dossierep->Passagecommissionep->Commissionep->themesTraites( $commissionep_id );
 			$niveauFinal = $themes[Inflector::underscore($this->alias)];
 			if( ( $niveauFinal == 'ep' ) && ( $niveauDecision == 'cg' ) ) {
 				return array();
@@ -232,103 +235,39 @@
 			$formData = array();
 
 			foreach( $datas as $key => $dossierep ) {
-				$formData[$this->alias][$key] = $dossierep[$this->alias];
-
+				$formData['Decisiondefautinsertionep66'][$key]['passagecommissionep_id'] = $dossierep['Passagecommissionep'][0]['id'];
 				if( $niveauDecision == 'ep' ) {
-					if( @$dossierep['Defautinsertionep66']['Decisiondefautinsertionep66'][count(@$dossierep['Defautinsertionep66']['Decisiondefautinsertionep66'])-1]['etape'] == 'ep' ) {
-						$record = @$dossierep['Defautinsertionep66']['Decisiondefautinsertionep66'][count(@$dossierep['Defautinsertionep66']['Decisiondefautinsertionep66'])-1];
+					if( isset( $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0] ) ) {
+						$formData['Decisiondefautinsertionep66'][$key]['id'] = $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['id'];
+						$formData['Decisiondefautinsertionep66'][$key]['decision'] = $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['decision'];
+						$formData['Decisiondefautinsertionep66'][$key]['raisonnonpassage'] = $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['raisonnonpassage'];
+						$formData['Decisiondefautinsertionep66'][$key]['decisionsup'] = $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['decisionsup'];
+						$formData['Decisiondefautinsertionep66'][$key]['typeorient_id'] = $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['typeorient_id'];
+						$formData['Decisiondefautinsertionep66'][$key]['structurereferente_id'] = implode( '_', array( $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['typeorient_id'], $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['structurereferente_id'] ) );
+						$formData['Decisiondefautinsertionep66'][$key]['referent_id'] = implode( '_', array( $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['structurereferente_id'], $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['referent_id'] ) );
 					}
-					else {
-						$record = @$dossierep['Defautinsertionep66']['Decisiondefautinsertionep66'][0];
-					}
-
-					if( $record['etape'] == $niveauDecision ) {
-						$formData['Decisiondefautinsertionep66'][$key]['id'] = $record['id'];
-						$formData['Decisiondefautinsertionep66'][$key]['etape'] = $record['etape'];
-					}
-
-					$formData['Decisiondefautinsertionep66'][$key]['defautinsertionep66_id'] = @$dossierep['Defautinsertionep66']['id'];
-					$formData['Decisiondefautinsertionep66'][$key]['decision'] = $record['decision'];
-					$formData['Decisiondefautinsertionep66'][$key]['decisionsup'] = $record['decisionsup'];
-					$formData['Decisiondefautinsertionep66'][$key]['typeorient_id'] = $record['typeorient_id'];
-					$formData['Decisiondefautinsertionep66'][$key]['structurereferente_id'] = implode( '_', array( $record['typeorient_id'], $record['structurereferente_id'] ) );
-					$formData['Decisiondefautinsertionep66'][$key]['referent_id'] = implode( '_', array( $record['structurereferente_id'], $record['referent_id'] ) );
 				}
 				else {
-					if( @$dossierep['Defautinsertionep66']['Decisiondefautinsertionep66'][count(@$dossierep['Defautinsertionep66']['Decisiondefautinsertionep66'])-1]['etape'] == 'cg' ) {
-						$record = @$dossierep['Defautinsertionep66']['Decisiondefautinsertionep66'][count(@$dossierep['Defautinsertionep66']['Decisiondefautinsertionep66'])-1];
+					if( isset( $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1] ) ) {
+						$formData['Decisiondefautinsertionep66'][$key]['id'] = $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['id'];
+						$formData['Decisiondefautinsertionep66'][$key]['decision'] = $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['decision'];
+						$formData['Decisiondefautinsertionep66'][$key]['raisonnonpassage'] = $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['raisonnonpassage'];
+						$formData['Decisiondefautinsertionep66'][$key]['decisionsup'] = $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['decisionsup'];
+						$formData['Decisiondefautinsertionep66'][$key]['typeorient_id'] = $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['typeorient_id'];
+						$formData['Decisiondefautinsertionep66'][$key]['structurereferente_id'] = implode( '_', array( $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['typeorient_id'], $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['structurereferente_id'] ) );
+						$formData['Decisiondefautinsertionep66'][$key]['referent_id'] = implode( '_', array( $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['structurereferente_id'], $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['referent_id'] ) );
 					}
 					else {
-						$record = @$dossierep['Defautinsertionep66']['Decisiondefautinsertionep66'][0];
+						$formData['Decisiondefautinsertionep66'][$key]['decision'] = $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['decision'];
+						$formData['Decisiondefautinsertionep66'][$key]['raisonnonpassage'] = $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['raisonnonpassage'];
+						$formData['Decisiondefautinsertionep66'][$key]['decisionsup'] = $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['decisionsup'];
+						$formData['Decisiondefautinsertionep66'][$key]['typeorient_id'] = $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['typeorient_id'];
+						$formData['Decisiondefautinsertionep66'][$key]['structurereferente_id'] = implode( '_', array( $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['typeorient_id'], $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['structurereferente_id'] ) );
+						$formData['Decisiondefautinsertionep66'][$key]['referent_id'] = implode( '_', array( $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['structurereferente_id'], $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['referent_id'] ) );
 					}
-
-					if( $record['etape'] == $niveauDecision ) {
-						$formData['Decisiondefautinsertionep66'][$key]['id'] = $record['id'];
-						$formData['Decisiondefautinsertionep66'][$key]['etape'] = $record['etape'];
-					}
-
-					$formData['Decisiondefautinsertionep66'][$key]['defautinsertionep66_id'] = @$dossierep['Defautinsertionep66']['id'];
-					$formData['Decisiondefautinsertionep66'][$key]['decision'] = $record['decision'];
-					$formData['Decisiondefautinsertionep66'][$key]['decisionsup'] = $record['decisionsup'];
-					$formData['Decisiondefautinsertionep66'][$key]['typeorient_id'] = $record['typeorient_id'];
-					$formData['Decisiondefautinsertionep66'][$key]['structurereferente_id'] = implode( '_', array( $record['typeorient_id'], $record['structurereferente_id'] ) );
-					$formData['Decisiondefautinsertionep66'][$key]['referent_id'] = implode( '_', array( $record['structurereferente_id'], $record['referent_id'] ) );
 				}
 			}
 // debug( $formData );
-			/*if( $niveauDecision == 'ep' ) {
-				foreach( $datas as $key => $dossierep ) {
-					if (isset($dossierep[$this->alias]['Decisionsaisinebilanparcoursep66'][0]['id'])) {
-						$formData['Decisionsaisinebilanparcoursep66'][$key]['id'] = $dossierep[$this->alias]['Decisionsaisinebilanparcoursep66'][0]['id'];
-						$formData['Decisionsaisinebilanparcoursep66'][$key]['typeorient_id'] = $dossierep[$this->alias]['Decisionsaisinebilanparcoursep66'][0]['typeorient_id'];
-						$formData['Decisionsaisinebilanparcoursep66'][$key]['structurereferente_id'] = implode(
-							'_',
-							array(
-								$dossierep[$this->alias]['Decisionsaisinebilanparcoursep66'][0]['typeorient_id'],
-								$dossierep[$this->alias]['Decisionsaisinebilanparcoursep66'][0]['structurereferente_id']
-							)
-						);
-					}
-					else {
-						$formData['Decisionsaisinebilanparcoursep66'][$key]['typeorient_id'] = $dossierep[$this->alias]['typeorient_id'];
-						$formData['Decisionsaisinebilanparcoursep66'][$key]['structurereferente_id'] = implode(
-							'_',
-							array(
-								$dossierep[$this->alias]['typeorient_id'],
-								$dossierep[$this->alias]['structurereferente_id']
-							)
-						);
-					}
-				}
-			}
-			else if( $niveauDecision == 'cg' ) {
-				foreach( $datas as $key => $dossierep ) {
-					if (isset($dossierep[$this->alias]['Decisionsaisinebilanparcoursep66'][1]['id'])) {
-						$formData['Decisionsaisinebilanparcoursep66'][$key]['id'] = $dossierep[$this->alias]['Decisionsaisinebilanparcoursep66'][1]['id'];
-						$formData['Decisionsaisinebilanparcoursep66'][$key]['decision'] = $dossierep[$this->alias]['Decisionsaisinebilanparcoursep66'][1]['decision'];
-						$formData['Decisionsaisinebilanparcoursep66'][$key]['typeorient_id'] = $dossierep[$this->alias]['Decisionsaisinebilanparcoursep66'][1]['typeorient_id'];
-						$formData['Decisionsaisinebilanparcoursep66'][$key]['structurereferente_id'] = implode(
-							'_',
-							array(
-								$dossierep[$this->alias]['Decisionsaisinebilanparcoursep66'][1]['typeorient_id'],
-								$dossierep[$this->alias]['Decisionsaisinebilanparcoursep66'][1]['structurereferente_id']
-							)
-						);
-					}
-					else {
-						$formData['Decisionsaisinebilanparcoursep66'][$key]['decision'] = $dossierep[$this->alias]['Decisionsaisinebilanparcoursep66'][0]['decision'];
-						$formData['Decisionsaisinebilanparcoursep66'][$key]['typeorient_id'] = $dossierep[$this->alias]['Decisionsaisinebilanparcoursep66'][0]['typeorient_id'];
-						$formData['Decisionsaisinebilanparcoursep66'][$key]['structurereferente_id'] = implode(
-							'_',
-							array(
-								$dossierep[$this->alias]['Decisionsaisinebilanparcoursep66'][0]['typeorient_id'],
-								$dossierep[$this->alias]['Decisionsaisinebilanparcoursep66'][0]['structurereferente_id']
-							)
-						);
-					}
-				}
-			}*/
-
 			return $formData;
 		}
 
@@ -342,7 +281,7 @@
 		*/
 
 		public function finaliser( $commissionep_id, $etape ) {
-			$commissionep = $this->Dossierep->Commissionep->find(
+			$commissionep = $this->Dossierep->Passagecommissionep->Commissionep->find(
 				'first',
 				array(
 					'conditions' => array( 'Commissionep.id' => $commissionep_id ),
@@ -578,27 +517,54 @@
 					),
 				),
 				'conditions' => array(
-					'Personne.id NOT IN (
-						SELECT
-								dossierseps.personne_id
-							FROM dossierseps
-							WHERE
-								dossierseps.personne_id = Personne.id
-								AND dossierseps.etapedossierep IN ( \'seance\', \'decisionep\', \'decisioncg\' )
-					)',
-					'Personne.id NOT IN (
-						SELECT
-								dossierseps.personne_id
-							FROM dossierseps
-								INNER JOIN commissionseps ON (
-									dossierseps.commissionep_id = commissionseps.id
-								)
-							WHERE
-								dossierseps.personne_id = Personne.id
-								AND dossierseps.etapedossierep = \'traite\'
-								AND dossierseps.themeep = \'defautsinsertionseps66\'
-								AND commissionseps.dateseance >= \''.date( 'Y-m-d', strtotime( '-2 mons' ) ).'\'
-					)'
+					'Personne.id NOT IN ('.$this->Dossierep->sq(
+						array(
+							'fields' => array( 'dossierseps1.id' ),
+							'alias' => 'dossierseps1',
+							'conditions' => array(
+								'dossierseps1.personne_id = Personne.id',
+								'dossierseps1.id IN ('.$this->Dossierep->Passagecommissionep->sq(
+									array(
+										'fields' => array( 'passagescommissionseps1.dossierep_id' ),
+										'alias' => 'passagescommissionseps1',
+										'conditions' => array(
+											'passagescommissionseps1.etatdossierep' => array( 'associe', 'decisionep', 'decisioncg' )
+										)
+									)
+								).')'
+							)
+						)
+					).')',
+					'Personne.id NOT IN ('.$this->Dossierep->sq(
+						array(
+							'fields' => array( 'dossierseps2.id' ),
+							'alias' => 'dossierseps2',
+							'conditions' => array(
+								'dossierseps2.personne_id = Personne.id',
+								'dossierseps2.themeep' => 'defautsinsertionseps66',
+								'dossierseps2.id IN ('.$this->Dossierep->Passagecommissionep->sq(
+									array(
+										'fields' => array( 'passagescommissionseps2.dossierep_id' ),
+										'alias' => 'passagescommissionseps2',
+										'conditions' => array(
+											'passagescommissionseps2.etatdossierep' => 'traite'
+										),
+										'joins' => array(
+											array(
+												'table' => 'commissionseps',
+												'alias' => 'commissionseps',
+												'type' => 'INNER',
+												'conditions' => array(
+													'commissionseps.id = passagescommissionseps2.commissionep_id',
+													'commissionseps.dateseance >=' => date( 'Y-m-d', strtotime( '-2 mons' ) )
+												)
+											)
+										)
+									)
+								).')'
+							)
+						)
+					).')'
 				) // FIXME: paramétrage
 			);
 
@@ -719,7 +685,7 @@
 		*
 		*/
 
-		public function qdRadies( $datas, $mesCodesInsee ) {
+		public function qdRadies( $datas, $mesCodesInsee, $filtre_zone_geo ) {
 			// FIXME: et qui ne sont pas passés dans une EP pour ce motif depuis au moins 1 mois (?)
 			$queryData = $this->_qdSelection( $datas, $mesCodesInsee, $filtre_zone_geo );
 			$qdRadies = $this->Historiqueetatpe->Informationpe->qdRadies();
