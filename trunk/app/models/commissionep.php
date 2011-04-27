@@ -716,14 +716,18 @@
 			$options = array( 'Personne' => array( 'qual' => ClassRegistry::init( 'Option' )->qual() ) );
 			foreach( $this->themesTraites( $commissionep_id ) as $theme => $decision ) {
 				$model = Inflector::classify( $theme );
+				if( in_array( 'Enumerable', $this->Passagecommissionep->Dossierep->{$model}->Behaviors->attached() ) ) {
+					$options = Set::merge( $options, $this->Passagecommissionep->Dossierep->{$model}->enums() );
+				}
 
-				$options = Set::merge( $options, $this->Passagecommissionep->Dossierep->{$model}->enums() );
-// debug($model);
-// die();
-				$modeleDecisions = array( 'Nonrespectsanctionep93' => 'Decisionnonrespectsanctionep93' );// FIXME: à supprimer après le renommage des tables
+				$modeleDecision = Inflector::classify( "decision{$theme}" );
+				if( in_array( 'Enumerable', $this->Passagecommissionep->{$modeleDecision}->Behaviors->attached() ) ) {
+					$options = Set::merge( $options, $this->Passagecommissionep->{$modeleDecision}->enums() );
+				}
+				/*$modeleDecisions = array( 'Nonrespectsanctionep93' => 'Decisionnonrespectsanctionep93' );// FIXME: à supprimer après le renommage des tables
 				if( isset( $modeleDecisions[$model] ) ) {
 					$options = Set::merge( $options, $this->Passagecommissionep->{$modeleDecisions[$model]}->enums() );
-				}
+				}*/
 
 				foreach( array( 'fields', 'joins' ) as $key ) {
 					$qdModele = $this->Passagecommissionep->Dossierep->{$model}->qdProcesVerbal();

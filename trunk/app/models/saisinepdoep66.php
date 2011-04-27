@@ -128,12 +128,26 @@
 					'all',
 					array(
 						'conditions' => array(
-							'Dossierep.commissionep_id' => $commissionep_id
+							'Dossierep.id IN ( '.
+								$this->Dossierep->Passagecommissionep->sq(
+									array(
+										'fields' => array(
+											'passagescommissionseps.dossierep_id'
+										),
+										'alias' => 'passagescommissionseps',
+										'conditions' => array(
+											'passagescommissionseps.commissionep_id' => $commissionep_id
+										)
+									)
+								)
+							.' )'
 						),
 						'contain' => array(
-							'Decisionsaisinepdoep66',
 							'Dossierep' => array(
-								'Commissionep'
+								'Passagecommissionep' => array(
+									'Decisionsaisinepdoep66',
+									'Commissionep'
+								)
 							),
 							'Traitementpdo' => array(
 								'Descriptionpdo',
