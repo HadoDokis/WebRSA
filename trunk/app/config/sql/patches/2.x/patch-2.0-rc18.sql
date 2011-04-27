@@ -245,6 +245,13 @@ ALTER TABLE personnes ALTER COLUMN haspiecejointe SET DEFAULT '0'::TYPE_BOOLEANN
 -- UPDATE personnes SET haspiecejointe = '0'::TYPE_BOOLEANNUMBER WHERE haspiecejointe IS NULL;
 -- ALTER TABLE personnes ALTER COLUMN haspiecejointe SET NOT NULL;
 
+-- -------------------------------------------------------------------------------------------------------------
+-- 20110426: optimisations ?
+-- -------------------------------------------------------------------------------------------------------------
+
+CREATE INDEX informationspe_nom_prenom_dtnai_idx ON informationspe USING btree (nom, prenom, dtnai);
+CREATE INDEX personnes_nom_prenom_dtnai_idx ON personnes USING btree (nom, prenom, dtnai);
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
