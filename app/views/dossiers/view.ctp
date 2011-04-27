@@ -331,7 +331,7 @@
                             </tr>
                             <tr class="odd">
                                 <th>Code état</th>
-                                <td><?php echo Set::extract( 'DEM.Informationpe.0.code', $details);?></td>
+                                <td><?php echo Set::enum( Set::extract( 'DEM.Informationpe.0.code', $details), $categorie );?></td>
                                 <td><?php echo Set::extract( 'CJT.Informationpe.0.code', $details);?></td>
                             </tr>
                             <tr class="even">
