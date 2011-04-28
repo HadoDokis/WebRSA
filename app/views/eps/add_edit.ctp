@@ -47,10 +47,37 @@
 
 	echo $form->button('Tout décocher', array('onclick' => "GereChkbox('listeZonesgeographiques','decocher');"));
 
-	if ($this->action == 'edit') {
-// 	if ($this->action == 'add') {
-// 		$ep_id = 0;
-// 	}
+
+    $i = 0;
+    foreach( $fonctionsParticipants as $fonction ) {
+        $i++;
+        $params = array(
+            'required' => true, 'fieldset' => false, 'domain' => 'ep', 'div' => false, 'label' => false, 'type' => 'select', 'multiple' => 'checkbox', 'empty' => false,  'id' => 'listeParticipants', 'options' => Set::combine( $fonction, 'Membreep.{n}.id', 'Membreep.{n}.name' )  );
+        if( $i != 1 ) {
+            $params['hiddeninput'] = false;
+        }
+        echo "<fieldset><legend>{$fonction['Fonctionmembreep']['name']}</legend>";
+        echo $html->tag(
+            'div',
+            $default->subform(
+                array(
+                    'Membreep.Membreep' => $params
+                ),
+                array(
+                    'options' => $options
+                )
+            ),
+            array(
+                'id' => 'listeParticipants'
+            )
+        );
+
+        echo '</fieldset>';
+    }
+
+
+
+/*	if ($this->action == 'edit') {
 
 	echo "<fieldset><legend>Participants</legend>";
 
@@ -98,7 +125,7 @@
 	echo "</fieldset>";
 
 	}
-
+*/
 	echo $xform->end( __( 'Save', true ) );
 
     echo $default->button(

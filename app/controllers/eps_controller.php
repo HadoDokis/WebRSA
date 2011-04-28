@@ -76,6 +76,7 @@
 				$this->Ep->create( $this->data );
 				$success = $this->Ep->save();
 
+
 				$this->_setFlashResult( 'Save', $success );
 				if( $success ) {
 					$this->Ep->commit();
@@ -102,10 +103,47 @@
 				$this->set('ep_id', $id);
 			}
 
-			$listeFonctionsMembres = $this->Ep->Membreep->Fonctionmembreep->find(
-				'list'
-			);
+			$listeFonctionsMembres = $this->Ep->Membreep->Fonctionmembreep->find( 'list' );
 			$this->set(compact('listeFonctionsMembres'));
+
+
+            /**
+            *
+            */
+            $fonctionsParticipants = $this->Ep->Membreep->Fonctionmembreep->find(
+                'all',
+                array(
+                    'contain' => array(
+                        'Membreep' => array(
+                            'fields' => array(
+                                'id',
+                                '( "Membreep"."qual" || \' \' || "Membreep"."nom" || \' \' || "Membreep"."prenom" ) AS "Membreep__name"'
+                            )
+                        )
+                    )
+                )
+            );
+            $this->set( compact( 'fonctionsParticipants' ) );
+//             debug($fonctionsParticipants);
+
+//             $listeParticipants = array();
+//             foreach( $participants as $participant ) {
+//                 $fontionsmembres = $this->Ep->Membreep->Fonctionmembreep->find( 'list', array( 'fields' => array( 'name' ) ) );
+//                 $fonctionMembre = Set::enum( $participant['Membreep']['fonctionmembreep_id'], $fontionsmembres );
+//                 $listeParticipants[$participant['Membreep']['id']] = implode( ' ', array( $participant['Membreep']['qual'], $participant['Membreep']['nom'], $participant['Membreep']['prenom'], ': ', $fonctionMembre ) );
+//             }
+//             $this->set( compact( 'listeParticipants' ) );
+            /**
+            *
+            */
+
+
+
+
+
+
+
+
 
 			$this->_setOptions();
 			$this->render( null, null, 'add_edit' );
@@ -130,11 +168,11 @@
 				$this->Ep->EpMembreep->begin();
 				$this->Ep->EpMembreep->create( $this->data );
 				$success = $this->Ep->EpMembreep->save();
-
+// debug($this->data);
 				$this->_setFlashResult( 'Save', $success );
 				if ( $success ) {
 					$this->Ep->EpMembreep->commit();
-					$this->redirect( array( 'action' => 'edit', $ep_id ) );
+// 					$this->redirect( array( 'action' => 'edit', $ep_id ) );
 				}
 				else {
 					$this->Ep->EpMembreep->rollback();
@@ -168,7 +206,9 @@
 
 			$listeParticipants = array();
 			foreach( $participants as $participant ) {
-				$listeParticipants[$participant['Membreep']['id']] = implode( ' ', array( $participant['Membreep']['qual'], $participant['Membreep']['nom'], $participant['Membreep']['prenom'] ) );
+                $fontionsmembres = $this->Ep->Membreep->Fonctionmembreep->find( 'list', array( 'fields' => array( 'name' ) ) );
+                $fonctionMembre = Set::enum( $participant['Membreep']['fonctionmembreep_id'], $fontionsmembres );
+				$listeParticipants[$participant['Membreep']['id']] = implode( ' ', array( $participant['Membreep']['qual'], $participant['Membreep']['nom'], $participant['Membreep']['prenom'], ': ', $fonctionMembre ) );
 			}
 			$this->set( compact( 'listeParticipants' ) );
 			$this->set( 'ep_id', $ep_id );
