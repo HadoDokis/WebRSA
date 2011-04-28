@@ -115,6 +115,12 @@
 // 				$options['Decisiondefautinsertionep66']['typeorient_id'] = $this->Commissionep->Passagecommissionep->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->Typeorient->listOptions();
 // 				$options['Decisiondefautinsertionep66']['structurereferente_id'] = $this->Commissionep->Passagecommissionep->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->Structurereferente->list1Options();//listOptions
 // 				$options['Decisiondefautinsertionep66']['referent_id'] = $this->Commissionep->Passagecommissionep->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->Referent->listOptions();
+				$listeTypesorients = $this->Commissionep->Passagecommissionep->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->Typeorient->find( 'list' );
+				$listeStructuresreferentes = $this->Commissionep->Passagecommissionep->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->Structurereferente->find( 'list' );
+				$listeReferents = $this->Commissionep->Passagecommissionep->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->Referent->find( 'list' );
+				$this->set( compact( 'listeTypesorients' ) );
+				$this->set( compact( 'listeStructuresreferentes' ) );
+				$this->set( compact( 'listeReferents' ) );
 				$options = Set::merge(
 					$options,
 					$this->Commissionep->Passagecommissionep->Dossierep->Defautinsertionep66->enums()

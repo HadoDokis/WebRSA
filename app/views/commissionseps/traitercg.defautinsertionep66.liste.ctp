@@ -16,35 +16,14 @@
 <th>Motif de radiation</th>
 <th>Avis EPL</th>
 <th colspan="4">Décision CG</th>
-<th class="innerTableHeader noprint">Avis de l\'EP</th>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
 // debug($dossierep);
-		$innerTable = '<table id="innerTable'.$i.'" class="innerTable">
-			<tbody>
-				<tr>
-					<th>Avis EP</th>
-					<td>'.Set::enum( @$dossierep['Defautinsertionep66']['Decisiondefautinsertionep66'][0]['decision'], $options['Decisiondefautinsertionep66']['decision'] ).'</td>
-				</tr>
-				<tr>
-					<th>Type de réorientation</th>
-					<td>'.Set::enum( @$dossierep['Defautinsertionep66']['Decisiondefautinsertionep66'][0]['typeorient_id'], $options['Decisiondefautinsertionep66']['typeorient_id'] ).'</td>
-				</tr>
-
-				<tr>
-					<th>Structure pour la réorientation</th>
-					<td>'.Set::enum( @$dossierep['Defautinsertionep66']['Decisiondefautinsertionep66'][0]['structurereferente_id'], $options['Decisiondefautinsertionep66']['structurereferente_id'] ).'</td>
-				</tr>
-
-			</tbody>
-		</table>';
+		$niveauDecision = count( $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'] ) - 1;
 		
-		$avisEp = Set::enum( @$dossierep['Defautinsertionep66']['Decisiondefautinsertionep66'][$i]['decision'], $options['Decisiondefautinsertionep66']['decision'] );
-		if ( isset( $dossierep['Defautinsertionep66']['Decisiondefautinsertionep66'][$i]['decisionsup'] ) && !empty( $dossierep['Defautinsertionep66']['Decisiondefautinsertionep66'][$i]['decisionsup'] ) ) {
-			$avisEp .= ' - '.Set::enum( @$dossierep['Defautinsertionep66']['Decisiondefautinsertionep66'][$i]['decisionsup'], $options['Decisiondefautinsertionep66']['decisionsup'] );
-		}
-		
+		$avisEp = implode( ' - ', Set::filter( array( Set::enum( @$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][$niveauDecision]['decision'], $options['Decisiondefautinsertionep66']['decision'] ), Set::enum( @$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][$niveauDecision]['decisionsup'], $options['Decisiondefautinsertionep66']['decisionsup'] ), $listeTypesorients[@$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][$niveauDecision]['typeorient_id']], $listeStructuresreferentes[@$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][$niveauDecision]['structurereferente_id']], $listeReferents[@$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][$niveauDecision]['referent_id']] ) ) );
+
 		echo $xhtml->tableCells(
 			array(
 				$dossierep['Dossierep']['id'],
@@ -64,7 +43,7 @@
 				$form->input( "Defautinsertionep66.{$i}.dossierep_id", array( 'type' => 'hidden', 'value' => $dossierep['Dossierep']['id'] ) ).
 				$form->input( "Decisiondefautinsertionep66.{$i}.id", array( 'type' => 'hidden' ) ).
 				$form->input( "Decisiondefautinsertionep66.{$i}.etape", array( 'type' => 'hidden', 'value' => 'cg' ) ).
-				$form->input( "Decisiondefautinsertionep66.{$i}.defautinsertionep66_id", array( 'type' => 'hidden', 'value' => @$dossierep['Defautinsertionep66']['id'] ) ).
+				$form->input( "Decisiondefautinsertionep66.{$i}.passagecommissionep_id", array( 'type' => 'hidden', 'value' ) ).
 
                 $avisEp,
 
@@ -72,8 +51,7 @@
 				$form->input( "Decisiondefautinsertionep66.{$i}.decisionsup", array( 'type' => 'select', 'label' => false, 'empty' => true, 'options' => $options['Decisiondefautinsertionep66']['decisionsup'], 'value' => @$decisionsdefautsinsertionseps66[$i]['decisionsup'] ) ),
 				$form->input( "Decisiondefautinsertionep66.{$i}.typeorient_id", array( 'label' => false, 'options' => $typesorients, 'empty' => true ) ),
 				$form->input( "Decisiondefautinsertionep66.{$i}.structurereferente_id", array( 'label' => false, 'options' => $structuresreferentes, 'empty' => true, 'type' => 'select' ) ),
-				$form->input( "Decisiondefautinsertionep66.{$i}.referent_id", array( 'label' => false, 'options' => $referents, 'empty' => true, 'type' => 'select' ) ),
-				array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
+				$form->input( "Decisiondefautinsertionep66.{$i}.referent_id", array( 'label' => false, 'options' => $referents, 'empty' => true, 'type' => 'select' ) )
 			)
 		);
 	}

@@ -64,17 +64,37 @@
 			$success = true;
 
 			if ($etape=='cg') {
-				$dossierseps = $this->find(
+				$dossierseps = $this->Dossierep->find(
 					'all',
 					array(
 						'conditions' => array(
-							'Dossierep.commissionep_id' => $commissionep_id
+							'Dossierep.themeep' => Inflector::tableize( $this->alias ),
+							'Dossierep.id IN ( '.
+								$this->Dossierep->Passagecommissionep->sq(
+									array(
+										'fields' => array(
+											'passagescommissionseps.dossierep_id'
+										),
+										'alias' => 'passagescommissionseps',
+										'conditions' => array(
+											'passagescommissionseps.commissionep_id' => $commissionep_id
+										)
+									)
+								)
+							.' )'
 						),
 						'contain' => array(
-							'Decisionsaisinepdoep66',
-							'Dossierep',
-							'Traitementpdo' => array(
-								'Propopdo'
+							'Passagecommissionep' => array(
+								'Decisionsaisinepdoep66' => array(
+									'order' => array(
+										'Decisionsaisinepdoep66.etape DESC'
+									)
+								)
+							),
+							$this->alias => array(
+								'Traitementpdo' => array(
+									'Propopdo'
+								)
 							)
 						)
 					)
@@ -83,10 +103,10 @@
 				foreach( $dossierseps as $dossierep ) {
 					$decisionpropopdo = array(
 						'Decisionpropopdo' => array(
-							'propopdo_id' => $dossierep['Traitementpdo']['propopdo_id'],
-							'datedecisionpdo' => @$dossierep['Decisionsaisinepdoep66'][1]['datedecisionpdo'],
-							'decisionpdo_id' => @$dossierep['Decisionsaisinepdoep66'][1]['decisionpdo_id'],
-							'commentairepdo' => @$dossierep['Decisionsaisinepdoep66'][1]['commentaire']
+							'propopdo_id' => $dossierep[$this->alias]['Traitementpdo']['propopdo_id'],
+							'datedecisionpdo' => @$dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][0]['datedecisionpdo'],
+							'decisionpdo_id' => @$dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][0]['decisionpdo_id'],
+							'commentairepdo' => @$dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][0]['commentaire']
 						)
 					);
 					$success = $this->Traitementpdo->Propopdo->Decisionpropopdo->save($decisionpropopdo) && $success;
@@ -158,9 +178,22 @@
 				);
 
 				foreach( $dossierseps as $dossierep ) {
-					$traitementpdo['Traitementpdo']['descriptionpdo_id'] = Configure::read( 'traitementResultatId' );
+					$descriptionpdo_saisinepdo = $this->Traitementpdo->Descriptionpdo->find(
+						'first',
+						array(
+							'fields' => array(
+								'Descriptionpdo.id'
+							),
+							'conditions' => array(
+								'Descriptionpdo.declencheep' => '1'
+							),
+							'contain' => false
+						)
+					);
+
+					$traitementpdo['Traitementpdo']['descriptionpdo_id'] = $descriptionpdo_saisinepdo['Descriptionpdo']['id'];
 					$traitementpdo['Traitementpdo']['traitementtypepdo_id'] = Configure::read( 'traitementClosId' );
-					$dateseance = $dossierep['Dossierep']['Commissionep']['dateseance'];
+					$dateseance = $dossierep['Dossierep']['Passagecommissionep'][0]['Commissionep']['dateseance'];
 					list($jour, $heure) = explode(' ', $dateseance);
 					$traitementpdo['Traitementpdo']['datereception'] = $jour;
 					$traitementpdo['Traitementpdo']['personne_id'] = $dossierep['Traitementpdo']['personne_id'];
@@ -248,8 +281,13 @@
 		 */
 		public function containQueryData() {
 			return array(
-				'Saisinepdoep66' => array(
+				'Saisinepdoep66',
+				'Passagecommissionep' => array(
+					'conditions' => array(
+						'Passagecommissionep.etatdossierep NOT' =>  array( 'annule', 'reporte' )
+					),
 					'Decisionsaisinepdoep66'=>array(
+						'order' => array( 'Decisionsaisinepdoep66.etape DESC' ),
 						'Decisionpdo'
 					),
 				)
@@ -269,9 +307,9 @@
 			else {
 				$success = $this->Decisionsaisinepdoep66->saveAll( $themeData, array( 'atomic' => false ) );
 
-				$this->Dossierep->updateAll(
-					array( 'Dossierep.etapedossierep' => '\'decision'.$niveauDecision.'\'' ),
-					array( '"Dossierep"."id"' => Set::extract( $data, '/Saisinepdoep66/dossierep_id' ) )
+				$this->Dossierep->Passagecommissionep->updateAll(
+					array( 'Passagecommissionep.etatdossierep' => '\'decision'.$niveauDecision.'\'' ),
+					array( '"Passagecommissionep"."id"' => Set::extract( $data, '/Decisionsaisinepdoep66/passagecommissionep_id' ) )
 				);
 
 				return $success;
@@ -300,26 +338,31 @@
 			}
 
 			$formData = array();
-			if ($niveauDecision=='ep') {
+			if ( $niveauDecision == 'ep' ) {
 				foreach( $datas as $key => $dossierep ) {
-					if (isset($dossierep[$this->alias]['Decisionsaisinepdoep66'][0]['id'])) {
-						$formData['Decisionsaisinepdoep66'][$key]['id'] = $dossierep[$this->alias]['Decisionsaisinepdoep66'][0]['id'];
-						$formData['Decisionsaisinepdoep66'][$key]['decisionpdo_id'] = $dossierep[$this->alias]['Decisionsaisinepdoep66'][0]['decisionpdo_id'];
-						$formData['Decisionsaisinepdoep66'][$key]['commentaire'] = $dossierep[$this->alias]['Decisionsaisinepdoep66'][0]['commentaire'];
+					if ( isset( $dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][0]['id'] ) ) {
+						$formData['Decisionsaisinepdoep66'][$key]['id'] = $dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][0]['id'];
+						$formData['Decisionsaisinepdoep66'][$key]['decisionpdo_id'] = $dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][0]['decisionpdo_id'];
+						$formData['Decisionsaisinepdoep66'][$key]['commentaire'] = $dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][0]['commentaire'];
+						$formData['Decisionsaisinepdoep66'][$key]['decision'] = $dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][0]['decision'];
+						$formData['Decisionsaisinepdoep66'][$key]['raisonnonpassage'] = $dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][0]['raisonnonpassage'];
 					}
-					$formData['Saisinepdoep66'][$key]['id'] = $dossierep[$this->alias]['id'];
-					$formData['Dossierep'][$key]['id'] = $dossierep['Dossierep']['id'];
+					else {
+						$formData['Decisionsaisinepdoep66'][$key]['decision'] = 'avis';
+					}
+					$formData['Decisionsaisinepdoep66'][$key]['passagecommissionep_id'] = $dossierep['Passagecommissionep'][0]['id'];
 				}
 			}
-			elseif ($niveauDecision=='cg') {
+			elseif ( $niveauDecision == 'cg' ) {
 				foreach( $datas as $key => $dossierep ) {
-					if (isset($dossierep[$this->alias]['Decisionsaisinepdoep66'][1]['id'])) {
-						$formData['Decisionsaisinepdoep66'][$key]['id'] = $dossierep[$this->alias]['Decisionsaisinepdoep66'][1]['id'];
-						$formData['Decisionsaisinepdoep66'][$key]['decisionpdo_id'] = $dossierep[$this->alias]['Decisionsaisinepdoep66'][1]['decisionpdo_id'];
-						$formData['Decisionsaisinepdoep66'][$key]['commentaire'] = $dossierep[$this->alias]['Decisionsaisinepdoep66'][1]['commentaire'];
+					if ( isset( $dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][1]['id'] ) ) {
+						$formData['Decisionsaisinepdoep66'][$key]['id'] = $dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][0]['id'];
 					}
-					$formData['Saisinepdoep66'][$key]['id'] = $dossierep[$this->alias]['id'];
-					$formData['Dossierep'][$key]['id'] = $dossierep['Dossierep']['id'];
+					$formData['Decisionsaisinepdoep66'][$key]['decisionpdo_id'] = $dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][0]['decisionpdo_id'];
+					$formData['Decisionsaisinepdoep66'][$key]['commentaire'] = $dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][0]['commentaire'];
+					$formData['Decisionsaisinepdoep66'][$key]['passagecommissionep_id'] = $dossierep['Passagecommissionep'][0]['id'];
+					$formData['Decisionsaisinepdoep66'][$key]['decision'] = $dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][0]['decision'];
+						$formData['Decisionsaisinepdoep66'][$key]['raisonnonpassage'] = $dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][0]['raisonnonpassage'];
 				}
 			}
 			return $formData;
@@ -327,22 +370,16 @@
 
 		public function prepareFormDataUnique( $dossierep_id, $dossierep, $niveauDecision ) {
 			$formData = array();
-			if ($niveauDecision=='cg') {
-				if (!isset($dossierep[$this->alias]['Decisionsaisinepdoep66'][1]['id'])) {
-					$formData['Decisionsaisinepdoep66']['decisionpdo_id'] = $dossierep[$this->alias]['Decisionsaisinepdoep66'][0]['decisionpdo_id'];
-					$formData['Decisionsaisinepdoep66']['commentaire'] = $dossierep[$this->alias]['Decisionsaisinepdoep66'][0]['commentaire'];
-					$formData['Decisionsaisinepdoep66']['saisinepdoep66_id'] = $dossierep[$this->alias]['Decisionsaisinepdoep66'][0]['saisinepdoep66_id'];
+			if ($niveauDecision=='decisioncg') {
+				if ( isset( $dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][1] ) ) {
+					$formData['Decisionsaisinepdoep66']['id'] = $dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][0]['id'];
 				}
-				else {
-					$formData['Decisionsaisinepdoep66']['decisionpdo_id'] = $dossierep[$this->alias]['Decisionsaisinepdoep66'][1]['decisionpdo_id'];
-					$formData['Decisionsaisinepdoep66']['commentaire'] = $dossierep[$this->alias]['Decisionsaisinepdoep66'][1]['commentaire'];
-					$formData['Decisionsaisinepdoep66']['id'] = $dossierep[$this->alias]['Decisionsaisinepdoep66'][1]['id'];
-					$formData['Decisionsaisinepdoep66']['saisinepdoep66_id'] = $dossierep[$this->alias]['Decisionsaisinepdoep66'][1]['saisinepdoep66_id'];
-					//$formData['Decisionsaisinepdoep66']['motifpdo'] = $dossierep[$this->alias]['Decisionsaisinepdoep66'][1]['motifpdo'];
-					//$formData['Decisionsaisinepdoep66']['nonadmis'] = $dossierep[$this->alias]['Decisionsaisinepdoep66'][1]['nonadmis'];
-				}
+				$formData['Decisionsaisinepdoep66']['decisionpdo_id'] = $dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][0]['decisionpdo_id'];
+				$formData['Decisionsaisinepdoep66']['commentaire'] = $dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][0]['commentaire'];
+				$formData['Decisionsaisinepdoep66']['passagecommissionep_id'] = $dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][0]['passagecommissionep_id'];
+				$formData['Decisionsaisinepdoep66']['decision'] = $dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][0]['decision'];
+				$formData['Decisionsaisinepdoep66']['raisonnonpassage'] = $dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][0]['raisonnonpassage'];
 
-				$formData['Saisinepdoep66']['id'] = $dossierep[$this->alias]['id'];
 				$formData['Dossierep']['id'] = $dossierep['Dossierep']['id'];
 			}
 			return $formData;
@@ -355,9 +392,9 @@
 		public function saveDecisionUnique( $data, $niveauDecision ) {
 			$success = $this->Decisionsaisinepdoep66->save( $data, array( 'atomic' => false ) );
 
-			$this->Dossierep->updateAll(
-				array( 'Dossierep.etapedossierep' => '\'decision'.$niveauDecision.'\'' ),
-				array( '"Dossierep"."id"' => Set::extract( $data, '/Saisinepdoep66/dossierep_id' ) )
+			$this->Dossierep->Passagecommissionep->updateAll(
+				array( 'Passagecommissionep.etatdossierep' => '\'decision'.$niveauDecision.'\'' ),
+				array( '"Passagecommissionep"."id"' => Set::extract( $data, '/Saisinepdoep66/dossierep_id' ) )
 			);
 
 			return $success;
@@ -376,7 +413,7 @@
 					'Saisinepdoep66.modified',
 					//
 					'Decisionsaisinepdoep66.id',
-					'Decisionsaisinepdoep66.saisinepdoep66_id',
+// 					'Decisionsaisinepdoep66.saisinepdoep66_id',
 					'Decisionsaisinepdoep66.etape',
 					'Decisionsaisinepdoep66.decisionpdo_id',
 					'Decisionsaisinepdoep66.commentaire',
@@ -403,7 +440,7 @@
 						'type'       => 'LEFT OUTER',
 						'foreignKey' => false,
 						'conditions' => array(
-							'Decisionsaisinepdoep66.saisinepdoep66_id = Saisinepdoep66.id',
+							'Decisionsaisinepdoep66.passagecommissionep_id = Passagecommissionep.id',
 							'Decisionsaisinepdoep66.etape' => 'ep'
 						),
 					),

@@ -285,38 +285,57 @@
 				'first',
 				array(
 					'conditions' => array( 'Commissionep.id' => $commissionep_id ),
-					'contain' => array( 'Ep' )
+					'contain' => array(
+						'Ep' => array(
+							'Regroupementep'
+						)
+					)
 				)
 			);
 
-			$niveauDecisionFinale = $commissionep['Ep'][Inflector::underscore( $this->alias )];
+			$niveauDecisionFinale = $commissionep['Ep']['Regroupementep'][Inflector::underscore( $this->alias )];
 
 			$dossierseps = $this->find(
 				'all',
 				array(
 					'conditions' => array(
-						'Dossierep.commissionep_id' => $commissionep_id,
+						'Dossierep.id IN ( '.
+							$this->Dossierep->Passagecommissionep->sq(
+								array(
+									'fields' => array(
+										'passagescommissionseps.dossierep_id'
+									),
+									'alias' => 'passagescommissionseps',
+									'conditions' => array(
+										'passagescommissionseps.commissionep_id' => $commissionep_id
+									)
+								)
+							)
+						.' )',
 						'Dossierep.themeep' => Inflector::tableize( $this->alias ),//FIXME: ailleurs aussi
 					),
 					'contain' => array(
-						'Decisiondefautinsertionep66' => array(
-							'conditions' => array(
-								'Decisiondefautinsertionep66.etape' => $etape
+						'Dossierep' => array(
+							'Passagecommissionep' => array(
+								'Decisiondefautinsertionep66' => array(
+									'conditions' => array(
+										'Decisiondefautinsertionep66.etape' => $etape
+									)
+								)
 							)
-						),
-						'Dossierep'
+						)
 					)
 				)
 			);
 
 			$success = true;
 			foreach( $dossierseps as $dossierep ) {
-				if( $niveauDecisionFinale == $etape ) {
+				if( $niveauDecisionFinale == "decision{$etape}" ) {
 					$defautinsertionep66 = array( 'Defautinsertionep66' => $dossierep['Defautinsertionep66'] );
-					if( !isset( $dossierep['Decisiondefautinsertionep66'][0]['decision'] ) ) {
+					if( !isset( $dossierep['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['decision'] ) ) {
 						$success = false;
 					}
-					$defautinsertionep66['Defautinsertionep66']['decision'] = @$dossierep['Decisiondefautinsertionep66'][0]['decision'];
+					$defautinsertionep66['Defautinsertionep66']['decision'] = @$dossierep['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['decision'];
 
 					// Si réorientation, alors passage en EP Parcours "Réorientation ou maintien d'orientation"
 					if( $defautinsertionep66['Defautinsertionep66']['decision'] == 'reorientationprofverssoc' || $defautinsertionep66['Defautinsertionep66']['decision'] == 'reorientationsocversprof' ) {
@@ -389,8 +408,8 @@
 							),
 							// FIXME: bilan de parcours arrangé ? nouvelle thématique ?
 							'Saisinebilanparcoursep66' => array(
-								'typeorient_id' => @$dossierep['Decisiondefautinsertionep66'][0]['typeorient_id'],
-								'structurereferente_id' => @$dossierep['Decisiondefautinsertionep66'][0]['structurereferente_id'],
+								'typeorient_id' => @$dossierep['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['typeorient_id'],
+								'structurereferente_id' => @$dossierep['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['structurereferente_id'],
 							)
 						);
 
@@ -763,7 +782,7 @@
 					'Defautinsertionep66.modified',
 					//
 					'Decisiondefautinsertionep66.id',
-					'Decisiondefautinsertionep66.defautinsertionep66_id',
+// 					'Decisiondefautinsertionep66.defautinsertionep66_id',
 					'Decisiondefautinsertionep66.typeorient_id',
 					'Decisiondefautinsertionep66.structurereferente_id',
 					'Decisiondefautinsertionep66.etape',
@@ -786,7 +805,7 @@
 						'type'       => 'LEFT OUTER',
 						'foreignKey' => false,
 						'conditions' => array(
-							'Decisiondefautinsertionep66.defautinsertionep66_id = Defautinsertionep66.id',
+							'Decisiondefautinsertionep66.passagecommissionep_id = Passagecommissionep.id',
 							'Decisiondefautinsertionep66.etape' => 'ep'
 						),
 					),

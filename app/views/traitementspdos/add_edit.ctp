@@ -25,8 +25,8 @@
 		echo $default->subform(
 			array(
 				'Traitementpdo.propopdo_id' => array( 'type' => 'hidden', 'value' => $propopdo_id ),
-				'Traitementpdo.descriptionpdo_id',
-				'Traitementpdo.traitementtypepdo_id'
+				'Traitementpdo.descriptionpdo_id' => array( 'type' => 'select' ),
+				'Traitementpdo.traitementtypepdo_id' => array( 'type' => 'select' )
 			),
 			array(
 				'options' => $options

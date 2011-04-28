@@ -328,5 +328,17 @@ ALTER TABLE decisionssaisinesbilansparcourseps66 ADD COLUMN raisonnonpassage TEX
 CREATE UNIQUE INDEX decisionssaisinesbilansparcourseps66_passagecommissionep_id_etape_idx ON decisionssaisinesbilansparcourseps66( passagecommissionep_id, etape );
 
 -- *****************************************************************************
+-- 20110426- saisinepdoep66
+-- *****************************************************************************
+
+ALTER TABLE decisionssaisinespdoseps66 ADD COLUMN passagecommissionep_id INTEGER DEFAULT NULL REFERENCES passagescommissionseps(id) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE decisionssaisinespdoseps66 DROP COLUMN saisinepdoep66_id;
+CREATE TYPE TYPE_DECISIONSAISINEPDOEP66 AS ENUM ( 'avis', 'annule', 'reporte' );
+ALTER TABLE decisionssaisinespdoseps66 ADD COLUMN decision TYPE_DECISIONSAISINEPDOEP66;
+ALTER TABLE decisionssaisinespdoseps66 ADD COLUMN raisonnonpassage TEXT DEFAULT NULL;
+
+CREATE UNIQUE INDEX decisionssaisinespdoseps66_passagecommissionep_id_etape_idx ON decisionssaisinespdoseps66( passagecommissionep_id, etape );
+
+-- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
