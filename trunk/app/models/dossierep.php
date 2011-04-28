@@ -217,19 +217,23 @@
 						"{$this->alias}.{$this->primaryKey}" => $id
 					),
 					'contain' => array(
-						'Commissionep' => array(
-							'Ep'
+						'Passagecommissionep' => array(
+							'Commissionep' => array(
+								'Ep' => array(
+									'Regroupementep'
+								)
+							)
 						)
 					)
 				)
 			);
 			
-			$themes = $this->Commissionep->Ep->themes();
+			$themes = $this->Passagecommissionep->Commissionep->Ep->Regroupementep->themes();
 			$themesTraites = array();
 
 			foreach( $themes as $key => $theme ) {
-				if( Inflector::tableize( $theme ) == $dossierep['Dossierep']['themeep'] && in_array( $dossierep['Commissionep']['Ep'][$theme], array( 'ep', 'cg' ) ) ) {
-					$themesTraites[$theme] = $dossierep['Commissionep']['Ep'][$theme];
+				if( Inflector::tableize( $theme ) == $dossierep['Dossierep']['themeep'] && in_array( $dossierep['Passagecommissionep'][0]['Commissionep']['Ep']['Regroupementep'][$theme], array( 'decisionep', 'decisioncg' ) ) ) {
+					$themesTraites[$theme] = $dossierep['Passagecommissionep'][0]['Commissionep']['Ep']['Regroupementep'][$theme];
 				}
 			}
 			return $themesTraites;

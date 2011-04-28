@@ -116,21 +116,37 @@
 		*/
 
 		public function finaliser( $commissionep_id, $etape, $user_id ) {
-			$dossierseps = $this->find(
+			$dossierseps = $this->Dossierep->find(
 				'all',
 				array(
 					'conditions' => array(
-						'Dossierep.commissionep_id' => $commissionep_id
+						'Dossierep.themeep' => Inflector::tableize( $this->alias ),
+						'Dossierep.id IN ( '.
+							$this->Dossierep->Passagecommissionep->sq(
+								array(
+									'fields' => array(
+										'passagescommissionseps.dossierep_id'
+									),
+									'alias' => 'passagescommissionseps',
+									'conditions' => array(
+										'passagescommissionseps.commissionep_id' => $commissionep_id
+									)
+								)
+							)
+						.' )'
 					),
 					'contain' => array(
-						'Decisionsaisinebilanparcoursep66' => array(
-							'conditions' => array(
-								'Decisionsaisinebilanparcoursep66.etape' => $etape
+						$this->alias => array(
+							'Bilanparcours66' => array(
+								'Orientstruct'
 							)
 						),
-						'Dossierep',
-						'Bilanparcours66' => array(
-							'Orientstruct',
+						'Passagecommissionep' => array(
+							'Decisionsaisinebilanparcoursep66' => array(
+								'conditions' => array(
+									'Decisionsaisinebilanparcoursep66.etape' => $etape
+								)
+							)
 						)
 					)
 				)
@@ -138,7 +154,7 @@
 
 			$success = true;
 			foreach( $dossierseps as $dossierep ) {
-				if( $dossierep['Decisionsaisinebilanparcoursep66'][0]['decision'] == 'accepte' ) {
+				if( $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['decision'] == 'accepte' ) {
 					$orientstruct = array(
 						'Orientstruct' => array(
 							'personne_id' => $dossierep['Bilanparcours66']['Orientstruct']['personne_id'],
@@ -433,7 +449,7 @@
 					'Saisinebilanparcoursep66.modified',
 					//
 					'Decisionsaisinebilanparcoursep66.id',
-					'Decisionsaisinebilanparcoursep66.saisinebilanparcoursep66_id',
+// 					'Decisionsaisinebilanparcoursep66.saisinebilanparcoursep66_id',
 					'Decisionsaisinebilanparcoursep66.etape',
 					'Decisionsaisinebilanparcoursep66.decision',
 					'Decisionsaisinebilanparcoursep66.typeorient_id',
@@ -456,7 +472,7 @@
 						'type'       => 'LEFT OUTER',
 						'foreignKey' => false,
 						'conditions' => array(
-							'Decisionsaisinebilanparcoursep66.saisinebilanparcoursep66_id = Saisinebilanparcoursep66.id',
+							'Decisionsaisinebilanparcoursep66.passagecommissionep_id = Passagecommissionep.id',
 							'Decisionsaisinebilanparcoursep66.etape' => 'ep'
 						),
 					),

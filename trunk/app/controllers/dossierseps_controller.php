@@ -16,6 +16,19 @@
 			$this->set( 'decisionpdo', $this->Decisionpdo->find( 'list' ) );
 
 			$options = $this->Propopdo->allEnumLists();
+			
+			// Ajout des enums pour les thématiques du CG uniquement
+			foreach( $this->Dossierep->Passagecommissionep->Commissionep->Ep->Regroupementep->themes() as $theme ) {
+				/*$model = Inflector::classify( $theme );
+				if( in_array( 'Enumerable', $this->Passagecommissionep->Dossierep->{$model}->Behaviors->attached() ) ) {
+					$options = Set::merge( $options, $this->Passagecommissionep->Dossierep->{$model}->enums() );
+				}*/
+
+				$modeleDecision = Inflector::classify( "decision{$theme}" );
+				if( in_array( 'Enumerable', $this->Dossierep->Passagecommissionep->Commissionep->Passagecommissionep->{$modeleDecision}->Behaviors->attached() ) ) {
+					$options = Set::merge( $options, $this->Dossierep->Passagecommissionep->Commissionep->Passagecommissionep->{$modeleDecision}->enums() );
+				}
+			}
 
 			$this->set( compact( 'options' ) );
 		}
@@ -299,28 +312,38 @@
 		public function _decision ( $dossierep_id, $niveauDecision ) {
 			$themeTraite = $this->Dossierep->themeTraite($dossierep_id);
 			$dossierep = array();
-			foreach ($themeTraite as $themeName=>$decision) {
-				$classThemeName = Inflector::classify($themeName);
-				$containQueryData = $this->Dossierep->{$classThemeName}->containQueryData();
-				$dossierep = $this->Dossierep->find(
-					'first',
-					array(
-						'conditions' => array(
-							'Dossierep.id' => $dossierep_id
-						),
-						'contain' => $containQueryData
+			
+			$dossierep = $this->Dossierep->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Dossierep.id' => $dossierep_id
 					)
-				);
-				$this->set( 'dossier', $dossierep );
-				$this->set( compact( 'themeName' ) );
-			}
+				)
+			);
+
+			$classThemeName = Inflector::classify( $dossierep['Dossierep']['themeep'] );
+			$containQueryData = $this->Dossierep->{$classThemeName}->containQueryData();
+			$dossierep = $this->Dossierep->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Dossierep.id' => $dossierep_id
+					),
+					'contain' => $containQueryData
+				)
+			);
+			
+			$this->set( 'dossier', $dossierep );
+			$this->set( 'themeName', Inflector::underscore( $classThemeName ) );
+
 			if (!empty($this->data)) {
 				$this->Dossierep->begin();
 				if ($this->Dossierep->sauvegardeUnique( $dossierep_id, $this->data, $niveauDecision )) {
 					$this->_setFlashResult( 'Save', true );
-					//$this->Dossierep->rollback();
+// 					$this->Dossierep->rollback();
 					$this->Dossierep->commit();
-					$this->redirect(array('controller'=>'commissionseps', 'action'=>'traitercg', $dossierep['Dossierep']['commissionep_id']));
+					$this->redirect(array('controller'=>'commissionseps', 'action'=>'traitercg', $dossierep['Passagecommissionep'][0]['commissionep_id']));
 				}
 				else {
 					$this->_setFlashResult( 'Save', false );

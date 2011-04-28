@@ -10,7 +10,8 @@
 			'ValidateTranslate',
 			'Enumerable' => array(
 				'fields' => array(
-					'etape'
+					'etape',
+					'decision'
 				)
 			),
 			'Formattable'
