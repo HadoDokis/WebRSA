@@ -244,6 +244,33 @@
 								'foreignKey' => false,
 								'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
 							),
+							array(
+								'table'      => 'calculsdroitsrsa',
+								'alias'      => 'Calculdroitrsa',
+								'type'       => 'INNER',
+								'foreignKey' => false,
+								'conditions' => array(
+									'Personne.id = Calculdroitrsa.personne_id',
+									'Calculdroitrsa.toppersdrodevorsa' => 1
+								)
+							),
+							array(
+								'table'      => 'dossiers',
+								'alias'      => 'Dossier',
+								'type'       => 'INNER',
+								'foreignKey' => false,
+								'conditions' => array( 'Foyer.dossier_id = Dossier.id' )
+							),
+							array(
+								'table'      => 'situationsdossiersrsa',
+								'alias'      => 'Situationdossierrsa',
+								'type'       => 'INNER',
+								'foreignKey' => false,
+								'conditions' => array(
+									'Situationdossierrsa.dossier_id = Dossier.id',
+									'Situationdossierrsa.etatdosrsa' => $this->Dossierep->Personne->Foyer->Dossier->Situationdossierrsa->etatOuvert()
+								)
+							),
 						),
 						'conditions' => array(
 							$conditionsAdresses,
@@ -341,7 +368,6 @@
 				$this->Dossierep->begin();
 				if ($this->Dossierep->sauvegardeUnique( $dossierep_id, $this->data, $niveauDecision )) {
 					$this->_setFlashResult( 'Save', true );
-// 					$this->Dossierep->rollback();
 					$this->Dossierep->commit();
 					$this->redirect(array('controller'=>'commissionseps', 'action'=>'traitercg', $dossierep['Passagecommissionep'][0]['commissionep_id']));
 				}

@@ -157,9 +157,9 @@
 				if( $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['decision'] == 'accepte' ) {
 					$orientstruct = array(
 						'Orientstruct' => array(
-							'personne_id' => $dossierep['Bilanparcours66']['Orientstruct']['personne_id'],
-							'typeorient_id' => $dossierep['Decisionsaisinebilanparcoursep66'][0]['typeorient_id'],
-							'structurereferente_id' => $dossierep['Decisionsaisinebilanparcoursep66'][0]['structurereferente_id'],
+							'personne_id' => $dossierep[$this->alias]['Bilanparcours66']['Orientstruct']['personne_id'],
+							'typeorient_id' => $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['typeorient_id'],
+							'structurereferente_id' => $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['structurereferente_id'],
 							'date_propo' => date( 'Y-m-d' ),
 							'date_valid' => date( 'Y-m-d' ),
 							'statut_orient' => 'Orienté',
@@ -188,7 +188,7 @@
 					$this->Bilanparcours66->Orientstruct->Personne->PersonneReferent->updateAll(
 						array( 'PersonneReferent.dfdesignation' => "'".date( 'Y-m-d' )."'" ),
 						array(
-							'"PersonneReferent"."personne_id"' => $dossierep['Bilanparcours66']['Orientstruct']['personne_id'],
+							'"PersonneReferent"."personne_id"' => $dossierep[$this->alias]['Bilanparcours66']['Orientstruct']['personne_id'],
 							'"PersonneReferent"."dfdesignation" IS NULL'
 						)
 					);
@@ -274,6 +274,9 @@
 					),
 					'Passagecommissionep' => array(
 						'Decisionsaisinebilanparcoursep66' => array(
+							'order' => array(
+								'Decisionsaisinebilanparcoursep66.etape DESC'
+							),
 							'Typeorient',
 							'Structurereferente'
 						),
@@ -295,9 +298,9 @@
 			else {
 				$success = $this->Decisionsaisinebilanparcoursep66->saveAll( $themeData, array( 'atomic' => false ) );
 
-				$this->Dossierep->updateAll(
-					array( 'Dossierep.etapedossierep' => '\'decision'.$niveauDecision.'\'' ),
-					array( '"Dossierep"."id"' => Set::extract( $data, '/Saisinebilanparcoursep66/dossierep_id' ) )
+				$this->Dossierep->Passagecommissionep->updateAll(
+					array( 'Passagecommissionep.etatdossierep' => '\'decision'.$niveauDecision.'\'' ),
+					array( '"Passagecommissionep"."id"' => Set::extract( $data, '/Decisionsaisinebilanparcoursep66/passagecommissionep_id' ) )
 				);
 
 				return $success;
@@ -336,28 +339,36 @@
 			$formData = array();
 			if( $niveauDecision == 'ep' ) {
 				foreach( $datas as $key => $dossierep ) {
-					$formData[$this->alias][$key] = $dossierep[$this->alias];
-
-					if (isset($dossierep[$this->alias]['Decisionsaisinebilanparcoursep66'][0]['id'])) {
-						$formData['Decisionsaisinebilanparcoursep66'][$key]['id'] = $dossierep[$this->alias]['Decisionsaisinebilanparcoursep66'][0]['id'];
-						$formData['Decisionsaisinebilanparcoursep66'][$key]['typeorient_id'] = $dossierep[$this->alias]['Decisionsaisinebilanparcoursep66'][0]['typeorient_id'];
+					$formData['Decisionsaisinebilanparcoursep66'][$key]['passagecommissionep_id'] = $dossierep['Passagecommissionep'][0]['id'];
+					if ( isset( $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['id'] ) ) {
+						$formData['Decisionsaisinebilanparcoursep66'][$key]['id'] = $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['id'];
+						$formData['Decisionsaisinebilanparcoursep66'][$key]['decision'] = $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['decision'];
+						$formData['Decisionsaisinebilanparcoursep66'][$key]['raisonnonpassage'] = $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['raisonnonpassage'];
+						$formData['Decisionsaisinebilanparcoursep66'][$key]['typeorient_id'] = $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['typeorient_id'];
 						$formData['Decisionsaisinebilanparcoursep66'][$key]['structurereferente_id'] = implode(
 							'_',
 							array(
-								$dossierep[$this->alias]['Decisionsaisinebilanparcoursep66'][0]['typeorient_id'],
-								$dossierep[$this->alias]['Decisionsaisinebilanparcoursep66'][0]['structurereferente_id']
+								$dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['typeorient_id'],
+								$dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['structurereferente_id']
 							)
 						);
 						$formData['Decisionsaisinebilanparcoursep66'][$key]['referent_id'] = implode(
 							'_',
 							array(
-								$dossierep[$this->alias]['Decisionsaisinebilanparcoursep66'][0]['structurereferente_id'],
-								$dossierep[$this->alias]['Decisionsaisinebilanparcoursep66'][0]['referent_id']
+								$dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['structurereferente_id'],
+								$dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['referent_id']
 							)
 						);
-						$formData['Decisionsaisinebilanparcoursep66'][$key]['commentaire'] = $dossierep[$this->alias]['Decisionsaisinebilanparcoursep66'][0]['commentaire'];
+						$formData['Decisionsaisinebilanparcoursep66'][$key]['commentaire'] = $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['commentaire'];
+						if ( !empty( $formData['Decisionsaisinebilanparcoursep66'][$key]['commentaire'] ) ) {
+							$formData['Decisionsaisinebilanparcoursep66'][$key]['checkcomm'] = 1;
+						}
+						else {
+							$formData['Decisionsaisinebilanparcoursep66'][$key]['checkcomm'] = 0;
+						}
 					}
 					else {
+						$formData['Decisionsaisinebilanparcoursep66'][$key]['decision'] = 'accepte';
 						$formData['Decisionsaisinebilanparcoursep66'][$key]['typeorient_id'] = $dossierep[$this->alias]['typeorient_id'];
 						$formData['Decisionsaisinebilanparcoursep66'][$key]['structurereferente_id'] = implode(
 							'_',
@@ -366,58 +377,32 @@
 								$dossierep[$this->alias]['structurereferente_id']
 							)
 						);
-						/*$formData['Decisionsaisinebilanparcoursep66'][$key]['referent_id'] = implode(
-							'_',
-							array(
-								$dossierep[$this->alias]['structurereferente_id'],
-								$dossierep[$this->alias]['referent_id']
-							)
-						);*/
 					}
 				}
 			}
 			else if( $niveauDecision == 'cg' ) {
 				foreach( $datas as $key => $dossierep ) {
-					$formData[$this->alias][$key] = $dossierep[$this->alias];
-
-					if (isset($dossierep[$this->alias]['Decisionsaisinebilanparcoursep66'][1]['id'])) {
-						$formData['Decisionsaisinebilanparcoursep66'][$key]['id'] = $dossierep[$this->alias]['Decisionsaisinebilanparcoursep66'][1]['id'];
-						$formData['Decisionsaisinebilanparcoursep66'][$key]['decision'] = $dossierep[$this->alias]['Decisionsaisinebilanparcoursep66'][1]['decision'];
-						$formData['Decisionsaisinebilanparcoursep66'][$key]['typeorient_id'] = $dossierep[$this->alias]['Decisionsaisinebilanparcoursep66'][1]['typeorient_id'];
-						$formData['Decisionsaisinebilanparcoursep66'][$key]['structurereferente_id'] = implode(
-							'_',
-							array(
-								$dossierep[$this->alias]['Decisionsaisinebilanparcoursep66'][1]['typeorient_id'],
-								$dossierep[$this->alias]['Decisionsaisinebilanparcoursep66'][1]['structurereferente_id']
-							)
-						);
-						$formData['Decisionsaisinebilanparcoursep66'][$key]['referent_id'] = implode(
-							'_',
-							array(
-								$dossierep[$this->alias]['Decisionsaisinebilanparcoursep66'][1]['structurereferente_id'],
-								$dossierep[$this->alias]['Decisionsaisinebilanparcoursep66'][1]['referent_id']
-							)
-						);
-						$formData['Decisionsaisinebilanparcoursep66'][$key]['commentaire'] = $dossierep[$this->alias]['Decisionsaisinebilanparcoursep66'][0]['commentaire'];
+					$formData['Decisionsaisinebilanparcoursep66'][$key]['passagecommissionep_id'] = $dossierep['Passagecommissionep'][0]['id'];
+					if ( isset( $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][1] ) ) {
+						$formData['Decisionsaisinebilanparcoursep66'][$key]['id'] = $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['id'];
 					}
-					else {
-						$formData['Decisionsaisinebilanparcoursep66'][$key]['decision'] = $dossierep[$this->alias]['Decisionsaisinebilanparcoursep66'][0]['decision'];
-						$formData['Decisionsaisinebilanparcoursep66'][$key]['typeorient_id'] = $dossierep[$this->alias]['Decisionsaisinebilanparcoursep66'][0]['typeorient_id'];
-						$formData['Decisionsaisinebilanparcoursep66'][$key]['structurereferente_id'] = implode(
-							'_',
-							array(
-								$dossierep[$this->alias]['Decisionsaisinebilanparcoursep66'][0]['typeorient_id'],
-								$dossierep[$this->alias]['Decisionsaisinebilanparcoursep66'][0]['structurereferente_id']
-							)
-						);
-						$formData['Decisionsaisinebilanparcoursep66'][$key]['referent_id'] = implode(
-							'_',
-							array(
-								$dossierep[$this->alias]['Decisionsaisinebilanparcoursep66'][0]['structurereferente_id'],
-								$dossierep[$this->alias]['Decisionsaisinebilanparcoursep66'][0]['referent_id']
-							)
-						);
-					}
+					$formData['Decisionsaisinebilanparcoursep66'][$key]['decision'] = $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['decision'];
+					$formData['Decisionsaisinebilanparcoursep66'][$key]['raisonnonpassage'] = $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['raisonnonpassage'];
+					$formData['Decisionsaisinebilanparcoursep66'][$key]['typeorient_id'] = $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['typeorient_id'];
+					$formData['Decisionsaisinebilanparcoursep66'][$key]['structurereferente_id'] = implode(
+						'_',
+						array(
+							$dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['typeorient_id'],
+							$dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['structurereferente_id']
+						)
+					);
+					$formData['Decisionsaisinebilanparcoursep66'][$key]['referent_id'] = implode(
+						'_',
+						array(
+							$dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['structurereferente_id'],
+							$dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['referent_id']
+						)
+					);
 				}
 			}
 // debug( $formData );
