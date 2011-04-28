@@ -410,7 +410,6 @@
 			$this->_setFlashResult( 'Save', $success );
 			if( $success ) {
 				$this->Commissionep->commit();
-// 				$this->Commissionep->rollback();
 			}
 			else {
 				$this->Commissionep->rollback();
