@@ -446,8 +446,25 @@
 						);
 
 						if( empty( $vxContratinsertion ) && ( $data[$this->alias]['choixparcours'] != 'reorientation' ) ) {
-							$this->invalidate( 'choixparcours', 'Cette personne ne possède aucune contrat d\'insertion validé dans une structure référente liée à celle de sa dernière orientation validée.' );
-							return false;
+                            $nbPerimes = $this->Contratinsertion->find(
+                                'count',
+                                array(
+                                    'conditions' => array(
+                                        'Contratinsertion.personne_id' => $vxOrientstruct['Orientstruct']['personne_id'],
+                                        'Contratinsertion.structurereferente_id' => $vxOrientstruct['Orientstruct']['structurereferente_id'],
+                                        'Contratinsertion.df_ci <' => date( 'Y-m-d' )
+                                    ),
+                                    'contain' => false
+                                )
+                            );
+                            if( $nbPerimes == 0 ){
+                                $this->invalidate( 'examenaudition', 'Cette personne ne possède aucun CER validé dans une structure référente liée à celle de sa dernière orientation validée.' );
+                            }
+                            else{
+                                $this->invalidate( 'examenaudition', 'Cette personne possède un CER validé mais dont la date de fin est dépassée.' );
+                            }
+                            return false;
+
 						}
 
 						// Sauvegarde du bilan
@@ -482,7 +499,7 @@
 			// Saisine audition
 			else if( isset($data['Bilanparcours66']['proposition']) && $data['Bilanparcours66']['proposition'] == 'audition' ) {
 				$data[$this->alias]['saisineepparcours'] = '0';
-// debug( $data );
+
 				$this->create( $data );
 				if( $success = $this->validates() ) {
 					$vxOrientstruct = $this->Orientstruct->find(
@@ -494,7 +511,7 @@
 							'contain' => false
 						)
 					);
-// debug($vxOrientstruct);
+
 					// FIXME: erreur pas dans choixparcours
 					if( empty( $vxOrientstruct ) ) {
 						$this->invalidate( 'examenaudition', 'Cette personne ne possède aucune orientation validée.' );
@@ -515,7 +532,23 @@
 
 					// FIXME: erreur pas dans choixparcours
 					if( $data[$this->alias]['examenaudition'] != 'DOD' && empty( $vxContratinsertion ) ) {
-						$this->invalidate( 'examenaudition', 'Cette personne ne possède aucune contrat d\'insertion validé dans une structure référente liée à celle de sa dernière orientation validée.' );
+                        $nbPerimes = $this->Contratinsertion->find(
+                            'count',
+                            array(
+                                'conditions' => array(
+                                    'Contratinsertion.personne_id' => $vxOrientstruct['Orientstruct']['personne_id'],
+                                    'Contratinsertion.structurereferente_id' => $vxOrientstruct['Orientstruct']['structurereferente_id'],
+                                    'Contratinsertion.df_ci <' => date( 'Y-m-d' )
+                                ),
+                                'contain' => false
+                            )
+                        );
+                        if( $nbPerimes == 0 ){
+                            $this->invalidate( 'examenaudition', 'Cette personne ne possède aucun CER validé dans une structure référente liée à celle de sa dernière orientation validée.' );
+                        }
+                        else{
+                            $this->invalidate( 'examenaudition', 'Cette personne possède un CER validé mais dont la date de fin est dépassée.' );
+                        }
 						return false;
 					}
 
