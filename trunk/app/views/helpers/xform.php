@@ -201,13 +201,18 @@
 
 			unset( $options['label'] );
 
-			return $this->Html->tag(
-				'fieldset',
-				$this->Html->tag( 'legend', $label ).
-					// /*Set::merge( $options, array( 'label' => false, 'div' => false, 'multiple' => 'multiple' ) )*/
-					$this->_input( $fieldName, $options ),
-				$htmlAttributes
-			);
+            if( !isset( $options["fieldset"] ) || $options["fieldset"] != false ) {
+                return $this->Html->tag(
+                    'fieldset',
+                    $this->Html->tag( 'legend', $label ).
+                        // /*Set::merge( $options, array( 'label' => false, 'div' => false, 'multiple' => 'multiple' ) )*/
+                        $this->_input( $fieldName, $options ),
+                    $htmlAttributes
+                );
+            }
+            else {
+                return $this->_input( $fieldName, $options );
+            }
 		}
 
 		/**
@@ -710,5 +715,102 @@
 			$this->__options[$name] = $data;
 			return $this->__options[$name];
 		}
+
+        /**
+        * Returns a formatted SELECT element. (CakePHP v. 1.2.9)
+        *
+        * Attributes:
+        *
+        * - 'showParents' - If included in the array and set to true, an additional option element
+        *   will be added for the parent of each option group.
+        * - 'multiple' - show a multiple select box.  If set to 'checkbox' multiple checkboxes will be
+        *   created instead.
+        *
+        * @param string $fieldName Name attribute of the SELECT
+        * @param array $options Array of the OPTION elements (as 'value'=>'Text' pairs) to be used in the
+        *    SELECT element
+        * @param mixed $selected The option selected by default.  If null, the default value
+        *   from POST data will be used when available.
+        * @param array $attributes The HTML attributes of the select element.
+        *   ajout de la clé hiddeninput, qui à false n'ajoute pas le champ caché avant les checkboxes
+        * @param mixed $showEmpty If true, the empty select option is shown.  If a string,
+        *   that string is displayed as the empty element.
+        * @return string Formatted SELECT element
+        */
+        function select( $fieldName, $options = array(), $selected = null, $attributes = array(), $showEmpty = '' ) {
+            $select = array();
+            $showParents = false;
+            $escapeOptions = true;
+            $style = null;
+            $tag = null;
+
+            if (isset($attributes['escape'])) {
+                $escapeOptions = $attributes['escape'];
+                unset($attributes['escape']);
+            }
+            $attributes = $this->_initInputField($fieldName, array_merge(
+                (array)$attributes, array('secure' => false)
+            ));
+
+            if (is_string($options) && isset($this->__options[$options])) {
+                $options = $this->__generateOptions($options);
+            } elseif (!is_array($options)) {
+                $options = array();
+            }
+            if (isset($attributes['type'])) {
+                unset($attributes['type']);
+            }
+            if (in_array('showParents', $attributes)) {
+                $showParents = true;
+                unset($attributes['showParents']);
+            }
+
+            if (!isset($selected)) {
+                $selected = $attributes['value'];
+            }
+
+            if (isset($attributes) && array_key_exists('multiple', $attributes)) {
+                $style = ($attributes['multiple'] === 'checkbox') ? 'checkbox' : null;
+                $template = ($style) ? 'checkboxmultiplestart' : 'selectmultiplestart';
+                $tag = $this->Html->tags[$template];
+                if( !isset( $attributes['hiddeninput'] ) || $attributes['hiddeninput'] != false ) {
+                    $select[] = $this->hidden(null, array('value' => '', 'id' => null, 'secure' => false));
+                }
+            } else {
+                $tag = $this->Html->tags['selectstart'];
+            }
+
+            if (!empty($tag) || isset($template)) {
+                $this->__secure();
+                $select[] = sprintf($tag, $attributes['name'], $this->_parseAttributes(
+                    $attributes, array('name', 'value'))
+                );
+            }
+            $emptyMulti = (
+                $showEmpty !== null && $showEmpty !== false && !(
+                    empty($showEmpty) && (isset($attributes) &&
+                    array_key_exists('multiple', $attributes))
+                )
+            );
+
+            if ($emptyMulti) {
+                $showEmpty = ($showEmpty === true) ? '' : $showEmpty;
+                $options = array_reverse($options, true);
+                $options[''] = $showEmpty;
+                $options = array_reverse($options, true);
+            }
+
+            $select = array_merge($select, $this->__selectOptions(
+                array_reverse($options, true),
+                $selected,
+                array(),
+                $showParents,
+                array('escape' => $escapeOptions, 'style' => $style)
+            ));
+
+            $template = ($style == 'checkbox') ? 'checkboxmultipleend' : 'selectend';
+            $select[] = $this->Html->tags[$template];
+            return $this->output(implode("\n", $select));
+        }
 	}
 ?>
