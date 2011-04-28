@@ -70,7 +70,7 @@
     <fieldset>
         <legend>Informations de candidature</legend>
         <?php
-
+// debug($this->viewVars);
             echo $default->subform(
                 array(
                     'ActioncandidatPersonne.personne_id' => array( 'value' => $personneId, 'type' => 'hidden' ),
@@ -162,8 +162,7 @@
                     'ActioncandidatPersonne.mobile' => array( 'type' => 'radio' , 'legend' => 'Etes-vous mobile ?', 'div' => false, 'options' => array( '0' => 'Non', '1' => 'Oui' ) ),
                     'ActioncandidatPersonne.naturemobile' => array( 'label' => 'Nature de la mobilité', 'empty' => true ),
                     'ActioncandidatPersonne.typemobile'=> array( 'label' => 'Type de mobilité ' ),
-                    'ActioncandidatPersonne.rendezvouspartenaire' => array( 'type' => 'radio' , 'legend' => 'Rendez-vous', 'div' => false, 'options' => array( '0' => 'Non', '1' => 'Oui' ) ),
-                    
+                    'ActioncandidatPersonne.rendezvouspartenaire' => array( 'type' => 'radio' , 'legend' => 'Rendez-vous', 'div' => false, 'options' => array( '0' => 'Non', '1' => 'Oui' ) )
                 ),
                 array(
                     'domain' => $domain,
