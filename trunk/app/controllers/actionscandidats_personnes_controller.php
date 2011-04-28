@@ -521,7 +521,7 @@
 				}
 			}
 
-			$this->set( 'actioncandidatPersonne', $actioncandidat_personne );
+// 			$this->set( 'actioncandidatPersonne', $actioncandidat_personne );
 			$this->_setOptions();
 			$this->ActioncandidatPersonne->commit();
 
