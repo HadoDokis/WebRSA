@@ -523,15 +523,21 @@
 						array(
 							'conditions' => array(
 								'Contratinsertion.personne_id' => $vxOrientstruct['Orientstruct']['personne_id'],
-								'Contratinsertion.structurereferente_id' => $vxOrientstruct['Orientstruct']['structurereferente_id'],
-								'Contratinsertion.df_ci >=' => date( 'Y-m-d' )
+								'Contratinsertion.structurereferente_id' => $vxOrientstruct['Orientstruct']['structurereferente_id']/*,
+								'Contratinsertion.df_ci >=' => date( 'Y-m-d' )*/
 							),
 							'contain' => false
 						)
 					);
 
-					// FIXME: erreur pas dans choixparcours
-					if( $data[$this->alias]['examenaudition'] != 'DOD' && empty( $vxContratinsertion ) ) {
+                    // FIXME: erreur pas dans choixparcours
+                    if( $data[$this->alias]['examenaudition'] != 'DOD' && empty( $vxContratinsertion ) ) {
+                        $this->invalidate( 'examenaudition', 'Cette personne ne possède aucun CER validé dans une structure référente liée à celle de sa dernière orientation validée.' );
+                        return false;
+                    }
+
+					// Mise en commentaire car les dates de CER ne doivent pas être bloquantes au niveau du bilan de parcours
+					/*if( $data[$this->alias]['examenaudition'] != 'DOD' && empty( $vxContratinsertion ) ) {
                         $nbPerimes = $this->Contratinsertion->find(
                             'count',
                             array(
@@ -550,7 +556,7 @@
                             $this->invalidate( 'examenaudition', 'Cette personne possède un CER validé mais dont la date de fin est dépassée.' );
                         }
 						return false;
-					}
+					}*/
 
 					// Sauvegarde du bilan
 	// 				$data[$this->alias]['referent_id'] = $vxOrientstruct['Orientstruct']['referent_id'];//FIXME: si changement  de référent
