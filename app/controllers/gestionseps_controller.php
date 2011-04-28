@@ -12,7 +12,8 @@
             }
 
             $compteurs = array(
-                'Fonctionmembreep' => ClassRegistry::init( 'Fonctionmembreep' )->find( 'count' )
+                'Fonctionmembreep' => ClassRegistry::init( 'Fonctionmembreep' )->find( 'count' ),
+                'Regroupementep' => ClassRegistry::init( 'Regroupementep' )->find( 'count' )
             );
             $this->set( compact( 'compteurs' ) );
 

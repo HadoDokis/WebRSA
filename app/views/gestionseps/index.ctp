@@ -39,7 +39,8 @@
                         h( 'Liste des EPs' ),
                         $xhtml->viewLink(
                             'Voir la table',
-                            array( 'controller' => 'eps', 'action' => 'index' )
+                            array( 'controller' => 'eps', 'action' => 'index' ),
+                            ( ( $compteurs['Regroupementep'] > 0 ) )
                         )
                     ),
                     array( 'class' => 'odd' ),
