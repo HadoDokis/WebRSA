@@ -23,7 +23,7 @@
             'Structurereferente'
 		);
 
-		public $helpers = array( 'Default', 'Locale', 'Csv', 'Ajax', 'Xform' );
+		public $helpers = array( 'Default', 'Locale', 'Csv', 'Ajax', 'Xform', 'Default2' );
 
 		public $aucunDroit = array( 'ajaxpart', 'ajaxstruct', 'ajaxreferent', 'ajaxreffonct' );
 
@@ -347,6 +347,7 @@
 				}
 				$this->set( compact( 'referentId', 'personne' ) );
 
+// debug($actioncandidat_personne );
 
 				$dossierId = $this->ActioncandidatPersonne->Personne->dossierId( $personne_id );
 				$this->assert( !empty( $dossierId ), 'invalidParameter' );
@@ -447,6 +448,7 @@
 			}
 			else{
 				if( $this->action == 'edit' ) {
+                    $this->data = $actioncandidat_personne;
 
 				/// Récupération des données socio pro (notamment Niveau etude) lié au contrat
 					$this->ActioncandidatPersonne->Personne->Dsp->unbindModelAll();
@@ -518,6 +520,8 @@
 
 				}
 			}
+
+			$this->set( 'actioncandidatPersonne', $actioncandidat_personne );
 			$this->_setOptions();
 			$this->ActioncandidatPersonne->commit();
 
