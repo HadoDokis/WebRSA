@@ -24,6 +24,7 @@
 			$this->set( 'statut_orient', $this->Option->statut_orient() );
 			$this->set( 'options', $this->Typeorient->listOptions() );
 			$this->set( 'structsReferentes', $this->Structurereferente->list1Options() );
+			$this->set( 'refsorientants', $this->Structurereferente->Referent->listOptions() );
 		}
 
 		/**
@@ -250,11 +251,13 @@
 			$this->set( 'foyer_id', $personne['Foyer']['id']);
 			$this->set( 'typesOrient',   $this->Typeorient->listOptions()  );
 			$this->set( 'structures',   $this->Structurereferente->list1Options()  );
+			$this->set( 'structuresorientantes',   $this->Structurereferente->listOptions()  );
 			$this->set( 'numdossierrsa',  $dossimple['Dossier']['numdemrsa']  );
 			$this->set( 'datdemdossrsa',  $dossimple['Dossier']['dtdemrsa'] );
 			$this->set( 'matricule',  $dossimple['Dossier']['matricule'] );
 			$this->set( 'orient_id', $personne['Orientstruct'][0]['typeorient_id']);
 			$this->set( 'structure_id', $personne['Orientstruct'][0]['structurereferente_id']);
+			$this->set( 'structureorientante_id', $personne['Orientstruct'][0]['structureorientante_id']);
 
 			$this->_setOptions();
 			if( !empty( $this->data ) ) {
@@ -285,6 +288,7 @@
 			else {
 				$this->data = $personne;
 			}
+			$this->_setOptions();
 		}
 	}
 ?>

@@ -5,11 +5,11 @@
 <script type="text/javascript">
     document.observe("dom:loaded", function() {
         // Masquage des champs select si Statut = non orienté
-        observeDisableFieldsOnValue( 'Orientstruct0StatutOrient', [ 'Orientstruct0TypeorientId', 'Orientstruct0StructurereferenteId' ], 'Non orienté', true );
-        observeDisableFieldsOnValue( 'Orientstruct1StatutOrient', [ 'Orientstruct1TypeorientId', 'Orientstruct1StructurereferenteId' ], 'Non orienté', true );
+        observeDisableFieldsOnValue( 'Orientstruct0StatutOrient', [ 'Orientstruct0TypeorientId', 'Orientstruct0StructurereferenteId', 'Orientstruct0StructureorientanteId', 'Orientstruct0ReferentorientantId' ], 'Non orienté', true );
+        observeDisableFieldsOnValue( 'Orientstruct1StatutOrient', [ 'Orientstruct1TypeorientId', 'Orientstruct1StructurereferenteId', 'Orientstruct1StructureorientanteId', 'Orientstruct1ReferentorientantId'  ], 'Non orienté', true );
         // Masquage des champs select si non droit et devoir
-        observeDisableFieldsOnValue( 'Calculdroitrsa0Toppersdrodevorsa', [ 'Orientstruct0TypeorientId', 'Orientstruct0StructurereferenteId', 'Orientstruct0StatutOrient' ], 0, true );
-        observeDisableFieldsOnValue( 'Calculdroitrsa1Toppersdrodevorsa', [ 'Orientstruct1TypeorientId', 'Orientstruct1StructurereferenteId', 'Orientstruct1StatutOrient' ], 0, true );
+        observeDisableFieldsOnValue( 'Calculdroitrsa0Toppersdrodevorsa', [ 'Orientstruct0TypeorientId', 'Orientstruct0StructurereferenteId', 'Orientstruct0StatutOrient', 'Orientstruct0StructureorientanteId', 'Orientstruct0ReferentorientantId' ], 0, true );
+        observeDisableFieldsOnValue( 'Calculdroitrsa1Toppersdrodevorsa', [ 'Orientstruct1TypeorientId', 'Orientstruct1StructurereferenteId', 'Orientstruct1StatutOrient', 'Orientstruct1StructureorientanteId', 'Orientstruct1ReferentorientantId'  ], 0, true );
         ///
 
     });
@@ -18,6 +18,8 @@
 <?php echo $javascript->link( 'dependantselect.js' ); ?>
 <script type="text/javascript">
     document.observe("dom:loaded", function() {
+        dependantSelect( 'Orientstruct0ReferentorientantId', 'Orientstruct0StructureorientanteId' );
+        dependantSelect( 'Orientstruct1ReferentorientantId', 'Orientstruct1StructureorientanteId' );
         dependantSelect( 'Orientstruct0StructurereferenteId', 'Orientstruct0TypeorientId' );
         dependantSelect( 'Orientstruct1StructurereferenteId', 'Orientstruct1TypeorientId' );
 
@@ -52,6 +54,12 @@
         </fieldset>
         <fieldset>
             <h3>Orientation</h3>
+            <?php 
+                if( Configure::read( 'Cg.departement' ) == 66 ){
+                    echo $form->input( 'Orientstruct.0.structureorientante_id', array( 'label' =>  'Structure orientante', 'type' => 'select', 'options' => $structsReferentes, 'empty' => true ) );
+                    echo $form->input( 'Orientstruct.0.referentorientant_id', array( 'label' =>  'Référent orientant', 'type' => 'select', 'options' => $refsorientants, 'empty' => true ) );
+                }
+            ?>
             <?php echo $form->input( 'Orientstruct.0.statut_orient', array( 'label' => "Statut de l'orientation", 'type' => 'select' , 'options' => $statut_orient, 'empty' => true ) );?>
             <?php echo $form->input( 'Orientstruct.0.typeorient_id', array( 'label' => "Type d'orientation / Type de structure", 'type' => 'select' , 'options' => $options, 'empty' => true ) );?>
           <!--  <?php echo $form->input( 'Typeorient.0.parent_id', array( 'label' =>  __d( 'structurereferente', 'Structurereferente.lib_type_orient', true ), 'type' => 'select', 'options' => $typesOrient, 'empty' => true ) );?>
@@ -75,6 +83,12 @@
         </fieldset>
         <fieldset>
             <h3>Orientation</h3>
+            <?php 
+                if( Configure::read( 'Cg.departement' ) == 66 ){
+                    echo $form->input( 'Orientstruct.1.structureorientante_id', array( 'label' =>  'Structure orientante', 'type' => 'select', 'options' => $structsReferentes, 'empty' => true ) );
+                    echo $form->input( 'Orientstruct.1.referentorientant_id', array( 'label' =>  'Référent orientant', 'type' => 'select', 'options' => $refsorientants, 'empty' => true ) );
+                }
+            ?>
             <?php echo $form->input( 'Orientstruct.1.statut_orient', array( 'label' => "Statut de l'orientation", 'type' => 'select' , 'options' => $statut_orient, 'empty' => true ) );?>
             <?php echo $form->input( 'Orientstruct.1.typeorient_id', array( 'label' => "Type d'orientation / Type de structure", 'type' => 'select' , 'options' => $options, 'empty' => true ) );?>
           <!--  <?php echo $form->input( 'Typeorient.1.parent_id', array( 'label' =>  __d( 'structurereferente', 'Structurereferente.lib_type_orient', true ), 'type' => 'select', 'options' => $typesOrient, 'empty' => true ) );?>
