@@ -105,15 +105,27 @@
 														);?>
 												</li>
 											<?php endif;?>
-											<?php if( $permissions->check( 'dsps', 'histo' ) ):?>
-												<li>
-													<?php
-														echo $xhtml->link(
-															'DSPs CG',
-															array( 'controller' => 'dsps', 'action' => 'histo', $personne['id'] )
-														);?>
-												</li>
-											<?php endif;?>
+											<?php if (Configure::read( 'Cg.departement' ) == 66 ):?>
+                                                <?php if( $permissions->check( 'dsps', 'histo' ) ):?>
+                                                    <li>
+                                                        <?php
+                                                            echo $xhtml->link(
+                                                                'DSPs mises à jour',
+                                                                array( 'controller' => 'dsps', 'action' => 'histo', $personne['id'] )
+                                                            );?>
+                                                    </li>
+                                                <?php endif;?>
+                                            <?php else:?>
+                                                <?php if( $permissions->check( 'dsps', 'histo' ) ):?>
+                                                    <li>
+                                                        <?php
+                                                            echo $xhtml->link(
+                                                                'DSPs CG',
+                                                                array( 'controller' => 'dsps', 'action' => 'histo', $personne['id'] )
+                                                            );?>
+                                                    </li>
+                                                <?php endif;?>
+                                            <?php endif;?>
 											<!--<?php if( $permissions->check( 'dspps', 'view' ) ):?>
 												<li>
 													<?php
