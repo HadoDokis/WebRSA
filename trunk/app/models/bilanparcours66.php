@@ -438,8 +438,8 @@
 							array(
 								'conditions' => array(
 									'Contratinsertion.personne_id' => $vxOrientstruct['Orientstruct']['personne_id'],
-									'Contratinsertion.structurereferente_id' => $vxOrientstruct['Orientstruct']['structurereferente_id'],
-									'Contratinsertion.df_ci >=' => date( 'Y-m-d' )
+									'Contratinsertion.structurereferente_id' => $vxOrientstruct['Orientstruct']['structurereferente_id']/*,
+									'Contratinsertion.df_ci >=' => date( 'Y-m-d' )*/
 								),
 								'contain' => false
 							)
