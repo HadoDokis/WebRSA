@@ -27,10 +27,11 @@
 			if ( !empty( $this->data ) ) {
 				if ( isset( $this->data['Nonorientationproep'] ) ) {
 					$this->{$this->modelClass}->begin();
-					$success = $this->{$this->modelClass}->saveCohorte($this->data);
+					$success = $this->{$this->modelClass}->saveCohorte( $this->data );
 					$this->_setFlashResult( 'Save', $success );
 					if ( $success ) {
 						$this->{$this->modelClass}->commit();
+						$this->redirect( Set::merge( array( 'action' => 'index' ), Set::flatten( array( 'Filtre' => $this->data['Filtre'] ), '__' ) ) );
 					}
 					else {
 						$this->{$this->modelClass}->rollback();
