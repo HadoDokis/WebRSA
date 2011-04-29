@@ -51,6 +51,10 @@
 	//                 'rule' => array( 'allEmpty', 'isvalidation' ),
 	//                 'message' => 'Si validation, choisir une valeur'
 	//             ),
+			'haspiece' => array(
+				'rule' => 'notEmpty',
+				'message' => 'Champ obligatoire'
+			)
 		);
 
 		public $belongsTo = array(
