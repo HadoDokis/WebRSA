@@ -77,7 +77,7 @@ msgid "Entretien.structurereferente_id"
 msgstr "Lieu de l'entretien"
 
 msgid "Entretien.referent_id"
-msgstr "Agent de l'entretien"
+msgstr "Réalisé par"
 
 msgid "Entretien.dateentretien"
 msgstr "Date de l'entretien"
