@@ -109,7 +109,8 @@
 							'commentairepdo' => @$dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][0]['commentaire']
 						)
 					);
-					$success = $this->Traitementpdo->Propopdo->Decisionpropopdo->save($decisionpropopdo) && $success;
+					$this->Traitementpdo->Propopdo->Decisionpropopdo->create($decisionpropopdo);
+					$success = $this->Traitementpdo->Propopdo->Decisionpropopdo->save() && $success;
 
 					/*$propopdo = $this->Traitementpdo->Propopdo->find(
 						'first',

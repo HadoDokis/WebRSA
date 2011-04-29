@@ -7,6 +7,7 @@
 ?>
 
 <?php
+debug($this->validationErrors);
 	if( $this->action == 'add'  ) {
 		if( Configure::read( 'nom_form_bilan_cg' ) == 'cg66' ) {
 			$this->pageTitle = 'Ajout d\'un bilan de parcours';

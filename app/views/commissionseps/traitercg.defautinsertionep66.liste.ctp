@@ -21,8 +21,8 @@
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
 // debug($dossierep);
 		$niveauDecision = count( $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'] ) - 1;
-		
-		$avisEp = implode( ' - ', Set::filter( array( Set::enum( @$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][$niveauDecision]['decision'], $options['Decisiondefautinsertionep66']['decision'] ), Set::enum( @$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][$niveauDecision]['decisionsup'], $options['Decisiondefautinsertionep66']['decisionsup'] ), $listeTypesorients[@$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][$niveauDecision]['typeorient_id']], $listeStructuresreferentes[@$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][$niveauDecision]['structurereferente_id']], $listeReferents[@$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][$niveauDecision]['referent_id']] ) ) );
+
+		$avisEp = implode( ' - ', Set::filter( array( Set::enum( @$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][$niveauDecision]['decision'], $options['Decisiondefautinsertionep66']['decision'] ), Set::enum( @$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][$niveauDecision]['decisionsup'], $options['Decisiondefautinsertionep66']['decisionsup'] ), @$listeTypesorients[@$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][$niveauDecision]['typeorient_id']], @$listeStructuresreferentes[@$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][$niveauDecision]['structurereferente_id']], @$listeReferents[@$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][$niveauDecision]['referent_id']] ) ) );
 
 		echo $xhtml->tableCells(
 			array(

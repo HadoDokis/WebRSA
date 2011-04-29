@@ -196,7 +196,7 @@
 		*/
 
 		public function index( $personne_id = null ) {
-			$conditions = array( 'Orientstruct.date_valid IS NOT NULL' );
+			$conditions = array( 'Orientstruct.date_valid IS NOT NULL', 'Orientstruct.structurereferente_id IS NOT NULL' );
 			if( !empty( $personne_id ) ) {
 				$conditions['Orientstruct.personne_id'] =  $personne_id;
 			}

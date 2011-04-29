@@ -446,7 +446,7 @@
 						);
 
 						if( empty( $vxContratinsertion ) && ( $data[$this->alias]['choixparcours'] != 'reorientation' ) ) {
-                            $nbPerimes = $this->Contratinsertion->find(
+                            /*$nbPerimes = $this->Contratinsertion->find(
                                 'count',
                                 array(
                                     'conditions' => array(
@@ -456,13 +456,13 @@
                                     ),
                                     'contain' => false
                                 )
-                            );
-                            if( $nbPerimes == 0 ){
-                                $this->invalidate( 'examenaudition', 'Cette personne ne possède aucun CER validé dans une structure référente liée à celle de sa dernière orientation validée.' );
-                            }
-                            else{
+                            );*/
+ //                           if( $nbPerimes == 0 ){
+                                $this->invalidate( 'choixparcours', 'Cette personne ne possède aucun CER validé dans une structure référente liée à celle de sa dernière orientation validée.' );
+//                            }
+/*                            else{
                                 $this->invalidate( 'examenaudition', 'Cette personne possède un CER validé mais dont la date de fin est dépassée.' );
-                            }
+                            }*/
                             return false;
 
 						}
