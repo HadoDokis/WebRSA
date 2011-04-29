@@ -305,6 +305,8 @@
 		'passagecommissionep' => 'passagescommissionseps',
 
         'sitecov58' => 'sitescovs58',
+		'signalementep93' => 'signalementseps93',
+		'decisionsignalementep93' => 'decisionssignalementseps93',
 	);
 /**
 * This is a key => value array of regex used to match words.
