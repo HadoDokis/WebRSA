@@ -340,5 +340,51 @@ ALTER TABLE decisionssaisinespdoseps66 ADD COLUMN raisonnonpassage TEXT DEFAULT 
 CREATE UNIQUE INDEX decisionssaisinespdoseps66_passagecommissionep_id_etape_idx ON decisionssaisinespdoseps66( passagecommissionep_id, etape );
 
 -- *****************************************************************************
+-- 20110429 - Nouvelle thématique CG 93: signalements
+-- *****************************************************************************
+
+DROP TABLE IF EXISTS signalementseps93;
+CREATE TABLE signalementseps93 (
+	id      				SERIAL NOT NULL PRIMARY KEY,
+	contratinsertion_id		INTEGER NOT NULL REFERENCES contratsinsertion(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	motif					TEXT NOT NULL,
+	date					DATE NOT NULL,
+	rang					INTEGER NOT NULL,
+	created					TIMESTAMP WITHOUT TIME ZONE,
+	modified				TIMESTAMP WITHOUT TIME ZONE
+);
+
+COMMENT ON TABLE signalementseps93 IS 'Thématique des sanctions pour passage en EP (CG 93)';
+
+CREATE INDEX signalementseps93_contratinsertion_id_idx ON signalementseps93( contratinsertion_id );
+CREATE INDEX signalementseps93_date_idx ON signalementseps93( date );
+CREATE INDEX signalementseps93_rang_idx ON signalementseps93( rang );
+CREATE UNIQUE INDEX signalementseps93_contratinsertion_id_rang_idx ON signalementseps93( contratinsertion_id, rang );
+
+-- -----------------------------------------------------------------------------
+
+DROP TYPE IF EXISTS TYPE_DECISIONSIGNALEMENTEP93 CASCADE;
+CREATE TYPE TYPE_DECISIONSIGNALEMENTEP93 AS ENUM ( '1reduction', '1maintien', '1sursis', '1pasavis', '1delai', '2suspensiontotale', '2suspensionpartielle', '2maintien', '2pasavis', '2report', 'annule', 'reporte' );
+
+DROP TABLE IF EXISTS decisionssignalementseps93;
+CREATE TABLE decisionssignalementseps93 (
+	id      				SERIAL NOT NULL PRIMARY KEY,
+	passagecommissionep_id	INTEGER NOT NULL REFERENCES passagescommissionseps(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	etape					TYPE_ETAPEDECISIONEP NOT NULL,
+	decision				TYPE_DECISIONSIGNALEMENTEP93 NOT NULL,
+	montantreduction		FLOAT DEFAULT NULL,
+	dureesursis				INTEGER DEFAULT NULL,
+	commentaire				TEXT DEFAULT NULL,
+	raisonnonpassage		TEXT DEFAULT NULL,
+	created					TIMESTAMP WITHOUT TIME ZONE,
+	modified				TIMESTAMP WITHOUT TIME ZONE
+);
+
+CREATE INDEX decisionssignalementseps93_passagecommissionep_id_idx ON decisionssignalementseps93( passagecommissionep_id );
+CREATE INDEX decisionssignalementseps93_etape_idx ON decisionssignalementseps93( etape );
+CREATE INDEX decisionssignalementseps93_decision_idx ON decisionssignalementseps93( decision );
+CREATE UNIQUE INDEX sdecisionssignalementseps93_passagecommissionep_id_etape_idx ON decisionssignalementseps93(passagecommissionep_id, etape);
+
+-- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

@@ -45,6 +45,7 @@
 			$date_saisi_ci = Set::extract( $criteresci, 'Filtre.date_saisi_ci' );
 			$decision_ci = Set::extract( $criteresci, 'Filtre.decision_ci' );
 			$datevalidation_ci = Set::extract( $criteresci, 'Filtre.datevalidation_ci' );
+			$dd_ci = Set::extract( $criteresci, 'Filtre.dd_ci' );
 			$df_ci = Set::extract( $criteresci, 'Filtre.df_ci' );
 			$locaadr = Set::extract( $criteresci, 'Filtre.locaadr' );
 			$numcomptt = Set::extract( $criteresci, 'Filtre.numcomptt' );
@@ -89,6 +90,12 @@
 			if( !empty( $datevalidation_ci ) && dateComplete( $criteresci, 'Filtre.datevalidation_ci' ) ) {
 				$datevalidation_ci = $datevalidation_ci['year'].'-'.$datevalidation_ci['month'].'-'.$datevalidation_ci['day'];
 				$conditions[] = 'Contratinsertion.datevalidation_ci = \''.$datevalidation_ci.'\'';
+			}
+
+			// ...
+			if( !empty( $dd_ci ) && dateComplete( $criteresci, 'Filtre.dd_ci' ) ) {
+				$dd_ci = $dd_ci['year'].'-'.$dd_ci['month'].'-'.$dd_ci['day'];
+				$conditions[] = 'Contratinsertion.dd_ci = \''.$dd_ci.'\'';
 			}
 
 			// ...
