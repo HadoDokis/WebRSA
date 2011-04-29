@@ -1,12 +1,13 @@
 <?php
     $csv->preserveLeadingZerosInExcel = true;
 
-    $csv->addRow( array( 'Date de l\'entretien', 'Nom/Prénom allocataire', 'Commune de l\'allocataire', 'Structure référente', 'Référent', 'Type d\'entretien', 'Objet de l\'entretien', 'A revoir le' ) );
+    $csv->addRow( array( 'Date de l\'entretien', 'Nom/Prénom allocataire', 'N° CAF', 'Commune de l\'allocataire', 'Structure référente', 'Référent', 'Type d\'entretien', 'Objet de l\'entretien', 'A revoir le' ) );
 
     foreach( $entretiens as $entretien ) {
         $row = array(
             Set::classicExtract( $entretien, 'Entretien.dateentretien' ),
             Set::classicExtract( $entretien, 'Personne.nom' ).' '.Set::classicExtract( $entretien, 'Personne.prenom'),
+            Set::classicExtract( $entretien, 'Dossier.matricule' ),
             Set::classicExtract( $entretien, 'Adresse.locaadr' ),
             Set::classicExtract( $entretien, 'Structurereferente.lib_struc' ),
             Set::classicExtract( $entretien, 'Referent.qual' ).' '.Set::classicExtract( $entretien, 'Referent.nom').' '.Set::classicExtract( $entretien, 'Referent.prenom'),

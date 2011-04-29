@@ -166,6 +166,7 @@
 					'"Rendezvous"."objetrdv"',
 					'"Rendezvous"."commentairerdv"',
 					'"Dossier"."numdemrsa"',
+					'"Dossier"."matricule"',
 					'"Adresse"."locaadr"',
 					'"Adresse"."numcomptt"',
 					'"Personne"."nom"',

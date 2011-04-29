@@ -12,12 +12,13 @@
         }
     }
 
-    $csv->addRow( array( 'N° Dossier', 'Nom/Prénom allocataire', 'Commune de l\'allocataire', 'Référent', 'Service référent', 'Type de contrat', 'Date début contrat', 'Durée', 'Date fin contrat', 'Décision et date validation', 'Action prévue' ) );
+    $csv->addRow( array( 'N° Dossier', 'N° CAF',  'Nom/Prénom allocataire', 'Commune de l\'allocataire', 'Référent', 'Service référent', 'Type de contrat', 'Date début contrat', 'Durée', 'Date fin contrat', 'Décision et date validation', 'Action prévue' ) );
 
     foreach( $contrats as $contrat ) {
 
         $row = array(
             Set::classicExtract( $contrat, 'Dossier.numdemrsa' ),
+            Set::classicExtract( $contrat, 'Dossier.matricule' ),
             Set::classicExtract( $contrat, 'Personne.nom' ).' '.Set::classicExtract( $contrat, 'Personne.prenom'),
             Set::classicExtract( $contrat, 'Adresse.locaadr' ),
             value( $referents, Set::classicExtract( $contrat, 'PersonneReferent.referent_id' ) ),

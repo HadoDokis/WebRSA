@@ -12,11 +12,12 @@
         }
     }
 
-    $csv->addRow( array( 'N° Dossier', 'Nom/Prénom allocataire', 'Suivi', 'Situation des droits', 'Date indus', /*'Allocation comptabilisée',*/ 'Montant initial de l\'indu', 'Montant transféré CG', 'Remise CG'/*, 'Annulation faible montant', 'Autres montants'*/ ) );
+    $csv->addRow( array( 'N° Dossier', 'N° CAF', 'Nom/Prénom allocataire', 'Suivi', 'Situation des droits', 'Date indus', /*'Allocation comptabilisée',*/ 'Montant initial de l\'indu', 'Montant transféré CG', 'Remise CG'/*, 'Annulation faible montant', 'Autres montants'*/ ) );
 
     foreach( $indus as $indu ) {
         $row = array(
             Set::extract( $indu, 'Dossier.numdemrsa' ),
+            Set::extract( $indu, 'Dossier.matricule' ),
             Set::extract( $indu, 'Personne.nom' ).' '.Set::extract( $indu, 'Personne.prenom'),
             Set::extract( $indu, 'Dossier.typeparte' ),
             value( $etatdosrsa, Set::extract( $indu, 'Situationdossierrsa.etatdosrsa' ) ),
