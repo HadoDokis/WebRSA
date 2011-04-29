@@ -101,6 +101,8 @@ msgstr "Code postal de la commission"
 msgid "Commissionep.villeseance"
 msgstr "Ville de la commission"
 
+msgid "Commissionep.etatcommissionep"
+msgstr "État de la commission d'EP"
 
 msgid "ENUM::ETATCOMMISSIONEP::cree"
 msgstr "Créée"
