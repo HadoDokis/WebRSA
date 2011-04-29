@@ -12,11 +12,12 @@
         }
     }
 
-    $csv->addRow( array( 'Nom/Prénom allocataire', 'Commune de l\'allocataire', 'Structure référente', 'Référent', 'Objet du RDV', 'Statut du RDV', 'Date du RDV', 'Heure du RDV', 'Objectif du RDV', 'Commentaire suite RDV' ) );
+    $csv->addRow( array( 'Nom/Prénom allocataire', 'N° CAF',  'Commune de l\'allocataire', 'Structure référente', 'Référent', 'Objet du RDV', 'Statut du RDV', 'Date du RDV', 'Heure du RDV', 'Objectif du RDV', 'Commentaire suite RDV' ) );
 
     foreach( $rdvs as $rdv ) {
         $row = array(
             Set::extract( $rdv, 'Personne.nom' ).' '.Set::extract( $rdv, 'Personne.prenom'),
+            Set::extract( $rdv, 'Dossier.matricule'  ),
             Set::extract( $rdv, 'Adresse.locaadr'  ),
             value( $struct, Set::extract( $rdv, 'Rendezvous.structurereferente_id' ) ),
             value( $referents, Set::extract( $rdv, 'Rendezvous.referent_id' ) ),

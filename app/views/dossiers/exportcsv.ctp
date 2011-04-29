@@ -12,7 +12,7 @@
         }
     }
 
-    $csv->addRow( array( 'N° Dossier', 'Date de demande', 'NIR', 'Etat du droit', 'Nom/Prénom allocataire',  'Commune de l\'allocataire', 'Type d\'orientation', 'Identifiant Pôle Emploi' ) );
+    $csv->addRow( array( 'N° Dossier', 'Date de demande', 'NIR', 'Etat du droit', 'Nom/Prénom allocataire',  'Commune de l\'allocataire', 'Type d\'orientation', 'Identifiant Pôle Emploi', 'N° CAF' ) );
 
     foreach( $dossiers as $dossier ) {
         $row = array(
@@ -23,7 +23,8 @@
             Set::extract( $dossier, 'Personne.nom' ).' '.Set::extract( $dossier, 'Personne.prenom'),
             Set::extract( $dossier, 'Adresse.locaadr' ),
             Set::enum( Set::classicExtract( $dossier, 'Orientstruct.typeorient_id' ), $typesorient ),
-            Set::extract( $dossier, 'Personne.idassedic' )
+            Set::extract( $dossier, 'Personne.idassedic' ),
+            Set::extract( $dossier, 'Dossier.matricule' )
         );
         $csv->addRow($row);
     }
