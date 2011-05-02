@@ -122,7 +122,7 @@
                     <td>'.h( Set::classicExtract( $options['proposition'], $bilanparcour66['Bilanparcours66']['proposition'] ) ).'</td>
                     <td>'.h( Set::enum( Set::classicExtract( $bilanparcour66, 'Bilanparcours66.positionbilan' ),  $options['positionbilan'] ) ).'</td>
                     <td>'.h( $motif ).'</td>'.
-                    $default2->Type2->format( $isSaisine, 'Dossierep.etapedossierep', array( 'type' => 'boolean', 'tag' => 'td' ) ).
+                    $default2->Type2->format( $isSaisine, 'Dossierep.themeep', array( 'type' => 'boolean', 'tag' => 'td' ) ).
                     '<td>'.$xhtml->link( 'Voir', array( 'controller' => 'bilansparcours66', 'action' => 'index', $bilanparcour66['Personne']['id'] ) ).'</td>
                 </tr>';
             }
