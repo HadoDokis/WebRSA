@@ -96,11 +96,15 @@
 
 			$personne_id = $contratinsertion['Contratinsertion']['personne_id'];
 
-			// TODO: d'un allocataire RSA soumis à droits et devoirs, appartenant à un dossier dont les droits sont ouverts
+			$erreursCandidatePassage = $this->Signalementep93->Dossierep->erreursCandidatePassage( $personne_id );
+
+			$dureeTolerance = Configure::read( 'Signalementep93.dureeTolerance' );
+
 			$traitable = (
 				( $contratinsertion['Contratinsertion']['decision_ci'] == 'V' )
 				&& ( strtotime( $contratinsertion['Contratinsertion']['dd_ci'] ) <= mktime() )
-				&& ( strtotime( $contratinsertion['Contratinsertion']['df_ci'] ) >= mktime() )
+				&& ( strtotime( $contratinsertion['Contratinsertion']['df_ci'] ) + ( $dureeTolerance * 24 * 60 * 60 ) >= mktime() )
+				&& empty( $erreursCandidatePassage )
 			);
 			$this->assert( $traitable, 'error500' );
 

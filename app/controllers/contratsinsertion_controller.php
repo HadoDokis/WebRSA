@@ -496,6 +496,7 @@
 					)
 				);
 				$this->set( compact( 'signalementseps93' ) );
+				$this->set( 'erreursCandidatePassage', $this->Contratinsertion->Signalementep93->Dossierep->erreursCandidatePassage( $personne_id ) );
 				$this->set( 'optionsdossierseps', $this->Contratinsertion->Signalementep93->Dossierep->Passagecommissionep->enums() );
 			}
 
