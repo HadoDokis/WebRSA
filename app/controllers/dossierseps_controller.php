@@ -3,9 +3,10 @@
 
 	class DossiersepsController extends AppController
 	{
-		public $helpers = array( 'Default' );
+		public $helpers = array( 'Default', 'Default2' );
 
-		var $uses = array( 'Option', 'Dossierep', 'Decisionpdo', 'Propopdo' );
+		public $uses = array( 'Option', 'Dossierep', 'Decisionpdo', 'Propopdo' );
+		public $components = array( 'Gedooo' );
 
 		/**
 		* FIXME: evite les droits
@@ -177,6 +178,7 @@
 					'Dossierep' => array(
 						'fields' => array(
 							'Dossierep.id',
+							'Personne.id',
 							'Personne.qual',
 							'Personne.nom',
 							'Personne.prenom',
@@ -469,5 +471,30 @@
 			$this->set( 'options', $this->Dossierep->enums() );
 			$this->set( 'dossierseps', $this->paginate( $this->Dossierep ) );
 		}
+
+
+        /**
+        *    Génération et envoi du courrier d'information avant passage en EP
+        */
+        public function courrierInformation( $dossierep_id ) {
+            $dossierep = $this->Dossierep->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Dossierep.id' => $dossierep_id
+                    )
+                )
+            );
+            $classThemeName = Inflector::classify( $dossierep['Dossierep']['themeep'] );
+            $pdf = $this->Dossierep->{$classThemeName}->getCourrierInformationPdf( $dossierep['Dossierep']['id'] );
+
+            if( $pdf ) {
+                $this->Gedooo->sendPdfContentToClient( $pdf, 'Courrier_Information' );
+            }
+            else {
+                $this->Session->setFlash( 'Impossible de générer le courrier d\'information', 'default', array( 'class' => 'error' ) );
+                $this->redirect( $this->referer() );
+            }
+        }
 	}
 ?>

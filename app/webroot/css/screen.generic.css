@@ -1087,6 +1087,10 @@ td.button.notifop a, td.action a.notifop, td span.button.notifop, table.default2
 td.button.filelink a, td.action a.filelink, td span.button.filelink, table.default2 td a.button.filelink {
     background-image: url( ../img/icons/link.png );
 }
+
+td.button.courrierInformation a, td.action a.courrierInformation, td span.button.courrierInformation, table.default2 td a.button.courrierInformation {
+    background-image: url( ../img/icons/printer.png );
+}
 /**/
 
 td.boolean span, table tr:nth-child(2n) td.boolean span {
