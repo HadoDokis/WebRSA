@@ -14,7 +14,8 @@
 		echo '<p class="notice">Veuillez attribuer des thème à l\'EP gérant la commission avant.</p>';
 	}
 	else {
-		echo $default->index(
+
+		echo $default2->index(
 			$dossierseps,
 			array(
 				'Dossierep.chosen' => array( 'input' => 'checkbox' ),
@@ -22,16 +23,16 @@
 				'Personne.nom',
 				'Personne.prenom',
 				'Dossierep.created',
-				'Dossierep.themeep',
+				'Dossierep.themeep'
 			),
 			array(
 				'cohorte' => true,
 				'options' => $options,
 				'hidden' => array( 'Dossierep.id', 'Passagecommissionep.id' ),
-				'paginate' => 'Dossierep'
-			)
+				'paginate' => 'Dossierep',
+				'actions' => array( 'Dossierseps::courrierInformation' )
+            )
 		);
-// 	debug( $dossierseps );
 	}
 
     echo $default->button(

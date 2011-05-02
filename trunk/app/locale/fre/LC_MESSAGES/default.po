@@ -449,6 +449,8 @@ msgstr "Décisions CG"
 msgid "Button::finalisercg"
 msgstr "Valider la commission CG"
 
+msgid "Button::courrierInformation"
+msgstr "Courrier d'information"
 ###############################################################################
 # Pagination
 # INFO: http://forum.cakephp-fr.org/viewtopic.php?id=878

@@ -31,7 +31,8 @@
 					'type'
 				)
 			),
-			'Formattable'
+			'Formattable',
+			'Gedooo'
 		);
 
 		public $belongsTo = array(
@@ -170,6 +171,29 @@
 					)
 				)
 			);
+		}
+		
+        /**
+        *    Récupération des informations propres au dossier devant passer en EP
+        *   avant liaison avec la commission d'EP
+        */
+		public function getCourrierInformationPdf( $dossierep_id ) {
+            $gedooo_data = $this->find(
+                'first',
+                array(
+                    'conditions' => array( 'Dossierep.id' => $dossierep_id ),
+                    'contain' => array(
+                        'Dossierep' => array(
+                            'Personne'
+                        ),
+                        'Bilanparcours66',
+                        'Contratinsertion',
+                        'Orientstruct'
+                    )
+                )
+            );
+
+            return $this->ged( $gedooo_data, "{$this->alias}/{$gedooo_data[$this->alias]['origine']}_courrierinformationavantep.odt" );
 		}
 
 		/**
