@@ -385,6 +385,15 @@ CREATE INDEX decisionssignalementseps93_etape_idx ON decisionssignalementseps93(
 CREATE INDEX decisionssignalementseps93_decision_idx ON decisionssignalementseps93( decision );
 CREATE UNIQUE INDEX sdecisionssignalementseps93_passagecommissionep_id_etape_idx ON decisionssignalementseps93(passagecommissionep_id, etape);
 
+-- -----------------------------------------------------------------------------
+-- 20110502 - Nouvelle thématique sur les passages en EP provoqués par
+-- l'absence non excusée à une rendez-vous
+-- -----------------------------------------------------------------------------
+
+TRUNCATE rendezvous CASCADE;
+ALTER TABLE typesrdv ADD COLUMN nbabsencesavpassageep INTEGER NOT NULL DEFAULT 0;
+ALTER TABLE statutsrdvs ADD COLUMN provoquepassageep type_booleannumber NOT NULL DEFAULT '0';
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

@@ -4,20 +4,25 @@
 <h1><?php echo $this->pageTitle;?></h1>
 
 <?php
-    if( $this->action == 'add' ) {
-        echo $form->create( 'Typerdv', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
-        echo $form->input( 'Typerdv.id', array( 'type' => 'hidden' ) );
-    }
-    else {
-        echo $form->create( 'Typerdv', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
-        echo $form->input( 'Typerdv.id', array( 'type' => 'hidden' ) );
-    }
+	if( $this->action == 'add' ) {
+		echo $form->create( 'Typerdv', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
+		echo $form->input( 'Typerdv.id', array( 'type' => 'hidden' ) );
+	}
+	else {
+		echo $form->create( 'Typerdv', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
+		echo $form->input( 'Typerdv.id', array( 'type' => 'hidden' ) );
+	}
 ?>
 
 <fieldset>
-    <?php echo $form->input( 'Typerdv.libelle', array( 'label' =>  required( __d( 'rendezvous', 'Rendezvous.lib_rdv', true ) ), 'type' => 'text' ) );?>
-    <?php echo $form->input( 'Typerdv.modelenotifrdv', array( 'label' =>  required( __( 'modelenotifrdv', true ) ), 'type' => 'text' ) );?>
+	<?php
+		echo $form->input( 'Typerdv.libelle', array( 'label' =>  required( __d( 'rendezvous', 'Rendezvous.lib_rdv', true ) ), 'type' => 'text' ) );
+		echo $form->input( 'Typerdv.modelenotifrdv', array( 'label' =>  required( __( 'modelenotifrdv', true ) ), 'type' => 'text' ) );
+		if ( Configure::read( 'Cg.departement' ) == 58 ) {
+			echo $form->input( 'Typerdv.nbabsencesavpassageep', array( 'label' =>  required( __( 'nbabsencesavpassageep', true ) ), 'type' => 'text' ) );
+		}
+	?>
 </fieldset>
 
-    <?php echo $form->submit( 'Enregistrer' );?>
+	<?php echo $form->submit( 'Enregistrer' );?>
 <?php echo $form->end();?>
