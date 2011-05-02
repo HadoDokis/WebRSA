@@ -98,6 +98,19 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Decisionsanctionrendezvousep58' => array(
+				'className' => 'Decisionsanctionrendezvousep58',
+				'foreignKey' => 'passagecommissionep_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 			'Decisionnonrespectsanctionep93' => array(
 				'className' => 'Decisionnonrespectsanctionep93',
 				'foreignKey' => 'passagecommissionep_id',

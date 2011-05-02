@@ -77,6 +77,9 @@ msgstr "Radiés et non inscrits à Pôle Emploi"
 msgid "ENUM::THEMEEP::signalementseps93"
 msgstr "Non respect des termes du CER"
 
+msgid "ENUM::THEMEEP::sanctionsrendezvouseps58"
+msgstr "Sanction pour rendez-vous non honoré(s)"
+
 #
 
 msgid "ENUM::ETAPEDOSSIEREP::cree"
