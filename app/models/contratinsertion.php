@@ -574,8 +574,8 @@
 				$positioncer = 'attvalid';
 			elseif ( !empty( $sitproCi ) )
 				$positioncer = 'annule';
-            }
-            if( !empty( $dernierContrat ) ){
+
+            if( !empty( $dernierContrat ) ) {
 //                 $dernierContrat['Contratinsertion']['positioncer'] = 'fincontrat';
                 $this->updateAll(
                     array( 'Contratinsertion.positioncer' => '\'fincontrat\'' ),
