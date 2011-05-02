@@ -394,6 +394,44 @@ TRUNCATE rendezvous CASCADE;
 ALTER TABLE typesrdv ADD COLUMN nbabsencesavpassageep INTEGER NOT NULL DEFAULT 0;
 ALTER TABLE statutsrdvs ADD COLUMN provoquepassageep type_booleannumber NOT NULL DEFAULT '0';
 
+ALTER TABLE dossierseps ALTER COLUMN themeep TYPE TEXT;
+DROP TYPE TYPE_THEMEEP;
+CREATE TYPE TYPE_THEMEEP AS ENUM ( 'reorientationseps93', 'saisinesbilansparcourseps66', 'saisinespdoseps66', 'nonrespectssanctionseps93', 'defautsinsertionseps66', 'nonorientationsproseps58', 'nonorientationsproseps93', 'regressionsorientationseps58', 'sanctionseps58', 'signalementseps93', 'sanctionsrendezvouseps58' );
+ALTER TABLE dossierseps ALTER COLUMN themeep TYPE TYPE_THEMEEP USING CAST(themeep AS TYPE_THEMEEP);
+
+CREATE TABLE sanctionsrendezvouseps58 (
+	id      				SERIAL NOT NULL PRIMARY KEY,
+	dossierep_id			INTEGER DEFAULT NULL REFERENCES dossierseps(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	typerdv_id				INTEGER NOT NULL REFERENCES typesrdv(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	commentaire				TEXT DEFAULT NULL,
+	created					TIMESTAMP WITHOUT TIME ZONE,
+	modified				TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE sanctionsrendezvouseps58 IS 'Thématique pour les sanctions après des rendez-vous non réalisé (CG58)';
+
+CREATE INDEX sanctionsrendezvouseps58_dossierep_id_idx ON sanctionsrendezvouseps58 (dossierep_id);
+CREATE INDEX sanctionsrendezvouseps58_typerdv_id_idx ON sanctionsrendezvouseps58 (typerdv_id);
+
+SELECT add_missing_table_field ('public', 'regroupementseps', 'sanctionrendezvousep58', 'TYPE_NIVEAUDECISIONEP');
+ALTER TABLE regroupementseps ALTER COLUMN sanctionrendezvousep58 SET DEFAULT 'nontraite';
+UPDATE regroupementseps SET sanctionrendezvousep58 = 'nontraite' WHERE sanctionrendezvousep58 IS NULL;
+ALTER TABLE regroupementseps ALTER COLUMN sanctionrendezvousep58 SET NOT NULL;
+
+CREATE TYPE TYPE_DECISIONSANCTIONRDV58 AS ENUM ( 'nonrespectcontrat', 'nonevaluation', 'refuscontrole', 'noncontrat' );
+
+CREATE TABLE decisionssanctionsrendezvouseps58 (
+	id      						SERIAL NOT NULL PRIMARY KEY,
+	passagecommissionep_id			INTEGER  NOT NULL REFERENCES passagescommissionseps(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	decision						TYPE_DECISIONSANCTIONRDV58 NOT NULL,
+	etape							TYPE_ETAPEDECISIONEP NOT NULL,
+	commentaire						TEXT DEFAULT NULL,
+	created							TIMESTAMP WITHOUT TIME ZONE,
+	modified						TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE decisionssanctionsrendezvouseps58 IS 'Décisions pour la thématique pour les sanctions après des rendez-vous non réalisé (CG58)';
+
+CREATE INDEX decisionssanctionsrendezvouseps58_passagecommissionep_id_idx ON decisionssanctionsrendezvouseps58 (passagecommissionep_id);
+
 -- *****************************************************************************
 -- 20110502, signalementseps93
 -- *****************************************************************************
