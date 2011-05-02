@@ -52,11 +52,11 @@
 				$this->set( 'qual', $this->Option->qual() );
 				$this->set( 'raison_ci', $this->Option->raison_ci() );
 				if( Configure::read( 'Cg.departement' ) == 66 ){
-                    $this->set( 'avisraison_ci', $this->Option->avisraison_ci() );
-                }
-                else if( Configure::read( 'Cg.departement' ) == 93 ){
-                    $this->set( 'avisraison_ci', array( 'D' => 'Defaut de conclusion', 'N' => 'Non respect du contrat' ) );
-                }
+					$this->set( 'avisraison_ci', $this->Option->avisraison_ci() );
+				}
+				else if( Configure::read( 'Cg.departement' ) == 93 ){
+					$this->set( 'avisraison_ci', array( 'D' => 'Defaut de conclusion', 'N' => 'Non respect du contrat' ) );
+				}
 				$this->set( 'aviseqpluri', $this->Option->aviseqpluri() );
 				$this->set( 'sect_acti_emp', $this->Option->sect_acti_emp() );
 				$this->set( 'emp_occupe', $this->Option->emp_occupe() );
@@ -83,7 +83,7 @@
 				$options = array_merge( $options, $optionsautreavissuspension );
 				$options = array_merge( $options, $optionsautreavisradiation );
 			}
-            $this->set( 'options', $options );
+			$this->set( 'options', $options );
 		}
 
 		/**
@@ -173,117 +173,117 @@
 
 
 
-        /**
-        * http://valums.com/ajax-upload/
-        * http://doc.ubuntu-fr.org/modules_php
-        * increase post_max_size and upload_max_filesize to 10M
-        * debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
-        */
+		/**
+		* http://valums.com/ajax-upload/
+		* http://doc.ubuntu-fr.org/modules_php
+		* increase post_max_size and upload_max_filesize to 10M
+		* debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
+		*/
 
-        public function ajaxfileupload() {
-            $this->Fileuploader->ajaxfileupload();
-        }
+		public function ajaxfileupload() {
+			$this->Fileuploader->ajaxfileupload();
+		}
 
-        /**
-        * http://valums.com/ajax-upload/
-        * http://doc.ubuntu-fr.org/modules_php
-        * increase post_max_size and upload_max_filesize to 10M
-        * debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
-        * FIXME: traiter les valeurs de retour
-        */
+		/**
+		* http://valums.com/ajax-upload/
+		* http://doc.ubuntu-fr.org/modules_php
+		* increase post_max_size and upload_max_filesize to 10M
+		* debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
+		* FIXME: traiter les valeurs de retour
+		*/
 
-        public function ajaxfiledelete() {
-            $this->Fileuploader->ajaxfiledelete();
-        }
+		public function ajaxfiledelete() {
+			$this->Fileuploader->ajaxfiledelete();
+		}
 
-        /**
-        *   Fonction permettant de visualiser les fichiers chargés dans la vue avant leur envoi sur le serveur
-        */
+		/**
+		*   Fonction permettant de visualiser les fichiers chargés dans la vue avant leur envoi sur le serveur
+		*/
 
-        public function fileview( $id ) {
-            $this->Fileuploader->fileview( $id );
-        }
+		public function fileview( $id ) {
+			$this->Fileuploader->fileview( $id );
+		}
 
-        /**
-        *   Téléchargement des fichiers préalablement associés à un traitement donné
-        */
+		/**
+		*   Téléchargement des fichiers préalablement associés à un traitement donné
+		*/
 
-        public function download( $fichiermodule_id ) {
-            $this->assert( !empty( $fichiermodule_id ), 'error404' );
-            $this->Fileuploader->download( $fichiermodule_id );
-        }
+		public function download( $fichiermodule_id ) {
+			$this->assert( !empty( $fichiermodule_id ), 'error404' );
+			$this->Fileuploader->download( $fichiermodule_id );
+		}
 
-        /**
-        *   Fonction permettant d'accéder à la page pour lier les fichiers à l'Orientation
-        */
+		/**
+		*   Fonction permettant d'accéder à la page pour lier les fichiers à l'Orientation
+		*/
 
-        public function filelink( $id ){
-            $this->assert( valid_int( $id ), 'invalidParameter' );
+		public function filelink( $id ){
+			$this->assert( valid_int( $id ), 'invalidParameter' );
 
-            $fichiers = array();
-            $contratinsertion = $this->Contratinsertion->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Contratinsertion.id' => $id
-                    ),
-                    'contain' => array(
-                        'Fichiermodule' => array(
-                            'fields' => array( 'name', 'id', 'created', 'modified' )
-                        )
-                    )
-                )
-            );
+			$fichiers = array();
+			$contratinsertion = $this->Contratinsertion->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Contratinsertion.id' => $id
+					),
+					'contain' => array(
+						'Fichiermodule' => array(
+							'fields' => array( 'name', 'id', 'created', 'modified' )
+						)
+					)
+				)
+			);
 
 
-            $personne_id = $contratinsertion['Contratinsertion']['personne_id'];
-            $dossier_id = $this->Contratinsertion->Personne->dossierId( $personne_id );
-            $this->assert( !empty( $dossier_id ), 'invalidParameter' );
+			$personne_id = $contratinsertion['Contratinsertion']['personne_id'];
+			$dossier_id = $this->Contratinsertion->Personne->dossierId( $personne_id );
+			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
 
-            $this->Contratinsertion->begin();
-            if( !$this->Jetons->check( $dossier_id ) ) {
-                $this->Contratinsertion->rollback();
-            }
-            $this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
+			$this->Contratinsertion->begin();
+			if( !$this->Jetons->check( $dossier_id ) ) {
+				$this->Contratinsertion->rollback();
+			}
+			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
 
-            // Retour à l'index en cas d'annulation
-            if( isset( $this->params['form']['Cancel'] ) ) {
-                $this->redirect( array( 'action' => 'index', $personne_id ) );
-            }
+			// Retour à l'index en cas d'annulation
+			if( isset( $this->params['form']['Cancel'] ) ) {
+				$this->redirect( array( 'action' => 'index', $personne_id ) );
+			}
 
-            if( !empty( $this->data ) ) {
+			if( !empty( $this->data ) ) {
 
-                $saved = $this->Contratinsertion->updateAll(
-                    array( 'Contratinsertion.haspiecejointe' => '\''.$this->data['Contratinsertion']['haspiecejointe'].'\'' ),
-                    array(
-                        '"Contratinsertion"."personne_id"' => $personne_id,
-                        '"Contratinsertion"."id"' => $id
-                    )
-                );
+				$saved = $this->Contratinsertion->updateAll(
+					array( 'Contratinsertion.haspiecejointe' => '\''.$this->data['Contratinsertion']['haspiecejointe'].'\'' ),
+					array(
+						'"Contratinsertion"."personne_id"' => $personne_id,
+						'"Contratinsertion"."id"' => $id
+					)
+				);
 
-                if( $saved ){
-                    // Sauvegarde des fichiers liés à une PDO
-                    $dir = $this->Fileuploader->dirFichiersModule( $this->action, $this->params['pass'][0] );
-                    $saved = $this->Fileuploader->saveFichiers( $dir, !Set::classicExtract( $this->data, "Contratinsertion.haspiecejointe" ), $id ) && $saved;
-                }
+				if( $saved ){
+					// Sauvegarde des fichiers liés à une PDO
+					$dir = $this->Fileuploader->dirFichiersModule( $this->action, $this->params['pass'][0] );
+					$saved = $this->Fileuploader->saveFichiers( $dir, !Set::classicExtract( $this->data, "Contratinsertion.haspiecejointe" ), $id ) && $saved;
+				}
 
-                if( $saved ) {
-                    $this->Jetons->release( $dossier_id );
-                    $this->Contratinsertion->commit();
-                    $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-                    $this->redirect( array(  'controller' => 'contratsinsertion','action' => 'index', $personne_id ) );
-                }
-                else {
-                    $fichiers = $this->Fileuploader->fichiers( $id );
-                    $this->Contratinsertion->rollback();
-                    $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
-                }
-            }
+				if( $saved ) {
+					$this->Jetons->release( $dossier_id );
+					$this->Contratinsertion->commit();
+					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+					$this->redirect( array(  'controller' => 'contratsinsertion','action' => 'index', $personne_id ) );
+				}
+				else {
+					$fichiers = $this->Fileuploader->fichiers( $id );
+					$this->Contratinsertion->rollback();
+					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+				}
+			}
 
-            $this->_setOptions();
-            $this->set( compact( 'dossier_id', 'personne_id', 'fichiers', 'contratinsertion' ) );
+			$this->_setOptions();
+			$this->set( compact( 'dossier_id', 'personne_id', 'fichiers', 'contratinsertion' ) );
 
-        }
+		}
 
 
 
@@ -306,17 +306,17 @@
 			// Recherche du nombre de référent lié au parcours de la personne
 			// Si aucun alors message d'erreur signalant l'absence de référent (cg66)
 // 			if( Configure::read( 'Cg.departement' ) != 93 ) {
-                $orientstruct = $this->Orientstruct->find(
-                    'count',
-                    array(
-                        'conditions' => array(
-                            'Orientstruct.personne_id' => $personne_id,
-                            'Orientstruct.statut_orient' => 'Orienté'
-                        ),
-                        'recursive' => -1
-                    )
-                );
-                $this->set( compact( 'orientstruct' ) );
+				$orientstruct = $this->Orientstruct->find(
+					'count',
+					array(
+						'conditions' => array(
+							'Orientstruct.personne_id' => $personne_id,
+							'Orientstruct.statut_orient' => 'Orienté'
+						),
+						'recursive' => -1
+					)
+				);
+				$this->set( compact( 'orientstruct' ) );
 
 				$persreferent = $this->PersonneReferent->find(
 					'count',
@@ -412,7 +412,7 @@
 				);
 				$this->set( 'propocontratinsertioncov58', $propocontratinsertioncov58 );
 				$this->set( 'optionsdossierscovs58', array_merge( $this->Orientstruct->Personne->Dossiercov58->enums(), $this->Orientstruct->Personne->Dossiercov58->Propocontratinsertioncov58->enums() ) );
-				
+
 				$nbdossiersnonfinalisescovs = $this->Contratinsertion->Personne->Dossiercov58->find(
 					'count',
 					array(
@@ -433,6 +433,70 @@
 					)
 				);
 				$this->set( 'nbdossiersnonfinalisescovs', $nbdossiersnonfinalisescovs );
+			}
+			else if ( Configure::read( 'Cg.departement' ) == 93 ) {
+				$signalementseps93 = $this->Contratinsertion->Signalementep93->Dossierep->find(
+					'all',
+					array(
+						'fields' => array(
+							'Dossierep.id',
+							'Dossierep.personne_id',
+							'Dossierep.themeep',
+							'Dossierep.created',
+							'Dossierep.modified',
+							'Signalementep93.contratinsertion_id',
+							'Signalementep93.id',
+							'Signalementep93.motif',
+							'Signalementep93.date',
+							'Signalementep93.rang',
+							'Signalementep93.created',
+							'Signalementep93.modified',
+							'Passagecommissionep.etatdossierep',
+							'Contratinsertion.dd_ci',
+							'Contratinsertion.df_ci',
+						),
+						'conditions' => array(
+							'Dossierep.personne_id' => $personne_id,
+							'Dossierep.themeep' => 'signalementseps93',
+							'Dossierep.id NOT IN ( '.$this->Contratinsertion->Signalementep93->Dossierep->Passagecommissionep->sq(
+								array(
+									'alias' => 'passagescommissionseps',
+									'fields' => array(
+										'passagescommissionseps.dossierep_id'
+									),
+									'conditions' => array(
+										'passagescommissionseps.etatdossierep' => array( 'traite', 'annule' )
+									)
+								)
+							).' )'
+						),
+						'joins' => array(
+							array(
+								'table'      => 'signalementseps93',
+								'alias'      => 'Signalementep93',
+								'type'       => 'INNER',
+								'foreignKey' => false,
+								'conditions' => array( 'Dossierep.id = Signalementep93.dossierep_id' )
+							),
+							array(
+								'table'      => 'contratsinsertion',
+								'alias'      => 'Contratinsertion',
+								'type'       => 'INNER',
+								'foreignKey' => false,
+								'conditions' => array( 'Contratinsertion.id = Signalementep93.contratinsertion_id' )
+							),
+							array(
+								'table'      => 'passagescommissionseps',
+								'alias'      => 'Passagecommissionep',
+								'type'       => 'LEFT OUTER',
+								'foreignKey' => false,
+								'conditions' => array( 'Dossierep.id = Passagecommissionep.dossierep_id' )
+							),
+						),
+					)
+				);
+				$this->set( compact( 'signalementseps93' ) );
+				$this->set( 'optionsdossierseps', $this->Contratinsertion->Signalementep93->Dossierep->Passagecommissionep->enums() );
 			}
 
 			///FIXME: pas propre, mais pr le moment ça marche afin d'eviter de tout renommer
@@ -486,11 +550,11 @@
 						'Contratinsertion.emp_occupe',
 						'Contratinsertion.duree_hebdo_emp',
 						'Contratinsertion.sitfam_ci',
-                        'Contratinsertion.sitpro_ci',
-                        'Contratinsertion.observ_benef',
-                        'Contratinsertion.nature_projet',
-                        'Contratinsertion.engag_object',
-                        'Contratinsertion.current_action',
+						'Contratinsertion.sitpro_ci',
+						'Contratinsertion.observ_benef',
+						'Contratinsertion.nature_projet',
+						'Contratinsertion.engag_object',
+						'Contratinsertion.current_action',
 						'Contratinsertion.nat_cont_trav',
 						'Contratinsertion.duree_cdd',
 						'Contratinsertion.duree_engag',
@@ -528,10 +592,10 @@
 			$this->_setOptions();
 			$this->set( 'personne_id', $contratinsertion['Contratinsertion']['personne_id'] );
 
-            // Retour à la liste en cas d'annulation
-            if(  isset( $this->params['form']['Cancel'] ) ) {
-                $this->redirect( array( 'action' => 'index', $contratinsertion['Contratinsertion']['personne_id'] ) );
-            }
+			// Retour à la liste en cas d'annulation
+			if(  isset( $this->params['form']['Cancel'] ) ) {
+				$this->redirect( array( 'action' => 'index', $contratinsertion['Contratinsertion']['personne_id'] ) );
+			}
 		}
 
 		/**
@@ -631,22 +695,22 @@
 			else if( $this->action == 'edit' ) {
 				$contratinsertion_id = $id;
 				$contratinsertion = $this->Contratinsertion->find(
-                    'first',
-                    array(
-                        'conditions' => array(
-                            'Contratinsertion.id' => $contratinsertion_id
-                        ),
-                        'contain' => array(
-                            'Autreavissuspension',
-                            'Autreavisradiation'
-                        )
-                    )
-                );
+					'first',
+					array(
+						'conditions' => array(
+							'Contratinsertion.id' => $contratinsertion_id
+						),
+						'contain' => array(
+							'Autreavissuspension',
+							'Autreavisradiation'
+						)
+					)
+				);
 				$this->assert( !empty( $contratinsertion ), 'invalidParameter' );
 // debug($contratinsertion);
 
 
-                $personne_id = Set::classicExtract( $contratinsertion, 'Contratinsertion.personne_id' );
+				$personne_id = Set::classicExtract( $contratinsertion, 'Contratinsertion.personne_id' );
 				$valueFormeci = Set::classicExtract( $contratinsertion, 'Contratinsertion.forme_ci' );
 
 				$nbContratsPrecedents = $this->Contratinsertion->find( 'count', array( 'recursive' => -1, 'conditions' => array( 'Contratinsertion.personne_id' => $personne_id ) ) );
@@ -725,40 +789,40 @@
 
 
 
-            /**
-            *   Utilisé pour les dates de suspension et de radiation
-            *   Si les dates ne sont pas présentes en base, elles ne seront pas affichées
-            *   Situation dossier rsa : dtclorsa -> date de radiation
-            *   Suspension droit : ddsusdrorsa -> date de suspension
-            */
-            $situationdossierrsa = $this->Contratinsertion->Personne->Foyer->Dossier->Situationdossierrsa->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Situationdossierrsa.dossier_id' => $dossier_id
-                    ),
-                    'recursive' => -1
-                )
-            );
-            $situationdossierrsa_id = Set::classicExtract( $situationdossierrsa, 'Situationdossierrsa.id' );
-            $suspension = $this->Contratinsertion->Personne->Foyer->Dossier->Situationdossierrsa->Suspensiondroit->find(
-                'all',
-                array(
-                    'fields' => array(
-                        'Suspensiondroit.ddsusdrorsa'
-                    ),
-                    'conditions' => array(
-                        'Suspensiondroit.situationdossierrsa_id' => $situationdossierrsa_id
-                    ),
-                    'recursive' => -1,
-                    'order' => 'Suspensiondroit.ddsusdrorsa DESC'
-                )
-            );
-            $this->set( compact( 'situationdossierrsa', 'suspension' ) );
+			/**
+			*   Utilisé pour les dates de suspension et de radiation
+			*   Si les dates ne sont pas présentes en base, elles ne seront pas affichées
+			*   Situation dossier rsa : dtclorsa -> date de radiation
+			*   Suspension droit : ddsusdrorsa -> date de suspension
+			*/
+			$situationdossierrsa = $this->Contratinsertion->Personne->Foyer->Dossier->Situationdossierrsa->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Situationdossierrsa.dossier_id' => $dossier_id
+					),
+					'recursive' => -1
+				)
+			);
+			$situationdossierrsa_id = Set::classicExtract( $situationdossierrsa, 'Situationdossierrsa.id' );
+			$suspension = $this->Contratinsertion->Personne->Foyer->Dossier->Situationdossierrsa->Suspensiondroit->find(
+				'all',
+				array(
+					'fields' => array(
+						'Suspensiondroit.ddsusdrorsa'
+					),
+					'conditions' => array(
+						'Suspensiondroit.situationdossierrsa_id' => $situationdossierrsa_id
+					),
+					'recursive' => -1,
+					'order' => 'Suspensiondroit.ddsusdrorsa DESC'
+				)
+			);
+			$this->set( compact( 'situationdossierrsa', 'suspension' ) );
 
 // debug($suspension);
 
-            //On ajout l'ID de l'utilisateur connecté afind e récupérer son service instructeur
+			//On ajout l'ID de l'utilisateur connecté afind e récupérer son service instructeur
 			$personne = $this->Contratinsertion->Personne->newDetailsCi( $personne_id, $this->Session->read( 'Auth.User.id' ) );
 			$this->set( 'personne', $personne );
 
@@ -802,17 +866,17 @@
 				}
 
 				/**
-                *   Utilisé pour les dates de suspension et de radiation
-                *   Si les dates ne sont pas présentes en base, elles ne seront pas affichées
-                *   Situation dossier rsa : dtclorsa -> date de radiation
-                *   Suspension droit : ddsusdrorsa -> date de suspension
-                */
-                if( isset( $situationdossierrsa ) ){
-                    $this->data['Contratinsertion']['dateradiationparticulier'] = $situationdossierrsa['Situationdossierrsa']['dtclorsa'];
-                }
-                if( isset( $suspension ) && !empty( $suspension ) ){
-                    $this->data['Contratinsertion']['datesuspensionparticulier'] = $suspension[0]['Suspensiondroit']['ddsusdrorsa'];
-                }
+				*   Utilisé pour les dates de suspension et de radiation
+				*   Si les dates ne sont pas présentes en base, elles ne seront pas affichées
+				*   Situation dossier rsa : dtclorsa -> date de radiation
+				*   Suspension droit : ddsusdrorsa -> date de suspension
+				*/
+				if( isset( $situationdossierrsa ) ){
+					$this->data['Contratinsertion']['dateradiationparticulier'] = $situationdossierrsa['Situationdossierrsa']['dtclorsa'];
+				}
+				if( isset( $suspension ) && !empty( $suspension ) ){
+					$this->data['Contratinsertion']['datesuspensionparticulier'] = $suspension[0]['Suspensiondroit']['ddsusdrorsa'];
+				}
 				$success = $this->Contratinsertion->save( $this->data );
 
 				if( Configure::read( 'nom_form_ci_cg' ) != 'cg66' ) {
@@ -831,41 +895,41 @@
 
 				$models = array( 'Autreavissuspension', 'Autreavisradiation' );
 				foreach( $models as $model ) {
-                    if( $this->action == 'add' ) {
-                        $this->{$this->modelClass}->{$model}->set( 'contratinsertion_id', $this->{$this->modelClass}->id );
-                    }
-                    else if ( $this->action == 'edit' ){
-                        $this->Contratinsertion->{$model}->deleteAll( array( "{$model}.contratinsertion_id" => $this->Contratinsertion->id ) );
-                    }
+					if( $this->action == 'add' ) {
+						$this->{$this->modelClass}->{$model}->set( 'contratinsertion_id', $this->{$this->modelClass}->id );
+					}
+					else if ( $this->action == 'edit' ){
+						$this->Contratinsertion->{$model}->deleteAll( array( "{$model}.contratinsertion_id" => $this->Contratinsertion->id ) );
+					}
 
 
-                    if( isset( $this->data[$model] ) ){
-                        $is{$model} = Set::filter( $this->data[$model] );
-                        if( !empty( $is{$model} ) ){
-                            $Autresavis = Set::extract( $is{$model}, "/{$model}" );
-                            $data = array( $model => array() );
+					if( isset( $this->data[$model] ) ){
+						$is{$model} = Set::filter( $this->data[$model] );
+						if( !empty( $is{$model} ) ){
+							$Autresavis = Set::extract( $is{$model}, "/{$model}" );
+							$data = array( $model => array() );
 
-                            foreach( $Autresavis as $i => $Autreavis ){
-                                $data[$model][] = array(
-                                    'contratinsertion_id' => $this->Contratinsertion->id,
-                                    strtolower($model) => $Autreavis
-                                );
-                            }
-                            $success = $this->Contratinsertion->{$model}->saveAll( $data[$model], array( 'atomic' => false ) ) && $success;
-                        }
-                    }
-                }
+							foreach( $Autresavis as $i => $Autreavis ){
+								$data[$model][] = array(
+									'contratinsertion_id' => $this->Contratinsertion->id,
+									strtolower($model) => $Autreavis
+								);
+							}
+							$success = $this->Contratinsertion->{$model}->saveAll( $data[$model], array( 'atomic' => false ) ) && $success;
+						}
+					}
+				}
 
-                if( isset( $this->data['Actioninsertion'] ) ) {
-                    $isActioninsertion = Set::filter( $this->data['Actioninsertion'] );
-                    if( $this->action == 'add' ) {
-                        $this->{$this->modelClass}->Actioninsertion->set( 'contratinsertion_id', $this->{$this->modelClass}->id );
-                    }
+				if( isset( $this->data['Actioninsertion'] ) ) {
+					$isActioninsertion = Set::filter( $this->data['Actioninsertion'] );
+					if( $this->action == 'add' ) {
+						$this->{$this->modelClass}->Actioninsertion->set( 'contratinsertion_id', $this->{$this->modelClass}->id );
+					}
 
-                    if( !empty( $isActioninsertion ) ){
-                        $success = $this->Contratinsertion->Actioninsertion->save( array( 'Actioninsertion' => $this->data['Actioninsertion'] ) ) && $success;
-                    }
-                }
+					if( !empty( $isActioninsertion ) ){
+						$success = $this->Contratinsertion->Actioninsertion->save( array( 'Actioninsertion' => $this->data['Actioninsertion'] ) ) && $success;
+					}
+				}
 
 
 
@@ -889,10 +953,10 @@
 							'contain'=>false
 						)
 					);
-                    if( !empty( $lastrdvorient ) ){
-                        $lastrdvorient['Rendezvous']['statutrdv_id'] = 1;
-                        $saved = $this->Contratinsertion->Referent->Rendezvous->save($lastrdvorient) && $saved;
-                    }
+					if( !empty( $lastrdvorient ) ){
+						$lastrdvorient['Rendezvous']['statutrdv_id'] = 1;
+						$saved = $this->Contratinsertion->Referent->Rendezvous->save($lastrdvorient) && $saved;
+					}
 
 					if( $saved ) {
 						$this->Jetons->release( $dossier_id );
@@ -1024,7 +1088,7 @@
 			}
 // debug($this->data);
 			$this->Contratinsertion->commit();
-            $this->_setOptions();
+			$this->_setOptions();
 			$this->set( compact( 'structures', 'referents' ) );
 
 			if( Configure::read( 'nom_form_ci_cg' ) == 'cg58' ) {
@@ -1093,22 +1157,22 @@
 		}
 
 
-        /**
-        *   Fonction pour annuler le CER pour le CG66
-        */
+		/**
+		*   Fonction pour annuler le CER pour le CG66
+		*/
 
-        public function cancel( $id ) {
-            $contrat = $this->{$this->modelClass}->findById( $id, null, null, -1 );
+		public function cancel( $id ) {
+			$contrat = $this->{$this->modelClass}->findById( $id, null, null, -1 );
 
-            $this->{$this->modelClass}->updateAll(
-                array( 'Contratinsertion.positioncer' => '\'annule\'' ),
-                array(
-                    '"Contratinsertion"."personne_id"' => $contrat['Contratinsertion']['personne_id'],
-                    '"Contratinsertion"."id"' => $contrat['Contratinsertion']['id']
-                )
-            );
-            $this->redirect( array( 'action' => 'index', $contrat['Contratinsertion']['personne_id'] ) );
-        }
+			$this->{$this->modelClass}->updateAll(
+				array( 'Contratinsertion.positioncer' => '\'annule\'' ),
+				array(
+					'"Contratinsertion"."personne_id"' => $contrat['Contratinsertion']['personne_id'],
+					'"Contratinsertion"."id"' => $contrat['Contratinsertion']['id']
+				)
+			);
+			$this->redirect( array( 'action' => 'index', $contrat['Contratinsertion']['personne_id'] ) );
+		}
 
 
 		/**

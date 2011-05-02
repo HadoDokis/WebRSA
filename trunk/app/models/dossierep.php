@@ -128,6 +128,19 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Signalementep93' => array(
+				'className' => 'Signalementep93',
+				'foreignKey' => 'dossierep_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 			// Thèmes 58
 			'Nonorientationproep58' => array(
 				'className' => 'Nonorientationproep58',
@@ -227,7 +240,7 @@
 					)
 				)
 			);
-			
+
 			$themes = $this->Passagecommissionep->Commissionep->Ep->Regroupementep->themes();
 			$themesTraites = array();
 

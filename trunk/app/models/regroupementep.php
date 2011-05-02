@@ -18,10 +18,12 @@
 					'nonrespectsanctionep93',
 					'reorientationep93',
 					'nonorientationproep93',
+// 					'regressionorientationep93',
+					'signalementep93',
 					// Thèmes 58
 					'nonorientationproep58',
 					'regressionorientationep58',
-					'sanctionep58'
+					'sanctionep58',
 				)
 			),
 			'Formattable'
