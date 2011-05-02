@@ -12,11 +12,11 @@
 //         }
 //     }
 
-    $csv->addRow( array( 'Date du bilan de parcours', 'Nom de la personne', 'Type de structure', 'Nom du prescripteur', 'Type de commission', 'Position du bilan', 'Choix du parcours', 'Saisine EP' ) );
+    $csv->addRow( array( 'Date du bilan de parcours', 'Nom de la personne', 'N° CAF', 'Type de structure', 'Nom du prescripteur', 'Type de commission', 'Position du bilan', 'Choix du parcours', 'Saisine EP' ) );
 
     foreach( $bilansparcours66 as $bilanparcours66 ) {
         $isSaisine = 'Non';
-        if( isset( $bilanparcours66['Dossierep']['etapedossierep'] ) ){
+        if( isset( $bilanparcours66['Dossierep']['themeep'] ) ){
             $isSaisine = 'Oui';
         }
 
@@ -37,10 +37,10 @@
         }
 
 
-
         $row = array(
             $locale->date( 'Date::short', Set::classicExtract( $bilanparcours66, 'Bilanparcours66.datebilan' ) ),
             Set::classicExtract( $bilanparcours66, 'Personne.nom_complet' ),
+            Set::classicExtract( $bilanparcours66, 'Dossier.matricule' ),
             Set::classicExtract( $bilanparcours66, 'Structurereferente.lib_struc' ),
             Set::classicExtract( $bilanparcours66, 'Referent.nom_complet' ),
             Set::classicExtract( $options['proposition'], $bilanparcours66['Bilanparcours66']['proposition'] ),

@@ -181,7 +181,8 @@
                     'Referent.nom',
                     'Referent.prenom',
                     'Structurereferente.lib_struc',
-                    'Dossierep.etapedossierep',
+                    'Dossier.matricule',
+                    'Dossierep.themeep'
                 ),
                 'joins' => $joins,
                 'order' => array( '"Bilanparcours66"."datebilan" ASC' ),
