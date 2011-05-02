@@ -44,22 +44,22 @@
             array(
                 'actions' => array(
                     'Contratsinsertion::valider' => array(
-                        'disabled' => '( "'.$permissions->check( 'contratsinsertion', 'valider' ).'" != "1" ) || ( "#Contratinsertion.decision_ci#" == "V" ) || ( "#Contratinsertion.forme_ci#" == "S" ) || ( "#Contratinsertion.positioncer#" == "annule" )'
+                        'disabled' => '( "'.$permissions->check( 'contratsinsertion', 'valider' ).'" != "1" ) || ( "#Contratinsertion.decision_ci#" == "V" ) || ( "#Contratinsertion.forme_ci#" == "S" ) || ( "#Contratinsertion.positioncer#" == "annule" ) || ( "#Contratinsertion.positioncer#" == "fincontrat" )'
                     ),
                     'Contratsinsertion::view',
-                    'Contratsinsertion::edit' => array( 'disabled' => '( "'.$permissions->check( 'contratsinsertion', 'edit' ).'" != "1" ) || ( "#Contratinsertion.decision_ci#" == "V" ) || ( "#Contratinsertion.forme_ci#" == "S" ) || ( "#Contratinsertion.positioncer#" == "annule" )' ),
+                    'Contratsinsertion::edit' => array( 'disabled' => '( "'.$permissions->check( 'contratsinsertion', 'edit' ).'" != "1" ) || ( "#Contratinsertion.decision_ci#" == "V" ) || ( "#Contratinsertion.forme_ci#" == "S" ) || ( "#Contratinsertion.positioncer#" == "annule" ) || ( "#Contratinsertion.positioncer#" == "fincontrat" )' ),
                     'Contratsinsertion::notifop' => array(
                         'label' => 'Notification OP',
                         'url' => array( 'controller' => 'contratsinsertion', 'action'=>'notificationsop' ),
-                        'disabled' => '( "'.$permissions->check( 'contratsinsertion', 'notificationsop' ).'" != "1" )  || ( "#Contratinsertion.positioncer#" == "annule" )'
+                        'disabled' => '( "'.$permissions->check( 'contratsinsertion', 'notificationsop' ).'" != "1" )  || ( "#Contratinsertion.positioncer#" == "annule" ) || ( "#Contratinsertion.positioncer#" == "fincontrat" )'
                     ),
                     'Contratsinsertion::print' => array(
                         'label' => 'Imprimer',
                         'url' => array( 'controller' => 'gedooos', 'action'=>'contratinsertion' ),
-                        'disabled' => '( "'.$permissions->check( 'contratsinsertion', 'print' ).'" != "1" )  || ( "#Contratinsertion.positioncer#" == "annule" )'
+                        'disabled' => '( "'.$permissions->check( 'contratsinsertion', 'print' ).'" != "1" )  || ( "#Contratinsertion.positioncer#" == "annule" ) || ( "#Contratinsertion.positioncer#" == "fincontrat" )'
                     ),
-                    'Contratsinsertion::cancel' => array( 'onclick' => "return confirm( 'Etes-vous sûr de vouloir annuler le CER ?' )", 'disabled' => '( "'.$permissions->check( 'contratsinsertion', 'cancel' ).'" != "1" ) ||  ( "#Contratinsertion.positioncer#" == "annule" )' ),
-                    'Contratsinsertion::filelink' => array( 'disabled' => '( "'.$permissions->check( 'contratsinsertion', 'cancel' ).'" != "1" )' )
+                    'Contratsinsertion::cancel' => array( 'onclick' => "return confirm( 'Etes-vous sûr de vouloir annuler le CER ?' )", 'disabled' => '( "'.$permissions->check( 'contratsinsertion', 'cancel' ).'" != "1" ) ||  ( "#Contratinsertion.positioncer#" == "annule" ) || ( "#Contratinsertion.positioncer#" == "fincontrat" )' ),
+                    'Contratsinsertion::filelink' => array( 'disabled' => '( "'.$permissions->check( 'contratsinsertion', 'cancel' ).'" != "1" )/* || ( "#Contratinsertion.positioncer#" == "fincontrat" )*/' )
                 ),
                 'add' => array( 'Contratinsertion.add' => array( 'controller'=>'contratsinsertion', 'action'=>'add', $personne_id , 'disabled' =>  $block ) ),
                 'options' => array( 'Contratinsertion' => $options )

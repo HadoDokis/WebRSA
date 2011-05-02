@@ -527,6 +527,7 @@
 			// Mise à jour des APREs
 			$return = $this->query( "UPDATE apres SET eligibiliteapre = 'O' WHERE apres.personne_id = ".$this->data[$this->name]['personne_id']." AND apres.etatdossierapre = 'COM';" ) && $return;
 			$return = $this->query( "UPDATE apres SET eligibiliteapre = 'N' WHERE apres.personne_id = ".$this->data[$this->name]['personne_id']." AND apres.etatdossierapre = 'INC';" ) && $return;
+// debug($created);
 
 			return $return;
 		}
@@ -536,18 +537,43 @@
 
             $formeCi = Set::classicExtract( $data, 'Contratinsertion.forme_ci' );
             $sitproCi = Set::classicExtract( $data, 'Contratinsertion.sitpro_ci' );
+// debug($data);
+            $personne_id = Set::classicExtract( $data, 'Contratinsertion.personne_id' );
+            $dernierContrat = $this->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Contratinsertion.personne_id' => $personne_id
+                    ),
+                    'order' => 'Contratinsertion.rg_ci DESC',
+                    'contain' => false
+                )
+            );
+//     debug($dernierContrat);
+//     die();
 
             $positioncer = null;
             // 'encours', 'attvalid', 'annule', 'fincontrat', 'encoursbilan', 'attrenouv', 'perime'
 
-            if ( $formeCi == 'S' )
+            if ( $formeCi == 'S' ){
                 $positioncer = 'encours';
-            elseif ( $formeCi == 'C' )
+            }
+            elseif ( $formeCi == 'C' ){
                 $positioncer = 'attvalid';
-            elseif ( !empty( $sitproCi ) )
+            }
+            elseif ( !empty( $sitproCi ) ){
                 $positioncer = 'annule';
-
-
+            }
+            if( !empty( $dernierContrat ) ){
+//                 $dernierContrat['Contratinsertion']['positioncer'] = 'fincontrat';
+                $this->updateAll(
+                    array( 'Contratinsertion.positioncer' => '\'fincontrat\'' ),
+                    array(
+                        '"Contratinsertion"."personne_id"' => $personne_id,
+                        '"Contratinsertion"."id"' => $dernierContrat['Contratinsertion']['id']
+                    )
+                );
+            }
             return $positioncer;
         }
 
