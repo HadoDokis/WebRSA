@@ -84,7 +84,7 @@
             $querydata = $this->Criterebilanparcours66->search( array_multisize( $this->params['named'] ) );
             unset( $querydata['limit'] );
             $bilansparcours66 = $this->Bilanparcours66->find( 'all', $querydata );
-
+// debug($bilansparcours66);
             foreach( $bilansparcours66 as $key => $bilanparcours66 ) {
                 $bilansparcours66[$key]['Personne']['nom_complet'] = implode(
                     ' ',

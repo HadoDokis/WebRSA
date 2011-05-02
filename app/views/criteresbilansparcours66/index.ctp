@@ -94,7 +94,7 @@
             foreach( $bilansparcours66 as $bilanparcour66 ) {
 
                 $isSaisine = '0';
-                if( isset( $bilanparcour66['Dossierep']['etapedossierep'] ) ){
+                if( isset( $bilanparcour66['Dossierep']['themeep'] ) ){
                     $isSaisine = '1';
                 }
 
