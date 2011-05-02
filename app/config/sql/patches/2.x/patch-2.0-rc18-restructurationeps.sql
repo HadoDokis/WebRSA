@@ -383,7 +383,7 @@ CREATE TABLE decisionssignalementseps93 (
 CREATE INDEX decisionssignalementseps93_passagecommissionep_id_idx ON decisionssignalementseps93( passagecommissionep_id );
 CREATE INDEX decisionssignalementseps93_etape_idx ON decisionssignalementseps93( etape );
 CREATE INDEX decisionssignalementseps93_decision_idx ON decisionssignalementseps93( decision );
-CREATE UNIQUE INDEX sdecisionssignalementseps93_passagecommissionep_id_etape_idx ON decisionssignalementseps93(passagecommissionep_id, etape);
+CREATE UNIQUE INDEX decisionssignalementseps93_passagecommissionep_id_etape_idx ON decisionssignalementseps93(passagecommissionep_id, etape);
 
 -- -----------------------------------------------------------------------------
 -- 20110502 - Nouvelle thématique sur les passages en EP provoqués par
@@ -393,6 +393,25 @@ CREATE UNIQUE INDEX sdecisionssignalementseps93_passagecommissionep_id_etape_idx
 TRUNCATE rendezvous CASCADE;
 ALTER TABLE typesrdv ADD COLUMN nbabsencesavpassageep INTEGER NOT NULL DEFAULT 0;
 ALTER TABLE statutsrdvs ADD COLUMN provoquepassageep type_booleannumber NOT NULL DEFAULT '0';
+
+-- *****************************************************************************
+-- 20110502, signalementseps93
+-- *****************************************************************************
+
+SELECT add_missing_table_field ( 'public', 'signalementseps93', 'dossierep_id', 'INTEGER' );
+ALTER TABLE signalementseps93 ALTER COLUMN dossierep_id SET NOT NULL;
+ALTER TABLE signalementseps93 ADD CONSTRAINT signalementseps93_dossierep_id_fk FOREIGN KEY (dossierep_id) REFERENCES dossierseps(id);
+
+ALTER TABLE dossierseps ALTER COLUMN themeep TYPE TEXT;
+DROP TYPE IF EXISTS TYPE_THEMEEP;
+CREATE TYPE TYPE_THEMEEP AS ENUM ( 'reorientationseps93', 'saisinesbilansparcourseps66', 'saisinespdoseps66', 'nonrespectssanctionseps93', 'defautsinsertionseps66', 'nonorientationsproseps58', 'nonorientationsproseps93', 'regressionsorientationseps58', 'sanctionseps58', 'signalementseps93' );
+ALTER TABLE dossierseps ALTER COLUMN themeep TYPE TYPE_THEMEEP USING CAST(themeep AS TYPE_THEMEEP);
+
+SELECT add_missing_table_field ( 'public', 'regroupementseps', 'signalementep93', 'type_niveaudecisionep' );
+ALTER TABLE regroupementseps ALTER COLUMN signalementep93 SET DEFAULT 'nontraite'::type_niveaudecisionep;
+UPDATE regroupementseps SET signalementep93 = 'nontraite'::type_niveaudecisionep WHERE signalementep93 IS NULL;
+ALTER TABLE regroupementseps ALTER COLUMN signalementep93 SET NOT NULL;
+UPDATE regroupementseps SET signalementep93 = 'decisioncg' WHERE nonrespectsanctionep93 = 'decisioncg';
 
 -- *****************************************************************************
 COMMIT;

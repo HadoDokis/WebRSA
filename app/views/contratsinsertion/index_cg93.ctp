@@ -17,6 +17,41 @@
 			<p class="notice">Cette personne ne possède pas encore de CER.</p>
 		<?php endif;?>
 
+		<?php if( isset( $signalementseps93 ) && !empty( $signalementseps93 ) ):?>
+			<h2>Signalements pour non respect du contrat</h2>
+			<table class="tooltips">
+				<thead>
+					<tr>
+						<th>Date début contrat</th>
+						<th>Date fin contrat</th>
+						<th>Date signalement</th>
+						<th>Rang signalement</th>
+						<th>État dossier EP</th>
+						<th colspan="2" class="action">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+				<?php foreach( $signalementseps93 as $signalementep93 ):?>
+					<?php
+						$etatdossierep = Set::enum( $signalementep93['Passagecommissionep']['etatdossierep'], $optionsdossierseps['Passagecommissionep']['etatdossierep'] );
+						if( empty( $etatdossierep ) ) {
+							$etatdossierep = 'En attente';
+						}
+					?>
+					<tr>
+						<td><?php echo $locale->date( 'Locale->date', $signalementep93['Contratinsertion']['dd_ci'] );?></td>
+						<td><?php echo $locale->date( 'Locale->date', $signalementep93['Contratinsertion']['df_ci'] );?></td>
+						<td><?php echo $locale->date( 'Locale->date', $signalementep93['Signalementep93']['date'] );?></td>
+						<td><?php echo h( $signalementep93['Signalementep93']['rang'] );?></td>
+						<td><?php echo h( $etatdossierep );?></td>
+						<td class="action"><?php echo $default->button( 'edit', array( 'controller' => 'signalementseps93', 'action' => 'edit', $signalementep93['Signalementep93']['id'] ), array( 'enabled' => ( empty( $signalementep93['Passagecommissionep']['etatdossierep'] ) ) ) );?></td>
+						<td class="action"><?php echo $default->button( 'delete', array( 'controller' => 'signalementseps93', 'action' => 'delete', $signalementep93['Signalementep93']['id'] ), array( 'enabled' => ( empty( $signalementep93['Passagecommissionep']['etatdossierep'] ) ) ) );?></td>
+					</tr>
+				<?php endforeach;?>
+				</tbody>
+			</table>
+		<?php endif;?>
+
 		<?php if( $permissions->check( 'contratsinsertion', 'add' ) ):?>
 			<ul class="actionMenu">
 				<?php
@@ -106,8 +141,11 @@
 								$xhtml->saisineEpLink(
 									'Signalement',
 									array( 'controller' => 'signalementseps93', 'action' => 'add', $contratinsertion['Contratinsertion']['id'] ),
-									// FIXME: et en plus, il n'existe pas de signalement (en cours de traitement) pour ce CER
-									$permissions->check( 'signalementseps93', 'add' ) && $enCours && $isValid && ( $contratinsertion['Contratinsertion']['forme_ci'] == 'S' )
+									$permissions->check( 'signalementseps93', 'add' )
+									&& $enCours
+									&& $isValid
+									&& ( $contratinsertion['Contratinsertion']['forme_ci'] == 'S' )
+									&& ( !isset( $signalementseps93 ) || empty( $signalementseps93 ) )
 								)
 							),
 							array( 'class' => 'odd' ),

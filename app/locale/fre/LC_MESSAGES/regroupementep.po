@@ -80,6 +80,9 @@ msgstr "Prise de décision non respect des obligations / sanctions"
 msgid "Regroupementep.nonorientationproep93"
 msgstr "Prise de décision pour non réorientation vers le professionnel"
 
+msgid "Regroupementep.signalementep93"
+msgstr "Non respect des termes du CER"
+
 msgid "ENUM::REORIENTATIONEP93::nontraite"
 msgstr "Décision non traitée"
 
@@ -105,6 +108,15 @@ msgid "ENUM::NONORIENTATIONPROEP93::decisionep"
 msgstr "Décision émise par l'EP"
 
 msgid "ENUM::NONORIENTATIONPROEP93::decisioncg"
+msgstr "Décision émise par le CG"
+
+msgid "ENUM::SIGNALEMENTEP93::nontraite"
+msgstr "Décision non traitée"
+
+msgid "ENUM::SIGNALEMENTEP93::decisionep"
+msgstr "Décision émise par l'EP"
+
+msgid "ENUM::SIGNALEMENTEP93::decisioncg"
 msgstr "Décision émise par le CG"
 
 # Spécifique cg 58

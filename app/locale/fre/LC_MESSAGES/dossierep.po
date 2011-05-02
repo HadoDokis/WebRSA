@@ -74,6 +74,9 @@ msgstr "Orientation du professionnelle vers le social"
 msgid "ENUM::THEMEEP::sanctionseps58"
 msgstr "Radiés et non inscrits à Pôle Emploi"
 
+msgid "ENUM::THEMEEP::signalementseps93"
+msgstr "Non respect des termes du CER"
+
 #
 
 msgid "ENUM::ETAPEDOSSIEREP::cree"

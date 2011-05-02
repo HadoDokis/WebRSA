@@ -13,7 +13,7 @@
 					'haspiecejointe' => array( 'domain' => 'contratinsertion' ),
 // 					'autreavissuspension',
 // 					'autreavisradiation'
-                )
+				)
 			),
 			'Formattable' => array(
 				'suffix' => array( 'structurereferente_id', 'referent_id' ),
@@ -140,19 +140,19 @@
 				)
 			),
 			'date_saisi_ci' => array(
-                array(
-                    'rule' => array('datePassee'),
-                    'message' => 'Merci de choisir une date antérieure à la date du jour',
-                    'on' => 'create'
-                ),
-                array(
-                    'rule' => 'date',
-                    'message' => 'Merci de rentrer une date valide',
-                    'allowEmpty' => false,
-                    'required' => true,
-                    'on' => 'create'
-                )
-            ),
+				array(
+					'rule' => array('datePassee'),
+					'message' => 'Merci de choisir une date antérieure à la date du jour',
+					'on' => 'create'
+				),
+				array(
+					'rule' => 'date',
+					'message' => 'Merci de rentrer une date valide',
+					'allowEmpty' => false,
+					'required' => true,
+					'on' => 'create'
+				)
+			),
 			/**
 			* Régle ajoutée suite à la demande du CG66
 			*/
@@ -234,6 +234,48 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Autreavissuspension' => array(
+				'className' => 'Autreavissuspension',
+				'foreignKey' => 'contratinsertion_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Autreavisradiation' => array(
+				'className' => 'Autreavisradiation',
+				'foreignKey' => 'contratinsertion_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Fichiermodule' => array(
+				'className' => 'Fichiermodule',
+				'foreignKey' => false,
+				'dependent' => false,
+				'conditions' => array(
+					'Fichiermodule.modele = \'Contratinsertion\'',
+					'Fichiermodule.fk_value = {$__cakeID__$}'
+				),
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 			'Nonrespectsanctionep93' => array(
 				'className' => 'Nonrespectsanctionep93',
 				'foreignKey' => 'contratinsertion_id',
@@ -247,48 +289,19 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
-			'Autreavissuspension' => array(
-                'className' => 'Autreavissuspension',
-                'foreignKey' => 'contratinsertion_id',
-                'dependent' => true,
-                'conditions' => '',
-                'fields' => '',
-                'order' => '',
-                'limit' => '',
-                'offset' => '',
-                'exclusive' => '',
-                'finderQuery' => '',
-                'counterQuery' => ''
-            ),
-			'Autreavisradiation' => array(
-                'className' => 'Autreavisradiation',
-                'foreignKey' => 'contratinsertion_id',
-                'dependent' => true,
-                'conditions' => '',
-                'fields' => '',
-                'order' => '',
-                'limit' => '',
-                'offset' => '',
-                'exclusive' => '',
-                'finderQuery' => '',
-                'counterQuery' => ''
-            ),
-            'Fichiermodule' => array(
-                'className' => 'Fichiermodule',
-                'foreignKey' => false,
-                'dependent' => false,
-                'conditions' => array(
-                    'Fichiermodule.modele = \'Contratinsertion\'',
-                    'Fichiermodule.fk_value = {$__cakeID__$}'
-                ),
-                'fields' => '',
-                'order' => '',
-                'limit' => '',
-                'offset' => '',
-                'exclusive' => '',
-                'finderQuery' => '',
-                'counterQuery' => ''
-            )
+			'Signalementep93' => array(
+				'className' => 'Signalementep93',
+				'foreignKey' => 'contratinsertion_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 		);
 
 
@@ -443,10 +456,10 @@
 			}
 
 
-            //  Calcul de la position du cER
-            if( Configure::read( 'Cg.departement' ) == '66' ) {
-                $this->data[$this->alias]['positioncer'] = $this->_calculPosition( $this->data );
-            }
+			//  Calcul de la position du cER
+			if( Configure::read( 'Cg.departement' ) == '66' ) {
+				$this->data[$this->alias]['positioncer'] = $this->_calculPosition( $this->data );
+			}
 
 			return $return;
 		}
@@ -533,10 +546,10 @@
 		}
 
 
-        protected function _calculPosition( $data ){
+		protected function _calculPosition( $data ){
 
-            $formeCi = Set::classicExtract( $data, 'Contratinsertion.forme_ci' );
-            $sitproCi = Set::classicExtract( $data, 'Contratinsertion.sitpro_ci' );
+			$formeCi = Set::classicExtract( $data, 'Contratinsertion.forme_ci' );
+			$sitproCi = Set::classicExtract( $data, 'Contratinsertion.sitpro_ci' );
 // debug($data);
             $personne_id = Set::classicExtract( $data, 'Contratinsertion.personne_id' );
             $dernierContrat = $this->find(
@@ -552,17 +565,15 @@
 //     debug($dernierContrat);
 //     die();
 
-            $positioncer = null;
-            // 'encours', 'attvalid', 'annule', 'fincontrat', 'encoursbilan', 'attrenouv', 'perime'
+			$positioncer = null;
+			// 'encours', 'attvalid', 'annule', 'fincontrat', 'encoursbilan', 'attrenouv', 'perime'
 
-            if ( $formeCi == 'S' ){
-                $positioncer = 'encours';
-            }
-            elseif ( $formeCi == 'C' ){
-                $positioncer = 'attvalid';
-            }
-            elseif ( !empty( $sitproCi ) ){
-                $positioncer = 'annule';
+			if ( $formeCi == 'S' )
+				$positioncer = 'encours';
+			elseif ( $formeCi == 'C' )
+				$positioncer = 'attvalid';
+			elseif ( !empty( $sitproCi ) )
+				$positioncer = 'annule';
             }
             if( !empty( $dernierContrat ) ){
 //                 $dernierContrat['Contratinsertion']['positioncer'] = 'fincontrat';
@@ -574,8 +585,8 @@
                     )
                 );
             }
-            return $positioncer;
-        }
+			return $positioncer;
+		}
 
         /**
         *   Liste des anciennes demandes d'ouverture de droit pour un allocataire

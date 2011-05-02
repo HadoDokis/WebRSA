@@ -124,6 +124,19 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Decisionsignalementep93' => array(
+				'className' => 'Decisionsignalementep93',
+				'foreignKey' => 'passagecommissionep_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 			'Decisiondefautinsertionep66' => array(
 				'className' => 'Decisiondefautinsertionep66',
 				'foreignKey' => 'passagecommissionep_id',
