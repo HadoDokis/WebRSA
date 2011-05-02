@@ -42,7 +42,7 @@
 				}
 			}
 			else {
-				
+
 				if( $permissions->check( 'dsps', 'edit' ) && ( (isset($rev)) && (!$rev) || ( $this->action == 'view_revs' ) ) ) {
 					echo '<ul class="actionMenu">
 							<li>'.$xhtml->editLink(
@@ -69,7 +69,7 @@
 						} else { $$( \'.empty\' ).each( function( elmt ) { elmt.show() } ); }'
 					)
 				);
-
+// debug($dsp);
 				$generalites = $default->view(
 					$dsp,
 					array(

@@ -243,7 +243,7 @@
 
         public function view( $id = null ) {
 			$dsp = $this->Dsp->findByPersonneId( $id );
-
+// debug($dsp);
 			if( empty( $dsp ) ) {
                 //Ajout Arnaud suite aux problemes de perf
 				$dsp = $this->Dsp->Personne->find(
@@ -266,9 +266,9 @@
 			$dspRev = $this->DspRev->find('first', array('conditions'=>array('dsp_id'=>$dsp_id), 'order'=>array('id ASC, created ASC')));
 			if (!empty($dspRev)) {
 				$rev = true;
-				foreach ($dspRev as $Model=>$values) {
-					$dsp[substr($Model,0,-3)] = $dspRev[$Model];
-				}
+//				foreach ($dspRev as $Model=>$values) {
+//					$dsp[substr($Model,0,-3)] = $dspRev[$Model];
+//				}
 			}
 			$this->set( 'dsp', $dsp );
 			$this->set('rev', $rev);
@@ -567,11 +567,15 @@
 
 				$dsp_id = Set::classicExtract( $this->data, 'Dsp.id' );
 				$this->data = Set::filter( $this->data );
-				
+
 				$data2 = null;
 
                 unset( $this->data['Dsp']['haspiecejointe'] );
-                if( $success = $this->Dsp->saveAll( $this->data, array( 'atomic' => false, 'validate' => 'first' ) ) && $success ) {		
+                if( $success = $this->Dsp->saveAll( $this->data, array( 'atomic' => false, 'validate' => 'only' ) ) && $success ) {		
+//                 die( 'coucou');
+                    if( $this->action == 'add' ){
+                        $success = $this->Dsp->saveAll( $this->data, array( 'atomic' => false, 'validate' => 'first' ) ) && $success;
+                    }
                     foreach($this->data as $Model=>$values) {
                         $data2[$Model."Rev"] = $this->data[$Model];
 
@@ -586,9 +590,9 @@
                     }
                     $data2['DspRev']['dsp_id'] = $this->Dsp->id;
                     $data2 = Set::remove($data2,'DspRev.id');
-                    
+
                     $this->DspRev->saveAll($data2, array( 'atomic' => false, 'validate' => 'first' ));
-                    
+
                     $this->Session->setFlash( __( 'Enregistrement effectué', true ), 'flash/success' );
                     // On enlève le jeton du dossier
                     $this->Jetons->release( array( 'Dossier.id' => $dossier_id ) ); // FIXME: if -> error
