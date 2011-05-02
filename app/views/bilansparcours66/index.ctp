@@ -87,7 +87,7 @@
                         echo "</tr></thead><tbody>";
 
                         foreach($bilansparcours66 as $bilanparcour66) {
-    // debug($bilanparcour66);
+//debug($bilanparcour66);
                             $positionbilan = Set::classicExtract( $bilanparcour66, 'Bilanparcours66.positionbilan' );
                             $block = true;
                             if( $positionbilan == 'annule' ){
@@ -129,27 +129,27 @@
                                         'td',
                                         Set::classicExtract( $structuresreferentes, Set::classicExtract( $bilanparcour66, 'Saisinebilanparcoursep66.structurereferente_id' ) )
                                     );
-                                    if ( isset( $bilanparcour66['Saisinebilanparcoursep66']['Decisionsaisinebilanparcoursep66'][0]['typeorient_id'] ) && !empty( $bilanparcour66['Saisinebilanparcoursep66']['Decisionsaisinebilanparcoursep66'][0]['typeorient_id'] ) ) {
+                                    if ( isset( $bilanparcour66['Saisinebilanparcoursep66']['Dossierep']['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['typeorient_id'] ) && !empty( $bilanparcour66['Saisinebilanparcoursep66']['Dossierep']['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['typeorient_id'] ) ) {
                                         echo $xhtml->tag(
                                             'td',
-                                            Set::classicExtract( $typesorients, Set::classicExtract( $bilanparcour66, 'Saisinebilanparcoursep66.Decisionsaisinebilanparcoursep66.0.typeorient_id' ) )
+                                            Set::classicExtract( $typesorients, Set::classicExtract( $bilanparcour66, 'Saisinebilanparcoursep66.Dossierep.Passagecommissionep.0.Decisionsaisinebilanparcoursep66.0.typeorient_id' ) )
                                         );
                                         echo $xhtml->tag(
                                             'td',
-                                            Set::classicExtract( $structuresreferentes, Set::classicExtract( $bilanparcour66, 'Saisinebilanparcoursep66.Decisionsaisinebilanparcoursep66.0.structurereferente_id' ) )
+                                            Set::classicExtract( $structuresreferentes, Set::classicExtract( $bilanparcour66, 'Saisinebilanparcoursep66.Dossierep.Passagecommissionep.0.Decisionsaisinebilanparcoursep66.0.structurereferente_id' ) )
                                         );
                                     }
                                     else {
                                         echo "<td colspan='2'></td>";
                                     }
-                                    if ( isset( $bilanparcour66['Saisinebilanparcoursep66']['Decisionsaisinebilanparcoursep66'][1]['typeorient_id'] ) && !empty( $bilanparcour66['Saisinebilanparcoursep66']['Decisionsaisinebilanparcoursep66'][1]['typeorient_id'] ) ) {
+                                    if ( isset( $bilanparcour66['Saisinebilanparcoursep66']['Dossierep']['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][1]['typeorient_id'] ) && !empty( $bilanparcour66['Saisinebilanparcoursep66']['Dossierep']['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][1]['typeorient_id'] ) ) {
                                         echo $xhtml->tag(
                                             'td',
-                                            Set::classicExtract( $typesorients, Set::classicExtract( $bilanparcour66, 'Saisinebilanparcoursep66.Decisionsaisinebilanparcoursep66.1.typeorient_id' ) )
+                                            Set::classicExtract( $typesorients, Set::classicExtract( $bilanparcour66, 'Saisinebilanparcoursep66.Dossierep.Passagecommissionep.0.Decisionsaisinebilanparcoursep66.1.typeorient_id' ) )
                                         );
                                         echo $xhtml->tag(
                                             'td',
-                                            Set::classicExtract( $structuresreferentes, Set::classicExtract( $bilanparcour66, 'Saisinebilanparcoursep66.Decisionsaisinebilanparcoursep66.1.structurereferente_id' ) )
+                                            Set::classicExtract( $structuresreferentes, Set::classicExtract( $bilanparcour66, 'Saisinebilanparcoursep66.Dossierep.Passagecommissionep.0.Decisionsaisinebilanparcoursep66.1.structurereferente_id' ) )
                                         );
                                     }
                                     else {
@@ -254,10 +254,10 @@
                                 'Bilanparcours66.choixparcours',
                                 'Saisinebilanparcoursep66.typeorient_id',
                                 'Saisinebilanparcoursep66.structurereferente_id',
-                                'Saisinebilanparcoursep66.Decisionsaisinebilanparcoursep66.0.typeorient_id',
-                                'Saisinebilanparcoursep66.Decisionsaisinebilanparcoursep66.0.structurereferente_id',
-                                'Saisinebilanparcoursep66.Decisionsaisinebilanparcoursep66.1.typeorient_id',
-                                'Saisinebilanparcoursep66.Decisionsaisinebilanparcoursep66.1.structurereferente_id'
+                                'Saisinebilanparcoursep66.Dossierep.Passagecommissionep.0.Decisionsaisinebilanparcoursep66.0.typeorient_id',
+                                'Saisinebilanparcoursep66.Dossierep.Passagecommissionep.0.Decisionsaisinebilanparcoursep66.0.structurereferente_id',
+                                'Saisinebilanparcoursep66.Dossierep.Passagecommissionep.0.Decisionsaisinebilanparcoursep66.1.typeorient_id',
+                                'Saisinebilanparcoursep66.Dossierep.Passagecommissionep.0.Decisionsaisinebilanparcoursep66.1.structurereferente_id'
                             ),
                             array(
                                 'actions' => array(
