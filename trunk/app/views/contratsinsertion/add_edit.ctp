@@ -320,7 +320,7 @@
             </tr>
             <tr>
                 <td class="mediumSize noborder">
-                    <strong>Ouverture de droit ( nombre d'ouvertures ) : </strong><?php echo count( Set::extract( $personne, '/Foyer/Dossier/dtdemrsa' ) );?>
+                    <strong>Ouverture de droit ( nombre d'ouvertures ) : </strong><?php echo $numouverturedroit; /*count( Set::extract( $personne, '/Foyer/Dossier/dtdemrsa' ) );*/?>
                 </td>
                 <td class="mediumSize noborder">
                     <strong>rSa majoré</strong>
@@ -344,7 +344,12 @@
                     </td>
                     <td class="noborder">
                         <?php
-                                echo '(nombre de renouvellement) : '.( $nbrCi - 1 );
+                                if( $nbrCi != 0 ) {
+                                    echo '(nombre de renouvellement) : '.( $nbrCi - 1 );
+                                }
+                                else {
+                                    echo '(nombre de renouvellement) : 0';
+                                }
                         ?>
                     </td>
                 </tr>

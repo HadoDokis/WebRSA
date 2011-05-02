@@ -765,6 +765,11 @@
             /// Calcul du numéro du contrat d'insertion
             $nbrCi = $this->Contratinsertion->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ) ) );
 
+
+
+            $numouverturedroit = $this->Contratinsertion->checkNumDemRsa( $personne_id );
+            $this->set( 'numouverturedroit', $numouverturedroit );
+
 			$this->set( 'valueFormeci', $valueFormeci );
 
 			/// Essai de sauvegarde

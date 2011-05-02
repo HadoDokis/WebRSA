@@ -550,5 +550,75 @@
 
             return $positioncer;
         }
+
+        /**
+        *   Liste des anciennes demandes d'ouverture de droit pour un allocataire
+        *   TODO
+        */
+        public function checkNumDemRsa( $personne_id ) {
+
+            $personne = $this->Personne->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Personne.id' => $personne_id
+                    ),
+                    'contain' => array(
+                        'Foyer' => array(
+                            'Dossier'
+                        )
+                    )
+                )
+            );
+            $this->set( compact( 'personne' ) );
+
+            $autreNumdemrsa = $this->Personne->Foyer->Dossier->find(
+                'all',
+                array(
+                    'fields' => array(
+                        'COUNT(DISTINCT "Dossier"."id") AS "count"'
+                    ),
+                    'joins' => array(
+                        array(
+                            'table'      => 'foyers',
+                            'alias'      => 'Foyer',
+                            'type'       => 'INNER',
+                            'foreignKey' => false,
+                            'conditions' => array( 'Foyer.dossier_id = Dossier.id' )
+                        ),
+                        array(
+                            'table'      => 'personnes',
+                            'alias'      => 'Personne',
+                            'type'       => 'INNER',
+                            'foreignKey' => false,
+                            'conditions' => array( 'Personne.foyer_id = Foyer.id' )
+                        )
+                    ),
+                    'conditions' => array(
+                        'OR' => array(
+                            array(
+                                'Personne.nir' => $personne['Personne']['nir'],
+                                //FIXME
+                                'nir_correct( Personne.nir  ) = true',
+                                'Personne.nir IS NOT NULL',
+                                'Personne.dtnai' => $personne['Personne']['dtnai']
+                            ),
+                            array(
+                                'Personne.nom' => $personne['Personne']['nom'],
+                                'Personne.prenom' => $personne['Personne']['prenom'],
+                                'Personne.dtnai' => $personne['Personne']['dtnai']
+                            )
+                        )
+                    ),
+                    'contain' => false,
+                    'recursive' => -1
+                )
+            );
+
+            return $autreNumdemrsa[0][0]['count'];
+        }
+
+
+
 	}
 ?>
