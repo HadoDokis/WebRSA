@@ -18,9 +18,9 @@
             <?php if( empty( $persreferent ) ) :?>
                 <p class="error">Aucun référent n'est lié au parcours de cette personne.</p>
             <?php endif;?>
-            <?php if( empty( $contratsinsertion ) ):?>
+<!--            <?php if( empty( $contratsinsertion ) ):?>
                 <p class="notice">Cette personne ne possède pas encore de CER.</p>
-            <?php endif;?>
+            <?php endif;?>-->
 
     <!-- <?php /*if( !empty( $contratsinsertion ) ): */?> -->
     <?php /*if( !empty( $contratsinsertion ) ):*/?>
