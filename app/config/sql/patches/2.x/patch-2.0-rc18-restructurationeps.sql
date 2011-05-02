@@ -440,11 +440,6 @@ SELECT add_missing_table_field ( 'public', 'signalementseps93', 'dossierep_id', 
 ALTER TABLE signalementseps93 ALTER COLUMN dossierep_id SET NOT NULL;
 ALTER TABLE signalementseps93 ADD CONSTRAINT signalementseps93_dossierep_id_fk FOREIGN KEY (dossierep_id) REFERENCES dossierseps(id);
 
-ALTER TABLE dossierseps ALTER COLUMN themeep TYPE TEXT;
-DROP TYPE IF EXISTS TYPE_THEMEEP;
-CREATE TYPE TYPE_THEMEEP AS ENUM ( 'reorientationseps93', 'saisinesbilansparcourseps66', 'saisinespdoseps66', 'nonrespectssanctionseps93', 'defautsinsertionseps66', 'nonorientationsproseps58', 'nonorientationsproseps93', 'regressionsorientationseps58', 'sanctionseps58', 'signalementseps93' );
-ALTER TABLE dossierseps ALTER COLUMN themeep TYPE TYPE_THEMEEP USING CAST(themeep AS TYPE_THEMEEP);
-
 SELECT add_missing_table_field ( 'public', 'regroupementseps', 'signalementep93', 'type_niveaudecisionep' );
 ALTER TABLE regroupementseps ALTER COLUMN signalementep93 SET DEFAULT 'nontraite'::type_niveaudecisionep;
 UPDATE regroupementseps SET signalementep93 = 'nontraite'::type_niveaudecisionep WHERE signalementep93 IS NULL;
