@@ -43,6 +43,7 @@
 				'Regroupementep.nonorientationproep58' => array( 'type' => 'hidden', 'value' => 'decisionep' ),
 				'Regroupementep.regressionorientationep58' => array( 'type' => 'hidden', 'value' => 'decisionep' ),
 				'Regroupementep.sanctionep58' => array( 'type' => 'hidden', 'value' => 'decisionep' ),
+				'Regroupementep.sanctionrendezvousep58' => array( 'type' => 'hidden', 'value' => 'decisionep' ),
 			)
 		);
 	}

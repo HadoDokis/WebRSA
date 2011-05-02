@@ -159,3 +159,16 @@ msgstr "Décision émise par l'EP"
 
 msgid "ENUM::SANCTIONEP58::decisioncg"
 msgstr "Décision émise par le CG"
+
+msgid "Regroupementep.sanctionrendezvousep58"
+msgstr "Sanctions pour rendez-vous non honorés"
+
+msgid "ENUM::SANCTIONRENDEZVOUSEP58::nontraite"
+msgstr "Décision non traitée"
+
+msgid "ENUM::SANCTIONRENDEZVOUSEP58::decisionep"
+msgstr "Décision émise par l'EP"
+
+msgid "ENUM::SANCTIONRENDEZVOUSEP58::decisioncg"
+msgstr "Décision émise par le CG"
+

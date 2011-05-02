@@ -191,5 +191,35 @@
 				return null;
 			}
 		}
+		
+		/**
+		 * Retourne un booléen selon si un dossier d'EP doit ou non
+		 * être créé pour la personne dont l'id est passé en paramètre
+		 */
+		public function passageEp( $personne_id, $newTyperdv_id ) {
+			$rdvs = $this->find(
+				'all',
+				array(
+					'conditions' => array(
+						'Rendezvous.typerdv_id' => $newTyperdv_id
+					),
+					'contain' => false,
+					'order' => array( 'Rendezvous.daterdv DESC' ),
+					'limit' => 2
+				)
+			);
+			
+			$typerdv = $this->Typerdv->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Typerdv.id' => $newTyperdv_id
+					),
+					'contain' => false
+				)
+			);
+			
+			return ( count( $rdvs ) == $typerdv['Typerdv']['nbabsencesavpassageep'] );
+		}
 	}
 ?>

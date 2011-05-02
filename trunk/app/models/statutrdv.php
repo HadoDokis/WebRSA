@@ -29,5 +29,23 @@
 				'counterQuery' => ''
 			)
 		);
+		
+		/**
+		 * Retourne un booléen suivant si le statut du rdv passé en paramètre
+		 * peut ou non provoquer un passage en EP
+		 */
+		public function provoquePassageEp( $statutrdv_id ) {
+			$statutrdv = $this->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Statutrdv.id' => $statutrdv_id
+					),
+					'contain' => false
+				)
+			);
+
+			return $statutrdv['Statutrdv']['provoquepassageep'];
+		}
 	}
 ?>
