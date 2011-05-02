@@ -325,13 +325,32 @@ App::import( 'Helper', 'Locale' );
 			if( !empty( $this->data ) ){
 				if( $this->Rendezvous->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
 					if( $this->Rendezvous->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
-
+						if ( $this->Rendezvous->Statutrdv->provoquePassageEp( $this->data['Rendezvous']['statutrdv_id'] ) ) {
+							if ( $this->Rendezvous->passageEp( $personne_id, $this->data['Rendezvous']['typerdv_id'] ) ) {
+								$dossierep = array(
+									'Dossierep' => array(
+										'personne_id' => $personne_id,
+										'themeep' => 'sanctionsrendezvouseps58'
+									)
+								);
+								$this->Rendezvous->Personne->Dossierep->save( $dossierep );
+								
+								$sanctionrendezvousep58 = array(
+									'Sanctionrendezvousep58' => array(
+										'dossierep_id' => $this->Rendezvous->Personne->Dossierep->id,
+										'typerdv_id' => $this->data['Rendezvous']['typerdv_id']
+									)
+								);
+								$this->Rendezvous->Personne->Dossierep->Sanctionrendezvousep58->save( $sanctionrendezvousep58 );
+							}
+						}
 						$this->Jetons->release( $dossier_id );
 						$this->Rendezvous->commit();
 						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 						$this->redirect( array(  'controller' => 'rendezvous','action' => 'index', $personne_id ) );
 					}
 					else {
+						$this->Rendezvous->rollback();
 						$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 					}
 				}

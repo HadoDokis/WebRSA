@@ -181,6 +181,19 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Sanctionrendezvousep58' => array(
+				'className' => 'Sanctionrendezvousep58',
+				'foreignKey' => 'dossierep_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 		);
 
 		public $hasMany = array(

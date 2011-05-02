@@ -24,6 +24,7 @@
 					'nonorientationproep58',
 					'regressionorientationep58',
 					'sanctionep58',
+					'sanctionrendezvousep58',
 				)
 			),
 			'Formattable'
