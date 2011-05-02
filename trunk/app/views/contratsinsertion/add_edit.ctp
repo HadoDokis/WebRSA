@@ -343,7 +343,9 @@
                         ?>
                     </td>
                     <td class="noborder">
-                        <?php echo '(nombre de renouvellement) : '.$nbrCi;?>
+                        <?php
+                                echo '(nombre de renouvellement) : '.( $nbrCi - 1 );
+                        ?>
                     </td>
                 </tr>
             <?php endif;?>

@@ -762,20 +762,17 @@
 			$personne = $this->Contratinsertion->Personne->newDetailsCi( $personne_id, $this->Session->read( 'Auth.User.id' ) );
 			$this->set( 'personne', $personne );
 
-
-			/// Calcul du numéro du contrat d'insertion
-			$nbrCi = $this->Contratinsertion->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ) ) );
-			$this->set( 'nbrCi', $nbrCi );
+            /// Calcul du numéro du contrat d'insertion
+            $nbrCi = $this->Contratinsertion->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ) ) );
 
 			$this->set( 'valueFormeci', $valueFormeci );
-
-
 
 			/// Essai de sauvegarde
 			if( !empty( $this->data ) ) {
 
-				$this->data['Contratinsertion']['rg_ci'] = $nbrCi + 1;
-
+                if( $this->action == 'add' ) {
+                    $this->data['Contratinsertion']['rg_ci'] = $nbrCi + 1;
+                }
 
 				if( Configure::read( 'nom_form_ci_cg' ) == 'cg58' ) {
 					$this->data['Contratinsertion']['forme_ci'] = 'S';
@@ -931,15 +928,17 @@
 						$this->data['Contratinsertion']['avisraison_radiation_ci'] =  $this->data['Contratinsertion']['avisraison_ci'];
 					}
 
+                    /// Si on est en présence d'un deuxième contrat -> Alors renouvellement
+//                     $this->data['Contratinsertion']['rg_ci'] = $nbrCi - 1;
+                    $nbrCi = $contratinsertion['Contratinsertion']['rg_ci'];
 				}
 
 				$this->data = Set::merge( $this->data, $this->_getDsp( $personne_id ) );
 
-				/// Si on est en présence d'un deuxième contrat -> Alors renouvellement
-				$this->data['Contratinsertion']['rg_ci'] = $nbrCi + 1;
 
 			}
 // debug( $this->data );
+            $this->set( 'nbrCi', $nbrCi );
 			// Doit-on setter les valeurs par défault ?
 			$dataStructurereferente_id = Set::classicExtract( $this->data, "{$this->Contratinsertion->alias}.structurereferente_id" );
 			$dataReferent_id = Set::classicExtract( $this->data, "{$this->Contratinsertion->alias}.referent_id" );
