@@ -369,14 +369,36 @@
 					}
 					else {
 						$formData['Decisionsaisinebilanparcoursep66'][$key]['decision'] = 'accepte';
-						$formData['Decisionsaisinebilanparcoursep66'][$key]['typeorient_id'] = $dossierep[$this->alias]['typeorient_id'];
-						$formData['Decisionsaisinebilanparcoursep66'][$key]['structurereferente_id'] = implode(
-							'_',
-							array(
-								$dossierep[$this->alias]['typeorient_id'],
-								$dossierep[$this->alias]['structurereferente_id']
-							)
-						);
+						$formData['Decisionsaisinebilanparcoursep66'][$key]['checkcomm'] = 0;
+						if ( $dossierep[$this->alias]['Bilanparcours66']['choixparcours'] == 'maintien' ) {
+							$formData['Decisionsaisinebilanparcoursep66'][$key]['typeorient_id'] = $dossierep[$this->alias]['Bilanparcours66']['Orientstruct']['typeorient_id'];
+							$formData['Decisionsaisinebilanparcoursep66'][$key]['structurereferente_id'] = implode(
+								'_',
+								array(
+									$dossierep[$this->alias]['Bilanparcours66']['Orientstruct']['typeorient_id'],
+									$dossierep[$this->alias]['Bilanparcours66']['Orientstruct']['structurereferente_id']
+								)
+							);
+							if ( $dossierep[$this->alias]['Bilanparcours66']['changereferent'] == 'O' ) {
+								$formData['Decisionsaisinebilanparcoursep66'][$key]['referent_id'] = implode(
+									'_',
+									array(
+										$dossierep[$this->alias]['Bilanparcours66']['Orientstruct']['structurereferente_id'],
+										$dossierep[$this->alias]['Bilanparcours66']['Orientstruct']['referent_id']
+									)
+								);
+							}
+						}
+						else {
+							$formData['Decisionsaisinebilanparcoursep66'][$key]['typeorient_id'] = $dossierep[$this->alias]['typeorient_id'];
+							$formData['Decisionsaisinebilanparcoursep66'][$key]['structurereferente_id'] = implode(
+								'_',
+								array(
+									$dossierep[$this->alias]['typeorient_id'],
+									$dossierep[$this->alias]['structurereferente_id']
+								)
+							);
+						}
 					}
 				}
 			}
