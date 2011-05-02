@@ -276,6 +276,13 @@
 	Configure::write( 'Signalementep93.dureeSursis', 31 );
 
 	/**
+	* Durée de la tolérance (en nombre de jours) par-rapport à la date de fin
+	* d'un CER que l'on voudrait passer en EP pour le thème "non respect des
+	* termes du CER du CG 93"
+	*/
+	Configure::write( 'Signalementep93.dureeTolerance', 365 );
+
+	/**
 	* Configuration pour le dialogue avec un CMS (système de gestion de contenu)
 	* comme Alfresco, servant à stocker les PDF
 	*/

@@ -17,7 +17,7 @@
 			$this->set( 'decisionpdo', $this->Decisionpdo->find( 'list' ) );
 
 			$options = $this->Propopdo->allEnumLists();
-			
+
 			// Ajout des enums pour les thématiques du CG uniquement
 			foreach( $this->Dossierep->Passagecommissionep->Commissionep->Ep->Regroupementep->themes() as $theme ) {
 				/*$model = Inflector::classify( $theme );
@@ -341,7 +341,7 @@
 		public function _decision ( $dossierep_id, $niveauDecision ) {
 			$themeTraite = $this->Dossierep->themeTraite($dossierep_id);
 			$dossierep = array();
-			
+
 			$dossierep = $this->Dossierep->find(
 				'first',
 				array(
@@ -362,7 +362,7 @@
 					'contain' => $containQueryData
 				)
 			);
-			
+
 			$this->set( 'dossier', $dossierep );
 			$this->set( 'themeName', Inflector::underscore( $classThemeName ) );
 

@@ -65,6 +65,21 @@
 
 	<!-- <?php /*if( !empty( $contratsinsertion ) ): */?> -->
 	<?php if( !empty( $contratsinsertion ) ):?>
+		<?php if( Configure::read( 'Cg.departement' ) == 93 && !empty( $erreursCandidatePassage ) ):?>
+			<h2>Raisons pour lesquelles le contrat ne peut pas être signalé</h2>
+			<div class="error_message">
+				<?php if( count( $erreursCandidatePassage ) > 1 ):?>
+				<ul>
+					<?php foreach( $erreursCandidatePassage as $erreur ):?>
+						<li><?php echo __d( 'relancenonrespectsanctionep93', "Erreur.{$erreur}", true );?></li>
+					<?php endforeach;?>
+				</ul>
+				<?php else:?>
+					<p><?php echo __d( 'relancenonrespectsanctionep93', "Erreur.{$erreursCandidatePassage[0]}", true );?></p>
+				<?php endif;?>
+			</div>
+		<?php endif;?>
+
 		<table class="tooltips">
 			<thead>
 				<tr>
@@ -80,9 +95,11 @@
 			<tbody>
 				<?php foreach( $contratsinsertion as $contratinsertion ):?>
 					<?php
+						$dureeTolerance = Configure::read( 'Signalementep93.dureeTolerance' );
+
 						$enCours = (
 							( strtotime( $contratinsertion['Contratinsertion']['dd_ci'] ) <= mktime() )
-							&& ( strtotime( $contratinsertion['Contratinsertion']['df_ci'] ) >= mktime() )
+							&& ( strtotime( $contratinsertion['Contratinsertion']['df_ci'] ) + ( $dureeTolerance * 24 * 60 * 60 ) >= mktime() )
 						);
 
 						$isValid = Set::extract( $contratinsertion, 'Contratinsertion.decision_ci' );
@@ -146,6 +163,7 @@
 									&& $isValid
 									&& ( $contratinsertion['Contratinsertion']['forme_ci'] == 'S' )
 									&& ( !isset( $signalementseps93 ) || empty( $signalementseps93 ) )
+									&& empty( $erreursCandidatePassage )
 								)
 							),
 							array( 'class' => 'odd' ),
