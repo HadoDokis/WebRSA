@@ -117,6 +117,10 @@
 				)
 			),
 			'datevalidation_ci' => array(
+				'notEmptyIf' => array(
+					'rule' => array( 'notEmptyIf', 'decision_ci', true, array( 'V' ) ),
+					'message' => 'Veuillez entrer une date valide',
+				),
 				'notEmpty' => array(
 					'rule' => 'date',
 					'message' => 'Veuillez entrer une date valide',
@@ -471,9 +475,8 @@
 		public function valider( $data ) {
 			$this->begin();
 			$success = $this->saveAll( $data, array( 'atomic' => false ) );
-
 			// Sortie de la procédure de relances / sanctions 93 en cas de validation d'un nouveau contrat
-			if( $success && Configure::read( 'Cg.departement' ) == '93' ) {
+			if( $success && Configure::read( 'Cg.departement' ) == '93' && isset( $data[$this->alias]['decision_ci'] ) && $data[$this->alias]['decision_ci'] == 'V' ) {
 				$nonrespectssanctionseps93 = $this->Nonrespectsanctionep93->find(
 					'all',
 					array(
