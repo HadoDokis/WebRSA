@@ -485,9 +485,11 @@
                     )
                 )
             );
+
             $classThemeName = Inflector::classify( $dossierep['Dossierep']['themeep'] );
             $pdf = $this->Dossierep->{$classThemeName}->getCourrierInformationPdf( $dossierep['Dossierep']['id'] );
-
+// debug($pdf);
+// die();
             if( $pdf ) {
                 $this->Gedooo->sendPdfContentToClient( $pdf, 'Courrier_Information' );
             }
