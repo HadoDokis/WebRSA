@@ -25,7 +25,7 @@
 				__d( 'sanctionep58', $dossierep['Sanctionep58']['origine'], true),
 
 				array(
-					$form->input( "Decisionsanctionep58.{$i}.id", array( 'type' => 'hidden', 'value' => @$dossierep['Sanctionep58']['Decisionsanctionep58'][0]['id'] ) ).
+					$form->input( "Decisionsanctionep58.{$i}.id", array( 'type' => 'hidden' ) ).
 					$form->input( "Decisionsanctionep58.{$i}.etape", array( 'type' => 'hidden', 'value' => 'ep' ) ).
 					$form->input( "Decisionsanctionep58.{$i}.sanctionep58_id", array( 'type' => 'hidden' ) ).
 					$form->input( "Decisionsanctionep58.{$i}.passagecommissionep_id", array( 'type' => 'hidden' ) ).
