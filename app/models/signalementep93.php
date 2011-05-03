@@ -17,7 +17,8 @@
 		public $actsAs = array(
 			'Autovalidate',
 			'ValidateTranslate',
-			'Formattable'
+			'Formattable',
+			'Gedooo'
 		);
 
 		public $belongsTo = array(
@@ -384,5 +385,30 @@
 				)
 			);
 		}
+
+
+        /**
+        *    Récupération des informations propres au dossier devant passer en EP
+        *   avant liaison avec la commission d'EP
+        */
+        public function getCourrierInformationPdf( $dossierep_id ) {
+            $gedooo_data = $this->find(
+                'first',
+                array(
+                    'conditions' => array( 'Dossierep.id' => $dossierep_id ),
+                    'contain' => array(
+                        'Dossierep' => array(
+                            'Personne'
+                        ),
+                        'Contratinsertion' => array(
+                            'Structurereferente',
+                        )
+                    )
+                )
+            );
+            return $this->ged( $gedooo_data, "{$this->alias}/courrierinformationavantep.odt" );
+        }
+
+
 	}
 ?>
