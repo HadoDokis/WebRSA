@@ -79,22 +79,6 @@
 			)
 		);
 
-		public $hasMany = array(
-			'Decisionsanctionep58' => array(
-				'className' => 'Decisionsanctionep58',
-				'foreignKey' => 'sanctionep58_id',
-				'dependent' => true,
-				'conditions' => '',
-				'fields' => '',
-				'order' => '',
-				'limit' => '',
-				'offset' => '',
-				'exclusive' => '',
-				'finderQuery' => '',
-				'counterQuery' => ''
-			),
-		);
-
 		/**
 		*
 		*/
@@ -487,7 +471,7 @@
 					}
 				}
 
-				$success = $this->Decisionsanctionep58->saveAll( $themeData, array( 'atomic' => false ) );
+				$success = $this->Dossierep->Passagecommissionep->Decisionsanctionep58->saveAll( $themeData, array( 'atomic' => false ) );
 				$this->Dossierep->Passagecommissionep->updateAll(
 					array( 'Passagecommissionep.etatdossierep' => '\'decision'.$niveauDecision.'\'' ),
 					array( '"Passagecommissionep"."id"' => Set::extract( $data, '/Decisionsanctionep58/passagecommissionep_id' ) )

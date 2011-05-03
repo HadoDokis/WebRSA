@@ -112,9 +112,6 @@
 
 			// Suivant le CG
 			if( Configure::read( 'Cg.departement' ) == 66 ) {
-// 				$options['Decisiondefautinsertionep66']['typeorient_id'] = $this->Commissionep->Passagecommissionep->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->Typeorient->listOptions();
-// 				$options['Decisiondefautinsertionep66']['structurereferente_id'] = $this->Commissionep->Passagecommissionep->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->Structurereferente->list1Options();//listOptions
-// 				$options['Decisiondefautinsertionep66']['referent_id'] = $this->Commissionep->Passagecommissionep->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->Referent->listOptions();
 				$listeTypesorients = $this->Commissionep->Passagecommissionep->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->Typeorient->find( 'list' );
 				$listeStructuresreferentes = $this->Commissionep->Passagecommissionep->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->Structurereferente->find( 'list' );
 				$listeReferents = $this->Commissionep->Passagecommissionep->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->Referent->find( 'list' );
@@ -134,6 +131,7 @@
 			}
 			else if( Configure::read( 'Cg.departement' ) == 58 ) {
 				$this->set( 'listesanctionseps58', $this->Commissionep->Passagecommissionep->Dossierep->Sanctionep58->Listesanctionep58->find( 'list' ) );
+				$this->set( 'typesrdv', $this->Commissionep->Passagecommissionep->Dossierep->Sanctionrendezvousep58->Typerdv->find( 'list' ) );
 			}
 
 			$this->set( compact( 'options' ) );
