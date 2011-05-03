@@ -647,7 +647,7 @@
         * 'dateentreeemploi' => notEmptyIf( array $data, 'activitebeneficiaire', true, array( 'P' ) )
         */
 
-        function notEmptyIf( array $data, $reference, $condition, $values ) {
+        /*function notEmptyIf( array $data, $reference, $condition, $values ) {
 			$data = array_values( $data );
             $data_value = ( isset( $data[0] ) ? $data[0] : null );
 
@@ -662,7 +662,24 @@
             }
 
             return $return;
-        }
+        }*/
+
+		public function notEmptyIf( array $data, $reference, $condition, $values ) {
+			$data = array_values( $data );
+			$data_value = ( isset( $data[0] ) ? $data[0] : null );
+
+			$reference_value = Set::extract( $this->data, $this->name.'.'.$reference );
+
+			$return = true;
+
+			foreach($values as $value) {
+				if ( ( $value == $reference_value ) == $condition ) {
+					(empty($data_value)) ? $return = false : $return = true;
+				}
+			}
+
+			return $return;
+		}
 
         /**
         * INFO: http://bakery.cakephp.org/articles/view/unbindall
