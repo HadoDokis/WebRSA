@@ -417,12 +417,13 @@ ALTER TABLE regroupementseps ALTER COLUMN sanctionrendezvousep58 SET DEFAULT 'no
 UPDATE regroupementseps SET sanctionrendezvousep58 = 'nontraite' WHERE sanctionrendezvousep58 IS NULL;
 ALTER TABLE regroupementseps ALTER COLUMN sanctionrendezvousep58 SET NOT NULL;
 
-CREATE TYPE TYPE_DECISIONSANCTIONRDV58 AS ENUM ( 'nonrespectcontrat', 'nonevaluation', 'refuscontrole', 'noncontrat' );
+CREATE TYPE TYPE_DECISIONSANCTIONRDV58 AS ENUM ( 'nonrespectcontrat', 'nonevaluation', 'refuscontrole', 'noncontrat', 'annule', 'reporte' );
 
 CREATE TABLE decisionssanctionsrendezvouseps58 (
 	id      						SERIAL NOT NULL PRIMARY KEY,
 	passagecommissionep_id			INTEGER  NOT NULL REFERENCES passagescommissionseps(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	decision						TYPE_DECISIONSANCTIONRDV58 NOT NULL,
+	raisonnonpassage				TEXT DEFAULT NULL,
 	etape							TYPE_ETAPEDECISIONEP NOT NULL,
 	commentaire						TEXT DEFAULT NULL,
 	created							TIMESTAMP WITHOUT TIME ZONE,
@@ -431,6 +432,9 @@ CREATE TABLE decisionssanctionsrendezvouseps58 (
 COMMENT ON TABLE decisionssanctionsrendezvouseps58 IS 'Décisions pour la thématique pour les sanctions après des rendez-vous non réalisé (CG58)';
 
 CREATE INDEX decisionssanctionsrendezvouseps58_passagecommissionep_id_idx ON decisionssanctionsrendezvouseps58 (passagecommissionep_id);
+CREATE INDEX decisionssanctionsrendezvouseps58_etape_idx ON decisionssanctionsrendezvouseps58( etape );
+CREATE INDEX decisionssanctionsrendezvouseps58_decision_idx ON decisionssanctionsrendezvouseps58( decision );
+CREATE UNIQUE INDEX decisionssanctionsrendezvouseps58_passagecommissionep_id_etape_idx ON decisionssanctionsrendezvouseps58(passagecommissionep_id, etape);
 
 -- *****************************************************************************
 -- 20110502, signalementseps93
