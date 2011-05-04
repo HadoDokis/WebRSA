@@ -338,7 +338,7 @@
 
 
             // Trouver la dernière demande RSA pour chacune des personnes du jeu de résultats
-            if( $criteres['Dossier']['dernier'] ) {
+            if( @$criteres['Dossier']['dernier'] ) {
                 $conditions[] = 'Dossier.id IN (
                     SELECT
                             dossiers.id
