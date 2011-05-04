@@ -34,6 +34,7 @@
 				'Regroupementep.radiepoleemploiep93' => array( 'type' => 'hidden', 'value' => 'decisioncg' ),
 				'Regroupementep.nonorientationproep93' => array( 'type' => 'hidden', 'value' => 'decisioncg' ),
 				'Regroupementep.signalementep93' => array( 'type' => 'hidden', 'value' => 'decisioncg' ),
+				'Regroupementep.contratcomplexeep93' => array( 'type' => 'hidden', 'value' => 'decisioncg' ),
 			)
 		);
 	}

@@ -285,7 +285,62 @@
 
 		}
 
+		/**
+		*
+		*/
 
+		protected function _qdThematiqueEp( $modele, $personne_id ) {
+			return array(
+				'fields' => array(
+					'Dossierep.id',
+					'Dossierep.personne_id',
+					'Dossierep.themeep',
+					'Dossierep.created',
+					'Dossierep.modified',
+					'Passagecommissionep.etatdossierep',
+					'Contratinsertion.dd_ci',
+					'Contratinsertion.df_ci',
+				),
+				'conditions' => array(
+					'Dossierep.personne_id' => $personne_id,
+					'Dossierep.themeep' => Inflector::tableize( $modele ),
+					'Dossierep.id NOT IN ( '.$this->Contratinsertion->{$modele}->Dossierep->Passagecommissionep->sq(
+						array(
+							'alias' => 'passagescommissionseps',
+							'fields' => array(
+								'passagescommissionseps.dossierep_id'
+							),
+							'conditions' => array(
+								'passagescommissionseps.etatdossierep' => array( 'traite', 'annule' )
+							)
+						)
+					).' )'
+				),
+				'joins' => array(
+					array(
+						'table'      => Inflector::tableize( $modele ),
+						'alias'      => $modele,
+						'type'       => 'INNER',
+						'foreignKey' => false,
+						'conditions' => array( "Dossierep.id = {$modele}.dossierep_id" )
+					),
+					array(
+						'table'      => 'contratsinsertion',
+						'alias'      => 'Contratinsertion',
+						'type'       => 'INNER',
+						'foreignKey' => false,
+						'conditions' => array( "Contratinsertion.id = {$modele}.contratinsertion_id" )
+					),
+					array(
+						'table'      => 'passagescommissionseps',
+						'alias'      => 'Passagecommissionep',
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array( 'Dossierep.id = Passagecommissionep.dossierep_id' )
+					),
+				),
+			);
+		}
 
 		/**
 		*
@@ -435,67 +490,43 @@
 				$this->set( 'nbdossiersnonfinalisescovs', $nbdossiersnonfinalisescovs );
 			}
 			else if ( Configure::read( 'Cg.departement' ) == 93 ) {
-				$signalementseps93 = $this->Contratinsertion->Signalementep93->Dossierep->find(
-					'all',
+				// Des dossiers pour la thématique des signalements ?
+				$queryData = $this->_qdThematiqueEp( 'Signalementep93', $personne_id );
+				$queryData['fields'] = Set::merge(
+					$queryData['fields'],
 					array(
-						'fields' => array(
-							'Dossierep.id',
-							'Dossierep.personne_id',
-							'Dossierep.themeep',
-							'Dossierep.created',
-							'Dossierep.modified',
-							'Signalementep93.contratinsertion_id',
-							'Signalementep93.id',
-							'Signalementep93.motif',
-							'Signalementep93.date',
-							'Signalementep93.rang',
-							'Signalementep93.created',
-							'Signalementep93.modified',
-							'Passagecommissionep.etatdossierep',
-							'Contratinsertion.dd_ci',
-							'Contratinsertion.df_ci',
-						),
-						'conditions' => array(
-							'Dossierep.personne_id' => $personne_id,
-							'Dossierep.themeep' => 'signalementseps93',
-							'Dossierep.id NOT IN ( '.$this->Contratinsertion->Signalementep93->Dossierep->Passagecommissionep->sq(
-								array(
-									'alias' => 'passagescommissionseps',
-									'fields' => array(
-										'passagescommissionseps.dossierep_id'
-									),
-									'conditions' => array(
-										'passagescommissionseps.etatdossierep' => array( 'traite', 'annule' )
-									)
-								)
-							).' )'
-						),
-						'joins' => array(
-							array(
-								'table'      => 'signalementseps93',
-								'alias'      => 'Signalementep93',
-								'type'       => 'INNER',
-								'foreignKey' => false,
-								'conditions' => array( 'Dossierep.id = Signalementep93.dossierep_id' )
-							),
-							array(
-								'table'      => 'contratsinsertion',
-								'alias'      => 'Contratinsertion',
-								'type'       => 'INNER',
-								'foreignKey' => false,
-								'conditions' => array( 'Contratinsertion.id = Signalementep93.contratinsertion_id' )
-							),
-							array(
-								'table'      => 'passagescommissionseps',
-								'alias'      => 'Passagecommissionep',
-								'type'       => 'LEFT OUTER',
-								'foreignKey' => false,
-								'conditions' => array( 'Dossierep.id = Passagecommissionep.dossierep_id' )
-							),
-						),
+						'Signalementep93.contratinsertion_id',
+						'Signalementep93.id',
+						'Signalementep93.motif',
+						'Signalementep93.date',
+						'Signalementep93.rang',
+						'Signalementep93.created',
+						'Signalementep93.modified',
 					)
 				);
-				$this->set( compact( 'signalementseps93' ) );
+
+				$signalementseps93 = $this->Contratinsertion->Signalementep93->Dossierep->find( 'all', $queryData );
+
+				// Des dossiers pour la thématique des signalements ?
+				$queryData = $this->_qdThematiqueEp( 'Contratcomplexeep93', $personne_id );
+				$queryData['fields'] = Set::merge(
+					$queryData['fields'],
+					array(
+						'Contratcomplexeep93.contratinsertion_id',
+						'Contratcomplexeep93.id',
+						'Contratcomplexeep93.created',
+						'Contratcomplexeep93.modified',
+					)
+				);
+				$contratscomplexeseps93 = $this->Contratinsertion->Contratcomplexeep93->Dossierep->find( 'all', $queryData );
+
+				$contratsenep = Set::merge(
+					Set::extract( $signalementseps93, '/Signalementep93/contratinsertion_id' ),
+					Set::extract( $contratscomplexeseps93, '/Contratcomplexeep93/contratinsertion_id' )
+				);
+
+				$this->set( compact( 'signalementseps93', 'contratscomplexeseps93', 'contratsenep' ) );
+
 				$this->set( 'erreursCandidatePassage', $this->Contratinsertion->Signalementep93->Dossierep->erreursCandidatePassage( $personne_id ) );
 				$this->set( 'optionsdossierseps', $this->Contratinsertion->Signalementep93->Dossierep->Passagecommissionep->enums() );
 			}

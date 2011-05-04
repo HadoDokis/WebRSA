@@ -472,7 +472,7 @@
 					}
 				}
 				else {
-					$niveauxDecisionsSeance = array_keys( $themesTraites );
+					$niveauxDecisionsSeance = array_values( $themesTraites );
 					$commissionep['Commissionep']['etatcommissionep'] = 'traiteep';
 					if( !in_array( 'decisioncg', $niveauxDecisionsSeance ) ) {
 						// Finalisation de chacun des dossiers

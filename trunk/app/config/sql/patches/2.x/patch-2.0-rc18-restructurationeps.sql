@@ -451,5 +451,61 @@ ALTER TABLE regroupementseps ALTER COLUMN signalementep93 SET NOT NULL;
 UPDATE regroupementseps SET signalementep93 = 'decisioncg' WHERE nonrespectsanctionep93 = 'decisioncg';
 
 -- *****************************************************************************
+-- 20110503, contratscomplexeseps93
+-- *****************************************************************************
+
+DROP TABLE IF EXISTS contratscomplexeseps93;
+CREATE TABLE contratscomplexeseps93 (
+	id						SERIAL NOT NULL PRIMARY KEY,
+	dossierep_id			INTEGER DEFAULT NULL REFERENCES dossierseps(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	contratinsertion_id		INTEGER NOT NULL REFERENCES contratsinsertion(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	created					TIMESTAMP WITHOUT TIME ZONE,
+	modified				TIMESTAMP WITHOUT TIME ZONE
+);
+
+COMMENT ON TABLE contratscomplexeseps93 IS 'Thématique des contrats complexes pour passage en EP (CG 93)';
+
+CREATE INDEX contratscomplexeseps93_dossierep_id_idx ON contratscomplexeseps93(dossierep_id);
+CREATE INDEX contratscomplexeseps93_contratinsertion_id_idx ON contratscomplexeseps93(contratinsertion_id);
+CREATE UNIQUE INDEX contratscomplexeseps93_dossierep_id_contratinsertion_id_idx ON contratscomplexeseps93(dossierep_id,contratinsertion_id);
+
+-- -----------------------------------------------------------------------------
+
+DROP TYPE IF EXISTS TYPE_DECISIONCONTRATCOMPLEXEEP93 CASCADE;
+CREATE TYPE TYPE_DECISIONCONTRATCOMPLEXEEP93 AS ENUM ( 'valide', 'rejete', 'annule', 'reporte' );
+
+-- -----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS decisionscontratscomplexeseps93;
+CREATE TABLE decisionscontratscomplexeseps93 (
+	id      				SERIAL NOT NULL PRIMARY KEY,
+	passagecommissionep_id	INTEGER NOT NULL REFERENCES passagescommissionseps(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	etape					TYPE_ETAPEDECISIONEP NOT NULL,
+	decision				TYPE_DECISIONCONTRATCOMPLEXEEP93 NOT NULL,
+	observ_ci				TEXT DEFAULT NULL, -- c'est la valeur cg qui sera reportée dans le contrat
+	datevalidation_ci		DATE DEFAULT NULL, --par défaut, la date de début du contrat
+	raisonnonpassage		TEXT DEFAULT NULL,
+	created					TIMESTAMP WITHOUT TIME ZONE,
+	modified				TIMESTAMP WITHOUT TIME ZONE
+);
+
+COMMENT ON TABLE decisionscontratscomplexeseps93 IS 'Décisions pour la thématique des contrats complexes pour passage en EP (CG 93)';
+
+CREATE INDEX decisionscontratscomplexeseps93_passagecommissionep_id_idx ON decisionscontratscomplexeseps93( passagecommissionep_id );
+CREATE INDEX decisionscontratscomplexeseps93_etape_idx ON decisionscontratscomplexeseps93( etape );
+CREATE INDEX decisionscontratscomplexeseps93_decision_idx ON decisionscontratscomplexeseps93( decision );
+CREATE UNIQUE INDEX decisionscontratscomplexeseps93_passagecommissionep_id_etape_idx ON decisionscontratscomplexeseps93(passagecommissionep_id, etape);
+
+-- -----------------------------------------------------------------------------
+
+ALTER TABLE dossierseps ALTER COLUMN themeep TYPE TEXT;
+DROP TYPE TYPE_THEMEEP;
+CREATE TYPE TYPE_THEMEEP AS ENUM ( 'reorientationseps93', 'saisinesbilansparcourseps66', 'saisinespdoseps66', 'nonrespectssanctionseps93', 'defautsinsertionseps66', 'nonorientationsproseps58', 'nonorientationsproseps93', 'regressionsorientationseps58', 'sanctionseps58', 'signalementseps93', 'sanctionsrendezvouseps58', 'contratscomplexeseps93' );
+ALTER TABLE dossierseps ALTER COLUMN themeep TYPE TYPE_THEMEEP USING CAST(themeep AS TYPE_THEMEEP);
+
+SELECT add_missing_table_field ('public', 'regroupementseps', 'contratcomplexeep93', 'type_niveaudecisionep');
+ALTER TABLE regroupementseps ALTER COLUMN contratcomplexeep93 SET DEFAULT 'nontraite'::type_niveaudecisionep;
+
+-- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

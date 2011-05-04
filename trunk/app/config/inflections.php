@@ -309,6 +309,9 @@
         'sitecov58' => 'sitescovs58',
 		'signalementep93' => 'signalementseps93',
 		'decisionsignalementep93' => 'decisionssignalementseps93',
+		'contratcomplexeep93' => 'contratscomplexeseps93',
+		'decisioncontratcomplexeep93' => 'decisionscontratscomplexeseps93',
+
 	);
 /**
 * This is a key => value array of regex used to match words.

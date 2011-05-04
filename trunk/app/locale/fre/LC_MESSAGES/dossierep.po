@@ -47,7 +47,7 @@ msgstr "Imprimer le courrier d'information"
 ###############################################################################
 
 msgid "ENUM::THEMEEP::reorientationseps93"
-msgstr "Demande de réorientation de la structure référente"
+msgstr "Demande de réorientation"
 
 msgid "ENUM::THEMEEP::saisinesbilansparcourseps66"
 msgstr "Demande de réorientation"
@@ -77,10 +77,13 @@ msgid "ENUM::THEMEEP::sanctionseps58"
 msgstr "Radiés et non inscrits à Pôle Emploi"
 
 msgid "ENUM::THEMEEP::signalementseps93"
-msgstr "Non respect des termes du CER"
+msgstr "Non respect du CER"
 
 msgid "ENUM::THEMEEP::sanctionsrendezvouseps58"
 msgstr "Sanction pour rendez-vous non honoré(s)"
+
+msgid "ENUM::THEMEEP::contratscomplexeseps93"
+msgstr "Validation des contrats complexes"
 
 #
 

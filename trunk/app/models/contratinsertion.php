@@ -306,6 +306,19 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Contratcomplexeep93' => array(
+				'className' => 'Contratcomplexeep93',
+				'foreignKey' => 'contratinsertion_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 		);
 
 
