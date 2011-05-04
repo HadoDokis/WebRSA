@@ -131,7 +131,7 @@
 			}
 			else if( Configure::read( 'Cg.departement' ) == 58 ) {
 				$this->set( 'listesanctionseps58', $this->Commissionep->Passagecommissionep->Dossierep->Sanctionep58->Listesanctionep58->find( 'list' ) );
-				$this->set( 'typesrdv', $this->Commissionep->Passagecommissionep->Dossierep->Sanctionrendezvousep58->Typerdv->find( 'list' ) );
+				$this->set( 'typesrdv', $this->Commissionep->Passagecommissionep->Dossierep->Sanctionrendezvousep58->Rendezvous->Typerdv->find( 'list' ) );
 			}
 
 			$this->set( compact( 'options' ) );
