@@ -269,48 +269,72 @@
 				)
 			);
 
-			return ( ( ( count( $rdvs ) % $typerdv['Typerdv']['nbabsencesavpassageep'] ) == 0 ) && $tousabsents && empty( $dossierep ) );
+			return ( ( count( $rdvs ) == $typerdv['Typerdv']['nbabsencesavpassageep'] ) && $tousabsents && empty( $dossierep ) );
 		}
 		
 		public function beforeSave( $options = array ( ) ) {
 			$return = parent::beforeSave( $options );
 			
-			if ( !isset( $this->data['Rendezvous']['id'] ) || empty( $this->data['Rendezvous']['id'] ) ) {
-				$dossierep = $this->Personne->Dossierep->find(
-					'first',
-					array(
-						'conditions' => array(
-							'Dossierep.personne_id' => $this->data['Rendezvous']['personne_id'],
-							'Dossierep.themeep' => 'sanctionsrendezvouseps58',
-							'Dossierep.id NOT IN ( '.
-								$this->Personne->Dossierep->Passagecommissionep->sq(
-									array(
-										'fields' => array(
-											'passagescommissionseps.dossierep_id'
-										),
-										'alias' => 'passagescommissionseps',
-										'conditions' => array(
-											'passagescommissionseps.etatdossierep' => array ( 'traite', 'annule' )
+			if ( Configure::read( 'Cg.departement' ) == 58 ) {
+				if ( !isset( $this->data['Rendezvous']['id'] ) || empty( $this->data['Rendezvous']['id'] ) ) {
+					$dossierep = $this->Personne->Dossierep->find(
+						'first',
+						array(
+							'conditions' => array(
+								'Dossierep.personne_id' => $this->data['Rendezvous']['personne_id'],
+								'Dossierep.themeep' => 'sanctionsrendezvouseps58',
+								'Dossierep.id NOT IN ( '.
+									$this->Personne->Dossierep->Passagecommissionep->sq(
+										array(
+											'fields' => array(
+												'passagescommissionseps.dossierep_id'
+											),
+											'alias' => 'passagescommissionseps',
+											'conditions' => array(
+												'passagescommissionseps.etatdossierep' => array ( 'traite', 'annule' )
+											)
 										)
 									)
-								)
-							.' )'
-						),
-						'contain' => array(
-							'Sanctionrendezvousep58' => array(
-								'Rendezvous' => array(
-									'conditions' => array(
-										'Rendezvous.typerdv_id' => $newTyperdv_id
+								.' )'
+							),
+							'contain' => array(
+								'Sanctionrendezvousep58' => array(
+									'Rendezvous' => array(
+										'conditions' => array(
+											'Rendezvous.typerdv_id' => $newTyperdv_id
+										)
 									)
 								)
 							)
 						)
-					)
-				);
-				
-				if ( isset( $dossierep['Sanctionrendezvousep58']['Rendezvous']['typerdv_id'] ) ) {
-					$this->invalidate( 'typerdv_id', 'Un passage en EP est déjà en cours pour cette objet, vous ne pouvez créer un nouveau rendez-vous pour ce même objet.' );
-					$return = false;
+					);
+					
+					if ( isset( $dossierep['Sanctionrendezvousep58']['Rendezvous']['typerdv_id'] ) ) {
+						$this->invalidate( 'typerdv_id', 'Un passage en EP est déjà en cours pour cette objet, vous ne pouvez créer un nouveau rendez-vous pour ce même objet.' );
+						$return = false;
+					}
+				}
+				else {
+					if ( !$this->Statutrdv->provoquePassageEp( $this->data['Rendezvous']['statutrdv_id'] ) || !$this->passageEp( $personne_id, $this->data['Rendezvous']['typerdv_id'] ) ) {
+						$dossierep = $this->Sanctionrendezvousep58->find(
+							'first',
+							array(
+								'fields' => array(
+									'Sanctionrendezvousep58.id',
+									'Sanctionrendezvousep58.dossierep_id'
+								),
+								'conditions' => array(
+									'Sanctionrendezvousep58.rendezvous_id' => $this->data['Rendezvous']['id']
+								),
+								'contain' => false
+							)
+						);
+						
+						if ( !empty( $dossierep ) ) {
+							$this->Sanctionrendezvousep58->delete( $dossierep['Sanctionrendezvousep58']['id'] );
+							$this->Sanctionrendezvousep58->Dossierep->delete( $dossierep['Sanctionrendezvousep58']['dossierep_id'] );
+						}
+					}
 				}
 			}
 			
