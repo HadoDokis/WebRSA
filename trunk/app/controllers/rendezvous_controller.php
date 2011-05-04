@@ -237,6 +237,7 @@ App::import( 'Helper', 'Locale' );
 					array(
 						'conditions' => array(
 							'Dossierep.themeep' => 'sanctionsrendezvouseps58',
+							'Dossierep.personne_id' => $personne_id,
 							'Dossierep.id NOT IN ( '.
 								$this->Rendezvous->Personne->Dossierep->Passagecommissionep->sq(
 									array(

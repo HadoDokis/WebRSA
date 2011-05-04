@@ -224,7 +224,8 @@
 				'all',
 				array(
 					'conditions' => array(
-						'Rendezvous.typerdv_id' => $newTyperdv_id
+						'Rendezvous.typerdv_id' => $newTyperdv_id,
+						'Rendezvous.personne_id' => $personne_id
 					),
 					'contain' => false,
 					'order' => array( 'Rendezvous.daterdv DESC', 'Rendezvous.heurerdv DESC', 'Rendezvous.id DESC' ),
