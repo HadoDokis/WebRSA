@@ -545,9 +545,28 @@
 				'Nonrespectsanctionep93.relanceCerCer2' => 'integer',
 				'Nonrespectsanctionep93.montantReduction' => 'numeric',
 				'Nonrespectsanctionep93.dureeSursis' => 'integer',
+				'Nonorientationproep93.delaiCreationContrat' => 'integer',
+				'Nonrespectsanctionep93.delaiRegularisation' => 'integer',
+				'Nonrespectsanctionep93.intervalleCerDo19' => 'string',
+				'Signalementep93.montantReduction' => 'integer',
+				'Signalementep93.dureeSursis' => 'integer',
+				'Signalementep93.dureeTolerance' => 'integer',
 			);
+			
+            $errors = $this->__configureReadError( $keys );
 
-			return $this->__configureReadError( $keys );
+            // Vérification d'un intervalle au sens PostgreSQL
+            $intervalResult = false;
+            try {
+                $intervalResult = @$this->Structurereferente->query( 'EXPLAIN SELECT ( INTERVAL \''.Configure::read( 'Nonrespectsanctionep93.intervalleCerDo19' ).'\' );' );
+            } catch( Exception $e ) {
+            }
+
+            if( !$intervalResult ) {
+                $errors['Nonrespectsanctionep93.intervalleCerDo19'] = 'interval incorrect';
+            }
+
+			return $errors;
 		}
 
 		/**

@@ -251,6 +251,12 @@
 	*/
 	Configure::write( 'Nonrespectsanctionep93.dureeSursis', 31 );
 
+    /**
+    * Durée du délai (en mois) accordé pour pour la détection des DO 19
+    * pour le thème "non respect et sanctions du CG 93"
+    */
+    Configure::write( 'Nonrespectsanctionep93.intervalleCerDo19', '1 month' );
+
 	/**
 	* Durée du délai (en jours) accordé pour la création d'un nouveau contrat pour
 	* le thème "détection brsa en parcours social sans réorientation"
