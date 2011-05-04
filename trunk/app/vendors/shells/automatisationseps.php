@@ -75,28 +75,41 @@
 					'conditions' => array(
 						'Decisionpdo.libelle LIKE' => 'DO 19%',
 						'Decisionpropopdo.datedecisionpdo IS NOT NULL',
+						//La date de décision de la PDO doit être supérieure à celle de la validation du CER
+						// Une fois la décision émise, le CEr doit être validé par la suite et non pas avant
+						// + intervalle d'1 mois entre la date de décision et la validation du CER
 						'Propopdo.personne_id NOT IN (
 							SELECT contratsinsertion.personne_id
 								FROM contratsinsertion
 								WHERE
 									contratsinsertion.personne_id = Propopdo.personne_id
 									AND date_trunc( \'day\', contratsinsertion.datevalidation_ci ) >= Decisionpropopdo.datedecisionpdo
-									AND date_trunc( \'day\', contratsinsertion.datevalidation_ci ) <= ( Decisionpropopdo.datedecisionpdo + INTERVAL \'1 mons\' )
+									AND date_trunc( \'day\', contratsinsertion.datevalidation_ci ) <= ( Decisionpropopdo.datedecisionpdo + INTERVAL \''.Configure::read( 'Nonrespectsanctionep93.intervalleCerDo19' ).'\' )
 						)',
 						// Et qui ne sont pas en EP
-						'Propopdo.personne_id NOT IN (
-							SELECT dossierseps.personne_id
-								FROM dossierseps
-								WHERE
-									dossierseps.personne_id = Propopdo.personne_id
- 									AND dossierseps.etapedossierep <> \'traite\'
-									AND dossierseps.themeep = \'nonrespectssanctionseps93\'
-						)',
+// 						'Propopdo.personne_id NOT IN (
+// 							SELECT dossierseps.personne_id
+// 								FROM dossierseps
+// 								WHERE
+// 									dossierseps.personne_id = Propopdo.personne_id
+//  									AND dossierseps.etapedossierep <> \'traite\'
+// 									AND dossierseps.themeep = \'nonrespectssanctionseps93\'
+// 						)',
+                        'Propopdo.personne_id NOT IN (
+                            SELECT dossierseps.personne_id
+                                FROM dossierseps
+                                INNER JOIN passagescommissionseps ON (
+                                    passagescommissionseps.dossierep_id = dossierseps.id )
+                                WHERE
+                                    dossierseps.personne_id = Propopdo.personne_id
+                                    AND dossierseps.themeep = \'nonrespectssanctionseps93\'
+                                    -- AND passagescommissionseps.etatdossierep NOT IN ( \'traite\', \'annule\' )
+                        )',
 
 					)
 				)
 			);
-
+// debug($propospdos);
 			if( count( $propospdos ) > 0 ) {
 				$this->Propopdo->begin();
 				$success = true;
@@ -110,18 +123,18 @@
 							)
 						)
 					);
-					$dossierep = array(
-						'Dossierep' => array(
-							'personne_id' => $propopdo['Propopdo']['personne_id'],
-							'etapedossierep' => 'cree',
-							'themeep' => 'nonrespectssanctionseps93',
-						),
-						'Nonrespectsanctionep93' => array(
-							'propopdo_id' => $propopdo['Propopdo']['id'],
-							'origine' => 'pdo',
-							'rgpassage' => ( $nbpassagespcd + 1 )
-						)
-					);
+
+                 $dossierep = array(
+                     'Dossierep' => array(
+                         'personne_id' => $propopdo['Propopdo']['personne_id'],
+                         'themeep' => 'nonrespectssanctionseps93',
+                     ),
+                     'Nonrespectsanctionep93' => array(
+                         'propopdo_id' => $propopdo['Propopdo']['id'],
+                         'origine' => 'pdo',
+                         'rgpassage' => ( $nbpassagespcd + 1 )
+                     )
+                 );
 
 					$success = $this->Nonrespectsanctionep93->saveAll( $dossierep, array( 'atomic' => false ) ) && $success;
 				}
@@ -136,7 +149,7 @@
 				}
 			}
 			else {
-				$this->out( 'Aucun dossiers EP pour la thématique "non respect / sanctions (CG 93)" à traiter' );
+				$this->out( 'Aucun dossier EP pour la thématique "non respect / sanctions (CG 93)" à traiter' );
 			}
 		}
 

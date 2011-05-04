@@ -40,6 +40,8 @@ msgstr "Sélectionné ?"
 msgid "Dossierep.themeep"
 msgstr "Thème du dossier"
 
+msgid "Dossierseps::courrierInformation"
+msgstr "Imprimer le courrier d'information"
 ###############################################################################
 # Enums
 ###############################################################################

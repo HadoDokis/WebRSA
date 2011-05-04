@@ -333,6 +333,17 @@ CREATE TABLE decisionspropospdos (
 	propopdo_id				INTEGER REFERENCES propospdos (id)
 );
 
+INSERT INTO decisionspropospdos ( isvalidation, validationdecision, datevalidationdecision, datedecisionpdo, commentairepdo, decisionpdo_id, propopdo_id )
+    SELECT
+        propospdos.isvalidation,
+        propospdos.validationdecision,
+        propospdos.datevalidationdecision,
+        propospdos.datedecisionpdo,
+        propospdos.commentairepdo,
+        propospdos.decisionpdo_id,
+        propospdos.id
+    FROM propospdos;
+
 SELECT alter_table_drop_column_if_exists( 'public', 'propospdos', 'datedecisionpdo' );
 SELECT alter_table_drop_column_if_exists( 'public', 'propospdos', 'decisionpdo_id' );
 SELECT alter_table_drop_column_if_exists( 'public', 'propospdos', 'commentairepdo' );
