@@ -437,8 +437,8 @@
                             </tr>
                             <tr class="odd">
                                 <th>Date de relance</th>
-                                <td><?php echo h( date_short( Set::extract( 'DEM.Nonrespectsanctionep93.derniere.Nonrespectsanctionep93.created', $details ) ) );?></td>
-                                <td><?php echo h( date_short( Set::extract( 'CJT.Nonrespectsanctionep93.derniere.Nonrespectsanctionep93.created', $details ) ) );?></td>
+                                <td><?php echo h( date_short( Set::extract( 'DEM.Nonrespectsanctionep93.derniere.Relancenonrespectsanctionep93.daterelance', $details ) ) );?></td>
+                                <td><?php echo h( date_short( Set::extract( 'CJT.Nonrespectsanctionep93.derniere.Relancenonrespectsanctionep93.daterelance', $details ) ) );?></td>
                             </tr>
                         </tbody>
                     </table>

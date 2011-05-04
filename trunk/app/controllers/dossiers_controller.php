@@ -490,15 +490,23 @@
 
 
 				// Dernière relance effective
-				$tRelance = $this->Dossier->Foyer->Personne->Contratinsertion->Nonrespectsanctionep93->find(
+				$tRelance = $this->Dossier->Foyer->Personne->Contratinsertion->Nonrespectsanctionep93->Relancenonrespectsanctionep93->find(
 					'first',
 					array(
 						'fields' => array(
 							'Nonrespectsanctionep93.created',
-							'Nonrespectsanctionep93.origine'
+							'Nonrespectsanctionep93.origine',
+							'Relancenonrespectsanctionep93.daterelance'
 						),
 						'contain' => false,
 						'joins' => array(
+                            array(
+                                'table'      => 'nonrespectssanctionseps93',
+                                'alias'      => 'Nonrespectsanctionep93',
+                                'type'       => 'LEFT OUTER',
+                                'foreignKey' => false,
+                                'conditions' => array( 'Nonrespectsanctionep93.id = Relancenonrespectsanctionep93.nonrespectsanctionep93_id' )
+                            ),
 							array(
 								'table'      => 'orientsstructs',
 								'alias'      => 'Orientstruct',
