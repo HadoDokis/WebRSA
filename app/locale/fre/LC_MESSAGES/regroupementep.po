@@ -172,3 +172,14 @@ msgstr "Décision émise par l'EP"
 msgid "ENUM::SANCTIONRENDEZVOUSEP58::decisioncg"
 msgstr "Décision émise par le CG"
 
+msgid "Regroupementep.contratcomplexeep93"
+msgstr "Validation des contrats complexes"
+
+msgid "ENUM::CONTRATCOMPLEXEEP93::nontraite"
+msgstr "Décision non traitée"
+
+msgid "ENUM::CONTRATCOMPLEXEEP93::decisionep"
+msgstr "Décision émise par l'EP"
+
+msgid "ENUM::CONTRATCOMPLEXEEP93::decisioncg"
+msgstr "Décision émise par le CG"

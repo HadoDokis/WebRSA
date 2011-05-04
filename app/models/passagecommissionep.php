@@ -150,6 +150,19 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Decisioncontratcomplexeep93' => array(
+				'className' => 'Decisioncontratcomplexeep93',
+				'foreignKey' => 'passagecommissionep_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 			'Decisiondefautinsertionep66' => array(
 				'className' => 'Decisiondefautinsertionep66',
 				'foreignKey' => 'passagecommissionep_id',

@@ -141,6 +141,19 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Contratcomplexeep93' => array(
+				'className' => 'Contratcomplexeep93',
+				'foreignKey' => 'dossierep_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 			// Thèmes 58
 			'Nonorientationproep58' => array(
 				'className' => 'Nonorientationproep58',

@@ -52,6 +52,36 @@
 			</table>
 		<?php endif;?>
 
+		<?php if( isset( $contratscomplexeseps93 ) && !empty( $contratscomplexeseps93 ) ):?>
+			<h2>Passages en EP pour contrats complees</h2>
+			<table class="tooltips">
+				<thead>
+					<tr>
+						<th>Date début contrat</th>
+						<th>Date fin contrat</th>
+						<th>Date de création du dossier d'EP</th>
+						<th>État dossier EP</th>
+					</tr>
+				</thead>
+				<tbody>
+				<?php foreach( $contratscomplexeseps93 as $signalementep93 ):?>
+					<?php
+						$etatdossierep = Set::enum( $signalementep93['Passagecommissionep']['etatdossierep'], $optionsdossierseps['Passagecommissionep']['etatdossierep'] );
+						if( empty( $etatdossierep ) ) {
+							$etatdossierep = 'En attente';
+						}
+					?>
+					<tr>
+						<td><?php echo $locale->date( 'Locale->date', $signalementep93['Contratinsertion']['dd_ci'] );?></td>
+						<td><?php echo $locale->date( 'Locale->date', $signalementep93['Contratinsertion']['df_ci'] );?></td>
+						<td><?php echo $locale->date( 'Locale->date', $signalementep93['Contratcomplexeep93']['created'] );?></td>
+						<td><?php echo h( $etatdossierep );?></td>
+					</tr>
+				<?php endforeach;?>
+				</tbody>
+			</table>
+		<?php endif;?>
+
 		<?php if( $permissions->check( 'contratsinsertion', 'add' ) ):?>
 			<ul class="actionMenu">
 				<?php
@@ -111,6 +141,8 @@
 							$block;
 						}
 
+						$contratenep = in_array( $contratinsertion['Contratinsertion']['id'], $contratsenep );
+
 						echo $xhtml->tableCells(
 							array(
 								h( Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.forme_ci' ), $forme_ci ) ),
@@ -120,12 +152,14 @@
 								h( Set::enum( Set::extract( $contratinsertion, 'Contratinsertion.decision_ci' ), $decision_ci ).' '.$locale->date( 'Date::short', Set::extract( $contratinsertion, 'Contratinsertion.datevalidation_ci' ) ) ),
 								$xhtml->validateLink(
 									'Valider le CER ',
-									array( 'controller' => 'contratsinsertion', 'action' => 'valider', $contratinsertion['Contratinsertion']['id'] )
+									array( 'controller' => 'contratsinsertion', 'action' => 'valider', $contratinsertion['Contratinsertion']['id'] ),
+									$permissions->check( 'contratsinsertion', 'valider' ) && !$contratenep
+
 								),
 								$xhtml->actionsLink(
 									'Actions pour le CER',
 									array( 'controller' => 'actionsinsertion', 'action' => 'index', $contratinsertion['Contratinsertion']['id'] ),
-									$permissions->check( 'actionsinsertion', 'index' )
+									$permissions->check( 'actionsinsertion', 'index' ) && !$contratenep
 								),
 								$xhtml->viewLink(
 									'Voir le CER',
@@ -135,10 +169,7 @@
 								$xhtml->editLink(
 									'Éditer le CER ',
 									array( 'controller' => 'contratsinsertion', 'action' => 'edit', $contratinsertion['Contratinsertion']['id'] ),
-//                                     array(
-										$block,
-										$permissions->check( 'contratsinsertion', 'edit' )
-//                                     )
+										$permissions->check( 'contratsinsertion', 'edit' ) && $block && !$contratenep
 								),
 								$xhtml->printLink(
 									'Imprimer le CER',
@@ -148,7 +179,7 @@
 								$xhtml->deleteLink(
 									'Supprimer le CER ',
 									array( 'controller' => 'contratsinsertion', 'action' => 'delete', $contratinsertion['Contratinsertion']['id'] ),
-									$permissions->check( 'contratsinsertion', 'delete' )
+									$permissions->check( 'contratsinsertion', 'delete' ) && !$contratenep
 								),
 								$xhtml->fileLink(
 									'Fichiers liés',
@@ -164,6 +195,7 @@
 									&& ( $contratinsertion['Contratinsertion']['forme_ci'] == 'S' )
 									&& ( !isset( $signalementseps93 ) || empty( $signalementseps93 ) )
 									&& empty( $erreursCandidatePassage )
+									&& !$contratenep
 								)
 							),
 							array( 'class' => 'odd' ),

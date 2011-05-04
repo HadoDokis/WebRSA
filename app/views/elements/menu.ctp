@@ -416,6 +416,7 @@
 								<li><?php echo $xhtml->link( 'Demandes de réorientation 93', array( 'controller' => 'reorientationseps93', 'action' => 'index' ) );?></li>
 								<li><?php echo $xhtml->link( 'Demande de suspension 93', array( 'controller' => 'nonrespectssanctionseps93', 'action' => 'index' ) );?></li>
 								<li><?php echo $xhtml->link( 'Sélection des allocataires radiés de Pôle Emploi', array( 'controller' => 'nonrespectssanctionseps93', 'action' => 'selectionradies' ) );?></li>
+								<li><?php echo $xhtml->link( 'Sélection des contrats complexes', array( 'controller' => 'contratscomplexeseps93', 'action' => 'selection' ) );?></li>
 							<?php elseif( Configure::read( 'Cg.departement' ) == 58 ):?>
 								<li><?php echo $xhtml->link( 'Radiation de Pôle Emploi', array( 'controller' => 'sanctionseps58', 'action' => 'selectionradies' ) );?></li>
 								<li><?php echo $xhtml->link( 'Non inscription à Pôle Emploi', array( 'controller' => 'sanctionseps58', 'action' => 'selectionnoninscrits' ) );?></li>

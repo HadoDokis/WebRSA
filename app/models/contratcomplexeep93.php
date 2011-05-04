@@ -1,34 +1,27 @@
-<?php
-	/**
-	* ...
-	*
-	* PHP versions 5
-	*
-	* @package       app
-	* @subpackage    app.app.models
-	*/
-
-	class Signalementep93 extends AppModel
+no<?php
+	class Contratcomplexeep93 extends AppModel
 	{
-		public $name = 'Signalementep93';
+		/**
+		*
+		*/
 
 		public $recursive = -1;
+
+		/**
+		*
+		*/
 
 		public $actsAs = array(
 			'Autovalidate',
 			'ValidateTranslate',
-			'Formattable',
-			'Gedooo'
+			'Formattable'
 		);
 
+		/**
+		*
+		*/
+
 		public $belongsTo = array(
-			'Contratinsertion' => array(
-				'className' => 'Contratinsertion',
-				'foreignKey' => 'contratinsertion_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
-			),
 			'Dossierep' => array(
 				'className' => 'Dossierep',
 				'foreignKey' => 'dossierep_id',
@@ -36,15 +29,14 @@
 				'fields' => '',
 				'order' => ''
 			),
+			'Contratinsertion' => array(
+				'className' => 'Contratinsertion',
+				'foreignKey' => 'contratinsertion_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
 		);
-
-		/**
-		* INFO: Fonction inutile pour cette thématique donc elle retourne simplement true
-		*/
-
-		public function verrouiller( $commissionep_id, $etape ) {
-			return true;
-		}
 
 		/**
 		* Querydata permettant d'obtenir les dossiers qui doivent être traités
@@ -91,19 +83,6 @@
 				'contain' => array(
 					'Personne' => array(
 						'Foyer' => array(
-							'fields' => array(
-								'id',
-								'dossier_id',
-								'sitfam',
-								'ddsitfam',
-								'typeocclog',
-								'mtvallocterr',
-								'mtvalloclog',
-								'contefichliairsa',
-								'mtestrsa',
-								'raisoctieelectdom',
-								"( SELECT COUNT(DISTINCT(personnes.id)) FROM personnes INNER JOIN prestations ON ( personnes.id = prestations.personne_id ) WHERE personnes.foyer_id = \"Foyer\".\"id\" AND prestations.natprest = 'RSA' AND prestations.rolepers = 'ENF' ) AS \"Foyer__nbenfants\"",
-							),
 							'Adressefoyer' => array(
 								'conditions' => array(
 									'Adressefoyer.rgadr' => '01'
@@ -117,9 +96,6 @@
 							'id',
 							'dossierep_id',
 							'contratinsertion_id',
-							'date',
-							'motif',
-							'rang',
 							'created',
 							'modified'
 
@@ -171,26 +147,19 @@
 				if( @$dossierep['Passagecommissionep'][0][$modeleDecisions][0]['etape'] == $niveauDecision ) {
 					$formData[$modeleDecisions][$key] = @$dossierep['Passagecommissionep'][0][$modeleDecisions][0];
 				}
-				// On ajoute les enregistrements de cette étape -> FIXME: manque les id ?
+				// On ajoute les enregistrements de cette étape
 				else {
-					if( $niveauDecision == 'ep' ) {
-						if( !empty( $datas[$key]['Passagecommissionep'][0][$modeleDecisions][0] ) ) { // Modification
-							$formData[$modeleDecisions][$key]['decision'] = @$datas[$key]['Passagecommissionep'][0][$modeleDecisions][0]['decision'];
-						}
-						else {
-							if( ( $dossierep['Personne']['Foyer']['nbenfants'] > 0 ) || ( $dossierep['Personne']['Foyer']['sitfam'] == 'MAR' ) ) {
-								$formData[$modeleDecisions][$key]['decision'] = '1maintien';
-							}
-							// FIXME: autre cas ?
-						}
-					}
-					else if( $niveauDecision == 'cg' ) {
+					if( $niveauDecision == 'cg' ) {
 						if( !empty( $datas[$key]['Passagecommissionep'][0][$modeleDecisions][1] ) ) { // Modification
 							$formData[$modeleDecisions][$key]['decision'] = @$datas[$key]['Passagecommissionep'][0][$modeleDecisions][1]['decision'];
+							$formData[$modeleDecisions][$key]['datevalidation_ci'] = @$datas[$key]['Passagecommissionep'][0][$modeleDecisions][1]['datevalidation_ci'];
+							$formData[$modeleDecisions][$key]['observ_ci'] = @$datas[$key]['Passagecommissionep'][0][$modeleDecisions][1]['observ_ci'];
 							$formData[$modeleDecisions][$key]['raisonnonpassage'] = @$datas[$key]['Passagecommissionep'][0][$modeleDecisions][1]['raisonnonpassage'];
 						}
 						else {
 							$formData[$modeleDecisions][$key]['decision'] = $dossierep['Passagecommissionep'][0][$modeleDecisions][0]['decision'];
+							$formData[$modeleDecisions][$key]['datevalidation_ci'] = $dossierep['Passagecommissionep'][0][$modeleDecisions][0]['datevalidation_ci'];
+							$formData[$modeleDecisions][$key]['observ_ci'] = $dossierep['Passagecommissionep'][0][$modeleDecisions][0]['observ_ci'];
 							$formData[$modeleDecisions][$key]['raisonnonpassage'] = $dossierep['Passagecommissionep'][0][$modeleDecisions][0]['raisonnonpassage'];
 						}
 					}
@@ -201,37 +170,58 @@
 		}
 
 		/**
+		* Récupération des informations propres au dossier devant passer en EP
+		* avant liaison avec la commission d'EP
+		*/
+
+		public function getCourrierInformationPdf( $dossierep_id ) {
+			$gedooo_data = $this->find(
+				'first',
+				array(
+					'conditions' => array( 'Dossierep.id' => $dossierep_id ),
+					'contain' => array(
+						'Dossierep' => array(
+							'Personne'
+						),
+						'Contratinsertion' => array(
+							'Structurereferente',
+						)
+					)
+				)
+			);
+			return $this->ged( $gedooo_data, "{$this->alias}/courrierinformationavantep.odt" );
+		}
+
+		/**
 		* TODO: docs
 		*/
 
 		public function saveDecisions( $data, $niveauDecision ) {
 			// FIXME: filtrer les données
-			$themeData = Set::extract( $data, '/Decisionsignalementep93' );
+			$themeData = Set::extract( $data, '/Decisioncontratcomplexeep93' );
 			if( empty( $themeData ) ) {
 				return true;
 			}
 			else {
 				foreach( array_keys( $themeData ) as $key ) {
 					// On complètre /on nettoie si ce n'est pas envoyé par le formulaire
-					if( $themeData[$key]['Decisionsignalementep93']['decision'] == '1reduction' ) {
-						$themeData[$key]['Decisionsignalementep93']['dureesursis'] = null;
-						$themeData[$key]['Decisionsignalementep93']['montantreduction'] = Configure::read( 'Signalementep93.montantReduction' );
+					if( $themeData[$key]['Decisioncontratcomplexeep93']['decision'] == 'valide' ) {
+						$themeData[$key]['Decisioncontratcomplexeep93']['raisonnonpassage'] = null;
 					}
-					else if( $themeData[$key]['Decisionsignalementep93']['decision'] == '1sursis' ) {
-						$themeData[$key]['Decisionsignalementep93']['montantreduction'] = null;
-						$themeData[$key]['Decisionsignalementep93']['dureesursis'] = Configure::read( 'Signalementep93.dureeSursis' );
+					else if( $themeData[$key]['Decisioncontratcomplexeep93']['decision'] == 'refuse' ) {
+						$themeData[$key]['Decisioncontratcomplexeep93']['datevalidation_ci'] = null;
 					}
-					else if( in_array( $themeData[$key]['Decisionsignalementep93']['decision'],  array( '1maintien', '1pasavis', '1delai' ) ) ) {
-						$themeData[$key]['Decisionsignalementep93']['montantreduction'] = null;
-						$themeData[$key]['Decisionsignalementep93']['dureesursis'] = null;
+					else if( in_array( $themeData[$key]['Decisioncontratcomplexeep93']['decision'], array( 'annule', 'reporte' ) ) ) {
+						$themeData[$key]['Decisioncontratcomplexeep93']['datevalidation_ci'] = null;
+						$themeData[$key]['Decisioncontratcomplexeep93']['observ_ci'] = null;
 					}
 					// FIXME: la même chose pour l'étape 2
 				}
 
-				$success = $this->Dossierep->Passagecommissionep->Decisionsignalementep93->saveAll( $themeData, array( 'atomic' => false ) );
+				$success = $this->Dossierep->Passagecommissionep->Decisioncontratcomplexeep93->saveAll( $themeData, array( 'atomic' => false ) );
 				$this->Dossierep->Passagecommissionep->updateAll(
 					array( 'Passagecommissionep.etatdossierep' => '\'decision'.$niveauDecision.'\'' ),
-					array( '"Passagecommissionep"."id"' => Set::extract( $data, '/Decisionsignalementep93/passagecommissionep_id' ) )
+					array( '"Passagecommissionep"."id"' => Set::extract( $data, '/Decisioncontratcomplexeep93/passagecommissionep_id' ) )
 				);
 
 				return $success;
@@ -243,6 +233,14 @@
 		*/
 
 		public function saveDecisionUnique( $data, $niveauDecision ) {
+			return true;
+		}
+
+		/**
+		* INFO: Fonction inutile pour cette thématique donc elle retourne simplement true
+		*/
+
+		public function verrouiller( $commissionep_id, $etape ) {
 			return true;
 		}
 
@@ -274,17 +272,13 @@
 						'Passagecommissionep.dossierep_id',
 						'Passagecommissionep.etatdossierep',
 						'Dossierep.personne_id',
-						'Decisionsignalementep93.decision',
-						/*'Decisionreorientationep93.typeorient_id',
-						'Decisionreorientationep93.structurereferente_id',
-						'Reorientationep93.structurereferente_id',
-						'Reorientationep93.referent_id',
-						'Reorientationep93.datedemande'*/
+						'Decisioncontratcomplexeep93.decision',
+						'Decisioncontratcomplexeep93.observ_ci',
+						'Decisioncontratcomplexeep93.datevalidation_ci',
+						'Contratcomplexeep93.contratinsertion_id'
 					),
 					'conditions' => array(
 						'Passagecommissionep.commissionep_id' => $commissionep_id
-						/*'Dossierep.commissionep_id' => $commissionep_id,
-						'Dossierep.themeep' => Inflector::tableize( $this->alias ),//FIXME: ailleurs aussi*/
 					),
 					'joins' => array(
 						array(
@@ -296,116 +290,58 @@
 							)
 						),
 						array(
-							'table' => 'signalementseps93',
-							'alias' => $this->alias,
+							'table' => 'contratscomplexeseps93',
+							'alias' => 'Contratcomplexeep93',
 							'type' => 'INNER',
 							'conditions' => array(
-								'Signalementep93.dossierep_id = Dossierep.id'
+								'Contratcomplexeep93.dossierep_id = Dossierep.id'
 							)
 						),
 						array(
-							'table' => 'decisionssignalementseps93',
-							'alias' => 'Decisionsignalementep93',
+							'table' => 'decisionscontratscomplexeseps93',
+							'alias' => 'Decisioncontratcomplexeep93',
 							'type' => 'INNER',
 							'conditions' => array(
-								'Decisionsignalementep93.passagecommissionep_id = Passagecommissionep.id',
-								'Decisionsignalementep93.etape' => $etape
+								'Decisioncontratcomplexeep93.passagecommissionep_id = Passagecommissionep.id',
+								'Decisioncontratcomplexeep93.etape' => $etape
 							)
 						)
 					),
-					/*'contain' => array(
-						'Decisionsignalementep93' => array(
-							'conditions' => array(
-								'Decisionsignalementep93.etape' => $etape
-							)
-						),
-						'Dossierep'
-					)*/
 				)
 			);
 
+			$enum = array(
+				'valide' => 'V',
+				'rejete' => 'N',
+				'annule' => 'N',
+				'reporte' => 'E'
+			);
 			$success = true;
+			$validate = $this->Contratinsertion->validate;
 			foreach( $dossierseps as $dossierep ) {
-				if( $niveauDecisionFinale == $etape ) {
-					$nonrespectsanctionep93 = array( $this->alias => $dossierep[$this->alias] );
-					$nonrespectsanctionep93[$this->alias]['active'] = 0;
-					if( !isset( $dossierep['Decisionsignalementep93'][0]['decision'] ) ) {
-						$success = false;
-					}
+				if( $niveauDecisionFinale == "decision{$etape}" ) {
+					$this->Contratinsertion->validate = array();
+					$contratinsertion = $this->Contratinsertion->find(
+						'first',
+						array(
+							'conditions' => array(
+								'Contratinsertion.id' => $dossierep['Contratcomplexeep93']['contratinsertion_id']
+							),
+							'contain' => false
+						)
+					);
 
-					$this->create( $nonrespectsanctionep93 ); // TODO: un saveAll ?
-					$success = $this->save() && $success;
+					$contratinsertion['Contratinsertion']['decision_ci'] = Set::enum( @$dossierep['Decisioncontratcomplexeep93']['decision'], $enum );
+					$contratinsertion['Contratinsertion']['observ_ci'] = @$dossierep['Decisioncontratcomplexeep93']['observ_ci'];
+					$contratinsertion['Contratinsertion']['datevalidation_ci'] = @$dossierep['Decisioncontratcomplexeep93']['datevalidation_ci'];
+
+					$this->Contratinsertion->create( $contratinsertion );
+					$success = $this->Contratinsertion->save() && $success;
 				}
 			}
+			$this->Contratinsertion->validate = $validate;
 
 			return $success;
-		}
-
-		/**
-		*
-		*/
-
-		public function qdProcesVerbal() {
-			return array(
-				'fields' => array(
-					'Signalementep93.id',
-					'Signalementep93.dossierep_id',
-					'Signalementep93.contratinsertion_id',
-					'Signalementep93.rang',
-					'Signalementep93.created',
-					'Signalementep93.modified',
-					'Decisionsignalementep93.id',
-// 					'Decisionsignalementep93.nonrespectsanctionep93_id',
-					'Decisionsignalementep93.etape',
-					'Decisionsignalementep93.decision',
-					'Decisionsignalementep93.montantreduction',
-					'Decisionsignalementep93.dureesursis',
-					'Decisionsignalementep93.commentaire',
-					'Decisionsignalementep93.created',
-					'Decisionsignalementep93.modified',
-				),
-				'joins' => array(
-					array(
-						'table'      => 'signalementseps93',
-						'alias'      => 'Signalementep93',
-						'type'       => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array( 'Signalementep93.dossierep_id = Dossierep.id' ),
-					),
-					array(
-						'table'      => 'decisionssignalementseps93',
-						'alias'      => 'Decisionsignalementep93',
-						'type'       => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array(
-							'Decisionsignalementep93.passagecommissionep_id = Passagecommissionep.id',
-							'Decisionsignalementep93.etape' => 'ep'
-						),
-					),
-				)
-			);
-		}
-
-		/**
-		*    Récupération des informations propres au dossier devant passer en EP
-		*   avant liaison avec la commission d'EP
-		*/
-		public function getCourrierInformationPdf( $dossierep_id ) {
-			$gedooo_data = $this->find(
-				'first',
-				array(
-					'conditions' => array( 'Dossierep.id' => $dossierep_id ),
-					'contain' => array(
-						'Dossierep' => array(
-							'Personne'
-						),
-						'Contratinsertion' => array(
-							'Structurereferente',
-						)
-					)
-				)
-			);
-			return $this->ged( $gedooo_data, "{$this->alias}/courrierinformationavantep.odt" );
 		}
 	}
 ?>
