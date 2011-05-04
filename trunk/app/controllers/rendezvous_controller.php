@@ -7,7 +7,7 @@ App::import( 'Helper', 'Locale' );
 		public $uses = array( 'Rendezvous', 'Option' );
 		
 		public $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Default2', 'Fileuploader' );
-        public $components = array( 'Gedooo', 'Fileuploader' );
+		public $components = array( 'Gedooo', 'Fileuploader' );
 		public $aucunDroit = array( 'ajaxreferent', 'ajaxreffonct', 'ajaxperm' );
 
 		public $commeDroit = array(
@@ -53,117 +53,117 @@ App::import( 'Helper', 'Locale' );
 
 
 
-        /**
-        * http://valums.com/ajax-upload/
-        * http://doc.ubuntu-fr.org/modules_php
-        * increase post_max_size and upload_max_filesize to 10M
-        * debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
-        */
+		/**
+		* http://valums.com/ajax-upload/
+		* http://doc.ubuntu-fr.org/modules_php
+		* increase post_max_size and upload_max_filesize to 10M
+		* debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
+		*/
 
-        public function ajaxfileupload() {
-            $this->Fileuploader->ajaxfileupload();
-        }
+		public function ajaxfileupload() {
+			$this->Fileuploader->ajaxfileupload();
+		}
 
-        /**
-        * http://valums.com/ajax-upload/
-        * http://doc.ubuntu-fr.org/modules_php
-        * increase post_max_size and upload_max_filesize to 10M
-        * debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
-        * FIXME: traiter les valeurs de retour
-        */
+		/**
+		* http://valums.com/ajax-upload/
+		* http://doc.ubuntu-fr.org/modules_php
+		* increase post_max_size and upload_max_filesize to 10M
+		* debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
+		* FIXME: traiter les valeurs de retour
+		*/
 
-        public function ajaxfiledelete() {
-            $this->Fileuploader->ajaxfiledelete();
-        }
+		public function ajaxfiledelete() {
+			$this->Fileuploader->ajaxfiledelete();
+		}
 
-        /**
-        *   Fonction permettant de visualiser les fichiers chargés dans la vue avant leur envoi sur le serveur
-        */
+		/**
+		*   Fonction permettant de visualiser les fichiers chargés dans la vue avant leur envoi sur le serveur
+		*/
 
-        public function fileview( $id ) {
-            $this->Fileuploader->fileview( $id );
-        }
+		public function fileview( $id ) {
+			$this->Fileuploader->fileview( $id );
+		}
 
-        /**
-        *   Téléchargement des fichiers préalablement associés à un traitement donné
-        */
+		/**
+		*   Téléchargement des fichiers préalablement associés à un traitement donné
+		*/
 
-        public function download( $fichiermodule_id ) {
-            $this->assert( !empty( $fichiermodule_id ), 'error404' );
-            $this->Fileuploader->download( $fichiermodule_id );
-        }
+		public function download( $fichiermodule_id ) {
+			$this->assert( !empty( $fichiermodule_id ), 'error404' );
+			$this->Fileuploader->download( $fichiermodule_id );
+		}
 
-        /**
-        *   Fonction permettant d'accéder à la page pour lier les fichiers à l'Orientation
-        */
+		/**
+		*   Fonction permettant d'accéder à la page pour lier les fichiers à l'Orientation
+		*/
 
-        public function filelink( $id ){
-            $this->assert( valid_int( $id ), 'invalidParameter' );
+		public function filelink( $id ){
+			$this->assert( valid_int( $id ), 'invalidParameter' );
 
-            $fichiers = array();
-            $rendezvous = $this->Rendezvous->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Rendezvous.id' => $id
-                    ),
-                    'contain' => array(
-                        'Fichiermodule' => array(
-                            'fields' => array( 'name', 'id', 'created', 'modified' )
-                        )
-                    )
-                )
-            );
+			$fichiers = array();
+			$rendezvous = $this->Rendezvous->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Rendezvous.id' => $id
+					),
+					'contain' => array(
+						'Fichiermodule' => array(
+							'fields' => array( 'name', 'id', 'created', 'modified' )
+						)
+					)
+				)
+			);
 
-            $personne_id = $rendezvous['Rendezvous']['personne_id'];
-            $dossier_id = $this->Rendezvous->Personne->dossierId( $personne_id );
-            $this->assert( !empty( $dossier_id ), 'invalidParameter' );
+			$personne_id = $rendezvous['Rendezvous']['personne_id'];
+			$dossier_id = $this->Rendezvous->Personne->dossierId( $personne_id );
+			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
 
-            $this->Rendezvous->begin();
-            if( !$this->Jetons->check( $dossier_id ) ) {
-                $this->Rendezvous->rollback();
-            }
-            $this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
+			$this->Rendezvous->begin();
+			if( !$this->Jetons->check( $dossier_id ) ) {
+				$this->Rendezvous->rollback();
+			}
+			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
 
-            // Retour à l'index en cas d'annulation
-            if( isset( $this->params['form']['Cancel'] ) ) {
-                $this->redirect( array( 'action' => 'index', $personne_id ) );
-            }
+			// Retour à l'index en cas d'annulation
+			if( isset( $this->params['form']['Cancel'] ) ) {
+				$this->redirect( array( 'action' => 'index', $personne_id ) );
+			}
 
-            if( !empty( $this->data ) ) {
+			if( !empty( $this->data ) ) {
 
-                $saved = $this->Rendezvous->updateAll(
-                    array( 'Rendezvous.haspiecejointe' => '\''.$this->data['Rendezvous']['haspiecejointe'].'\'' ),
-                    array(
-                        '"Rendezvous"."personne_id"' => $personne_id,
-                        '"Rendezvous"."id"' => $id
-                    )
-                );
+				$saved = $this->Rendezvous->updateAll(
+					array( 'Rendezvous.haspiecejointe' => '\''.$this->data['Rendezvous']['haspiecejointe'].'\'' ),
+					array(
+						'"Rendezvous"."personne_id"' => $personne_id,
+						'"Rendezvous"."id"' => $id
+					)
+				);
 
-                if( $saved ){
-                    // Sauvegarde des fichiers liés à une PDO
-                    $dir = $this->Fileuploader->dirFichiersModule( $this->action, $this->params['pass'][0] );
-                    $saved = $this->Fileuploader->saveFichiers( $dir, !Set::classicExtract( $this->data, "Rendezvous.haspiecejointe" ), $id ) && $saved;
-                }
+				if( $saved ){
+					// Sauvegarde des fichiers liés à une PDO
+					$dir = $this->Fileuploader->dirFichiersModule( $this->action, $this->params['pass'][0] );
+					$saved = $this->Fileuploader->saveFichiers( $dir, !Set::classicExtract( $this->data, "Rendezvous.haspiecejointe" ), $id ) && $saved;
+				}
 
-                if( $saved ) {
-                    $this->Jetons->release( $dossier_id );
-                    $this->Rendezvous->commit();
-                    $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-                    $this->redirect( array(  'controller' => 'rendezvous','action' => 'index', $personne_id ) );
-                }
-                else {
-                    $fichiers = $this->Fileuploader->fichiers( $id );
-                    $this->Rendezvous->rollback();
-                    $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
-                }
-            }
+				if( $saved ) {
+					$this->Jetons->release( $dossier_id );
+					$this->Rendezvous->commit();
+					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+					$this->redirect( array(  'controller' => 'rendezvous','action' => 'index', $personne_id ) );
+				}
+				else {
+					$fichiers = $this->Fileuploader->fichiers( $id );
+					$this->Rendezvous->rollback();
+					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+				}
+			}
 
-            $this->_setOptions();
+			$this->_setOptions();
 //             $this->Rendezvous->commit();
-            $this->set( compact( 'dossier_id', 'personne_id', 'fichiers', 'rendezvous' ) );
+			$this->set( compact( 'dossier_id', 'personne_id', 'fichiers', 'rendezvous' ) );
 
-        }
+		}
 
 
 
@@ -263,50 +263,39 @@ App::import( 'Helper', 'Locale' );
 			$this->set( compact( 'dossierep' ) );
 // debug($dossierep);
 			
-			$dossierepEnCours = false;
-			if ( !empty( $dossierep ) ) {
-				$dossierepEnCours = $this->Rendezvous->Personne->Dossierep->find(
-					'count',
-					array(
-						'conditions' => array(
-							'Dossierep.id' => $dossierep['Dossierep']['id'],
-							'Dossierep.id IN ( '.
-								$this->Rendezvous->Personne->Dossierep->Passagecommissionep->sq(
-									array(
-										'fields' => array(
-											'passagescommissionseps.dossierep_id'
-										),
-										'alias' => 'passagescommissionseps',
-										'conditions' => array(
-											'passagescommissionseps.etatdossierep' => array( 'associe', 'decisionep', 'decisioncg', 'traite', 'annule', 'reporte' )
-										)
+			$dossierepLie = $this->Rendezvous->Personne->Dossierep->find(
+				'count',
+				array(
+					'conditions' => array(
+						'Dossierep.id IN ( '.
+							$this->Rendezvous->Personne->Dossierep->Passagecommissionep->sq(
+								array(
+									'fields' => array(
+										'passagescommissionseps.dossierep_id'
+									),
+									'alias' => 'passagescommissionseps',
+									'conditions' => array(
+										'passagescommissionseps.etatdossierep' => array( 'associe', 'decisionep', 'decisioncg', 'traite', 'annule', 'reporte' )
 									)
 								)
-							.' )'
-						),
-						'joins' => array(
-							array(
-								'table' => 'sanctionsrendezvouseps58',
-								'alias' => 'Sanctionrendezvousep58',
-								'type' => 'INNER',
-								'conditions' => array(
-									'Sanctionrendezvousep58.dossierep_id = Dossierep.id',
-									'Sanctionrendezvousep58.rendezvous_id' => $lastrdv_id
-								)
 							)
-						),/*
-						'contain' => array(
-							'Sanctionrendezvousep58' => array(
-								'Rendezvous' => array(
-									'conditions' => array( 'Rendezvous.id' => $lastrdv_id )
-								)
+						.' )'
+					),
+					'joins' => array(
+						array(
+							'table' => 'sanctionsrendezvouseps58',
+							'alias' => 'Sanctionrendezvousep58',
+							'type' => 'INNER',
+							'conditions' => array(
+								'Sanctionrendezvousep58.dossierep_id = Dossierep.id',
+								'Sanctionrendezvousep58.rendezvous_id' => $lastrdv_id
 							)
-						),*/
-						'order' => array( 'Dossierep.created ASC' )
-					)
-				);
-			}
-			$this->set( compact( 'dossierepEnCours' ) );
+						)
+					),
+					'order' => array( 'Dossierep.created ASC' )
+				)
+			);
+			$this->set( compact( 'dossierepLie' ) );
 			
 			$this->set( compact( 'rdvs' ) );
 			$this->set( 'personne_id', $personne_id );
@@ -470,111 +459,147 @@ App::import( 'Helper', 'Locale' );
 		}
 
 		/**
-		* FIXME: delete n'est pas implémenté
+		* Suppression du rendez-vous et du dossier d'EP lié si celui-ci n'est pas
+		* associé à un passage en commission d'EP
 		*/
 
-		public function delete($id) {
-            $this->Default->delete( $id );
+		public function delete( $id ) {
+			$rendezvous = $this->Rendezvous->find(
+				'first',
+				array(
+					'fields' => array(
+						'Rendezvous.personne_id'
+					),
+					'conditions' => array(
+						'Rendezvous.id' => $id
+					),
+					'contain' => false
+				)
+			);
+			
+			$dossierep = $this->Rendezvous->Sanctionrendezvousep58->find(
+				'first',
+				array(
+					'fields' => array(
+						'Sanctionrendezvousep58.id',
+						'Sanctionrendezvousep58.dossierep_id'
+					),
+					'conditions' => array(
+						'Sanctionrendezvousep58.rendezvous_id' => $id
+					),
+					'contain' => false
+				)
+			);
+			
+			$success = true;
+			if ( !empty( $dossierep ) ) {
+				$success = $this->Rendezvous->Sanctionrendezvousep58->delete( $dossierep['Sanctionrendezvousep58']['id'] ) && $success;
+				$success = $this->Rendezvous->Sanctionrendezvousep58->Dossierep->delete( $dossierep['Sanctionrendezvousep58']['dossierep_id'] ) && $success;
+			}
+			$success = $this->Rendezvous->delete( $id ) && $success;
+			
+			$this->_setFlashResult( 'Save', $success );
+			$this->redirect( array(  'controller' => 'rendezvous','action' => 'index', $rendezvous['Rendezvous']['personne_id'] ) );
 		}
 
-        function gedooo( $rdv_id = null ) {
-            // TODO: error404/error500 si on ne trouve pas les données
-            $qual = $this->Option->qual();
-            $typevoie = $this->Option->typevoie();
+		function gedooo( $rdv_id = null ) {
+			// TODO: error404/error500 si on ne trouve pas les données
+			$qual = $this->Option->qual();
+			$typevoie = $this->Option->typevoie();
 
-            $rdv = $this->Rendezvous->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Rendezvous.id' => $rdv_id
-                    )
-                )
-            );
+			$rdv = $this->Rendezvous->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Rendezvous.id' => $rdv_id
+					)
+				)
+			);
 
 
-            ///Pour le choix entre les différentes notifications possibles
-            $modele = $rdv['Typerdv']['modelenotifrdv'];
+			///Pour le choix entre les différentes notifications possibles
+			$modele = $rdv['Typerdv']['modelenotifrdv'];
 
-            $this->Rendezvous->Personne->Foyer->Adressefoyer->bindModel(
-                array(
-                    'belongsTo' => array(
-                        'Adresse' => array(
-                            'className'     => 'Adresse',
-                            'foreignKey'    => 'adresse_id'
-                        )
-                    )
-                )
-            );
+			$this->Rendezvous->Personne->Foyer->Adressefoyer->bindModel(
+				array(
+					'belongsTo' => array(
+						'Adresse' => array(
+							'className'     => 'Adresse',
+							'foreignKey'    => 'adresse_id'
+						)
+					)
+				)
+			);
 
-            $adresse = $this->Rendezvous->Personne->Foyer->Adressefoyer->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Adressefoyer.foyer_id' => $rdv['Personne']['foyer_id'],
-                        'Adressefoyer.rgadr' => '01',
-                    )
-                )
-            );
-            $rdv['Adresse'] = $adresse['Adresse'];
+			$adresse = $this->Rendezvous->Personne->Foyer->Adressefoyer->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Adressefoyer.foyer_id' => $rdv['Personne']['foyer_id'],
+						'Adressefoyer.rgadr' => '01',
+					)
+				)
+			);
+			$rdv['Adresse'] = $adresse['Adresse'];
 
-            // Récupération de l'utilisateur
-            $user = $this->User->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'User.id' => $this->Session->read( 'Auth.User.id' )
-                    )
-                )
-            );
-            $rdv['User'] = $user['User'];
-            $rdv['Serviceinstructeur'] = $user['Serviceinstructeur'];
+			// Récupération de l'utilisateur
+			$user = $this->User->find(
+				'first',
+				array(
+					'conditions' => array(
+						'User.id' => $this->Session->read( 'Auth.User.id' )
+					)
+				)
+			);
+			$rdv['User'] = $user['User'];
+			$rdv['Serviceinstructeur'] = $user['Serviceinstructeur'];
 
-            $dossier = $this->Rendezvous->Personne->Foyer->Dossier->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Dossier.id' => $rdv['Personne']['foyer_id']
-                    )
-                )
-            );
-            $rdv['Dossier_RSA'] = $dossier['Dossier'];
+			$dossier = $this->Rendezvous->Personne->Foyer->Dossier->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Dossier.id' => $rdv['Personne']['foyer_id']
+					)
+				)
+			);
+			$rdv['Dossier_RSA'] = $dossier['Dossier'];
 
-            ///Pour la qualité de la personne
-            $rdv['Personne']['qual'] = Set::extract( $qual, Set::extract( $rdv, 'Personne.qual' ) );
-            ///Pour l'adresse de la structure référente
-            $rdv['Structurereferente']['type_voie'] = Set::extract( $typevoie, Set::classicExtract( $rdv, 'Structurereferente.type_voie' ) );
-            ///Pour la date du rendez-vous
-            $LocaleHelper = new LocaleHelper();
-            $rdv['Rendezvous']['daterdv'] =  $LocaleHelper->date( '%d/%m/%Y', Set::classicExtract( $rdv, 'Rendezvous.daterdv' ) );
+			///Pour la qualité de la personne
+			$rdv['Personne']['qual'] = Set::extract( $qual, Set::extract( $rdv, 'Personne.qual' ) );
+			///Pour l'adresse de la structure référente
+			$rdv['Structurereferente']['type_voie'] = Set::extract( $typevoie, Set::classicExtract( $rdv, 'Structurereferente.type_voie' ) );
+			///Pour la date du rendez-vous
+			$LocaleHelper = new LocaleHelper();
+			$rdv['Rendezvous']['daterdv'] =  $LocaleHelper->date( '%d/%m/%Y', Set::classicExtract( $rdv, 'Rendezvous.daterdv' ) );
 //             debug( $LocaleHelper->date( '%d-%m-%Y', Set::classicExtract( $rdv, 'Rendezvous.daterdv' ) ) );
-            $rdv['Rendezvous']['heurerdv'] = $LocaleHelper->date( 'Time::short', Set::classicExtract( $rdv, 'Rendezvous.heurerdv' ) );
-            ///Pour l'adresse de la personne
-            $rdv['Adresse']['typevoie'] = Set::extract( $typevoie, Set::extract( $rdv, 'Adresse.typevoie' ) );
+			$rdv['Rendezvous']['heurerdv'] = $LocaleHelper->date( 'Time::short', Set::classicExtract( $rdv, 'Rendezvous.heurerdv' ) );
+			///Pour l'adresse de la personne
+			$rdv['Adresse']['typevoie'] = Set::extract( $typevoie, Set::extract( $rdv, 'Adresse.typevoie' ) );
 
-            ///Pour le référent lié au RDV
-            $structurereferente_id = Set::classicExtract( $rdv, 'Structurereferente.id' );
-            $referents = $this->Rendezvous->Personne->Referent->referentsListe( $structurereferente_id );
-            $this->set( 'referents', $referents );
-            if( !empty( $referents ) ) {
-                $rdv['Rendezvous']['referent_id'] = Set::extract( $referents, Set::classicExtract( $rdv, 'Rendezvous.referent_id' ) );
-            }
+			///Pour le référent lié au RDV
+			$structurereferente_id = Set::classicExtract( $rdv, 'Structurereferente.id' );
+			$referents = $this->Rendezvous->Personne->Referent->referentsListe( $structurereferente_id );
+			$this->set( 'referents', $referents );
+			if( !empty( $referents ) ) {
+				$rdv['Rendezvous']['referent_id'] = Set::extract( $referents, Set::classicExtract( $rdv, 'Rendezvous.referent_id' ) );
+			}
 
-            ///Pour les permanences liées aux structures référentes
-            $perm = $this->Rendezvous->Personne->Referent->Structurereferente->Permanence->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Permanence.id' => Set::classicExtract( $rdv, 'Rendezvous.permanence_id' )
-                    )
-                )
-            );
-            $rdv['Permanence'] = $perm['Permanence'];
-            if( !empty( $perm ) ){
-                $rdv['Permanence']['typevoie'] = Set::extract( $typevoie, Set::classicExtract( $rdv, 'Permanence.typevoie' ) );
-            }
+			///Pour les permanences liées aux structures référentes
+			$perm = $this->Rendezvous->Personne->Referent->Structurereferente->Permanence->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Permanence.id' => Set::classicExtract( $rdv, 'Rendezvous.permanence_id' )
+					)
+				)
+			);
+			$rdv['Permanence'] = $perm['Permanence'];
+			if( !empty( $perm ) ){
+				$rdv['Permanence']['typevoie'] = Set::extract( $typevoie, Set::classicExtract( $rdv, 'Permanence.typevoie' ) );
+			}
 
 			$pdf = $this->Rendezvous->ged( $rdv, 'RDV/'.$modele.'.odt' );
 			$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'rendezvous-%s.pdf', date( 'Y-m-d' ) ) );
-        }
+		}
 	}
 ?>
