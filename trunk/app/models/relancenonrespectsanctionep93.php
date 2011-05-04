@@ -1095,7 +1095,7 @@
 										'passagescommissionseps.dossierep_id'
 									),
 									'conditions' => array(
-										'passagescommissionseps.dossierep_id = dossierseps.id',
+										'passagescommissionseps.dossierep_id = Dossierep.id',
 										'passagescommissionseps.etatdossierep' => array( 'traite', 'annule' )
 									),
 								)
@@ -1127,7 +1127,7 @@
 												'passagescommissionseps.dossierep_id'
 											),
 											'conditions' => array(
-												'passagescommissionseps.dossierep_id = Dossier.id',
+												'passagescommissionseps.dossierep_id = Dossierep.id',
 												'passagescommissionseps.etatdossierep' => array( 'traite', 'annule' )
 											),
 										)
@@ -1143,13 +1143,21 @@
 									'foreignKey' => false,
 									'conditions' => array( 'Dossierep.id = Nonrespectsanctionep93.dossierep_id' )
 								),
+                                array(
+                                    'table'      => 'passagescommissionseps',
+                                    'alias'      => 'Passagecommissionep',
+                                    'type'       => 'INNER',
+                                    'foreignKey' => false,
+                                    'conditions' => array( 'Dossierep.id = Passagecommissionep.dossierep_id' )
+                                ),
 								array(
 									'table'      => 'decisionsnonrespectssanctionseps93',
 									'alias'      => 'Decisionnonrespectsanctionep93',
 									'type'       => 'INNER',
 									'foreignKey' => false,
 									'conditions' => array(
-										'Nonrespectsanctionep93.id = Decisionnonrespectsanctionep93.nonrespectsanctionep93_id',
+                                        'Passagecommissionep.id = Decisionnonrespectsanctionep93.passagecommissionep_id',
+// 										'Nonrespectsanctionep93.id = Decisionnonrespectsanctionep93.nonrespectsanctionep93_id',
 										'( DATE( NOW() ) - ( CAST( Decisionnonrespectsanctionep93.modified AS DATE ) ) ) <= '.Configure::read( 'Nonrespectsanctionep93.relanceDecisionNonRespectSanctions' )
 									)
 								)
