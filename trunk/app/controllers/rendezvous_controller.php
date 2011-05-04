@@ -231,71 +231,73 @@ App::import( 'Helper', 'Locale' );
 			$this->Rendezvous->forceVirtualFields = false;
 // debug($rdvs);
 			
-			$dossierep = $this->Rendezvous->Personne->Dossierep->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Dossierep.themeep' => 'sanctionsrendezvouseps58',
-						'Dossierep.id NOT IN ( '.
-							$this->Rendezvous->Personne->Dossierep->Passagecommissionep->sq(
-								array(
-									'fields' => array(
-										'passagescommissionseps.dossierep_id'
-									),
-									'alias' => 'passagescommissionseps',
-									'conditions' => array(
-										'passagescommissionseps.etatdossierep' => array( 'traite', 'annule' )
+			if ( Configure::read( 'Cg.departement' ) == 58 ) {
+				$dossierep = $this->Rendezvous->Personne->Dossierep->find(
+					'first',
+					array(
+						'conditions' => array(
+							'Dossierep.themeep' => 'sanctionsrendezvouseps58',
+							'Dossierep.id NOT IN ( '.
+								$this->Rendezvous->Personne->Dossierep->Passagecommissionep->sq(
+									array(
+										'fields' => array(
+											'passagescommissionseps.dossierep_id'
+										),
+										'alias' => 'passagescommissionseps',
+										'conditions' => array(
+											'passagescommissionseps.etatdossierep' => array( 'traite', 'annule' )
+										)
 									)
 								)
-							)
-						.' )'
-					),
-					'contain' => array(
-						'Sanctionrendezvousep58' => array(
-							'Rendezvous' => array(
-								'Typerdv'
-							)
-						)
-					),
-					'order' => array( 'Dossierep.created ASC' )
-				)
-			);
-			$this->set( compact( 'dossierep' ) );
-// debug($dossierep);
-			
-			$dossierepLie = $this->Rendezvous->Personne->Dossierep->find(
-				'count',
-				array(
-					'conditions' => array(
-						'Dossierep.id IN ( '.
-							$this->Rendezvous->Personne->Dossierep->Passagecommissionep->sq(
-								array(
-									'fields' => array(
-										'passagescommissionseps.dossierep_id'
-									),
-									'alias' => 'passagescommissionseps',
-									'conditions' => array(
-										'passagescommissionseps.etatdossierep' => array( 'associe', 'decisionep', 'decisioncg', 'traite', 'annule', 'reporte' )
-									)
+							.' )'
+						),
+						'contain' => array(
+							'Sanctionrendezvousep58' => array(
+								'Rendezvous' => array(
+									'Typerdv'
 								)
 							)
-						.' )'
-					),
-					'joins' => array(
-						array(
-							'table' => 'sanctionsrendezvouseps58',
-							'alias' => 'Sanctionrendezvousep58',
-							'type' => 'INNER',
-							'conditions' => array(
-								'Sanctionrendezvousep58.dossierep_id = Dossierep.id',
-								'Sanctionrendezvousep58.rendezvous_id' => $lastrdv_id
+						),
+						'order' => array( 'Dossierep.created ASC' )
+					)
+				);
+				$this->set( compact( 'dossierep' ) );
+	// debug($dossierep);
+				
+				$dossierepLie = $this->Rendezvous->Personne->Dossierep->find(
+					'count',
+					array(
+						'conditions' => array(
+							'Dossierep.id IN ( '.
+								$this->Rendezvous->Personne->Dossierep->Passagecommissionep->sq(
+									array(
+										'fields' => array(
+											'passagescommissionseps.dossierep_id'
+										),
+										'alias' => 'passagescommissionseps',
+										'conditions' => array(
+											'passagescommissionseps.etatdossierep' => array( 'associe', 'decisionep', 'decisioncg', 'traite', 'annule', 'reporte' )
+										)
+									)
+								)
+							.' )'
+						),
+						'joins' => array(
+							array(
+								'table' => 'sanctionsrendezvouseps58',
+								'alias' => 'Sanctionrendezvousep58',
+								'type' => 'INNER',
+								'conditions' => array(
+									'Sanctionrendezvousep58.dossierep_id = Dossierep.id',
+									'Sanctionrendezvousep58.rendezvous_id' => $lastrdv_id
+								)
 							)
-						)
-					),
-					'order' => array( 'Dossierep.created ASC' )
-				)
-			);
-			$this->set( compact( 'dossierepLie' ) );
+						),
+						'order' => array( 'Dossierep.created ASC' )
+					)
+				);
+				$this->set( compact( 'dossierepLie' ) );
+			}
 			
 			$this->set( compact( 'rdvs' ) );
 			$this->set( 'personne_id', $personne_id );
@@ -400,7 +402,7 @@ App::import( 'Helper', 'Locale' );
 			if( !empty( $this->data ) ){
 				if( $this->Rendezvous->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
 					if( $this->Rendezvous->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
-						if ( $this->Rendezvous->Statutrdv->provoquePassageEp( $this->data['Rendezvous']['statutrdv_id'] ) ) {
+						if ( $this->Rendezvous->Statutrdv->provoquePassageEp( $this->data['Rendezvous']['statutrdv_id'] ) && Configure::read( 'Cg.departement' ) == 58 ) {
 							if ( $this->Rendezvous->passageEp( $personne_id, $this->data['Rendezvous']['typerdv_id'] ) ) {
 								$dossierep = array(
 									'Dossierep' => array(
@@ -476,25 +478,27 @@ App::import( 'Helper', 'Locale' );
 					'contain' => false
 				)
 			);
-			
-			$dossierep = $this->Rendezvous->Sanctionrendezvousep58->find(
-				'first',
-				array(
-					'fields' => array(
-						'Sanctionrendezvousep58.id',
-						'Sanctionrendezvousep58.dossierep_id'
-					),
-					'conditions' => array(
-						'Sanctionrendezvousep58.rendezvous_id' => $id
-					),
-					'contain' => false
-				)
-			);
-			
 			$success = true;
-			if ( !empty( $dossierep ) ) {
-				$success = $this->Rendezvous->Sanctionrendezvousep58->delete( $dossierep['Sanctionrendezvousep58']['id'] ) && $success;
-				$success = $this->Rendezvous->Sanctionrendezvousep58->Dossierep->delete( $dossierep['Sanctionrendezvousep58']['dossierep_id'] ) && $success;
+			
+			if ( Configure::read( 'Cg.departement' ) == 58 ) {
+				$dossierep = $this->Rendezvous->Sanctionrendezvousep58->find(
+					'first',
+					array(
+						'fields' => array(
+							'Sanctionrendezvousep58.id',
+							'Sanctionrendezvousep58.dossierep_id'
+						),
+						'conditions' => array(
+							'Sanctionrendezvousep58.rendezvous_id' => $id
+						),
+						'contain' => false
+					)
+				);
+				
+				if ( !empty( $dossierep ) ) {
+					$success = $this->Rendezvous->Sanctionrendezvousep58->delete( $dossierep['Sanctionrendezvousep58']['id'] ) && $success;
+					$success = $this->Rendezvous->Sanctionrendezvousep58->Dossierep->delete( $dossierep['Sanctionrendezvousep58']['dossierep_id'] ) && $success;
+				}
 			}
 			$success = $this->Rendezvous->delete( $id ) && $success;
 			
