@@ -3,7 +3,7 @@
         $pageTitle = 'Contrats Particuliers validés';
     }
     else{
-        $pageTitle = 'Contrats Particuliers validés';
+        $pageTitle = 'Contrats validés';
     }
 
     echo $this->pageTitle = $pageTitle;
