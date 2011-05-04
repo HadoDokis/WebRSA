@@ -10,6 +10,9 @@
 		if( isset( $dossierep ) && !empty( $dossierep ) ) {
 			echo '<p class="error">Ce dossier est en cours de passage en EP : '.$dossierep['Sanctionrendezvousep58']['Rendezvous']['Typerdv']['libelle'].'.</p>';
 		}
+		if ( !isset( $dossierepLie ) ) {
+			$dossierepLie = 0;
+		}
 
 		echo $default2->index(
 			$rdvs,
@@ -33,34 +36,9 @@
 					'Rendezvous::delete' => array( 'disabled' => '( "'.$permissions->check( 'rendezvous', 'delete' ).'" != "1" ) || ( "#Rendezvous.id#" != '.$lastrdv_id.' ) || ( "'.$dossierepLie.'" == "1" )' ),
 					'Rendezvous::filelink' => array( 'disabled' => '( "'.$permissions->check( 'rendezvous', 'filelink' ).'" != "1" ) ' )
 				),
-				'add' => array( 'Rendezvous.add' => array( 'controller'=>'rendezvous', 'action'=>'add', $personne_id ) ),
-//                 'options' => $options
+				'add' => array( 'Rendezvous.add' => array( 'controller'=>'rendezvous', 'action'=>'add', $personne_id ) )
 			)
 		);
-//         echo $default->index(
-//             $rdvs,
-//             array(
-//                 'Personne.nom_complet',
-//                 'Structurereferente.lib_struc',
-//                 'Referent.nom_complet',
-//                 'Permanence.libpermanence',
-//                 'Typerdv.libelle',
-//                 'Statutrdv.libelle',
-//                 'Rendezvous.daterdv',
-//                 'Rendezvous.heurerdv',
-//                 'Rendezvous.objetrdv',
-//                 'Rendezvous.commentairerdv'
-//             ),
-//             array(
-//                 'actions' => array(
-//                     'Rendezvous.view',
-//                     'Rendezvous.edit',
-//                     'Rendezvous.gedooo'/* => array( 'controller' => 'gedooos', 'action' => 'rendezvous' )*/,
-//                     'Rendezvous.delete'
-//                 ),
-//                 'add' => array( 'Rendezvous.add' => $personne_id )
-//             )
-//         );
 	?>
 </div>
 <div class="clearer"><hr /></div>
