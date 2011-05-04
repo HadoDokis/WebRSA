@@ -402,7 +402,7 @@ ALTER TABLE dossierseps ALTER COLUMN themeep TYPE TYPE_THEMEEP USING CAST(themee
 CREATE TABLE sanctionsrendezvouseps58 (
 	id      				SERIAL NOT NULL PRIMARY KEY,
 	dossierep_id			INTEGER DEFAULT NULL REFERENCES dossierseps(id) ON DELETE CASCADE ON UPDATE CASCADE,
-	typerdv_id				INTEGER NOT NULL REFERENCES typesrdv(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	rendezvous_id			INTEGER NOT NULL REFERENCES rendezvous(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	commentaire				TEXT DEFAULT NULL,
 	created					TIMESTAMP WITHOUT TIME ZONE,
 	modified				TIMESTAMP WITHOUT TIME ZONE
@@ -410,7 +410,7 @@ CREATE TABLE sanctionsrendezvouseps58 (
 COMMENT ON TABLE sanctionsrendezvouseps58 IS 'Thématique pour les sanctions après des rendez-vous non réalisé (CG58)';
 
 CREATE INDEX sanctionsrendezvouseps58_dossierep_id_idx ON sanctionsrendezvouseps58 (dossierep_id);
-CREATE INDEX sanctionsrendezvouseps58_typerdv_id_idx ON sanctionsrendezvouseps58 (typerdv_id);
+CREATE INDEX sanctionsrendezvouseps58_typerdv_id_idx ON sanctionsrendezvouseps58 (rendezvous_id);
 
 SELECT add_missing_table_field ('public', 'regroupementseps', 'sanctionrendezvousep58', 'TYPE_NIVEAUDECISIONEP');
 ALTER TABLE regroupementseps ALTER COLUMN sanctionrendezvousep58 SET DEFAULT 'nontraite';

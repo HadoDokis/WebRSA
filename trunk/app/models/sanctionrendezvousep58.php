@@ -32,9 +32,9 @@
 				'fields' => '',
 				'order' => ''
 			),
-			'Typerdv' => array(
-				'className' => 'Typerdv',
-				'foreignKey' => 'typerdv_id',
+			'Rendezvous' => array(
+				'className' => 'Rendezvous',
+				'foreignKey' => 'rendezvous_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
@@ -108,12 +108,14 @@
 						'fields' => array(
 							'id',
 							'dossierep_id',
-							'typerdv_id',
+							'rendezvous_id',
 							'created',
 							'modified'
 
 						),
-						'Typerdv'
+						'Rendezvous' => array(
+							'Typerdv'
+						)
 					),
 					'Passagecommissionep' => array(
 						'conditions' => array(

@@ -220,8 +220,94 @@ App::import( 'Helper', 'Locale' );
 					)
 				)
 			);
+			
+			if ( isset( $rdvs['0']['Rendezvous']['id'] ) && !empty( $rdvs['0']['Rendezvous']['id'] ) ) {
+				$lastrdv_id = $rdvs['0']['Rendezvous']['id'];
+			}
+			else {
+				$lastrdv_id = 0;
+			}
+			$this->set( 'lastrdv_id', $lastrdv_id );
 			$this->Rendezvous->forceVirtualFields = false;
 // debug($rdvs);
+			
+			$dossierep = $this->Rendezvous->Personne->Dossierep->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Dossierep.themeep' => 'sanctionsrendezvouseps58',
+						'Dossierep.id NOT IN ( '.
+							$this->Rendezvous->Personne->Dossierep->Passagecommissionep->sq(
+								array(
+									'fields' => array(
+										'passagescommissionseps.dossierep_id'
+									),
+									'alias' => 'passagescommissionseps',
+									'conditions' => array(
+										'passagescommissionseps.etatdossierep' => array( 'traite', 'annule' )
+									)
+								)
+							)
+						.' )'
+					),
+					'contain' => array(
+						'Sanctionrendezvousep58' => array(
+							'Rendezvous' => array(
+								'Typerdv'
+							)
+						)
+					),
+					'order' => array( 'Dossierep.created ASC' )
+				)
+			);
+			$this->set( compact( 'dossierep' ) );
+// debug($dossierep);
+			
+			$dossierepEnCours = false;
+			if ( !empty( $dossierep ) ) {
+				$dossierepEnCours = $this->Rendezvous->Personne->Dossierep->find(
+					'count',
+					array(
+						'conditions' => array(
+							'Dossierep.id' => $dossierep['Dossierep']['id'],
+							'Dossierep.id IN ( '.
+								$this->Rendezvous->Personne->Dossierep->Passagecommissionep->sq(
+									array(
+										'fields' => array(
+											'passagescommissionseps.dossierep_id'
+										),
+										'alias' => 'passagescommissionseps',
+										'conditions' => array(
+											'passagescommissionseps.etatdossierep' => array( 'associe', 'decisionep', 'decisioncg', 'traite', 'annule', 'reporte' )
+										)
+									)
+								)
+							.' )'
+						),
+						'joins' => array(
+							array(
+								'table' => 'sanctionsrendezvouseps58',
+								'alias' => 'Sanctionrendezvousep58',
+								'type' => 'INNER',
+								'conditions' => array(
+									'Sanctionrendezvousep58.dossierep_id = Dossierep.id',
+									'Sanctionrendezvousep58.rendezvous_id' => $lastrdv_id
+								)
+							)
+						),/*
+						'contain' => array(
+							'Sanctionrendezvousep58' => array(
+								'Rendezvous' => array(
+									'conditions' => array( 'Rendezvous.id' => $lastrdv_id )
+								)
+							)
+						),*/
+						'order' => array( 'Dossierep.created ASC' )
+					)
+				);
+			}
+			$this->set( compact( 'dossierepEnCours' ) );
+			
 			$this->set( compact( 'rdvs' ) );
 			$this->set( 'personne_id', $personne_id );
 		}
@@ -338,7 +424,7 @@ App::import( 'Helper', 'Locale' );
 								$sanctionrendezvousep58 = array(
 									'Sanctionrendezvousep58' => array(
 										'dossierep_id' => $this->Rendezvous->Personne->Dossierep->id,
-										'typerdv_id' => $this->data['Rendezvous']['typerdv_id']
+										'rendezvous_id' => $this->Rendezvous->id
 									)
 								);
 								$this->Rendezvous->Personne->Dossierep->Sanctionrendezvousep58->save( $sanctionrendezvousep58 );
