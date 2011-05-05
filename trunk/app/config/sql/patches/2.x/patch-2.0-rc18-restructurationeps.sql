@@ -507,5 +507,13 @@ SELECT add_missing_table_field ('public', 'regroupementseps', 'contratcomplexeep
 ALTER TABLE regroupementseps ALTER COLUMN contratcomplexeep93 SET DEFAULT 'nontraite'::type_niveaudecisionep;
 
 -- *****************************************************************************
+-- 20110505, sanctionseps58
+-- *****************************************************************************
+
+ALTER TABLE sanctionseps58 DROP COLUMN listesanctionep58_id;
+ALTER TABLE decisionssanctionseps58 ADD COLUMN listesanctionep58_id INTEGER DEFAULT NULL REFERENCES listesanctionseps58(id) ON DELETE CASCADE ON UPDATE CASCADE;
+CREATE INDEX decisionssanctionseps58_listesanctionep58_id_idx ON decisionssanctionseps58( listesanctionep58_id );
+
+-- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
