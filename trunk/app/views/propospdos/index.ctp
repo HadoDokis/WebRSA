@@ -65,7 +65,7 @@
 		                <th>Motif de la décision</th>
 		                <th>Date de la décision CG</th>
 		                <th>Commentaire PDO</th>
-		                <th>Etat du dossier PDO</th>
+<!-- 		                <th>Etat du dossier PDO</th> -->
 		                <th colspan="3" class="action">Actions</th>
 					<?php } ?>
                 </tr>
@@ -99,14 +99,15 @@
 		                    );
 						}
 						else {
+
 							echo $xhtml->tableCells(
 		                        array(
 		                            h( Set::enum( Set::classicExtract( $pdo, 'Propopdo.typepdo_id' ), $typepdo ) ),
-		                            h( Set::enum( Set::classicExtract( $pdo, 'Propopdo.decisionpdo_id' ), $decisionpdo ) ),
+		                            h( Set::enum( Set::classicExtract( $pdo, 'Decisionpropopdo.decisionpdo_id' ), $decisionpdo ) ),
 		                            h( Set::enum( Set::classicExtract( $pdo, 'Propopdo.motifpdo' ), $motifpdo ) ),
-		                            h( date_short( Set::classicExtract( $pdo, 'Propopdo.datedecisionpdo' ) ) ),
-		                            h( Set::classicExtract( $pdo, 'Propopdo.commentairepdo' ) ),
-		                            h( Set::enum( Set::classicExtract( $pdo, 'Propopdo.etatdossierpdo' ), $options['etatdossierpdo'] ) ),
+		                            h( date_short( Set::classicExtract( $pdo, 'Decisionpropopdo.datedecisionpdo' ) ) ),
+		                            h( Set::classicExtract( $pdo, 'Decisionpropopdo.commentairepdo' ) ),
+// 		                            h( Set::enum( Set::classicExtract( $pdo, 'Propopdo.etatdossierpdo' ), $options['etatdossierpdo'] ) ),
 		                            $xhtml->treatmentLink(
 		                                'Traitements sur la PDO',
 		                                array( 'controller' => 'traitementspdos', 'action' => 'index', $pdo['Propopdo']['id'])

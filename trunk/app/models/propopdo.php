@@ -253,7 +253,9 @@
 /*                  '"Typenotifpdo"."id"',
                     '"Typenotifpdo"."libelle"',*/
                     '"Typepdo"."libelle"',
-
+                    '"Decisionpropopdo"."decisionpdo_id"',
+                    '"Decisionpropopdo"."datedecisionpdo"',
+                    '"Decisionpropopdo"."commentairepdo"',
 					'"Personne"."id"',
 					'"Personne"."pieecpres"',
 				),
@@ -331,7 +333,14 @@
 	//                             '( Prestation.natprest = \'RSA\' OR Prestation.natprest = \'PFA\' )',
 							'( Prestation.rolepers = \'DEM\' OR Prestation.rolepers = \'CJT\' )',
 						)
-					)
+					),
+					array(
+                        'table'      => 'decisionspropospdos',
+                        'alias'      => 'Decisionpropopdo',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Decisionpropopdo.propopdo_id = Propopdo.id' )
+                    ),
 				),
 				/*'order' => 'Propopdo.datedecisionpdo ASC'*/
 				'order' => 'Propopdo.datereceptionpdo DESC'
