@@ -440,6 +440,31 @@
                                 <td><?php echo h( date_short( Set::extract( 'DEM.Nonrespectsanctionep93.derniere.Relancenonrespectsanctionep93.daterelance', $details ) ) );?></td>
                                 <td><?php echo h( date_short( Set::extract( 'CJT.Nonrespectsanctionep93.derniere.Relancenonrespectsanctionep93.daterelance', $details ) ) );?></td>
                             </tr>
+                            <tr class="even">
+                                <th>Type de relance</th>
+                                <td><?php
+                                    $numrelance = Set::extract( 'DEM.Nonrespectsanctionep93.derniere.Relancenonrespectsanctionep93.numrelance', $details );
+                                    if( !empty($numrelance) ){
+                                        if( $numrelance == 1 ) {
+                                            echo '1ère relance';
+                                        }
+                                        else {
+                                            echo "{$numrelance}ème relance";
+                                        }
+                                    }
+                                ?></td>
+                                <td><?php
+                                    $numrelance = Set::extract( 'CJT.Nonrespectsanctionep93.derniere.Relancenonrespectsanctionep93.numrelance', $details );
+                                    if( !empty($numrelance) ){
+                                        if( $numrelance == 1 ) {
+                                            echo '1ère relance';
+                                        }
+                                        else {
+                                            echo "{$numrelance}ème relance";
+                                        }
+                                    }
+                                ?></td>
+                            </tr>
                         </tbody>
                     </table>
                 <?php endif;?>

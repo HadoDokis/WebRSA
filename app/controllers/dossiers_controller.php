@@ -499,14 +499,16 @@
 						'fields' => array(
 							'Nonrespectsanctionep93.created',
 							'Nonrespectsanctionep93.origine',
-							'Relancenonrespectsanctionep93.daterelance'
+							'Nonrespectsanctionep93.rgpassage',
+							'Relancenonrespectsanctionep93.daterelance',
+							'Relancenonrespectsanctionep93.numrelance'
 						),
 						'contain' => false,
 						'joins' => array(
                             array(
                                 'table'      => 'nonrespectssanctionseps93',
                                 'alias'      => 'Nonrespectsanctionep93',
-                                'type'       => 'LEFT OUTER',
+                                'type'       => 'INNER',
                                 'foreignKey' => false,
                                 'conditions' => array( 'Nonrespectsanctionep93.id = Relancenonrespectsanctionep93.nonrespectsanctionep93_id' )
                             ),
@@ -551,7 +553,7 @@
 								)
 							)
 						),
-						'order' => "Nonrespectsanctionep93.created DESC",
+						'order' => 'Relancenonrespectsanctionep93.daterelance DESC'
 					)
 				);
 				$personnesFoyer[$index]['Nonrespectsanctionep93']['derniere'] = $tRelance;
@@ -618,106 +620,7 @@
                 }
 
                 $personnesFoyer[$index]['Dossierep']['derniere'] = Set::merge( $tdossierEp, $decisionEP );
-// debug( $personnesFoyer[$index]['Dossierep']['derniere'] );
-                /*$tdossierEp = $this->Dossier->Foyer->Personne->Dossierep->find(
-                    'first',
-                    array(
-                        'fields' => array(
-                            'Dossierep.themeep',
-                            'Commissionep.dateseance',
-                            'Passagecommissionep.id',
-                            'Passagecommissionep.etatdossierep',
-                        ),
-                        'joins' => array(
-                            array(
-                                'table'      => 'passagescommissionseps',
-                                'alias'      => 'Passagecommissionep',
-                                'type'       => 'INNER',
-                                'foreignKey' => false,
-                                'conditions' => array( 'Passagecommissionep.dossierep_id = Dossierep.id' )
-                            ),
-                            array(
-                                'table'      => 'commissionseps',
-                                'alias'      => 'Commissionep',
-                                'type'       => 'INNER',
-                                'foreignKey' => false,
-                                'conditions' => array( 'Passagecommissionep.commissionep_id = Commissionep.id' )
-                            ),
-                        ),
-                        'conditions' => array(
-                            'Dossierep.personne_id' => $personnesFoyer[$index]['Personne']['id']
-                        ),
-                        'order' => array(
-                            'Commissionep.dateseance DESC'
-                        ),
-                        'contain' => false,
-                    )
-                );*/
 
-
-				/*$tdossierEp = $this->Dossier->Foyer->Personne->Dossierep->find(
-					'first',
-					array(
-						'fields' => array(
-							'id',
-							'created',
-							'themeep',
-						),
-						'conditions' => array(
-							'Dossierep.personne_id' => $personnesFoyer[$index]['Personne']['id']
-						),
-						'contain' => false,
-						'order' => "Dossierep.created DESC",
-						'recursive' => -1
-					)
-				);
-// debug($tdossierEp);
-                if( !empty( $tdossierEp ) ){
-                    $themeEP = Set::classicExtract( $tdossierEp, 'Dossierep.themeep' );
-                    $modelTheme = Inflector::classify( Inflector::singularize( $themeEP ) );
-                    $modelThemeLieName = Inflector::singularize( $themeEP );
-
-                    $decisionEP = $this->Dossier->Foyer->Personne->Dossierep->{$modelTheme}->find(
-                        'first',
-                        array(
-                            'conditions' => array(
-                                "{$modelTheme}.dossierep_id" => $tdossierEp['Dossierep']['id']
-                            )
-                        )
-                    );
-    // debug($decisionEP);
-
-
-                    $tCommissionEp = $this->Dossier->Foyer->Personne->Dossierep->Passagecommissionep->find(
-                        'first',
-                        array(
-                            'conditions' => array(
-                                'Passagecommissionep.dossierep_id' => $tdossierEp['Dossierep']['id']
-                            ),
-                            'contain' => array(
-                                'Commissionep' => array(
-                                    'fields' => array(
-                                        'dateseance'
-                                    )
-                                ),
-                                "Decision{$modelThemeLieName}" => array(
-                                    'order' => "Decision{$modelThemeLieName}.etape DESC"
-                                )
-                            )
-                        )
-                    );
-    debug($tCommissionEp);
-
-                    $tdossierEp = Set::merge( $tdossierEp, $tCommissionEp );
-                    $decisionEP = $tdossierEp["Decision$modelThemeLieName"][0]['decision'];
-
-                    $this->set( 'decisionEP', $decisionEP );
-//                     debug($decisionEP);
-//                     debug( $tdossierEp);
-                }
-                $personnesFoyer[$index]['Dossierep']['derniere'] = $tdossierEp;
-
-// debug($tdossierEp);*/
 
 
 				/**
