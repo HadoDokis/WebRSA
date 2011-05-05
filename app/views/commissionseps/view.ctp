@@ -224,7 +224,7 @@
 				<?php
 					foreach( $themes as $theme ) {
 // 						debug( Set::flatten( $dossiers[$theme] ) );
-// debug($theme);
+// debug($dossiers);
 						if( ( $theme == 'nonorientationproep58' ) || ( $theme == 'reorientationep93' ) || ( $theme == 'nonorientationproep93' ) || ( $theme == 'regressionorientationep58' ) || ( $theme == 'sanctionep58' ) ){
 							$controller = 'orientsstructs';
 						}

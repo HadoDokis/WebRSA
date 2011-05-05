@@ -174,8 +174,8 @@
 					$conditionsAdresses = array();
 				}
 
-				$this->paginate = array(
-					'Dossierep' => array(
+				$queryData = array(
+// 					'Dossierep' => array(
 						'fields' => array(
 							'Dossierep.id',
 							'Personne.id',
@@ -303,17 +303,17 @@
 						),
 						'limit' => 100,
 						'order' => array( 'Dossierep.created ASC' )
-					)
+// 					)
 				);
 
-				$dossierseps = $this->paginate( $this->Dossierep );
+				/*$dossierseps = $this->paginate( $this->Dossierep );
 
 				// INFO: pour avoir le formulaire pré-rempli ... à mettre dans le modèle également ?
 				if( empty( $this->data ) ) {
 					foreach( $dossierseps as $key => $dossierep ) {
 						$dossierseps[$key]['Dossierep']['chosen'] =  ( ( $dossierep['Passagecommissionep']['commissionep_id'] == $commissionep_id ) );
 					}
-				}
+				}*/
 
 				$options = $this->Dossierep->enums();
 				$options['Dossierep']['commissionep_id'] = $this->Dossierep->Passagecommissionep->Commissionep->find(
@@ -329,6 +329,29 @@
 			else {
 				$this->set( 'themeEmpty', true );
 			}
+
+
+            $themesChoose = array_keys( $this->Dossierep->Passagecommissionep->Commissionep->themesTraites( $commissionep_id ) );
+            
+            $dossiers = array();
+            $countDossiers = 0;
+            $originalPaginate = $this->paginate;
+            foreach( $themesChoose as $theme ){
+                //$queryData = $this->paginate['Dossierep'];
+                $queryData['conditions']['Dossierep.themeep'] = Inflector::tableize( $theme );
+                //$dossiers[$theme] = $this->paginate( $this->Dossierep );
+                $dossiers[$theme] = $this->Dossierep->find( 'all', $queryData );
+                // INFO: pour avoir le formulaire pré-rempli ... à mettre dans le modèle également ?
+                if( empty( $this->data ) ) {
+                    foreach( $dossiers[$theme] as $key => $dossierep ) {
+                        $dossiers[$theme][$key]['Dossierep']['chosen'] =  ( ( $dossierep['Passagecommissionep']['commissionep_id'] == $commissionep_id ) );
+                    }
+                }
+                $countDossiers += count($dossiers[$theme]);
+            }
+            $this->paginate = $originalPaginate;
+            $this->set( compact( 'dossiers', 'themesChoose' ) );
+            $this->set( compact( 'countDossiers' ) );
 
 			$this->set( compact( 'options', 'dossierseps', 'commissionep' ) );
 			$this->set( 'commissionep_id', $commissionep_id);
