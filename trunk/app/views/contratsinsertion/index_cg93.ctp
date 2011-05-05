@@ -137,9 +137,9 @@
 						if( $isValid == 'V'  ){
 							$block = false;
 						}
-						else{
-							$block;
-						}
+// 						else{
+// 							$block;
+// 						}
 
 						$contratenep = in_array( $contratinsertion['Contratinsertion']['id'], $contratsenep );
 
@@ -191,7 +191,7 @@
 									array( 'controller' => 'signalementseps93', 'action' => 'add', $contratinsertion['Contratinsertion']['id'] ),
 									$permissions->check( 'signalementseps93', 'add' )
 									&& $enCours
-									&& $isValid
+									&& !$block
 									&& ( $contratinsertion['Contratinsertion']['forme_ci'] == 'S' )
 									&& ( !isset( $signalementseps93 ) || empty( $signalementseps93 ) )
 									&& empty( $erreursCandidatePassage )
