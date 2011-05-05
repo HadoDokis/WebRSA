@@ -514,6 +514,12 @@ ALTER TABLE sanctionseps58 DROP COLUMN listesanctionep58_id;
 ALTER TABLE decisionssanctionseps58 ADD COLUMN listesanctionep58_id INTEGER DEFAULT NULL REFERENCES listesanctionseps58(id) ON DELETE CASCADE ON UPDATE CASCADE;
 CREATE INDEX decisionssanctionseps58_listesanctionep58_id_idx ON decisionssanctionseps58( listesanctionep58_id );
 
+-- ***********************************************************************************
+-- 20110505, suppression contrainte not null sur le champ name de la commissionseps
+-- ***********************************************************************************
+ALTER TABLE commissionseps ALTER COLUMN name DROP NOT NULL;
+ALTER TABLE commissionseps ALTER COLUMN name SET DEFAULT NULL;
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
