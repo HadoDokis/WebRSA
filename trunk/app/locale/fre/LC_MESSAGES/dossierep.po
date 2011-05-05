@@ -47,7 +47,7 @@ msgstr "Imprimer le courrier d'information"
 ###############################################################################
 
 msgid "ENUM::THEMEEP::reorientationseps93"
-msgstr "Demande de réorientation"
+msgstr "Réorientations"
 
 msgid "ENUM::THEMEEP::saisinesbilansparcourseps66"
 msgstr "Demande de réorientation"
@@ -59,7 +59,7 @@ msgid "ENUM::THEMEEP::saisinespdoseps66"
 msgstr "Saisine PDO"
 
 msgid "ENUM::THEMEEP::nonrespectssanctionseps93"
-msgstr "Demande de suspension"
+msgstr "Demandes de suspension"
 
 msgid "ENUM::THEMEEP::defautsinsertionseps66"
 msgstr "Défaut d'insertion"
@@ -83,7 +83,7 @@ msgid "ENUM::THEMEEP::sanctionsrendezvouseps58"
 msgstr "Sanction pour rendez-vous non honoré(s)"
 
 msgid "ENUM::THEMEEP::contratscomplexeseps93"
-msgstr "Validation des contrats complexes"
+msgstr "CER complexes"
 
 #
 

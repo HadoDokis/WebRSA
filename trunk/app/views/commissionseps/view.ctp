@@ -13,7 +13,7 @@
 		}
 
 		if( in_array( 'commissionseps::delete', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) ) {
-			echo '<li>'.$xhtml->deleteLink(
+			echo '<li>'.$xhtml->cancelLink(
 				__d( 'commissionep','Commissionseps::delete', true ),
 				array( 'controller' => 'commissionseps', 'action' => 'delete', $commissionep['Commissionep']['id'] )
 			).' </li>';

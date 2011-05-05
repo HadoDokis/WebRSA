@@ -59,7 +59,7 @@ msgid "Commissionseps::edit"
 msgstr "Modifier la commission d'EP"
 
 msgid "Commissionseps::delete"
-msgstr "Supprimer la commission d'EP"
+msgstr "Annuler la commission d'EP"
 
 msgid "Commissionseps::choose"
 msgstr "Choisir les dossiers à passer à la commission d'EP"
