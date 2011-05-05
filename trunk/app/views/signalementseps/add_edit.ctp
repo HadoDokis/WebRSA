@@ -31,8 +31,8 @@
 		echo $default->subform(
 			array(
 				"{$modelClassName}.id" => array( 'type' => 'hidden' ),
-				"{$modelClassName}.date" => array( 'selected' => $defaultDate ),
-				"{$modelClassName}.motif",
+				"{$modelClassName}.date" => array( 'selected' => $defaultDate, 'type' => 'date' ),
+				"{$modelClassName}.motif" => array( 'type' => 'textarea' ),
 			)
 		);
 

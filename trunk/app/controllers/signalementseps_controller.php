@@ -139,8 +139,8 @@
 					$success = $this->{$this->modelClass}->Dossierep->saveAll( $this->data, array( 'atomic' => false ) );
 				}
 				else {
-					$success = $this->{$this->modelClass}->create();
-					$success = $this->{$this->modelClass}->save( $this->data );
+					$success = $this->{$this->modelClass}->create( $this->data );
+					$success = $this->{$this->modelClass}->save();
 				}
 
 				$this->_setFlashResult( 'Save', $success );
