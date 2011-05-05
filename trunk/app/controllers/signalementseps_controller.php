@@ -1,6 +1,18 @@
 <?php
-	class Signalementseps93Controller extends Appcontroller
+	class SignalementsepsController extends Appcontroller
 	{
+		
+		public $uses = array( 'Signalementep93' );
+		
+		/**
+		*
+		*/
+		
+		public function beforeFilter() {
+			$this->modelClass = 'Signalementep'.Configure::read( 'Cg.departement' );
+			parent::beforeFilter();
+		}
+		
 		/**
 		*
 		*/
@@ -28,13 +40,13 @@
 				$contratinsertion_id = $id;
 
 				// Il n'existe pas d'autre signalement en cours de traitement pour ce contrat
-				$count = $this->Signalementep93->Dossierep->find(
+				$count = $this->{$this->modelClass}->Dossierep->find(
 					'count',
 					array(
 						'conditions' => array(
-							'Signalementep93.contratinsertion_id' => $contratinsertion_id,
-							'Dossierep.themeep' => 'signalementseps93',
-							'Dossierep.id NOT IN ( '.$this->Signalementep93->Dossierep->Passagecommissionep->sq(
+							$this->modelClass.'.contratinsertion_id' => $contratinsertion_id,
+							'Dossierep.themeep' => Inflector::tableize( $this->modelClass ),
+							'Dossierep.id NOT IN ( '.$this->{$this->modelClass}->Dossierep->Passagecommissionep->sq(
 								array(
 									'alias' => 'passagescommissionseps',
 									'fields' => array(
@@ -49,18 +61,18 @@
 						),
 						'joins' => array(
 							array(
-								'table'      => 'signalementseps93',
-								'alias'      => 'Signalementep93',
+								'table'      => Inflector::tableize( $this->modelClass ),
+								'alias'      => $this->modelClass,
 								'type'       => 'INNER',
 								'foreignKey' => false,
-								'conditions' => array( 'Dossierep.id = Signalementep93.dossierep_id' )
+								'conditions' => array( "Dossierep.id = {$this->modelClass}.dossierep_id" )
 							),
 							array(
 								'table'      => 'contratsinsertion',
 								'alias'      => 'Contratinsertion',
 								'type'       => 'INNER',
 								'foreignKey' => false,
-								'conditions' => array( 'Contratinsertion.id = Signalementep93.contratinsertion_id' )
+								'conditions' => array( "Contratinsertion.id = {$this->modelClass}.contratinsertion_id" )
 							),
 						),
 					)
@@ -68,22 +80,22 @@
 				$this->assert( empty( $count ), 'error500' );
 			}
 			else {
-				$signalementep93_id = $id;
-				$signalementep93 = $this->Signalementep93->find(
+				$signalementep_id = $id;
+				$signalementep = $this->{$this->modelClass}->find(
 					'first',
 					array(
 						'conditions' => array(
-							'Signalementep93.id' => $signalementep93_id
+							$this->modelClass.'.id' => $signalementep_id
 						),
 						'contain' => false
 					)
 				);
-				$this->assert( !empty( $signalementep93 ), 'invalidParameter' );
-				$contratinsertion_id = $signalementep93['Signalementep93']['contratinsertion_id'];
+				$this->assert( !empty( $signalementep ), 'invalidParameter' );
+				$contratinsertion_id = $signalementep[$this->modelClass]['contratinsertion_id'];
 			}
 
 			// Recherche du CER et vérifications
-			$contratinsertion = $this->Signalementep93->Contratinsertion->find(
+			$contratinsertion = $this->{$this->modelClass}->Contratinsertion->find(
 				'first',
 				array(
 					'conditions' => array(
@@ -96,9 +108,9 @@
 
 			$personne_id = $contratinsertion['Contratinsertion']['personne_id'];
 
-			$erreursCandidatePassage = $this->Signalementep93->Dossierep->erreursCandidatePassage( $personne_id );
+			$erreursCandidatePassage = $this->{$this->modelClass}->Dossierep->erreursCandidatePassage( $personne_id );
 
-			$dureeTolerance = Configure::read( 'Signalementep93.dureeTolerance' );
+			$dureeTolerance = Configure::read( $this->modelClass.'.dureeTolerance' );
 
 			$traitable = (
 				( $contratinsertion['Contratinsertion']['decision_ci'] == 'V' )
@@ -114,34 +126,34 @@
 					$this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index', $personne_id ) );
 				}
 			
-				$this->Signalementep93->Dossierep->begin();
+				$this->{$this->modelClass}->Dossierep->begin();
 
 				if( $this->action == 'add' ) {
-					$rangpcd = $this->Signalementep93->field( 'rang', array( 'Signalementep93.contratinsertion_id' => $contratinsertion_id ), array( 'Signalementep93.rang DESC' ) );
-					$this->data['Signalementep93']['contratinsertion_id'] = $contratinsertion_id;
-					$this->data['Signalementep93']['rang'] = ( empty( $rangpcd ) ? 1 : $rangpcd + 1 );
+					$rangpcd = $this->{$this->modelClass}->field( 'rang', array( $this->modelClass.'.contratinsertion_id' => $contratinsertion_id ), array( $this->modelClass.'.rang DESC' ) );
+					$this->data[$this->modelClass]['contratinsertion_id'] = $contratinsertion_id;
+					$this->data[$this->modelClass]['rang'] = ( empty( $rangpcd ) ? 1 : $rangpcd + 1 );
 
 					$this->data['Dossierep']['personne_id'] = $personne_id;
-					$this->data['Dossierep']['themeep'] = 'signalementseps93';
+					$this->data['Dossierep']['themeep'] = Inflector::tableize( $this->modelClass );
 
-					$success = $this->Signalementep93->Dossierep->saveAll( $this->data, array( 'atomic' => false ) );
+					$success = $this->{$this->modelClass}->Dossierep->saveAll( $this->data, array( 'atomic' => false ) );
 				}
 				else {
-					$success = $this->Signalementep93->create();
-					$success = $this->Signalementep93->save( $this->data );
+					$success = $this->{$this->modelClass}->create();
+					$success = $this->{$this->modelClass}->save( $this->data );
 				}
 
 				$this->_setFlashResult( 'Save', $success );
 				if( $success ) {
-					$this->Signalementep93->commit();
+					$this->{$this->modelClass}->commit();
 					$this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index', $personne_id ) );
 				}
 				else {
-					$this->Signalementep93->Dossierep->rollback();
+					$this->{$this->modelClass}->Dossierep->rollback();
 				}
 			}
 			else if( $this->action == 'edit' ) {
-				$this->data = $signalementep93;
+				$this->data = $signalementep;
 			}
 
 			$this->set( 'personne_id', $personne_id );
@@ -155,18 +167,18 @@
 		*/
 
 		public function delete( $id ) {
-			$signalementep93 = $this->Signalementep93->Dossierep->find(
+			$signalementep = $this->{$this->modelClass}->Dossierep->find(
 				'first',
 				array(
 					'fields' => array(
-						'Signalementep93.id',
+						$this->modelClass.'.id',
 						'Dossierep.id',
 						'Passagecommissionep.etatdossierep',
 					),
 					'conditions' => array(
-						'Signalementep93.id' => $id,
-						'Dossierep.themeep' => 'signalementseps93',
-						'Dossierep.id NOT IN ( '.$this->Signalementep93->Dossierep->Passagecommissionep->sq(
+						$this->modelClass.'.id' => $id,
+						'Dossierep.themeep' => Inflector::tableize( $this->modelClass ),
+						'Dossierep.id NOT IN ( '.$this->{$this->modelClass}->Dossierep->Passagecommissionep->sq(
 							array(
 								'alias' => 'passagescommissionseps',
 								'fields' => array(
@@ -180,18 +192,18 @@
 					),
 					'joins' => array(
 						array(
-							'table'      => 'signalementseps93',
-							'alias'      => 'Signalementep93',
+							'table'      => Inflector::tableize( $this->modelClass ),
+							'alias'      => $this->modelClass,
 							'type'       => 'INNER',
 							'foreignKey' => false,
-							'conditions' => array( 'Dossierep.id = Signalementep93.dossierep_id' )
+							'conditions' => array( "Dossierep.id = {$this->modelClass}.dossierep_id" )
 						),
 						array(
 							'table'      => 'contratsinsertion',
 							'alias'      => 'Contratinsertion',
 							'type'       => 'INNER',
 							'foreignKey' => false,
-							'conditions' => array( 'Contratinsertion.id = Signalementep93.contratinsertion_id' )
+							'conditions' => array( "Contratinsertion.id = {$this->modelClass}.contratinsertion_id" )
 						),
 						array(
 							'table'      => 'passagescommissionseps',
@@ -204,17 +216,17 @@
 				)
 			);
 
-			$this->assert( !empty( $signalementep93 ), 'invalidParameter' );
+			$this->assert( !empty( $signalementep ), 'invalidParameter' );
 
-			$this->Signalementep93->Dossierep->begin();
-			$success = $this->Signalementep93->Dossierep->delete( $signalementep93['Dossierep']['id'] );
+			$this->{$this->modelClass}->Dossierep->begin();
+			$success = $this->{$this->modelClass}->Dossierep->delete( $signalementep['Dossierep']['id'] );
 			$this->_setFlashResult( 'Delete', $success );
 
 			if( $success ) {
-				$this->Signalementep93->Dossierep->commit();
+				$this->{$this->modelClass}->Dossierep->commit();
 			}
 			else {
-				$this->Signalementep93->Dossierep->rollback();
+				$this->{$this->modelClass}->Dossierep->rollback();
 			}
 
 			$this->redirect( Router::url( $this->referer(), true ) );
