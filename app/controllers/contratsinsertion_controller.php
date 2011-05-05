@@ -506,6 +506,7 @@
 				);
 
 				$signalementseps93 = $this->Contratinsertion->Signalementep93->Dossierep->find( 'all', $queryData );
+				debug($signalementseps93);
 
 				// Des dossiers pour la thématique des signalements ?
 				$queryData = $this->_qdThematiqueEp( 'Contratcomplexeep93', $personne_id );
