@@ -7,6 +7,7 @@
 	else {
 		$this->pageTitle = 'Modification d\'un signalement';
 	}
+	$modelClassName = 'Signalementep'.Configure::read( 'Cg.departement' );
 ?>
 <div class="with_treemenu">
 	<h1> <?php echo $this->pageTitle; ?> </h1>
@@ -20,18 +21,18 @@
 	<?php
 		echo $xform->create();
 
-		if( empty( $this->data ) || !dateComplete( $this->data, 'Signalementep93.date' ) ) {
+		if( empty( $this->data ) || !dateComplete( $this->data, "{$modelClassName}.date" ) ) {
 			$defaultDate = date( 'Y-m-d' );
 		}
 		else {
-			$defaultDate = $this->data['Signalementep93']['date'];
+			$defaultDate = $this->data[$modelClassName]['date'];
 		}
 
 		echo $default->subform(
 			array(
-				'Signalementep93.id' => array( 'type' => 'hidden' ),
-				'Signalementep93.date' => array( 'selected' => $defaultDate ),
-				'Signalementep93.motif',
+				"{$modelClassName}.id" => array( 'type' => 'hidden' ),
+				"{$modelClassName}.date" => array( 'selected' => $defaultDate ),
+				"{$modelClassName}.motif",
 			)
 		);
 

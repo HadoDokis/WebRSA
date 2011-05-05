@@ -188,8 +188,8 @@
 								),
 								$xhtml->saisineEpLink(
 									'Signalement',
-									array( 'controller' => 'signalementseps93', 'action' => 'add', $contratinsertion['Contratinsertion']['id'] ),
-									$permissions->check( 'signalementseps93', 'add' )
+									array( 'controller' => 'signalementseps', 'action' => 'add', $contratinsertion['Contratinsertion']['id'] ),
+									$permissions->check( 'signalementseps', 'add' )
 									&& $enCours
 									&& !$block
 									&& ( $contratinsertion['Contratinsertion']['forme_ci'] == 'S' )
