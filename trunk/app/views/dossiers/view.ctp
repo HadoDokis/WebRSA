@@ -447,44 +447,47 @@
                 <td>
                     <h2>Dernier passage en EP</h2>
                     <?php
-                        $dateEpDEM = null;
-                        $etapeEpDEM = null;
-                        $decisionEpDEM = null;
-
-                        $dateEpCJT = null;
-                        $etapeEpCJT = null;
-                        $decisionEpCJT = null;
-// debug($dossierep);
-                        if( isset( $details['DEM'] ) && ( $details['DEM']['Dossierep']['derniere']['Dossierep']['etapedossierep'] == 'traite' ) ){
-                            $dateEpDEM = h( date_short( Set::extract( 'DEM.Dossierep.derniere.Dossierep.created', $details ) ) );
-                            $etapeEpDEM =  Set::enum( Set::classicExtract( $details, 'DEM.Dossierep.derniere.Dossierep.etapedossierep' ), $dossierep['etapedossierep'] );
-                            $decisionEpDEM = Set::enum( Set::classicExtract( $details, 'DEM.Dossierep.derniere.Dossierep.themeep' ), $dossierep['themeep'] );
-
+                        $detailsEp = array();
+                        foreach( array( 'DEM', 'CJT' ) as $roleEp ) {
+                            if( isset( $details[$roleEp]['Dossierep']['derniere']['Dossierep'] ) ){
+                                $detailsEp[$roleEp]['dateEp'] = h( date_short( Set::extract( "{$roleEp}.Dossierep.derniere.Commissionep.dateseance", $details ) ) );
+                                $themeep = Set::classicExtract( $details, "{$roleEp}.Dossierep.derniere.Dossierep.themeep" );
+                                $modeleDecision = 'Decision'.Inflector::singularize( $themeep );
+                                $detailsEp[$roleEp]['themeEp'] = Set::enum( Set::classicExtract( $details, "{$roleEp}.Dossierep.derniere.Dossierep.themeep" ), $dossierep['themeep'] );
+                                $detailsEp[$roleEp]['decisionEp'] = Set::enum( Set::classicExtract( $details, "{$roleEp}.Dossierep.derniere.{$modeleDecision}.decision" ), $options[$modeleDecision]['decision'] );
+//                                 $detailsEp[$roleEp]['etapeDecisionEp'] = Set::enum( Set::classicExtract( $details, "{$roleEp}.Dossierep.derniere.{$modeleDecision}.etape" ), $options[$modeleDecision]['etape'] );
+                                $detailsEp[$roleEp]['etatDossierep'] = Set::enum( Set::classicExtract( $details, "{$roleEp}.Dossierep.derniere.Passagecommissionep.etatdossierep" ), $options['Passagecommissionep']['etatdossierep'] );
+                            }
                         }
-                        if( isset( $details['CJT'] ) && ( $details['CJT']['Dossierep']['derniere']['Dossierep']['etapedossierep'] == 'traite' ) ){
-                            $dateEpCJT = h( date_short( Set::extract( 'CJT.Dossierep.derniere.Dossierep.created', $details ) ) );
-                            $etapeEpCJT =  Set::enum( Set::classicExtract( $details, 'CJT.Dossierep.derniere.Dossierep.etapedossierep' ), $dossierep['etapedossierep'] );
-                            $decisionEpCJT = Set::enum( Set::classicExtract( $details, 'CJT.Dossierep.derniere.Dossierep.themeep' ), $dossierep['themeep'] );
-                        }
-
+//                         debug($options);
                     ?>
                     <table>
                     <?php echo thead( 10 );?>
                         <tbody>
                             <tr class="even">
-                                <th>Date de l'EP</th>
-                                <td><?php echo $dateEpDEM;?></td>
-                                <td><?php echo$dateEpCJT;?></td>
+                                <th>Date de la commission d'EP</th>
+                                <td><?php echo @$detailsEp['DEM']['dateEp'];?></td>
+                                <td><?php echo @$detailsEp['CJT']['dateEp'];?></td>
                             </tr>
-<!--                            <tr class="odd">
-                                <th>Etape de passage en EP</th>
-                                <td><?php echo $etapeEpDEM;?></td>
-                                <td><?php echo $etapeEpCJT;?></td>
-                            </tr>-->
                             <tr class="odd">
-                                <th>Décision de l'EP</th>
-                                <td><?php echo $decisionEpDEM;?></td>
-                                <td><?php echo $decisionEpCJT;?></td>
+                                <th>Motif de passage en EP</th>
+                                <td><?php echo @$detailsEp['DEM']['themeEp'];?></td>
+                                <td><?php echo @$detailsEp['CJT']['themeEp'];?></td>
+                            </tr>
+<!--                            <tr class="even">
+                                <th>Étape décision</th>
+                                <td><?php echo @$detailsEp['DEM']['etapeDecisionEp'];?></td>
+                                <td><?php echo @$detailsEp['CJT']['etapeDecisionEp'];?></td>
+                            </tr>-->
+                            <tr class="even">
+                                <th>État dossier EP</th>
+                                <td><?php echo @$detailsEp['DEM']['etatDossierep'];?></td>
+                                <td><?php echo @$detailsEp['CJT']['etatDossierep'];?></td>
+                            </tr>
+                            <tr class="odd">
+                                <th>Décision de la commission d'EP</th>
+                                <td><?php echo @$detailsEp['DEM']['decisionEp'];?></td>
+                                <td><?php echo @$detailsEp['CJT']['decisionEp'];?></td>
                             </tr>
                         </tbody>
                     </table>
