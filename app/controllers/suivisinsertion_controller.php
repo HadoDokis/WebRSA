@@ -113,6 +113,9 @@
             
             $this->set(compact('personnesFoyer'));
 
+            $options = array(
+                'Passagecommissionep' => $this->Dossier->Foyer->Personne->Dossierep->Passagecommissionep->allEnumLists()
+            );
             $roles = Set::extract( '{n}.Prestation.rolepers', $personnesFoyer );
             foreach( $roles as $index => $role ) {
                 // Contrat insertion lié à la personne
@@ -205,26 +208,65 @@
                 $personnesFoyer[$index]['Orientstruct']['derniere'] = $tOrientstruct['Orientstruct'];
 
 
-                // Dernier passage en EP
-                $tEp = $this->Dossier->Foyer->Personne->Dossierep->find(
+                // Dernier passage effectif (lié à un passagecommissionep)
+                $tdossierEp = $this->Dossier->Foyer->Personne->Dossierep->find(
                     'first',
                     array(
-//                         'fields' => array(
-//                             'id',
-//                             'etapedossierep',
-//                             'created',
-//                             'commissionep_id',
-//                             'themeep',
-//                         ),
+                        'fields' => array(
+                            'Dossierep.themeep',
+                            'Commissionep.dateseance',
+                            'Passagecommissionep.id',
+                            'Passagecommissionep.etatdossierep',
+                        ),
+                        'joins' => array(
+                            array(
+                                'table'      => 'passagescommissionseps',
+                                'alias'      => 'Passagecommissionep',
+                                'type'       => 'INNER',
+                                'foreignKey' => false,
+                                'conditions' => array( 'Passagecommissionep.dossierep_id = Dossierep.id' )
+                            ),
+                            array(
+                                'table'      => 'commissionseps',
+                                'alias'      => 'Commissionep',
+                                'type'       => 'INNER',
+                                'foreignKey' => false,
+                                'conditions' => array( 'Passagecommissionep.commissionep_id = Commissionep.id' )
+                            ),
+                        ),
                         'conditions' => array(
                             'Dossierep.personne_id' => $personnesFoyer[$index]['Personne']['id']
                         ),
+                        'order' => array(
+                            'Commissionep.dateseance DESC'
+                        ),
                         'contain' => false,
-                        'order' => "Dossierep.created ASC", //FIXME
-                        'recursive' => -1
                     )
                 );
-                $personnesFoyer[$index]['Dossierep']['derniere'] = $tEp;
+
+                $decisionEP = array();
+                if( !empty( $tdossierEp ) ) {
+                    $themeEP = Set::classicExtract( $tdossierEp, 'Dossierep.themeep' );
+                    $modelTheme = Inflector::classify( Inflector::singularize( $themeEP ) );
+                    $modelDecision = 'Decision'.Inflector::singularize( $themeEP );
+
+                    if( !isset( $options[$modelDecision] ) ) {
+                        $options[$modelDecision] = $this->Dossier->Foyer->Personne->Dossierep->Passagecommissionep->{$modelDecision}->allEnumLists();
+                    }
+
+                    $decisionEP = $this->Dossier->Foyer->Personne->Dossierep->Passagecommissionep->{$modelDecision}->find(
+                        'first',
+                        array(
+                            'conditions' => array(
+                                "{$modelDecision}.passagecommissionep_id" => $tdossierEp['Passagecommissionep']['id']
+                            ),
+                            'order' => array( "{$modelDecision}.etape DESC" ),
+                            'contain' => false
+                        )
+                    );
+                }
+
+                $personnesFoyer[$index]['Dossierep']['derniere'] = Set::merge( $tdossierEp, $decisionEP );
 
                 if( Configure::read( 'Cg.departement' ) == 93 ) {
                     // Dernière relance effective
@@ -287,7 +329,7 @@
 
                 $details[$role] = $personnesFoyer[$index];
             }
-
+// debug($details);
             // Structure référentes
             $structuresreferentes = $this->Structurereferente->find( 'list', array( 'fields' => array( 'id', 'lib_struc' ) ) );
             $typesorient = $this->Typeorient->find( 'list', array( 'fields' => array( 'id', 'lib_type_orient' ) ) );
@@ -298,6 +340,7 @@
 
             $this->set( 'dossier_id', $dossier_id );
             $this->set( 'details', $details );
+            $this->set( 'options', $options );
 
         }
 
