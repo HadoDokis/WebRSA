@@ -109,6 +109,11 @@
 			$this->assert( $traitable, 'error500' );
 
 			if( !empty( $this->data ) ) {
+				
+				if ( isset( $this->params['form']['Cancel'] ) ) {
+					$this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index', $personne_id ) );
+				}
+			
 				$this->Signalementep93->Dossierep->begin();
 
 				if( $this->action == 'add' ) {
