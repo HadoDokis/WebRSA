@@ -497,25 +497,38 @@
         <table>
             <thead>
                 <tr class="odd">
-                    <th colspan="4">Parcours Demandeur</th>
-                    <th colspan="4">Parcours Conjoint</th>
+                    <th colspan="5">Parcours Demandeur</th>
+                    <th colspan="5">Parcours Conjoint</th>
                 </tr>
             </thead>
             <tbody>
                 <tr class="odd">
                     <th>Type de relance</th>
                     <th>Date de relance</th>
+                    <th>Rang de passage</th>
                     <th>Réalisé</th>
                     <th class="action">Action</th>
 
                     <th>Type de relance</th>
                     <th>Date de relance</th>
+                    <th>Rang de passage</th>
                     <th>Réalisé</th>
                     <th class="action">Action</th>
                 </tr>
                 <tr>
                     <td><?php echo Set::enum( Set::classicExtract( $details, 'DEM.Nonrespectsanctionep93.derniere.Nonrespectsanctionep93.origine' ), $relance['origine'] );?></td>
-                    <td><?php echo h( date_short( Set::extract( 'DEM.Nonrespectsanctionep93.derniere.Nonrespectsanctionep93.created', $details ) ) );?></td>
+                    <td><?php echo h( date_short( Set::extract( 'DEM.Nonrespectsanctionep93.derniere.Relancenonrespectsanctionep93.daterelance', $details ) ) );?></td>
+                    <td><?php
+                        $numrelance = Set::extract( 'DEM.Nonrespectsanctionep93.derniere.Relancenonrespectsanctionep93.numrelance', $details );
+                        if( !empty($numrelance) ){
+                            if( $numrelance == 1 ) {
+                                echo '1ère relance';
+                            }
+                            else {
+                                echo "{$numrelance}ème relance";
+                            }
+                        }
+                    ?></td>
                     <td><?php echo $xhtml->boolean( !empty( $details['DEM']['Nonrespectsanctionep93']['derniere']['Nonrespectsanctionep93']['origine'] ) );?></td>
                     <td><?php
                         if( !empty( $details['DEM']['Nonrespectsanctionep93']['derniere']['Nonrespectsanctionep93']['origine'] ) ){
@@ -528,7 +541,18 @@
                     </td>
 
                     <td><?php echo Set::enum( Set::classicExtract( $details, 'CJT.Nonrespectsanctionep93.derniere.Nonrespectsanctionep93.origine' ), $relance['origine'] );?></td>
-                    <td><?php echo h( date_short( Set::extract( 'CJT.Nonrespectsanctionep93.derniere.Nonrespectsanctionep93.created', $details ) ) );?></td>
+                    <td><?php echo h( date_short( Set::extract( 'CJT.Nonrespectsanctionep93.derniere.Relancenonrespectsanctionep93.daterelance', $details ) ) );?></td>
+                    <td><?php
+                        $numrelance = Set::extract( 'CJT.Nonrespectsanctionep93.derniere.Relancenonrespectsanctionep93.numrelance', $details );
+                        if( !empty($numrelance) ){
+                            if( $numrelance == 1 ) {
+                                echo '1ère relance';
+                            }
+                            else {
+                                echo "{$numrelance}ème relance";
+                            }
+                        }
+                    ?></td>
                     <td><?php echo $xhtml->boolean( !empty( $details['CJT']['Nonrespectsanctionep93']['derniere']['Nonrespectsanctionep93']['origine'] ) );?></td>
                     <td><?php
                         if( !empty( $details['CJT']['Nonrespectsanctionep93']['derniere']['Nonrespectsanctionep93']['origine'] ) ){
@@ -556,11 +580,11 @@
                         $modeleDecision = 'Decision'.Inflector::singularize( $themeep );
                         $detailsEp[$roleEp]['themeEp'] = Set::enum( Set::classicExtract( $details, "{$roleEp}.Dossierep.derniere.Dossierep.themeep" ), $dossierep['themeep'] );
                         $detailsEp[$roleEp]['decisionEp'] = Set::enum( Set::classicExtract( $details, "{$roleEp}.Dossierep.derniere.{$modeleDecision}.decision" ), $options[$modeleDecision]['decision'] );
-//                                 $detailsEp[$roleEp]['etapeDecisionEp'] = Set::enum( Set::classicExtract( $details, "{$roleEp}.Dossierep.derniere.{$modeleDecision}.etape" ), $options[$modeleDecision]['etape'] );
+
                         $detailsEp[$roleEp]['etatDossierep'] = Set::enum( Set::classicExtract( $details, "{$roleEp}.Dossierep.derniere.Passagecommissionep.etatdossierep" ), $options['Passagecommissionep']['etatdossierep'] );
                     }
                 }
-//                         debug($options);
+
             ?>
             <table>
                 <thead>

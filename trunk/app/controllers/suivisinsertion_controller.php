@@ -270,15 +270,25 @@
 
                 if( Configure::read( 'Cg.departement' ) == 93 ) {
                     // Dernière relance effective
-                    $tRelance = $this->Dossier->Foyer->Personne->Contratinsertion->Nonrespectsanctionep93->find(
+                    $tRelance = $this->Dossier->Foyer->Personne->Contratinsertion->Nonrespectsanctionep93->Relancenonrespectsanctionep93->find(
                         'first',
                         array(
                             'fields' => array(
                                 'Nonrespectsanctionep93.created',
-                                'Nonrespectsanctionep93.origine'
+                                'Nonrespectsanctionep93.origine',
+                                'Nonrespectsanctionep93.rgpassage',
+                                'Relancenonrespectsanctionep93.daterelance',
+                                'Relancenonrespectsanctionep93.numrelance'
                             ),
                             'contain' => false,
                             'joins' => array(
+                                array(
+                                    'table'      => 'nonrespectssanctionseps93',
+                                    'alias'      => 'Nonrespectsanctionep93',
+                                    'type'       => 'LEFT OUTER',
+                                    'foreignKey' => false,
+                                    'conditions' => array( 'Nonrespectsanctionep93.id = Relancenonrespectsanctionep93.nonrespectsanctionep93_id' )
+                                ),
                                 array(
                                     'table'      => 'orientsstructs',
                                     'alias'      => 'Orientstruct',
@@ -320,13 +330,13 @@
                                     )
                                 )
                             ),
-                            'order' => "Nonrespectsanctionep93.created DESC",
+                            'order' => "Relancenonrespectsanctionep93.daterelance DESC",
                         )
                     );
                     $personnesFoyer[$index]['Nonrespectsanctionep93']['derniere'] = $tRelance;
                 }
 
-
+// debug($options);
                 $details[$role] = $personnesFoyer[$index];
             }
 // debug($details);
