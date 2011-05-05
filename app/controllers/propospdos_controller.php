@@ -143,6 +143,7 @@
 
 			$conditions = array( 'Propopdo.personne_id' => $personne_id );
 
+
 			/// Récupération des listes des PDO
 			$options = $this->Propopdo->prepare( 'propopdo', array( 'conditions' => $conditions ) );
 			$pdos = $this->Propopdo->find( 'all', $options );
