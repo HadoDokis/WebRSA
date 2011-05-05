@@ -208,7 +208,7 @@
 		public function saveDecisions( $data, $niveauDecision ) {
 			// FIXME: filtrer les données
 			$modeleDecisions = Inflector::classify( 'decisions'.Inflector::tableize( $this->alias ) );
-			
+
 			$themeData = Set::extract( $data, "/{$modeleDecisions}" );
 			if( empty( $themeData ) ) {
 				return true;
@@ -340,7 +340,7 @@
 
 		public function qdProcesVerbal() {
 			$modeleDecisions = Inflector::classify( 'decisions'.Inflector::tableize( $this->alias ) );
-			
+
 			return array(
 				'fields' => array(
 					"{$this->alias}.id",
@@ -355,6 +355,7 @@
 					"{$modeleDecisions}.montantreduction",
 					"{$modeleDecisions}.dureesursis",
 					"{$modeleDecisions}.commentaire",
+					"{$modeleDecisions}.raisonnonpassage",
 					"{$modeleDecisions}.created",
 					"{$modeleDecisions}.modified",
 				),

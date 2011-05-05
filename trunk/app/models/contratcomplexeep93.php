@@ -14,7 +14,8 @@
 		public $actsAs = array(
 			'Autovalidate',
 			'ValidateTranslate',
-			'Formattable'
+			'Formattable',
+			'Gedooo'
 		);
 
 		/**
@@ -167,6 +168,51 @@
 			}
 
 			return $formData;
+		}
+
+		/**
+		*
+		*/
+
+		public function qdProcesVerbal() {
+			$modeleDecisions = Inflector::classify( 'decisions'.Inflector::tableize( $this->alias ) );
+
+			return array(
+				'fields' => array(
+					"{$this->alias}.id",
+					"{$this->alias}.dossierep_id",
+					"{$this->alias}.contratinsertion_id",
+					"{$this->alias}.created",
+					"{$this->alias}.modified",
+					"{$modeleDecisions}.id",
+					"{$modeleDecisions}.etape",
+					"{$modeleDecisions}.decision",
+					"{$modeleDecisions}.observ_ci",
+					"{$modeleDecisions}.datevalidation_ci",
+					"{$modeleDecisions}.raisonnonpassage",
+					"{$modeleDecisions}.created",
+					"{$modeleDecisions}.modified",
+				),
+				'joins' => array(
+					array(
+						'table'      => Inflector::tableize( $this->alias ),
+						'alias'      => $this->alias,
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array( "{$this->alias}.dossierep_id = Dossierep.id" ),
+					),
+					array(
+						'table'      => 'decisions'.Inflector::tableize( $this->alias ),
+						'alias'      => $modeleDecisions,
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array(
+							"{$modeleDecisions}.passagecommissionep_id = Passagecommissionep.id",
+							"{$modeleDecisions}.etape" => 'ep'
+						),
+					),
+				)
+			);
 		}
 
 		/**
