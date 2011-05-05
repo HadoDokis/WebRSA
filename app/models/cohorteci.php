@@ -27,6 +27,47 @@
 					$conditions[] = 'Contratinsertion.decision_ci IS NOT NULL';
 					$conditions[] = 'Contratinsertion.decision_ci = \'V\'';
 				}
+
+				if( Configure::read( 'Cg.departement' ) == 93 ) {
+					// Si on veut valider des CER complexes, on s'assurera qu'ils ne sont
+					// pas en EP pour validation de contrat complexe, ou alors dans un état annulé
+					if( in_array( $statutValidation, array( 'Decisionci::nonvalide', 'Decisionci::enattente' ) ) ) {
+						$ModeleContratcomplexeep93 = ClassRegistry::init( 'Contratcomplexeep93' );
+						$conditions[] = 'Contratinsertion.id NOT IN (
+							'.$ModeleContratcomplexeep93->sq(
+								array(
+									'fields' => array( 'contratscomplexeseps93.contratinsertion_id' ),
+									'alias' => 'contratscomplexeseps93',
+									'joins' => array(
+										array(
+											'table'      => 'dossierseps',
+											'alias'      => 'dossierseps',
+											'type'       => 'INNER',
+											'foreignKey' => false,
+											'conditions' => array( 'dossierseps.id = contratscomplexeseps93.dossierep_id' )
+										),
+									),
+									'conditions' => array(
+										'contratscomplexeseps93.contratinsertion_id = Contratinsertion.id',
+										'dossierseps.id NOT IN (
+											'.$ModeleContratcomplexeep93->Dossierep->Passagecommissionep->sq(
+												array(
+													'fields' => array( 'passagescommissionseps.dossierep_id' ),
+													'alias' => 'passagescommissionseps',
+													'conditions' => array(
+														'passagescommissionseps.dossierep_id = dossierseps.id',
+														'passagescommissionseps.etatdossierep' => 'annule',
+													),
+												)
+											).'
+										)'
+									),
+								)
+							).'
+						)';
+
+					}
+				}
 			}
 
 

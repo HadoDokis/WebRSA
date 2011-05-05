@@ -1,4 +1,4 @@
-<h1><?php echo $this->pageTitle = __d( 'contratscomplexeseps93', "{$this->name}::{$this->action}", true );?></h1>
+<h1><?php echo $this->pageTitle = __d( 'contratcomplexeep93', "{$this->name}::{$this->action}", true );?></h1>
 
 <?php
 	echo $default2->index(
@@ -18,7 +18,7 @@
 				'Contratinsertion.id'
 			),
 			'paginate' => 'Contratinsertion',
-			'domain' => 'contratscomplexeseps93'
+			'domain' => 'contratcomplexeep93'
 		)
 	);
 

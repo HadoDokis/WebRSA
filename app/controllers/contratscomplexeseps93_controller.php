@@ -59,6 +59,9 @@
 
 			$this->paginate = array(
 				'Contratinsertion' => array(
+					'contain' => array(
+						'Personne'
+					),
 					'conditions' => array(
 						'Contratinsertion.decision_ci' => 'E',
 						'Contratinsertion.forme_ci' => 'C',
@@ -68,9 +71,59 @@
 								'fields' => array( 'contratscomplexeseps93.contratinsertion_id' ),
 							)
 						).' )',
-					),
-					'contain' => array(
-						'Personne'
+						'Personne.id IN (
+							'.$this->Contratcomplexeep93->Contratinsertion->Personne->sq(
+								array(
+									'alias' => 'personnes',
+									'fields' => array( 'personnes.id' ),
+									'joins' => array(
+										array(
+											'table'      => 'prestations',
+											'alias'      => 'prestations',
+											'type'       => 'INNER',
+											'foreignKey' => false,
+											'conditions' => array(
+												'personnes.id = prestations.personne_id',
+												'prestations.natprest' => 'RSA',
+											)
+										),
+										array(
+											'table'      => 'foyers',
+											'alias'      => 'foyers',
+											'type'       => 'INNER',
+											'foreignKey' => false,
+											'conditions' => array(
+												'foyers.id = personnes.foyer_id'
+											)
+										),
+										array(
+											'table'      => 'situationsdossiersrsa',
+											'alias'      => 'situationsdossiersrsa',
+											'type'       => 'INNER',
+											'foreignKey' => false,
+											'conditions' => array(
+												'foyers.dossier_id = situationsdossiersrsa.dossier_id',
+											)
+										),
+										array(
+											'table'      => 'calculsdroitsrsa',
+											'alias'      => 'calculsdroitsrsa',
+											'type'       => 'INNER',
+											'foreignKey' => false,
+											'conditions' => array(
+												'personnes.id = calculsdroitsrsa.personne_id'
+											)
+										),
+									),
+									'conditions' => array(
+										'personnes.id = Personne.id',
+										'prestations.rolepers' => array( 'DEM', 'CJT' ),
+										'situationsdossiersrsa.etatdosrsa' => ClassRegistry::init( 'Situationdossierrsa' )->etatOuvert(),
+										'calculsdroitsrsa.toppersdrodevorsa' => 1
+									),
+								)
+							).'
+						)'
 					),
 					'limit' => 10
 				)
