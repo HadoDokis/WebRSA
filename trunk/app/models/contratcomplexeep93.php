@@ -389,50 +389,5 @@
 
 			return $success;
 		}
-
-
-        /**
-        *
-        */
-
-        public function qdProcesVerbal() {
-            return array(
-                'fields' => array(
-                    'Contratcomplexeep93.id',
-                    'Contratcomplexeep93.dossierep_id',
-                    'Contratcomplexeep93.contratinsertion_id',
-                    'Contratcomplexeep93.created',
-                    'Contratcomplexeep93.modified',
-                    //
-                    'Decisioncontratcomplexeep93.id',
-                    'Decisioncontratcomplexeep93.etape',
-                    'Decisioncontratcomplexeep93.decision',
-                    'Decisioncontratcomplexeep93.observ_ci',
-                    'Decisioncontratcomplexeep93.datevalidation_ci',
-                    'Decisioncontratcomplexeep93.raisonnonpassage',
-                    'Decisioncontratcomplexeep93.created',
-                    'Decisioncontratcomplexeep93.modified',
-                ),
-                'joins' => array(
-                    array(
-                        'table'      => 'contratscomplexeseps93',
-                        'alias'      => 'Contratcomplexeep93',
-                        'type'       => 'LEFT OUTER',
-                        'foreignKey' => false,
-                        'conditions' => array( 'Contratcomplexeep93.dossierep_id = Dossierep.id' ),
-                    ),
-                    array(
-                        'table'      => 'decisionscontratscomplexeseps93',
-                        'alias'      => 'Decisioncontratcomplexeep93',
-                        'type'       => 'LEFT OUTER',
-                        'foreignKey' => false,
-                        'conditions' => array(
-                            'Decisioncontratcomplexeep93.passagecommissionep_id = Passagecommissionep.id',
-                            'Decisioncontratcomplexeep93.etape' => 'ep'
-                        ),
-                    ),
-                )
-            );
-        }
 	}
 ?>
