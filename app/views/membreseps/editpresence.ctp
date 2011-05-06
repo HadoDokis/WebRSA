@@ -22,6 +22,7 @@
                 			)
                 		);
                 		foreach($membres as $membre) {
+
                 			if ($membre['Membreep']['fonctionmembreep_id']==$fonction['Fonctionmembreep']['id']) {
 								if (empty($membre['CommissionepMembreep']['presence'])) {
 									if ($membre['CommissionepMembreep']['reponse']=='confirme')
@@ -33,6 +34,7 @@
 								}
 								else
 									$defaut = $membre['CommissionepMembreep']['presence'];
+									$valueDefaut = $membre['Membreep']['suppleant_id'];
 				        		echo $html->tag(
 				        			'tr',
 				        			$html->tag(
@@ -47,7 +49,8 @@
 				        						'type'=>'select',
 				        						'label'=>false,
 				        						'default'=>$defaut,
-				        						'options'=>$options['CommissionepMembreep']['presence']
+				        						'options'=>$options['CommissionepMembreep']['presence'],
+                                                'class' => 'presence'
 				        					)
 				        				),
 				        				array(
@@ -55,13 +58,30 @@
 				        				)
 				        			).
 				        			$html->tag(
-				        				'td',
-				        				implode(' ', array($membre['Suppleant']['qual'], $membre['Suppleant']['nom'], $membre['Suppleant']['prenom'])),
-				        				array(
-				        					'id' => 'suppleant_'.$membre['Membreep']['id']
-				        				)
-				        			)
+                                        'td',
+                                        $form->input(
+                                            'Membreep.Membreep_id.'.$membre['Membreep']['id'].'.presence',
+                                            array(
+                                                'type'=>'select',
+                                                'label'=>false,
+                                                'default'=>$valueDefaut,
+                                                'options'=> $membre['Membreep']['listeSuppleant'],
+                                                'empty' => true
+                                            )
+                                        ),
+                                        array(
+                                            'colspan' => 1
+                                        )
+                                    )
+// 				        			$html->tag(
+// 				        				'td',
+// 				        				implode(' ', array($membre['Suppleant']['qual'], $membre['Suppleant']['nom'], $membre['Suppleant']['prenom'])),
+// 				        				array(
+// 				        					'id' => 'suppleant_'.$membre['Membreep']['id']
+// 				        				)
+// 				        			)
 				        		);
+// 				        		debug($membre);
                 			}
                 		}
                 	}
@@ -74,14 +94,14 @@
 
 <script type="text/javascript">
     document.observe("dom:loaded", function() {
-		$$('table#listeParticipants select').each(function(select) {
+		$$('table#listeParticipants select.presence').each(function(select) {
 			$(select).observe('change', function() {
 				checkPresence(select);
 			} );
 			checkPresence(select);
 		} );
     });
-    
+
     function checkPresence(select) {
 		if (select.getValue() == 'remplacepar') {
 			select.up('td').writeAttribute('colspan', 1);
