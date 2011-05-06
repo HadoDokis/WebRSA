@@ -10,16 +10,11 @@
             'candidatureform',
             'data[ActioncandidatPersonne][rendezvouspartenaire]',
             [
-//                 'ActioncandidatPersonneDaterdvpartenaireDay',
-                    'RendezvousDaterdvDay',
-                    'RendezvousDaterdvMonth',
-                    'RendezvousDaterdvYear',
-                    'RendezvousHeurerdvHour',
-                    'RendezvousHeurerdvMin',
-                    'RendezvousStructurereferenteId',
-                    'RendezvousReferentId'
-//                 'ActioncandidatPersonneDaterdvpartenaireMonth',
-//                 'ActioncandidatPersonneDaterdvpartenaireYear'
+                    'ActioncandidatPersonneHorairerdvpartenaireDay',
+                    'ActioncandidatPersonneHorairerdvpartenaireMonth',
+                    'ActioncandidatPersonneHorairerdvpartenaireYear',
+                    'ActioncandidatPersonneHorairerdvpartenaireHour',
+                    'ActioncandidatPersonneHorairerdvpartenaireMin',
             ],
             '1',
             true
@@ -44,16 +39,19 @@
                     'url' => Router::url( array( 'action' => 'ajaxpart', Set::extract( $this->data, 'ActioncandidatPersonne.actioncandidat_id' ) ), true )
                 )
             );
+        ?>;
+		<?php
+            echo $ajax->remoteFunction(
+                array(
+                    'update' => 'ActioncandidatPrescripteurReferentId',
+                    'url' => Router::url( array( 'action' => 'ajaxreferent', $referentId ), true)
+                )
+            );           
         ?>
     } );
 </script>
 <!--/************************************************************************/ -->
 <?php echo $javascript->link( 'dependantselect.js' ); ?>
-<script type="text/javascript">
-    document.observe("dom:loaded", function() {
-        dependantSelect( 'RendezvousReferentId', 'RendezvousStructurereferenteId' );
-    });
-</script>
 <div class="with_treemenu">
     <?php
         echo $xhtml->tag(
@@ -70,14 +68,11 @@
     <fieldset>
         <legend>Informations de candidature</legend>
         <?php
-// debug($this->viewVars);
             echo $default->subform(
                 array(
                     'ActioncandidatPersonne.personne_id' => array( 'value' => $personneId, 'type' => 'hidden' ),
                     'ActioncandidatPersonne.actioncandidat_id',
                     'ActioncandidatPersonne.referent_id' => array( 'value' => $referentId ),
-//                     'ActioncandidatPersonne.ddaction' => array( 'dateFormat' => 'DMY', 'domain' => 'actioncandidat_personne' ),
-//                     'ActioncandidatPersonne.dfaction' => array( 'dateFormat' => 'DMY', 'domain' => 'actioncandidat_personne' )
                 ),
                 array(
                     'domain' => $domain,
@@ -91,9 +86,19 @@
                 'div',
                 '<b>Partenaire</b>',
                 array(
-                    'id' => 'ActioncandidatPartenairePartenaireId'
+                	'id' => 'ActioncandidatPartenairePartenaireId'
                 )
             );
+            
+            echo $ajax->observeField( 'ActioncandidatPersonneReferentId', array( 'update' => 'ActioncandidatPrescripteurReferentId', 'url' => Router::url( array( 'action' => 'ajaxreferent' ), true ) ) );
+
+            echo $xhtml->tag(
+                'div',
+                '<b>Prescripteur</b>',
+                array(
+                    'id' => 'ActioncandidatPrescripteurReferentId'
+                )
+            );           
 
         ?>
     </fieldset>
@@ -114,19 +119,25 @@
                 )
             );
 
+			$labelMatricule = Set::extract( $personne, 'Foyer.Dossier.fonorg' );
             echo $default->view(
                 $personne,
                 array(
                     'Personne.dtnai',
                     'Foyer.Modecontact.numtel' => array( 'label' => 'N° de téléphone' ),
-                    'Foyer.Dossier.matricule' => array( 'label' => 'N° CAF' )
+                    'Foyer.Dossier.matricule' => array( 'label' => "N° {$labelMatricule}" )
                 ),
                 array(
                     'widget' => 'dl',
                     'class' => 'allocataire infos'
                 )
             );
-
+            echo $xhtml->tag(
+            	'dl', 
+            	$xhtml->tag( 'dt', 'N° Pôle Emploi') . $xhtml->tag( 'dd', $identifiantpe['Informationpe']['identifiantpe']),
+                array( 'class' => 'allocataire infos' )
+            );
+            
             echo $xhtml->tag(
                 'dl',
                 $xhtml->tag( 'dt', 'Adresse' ).
@@ -138,7 +149,6 @@
                     'class' => 'allocataire infos'
                 )
             );
-
         ?>
     </fieldset>
     <fieldset>
@@ -162,57 +172,47 @@
                     'ActioncandidatPersonne.mobile' => array( 'type' => 'radio' , 'legend' => 'Etes-vous mobile ?', 'div' => false, 'options' => array( '0' => 'Non', '1' => 'Oui' ) ),
                     'ActioncandidatPersonne.naturemobile' => array( 'label' => 'Nature de la mobilité', 'empty' => true ),
                     'ActioncandidatPersonne.typemobile'=> array( 'label' => 'Type de mobilité ' ),
-                    'ActioncandidatPersonne.rendezvouspartenaire' => array( 'type' => 'radio' , 'legend' => 'Rendez-vous', 'div' => false, 'options' => array( '0' => 'Non', '1' => 'Oui' ) )
                 ),
                 array(
                     'domain' => $domain,
                     'options' => $options
                 )
             );
-
+		?>
+	</fieldset>
+	<fieldset>
+		<legend>Rendez-vous</legend>
+		<?php 
             echo $default->subform(
-                array(
-                    'ActioncandidatPersonne.rendezvous_id' => array( 'type' => 'hidden' ),
-                    'Rendezvous.id' => array( 'type' => 'hidden' ),
-                    'Rendezvous.personne_id' => array( 'value' => $personneId, 'type' => 'hidden' ),
-                    'Rendezvous.daterdv' => array( 'label' =>  'Rendez-vous fixé le ', 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 2, 'maxYear' => date( 'Y' ) + 2, 'empty' => true ),
-                    'Rendezvous.heurerdv' => array( 'label' => 'A ', 'type' => 'time', 'timeFormat' => '24', 'minuteInterval' => 5,  'empty' => true, 'hourRange' => array( 8, 19 ) )
+				array(
+                    'ActioncandidatPersonne.rendezvouspartenaire' => array( 'type' => 'radio' , 'legend' => 'Rendez-vous', 'div' => false, 'options' => array( '0' => 'Non', '1' => 'Oui' ) ),
+					'ActioncandidatPersonne.horairerdvpartenaire' => array(
+                   		'type' => 'datetime',
+                   		'label' => 'Rendez-vous fixé le ',
+						'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 2, 'maxYear' => date( 'Y' ) + 2,
+						'timeFormat'=>24, 'interval' => 5,
+						'empty' => true
+					),
                 ),
                 array(
                     'options' => $options,
                     'domain' => $domain
                 )
-            );
-
-
-            echo $xform->input( 'Rendezvous.structurereferente_id', array( 'label' =>  required( __( 'Nom de l\'organisme', true ) ), 'type' => 'select', 'options' => $structs, 'empty' => true ) );
-
-            echo $xform->input( 'Rendezvous.referent_id', array( 'label' =>  ( 'Nom de l\'agent / du référent' ), 'type' => 'select', 'options' => $referents, 'empty' => true ) );
-
-
-            ///Ajax pour les données du référent et de l'organisme auquel il est lié
-            echo $ajax->observeField( 'RendezvousReferentId', array( 'update' => 'StructureData', 'url' => Router::url( array( 'action' => 'ajaxreffonct' ), true ) ) );
-
-            echo $xhtml->tag(
-                'div',
-                '<b></b>',
-                array(
-                    'id' => 'StructureData'
-                )
-            );
-
-            echo $default->subform(
-                array(
-                    'ActioncandidatPersonne.enattente' => array( 'type' => 'radio', 'div' => false, 'legend' => 'Candidature en attente', 'options' => array( 'N' => 'Non', 'O' => 'Oui' ) )
-                ),
-                array(
-                    'options' => $options,
-                    'domain' => $domain
-                )
-            );
-
+            );            
         ?>
-    </fieldset>
+	</fieldset>
+	<?php 
+		echo $default->subform(
+			array(
+				'ActioncandidatPersonne.enattente' => array( 'type' => 'radio', 'div' => false, 'legend' => 'Candidature en attente', 'options' => array( 'N' => 'Non', 'O' => 'Oui' ) )
+			),
+			array(
+				'options' => $options,
+				'domain' => $domain
+			)
+		);
+	?>
+
     <fieldset class="loici">
         <p>
             <strong>Engagement:</strong><br />
@@ -263,10 +263,25 @@
                         'options' => $options
                     )
                 );
-
-    //             debug($options);
             ?>
         </fieldset>
+        <fieldset>
+        	<legend>Sortie</legend>
+        	<?php 
+				echo $default->subform(
+					array(
+						'ActioncandidatPersonne.sortiele',
+						'ActioncandidatPersonne.motifsortie_id'
+					),
+					array(
+						'domain' => $domain,
+						'options' => $options
+					)
+				);
+			?>
+		</fieldset>
+        
+        
     <?php endif;?>
     <div class="submit">
         <?php
