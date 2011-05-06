@@ -16,7 +16,8 @@
 					'typeorient_id',
 					'structurereferente_id'
 				)
-			)
+			),
+			'Gedooo'
 		);
 
 		public $belongsTo = array(
@@ -250,6 +251,95 @@
 		public function verrouiller( $commissionep_id, $etape ) {
 			return true;
 		}
+        /**
+        *
+        */
+
+        public function qdProcesVerbal() {
+            $modele = 'Regressionorientationep'.Configure::read( 'Cg.departement' );
+            $modeleDecisions = 'Decisionregressionorientationep'.Configure::read( 'Cg.departement' );
+
+            return array(
+                'fields' => array(
+                    "{$modele}.id",
+                    "{$modele}.dossierep_id",
+                    "{$modele}.typeorient_id",
+                    "{$modele}.structurereferente_id",
+                    "{$modele}.datedemande",
+                    "{$modele}.referent_id",
+                    "{$modele}.user_id",
+                    "{$modele}.commentaire",
+                    "{$modele}.created",
+                    "{$modele}.modified",
+                    "{$modeleDecisions}.id",
+                    "{$modeleDecisions}.typeorient_id",
+                    "{$modeleDecisions}.structurereferente_id",
+                    "{$modeleDecisions}.referent_id",
+                    "{$modeleDecisions}.etape",
+                    "{$modeleDecisions}.commentaire",
+                    "{$modeleDecisions}.created",
+                    "{$modeleDecisions}.modified",
+                    "{$modeleDecisions}.passagecommissionep_id",
+                    "{$modeleDecisions}.decision",
+                    "{$modeleDecisions}.raisonnonpassage",
+                ),
+                'joins' => array(
+                    array(
+                        'table'      => Inflector::tableize( $modele ),
+                        'alias'      => $modele,
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( "{$modele}.dossierep_id = Dossierep.id" ),
+                    ),
+                    array(
+                        'table'      => Inflector::tableize( $modeleDecisions ),
+                        'alias'      => $modeleDecisions,
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array(
+                            "{$modeleDecisions}.passagecommissionep_id = Passagecommissionep.id",
+                            "{$modeleDecisions}.etape" => 'ep'
+                        ),
+                    ),
+                )
+            );
+        }
+        
+        /**
+        *   Fonction permettant de récupérer le nom de la classe parente
+        *   En cas de demande de modification du CG, possibilité de copier cette fonction dans 
+        *   la classe fille souhaitée afin de récupérer le chemin voulu
+        */
+
+        protected function _courrierInformationPathPdf( $gedooo_data ) {
+            $parent_class = get_parent_class( $this );
+            return "{$parent_class}/courrierinformationavantep.odt";
+        }
+
+
+        /**
+        *    Récupération des informations propres au dossier devant passer en EP
+        *   avant liaison avec la commission d'EP
+        */
+        public function getCourrierInformationPdf( $dossierep_id ) {
+
+            $gedooo_data = $this->find(
+                'first',
+                array(
+                    'conditions' => array( 'Dossierep.id' => $dossierep_id ),
+                    'contain' => array(
+                        'Dossierep' => array(
+                            'Personne'
+                        ),
+                       'Typeorient',
+                        'Structurereferente',
+                    )
+                )
+            );
+
+            $path = $this->_courrierInformationPathPdf( $gedooo_data );
+            return $this->ged( $gedooo_data, $path );
+        }
 
 	}
 ?>

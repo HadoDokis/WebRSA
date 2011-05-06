@@ -349,6 +349,7 @@
 					"{$this->alias}.rang",
 					"{$this->alias}.created",
 					"{$this->alias}.modified",
+					"{$this->alias}.motif",
 					"{$modeleDecisions}.id",
 					"{$modeleDecisions}.etape",
 					"{$modeleDecisions}.decision",
@@ -358,6 +359,7 @@
 					"{$modeleDecisions}.raisonnonpassage",
 					"{$modeleDecisions}.created",
 					"{$modeleDecisions}.modified",
+					"{$modeleDecisions}.raisonnonpassage",
 				),
 				'joins' => array(
 					array(

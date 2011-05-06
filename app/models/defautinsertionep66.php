@@ -814,6 +814,7 @@
 					'Decisiondefautinsertionep66.commentaire',
 					'Decisiondefautinsertionep66.created',
 					'Decisiondefautinsertionep66.modified',
+					'Decisiondefautinsertionep66.raisonnonpassage',
 				),
 				'joins' => array(
 					array(

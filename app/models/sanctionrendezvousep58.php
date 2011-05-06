@@ -21,7 +21,8 @@
 // 					'type'
 // 				)
 // 			),
-			'Formattable'
+			'Formattable',
+			'Gedooo'
 		);
 
 		public $belongsTo = array(
@@ -201,6 +202,71 @@
 			// Aucune action utile ?
 			return true;
 		}
-		
+		        /**
+        *
+        */
+
+        public function qdProcesVerbal() {
+            return array(
+                'fields' => array(
+                    'Sanctionrendezvousep58.id',
+                    'Sanctionrendezvousep58.dossierep_id',
+                    'Sanctionrendezvousep58.typerdv_id',
+                    'Sanctionrendezvousep58.commentaire',
+                    'Sanctionrendezvousep58.created',
+                    'Sanctionrendezvousep58.modified',
+                    //
+                    'Decisionsanctionrendezvousep58.id',
+                    'Decisionsanctionrendezvousep58.etape',
+                    'Decisionsanctionrendezvousep58.decision',
+                    'Decisionsanctionrendezvousep58.commentaire',
+                    'Decisionsanctionrendezvousep58.created',
+                    'Decisionsanctionrendezvousep58.modified',
+                    'Decisionsanctionrendezvousep58.raisonnonpassage',
+                ),
+                'joins' => array(
+                    array(
+                        'table'      => 'sanctionsrendezouseps58',
+                        'alias'      => 'Sanctionrendezvousep58',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Sanctionrendezvousep58.dossierep_id = Dossierep.id' ),
+                    ),
+                    array(
+                        'table'      => 'decisionssanctionsrendezouseps58',
+                        'alias'      => 'Decisionsanctionrendezvousep58',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array(
+                            'Decisionsanctionrendezvousep58.passagecommissionep_id = Passagecommissionep.id',
+                            'Decisionsanctionrendezvousep58.etape' => 'ep'
+                        ),
+                    ),
+                )
+            );
+        }
+
+        /**
+        *    Récupération des informations propres au dossier devant passer en EP
+        *   avant liaison avec la commission d'EP
+        */
+        public function getCourrierInformationPdf( $dossierep_id ) {
+            $gedooo_data = $this->find(
+                'first',
+                array(
+                    'conditions' => array( 'Dossierep.id' => $dossierep_id ),
+                    'contain' => array(
+                        'Dossierep' => array(
+                            'Personne'
+                        ),
+                        'Rendezvous' => array(
+                            'Typerdv'
+                        )
+                    )
+                )
+            );
+            return $this->ged( $gedooo_data, "{$this->alias}/courrierinformationavantep.odt" );
+        }
+
 	}
 ?>
