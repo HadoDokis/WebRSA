@@ -10,6 +10,7 @@
         $partenaires,
         array(
             'Partenaire.libstruc',
+        	'Partenaire.codepartenaire',
             'Partenaire.numvoie',
             'Partenaire.typevoie',
             'Partenaire.nomvoie',
@@ -17,7 +18,6 @@
             'Partenaire.numtel',
             'Partenaire.numfax',
             'Partenaire.email',
-
             'Partenaire.codepostal',
             'Partenaire.ville'
         ),
