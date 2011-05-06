@@ -18,13 +18,6 @@
 		);
 
 		public $belongsTo = array(
-			'Sanctionep58' => array(
-				'className' => 'Sanctionep58',
-				'foreignKey' => 'sanctionep58_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
-			),
 			'Passagecommissionep' => array(
 				'className' => 'Passagecommissionep',
 				'foreignKey' => 'passagecommissionep_id',

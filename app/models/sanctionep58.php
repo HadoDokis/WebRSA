@@ -36,13 +36,6 @@
 		);
 
 		public $belongsTo = array(
-			'Bilanparcours66' => array(
-				'className' => 'Bilanparcours66',
-				'foreignKey' => 'bilanparcours66_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
-			),
 			'Dossierep' => array(
 				'className' => 'Dossierep',
 				'foreignKey' => 'dossierep_id',
@@ -53,20 +46,6 @@
 			'Contratinsertion' => array(
 				'className' => 'Contratinsertion',
 				'foreignKey' => 'contratinsertion_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
-			),
-			'Orientstruct' => array(
-				'className' => 'Orientstruct',
-				'foreignKey' => 'orientstruct_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
-			),
-			'Historiqueetatpe' => array(
-				'className' => 'Historiqueetatpe',
-				'foreignKey' => 'historiqueetatpe_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''

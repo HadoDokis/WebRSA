@@ -136,6 +136,9 @@
 				)
 			);
 			
+			$success = true;
+			$this->Sanctionep58->begin();
+			
 			$dossierep = array(
 				'Dossierep' => array(
 					'themeep' => 'sanctionseps58',
@@ -165,6 +168,39 @@
 			}
 			
 			$this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index', $contratinsertion['Contratinsertion']['personne_id'] ) );
+		}
+		
+		/**
+		 *
+		 */
+		public function deleteNonrespectcer( $sanctionep58_id ) {
+			$dossierep = $this->Sanctionep58->find(
+				'first',
+				array(
+					'condtions' => array(
+						'Sanctionep58.id' => $sanctionep58_id
+					),
+					'contain' => array(
+						'Dossierep'
+					)
+				)
+			);
+			
+			$success = true;
+			$this->Sanctionep58->begin();
+
+			$success = $this->Sanctionep58->delete( $dossierep['Sanctionep58']['id'] ) && $success;
+			$success = $this->Sanctionep58->Dossierep->delete( $dossierep['Dossierep']['id'] ) && $success;
+
+			$this->_setFlashResult( 'Save', $success );
+			if( $success ) {
+				$this->Sanctionep58->commit();
+			}
+			else {
+				$this->Sanctionep58->rollback();
+			}
+			
+			$this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index', $dossierep['Dossierep']['personne_id'] ) );
 		}
 	}
 ?>
