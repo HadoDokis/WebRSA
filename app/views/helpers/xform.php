@@ -612,11 +612,11 @@
 			$selectMinuteAttr['interval'] = $interval;
 			switch ($timeFormat) {
 				case '24':
-					$opt .= $this->hour($fieldName, true, $hour, $selectHourAttr, $showEmpty) . ':' .
+					$opt .= ' ' . $this->hour($fieldName, true, $hour, $selectHourAttr, $showEmpty) . ':' .
 					$this->minute($fieldName, $min, $selectMinuteAttr, $showEmpty);
 				break;
 				case '12':
-					$opt .= $this->hour($fieldName, false, $hour, $selectHourAttr, $showEmpty) . ':' .
+					$opt .= ' ' . $this->hour($fieldName, false, $hour, $selectHourAttr, $showEmpty) . ':' .
 					$this->minute($fieldName, $min, $selectMinuteAttr, $showEmpty) . ' ' .
 					$this->meridian($fieldName, $meridian, $selectMeridianAttr, $showEmpty);
 				break;
