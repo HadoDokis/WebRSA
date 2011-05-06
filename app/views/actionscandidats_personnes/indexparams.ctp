@@ -64,6 +64,17 @@
                     array( 'class' => 'odd' ),
                     array( 'class' => 'even' )
                 );
+                echo $xhtml->tableCells(
+                    array(
+                        h( 'Motifs de sortie' ),
+                        $xhtml->viewLink(
+                            'Voir la table',
+                            array( 'controller' => 'motifssortie', 'action' => 'index' )
+                        )
+                    ),
+                    array( 'class' => 'odd' ),
+                    array( 'class' => 'even' )
+                );                
             ?>
         </tbody>
     </table>

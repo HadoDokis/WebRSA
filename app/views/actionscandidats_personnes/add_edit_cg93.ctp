@@ -265,36 +265,53 @@
     <fieldset class="actioncandidat">
         <legend class="actioncandidat" >Partenaire / Prestataire</legend>
         <?php
-            echo $default->subform(
-                array(
-                    'ActioncandidatPersonne.rendezvous_id' => array( 'type' => 'hidden' ),
-                    'Rendezvous.id' => array( 'type' => 'hidden' ),
-                    'Rendezvous.personne_id' => array( 'value' => $personneId, 'type' => 'hidden' ),
-                    'Rendezvous.daterdv' => array( 'label' =>  'Rendez-vous fixé le ', 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 2, 'maxYear' => date( 'Y' ) + 2, 'empty' => true ),
-                    'Rendezvous.heurerdv' => array( 'label' => 'A ', 'type' => 'time', 'timeFormat' => '24', 'minuteInterval' => 5,  'empty' => true, 'hourRange' => array( 8, 19 ) )
+         	echo $default->subform(
+				array(
+					'ActioncandidatPersonne.rendezvouspartenaire' => array( 'type' => 'hidden', 'value'=>1 ),
+					'ActioncandidatPersonne.horairerdvpartenaire' => array(
+                   		'type' => 'datetime',
+						'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 2, 'maxYear' => date( 'Y' ) + 2,
+						'timeFormat'=>24, 'interval' => 5,
+						'empty' => true,
+						'required' => true
+					),
                 ),
                 array(
                     'options' => $options,
                     'domain' => $domain
                 )
-            );
-
-
-            echo $xform->input( 'Rendezvous.structurereferente_id', array( 'label' =>  required( __( 'Nom de l\'organisme', true ) ), 'type' => 'select', 'options' => $structs, 'empty' => true ) );
-
-            echo $xform->input( 'Rendezvous.referent_id', array( 'label' =>  ( 'Nom de l\'agent / du référent' ), 'type' => 'select', 'options' => $referents, 'empty' => true ) );
-
-
-            ///Ajax pour les données du référent et de l'organisme auquel il est lié
-            echo $ajax->observeField( 'RendezvousReferentId', array( 'update' => 'StructureData', 'url' => Router::url( array( 'action' => 'ajaxreffonct' ), true ) ) );
-
-            echo $xhtml->tag(
-                'div',
-                '<b></b>',
-                array(
-                    'id' => 'StructureData'
-                )
-            );
+            );      
+        
+//            echo $default->subform(
+//                array(
+//                    'ActioncandidatPersonne.rendezvous_id' => array( 'type' => 'hidden' ),
+//                    'Rendezvous.id' => array( 'type' => 'hidden' ),
+//                    'Rendezvous.personne_id' => array( 'value' => $personneId, 'type' => 'hidden' ),
+//                    'Rendezvous.daterdv' => array( 'label' =>  'Rendez-vous fixé le ', 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 2, 'maxYear' => date( 'Y' ) + 2, 'empty' => true ),
+//                    'Rendezvous.heurerdv' => array( 'label' => 'A ', 'type' => 'time', 'timeFormat' => '24', 'minuteInterval' => 5,  'empty' => true, 'hourRange' => array( 8, 19 ) )
+//                ),
+//                array(
+//                    'options' => $options,
+//                    'domain' => $domain
+//                )
+//            );
+//
+//
+//            echo $xform->input( 'Rendezvous.structurereferente_id', array( 'label' =>  required( __( 'Nom de l\'organisme', true ) ), 'type' => 'select', 'options' => $structs, 'empty' => true ) );
+//
+//            echo $xform->input( 'Rendezvous.referent_id', array( 'label' =>  ( 'Nom de l\'agent / du référent' ), 'type' => 'select', 'options' => $referents, 'empty' => true ) );
+//
+//
+//            ///Ajax pour les données du référent et de l'organisme auquel il est lié
+//            echo $ajax->observeField( 'RendezvousReferentId', array( 'update' => 'StructureData', 'url' => Router::url( array( 'action' => 'ajaxreffonct' ), true ) ) );
+//
+//            echo $xhtml->tag(
+//                'div',
+//                '<b></b>',
+//                array(
+//                    'id' => 'StructureData'
+//                )
+//            );
 
             echo $default->subform(
                 array(

@@ -1,22 +1,39 @@
-<?php if( !empty( $part ) ):?>
+<?php if( !empty( $actioncandidatPartenaire ) ): ?>
+<fieldset>
+	<legend>Partenaire</legend>
     <table class="wide noborder">
         <tr>
-            <td class="wide noborder"><strong>Partenaire</strong></td>
-            <td class="wide noborder"><strong>Nom du correspondant</strong></td>
+            <td class="wide noborder"><strong>Nom : </strong></td>
+            <td class="wide noborder">
+                <?php
+                	if( !is_null($referent) )
+                    	echo Set::classicExtract( $referent, 'Referent.nom_complet' );
+                    else
+                    	echo 'Aucun référent saisi';
+                ?>
+            </td>
         </tr>
         <tr>
-            <td class="wide noborder">
-                <?php
-//                 debug($part);
-                    echo Set::enum( Set::classicExtract( $part, 'ActioncandidatPartenaire.partenaire_id' ), $parts );
-                ?>
-            </td>
-            <td class="wide noborder">
-                <?php
-                    echo Set::classicExtract( $contact, 'Contactpartenaire.qual' ).' '.Set::classicExtract( $contact, 'Contactpartenaire.nom' ).' '.Set::classicExtract( $contact, 'Contactpartenaire.prenom' );
-                ?>
-            </td>
+        	<td class="wide noborder"><strong>Tél. : </strong></td>
+            <td class="wide noborder"><?php echo Set::classicExtract( $actioncandidatPartenaire, 'Partenaire.numtel' ); ?></td>
+        </tr>  
+        <tr>
+        	<td class="wide noborder"><strong>Fax : </strong></td>
+            <td class="wide noborder"><?php echo Set::classicExtract( $actioncandidatPartenaire, 'Partenaire.numfax' ); ?></td>
         </tr>
+        <tr>
+        	<td class="wide noborder"><strong>Code action : </strong></td>
+            <td class="wide noborder"><?php echo Set::classicExtract( $actioncandidatPartenaire, 'Actioncandidat.codeaction' ); ?></td>
+        </tr>  
+        <tr>
+        	<td class="wide noborder"><strong>Correspondant de l'action : </strong></td>
+            <td class="wide noborder">
+                <?php
+                    echo Set::classicExtract( $actioncandidatPartenaire, 'Partenaire.libstruc' );
+                ?>
+            </td>        
+        </tr>                    
 
     </table>
+</fieldset>    
 <?php endif;?>

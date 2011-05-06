@@ -17,7 +17,7 @@
         echo $default->index(
             $actionscandidats_personnes,
             array(
-                'Actioncandidat.intitule',
+                'Actioncandidat.name',
                 'Referent.nom_complet',
                 'Actioncandidat.Partenaire.0.libstruc',
                 'ActioncandidatPersonne.datesignature' => array( 'domain' => $domain )/*,
@@ -27,7 +27,9 @@
             array(
 //                 'cohorte' => false,
                 'actions' => array(
+                    'ActioncandidatPersonne.view' => array( 'domain' => $domain ),            
                     'ActioncandidatPersonne.edit' => array( 'domain' => $domain ),
+                    'ActioncandidatPersonne.delete' => array( 'domain' => $domain ),
                     'ActioncandidatPersonne.gedooo' => array( 'domain' => $domain )
                 ),
                 'add' => array( 'ActioncandidatPersonne.add' => $this->params['pass'][0] )
