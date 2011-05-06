@@ -520,6 +520,20 @@ CREATE INDEX decisionssanctionseps58_listesanctionep58_id_idx ON decisionssancti
 ALTER TABLE commissionseps ALTER COLUMN name DROP NOT NULL;
 ALTER TABLE commissionseps ALTER COLUMN name SET DEFAULT NULL;
 
+-- ***********************************************************************************
+-- 20110506, ajout d'un champ pour repérer le CER cosant un passage en sactionep58 + contraintes
+-- ***********************************************************************************
+
+ALTER TABLE sanctionseps58 ADD COLUMN contratinsertion_id INTEGER DEFAULT NULL REFERENCES contratsinsertion(id) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE sanctionseps58 ALTER COLUMN origine TYPE TEXT;
+DROP TYPE TYPE_ORIGINESANCTION;
+CREATE TYPE TYPE_ORIGINESANCTION AS ENUM ( 'radiepe', 'noninscritpe', 'nonrespectcer' );
+ALTER TABLE sanctionseps58 ALTER COLUMN origine TYPE TYPE_ORIGINESANCTION USING CAST(origine AS TYPE_ORIGINESANCTION);
+CREATE INDEX sanctionseps58_contratinsertion_id_idx ON sanctionseps58( contratinsertion_id );
+ALTER TABLE sanctionseps58 ADD CONSTRAINT sanctionseps58_valid_entry_check CHECK(
+	( contratinsertion_id IS NULL AND origine <> 'nonrespectcer'::TYPE_ORIGINESANCTION ) OR ( contratinsertion_id IS NOT NULL AND origine = 'nonrespectcer'::TYPE_ORIGINESANCTION )
+);
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
