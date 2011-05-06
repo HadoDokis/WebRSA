@@ -27,7 +27,7 @@
             array(
 //                 'cohorte' => false,
                 'actions' => array(
-                    'ActioncandidatPersonne.view' => array( 'domain' => $domain ),            
+//                     'ActioncandidatPersonne.view' => array( 'domain' => $domain ),
                     'ActioncandidatPersonne.edit' => array( 'domain' => $domain ),
                     'ActioncandidatPersonne.delete' => array( 'domain' => $domain ),
                     'ActioncandidatPersonne.gedooo' => array( 'domain' => $domain )
