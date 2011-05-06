@@ -314,6 +314,23 @@ CREATE INDEX actionscandidats_nbpostedispo_idx ON actionscandidats( nbpostedispo
 CREATE INDEX actionscandidats_correspondantaction_idx ON actionscandidats( correspondantaction );
 CREATE INDEX actionscandidats_referent_id_idx ON actionscandidats( referent_id );
 
+
+-- MOTIFSSORTIE
+DROP TABLE IF EXISTS motifssortie;
+CREATE TABLE motifssortie
+(
+    id  SERIAL NOT NULL PRIMARY KEY,
+    name    TEXT
+);
+
+COMMENT ON TABLE motifssortie IS 'Table pour les motifs de sortie d''une action d''insertion pour la fiche de candidature (CG66)';
+COMMENT ON COLUMN motifssortie.id IS '[PK] Identifiant';
+COMMENT ON COLUMN motifssortie.name IS 'Intitulé du motif de sortie';
+
+CREATE INDEX motifssortie_name_idx ON motifssortie( name );
+
+
+
 -- ACTIONSCANDIDATS_PERSONNES
 CREATE TABLE actionscandidats_personnes
 (
@@ -395,21 +412,6 @@ COMMENT ON COLUMN actionscandidats_zonesgeographiques.zonegeographique_id IS '[F
 SELECT alter_table_drop_column_if_exists('public', 'partenaires', 'codepartenaire');
 ALTER TABLE partenaires ADD COLUMN codepartenaire character varying(10);
 COMMENT ON COLUMN partenaires.codepartenaire IS 'Code partenaire (en lien avec le code action)';
-
--- MOTIFSSORTIE
-DROP TABLE IF EXISTS motifssortie;
-CREATE TABLE motifssortie
-(
-	id	SERIAL NOT NULL PRIMARY KEY,
-	name	TEXT
-);
-
-COMMENT ON TABLE motifssortie IS 'Table pour les motifs de sortie d''une action d''insertion pour la fiche de candidature (CG66)';
-COMMENT ON COLUMN motifssortie.id IS '[PK] Identifiant';
-COMMENT ON COLUMN motifssortie.name IS 'Intitulé du motif de sortie';
-
-CREATE INDEX motifssortie_name_idx ON motifssortie( name );
-
 
 
 
