@@ -177,6 +177,20 @@
 	Configure::write( 'Optimisations.progressivePaginate', true );
 
 	/**
+	* Surcharge de la pagination progressive pour l'action nouveaux
+	* du contrôleur Cohortesci.
+	*/
+
+	Configure::write( 'Optimisations.Cohortesci_nouveaux.progressivePaginate', false );
+
+	/**
+	* Surcharge de la pagination progressive pour l'action avisdemande
+	* du contrôleur Cohortespdos.
+	*/
+
+	Configure::write( 'Optimisations.Cohortespdos_avisdemande.progressivePaginate', false );
+
+	/**
 	 * Variables permettant le déclenchement de passage en EPD d'un dossier via les PDOs
 	 */
 	Configure::write( 'traitementResultatId', 2 );

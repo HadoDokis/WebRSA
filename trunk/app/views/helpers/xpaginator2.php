@@ -84,7 +84,22 @@
 			$count = Set::classicExtract( $this->params, "paging.{$classname}.count" );
 			$limit = Set::classicExtract( $this->params, "paging.{$classname}.options.limit" );
 
-			if( ( $count > ( $limit * $page ) ) && ( $format == 'Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%' ) && Configure::read( 'Optimisations.progressivePaginate' ) ) {
+			$controllerName = Inflector::camelize( $this->params['controller'] );
+
+			// Pagination progressive pour ce contrôleur et cette action ?
+			$progressivePaginate = Configure::read( "Optimisations.{$controllerName}_{$this->params['action']}.progressivePaginate" );
+
+			// Pagination progressive pour ce contrôleur ?
+			if( is_null( $progressivePaginate ) ) {
+				$progressivePaginate = Configure::read( "Optimisations.{$controllerName}.progressivePaginate" );
+			}
+
+			// Pagination progressive en général ?
+			if( is_null( $progressivePaginate ) ) {
+				$progressivePaginate = Configure::read( 'Optimisations.progressivePaginate' );
+			}
+
+			if( ( $count > ( $limit * $page ) ) && ( $format == 'Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%' ) && $progressivePaginate ) {
 				$format = 'Résultats %start% - %end% sur au moins %count% résultats.';
 			}
 // 			else {
