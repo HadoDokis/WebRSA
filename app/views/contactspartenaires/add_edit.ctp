@@ -24,4 +24,14 @@
             'options' => $options
         )
     );
+    echo $default->button(
+        'back',
+        array(
+            'controller' => 'contactspartenaires',
+            'action'     => 'index'
+        ),
+        array(
+            'id' => 'Back'
+        )
+    );    
 ?>

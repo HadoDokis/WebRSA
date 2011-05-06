@@ -13,6 +13,7 @@
             'Contactpartenaire.nom',
             'Contactpartenaire.prenom',
             'Partenaire.libstruc',
+        	'Partenaire.codepartenaire',
             'Contactpartenaire.numtel',
             'Contactpartenaire.email'
         ),
