@@ -521,6 +521,12 @@ ALTER TABLE commissionseps ALTER COLUMN name DROP NOT NULL;
 ALTER TABLE commissionseps ALTER COLUMN name SET DEFAULT NULL;
 
 -- ***********************************************************************************
+-- 20110505, ajout du champ raisonnonpassage pour les tables de décisions manquantes
+-- ***********************************************************************************
+ALTER TABLE decisionsnonorientationsproseps66 ADD COLUMN raisonnonpassage TEXT DEFAULT NULL;
+ALTER TABLE decisionsregressionsorientationseps93 ADD COLUMN raisonnonpassage TEXT DEFAULT NULL;
+
+-- ***********************************************************************************
 -- 20110506, ajout d'un champ pour repérer le CER cosant un passage en sactionep58 + contraintes
 -- ***********************************************************************************
 

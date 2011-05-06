@@ -425,6 +425,7 @@
 					'Decisionsaisinepdoep66.datedecisionpdo',
 					'Decisionsaisinepdoep66.created',
 					'Decisionsaisinepdoep66.modified',
+					'Decisionsaisinepdoep66.raisonnonpassage',
 					//
 					'Decisionpdo.id',
 					'Decisionpdo.libelle',

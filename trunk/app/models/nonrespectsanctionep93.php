@@ -460,6 +460,7 @@
 					'Decisionnonrespectsanctionep93.commentaire',
 					'Decisionnonrespectsanctionep93.created',
 					'Decisionnonrespectsanctionep93.modified',
+					'Decisionnonrespectsanctionep93.raisonnonpassage',
 				),
 				'joins' => array(
 					array(

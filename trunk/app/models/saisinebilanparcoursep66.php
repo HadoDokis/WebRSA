@@ -465,6 +465,7 @@
 					'Decisionsaisinebilanparcoursep66.commentaire',
 					'Decisionsaisinebilanparcoursep66.created',
 					'Decisionsaisinebilanparcoursep66.modified',
+					'Decisionsaisinebilanparcoursep66.raisonnonpassage',
 				),
 				'joins' => array(
 					array(

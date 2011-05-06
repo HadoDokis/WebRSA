@@ -525,6 +525,51 @@
 			// Aucune action utile ?
 			return true;
 		}
+        /**
+        *
+        */
+
+        public function qdProcesVerbal() {
+            return array(
+                'fields' => array(
+                    'Sanctionep58.id',
+                    'Sanctionep58.dossierep_id',
+                    'Sanctionep58.listesanctionep58_id',
+                    'Sanctionep58.origine',
+                    'Sanctionep58.commentaire',
+                    'Sanctionep58.created',
+                    'Sanctionep58.modified',
+                    //
+                    'Decisionsanctionep58.id',
+                    'Decisionsanctionep58.etape',
+                    'Decisionsanctionep58.decision',
+                    'Decisionsanctionep58.commentaire',
+                    'Decisionsanctionep58.created',
+                    'Decisionsanctionep58.modified',
+                    'Decisionsanctionep58.raisonnonpassage',
+
+                ),
+                'joins' => array(
+                    array(
+                        'table'      => 'sanctionseps58',
+                        'alias'      => 'Sanctionep58',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Sanctionep58.dossierep_id = Dossierep.id' ),
+                    ),
+                    array(
+                        'table'      => 'decisionssanctionseps58',
+                        'alias'      => 'Decisionsanctionep58',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array(
+                            'Decisionsanctionep58.passagecommissionep_id = Passagecommissionep.id',
+                            'Decisionsanctionep58.etape' => 'ep'
+                        ),
+                    )
+                )
+            );
+        }
 
 
         /**

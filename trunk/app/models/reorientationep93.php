@@ -725,6 +725,7 @@
 					'Decisionreorientationep93.commentaire',
 					'Decisionreorientationep93.created',
 					'Decisionreorientationep93.modified',
+					'Decisionreorientationep93.raisonnonpassage',
 				),
 				'joins' => array(
 					array(
