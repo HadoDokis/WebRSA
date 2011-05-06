@@ -1,0 +1,32 @@
+<?php
+    echo $xhtml->tag(
+        'h1',
+        $this->pageTitle = __d( 'motifsortie', "Motifssortie::{$this->action}", true )
+    )
+?>
+<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+
+<?php
+    echo $default->form(
+        array(
+            'Motifsortie.name'
+        ),
+        array(
+            'actions' => array(
+                'Motifsortie.save',
+                'Motifsortie.cancel'
+            )
+        )
+    );
+    echo $default->button(
+        'back',
+        array(
+            'controller' => 'motifssortie',
+            'action'     => 'index'
+        ),
+        array(
+            'id' => 'Back'
+        )
+    );    
+    
+?>
