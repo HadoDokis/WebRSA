@@ -80,22 +80,22 @@
 				'insertQuery' => '',
 				'with' => 'ActioncandidatPartenaire'
 			),
-			'Contactpartenaire' => array(
-				'className' => 'Contactpartenaire',
-				'joinTable' => 'contactspartenaires_partenaires',
-				'foreignKey' => 'partenaire_id',
-				'associationForeignKey' => 'contactpartenaire_id',
-				'unique' => true,
-				'conditions' => '',
-				'fields' => '',
-				'order' => '',
-				'limit' => '',
-				'offset' => '',
-				'finderQuery' => '',
-				'deleteQuery' => '',
-				'insertQuery' => '',
-				'with' => 'ContactpartenairePartenaire'
-			)
+//			'Contactpartenaire' => array(
+//				'className' => 'Contactpartenaire',
+//				'joinTable' => 'contactspartenaires_partenaires',
+//				'foreignKey' => 'partenaire_id',
+//				'associationForeignKey' => 'contactpartenaire_id',
+//				'unique' => true,
+//				'conditions' => '',
+//				'fields' => '',
+//				'order' => '',
+//				'limit' => '',
+//				'offset' => '',
+//				'finderQuery' => '',
+//				'deleteQuery' => '',
+//				'insertQuery' => '',
+//				'with' => 'ContactpartenairePartenaire'
+//			)
 		);
 	}
 ?>
