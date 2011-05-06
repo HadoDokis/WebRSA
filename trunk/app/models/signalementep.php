@@ -402,7 +402,8 @@
 					)
 				)
 			);
-			return $this->ged( $gedooo_data, "{$this->alias}/courrierinformationavantep.odt" );
+            $modeleParent = get_parent_class( $this->alias );
+			return $this->ged( $gedooo_data, "{$modeleParent}/courrierinformationavantep.odt" );
 		}
 	}
 ?>
