@@ -86,7 +86,8 @@ UPDATE servicesinstructeurs
                     AND suivisinstruction.numcomins = ''194''
                     AND suivisinstruction.numagrins = ''2''
         ) = 1
-    )'
+    )
+)'
     WHERE servicesinstructeurs.id = 13;
 -- *****************************************************************************
 COMMIT;
