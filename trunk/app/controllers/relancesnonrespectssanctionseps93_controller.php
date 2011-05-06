@@ -3,9 +3,9 @@
 	{
 		public $uses = array( 'Relancenonrespectsanctionep93', 'Nonrespectsanctionep93', 'Orientstruct', 'Contratinsertion', 'Dossierep', 'Dossier', 'Pdf' );
 
-		var $components = array( 'Prg' => array( 'actions' => array( 'impressions' ) ), 'Gedooo' );
+		public $components = array( 'Prg' => array( 'actions' => array( 'impressions' ) ), 'Gedooo' );
 
-		var $helpers = array( 'Default2', 'Csv' );
+		public $helpers = array( 'Default2', 'Csv' );
 
 		/**
 		*
@@ -466,12 +466,25 @@
 
 			$this->Relancenonrespectsanctionep93->begin();
 
+			$nErrors = 0;
 			$contents = $this->Relancenonrespectsanctionep93->find( 'all', $queryData );
 			foreach( $contents as $i => $content ) {
 				if( empty( $content['Pdf']['document'] ) && !empty( $content['Pdf']['cmspath'] ) ) {
 					$cmisPdf = Cmis::read( $content['Pdf']['cmspath'], true );
-					$contents[$i]['Pdf']['document'] = $cmisPdf['content'];
+					if( !empty( $cmisPdf['content'] ) ) {
+						$contents[$i]['Pdf']['document'] = $cmisPdf['content'];
+					}
 				}
+				// Gestion des erreurs: si on n'a toujours pas le document
+				if( empty( $contents[$i]['Pdf']['document'] ) ) {
+					$nErrors++;
+					unset( $results[$i] );
+				}
+			}
+
+			if( $nErrors > 0 ) {
+				$this->Session->setFlash( "Erreur lors de l'impression en cohorte: {$nErrors} documents n'ont pas pu être imprimés. Abandon de l'impression de la cohorte. Demandez à votre administrateur d'exécuter cake/console/cake generationpdfs relancenonrespectsanctionep93", 'flash/error' );
+				$this->redirect( $this->referer() );
 			}
 
 			$ids = Set::extract( '/Relancenonrespectsanctionep93/id', $contents );
@@ -493,7 +506,8 @@
 			}
 			else {
 				$this->Relancenonrespectsanctionep93->rollback();
-				$this->cakeError( 'error500' );
+				$this->Session->setFlash( 'Erreur lors de l\'impression en cohorte.', 'flash/error' );
+				$this->redirect( $this->referer() );
 			}
 		}
 	}
