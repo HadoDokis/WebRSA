@@ -14,6 +14,7 @@
 <?php 
 	echo $xform->create( 'ActioncandidatPersonne', array( 'id' => 'viewForm' ) );
 //$this->log( $actionscandidatspersonne);
+		echo $html->tag('div', $html->tag('strong', 'Action candidat Personne'));
         echo $default->view(
         	$actionscandidatspersonne,
             array(
@@ -33,11 +34,10 @@
                 'widget' => 'table',
             )
 		);
+		echo $html->tag('div', $html->tag('strong', ''));
         echo $default->view(
         	$actionscandidatspersonne,
             array(
-            'Referent.id',
-            'Referent.structurereferente_id',
             'Referent.nom',
             'Referent.prenom',
             'Referent.numero_poste',
@@ -49,11 +49,11 @@
                 'widget' => 'table',
                 )
 		);
-
+		echo $html->tag('div', $html->tag('strong', ''));
         echo $default->view(
         	$actionscandidatspersonne,
             array(
-                'Motifsortie.id',
+                'ActioncandidatPersonne.sortiele',
 				'Motifsortie.name',
 			),
             array(
@@ -61,13 +61,10 @@
             )
 		);	
 
+		echo $html->tag('div', $html->tag('strong', ''));
         echo $default->view(
         	$actionscandidatspersonne,
             array(
-            'ActioncandidatPersonne.id',
-            'ActioncandidatPersonne.personne_id',
-            'ActioncandidatPersonne.actioncandidat_id',
-            'ActioncandidatPersonne.referent_id',
             'ActioncandidatPersonne.ddaction',
             'ActioncandidatPersonne.dfaction',
             'ActioncandidatPersonne.motifdemande',
@@ -90,8 +87,7 @@
             'ActioncandidatPersonne.presencecontrat',
             'ActioncandidatPersonne.integrationaction',
             'ActioncandidatPersonne.horairerdvpartenaire',
-            'ActioncandidatPersonne.sortiele',
-            'ActioncandidatPersonne.motifsortie_id'
+            
 			),
             array(
                 'widget' => 'table',
