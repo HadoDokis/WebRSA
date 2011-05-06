@@ -245,7 +245,7 @@
 					WHERE personnes.id = {$personneId}
 				;";
 			$result = $this->query( $query );
-			return array('Informationpe'=> $result[0][0]);
+			return array('Informationpe'=> Set::classicExtract( $result, '0.0' ) );
 		}
 	}
 ?>

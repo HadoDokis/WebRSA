@@ -132,11 +132,14 @@
                     'class' => 'allocataire infos'
                 )
             );
-            echo $xhtml->tag(
-            	'dl', 
-            	$xhtml->tag( 'dt', 'N° Pôle Emploi') . $xhtml->tag( 'dd', $identifiantpe['Informationpe']['identifiantpe']),
-                array( 'class' => 'allocataire infos' )
-            );
+            if( !empty( $identifiantpe ) ){
+                echo $xhtml->tag(
+                    'dl', 
+                    $xhtml->tag( 'dt', 'N° Pôle Emploi') . $xhtml->tag( 'dd', $identifiantpe['Informationpe']['identifiantpe']),
+                    array( 'class' => 'allocataire infos' )
+                );
+            }
+
             
             echo $xhtml->tag(
                 'dl',
