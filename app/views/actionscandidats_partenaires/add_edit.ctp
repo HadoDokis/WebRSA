@@ -20,4 +20,15 @@
             'options' => $options
         )
     );
+    echo $default->button(
+        'back',
+        array(
+            'controller' => 'actionscandidats_partenaires',
+            'action'     => 'index'
+        ),
+        array(
+            'id' => 'Back'
+        )
+    );    
+    
 ?>
