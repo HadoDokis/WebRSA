@@ -541,12 +541,12 @@
 
 
             ///Personne liée au parcours
-            $apre = $this->Personne->{$this->modelClass}->find(
+            $personne_referent = $this->Personne->PersonneReferent->find(
                 'first',
                 array(
                     'conditions' => array(
-                        '{$this->modelClass}.personne_id' => $personne_id,
-                        '{$this->modelClass}.dfdesignation IS NULL'
+                        'PersonneReferent.personne_id' => $personne_id,
+                        'PersonneReferent.dfdesignation IS NULL'
                     ),
                     'recursive' => -1
                 )
@@ -716,11 +716,11 @@
                 $structurereferente_id = $referent_id = null;
 
 
-                $structPersRef = Set::classicExtract( $apre, '{$this->modelClass}.structurereferente_id' );
+                $structPersRef = Set::classicExtract( $personne_referent, 'PersonneReferent.structurereferente_id' );
                 // Valeur par défaut préférée: à partir de personnes_referents
-                if( !empty( $apre ) && array_key_exists( $structPersRef, $structs ) ){
-                    $structurereferente_id = Set::classicExtract( $apre, '{$this->modelClass}.structurereferente_id' );
-                    $referent_id = Set::classicExtract( $apre, '{$this->modelClass}.referent_id' );
+                if( !empty( $personne_referent ) && array_key_exists( $structPersRef, $structs ) ){
+                    $structurereferente_id = Set::classicExtract( $personne_referent, 'PersonneReferent.structurereferente_id' );
+                    $referent_id = Set::classicExtract( $personne_referent, 'PersonneReferent.referent_id' );
                 }
 
                 if( !empty( $structurereferente_id ) ) {
