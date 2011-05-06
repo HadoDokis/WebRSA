@@ -192,7 +192,7 @@
 						if (!empty($membreepseanceep['CommissionepMembreep']['presence'])) {
 							$membreepseanceep['CommissionepMembreep']['presencetxt'] = __d('commissionep_membreep', 'ENUM::PRESENCE::'.$membreepseanceep['CommissionepMembreep']['presence'], true);
 							if ($membreepseanceep['CommissionepMembreep']['presence']=='remplacepar')
-								$membreepseanceep['CommissionepMembreep']['presencetxt'] .= ' '.$membreepseanceep['Membreep']['suppleant'];
+								$membreepseanceep['CommissionepMembreep']['presencetxt'] .= ' '.@$membreepseanceep['Membreep']['suppleant'];
 						}
 						echo $html->tag(
 							'td',

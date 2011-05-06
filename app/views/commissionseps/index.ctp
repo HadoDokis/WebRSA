@@ -110,13 +110,16 @@
 					<th>'.$xpaginator->sort( __d( 'ep', 'Ep.identifiant', true ), 'Ep.identifiant' ).'</th>
 					<th>'.$xpaginator->sort( __d( 'ep', 'Ep.name', true ), 'Ep.name' ).'</th>
 					<th>'.$xpaginator->sort( __d( 'commissionep', 'Commissionep.identifiant', true ), 'Commissionep.identifiant' ).'</th>
-					<th>'.$xpaginator->sort( __d( 'structurereferente', 'Structurereferente.lib_struc', true ), 'Structurereferente.lib_struc' ).'</th>
+					<th>'.$xpaginator->sort( __d( 'commissionep', 'Commissionep.lieuseance', true ), 'Commissionep.lieuseance' ).'</th>
 					<th>'.$xpaginator->sort( __d( 'commissionep', 'Commissionep.dateseance', true ), 'Commissionep.dateseance' ).'</th>
+					<th>Nombre de participants</th>
+					<th>Nombre d\'absents</th>
 					<th>'.$xpaginator->sort( __d( 'commissionep', 'Commissionep.etatcommissionep', true ), 'Commissionep.etatcommissionep' ).'</th>
 					<th>'.$xpaginator->sort( __d( 'commissionep', 'Commissionep.observations', true ), 'Commissionep.observations' ).'</th>
 					<th>Actions</th>
 				</tr></thead><tbody>';
 			foreach( $commissionseps as $commissionep ) {
+// debug($commissionep);
 				/*if( Configure::read( 'Cg.departement' ) != 93 ) {
 					$lien = $xhtml->link( 'Voir', array( 'controller' => 'commissionseps', 'action' => 'view', $commissionep['Commissionep']['id'] ) );
 				}
@@ -140,8 +143,10 @@
 					<td>'.h( $commissionep['Ep']['identifiant'] ).'</td>
 					<td>'.h( $commissionep['Ep']['name'] ).'</td>
 					<td>'.h( $commissionep['Commissionep']['identifiant'] ).'</td>
-					<td>'.h( @$commissionep['Structurereferente']['lib_struc'] ).'</td>
-					<td>'.h( $locale->date( 'Date::short', $commissionep['Commissionep']['dateseance'] ) ).'</td>
+					<td>'.h( @$commissionep['Commissionep']['lieuseance'] ).'</td>
+					<td>'.h( $locale->date( '%d/%m/%Y %H:%M', $commissionep['Commissionep']['dateseance'] ) ).'</td>
+					<td>'.h( $commissionep['Commissionep']['nbparticipants'] ).'</td>
+					<td>'.h( $commissionep['Commissionep']['nbabsents'] ).'</td>
 					<td>'.h( Set::enum( $commissionep['Commissionep']['etatcommissionep'], $options['Commissionep']['etatcommissionep'] ) ).'</td>
 					<td>'.h( $commissionep['Commissionep']['observations'] ).'</td>
 					<td>'.$lien.'</td>
