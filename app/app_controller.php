@@ -316,7 +316,20 @@
 		*/
 
 		public function paginate( $object = null, $scope = array(), $whitelist = array() ) {
-			if( Configure::read( 'Optimisations.progressivePaginate' ) ) {
+			// Pagination progressive pour ce contrôleur et cette action ?
+			$progressivePaginate = Configure::read( "Optimisations.{$this->name}_{$this->action}.progressivePaginate" );
+
+			// Pagination progressive pour ce contrôleur ?
+			if( is_null( $progressivePaginate ) ) {
+				$progressivePaginate = Configure::read( "Optimisations.{$this->name}.progressivePaginate" );
+			}
+
+			// Pagination progressive en général ?
+			if( is_null( $progressivePaginate ) ) {
+				$progressivePaginate = Configure::read( 'Optimisations.progressivePaginate' );
+			}
+
+			if( $progressivePaginate ) {
 				return $this->_progressivePaginate( $object, $scope, $whitelist );
 			}
 			else {
