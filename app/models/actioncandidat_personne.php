@@ -25,9 +25,9 @@
 				'fields' => '',
 				'order' => ''
 			),
-			'Rendezvous' => array(
-				'className' => 'Rendezvous',
-				'foreignKey' => 'rendezvous_id',
+			'Motifsortie' => array(
+				'className' => 'Motifsortie',
+				'foreignKey' => 'motifsortie_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
@@ -83,10 +83,10 @@
 			'actioncandidat_id' => array(
 				array( 'rule' => 'notEmpty' )
 			),
-			'enattente'  => array(
-				'rule' => 'notEmpty',
-				'message' => 'Champ obligatoire'
-			),
+//			'enattente'  => array(
+//				'rule' => 'notEmpty',
+//				'message' => 'Champ obligatoire'
+//			),
 			'bilanvenu'  => array(
 				'rule' => 'notEmpty',
 				'message' => 'Champ obligatoire'
