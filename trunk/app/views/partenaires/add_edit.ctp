@@ -10,6 +10,7 @@
     echo $default->form(
         array(
             'Partenaire.libstruc' => array( 'required' => true ),
+            'Partenaire.codepartenaire',
             'Partenaire.numvoie' => array( 'required' => true ),
             'Partenaire.typevoie' => array( 'required' => true ),
             'Partenaire.nomvoie' => array( 'required' => true ),
@@ -28,4 +29,14 @@
             'options' => $options
        )
     );
+    echo $default->button(
+        'back',
+        array(
+            'controller' => 'partenaires',
+            'action'     => 'index'
+        ),
+        array(
+            'id' => 'Back'
+        )
+    );    
 ?>
