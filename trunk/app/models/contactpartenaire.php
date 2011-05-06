@@ -43,23 +43,25 @@
 			)
 		);
 
-		public $hasAndBelongsToMany = array(
-			'Partenaire' => array(
-				'className' => 'Partenaire',
-				'joinTable' => 'contactspartenaires_partenaires',
-				'foreignKey' => 'contactpartenaire_id',
-				'associationForeignKey' => 'partenaire_id',
-				'unique' => true,
-				'conditions' => '',
-				'fields' => '',
-				'order' => '',
-				'limit' => '',
-				'offset' => '',
-				'finderQuery' => '',
-				'deleteQuery' => '',
-				'insertQuery' => '',
-				'with' => 'ContactpartenairePartenaire'
-			)
-		);
+//		public $hasAndBelongsToMany = array(
+//			'Partenaire' => array(
+//				'className' => 'Partenaire',
+//				'joinTable' => 'contactspartenaires_partenaires',
+//				'foreignKey' => 'contactpartenaire_id',
+//				'associationForeignKey' => 'partenaire_id',
+//				'unique' => true,
+//				'conditions' => '',
+//				'fields' => '',
+//				'order' => '',
+//				'limit' => '',
+//				'offset' => '',
+//				'finderQuery' => '',
+//				'deleteQuery' => '',
+//				'insertQuery' => '',
+//				'with' => 'ContactpartenairePartenaire'
+//			)
+//		);
+		
+		
 	}
 ?>
