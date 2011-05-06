@@ -3,7 +3,9 @@
     class ActionscandidatsController extends AppController 
     {
         var $name = 'Actionscandidats';
-        var $uses = array( 'Actioncandidat', 'ActioncandidatPersonne', 'ActioncandidatPartenaire', 'Option', 'Personne' );
+        var $uses = array( 'Actioncandidat', 'ActioncandidatPersonne', 'ActioncandidatPartenaire',
+        	'Option', 'Personne' ,'Referent'
+         );
         var $helpers = array( 'Xform', 'Default', 'Theme' );
         var $components = array( 'Default' );
         
@@ -24,7 +26,17 @@
             return $return;
         }
 
-
+        
+       	protected function _setOptions() {
+			$options = $this->Actioncandidat->enums();
+    		if( $this->action != 'index' ) {
+				$options['Actioncandidat']['referent_id'] = $this->Referent->find('list');
+				$options['Zonegeographique'] = $this->Actioncandidat->Zonegeographique->find( 'list' );
+			}			
+			$this->set( compact( 'options' ) );
+		}        
+        
+        
         /**
         *   Ajout à la suite de l'utilisation des nouveaux helpers
         *   - default.php
@@ -36,6 +48,7 @@
                 Inflector::tableize( $this->modelClass ),
                 $this->paginate( $this->modelClass )
             );
+            $this->_setOptions();
         }
 
         /**
@@ -61,8 +74,12 @@
         */
 
         function _add_edit(){
+        	$this->_setOptions();
+        	
             $args = func_get_args();
             $this->Default->{$this->action}( $args );
+            
+            
         }
 
         /**
