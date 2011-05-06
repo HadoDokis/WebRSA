@@ -9,8 +9,14 @@
     echo $default->index(
         $actionscandidats,
         array(
-            'Actioncandidat.intitule',
-            'Actioncandidat.code'
+            'Actioncandidat.name',
+            'Actioncandidat.codeaction' => array('type'=>'text'),
+        	'Actioncandidat.lieuaction',
+        	'Actioncandidat.cantonaction',
+        	'Actioncandidat.ddaction',
+        	'Actioncandidat.dfaction',
+        	'Actioncandidat.nbpostedispo',
+        	'Actioncandidat.hasfichecandidature'
         ),
         array(
             'cohorte' => false,
@@ -19,6 +25,7 @@
                 'Actioncandidat.delete',
             ),
             'add' => 'Actioncandidat.add',
+            'options' => $options
         )
     );
 

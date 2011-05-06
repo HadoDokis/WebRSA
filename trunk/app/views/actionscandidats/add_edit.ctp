@@ -7,16 +7,95 @@
 <?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 
 <?php
-    echo $default->form(
+	echo $xform->create( null, array( 'id' => 'ActioncandidatAddEditForm' ) );
+	
+	if (isset($this->data['Actioncandidat']['id']))
+		echo $form->input('Actioncandidat.id', array('type'=>'hidden'));	
+
+    echo $default->subform(
         array(
-            'Actioncandidat.intitule' => array( 'domain' => 'actioncandidat', 'required' => true ),
-            'Actioncandidat.code' => array( 'domain' => 'actioncandidat', 'required' => true ),
-        ),
+            'Actioncandidat.name' => array( 'domain' => 'actioncandidat', 'required' => true ),
+            'Actioncandidat.themecode' => array( 'domain' => 'actioncandidat', 'required' => true ),
+            'Actioncandidat.codefamille' => array( 'domain' => 'actioncandidat', 'required' => true ),
+            'Actioncandidat.numcodefamille' => array( 'domain' => 'actioncandidat', 'required' => true ),
+            'Actioncandidat.contractualisation' => array( 'domain' => 'actioncandidat', 'type' => 'select'),
+            'Actioncandidat.lieuaction' => array( 'domain' => 'actioncandidat', 'required' => true ),
+            'Actioncandidat.cantonaction' => array( 'domain' => 'actioncandidat', 'required' => true ),
+            'Actioncandidat.ddaction' => array( 'domain' => 'actioncandidat', 'required' => true ),
+            'Actioncandidat.dfaction' => array( 'domain' => 'actioncandidat', 'required' => true ),
+            'Actioncandidat.nbpostedispo' => array( 'domain' => 'actioncandidat', 'required' => true ),
+            'Actioncandidat.nbposterestant' => array( 'domain' => 'actioncandidat'),
+        	'Actioncandidat.correspondantaction' => array('type' => 'checkbox' )
+	       ),
         array(
-            'actions' => array(
-                'Actioncandidat.save',
-                'Actioncandidat.cancel'
-            )
+            'options' => $options
         )
     );
+
+//    echo $html->tag('div', $form->input( 'Actioncandidat.correspondantaction', array('type' => 'checkbox' ) ));
 ?>
+<fieldset class="col2" id="filtre_referent">
+    <legend>Référent</legend>
+    <script type="text/javascript">
+        document.observe("dom:loaded", function() {
+            observeDisableFieldsetOnCheckbox( 'ActioncandidatCorrespondantaction', 'filtre_referent', false );
+        });
+    </script>
+<?php 
+    echo $default->subform(
+        array(
+        	'Actioncandidat.referent_id' => array('domain' => 'actioncandidat', 'type'=>'select' ),
+        ),
+        array(
+            'options' => $options
+        )
+    ); 
+?>
+</fieldset>   
+<?php    
+    echo $default->subform(
+        array(
+			'Actioncandidat.hasfichecandidature' => array( 'domain' => 'actioncandidat', 'required' => true, 'type'=>'radio' ),        
+        ),
+        array(
+        	'options' => $options
+        )
+    );   
+    
+	echo $html->tag('div', $form->input( 'Actioncandidat.filtre_zone_geo', array( 'label' => 'Restreindre les zones géographiques', 'type' => 'checkbox' ) )) ;
+	?>
+<fieldset class="col2" id="filtres_zone_geo">
+    <legend>Zones géographiques</legend>
+    <script type="text/javascript">
+        function toutCocher() {
+            $$( 'input[name="data[Zonegeographique][Zonegeographique][]"]' ).each( function( checkbox ) {
+                $( checkbox ).checked = true;
+            });
+        }
+
+        function toutDecocher() {
+            $$( 'input[name="data[Zonegeographique][Zonegeographique][]"]' ).each( function( checkbox ) {
+                $( checkbox ).checked = false;
+            });
+        }
+
+        document.observe("dom:loaded", function() {
+            Event.observe( 'toutCocher', 'click', toutCocher );
+            Event.observe( 'toutDecocher', 'click', toutDecocher );
+            observeDisableFieldsetOnCheckbox( 'ActioncandidatFiltreZoneGeo', 'filtres_zone_geo', false );
+        });
+    </script>
+    <?php echo $form->button( 'Tout cocher', array( 'id' => 'toutCocher' ) );?>
+    <?php echo $form->button( 'Tout décocher', array( 'id' => 'toutDecocher' ) );?>
+    <?php echo $form->input( 'Zonegeographique.Zonegeographique', array( 'label' => false, 'multiple' => 'checkbox' , 'options' => $options['Zonegeographique'] ) ); ?>
+</fieldset>    
+<?php   
+    echo $default->button(
+		'back',
+        array('controller' => 'actionscandidats', 'action' => 'index'),
+        array('id' => 'Back')
+	);
+
+	echo $xform->end( __( 'Save', true ) );
+?>
+
