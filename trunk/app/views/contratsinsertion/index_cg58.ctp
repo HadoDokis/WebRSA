@@ -33,7 +33,7 @@
 							<th>Date fin contrat</th>
 							<th>Date signalement</th>
 							<th>État dossier EP</th>
-<!-- 							<th colspan="2" class="action">Actions</th> -->
+							<th colspan="1" class="action">Actions</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -50,7 +50,7 @@
 							<td><?php echo $locale->date( 'Locale->date', $sanctionep58['Sanctionep58']['created'] );?></td>
 							<td><?php echo h( $etatdossierep );?></td>
 <!-- 							<td class="action"><?php echo $default->button( 'edit', array( 'controller' => 'sanctionseps58', 'action' => 'edit', $sanctionep58['Sanctionep58']['id'] ), array( 'enabled' => ( empty( $sanctionep58['Passagecommissionep']['etatdossierep'] ) ) ) );?></td> -->
-<!-- 							<td class="action"><?php echo $default->button( 'delete', array( 'controller' => 'sanctionseps58', 'action' => 'delete', $sanctionep58['Sanctionep58']['id'] ), array( 'enabled' => ( empty( $sanctionep58['Passagecommissionep']['etatdossierep'] ) ) ) );?></td> -->
+							<td class="action"><?php echo $default->button( 'delete', array( 'controller' => 'sanctionseps58', 'action' => 'deleteNonrespectcer', $sanctionep58['Sanctionep58']['id'] ), array( 'enabled' => ( empty( $sanctionep58['Passagecommissionep']['etatdossierep'] ) ), 'confirm' => 'Confirmer la suppession ?' ) );?></td>
 						</tr>
 					<?php endforeach;?>
 					</tbody>
