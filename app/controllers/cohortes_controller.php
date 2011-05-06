@@ -1,5 +1,6 @@
 <?php
-	App::import('Sanitize');
+	App::import( 'Sanitize' );
+	require_once( APPLIBS.'cmis.php' );
 
 	class CohortesController extends AppController
 	{
@@ -296,7 +297,30 @@
 				$queryData['order'] = array( "{$this->params['named']['sort']} {$this->params['named']['direction']}" );
 			}
 
+			$queryData['fields'][] = 'Pdf.cmspath';
+
 			$results = $this->Personne->find( 'all', $queryData );
+
+			// Si le contenu du PDF n'est pas dans la table pdfs, aller le chercher sur le serveur CMS
+			$nErrors = 0;
+			foreach( $results as $i => $result ) {
+				if( empty( $result['Pdf']['document'] ) && !empty( $result['Pdf']['cmspath'] ) ) {
+					$pdf = Cmis::read( $result['Pdf']['cmspath'], true );
+					if( !empty( $pdf['content'] ) ) {
+						$results[$i]['Pdf']['document'] = $pdf['content'];
+					}
+				}
+				// Gestion des erreurs: si on n'a toujours pas le document
+				if( empty( $results[$i]['Pdf']['document'] ) ) {
+					$nErrors++;
+					unset( $results[$i] );
+				}
+			}
+
+			if( $nErrors > 0 ) {
+				$this->Session->setFlash( "Erreur lors de l'impression en cohorte: {$nErrors} documents n'ont pas pu être imprimés. Abandon de l'impression de la cohorte. Demandez à votre administrateur d'exécuter cake/console/cake generationpdfs orientsstructs", 'flash/error' );
+				$this->redirect( $this->referer() );
+			}
 
 			$content = $this->Gedooo->concatPdfs( Set::extract( $results, '/Pdf/document' ), 'orientsstructs' );
 
@@ -315,7 +339,8 @@
 			}
 			else {
 				$this->Dossier->rollback();
-				// redirect referer
+				$this->Session->setFlash( 'Erreur lors de l\'impression en cohorte.', 'flash/error' );
+				$this->redirect( $this->referer() );
 			}
 		}
 	}
