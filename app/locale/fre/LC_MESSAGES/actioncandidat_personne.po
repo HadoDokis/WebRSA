@@ -21,6 +21,10 @@ msgstr ""
 ###############################################################################
 ### ENUM pour le bilan de la candidature
 ###############################################################################
+
+msgid "ActioncandidatPersonne::delete::confirm"
+msgstr "Voulez-vous supprimer la fiche de candidature ?"
+
 msgid "ActionscandidatsPersonne::index::empty"
 msgstr "Aucune fiche présente pour cette personne"
 
