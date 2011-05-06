@@ -313,6 +313,7 @@
 		'decisionsignalementep93' => 'decisionssignalementseps93',
 		'contratcomplexeep93' => 'contratscomplexeseps93',
 		'decisioncontratcomplexeep93' => 'decisionscontratscomplexeseps93',
+		'motifsortie' => 'motifssortie'
 
 	);
 /**
