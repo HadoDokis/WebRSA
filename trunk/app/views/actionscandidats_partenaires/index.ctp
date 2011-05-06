@@ -9,8 +9,10 @@
     echo $default->index(
         $actionscandidats_partenaires,
         array(
-            'Actioncandidat.intitule',
+            'Actioncandidat.name',
+        	'Actioncandidat.codeaction' => array('type'=>'text'),
             'Partenaire.libstruc',
+        	'Partenaire.codepartenaire'
         ),
         array(
             'cohorte' => false,
