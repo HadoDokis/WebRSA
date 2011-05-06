@@ -155,6 +155,7 @@
 					//'Commissionep.structurereferente_id',
 					'Commissionep.dateseance',
 					'Commissionep.etatcommissionep',
+					'Commissionep.lieuseance',
 					'Commissionep.observations'
 				),
 				'contain'=>array(
@@ -166,7 +167,8 @@
 							'identifiant'
 						),
 						'Regroupementep'
-					)
+					),
+					'Membreep'
 				),
 				'order' => array( '"Commissionep"."dateseance" ASC' ),
 				'conditions' => $conditions

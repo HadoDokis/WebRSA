@@ -148,6 +148,8 @@
 		public function index( $etape = null ) {
 			if( !empty( $this->data ) ) {
 				$this->paginate['Commissionep'] = $this->Commissionep->search( $this->data );
+
+
 				$this->paginate['Commissionep']['limit'] = 10;
 
 				switch( $etape ) {
@@ -163,9 +165,42 @@
 				}
 
 				$commissionseps = $this->paginate( $this->Commissionep );
-				$this->set( 'commissionseps', $commissionseps );
+
 // 				$this->set( 'etape', $etape );
+
+
+                foreach( $commissionseps as $key => $commissionep ){
+                    //Calcul du nombre de participants
+                    $nbparticipants = $this->Commissionep->Membreep->CommissionepMembreep->find(
+                        'count',
+                        array(
+                            'conditions' => array(
+                                'CommissionepMembreep.commissionep_id' => Set::classicExtract( $commissionep, 'Commissionep.id' ),
+                                'CommissionepMembreep.membreep_id IS NOT NULL'
+                            ),
+                            'contain' => false
+                        )
+                    );
+                    $commissionseps[$key]['Commissionep']['nbparticipants'] = $nbparticipants;
+
+                    //Calcul du nombre d'absents parmi les participants
+                    $nbabsents = $this->Commissionep->Membreep->CommissionepMembreep->find(
+                        'count',
+                        array(
+                            'conditions' => array(
+                                'CommissionepMembreep.commissionep_id' => Set::classicExtract( $commissionep, 'Commissionep.id' ),
+                                'CommissionepMembreep.membreep_id IS NOT NULL',
+                                'CommissionepMembreep.presence <> \'present\''
+                            ),
+                            'contain' => false
+                        )
+                    );
+                    $commissionseps[$key]['Commissionep']['nbabsents'] = $nbabsents;
+                }
+                $this->set( 'commissionseps', $commissionseps );
 			}
+
+// debug($commissionseps);
 			$this->_setOptions();
 			$this->render( null, null, 'index' );
 		}
