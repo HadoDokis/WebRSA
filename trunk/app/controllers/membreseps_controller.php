@@ -431,7 +431,7 @@
 					'contain'=>false
 				)
 			);
-			$this->set('membres', $membres);
+// 			$this->set('membres', $membres);
 
 			$fonctionsmembres = $this->Membreep->Fonctionmembreep->find(
 				'all',
@@ -478,6 +478,40 @@
 				)
 			);
 			$this->set('fonctionsmembres', $fonctionsmembres);
+
+
+
+
+            foreach( $membres as $key => $membre ){
+                $suppleants = $this->Membreep->find(
+                    'all',
+                    array(
+                        'conditions'=>array(
+                            'Membreep.id <>'=>$membre['Membreep']['id'],
+                            'Membreep.fonctionmembreep_id'=>$membre['Membreep']['fonctionmembreep_id']
+                        ),
+                        'contain'=>false
+                    )
+                );
+
+                $listeSuppleant = array();
+                foreach($suppleants as $suppleant) {
+                    $listeSuppleant[$suppleant['Membreep']['id']] = $suppleant['Membreep']['qual'].' '.$suppleant['Membreep']['nom'].' '.$suppleant['Membreep']['prenom'];
+    //                 debug($listeSuppleant);
+                }
+    //             $defaultvalue = $membr['Membreep']['suppleant_id'];
+                $this->set( compact( 'listeSuppleant' ) );
+                
+                
+                $membres[$key]['Membreep']['listeSuppleant'] = $listeSuppleant;
+            }
+
+
+
+$this->set('membres', $membres);
+
+
+
 
 			$this->set('seance_id', $seance_id);
 			$this->set('ep_id', $ep_id);
