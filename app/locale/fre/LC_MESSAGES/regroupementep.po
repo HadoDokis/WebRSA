@@ -149,7 +149,7 @@ msgid "Regroupementep.regressionorientationep58"
 msgstr "Dossier orienté du professionnel vers le social"
 
 msgid "Regroupementep.sanctionep58"
-msgstr "Détection des radiés de Pôle-Emploi"
+msgstr "Détection des dossiers pour sanction"
 
 msgid "ENUM::SANCTIONEP58::nontraite"
 msgstr "Décision non traitée"

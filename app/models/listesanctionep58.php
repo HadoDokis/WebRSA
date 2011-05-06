@@ -12,8 +12,8 @@
 		);
 
 		public $hasMany = array(
-			'Sanctionep58' => array(
-				'className' => 'Sanctionep58',
+			'Decisionsanctionep58' => array(
+				'className' => 'Decisionsanctionep58',
 				'foreignKey' => 'listesanctionep58_id',
 				'dependent' => true,
 				'conditions' => '',

@@ -24,17 +24,50 @@
 				<p class="notice">Cette personne ne possède pas encore de contrat d'engagement réciproque.</p>
 			<?php endif;?>
 
-		<?php if( $permissions->check( 'proposcontratsinsertioncovs58', 'add' ) && $nbdossiersnonfinalisescovs == 0 ):?>
-			<ul class="actionMenu">
-				<?php
-					echo '<li>'.$xhtml->addLink(
-						'Ajouter un CER',
-						array( 'controller' => 'proposcontratsinsertioncovs58', 'action' => 'add', $personne_id )
-					).' </li>';
-				?>
-			</ul>
+			<?php if( isset( $sanctionseps58 ) && !empty( $sanctionseps58 ) ):?>
+				<h2>Signalements pour non respect du contrat</h2>
+				<table class="tooltips">
+					<thead>
+						<tr>
+							<th>Date début contrat</th>
+							<th>Date fin contrat</th>
+							<th>Date signalement</th>
+							<th>État dossier EP</th>
+<!-- 							<th colspan="2" class="action">Actions</th> -->
+						</tr>
+					</thead>
+					<tbody>
+					<?php foreach( $sanctionseps58 as $sanctionep58 ):?>
+						<?php
+							$etatdossierep = Set::enum( $sanctionep58['Passagecommissionep']['etatdossierep'], $optionsdossierseps['Passagecommissionep']['etatdossierep'] );
+							if( empty( $etatdossierep ) ) {
+								$etatdossierep = 'En attente';
+							}
+						?>
+						<tr>
+							<td><?php echo $locale->date( 'Locale->date', $sanctionep58['Contratinsertion']['dd_ci'] );?></td>
+							<td><?php echo $locale->date( 'Locale->date', $sanctionep58['Contratinsertion']['df_ci'] );?></td>
+							<td><?php echo $locale->date( 'Locale->date', $sanctionep58['Sanctionep58']['created'] );?></td>
+							<td><?php echo h( $etatdossierep );?></td>
+<!-- 							<td class="action"><?php echo $default->button( 'edit', array( 'controller' => 'sanctionseps58', 'action' => 'edit', $sanctionep58['Sanctionep58']['id'] ), array( 'enabled' => ( empty( $sanctionep58['Passagecommissionep']['etatdossierep'] ) ) ) );?></td> -->
+<!-- 							<td class="action"><?php echo $default->button( 'delete', array( 'controller' => 'sanctionseps58', 'action' => 'delete', $sanctionep58['Sanctionep58']['id'] ), array( 'enabled' => ( empty( $sanctionep58['Passagecommissionep']['etatdossierep'] ) ) ) );?></td> -->
+						</tr>
+					<?php endforeach;?>
+					</tbody>
+				</table>
+			<?php endif;?>
+
+			<?php if( $permissions->check( 'proposcontratsinsertioncovs58', 'add' ) && $nbdossiersnonfinalisescovs == 0 ):?>
+				<ul class="actionMenu">
+					<?php
+						echo '<li>'.$xhtml->addLink(
+							'Ajouter un CER',
+							array( 'controller' => 'proposcontratsinsertioncovs58', 'action' => 'add', $personne_id )
+						).' </li>';
+					?>
+				</ul>
+			<?php endif;?>
 		<?php endif;?>
-	<?php endif;?>
 
 	<?php if( Configure::read( 'Cg.departement' ) == 58 && isset( $propocontratinsertioncov58 ) && !empty( $propocontratinsertioncov58 ) ):?>
 		<h2>Contrat en cours de validation par la commission d'orientation et de validation</h2>
@@ -75,20 +108,26 @@
 					<th>Date début</th>
 					<th>Date fin</th>
 					<th>Décision</th>
-					<th colspan="5" class="action">Actions</th>
+					<th colspan="6" class="action">Actions</th>
 				</tr>
 			</thead>
 			<tbody>
 				<?php foreach( $contratsinsertion as $contratinsertion ):?>
 					<?php
+						$dureeTolerance = Configure::read( 'Sanctionep58.nonrespectcer.dureeTolerance' );
+
+						$enCours = (
+							( strtotime( $contratinsertion['Contratinsertion']['dd_ci'] ) <= mktime() )
+							&& ( strtotime( $contratinsertion['Contratinsertion']['df_ci'] ) + ( $dureeTolerance * 24 * 60 * 60 ) >= mktime() )
+						);
+
 						$isValid = Set::extract( $contratinsertion, 'Contratinsertion.decision_ci' );
 						$block = true;
 						if( $isValid == 'V'  ){
 							$block = false;
 						}
-						else{
-							$block;
-						}
+
+						$contratenep = in_array( $contratinsertion['Contratinsertion']['id'], $contratsenep );
 
 						echo $xhtml->tableCells(
 							array(
@@ -127,7 +166,18 @@
                                     'Fichiers liés',
                                     array( 'controller' => 'contratsinsertion', 'action' => 'filelink', $contratinsertion['Contratinsertion']['id'] ),
                                     $permissions->check( 'contratsinsertion', 'filelink' )
-                                )
+                                ),
+								$xhtml->saisineEpLink(
+									'Sanction',
+									array( 'controller' => 'sanctionseps58', 'action' => 'nonrespectcer', $contratinsertion['Contratinsertion']['id'] ),
+									$permissions->check( 'sanctionseps58', 'nonrespectcer' )
+									&& $enCours
+									&& !$block
+									&& ( $contratinsertion['Contratinsertion']['forme_ci'] == 'S' )
+									&& ( !isset( $sanctionseps58 ) || empty( $sanctionseps58 ) )
+									&& empty( $erreursCandidatePassage )
+									&& !$contratenep
+								)
 							),
 							array( 'class' => 'odd' ),
 							array( 'class' => 'even' )

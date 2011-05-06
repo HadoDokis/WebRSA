@@ -319,6 +319,19 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Sanctionep58' => array(
+				'className' => 'Sanctionep58',
+				'foreignKey' => 'contratinsertion_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 		);
 
 

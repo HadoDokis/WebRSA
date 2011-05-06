@@ -210,6 +210,13 @@
 	Configure::write( 'Nonorientationproep58.delaiCreationContrat', 60 );
 
 	/**
+	* Durée de la tolérance (en nombre de jours) par-rapport à la date de fin
+	* d'un CER que l'on voudrait passer en EP pour le thème "sanctionep58" et
+	* l'origine "nonrespectcer"
+	*/
+	Configure::write( 'Sanctionep58.nonrespectcer.dureeTolerance', 365 );
+
+	/**
 	* Configuration pour le dialogue avec un CMS (système de gestion de contenu)
 	* comme Alfresco, servant à stocker les PDF
 	*/
