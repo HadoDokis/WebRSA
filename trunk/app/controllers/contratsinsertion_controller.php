@@ -488,6 +488,26 @@
 					)
 				);
 				$this->set( 'nbdossiersnonfinalisescovs', $nbdossiersnonfinalisescovs );
+				
+				$queryData = $this->_qdThematiqueEp( 'Sanctionep58', $personne_id );
+				$queryData['fields'] = Set::merge(
+					$queryData['fields'],
+					array(
+						'Sanctionep58.id',
+						'Sanctionep58.contratinsertion_id',
+						'Sanctionep58.created',
+						'Sanctionep58.modified',
+					)
+				);
+
+				$sanctionseps58 = $this->Contratinsertion->Signalementep93->Dossierep->find( 'all', $queryData );
+
+				$contratsenep = Set::extract( $sanctionseps58, '/Sanctionep58/contratinsertion_id' );
+
+				$this->set( compact( 'sanctionseps58', 'contratsenep' ) );
+
+				$this->set( 'erreursCandidatePassage', $this->Contratinsertion->Sanctionep58->Dossierep->erreursCandidatePassage( $personne_id ) );
+				$this->set( 'optionsdossierseps', $this->Contratinsertion->Sanctionep58->Dossierep->Passagecommissionep->enums() );
 			}
 			else if ( Configure::read( 'Cg.departement' ) == 93 ) {
 				// Des dossiers pour la thématique des signalements ?

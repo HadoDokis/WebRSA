@@ -39,3 +39,6 @@ msgstr "Radiation de Pôle Emploi"
 
 msgid "noninscritpe"
 msgstr "Non inscrit à Pôle Emploi"
+
+msgid "nonrespectcer"
+msgstr "Non respect du contrat"

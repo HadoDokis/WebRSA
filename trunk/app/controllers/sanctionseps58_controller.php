@@ -63,59 +63,11 @@
 						);
 						$this->Sanctionep58->Dossierep->create( $dossierep );
 						$success = $this->Sanctionep58->Dossierep->save() && $success;
-
-						$rgsanction = $this->Sanctionep58->find(
-							'count',
-							array(
-								'conditions' => array(
-									'Sanctionep58.origine' => $origine
-								),
-								'joins' => array(
-									array(
-										'table' => 'dossierseps',
-										'alias' => 'Dossierep',
-										'type' => 'INNER',
-										'conditions' => array(
-											'Dossierep.id = Sanctionep58.dossierep_id'
-										)
-									),
-									array(
-										'table' => 'passagescommissionseps',
-										'alias' => 'Passagecommissionep',
-										'type' => 'INNER',
-										'conditions' => array(
-											'Dossierep.id = Passagecommissionep.dossierep_id'
-										)
-									),
-									array(
-										'table' => 'decisionssanctionseps58',
-										'alias' => 'Decisionsanctionep58',
-										'type' => 'INNER',
-										'conditions' => array(
-											'Passagecommissionep.id = Decisionsanctionep58.passagecommissionep_id',
-											'Decisionsanctionep58.decision' => 'sanction'
-										)
-									)
-								),
-								'contain' => false
-							)
-						);
-
-						$listesanctionep58 = $this->Sanctionep58->Listesanctionep58->find(
-							'first',
-							array(
-								'conditions' => array(
-									'Listesanctionep58.rang' => $rgsanction+1
-								),
-								'contain' => false
-							)
-						);
 						
 						$sanctionep58 = array(
 							'Sanctionep58' => array(
 								'dossierep_id' => $this->Sanctionep58->Dossierep->id,
-								'origine' => $origine,
-								'listesanctionep58_id' => $listesanctionep58['Listesanctionep58']['id']
+								'origine' => $origine
 							)
 						);
 
@@ -164,6 +116,55 @@
 
 		public function selectionradies() {
 			$this->_selectionPassageSanctionep58( 'qdRadies', 'radiepe' );
+		}
+		
+		/**
+		 *
+		 */
+		public function nonrespectcer( $contratinsertion_id ) {
+			$contratinsertion = $this->Sanctionep58->Contratinsertion->find(
+				'first',
+				array(
+					'fields' => array(
+						'Contratinsertion.id',
+						'Contratinsertion.personne_id'
+					),
+					'conditions' => array(
+						'Contratinsertion.id' => $contratinsertion_id
+					),
+					'contain' => false
+				)
+			);
+			
+			$dossierep = array(
+				'Dossierep' => array(
+					'themeep' => 'sanctionseps58',
+					'personne_id' => $contratinsertion['Contratinsertion']['personne_id']
+				)
+			);
+			$this->Sanctionep58->Dossierep->create( $dossierep );
+			$success = $this->Sanctionep58->Dossierep->save() && $success;
+			
+			$sanctionep58 = array(
+				'Sanctionep58' => array(
+					'dossierep_id' => $this->Sanctionep58->Dossierep->id,
+					'origine' => 'nonrespectcer',
+					'contratinsertion_id' => $contratinsertion['Contratinsertion']['id']
+				)
+			);
+
+			$this->Sanctionep58->create( $sanctionep58 );
+			$success = $this->Sanctionep58->save() && $success;
+			
+			$this->_setFlashResult( 'Save', $success );
+			if( $success ) {
+				$this->Sanctionep58->commit();
+			}
+			else {
+				$this->Sanctionep58->rollback();
+			}
+			
+			$this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index', $contratinsertion['Contratinsertion']['personne_id'] ) );
 		}
 	}
 ?>

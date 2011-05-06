@@ -70,13 +70,6 @@
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
-			),
-			'Listesanctionep58' => array(
-				'className' => 'Listesanctionep58',
-				'foreignKey' => 'listesanctionep58_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
 			)
 		);
 
@@ -118,7 +111,7 @@
 					),
 					'conditions' => array(
 						$this->alias.'.origine' => $origine,
-						$this->alias.'.listesanctionep58_id <>' => $idSanctionMax['Listesanctionep58']['id'],
+						'Decisionsanctionep58.listesanctionep58_id <>' => $idSanctionMax['Listesanctionep58']['id'],
 						'Dossierep.id = (
 							SELECT dossierseps.id
 								FROM dossierseps
@@ -139,14 +132,6 @@
 							)
 						),
 						array(
-							'table' => 'listesanctionseps58',
-							'alias' => 'Listesanctionep58',
-							'type' => 'INNER',
-							'conditions' => array(
-								'Sanctionep58.listesanctionep58_id = Listesanctionep58.id'
-							)
-						),
-						array(
 							'table' => 'passagescommissionseps',
 							'alias' => 'Passagecommissionep',
 							'type' => 'INNER',
@@ -160,6 +145,14 @@
 							'type' => 'INNER',
 							'conditions' => array(
 								'Decisionsanctionep58.passagecommissionep_id = Passagecommissionep.id'
+							)
+						),
+						array(
+							'table' => 'listesanctionseps58',
+							'alias' => 'Listesanctionep58',
+							'type' => 'INNER',
+							'conditions' => array(
+								'Decisionsanctionep58.listesanctionep58_id = Listesanctionep58.id'
 							)
 						)
 					),
@@ -400,20 +393,19 @@
 						'fields' => array(
 							'id',
 							'dossierep_id',
-							'listesanctionep58_id',
 							'origine',
 							'created',
 							'modified'
 
-						),
-						'Listesanctionep58'
+						)
 					),
 					'Passagecommissionep' => array(
 						'conditions' => array(
 							'Passagecommissionep.commissionep_id' => $commissionep_id
 						),
 						'Decisionsanctionep58' => array(
-							'order' => array( 'etape DESC' )
+							'order' => array( 'etape DESC' ),
+							'Listesanctionep58'
 						)
 					)
 				)
@@ -441,13 +433,70 @@
 
 			$formData = array();
 			foreach( $datas as $key => $dossierep ) {
-				$formData['Decisionsanctionep58'][$key]['passagecommissionep_id'] = @$datas[$key][Passagecommissionep][0]['id'];
+				$formData['Decisionsanctionep58'][$key]['passagecommissionep_id'] = @$datas[$key]['Passagecommissionep'][0]['id'];
 
 				if( $niveauDecision == 'ep' ) {
 					if( isset( $datas[$key]['Passagecommissionep'][0]['Decisionsanctionep58'][0] ) ) { // Modification
 						$formData['Decisionsanctionep58'][$key]['id'] = @$datas[$key]['Passagecommissionep'][0]['Decisionsanctionep58'][0]['id'];
 						$formData['Decisionsanctionep58'][$key]['decision'] = @$datas[$key]['Passagecommissionep'][0]['Decisionsanctionep58'][0]['decision'];
 						$formData['Decisionsanctionep58'][$key]['raisonnonpassage'] = @$datas[$key]['Passagecommissionep'][0]['Decisionsanctionep58'][0]['raisonnonpassage'];
+						$formData['Decisionsanctionep58'][$key]['listesanctionep58_id'] = @$datas[$key]['Passagecommissionep'][0]['Decisionsanctionep58'][0]['listesanctionep58_id'];
+					}
+					else {
+						$nbdossierssanctions = $this->Dossierep->find(
+							'count',
+							array(
+								'conditions' => array(
+									'Dossierep.personne_id' => $dossierep['Personne']['id'],
+									'Dossierep.themeep' => 'sanctionseps58'
+								),
+								'joins' => array(
+									array(
+										'table' => 'sanctionseps58',
+										'alias' => 'Sanctionep58',
+										'type' => 'INNER',
+										'conditions' => array(
+											'Sanctionep58.dossierep_id = Dossierep.id',
+											'Sanctionep58.origine' => $dossierep['Sanctionep58']['origine']
+										)
+									),
+									array(
+										'table' => 'passagescommissionseps',
+										'alias' => 'Passagecommissionep',
+										'type' => 'INNER',
+										'conditions' => array(
+											'Passagecommissionep.dossierep_id = Dossierep.id',
+											'Passagecommissionep.etatdossierep' => 'traite'
+										)
+									),
+									array(
+										'table' => 'decisionssanctionseps58',
+										'alias' => 'Decisionsanctionep58',
+										'type' => 'INNER',
+										'conditions' => array(
+											'Decisionsanctionep58.passagecommissionep_id = Passagecommissionep.id',
+											'Decisionsanctionep58.decision' => 'sanction'
+										)
+									)
+								),
+								'contain' => false
+							)
+						);
+						
+						$listesanctionep58 = $this->Dossierep->Passagecommissionep->Decisionsanctionep58->Listesanctionep58->find(
+							'first',
+							array(
+								'fields' => array(
+									'Listesanctionep58.id'
+								),
+								'conditions' => array(
+									'Listesanctionep58.rang' => $nbdossierssanctions + 1
+								),
+								'contain' => false
+							)
+						);
+						
+						$formData['Decisionsanctionep58'][$key]['listesanctionep58_id'] = $listesanctionep58['Listesanctionep58']['id'];
 					}
 				}
 			}
@@ -495,48 +544,6 @@
 
 		public function finaliser( $commissionep_id, $etape ) {
 			// Aucune action utile ?
-			/*$commissionep = $this->Dossierep->Commissionep->find(
-				'first',
-				array(
-					'conditions' => array( 'Commissionep.id' => $commissionep_id ),
-					'contain' => array( 'Ep' )
-				)
-			);
-
-			$niveauDecisionFinale = $commissionep['Ep'][Inflector::underscore( $this->alias )];
-
-			$dossierseps = $this->find(
-				'all',
-				array(
-					'conditions' => array(
-						'Dossierep.commissionep_id' => $commissionep_id,
-						'Dossierep.themeep' => Inflector::tableize( $this->alias ),//FIXME: ailleurs aussi
-					),
-					'contain' => array(
-						'Decisionsanctionep58' => array(
-							'conditions' => array(
-								'Decisionsanctionep58.etape' => $etape
-							)
-						),
-						'Dossierep'
-					)
-				)
-			);
-
-			$success = true;
-			foreach( $dossierseps as $dossierep ) {
-				if( $niveauDecisionFinale == $etape ) {
-					$sanctionep58 = array( $this->alias => $dossierep[$this->alias] );
-					if( !isset( $dossierep['Decisionsanctionep58'][0]['decision'] ) ) {
-						$success = false;
-					}
-					$sanctionep58[$this->alias]['decision'] = @$dossierep['Decisionsanctionep58'][0]['decision'];
-
-					$success = $this->save( $sanctionep58 ) && $success;
-				}
-			}
-
-			return $success;*/
 			return true;
 		}
 
