@@ -201,5 +201,51 @@
 
 			return $queryData;
 		}
+		
+		
+		/**
+		 * Récupère le dernier identifiant Pôle Emploi d'une personne donnée.
+		 * Note : l'utilisation de l'identifiant Personne.idassedic est déconseillé.
+		 * @param $personneId 
+		 */
+		public function dernierIdentifiantpe( $personneId)
+		{
+			$query = "
+				SELECT
+					historiqueetatspe.identifiantpe
+					FROM informationspe
+						INNER JOIN historiqueetatspe ON (
+							informationspe.id = historiqueetatspe.informationpe_id
+							AND historiqueetatspe.id IN (
+								SELECT h.id
+									FROM historiqueetatspe AS h
+									WHERE h.informationpe_id = informationspe.id
+									ORDER BY h.date DESC
+									LIMIT 1
+							)
+						)
+						INNER JOIN personnes ON (
+							(
+								personnes.nir IS NOT NULL
+								AND personnes.dtnai IS NOT NULL
+								AND nir_correct( personnes.nir )
+								AND informationspe.nir IS NOT NULL
+								AND personnes.nir = informationspe.nir
+								AND personnes.dtnai = informationspe.dtnai
+							)
+							OR (
+								personnes.nom IS NOT NULL
+								AND personnes.prenom IS NOT NULL
+								AND personnes.dtnai IS NOT NULL
+								AND TRIM( BOTH ' ' FROM personnes.nom ) = TRIM( BOTH ' ' FROM informationspe.nom )
+								AND TRIM( BOTH ' ' FROM personnes.prenom ) = TRIM( BOTH ' ' FROM informationspe.prenom )
+								AND personnes.dtnai = informationspe.dtnai
+							)
+						)
+					WHERE personnes.id = {$personneId}
+				;";
+			$result = $this->query( $query );
+			return array('Informationpe'=> $result[0][0]);
+		}
 	}
 ?>
