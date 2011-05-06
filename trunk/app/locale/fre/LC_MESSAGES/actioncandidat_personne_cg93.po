@@ -88,3 +88,6 @@ msgstr " "
 
 msgid "ActioncandidatPersonne.precisionmotif"
 msgstr "* Préciser les motifs"
+
+msgid "ActioncandidatPersonne.horairerdvpartenaire"
+msgstr "Rendez-vous fixé le"
