@@ -705,14 +705,14 @@
 
 				switch( $search['Relance.numrelance'] ) {
 					case 1:
+						//Le dernier contrat en cours
 						$conditions[] = 'Contratinsertion.id IN (
 							SELECT contratsinsertion.id
 								FROM contratsinsertion
 								WHERE
 									contratsinsertion.datevalidation_ci IS NOT NULL
-									AND contratsinsertion.df_ci < NOW()
 									AND contratsinsertion.personne_id = Personne.id
-								ORDER by contratsinsertion.datevalidation_ci DESC
+								ORDER by contratsinsertion.df_ci DESC
 								LIMIT 1
 						)';
 

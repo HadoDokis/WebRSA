@@ -414,10 +414,11 @@ ALTER TABLE partenaires ADD COLUMN codepartenaire character varying(10);
 COMMENT ON COLUMN partenaires.codepartenaire IS 'Code partenaire (en lien avec le code action)';
 
 -- -----------------------------------------------------------------------------
--- Correction d'une commande du patch 2.0rc15 (ligne 241) qui ne nettoyait pas
--- correctement les orientsstructs non orientées.
+-- 20110509
 -- -----------------------------------------------------------------------------
 
+-- Correction d'une commande du patch 2.0rc15 (ligne 241) qui ne nettoyait pas
+-- correctement les orientsstructs non orientées.
 UPDATE orientsstructs
 	SET
 		typeorient_id = NULL,
