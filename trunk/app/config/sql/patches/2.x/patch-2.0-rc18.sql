@@ -168,7 +168,7 @@ INSERT INTO sitescovs58 ( name )
             covs58.name IS NOT NULL;
 
 UPDATE covs58
-    SET sitecov58_id = sitescovs58.id 
+    SET sitecov58_id = sitescovs58.id
             FROM sitescovs58
             WHERE sitescovs58.name = covs58.name;
 
@@ -253,7 +253,7 @@ CREATE INDEX informationspe_nom_prenom_dtnai_idx ON informationspe USING btree (
 CREATE INDEX personnes_nom_prenom_dtnai_idx ON personnes USING btree (nom, prenom, dtnai);
 
 -- -------------------------------------------------------------------------------------------------------------
--- 20110506: Fiche candidature pour CG66 
+-- 20110506: Fiche candidature pour CG66
 -- -------------------------------------------------------------------------------------------------------------
 
 -- ACTIONSCANDIDATS & SES RELATIONS
@@ -288,7 +288,7 @@ CREATE TABLE actionscandidats
 
 COMMENT ON TABLE actionscandidats IS 'Table pour les actions d''insertion liées à la fiche de candidature (CG66)';
 COMMENT ON COLUMN actionscandidats.id IS '[PK] Identifiant';
-COMMENT ON COLUMN actionscandidats.name	IS 'Intitulé de l''action';			
+COMMENT ON COLUMN actionscandidats.name	IS 'Intitulé de l''action';
 COMMENT ON COLUMN actionscandidats.themecode IS 'Code de l''action : partie thème';
 COMMENT ON COLUMN actionscandidats.codefamille IS 'Code de l''action : partie code famille';
 COMMENT ON COLUMN actionscandidats.numcodefamille IS 'Code de l''action : numéro du code famille';
@@ -384,7 +384,7 @@ CREATE INDEX actionscandidats_personnes_presencecontrat_idx ON actionscandidats_
 CREATE INDEX actionscandidats_personnes_referent_id_idx ON actionscandidats_personnes (referent_id);
 CREATE INDEX actionscandidats_personnes_rendezvouspartenaire_idx ON actionscandidats_personnes (rendezvouspartenaire);
 CREATE INDEX actionscandidats_personnes_motifsortie_id_idx ON actionscandidats_personnes( motifsortie_id );
-  
+
 -- ACTIONSCANDIDATS_PARTENAIRES
 CREATE TABLE actionscandidats_partenaires
 (
@@ -408,15 +408,30 @@ COMMENT ON COLUMN actionscandidats_zonesgeographiques.id IS '[PK] Identifiant';
 COMMENT ON COLUMN actionscandidats_zonesgeographiques.actioncandidat_id IS '[FK] actionscandidats(id)';
 COMMENT ON COLUMN actionscandidats_zonesgeographiques.zonegeographique_id IS '[FK] zonesgeographiques(id)';
 
--- PARTENAIRES 
+-- PARTENAIRES
 SELECT alter_table_drop_column_if_exists('public', 'partenaires', 'codepartenaire');
 ALTER TABLE partenaires ADD COLUMN codepartenaire character varying(10);
 COMMENT ON COLUMN partenaires.codepartenaire IS 'Code partenaire (en lien avec le code action)';
 
+-- -----------------------------------------------------------------------------
+-- Correction d'une commande du patch 2.0rc15 (ligne 241) qui ne nettoyait pas
+-- correctement les orientsstructs non orientées.
+-- -----------------------------------------------------------------------------
 
-
-
-
+UPDATE orientsstructs
+	SET
+		typeorient_id = NULL,
+		structurereferente_id = NULL,
+		referent_id = NULL,
+		valid_cg = NULL,
+		date_valid = NULL,
+		date_impression = NULL,
+		etatorient = NULL,
+		rgorient = NULL,
+		structureorientante_id = NULL,
+		referentorientant_id = NULL,
+		user_id = NULL
+	WHERE statut_orient <> 'Orienté';
 
 -- *****************************************************************************
 COMMIT;
