@@ -92,7 +92,7 @@
             <tbody>
                 <?php
                     foreach( $comitesapres as $comiteapre ) {
-debug($comiteapre);
+// debug($comiteapre);
                         $comiteapre = $comiteapre['Comiteapre'];
 
                         echo $xhtml->tableCells(
