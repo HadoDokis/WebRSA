@@ -22,6 +22,15 @@
 		*
 		*/
 
+		public function beforeFilter() {
+			ini_set('max_execution_time', 0);
+			parent::beforeFilter();
+		}
+
+		/**
+		*
+		*/
+
 		protected function _setOptions() {
 			$options = $this->Apre->allEnumLists();
 			$this->set( 'options', $options );
