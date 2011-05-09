@@ -567,12 +567,20 @@
 						LIMIT 1
 				)';
 
+				// On accepte les orientations validées durant le CER, si c'est pour la même structure référente
 				$conditions[] = 'Orientstruct.personne_id NOT IN (
 									SELECT contratsinsertion.personne_id
 										FROM contratsinsertion
 										WHERE
 											contratsinsertion.personne_id = Orientstruct.personne_id
-											AND date_trunc( \'day\', contratsinsertion.datevalidation_ci ) >= Orientstruct.date_valid
+											AND (
+												date_trunc( \'day\', contratsinsertion.datevalidation_ci ) >= Orientstruct.date_valid
+												OR (
+													date_trunc( \'day\', "contratsinsertion"."dd_ci" ) <= "Orientstruct"."date_valid"
+													AND date_trunc( \'day\', "contratsinsertion"."df_ci" ) >= "Orientstruct"."date_valid"
+													AND "contratsinsertion"."structurereferente_id" = "Orientstruct"."structurereferente_id"
+												)
+											)
 										)';
 				$conditions[] = "Orientstruct.date_impression <= DATE( NOW() )";
 				if( !empty( $search['Relance.compare0'] ) && !empty( $search['Relance.nbjours0'] ) ) {
