@@ -237,25 +237,30 @@
 
 
 						echo "<div id=\"$theme\"><h3 class=\"title\">".__d( 'dossierep',  'ENUM::THEMEEP::'.Inflector::tableize( $theme ), true )."</h3>";
-						echo $default2->index(
-							$dossiers[$theme],
-							array(
-								'Dossierep.Personne.qual',
-								'Dossierep.Personne.nom',
-								'Dossierep.Personne.prenom',
-								'Dossierep.Personne.dtnai',
-								'Dossierep.Personne.Foyer.Adressefoyer.0.Adresse.locaadr',
-								'Dossierep.created',
-								'Dossierep.themeep',
-								'Passagecommissionep.etatdossierep',
-							),
-							array(
-								'actions' => array(
-									'Dossierseps::view' => array( 'label' => 'Voir', 'url' => array( 'controller' => $controller, 'action' => 'index', '#Dossierep.Personne.id#' ), 'class' => 'external' )
+						if( empty( $dossiers[$theme] ) ) {
+							echo '<p class="notice">Il n\'existe aucun dossier de cette thématique associé à cette commission d\'EP.</p>';
+						}
+						else {
+							echo $default2->index(
+								$dossiers[$theme],
+								array(
+									'Dossierep.Personne.qual',
+									'Dossierep.Personne.nom',
+									'Dossierep.Personne.prenom',
+									'Dossierep.Personne.dtnai',
+									'Dossierep.Personne.Foyer.Adressefoyer.0.Adresse.locaadr',
+									'Dossierep.created',
+									'Dossierep.themeep',
+									'Passagecommissionep.etatdossierep',
 								),
-								'options' => $options
-							)
-						);
+								array(
+									'actions' => array(
+										'Dossierseps::view' => array( 'label' => 'Voir', 'url' => array( 'controller' => $controller, 'action' => 'index', '#Dossierep.Personne.id#' ), 'class' => 'external' )
+									),
+									'options' => $options
+								)
+							);
+						}
 						echo "</div>";
 					}
 				?>
