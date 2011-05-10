@@ -26,6 +26,8 @@
 			}
 		}
 
+		$indexDecision = count( $dossierep['Passagecommissionep'][0]['Decisionnonrespectsanctionep93'] ) - 1;
+
 		echo $xhtml->tableCells(
 			array(
 				$dossierep['Dossierep']['id'],
@@ -38,7 +40,7 @@
 				@$dossierep['Nonrespectsanctionep93']['rgpassage'],
 				Set::enum( @$dossierep['Personne']['Foyer']['sitfam'], $options['Foyer']['sitfam'] ),
 				@$dossierep['Personne']['Foyer']['nbenfants'],
-				Set::enum( @$dossierep['Nonrespectsanctionep93']['Decisionnonrespectsanctionep93'][1]['decision'], $options['Decisionnonrespectsanctionep93']['decision'] ),
+				Set::enum( @$dossierep['Passagecommissionep'][0]['Decisionnonrespectsanctionep93'][$indexDecision]['decision'], $options['Decisionnonrespectsanctionep93']['decision'] ),
 				array(
 					$form->input( "Nonrespectsanctionep93.{$i}.id", array( 'type' => 'hidden'/*, 'value' => $dossierep['Nonrespectsanctionep93']['id']*/ ) ).
 					$form->input( "Nonrespectsanctionep93.{$i}.dossierep_id", array( 'type' => 'hidden'/*, 'value' => $dossierep['Dossierep']['id']*/ ) ).
