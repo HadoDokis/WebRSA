@@ -26,6 +26,9 @@ msgstr "Origines des PDOs"
 msgid "Originespdos::add"
 msgstr "Ajout d'une origine"
 
+msgid "Originespdos::edit"
+msgstr "Modifier l'origine"
+
 msgid "Originepdo::index::empty"
 msgstr "Aucune origine des PDOs présente"
 
