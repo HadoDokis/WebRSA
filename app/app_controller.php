@@ -176,19 +176,21 @@
 		*/
 
 		protected function _updateConnection() {
-				if( Configure::read( 'Utilisateurs.multilogin' ) == false ) {
-					$connection_id = $this->Session->read( 'Auth.Connection.id' );
+			if( Configure::read( 'Utilisateurs.multilogin' ) == false ) {
+				$connection_id = $this->Session->read( 'Auth.Connection.id' );
 
-					if( empty( $connection_id ) ) {
-						$connection_id = $this->Connection->field( 'id', array( 'user_id' => $this->Session->read( 'Auth.User.id' ) ) );
-						$this->Session->write( 'Auth.Connection.id', $connection_id );
-					}
+				if( empty( $connection_id ) ) {
+					$connection_id = $this->Connection->field( 'id', array( 'user_id' => $this->Session->read( 'Auth.User.id' ) ) );
+					$this->Session->write( 'Auth.Connection.id', $connection_id );
+				}
 
-					if( !empty( $connection_id ) ) {
-						$this->Connection->create( array( 'id' => $connection_id ) );
+				if( !empty( $connection_id ) ) {
+					$this->Connection->create( array( 'id' => $connection_id ) );
+					if( $this->Connection->exists() ) {
 						$this->Connection->saveField( 'modified', null );
 					}
 				}
+			}
 		}
 
 		/**
