@@ -71,7 +71,7 @@
             echo $default->subform(
                 array(
                     'ActioncandidatPersonne.personne_id' => array( 'value' => $personneId, 'type' => 'hidden' ),
-                    'ActioncandidatPersonne.actioncandidat_id',
+                    'ActioncandidatPersonne.actioncandidat_id' => array( 'type' => 'select' ),
                     'ActioncandidatPersonne.referent_id' => array( 'value' => $referentId ),
                 ),
                 array(
