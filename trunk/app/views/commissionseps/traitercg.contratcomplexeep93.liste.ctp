@@ -9,7 +9,8 @@
 <th rowspan="2">Création du dossier EP</th>
 <th rowspan="2">Date de début du contrat</th>
 <th rowspan="2">Date de fin du contrat</th>
-<th colspan="3">Avis EP</th>
+<th rowspan="2">Avis EP</th>
+<th colspan="3">Décision CG</th>
 </tr>
 <tr>
 <th>Décision</th>
@@ -18,6 +19,7 @@
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
+		$indexDecision = count( $dossierep['Passagecommissionep'][0]['Decisioncontratcomplexeep93'] ) - 1;
 // debug($dossierep);
 		echo $xhtml->tableCells(
 			array(
@@ -28,17 +30,17 @@
 				$locale->date( __( 'Locale->date', true ), $dossierep['Dossierep']['created'] ),
 				$locale->date( __( 'Locale->date', true ), @$dossierep['Contratcomplexeep93']['Contratinsertion']['dd_ci'] ),
 				$locale->date( __( 'Locale->date', true ), @$dossierep['Contratcomplexeep93']['Contratinsertion']['df_ci'] ),
-				/*array(
-					$form->input( "Contratcomplexeep93.{$i}.id", array( 'type' => 'hidden' ) ).
-					$form->input( "Contratcomplexeep93.{$i}.dossierep_id", array( 'type' => 'hidden' ) ).
-					$form->input( "Decisioncontratcomplexeep93.{$i}.id", array( 'type' => 'hidden' ) ).
-					$form->input( "Decisioncontratcomplexeep93.{$i}.passagecommissionep_id", array( 'type' => 'hidden' ) ).
-					$form->input( "Decisioncontratcomplexeep93.{$i}.etape", array( 'type' => 'hidden', 'value' => 'ep' ) ).
-					$form->input( "Decisioncontratcomplexeep93.{$i}.decision", array( 'type' => 'select', 'options' => $options['Decisioncontratcomplexeep93']['decision'], 'div' => false, 'label' => false ) ),
-					$form->input( "Decisioncontratcomplexeep93.{$i}.datevalidation_ci", array( 'type' => 'date', 'div' => false, 'label' => false ) ),
-					$form->input( "Decisioncontratcomplexeep93.{$i}.observ_ci", array( 'type' => 'text', 'div' => false, 'label' => false ) ),
-					array( 'id' => "Decisioncontratcomplexeep93{$i}ColumnDecision", 'colspan' => 4 )
-				),*/
+				implode(
+					' - ',
+					Set::filter(
+						array(
+							Set::enum( @$dossierep['Passagecommissionep'][0]['Decisioncontratcomplexeep93'][$indexDecision]['decision'], $options['Decisioncontratcomplexeep93']['decision'] ),
+							$locale->date( 'Locale->date', @$dossierep['Passagecommissionep'][0]['Decisioncontratcomplexeep93'][$indexDecision]['datevalidation_ci'] ),
+							@$dossierep['Passagecommissionep'][0]['Decisioncontratcomplexeep93'][$indexDecision]['observ_ci'],
+							@$dossierep['Passagecommissionep'][0]['Decisioncontratcomplexeep93'][$indexDecision]['raisonnonpassage']
+						)
+					)
+				),
 				$form->input( "Contratcomplexeep93.{$i}.id", array( 'type' => 'hidden' ) ).
 				$form->input( "Contratcomplexeep93.{$i}.dossierep_id", array( 'type' => 'hidden' ) ).
 				$form->input( "Decisioncontratcomplexeep93.{$i}.id", array( 'type' => 'hidden' ) ).

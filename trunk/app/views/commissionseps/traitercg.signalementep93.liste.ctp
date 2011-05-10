@@ -28,6 +28,8 @@
 			}
 		}
 
+		$indexDecision = count( $dossierep['Passagecommissionep'][0]['Decisionsignalementep93'] ) - 1;
+
 		echo $xhtml->tableCells(
 			array(
 				$dossierep['Dossierep']['id'],
@@ -42,7 +44,15 @@
 				@$dossierep['Signalementep93']['rang'],
 				Set::enum( @$dossierep['Personne']['Foyer']['sitfam'], $options['Foyer']['sitfam'] ),
 				@$dossierep['Personne']['Foyer']['nbenfants'],
-				Set::enum( @$dossierep['Passagecommissionep'][0]['Decisionsignalementep93'][0]['decision'], $options['Decisionsignalementep93']['decision'] ),
+				implode(
+					' - ',
+					Set::filter(
+						array(
+							Set::enum( @$dossierep['Passagecommissionep'][0]['Decisionsignalementep93'][$indexDecision]['decision'], $options['Decisionsignalementep93']['decision'] ),
+							@$dossierep['Passagecommissionep'][0]['Decisionsignalementep93'][$indexDecision]['raisonnonpassage']
+						)
+					)
+				),
 				array(
 					$form->input( "Signalementep93.{$i}.id", array( 'type' => 'hidden'/*, 'value' => $dossierep['Signalementep93']['id']*/ ) ).
 					$form->input( "Signalementep93.{$i}.dossierep_id", array( 'type' => 'hidden'/*, 'value' => $dossierep['Dossierep']['id']*/ ) ).
