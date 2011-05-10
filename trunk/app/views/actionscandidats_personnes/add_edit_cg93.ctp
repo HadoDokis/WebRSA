@@ -345,7 +345,7 @@
             echo $default->subform(
                 array(
                     'ActioncandidatPersonne.personne_id' => array( 'value' => $personneId, 'type' => 'hidden' ),
-                    'ActioncandidatPersonne.actioncandidat_id'
+                    'ActioncandidatPersonne.actioncandidat_id' => array( 'type' => 'select' )
                 ),
                 array(
                     'domain' => $domain,
