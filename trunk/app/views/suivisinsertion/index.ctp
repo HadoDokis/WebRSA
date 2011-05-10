@@ -571,54 +571,59 @@
         <?php if( Configure::read( 'Cg.departement' ) == 93 ):?>
             <!-- Etape 9 : Affichage du dernier passage en EP -->
             <h2>Etape 9: Dernier passage en EP</h2>
-            <?php
-                $detailsEp = array();
-                foreach( array( 'DEM', 'CJT' ) as $roleEp ) {
-                    if( isset( $details[$roleEp]['Dossierep']['derniere']['Dossierep'] ) ){
-                        $detailsEp[$roleEp]['dateEp'] = h( date_short( Set::extract( "{$roleEp}.Dossierep.derniere.Commissionep.dateseance", $details ) ) );
-                        $themeep = Set::classicExtract( $details, "{$roleEp}.Dossierep.derniere.Dossierep.themeep" );
-                        $modeleDecision = 'Decision'.Inflector::singularize( $themeep );
-                        $detailsEp[$roleEp]['themeEp'] = Set::enum( Set::classicExtract( $details, "{$roleEp}.Dossierep.derniere.Dossierep.themeep" ), $dossierep['themeep'] );
-                        $detailsEp[$roleEp]['decisionEp'] = Set::enum( Set::classicExtract( $details, "{$roleEp}.Dossierep.derniere.{$modeleDecision}.decision" ), $options[$modeleDecision]['decision'] );
+                <?php
+                    $detailsEp = array();
+                    foreach( array( 'DEM', 'CJT' ) as $roleEp ) {
+                        if( isset( $details[$roleEp]['Dossierep']['derniere']['Dossierep'] ) ){
+                            $detailsEp[$roleEp]['dateEp'] = h( date_short( Set::extract( "{$roleEp}.Dossierep.derniere.Commissionep.dateseance", $details ) ) );
+                            $themeep = Set::classicExtract( $details, "{$roleEp}.Dossierep.derniere.Dossierep.themeep" );
+                            $modeleDecision = 'Decision'.Inflector::singularize( $themeep );
+                            $detailsEp[$roleEp]['themeEp'] = Set::enum( Set::classicExtract( $details, "{$roleEp}.Dossierep.derniere.Dossierep.themeep" ), $dossierep['themeep'] );
+                            $detailsEp[$roleEp]['decisionEp'] = Set::enum( Set::classicExtract( $details, "{$roleEp}.Dossierep.derniere.{$modeleDecision}.decision" ), $options[$modeleDecision]['decision'] );
 
-                        $detailsEp[$roleEp]['etatDossierep'] = Set::enum( Set::classicExtract( $details, "{$roleEp}.Dossierep.derniere.Passagecommissionep.etatdossierep" ), $options['Passagecommissionep']['etatdossierep'] );
+                            $detailsEp[$roleEp]['etatDossierep'] = Set::enum( Set::classicExtract( $details, "{$roleEp}.Dossierep.derniere.Passagecommissionep.etatdossierep" ), $options['Passagecommissionep']['etatdossierep'] );
+                        }
                     }
-                }
 
-            ?>
-            <table>
-                <thead>
-                    <tr class="odd">
-                        <th colspan="5">Parcours Demandeur</th>
-                        <th colspan="4">Parcours Conjoint</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="odd">
-                        <th>Date de la commission d'EP</th>
-                        <th>Motif de passage en EP</th>
-                        <th>État dossier EP</th>
-                        <th>Décision de l'EP</th>
-                        <th></th>
+                ?>
+                <?php if( isset($detailsEp) && !empty( $detailsEp ) ):?>
+                <table>
+                    <thead>
+                        <tr class="odd">
+                            <th colspan="5">Parcours Demandeur</th>
+                            <th colspan="4">Parcours Conjoint</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="odd">
+                            <th>Date de la commission d'EP</th>
+                            <th>Motif de passage en EP</th>
+                            <th>État dossier EP</th>
+                            <th>Décision de l'EP</th>
+                            <th></th>
 
-                        <th>Date de la commission d'EP</th>
-                        <th>Motif de passage en EP</th>
-                        <th>État dossier EP</th>
-                        <th>Décision de l'EP</th>
+                            <th>Date de la commission d'EP</th>
+                            <th>Motif de passage en EP</th>
+                            <th>État dossier EP</th>
+                            <th>Décision de l'EP</th>
 
-                    </tr>
-                        <td><?php echo @$detailsEp['DEM']['dateEp'];?></td>
-                        <td><?php echo @$detailsEp['DEM']['themeEp'];?></td>
-                        <td><?php echo @$detailsEp['DEM']['etatDossierep'];?></td>
-                        <td><?php echo @$detailsEp['DEM']['decisionEp'];?></td>
+                        </tr>
+                            <td><?php echo @$detailsEp['DEM']['dateEp'];?></td>
+                            <td><?php echo @$detailsEp['DEM']['themeEp'];?></td>
+                            <td><?php echo @$detailsEp['DEM']['etatDossierep'];?></td>
+                            <td><?php echo @$detailsEp['DEM']['decisionEp'];?></td>
 
-                        <td><?php echo @$detailsEp['CJT']['dateEp'];?></td>
-                        <td><?php echo @$detailsEp['CJT']['themeEp'];?></td>
-                        <td><?php echo @$detailsEp['CJT']['etatDossierep'];?></td>
-                        <td><?php echo @$detailsEp['CJT']['decisionEp'];?></td>
-                    </tr>
-                </tbody>
-            </table>
+                            <td><?php echo @$detailsEp['CJT']['dateEp'];?></td>
+                            <td><?php echo @$detailsEp['CJT']['themeEp'];?></td>
+                            <td><?php echo @$detailsEp['CJT']['etatDossierep'];?></td>
+                            <td><?php echo @$detailsEp['CJT']['decisionEp'];?></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            <?php else:?>
+                <p class="notice">Aucun passage en EP présent.</p>
+            <?php endif;?>
         <?php endif;?>
     
         <?php if( Configure::read( 'Cg.departement' ) == 66 ):?>
@@ -638,6 +643,7 @@
                 }
 //                         debug($options);
             ?>
+            <?php if( isset($detailsEp) && !empty( $detailsEp ) ):?>
             <table>
                 <thead>
                     <tr class="odd">
@@ -671,6 +677,10 @@
                     </tr>
                 </tbody>
             </table>
+
+            <?php else:?>
+                <p class="notice">Aucun passage en EP présent.</p>
+            <?php endif;?>
         <?php endif;?>
     </div>
 </div>
