@@ -17,6 +17,8 @@ SELECT add_missing_table_field ('public', 'membreseps', 'compladr', 'VARCHAR(100
 SELECT add_missing_table_field ('public', 'membreseps', 'codepostal', 'CHAR(5)');
 SELECT add_missing_table_field ('public', 'membreseps', 'ville', 'VARCHAR(100)');
 
+ALTER TABLE actionscandidats ALTER COLUMN contractualisation SET NOT NULL;
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
