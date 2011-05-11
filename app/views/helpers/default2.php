@@ -134,7 +134,7 @@
 			foreach( Set::normalize( $columns ) as $column => $options ) {
 				$label = $this->label( $column, $options );
 
-				if( Set::check( $this->Xpaginator2->params, 'paging' ) ) {
+				if( Set::check( $this->Xpaginator2->params, 'paging' ) && ( !isset( $options['sort'] ) || $options['sort'] ) ) {
 					$thead[] = $this->Xpaginator2->sort( $label, $column );
 				}
 				else {
@@ -316,6 +316,8 @@
 				foreach( $cells as $path => $params ) {
 					if( $this->_translateVisible( $data, $params ) ) {
 						$params = $this->Type2->prepare( 'output', $path, $params );
+						unset( $params['sort'] );
+
 						list( $model, $field ) = Xinflector::modelField( $path );
 						$validationErrors = $this->validationErrors[$modelName];
 

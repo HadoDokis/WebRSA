@@ -17,6 +17,8 @@
 			/// TODO: Voir où l'utiliser ailleurs
 			if( !$this->Session->check( 'Cache.mesCodesInsee' ) ) {
 				if( Configure::read( 'Zonesegeographiques.CodesInsee' ) ) {
+					$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+					$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
 					$listeCodesInseeLocalites = $this->Dossier->Foyer->Personne->Cui->Structurereferente->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) );
 				}
 				else {
