@@ -107,6 +107,11 @@
 				'rule' => 'notEmpty',
 				'message' => 'Champ obligatoire'
 			),
+			'horairerdvpartenaire' => array(
+				'rule' => 'notEmpty',
+				'message' => 'Champ obligatoire',
+				'required' => false
+			),
 			'ddaction' => array(
 				'rule' => 'notEmpty',
 				'message' => 'Champ obligatoire'
