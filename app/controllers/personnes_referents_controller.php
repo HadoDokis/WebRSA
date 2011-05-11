@@ -152,7 +152,17 @@
             $this->assert( ( $nbrPersonnes == 1 ), 'invalidParameter' );
 
 
-            $personnes_referents = $this->PersonneReferent->find( 'all', array( 'conditions' => array( 'PersonneReferent.personne_id' => $personne_id ) ) );
+            $personnes_referents = $this->PersonneReferent->find(
+				'all',
+				array(
+					'conditions' => array(
+						'PersonneReferent.personne_id' => $personne_id
+					),
+					'order' =>array(
+						'PersonneReferent.dddesignation DESC'
+					)
+				)
+			);
             $this->set( 'personnes_referents', $personnes_referents );
 
 //             debug($personnes_referents);
