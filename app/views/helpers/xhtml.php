@@ -13,9 +13,12 @@
 				if( $escapeTitle ) {
 					$title = h( $title );
 				}
-				return "<span class=\"disabled\">{$title}</span>";
+				$htmlAttributes['class'] = ( isset( $htmlAttributes['class'] ) ? "{$htmlAttributes['class']} disabled" : "disabled" );
+
+				return "<span class=\"{$htmlAttributes['class']}\">{$title}</span>";
 			}
 			else {
+                unset( $htmlAttributes['enabled'] );
 				return parent::link( $title, $url, $htmlAttributes, $confirmMessage, $escapeTitle );
 			}
 		}
