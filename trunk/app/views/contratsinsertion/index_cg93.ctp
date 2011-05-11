@@ -44,8 +44,8 @@
 						<td><?php echo $locale->date( 'Locale->date', $signalementep93['Signalementep93']['date'] );?></td>
 						<td><?php echo h( $signalementep93['Signalementep93']['rang'] );?></td>
 						<td><?php echo h( $etatdossierep );?></td>
-						<td class="action"><?php echo $default->button( 'edit', array( 'controller' => 'signalementseps93', 'action' => 'edit', $signalementep93['Signalementep93']['id'] ), array( 'enabled' => ( empty( $signalementep93['Passagecommissionep']['etatdossierep'] ) ) ) );?></td>
-						<td class="action"><?php echo $default->button( 'delete', array( 'controller' => 'signalementseps93', 'action' => 'delete', $signalementep93['Signalementep93']['id'] ), array( 'enabled' => ( empty( $signalementep93['Passagecommissionep']['etatdossierep'] ) ) ) );?></td>
+						<td class="action"><?php echo $default->button( 'edit', array( 'controller' => 'signalementseps', 'action' => 'edit', $signalementep93['Signalementep93']['id'] ), array( 'enabled' => ( empty( $signalementep93['Passagecommissionep']['etatdossierep'] ) ) ) );?></td>
+						<td class="action"><?php echo $default->button( 'delete', array( 'controller' => 'signalementseps', 'action' => 'delete', $signalementep93['Signalementep93']['id'] ), array( 'enabled' => ( empty( $signalementep93['Passagecommissionep']['etatdossierep'] ) ), 'confirm' => 'Confirmer la suppression du signalement ?' ) );?></td>
 					</tr>
 				<?php endforeach;?>
 				</tbody>
