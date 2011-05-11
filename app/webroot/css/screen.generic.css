@@ -1068,6 +1068,10 @@ td.button.print a, td.action a.print, td span.button.print, table.default2 td a.
 	background-image: url( ../img/icons/printer.png );
 }
 
+td.button.print.disabled a, td.action a.print.disabled, td span.button.print.disabled, table.default2 td a.button.print.disabled {
+    background-image: url( ../img/icons/printer_disabled.png );
+}
+
 td.button.delete a, td.action a.delete, td span.button.delete, table.default2 td a.button.delete {
 	background-image: url( ../img/icons/delete.png );
 }
@@ -1089,6 +1093,10 @@ td.button.filelink a, td.action a.filelink, td span.button.filelink, table.defau
 }
 
 td.button.courrierInformation a, td.action a.courrierInformation, td span.button.courrierInformation, table.default2 td a.button.courrierInformation {
+    background-image: url( ../img/icons/printer.png );
+}
+
+td.button.printConvocation a, td.action a.printConvocation, td span.button.printConvocation, table.default2 td a.button.printConvocation {
     background-image: url( ../img/icons/printer.png );
 }
 /**/

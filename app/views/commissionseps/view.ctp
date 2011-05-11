@@ -85,6 +85,16 @@
 		else {
 			echo '<li><span class="disabled"> '.__d( 'commissionep','Commissionseps::finalisercg',true ).'</span></li>';
 		}
+
+        if( in_array( 'commissionseps::printDecision', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) ) {
+            echo '<li>'.$xhtml->link(
+                __d( 'commissionep','Commissionseps::printDecision',true ),
+                array( 'controller' => 'commissionseps', 'action' => 'printDecision', $commissionep['Commissionep']['id'] )
+            ).' </li>';
+        }
+        else {
+            echo '<li><span class="disabled"> '.__d( 'commissionep','Commissionseps::printDecision',true ).'</span></li>';
+        }
 	?>
 	</ul>
 
@@ -164,9 +174,16 @@
 							'Membreep.nom',
 							'CommissionepMembreep.reponse',
 							'CommissionepMembreep.presence'
+						),
+						array(
+                            'actions' => array(
+                                'Commissionseps::printConvocation'
+                            )
 						)
 					)
 				);
+
+                $disableConvocationParticipant = in_array( 'commissionseps::printConvocationParticipant', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] );
 				echo "<tbody>";
 				foreach($membresepsseanceseps as $membreepseanceep) {
 					echo "<tr>";
@@ -198,6 +215,19 @@
 							'td',
 							$membreepseanceep['CommissionepMembreep']['presencetxt']
 						);
+
+						echo $html->tag(
+                            'td',
+                            $xhtml->link(
+                                'Convocation',
+                                array( 'controller' => 'commissionseps', 'action' => 'printConvocationParticipant', $membreepseanceep['CommissionepMembreep']['id'] ),
+                                array(
+                                    'enabled' => ( ( $membreepseanceep['CommissionepMembreep']['reponse'] == 'remplacepar' ) || ( $membreepseanceep['CommissionepMembreep']['reponse'] == 'confirme' ) && !empty( $disableConvocationParticipant ) ),
+                                    'class' => 'button print'
+                                )
+                            ),
+                            array( 'class' => 'action')
+                        );
 					echo "</tr>";
 				}
 				echo "</tbody></table>";
@@ -209,6 +239,9 @@
 			<h2 class="title">3. Liste des dossiers</h2>
 			<ul class="actionMenu">
 				<?php
+
+                    $disableConvocationBeneficiaire = in_array( 'commissionseps::printConvocationBeneficiaire', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] );
+
 					if( in_array( 'dossierseps::choose', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) ) {
 						echo '<li>'.$xhtml->editLink(
 							'Modifier',
@@ -255,7 +288,8 @@
 								),
 								array(
 									'actions' => array(
-										'Dossierseps::view' => array( 'label' => 'Voir', 'url' => array( 'controller' => $controller, 'action' => 'index', '#Dossierep.Personne.id#' ), 'class' => 'external' )
+										'Dossierseps::view' => array( 'label' => 'Voir', 'url' => array( 'controller' => $controller, 'action' => 'index', '#Dossierep.Personne.id#' ), 'class' => 'external' ),
+										'Commissionseps::printConvocation' => array( 'url' => array( 'controller' => 'commissionseps', 'action' => 'printConvocationBeneficiaire', '#Dossierep.id#' ), 'disabled' => empty( $disableConvocationBeneficiaire ))
 									),
 									'options' => $options
 								)

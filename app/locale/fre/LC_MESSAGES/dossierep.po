@@ -42,6 +42,12 @@ msgstr "Thème du dossier"
 
 msgid "Dossierseps::courrierInformation"
 msgstr "Imprimer le courrier d'information"
+
+msgid "Dossierseps::printConvocation"
+msgstr "Imprimer la convocation"
+
+msgid "Dossierseps::view"
+msgstr "Voir le dossier de la personne"
 ###############################################################################
 # Enums
 ###############################################################################
