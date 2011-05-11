@@ -98,7 +98,7 @@
 					<td class="number"><?php echo h( $reorientationep93['Orientstruct']['rgorient'] + 1 );?></td>
 					<td><?php echo h( $etatdossierep );?></td>
 					<td><?php echo $default->button( 'edit', array( 'controller' => 'reorientationseps93', 'action' => 'edit', $reorientationep93['Reorientationep93']['id'] ), array( 'enabled' => ( empty( $reorientationep93['Passagecommissionep']['etatdossierep'] ) ) ) );?></td>
-					<td><?php echo $default->button( 'delete', array( 'controller' => 'reorientationseps93', 'action' => 'delete', $reorientationep93['Reorientationep93']['id'] ), array( 'enabled' => ( empty( $reorientationep93['Passagecommissionep']['etatdossierep'] ) ) ) );?></td>
+					<td><?php echo $default->button( 'delete', array( 'controller' => 'reorientationseps93', 'action' => 'delete', $reorientationep93['Reorientationep93']['id'] ), array( 'enabled' => ( empty( $reorientationep93['Passagecommissionep']['etatdossierep'] ) ), 'confirm' => 'Êtes-vous sûr de vouloir supprimer la demande de réorientation ?' ) );?></td>
 				</tr>
 			</tbody>
 		</table>
