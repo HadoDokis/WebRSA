@@ -97,6 +97,9 @@ msgstr "Heure du prochain rendez-vous"
 msgid "Entretien.objetentretien_id"
 msgstr "Objet de l'entretien"
 
+msgid "Entretien.typerdv_id"
+msgstr "Type de l'entretien"
+
 msgid "Entretien.arevoirle"
 msgstr "A revoir le"
 
