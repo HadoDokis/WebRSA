@@ -39,6 +39,27 @@ msgstr "Téléphone"
 msgid "Membreep.mail"
 msgstr "Email"
 
+msgid "Membreep.numvoie"
+msgstr "N° de voie"
+
+msgid "Membreep.typevoie"
+msgstr "Type de voie"
+
+msgid "Membreep.nomvoie"
+msgstr "Nom de voie"
+
+msgid "Membreep.compladr"
+msgstr "Complément d'adresse"
+
+msgid "Membreep.codepostal"
+msgstr "Code postal"
+
+msgid "Membreep.ville"
+msgstr "Ville"
+
+msgid "Membreep.adresse"
+msgstr "Adresse complète"
+
 msgid "Membreep.ep_id"
 msgstr "Nom de l'EP"
 
