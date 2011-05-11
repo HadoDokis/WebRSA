@@ -16,7 +16,12 @@
 			'Membreep.qual' => array( 'required' => true ),
 			'Membreep.nom' => array( 'required' => true ),
 			'Membreep.prenom' => array( 'required' => true ),
-			'Membreep.tel',
+			'Membreep.numvoie',
+			'Membreep.typevoie' => array( 'type' => 'select', 'options' => $options['typevoie'] ),
+			'Membreep.nomvoie',
+			'Membreep.compladr',
+			'Membreep.codepostal',
+			'Membreep.ville',
 			'Membreep.mail',
 			'Membreep.suppleant_id' => array('type'=>'select', 'options'=>$listeSuppleants)
 		),

@@ -12,9 +12,13 @@
 			if( $this->action != 'index' ) {
 				$options['Membreep']['fonctionmembreep_id'] = $this->Membreep->Fonctionmembreep->find( 'list' );
 				$options['Membreep']['ep_id'] = $this->Membreep->Ep->find( 'list' );
+                $optionTypevoie['typevoie'] = ClassRegistry::init( 'Option' )->typevoie();
+                $options = Set::merge( $options, $optionTypevoie );
 			}
 			$enums = $this->Membreep->CommissionepMembreep->enums();
 			$options['CommissionepMembreep'] = $enums['CommissionepMembreep'];
+
+
 			$this->set( compact( 'options' ) );
 		}
 
@@ -27,6 +31,13 @@
 					'Membreep.qual',
 					'Membreep.nom',
 					'Membreep.prenom',
+					'Membreep.numvoie',
+                    'Membreep.typevoie',
+                    'Membreep.nomvoie',
+                    'Membreep.compladr',
+                    'Membreep.codepostal',
+                    'Membreep.ville',
+                    'Membreep.mail',
 					'Membreep.suppleant_id',
 					'Suppleant.qual',
 					'Suppleant.nom',
@@ -39,10 +50,16 @@
 				'limit' => 10
 			);
 			$membreseps = $this->paginate( $this->Membreep );
+
+			$typesvoies = ClassRegistry::init( 'Option' )->typevoie();
 			foreach( $membreseps as &$membreep) {
+                $typevoie = Set::enum( Set::classicExtract( $membreep, 'Membreep.typevoie' ), $typesvoies );
+
 				if (isset($membreep['Suppleant']['id']) && !empty($membreep['Suppleant']['id']))
 					$membreep['Membreep']['nomcompletsuppleant'] = implode ( ' ', array( $membreep['Suppleant']['qual'], $membreep['Suppleant']['nom'], $membreep['Suppleant']['prenom']) );
 				$membreep['Membreep']['nomcomplet'] = implode ( ' ', array( $membreep['Membreep']['qual'], $membreep['Membreep']['nom'], $membreep['Membreep']['prenom']) );
+				
+				$membreep['Membreep']['adresse'] = implode ( ' ', array( $membreep['Membreep']['numvoie'], $typevoie, $membreep['Membreep']['nomvoie'], $membreep['Membreep']['compladr'], $membreep['Membreep']['codepostal'], $membreep['Membreep']['ville']  ) );
 
 			}
 
