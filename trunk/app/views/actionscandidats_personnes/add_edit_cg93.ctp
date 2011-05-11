@@ -315,7 +315,7 @@
 
             echo $default->subform(
                 array(
-                    'ActioncandidatPersonne.pieceallocataire' => array( 'legend' => 'L\'allocataire est invité à se munir: ', 'type' => 'radio', 'separator' => '<br />', 'options' => $options['ActioncandidatPersonne']['pieceallocataire'] ),
+                    'ActioncandidatPersonne.pieceallocataire' => array( 'legend' => required( 'L\'allocataire est invité à se munir : ' ), 'type' => 'radio', 'separator' => '<br />', 'options' => $options['ActioncandidatPersonne']['pieceallocataire'] ),
                     'ActioncandidatPersonne.autrepiece' => array( 'label' => false )
                 )
             );
@@ -329,12 +329,12 @@
         <?php
             echo $default->subform(
                 array(
-                    'ActioncandidatPersonne.bilanvenu' => array( 'type' => 'radio', 'separator' => '<br />',  'legend' => 'La personne s\'est présentée' ),
-                    'ActioncandidatPersonne.bilanrecu' => array( 'type' => 'radio', 'separator' => '<br />',  'legend' => 'La personne a été reçue' ),
+                    'ActioncandidatPersonne.bilanvenu' => array( 'type' => 'radio', 'separator' => '<br />',  'legend' => required( 'La personne s\'est présentée' ) ),
+                    'ActioncandidatPersonne.bilanrecu' => array( 'type' => 'radio', 'separator' => '<br />',  'legend' => required( 'La personne a été reçue' ) ),
                     'ActioncandidatPersonne.daterecu' => array( 'type' => 'date', 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 2, 'maxYear' => date( 'Y' ) + 2, 'empty' => true ),
                     'ActioncandidatPersonne.personnerecu' => array( 'type' => 'text' ),
                     'ActioncandidatPersonne.presencecontrat' => array( 'type' => 'select', 'label' => 'Avec son contrat d\'Engagement Réciproque' ),
-                    'ActioncandidatPersonne.bilanretenu' => array( 'type' => 'radio', 'separator' => '<br />', 'legend' => 'La personne a été retenue' )
+                    'ActioncandidatPersonne.bilanretenu' => array( 'type' => 'radio', 'separator' => '<br />', 'legend' => required( 'La personne a été retenue' ) )
                 ),
                 array(
                     'options' => $options,
@@ -366,7 +366,7 @@
 
             echo $default->subform(
                 array(
-                    'ActioncandidatPersonne.integrationaction' => array( 'type' => 'radio', 'separator' => '<br />',  'legend' => 'La personne souhaite intégrer l\'action' ),
+                    'ActioncandidatPersonne.integrationaction' => array( 'type' => 'radio', 'separator' => '<br />',  'legend' => required( 'La personne souhaite intégrer l\'action' ) ),
                     'ActioncandidatPersonne.precisionmotif',
                     'ActioncandidatPersonne.dfaction' => array( 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 2, 'maxYear' => date( 'Y' ) + 2, 'empty' => true )
                 ),
