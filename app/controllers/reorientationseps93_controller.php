@@ -295,13 +295,19 @@
 
 		public function delete( $id ) {
 			$this->Reorientationep93->begin();
+			$success = true;
 			$reorientationep93 = $this->Reorientationep93->find( 'first', array( 'condition' => array( 'Reorientationep93.id' => $id ), 'contain' => false ) );
-			if( !empty( $reorientationep93['Reorientationep93']['dossierep_id'] ) ) {
-				$success = $this->Reorientationep93->Dossierep->delete( $reorientationep93['Reorientationep93']['dossierep_id'] );
-			}
 			$success = $this->Reorientationep93->delete( $id ) && $success;
+			if( !empty( $reorientationep93['Reorientationep93']['dossierep_id'] ) ) {
+				$success = $this->Reorientationep93->Dossierep->delete( $reorientationep93['Reorientationep93']['dossierep_id'] ) && $success;
+			}
 			$this->_setFlashResult( 'Delete', $success );
-			$this->Reorientationep93->commit();
+			if ( $success ) {
+				$this->Reorientationep93->commit();
+			}
+			else {
+				$this->Reorientationep93->rollback();
+			}
 			$this->redirect( Router::url( $this->referer(), true ) );
 		}
 	}
