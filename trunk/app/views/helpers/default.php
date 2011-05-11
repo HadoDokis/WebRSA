@@ -210,7 +210,7 @@
 
 				$label = $this->label( $column, $options );
 
-				if( Set::check( $this->Xpaginator->params, 'paging' ) ) {
+				if( Set::check( $this->Xpaginator->params, 'paging' ) && ( !isset( $options['sort'] ) || $options['sort'] ) ) {
 					$thead[] = $this->Xpaginator->sort( $label, $column );
 				}
 				else {
@@ -378,6 +378,8 @@
 				$line = array();
 				foreach( $cells as $path => $params ) {
 					$params = $this->Type->prepare( 'output', $path, $params );
+					unset( $params['sort'] );
+
 					list( $model, $field ) = model_field( $path );
 					$validationErrors = ClassRegistry::init( $model )->validationErrors;
 
@@ -779,7 +781,10 @@
 				$return .= $this->Type->input( "Search.$fieldName", $options );
 			}
 
-			$return .= $this->Xform->input( "Search.active", array( 'value' => true, 'type' => 'hidden' ) );
+			if( !empty( $form ) ) {
+				$return .= $this->Xform->input( "Search.active", array( 'value' => true, 'type' => 'hidden' ) );
+			}
+
 			if( !empty( $form ) ) {
 				$return .= $this->Xform->submit( __( 'Search', true ) );
 				$return .= $this->Xform->end();

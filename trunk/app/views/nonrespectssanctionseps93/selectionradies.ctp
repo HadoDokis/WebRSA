@@ -4,8 +4,8 @@
 	echo $default2->index(
 		$personnes,
 		array(
-			'Historiqueetatpe.chosen' => array( 'input' => 'checkbox', 'type' => 'boolean', 'domain' => 'nonrespectsanctionep93' ),
-			'Personne.nom',
+			'Historiqueetatpe.chosen' => array( 'input' => 'checkbox', 'type' => 'boolean', 'domain' => 'nonrespectsanctionep93', 'sort' => false ),
+			'Personne.nom' => array( 'sort' => false ),
 			'Personne.prenom',
 			'Personne.dtnai',
 			'Historiqueetatpe.date',

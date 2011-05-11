@@ -23,6 +23,7 @@
     }
 
     echo $xform->create( 'Criterescuis', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );
+	echo $form->input( 'Search.active', array( 'type' => 'hidden', 'value' => true ) );
 ?>
 <fieldset>
     <legend>Recherche de Contrat Unique d'Insertion</legend>
@@ -55,11 +56,13 @@
                 'Dossier.numdemrsa' => array( 'label' => __d( 'dossier', 'Dossier.numdemrsa', true ), 'type' => 'text', 'maxlength' => 15 )
             ),
             array(
-                'options' => $options
+                'options' => $options,
+				'form' => false
             )
         );
     ?>
-<?php echo $xform->end(); ?>
+<?php echo $xform->end( __( 'Search', true ) ); ?>
+
 <?php $pagination = $xpaginator->paginationBlock( 'Cui', $this->passedArgs ); ?>
 
     <?php if( isset( $criterescuis ) ):?>
