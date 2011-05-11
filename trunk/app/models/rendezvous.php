@@ -96,19 +96,6 @@
 		);
 
 		public $hasMany = array(
-			'ActioncandidatPersonne' => array(
-				'className' => 'ActioncandidatPersonne',
-				'foreignKey' => 'rendezvous_id',
-				'dependent' => true,
-				'conditions' => '',
-				'fields' => '',
-				'order' => '',
-				'limit' => '',
-				'offset' => '',
-				'exclusive' => '',
-				'finderQuery' => '',
-				'counterQuery' => ''
-			),
 			'Bilanparcours' => array(
 				'className' => 'Bilanparcours',
 				'foreignKey' => 'rendezvous_id',
