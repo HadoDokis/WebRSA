@@ -546,7 +546,7 @@
 
 				$return .= $this->Xform->submit( __( 'Validate', true ), array( 'name' => 'cohorte' ) );
 				$return .= $this->Xform->end();
-				$return = $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) ).$return;
+				$return = $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false ).$return;
 			}
 
 			return $return;
@@ -627,7 +627,7 @@
 			$return .= $this->Html->tag( 'div', implode( ' ', $buttons ), array( 'class' => 'submit' ) );
 			$return .= $this->Xform->end();
 
-			return $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) ).$return;
+			return $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false ).$return;
 		}
 
 		/**
@@ -685,7 +685,7 @@
 			$return .= $this->Xform->submit( __( 'Search', true ) );
 			$return .= $this->Xform->end();
 
-			return $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) ).$return;
+			return $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false ).$return;
 		}
 
 		/**
