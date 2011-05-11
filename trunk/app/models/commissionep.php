@@ -622,6 +622,32 @@
 			return $success;
 		}
 
+
+        /**
+        * Retourne une chaîne de 12 caractères formattée comme suit:
+        * CO, année sur 4 chiffres, mois sur 2 chiffres, nombre de commissions.
+        */
+
+        public function identifiant() {
+            return 'CO'.date( 'Ym' ).sprintf( "%010s",  $this->find( 'count' ) + 1 );
+        }
+
+        /**
+        * Ajout de l'identifiant de la séance lors de la sauvegarde.
+        */
+
+        public function beforeValidate( $options = array() ) {
+            $primaryKey = Set::classicExtract( $this->data, "{$this->alias}.{$this->primaryKey}" );
+            $identifiant = Set::classicExtract( $this->data, "{$this->alias}.identifiant" );
+
+            if( empty( $primaryKey ) && empty( $identifiant ) ) {
+                $this->data[$this->alias]['identifiant'] = $this->identifiant();
+            }
+
+            return true;
+        }
+
+
 		/**
 		*
 		*/
@@ -693,6 +719,10 @@
 					'Personne.dtinscpoleemploi',
 					'Personne.numfixe',
 					'Personne.numport',
+					'Adresse.locaadr',
+                    'Adresse.numcomptt',
+                    'Adresse.codepos',
+					
 				),
 				'joins' => array(
 					array(
@@ -712,6 +742,33 @@
 						'foreignKey' => false,
 						'conditions' => array( "Dossierep.personne_id = Personne.id" ),
 					),
+					array(
+                        'table'      => 'foyers',
+                        'alias'      => 'Foyer',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Personne.foyer_id = Foyer.id' )
+                    ),
+                    array(
+                        'table'      => 'adressesfoyers',
+                        'alias'      => 'Adressefoyer',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array(
+                            'Foyer.id = Adressefoyer.foyer_id',
+                            // FIXME: c'est un hack pour n'avoir qu'une seule adresse de range 01 par foyer!
+                            'Adressefoyer.id IN (
+                                '.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01('Adressefoyer.foyer_id').'
+                            )'
+                        )
+                    ),
+                    array(
+                        'table'      => 'adresses',
+                        'alias'      => 'Adresse',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
+                    )
 				)
 			);
 
@@ -771,6 +828,21 @@
 				$commissionep_data["presences_{$typepresence}_count"] = count( $presences["Presences_{$typepresence}"] );
 			}
 
+            // Nb de dossiers d'EP par thématique
+            $themes = array();
+            foreach( $dossierseps as $key => $theme ) {
+                $themes["Themes_{$theme['Dossierep']['themeep']}"][] = array( 'Dossierep' => $theme['Dossierep'] );
+            }
+            foreach( $options['Dossierep']['themeep'] as $theme => $libelleTheme ) {
+                if( !isset( $themes["Themes_{$theme}"] ) ) {
+                    $themes["Themes_{$theme}"] = array();
+                }
+                $commissionep_data["nbdossiers_{$theme}_count"] = count( $themes["Themes_{$theme}"] );
+            }
+
+// debug( $commissionep_data );
+// debug($dossierseps);
+// die();
 			return $this->ged(
 				array_merge(
 					array(
@@ -833,6 +905,9 @@
 					'Personne.dtinscpoleemploi',
 					'Personne.numfixe',
 					'Personne.numport',
+					'Adresse.locaadr',
+					'Adresse.numcomptt',
+					'Adresse.codepos',
 				),
 				'joins' => array(
 					array(
@@ -849,6 +924,33 @@
 						'foreignKey' => false,
 						'conditions' => array( "Dossierep.personne_id = Personne.id" ),
 					),
+					array(
+                        'table'      => 'foyers',
+                        'alias'      => 'Foyer',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Personne.foyer_id = Foyer.id' )
+                    ),
+                    array(
+                        'table'      => 'adressesfoyers',
+                        'alias'      => 'Adressefoyer',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array(
+                            'Foyer.id = Adressefoyer.foyer_id',
+                            // FIXME: c'est un hack pour n'avoir qu'une seule adresse de range 01 par foyer!
+                            'Adressefoyer.id IN (
+                                '.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01('Adressefoyer.foyer_id').'
+                            )'
+                        )
+                    ),
+                    array(
+                        'table'      => 'adresses',
+                        'alias'      => 'Adresse',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
+                    )
 				),
 				'conditions' => array(
 					'Passagecommissionep.commissionep_id' => $commissionep_id
@@ -892,11 +994,42 @@
 				$commissionep_data["reponses_{$typereponse}_count"] = count( $reponses["Reponses_{$typereponse}"] );
 			}
 
+            // Nb de dossiers d'EP par nom de commune
+            ///FIXME: voir comment faire pour avoir et la ville et le nombre correspondant
+            $dossiersParCommune = array();
+            $adresses = array();
+            foreach( $dossierseps as $key => $adresse ) {
+                $adresses["Dossiers_{$adresse['Adresse']['locaadr']}"][] = array( 'Adresse' => $adresse['Adresse'] );
+                $locaadr = $adresse['Adresse']['locaadr'];
+//                 $commissionep_data["nbdossiers_parville_count"][$locaadr] = count( $adresses["Dossiers_{$adresse['Adresse']['locaadr']}"] );
+                //$commissionep_data["nbdossiers_{$locaadr}_count"] = count( $adresses["Dossiers_{$adresse['Adresse']['locaadr']}"] );
+                $dossiersParCommune[] = array( 'ville' => $locaadr, 'count' => count( $adresses["Dossiers_{$adresse['Adresse']['locaadr']}"] ) );
+            }
+
+            // Nb de dossiers d'EP par thématique
+            $themes = array();
+            foreach( $dossierseps as $key => $theme ) {
+                $themes["Themes_{$theme['Dossierep']['themeep']}"][] = array( 'Dossierep' => $theme['Dossierep'] );
+            }
+            foreach( $options['Dossierep']['themeep'] as $theme => $libelleTheme ) {
+                if( !isset( $themes["Themes_{$theme}"] ) ) {
+                    $themes["Themes_{$theme}"] = array();
+                }
+//                 $commissionep_data["nbdossiers_{$theme}_count"] = count( $themes["Themes_{$theme}"] );
+                $dossiersParTheme[] = array( 'theme' => $theme, 'count' => count( $themes["Themes_{$theme}"] ) );
+            }
+
+// debug( $dossiersParCommune );
+// debug( $commissionep_data );
+// debug($adresses);
+// die();
 			return $this->ged(
 				array_merge(
 					array(
 						$commissionep_data,
 						'Dossierseps' => $dossierseps,
+						'DossiersParCommune' => $dossiersParCommune,
+						'DossiersParTheme' => $dossiersParTheme
 					),
 					$reponses
 				),
@@ -906,28 +1039,194 @@
 			);
 		}
 
-		/**
-		* Retourne une chaîne de 12 caractères formattée comme suit:
-		* CO, année sur 4 chiffres, mois sur 2 chiffres, nombre de commissions.
-		*/
 
-		public function identifiant() {
-			return 'CO'.date( 'Ym' ).sprintf( "%010s",  $this->find( 'count' ) + 1 );
-		}
+        /**
+        *    Récupération des informations propres au dossier devant passer en EP
+        *   après liaison avec la commission d'EP
+        */
+        public function getConvocationBeneficiaireEpPdf( $dossierep_id ) {
+            $gedooo_data = $this->Passagecommissionep->Dossierep->find(
+                'first',
+                array(
+                    'conditions' => array( 'Dossierep.id' => $dossierep_id ),
+                    'contain' => array(
+                        'Personne',
+                        'Passagecommissionep' => array(
+                            'Commissionep'
+                        )
+                    )
+                )
+            );
+// debug($gedooo_data);
+// die();
+            return $this->ged( $gedooo_data, "{$this->alias}/convocationep_beneficiaire.odt" );
+        }
 
-		/**
-		* Ajout de l'identifiant de la séance lors de la sauvegarde.
-		*/
+        /**
+        *   Impression des convocations pour les participants à une commission d'EP
+        */
 
-		public function beforeValidate( $options = array() ) {
-			$primaryKey = Set::classicExtract( $this->data, "{$this->alias}.{$this->primaryKey}" );
-			$identifiant = Set::classicExtract( $this->data, "{$this->alias}.identifiant" );
+        public function getPdfConvocationParticipant( $commissionep_membreep_id ) {
 
-			if( empty( $primaryKey ) && empty( $identifiant ) ) {
-				$this->data[$this->alias]['identifiant'] = $this->identifiant();
-			}
+            $participant = $this->CommissionepMembreep->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'CommissionepMembreep.id' => $commissionep_membreep_id
+                    ),
+                    'contain' => array(
+                        'Commissionep',
+                        'Membreep' => array(
+                            'Fonctionmembreep'
+                        )
+                    )
+                )
+            );
+/*
+debug($participant);
+die();*/
+            return $this->ged( $participant, "{$this->alias}/convocationep_participant.odt" );
+        }
 
-			return true;
-		}
+
+
+        /**
+        *
+        */
+
+        public function getPdfDecision( $commissionep_id ) {
+
+            $commissionep_data = $this->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Commissionep.id' => $commissionep_id
+                    ),
+                    'contain' => false
+                )
+            );
+
+            $queryData = array(
+                'fields' => array(
+                    'Dossierep.id',
+                    'Dossierep.personne_id',
+                    'Dossierep.themeep',
+                    'Dossierep.created',
+                    'Dossierep.modified',
+                    //
+                    'Personne.id',
+                    'Personne.foyer_id',
+                    'Personne.qual',
+                    'Personne.nom',
+                    'Personne.prenom',
+                    'Personne.nomnai',
+                    'Personne.prenom2',
+                    'Personne.prenom3',
+                    'Personne.nomcomnai',
+                    'Personne.dtnai',
+                    'Personne.rgnai',
+                    'Personne.typedtnai',
+                    'Personne.nir',
+                    'Personne.topvalec',
+                    'Personne.sexe',
+                    'Personne.nati',
+                    'Personne.dtnati',
+                    'Personne.pieecpres',
+                    'Personne.idassedic',
+                    'Personne.numagenpoleemploi',
+                    'Personne.dtinscpoleemploi',
+                    'Personne.numfixe',
+                    'Personne.numport',
+                    'Adresse.locaadr',
+                    'Adresse.numcomptt',
+                    'Adresse.codepos',
+                    
+                ),
+                'joins' => array(
+                    array(
+                        'table'      => 'passagescommissionseps',
+                        'alias'      => 'Passagecommissionep',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array(
+                            'Passagecommissionep.dossierep_id = Dossierep.id',
+                            'Passagecommissionep.commissionep_id' => $commissionep_id,
+                        ),
+                    ),
+                    array(
+                        'table'      => 'personnes',
+                        'alias'      => 'Personne',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( "Dossierep.personne_id = Personne.id" ),
+                    ),
+                    array(
+                        'table'      => 'foyers',
+                        'alias'      => 'Foyer',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Personne.foyer_id = Foyer.id' )
+                    ),
+                    array(
+                        'table'      => 'adressesfoyers',
+                        'alias'      => 'Adressefoyer',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array(
+                            'Foyer.id = Adressefoyer.foyer_id',
+                            // FIXME: c'est un hack pour n'avoir qu'une seule adresse de range 01 par foyer!
+                            'Adressefoyer.id IN (
+                                '.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01('Adressefoyer.foyer_id').'
+                            )'
+                        )
+                    ),
+                    array(
+                        'table'      => 'adresses',
+                        'alias'      => 'Adresse',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
+                    )
+                )
+            );
+
+            $options = array( 'Personne' => array( 'qual' => ClassRegistry::init( 'Option' )->qual() ) );
+            foreach( $this->themesTraites( $commissionep_id ) as $theme => $decision ) {
+                $model = Inflector::classify( $theme );
+                if( in_array( 'Enumerable', $this->Passagecommissionep->Dossierep->{$model}->Behaviors->attached() ) ) {
+                    $options = Set::merge( $options, $this->Passagecommissionep->Dossierep->{$model}->enums() );
+                }
+
+                $modeleDecision = Inflector::classify( "decision{$theme}" );
+                if( in_array( 'Enumerable', $this->Passagecommissionep->{$modeleDecision}->Behaviors->attached() ) ) {
+                    $options = Set::merge( $options, $this->Passagecommissionep->{$modeleDecision}->enums() );
+                }
+
+                foreach( array( 'fields', 'joins' ) as $key ) {
+                    $qdModele = $this->Passagecommissionep->Dossierep->{$model}->qdProcesVerbal();
+                    $queryData[$key] = array_merge( $queryData[$key], $qdModele[$key] );
+                }
+            }
+            $options = Set::merge( $options, $this->enums() );
+            $options = Set::merge( $options, $this->Passagecommissionep->Dossierep->enums() );
+            $options = Set::merge( $options, $this->Membreep->enums() );
+            $options = Set::merge( $options, $this->CommissionepMembreep->enums() );
+
+            $dossierseps = $this->Passagecommissionep->Dossierep->find( 'all', $queryData );
+            // FIXME: faire la traduction des enums dans les modèles correspondants ?
+// debug($dossierseps);
+// die();
+            return $this->ged(
+                array_merge(
+                    array(
+                        $commissionep_data,
+                        'Dossierseps' => $dossierseps
+                    )
+                ),
+                "{$this->alias}/decisionep.odt",
+                true,
+                $options
+            );
+        }
 	}
 ?>
