@@ -67,7 +67,7 @@ $this->pageTitle = 'Indicateurs de nature des contrats'
 		<tr>
 			<td class="odd" style="width: 70%;">Actions facilitant le lien social (développement de l'autonomie sociale, activités collectives,…)</td>
 			<td style="width: 30%;" class="number"><strong><?php echo isset($results['L262-35'][6]) ? $results['L262-35'][6] : ''; ?></strong></td>
-		</tr>		
+		</tr>
 		<tr>
 			<td class="odd" style="width: 70%;">Actions facilitant la mobilité (permis de conduire, acquisition / location de véhicule, frais de transport…)</td>
 			<td style="width: 30%;" class="number"><strong><?php echo isset($results['L262-35'][7]) ? $results['L262-35'][7] : ''; ?></strong></td>
@@ -95,7 +95,7 @@ $this->pageTitle = 'Indicateurs de nature des contrats'
 		<tr>
 			<td class="odd" style="width: 70%;">Autres actions</td>
 			<td style="width: 30%;" class="number"><strong><?php echo isset($results['L262-35'][13]) ? $results['L262-35'][13] : ''; ?></strong></td>
-		</tr>		
+		</tr>
 		<tr class="even">
 			<td colspan="2"><strong>b. Nature des actions d'insertions inscrites dans les contrats d'engagement réciproque en matière d'insertion sociale ou professionnelle (L262-36)</strong></td>
 		</tr>
@@ -126,7 +126,7 @@ $this->pageTitle = 'Indicateurs de nature des contrats'
 		<tr>
 			<td class="odd" style="width: 70%;">Actions facilitant le lien social (développement de l'autonomie sociale, activités collectives,…)</td>
 			<td style="width: 30%;" class="number"><strong><?php echo isset($results['L262-36'][6]) ? $results['L262-36'][6] : ''; ?></strong></td>
-		</tr>		
+		</tr>
 		<tr>
 			<td class="odd" style="width: 70%;">Actions facilitant la mobilité (permis de conduire, acquisition / location de véhicule, frais de transport…)</td>
 			<td style="width: 30%;" class="number"><strong><?php echo isset($results['L262-36'][7]) ? $results['L262-36'][7] : ''; ?></strong></td>
@@ -154,7 +154,7 @@ $this->pageTitle = 'Indicateurs de nature des contrats'
 		<tr>
 			<td class="odd" style="width: 70%;">Autres actions</td>
 			<td style="width: 30%;" class="number"><strong><?php echo isset($results['L262-36'][13]) ? $results['L262-36'][13] : ''; ?></strong></td>
-		</tr>	
+		</tr>
 	</tbody>
 </table>
 <p>(*) Pour un département inscrivant plusieurs actions par contrat, un même contrat sera comptabilisé autant de fois qu’il y a d’actions.</p>

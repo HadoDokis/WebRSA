@@ -44,8 +44,7 @@
 			$xpaginator->options( array('url' => $this->passedArgs ) );
 			$pagination = $xpaginator->paginationBlock( 'Personne', $this->passedArgs );
 		?>
-		<p><?php echo $pagination;/*echo sprintf( 'Nombre de pages: %s - Nombre de résultats: %s.', $locale->number( $pages ), $locale->number( $count ) );*/?></p>
-		<?php /* echo $pagination;*/ ?>
+		<?php echo $pagination;?>
 		<table class="tooltips">
 			<thead>
 				<tr>
@@ -151,7 +150,7 @@
 				<?php endforeach;?>
 			</tbody>
 		</table>
-		<p><?php echo $pagination;?></p>
+		<?php echo $pagination;?>
 		<?php echo $this->element( 'popup' );?>
 
 		<?php

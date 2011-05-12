@@ -12,7 +12,7 @@ array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 
 ).'</ul>';
 //}
 ?>
-<?php echo $form->create( 'Statistiquesministerielle', array( 'type' => 'post', 'action' => '/indicateursOrientations/', 'id' => 'Search', 'class' => ( !empty( $this->data ) ? 'folded' : 'unfolded' ) ) );?>
+<?php echo $form->create( 'Statistiquesministerielle', array( 'type' => 'post', 'action' => Router::url( null, true ), 'id' => 'Search', 'class' => ( !empty( $this->data ) ? 'folded' : 'unfolded' ) ) );?>
 <fieldset><legend>Critères</legend>
 <?php echo $form->input( 'Statistiquesministerielle.localisation', array('disabled'=>true, 'label' => 'Localité') ); ?>
 <?php echo $form->input( 'Statistiquesministerielle.service', array('disabled'=>true, 'label' => __( 'lib_service', true ), 'type' => 'select' , 'options' => $typeservice, 'empty' => true ) ); ?>
@@ -108,7 +108,7 @@ $this->pageTitle = 'Indicateurs d\'orientations'
 			<td class="number"><strong><?php echo isset($results['age'][6][2]) ? $results['age'][6][2] : ''; ?></strong></td>
 			<td class="number"><strong><?php echo isset($results['age'][6][3]) ? $results['age'][6][3] : ''; ?></strong></td>
 		</tr>
-		
+
 		<tr class="even">
 			<td colspan="5">Situation familliale :</td>
 		</tr>
@@ -189,12 +189,12 @@ $this->pageTitle = 'Indicateurs d\'orientations'
 			<td class="number"><strong><?php echo isset($results['situation'][10][2]) ? $results['situation'][10][2] : ''; ?></strong></td>
 			<td class="number"><strong><?php echo isset($results['situation'][10][3]) ? $results['situation'][10][3] : ''; ?></strong></td>
 		</tr>
-		
+
 		<tr class="even">
 			<td colspan="5">Niveau de formation :</td>
 		</tr>
 		<tr class="odd">
-			<td>- inférieur au Cap / Bep <i>(Vbis et VI)<i/></td>
+			<td>- inférieur au Cap / Bep <i>(Vbis et VI)</i></td>
 			<td class="number"><strong><?php echo isset($results['formation'][0][0]) ? $results['formation'][0][0] : ''; ?></strong></td>
 			<td class="number"><strong><?php echo isset($results['formation'][0][1]) ? $results['formation'][0][1] : ''; ?></strong></td>
 			<td class="number"><strong><?php echo isset($results['formation'][0][2]) ? $results['formation'][0][2] : ''; ?></strong></td>
@@ -228,8 +228,8 @@ $this->pageTitle = 'Indicateurs d\'orientations'
 			<td class="number"><strong><?php echo isset($results['formation'][4][2]) ? $results['formation'][4][2] : ''; ?></strong></td>
 			<td class="number"><strong><?php echo isset($results['formation'][4][3]) ? $results['formation'][4][3] : ''; ?></strong></td>
 		</tr>
-		
-										
+
+
 		<tr class="even">
 			<td colspan="5">Ancienneté dans le dispositif, y compris anciens minima (RMI, API) (**) :</td>
 		</tr>
@@ -274,7 +274,7 @@ $this->pageTitle = 'Indicateurs d\'orientations'
 			<td class="number"><strong><?php echo isset($results['anciennete'][5][1]) ? $results['anciennete'][5][1] : ''; ?></strong></td>
 			<td class="number"><strong><?php echo isset($results['anciennete'][5][2]) ? $results['anciennete'][5][2] : ''; ?></strong></td>
 			<td class="number"><strong><?php echo isset($results['anciennete'][5][3]) ? $results['anciennete'][5][3] : ''; ?></strong></td>
-		</tr>																								
+		</tr>
 	</tbody>
 </table>
 <p>(*) Certains bénéficiaires du Rsa peuvent être en attente

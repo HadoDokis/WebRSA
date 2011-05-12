@@ -3,7 +3,7 @@
 		Affiche les menus-controlleurs pour la saisie des droits
 		Paramètres :
 	*/
-	
+
 	?>
 		<script type="text/javascript">
 			function GereChkbox(conteneur, a_faire) {
@@ -14,21 +14,21 @@
 						if ($(input).checked==true) blnEtat=false;
 						else blnEtat=true;
 					}
-					
+
 					$(input).checked=blnEtat;
 				} );
 			}
-			
+
             document.observe( "dom:loaded", function() {
                 var baseUrl = '<?php echo Router::url( '/', true );?>';
 				make_treemenus_droits( baseUrl, <?php echo ( Configure::read( 'UI.menu.large' ) ? 'true' : 'false' );?> );
 			} );
 		</script>
-		<input type="button" value="Tout cocher" onClick="GereChkbox('tableEditDroits','cocher');">&nbsp;&nbsp;&nbsp;
-		<input type="button" value="Tout décocher" onClick="GereChkbox('tableEditDroits','decocher');">&nbsp;&nbsp;&nbsp;
-		<input type="button" value="Inverser la sélection" onClick="GereChkbox('tableEditDroits','inverser');">
+		<input type="button" value="Tout cocher" onclick="GereChkbox('tableEditDroits','cocher');" />&nbsp;&nbsp;&nbsp;
+		<input type="button" value="Tout décocher" onclick="GereChkbox('tableEditDroits','decocher');" />&nbsp;&nbsp;&nbsp;
+		<input type="button" value="Inverser la sélection" onclick="GereChkbox('tableEditDroits','inverser');" />
 	<?php
-				
+
 	echo $javascript->link('droits', true);
 	echo $xhtml->tag('table', null, array('cellspacing'=>'0', 'cellpadding'=>'0', 'id'=>'tableEditDroits', 'class'=>'table', 'style'=>'margin-top:20px;'));
 	foreach($listeCtrlAction as $rownum => $ctrlAction) {

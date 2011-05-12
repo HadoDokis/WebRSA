@@ -48,15 +48,15 @@ $this->pageTitle = 'Indicateurs motifs de réorientations'
 		<tr>
 			<td style="width: 70%;">Orientation initiale inadaptée</td>
 			<td class="number" style="width: 30%;"><strong><?php echo isset($results['tab1']) ? $results['tab1'] : ''; ?></strong></td>
-		</tr>		
+		</tr>
 		<tr>
 			<td style="width: 70%;">Changement de situation de la personne (difficultés nouvelles de logement, santé, garde d'enfants, famille, ...)</td>
 			<td class="number" style="width: 30%;"><strong><?php echo isset($results['tab1']) ? $results['tab1'] : ''; ?></strong></td>
-		</tr>		
+		</tr>
 		<tr>
 			<td style="width: 70%;">Autres :</td>
 			<td class="number" style="width: 30%;"><strong><?php echo isset($results['tab1']) ? $results['tab1'] : ''; ?></strong></td>
-		</tr>		
+		</tr>
 	</tbody>
 </table>
 <p>
@@ -80,11 +80,11 @@ $this->pageTitle = 'Indicateurs motifs de réorientations'
 		<tr>
 			<td style="width: 70%;">Dont maintien en orientation à dominante sociale</td>
 			<td class="number" style="width: 30%;"><strong><?php echo isset($results['tab2']) ? $results['tab2'] : ''; ?></strong></td>
-		</tr>		
+		</tr>
 		<tr>
 			<td style="width: 70%;">Dont réorientation vers une dominante professionnelle</td>
 			<td class="number" style="width: 30%;"><strong><?php echo isset($results['tab2']) ? $results['tab2'] : ''; ?></strong></td>
-		</tr>		
+		</tr>
 	</tbody>
 </table>
 <?php endif;?>

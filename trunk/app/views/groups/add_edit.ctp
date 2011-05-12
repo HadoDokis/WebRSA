@@ -2,24 +2,23 @@
 <?php $this->pageTitle = 'Groupe';?>
 
 <h1><?php echo $this->pageTitle." ".$this->data['Group']['name'];?></h1><br />
+<?php echo $form->create( 'Group', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );?>
 
 <div id="tabbedWrapper" class="tabs">
     <div id="infos">
         <h2 class="title">Informations</h2>
-		<?php 
+		<?php
 			if( $this->action == 'add' ) {
-				echo $form->create( 'Group', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
 				echo $form->input( 'Group.id', array( 'type' => 'hidden', 'value' => '' ) );
 			}
 			else {
-				echo $form->create( 'Group', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
 				echo $form->input( 'Group.id', array( 'type' => 'hidden' ) );
 			}
 		?>
 
 	<?php include '_form.ctp'; ?>
     </div>
-    
+
     <div id="droits">
     	<h2 class="title">Droits</h2>
     	<?php
