@@ -230,7 +230,7 @@
                     array(
                         'Dsp.id' => array( 'type' => 'hidden' ),
                         'Dsp.personne_id' => array( 'value' => $personneId, 'type' => 'hidden' ),
-                        'Dsp.nivetu' => array( 'options' => $options['Dsp']['nivetu'], 'empty' => true ),
+                        'Dsp.nivetu' => array( 'options' => $options['Dsp']['nivetu'], 'required' => true, 'empty' => true ),
                         'Dsp.libautrqualipro' => array( 'type' => 'textarea' )
                     )
                 );
