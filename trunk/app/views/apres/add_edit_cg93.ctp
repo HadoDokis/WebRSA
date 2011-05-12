@@ -305,7 +305,7 @@
             <table class="wide noborder">
                 <tr>
                     <td class="noborder">
-                        <strong>Nom de l'organisme</strong>
+                        <strong><?php echo required( 'Nom de l\'organisme' ); ?></strong>
                         <?php echo $xform->input( "{$this->modelClass}.structurereferente_id", array( 'domain' => 'apre', 'label' => false, 'type' => 'select', 'options' => $structs, 'selected' => $struct_id, 'empty' => true ) );?>
                         <?php echo $ajax->observeField( $this->modelClass.'StructurereferenteId', array( 'update' => 'StructurereferenteRef', 'url' => Router::url( array( 'action' => 'ajaxstruct' ), true ) ) ); ?> 
                     </td>
