@@ -42,7 +42,7 @@
             <legend>Ressources mensuelles</legend>
             <?php echo $form->input( 'Ressourcemensuelle.'.$i.'.moisress', array( 'label' => __d( 'ressource', 'Ressource.moisress', true ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+1, 'minYear'=>date('Y')-20, 'empty' => true) );?><!-- FIXME: la date ne doit pas comporter de jour à l'affichage -->
             <?php echo $form->input( 'Ressourcemensuelle.'.$i.'.nbheumentra', array( 'label' => __d( 'ressource', 'Ressource.nbheumentra', true ), 'type' => 'text', 'maxlength' => 3 ) );?>
-            <?php echo $form->input( 'Ressourcemensuelle.'.$i.'.mtabaneu', array( 'label' => __( 'mtabaneu', true ), 'type' => 'text', 'maxlength' => 11 ) );?>
+            <?php echo $form->input( 'Ressourcemensuelle.'.$i.'.mtabaneu', array( 'label' => __d( 'ressource', 'Ressource.mtabaneu', true ), 'type' => 'text', 'maxlength' => 11 ) );?>
 
             <?php echo $form->input( 'Detailressourcemensuelle.'.$i.'.natress', array( 'label' => __d( 'ressource', 'Ressource.natress', true ), 'type' => 'select', 'options' => $natress, 'empty' => true ) );?>
             <?php echo $form->input( 'Detailressourcemensuelle.'.$i.'.mtnatressmen', array( 'label' => __d( 'ressource', 'Ressource.mtnatressmen', true ), 'type' => 'text', 'maxlength' => 11 ) );?>
