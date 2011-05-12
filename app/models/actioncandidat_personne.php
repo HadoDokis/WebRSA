@@ -87,6 +87,10 @@
 //				'rule' => 'notEmpty',
 //				'message' => 'Champ obligatoire'
 //			),
+			'nivetu'  => array(
+				'rule' => 'notEmpty',
+				'message' => 'Champ obligatoire'
+			),
 			'bilanvenu'  => array(
 				'rule' => 'notEmpty',
 				'message' => 'Champ obligatoire'
