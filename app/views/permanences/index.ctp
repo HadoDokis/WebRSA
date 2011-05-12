@@ -61,14 +61,12 @@
                 <?php endforeach;?>
             </tbody>
         </table>
-        <?php endif;?>
-    </div>
+	</div>
+	<?php endif;?>
 
     <div class="submit">
-        <?php
-            echo $xform->submit( 'Retour', array( 'name' => 'Cancel', 'div' => false ) );
-        ?>
+        <?php echo $xform->submit( 'Retour', array( 'name' => 'Cancel', 'div' => false ) ); ?>
     </div>
+	<?php echo $xform->end();?>
 
 <div class="clearer"><hr /></div>
-<?php echo $xform->end();?>

@@ -95,7 +95,7 @@ $this->pageTitle = 'Indicateurs de réorientations'
 			<td class="number"><strong><?php echo isset($results['age'][6][1]) ? $results['age'][6][1] : ''; ?></strong></td>
 			<td class="number"><strong><?php echo isset($results['age'][6][2]) ? $results['age'][6][2] : ''; ?></strong></td>
 		</tr>
-		
+
 		<tr class="even">
 			<td colspan="5">Situation familliale :</td>
 		</tr>
@@ -165,12 +165,12 @@ $this->pageTitle = 'Indicateurs de réorientations'
 			<td class="number"><strong><?php echo isset($results['situation'][10][1]) ? $results['situation'][10][1] : ''; ?></strong></td>
 			<td class="number"><strong><?php echo isset($results['situation'][10][2]) ? $results['situation'][10][2] : ''; ?></strong></td>
 		</tr>
-		
+
 		<tr class="even">
 			<td colspan="5">Niveau de formation :</td>
 		</tr>
 		<tr class="odd">
-			<td>- inférieur au Cap / Bep <i>(Vbis et VI)<i/></td>
+			<td>- inférieur au Cap / Bep <i>(Vbis et VI)</i></td>
 			<td class="number"><strong><?php echo isset($results['formation'][0][0]) ? $results['formation'][0][0] : ''; ?></strong></td>
 			<td class="number"><strong><?php echo isset($results['formation'][0][1]) ? $results['formation'][0][1] : ''; ?></strong></td>
 			<td class="number"><strong><?php echo isset($results['formation'][0][2]) ? $results['formation'][0][2] : ''; ?></strong></td>
@@ -199,8 +199,8 @@ $this->pageTitle = 'Indicateurs de réorientations'
 			<td class="number"><strong><?php echo isset($results['formation'][4][1]) ? $results['formation'][4][1] : ''; ?></strong></td>
 			<td class="number"><strong><?php echo isset($results['formation'][4][2]) ? $results['formation'][4][2] : ''; ?></strong></td>
 		</tr>
-		
-										
+
+
 		<tr class="even">
 			<td colspan="5">Ancienneté dans le dispositif, y compris anciens minima (RMI, API) (**) :</td>
 		</tr>
@@ -239,7 +239,7 @@ $this->pageTitle = 'Indicateurs de réorientations'
 			<td class="number"><strong><?php echo isset($results['anciennete'][5][0]) ? $results['anciennete'][5][0] : ''; ?></strong></td>
 			<td class="number"><strong><?php echo isset($results['anciennete'][5][1]) ? $results['anciennete'][5][1] : ''; ?></strong></td>
 			<td class="number"><strong><?php echo isset($results['anciennete'][5][2]) ? $results['anciennete'][5][2] : ''; ?></strong></td>
-		</tr>																								
+		</tr>
 	</tbody>
 </table>
 <p>

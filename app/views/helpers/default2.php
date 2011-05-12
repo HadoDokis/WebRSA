@@ -741,7 +741,9 @@
 					$columnOptions['dateFormat'],
 					$columnOptions['maxlength'],
 					$columnOptions['suffix'],
-					$columnOptions['currency']
+					$columnOptions['currency'],
+					$columnOptions['value'],
+					$columnOptions['empty']
 				);
 
 				$line = $this->Html->tag(

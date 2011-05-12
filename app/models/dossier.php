@@ -283,10 +283,10 @@
 				$conditions[] = "Dossier.id IN ( SELECT detailsdroitsrsa.dossier_id FROM detailsdroitsrsa INNER JOIN detailscalculsdroitsrsa ON detailscalculsdroitsrsa.detaildroitrsa_id = detailsdroitsrsa.id WHERE detailscalculsdroitsrsa.natpf ILIKE '%".Sanitize::paranoid( $params['Detailcalculdroitrsa']['natpf'] )."%' )";
 			}
 
-            /// Critères sur Soumis à Droit et Devoir - toppersdrodevorsa
-            if( isset( $params['Calculdroitrsa']['toppersdrodevorsa'] ) && is_numeric( $params['Calculdroitrsa']['toppersdrodevorsa'] ) ) {
-                $conditions[] = array('Calculdroitrsa.toppersdrodevorsa'=>$params['Calculdroitrsa']['toppersdrodevorsa']);
-            }
+			/// Critères sur Soumis à Droit et Devoir - toppersdrodevorsa
+			if( isset( $params['Calculdroitrsa']['toppersdrodevorsa'] ) && is_numeric( $params['Calculdroitrsa']['toppersdrodevorsa'] ) ) {
+				$conditions[] = array('Calculdroitrsa.toppersdrodevorsa'=>$params['Calculdroitrsa']['toppersdrodevorsa']);
+			}
 
 			/// Critères sur le dossier - date de demande
 			if( isset( $params['Dossier']['dtdemrsa'] ) && !empty( $params['Dossier']['dtdemrsa'] ) ) {
@@ -352,20 +352,20 @@
 			}
 
 
-            $hasContrat  = Set::extract( $params, 'Personne.hascontrat' );
-            /// Statut de présence contrat engagement reciproque
-            if( !empty( $hasContrat ) && in_array( $hasContrat, array( 'O', 'N' ) ) ) {
-                if( $hasContrat == 'O' ) {
-                    $conditions[] = '( SELECT COUNT(contratsinsertion.id) FROM contratsinsertion WHERE contratsinsertion.personne_id = "Personne"."id" ) > 0';
-                }
-                else {
-                    $conditions[] = '( SELECT COUNT(contratsinsertion.id) FROM contratsinsertion WHERE contratsinsertion.personne_id = "Personne"."id" ) = 0';
-                }
-            }
+			$hasContrat  = Set::extract( $params, 'Personne.hascontrat' );
+			/// Statut de présence contrat engagement reciproque
+			if( !empty( $hasContrat ) && in_array( $hasContrat, array( 'O', 'N' ) ) ) {
+				if( $hasContrat == 'O' ) {
+					$conditions[] = '( SELECT COUNT(contratsinsertion.id) FROM contratsinsertion WHERE contratsinsertion.personne_id = "Personne"."id" ) > 0';
+				}
+				else {
+					$conditions[] = '( SELECT COUNT(contratsinsertion.id) FROM contratsinsertion WHERE contratsinsertion.personne_id = "Personne"."id" ) = 0';
+				}
+			}
 
 
 			// Trouver la dernière demande RSA pour chacune des personnes du jeu de résultats
-			if( $params['Dossier']['dernier'] ) {
+			if( isset( $params['Dossier']['dernier'] ) && $params['Dossier']['dernier'] ) {
 				$conditions[] = 'Dossier.id IN (
 					SELECT
 							dossiers.id
@@ -402,10 +402,10 @@
 			}
 
 
-            // Personne ne possédant pas d'orientation, ne possédant aucune entrée dans la table orientsstructs
-            if( $params['Orientstruct']['sansorientation'] ) {
-                $conditions[] = '( SELECT COUNT(orientsstructs.id) FROM orientsstructs WHERE orientsstructs.personne_id = "Personne"."id" ) = 0';
-            }
+			// Personne ne possédant pas d'orientation, ne possédant aucune entrée dans la table orientsstructs
+			if( isset( $params['Orientstruct']['sansorientation'] ) && $params['Orientstruct']['sansorientation'] ) {
+				$conditions[] = '( SELECT COUNT(orientsstructs.id) FROM orientsstructs WHERE orientsstructs.personne_id = "Personne"."id" ) = 0';
+			}
 
 
 			/**
@@ -472,15 +472,15 @@
 						)
 					),
 					array(
-                        'table'      => 'calculsdroitsrsa',
-                        'alias'      => 'Calculdroitrsa',
+						'table'      => 'calculsdroitsrsa',
+						'alias'      => 'Calculdroitrsa',
 //                         'type'       => 'INNER',
-                        'type'       => 'LEFT OUTER',
-                        'foreignKey' => false,
-                        'conditions' => array(
-                            'Personne.id = Calculdroitrsa.personne_id'
-                        )
-                    ),
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array(
+							'Personne.id = Calculdroitrsa.personne_id'
+						)
+					),
 					array(
 						'table'      => 'situationsdossiersrsa',
 						'alias'      => 'Situationdossierrsa',

@@ -90,7 +90,7 @@
 			// Passage des champs du filtre lorsqu'on renvoie le formulaire du bas
 			if( isset( $this->data['Filtre'] ) && is_array( $this->data['Filtre'] ) ) {
 				foreach( Set::flatten( $this->data['Filtre'] ) as $hiddenfield => $hiddenvalue ) {
-					echo $xform->input( "Filtre.$hiddenfield", array( 'type' => 'hidden', 'value' => $hiddenvalue ) );
+					echo '<div>'.$xform->input( "Filtre.$hiddenfield", array( 'type' => 'hidden', 'value' => $hiddenvalue, 'id' => 'FiltreBasDureenonreorientation' ) ).'</div>';
 				}
 			}
 		?>

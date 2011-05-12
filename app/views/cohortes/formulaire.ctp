@@ -76,7 +76,7 @@
 		<?php echo $form->create( 'NouvellesDemandes', array( 'url'=> Router::url( null, true ) ) );?>
 		<?php
 			foreach( Set::flatten( $this->data['Filtre'], '.' ) as $key => $value ) {
-				echo '<div>'.$form->input( "Filtre.{$key}", array( 'type' => 'hidden', 'value' => $value ) ).'</div>';
+				echo '<div>'.$form->input( "Filtre.{$key}", array( 'type' => 'hidden', 'value' => $value, 'id' => 'FiltreBas'.Inflector::humanize( $key ) ) ).'</div>';
 			}
 		?>
 			<table class="tooltips">

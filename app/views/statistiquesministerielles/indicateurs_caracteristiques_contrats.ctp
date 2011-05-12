@@ -122,7 +122,7 @@ $this->pageTitle = 'Indicateurs de caractéristiques des contrats'
 		<tr class="odd">
 			<td>- 1 an et plus</td>
 			<td class="number"><strong><?php echo isset($results['R5'][2]) ? $results['R5'][2] : ''; ?></strong></td>
-		</tr>		
+		</tr>
 	</tbody>
 </table>
 <p>

@@ -18,16 +18,17 @@
 
 <h1><?php echo $this->pageTitle;?></h1>
 
+<?php if( @$this->action == 'creationmodification' ):?>
 	<ul class="actionMenu">
 		<?php
-			if( @$this->action == 'creationmodification' ) {
-				echo '<li>'.$xhtml->addLink(
-					'Ajouter',
-					array( 'controller' => 'commissionseps', 'action' => 'add' )
-				).' </li>';
-			}
+			echo '<li>'.$xhtml->addLink(
+				'Ajouter',
+				array( 'controller' => 'commissionseps', 'action' => 'add' )
+			).' </li>';
 		?>
 	</ul>
+<?php endif;?>
+
 <?php
 	echo '<ul class="actionMenu"><li>'.$xhtml->link(
 		$xhtml->image(
@@ -103,7 +104,7 @@
 		else {
 			$pagination = $xpaginator->paginationBlock( 'Commissionep', $this->passedArgs );
 
-			echo '<p>'.$pagination.'</p>';
+			echo $pagination;
 
 			echo '<table><thead>';
 				echo '<tr>
@@ -154,7 +155,7 @@
 			}
 			echo '</tbody></table>';
 
-			echo '<p>'.$pagination.'</p>';
+			echo $pagination;
 		}
 	}
 ?>

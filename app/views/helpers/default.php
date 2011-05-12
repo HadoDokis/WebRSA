@@ -853,7 +853,9 @@
 					$columnOptions['dateFormat'],
 					$columnOptions['maxlength'],
 					$columnOptions['suffix'],
-					$columnOptions['currency']
+					$columnOptions['currency'],
+					$columnOptions['value'],
+					$columnOptions['empty']
 				);
 
 				if( $widget == 'dl' ) {
