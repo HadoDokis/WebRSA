@@ -19,6 +19,9 @@ msgstr ""
 
 ###############################################################################
 
+msgid "ActioncandidatPersonne::delete::confirm"
+msgstr "Voulez-vous supprimer la fiche de candidature ?"
+
 msgid "ActionscandidatsPersonnes::add"
 msgstr "Ajout d'une fiche de candidature"
 
