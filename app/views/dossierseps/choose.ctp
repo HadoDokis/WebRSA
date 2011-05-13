@@ -15,7 +15,7 @@
         <?php
 
             if ( isset( $themeEmpty ) && $themeEmpty == true ) {
-                echo '<p class="notice">Veuillez attribuer des thème à l\'EP gérant la commission avant.</p>';
+                echo '<p class="notice">Veuillez attribuer des thèmes à l\'EP gérant la commission avant.</p>';
             }
             else {
 // debug($dossiers);
@@ -37,7 +37,8 @@
                             'options' => $options,
                             'hidden' => array( 'Dossierep.id', 'Passagecommissionep.id' ),
                             'paginate' => 'Dossierep',
-                            'actions' => array( 'Dossierseps::courrierInformation' )
+                            'actions' => array( 'Dossierseps::courrierInformation' ),
+                            'id' => $theme
                         )
                     );
                     echo "</div>";

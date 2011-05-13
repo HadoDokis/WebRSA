@@ -25,11 +25,13 @@
                 				'td',
                 				$fonction['Fonctionmembreep']['name'].' :',
                 				array(
-                					'colspan' => 3
+                					'colspan' => 4
                 				)
                 			)
                 		);
+
                 		foreach($membres as $membre) {
+
                 			if ($membre['Membreep']['fonctionmembreep_id']==$fonction['Fonctionmembreep']['id']) {
 				        		echo $html->tag(
 				        			'tr',

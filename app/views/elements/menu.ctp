@@ -381,28 +381,20 @@
 			<li id="menu4one">
 				<?php echo $xhtml->link( 'Eq. Pluri.', '#' );?>
 				<ul>
-				<!--
-					<li><?php echo $xhtml->link( 'Liste des commissions', array( 'controller' => 'commissionseps', 'action' => 'index' ) );?></li>
-					<li><?php echo $xhtml->link( 'Liste des dossiers', array( 'controller' => 'dossierseps', 'action' => 'index' ) );?></li>
-					<li><?php echo $xhtml->link( 'Liste des décisions', array( 'controller' => 'dossierseps', 'action' => 'decisions' ) );?></li>
-					<li><a href="#">CG 66</a>
-						<ul>
-							<li><?php echo $xhtml->link( 'Bilans de parcours 66', array( 'controller' => 'bilansparcours66', 'action' => 'index' ) );?></li>
-							<li><?php echo $xhtml->link( 'Sélection des allocataires non inscrits à Pôle Emploi', array( 'controller' => 'defautsinsertionseps66', 'action' => 'selectionnoninscrits' ) );?></li>
-							<li><?php echo $xhtml->link( 'Sélection des allocataires radiés de Pôle Emploi', array( 'controller' => 'defautsinsertionseps66', 'action' => 'selectionradies' ) );?></li>
-						</ul>
-					</li>
-					<li><a href="#">CG 93</a>
-						<ul>
-							<li><?php echo $xhtml->link( 'Demandes de réorientation 93', array( 'controller' => 'reorientationseps93', 'action' => 'index' ) );?></li>
-							<li><?php echo $xhtml->link( 'Demande de suspension 93', array( 'controller' => 'nonrespectssanctionseps93', 'action' => 'index' ) );?></li>
-						</ul>
-					</li>
-				-->
-					<li><?php echo $xhtml->link( 'Création / modification', array( 'controller' => 'commissionseps', 'action' => 'creationmodification' ) );?></li>
-					<li><?php echo $xhtml->link( 'Attribution des dossiers à une commission', array( 'controller' => 'commissionseps', 'action' => 'attributiondossiers' ) );?></li>
-					<li><?php echo $xhtml->link( 'Arbitrage', array( 'controller' => 'commissionseps', 'action' => 'arbitrage' ) );?></li>
-					<li><?php echo $xhtml->link( 'Recherche', array( 'controller' => 'commissionseps', 'action' => 'recherche' ) );?></li>
+					<li><a href="#">Mise en place du dispositif</a>
+                        <ul>
+                            <li><?php echo $xhtml->link( 'Création des membres', array( 'controller' => 'membreseps', 'action' => 'index' ) );?></li>
+                            <li><?php echo $xhtml->link( 'Création des EPs', array( 'controller' => 'eps', 'action' => 'index' ) );?></li>
+                            <li><?php echo $xhtml->link( 'Création des Commissions', array( 'controller' => 'commissionseps', 'action' => 'creationmodification' ) );?></li>
+                        </ul>
+                    </li>
+                    <li><?php echo $xhtml->link( 'Commissions', array( 'controller' => 'commissionseps', 'action' => 'recherche' ) );?></li>
+                    <li><a href="#">Arbitrage</a>
+                        <ul>
+                            <li><?php echo $xhtml->link( 'EP', array( 'controller' => 'commissionseps', 'action' => 'arbitrage' ) );?></li>
+                            <li><?php echo $xhtml->link( 'CG', array( 'controller' => 'commissionseps', 'action' => 'arbitrage' ) );?></li>
+                        </ul>
+                    </li>
 					<li>
                         <?php if( Configure::read( 'Cg.departement' ) == 58 ):?>
                             <a href="#">Motifs de saisine</a>
