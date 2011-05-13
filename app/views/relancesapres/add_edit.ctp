@@ -70,7 +70,7 @@
             $piecesManquantesAides = Set::classicExtract( $apre, "Apre.Piece.Manquante" );
             foreach( $piecesManquantesAides as $model => $pieces ) {
                 if( !empty( $pieces ) ) {
-                    echo $xhtml->tag( 'h2', $model );
+                    echo $xhtml->tag( 'h2', __d( 'apre', $model, true ) );
                     echo '<ul><li>'.implode( '</li><li>', $pieces ).'</li></ul>';
                 }
             }
