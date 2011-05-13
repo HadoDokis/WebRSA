@@ -58,12 +58,12 @@
 			<?php
 				if( $cov58['Cov58']['etatcov'] == 'cree' ) {
 					echo '<li>'.$xhtml->editLink(
-						'Modifier',
+						'Affecter les dossiers',
 						array( 'controller' => 'dossierscovs58', 'action' => 'choose', Set::classicExtract( $cov58, 'Cov58.id' ) )
 					).' </li>';
 				}
 				else {
-					echo '<li><span class="disabled"> Modifier</span></li>';
+					echo '<li><span class="disabled"> Affecter les dossiers</span></li>';
 				}
 			?>
 		</ul>
