@@ -452,11 +452,14 @@ msgstr "Valider la commission CG"
 msgid "Button::courrierInformation"
 msgstr "Courrier d'information"
 
-msgid "Button::printConvocation"
-msgstr "Convocation"
+msgid "Button::printConvocationParticipant"
+msgstr "Ordre du jour"
 
 msgid "Button::printConvocationBeneficiaire"
 msgstr "Convocation"
+
+msgid "Button::fichesynthese"
+msgstr "Fiche de synthèse"
 ###############################################################################
 # Pagination
 # INFO: http://forum.cakephp-fr.org/viewtopic.php?id=878

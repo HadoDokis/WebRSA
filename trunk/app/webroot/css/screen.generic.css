@@ -1096,7 +1096,16 @@ td.button.courrierInformation a, td.action a.courrierInformation, td span.button
     background-image: url( ../img/icons/printer.png );
 }
 
-td.button.printConvocation a, td.action a.printConvocation, td span.button.printConvocation, table.default2 td a.button.printConvocation {
+td.button.printConvocationParticipant a, td.action a.printConvocationParticipant, td span.button.printConvocationParticipant, table.default2 td a.button.printConvocationParticipant {
+    background-image: url( ../img/icons/printer.png );
+}
+
+
+td.button.printConvocationBeneficiaire a, td.action a.printConvocationBeneficiaire, td span.button.printConvocationBeneficiaire, table.default2 td a.button.printConvocationBeneficiaire {
+    background-image: url( ../img/icons/printer.png );
+}
+
+td.button.fichesynthese a, td.action a.fichesynthese, td span.button.fichesynthese, table.default2 td a.button.fichesynthese {
     background-image: url( ../img/icons/printer.png );
 }
 /**/

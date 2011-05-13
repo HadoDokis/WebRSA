@@ -934,7 +934,7 @@
 			$content = $this->image(
 				'icons/pencil.png',
 				array( 'alt' => '' )
-			).' 5. Présences';
+			).' 4. Présences';
 
 			if( $enabled ) {
 				return $this->link(

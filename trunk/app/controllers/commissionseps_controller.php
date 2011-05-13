@@ -41,14 +41,14 @@
 				'commissionseps::edit',
 				'membreseps::editpresence',
 				'commissionseps::traiterep',
-				'commissionseps::delete',
+				'commissionseps::delete',/*
 				'commissionseps::printConvocationBeneficiaire',
-                'commissionseps::printConvocationParticipant',
+                'commissionseps::printConvocationParticipant',*/
 			),
 			'decisionep' => array(
-				'commissionseps::ordredujour',
+				'commissionseps::ordredujour',/*
 				'commissionseps::printConvocationBeneficiaire',
-                'commissionseps::printConvocationParticipant',
+                'commissionseps::printConvocationParticipant',*/
 				'commissionseps::edit',
 				'commissionseps::traiterep',
 				'commissionseps::finaliserep',
@@ -497,7 +497,7 @@
 	// 					'Dossierep' => array(
 	// 						'Personne'
 	// 					),
-						'Ep' => array( 'Regroupementep')
+						'Ep' => array( 'Regroupementep'/*, 'Membreep'*/)
 					)
 				)
 			);
@@ -537,7 +537,31 @@
 				);
 				$countDossiers += count($dossiers[$theme]);
 			}
-
+			$dossierseps = $this->Commissionep->Passagecommissionep->find(
+                'all',
+                array(
+                    'conditions' => array(
+                        'Passagecommissionep.commissionep_id' => $commissionep_id
+                    ),
+                    'contain' => array(
+                        'Dossierep' => array(
+                            'Personne' => array(
+                                'Foyer' => array(
+                                    'Adressefoyer' => array(
+                                        'conditions' => array(
+                                            'Adressefoyer.rgadr' => '01'
+                                        ),
+                                        'Adresse'
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+			);
+			if( !empty( $dossierseps ) ){
+                $this->set( compact( 'dossierseps' ) );
+            }
 			$this->set(compact('dossiers'));
 			$this->set(compact('countDossiers'));
 
@@ -564,6 +588,8 @@
 					'Membreep' => array( 'Fonctionmembreep')
 				)
 			));
+
+
 			foreach($membresepsseanceseps as &$membreepseanceep) {
 				if (!empty($membreepseanceep['Membreep']['suppleant_id'])) {
 					$remplacant = $this->Commissionep->Membreep->find( 'first', array(
