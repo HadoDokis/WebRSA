@@ -34,7 +34,7 @@
 
         echo $form->input( 'Propoorientationcov58.referent_id', array(  'label' => __d( 'structurereferente', 'Structurereferente.nom_referent', true  ), 'type' => 'select', 'options' => $referents, 'empty' => true, 'selected' => $this->data['Propoorientationcov58']['referent_id'] ) );
 
-		echo $form->input( 'Propoorientationcov58.datedemande', array(  'label' =>  required( __d( 'contratinsertion', 'Contratinsertion.date_propo', true ) ), 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' )+10, 'minYear' => ( date( 'Y' ) - 10 ), 'empty' => true, 'tyoe' => 'date' ) );
+		echo $form->input( 'Propoorientationcov58.datedemande', array(  'label' =>  required( __d( 'contratinsertion', 'Contratinsertion.date_propo', true ) ), 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 3, 'minYear' => ( date( 'Y' ) - 3 ), 'empty' => true, 'tyoe' => 'date' ) );
 		
 		echo $form->input( 'Propoorientationcov58.user_id', array( 'type' => 'hidden', 'value' => $session->read( 'Auth.User.id' ) ) );
 	?>
