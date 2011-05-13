@@ -267,7 +267,7 @@
 		public function decision_ci() {
 			return array(
 				'E' => 'En attente de décision',
-				'V' => 'Validation à compter du',
+				'V' => 'Validation le',
 				/*'A' => 'Ajournement',
 				'R' => 'Rejet'*/
 				'N' => 'Non validé'
