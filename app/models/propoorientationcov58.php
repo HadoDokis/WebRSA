@@ -81,7 +81,10 @@
 				$this->alias.'.id',
 				$this->alias.'.datedemande',
 				'Typeorient.lib_type_orient',
-				'Structurereferente.lib_struc'
+				'Structurereferente.lib_struc',
+				'Referent.qual',
+				'Referent.nom',
+				'Referent.prenom'
 			);
 		}
 		
@@ -113,6 +116,14 @@
 					'type' => 'INNER',
 					'conditions' => array(
 						'Propoorientationcov58.typeorient_id = Typeorient.id'
+					)
+				),
+				array(
+					'table' => 'referents',
+					'alias' => 'Referent',
+					'type' => 'LEFT OUTER',
+					'conditions' => array(
+						'Propoorientationcov58.referent_id = Referent.id'
 					)
 				)
 			);
@@ -229,12 +240,14 @@
 			if ( $data['decisioncov'] == 'accepte' ) {
 				$dossier['Propoorientationcov58']['covtypeorient_id'] = $dossier['Propoorientationcov58']['typeorient_id'];
 				$dossier['Propoorientationcov58']['covstructurereferente_id'] = $dossier['Propoorientationcov58']['structurereferente_id'];
+				$dossier['Propoorientationcov58']['covreferent_id'] = $dossier['Propoorientationcov58']['referent_id'];
 			}
 			else {
-				$dossier['Propoorientationcov58']['referent_id'] = null;
+				list($structurereferente_id, $referent_id) = explode('_', $data['referent_id']);
 				list($typeorient_id, $structurereferente_id) = explode('_', $data['structurereferente_id']);
 				$dossier['Propoorientationcov58']['covtypeorient_id'] = $typeorient_id;
 				$dossier['Propoorientationcov58']['covstructurereferente_id'] = $structurereferente_id;
+				$dossier['Propoorientationcov58']['referent_id'] = $referent_id;
 			}
 			list($jour, $heure) = explode(' ', $cov58['Cov58']['datecommission']);
 			$dossier['Propoorientationcov58']['datevalidation'] = $jour;
