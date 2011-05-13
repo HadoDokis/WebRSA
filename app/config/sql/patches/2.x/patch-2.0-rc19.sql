@@ -22,6 +22,27 @@ ALTER TABLE actionscandidats ALTER COLUMN contractualisation SET NOT NULL;
 SELECT add_missing_table_field ('public', 'proposorientationscovs58', 'decisioncov', 'CHAR(10)');
 SELECT add_missing_table_field ('public', 'proposcontratsinsertioncovs58', 'decisioncov', 'VARCHAR(10)');
 
+UPDATE contratsinsertion 
+    SET decision_ci = 'N'
+    WHERE decision_ci IN ( 'A', 'R' );
+
+UPDATE contratsinsertion 
+    SET datevalidation_ci = null
+    WHERE decision_ci IN ( 'N', 'E' );
+
+UPDATE contratsinsertion 
+    SET datevalidation_ci = dd_ci
+    WHERE
+        decision_ci = 'V'
+        AND datevalidation_ci IS NULL;
+
+
+ALTER TABLE contratsinsertion ADD CONSTRAINT contratsinsertion_decision_ci_datevalidation_ci_check CHECK(
+    ( decision_ci = 'V' AND datevalidation_ci IS NOT NULL )
+    OR ( decision_ci <> 'V' AND datevalidation_ci IS NULL )
+);
+
+
 SELECT add_missing_table_field ('public', 'proposorientationscovs58', 'referent_id', 'INTEGER');
 SELECT add_missing_constraint ('public', 'proposorientationscovs58', 'proposorientationscovs58_referent_id_id_fkey', 'referents', 'referent_id');
 SELECT add_missing_table_field ('public', 'proposorientationscovs58', 'covreferent_id', 'INTEGER');

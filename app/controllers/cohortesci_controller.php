@@ -213,7 +213,8 @@
 						}
 
 						if( empty( $value['Contratinsertion']['datevalidation_ci'] ) ) {
-							$cohorteci[$key]['Contratinsertion']['proposition_datevalidation_ci'] = date( 'Y-m-d' );
+// 							$cohorteci[$key]['Contratinsertion']['proposition_datevalidation_ci'] = date( 'Y-m-d' );
+                            $cohorteci[$key]['Contratinsertion']['proposition_datevalidation_ci'] = $value['Contratinsertion']['dd_ci'];
 						}
 						else {
 							$cohorteci[$key]['Contratinsertion']['proposition_datevalidation_ci'] = $value['Contratinsertion']['datevalidation_ci'];
@@ -221,6 +222,7 @@
 					}
 
 					$this->set( 'cohorteci', $cohorteci );
+// 					debug($cohorteci);
 				}
 
 			}
