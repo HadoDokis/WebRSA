@@ -2,15 +2,24 @@
 <div  id="ficheCI">
 	<ul class="actionMenu">
 	<?php
-		
 		if( $cov58['Cov58']['etatcov'] == 'cree' ) {
 			echo '<li>'.$xhtml->editLink(
-				__d('Cov58','Cov58.edit',true),
+				__d( 'cov58', 'Cov58.edit', true ),
 				array( 'controller' => 'covs58', 'action' => 'edit', $cov58['Cov58']['id'] )
 			).' </li>';
 		}
 		else {
 			echo '<li><span class="disabled"> Modifier</span></li>';
+		}
+
+		if( $countDossiers > 0 ) {
+			echo '<li>'.$xhtml->link(
+				__d( 'cov58','Covs58::ordredujour', true ),
+				array( 'controller' => 'covs58', 'action' => 'ordredujour', $cov58['Cov58']['id'] )
+			).' </li>';
+		}
+		else {
+			echo '<li><span class="disabled"> '.__d( 'cov58','Covs58::ordredujour',true ).'</span></li>';
 		}
 
 		if( $cov58['Cov58']['etatcov'] != 'finalise' && $countDossiers > 0 ) {
@@ -21,6 +30,16 @@
 		}
 		else {
 			echo '<li><span class="disabled"> '.__d( 'cov58','Covs58::decisioncov',true ).'</span></li>';
+		}
+
+		if( $cov58['Cov58']['etatcov'] == 'finalise' ) {
+			echo '<li>'.$xhtml->link(
+				__d( 'cov58','Covs58::impressionpv',true ),
+				array( 'controller' => 'covs58', 'action' => 'impressionpv', $cov58['Cov58']['id'] )
+			).' </li>';
+		}
+		else {
+			echo '<li><span class="disabled"> '.__d( 'cov58','Covs58::impressionpv',true ).'</span></li>';
 		}
 		
 	?>
@@ -57,7 +76,7 @@
 		<ul class="actionMenu">
 			<?php
 				if( $cov58['Cov58']['etatcov'] == 'cree' ) {
-					echo '<li>'.$xhtml->editLink(
+					echo '<li>'.$xhtml->affecteLink(
 						'Affecter les dossiers',
 						array( 'controller' => 'dossierscovs58', 'action' => 'choose', Set::classicExtract( $cov58, 'Cov58.id' ) )
 					).' </li>';

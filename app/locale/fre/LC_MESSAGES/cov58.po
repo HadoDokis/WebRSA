@@ -19,6 +19,9 @@ msgstr ""
 
 ###############################################################################
 
+msgid "Cov58.edit"
+msgstr "Modifier la COV"
+
 msgid "Cov58.datecommission"
 msgstr "Date de la commission"
 
@@ -42,6 +45,12 @@ msgstr "Décisions"
 
 msgid "Covs58::index"
 msgstr "Commision de la COV"
+
+msgid "Covs58::ordredujour"
+msgstr "Imprimer l'ordre du jour"
+
+msgid "Covs58::impressionpv"
+msgstr "Imprimer le procès verbal"
 
 msgid "Cov58::index::empty"
 msgstr "Aucun dossier sélectionné pour cette commission"
