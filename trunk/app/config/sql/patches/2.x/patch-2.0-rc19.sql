@@ -22,6 +22,11 @@ ALTER TABLE actionscandidats ALTER COLUMN contractualisation SET NOT NULL;
 SELECT add_missing_table_field ('public', 'proposorientationscovs58', 'decisioncov', 'CHAR(10)');
 SELECT add_missing_table_field ('public', 'proposcontratsinsertioncovs58', 'decisioncov', 'VARCHAR(10)');
 
+SELECT add_missing_table_field ('public', 'proposorientationscovs58', 'referent_id', 'INTEGER');
+SELECT add_missing_constraint ('public', 'proposorientationscovs58', 'proposorientationscovs58_referent_id_id_fkey', 'referents', 'referent_id');
+SELECT add_missing_table_field ('public', 'proposorientationscovs58', 'covreferent_id', 'INTEGER');
+SELECT add_missing_constraint ('public', 'proposorientationscovs58', 'proposorientationscovs58_covreferent_id_id_fkey', 'referents', 'covreferent_id');
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

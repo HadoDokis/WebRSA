@@ -29,9 +29,10 @@
 			$options = array_merge($options, $this->Cov58->Dossiercov58->enums());
 			$typesorients = $this->Cov58->Dossiercov58->Propoorientationcov58->Structurereferente->Typeorient->listOptions();
 			$structuresreferentes = $this->Cov58->Dossiercov58->Propoorientationcov58->Structurereferente->list1Options();
+			$referents = $this->Cov58->Dossiercov58->Propoorientationcov58->Structurereferente->Referent->listOptions();
 			$sitescovs58 = $this->Cov58->Sitecov58->find( 'list', array( 'fields' => array( 'name' ) ) );
 
-			$this->set(compact('options', 'typesorients', 'structuresreferentes', 'typevoie', 'sitescovs58' ));
+			$this->set(compact('options', 'typesorients', 'structuresreferentes', 'referents', 'typevoie', 'sitescovs58' ));
 
 			$decisionscovs = array( 'accepte' => 'Accepté', 'refus' => 'Refusé', 'ajourne' => 'Ajourné' );
 			$this->set(compact('decisionscovs'));
