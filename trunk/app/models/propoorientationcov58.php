@@ -4,6 +4,8 @@
 	{
 		public $name = 'Propoorientationcov58';
 
+		public $recursive = -1;
+
 		public $actsAs = array(
 			'Autovalidate',
 			'Containable',
@@ -120,7 +122,7 @@
 		* FIXME -> aucun dossier en cours, pour certains thèmes:
 		*		- CG 93
 		*			* Nonrespectsanctionep93 -> ne débouche pas sur une orientation: '1reduction', '1maintien', '1sursis', '2suspensiontotale', '2suspensionpartielle', '2maintien'
-		*			* Reorientationep93 -> peut déboucher sur une réorientation
+		*			* Propoorientationcov58 -> peut déboucher sur une réorientation
 		*		- CG 66
 		*			* Defautinsertionep66 -> peut déboucher sur une orientation: 'suspensionnonrespect', 'suspensiondefaut', 'maintien', 'reorientationprofverssoc', 'reorientationsocversprof'
 		*			* Saisinebilanparcoursep66 -> peut déboucher sur une réorientation
@@ -261,6 +263,39 @@
 			
 			return $success;
 		}
-		
+
+		/**
+		*
+		*/
+
+		public function qdProcesVerbal() {
+			return array(
+				'fields' => array(
+					'Propoorientationcov58.id',
+					'Propoorientationcov58.dossiercov58_id',
+					'Propoorientationcov58.typeorient_id',
+					'Propoorientationcov58.structurereferente_id',
+					'Propoorientationcov58.datedemande',
+					'Propoorientationcov58.rgorient',
+					'Propoorientationcov58.commentaire',
+					'Propoorientationcov58.covtypeorient_id',
+					'Propoorientationcov58.covstructurereferente_id',
+					'Propoorientationcov58.datevalidation',
+					'Propoorientationcov58.commentaire',
+					'Propoorientationcov58.user_id',
+					'Propoorientationcov58.decisioncov'
+				),
+				'joins' => array(
+					array(
+						'table'      => 'proposorientationscovs58',
+						'alias'      => 'Propoorientationcov58',
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array( 'Propoorientationcov58.dossiercov58_id = Dossiercov58.id' ),
+					)
+				)
+			);
+		}
+
 	}
 ?>

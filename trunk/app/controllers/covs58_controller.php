@@ -7,7 +7,7 @@
 
         public $uses = array( 'Cov58', 'Option' );
 
-		public $components = array( 'Prg' => array( 'actions' => array( 'index' ) ) );
+		public $components = array( 'Prg' => array( 'actions' => array( 'index' ) ), 'Gedooo' );
 
 		/**
 		*
@@ -227,6 +227,38 @@
 			$success = $this->Cov58->delete( $id );
 			$this->_setFlashResult( 'Delete', $success );
 			$this->redirect( array( 'action' => 'index' ) );
+		}
+
+		/**
+		*
+		*/
+
+		public function ordredujour( $cov58_id ) {
+ 			$pdf = $this->Cov58->getPdfOrdreDuJour( $cov58_id );
+
+			if( $pdf ) {
+				$this->Gedooo->sendPdfContentToClient( $pdf, 'OJ' );
+			}
+			else {
+				$this->Session->setFlash( 'Impossible de générer l\'ordre du jour de la COV', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
+			}
+		}
+
+		/**
+		*
+		*/
+
+		public function impressionpv( $cov58_id ) {
+ 			$pdf = $this->Cov58->getPdfPv( $cov58_id );
+
+			if( $pdf ) {
+				$this->Gedooo->sendPdfContentToClient( $pdf, 'pv' );
+			}
+			else {
+				$this->Session->setFlash( 'Impossible de générer le PV de la COV', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
+			}
 		}
 
 	}

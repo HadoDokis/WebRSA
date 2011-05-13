@@ -3,6 +3,8 @@
 	{
 		public $name = 'Propocontratinsertioncov58';
 
+		public $recursive = -1;
+
 		public $actsAs = array(
 			'Autovalidate',
 			'Containable',
@@ -244,6 +246,41 @@
 			$success = $this->Dossiercov58->Personne->Contratinsertion->save() && $success;
 			
 			return $success;
+		}
+
+		/**
+		*
+		*/
+
+		public function qdProcesVerbal() {
+			return array(
+				'fields' => array(
+					'Propocontratinsertioncov58.id',
+					'Propocontratinsertioncov58.dossiercov58_id',
+					'Propocontratinsertioncov58.structurereferente_id',
+					'Propocontratinsertioncov58.referent_id',
+					'Propocontratinsertioncov58.datedemande',
+					'Propocontratinsertioncov58.num_contrat',
+					'Propocontratinsertioncov58.dd_ci',
+					'Propocontratinsertioncov58.duree_engag',
+					'Propocontratinsertioncov58.df_ci',
+					'Propocontratinsertioncov58.forme_ci',
+					'Propocontratinsertioncov58.avisraison_ci',
+					'Propocontratinsertioncov58.rg_ci',
+					'Propocontratinsertioncov58.datevalidation',
+					'Propocontratinsertioncov58.commentaire',
+					'Propocontratinsertioncov58.decisioncov'
+				),
+				'joins' => array(
+					array(
+						'table'      => 'proposcontratsinsertioncovs58',
+						'alias'      => 'Propocontratinsertioncov58',
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array( 'Propocontratinsertioncov58.dossiercov58_id = Dossiercov58.id' ),
+					)
+				)
+			);
 		}
 		
 	}
