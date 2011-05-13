@@ -25,6 +25,9 @@ msgstr "Date de la demande"
 msgid "Propoorientationcov58.etapecov"
 msgstr "Etape du dossier"
 
+msgid "Propoorientationcov58.commentaire"
+msgstr "Observations"
+
 msgid "ENUM::ETAPECOV::traitement"
 msgstr "En cours de traitement"
 

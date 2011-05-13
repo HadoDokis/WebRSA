@@ -38,7 +38,7 @@ msgid "Propocontratinsertioncov58.datevalidation"
 msgstr "Date de validation du CER"
 
 msgid "Propocontratinsertioncov58.commentaire"
-msgstr "Observation"
+msgstr "Observations"
 
 msgid "ENUM::NUM_CONTRAT::PRE"
 msgstr "Premier contrat"

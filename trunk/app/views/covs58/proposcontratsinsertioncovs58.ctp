@@ -35,7 +35,7 @@ echo '</tr></thead><tbody>';
 		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
 			observeDisableFieldsOnValue(
 				'Propocontratinsertioncov58<?php echo $i;?>Decisioncov',
-				[ 'Propocontratinsertioncov58<?php echo $i;?>DatevalidationDay', 'Propocontratinsertioncov58<?php echo $i;?>DatevalidationMonth', 'Propocontratinsertioncov58<?php echo $i;?>DatevalidationYear', 'Propocontratinsertioncov58<?php echo $i;?>Commentaire' ],
+				[ 'Propocontratinsertioncov58<?php echo $i;?>DatevalidationDay', 'Propocontratinsertioncov58<?php echo $i;?>DatevalidationMonth', 'Propocontratinsertioncov58<?php echo $i;?>DatevalidationYear' ],
 				'accepte',
 				false
 			);
