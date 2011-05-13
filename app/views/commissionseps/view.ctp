@@ -22,15 +22,15 @@
 			echo '<li><span class="disabled"> '.__d( 'commissionep','Commissionseps::delete',true ).'</span></li>';
 		}
 
-		if( in_array( 'commissionseps::ordredujour', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) ) {
-			echo '<li>'.$xhtml->link(
-				__d( 'commissionep','Commissionseps::ordredujour', true ),
-				array( 'controller' => 'commissionseps', 'action' => 'ordredujour', $commissionep['Commissionep']['id'] )
-			).' </li>';
-		}
-		else {
-			echo '<li><span class="disabled"> '.__d( 'commissionep','Commissionseps::ordredujour',true ).'</span></li>';
-		}
+// 		if( in_array( 'commissionseps::ordredujour', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) ) {
+// 			echo '<li>'.$xhtml->link(
+// 				__d( 'commissionep','Commissionseps::ordredujour', true ),
+// 				array( 'controller' => 'commissionseps', 'action' => 'ordredujour', $commissionep['Commissionep']['id'] )
+// 			).' </li>';
+// 		}
+// 		else {
+// 			echo '<li><span class="disabled"> '.__d( 'commissionep','Commissionseps::ordredujour',true ).'</span></li>';
+// 		}
 
 		if( in_array( 'commissionseps::traiterep', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) ) {
 			echo '<li>'.$xhtml->link(
@@ -166,26 +166,26 @@
 				</ul>
 			<?php
 				echo "<table>";
-				echo $html->tag(
-					'thead',
-					$default->thead(
+				echo $default->thead(
 						array(
 							'Membreep.Fonctionmembreep.name',
 							'Membreep.nom',
+							'Membreep.tel',
+							'Membreep.mail',
 							'CommissionepMembreep.reponse',
 							'CommissionepMembreep.presence'
 						),
 						array(
                             'actions' => array(
-                                'Commissionseps::printConvocation'
+                                'Commissionseps::printConvocationParticipant'
                             )
 						)
-					)
-				);
+                    );
 
                 $disableConvocationParticipant = in_array( 'commissionseps::printConvocationParticipant', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] );
 				echo "<tbody>";
 				foreach($membresepsseanceseps as $membreepseanceep) {
+
 					echo "<tr>";
 						echo $html->tag(
 							'td',
@@ -195,6 +195,15 @@
 							'td',
 							implode(' ', array($membreepseanceep['Membreep']['qual'], $membreepseanceep['Membreep']['nom'], $membreepseanceep['Membreep']['prenom']))
 						);
+						echo $html->tag(
+                            'td',
+                            $membreepseanceep['Membreep']['tel']
+                        );
+                        echo $html->tag(
+                            'td',
+                            $membreepseanceep['Membreep']['mail']
+                        );
+
 						$membreepseanceep['CommissionepMembreep']['reponsetxt'] = "";
 						if (!empty($membreepseanceep['CommissionepMembreep']['reponse'])) {
 							$membreepseanceep['CommissionepMembreep']['reponsetxt'] = __d('commissionep_membreep', 'ENUM::REPONSE::'.$membreepseanceep['CommissionepMembreep']['reponse'], true);
@@ -219,10 +228,10 @@
 						echo $html->tag(
                             'td',
                             $xhtml->link(
-                                'Convocation',
+                                'Ordre du jour',
                                 array( 'controller' => 'commissionseps', 'action' => 'printConvocationParticipant', $membreepseanceep['CommissionepMembreep']['id'] ),
                                 array(
-                                    'enabled' => ( ( $membreepseanceep['CommissionepMembreep']['reponse'] == 'remplacepar' ) || ( $membreepseanceep['CommissionepMembreep']['reponse'] == 'confirme' ) && !empty( $disableConvocationParticipant ) ),
+                                    'enabled' => ( ( $membreepseanceep['CommissionepMembreep']['reponse'] == 'remplacepar' || $membreepseanceep['CommissionepMembreep']['reponse'] == 'confirme' ) && empty( $disableConvocationParticipant )  && empty( $membreepseanceep['CommissionepMembreep']['presence'] ) ),
                                     'class' => 'button print'
                                 )
                             ),
@@ -231,6 +240,7 @@
 					echo "</tr>";
 				}
 				echo "</tbody></table>";
+
 			?>
 			</div>
 		</div>
@@ -289,14 +299,46 @@
 								array(
 									'actions' => array(
 										'Dossierseps::view' => array( 'label' => 'Voir', 'url' => array( 'controller' => $controller, 'action' => 'index', '#Dossierep.Personne.id#' ), 'class' => 'external' ),
-										'Commissionseps::printConvocation' => array( 'url' => array( 'controller' => 'commissionseps', 'action' => 'printConvocationBeneficiaire', '#Dossierep.id#' ), 'disabled' => empty( $disableConvocationBeneficiaire ))
+										'Commissionseps::printConvocationBeneficiaire' => array( 'url' => array( 'controller' => 'commissionseps', 'action' => 'printConvocationBeneficiaire', '#Dossierep.id#' ), 'disabled' => empty( $disableConvocationBeneficiaire ))
 									),
-									'options' => $options
+									'options' => $options,
+									'id' => $theme
 								)
 							);
+
 						}
 						echo "</div>";
 					}
+
+
+                    echo "<div id=synthese><h3 class=\"title\">Synthèse</h3>";
+                        if( isset($dossierseps) ){
+                            echo $default2->index(
+                                $dossierseps,
+                                array(
+                                    'Dossierep.Personne.qual',
+                                    'Dossierep.Personne.nom',
+                                    'Dossierep.Personne.prenom',
+                                    'Dossierep.Personne.dtnai',
+                                    'Dossierep.Personne.Foyer.Adressefoyer.0.Adresse.locaadr',
+                                    'Dossierep.created',
+                                    'Dossierep.themeep',
+                                    'Passagecommissionep.etatdossierep',
+                                ),
+                                array(
+                                    'actions' => array(
+                                        'Dossierseps::view' => array( 'label' => 'Voir', 'url' => array( 'controller' => $controller, 'action' => 'index', '#Dossierep.Personne.id#' ), 'class' => 'external' ),
+                                        'Dossierseps::fichesynthese' => array( 'url' => array( 'controller' => 'dossierseps', 'action' => 'fichesynthese', '#Dossierep.id#' ) )
+                                    ),
+                                    'options' => $options,
+                                    'id' => $theme
+                                )
+                            );
+                        }
+                        else {
+                            echo '<p class="notice">Il n\'existe aucun dossier associé à cette commission d\'EP.</p>';
+                        }
+                    echo "</div>";
 				?>
 			</div>
 		</div>
