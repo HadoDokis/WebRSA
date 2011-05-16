@@ -44,9 +44,15 @@ ALTER TABLE contratsinsertion ADD CONSTRAINT contratsinsertion_decision_ci_datev
 
 
 SELECT add_missing_table_field ('public', 'proposorientationscovs58', 'referent_id', 'INTEGER');
-SELECT add_missing_constraint ('public', 'proposorientationscovs58', 'proposorientationscovs58_referent_id_id_fkey', 'referents', 'referent_id');
+SELECT add_missing_constraint ('public', 'proposorientationscovs58', 'proposorientationscovs58_referent_id_fkey', 'referents', 'referent_id');
 SELECT add_missing_table_field ('public', 'proposorientationscovs58', 'covreferent_id', 'INTEGER');
-SELECT add_missing_constraint ('public', 'proposorientationscovs58', 'proposorientationscovs58_covreferent_id_id_fkey', 'referents', 'covreferent_id');
+SELECT add_missing_constraint ('public', 'proposorientationscovs58', 'proposorientationscovs58_covreferent_id_fkey', 'referents', 'covreferent_id');
+
+SELECT add_missing_table_field ('public', 'eps_membreseps', 'suppleant_id', 'INTEGER');
+SELECT add_missing_constraint ('public', 'eps_membreseps', 'eps_membreseps_suppleant_id_fkey', 'referents', 'suppleant_id');
+
+SELECT add_missing_table_field ('public', 'membreseps', 'suppleant_id', 'INTEGER');
+ALTER TABLE membreseps DROP COLUMN suppleant_id;
 
 -- *****************************************************************************
 COMMIT;
