@@ -48,13 +48,13 @@
 					'Personne.qual',
 					'Personne.nom',
 					'Personne.prenom',
-					'Commissionep.dateseance',
+// 					'Commissionep.dateseance',
 					'Dossierep.created',
-					'Dossierep.etatdossierep',
+// 					'Dossierep.etatdossierep',
 					'Dossierep.themeep',
 				),
 				'contain' => array(
-					'Commissionep',
+// 					'Commissionep',
 					'Personne',
 				),
 				'limit' => 10

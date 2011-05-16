@@ -25,10 +25,6 @@
             $this->set('zone', $zone);
         }
 
-        function edit( $param = null ) {
-
-        }
-
     }
 
 ?>
