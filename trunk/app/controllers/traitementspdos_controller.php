@@ -398,14 +398,6 @@
 		*
 		*/
 
-		public function gedooo( $id = null ) {
-
-		}
-
-		/**
-		*
-		*/
-
 		public function clore($id = null) {
 			$traitementpdo = $this->Traitementpdo->find(
 				'first',
