@@ -10,7 +10,8 @@
 						'type' => 'confort', 'domain' => 'dsp'
 					),
 				)
-			)
+			),
+			'Autovalidate'
 		);
 
         var $belongsTo = array( 'Dsp' );

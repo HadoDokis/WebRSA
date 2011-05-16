@@ -13,7 +13,8 @@
 					),
 				)
 			),
-			'Revision' => array('auto'=>false)
+			'Revision' => array('auto'=>false),
+			'Autovalidate'
 		);
     }
 ?>
