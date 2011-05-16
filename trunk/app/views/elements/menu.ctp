@@ -20,7 +20,7 @@
 									</ul>
 							</li>
 						<?php endif;?>
-						<?php if( $permissions->check( 'cohortesci', 'nouveaux' ) || $permissions->check( 'cohortesci', 'valides' ) || $permissions->check( 'cohortesci', 'enattente' ) ):?>
+						<?php if( $permissions->check( 'cohortesci', 'nouveaux' ) || $permissions->check( 'cohortesci', 'valides' ) /*|| $permissions->check( 'cohortesci', 'enattente' )*/ ):?>
 							<!-- AJOUT POUR LA GESTION DES CONTRATS D'ENGAGEMENT RECIPROQUE (Cohorte) -->
 							<li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
 								<?php  echo $xhtml->link( 'CER ', '#' );?>
@@ -28,9 +28,9 @@
 										<?php if( $permissions->check( 'cohortesci', 'nouveaux' ) ): ?>
 											<li><?php echo $xhtml->link( 'Contrats à valider', array( 'controller' => 'cohortesci', 'action' => 'nouveaux' ), array( 'title' => 'Contrats à valider' ) );?></li>
 										<?php endif; ?>
-										<?php if( $permissions->check( 'cohortesci', 'enattente' ) ): ?>
+										<!--<?php if( $permissions->check( 'cohortesci', 'enattente' ) ): ?>
 											<li><?php echo $xhtml->link( 'En attente', array( 'controller' => 'cohortesci', 'action' => 'enattente' ), array( 'title' => 'Contrats en attente' ) );?></li>
-										<?php endif; ?>
+										<?php endif; ?>-->
 										<?php if( $permissions->check( 'cohortesci', 'valides' ) ): ?>
 											<li><?php echo $xhtml->link( 'Contrats validés', array( 'controller' => 'cohortesci', 'action' => 'valides' ), array( 'title' => 'Contrats validés' ) );?></li>
 										<?php endif; ?>
