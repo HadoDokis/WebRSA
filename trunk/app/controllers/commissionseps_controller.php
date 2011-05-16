@@ -209,6 +209,10 @@
 
 // debug($commissionseps);
 			$this->_setOptions();
+			$compteurs = array(
+				'Ep' => $this->Commissionep->Ep->find( 'count' )
+			);
+			$this->set( compact( 'compteurs' ) );
 			$this->render( null, null, 'index' );
 		}
 

@@ -64,6 +64,12 @@
 			}
 
 			$this->_setOptions();
+
+			$compteurs = array(
+				'Fonctionmembreep' => $this->Membreep->Fonctionmembreep->find( 'count' )
+			);
+			$this->set( compact( 'compteurs' ) );
+
 			$this->set( compact( 'membreseps' ) );
 		}
 

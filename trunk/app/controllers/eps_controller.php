@@ -46,6 +46,10 @@
 
 			$this->_setOptions();
 			$this->set( 'eps', $this->paginate( $this->Ep ) );
+			$compteurs = array(
+				'Regroupementep' => $this->Ep->Regroupementep->find( 'count' )
+			);
+			$this->set( compact( 'compteurs' ) );
 		}
 
 		/**

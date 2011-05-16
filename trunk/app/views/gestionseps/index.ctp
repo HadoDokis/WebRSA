@@ -21,7 +21,7 @@
                     ),
                     array( 'class' => 'odd' ),
                     array( 'class' => 'even' )
-                );
+                );/*
                 echo $xhtml->tableCells(
                     array(
                         h( 'Liste de membres pour une EP' ),
@@ -45,7 +45,7 @@
                     ),
                     array( 'class' => 'odd' ),
                     array( 'class' => 'even' )
-                );
+                );*/
                 echo $xhtml->tableCells(
                     array(
                         h( __d( 'regroupementep', 'Regroupementep::index', true ) ),
