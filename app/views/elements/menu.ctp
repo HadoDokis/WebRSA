@@ -381,15 +381,15 @@
 			<li id="menu4one">
 				<?php echo $xhtml->link( 'Eq. Pluri.', '#' );?>
 				<ul>
-					<li><a href="#">Mise en place du dispositif</a>
+					<li><a href="#">1. Mise en place du dispositif</a>
                         <ul>
                             <li><?php echo $xhtml->link( 'Création des membres', array( 'controller' => 'membreseps', 'action' => 'index' ) );?></li>
                             <li><?php echo $xhtml->link( 'Création des EPs', array( 'controller' => 'eps', 'action' => 'index' ) );?></li>
                             <li><?php echo $xhtml->link( 'Création des Commissions', array( 'controller' => 'commissionseps', 'action' => 'creationmodification' ) );?></li>
                         </ul>
                     </li>
-                    <li><?php echo $xhtml->link( 'Commissions', array( 'controller' => 'commissionseps', 'action' => 'recherche' ) );?></li>
-                    <li><a href="#">Arbitrage</a>
+                    <li><?php echo $xhtml->link( '2. Constitution de la commission', array( 'controller' => 'commissionseps', 'action' => 'recherche' ) );?></li>
+                    <li><a href="#">3. Arbitrage</a>
                         <ul>
                             <li><?php echo $xhtml->link( 'EP', array( 'controller' => 'commissionseps', 'action' => 'arbitrage' ) );?></li>
                             <li><?php echo $xhtml->link( 'CG', array( 'controller' => 'commissionseps', 'action' => 'arbitrage' ) );?></li>
