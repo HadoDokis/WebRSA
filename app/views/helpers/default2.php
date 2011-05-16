@@ -450,16 +450,24 @@
 					$controllerName = Inflector::camelize( $controllerUrl );
 					debug( $controllerName );
 					debug( $controllerUrl );*/
-					/// INFO: modification faite par gaëtan pour personaliser l'url
+					/// INFO: modification pour personaliser l'url
+					/// INFO2: modification pour permettre de désactiver le bouton add
 					$url = array();
+					$disabled = false;
 					foreach( $actions as $text => $actionParams ) {
-						$url = $actionParams;
+						if ( $text == 'disabled' ) {
+							$disabled = $actionParams;
+						}
+						elseif ( preg_match( '/\.add/', $text ) && !empty( $actionParams ) ) {
+							$url = $actionParams;
+						}
 					}
-					if ( empty( $url ) )
+					if ( empty( $url ) ) {
 						$url = array( 'controller' => $this->params['controller'], 'action' => 'add' );
-						$actions = array(
-							"{$controllerName}::add" => array( 'url' => $url )
-						);
+					}
+					$actions = array(
+						"{$controllerName}::add" => array( 'url' => $url, 'disabled' => $disabled )
+					);
 				}
 
 				$lis = array();
@@ -469,7 +477,7 @@
 						$this->button(
 							$actionParams['url']['action'],
 							$actionParams['url'],
-							array( 'title' => __d( $domain, $text, true ), 'enabled' => ( isset( $actionParams['url']['disabled'] ) ) ? !$actionParams['url']['disabled'] : true )
+							array( 'title' => __d( $domain, $text, true ), 'enabled' => ( ( isset( $actionParams['url']['disabled'] ) ) ? !$actionParams['url']['disabled'] : true ) && ( ( isset( $actionParams['disabled'] ) ) ? !$actionParams['disabled'] : true ) )
 						),
 						array( 'class' => $actionParams['url']['action'] )
 					);
