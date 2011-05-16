@@ -79,6 +79,15 @@
 			)			
 		);
 		
+        /**
+        *
+        */
+
+        public function listePourFicheCandidature() {
+            ///Récupération de la liste des actions avec fiche de candidature
+            $avecfiche = $this->find( 'list', array( 'conditions' => array( 'Actioncandidat.hasfichecandidature' => 1 ) ) );
+            return $avecfiche;
+        }
 
 		function afterFind($results,$primary = false)
 		{
