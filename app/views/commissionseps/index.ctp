@@ -23,7 +23,8 @@
 		<?php
 			echo '<li>'.$xhtml->addLink(
 				'Ajouter',
-				array( 'controller' => 'commissionseps', 'action' => 'add' )
+				array( 'controller' => 'commissionseps', 'action' => 'add' ),
+				( $compteurs['Ep'] > 0 )
 			).' </li>';
 		?>
 	</ul>

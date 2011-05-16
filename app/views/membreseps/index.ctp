@@ -1,6 +1,11 @@
 <h1><?php echo $this->pageTitle = 'Liste des membres pour les équipes pluridisciplinaires';?></h1>
 
 <?php
+
+	if ( $compteurs['Fonctionmembreep'] == 0 ) {
+		echo "<p class='error'>Merci d'ajouter au moins une fonction pour les membres avant d'ajouter un membre.</p>";
+	}
+
 	echo $default2->index(
 		$membreseps,
 		array(
@@ -16,19 +21,19 @@
 				'Membreseps::edit',
 				'Membreseps::delete'
 			),
-			'add' => array( 'Membreep.add' ),
+			'add' => array( 'Membreep.add', 'disabled' => ( $compteurs['Fonctionmembreep'] == 0 ) ),
 			'options' => $options
 		)
 	);
 
-    echo $default->button(
-        'back',
-        array(
-            'controller' => 'gestionseps',
-            'action'     => 'index'
-        ),
-        array(
-            'id' => 'Back'
-        )
-    );
+// 	echo $default->button(
+// 		'back',
+// 		array(
+// 			'controller' => 'gestionseps',
+// 			'action'     => 'index'
+// 		),
+// 		array(
+// 			'id' => 'Back'
+// 		)
+// 	);
 ?>
