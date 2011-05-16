@@ -11,17 +11,19 @@
         </thead>
         <tbody>
             <?php
-                echo $xhtml->tableCells(
-                    array(
-                        h( 'Actions d\'insertion' ),
-                        $xhtml->viewLink(
-                            'Voir la table',
-                            array( 'controller' => 'actions', 'action' => 'index' )
-                        )
-                    ),
-                    array( 'class' => 'odd' ),
-                    array( 'class' => 'even' )
-                );
+                if( Configure::read( 'Cg.departement' ) != 66 ){
+                    echo $xhtml->tableCells(
+                        array(
+                            h( 'Actions d\'insertion' ),
+                            $xhtml->viewLink(
+                                'Voir la table',
+                                array( 'controller' => 'actions', 'action' => 'index' )
+                            )
+                        ),
+                        array( 'class' => 'odd' ),
+                        array( 'class' => 'even' )
+                    );
+                }
                 echo $xhtml->tableCells(
                     array(
                         h( 'APREs' ),
@@ -205,17 +207,19 @@
                     array( 'class' => 'odd' ),
                     array( 'class' => 'even' )
                 );
-                echo $xhtml->tableCells(
-                    array(
-                        h( 'Types d\'actions' ),
-                        $xhtml->viewLink(
-                            'Voir la table',
-                            array( 'controller' => 'typesactions', 'action' => 'index' )
-                        )
-                    ),
-                    array( 'class' => 'odd' ),
-                    array( 'class' => 'even' )
-                );
+                if( Configure::read( 'Cg.departement' ) != 66 ){
+                    echo $xhtml->tableCells(
+                        array(
+                            h( 'Types d\'actions' ),
+                            $xhtml->viewLink(
+                                'Voir la table',
+                                array( 'controller' => 'typesactions', 'action' => 'index' )
+                            )
+                        ),
+                        array( 'class' => 'odd' ),
+                        array( 'class' => 'even' )
+                    );
+                }
 //                 echo $xhtml->tableCells(
 //                     array(
 //                         h( 'Types de contrats d\'insertion' ),

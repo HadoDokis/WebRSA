@@ -405,6 +405,11 @@
 			$dsp = $this->Dsp->findByPersonneId( $personne_id, null, null, -1  );
 			$this->set( compact( 'dsp' ) );
 
+
+            ///Récupération de la liste des actions avec une fiche de candidature
+            $actionsfiche = $this->{$this->modelClass}->Actioncandidat->listePourFicheCandidature();
+            $this->set( 'actionsfiche', $actionsfiche );
+
 			$this->ActioncandidatPersonne->begin();
 
 			if( !empty( $this->data ) ){

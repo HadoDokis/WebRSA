@@ -18,14 +18,8 @@
             'Actioncandidat.themecode' => array( 'domain' => 'actioncandidat', 'required' => true ),
             'Actioncandidat.codefamille' => array( 'domain' => 'actioncandidat', 'required' => true ),
             'Actioncandidat.numcodefamille' => array( 'domain' => 'actioncandidat', 'required' => true ),
-            'Actioncandidat.contractualisation' => array( 'domain' => 'actioncandidat', 'type' => 'select'),
-            'Actioncandidat.lieuaction' => array( 'domain' => 'actioncandidat', 'required' => true ),
-            'Actioncandidat.cantonaction' => array( 'domain' => 'actioncandidat', 'required' => true ),
-            'Actioncandidat.ddaction' => array( 'domain' => 'actioncandidat', 'required' => true ),
-            'Actioncandidat.dfaction' => array( 'domain' => 'actioncandidat', 'required' => true ),
-            'Actioncandidat.nbpostedispo' => array( 'domain' => 'actioncandidat', 'required' => true ),
-            'Actioncandidat.nbposterestant' => array( 'domain' => 'actioncandidat'),
-        	'Actioncandidat.correspondantaction' => array('type' => 'checkbox' )
+            'Actioncandidat.hasfichecandidature' => array( 'domain' => 'actioncandidat', 'required' => true, 'type'=>'radio' ),
+            'Actioncandidat.correspondantaction' => array('type' => 'checkbox' )
 	       ),
         array(
             'options' => $options
@@ -39,6 +33,16 @@
     <script type="text/javascript">
         document.observe("dom:loaded", function() {
             observeDisableFieldsetOnCheckbox( 'ActioncandidatCorrespondantaction', 'filtre_referent', false );
+            observeDisableFieldsOnRadioValue(
+                'ActioncandidatAddEditForm',
+                'data[Actioncandidat][hasfichecandidature]',
+                [
+                    'ActioncandidatNbpostedispo',
+                    'ActioncandidatNbposterestant'
+                ],
+                1,
+                true
+            );
         });
     </script>
 <?php 
@@ -55,7 +59,13 @@
 <?php    
     echo $default->subform(
         array(
-			'Actioncandidat.hasfichecandidature' => array( 'domain' => 'actioncandidat', 'required' => true, 'type'=>'radio' ),        
+            'Actioncandidat.contractualisation' => array( 'domain' => 'actioncandidat', 'type' => 'select'),
+            'Actioncandidat.lieuaction' => array( 'domain' => 'actioncandidat', 'required' => true ),
+            'Actioncandidat.cantonaction' => array( 'domain' => 'actioncandidat', 'required' => true ),
+            'Actioncandidat.ddaction' => array( 'domain' => 'actioncandidat', 'required' => true ),
+            'Actioncandidat.dfaction' => array( 'domain' => 'actioncandidat', 'required' => true ),
+            'Actioncandidat.nbpostedispo' => array( 'domain' => 'actioncandidat', 'required' => true ),
+            'Actioncandidat.nbposterestant' => array( 'domain' => 'actioncandidat')
         ),
         array(
         	'options' => $options
