@@ -18,20 +18,21 @@
 
 			if( !empty( $statutValidation ) ) {
 				if( $statutValidation == 'Decisionci::nonvalide' ) {
-					$conditions[] = '( ( Contratinsertion.decision_ci <> \'V\' ) AND /*( Contratinsertion.decision_ci <> \'E\' ) ) OR ( */Contratinsertion.decision_ci IS NOT NULL )'; ///FIXME: pourquoi avoir mis <>E !!!
+					//$conditions[] = '( ( Contratinsertion.decision_ci <> \'V\' ) AND /*( Contratinsertion.decision_ci <> \'E\' ) ) OR ( */Contratinsertion.decision_ci IS NOT NULL )'; ///FIXME: pourquoi avoir mis <>E !!!
+					$conditions[] = '( ( Contratinsertion.decision_ci = \'E\' ) OR ( Contratinsertion.decision_ci IS NULL ) )';
 				}
-				else if( $statutValidation == 'Decisionci::enattente' ) {
+				/*else if( $statutValidation == 'Decisionci::enattente' ) {
 					$conditions[] = 'Contratinsertion.decision_ci = \'E\'';
-				}
+				}*/
 				else if( $statutValidation == 'Decisionci::valides' ) {
 					$conditions[] = 'Contratinsertion.decision_ci IS NOT NULL';
-					$conditions[] = 'Contratinsertion.decision_ci = \'V\'';
+					$conditions[] = 'Contratinsertion.decision_ci <> \'E\'';
 				}
 
 				if( Configure::read( 'Cg.departement' ) == 93 ) {
 					// Si on veut valider des CER complexes, on s'assurera qu'ils ne sont
 					// pas en EP pour validation de contrat complexe, ou alors dans un état annulé
-					if( in_array( $statutValidation, array( 'Decisionci::nonvalide', 'Decisionci::enattente' ) ) ) {
+					if( in_array( $statutValidation, array( 'Decisionci::nonvalide'/*, 'Decisionci::enattente'*/ ) ) ) {
 						$ModeleContratcomplexeep93 = ClassRegistry::init( 'Contratcomplexeep93' );
 						$conditions[] = 'Contratinsertion.id NOT IN (
 							'.$ModeleContratcomplexeep93->sq(
