@@ -46,6 +46,15 @@ msgstr "Imprimer la fiche"
 msgid "ActioncandidatPersonne.positionfiche"
 msgstr "Position de la fiche"
 
+msgid "ActioncandidatPersonne.actioncandidat_id"
+msgstr "Action engagée"
+
+msgid "ActioncandidatPersonne.referent_id"
+msgstr "Nom du prescripteur"
+
+msgid "ActioncandidatPersonne.datesignature"
+msgstr "Date de la signature"
+
 msgid "ENUM::BILANRETENU::RET"
 msgstr "Retenu(e)"
 
