@@ -37,17 +37,17 @@
 				'commissionseps::delete',
 			),
 			'presence' => array(
-				'commissionseps::ordredujour',
+// 				'commissionseps::ordredujour',
 				'commissionseps::edit',
 				'membreseps::editpresence',
 				'commissionseps::traiterep',
-				'commissionseps::delete',/*
-				'commissionseps::printConvocationBeneficiaire',
+				'commissionseps::delete',
+				/*'commissionseps::printConvocationBeneficiaire',
                 'commissionseps::printConvocationParticipant',*/
 			),
 			'decisionep' => array(
-				'commissionseps::ordredujour',/*
-				'commissionseps::printConvocationBeneficiaire',
+// 				'commissionseps::ordredujour',
+				/*'commissionseps::printConvocationBeneficiaire',
                 'commissionseps::printConvocationParticipant',*/
 				'commissionseps::edit',
 				'commissionseps::traiterep',
@@ -55,18 +55,18 @@
 				'commissionseps::delete',
 			),
 			'traiteep' => array(
-				'commissionseps::ordredujour',
+// 				'commissionseps::ordredujour',
 				'commissionseps::impressionpv',
 				'commissionseps::traitercg',
 			),
 			'decisioncg' => array(
-				'commissionseps::ordredujour',
+// 				'commissionseps::ordredujour',
 				'commissionseps::impressionpv',
 				'commissionseps::traitercg',
 				'commissionseps::finalisercg',
 			),
 			'traite' => array(
-				'commissionseps::ordredujour',
+// 				'commissionseps::ordredujour',
 				'commissionseps::impressionpv',
 				'commissionseps::printDecision',
 			),
@@ -506,7 +506,12 @@
 				)
 			);
 // 			debug( $commissionep );
-			$this->set('commissionep', $commissionep);
+			
+			list( $jourCommission, $heureCommission ) = explode( ' ', $commissionep['Commissionep']['dateseance'] );
+			$commissionAujourdhui = ( date( 'Y-m-d' ) >= $jourCommission );
+			$this->set( compact( 'commissionAujourdhui' ) );
+			
+			$this->set( 'commissionep', $commissionep );
 			$this->_setOptions();
 
 			// Dossiers à passer en séance, par thème traité
