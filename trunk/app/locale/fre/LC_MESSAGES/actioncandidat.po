@@ -81,6 +81,9 @@ msgstr "Marché"
 msgid "ENUM::CONTRACTUALISATION::subvention"
 msgstr "Subvention"
 
+msgid "ENUM::CONTRACTUALISATION::internecg"
+msgstr "Interne au CG"
+
 msgid "ENUM::CORRESPONDANTACTION::0"
 msgstr "Non"
 

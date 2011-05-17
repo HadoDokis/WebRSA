@@ -14,18 +14,20 @@
     ?>
 
     <?php
+//     debug($actionscandidats_personnes);
         echo $default->index(
             $actionscandidats_personnes,
             array(
                 'Actioncandidat.name',
                 'Referent.nom_complet',
                 'Actioncandidat.Partenaire.0.libstruc',
-                'ActioncandidatPersonne.datesignature' => array( 'domain' => $domain )/*,
+                'ActioncandidatPersonne.datesignature' => array( 'domain' => $domain ),
+                'ActioncandidatPersonne.positionfiche'/*,
                 'ActioncandidatPersonne.ddaction',
                 'ActioncandidatPersonne.dfaction'*/
             ),
             array(
-//                 'cohorte' => false,
+                'options' => $options,
                 'actions' => array(
 //                     'ActioncandidatPersonne.view' => array( 'domain' => $domain ),
                     'ActioncandidatPersonne.edit' => array( 'domain' => $domain ),

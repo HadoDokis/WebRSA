@@ -31,6 +31,12 @@
 			true
 		);
 
+        observeDisableFieldsetOnCheckbox(
+            'ActioncandidatPersonneIssortie',
+            'issortie',
+            false,
+            true
+        );
 
 		<?php
 			echo $ajax->remoteFunction(
@@ -44,9 +50,9 @@
 			echo $ajax->remoteFunction(
 				array(
 					'update' => 'ActioncandidatPrescripteurReferentId',
-					'url' => Router::url( array( 'action' => 'ajaxreferent', $referentId ), true)
+					'url' => Router::url( array( 'action' => 'ajaxreferent', Set::extract( $this->data, 'ActioncandidatPersonne.referent_id' ) ), true)
 				)
-			);           
+			);
 		?>
 	} );
 </script>
@@ -98,7 +104,7 @@
 				array(
 					'id' => 'ActioncandidatPrescripteurReferentId'
 				)
-			);           
+			);
 
 		?>
 	</fieldset>
@@ -205,15 +211,15 @@
 		?>
 	</fieldset>
 	<?php 
-		echo $default->subform(
-			array(
-				'ActioncandidatPersonne.enattente' => array( 'type' => 'radio', 'div' => false, 'legend' => 'Candidature en attente', 'options' => array( 'N' => 'Non', 'O' => 'Oui' ) )
-			),
-			array(
-				'options' => $options,
-				'domain' => $domain
-			)
-		);
+// 		echo $default->subform(
+// 			array(
+// 				'ActioncandidatPersonne.enattente' => array( 'type' => 'radio', 'div' => false, 'legend' => 'Candidature en attente', 'options' => array( 'N' => 'Non', 'O' => 'Oui' ) )
+// 			),
+// 			array(
+// 				'options' => $options,
+// 				'domain' => $domain
+// 			)
+// 		);
 	?>
 
 	<fieldset class="loici">
@@ -247,8 +253,8 @@
 
 				echo $default->subform(
 					array(
-						'ActioncandidatPersonne.bilanvenu' => array( 'type' => 'radio', 'separator' => '<br />',  'legend' => false ),
-						'ActioncandidatPersonne.bilanretenu' => array( 'type' => 'radio', 'separator' => '<br />', 'legend' => false ),
+						'ActioncandidatPersonne.bilanvenu' => array( 'required' => true, 'type' => 'radio', 'separator' => '<br />',  'legend' => false ),
+						'ActioncandidatPersonne.bilanretenu' => array( 'required' => true, 'type' => 'radio', 'separator' => '<br />', 'legend' => false ),
 					),
 					array(
 						'domain' => $domain,
@@ -269,20 +275,31 @@
 			?>
 		</fieldset>
 		<fieldset>
-			<legend>Sortie</legend>
-			<?php 
-				echo $default->subform(
-					array(
-						'ActioncandidatPersonne.sortiele',
-						'ActioncandidatPersonne.motifsortie_id'
-					),
-					array(
-						'domain' => $domain,
-						'options' => $options
-					)
-				);
-			?>
-		</fieldset>
+            <?php
+                echo $default2->subform(
+                    array(
+                        'ActioncandidatPersonne.issortie' => array( 'label' =>  'Sortie', 'type' => 'checkbox' ),
+                        ),
+                    array(
+                        'options' => $options
+                    )
+                );
+            ?>
+            <fieldset id="issortie" class="invisible">
+                <?php 
+                    echo $default->subform(
+                        array(
+                            'ActioncandidatPersonne.sortiele',
+                            'ActioncandidatPersonne.motifsortie_id'
+                        ),
+                        array(
+                            'domain' => $domain,
+                            'options' => $options
+                        )
+                    );
+                ?>
+            </fieldset>
+        </fieldset>
 		
 		
 	<?php endif;?>
