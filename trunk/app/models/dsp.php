@@ -9,7 +9,13 @@
 		public $name = 'Dsp';
 
 		public $belongsTo = array(
-			'Personne'
+			'Personne' => array(
+				'className' => 'Personne',
+				'foreignKey' => 'personne_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
 		);
 
 		public $hasMany = array(
