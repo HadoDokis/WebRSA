@@ -1123,3 +1123,7 @@ td.boolean.true span {
 td.boolean.false span {
 	background-image: url( ../img/icons/cross.png );
 }
+
+fieldset.partenaire.bilan div.input.radio.error {
+    width: 47%;
+}

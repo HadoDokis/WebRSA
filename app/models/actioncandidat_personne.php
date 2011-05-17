@@ -72,7 +72,8 @@
 				)
 			),
 			'Formattable',
-			'Gedooo'
+			'Gedooo',
+			'Autovalidate'
 		);
 
 
@@ -127,6 +128,10 @@
 				'rule' => 'notEmpty',
 				'message' => 'Champ obligatoire'
 			),
+			'motifsortie_id' => array(
+                'rule' => 'notEmpty',
+                'message' => 'Champ obligatoire'
+            )
 		);
 
 

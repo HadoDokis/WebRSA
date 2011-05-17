@@ -2,26 +2,29 @@
 	class ActionscandidatsPersonnesController extends AppController
 	{
 		public $name = 'ActionscandidatsPersonnes';
+//6,08 secondes. 25.48 MB / 25.75 MB. 132 modèles
+//5,97 secondes. 25.36 MB / 25.75 MB. 130 modèles
 
+//2,99 secondes. 20.16 MB / 20.50 MB. 75 modèles
 		public $uses = array(
 			'ActioncandidatPersonne',
 			'Option',
-			'Personne',
-			'Actioncandidat',
-			'Partenaire',
-			'Typerdv',
-			'PersonneReferent',
-			'Referent',
+// 			'Personne',
+// 			'Actioncandidat',
+// 			'Partenaire',
+// 			'Typerdv',
+// 			'PersonneReferent',
+// 			'Referent',
 			//'Rendezvous',
-			'ActioncandidatPartenaire',
-			'Contactpartenaire',
-			'Adressefoyer',
-			'Detailnatmob',
-			'Dsp',
-			'Serviceinstructeur',
-			'Foyer',
-            'Structurereferente',
-			'Motifsortie'
+// 			'ActioncandidatPartenaire',
+// 			'Contactpartenaire',
+// 			'Adressefoyer',
+// 			'Detailnatmob',
+// 			'Dsp',
+// 			'Serviceinstructeur',
+// 			'Foyer',
+//             'Structurereferente',
+// 			'Motifsortie'
 		);
 
 		public $helpers = array( 'Default', 'Locale', 'Csv', 'Ajax', 'Xform', 'Default2' );
@@ -49,7 +52,7 @@
 			$options = Set::insert( $options, 'Adresse.typevoie', $this->Option->typevoie() );
 			$options = Set::insert( $options, 'Personne.qual', $this->Option->qual() );
 			$options = Set::insert( $options, 'Contratinsertion.decision_ci', $this->Option->decision_ci() );
-			$options = Set::insert( $options, 'Dsp', $this->Dsp->allEnumLists() );
+			$options = Set::insert( $options, 'Dsp', $this->ActioncandidatPersonne->Personne->Dsp->allEnumLists() );
 
 			foreach( array( 'Actioncandidat', /*'Personne', */'Referent'/*, 'Partenaire'*/, 'Motifsortie' ) as $linkedModel ) {
 				$field = Inflector::singularize( Inflector::tableize( $linkedModel ) ).'_id';
@@ -58,7 +61,7 @@
 			App::import( 'Helper', 'Locale' );
 			$this->Locale = new LocaleHelper();
 
-			$options = Set::insert( $options, 'ActioncandidatPersonne.naturemobile', $this->Detailnatmob->enumList( 'natmob' ) );
+			$options = Set::insert( $options, 'ActioncandidatPersonne.naturemobile', $this->ActioncandidatPersonne->Personne->Dsp->Detailnatmob->enumList( 'natmob' ) );
 
 
 			$this->set( 'typevoie', $this->Option->typevoie() );
@@ -67,7 +70,7 @@
 			$this->set( 'sitfam', $this->Option->sitfam() );
 			$this->set( 'sect_acti_emp', $this->Option->sect_acti_emp() );
 			$this->set( 'rolepers', $this->Option->rolepers() );
-			$this->set( 'typeservice', $this->Serviceinstructeur->find( 'first' ) );
+			$this->set( 'typeservice', $this->ActioncandidatPersonne->Personne->Orientstruct->Serviceinstructeur->find( 'first' ) );
 			$this->set( compact( 'options', 'typevoie' ) );
 
 		}
@@ -138,23 +141,11 @@
 			$dataActioncandidat_id = Set::extract( $this->data, 'ActioncandidatPersonne.actioncandidat_id' );
 			$actioncandidat_id = ( empty( $actioncandidat_id ) && !empty( $dataActioncandidat_id ) ? $dataActioncandidat_id : $actioncandidat_id );
 
-////             if( is_int( $actioncandidat_id ) ) {
-//				$part = $this->ActioncandidatPartenaire->findbyActioncandidatId( $actioncandidat_id, null, null, -1 );
-////             }
-//
-//			$parts = $this->Partenaire->find( 'list', array( 'conditions' => array(), 'recursive' => -1 ) );
-//			$this->set( compact( 'part', 'parts' ) );
-//
-//			if( !empty( $part ) ) {
-//				$contact = $this->Contactpartenaire->findByPartenaireId( Set::classicExtract( $part, 'ActioncandidatPartenaire.partenaire_id', null, null, -1 ) );
-//			}
-//			$this->set( compact( 'contact' ) );
-
-			$actioncandidatPartenaire = $this->ActioncandidatPartenaire->findbyActioncandidatId( $actioncandidat_id, null, null, 0 );			
+			$actioncandidatPartenaire = $this->ActioncandidatPersonne->Actioncandidat->ActioncandidatPartenaire->findbyActioncandidatId( $actioncandidat_id, null, null, 0 );			
 			if( ($actioncandidatPartenaire['Actioncandidat']['correspondantaction'] == 1) && !empty($actioncandidatPartenaire['Actioncandidat']['referent_id']))
 			{
-				$this->Referent->recursive = -1;
-				$referent = $this->Referent->read(null, $actioncandidatPartenaire['Actioncandidat']['referent_id']);
+				$this->ActioncandidatPersonne->Personne->Referent->recursive = -1;
+				$referent = $this->ActioncandidatPersonne->Personne->Referent->read(null, $actioncandidatPartenaire['Actioncandidat']['referent_id']);
 			}
 			$this->set( compact( 'actioncandidatPartenaire', 'referent' ) );
 			
@@ -167,8 +158,8 @@
 			Configure::write( 'debug', 0 );
 			$dataReferent_id = Set::extract( $this->data, 'ActioncandidatPersonne.referent_id' );
 			$referent_id = ( empty( $referent_id ) && !empty( $dataReferent_id ) ? $dataReferent_id : $referent_id );
-			$this->Referent->recursive = 0;
-			$prescripteur = $this->Referent->read(null, $referent_id);
+			$this->ActioncandidatPersonne->Personne->Referent->recursive = 0;
+			$prescripteur = $this->ActioncandidatPersonne->Personne->Referent->read(null, $referent_id);
 			$this->set( compact( 'prescripteur' ) );
 			$this->render( 'ajaxreferent', 'ajax' );
 		}
@@ -184,8 +175,8 @@
 			$dataReferent_id = Set::extract( $this->data, 'ActioncandidatPersonne.referent_id' );
 			$referent_id = ( empty( $referent_id ) && !empty( $dataReferent_id ) ? $dataReferent_id : $referent_id );
 			if( is_int( $referent_id ) ) {
-				$referent = $this->Referent->findbyId( $referent_id, null, null, -1 );
-				$structs = $this->Structurereferente->find(
+				$referent = $this->ActioncandidatPersonne->Personne->Referent->findbyId( $referent_id, null, null, -1 );
+				$structs = $this->ActioncandidatPersonne->Personne->Orientstruct->Structurereferente->find(
 					'first',
 					array(
 						'conditions' => array(
@@ -220,9 +211,9 @@
 			$referent_id = ( empty( $referent_id ) && !empty( $dataReferent_id ) ? $dataReferent_id : $referent_id );
 
 			if( is_int( $referent_id ) ) {
-				$referent = $this->Referent->findbyId( $referent_id, null, null, -1 );
+				$referent = $this->ActioncandidatPersonne->Personne->Referent->findbyId( $referent_id, null, null, -1 );
 
-				$structs = $this->Structurereferente->find(
+				$structs = $this->ActioncandidatPersonne->Personne->Orientstruct->Structurereferente->find(
 					'first',
 					array(
 						'conditions' => array(
@@ -265,7 +256,6 @@
 		protected function _add_edit( $id = null ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
-
 			// Retour à l'index en cas d'annulation
 			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
 				if( $this->action == 'edit' ) {
@@ -279,28 +269,27 @@
 				$personne_id = $id;
 				// Préparation du menu du dossier
 				$dossierId = $this->ActioncandidatPersonne->Personne->dossierId( $personne_id );
+
 				$this->assert( !empty( $dossierId ), 'invalidParameter' );
 				$this->set( compact( 'dossierId', 'personne_id' ) );
 
-				///Afin d'obtenir les données de la personne nécessaires
-				$personne = $this->Personne->findById( $personne_id, null, null, -1 );
-				$this->set( compact( 'personne' ) );
-//                 unset( $personne['Apre'] );
+// debug( class_registry_models_count() ); // 14
 
 				///Pour récupérer le référent lié à la personne s'il existe déjà
-				$personne_referent = $this->PersonneReferent->find( 'first', array( 'conditions' => array( 'PersonneReferent.personne_id' => $personne_id ) ) );
+				$personne_referent = $this->ActioncandidatPersonne->Personne->PersonneReferent->find( 'first', array( 'conditions' => array( 'PersonneReferent.personne_id' => $personne_id ), 'contain' => false ) );
 
 				$referentId = null;
 				if( !empty( $personne_referent ) ){
 					$referentId = Set::classicExtract( $personne_referent, 'PersonneReferent.referent_id' );
-					$referents = $this->Referent->findById( $referentId, null, null, -1 );
+					$referents = $this->ActioncandidatPersonne->Personne->Referent->findById( $referentId, null, null, -1 );
 					$this->set( compact( 'referents' ) );
 				}
 				$this->set( compact( 'referentId' ) );
 
 				///Données propre au partenaire
-				$part = $this->Actioncandidat->Partenaire->find( 'list' );
+				$part = $this->ActioncandidatPersonne->Actioncandidat->Partenaire->find( 'list', array( 'contain' => false ) );
 				$this->set( compact( 'part' ) );
+
 			}
 			else if( $this->action == 'edit' ) {
 				$actioncandidat_personne_id = $id;
@@ -308,13 +297,13 @@
 				$this->assert( !empty( $actioncandidat_personne ), 'invalidParameter' );
 
 				$personne_id = Set::classicExtract( $actioncandidat_personne, 'ActioncandidatPersonne.personne_id' );
-				$personne = $this->Personne->findById( $personne_id, null, null, -1 );
-				$personne_referent = $this->PersonneReferent->find( 'first', array( 'conditions' => array( 'PersonneReferent.personne_id' => $personne_id ) ) );
+				$personne = $this->ActioncandidatPersonne->Personne->findById( $personne_id, null, null, -1 );
+				$personne_referent = $this->ActioncandidatPersonne->Personne->PersonneReferent->find( 'first', array( 'conditions' => array( 'PersonneReferent.personne_id' => $personne_id ) ) );
 
 				$referentId = null;
 				if( !empty( $personne_referent ) ){
 					$referentId = Set::classicExtract( $personne_referent, 'PersonneReferent.referent_id' );
-					$referents = $this->Referent->findById( $referentId, null, null, -1 );
+					$referents = $this->ActioncandidatPersonne->Personne->Referent->findById( $referentId, null, null, -1 );
 					$this->set( compact( 'referents' ) );
 				}
 				$this->set( compact( 'referentId', 'personne' ) );
@@ -328,7 +317,11 @@
 			$this->set( 'personne_id', $personne_id );
 
 			///Données récupérées propre à la personne
-			$personne = $this->{$this->modelClass}->Personne->detailsCi( $personne_id );
+			$personne = $this->{$this->modelClass}->Personne->newDetailsCi( $personne_id );
+
+// debug($personne);
+// debug( class_registry_models() );
+// debug( class_registry_models_count() ); // 39
 			///Données Contrat engagement
 			$contrat = $this->{$this->modelClass}->Personne->Contratinsertion->find(
 				'first',
@@ -345,32 +338,40 @@
 			}
 			$this->set( 'personne', $personne );
 
+
+// debug( class_registry_models() );
+// debug( class_registry_models_count() ); //54
 			///Nombre d'enfants par foyer
-			$nbEnfants = $this->Foyer->nbEnfants( Set::classicExtract( $personne, 'Foyer.id' ) );
+			$nbEnfants = $this->ActioncandidatPersonne->Personne->Foyer->nbEnfants( Set::classicExtract( $personne, 'Personne.foyer_id' ) );
 			$this->set( 'nbEnfants', $nbEnfants );
 
 			//Numéro Pôle Emploi :
 			$identifiantpe = ClassRegistry::init('Informationpe')->dernierIdentifiantpe( $personne_id);
 			$this->set( 'identifiantpe', $identifiantpe );
-
+// debug( class_registry_models() );
+// debug( class_registry_models_count() ); //55
 			///Récupération de la liste des structures référentes liés uniquement à l'APRE
-			$structs = $this->Structurereferente->listOptions( );
+			$structs = $this->ActioncandidatPersonne->Personne->Orientstruct->Structurereferente->listOptions( );
 			$this->set( 'structs', $structs );
-
+// debug( class_registry_models() );
+// debug( class_registry_models_count() ); //57
 			///Récupération de la liste des référents liés à l'APRE
-			$referents = $this->Referent->listOptions();
+			$referents = $this->ActioncandidatPersonne->Personne->Referent->listOptions();
 			$this->set( 'referents', $referents );
 
-
+// debug( class_registry_models() );
+// debug( class_registry_models_count() ); //57
 			///Données Dsp
-			$dsp = $this->Dsp->findByPersonneId( $personne_id, null, null, -1  );
+			$dsp = $this->ActioncandidatPersonne->Personne->Dsp->findByPersonneId( $personne_id, null, null, -1  );
 			$this->set( compact( 'dsp' ) );
 
-
+// debug( class_registry_models() );
+// debug( class_registry_models_count() ); //57
             ///Récupération de la liste des actions avec une fiche de candidature
             $actionsfiche = $this->{$this->modelClass}->Actioncandidat->listePourFicheCandidature();
             $this->set( 'actionsfiche', $actionsfiche );
-
+// debug( class_registry_models() );
+// debug( class_registry_models_count() ); //57
 			$this->ActioncandidatPersonne->begin();
 
 			if( !empty( $this->data ) ){
@@ -422,6 +423,8 @@
 			}
 
 			$this->_setOptions();
+// debug( class_registry_models() );
+// debug( class_registry_models_count() ); //74
 			$this->ActioncandidatPersonne->commit();
 
 			$this->render( $this->action, null, 'add_edit_'.Configure::read( 'ActioncandidatPersonne.suffixe' ) );
@@ -434,7 +437,7 @@
 		public function gedooo( $id = null ) {
 			$qual = $this->Option->qual();
 			$typevoie = $this->Option->typevoie();
-			$mobilites = $this->Dsp->Detailnatmob->enumList( 'natmob' );
+			$mobilites = $this->ActioncandidatPersonne->Personne->Dsp->Detailnatmob->enumList( 'natmob' );
 
 			$actioncandidat_personne = $this->ActioncandidatPersonne->find(
 				'first',
@@ -446,7 +449,7 @@
 				)
 			);
 
-			$this->Adressefoyer->bindModel(
+			$this->ActioncandidatPersonne->Personne->Foyer->Adressefoyer->bindModel(
 				array(
 					'belongsTo' => array(
 						'Adresse' => array(
@@ -457,7 +460,7 @@
 				)
 			);
 
-			$adresse = $this->Adressefoyer->find(
+			$adresse = $this->ActioncandidatPersonne->Personne->Foyer->Adressefoyer->find(
 				'first',
 				array(
 					'conditions' => array(
@@ -470,13 +473,13 @@
 
 			if( Configure::read( 'Cg.departement' ) == 66 ) {
 				$actioncandidat_id = Set::classicExtract( $actioncandidat_personne, 'Actioncandidat.id' );
-				$actioncandidatpartenaire = $this->ActioncandidatPartenaire->findByActioncandidatId( $actioncandidat_id, null, null, -1 );
+				$actioncandidatpartenaire = $this->ActioncandidatPersonne->Actioncandidat->ActioncandidatPartenaire->findByActioncandidatId( $actioncandidat_id, null, null, -1 );
 				$partenaire_id = Set::classicExtract( $actioncandidatpartenaire, 'ActioncandidatPartenaire.partenaire_id' );
-				$partenaire = $this->Partenaire->findById( $partenaire_id, null, null, -1 );
+				$partenaire = $this->ActioncandidatPersonne->Actioncandidat->ActioncandidatPartenaire->Partenaire->findById( $partenaire_id, null, null, -1 );
 
 				$actioncandidat_personne = Set::merge( $actioncandidat_personne, $partenaire );
 
-				$contactpartenaire = $this->Contactpartenaire->findByPartenaireId( $partenaire_id, null, null, -1 );
+				$contactpartenaire = $this->ActioncandidatPersonne->Actioncandidat->ActioncandidatPartenaire->Partenaire->ContactpartenairePartenaire->Contactpartenaire->findByPartenaireId( $partenaire_id, null, null, -1 );
 				$actioncandidat_personne = Set::merge( $actioncandidat_personne, $contactpartenaire );
 			}
 
