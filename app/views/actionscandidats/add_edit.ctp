@@ -18,21 +18,18 @@
             'Actioncandidat.themecode' => array( 'domain' => 'actioncandidat', 'required' => true ),
             'Actioncandidat.codefamille' => array( 'domain' => 'actioncandidat', 'required' => true ),
             'Actioncandidat.numcodefamille' => array( 'domain' => 'actioncandidat', 'required' => true ),
-            'Actioncandidat.hasfichecandidature' => array( 'domain' => 'actioncandidat', 'required' => true, 'type'=>'radio' ),
+            'Actioncandidat.hasfichecandidature' => array( 'domain' => 'actioncandidat', 'required' => true, 'type'=>'radio', 'options' => $options['Actioncandidat']['hasfichecandidature'] ),
             'Actioncandidat.correspondantaction' => array('type' => 'checkbox' )
-	       ),
-        array(
-            'options' => $options
         )
     );
 
-//    echo $html->tag('div', $form->input( 'Actioncandidat.correspondantaction', array('type' => 'checkbox' ) ));
 ?>
 <fieldset class="col2" id="filtre_referent">
     <legend>Référent</legend>
     <script type="text/javascript">
         document.observe("dom:loaded", function() {
             observeDisableFieldsetOnCheckbox( 'ActioncandidatCorrespondantaction', 'filtre_referent', false );
+
             observeDisableFieldsOnRadioValue(
                 'ActioncandidatAddEditForm',
                 'data[Actioncandidat][hasfichecandidature]',
@@ -43,6 +40,8 @@
                 1,
                 true
             );
+
+
         });
     </script>
 <?php 
@@ -61,9 +60,9 @@
         array(
             'Actioncandidat.contractualisation' => array( 'domain' => 'actioncandidat', 'type' => 'select'),
             'Actioncandidat.lieuaction' => array( 'domain' => 'actioncandidat', 'required' => true ),
-            'Actioncandidat.cantonaction' => array( 'domain' => 'actioncandidat', 'required' => true ),
-            'Actioncandidat.ddaction' => array( 'domain' => 'actioncandidat', 'required' => true ),
-            'Actioncandidat.dfaction' => array( 'domain' => 'actioncandidat', 'required' => true ),
+            'Actioncandidat.cantonaction' => array( 'domain' => 'actioncandidat', 'required' => true, 'options' => $cantons ),
+            'Actioncandidat.ddaction' => array( 'domain' => 'actioncandidat', 'required' => true, 'minYear' => date( 'Y' ) - 1, 'maxYear' => date( 'Y' ) + 5 ),
+            'Actioncandidat.dfaction' => array( 'domain' => 'actioncandidat', 'required' => true, 'minYear' => date( 'Y' ) - 1, 'maxYear' => date( 'Y' ) + 5 ),
             'Actioncandidat.nbpostedispo' => array( 'domain' => 'actioncandidat', 'required' => true ),
             'Actioncandidat.nbposterestant' => array( 'domain' => 'actioncandidat')
         ),
@@ -98,14 +97,15 @@
     <?php echo $form->button( 'Tout cocher', array( 'id' => 'toutCocher' ) );?>
     <?php echo $form->button( 'Tout décocher', array( 'id' => 'toutDecocher' ) );?>
     <?php echo $form->input( 'Zonegeographique.Zonegeographique', array( 'label' => false, 'multiple' => 'checkbox' , 'options' => $options['Zonegeographique'] ) ); ?>
-</fieldset>    
-<?php   
+</fieldset>
+<?php
+
+    echo $xform->end( __( 'Save', true ) );
     echo $default->button(
 		'back',
         array('controller' => 'actionscandidats', 'action' => 'index'),
         array('id' => 'Back')
 	);
 
-	echo $xform->end( __( 'Save', true ) );
 ?>
 

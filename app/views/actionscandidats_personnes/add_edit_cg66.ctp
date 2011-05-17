@@ -90,21 +90,23 @@
 
 			echo $xhtml->tag(
 				'div',
-				'<b>Partenaire</b>',
+				null,
 				array(
 					'id' => 'ActioncandidatPartenairePartenaireId'
 				)
 			);
-			
+            echo $xhtml->tag( '/div' );
+
 			echo $ajax->observeField( 'ActioncandidatPersonneReferentId', array( 'update' => 'ActioncandidatPrescripteurReferentId', 'url' => Router::url( array( 'action' => 'ajaxreferent' ), true ) ) );
 
 			echo $xhtml->tag(
 				'div',
-				'<b>Prescripteur</b>',
+				null,
 				array(
 					'id' => 'ActioncandidatPrescripteurReferentId'
 				)
 			);
+			echo $xhtml->tag( '/div' );
 
 		?>
 	</fieldset>
@@ -210,17 +212,6 @@
 			);            
 		?>
 	</fieldset>
-	<?php 
-// 		echo $default->subform(
-// 			array(
-// 				'ActioncandidatPersonne.enattente' => array( 'type' => 'radio', 'div' => false, 'legend' => 'Candidature en attente', 'options' => array( 'N' => 'Non', 'O' => 'Oui' ) )
-// 			),
-// 			array(
-// 				'options' => $options,
-// 				'domain' => $domain
-// 			)
-// 		);
-	?>
 
 	<fieldset class="loici">
 		<p>
