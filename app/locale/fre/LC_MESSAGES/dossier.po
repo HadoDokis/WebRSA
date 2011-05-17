@@ -28,3 +28,6 @@ msgstr "N° CAF"
 
 msgid "Dossier.numdemrsa"
 msgstr "N° demande RSA"
+
+msgid "Dossier.dtdemrsa"
+msgstr "Date de demande RSA"

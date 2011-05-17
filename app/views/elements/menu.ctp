@@ -157,6 +157,14 @@
 							<li><?php echo $xhtml->link( 'Par Entretiens', array( 'controller' => 'criteresentretiens', 'action' => 'index' ) );?>
 							</li>
 						<?php endif;?>
+
+                        <?php if( Configure::read( 'Cg.departement' ) == 66 ): ?>
+                            <?php if( $permissions->check( 'criteresfichescandidature', 'index' ) ): ?>
+                                <li><?php echo $xhtml->link( 'Par Fiches de candidature', array( 'controller' => 'criteresfichescandidature', 'action' => 'index' ) );?>
+                                </li>
+                            <?php endif;?>
+                        <?php endif;?>
+
 						<?php if( $permissions->check( 'cohortesindus', 'index' ) ): ?>
 							<li><?php echo $xhtml->link( 'Par Indus', array( 'controller' => 'cohortesindus', 'action' => 'index' ) );?>
 							</li>
