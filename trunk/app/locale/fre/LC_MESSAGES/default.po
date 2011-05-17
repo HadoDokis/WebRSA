@@ -408,6 +408,9 @@ msgstr "Supprimer"
 msgid "Button::print"
 msgstr "Imprimer"
 
+msgid "Button::gedooo"
+msgstr "Imprimer"
+
 msgid "Button::validate"
 msgstr "Valider"
 

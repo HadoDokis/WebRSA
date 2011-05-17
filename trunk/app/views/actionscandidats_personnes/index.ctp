@@ -15,26 +15,24 @@
 
     <?php
 //     debug($actionscandidats_personnes);
-        echo $default->index(
+        echo $default2->index(
             $actionscandidats_personnes,
             array(
                 'Actioncandidat.name',
-                'Referent.nom_complet',
+                'Referent.nom_complet' => array( 'type' => 'text' ),
                 'Actioncandidat.Partenaire.0.libstruc',
                 'ActioncandidatPersonne.datesignature' => array( 'domain' => $domain ),
-                'ActioncandidatPersonne.positionfiche'/*,
-                'ActioncandidatPersonne.ddaction',
-                'ActioncandidatPersonne.dfaction'*/
+                'ActioncandidatPersonne.positionfiche'
             ),
             array(
                 'options' => $options,
                 'actions' => array(
 //                     'ActioncandidatPersonne.view' => array( 'domain' => $domain ),
-                    'ActioncandidatPersonne.edit' => array( 'domain' => $domain ),
-                    'ActioncandidatPersonne.delete' => array( 'domain' => $domain ),
-                    'ActioncandidatPersonne.gedooo' => array( 'domain' => $domain )
+                    'ActionscandidatsPersonnes::edit' => array( 'domain' => $domain, 'disabled' =>  '( "'.$permissions->check( 'actionscandidats_personnes', 'edit' ).'" != "1" ) ' ),
+                    'ActionscandidatsPersonnes::delete' => array( 'domain' => $domain, 'disabled' =>  '( "'.$permissions->check( 'actionscandidats_personnes', 'delete' ).'" != "1" ) '  ),
+                    'ActionscandidatsPersonnes::gedooo' => array( 'domain' => $domain, 'disabled' =>  '( "'.$permissions->check( 'actionscandidats_personnes', 'gedooo' ).'" != "1" ) '  )
                 ),
-                'add' => array( 'ActioncandidatPersonne.add' => $this->params['pass'][0] )
+                'add' => array( 'ActioncandidatPersonne.add' => array( 'controller'=>'actionscandidats_personnes', 'action'=>'add', $personne_id ) )
             )
         );
 
