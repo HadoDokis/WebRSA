@@ -1008,6 +1008,7 @@
 						'Dossier.id',
 						'Dossier.numdemrsa',
 						'Dossier.dtdemrsa',
+						'Dossier.fonorg',
 						'Dossier.matricule',
 						'Personne.id',
 						'Personne.foyer_id',
@@ -1016,6 +1017,8 @@
 						'Personne.prenom',
 						'Personne.dtnai',
 						'Personne.nir',
+						'Personne.numfixe',
+						'Personne.numport',
 						'Personne.idassedic',
 						'Prestation.rolepers',
 						'Adresse.numvoie',
@@ -1024,9 +1027,9 @@
 						'Adresse.locaadr',
 						'Adresse.codepos',
 						'Adresse.nomvoie',
-		//                         'Modecontact.numtel',
-		//                         'Modecontact.autorutitel',
-		//                         'Modecontact.autorutiadrelec',
+//                         'Modecontact.numtel',
+//                         'Modecontact.autorutitel',
+//                         'Modecontact.autorutiadrelec',
 		//                         'Activite.act',
 						'Serviceinstructeur.lib_service',
 					),
@@ -1073,13 +1076,13 @@
 							'foreignKey' => false,
 							'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
 						),
-		//                         array(
-		//                             'table'      => 'modescontact',
-		//                             'alias'      => 'Modecontact',
-		//                             'type'       => 'LEFT OUTER',
-		//                             'foreignKey' => false,
-		//                             'conditions' => array( 'Foyer.id = Modecontact.foyer_id' )
-		//                         ),
+//                         array(
+//                             'table'      => 'modescontact',
+//                             'alias'      => 'Modecontact',
+//                             'type'       => 'LEFT OUTER',
+//                             'foreignKey' => false,
+//                             'conditions' => array( 'Foyer.id = Modecontact.foyer_id' )
+//                         ),
 		//                         array(
 		//                             'table'      => 'activites',
 		//                             'alias'      => 'Activite',

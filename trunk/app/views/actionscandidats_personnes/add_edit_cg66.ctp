@@ -127,13 +127,14 @@
 				)
 			);
 
-			$labelMatricule = Set::extract( $personne, 'Foyer.Dossier.fonorg' );
+			$labelMatricule = Set::classicExtract( $personne, 'Dossier.fonorg' );
+			$numTel = Set::classicExtract( $personne, 'Personne.numtel' );
 			echo $default->view(
 				$personne,
 				array(
 					'Personne.dtnai',
-					'Foyer.Modecontact.numtel' => array( 'label' => 'N° de téléphone' ),
-					'Foyer.Dossier.matricule' => array( 'label' => "N° {$labelMatricule}" )
+					'Personne.numfixe' => array( 'type' => 'text' ),//  'label' => "N° de téléphone {$numTel}" ),
+					'Dossier.matricule' => array( 'type' => 'text', 'label' => "N° {$labelMatricule}" )
 				),
 				array(
 					'widget' => 'dl',
@@ -201,7 +202,8 @@
 						'type' => 'datetime',
 						'label' => 'Rendez-vous fixé le ',
 						'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 2, 'maxYear' => date( 'Y' ) + 2,
-						'timeFormat'=>24, 'interval' => 5,
+						'timeFormat'=>24,
+						'interval' => 5,
 						'empty' => true
 					),
 				),
@@ -209,7 +211,7 @@
 					'options' => $options,
 					'domain' => $domain
 				)
-			);            
+			);
 		?>
 	</fieldset>
 
@@ -239,12 +241,12 @@
 			<?php
 				echo $xhtml->tag(
 					'dl',
-					'Bilan d\'accueil : '
+					'Bilan d\'accueil : '.REQUIRED_MARK
 				);
 
 				echo $default->subform(
 					array(
-						'ActioncandidatPersonne.bilanvenu' => array( 'required' => true, 'type' => 'radio', 'separator' => '<br />',  'legend' => false ),
+						'ActioncandidatPersonne.bilanvenu' => array( 'required' => true, 'type' => 'radio', 'separator' => '<br />',  'legend' => false, 'style' => 'padding:0;' ),
 						'ActioncandidatPersonne.bilanretenu' => array( 'required' => true, 'type' => 'radio', 'separator' => '<br />', 'legend' => false ),
 					),
 					array(
