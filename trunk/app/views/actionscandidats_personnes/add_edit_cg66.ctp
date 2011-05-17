@@ -4,59 +4,6 @@
 	echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
 ?>
 
-<script type="text/javascript">
-	document.observe( "dom:loaded", function() {
-		observeDisableFieldsOnRadioValue(
-			'candidatureform',
-			'data[ActioncandidatPersonne][rendezvouspartenaire]',
-			[
-					'ActioncandidatPersonneHorairerdvpartenaireDay',
-					'ActioncandidatPersonneHorairerdvpartenaireMonth',
-					'ActioncandidatPersonneHorairerdvpartenaireYear',
-					'ActioncandidatPersonneHorairerdvpartenaireHour',
-					'ActioncandidatPersonneHorairerdvpartenaireMin',
-			],
-			'1',
-			true
-		);
-
-		observeDisableFieldsOnRadioValue(
-			'candidatureform',
-			'data[ActioncandidatPersonne][mobile]',
-			[
-				'ActioncandidatPersonneTypemobile',
-				'ActioncandidatPersonneNaturemobile'
-			],
-			'1',
-			true
-		);
-
-        observeDisableFieldsetOnCheckbox(
-            'ActioncandidatPersonneIssortie',
-            'issortie',
-            false,
-            true
-        );
-
-		<?php
-			echo $ajax->remoteFunction(
-				array(
-					'update' => 'ActioncandidatPartenairePartenaireId',
-					'url' => Router::url( array( 'action' => 'ajaxpart', Set::extract( $this->data, 'ActioncandidatPersonne.actioncandidat_id' ) ), true )
-				)
-			);
-		?>;
-		<?php
-			echo $ajax->remoteFunction(
-				array(
-					'update' => 'ActioncandidatPrescripteurReferentId',
-					'url' => Router::url( array( 'action' => 'ajaxreferent', Set::extract( $this->data, 'ActioncandidatPersonne.referent_id' ) ), true)
-				)
-			);
-		?>
-	} );
-</script>
-<!--/************************************************************************/ -->
 <?php echo $javascript->link( 'dependantselect.js' ); ?>
 <div class="with_treemenu">
 	<?php
@@ -85,28 +32,29 @@
 					'options' => $options
 				)
 			);
-
+// debug( ( $this->action == 'add' ) && !empty( $referentId )  );
 			echo $ajax->observeField( 'ActioncandidatPersonneActioncandidatId', array( 'update' => 'ActioncandidatPartenairePartenaireId', 'url' => Router::url( array( 'action' => 'ajaxpart' ), true ) ) );
 
 			echo $xhtml->tag(
 				'div',
-				null,
+				' ',
 				array(
 					'id' => 'ActioncandidatPartenairePartenaireId'
 				)
 			);
-            echo $xhtml->tag( '/div' );
-
-			echo $ajax->observeField( 'ActioncandidatPersonneReferentId', array( 'update' => 'ActioncandidatPrescripteurReferentId', 'url' => Router::url( array( 'action' => 'ajaxreferent' ), true ) ) );
+//             echo $xhtml->tag( '/div' );
 
 			echo $xhtml->tag(
 				'div',
-				null,
+				' ',
 				array(
 					'id' => 'ActioncandidatPrescripteurReferentId'
 				)
 			);
-			echo $xhtml->tag( '/div' );
+// 			echo $xhtml->tag( '/div' );
+
+            echo $ajax->observeField( 'ActioncandidatPersonneReferentId', array( 'update' => 'ActioncandidatPrescripteurReferentId', 'url' => Router::url( array( 'action' => 'ajaxreferent' ), true ) ) );
+
 
 		?>
 	</fieldset>
@@ -305,3 +253,69 @@
 	<?php echo $xform->end();?>
 </div>
 <div class="clearer"><hr /></div>
+
+<script type="text/javascript">
+    document.observe( "dom:loaded", function() {
+        <?php
+            echo $ajax->remoteFunction(
+                array(
+                    'update' => 'ActioncandidatPartenairePartenaireId',
+                    'url' => Router::url( array( 'action' => 'ajaxpart', Set::extract( $this->data, 'ActioncandidatPersonne.actioncandidat_id' ) ), true )
+                )
+            );
+        ?>;
+        <?php
+            if( ( $this->action == 'add' ) && !empty( $referentId ) ) {
+                echo $ajax->remoteFunction(
+                    array(
+                        'update' => 'ActioncandidatPrescripteurReferentId',
+                        'url' => Router::url( array( 'action' => 'ajaxreferent', $referentId ), true)
+                    )
+                );
+            }
+            else {
+                echo $ajax->remoteFunction(
+                    array(
+                        'update' => 'ActioncandidatPrescripteurReferentId',
+                        'url' => Router::url( array( 'action' => 'ajaxreferent', Set::extract( $this->data, 'ActioncandidatPersonne.referent_id' ) ), true)
+                    )
+                );
+            }
+        ?>
+
+        observeDisableFieldsOnRadioValue(
+            'candidatureform',
+            'data[ActioncandidatPersonne][rendezvouspartenaire]',
+            [
+                    'ActioncandidatPersonneHorairerdvpartenaireDay',
+                    'ActioncandidatPersonneHorairerdvpartenaireMonth',
+                    'ActioncandidatPersonneHorairerdvpartenaireYear',
+                    'ActioncandidatPersonneHorairerdvpartenaireHour',
+                    'ActioncandidatPersonneHorairerdvpartenaireMin',
+            ],
+            '1',
+            true
+        );
+
+        observeDisableFieldsOnRadioValue(
+            'candidatureform',
+            'data[ActioncandidatPersonne][mobile]',
+            [
+                'ActioncandidatPersonneTypemobile',
+                'ActioncandidatPersonneNaturemobile'
+            ],
+            '1',
+            true
+        );
+
+        <?php  if( $this->action == 'edit' ):?>
+        observeDisableFieldsetOnCheckbox(
+            'ActioncandidatPersonneIssortie',
+            'issortie',
+            false,
+            true
+        );
+        <?php endif;?>
+    } );
+</script>
+<!--/************************************************************************/ -->
