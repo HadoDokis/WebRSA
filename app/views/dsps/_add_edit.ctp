@@ -25,7 +25,7 @@
 		observeDisableFieldsOnValue( 'DspTopautrpermicondu', [ 'DspLibautrpermicondu' ], '1', false );
 		// FIXME: pas de niveau = pas de diplôme ?
 		observeDisableFieldsOnValue( 'DspNivetu', [ 'DspNivdipmaxobt', 'DspAnnobtnivdipmax' ], [ '', '1207' ], true );
-		
+
 		observeDisableFieldsOnValue( 'DspTopmoyloco', [ 'Detailmoytrans0Moytrans', 'Detailmoytrans1Moytrans', 'Detailmoytrans2Moytrans', 'Detailmoytrans3Moytrans', 'Detailmoytrans4Moytrans', 'Detailmoytrans5Moytrans', 'Detailmoytrans6Moytrans', 'Detailmoytrans7Moytrans' ], '1', false );
 
 		observeDisableFieldsOnValue( 'DspTopprojpro', [ 'Detailprojpro0Projpro', 'Detailprojpro1Projpro', 'Detailprojpro2Projpro', 'Detailprojpro3Projpro', 'Detailprojpro4Projpro', 'Detailprojpro5Projpro', 'Detailprojpro6Projpro', 'Detailprojpro7Projpro', 'Detailprojpro8Projpro', 'Detailprojpro9Projpro', 'Detailprojpro10Projpro', 'Detailprojpro11Projpro', 'Detailprojpro12Projpro' ], '1', false );
@@ -36,13 +36,50 @@
 		observeDisableFieldsOnCheckbox( 'Detaildiflog0Diflog', [ 'Detaildiflog1Diflog', 'Detaildiflog2Diflog', 'Detaildiflog3Diflog', 'Detaildiflog4Diflog', 'Detaildiflog5Diflog', 'Detaildiflog6Diflog', 'Detaildiflog7Diflog', 'Detaildiflog8Diflog', 'Detaildiflog8Libautrdiflog' ], true );
 
 
-        Event.observe( $( 'Detailaccosocindi4Libautraccosocindi' ), 'keypress', function(event) {
-            textareaMakeItCount('Detailaccosocindi4Libautraccosocindi', 100, true );
-        } );
+		// Champs textarea ayant une longueur maximale de 250 caractères.
+		Event.observe( $( 'DspLibcooraccosocfam' ), 'keypress', function(event) {
+			textareaMakeItCount('DspLibcooraccosocfam', 250, true );
+		} );
 
-        Event.observe( $( 'DspLibcooraccoemploi' ), 'keypress', function(event) {
-            textareaMakeItCount('DspLibcooraccoemploi', 100, true );
-        });
+		Event.observe( $( 'DspLibcooraccosocindi' ), 'keypress', function(event) {
+			textareaMakeItCount('DspLibcooraccosocindi', 250, true );
+		} );
+
+		// Champs textarea ayant une longueur maximale de 100 caractères.
+		Event.observe( $( 'Detailaccosocfam3Libautraccosocfam' ), 'keypress', function(event) {
+			textareaMakeItCount('Detailaccosocfam3Libautraccosocfam', 100, true );
+		} );
+
+		Event.observe( $( 'Detailaccosocindi4Libautraccosocindi' ), 'keypress', function(event) {
+			textareaMakeItCount('Detailaccosocindi4Libautraccosocindi', 100, true );
+		} );
+
+		Event.observe( $( 'Detaildifsoc6Libautrdifsoc' ), 'keypress', function(event) {
+			textareaMakeItCount('Detaildifsoc6Libautrdifsoc', 100, true );
+		} );
+
+		Event.observe( $( 'Detaildiflog8Libautrdiflog' ), 'keypress', function(event) {
+			textareaMakeItCount('Detaildiflog8Libautrdiflog', 100, true );
+		} );
+
+		Event.observe( $( 'DspLibcooraccoemploi' ), 'keypress', function(event) {
+			textareaMakeItCount('DspLibcooraccoemploi', 100, true );
+		} );
+
+		<?php if( $cg == 'cg58' ):?>
+		// Champs textarea ayant une longueur maximale de 100 caractères.
+		Event.observe( $( 'Detailmoytrans7Libautrmoytrans' ), 'keypress', function(event) {
+			textareaMakeItCount('Detailmoytrans7Libautrmoytrans', 100, true );
+		} );
+
+		Event.observe( $( 'Detailprojpro12Libautrprojpro' ), 'keypress', function(event) {
+			textareaMakeItCount('Detailprojpro12Libautrprojpro', 100, true );
+		} );
+
+		Event.observe( $( 'Detaildifsocpro9Libautrdifsocpro' ), 'keypress', function(event) {
+			textareaMakeItCount('Detaildifsocpro9Libautrdifsocpro', 100, true );
+		} );
+		<?php endif;?>
 	} );
 </script>
 
@@ -135,7 +172,7 @@ Plan:
 		<?php
 			// SituationSociale - DetailDifficulteSituationSociale (0-n)
 			echo $dsphm->fieldset( 'Detaildifsoc', 'difsoc', 'libautrdifsoc', $dsp_id, '0407', $options['Detaildifsoc']['difsoc'] );
-			
+
 			// SituationSociale - DetailDifficulteSituationSocialeProfessionel (0-n)
 			if ($cg=='cg58')
 				echo $dsphm->fieldset( 'Detaildifsocpro', 'difsocpro', 'libautrdifsocpro', $dsp_id, '2110', $options['Detaildifsocpro']['difsocpro'] );
@@ -216,10 +253,10 @@ Plan:
 					'options' => $options
 				)
 			);
-				
+
 			if ($cg=='cg58')
 				echo $dsphm->fieldset( 'Detailprojpro', 'projpro', 'libautrprojpro', $dsp_id, '2213', $options['Detailprojpro']['projpro'] );
-			
+
 			echo $default->subform(
 				array(
 					'Dsp.libemploirech',
@@ -231,7 +268,7 @@ Plan:
 					'options' => $options
 				)
 			);
-			
+
 			if ($cg=='cg58') {
 				echo $default->subform(
 					array(
@@ -277,10 +314,11 @@ Plan:
 						'options' => $options
 					)
 				);
-				
-				if ($cg=='cg58')
+
+				if( $cg=='cg58' ) {
 					echo $dsphm->fieldset( 'Detailmoytrans', 'moytrans', 'libautrmoytrans', $dsp_id, '2008', $options['Detailmoytrans']['moytrans'] );
-				
+				}
+
 				echo $default->subform(
 					array(
 						'Dsp.toppermicondub',
@@ -315,7 +353,7 @@ Plan:
 					'options' => $options
 				)
 			);
-			
+
 			if ($cg=='cg58') {
 				echo $default->subform(
 					array(
@@ -327,7 +365,7 @@ Plan:
 				);
 				echo $dsphm->fieldset( 'Detailconfort', 'confort', null, $dsp_id, null, $options['Detailconfort']['confort'] );
 			}
-			
+
 			echo $default->subform(
 				array(
 					'Dsp.demarlog'
@@ -346,11 +384,11 @@ Plan:
 		?>
 	</fieldset>
 
-    <div class="submit">
-        <?php echo $form->submit( 'Enregistrer', array( 'div' => false ) );?>
-        <?php echo $form->submit('Annuler', array( 'name' => 'Cancel', 'div' => false ) );?>
-    </div>
-    <?php echo $form->end();?>
+	<div class="submit">
+		<?php echo $form->submit( 'Enregistrer', array( 'div' => false ) );?>
+		<?php echo $form->submit('Annuler', array( 'name' => 'Cancel', 'div' => false ) );?>
+	</div>
+	<?php echo $form->end();?>
 
 <?php
 // 		echo $xform->submit( 'Form::Save' );

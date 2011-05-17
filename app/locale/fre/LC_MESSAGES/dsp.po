@@ -42,13 +42,13 @@ msgid "Dsp.accosocfam"
 msgstr "Votre famille fait-elle l'objet d'accompagnement social ?"
 
 msgid "Dsp.libcooraccosocfam"
-msgstr "Coordonnées et adresse de l'organisme ?"
+msgstr "Coordonnées et adresse de l'organisme ? (250 carac. max)"
 
 msgid "Dsp.accosocindi"
 msgstr "Bénéficiez vous d'un accompagnement individuel ?"
 
 msgid "Dsp.libcooraccosocindi"
-msgstr "Coordonnées et adresse de l'organisme ?"
+msgstr "Coordonnées et adresse de l'organisme ? (250 carac. max)"
 
 msgid "Dsp.soutdemarsoc"
 msgstr "Etes-vous soutenu par votre entourage dans vos démarches ?"
@@ -111,7 +111,7 @@ msgid "Dsp.accoemploi"
 msgstr "Etes-vous accompagné dans votre recherche d'emploi ?"
 
 msgid "Dsp.libcooraccoemploi"
-msgstr "Si pôle emploi ou autre, remplir pour les coordonnées de l'organisme"
+msgstr "Si pôle emploi ou autre, remplir pour les coordonnées de l'organisme (100 carac. max)"
 
 msgid "Dsp.topprojpro"
 msgstr "Avez vous un projet professionnel identifié ?"
@@ -376,7 +376,7 @@ msgid "Detaildifsoc.difsoc"
 msgstr "Rencontrez vous des difficultés sociales ?"
 
 msgid "Detaildifsoc.libautrdifsoc"
-msgstr "Difficultés sociale autres Précision ?"
+msgstr "Difficultés sociale autres Précision ? (100 carac. max)"
 
 ###############################################################################
 
@@ -409,7 +409,7 @@ msgid "Detailaccosocfam.nataccosocfam"
 msgstr "Dans quel domaine accompagnement familial ?"
 
 msgid "Detailaccosocfam.libautraccosocfam"
-msgstr "Autre accompagnement familial"
+msgstr "Autre accompagnement familial (100 carac. max)"
 
 ###############################################################################
 
@@ -531,7 +531,7 @@ msgid "Detaildiflog.diflog"
 msgstr "Difficultés logement ?"
 
 msgid "Detaildiflog.libautrdiflog"
-msgstr "Autres difficultés de logement ?"
+msgstr "Autres difficultés de logement ? (100 carac. max)"
 
 ###############################################################################
 
@@ -594,7 +594,7 @@ msgid "Detailmoytrans.moytrans"
 msgstr "Quel moyen de transport ?"
 
 msgid "Detailmoytrans.libautrmoytrans"
-msgstr "Merci d'indiquer le(s) autre(s) moyen(s) de transport :"
+msgstr "Merci d'indiquer le(s) autre(s) moyen(s) de transport (100 carac. max) :"
 
 ###############################################################################
 # Detailsdifsocpros
@@ -634,7 +634,7 @@ msgid "Detaildifsocpro.difsocpro"
 msgstr "Quelles sont les difficultés sociales décelées par le professionnel ?"
 
 msgid "Detaildifsocpro.libautrdifsocpro"
-msgstr "Merci de préciser les quelles :"
+msgstr "Merci de préciser les quelles (100 carac. max) :"
 
 ###############################################################################
 # Detailsprojpros
@@ -683,7 +683,7 @@ msgid "Detailprojpro.projpro"
 msgstr "Le(s) quel(s) ?"
 
 msgid "Detailprojpro.libautrprojpro"
-msgstr "Merci de préciser :"
+msgstr "Merci de préciser (100 carac. max) :"
 
 ###############################################################################
 
