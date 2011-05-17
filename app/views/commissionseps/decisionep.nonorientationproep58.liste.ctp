@@ -35,11 +35,11 @@ echo '<table><thead>
 						)
 					)
 				),
-				
+
 				$options['Decisionnonorientationproep58']['decision'][Set::classicExtract( $datas, "Decisionnonorientationproep58.{$i}.decision" )],
 				array( $typesorients[Set::classicExtract( $datas, "Decisionnonorientationproep58.{$i}.typeorient_id" )], array( 'id' => "Decisionnonorientationproep58{$i}TypeorientId" ) ),
 				array( $structuresreferentes[Set::classicExtract( $datas, "Decisionnonorientationproep58.{$i}.structurereferente_id" )], array( 'id' => "Decisionnonorientationproep58{$i}StructurereferenteId" ) ),
-				array( Set::classicExtract( $datas, "Decisionnonorientationproep58.{$i}.raisonnonpassage" ), array( 'colspan' => '2', 'id' => "Decisionnonorientationproep58{$i}Raisonnonpassage" ) ))
+				array( Set::classicExtract( $datas, "Decisionnonorientationproep58.{$i}.raisonnonpassage" ), array( 'colspan' => '2', 'id' => "Decisionnonorientationproep58{$i}Raisonnonpassage" ) )
 			)
 		);
 	}
