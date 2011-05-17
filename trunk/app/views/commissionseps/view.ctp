@@ -185,7 +185,7 @@
 						)
 					);
 
-				$disableConvocationParticipant = in_array( 'commissionseps::printConvocationParticipant', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] );
+				$disableConvocationParticipant = !in_array( 'commissionseps::printConvocationParticipant', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] );
 				echo "<tbody>";
 				foreach($membresepsseanceseps as $membreepseanceep) {
 
@@ -212,7 +212,7 @@
 						}
 						$membreepseanceep['CommissionepMembreep']['reponsetxt'] = __d('commissionep_membreep', 'ENUM::REPONSE::'.$membreepseanceep['CommissionepMembreep']['reponse'], true);
 						if ($membreepseanceep['CommissionepMembreep']['reponse']=='remplacepar') {
-							$membreepseanceep['CommissionepMembreep']['reponsetxt'] .= ' '.$membreepseanceep['Membreep']['suppleant'];
+							$membreepseanceep['CommissionepMembreep']['reponsetxt'] .= ' '.$listemembreseps[$membreepseanceep['CommissionepMembreep']['reponsesuppleant_id']];
 						}
 						echo $html->tag(
 							'td',
@@ -223,7 +223,7 @@
 						if (!empty($membreepseanceep['CommissionepMembreep']['presence'])) {
 							$membreepseanceep['CommissionepMembreep']['presencetxt'] = __d('commissionep_membreep', 'ENUM::PRESENCE::'.$membreepseanceep['CommissionepMembreep']['presence'], true);
 							if ($membreepseanceep['CommissionepMembreep']['presence']=='remplacepar') {
-								$membreepseanceep['CommissionepMembreep']['presencetxt'] .= ' '.$membreepseanceep['Membreep']['suppleant'];
+								$membreepseanceep['CommissionepMembreep']['presencetxt'] .= ' '.$listemembreseps[$membreepseanceep['CommissionepMembreep']['presencesuppleant_id']];
 							}
 						}
 						echo $html->tag(

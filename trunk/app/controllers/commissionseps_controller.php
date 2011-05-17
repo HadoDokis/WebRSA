@@ -580,7 +580,8 @@
 				'CommissionepMembreep.membreep_id',
 				'CommissionepMembreep.reponse',
 				'CommissionepMembreep.presence',
-				'CommissionepMembreep.suppleant_id',
+				'CommissionepMembreep.reponsesuppleant_id',
+				'CommissionepMembreep.presencesuppleant_id',
 				'Membreep.qual',
 				'Membreep.nom',
 				'Membreep.prenom',
@@ -643,22 +644,41 @@
 					'contain' => false
 				)
 			);
-
-			foreach( $membresepsseanceseps as &$membreepseanceep ) {
-				if ( !empty( $membreepseanceep['CommissionepMembreep']['suppleant_id'] ) ) {
-					$remplacant = $this->Commissionep->Membreep->find(
-						'first',
-						array(
-							'conditions' => array(
-								'Membreep.id' => $membreepseanceep['CommissionepMembreep']['suppleant_id']
-							),
-							'contain' => false
-						)
-					);
-					$membreepseanceep['Membreep']['suppleant'] = implode(' ', array($remplacant['Membreep']['qual'], $remplacant['Membreep']['nom'], $remplacant['Membreep']['prenom']));
-				}
-			}
 			$this->set('membresepsseanceseps', $membresepsseanceseps);
+
+			$membreseps = $this->Commissionep->CommissionepMembreep->Membreep->find(
+				'all',
+				array(
+					'fields' => array(
+						'Membreep.id',
+						'Membreep.qual',
+						'Membreep.nom',
+						'Membreep.prenom',
+						'Membreep.fonctionmembreep_id'
+					),
+					'conditions' => array(
+						'Membreep.id NOT IN ( '.$this->Commissionep->CommissionepMembreep->Membreep->EpMembreep->sq(
+							array(
+								'fields' => array(
+									'eps_membreseps.membreep_id'
+								),
+								'alias' => 'eps_membreseps',
+								'conditions' => array(
+									'eps_membreseps.ep_id' => $commissionep['Commissionep']['ep_id']
+								)
+							)
+						).' )'
+					),
+					'contain' => false
+				)
+			);
+
+			$listemembreseps = array();
+			foreach( $membreseps as $membreep ) {
+				$listemembreseps[$membreep['Membreep']['id']] = implode( ' ', array( $membreep['Membreep']['qual'], $membreep['Membreep']['nom'], $membreep['Membreep']['prenom'] ) );
+			}
+			$this->set( compact( 'listemembreseps' ) );
+
 			$this->set('etatsActions', $this->etatsActions);
 		}
 
