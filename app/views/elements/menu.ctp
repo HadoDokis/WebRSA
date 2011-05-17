@@ -391,8 +391,8 @@
 					<li><?php echo $xhtml->link( '2. Constitution de la commission', array( 'controller' => 'commissionseps', 'action' => 'recherche' ) );?></li>
 					<li><a href="#">3. Arbitrage</a>
 						<ul>
-							<li><?php echo $xhtml->link( 'EP', array( 'controller' => 'commissionseps', 'action' => 'arbitrage' ) );?></li>
-							<li><?php echo $xhtml->link( 'CG', array( 'controller' => 'commissionseps', 'action' => 'arbitrage' ) );?></li>
+							<li><?php echo $xhtml->link( 'EP', array( 'controller' => 'commissionseps', 'action' => 'arbitrageep' ) );?></li>
+							<li><?php echo $xhtml->link( 'CG', array( 'controller' => 'commissionseps', 'action' => 'arbitragecg' ) );?></li>
 						</ul>
 					</li>
 					<li>
