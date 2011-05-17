@@ -88,5 +88,24 @@ SELECT add_missing_table_field ('public', 'commissionseps_membreseps', 'supplean
 ALTER TABLE commissionseps_membreseps DROP COLUMN suppleant_id;
 
 -- *****************************************************************************
+-- 20110517, ajout du champ pour le bouton radio du cg93
+-- *****************************************************************************
+DROP TYPE IF EXISTS TYPE_DECISIONPCG;
+CREATE TYPE TYPE_DECISIONPCG AS ENUM ( 'valide', 'enattente' );
+
+SELECT add_missing_table_field ('public', 'decisionsnonrespectssanctionseps93', 'decisionpcg', 'TYPE_DECISIONPCG');
+ALTER TABLE decisionsnonrespectssanctionseps93 ALTER COLUMN decisionpcg SET DEFAULT 'valide'::type_decisionpcg;
+SELECT add_missing_table_field ('public', 'decisionsreorientationseps93', 'decisionpcg', 'TYPE_DECISIONPCG');
+ALTER TABLE decisionsreorientationseps93 ALTER COLUMN decisionpcg SET DEFAULT 'valide'::type_decisionpcg;
+SELECT add_missing_table_field ('public', 'decisionsnonorientationsproseps93', 'decisionpcg', 'TYPE_DECISIONPCG');
+ALTER TABLE decisionsnonorientationsproseps93 ALTER COLUMN decisionpcg SET DEFAULT 'valide'::type_decisionpcg;
+SELECT add_missing_table_field ('public', 'decisionsregressionsorientationseps93', 'decisionpcg', 'TYPE_DECISIONPCG');
+ALTER TABLE decisionsregressionsorientationseps93 ALTER COLUMN decisionpcg SET DEFAULT 'valide'::type_decisionpcg;
+SELECT add_missing_table_field ('public', 'decisionssignalementseps93', 'decisionpcg', 'TYPE_DECISIONPCG');
+ALTER TABLE decisionssignalementseps93 ALTER COLUMN decisionpcg SET DEFAULT 'valide'::type_decisionpcg;
+SELECT add_missing_table_field ('public', 'decisionscontratscomplexeseps93', 'decisionpcg', 'TYPE_DECISIONPCG');
+ALTER TABLE decisionscontratscomplexeseps93 ALTER COLUMN decisionpcg SET DEFAULT 'valide'::type_decisionpcg;
+
+-- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
