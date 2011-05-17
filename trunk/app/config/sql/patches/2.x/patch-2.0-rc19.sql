@@ -53,12 +53,15 @@ SELECT add_missing_constraint ('public', 'eps_membreseps', 'eps_membreseps_suppl
 
 SELECT add_missing_table_field ('public', 'membreseps', 'suppleant_id', 'INTEGER');
 ALTER TABLE membreseps DROP COLUMN suppleant_id;
+SELECT add_missing_table_field ('public', 'eps_membreseps', 'suppleant_id', 'INTEGER');
+ALTER TABLE eps_membreseps DROP COLUMN suppleant_id;
 
 
 
--- *************************************************************************************************************
--- 20110517, ajout d'une valeur pour le type enum contractualisation dans les fiches de candidatures 66
--- *************************************************************************************************************
+-- *****************************************************************************
+-- 20110517, ajout d'une valeur pour le type enum contractualisation dans
+-- les fiches de candidatures 66
+-- *****************************************************************************
 ALTER TABLE actionscandidats ALTER COLUMN contractualisation TYPE TEXT;
 DROP TYPE TYPE_CONTRACTUALISATION;
 CREATE TYPE TYPE_CONTRACTUALISATION AS ENUM ( 'marche', 'subvention', 'internecg' );
@@ -70,6 +73,14 @@ CREATE TYPE TYPE_POSITIONFICHE AS ENUM ( 'enattente', 'encours', 'nonretenue', '
 ALTER TABLE actionscandidats_personnes ADD COLUMN positionfiche TYPE_POSITIONFICHE DEFAULT  'enattente'::type_positionfiche;
 
 SELECT add_missing_table_field ('public', 'actionscandidats_personnes', 'issortie', 'type_booleannumber');
+
+-- *****************************************************************************
+-- 20110517, modifications pour la gestion des présences dans les eps
+-- *****************************************************************************
+
+SELECT add_missing_table_field ('public', 'commissionseps_membreseps', 'suppleant', 'INTEGER');
+ALTER TABLE commissionseps_membreseps DROP COLUMN suppleant;
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
