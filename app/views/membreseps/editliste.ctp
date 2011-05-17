@@ -69,9 +69,8 @@
 		</div>
 
 	<?php echo $xform->end( 'Enregistrer' );?>
-	
-	<?php
 
+	<?php
 		echo $default->button(
 			'back',
 			array(
@@ -83,7 +82,6 @@
 				'id' => 'Back'
 			)
 		);
-	
 	?>
 
 <script type="text/javascript">

@@ -77,9 +77,15 @@ SELECT add_missing_table_field ('public', 'actionscandidats_personnes', 'issorti
 -- *****************************************************************************
 -- 20110517, modifications pour la gestion des présences dans les eps
 -- *****************************************************************************
-
 SELECT add_missing_table_field ('public', 'commissionseps_membreseps', 'suppleant', 'INTEGER');
 ALTER TABLE commissionseps_membreseps DROP COLUMN suppleant;
+SELECT add_missing_table_field ('public', 'commissionseps_membreseps', 'reponsesuppleant_id', 'INTEGER');
+SELECT add_missing_constraint ('public', 'commissionseps_membreseps', 'commissionseps_membreseps_reponsesuppleant_id_fkey', 'membreseps', 'reponsesuppleant_id');
+SELECT add_missing_table_field ('public', 'commissionseps_membreseps', 'presencesuppleant_id', 'INTEGER');
+SELECT add_missing_constraint ('public', 'commissionseps_membreseps', 'commissionseps_membreseps_presencesuppleant_id_fkey', 'membreseps', 'presencesuppleant_id');
+
+SELECT add_missing_table_field ('public', 'commissionseps_membreseps', 'suppleant_id', 'INTEGER');
+ALTER TABLE commissionseps_membreseps DROP COLUMN suppleant_id;
 
 -- *****************************************************************************
 COMMIT;
