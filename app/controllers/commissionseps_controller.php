@@ -521,11 +521,11 @@
 				)
 			);
 // 			debug( $commissionep );
-			
+
 			list( $jourCommission, $heureCommission ) = explode( ' ', $commissionep['Commissionep']['dateseance'] );
 			$presencesPossible = ( date( 'Y-m-d' ) >= $jourCommission );
 			$this->set( compact( 'presencesPossible' ) );
-			
+
 			$this->set( 'commissionep', $commissionep );
 			$this->_setOptions();
 
@@ -830,8 +830,54 @@ die();*/
 		*/
 
 		public function printConvocationParticipant( $commissionep_membreep_id ) {
+			$commissionep_id = $this->Commissionep->CommissionepMembreep->field( 'commissionep_id', array( 'CommissionepMembreep.id' => $commissionep_membreep_id ) );
+			$this->assert( !empty( $commissionep_id ), 'invalidParameter' );
 
-			$participant = $this->Commissionep->CommissionepMembreep->find(
+			// Réponses prévisionnelles de participation
+			$reponsesNonIndiquees = $this->Commissionep->CommissionepMembreep->find(
+				'count',
+				array(
+					'conditions' => array(
+						'CommissionepMembreep.commissionep_id' => $commissionep_id,
+						'CommissionepMembreep.reponse' => 'nonrenseigne'
+					)
+				)
+			);
+
+			// Dossiers devant passer dans cette commission
+			$nombreDossierseps = $this->Commissionep->Passagecommissionep->find(
+				'count',
+				array(
+					'contain' => array(
+						'Dossierep'
+					),
+					'conditions' => array(
+						'Passagecommissionep.commissionep_id' => $commissionep_id
+					)
+				)
+			);
+
+			if( ( $reponsesNonIndiquees > 0 ) || ( $nombreDossierseps == 0 ) ) {
+				if( $reponsesNonIndiquees > 0 ) {
+					$this->Session->setFlash( 'Impossible d\'imprimer l\'ordre du jour avant d\'avoir indiqué la réponse des participants.', 'default', array( 'class' => 'error' ) );
+				}
+				if( $nombreDossierseps == 0 ) {
+					$this->Session->setFlash( 'Impossible d\'imprimer l\'ordre du jour avant d\'avoir attribué des dossiers.', 'default', array( 'class' => 'error' ) );
+				}
+				$this->redirect( $this->referer() );
+			}
+
+			$pdf = $this->Commissionep->getPdfConvocationParticipant( $commissionep_membreep_id );
+
+			if( $pdf ) {
+				$this->Gedooo->sendPdfContentToClient( $pdf, 'ConvocationepParticipant' );
+			}
+			else {
+				$this->Session->setFlash( 'Impossible de générer les convocations du participant à la commission d\'EP', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
+			}
+
+			/*$participant = $this->Commissionep->CommissionepMembreep->find(
 				'first',
 				array(
 					'conditions' => array(
@@ -855,7 +901,7 @@ die();*/
 			else {
 				$this->Session->setFlash( 'Impossible de générer les convocations du participant à la commission d\'EP', 'default', array( 'class' => 'error' ) );
 				$this->redirect( $this->referer() );
-			}
+			}*/
 		}
 
 		/**

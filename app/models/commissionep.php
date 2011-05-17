@@ -38,22 +38,6 @@
 			),
 		);
 
-		/*public $hasMany = array(
-			'Dossierep' => array(
-				'className' => 'Dossierep',
-				'foreignKey' => 'commissionep_id',
-				'dependent' => true,
-				'conditions' => '',
-				'fields' => '',
-				'order' => '',
-				'limit' => '',
-				'offset' => '',
-				'exclusive' => '',
-				'finderQuery' => '',
-				'counterQuery' => ''
-			),
-		);*/
-
 		public $hasMany = array(
 			'Passagecommissionep' => array(
 				'className' => 'Passagecommissionep',
@@ -1097,6 +1081,7 @@
 			);
 			$convocation = array( 'Participant' => $convocation['Membreep'], 'Commissionep' => $convocation['Commissionep'] );
 
+			// FIXME: doc
 			$queryData = array(
 				'fields' => array(
 					'Dossierep.themeep',
@@ -1157,33 +1142,6 @@
 					'Adresse.locaadr ASC'
 				)
 			);
-/*
-	SELECT
-			dossierseps.themeep,
-			adresses.locaadr,
-			COUNT(dossierseps.id)
-		FROM dossierseps
-			INNER JOIN passagescommissionseps ON (
-				passagescommissionseps.dossierep_id = dossierseps.id
-			)
-			INNER JOIN personnes ON (
-				dossierseps.personne_id = personnes.id
-			)
-			INNER JOIN foyers ON (
-				personnes.foyer_id = foyers.id
-			)
-			INNER JOIN adressesfoyers ON (
-				adressesfoyers.foyer_id = foyers.id
-				AND adressesfoyers.rgadr = '01'
-			)
-			INNER JOIN adresses ON (
-				adressesfoyers.adresse_id = adresses.id
-			)
-		WHERE passagescommissionseps.commissionep_id = 1
-		GROUP BY
-			dossierseps.themeep,
-			adresses.locaadr
-*/
 
 			$options = array( 'Personne' => array( 'qual' => ClassRegistry::init( 'Option' )->qual() ) );
 			$options = Set::merge( $options, $this->enums() );
@@ -1195,29 +1153,38 @@
 			$dossierseps = $this->Passagecommissionep->Dossierep->find( 'all', $queryData );
 			// FIXME: faire la traduction des enums dans les modèles correspondants ?
 
-// function themesTraites( $id )
+			// FIXME: documentation
+			$themesTraites = $this->themesTraites( $convocation['Commissionep']['id'] );
+			$themesTraites = array_keys( $themesTraites );
+			sort( $themesTraites );
 
-/*
-array(
-	array(
-		'commune' => 'PANTIN',
-		'contratscomplexeseps93' => 0,
-		'nonrespectssanctionseps93' => 0
-	)
-)
-*/
+			$dossiersParCommune = array();
+			foreach( $dossierseps as $dossierep ) {
+				$commune = $dossierep['Adresse']['locaadr'];
+				if( !isset( $dossiersParCommune[$commune] ) ) {
+					$dossiersParCommune[$commune] = array();
+				}
+				$dossiersParCommune[$commune][$dossierep['Dossierep']['themeep']] = $dossierep[0]['nombre'];
+			}
 
-// debug($convocation);
-debug($dossierseps);
-die();
+			$dossierseps = array();
+			$default = array();
+			foreach( $themesTraites as $themeTraite ) {
+				$default[Inflector::pluralize($themeTraite)] = 0;
+			}
 
+			foreach( $dossiersParCommune as $commune => $dossierParCommune ) {
+				$dossierParCommune = array_merge( array( 'commune' => $commune ), $default, $dossierParCommune );
+				$dossierParCommune['total'] = array_sum( $dossierParCommune );
+				$dossierseps[] = $dossierParCommune;
+			}
 
 			// present, excuse, FIXME: remplace_par
 			$reponsesTmp = $this->CommissionepMembreep->find(
 				'all',
 				array(
 					'conditions' => array(
-						'CommissionepMembreep.commissionep_id' => $commissionep_id
+						'CommissionepMembreep.commissionep_id' => $convocation['Commissionep']['id']
 					),
 					'contain' => array(
 						'Membreep' => array(
@@ -1239,47 +1206,18 @@ die();
 				$commissionep_data["reponses_{$typereponse}_count"] = count( $reponses["Reponses_{$typereponse}"] );
 			}
 
-			// Nb de dossiers d'EP par nom de commune
-			///FIXME: voir comment faire pour avoir et la ville et le nombre correspondant
-			$dossiersParCommune = array();
-			$adresses = array();
-			foreach( $dossierseps as $key => $adresse ) {
-				$adresses["Dossiers_{$adresse['Adresse']['locaadr']}"][] = array( 'Adresse' => $adresse['Adresse'] );
-				$locaadr = $adresse['Adresse']['locaadr'];
-//                 $commissionep_data["nbdossiers_parville_count"][$locaadr] = count( $adresses["Dossiers_{$adresse['Adresse']['locaadr']}"] );
-				//$commissionep_data["nbdossiers_{$locaadr}_count"] = count( $adresses["Dossiers_{$adresse['Adresse']['locaadr']}"] );
-				$dossiersParCommune[] = array( 'ville' => $locaadr, 'count' => count( $adresses["Dossiers_{$adresse['Adresse']['locaadr']}"] ) );
-			}
-
-			// Nb de dossiers d'EP par thématique
-			$themes = array();
-			foreach( $dossierseps as $key => $theme ) {
-				$themes["Themes_{$theme['Dossierep']['themeep']}"][] = array( 'Dossierep' => $theme['Dossierep'] );
-			}
-			foreach( $options['Dossierep']['themeep'] as $theme => $libelleTheme ) {
-				if( !isset( $themes["Themes_{$theme}"] ) ) {
-					$themes["Themes_{$theme}"] = array();
-				}
-//                 $commissionep_data["nbdossiers_{$theme}_count"] = count( $themes["Themes_{$theme}"] );
-				$dossiersParTheme[] = array( 'theme' => $theme, 'count' => count( $themes["Themes_{$theme}"] ) );
-			}
-
-			/*return $this->ged(
+			return $this->ged(
 				array_merge(
 					array(
-						$commissionep_data,
+						$convocation,
 						'Dossierseps' => $dossierseps,
-						'DossiersParCommune' => $dossiersParCommune,
-						'DossiersParTheme' => $dossiersParTheme
 					),
 					$reponses
 				),
-				"{$this->alias}/ordedujour.odt",
+				"{$this->alias}/convocationep_participant.odt",
 				true,
 				$options
-			);*/
-
-            return $this->ged( $convocation, "{$this->alias}/convocationep_participant.odt" );
+			);
         }
 
 
