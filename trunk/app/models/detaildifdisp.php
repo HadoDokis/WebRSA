@@ -1,14 +1,22 @@
 <?php
-    class Detaildifdisp extends AppModel
-    {
-        var $name = 'Detaildifdisp';
+	class Detaildifdisp extends AppModel
+	{
+		public $name = 'Detaildifdisp';
 
-        var $belongsTo = array( 'Dsp' );
+		public $belongsTo = array(
+			'Dsp' => array(
+				'className' => 'Dsp',
+				'foreignKey' => 'dsp_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+		);
 
-        var $actsAs = array(
-            'Enumerable' => array(
-                'fields' => array(
-                    'difdisp' => array(
+		public $actsAs = array(
+			'Enumerable' => array(
+				'fields' => array(
+					'difdisp' => array(
 						'type' => 'difdisp', 'domain' => 'dsp'
 					),
 				)
@@ -16,5 +24,5 @@
 			'Revision' => array('auto'=>false),
 			'Autovalidate'
 		);
-    }
+	}
 ?>

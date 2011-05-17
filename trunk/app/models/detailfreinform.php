@@ -1,12 +1,12 @@
 <?php
-    class Detailfreinform extends AppModel
-    {
-        var $name = 'Detailfreinform';
+	class Detailfreinform extends AppModel
+	{
+		public $name = 'Detailfreinform';
 
-        var $actsAs = array(
-            'Enumerable' => array(
-                'fields' => array(
-                    'freinform' => array(
+		public $actsAs = array(
+			'Enumerable' => array(
+				'fields' => array(
+					'freinform' => array(
 						'type' => 'freinform', 'domain' => 'dsp'
 					),
 				)
@@ -15,6 +15,14 @@
 			'Autovalidate'
 		);
 
-        var $belongsTo = array( 'Dsp' );
-    }
+		public $belongsTo = array(
+			'Dsp' => array(
+				'className' => 'Dsp',
+				'foreignKey' => 'dsp_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+		);
+	}
 ?>

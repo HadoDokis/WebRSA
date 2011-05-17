@@ -1,12 +1,12 @@
 <?php
-    class Detaildifsoc extends AppModel
-    {
-        var $name = 'Detaildifsoc';
+	class Detaildifsoc extends AppModel
+	{
+		public $name = 'Detaildifsoc';
 
-        var $actsAs = array(
-            'Enumerable' => array(
-                'fields' => array(
-                    'difsoc' => array(
+		public $actsAs = array(
+			'Enumerable' => array(
+				'fields' => array(
+					'difsoc' => array(
 						'type' => 'difsoc', 'domain' => 'dsp'
 					),
 				)
@@ -15,6 +15,14 @@
 			'Autovalidate'
 		);
 
-        var $belongsTo = array( 'Dsp' );
-    }
+		public $belongsTo = array(
+			'Dsp' => array(
+				'className' => 'Dsp',
+				'foreignKey' => 'dsp_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+		);
+	}
 ?>

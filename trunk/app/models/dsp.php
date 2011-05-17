@@ -4,69 +4,201 @@
 	define( 'ANNOBTNIVDIPMAX_MAX_YEAR', date( 'Y' ) );
 	define( 'ANNOBTNIVDIPMAX_MESSAGE', 'Veuillez entrer une année comprise entre '.ANNOBTNIVDIPMAX_MIN_YEAR.' et '.ANNOBTNIVDIPMAX_MAX_YEAR.' .' );
 
-    class Dsp extends AppModel
-    {
-        var $name = 'Dsp';
+	class Dsp extends AppModel
+	{
+		public $name = 'Dsp';
 
-        var $belongsTo = array(
+		public $belongsTo = array(
 			'Personne'
 		);
 
-        var $hasMany = array(
-			'Detaildifsoc',
-			'Detailaccosocfam',
-			'Detailaccosocindi',
-			'Detaildifdisp',
-			'Detailnatmob',
-			'Detaildiflog',
-			'Detailmoytrans',
-			'Detaildifsocpro',
-			'Detailprojpro',
-			'Detailfreinform',
-			'Detailconfort'/*,
-            'Fichiermodule' => array(
-                'className' => 'Fichiermodule',
-                'foreignKey' => false,
-                'dependent' => false,
-                'conditions' => array(
-                    'Fichiermodule.modele = \'Dsp\'',
-                    'Fichiermodule.fk_value = {$__cakeID__$}'
-                ),
-                'fields' => '',
-                'order' => '',
-                'limit' => '',
-                'offset' => '',
-                'exclusive' => '',
-                'finderQuery' => '',
-                'counterQuery' => ''
-            )*/
+		public $hasMany = array(
+			'Detaildifsoc' => array(
+				'className' => 'Detaildifsoc',
+				'foreignKey' => 'dsp_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Detailaccosocfam' => array(
+				'className' => 'Detailaccosocfam',
+				'foreignKey' => 'dsp_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Detailaccosocindi' => array(
+				'className' => 'Detailaccosocindi',
+				'foreignKey' => 'dsp_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Detaildifdisp' => array(
+				'className' => 'Detaildifdisp',
+				'foreignKey' => 'dsp_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Detailnatmob' => array(
+				'className' => 'Detailnatmob',
+				'foreignKey' => 'dsp_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Detaildiflog' => array(
+				'className' => 'Detaildiflog',
+				'foreignKey' => 'dsp_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Detailmoytrans' => array(
+				'className' => 'Detailmoytrans',
+				'foreignKey' => 'dsp_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Detaildifsocpro' => array(
+				'className' => 'Detaildifsocpro',
+				'foreignKey' => 'dsp_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Detailprojpro' => array(
+				'className' => 'Detailprojpro',
+				'foreignKey' => 'dsp_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Detailfreinform' => array(
+				'className' => 'Detailfreinform',
+				'foreignKey' => 'dsp_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Detailconfort' => array(
+				'className' => 'Detailconfort',
+				'foreignKey' => 'dsp_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			)/*,
+			'Fichiermodule' => array(
+				'className' => 'Fichiermodule',
+				'foreignKey' => false,
+				'dependent' => false,
+				'conditions' => array(
+					'Fichiermodule.modele = \'Dsp\'',
+					'Fichiermodule.fk_value = {$__cakeID__$}'
+				),
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			)*/
 		);
 
-        var $validate = array(
-            'hispro' => array(
-                array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                )
-            ),
+		public $validate = array(
+			'hispro' => array(
+				array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+				)
+			),
 			'annobtnivdipmax' => array(
 				'rule' => array( 'inclusiveRange', ANNOBTNIVDIPMAX_MIN_YEAR, ANNOBTNIVDIPMAX_MAX_YEAR ),
 				'message' => ANNOBTNIVDIPMAX_MESSAGE,
 				'allowEmpty' => true
 			),
-            'personne_id' => array( // FIXME: Autovalidate ne le fait pas ? -> contratsinsertion/edit/10630
-                array(
-                    'rule' => 'notEmpty',
-                    'message' => 'Champ obligatoire'
-                )
-            )
-        );
+			'personne_id' => array( // FIXME: Autovalidate ne le fait pas ? -> contratsinsertion/edit/10630
+				array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+				)
+			)
+		);
 
-        var $actsAs = array(
+		public $actsAs = array(
 			'Autovalidate',
-            'Enumerable' => array(
-                'fields' => array(
-                    'sitpersdemrsa' => array(
+			'Enumerable' => array(
+				'fields' => array(
+					'sitpersdemrsa' => array(
 						'values' => array( '0101', '0102', '0103', '0104', '0105', '0106', '0107', '0108', '0109' )
 					),
 					'nivetu' => array(
@@ -115,32 +247,32 @@
 					'concoformqualiemploi' => array( 'type' => 'nos', 'domain' => 'default' ),
 					'drorsarmianta2' => array( 'type' => 'nos', 'domain' => 'default' ),
 					'statutoccupation' => array( 'values' => array('proprietaire', 'locataire') )
-                )
-            ),
+				)
+			),
 			'Revision' => array('auto' => false)
-        );
-        
-        /*
-    	* FIXME: le Set::remove est plus propre, non ?
-        */
+		);
 
-        public function filterOptions( $cg, $options ) {
-        	if( $cg == 'cg58' ) {
-                $valuesDeleted = array( '0502', '0503', '0504' ); 
-                foreach( $valuesDeleted as $valueDeleted ){
-                    unset( $options['Detaildifdisp']['difdisp'][$valueDeleted] );
-                }
-        		return $options;
-        	}
-        	
+		/*
+		* FIXME: le Set::remove est plus propre, non ?
+		*/
+
+		public function filterOptions( $cg, $options ) {
+			if( $cg == 'cg58' ) {
+				$valuesDeleted = array( '0502', '0503', '0504' );
+				foreach( $valuesDeleted as $valueDeleted ){
+					unset( $options['Detaildifdisp']['difdisp'][$valueDeleted] );
+				}
+				return $options;
+			}
+
 			// Detaildifdisp.difdisp
-        	$values = array( '0507', '0508', '0509', '0510', '0511', '0512', '0513', '0514' );
-        	foreach( $values as $value ) {
-	        	//$options = Set::remove( $options['Detaildifdisp']['difdisp'], $value );
-	        	unset( $options['Detaildifdisp']['difdisp'][$value] );
-        	}
-        	
-        	return $options;     	
-        }
-    }
+			$values = array( '0507', '0508', '0509', '0510', '0511', '0512', '0513', '0514' );
+			foreach( $values as $value ) {
+				//$options = Set::remove( $options['Detaildifdisp']['difdisp'], $value );
+				unset( $options['Detaildifdisp']['difdisp'][$value] );
+			}
+
+			return $options;
+		}
+	}
 ?>

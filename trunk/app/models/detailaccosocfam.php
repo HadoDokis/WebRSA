@@ -1,14 +1,22 @@
 <?php
-    class Detailaccosocfam extends AppModel
-    {
-        var $name = 'Detailaccosocfam';
+	class Detailaccosocfam extends AppModel
+	{
+		public $name = 'Detailaccosocfam';
 
-        var $belongsTo = array( 'Dsp' );
+		public $belongsTo = array(
+			'Dsp' => array(
+				'className' => 'Dsp',
+				'foreignKey' => 'dsp_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+		);
 
-        var $actsAs = array(
-            'Enumerable' => array(
-                'fields' => array(
-                    'nataccosocfam' => array(
+		public $actsAs = array(
+			'Enumerable' => array(
+				'fields' => array(
+					'nataccosocfam' => array(
 						'type' => 'nataccosocfam', 'domain' => 'dsp'
 					),
 				)
@@ -16,5 +24,5 @@
 			'Revision' => array('auto'=>false),
 			'Autovalidate'
 		);
-    }
+	}
 ?>
