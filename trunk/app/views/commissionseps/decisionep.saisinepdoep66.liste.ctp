@@ -1,0 +1,45 @@
+<?php
+echo '<table><thead>
+<tr>
+<th>Dossier EP</th>
+<th>Nom du demandeur</th>
+<th>Adresse</th>
+<th>Date de naissance</th>
+<th>Création du dossier EP</th>
+<th>Motif(s) de la PDO</th>
+<th>Description du traitement</th>
+<th colspan=\'3\'>Avis de l\'EP</th>
+</tr>
+</thead><tbody>';
+	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
+		$listeSituationPdo = array();
+		foreach($dossierep['Saisinepdoep66']['Traitementpdo']['Propopdo']['Situationpdo'] as $situationpdo) {
+			$listeSituationPdo[] = $situationpdo['libelle'];
+		}
+		echo $xhtml->tableCells(
+			array(
+				$dossierep['Dossierep']['id'],
+				implode( ' ', array( $dossierep['Personne']['qual'], $dossierep['Personne']['nom'], $dossierep['Personne']['prenom'] ) ),
+				implode( ' ', array( $dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['numvoie'], isset( $typevoie[$dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie']] ) ? $typevoie[$dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie']] : null, $dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['nomvoie'] ) ),
+				$locale->date( __( 'Locale->date', true ), $dossierep['Personne']['dtnai'] ),
+				$locale->date( __( 'Locale->date', true ), $dossierep['Dossierep']['created'] ),
+				implode(' / ', $listeSituationPdo),
+				$dossierep['Saisinepdoep66']['Traitementpdo']['Descriptionpdo']['name'],
+
+				$options['Decisionsaisinepdoep66']['decision'][Set::classicExtract( $datas, "Decisionsaisinepdoep66.{$i}.decision" )],
+				array( $options[Set::classicExtract( $datas, "Decisionsaisinepdoep66.{$i}.decisionpdo_id" )], array( 'id' => "Decisionsaisinepdoep66{$i}DecisionpdoId" ) ),
+				array( Set::classicExtract( $datas, "Decisionsaisinepdoep66.{$i}.commentaire" ), array( 'id' => "Decisionsaisinepdoep66{$i}Commentaire" ) ),
+				array( Set::classicExtract( $datas, "Decisionsaisinepdoep66.{$i}.raisonnonpassage" ), array( 'colspan' => '2', 'id' => "Decisionsaisinepdoep66{$i}Raisonnonpassage" ) )
+			)
+		);
+	}
+	echo '</tbody></table>';
+?>
+
+<script type="text/javascript">
+	document.observe("dom:loaded", function() {
+		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
+			afficheRaisonpassage( '<?php echo $options['Decisionsaisinepdoep66']['decision'][Set::classicExtract( $datas, "Decisionsaisinepdoep66.{$i}.decision" )];?>', [ 'Decisionsaisinepdoep66<?php echo $i;?>DecisionpdoId', 'Decisionsaisinepdoep66<?php echo $i;?>Commentaire' ], 'Decisionsaisinepdoep66<?php echo $i;?>Raisonnonpassage' );
+		<?php endfor;?>
+	});
+</script>

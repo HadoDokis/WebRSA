@@ -43,12 +43,12 @@
 				'commissionseps::traiterep',
 				'commissionseps::delete',
 				/*'commissionseps::printConvocationBeneficiaire',
-                'commissionseps::printConvocationParticipant',*/
+				'commissionseps::printConvocationParticipant',*/
 			),
 			'decisionep' => array(
 // 				'commissionseps::ordredujour',
 				/*'commissionseps::printConvocationBeneficiaire',
-                'commissionseps::printConvocationParticipant',*/
+				'commissionseps::printConvocationParticipant',*/
 				'commissionseps::edit',
 				'commissionseps::traiterep',
 				'commissionseps::finaliserep',
@@ -167,7 +167,7 @@
 						$this->paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'cree', 'associe' );
 						break;
 					case 'arbitrageep':
-						$this->paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'presence', 'decisionep' );
+						$this->paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'associe', 'presence', 'decisionep', 'traiteep' );
 						break;
 					case 'arbitragecg':
 						$this->paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'traiteep', 'decisioncg' );
@@ -179,35 +179,35 @@
 // 				$this->set( 'etape', $etape );
 
 
-                foreach( $commissionseps as $key => $commissionep ){
-                    //Calcul du nombre de participants
-                    $nbparticipants = $this->Commissionep->Membreep->CommissionepMembreep->find(
-                        'count',
-                        array(
-                            'conditions' => array(
-                                'CommissionepMembreep.commissionep_id' => Set::classicExtract( $commissionep, 'Commissionep.id' ),
-                                'CommissionepMembreep.membreep_id IS NOT NULL'
-                            ),
-                            'contain' => false
-                        )
-                    );
-                    $commissionseps[$key]['Commissionep']['nbparticipants'] = $nbparticipants;
+				foreach( $commissionseps as $key => $commissionep ){
+					//Calcul du nombre de participants
+					$nbparticipants = $this->Commissionep->Membreep->CommissionepMembreep->find(
+						'count',
+						array(
+							'conditions' => array(
+								'CommissionepMembreep.commissionep_id' => Set::classicExtract( $commissionep, 'Commissionep.id' ),
+								'CommissionepMembreep.membreep_id IS NOT NULL'
+							),
+							'contain' => false
+						)
+					);
+					$commissionseps[$key]['Commissionep']['nbparticipants'] = $nbparticipants;
 
-                    //Calcul du nombre d'absents parmi les participants
-                    $nbabsents = $this->Commissionep->Membreep->CommissionepMembreep->find(
-                        'count',
-                        array(
-                            'conditions' => array(
-                                'CommissionepMembreep.commissionep_id' => Set::classicExtract( $commissionep, 'Commissionep.id' ),
-                                'CommissionepMembreep.membreep_id IS NOT NULL',
-                                'CommissionepMembreep.presence <> \'present\''
-                            ),
-                            'contain' => false
-                        )
-                    );
-                    $commissionseps[$key]['Commissionep']['nbabsents'] = $nbabsents;
-                }
-                $this->set( 'commissionseps', $commissionseps );
+					//Calcul du nombre d'absents parmi les participants
+					$nbabsents = $this->Commissionep->Membreep->CommissionepMembreep->find(
+						'count',
+						array(
+							'conditions' => array(
+								'CommissionepMembreep.commissionep_id' => Set::classicExtract( $commissionep, 'Commissionep.id' ),
+								'CommissionepMembreep.membreep_id IS NOT NULL',
+								'CommissionepMembreep.presence <> \'present\''
+							),
+							'contain' => false
+						)
+					);
+					$commissionseps[$key]['Commissionep']['nbabsents'] = $nbabsents;
+				}
+				$this->set( 'commissionseps', $commissionseps );
 			}
 
 // debug($commissionseps);
@@ -312,8 +312,8 @@
 		}
 
 		/**
-		 *
-		 */
+		*
+		*/
 
 		function ajaxadresse( $structurereferente_id = null ) { // FIXME
 			Configure::write( 'debug', 0 );
@@ -371,6 +371,10 @@
 		*/
 
 		protected function _traiter( $commissionep_id, $niveauDecision ) {
+			if( isset( $this->params['form']['Valider'] ) ) {
+				$this->_finaliser( $commissionep_id, $niveauDecision );
+			}
+
 			$commissionep = $this->Commissionep->find(
 				'first',
 				array(
@@ -404,7 +408,7 @@
 				$this->_setFlashResult( 'Save', $success );
 				if( $success ) {
 					$this->Commissionep->commit();
-					$this->redirect( array( 'action' => 'view', $commissionep_id, '#dossiers' ) );
+// 					$this->redirect( array( 'action' => 'view', $commissionep_id, '#dossiers' ) );
 				}
 				else {
 					$this->Commissionep->rollback();
@@ -465,20 +469,20 @@
 			$this->_setFlashResult( 'Save', $success );
 			if( $success ) {
 				$this->Commissionep->commit();
+				$this->redirect( array( 'action' => "decision{$niveauDecision}", $commissionep_id ) );
 			}
 			else {
 				$this->Commissionep->rollback();
 			}
-			$this->redirect( array( 'action' => 'view', $commissionep_id, '#dossiers' ) );
 		}
 
 		/**
 		* Finalisation de la séance au niveau EP
 		*/
 
-		public function finaliserep( $commissionep_id ) {
+		/*public function finaliserep( $commissionep_id ) {
 			$this->_finaliser( $commissionep_id, 'ep' );
-		}
+		}*/
 
 		/**
 		* Traitement d'une séance au niveau de décision CG
@@ -494,9 +498,9 @@
 		* Finalisation de la séance au niveau CG
 		*/
 
-		public function finalisercg( $commissionep_id ) {
+		/*public function finalisercg( $commissionep_id ) {
 			$this->_finaliser( $commissionep_id, 'cg' );
-		}
+		}*/
 
 
 		/**
@@ -519,8 +523,8 @@
 // 			debug( $commissionep );
 			
 			list( $jourCommission, $heureCommission ) = explode( ' ', $commissionep['Commissionep']['dateseance'] );
-			$commissionAujourdhui = ( date( 'Y-m-d' ) >= $jourCommission );
-			$this->set( compact( 'commissionAujourdhui' ) );
+			$presencesPossible = ( date( 'Y-m-d' ) >= $jourCommission );
+			$this->set( compact( 'presencesPossible' ) );
 			
 			$this->set( 'commissionep', $commissionep );
 			$this->_setOptions();
@@ -558,30 +562,30 @@
 				$countDossiers += count($dossiers[$theme]);
 			}
 			$dossierseps = $this->Commissionep->Passagecommissionep->find(
-                'all',
-                array(
-                    'conditions' => array(
-                        'Passagecommissionep.commissionep_id' => $commissionep_id
-                    ),
-                    'contain' => array(
-                        'Dossierep' => array(
-                            'Personne' => array(
-                                'Foyer' => array(
-                                    'Adressefoyer' => array(
-                                        'conditions' => array(
-                                            'Adressefoyer.rgadr' => '01'
-                                        ),
-                                        'Adresse'
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
+				'all',
+				array(
+					'conditions' => array(
+						'Passagecommissionep.commissionep_id' => $commissionep_id
+					),
+					'contain' => array(
+						'Dossierep' => array(
+							'Personne' => array(
+								'Foyer' => array(
+									'Adressefoyer' => array(
+										'conditions' => array(
+											'Adressefoyer.rgadr' => '01'
+										),
+										'Adresse'
+									)
+								)
+							)
+						)
+					)
+				)
 			);
 			if( !empty( $dossierseps ) ){
-                $this->set( compact( 'dossierseps' ) );
-            }
+				$this->set( compact( 'dossierseps' ) );
+			}
 			$this->set(compact('dossiers'));
 			$this->set(compact('countDossiers'));
 
@@ -731,7 +735,7 @@
 				$this->redirect( $this->referer() );
 			}
 
- 			$pdf = $this->Commissionep->getPdfPv( $commissionep_id );
+			$pdf = $this->Commissionep->getPdfPv( $commissionep_id );
 
 			if( $pdf ) {
 				$this->Gedooo->sendPdfContentToClient( $pdf, 'pv' );
@@ -779,7 +783,7 @@
 				$this->redirect( $this->referer() );
 			}
 
- 			$pdf = $this->Commissionep->getPdfOrdreDuJour( $commissionep_id );
+			$pdf = $this->Commissionep->getPdfOrdreDuJour( $commissionep_id );
 
 			if( $pdf ) {
 				$this->Gedooo->sendPdfContentToClient( $pdf, 'OJ' );
@@ -791,118 +795,166 @@
 		}
 
 
-        /**
-        *   Génération du document de convocation du passage en EP à l'allocataire.
-        *   Courrier contenant le lieu, date et heure de la commission EP
-        */
+		/**
+		*   Génération du document de convocation du passage en EP à l'allocataire.
+		*   Courrier contenant le lieu, date et heure de la commission EP
+		*/
 
-        public function printConvocationBeneficiaire( $dossierep_id ) {
+		public function printConvocationBeneficiaire( $dossierep_id ) {
 
-            $dossierep = $this->Commissionep->Passagecommissionep->Dossierep->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Dossierep.id' => $dossierep_id
-                    ),
-                    'contain' => false
-                )
-            );
+			$dossierep = $this->Commissionep->Passagecommissionep->Dossierep->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Dossierep.id' => $dossierep_id
+					),
+					'contain' => false
+				)
+			);
 
-            $pdf = $this->Commissionep->getConvocationBeneficiaireEpPdf( $dossierep_id );
+			$pdf = $this->Commissionep->getConvocationBeneficiaireEpPdf( $dossierep_id );
 /*debug($pdf);
 die();*/
-            if( $pdf ) {
-                $this->Gedooo->sendPdfContentToClient( $pdf, 'ConvocationEPBeneficiaire' );
-            }
-            else {
-                $this->Session->setFlash( 'Impossible de générer le courrier d\'information', 'default', array( 'class' => 'error' ) );
-                $this->redirect( $this->referer() );
-            }
-        }
+			if( $pdf ) {
+				$this->Gedooo->sendPdfContentToClient( $pdf, 'ConvocationEPBeneficiaire' );
+			}
+			else {
+				$this->Session->setFlash( 'Impossible de générer le courrier d\'information', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
+			}
+		}
 
 
-        /**
-        *   Impression des convocations pour les participants à la commission d'EP
-        */
+		/**
+		*   Impression des convocations pour les participants à la commission d'EP
+		*/
 
-        public function printConvocationParticipant( $commissionep_membreep_id ) {
+		public function printConvocationParticipant( $commissionep_membreep_id ) {
 
-            $participant = $this->Commissionep->CommissionepMembreep->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'CommissionepMembreep.id' => $commissionep_membreep_id
-                    ),
-                    'contain' => array(
-                        'Commissionep',
-                        'Membreep' => array(
-                            'Fonctionmembreep'
-                        )
-                    )
-                )
-            );
+			$participant = $this->Commissionep->CommissionepMembreep->find(
+				'first',
+				array(
+					'conditions' => array(
+						'CommissionepMembreep.id' => $commissionep_membreep_id
+					),
+					'contain' => array(
+						'Commissionep',
+						'Membreep' => array(
+							'Fonctionmembreep'
+						)
+					)
+				)
+			);
 // debug($participant);
 // die();
-            $pdf = $this->Commissionep->getPdfConvocationParticipant( $commissionep_membreep_id );
+			$pdf = $this->Commissionep->getPdfConvocationParticipant( $commissionep_membreep_id );
 
-            if( $pdf ) {
-                $this->Gedooo->sendPdfContentToClient( $pdf, 'ConvocationepParticipant' );
-            }
-            else {
-                $this->Session->setFlash( 'Impossible de générer les convocations du participant à la commission d\'EP', 'default', array( 'class' => 'error' ) );
-                $this->redirect( $this->referer() );
-            }
-        }
+			if( $pdf ) {
+				$this->Gedooo->sendPdfContentToClient( $pdf, 'ConvocationepParticipant' );
+			}
+			else {
+				$this->Session->setFlash( 'Impossible de générer les convocations du participant à la commission d\'EP', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
+			}
+		}
 
-        /**
-        *   Impression des décisions émises par la commission de l'EP
-        *   Représente le point 11 du processus de l'EP
-        */
+		/**
+		*   Impression des décisions émises par la commission de l'EP
+		*   Représente le point 11 du processus de l'EP
+		*/
 
-        public function printDecision( $commissionep_id ) {
-            $commissionep = $this->Commissionep->find(
-                'first',
-                array(
-                    'fields' => array(
-                        'Commissionep.etatcommissionep'
-                    ),
-                    'conditions' => array(
-                        'Commissionep.id' => $commissionep_id
-                    )
-                )
-            );
+		public function printDecision( $commissionep_id ) {
+			$commissionep = $this->Commissionep->find(
+				'first',
+				array(
+					'fields' => array(
+						'Commissionep.etatcommissionep'
+					),
+					'conditions' => array(
+						'Commissionep.id' => $commissionep_id
+					)
+				)
+			);
 
-            $presencesNonIndiquees = $this->Commissionep->CommissionepMembreep->find(
-                'count',
-                array(
-                    'conditions' => array(
-                        'CommissionepMembreep.commissionep_id' => $commissionep_id,
-                        'CommissionepMembreep.presence IS NULL'
-                    )
-                )
-            );
+			$presencesNonIndiquees = $this->Commissionep->CommissionepMembreep->find(
+				'count',
+				array(
+					'conditions' => array(
+						'CommissionepMembreep.commissionep_id' => $commissionep_id,
+						'CommissionepMembreep.presence IS NULL'
+					)
+				)
+			);
 
-            if( empty( $commissionep['Commissionep']['etatcommissionep'] ) || ( $presencesNonIndiquees > 0 ) ) {
-                if( empty( $commissionep['Commissionep']['etatcommissionep'] ) ) {
-                    $this->Session->setFlash( 'Impossible d\'imprimer le PV avant de finaliser la commission au niveau EP.', 'default', array( 'class' => 'error' ) );
-                }
-                else {
-                    $this->Session->setFlash( 'Impossible d\'imprimer le PV avant d\'avoir pris les présences de la commission d\'EP.', 'default', array( 'class' => 'error' ) );
-                }
+			if( empty( $commissionep['Commissionep']['etatcommissionep'] ) || ( $presencesNonIndiquees > 0 ) ) {
+				if( empty( $commissionep['Commissionep']['etatcommissionep'] ) ) {
+					$this->Session->setFlash( 'Impossible d\'imprimer le PV avant de finaliser la commission au niveau EP.', 'default', array( 'class' => 'error' ) );
+				}
+				else {
+					$this->Session->setFlash( 'Impossible d\'imprimer le PV avant d\'avoir pris les présences de la commission d\'EP.', 'default', array( 'class' => 'error' ) );
+				}
 
-                $this->redirect( $this->referer() );
-            }
+				$this->redirect( $this->referer() );
+			}
 
-            $pdf = $this->Commissionep->getPdfDecision( $commissionep_id );
+			$pdf = $this->Commissionep->getPdfDecision( $commissionep_id );
 
-            if( $pdf ) {
-                $this->Gedooo->sendPdfContentToClient( $pdf, 'DecisionEP' );
-            }
-            else {
-                $this->Session->setFlash( 'Impossible de générer les décisions émises par la commission d\'EP', 'default', array( 'class' => 'error' ) );
-                $this->redirect( $this->referer() );
-            }
-        }
+			if( $pdf ) {
+				$this->Gedooo->sendPdfContentToClient( $pdf, 'DecisionEP' );
+			}
+			else {
+				$this->Session->setFlash( 'Impossible de générer les décisions émises par la commission d\'EP', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
+			}
+		}
+
+		/**
+		* Affichage des décisions de la commission d'EP niveau EP
+		*/
+
+		public function decisionep( $commissionep_id ) {
+			$this->_decision( $commissionep_id, 'ep' );
+		}
+
+		/**
+		* Affichage des décisions de la commission d'EP niveau CG
+		*/
+
+		public function decisioncg( $commissionep_id ) {
+			$this->_decision( $commissionep_id, 'cg' );
+		}
+
+		/**
+		* Affichage des décisions de la commission d'EP
+		*/
+
+		protected function _decision( $commissionep_id, $niveauDecision ) {
+			if( isset( $this->params['form']['Imprimerpv'] ) ) {
+				$this->impressionpv( $commissionep_id );
+			}
+
+			$commissionep = $this->Commissionep->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Commissionep.id' => $commissionep_id,
+					),
+					'contain' => array(
+						'Ep'
+					)
+				)
+			);
+
+			$this->assert( !empty( $commissionep ), 'error404' );
+
+			$dossiers = $this->Commissionep->dossiersParListe( $commissionep_id, $niveauDecision );
+
+			$datas = $this->Commissionep->prepareFormData( $commissionep_id, $dossiers, $niveauDecision );
+
+			$this->set( compact( 'commissionep', 'dossiers', 'datas' ) );
+			$this->set( 'commissionep_id', $commissionep_id);
+			$this->_setOptions();
+		}
 
 
 	}

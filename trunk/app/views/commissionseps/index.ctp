@@ -8,8 +8,11 @@
 		case 'attributiondossiers':
 			$this->pageTitle = 'Attribution des dossiers à une commission d\'EP';
 			break;
-		case 'arbitrage':
-			$this->pageTitle = 'Arbitrage d\'une commission d\'EP';
+		case 'arbitrageep':
+			$this->pageTitle = 'Arbitrage d\'une commission d\'EP (niveau EP)';
+			break;
+		case 'arbitragecg':
+			$this->pageTitle = 'Arbitrage d\'une commission d\'EP (niveau CG)';
 			break;
 		default:
 			$this->pageTitle = 'Liste des commissions d\'EP';
@@ -107,6 +110,23 @@
 
 			echo $pagination;
 
+			switch( @$this->action ) {
+				case 'creationmodification':
+					$colspan = 1;
+					break;
+				case 'attributiondossiers':
+					$colspan = 1;
+					break;
+				case 'arbitrageep':
+					$colspan = 2;
+					break;
+				case 'arbitragecg':
+					$colspan = 1;
+					break;
+				default:
+					$colspan = 1;
+			}
+
 			echo '<table><thead>';
 				echo '<tr>
 					<th>'.$xpaginator->sort( __d( 'ep', 'Ep.identifiant', true ), 'Ep.identifiant' ).'</th>
@@ -118,28 +138,40 @@
 					<th>Nombre d\'absents</th>
 					<th>'.$xpaginator->sort( __d( 'commissionep', 'Commissionep.etatcommissionep', true ), 'Commissionep.etatcommissionep' ).'</th>
 					<th>'.$xpaginator->sort( __d( 'commissionep', 'Commissionep.observations', true ), 'Commissionep.observations' ).'</th>
-					<th>Actions</th>
+					<th colspan=\''.$colspan.'\'>Actions</th>
 				</tr></thead><tbody>';
 			foreach( $commissionseps as $commissionep ) {
 // debug($commissionep);
-				/*if( Configure::read( 'Cg.departement' ) != 93 ) {
-					$lien = $xhtml->link( 'Voir', array( 'controller' => 'commissionseps', 'action' => 'view', $commissionep['Commissionep']['id'] ) );
+
+				switch( @$this->action ) {
+					case 'creationmodification':
+						$lien = '<td>'.$xhtml->link( 'Modification', array( 'controller' => 'commissionseps', 'action' => 'edit', $commissionep['Commissionep']['id'] ) ).'</td>';
+						break;
+					case 'attributiondossiers':
+						$lien = '<td>'.$xhtml->link( 'Attribution des dossiers à une commission', array( 'controller' => 'dossierseps', 'action' => 'choose', $commissionep['Commissionep']['id'] ) ).'</td>';
+						break;
+					case 'arbitrageep':
+						list( $jourCommission, $heureCommission ) = explode( ' ', $commissionep['Commissionep']['dateseance'] );
+						$presencesPossible = ( date( 'Y-m-d' ) >= $jourCommission );
+						if ( ( $commissionep['Commissionep']['etatcommissionep'] == 'associe' || $commissionep['Commissionep']['etatcommissionep'] == 'presence' ) && $presencesPossible ) {
+							$lien = '<td>'.$xhtml->link( 'Présences', array( 'controller' => 'membreseps', 'action' => 'editpresence', $commissionep['Commissionep']['id'] ) ).'</td>';
+						}
+						else {
+							$lien = '<td>Présences</td>';
+						}
+						if ( $commissionep['Commissionep']['etatcommissionep'] == 'presence' || $commissionep['Commissionep']['etatcommissionep'] == 'decisionep' ) {
+							$lien .= '<td>'.$xhtml->link( 'Arbitrage', array( 'controller' => 'commissionseps', 'action' => 'traiterep', $commissionep['Commissionep']['id'] ) ).'</td>';
+						}
+						else {
+							$lien .= '<td>Arbitrage</td>';
+						}
+						break;
+					case 'arbitragecg':
+						$lien = '<td>'.$xhtml->link( 'Arbitrage', array( 'controller' => 'commissionseps', 'action' => 'view', $commissionep['Commissionep']['id'] ) ).'</td>';
+						break;
+					default:
+						$lien = '<td>'.$xhtml->link( 'Voir', array( 'controller' => 'commissionseps', 'action' => 'view', $commissionep['Commissionep']['id'] ) ).'</td>';
 				}
-				else {*/
-					switch( @$this->action ) {
-						case 'creationmodification':
-							$lien = $xhtml->link( 'Modification', array( 'controller' => 'commissionseps', 'action' => 'edit', $commissionep['Commissionep']['id'] ) );
-							break;
-						case 'attributiondossiers':
-							$lien = $xhtml->link( 'Attribution des dossiers à une commission', array( 'controller' => 'dossierseps', 'action' => 'choose', $commissionep['Commissionep']['id'] ) );
-							break;
-						case 'arbitrage':
-							$lien = $xhtml->link( 'Arbitrage', array( 'controller' => 'commissionseps', 'action' => 'view', $commissionep['Commissionep']['id'] ) );
-							break;
-						default:
-							$lien = $xhtml->link( 'Voir', array( 'controller' => 'commissionseps', 'action' => 'view', $commissionep['Commissionep']['id'] ) );
-					}
-				//}
 
 				echo '<tr>
 					<td>'.h( $commissionep['Ep']['identifiant'] ).'</td>
@@ -151,7 +183,7 @@
 					<td>'.h( $commissionep['Commissionep']['nbabsents'] ).'</td>
 					<td>'.h( Set::enum( $commissionep['Commissionep']['etatcommissionep'], $options['Commissionep']['etatcommissionep'] ) ).'</td>
 					<td>'.h( $commissionep['Commissionep']['observations'] ).'</td>
-					<td>'.$lien.'</td>
+					'.$lien.'
 				</tr>';
 			}
 			echo '</tbody></table>';
