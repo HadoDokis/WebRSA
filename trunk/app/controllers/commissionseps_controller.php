@@ -166,8 +166,11 @@
 					case 'attributiondossiers':
 						$this->paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'cree', 'associe' );
 						break;
-					case 'arbitrage':
-						$this->paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'associe', 'presence', 'decisionep', 'traiteep', 'decisioncg' );
+					case 'arbitrageep':
+						$this->paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'presence', 'decisionep' );
+						break;
+					case 'arbitragecg':
+						$this->paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'traiteep', 'decisioncg' );
 						break;
 				}
 
@@ -236,7 +239,15 @@
 		*
 		*/
 
-		public function arbitrage() {
+		public function arbitrageep() {
+			$this->index( $this->action );
+		}
+
+		/**
+		*
+		*/
+
+		public function arbitragecg() {
 			$this->index( $this->action );
 		}
 
