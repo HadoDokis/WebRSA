@@ -575,33 +575,81 @@
 				'CommissionepMembreep.membreep_id',
 				'CommissionepMembreep.reponse',
 				'CommissionepMembreep.presence',
+				'CommissionepMembreep.suppleant_id',
 				'Membreep.qual',
 				'Membreep.nom',
 				'Membreep.prenom',
-				'Membreep.suppleant_id',
-				'Membreep.fonctionmembreep_id'
+				'Membreep.tel',
+				'Membreep.mail',
+				'Membreep.fonctionmembreep_id',
+				'Fonctionmembreep.name'
 			);
 
-			$membresepsseanceseps = $this->Commissionep->CommissionepMembreep->find( 'all', array(
-				'fields' => $fields,
-				'conditions'=> array(
-					'Commissionep.id' => $commissionep_id
-				),
-				'contain' => array(
-					'Commissionep',
-					'Membreep' => array( 'Fonctionmembreep')
-				)
-			));
-
-
-			foreach($membresepsseanceseps as &$membreepseanceep) {
-				if (!empty($membreepseanceep['Membreep']['suppleant_id'])) {
-					$remplacant = $this->Commissionep->Membreep->find( 'first', array(
-						'conditions'=> array(
-							'Membreep.id' => $membreepseanceep['Membreep']['suppleant_id']
+			$membresepsseanceseps = $this->Commissionep->find(
+				'all',
+				array(
+					'fields' => $fields,
+					'conditions'=> array(
+						'Commissionep.ep_id' => $commissionep['Commissionep']['ep_id']
+					),
+					'joins' => array(
+						array(
+							'alias' => 'Ep',
+							'table' => 'eps',
+							'type' => 'INNER',
+							'conditions' => array(
+								'Commissionep.ep_id = Ep.id'
+							)
 						),
-						'contain' => false
-					));
+						array(
+							'alias' => 'EpMembreep',
+							'table' => 'eps_membreseps',
+							'type' => 'INNER',
+							'conditions' => array(
+								'EpMembreep.ep_id = Ep.id'
+							)
+						),
+						array(
+							'alias' => 'Membreep',
+							'table' => 'membreseps',
+							'type' => 'INNER',
+							'conditions' => array(
+								'Membreep.id = EpMembreep.membreep_id'
+							)
+						),
+						array(
+							'alias' => 'Fonctionmembreep',
+							'table' => 'fonctionsmembreseps',
+							'type' => 'INNER',
+							'conditions' => array(
+								'Membreep.fonctionmembreep_id = Fonctionmembreep.id'
+							)
+						),
+						array(
+							'alias' => 'CommissionepMembreep',
+							'table' => 'commissionseps_membreseps',
+							'type' => 'LEFT OUTER',
+							'conditions' => array(
+								'CommissionepMembreep.commissionep_id = Commissionep.id',
+								'CommissionepMembreep.membreep_id = Membreep.id'
+							)
+						)
+					),
+					'contain' => false
+				)
+			);
+
+			foreach( $membresepsseanceseps as &$membreepseanceep ) {
+				if ( !empty( $membreepseanceep['CommissionepMembreep']['suppleant_id'] ) ) {
+					$remplacant = $this->Commissionep->Membreep->find(
+						'first',
+						array(
+							'conditions' => array(
+								'Membreep.id' => $membreepseanceep['CommissionepMembreep']['suppleant_id']
+							),
+							'contain' => false
+						)
+					);
 					$membreepseanceep['Membreep']['suppleant'] = implode(' ', array($remplacant['Membreep']['qual'], $remplacant['Membreep']['nom'], $remplacant['Membreep']['prenom']));
 				}
 			}

@@ -37,15 +37,10 @@
                     'Membreep.compladr',
                     'Membreep.codepostal',
                     'Membreep.ville',
-                    'Membreep.mail',
-					'Membreep.suppleant_id',
-					'Suppleant.qual',
-					'Suppleant.nom',
-					'Suppleant.prenom'
+                    'Membreep.mail'
 				),
 				'contain' => array(
-					'Fonctionmembreep',
-					'Suppleant'
+					'Fonctionmembreep'
 				),
 				'limit' => 10
 			);
@@ -54,11 +49,7 @@
 			$typesvoies = ClassRegistry::init( 'Option' )->typevoie();
 			foreach( $membreseps as &$membreep) {
                 $typevoie = Set::enum( Set::classicExtract( $membreep, 'Membreep.typevoie' ), $typesvoies );
-
-				if (isset($membreep['Suppleant']['id']) && !empty($membreep['Suppleant']['id']))
-					$membreep['Membreep']['nomcompletsuppleant'] = implode ( ' ', array( $membreep['Suppleant']['qual'], $membreep['Suppleant']['nom'], $membreep['Suppleant']['prenom']) );
 				$membreep['Membreep']['nomcomplet'] = implode ( ' ', array( $membreep['Membreep']['qual'], $membreep['Membreep']['nom'], $membreep['Membreep']['prenom']) );
-				
 				$membreep['Membreep']['adresse'] = implode ( ' ', array( $membreep['Membreep']['numvoie'], $typevoie, $membreep['Membreep']['nomvoie'], $membreep['Membreep']['compladr'], $membreep['Membreep']['codepostal'], $membreep['Membreep']['ville']  ) );
 
 			}
@@ -116,27 +107,6 @@
 				$this->assert( !empty( $this->data ), 'error404' );
 			}
 
-			$listeSuppleants = array();
-			if( $this->action == 'add' ) {
-				$membres = array();
-			}
-			elseif( $this->action == 'edit' ) {
-				$membres = $this->Membreep->find(
-					'all',
-					array(
-						'conditions'=>array(
-							'Membreep.id <>'=>$id,
-							'Membreep.fonctionmembreep_id'=>$this->data['Membreep']['fonctionmembreep_id']
-						),
-						'contain'=>false
-					)
-				);
-			}
-			foreach($membres as $membre) {
-				$listeSuppleants[$membre['Membreep']['id']] = implode(' ', array($membre['Membreep']['qual'], $membre['Membreep']['nom'], $membre['Membreep']['prenom']));
-			}
-			$this->set(compact('listeSuppleants'));
-
 			$this->_setOptions();
 			$this->render( null, null, 'add_edit' );
 		}
@@ -151,28 +121,6 @@
 			$this->redirect( array( 'action' => 'index' ) );
 		}
 
-		public function ajaxfindsuppleant() {
-            Configure::write( 'debug', 0 );
-            $suppleants = $this->Membreep->find(
-            	'all',
-            	array(
-            		'conditions'=>array(
-            			'Membreep.id <>'=>$this->data['Membreep']['id'],
-            			'Membreep.fonctionmembreep_id'=>$this->data['Membreep']['fonctionmembreep_id']
-            		),
-            		'contain'=>false
-            	)
-            );
-			$listeSuppleant = array();
-			foreach($suppleants as $suppleant) {
-				$listeSuppleant[$suppleant['Membreep']['id']] = $suppleant['Membreep']['qual'].' '.$suppleant['Membreep']['nom'].' '.$suppleant['Membreep']['prenom'];
-			}
-			$defaultvalue = $this->data['Membreep']['suppleant_id'];
-            $this->set( compact( 'listeSuppleant' ) );
-            $this->set( compact( 'defaultvalue' ) );
-            $this->render( $this->action, 'ajax', '/membreseps/ajaxfindsuppleant' );
-		}
-
 		/**
 		 * Dresse la liste de tous les membres de l'EP pour enregistrer ceux, parmis-eux, qui participeront à la séance.
 		 * @param integer $ep_id Index de l'EP dont on veut récupérer tous les membres.
@@ -180,34 +128,46 @@
 		public function editliste( $ep_id, $seance_id ) {
 			if( !empty( $this->data ) ) {
 				$success = true;
-				$this->Membreep->CommissionepMembreep->begin();
-				foreach($this->data['CommissionepMembreep']['Membreep_id'] as $membreep_id => $reponse) {
-					$existeEnBase = $this->Membreep->CommissionepMembreep->find(
-						'first',
-						array(
-							'conditions'=>array(
-								'CommissionepMembreep.membreep_id'=>$membreep_id,
-								'CommissionepMembreep.commissionep_id'=>$seance_id
-							),
-							'contain' => false
-						)
-					);
+				if ( !$this->Membreep->CommissionepMembreep->checkDoublon( $this->data['CommissionepMembreep']['Membreep_id'] ) ) {
+					$this->Membreep->CommissionepMembreep->begin();
+					foreach( $this->data['CommissionepMembreep']['Membreep_id'] as $membreep_id => $reponse ) {
+						$existeEnBase = $this->Membreep->CommissionepMembreep->find(
+							'first',
+							array(
+								'conditions'=>array(
+									'CommissionepMembreep.membreep_id'=>$membreep_id,
+									'CommissionepMembreep.commissionep_id'=>$seance_id
+								),
+								'contain' => false
+							)
+						);
 
-					if (!empty($existeEnBase)) {
-						$existeEnBase['CommissionepMembreep']['reponse'] = $reponse['reponse'];
-						$this->Membreep->CommissionepMembreep->create( $existeEnBase );
-						$success = $this->Membreep->CommissionepMembreep->save() && $success;
+						if (!empty($existeEnBase)) {
+							$existeEnBase['CommissionepMembreep']['reponse'] = $reponse['reponse'];
+							if ( $reponse['reponse'] == 'remplacepar' ) {
+								$existeEnBase['CommissionepMembreep']['suppleant_id'] = $reponse['suppleant_id'];
+							}
+							$this->Membreep->CommissionepMembreep->create( $existeEnBase );
+							$success = $this->Membreep->CommissionepMembreep->save() && $success;
+						}
+						else {
+							$nouvelleEntree['CommissionepMembreep']['commissionep_id'] = $seance_id;
+							$nouvelleEntree['CommissionepMembreep']['membreep_id'] = $membreep_id;
+							$nouvelleEntree['CommissionepMembreep']['reponse'] = $reponse['reponse'];
+							if ( $reponse['reponse'] == 'remplacepar' ) {
+								$nouvelleEntree['CommissionepMembreep']['suppleant_id'] = $reponse['suppleant_id'];
+							}
+							$this->Membreep->CommissionepMembreep->create($nouvelleEntree);
+							$success = $this->Membreep->CommissionepMembreep->save() && $success;
+						}
 					}
-					else {
-						$nouvelleEntree['CommissionepMembreep']['commissionep_id'] = $seance_id;
-						$nouvelleEntree['CommissionepMembreep']['membreep_id'] = $membreep_id;
-						$nouvelleEntree['CommissionepMembreep']['reponse'] = $reponse['reponse'];
-						$this->Membreep->CommissionepMembreep->create($nouvelleEntree);
-						$success = $this->Membreep->CommissionepMembreep->save() && $success;
-					}
+
+					$success = $this->Membreep->CommissionepMembreep->Commissionep->changeEtatCreeAssocie( $seance_id ) && $success;
 				}
-
-				$success = $this->Membreep->CommissionepMembreep->Commissionep->changeEtatCreeAssocie( $seance_id ) && $success;
+				else {
+					$success = false;
+					
+				}
 
 				$this->_setFlashResult( 'Save', $success );
 				if ($success) {
@@ -230,22 +190,9 @@
 						'Membreep.tel',
 						'Membreep.mail',
 						'Membreep.fonctionmembreep_id',
-						'Membreep.suppleant_id',
-						'CommissionepMembreep.reponse',
-						'Suppleant.qual',
-						'Suppleant.nom',
-						'Suppleant.prenom'
+						'CommissionepMembreep.reponse'
 					),
 					'joins' => array(
-						array(
-							'table' => 'membreseps',
-							'alias' => 'Suppleant',
-							'type' => 'LEFT OUTER',
-							'foreignKey' => false,
-							'conditions' => array(
-								'Suppleant.id = Membreep.suppleant_id'
-							)
-						),
 						array(
 							'table' => 'commissionseps_membreseps',
 							'alias' => 'CommissionepMembreep',
@@ -336,11 +283,43 @@
 			);
 			$this->set('fonctionsmembres', $fonctionsmembres);
 
+			$listemembres = $this->Membreep->find(
+				'all',
+				array(
+					'fields' => array(
+						'Membreep.id',
+						'Membreep.qual',
+						'Membreep.nom',
+						'Membreep.prenom',
+						'Membreep.fonctionmembreep_id'
+					),
+					'conditions' => array(
+						'Membreep.id NOT IN ( '.$this->Membreep->EpMembreep->sq(
+							array(
+								'fields' => array(
+									'eps_membreseps.membreep_id'
+								),
+								'alias' => 'eps_membreseps',
+								'conditions' => array(
+									'eps_membreseps.ep_id' => $ep_id
+								)
+							)
+						).' )'
+					),
+					'contain' => false
+				)
+			);
+
+			$membres_fonction = array();
+			foreach( $listemembres as $membreep ) {
+				$membres_fonction[$membreep['Membreep']['fonctionmembreep_id']][$membreep['Membreep']['id']] = implode( ' ', array( $membreep['Membreep']['qual'], $membreep['Membreep']['nom'], $membreep['Membreep']['prenom'] ) );
+			}
+			$this->set( 'membres_fonction', $membres_fonction );
+
 			$this->set('seance_id', $seance_id);
 			$this->set('ep_id', $ep_id);
 			$this->_setOptions();
 		}
-
 
 		public function editpresence( $ep_id, $seance_id ) {
 			if( !empty( $this->data ) ) {

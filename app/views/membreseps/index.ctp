@@ -13,8 +13,7 @@
 			'Fonctionmembreep.name',
 			'Membreep.tel',
 			'Membreep.adresse'=>array('type'=>'text'),
-			'Membreep.mail',
-			'Membreep.nomcompletsuppleant'=>array('type'=>'text')	
+			'Membreep.mail'
 		),
 		array(
 			'actions' => array(
