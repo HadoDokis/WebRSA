@@ -160,7 +160,10 @@
 					echo '<li>'.$xhtml->presenceLink(
 						__d('commissionep','Commissionep::presence',true),
 						array( 'controller' => 'membreseps', 'action' => 'editpresence', $commissionep['Commissionep']['ep_id'], $commissionep['Commissionep']['id'] ),
-						in_array( 'membreseps::editpresence', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] )
+						(
+							in_array( 'membreseps::editpresence', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] )
+							&& $commissionAujourdhui
+						)
 					).' </li>';
 				?>
 				</ul>
