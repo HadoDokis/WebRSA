@@ -32,11 +32,12 @@
     		if( $this->action != 'index' ) {
 				$options['Actioncandidat']['referent_id'] = $this->Referent->find('list');
 				$options['Zonegeographique'] = $this->Actioncandidat->Zonegeographique->find( 'list' );
-			}			
+				$this->loadModel( 'Canton' );
+                $this->set( 'cantons', $this->Canton->selectList() );
+			}
 			$this->set( compact( 'options' ) );
-		}        
-        
-        
+		}
+
         /**
         *   Ajout à la suite de l'utilisation des nouveaux helpers
         *   - default.php

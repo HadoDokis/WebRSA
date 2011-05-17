@@ -72,52 +72,6 @@
 
 		}
 
-
-//         function beforeFilter() {
-//             $return = parent::beforeFilter();
-//
-//             $options = array();
-//             foreach( $this->{$this->modelClass}->allEnumLists() as $field => $values ) {
-//                 $options = Set::insert( $options, "{$this->modelClass}.{$field}", $values );
-// //                 debug($options);
-//             }
-//
-//             $options = Set::insert( $options, 'Adresse.typevoie', $this->Option->typevoie() );
-//             $options = Set::insert( $options, 'Personne.qual', $this->Option->qual() );
-//             $options = Set::insert( $options, 'Contratinsertion.decision_ci', $this->Option->decision_ci() );
-//             $options = Set::insert( $options, 'Dsp', $this->Dsp->allEnumLists() );
-//
-//             foreach( array( 'Actioncandidat', /*'Personne', */'Referent'/*, 'Partenaire'*/ ) as $linkedModel ) {
-//                 $field = Inflector::singularize( Inflector::tableize( $linkedModel ) ).'_id';
-//                 $options = Set::insert( $options, "{$this->modelClass}.{$field}", $this->{$this->modelClass}->{$linkedModel}->find( 'list', array( 'recursive' => -1 ) ) );
-//
-//             }
-//             App::import( 'Helper', 'Locale' );
-//             $this->Locale = new LocaleHelper();
-//
-//             $options = Set::insert( $options, 'ActioncandidatPersonne.naturemobile', $this->Natmob->find( 'list' ) );
-//
-//
-//             $this->set( 'typevoie', $this->Option->typevoie() );
-//             $this->set( 'qual', $this->Option->qual() );
-//             $this->set( 'natureAidesApres', $this->Option->natureAidesApres() );
-//             $this->set( 'sitfam', $this->Option->sitfam() );
-//             $this->set( 'sect_acti_emp', $this->Option->sect_acti_emp() );
-//             $this->set( 'rolepers', $this->Option->rolepers() );
-//             $this->set( 'typeservice', $this->Serviceinstructeur->find( 'first' ) );
-//             $this->set( compact( 'options', 'typevoie' ) );
-//
-//
-//             ///Données nécessaire spour la création du RDV si celui-ci existe
-// //             $this->set( 'struct', $this->Structurereferente->listOptions() );
-// //             $this->set( 'sr', $this->Structurereferente->find( 'list', array( 'recursive' => 1 ) ) );
-// //             $this->set( 'referents', $this->Referent->find( 'list', array( 'recursive' => 1 ) ) );
-//
-//
-//
-//             return $return;
-//         }
-
   /**
 		*
   */
@@ -141,10 +95,17 @@
 			$this->assert( !empty( $dossierId ), 'invalidParameter' );
 			$this->set( compact( 'dossierId' ) );
 
+            $this->ActioncandidatPersonne->forceVirtualFields = true;
 			$queryData = array(
 				'ActioncandidatPersonne' => array(
 					'conditions' => array(
 						'ActioncandidatPersonne.personne_id' => $personne_id
+					),
+					'contain' => array(
+                        'Actioncandidat' => array(
+                            'Partenaire'
+                        ),
+                        'Referent'
 					)
 				)
 			);
@@ -155,8 +116,8 @@
 				)
 			);
 
-			$this->{$this->modelClass}->Personne->unbindModelAll( false );
-			$this->{$this->modelClass}->Referent->unbindModelAll( false );
+// 			$this->{$this->modelClass}->Personne->unbindModelAll( false );
+// 			$this->{$this->modelClass}->Referent->unbindModelAll( false );
 			$this->paginate = Set::merge( $this->paginate, $queryData );
 			$items = $this->paginate( $this->modelClass );
 			$varname = Inflector::tableize( $this->name );

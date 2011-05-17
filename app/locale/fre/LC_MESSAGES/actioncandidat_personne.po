@@ -43,6 +43,9 @@ msgstr "Modifier la fiche"
 msgid "ActioncandidatPersonne::gedooo"
 msgstr "Imprimer la fiche"
 
+msgid "ActioncandidatPersonne.positionfiche"
+msgstr "Position de la fiche"
+
 msgid "ENUM::BILANRETENU::RET"
 msgstr "Retenu(e)"
 
@@ -67,7 +70,6 @@ msgstr "Oui"
 msgid "ENUM::ENATTENTE::1"
 msgstr "Non"
 
-
 msgid "ENUM::PIECEALLOCATAIRE::CER"
 msgstr "Contrat d'Engagement Réciproque"
 
@@ -91,4 +93,16 @@ msgstr "Oui"
 
 msgid "ENUM::INTEGRATIONACTION::N"
 msgstr "Non"
+
+msgid "ENUM::POSITIONFICHE::enattente"
+msgstr "En attente"
+
+msgid "ENUM::POSITIONFICHE::sortie"
+msgstr "Sortie"
+
+msgid "ENUM::POSITIONFICHE::encours"
+msgstr "En cours"
+
+msgid "ENUM::POSITIONFICHE::nonretenue"
+msgstr "Non retenu(e)"
 ###############################################################################

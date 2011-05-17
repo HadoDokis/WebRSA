@@ -54,6 +54,22 @@ SELECT add_missing_constraint ('public', 'eps_membreseps', 'eps_membreseps_suppl
 SELECT add_missing_table_field ('public', 'membreseps', 'suppleant_id', 'INTEGER');
 ALTER TABLE membreseps DROP COLUMN suppleant_id;
 
+
+
+-- *************************************************************************************************************
+-- 20110517, ajout d'une valeur pour le type enum contractualisation dans les fiches de candidatures 66
+-- *************************************************************************************************************
+ALTER TABLE actionscandidats ALTER COLUMN contractualisation TYPE TEXT;
+DROP TYPE TYPE_CONTRACTUALISATION;
+CREATE TYPE TYPE_CONTRACTUALISATION AS ENUM ( 'marche', 'subvention', 'internecg' );
+ALTER TABLE actionscandidats ALTER COLUMN contractualisation TYPE TYPE_CONTRACTUALISATION USING CAST(contractualisation AS TYPE_CONTRACTUALISATION);
+
+
+DROP TYPE IF EXISTS TYPE_POSITIONFICHE;
+CREATE TYPE TYPE_POSITIONFICHE AS ENUM ( 'enattente', 'encours', 'nonretenue', 'sortie' );
+ALTER TABLE actionscandidats_personnes ADD COLUMN positionfiche TYPE_POSITIONFICHE DEFAULT  'enattente'::type_positionfiche;
+
+SELECT add_missing_table_field ('public', 'actionscandidats_personnes', 'issortie', 'type_booleannumber');
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

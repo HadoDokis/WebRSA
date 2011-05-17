@@ -65,7 +65,10 @@
 					'integrationaction' => array(
 						'values' => array( 'O', 'N' ),
 						'domain' => 'actioncandidat_personne'
-					)
+					),
+                    'positionfiche' => array(
+                        'domain' => 'actioncandidat_personne'
+                    )
 				)
 			),
 			'Formattable',
@@ -125,5 +128,46 @@
 				'message' => 'Champ obligatoire'
 			),
 		);
+
+
+        /**
+        *   BeforeSave
+        */
+
+        public function beforeSave( $options = array() ) {
+            $return = parent::beforeSave( $options );
+            //  Calcul de la position de la fiche de calcul
+            $this->data[$this->alias]['positionfiche'] = $this->_calculPosition( $this->data );
+
+            return $return;
+        }
+
+
+        protected function _calculPosition( $data ){
+
+            $bilanrecu = Set::classicExtract( $data, 'ActioncandidatPersonne.bilanvenu' );
+            $bilanretenu = Set::classicExtract( $data, 'ActioncandidatPersonne.bilanretenu' );
+            $issortie = Set::classicExtract( $data, 'ActioncandidatPersonne.issortie' );
+
+            $positionfiche = null;
+            // 'encours', 'attvalid', 'annule', 'fincontrat', 'encoursbilan', 'attrenouv', 'perime'
+
+
+            if ( empty( $bilanrecu ) && empty( $bilanretenu ) && empty( $motifsortie ) ){
+                $positionfiche = 'enattente';
+            }
+            elseif ( !empty( $bilanrecu ) && ( $bilanretenu == 'NRE' ) && empty( $issortie ) ){
+                $positionfiche = 'nonretenue';
+            }
+            elseif ( !empty( $bilanrecu ) && ( $bilanretenu != 'NRE' ) && empty( $issortie ) ){
+                $positionfiche = 'encours';
+            }
+            elseif ( !empty( $bilanrecu ) && ( $bilanretenu != 'NRE' ) && !empty( $issortie ) ){
+                $positionfiche = 'sortie';
+            }
+
+            return $positionfiche;
+        }
+
 	}
 ?>
