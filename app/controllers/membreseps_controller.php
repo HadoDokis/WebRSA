@@ -125,7 +125,7 @@
 		* Dresse la liste de tous les membres de l'EP pour enregistrer ceux, parmis-eux, qui participeront à la séance.
 		* @param integer $ep_id Index de l'EP dont on veut récupérer tous les membres.
 		*/
-		public function editliste( $ep_id, $seance_id ) {
+		public function editliste( $commissionep_id ) {
 			if( !empty( $this->data ) ) {
 				$success = true;
 				if ( !$this->Membreep->CommissionepMembreep->checkDoublon( $this->data['CommissionepMembreep']['Membreep_id'] ) ) {
@@ -136,7 +136,7 @@
 							array(
 								'conditions'=>array(
 									'CommissionepMembreep.membreep_id'=>$membreep_id,
-									'CommissionepMembreep.commissionep_id'=>$seance_id
+									'CommissionepMembreep.commissionep_id'=>$commissionep_id
 								),
 								'contain' => false
 							)
@@ -151,7 +151,7 @@
 							$success = $this->Membreep->CommissionepMembreep->save() && $success;
 						}
 						else {
-							$nouvelleEntree['CommissionepMembreep']['commissionep_id'] = $seance_id;
+							$nouvelleEntree['CommissionepMembreep']['commissionep_id'] = $commissionep_id;
 							$nouvelleEntree['CommissionepMembreep']['membreep_id'] = $membreep_id;
 							$nouvelleEntree['CommissionepMembreep']['reponse'] = $reponse['reponse'];
 							if ( $reponse['reponse'] == 'remplacepar' ) {
@@ -162,7 +162,7 @@
 						}
 					}
 
-					$success = $this->Membreep->CommissionepMembreep->Commissionep->changeEtatCreeAssocie( $seance_id ) && $success;
+					$success = $this->Membreep->CommissionepMembreep->Commissionep->changeEtatCreeAssocie( $commissionep_id ) && $success;
 				}
 				else {
 					$success = false;
@@ -172,12 +172,23 @@
 				$this->_setFlashResult( 'Save', $success );
 				if ($success) {
 					$this->Membreep->CommissionepMembreep->commit();
-					$this->redirect(array('controller'=>'commissionseps', 'action'=>'view', $seance_id));
+					$this->redirect(array('controller'=>'commissionseps', 'action'=>'view', $commissionep_id));
 				}
 				else {
 					$this->Membreep->CommissionepMembreep->rollback();
 				}
 			}
+
+			$commissionep = $this->Membreep->CommissionepMembreep->Commissionep->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Commissionep.id' => $commissionep_id
+					),
+					'contain' => false
+				)
+			);
+			$ep_id = $commissionep['Commissionep']['ep_id'];
 
 			$membres = $this->Membreep->find(
 				'all',
@@ -200,7 +211,7 @@
 							'foreignKey' => false,
 							'conditions' => array(
 								'Membreep.id = CommissionepMembreep.membreep_id',
-								'CommissionepMembreep.commissionep_id' => $seance_id
+								'CommissionepMembreep.commissionep_id' => $commissionep_id
 							)
 						),
 						array(
@@ -316,12 +327,12 @@
 			}
 			$this->set( 'membres_fonction', $membres_fonction );
 
-			$this->set('seance_id', $seance_id);
+			$this->set('seance_id', $commissionep_id);
 			$this->set('ep_id', $ep_id);
 			$this->_setOptions();
 		}
 
-		public function editpresence( $ep_id, $seance_id ) {
+		public function editpresence( $commissionep_id ) {
 			if( !empty( $this->data ) ) {
 				$success = true;
 				$this->Membreep->CommissionepMembreep->begin();
@@ -331,7 +342,7 @@
 						array(
 							'conditions'=>array(
 								'CommissionepMembreep.membreep_id'=>$membreep_id,
-								'CommissionepMembreep.commissionep_id'=>$seance_id
+								'CommissionepMembreep.commissionep_id'=>$commissionep_id
 							),
 							'contain' => false
 						)
@@ -345,7 +356,7 @@
 						$success = $this->Membreep->CommissionepMembreep->save() && $success;
 					}
 					else {
-						$nouvelleEntree['CommissionepMembreep']['commissionep_id'] = $seance_id;
+						$nouvelleEntree['CommissionepMembreep']['commissionep_id'] = $commissionep_id;
 						$nouvelleEntree['CommissionepMembreep']['membreep_id'] = $membreep_id;
 						$nouvelleEntree['CommissionepMembreep']['presence'] = $reponse['presence'];
 						if ( $reponse['presence'] == 'remplacepar' ) {
@@ -356,17 +367,28 @@
 					}
 				}
 
-				$success = $this->Membreep->CommissionepMembreep->Commissionep->changeEtatAssociePresence( $seance_id ) && $success;
+				$success = $this->Membreep->CommissionepMembreep->Commissionep->changeEtatAssociePresence( $commissionep_id ) && $success;
 
 				$this->_setFlashResult( 'Save', $success );
 				if ($success) {
 					$this->Membreep->CommissionepMembreep->commit();
-					$this->redirect(array('controller'=>'commissionseps', 'action'=>'view', $seance_id));
+					$this->redirect(array('controller'=>'commissionseps', 'action'=>'view', $commissionep_id));
 				}
 				else {
 					$this->Membreep->CommissionepMembreep->rollback();
 				}
 			}
+
+			$commissionep = $this->Membreep->CommissionepMembreep->Commissionep->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Commissionep.id' => $commissionep_id
+					),
+					'contain' => false
+				)
+			);
+			$ep_id = $commissionep['Commissionep']['ep_id'];
 
 			$membres = $this->Membreep->find(
 				'all',
@@ -392,7 +414,7 @@
 							'foreignKey' => false,
 							'conditions' => array(
 								'Membreep.id = CommissionepMembreep.membreep_id',
-								'CommissionepMembreep.commissionep_id' => $seance_id
+								'CommissionepMembreep.commissionep_id' => $commissionep_id
 							)
 						),
 						array(
@@ -508,7 +530,7 @@
 			}
 			$this->set( 'membres_fonction', $membres_fonction );
 
-			$this->set('seance_id', $seance_id);
+			$this->set('seance_id', $commissionep_id);
 			$this->set('ep_id', $ep_id);
 			$this->_setOptions();
 		}

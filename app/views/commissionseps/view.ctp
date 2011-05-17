@@ -153,16 +153,16 @@
 				<?php
 					echo '<li>'.$xhtml->editLink(
 						__d('commissionep','Commissionep.edit',true),
-						array( 'controller' => 'membreseps', 'action' => 'editliste', $commissionep['Commissionep']['ep_id'], $commissionep['Commissionep']['id'] ),
+						array( 'controller' => 'membreseps', 'action' => 'editliste', $commissionep['Commissionep']['id'] ),
 						in_array( 'membreseps::editliste', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] )
 					).' </li>';
 
 					echo '<li>'.$xhtml->presenceLink(
 						__d('commissionep','Commissionep::presence',true),
-						array( 'controller' => 'membreseps', 'action' => 'editpresence', $commissionep['Commissionep']['ep_id'], $commissionep['Commissionep']['id'] ),
+						array( 'controller' => 'membreseps', 'action' => 'editpresence', $commissionep['Commissionep']['id'] ),
 						(
 							in_array( 'membreseps::editpresence', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] )
-							&& $commissionAujourdhui
+							&& $presencesPossible
 						)
 					).' </li>';
 				?>

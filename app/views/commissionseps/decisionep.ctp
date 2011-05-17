@@ -1,29 +1,19 @@
-<h1><?php echo $this->pageTitle = 'Traitement de la commission du '.date('d-m-Y à h:i', strtotime($commissionep['Commissionep']['dateseance'])).' par l\'EP '; ?></h1>
+<h1><?php echo $this->pageTitle = 'Décisions de la commission du '.date('d-m-Y à h:i', strtotime($commissionep['Commissionep']['dateseance'])).' par l\'EP '; ?></h1>
 <?php echo $javascript->link( 'dependantselect.js' ); ?>
 <br/>
 <div id="tabbedWrapper" class="tabs">
 	<?php
-		echo $form->create( null, array( 'url' => Router::url( null, true ) ) );
-
 		foreach( array_keys( $dossiers ) as $theme ) {
-			$file = sprintf( 'traiterep.%s.liste.ctp', Inflector::underscore( $theme ) );
+			$file = sprintf( 'decisionep.%s.liste.ctp', Inflector::underscore( $theme ) );
 			echo '<div id="'.$theme.'"><h2 class="title">'.__d( 'dossierep', 'ENUM::THEMEEP::'.Inflector::tableize( $theme ), true ).'</h2>';
 			if( !empty( $dossiers[$theme]['liste'] ) ) {
 				require_once( $file );
 			}
 			else {
-				echo '<p class="notice">Aucun dossier à traiter pour cette thématique.</p>';
+				echo '<p class="notice">Aucun dossier n\'a été traité pour cette thématique.</p>';
 			}
 			echo '</div>';
 		}
-
-		echo '<div class="submit">';
-			echo $form->submit( 'Enregistrer', array( 'div' => false ) );
-			if ( $commissionep['Commissionep']['etatcommissionep'] == 'decisionep' ) {
-				echo $form->submit( 'Valider', array( 'name' => 'Valider', 'div' => false ) );
-			}
-		echo '</div>';
-		echo $form->end();
 
 		echo $default->button(
 			'back',
@@ -36,7 +26,11 @@
 				'id' => 'Back'
 			)
 		);
-		
+
+		echo $form->create( null, array( 'url' => Router::url( null, true ) ) );
+		echo $form->submit( 'Imprimer le PV de la commission', array( 'name' => 'Imprimerpv' ) );
+		echo $form->end();
+
 	?>
 </div>
 
@@ -51,7 +45,7 @@
 	makeTabbed( 'tabbedWrapper', 2 );
 	
 	function changeColspanRaisonNonPassage( idColumnToChangeColspan, decision, idsNonRaisonpassage, idRaisonpassage ) {
-		if ( $F( decision ) == 'reporte' || $F( decision ) == 'annule' ) {
+		if ( decision == 'reporte' || decision == 'annule' ) {
 			$( idColumnToChangeColspan ).writeAttribute( "colspan", "1" );
 		}
 		else {
@@ -61,17 +55,17 @@
 	}
 
 	function afficheRaisonpassage( decision, idsNonRaisonpassage, idRaisonpassage ) {
-		if ( $F( decision ) == 'reporte' || $F( decision ) == 'annule' ) {
+		if ( decision == 'reporte' || decision == 'annule' ) {
 			idsNonRaisonpassage.each( function ( id ) {
-				$( id ).up(1).hide();
+				$( id ).hide();
 			});
-			$( idRaisonpassage ).up(1).show();
+			$( idRaisonpassage ).show();
 		}
 		else {
 			idsNonRaisonpassage.each( function ( id ) {
-				$( id ).up(1).show();
+				$( id ).show();
 			});
-			$( idRaisonpassage ).up(1).hide();
+			$( idRaisonpassage ).hide();
 		}
 	}
 </script>

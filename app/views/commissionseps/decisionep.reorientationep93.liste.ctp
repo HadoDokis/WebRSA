@@ -1,0 +1,47 @@
+<?php
+echo '<table><thead>
+<tr>
+<th>Dossier EP</th>
+<th>Nom du demandeur</th>
+<th>Adresse</th>
+<th>Date de naissance</th>
+<th>Création du dossier EP</th>
+<th>Motif de la demande</th>
+<th>Orientation actuelle</th>
+<th>Structure référente actuelle</th>
+<th>Orientation préconisée</th>
+<th>Structure référente préconisée</th>
+<th colspan=\'3\'>Avis EP</th>
+</tr>
+</thead><tbody>';
+	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
+		echo $xhtml->tableCells(
+			array(
+				$dossierep['Dossierep']['id'],
+				implode( ' ', array( $dossierep['Personne']['qual'], $dossierep['Personne']['nom'], $dossierep['Personne']['prenom'] ) ),
+				implode( ' ', array( $dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['numvoie'], isset( $typevoie[$dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie']] ) ? $typevoie[$dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie']] : null, $dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['nomvoie'] ) ),
+				$locale->date( __( 'Locale->date', true ), $dossierep['Personne']['dtnai'] ),
+				$locale->date( __( 'Locale->date', true ), $dossierep['Dossierep']['created'] ),
+				$dossierep['Reorientationep93']['Motifreorientep93']['name'],
+				$dossierep['Reorientationep93']['Orientstruct']['Typeorient']['lib_type_orient'],
+				$dossierep['Reorientationep93']['Orientstruct']['Structurereferente']['lib_struc'],
+				@$dossierep['Reorientationep93']['Typeorient']['lib_type_orient'],
+				@$dossierep['Reorientationep93']['Structurereferente']['lib_struc'],
+				
+				$options['Decisionreorientationep93']['decision'][Set::classicExtract( $datas, "Decisionreorientationep93.{$i}.decision" )],
+				array( $typesorients[Set::classicExtract( $datas, "Decisionreorientationep93.{$i}.typeorient_id" )], array( 'id' => "Decisionreorientationep93{$i}TypeorientId" ) ),
+				array( $structuresreferentes[Set::classicExtract( $datas, "Decisionreorientationep93.{$i}.structurereferente_id" )], array( 'id' => "Decisionreorientationep93{$i}StructurereferenteId" ) ),
+				array( Set::classicExtract( $datas, "Decisionreorientationep93.{$i}.raisonnonpassage" ), array( 'colspan' => '2', 'id' => "Decisionreorientationep93{$i}Raisonnonpassage" ) )
+			)
+		);
+	}
+	echo '</tbody></table>';
+?>
+
+<script type="text/javascript">
+	document.observe("dom:loaded", function() {
+		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
+			afficheRaisonpassage( '<?php echo $options['Decisionreorientationep93']['decision'][Set::classicExtract( $datas, "Decisionreorientationep93.{$i}.decision" )];?>', [ 'Decisionreorientationep93<?php echo $i;?>TypeorientId', 'Decisionreorientationep93<?php echo $i;?>StructurereferenteId' ], 'Decisionreorientationep93<?php echo $i;?>Raisonnonpassage' );
+		<?php endfor;?>
+	});
+</script>
