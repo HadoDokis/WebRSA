@@ -1,12 +1,12 @@
 <?php
-    class Detailprojpro extends AppModel
-    {
-        var $name = 'Detailprojpro';
+	class Detailprojpro extends AppModel
+	{
+		public $name = 'Detailprojpro';
 
-        var $actsAs = array(
-            'Enumerable' => array(
-                'fields' => array(
-                    'projpro' => array(
+		public $actsAs = array(
+			'Enumerable' => array(
+				'fields' => array(
+					'projpro' => array(
 						'type' => 'projpro', 'domain' => 'dsp'
 					),
 				)
@@ -15,6 +15,14 @@
 			'Autovalidate'
 		);
 
-        var $belongsTo = array( 'Dsp' );
-    }
+		public $belongsTo = array(
+			'Dsp' => array(
+				'className' => 'Dsp',
+				'foreignKey' => 'dsp_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+		);
+	}
 ?>

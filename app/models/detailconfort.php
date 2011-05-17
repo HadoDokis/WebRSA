@@ -1,12 +1,12 @@
 <?php
-    class Detailconfort extends AppModel
-    {
-        var $name = 'Detailconfort';
+	class Detailconfort extends AppModel
+	{
+		public $name = 'Detailconfort';
 
-        var $actsAs = array(
-            'Enumerable' => array(
-                'fields' => array(
-                    'confort' => array(
+		public $actsAs = array(
+			'Enumerable' => array(
+				'fields' => array(
+					'confort' => array(
 						'type' => 'confort', 'domain' => 'dsp'
 					),
 				)
@@ -14,6 +14,14 @@
 			'Autovalidate'
 		);
 
-        var $belongsTo = array( 'Dsp' );
-    }
+		public $belongsTo = array(
+			'Dsp' => array(
+				'className' => 'Dsp',
+				'foreignKey' => 'dsp_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+		);
+	}
 ?>

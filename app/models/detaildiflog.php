@@ -1,14 +1,22 @@
 <?php
-    class Detaildiflog extends AppModel
-    {
-        var $name = 'Detaildiflog';
+	class Detaildiflog extends AppModel
+	{
+		public $name = 'Detaildiflog';
 
-        var $belongsTo = array( 'Dsp' );
+		public $belongsTo = array(
+			'Dsp' => array(
+				'className' => 'Dsp',
+				'foreignKey' => 'dsp_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+		);
 
-        var $actsAs = array(
-            'Enumerable' => array(
-                'fields' => array(
-                    'diflog' => array(
+		public $actsAs = array(
+			'Enumerable' => array(
+				'fields' => array(
+					'diflog' => array(
 						'type' => 'diflog', 'domain' => 'dsp'
 					),
 				)
@@ -16,5 +24,5 @@
 			'Revision' => array('auto'=>false),
 			'Autovalidate'
 		);
-    }
+	}
 ?>

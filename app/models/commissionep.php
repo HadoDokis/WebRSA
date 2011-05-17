@@ -735,7 +735,7 @@
 					'Adresse.locaadr',
                     'Adresse.numcomptt',
                     'Adresse.codepos',
-					
+
 				),
 				'joins' => array(
 					array(
@@ -874,7 +874,7 @@
 		*
 		*/
 
-		public function getPdfOrdreDuJour( $commissionep_id ) {
+		/*public function getPdfOrdreDuJour( $commissionep_id ) {
  			$commissionep_data = $this->find(
 				'first',
 				array(
@@ -1050,7 +1050,7 @@
 				true,
 				$options
 			);
-		}
+		}*/
 
 
         /**
@@ -1076,29 +1076,210 @@
         }
 
         /**
-        *   Impression des convocations pour les participants à une commission d'EP
+        *   Impression de convocation pour un participant à une commission d'EP
         */
 
         public function getPdfConvocationParticipant( $commissionep_membreep_id ) {
+			// Participant auquel la convocation doit être envoyée
+			$convocation = $this->CommissionepMembreep->find(
+				'first',
+				array(
+					'conditions' => array(
+						'CommissionepMembreep.id' => $commissionep_membreep_id
+					),
+					'contain' => array(
+						'Commissionep',
+						'Membreep' => array(
+							'Fonctionmembreep'
+						)
+					)
+				)
+			);
+			$convocation = array( 'Participant' => $convocation['Membreep'], 'Commissionep' => $convocation['Commissionep'] );
 
-            $participant = $this->CommissionepMembreep->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'CommissionepMembreep.id' => $commissionep_membreep_id
-                    ),
-                    'contain' => array(
-                        'Commissionep',
-                        'Membreep' => array(
-                            'Fonctionmembreep'
-                        )
-                    )
-                )
-            );
+			$queryData = array(
+				'fields' => array(
+					'Dossierep.themeep',
+					'Adresse.locaadr',
+					'COUNT("Dossierep"."id") AS "nombre"',
+				),
+				'joins' => array(
+					array(
+						'table'      => 'passagescommissionseps',
+						'alias'      => 'Passagecommissionep',
+						'type'       => 'INNER',
+						'foreignKey' => false,
+						'conditions' => array( "Dossierep.id = Passagecommissionep.dossierep_id" ),
+					),
+					array(
+						'table'      => 'personnes',
+						'alias'      => 'Personne',
+						'type'       => 'INNER',
+						'foreignKey' => false,
+						'conditions' => array( "Dossierep.personne_id = Personne.id" ),
+					),
+					array(
+						'table'      => 'foyers',
+						'alias'      => 'Foyer',
+						'type'       => 'INNER',
+						'foreignKey' => false,
+						'conditions' => array( 'Personne.foyer_id = Foyer.id' )
+					),
+					array(
+						'table'      => 'adressesfoyers',
+						'alias'      => 'Adressefoyer',
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array(
+							'Foyer.id = Adressefoyer.foyer_id',
+							// FIXME: c'est un hack pour n'avoir qu'une seule adresse de range 01 par foyer!
+							'Adressefoyer.id IN (
+								'.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01('Adressefoyer.foyer_id').'
+							)'
+						)
+					),
+					array(
+						'table'      => 'adresses',
+						'alias'      => 'Adresse',
+						'type'       => 'INNER',
+						'foreignKey' => false,
+						'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
+					)
+				),
+				'conditions' => array(
+					'Passagecommissionep.commissionep_id' => $convocation['Commissionep']['id']
+				),
+				'group' => array(
+					'Dossierep.themeep',
+					'Adresse.locaadr'
+				),
+				'order' => array(
+					'Adresse.locaadr ASC'
+				)
+			);
 /*
-debug($participant);
-die();*/
-            return $this->ged( $participant, "{$this->alias}/convocationep_participant.odt" );
+	SELECT
+			dossierseps.themeep,
+			adresses.locaadr,
+			COUNT(dossierseps.id)
+		FROM dossierseps
+			INNER JOIN passagescommissionseps ON (
+				passagescommissionseps.dossierep_id = dossierseps.id
+			)
+			INNER JOIN personnes ON (
+				dossierseps.personne_id = personnes.id
+			)
+			INNER JOIN foyers ON (
+				personnes.foyer_id = foyers.id
+			)
+			INNER JOIN adressesfoyers ON (
+				adressesfoyers.foyer_id = foyers.id
+				AND adressesfoyers.rgadr = '01'
+			)
+			INNER JOIN adresses ON (
+				adressesfoyers.adresse_id = adresses.id
+			)
+		WHERE passagescommissionseps.commissionep_id = 1
+		GROUP BY
+			dossierseps.themeep,
+			adresses.locaadr
+*/
+
+			$options = array( 'Personne' => array( 'qual' => ClassRegistry::init( 'Option' )->qual() ) );
+			$options = Set::merge( $options, $this->enums() );
+			$options = Set::merge( $options, $this->Passagecommissionep->Dossierep->enums() );
+			$options = Set::merge( $options, $this->Membreep->enums() );
+			$options = Set::merge( $options, $this->CommissionepMembreep->enums() );
+			$options = Set::merge( $options, $this->Passagecommissionep->enums() );
+
+			$dossierseps = $this->Passagecommissionep->Dossierep->find( 'all', $queryData );
+			// FIXME: faire la traduction des enums dans les modèles correspondants ?
+
+// function themesTraites( $id )
+
+/*
+array(
+	array(
+		'commune' => 'PANTIN',
+		'contratscomplexeseps93' => 0,
+		'nonrespectssanctionseps93' => 0
+	)
+)
+*/
+
+// debug($convocation);
+debug($dossierseps);
+die();
+
+
+			// present, excuse, FIXME: remplace_par
+			$reponsesTmp = $this->CommissionepMembreep->find(
+				'all',
+				array(
+					'conditions' => array(
+						'CommissionepMembreep.commissionep_id' => $commissionep_id
+					),
+					'contain' => array(
+						'Membreep' => array(
+							'Fonctionmembreep'
+						)
+					)
+				)
+			);
+
+			// FIXME: presence -> obliger de prendre les présences avant d'imprimer le PV
+			$reponses = array();
+			foreach( $reponsesTmp as $reponse ) {
+				$reponses["Reponses_{$reponse['CommissionepMembreep']['reponse']}"][] = array( 'Membreep' => $reponse['Membreep'] );
+			}
+			foreach( $options['CommissionepMembreep']['reponse'] as $typereponse => $libelle ) {
+				if( !isset( $reponses["Reponses_{$typereponse}"] ) ) {
+					$reponses["Reponses_{$typereponse}"] = array();
+				}
+				$commissionep_data["reponses_{$typereponse}_count"] = count( $reponses["Reponses_{$typereponse}"] );
+			}
+
+			// Nb de dossiers d'EP par nom de commune
+			///FIXME: voir comment faire pour avoir et la ville et le nombre correspondant
+			$dossiersParCommune = array();
+			$adresses = array();
+			foreach( $dossierseps as $key => $adresse ) {
+				$adresses["Dossiers_{$adresse['Adresse']['locaadr']}"][] = array( 'Adresse' => $adresse['Adresse'] );
+				$locaadr = $adresse['Adresse']['locaadr'];
+//                 $commissionep_data["nbdossiers_parville_count"][$locaadr] = count( $adresses["Dossiers_{$adresse['Adresse']['locaadr']}"] );
+				//$commissionep_data["nbdossiers_{$locaadr}_count"] = count( $adresses["Dossiers_{$adresse['Adresse']['locaadr']}"] );
+				$dossiersParCommune[] = array( 'ville' => $locaadr, 'count' => count( $adresses["Dossiers_{$adresse['Adresse']['locaadr']}"] ) );
+			}
+
+			// Nb de dossiers d'EP par thématique
+			$themes = array();
+			foreach( $dossierseps as $key => $theme ) {
+				$themes["Themes_{$theme['Dossierep']['themeep']}"][] = array( 'Dossierep' => $theme['Dossierep'] );
+			}
+			foreach( $options['Dossierep']['themeep'] as $theme => $libelleTheme ) {
+				if( !isset( $themes["Themes_{$theme}"] ) ) {
+					$themes["Themes_{$theme}"] = array();
+				}
+//                 $commissionep_data["nbdossiers_{$theme}_count"] = count( $themes["Themes_{$theme}"] );
+				$dossiersParTheme[] = array( 'theme' => $theme, 'count' => count( $themes["Themes_{$theme}"] ) );
+			}
+
+			/*return $this->ged(
+				array_merge(
+					array(
+						$commissionep_data,
+						'Dossierseps' => $dossierseps,
+						'DossiersParCommune' => $dossiersParCommune,
+						'DossiersParTheme' => $dossiersParTheme
+					),
+					$reponses
+				),
+				"{$this->alias}/ordedujour.odt",
+				true,
+				$options
+			);*/
+
+            return $this->ged( $convocation, "{$this->alias}/convocationep_participant.odt" );
         }
 
 
@@ -1153,7 +1334,7 @@ die();*/
                     'Adresse.locaadr',
                     'Adresse.numcomptt',
                     'Adresse.codepos',
-                    
+
                 ),
                 'joins' => array(
                     array(
