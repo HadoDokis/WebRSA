@@ -1072,6 +1072,14 @@ td.button.print.disabled a, td.action a.print.disabled, td span.button.print.dis
     background-image: url( ../img/icons/printer_disabled.png );
 }
 
+td.button.gedooo a, td.action a.gedooo, td span.button.gedooo, table.default2 td a.button.gedooo {
+    background-image: url( ../img/icons/printer.png );
+}
+
+td.button.gedooo.disabled a, td.action a.gedooo.disabled, td span.button.gedooo.disabled, table.default2 td a.button.gedooo.disabled {
+    background-image: url( ../img/icons/printer_disabled.png );
+}
+
 td.button.delete a, td.action a.delete, td span.button.delete, table.default2 td a.button.delete {
 	background-image: url( ../img/icons/delete.png );
 }
