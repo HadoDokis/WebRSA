@@ -293,78 +293,78 @@
 
 
 
-            <?php if( Configure::read( 'Cg.departement' ) == 34 ):?>
-                <!-- Début du menu des maquettes offre d'insertion-->
-                <li id="menuTest0one" >
-                    <?php echo $html->link( 'Offre d\'Insertion', '#' );?>
-                    <ul>
-                        <li>
-                            <?php echo $html->link( 'Appels à projet', '#' );?>
-                            <ul>
-                                <li><?php echo $html->link( 'Saisie appels à projet', array( 'controller' => 'pages/display/webrsa/', 'action' => 'candidature_appel_a_projet' ) );?></li>
-                                <li><?php echo $html->link( 'Liste des appels à projet', array( 'controller' => 'pages/display/webrsa/', 'action' => 'liste_appels_a_projet' ) );?></li>
-                                <!--
-                                <li>
-                                    <?php echo $html->link( 'Saisie appels à projet', '#' );?>
-                                    <ul>
-                                        <li><?php echo $html->link( 'Saisie appels à projet', array( 'controller' => 'pages/display/webrsa/', 'action' => 'candidature_appel_a_projet' ) );?></li>
-                                        <li><?php echo $html->link( 'Liste des appels à projet', array( 'controller' => 'pages/display/webrsa/', 'action' => 'liste_appels_a_projet' ) );?></li>
-                                    </ul>
-                                </li>
-                                <li><?php echo $html->link( 'Liste des appels à projet', array( 'controller' => 'pages/display/webrsa/', 'action' => 'liste_appels_a_projet' ) );?></li> -->
-                          </ul>
-                        </li>
-                        <li>
-                            <?php echo $html->link( 'Candidatures', '#' );?>
-                            <ul>
-                                <li><?php echo $html->link( 'Saisie de candidatures', array( 'controller' => 'pages/display/webrsa/', 'action' => 'saisie_candidature_structure1' ) );?></li>
-                                <li><?php echo $html->link( 'Liste des candidatures', array( 'controller' => 'pages/display/webrsa/', 'action' => 'suivi_candidats' ) );?></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <?php echo $html->link( 'Analyses des candidatures', '#' );?>
-                            <ul>
-                                <li><?php echo $html->link( 'Par lot', array( 'controller' => 'pages/display/webrsa/', 'action' => 'analyse_candidature' ) );?></li>
-                                <li><?php echo $html->link( 'Par structures', array( 'controller' => 'pages/display/webrsa/', 'action' => 'suivi_structure_candidate' ) );?></li>
-                                <li><?php echo $html->link( 'Par actions', array( 'controller' => 'pages/display/webrsa/', 'action' => 'selection_actions' ) );?></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <?php echo $html->link( 'Administration structure', '#' );?>
-                            <ul>
-                                <li><?php echo $html->link( 'Recherche de structures', array( 'controller' => 'pages/display/webrsa/', 'action' => 'recherche_admin_structure' ) );?></li>
-                                <li><?php echo $html->link( 'Suivi des étapes / pièces', array( 'controller' => 'pages/display/webrsa/', 'action' => 'suivi_etapes_pieces' ) );?></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <?php echo $html->link( 'Conventions', '#' );?>
-                            <ul>
-                                <li><?php echo $html->link( 'Liste des conventions', array( 'controller' => 'pages/display/webrsa/', 'action' => 'liste_convention' ) );?></li>
-                                <li><?php echo $html->link( 'Création de convention', array( 'controller' => 'pages/display/webrsa/', 'action' => 'create_convention' ) );?></li>
-                                <li><?php echo $html->link( 'Gestion des conventions', array( 'controller' => 'pages/display/webrsa/', 'action' => 'gestion_convention' ) );?></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <?php echo $html->link( 'Paiements', '#' );?>
-                            <ul>
-                                <li><?php echo $html->link( 'Saisie déclenchements paiement', array( 'controller' => 'pages/display/webrsa/', 'action' => 'gestion_convention' ) );?></li>
-                                <li><?php echo $html->link( 'Suivi des paiements', array( 'controller' => 'pages/display/webrsa/', 'action' => 'liste_suivi_paiement' ) );?></li>
-                                <li><?php echo $html->link( 'Demande de remboursement', array( 'controller' => 'pages/display/webrsa/', 'action' => 'demande_remboursement' ) );?></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <?php echo $html->link( 'Offres', '#' );?>
-                            <ul>
-                                <li><?php echo $html->link( 'Recherche d\'offres', array( 'controller' => 'pages/display/webrsa/', 'action' => 'recherche_offre' ) );?></li>
-                                <li><?php echo $html->link( 'Création d\'offres', array( 'controller' => 'pages/display/webrsa/', 'action' => 'create_offre' ) );?></li>
-                                <li><?php echo $html->link( 'Gestion des offres', array( 'controller' => 'pages/display/webrsa/', 'action' => 'gestion_offre' ) );?></li>
-                            </ul>
-                        </li>
-                            <li><?php echo $html->link( 'Suivi des stagiaires', array( 'controller' => 'pages/display/webrsa/', 'action' => 'suivi_stagiaires' ) );?></li>
-                    </ul>
-                </li>
-            <?php endif;?>
-              <!-- Fin du menu des maquettes offre d'insertion-->
+			<?php if( Configure::read( 'Cg.departement' ) == 34 ):?>
+				<!-- Début du menu des maquettes offre d'insertion-->
+				<li id="menuTest0one" >
+					<?php echo $html->link( 'Offre d\'Insertion', '#' );?>
+					<ul>
+						<li>
+							<?php echo $html->link( 'Appels à projet', '#' );?>
+							<ul>
+								<li><?php echo $html->link( 'Saisie appels à projet', array( 'controller' => 'pages/display/webrsa/', 'action' => 'candidature_appel_a_projet' ) );?></li>
+								<li><?php echo $html->link( 'Liste des appels à projet', array( 'controller' => 'pages/display/webrsa/', 'action' => 'liste_appels_a_projet' ) );?></li>
+								<!--
+								<li>
+									<?php echo $html->link( 'Saisie appels à projet', '#' );?>
+									<ul>
+										<li><?php echo $html->link( 'Saisie appels à projet', array( 'controller' => 'pages/display/webrsa/', 'action' => 'candidature_appel_a_projet' ) );?></li>
+										<li><?php echo $html->link( 'Liste des appels à projet', array( 'controller' => 'pages/display/webrsa/', 'action' => 'liste_appels_a_projet' ) );?></li>
+									</ul>
+								</li>
+								<li><?php echo $html->link( 'Liste des appels à projet', array( 'controller' => 'pages/display/webrsa/', 'action' => 'liste_appels_a_projet' ) );?></li> -->
+						</ul>
+						</li>
+						<li>
+							<?php echo $html->link( 'Candidatures', '#' );?>
+							<ul>
+								<li><?php echo $html->link( 'Saisie de candidatures', array( 'controller' => 'pages/display/webrsa/', 'action' => 'saisie_candidature_structure1' ) );?></li>
+								<li><?php echo $html->link( 'Liste des candidatures', array( 'controller' => 'pages/display/webrsa/', 'action' => 'suivi_candidats' ) );?></li>
+							</ul>
+						</li>
+						<li>
+							<?php echo $html->link( 'Analyses des candidatures', '#' );?>
+							<ul>
+								<li><?php echo $html->link( 'Par lot', array( 'controller' => 'pages/display/webrsa/', 'action' => 'analyse_candidature' ) );?></li>
+								<li><?php echo $html->link( 'Par structures', array( 'controller' => 'pages/display/webrsa/', 'action' => 'suivi_structure_candidate' ) );?></li>
+								<li><?php echo $html->link( 'Par actions', array( 'controller' => 'pages/display/webrsa/', 'action' => 'selection_actions' ) );?></li>
+							</ul>
+						</li>
+						<li>
+							<?php echo $html->link( 'Administration structure', '#' );?>
+							<ul>
+								<li><?php echo $html->link( 'Recherche de structures', array( 'controller' => 'pages/display/webrsa/', 'action' => 'recherche_admin_structure' ) );?></li>
+								<li><?php echo $html->link( 'Suivi des étapes / pièces', array( 'controller' => 'pages/display/webrsa/', 'action' => 'suivi_etapes_pieces' ) );?></li>
+							</ul>
+						</li>
+						<li>
+							<?php echo $html->link( 'Conventions', '#' );?>
+							<ul>
+								<li><?php echo $html->link( 'Liste des conventions', array( 'controller' => 'pages/display/webrsa/', 'action' => 'liste_convention' ) );?></li>
+								<li><?php echo $html->link( 'Création de convention', array( 'controller' => 'pages/display/webrsa/', 'action' => 'create_convention' ) );?></li>
+								<li><?php echo $html->link( 'Gestion des conventions', array( 'controller' => 'pages/display/webrsa/', 'action' => 'gestion_convention' ) );?></li>
+							</ul>
+						</li>
+						<li>
+							<?php echo $html->link( 'Paiements', '#' );?>
+							<ul>
+								<li><?php echo $html->link( 'Saisie déclenchements paiement', array( 'controller' => 'pages/display/webrsa/', 'action' => 'gestion_convention' ) );?></li>
+								<li><?php echo $html->link( 'Suivi des paiements', array( 'controller' => 'pages/display/webrsa/', 'action' => 'liste_suivi_paiement' ) );?></li>
+								<li><?php echo $html->link( 'Demande de remboursement', array( 'controller' => 'pages/display/webrsa/', 'action' => 'demande_remboursement' ) );?></li>
+							</ul>
+						</li>
+						<li>
+							<?php echo $html->link( 'Offres', '#' );?>
+							<ul>
+								<li><?php echo $html->link( 'Recherche d\'offres', array( 'controller' => 'pages/display/webrsa/', 'action' => 'recherche_offre' ) );?></li>
+								<li><?php echo $html->link( 'Création d\'offres', array( 'controller' => 'pages/display/webrsa/', 'action' => 'create_offre' ) );?></li>
+								<li><?php echo $html->link( 'Gestion des offres', array( 'controller' => 'pages/display/webrsa/', 'action' => 'gestion_offre' ) );?></li>
+							</ul>
+						</li>
+							<li><?php echo $html->link( 'Suivi des stagiaires', array( 'controller' => 'pages/display/webrsa/', 'action' => 'suivi_stagiaires' ) );?></li>
+					</ul>
+				</li>
+			<?php endif;?>
+			<!-- Fin du menu des maquettes offre d'insertion-->
 
 
 
@@ -382,25 +382,25 @@
 				<?php echo $xhtml->link( 'Eq. Pluri.', '#' );?>
 				<ul>
 					<li><a href="#">1. Mise en place du dispositif</a>
-                        <ul>
-                            <li><?php echo $xhtml->link( 'Création des membres', array( 'controller' => 'membreseps', 'action' => 'index' ) );?></li>
-                            <li><?php echo $xhtml->link( 'Création des EPs', array( 'controller' => 'eps', 'action' => 'index' ) );?></li>
-                            <li><?php echo $xhtml->link( 'Création des Commissions', array( 'controller' => 'commissionseps', 'action' => 'creationmodification' ) );?></li>
-                        </ul>
-                    </li>
-                    <li><?php echo $xhtml->link( '2. Constitution de la commission', array( 'controller' => 'commissionseps', 'action' => 'recherche' ) );?></li>
-                    <li><a href="#">3. Arbitrage</a>
-                        <ul>
-                            <li><?php echo $xhtml->link( 'EP', array( 'controller' => 'commissionseps', 'action' => 'arbitrage' ) );?></li>
-                            <li><?php echo $xhtml->link( 'CG', array( 'controller' => 'commissionseps', 'action' => 'arbitrage' ) );?></li>
-                        </ul>
-                    </li>
+						<ul>
+							<li><?php echo $xhtml->link( 'Création des membres', array( 'controller' => 'membreseps', 'action' => 'index' ) );?></li>
+							<li><?php echo $xhtml->link( 'Création des EPs', array( 'controller' => 'eps', 'action' => 'index' ) );?></li>
+							<li><?php echo $xhtml->link( 'Création des Commissions', array( 'controller' => 'commissionseps', 'action' => 'creationmodification' ) );?></li>
+						</ul>
+					</li>
+					<li><?php echo $xhtml->link( '2. Constitution de la commission', array( 'controller' => 'commissionseps', 'action' => 'recherche' ) );?></li>
+					<li><a href="#">3. Arbitrage</a>
+						<ul>
+							<li><?php echo $xhtml->link( 'EP', array( 'controller' => 'commissionseps', 'action' => 'arbitrage' ) );?></li>
+							<li><?php echo $xhtml->link( 'CG', array( 'controller' => 'commissionseps', 'action' => 'arbitrage' ) );?></li>
+						</ul>
+					</li>
 					<li>
-                        <?php if( Configure::read( 'Cg.departement' ) == 58 ):?>
-                            <a href="#">Motifs de saisine</a>
-                        <?php else:?>
-                            <a href="#">Thématiques</a>
-                        <?php endif;?>
+						<?php if( Configure::read( 'Cg.departement' ) == 58 ):?>
+							<a href="#">Motifs de saisine</a>
+						<?php else:?>
+							<a href="#">Thématiques</a>
+						<?php endif;?>
 						<ul>
 							<?php if( Configure::read( 'Cg.departement' ) == 66 ):?>
 								<li><?php echo $xhtml->link( 'Bilans de parcours 66', array( 'controller' => 'bilansparcours66', 'action' => 'index' ) );?></li>
@@ -412,7 +412,7 @@
 							<?php elseif( Configure::read( 'Cg.departement' ) == 58 ):?>
 								<li><?php echo $xhtml->link( 'Radiation de Pôle Emploi', array( 'controller' => 'sanctionseps58', 'action' => 'selectionradies' ) );?></li>
 								<li><?php echo $xhtml->link( 'Non inscription à Pôle Emploi', array( 'controller' => 'sanctionseps58', 'action' => 'selectionnoninscrits' ) );?></li>
-                                <li><?php echo $xhtml->link( 'Demande de maintien dans le social', array( 'controller' => 'nonorientationsproseps', 'action' => 'index' ) );?></li>
+								<li><?php echo $xhtml->link( 'Demande de maintien dans le social', array( 'controller' => 'nonorientationsproseps', 'action' => 'index' ) );?></li>
 							<?php endif;?>
 						</ul>
 					</li>

@@ -21,30 +21,7 @@
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
-			),
-			'Suppleant' => array(
-				'className' => 'Membreep',
-				'foreignKey' => 'suppleant_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
 			)
-		);
-
-		public $hasOne = array(
-			'Membreep' => array(
-				'className' => 'Membreep',
-				'foreignKey' => 'suppleant_id',
-				'dependent' => true,
-				'conditions' => '',
-				'fields' => '',
-				'order' => '',
-				'limit' => '',
-				'offset' => '',
-				'exclusive' => '',
-				'finderQuery' => '',
-				'counterQuery' => ''
-			),
 		);
 
 		public $hasAndBelongsToMany = array(

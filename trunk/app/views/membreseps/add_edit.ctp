@@ -23,8 +23,7 @@
 			'Membreep.nomvoie',
 			'Membreep.compladr',
 			'Membreep.codepostal',
-			'Membreep.ville',
-			'Membreep.suppleant_id' => array('type'=>'select', 'options'=>$listeSuppleants)
+			'Membreep.ville'
 		),
 		array(
 			'id' => 'MembreepAddEditForm',
@@ -32,10 +31,6 @@
 		)
 	);
 ?>
-
-<script type="text/javascript">
-	$( 'MembreepSuppleantId' ).up( 'div' ).id = 'updateMe';
-</script>
 
 <?php
     echo $default->button(
@@ -48,13 +43,4 @@
             'id' => 'Back'
         )
     );
-    
-	echo $ajax->observeField(
-		'MembreepFonctionmembreepId',
-		array(
-			'update' => 'updateMe',
-			'url' => Router::url( "/membreseps/ajaxfindsuppleant", true ),
-			'with' => 'Form.serializeElements( $$("form")[0].getElements() )'
-		)
-	);
 ?>
