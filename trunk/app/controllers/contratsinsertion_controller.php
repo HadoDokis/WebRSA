@@ -80,8 +80,11 @@
 				$this->set( 'actions', $this->Action->grouplist( 'prest' ) );
 				$optionsautreavissuspension = $this->Contratinsertion->Autreavissuspension->allEnumLists();
 				$optionsautreavisradiation = $this->Contratinsertion->Autreavisradiation->allEnumLists();
+				$this->set( 'fiches', $this->Contratinsertion->Personne->ActioncandidatPersonne->Actioncandidat->allEnumLists() );
+// 				debug($fiches);
 				$options = array_merge( $options, $optionsautreavissuspension );
 				$options = array_merge( $options, $optionsautreavisradiation );
+
 			}
 			$this->set( 'options', $options );
 		}
@@ -887,6 +890,27 @@
             $this->set( 'numouverturedroit', $numouverturedroit );
 
 			$this->set( 'valueFormeci', $valueFormeci );
+
+
+            /**
+            *   Utilisé pour les détections de fiche de candidature
+            *   pour savoir si des actions sont en cours ou non
+            */
+            $fichescandidature = $this->Contratinsertion->Personne->ActioncandidatPersonne->find(
+                'all',
+                array(
+                    'conditions' => array(
+                        'ActioncandidatPersonne.personne_id' => $personne_id
+                    ),
+                    'contain' => array(
+                        'Actioncandidat'
+                    )
+                )
+            );
+            $this->set( compact( 'fichescandidature' ) );
+
+
+
 
 			/// Essai de sauvegarde
 			if( !empty( $this->data ) ) {
