@@ -609,6 +609,7 @@
 				'CommissionepMembreep.presence',
 				'CommissionepMembreep.reponsesuppleant_id',
 				'CommissionepMembreep.presencesuppleant_id',
+				'Membreep.id',
 				'Membreep.qual',
 				'Membreep.nom',
 				'Membreep.prenom',
@@ -623,7 +624,7 @@
 				array(
 					'fields' => $fields,
 					'conditions'=> array(
-						'Commissionep.ep' => $commissionep_id
+						'Commissionep.id' => $commissionep_id
 					),
 					'joins' => array(
 						array(
@@ -805,6 +806,36 @@
 				$this->redirect( $this->referer() );
 			}
 		}
+
+        /**
+        *   Génération du document d'invitation à une  EP au participant.
+        *   Courrier contenant le lieu, date et heure de la commission EP
+        */
+
+        public function printConvocationParticipant( $dossierep_id ) {
+
+            $dossierep = $this->Commissionep->Passagecommissionep->Dossierep->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Dossierep.id' => $dossierep_id
+                    ),
+                    'contain' => false
+                )
+            );
+
+            $pdf = $this->Commissionep->getPdfConvocationParticipant( $dossierep_id );
+/*debug($pdf);
+die();*/
+            if( $pdf ) {
+                $this->Gedooo->sendPdfContentToClient( $pdf, 'ConvocationEPParticipant' );
+            }
+            else {
+                $this->Session->setFlash( 'Impossible de générer le courrier d\'information', 'default', array( 'class' => 'error' ) );
+                $this->redirect( $this->referer() );
+            }
+        }
+
 
 
 		/**
