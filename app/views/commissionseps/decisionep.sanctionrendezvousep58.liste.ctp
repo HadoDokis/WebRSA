@@ -11,6 +11,8 @@ echo '<table><thead>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
+		$decisionep = $dossierep['Passagecommissionep'][0]['Decisionsanctionrendezvousep58'][0];
+		
 		echo $xhtml->tableCells(
 			array(
 				$dossierep['Dossierep']['id'],
@@ -21,10 +23,10 @@ echo '<table><thead>
 				Set::classicExtract( $typesrdv, $dossierep['Sanctionrendezvousep58']['Rendezvous']['typerdv_id'], true),
 				
 				array(
-					$options['Decisionsanctionrendezvousep58']['decision'][Set::classicExtract( $datas, "Decisionsanctionrendezvousep58.{$i}.decision" )],
+					$options['Decisionsanctionrendezvousep58']['decision'][Set::classicExtract( $decisionep, "decision" )],
 					array( 'id' => "Decisionsanctionrendezvousep58{$i}ColumnDecision", 'colspan' => 2 )
 				),
-				array( Set::classicExtract( $datas, "Decisionsanctionrendezvousep58.{$i}.raisonnonpassage" ), array( 'id' => "Decisionsanctionrendezvousep58{$i}Raisonnonpassage" ) )
+				array( Set::classicExtract( $decisionep, "raisonnonpassage" ), array( 'id' => "Decisionsanctionrendezvousep58{$i}Raisonnonpassage" ) )
 			)
 		);
 	}
@@ -34,7 +36,7 @@ echo '<table><thead>
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
 		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
-			changeColspanRaisonNonPassage( '<?php echo $options['Decisionsanctionrendezvousep58']['decision'][Set::classicExtract( $datas, "Decisionsanctionrendezvousep58.{$i}.decision" )];?>', 'Decisionsanctionrendezvousep58<?php echo $i;?>Decision', [ ], 'Decisionsanctionrendezvousep58<?php echo $i;?>Raisonnonpassage' );
+			changeColspanRaisonNonPassage( '<?php echo $options['Decisionsanctionrendezvousep58']['decision'][Set::classicExtract( $decisionep, "decision" )];?>', 'Decisionsanctionrendezvousep58<?php echo $i;?>Decision', [ ], 'Decisionsanctionrendezvousep58<?php echo $i;?>Raisonnonpassage' );
 		<?php endfor;?>
 	});
 </script>

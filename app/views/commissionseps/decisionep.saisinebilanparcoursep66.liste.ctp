@@ -15,6 +15,8 @@ echo '<table><thead>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
+		$decisionep = $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0];
+
 		echo $xhtml->tableCells(
 			array(
 				$dossierep['Dossierep']['id'],
@@ -28,12 +30,12 @@ echo '<table><thead>
 				@$dossierep['Saisinebilanparcoursep66']['Typeorient']['lib_type_orient'],
 				@$dossierep['Saisinebilanparcoursep66']['Structurereferente']['lib_struc'],
 
-				$options['Decisionsaisinebilanparcoursep66']['decision'][Set::classicExtract( $datas, "Decisionsaisinebilanparcoursep66.{$i}.decision" )],
-				array( $typesorients[Set::classicExtract( $datas, "Decisionsaisinebilanparcoursep66.{$i}.typeorient_id" )], array( 'id' => "Decisionsaisinebilanparcoursep66{$i}TypeorientId" ) ),
-				array( $structuresreferentes[Set::classicExtract( $datas, "Decisionsaisinebilanparcoursep66.{$i}.structurereferente_id" )], array( 'id' => "Decisionsaisinebilanparcoursep66{$i}StructurereferenteId" ) ),
-				array( $referents[Set::classicExtract( $datas, "Decisionsaisinebilanparcoursep66.{$i}.referent_id" )], array( 'id' => "Decisionsaisinebilanparcoursep66{$i}ReferentId" ) ),
-				array( Set::classicExtract( $datas, "Decisionsaisinebilanparcoursep66.{$i}.raisonnonpassage" ), array( 'colspan' => 3, 'id' => "Decisionsaisinebilanparcoursep66{$i}Raisonnonpassage" ) ),
-				Set::classicExtract( $datas, "Decisionsaisinebilanparcoursep66.{$i}.commentaire" )
+				$options['Decisionsaisinebilanparcoursep66']['decision'][Set::classicExtract( $decisionep, "decision" )],
+				array( $typesorients[Set::classicExtract( $decisionep, "typeorient_id" )], array( 'id' => "Decisionsaisinebilanparcoursep66{$i}TypeorientId" ) ),
+				array( $structuresreferentes[Set::classicExtract( $decisionep, "structurereferente_id" )], array( 'id' => "Decisionsaisinebilanparcoursep66{$i}StructurereferenteId" ) ),
+				array( $referents[Set::classicExtract( $decisionep, "referent_id" )], array( 'id' => "Decisionsaisinebilanparcoursep66{$i}ReferentId" ) ),
+				array( Set::classicExtract( $decisionep, "raisonnonpassage" ), array( 'colspan' => 3, 'id' => "Decisionsaisinebilanparcoursep66{$i}Raisonnonpassage" ) ),
+				Set::classicExtract( $decisionep, "commentaire" )
 			)
 		);
 	}
@@ -43,7 +45,7 @@ echo '<table><thead>
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
 		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
-			afficheRaisonpassage( '<?php echo $options['Decisionsaisinebilanparcoursep66']['decision'][Set::classicExtract( $datas, "Decisionsaisinebilanparcoursep66.{$i}.decision" )];?>', [ 'Decisionsaisinebilanparcoursep66<?php echo $i;?>TypeorientId', 'Decisionsaisinebilanparcoursep66<?php echo $i;?>StructurereferenteId', 'Decisionsaisinebilanparcoursep66<?php echo $i;?>ReferentId' ], 'Decisionsaisinebilanparcoursep66<?php echo $i;?>Raisonnonpassage' );
+			afficheRaisonpassage( '<?php echo $options['Decisionsaisinebilanparcoursep66']['decision'][Set::classicExtract( $decisionep, "decision" )];?>', [ 'Decisionsaisinebilanparcoursep66<?php echo $i;?>TypeorientId', 'Decisionsaisinebilanparcoursep66<?php echo $i;?>StructurereferenteId', 'Decisionsaisinebilanparcoursep66<?php echo $i;?>ReferentId' ], 'Decisionsaisinebilanparcoursep66<?php echo $i;?>Raisonnonpassage' );
 		<?php endfor;?>
 	});
 </script>

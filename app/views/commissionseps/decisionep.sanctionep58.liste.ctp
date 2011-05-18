@@ -11,6 +11,8 @@ echo '<table><thead>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
+		$decisionep = $dossierep['Passagecommissionep'][0]['Decisionsanctionep58'][0];
+		
 		echo $xhtml->tableCells(
 			array(
 				$dossierep['Dossierep']['id'],
@@ -20,9 +22,9 @@ echo '<table><thead>
 				$locale->date( __( 'Locale->date', true ), $dossierep['Dossierep']['created'] ),
 				__d( 'sanctionep58', $dossierep['Sanctionep58']['origine'], true),
 
-				$options['Decisionsanctionep58']['decision'][Set::classicExtract( $datas, "Decisionsanctionep58.{$i}.decision" )],
-				array( $listesanctionseps58[Set::classicExtract( $datas, "Decisionsanctionep58.{$i}.listesanctionep58_id" )], array( 'id' => "Decisionsanctionep58{$i}Listesanctionep58Id" ) ),
-				array( Set::classicExtract( $datas, "Decisionsanctionep58.{$i}.raisonnonpassage" ), array( 'id' => "Decisionsanctionep58{$i}Raisonnonpassage" ) )
+				$options['Decisionsanctionep58']['decision'][Set::classicExtract( $decisionep, "decision" )],
+				array( $listesanctionseps58[Set::classicExtract( $decisionep, "listesanctionep58_id" )], array( 'id' => "Decisionsanctionep58{$i}Listesanctionep58Id" ) ),
+				array( Set::classicExtract( $decisionep, "raisonnonpassage" ), array( 'id' => "Decisionsanctionep58{$i}Raisonnonpassage" ) )
 			)
 		);
 	}
@@ -32,7 +34,7 @@ echo '<table><thead>
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
 		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
-			afficheRaisonpassage( '<?php echo $options['Decisionsanctionep58']['decision'][Set::classicExtract( $datas, "Decisionsanctionep58.{$i}.decision" )];?>', [ 'Decisionsanctionep58<?php echo $i;?>Listesanctionep58Id' ], 'Decisionsanctionep58<?php echo $i;?>Raisonnonpassage' );
+			afficheRaisonpassage( '<?php echo $options['Decisionsanctionep58']['decision'][Set::classicExtract( $decisionep, "decision" )];?>', [ 'Decisionsanctionep58<?php echo $i;?>Listesanctionep58Id' ], 'Decisionsanctionep58<?php echo $i;?>Raisonnonpassage' );
 		<?php endfor;?>
 	});
 </script>

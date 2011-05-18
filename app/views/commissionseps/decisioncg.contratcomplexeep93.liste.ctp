@@ -47,7 +47,7 @@ echo '<table><thead>
 				$options['Decisionnonorientationproep93']['decision'][Set::classicExtract( $decisioncg, "decision" )],
 				array( Set::classicExtract( $decisioncg, "datevalidation_ci" ), array( 'id' => "Decisioncontratcomplexeep93{$i}DatevalidationCi" ) ),
 				array( Set::classicExtract( $decisioncg, "observ_ci" ), array( 'id' => "Decisioncontratcomplexeep93{$i}ObservCi" ) ),
-				array( Set::classicExtract( $datas, "raisonnonpassage" ), array( 'colspan' => '2', 'id' => "Decisioncontratcomplexeep93{$i}Raisonnonpassage" ) )
+				array( Set::classicExtract( $decisioncg, "raisonnonpassage" ), array( 'colspan' => '2', 'id' => "Decisioncontratcomplexeep93{$i}Raisonnonpassage" ) )
 			)
 		);
 	}

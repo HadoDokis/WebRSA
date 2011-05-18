@@ -16,6 +16,8 @@ echo '<table><thead>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
+		$decisionep = $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0];
+		
 		echo $xhtml->tableCells(
 			array(
 				$dossierep['Dossierep']['id'],
@@ -31,13 +33,13 @@ echo '<table><thead>
 				@$dossierep['Defautinsertionep66']['Historiqueetatpe']['motif'],
 
 				implode( ' / ', Set::filter( array(
-					$options['Decisiondefautinsertionep66']['decision'][Set::classicExtract( $datas, "Decisiondefautinsertionep66.{$i}.decision" )],
-					$options['Decisiondefautinsertionep66']['decisionsup'][Set::classicExtract( $datas, "Decisiondefautinsertionep66.{$i}.decisionsup" )]
+					$options['Decisiondefautinsertionep66']['decision'][Set::classicExtract( $decisionep, "decision" )],
+					$options['Decisiondefautinsertionep66']['decisionsup'][Set::classicExtract( $decisionep, "decisionsup" )]
 				) ) ),
-				array( $typesorients[Set::classicExtract( $datas, "Decisiondefautinsertionep66.{$i}.typeorient_id" )], array( 'id' => "Decisiondefautinsertionep66{$i}TypeorientId" ) ),
-				array( $structuresreferentes[Set::classicExtract( $datas, "Decisiondefautinsertionep66.{$i}.structurereferente_id" )], array( 'id' => "Decisiondefautinsertionep66{$i}StructurereferenteId" ) ),
-				array( $referents[Set::classicExtract( $datas, "Decisiondefautinsertionep66.{$i}.referent_id" )], array( 'id' => "Decisiondefautinsertionep66{$i}ReferentId" ) ),
-				array( Set::classicExtract( $datas, "Decisiondefautinsertionep66.{$i}.raisonnonpassage" ), array( 'colspan' => '3', 'id' => "Decisiondefautinsertionep66{$i}Raisonnonpassage" ) )
+				array( $typesorients[Set::classicExtract( $decisionep, "typeorient_id" )], array( 'id' => "Decisiondefautinsertionep66{$i}TypeorientId" ) ),
+				array( $structuresreferentes[Set::classicExtract( $decisionep, "structurereferente_id" )], array( 'id' => "Decisiondefautinsertionep66{$i}StructurereferenteId" ) ),
+				array( $referents[Set::classicExtract( $decisionep, "referent_id" )], array( 'id' => "Decisiondefautinsertionep66{$i}ReferentId" ) ),
+				array( Set::classicExtract( $decisionep, "raisonnonpassage" ), array( 'colspan' => '3', 'id' => "Decisiondefautinsertionep66{$i}Raisonnonpassage" ) )
 			)
 		);
 	}
@@ -47,7 +49,7 @@ echo '<table><thead>
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
 		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
-			afficheRaisonpassage( '<?php echo $options['Decisiondefautinsertionep66']['decision'][Set::classicExtract( $datas, "Decisiondefautinsertionep66.{$i}.decision" )];?>', [ 'Decisiondefautinsertionep66<?php echo $i;?>TypeorientId', 'Decisiondefautinsertionep66<?php echo $i;?>StructurereferenteId', 'Decisiondefautinsertionep66<?php echo $i;?>ReferentId' ], 'Decisiondefautinsertionep66<?php echo $i;?>Raisonnonpassage' );
+			afficheRaisonpassage( '<?php echo $options['Decisiondefautinsertionep66']['decision'][Set::classicExtract( $decisionep, "decision" )];?>', [ 'Decisiondefautinsertionep66<?php echo $i;?>TypeorientId', 'Decisiondefautinsertionep66<?php echo $i;?>StructurereferenteId', 'Decisiondefautinsertionep66<?php echo $i;?>ReferentId' ], 'Decisiondefautinsertionep66<?php echo $i;?>Raisonnonpassage' );
 		<?php endfor;?>
 	});
 </script>

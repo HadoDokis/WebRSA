@@ -15,6 +15,8 @@ echo '<table><thead>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
+		$decisionep = $dossierep['Passagecommissionep'][0]['Decisionreorientationep93'][0];
+
 		echo $xhtml->tableCells(
 			array(
 				$dossierep['Dossierep']['id'],
@@ -28,10 +30,10 @@ echo '<table><thead>
 				@$dossierep['Reorientationep93']['Typeorient']['lib_type_orient'],
 				@$dossierep['Reorientationep93']['Structurereferente']['lib_struc'],
 				
-				$options['Decisionreorientationep93']['decision'][Set::classicExtract( $datas, "Decisionreorientationep93.{$i}.decision" )],
-				array( $typesorients[Set::classicExtract( $datas, "Decisionreorientationep93.{$i}.typeorient_id" )], array( 'id' => "Decisionreorientationep93{$i}TypeorientId" ) ),
-				array( $structuresreferentes[Set::classicExtract( $datas, "Decisionreorientationep93.{$i}.structurereferente_id" )], array( 'id' => "Decisionreorientationep93{$i}StructurereferenteId" ) ),
-				array( Set::classicExtract( $datas, "Decisionreorientationep93.{$i}.raisonnonpassage" ), array( 'colspan' => '2', 'id' => "Decisionreorientationep93{$i}Raisonnonpassage" ) )
+				$options['Decisionreorientationep93']['decision'][Set::classicExtract( $decisionep, "decision" )],
+				array( $typesorients[Set::classicExtract( $decisionep, "typeorient_id" )], array( 'id' => "Decisionreorientationep93{$i}TypeorientId" ) ),
+				array( $structuresreferentes[Set::classicExtract( $decisionep, "structurereferente_id" )], array( 'id' => "Decisionreorientationep93{$i}StructurereferenteId" ) ),
+				array( Set::classicExtract( $decisionep, "raisonnonpassage" ), array( 'colspan' => '2', 'id' => "Decisionreorientationep93{$i}Raisonnonpassage" ) )
 			)
 		);
 	}
@@ -41,7 +43,7 @@ echo '<table><thead>
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
 		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
-			afficheRaisonpassage( '<?php echo $options['Decisionreorientationep93']['decision'][Set::classicExtract( $datas, "Decisionreorientationep93.{$i}.decision" )];?>', [ 'Decisionreorientationep93<?php echo $i;?>TypeorientId', 'Decisionreorientationep93<?php echo $i;?>StructurereferenteId' ], 'Decisionreorientationep93<?php echo $i;?>Raisonnonpassage' );
+			afficheRaisonpassage( '<?php echo $options['Decisionreorientationep93']['decision'][Set::classicExtract( $decisionep, "decision" )];?>', [ 'Decisionreorientationep93<?php echo $i;?>TypeorientId', 'Decisionreorientationep93<?php echo $i;?>StructurereferenteId' ], 'Decisionreorientationep93<?php echo $i;?>Raisonnonpassage' );
 		<?php endfor;?>
 	});
 </script>
