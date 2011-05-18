@@ -19,30 +19,62 @@
     <table class="wide noborder">
         <tr>
             <td class="mediumSize noborder">
-                <strong>Positionnement éventuel sur l'action d'insertion</strong>
-                <?php
-//                     echo $form->input( 'Action.id', array( 'type' => 'hidden' ) );
-//                     echo $form->input( 'Action.code', array( 'label' => __d( 'action', 'Action.code_action', true ), 'type' => 'text', 'empty' => true, 'maxlength' => 2 )  );
-//                     echo $form->input( 'Contratinsertion.engag_object', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.engag_object', true ), 'type' => 'textarea', 'rows' => 10 )  );
-                ?>
-                 <?php echo $form->input( 'Contratinsertion.engag_object', array( 'label' => 'Intitulé de ( ou des ) actions', 'type' => 'textarea' ) );?>
-                <?php
-                    ///FIXME
-                    $contratinsertion_id = Set::extract( $this->data, 'Actioninsertion.contratinsertion_id' );
-                    if( $this->action == 'edit' && !empty( $contratinsertion_id ) ) :?>
-                    <?php echo $form->input( 'Actioninsertion.contratinsertion_id', array( 'label' => false, 'div' => false,  'type' => 'hidden' ) );?>
-                <?php endif;?>
-                <?php
-//                     echo $form->input( 'Actioninsertion.dd_action', array( 'label' => __d( 'action', 'Action.dd_action', true ), 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true )  );
-                ?>
+                <fieldset>
+                    <legend><strong>Positionnement éventuel sur l'action d'insertion</strong></legend>
+                    <?php echo $form->input( 'Contratinsertion.engag_object', array( 'label' => 'Intitulé de ( ou des ) actions', 'type' => 'textarea' ) );?>
+                    <?php
+                        //FIXME
+                        $contratinsertion_id = Set::extract( $this->data, 'Actioninsertion.contratinsertion_id' );
+                        if( $this->action == 'edit' && !empty( $contratinsertion_id ) ) :?>
+                        <?php echo $form->input( 'Actioninsertion.contratinsertion_id', array( 'label' => false, 'div' => false,  'type' => 'hidden' ) );?>
+                    <?php endif;?>
+                    <?php
+//                         echo $default->subform(
+//                             'Contratinsertion.actioncandi'
+//                         );
+                    ?>
+
+
+                </fieldset>
+
             </td>
             <td class="mediumSize noborder">
-                <strong>Action(s) déjà en cours</strong>
-                <?php echo $form->input( 'Contratinsertion.current_action', array( 'label' => 'Intitulé de ( ou des ) actions', 'type' => 'textarea' ) );?>
-
-                <?php
-                    /*echo $form->input( 'Actioninsertion.dd_action', array( 'label' => __d( 'action', 'Action.dd_action', true ), 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true )  );*/
-                ?>
+                <fieldset>
+                    <legend> <strong>Action(s) déjà en cours</strong></legend>
+                        <?php if( !empty( $fichescandidature ) ):?>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Action engagée</th>
+                                    <th>Code de l'action</th>
+                                    <th>Contractualisation</th>
+                                    <th>Date de début de l'action</th>
+                                    <th>Date de fin de l'action</th>
+                                    <th>Fiche de candidature ?</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php 
+                                    foreach( $fichescandidature as $key => $fiche )
+                                    {
+                                        echo '<tr>';
+                                            echo $xhtml->tag('td', $fiche['Actioncandidat']['name']);
+                                            echo $xhtml->tag('td', $fiche['Actioncandidat']['themecode'].''.$fiche['Actioncandidat']['codefamille'].''.$fiche['Actioncandidat']['numcodefamille']);
+                                            echo $xhtml->tag('td', Set::enum( $fiche['Actioncandidat']['contractualisation'], $fiches['contractualisation'] ) );
+                                            echo $xhtml->tag('td', date_short( $fiche['Actioncandidat']['ddaction'] ) );
+                                            echo $xhtml->tag('td', date_short( $fiche['Actioncandidat']['dfaction'] ) );
+                                            echo $xhtml->tag('td', $fiche['Actioncandidat']['hasfichecandidature'] ? 'Oui' : 'Non' );
+                                            echo $xhtml->tag('td', $xhtml->viewLink( 'Voir', array( 'controller' => 'actionscandidats_personnes', 'action' => 'index', $fiche['ActioncandidatPersonne']['personne_id'] ) ) );
+                                        echo '</tr>';
+                                    }
+                                ?>
+                            </tbody>
+                        </table>
+                        <?php else:?>
+                            <p class="notice">Aucune action engagée pour cet allocataire.</p>
+                        <?php endif;?>
+                </fieldset>
             </td>
         </tr>
     </table>
