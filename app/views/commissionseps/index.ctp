@@ -14,6 +14,9 @@
 		case 'arbitragecg':
 			$this->pageTitle = 'Arbitrage d\'une commission d\'EP (niveau CG)';
 			break;
+        case 'decisions':
+            $this->pageTitle = 'Consultation des décisions';
+            break;
 		default:
 			$this->pageTitle = 'Liste des commissions d\'EP';
 	}
@@ -123,6 +126,9 @@
 				case 'arbitragecg':
 					$colspan = 1;
 					break;
+                case 'decisions':
+                    $colspan = 1;
+                    break;
 				default:
 					$colspan = 1;
 			}
@@ -180,6 +186,14 @@
 							$lien = '<td>Arbitrage</td>';
 						}
 						break;
+                    case 'decisions':
+                        if ( $commissionep['Commissionep']['etatcommissionep'] == 'traite' ) {
+                            $lien = '<td>'.$xhtml->link( 'Voir les décisions', array( 'controller' => 'commissionseps', 'action' => 'decisioncg', $commissionep['Commissionep']['id'] ) ).'</td>';
+                        }
+                        else {
+                            $lien = '<td>Arbitrage</td>';
+                        }
+                        break;
 					default:
 						$lien = '<td>'.$xhtml->link( 'Voir', array( 'controller' => 'commissionseps', 'action' => 'view', $commissionep['Commissionep']['id'] ) ).'</td>';
 				}

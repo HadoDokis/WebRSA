@@ -104,28 +104,42 @@
 								</ul>
 							</li>
 						<?php endif; ?>-->
-						<?php if ( Configure::read( 'Cg.departement' ) == 93 ): ?>
-							<?php if( $permissions->check( 'relancesnonrespectssanctionseps93', 'cohorte' ) || $permissions->check( 'relancesnonrespectssanctionseps93', 'impressions' ) ): ?>
-								<li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
-									<?php echo $xhtml->link( 'Relances (EP)','#' );?>
-									<ul>
-										<?php if( $permissions->check( 'relancesnonrespectssanctionseps93', 'cohorte' ) ): ?>
-											<li><?php echo $xhtml->link( __d( 'relancenonrespectsanctionep93', 'Relancesnonrespectssanctionseps93::cohorte', true ), array( 'controller' => 'relancesnonrespectssanctionseps93', 'action' => 'cohorte' ), array( 'title' => __d( 'relancenonrespectsanctionep93', 'Relancesnonrespectssanctionseps93::cohorte', true ) ) );?></li>
-										<?php endif;?>
-										<?php if( $permissions->check( 'relancesnonrespectssanctionseps93', 'impressions' ) ): ?>
-											<li><?php echo $xhtml->link( __d( 'relancenonrespectsanctionep93', 'Relancesnonrespectssanctionseps93::impressions', true ), array( 'controller' => 'relancesnonrespectssanctionseps93', 'action' => 'impressions' ), array( 'title' => __d( 'relancenonrespectsanctionep93', 'Relancesnonrespectssanctionseps93::impressions', true ) ) );?></li>
-										<?php endif;?>
-									</ul>
-								</li>
-							<?php endif; ?>
-						<?php endif; ?>
-						<?php if( $permissions->check( 'nonorientationsproseps', 'index' ) ): ?>
-							<?php if ( Configure::read( 'Cg.departement' ) == 93 ): ?>
-								<li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
-									<?php echo $xhtml->link( 'Détection brsa en parcours social sans réorientation', array( 'controller' => 'nonorientationsproseps', 'action' => 'index' ) );?>
-								</li>
-							<?php endif; ?>
-						<?php endif; ?>
+						<?php if( ( $permissions->check( 'cohortespdos', 'avisdemande' ) || $permissions->check( 'cohortespdos', 'valide' ) || $permissions->check( 'cohortespdos', 'enattente' ) ) && Configure::read( 'Cg.departement' ) == 93 ): ?>
+                            <!-- AJOUT POUR LA GESTION DES PDOs (Cohorte) -->
+                            <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
+                                <?php echo $xhtml->link( 'EPs', '#' );?>
+                                <ul>
+                                <?php if ( Configure::read( 'Cg.departement' ) == 93 ): ?>
+                                    <?php if( $permissions->check( 'relancesnonrespectssanctionseps93', 'cohorte' ) || $permissions->check( 'relancesnonrespectssanctionseps93', 'impressions' ) ): ?>
+                                        <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
+                                            <?php echo $xhtml->link( 'Relances (EP)','#' );?>
+                                            <ul>
+                                                <?php if( $permissions->check( 'relancesnonrespectssanctionseps93', 'cohorte' ) ): ?>
+                                                    <li><?php echo $xhtml->link( __d( 'relancenonrespectsanctionep93', 'Relancesnonrespectssanctionseps93::cohorte', true ), array( 'controller' => 'relancesnonrespectssanctionseps93', 'action' => 'cohorte' ), array( 'title' => __d( 'relancenonrespectsanctionep93', 'Relancesnonrespectssanctionseps93::cohorte', true ) ) );?></li>
+                                                <?php endif;?>
+                                                <?php if( $permissions->check( 'relancesnonrespectssanctionseps93', 'impressions' ) ): ?>
+                                                    <li><?php echo $xhtml->link( __d( 'relancenonrespectsanctionep93', 'Relancesnonrespectssanctionseps93::impressions', true ), array( 'controller' => 'relancesnonrespectssanctionseps93', 'action' => 'impressions' ), array( 'title' => __d( 'relancenonrespectsanctionep93', 'Relancesnonrespectssanctionseps93::impressions', true ) ) );?></li>
+                                                <?php endif;?>
+                                            </ul>
+                                        </li>
+                                    <?php endif; ?>
+                                <?php endif; ?>
+                                <?php if( $permissions->check( 'nonorientationsproseps', 'index' ) ): ?>
+                                    <?php if ( Configure::read( 'Cg.departement' ) == 93 ): ?>
+                                        <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
+                                            <?php echo $xhtml->link( 'Parcours social sans réorientation', array( 'controller' => 'nonorientationsproseps', 'action' => 'index' ) );?>
+                                        </li>
+                                    <?php endif; ?>
+                                <?php endif; ?>
+                                <?php if( $permissions->check( 'defautsinsertionseps66', 'selectionradies' ) ): ?>
+                                    <li> <?php echo $xhtml->link( 'Radiés de Pôle Emploi',  array( 'controller' => 'defautsinsertionseps66', 'action' => 'selectionradies'  ) );?> </li>
+                                <?php endif;?>
+                                <?php if( $permissions->check( 'contratscomplexeseps93', 'selection' ) ): ?>
+                                    <li><?php echo $xhtml->link( 'CER complexes', array( 'controller' => 'contratscomplexeseps93', 'action' => 'selection' ) );?></li>
+                                <?php endif;?>
+                                </ul>
+                            </li>
+                        <?php endif;?>
 					</ul>
 				</li>
 			<?php endif;?>
@@ -403,8 +417,9 @@
 							<li><?php echo $xhtml->link( 'CG', array( 'controller' => 'commissionseps', 'action' => 'arbitragecg' ) );?></li>
 						</ul>
 					</li>
-					<li>
-						<?php if( Configure::read( 'Cg.departement' ) == 58 ):?>
+					<li><?php echo $xhtml->link( '4. Consultation des décisions', array( 'controller' => 'commissionseps', 'action' => 'decisions' ) );?></li>
+					<!-- <li>
+						<?php /*if( Configure::read( 'Cg.departement' ) == 58 ):?>
 							<a href="#">Motifs de saisine</a>
 						<?php else:?>
 							<a href="#">Thématiques</a>
@@ -421,9 +436,9 @@
 								<li><?php echo $xhtml->link( 'Radiation de Pôle Emploi', array( 'controller' => 'sanctionseps58', 'action' => 'selectionradies' ) );?></li>
 								<li><?php echo $xhtml->link( 'Non inscription à Pôle Emploi', array( 'controller' => 'sanctionseps58', 'action' => 'selectionnoninscrits' ) );?></li>
 								<li><?php echo $xhtml->link( 'Demande de maintien dans le social', array( 'controller' => 'nonorientationsproseps', 'action' => 'index' ) );?></li>
-							<?php endif;?>
+							<?php endif;*/?>
 						</ul>
-					</li>
+					</li> -->
 				</ul>
 			</li>
 			<?php endif;?>
