@@ -71,7 +71,7 @@
 					'Bilanparcours66.orientstruct_id' => array( 'type' => 'hidden' ),
 					'Bilanparcours66.structurereferente_id',
 					'Bilanparcours66.referent_id',
-					'Bilanparcours66.autrestructurereferente_id' => array( 'type' => 'select', 'options' => $autresstructuresreferentes ),
+// 					'Bilanparcours66.autrestructurereferente_id' => array( 'type' => 'select', 'options' => $autresstructuresreferentes ),
 					'Bilanparcours66.presenceallocataire' => array('required'=>true)
 				),
 				array(
