@@ -172,6 +172,9 @@
 					case 'arbitragecg':
 						$this->paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'traiteep', 'decisioncg', 'traite' );
 						break;
+                    case 'decisioncg':
+                        $this->paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'traite' );
+                        break;
 				}
 
 				$commissionseps = $this->paginate( $this->Commissionep );
@@ -247,6 +250,15 @@
 		public function arbitragecg() {
 			$this->index( $this->action );
 		}
+
+
+        /**
+        *
+        */
+
+        public function decisions() {
+            $this->index( $this->action );
+        }
 
 		/**
 		*

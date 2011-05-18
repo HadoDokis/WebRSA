@@ -58,17 +58,19 @@
                     array( 'class' => 'even' )
                 );
 
-                echo $xhtml->tableCells(
-                    array(
-                        h( 'Motifs de demandes de réorientation' ),
-                        $xhtml->viewLink(
-                            'Voir la table',
-                            array( 'controller' => 'motifsreorientseps93', 'action' => 'index' )
-                        )
-                    ),
-                    array( 'class' => 'odd' ),
-                    array( 'class' => 'even' )
-                );
+                if( Configure::read( 'Cg.departement' ) !=  66 ) {
+                    echo $xhtml->tableCells(
+                        array(
+                            h( 'Motifs de demandes de réorientation' ),
+                            $xhtml->viewLink(
+                                'Voir la table',
+                                array( 'controller' => 'motifsreorientseps93', 'action' => 'index' )
+                            )
+                        ),
+                        array( 'class' => 'odd' ),
+                        array( 'class' => 'even' )
+                    );
+                }
             ?>
         </tbody>
     </table>
