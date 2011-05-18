@@ -23,7 +23,7 @@ echo '<table><thead>
 				$dossierep['Nonorientationproep93']['Orientstruct']['Typeorient']['lib_type_orient'].' - '.
 				$dossierep['Nonorientationproep93']['Orientstruct']['Structurereferente']['lib_struc'].' - '.
 				implode( ' ', array( @$dossierep['Nonorientationproep93']['Orientstruct']['Referent']['qual'], @$dossierep['Nonorientationproep93']['Orientstruct']['Referent']['nom'], @$dossierep['Nonorientationproep93']['Orientstruct']['Referent']['prenom'] ) ),
-				
+
 				$options['Decisionnonorientationproep93']['decision'][Set::classicExtract( $datas, "Decisionnonorientationproep93.{$i}.decision" )],
 				array( $typesorients[Set::classicExtract( $datas, "Decisionnonorientationproep93.{$i}.typeorient_id" )], array( 'id' => "Decisionnonorientationproep93{$i}TypeorientId" ) ),
 				array( $structuresreferentes[Set::classicExtract( $datas, "Decisionnonorientationproep93.{$i}.structurereferente_id" )], array( 'id' => "Decisionnonorientationproep93{$i}StructurereferenteId" ) ),
