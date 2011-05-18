@@ -992,9 +992,7 @@ die();*/
 
 			$dossiers = $this->Commissionep->dossiersParListe( $commissionep_id, $niveauDecision );
 
-			$datas = $this->Commissionep->prepareFormData( $commissionep_id, $dossiers, $niveauDecision );
-
-			$this->set( compact( 'commissionep', 'dossiers', 'datas' ) );
+			$this->set( compact( 'commissionep', 'dossiers' ) );
 			$this->set( 'commissionep_id', $commissionep_id);
 			$this->_setOptions();
 		}
