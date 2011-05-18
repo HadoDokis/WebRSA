@@ -77,7 +77,7 @@ msgid "ENUM::THEMEEP::nonorientationsproseps58"
 msgstr "Non orientation professionnelle"
 
 msgid "ENUM::THEMEEP::nonorientationsproseps93"
-msgstr "Détection brsa en parcours social sans réorientation"
+msgstr "Parcours social sans réorientation"
 
 msgid "ENUM::THEMEEP::regressionsorientationseps58"
 msgstr "Orientation du professionnelle vers le social"
