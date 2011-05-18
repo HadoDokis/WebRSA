@@ -118,7 +118,7 @@
 					$colspan = 1;
 					break;
 				case 'arbitrageep':
-					$colspan = 2;
+					$colspan = 3;
 					break;
 				case 'arbitragecg':
 					$colspan = 1;
@@ -165,9 +165,20 @@
 						else {
 							$lien .= '<td>Arbitrage</td>';
 						}
+						if ( $commissionep['Commissionep']['etatcommissionep'] == 'traiteep' || $commissionep['Commissionep']['etatcommissionep'] == 'decisioncg' || $commissionep['Commissionep']['etatcommissionep'] == 'traite' ) {
+							$lien .= '<td>'.$xhtml->link( 'Décisions', array( 'controller' => 'commissionseps', 'action' => 'decisionep', $commissionep['Commissionep']['id'] ) ).'</td>';
+						}
+						else {
+							$lien .= '<td>Décisions</td>';
+						}
 						break;
 					case 'arbitragecg':
-						$lien = '<td>'.$xhtml->link( 'Arbitrage', array( 'controller' => 'commissionseps', 'action' => 'view', $commissionep['Commissionep']['id'] ) ).'</td>';
+						if ( $commissionep['Commissionep']['etatcommissionep'] == 'traiteep' || $commissionep['Commissionep']['etatcommissionep'] == 'decisioncg' ) {
+							$lien = '<td>'.$xhtml->link( 'Arbitrage', array( 'controller' => 'commissionseps', 'action' => 'traitercg', $commissionep['Commissionep']['id'] ) ).'</td>';
+						}
+						else {
+							$lien = '<td>Arbitrage</td>';
+						}
 						break;
 					default:
 						$lien = '<td>'.$xhtml->link( 'Voir', array( 'controller' => 'commissionseps', 'action' => 'view', $commissionep['Commissionep']['id'] ) ).'</td>';
