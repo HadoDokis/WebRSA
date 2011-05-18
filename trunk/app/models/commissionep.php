@@ -1059,6 +1059,204 @@
             return $this->ged( $gedooo_data, "{$this->alias}/convocationep_beneficiaire.odt" );
         }
 
+		/**
+		*
+		*/
+
+		protected function _qdFichesSynthetiques( $conditions ) {
+			return array(
+				'fields' => array(
+					'Dossierep.themeep',
+					'Foyer.sitfam',
+					'(
+						SELECT
+								dossiers.dtdemrsa
+							FROM personnes
+								INNER JOIN prestations ON (
+									personnes.id = prestations.personne_id
+									AND prestations.natprest = \'RSA\'
+								)
+								INNER JOIN foyers ON (
+									personnes.foyer_id = foyers.id
+								)
+								INNER JOIN dossiers ON (
+									dossiers.id = foyers.dossier_id
+								)
+							WHERE
+								prestations.rolepers IN ( \'DEM\', \'CJT\' )
+								AND (
+									(
+										nir_correct( "Personne"."nir" )
+										AND nir_correct( personnes.nir )
+										AND personnes.nir = "Personne"."nir"
+										AND personnes.dtnai = "Personne"."dtnai"
+									)
+									OR
+									(
+										personnes.nom = "Personne"."nom"
+										AND personnes.prenom = "Personne"."prenom"
+										AND personnes.dtnai = "Personne"."dtnai"
+									)
+								)
+							ORDER BY dossiers.dtdemrsa ASC
+							LIMIT 1
+					) AS "Dossier__dtdemrsa"',
+					'( CASE WHEN "Serviceinstructeur"."lib_service" IS NULL THEN \'Hors département\' ELSE "Serviceinstructeur"."lib_service" END ) AS "Serviceinstructeur__lib_service"',
+					'',
+					'Orientstruct.date_valid',
+					'( CASE WHEN "Historiqueetatpe"."etat" IN ( NULL, \'cessation\' ) THEN \'Non\' ELSE \'Oui\' END ) AS "Historiqueetatpe__inscritpe"',
+					'Adresse.locaadr',
+				),
+				'joins' => array(
+					array(
+						'table'      => 'passagescommissionseps',
+						'alias'      => 'Passagecommissionep',
+						'type'       => 'INNER',
+						'foreignKey' => false,
+						'conditions' => array( "Dossierep.id = Passagecommissionep.dossierep_id" ),
+					),
+					array(
+						'table'      => 'personnes',
+						'alias'      => 'Personne',
+						'type'       => 'INNER',
+						'foreignKey' => false,
+						'conditions' => array( "Dossierep.personne_id = Personne.id" ),
+					),
+					array(
+						'table'      => 'foyers',
+						'alias'      => 'Foyer',
+						'type'       => 'INNER',
+						'foreignKey' => false,
+						'conditions' => array( 'Personne.foyer_id = Foyer.id' )
+					),
+					array(
+						'table'      => 'dossiers',
+						'alias'      => 'Dossier',
+						'type'       => 'INNER',
+						'foreignKey' => false,
+						'conditions' => array( 'Foyer.dossier_id = Dossier.id' )
+					),
+					array(
+						'table'      => 'suivisinstruction',
+						'alias'      => 'Suiviinstruction',
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array(
+							'Suiviinstruction.dossier_id = Dossier.id',
+							'Suiviinstruction.id IN (
+								'.ClassRegistry::init( 'Suiviinstruction' )->sq(
+									array(
+										'alias' => 'suivisinstruction',
+										'fields' => array( 'suivisinstruction.id' ),
+										'conditions' => array( 'suivisinstruction.dossier_id = Dossier.id' ),
+										'order' => array( 'suivisinstruction.date_etat_instruction DESC' ),
+										'limit' => 1,
+									)
+								).'
+							)',
+
+						)
+					),
+					array(
+						'table'      => 'servicesinstructeurs',
+						'alias'      => 'Serviceinstructeur',
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array(
+							'Suiviinstruction.numdepins = Serviceinstructeur.numdepins',
+							'Suiviinstruction.typeserins = Serviceinstructeur.typeserins',
+							'Suiviinstruction.numcomins = Serviceinstructeur.numcomins',
+							'Suiviinstruction.numagrins = Serviceinstructeur.numagrins',
+						)
+					),
+					array(
+						'table'      => 'orientsstructs',
+						'alias'      => 'Orientstruct',
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array(
+							'Orientstruct.personne_id = Personne.id',
+							'Orientstruct.id IN (
+								'.ClassRegistry::init( 'Orientstruct' )->sq(
+									array(
+										'alias' => 'orientsstructs',
+										'fields' => array( 'orientsstructs.id' ),
+										'conditions' => array(
+											'orientsstructs.personne_id = Personne.id',
+											'orientsstructs.statut_orient' => 'Orienté',
+										),
+										'order' => array( 'orientsstructs.date_valid DESC' ),
+										'limit' => 1,
+									)
+								).'
+							)',
+						)
+					),
+					array(
+						'table'      => 'informationspe',
+						'alias'      => 'Informationpe',
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array(
+							'OR' => array(
+								array(
+									'Informationpe.nir IS NOT NULL',
+									'Personne.nir IS NOT NULL',
+									'Informationpe.nir = Personne.nir',
+								),
+								array(
+									'Informationpe.nom = Personne.nom',
+									'Informationpe.prenom = Personne.prenom',
+									'Informationpe.dtnai = Personne.dtnai',
+								)
+							)
+						)
+					),
+					array(
+						'table'      => 'historiqueetatspe',
+						'alias'      => 'Historiqueetatpe',
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array(
+							'Historiqueetatpe.informationpe_id = Informationpe.id',
+							'Historiqueetatpe.id IN (
+										SELECT h.id
+											FROM historiqueetatspe AS h
+											WHERE h.informationpe_id = Informationpe.id
+											ORDER BY h.date DESC
+											LIMIT 1
+							)'
+						)
+					),
+					array(
+						'table'      => 'adressesfoyers',
+						'alias'      => 'Adressefoyer',
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array(
+							'Foyer.id = Adressefoyer.foyer_id',
+							// FIXME: c'est un hack pour n'avoir qu'une seule adresse de range 01 par foyer!
+							'Adressefoyer.id IN (
+								'.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01('Adressefoyer.foyer_id').'
+							)'
+						)
+					),
+					array(
+						'table'      => 'adresses',
+						'alias'      => 'Adresse',
+						'type'       => 'INNER',
+						'foreignKey' => false,
+						'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
+					)
+				),
+				'conditions' => $conditions,
+				'order' => array(
+					'Dossierep.themeep DESC',
+					'Adresse.locaadr ASC'
+				)
+			);
+		}
+
         /**
         *   Impression de convocation pour un participant à une commission d'EP
         */
@@ -1072,7 +1270,11 @@
 						'CommissionepMembreep.id' => $commissionep_membreep_id
 					),
 					'contain' => array(
-						'Commissionep',
+						'Commissionep' => array(
+							'Ep' => array(
+								'Regroupementep'
+							)
+						),
 						'Membreep' => array(
 							'Fonctionmembreep'
 						)
@@ -1147,8 +1349,10 @@
 			$options = Set::merge( $options, $this->enums() );
 			$options = Set::merge( $options, $this->Passagecommissionep->Dossierep->enums() );
 			$options = Set::merge( $options, $this->Membreep->enums() );
+			$options['Participant'] = $options['Membreep'];
 			$options = Set::merge( $options, $this->CommissionepMembreep->enums() );
 			$options = Set::merge( $options, $this->Passagecommissionep->enums() );
+			$options['Participant']['typevoie'] = ClassRegistry::init( 'Option' )->typevoie();
 
 			$dossierseps = $this->Passagecommissionep->Dossierep->find( 'all', $queryData );
 			// FIXME: faire la traduction des enums dans les modèles correspondants ?
@@ -1206,11 +1410,20 @@
 				$commissionep_data["reponses_{$typereponse}_count"] = count( $reponses["Reponses_{$typereponse}"] );
 			}
 
+			// Fiches synthétiques des dossiers d'EP
+			$fichessynthetiques = $this->Passagecommissionep->Dossierep->find(
+				'all',
+				$this->_qdFichesSynthetiques( array( 'Passagecommissionep.commissionep_id' => $convocation['Commissionep']['id'] ) )
+			);
+
+			$options['Foyer']['sitfam'] = ClassRegistry::init( 'Option' )->sitfam();
+
 			return $this->ged(
 				array_merge(
 					array(
 						$convocation,
 						'Dossierseps' => $dossierseps,
+						'Fichessynthetiques' => $fichessynthetiques
 					),
 					$reponses
 				),
