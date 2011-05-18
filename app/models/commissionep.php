@@ -1257,11 +1257,49 @@
 			);
 		}
 
-        /**
-        *   Impression de convocation pour un participant à une commission d'EP
-        */
+		/**
+		*   Impression de convocation pour un participant à une commission d'EP
+		*/
 
-        public function getPdfConvocationParticipant( $commissionep_membreep_id ) {
+		public function getPdfConvocationParticipant( $commissionep_membreep_id ) {
+			// Participant auquel la convocation doit être envoyée
+			$convocation = $this->CommissionepMembreep->find(
+				'first',
+				array(
+					'conditions' => array(
+						'CommissionepMembreep.id' => $commissionep_membreep_id
+					),
+					'contain' => array(
+						'Commissionep' => array(
+							'Ep' => array(
+								'Regroupementep'
+							)
+						),
+						'Membreep' => array(
+							'Fonctionmembreep'
+						)
+					)
+				)
+			);
+			$convocation = array( 'Participant' => $convocation['Membreep'], 'Commissionep' => $convocation['Commissionep'] );
+
+			$options['Participant'] = $options['Membreep'];
+			$options['Participant']['typevoie'] = ClassRegistry::init( 'Option' )->typevoie();
+
+			return $this->ged(
+				$convocation,
+				"{$this->alias}/convocationep_participant.odt",
+				false,
+				$options
+			);
+
+		}
+
+		/**
+		*   Impression de l'ordre du jour pour un participant à une commission d'EP
+		*/
+
+        public function getPdfOrdredujour( $commissionep_membreep_id ) {
 			// Participant auquel la convocation doit être envoyée
 			$convocation = $this->CommissionepMembreep->find(
 				'first',
@@ -1427,7 +1465,7 @@
 					),
 					$reponses
 				),
-				"{$this->alias}/convocationep_participant.odt",
+				"{$this->alias}/ordredujour_participant.odt",
 				true,
 				$options
 			);

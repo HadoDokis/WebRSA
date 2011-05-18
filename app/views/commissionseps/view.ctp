@@ -180,12 +180,12 @@
 						),
 						array(
 							'actions' => array(
-								'Commissionseps::printConvocationParticipant'
+								'Commissionseps::printOrdreDuJour'
 							)
 						)
 					);
 
-				$disableConvocationParticipant = !in_array( 'commissionseps::printConvocationParticipant', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] );
+				$disableConvocationParticipant = !in_array( 'commissionseps::printOrdreDuJour', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] );
 				echo "<tbody>";
 				foreach($membresepsseanceseps as $membreepseanceep) {
 
@@ -235,7 +235,7 @@
 							'td',
 							$xhtml->link(
 								'Ordre du jour',
-								array( 'controller' => 'commissionseps', 'action' => 'printConvocationParticipant', $membreepseanceep['CommissionepMembreep']['id'] ),
+								array( 'controller' => 'commissionseps', 'action' => 'printOrdreDuJour', $membreepseanceep['CommissionepMembreep']['id'] ),
 								array(
 									'enabled' => ( ( $membreepseanceep['CommissionepMembreep']['reponse'] == 'remplacepar' || $membreepseanceep['CommissionepMembreep']['reponse'] == 'confirme' ) && empty( $disableConvocationParticipant )  && empty( $membreepseanceep['CommissionepMembreep']['presence'] ) ),
 									'class' => 'button print'
