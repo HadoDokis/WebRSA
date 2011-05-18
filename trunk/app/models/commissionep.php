@@ -681,7 +681,11 @@
 					'conditions' => array(
 						'Commissionep.id' => $commissionep_id
 					),
-					'contain' => false
+					'contain' => array(
+						'Ep' => array(
+							'Regroupementep'
+						)
+					)
 				)
 			);
 
