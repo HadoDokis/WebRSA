@@ -1287,14 +1287,18 @@
 			);
 			$convocation = array( 'Participant' => $convocation['Membreep'], 'Commissionep' => $convocation['Commissionep'] );
 
-			$options['Participant'] = $options['Membreep'];
+//             $options = Set::merge( $options, $this->Membreep->enums() );
+// 			$options['Participant'] = $options['Membreep'];
+
 			$options['Participant']['typevoie'] = ClassRegistry::init( 'Option' )->typevoie();
 
+// debug($convocation);
+// die();
 			return $this->ged(
 				$convocation,
-				"{$this->alias}/convocationep_participant.odt",
+				"{$this->alias}/convocationep_participant.odt"/*,
 				false,
-				$options
+				$options*/
 			);
 
 		}
