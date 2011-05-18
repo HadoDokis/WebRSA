@@ -108,4 +108,22 @@
 	);
 
 ?>
+<script type="text/javascript">
 
+    document.observe( "dom:loaded", function() {
+
+        var v = $( 'ActioncandidatAddEditForm' ).getInputs( 'radio', 'data[Actioncandidat][hasfichecandidature]' );
+        var currentSelectValue = $F('ActioncandidatContractualisation');
+        $( v ).each( function( radio ) {
+            $( radio ).observe( 'change', function( event ) {
+                if( radio.value == 0 ){
+                    $( 'ActioncandidatContractualisation' ).setValue('internecg');
+                }
+                else{
+                    $( 'ActioncandidatContractualisation' ).setValue(currentSelectValue);
+                }
+            } );
+       } );
+
+    });
+</script>
