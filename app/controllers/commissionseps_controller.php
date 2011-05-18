@@ -167,17 +167,14 @@
 						$this->paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'cree', 'associe' );
 						break;
 					case 'arbitrageep':
-						$this->paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'associe', 'presence', 'decisionep', 'traiteep' );
+						$this->paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'associe', 'presence', 'decisionep', 'traiteep', 'decisioncg', 'traite' );
 						break;
 					case 'arbitragecg':
-						$this->paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'traiteep', 'decisioncg' );
+						$this->paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'traiteep', 'decisioncg', 'traite' );
 						break;
 				}
 
 				$commissionseps = $this->paginate( $this->Commissionep );
-
-// 				$this->set( 'etape', $etape );
-
 
 				foreach( $commissionseps as $key => $commissionep ){
 					//Calcul du nombre de participants
