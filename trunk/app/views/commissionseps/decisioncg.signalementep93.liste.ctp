@@ -18,14 +18,15 @@ echo '<table><thead>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
+		$decisionep = $dossierep['Passagecommissionep'][0]['Decisionsignalementep93'][1];
+		$decisioncg = $dossierep['Passagecommissionep'][0]['Decisionsignalementep93'][0];
+
 		$lineOptions = array();
 		foreach( $options['Decisionsignalementep93']['decision'] as $key => $label ) {
 			if( !in_array( $key[0], array( 1, 2 ) ) || ( $key[0] == min( 2, $dossierep['Signalementep93']['rang'] ) ) ) {
 				$lineOptions[$key] = $label;
 			}
 		}
-
-		$indexDecision = count( $dossierep['Passagecommissionep'][0]['Decisionsignalementep93'] ) - 1;
 
 		echo $xhtml->tableCells(
 			array(
@@ -45,23 +46,15 @@ echo '<table><thead>
 					' - ',
 					Set::filter(
 						array(
-							Set::enum( @$dossierep['Passagecommissionep'][0]['Decisionsignalementep93'][$indexDecision]['decision'], $options['Decisionsignalementep93']['decision'] ),
-							@$dossierep['Passagecommissionep'][0]['Decisionsignalementep93'][$indexDecision]['raisonnonpassage']
+							Set::enum( @$dossierep['decision'], $options['Decisionsignalementep93']['decision'] ),
+							@$dossierep['raisonnonpassage']
 						)
 					)
 				),
 
-				$form->input( "Decisionsignalementep93.{$i}.decisionpcg", array( 'legend' => false, 'options' => @$options['Decisionreorientationep93']['decisionpcg'], 'empty' => true, 'type' => 'radio' ) ),
-				array(
-					$form->input( "Signalementep93.{$i}.id", array( 'type' => 'hidden' ) ).
-					$form->input( "Signalementep93.{$i}.dossierep_id", array( 'type' => 'hidden' ) ).
-					$form->input( "Decisionsignalementep93.{$i}.id", array( 'type' => 'hidden' ) ).
-					$form->input( "Decisionsignalementep93.{$i}.passagecommissionep_id", array( 'type' => 'hidden' ) ).
-					$form->input( "Decisionsignalementep93.{$i}.etape", array( 'type' => 'hidden', 'value' => 'cg' ) ).
-					$form->input( "Decisionsignalementep93.{$i}.decision", array( 'type' => 'select', 'options' => $lineOptions, 'div' => false, 'label' => false ) ),
-					array( 'id' => "Decisionsignalementep93{$i}ColumnDecision", 'colspan' => 2 )
-				),
-				$form->input( "Decisionsignalementep93.{$i}.raisonnonpassage", array( 'label' => false, 'type' => 'textarea', 'empty' => true ) ),
+				$options['Decisionsignalementep93']['decisionpcg'][Set::classicExtract( $decisioncg, "decisionpcg" )],
+				$options['Decisionsignalementep93']['decision'][Set::classicExtract( $decisioncg, "decision" )],
+				array( Set::classicExtract( $decisioncg, "raisonnonpassage" ), array( 'colspan' => '2', 'id' => "Decisionsignalementep93{$i}Raisonnonpassage" ) )
 			)
 		);
 	}
@@ -71,15 +64,7 @@ echo '<table><thead>
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
 		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
-			$( 'Decisionsignalementep93<?php echo $i;?>DecisionpcgEnattente' ).observe( 'click', function() {
-				$( 'Decisionsignalementep93<?php echo $i;?>Decision' ).setValue( 'reporte' );
-				fireEvent( $( 'Decisionsignalementep93<?php echo $i;?>Decision' ),'change');
-			} );
-
-			$( 'Decisionsignalementep93<?php echo $i;?>Decision' ).observe( 'change', function() {
-				changeColspanRaisonNonPassage( 'Decisionsignalementep93<?php echo $i;?>ColumnDecision', 'Decisionsignalementep93<?php echo $i;?>Decision', [], 'Decisionsignalementep93<?php echo $i;?>Raisonnonpassage' );
-			});
-			changeColspanRaisonNonPassage( 'Decisionsignalementep93<?php echo $i;?>ColumnDecision', 'Decisionsignalementep93<?php echo $i;?>Decision', [], 'Decisionsignalementep93<?php echo $i;?>Raisonnonpassage' );
+			changeColspanRaisonNonPassage( '<?php echo Set::classicExtract( $dossiers, "{$theme}.liste.{$i}.Passagecommissionep.0.Decisionsignalementep93.0.decision" );?>', 'Decisionsignalementep93<?php echo $i;?>Decision', [], 'Decisionsignalementep93<?php echo $i;?>Raisonnonpassage' );
 		<?php endfor;?>
 	});
 </script>

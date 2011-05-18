@@ -64,6 +64,12 @@ msgstr "Montant réduction"
 msgid "Decisionnonrespectsanctionep93.dureesursis"
 msgstr "Durée sursis"
 
+msgid "ENUM::DECISIONPCG::valide"
+msgstr "Validé"
+
+msgid "ENUM::DECISIONPCG::enattente"
+msgstr "En attente"
+
 # msgid "ENUM::ETAPE::ep"
 # msgstr "EP"
 #

@@ -1,6 +1,5 @@
 <?php
-// 	echo $form->create( null, array( 'url' => Router::url( null, true ) ) );
-	echo '<table><thead>
+echo '<table><thead>
 <tr>
 <th>Dossier EP</th>
 <th>Nom du demandeur</th>
@@ -10,7 +9,7 @@
 <th>Date d\'orientation</th>
 <th>Orientation actuelle</th>
 <th>Avis EPL</th>
-<th colspan="3">Décision CG</th>
+<th colspan="4">Décision CG</th>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
@@ -42,6 +41,7 @@
 				implode( ' ', array( @$dossierep['Nonorientationproep93']['Orientstruct']['Referent']['qual'], @$dossierep['Nonorientationproep93']['Orientstruct']['Referent']['nom'], @$dossierep['Nonorientationproep93']['Orientstruct']['Referent']['prenom'] ) ),
 				$avisep,
 
+				$form->input( "Decisionnonorientationproep93.{$i}.decisionpcg", array( 'legend' => false, 'options' => @$options['Decisionreorientationep93']['decisionpcg'], 'empty' => true, 'type' => 'radio' ) ),
 				$form->input( "Nonorientationproep93.{$i}.id", array( 'type' => 'hidden', 'value' => $dossierep['Nonorientationproep93']['id'] ) ).
 				$form->input( "Nonorientationproep93.{$i}.dossierep_id", array( 'type' => 'hidden', 'value' => $dossierep['Dossierep']['id'] ) ).
 				$form->input( "Decisionnonorientationproep93.{$i}.id", array( 'type' => 'hidden' ) ).
@@ -73,6 +73,11 @@
 				'reorientation',
 				false
 			);
+
+			$( 'Decisionnonorientationproep93<?php echo $i;?>DecisionpcgEnattente' ).observe( 'click', function() {
+				$( 'Decisionnonorientationproep93<?php echo $i;?>Decision' ).setValue( 'reporte' );
+				fireEvent( $( 'Decisionnonorientationproep93<?php echo $i;?>Decision' ),'change');
+			} );
 
 			$( 'Decisionnonorientationproep93<?php echo $i;?>Decision' ).observe( 'change', function() {
 				afficheRaisonpassage( 'Decisionnonorientationproep93<?php echo $i;?>Decision', [ 'Decisionnonorientationproep93<?php echo $i;?>TypeorientId', 'Decisionnonorientationproep93<?php echo $i;?>StructurereferenteId' ], 'Decisionnonorientationproep93<?php echo $i;?>Raisonnonpassage' );

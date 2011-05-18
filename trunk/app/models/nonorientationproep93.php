@@ -6,6 +6,50 @@
 		public $useTable = 'nonorientationsproseps93';
 
 		/**
+		 *
+		 */
+
+		public function prepareFormData( $commissionep_id, $datas, $niveauDecision ) {
+			// Doit-on prendre une décision à ce niveau ?
+			$themes = $this->Dossierep->Passagecommissionep->Commissionep->themesTraites( $commissionep_id );
+			$niveauFinal = $themes[Inflector::underscore($this->alias)];
+			if( ( $niveauFinal == 'ep' ) && ( $niveauDecision == 'cg' ) ) {
+				return array();
+			}
+// debug($datas);
+			$formData = array();
+			foreach( $datas as $key => $dossierep ) {
+				$formData['Decision'.Inflector::underscore( $this->alias )][$key]['passagecommissionep_id'] = $dossierep['Passagecommissionep'][0]['id'];
+				if( $niveauDecision == 'ep' ) {
+					if( isset( $datas[$key]['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0] ) ) { // Modification
+						$formData['Decision'.Inflector::underscore( $this->alias )][$key]['id'] = @$datas[$key]['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0]['id'];
+						$formData['Decision'.Inflector::underscore( $this->alias )][$key]['decision'] = @$datas[$key]['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0]['decision'];
+						$formData['Decision'.Inflector::underscore( $this->alias )][$key]['raisonnonpassage'] = @$datas[$key]['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0]['raisonnonpassage'];
+						$formData['Decision'.Inflector::underscore( $this->alias )][$key]['structurereferente_id'] = @$datas[$key]['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0]['typeorient_id'].'_'.@$datas[$key]['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0]['structurereferente_id'];
+						$formData['Decision'.Inflector::underscore( $this->alias )][$key]['typeorient_id'] = @$datas[$key]['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0]['typeorient_id'];
+					}
+				}
+				elseif( $niveauDecision == 'cg' ) {
+					if( !empty( $datas[$key]['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0] ) ) { // Modification
+						$formData['Decision'.Inflector::underscore( $this->alias )][$key]['id'] = @$datas[$key]['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0]['id'];
+						$formData['Decision'.Inflector::underscore( $this->alias )][$key]['decisionpcg'] = @$datas[$key]['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0]['decisionpcg'];
+					}
+					else {
+						$formData['Decision'.Inflector::underscore( $this->alias )][$key]['decisionpcg'] = 'valide';
+					}
+					$formData['Decision'.Inflector::underscore( $this->alias )][$key]['decision'] = @$datas[$key]['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0]['decision'];
+					$formData['Decision'.Inflector::underscore( $this->alias )][$key]['raisonnonpassage'] = @$datas[$key]['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0]['raisonnonpassage'];
+					$formData['Decision'.Inflector::underscore( $this->alias )][$key]['structurereferente_id'] = @$datas[$key]['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0]['typeorient_id'].'_'.@$datas[$key]['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0]['structurereferente_id'];
+					$formData['Decision'.Inflector::underscore( $this->alias )][$key]['typeorient_id'] = @$datas[$key]['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0]['typeorient_id'];
+				}
+			}
+// debug( $datas );
+// debug( $formData );
+
+			return $formData;
+		}
+
+		/**
 		*
 		*/
 

@@ -512,10 +512,12 @@
 					}
 				}
 				else if( $niveauDecision == 'cg' ) {
+					$formData['Decisionreorientationep93'][$key]['decision'] = $dossierep['Passagecommissionep'][0]['Decisionreorientationep93'][0]['decision'];
+					$formData['Decisionreorientationep93'][$key]['raisonnonpassage'] = @$datas[$key]['Passagecommissionep'][0]['Decisionreorientationep93'][0]['raisonnonpassage'];
+					
 					if( !empty( $datas[$key]['Passagecommissionep'][0]['Decisionreorientationep93'][1] ) ) { // Modification
 						$formData['Decisionreorientationep93'][$key]['id'] = @$datas[$key]['Passagecommissionep'][0]['Decisionreorientationep93'][0]['id'];
-						$formData['Decisionreorientationep93'][$key]['decision'] = @$datas[$key]['Passagecommissionep'][0]['Decisionreorientationep93'][0]['decision'];
-						$formData['Decisionreorientationep93'][$key]['raisonnonpassage'] = @$datas[$key]['Passagecommissionep'][0]['Decisionreorientationep93'][0]['raisonnonpassage'];
+						$formData['Decisionreorientationep93'][$key]['decisionpcg'] = @$datas[$key]['Passagecommissionep'][0]['Decisionreorientationep93'][0]['decisionpcg'];
 
 						$formData['Decisionreorientationep93'][$key]['typeorient_id'] = @$datas[$key]['Passagecommissionep'][0]['Decisionreorientationep93'][0]['typeorient_id'];
 						$formData['Decisionreorientationep93'][$key]['structurereferente_id'] = implode(
@@ -526,9 +528,8 @@
 							)
 						);
 					}
-					elseif( !empty( $datas[$key]['Passagecommissionep'][0]['Decisionreorientationep93'][0] ) ) { // Modification
-						$formData['Decisionreorientationep93'][$key]['decision'] = $dossierep['Passagecommissionep'][0]['Decisionreorientationep93'][0]['decision'];
-						$formData['Decisionreorientationep93'][$key]['raisonnonpassage'] = @$datas[$key]['Passagecommissionep'][0]['Decisionreorientationep93'][0]['raisonnonpassage'];
+					elseif( !empty( $datas[$key]['Passagecommissionep'][0]['Decisionreorientationep93'][0] ) ) {
+						$formData['Decisionreorientationep93'][$key]['decisionpcg'] = 'valide';
 						if( $formData['Decisionreorientationep93'][$key]['decision'] == 'refuse' ) {
 							$formData['Decisionreorientationep93'][$key]['typeorient_id'] = $dossierep[$this->alias]['typeorient_id'];
 							$formData['Decisionreorientationep93'][$key]['structurereferente_id'] = implode(

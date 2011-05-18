@@ -33,3 +33,9 @@ msgstr "Annulé"
 
 msgid "ENUM::DECISION::reporte"
 msgstr "Reporté"
+
+msgid "ENUM::DECISIONPCG::valide"
+msgstr "Validé"
+
+msgid "ENUM::DECISIONPCG::enattente"
+msgstr "En attente"

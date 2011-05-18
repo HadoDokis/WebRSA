@@ -245,10 +245,12 @@
 					else if( $niveauDecision == 'cg' ) {
 						if( !empty( $datas[$key]['Passagecommissionep'][0]['Decisionnonrespectsanctionep93'][1] ) ) { // Modification
 							$formData['Decisionnonrespectsanctionep93'][$key]['decision'] = @$datas[$key]['Passagecommissionep'][0]['Decisionnonrespectsanctionep93'][1]['decision'];
+							$formData['Decisionnonrespectsanctionep93'][$key]['decisionpcg'] = @$datas[$key]['Passagecommissionep'][0]['Decisionnonrespectsanctionep93'][1]['decisionpcg'];
 							$formData['Decisionnonrespectsanctionep93'][$key]['raisonnonpassage'] = @$datas[$key]['Passagecommissionep'][0]['Decisionnonrespectsanctionep93'][1]['raisonnonpassage'];
 						}
 						else {
 							$formData['Decisionnonrespectsanctionep93'][$key]['decision'] = $dossierep['Passagecommissionep'][0]['Decisionnonrespectsanctionep93'][0]['decision'];
+							$formData['Decisionnonrespectsanctionep93'][$key]['decisionpcg'] = 'valide';
 							$formData['Decisionnonrespectsanctionep93'][$key]['raisonnonpassage'] = $dossierep['Passagecommissionep'][0]['Decisionnonrespectsanctionep93'][0]['raisonnonpassage'];
 						}
 					}
