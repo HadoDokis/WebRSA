@@ -30,7 +30,7 @@
 				'commissionseps::ordredujour',
 				'dossierseps::choose',
 				'commissionseps::printConvocationBeneficiaire',
-				'commissionseps::printOrdreDuJour',
+				'commissionseps::printConvocationParticipant',
 				'membreseps::editliste',
 				'commissionseps::edit',
 				'membreseps::editpresence',
@@ -43,12 +43,12 @@
 				'commissionseps::traiterep',
 				'commissionseps::delete',
 				/*'commissionseps::printConvocationBeneficiaire',
-				'commissionseps::printOrdreDuJour',*/
+				'commissionseps::printConvocationParticipant',*/
 			),
 			'decisionep' => array(
 // 				'commissionseps::ordredujour',
 				/*'commissionseps::printConvocationBeneficiaire',
-				'commissionseps::printOrdreDuJour',*/
+				'commissionseps::printConvocationParticipant',*/
 				'commissionseps::edit',
 				'commissionseps::traiterep',
 				'commissionseps::finaliserep',
@@ -623,7 +623,7 @@
 				array(
 					'fields' => $fields,
 					'conditions'=> array(
-						'Commissionep.ep_id' => $commissionep['Commissionep']['ep_id']
+						'Commissionep.id' => $commissionep_id
 					),
 					'joins' => array(
 						array(
@@ -841,7 +841,7 @@ die();*/
 		*   Impression des convocations pour les participants à la commission d'EP
 		*/
 
-		public function printOrdreDuJour( $commissionep_membreep_id ) {
+		public function printConvocationParticipant( $commissionep_membreep_id ) {
 			$commissionep_id = $this->Commissionep->CommissionepMembreep->field( 'commissionep_id', array( 'CommissionepMembreep.id' => $commissionep_membreep_id ) );
 			$this->assert( !empty( $commissionep_id ), 'invalidParameter' );
 
@@ -879,7 +879,7 @@ die();*/
 				$this->redirect( $this->referer() );
 			}
 
-			$pdf = $this->Commissionep->getPdfOrdredujour( $commissionep_membreep_id );
+			$pdf = $this->Commissionep->getPdfConvocationParticipant( $commissionep_membreep_id );
 
 			if( $pdf ) {
 				$this->Gedooo->sendPdfContentToClient( $pdf, 'ConvocationepParticipant' );
