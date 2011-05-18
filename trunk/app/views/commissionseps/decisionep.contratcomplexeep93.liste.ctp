@@ -18,7 +18,8 @@ echo '<table><thead>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
-		$indexDecision = count( $dossierep['Passagecommissionep'][0]['Decisioncontratcomplexeep93'] ) - 1;
+		$decisionep = $dossierep['Passagecommissionep'][0]['Decisioncontratcomplexeep93'][0];
+
 		echo $xhtml->tableCells(
 			array(
 				$dossierep['Dossierep']['id'],
@@ -32,18 +33,18 @@ echo '<table><thead>
 					' - ',
 					Set::filter(
 						array(
-							Set::enum( @$dossierep['Passagecommissionep'][0]['Decisioncontratcomplexeep93'][$indexDecision]['decision'], $options['Decisioncontratcomplexeep93']['decision'] ),
-							$locale->date( 'Locale->date', @$dossierep['Passagecommissionep'][0]['Decisioncontratcomplexeep93'][$indexDecision]['datevalidation_ci'] ),
-							@$dossierep['Passagecommissionep'][0]['Decisioncontratcomplexeep93'][$indexDecision]['observ_ci'],
-							@$dossierep['Passagecommissionep'][0]['Decisioncontratcomplexeep93'][$indexDecision]['raisonnonpassage']
+							Set::enum( @$dossierep['Passagecommissionep'][0]['Decisioncontratcomplexeep93'][0]['decision'], $options['Decisioncontratcomplexeep93']['decision'] ),
+							$locale->date( 'Locale->date', @$dossierep['Passagecommissionep'][0]['Decisioncontratcomplexeep93'][0]['datevalidation_ci'] ),
+							@$dossierep['Passagecommissionep'][0]['Decisioncontratcomplexeep93'][0]['observ_ci'],
+							@$dossierep['Passagecommissionep'][0]['Decisioncontratcomplexeep93'][0]['raisonnonpassage']
 						)
 					)
 				),
 
-				$options['Decisionnonorientationproep93']['decision'][Set::classicExtract( $datas, "Decisionnonorientationproep93.{$i}.decision" )],
-				array( Set::classicExtract( $datas, "Decisionnonorientationproep93.{$i}.datevalidation_ci" ), array( 'id' => "Decisionnonorientationproep93{$i}DatevalidationCi" ) ),
-				array( Set::classicExtract( $datas, "Decisionnonorientationproep93.{$i}.observ_ci" ), array( 'id' => "Decisionnonorientationproep93{$i}ObservCi" ) ),
-				array( Set::classicExtract( $datas, "Decisionnonorientationproep93.{$i}.raisonnonpassage" ), array( 'colspan' => '2', 'id' => "Decisionnonorientationproep93{$i}Raisonnonpassage" ) )
+				$options['Decisionnonorientationproep93']['decision'][Set::classicExtract( $decisionep, "decision" )],
+				array( Set::classicExtract( $decisionep, "datevalidation_ci" ), array( 'id' => "Decisionnonorientationproep93{$i}DatevalidationCi" ) ),
+				array( Set::classicExtract( $decisionep, "observ_ci" ), array( 'id' => "Decisionnonorientationproep93{$i}ObservCi" ) ),
+				array( Set::classicExtract( $decisionep, "raisonnonpassage" ), array( 'colspan' => '2', 'id' => "Decisionnonorientationproep93{$i}Raisonnonpassage" ) )
 			)
 		);
 	}
@@ -54,7 +55,7 @@ echo '<table><thead>
 	document.observe("dom:loaded", function() {
 		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
 			afficheRaisonpassage(
-				'<?php echo $options['Decisioncontratcomplexeep93']['decision'][Set::classicExtract( $datas, "Decisioncontratcomplexeep93.{$i}.decision" )];?>',
+				'<?php echo $options['Decisioncontratcomplexeep93']['decision'][Set::classicExtract( $decisionep, "decision" )];?>',
 				[ 'Decisioncontratcomplexeep93<?php echo $i;?>ObservCi', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiDay' ],
 				'Decisioncontratcomplexeep93<?php echo $i;?>Raisonnonpassage'
 			);

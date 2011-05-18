@@ -16,6 +16,8 @@
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
+		$decisionep = $dossierep['Passagecommissionep'][0]['Decisionnonrespectsanctionep93'][0];
+
 		$lineOptions = array();
 		foreach( $options['Decisionnonrespectsanctionep93']['decision'] as $key => $label ) {
 			if( !in_array( $key[0], array( 1, 2 ) ) || ( $key[0] == min( 2, $dossierep['Nonrespectsanctionep93']['rgpassage'] ) ) ) {
@@ -37,10 +39,10 @@
 				@$dossierep['Personne']['Foyer']['nbenfants'],
 
 				array(
-					$options['Decisionnonrespectsanctionep93']['decision'][Set::classicExtract( $datas, "Decisionnonrespectsanctionep93.{$i}.decision" )],
+					$options['Decisionnonrespectsanctionep93']['decision'][Set::classicExtract( $decisionep, "decision" )],
 					array( 'id' => "Decisionnonrespectsanctionep93{$i}ColumnDecision", 'colspan' => 2 )
 				),
-				array( Set::classicExtract( $datas, "Decisionnonrespectsanctionep93.{$i}.raisonnonpassage" ), array( 'id' => "Decisionnonrespectsanctionep93{$i}Raisonnonpassage" ) )
+				array( Set::classicExtract( $decisionep, "raisonnonpassage" ), array( 'id' => "Decisionnonrespectsanctionep93{$i}Raisonnonpassage" ) )
 			)
 		);
 	}
@@ -50,7 +52,7 @@
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
 		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
-			changeColspanRaisonNonPassage( '<?php echo $options['Decisionnonrespectsanctionep93']['decision'][Set::classicExtract( $datas, "Decisionnonrespectsanctionep93.{$i}.decision" )];?>', 'Decisionnonrespectsanctionep93<?php echo $i;?>Decision', [], 'Decisionnonrespectsanctionep93<?php echo $i;?>Raisonnonpassage' );
+			changeColspanRaisonNonPassage( '<?php echo $options['Decisionnonrespectsanctionep93']['decision'][Set::classicExtract( $decisionep, "decision" )];?>', 'Decisionnonrespectsanctionep93<?php echo $i;?>Decision', [], 'Decisionnonrespectsanctionep93<?php echo $i;?>Raisonnonpassage' );
 		<?php endfor;?>
 	});
 </script>
