@@ -303,6 +303,9 @@
 					$this->redirect( $this->referer() );
 				}
 			}
+			else if( $this->action == 'add' ) {
+				$this->data['Commissionep']['etatcommissionep'] = 'associe';
+			}
 
 			$this->_setOptions();
 			$this->render( null, null, 'add_edit' );

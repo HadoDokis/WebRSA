@@ -15,7 +15,7 @@
 	class GedoooBehavior extends ModelBehavior
 	{
 		/**
-		*
+		* INFO: GDO_FieldType: text, string, number, date
 		*/
 
 		protected function _addPartValue( $oPart, $key, $value, $options ) {
@@ -30,7 +30,7 @@
 			else if( preg_match( '/^([0-9]{4})-([0-9]{2})-([0-9]{2}) ([0-9]{2}:[0-9]{2}:[0-9]{2})$/', $value, $matches ) ) {
 				$type = 'date';
 				$value = "{$matches[3]}/{$matches[2]}/{$matches[1]}";
-				$oPart->addElement( new GDO_FieldType( strtolower( $key ).'_time', $matches[4], 'time' ) );
+				$oPart->addElement( new GDO_FieldType( strtolower( $key ).'_time', preg_replace( '/([0-9]{2}:[0-9]{2}):[0-9]{2}/', '\1', $matches[4] ), 'text' ) );
 			}
 
 

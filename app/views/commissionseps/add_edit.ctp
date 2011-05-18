@@ -31,6 +31,7 @@
 	echo $default->subform(
 		array(
 			'Commissionep.id' => array('type'=>'hidden'),
+			'Commissionep.etatcommissionep' => array('type'=>'hidden'),
 // 			'Commissionep.identifiant',
 			'Commissionep.ep_id' => array( 'type' => 'select' ),
 			'Commissionep.name',
@@ -46,15 +47,15 @@
 		)
 	);
 
-	echo $ajax->observeField( 'CommissionepStructurereferenteId', array( 'update' => 'Adresse', 'url' => Router::url( '/', true ).'commissionseps/ajaxadresse' ) );
-
-	echo $html->tag(
-		'div',
-		'',
-		array(
-			'id' => 'Adresse'
-		)
-	);
+// 	echo $ajax->observeField( 'CommissionepStructurereferenteId', array( 'update' => 'Adresse', 'url' => Router::url( '/', true ).'commissionseps/ajaxadresse' ) );
+//
+// 	echo $html->tag(
+// 		'div',
+// 		'',
+// 		array(
+// 			'id' => 'Adresse'
+// 		)
+// 	);
 
 	echo $default->subform(
 		array(
@@ -70,7 +71,7 @@
 	echo $form->end( 'Enregistrer' );
 ?>
 
-<script type="text/javascript">
+<!--<script type="text/javascript">
 	document.observe("dom:loaded", function() {
 		// Affichage de l'adresse lors de l'apparition du formulaire
 		new Ajax.Updater(
@@ -84,4 +85,4 @@
 			}
 		)
 	} );
-</script>
+</script>-->
