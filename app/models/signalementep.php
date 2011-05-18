@@ -188,10 +188,12 @@
 					else if( $niveauDecision == 'cg' ) {
 						if( !empty( $datas[$key]['Passagecommissionep'][0][$modeleDecisions][1] ) ) { // Modification
 							$formData[$modeleDecisions][$key]['decision'] = @$datas[$key]['Passagecommissionep'][0][$modeleDecisions][1]['decision'];
+							$formData[$modeleDecisions][$key]['decisionpcg'] = @$datas[$key]['Passagecommissionep'][0][$modeleDecisions][1]['decisionpcg'];
 							$formData[$modeleDecisions][$key]['raisonnonpassage'] = @$datas[$key]['Passagecommissionep'][0][$modeleDecisions][1]['raisonnonpassage'];
 						}
 						else {
 							$formData[$modeleDecisions][$key]['decision'] = $dossierep['Passagecommissionep'][0][$modeleDecisions][0]['decision'];
+							$formData[$modeleDecisions][$key]['decisionpcg'] = 'valide';
 							$formData[$modeleDecisions][$key]['raisonnonpassage'] = $dossierep['Passagecommissionep'][0][$modeleDecisions][0]['raisonnonpassage'];
 						}
 					}

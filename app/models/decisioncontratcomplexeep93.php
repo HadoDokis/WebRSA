@@ -18,7 +18,8 @@
 			'Enumerable' => array(
 				'fields' => array(
 					'etape',
-					'decision'
+					'decision',
+					'decisionpcg'
 				)
 			),
 			'Autovalidate',

@@ -18,7 +18,12 @@
 			echo '</div>';
 		}
 
-		echo $form->submit( 'Enregistrer' );
+		echo '<div class="submit">';
+			echo $form->submit( 'Enregistrer', array( 'div' => false ) );
+			if ( $commissionep['Commissionep']['etatcommissionep'] == 'decisioncg' ) {
+				echo $form->submit( 'Valider', array( 'name' => 'Valider', 'div' => false ) );
+			}
+		echo '</div>';
 		echo $form->end();
 
 		echo $default->button(

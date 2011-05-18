@@ -36,7 +36,8 @@ echo '<table><thead>
 					array(
 						'controller'=>'dossierseps',
 						'action'=>'decisioncg',
-						$dossierep['Dossierep']['id']
+						$dossierep['Dossierep']['id'],
+						'enabled' => false
 					)
 				)
 			)

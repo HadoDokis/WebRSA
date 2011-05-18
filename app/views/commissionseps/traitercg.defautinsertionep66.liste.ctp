@@ -1,6 +1,5 @@
 <?php
-// 	echo $form->create( null, array( 'url' => Router::url( null, true ) ) );
-	echo '<table class="tooltips"><thead>
+echo '<table class="tooltips"><thead>
 <tr>
 <th>Dossier EP</th>
 <th>Nom du demandeur</th>
@@ -51,28 +50,20 @@
 				$form->input( "Decisiondefautinsertionep66.{$i}.decisionsup", array( 'type' => 'select', 'label' => false, 'empty' => true, 'options' => $options['Decisiondefautinsertionep66']['decisionsup'], 'value' => @$decisionsdefautsinsertionseps66[$i]['decisionsup'] ) ),
 				$form->input( "Decisiondefautinsertionep66.{$i}.typeorient_id", array( 'label' => false, 'options' => $typesorients, 'empty' => true ) ),
 				$form->input( "Decisiondefautinsertionep66.{$i}.structurereferente_id", array( 'label' => false, 'options' => $structuresreferentes, 'empty' => true, 'type' => 'select' ) ),
-				$form->input( "Decisiondefautinsertionep66.{$i}.referent_id", array( 'label' => false, 'options' => $referents, 'empty' => true, 'type' => 'select' ) )
+				$form->input( "Decisiondefautinsertionep66.{$i}.referent_id", array( 'label' => false, 'options' => $referents, 'empty' => true, 'type' => 'select' ) ),
+				array( $form->input( "Decisiondefautinsertionep66.{$i}.raisonnonpassage", array( 'label' => false, 'type' => 'textarea', 'empty' => true ) ), array( 'colspan' => '3' ) )
 			)
 		);
 	}
 	echo '</tbody></table>';
-//debug( $this->data );
-// 	echo $form->submit( 'Enregistrer' );
-// 	echo $form->end();
-
-// 	debug( $commissionep );
-//debug( $dossiers[$theme]['liste'] );
-// debug( $options );
 ?>
 
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
 		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
 			dependantSelect( 'Decisiondefautinsertionep66<?php echo $i?>StructurereferenteId', 'Decisiondefautinsertionep66<?php echo $i?>TypeorientId' );
-			try { $( 'Decisiondefautinsertionep66<?php echo $i?>StructurereferenteId' ).onchange(); } catch(id) { }
-			
+
 			dependantSelect( 'Decisiondefautinsertionep66<?php echo $i?>ReferentId', 'Decisiondefautinsertionep66<?php echo $i?>StructurereferenteId' );
-			try { $( 'Decisiondefautinsertionep66<?php echo $i?>ReferentId' ).onchange(); } catch(id) { }
 
 			observeDisableFieldsOnValue(
 				'Decisiondefautinsertionep66<?php echo $i;?>Decision',
@@ -103,6 +94,19 @@
 			else {
 				$( 'Decisiondefautinsertionep66<?php echo $i;?>Decisionsup' ).hide();
 			}
+
+			$( 'Decisiondefautinsertionep66<?php echo $i;?>Decision' ).observe( 'change', function() {
+				afficheRaisonpassage(
+					'Decisiondefautinsertionep66<?php echo $i;?>Decision',
+					[ 'Decisiondefautinsertionep66<?php echo $i;?>TypeorientId', 'Decisiondefautinsertionep66<?php echo $i;?>StructurereferenteId', 'Decisiondefautinsertionep66<?php echo $i;?>ReferentId' ],
+					'Decisiondefautinsertionep66<?php echo $i;?>Raisonnonpassage'
+				);
+			});
+			afficheRaisonpassage(
+				'Decisiondefautinsertionep66<?php echo $i;?>Decision',
+				[ 'Decisiondefautinsertionep66<?php echo $i;?>TypeorientId', 'Decisiondefautinsertionep66<?php echo $i;?>StructurereferenteId', 'Decisiondefautinsertionep66<?php echo $i;?>ReferentId' ],
+				'Decisiondefautinsertionep66<?php echo $i;?>Raisonnonpassage'
+			);
 		<?php endfor;?>
 	});
 </script>

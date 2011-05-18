@@ -1,6 +1,5 @@
 <?php
-// 	echo $form->create( null, array( 'url' => Router::url( null, true ) ) );
-	echo '<table><thead>
+echo '<table><thead>
 <tr>
 <th>Dossier EP</th>
 <th>Nom du demandeur</th>
@@ -31,7 +30,6 @@
 				@$dossierep['Saisinebilanparcoursep66']['Structurereferente']['lib_struc'],
 				implode( ' - ', Set::filter( array( @$dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['Typeorient']['lib_type_orient'], @$dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['Structurereferente']['lib_struc'] ) ) ),
 				$form->input( "Decisionsaisinebilanparcoursep66.{$i}.id", array( 'type' => 'hidden', 'value' => @$this->data['Decisionsaisinebilanparcoursep66'][$i]['id'] ) ).
-// 				$form->input( "Dossierep.{$i}.id", array( 'type' => 'hidden', 'value' => $dossierep['Dossierep']['id'] ) ).
 				$form->input( "Saisinebilanparcoursep66.{$i}.dossierep_id", array( 'type' => 'hidden', 'value' => $dossierep['Dossierep']['id'] ) ).
 				$form->input( "Decisionsaisinebilanparcoursep66.{$i}.etape", array( 'type' => 'hidden', 'value' => 'cg' ) ).
 				$form->input( "Decisionsaisinebilanparcoursep66.{$i}.passagecommissionep_id", array( 'type' => 'hidden' ) ).
@@ -44,11 +42,6 @@
 		);
 	}
 	echo '</tbody></table>';
-// 	echo $form->submit( 'Enregistrer' );
-// 	echo $form->end();
-
-// 	debug( $commissionep );
-// 	debug( $options );
 ?>
 
 <script type="text/javascript">
