@@ -316,7 +316,7 @@
 				}
 			}
 			else if( $this->action == 'add' ) {
-				$this->data['Commissionep']['etatcommissionep'] = 'associe';
+				$this->data['Commissionep']['etatcommissionep'] = 'cree';
 			}
 
 			$this->_setOptions();
