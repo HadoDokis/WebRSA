@@ -27,8 +27,8 @@ echo '<table><thead>
 				@$dossierep['Regressionorientationep58']['Structurereferente']['lib_struc'],
 
 				$options['Decisionregressionorientationep58']['decision'][Set::classicExtract( $decisionep, "decision" )],
-				array( $typesorients[Set::classicExtract( $decisionep, "typeorient_id" )], array( 'id' => "Decisionregressionorientationep58{$i}TypeorientId" ) ),
-				array( $structuresreferentes[Set::classicExtract( $decisionep, "structurereferente_id" )], array( 'id' => "Decisionregressionorientationep58{$i}StructurereferenteId" ) ),
+				array( $liste_typesorients[Set::classicExtract( $decisionep, "typeorient_id" )], array( 'id' => "Decisionregressionorientationep58{$i}TypeorientId" ) ),
+				array( $liste_structuresreferentes[Set::classicExtract( $decisionep, "structurereferente_id" )], array( 'id' => "Decisionregressionorientationep58{$i}StructurereferenteId" ) ),
 				array( Set::classicExtract( $decisionep, "raisonnonpassage" ), array( 'colspan' => '2', 'id' => "Decisionregressionorientationep58{$i}Raisonnonpassage" ) )
 			)
 		);

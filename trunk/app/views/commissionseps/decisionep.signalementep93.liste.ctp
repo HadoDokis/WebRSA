@@ -40,7 +40,7 @@ echo '<table><thead>
 				@$dossierep['Signalementep93']['rang'],
 				Set::enum( @$dossierep['Personne']['Foyer']['sitfam'], $options['Foyer']['sitfam'] ),
 				@$dossierep['Personne']['Foyer']['nbenfants'],
-				
+
 				array(
 					$options['Decisionsignalementep93']['decision'][Set::classicExtract( $decisionep, "decision" )],
 					array( 'id' => "Decisionsignalementep93{$i}ColumnDecision", 'colspan' => 2 )

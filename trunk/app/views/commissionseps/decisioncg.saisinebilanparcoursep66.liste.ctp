@@ -34,9 +34,9 @@ echo '<table><thead>
 				implode( ' - ', Set::filter( array( @$dossierep['Typeorient']['lib_type_orient'], @$dossierep['Structurereferente']['lib_struc'] ) ) ),
 
 				$options['Decisionsaisinebilanparcoursep66']['decision'][Set::classicExtract( $decisioncg, "decision" ),
-				array( $typesorients[Set::classicExtract( $decisioncg, "typeorient_id" )], array( 'id' => "Decisionsaisinebilanparcoursep66{$i}TypeorientId" ) ),
-				array( $structuresreferentes[Set::classicExtract( $decisioncg, "typeorient_id" ).'_'.Set::classicExtract( $decisioncg, "structurereferente_id" )], array( 'id' => "Decisionsaisinebilanparcoursep66{$i}StructurereferenteId" ) ),
-				array( $referents[Set::classicExtract( $decisioncg, "structurereferente_id" ).'_'.Set::classicExtract( $decisioncg, "referent_id" )], array( 'id' => "Decisionsaisinebilanparcoursep66{$i}ReferentId" ) ),
+				array( $liste_typesorients[Set::classicExtract( $decisioncg, "typeorient_id" )], array( 'id' => "Decisionsaisinebilanparcoursep66{$i}TypeorientId" ) ),
+				array( $liste_structuresreferentes[Set::classicExtract( $decisioncg, "structurereferente_id" )], array( 'id' => "Decisionsaisinebilanparcoursep66{$i}StructurereferenteId" ) ),
+				array( $liste_referents[Set::classicExtract( $decisioncg, "referent_id" )], array( 'id' => "Decisionsaisinebilanparcoursep66{$i}ReferentId" ) ),
 				array( Set::classicExtract( $decisioncg, "raisonnonpassage" ), array( 'colspan' => '2', 'id' => "Decisionsaisinebilanparcoursep66{$i}Raisonnonpassage" ) )
 			)
 		);

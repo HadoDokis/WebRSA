@@ -27,8 +27,8 @@ echo '<table><thead>
 				implode( ' ', array( @$dossierep['Nonorientationproep93']['Orientstruct']['Referent']['qual'], @$dossierep['Nonorientationproep93']['Orientstruct']['Referent']['nom'], @$dossierep['Nonorientationproep93']['Orientstruct']['Referent']['prenom'] ) ),
 
 				$options['Decisionnonorientationproep93']['decision'][Set::classicExtract( $decisionep, "decision" )],
-				array( $typesorients[Set::classicExtract( $decisionep, "typeorient_id" )], array( 'id' => "Decisionnonorientationproep93{$i}TypeorientId" ) ),
-				array( $structuresreferentes[Set::classicExtract( $decisionep, "structurereferente_id" )], array( 'id' => "Decisionnonorientationproep93{$i}StructurereferenteId" ) ),
+				array( $liste_typesorients[Set::classicExtract( $decisionep, "typeorient_id" )], array( 'id' => "Decisionnonorientationproep93{$i}TypeorientId" ) ),
+				array( $liste_structuresreferentes[Set::classicExtract( $decisionep, "structurereferente_id" )], array( 'id' => "Decisionnonorientationproep93{$i}StructurereferenteId" ) ),
 				array( Set::classicExtract( $decisionep, "raisonnonpassage" ), array( 'colspan' => '2', 'id' => "Decisionnonorientationproep93{$i}Raisonnonpassage" ) )
 			)
 		);

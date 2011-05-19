@@ -31,9 +31,9 @@ echo '<table><thead>
 				@$dossierep['Saisinebilanparcoursep66']['Structurereferente']['lib_struc'],
 
 				$options['Decisionsaisinebilanparcoursep66']['decision'][Set::classicExtract( $decisionep, "decision" )],
-				array( $typesorients[Set::classicExtract( $decisionep, "typeorient_id" )], array( 'id' => "Decisionsaisinebilanparcoursep66{$i}TypeorientId" ) ),
-				array( $structuresreferentes[Set::classicExtract( $decisionep, "structurereferente_id" )], array( 'id' => "Decisionsaisinebilanparcoursep66{$i}StructurereferenteId" ) ),
-				array( $referents[Set::classicExtract( $decisionep, "referent_id" )], array( 'id' => "Decisionsaisinebilanparcoursep66{$i}ReferentId" ) ),
+				array( $liste_typesorients[Set::classicExtract( $decisionep, "typeorient_id" )], array( 'id' => "Decisionsaisinebilanparcoursep66{$i}TypeorientId" ) ),
+				array( $liste_structuresreferentes[Set::classicExtract( $decisionep, "structurereferente_id" )], array( 'id' => "Decisionsaisinebilanparcoursep66{$i}StructurereferenteId" ) ),
+				array( $liste_referents[Set::classicExtract( $decisionep, "referent_id" )], array( 'id' => "Decisionsaisinebilanparcoursep66{$i}ReferentId" ) ),
 				array( Set::classicExtract( $decisionep, "raisonnonpassage" ), array( 'colspan' => 3, 'id' => "Decisionsaisinebilanparcoursep66{$i}Raisonnonpassage" ) ),
 				Set::classicExtract( $decisionep, "commentaire" )
 			)
