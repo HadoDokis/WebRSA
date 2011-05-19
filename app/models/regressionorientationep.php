@@ -230,8 +230,6 @@
 							$themeData[$key]['Decision'.Inflector::underscore( $this->alias )]['referent_id'] = null;
 						}
 					}
-					$this->create( $themeData );
-					$success = $this->save() && $success;
 				}
 
 				$success = $this->Dossierep->Passagecommissionep->{'Decision'.Inflector::underscore( $this->alias )}->saveAll( $themeData, array( 'atomic' => false ) ) && $success;
