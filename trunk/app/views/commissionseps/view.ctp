@@ -236,7 +236,7 @@
                             'td',
                             $xhtml->link(
                                 'Convocation',
-                                array( 'controller' => 'commissionseps', 'action' => 'printConvocationParticipant', $membreepseanceep['Membreep']['id'] ),
+                                array( 'controller' => 'commissionseps', 'action' => 'printConvocationParticipant', $commissionep['Commissionep']['id'], $membreepseanceep['Membreep']['id'] ),
                                 array(
                                     'enabled' => ( $membreepseanceep['CommissionepMembreep']['reponse'] == 'nonrenseigne' /*&& empty( $disableOrdredujour )*/  && empty( $membreepseanceep['CommissionepMembreep']['presence'] ) ),
                                     'class' => 'button print'

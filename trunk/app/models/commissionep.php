@@ -1265,38 +1265,66 @@
 		*   Impression de convocation pour un participant à une commission d'EP
 		*/
 
-		public function getPdfConvocationParticipant( $commissionep_membreep_id ) {
+		public function getPdfConvocationParticipant( $commissionep_id, $membreep_id ) {
 			// Participant auquel la convocation doit être envoyée
-			$convocation = $this->CommissionepMembreep->find(
-				'first',
-				array(
-					'conditions' => array(
-						'CommissionepMembreep.id' => $commissionep_membreep_id
-					),
-					'contain' => array(
-						'Commissionep' => array(
-							'Ep' => array(
-								'Regroupementep'
-							)
-						),
-						'Membreep' => array(
-							'Fonctionmembreep'
-						)
-					)
-				)
-			);
-			$convocation = array( 'Participant' => $convocation['Membreep'], 'Commissionep' => $convocation['Commissionep'] );
+// 			$convocation = $this->CommissionepMembreep->find(
+// 				'first',
+// 				array(
+// 					'conditions' => array(
+// 						'CommissionepMembreep.id' => $commissionep_membreep_id
+// 					),
+// 					'contain' => array(
+// 						'Commissionep' => array(
+// 							'Ep' => array(
+// 								'Regroupementep'
+// 							)
+// 						),
+// 						'Membreep' => array(
+// 							'Fonctionmembreep'
+// 						)
+// 					)
+// 				)
+// 			);
 
-            $options = array();
-            $options = Set::merge( $options, $this->Membreep->enums() );
-            $options['Participant'] = $options['Membreep'];
-			$options['Participant']['typevoie'] = ClassRegistry::init( 'Option' )->typevoie();
+            $commissionep = $this->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Commissionep.id' => $commissionep_id
+                    ),
+                    'contain' => array(
+                        'Ep' => array(
+                             'Regroupementep'
+                         )
+                    )
+                )
+            );
+
+            $membreep = $this->Membreep->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Membreep.id' => $membreep_id
+                    ),
+                    'contain' => array(
+                         'Fonctionmembreep'
+                     )
+                )
+            );
+
+            $convocation = Set::merge( $commissionep, $membreep );
+
+// debug($convocation);
+// die();
+
+            $options = $this->Membreep->enums();
+			$options['Membreep']['typevoie'] = ClassRegistry::init( 'Option' )->typevoie();
 
 			return $this->ged(
 				$convocation,
-				"{$this->alias}/convocationep_participant.odt"/*,
+				"{$this->alias}/convocationep_participant.odt",
 				false,
-				$options*/
+				$options
 			);
 
 		}
