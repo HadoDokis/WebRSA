@@ -204,6 +204,18 @@
 							<?php if( $permissions->check( 'criteresdossierscovs58', 'index' ) ):?>
 								<li> <?php echo $xhtml->link( 'Par Dossiers COV', array( 'controller' => 'criteresdossierscovs58', 'action' => 'index'  ) );?> </li>
 							<?php endif;?>
+							<?php if( $permissions->check( 'sanctionseps58', 'selectionnoninscrits' ) ):?>
+								<li>
+									<?php echo $xhtml->link( 'Pôle Emploi', '#' );?>
+									<ul>
+										<li><?php echo $xhtml->link( 'Radiation de Pôle Emploi', array( 'controller' => 'sanctionseps58', 'action' => 'selectionradies' ) );?></li>
+										<li><?php echo $xhtml->link( 'Non inscription à Pôle Emploi', array( 'controller' => 'sanctionseps58', 'action' => 'selectionnoninscrits' ) );?></li>
+									</ul>
+								</li>
+							<?php endif;?>
+							<?php if( $permissions->check( 'nonorientationsproseps', 'index' ) ):?>
+								<li><?php echo $xhtml->link( 'Demande de maintien dans le social', array( 'controller' => 'nonorientationsproseps', 'action' => 'index' ) );?></li>
+							<?php endif;?>
 						<?php endif;?>
 						<?php if( Configure::read( 'Cg.departement' ) == '66' ): ?>
 							<?php if( $permissions->check( 'criteresbilansparcours66', 'index' ) ):?>
