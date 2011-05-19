@@ -27,7 +27,7 @@
 				@$dossierep['Regressionorientationep58']['Typeorient']['lib_type_orient'],
 				@$dossierep['Regressionorientationep58']['Structurereferente']['lib_struc'],
 
-				$form->input( "Decisionregressionorientationep58.{$i}.id", array( 'type' => 'hidden', 'value' => @$this->data['Decisionregressionorientationep58'][$i]['id'] ) ).
+				$form->input( "Decisionregressionorientationep58.{$i}.id", array( 'type' => 'hidden' ) ).
 				$form->input( "Decisionregressionorientationep58.{$i}.passagecommissionep_id", array( 'type' => 'hidden' ) ).
 				$form->input( "Decisionregressionorientationep58.{$i}.regressionorientationep58_id", array( 'type' => 'hidden' ) ).
 // 				$form->input( "Dossierep.{$i}.id", array( 'type' => 'hidden', 'value' => $dossierep['Dossierep']['id'] ) ).
