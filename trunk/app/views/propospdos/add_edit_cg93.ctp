@@ -99,20 +99,24 @@
                 </tr>
             </table>
         </fieldset>
-<fieldset>
-    <legend><?php echo required( $default2->label( 'Propopdo.haspiece' ) );?></legend>
+        <?php if( $this->action == 'add' ):?>
+        <?php echo $form->input( 'Propopdo.haspiece', array( 'type' => 'hidden', 'value' => '0' ) );?>
+        <?php endif;?>
+        <?php if( $this->action == 'edit' ):?>
+            <fieldset>
+                <legend><?php echo required( $default2->label( 'Propopdo.haspiece' ) );?></legend>
 
-    <?php echo $form->input( 'Propopdo.haspiece', array( 'type' => 'radio', 'options' => $options['haspiece'], 'legend' => false, 'fieldset' => false ) );?>
-    <fieldset id="filecontainer-piece" class="noborder invisible">
-        <?php
-            echo $fileuploader->create(
-                $fichiers,
-                Router::url( array( 'action' => 'ajaxfileupload' ), true )
-            );
-        ?>
-    </fieldset>
-</fieldset>
-
+                <?php echo $form->input( 'Propopdo.haspiece', array( 'type' => 'radio', 'options' => $options['haspiece'], 'legend' => false, 'fieldset' => false ) );?>
+                <fieldset id="filecontainer-piece" class="noborder invisible">
+                    <?php
+                        echo $fileuploader->create(
+                            $fichiers,
+                            Router::url( array( 'action' => 'ajaxfileupload' ), true )
+                        );
+                    ?>
+                </fieldset>
+            </fieldset>
+        <?php endif;?>
 <script type="text/javascript">
     document.observe( "dom:loaded", function() {
         observeDisableFieldsetOnRadioValue(
