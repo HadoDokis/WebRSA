@@ -49,6 +49,20 @@
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
+			),
+			'Historiqueetatpe' => array(
+				'className' => 'Historiqueetatpe',
+				'foreignKey' => 'historiqueetatpe_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			'Listesanctionep58' => array(
+				'className' => 'Listesanctionep58',
+				'foreignKey' => 'listesanctionep58_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
 			)
 		);
 
