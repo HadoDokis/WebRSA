@@ -395,7 +395,6 @@
 		protected function _traiter( $commissionep_id, $niveauDecision ) {
 			if( isset( $this->params['form']['Valider'] ) ) {
 				$this->_finaliser( $commissionep_id, $niveauDecision );
-				$this->redirect( array( 'controller' => 'commissionseps', 'action' => 'traiter'.$niveauDecision, $commissionep_id ) );
 			}
 
 			$commissionep = $this->Commissionep->find(
@@ -431,7 +430,7 @@
 				$this->_setFlashResult( 'Save', $success );
 				if( $success ) {
 					$this->Commissionep->commit();
-// 					$this->redirect( array( 'action' => 'view', $commissionep_id, '#dossiers' ) );
+					$this->redirect( array( 'controller' => 'commissionseps', 'action' => 'traiter'.$niveauDecision, $commissionep_id ) );
 				}
 				else {
 					$this->Commissionep->rollback();
