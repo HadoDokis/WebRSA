@@ -36,7 +36,7 @@ echo '<table><thead>
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
 		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
-			changeColspanRaisonNonPassage( '<?php echo $options['Decisionsanctionrendezvousep58']['decision'][Set::classicExtract( $decisionep, "decision" )];?>', 'Decisionsanctionrendezvousep58<?php echo $i;?>Decision', [ ], 'Decisionsanctionrendezvousep58<?php echo $i;?>Raisonnonpassage' );
+			changeColspanRaisonNonPassage( '<?php echo Set::classicExtract( $dossiers, "{$theme}.liste.{$i}.Passagecommissionep.0.Decisionsanctionrendezvousep58.0.decision" );?>', 'Decisionsanctionrendezvousep58<?php echo $i;?>Decision', [ ], 'Decisionsanctionrendezvousep58<?php echo $i;?>Raisonnonpassage' );
 		<?php endfor;?>
 	});
 </script>
