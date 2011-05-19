@@ -272,6 +272,9 @@
 					),
 					'Passagecommissionep' => array(
 						'Decisionsaisinepdoep66'=>array(
+							'order' => array(
+								'Decisionsaisinepdoep66.etape DESC'
+							),
 							'Decisionpdo'
 						)
 					)
