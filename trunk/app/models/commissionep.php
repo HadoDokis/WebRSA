@@ -555,7 +555,7 @@
 					)
 				)
 			);
-
+// debug($commissionep);
 			$this->id = $commissionep_id;
 			if( !empty( $nbDossierseps ) && !empty( $nbMembreseps ) && $commissionep['Commissionep']['etatcommissionep'] == 'cree' ) {
 				$this->set( 'etatcommissionep', 'associe' );
@@ -1287,13 +1287,11 @@
 			);
 			$convocation = array( 'Participant' => $convocation['Membreep'], 'Commissionep' => $convocation['Commissionep'] );
 
-//             $options = Set::merge( $options, $this->Membreep->enums() );
-// 			$options['Participant'] = $options['Membreep'];
-
+            $options = array();
+            $options = Set::merge( $options, $this->Membreep->enums() );
+            $options['Participant'] = $options['Membreep'];
 			$options['Participant']['typevoie'] = ClassRegistry::init( 'Option' )->typevoie();
 
-// debug($convocation);
-// die();
 			return $this->ged(
 				$convocation,
 				"{$this->alias}/convocationep_participant.odt"/*,
@@ -1399,7 +1397,8 @@
 			$options = Set::merge( $options, $this->CommissionepMembreep->enums() );
 			$options = Set::merge( $options, $this->Passagecommissionep->enums() );
 			$options['Participant']['typevoie'] = ClassRegistry::init( 'Option' )->typevoie();
-
+// debug($options);
+// die();
 			$dossierseps = $this->Passagecommissionep->Dossierep->find( 'all', $queryData );
 			// FIXME: faire la traduction des enums dans les modèles correspondants ?
 
