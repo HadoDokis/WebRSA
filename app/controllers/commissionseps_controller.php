@@ -117,6 +117,16 @@
 				}
 			}
 
+			if( in_array( $this->action, array( 'decisionep', 'decisioncg' ) ) ) {
+				$liste_typesorients = $this->Commissionep->Passagecommissionep->Dossierep->Personne->Orientstruct->Typeorient->find( 'list' );
+				$liste_structuresreferentes = $this->Commissionep->Passagecommissionep->Dossierep->Personne->Orientstruct->Structurereferente->find( 'list' );
+				$liste_referents = $this->Commissionep->Passagecommissionep->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->Referent->find( 'list' );
+
+				$this->set( 'liste_typesorients', $liste_typesorients );
+				$this->set( 'liste_structuresreferentes', $liste_structuresreferentes );
+				$this->set( 'liste_referents', $liste_referents );
+			}
+
 			// Suivant le CG
 			if( Configure::read( 'Cg.departement' ) == 66 ) {
 				$listeTypesorients = $this->Commissionep->Passagecommissionep->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->Typeorient->find( 'list' );
@@ -385,6 +395,7 @@
 		protected function _traiter( $commissionep_id, $niveauDecision ) {
 			if( isset( $this->params['form']['Valider'] ) ) {
 				$this->_finaliser( $commissionep_id, $niveauDecision );
+				$this->redirect( array( 'controller' => 'commissionseps', 'action' => 'traiter'.$niveauDecision, $commissionep_id ) );
 			}
 
 			$commissionep = $this->Commissionep->find(
@@ -812,9 +823,19 @@
         *   Courrier contenant le lieu, date et heure de la commission EP
         */
 
-        public function printConvocationParticipant( $commissionep_id, $membreep_id ) {
+        public function printConvocationParticipant( $dossierep_id ) {
 
-            $pdf = $this->Commissionep->getPdfConvocationParticipant( $commissionep_id, $membreep_id );
+            $dossierep = $this->Commissionep->Passagecommissionep->Dossierep->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Dossierep.id' => $dossierep_id
+                    ),
+                    'contain' => false
+                )
+            );
+
+            $pdf = $this->Commissionep->getPdfConvocationParticipant( $dossierep_id );
 /*debug($pdf);
 die();*/
             if( $pdf ) {

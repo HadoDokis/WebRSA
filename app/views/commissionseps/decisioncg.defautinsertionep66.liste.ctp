@@ -47,9 +47,9 @@ echo '<table class="tooltips"><thead>
                 $avisEp,
 
 				implode( ' / ', Set::filter( array( $options['Decisionnonorientationproep93']['decision'][Set::classicExtract( $decisioncg, "decision" )], $options['Decisionnonorientationproep93']['decisionsup'][Set::classicExtract( $decisioncg, "decisionsup" )] ) ) ),
-				array( $typesorients[Set::classicExtract( $decisioncg, "typeorient_id" )], array( 'id' => "Decisiondefautinsertionep66{$i}TypeorientId" ) ),
-				array( $structuresreferentes[Set::classicExtract( $decisioncg, "typeorient_id" ).'_'.Set::classicExtract( $decisioncg, "structurereferente_id" )], array( 'id' => "Decisiondefautinsertionep66{$i}StructurereferenteId" ) ),
-				array( $referents[Set::classicExtract( $decisioncg, "structurereferente_id" ).'_'.Set::classicExtract( $decisioncg, "referent_id" )], array( 'id' => "Decisiondefautinsertionep66{$i}ReferentId" ) ),
+				array( $liste_typesorients[Set::classicExtract( $decisioncg, "typeorient_id" )], array( 'id' => "Decisiondefautinsertionep66{$i}TypeorientId" ) ),
+				array( $liste_structuresreferentes[Set::classicExtract( $decisioncg, "structurereferente_id" )], array( 'id' => "Decisiondefautinsertionep66{$i}StructurereferenteId" ) ),
+				array( $liste_referents[Set::classicExtract( $decisioncg, "referent_id" )], array( 'id' => "Decisiondefautinsertionep66{$i}ReferentId" ) ),
 				array( Set::classicExtract( $decisioncg, "raisonnonpassage" ), array( 'colspan' => '2', 'id' => "Decisiondefautinsertionep66{$i}Raisonnonpassage" ) )
 			)
 		);

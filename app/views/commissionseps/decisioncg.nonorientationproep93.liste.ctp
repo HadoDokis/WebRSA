@@ -39,8 +39,8 @@ echo '<table><thead>
 
 				$options['Decisionnonorientationproep93']['decisionpcg'][Set::classicExtract( $decisioncg, "decisionpcg" )],
 				$options['Decisionnonorientationproep93']['decision'][Set::classicExtract( $decisioncg, "decision" )],
-				array( $typesorients[Set::classicExtract( $decisioncg, "typeorient_id" )], array( 'id' => "Decisionnonorientationproep93{$i}TypeorientId" ) ),
-				array( $structuresreferentes[Set::classicExtract( $decisioncg, "typeorient_id" ).'_'.Set::classicExtract( $decisioncg, "structurereferente_id" )], array( 'id' => "Decisionnonorientationproep93{$i}StructurereferenteId" ) ),
+				array( $liste_typesorients[Set::classicExtract( $decisioncg, "typeorient_id" )], array( 'id' => "Decisionnonorientationproep93{$i}TypeorientId" ) ),
+				array( $liste_structuresreferentes[Set::classicExtract( $decisioncg, "structurereferente_id" )], array( 'id' => "Decisionnonorientationproep93{$i}StructurereferenteId" ) ),
 				array( Set::classicExtract( $decisioncg, "raisonnonpassage" ), array( 'colspan' => '2', 'id' => "Decisionnonorientationproep93{$i}Raisonnonpassage" ) )
 			)
 		);
