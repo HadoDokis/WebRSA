@@ -413,7 +413,7 @@
 				$this->redirect( $this->referer() );
 			}
 
-			if( !empty( $this->data ) ) {
+			if( !empty( $this->data ) && !isset( $this->params['form']['Valider'] ) ) {
 				$this->Commissionep->begin();
 				$success = $this->Commissionep->saveDecisions( $commissionep_id, $this->data, $niveauDecision );
 
