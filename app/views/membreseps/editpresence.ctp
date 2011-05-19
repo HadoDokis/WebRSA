@@ -4,7 +4,7 @@
 
 	<h1><?php echo $this->pageTitle;?></h1>
 	
-	<?php echo $xform->create( 'Membreep', array( 'type' => 'post', 'url' => '/membreseps/editpresence/'.$ep_id.'/'.$seance_id ) ); ?>
+	<?php echo $xform->create( 'Membreep', array( 'type' => 'post', 'url' => '/membreseps/editpresence/'.$seance_id ) ); ?>
 		<div class="aere">
 			<fieldset>
 				<legend>Liste des participants</legend>
