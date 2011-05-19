@@ -55,7 +55,7 @@ echo '<table><thead>
 	document.observe("dom:loaded", function() {
 		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
 			afficheRaisonpassage(
-				'<?php echo $options['Decisioncontratcomplexeep93']['decision'][Set::classicExtract( $decisionep, "decision" )];?>',
+				'<?php echo Set::classicExtract( $dossiers, "{$theme}.liste.{$i}.Passagecommissionep.0.Decisioncontratcomplexeep93.0.decision" );?>',
 				[ 'Decisioncontratcomplexeep93<?php echo $i;?>ObservCi', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiDay' ],
 				'Decisioncontratcomplexeep93<?php echo $i;?>Raisonnonpassage'
 			);
