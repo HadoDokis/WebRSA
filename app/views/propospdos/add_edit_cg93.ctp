@@ -27,11 +27,11 @@
     <?php
 
         if( $this->action == 'add' ) {
-            echo $xform->create( 'Propopdo', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
+            echo $xform->create( 'Propopdo', array( 'id' => 'propopdoform', 'type' => 'post', 'url' => Router::url( null, true ) ) );
 //             echo $xform->input( 'PropopdoTypenotifpdo.id', array( 'type' => 'hidden' ) );
         }
         else {
-            echo $xform->create( 'Propopdo', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
+            echo $xform->create( 'Propopdo', array( 'id' => 'propopdoform', 'type' => 'post', 'url' => Router::url( null, true ) ) );
             echo '<div>';
             echo $xform->input( 'Propopdo.id', array( 'type' => 'hidden' ) );
             echo $xform->input( 'Decisionpropopdo.0.id', array( 'type' => 'hidden' ) );
