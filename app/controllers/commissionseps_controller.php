@@ -812,19 +812,9 @@
         *   Courrier contenant le lieu, date et heure de la commission EP
         */
 
-        public function printConvocationParticipant( $dossierep_id ) {
+        public function printConvocationParticipant( $commissionep_id, $membreep_id ) {
 
-            $dossierep = $this->Commissionep->Passagecommissionep->Dossierep->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Dossierep.id' => $dossierep_id
-                    ),
-                    'contain' => false
-                )
-            );
-
-            $pdf = $this->Commissionep->getPdfConvocationParticipant( $dossierep_id );
+            $pdf = $this->Commissionep->getPdfConvocationParticipant( $commissionep_id, $membreep_id );
 /*debug($pdf);
 die();*/
             if( $pdf ) {
