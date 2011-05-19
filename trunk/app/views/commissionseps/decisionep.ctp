@@ -45,11 +45,12 @@
 	makeTabbed( 'tabbedWrapper', 2 );
 	
 	function changeColspanRaisonNonPassage( idColumnToChangeColspan, decision, idsNonRaisonpassage, idRaisonpassage ) {
+		var colspan = $( idColumnToChangeColspan ).readAttribute( "colspan" );
 		if ( decision == 'reporte' || decision == 'annule' ) {
-			$( idColumnToChangeColspan ).writeAttribute( "colspan", "1" );
+			$( idColumnToChangeColspan ).writeAttribute( "colspan", colspan + 1 );
 		}
 		else {
-			$( idColumnToChangeColspan ).writeAttribute( "colspan", "2" );
+			$( idColumnToChangeColspan ).writeAttribute( "colspan", colspan - 1 );
 		}
 		afficheRaisonpassage( decision, idsNonRaisonpassage, idRaisonpassage );
 	}
