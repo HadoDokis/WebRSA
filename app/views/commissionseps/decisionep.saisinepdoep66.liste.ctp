@@ -29,7 +29,7 @@ echo '<table><thead>
 				$dossierep['Saisinepdoep66']['Traitementpdo']['Descriptionpdo']['name'],
 
 				$options['Decisionsaisinepdoep66']['decision'][Set::classicExtract( $decisionep, "decision" )],
-				array( $options['Decisionsaisinepdoep66']['decisionpdo_id'][Set::classicExtract( $decisionep, "decisionpdo_id" )], array( 'id' => "Decisionsaisinepdoep66{$i}DecisionpdoId" ) ),
+				array( @$options['Decisionsaisinepdoep66']['decisionpdo_id'][Set::classicExtract( $decisionep, "decisionpdo_id" )], array( 'id' => "Decisionsaisinepdoep66{$i}DecisionpdoId" ) ),
 				array( Set::classicExtract( $decisionep, "commentaire" ), array( 'id' => "Decisionsaisinepdoep66{$i}Commentaire" ) ),
 				array( Set::classicExtract( $decisionep, "raisonnonpassage" ), array( 'colspan' => '2', 'id' => "Decisionsaisinepdoep66{$i}Raisonnonpassage" ) )
 			)

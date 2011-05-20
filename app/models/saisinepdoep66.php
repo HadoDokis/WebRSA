@@ -102,16 +102,18 @@
 				);
 
 				foreach( $dossierseps as $dossierep ) {
-					$decisionpropopdo = array(
-						'Decisionpropopdo' => array(
-							'propopdo_id' => $dossierep[$this->alias]['Traitementpdo']['propopdo_id'],
-							'datedecisionpdo' => @$dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][0]['datedecisionpdo'],
-							'decisionpdo_id' => @$dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][0]['decisionpdo_id'],
-							'commentairepdo' => @$dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][0]['commentaire']
-						)
-					);
-					$this->Traitementpdo->Propopdo->Decisionpropopdo->create($decisionpropopdo);
-					$success = $this->Traitementpdo->Propopdo->Decisionpropopdo->save() && $success;
+					if ( $dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][0]['decision'] != 'annule' && $dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][0]['decision'] != 'reporte' ) {
+						$decisionpropopdo = array(
+							'Decisionpropopdo' => array(
+								'propopdo_id' => $dossierep[$this->alias]['Traitementpdo']['propopdo_id'],
+								'datedecisionpdo' => @$dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][0]['datedecisionpdo'],
+								'decisionpdo_id' => @$dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][0]['decisionpdo_id'],
+								'commentairepdo' => @$dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][0]['commentaire']
+							)
+						);
+						$this->Traitementpdo->Propopdo->Decisionpropopdo->create($decisionpropopdo);
+						$success = $this->Traitementpdo->Propopdo->Decisionpropopdo->save() && $success;
+					}
 
 					/*$propopdo = $this->Traitementpdo->Propopdo->find(
 						'first',

@@ -8,7 +8,7 @@ echo '<table><thead>
 <th>Création du dossier EP</th>
 <th>Motif(s) de la PDO</th>
 <th>Description du traitement</th>
-<th colspan=\'2\'>Avis de l\'EP</th>
+<th colspan=\'3\'>Avis de l\'EP</th>
 <th>CGA s\'est prononcé ?</th>
 <th>Actions</th>
 </tr>
@@ -19,6 +19,8 @@ echo '<table><thead>
 			$listeSituationPdo[] = $situationpdo['libelle'];
 		}
 
+		$indexDecision = count( $dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'] ) - 1;
+
 		echo $xhtml->tableCells(
 			array(
 				$dossierep['Dossierep']['id'],
@@ -28,8 +30,10 @@ echo '<table><thead>
 				$locale->date( __( 'Locale->date', true ), $dossierep['Dossierep']['created'] ),
 				implode(' / ', $listeSituationPdo),
 				$dossierep['Saisinepdoep66']['Traitementpdo']['Descriptionpdo']['name'],
-				$dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][0]['Decisionpdo']['libelle'],
-				$dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][0]['commentaire'],
+
+				$options['Decisionsaisinepdoep66']['decision'][$dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][$indexDecision]['decision']],
+				@$dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][$indexDecision]['Decisionpdo']['libelle'],
+				$dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][$indexDecision]['commentaire'],
 				isset($dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][1]) ? 'Oui' : 'Non',
 				$xhtml->link(
 					'Décision',
