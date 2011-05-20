@@ -70,7 +70,21 @@
 
 	echo $form->end( 'Enregistrer' );
 ?>
-
+    <?php
+        if( $this->action == 'edit')  {
+            echo $default->button(
+                'back',
+                array(
+                    'controller' => 'commissionseps',
+                    'action'     => 'view',
+                    Set::classicExtract( $this->data, 'Commissionep.id' )
+                ),
+                array(
+                    'id' => 'Back'
+                )
+            );
+        }
+    ?>
 <!--<script type="text/javascript">
 	document.observe("dom:loaded", function() {
 		// Affichage de l'adresse lors de l'apparition du formulaire

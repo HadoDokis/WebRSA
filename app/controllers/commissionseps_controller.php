@@ -319,6 +319,7 @@
 					)
 				);
 				$this->assert( !empty( $this->data ), 'error404' );
+// 				$this->set( 'commissionep_id', $commissionep_id );
 
 				if( in_array( $this->data['Commissionep']['etatcommissionep'], array( 'decisionep', 'decisioncg', 'annulee' ) ) ) {
 					$this->Session->setFlash( 'Impossible de modifier une commission d\'EP lorsque celle-ci comporte déjà des avis ou des décisions.', 'default', array( 'class' => 'error' ) );

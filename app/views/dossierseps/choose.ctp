@@ -29,8 +29,8 @@
                             'Personne.qual',
                             'Personne.nom',
                             'Personne.prenom',
-                            'Dossierep.created',
-                            'Dossierep.themeep'
+                            'Dossierep.created'/*,
+                            'Dossierep.themeep'*/
                         ),
                         array(
                             'cohorte' => true,

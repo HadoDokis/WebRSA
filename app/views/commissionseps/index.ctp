@@ -151,7 +151,7 @@
 
 				switch( @$this->action ) {
 					case 'creationmodification':
-						$lien = '<td>'.$xhtml->link( 'Modification', array( 'controller' => 'commissionseps', 'action' => 'edit', $commissionep['Commissionep']['id'] ) ).'</td>';
+						$lien = '<td>'.$xhtml->link( 'Voir', array( 'controller' => 'commissionseps', 'action' => 'view', $commissionep['Commissionep']['id'] ) ).'</td>';
 						break;
 					case 'attributiondossiers':
 						$lien = '<td>'.$xhtml->link( 'Attribution des dossiers à une commission', array( 'controller' => 'dossierseps', 'action' => 'choose', $commissionep['Commissionep']['id'] ) ).'</td>';

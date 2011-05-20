@@ -22,81 +22,72 @@
 			echo '<li><span class="disabled"> '.__d( 'commissionep','Commissionseps::delete',true ).'</span></li>';
 		}
 
-// 		if( in_array( 'commissionseps::ordredujour', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) ) {
+
+// 		if( in_array( 'commissionseps::traiterep', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) ) {
 // 			echo '<li>'.$xhtml->link(
-// 				__d( 'commissionep','Commissionseps::ordredujour', true ),
-// 				array( 'controller' => 'commissionseps', 'action' => 'ordredujour', $commissionep['Commissionep']['id'] )
+// 				__d( 'commissionep','Commissionseps::traiterep',true ),
+// 				array( 'controller' => 'commissionseps', 'action' => 'traiterep', $commissionep['Commissionep']['id'] )
 // 			).' </li>';
 // 		}
 // 		else {
-// 			echo '<li><span class="disabled"> '.__d( 'commissionep','Commissionseps::ordredujour',true ).'</span></li>';
+// 			echo '<li><span class="disabled"> '.__d( 'commissionep','Commissionseps::traiterep',true ).'</span></li>';
+// 		}
+// 
+// 		if( in_array( 'commissionseps::finaliserep', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) ) {
+// 			echo '<li>'.$xhtml->link(
+// 				__d( 'commissionep','Commissionseps::finaliserep',true ),
+// 				array( 'controller' => 'commissionseps', 'action' => 'finaliserep', $commissionep['Commissionep']['id'] )
+// 			).' </li>';
+// 		}
+// 		else {
+// 			echo '<li><span class="disabled"> '.__d( 'commissionep','Commissionseps::finaliserep',true ).'</span></li>';
 // 		}
 
-		if( in_array( 'commissionseps::traiterep', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) ) {
-			echo '<li>'.$xhtml->link(
-				__d( 'commissionep','Commissionseps::traiterep',true ),
-				array( 'controller' => 'commissionseps', 'action' => 'traiterep', $commissionep['Commissionep']['id'] )
-			).' </li>';
-		}
-		else {
-			echo '<li><span class="disabled"> '.__d( 'commissionep','Commissionseps::traiterep',true ).'</span></li>';
-		}
-
-		if( in_array( 'commissionseps::finaliserep', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) ) {
-			echo '<li>'.$xhtml->link(
-				__d( 'commissionep','Commissionseps::finaliserep',true ),
-				array( 'controller' => 'commissionseps', 'action' => 'finaliserep', $commissionep['Commissionep']['id'] )
-			).' </li>';
-		}
-		else {
-			echo '<li><span class="disabled"> '.__d( 'commissionep','Commissionseps::finaliserep',true ).'</span></li>';
-		}
-
 	?>
-	</ul><ul class="actionMenu">
+	</ul><!--<ul class="actionMenu">-->
 	<?php
 
-		if( in_array( 'commissionseps::impressionpv', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) ) {
-			echo '<li>'.$xhtml->link(
-				__d( 'commissionep','Commissionseps::impressionpv', true ),
-				array( 'controller' => 'commissionseps', 'action' => 'impressionpv', $commissionep['Commissionep']['id'] )
-			).' </li>';
-		}
-		else {
-			echo '<li><span class="disabled"> '.__d( 'commissionep','Commissionseps::impressionpv',true ).'</span></li>';
-		}
-
-		if( in_array( 'commissionseps::traitercg', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) ) {
-			echo '<li>'.$xhtml->link(
-				__d( 'commissionep','Commissionseps::traitercg',true ),
-				array( 'controller' => 'commissionseps', 'action' => 'traitercg', $commissionep['Commissionep']['id'] )
-			).' </li>';
-		}
-		else {
-			echo '<li><span class="disabled"> '.__d( 'commissionep','Commissionseps::traitercg',true ).'</span></li>';
-		}
-
-		if( in_array( 'commissionseps::finalisercg', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) ) {
-			echo '<li>'.$xhtml->link(
-				__d( 'commissionep','Commissionseps::finalisercg',true ),
-				array( 'controller' => 'commissionseps', 'action' => 'finalisercg', $commissionep['Commissionep']['id'] )
-			).' </li>';
-		}
-		else {
-			echo '<li><span class="disabled"> '.__d( 'commissionep','Commissionseps::finalisercg',true ).'</span></li>';
-		}
-
-		if( in_array( 'commissionseps::printDecision', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) ) {
-			echo '<li>'.$xhtml->link(
-				__d( 'commissionep','Commissionseps::printDecision',true ),
-				array( 'controller' => 'commissionseps', 'action' => 'printDecision', $commissionep['Commissionep']['id'] )
-			).' </li>';
-		}
-		else {
-			echo '<li><span class="disabled"> '.__d( 'commissionep','Commissionseps::printDecision',true ).'</span></li>';
-		}
+// 		if( in_array( 'commissionseps::impressionpv', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) ) {
+// 			echo '<li>'.$xhtml->link(
+// 				__d( 'commissionep','Commissionseps::impressionpv', true ),
+// 				array( 'controller' => 'commissionseps', 'action' => 'impressionpv', $commissionep['Commissionep']['id'] )
+// 			).' </li>';
+// 		}
+// 		else {
+// 			echo '<li><span class="disabled"> '.__d( 'commissionep','Commissionseps::impressionpv',true ).'</span></li>';
+// 		}
+// 
+// 		if( in_array( 'commissionseps::traitercg', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) ) {
+// 			echo '<li>'.$xhtml->link(
+// 				__d( 'commissionep','Commissionseps::traitercg',true ),
+// 				array( 'controller' => 'commissionseps', 'action' => 'traitercg', $commissionep['Commissionep']['id'] )
+// 			).' </li>';
+// 		}
+// 		else {
+// 			echo '<li><span class="disabled"> '.__d( 'commissionep','Commissionseps::traitercg',true ).'</span></li>';
+// 		}
+// 
+// 		if( in_array( 'commissionseps::finalisercg', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) ) {
+// 			echo '<li>'.$xhtml->link(
+// 				__d( 'commissionep','Commissionseps::finalisercg',true ),
+// 				array( 'controller' => 'commissionseps', 'action' => 'finalisercg', $commissionep['Commissionep']['id'] )
+// 			).' </li>';
+// 		}
+// 		else {
+// 			echo '<li><span class="disabled"> '.__d( 'commissionep','Commissionseps::finalisercg',true ).'</span></li>';
+// 		}
+// 
+// 		if( in_array( 'commissionseps::printDecision', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) ) {
+// 			echo '<li>'.$xhtml->link(
+// 				__d( 'commissionep','Commissionseps::printDecision',true ),
+// 				array( 'controller' => 'commissionseps', 'action' => 'printDecision', $commissionep['Commissionep']['id'] )
+// 			).' </li>';
+// 		}
+// 		else {
+// 			echo '<li><span class="disabled"> '.__d( 'commissionep','Commissionseps::printDecision',true ).'</span></li>';
+// 		}
 	?>
-	</ul>
+<!-- 	</ul> -->
 
 	<table>
 		<tbody>
