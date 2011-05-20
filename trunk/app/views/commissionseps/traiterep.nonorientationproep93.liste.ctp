@@ -1,6 +1,5 @@
 <?php
-// 	echo $form->create( null, array( 'url' => Router::url( null, true ) ) );
-	echo '<table><thead>
+echo '<table><thead>
 <tr>
 <th>Dossier EP</th>
 <th>Nom du demandeur</th>
@@ -21,9 +20,7 @@
 				$locale->date( __( 'Locale->date', true ), $dossierep['Personne']['dtnai'] ),
 				$locale->date( __( 'Locale->date', true ), $dossierep['Dossierep']['created'] ),
 				$locale->date( __( 'Locale->date', true ), $dossierep['Nonorientationproep93']['Orientstruct']['date_valid'] ),
-				$dossierep['Nonorientationproep93']['Orientstruct']['Typeorient']['lib_type_orient'].' - '.
-				$dossierep['Nonorientationproep93']['Orientstruct']['Structurereferente']['lib_struc'].' - '.
-				implode( ' ', array( @$dossierep['Nonorientationproep93']['Orientstruct']['Referent']['qual'], @$dossierep['Nonorientationproep93']['Orientstruct']['Referent']['nom'], @$dossierep['Nonorientationproep93']['Orientstruct']['Referent']['prenom'] ) ),
+				implode( ' - ', Set::filter( array( $dossierep['Nonorientationproep93']['Orientstruct']['Typeorient']['lib_type_orient'], $dossierep['Nonorientationproep93']['Orientstruct']['Structurereferente']['lib_struc'], implode( ' ', array( @$dossierep['Nonorientationproep93']['Orientstruct']['Referent']['qual'], @$dossierep['Nonorientationproep93']['Orientstruct']['Referent']['nom'], @$dossierep['Nonorientationproep93']['Orientstruct']['Referent']['prenom'] ) ) ) ) ),
 
 				$form->input( "Nonorientationproep93.{$i}.id", array( 'type' => 'hidden', 'value' => $dossierep['Nonorientationproep93']['id'] ) ).
 				$form->input( "Nonorientationproep93.{$i}.dossierep_id", array( 'type' => 'hidden', 'value' => $dossierep['Dossierep']['id'] ) ).
@@ -31,9 +28,6 @@
 				$form->input( "Decisionnonorientationproep93.{$i}.etape", array( 'type' => 'hidden', 'value' => 'ep' ) ).
 				$form->input( "Decisionnonorientationproep93.{$i}.defautinsertionep66_id", array( 'type' => 'hidden', 'value' => @$dossierep['Nonorientationproep93']['id'] ) ).
 
-				/*$form->input( "Decisionnonorientationproep93.{$i}.decision", array( 'type' => 'select', 'label' => false, 'empty' => true, 'options' => $options['Decisionnonorientationproep93']['decision'], 'value' => @$this->data[$i]['decision'] ) ),
-				$form->input( "Decisionnonorientationproep93.{$i}.typeorient_id", array( 'type' => 'select', 'label' => false, 'options' => @$options['Commissionep']['typeorient_id'], 'empty' => true, 'value' => @$this->data[$i]['typeorient_id'] ) ),
-				$form->input( "Decisionnonorientationproep93.{$i}.structurereferente_id", array( 'label' => false, 'options' => @$options['Commissionep']['structurereferente_id'], 'empty' => true, 'type' => 'select', 'value' => @$this->data[$i]['structurereferente_id'] ) )*/
 				$form->input( "Decisionnonorientationproep93.{$i}.id", array( 'type' => 'hidden' ) ).
 				$form->input( "Decisionnonorientationproep93.{$i}.passagecommissionep_id", array( 'type' => 'hidden' ) ).
 				$form->input( "Decisionnonorientationproep93.{$i}.etape", array( 'type' => 'hidden', 'value' => 'ep' ) ).

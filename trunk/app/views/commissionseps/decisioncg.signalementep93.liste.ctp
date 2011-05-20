@@ -42,12 +42,13 @@ echo '<table><thead>
 				@$dossierep['Signalementep93']['rang'],
 				Set::enum( @$dossierep['Personne']['Foyer']['sitfam'], $options['Foyer']['sitfam'] ),
 				@$dossierep['Personne']['Foyer']['nbenfants'],
+				
 				implode(
 					' - ',
 					Set::filter(
 						array(
-							Set::enum( @$dossierep['decision'], $options['Decisionsignalementep93']['decision'] ),
-							@$dossierep['raisonnonpassage']
+							Set::enum( @$decisionep['decision'], $options['Decisionsignalementep93']['decision'] ),
+							@$decisionep['raisonnonpassage']
 						)
 					)
 				),

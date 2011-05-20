@@ -12,15 +12,15 @@ echo '<table><thead>
 <th colspan="4">Décision CG</th>
 </tr>
 </thead><tbody>';
-	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
+foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
 		$decisionep = $dossierep['Passagecommissionep'][0]['Decisionnonorientationproep93'][1];
 		$decisioncg = $dossierep['Passagecommissionep'][0]['Decisionnonorientationproep93'][0];
 
-		if ( $dossierep['decision'] == 'maintienref' ) {
+		if ( $decisionep['decision'] == 'maintienref' ) {
 			$avisep = $dossierep['Nonorientationproep93']['Orientstruct']['Typeorient']['lib_type_orient'].' - '.$dossierep['Nonorientationproep93']['Orientstruct']['Structurereferente']['lib_struc'];
 		}
-		else if ( $dossierep['decision'] == 'reorientation' ) {
-			$avisep = $dossierep['Typeorient']['lib_type_orient'].' - '.$dossierep['Structurereferente']['lib_struc'];
+		else if ( $decisionep['decision'] == 'reorientation' ) {
+			$avisep = $decisionep['Typeorient']['lib_type_orient'].' - '.$decisionep['Structurereferente']['lib_struc'];
 		}
 
 		echo $xhtml->tableCells(
@@ -39,8 +39,8 @@ echo '<table><thead>
 
 				$options['Decisionnonorientationproep93']['decisionpcg'][Set::classicExtract( $decisioncg, "decisionpcg" )],
 				$options['Decisionnonorientationproep93']['decision'][Set::classicExtract( $decisioncg, "decision" )],
-				array( $liste_typesorients[Set::classicExtract( $decisioncg, "typeorient_id" )], array( 'id' => "Decisionnonorientationproep93{$i}TypeorientId" ) ),
-				array( $liste_structuresreferentes[Set::classicExtract( $decisioncg, "structurereferente_id" )], array( 'id' => "Decisionnonorientationproep93{$i}StructurereferenteId" ) ),
+				array( @$liste_typesorients[Set::classicExtract( $decisioncg, "typeorient_id" )], array( 'id' => "Decisionnonorientationproep93{$i}TypeorientId" ) ),
+				array( @$liste_structuresreferentes[Set::classicExtract( $decisioncg, "structurereferente_id" )], array( 'id' => "Decisionnonorientationproep93{$i}StructurereferenteId" ) ),
 				array( Set::classicExtract( $decisioncg, "raisonnonpassage" ), array( 'colspan' => '2', 'id' => "Decisionnonorientationproep93{$i}Raisonnonpassage" ) )
 			)
 		);
