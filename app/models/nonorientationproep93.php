@@ -30,7 +30,7 @@
 					}
 				}
 				elseif( $niveauDecision == 'cg' ) {
-					if( !empty( $datas[$key]['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0] ) ) { // Modification
+					if( !empty( $datas[$key]['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][1] ) ) { // Modification
 						$formData['Decision'.Inflector::underscore( $this->alias )][$key]['id'] = @$datas[$key]['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0]['id'];
 						$formData['Decision'.Inflector::underscore( $this->alias )][$key]['decisionpcg'] = @$datas[$key]['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0]['decisionpcg'];
 					}
