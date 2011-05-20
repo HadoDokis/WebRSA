@@ -30,7 +30,21 @@
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
-			)
+			),
+			'Remplacantmembreep' => array(
+				'className' => 'Membreep',
+				'foreignKey' => 'reponsesuppleant_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			'Remplacanteffectifmembreep' => array(
+				'className' => 'Membreep',
+				'foreignKey' => 'presencesuppleant_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
 		);
 
 		/**
