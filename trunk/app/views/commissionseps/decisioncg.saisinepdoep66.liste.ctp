@@ -30,11 +30,12 @@ echo '<table><thead>
 				$locale->date( __( 'Locale->date', true ), $dossierep['Dossierep']['created'] ),
 				implode(' / ', $listeSituationPdo),
 				$dossierep['Saisinepdoep66']['Traitementpdo']['Descriptionpdo']['name'],
-				$decisionep['Decisionpdo']['libelle'],
-// 				$decisionep['commentaire'],
 
 				$options['Decisionsaisinepdoep66']['decision'][Set::classicExtract( $decisioncg, "decision" )],
-				array( $options['Decisionsaisinepdoep66']['decisionpdo_id'][Set::classicExtract( $decisioncg, "decisionpdo_id" )].' au '.Set::classicExtract( $decisioncg, "datedecisionpdo" ), array( 'id' => "Decisionsaisinepdoep66{$i}Decisioncg" ) ),
+
+				@$decisionep['Decisionpdo']['libelle'],
+// 				$decisionep['commentaire'],
+				array( @$options['Decisionsaisinepdoep66']['decisionpdo_id'][Set::classicExtract( $decisioncg, "decisionpdo_id" )].' au '.Set::classicExtract( $decisioncg, "datedecisionpdo" ), array( 'id' => "Decisionsaisinepdoep66{$i}Decisioncg" ) ),
 				array( Set::classicExtract( $decisioncg, "raisonnonpassage" ), array( 'id' => "Decisionsaisinepdoep66{$i}Raisonnonpassage" ) )
 			)
 		);

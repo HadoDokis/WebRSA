@@ -26,9 +26,11 @@ echo '<table><thead>
 				$dossierep['Saisinebilanparcoursep66']['Bilanparcours66']['Orientstruct']['Typeorient']['lib_type_orient'],
 				$dossierep['Saisinebilanparcoursep66']['Bilanparcours66']['Orientstruct']['Structurereferente']['lib_struc'],
 				(!empty($dossierep['Saisinebilanparcoursep66']['Bilanparcours66']['reorientation'])) ? __d('bilanparcours66', 'ENUM::REORIENTATION::'.$dossierep['Saisinebilanparcoursep66']['Bilanparcours66']['reorientation'], true) : '',
-				@$dossierep['Saisinebilanparcoursep66']['Typeorient']['lib_type_orient'].' - '.
-				@$dossierep['Saisinebilanparcoursep66']['Structurereferente']['lib_struc'],
+	
+				implode( ' - ', Set::filter( array( @$dossierep['Saisinebilanparcoursep66']['Typeorient']['lib_type_orient'], @$dossierep['Saisinebilanparcoursep66']['Structurereferente']['lib_struc'] ) ) ),
+
 				implode( ' - ', Set::filter( array( @$dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['Typeorient']['lib_type_orient'], @$dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['Structurereferente']['lib_struc'] ) ) ),
+
 				$form->input( "Decisionsaisinebilanparcoursep66.{$i}.id", array( 'type' => 'hidden', 'value' => @$this->data['Decisionsaisinebilanparcoursep66'][$i]['id'] ) ).
 				$form->input( "Saisinebilanparcoursep66.{$i}.dossierep_id", array( 'type' => 'hidden', 'value' => $dossierep['Dossierep']['id'] ) ).
 				$form->input( "Decisionsaisinebilanparcoursep66.{$i}.etape", array( 'type' => 'hidden', 'value' => 'cg' ) ).

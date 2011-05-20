@@ -34,14 +34,5 @@
 			)
 		);
 
-		// TODO: lorsqu'on pourra reporter les dossiers,
-		// il faudra soit faire soit un report, soit les validations ci-dessous
-		public $validate = array(
-			'decisionpdo_id' => array(
-				array(
-					'rule' => array( 'notEmpty' )
-				)
-			),
-		);
 	}
 ?>
