@@ -9,7 +9,7 @@ echo '<table><thead>
 <th rowspan="2">Date de début du contrat</th>
 <th rowspan="2">Date de fin du contrat</th>
 <th rowspan="2">Avis EP</th>
-<th colspan="5">Décision CG</th>
+<th colspan="4">Décision CG</th>
 </tr>
 <tr>
 <th>Décision PCG</th>
@@ -43,8 +43,8 @@ echo '<table><thead>
 					)
 				),
 
-				$options['Decisionnonorientationproep93']['decisionpcg'][Set::classicExtract( $decisioncg, "decisionpcg" )],
-				$options['Decisionnonorientationproep93']['decision'][Set::classicExtract( $decisioncg, "decision" )],
+				$options['Decisioncontratcomplexeep93']['decisionpcg'][Set::classicExtract( $decisioncg, "decisionpcg" )],
+				$options['Decisioncontratcomplexeep93']['decision'][Set::classicExtract( $decisioncg, "decision" )],
 				array( Set::classicExtract( $decisioncg, "datevalidation_ci" ), array( 'id' => "Decisioncontratcomplexeep93{$i}DatevalidationCi" ) ),
 				array( Set::classicExtract( $decisioncg, "observ_ci" ), array( 'id' => "Decisioncontratcomplexeep93{$i}ObservCi" ) ),
 				array( Set::classicExtract( $decisioncg, "raisonnonpassage" ), array( 'colspan' => '2', 'id' => "Decisioncontratcomplexeep93{$i}Raisonnonpassage" ) )
@@ -58,8 +58,8 @@ echo '<table><thead>
 	document.observe("dom:loaded", function() {
 		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
 			afficheRaisonpassage(
-				'<?php echo Set::classicExtract( $dossiers, "{$theme}.liste.{$i}.Passagecommissionep.0.Decisionreorientationep93.0.decision" );?>',
-				[ 'Decisioncontratcomplexeep93<?php echo $i;?>ObservCi', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiDay' ],
+				'<?php echo Set::classicExtract( $dossiers, "{$theme}.liste.{$i}.Passagecommissionep.0.Decisioncontratcomplexeep93.0.decision" );?>',
+				[ 'Decisioncontratcomplexeep93<?php echo $i;?>ObservCi', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCi' ],
 				'Decisioncontratcomplexeep93<?php echo $i;?>Raisonnonpassage'
 			);
 		<?php endfor;?>
