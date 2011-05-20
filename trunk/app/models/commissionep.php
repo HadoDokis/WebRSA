@@ -1353,6 +1353,21 @@
 					)
 				)
 			);
+
+			// Si le membre est remplacé par un autre, il faut aller cherche le remplaçant
+			if( $convocation['CommissionepMembreep']['reponse'] == 'remplacepar' ) {
+				$membreep = $this->Membreep->find(
+					'first',
+					array(
+						'conditions' => array(
+							'Membreep.id' => $convocation['CommissionepMembreep']['reponsesuppleant_id']
+						),
+						'contain' => false
+					)
+				);
+				$convocation = Set::merge( $convocation, $membreep );
+			}
+
 			$convocation = array( 'Participant' => $convocation['Membreep'], 'Commissionep' => $convocation['Commissionep'] );
 
 			// FIXME: doc
@@ -1425,8 +1440,8 @@
 			$options = Set::merge( $options, $this->CommissionepMembreep->enums() );
 			$options = Set::merge( $options, $this->Passagecommissionep->enums() );
 			$options['Participant']['typevoie'] = ClassRegistry::init( 'Option' )->typevoie();
-// debug($options);
-// die();
+			$options['Remplacantmembreep'] = $options['Membreep'];
+
 			$dossierseps = $this->Passagecommissionep->Dossierep->find( 'all', $queryData );
 			// FIXME: faire la traduction des enums dans les modèles correspondants ?
 
@@ -1466,15 +1481,15 @@
 					'contain' => array(
 						'Membreep' => array(
 							'Fonctionmembreep'
-						)
+						),
+						'Remplacantmembreep'
 					)
 				)
 			);
 
-			// FIXME: presence -> obliger de prendre les présences avant d'imprimer le PV
 			$reponses = array();
 			foreach( $reponsesTmp as $reponse ) {
-				$reponses["Reponses_{$reponse['CommissionepMembreep']['reponse']}"][] = array( 'Membreep' => $reponse['Membreep'] );
+				$reponses["Reponses_{$reponse['CommissionepMembreep']['reponse']}"][] = array( 'Membreep' => $reponse['Membreep'], 'Remplacantmembreep' => $reponse['Remplacantmembreep'] );
 			}
 			foreach( $options['CommissionepMembreep']['reponse'] as $typereponse => $libelle ) {
 				if( !isset( $reponses["Reponses_{$typereponse}"] ) ) {
