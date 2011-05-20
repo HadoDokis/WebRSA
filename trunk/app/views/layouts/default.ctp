@@ -29,7 +29,7 @@
 			}
 		?>
 		<!-- TODO: à la manière de cake, dans les vues qui en ont besoin -->
-		<script type="text/javascript">
+		<script type="text/javascript"><![CDATA[
 			// prototype
 			document.observe( "dom:loaded", function() {
 				<?php
@@ -86,7 +86,7 @@
 				location.replace(baseUrl);
 			}
 
-		</script>
+		]]></script>
 		<!--[if IE]>
 			<style type="text/css" media="screen, presentation">
 				.treemenu { position: relative; }
