@@ -41,10 +41,10 @@ echo '<table><thead>
 					)
 				),
 
-				$options['Decisionnonorientationproep93']['decision'][Set::classicExtract( $decisionep, "decision" )],
-				array( Set::classicExtract( $decisionep, "datevalidation_ci" ), array( 'id' => "Decisionnonorientationproep93{$i}DatevalidationCi" ) ),
-				array( Set::classicExtract( $decisionep, "observ_ci" ), array( 'id' => "Decisionnonorientationproep93{$i}ObservCi" ) ),
-				array( Set::classicExtract( $decisionep, "raisonnonpassage" ), array( 'colspan' => '2', 'id' => "Decisionnonorientationproep93{$i}Raisonnonpassage" ) )
+				$options['Decisioncontratcomplexeep93']['decision'][Set::classicExtract( $decisionep, "decision" )],
+				array( Set::classicExtract( $decisionep, "datevalidation_ci" ), array( 'id' => "Decisioncontratcomplexeep93{$i}DatevalidationCi" ) ),
+				array( Set::classicExtract( $decisionep, "observ_ci" ), array( 'id' => "Decisioncontratcomplexeep93{$i}ObservCi" ) ),
+				array( Set::classicExtract( $decisionep, "raisonnonpassage" ), array( 'colspan' => '2', 'id' => "Decisioncontratcomplexeep93{$i}Raisonnonpassage" ) )
 			)
 		);
 	}
@@ -56,7 +56,7 @@ echo '<table><thead>
 		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
 			afficheRaisonpassage(
 				'<?php echo Set::classicExtract( $dossiers, "{$theme}.liste.{$i}.Passagecommissionep.0.Decisioncontratcomplexeep93.0.decision" );?>',
-				[ 'Decisioncontratcomplexeep93<?php echo $i;?>ObservCi', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiDay' ],
+				[ 'Decisioncontratcomplexeep93<?php echo $i;?>ObservCi', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCi' ],
 				'Decisioncontratcomplexeep93<?php echo $i;?>Raisonnonpassage'
 			);
 		<?php endfor;?>
