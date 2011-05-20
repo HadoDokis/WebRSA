@@ -319,7 +319,6 @@
 					)
 				);
 				$this->assert( !empty( $this->data ), 'error404' );
-// 				$this->set( 'commissionep_id', $commissionep_id );
 
 				if( in_array( $this->data['Commissionep']['etatcommissionep'], array( 'decisionep', 'decisioncg', 'annulee' ) ) ) {
 					$this->Session->setFlash( 'Impossible de modifier une commission d\'EP lorsque celle-ci comporte déjà des avis ou des décisions.', 'default', array( 'class' => 'error' ) );
@@ -396,6 +395,7 @@
 		protected function _traiter( $commissionep_id, $niveauDecision ) {
 			if( isset( $this->params['form']['Valider'] ) ) {
 				$this->_finaliser( $commissionep_id, $niveauDecision );
+/*				$this->redirect( array( 'controller' => 'commissionseps', 'action' => 'traiter'.$niveauDecision, $commissionep_id ) );*/
 			}
 
 			$commissionep = $this->Commissionep->find(
@@ -431,7 +431,7 @@
 				$this->_setFlashResult( 'Save', $success );
 				if( $success ) {
 					$this->Commissionep->commit();
-					$this->redirect( array( 'controller' => 'commissionseps', 'action' => 'traiter'.$niveauDecision, $commissionep_id ) );
+                    $this->redirect( array( 'controller' => 'commissionseps', 'action' => 'traiter'.$niveauDecision, $commissionep_id ) );
 				}
 				else {
 					$this->Commissionep->rollback();
@@ -823,19 +823,9 @@
         *   Courrier contenant le lieu, date et heure de la commission EP
         */
 
-        public function printConvocationParticipant( $dossierep_id ) {
+        public function printConvocationParticipant( $commissionep_id, $membreep_id ) {
 
-            $dossierep = $this->Commissionep->Passagecommissionep->Dossierep->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Dossierep.id' => $dossierep_id
-                    ),
-                    'contain' => false
-                )
-            );
-
-            $pdf = $this->Commissionep->getPdfConvocationParticipant( $dossierep_id );
+            $pdf = $this->Commissionep->getPdfConvocationParticipant( $commissionep_id, $membreep_id );
 /*debug($pdf);
 die();*/
             if( $pdf ) {
