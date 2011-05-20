@@ -191,19 +191,19 @@
 				foreach($membresepsseanceseps as $membreepseanceep) {
 
 					echo "<tr>";
-						echo $html->tag(
+						echo $xhtml->tag(
 							'td',
 							$membreepseanceep['Fonctionmembreep']['name']
 						);
-						echo $html->tag(
+						echo $xhtml->tag(
 							'td',
 							implode(' ', array($membreepseanceep['Membreep']['qual'], $membreepseanceep['Membreep']['nom'], $membreepseanceep['Membreep']['prenom']))
 						);
-						echo $html->tag(
+						echo $xhtml->tag(
 							'td',
 							$membreepseanceep['Membreep']['tel']
 						);
-						echo $html->tag(
+						echo $xhtml->tag(
 							'td',
 							$membreepseanceep['Membreep']['mail']
 						);
@@ -215,7 +215,7 @@
 						if ($membreepseanceep['CommissionepMembreep']['reponse']=='remplacepar') {
 							$membreepseanceep['CommissionepMembreep']['reponsetxt'] .= ' '.$listemembreseps[$membreepseanceep['CommissionepMembreep']['reponsesuppleant_id']];
 						}
-						echo $html->tag(
+						echo $xhtml->tag(
 							'td',
 							$membreepseanceep['CommissionepMembreep']['reponsetxt']
 						);
@@ -227,12 +227,12 @@
 								$membreepseanceep['CommissionepMembreep']['presencetxt'] .= ' '.$listemembreseps[$membreepseanceep['CommissionepMembreep']['presencesuppleant_id']];
 							}
 						}
-						echo $html->tag(
+						echo $xhtml->tag(
 							'td',
 							$membreepseanceep['CommissionepMembreep']['presencetxt']
 						);
 
-                        echo $html->tag(
+                        echo $xhtml->tag(
                             'td',
                             $xhtml->link(
                                 'Convocation',
@@ -246,7 +246,7 @@
                         );
 
 
-						echo $html->tag(
+						echo $xhtml->tag(
 							'td',
 							$xhtml->link(
 								'Ordre du jour',
@@ -268,12 +268,7 @@
 	<?php endif;?>
 		<div id="dossiers">
 			<h2 class="title">3. Liste des dossiers</h2>
-			<ul class="actionMenu">
-				<?php
-
-					$disableConvocationBeneficiaire = in_array( 'commissionseps::printConvocationBeneficiaire', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] );
-				?>
-			</ul>
+			<?php $disableConvocationBeneficiaire = in_array( 'commissionseps::printConvocationBeneficiaire', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ); ?>
 			<div id="dossierseps">
 				<?php
 					foreach( $themes as $theme ) {
@@ -293,10 +288,10 @@
 						echo "<div id=\"$theme\"><h3 class=\"title\">".__d( 'dossierep',  'ENUM::THEMEEP::'.Inflector::tableize( $theme ), true )."</h3>";
 
 						if( in_array( 'dossierseps::choose', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) ) {
-							echo '<li>'.$xhtml->editLink(
+							echo '<ul class="actionMenu"><li>'.$xhtml->editLink(
 								'Modifier',
 								array( 'controller' => 'dossierseps', 'action' => 'choose', Set::classicExtract( $commissionep, 'Commissionep.id' ), "#{$theme}" )
-							).' </li>';
+							).' </li></ul>';
 						}
 						else {
 							echo '<li><span class="disabled"> Modifier</span></li>';
@@ -333,7 +328,7 @@
 					}
 
 
-					echo "<div id=synthese><h3 class=\"title\">Synthèse</h3>";
+					echo "<div id=\"synthese\"><h3 class=\"title\">Synthèse</h3>";
 						if( isset($dossierseps) ){
 							echo $default2->index(
 								$dossierseps,

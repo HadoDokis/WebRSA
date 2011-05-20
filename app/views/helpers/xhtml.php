@@ -23,6 +23,13 @@
 			}
 		}
 
+		public function tag( $name, $text = null, $attributes = array(), $escape = false ) {
+			if( is_null( $text ) || strlen( $text ) == 0 ) {
+				$text = ' ';
+			}
+			return parent::tag( $name, $text, $attributes, $escape );
+		}
+
 		/**
 		*
 		*/
