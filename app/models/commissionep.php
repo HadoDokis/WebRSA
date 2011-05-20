@@ -812,7 +812,9 @@
 					'contain' => array(
 						'Membreep' => array(
 							'Fonctionmembreep'
-						)
+						),
+						'Remplacanteffectifmembreep',
+						'Remplacantmembreep'
 					)
 				)
 			);
@@ -820,8 +822,19 @@
 			// FIXME: presence -> obliger de prendre les présences avant d'imprimer le PV
 			$presences = array();
 			foreach( $presencesTmp as $presence ) {
+				// Y-a-t'il eu un remplaçant effectif ?
+				if( ( $presence['CommissionepMembreep']['presence'] == 'remplacepar' ) && !empty( $presence['CommissionepMembreep']['presencesuppleant_id'] ) ) {
+					$presence['CommissionepMembreep']['presence'] = 'present';
+					$presence['Membreep'] = Set::merge( $presence['Membreep'], $presence['Remplacanteffectifmembreep'] );
+				}
+				else if( $presence['CommissionepMembreep']['presence'] == 'excuse' ) {
+					$presence['Membreep'] = Set::merge( $presence['Membreep'], $presence['Remplacantmembreep'] );
+				}
+
 				$presences["Presences_{$presence['CommissionepMembreep']['presence']}"][] = array( 'Membreep' => $presence['Membreep'] );
 			}
+// debug( $presencesTmp );
+// die();
 			foreach( $options['CommissionepMembreep']['presence'] as $typepresence => $libelle ) {
 				if( !isset( $presences["Presences_{$typepresence}"] ) ) {
 					$presences["Presences_{$typepresence}"] = array();
