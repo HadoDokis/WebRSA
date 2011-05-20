@@ -272,16 +272,6 @@
 				<?php
 
 					$disableConvocationBeneficiaire = in_array( 'commissionseps::printConvocationBeneficiaire', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] );
-
-					if( in_array( 'dossierseps::choose', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) ) {
-						echo '<li>'.$xhtml->editLink(
-							'Modifier',
-							array( 'controller' => 'dossierseps', 'action' => 'choose', Set::classicExtract( $commissionep, 'Commissionep.id' ) )
-						).' </li>';
-					}
-					else {
-						echo '<li><span class="disabled"> Modifier</span></li>';
-					}
 				?>
 			</ul>
 			<div id="dossierseps">
@@ -301,6 +291,17 @@
 
 
 						echo "<div id=\"$theme\"><h3 class=\"title\">".__d( 'dossierep',  'ENUM::THEMEEP::'.Inflector::tableize( $theme ), true )."</h3>";
+
+						if( in_array( 'dossierseps::choose', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) ) {
+							echo '<li>'.$xhtml->editLink(
+								'Modifier',
+								array( 'controller' => 'dossierseps', 'action' => 'choose', Set::classicExtract( $commissionep, 'Commissionep.id' ), "#{$theme}" )
+							).' </li>';
+						}
+						else {
+							echo '<li><span class="disabled"> Modifier</span></li>';
+						}
+
 						if( empty( $dossiers[$theme] ) ) {
 							echo '<p class="notice">Il n\'existe aucun dossier de cette thématique associé à cette commission d\'EP.</p>';
 						}
