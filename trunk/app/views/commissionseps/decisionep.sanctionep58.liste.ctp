@@ -23,7 +23,7 @@ echo '<table><thead>
 				__d( 'sanctionep58', $dossierep['Sanctionep58']['origine'], true),
 
 				$options['Decisionsanctionep58']['decision'][Set::classicExtract( $decisionep, "decision" )],
-				array( $listesanctionseps58[Set::classicExtract( $decisionep, "listesanctionep58_id" )], array( 'id' => "Decisionsanctionep58{$i}Listesanctionep58Id" ) ),
+				array( @$listesanctionseps58[Set::classicExtract( $decisionep, "listesanctionep58_id" )], array( 'id' => "Decisionsanctionep58{$i}Listesanctionep58Id" ) ),
 				array( Set::classicExtract( $decisionep, "raisonnonpassage" ), array( 'id' => "Decisionsanctionep58{$i}Raisonnonpassage" ) )
 			)
 		);
