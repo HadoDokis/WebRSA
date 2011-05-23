@@ -1,5 +1,5 @@
 <?php
-echo '<table><thead>
+echo '<table id="Decisionsaisinepdoep66" class="tooltips"><thead>
 <tr>
 <th>Dossier EP</th>
 <th>Nom du demandeur</th>
@@ -10,6 +10,8 @@ echo '<table><thead>
 <th>Description du traitement</th>
 <th colspan=\'1\'>Avis de l\'EP</th>
 <th colspan=\'2\'>Décision du CG</th>
+<th>Observations</th>
+<th class="innerTableHeader noprint">Avis EP</th>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
@@ -20,6 +22,22 @@ echo '<table><thead>
 		foreach($dossierep['Saisinepdoep66']['Traitementpdo']['Propopdo']['Situationpdo'] as $situationpdo) {
 			$listeSituationPdo[] = $situationpdo['libelle'];
 		}
+
+		$innerTable = "<table id=\"innerTableDecisionsaisinepdoep66{$i}\" class=\"innerTable\">
+			<tbody>
+				<tr>
+					<th>Observations de l'EP</th>
+					<td>".Set::classicExtract( $decisionep, "commentaire" )."</td>
+				</tr>";
+		
+		if ( $decisionep['decision'] == 'reporte' || $decisionep['decision'] == 'annule' ) {
+			$innerTable .= " <tr>
+				<th>Raison du non passage de l'EP</th>
+				<td>".Set::classicExtract( $decisionep, "raisonnonpassage" )."</td>
+			</tr>";
+		}
+		
+		$innerTable .= "</tbody></table>";
 
 		echo $xhtml->tableCells(
 			array(
@@ -34,10 +52,13 @@ echo '<table><thead>
 				$options['Decisionsaisinepdoep66']['decision'][Set::classicExtract( $decisioncg, "decision" )],
 
 				@$decisionep['Decisionpdo']['libelle'],
-// 				$decisionep['commentaire'],
 				array( @$options['Decisionsaisinepdoep66']['decisionpdo_id'][Set::classicExtract( $decisioncg, "decisionpdo_id" )].' au '.Set::classicExtract( $decisioncg, "datedecisionpdo" ), array( 'id' => "Decisionsaisinepdoep66{$i}Decisioncg" ) ),
-				array( Set::classicExtract( $decisioncg, "raisonnonpassage" ), array( 'id' => "Decisionsaisinepdoep66{$i}Raisonnonpassage" ) )
-			)
+				array( Set::classicExtract( $decisioncg, "raisonnonpassage" ), array( 'id' => "Decisionsaisinepdoep66{$i}Raisonnonpassage" ) ),
+				Set::classicExtract( $decisioncg, "commentaire" ),
+				array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
+			),
+			array( 'class' => 'odd' ),
+			array( 'class' => 'even' )
 		);
 	}
 	echo '</tbody></table>';

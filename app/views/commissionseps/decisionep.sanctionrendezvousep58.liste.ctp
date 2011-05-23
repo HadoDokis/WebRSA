@@ -8,6 +8,7 @@ echo '<table><thead>
 <th>Création du dossier EP</th>
 <th>Origine du dossier</th>
 <th colspan=\'2\'>Avis EPL</th>
+<th>Observations</th>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
@@ -26,7 +27,8 @@ echo '<table><thead>
 					$options['Decisionsanctionrendezvousep58']['decision'][Set::classicExtract( $decisionep, "decision" )],
 					array( 'id' => "Decisionsanctionrendezvousep58{$i}ColumnDecision", 'colspan' => 2 )
 				),
-				array( Set::classicExtract( $decisionep, "raisonnonpassage" ), array( 'id' => "Decisionsanctionrendezvousep58{$i}Raisonnonpassage" ) )
+				array( Set::classicExtract( $decisionep, "raisonnonpassage" ), array( 'id' => "Decisionsanctionrendezvousep58{$i}Raisonnonpassage" ) ),
+				Set::classicExtract( $decisionep, "commentaire"
 			)
 		);
 	}

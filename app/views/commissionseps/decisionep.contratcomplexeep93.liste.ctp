@@ -10,6 +10,7 @@ echo '<table><thead>
 <th rowspan="2">Date de fin du contrat</th>
 <th rowspan="2">Avis EP</th>
 <th colspan="3">Décision CG</th>
+<th rowspan="2">Observations</th>
 </tr>
 <tr>
 <th>Décision</th>
@@ -44,7 +45,8 @@ echo '<table><thead>
 				$options['Decisioncontratcomplexeep93']['decision'][Set::classicExtract( $decisionep, "decision" )],
 				array( Set::classicExtract( $decisionep, "datevalidation_ci" ), array( 'id' => "Decisioncontratcomplexeep93{$i}DatevalidationCi" ) ),
 				array( Set::classicExtract( $decisionep, "observ_ci" ), array( 'id' => "Decisioncontratcomplexeep93{$i}ObservCi" ) ),
-				array( Set::classicExtract( $decisionep, "raisonnonpassage" ), array( 'colspan' => '2', 'id' => "Decisioncontratcomplexeep93{$i}Raisonnonpassage" ) )
+				array( Set::classicExtract( $decisionep, "raisonnonpassage" ), array( 'colspan' => '2', 'id' => "Decisioncontratcomplexeep93{$i}Raisonnonpassage" ) ),
+				Set::classicExtract( $decisionep, "commentaire"
 			)
 		);
 	}

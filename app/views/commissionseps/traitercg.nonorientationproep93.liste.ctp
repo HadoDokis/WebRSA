@@ -1,5 +1,5 @@
 <?php
-echo '<table><thead>
+echo '<table id="Decisionnonorientationproep93" class="tooltips"><thead>
 <tr>
 <th>Dossier EP</th>
 <th>Nom du demandeur</th>
@@ -14,18 +14,30 @@ echo '<table><thead>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
-		if ( isset( $dossierep['Passagecommissionep'][0]['Decisionnonorientationproep93'][1] ) ) {
-			$niveau = 1;
-		}
-		else {
-			$niveau = 0;
+		$niveau = count( $dossierep['Passagecommissionep'][0]['Decisionnonorientationproep93'] ) - 1;
+
+		$innerTable = "<table id=\"innerTableDecisionnonorientationproep93{$i}\" class=\"innerTable\">
+			<tbody>
+				<tr>
+					<th>Observations de l'EP</th>
+					<td>".Set::classicExtract( $dossierep, "Passagecommissionep.0.Decisionnonorientationproep93.{$niveau}.commentaire" )."</td>
+				</tr>";
+
+		if ( $dossierep['Passagecommissionep'][0]['Decisionnonorientationproep93'][$niveau]['decision'] == 'reporte' || $dossierep['Passagecommissionep'][0]['Decisionnonorientationproep93'][$niveau]['decision'] == 'annule' ) {
+			$innerTable .= " <tr>
+				<th>Raison du non passage de l'EP</th>
+				<td>".Set::classicExtract( $dossierep, "Passagecommissionep.0.Decisionnonorientationproep93.{$niveau}.raisonnonpassage" )."</td>
+			</tr>";
 		}
 
+		$innerTable .= "</tbody></table>";
+
+		$avisep = $options['Decisionnonorientationproep93']['decision'][Set::classicExtract( $dossierep, "Passagecommissionep.0.Decisionnonorientationproep93.{$niveau}.decision" )];
 		if ( $dossierep['Passagecommissionep'][0]['Decisionnonorientationproep93'][$niveau]['decision'] == 'maintienref' ) {
-			$avisep = implode( ' - ', Set::filter( array( $dossierep['Nonorientationproep93']['Orientstruct']['Typeorient']['lib_type_orient'], $dossierep['Nonorientationproep93']['Orientstruct']['Structurereferente']['lib_struc'] ) ) );
+			$avisep .= ' - '.implode( ' - ', Set::filter( array( $dossierep['Nonorientationproep93']['Orientstruct']['Typeorient']['lib_type_orient'], $dossierep['Nonorientationproep93']['Orientstruct']['Structurereferente']['lib_struc'] ) ) );
 		}
 		else if ( $dossierep['Passagecommissionep'][0]['Decisionnonorientationproep93'][$niveau]['decision'] == 'reorientation' ) {
-			$avisep = implode( ' - ', Set::filter( array( $dossierep['Passagecommissionep'][0]['Decisionnonorientationproep93'][$niveau]['Typeorient']['lib_type_orient'], $dossierep['Passagecommissionep'][0]['Decisionnonorientationproep93'][$niveau]['Structurereferente']['lib_struc'] ) ) );
+			$avisep .= ' - '.implode( ' - ', Set::filter( array( $dossierep['Passagecommissionep'][0]['Decisionnonorientationproep93'][$niveau]['Typeorient']['lib_type_orient'], $dossierep['Passagecommissionep'][0]['Decisionnonorientationproep93'][$niveau]['Structurereferente']['lib_struc'] ) ) );
 		}
 
 		echo $xhtml->tableCells(
@@ -52,8 +64,11 @@ echo '<table><thead>
 				$form->input( "Decisionnonorientationproep93.{$i}.typeorient_id", array( 'type' => 'select', 'label' => false, 'options' => $typesorients, 'empty' => true ) ),
 				$form->input( "Decisionnonorientationproep93.{$i}.structurereferente_id", array( 'label' => false, 'options' => $structuresreferentes, 'empty' => true, 'type' => 'select' ) ),
 				array( $form->input( "Decisionnonorientationproep93.{$i}.raisonnonpassage", array( 'label' => false, 'type' => 'textarea' ) ), array( 'colspan' => '2' ) ),
-				$form->input( "Decisionnonorientationproep93.{$i}.commentaire", array( 'label' =>false, 'type' => 'textarea' ) )
-			)
+				$form->input( "Decisionnonorientationproep93.{$i}.commentaire", array( 'label' =>false, 'type' => 'textarea' ) ),
+				array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
+			),
+			array( 'class' => 'odd' ),
+			array( 'class' => 'even' )
 		);
 	}
 	echo '</tbody></table>';
