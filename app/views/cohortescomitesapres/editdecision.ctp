@@ -31,7 +31,7 @@
             <tbody>
                 <?php
 
-                    $innerTable = '<table id="innerTable0" class="innerTable">
+                    $innerTable = '<table id="innerTablesearchResults0" class="innerTable">
                             <tbody>
                                 <tr>
                                     <th>Date naissance</th>

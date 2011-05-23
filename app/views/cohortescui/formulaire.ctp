@@ -51,7 +51,7 @@
                 <tbody>
                     <?php foreach( $cohortecui as $index => $contrat ):?>
                         <?php
-                        $innerTable = '<table id="innerTable'.$index.'" class="innerTable">
+                        $innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
                             <tbody>
                                 <tr>
                                     <th>Date naissance</th>

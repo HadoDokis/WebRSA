@@ -131,7 +131,7 @@
             <tbody>
                 <?php foreach( $orients as $index => $orient ):?>
                     <?php
-                        $innerTable = '<table id="innerTable'.$index.'" class="innerTable">
+                        $innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
                             <tbody>
                                 <tr>
                                     <th>Etat du droit</th>

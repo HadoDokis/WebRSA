@@ -138,7 +138,7 @@
                     <?php
                         $title = $apre['Dossier']['numdemrsa'];
 
-                        $innerTable = '<table id="innerTable'.$index.'" class="innerTable">
+                        $innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
                             <tbody>
                                 <tr>
                                     <th>N° CAF</th>
