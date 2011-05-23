@@ -955,6 +955,28 @@
 			}
 		}
 
+            /**
+        *
+        */
+
+        function reponseLink( $title, $url, $enabled = true ) {
+            $content = $this->image(
+                'icons/pencil.png',
+                array( 'alt' => '' )
+            ).' Réponses';
+
+            if( $enabled ) {
+                return $this->link(
+                    $content,
+                    $url,
+                    array( 'escape' => false, 'title' => $title )
+                );
+            }
+            else {
+                return '<span class="disabled">'.$content.'</span>';
+            }
+        }
+
 		/**
 		*
 		*/

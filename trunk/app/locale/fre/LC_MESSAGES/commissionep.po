@@ -43,8 +43,8 @@ msgstr "Equipe dont dépend la commission"
 msgid "Commissionep.structurereferente_id"
 msgstr "Lieu de la commission"
 
-msgid "Commissionep.edit"
-msgstr "Modifier la liste des participants à l'EP"
+msgid "Commissionep.reponse"
+msgstr "Saisir les réponses des participants à l'EP"
 
 msgid "Commissionep.presence"
 msgstr "Noter les presences des participants à l'EP"
