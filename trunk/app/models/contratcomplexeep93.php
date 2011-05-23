@@ -151,20 +151,12 @@
 				// On ajoute les enregistrements de cette étape
 				else {
 					if( $niveauDecision == 'cg' ) {
-						if( !empty( $datas[$key]['Passagecommissionep'][0][$modeleDecisions][1] ) ) { // Modification
-							$formData[$modeleDecisions][$key]['decision'] = @$datas[$key]['Passagecommissionep'][0][$modeleDecisions][1]['decision'];
-							$formData[$modeleDecisions][$key]['datevalidation_ci'] = @$datas[$key]['Passagecommissionep'][0][$modeleDecisions][1]['datevalidation_ci'];
-							$formData[$modeleDecisions][$key]['observ_ci'] = @$datas[$key]['Passagecommissionep'][0][$modeleDecisions][1]['observ_ci'];
-							$formData[$modeleDecisions][$key]['raisonnonpassage'] = @$datas[$key]['Passagecommissionep'][0][$modeleDecisions][1]['raisonnonpassage'];
-							$formData[$modeleDecisions][$key]['decisionpcg'] = @$datas[$key]['Passagecommissionep'][0][$modeleDecisions][1]['decisionpcg'];
-						}
-						else {
-							$formData[$modeleDecisions][$key]['decision'] = $dossierep['Passagecommissionep'][0][$modeleDecisions][0]['decision'];
-							$formData[$modeleDecisions][$key]['datevalidation_ci'] = $dossierep['Passagecommissionep'][0][$modeleDecisions][0]['datevalidation_ci'];
-							$formData[$modeleDecisions][$key]['observ_ci'] = $dossierep['Passagecommissionep'][0][$modeleDecisions][0]['observ_ci'];
-							$formData[$modeleDecisions][$key]['raisonnonpassage'] = $dossierep['Passagecommissionep'][0][$modeleDecisions][0]['raisonnonpassage'];
-							$formData[$modeleDecisions][$key]['decisionpcg'] = 'valide';
-						}
+						$formData[$modeleDecisions][$key]['decision'] = $dossierep['Passagecommissionep'][0][$modeleDecisions][0]['decision'];
+						$formData[$modeleDecisions][$key]['datevalidation_ci'] = $dossierep['Passagecommissionep'][0][$modeleDecisions][0]['datevalidation_ci'];
+						$formData[$modeleDecisions][$key]['observ_ci'] = $dossierep['Passagecommissionep'][0][$modeleDecisions][0]['observ_ci'];
+						$formData[$modeleDecisions][$key]['raisonnonpassage'] = $dossierep['Passagecommissionep'][0][$modeleDecisions][0]['raisonnonpassage'];
+						$formData[$modeleDecisions][$key]['commentaire'] = $dossierep['Passagecommissionep'][0][$modeleDecisions][0]['commentaire'];
+						$formData[$modeleDecisions][$key]['decisionpcg'] = 'valide';
 					}
 				}
 			}

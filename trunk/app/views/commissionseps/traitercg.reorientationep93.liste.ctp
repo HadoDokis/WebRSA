@@ -13,10 +13,10 @@ echo '<table><thead>
 <th>Structure référente préconisée</th>
 <th>Avis EP</th>
 <th colspan=\'4\'>Décision CG</th>
+<th>Observations</th>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
-// debug($dossierep);
 		$decisionep = $dossierep['Passagecommissionep'][0]['Decisionreorientationep93'][count($dossierep['Passagecommissionep'][0]['Decisionreorientationep93'])-1];
 		if( $decisionep['decision'] != 'accepte' ) {
 			$decisionep['Typeorient']['lib_type_orient'] = null;
@@ -47,7 +47,8 @@ echo '<table><thead>
 				$form->input( "Decisionreorientationep93.{$i}.decision", array( 'label' => false, 'options' => @$options['Decisionreorientationep93']['decision'], 'empty' => true ) ),
 				$form->input( "Decisionreorientationep93.{$i}.typeorient_id", array( 'label' => false, 'options' => $typesorients, 'empty' => true ) ),
 				$form->input( "Decisionreorientationep93.{$i}.structurereferente_id", array( 'label' => false, 'options' => $structuresreferentes, 'empty' => true ) ),
-				array( $form->input( "Decisionreorientationep93.{$i}.raisonnonpassage", array( 'label' => false, 'type' => 'textarea', 'empty' => true ) ), array( 'colspan' => '2' ) )
+				array( $form->input( "Decisionreorientationep93.{$i}.raisonnonpassage", array( 'label' => false, 'type' => 'textarea' ) ), array( 'colspan' => '2' ) ),
+				$form->input( "Decisionreorientationep93.{$i}.commentaire", array( 'label' =>false, 'type' => 'textarea' ) )
 			)
 		);
 	}

@@ -433,6 +433,7 @@
 						$formData['Decisionsanctionep58'][$key]['id'] = @$datas[$key]['Passagecommissionep'][0]['Decisionsanctionep58'][0]['id'];
 						$formData['Decisionsanctionep58'][$key]['decision'] = @$datas[$key]['Passagecommissionep'][0]['Decisionsanctionep58'][0]['decision'];
 						$formData['Decisionsanctionep58'][$key]['raisonnonpassage'] = @$datas[$key]['Passagecommissionep'][0]['Decisionsanctionep58'][0]['raisonnonpassage'];
+						$formData['Decisionsanctionep58'][$key]['commentaire'] = @$datas[$key]['Passagecommissionep'][0]['Decisionsanctionep58'][0]['commentaire'];
 						$formData['Decisionsanctionep58'][$key]['listesanctionep58_id'] = @$datas[$key]['Passagecommissionep'][0]['Decisionsanctionep58'][0]['listesanctionep58_id'];
 					}
 					else {

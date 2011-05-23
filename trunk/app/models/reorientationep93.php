@@ -487,6 +487,7 @@
 						$formData['Decisionreorientationep93'][$key]['id'] = @$datas[$key]['Passagecommissionep'][0]['Decisionreorientationep93'][0]['id'];
 						$formData['Decisionreorientationep93'][$key]['decision'] = @$datas[$key]['Passagecommissionep'][0]['Decisionreorientationep93'][0]['decision'];
 						$formData['Decisionreorientationep93'][$key]['raisonnonpassage'] = @$datas[$key]['Passagecommissionep'][0]['Decisionreorientationep93'][0]['raisonnonpassage'];
+						$formData['Decisionreorientationep93'][$key]['commentaire'] = @$datas[$key]['Passagecommissionep'][0]['Decisionreorientationep93'][0]['commentaire'];
 
 						$formData['Decisionreorientationep93'][$key]['typeorient_id'] = @$datas[$key]['Passagecommissionep'][0]['Decisionreorientationep93'][0]['typeorient_id'];
 						$formData['Decisionreorientationep93'][$key]['structurereferente_id'] = implode(
@@ -514,6 +515,7 @@
 				else if( $niveauDecision == 'cg' ) {
 					$formData['Decisionreorientationep93'][$key]['decision'] = $dossierep['Passagecommissionep'][0]['Decisionreorientationep93'][0]['decision'];
 					$formData['Decisionreorientationep93'][$key]['raisonnonpassage'] = @$datas[$key]['Passagecommissionep'][0]['Decisionreorientationep93'][0]['raisonnonpassage'];
+					$formData['Decisionreorientationep93'][$key]['commentaire'] = @$datas[$key]['Passagecommissionep'][0]['Decisionreorientationep93'][0]['commentaire'];
 					
 					if( !empty( $datas[$key]['Passagecommissionep'][0]['Decisionreorientationep93'][1] ) ) { // Modification
 						$formData['Decisionreorientationep93'][$key]['id'] = @$datas[$key]['Passagecommissionep'][0]['Decisionreorientationep93'][0]['id'];

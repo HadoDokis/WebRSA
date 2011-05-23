@@ -166,7 +166,6 @@
 			foreach( $datas as $key => $dossierep ) {
 				$formData[$this->alias][$key]['id'] = @$datas[$key][$this->alias]['id'];
 				$formData[$this->alias][$key]['dossierep_id'] = @$datas[$key][$this->alias]['dossierep_id'];
-				$formData[$modeleDecisions][$key]['passagecommissionep_id'] = @$datas[$key]['Passagecommissionep'][0]['id'];
 
 				// On modifie les enregistrements de cette étape
 				if( @$dossierep['Passagecommissionep'][0][$modeleDecisions][0]['etape'] == $niveauDecision ) {
@@ -174,28 +173,17 @@
 				}
 				// On ajoute les enregistrements de cette étape -> FIXME: manque les id ?
 				else {
+					$formData[$modeleDecisions][$key]['passagecommissionep_id'] = @$datas[$key]['Passagecommissionep'][0]['id'];
 					if( $niveauDecision == 'ep' ) {
-						if( !empty( $datas[$key]['Passagecommissionep'][0][$modeleDecisions][0] ) ) { // Modification
-							$formData[$modeleDecisions][$key]['decision'] = @$datas[$key]['Passagecommissionep'][0][$modeleDecisions][0]['decision'];
+						if( ( $dossierep['Personne']['Foyer']['nbenfants'] > 0 ) || ( $dossierep['Personne']['Foyer']['sitfam'] == 'MAR' ) ) {
+							$formData[$modeleDecisions][$key]['decision'] = '1maintien';
 						}
-						else {
-							if( ( $dossierep['Personne']['Foyer']['nbenfants'] > 0 ) || ( $dossierep['Personne']['Foyer']['sitfam'] == 'MAR' ) ) {
-								$formData[$modeleDecisions][$key]['decision'] = '1maintien';
-							}
-							// FIXME: autre cas ?
-						}
+						// FIXME: autre cas ?
 					}
 					else if( $niveauDecision == 'cg' ) {
-						if( !empty( $datas[$key]['Passagecommissionep'][0][$modeleDecisions][1] ) ) { // Modification
-							$formData[$modeleDecisions][$key]['decision'] = @$datas[$key]['Passagecommissionep'][0][$modeleDecisions][1]['decision'];
-							$formData[$modeleDecisions][$key]['decisionpcg'] = @$datas[$key]['Passagecommissionep'][0][$modeleDecisions][1]['decisionpcg'];
-							$formData[$modeleDecisions][$key]['raisonnonpassage'] = @$datas[$key]['Passagecommissionep'][0][$modeleDecisions][1]['raisonnonpassage'];
-						}
-						else {
-							$formData[$modeleDecisions][$key]['decision'] = $dossierep['Passagecommissionep'][0][$modeleDecisions][0]['decision'];
-							$formData[$modeleDecisions][$key]['decisionpcg'] = 'valide';
-							$formData[$modeleDecisions][$key]['raisonnonpassage'] = $dossierep['Passagecommissionep'][0][$modeleDecisions][0]['raisonnonpassage'];
-						}
+						$formData[$modeleDecisions][$key]['decision'] = $dossierep['Passagecommissionep'][0][$modeleDecisions][0]['decision'];
+						$formData[$modeleDecisions][$key]['decisionpcg'] = 'valide';
+						$formData[$modeleDecisions][$key]['raisonnonpassage'] = $dossierep['Passagecommissionep'][0][$modeleDecisions][0]['raisonnonpassage'];
 					}
 				}
 			}
