@@ -336,7 +336,7 @@
 								array(
 									'actions' => array(
 										'Dossierseps::view' => array( 'label' => 'Voir', 'url' => array( 'controller' => $controller, 'action' => 'index', '#Dossierep.Personne.id#' ), 'class' => 'external' ),
-										'Dossierseps::fichesynthese' => array( 'url' => array( 'controller' => 'dossierseps', 'action' => 'fichesynthese', '#Dossierep.id#' ) )
+										'Dossierseps::fichesynthese' => array( 'url' => array( 'controller' => 'commissionseps', 'action' => 'fichesynthese',  Set::classicExtract( $commissionep, 'Commissionep.id' ), '#Dossierep.id#' ) )
 									),
 									'options' => $options,
 									'id' => $theme

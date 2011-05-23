@@ -1674,5 +1674,153 @@
                 $options
             );
         }
+
+
+        public function getFicheSynthese( $commissionep_id, $dossierep_id ) {
+
+//             $commissionep = $this->find(
+//                 'first',
+//                 array(
+//                     'conditions' => array(
+//                         'Commissionep.id' => $commissionep_id
+//                     ),
+//                     'contain' => array(
+//                         'Ep' => array(
+//                              'Regroupementep'
+//                          )
+//                     )
+//                 )
+//             );
+// 
+//             $dossierep = $this->Passagecommissionep->Dossierep->find(
+//                 'first',
+//                 array(
+//                     'conditions' => array(
+//                         'Dossierep.id' => $dossierep_id
+//                     ),
+//                     'contain' => false
+//                 )
+//             );
+// 
+//             $fichesynthese = Set::merge( $commissionep, $dossierep );
+
+            $queryData = array(
+                'fields' => array(
+                    'Dossierep.id',
+                    'Dossierep.personne_id',
+                    'Dossierep.themeep',
+                    'Dossierep.created',
+                    'Dossierep.modified',
+                    //
+                    'Personne.id',
+                    'Personne.foyer_id',
+                    'Personne.qual',
+                    'Personne.nom',
+                    'Personne.prenom',
+                    'Personne.nomnai',
+                    'Personne.prenom2',
+                    'Personne.prenom3',
+                    'Personne.nomcomnai',
+                    'Personne.dtnai',
+                    'Personne.rgnai',
+                    'Personne.typedtnai',
+                    'Personne.nir',
+                    'Personne.topvalec',
+                    'Personne.sexe',
+                    'Personne.nati',
+                    'Personne.dtnati',
+                    'Personne.pieecpres',
+                    'Personne.idassedic',
+                    'Personne.numagenpoleemploi',
+                    'Personne.dtinscpoleemploi',
+                    'Personne.numfixe',
+                    'Personne.numport',
+                    'Dossier.matricule',
+                    'Foyer.sitfam',
+                    'Adresse.numvoie',
+                    'Adresse.typevoie',
+                    'Adresse.nomvoie',
+                    'Adresse.compladr',
+                    'Adresse.locaadr',
+                    'Adresse.numcomptt',
+                    'Adresse.codepos',
+
+                ),
+                'joins' => array(
+                    array(
+                        'table'      => 'personnes',
+                        'alias'      => 'Personne',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( "Dossierep.personne_id = Personne.id" ),
+                    ),
+                    array(
+                        'table'      => 'foyers',
+                        'alias'      => 'Foyer',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Personne.foyer_id = Foyer.id' )
+                    ),
+                    array(
+                        'table'      => 'dossiers',
+                        'alias'      => 'Dossier',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Dossier.id = Foyer.dossier_id' )
+                    ),
+                    array(
+                        'table'      => 'adressesfoyers',
+                        'alias'      => 'Adressefoyer',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array(
+                            'Foyer.id = Adressefoyer.foyer_id',
+                            'Adressefoyer.id IN (
+                                '.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01('Adressefoyer.foyer_id').'
+                            )'
+                        )
+                    ),
+                    array(
+                        'table'      => 'adresses',
+                        'alias'      => 'Adresse',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
+                    )
+                ),
+                'conditions' => array(
+                    'Dossierep.id' => $dossierep_id
+                )
+            );
+
+            // Fiches synthétiques des dossiers d'EP
+            $fichessynthetiques = $this->Passagecommissionep->Dossierep->find(
+                'first',
+                $this->_qdFichesSynthetiques( array( 'Passagecommissionep.commissionep_id' => $commissionep_id ) )
+            );
+            
+            $dossierep = $this->Passagecommissionep->Dossierep->find( 'first', $queryData );
+            $dataFiche = Set::merge( $dossierep, $fichessynthetiques );
+// debug($dataFiche );
+// die();
+
+            $options['Foyer']['sitfam'] = ClassRegistry::init( 'Option' )->sitfam();
+
+/*
+            return $this->ged(
+                $convocation,
+                "{$this->alias}/convocationep_participant.odt",
+                false,
+                $options
+            );*/
+
+            return $this->ged(
+                $dataFiche,
+                "{$this->alias}/fichesynthese.odt",
+                false,
+                $options
+            );
+        }
+
 	}
 ?>

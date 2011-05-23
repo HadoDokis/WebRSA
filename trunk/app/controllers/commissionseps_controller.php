@@ -1045,5 +1045,20 @@ die();*/
 		}
 
 
+        /**
+        *    Génération de la fiche de synthèse des différents dossiers d'EP
+        */
+        public function fichesynthese( $commissionep_id, $dossierep_id ) {
+
+            $pdf = $this->Commissionep->getFicheSynthese( $commissionep_id, $dossierep_id  );
+
+            if( $pdf ) {
+                $this->Gedooo->sendPdfContentToClient( $pdf, 'FicheSynthetique' );
+            }
+            else {
+                $this->Session->setFlash( 'Impossible de générer le courrier d\'information', 'default', array( 'class' => 'error' ) );
+                $this->redirect( $this->referer() );
+            }
+        }
 	}
 ?>
