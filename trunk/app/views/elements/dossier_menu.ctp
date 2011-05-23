@@ -312,6 +312,16 @@
 												</ul>
 											</li>
 											<?php endif;?>
+											<?php if( $permissions->check( 'historiqueseps', 'index' ) ):?>
+                                            <li>
+                                                <?php
+                                                    echo $xhtml->link(
+                                                        'Historique des EPs',
+                                                        array( 'controller' => 'historiqueseps', 'action' => 'index', $personne['id'] )
+                                                    );
+                                                ?>
+                                            </li>
+                                            <?php endif;?>
 											<li><span>Offre d'insertion</span>
 												<ul>
 												<!-- <li>
