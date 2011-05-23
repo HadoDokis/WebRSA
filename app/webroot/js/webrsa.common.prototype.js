@@ -281,7 +281,7 @@ function mkTooltipTables() {
                 var jPosition = 0;
                 $( tr ).getElementsBySelector( 'td' ).each( function( td ) {
                     if( !actionPositions.include( jPosition ) ) {
-                        tips.push( new Tooltip( $( td ), 'innerTable' + iPosition ) );
+						tips.push( new Tooltip( $( td ), 'innerTable' + $( table ).readAttribute( 'id' ) + iPosition ) );
                     }
                     jPosition++;
                 } );
