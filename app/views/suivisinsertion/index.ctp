@@ -579,7 +579,9 @@
                             $themeep = Set::classicExtract( $details, "{$roleEp}.Dossierep.derniere.Dossierep.themeep" );
                             $modeleDecision = 'Decision'.Inflector::singularize( $themeep );
                             $detailsEp[$roleEp]['themeEp'] = Set::enum( Set::classicExtract( $details, "{$roleEp}.Dossierep.derniere.Dossierep.themeep" ), $dossierep['themeep'] );
-                            $detailsEp[$roleEp]['decisionEp'] = Set::enum( Set::classicExtract( $details, "{$roleEp}.Dossierep.derniere.{$modeleDecision}.decision" ), $options[$modeleDecision]['decision'] );
+                            $detailsEp[$roleEp]['decisionEp'] = Set::enum( Set::classicExtract( $details, "{$roleEp}.Dossierep.derniere.0.{$modeleDecision}.decision" ), $options[$modeleDecision]['decision'] );
+
+                            $detailsEp[$roleEp]['decisionCG'] = Set::enum( Set::classicExtract( $details, "{$roleEp}.Dossierep.derniere.1.{$modeleDecision}.decision" ), $options[$modeleDecision]['decision'] );
 
                             $detailsEp[$roleEp]['etatDossierep'] = Set::enum( Set::classicExtract( $details, "{$roleEp}.Dossierep.derniere.Passagecommissionep.etatdossierep" ), $options['Passagecommissionep']['etatdossierep'] );
                         }
@@ -590,8 +592,8 @@
                 <table>
                     <thead>
                         <tr class="odd">
-                            <th colspan="5">Parcours Demandeur</th>
-                            <th colspan="4">Parcours Conjoint</th>
+                            <th colspan="6">Parcours Demandeur</th>
+                            <th colspan="5">Parcours Conjoint</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -600,23 +602,27 @@
                             <th>Motif de passage en EP</th>
                             <th>État dossier EP</th>
                             <th>Décision de l'EP</th>
+                            <th>Décision du CG</th>
                             <th></th>
 
                             <th>Date de la commission d'EP</th>
                             <th>Motif de passage en EP</th>
                             <th>État dossier EP</th>
                             <th>Décision de l'EP</th>
+                            <th>Décision du CG</th>
 
                         </tr>
                             <td><?php echo @$detailsEp['DEM']['dateEp'];?></td>
                             <td><?php echo @$detailsEp['DEM']['themeEp'];?></td>
                             <td><?php echo @$detailsEp['DEM']['etatDossierep'];?></td>
                             <td><?php echo @$detailsEp['DEM']['decisionEp'];?></td>
+                            <td><?php echo @$detailsEp['DEM']['decisionCG'];?></td>
 
                             <td><?php echo @$detailsEp['CJT']['dateEp'];?></td>
                             <td><?php echo @$detailsEp['CJT']['themeEp'];?></td>
                             <td><?php echo @$detailsEp['CJT']['etatDossierep'];?></td>
                             <td><?php echo @$detailsEp['CJT']['decisionEp'];?></td>
+                            <td><?php echo @$detailsEp['CJT']['decisionCG'];?></td>
                         </tr>
                     </tbody>
                 </table>
