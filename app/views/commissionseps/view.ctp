@@ -138,12 +138,12 @@
 <div id="tabbedWrapper" class="tabs">
 	<?php if( isset( $membresepsseanceseps ) ):?>
 		<div id="participants">
-			<h2 class="title">2. Liste des participants</h2>
+			<h2 class="title">2. Gestion des participants</h2>
 			<div>
 				<ul class="actionMenu">
 				<?php
-					echo '<li>'.$xhtml->editLink(
-						__d('commissionep','Commissionep.edit',true),
+					echo '<li>'.$xhtml->reponseLink(
+						__d('commissionep','Commissionep.reponse',true),
 						array( 'controller' => 'membreseps', 'action' => 'editliste', $commissionep['Commissionep']['id'] ),
 						in_array( 'membreseps::editliste', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] )
 					).' </li>';
@@ -226,7 +226,7 @@
                         echo $xhtml->tag(
                             'td',
                             $xhtml->link(
-                                'Convocation',
+                                'Invitation',
                                 array( 'controller' => 'commissionseps', 'action' => 'printConvocationParticipant', $commissionep['Commissionep']['id'], $membreepseanceep['Membreep']['id'] ),
                                 array(
                                     'enabled' => ( $membreepseanceep['CommissionepMembreep']['reponse'] == 'nonrenseigne' /*&& empty( $disableOrdredujour )*/  && empty( $membreepseanceep['CommissionepMembreep']['presence'] ) ),
