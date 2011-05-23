@@ -107,5 +107,13 @@ SELECT add_missing_table_field ('public', 'decisionscontratscomplexeseps93', 'de
 ALTER TABLE decisionscontratscomplexeseps93 ALTER COLUMN decisionpcg SET DEFAULT 'valide'::type_decisionpcg;
 
 -- *****************************************************************************
+-- 20110523, ajout de champs de commentaires dans les décisions du module EP
+-- pour les thématiques où elles manquent
+-- *****************************************************************************
+
+SELECT add_missing_table_field ('public', 'decisionscontratscomplexeseps93', 'commentaire', 'TEXT');
+SELECT add_missing_table_field ('public', 'defautsinsertionseps66', 'commentaire', 'TEXT');
+
+-- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
