@@ -428,7 +428,7 @@
 				$line = implode( '', $line ).$this->actions( $data, $cohorteParams );
 				if( Set::check( $cohorteParams, 'tooltip' ) ) {
 					$tooltip = Set::extract( $cohorteParams, 'tooltip' );
-					$tooltip = $this->view( $data, $tooltip, array( 'widget' => 'table', 'class' => 'innerTable', 'id' => "innerTable{$key}" ) );
+					$tooltip = $this->view( $data, $tooltip, array( 'widget' => 'table', 'class' => 'innerTable', 'id' => "innerTable{$containerId}{$key}" ) );
 					$line .= $this->Html->tag( 'td', $tooltip, array( 'class' => 'innerTableCell noprint' ) );
 				}
 

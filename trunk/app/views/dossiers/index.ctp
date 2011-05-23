@@ -134,7 +134,7 @@
                     <?php
                         $title = $dossier['Dossier']['numdemrsa'];
 // debug( $dossier );
-                        $innerTable = '<table id="innerTable'.$index.'" class="innerTable">
+                        $innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
                             <tbody>
                                <tr>
                                     <th>Numéro CAF</th>

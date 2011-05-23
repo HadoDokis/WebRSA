@@ -55,7 +55,7 @@
             <tbody>
                 <?php foreach( $comitesapres as $index => $comite ):?>
                 <?php
-                    $innerTable = '<table id="innerTable'.$index.'" class="innerTable">
+                    $innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
                             <tbody>
                                 <tr>
                                     <th>Date naissance</th>

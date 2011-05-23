@@ -85,7 +85,7 @@
         <tbody>
         <?php foreach( $cohortevalidationapre66 as $index => $validationapre ):?>
             <?php
-                    $innerTable = '<table id="innerTable'.$index.'" class="innerTable">
+                    $innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
                         <tbody>
                             <tr>
                                 <th>Date naissance</th>
