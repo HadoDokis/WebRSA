@@ -86,6 +86,9 @@
 						),
 						'contain' => array(
 							'Passagecommissionep' => array(
+								'conditions' => array(
+									'Passagecommissionep.commissionep_id' => $commissionep_id
+								),
 								'Decisionsaisinepdoep66' => array(
 									'order' => array(
 										'Decisionsaisinepdoep66.etape DESC'

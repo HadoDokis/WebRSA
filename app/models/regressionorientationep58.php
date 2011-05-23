@@ -47,6 +47,9 @@
 					'contain' => array(
 						'Regressionorientationep58',
 						'Passagecommissionep' => array(
+							'conditions' => array(
+								'Passagecommissionep.commissionep_id' => $commissionep_id
+							),
 							'Decisionregressionorientationep58'
 						)
 					)
@@ -69,7 +72,6 @@
 							'user_id' => $dossierep['Regressionorientationep58']['user_id']
 						)
 					);
-
 					$this->Structurereferente->Orientstruct->create( $orientstruct );
 					$success = $this->Structurereferente->Orientstruct->save() && $success;
 					$success = $this->Structurereferente->Orientstruct->generatePdf( $this->Structurereferente->Orientstruct->id, $dossierep['Regressionorientationep58']['user_id'] ) && $success;

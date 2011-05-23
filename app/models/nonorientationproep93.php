@@ -90,6 +90,9 @@
 					'contain' => array(
 						'Dossierep' => array(
 							'Passagecommissionep' => array(
+								'conditions' => array(
+									'Passagecommissionep.commissionep_id' => $commissionep_id
+								),
 								'Decisionnonorientationproep93' => array(
 									'conditions' => array(
 										'Decisionnonorientationproep93.etape' => $etape
