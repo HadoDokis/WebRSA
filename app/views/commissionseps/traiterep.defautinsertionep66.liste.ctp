@@ -1,6 +1,5 @@
 <?php
-// 	echo $form->create( null, array( 'url' => Router::url( null, true ) ) );
-	echo '<table><thead>
+echo '<table><thead>
 <tr>
 <th>Dossier EP</th>
 <th>Nom du demandeur</th>
@@ -15,11 +14,10 @@
 <th>Date de radiation</th>
 <th>Motif de radiation</th>
 <th colspan="4">Avis EPL</th>
+<th>Observations</th>
 </tr>
 </thead><tbody>';
-// debug($this->data);
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
-// debug( $dossierep );
 		echo $xhtml->tableCells(
 			array(
 				$dossierep['Dossierep']['id'],
@@ -45,17 +43,12 @@
 				$form->input( "Decisiondefautinsertionep66.{$i}.typeorient_id", array( 'label' => false, 'options' => $typesorients, 'empty' => true, 'value' => @$decisionsdefautsinsertionseps66[$i]['typeorient_id'] ) ),
 				$form->input( "Decisiondefautinsertionep66.{$i}.structurereferente_id", array( 'label' => false, 'options' => $structuresreferentes, 'empty' => true, 'type' => 'select', 'value' => @$decisionsdefautsinsertionseps66[$i]['structurereferente_id'] ) ),
 				$form->input( "Decisiondefautinsertionep66.{$i}.referent_id", array( 'label' => false, 'options' => $referents, 'empty' => true, 'type' => 'select', 'value' => @$decisionsdefautsinsertionseps66[$i]['referent_id'] ) ),
-				array( $form->input( "Decisiondefautinsertionep66.{$i}.raisonnonpassage", array( 'label' => false, 'type' => 'textarea' ) ), array( 'colspan' => 3 ) )
+				array( $form->input( "Decisiondefautinsertionep66.{$i}.raisonnonpassage", array( 'label' => false, 'type' => 'textarea' ) ), array( 'colspan' => 3 ) ),
+				$form->input( "Decisiondefautinsertionep66.{$i}.commentaire", array( 'label' =>false, 'type' => 'textarea' ) )
 			)
 		);
 	}
 	echo '</tbody></table>';
-// 	echo $form->submit( 'Enregistrer' );
-// 	echo $form->end();
-
-// 	debug( $commissionep );
-// debug( $dossiers[$theme]['liste'] );
-// debug( $options );
 ?>
 
 <script type="text/javascript">

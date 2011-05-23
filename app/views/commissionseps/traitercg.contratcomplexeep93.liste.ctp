@@ -10,17 +10,17 @@ echo '<table><thead>
 <th rowspan="2">Date de fin du contrat</th>
 <th rowspan="2">Avis EP</th>
 <th colspan="4">Décision CG</th>
+<th rowspan="2">Observations</th>
 </tr>
 <tr>
 <th>Décision PCG</th>
 <th>Décision</th>
 <th>Date de validation</th>
-<th>Observations</th>
+<th>Observations du contrat</th>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
 		$indexDecision = count( $dossierep['Passagecommissionep'][0]['Decisioncontratcomplexeep93'] ) - 1;
-// debug($dossierep);
 		echo $xhtml->tableCells(
 			array(
 				$dossierep['Dossierep']['id'],

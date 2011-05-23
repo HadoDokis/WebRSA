@@ -1,5 +1,4 @@
 <?php
-
 echo '<table><thead>
 <tr>
 <th>Dossier EP</th>
@@ -10,10 +9,10 @@ echo '<table><thead>
 <th>Motif(s) de la PDO</th>
 <th>Description du traitement</th>
 <th colspan=\'3\'>Avis de l\'EP</th>
+<th>Observations</th>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
-
 		$listeSituationPdo = array();
 		foreach($dossierep['Saisinepdoep66']['Traitementpdo']['Propopdo']['Situationpdo'] as $situationpdo) {
 			$listeSituationPdo[] = $situationpdo['libelle'];
@@ -33,14 +32,13 @@ echo '<table><thead>
 				$form->input( "Decisionsaisinepdoep66.{$i}.etape", array( 'type' => 'hidden', 'value' => 'ep' ) ).
 				$form->input( "Decisionsaisinepdoep66.{$i}.decision", array( 'label' => false, 'options' => $options['Decisionsaisinepdoep66']['decision'], 'empty' => true ) ),
 				$form->input( "Decisionsaisinepdoep66.{$i}.decisionpdo_id", array( 'label' => false, 'options' => @$options['Decisionsaisinepdoep66']['decisionpdo_id'], 'empty' => true ) ),
-				$form->input( "Decisionsaisinepdoep66.{$i}.commentaire", array( 'label' => false, 'type' => 'textarea'/*, 'cols' => '25', 'rows' => '2'*/ ) ),
-				array( $form->input( "Decisionsaisinepdoep66.{$i}.raisonnonpassage", array( 'label' => false, 'type' => 'textarea' ) ), array( 'colspan' => 2 ) )
+				$form->input( "Decisionsaisinepdoep66.{$i}.commentaire", array( 'label' => false, 'type' => 'textarea' ) ),
+				array( $form->input( "Decisionsaisinepdoep66.{$i}.raisonnonpassage", array( 'label' => false, 'type' => 'textarea' ) ), array( 'colspan' => 2 ) ),
+				$form->input( "Decisionsaisinepdoep66.{$i}.commentaire", array( 'label' => false, 'type' => 'textarea' ) )
 			)
 		);
 	}
 	echo '</tbody></table>';
-// 	echo $form->submit( 'Enregistrer' );
-// 	echo $form->end();
 ?>
 
 <script type="text/javascript">

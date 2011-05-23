@@ -1,6 +1,5 @@
 <?php
-// 	echo $form->create( null, array( 'url' => Router::url( null, true ) ) );
-	echo '<table><thead>
+echo '<table><thead>
 <tr>
 <th>Dossier EP</th>
 <th>Nom du demandeur</th>
@@ -9,11 +8,10 @@
 <th>Création du dossier EP</th>
 <th>Origine du dossier</th>
 <th colspan=\'2\'>Avis EPL</th>
+<th>Observations</th>
 </tr>
 </thead><tbody>';
-// debug($this->data);
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
-// debug( $dossierep );
 		echo $xhtml->tableCells(
 			array(
 				$dossierep['Dossierep']['id'],
@@ -30,17 +28,12 @@
 
 				$form->input( "Decisionsanctionep58.{$i}.decision", array( 'type' => 'select', 'label' => false, 'empty' => true, 'options' => @$options['Decisionsanctionep58']['decision'] ) ),
 				$form->input( "Decisionsanctionep58.{$i}.listesanctionep58_id", array( 'type' => 'select', 'label' => false, 'options' => $listesanctionseps58 ) ),
-				$form->input( "Decisionsanctionep58.{$i}.raisonnonpassage", array( 'label' => false, 'type' => 'textarea', 'empty' => true ) )
+				$form->input( "Decisionsanctionep58.{$i}.raisonnonpassage", array( 'label' => false, 'type' => 'textarea', 'empty' => true ) ),
+				$form->input( "Decisionsanctionep58.{$i}.commentaire", array( 'label' => false, 'type' => 'textarea' ) )
 			)
 		);
 	}
 	echo '</tbody></table>';
-// 	echo $form->submit( 'Enregistrer' );
-// 	echo $form->end();
-
-// 	debug( $commissionep );
-// debug( $dossiers[$theme]['liste'] );
-// debug( $options );
 ?>
 
 <script type="text/javascript">
