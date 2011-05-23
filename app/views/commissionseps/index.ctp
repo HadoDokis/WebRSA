@@ -142,7 +142,9 @@
 					<th>'.$xpaginator->sort( __d( 'commissionep', 'Commissionep.dateseance', true ), 'Commissionep.dateseance' ).'</th>
 					<th>Nombre de participants</th>
 					<th>Nombre d\'absents</th>
-					<th>'.$xpaginator->sort( __d( 'commissionep', 'Commissionep.etatcommissionep', true ), 'Commissionep.etatcommissionep' ).'</th>
+					<!--<th>'.$xpaginator->sort( __d( 'commissionep', 'Commissionep.etatcommissionep', true ), 'Commissionep.etatcommissionep' ).'</th>-->
+					<th>Présence</th>
+					<th>Statut de la commission</th>
 					<th>'.$xpaginator->sort( __d( 'commissionep', 'Commissionep.observations', true ), 'Commissionep.observations' ).'</th>
 					<th colspan=\''.$colspan.'\'>Actions</th>
 				</tr></thead><tbody>';
@@ -184,7 +186,9 @@
 					<td>'.h( $locale->date( '%d/%m/%Y %H:%M', $commissionep['Commissionep']['dateseance'] ) ).'</td>
 					<td>'.h( $commissionep['Commissionep']['nbparticipants'] ).'</td>
 					<td>'.h( $commissionep['Commissionep']['nbabsents'] ).'</td>
-					<td>'.h( Set::enum( $commissionep['Commissionep']['etatcommissionep'], $options['Commissionep']['etatcommissionep'] ) ).'</td>
+					<!--<td>'.h( Set::enum( $commissionep['Commissionep']['etatcommissionep'], $options['Commissionep']['etatcommissionep'] ) ).'</td>-->
+					<td>'.h( ( $commissionep['Commissionep']['etatcommissionep'] == 'cree' || $commissionep['Commissionep']['etatcommissionep']  == 'associe' ) ? 'Non validée' : 'Validée' ).'</td>
+					<td>'.h( ( $commissionep['Commissionep']['etatcommissionep'] == 'traite') ? 'Traitée' : 'En cours' ).'</td>
 					<td>'.h( $commissionep['Commissionep']['observations'] ).'</td>
 					'.$lien.'
 				</tr>';
