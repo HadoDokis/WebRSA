@@ -13,6 +13,7 @@ echo '<table><thead>
 <th>Date de radiation</th>
 <th>Motif de radiation</th>
 <th colspan="5">Avis EPL</th>
+<th>Observations</th>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
@@ -40,7 +41,8 @@ echo '<table><thead>
 				array( @$liste_typesorients[Set::classicExtract( $decisionep, "typeorient_id" )], array( 'id' => "Decisiondefautinsertionep66{$i}TypeorientId" ) ),
 				array( @$liste_structuresreferentes[Set::classicExtract( $decisionep, "structurereferente_id" )], array( 'id' => "Decisiondefautinsertionep66{$i}StructurereferenteId" ) ),
 				array( @$liste_referents[Set::classicExtract( $decisionep, "referent_id" )], array( 'id' => "Decisiondefautinsertionep66{$i}ReferentId" ) ),
-				array( Set::classicExtract( $decisionep, "raisonnonpassage" ), array( 'colspan' => '3', 'id' => "Decisiondefautinsertionep66{$i}Raisonnonpassage" ) )
+				array( Set::classicExtract( $decisionep, "raisonnonpassage" ), array( 'colspan' => '3', 'id' => "Decisiondefautinsertionep66{$i}Raisonnonpassage" ) ),
+				Set::classicExtract( $decisionep, "commentaire"
 			)
 		);
 	}

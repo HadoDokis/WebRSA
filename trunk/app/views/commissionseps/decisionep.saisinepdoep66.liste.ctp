@@ -9,6 +9,7 @@ echo '<table><thead>
 <th>Motif(s) de la PDO</th>
 <th>Description du traitement</th>
 <th colspan=\'3\'>Avis de l\'EP</th>
+<th>Observations</th>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
@@ -31,7 +32,8 @@ echo '<table><thead>
 				$options['Decisionsaisinepdoep66']['decision'][Set::classicExtract( $decisionep, "decision" )],
 				array( @$options['Decisionsaisinepdoep66']['decisionpdo_id'][Set::classicExtract( $decisionep, "decisionpdo_id" )], array( 'id' => "Decisionsaisinepdoep66{$i}DecisionpdoId" ) ),
 				array( Set::classicExtract( $decisionep, "commentaire" ), array( 'id' => "Decisionsaisinepdoep66{$i}Commentaire" ) ),
-				array( Set::classicExtract( $decisionep, "raisonnonpassage" ), array( 'colspan' => '2', 'id' => "Decisionsaisinepdoep66{$i}Raisonnonpassage" ) )
+				array( Set::classicExtract( $decisionep, "raisonnonpassage" ), array( 'colspan' => '2', 'id' => "Decisionsaisinepdoep66{$i}Raisonnonpassage" ) ),
+				Set::classicExtract( $decisionep, "commentaire"
 			)
 		);
 	}

@@ -1,5 +1,5 @@
 <?php
-echo '<table><thead>
+echo '<table id="Decisioncontratcomplexeep93" class="tooltips"><thead>
 <tr>
 <th rowspan="2">Dossier EP</th>
 <th rowspan="2">Nom du demandeur</th>
@@ -11,6 +11,7 @@ echo '<table><thead>
 <th rowspan="2">Avis EP</th>
 <th colspan="4">Décision CG</th>
 <th rowspan="2">Observations</th>
+<th rowspan="2" class="innerTableHeader noprint">Avis EP</th>
 </tr>
 <tr>
 <th>Décision PCG</th>
@@ -21,6 +22,23 @@ echo '<table><thead>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
 		$indexDecision = count( $dossierep['Passagecommissionep'][0]['Decisioncontratcomplexeep93'] ) - 1;
+
+		$innerTable = "<table id=\"innerTableDecisioncontratcomplexeep93{$i}\" class=\"innerTable\">
+			<tbody>
+				<tr>
+					<th>Observations de l'EP</th>
+					<td>".Set::classicExtract( $dossierep, "Passagecommissionep.0.Decisioncontratcomplexeep93.{$indexDecision}.commentaire" )."</td>
+				</tr>";
+
+		if ( $dossierep['Passagecommissionep'][0]['Decisioncontratcomplexeep93'][$indexDecision]['decision'] == 'reporte' || $dossierep['Passagecommissionep'][0]['Decisioncontratcomplexeep93'][$indexDecision]['decision'] == 'annule' ) {
+			$innerTable .= " <tr>
+				<th>Raison du non passage de l'EP</th>
+				<td>".Set::classicExtract( $dossierep, "Passagecommissionep.0.Decisioncontratcomplexeep93.{$indexDecision}.raisonnonpassage" )."</td>
+			</tr>";
+		}
+
+		$innerTable .= "</tbody></table>";
+
 		echo $xhtml->tableCells(
 			array(
 				$dossierep['Dossierep']['id'],
@@ -51,8 +69,12 @@ echo '<table><thead>
 				$form->input( "Decisioncontratcomplexeep93.{$i}.decision", array( 'type' => 'select', 'options' => $options['Decisioncontratcomplexeep93']['decision'], 'label' => false ) ),
 				$form->input( "Decisioncontratcomplexeep93.{$i}.datevalidation_ci", array( 'type' => 'date', 'label' => false, 'dateFormat' => __( 'Locale->dateFormat', true ) ) ),
 				$form->input( "Decisioncontratcomplexeep93.{$i}.observ_ci", array( 'type' => 'textarea', 'label' => false ) ),
-				array( $form->input( "Decisioncontratcomplexeep93.{$i}.raisonnonpassage", array( 'label' => false, 'type' => 'textarea', 'empty' => true ) ), array( 'colspan' => '2' ) )
-			)
+				array( $form->input( "Decisioncontratcomplexeep93.{$i}.raisonnonpassage", array( 'label' => false, 'type' => 'textarea' ) ), array( 'colspan' => '2' ) ),
+				$form->input( "Decisioncontratcomplexeep93.{$i}.commentaire", array( 'label' => false, 'type' => 'textarea' ) ),
+				array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
+			),
+			array( 'class' => 'odd' ),
+			array( 'class' => 'even' )
 		);
 	}
 	echo '</tbody></table>';

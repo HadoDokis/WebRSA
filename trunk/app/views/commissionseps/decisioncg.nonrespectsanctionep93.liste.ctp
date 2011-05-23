@@ -1,5 +1,5 @@
 <?php
-echo '<table><thead>
+echo '<table id="Decisionnonrespectsanctionep93" class="tooltips"><thead>
 <tr>
 <th>Dossier EP</th>
 <th>Nom du demandeur</th>
@@ -13,6 +13,8 @@ echo '<table><thead>
 <th>Nombre d\'enfants</th>
 <th>Avis EP</th>
 <th colspan="3">Décision CG</th>
+<th>Observations</th>
+<th class="innerTableHeader noprint">Avis EP</th>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
@@ -25,6 +27,22 @@ echo '<table><thead>
 				$lineOptions[$key] = $label;
 			}
 		}
+		
+		$innerTable = "<table id=\"innerTableDecisionnonrespectsanctionep93{$i}\" class=\"innerTable\">
+			<tbody>
+				<tr>
+					<th>Observations de l'EP</th>
+					<td>".Set::classicExtract( $decisionep, "commentaire" )."</td>
+				</tr>";
+		
+		if ( $decisionep['decision'] == 'reporte' || $decisionep['decision'] == 'annule' ) {
+			$innerTable .= " <tr>
+				<th>Raison du non passage de l'EP</th>
+				<td>".Set::classicExtract( $decisionep, "raisonnonpassage" )."</td>
+			</tr>";
+		}
+		
+		$innerTable .= "</tbody></table>";
 
 		echo $xhtml->tableCells(
 			array(
@@ -38,15 +56,20 @@ echo '<table><thead>
 				@$dossierep['Nonrespectsanctionep93']['rgpassage'],
 				Set::enum( @$dossierep['Personne']['Foyer']['sitfam'], $options['Foyer']['sitfam'] ),
 				@$dossierep['Personne']['Foyer']['nbenfants'],
-				Set::enum( @$dossierep['decision'], $options['Decisionnonrespectsanctionep93']['decision'] ),
+				
+				Set::enum( @$decisionep['decision'], $options['Decisionnonrespectsanctionep93']['decision'] ),
 
 				$options['Decisionnonrespectsanctionep93']['decisionpcg'][Set::classicExtract( $decisioncg, "decisionpcg" )],
 				array(
 					$options['Decisionnonrespectsanctionep93']['decision'][Set::classicExtract( $decisioncg, "decision" )],
 					array( 'id' => "Decisionnonrespectsanctionep93{$i}ColumnDecision", 'colspan' => 2 )
 				),
-				array( Set::classicExtract( $decisioncg, "raisonnonpassage" ), array( 'id' => "Decisionnonrespectsanctionep93{$i}Raisonnonpassage" ) )
-			)
+ 				array( Set::classicExtract( $decisioncg, "raisonnonpassage" ), array( 'id' => "Decisionnonrespectsanctionep93{$i}Raisonnonpassage" ) ),
+				Set::classicExtract( $decisioncg, "commentaire" ),
+				array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
+			),
+			array( 'class' => 'odd' ),
+			array( 'class' => 'even' )
 		);
 	}
 	echo '</tbody></table>';

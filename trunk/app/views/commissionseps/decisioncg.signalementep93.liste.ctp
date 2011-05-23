@@ -1,5 +1,5 @@
 <?php
-echo '<table><thead>
+echo '<table id="Decisionsignalementep93" class="tooltips"><thead>
 <tr>
 <th>Dossier EP</th>
 <th>Nom du demandeur</th>
@@ -14,7 +14,9 @@ echo '<table><thead>
 <th>Situation familiale</th>
 <th>Nombre d\'enfants</th>
 <th>Avis EP</th>
-<th id=\'decisionCg\' colspan="3">Décision CG</th>
+<th colspan="3">Décision CG</th>
+<th>Observations</th>
+<th class="innerTableHeader noprint">Avis EP</th>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
@@ -27,6 +29,22 @@ echo '<table><thead>
 				$lineOptions[$key] = $label;
 			}
 		}
+
+		$innerTable = "<table id=\"innerTableDecisionsignalementep93{$i}\" class=\"innerTable\">
+			<tbody>
+				<tr>
+					<th>Observations de l'EP</th>
+					<td>".Set::classicExtract( $decisionep, "commentaire" )."</td>
+				</tr>";
+		
+		if ( $decisionep['decision'] == 'reporte' || $decisionep['decision'] == 'annule' ) {
+			$innerTable .= " <tr>
+				<th>Raison du non passage de l'EP</th>
+				<td>".Set::classicExtract( $decisionep, "raisonnonpassage" )."</td>
+			</tr>";
+		}
+		
+		$innerTable .= "</tbody></table>";
 
 		echo $xhtml->tableCells(
 			array(
@@ -54,9 +72,16 @@ echo '<table><thead>
 				),
 
 				$options['Decisionsignalementep93']['decisionpcg'][Set::classicExtract( $decisioncg, "decisionpcg" )],
-				$options['Decisionsignalementep93']['decision'][Set::classicExtract( $decisioncg, "decision" )],
-				array( Set::classicExtract( $decisioncg, "raisonnonpassage" ), array( 'colspan' => '2', 'id' => "Decisionsignalementep93{$i}Raisonnonpassage" ) )
-			)
+				array(
+					$options['Decisionsignalementep93']['decision'][Set::classicExtract( $decisionep, "decision" )],
+					array( 'id' => "Decisionsignalementep93{$i}ColumnDecision", 'colspan' => 2 )
+				),
+				array( Set::classicExtract( $decisioncg, "raisonnonpassage" ), array( 'id' => "Decisionsignalementep93{$i}Raisonnonpassage" ) ),
+				Set::classicExtract( $decisioncg, "commentaire" ),
+				array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
+			),
+			array( 'class' => 'odd' ),
+			array( 'class' => 'even' )
 		);
 	}
 	echo '</tbody></table>';
@@ -65,7 +90,7 @@ echo '<table><thead>
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
 		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
-			changeColspanRaisonNonPassage( 'decisionCg', '<?php echo Set::classicExtract( $dossiers, "{$theme}.liste.{$i}.Passagecommissionep.0.Decisionsignalementep93.0.decision" );?>', [], 'Decisionsignalementep93<?php echo $i;?>Raisonnonpassage' );
+			changeColspanRaisonNonPassage( 'Decisionsignalementep93<?php echo $i;?>ColumnDecision', '<?php echo Set::classicExtract( $dossiers, "{$theme}.liste.{$i}.Passagecommissionep.0.Decisionsignalementep93.0.decision" );?>', [], 'Decisionsignalementep93<?php echo $i;?>Raisonnonpassage' );
 		<?php endfor;?>
 	});
 </script>

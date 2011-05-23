@@ -13,6 +13,7 @@
 <th>Situation familiale</th>
 <th>Nombre d\'enfants</th>
 <th colspan=\'2\'>Avis EP</th>
+<th>Observations</th>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
@@ -42,7 +43,8 @@
 					$options['Decisionnonrespectsanctionep93']['decision'][Set::classicExtract( $decisionep, "decision" )],
 					array( 'id' => "Decisionnonrespectsanctionep93{$i}ColumnDecision", 'colspan' => 2 )
 				),
-				array( Set::classicExtract( $decisionep, "raisonnonpassage" ), array( 'id' => "Decisionnonrespectsanctionep93{$i}Raisonnonpassage" ) )
+				array( Set::classicExtract( $decisionep, "raisonnonpassage" ), array( 'id' => "Decisionnonrespectsanctionep93{$i}Raisonnonpassage" ) ),
+				Set::classicExtract( $decisionep, "commentaire"
 			)
 		);
 	}

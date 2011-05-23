@@ -12,6 +12,7 @@ echo '<table><thead>
 <th>Orientation préconisée</th>
 <th>Structure référente préconisée</th>
 <th colspan=\'3\'>Avis EP</th>
+<th>Observations</th>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
@@ -33,7 +34,8 @@ echo '<table><thead>
 				$options['Decisionreorientationep93']['decision'][Set::classicExtract( $decisionep, "decision" )],
 				array( @$liste_typesorients[Set::classicExtract( $decisionep, "typeorient_id" )], array( 'id' => "Decisionreorientationep93{$i}TypeorientId" ) ),
 				array( @$liste_structuresreferentes[Set::classicExtract( $decisionep, "structurereferente_id" )], array( 'id' => "Decisionreorientationep93{$i}StructurereferenteId" ) ),
-				array( Set::classicExtract( $decisionep, "raisonnonpassage" ), array( 'colspan' => '2', 'id' => "Decisionreorientationep93{$i}Raisonnonpassage" ) )
+				array( Set::classicExtract( $decisionep, "raisonnonpassage" ), array( 'colspan' => '2', 'id' => "Decisionreorientationep93{$i}Raisonnonpassage" ) ),
+				Set::classicExtract( $decisionep, "commentaire"
 			)
 		);
 	}

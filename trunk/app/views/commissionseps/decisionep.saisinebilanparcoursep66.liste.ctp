@@ -11,7 +11,7 @@ echo '<table><thead>
 <th>Type de réorientation</th>
 <th colspan="2">Proposition référent</th>
 <th colspan="4">Avis EPL</th>
-<th>Commentaire</th>
+<th>Observations</th>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {

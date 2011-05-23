@@ -1,5 +1,5 @@
 <?php
-echo '<table><thead>
+echo '<table id="Decisioncontratcomplexeep93" class="tooltips"><thead>
 <tr>
 <th rowspan="2">Dossier EP</th>
 <th rowspan="2">Nom du demandeur</th>
@@ -10,17 +10,35 @@ echo '<table><thead>
 <th rowspan="2">Date de fin du contrat</th>
 <th rowspan="2">Avis EP</th>
 <th colspan="4">Décision CG</th>
+<th rowspan="2">Observations</th>
+<th rowspan="2" class="innerTableHeader noprint">Avis EP</th>
 </tr>
 <tr>
 <th>Décision PCG</th>
 <th>Décision</th>
 <th>Date de validation</th>
-<th>Observations</th>
+<th>Observations du contrat</th>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
 		$decisionep = $dossierep['Passagecommissionep'][0]['Decisioncontratcomplexeep93'][1];
 		$decisioncg = $dossierep['Passagecommissionep'][0]['Decisioncontratcomplexeep93'][0];
+
+		$innerTable = "<table id=\"innerTableDecisioncontratcomplexeep93{$i}\" class=\"innerTable\">
+			<tbody>
+				<tr>
+					<th>Observations de l'EP</th>
+					<td>".Set::classicExtract( $decisionep, "commentaire" )."</td>
+				</tr>";
+		
+		if ( $decisionep['decision'] == 'reporte' || $decisionep['decision'] == 'annule' ) {
+			$innerTable .= " <tr>
+				<th>Raison du non passage de l'EP</th>
+				<td>".Set::classicExtract( $decisionep, "raisonnonpassage" )."</td>
+			</tr>";
+		}
+		
+		$innerTable .= "</tbody></table>";
 
 		echo $xhtml->tableCells(
 			array(
@@ -47,8 +65,12 @@ echo '<table><thead>
 				$options['Decisioncontratcomplexeep93']['decision'][Set::classicExtract( $decisioncg, "decision" )],
 				array( Set::classicExtract( $decisioncg, "datevalidation_ci" ), array( 'id' => "Decisioncontratcomplexeep93{$i}DatevalidationCi" ) ),
 				array( Set::classicExtract( $decisioncg, "observ_ci" ), array( 'id' => "Decisioncontratcomplexeep93{$i}ObservCi" ) ),
-				array( Set::classicExtract( $decisioncg, "raisonnonpassage" ), array( 'colspan' => '2', 'id' => "Decisioncontratcomplexeep93{$i}Raisonnonpassage" ) )
-			)
+				array( Set::classicExtract( $decisioncg, "raisonnonpassage" ), array( 'colspan' => '2', 'id' => "Decisioncontratcomplexeep93{$i}Raisonnonpassage" ) ),
+				Set::classicExtract( $decisioncg, "commentaire" ),
+				array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
+			),
+			array( 'class' => 'odd' ),
+			array( 'class' => 'even' )
 		);
 	}
 	echo '</tbody></table>';
