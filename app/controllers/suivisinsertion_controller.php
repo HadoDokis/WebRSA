@@ -255,12 +255,12 @@
                     }
 
                     $decisionEP = $this->Dossier->Foyer->Personne->Dossierep->Passagecommissionep->{$modelDecision}->find(
-                        'first',
+                        'all',
                         array(
                             'conditions' => array(
                                 "{$modelDecision}.passagecommissionep_id" => $tdossierEp['Passagecommissionep']['id']
                             ),
-                            'order' => array( "{$modelDecision}.etape DESC" ),
+//                             'order' => array( "{$modelDecision}.etape DESC" ),
                             'contain' => false
                         )
                     );
