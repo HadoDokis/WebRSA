@@ -47,6 +47,9 @@
 					'contain' => array(
 						'Regressionorientationep93',
 						'Passagecommissionep' => array(
+							'conditions' => array(
+								'Passagecommissionep.commissionep_id' => $commissionep_id
+							),
 							'Decisionregressionorientationep93'
 						)
 					)

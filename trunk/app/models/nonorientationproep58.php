@@ -46,6 +46,9 @@
 					'contain' => array(
 						'Dossierep' => array(
 							'Passagecommissionep' => array(
+								'conditions' => array(
+									'Passagecommissionep.commissionep_id' => $commissionep_id
+								),
 								'Decisionnonorientationproep58' => array(
 									'conditions' => array(
 										'Decisionnonorientationproep58.etape' => $etape

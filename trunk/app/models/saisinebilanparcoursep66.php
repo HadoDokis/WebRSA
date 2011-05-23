@@ -143,6 +143,9 @@
 							)
 						),
 						'Passagecommissionep' => array(
+							'conditions' => array(
+								'Passagecommissionep.commissionep_id' => $commissionep_id
+							),
 							'Decisionsaisinebilanparcoursep66' => array(
 								'conditions' => array(
 									'Decisionsaisinebilanparcoursep66.etape' => $etape
