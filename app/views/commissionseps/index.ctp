@@ -159,40 +159,18 @@
 					case 'arbitrageep':
 						list( $jourCommission, $heureCommission ) = explode( ' ', $commissionep['Commissionep']['dateseance'] );
 						$presencesPossible = ( date( 'Y-m-d' ) >= $jourCommission );
-						if ( ( $commissionep['Commissionep']['etatcommissionep'] == 'associe' || $commissionep['Commissionep']['etatcommissionep'] == 'presence' ) && $presencesPossible ) {
-							$lien = '<td>'.$xhtml->link( 'Présences', array( 'controller' => 'membreseps', 'action' => 'editpresence', $commissionep['Commissionep']['id'] ) ).'</td>';
-						}
-						else {
-							$lien = '<td>Présences</td>';
-						}
-						if ( $commissionep['Commissionep']['etatcommissionep'] == 'presence' || $commissionep['Commissionep']['etatcommissionep'] == 'decisionep' ) {
-							$lien .= '<td>'.$xhtml->link( 'Arbitrage', array( 'controller' => 'commissionseps', 'action' => 'traiterep', $commissionep['Commissionep']['id'] ) ).'</td>';
-						}
-						else {
-							$lien .= '<td>Arbitrage</td>';
-						}
-						if ( $commissionep['Commissionep']['etatcommissionep'] == 'traiteep' || $commissionep['Commissionep']['etatcommissionep'] == 'decisioncg' || $commissionep['Commissionep']['etatcommissionep'] == 'traite' ) {
-							$lien .= '<td>'.$xhtml->link( 'Décisions', array( 'controller' => 'commissionseps', 'action' => 'decisionep', $commissionep['Commissionep']['id'] ) ).'</td>';
-						}
-						else {
-							$lien .= '<td>Décisions</td>';
-						}
+
+						$lien = '<td>'.$xhtml->link( 'Présences', array( 'controller' => 'membreseps', 'action' => 'editpresence', $commissionep['Commissionep']['id'] ), array( 'enabled' => ( ( $commissionep['Commissionep']['etatcommissionep'] == 'associe' || $commissionep['Commissionep']['etatcommissionep'] == 'presence' ) && $presencesPossible ) ) ).'</td>';
+						
+						$lien .= '<td>'.$xhtml->link( 'Arbitrage', array( 'controller' => 'commissionseps', 'action' => 'traiterep', $commissionep['Commissionep']['id'] ), array( 'enabled' => ( $commissionep['Commissionep']['etatcommissionep'] == 'presence' || $commissionep['Commissionep']['etatcommissionep'] == 'decisionep' ) ) ).'</td>';
+						
+						$lien .= '<td>'.$xhtml->link( 'Décisions', array( 'controller' => 'commissionseps', 'action' => 'decisionep', $commissionep['Commissionep']['id'] ), array( 'enabled' => ( $commissionep['Commissionep']['etatcommissionep'] == 'traiteep' || $commissionep['Commissionep']['etatcommissionep'] == 'decisioncg' || $commissionep['Commissionep']['etatcommissionep'] == 'traite' ) ) ).'</td>';
 						break;
 					case 'arbitragecg':
-						if ( $commissionep['Commissionep']['etatcommissionep'] == 'traiteep' || $commissionep['Commissionep']['etatcommissionep'] == 'decisioncg' ) {
-							$lien = '<td>'.$xhtml->link( 'Arbitrage', array( 'controller' => 'commissionseps', 'action' => 'traitercg', $commissionep['Commissionep']['id'] ) ).'</td>';
-						}
-						else {
-							$lien = '<td>Arbitrage</td>';
-						}
+						$lien = '<td>'.$xhtml->link( 'Arbitrage', array( 'controller' => 'commissionseps', 'action' => 'traitercg', $commissionep['Commissionep']['id'] ), array( 'enabled' => ( $commissionep['Commissionep']['etatcommissionep'] == 'traiteep' || $commissionep['Commissionep']['etatcommissionep'] == 'decisioncg' ) ) ).'</td>';
 						break;
                     case 'decisions':
-                        if ( $commissionep['Commissionep']['etatcommissionep'] == 'traite' ) {
-                            $lien = '<td>'.$xhtml->link( 'Voir les décisions', array( 'controller' => 'commissionseps', 'action' => 'decisioncg', $commissionep['Commissionep']['id'] ) ).'</td>';
-                        }
-                        else {
-                            $lien = '<td>Arbitrage</td>';
-                        }
+						$lien = '<td>'.$xhtml->link( 'Voir les décisions', array( 'controller' => 'commissionseps', 'action' => 'decisioncg', $commissionep['Commissionep']['id'] ), array( 'enabled' => $commissionep['Commissionep']['etatcommissionep'] == 'traite' ) ).'</td>';
                         break;
 					default:
 						$lien = '<td>'.$xhtml->link( 'Voir', array( 'controller' => 'commissionseps', 'action' => 'view', $commissionep['Commissionep']['id'] ) ).'</td>';
