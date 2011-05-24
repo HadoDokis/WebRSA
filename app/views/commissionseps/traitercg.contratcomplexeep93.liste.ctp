@@ -1,7 +1,6 @@
 <?php
 echo '<table id="Decisioncontratcomplexeep93" class="tooltips"><thead>
 <tr>
-<th rowspan="2">Dossier EP</th>
 <th rowspan="2">Nom du demandeur</th>
 <th rowspan="2">Adresse</th>
 <th rowspan="2">Date de naissance</th>
@@ -41,7 +40,6 @@ echo '<table id="Decisioncontratcomplexeep93" class="tooltips"><thead>
 
 		echo $xhtml->tableCells(
 			array(
-				$dossierep['Dossierep']['id'],
 				implode( ' ', array( $dossierep['Personne']['qual'], $dossierep['Personne']['nom'], $dossierep['Personne']['prenom'] ) ),
 				implode( ' ', array( $dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['numvoie'], isset( $typevoie[$dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie']] ) ? $typevoie[$dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie']] : null, $dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['nomvoie'] ) ),
 				$locale->date( __( 'Locale->date', true ), $dossierep['Personne']['dtnai'] ),
