@@ -15,6 +15,17 @@
 			echo '</div>';
 		}
 
+		echo '<ul class="actionMenu center">';
+			echo '<li>'.$xhtml->link(
+				__d( 'commissionep','Commissionseps::impressionpv', true ),
+				array( 'controller' => 'commissionseps', 'action' => 'impressionpv', $commissionep['Commissionep']['id'] )
+			).' </li>';
+		echo '</ul>';
+
+// 		echo $form->create( null, array( 'url' => Router::url( null, true ) ) );
+// 		echo $form->submit( 'Imprimer le PV de la commission', array( 'name' => 'Imprimerpv' ) );
+// 		echo $form->end();
+
 		echo $default->button(
 			'back',
 			array(
@@ -26,10 +37,6 @@
 				'id' => 'Back'
 			)
 		);
-
-		echo $form->create( null, array( 'url' => Router::url( null, true ) ) );
-		echo $form->submit( 'Imprimer le PV de la commission', array( 'name' => 'Imprimerpv' ) );
-		echo $form->end();
 
 	?>
 </div>

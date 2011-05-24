@@ -300,9 +300,17 @@
 									)
 								);
 								if( $commissionep['Commissionep']['etatcommissionep'] == 'associe' ) {
-									echo $form->create( null, array( 'url' => Router::url( null, true ) ) );
-									echo $form->submit( 'Valider', array( 'name' => 'Valider' ) );
-									echo $form->end();
+
+									echo '<ul class="actionMenu center">';
+										echo '<li>'.$xhtml->link(
+											__d( 'commissionep','Commissionseps::validecommission', true ),
+											array( 'controller' => 'commissionseps', 'action' => 'validecommission', $commissionep['Commissionep']['id'] )
+										).' </li>';
+									echo '</ul>';
+	
+// 									echo $form->create( null, array( 'url' => Router::url( null, true ) ) );
+// 									echo $form->submit( 'Valider', array( 'name' => 'Valider' ) );
+// 									echo $form->end();
 								}
 							}
 							else {

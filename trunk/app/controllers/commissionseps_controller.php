@@ -537,13 +537,6 @@
 		* @param integer $commissionep_id
 		*/
 		public function view( $commissionep_id = null ) {
-			if( isset( $this->params['form']['Valider'] ) ) {
-				$this->Commissionep->id = $commissionep_id;
-				$this->Commissionep->saveField( 'etatcommissionep', 'valide' );
-				$this->_setFlashResult( 'Save', true );
-				$this->redirect( array( 'action' => 'view', $commissionep_id ) );
-			}
-
 			$commissionep = $this->Commissionep->find(
 				'first', array(
 					'conditions' => array( 'Commissionep.id' => $commissionep_id ),
@@ -637,9 +630,9 @@
 				'Membreep.qual',
 				'Membreep.nom',
 				'Membreep.prenom',
-				'Membreep.organisme',
 				'Membreep.tel',
 				'Membreep.mail',
+				'Membreep.organisme',
 				'Membreep.fonctionmembreep_id',
 				'Fonctionmembreep.name'
 			);
@@ -707,7 +700,6 @@
 						'Membreep.qual',
 						'Membreep.nom',
 						'Membreep.prenom',
-						'Membreep.organisme',
 						'Membreep.fonctionmembreep_id'
 					),
 					'conditions' => array(
@@ -734,6 +726,16 @@
 			$this->set( compact( 'listemembreseps' ) );
 
 			$this->set('etatsActions', $this->etatsActions);
+		}
+		
+		/**
+		 * Passe une commission dont l'id est passé en paramètre en validé
+		 */
+		public function validecommission( $commissionep_id ) {
+			$this->Commissionep->id = $commissionep_id;
+			$this->Commissionep->saveField( 'etatcommissionep', 'valide' );
+			$this->_setFlashResult( 'Save', true );
+			$this->redirect( $this->referer() );
 		}
 
 		/**
@@ -839,8 +841,10 @@
         */
 
         public function printConvocationParticipant( $commissionep_id, $membreep_id ) {
-            $pdf = $this->Commissionep->getPdfConvocationParticipant( $commissionep_id, $membreep_id );
 
+            $pdf = $this->Commissionep->getPdfConvocationParticipant( $commissionep_id, $membreep_id );
+/*debug($pdf);
+die();*/
             if( $pdf ) {
                 $this->Gedooo->sendPdfContentToClient( $pdf, 'ConvocationEPParticipant' );
             }
@@ -857,9 +861,21 @@
 		*   Courrier contenant le lieu, date et heure de la commission EP
 		*/
 
-		public function printConvocationBeneficiaire( $passagecommissionep_id ) {
-			$pdf = $this->Commissionep->Passagecommissionep->Dossierep->getConvocationBeneficiaireEpPdf( $passagecommissionep_id );
+		public function printConvocationBeneficiaire( $dossierep_id ) {
 
+			$dossierep = $this->Commissionep->Passagecommissionep->Dossierep->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Dossierep.id' => $dossierep_id
+					),
+					'contain' => false
+				)
+			);
+
+			$pdf = $this->Commissionep->getConvocationBeneficiaireEpPdf( $dossierep_id );
+/*debug($pdf);
+die();*/
 			if( $pdf ) {
 				$this->Gedooo->sendPdfContentToClient( $pdf, 'ConvocationEPBeneficiaire' );
 			}
@@ -1020,9 +1036,9 @@
 		*/
 
 		protected function _decision( $commissionep_id, $niveauDecision ) {
-			if( isset( $this->params['form']['Imprimerpv'] ) ) {
+			/*if( isset( $this->params['form']['Imprimerpv'] ) ) {
 				$this->impressionpv( $commissionep_id );
-			}
+			}*/
 
 			$commissionep = $this->Commissionep->find(
 				'first',
