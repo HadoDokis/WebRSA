@@ -435,6 +435,31 @@
 								)
 							);
 						}
+
+						if( $tableDecisionTraite == 'decisionsnonrespectssanctionseps93' || $tableDecisionTraite == 'decisionssignalementseps93' ) {
+							$listeDecisions = array( '1pasavis', '2pasavis' );
+							foreach( $listeDecisions as $decision ) {
+								$this->Passagecommissionep->updateAll(
+									array( 'Passagecommissionep.etatdossierep' => "'reporte'" ),
+									array(
+										'"Passagecommissionep"."commissionep_id"' => $commissionep_id,
+										'"Passagecommissionep"."id" IN ( '. $this->Passagecommissionep->{$modelDecisionTraite}->sq(
+											array(
+												'fields' => array(
+													"{$tableDecisionTraite}.passagecommissionep_id"
+												),
+												'alias' => "{$tableDecisionTraite}",
+												'conditions' => array(
+													"{$tableDecisionTraite}.decision" => array( $decision ),
+														"{$tableDecisionTraite}.etape" => $niveauDecision
+												)
+											)
+										).' )'
+									)
+								);
+							}
+						}
+
 					}
 					elseif( $niveauDecisionTheme == 'decisioncg' && "decision{$niveauDecision}" == 'decisionep' ) {
 						$this->Passagecommissionep->updateAll(
