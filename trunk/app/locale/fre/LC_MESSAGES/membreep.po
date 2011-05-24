@@ -33,6 +33,9 @@ msgstr "Prénom"
 msgid "Membreep.nomcomplet"
 msgstr "Nom du participant"
 
+msgid "Membreep.organisme"
+msgstr "Organisme"
+
 msgid "Membreep.tel"
 msgstr "Téléphone"
 

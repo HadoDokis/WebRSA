@@ -637,6 +637,7 @@
 				'Membreep.qual',
 				'Membreep.nom',
 				'Membreep.prenom',
+				'Membreep.organisme',
 				'Membreep.tel',
 				'Membreep.mail',
 				'Membreep.fonctionmembreep_id',
@@ -706,6 +707,7 @@
 						'Membreep.qual',
 						'Membreep.nom',
 						'Membreep.prenom',
+						'Membreep.organisme',
 						'Membreep.fonctionmembreep_id'
 					),
 					'conditions' => array(
@@ -837,10 +839,8 @@
         */
 
         public function printConvocationParticipant( $commissionep_id, $membreep_id ) {
-
             $pdf = $this->Commissionep->getPdfConvocationParticipant( $commissionep_id, $membreep_id );
-/*debug($pdf);
-die();*/
+
             if( $pdf ) {
                 $this->Gedooo->sendPdfContentToClient( $pdf, 'ConvocationEPParticipant' );
             }
@@ -857,21 +857,9 @@ die();*/
 		*   Courrier contenant le lieu, date et heure de la commission EP
 		*/
 
-		public function printConvocationBeneficiaire( $dossierep_id ) {
+		public function printConvocationBeneficiaire( $passagecommissionep_id ) {
+			$pdf = $this->Commissionep->Passagecommissionep->Dossierep->getConvocationBeneficiaireEpPdf( $passagecommissionep_id );
 
-			$dossierep = $this->Commissionep->Passagecommissionep->Dossierep->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Dossierep.id' => $dossierep_id
-					),
-					'contain' => false
-				)
-			);
-
-			$pdf = $this->Commissionep->getConvocationBeneficiaireEpPdf( $dossierep_id );
-/*debug($pdf);
-die();*/
 			if( $pdf ) {
 				$this->Gedooo->sendPdfContentToClient( $pdf, 'ConvocationEPBeneficiaire' );
 			}

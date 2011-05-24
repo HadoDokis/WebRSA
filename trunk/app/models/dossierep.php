@@ -405,5 +405,24 @@
 
 			return $errors;
 		}
+
+		/**
+		*    Récupération des informations propres au dossier devant passer en EP
+		*   après liaison avec la commission d'EP
+		*/
+		public function getConvocationBeneficiaireEpPdf( $passagecommissionep_id ) {
+			$passagecommission = $this->Passagecommissionep->find(
+				'first',
+				array(
+					'conditions' => array( 'Passagecommissionep.id' => $passagecommissionep_id ),
+					'contain' => array(
+						'Dossierep'
+					)
+				)
+			);
+
+			$theme = Inflector::classify( $passagecommission['Dossierep']['themeep'] );
+			return $this->{$theme}->getConvocationBeneficiaireEpPdf( $passagecommissionep_id );
+		}
 	}
 ?>

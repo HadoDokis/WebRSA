@@ -133,6 +133,13 @@ CREATE TYPE TYPE_ETATCOMMISSIONEP AS ENUM ( 'cree', 'associe', 'valide', 'presen
 ALTER TABLE commissionseps ALTER COLUMN etatcommissionep TYPE TYPE_ETATCOMMISSIONEP USING CAST(etatcommissionep AS TYPE_ETATCOMMISSIONEP);
 ALTER TABLE commissionseps ALTER COLUMN etatcommissionep SET DEFAULT 'cree'::TYPE_ETATCOMMISSIONEP;
 
+-- *******************************************************************************************************
+-- 20110524, ajout de l'organisme aux membres de l'EP
+-- *******************************************************************************************************
+
+SELECT add_missing_table_field ('public', 'membreseps', 'organisme', 'VARCHAR(250)');
+ALTER TABLE membreseps ALTER COLUMN organisme SET DEFAULT NULL;
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
