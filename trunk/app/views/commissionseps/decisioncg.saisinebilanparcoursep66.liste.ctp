@@ -11,7 +11,7 @@ echo '<table id="Decisionsaisinebilanparcoursep66" class="tooltips"><thead>
 <th>Type de réorientation</th>
 <th>Proposition référent</th>
 <th>Avis EPL</th>
-<th>Avis CG</th>
+<th>Décision CG</th>
 <th colspan="3">Décision coordonnateur/CG</th>
 <th>Observations</th>
 <th class="innerTableHeader noprint">Avis EP</th>
