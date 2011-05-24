@@ -74,7 +74,7 @@ msgid "Commissionseps::finaliserep"
 msgstr "6. Finaliser la commission d'EP"
 
 msgid "Commissionseps::impressionpv"
-msgstr "7. Imprimer le PV de la commission"
+msgstr "Imprimer le PV de la commission"
 
 msgid "Commissionseps::traitercg"
 msgstr "8. Emettre la décision du CG"
@@ -84,6 +84,9 @@ msgstr "9. Finaliser la décision CG"
 
 msgid "Commissionseps::printDecision"
 msgstr "10. Imprimer les décisions"
+
+msgid "Commissionseps::validecommission"
+msgstr "Valider la commission"
 
 msgid "ENUM::FINALISEE::cg"
 msgstr "Décision CG"
