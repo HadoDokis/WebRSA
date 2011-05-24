@@ -479,7 +479,7 @@
 
 				$actioncandidat_personne = Set::merge( $actioncandidat_personne, $partenaire );
 
-				$contactpartenaire = $this->ActioncandidatPersonne->Actioncandidat->ActioncandidatPartenaire->Partenaire->ContactpartenairePartenaire->Contactpartenaire->findByPartenaireId( $partenaire_id, null, null, -1 );
+				$contactpartenaire = $this->ActioncandidatPersonne->Actioncandidat->ActioncandidatPartenaire->Partenaire->Contactpartenaire->findByPartenaireId( $partenaire_id, null, null, -1 );
 				$actioncandidat_personne = Set::merge( $actioncandidat_personne, $contactpartenaire );
 			}
 
