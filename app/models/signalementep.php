@@ -377,7 +377,7 @@
 		*    Récupération des informations propres au dossier devant passer en EP
 		*   avant liaison avec la commission d'EP
 		*/
-		public function getCourrierInformationPdf( $dossierep_id ) {
+		/*public function getCourrierInformationPdf( $dossierep_id ) {
 			$gedooo_data = $this->find(
 				'first',
 				array(
@@ -394,6 +394,29 @@
 			);
             $modeleParent = get_parent_class( $this->alias );
 			return $this->ged( $gedooo_data, "{$modeleParent}/courrierinformationavantep.odt" );
+		}*/
+
+		/**
+		* Récupération du courrier de convocation à l'allocataire pour un passage
+		* en commission donné.
+		* FIXME: spécifique par thématique
+		*/
+
+		public function getConvocationBeneficiaireEpPdf( $passagecommissionep_id ) {
+			$gedooo_data = $this->Dossierep->Passagecommissionep->find(
+				'first',
+				array(
+					'conditions' => array( 'Passagecommissionep.id' => $passagecommissionep_id ),
+					'contain' => array(
+						'Dossierep' => array(
+							'Personne',
+						),
+						'Commissionep'
+					)
+				)
+			);
+
+			return $this->ged( $gedooo_data, "Commissionep/convocationep_beneficiaire.odt" );
 		}
 	}
 ?>

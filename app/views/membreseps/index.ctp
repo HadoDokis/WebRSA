@@ -11,6 +11,7 @@
 		array(
 			'Membreep.nomcomplet'=>array('type'=>'text'),
 			'Fonctionmembreep.name',
+			'Membreep.organisme',
 			'Membreep.tel',
 			'Membreep.adresse'=>array('type'=>'text'),
 			'Membreep.mail'

@@ -499,7 +499,7 @@
         /**
         *    Génération et envoi du courrier d'information avant passage en EP
         */
-        public function courrierInformation( $dossierep_id ) {
+        /*public function courrierInformation( $dossierep_id ) {
             $dossierep = $this->Dossierep->find(
                 'first',
                 array(
@@ -511,8 +511,7 @@
 
             $classThemeName = Inflector::classify( $dossierep['Dossierep']['themeep'] );
             $pdf = $this->Dossierep->{$classThemeName}->getCourrierInformationPdf( $dossierep['Dossierep']['id'] );
-/*debug($pdf);
-die();*/
+
             if( $pdf ) {
                 $this->Gedooo->sendPdfContentToClient( $pdf, 'Courrier_Information' );
             }
@@ -520,6 +519,6 @@ die();*/
                 $this->Session->setFlash( 'Impossible de générer le courrier d\'information', 'default', array( 'class' => 'error' ) );
                 $this->redirect( $this->referer() );
             }
-        }
+        }*/
 	}
 ?>

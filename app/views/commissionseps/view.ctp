@@ -164,6 +164,7 @@
 						array(
 							'Membreep.Fonctionmembreep.name',
 							'Membreep.nom',
+							'Membreep.organisme',
 							'Membreep.tel',
 							'Membreep.mail',
 							'CommissionepMembreep.reponse',
@@ -189,6 +190,10 @@
 						echo $xhtml->tag(
 							'td',
 							implode(' ', array($membreepseanceep['Membreep']['qual'], $membreepseanceep['Membreep']['nom'], $membreepseanceep['Membreep']['prenom']))
+						);
+						echo $xhtml->tag(
+							'td',
+							$membreepseanceep['Membreep']['organisme']
 						);
 						echo $xhtml->tag(
 							'td',

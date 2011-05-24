@@ -1078,29 +1078,6 @@
 			);
 		}*/
 
-
-        /**
-        *    Récupération des informations propres au dossier devant passer en EP
-        *   après liaison avec la commission d'EP
-        */
-        public function getConvocationBeneficiaireEpPdf( $dossierep_id ) {
-            $gedooo_data = $this->Passagecommissionep->Dossierep->find(
-                'first',
-                array(
-                    'conditions' => array( 'Dossierep.id' => $dossierep_id ),
-                    'contain' => array(
-                        'Personne',
-                        'Passagecommissionep' => array(
-                            'Commissionep'
-                        )
-                    )
-                )
-            );
-// debug($gedooo_data);
-// die();
-            return $this->ged( $gedooo_data, "{$this->alias}/convocationep_beneficiaire.odt" );
-        }
-
 		/**
 		*
 		*/
