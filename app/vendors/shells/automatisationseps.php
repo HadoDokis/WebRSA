@@ -1,8 +1,8 @@
 <?php
 // 	App::import( 'Core', 'ConnectionManager' ); // CakePHP 1.2 fix
 
-    class AutomatisationsepsShell extends AppShell
-    {
+	class AutomatisationsepsShell extends AppShell
+	{
 		/*public $allConnections = array();
 
 		public $commandDescriptions = array(
@@ -95,16 +95,16 @@
 //  									AND dossierseps.etapedossierep <> \'traite\'
 // 									AND dossierseps.themeep = \'nonrespectssanctionseps93\'
 // 						)',
-                        'Propopdo.personne_id NOT IN (
-                            SELECT dossierseps.personne_id
-                                FROM dossierseps
-                                INNER JOIN passagescommissionseps ON (
-                                    passagescommissionseps.dossierep_id = dossierseps.id )
-                                WHERE
-                                    dossierseps.personne_id = Propopdo.personne_id
-                                    AND dossierseps.themeep = \'nonrespectssanctionseps93\'
-                                    -- AND passagescommissionseps.etatdossierep NOT IN ( \'traite\', \'annule\' )
-                        )',
+						'Propopdo.personne_id NOT IN (
+							SELECT dossierseps.personne_id
+								FROM dossierseps
+								INNER JOIN passagescommissionseps ON (
+									passagescommissionseps.dossierep_id = dossierseps.id )
+								WHERE
+									dossierseps.personne_id = Propopdo.personne_id
+									AND dossierseps.themeep = \'nonrespectssanctionseps93\'
+									-- AND passagescommissionseps.etatdossierep NOT IN ( \'traite\', \'annule\' )
+						)',
 
 					)
 				)
@@ -118,23 +118,37 @@
 						'count',
 						array(
 							'conditions' => array(
-								'Dossierep.personne_id' => $propopdo['Propopdo']['personne_id'],
 								'Dossierep.themeep' => 'nonrespectssanctionseps93',
-							)
+								'Nonrespectsanctionep93.origine' => 'pdo',
+								'Nonrespectsanctionep93.propopdo_id' => $propopdo['Propopdo']['id'],
+								'Nonrespectsanctionep93.sortienvcontrat' => 0,
+								'Nonrespectsanctionep93.active' => 0
+							),
+							'joins' => array(
+								array(
+									'alias' => 'Nonrespectsanctionep93',
+									'table' => 'nonrespectssanctionseps93',
+									'type' => 'INNER',
+									'conditions' => array(
+										'Nonrespectsanctionep93.dossierep_id' => 'Dossierep.id'
+									)
+								)
+							),
+							'contain' => false
 						)
 					);
 
-                 $dossierep = array(
-                     'Dossierep' => array(
-                         'personne_id' => $propopdo['Propopdo']['personne_id'],
-                         'themeep' => 'nonrespectssanctionseps93',
-                     ),
-                     'Nonrespectsanctionep93' => array(
-                         'propopdo_id' => $propopdo['Propopdo']['id'],
-                         'origine' => 'pdo',
-                         'rgpassage' => ( $nbpassagespcd + 1 )
-                     )
-                 );
+					$dossierep = array(
+						'Dossierep' => array(
+							'personne_id' => $propopdo['Propopdo']['personne_id'],
+							'themeep' => 'nonrespectssanctionseps93',
+						),
+						'Nonrespectsanctionep93' => array(
+							'propopdo_id' => $propopdo['Propopdo']['id'],
+							'origine' => 'pdo',
+							'rgpassage' => ( $nbpassagespcd + 1 )
+						)
+					);
 
 					$success = $this->Nonrespectsanctionep93->saveAll( $dossierep, array( 'atomic' => false ) ) && $success;
 				}
@@ -179,5 +193,5 @@
 
 			$this->_stop( 0 );
 		}*/
-    }
+	}
 ?>
