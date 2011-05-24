@@ -37,6 +37,8 @@
 					'Membreep.compladr',
 					'Membreep.codepostal',
 					'Membreep.ville',
+					'Membreep.organisme',
+					'Membreep.tel',
 					'Membreep.mail'
 				),
 				'contain' => array(
