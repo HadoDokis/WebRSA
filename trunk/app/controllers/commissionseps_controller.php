@@ -33,7 +33,13 @@
 				'commissionseps::printOrdreDuJour',
 				'membreseps::editliste',
 				'commissionseps::edit',
+				'commissionseps::delete',
+			),
+			'valide' => array(
+				'commissionseps::ordredujour',
 				'membreseps::editpresence',
+				'commissionseps::printConvocationBeneficiaire',
+				'commissionseps::printOrdreDuJour',
 				'commissionseps::delete',
 			),
 			'presence' => array(
@@ -530,7 +536,14 @@
 		* Affiche la séance EP avec la liste de ses membres.
 		* @param integer $commissionep_id
 		*/
-		public function view($commissionep_id = null) {
+		public function view( $commissionep_id = null ) {
+			if( isset( $this->params['form']['Valider'] ) ) {
+				$this->Commissionep->id = $commissionep_id;
+				$this->Commissionep->saveField( 'etatcommissionep', 'valide' );
+				$this->_setFlashResult( 'Save', true );
+				$this->redirect( array( 'action' => 'view', $commissionep_id ) );
+			}
+
 			$commissionep = $this->Commissionep->find(
 				'first', array(
 					'conditions' => array( 'Commissionep.id' => $commissionep_id ),
