@@ -46,8 +46,10 @@ echo '<table><thead>
 				array( Set::classicExtract( $decisionep, "datevalidation_ci" ), array( 'id' => "Decisioncontratcomplexeep93{$i}DatevalidationCi" ) ),
 				array( Set::classicExtract( $decisionep, "observ_ci" ), array( 'id' => "Decisioncontratcomplexeep93{$i}ObservCi" ) ),
 				array( Set::classicExtract( $decisionep, "raisonnonpassage" ), array( 'colspan' => '2', 'id' => "Decisioncontratcomplexeep93{$i}Raisonnonpassage" ) ),
-				Set::classicExtract( $decisionep, "commentaire"
-			)
+				Set::classicExtract( $decisionep, "commentaire" )
+			),
+			array( 'class' => 'odd' ),
+			array( 'class' => 'even' )
 		);
 	}
 	echo '</tbody></table>';

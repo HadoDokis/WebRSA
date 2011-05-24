@@ -43,8 +43,10 @@ echo '<table><thead>
 				array( @$liste_typesorients[Set::classicExtract( $decisionep, "typeorient_id" )], array( 'id' => "Decisionnonorientationproep58{$i}TypeorientId" ) ),
 				array( @$liste_structuresreferentes[Set::classicExtract( $decisionep, "structurereferente_id" )], array( 'id' => "Decisionnonorientationproep58{$i}StructurereferenteId" ) ),
 				array( Set::classicExtract( $decisionep, "raisonnonpassage" ), array( 'colspan' => '2', 'id' => "Decisionnonorientationproep58{$i}Raisonnonpassage" ) ),
-				Set::classicExtract( $decisionep, "commentaire"
-			)
+				Set::classicExtract( $decisionep, "commentaire" )
+			),
+			array( 'class' => 'odd' ),
+			array( 'class' => 'even' )
 		);
 	}
 	echo '</tbody></table>';

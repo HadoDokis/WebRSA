@@ -32,9 +32,11 @@ echo '<table><thead>
 				$form->input( "Decisionregressionorientationep58.{$i}.decision", array( 'label' => false, 'type' => 'select', 'options' => @$options['Decisionregressionorientationep58']['decision'], 'empty' => true ) ),
 				$form->input( "Decisionregressionorientationep58.{$i}.typeorient_id", array( 'label' => false, 'options' => $typesorients, 'empty' => true ) ),
 				$form->input( "Decisionregressionorientationep58.{$i}.structurereferente_id", array( 'label' => false, 'options' => $structuresreferentes, 'empty' => true, 'type' => 'select' ) ),
-				array( $form->input( "Decisionregressionorientationep58.{$i}.raisonnonpassage", array( 'label' => false, 'type' => 'textarea' ) ), array( 'colspan' => '2' ) ).
+				array( $form->input( "Decisionregressionorientationep58.{$i}.raisonnonpassage", array( 'label' => false, 'type' => 'textarea' ) ), array( 'colspan' => '2' ) ),
 				$form->input( "Decisionregressionorientationep58.{$i}.commentaire", array( 'label' =>false, 'type' => 'textarea' ) )
-			)
+			),
+			array( 'class' => 'odd' ),
+			array( 'class' => 'even' )
 		);
 	}
 	echo '</tbody></table>';

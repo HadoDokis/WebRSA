@@ -35,7 +35,9 @@ echo '<table><thead>
 				$form->input( "Decisionsaisinepdoep66.{$i}.commentaire", array( 'label' => false, 'type' => 'textarea' ) ),
 				array( $form->input( "Decisionsaisinepdoep66.{$i}.raisonnonpassage", array( 'label' => false, 'type' => 'textarea' ) ), array( 'colspan' => 2 ) ),
 				$form->input( "Decisionsaisinepdoep66.{$i}.commentaire", array( 'label' => false, 'type' => 'textarea' ) )
-			)
+			),
+			array( 'class' => 'odd' ),
+			array( 'class' => 'even' )
 		);
 	}
 	echo '</tbody></table>';

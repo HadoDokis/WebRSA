@@ -46,7 +46,9 @@ echo '<table><thead>
 				),
 				$form->input( "Decisionnonrespectsanctionep93.{$i}.raisonnonpassage", array( 'label' => false, 'type' => 'textarea' ) ),
 				$form->input( "Decisionnonrespectsanctionep93.{$i}.commentaire", array( 'label' =>false, 'type' => 'textarea' ) )
-			)
+			),
+			array( 'class' => 'odd' ),
+			array( 'class' => 'even' )
 		);
 	}
 	echo '</tbody></table>';

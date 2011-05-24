@@ -47,8 +47,10 @@ echo '<table><thead>
 					array( 'id' => "Decisionsignalementep93{$i}ColumnDecision", 'colspan' => 2 )
 				),
 				array( Set::classicExtract( $decisionep, "raisonnonpassage" ), array( 'id' => "Decisionsignalementep93{$i}Raisonnonpassage" ) ),
-				Set::classicExtract( $decisionep, "commentaire"
-			)
+				Set::classicExtract( $decisionep, "commentaire" )
+			),
+			array( 'class' => 'odd' ),
+			array( 'class' => 'even' )
 		);
 	}
 	echo '</tbody></table>';

@@ -36,7 +36,9 @@ echo '<table><thead>
 				array( @$liste_referents[Set::classicExtract( $decisionep, "referent_id" )], array( 'id' => "Decisionsaisinebilanparcoursep66{$i}ReferentId" ) ),
 				array( Set::classicExtract( $decisionep, "raisonnonpassage" ), array( 'colspan' => 3, 'id' => "Decisionsaisinebilanparcoursep66{$i}Raisonnonpassage" ) ),
 				Set::classicExtract( $decisionep, "commentaire" )
-			)
+			),
+			array( 'class' => 'odd' ),
+			array( 'class' => 'even' )
 		);
 	}
 	echo '</tbody></table>';
