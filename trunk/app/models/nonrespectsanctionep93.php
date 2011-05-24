@@ -233,6 +233,7 @@
 					if( $niveauDecision == 'ep' ) {
 						if( !empty( $datas[$key]['Passagecommissionep'][0]['Decisionnonrespectsanctionep93'][0] ) ) { // Modification
 							$formData['Decisionnonrespectsanctionep93'][$key]['decision'] = @$datas[$key]['Passagecommissionep'][0]['Decisionnonrespectsanctionep93'][0]['decision'];
+							$formData['Decisionnonrespectsanctionep93'][$key]['commentaire'] = @$datas[$key]['Passagecommissionep'][0]['Decisionnonrespectsanctionep93'][0]['commentaire'];
 						}
 						else {
 							if( ( $dossierep['Personne']['Foyer']['nbenfants'] > 0 ) || ( $dossierep['Personne']['Foyer']['sitfam'] == 'MAR' ) ) {
@@ -245,6 +246,7 @@
 						$formData['Decisionnonrespectsanctionep93'][$key]['decision'] = $dossierep['Passagecommissionep'][0]['Decisionnonrespectsanctionep93'][0]['decision'];
 						$formData['Decisionnonrespectsanctionep93'][$key]['decisionpcg'] = 'valide';
 						$formData['Decisionnonrespectsanctionep93'][$key]['raisonnonpassage'] = $dossierep['Passagecommissionep'][0]['Decisionnonrespectsanctionep93'][0]['raisonnonpassage'];
+						$formData['Decisionnonrespectsanctionep93'][$key]['commentaire'] = @$datas[$key]['Passagecommissionep'][0]['Decisionnonrespectsanctionep93'][0]['commentaire'];
 					}
 				}
 			}
