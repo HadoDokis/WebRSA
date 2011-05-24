@@ -586,7 +586,7 @@
 				$this->set( 'etatcommissionep', 'associe' );
 				$success = $this->save() && $success;
 			}
-			else if( ( $nbDossierseps == 0 ) || ( $nbMembresepsNonRenseignes > 0 ) ) && ( $commissionep['Commissionep']['etatcommissionep'] == 'associe' ) ) {
+			else if( ( ( $nbDossierseps == 0 ) || ( $nbMembresepsNonRenseignes > 0 ) ) && ( $commissionep['Commissionep']['etatcommissionep'] == 'associe' ) ) {
 				$this->set( 'etatcommissionep', 'cree' );
 				$success = $this->save() && $success;
 			}
