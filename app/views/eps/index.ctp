@@ -5,6 +5,9 @@
 	if ( $compteurs['Regroupementep'] == 0 ) {
 		echo "<p class='error'>Merci d'ajouter au moins un regroupement avant d'ajouter une EP.</p>";
 	}
+	if ( $compteurs['Membreep'] == 0 ) {
+		echo "<p class='error'>Merci d'ajouter au moins un membre avant d'ajouter une EP.</p>";
+	}
 
 	echo $default2->index(
 		$eps,
@@ -18,7 +21,7 @@
 				'Eps::edit',
 				'Eps::delete'
 			),
-			'add' => array( 'Ep.add', 'disabled' => ( $compteurs['Regroupementep'] == 0 ) ),
+			'add' => array( 'Ep.add', 'disabled' => ( $compteurs['Regroupementep'] == 0 || $compteurs['Membreep'] == 0 ) ),
 			'options' => $options
 		)
 	);

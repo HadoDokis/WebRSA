@@ -49,6 +49,9 @@
 
 
     $i = 0;
+    if ( isset( $this->validationErrors['Ep']['Membreep.Membreep'] ) && !empty( $this->validationErrors['Ep']['Membreep.Membreep'] ) ) {
+		echo "<p class='error'>".$this->validationErrors['Ep']['Membreep.Membreep']."</p>";
+    }
     foreach( $fonctionsParticipants as $fonction ) {
         $i++;
         $params = array(
