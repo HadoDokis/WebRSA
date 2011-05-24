@@ -113,6 +113,9 @@ msgstr "Créée"
 msgid "ENUM::ETATCOMMISSIONEP::associe"
 msgstr "Associée"
 
+msgid "ENUM::ETATCOMMISSIONEP::valide"
+msgstr "Commission validée"
+
 msgid "ENUM::ETATCOMMISSIONEP::presence"
 msgstr "Présences prises"
 

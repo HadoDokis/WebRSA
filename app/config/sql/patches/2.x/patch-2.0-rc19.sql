@@ -123,6 +123,16 @@ DROP TYPE TYPE_PRESENCESEANCEEP;
 CREATE TYPE TYPE_PRESENCESEANCEEP AS ENUM ( 'present', 'excuse', 'absent', 'remplacepar' );
 ALTER TABLE commissionseps_membreseps ALTER COLUMN presence TYPE TYPE_PRESENCESEANCEEP USING CAST(presence AS TYPE_PRESENCESEANCEEP);
 
+-- *******************************************************************************************************
+-- 20110524, ajout d'un état à la commission pour la figée avant de prendre les présences
+-- *******************************************************************************************************
+ALTER TABLE commissionseps ALTER COLUMN etatcommissionep TYPE TEXT;
+ALTER TABLE commissionseps ALTER COLUMN etatcommissionep DROP DEFAULT;
+DROP TYPE IF EXISTS TYPE_ETATCOMMISSIONEP;
+CREATE TYPE TYPE_ETATCOMMISSIONEP AS ENUM ( 'cree', 'associe', 'valide', 'presence', 'decisionep', 'traiteep', 'decisioncg', 'traite', 'annule', 'reporte' );
+ALTER TABLE commissionseps ALTER COLUMN etatcommissionep TYPE TYPE_ETATCOMMISSIONEP USING CAST(etatcommissionep AS TYPE_ETATCOMMISSIONEP);
+ALTER TABLE commissionseps ALTER COLUMN etatcommissionep SET DEFAULT 'cree'::TYPE_ETATCOMMISSIONEP;
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

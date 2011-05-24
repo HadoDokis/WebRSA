@@ -171,7 +171,7 @@
 						),
 						array(
 							'actions' => array(
-                                'Commissionseps::printConvocationParticipant',
+								'Commissionseps::printConvocationParticipant',
 								'Commissionseps::printOrdreDuJour'
 							)
 						)
@@ -223,18 +223,18 @@
 							$membreepseanceep['CommissionepMembreep']['presencetxt']
 						);
 
-                        echo $xhtml->tag(
-                            'td',
-                            $xhtml->link(
-                                'Invitation',
-                                array( 'controller' => 'commissionseps', 'action' => 'printConvocationParticipant', $commissionep['Commissionep']['id'], $membreepseanceep['Membreep']['id'] ),
-                                array(
-                                    'enabled' => ( $membreepseanceep['CommissionepMembreep']['reponse'] == 'nonrenseigne' /*&& empty( $disableOrdredujour )*/  && empty( $membreepseanceep['CommissionepMembreep']['presence'] ) ),
-                                    'class' => 'button print'
-                                )
-                            ),
-                            array( 'class' => 'action')
-                        );
+						echo $xhtml->tag(
+							'td',
+							$xhtml->link(
+								'Invitation',
+								array( 'controller' => 'commissionseps', 'action' => 'printConvocationParticipant', $commissionep['Commissionep']['id'], $membreepseanceep['Membreep']['id'] ),
+								array(
+									'enabled' => ( $membreepseanceep['CommissionepMembreep']['reponse'] == 'nonrenseigne' /*&& empty( $disableOrdredujour )*/  && empty( $membreepseanceep['CommissionepMembreep']['presence'] ) ),
+									'class' => 'button print'
+								)
+							),
+							array( 'class' => 'action')
+						);
 
 
 						echo $xhtml->tag(
@@ -270,36 +270,41 @@
 						require_once( "view.{$theme}.liste.ctp" );
 					}
 
-                    if( Configure::read( 'Cg.departement' )  == 93 ){
-                        echo "<div id=\"synthese\"><h3 class=\"title\">Synthèse</h3>";
-                            if( isset($dossierseps) ){
-                                echo $default2->index(
-                                    $dossierseps,
-                                    array(
-                                        'Dossierep.Personne.qual',
-                                        'Dossierep.Personne.nom',
-                                        'Dossierep.Personne.prenom',
-                                        'Dossierep.Personne.dtnai',
-                                        'Dossierep.Personne.Foyer.Adressefoyer.0.Adresse.locaadr',
-                                        'Dossierep.created',
-                                        'Dossierep.themeep',
-                                        'Passagecommissionep.etatdossierep',
-                                    ),
-                                    array(
-                                        'actions' => array(
-                                            'Dossierseps::view' => array( 'label' => 'Voir', 'url' => array( 'controller' => $controller, 'action' => 'index', '#Dossierep.Personne.id#' ), 'class' => 'external' ),
-                                            'Dossierseps::fichesynthese' => array( 'url' => array( 'controller' => 'commissionseps', 'action' => 'fichesynthese',  Set::classicExtract( $commissionep, 'Commissionep.id' ), '#Dossierep.id#' ) )
-                                        ),
-                                        'options' => $options,
-                                        'id' => $theme
-                                    )
-                                );
-                            }
-                            else {
-                                echo '<p class="notice">Il n\'existe aucun dossier associé à cette commission d\'EP.</p>';
-                            }
-                        echo "</div>";
-                    }
+					if( Configure::read( 'Cg.departement' )  == 93 ){
+						echo "<div id=\"synthese\"><h3 class=\"title\">Synthèse</h3>";
+							if( isset($dossierseps) ){
+								echo $default2->index(
+									$dossierseps,
+									array(
+										'Dossierep.Personne.qual',
+										'Dossierep.Personne.nom',
+										'Dossierep.Personne.prenom',
+										'Dossierep.Personne.dtnai',
+										'Dossierep.Personne.Foyer.Adressefoyer.0.Adresse.locaadr',
+										'Dossierep.created',
+										'Dossierep.themeep',
+										'Passagecommissionep.etatdossierep',
+									),
+									array(
+										'actions' => array(
+											'Dossierseps::view' => array( 'label' => 'Voir', 'url' => array( 'controller' => $controller, 'action' => 'index', '#Dossierep.Personne.id#' ), 'class' => 'external' ),
+											'Dossierseps::fichesynthese' => array( 'url' => array( 'controller' => 'commissionseps', 'action' => 'fichesynthese',  Set::classicExtract( $commissionep, 'Commissionep.id' ), '#Dossierep.id#' ) )
+										),
+										'options' => $options,
+										'id' => $theme
+									)
+								);
+								if( $commissionep['Commissionep']['etatcommissionep'] == 'associe' ) {
+									echo $form->create( null, array( 'url' => Router::url( null, true ) ) );
+									echo $form->submit( 'Valider', array( 'name' => 'Valider' ) );
+									echo $form->end();
+								}
+							}
+							else {
+								echo '<p class="notice">Il n\'existe aucun dossier associé à cette commission d\'EP.</p>';
+							}
+						echo "</div>";
+					}
 				?>
 			</div>
 		</div>
