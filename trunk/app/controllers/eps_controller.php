@@ -47,7 +47,8 @@
 			$this->_setOptions();
 			$this->set( 'eps', $this->paginate( $this->Ep ) );
 			$compteurs = array(
-				'Regroupementep' => $this->Ep->Regroupementep->find( 'count' )
+				'Regroupementep' => $this->Ep->Regroupementep->find( 'count' ),
+				'Membreep' => $this->Ep->Membreep->find( 'count' )
 			);
 			$this->set( compact( 'compteurs' ) );
 		}
@@ -76,10 +77,16 @@
 
 		protected function _add_edit( $id = null ) {
 			if ( !empty( $this->data ) ) {
+				$success = true;
 				$this->Ep->begin();
-				$this->Ep->create( $this->data );
-				$success = $this->Ep->save();
-
+				if ( empty( $this->data['Membreep']['Membreep'] ) ) {
+					$success = false;
+					$this->Ep->invalidate( 'Membreep.Membreep', 'Il est obligatoire de saisir au moins un membre pour participer à une commission d\'EP.' );
+				}
+				else {
+					$this->Ep->create( $this->data );
+					$success = $this->Ep->save() && $success;
+				}
 
 				$this->_setFlashResult( 'Save', $success );
 				if( $success ) {
