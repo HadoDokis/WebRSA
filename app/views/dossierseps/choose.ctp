@@ -37,12 +37,12 @@
                             'options' => $options,
                             'hidden' => array( 'Dossierep.id', 'Passagecommissionep.id' ),
                             'paginate' => 'Dossierep',
-                            'actions' => array( 'Dossierseps::courrierInformation' ),
+//                             'actions' => array( 'Dossierseps::courrierInformation' ),
                             'id' => $theme
                         )
                     );
                     echo "</div>";
-        // debug($dossierseps[$theme]);
+//         debug($theme);
                 }
             }
 
