@@ -1,7 +1,6 @@
 <?php
 echo '<table><thead>
 <tr>
-<th>Dossier EP</th>
 <th>Nom du demandeur</th>
 <th>Adresse</th>
 <th>Date de naissance</th>
@@ -18,7 +17,6 @@ echo '<table><thead>
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
 		echo $xhtml->tableCells(
 			array(
-				$dossierep['Dossierep']['id'],
 				implode( ' ', array( $dossierep['Personne']['qual'], $dossierep['Personne']['nom'], $dossierep['Personne']['prenom'] ) ),
 				implode( ' ', array( $dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['numvoie'], isset( $typevoie[$dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie']] ) ? $typevoie[$dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie']] : null, $dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['nomvoie'] ) ),
 				$locale->date( __( 'Locale->date', true ), $dossierep['Personne']['dtnai'] ),
