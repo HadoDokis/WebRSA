@@ -32,6 +32,7 @@
 				'commissionseps::printConvocationBeneficiaire',
 				'commissionseps::printOrdreDuJour',
 				'membreseps::editliste',
+				'membreseps::editpresence',
 				'commissionseps::edit',
 				'commissionseps::delete',
 			),
@@ -44,7 +45,6 @@
 			),
 			'presence' => array(
 // 				'commissionseps::ordredujour',
-				'commissionseps::edit',
 				'membreseps::editpresence',
 				'commissionseps::traiterep',
 				'commissionseps::delete',
