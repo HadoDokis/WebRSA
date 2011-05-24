@@ -245,6 +245,7 @@
 						$formData['Decisionnonrespectsanctionep93'][$key]['decision'] = $dossierep['Passagecommissionep'][0]['Decisionnonrespectsanctionep93'][0]['decision'];
 						$formData['Decisionnonrespectsanctionep93'][$key]['decisionpcg'] = 'valide';
 						$formData['Decisionnonrespectsanctionep93'][$key]['raisonnonpassage'] = $dossierep['Passagecommissionep'][0]['Decisionnonrespectsanctionep93'][0]['raisonnonpassage'];
+						$formData['Decisionnonrespectsanctionep93'][$key]['commentaire'] = $dossierep['Passagecommissionep'][0]['Decisionnonrespectsanctionep93'][0]['commentaire'];
 					}
 				}
 			}
