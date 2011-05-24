@@ -245,7 +245,6 @@
 						$formData['Decisionnonrespectsanctionep93'][$key]['decision'] = $dossierep['Passagecommissionep'][0]['Decisionnonrespectsanctionep93'][0]['decision'];
 						$formData['Decisionnonrespectsanctionep93'][$key]['decisionpcg'] = 'valide';
 						$formData['Decisionnonrespectsanctionep93'][$key]['raisonnonpassage'] = $dossierep['Passagecommissionep'][0]['Decisionnonrespectsanctionep93'][0]['raisonnonpassage'];
-						$formData['Decisionnonrespectsanctionep93'][$key]['commentaire'] = $dossierep['Passagecommissionep'][0]['Decisionnonrespectsanctionep93'][0]['commentaire'];
 					}
 				}
 			}
@@ -659,14 +658,123 @@
 					'conditions' => array( 'Passagecommissionep.id' => $passagecommissionep_id ),
 					'contain' => array(
 						'Dossierep' => array(
-							'Personne',
+							'Personne' => array(
+								'Foyer' => array(
+									'Adressefoyer' => array(
+										'conditions' => array(
+											'Adressefoyer.rgadr' => '01' // FIXME
+										),
+										'Adresse'
+									)
+								)
+							),
+							'Nonrespectsanctionep93'
 						),
 						'Commissionep'
 					)
 				)
 			);
-// debug( $gedooo_data );die();
-			return $this->ged( $gedooo_data, "Commissionep/convocationep_beneficiaire.odt" );
+
+			// Traductions
+			$options['Personne']['qual'] = ClassRegistry::init( 'Option' )->qual();
+			$options['Adresse']['typevoie'] = ClassRegistry::init( 'Option' )->typevoie();
+
+			// Modèle de document à utiliser:
+			if( $gedooo_data['Dossierep']['Nonrespectsanctionep93']['rgpassage'] == 1 ) {
+				$modeleOdt = "{$this->alias}/convocationep_beneficiaire_1er_passage.odt";
+			}
+			else {
+				// On est déja passés pour cette raison et on recherche la décision
+				$ancienPassage = $this->find(
+					'first',
+					array(
+						'fields' => array(
+							'Decisionnonrespectsanctionep93.id',
+							'Decisionnonrespectsanctionep93.etape',
+							'Decisionnonrespectsanctionep93.decision',
+							'Decisionnonrespectsanctionep93.montantreduction',
+							'Decisionnonrespectsanctionep93.dureesursis',
+							'Decisionnonrespectsanctionep93.commentaire',
+							'Decisionnonrespectsanctionep93.created',
+							'Decisionnonrespectsanctionep93.modified',
+							'Decisionnonrespectsanctionep93.passagecommissionep_id',
+							'Decisionnonrespectsanctionep93.raisonnonpassage',
+							'Decisionnonrespectsanctionep93.decisionpcg',
+							'Passagecommissionep.impressiondecision',
+						),
+						'conditions' => array(
+							'Nonrespectsanctionep93.dossierep_id <>' => $gedooo_data['Dossierep']['Nonrespectsanctionep93']['dossierep_id'],
+							'Nonrespectsanctionep93.propopdo_id' => $gedooo_data['Dossierep']['Nonrespectsanctionep93']['propopdo_id'],
+							'Nonrespectsanctionep93.orientstruct_id' => $gedooo_data['Dossierep']['Nonrespectsanctionep93']['orientstruct_id'],
+							'Nonrespectsanctionep93.contratinsertion_id' => $gedooo_data['Dossierep']['Nonrespectsanctionep93']['contratinsertion_id'],
+							'Nonrespectsanctionep93.origine' => $gedooo_data['Dossierep']['Nonrespectsanctionep93']['origine'],
+							'Nonrespectsanctionep93.sortienvcontrat' => 0,
+							'Nonrespectsanctionep93.active' => 0,
+							'Nonrespectsanctionep93.historiqueetatpe_id' => $gedooo_data['Dossierep']['Nonrespectsanctionep93']['historiqueetatpe_id'],
+						),
+						'joins' => array(
+							array(
+								'table' => 'dossierseps',
+								'alias' => 'Dossierep',
+								'type' => 'INNER',
+								'conditions' => array(
+									'Nonrespectsanctionep93.dossierep_id = Dossierep.id'
+								)
+							),
+							array(
+								'table' => 'passagescommissionseps',
+								'alias' => 'Passagecommissionep',
+								'type' => 'INNER',
+								'conditions' => array(
+									'Passagecommissionep.dossierep_id = Dossierep.id'
+								)
+							),
+							array(
+								'table' => 'commissionseps',
+								'alias' => 'Commissionep',
+								'type' => 'INNER',
+								'conditions' => array(
+									'Passagecommissionep.commissionep_id = Commissionep.id'
+								)
+							),
+							array(
+								'table' => 'decisionsnonrespectssanctionseps93',
+								'alias' => 'Decisionnonrespectsanctionep93',
+								'type' => 'INNER',
+								'conditions' => array(
+									'Decisionnonrespectsanctionep93.passagecommissionep_id = Passagecommissionep.id'
+								)
+							),
+						),
+						'order' => array( 'Commissionep.dateseance DESC', 'Decisionnonrespectsanctionep93.etape DESC' ),
+						'contain' => false
+					)
+				);
+
+				// FIXME: date d'impression
+				if( $ancienPassage['Decisionnonrespectsanctionep93']['decision'] == '1delai' ) {
+					$modeleOdt = "{$this->alias}/convocationep_beneficiaire_2eme_passage_suite_delai.odt";
+				}
+				else if( in_array( $ancienPassage['Decisionnonrespectsanctionep93']['decision'], array( '2report', 'reporte' ) ) ) {
+					$modeleOdt = "{$this->alias}/convocationep_beneficiaire_2eme_passage_suite_report.odt";
+				}
+				else {
+					$modeleOdt = "{$this->alias}/convocationep_beneficiaire_2eme_passage.odt";
+				}
+
+				$gedooo_data['Decisionprecedente'] = $ancienPassage['Decisionnonrespectsanctionep93'];
+				$gedooo_data['Decisionprecedente']['impressiondecision'] = $ancienPassage['Passagecommissionep']['impressiondecision'];
+
+				$options = Set::merge( $options, ClassRegistry::init( 'Decisionnonrespectsanctionep93' )->enums() );
+				$options['Decisionprecedente'] = $options['Decisionnonrespectsanctionep93'];
+			}
+
+			return $this->ged(
+				$gedooo_data,
+				$modeleOdt,
+                false,
+                $options
+			);
 		}
 	}
 ?>

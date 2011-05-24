@@ -33,9 +33,8 @@
 				$oPart->addElement( new GDO_FieldType( strtolower( $key ).'_time', preg_replace( '/([0-9]{2}:[0-9]{2}):[0-9]{2}/', '\1', $matches[4] ), 'text' ) );
 			}
 
-
 			// Traduction des enums
-			if( preg_match( '/^([^_]+)_(.*)$/', $key, $matches ) ) {
+			if( preg_match( '/([^_]+)_([^_]+)$/', $key, $matches ) ) {
 				if( isset( $options[$matches[1]][$matches[2]] ) ) {
 					$value = Set::enum( $value, $options[$matches[1]][$matches[2]] );
 				}

@@ -165,12 +165,25 @@
 						);
 
 						if( $data['Relance']['contrat'] == 0 ) {
+							$nbpassages = $this->Nonrespectsanctionep93->find(
+								'count',
+								array(
+									'conditions' => array(
+										'Nonrespectsanctionep93.orientstruct_id' => $relance['orientstruct_id'],
+										'origine' => 'orientstruct',
+										'sortienvcontrat' => '0',
+										'active' => '0',
+									),
+									'contain' => false
+								)
+							);
+
 							$item = array(
 								'Nonrespectsanctionep93' => array(
 									'orientstruct_id' => $relance['orientstruct_id'],
 									'origine' => 'orientstruct',
 									'active' => 1,
-									'rgpassage' => 1,
+									'rgpassage' => ( $nbpassages + 1 ),
 								),
 								'Relancenonrespectsanctionep93' => array(
 									array(
@@ -181,12 +194,25 @@
 							);
 						}
 						else {
+							$nbpassages = $this->Nonrespectsanctionep93->find(
+								'count',
+								array(
+									'conditions' => array(
+										'Nonrespectsanctionep93.contratinsertion_id' => $relance['contratinsertion_id'],
+										'origine' => 'contratinsertion',
+										'sortienvcontrat' => '0',
+										'active' => '0',
+									),
+									'contain' => false
+								)
+							);
+
 							$item = array(
 								'Nonrespectsanctionep93' => array(
 									'contratinsertion_id' => $relance['contratinsertion_id'],
 									'origine' => 'contratinsertion',
 									'active' => 1,
-									'rgpassage' => 1,
+									'rgpassage' => ( $nbpassages + 1 ),
 								),
 								'Relancenonrespectsanctionep93' => array(
 									array(

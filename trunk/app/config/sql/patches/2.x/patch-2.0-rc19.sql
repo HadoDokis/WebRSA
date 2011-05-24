@@ -140,6 +140,13 @@ ALTER TABLE commissionseps ALTER COLUMN etatcommissionep SET DEFAULT 'cree'::TYP
 SELECT add_missing_table_field ('public', 'membreseps', 'organisme', 'VARCHAR(250)');
 ALTER TABLE membreseps ALTER COLUMN organisme SET DEFAULT NULL;
 
+-- *******************************************************************************************************
+-- 20110524, ajout de la date d'impression de la décision d'un passage en EP
+-- *******************************************************************************************************
+
+SELECT add_missing_table_field ('public', 'passagescommissionseps', 'impressiondecision', 'DATE');
+ALTER TABLE passagescommissionseps ALTER COLUMN impressiondecision SET DEFAULT NULL;
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
