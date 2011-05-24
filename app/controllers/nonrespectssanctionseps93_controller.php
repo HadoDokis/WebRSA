@@ -313,14 +313,6 @@
 							)
 						);
 
-						///FIXME : à corriger plus tard probablement
-						if ( $rgpassage >= 1 ) {
-							$rgpassage = 2;
-						}
-						else {
-							$rgpassage = 1;
-						}
-
 						$nonrespectsanctionep93 = array(
 							'Nonrespectsanctionep93' => array(
 								'dossierep_id' => $this->Nonrespectsanctionep93->Dossierep->id,
