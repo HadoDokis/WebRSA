@@ -114,6 +114,15 @@ ALTER TABLE decisionscontratscomplexeseps93 ALTER COLUMN decisionpcg SET DEFAULT
 SELECT add_missing_table_field ('public', 'decisionscontratscomplexeseps93', 'commentaire', 'TEXT');
 SELECT add_missing_table_field ('public', 'defautsinsertionseps66', 'commentaire', 'TEXT');
 
+
+-- *******************************************************************************************************
+-- 20110524, ajout de la valeur Absent pour les présences des participants à une commission EP
+-- *******************************************************************************************************
+ALTER TABLE commissionseps_membreseps ALTER COLUMN presence TYPE TEXT;
+DROP TYPE TYPE_PRESENCESEANCEEP;
+CREATE TYPE TYPE_PRESENCESEANCEEP AS ENUM ( 'present', 'excuse', 'absent', 'remplacepar' );
+ALTER TABLE commissionseps_membreseps ALTER COLUMN presence TYPE TYPE_PRESENCESEANCEEP USING CAST(presence AS TYPE_PRESENCESEANCEEP);
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

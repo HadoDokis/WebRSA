@@ -270,34 +270,36 @@
 						require_once( "view.{$theme}.liste.ctp" );
 					}
 
-					echo "<div id=\"synthese\"><h3 class=\"title\">Synthèse</h3>";
-						if( isset($dossierseps) ){
-							echo $default2->index(
-								$dossierseps,
-								array(
-									'Dossierep.Personne.qual',
-									'Dossierep.Personne.nom',
-									'Dossierep.Personne.prenom',
-									'Dossierep.Personne.dtnai',
-									'Dossierep.Personne.Foyer.Adressefoyer.0.Adresse.locaadr',
-									'Dossierep.created',
-									'Dossierep.themeep',
-									'Passagecommissionep.etatdossierep',
-								),
-								array(
-									'actions' => array(
-										'Dossierseps::view' => array( 'label' => 'Voir', 'url' => array( 'controller' => $controller, 'action' => 'index', '#Dossierep.Personne.id#' ), 'class' => 'external' ),
-										'Dossierseps::fichesynthese' => array( 'url' => array( 'controller' => 'commissionseps', 'action' => 'fichesynthese',  Set::classicExtract( $commissionep, 'Commissionep.id' ), '#Dossierep.id#' ) )
-									),
-									'options' => $options,
-									'id' => $theme
-								)
-							);
-						}
-						else {
-							echo '<p class="notice">Il n\'existe aucun dossier associé à cette commission d\'EP.</p>';
-						}
-					echo "</div>";
+                    if( Configure::read( 'Cg.departement' )  == 93 ){
+                        echo "<div id=\"synthese\"><h3 class=\"title\">Synthèse</h3>";
+                            if( isset($dossierseps) ){
+                                echo $default2->index(
+                                    $dossierseps,
+                                    array(
+                                        'Dossierep.Personne.qual',
+                                        'Dossierep.Personne.nom',
+                                        'Dossierep.Personne.prenom',
+                                        'Dossierep.Personne.dtnai',
+                                        'Dossierep.Personne.Foyer.Adressefoyer.0.Adresse.locaadr',
+                                        'Dossierep.created',
+                                        'Dossierep.themeep',
+                                        'Passagecommissionep.etatdossierep',
+                                    ),
+                                    array(
+                                        'actions' => array(
+                                            'Dossierseps::view' => array( 'label' => 'Voir', 'url' => array( 'controller' => $controller, 'action' => 'index', '#Dossierep.Personne.id#' ), 'class' => 'external' ),
+                                            'Dossierseps::fichesynthese' => array( 'url' => array( 'controller' => 'commissionseps', 'action' => 'fichesynthese',  Set::classicExtract( $commissionep, 'Commissionep.id' ), '#Dossierep.id#' ) )
+                                        ),
+                                        'options' => $options,
+                                        'id' => $theme
+                                    )
+                                );
+                            }
+                            else {
+                                echo '<p class="notice">Il n\'existe aucun dossier associé à cette commission d\'EP.</p>';
+                            }
+                        echo "</div>";
+                    }
 				?>
 			</div>
 		</div>
