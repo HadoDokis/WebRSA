@@ -18,7 +18,7 @@
                 echo '<p class="notice">Veuillez attribuer des thèmes à l\'EP gérant la commission avant.</p>';
             }
             else {
-// debug($dossiers);
+//debug($dossiers);
                 foreach( $themesChoose as $theme ){
 
                     echo "<div id=\"$theme\"><h3 class=\"title\">".__d( 'dossierep',  'ENUM::THEMEEP::'.Inflector::tableize( $theme ), true )."</h3>";
@@ -37,7 +37,7 @@
                             'options' => $options,
                             'hidden' => array( 'Dossierep.id', 'Passagecommissionep.id' ),
                             'paginate' => 'Dossierep',
-//                             'actions' => array( 'Dossierseps::courrierInformation' ),
+                            'actions' => array( 'Personnes::view' ),
                             'id' => $theme
                         )
                     );
