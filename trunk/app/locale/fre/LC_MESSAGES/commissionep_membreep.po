@@ -60,3 +60,6 @@ msgstr "Excusé"
 
 msgid "ENUM::PRESENCE::remplacepar"
 msgstr "Remplacé par"
+
+msgid "ENUM::PRESENCE::absent"
+msgstr "Absent"
