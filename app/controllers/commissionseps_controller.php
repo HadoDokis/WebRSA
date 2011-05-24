@@ -861,21 +861,9 @@ die();*/
 		*   Courrier contenant le lieu, date et heure de la commission EP
 		*/
 
-		public function printConvocationBeneficiaire( $dossierep_id ) {
+		public function printConvocationBeneficiaire( $passagecommissionep_id ) {
+			$pdf = $this->Commissionep->Passagecommissionep->Dossierep->getConvocationBeneficiaireEpPdf( $passagecommissionep_id );
 
-			$dossierep = $this->Commissionep->Passagecommissionep->Dossierep->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Dossierep.id' => $dossierep_id
-					),
-					'contain' => false
-				)
-			);
-
-			$pdf = $this->Commissionep->getConvocationBeneficiaireEpPdf( $dossierep_id );
-/*debug($pdf);
-die();*/
 			if( $pdf ) {
 				$this->Gedooo->sendPdfContentToClient( $pdf, 'ConvocationEPBeneficiaire' );
 			}
