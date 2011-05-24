@@ -178,51 +178,92 @@ msgid "ENUM::SITPERSDEMRSA::0109"
 msgstr "Fin d'études"
 
 ###############################################################################
-# Enum Dsp.nivetu
+# Enum Dsp.nivetu -> Niveau de formation au sens INSEE
 ###############################################################################
 
+# msgid "ENUM::NIVETU::1201"
+# msgstr "Niveau I/II : enseignement supérieur"
+# 
+# msgid "ENUM::NIVETU::1202"
+# msgstr "Niveau III : BAC + 2"
+# 
+# msgid "ENUM::NIVETU::1203"
+# msgstr "Niveau IV : BAC ou équivalent"
+# 
+# msgid "ENUM::NIVETU::1204"
+# msgstr "Niveau V : CAP/BEP"
+# 
+# msgid "ENUM::NIVETU::1205"
+# msgstr "Niveau Vbis : fin de scolarité obligatoire"
+# 
+# msgid "ENUM::NIVETU::1206"
+# msgstr "Niveau VI : pas de niveau"
+# 
+# msgid "ENUM::NIVETU::1207"
+# msgstr "Niveau VII : jamais scolarisé"
+
+
 msgid "ENUM::NIVETU::1201"
-msgstr "Niveau I/II : enseignement supérieur"
+msgstr "Niveau I/II : sorties avec un diplôme de niveau supérieur à bac+2 (licence, maîtrise, master, dea, dess, doctorat, diplôme de grande école)"
 
 msgid "ENUM::NIVETU::1202"
-msgstr "Niveau III : BAC + 2"
+msgstr "Niveau III : sorties avec un diplôme de niveau Bac + 2 ans (DUT, BTS, DEUG, écoles des formations sanitaires ou sociales, etc.)"
 
 msgid "ENUM::NIVETU::1203"
-msgstr "Niveau IV : BAC ou équivalent"
+msgstr "Niveau IV : sorties des classes de terminale de l'enseignement secondaire (avec ou sans le baccalauréat). Abandons des études supérieures sans diplôme"
 
 msgid "ENUM::NIVETU::1204"
-msgstr "Niveau V : CAP/BEP"
+msgstr "Niveau V : sorties de dernière année de CAP, BEP ou équivalent avec ou sans diplôme. Abandons des études en seconde ou en première"
 
 msgid "ENUM::NIVETU::1205"
-msgstr "Niveau Vbis : fin de scolarité obligatoire"
+msgstr "Niveau Vbis : sorties de 3ème générale, de 4ème et 3ème technologiques et des classes du second cycle court (notamment CAP, BEP) avant l'année terminale"
 
 msgid "ENUM::NIVETU::1206"
-msgstr "Niveau VI : pas de niveau"
+msgstr "Niveau VI : sorties du 1er cycle de l'enseignement secondaire (6ème, 5ème, 4ème) et des formations préprofessionnelles en un an"
 
 msgid "ENUM::NIVETU::1207"
 msgstr "Niveau VII : jamais scolarisé"
 
+
 ###############################################################################
-# Enum Dsp.nivdipmaxobt
+# Enum Dsp.nivdipmaxobt -> Niveau de diplome au sens INSEE
 ###############################################################################
+# 
+# msgid "ENUM::NIVDIPMAXOBT::2601"
+# msgstr "Enseignement supérieur"
+# 
+# msgid "ENUM::NIVDIPMAXOBT::2602"
+# msgstr "BAC + 2"
+# 
+# msgid "ENUM::NIVDIPMAXOBT::2603"
+# msgstr "BAC ou équivalent"
+# 
+# msgid "ENUM::NIVDIPMAXOBT::2604"
+# msgstr "CAP/BEP"
+# 
+# msgid "ENUM::NIVDIPMAXOBT::2605"
+# msgstr "BEPC/CEP"
+# 
+# msgid "ENUM::NIVDIPMAXOBT::2606"
+# msgstr "Aucun"
 
 msgid "ENUM::NIVDIPMAXOBT::2601"
-msgstr "Enseignement supérieur"
+msgstr "Niveaux I et II : diplômes de second ou troisième cycle universitaire (licence, maîtrise, master, DEA, DESS, doctorat) ou diplômes de grande école"
 
 msgid "ENUM::NIVDIPMAXOBT::2602"
-msgstr "BAC + 2"
+msgstr "Niveau III : diplômes de niveau Bac plus 2 (DUT, BTS, DEUG, écoles des formations sanitaires ou sociales,...)"
 
 msgid "ENUM::NIVDIPMAXOBT::2603"
-msgstr "BAC ou équivalent"
+msgstr "Niveau IV : Baccalauréat général, technologique ou professionnel"
 
 msgid "ENUM::NIVDIPMAXOBT::2604"
-msgstr "CAP/BEP"
+msgstr "Niveau V : CAP ou BEP"
 
 msgid "ENUM::NIVDIPMAXOBT::2605"
-msgstr "BEPC/CEP"
+msgstr "Niveau VI : sans diplôme ou Brevet des collèges"
 
 msgid "ENUM::NIVDIPMAXOBT::2606"
-msgstr "Aucun"
+msgstr "Niveau VII : Aucun"
 
 ###############################################################################
 # Enum Dsp.hispro
