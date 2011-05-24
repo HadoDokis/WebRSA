@@ -11,7 +11,7 @@ echo '<table><thead>
 <th>Type de réorientation</th>
 <th>Proposition référent</th>
 <th>Avis EPL</th>
-<th>Avis CG</th>
+<th>Décision CG</th>
 <th colspan="3">Décision coordonnateur/CG</th>
 <th>Observations</th>
 </tr>
