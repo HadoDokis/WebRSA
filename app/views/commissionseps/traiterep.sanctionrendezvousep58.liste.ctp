@@ -32,7 +32,9 @@ echo '<table><thead>
 				),
 				$form->input( "Decisionsanctionrendezvousep58.{$i}.raisonnonpassage", array( 'label' => false, 'type' => 'textarea' ) ),
 				$form->input( "Decisionsanctionrendezvousep58.{$i}.commentaire", array( 'label' => false, 'type' => 'textarea' ) )
-			)
+			),
+			array( 'class' => 'odd' ),
+			array( 'class' => 'even' )
 		);
 	}
 	echo '</tbody></table>';

@@ -1,5 +1,5 @@
 <?php
-echo '<table><thead>
+echo '<table id="Decisionsaisinepdoep66" class="tooltips"><thead>
 <tr>
 <th>Dossier EP</th>
 <th>Nom du demandeur</th>
@@ -11,6 +11,7 @@ echo '<table><thead>
 <th colspan=\'3\'>Avis de l\'EP</th>
 <th>CGA s\'est prononcé ?</th>
 <th>Actions</th>
+<th class="innerTableHeader noprint">Avis EP</th>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
@@ -19,7 +20,23 @@ echo '<table><thead>
 			$listeSituationPdo[] = $situationpdo['libelle'];
 		}
 
-		$indexDecision = count( $dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'] ) - 1;
+		$decisionep = $dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][count($dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'])-1];
+
+		$innerTable = "<table id=\"innerTableDecisionsaisinepdoep66{$i}\" class=\"innerTable\">
+			<tbody>
+				<tr>
+					<th>Observations de l'EP</th>
+					<td>".Set::classicExtract( $decisionep, "commentaire" )."</td>
+				</tr>";
+		
+		if ( $decisionep['decision'] == 'reporte' || $decisionep['decision'] == 'annule' ) {
+			$innerTable .= " <tr>
+				<th>Raison du non passage de l'EP</th>
+				<td>".Set::classicExtract( $decisionep, "raisonnonpassage" )."</td>
+			</tr>";
+		}
+		
+		$innerTable .= "</tbody></table>";
 
 		echo $xhtml->tableCells(
 			array(
@@ -31,9 +48,9 @@ echo '<table><thead>
 				implode(' / ', $listeSituationPdo),
 				$dossierep['Saisinepdoep66']['Traitementpdo']['Descriptionpdo']['name'],
 
-				$options['Decisionsaisinepdoep66']['decision'][$dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][$indexDecision]['decision']],
-				@$dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][$indexDecision]['Decisionpdo']['libelle'],
-				$dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][$indexDecision]['commentaire'],
+				$options['Decisionsaisinepdoep66']['decision'][$decisionep['decision']],
+				@$decisionep['Decisionpdo']['libelle'],
+				$decisionep['commentaire'],
 				isset($dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][1]) ? 'Oui' : 'Non',
 				$xhtml->link(
 					'Décision',
@@ -42,8 +59,11 @@ echo '<table><thead>
 						'action'=>'decisioncg',
 						$dossierep['Dossierep']['id']
 					)
-				)
-			)
+				),
+				array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
+			),
+			array( 'class' => 'odd' ),
+			array( 'class' => 'even' )
 		);
 	}
 	echo '</tbody></table>';

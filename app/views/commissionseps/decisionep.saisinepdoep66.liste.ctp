@@ -33,8 +33,10 @@ echo '<table><thead>
 				array( @$options['Decisionsaisinepdoep66']['decisionpdo_id'][Set::classicExtract( $decisionep, "decisionpdo_id" )], array( 'id' => "Decisionsaisinepdoep66{$i}DecisionpdoId" ) ),
 				array( Set::classicExtract( $decisionep, "commentaire" ), array( 'id' => "Decisionsaisinepdoep66{$i}Commentaire" ) ),
 				array( Set::classicExtract( $decisionep, "raisonnonpassage" ), array( 'colspan' => '2', 'id' => "Decisionsaisinepdoep66{$i}Raisonnonpassage" ) ),
-				Set::classicExtract( $decisionep, "commentaire"
-			)
+				Set::classicExtract( $decisionep, "commentaire" )
+			),
+			array( 'class' => 'odd' ),
+			array( 'class' => 'even' )
 		);
 	}
 	echo '</tbody></table>';

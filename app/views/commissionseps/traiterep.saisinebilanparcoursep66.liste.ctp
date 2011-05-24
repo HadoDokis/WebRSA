@@ -39,7 +39,9 @@ echo '<table><thead>
 				array( $form->input( "Decisionsaisinebilanparcoursep66.{$i}.raisonnonpassage", array( 'label' => false, 'empty' => true, 'type' => 'textarea' ) ), array( 'colspan' => 3 ) ),
 				$form->input( "Decisionsaisinebilanparcoursep66.{$i}.checkcomm", array( 'label' =>false, 'type' => 'checkbox' ) ).
 				$form->input( "Decisionsaisinebilanparcoursep66.{$i}.commentaire", array( 'label' =>false, 'type' => 'textarea' ) )
-			)
+			),
+			array( 'class' => 'odd' ),
+			array( 'class' => 'even' )
 		);
 	}
 	echo '</tbody></table>';

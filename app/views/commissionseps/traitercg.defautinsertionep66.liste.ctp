@@ -1,5 +1,5 @@
 <?php
-echo '<table class="tooltips"><thead>
+echo '<table id="Decisiondefautinsertionep66" class="tooltips"><thead>
 <tr>
 <th>Dossier EP</th>
 <th>Nom du demandeur</th>
@@ -16,12 +16,28 @@ echo '<table class="tooltips"><thead>
 <th>Avis EPL</th>
 <th colspan="4">Décision CG</th>
 <th>Observations</th>
+<th class="innerTableHeader noprint">Avis EP</th>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
-		$niveauDecision = count( $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'] ) - 1;
+		$decisionep = $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][count($dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'])-1];
+		$avisEp = implode( ' - ', Set::filter( array( Set::enum( @$decisionep['decision'], $options['Decisiondefautinsertionep66']['decision'] ), Set::enum( @$decisionep['decisionsup'], $options['Decisiondefautinsertionep66']['decisionsup'] ), @$listeTypesorients[@$decisionep['typeorient_id']], @$listeStructuresreferentes[@$decisionep['structurereferente_id']], @$listeReferents[@$decisionep['referent_id']] ) ) );
 
-		$avisEp = implode( ' - ', Set::filter( array( Set::enum( @$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][$niveauDecision]['decision'], $options['Decisiondefautinsertionep66']['decision'] ), Set::enum( @$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][$niveauDecision]['decisionsup'], $options['Decisiondefautinsertionep66']['decisionsup'] ), @$listeTypesorients[@$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][$niveauDecision]['typeorient_id']], @$listeStructuresreferentes[@$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][$niveauDecision]['structurereferente_id']], @$listeReferents[@$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][$niveauDecision]['referent_id']] ) ) );
+		$innerTable = "<table id=\"innerTableDecisiondefautinsertionep66{$i}\" class=\"innerTable\">
+			<tbody>
+				<tr>
+					<th>Observations de l'EP</th>
+					<td>".Set::classicExtract( $decisionep, "commentaire" )."</td>
+				</tr>";
+		
+		if ( $decisionep['decision'] == 'reporte' || $decisionep['decision'] == 'annule' ) {
+			$innerTable .= " <tr>
+				<th>Raison du non passage de l'EP</th>
+				<td>".Set::classicExtract( $decisionep, "raisonnonpassage" )."</td>
+			</tr>";
+		}
+		
+		$innerTable .= "</tbody></table>";
 
 		echo $xhtml->tableCells(
 			array(
@@ -52,8 +68,11 @@ echo '<table class="tooltips"><thead>
 				$form->input( "Decisiondefautinsertionep66.{$i}.structurereferente_id", array( 'label' => false, 'options' => $structuresreferentes, 'empty' => true, 'type' => 'select' ) ),
 				$form->input( "Decisiondefautinsertionep66.{$i}.referent_id", array( 'label' => false, 'options' => $referents, 'empty' => true, 'type' => 'select' ) ),
 				array( $form->input( "Decisiondefautinsertionep66.{$i}.raisonnonpassage", array( 'label' => false, 'type' => 'textarea' ) ), array( 'colspan' => '3' ) ),
-				$form->input( "Decisiondefautinsertionep66.{$i}.commentaire", array( 'label' =>false, 'type' => 'textarea' ) )
-			)
+				$form->input( "Decisiondefautinsertionep66.{$i}.commentaire", array( 'label' =>false, 'type' => 'textarea' ) ),
+				array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
+			),
+			array( 'class' => 'odd' ),
+			array( 'class' => 'even' )
 		);
 	}
 	echo '</tbody></table>';

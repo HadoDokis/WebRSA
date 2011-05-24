@@ -1,5 +1,5 @@
 <?php
-echo '<table><thead>
+echo '<table id="Decisionsaisinebilanparcoursep66" class="tooltips"><thead>
 <tr>
 <th>Dossier EP</th>
 <th>Nom du demandeur</th>
@@ -14,9 +14,27 @@ echo '<table><thead>
 <th>Décision CG</th>
 <th colspan="3">Décision coordonnateur/CG</th>
 <th>Observations</th>
+<th class="innerTableHeader noprint">Avis EP</th>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
+		$decisionep = $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][count($dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'])-1];
+		$innerTable = "<table id=\"innerTableDecisionsaisinebilanparcoursep66{$i}\" class=\"innerTable\">
+			<tbody>
+				<tr>
+					<th>Observations de l'EP</th>
+					<td>".Set::classicExtract( $decisionep, "commentaire" )."</td>
+				</tr>";
+		
+		if ( $decisionep['decision'] == 'reporte' || $decisionep['decision'] == 'annule' ) {
+			$innerTable .= "<tr>
+				<th>Raison du non passage de l'EP</th>
+				<td>".Set::classicExtract( $decisionep, "raisonnonpassage" )."</td>
+			</tr>";
+		}
+		
+		$innerTable .= "</tbody></table>";
+		
 		echo $xhtml->tableCells(
 			array(
 				$dossierep['Dossierep']['id'],
@@ -30,7 +48,7 @@ echo '<table><thead>
 	
 				implode( ' - ', Set::filter( array( @$dossierep['Saisinebilanparcoursep66']['Typeorient']['lib_type_orient'], @$dossierep['Saisinebilanparcoursep66']['Structurereferente']['lib_struc'] ) ) ),
 
-				implode( ' - ', Set::filter( array( @$dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['Typeorient']['lib_type_orient'], @$dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['Structurereferente']['lib_struc'] ) ) ),
+				implode( ' - ', Set::filter( array( @$decisionep['Typeorient']['lib_type_orient'], @$decisionep['Structurereferente']['lib_struc'] ) ) ),
 
 				$form->input( "Decisionsaisinebilanparcoursep66.{$i}.id", array( 'type' => 'hidden', 'value' => @$this->data['Decisionsaisinebilanparcoursep66'][$i]['id'] ) ).
 				$form->input( "Saisinebilanparcoursep66.{$i}.dossierep_id", array( 'type' => 'hidden', 'value' => $dossierep['Dossierep']['id'] ) ).
@@ -41,8 +59,11 @@ echo '<table><thead>
 				$form->input( "Decisionsaisinebilanparcoursep66.{$i}.structurereferente_id", array( 'label' => false, 'options' => $structuresreferentes, 'empty' => true ) ),
 				$form->input( "Decisionsaisinebilanparcoursep66.{$i}.referent_id", array( 'label' => false, 'options' => $referents, 'empty' => true ) ),
 				array( $form->input( "Decisionsaisinebilanparcoursep66.{$i}.raisonnonpassage", array( 'label' => false, 'type' => 'textarea' ) ), array( 'colspan' => 3 ) ),
-				$form->input( "Decisionsaisinebilanparcoursep66.{$i}.commentaire", array( 'label' =>false, 'type' => 'textarea' ) )
-			)
+				$form->input( "Decisionsaisinebilanparcoursep66.{$i}.commentaire", array( 'label' =>false, 'type' => 'textarea' ) ),
+				array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
+			),
+			array( 'class' => 'odd' ),
+			array( 'class' => 'even' )
 		);
 	}
 	echo '</tbody></table>';
