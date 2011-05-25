@@ -888,6 +888,17 @@
 				$modeleOdt  = "{$this->alias}/decision_{$etape}_annule.odt";
 			}
 
+			// La structure référente, plutôt que de devoir conditionner la vue (le modèle ODT)
+			if( in_array( $origine, array( 'orientstruct', 'radiepe' ) ) ) {
+				$gedooo_data['Structurereferente'] = $gedooo_data['Dossierep']['Nonrespectsanctionep93']['Orientstruct']['Structurereferente'];
+			}
+			else if( $origine == 'contratinsertion' ) {
+				$gedooo_data['Structurereferente'] = $gedooo_data['Dossierep']['Nonrespectsanctionep93']['Contratinsertion']['Structurereferente'];
+			}
+			else if( $origine == 'pdo' ) {
+				$gedooo_data['Structurereferente'] = $gedooo_data['Dossierep']['Nonrespectsanctionep93']['Propopdo']['Structurereferente'];
+			}
+
 			// Traductions
 			$options = $this->Dossierep->Passagecommissionep->Decisionnonrespectsanctionep93->enums();
 			$options['Personne']['qual'] = ClassRegistry::init( 'Option' )->qual();
