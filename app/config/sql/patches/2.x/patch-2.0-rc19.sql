@@ -194,6 +194,15 @@ ALTER TABLE decisionssignalementseps93 ALTER COLUMN decision TYPE TYPE_DECISIONS
 SELECT add_missing_table_field ('public', 'passagescommissionseps', 'impressionconvocation', 'DATE');
 ALTER TABLE passagescommissionseps ALTER COLUMN impressionconvocation SET DEFAULT NULL;
 
+
+-- *******************************************************************************************************
+-- 20110525, ajout des champs created et modified dans la table rendezvous
+-- *******************************************************************************************************
+
+SELECT add_missing_table_field ('public', 'rendezvous', 'created', 'TIMESTAMP WITHOUT TIME ZONE');
+ALTER TABLE rendezvous ALTER COLUMN created SET DEFAULT NULL;
+SELECT add_missing_table_field ('public', 'rendezvous', 'modified', 'TIMESTAMP WITHOUT TIME ZONE');
+ALTER TABLE rendezvous ALTER COLUMN modified SET DEFAULT NULL;
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
