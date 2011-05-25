@@ -432,16 +432,12 @@
 					'Nonrespectsanctionep93.orientstruct_id',
 					'Nonrespectsanctionep93.contratinsertion_id',
 					'Nonrespectsanctionep93.origine',
-					'Nonrespectsanctionep93.decision',
 					'Nonrespectsanctionep93.rgpassage',
-					'Nonrespectsanctionep93.montantreduction',
-					'Nonrespectsanctionep93.dureesursis',
 					'Nonrespectsanctionep93.sortienvcontrat',
 					'Nonrespectsanctionep93.active',
 					'Nonrespectsanctionep93.created',
 					'Nonrespectsanctionep93.modified',
 					'Decisionnonrespectsanctionep93.id',
-// 					'Decisionnonrespectsanctionep93.nonrespectsanctionep93_id',
 					'Decisionnonrespectsanctionep93.etape',
 					'Decisionnonrespectsanctionep93.decision',
 					'Decisionnonrespectsanctionep93.montantreduction',
@@ -896,6 +892,8 @@
 			$options = $this->Dossierep->Passagecommissionep->Decisionnonrespectsanctionep93->enums();
 			$options['Personne']['qual'] = ClassRegistry::init( 'Option' )->qual();
 			$options['Adresse']['typevoie'] = ClassRegistry::init( 'Option' )->typevoie();
+			$options['Structurereferente']['type_voie'] = $options['Adresse']['typevoie'];
+// debug($options);die();
 // debug($gedooo_data);die();
 			return $this->ged(
 				$gedooo_data,
