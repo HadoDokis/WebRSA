@@ -954,8 +954,8 @@ die();*/
 		}
 
 		/**
-		*   Impression des décisions émises par la commission de l'EP
-		*   Représente le point 11 du processus de l'EP
+		* Impression des décisions émises par la commission de l'EP
+		* Représente le point 11 du processus de l'EP
 		*/
 
 		public function printDecision( $commissionep_id ) {
@@ -1049,21 +1049,37 @@ die();*/
 			$this->_setOptions();
 		}
 
+		/**
+		* Génération du PDF concernant la décision suite au passage en commission
+		* d'un dossier d'EP pour un certain niveau de décision.
+		*/
 
-        /**
-        *    Génération de la fiche de synthèse des différents dossiers d'EP
-        */
-        public function fichesynthese( $commissionep_id, $dossierep_id ) {
+		public function impressionDecision( $etape, $passagecommissionep_id ) {
+			$pdf = $this->Commissionep->Passagecommissionep->Dossierep->getDecisionPdf( $etape, $passagecommissionep_id  );
 
-            $pdf = $this->Commissionep->getFicheSynthese( $commissionep_id, $dossierep_id  );
+			if( $pdf ) {
+				$this->Gedooo->sendPdfContentToClient( $pdf, 'CourrierDecision' );
+			}
+			else {
+				$this->Session->setFlash( 'Impossible de générer le courrier de décision', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
+			}
+		}
 
-            if( $pdf ) {
-                $this->Gedooo->sendPdfContentToClient( $pdf, 'FicheSynthetique' );
-            }
-            else {
-                $this->Session->setFlash( 'Impossible de générer le courrier d\'information', 'default', array( 'class' => 'error' ) );
-                $this->redirect( $this->referer() );
-            }
-        }
+		/**
+		* Génération de la fiche de synthèse des différents dossiers d'EP
+		*/
+
+		public function fichesynthese( $commissionep_id, $dossierep_id ) {
+			$pdf = $this->Commissionep->getFicheSynthese( $commissionep_id, $dossierep_id  );
+
+			if( $pdf ) {
+				$this->Gedooo->sendPdfContentToClient( $pdf, 'FicheSynthetique' );
+			}
+			else {
+				$this->Session->setFlash( 'Impossible de générer le courrier d\'information', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
+			}
+		}
 	}
 ?>

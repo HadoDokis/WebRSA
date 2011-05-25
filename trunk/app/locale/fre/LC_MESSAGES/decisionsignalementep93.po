@@ -25,9 +25,6 @@ msgstr "Maintien"
 msgid "ENUM::DECISION::1reduction"
 msgstr "Réduction de 100€"
 
-msgid "ENUM::DECISION::1sursis"
-msgstr "Report"
-
 msgid "ENUM::DECISION::1pasavis"
 msgstr "Pas d'avis"
 
@@ -45,9 +42,6 @@ msgstr "Suspension partielle"
 
 msgid "ENUM::DECISION::2pasavis"
 msgstr "Pas d'avis"
-
-msgid "ENUM::DECISION::2report"
-msgstr "Report technique"
 
 msgid "ENUM::DECISION::annule"
 msgstr "Annulé"

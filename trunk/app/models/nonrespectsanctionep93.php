@@ -58,6 +58,13 @@
 				'fields' => '',
 				'order' => ''
 			),
+			'Historiqueetatpe' => array(
+				'className' => 'Historiqueetatpe',
+				'foreignKey' => 'historiqueetatpe_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			)
 		);
 
 		public $hasMany = array(
@@ -269,11 +276,11 @@
 						$themeData[$key]['Decisionnonrespectsanctionep93']['dureesursis'] = null;
 						$themeData[$key]['Decisionnonrespectsanctionep93']['montantreduction'] = Configure::read( 'Nonrespectsanctionep93.montantReduction' );
 					}
-					else if( $themeData[$key]['Decisionnonrespectsanctionep93']['decision'] == '1sursis' ) {
+					else if( $themeData[$key]['Decisionnonrespectsanctionep93']['decision'] == '1delai' ) {
 						$themeData[$key]['Decisionnonrespectsanctionep93']['montantreduction'] = null;
 						$themeData[$key]['Decisionnonrespectsanctionep93']['dureesursis'] = Configure::read( 'Nonrespectsanctionep93.dureeSursis' );
 					}
-					else if( in_array( $themeData[$key]['Decisionnonrespectsanctionep93']['decision'],  array( '1maintien', '1pasavis', '1delai' ) ) ) {
+					else if( in_array( $themeData[$key]['Decisionnonrespectsanctionep93']['decision'],  array( '1maintien', '1pasavis', '2pasavis', 'reporte', 'annule' ) ) ) {
 						$themeData[$key]['Decisionnonrespectsanctionep93']['montantreduction'] = null;
 						$themeData[$key]['Decisionnonrespectsanctionep93']['dureesursis'] = null;
 					}
@@ -384,18 +391,6 @@
 					if( !isset( $dossierep['Decisionnonrespectsanctionep93'][0]['decision'] ) ) {
 						$success = false;
 					}
-
-					// Copie de la décision
-					$nonrespectsanctionep93['Nonrespectsanctionep93']['decision'] = @$dossierep['Decisionnonrespectsanctionep93'][0]['decision'];
-					$nonrespectsanctionep93['Nonrespectsanctionep93']['montantreduction'] = @$dossierep['Decisionnonrespectsanctionep93'][0]['montantreduction'];
-					$nonrespectsanctionep93['Nonrespectsanctionep93']['dureesursis'] = @$dossierep['Decisionnonrespectsanctionep93'][0]['dureesursis'];
-
-					/*if( $nonrespectsanctionep93['Nonrespectsanctionep93']['decision'] == '1reduction' ) { // FIXME: vient de la dernière décision
-						$nonrespectsanctionep93['Nonrespectsanctionep93']['montantreduction'] = Configure::read( 'Nonrespectsanctionep93.montantReduction' );
-					}
-					else if( $nonrespectsanctionep93['Nonrespectsanctionep93']['decision'] == '1sursis' ) {
-						$nonrespectsanctionep93['Nonrespectsanctionep93']['dureesursis'] = Configure::read( 'Nonrespectsanctionep93.dureeSursis' );
-					}*/
 
 					$this->create( $nonrespectsanctionep93 ); // TODO: un saveAll ?
 					$success = $this->save() && $success;
@@ -755,7 +750,7 @@
 				if( $ancienPassage['Decisionnonrespectsanctionep93']['decision'] == '1delai' ) {
 					$modeleOdt = "{$this->alias}/convocationep_beneficiaire_2eme_passage_suite_delai.odt";
 				}
-				else if( in_array( $ancienPassage['Decisionnonrespectsanctionep93']['decision'], array( '2report', 'reporte' ) ) ) {
+				else if( in_array( $ancienPassage['Decisionnonrespectsanctionep93']['decision'], array( '1pasavis', '2pasavis', 'reporte' ) ) ) {
 					$modeleOdt = "{$this->alias}/convocationep_beneficiaire_2eme_passage_suite_report.odt";
 				}
 				else {
@@ -769,6 +764,139 @@
 				$options['Decisionprecedente'] = $options['Decisionnonrespectsanctionep93'];
 			}
 
+			return $this->ged(
+				$gedooo_data,
+				$modeleOdt,
+				false,
+				$options
+			);
+		}
+
+		/**
+		* Récupération de la décision suite au passage en commission d'un dossier
+		* d'EP pour un certain niveau de décision.
+		* FIXME: spécifique par thématique
+		*/
+
+		public function getDecisionPdf( $etape, $passagecommissionep_id  ) {
+			$gedooo_data = $this->Dossierep->Passagecommissionep->find(
+				'first',
+				array(
+					'conditions' => array( 'Passagecommissionep.id' => $passagecommissionep_id ),
+					'contain' => array(
+						'Commissionep',
+						'Dossierep' => array(
+							'Personne' => array(
+								'Foyer' => array(
+									'Adressefoyer' => array(
+										'conditions' => array(
+											'Adressefoyer.rgadr' => '01' // FIXME
+										),
+										'Adresse'
+									)
+								)
+							),
+							'Nonrespectsanctionep93' => array(
+								'Orientstruct' => array(
+									'Typeorient',
+									'Structurereferente'
+								),
+								'Contratinsertion' => array(
+									'Structurereferente' => array(
+										'Typeorient'
+									)
+								),
+								'Propopdo' => array(
+									'Structurereferente' => array(
+										'Typeorient'
+									)
+								),
+								'Historiqueetatpe',
+							),
+						),
+						'Decisionnonrespectsanctionep93' => array(
+							'conditions' => array(
+								'Decisionnonrespectsanctionep93.etape' => $etape
+							)
+						)
+					)
+				)
+			);
+
+			if( empty( $gedooo_data ) || !isset( $gedooo_data['Decisionnonrespectsanctionep93'][0] ) || empty( $gedooo_data['Decisionnonrespectsanctionep93'][0] ) ) {
+				return false;
+			}
+
+			if( $gedooo_data['Dossierep']['Nonrespectsanctionep93']['origine'] == 'radiepe' ) {
+				// FIXME: faut-il s'assurer que la dernière orientation soit bien en emploi ?
+				$orientstruct = $this->Orientstruct->find(
+					'first',
+					array(
+						'conditions' => array(
+							'Orientstruct.personne_id' => $gedooo_data['Dossierep']['Personne']['id'],
+							'Orientstruct.date_valid IS NOT NULL',
+						),
+						'contain' => array(
+							'Structurereferente'
+						),
+						'order' => array( 'Orientstruct.date_valid DESC' )
+					)
+				);
+
+				$gedooo_data['Dossierep']['Nonrespectsanctionep93']['Historiqueetatpe']['Orientstruct'] = $orientstruct['Orientstruct'];
+				$gedooo_data['Dossierep']['Nonrespectsanctionep93']['Historiqueetatpe']['Orientstruct']['Structurereferente'] = $orientstruct['Structurereferente'];
+			}
+
+			// Choix du modèle de document
+			$decision = $gedooo_data['Decisionnonrespectsanctionep93'][0]['decision'];
+			$origine = $gedooo_data['Dossierep']['Nonrespectsanctionep93']['origine'];
+
+			if( $decision == '1delai' ) {
+				$modeleOdt  = "{$this->alias}/decision_{$etape}_delai.odt";
+			}
+			else if( $decision == '1reduction' ) {
+				if( in_array( $origine, array( 'orientstruct', 'contratinsertion' ) ) ) {
+					if( $origine == 'orientstruct' ) {
+						$emploi = preg_match( '/Emploi/i', $gedooo_data['Dossierep']['Nonrespectsanctionep93']['Orientstruct']['Typeorient']['lib_type_orient'] );
+					}
+					else {
+						$emploi = preg_match( '/Emploi/i', $gedooo_data['Dossierep']['Nonrespectsanctionep93']['Contratinsertion']['Structurereferente']['Typeorient']['lib_type_orient'] );
+					}
+					if( $emploi ) {
+						$modeleOdt  = "{$this->alias}/decision_{$etape}_reduction_pdv.odt";
+					}
+					else {
+						$modeleOdt  = "{$this->alias}/decision_{$etape}_reduction_ppae.odt";
+					}
+				}
+				else if( $origine == 'radiepe' ) {
+					$modeleOdt  = "{$this->alias}/decision_{$etape}_reduction_ppae.odt";
+				}
+				else if( $origine == 'pdo' ) {
+					$modeleOdt  = "{$this->alias}/decision_{$etape}_reduction_pdv.odt";
+				}
+			}
+			else if( in_array( $decision, array( '1maintien', '2maintien' ) ) ) {
+				$modeleOdt  = "{$this->alias}/decision_{$etape}_maintien.odt";
+			}
+			else if( $decision == '2suspensiontotale' ) {
+				$modeleOdt  = "{$this->alias}/decision_{$etape}_suspensiontotale.odt";
+			}
+			else if( $decision == '2suspensionpartielle' ) {
+				$modeleOdt  = "{$this->alias}/decision_{$etape}_suspensionpartielle.odt";
+			}
+			else if( in_array( $decision, array( '1pasavis', '2pasavis', 'reporte' ) ) ) {
+				$modeleOdt  = "{$this->alias}/decision_{$etape}_reporte.odt";
+			}
+			else if( $decision == 'annule' ) {
+				$modeleOdt  = "{$this->alias}/decision_{$etape}_annule.odt";
+			}
+
+			// Traductions
+			$options = $this->Dossierep->Passagecommissionep->Decisionnonrespectsanctionep93->enums();
+			$options['Personne']['qual'] = ClassRegistry::init( 'Option' )->qual();
+			$options['Adresse']['typevoie'] = ClassRegistry::init( 'Option' )->typevoie();
+// debug($gedooo_data);die();
 			return $this->ged(
 				$gedooo_data,
 				$modeleOdt,

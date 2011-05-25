@@ -260,8 +260,8 @@
 	Configure::write( 'Nonrespectsanctionep93.montantReduction', 100 );
 
 	/**
-	* Durée du sursis (en jours) lors d'un premier passage en EP pour
-	* le thème "non respect et sanctions du CG 93"
+	* Durée du délai supplémentaire (en jours) lors d'un premier passage en EP
+	* pour le thème "non respect et sanctions du CG 93"
 	*/
 	Configure::write( 'Nonrespectsanctionep93.dureeSursis', 31 );
 

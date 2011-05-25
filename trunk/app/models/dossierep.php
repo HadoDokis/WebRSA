@@ -407,9 +407,10 @@
 		}
 
 		/**
-		*    Récupération des informations propres au dossier devant passer en EP
-		*   après liaison avec la commission d'EP
+		* Récupération des informations propres au dossier devant passer en EP
+		* après liaison avec la commission d'EP
 		*/
+
 		public function getConvocationBeneficiaireEpPdf( $passagecommissionep_id ) {
 			$passagecommission = $this->Passagecommissionep->find(
 				'first',
@@ -422,7 +423,50 @@
 			);
 
 			$theme = Inflector::classify( $passagecommission['Dossierep']['themeep'] );
-			return $this->{$theme}->getConvocationBeneficiaireEpPdf( $passagecommissionep_id );
+			$pdf = $this->{$theme}->getConvocationBeneficiaireEpPdf( $passagecommissionep_id );
+
+			if( !empty( $pdf ) ) {
+				$this->Passagecommissionep->updateAll(
+					array( 'Passagecommissionep.impressionconvocation' => "'".date( 'Y-m-d' )."'" ),
+					array(
+						'"Passagecommissionep"."id"' => $passagecommissionep_id,
+						'"Passagecommissionep"."impressionconvocation" IS NULL'
+					)
+				);
+			}
+
+			return $pdf;
+		}
+
+		/**
+		*
+		*/
+
+		public function getDecisionPdf( $etape, $passagecommissionep_id  ) {
+			$passagecommission = $this->Passagecommissionep->find(
+				'first',
+				array(
+					'conditions' => array( 'Passagecommissionep.id' => $passagecommissionep_id ),
+					'contain' => array(
+						'Dossierep'
+					)
+				)
+			);
+
+			$theme = Inflector::classify( $passagecommission['Dossierep']['themeep'] );
+			$pdf = $this->{$theme}->getDecisionPdf( $etape, $passagecommissionep_id );
+
+			if( !empty( $pdf ) ) {
+				$this->Passagecommissionep->updateAll(
+					array( 'Passagecommissionep.impressiondecision' => "'".date( 'Y-m-d' )."'" ),
+					array(
+						'"Passagecommissionep"."id"' => $passagecommissionep_id,
+						'"Passagecommissionep"."impressiondecision" IS NULL'
+					)
+				);
+			}
+
+			return $pdf;
 		}
 	}
 ?>

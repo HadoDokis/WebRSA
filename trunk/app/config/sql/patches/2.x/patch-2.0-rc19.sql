@@ -156,6 +156,44 @@ ALTER TABLE statutsrdvs ALTER COLUMN permetpassageepl SET DEFAULT '0';
 UPDATE statutsrdvs SET permetpassageepl = '0' WHERE permetpassageepl IS NULL;
 ALTER TABLE statutsrdvs ALTER COLUMN permetpassageepl SET NOT NULL;
 
+-- *******************************************************************************************************
+-- 20110525:
+--   * suppression des décision de la table nonrespectssanctionseps93
+--   * suppression des valeurs 1sursis et 2report des décisions des decisionsnonrespectssanctionseps93
+--   * suppression des valeurs 1sursis et 2report des décisions des decisionssignalementseps93
+-- *******************************************************************************************************
+
+ALTER TABLE nonrespectssanctionseps93 DROP COLUMN decision;
+ALTER TABLE nonrespectssanctionseps93 DROP COLUMN montantreduction;
+ALTER TABLE nonrespectssanctionseps93 DROP COLUMN dureesursis;
+
+-- -------------------------------------------------------------------------------------------------------
+
+UPDATE decisionsnonrespectssanctionseps93 SET decision = '1delai'::TYPE_DECISIONSANCTIONEP93 WHERE decision = '1sursis'::TYPE_DECISIONSANCTIONEP93;
+
+ALTER TABLE decisionsnonrespectssanctionseps93 ALTER COLUMN decision TYPE TEXT;
+ALTER TABLE decisionsnonrespectssanctionseps93 ALTER COLUMN decision DROP DEFAULT;
+DROP TYPE IF EXISTS TYPE_DECISIONSANCTIONEP93;
+CREATE TYPE TYPE_DECISIONSANCTIONEP93 AS ENUM ( '1reduction', '1maintien', '1pasavis', '1delai', '2suspensiontotale', '2suspensionpartielle', '2maintien', '2pasavis', 'annule', 'reporte' );
+ALTER TABLE decisionsnonrespectssanctionseps93 ALTER COLUMN decision TYPE TYPE_DECISIONSANCTIONEP93 USING CAST(decision AS TYPE_DECISIONSANCTIONEP93);
+
+-- -------------------------------------------------------------------------------------------------------
+
+UPDATE decisionssignalementseps93 SET decision = '1delai'::TYPE_DECISIONSIGNALEMENTEP93 WHERE decision = '1sursis'::TYPE_DECISIONSIGNALEMENTEP93;
+
+ALTER TABLE decisionssignalementseps93 ALTER COLUMN decision TYPE TEXT;
+ALTER TABLE decisionssignalementseps93 ALTER COLUMN decision DROP DEFAULT;
+DROP TYPE IF EXISTS TYPE_DECISIONSIGNALEMENTEP93;
+CREATE TYPE TYPE_DECISIONSIGNALEMENTEP93 AS ENUM ( '1reduction', '1maintien', '1pasavis', '1delai', '2suspensiontotale', '2suspensionpartielle', '2maintien', '2pasavis', 'annule', 'reporte' );
+ALTER TABLE decisionssignalementseps93 ALTER COLUMN decision TYPE TYPE_DECISIONSIGNALEMENTEP93 USING CAST(decision AS TYPE_DECISIONSIGNALEMENTEP93);
+
+-- *******************************************************************************************************
+-- 20110525, ajout de la date d'impression de la convocation de l'allocataire
+-- *******************************************************************************************************
+
+SELECT add_missing_table_field ('public', 'passagescommissionseps', 'impressionconvocation', 'DATE');
+ALTER TABLE passagescommissionseps ALTER COLUMN impressionconvocation SET DEFAULT NULL;
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
