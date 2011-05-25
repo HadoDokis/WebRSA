@@ -1486,25 +1486,9 @@
 						'Adresse.numcomptt',
 						'Adresse.codepos',
 						//
-// 						'Saisinebilanparcoursep66.origine',
-// 						'Saisinepdoep66.origine',
 						'Defautinsertionep66.origine'
 					),
 					'joins' => array(
-// 						array(
-// 							'table'      => 'saisinesbilansparcourseps66',
-// 							'alias'      => 'Saisinebilanparcoursep66',
-// 							'type'       => 'LEFT OUTER',
-// 							'foreignKey' => false,
-// 							'conditions' => array( "Dossierep.id = Saisinebilanparcoursep66.dossierep_id" ),
-// 						),
-// 						array(
-// 							'table'      => 'saisinespdoseps66',
-// 							'alias'      => 'Saisinepdoep66',
-// 							'type'       => 'LEFT OUTER',
-// 							'foreignKey' => false,
-// 							'conditions' => array( "Dossierep.id = Saisinepdoep66.dossierep_id" ),
-// 						),
 						array(
 							'table'      => 'defautsinsertionseps66',
 							'alias'      => 'Defautinsertionep66',
@@ -1567,6 +1551,7 @@
 			$options['Participant'] = $options['Membreep'];
 			$options = Set::merge( $options, $this->CommissionepMembreep->enums() );
 			$options = Set::merge( $options, $this->Passagecommissionep->enums() );
+			$options = Set::merge( $options, $this->Passagecommissionep->Dossierep->Defautinsertionep66->enums() );
 			$options['Participant']['typevoie'] = ClassRegistry::init( 'Option' )->typevoie();
 			$options['Remplacantmembreep'] = $options['Membreep'];
 
