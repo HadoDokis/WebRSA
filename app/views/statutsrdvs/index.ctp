@@ -24,6 +24,9 @@
 					if( Configure::read( 'Cg.departement' ) == 58 ) {
 						echo '<th>Provoque un passage en EP ?</th>';
 					}
+					elseif( Configure::read( 'Cg.departement' ) == 66 ) {
+						echo '<th>Permet un passage en EPL Audition ?</th>';
+					}
 				?>
 				<th colspan="2" class="action">Actions</th>
 			</tr>
@@ -36,6 +39,12 @@
 						$listefields = array_merge(
 							$listefields,
 							array( $provoquepassageep[$statutrdv['Statutrdv']['provoquepassageep']] )
+						);
+					}
+					elseif( Configure::read( 'Cg.departement' ) == 66 ) {
+						$listefields = array_merge(
+							$listefields,
+							array( $provoquepassageep[$statutrdv['Statutrdv']['permetpassageepl']] )
 						);
 					}
 					$listefields = array_merge(

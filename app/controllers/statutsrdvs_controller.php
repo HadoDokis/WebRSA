@@ -13,7 +13,8 @@
 
 		public function _setOptions() {
 			$provoquepassageep = array( '0' => 'Non', '1' => 'Oui' );
-			$this->set( compact( 'provoquepassageep' ) );
+			$permetpassageepl = array( '0' => 'Non', '1' => 'Oui' );
+			$this->set( compact( 'provoquepassageep', 'permetpassageepl' ) );
 		}
 
 		function index() {

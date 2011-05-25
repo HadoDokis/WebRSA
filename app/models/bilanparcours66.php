@@ -51,8 +51,8 @@
 					'haspiecejointe'
 				)
 			),
-            'Gedooo',
-            'StorablePdf',
+			'Gedooo',
+			'StorablePdf',
 		);
 
 		public $validate = array(
@@ -69,14 +69,14 @@
 				array(
 					'rule' => array('datePassee'),
 					'message' => 'Merci de choisir une date antérieure à la date du jour',
-                    'on' => 'create'
+					'on' => 'create'
 				),
 				array(
 					'rule' => 'date',
 					'message' => 'Merci de rentrer une date valide',
 					'allowEmpty' => false,
 					'required' => true,
-                    'on' => 'create'
+					'on' => 'create'
 				)
 			)
 		);
@@ -149,46 +149,46 @@
 			),
 		);
 
-        public $hasMany = array(
-            'Fichiermodule' => array(
-                'className' => 'Fichiermodule',
-                'foreignKey' => false,
-                'dependent' => false,
-                'conditions' => array(
-                    'Fichiermodule.modele = \'Bilanparcours66\'',
-                    'Fichiermodule.fk_value = {$__cakeID__$}'
-                ),
-                'fields' => '',
-                'order' => '',
-                'limit' => '',
-                'offset' => '',
-                'exclusive' => '',
-                'finderQuery' => '',
-                'counterQuery' => ''
-            )
-        );
+		public $hasMany = array(
+			'Fichiermodule' => array(
+				'className' => 'Fichiermodule',
+				'foreignKey' => false,
+				'dependent' => false,
+				'conditions' => array(
+					'Fichiermodule.modele = \'Bilanparcours66\'',
+					'Fichiermodule.fk_value = {$__cakeID__$}'
+				),
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			)
+		);
 
 
-        public function beforeSave( $options = array() ) {
-            $return = parent::beforeSave( $options );
+		public function beforeSave( $options = array() ) {
+			$return = parent::beforeSave( $options );
 
-            $this->data[$this->alias]['positionbilan'] = $this->_calculPositionBilan( $this->data );
+			$this->data[$this->alias]['positionbilan'] = $this->_calculPositionBilan( $this->data );
 
-            return $return;
-        }
+			return $return;
+		}
 
 
-        protected function _calculPositionBilan( $data ){
+		protected function _calculPositionBilan( $data ){
 
-            $traitement = Set::classicExtract( $data, 'Bilanparcours66.proposition' );
+			$traitement = Set::classicExtract( $data, 'Bilanparcours66.proposition' );
 // debug($data);
-            $positionbilan = null;
-            // 'eplaudit', 'eplparc', 'attcga', 'attct', 'ajourne', 'annule'
+			$positionbilan = null;
+			// 'eplaudit', 'eplparc', 'attcga', 'attct', 'ajourne', 'annule'
 
-            if ( ( $traitement == 'audition' || $traitement == 'auditionpe' ) && empty( $saisineep ) )
-                $positionbilan = 'eplaudit';
-            elseif ( $traitement == 'parcours' && empty( $saisineep ) )
-                $positionbilan = 'eplparc';
+			if ( ( $traitement == 'audition' || $traitement == 'auditionpe' ) && empty( $saisineep ) )
+				$positionbilan = 'eplaudit';
+			elseif ( $traitement == 'parcours' && empty( $saisineep ) )
+				$positionbilan = 'eplparc';
 // // Une fois le traitement = audition et avis ep émis, alorspaser en attcga
 //             elseif( ( $traitement == 'audition' ) && !empty( $saisineep ) && ( $etapedossierep == 'traiterep' ) )
 //                 $positionbilan = 'attcga';
@@ -203,9 +203,9 @@
 
 // Si bilan annulé -> annule
 //                 $positionbilan = 'annule';
-            return $positionbilan;
+			return $positionbilan;
 
-        }
+		}
 
 
 
@@ -446,24 +446,24 @@
 						);
 
 						if( empty( $vxContratinsertion ) && ( $data[$this->alias]['choixparcours'] != 'reorientation' ) ) {
-                            /*$nbPerimes = $this->Contratinsertion->find(
-                                'count',
-                                array(
-                                    'conditions' => array(
-                                        'Contratinsertion.personne_id' => $vxOrientstruct['Orientstruct']['personne_id'],
-                                        'Contratinsertion.structurereferente_id' => $vxOrientstruct['Orientstruct']['structurereferente_id'],
-                                        'Contratinsertion.df_ci <' => date( 'Y-m-d' )
-                                    ),
-                                    'contain' => false
-                                )
-                            );*/
- //                           if( $nbPerimes == 0 ){
-                                $this->invalidate( 'choixparcours', 'Cette personne ne possède aucun CER validé dans une structure référente liée à celle de sa dernière orientation validée.' );
+							/*$nbPerimes = $this->Contratinsertion->find(
+								'count',
+								array(
+									'conditions' => array(
+										'Contratinsertion.personne_id' => $vxOrientstruct['Orientstruct']['personne_id'],
+										'Contratinsertion.structurereferente_id' => $vxOrientstruct['Orientstruct']['structurereferente_id'],
+										'Contratinsertion.df_ci <' => date( 'Y-m-d' )
+									),
+									'contain' => false
+								)
+							);*/
+//                           if( $nbPerimes == 0 ){
+								$this->invalidate( 'choixparcours', 'Cette personne ne possède aucun CER validé dans une structure référente liée à celle de sa dernière orientation validée.' );
 //                            }
 /*                            else{
-                                $this->invalidate( 'examenaudition', 'Cette personne possède un CER validé mais dont la date de fin est dépassée.' );
-                            }*/
-                            return false;
+								$this->invalidate( 'examenaudition', 'Cette personne possède un CER validé mais dont la date de fin est dépassée.' );
+							}*/
+							return false;
 
 						}
 
@@ -530,31 +530,57 @@
 						)
 					);
 
-                    // FIXME: erreur pas dans choixparcours
-                    if( $data[$this->alias]['examenaudition'] != 'DOD' && empty( $vxContratinsertion ) ) {
-                        $this->invalidate( 'examenaudition', 'Cette personne ne possède aucun CER validé dans une structure référente liée à celle de sa dernière orientation validée.' );
-                        return false;
-                    }
+					// FIXME: erreur pas dans choixparcours
+					if( $data[$this->alias]['examenaudition'] != 'DOD' && empty( $vxContratinsertion ) ) {
+						$this->invalidate( 'examenaudition', 'Cette personne ne possède aucun CER validé dans une structure référente liée à celle de sa dernière orientation validée.' );
+						return false;
+					}
+
+					$nbrdvsnonvenu = $this->Contratinsertion->Personne->Rendezvous->find(
+						'count',
+						array(
+							'conditions' => array(
+								'Rendezvous.personne_id' => $data[$this->alias]['personne_id'],
+								'Statutrdv.permetpassageepl' => 1
+							),
+							'joins' => array(
+								array(
+									'alias' => 'Statutrdv',
+									'table' => 'statutsrdvs',
+									'type' => 'INNER',
+									'conditions' => array(
+										'Rendezvous.statutrdv_id = Statutrdv.id'
+									)
+								)
+							),
+							'contain' => false
+						)
+					);
+
+					if ( $data[$this->alias]['examenaudition'] == 'DOD' && $nbrdvsnonvenu < 2 ) {
+						$this->invalidate( 'examenaudition', 'Cette personne ne possède pas assez de rendez-vous où elle ne s\'est pas présentée.' );
+						return false;
+					}
 
 					// Mise en commentaire car les dates de CER ne doivent pas être bloquantes au niveau du bilan de parcours
 					/*if( $data[$this->alias]['examenaudition'] != 'DOD' && empty( $vxContratinsertion ) ) {
-                        $nbPerimes = $this->Contratinsertion->find(
-                            'count',
-                            array(
-                                'conditions' => array(
-                                    'Contratinsertion.personne_id' => $vxOrientstruct['Orientstruct']['personne_id'],
-                                    'Contratinsertion.structurereferente_id' => $vxOrientstruct['Orientstruct']['structurereferente_id'],
-                                    'Contratinsertion.df_ci <' => date( 'Y-m-d' )
-                                ),
-                                'contain' => false
-                            )
-                        );
-                        if( $nbPerimes == 0 ){
-                            $this->invalidate( 'examenaudition', 'Cette personne ne possède aucun CER validé dans une structure référente liée à celle de sa dernière orientation validée.' );
-                        }
-                        else{
-                            $this->invalidate( 'examenaudition', 'Cette personne possède un CER validé mais dont la date de fin est dépassée.' );
-                        }
+						$nbPerimes = $this->Contratinsertion->find(
+							'count',
+							array(
+								'conditions' => array(
+									'Contratinsertion.personne_id' => $vxOrientstruct['Orientstruct']['personne_id'],
+									'Contratinsertion.structurereferente_id' => $vxOrientstruct['Orientstruct']['structurereferente_id'],
+									'Contratinsertion.df_ci <' => date( 'Y-m-d' )
+								),
+								'contain' => false
+							)
+						);
+						if( $nbPerimes == 0 ){
+							$this->invalidate( 'examenaudition', 'Cette personne ne possède aucun CER validé dans une structure référente liée à celle de sa dernière orientation validée.' );
+						}
+						else{
+							$this->invalidate( 'examenaudition', 'Cette personne possède un CER validé mais dont la date de fin est dépassée.' );
+						}
 						return false;
 					}*/
 
@@ -634,148 +660,148 @@
 			return $success;
 		}
 
-        /**
-        * Retourne le chemin relatif du modèle de document à utiliser pour l'enregistrement du PDF.
-        */
+		/**
+		* Retourne le chemin relatif du modèle de document à utiliser pour l'enregistrement du PDF.
+		*/
 
-        public function modeleOdt( $data ) {
-            return "Bilanparcours/bilanparcours.odt";
-        }
+		public function modeleOdt( $data ) {
+			return "Bilanparcours/bilanparcours.odt";
+		}
 
-        /**
-        * Récupère les données pour le PDf
-        */
+		/**
+		* Récupère les données pour le PDf
+		*/
 
-        public function getDataForPdf( $id ) {
-            // TODO: error404/error500 si on ne trouve pas les données
-            $optionModel = ClassRegistry::init( 'Option' );
-            $qual = $optionModel->qual();
-            $typevoie = $optionModel->typevoie();
-            $conditions = array( 'Bilanparcours66.id' => $id );
+		public function getDataForPdf( $id ) {
+			// TODO: error404/error500 si on ne trouve pas les données
+			$optionModel = ClassRegistry::init( 'Option' );
+			$qual = $optionModel->qual();
+			$typevoie = $optionModel->typevoie();
+			$conditions = array( 'Bilanparcours66.id' => $id );
 
-            $joins = array(
-                array(
-                    'table'      => 'orientsstructs',
-                    'alias'      => 'Orientstruct',
-                    'type'       => 'LEFT OUTER',
-                    'foreignKey' => false,
-                    'conditions' => array( 'Orientstruct.id = Bilanparcours66.orientstruct_id' )
-                ),
-                array(
-                    'table'      => 'contratsinsertion',
-                    'alias'      => 'Contratinsertion',
-                    'type'       => 'LEFT OUTER',
-                    'foreignKey' => false,
-                    'conditions' => array( 'Contratinsertion.id = Bilanparcours66.contratinsertion_id' )
-                ),
-                array(
-                    'table'      => 'personnes',
-                    'alias'      => 'Personne',
-                    'type'       => 'INNER',
-                    'foreignKey' => false,
-                    'conditions' => array(
-                        'OR' => array(
-                            'Personne.id = Orientstruct.personne_id',
-                            'Personne.id = Contratinsertion.personne_id'
-                        )
-                    )
-                ),
-                array(
-                    'table'      => 'foyers',
-                    'alias'      => 'Foyer',
-                    'type'       => 'INNER',
-                    'foreignKey' => false,
-                    'conditions' => array( 'Foyer.id = Personne.foyer_id' )
-                ),
-                array(
-                    'table'      => 'dossiers',
-                    'alias'      => 'Dossier',
-                    'type'       => 'INNER',
-                    'foreignKey' => false,
-                    'conditions' => array( 'Dossier.id = Foyer.dossier_id' )
-                ),
-                array(
-                    'table'      => 'adressesfoyers',
-                    'alias'      => 'Adressefoyer',
-                    'type'       => 'INNER',
-                    'foreignKey' => false,
-                    'conditions' => array(
-                        'Foyer.id = Adressefoyer.foyer_id',
-                        'Adressefoyer.rgadr' => '01'
-                    )
-                ),
-                array(
-                    'table'      => 'adresses',
-                    'alias'      => 'Adresse',
-                    'type'       => 'INNER',
-                    'foreignKey' => false,
-                    'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
-                ),
-                array(
-                    'table'      => 'pdfs',
-                    'alias'      => 'Pdf',
-                    'type'       => 'LEFT OUTER',
-                    'foreignKey' => false,
-                    'conditions' => array(
-                        'Pdf.modele' => $this->alias,
-                        'Pdf.fk_value = Bilanparcours66.id'
-                    )
-                ),
-            );
+			$joins = array(
+				array(
+					'table'      => 'orientsstructs',
+					'alias'      => 'Orientstruct',
+					'type'       => 'LEFT OUTER',
+					'foreignKey' => false,
+					'conditions' => array( 'Orientstruct.id = Bilanparcours66.orientstruct_id' )
+				),
+				array(
+					'table'      => 'contratsinsertion',
+					'alias'      => 'Contratinsertion',
+					'type'       => 'LEFT OUTER',
+					'foreignKey' => false,
+					'conditions' => array( 'Contratinsertion.id = Bilanparcours66.contratinsertion_id' )
+				),
+				array(
+					'table'      => 'personnes',
+					'alias'      => 'Personne',
+					'type'       => 'INNER',
+					'foreignKey' => false,
+					'conditions' => array(
+						'OR' => array(
+							'Personne.id = Orientstruct.personne_id',
+							'Personne.id = Contratinsertion.personne_id'
+						)
+					)
+				),
+				array(
+					'table'      => 'foyers',
+					'alias'      => 'Foyer',
+					'type'       => 'INNER',
+					'foreignKey' => false,
+					'conditions' => array( 'Foyer.id = Personne.foyer_id' )
+				),
+				array(
+					'table'      => 'dossiers',
+					'alias'      => 'Dossier',
+					'type'       => 'INNER',
+					'foreignKey' => false,
+					'conditions' => array( 'Dossier.id = Foyer.dossier_id' )
+				),
+				array(
+					'table'      => 'adressesfoyers',
+					'alias'      => 'Adressefoyer',
+					'type'       => 'INNER',
+					'foreignKey' => false,
+					'conditions' => array(
+						'Foyer.id = Adressefoyer.foyer_id',
+						'Adressefoyer.rgadr' => '01'
+					)
+				),
+				array(
+					'table'      => 'adresses',
+					'alias'      => 'Adresse',
+					'type'       => 'INNER',
+					'foreignKey' => false,
+					'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
+				),
+				array(
+					'table'      => 'pdfs',
+					'alias'      => 'Pdf',
+					'type'       => 'LEFT OUTER',
+					'foreignKey' => false,
+					'conditions' => array(
+						'Pdf.modele' => $this->alias,
+						'Pdf.fk_value = Bilanparcours66.id'
+					)
+				),
+			);
 
-            $queryData = array(
-                'fields' => array(
-                    'Dossier.matricule',
-                    'Adresse.numvoie',
-                    'Adresse.typevoie',
-                    'Adresse.nomvoie',
-                    'Adresse.complideadr',
-                    'Adresse.compladr',
-                    'Adresse.lieudist',
-                    'Adresse.numcomrat',
-                    'Adresse.numcomptt',
-                    'Adresse.codepos',
-                    'Adresse.locaadr',
-                    'Adresse.pays',
-                    'Personne.qual',
-                    'Personne.nom',
-                    'Personne.prenom',
-                    'Personne.nir',
-                    'Orientstruct.date_impression',
-                    'Contratinsertion.df_ci',
-                    'Contratinsertion.datevalidation_ci',
-                ),
-                'joins' => $joins,
-                'conditions' => $conditions,
-                'contain' => false
-            );
+			$queryData = array(
+				'fields' => array(
+					'Dossier.matricule',
+					'Adresse.numvoie',
+					'Adresse.typevoie',
+					'Adresse.nomvoie',
+					'Adresse.complideadr',
+					'Adresse.compladr',
+					'Adresse.lieudist',
+					'Adresse.numcomrat',
+					'Adresse.numcomptt',
+					'Adresse.codepos',
+					'Adresse.locaadr',
+					'Adresse.pays',
+					'Personne.qual',
+					'Personne.nom',
+					'Personne.prenom',
+					'Personne.nir',
+					'Orientstruct.date_impression',
+					'Contratinsertion.df_ci',
+					'Contratinsertion.datevalidation_ci',
+				),
+				'joins' => $joins,
+				'conditions' => $conditions,
+				'contain' => false
+			);
 
-            $data = $this->find( 'first', $queryData );
+			$data = $this->find( 'first', $queryData );
 // debug($data);
 // die();
-            $data['Personne']['qual'] = Set::enum( $data['Personne']['qual'], $qual );
-            $data['Adresse']['typevoie'] = Set::enum( $data['Adresse']['typevoie'], $typevoie );
+			$data['Personne']['qual'] = Set::enum( $data['Personne']['qual'], $qual );
+			$data['Adresse']['typevoie'] = Set::enum( $data['Adresse']['typevoie'], $typevoie );
 
-            return $data;
-        }
+			return $data;
+		}
 
-        /**
-        *
-        */
+		/**
+		*
+		*/
 
-        public function getPdfCourrierInformation( $id ) {
+		public function getPdfCourrierInformation( $id ) {
 
-            $gedooo_data = $this->getDataForPdf( $id );
-            $this->updateAll(
-                array( 'Bilanparcours66.datecourrierimpression' => "'".date( 'Y-m-d' )."'" ),
-                array(
-                    '"Bilanparcours66"."datecourrierimpression" IS NULL',
-                    '"Bilanparcours66"."id"' => $id
-                )
-            );
+			$gedooo_data = $this->getDataForPdf( $id );
+			$this->updateAll(
+				array( 'Bilanparcours66.datecourrierimpression' => "'".date( 'Y-m-d' )."'" ),
+				array(
+					'"Bilanparcours66"."datecourrierimpression" IS NULL',
+					'"Bilanparcours66"."id"' => $id
+				)
+			);
 
-            return $this->ged( $gedooo_data, 'Bilanparcours/courrierinformationavantep.odt'/*, true, $options*/ );
-        }
+			return $this->ged( $gedooo_data, 'Bilanparcours/courrierinformationavantep.odt'/*, true, $options*/ );
+		}
 
 	}
 ?>

@@ -17,7 +17,12 @@
 <fieldset>
 	<?php
 		echo $form->input( 'Statutrdv.libelle', array( 'label' =>  required( __( 'Statut du RDV', true ) ), 'type' => 'text' ) );
-		echo $form->input( 'Statutrdv.provoquepassageep', array( 'legend' =>  required( __( 'Provoque un passage en EP ?', true ) ), 'fieldset' => false, 'type' => 'radio', 'options' => $provoquepassageep ) );
+		if ( Configure::read( 'Cg.departement' ) == 58 ) {
+			echo $form->input( 'Statutrdv.provoquepassageep', array( 'legend' =>  required( __( 'Provoque un passage en EP ?', true ) ), 'fieldset' => false, 'type' => 'radio', 'options' => $provoquepassageep ) );
+		}
+		elseif ( Configure::read( 'Cg.departement' ) == 66 ) {
+			echo $form->input( 'Statutrdv.permetpassageepl', array( 'legend' =>  required( __( 'Permet un passage en EPL Audition ?', true ) ), 'fieldset' => false, 'type' => 'radio', 'options' => $permetpassageepl ) );
+		}
 	?>
 </fieldset>
 
