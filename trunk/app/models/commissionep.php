@@ -1386,66 +1386,179 @@
 			$convocation = array( 'Participant' => $convocation['Membreep'], 'Commissionep' => $convocation['Commissionep'] );
 
 			// FIXME: doc
-			$queryData = array(
-				'fields' => array(
-					'Dossierep.themeep',
-					'Adresse.locaadr',
-					'COUNT("Dossierep"."id") AS "nombre"',
-				),
-				'joins' => array(
-					array(
-						'table'      => 'passagescommissionseps',
-						'alias'      => 'Passagecommissionep',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( "Dossierep.id = Passagecommissionep.dossierep_id" ),
+			if ( Configure::read( 'Cg.departement' == 93 ) || Configure::read( 'Cg.departement' == 58 ) ) {
+				$queryData = array(
+					'fields' => array(
+						'Dossierep.themeep',
+						'Adresse.locaadr',
+						'COUNT("Dossierep"."id") AS "nombre"',
 					),
-					array(
-						'table'      => 'personnes',
-						'alias'      => 'Personne',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( "Dossierep.personne_id = Personne.id" ),
-					),
-					array(
-						'table'      => 'foyers',
-						'alias'      => 'Foyer',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Personne.foyer_id = Foyer.id' )
-					),
-					array(
-						'table'      => 'adressesfoyers',
-						'alias'      => 'Adressefoyer',
-						'type'       => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array(
-							'Foyer.id = Adressefoyer.foyer_id',
-							// FIXME: c'est un hack pour n'avoir qu'une seule adresse de range 01 par foyer!
-							'Adressefoyer.id IN (
-								'.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01('Adressefoyer.foyer_id').'
-							)'
+					'joins' => array(
+						array(
+							'table'      => 'passagescommissionseps',
+							'alias'      => 'Passagecommissionep',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array( "Dossierep.id = Passagecommissionep.dossierep_id" ),
+						),
+						array(
+							'table'      => 'personnes',
+							'alias'      => 'Personne',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array( "Dossierep.personne_id = Personne.id" ),
+						),
+						array(
+							'table'      => 'foyers',
+							'alias'      => 'Foyer',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array( 'Personne.foyer_id = Foyer.id' )
+						),
+						array(
+							'table'      => 'adressesfoyers',
+							'alias'      => 'Adressefoyer',
+							'type'       => 'LEFT OUTER',
+							'foreignKey' => false,
+							'conditions' => array(
+								'Foyer.id = Adressefoyer.foyer_id',
+								// FIXME: c'est un hack pour n'avoir qu'une seule adresse de rang 01 par foyer!
+								'Adressefoyer.id IN (
+									'.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01('Adressefoyer.foyer_id').'
+								)'
+							)
+						),
+						array(
+							'table'      => 'adresses',
+							'alias'      => 'Adresse',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
 						)
 					),
-					array(
-						'table'      => 'adresses',
-						'alias'      => 'Adresse',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
+					'conditions' => array(
+						'Passagecommissionep.commissionep_id' => $convocation['Commissionep']['id']
+					),
+					'group' => array(
+						'Dossierep.themeep',
+						'Adresse.locaadr'
+					),
+					'order' => array(
+						'Adresse.locaadr ASC'
 					)
-				),
-				'conditions' => array(
-					'Passagecommissionep.commissionep_id' => $convocation['Commissionep']['id']
-				),
-				'group' => array(
-					'Dossierep.themeep',
-					'Adresse.locaadr'
-				),
-				'order' => array(
-					'Adresse.locaadr ASC'
-				)
-			);
+				);
+			}
+			else {
+				$queryData = array(
+					'fields' => array(
+						'Dossierep.id',
+						'Dossierep.personne_id',
+						'Passagecommissionep.commissionep_id',
+						'Passagecommissionep.etatdossierep',
+						'Dossierep.themeep',
+						'Dossierep.created',
+						'Dossierep.modified',
+						//
+						'Personne.id',
+						'Personne.foyer_id',
+						'Personne.qual',
+						'Personne.nom',
+						'Personne.prenom',
+						'Personne.nomnai',
+						'Personne.prenom2',
+						'Personne.prenom3',
+						'Personne.nomcomnai',
+						'Personne.dtnai',
+						'Personne.rgnai',
+						'Personne.typedtnai',
+						'Personne.nir',
+						'Personne.topvalec',
+						'Personne.sexe',
+						'Personne.nati',
+						'Personne.dtnati',
+						'Personne.pieecpres',
+						'Personne.idassedic',
+						'Personne.numagenpoleemploi',
+						'Personne.dtinscpoleemploi',
+						'Personne.numfixe',
+						'Personne.numport',
+						'Adresse.locaadr',
+						'Adresse.numcomptt',
+						'Adresse.codepos',
+						//
+// 						'Saisinebilanparcoursep66.origine',
+// 						'Saisinepdoep66.origine',
+						'Defautinsertionep66.origine'
+					),
+					'joins' => array(
+// 						array(
+// 							'table'      => 'saisinesbilansparcourseps66',
+// 							'alias'      => 'Saisinebilanparcoursep66',
+// 							'type'       => 'LEFT OUTER',
+// 							'foreignKey' => false,
+// 							'conditions' => array( "Dossierep.id = Saisinebilanparcoursep66.dossierep_id" ),
+// 						),
+// 						array(
+// 							'table'      => 'saisinespdoseps66',
+// 							'alias'      => 'Saisinepdoep66',
+// 							'type'       => 'LEFT OUTER',
+// 							'foreignKey' => false,
+// 							'conditions' => array( "Dossierep.id = Saisinepdoep66.dossierep_id" ),
+// 						),
+						array(
+							'table'      => 'defautsinsertionseps66',
+							'alias'      => 'Defautinsertionep66',
+							'type'       => 'LEFT OUTER',
+							'foreignKey' => false,
+							'conditions' => array( "Dossierep.id = Defautinsertionep66.dossierep_id" ),
+						),
+						array(
+							'table'      => 'passagescommissionseps',
+							'alias'      => 'Passagecommissionep',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array( "Dossierep.id = Passagecommissionep.dossierep_id" ),
+						),
+						array(
+							'table'      => 'personnes',
+							'alias'      => 'Personne',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array( "Dossierep.personne_id = Personne.id" ),
+						),
+						array(
+							'table'      => 'foyers',
+							'alias'      => 'Foyer',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array( 'Personne.foyer_id = Foyer.id' )
+						),
+						array(
+							'table'      => 'adressesfoyers',
+							'alias'      => 'Adressefoyer',
+							'type'       => 'LEFT OUTER',
+							'foreignKey' => false,
+							'conditions' => array(
+								'Foyer.id = Adressefoyer.foyer_id',
+								// FIXME: c'est un hack pour n'avoir qu'une seule adresse de rang 01 par foyer!
+								'Adressefoyer.id IN (
+									'.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01('Adressefoyer.foyer_id').'
+								)'
+							)
+						),
+						array(
+							'table'      => 'adresses',
+							'alias'      => 'Adresse',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
+						)
+					),
+					'conditions' => array(
+						'Passagecommissionep.commissionep_id' => $convocation['Commissionep']['id']
+					)
+				);
+			}
 
 			$options = array( 'Personne' => array( 'qual' => ClassRegistry::init( 'Option' )->qual() ) );
 			$options = Set::merge( $options, $this->enums() );
@@ -1465,25 +1578,27 @@
 			$themesTraites = array_keys( $themesTraites );
 			sort( $themesTraites );
 
-			$dossiersParCommune = array();
-			foreach( $dossierseps as $dossierep ) {
-				$commune = $dossierep['Adresse']['locaadr'];
-				if( !isset( $dossiersParCommune[$commune] ) ) {
-					$dossiersParCommune[$commune] = array();
+			if ( Configure::read( 'Cg.departemenet' ) == 93 || Configure::read( 'Cg.departemenet' ) == 58 ) {
+				$dossiersParCommune = array();
+				foreach( $dossierseps as $dossierep ) {
+					$commune = $dossierep['Adresse']['locaadr'];
+					if( !isset( $dossiersParCommune[$commune] ) ) {
+						$dossiersParCommune[$commune] = array();
+					}
+					$dossiersParCommune[$commune][$dossierep['Dossierep']['themeep']] = $dossierep[0]['nombre'];
 				}
-				$dossiersParCommune[$commune][$dossierep['Dossierep']['themeep']] = $dossierep[0]['nombre'];
-			}
 
-			$dossierseps = array();
-			$default = array();
-			foreach( $themesTraites as $themeTraite ) {
-				$default[Inflector::pluralize($themeTraite)] = 0;
-			}
+				$dossierseps = array();
+				$default = array();
+				foreach( $themesTraites as $themeTraite ) {
+					$default[Inflector::pluralize($themeTraite)] = 0;
+				}
 
-			foreach( $dossiersParCommune as $commune => $dossierParCommune ) {
-				$dossierParCommune = array_merge( array( 'commune' => $commune ), $default, $dossierParCommune );
-				$dossierParCommune['total'] = array_sum( $dossierParCommune );
-				$dossierseps[] = $dossierParCommune;
+				foreach( $dossiersParCommune as $commune => $dossierParCommune ) {
+					$dossierParCommune = array_merge( array( 'commune' => $commune ), $default, $dossierParCommune );
+					$dossierParCommune['total'] = array_sum( $dossierParCommune );
+					$dossierseps[] = $dossierParCommune;
+				}
 			}
 
 			// present, excuse, FIXME: remplace_par
@@ -1520,7 +1635,14 @@
 			);
 
 			$options['Foyer']['sitfam'] = ClassRegistry::init( 'Option' )->sitfam();
-
+// debug(array_merge(
+// array(
+// $convocation,
+// 'Dossierseps' => $dossierseps,
+// 'Fichessynthetiques' => $fichessynthetiques
+// ),
+// $reponses
+// ));die();
 			return $this->ged(
 				array_merge(
 					array(
