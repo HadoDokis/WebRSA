@@ -1530,7 +1530,7 @@
 					),
 					$reponses
 				),
-				"{$this->alias}/ordredujour_participant.odt",
+				"{$this->alias}/ordredujour_participant_".Configure::read( 'Cg.departement' ).".odt",
 				true,
 				$options
 			);
