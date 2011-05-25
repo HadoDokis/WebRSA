@@ -147,6 +147,15 @@ ALTER TABLE membreseps ALTER COLUMN organisme SET DEFAULT NULL;
 SELECT add_missing_table_field ('public', 'passagescommissionseps', 'impressiondecision', 'DATE');
 ALTER TABLE passagescommissionseps ALTER COLUMN impressiondecision SET DEFAULT NULL;
 
+-- *******************************************************************************************************
+-- 20110525, ajout d'un champ pour la détection du statut de rdv qui va permettre en passage en
+-- epl audition
+-- *******************************************************************************************************
+SELECT add_missing_table_field ('public', 'statutsrdvs', 'permetpassageepl', 'TYPE_BOOLEANNUMBER');
+ALTER TABLE statutsrdvs ALTER COLUMN permetpassageepl SET DEFAULT '0';
+UPDATE statutsrdvs SET permetpassageepl = '0' WHERE permetpassageepl IS NULL;
+ALTER TABLE statutsrdvs ALTER COLUMN permetpassageepl SET NOT NULL;
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
