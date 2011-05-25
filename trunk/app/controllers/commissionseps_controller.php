@@ -12,7 +12,7 @@
 	{
 		public $helpers = array( 'Default', 'Default2', 'Ajax' );
 		public $uses = array( 'Commissionep', 'Option' );
-		public $components = array( 'Prg' => array( 'actions' => array( 'index', 'creationmodification', 'attributiondossiers', 'arbitrage', 'recherche' ) ), 'Gedooo' );
+		public $components = array( 'Prg' => array( 'actions' => array( 'index', 'creationmodification', 'attributiondossiers', 'arbitrageep', 'arbitragecg', 'recherche', 'decisions' ) ), 'Gedooo' );
 		public $aucunDroit = array( 'ajaxadresse' );
 
 		/**
