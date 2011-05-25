@@ -211,11 +211,11 @@
 						$themeData[$key][$modeleDecisions]['dureesursis'] = null;
 						$themeData[$key][$modeleDecisions]['montantreduction'] = Configure::read( "{$this->alias}.montantReduction" );
 					}
-					else if( $themeData[$key][$modeleDecisions]['decision'] == '1sursis' ) {
+					else if( $themeData[$key][$modeleDecisions]['decision'] == '1delai' ) {
 						$themeData[$key][$modeleDecisions]['montantreduction'] = null;
 						$themeData[$key][$modeleDecisions]['dureesursis'] = Configure::read( "{$this->alias}.dureeSursis" );
 					}
-					else if( in_array( $themeData[$key][$modeleDecisions]['decision'],  array( '1maintien', '1pasavis', '1delai' ) ) ) {
+					else if( in_array( $themeData[$key][$modeleDecisions]['decision'],  array( '1maintien', '1pasavis', '2pasavis', 'reporte' ) ) ) {
 						$themeData[$key][$modeleDecisions]['montantreduction'] = null;
 						$themeData[$key][$modeleDecisions]['dureesursis'] = null;
 					}
