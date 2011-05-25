@@ -302,7 +302,7 @@
 						$this->Nonrespectsanctionep93->Dossierep->create( $dossierep );
 						$success = $this->Nonrespectsanctionep93->Dossierep->save() && $success;
 
-						$rgpassage = $this->Nonrespectsanctionep93->find(
+						$nbpassagespcd = $this->Nonrespectsanctionep93->find(
 							'count',
 							array(
 								'conditions' => array(
@@ -318,7 +318,7 @@
 								'dossierep_id' => $this->Nonrespectsanctionep93->Dossierep->id,
 								'historiqueetatpe_id' => $item['id'],
 								'origine' => 'radiepe',
-								'rgpassage' => $rgpassage,
+								'rgpassage' => ( $nbpassagespcd + 1 ),
 								'active' => 0
 							)
 						);

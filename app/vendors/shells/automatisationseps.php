@@ -130,7 +130,7 @@
 									'table' => 'nonrespectssanctionseps93',
 									'type' => 'INNER',
 									'conditions' => array(
-										'Nonrespectsanctionep93.dossierep_id' => 'Dossierep.id'
+										'Nonrespectsanctionep93.dossierep_id = Dossierep.id'
 									)
 								)
 							),
