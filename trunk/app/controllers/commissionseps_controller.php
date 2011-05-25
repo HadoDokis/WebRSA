@@ -727,7 +727,7 @@
 
 			$this->set('etatsActions', $this->etatsActions);
 		}
-		
+
 		/**
 		 * Passe une commission dont l'id est passé en paramètre en validé
 		 */
@@ -1058,7 +1058,7 @@ die();*/
 			$pdf = $this->Commissionep->Passagecommissionep->Dossierep->getDecisionPdf( $etape, $passagecommissionep_id  );
 
 			if( $pdf ) {
-				$this->Gedooo->sendPdfContentToClient( $pdf, 'CourrierDecision' );
+				$this->Gedooo->sendPdfContentToClient( $pdf, "CourrierDecision-{$passagecommissionep_id}.pdf" );
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer le courrier de décision', 'default', array( 'class' => 'error' ) );
