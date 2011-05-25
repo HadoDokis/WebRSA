@@ -7,7 +7,7 @@
 
 		var $aucunDroit = array( 'ajaxstruct', 'ajaxetatpdo', 'ajaxetat1', 'ajaxetat2', 'ajaxetat3', 'ajaxetat4', 'ajaxetat5', 'ajaxfichecalcul' );
 
-        var $components = array( 'Fileuploader' );
+        var $components = array( 'Fileuploader', 'Gedooo' );
 
 		var $helpers = array( 'Default', 'Default2', 'Ajax', 'Fileuploader' );
 
@@ -485,6 +485,25 @@
             $this->assert( !empty( $fichiermodule_id ), 'error404' );
             $this->Fileuploader->download( $fichiermodule_id );
         }
+
+
+        /**
+        *    Génération du courrier de PDO pour le bénéficiaire
+        */
+        public function printCourrier( $propopdo_id ) {
+
+            $pdf = $this->Propopdo->getCourrierPdo( $propopdo_id );
+
+            if( $pdf ) {
+                $this->Gedooo->sendPdfContentToClient( $pdf, 'CourrierPdo' );
+            }
+            else {
+                $this->Session->setFlash( 'Impossible de générer le courrier d\'information', 'default', array( 'class' => 'error' ) );
+                $this->redirect( $this->referer() );
+            }
+        }
+
+
 
 	}
 ?>

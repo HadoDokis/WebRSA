@@ -17,6 +17,7 @@
 			),
 			'Formattable',
 			'Autovalidate',
+			'Gedooo'
 		);
 
 		public $validate = array(
@@ -256,6 +257,7 @@
                     '"Decisionpropopdo"."decisionpdo_id"',
                     '"Decisionpropopdo"."datedecisionpdo"',
                     '"Decisionpropopdo"."commentairepdo"',
+                    '"Decisionpdo"."libelle"',
 					'"Personne"."id"',
 					'"Personne"."pieecpres"',
 				),
@@ -340,6 +342,13 @@
                         'type'       => 'LEFT OUTER',
                         'foreignKey' => false,
                         'conditions' => array( 'Decisionpropopdo.propopdo_id = Propopdo.id' )
+                    ),
+                    array(
+                        'table'      => 'decisionspdos',
+                        'alias'      => 'Decisionpdo',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Decisionpdo.id = Decisionpropopdo.decisionpdo_id' )
                     ),
 				),
 				/*'order' => 'Propopdo.datedecisionpdo ASC'*/
@@ -506,6 +515,122 @@
 			
 			return $return;
 		}
+
+
+
+        public function getCourrierPdo( $propopdo_id ) {
+
+           $queryData = array(
+                'fields' => array(
+                    'Propopdo.id',
+                    'Propopdo.personne_id',
+                    'Propopdo.typepdo_id',
+                    'Propopdo.typenotifpdo_id',
+                    'Propopdo.originepdo_id',
+                    'Propopdo.datereceptionpdo',
+                    'Propopdo.motifpdo',
+                    'Propopdo.orgpayeur',
+                    'Propopdo.serviceinstructeur_id',
+                    'Propopdo.user_id',
+                    'Propopdo.categoriegeneral',
+                    'Propopdo.iscomplet',
+                    'Propopdo.categoriedetail',
+                    'Propopdo.etatdossierpdo',
+                    'Decisionpropopdo.decisionpdo_id',
+                    'Decisionpropopdo.datedecisionpdo',
+                    'Decisionpropopdo.commentairepdo',
+                    'Decisionpdo.libelle',
+                    'Personne.nom',
+                    'Personne.prenom',
+                    'Personne.qual',
+                    'Foyer.sitfam',
+                ),
+                'recursive' => -1,
+                'joins' => array(
+                    array(
+                        'table'      => 'personnes',
+                        'alias'      => 'Personne',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Propopdo.personne_id = Personne.id' ),
+                    ),
+                    array(
+                        'table'      => 'foyers',
+                        'alias'      => 'Foyer',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Personne.foyer_id = Foyer.id' )
+                    ),
+                    array(
+                        'table'      => 'dossiers',
+                        'alias'      => 'Dossier',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Dossier.id = Foyer.dossier_id' )
+                    ),
+                    array(
+                        'table'      => 'adressesfoyers',
+                        'alias'      => 'Adressefoyer',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array(
+                            'Foyer.id = Adressefoyer.foyer_id',
+                            'Adressefoyer.id IN (
+                                '.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01('Adressefoyer.foyer_id').'
+                            )'
+                        )
+                    ),
+                    array(
+                        'table'      => 'adresses',
+                        'alias'      => 'Adresse',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
+                    ),
+                    array(
+                        'table'      => 'decisionspropospdos',
+                        'alias'      => 'Decisionpropopdo',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Decisionpropopdo.propopdo_id = Propopdo.id' )
+                    ),
+                    array(
+                        'table'      => 'decisionspdos',
+                        'alias'      => 'Decisionpdo',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Decisionpdo.id = Decisionpropopdo.decisionpdo_id' )
+                    ),
+                ),
+                'conditions' => array(
+                    'Propopdo.id' => $propopdo_id
+                )
+            );
+
+            $propopdo = $this->find( 'first', $queryData );
+
+            $libelleDecision = Set::classicExtract( $propopdo, 'Decisionpdo.libelle' );
+
+            if( ereg("DO 10", $libelleDecision ) ) {
+                $nomModele = 'pdo_etudiant';
+            }
+            else if( ereg("DO 19", $libelleDecision ) ) {
+                $nomModele = 'pdo_insertion';
+            }
+            $options['Foyer']['sitfam'] = ClassRegistry::init( 'Option' )->sitfam();
+// debug($propopdo );
+// die();
+
+            return $this->ged(
+                $propopdo,
+                "PDO/{$nomModele}.odt",
+                false,
+                $options
+            );
+        }
+
+
+
 
 	}
 ?>

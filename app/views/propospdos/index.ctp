@@ -66,7 +66,7 @@
 		                <th>Date de la décision CG</th>
 		                <th>Commentaire PDO</th>
 <!-- 		                <th>Etat du dossier PDO</th> -->
-		                <th colspan="3" class="action">Actions</th>
+		                <th colspan="4" class="action">Actions</th>
 					<?php } ?>
                 </tr>
             </thead>
@@ -99,6 +99,19 @@
 		                    );
 						}
 						else {
+                            
+                            
+                            
+                            
+                            $authPrintcourrier = false;
+                            $libelleDecision = Set::classicExtract( $pdo, 'Decisionpdo.libelle' );
+                            if( ereg("DO 10", $libelleDecision ) || ereg("DO 19", $libelleDecision ) ) {
+                                $authPrintcourrier = true;
+                            }
+                            else{
+                                $authPrintcourrier = false;
+                            }
+
 
 							echo $xhtml->tableCells(
 		                        array(
@@ -121,7 +134,12 @@
 		                                'Éditer le dossier PDO',
 		                                array( 'controller' => 'propospdos', 'action' => 'edit', $pdo['Propopdo']['id'] ),
 		                                $permissions->check( 'propospdos', 'edit' )
-		                            )
+		                            ),
+                                    $xhtml->printLink(
+                                        'Imprimer',
+                                        array( 'controller' => 'propospdos', 'action' => 'printCourrier', $pdo['Propopdo']['id'] ),
+                                        ( $authPrintcourrier && $permissions->check( 'propospdos', 'printCourrier' ) )
+                                    )
 		                        ),
 		                        array( 'class' => 'odd' ),
 		                        array( 'class' => 'even' )
