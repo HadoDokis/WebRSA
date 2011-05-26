@@ -44,7 +44,7 @@ msgid "Covs58::decisioncov"
 msgstr "Décisions"
 
 msgid "Covs58::index"
-msgstr "Commision de la COV"
+msgstr "Commission de la COV"
 
 msgid "Covs58::ordredujour"
 msgstr "Imprimer l'ordre du jour"
