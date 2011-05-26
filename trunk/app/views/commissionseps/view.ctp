@@ -120,11 +120,11 @@
 				<td><?php echo isset( $commissionep['Commissionep']['villeseance'] ) ? $commissionep['Commissionep']['villeseance'] : null ;?></td>
 			</tr>
 			<tr class="even">
-				<th><?php echo "Salle de la commision";?></th>
+				<th><?php echo "Salle de la commission";?></th>
 				<td><?php echo isset( $commissionep['Commissionep']['salle'] ) ? $commissionep['Commissionep']['salle'] : null ;?></td>
 			</tr>
 			<tr class="odd">
-				<th><?php echo "Observations de la commision";?></th>
+				<th><?php echo "Observations de la commission";?></th>
 				<td><?php echo isset( $commissionep['Commissionep']['observations'] ) ? $commissionep['Commissionep']['observations'] : null ;?></td>
 			</tr>
 			<tr class="even">

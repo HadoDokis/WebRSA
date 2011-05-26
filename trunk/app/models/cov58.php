@@ -1,6 +1,6 @@
 <?php
 	/**
-	* Commision d'orientation et validation (COV)
+	* Commission d'orientation et validation (COV)
 	*
 	* PHP versions 5
 	*
