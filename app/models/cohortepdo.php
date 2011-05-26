@@ -43,7 +43,7 @@
 
 			/// Critères
 			$typepdo_id = Set::extract( $criterespdo, 'Cohortepdo.typepdo_id' );
-			$decisionpdo_id = Set::extract( $criterespdo, 'Cohortepdo.decisionpdo_id' );
+			$decisionpdo = Set::extract( $criterespdo, 'Cohortepdo.decisionpdo_id' );
 			$motifpdo = Set::extract( $criterespdo, 'Cohortepdo.motifpdo' );
 			$datedecisionpdo = Set::extract( $criterespdo, 'Cohortepdo.datedecisionpdo' );
 			$matricule = Set::extract( $criterespdo, 'Cohortepdo.matricule' );
@@ -104,10 +104,10 @@
 				}
 			}
 
-			// Décision CG
-			if( !empty( $decisionpdo_id ) ) {
-				$conditions[] = 'Propopdo.decisionpdo_id = \''.$decisionpdo_id.'\'';
-			}
+            // Décision de la PDO
+            if( !empty( $decisionpdo ) ) {
+                $conditions[] = 'Decisionpropopdo.decisionpdo_id = \''.Sanitize::clean( $decisionpdo ).'\'';
+            }
 
 			// Décision CG
 			if( !empty( $gestionnaire ) ) {
@@ -195,6 +195,13 @@
 						'foreignKey' => false,
 						'conditions' => array( 'Propopdo.personne_id = Personne.id' )
 					),
+					array(
+                        'table'      => 'decisionspropospdos',
+                        'alias'      => 'Decisionpropopdo',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Decisionpropopdo.propopdo_id = Propopdo.id' )
+                    ),
 					array(
 						'table'      => 'traitementspdos',
 						'alias'      => 'Traitementpdo',
