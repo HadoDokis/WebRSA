@@ -511,7 +511,6 @@
 						),
 						'conditions' => array(
 							'Nonrespectsanctionep93.dossierep_id IS NULL',
-							'Nonrespectsanctionep93.decision IS NULL',
 							'Nonrespectsanctionep93.sortienvcontrat <>' => '1',
 							'Nonrespectsanctionep93.active' => '1',
 							'Nonrespectsanctionep93.created <' => "{$data['Contratinsertion']['datevalidation_ci']['year']}-{$data['Contratinsertion']['datevalidation_ci']['month']}-{$data['Contratinsertion']['datevalidation_ci']['day']}",
