@@ -245,3 +245,6 @@ msgstr "Oui"
 
 msgid "ENUM::HASPIECEJOINTE::0"
 msgstr "Non"
+
+msgid "Contratinsertion.present"
+msgstr "Présence d'un contrat ?"
