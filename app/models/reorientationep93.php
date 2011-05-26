@@ -796,5 +796,28 @@
 
 			return $this->ged( $gedooo_data, "Commissionep/convocationep_beneficiaire.odt" );
 		}
+
+		/**
+		 * Fonction retournant ce qui va aller dans un contain permettant de retrouver la liste des
+		 * dossierseps liés à une commission
+		 */
+		public function qdContainListeDossier() {
+			return array(
+				'Dossierep' => array(
+					$this->alias,
+					'Personne' => array(
+						'Foyer' => array(
+							'Dossier',
+							'Adressefoyer' => array(
+								'conditions' => array(
+									'Adressefoyer.rgadr' => '01'
+								),
+								'Adresse'
+							)
+						)
+					)
+				)
+			);
+		}
 	}
 ?>
