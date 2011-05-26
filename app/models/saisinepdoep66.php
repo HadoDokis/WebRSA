@@ -427,6 +427,7 @@
 // 					'Decisionsaisinepdoep66.saisinepdoep66_id',
 					'Decisionsaisinepdoep66.etape',
 					'Decisionsaisinepdoep66.decisionpdo_id',
+					'Decisionsaisinepdoep66.decision',
 					'Decisionsaisinepdoep66.commentaire',
 					'Decisionsaisinepdoep66.nonadmis',
 					'Decisionsaisinepdoep66.motifpdo',
