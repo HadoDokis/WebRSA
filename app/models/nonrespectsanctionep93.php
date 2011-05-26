@@ -482,6 +482,7 @@
 					'Personne.prenom',
 					'Personne.dtnai',
 					'Personne.nir',
+					'Adresse.locaadr',
 					'Typeorient.lib_type_orient',
 					'(CASE WHEN "Contratinsertion"."id" IS NOT NULL THEN true ELSE false END ) AS "Contratinsertion__present"'
 				),
@@ -505,6 +506,26 @@
 						'foreignKey' => false,
 						'conditions' => array( 'Personne.foyer_id = Foyer.id' )
 					),
+					array(
+                        'table'      => 'adressesfoyers',
+                        'alias'      => 'Adressefoyer',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array(
+                            'Foyer.id = Adressefoyer.foyer_id',
+                            // FIXME: c'est un hack pour n'avoir qu'une seule adresse de range 01 par foyer!
+                            'Adressefoyer.id IN (
+                                '.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01('Adressefoyer.foyer_id').'
+                            )'
+                        )
+                    ),
+                    array(
+                        'table'      => 'adresses',
+                        'alias'      => 'Adresse',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
+                    ),
 					array(
 						'table'      => 'dossiers',
 						'alias'      => 'Dossier',
