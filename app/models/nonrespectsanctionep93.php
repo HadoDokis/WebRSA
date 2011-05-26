@@ -481,7 +481,9 @@
 					'Personne.nom',
 					'Personne.prenom',
 					'Personne.dtnai',
-					'Personne.nir'
+					'Personne.nir',
+					'Typeorient.lib_type_orient',
+					'(CASE WHEN "Contratinsertion"."id" IS NOT NULL THEN true ELSE false END ) AS "Contratinsertion__present"'
 				),
 				'contain' => false,
 				'joins' => array(
@@ -554,7 +556,34 @@
 									WHERE t.lib_type_orient LIKE \'Emploi%\'
 							)'// FIXME
 						)
-					)
+					),
+					array(
+                        'table'      => 'contratsinsertion', // FIXME:
+                        'alias'      => 'Contratinsertion',
+                        'type'       => 'LEFT OUTER',
+                        'foreignKey' => false,
+                        'conditions' => array(
+                            'Personne.id = Contratinsertion.personne_id',
+                            'Contratinsertion.id IN (
+                                SELECT cer.id
+                                    FROM contratsinsertion AS cer
+                                    WHERE
+                                        cer.personne_id = Personne.id
+                                        AND cer.df_ci IS NOT NULL
+                                    ORDER BY cer.df_ci DESC
+                                    LIMIT 1
+                            )',
+                        )
+                    ),
+                    array(
+                        'table'      => 'typesorients', // FIXME:
+                        'alias'      => 'Typeorient',
+                        'type'       => 'INNER',
+                        'foreignKey' => false,
+                        'conditions' => array(
+                            'Typeorient.id = Orientstruct.typeorient_id',
+                        )
+                    )
 				),
 				'conditions' => array(
 					'Personne.id NOT IN ( '.
