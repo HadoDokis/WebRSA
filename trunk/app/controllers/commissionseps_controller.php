@@ -183,7 +183,7 @@
 						$this->paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'cree', 'associe' );
 						break;
 					case 'arbitrageep':
-						$this->paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'associe', 'presence', 'decisionep', 'traiteep', 'decisioncg', 'traite' );
+						$this->paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'associe', 'valide', 'presence', 'decisionep', 'traiteep', 'decisioncg', 'traite' );
 						break;
 					case 'arbitragecg':
 						$this->paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'traiteep', 'decisioncg', 'traite' );
