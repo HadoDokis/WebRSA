@@ -183,6 +183,7 @@
 					"{$modeleDecisions}.decision",
 					"{$modeleDecisions}.observ_ci",
 					"{$modeleDecisions}.datevalidation_ci",
+					"{$modeleDecisions}.commentaire",
 					"{$modeleDecisions}.raisonnonpassage",
 					"{$modeleDecisions}.created",
 					"{$modeleDecisions}.modified",
