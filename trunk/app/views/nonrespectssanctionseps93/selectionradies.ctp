@@ -9,6 +9,7 @@
 			'Personne.nom' => array( 'sort' => false ),
 			'Personne.prenom',
 			'Personne.dtnai',
+			'Adresse.locaadr',
 			'Historiqueetatpe.date',
 			'Typeorient.lib_type_orient',
 			'Contratinsertion.present' => array( 'type' => 'boolean' )
