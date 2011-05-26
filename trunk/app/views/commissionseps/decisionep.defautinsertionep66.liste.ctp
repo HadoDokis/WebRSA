@@ -11,7 +11,7 @@ echo '<table><thead>
 <th>Motif saisine</th>
 <th>Date de radiation</th>
 <th>Motif de radiation</th>
-<th colspan="5">Avis EPL</th>
+<th colspan="4">Avis EPL</th>
 <th>Observations</th>
 </tr>
 </thead><tbody>';
