@@ -38,7 +38,8 @@
                             'hidden' => array( 'Dossierep.id', 'Passagecommissionep.id' ),
                             'paginate' => 'Dossierep',
                             'actions' => array( 'Personnes::view' ),
-                            'id' => $theme
+                            'id' => $theme,
+							'labelcohorte' => 'Enregistrer'
                         )
                     );
                     echo "</div>";

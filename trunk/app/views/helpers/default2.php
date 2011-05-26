@@ -552,7 +552,14 @@
 	// 					}
 	// 				}
 
-				$return .= $this->Xform->submit( __( 'Validate', true ), array( 'name' => 'cohorte' ) );
+				if( isset( $cohorteParams['labelcohorte'] ) ) {
+					$labelcohorte = $cohorteParams['labelcohorte'];
+				}
+				else {
+					$labelcohorte = __( 'Validate', true );
+				}
+
+				$return .= $this->Xform->submit( $labelcohorte, array( 'name' => 'cohorte' ) );
 				$return .= $this->Xform->end();
 				$return = $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false ).$return;
 			}
