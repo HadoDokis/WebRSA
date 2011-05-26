@@ -1054,8 +1054,8 @@ die();*/
 		* d'un dossier d'EP pour un certain niveau de décision.
 		*/
 
-		public function impressionDecision( $etape, $passagecommissionep_id ) {
-			$pdf = $this->Commissionep->Passagecommissionep->Dossierep->getDecisionPdf( $etape, $passagecommissionep_id  );
+		public function impressionDecision( $passagecommissionep_id ) {
+			$pdf = $this->Commissionep->Passagecommissionep->Dossierep->getDecisionPdf( $passagecommissionep_id  );
 
 			if( $pdf ) {
 				$this->Gedooo->sendPdfContentToClient( $pdf, "CourrierDecision-{$passagecommissionep_id}.pdf" );
