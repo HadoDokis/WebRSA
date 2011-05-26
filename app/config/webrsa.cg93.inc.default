@@ -303,6 +303,13 @@
 	Configure::write( 'Signalementep93.dureeTolerance', 365 );
 
 	/**
+	* Nombre de jours entre deux passages successifs en EP pour une même personne
+	* et une même thématique.
+	* FIXME: à rendre plus générique (pour toutes les thématiques)
+	*/
+	Configure::write( 'Dossierep.nbJoursEntreDeuxPassages', 31 );
+
+	/**
 	* Configuration pour le dialogue avec un CMS (système de gestion de contenu)
 	* comme Alfresco, servant à stocker les PDF
 	*/

@@ -203,6 +203,30 @@ SELECT add_missing_table_field ('public', 'rendezvous', 'created', 'TIMESTAMP WI
 ALTER TABLE rendezvous ALTER COLUMN created SET DEFAULT NULL;
 SELECT add_missing_table_field ('public', 'rendezvous', 'modified', 'TIMESTAMP WITHOUT TIME ZONE');
 ALTER TABLE rendezvous ALTER COLUMN modified SET DEFAULT NULL;
+
+-- *******************************************************************************************************
+-- 20110526, mise à jour des dates d'impression des convocations et des décsions des passages en EP.
+-- *******************************************************************************************************
+
+UPDATE passagescommissionseps
+	SET impressionconvocation = (
+		SELECT date_trunc( 'day', commissionseps.dateseance ) - INTERVAL '31 days'
+			FROM commissionseps
+			WHERE commissionseps.id = passagescommissionseps.commissionep_id
+		)
+	WHERE
+		impressionconvocation IS NULL;
+
+UPDATE passagescommissionseps
+	SET impressiondecision = (
+		SELECT date_trunc( 'day', commissionseps.dateseance )
+			FROM commissionseps
+			WHERE commissionseps.id = passagescommissionseps.commissionep_id
+		)
+	WHERE
+		impressiondecision IS NULL
+		AND etatdossierep IN ( 'traite', 'annule', 'reporte' );
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
