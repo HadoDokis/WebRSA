@@ -936,8 +936,23 @@
 			}
 
 			// Calcul de la date de fin de sursis si besoin
+			$dateDepart = strtotime( $gedooo_data['Passagecommissionep']['impressiondecision'] );
+			if( empty( $dateDepart ) ) {
+				$dateDepart = mktime();
+			}
+
 			if( $decision == '1delai' ) {
-				$gedooo_data['Decisionnonrespectsanctionep93'][0]['datefinsursis'] = date( 'Y-m-d', mktime() + ( $gedooo_data['Decisionnonrespectsanctionep93'][0]['dureesursis'] * 24 * 60 * 60 ) );
+				$gedooo_data['Decisionnonrespectsanctionep93'][0]['datefinsursis'] = date( 'Y-m-d', ( $dateDepart + ( $gedooo_data['Decisionnonrespectsanctionep93'][0]['dureesursis'] * 24 * 60 * 60 ) ) );
+			}
+			else {
+				// FIXME
+				$gedooo_data['Decisionnonrespectsanctionep93'][0]['datefinsursis'] = date( 'Y-m-d', ( $dateDepart + ( Configure::read( 'Dossierep.nbJoursEntreDeuxPassages' ) * 24 * 60 * 60 ) ) );
+			}
+
+			// Calcul du mois de début de sanction si besoin
+			if( in_array( $decision, array( '1reduction', '2suspensiontotale', '2suspensionpartielle' ) ) ) {
+				$moisCourant = preg_replace( '/\-[0-9]+$/', '-01', date( 'Y-m-d', $dateDepart ) );
+				$gedooo_data['Decisionnonrespectsanctionep93'][0]['moisdebutsanction'] = date( 'Y-m-d', strtotime( "+1 months", strtotime( $moisCourant ) ) );
 			}
 
 			// Possède-t'on un PDF déjà stocké ?
