@@ -19,15 +19,6 @@ msgstr ""
 
 ###############################################################################
 
-msgid "Nonrespectsanctionep93.decision"
-msgstr "Décision"
-
-msgid "Nonrespectsanctionep93.montantreduction"
-msgstr "Montant réduction"
-
-msgid "Nonrespectsanctionep93.dureesursis"
-msgstr "Durée sursis"
-
 msgid "Nonrespectsanctionep93.origine"
 msgstr "Origine"
 
