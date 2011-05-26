@@ -1,6 +1,7 @@
 <h1><?php echo $this->pageTitle = __d( 'nonrespectsanctionep93', "{$this->name}::{$this->action}", true );?></h1>
 
 <?php
+// debug($personnes);
 	echo $default2->index(
 		$personnes,
 		array(
@@ -9,6 +10,8 @@
 			'Personne.prenom',
 			'Personne.dtnai',
 			'Historiqueetatpe.date',
+			'Typeorient.lib_type_orient',
+			'Contratinsertion.present' => array( 'type' => 'boolean' )
 		),
 		array(
 			'cohorte' => true,
