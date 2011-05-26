@@ -30,7 +30,7 @@
 	<?php
 
 	echo $javascript->link('droits', true);
-	echo $xhtml->tag('table', null, array('cellspacing'=>'0', 'cellpadding'=>'0', 'id'=>'tableEditDroits', 'class'=>'table', 'style'=>'margin-top:20px;'));
+	echo $html->tag('table', null, array('cellspacing'=>'0', 'cellpadding'=>'0', 'id'=>'tableEditDroits', 'class'=>'table', 'style'=>'margin-top:20px;'));
 	foreach($listeCtrlAction as $rownum => $ctrlAction) {
 		$classTd = 'niveau'.$ctrlAction['niveau'];
 		if ($ctrlAction['niveau']==0) $ctrlAction['title']='<b>'.$ctrlAction['title'].'</b>';
