@@ -162,7 +162,7 @@
 						list( $jourCommission, $heureCommission ) = explode( ' ', $commissionep['Commissionep']['dateseance'] );
 						$presencesPossible = ( date( 'Y-m-d' ) >= $jourCommission );
 
-						$lien = '<td>'.$xhtml->link( 'Présences', array( 'controller' => 'membreseps', 'action' => 'editpresence', $commissionep['Commissionep']['id'] ), array( 'enabled' => ( ( $commissionep['Commissionep']['etatcommissionep'] == 'associe' || $commissionep['Commissionep']['etatcommissionep'] == 'presence' ) && $presencesPossible ) ) ).'</td>';
+						$lien = '<td>'.$xhtml->link( 'Présences', array( 'controller' => 'membreseps', 'action' => 'editpresence', $commissionep['Commissionep']['id'] ), array( 'enabled' => ( ( $commissionep['Commissionep']['etatcommissionep'] == 'associe' || $commissionep['Commissionep']['etatcommissionep'] == 'presence' || $commissionep['Commissionep']['etatcommissionep'] == 'valide' ) && $presencesPossible ) ) ).'</td>';
 						
 						$lien .= '<td>'.$xhtml->link( 'Arbitrage', array( 'controller' => 'commissionseps', 'action' => 'traiterep', $commissionep['Commissionep']['id'] ), array( 'enabled' => ( $commissionep['Commissionep']['etatcommissionep'] == 'presence' || $commissionep['Commissionep']['etatcommissionep'] == 'decisionep' ) ) ).'</td>';
 						
@@ -187,7 +187,7 @@
 					<td>'.h( $commissionep['Commissionep']['nbparticipants'] ).'</td>
 					<td>'.h( $commissionep['Commissionep']['nbabsents'] ).'</td>
 					<!--<td>'.h( Set::enum( $commissionep['Commissionep']['etatcommissionep'], $options['Commissionep']['etatcommissionep'] ) ).'</td>-->
-					<td>'.h( ( $commissionep['Commissionep']['etatcommissionep'] == 'cree' || $commissionep['Commissionep']['etatcommissionep']  == 'associe' ) ? 'Non validée' : 'Validée' ).'</td>
+					<td>'.h( ( $commissionep['Commissionep']['etatcommissionep'] == 'cree' || $commissionep['Commissionep']['etatcommissionep']  == 'associe' || $commissionep['Commissionep']['etatcommissionep']  == 'valide' ) ? 'Non validée' : 'Validée' ).'</td>
 					<td>'.h( ( $commissionep['Commissionep']['etatcommissionep'] == 'traite') ? 'Traitée' : 'En cours' ).'</td>
 					<td>'.h( $commissionep['Commissionep']['observations'] ).'</td>
 					'.$lien.'
