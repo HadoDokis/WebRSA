@@ -572,24 +572,12 @@
 							'Passagecommissionep.commissionep_id' => $commissionep_id,
 							'Dossierep.themeep' => Inflector::tableize( $class )
 						),
-						'contain' => array(
-							'Dossierep' => array(
-								'Personne' => array(
-									'Foyer' => array(
-										'Adressefoyer' => array(
-											'conditions' => array(
-												'Adressefoyer.rgadr' => '01'
-											),
-											'Adresse'
-										)
-									)
-								)
-							)
-						),
+						'contain' => $this->Commissionep->Passagecommissionep->Dossierep->{$class}->qdContainListeDossier()
 					)
 				);
 				$countDossiers += count($dossiers[$theme]);
 			}
+// debug($dossiers);
 			$dossierseps = $this->Commissionep->Passagecommissionep->find(
 				'all',
 				array(
@@ -612,6 +600,7 @@
 					)
 				)
 			);
+
 			if( !empty( $dossierseps ) ){
 				$this->set( compact( 'dossierseps' ) );
 			}
