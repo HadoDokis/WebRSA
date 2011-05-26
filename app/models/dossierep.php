@@ -442,7 +442,7 @@
 		*
 		*/
 
-		public function getDecisionPdf( $etape, $passagecommissionep_id  ) {
+		public function getDecisionPdf( $passagecommissionep_id  ) {
 			$passagecommission = $this->Passagecommissionep->find(
 				'first',
 				array(
@@ -454,7 +454,7 @@
 			);
 
 			$theme = Inflector::classify( $passagecommission['Dossierep']['themeep'] );
-			$pdf = $this->{$theme}->getDecisionPdf( $etape, $passagecommissionep_id );
+			$pdf = $this->{$theme}->getDecisionPdf( $passagecommissionep_id );
 
 			if( !empty( $pdf ) ) {
 				$this->Passagecommissionep->updateAll(

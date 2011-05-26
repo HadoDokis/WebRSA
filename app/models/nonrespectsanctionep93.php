@@ -774,7 +774,7 @@
 		* FIXME: spécifique par thématique
 		*/
 
-		public function getDecisionPdf( $etape, $passagecommissionep_id  ) {
+		public function getDecisionPdf( $passagecommissionep_id  ) {
 			$gedooo_data = $this->Dossierep->Passagecommissionep->find(
 				'first',
 				array(
@@ -786,7 +786,7 @@
 								'Foyer' => array(
 									'Adressefoyer' => array(
 										'conditions' => array(
-											'Adressefoyer.rgadr' => '01' // FIXME
+											'Adressefoyer.id IN ( '.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01( 'Adressefoyer.foyer_id' ).' )'
 										),
 										'Adresse'
 									)
@@ -811,9 +811,13 @@
 							),
 						),
 						'Decisionnonrespectsanctionep93' => array(
-							'conditions' => array(
+							/*'conditions' => array(
 								'Decisionnonrespectsanctionep93.etape' => $etape
-							)
+							)*/
+							'order' => array(
+								'Decisionnonrespectsanctionep93.etape DESC'
+							),
+							'limit' => 1
 						)
 					)
 				)
@@ -848,7 +852,7 @@
 			$origine = $gedooo_data['Dossierep']['Nonrespectsanctionep93']['origine'];
 
 			if( $decision == '1delai' ) {
-				$modeleOdt  = "{$this->alias}/decision_{$etape}_delai.odt";
+				$modeleOdt  = "{$this->alias}/decision_delai.odt";
 			}
 			else if( $decision == '1reduction' ) {
 				if( in_array( $origine, array( 'orientstruct', 'contratinsertion' ) ) ) {
@@ -859,38 +863,41 @@
 						$emploi = preg_match( '/Emploi/i', $gedooo_data['Dossierep']['Nonrespectsanctionep93']['Contratinsertion']['Structurereferente']['Typeorient']['lib_type_orient'] );
 					}
 					if( $emploi ) {
-						$modeleOdt  = "{$this->alias}/decision_{$etape}_reduction_pdv.odt";
+						$modeleOdt  = "{$this->alias}/decision_reduction_pdv.odt";
 					}
 					else {
-						$modeleOdt  = "{$this->alias}/decision_{$etape}_reduction_ppae.odt";
+						$modeleOdt  = "{$this->alias}/decision_reduction_ppae.odt";
 					}
 				}
 				else if( $origine == 'radiepe' ) {
-					$modeleOdt  = "{$this->alias}/decision_{$etape}_reduction_ppae.odt";
+					$modeleOdt  = "{$this->alias}/decision_reduction_ppae.odt";
 				}
 				else if( $origine == 'pdo' ) {
-					$modeleOdt  = "{$this->alias}/decision_{$etape}_reduction_pdv.odt";
+					$modeleOdt  = "{$this->alias}/decision_reduction_pdv.odt";
 				}
 			}
 			else if( in_array( $decision, array( '1maintien', '2maintien' ) ) ) {
-				$modeleOdt  = "{$this->alias}/decision_{$etape}_maintien.odt";
+				$modeleOdt  = "{$this->alias}/decision_maintien.odt";
 			}
 			else if( $decision == '2suspensiontotale' ) {
-				$modeleOdt  = "{$this->alias}/decision_{$etape}_suspensiontotale.odt";
+				$modeleOdt  = "{$this->alias}/decision_suspensiontotale.odt";
 			}
 			else if( $decision == '2suspensionpartielle' ) {
-				$modeleOdt  = "{$this->alias}/decision_{$etape}_suspensionpartielle.odt";
+				$modeleOdt  = "{$this->alias}/decision_suspensionpartielle.odt";
 			}
 			else if( in_array( $decision, array( '1pasavis', '2pasavis', 'reporte' ) ) ) {
-				$modeleOdt  = "{$this->alias}/decision_{$etape}_reporte.odt";
+				$modeleOdt  = "{$this->alias}/decision_reporte.odt";
 			}
 			else if( $decision == 'annule' ) {
-				$modeleOdt  = "{$this->alias}/decision_{$etape}_annule.odt";
+				$modeleOdt  = "{$this->alias}/decision_annule.odt";
 			}
 
 			// La structure référente, plutôt que de devoir conditionner la vue (le modèle ODT)
-			if( in_array( $origine, array( 'orientstruct', 'radiepe' ) ) ) {
+			if( $origine == 'orientstruct' ) {
 				$gedooo_data['Structurereferente'] = $gedooo_data['Dossierep']['Nonrespectsanctionep93']['Orientstruct']['Structurereferente'];
+			}
+			else if( $origine == 'radiepe' ) {
+				$gedooo_data['Structurereferente'] = $gedooo_data['Dossierep']['Nonrespectsanctionep93']['Historiqueetatpe']['Orientstruct']['Structurereferente'];
 			}
 			else if( $origine == 'contratinsertion' ) {
 				$gedooo_data['Structurereferente'] = $gedooo_data['Dossierep']['Nonrespectsanctionep93']['Contratinsertion']['Structurereferente'];
@@ -899,19 +906,60 @@
 				$gedooo_data['Structurereferente'] = $gedooo_data['Dossierep']['Nonrespectsanctionep93']['Propopdo']['Structurereferente'];
 			}
 
+			// Calcul de la date de fin de sursis si besoin
+			if( $decision == '1delai' ) {
+				$gedooo_data['Decisionnonrespectsanctionep93'][0]['datefinsursis'] = date( 'Y-m-d', mktime() + ( $gedooo_data['Decisionnonrespectsanctionep93'][0]['dureesursis'] * 24 * 60 * 60 ) );
+			}
+
+			// Possède-t'on un PDF déjà stocké ?
+			$pdfModel = ClassRegistry::init( 'Pdf' );
+			$pdf = $pdfModel->find(
+				'first',
+				array(
+					'conditions' => array(
+						'modele' => 'Passagecommissionep',
+						'modeledoc' => $modeleOdt,
+						'fk_value' => $passagecommissionep_id
+					)
+				)
+			);
+
+			if( !empty( $pdf ) && empty( $pdf['Pdf']['document'] ) ) {
+				$cmisPdf = Cmis::read( "/Passagecommissionep/{$passagecommissionep_id}.pdf", true );
+				$pdf['Pdf']['document'] = $cmisPdf['content'];
+			}
+
+			if( !empty( $pdf['Pdf']['document'] ) ) {
+				return $pdf['Pdf']['document'];
+			}
+
 			// Traductions
 			$options = $this->Dossierep->Passagecommissionep->Decisionnonrespectsanctionep93->enums();
 			$options['Personne']['qual'] = ClassRegistry::init( 'Option' )->qual();
 			$options['Adresse']['typevoie'] = ClassRegistry::init( 'Option' )->typevoie();
-			$options['Structurereferente']['type_voie'] = $options['Adresse']['typevoie'];
-// debug($options);die();
-// debug($gedooo_data);die();
-			return $this->ged(
+			$gedooo_data['Structurereferente']['type_voie'] = Set::enum( $gedooo_data['Structurereferente']['type_voie'], $options['Adresse']['typevoie'] );
+
+			// Sinon, on génère le PDF
+			$pdf =  $this->ged(
 				$gedooo_data,
 				$modeleOdt,
                 false,
                 $options
 			);
+
+			$oldRecord['Pdf']['modele'] = 'Passagecommissionep';
+			$oldRecord['Pdf']['modeledoc'] = $modeleOdt;
+			$oldRecord['Pdf']['fk_value'] = $passagecommissionep_id;
+			$oldRecord['Pdf']['document'] = $pdf;
+
+			$pdfModel->create( $oldRecord );
+			$success = $pdfModel->save();
+
+			if( !$success ) {
+				return false;
+			}
+
+			return $pdf;
 		}
 	}
 ?>
