@@ -96,26 +96,27 @@
 		?>
 		<?php echo $form->end( 'Enregistrer' );?>
 
+        <script type="text/javascript">
+            function toutCocher() {
+
+                $$( 'input[type="checkbox"]' ).each( function( checkbox ) {
+                    $( checkbox ).checked = true;
+                });
+            }
+
+            function toutDecocher() {
+                $$( 'input[type="checkbox"]' ).each( function( checkbox ) {
+                    $( checkbox ).checked = false;
+                });
+            }
+
+            document.observe("dom:loaded", function() {
+                Event.observe( 'toutCocher', 'click', toutCocher );
+                Event.observe( 'toutDecocher', 'click', toutDecocher );
+            });
+        </script>
+        <?php echo $form->button( 'Tout cocher', array( 'id' => 'toutCocher' ) );?>
+        <?php echo $form->button( 'Tout décocher', array( 'id' => 'toutDecocher' ) );?>
 	<?php endif;?>
+
 <?php endif;?>
- <script type="text/javascript">
-        function toutCocher() {
-
-            $$( 'input[type="checkbox"]' ).each( function( checkbox ) {
-                $( checkbox ).checked = true;
-            });
-        }
-
-        function toutDecocher() {
-            $$( 'input[type="checkbox"]' ).each( function( checkbox ) {
-                $( checkbox ).checked = false;
-            });
-        }
-
-        document.observe("dom:loaded", function() {
-            Event.observe( 'toutCocher', 'click', toutCocher );
-            Event.observe( 'toutDecocher', 'click', toutDecocher );
-        });
-    </script>
-    <?php echo $form->button( 'Tout cocher', array( 'id' => 'toutCocher' ) );?>
-    <?php echo $form->button( 'Tout décocher', array( 'id' => 'toutDecocher' ) );?>
