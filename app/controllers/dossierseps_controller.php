@@ -320,11 +320,10 @@
 					'list',
 					array(
 						'conditions' => array(
-							'Commissionep.etatcommissionep' => array( 'cree', 'associe', 'decisionep' )
+							'Commissionep.etatcommissionep' => array( 'cree', 'associe', 'valide', 'presence', 'decisionep' )
 						)
 					)
 				);
-
 			}
 			else {
 				$this->set( 'themeEmpty', true );
