@@ -1,93 +1,101 @@
-<?php
-	if( Configure::read( 'debug' ) ) {
-		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
-	}
-?>
-<h1><?php echo $this->pageTitle = __d( 'relancenonrespectsanctionep93', 'Relancesnonrespectssanctionseps93::cohorte', true );?></h1>
+	<?php
+		if( Configure::read( 'debug' ) ) {
+			echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+		}
+	?>
+	<h1><?php echo $this->pageTitle = __d( 'relancenonrespectsanctionep93', 'Relancesnonrespectssanctionseps93::cohorte', true );?></h1>
 
-<?php if( is_array( $this->data ) ):?>
-	<ul class="actionMenu">
-		<?php
-			echo '<li>'.$xhtml->link(
-				$xhtml->image(
-					'icons/application_form_magnify.png',
-					array( 'alt' => '' )
-				).' Formulaire',
-				'#',
-				array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "var form = $$( 'form' ); form = form[0]; $( form ).toggle(); return false;" )
-			).'</li>';
-		?>
-	</ul>
-<?php endif;?>
+	<?php if( is_array( $this->data ) ):?>
+		<ul class="actionMenu">
+			<?php
+				echo '<li>'.$xhtml->link(
+					$xhtml->image(
+						'icons/application_form_magnify.png',
+						array( 'alt' => '' )
+					).' Formulaire',
+					'#',
+					array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "var form = $$( 'form' ); form = form[0]; $( form ).toggle(); return false;" )
+				).'</li>';
+			?>
+		</ul>
+	<?php endif;?>
 
-<?php
-	// Formulaire
-	echo $xform->create();
+	<?php
+		// Formulaire
+		echo $xform->create();
 
-	echo $xhtml->tag( 'fieldset', $xhtml->tag( 'legend', 'Recherche par bénéficiaire' ).
-		$default->subform(
+		echo $xhtml->tag( 'fieldset', $xhtml->tag( 'legend', 'Recherche par bénéficiaire' ).
+			$default->subform(
+				array(
+					'Search.Personne.nom' => array( 'type' => 'text', 'label' => __d( 'personne', 'Personne.nom', true ), 'required' => false ),
+					'Search.Personne.nomnai' => array( 'type' => 'text', 'label' => __d( 'personne', 'Personne.nomnai', true ) ),
+					'Search.Personne.prenom' => array( 'type' => 'text', 'label' => __d( 'personne', 'Personne.prenom', true ), 'required' => false ),
+					'Search.Personne.nir' => array( 'type' => 'text', 'label' => __d( 'personne', 'Personne.nir', true ) ),
+					'Search.Adresse.numcomptt' => array( 'required' => false, 'label' => __d( 'adresse', 'Adresse.numcomptt', true ) ),
+					'Search.Serviceinstructeur.id' => array( 'domain' => 'relancenonrespectsanctionep93', 'label' => __d( 'relancenonrespectsanctionep93', 'Serviceinstructeur.id', true ) ),// suiviinstruction
+				),
+				array(
+					'options' => $options
+				)
+			)
+		);
+
+		echo $xhtml->tag( 'fieldset', $xhtml->tag( 'legend', 'Recherche par dossier CAF' ).
+			$default->subform(
+				array(
+					'Search.Dossier.matricule' => array( 'type' => 'text', 'label' => __d( 'dossier', 'Dossier.matricule', true ) ),
+					'Search.Dossiercaf.nomtitulaire' => array( 'type' => 'text', 'label' => __d( 'dossiercaf', 'Dossiercaf.nomtitulaire', true ) ),
+					'Search.Dossiercaf.prenomtitulaire' => array( 'type' => 'text', 'label' => __d( 'dossiercaf', 'Dossiercaf.prenomtitulaire', true ) ),
+				)
+			)
+		);
+
+		$comparators = array( '<' => '<' ,'>' => '>','<=' => '<=', '>=' => '>=' );
+
+		echo '<fieldset><legend>Présence contrat</legend><div class="input">';
+		echo '<fieldset><legend><input name="data[Search][Relance][contrat]" id="SearchRelanceContrat0" value="0" '.( ( @$this->data['Search']['Relance']['contrat'] == 0 ) ? 'checked="checked"' : '' ).' type="radio" /><label for="RelanceContrat0">Personne orientée sans contrat</label></legend>'.
+			'<div>'.
+				$form->input( 'Search.Relance.compare0', array( 'label' => 'Opérateurs', 'type' => 'select', 'options' => $comparators, 'empty' => true ) ).
+				$form->input( 'Search.Relance.nbjours0', array( 'label' => 'Nombre de jours depuis l\'orientation<span id="nbjoursmin0"></span>', 'type' => 'text' ) ).
+			'</div>'.
+			'</fieldset>';
+		echo '<fieldset><legend><input name="data[Search][Relance][contrat]" id="SearchRelanceContrat1" value="1" '.( ( @$this->data['Search']['Relance']['contrat'] == 1 ) ? 'checked="checked"' : '' ).' type="radio" /><label for="RelanceContrat1">Personne orientée avec contrat</label></legend>'.
+			'<div>'.
+				$form->input( 'Search.Relance.compare1', array( 'label' => 'Opérateurs', 'type' => 'select', 'options' => $comparators, 'empty' => true ) ).
+				$form->input( 'Search.Relance.nbjours1', array( 'label' => 'Nombre de jours depuis la fin du dernier contrat<span id="nbjoursmin1"></span>', 'type' => 'text' ) ).
+			'</div>'.
+			'</fieldset>';
+		echo '</div></fieldset>';
+
+		echo $default2->subform(
 			array(
-				'Personne.nom' => array( 'type' => 'text', 'required' => false ),
-				'Personne.nomnai' => array( 'type' => 'text' ),
-				'Personne.prenom' => array( 'type' => 'text', 'required' => false ),
-				'Personne.nir' => array( 'type' => 'text' ),
-				'Adresse.numcomptt' => array( 'required' => false ),
-				'Serviceinstructeur.id' => array( 'domain' => 'relancenonrespectsanctionep93' ),// suiviinstruction
+	// 			'Relance.contrat' => array( 'label' => 'Présence contrat', 'type' => 'radio', 'options' => array( 0 => 'Personne orientée sans contrat', 1 => 'Personne orientée avec contrat' ), 'value' => ( isset( $this->data['Search']['Relance']['contrat'] ) ? @$this->data['Search']['Relance']['contrat'] : 0 ) ),
+				'Search.Relance.numrelance' => array( 'label' => 'Type de relance à réaliser', 'type' => 'radio', 'options' => array( 1 => 'Première relance', 2 => 'Seconde relance', 3 => /*'Troisième relance'*/'Confirmation passage en EP' ), 'value' => ( isset( $this->data['Search']['Relance']['numrelance'] ) ? @$this->data['Search']['Relance']['numrelance'] : 1 ) ),
 			),
 			array(
 				'options' => $options
 			)
-		)
-	);
+		);
 
-	echo $xhtml->tag( 'fieldset', $xhtml->tag( 'legend', 'Recherche par dossier CAF' ).
-		$default->subform(
-			array(
-				'Dossier.matricule' => array( 'type' => 'text' ),
-				'Dossiercaf.nomtitulaire' => array( 'type' => 'text' ),
-				'Dossiercaf.prenomtitulaire' => array( 'type' => 'text' ),
-			)
-		)
-	);
+		echo $xform->end( __( 'Rechercher', true ) );
+		// Résultats
+		if( isset( $results ) ) {
+			if( empty( $results ) ) {
+				echo $xhtml->tag( 'p', 'Aucun résultat ne correspond à ces critères.', array( 'class' => 'notice' ) );
+			}
+			else {
+				if( $this->data['Search']['Relance']['contrat'] == 0 ) {
+					$pagination = $xpaginator->paginationBlock( 'Orientstruct', $this->passedArgs );
+				}
+				else {
+					$pagination = $xpaginator->paginationBlock( 'Contratinsertion', $this->passedArgs );
+				}
 
-	$comparators = array( '<' => '<' ,'>' => '>','<=' => '<=', '>=' => '>=' );
+				echo $pagination;
+				echo $xform->create( null, array( 'id' => 'Relancenonrespectsanctionep93Form' ) );
 
-	echo '<fieldset><legend>Présence contrat</legend><div class="input">';
-	echo '<fieldset><legend><input name="data[Relance][contrat]" id="RelanceContrat0" value="0" '.( ( @$this->data['Relance']['contrat'] == 0 ) ? 'checked="checked"' : '' ).' type="radio" /><label for="RelanceContrat0">Personne orientée sans contrat</label></legend>'.
-		'<div>'.
-			$form->input( 'Relance.compare0', array( 'label' => 'Opérateurs', 'type' => 'select', 'options' => $comparators, 'empty' => true ) ).
-			$form->input( 'Relance.nbjours0', array( 'label' => 'Nombre de jours depuis l\'orientation<span id="nbjoursmin0"></span>', 'type' => 'text' ) ).
-		'</div>'.
-		'</fieldset>';
-	echo '<fieldset><legend><input name="data[Relance][contrat]" id="RelanceContrat1" value="1" '.( ( @$this->data['Relance']['contrat'] == 1 ) ? 'checked="checked"' : '' ).' type="radio" /><label for="RelanceContrat1">Personne orientée avec contrat</label></legend>'.
-		'<div>'.
-			$form->input( 'Relance.compare1', array( 'label' => 'Opérateurs', 'type' => 'select', 'options' => $comparators, 'empty' => true ) ).
-			$form->input( 'Relance.nbjours1', array( 'label' => 'Nombre de jours depuis la fin du dernier contrat<span id="nbjoursmin1"></span>', 'type' => 'text' ) ).
-		'</div>'.
-		'</fieldset>';
-	echo '</div></fieldset>';
-
-	echo $default2->subform(
-		array(
-// 			'Relance.contrat' => array( 'label' => 'Présence contrat', 'type' => 'radio', 'options' => array( 0 => 'Personne orientée sans contrat', 1 => 'Personne orientée avec contrat' ), 'value' => ( isset( $this->data['Relance']['contrat'] ) ? @$this->data['Relance']['contrat'] : 0 ) ),
-			'Relance.numrelance' => array( 'label' => 'Type de relance à réaliser', 'type' => 'radio', 'options' => array( 1 => 'Première relance', 2 => 'Seconde relance', 3 => /*'Troisième relance'*/'Confirmation passage en EP' ), 'value' => ( isset( $this->data['Relance']['numrelance'] ) ? @$this->data['Relance']['numrelance'] : 1 ) ),
-		),
-		array(
-			'options' => $options
-		)
-	);
-
-	echo $xform->end( __( 'Rechercher', true ) );
-	// Résultats
-	if( isset( $results ) ) {
-		if( empty( $results ) ) {
-			echo $xhtml->tag( 'p', 'Aucun résultat ne correspond à ces critères.', array( 'class' => 'notice' ) );
-		}
-		else {
-			echo $xform->create( null, array( 'id' => 'Relancenonrespectsanctionep93Form' ) );
-
-			foreach( Set::flatten( $this->data ) as $key => $data ) {
-				if( !preg_match( '/^Relancenonrespectsanctionep93\./', $key ) && !( trim( $data ) == '' ) ) {
+				foreach( Set::flatten( $this->data ) as $key => $data ) {
+					if( !preg_match( '/^Relancenonrespectsanctionep93\./', $key ) && !( trim( $data ) == '' ) ) {
 					echo $xform->input( $key, array( 'type' => 'hidden', 'value' => $data ) );
 				}
 			}
@@ -95,18 +103,19 @@
 			echo '<table class="tooltips" style="width: 100%;">
 				<thead>
 					<tr>
-						<th>N° CAF</th>
-						<th>Nom / Prénom Allocataire</th>
-						<th>NIR</th>
-						<th>Nom de commune</th>
-						'.( ( $this->data['Relance']['contrat'] == 0 ) ? '<th>Date d\'orientation</th>' : '' ).'
-						'.( ( $this->data['Relance']['contrat'] == 0 ) ? '<th>Date de notification d\'orientation</th>' : '' ).'
-						'.( ( $this->data['Relance']['contrat'] == 0 ) ? '<th>Nombre de jours depuis la notification d\'orientation</th>' : '' ).'
-						'.( ( $this->data['Relance']['contrat'] == 1 ) ? '<th>Date de fin du contrat</th>' : '' ).'
-						'.( ( $this->data['Relance']['contrat'] == 1 ) ? '<th>Nombre de jours depuis la fin du contrat</th>' : '' ).'
-						'.( ( $this->data['Relance']['numrelance'] == 2 ) ? '<th>Date de première relance</th>' : '' ).'
-						'.( ( $this->data['Relance']['numrelance'] == 3 ) ? '<th>Date de seconde relance</th>' : '' ).'
-						<th>Date de relance minimale</th>
+						<th>'.$xpaginator->sort( 'N° CAF', 'Dossier.matricule' ).'</th>
+						<th>'.$xpaginator->sort( 'Nom / Prénom Allocataire', 'Personne.nom' ).'</th><!-- FIXME -->
+						<th>'.$xpaginator->sort( 'NIR', 'Personne.nir' ).'</th>
+						<th>'.$xpaginator->sort( 'Nom de commune', 'Adresse.locaadr' ).'</th>
+						'.( ( $this->data['Search']['Relance']['contrat'] == 0 ) ? '<th>'.$xpaginator->sort( 'Date d\'orientation', 'Orientstruct.date_valid' ).'</th>' : '' ).'
+						'.( ( $this->data['Search']['Relance']['contrat'] == 0 ) ? '<th>'.$xpaginator->sort( 'Date de notification d\'orientation', 'Orientstruct.date_impression' ).'</th>' : '' ).'
+						'.( ( $this->data['Search']['Relance']['contrat'] == 0 ) ? '<th>'.$xpaginator->sort( 'Nombre de jours depuis la notification d\'orientation', 'Orientstruct.date_impression' ).'</th>' : '' ).'
+						'.( ( $this->data['Search']['Relance']['contrat'] == 1 ) ? '<th>'.$xpaginator->sort( 'Date de fin du contrat', 'Contratinsertion.df_ci' ).'</th>' : '' ).'
+						'.( ( $this->data['Search']['Relance']['contrat'] == 1 ) ? '<th>'.$xpaginator->sort( 'Nombre de jours depuis la fin du contrat', 'Contratinsertion.df_ci' ).'</th>' : '' ).'
+						'.( ( $this->data['Search']['Relance']['numrelance'] == 2 ) ? '<th>'.$xpaginator->sort( 'Date de première relance', 'Relancenonrespectsanctionep93.daterelance' ).'</th>' : '' ).'
+						'.( ( $this->data['Search']['Relance']['numrelance'] == 3 ) ? '<th>'.$xpaginator->sort( 'Date de seconde relance', 'Relancenonrespectsanctionep93.daterelance' ).'</th>' : '' ).'
+						'.( ( $this->data['Search']['Relance']['contrat'] == 0 ) ? '<th>'.$xpaginator->sort( 'Date de relance minimale', 'Orientstruct.date_impression' ).'</th>' : '' ).'
+						'.( ( $this->data['Search']['Relance']['contrat'] == 1 ) ? '<th>'.$xpaginator->sort( 'Date de relance minimale', 'Contratinsertion.df_ci' ).'</th>' : '' ).'
 						<th style="width: 19em;">'.__d( 'relancenonrespectsanctionep93', 'Relancenonrespectsanctionep93.daterelance', true ).'</th>
 						<th style="width: 8em;">'.__d( 'relancenonrespectsanctionep93', 'Relancenonrespectsanctionep93.arelancer', true ).'</th>
 						<th class="innerTableHeader">Informations complémentaires</th>
@@ -130,7 +139,7 @@
 						h( @$result['Adresse']['locaadr'] )
 					);
 
-					if( $this->data['Relance']['contrat'] == 0 ) {
+					if( $this->data['Search']['Relance']['contrat'] == 0 ) {
 						$row[] = h( date_short( @$result['Orientstruct']['date_valid'] ) );
 						$row[] = h( date_short( @$result['Orientstruct']['date_impression'] ) );
 						$row[] = h( @$result['Orientstruct']['nbjours'] );
@@ -140,7 +149,7 @@
 						$row[] = h( @$result['Contratinsertion']['nbjours'] );
 					}
 
-					if( $this->data['Relance']['numrelance'] >  1 && $this->data['Relance']['numrelance'] <= 3 ) {
+					if( $this->data['Search']['Relance']['numrelance'] >  1 && $this->data['Search']['Relance']['numrelance'] <= 3 ) {
 						$row[] = date_short( @$result['Relancenonrespectsanctionep93']['daterelance'] );
 					}
 
@@ -149,8 +158,8 @@
 					$row = Set::merge(
 						$row,
 						array(
-							( ( @$this->data['Relance']['numrelance'] > 1 ) ? $xform->input( "Relancenonrespectsanctionep93.{$index}.nonrespectsanctionep93_id", array( 'type' => 'hidden', 'value' => @$result['Nonrespectsanctionep93']['id'] ) ) : '' ).
-							$xform->input( "Relancenonrespectsanctionep93.{$index}.numrelance", array( 'type' => 'hidden', 'value' => @$this->data['Relance']['numrelance'] ) ).
+							( ( @$this->data['Search']['Relance']['numrelance'] > 1 ) ? $xform->input( "Relancenonrespectsanctionep93.{$index}.nonrespectsanctionep93_id", array( 'type' => 'hidden', 'value' => @$result['Nonrespectsanctionep93']['id'] ) ) : '' ).
+							$xform->input( "Relancenonrespectsanctionep93.{$index}.numrelance", array( 'type' => 'hidden', 'value' => @$this->data['Search']['Relance']['numrelance'] ) ).
 							$xform->input( "Relancenonrespectsanctionep93.{$index}.orientstruct_id", array( 'type' => 'hidden', 'value' => @$result['Orientstruct']['id'] ) ).
 							$xform->input( "Relancenonrespectsanctionep93.{$index}.contratinsertion_id", array( 'type' => 'hidden', 'value' => @$result['Contratinsertion']['id'] ) ).
 							$xform->input( "Relancenonrespectsanctionep93.{$index}.daterelance", array( 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 5, 'label' => false ) ),
@@ -166,7 +175,15 @@
 					);
 				}
 			echo '</tbody></table>';
-			echo $xform->end( __( 'Save', true ) );
+
+			echo '<div class="selectall">';
+			echo $xform->button( 'Tout relancer', array( 'onclick' => 'checkRadiosBySelector( \'input[type="radio"][value="R"]\' );' ) );
+			echo $xform->button( 'Tout mettre en attente', array( 'onclick' => 'checkRadiosBySelector( \'input[type="radio"][value="E"]\' );' ) );
+			echo '</div>';
+
+			echo $pagination;
+			echo $xform->submit( __( 'Save', true ) );
+			echo $xform->end();
 		}
 	}
 ?>
@@ -186,6 +203,13 @@
 			false
 		);
 		<?php endforeach;?>
+
+		function checkRadiosBySelector( selector ) {
+			var radios = $$( selector );
+			$( radios ).each( function( radio ) {
+				$( radio ).click();
+			} );
+		}
 	</script>
 <?php endif;?>
 
@@ -237,30 +261,30 @@
 
 	observeDisableFieldsOnRadioValue2(
 		form,
-		'data[Relance][contrat]',
-		[ 'RelanceNumrelance3' ],
+		'data[Search][Relance][contrat]',
+		[ 'SearchRelanceNumrelance3' ],
 		'1',
 		false
 	);
 
 	observeDisableFieldsOnRadioValue(
 		form,
-		'data[Relance][contrat]',
-		[ 'RelanceCompare0', 'RelanceNbjours0' ],
+		'data[Search][Relance][contrat]',
+		[ 'SearchRelanceCompare0', 'SearchRelanceNbjours0' ],
 		'1',
 		false
 	);
 
 	observeDisableFieldsOnRadioValue(
 		form,
-		'data[Relance][contrat]',
-		[ 'RelanceCompare1', 'RelanceNbjours1' ],
+		'data[Search][Relance][contrat]',
+		[ 'SearchRelanceCompare1', 'SearchRelanceNbjours1' ],
 		'0',
 		false
 	);
 
 	document.observe("dom:loaded", function() {
-		[ $('RelanceContrat0'), $('RelanceContrat1'), $('RelanceNumrelance1'), $('RelanceNumrelance2'), $('RelanceNumrelance3') ].each( function(field) {
+		[ $('SearchRelanceContrat0'), $('SearchRelanceContrat1'), $('SearchRelanceNumrelance1'), $('SearchRelanceNumrelance2'), $('SearchRelanceNumrelance3') ].each( function(field) {
 			field.observe('change', function() {
 				updateNbJours(findContrat(), findRelance());
 			} );
@@ -269,18 +293,18 @@
 	});
 
 	function findRelance() {
-		if ($('RelanceNumrelance1').checked==true)
+		if ($('SearchRelanceNumrelance1').checked==true)
 			return 1;
-		else if ($('RelanceNumrelance2').checked==true)
+		else if ($('SearchRelanceNumrelance2').checked==true)
 			return 2;
-		else if ($('RelanceNumrelance3').checked==true)
+		else if ($('SearchRelanceNumrelance3').checked==true)
 			return 3;
 	}
 
 	function findContrat() {
-		if ($('RelanceContrat0').checked==true)
+		if ($('SearchRelanceContrat0').checked==true)
 			return 0;
-		else if ($('RelanceContrat1').checked==true)
+		else if ($('SearchRelanceContrat1').checked==true)
 			return 1;
 	}
 

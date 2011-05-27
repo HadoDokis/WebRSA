@@ -191,6 +191,13 @@
 	Configure::write( 'Optimisations.Cohortespdos_avisdemande.progressivePaginate', false );
 
 	/**
+	* Surcharge de la pagination progressive pour l'action cohorte
+	* du contrôleur Relancesnonrespectssanctionseps93.
+	*/
+
+	Configure::write( 'Optimisations.Relancesnonrespectssanctionseps93_cohorte.progressivePaginate', false );
+
+	/**
 	 * Variables permettant le déclenchement de passage en EPD d'un dossier via les PDOs
 	 */
 	Configure::write( 'traitementResultatId', 2 );
