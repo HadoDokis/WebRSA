@@ -135,6 +135,34 @@
 		</table>
 	<?php endif;?>
 
+	<?php if( Configure::read( 'Cg.departement' ) == 58 && isset( $regressionorientaionep58 ) && !empty( $regressionorientaionep58 ) ):?>
+		<h2>Réorientation du professionel de l'Emploi vers le Social en étude par l'équipe pluridisciplinaire</h2>
+		<table class="aere">
+			<thead>
+				<tr>
+					<th>Nom</th>
+					<th>Prénom</th>
+					<th>Date de la demande</th>
+					<th>Type d'orientation</th>
+					<th>Type de structure</th>
+					<th>État du dossier d'EP</th>
+					<th class="action">Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><?php echo h( $regressionorientaionep58['Personne']['nom'] );?></td>
+					<td><?php echo h( $regressionorientaionep58['Personne']['prenom'] );?></td>
+					<td><?php echo $locale->date( __( 'Date::short', true ), $regressionorientaionep58['Regressionorientationep58']['datedemande'] );?></td>
+					<td><?php echo h( $regressionorientaionep58['Typeorient']['lib_type_orient'] );?></td>
+					<td><?php echo h( $regressionorientaionep58['Structurereferente']['lib_struc'] );?></td>
+					<td><?php echo h( Set::enum( $regressionorientaionep58['Passagecommissionep']['etatdossierep'], $optionsdossierseps['Passagecommissionep']['etatdossierep'] ) );?></td>
+					<td><?php echo $default->button( 'delete', array( 'controller' => 'regressionsorientationseps', 'action' => 'delete', $regressionorientaionep58['Regressionorientationep58']['id'] ), array( 'enabled' => empty( $regressionorientaionep58['Passagecommissionep']['etatdossierep'] ) ), 'Confirmer ?' );?></td>
+				</tr>
+			</tbody>
+		</table>
+	<?php endif;?>
+
 	<?php if( !empty( $orientstructs ) ):?>
 		<h2>Orientations effectives</h2>
 		<table class="tooltips">

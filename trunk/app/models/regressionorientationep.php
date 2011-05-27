@@ -52,6 +52,92 @@
 		);
 
 		/**
+		 * Retourne pour un personne_id donnée les queryDatas permettant de retrouver
+		 * ses réorientationseps93 si elle en a en cours
+		 */
+		
+		public function qdReorientationEnCours( $personne_id ) {
+			return array(
+				'fields' => array(
+					'Personne.nom',
+					'Personne.prenom',
+					$this->alias.'.id',
+					$this->alias.'.datedemande',
+					'Typeorient.lib_type_orient',
+					'Structurereferente.lib_struc',
+					'Passagecommissionep.etatdossierep'
+				),
+				'conditions' => array(
+					'Dossierep.personne_id' => $personne_id,
+					'Dossierep.themeep' => Inflector::tableize( $this->alias ),
+					'Dossierep.id NOT IN ( '.$this->Dossierep->Passagecommissionep->sq(
+						array(
+							'alias' => 'passagescommissionseps',
+							'fields' => array(
+								'passagescommissionseps.dossierep_id'
+							),
+							'conditions' => array(
+								'passagescommissionseps.etatdossierep' => array( 'traite', 'annule' )
+							)
+						)
+					).' )'
+				),
+				'joins' => array(
+					array(
+						'table' => 'dossierseps',
+						'alias' => 'Dossierep',
+						'type' => 'INNER',
+						'conditions' => array(
+							$this->alias.'.dossierep_id = Dossierep.id'
+						)
+					),
+					array(
+						'table' => 'typesorients',
+						'alias' => 'Typeorient',
+						'type' => 'INNER',
+						'conditions' => array(
+							$this->alias.'.typeorient_id = Typeorient.id'
+						)
+					),
+					array(
+						'table' => 'structuresreferentes',
+						'alias' => 'Structurereferente',
+						'type' => 'INNER',
+						'conditions' => array(
+							$this->alias.'.structurereferente_id = Structurereferente.id'
+						)
+					),
+					array(
+						'table' => 'passagescommissionseps',
+						'alias' => 'Passagecommissionep',
+						'type' => 'LEFT OUTER',
+						'conditions' => array(
+							'Passagecommissionep.dossierep_id = Dossierep.id'
+						)
+					),
+					array(
+						'table' => 'commissionseps',
+						'alias' => 'Commissionep',
+						'type' => 'LEFT OUTER',
+						'conditions' => array(
+							'Passagecommissionep.commissionep_id = Commissionep.id'
+						)
+					),
+					array(
+						'table' => 'personnes',
+						'alias' => 'Personne',
+						'type' => 'INNER',
+						'conditions' => array(
+							'Dossierep.personne_id = Personne.id'
+						)
+					)
+				),
+				'contain' => false,
+				'order' => array( 'Commissionep.dateseance DESC', 'Commissionep.id DESC' )
+			);
+		}
+
+		/**
 		* Querydata permettant d'obtenir les dossiers qui doivent être traités
 		* par liste pour la thématique de ce modèle.
 		*
