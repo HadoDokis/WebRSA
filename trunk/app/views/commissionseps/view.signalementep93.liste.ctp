@@ -29,6 +29,11 @@
 		echo '<p class="notice">Il n\'existe aucun dossier de cette thématique associé à cette commission d\'EP.</p>';
 	}
 	else {
+		$duree_engag = 'duree_engag_'.Configure::read( 'nom_form_ci_cg' );
+		foreach( $dossiers[$theme] as &$dossierep ) {
+			$dossierep['Dossierep']['Signalementep93']['Contratinsertion']['duree_engag'] = Set::enum( $dossierep['Dossierep']['Signalementep93']['Contratinsertion']['duree_engag'], $$duree_engag );
+		}
+
 		echo $default2->index(
 			$dossiers[$theme],
 			array(
