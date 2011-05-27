@@ -580,7 +580,12 @@
 		public function qdContainListeDossier() {
 			return array(
 				'Dossierep' => array(
-					$this->alias,
+					$this->alias => array(
+						'Orientstruct' => array(
+							'Typeorient',
+							'Structurereferente'
+						)
+					),
 					'Personne' => array(
 						'Foyer' => array(
 							'Dossier',

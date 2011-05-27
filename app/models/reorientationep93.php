@@ -804,7 +804,10 @@
 		public function qdContainListeDossier() {
 			return array(
 				'Dossierep' => array(
-					$this->alias,
+					$this->alias => array(
+						'Structurereferente',
+						'Motifreorientep93'
+					),
 					'Personne' => array(
 						'Foyer' => array(
 							'Dossier',

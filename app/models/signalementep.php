@@ -427,7 +427,11 @@
 		public function qdContainListeDossier() {
 			return array(
 				'Dossierep' => array(
-					$this->alias,
+					$this->alias => array(
+						'Contratinsertion' => array(
+							'Structurereferente'
+						)
+					),
 					'Personne' => array(
 						'Foyer' => array(
 							'Dossier',

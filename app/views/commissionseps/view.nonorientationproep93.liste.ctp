@@ -32,14 +32,16 @@
 		echo $default2->index(
 			$dossiers[$theme],
 			array(
+				'Dossierep.Personne.Foyer.Dossier.numdemrsa',
+				'Dossierep.Personne.Foyer.Dossier.matricule',
 				'Dossierep.Personne.qual',
 				'Dossierep.Personne.nom',
 				'Dossierep.Personne.prenom',
 				'Dossierep.Personne.dtnai',
-				'Dossierep.Personne.Foyer.Adressefoyer.0.Adresse.locaadr',
-				'Dossierep.created',
-				'Dossierep.themeep',
-				'Passagecommissionep.etatdossierep',
+				'Dossierep.Nonorientationproep93.Orientstruct.Typeorient.lib_type_orient',
+				'Dossierep.Nonorientationproep93.Orientstruct.Structurereferente.lib_struc',
+				'Dossierep.Nonorientationproep93.Orientstruct.date_valid',
+// 				'Passagecommissionep.etatdossierep',
 			),
 			array(
 				'actions' => array(
