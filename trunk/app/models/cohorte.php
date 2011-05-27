@@ -398,6 +398,8 @@
 						'Adresse.numcomptt',
 						'Situationdossierrsa.dtclorsa',
 						'Situationdossierrsa.moticlorsa',
+						'Suiviinstruction.typeserins',
+// 						'Serviceinstructeur.lib_service',
 						'Orientstruct.id',
 						'Orientstruct.date_valid',
 						'Orientstruct.propo_algo',
@@ -449,6 +451,34 @@
 							'foreignKey' => false,
 							'conditions' => array( 'Dossier.id = Foyer.dossier_id' )
 						),
+						array(
+							'table' => 'suivisinstruction',
+							'alias' => 'Suiviinstruction',
+							'type' => 'LEFT OUTER',
+							'foreignKey' => false,
+							'conditions' => array(
+								'Dossier.id = Suiviinstruction.dossier_id',
+								'Suiviinstruction.id IN (
+									SELECT suivisinstruction.id
+										FROM suivisinstruction
+										WHERE suivisinstruction.dossier_id = Suiviinstruction.dossier_id
+										ORDER BY suivisinstruction.id DESC
+										LIMIT 1
+								)'
+							)
+						),
+						/*array(
+							'table' => 'servicesinstructeurs',
+							'alias' => 'Serviceinstructeur',
+							'type' => 'LEFT OUTER',
+							'foreignKey' => false,
+							'conditions' => array(
+								'Serviceinstructeur.numdepins  = Suiviinstruction.numdepins',
+								'Serviceinstructeur.typeserins  = Suiviinstruction.typeserins',
+								'Serviceinstructeur.numcomins  = Suiviinstruction.numcomins',
+								'Serviceinstructeur.numagrins  = Suiviinstruction.numagrins',
+							)
+						),*/
 						array(
 							'table' => 'adressesfoyers',
 							'alias' => 'Adressefoyer',
