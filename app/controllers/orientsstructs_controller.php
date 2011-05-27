@@ -339,6 +339,13 @@
 				);
 				$this->set( 'propoorientationcov58', $propoorientationcov58 );
 				$this->set( 'optionsdossierscovs58', $this->Orientstruct->Personne->Dossiercov58->enums() );
+
+				$regressionorientaionep58 = $this->Orientstruct->Personne->Dossierep->Regressionorientationep58->find(
+					'first',
+					$this->Orientstruct->Personne->Dossierep->Regressionorientationep58->qdReorientationEnCours( $personne_id )
+				);
+				$this->set( compact( 'regressionorientaionep58' ) );
+				$this->set( 'optionsdossierseps', $this->Orientstruct->Personne->Dossierep->Passagecommissionep->enums() );
 			}
 
 			$this->set( 'droitsouverts', $this->Dossier->Situationdossierrsa->droitsOuverts( $dossier_id ) );
