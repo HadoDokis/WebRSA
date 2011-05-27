@@ -63,6 +63,9 @@ msgstr "Type de CER "
 msgid "Contratinsertion.rg_ci"
 msgstr "Rang du présent contrat "
 
+msgid "Contratinsertion.type_demande"
+msgstr "Type de demande"
+
 msgid "Contratinsertion.actions_prev"
 msgstr "Avez-vous pu réaliser les actions prévues dans votre contrat précédent ? "
 

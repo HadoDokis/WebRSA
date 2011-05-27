@@ -32,14 +32,19 @@
 		echo $default2->index(
 			$dossiers[$theme],
 			array(
+				'Dossierep.Personne.Foyer.Dossier.numdemrsa',
+				'Dossierep.Personne.Foyer.Dossier.matricule',
 				'Dossierep.Personne.qual',
 				'Dossierep.Personne.nom',
 				'Dossierep.Personne.prenom',
 				'Dossierep.Personne.dtnai',
-				'Dossierep.Personne.Foyer.Adressefoyer.0.Adresse.locaadr',
-				'Dossierep.created',
-				'Dossierep.themeep',
-				'Passagecommissionep.etatdossierep',
+				'Dossierep.Reorientationep93.Structurereferente.lib_struc',
+				'Dossierep.Reorientationep93.Motifreorientep93.name',
+				'Dossierep.Reorientationep93.accordaccueil' => array( 'type' => 'boolean' ),
+				'Dossierep.Reorientationep93.accordallocataire' => array( 'type' => 'boolean' ),
+				'Dossierep.Reorientationep93.urgent' => array( 'type' => 'boolean' ),
+				'Dossierep.Reorientationep93.datedemande',
+// 				'Passagecommissionep.etatdossierep',
 			),
 			array(
 				'actions' => array(

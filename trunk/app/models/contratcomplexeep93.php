@@ -416,7 +416,9 @@
 			return array(
 				'Dossierep' => array(
 					$this->alias => array(
-						'Contratinsertion'
+						'Contratinsertion' => array(
+							'Structurereferente'
+						)
 					),
 					'Personne' => array(
 						'Foyer' => array(

@@ -32,14 +32,16 @@
 		echo $default2->index(
 			$dossiers[$theme],
 			array(
-				'Dossierep.Personne.qual',
-				'Dossierep.Personne.nom',
-				'Dossierep.Personne.prenom',
-				'Dossierep.Personne.dtnai',
+				'Dossierep.Personne.Foyer.Dossier.numdemrsa',
 				'Dossierep.Personne.Foyer.Adressefoyer.0.Adresse.locaadr',
-				'Dossierep.created',
-				'Dossierep.themeep',
-				'Passagecommissionep.etatdossierep',
+				'Dossierep.Signalementep93.Contratinsertion.num_contrat',
+				'Dossierep.Signalementep93.Contratinsertion.dd_ci',
+				'Dossierep.Signalementep93.Contratinsertion.duree_engag',
+				'Dossierep.Signalementep93.Contratinsertion.df_ci',
+				'Dossierep.Signalementep93.Contratinsertion.Structurereferente.lib_struc',
+				'Dossierep.Signalementep93.Contratinsertion.nature_projet',
+				'Dossierep.Signalementep93.Contratinsertion.type_demande',
+// 				'Passagecommissionep.etatdossierep',
 			),
 			array(
 				'actions' => array(
