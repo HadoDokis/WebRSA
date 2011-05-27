@@ -1135,3 +1135,5 @@ td.boolean.false span {
 fieldset.partenaire.bilan div.input.radio.error {
     width: 47%;
 }
+
+div.selectall { text-align: right; margin-top: 1em; }
