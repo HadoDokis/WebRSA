@@ -615,7 +615,7 @@
 				)
 			);
 
-			if( empty( $commissionep ) || !in_array( $commissionep['Commissionep']['etatcommissionep'], array( 'associe', 'presence' ) ) ) {
+			if( empty( $commissionep ) || !in_array( $commissionep['Commissionep']['etatcommissionep'], array( 'associe', 'presence', 'valide' ) ) ) {
 				return false;
 			}
 
