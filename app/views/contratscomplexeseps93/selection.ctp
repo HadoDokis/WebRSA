@@ -1,10 +1,11 @@
 <h1><?php echo $this->pageTitle = __d( 'contratcomplexeep93', "{$this->name}::{$this->action}", true );?></h1>
 
 <?php
+// debug($contratsinsertion);
 	echo $default2->index(
 		$contratsinsertion,
 		array(
-			'Contratinsertion.chosen' => array( 'input' => 'checkbox', 'type' => 'boolean', 'domain' => 'contratscomplexeseps93' ),
+			'Contratinsertion.chosen' => array( 'input' => 'checkbox', 'type' => 'boolean', 'domain' => 'contratcomplexeep93', 'sort' => false ),
 			'Personne.nom',
 			'Personne.prenom',
 			'Personne.dtnai',
@@ -18,7 +19,8 @@
 				'Contratinsertion.id'
 			),
 			'paginate' => 'Contratinsertion',
-			'domain' => 'contratcomplexeep93'
+			'domain' => 'contratcomplexeep93',
+			'labelcohorte' => 'Enregistrer'
 		)
 	);
 

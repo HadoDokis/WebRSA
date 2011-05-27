@@ -13,3 +13,6 @@ msgstr "Sélection des contrats complexes"
 
 msgid "Contratcomplexeep93::index::empty"
 msgstr "Il n'y a pas de contrat complexe à sélectionner"
+
+msgid "Contratinsertion.chosen"
+msgstr "Sélectionné ?"
