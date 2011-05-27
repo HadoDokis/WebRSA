@@ -556,7 +556,7 @@
 				)
 			);
 
-			if( empty( $commissionep ) || !in_array( $commissionep['Commissionep']['etatcommissionep'], array( 'cree', 'associe', 'valide' ) ) ) {
+			if( empty( $commissionep ) || !in_array( $commissionep['Commissionep']['etatcommissionep'], array( 'cree', 'associe' ) ) ) {
 				return false;
 			}
 
@@ -615,12 +615,11 @@
 				)
 			);
 
-			if( empty( $commissionep ) || !in_array( $commissionep['Commissionep']['etatcommissionep'], array( 'associe', 'presence', 'valide' ) ) ) {
+			if( empty( $commissionep ) || !in_array( $commissionep['Commissionep']['etatcommissionep'], array( 'associe', 'valide', 'presence' ) ) ) {
 				return false;
 			}
 
 			$success = true;
-
 			$nbMembreseps = $this->CommissionepMembreep->find(
 				'count',
 				array(
@@ -632,12 +631,17 @@
 			);
 
 			$this->id = $commissionep_id;
-			if( !empty( $nbMembreseps ) && $commissionep['Commissionep']['etatcommissionep'] == 'associe' ) {
+			if( !empty( $nbMembreseps ) && in_array( $commissionep['Commissionep']['etatcommissionep'], array( 'associe', 'valide' ) ) ) {
 				$this->set( 'etatcommissionep', 'presence' );
 				$success = $this->save() && $success;
 			}
 			else if(  empty( $nbMembreseps ) && $commissionep['Commissionep']['etatcommissionep'] == 'presence' ) {
-				$this->set( 'etatcommissionep', 'associe' );
+				if( Configure::read( 'Cg.departement' ) == 93 ) {
+					$this->set( 'etatcommissionep', 'valide' );
+				}
+				else {
+					$this->set( 'etatcommissionep', 'associe' );
+				}
 				$success = $this->save() && $success;
 			}
 
