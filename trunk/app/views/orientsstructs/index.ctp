@@ -37,7 +37,7 @@
 				?>
 			</ul>
 		<?php endif;?>
-	<?php elseif( Configure::read( 'Cg.departement' ) == 58 && $rgorient_max <=1 ):?>
+	<?php elseif( Configure::read( 'Cg.departement' ) == 58 ):?>
 		<?php if( $permissions->check( 'proposorientationscovs58', 'add' ) ):?>
 			<ul class="actionMenu">
 				<?php
