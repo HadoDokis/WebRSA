@@ -94,7 +94,7 @@
 				}
 			}
 		?>
-		<?php echo $form->end( 'Valider' );?>
+		<?php echo $form->end( 'Enregistrer' );?>
 
 	<?php endif;?>
 <?php endif;?>

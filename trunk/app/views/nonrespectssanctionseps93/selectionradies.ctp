@@ -21,7 +21,8 @@
 				'Historiqueetatpe.id'
 			),
 			'paginate' => 'Personne',
-			'domain' => 'nonrespectsanctionep93'
+			'domain' => 'nonrespectsanctionep93',
+			'labelcohorte' => 'Enregistrer'
 		)
 	);
 ?>
