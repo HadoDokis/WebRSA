@@ -151,6 +151,11 @@
 					$options,
 					$this->Commissionep->Passagecommissionep->Dossierep->Nonrespectsanctionep93->enums()
 				);
+				$options = Set::merge(
+					$options,
+					$this->Commissionep->Passagecommissionep->Dossierep->Signalementep93->Contratinsertion->enums()
+				);
+				$this->set( 'duree_engag_cg93', $this->Option->duree_engag_cg93() );
 			}
 			else if( Configure::read( 'Cg.departement' ) == 58 ) {
 				$this->set( 'listesanctionseps58', $this->Commissionep->Passagecommissionep->Decisionsanctionep58->Listesanctionep58->find( 'list' ) );
