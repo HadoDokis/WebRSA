@@ -26,6 +26,7 @@
 		)
 	);
 ?>
+<?php if( !empty( $personnes ) ):?>
     <script type="text/javascript">
         function toutCocher() {
 
@@ -47,3 +48,4 @@
     </script>
     <?php echo $form->button( 'Tout cocher', array( 'id' => 'toutCocher' ) );?>
     <?php echo $form->button( 'Tout décocher', array( 'id' => 'toutDecocher' ) );?>
+<?php endif;?>
