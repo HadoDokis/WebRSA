@@ -86,7 +86,7 @@
 						<th>Date demande</th>
 						<th>Présence DSP</th>
 						<th>Nom prenom</th>
-						<th>Service instructeur</th>
+						<th>Type de service instructeur</th>
 						<th>PréOrientation</th>
 						<th class="action">Orientation</th>
 						<th class="action">Structure</th>

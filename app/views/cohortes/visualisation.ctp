@@ -52,7 +52,8 @@
 					<th><?php echo $xpaginator->sort( 'Nom, prenom', 'Personne.nom' );?></th>
 					<th><?php echo $xpaginator->sort( 'Date demande', 'Dossier.dtdemrsa' );?></th>
 					<th><?php echo $xpaginator->sort( 'Présence DSP', 'Dsp.id' );?></th>
-					<th><?php echo $xpaginator->sort( 'Service instructeur', 'Suiviinstruction.typeserins' );?></th>
+					<th><?php echo $xpaginator->sort( 'Type de service instructeur', 'Suiviinstruction.typeserins' );?></th>
+					<!--<th><?php echo $xpaginator->sort( 'Service instructeur', 'Serviceinstructeur.lib_service' );?></th>-->
 					<th><?php echo $xpaginator->sort( 'PréOrientation', 'Orientstruct.propo_algo' );?></th>
 					<th><?php echo $xpaginator->sort( 'Orientation', 'Typeorient.lib_type_orient' );?></th>
 					<th><?php echo $xpaginator->sort( 'Structure', 'Structurereferente.lib_struc' );?></th>
@@ -127,6 +128,7 @@
 								h( date_short( $personne['Dossier']['dtdemrsa'] ) ),
 								h( !empty( $personne['Dsp']['id'] ) ? 'Oui' : 'Non' ),
 								h( value( $typeserins, Set::classicExtract( $personne, 'Suiviinstruction.typeserins') ) ),
+// 								h( Set::classicExtract( $personne, 'Serviceinstructeur.lib_service' ) ),
 								//h( isset( $typesOrient[$personne['Orientstruct']['propo_algo']] ) ? $typesOrient[$personne['Orientstruct']['propo_algo']] : null),
 								h( Set::enum( $personne['Orientstruct']['propo_algo'], $typesOrient ) ),
 								h( $personne['Typeorient']['lib_type_orient'] ),

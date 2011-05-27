@@ -150,7 +150,7 @@
 
 					if( $statutOrientation == 'Orienté' ) {
 						$queryData['limit'] = 10;
-
+// debug( $queryData );
 						$this->paginate = array( 'Personne' => $queryData );
 						$cohorte = $this->paginate( $this->Personne );
 
