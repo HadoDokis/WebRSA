@@ -19,8 +19,8 @@
 				} );
 			}
 
-            document.observe( "dom:loaded", function() {
-                var baseUrl = '<?php echo Router::url( '/', true );?>';
+			document.observe( "dom:loaded", function() {
+				var baseUrl = '<?php echo Router::url( '/', true );?>';
 				make_treemenus_droits( baseUrl, <?php echo ( Configure::read( 'UI.menu.large' ) ? 'true' : 'false' );?> );
 			} );
 		</script>
@@ -30,7 +30,8 @@
 	<?php
 
 	echo $javascript->link('droits', true);
-	echo $html->tag('table', null, array('cellspacing'=>'0', 'cellpadding'=>'0', 'id'=>'tableEditDroits', 'class'=>'table', 'style'=>'margin-top:20px;'));
+// 	echo $html->tag('table', null, array('cellspacing'=>'0', 'cellpadding'=>'0', 'id'=>'tableEditDroits', 'style'=>'margin-top:20px;'));
+	echo '<table cellspacing="0" cellpadding="0" style="margin-top:20px;" class="table" id="tableEditDroits">';
 	foreach($listeCtrlAction as $rownum => $ctrlAction) {
 		$classTd = 'niveau'.$ctrlAction['niveau'];
 		if ($ctrlAction['niveau']==0) $ctrlAction['title']='<b>'.$ctrlAction['title'].'</b>';
@@ -44,14 +45,14 @@
 		if ($ctrlAction['nbSousElements']>0)
 			$optionsCheckBox['onclick'] = 'toggleCheckBoxDroits('.$rownum.', '.$ctrlAction['nbSousElements'].');';
 
-		echo $xhtml->tag('tr', null,  array('class'=>"$classTd") );
+		echo '<tr class="'.$classTd.'">';
 			echo $xhtml->tag('td', ' '.$indentation.$ctrlAction['title'].'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;', array('class'=>"$classTd label"));
 			if ($ctrlAction['modifiable']) {
 				echo $xhtml->tag('td', $form->input('Droits.'.$ctrlAction['acosAlias'], $optionsCheckBox), array('class'=>$classTd));
 			}
 			else
 				echo $xhtml->tag('td', $form->hidden('Droits.'.$ctrlAction['acosAlias']), array('class'=>$classTd));
-		echo $xhtml->tag('/tr');
+		echo '</tr>';
 	}
-	echo $xhtml->tag('/table');
+	echo '</table>';
 ?>
