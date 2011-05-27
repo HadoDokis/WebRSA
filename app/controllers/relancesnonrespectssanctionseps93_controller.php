@@ -3,7 +3,7 @@
 	{
 		public $uses = array( 'Relancenonrespectsanctionep93', 'Nonrespectsanctionep93', 'Orientstruct', 'Contratinsertion', 'Dossierep', 'Dossier', 'Pdf' );
 
-		public $components = array( 'Prg' => array( 'actions' => array( 'impressions' ) ), 'Gedooo' );
+		public $components = array( 'Prg' => array( 'actions' => array( 'cohorte' => array( 'filter' => 'Search' ), 'impressions' ) ), 'Gedooo' );
 
 		public $helpers = array( 'Default2', 'Csv' );
 
@@ -168,6 +168,8 @@
 
 		public function cohorte() {
 			if( !empty( $this->data ) ) {
+				$search = $this->data['Search'];
+
 				/// Enregistrement de la cohorte de relances
 				if( isset( $this->data['Relancenonrespectsanctionep93'] ) ) {
 					$data = $this->data['Relancenonrespectsanctionep93'];
@@ -184,12 +186,15 @@
 						$this->Nonrespectsanctionep93->begin();
 
 						// Relances non respect orientation
-						$success = $this->Relancenonrespectsanctionep93->saveCohorte( $newData, $this->data );
+						$success = $this->Relancenonrespectsanctionep93->saveCohorte( $newData, $search );
 
 						$this->_setFlashResult( 'Save', $success );
 						if( $success ) {
-							unset( $this->data['Relancenonrespectsanctionep93'] );
+							unset( $this->data['Relancenonrespectsanctionep93'], $this->data['sessionKey'] );
+							//$this->Nonrespectsanctionep93->rollback();
 							$this->Nonrespectsanctionep93->commit();
+							$url = Router::url( Set::merge( array( 'action' => $this->action ), Set::flatten( $this->data ) ), true );
+							$this->redirect( $url );
 						}
 						else {
 							$this->Nonrespectsanctionep93->rollback();
@@ -198,10 +203,78 @@
 				}
 
 				/// Moteur de recherche
-				$results = $this->Relancenonrespectsanctionep93->search( $this->data );
+				$search = Set::flatten( $search );
+				$search = Set::filter( $search );
+
+				if( $this->data['Search']['Relance']['contrat'] == 0 ) {
+					$this->paginate['Orientstruct'] = $this->Relancenonrespectsanctionep93->search( $search );
+					$results = $this->paginate( $this->Nonrespectsanctionep93->Orientstruct );
+
+					if( !empty( $results ) ) {
+						foreach( $results as $i => $result ) {
+							// Calcul de la date de relance minimale
+							if( $search['Relance.numrelance'] == 1 ) {
+								$results[$i]['Nonrespectsanctionep93']['datemin'] = date(
+									'Y-m-d',
+									strtotime(
+										'+'.( Configure::read( 'Nonrespectsanctionep93.relanceOrientstructCer1' ) + 1 ).' days',
+										strtotime( $result['Orientstruct']['date_impression'] )
+									)
+								);
+							}
+							else if( $search['Relance.numrelance'] > 1 ) {
+								$results[$i]['Nonrespectsanctionep93']['datemin'] = date(
+									'Y-m-d',
+									strtotime(
+										'+'.( Configure::read( "Nonrespectsanctionep93.relanceOrientstructCer{$search['Relance.numrelance']}" ) + 1 ).' days',
+										strtotime( $result['Relancenonrespectsanctionep93']['daterelance'] )
+									)
+								);
+							}
+
+							$results[$i]['Orientstruct']['nbjours'] = round(
+								//( mktime() - strtotime( $result['Orientstruct']['date_valid'] ) ) / ( 60 * 60 * 24 )
+								( mktime() - strtotime( $result['Orientstruct']['date_impression'] ) ) / ( 60 * 60 * 24 )
+							);
+						}
+					}
+				}
+				else if( $this->data['Search']['Relance']['contrat'] == 1 ) {
+					$this->paginate['Contratinsertion'] = $this->Relancenonrespectsanctionep93->search( $search );
+					$results = $this->paginate( $this->Nonrespectsanctionep93->Contratinsertion );
+
+					if( !empty( $results ) ) {
+						foreach( $results as $i => $result ) {
+							// Calcul de la date de relance minimale
+							if( $search['Relance.numrelance'] == 1 ) {
+								$results[$i]['Nonrespectsanctionep93']['datemin'] = date(
+									'Y-m-d',
+									strtotime(
+										'+'.( Configure::read( 'Nonrespectsanctionep93.relanceCerCer1' ) + 1 ).' days',
+										strtotime( $result['Contratinsertion']['df_ci'] )
+									)
+								);
+							}
+							else if( $search['Relance.numrelance'] > 1 ) {
+								$results[$i]['Nonrespectsanctionep93']['datemin'] = date(
+									'Y-m-d',
+									strtotime(
+										'+'.( Configure::read( "Nonrespectsanctionep93.relanceCerCer{$search['Relance.numrelance']}" ) + 1 ).' days',
+										strtotime( $result['Relancenonrespectsanctionep93']['daterelance'] )
+									)
+								);
+							}
+
+							$results[$i]['Contratinsertion']['nbjours'] = round(
+								( mktime() - strtotime( $result['Contratinsertion']['df_ci'] ) ) / ( 60 * 60 * 24 )
+							);
+						}
+					}
+				};
+
 				$this->set( compact( 'results' ) );
 
-				if( $this->Relancenonrespectsanctionep93->checkCompareError( $this->data ) == true ) {
+				if( $this->Relancenonrespectsanctionep93->checkCompareError( Xset::bump( $search ) ) == true ) {
 					$this->Session->setFlash( 'Vos critères de recherche entrent en contradiction avec les critères de base', 'flash/error' );
 				}
 			}

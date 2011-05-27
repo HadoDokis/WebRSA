@@ -334,10 +334,8 @@
 		/**
 		 * Fonction de recherche des dossiers à relancer
 		 */
-		public function search($search) {
-			unset( $search['Relancenonrespectsanctionep93'] );
-			$search = Set::flatten( $search );
-			$search = Set::filter( $search );
+		public function search( $search ) {
+			unset( $search['page'], $search['sort'], $search['direction'] );
 
 			$conditions = array();
 			$joins = array();
@@ -698,36 +696,37 @@
 					'order' => array( 'Orientstruct.date_impression ASC' ),
 				);
 
-				$results = $this->Nonrespectsanctionep93->Orientstruct->find( 'all', $queryData );
+				return $queryData;
+// 				$results = $this->Nonrespectsanctionep93->Orientstruct->find( 'all', $queryData );
 
-				if( !empty( $results ) ) {
-					foreach( $results as $i => $result ) {
-						// Calcul de la date de relance minimale
-						if( $search['Relance.numrelance'] == 1 ) {
-							$results[$i]['Nonrespectsanctionep93']['datemin'] = date(
-								'Y-m-d',
-								strtotime(
-									'+'.( Configure::read( 'Nonrespectsanctionep93.relanceOrientstructCer1' ) + 1 ).' days',
-									strtotime( $result['Orientstruct']['date_impression'] )
-								)
-							);
-						}
-						else if( $search['Relance.numrelance'] > 1 ) {
-							$results[$i]['Nonrespectsanctionep93']['datemin'] = date(
-								'Y-m-d',
-								strtotime(
-									'+'.( Configure::read( "Nonrespectsanctionep93.relanceOrientstructCer{$search['Relance.numrelance']}" ) + 1 ).' days',
-									strtotime( $result['Relancenonrespectsanctionep93']['daterelance'] )
-								)
-							);
-						}
-
-						$results[$i]['Orientstruct']['nbjours'] = round(
-							//( mktime() - strtotime( $result['Orientstruct']['date_valid'] ) ) / ( 60 * 60 * 24 )
-							( mktime() - strtotime( $result['Orientstruct']['date_impression'] ) ) / ( 60 * 60 * 24 )
-						);
-					}
-				}
+// 				if( !empty( $results ) ) {
+// 					foreach( $results as $i => $result ) {
+// 						// Calcul de la date de relance minimale
+// 						if( $search['Relance.numrelance'] == 1 ) {
+// 							$results[$i]['Nonrespectsanctionep93']['datemin'] = date(
+// 								'Y-m-d',
+// 								strtotime(
+// 									'+'.( Configure::read( 'Nonrespectsanctionep93.relanceOrientstructCer1' ) + 1 ).' days',
+// 									strtotime( $result['Orientstruct']['date_impression'] )
+// 								)
+// 							);
+// 						}
+// 						else if( $search['Relance.numrelance'] > 1 ) {
+// 							$results[$i]['Nonrespectsanctionep93']['datemin'] = date(
+// 								'Y-m-d',
+// 								strtotime(
+// 									'+'.( Configure::read( "Nonrespectsanctionep93.relanceOrientstructCer{$search['Relance.numrelance']}" ) + 1 ).' days',
+// 									strtotime( $result['Relancenonrespectsanctionep93']['daterelance'] )
+// 								)
+// 							);
+// 						}
+// 
+// 						$results[$i]['Orientstruct']['nbjours'] = round(
+// 							//( mktime() - strtotime( $result['Orientstruct']['date_valid'] ) ) / ( 60 * 60 * 24 )
+// 							( mktime() - strtotime( $result['Orientstruct']['date_impression'] ) ) / ( 60 * 60 * 24 )
+// 						);
+// 					}
+// 				}
 			}
 			else {
 				// Dernièr contrat
@@ -828,7 +827,8 @@
 					'order' => array( 'Contratinsertion.df_ci ASC' ),
 				);
 
-				$results = $this->Nonrespectsanctionep93->Contratinsertion->find( 'all', $queryData );
+				return $queryData;
+				/*$results = $this->Nonrespectsanctionep93->Contratinsertion->find( 'all', $queryData );
 
 				if( !empty( $results ) ) {
 					foreach( $results as $i => $result ) {
@@ -856,9 +856,9 @@
 							( mktime() - strtotime( $result['Contratinsertion']['df_ci'] ) ) / ( 60 * 60 * 24 )
 						);
 					}
-				}
+				}*/
 			}
-			return $results;
+// 			return $results;
 		}
 
 		/**
