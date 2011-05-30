@@ -120,13 +120,14 @@
 			// Fin conditions zones géographiques CG 66
 
 			if( !empty( $this->data ) ) {
+debug($this->data);
 				$ajouts = array();
 				$suppressions = array();
 				foreach( $this->data['Dossierep'] as $key => $dossierep ) {
-					if( empty( $dossierep['chosen'] ) ) {
+					if( empty( $dossierep['chosen'] ) && !empty( $this->data['Passagecommissionep'][$key]['id'] ) ) {
 						$suppressions[] = $this->data['Passagecommissionep'][$key]['id'];
 					}
-					else if( !empty( $dossierep['chosen'] ) ) {
+					else if( !empty( $dossierep['chosen'] ) && empty( $this->data['Passagecommissionep'][$key]['id'] ) ) {
 						$ajouts[] = array(
 // 							'etatdossierep' => 'cree',
 							'commissionep_id' => $commissionep_id,
@@ -134,7 +135,8 @@
 						);
 					}
 				}
-
+debug($ajouts);
+debug($suppressions);
 				$this->Dossierep->begin();
 
 				$success = true;
@@ -254,7 +256,11 @@
 										)
 									)
 								)
-							.' )'
+							.' )',
+// 							'OR' => array(
+// 								'Passagecommissionep.commissionep_id IS NULL',
+// 								'Passagecommissionep.commissionep_id' => $commissionep_id
+// 							)
 						),
 						'limit' => 100,
 						'order' => array( 'Dossierep.created ASC' )
