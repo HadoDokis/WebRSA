@@ -570,16 +570,21 @@
 			$countDossiers = 0;
 			foreach( $themes as $theme ) {
 				$class = Inflector::classify( $theme );
-				$dossiers[$theme] = $this->Commissionep->Passagecommissionep->find(
+
+				$qdListeDossier = $this->Commissionep->Passagecommissionep->Dossierep->{$class}->qdListeDossier();
+
+				if ( isset( $qdListeDossier['fields'] ) ) {
+					$qd['fields'] = $qdListeDossier['fields'];
+				}
+				$qd['conditions'] = array( 'Passagecommissionep.commissionep_id' => $commissionep_id, 'Dossierep.themeep' => Inflector::tableize( $class ) );
+				$qd['joins'] = $qdListeDossier['joins'];
+				$qd['contain'] = false;
+
+				$dossiers[$theme] = $this->Commissionep->Passagecommissionep->Dossierep->find(
 					'all',
-					array(
-						'conditions' => array(
-							'Passagecommissionep.commissionep_id' => $commissionep_id,
-							'Dossierep.themeep' => Inflector::tableize( $class )
-						),
-						'contain' => $this->Commissionep->Passagecommissionep->Dossierep->{$class}->qdContainListeDossier()
-					)
+					$qd
 				);
+
 				$countDossiers += count($dossiers[$theme]);
 			}
 // debug($dossiers);

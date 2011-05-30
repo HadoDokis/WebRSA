@@ -130,7 +130,7 @@
 						$ajouts[] = array(
 // 							'etatdossierep' => 'cree',
 							'commissionep_id' => $commissionep_id,
-							'dossierep_id' => $dossierep['id'],
+							'dossierep_id' => $this->data['Dossierep'][$key]['id'],
 						);
 					}
 				}
@@ -144,7 +144,7 @@
 				}
 
 				if( !empty( $suppressions ) ) {
-					 $success = $this->Dossierep->Passagecommissionep->delete( $suppressions ) && $success;
+					$success = $this->Dossierep->Passagecommissionep->delete( $suppressions ) && $success;
 				}
 
 				// Changer l'état de la séance
@@ -191,16 +191,6 @@
 						),
 						'joins' => array(
 							array(
-								'table'      => 'passagescommissionseps',
-								'alias'      => 'Passagecommissionep',
-								'type'       => 'LEFT OUTER',
-								'foreignKey' => false,
-								'conditions' => array(
-									'Dossierep.id = Passagecommissionep.dossierep_id',
-									'Passagecommissionep.commissionep_id' => $commissionep_id
-								)
-							),
-							array(
 								'table'      => 'commissionseps',
 								'alias'      => 'Commissionep',
 								'type'       => 'LEFT OUTER',
@@ -219,34 +209,6 @@
 								)
 							),
 							array(
-								'table'      => 'personnes',
-								'alias'      => 'Personne',
-								'type'       => 'INNER',
-								'foreignKey' => false,
-								'conditions' => array( 'Dossierep.personne_id = Personne.id' )
-							),
-							array(
-								'table'      => 'foyers',
-								'alias'      => 'Foyer',
-								'type'       => 'INNER',
-								'foreignKey' => false,
-								'conditions' => array( 'Personne.foyer_id = Foyer.id' )
-							),
-							array(
-								'table'      => 'adressesfoyers',
-								'alias'      => 'Adressefoyer',
-								'type'       => 'INNER',
-								'foreignKey' => false,
-								'conditions' => array( 'Foyer.id = Adressefoyer.foyer_id', 'Adressefoyer.rgadr = \'01\'' )
-							),
-							array(
-								'table'      => 'adresses',
-								'alias'      => 'Adresse',
-								'type'       => 'INNER',
-								'foreignKey' => false,
-								'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
-							),
-							array(
 								'table'      => 'calculsdroitsrsa',
 								'alias'      => 'Calculdroitrsa',
 								'type'       => 'INNER',
@@ -255,13 +217,6 @@
 									'Personne.id = Calculdroitrsa.personne_id',
 									'Calculdroitrsa.toppersdrodevorsa' => 1
 								)
-							),
-							array(
-								'table'      => 'dossiers',
-								'alias'      => 'Dossier',
-								'type'       => 'INNER',
-								'foreignKey' => false,
-								'conditions' => array( 'Foyer.dossier_id = Dossier.id' )
 							),
 							array(
 								'table'      => 'situationsdossiersrsa',
@@ -329,28 +284,58 @@
 				$this->set( 'themeEmpty', true );
 			}
 
+			$themesChoose = array_keys( $this->Dossierep->Passagecommissionep->Commissionep->themesTraites( $commissionep_id ) );
+			
+			$dossiers = array();
+			$countDossiers = 0;
+			$originalPaginate = $this->paginate;
+			foreach( $themesChoose as $theme ){
+				//$queryData = $this->paginate['Dossierep'];
+				$class = Inflector::classify( $theme );
 
-            $themesChoose = array_keys( $this->Dossierep->Passagecommissionep->Commissionep->themesTraites( $commissionep_id ) );
-            
-            $dossiers = array();
-            $countDossiers = 0;
-            $originalPaginate = $this->paginate;
-            foreach( $themesChoose as $theme ){
-                //$queryData = $this->paginate['Dossierep'];
-                $queryData['conditions']['Dossierep.themeep'] = Inflector::tableize( $theme );
-                //$dossiers[$theme] = $this->paginate( $this->Dossierep );
-                $dossiers[$theme] = $this->Dossierep->find( 'all', $queryData );
-                // INFO: pour avoir le formulaire pré-rempli ... à mettre dans le modèle également ?
-                if( empty( $this->data ) ) {
-                    foreach( $dossiers[$theme] as $key => $dossierep ) {
-                        $dossiers[$theme][$key]['Dossierep']['chosen'] =  ( ( $dossierep['Passagecommissionep']['commissionep_id'] == $commissionep_id ) );
-                    }
-                }
-                $countDossiers += count($dossiers[$theme]);
-            }
-            $this->paginate = $originalPaginate;
-            $this->set( compact( 'dossiers', 'themesChoose' ) );
-            $this->set( compact( 'countDossiers' ) );
+				$qdListeDossier = $this->Dossierep->{$class}->qdListeDossier();
+
+				if ( isset( $qdListeDossier['fields'] ) ) {
+					$qd['fields'] = array_merge( $qdListeDossier['fields'], $queryData['fields'] );
+				}
+				$qd['conditions'] = array_merge( array( 'Dossierep.themeep' => Inflector::tableize( $class ) ), $queryData['conditions'] );
+				$qd['joins'] = array_merge( $qdListeDossier['joins'], $queryData['joins'] );
+				$qd['contain'] = false;
+				$qd['limit'] = $queryData['limit'];
+				$qd['order'] = $queryData['order'];
+
+				$dossiers[$theme] = $this->Dossierep->find(
+					'all',
+					$qd
+				);
+
+				//$queryData['conditions']['Dossierep.themeep'] = Inflector::tableize( $theme );
+				//$dossiers[$theme] = $this->paginate( $this->Dossierep );
+				//$dossiers[$theme] = $this->Dossierep->find( 'all', $queryData );
+				// INFO: pour avoir le formulaire pré-rempli ... à mettre dans le modèle également ?
+				if( empty( $this->data ) ) {
+					foreach( $dossiers[$theme] as $key => $dossierep ) {
+						$dossiers[$theme][$key]['Dossierep']['chosen'] = ( ( $dossierep['Passagecommissionep']['commissionep_id'] == $commissionep_id ) );
+					}
+				}
+				$countDossiers += count($dossiers[$theme]);
+			}
+
+			$this->paginate = $originalPaginate;
+			$this->set( compact( 'dossiers', 'themesChoose' ) );
+			$this->set( compact( 'countDossiers' ) );
+
+			if ( Configure::read( 'Cg.departement' ) == 93 ) {
+				$options = Set::merge(
+					$options,
+					$this->Dossierep->Nonrespectsanctionep93->enums()
+				);
+				$options = Set::merge(
+					$options,
+					$this->Dossierep->Signalementep93->Contratinsertion->enums()
+				);
+				$this->set( 'duree_engag_cg93', $this->Option->duree_engag_cg93() );
+			}
 
 			$this->set( compact( 'options', 'dossierseps', 'commissionep' ) );
 			$this->set( 'commissionep_id', $commissionep_id);
@@ -495,29 +480,29 @@
 		}
 
 
-        /**
-        *    Génération et envoi du courrier d'information avant passage en EP
-        */
-        /*public function courrierInformation( $dossierep_id ) {
-            $dossierep = $this->Dossierep->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Dossierep.id' => $dossierep_id
-                    )
-                )
-            );
+		/**
+		*    Génération et envoi du courrier d'information avant passage en EP
+		*/
+		/*public function courrierInformation( $dossierep_id ) {
+			$dossierep = $this->Dossierep->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Dossierep.id' => $dossierep_id
+					)
+				)
+			);
 
-            $classThemeName = Inflector::classify( $dossierep['Dossierep']['themeep'] );
-            $pdf = $this->Dossierep->{$classThemeName}->getCourrierInformationPdf( $dossierep['Dossierep']['id'] );
+			$classThemeName = Inflector::classify( $dossierep['Dossierep']['themeep'] );
+			$pdf = $this->Dossierep->{$classThemeName}->getCourrierInformationPdf( $dossierep['Dossierep']['id'] );
 
-            if( $pdf ) {
-                $this->Gedooo->sendPdfContentToClient( $pdf, 'Courrier_Information' );
-            }
-            else {
-                $this->Session->setFlash( 'Impossible de générer le courrier d\'information', 'default', array( 'class' => 'error' ) );
-                $this->redirect( $this->referer() );
-            }
-        }*/
+			if( $pdf ) {
+				$this->Gedooo->sendPdfContentToClient( $pdf, 'Courrier_Information' );
+			}
+			else {
+				$this->Session->setFlash( 'Impossible de générer le courrier d\'information', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
+			}
+		}*/
 	}
 ?>

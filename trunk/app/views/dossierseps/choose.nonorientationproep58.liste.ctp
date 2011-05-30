@@ -6,8 +6,10 @@
 			'Personne.qual',
 			'Personne.nom',
 			'Personne.prenom',
-			'Dossierep.created'/*,
-			'Dossierep.themeep'*/
+			'Personne.dtnai',
+			'Adresse.locaadr',
+			'Dossierep.created',
+// 			'Dossierep.themeep',
 		),
 		array(
 			'cohorte' => true,
