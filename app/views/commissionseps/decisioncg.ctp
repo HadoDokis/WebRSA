@@ -16,15 +16,14 @@
 		}
 
 		echo $default->button(
-			'back',
-			array(
-				'controller' => 'commissionseps',
-				'action'     => 'view',
-				$commissionep_id
-			),
-			array(
-				'id' => 'Back'
-			)
+		    'back',
+		    array(
+		        'controller' => 'commissionseps',
+		        'action'     => 'arbitragecg'
+		    ),
+		    array(
+		        'id' => 'Back'
+		    )
 		);
 
 		/*echo $form->create( null, array( 'url' => Router::url( null, true ) ) );
