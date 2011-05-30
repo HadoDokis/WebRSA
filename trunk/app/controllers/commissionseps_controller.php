@@ -42,7 +42,7 @@
 				'commissionseps::ordredujour',
 				'membreseps::editpresence',
 				'commissionseps::printConvocationBeneficiaire',
-				'membreseps::printConvocationParticipant',
+// 				'membreseps::printConvocationParticipant',
 				'commissionseps::printOrdreDuJour',
 				'commissionseps::delete',
 			),
