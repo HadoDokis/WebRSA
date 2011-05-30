@@ -147,7 +147,7 @@
 						),
 					),
 					'conditions' => array(
-						'Dossiercov58.etapecov NOT' => array( 'traitement', 'finalise' )
+						'Dossiercov58.etapecov NOT' => 'finalise'
 					),
 					'limit' => 100,
 					'order' => array( $class.'.datedemande ASC' )
