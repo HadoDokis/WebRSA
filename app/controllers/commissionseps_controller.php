@@ -25,6 +25,7 @@
 				'membreseps::editliste',
 				'commissionseps::edit',
 				'commissionseps::delete',
+				'membreseps::printConvocationParticipant',
 			),
 			'associe' => array(
 				'commissionseps::ordredujour',
