@@ -224,26 +224,28 @@
 			$success = $this->Dossiercov58->save($dossier['Dossiercov58']) && $success;
 			$success = $this->save($dossier['Propocontratinsertioncov58']) && $success;
 			
-			$contratinsertion = array(
-				'Contratinsertion' => array(
-					'personne_id' => $dossier['Dossiercov58']['personne_id'],
-					'structurereferente_id' => $dossier['Propocontratinsertioncov58']['structurereferente_id'],
-					'referent_id' => $dossier['Propocontratinsertioncov58']['referent_id'],
-					'num_contrat' => $dossier['Propocontratinsertioncov58']['num_contrat'],
-					'dd_ci' => $dossier['Propocontratinsertioncov58']['dd_ci'],
-					'duree_engag' => $dossier['Propocontratinsertioncov58']['duree_engag'],
-					'df_ci' => $dossier['Propocontratinsertioncov58']['df_ci'],
-					'forme_ci' => $dossier['Propocontratinsertioncov58']['forme_ci'],
-					'avisraison_ci' => $dossier['Propocontratinsertioncov58']['avisraison_ci'],
-					'rg_ci' => $dossier['Propocontratinsertioncov58']['rg_ci'],
-					'observ_ci' => $data['commentaire'],
-					'date_saisi_ci' => $dossier['Propocontratinsertioncov58']['datedemande'],
-					'datevalidation_ci' => $data['datevalidation'],
-					'decision_ci' => 'V'
-				)
-			);
-			$this->Dossiercov58->Personne->Contratinsertion->create( $contratinsertion ) && $success;
-			$success = $this->Dossiercov58->Personne->Contratinsertion->save() && $success;
+			if ( $dossier['Propocontratinsertioncov58']['decisioncov'] == 'accepte' ) {
+				$contratinsertion = array(
+					'Contratinsertion' => array(
+						'personne_id' => $dossier['Dossiercov58']['personne_id'],
+						'structurereferente_id' => $dossier['Propocontratinsertioncov58']['structurereferente_id'],
+						'referent_id' => $dossier['Propocontratinsertioncov58']['referent_id'],
+						'num_contrat' => $dossier['Propocontratinsertioncov58']['num_contrat'],
+						'dd_ci' => $dossier['Propocontratinsertioncov58']['dd_ci'],
+						'duree_engag' => $dossier['Propocontratinsertioncov58']['duree_engag'],
+						'df_ci' => $dossier['Propocontratinsertioncov58']['df_ci'],
+						'forme_ci' => $dossier['Propocontratinsertioncov58']['forme_ci'],
+						'avisraison_ci' => $dossier['Propocontratinsertioncov58']['avisraison_ci'],
+						'rg_ci' => $dossier['Propocontratinsertioncov58']['rg_ci'],
+						'observ_ci' => $data['commentaire'],
+						'date_saisi_ci' => $dossier['Propocontratinsertioncov58']['datedemande'],
+						'datevalidation_ci' => $data['datevalidation'],
+						'decision_ci' => 'V'
+					)
+				);
+				$this->Dossiercov58->Personne->Contratinsertion->create( $contratinsertion ) && $success;
+				$success = $this->Dossiercov58->Personne->Contratinsertion->save() && $success;
+			}
 			
 			return $success;
 		}
