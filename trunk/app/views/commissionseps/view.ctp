@@ -234,7 +234,8 @@
 								'Invitation',
 								array( 'controller' => 'commissionseps', 'action' => 'printConvocationParticipant', $commissionep['Commissionep']['id'], $membreepseanceep['Membreep']['id'] ),
 								array(
-									'enabled' => ( $membreepseanceep['CommissionepMembreep']['reponse'] == 'nonrenseigne' /*&& empty( $disableOrdredujour )*/  && empty( $membreepseanceep['CommissionepMembreep']['presence'] ) ),
+									//'enabled' => ( $membreepseanceep['CommissionepMembreep']['reponse'] == 'nonrenseigne' /*&& empty( $disableOrdredujour )*/  && empty( $membreepseanceep['CommissionepMembreep']['presence'] ) ),
+									'enabled' => ( in_array( 'membreseps::printConvocationParticipant', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) ),
 									'class' => 'button print'
 								)
 							),
@@ -248,7 +249,8 @@
 								'Ordre du jour',
 								array( 'controller' => 'commissionseps', 'action' => 'printOrdreDuJour', $membreepseanceep['CommissionepMembreep']['id'] ),
 								array(
-									'enabled' => ( ( $membreepseanceep['CommissionepMembreep']['reponse'] == 'remplacepar' || $membreepseanceep['CommissionepMembreep']['reponse'] == 'confirme' ) && empty( $disableOrdredujour )  && empty( $membreepseanceep['CommissionepMembreep']['presence'] ) ),
+									//'enabled' => ( ( $membreepseanceep['CommissionepMembreep']['reponse'] == 'remplacepar' || $membreepseanceep['CommissionepMembreep']['reponse'] == 'confirme' ) && empty( $disableOrdredujour )  && empty( $membreepseanceep['CommissionepMembreep']['presence'] ) ),
+									'enabled' => ( ( $membreepseanceep['CommissionepMembreep']['reponse'] == 'remplacepar' || $membreepseanceep['CommissionepMembreep']['reponse'] == 'confirme' ) && empty( $disableOrdredujour ) ),
 									'class' => 'button print'
 								)
 							),
