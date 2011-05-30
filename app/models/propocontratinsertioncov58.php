@@ -219,12 +219,12 @@
 					)
 				)
 			);
-			
+
 			$dossier['Dossiercov58']['etapecov'] = 'finalise';
 			$success = $this->Dossiercov58->save($dossier['Dossiercov58']) && $success;
 			$success = $this->save($dossier['Propocontratinsertioncov58']) && $success;
-			
-			if ( $dossier['Propocontratinsertioncov58']['decisioncov'] == 'accepte' ) {
+
+			if ( $data['decisioncov'] == 'accepte' ) {
 				$contratinsertion = array(
 					'Contratinsertion' => array(
 						'personne_id' => $dossier['Dossiercov58']['personne_id'],
