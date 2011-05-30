@@ -117,10 +117,13 @@
                  <tr>
                     <th><?php echo $xpaginator->sort( 'Numéro dossier', 'Dossier.numdemrsa' );?></th>
                     <th><?php echo $xpaginator->sort( 'Allocataire', 'Personne.nom' );?></th>
-                    <th><?php echo $xpaginator->sort( 'N° Téléphone', 'Modecontact.numtel' );?></th>
                     <th><?php echo $xpaginator->sort( 'Commune', 'Adresse.locaadr' );?></th>
                     <th><?php echo $xpaginator->sort( 'Date d\'ouverture droits', 'Dossier.dtdemrsa' );?></th>
                     <th><?php echo $xpaginator->sort( 'Date d\'orientation', 'Orientstruct.date_valid' );?></th>
+					<?php if( Configure::read( 'Cg.departement' ) == 93 ):?>
+						<th><?php echo $xpaginator->sort( 'Préconisation d\'orientation', 'Orientstruct.propo_algo' );?></th>
+					<?php endif;?>
+					<th><?php echo $xpaginator->sort( 'Type d\'orientation', 'Orientstruct.typeorient_id' );?></th>
                     <th><?php echo $xpaginator->sort( 'Structure référente', 'Structurereferente.lib_struc' );?></th>
                     <th><?php echo $xpaginator->sort( 'Statut orientation', 'Orientstruct.statut_orient' );?></th>
                     <th><?php echo $xpaginator->sort( 'Soumis à droits et devoirs', 'Calculdroitrsa.toppersdrodevorsa' );?></th>
@@ -157,30 +160,43 @@
                                     <th>Identifiant Pôle Emploi</th>
                                     <td>'.$orient['Infopoleemploi']['identifiantpe'].'</td>
                                 </tr>
+                                <tr>
+                                    <th>N° Téléphone</th>
+                                    <td>'.h( $orient['Modecontact']['numtel'] ).'</td>
+                                </tr>
                             </tbody>
                         </table>';
 
-                        echo $xhtml->tableCells(
+						$cells = array(
+							h( $orient['Dossier']['numdemrsa'] ),
+							h( $orient['Personne']['qual'].' '.$orient['Personne']['nom'].' '.$orient['Personne']['prenom'] ),
+							h( $orient['Adresse']['locaadr'] ),
+							h( date_short( $orient['Dossier']['dtdemrsa'] ) ),
+							h( date_short( $orient['Orientstruct']['date_valid'] ) )
+						);
 
-                            array(
-                                h( $orient['Dossier']['numdemrsa'] ),
-                                h( $orient['Personne']['qual'].' '.$orient['Personne']['nom'].' '.$orient['Personne']['prenom'] ),
-                                h( $orient['Modecontact']['numtel'] ),
-                                h( $orient['Adresse']['locaadr'] ),
-                                h( date_short( $orient['Dossier']['dtdemrsa'] ) ),
-                                h( date_short( $orient['Orientstruct']['date_valid'] ) ),
-                                h( isset( $sr[$orient['Orientstruct']['structurereferente_id']] ) ? $sr[$orient['Orientstruct']['structurereferente_id']] : null ),
-                                h( $orient['Orientstruct']['statut_orient'] ),
-                                $xhtml->boolean( $orient['Calculdroitrsa']['toppersdrodevorsa'] ),
-                                array(
-                                    $xhtml->viewLink(
-                                        'Voir le dossier « '.$orient['Dossier']['numdemrsa'].' »',
-                                        array( 'controller' => 'orientsstructs', 'action' => 'index', $orient['Personne']['id'] )
-                                    ),
-                                    array( 'class' => 'noprint' )
-                                ),
-                                array( $innerTable, array( 'class' => 'innerTableCell noprint' ) ),
-                            ),
+						if( Configure::read( 'Cg.departement' ) == 93 ) {
+							$cells[] = h( Set::enum( $orient['Orientstruct']['propo_algo'], $typeorient ) );
+						}
+
+						array_push(
+							$cells,
+							h( Set::enum( $orient['Orientstruct']['typeorient_id'], $typeorient ) ),
+							h( isset( $sr[$orient['Orientstruct']['structurereferente_id']] ) ? $sr[$orient['Orientstruct']['structurereferente_id']] : null ),
+							h( $orient['Orientstruct']['statut_orient'] ),
+							$xhtml->boolean( $orient['Calculdroitrsa']['toppersdrodevorsa'] ),
+							array(
+								$xhtml->viewLink(
+									'Voir le dossier « '.$orient['Dossier']['numdemrsa'].' »',
+									array( 'controller' => 'orientsstructs', 'action' => 'index', $orient['Personne']['id'] )
+								),
+								array( 'class' => 'noprint' )
+							),
+							array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
+						);
+
+                        echo $xhtml->tableCells(
+                            $cells,
                             array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
                             array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
                         );

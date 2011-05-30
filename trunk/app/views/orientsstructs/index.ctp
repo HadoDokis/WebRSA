@@ -172,7 +172,8 @@
 					<th>Prénom</th>
 					<th>Date de la demande</th>
 					<th>Date d'orientation</th>
-					<th>Préconisation d'orientation</th>
+					<?php if( Configure::read( 'Cg.departement' ) == 93 ):?><th>Préconisation d'orientation</th><?php endif;?>
+					<th>Type d'orientation</th>
 					<th>Structure référente</th>
 					<th>Rang d'orientation</th>
  					<!--<?php if( Configure::read( 'nom_form_ci_cg' ) == 'cg58' ):?><th>Etat de l'orientation</th><?php endif;?>-->
@@ -201,14 +202,18 @@
 							h( $orientstruct['Personne']['prenom'] ),
 							h( date_short( $orientstruct['Orientstruct']['date_propo'] ) ),
 							h( date_short( $orientstruct['Orientstruct']['date_valid'] ) ),
-							h( Set::classicExtract( $orientstruct, 'Typeorient.lib_type_orient' ) ),
-							h( $orientstruct['Structurereferente']['lib_struc']  ),
-							h( $rgorient ),
 						);
 
-						/*if( Configure::read( 'nom_form_ci_cg' ) == 'cg58' ) {
-							$cells[] = h( Set::enum( $orientstruct['Orientstruct']['etatorient'], $options['etatorient'] ) ) ;
-						}*/
+						if( Configure::read( 'Cg.departement' ) == 93 ) {
+							$cells[] = h( Set::enum( $orientstruct['Orientstruct']['propo_algo'], $typesorients ) );
+						}
+
+						array_push(
+							$cells,
+							h( Set::classicExtract( $orientstruct, 'Typeorient.lib_type_orient' ) ),
+							h( $orientstruct['Structurereferente']['lib_struc']  ),
+							h( $rgorient )
+						);
 
 						array_push(
 							$cells,
