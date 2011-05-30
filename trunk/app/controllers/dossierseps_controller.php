@@ -123,10 +123,10 @@
 				$ajouts = array();
 				$suppressions = array();
 				foreach( $this->data['Dossierep'] as $key => $dossierep ) {
-					if( empty( $dossierep['chosen'] ) && !empty( $this->data['Passagecommissionep'][$key]['id'] ) ) {
+					if( empty( $dossierep['chosen'] ) ) {
 						$suppressions[] = $this->data['Passagecommissionep'][$key]['id'];
 					}
-					else if( !empty( $dossierep['chosen'] ) && empty( $this->data['Passagecommissionep'][$key]['id'] ) ) {
+					else if( !empty( $dossierep['chosen'] ) ) {
 						$ajouts[] = array(
 // 							'etatdossierep' => 'cree',
 							'commissionep_id' => $commissionep_id,
