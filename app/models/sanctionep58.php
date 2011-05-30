@@ -79,7 +79,7 @@
 		*/
 
 		protected function _qdSelection( $origine ) {
-			$idSanctionMax = $this->Listesanctionep58->find(
+			$idSanctionMax = $this->Dossierep->Passagecommissionep->Decisionsanctionep58->Listesanctionep58->find(
 				'first',
 				array(
 					'order' => array( 'Listesanctionep58.rang DESC' ),
