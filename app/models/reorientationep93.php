@@ -798,25 +798,99 @@
 		}
 
 		/**
-		 * Fonction retournant ce qui va aller dans un contain permettant de retrouver la liste des
-		 * dossierseps liés à une commission
+		 * Fonction retournant un querydata qui va permettre de retrouver des dossiers d'EP
 		 */
-		public function qdContainListeDossier() {
+		public function qdListeDossier() {
 			return array(
-				'Dossierep' => array(
-					$this->alias => array(
-						'Structurereferente',
-						'Motifreorientep93'
+				'fields' => array(
+					'Dossierep.id',
+					'Dossier.numdemrsa',
+					'Dossier.matricule',
+					'Personne.qual',
+					'Personne.nom',
+					'Personne.prenom',
+					'Personne.dtnai',
+					'Structurereferente.lib_struc',
+					'Motifreorientep93.name',
+					'Reorientationep93.accordaccueil',
+					'Reorientationep93.accordallocataire',
+					'Reorientationep93.urgent',
+					'Reorientationep93.datedemande',
+					'Passagecommissionep.id',
+					'Passagecommissionep.commissionep_id'
+				),
+				'joins' => array(
+					array(
+						'alias' => $this->alias,
+						'table' => Inflector::tableize( $this->alias ),
+						'type' => 'INNER',
+						'conditions' => array(
+							'Dossierep.id = '.$this->alias.'.dossierep_id'
+						)
 					),
-					'Personne' => array(
-						'Foyer' => array(
-							'Dossier',
-							'Adressefoyer' => array(
-								'conditions' => array(
-									'Adressefoyer.rgadr' => '01'
-								),
-								'Adresse'
-							)
+					array(
+						'alias' => 'Structurereferente',
+						'table' => 'structuresreferentes',
+						'type' => 'INNER',
+						'conditions' => array(
+							'Structurereferente.id = '.$this->alias.'.structurereferente_id'
+						)
+					),
+					array(
+						'alias' => 'Motifreorientep93',
+						'table' => 'motifsreorientseps93',
+						'type' => 'INNER',
+						'conditions' => array(
+							'Motifreorientep93.id = '.$this->alias.'.motifreorientep93_id'
+						)
+					),
+					array(
+						'alias' => 'Personne',
+						'table' => 'personnes',
+						'type' => 'INNER',
+						'conditions' => array(
+							'Dossierep.personne_id = Personne.id'
+						)
+					),
+					array(
+						'alias' => 'Foyer',
+						'table' => 'foyers',
+						'type' => 'INNER',
+						'conditions' => array(
+							'Personne.foyer_id = Foyer.id'
+						)
+					),
+					array(
+						'alias' => 'Dossier',
+						'table' => 'dossiers',
+						'type' => 'INNER',
+						'conditions' => array(
+							'Foyer.dossier_id = Dossier.id'
+						)
+					),
+					array(
+						'alias' => 'Adressefoyer',
+						'table' => 'adressesfoyers',
+						'type' => 'INNER',
+						'conditions' => array(
+							'Adressefoyer.foyer_id = Foyer.id',
+							'Adressefoyer.rgadr' => '01'
+						)
+					),
+					array(
+						'alias' => 'Adresse',
+						'table' => 'adresses',
+						'type' => 'INNER',
+						'conditions' => array(
+							'Adressefoyer.adresse_id = Adresse.id'
+						)
+					),
+					array(
+						'alias' => 'Passagecommissionep',
+						'table' => 'passagescommissionseps',
+						'type' => 'LEFT OUTER',
+						'conditions' => array(
+							'Passagecommissionep.dossierep_id = Dossierep.id'
 						)
 					)
 				)

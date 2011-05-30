@@ -35,7 +35,7 @@ msgid "Dossierep.etapedossierep"
 msgstr "Etape du dossier"
 
 msgid "Dossierep.chosen"
-msgstr "Sélectionné ?"
+msgstr "Sélectionner"
 
 msgid "Dossierep.themeep"
 msgstr "Thème du dossier"

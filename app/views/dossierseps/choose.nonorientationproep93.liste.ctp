@@ -2,19 +2,22 @@
 	echo $default2->index(
 		$dossiers[$theme],
 		array(
-			'Dossierep.chosen' => array( 'input' => 'checkbox' ),
+			'Dossier.numdemrsa',
+			'Dossier.matricule',
 			'Personne.qual',
 			'Personne.nom',
 			'Personne.prenom',
-			'Dossierep.created'/*,
-			'Dossierep.themeep'*/
+			'Personne.dtnai',
+			'Typeorient.lib_type_orient',
+			'Structurereferente.lib_struc',
+			'Orientstruct.date_valid',
+			'Dossierep.chosen' => array( 'input' => 'checkbox' ),
 		),
 		array(
 			'cohorte' => true,
 			'options' => $options,
 			'hidden' => array( 'Dossierep.id', 'Passagecommissionep.id' ),
 			'paginate' => 'Dossierep',
-			'actions' => array( 'Personnes::view' ),
 			'id' => $theme,
 			'labelcohorte' => 'Enregistrer'
 		)

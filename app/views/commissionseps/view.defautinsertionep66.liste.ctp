@@ -32,11 +32,11 @@
 		echo $default2->index(
 			$dossiers[$theme],
 			array(
-				'Dossierep.Personne.qual',
-				'Dossierep.Personne.nom',
-				'Dossierep.Personne.prenom',
-				'Dossierep.Personne.dtnai',
-				'Dossierep.Personne.Foyer.Adressefoyer.0.Adresse.locaadr',
+				'Personne.qual',
+				'Personne.nom',
+				'Personne.prenom',
+				'Personne.dtnai',
+				'Adresse.locaadr',
 				'Dossierep.created',
 				'Dossierep.themeep',
 				'Passagecommissionep.etatdossierep',

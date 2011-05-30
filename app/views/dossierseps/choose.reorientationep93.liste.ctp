@@ -2,19 +2,25 @@
 	echo $default2->index(
 		$dossiers[$theme],
 		array(
-			'Dossierep.chosen' => array( 'input' => 'checkbox' ),
+			'Dossier.numdemrsa',
+			'Dossier.matricule',
 			'Personne.qual',
 			'Personne.nom',
 			'Personne.prenom',
-			'Dossierep.created'/*,
-			'Dossierep.themeep'*/
+			'Personne.dtnai',
+			'Structurereferente.lib_struc',
+			'Motifreorientep93.name',
+			'Reorientationep93.accordaccueil' => array( 'type' => 'boolean' ),
+			'Reorientationep93.accordallocataire' => array( 'type' => 'boolean' ),
+			'Reorientationep93.urgent' => array( 'type' => 'boolean' ),
+			'Reorientationep93.datedemande',
+			'Dossierep.chosen' => array( 'input' => 'checkbox' ),
 		),
 		array(
 			'cohorte' => true,
 			'options' => $options,
 			'hidden' => array( 'Dossierep.id', 'Passagecommissionep.id' ),
 			'paginate' => 'Dossierep',
-			'actions' => array( 'Personnes::view' ),
 			'id' => $theme,
 			'labelcohorte' => 'Enregistrer'
 		)

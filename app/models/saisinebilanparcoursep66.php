@@ -545,22 +545,79 @@
 		}
 
 		/**
-		 * Fonction retournant ce qui va aller dans un contain permettant de retrouver la liste des
-		 * dossierseps liés à une commission
+		 * Fonction retournant un querydata qui va permettre de retrouver des dossiers d'EP
 		 */
-		public function qdContainListeDossier() {
+		public function qdListeDossier() {
 			return array(
-				'Dossierep' => array(
-					$this->alias,
-					'Personne' => array(
-						'Foyer' => array(
-							'Dossier',
-							'Adressefoyer' => array(
-								'conditions' => array(
-									'Adressefoyer.rgadr' => '01'
-								),
-								'Adresse'
-							)
+				'fields' => array(
+					'Dossierep.id',
+					'Personne.qual',
+					'Personne.nom',
+					'Personne.prenom',
+					'Personne.dtnai',
+					'Adresse.locaadr',
+					'Dossierep.created',
+					'Dossierep.themeep',
+					'Passagecommissionep.id',
+					'Passagecommissionep.commissionep_id',
+					'Passagecommissionep.etatdossierep',
+				),
+				'joins' => array(
+					array(
+						'alias' => $this->alias,
+						'table' => Inflector::tableize( $this->alias ),
+						'type' => 'INNER',
+						'conditions' => array(
+							'Dossierep.id = '.$this->alias.'.dossierep_id'
+						)
+					),
+					array(
+						'alias' => 'Personne',
+						'table' => 'personnes',
+						'type' => 'INNER',
+						'conditions' => array(
+							'Dossierep.personne_id = Personne.id'
+						)
+					),
+					array(
+						'alias' => 'Foyer',
+						'table' => 'foyers',
+						'type' => 'INNER',
+						'conditions' => array(
+							'Personne.foyer_id = Foyer.id'
+						)
+					),
+					array(
+						'alias' => 'Dossier',
+						'table' => 'dossiers',
+						'type' => 'INNER',
+						'conditions' => array(
+							'Foyer.dossier_id = Dossier.id'
+						)
+					),
+					array(
+						'alias' => 'Adressefoyer',
+						'table' => 'adressesfoyers',
+						'type' => 'INNER',
+						'conditions' => array(
+							'Adressefoyer.foyer_id = Foyer.id',
+							'Adressefoyer.rgadr' => '01'
+						)
+					),
+					array(
+						'alias' => 'Adresse',
+						'table' => 'adresses',
+						'type' => 'INNER',
+						'conditions' => array(
+							'Adressefoyer.adresse_id = Adresse.id'
+						)
+					),
+					array(
+						'alias' => 'Passagecommissionep',
+						'table' => 'passagescommissionseps',
+						'type' => 'LEFT OUTER',
+						'conditions' => array(
+							'Passagecommissionep.dossierep_id = Dossierep.id'
 						)
 					)
 				)

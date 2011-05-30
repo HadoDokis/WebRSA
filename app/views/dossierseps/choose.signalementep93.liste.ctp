@@ -1,20 +1,28 @@
 <?php
+	$duree_engag = 'duree_engag_'.Configure::read( 'nom_form_ci_cg' );
+	foreach( $dossiers[$theme] as &$dossierep ) {
+		$dossierep['Contratinsertion']['duree_engag'] = Set::enum( $dossierep['Contratinsertion']['duree_engag'], $$duree_engag );
+	}
+
 	echo $default2->index(
 		$dossiers[$theme],
 		array(
+			'Dossier.numdemrsa',
+			'Adresse.locaadr',
+			'Contratinsertion.num_contrat',
+			'Contratinsertion.dd_ci',
+			'Contratinsertion.duree_engag',
+			'Contratinsertion.df_ci',
+			'Structurereferente.lib_struc',
+			'Contratinsertion.nature_projet',
+			'Contratinsertion.type_demande',
 			'Dossierep.chosen' => array( 'input' => 'checkbox' ),
-			'Personne.qual',
-			'Personne.nom',
-			'Personne.prenom',
-			'Dossierep.created'/*,
-			'Dossierep.themeep'*/
 		),
 		array(
 			'cohorte' => true,
 			'options' => $options,
 			'hidden' => array( 'Dossierep.id', 'Passagecommissionep.id' ),
 			'paginate' => 'Dossierep',
-			'actions' => array( 'Personnes::view' ),
 			'id' => $theme,
 			'labelcohorte' => 'Enregistrer'
 		)

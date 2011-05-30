@@ -31,21 +31,21 @@
 	else {
 		$duree_engag = 'duree_engag_'.Configure::read( 'nom_form_ci_cg' );
 		foreach( $dossiers[$theme] as &$dossierep ) {
-			$dossierep['Dossierep']['Contratcomplexeep93']['Contratinsertion']['duree_engag'] = Set::enum( $dossierep['Dossierep']['Contratcomplexeep93']['Contratinsertion']['duree_engag'], $$duree_engag );
+			$dossierep['Contratinsertion']['duree_engag'] = Set::enum( $dossierep['Contratinsertion']['duree_engag'], $$duree_engag );
 		}
 
 		echo $default2->index(
 			$dossiers[$theme],
 			array(
-				'Dossierep.Personne.Foyer.Dossier.numdemrsa',
-				'Dossierep.Personne.Foyer.Adressefoyer.0.Adresse.locaadr',
-				'Dossierep.Contratcomplexeep93.Contratinsertion.num_contrat',
-				'Dossierep.Contratcomplexeep93.Contratinsertion.dd_ci',
-				'Dossierep.Contratcomplexeep93.Contratinsertion.duree_engag',
-				'Dossierep.Contratcomplexeep93.Contratinsertion.df_ci',
-				'Dossierep.Contratcomplexeep93.Contratinsertion.Structurereferente.lib_struc',
-				'Dossierep.Contratcomplexeep93.Contratinsertion.nature_projet',
-				'Dossierep.Contratcomplexeep93.Contratinsertion.type_demande',
+				'Dossier.numdemrsa',
+				'Adresse.locaadr',
+				'Contratinsertion.num_contrat',
+				'Contratinsertion.dd_ci',
+				'Contratinsertion.duree_engag',
+				'Contratinsertion.df_ci',
+				'Structurereferente.lib_struc',
+				'Contratinsertion.nature_projet',
+				'Contratinsertion.type_demande',
 // 				'Passagecommissionep.etatdossierep',
 			),
 			array(
