@@ -374,7 +374,7 @@
 				$this->_setFlashResult( 'Save', $success );
 				if ($success) {
 					$this->Membreep->CommissionepMembreep->commit();
-					$this->redirect(array('controller'=>'commissionseps', 'action'=>'view', $commissionep_id));
+					$this->redirect(array('controller'=>'commissionseps', 'action'=>'traiterep', $commissionep_id));
 				}
 				else {
 					$this->Membreep->CommissionepMembreep->rollback();
