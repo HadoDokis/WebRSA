@@ -590,13 +590,12 @@
 				)
 			);
 
-// debug($commissionep);
 			$this->id = $commissionep_id;
 			if( ( $nbDossierseps > 0 ) && ( $nbMembresepsNonRenseignes == 0 ) && ( $nbMembresepsTotal > 0 ) && ( $commissionep['Commissionep']['etatcommissionep'] == 'cree' ) ) {
 				$this->set( 'etatcommissionep', 'associe' );
 				$success = $this->save() && $success;
 			}
-			else if( ( ( $nbDossierseps == 0 ) || ( $nbMembresepsNonRenseignes > 0 ) || ( $nbMembresepsTotal > 0 ) ) && ( $commissionep['Commissionep']['etatcommissionep'] == 'associe' ) ) {
+			else if( ( ( $nbDossierseps == 0 ) || ( $nbMembresepsNonRenseignes > 0 ) || ( $nbMembresepsTotal == 0 ) ) && ( $commissionep['Commissionep']['etatcommissionep'] == 'associe' ) ) {
 				$this->set( 'etatcommissionep', 'cree' );
 				$success = $this->save() && $success;
 			}
