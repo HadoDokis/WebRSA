@@ -29,8 +29,7 @@
 			'back',
 			array(
 				'controller' => 'commissionseps',
-				'action'     => 'view',
-				$commissionep_id
+				'action'     => 'arbitrageep'
 			),
 			array(
 				'id' => 'Back'
