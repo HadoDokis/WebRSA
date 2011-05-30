@@ -56,13 +56,6 @@
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
-			),
-			'Listesanctionep58' => array(
-				'className' => 'Listesanctionep58',
-				'foreignKey' => 'listesanctionep58_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
 			)
 		);
 
@@ -549,13 +542,13 @@
                 'fields' => array(
                     'Sanctionep58.id',
                     'Sanctionep58.dossierep_id',
-                    'Sanctionep58.listesanctionep58_id',
                     'Sanctionep58.origine',
                     'Sanctionep58.commentaire',
                     'Sanctionep58.created',
                     'Sanctionep58.modified',
                     //
                     'Decisionsanctionep58.id',
+                    'Decisionsanctionep58.listesanctionep58_id',
                     'Decisionsanctionep58.etape',
                     'Decisionsanctionep58.decision',
                     'Decisionsanctionep58.commentaire',
