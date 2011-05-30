@@ -212,7 +212,7 @@
                 'fields' => array(
                     'Sanctionrendezvousep58.id',
                     'Sanctionrendezvousep58.dossierep_id',
-                    'Sanctionrendezvousep58.typerdv_id',
+                    'Sanctionrendezvousep58.rendezvous_id',
                     'Sanctionrendezvousep58.commentaire',
                     'Sanctionrendezvousep58.created',
                     'Sanctionrendezvousep58.modified',
@@ -227,14 +227,14 @@
                 ),
                 'joins' => array(
                     array(
-                        'table'      => 'sanctionsrendezouseps58',
+                        'table'      => 'sanctionsrendezvouseps58',
                         'alias'      => 'Sanctionrendezvousep58',
                         'type'       => 'LEFT OUTER',
                         'foreignKey' => false,
                         'conditions' => array( 'Sanctionrendezvousep58.dossierep_id = Dossierep.id' ),
                     ),
                     array(
-                        'table'      => 'decisionssanctionsrendezouseps58',
+                        'table'      => 'decisionssanctionsrendezvouseps58',
                         'alias'      => 'Decisionsanctionrendezvousep58',
                         'type'       => 'LEFT OUTER',
                         'foreignKey' => false,
