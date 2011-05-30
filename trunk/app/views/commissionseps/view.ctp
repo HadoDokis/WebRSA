@@ -148,14 +148,16 @@
 						in_array( 'membreseps::editliste', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] )
 					).' </li>';
 
-					echo '<li>'.$xhtml->presenceLink(
-						__d('commissionep','Commissionep::presence',true),
-						array( 'controller' => 'membreseps', 'action' => 'editpresence', $commissionep['Commissionep']['id'] ),
-						(
-							in_array( 'membreseps::editpresence', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] )
-							&& $presencesPossible
-						)
-					).' </li>';
+                    if( Configure::read( 'Cg.departement' ) != 93 ) {
+                        echo '<li>'.$xhtml->presenceLink(
+                            __d('commissionep','Commissionep::presence',true),
+                            array( 'controller' => 'membreseps', 'action' => 'editpresence', $commissionep['Commissionep']['id'] ),
+                            (
+                                in_array( 'membreseps::editpresence', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] )
+                                && $presencesPossible
+                            )
+                        ).' </li>';
+                    }
 				?>
 				</ul>
 			<?php
