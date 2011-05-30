@@ -423,7 +423,7 @@
 		/**
 		 * Fonction retournant un querydata qui va permettre de retrouver des dossiers d'EP
 		 */
-		public function qdListeDossier() {
+		public function qdListeDossier( $commissionep_id = null ) {
 			return array(
 				'fields' => array(
 					'Dossierep.id',
@@ -510,8 +510,14 @@
 						'alias' => 'Passagecommissionep',
 						'table' => 'passagescommissionseps',
 						'type' => 'LEFT OUTER',
-						'conditions' => array(
-							'Passagecommissionep.dossierep_id = Dossierep.id'
+						'conditions' => Set::merge(
+							array( 'Passagecommissionep.dossierep_id = Dossierep.id' ),
+							empty( $commissionep_id ) ? array() : array(
+								'OR' => array(
+									'Passagecommissionep.commissionep_id IS NULL',
+									'Passagecommissionep.commissionep_id' => $commissionep_id
+								)
+							)
 						)
 					)
 				)

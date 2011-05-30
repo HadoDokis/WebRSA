@@ -299,7 +299,7 @@ debug($suppressions);
 				//$queryData = $this->paginate['Dossierep'];
 				$class = Inflector::classify( $theme );
 
-				$qdListeDossier = $this->Dossierep->{$class}->qdListeDossier();
+				$qdListeDossier = $this->Dossierep->{$class}->qdListeDossier( $commissionep_id );
 
 				if ( isset( $qdListeDossier['fields'] ) ) {
 					$qd['fields'] = array_merge( $qdListeDossier['fields'], $queryData['fields'] );
@@ -326,7 +326,7 @@ debug($suppressions);
 				}
 				$countDossiers += count($dossiers[$theme]);
 			}
-
+// debug( $dossiers );
 			$this->paginate = $originalPaginate;
 			$this->set( compact( 'dossiers', 'themesChoose' ) );
 			$this->set( compact( 'countDossiers' ) );
@@ -347,9 +347,17 @@ debug($suppressions);
 			$this->set( 'commissionep_id', $commissionep_id);
 		}
 
+		/**
+		*
+		*/
+
 		public function decisioncg ( $dossierep_id ) {
 			$this->_decision( $dossierep_id, 'cg' );
 		}
+
+		/**
+		*
+		*/
 
 		public function _decision ( $dossierep_id, $niveauDecision ) {
 			$themeTraite = $this->Dossierep->themeTraite($dossierep_id);
