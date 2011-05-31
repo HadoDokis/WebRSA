@@ -79,8 +79,7 @@ echo '<table><thead>
 				[
 					'Decisionsaisinebilanparcoursep66<?php echo $i;?>TypeorientId',
 					'Decisionsaisinebilanparcoursep66<?php echo $i;?>StructurereferenteId',
-					'Decisionsaisinebilanparcoursep66<?php echo $i;?>ReferentId',
-					'Decisionsaisinebilanparcoursep66<?php echo $i;?>Checkcomm'
+					'Decisionsaisinebilanparcoursep66<?php echo $i;?>ReferentId'
 				],
 				'accepte',
 				false
