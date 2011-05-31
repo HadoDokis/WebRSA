@@ -551,6 +551,7 @@
 			return array(
 				'fields' => array(
 					'Dossierep.id',
+					'Personne.id',
 					'Personne.qual',
 					'Personne.nom',
 					'Personne.prenom',
