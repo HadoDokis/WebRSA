@@ -27,16 +27,15 @@ echo '<table id="Decisioncontratcomplexeep93" class="tooltips"><thead>
 				<tr>
 					<th>Observations de l'EP</th>
 					<td>".Set::classicExtract( $dossierep, "Passagecommissionep.0.Decisioncontratcomplexeep93.{$indexDecision}.commentaire" )."</td>
-				</tr>";
+				</tr>
+			</tbody>
+		</table>";
 
-		if ( $dossierep['Passagecommissionep'][0]['Decisioncontratcomplexeep93'][$indexDecision]['decision'] == 'reporte' || $dossierep['Passagecommissionep'][0]['Decisioncontratcomplexeep93'][$indexDecision]['decision'] == 'annule' ) {
-			$innerTable .= " <tr>
-				<th>Raison du non passage de l'EP</th>
-				<td>".Set::classicExtract( $dossierep, "Passagecommissionep.0.Decisioncontratcomplexeep93.{$indexDecision}.raisonnonpassage" )."</td>
-			</tr>";
-		}
-
-		$innerTable .= "</tbody></table>";
+		$hiddenFields = $form->input( "Contratcomplexeep93.{$i}.id", array( 'type' => 'hidden' ) ).
+						$form->input( "Contratcomplexeep93.{$i}.dossierep_id", array( 'type' => 'hidden' ) ).
+						$form->input( "Decisioncontratcomplexeep93.{$i}.id", array( 'type' => 'hidden' ) ).
+						$form->input( "Decisioncontratcomplexeep93.{$i}.passagecommissionep_id", array( 'type' => 'hidden' ) ).
+						$form->input( "Decisioncontratcomplexeep93.{$i}.etape", array( 'type' => 'hidden', 'value' => 'cg' ) );
 
 		echo $xhtml->tableCells(
 			array(
@@ -59,16 +58,12 @@ echo '<table id="Decisioncontratcomplexeep93" class="tooltips"><thead>
 				),
 
 				$form->input( "Decisioncontratcomplexeep93.{$i}.decisionpcg", array( 'legend' => false, 'options' => @$options['Decisionreorientationep93']['decisionpcg'], 'type' => 'radio' ) ),
-				$form->input( "Contratcomplexeep93.{$i}.id", array( 'type' => 'hidden' ) ).
-				$form->input( "Contratcomplexeep93.{$i}.dossierep_id", array( 'type' => 'hidden' ) ).
-				$form->input( "Decisioncontratcomplexeep93.{$i}.id", array( 'type' => 'hidden' ) ).
-				$form->input( "Decisioncontratcomplexeep93.{$i}.passagecommissionep_id", array( 'type' => 'hidden' ) ).
-				$form->input( "Decisioncontratcomplexeep93.{$i}.etape", array( 'type' => 'hidden', 'value' => 'cg' ) ).
-				$form->input( "Decisioncontratcomplexeep93.{$i}.decision", array( 'type' => 'select', 'options' => $options['Decisioncontratcomplexeep93']['decision'], 'label' => false ) ),
+				array( $form->input( "Decisioncontratcomplexeep93.{$i}.decision", array( 'type' => 'select', 'options' => $options['Decisioncontratcomplexeep93']['decision'], 'label' => false ) ), array( 'id' => "Decisioncontratcomplexeep93{$i}DecisionColumn" ) ),
 				$form->input( "Decisioncontratcomplexeep93.{$i}.datevalidation_ci", array( 'type' => 'date', 'label' => false, 'dateFormat' => __( 'Locale->dateFormat', true ) ) ),
 				$form->input( "Decisioncontratcomplexeep93.{$i}.observ_ci", array( 'type' => 'textarea', 'label' => false ) ),
-				array( $form->input( "Decisioncontratcomplexeep93.{$i}.raisonnonpassage", array( 'label' => false, 'type' => 'textarea' ) ), array( 'colspan' => '2' ) ),
-				$form->input( "Decisioncontratcomplexeep93.{$i}.commentaire", array( 'label' => false, 'type' => 'textarea' ) ),
+// 				array( $form->input( "Decisioncontratcomplexeep93.{$i}.raisonnonpassage", array( 'label' => false, 'type' => 'textarea' ) ), array( 'colspan' => '2' ) ),
+				$form->input( "Decisioncontratcomplexeep93.{$i}.commentaire", array( 'label' => false, 'type' => 'textarea' ) ).
+				$hiddenFields,
 				array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
 			),
 			array( 'class' => 'odd' ),
@@ -94,17 +89,22 @@ echo '<table id="Decisioncontratcomplexeep93" class="tooltips"><thead>
 			} );
 
 			$( 'Decisioncontratcomplexeep93<?php echo $i;?>Decision' ).observe( 'change', function() {
-				afficheRaisonpassage(
-					'Decisioncontratcomplexeep93<?php echo $i;?>Decision',
-					[ 'Decisioncontratcomplexeep93<?php echo $i;?>ObservCi', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiDay', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiMonth', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiYear' ],
-					'Decisioncontratcomplexeep93<?php echo $i;?>Raisonnonpassage'
-				);
+				changeColspanAnnuleReporte( 'Decisioncontratcomplexeep93<?php echo $i;?>DecisionColumn', 3, 'Decisioncontratcomplexeep93<?php echo $i;?>Decision', [ 'Decisioncontratcomplexeep93<?php echo $i;?>ObservCi', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiDay', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiMonth', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiYear' ] );
 			});
-			afficheRaisonpassage(
-				'Decisioncontratcomplexeep93<?php echo $i;?>Decision',
-				[ 'Decisioncontratcomplexeep93<?php echo $i;?>ObservCi', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiDay', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiMonth', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiYear' ],
-				'Decisioncontratcomplexeep93<?php echo $i;?>Raisonnonpassage'
-			);
+			changeColspanAnnuleReporte( 'Decisioncontratcomplexeep93<?php echo $i;?>DecisionColumn', 3, 'Decisioncontratcomplexeep93<?php echo $i;?>Decision', [ 'Decisioncontratcomplexeep93<?php echo $i;?>ObservCi', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiDay', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiMonth', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiYear' ] );
+
+// 			$( 'Decisioncontratcomplexeep93<?php echo $i;?>Decision' ).observe( 'change', function() {
+// 				afficheRaisonpassage(
+// 					'Decisioncontratcomplexeep93<?php echo $i;?>Decision',
+// 					[ 'Decisioncontratcomplexeep93<?php echo $i;?>ObservCi', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiDay', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiMonth', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiYear' ],
+// 					'Decisioncontratcomplexeep93<?php echo $i;?>Raisonnonpassage'
+// 				);
+// 			});
+// 			afficheRaisonpassage(
+// 				'Decisioncontratcomplexeep93<?php echo $i;?>Decision',
+// 				[ 'Decisioncontratcomplexeep93<?php echo $i;?>ObservCi', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiDay', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiMonth', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiYear' ],
+// 				'Decisioncontratcomplexeep93<?php echo $i;?>Raisonnonpassage'
+// 			);
 		<?php endfor;?>
 	});
 </script>

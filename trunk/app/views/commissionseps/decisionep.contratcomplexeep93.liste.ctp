@@ -7,8 +7,7 @@ echo '<table><thead>
 <th rowspan="2">Création du dossier EP</th>
 <th rowspan="2">Date de début du contrat</th>
 <th rowspan="2">Date de fin du contrat</th>
-<th rowspan="2">Avis EP</th>
-<th colspan="3">Décision CG</th>
+<th colspan="3">Avis EP</th>
 <th rowspan="2">Observations</th>
 </tr>
 <tr>
@@ -28,22 +27,11 @@ echo '<table><thead>
 				$locale->date( __( 'Locale->date', true ), $dossierep['Dossierep']['created'] ),
 				$locale->date( __( 'Locale->date', true ), @$dossierep['Contratcomplexeep93']['Contratinsertion']['dd_ci'] ),
 				$locale->date( __( 'Locale->date', true ), @$dossierep['Contratcomplexeep93']['Contratinsertion']['df_ci'] ),
-				implode(
-					' - ',
-					Set::filter(
-						array(
-							Set::enum( @$dossierep['Passagecommissionep'][0]['Decisioncontratcomplexeep93'][0]['decision'], $options['Decisioncontratcomplexeep93']['decision'] ),
-							$locale->date( 'Locale->date', @$dossierep['Passagecommissionep'][0]['Decisioncontratcomplexeep93'][0]['datevalidation_ci'] ),
-							@$dossierep['Passagecommissionep'][0]['Decisioncontratcomplexeep93'][0]['observ_ci'],
-							@$dossierep['Passagecommissionep'][0]['Decisioncontratcomplexeep93'][0]['raisonnonpassage']
-						)
-					)
-				),
 
-				$options['Decisioncontratcomplexeep93']['decision'][Set::classicExtract( $decisionep, "decision" )],
+				array( $options['Decisioncontratcomplexeep93']['decision'][Set::classicExtract( $decisionep, "decision" )], array( 'id' => "Decisioncontratcomplexeep93{$i}DecisionColumn" ) ),
 				array( Set::classicExtract( $decisionep, "datevalidation_ci" ), array( 'id' => "Decisioncontratcomplexeep93{$i}DatevalidationCi" ) ),
 				array( Set::classicExtract( $decisionep, "observ_ci" ), array( 'id' => "Decisioncontratcomplexeep93{$i}ObservCi" ) ),
-				array( Set::classicExtract( $decisionep, "raisonnonpassage" ), array( 'colspan' => '2', 'id' => "Decisioncontratcomplexeep93{$i}Raisonnonpassage" ) ),
+// 				array( Set::classicExtract( $decisionep, "raisonnonpassage" ), array( 'colspan' => '2', 'id' => "Decisioncontratcomplexeep93{$i}Raisonnonpassage" ) ),
 				Set::classicExtract( $decisionep, "commentaire" )
 			),
 			array( 'class' => 'odd' ),
@@ -56,11 +44,13 @@ echo '<table><thead>
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
 		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
-			afficheRaisonpassage(
-				'<?php echo Set::classicExtract( $dossiers, "{$theme}.liste.{$i}.Passagecommissionep.0.Decisioncontratcomplexeep93.0.decision" );?>',
-				[ 'Decisioncontratcomplexeep93<?php echo $i;?>ObservCi', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCi' ],
-				'Decisioncontratcomplexeep93<?php echo $i;?>Raisonnonpassage'
-			);
+			changeColspanAnnuleReporte( 'Decisioncontratcomplexeep93<?php echo $i;?>DecisionColumn', '<?php echo Set::classicExtract( $dossiers, "{$theme}.liste.{$i}.Passagecommissionep.0.Decisioncontratcomplexeep93.0.decision" );?>', 3, [ 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCi', 'Decisioncontratcomplexeep93<?php echo $i;?>ObservCi' ] );
+
+// 			afficheRaisonpassage(
+// 				'<?php echo Set::classicExtract( $dossiers, "{$theme}.liste.{$i}.Passagecommissionep.0.Decisioncontratcomplexeep93.0.decision" );?>',
+// 				[ 'Decisioncontratcomplexeep93<?php echo $i;?>ObservCi', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCi' ],
+// 				'Decisioncontratcomplexeep93<?php echo $i;?>Raisonnonpassage'
+// 			);
 		<?php endfor;?>
 	});
 </script>
