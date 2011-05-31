@@ -402,6 +402,7 @@
 			}
 			$this->_setOptions();
 			$this->set('dossierep_id', $dossierep_id);
+			$this->set( 'commissionep_id', $dossierep['Passagecommissionep'][0]['commissionep_id'] );
 		}
 
 		/**
