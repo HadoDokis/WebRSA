@@ -227,6 +227,59 @@ UPDATE passagescommissionseps
 		impressiondecision IS NULL
 		AND etatdossierep IN ( 'traite', 'annule', 'reporte' );
 
+-- *******************************************************************************************************
+-- 20110531: nettoyage des tables des décisions d'EP
+-- *******************************************************************************************************
+
+-- Suppression du caractère obligatoire du champ decision des tables de décision
+ALTER TABLE decisionscontratscomplexeseps93 ALTER COLUMN decision DROP NOT NULL;
+ALTER TABLE decisionscontratscomplexeseps93 ALTER COLUMN decision SET DEFAULT NULL;
+
+ALTER TABLE decisionsdefautsinsertionseps66 ALTER COLUMN decision DROP NOT NULL;
+ALTER TABLE decisionsdefautsinsertionseps66 ALTER COLUMN decision SET DEFAULT NULL;
+
+ALTER TABLE decisionsregressionsorientationseps58 ALTER COLUMN decision DROP NOT NULL;
+ALTER TABLE decisionsregressionsorientationseps58 ALTER COLUMN decision SET DEFAULT NULL;
+
+ALTER TABLE decisionsreorientationseps93 ALTER COLUMN decision DROP NOT NULL;
+ALTER TABLE decisionsreorientationseps93 ALTER COLUMN decision SET DEFAULT NULL;
+
+ALTER TABLE decisionssanctionsrendezvouseps58 ALTER COLUMN decision DROP NOT NULL;
+ALTER TABLE decisionssanctionsrendezvouseps58 ALTER COLUMN decision SET DEFAULT NULL;
+
+ALTER TABLE decisionssignalementseps93 ALTER COLUMN decision DROP NOT NULL;
+ALTER TABLE decisionssignalementseps93 ALTER COLUMN decision SET DEFAULT NULL;
+
+-- Ajout du caractère obligatoire du champ passagecommissionep_id des tables de décisions
+ALTER TABLE decisionsdefautsinsertionseps66 ALTER COLUMN passagecommissionep_id SET NOT NULL;
+ALTER TABLE decisionsregressionsorientationseps58 ALTER COLUMN passagecommissionep_id SET NOT NULL;
+ALTER TABLE decisionsreorientationseps93 ALTER COLUMN passagecommissionep_id SET NOT NULL;
+ALTER TABLE decisionsnonorientationsproseps58 ALTER COLUMN passagecommissionep_id SET NOT NULL;
+ALTER TABLE decisionsnonorientationsproseps93 ALTER COLUMN passagecommissionep_id SET NOT NULL;
+ALTER TABLE decisionsnonrespectssanctionseps93 ALTER COLUMN passagecommissionep_id SET NOT NULL;
+ALTER TABLE decisionssaisinespdoseps66 ALTER COLUMN passagecommissionep_id SET NOT NULL;
+ALTER TABLE decisionssaisinesbilansparcourseps66 ALTER COLUMN passagecommissionep_id SET NOT NULL;
+ALTER TABLE decisionssanctionseps58 ALTER COLUMN passagecommissionep_id SET NOT NULL;
+
+-- Il manque le champ passagecommissionep_id dans la table decisionsregressionsorientationseps93
+DELETE FROM decisionsregressionsorientationseps93;
+ALTER TABLE decisionsregressionsorientationseps93 ADD COLUMN passagecommissionep_id INTEGER DEFAULT NULL REFERENCES passagescommissionseps(id) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE decisionsregressionsorientationseps93 ALTER COLUMN passagecommissionep_id SET NOT NULL;
+
+-- Le champ regressionorientationep93_id de la table decisionsregressionsorientationseps93 ne sert à rien
+ALTER TABLE decisionsregressionsorientationseps93 DROP COLUMN regressionorientationep93_id;
+
+-- *******************************************************************************************************
+-- 20110531: ces thématiques ne sont pas utilsées actuellement
+-- FIXME: supprimer les fichiers de modèle
+-- *******************************************************************************************************
+
+DROP TABLE decisionsnonorientationsproseps66;
+DROP TABLE decisionsregressionsorientationseps93;
+
+DROP TABLE nonorientationsproseps66;
+DROP TABLE regressionsorientationseps93;
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
