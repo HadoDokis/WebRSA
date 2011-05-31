@@ -19,7 +19,8 @@
 			'hidden' => array( 'Dossierep.id', 'Passagecommissionep.id' ),
 			'paginate' => 'Dossierep',
 			'id' => $theme,
-			'labelcohorte' => 'Enregistrer'
+			'labelcohorte' => 'Enregistrer',
+			'cohortehidden' => array( 'Choose.theme' => array( 'value' => $theme ) )
 		)
 	);
 ?>

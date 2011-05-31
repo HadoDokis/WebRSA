@@ -120,7 +120,6 @@
 			// Fin conditions zones géographiques CG 66
 
 			if( !empty( $this->data ) ) {
-debug($this->data);
 				$ajouts = array();
 				$suppressions = array();
 				foreach( $this->data['Dossierep'] as $key => $dossierep ) {
@@ -135,8 +134,7 @@ debug($this->data);
 						);
 					}
 				}
-debug($ajouts);
-debug($suppressions);
+
 				$this->Dossierep->begin();
 
 				$success = true;
@@ -156,7 +154,7 @@ debug($suppressions);
 
 				if( $success ) {
 					$this->Dossierep->commit();
-					$this->redirect( array( 'controller'=>'commissionseps', 'action'=>'view', $commissionep_id, '#dossiers' ) );
+					$this->redirect( array( 'controller'=>'commissionseps', 'action'=>'view', $commissionep_id, '#dossiers,'.$this->data['Choose']['theme'] ) );
 				}
 				else {
 					$this->Dossierep->rollback();
