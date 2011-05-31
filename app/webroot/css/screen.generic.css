@@ -448,6 +448,11 @@ div#suiviInsertion tbody tr.even th {
 
 /*****************************************************************************/
 
+td.error {
+    background: #fff2f2!important;
+	color: #cc0000;
+}
+
 p.error, div.error_message {
     background: #ffe5e5;
     color: #b20000;
@@ -998,6 +1003,15 @@ ul.ui-tabs-nav a.active {
     border: 1px solid silver;
     border-bottom: 1px solid white;
     background: white;
+}
+
+ul.ui-tabs-nav li.error a {
+    background: #e6cece!important;
+	color: #cc0000;
+}
+
+ul.ui-tabs-nav li.error a.active {
+    background: #ffe5e5!important;
 }
 
 /*******************************************************************************
