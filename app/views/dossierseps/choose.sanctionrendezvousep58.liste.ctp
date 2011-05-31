@@ -18,7 +18,8 @@
 			'paginate' => 'Dossierep',
 			'actions' => array( 'Personnes::view' ),
 			'id' => $theme,
-			'labelcohorte' => 'Enregistrer'
+			'labelcohorte' => 'Enregistrer',
+			'cohortehidden' => array( 'Choose.theme' => array( 'value' => $theme ) )
 		)
 	);
 ?>

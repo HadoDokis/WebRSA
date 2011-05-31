@@ -545,6 +545,16 @@
 					}
 				}
 
+				//
+				if( Set::check( $cohorteParams, 'cohortehidden' ) ) {
+					if( !empty( $cohorteParams['cohortehidden'] ) ) {
+						foreach( $cohorteParams['cohortehidden'] as $cpath => $coptions ) {
+							$return .= $this->Xform->input( $cpath, Set::merge( array( 'type' => 'hidden' ), $coptions ) );
+						}
+					}
+				}
+
+
 				// Pagination
 	// 				foreach( array( 'page', 'sort', 'direction' ) as $paginationKey ) {
 	// 					if( Set::check( $this->params, "named.{$paginationKey}" ) ) {
