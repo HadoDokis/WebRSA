@@ -734,7 +734,8 @@ function makeTabbed( wrapperId, titleLevel ) {
 	var ul = new Element( 'ul', { 'class' : 'ui-tabs-nav' } );
 	$$( '#' + wrapperId + ' h' + titleLevel + '.title' ).each( function( title ) {
 		var parent = title.up();
-		var li = new Element( 'li', { 'class' : 'tab' } ).update(
+		var classNames = $( title ).readAttribute( 'class' ).replace( /title/, 'tab' );
+		var li = new Element( 'li', { 'class' : classNames } ).update(
 			new Element( 'a', { href: '#' + parent.id } ).update( title.innerHTML )
 		);
 		ul.appendChild( li );
