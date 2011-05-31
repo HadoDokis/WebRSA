@@ -105,7 +105,7 @@
 	<?php endif;?>
 
 	<?php if( Configure::read( 'Cg.departement' ) == 58 && isset( $propoorientationcov58 ) && !empty( $propoorientationcov58 ) ):?>
-		<h2>Réorientation en cours de validation par la commission d'orientation et de validation</h2>
+		<h2>Nouvelle orientation en cours de validation par la commission d'orientation et de validation</h2>
 		<table class="aere">
 			<thead>
 				<tr>
