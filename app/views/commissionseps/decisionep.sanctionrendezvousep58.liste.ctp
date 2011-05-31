@@ -6,7 +6,7 @@ echo '<table><thead>
 <th>Date de naissance</th>
 <th>Création du dossier EP</th>
 <th>Origine du dossier</th>
-<th colspan=\'2\'>Avis EPL</th>
+<th>Avis EPL</th>
 <th>Observations</th>
 </tr>
 </thead><tbody>';
@@ -21,11 +21,8 @@ echo '<table><thead>
 				$locale->date( __( 'Locale->date', true ), $dossierep['Dossierep']['created'] ),
 				Set::classicExtract( $typesrdv, $dossierep['Sanctionrendezvousep58']['Rendezvous']['typerdv_id'], true),
 
-				array(
-					$options['Decisionsanctionrendezvousep58']['decision'][Set::classicExtract( $decisionep, "decision" )],
-					array( 'id' => "Decisionsanctionrendezvousep58{$i}ColumnDecision", 'colspan' => 2 )
-				),
-				array( Set::classicExtract( $decisionep, "raisonnonpassage" ), array( 'id' => "Decisionsanctionrendezvousep58{$i}Raisonnonpassage" ) ),
+				array( $options['Decisionsanctionrendezvousep58']['decision'][Set::classicExtract( $decisionep, "decision" )], array( 'id' => "Decisionsanctionrendezvousep58{$i}ColumnDecision" ) ),
+// 				array( Set::classicExtract( $decisionep, "raisonnonpassage" ), array( 'id' => "Decisionsanctionrendezvousep58{$i}Raisonnonpassage" ) ),
 				Set::classicExtract( $decisionep, "commentaire" )
 			),
 			array( 'class' => 'odd' ),
@@ -38,7 +35,7 @@ echo '<table><thead>
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
 		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
-			changeColspanRaisonNonPassage( 'Decisionsanctionrendezvousep58<?php echo $i;?>ColumnDecision', '<?php echo Set::classicExtract( $dossiers, "{$theme}.liste.{$i}.Passagecommissionep.0.Decisionsanctionrendezvousep58.0.decision" );?>', [ ], 'Decisionsanctionrendezvousep58<?php echo $i;?>Raisonnonpassage' );
+// 			changeColspanRaisonNonPassage( 'Decisionsanctionrendezvousep58<?php echo $i;?>ColumnDecision', '<?php echo Set::classicExtract( $dossiers, "{$theme}.liste.{$i}.Passagecommissionep.0.Decisionsanctionrendezvousep58.0.decision" );?>', [ ], 'Decisionsanctionrendezvousep58<?php echo $i;?>Raisonnonpassage' );
 		<?php endfor;?>
 	});
 </script>

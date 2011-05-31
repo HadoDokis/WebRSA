@@ -21,9 +21,9 @@ echo '<table><thead>
 				$locale->date( __( 'Locale->date', true ), $dossierep['Dossierep']['created'] ),
 				__d( 'sanctionep58', $dossierep['Sanctionep58']['origine'], true),
 
-				$options['Decisionsanctionep58']['decision'][Set::classicExtract( $decisionep, "decision" )],
+				array( $options['Decisionsanctionep58']['decision'][Set::classicExtract( $decisionep, "decision" )], array( 'id' => "Decisionsanctionep58{$i}DecisionColumn" ) ),
 				array( @$listesanctionseps58[Set::classicExtract( $decisionep, "listesanctionep58_id" )], array( 'id' => "Decisionsanctionep58{$i}Listesanctionep58Id" ) ),
-				array( Set::classicExtract( $decisionep, "raisonnonpassage" ), array( 'id' => "Decisionsanctionep58{$i}Raisonnonpassage" ) ),
+// 				array( Set::classicExtract( $decisionep, "raisonnonpassage" ), array( 'id' => "Decisionsanctionep58{$i}Raisonnonpassage" ) ),
 				Set::classicExtract( $decisionep, "commentaire" )
 			),
 			array( 'class' => 'odd' ),
@@ -36,7 +36,9 @@ echo '<table><thead>
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
 		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
-			afficheRaisonpassage( '<?php echo Set::classicExtract( $dossiers, "{$theme}.liste.{$i}.Passagecommissionep.0.Decisionsanctionep58.0.decision" );?>', [ 'Decisionsanctionep58<?php echo $i;?>Listesanctionep58Id' ], 'Decisionsanctionep58<?php echo $i;?>Raisonnonpassage' );
+			changeColspanAnnuleReporte( 'Decisionsanctionep58<?php echo $i;?>DecisionColumn', '<?php echo Set::classicExtract( $dossiers, "{$theme}.liste.{$i}.Passagecommissionep.0.Decisionsanctionep58.0.decision" );?>', 2, [ 'Decisionsanctionep58<?php echo $i;?>Listesanctionep58Id' ] );
+
+// 			afficheRaisonpassage( '<?php echo Set::classicExtract( $dossiers, "{$theme}.liste.{$i}.Passagecommissionep.0.Decisionsanctionep58.0.decision" );?>', [ 'Decisionsanctionep58<?php echo $i;?>Listesanctionep58Id' ], 'Decisionsanctionep58<?php echo $i;?>Raisonnonpassage' );
 		<?php endfor;?>
 	});
 </script>

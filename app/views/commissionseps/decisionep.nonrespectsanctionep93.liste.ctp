@@ -10,7 +10,7 @@ echo '<table><thead>
 <th>Rang du passage en EP</th>
 <th>Situation familiale</th>
 <th>Nombre d\'enfants</th>
-<th colspan=\'2\'>Avis EP</th>
+<th>Avis EP</th>
 <th>Observations</th>
 </tr>
 </thead><tbody>';
@@ -36,11 +36,8 @@ echo '<table><thead>
 				Set::enum( @$dossierep['Personne']['Foyer']['sitfam'], $options['Foyer']['sitfam'] ),
 				@$dossierep['Personne']['Foyer']['nbenfants'],
 
-				array(
-					$options['Decisionnonrespectsanctionep93']['decision'][Set::classicExtract( $decisionep, "decision" )],
-					array( 'id' => "Decisionnonrespectsanctionep93{$i}ColumnDecision", 'colspan' => 2 )
-				),
-				array( Set::classicExtract( $decisionep, "raisonnonpassage" ), array( 'id' => "Decisionnonrespectsanctionep93{$i}Raisonnonpassage" ) ),
+				array( $options['Decisionnonrespectsanctionep93']['decision'][Set::classicExtract( $decisionep, "decision" )], array( 'id' => "Decisionnonrespectsanctionep93{$i}ColumnDecision" ) ),
+// 				array( Set::classicExtract( $decisionep, "raisonnonpassage" ), array( 'id' => "Decisionnonrespectsanctionep93{$i}Raisonnonpassage" ) ),
 				Set::classicExtract( $decisionep, "commentaire" )
 			),
 			array( 'class' => 'odd' ),
@@ -53,7 +50,7 @@ echo '<table><thead>
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
 		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
-			changeColspanRaisonNonPassage( 'Decisionnonrespectsanctionep93<?php echo $i;?>ColumnDecision', '<?php echo Set::classicExtract( $dossiers, "{$theme}.liste.{$i}.Passagecommissionep.0.Decisionnonrespectsanctionep93.0.decision" );?>', [], 'Decisionnonrespectsanctionep93<?php echo $i;?>Raisonnonpassage' );
+// 			changeColspanRaisonNonPassage( 'Decisionnonrespectsanctionep93<?php echo $i;?>ColumnDecision', '<?php echo Set::classicExtract( $dossiers, "{$theme}.liste.{$i}.Passagecommissionep.0.Decisionnonrespectsanctionep93.0.decision" );?>', [], 'Decisionnonrespectsanctionep93<?php echo $i;?>Raisonnonpassage' );
 		<?php endfor;?>
 	});
 </script>

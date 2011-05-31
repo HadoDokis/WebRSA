@@ -49,29 +49,44 @@
 
 <script type="text/javascript">
 	makeTabbed( 'tabbedWrapper', 2 );
-	
-	function changeColspanRaisonNonPassage( idColumnToChangeColspan, decision, idsNonRaisonpassage, idRaisonpassage ) {
-		if ( $F( decision ) == 'reporte' || $F( decision ) == 'annule' ) {
-			$( idColumnToChangeColspan ).writeAttribute( "colspan", "1" );
-		}
-		else {
-			$( idColumnToChangeColspan ).writeAttribute( "colspan", "2" );
-		}
-		afficheRaisonpassage( decision, idsNonRaisonpassage, idRaisonpassage );
-	}
 
-	function afficheRaisonpassage( decision, idsNonRaisonpassage, idRaisonpassage ) {
+	function changeColspanAnnuleReporte( idColumnToChangeColspan, colspanMax, decision, idsNonRaisonpassage ) {
 		if ( $F( decision ) == 'reporte' || $F( decision ) == 'annule' ) {
+			$( idColumnToChangeColspan ).writeAttribute( "colspan", colspanMax );
 			idsNonRaisonpassage.each( function ( id ) {
 				$( id ).up(1).hide();
 			});
-			$( idRaisonpassage ).up(1).show();
 		}
 		else {
+			$( idColumnToChangeColspan ).writeAttribute( "colspan", 1 );
 			idsNonRaisonpassage.each( function ( id ) {
 				$( id ).up(1).show();
 			});
-			$( idRaisonpassage ).up(1).hide();
 		}
 	}
+
+// 	function changeColspanRaisonNonPassage( idColumnToChangeColspan, decision, idsNonRaisonpassage, idRaisonpassage ) {
+// 		if ( $F( decision ) == 'reporte' || $F( decision ) == 'annule' ) {
+// 			$( idColumnToChangeColspan ).writeAttribute( "colspan", "1" );
+// 		}
+// 		else {
+// 			$( idColumnToChangeColspan ).writeAttribute( "colspan", "2" );
+// 		}
+// 		afficheRaisonpassage( decision, idsNonRaisonpassage, idRaisonpassage );
+// 	}
+// 
+// 	function afficheRaisonpassage( decision, idsNonRaisonpassage, idRaisonpassage ) {
+// 		if ( $F( decision ) == 'reporte' || $F( decision ) == 'annule' ) {
+// 			idsNonRaisonpassage.each( function ( id ) {
+// 				$( id ).up(1).hide();
+// 			});
+// 			$( idRaisonpassage ).up(1).show();
+// 		}
+// 		else {
+// 			idsNonRaisonpassage.each( function ( id ) {
+// 				$( id ).up(1).show();
+// 			});
+// 			$( idRaisonpassage ).up(1).hide();
+// 		}
+// 	}
 </script>

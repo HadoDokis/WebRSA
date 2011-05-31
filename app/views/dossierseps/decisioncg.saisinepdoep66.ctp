@@ -16,7 +16,7 @@
 		echo $default->subform(
 			array(
 				'Decisionsaisinepdoep66.decision' => array( 'label' =>  ( __( 'État du dossier', true ) ), 'type' => 'select', 'empty' => true ),
-				'Decisionsaisinepdoep66.raisonnonpassage' => array( 'label' =>  'Raison : ', 'type' => 'textarea' ),
+// 				'Decisionsaisinepdoep66.raisonnonpassage' => array( 'label' =>  'Raison : ', 'type' => 'textarea' ),
 				'Decisionsaisinepdoep66.datedecisionpdo' => array( 'label' =>  ( __( 'Date de décision de la PDO', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => false ),
 				'Decisionsaisinepdoep66.decisionpdo_id' => array( 'label' =>  ( __( 'Décision du Conseil Général', true ) ), 'type' => 'select', 'options' => $decisionpdo, 'empty' => true ),
 				//'Decisionsaisinepdoep66.dateenvoiop' => array( 'label' =>  ( __( 'Date d\'envoi à l\'OP', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => false ),
@@ -70,27 +70,27 @@
 			$( 'Decisionsaisinepdoep66DatedecisionpdoMonth' ).disable();
 			$( 'Decisionsaisinepdoep66DatedecisionpdoYear' ).disable();
 			$( 'Decisionsaisinepdoep66DecisionpdoId' ).disable();
-			$( 'Decisionsaisinepdoep66Commentaire' ).disable();
-			$( 'Decisionsaisinepdoep66Raisonnonpassage' ).up(0).show();
-			$( 'Decisionsaisinepdoep66Raisonnonpassage' ).enable();
+// 			$( 'Decisionsaisinepdoep66Commentaire' ).disable();
+// 			$( 'Decisionsaisinepdoep66Raisonnonpassage' ).up(0).show();
+// 			$( 'Decisionsaisinepdoep66Raisonnonpassage' ).enable();
 		}
 		else if ( $F( 'Decisionsaisinepdoep66Decision' ) == '' ) {
 			$( 'Decisionsaisinepdoep66DatedecisionpdoDay' ).disable();
 			$( 'Decisionsaisinepdoep66DatedecisionpdoMonth' ).disable();
 			$( 'Decisionsaisinepdoep66DatedecisionpdoYear' ).disable();
 			$( 'Decisionsaisinepdoep66DecisionpdoId' ).disable();
-			$( 'Decisionsaisinepdoep66Commentaire' ).disable();
-			$( 'Decisionsaisinepdoep66Raisonnonpassage' ).up(0).hide();
-			$( 'Decisionsaisinepdoep66Raisonnonpassage' ).disable();
+// 			$( 'Decisionsaisinepdoep66Commentaire' ).disable();
+// 			$( 'Decisionsaisinepdoep66Raisonnonpassage' ).up(0).hide();
+// 			$( 'Decisionsaisinepdoep66Raisonnonpassage' ).disable();
 		}
 		else {
 			$( 'Decisionsaisinepdoep66DatedecisionpdoDay' ).enable();
 			$( 'Decisionsaisinepdoep66DatedecisionpdoMonth' ).enable();
 			$( 'Decisionsaisinepdoep66DatedecisionpdoYear' ).enable();
 			$( 'Decisionsaisinepdoep66DecisionpdoId' ).enable();
-			$( 'Decisionsaisinepdoep66Commentaire' ).enable();
-			$( 'Decisionsaisinepdoep66Raisonnonpassage' ).up(0).hide();
-			$( 'Decisionsaisinepdoep66Raisonnonpassage' ).disable();
+// 			$( 'Decisionsaisinepdoep66Commentaire' ).enable();
+// 			$( 'Decisionsaisinepdoep66Raisonnonpassage' ).up(0).hide();
+// 			$( 'Decisionsaisinepdoep66Raisonnonpassage' ).disable();
 		}
 	}
 </script>

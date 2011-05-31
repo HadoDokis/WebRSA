@@ -13,7 +13,7 @@ echo '<table id="Decisionsignalementep93" class="tooltips"><thead>
 <th>Situation familiale</th>
 <th>Nombre d\'enfants</th>
 <th>Avis EP</th>
-<th colspan="3">Décision CG</th>
+<th colspan="2">Décision CG</th>
 <th>Observations</th>
 </tr>
 </thead><tbody>';
@@ -32,16 +32,15 @@ echo '<table id="Decisionsignalementep93" class="tooltips"><thead>
 				<tr>
 					<th>Observations de l'EP</th>
 					<td>".Set::classicExtract( $dossierep, "Passagecommissionep.0.Decisionsignalementep93.{$indexDecision}.commentaire" )."</td>
-				</tr>";
+				</tr>
+			</tbody>
+		</table>";
 
-		if ( $dossierep['Passagecommissionep'][0]['Decisionsignalementep93'][$indexDecision]['decision'] == 'reporte' || $dossierep['Passagecommissionep'][0]['Decisionsignalementep93'][$indexDecision]['decision'] == 'annule' ) {
-			$innerTable .= " <tr>
-				<th>Raison du non passage de l'EP</th>
-				<td>".Set::classicExtract( $dossierep, "Passagecommissionep.0.Decisionsignalementep93.{$indexDecision}.raisonnonpassage" )."</td>
-			</tr>";
-		}
-
-		$innerTable .= "</tbody></table>";
+		$hiddenFields = $form->input( "Signalementep93.{$i}.id", array( 'type' => 'hidden' ) ).
+						$form->input( "Signalementep93.{$i}.dossierep_id", array( 'type' => 'hidden' ) ).
+						$form->input( "Decisionsignalementep93.{$i}.id", array( 'type' => 'hidden' ) ).
+						$form->input( "Decisionsignalementep93.{$i}.passagecommissionep_id", array( 'type' => 'hidden' ) ).
+						$form->input( "Decisionsignalementep93.{$i}.etape", array( 'type' => 'hidden', 'value' => 'cg' ) );
 
 		echo $xhtml->tableCells(
 			array(
@@ -67,17 +66,10 @@ echo '<table id="Decisionsignalementep93" class="tooltips"><thead>
 				),
 
 				$form->input( "Decisionsignalementep93.{$i}.decisionpcg", array( 'legend' => false, 'options' => @$options['Decisionreorientationep93']['decisionpcg'], 'empty' => true, 'type' => 'radio' ) ),
-				array(
-					$form->input( "Signalementep93.{$i}.id", array( 'type' => 'hidden' ) ).
-					$form->input( "Signalementep93.{$i}.dossierep_id", array( 'type' => 'hidden' ) ).
-					$form->input( "Decisionsignalementep93.{$i}.id", array( 'type' => 'hidden' ) ).
-					$form->input( "Decisionsignalementep93.{$i}.passagecommissionep_id", array( 'type' => 'hidden' ) ).
-					$form->input( "Decisionsignalementep93.{$i}.etape", array( 'type' => 'hidden', 'value' => 'cg' ) ).
-					$form->input( "Decisionsignalementep93.{$i}.decision", array( 'type' => 'select', 'options' => $lineOptions, 'div' => false, 'label' => false ) ),
-					array( 'id' => "Decisionsignalementep93{$i}ColumnDecision", 'colspan' => 2 )
-				),
-				$form->input( "Decisionsignalementep93.{$i}.raisonnonpassage", array( 'label' => false, 'type' => 'textarea' ) ),
-				$form->input( "Decisionsignalementep93.{$i}.commentaire", array( 'label' =>false, 'type' => 'textarea' ) ),
+				array( $form->input( "Decisionsignalementep93.{$i}.decision", array( 'type' => 'select', 'options' => $lineOptions, 'div' => false, 'label' => false ) ), array( 'id' => "Decisionsignalementep93{$i}ColumnDecision" ) ),
+// 				$form->input( "Decisionsignalementep93.{$i}.raisonnonpassage", array( 'label' => false, 'type' => 'textarea' ) ),
+				$form->input( "Decisionsignalementep93.{$i}.commentaire", array( 'label' =>false, 'type' => 'textarea' ) ).
+				$hiddenFields,
 				array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
 			),
 			array( 'class' => 'odd' ),
@@ -95,10 +87,10 @@ echo '<table id="Decisionsignalementep93" class="tooltips"><thead>
 				fireEvent( $( 'Decisionsignalementep93<?php echo $i;?>Decision' ),'change');
 			} );
 
-			$( 'Decisionsignalementep93<?php echo $i;?>Decision' ).observe( 'change', function() {
-				changeColspanRaisonNonPassage( 'Decisionsignalementep93<?php echo $i;?>ColumnDecision', 'Decisionsignalementep93<?php echo $i;?>Decision', [], 'Decisionsignalementep93<?php echo $i;?>Raisonnonpassage' );
-			});
-			changeColspanRaisonNonPassage( 'Decisionsignalementep93<?php echo $i;?>ColumnDecision', 'Decisionsignalementep93<?php echo $i;?>Decision', [], 'Decisionsignalementep93<?php echo $i;?>Raisonnonpassage' );
+// 			$( 'Decisionsignalementep93<?php echo $i;?>Decision' ).observe( 'change', function() {
+// 				changeColspanRaisonNonPassage( 'Decisionsignalementep93<?php echo $i;?>ColumnDecision', 'Decisionsignalementep93<?php echo $i;?>Decision', [], 'Decisionsignalementep93<?php echo $i;?>Raisonnonpassage' );
+// 			});
+// 			changeColspanRaisonNonPassage( 'Decisionsignalementep93<?php echo $i;?>ColumnDecision', 'Decisionsignalementep93<?php echo $i;?>Decision', [], 'Decisionsignalementep93<?php echo $i;?>Raisonnonpassage' );
 		<?php endfor;?>
 	});
 </script>

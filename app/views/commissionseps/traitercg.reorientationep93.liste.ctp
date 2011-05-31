@@ -27,16 +27,15 @@ echo '<table id="Decisionreorientationep93" class="tooltips"><thead>
 				<tr>
 					<th>Observations de l'EP</th>
 					<td>".Set::classicExtract( $decisionep, "commentaire" )."</td>
-				</tr>";
+				</tr>
+			</tbody>
+		</table>";
 
-		if ( $decisionep['decision'] == 'reporte' || $decisionep['decision'] == 'annule' ) {
-			$innerTable .= " <tr>
-				<th>Raison du non passage de l'EP</th>
-				<td>".Set::classicExtract( $decisionep, "raisonnonpassage" )."</td>
-			</tr>";
-		}
-		
-		$innerTable .= "</tbody></table>";
+		$hiddenFields = $form->input( "Reorientationep93.{$i}.id", array( 'type' => 'hidden' ) ).
+						$form->input( "Reorientationep93.{$i}.dossierep_id", array( 'type' => 'hidden' ) ).
+						$form->input( "Decisionreorientationep93.{$i}.id", array( 'type' => 'hidden' ) ).
+						$form->input( "Decisionreorientationep93.{$i}.etape", array( 'type' => 'hidden', 'value' => 'cg' ) ).
+						$form->input( "Decisionreorientationep93.{$i}.passagecommissionep_id", array( 'type' => 'hidden' ) );
 
 		echo $xhtml->tableCells(
 			array(
@@ -51,18 +50,13 @@ echo '<table id="Decisionreorientationep93" class="tooltips"><thead>
 				@$dossierep['Reorientationep93']['Structurereferente']['lib_struc'],
 				implode( ' / ', Set::filter( array( $options['Decisionreorientationep93']['decision'][$decisionep['decision']], @$decisionep['Typeorient']['lib_type_orient'], @$decisionep['Structurereferente']['lib_struc'], $decisionep['raisonnonpassage'] ) ) ),
 
-				$form->input( "Reorientationep93.{$i}.id", array( 'type' => 'hidden' ) ).
-				$form->input( "Reorientationep93.{$i}.dossierep_id", array( 'type' => 'hidden' ) ).
-				$form->input( "Decisionreorientationep93.{$i}.id", array( 'type' => 'hidden' ) ).
-				$form->input( "Decisionreorientationep93.{$i}.etape", array( 'type' => 'hidden', 'value' => 'cg' ) ).
-				$form->input( "Decisionreorientationep93.{$i}.passagecommissionep_id", array( 'type' => 'hidden' ) ).
-
 				$form->input( "Decisionreorientationep93.{$i}.decisionpcg", array( 'legend' => false, 'options' => @$options['Decisionreorientationep93']['decisionpcg'], 'empty' => true, 'type' => 'radio' ) ),
-				$form->input( "Decisionreorientationep93.{$i}.decision", array( 'label' => false, 'options' => @$options['Decisionreorientationep93']['decision'], 'empty' => true ) ),
+				array( $form->input( "Decisionreorientationep93.{$i}.decision", array( 'label' => false, 'options' => @$options['Decisionreorientationep93']['decision'], 'empty' => true ) ), array( 'id' => "Decisionreorientationep93{$i}DecisionColumn" ) ),
 				$form->input( "Decisionreorientationep93.{$i}.typeorient_id", array( 'label' => false, 'options' => $typesorients, 'empty' => true ) ),
 				$form->input( "Decisionreorientationep93.{$i}.structurereferente_id", array( 'label' => false, 'options' => $structuresreferentes, 'empty' => true ) ),
-				array( $form->input( "Decisionreorientationep93.{$i}.raisonnonpassage", array( 'label' => false, 'type' => 'textarea' ) ), array( 'colspan' => '2' ) ),
-				$form->input( "Decisionreorientationep93.{$i}.commentaire", array( 'label' =>false, 'type' => 'textarea' ) ),
+// 				array( $form->input( "Decisionreorientationep93.{$i}.raisonnonpassage", array( 'label' => false, 'type' => 'textarea' ) ), array( 'colspan' => '2' ) ),
+				$form->input( "Decisionreorientationep93.{$i}.commentaire", array( 'label' =>false, 'type' => 'textarea' ) ).
+				$hiddenFields,
 				array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
 			),
 			array( 'class' => 'odd' ),
@@ -90,9 +84,14 @@ echo '<table id="Decisionreorientationep93" class="tooltips"><thead>
 			} );
 
 			$( 'Decisionreorientationep93<?php echo $i;?>Decision' ).observe( 'change', function() {
-				afficheRaisonpassage( 'Decisionreorientationep93<?php echo $i;?>Decision', [ 'Decisionreorientationep93<?php echo $i;?>TypeorientId', 'Decisionreorientationep93<?php echo $i;?>StructurereferenteId' ], 'Decisionreorientationep93<?php echo $i;?>Raisonnonpassage' );
+				changeColspanAnnuleReporte( 'Decisionreorientationep93<?php echo $i;?>DecisionColumn', 3, 'Decisionreorientationep93<?php echo $i;?>Decision', [ 'Decisionreorientationep93<?php echo $i;?>TypeorientId', 'Decisionreorientationep93<?php echo $i;?>StructurereferenteId' ] );
 			});
-			afficheRaisonpassage( 'Decisionreorientationep93<?php echo $i;?>Decision', [ 'Decisionreorientationep93<?php echo $i;?>TypeorientId', 'Decisionreorientationep93<?php echo $i;?>StructurereferenteId' ], 'Decisionreorientationep93<?php echo $i;?>Raisonnonpassage' );
+			changeColspanAnnuleReporte( 'Decisionreorientationep93<?php echo $i;?>DecisionColumn', 3, 'Decisionreorientationep93<?php echo $i;?>Decision', [ 'Decisionreorientationep93<?php echo $i;?>TypeorientId', 'Decisionreorientationep93<?php echo $i;?>StructurereferenteId' ] );
+
+// 			$( 'Decisionreorientationep93<?php echo $i;?>Decision' ).observe( 'change', function() {
+// 				afficheRaisonpassage( 'Decisionreorientationep93<?php echo $i;?>Decision', [ 'Decisionreorientationep93<?php echo $i;?>TypeorientId', 'Decisionreorientationep93<?php echo $i;?>StructurereferenteId' ], 'Decisionreorientationep93<?php echo $i;?>Raisonnonpassage' );
+// 			});
+// 			afficheRaisonpassage( 'Decisionreorientationep93<?php echo $i;?>Decision', [ 'Decisionreorientationep93<?php echo $i;?>TypeorientId', 'Decisionreorientationep93<?php echo $i;?>StructurereferenteId' ], 'Decisionreorientationep93<?php echo $i;?>Raisonnonpassage' );
 		<?php endfor;?>
 	});
 </script>
