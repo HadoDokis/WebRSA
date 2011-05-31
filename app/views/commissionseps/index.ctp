@@ -166,7 +166,7 @@
 						
 						$lien .= '<td>'.$xhtml->link( 'Arbitrage', array( 'controller' => 'commissionseps', 'action' => 'traiterep', $commissionep['Commissionep']['id'] ), array( 'enabled' => ( $commissionep['Commissionep']['etatcommissionep'] == 'presence' || $commissionep['Commissionep']['etatcommissionep'] == 'decisionep' ) ) ).'</td>';
 						
-						$lien .= '<td>'.$xhtml->link( 'Décisions', array( 'controller' => 'commissionseps', 'action' => 'decisionep', $commissionep['Commissionep']['id'] ), array( 'enabled' => ( $commissionep['Commissionep']['etatcommissionep'] == 'traiteep' || $commissionep['Commissionep']['etatcommissionep'] == 'decisioncg' || $commissionep['Commissionep']['etatcommissionep'] == 'traite' ) ) ).'</td>';
+						$lien .= '<td>'.$xhtml->link( 'Avis', array( 'controller' => 'commissionseps', 'action' => 'decisionep', $commissionep['Commissionep']['id'] ), array( 'enabled' => ( $commissionep['Commissionep']['etatcommissionep'] == 'traiteep' || $commissionep['Commissionep']['etatcommissionep'] == 'decisioncg' || $commissionep['Commissionep']['etatcommissionep'] == 'traite' ) ) ).'</td>';
 						break;
 					case 'arbitragecg':
 						$lien = '<td>'.$xhtml->link( 'Arbitrage', array( 'controller' => 'commissionseps', 'action' => 'traitercg', $commissionep['Commissionep']['id'] ), array( 'enabled' => ( $commissionep['Commissionep']['etatcommissionep'] == 'traiteep' || $commissionep['Commissionep']['etatcommissionep'] == 'decisioncg' ) ) ).'</td>';
