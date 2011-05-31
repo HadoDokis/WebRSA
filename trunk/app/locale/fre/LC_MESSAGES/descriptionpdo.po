@@ -19,22 +19,22 @@ msgstr ""
 
 ###############################################################################
 msgid "Descriptionspdos::index"
-msgstr "Description PDO"
+msgstr "Description des traitements PDO"
 
 msgid "Descriptionpdo::index::empty"
-msgstr "Aucune description présente"
+msgstr "Aucune description de traitement présente"
 
 msgid "Descriptionpdo::add"
-msgstr "Ajouter une nouvelle description PDO"
+msgstr "Ajouter une nouvelle description de traitement PDO"
 
 msgid "Descriptionspdos::add"
-msgstr "Ajout d'une description PDO"
+msgstr "Ajout d'une description de traitement PDO"
 
 msgid "Descriptionspdos::edit"
-msgstr "Modification d'une description"
+msgstr "Modification d'une description de traitement PDO"
 
 msgid "Descriptionpdo.name"
-msgstr "Intitulé de la description"
+msgstr "Intitulé de la description du traitement"
 
 msgid "Descriptionpdo.modelenotification"
 msgstr "Modèle de notification lié"
@@ -61,7 +61,7 @@ msgid "ENUM::DATEACTIVE::datereception"
 msgstr "Date de réception"
 
 msgid "Descriptionpdo.dateactive"
-msgstr "Date à activer"
+msgstr "Date du traitement à activer"
 
 msgid "Descriptionpdo.declencheep"
-msgstr "Déclenche un passage en EP ?"
+msgstr "Ce traitement déclenche un passage en EP ?"
