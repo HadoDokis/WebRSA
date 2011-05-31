@@ -12,7 +12,7 @@ echo '<table><thead>
 <th>Rang du passage en EP</th>
 <th>Situation familiale</th>
 <th>Nombre d\'enfants</th>
-<th colspan="2">Avis EP</th>
+<th>Avis EP</th>
 <th>Observations</th>
 </tr>
 </thead><tbody>';
@@ -23,6 +23,12 @@ echo '<table><thead>
 				$lineOptions[$key] = $label;
 			}
 		}
+
+		$hiddenFields = $form->input( "Signalementep93.{$i}.id", array( 'type' => 'hidden' ) ).
+						$form->input( "Signalementep93.{$i}.dossierep_id", array( 'type' => 'hidden') ).
+						$form->input( "Decisionsignalementep93.{$i}.id", array( 'type' => 'hidden' ) ).
+						$form->input( "Decisionsignalementep93.{$i}.passagecommissionep_id", array( 'type' => 'hidden' ) ).
+						$form->input( "Decisionsignalementep93.{$i}.etape", array( 'type' => 'hidden', 'value' => 'ep' ) );
 
 		echo $xhtml->tableCells(
 			array(
@@ -37,17 +43,10 @@ echo '<table><thead>
 				@$dossierep['Signalementep93']['rang'],
 				Set::enum( @$dossierep['Personne']['Foyer']['sitfam'], $options['Foyer']['sitfam'] ),
 				@$dossierep['Personne']['Foyer']['nbenfants'],
-				array(
-					$form->input( "Signalementep93.{$i}.id", array( 'type' => 'hidden'/*, 'value' => $dossierep['Signalementep93']['id']*/ ) ).
-					$form->input( "Signalementep93.{$i}.dossierep_id", array( 'type' => 'hidden'/*, 'value' => $dossierep['Dossierep']['id']*/ ) ).
-					$form->input( "Decisionsignalementep93.{$i}.id", array( 'type' => 'hidden'/*, 'value' => @$record['id']*/ ) ).
-					$form->input( "Decisionsignalementep93.{$i}.passagecommissionep_id", array( 'type' => 'hidden' ) ).
-					$form->input( "Decisionsignalementep93.{$i}.etape", array( 'type' => 'hidden', 'value' => 'ep' ) ).
-					$form->input( "Decisionsignalementep93.{$i}.decision", array( 'type' => 'select', 'options' => $lineOptions, 'div' => false, 'label' => false ) ),
-					array( 'id' => "Decisionsignalementep93{$i}ColumnDecision", 'colspan' => 2 )
-				),
-				$form->input( "Decisionsignalementep93.{$i}.raisonnonpassage", array( 'label' => false, 'type' => 'textarea' ) ),
-				$form->input( "Decisionsignalementep93.{$i}.commentaire", array( 'label' => false, 'type' => 'textarea' ) )
+				array( $form->input( "Decisionsignalementep93.{$i}.decision", array( 'type' => 'select', 'options' => $lineOptions, 'div' => false, 'label' => false ) ), array( 'id' => "Decisionsignalementep93{$i}ColumnDecision" ) ),
+// 				$form->input( "Decisionsignalementep93.{$i}.raisonnonpassage", array( 'label' => false, 'type' => 'textarea' ) ),
+				$form->input( "Decisionsignalementep93.{$i}.commentaire", array( 'label' => false, 'type' => 'textarea' ) ).
+				$hiddenFields
 			),
 			array( 'class' => 'odd' ),
 			array( 'class' => 'even' )
@@ -59,10 +58,10 @@ echo '<table><thead>
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
 		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
-			$( 'Decisionsignalementep93<?php echo $i;?>Decision' ).observe( 'change', function() {
-				changeColspanRaisonNonPassage( 'Decisionsignalementep93<?php echo $i;?>ColumnDecision', 'Decisionsignalementep93<?php echo $i;?>Decision', [], 'Decisionsignalementep93<?php echo $i;?>Raisonnonpassage' );
-			});
-			changeColspanRaisonNonPassage( 'Decisionsignalementep93<?php echo $i;?>ColumnDecision', 'Decisionsignalementep93<?php echo $i;?>Decision', [], 'Decisionsignalementep93<?php echo $i;?>Raisonnonpassage' );
+// 			$( 'Decisionsignalementep93<?php echo $i;?>Decision' ).observe( 'change', function() {
+// 				changeColspanRaisonNonPassage( 'Decisionsignalementep93<?php echo $i;?>ColumnDecision', 'Decisionsignalementep93<?php echo $i;?>Decision', [], 'Decisionsignalementep93<?php echo $i;?>Raisonnonpassage' );
+// 			});
+// 			changeColspanRaisonNonPassage( 'Decisionsignalementep93<?php echo $i;?>ColumnDecision', 'Decisionsignalementep93<?php echo $i;?>Decision', [], 'Decisionsignalementep93<?php echo $i;?>Raisonnonpassage' );
 		<?php endfor;?>
 	});
 </script>

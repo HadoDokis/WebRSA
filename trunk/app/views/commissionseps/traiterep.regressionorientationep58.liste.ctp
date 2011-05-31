@@ -12,6 +12,12 @@ echo '<table><thead>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
+
+		$hiddenFields = $form->input( "Decisionregressionorientationep58.{$i}.id", array( 'type' => 'hidden' ) ).
+						$form->input( "Decisionregressionorientationep58.{$i}.passagecommissionep_id", array( 'type' => 'hidden' ) ).
+						$form->input( "Decisionregressionorientationep58.{$i}.regressionorientationep58_id", array( 'type' => 'hidden' ) ).
+						$form->input( "Decisionregressionorientationep58.{$i}.etape", array( 'type' => 'hidden', 'value' => 'ep' ) );
+
 		echo $xhtml->tableCells(
 			array(
 				implode( ' ', array( $dossierep['Personne']['qual'], $dossierep['Personne']['nom'], $dossierep['Personne']['prenom'] ) ),
@@ -23,15 +29,12 @@ echo '<table><thead>
 				@$dossierep['Regressionorientationep58']['Typeorient']['lib_type_orient'],
 				@$dossierep['Regressionorientationep58']['Structurereferente']['lib_struc'],
 
-				$form->input( "Decisionregressionorientationep58.{$i}.id", array( 'type' => 'hidden' ) ).
-				$form->input( "Decisionregressionorientationep58.{$i}.passagecommissionep_id", array( 'type' => 'hidden' ) ).
-				$form->input( "Decisionregressionorientationep58.{$i}.regressionorientationep58_id", array( 'type' => 'hidden' ) ).
-				$form->input( "Decisionregressionorientationep58.{$i}.etape", array( 'type' => 'hidden', 'value' => 'ep' ) ).
-				$form->input( "Decisionregressionorientationep58.{$i}.decision", array( 'label' => false, 'type' => 'select', 'options' => @$options['Decisionregressionorientationep58']['decision'], 'empty' => true ) ),
+				array( $form->input( "Decisionregressionorientationep58.{$i}.decision", array( 'label' => false, 'type' => 'select', 'options' => @$options['Decisionregressionorientationep58']['decision'], 'empty' => true ) ), array( 'id' => "Decisionregressionorientationep58{$i}DecisionColumn" ) ),
 				$form->input( "Decisionregressionorientationep58.{$i}.typeorient_id", array( 'label' => false, 'options' => $typesorients, 'empty' => true ) ),
 				$form->input( "Decisionregressionorientationep58.{$i}.structurereferente_id", array( 'label' => false, 'options' => $structuresreferentes, 'empty' => true, 'type' => 'select' ) ),
-				array( $form->input( "Decisionregressionorientationep58.{$i}.raisonnonpassage", array( 'label' => false, 'type' => 'textarea' ) ), array( 'colspan' => '2' ) ),
-				$form->input( "Decisionregressionorientationep58.{$i}.commentaire", array( 'label' =>false, 'type' => 'textarea' ) )
+// 				array( $form->input( "Decisionregressionorientationep58.{$i}.raisonnonpassage", array( 'label' => false, 'type' => 'textarea' ) ), array( 'colspan' => '2' ) ),
+				$form->input( "Decisionregressionorientationep58.{$i}.commentaire", array( 'label' =>false, 'type' => 'textarea' ) ).
+				$hiddenFields
 			),
 			array( 'class' => 'odd' ),
 			array( 'class' => 'even' )
@@ -54,9 +57,14 @@ echo '<table><thead>
 			);
 
 			$( 'Decisionregressionorientationep58<?php echo $i;?>Decision' ).observe( 'change', function() {
-				afficheRaisonpassage( 'Decisionregressionorientationep58<?php echo $i;?>Decision', [ 'Decisionregressionorientationep58<?php echo $i;?>TypeorientId', 'Decisionregressionorientationep58<?php echo $i;?>StructurereferenteId' ], 'Decisionregressionorientationep58<?php echo $i;?>Raisonnonpassage' );
+				changeColspanAnnuleReporte( 'Decisionregressionorientationep58<?php echo $i;?>DecisionColumn', 3, 'Decisionregressionorientationep58<?php echo $i;?>Decision', [ 'Decisionregressionorientationep58<?php echo $i;?>TypeorientId', 'Decisionregressionorientationep58<?php echo $i;?>StructurereferenteId' ] );
 			});
-			afficheRaisonpassage( 'Decisionregressionorientationep58<?php echo $i;?>Decision', [ 'Decisionregressionorientationep58<?php echo $i;?>TypeorientId', 'Decisionregressionorientationep58<?php echo $i;?>StructurereferenteId' ], 'Decisionregressionorientationep58<?php echo $i;?>Raisonnonpassage' );
+			changeColspanAnnuleReporte( 'Decisionregressionorientationep58<?php echo $i;?>DecisionColumn', 3, 'Decisionregressionorientationep58<?php echo $i;?>Decision', [ 'Decisionregressionorientationep58<?php echo $i;?>TypeorientId', 'Decisionregressionorientationep58<?php echo $i;?>StructurereferenteId' ] );
+
+// 			$( 'Decisionregressionorientationep58<?php echo $i;?>Decision' ).observe( 'change', function() {
+// 				afficheRaisonpassage( 'Decisionregressionorientationep58<?php echo $i;?>Decision', [ 'Decisionregressionorientationep58<?php echo $i;?>TypeorientId', 'Decisionregressionorientationep58<?php echo $i;?>StructurereferenteId' ], 'Decisionregressionorientationep58<?php echo $i;?>Raisonnonpassage' );
+// 			});
+// 			afficheRaisonpassage( 'Decisionregressionorientationep58<?php echo $i;?>Decision', [ 'Decisionregressionorientationep58<?php echo $i;?>TypeorientId', 'Decisionregressionorientationep58<?php echo $i;?>StructurereferenteId' ], 'Decisionregressionorientationep58<?php echo $i;?>Raisonnonpassage' );
 		<?php endfor;?>
 	});
 </script>
