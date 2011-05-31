@@ -427,6 +427,7 @@
 			return array(
 				'fields' => array(
 					'Dossierep.id',
+					'Personne.id',
 					'Dossier.numdemrsa',
 					'Adresse.locaadr',
 					'Contratinsertion.num_contrat',

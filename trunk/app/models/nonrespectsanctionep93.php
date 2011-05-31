@@ -1036,6 +1036,7 @@
 					'Dossierep.id',
 					'Dossier.numdemrsa',
 					'Dossier.matricule',
+					'Personne.id',
 					'Personne.qual',
 					'Personne.nom',
 					'Personne.prenom',
