@@ -7,8 +7,8 @@ echo '<table id="Decisionsaisinepdoep66" class="tooltips"><thead>
 <th>Création du dossier EP</th>
 <th>Motif(s) de la PDO</th>
 <th>Description du traitement</th>
-<th colspan=\'1\'>Avis de l\'EP</th>
-<th colspan=\'2\'>Décision du CG</th>
+<th colspan=\'2\'>Avis de l\'EP</th>
+<th>Décision du CG</th>
 <th>Observations</th>
 <th class="innerTableHeader noprint">Avis EP</th>
 </tr>
@@ -27,16 +27,16 @@ echo '<table id="Decisionsaisinepdoep66" class="tooltips"><thead>
 				<tr>
 					<th>Observations de l'EP</th>
 					<td>".Set::classicExtract( $decisionep, "commentaire" )."</td>
-				</tr>";
+				</tr>
+			</tbody>
+		</table>";
 		
-		if ( $decisionep['decision'] == 'reporte' || $decisionep['decision'] == 'annule' ) {
-			$innerTable .= " <tr>
-				<th>Raison du non passage de l'EP</th>
-				<td>".Set::classicExtract( $decisionep, "raisonnonpassage" )."</td>
-			</tr>";
+		if ( $decisioncg['decision'] == 'annule' || $decisioncg['decision'] == 'reporte' ) {
+			$cg = $options['Decisionsaisinepdoep66']['decision'][$decisioncg['decision']];
 		}
-		
-		$innerTable .= "</tbody></table>";
+		else {
+			$cg = @$options['Decisionsaisinepdoep66']['decisionpdo_id'][Set::classicExtract( $decisioncg, "decisionpdo_id" )].' au '.Set::classicExtract( $decisioncg, "datedecisionpdo");
+		}
 
 		echo $xhtml->tableCells(
 			array(
@@ -47,11 +47,11 @@ echo '<table id="Decisionsaisinepdoep66" class="tooltips"><thead>
 				implode(' / ', $listeSituationPdo),
 				$dossierep['Saisinepdoep66']['Traitementpdo']['Descriptionpdo']['name'],
 
-				$options['Decisionsaisinepdoep66']['decision'][Set::classicExtract( $decisioncg, "decision" )],
+				array( $options['Decisionsaisinepdoep66']['decision'][Set::classicExtract( $decisioncg, "decision" )], array( 'id' => "Decisionsaisinepdoep66{$i}DecisionColumn" ) ),
 
-				@$decisionep['Decisionpdo']['libelle'],
-				array( @$options['Decisionsaisinepdoep66']['decisionpdo_id'][Set::classicExtract( $decisioncg, "decisionpdo_id" )].' au '.Set::classicExtract( $decisioncg, "datedecisionpdo" ), array( 'id' => "Decisionsaisinepdoep66{$i}Decisioncg" ) ),
-				array( Set::classicExtract( $decisioncg, "raisonnonpassage" ), array( 'id' => "Decisionsaisinepdoep66{$i}Raisonnonpassage" ) ),
+				@$decisioncg['Decisionpdo']['libelle'],
+				array( $cg, array( 'id' => "Decisionsaisinepdoep66{$i}Decisioncg" ) ),
+// 				array( Set::classicExtract( $decisioncg, "raisonnonpassage" ), array( 'id' => "Decisionsaisinepdoep66{$i}Raisonnonpassage" ) ),
 				Set::classicExtract( $decisioncg, "commentaire" ),
 				array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
 			),
@@ -66,7 +66,7 @@ echo '<table id="Decisionsaisinepdoep66" class="tooltips"><thead>
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
 		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
-			afficheRaisonpassage( '<?php echo Set::classicExtract( $dossiers, "{$theme}.liste.{$i}.Passagecommissionep.0.Decisionsaisinepdoep66.0.decision" );?>', [ 'Decisionsaisinepdoep66<?php echo $i;?>Decisioncg' ], 'Decisionsaisinepdoep66<?php echo $i;?>Raisonnonpassage' );
+// 			afficheRaisonpassage( '<?php echo Set::classicExtract( $dossiers, "{$theme}.liste.{$i}.Passagecommissionep.0.Decisionsaisinepdoep66.0.decision" );?>', [ 'Decisionsaisinepdoep66<?php echo $i;?>Decisioncg' ], 'Decisionsaisinepdoep66<?php echo $i;?>Raisonnonpassage' );
 		<?php endfor;?>
 	});
 </script>

@@ -24,40 +24,14 @@ echo '<table id="Decisiondefautinsertionep66" class="tooltips"><thead>
 
 		$avisEp = implode( ' - ', Set::filter( array( Set::enum( @$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1]['decision'], $options['Decisiondefautinsertionep66']['decision'] ), Set::enum( @$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1]['decisionsup'], $options['Decisiondefautinsertionep66']['decisionsup'] ), @$listeTypesorients[@$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1]['typeorient_id']], @$listeStructuresreferentes[@$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1]['structurereferente_id']], @$listeReferents[@$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1]['referent_id']] ) ) );
 
-		if ( $decisioncg['decision'] == 'reorientationprofverssoc' || $decisioncg['decision'] == 'reorientationsocversprof' ) {
-			$avisCg = array(
-				implode( ' / ', Set::filter( array(
-					$options['Decisiondefautinsertionep66']['decision'][Set::classicExtract( $decisioncg, "decision" )],
-					$options['Decisiondefautinsertionep66']['decisionsup'][Set::classicExtract( $decisioncg, "decisionsup" )]
-				) ) ),
-				array( $liste_typesorients[Set::classicExtract( $decisioncg, "typeorient_id" )], array( 'id' => "Decisiondefautinsertionep66{$i}TypeorientId" ) ),
-				array( $liste_structuresreferentes[Set::classicExtract( $decisioncg, "structurereferente_id" )], array( 'id' => "Decisiondefautinsertionep66{$i}StructurereferenteId" ) ),
-				array( $liste_referents[Set::classicExtract( $decisioncg, "referent_id" )], array( 'id' => "Decisiondefautinsertionep66{$i}ReferentId" ) ),
-				array( Set::classicExtract( $decisioncg, "raisonnonpassage" ), array( 'colspan' => '3', 'id' => "Decisiondefautinsertionep66{$i}Raisonnonpassage" ) )
-			);
-		}
-		else {
-			$avisCg = array(
-				array( $options['Decisiondefautinsertionep66']['decision'][Set::classicExtract( $decisioncg, "decision" )], array( 'colspan' => 4 ) ),
-				array( Set::classicExtract( $decisioncg, "raisonnonpassage" ), array( 'id' => "Decisiondefautinsertionep66{$i}Raisonnonpassage" ) )
-			);
-		}
-
 		$innerTable = "<table id=\"innerTableDecisiondefautinsertionep66{$i}\" class=\"innerTable\">
 			<tbody>
 				<tr>
 					<th>Observations de l'EP</th>
 					<td>".Set::classicExtract( $decisionep, "commentaire" )."</td>
-				</tr>";
-		
-		if ( $decisionep['decision'] == 'reporte' || $decisionep['decision'] == 'annule' ) {
-			$innerTable .= " <tr>
-				<th>Raison du non passage de l'EP</th>
-				<td>".Set::classicExtract( $decisionep, "raisonnonpassage" )."</td>
-			</tr>";
-		}
-		
-		$innerTable .= "</tbody></table>";
+				</tr>
+			</tbody>
+		</table>";
 
 		echo $xhtml->tableCells(
 			array(
@@ -73,22 +47,17 @@ echo '<table id="Decisiondefautinsertionep66" class="tooltips"><thead>
 				$locale->date( __( 'Locale->date', true ), @$dossierep['Defautinsertionep66']['Historiqueetatpe']['date'] ),
 				@$dossierep['Defautinsertionep66']['Historiqueetatpe']['motif'],
 
-				$form->input( "Defautinsertionep66.{$i}.id", array( 'type' => 'hidden', 'value' => $dossierep['Defautinsertionep66']['id'] ) ).
-				$form->input( "Defautinsertionep66.{$i}.dossierep_id", array( 'type' => 'hidden', 'value' => $dossierep['Dossierep']['id'] ) ).
-				$form->input( "Decisiondefautinsertionep66.{$i}.id", array( 'type' => 'hidden' ) ).
-				$form->input( "Decisiondefautinsertionep66.{$i}.etape", array( 'type' => 'hidden', 'value' => 'cg' ) ).
-				$form->input( "Decisiondefautinsertionep66.{$i}.passagecommissionep_id", array( 'type' => 'hidden', 'value' ) ).
-
 				$avisEp,
 
-				implode( ' / ', Set::filter( array(
-					$options['Decisiondefautinsertionep66']['decision'][Set::classicExtract( $decisioncg, "decision" )],
-					@$options['Decisiondefautinsertionep66']['decisionsup'][Set::classicExtract( $decisioncg, "decisionsup" )]
-				) ) ),
+				array( implode( ' / ', Set::filter( array(
+					$options['Decisiondefautinsertionep66']['decision'][Set::classicExtract( $decisionep, "decision" )],
+					@$options['Decisiondefautinsertionep66']['decisionsup'][Set::classicExtract( $decisionep, "decisionsup" )]
+				) ) ), array( 'id' => "Decisiondefautinsertionep66{$i}DecisionColumn" ) ),
+
 				array( @$liste_typesorients[Set::classicExtract( $decisioncg, "typeorient_id" )], array( 'id' => "Decisiondefautinsertionep66{$i}TypeorientId" ) ),
 				array( @$liste_structuresreferentes[Set::classicExtract( $decisioncg, "structurereferente_id" )], array( 'id' => "Decisiondefautinsertionep66{$i}StructurereferenteId" ) ),
 				array( @$liste_referents[Set::classicExtract( $decisioncg, "referent_id" )], array( 'id' => "Decisiondefautinsertionep66{$i}ReferentId" ) ),
-				array( Set::classicExtract( $decisioncg, "raisonnonpassage" ), array( 'colspan' => '3', 'id' => "Decisiondefautinsertionep66{$i}Raisonnonpassage" ) ),
+// 				array( Set::classicExtract( $decisioncg, "raisonnonpassage" ), array( 'colspan' => '3', 'id' => "Decisiondefautinsertionep66{$i}Raisonnonpassage" ) ),
 				Set::classicExtract( $decisioncg, "commentaire" ),
 				array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
 			),
@@ -102,7 +71,9 @@ echo '<table id="Decisiondefautinsertionep66" class="tooltips"><thead>
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
 		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
-			afficheRaisonpassage( '<?php echo Set::classicExtract( $dossiers, "{$theme}.liste.{$i}.Passagecommissionep.0.Decisiondefautinsertionep66.0.decision" );?>', [ 'Decisiondefautinsertionep66<?php echo $i;?>TypeorientId', 'Decisiondefautinsertionep66<?php echo $i;?>StructurereferenteId', 'Decisiondefautinsertionep66<?php echo $i;?>ReferentId' ], 'Decisiondefautinsertionep66<?php echo $i;?>Raisonnonpassage' );
+			changeColspanAnnuleReporte( 'Decisiondefautinsertionep66<?php echo $i;?>DecisionColumn', '<?php echo Set::classicExtract( $dossiers, "{$theme}.liste.{$i}.Passagecommissionep.0.Decisiondefautinsertionep66.0.decision" );?>', 4, [ 'Decisiondefautinsertionep66<?php echo $i;?>TypeorientId', 'Decisiondefautinsertionep66<?php echo $i;?>StructurereferenteId', 'Decisiondefautinsertionep66<?php echo $i;?>ReferentId' ] );
+
+// 			afficheRaisonpassage( '<?php echo Set::classicExtract( $dossiers, "{$theme}.liste.{$i}.Passagecommissionep.0.Decisiondefautinsertionep66.0.decision" );?>', [ 'Decisiondefautinsertionep66<?php echo $i;?>TypeorientId', 'Decisiondefautinsertionep66<?php echo $i;?>StructurereferenteId', 'Decisiondefautinsertionep66<?php echo $i;?>ReferentId' ], 'Decisiondefautinsertionep66<?php echo $i;?>Raisonnonpassage' );
 		<?php endfor;?>
 	});
 </script>

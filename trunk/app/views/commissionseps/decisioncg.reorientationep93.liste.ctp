@@ -25,16 +25,9 @@ echo '<table id="Decisionreorientationep93" class="tooltips"><thead>
 				<tr>
 					<th>Observations de l'EP</th>
 					<td>".Set::classicExtract( $decisionep, "commentaire" )."</td>
-				</tr>";
-
-		if ( $decisionep['decision'] == 'reporte' || $decisionep['decision'] == 'annule' ) {
-			$innerTable .= " <tr>
-				<th>Raison du non passage de l'EP</th>
-				<td>".Set::classicExtract( $decisionep, "raisonnonpassage" )."</td>
-			</tr>";
-		}
-		
-		$innerTable .= "</tbody></table>";
+				</tr>
+			</tbody>
+		</table>";
 
 		echo $xhtml->tableCells(
 			array(
@@ -50,10 +43,10 @@ echo '<table id="Decisionreorientationep93" class="tooltips"><thead>
 				implode( ' / ', Set::filter( array( $options['Decisionreorientationep93']['decision'][$decisionep['decision']], @$decisionep['Typeorient']['lib_type_orient'], @$decisionep['Structurereferente']['lib_struc'], $decisionep['raisonnonpassage'] ) ) ),
 
 				$options['Decisionreorientationep93']['decisionpcg'][Set::classicExtract( $decisioncg, "decisionpcg" )],
-				$options['Decisionreorientationep93']['decision'][Set::classicExtract( $decisioncg, "decision" )],
+				array( $options['Decisionreorientationep93']['decision'][Set::classicExtract( $decisioncg, "decision" )], array( 'id' => "Decisionreorientationep93{$i}DecisionColumn" ) ),
 				array( @$liste_typesorients[Set::classicExtract( $decisioncg, "typeorient_id" )], array( 'id' => "Decisionreorientationep93{$i}TypeorientId" ) ),
 				array( @$liste_structuresreferentes[Set::classicExtract( $decisioncg, "structurereferente_id" )], array( 'id' => "Decisionreorientationep93{$i}StructurereferenteId" ) ),
-				array( Set::classicExtract( $decisioncg, "raisonnonpassage" ), array( 'colspan' => '2', 'id' => "Decisionreorientationep93{$i}Raisonnonpassage" ) ),
+// 				array( Set::classicExtract( $decisioncg, "raisonnonpassage" ), array( 'colspan' => '2', 'id' => "Decisionreorientationep93{$i}Raisonnonpassage" ) ),
 				Set::classicExtract( $decisioncg, "commentaire" ),
 				array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
 			),
@@ -67,7 +60,9 @@ echo '<table id="Decisionreorientationep93" class="tooltips"><thead>
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
 		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
-			afficheRaisonpassage( '<?php echo Set::classicExtract( $dossiers, "{$theme}.liste.{$i}.Passagecommissionep.0.Decisionreorientationep93.0.decision" );?>', [ 'Decisionreorientationep93<?php echo $i;?>TypeorientId', 'Decisionreorientationep93<?php echo $i;?>StructurereferenteId' ], 'Decisionreorientationep93<?php echo $i;?>Raisonnonpassage' );
+			changeColspanAnnuleReporte( 'Decisionreorientationep93<?php echo $i;?>DecisionColumn', '<?php echo Set::classicExtract( $dossiers, "{$theme}.liste.{$i}.Passagecommissionep.0.Decisionreorientationep93.0.decision" );?>', 3, [ 'Decisionreorientationep93<?php echo $i;?>TypeorientId', 'Decisionreorientationep93<?php echo $i;?>StructurereferenteId' ] );
+
+// 			afficheRaisonpassage( '<?php echo Set::classicExtract( $dossiers, "{$theme}.liste.{$i}.Passagecommissionep.0.Decisionreorientationep93.0.decision" );?>', [ 'Decisionreorientationep93<?php echo $i;?>TypeorientId', 'Decisionreorientationep93<?php echo $i;?>StructurereferenteId' ], 'Decisionreorientationep93<?php echo $i;?>Raisonnonpassage' );
 		<?php endfor;?>
 	});
 </script>

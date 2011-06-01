@@ -27,22 +27,15 @@ echo '<table id="Decisionnonrespectsanctionep93" class="tooltips"><thead>
 				$lineOptions[$key] = $label;
 			}
 		}
-		
+
 		$innerTable = "<table id=\"innerTableDecisionnonrespectsanctionep93{$i}\" class=\"innerTable\">
 			<tbody>
 				<tr>
 					<th>Observations de l'EP</th>
 					<td>".Set::classicExtract( $decisionep, "commentaire" )."</td>
-				</tr>";
-		
-		if ( $decisionep['decision'] == 'reporte' || $decisionep['decision'] == 'annule' ) {
-			$innerTable .= " <tr>
-				<th>Raison du non passage de l'EP</th>
-				<td>".Set::classicExtract( $decisionep, "raisonnonpassage" )."</td>
-			</tr>";
-		}
-		
-		$innerTable .= "</tbody></table>";
+				</tr>
+			</tbody>
+		</table>";
 
 		echo $xhtml->tableCells(
 			array(
@@ -63,7 +56,7 @@ echo '<table id="Decisionnonrespectsanctionep93" class="tooltips"><thead>
 					$options['Decisionnonrespectsanctionep93']['decision'][Set::classicExtract( $decisioncg, "decision" )],
 					array( 'id' => "Decisionnonrespectsanctionep93{$i}ColumnDecision", 'colspan' => 2 )
 				),
- 				array( Set::classicExtract( $decisioncg, "raisonnonpassage" ), array( 'id' => "Decisionnonrespectsanctionep93{$i}Raisonnonpassage" ) ),
+//  				array( Set::classicExtract( $decisioncg, "raisonnonpassage" ), array( 'id' => "Decisionnonrespectsanctionep93{$i}Raisonnonpassage" ) ),
 				Set::classicExtract( $decisioncg, "commentaire" ),
 				$xhtml->printLink( 'Imprimer', array( 'controller' => 'commissionseps', 'action' => 'impressionDecision', $dossierep['Passagecommissionep'][0]['id'] ) ),
 				array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
@@ -78,7 +71,7 @@ echo '<table id="Decisionnonrespectsanctionep93" class="tooltips"><thead>
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
 		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
-			changeColspanRaisonNonPassage( 'Decisionnonrespectsanctionep93<?php echo $i;?>ColumnDecision', '<?php echo Set::classicExtract( $dossiers, "{$theme}.liste.{$i}.Passagecommissionep.0.Decisionnonrespectsanctionep93.0.decision" );?>', [], 'Decisionnonrespectsanctionep93<?php echo $i;?>Raisonnonpassage' );
+// 			changeColspanRaisonNonPassage( 'Decisionnonrespectsanctionep93<?php echo $i;?>ColumnDecision', '<?php echo Set::classicExtract( $dossiers, "{$theme}.liste.{$i}.Passagecommissionep.0.Decisionnonrespectsanctionep93.0.decision" );?>', [], 'Decisionnonrespectsanctionep93<?php echo $i;?>Raisonnonpassage' );
 		<?php endfor;?>
 	});
 </script>
