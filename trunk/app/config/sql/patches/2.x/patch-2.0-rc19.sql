@@ -313,7 +313,7 @@ CREATE TABLE compositionsregroupementseps (
 COMMENT ON TABLE compositionsregroupementseps IS 'Composition des EPs';
 
 
-TRUNCATE TABLE contactspartenaires CASCADE;
+TRUNCATE TABLE actionscandidats CASCADE;
 SELECT add_missing_table_field ( 'public', 'actionscandidats', 'contactpartenaire_id', 'INTEGER' );
 ALTER TABLE actionscandidats ALTER COLUMN contactpartenaire_id SET NOT NULL;
 ALTER TABLE actionscandidats ADD CONSTRAINT actionscandidats_contactpartenaire_id_fk FOREIGN KEY (contactpartenaire_id) REFERENCES contactspartenaires(id);
