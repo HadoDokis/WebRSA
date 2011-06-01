@@ -53,18 +53,28 @@
 			),
 		);
 
-		// TODO: lorsqu'on pourra reporter les dossiers,
-		// il faudra soit faire soit un report, soit les validations ci-dessous
-		public $validate = array(
-			'typeorient_id' => array(
+		/**
+		* Les règles de validation qui seront utilisées lors de la validation
+		* en EP des décisions de la thématique
+		*/
+
+		public $validateFinalisation = array(
+			'decision' => array(
 				array(
 					'rule' => array( 'notEmpty' )
 				)
 			),
+			'typeorient_id' => array(
+				'notEmptyIf' => array(
+					'rule' => array( 'notEmptyIf', 'decision', true, array( 'accepte' ) ),
+					'message' => 'Champ obligatoire',
+				),
+			),
 			'structurereferente_id' => array(
-				array(
-					'rule' => array( 'notEmpty' )
-				)
+				'notEmptyIf' => array(
+					'rule' => array( 'notEmptyIf', 'decision', true, array( 'accepte' ) ),
+					'message' => 'Champ obligatoire',
+				),
 			),
 		);
 	}

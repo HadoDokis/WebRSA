@@ -46,9 +46,18 @@ echo '<table id="Decisionsaisinebilanparcoursep66" class="tooltips"><thead>
 
 				implode( ' - ', Set::filter( array( $options['Decisionsaisinebilanparcoursep66']['decision'][$decisionep['decision']], @$decisionep['Typeorient']['lib_type_orient'], @$decisionep['Structurereferente']['lib_struc'] ) ) ),
 
-				array( $form->input( "Decisionsaisinebilanparcoursep66.{$i}.decision", array( 'label' => false, 'options' => @$options['Decisionsaisinebilanparcoursep66']['decision'], 'empty' => true ) ), array( 'id' => "Decisionsaisinebilanparcoursep66{$i}DecisionColumn" ) ),
-				$form->input( "Decisionsaisinebilanparcoursep66.{$i}.typeorient_id", array( 'label' => false, 'options' => $typesorients, 'empty' => true ) ),
-				$form->input( "Decisionsaisinebilanparcoursep66.{$i}.structurereferente_id", array( 'label' => false, 'options' => $structuresreferentes, 'empty' => true ) ),
+				array(
+					$form->input( "Decisionsaisinebilanparcoursep66.{$i}.decision", array( 'label' => false, 'options' => @$options['Decisionsaisinebilanparcoursep66']['decision'], 'empty' => true ) ),
+					array( 'id' => "Decisionsaisinebilanparcoursep66{$i}DecisionColumn", 'class' => ( !empty( $this->validationErrors['Decisionsaisinebilanparcoursep66'][$i]['decision'] ) ? 'error' : '' ) )
+				),
+				array(
+					$form->input( "Decisionsaisinebilanparcoursep66.{$i}.typeorient_id", array( 'label' => false, 'options' => $typesorients, 'empty' => true ) ),
+					( !empty( $this->validationErrors['Decisionsaisinebilanparcoursep66'][$i]['typeorient_id'] ) ? array( 'class' => 'error' ) : array() )
+				),
+				array(
+					$form->input( "Decisionsaisinebilanparcoursep66.{$i}.structurereferente_id", array( 'label' => false, 'options' => $structuresreferentes, 'empty' => true ) ),
+					( !empty( $this->validationErrors['Decisionsaisinebilanparcoursep66'][$i]['structurereferente_id'] ) ? array( 'class' => 'error' ) : array() )
+				),
 				$form->input( "Decisionsaisinebilanparcoursep66.{$i}.referent_id", array( 'label' => false, 'options' => $referents, 'empty' => true ) ),
 // 				array( $form->input( "Decisionsaisinebilanparcoursep66.{$i}.raisonnonpassage", array( 'label' => false, 'type' => 'textarea' ) ), array( 'colspan' => 3 ) ),
 				$form->input( "Decisionsaisinebilanparcoursep66.{$i}.commentaire", array( 'label' =>false, 'type' => 'textarea' ) ).

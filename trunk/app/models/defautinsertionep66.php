@@ -274,14 +274,14 @@
 				}
 				else {
 					if( isset( $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1] ) ) {
-						$formData['Decisiondefautinsertionep66'][$key]['id'] = $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['id'];
-						$formData['Decisiondefautinsertionep66'][$key]['decision'] = $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['decision'];
-						$formData['Decisiondefautinsertionep66'][$key]['raisonnonpassage'] = $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['raisonnonpassage'];
-						$formData['Decisiondefautinsertionep66'][$key]['commentaire'] = $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['commentaire'];
-						$formData['Decisiondefautinsertionep66'][$key]['decisionsup'] = $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['decisionsup'];
-						$formData['Decisiondefautinsertionep66'][$key]['typeorient_id'] = $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['typeorient_id'];
-						$formData['Decisiondefautinsertionep66'][$key]['structurereferente_id'] = implode( '_', array( $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['typeorient_id'], $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['structurereferente_id'] ) );
-						$formData['Decisiondefautinsertionep66'][$key]['referent_id'] = implode( '_', array( $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['structurereferente_id'], $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['referent_id'] ) );
+						$formData['Decisiondefautinsertionep66'][$key]['id'] = $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1]['id'];
+						$formData['Decisiondefautinsertionep66'][$key]['decision'] = $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1]['decision'];
+						$formData['Decisiondefautinsertionep66'][$key]['raisonnonpassage'] = $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1]['raisonnonpassage'];
+						$formData['Decisiondefautinsertionep66'][$key]['commentaire'] = $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1]['commentaire'];
+						$formData['Decisiondefautinsertionep66'][$key]['decisionsup'] = $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1]['decisionsup'];
+						$formData['Decisiondefautinsertionep66'][$key]['typeorient_id'] = $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1]['typeorient_id'];
+						$formData['Decisiondefautinsertionep66'][$key]['structurereferente_id'] = implode( '_', array( $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1]['typeorient_id'], $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1]['structurereferente_id'] ) );
+						$formData['Decisiondefautinsertionep66'][$key]['referent_id'] = implode( '_', array( $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1]['structurereferente_id'], $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1]['referent_id'] ) );
 					}
 					else {
 						$formData['Decisiondefautinsertionep66'][$key]['decision'] = $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['decision'];
