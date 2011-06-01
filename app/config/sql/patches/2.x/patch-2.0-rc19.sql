@@ -287,6 +287,28 @@ DROP TABLE regressionsorientationseps93;
 ALTER TABLE actionscandidats ALTER COLUMN nbpostedispo DROP NOT NULL;
 ALTER TABLE actionscandidats ALTER COLUMN nbpostedispo SET DEFAULT NULL;
 
+-- *******************************************************************************************************
+-- 20110601: ajout de la notion de corum pour le cg66
+-- *******************************************************************************************************
+
+SELECT add_missing_table_field ('public', 'regroupementseps', 'nbminmembre', 'INTEGER');
+UPDATE regroupementseps SET nbminmembre = 0 WHERE nbminmembre IS NULL;
+ALTER TABLE regroupementseps ALTER COLUMN nbminmembre SET DEFAULT 0;
+ALTER TABLE regroupementseps ALTER COLUMN nbminmembre SET NOT NULL;
+SELECT add_missing_table_field ('public', 'regroupementseps', 'nbmaxmembre', 'INTEGER');
+UPDATE regroupementseps SET nbmaxmembre = 0 WHERE nbmaxmembre IS NULL;
+ALTER TABLE regroupementseps ALTER COLUMN nbmaxmembre SET DEFAULT 0;
+ALTER TABLE regroupementseps ALTER COLUMN nbmaxmembre SET NOT NULL;
+
+SELECT add_missing_table_field ('public', 'fonctionsmembreseps', 'nbpresenceobligatoire', 'INTEGER');
+UPDATE fonctionsmembreseps SET nbpresenceobligatoire = 0 WHERE nbpresenceobligatoire IS NULL;
+ALTER TABLE fonctionsmembreseps ALTER COLUMN nbpresenceobligatoire SET DEFAULT 0;
+ALTER TABLE fonctionsmembreseps ALTER COLUMN nbpresenceobligatoire SET NOT NULL;
+SELECT add_missing_table_field ('public', 'fonctionsmembreseps', 'presenceprioritaire', 'TYPE_BOOLEANNUMBER');
+UPDATE fonctionsmembreseps SET presenceprioritaire = '0' WHERE presenceprioritaire IS NULL;
+ALTER TABLE fonctionsmembreseps ALTER COLUMN presenceprioritaire SET DEFAULT '0'::TYPE_BOOLEANNUMBER;
+ALTER TABLE fonctionsmembreseps ALTER COLUMN presenceprioritaire SET NOT NULL;
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
