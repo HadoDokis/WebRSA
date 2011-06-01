@@ -40,10 +40,18 @@ echo '<table><thead>
 					)
 				),
 
-				array( $form->input( "Decisionnonorientationproep58.{$i}.decision", array( 'type' => 'select', 'label' => false, 'empty' => true, 'options' => $options['Decisionnonorientationproep58']['decision'] ) ), array( 'id' => "Decisionnonorientationproep58{$i}DecisionColumn" ) ),
-				$form->input( "Decisionnonorientationproep58.{$i}.typeorient_id", array( 'type' => 'select', 'label' => false, 'options' => $typesorients, 'empty' => true ) ),
-				$form->input( "Decisionnonorientationproep58.{$i}.structurereferente_id", array( 'label' => false, 'options' => $structuresreferentes, 'empty' => true, 'type' => 'select' ) ),
-// 				array( $form->input( "Decisionnonorientationproep58.{$i}.raisonnonpassage", array( 'label' => false, 'type' => 'textarea' ) ), array( 'colspan' => '2' ) ),
+				array(
+					$form->input( "Decisionnonorientationproep58.{$i}.decision", array( 'type' => 'select', 'label' => false, 'empty' => true, 'options' => $options['Decisionnonorientationproep58']['decision'] ) ),
+					array( 'id' => "Decisionnonorientationproep58{$i}DecisionColumn", 'class' => ( !empty( $this->validationErrors['Decisionnonorientationproep58'][$i]['decision'] ) ? 'error' : '' ) )
+				),
+				array(
+					$form->input( "Decisionnonorientationproep58.{$i}.typeorient_id", array( 'type' => 'select', 'label' => false, 'options' => $typesorients, 'empty' => true ) ),
+					( !empty( $this->validationErrors['Decisionnonorientationproep58'][$i]['typeorient_id'] ) ? array( 'class' => 'error' ) : array() )
+				),
+				array(
+					$form->input( "Decisionnonorientationproep58.{$i}.structurereferente_id", array( 'label' => false, 'options' => $structuresreferentes, 'empty' => true, 'type' => 'select' ) ),
+					( !empty( $this->validationErrors['Decisionnonorientationproep58'][$i]['structurereferente_id'] ) ? array( 'class' => 'error' ) : array() )
+				),
 				$form->input( "Decisionnonorientationproep58.{$i}.commentaire", array( 'label' =>false, 'type' => 'textarea' ) ).
 				$hiddenFields
 			),

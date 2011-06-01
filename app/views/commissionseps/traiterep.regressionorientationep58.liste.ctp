@@ -29,10 +29,18 @@ echo '<table><thead>
 				@$dossierep['Regressionorientationep58']['Typeorient']['lib_type_orient'],
 				@$dossierep['Regressionorientationep58']['Structurereferente']['lib_struc'],
 
-				array( $form->input( "Decisionregressionorientationep58.{$i}.decision", array( 'label' => false, 'type' => 'select', 'options' => @$options['Decisionregressionorientationep58']['decision'], 'empty' => true ) ), array( 'id' => "Decisionregressionorientationep58{$i}DecisionColumn" ) ),
-				$form->input( "Decisionregressionorientationep58.{$i}.typeorient_id", array( 'label' => false, 'options' => $typesorients, 'empty' => true ) ),
-				$form->input( "Decisionregressionorientationep58.{$i}.structurereferente_id", array( 'label' => false, 'options' => $structuresreferentes, 'empty' => true, 'type' => 'select' ) ),
-// 				array( $form->input( "Decisionregressionorientationep58.{$i}.raisonnonpassage", array( 'label' => false, 'type' => 'textarea' ) ), array( 'colspan' => '2' ) ),
+				array(
+					$form->input( "Decisionregressionorientationep58.{$i}.decision", array( 'label' => false, 'type' => 'select', 'options' => @$options['Decisionregressionorientationep58']['decision'], 'empty' => true ) ),
+					array( 'id' => "Decisionregressionorientationep58{$i}DecisionColumn", 'class' => ( !empty( $this->validationErrors['Decisionregressionorientationep58'][$i]['decision'] ) ? 'error' : '' ) )
+				),
+				array(
+					$form->input( "Decisionregressionorientationep58.{$i}.typeorient_id", array( 'label' => false, 'options' => $typesorients, 'empty' => true ) ),
+					( !empty( $this->validationErrors['Decisionregressionorientationep58'][$i]['typeorient_id'] ) ? array( 'class' => 'error' ) : array() )
+				),
+				array(
+					$form->input( "Decisionregressionorientationep58.{$i}.structurereferente_id", array( 'label' => false, 'options' => $structuresreferentes, 'empty' => true, 'type' => 'select' ) ),
+					( !empty( $this->validationErrors['Decisionregressionorientationep58'][$i]['structurereferente_id'] ) ? array( 'class' => 'error' ) : array() )
+				),
 				$form->input( "Decisionregressionorientationep58.{$i}.commentaire", array( 'label' =>false, 'type' => 'textarea' ) ).
 				$hiddenFields
 			),
