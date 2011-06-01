@@ -10,6 +10,11 @@
 		$fields[] = "Regroupementep.{$theme}";
 	}
 
+	if ( Configure::read( 'Cg.departement' ) == 66 ) {
+		$fields[] = "Regroupementep.nbminmembre";
+		$fields[] = "Regroupementep.nbmaxmembre";
+	}
+
 	echo $default2->index(
 		$regroupementeps,
 		$fields,

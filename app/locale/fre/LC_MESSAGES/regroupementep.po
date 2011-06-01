@@ -28,6 +28,12 @@ msgstr "Nom du regroupement"
 msgid "Regroupementep.id"
 msgstr "Index"
 
+msgid "Regroupementep.nbminmembre"
+msgstr "Nombre minimum de membres"
+
+msgid "Regroupementep.nbmaxmembre"
+msgstr "Nombre maximum de membres"
+
 msgid "Regroupementep::index"
 msgstr "Regroupements des EPs"
 

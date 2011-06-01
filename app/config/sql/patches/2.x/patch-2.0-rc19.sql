@@ -302,14 +302,15 @@ UPDATE regroupementseps SET nbmaxmembre = 0 WHERE nbmaxmembre IS NULL;
 ALTER TABLE regroupementseps ALTER COLUMN nbmaxmembre SET DEFAULT 0;
 ALTER TABLE regroupementseps ALTER COLUMN nbmaxmembre SET NOT NULL;
 
--- SELECT add_missing_table_field ('public', 'fonctionsmembreseps', 'nbpresenceobligatoire', 'INTEGER');
--- UPDATE fonctionsmembreseps SET nbpresenceobligatoire = 0 WHERE nbpresenceobligatoire IS NULL;
--- ALTER TABLE fonctionsmembreseps ALTER COLUMN nbpresenceobligatoire SET DEFAULT 0;
--- ALTER TABLE fonctionsmembreseps ALTER COLUMN nbpresenceobligatoire SET NOT NULL;
--- SELECT add_missing_table_field ('public', 'fonctionsmembreseps', 'presenceprioritaire', 'TYPE_BOOLEANNUMBER');
--- UPDATE fonctionsmembreseps SET presenceprioritaire = '0' WHERE presenceprioritaire IS NULL;
--- ALTER TABLE fonctionsmembreseps ALTER COLUMN presenceprioritaire SET DEFAULT '0'::TYPE_BOOLEANNUMBER;
--- ALTER TABLE fonctionsmembreseps ALTER COLUMN presenceprioritaire SET NOT NULL;
+DROP TABLE IF EXISTS compositionsregroupementseps;
+CREATE TABLE compositionsregroupementseps (
+	id      				SERIAL NOT NULL PRIMARY KEY,
+	fonctionmembreep_id		INTEGER NOT NULL REFERENCES fonctionsmembreseps(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	regroupementep_id		INTEGER NOT NULL REFERENCES regroupementseps(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	prioritaire				TYPE_BOOLEANNUMBER NOT NULL DEFAULT '0'::TYPE_BOOLEANNUMBER,
+	obligatoire				TYPE_BOOLEANNUMBER NOT NULL DEFAULT '0'::TYPE_BOOLEANNUMBER
+);
+COMMENT ON TABLE compositionsregroupementseps IS 'Composition des EPs';
 
 -- *****************************************************************************
 COMMIT;

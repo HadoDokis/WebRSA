@@ -303,6 +303,7 @@
 		'fichiermodule' => 'fichiersmodules',
 		// EPs restructuration
 		'passagecommissionep' => 'passagescommissionseps',
+		'compositionregroupementep' => 'compositionsregroupementseps',
 
         'sitecov58' => 'sitescovs58',
 		'signalementep93' => 'signalementseps93',
