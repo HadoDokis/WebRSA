@@ -75,19 +75,6 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
-			'Nonorientationproep66' => array(
-				'className' => 'Nonorientationproep66',
-				'foreignKey' => 'dossierep_id',
-				'dependent' => true,
-				'conditions' => '',
-				'fields' => '',
-				'order' => '',
-				'limit' => '',
-				'offset' => '',
-				'exclusive' => '',
-				'finderQuery' => '',
-				'counterQuery' => ''
-			),
 			// Thèmes 93
 			'Reorientationep93' => array(
 				'className' => 'Reorientationep93',

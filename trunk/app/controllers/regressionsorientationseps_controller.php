@@ -5,7 +5,7 @@
 
 		public $helpers = array( 'Default2', 'Xpaginator' );
 
-		public $uses = array( 'Regressionorientationep58'/*, 'Regressionorientationep66', 'Regressionorientationep93'*/ );
+		public $uses = array( 'Regressionorientationep58' );
 
 		public function beforeFilter() {
 			ini_set('max_execution_time', 0);

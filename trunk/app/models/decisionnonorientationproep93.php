@@ -57,5 +57,30 @@
 				'order' => ''
 			),
 		);
+
+		/**
+		* Les règles de validation qui seront utilisées lors de la validation
+		* en EP des décisions de la thématique
+		*/
+
+		public $validateFinalisation = array(
+			'decision' => array(
+				array(
+					'rule' => array( 'notEmpty' )
+				)
+			),
+			'typeorient_id' => array(
+				'notEmptyIf' => array(
+					'rule' => array( 'notEmptyIf', 'decision', true, array( 'reorientation' ) ),
+					'message' => 'Champ obligatoire',
+				),
+			),
+			'structurereferente_id' => array(
+				'notEmptyIf' => array(
+					'rule' => array( 'notEmptyIf', 'decision', true, array( 'reorientation' ) ),
+					'message' => 'Champ obligatoire',
+				),
+			),
+		);
 	}
 ?>

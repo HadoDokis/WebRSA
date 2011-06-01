@@ -31,7 +31,7 @@
 	else {
 		$duree_engag = 'duree_engag_'.Configure::read( 'nom_form_ci_cg' );
 		foreach( $dossiers[$theme] as &$dossierep ) {
-			$dossierep['Dossierep']['Signalementep93']['Contratinsertion']['duree_engag'] = Set::enum( $dossierep['Dossierep']['Signalementep93']['Contratinsertion']['duree_engag'], $$duree_engag );
+			$dossierep['Contratinsertion']['duree_engag'] = Set::enum( $dossierep['Contratinsertion']['duree_engag'], $$duree_engag );
 		}
 
 		echo $default2->index(

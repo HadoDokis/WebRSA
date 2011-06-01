@@ -5,7 +5,7 @@
 
 		public $helpers = array( 'Default2', 'Xpaginator' );
 
-		public $uses = array( 'Nonorientationproep58',/* 'Nonorientationproep66',*/ 'Nonorientationproep93' );
+		public $uses = array( 'Nonorientationproep58', 'Nonorientationproep93' );
 
 		public function beforeFilter() {
 			ini_set('max_execution_time', 0);

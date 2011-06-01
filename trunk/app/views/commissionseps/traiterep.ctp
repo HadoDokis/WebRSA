@@ -7,8 +7,11 @@
 		echo $form->create( null, array( 'url' => Router::url( null, true ) ) );
 
 		foreach( array_keys( $dossiers ) as $theme ) {
+			$modeleDecision = Inflector::classify( 'Decision'.Inflector::underscore( $theme ) );
+			$errorClass = ( !empty( $this->validationErrors[$modeleDecision] ) ? 'error' : '' );
+
 			$file = sprintf( 'traiterep.%s.liste.ctp', Inflector::underscore( $theme ) );
-			echo '<div id="'.$theme.'"><h2 class="title">'.__d( 'dossierep', 'ENUM::THEMEEP::'.Inflector::tableize( $theme ), true ).'</h2>';
+			echo '<div id="'.$theme.'" class="'.$errorClass.'"><h2 class="title '.$errorClass.'">'.__d( 'dossierep', 'ENUM::THEMEEP::'.Inflector::tableize( $theme ), true ).'</h2>';
 			if( !empty( $dossiers[$theme]['liste'] ) ) {
 				require_once( $file );
 			}
