@@ -15,18 +15,15 @@
 			)
 		);
 
-//		public $validate = array(
-//			'intitule' => array(
-//				array(
-//					'rule' => array('notEmpty'),
-//				),
-//			),
-//			'code' => array(
-//				array(
-//					'rule' => array('notEmpty'),
-//				),
-//			),
-//		);
+		public $validate = array(
+			'nbpostedispo' => array(
+				'notEmptyIf' => array(
+                    'rule' => array( 'notEmptyIf', 'hasfichecandidature', true, array( '1' ) ),
+                    'message' => 'Champ obligatoire',
+                ),
+			)
+		);
+
 
 		public $hasAndBelongsToMany = array(
 			'Partenaire' => array(
