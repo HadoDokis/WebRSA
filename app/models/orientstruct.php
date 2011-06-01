@@ -154,19 +154,6 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
-			'Nonorientationproep66' => array(
-				'className' => 'Nonorientationproep66',
-				'foreignKey' => 'orientstruct_id',
-				'dependent' => true,
-				'conditions' => '',
-				'fields' => '',
-				'order' => '',
-				'limit' => '',
-				'offset' => '',
-				'exclusive' => '',
-				'finderQuery' => '',
-				'counterQuery' => ''
-			),
 			'Nonorientationproep93' => array(
 				'className' => 'Nonorientationproep93',
 				'foreignKey' => 'orientstruct_id',

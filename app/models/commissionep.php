@@ -245,7 +245,9 @@
 
 			$success = true;
 
-			foreach( $data as $thematique => $dossierseps ) {
+			// FIXME: ne sert à rien ?
+			// FIXME: ça va casser ailleurs ?
+			/*foreach( $data as $thematique => $dossierseps ) {
 				foreach( $dossierseps as $key => $dossierep ) {
 					if( empty( $dossierep['decision'] ) ) {
 						unset( $dossierseps[$key] );
@@ -254,11 +256,13 @@
 				if( empty( $dossierseps ) ) {
 					unset( $data[$thematique] );
 				}
-			}
+			}*/
 
 			foreach( $this->themesTraites( $commissionep_id ) as $theme => $decision ) {
 				$model = Inflector::classify( $theme );
-				$success = $this->Passagecommissionep->Dossierep->{$model}->saveDecisions( $data, $niveauDecision ) && $success;
+				if( isset( $data[$model] ) ) { // FIXME: && $data['Decision..] ?
+					$success = $this->Passagecommissionep->Dossierep->{$model}->saveDecisions( $data, $niveauDecision ) && $success;
+				}
 			}
 
 			///FIXME : calculer si tous les dossiers ont bien une décision avant de chager l'état ?
@@ -346,11 +350,24 @@
 		* @access public
 		*/
 
-		public function finaliser( $commissionep_id, $niveauDecision, $user_id ) {
-			$success = true;
+		public function finaliser( $commissionep_id, $data, $niveauDecision, $user_id ) {
 			$themesTraites = $this->themesTraites( $commissionep_id );
 
-			// Recherche des dossiers pas encore traités à cette étape
+			// Première partie: revalidation "spéciale" des décisions
+			foreach( $themesTraites as $themeTraite => $niveauDecisionTheme ) {
+				$modeleDecision = Inflector::classify( "decision{$themeTraite}" );
+				if( isset( $this->Passagecommissionep->{$modeleDecision}->validateFinalisation ) ) {
+					// FIXME: pas possible de faire un merge avec les règles déduites par Autovalidate ?
+					$this->Passagecommissionep->{$modeleDecision}->validate = $this->Passagecommissionep->{$modeleDecision}->validateFinalisation;
+				}
+			}
+
+			if( !$this->saveDecisions( $commissionep_id, $data, $niveauDecision ) ) {
+				return false;
+			}
+
+			// Deuxième partie: recherche des dossiers pas encore traités à cette étape
+			$success = true;
 			$totalErrors = 0;
 			foreach( $themesTraites as $themeTraite => $niveauDecisionTheme ) {
 				$themeTraite = Inflector::tableize( $themeTraite );
@@ -675,7 +692,7 @@
 			$primaryKey = Set::classicExtract( $this->data, "{$this->alias}.{$this->primaryKey}" );
 			$identifiant = Set::classicExtract( $this->data, "{$this->alias}.identifiant" );
 
-			if( empty( $primaryKey ) && empty( $identifiant ) ) {
+			if( empty( $primaryKey ) && empty( $identifiant ) && empty( $this->{$this->primaryKey} ) ) {
 				$this->data[$this->alias]['identifiant'] = $this->identifiant();
 			}
 

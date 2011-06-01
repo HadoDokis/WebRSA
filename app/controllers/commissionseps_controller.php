@@ -509,7 +509,7 @@
 			}
 
 			$this->Commissionep->begin();
-			$success = $this->Commissionep->finaliser( $commissionep_id, $niveauDecision, $this->Session->read( 'Auth.User.id' ) );
+			$success = $this->Commissionep->finaliser( $commissionep_id, $this->data, $niveauDecision, $this->Session->read( 'Auth.User.id' ) );
 
 			$this->_setFlashResult( 'Save', $success );
 			if( $success ) {

@@ -31,13 +31,13 @@
 		*
 		*/
 
-		public $validate = array(
-			'decision' => array(
-				array(
-					'rule' => array( 'notEmpty' )
-				)
-			),
-		);
+// 		public $validate = array(
+// 			'decision' => array(
+// 				array(
+// 					'rule' => array( 'notEmpty' )
+// 				)
+// 			),
+// 		);
 
 		/**
 		*
@@ -50,6 +50,30 @@
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
+			),
+		);
+
+		/**
+		* Les règles de validation qui seront utilisées lors de la validation
+		* en EP des décisions de la thématique
+		*/
+
+		public $validateFinalisation = array(
+			'decision' => array(
+				array(
+					'rule' => array( 'notEmpty' )
+				)
+			),
+			'datevalidation_ci' => array(
+				'notEmptyIf' => array(
+					'rule' => array( 'notEmptyIf', 'decision', true, array( 'valide' ) ),
+					'message' => 'Champ obligatoire',
+				),
+				'notEmpty' => array(
+					'rule' => 'date',
+					'message' => 'Veuillez entrer une date valide',
+					'allowEmpty'    => true
+				)
 			),
 		);
 	}

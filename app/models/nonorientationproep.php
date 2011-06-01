@@ -375,6 +375,7 @@
 						$data['Decision'.Inflector::underscore( $this->alias )][$key]['typeorient_id'] = null;
 					}
 				}
+
 				$success = $this->Dossierep->Passagecommissionep->{'Decision'.Inflector::underscore($this->alias)}->saveAll( Set::extract( $data, '/'.'Decision'.Inflector::underscore( $this->alias ) ), array( 'atomic' => false ) );
 				$this->Dossierep->Passagecommissionep->updateAll(
 					array( 'Passagecommissionep.etatdossierep' => '\'decision'.$niveauDecision.'\'' ),
@@ -580,8 +581,6 @@
 			return array(
 				'fields' => array(
 					'Dossierep.id',
-					'Dossierep.created',
-					'Dossierep.themeep',
 					'Dossier.numdemrsa',
 					'Dossier.matricule',
 					'Personne.id',
@@ -589,13 +588,11 @@
 					'Personne.nom',
 					'Personne.prenom',
 					'Personne.dtnai',
-					'Adresse.locaadr',
 					'Typeorient.lib_type_orient',
 					'Structurereferente.lib_struc',
 					'Orientstruct.date_valid',
 					'Passagecommissionep.id',
-					'Passagecommissionep.commissionep_id',
-					'Passagecommissionep.etatdossierep'
+					'Passagecommissionep.commissionep_id'
 				),
 				'joins' => array(
 					array(
