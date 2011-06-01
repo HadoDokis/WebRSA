@@ -371,6 +371,25 @@
 			}
 
 
+
+            // Trouver les PDOs avec un traitement possédant une date d'échéance
+            if( isset( $criterespdos['Propopdo']['traitementencours'] ) && $criterespdos['Propopdo']['traitementencours'] ) {
+                $conditions[] = array(
+                    'Propopdo.id IN ( '.ClassRegistry::init( 'Traitementpdo' )->sq(
+                        array(
+                            'alias' => 'traitementspdos',
+                            'fields' => array( 'traitementspdos.propopdo_id' ),
+                            'conditions' => array(
+                                'traitementspdos.propopdo_id = Propopdo.id',
+                                'traitementspdos.dateecheance IS NOT NULL'
+                            )
+                        )
+                    ).' )',
+                );
+            }
+
+
+
 			/// Requête
 //             $this->Dossier = ClassRegistry::init( 'Dossier' );
 

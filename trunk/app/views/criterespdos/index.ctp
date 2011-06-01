@@ -51,6 +51,11 @@
 			<?php echo $form->input( 'Decisionpropopdo.datedecisionpdo_to', array( 'label' => 'Au (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $datereceptionpdo_to ) );?>
 		</fieldset>
 </fieldset>
+    <?php
+        $valueTraitementEncours = isset( $this->data['Propopdo']['traitementencours'] ) ? $this->data['Propopdo']['traitementencours'] : true;
+        echo $form->input( 'Propopdo.traitementencours', array( 'label' => 'Uniquement les PDOs possédant un traitement avec une date d\'échéance', 'type' => 'checkbox'/*, 'checked' => $valueTraitementEncours*/ ) );
+    ?>
+
 	<?php
 
 		///Formulaire de recherche pour les PDOs
@@ -59,40 +64,23 @@
 				'Propopdo.datereceptionpdo' => array( 'label' => __d( 'propopdo', 'Propopdo.datereceptionpdo', true ), 'type' => 'date', 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 1, 'maxYear' => date( 'Y' ) + 1 ),
 				'Propopdo.originepdo_id' => array( 'label' => __d( 'propopdo', 'Propopdo.originepdo_id', true ), 'type' => 'select', 'options' => $originepdo, 'empty' => true ),
 				'Propopdo.etatdossierpdo' => array( 'label' => __d( 'propopdo', 'Propopdo.etatdossierpdo', true ), 'type' => 'select', 'options' => $options['etatdossierpdo'], 'empty' => true ),
+                'Decisionpropopdo.decisionpdo_id' => array( 'label' => __d( 'decisionpropopdo', 'Decisionpropopdo.decisionpdo_id', true ), 'type' => 'select', 'options' => $decisionpdo, 'empty' => true ),
 				'Propopdo.user_id' => array( 'label' => __d( 'propopdo', 'Propopdo.user_id', true ), 'type' => 'select', 'options' => $gestionnaire, 'empty' => true ),
 				'Propopdo.motifpdo' => array( 'label' => __d( 'propopdo', 'Propopdo.motifpdo', true ), 'type' => 'select', 'options' => $motifpdo, 'empty' => true  ),
 				'Personne.nom' => array( 'label' => __d( 'personne', 'Personne.nom', true ), 'type' => 'text' ),
 				'Personne.prenom' => array( 'label' => __d( 'personne', 'Personne.prenom', true ), 'type' => 'text' ),
 				'Personne.nir' => array( 'label' => __d( 'personne', 'Personne.nir', true ), 'type' => 'text', 'maxlength' => 15 ),
 				'Dossier.matricule' => array( 'label' => __d( 'dossier', 'Dossier.matricule', true ), 'type' => 'text', 'maxlength' => 15 ),
-				'Dossier.numdemrsa' => array( 'label' => __d( 'dossier', 'Dossier.numdemrsa', true ), 'type' => 'text', 'maxlength' => 15 ),
-				'Decisionpropopdo.decisionpdo_id' => array( 'label' => __d( 'decisionpropopdo', 'Decisionpropopdo.decisionpdo_id', true ), 'type' => 'select', 'options' => $decisionpdo, 'empty' => true )
+				'Dossier.numdemrsa' => array( 'label' => __d( 'dossier', 'Dossier.numdemrsa', true ), 'type' => 'text', 'maxlength' => 15 )
 			),
 			array(
                 'form' => false,
 				'options' => $options
 			)
 		);
-// echo $default->search(
-//             array(
-//                 'Propopdo.datereceptionpdo' => array( 'label' => __d( 'propopdo', 'Propopdo.datereceptionpdo', true ), 'type' => 'date', 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 1, 'maxYear' => date( 'Y' ) + 1 ),
-//                 'Propopdo.originepdo_id' => array( 'label' => __d( 'propopdo', 'Propopdo.originepdo_id', true ), 'type' => 'select', 'options' => $originepdo, 'empty' => true ),
-//                 'Propopdo.etatdossierpdo' => array( 'label' => __d( 'propopdo', 'Propopdo.etatdossierpdo', true ), 'type' => 'select', 'options' => $options['etatdossierpdo'], 'empty' => true ),
-//                 'Propopdo.user_id' => array( 'label' => __d( 'propopdo', 'Propopdo.user_id', true ), 'type' => 'select', 'options' => $gestionnaire, 'empty' => true ),
-//                 'Propopdo.motifpdo' => array( 'label' => __d( 'propopdo', 'Propopdo.motifpdo', true ), 'type' => 'select', 'options' => $motifpdo, 'empty' => true  ),
-//                 'Personne.nom' => array( 'label' => __d( 'personne', 'Personne.nom', true ), 'type' => 'text' ),
-//                 'Personne.prenom' => array( 'label' => __d( 'personne', 'Personne.prenom', true ), 'type' => 'text' ),
-//                 'Personne.nir' => array( 'label' => __d( 'personne', 'Personne.nir', true ), 'type' => 'text', 'maxlength' => 15 ),
-//                 'Dossier.matricule' => array( 'label' => __d( 'dossier', 'Dossier.matricule', true ), 'type' => 'text', 'maxlength' => 15 ),
-//                 'Dossier.numdemrsa' => array( 'label' => __d( 'dossier', 'Dossier.numdemrsa', true ), 'type' => 'text', 'maxlength' => 15 ),
-//                 'Decisionpropopdo.decisionpdo_id' => array( 'label' => __d( 'decisionpropopdo', 'Decisionpropopdo.decisionpdo_id', true ), 'type' => 'select', 'options' => $decisionpdo, 'empty' => true )
-//             ),
-//             array(
-//                 'form' => false,
-//                 'options' => $options
-//             )
-//         );
+
 	?>
+
 	<?php
         $valueDossierDernier = isset( $this->data['Dossier']['dernier'] ) ? $this->data['Dossier']['dernier'] : true;
         echo $form->input( 'Dossier.dernier', array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueDossierDernier ) );

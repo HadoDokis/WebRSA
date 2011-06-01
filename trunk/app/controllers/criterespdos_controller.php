@@ -84,7 +84,7 @@
 					$this->paginate = $this->_qdAddFilters( $this->paginate );
 
 					$criterespdos = $this->paginate( 'Propopdo' );
-
+// debug($criterespdos);
 					$this->Dossier->commit();
 
 					$this->set( 'criterespdos', $criterespdos );
