@@ -300,14 +300,14 @@ UPDATE regroupementseps SET nbmaxmembre = 0 WHERE nbmaxmembre IS NULL;
 ALTER TABLE regroupementseps ALTER COLUMN nbmaxmembre SET DEFAULT 0;
 ALTER TABLE regroupementseps ALTER COLUMN nbmaxmembre SET NOT NULL;
 
-SELECT add_missing_table_field ('public', 'fonctionsmembreseps', 'nbpresenceobligatoire', 'INTEGER');
-UPDATE fonctionsmembreseps SET nbpresenceobligatoire = 0 WHERE nbpresenceobligatoire IS NULL;
-ALTER TABLE fonctionsmembreseps ALTER COLUMN nbpresenceobligatoire SET DEFAULT 0;
-ALTER TABLE fonctionsmembreseps ALTER COLUMN nbpresenceobligatoire SET NOT NULL;
-SELECT add_missing_table_field ('public', 'fonctionsmembreseps', 'presenceprioritaire', 'TYPE_BOOLEANNUMBER');
-UPDATE fonctionsmembreseps SET presenceprioritaire = '0' WHERE presenceprioritaire IS NULL;
-ALTER TABLE fonctionsmembreseps ALTER COLUMN presenceprioritaire SET DEFAULT '0'::TYPE_BOOLEANNUMBER;
-ALTER TABLE fonctionsmembreseps ALTER COLUMN presenceprioritaire SET NOT NULL;
+-- SELECT add_missing_table_field ('public', 'fonctionsmembreseps', 'nbpresenceobligatoire', 'INTEGER');
+-- UPDATE fonctionsmembreseps SET nbpresenceobligatoire = 0 WHERE nbpresenceobligatoire IS NULL;
+-- ALTER TABLE fonctionsmembreseps ALTER COLUMN nbpresenceobligatoire SET DEFAULT 0;
+-- ALTER TABLE fonctionsmembreseps ALTER COLUMN nbpresenceobligatoire SET NOT NULL;
+-- SELECT add_missing_table_field ('public', 'fonctionsmembreseps', 'presenceprioritaire', 'TYPE_BOOLEANNUMBER');
+-- UPDATE fonctionsmembreseps SET presenceprioritaire = '0' WHERE presenceprioritaire IS NULL;
+-- ALTER TABLE fonctionsmembreseps ALTER COLUMN presenceprioritaire SET DEFAULT '0'::TYPE_BOOLEANNUMBER;
+-- ALTER TABLE fonctionsmembreseps ALTER COLUMN presenceprioritaire SET NOT NULL;
 
 -- *****************************************************************************
 COMMIT;
