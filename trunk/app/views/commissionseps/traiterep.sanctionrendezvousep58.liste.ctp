@@ -25,8 +25,10 @@ echo '<table><thead>
 				$locale->date( __( 'Locale->date', true ), $dossierep['Dossierep']['created'] ),
 				Set::classicExtract( $typesrdv, $dossierep['Sanctionrendezvousep58']['Rendezvous']['typerdv_id'], true),
 
-				array( $form->input( "Decisionsanctionrendezvousep58.{$i}.decision", array( 'type' => 'select', 'label' => false, 'empty' => true, 'options' => @$options['Decisionsanctionrendezvousep58']['decision'], 'value' => @$dossierep['Sanctionep58']['Decisionsanctionrendezvousep58'][0]['decision'] ) ), array( 'id' => "Decisionsanctionrendezvousep58{$i}ColumnDecision" ) ),
-// 				$form->input( "Decisionsanctionrendezvousep58.{$i}.raisonnonpassage", array( 'label' => false, 'type' => 'textarea' ) ),
+				array(
+					$form->input( "Decisionsanctionrendezvousep58.{$i}.decision", array( 'type' => 'select', 'label' => false, 'empty' => true, 'options' => @$options['Decisionsanctionrendezvousep58']['decision'], 'value' => @$dossierep['Sanctionep58']['Decisionsanctionrendezvousep58'][0]['decision'] ) ),
+					array( 'id' => "Decisionsanctionrendezvousep58{$i}ColumnDecision", 'class' => ( !empty( $this->validationErrors['Decisionsanctionrendezvousep58'][$i]['decision'] ) ? 'error' : '' ) )
+				),
 				$form->input( "Decisionsanctionrendezvousep58.{$i}.commentaire", array( 'label' => false, 'type' => 'textarea' ) ).
 				$hiddenFields
 			),

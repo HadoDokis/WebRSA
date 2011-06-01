@@ -502,12 +502,6 @@
 				return true;
 			}
 			else {
-				foreach( array_keys( $themeData ) as $key ) {
-					if ( empty( $themeData[$key]['Decisionsanctionep58']['decision'] ) ) {
-						unset( $themeData[$key] );
-					}
-				}
-
 				$success = $this->Dossierep->Passagecommissionep->Decisionsanctionep58->saveAll( $themeData, array( 'atomic' => false ) );
 				$this->Dossierep->Passagecommissionep->updateAll(
 					array( 'Passagecommissionep.etatdossierep' => '\'decision'.$niveauDecision.'\'' ),

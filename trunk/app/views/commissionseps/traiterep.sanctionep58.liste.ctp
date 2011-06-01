@@ -25,8 +25,14 @@ echo '<table><thead>
 				$locale->date( __( 'Locale->date', true ), $dossierep['Dossierep']['created'] ),
 				__d( 'sanctionep58', $dossierep['Sanctionep58']['origine'], true),
 
-				array( $form->input( "Decisionsanctionep58.{$i}.decision", array( 'type' => 'select', 'label' => false, 'empty' => true, 'options' => @$options['Decisionsanctionep58']['decision'] ) ), array( 'id' => "Decisionsanctionep58{$i}DecisionColumn" ) ),
-				$form->input( "Decisionsanctionep58.{$i}.listesanctionep58_id", array( 'type' => 'select', 'label' => false, 'options' => $listesanctionseps58 ) ),
+				array(
+					$form->input( "Decisionsanctionep58.{$i}.decision", array( 'type' => 'select', 'label' => false, 'empty' => true, 'options' => @$options['Decisionsanctionep58']['decision'] ) ),
+					array( 'id' => "Decisionsanctionep58{$i}DecisionColumn", 'class' => ( !empty( $this->validationErrors['Decisionsanctionep58'][$i]['decision'] ) ? 'error' : '' ) )
+				),
+				array(
+					$form->input( "Decisionsanctionep58.{$i}.listesanctionep58_id", array( 'type' => 'select', 'label' => false, 'options' => $listesanctionseps58 ) ),
+					( !empty( $this->validationErrors['Decisionsanctionep58'][$i]['listesanctionep58_id'] ) ? array( 'class' => 'error' ) : array() )
+				),
 // 				$form->input( "Decisionsanctionep58.{$i}.raisonnonpassage", array( 'label' => false, 'type' => 'textarea', 'empty' => true ) ),
 				$form->input( "Decisionsanctionep58.{$i}.commentaire", array( 'label' => false, 'type' => 'textarea' ) ).
 				$hiddenFields

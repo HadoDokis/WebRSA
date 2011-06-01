@@ -260,7 +260,8 @@
 
 			foreach( $this->themesTraites( $commissionep_id ) as $theme => $decision ) {
 				$model = Inflector::classify( $theme );
-				if( isset( $data[$model] ) ) { // FIXME: && $data['Decision..] ?
+				$modeleDecision = Inflector::classify( "decision{$theme}" );
+				if( isset( $data[$model] ) || isset( $data[$modeleDecision] ) ) { // FIXME: && $data['Decision..] ?
 					$success = $this->Passagecommissionep->Dossierep->{$model}->saveDecisions( $data, $niveauDecision ) && $success;
 				}
 			}
