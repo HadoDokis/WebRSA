@@ -19,6 +19,20 @@
 
             $conditions = array();
 
+
+            foreach( array( 'nom', 'prenom', 'nomnai', 'nir' ) as $criterePersonne ) {
+                if( isset( $criteresbilansparcours66['Personne'][$criterePersonne] ) && !empty( $criteresbilansparcours66['Personne'][$criterePersonne] ) ) {
+                    $conditions[] = 'UPPER(Personne.'.$criterePersonne.') LIKE \''.$this->wildcard( strtoupper( replace_accents( $criteresbilansparcours66['Personne'][$criterePersonne] ) ) ).'\'';
+                }
+            }
+
+            foreach( array( 'numdemrsa', 'matricule' ) as $critereDossier ) {
+                if( isset( $criteresbilansparcours66['Dossier'][$critereDossier] ) && !empty( $criteresbilansparcours66['Dossier'][$critereDossier] ) ) {
+                    $conditions[] = 'Dossier.'.$critereDossier.' ILIKE \''.$this->wildcard( $criteresbilansparcours66['Dossier'][$critereDossier] ).'\'';
+                }
+            }
+
+
             if ( isset($criteresbilansparcours66['Bilanparcours66']['choixparcours']) && !empty($criteresbilansparcours66['Bilanparcours66']['choixparcours']) ) {
                 $conditions[] = array('Bilanparcours66.choixparcours'=>$criteresbilansparcours66['Bilanparcours66']['choixparcours']);
             }
