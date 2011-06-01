@@ -54,9 +54,15 @@ msgstr "Prénom du contact"
 msgid "Contactpartenaire.numtel"
 msgstr "Numéro de téléphone du contact"
 
+msgid "Contactpartenaire.numfax"
+msgstr "Numéro de fax"
+
 msgid "Contactpartenaire.email"
 msgstr "Email du contact"
 
 msgid "Contactpartenaire.partenaire_id"
 msgstr "Partenaire lié"
+
+msgid "Contactpartenaire.nom_candidat"
+msgstr "Nom du contact"
 ###############################################################################

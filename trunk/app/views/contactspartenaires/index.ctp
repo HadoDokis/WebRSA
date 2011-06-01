@@ -12,10 +12,10 @@
             'Contactpartenaire.qual' => array( 'options' => $qual ),
             'Contactpartenaire.nom',
             'Contactpartenaire.prenom',
-            'Partenaire.libstruc',
-        	'Partenaire.codepartenaire',
             'Contactpartenaire.numtel',
-            'Contactpartenaire.email'
+            'Contactpartenaire.numfax',
+            'Contactpartenaire.email',
+            'Partenaire.libstruc'
         ),
         array(
             'cohorte' => false,

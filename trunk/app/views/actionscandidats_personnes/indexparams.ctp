@@ -25,7 +25,8 @@
                         h( 'Actions d\'insertion pour fiches de '.$typefiche ),
                         $xhtml->viewLink(
                             'Voir la table',
-                            array( 'controller' => 'actionscandidats', 'action' => 'index' )
+                            array( 'controller' => 'actionscandidats', 'action' => 'index' ),
+                            ( ( $compteurs['Contactpartenaire'] > 0 ) && ( $compteurs['Partenaire'] > 0 ) )
                         )
                     ),
                     array( 'class' => 'odd' ),
@@ -36,7 +37,8 @@
                         h( 'Contacts des partenaires' ),
                         $xhtml->viewLink(
                             'Voir la table',
-                            array( 'controller' => 'contactspartenaires', 'action' => 'index' )
+                            array( 'controller' => 'contactspartenaires', 'action' => 'index' ),
+                            ( $compteurs['Partenaire'] > 0 )
                         )
                     ),
                     array( 'class' => 'odd' ),
@@ -53,17 +55,17 @@
                     array( 'class' => 'odd' ),
                     array( 'class' => 'even' )
                 );
-                echo $xhtml->tableCells(
-                    array(
-                        h( 'Types d\'actions par partenaires' ),
-                        $xhtml->viewLink(
-                            'Voir la table',
-                            array( 'controller' => 'actionscandidats_partenaires', 'action' => 'index' )
-                        )
-                    ),
-                    array( 'class' => 'odd' ),
-                    array( 'class' => 'even' )
-                );
+//                 echo $xhtml->tableCells(
+//                     array(
+//                         h( 'Types d\'actions par partenaires' ),
+//                         $xhtml->viewLink(
+//                             'Voir la table',
+//                             array( 'controller' => 'actionscandidats_partenaires', 'action' => 'index' )
+//                         )
+//                     ),
+//                     array( 'class' => 'odd' ),
+//                     array( 'class' => 'even' )
+//                 );
                 echo $xhtml->tableCells(
                     array(
                         h( 'Motifs de sortie' ),

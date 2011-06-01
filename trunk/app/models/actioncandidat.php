@@ -24,6 +24,17 @@
 			)
 		);
 
+        public $belongsTo = array(
+            'Contactpartenaire' => array(
+                'className' => 'Contactpartenaire',
+                'foreignKey' => 'contactpartenaire_id',
+                'conditions' => '',
+                'fields' => '',
+                'order' => ''
+            )
+        );
+
+
 
 		public $hasAndBelongsToMany = array(
 			'Partenaire' => array(

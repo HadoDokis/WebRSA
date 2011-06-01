@@ -3,6 +3,8 @@
 	{
 		public $name = 'Contactpartenaire';
 
+		public $displayField = 'nom_candidat';
+
 		public $actsAs = array(
 			'ValidateTranslate',
 		);
@@ -42,7 +44,30 @@
 				'order' => ''
 			)
 		);
+        public $hasMany = array(
+            'Actioncandidat' => array(
+                'className' => 'Actioncandidat',
+                'foreignKey' => 'contactpartenaire_id',
+                'dependent' => true,
+                'conditions' => '',
+                'fields' => '',
+                'order' => '',
+                'limit' => '',
+                'offset' => '',
+                'exclusive' => '',
+                'finderQuery' => '',
+                'counterQuery' => ''
+            )
+        );
 
+
+
+        public $virtualFields = array(
+            'nom_candidat' => array(
+                'type'      => 'string',
+                'postgres'  => '( "%s"."qual" || \' \' || "%s"."nom" || \' \' || "%s"."prenom" )'
+            )
+        );
 //		public $hasAndBelongsToMany = array(
 //			'Partenaire' => array(
 //				'className' => 'Partenaire',

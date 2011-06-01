@@ -2,14 +2,12 @@
 
     class ActionscandidatsController extends AppController 
     {
-        var $name = 'Actionscandidats';
-        var $uses = array( 'Actioncandidat', 'ActioncandidatPersonne', 'ActioncandidatPartenaire',
-        	'Option', 'Personne' ,'Referent'
-         );
-        var $helpers = array( 'Xform', 'Default', 'Theme' );
-        var $components = array( 'Default' );
+        public $name = 'Actionscandidats';
+        public $uses = array( 'Actioncandidat', 'Option' );
+        public $helpers = array( 'Xform', 'Default', 'Theme' );
+        public $components = array( 'Default' );
         
-		var $commeDroit = array(
+		public $commeDroit = array(
 			'view' => 'Actionscandidats:index',
 			'add' => 'Actionscandidats:edit'
 		);
@@ -18,7 +16,7 @@
         *
         */
 
-        function beforeFilter() {
+        public function beforeFilter() {
             $return = parent::beforeFilter();
             $options = array();
             $this->set( 'typevoie', $this->Option->typevoie() );
@@ -30,11 +28,17 @@
        	protected function _setOptions() {
 			$options = $this->Actioncandidat->enums();
     		if( $this->action != 'index' ) {
-				$options['Actioncandidat']['referent_id'] = $this->Referent->find('list');
+				$options['Actioncandidat']['referent_id'] = $this->Actioncandidat->ActioncandidatPersonne->Referent->find('list');
 				$options['Zonegeographique'] = $this->Actioncandidat->Zonegeographique->find( 'list' );
-				$this->loadModel( 'Canton' );
-                $this->set( 'cantons', $this->Canton->selectList() );
+                $this->set( 'cantons', ClassRegistry::init( 'Canton' )->selectList() );
 			}
+			
+            foreach( array( 'Contactpartenaire' ) as $linkedModel ) {
+                $field = Inflector::singularize( Inflector::tableize( $linkedModel ) ).'_id';
+                $options = Set::insert( $options, "{$this->modelClass}.{$field}", $this->{$this->modelClass}->{$linkedModel}->find( 'list' ) );
+            }
+			
+			
 			$this->set( compact( 'options' ) );
 		}
 
@@ -45,6 +49,18 @@
         */
 
         public function index() {
+
+            $this->Actioncandidat->forceVirtualFields = true;
+            $this->Actioncandidat->recursive = 0;
+
+            $this->paginate = array(
+                'contain' => array(
+                    'Contactpartenaire' => array(
+                        'Partenaire'
+                    )
+                )
+            );
+
             $this->set(
                 Inflector::tableize( $this->modelClass ),
                 $this->paginate( $this->modelClass )
@@ -74,7 +90,7 @@
         *
         */
 
-        function _add_edit(){
+        protected function _add_edit(){
         	$this->_setOptions();
         	
             $args = func_get_args();

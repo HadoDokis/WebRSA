@@ -84,6 +84,11 @@
 			if( isset( $this->params['form']['Cancel'] ) ) {
 				$this->redirect( array( 'controller' => 'parametrages', 'action' => 'index' ) );
 			}
+			$compteurs = array(
+                'Partenaire' => ClassRegistry::init( 'Partenaire' )->find( 'count' ),
+                'Contactpartenaire' => ClassRegistry::init( 'Contactpartenaire' )->find( 'count' )
+            );
+            $this->set( compact( 'compteurs' ) );
 		}
 
 		/**
@@ -106,7 +111,9 @@
 					),
 					'contain' => array(
                         'Actioncandidat' => array(
-                            'Partenaire'
+                            'Contactpartenaire' => array(
+                                'Partenaire'
+                            )
                         ),
                         'Referent'
 					)
@@ -114,8 +121,8 @@
 			);
 			$this->paginate = array(
 				$this->modelClass => array(
-					'limit' => 5,
-					'recursive' => 2
+					'limit' => 5/*,
+					'recursive' => 2*/
 				)
 			);
 
@@ -127,6 +134,7 @@
 			$this->set( $varname, $items );
 			$this->_setOptions();
 			$this->set( 'personne_id', $personne_id );
+// 			$this->render( $this->action, null, '/actionscandidats_personnes/index_'.Configure::read( 'nom_form_ci_cg' ) );
 
 		}
 
@@ -141,14 +149,29 @@
 			$dataActioncandidat_id = Set::extract( $this->data, 'ActioncandidatPersonne.actioncandidat_id' );
 			$actioncandidat_id = ( empty( $actioncandidat_id ) && !empty( $dataActioncandidat_id ) ? $dataActioncandidat_id : $actioncandidat_id );
 
-			$actioncandidatPartenaire = $this->ActioncandidatPersonne->Actioncandidat->ActioncandidatPartenaire->findbyActioncandidatId( $actioncandidat_id, null, null, 0 );			
-			if( ($actioncandidatPartenaire['Actioncandidat']['correspondantaction'] == 1) && !empty($actioncandidatPartenaire['Actioncandidat']['referent_id']))
-			{
-				$this->ActioncandidatPersonne->Personne->Referent->recursive = -1;
-				$referent = $this->ActioncandidatPersonne->Personne->Referent->read(null, $actioncandidatPartenaire['Actioncandidat']['referent_id']);
+            if( !empty( $actioncandidat_id ) ) {
+                $this->ActioncandidatPersonne->Actioncandidat->forceVirtualFields = true;
+                $actioncandidat = $this->ActioncandidatPersonne->Actioncandidat->find(
+                    'first',
+                    array(
+                        'conditions' => array(
+                            'Actioncandidat.id' => $actioncandidat_id
+                        ),
+                        'contain' => array(
+                            'Contactpartenaire' => array(
+                                'Partenaire'
+                            )
+                        )
+                    )
+                );
+
+                if( ($actioncandidat['Actioncandidat']['correspondantaction'] == 1) && !empty($actioncandidat['Actioncandidat']['referent_id']))
+                {
+                    $this->ActioncandidatPersonne->Personne->Referent->recursive = -1;
+                    $referent = $this->ActioncandidatPersonne->Personne->Referent->read(null, $actioncandidat['Actioncandidat']['referent_id']);
+                }
+                $this->set( compact( 'actioncandidat', 'referent' ) );
 			}
-			$this->set( compact( 'actioncandidatPartenaire', 'referent' ) );
-			
 			$this->render( 'ajaxpart', 'ajax' );
 		}
 
@@ -499,6 +522,26 @@
 		{
 			$this->Default->delete( $id );
 		}
+
+
+        /**
+        *   Fonction pour annuler le CER pour le CG66
+        */
+
+        public function cancel( $id ) {
+            $actioncandidat = $this->{$this->modelClass}->findById( $id, null, null, -1 );
+            $personne_id = Set::classicExtract( $actioncandidat, 'ActioncandidatPersonne.personne_id' );
+
+            $this->{$this->modelClass}->updateAll(
+                array( 'ActioncandidatPersonne.positionfiche' => '\'annule\'' ),
+                array(
+                    '"ActioncandidatPersonne"."id"' => $id
+                )
+            );
+            $this->redirect( array( 'action' => 'index', $personne_id ) );
+        }
+
+
 
 		public function view( $id )
 		{
