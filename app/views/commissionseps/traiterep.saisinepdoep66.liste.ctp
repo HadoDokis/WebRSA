@@ -30,8 +30,14 @@ echo '<table><thead>
 				implode(' / ', $listeSituationPdo),
 				$dossierep['Saisinepdoep66']['Traitementpdo']['Descriptionpdo']['name'],
 
-				array( $form->input( "Decisionsaisinepdoep66.{$i}.decision", array( 'label' => false, 'options' => $options['Decisionsaisinepdoep66']['decision'], 'empty' => true ) ), array( 'id' => "Decisionsaisinepdoep66{$i}DecisionColumn" ) ),
-				$form->input( "Decisionsaisinepdoep66.{$i}.decisionpdo_id", array( 'label' => false, 'options' => @$options['Decisionsaisinepdoep66']['decisionpdo_id'], 'empty' => true ) ),
+				array(
+					$form->input( "Decisionsaisinepdoep66.{$i}.decision", array( 'label' => false, 'options' => $options['Decisionsaisinepdoep66']['decision'], 'empty' => true ) ),
+					array( 'id' => "Decisionsaisinepdoep66{$i}DecisionColumn", 'class' => ( !empty( $this->validationErrors['Decisionsaisinepdoep66'][$i]['decision'] ) ? 'error' : '' ) )
+				),
+				array(
+					$form->input( "Decisionsaisinepdoep66.{$i}.decisionpdo_id", array( 'label' => false, 'options' => @$options['Decisionsaisinepdoep66']['decisionpdo_id'], 'empty' => true ) ),
+					( !empty( $this->validationErrors['Decisionsaisinepdoep66'][$i]['decisionpdo_id'] ) ? array( 'class' => 'error' ) : array() )
+				),
 // 				array( $form->input( "Decisionsaisinepdoep66.{$i}.raisonnonpassage", array( 'label' => false, 'type' => 'textarea' ) ), array( 'colspan' => 2 ) ),
 				$form->input( "Decisionsaisinepdoep66.{$i}.commentaire", array( 'label' => false, 'type' => 'textarea' ) ).
 				$hiddenFields
