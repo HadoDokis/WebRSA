@@ -86,6 +86,7 @@
         <?php
             echo '<table><thead>';
                 echo '<tr>
+                    <th>'.$xpaginator->sort( __d( 'dossier', 'Dossier.numdemrsa', true ), 'Dossier.numdemrsa' ).'</th>
                     <th>'.$xpaginator->sort( __d( 'bilanparcours66', 'Bilanparcours66.datebilan', true ), 'Bilanparcours66.datebilan' ).'</th>
                     <th>'.$xpaginator->sort( __d( 'personne', 'Personne.nom_complet', true ), 'Personne.nom_complet' ).'</th>
                     <th>'.$xpaginator->sort( __d( 'structurereferente', 'Structurereferente.lib_struc', true ), 'Structurereferente.lib_struc' ).'</th>
@@ -118,8 +119,9 @@
                 else {
                     $motif = Set::classicExtract( $options['choixparcours'], $bilanparcour66['Bilanparcours66']['choixparcours'] );
                 }
-
+// debug($bilanparcour66);
                 echo '<tr>
+                    <td>'.h( $bilanparcour66['Dossier']['numdemrsa'] ).'</td>
                     <td>'.h( $locale->date( 'Date::short', $bilanparcour66['Bilanparcours66']['datebilan'] ) ).'</td>
                     <td>'.h( $bilanparcour66['Personne']['nom_complet'] ).'</td>
                     <td>'.h( $bilanparcour66['Structurereferente']['lib_struc'] ).'</td>
