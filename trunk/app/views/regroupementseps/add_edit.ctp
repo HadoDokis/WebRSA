@@ -35,6 +35,8 @@
 				'Regroupementep.nonorientationproep93' => array( 'type' => 'hidden', 'value' => 'decisioncg' ),
 				'Regroupementep.signalementep93' => array( 'type' => 'hidden', 'value' => 'decisioncg' ),
 				'Regroupementep.contratcomplexeep93' => array( 'type' => 'hidden', 'value' => 'decisioncg' ),
+				'Regroupementep.nbminmembre' => array( 'type' => 'hidden', 'value' => 0 ),
+				'Regroupementep.nbmaxmembre' => array( 'type' => 'hidden', 'value' => 0 ),
 			)
 		);
 	}
@@ -46,6 +48,8 @@
 				'Regroupementep.regressionorientationep58' => array( 'type' => 'hidden', 'value' => 'decisionep' ),
 				'Regroupementep.sanctionep58' => array( 'type' => 'hidden', 'value' => 'decisionep' ),
 				'Regroupementep.sanctionrendezvousep58' => array( 'type' => 'hidden', 'value' => 'decisionep' ),
+				'Regroupementep.nbminmembre' => array( 'type' => 'hidden', 'value' => 0 ),
+				'Regroupementep.nbmaxmembre' => array( 'type' => 'hidden', 'value' => 0 ),
 			)
 		);
 	}
@@ -69,6 +73,26 @@
 			),
 			array(
 				'label'=>'Thématiques 66'
+			)
+		);
+
+		echo $xhtml->tag(
+			'fieldset',
+			$xhtml->tag(
+				'legend',
+				'Présence des membres'
+			).
+			$default->subform(
+				array(
+					'Regroupementep.nbminmembre' => array( 'label' => 'Nombre minimum de membre pour une commission (0 si pas de minimum)', 'required' => true ),
+					'Regroupementep.nbmaxmembre' => array( 'label' => 'Nombre maximum de membre pour une commission (0 si pas de maximum)', 'required' => true )
+				),
+				array(
+					'options' => $options
+				)
+			),
+			array(
+				'label'=>'Présence des membres'
 			)
 		);
 	}
