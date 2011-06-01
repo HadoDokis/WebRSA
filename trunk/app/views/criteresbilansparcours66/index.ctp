@@ -35,6 +35,11 @@
                 <?php
                     echo $default2->subform(
                         array(
+                            'Personne.nom' => array( 'type' => 'text' ),
+                            'Personne.nomnai' => array( 'type' => 'text' ),
+                            'Personne.prenom' => array( 'type' => 'text' ),
+                            'Dossier.numdemrsa' => array( 'type' => 'text' ),
+                            'Dossier.matricule' => array( 'type' => 'text' ),
                             'Bilanparcours66.proposition' => array( 'type' => 'select', 'options' => $options['proposition'] ),
                             'Bilanparcours66.choixparcours' => array( 'type' => 'select', 'options' => $options['choixparcours'] ),
                             'Bilanparcours66.examenaudition' => array( 'type' => 'select', 'options' => $options['examenaudition'] ),
