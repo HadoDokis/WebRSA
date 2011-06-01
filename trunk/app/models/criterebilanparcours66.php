@@ -196,6 +196,7 @@
                     'Referent.prenom',
                     'Structurereferente.lib_struc',
                     'Dossier.matricule',
+                    'Dossier.numdemrsa',
                     'Dossierep.themeep'
                 ),
                 'joins' => $joins,
