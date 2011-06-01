@@ -280,6 +280,13 @@ DROP TABLE decisionsregressionsorientationseps93;
 DROP TABLE nonorientationsproseps66;
 DROP TABLE regressionsorientationseps93;
 
+-- *******************************************************************************************************
+-- 20110601: suppression de la règle not null car ajout de la règle de validation dans le modèle
+-- *******************************************************************************************************
+
+ALTER TABLE actionscandidats ALTER COLUMN nbpostedispo DROP NOT NULL;
+ALTER TABLE actionscandidats ALTER COLUMN nbpostedispo SET DEFAULT NULL;
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
