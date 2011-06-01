@@ -42,27 +42,36 @@
 
 <script type="text/javascript">
 	makeTabbed( 'tabbedWrapper', 2 );
-	
-	function changeColspanRaisonNonPassage( idColumnToChangeColspan, decision, idsNonRaisonpassage, idRaisonpassage ) {
-		var colspan = $( idColumnToChangeColspan ).readAttribute( "colspan" );
-		if ( decision == 'reporte' || decision == 'annule' ) {
-			$( idColumnToChangeColspan ).writeAttribute( "colspan", parseInt( colspan ) - 1 );
-		}
-		afficheRaisonpassage( decision, idsNonRaisonpassage, idRaisonpassage );
-	}
 
-	function afficheRaisonpassage( decision, idsNonRaisonpassage, idRaisonpassage ) {
+	function changeColspanAnnuleReporte( idColumnToChangeColspan, decision, colspanMax, idsNonRaisonpassage ) {
 		if ( decision == 'reporte' || decision == 'annule' ) {
+			$( idColumnToChangeColspan ).writeAttribute( "colspan", colspanMax );
 			idsNonRaisonpassage.each( function ( id ) {
 				$( id ).hide();
 			});
-			$( idRaisonpassage ).show();
-		}
-		else {
-			idsNonRaisonpassage.each( function ( id ) {
-				$( id ).show();
-			});
-			$( idRaisonpassage ).hide();
 		}
 	}
+	
+// 	function changeColspanRaisonNonPassage( idColumnToChangeColspan, decision, idsNonRaisonpassage, idRaisonpassage ) {
+// 		var colspan = $( idColumnToChangeColspan ).readAttribute( "colspan" );
+// 		if ( decision == 'reporte' || decision == 'annule' ) {
+// 			$( idColumnToChangeColspan ).writeAttribute( "colspan", parseInt( colspan ) - 1 );
+// 		}
+// 		afficheRaisonpassage( decision, idsNonRaisonpassage, idRaisonpassage );
+// 	}
+// 
+// 	function afficheRaisonpassage( decision, idsNonRaisonpassage, idRaisonpassage ) {
+// 		if ( decision == 'reporte' || decision == 'annule' ) {
+// 			idsNonRaisonpassage.each( function ( id ) {
+// 				$( id ).hide();
+// 			});
+// 			$( idRaisonpassage ).show();
+// 		}
+// 		else {
+// 			idsNonRaisonpassage.each( function ( id ) {
+// 				$( id ).show();
+// 			});
+// 			$( idRaisonpassage ).hide();
+// 		}
+// 	}
 </script>

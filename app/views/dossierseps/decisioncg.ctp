@@ -3,4 +3,16 @@
 <?php
 	$file = sprintf( 'decisioncg.%s.ctp', Inflector::underscore( $themeName ) );
 	require_once( $file );
+
+	echo $default->button(
+		'back',
+		array(
+			'controller' => 'commissionseps',
+			'action'     => 'traitercg',
+			$commissionep_id
+		),
+		array(
+			'id' => 'Back'
+		)
+	);
 ?>

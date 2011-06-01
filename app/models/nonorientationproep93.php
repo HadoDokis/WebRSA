@@ -132,7 +132,7 @@
 						$this->Orientstruct->create( $orientstruct );
 						$success = $this->Orientstruct->save() && $success;
 						$success = $this->Orientstruct->generatePdf( $this->Orientstruct->id, $dossierep['Nonorientationproep93']['user_id'] ) && $success;
-			}
+					}
 				}
 			}
 

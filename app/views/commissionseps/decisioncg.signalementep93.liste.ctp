@@ -13,7 +13,7 @@ echo '<table id="Decisionsignalementep93" class="tooltips"><thead>
 <th>Situation familiale</th>
 <th>Nombre d\'enfants</th>
 <th>Avis EP</th>
-<th colspan="3">Décision CG</th>
+<th colspan="2">Décision CG</th>
 <th>Observations</th>
 <th class="innerTableHeader noprint">Avis EP</th>
 </tr>
@@ -34,16 +34,9 @@ echo '<table id="Decisionsignalementep93" class="tooltips"><thead>
 				<tr>
 					<th>Observations de l'EP</th>
 					<td>".Set::classicExtract( $decisionep, "commentaire" )."</td>
-				</tr>";
-		
-		if ( $decisionep['decision'] == 'reporte' || $decisionep['decision'] == 'annule' ) {
-			$innerTable .= " <tr>
-				<th>Raison du non passage de l'EP</th>
-				<td>".Set::classicExtract( $decisionep, "raisonnonpassage" )."</td>
-			</tr>";
-		}
-		
-		$innerTable .= "</tbody></table>";
+				</tr>
+			</tbody>
+		</table>";
 
 		echo $xhtml->tableCells(
 			array(
@@ -69,12 +62,8 @@ echo '<table id="Decisionsignalementep93" class="tooltips"><thead>
 					)
 				),
 
-				$options['Decisionsignalementep93']['decisionpcg'][Set::classicExtract( $decisioncg, "decisionpcg" )],
-				array(
-					$options['Decisionsignalementep93']['decision'][Set::classicExtract( $decisionep, "decision" )],
-					array( 'id' => "Decisionsignalementep93{$i}ColumnDecision", 'colspan' => 2 )
-				),
-				array( Set::classicExtract( $decisioncg, "raisonnonpassage" ), array( 'id' => "Decisionsignalementep93{$i}Raisonnonpassage" ) ),
+				$options['Decisionsignalementep93']['decisionpcg'][Set::classicExtract( $decisioncg, "decisionpcg" )], array( $options['Decisionsignalementep93']['decision'][Set::classicExtract( $decisionep, "decision" )], array( 'id' => "Decisionsignalementep93{$i}ColumnDecision" ) ),
+// 				array( Set::classicExtract( $decisioncg, "raisonnonpassage" ), array( 'id' => "Decisionsignalementep93{$i}Raisonnonpassage" ) ),
 				Set::classicExtract( $decisioncg, "commentaire" ),
 				array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
 			),
@@ -88,7 +77,7 @@ echo '<table id="Decisionsignalementep93" class="tooltips"><thead>
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
 		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
-			changeColspanRaisonNonPassage( 'Decisionsignalementep93<?php echo $i;?>ColumnDecision', '<?php echo Set::classicExtract( $dossiers, "{$theme}.liste.{$i}.Passagecommissionep.0.Decisionsignalementep93.0.decision" );?>', [], 'Decisionsignalementep93<?php echo $i;?>Raisonnonpassage' );
+// 			changeColspanRaisonNonPassage( 'Decisionsignalementep93<?php echo $i;?>ColumnDecision', '<?php echo Set::classicExtract( $dossiers, "{$theme}.liste.{$i}.Passagecommissionep.0.Decisionsignalementep93.0.decision" );?>', [], 'Decisionsignalementep93<?php echo $i;?>Raisonnonpassage' );
 		<?php endfor;?>
 	});
 </script>
