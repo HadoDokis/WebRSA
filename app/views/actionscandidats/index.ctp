@@ -16,7 +16,9 @@
         	'Actioncandidat.ddaction',
         	'Actioncandidat.dfaction',
         	'Actioncandidat.nbpostedispo',
-        	'Actioncandidat.hasfichecandidature'
+        	'Actioncandidat.hasfichecandidature',
+        	'Contactpartenaire.Partenaire.libstruc',
+        	'Contactpartenaire.nom_candidat'
         ),
         array(
             'cohorte' => false,
@@ -28,7 +30,7 @@
             'options' => $options
         )
     );
-
+// debug($actionscandidats);
     echo $default->button(
         'back',
         array(

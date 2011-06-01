@@ -13,6 +13,7 @@
             'Contactpartenaire.nom' => array( 'required' => true ),
             'Contactpartenaire.prenom' => array( 'required' => true ),
             'Contactpartenaire.numtel',
+            'Contactpartenaire.numfax',
             'Contactpartenaire.email',
             'Contactpartenaire.partenaire_id' => array( 'type' => 'select', 'empty' => true, 'required' => true )
         ),

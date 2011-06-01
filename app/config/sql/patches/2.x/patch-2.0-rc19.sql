@@ -312,6 +312,21 @@ CREATE TABLE compositionsregroupementseps (
 );
 COMMENT ON TABLE compositionsregroupementseps IS 'Composition des EPs';
 
+
+TRUNCATE TABLE contactspartenaires CASCADE;
+SELECT add_missing_table_field ( 'public', 'actionscandidats', 'contactpartenaire_id', 'INTEGER' );
+ALTER TABLE actionscandidats ALTER COLUMN contactpartenaire_id SET NOT NULL;
+ALTER TABLE actionscandidats ADD CONSTRAINT actionscandidats_contactpartenaire_id_fk FOREIGN KEY (contactpartenaire_id) REFERENCES contactspartenaires(id);
+-- SELECT alter_table_drop_column_if_exists ( 'public', 'contactspartenaires', 'partenaire_id' );
+
+SELECT add_missing_table_field ( 'public', 'contactspartenaires', 'numfax', 'VARCHAR(10)' );
+
+ALTER TABLE actionscandidats_personnes ALTER COLUMN positionfiche TYPE TEXT;
+ALTER TABLE actionscandidats_personnes ALTER COLUMN positionfiche DROP DEFAULT;
+DROP TYPE IF EXISTS TYPE_POSITIONFICHE;
+CREATE TYPE TYPE_POSITIONFICHE AS ENUM ( 'enattente', 'encours', 'nonretenue', 'sortie', 'annule' );
+ALTER TABLE actionscandidats_personnes ALTER COLUMN positionfiche TYPE TYPE_POSITIONFICHE USING CAST(positionfiche AS TYPE_POSITIONFICHE);
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

@@ -96,8 +96,19 @@
     </script>
     <?php echo $form->button( 'Tout cocher', array( 'id' => 'toutCocher' ) );?>
     <?php echo $form->button( 'Tout décocher', array( 'id' => 'toutDecocher' ) );?>
-    <?php echo $form->input( 'Zonegeographique.Zonegeographique', array( 'label' => false, 'multiple' => 'checkbox' , 'options' => $options['Zonegeographique'] ) ); ?>
+    <?php echo $form->input( 'Zonegeographique.Zonegeographique', array( 'label' => false, 'multiple' => 'checkbox' , 'options' => $options['Zonegeographique'] ) );
+    ?>
 </fieldset>
+    <?php
+        echo $default->subform(
+            array(
+                'Actioncandidat.contactpartenaire_id' => array( 'type' => 'select', 'empty' => true, 'required' => true )
+            ),
+            array(
+                'options' => $options
+            )
+        );
+    ?>
 <?php
 
     echo $xform->end( __( 'Save', true ) );

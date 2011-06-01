@@ -96,3 +96,5 @@ msgstr "Sans fiche de candidature"
 msgid "ENUM::HASFICHECANDIDATURE::1"
 msgstr "Avec fiche de candidature"
 
+msgid "Actioncandidat.contactpartenaire_id"
+msgstr "Contact lié à cette action ?"

@@ -109,6 +109,9 @@ msgstr "En attente"
 msgid "ENUM::POSITIONFICHE::sortie"
 msgstr "Sortie"
 
+msgid "ENUM::POSITIONFICHE::annule"
+msgstr "Annulé"
+
 msgid "ENUM::POSITIONFICHE::encours"
 msgstr "En cours"
 
