@@ -114,18 +114,18 @@
                     'conditions' => array( 'Actioncandidat.id = ActioncandidatPersonne.actioncandidat_id' ),
                 ),
                 array(
-                    'table'      => 'actionscandidats_partenaires',
-                    'alias'      => 'ActioncandidatPartenaire',
+                    'table'      => 'contactspartenaires',
+                    'alias'      => 'Contactpartenaire',
                     'type'       => 'INNER',
                     'foreignKey' => false,
-                    'conditions' => array( 'ActioncandidatPartenaire.actioncandidat_id = Actioncandidat.id' ),
+                    'conditions' => array( 'Contactpartenaire.id = Actioncandidat.contactpartenaire_id' ),
                 ),
                 array(
                     'table'      => 'partenaires',
                     'alias'      => 'Partenaire',
                     'type'       => 'INNER',
                     'foreignKey' => false,
-                    'conditions' => array( 'ActioncandidatPartenaire.partenaire_id = Partenaire.id' ),
+                    'conditions' => array( 'Contactpartenaire.partenaire_id = Partenaire.id' ),
                 ),
                 array(
                     'table'      => 'personnes',
