@@ -200,10 +200,10 @@
 
 				switch( $etape ) {
 					case 'creationmodification':
-						$this->paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'cree', 'associe' );
+						$this->paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'cree', 'quorum', 'associe' );
 						break;
 					case 'attributiondossiers':
-						$this->paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'cree', 'associe' );
+						$this->paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'cree', 'quorum', 'associe' );
 						break;
 					case 'arbitrageep':
 						$this->paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'associe', 'valide', 'presence', 'decisionep', 'traiteep', 'decisioncg', 'traite' );
