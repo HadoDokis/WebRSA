@@ -453,11 +453,34 @@
 			$this->render( $this->action, null, 'add_edit_'.Configure::read( 'ActioncandidatPersonne.suffixe' ) );
 		}
 
+
+        /**
+        * Impression de la fiche de candidature
+        */
+
+        public function printFiche( $actioncandidat_personne_id ) {
+            $pdf = $this->ActioncandidatPersonne->getPdfFiche( $actioncandidat_personne_id );
+
+            if( $pdf ) {
+                $this->Gedooo->sendPdfContentToClient( $pdf, 'FicheCandidature' );
+            }
+            else {
+                $this->Session->setFlash( 'Impossible de générer la fiche de candidature', 'default', array( 'class' => 'error' ) );
+                $this->redirect( $this->referer() );
+            }
+        }
+
+
+
+
+
+
+
 		/**
 		*
 		*/
 
-		public function gedooo( $id = null ) {
+		/*public function gedooo( $id = null ) {
 			$qual = $this->Option->qual();
 			$typevoie = $this->Option->typevoie();
 			$mobilites = $this->ActioncandidatPersonne->Personne->Dsp->Detailnatmob->enumList( 'natmob' );
@@ -505,7 +528,8 @@
 				$contactpartenaire = $this->ActioncandidatPersonne->Actioncandidat->ActioncandidatPartenaire->Partenaire->Contactpartenaire->findByPartenaireId( $partenaire_id, null, null, -1 );
 				$actioncandidat_personne = Set::merge( $actioncandidat_personne, $contactpartenaire );
 			}
-
+debug($actioncandidat_personne);
+die();
 			///Traduction pour les données de la Personne/Contact/Partenaire/Référent
 			$actioncandidat_personne['Personne']['qual'] = Set::enum( Set::classicExtract( $actioncandidat_personne, 'Personne.qual' ), $qual );
 			$actioncandidat_personne['Referent']['qual'] = Set::enum( Set::classicExtract( $actioncandidat_personne, 'Referent.qual' ), $qual );
@@ -513,9 +537,11 @@
 			$actioncandidat_personne['Partenaire']['typevoie'] = Set::enum( Set::classicExtract( $actioncandidat_personne, 'Partenaire.typevoie' ), $typevoie );
 			$actioncandidat_personne['ActioncandidatPersonne']['naturemobile'] = Set::enum( Set::classicExtract( $actioncandidat_personne, 'ActioncandidatPersonne.naturemobile' ), $mobilites );
 
+// correspondantaction_nom_complet
+
 			$pdf = $this->ActioncandidatPersonne->ged( $actioncandidat_personne, 'Candidature/fichecandidature.odt' );
 			$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'actioncandidat_personne-%s.pdf', date( 'Y-m-d' ) ) );
-		}
+		}*/
 
 		
 		public function delete( $id )
