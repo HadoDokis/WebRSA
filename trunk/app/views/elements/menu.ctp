@@ -55,6 +55,20 @@
 									</ul>
 							</li>
 						<?php endif;?>
+						<?php if( ( Configure::read( 'Cg.departement' ) == 66 ) && ( $permissions->check( 'cohortesfichescandidature66', 'fichesenattente' ) || $permissions->check( 'cohortesfichescandidature66', 'fichesencours' ) ) ):?>
+                            <!-- AJOUT POUR LA GESTION DES Fiches de candidature 66 (Cohorte) -->
+                            <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
+                                <?php  echo $xhtml->link( 'Fiches de candidature ', '#' );?>
+                                    <ul>
+                                        <?php if( $permissions->check( 'cohortesfichescandidature66', 'fichesenattente' ) ): ?>
+                                            <li><?php echo $xhtml->link( 'Fiches en attente', array( 'controller' => 'cohortesfichescandidature66', 'action' => 'fichesenattente' ), array( 'title' => 'Fiches en attente' ) );?></li>
+                                        <?php endif; ?>
+                                        <?php if( $permissions->check( 'cohortesfichescandidature66', 'fichesencours' ) ): ?>
+                                            <li><?php echo $xhtml->link( 'Fiches en cours', array( 'controller' => 'cohortesfichescandidature66', 'action' => 'fichesencours' ), array( 'title' => 'Fiches en cours' ) );?></li>
+                                        <?php endif; ?>
+                                    </ul>
+                            </li>
+                        <?php endif;?>
 						<?php if( $permissions->check( 'cohortes', 'nouvelles' ) || $permissions->check( 'cohortes', 'orientees' ) || $permissions->check( 'cohortes', 'enattente' ) ): ?>
 							<!-- MODIF POUR LA GESTION DES ORIENTATIONS (Cohorte) -->
 							<li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
