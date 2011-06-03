@@ -31,6 +31,9 @@ msgstr "Aucune fiche présente pour cette personne"
 msgid "ActionscandidatsPersonnes::add"
 msgstr "Ajout d'une fiche"
 
+msgid "ActioncandidatPersonne::index::empty"
+msgstr "Aucune fiche de candidature pour cette personne"
+
 msgid "ActionscandidatsPersonnes::edit"
 msgstr "Modification de la fiche"
 
