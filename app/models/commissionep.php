@@ -357,13 +357,13 @@
 			// Première partie: revalidation "spéciale" des décisions
 			foreach( $themesTraites as $themeTraite => $niveauDecisionTheme ) {
 				$modeleDecision = Inflector::classify( "decision{$themeTraite}" );
-				if( isset( $this->Passagecommissionep->{$modeleDecision}->validateFinalisation ) ) {
+				if( isset( $this->Passagecommissionep->{$modeleDecision}->validateFinalisation ) && $themeTraite != "saisinepdoep66" ) {///FIXME : rustine en attendant de trouver mieux pour cette thématique dont les données ne sont pas renvoyés et qui empêche donc la validation
 					// FIXME: pas possible de faire un merge avec les règles déduites par Autovalidate ?
 					$this->Passagecommissionep->{$modeleDecision}->validate = $this->Passagecommissionep->{$modeleDecision}->validateFinalisation;
 				}
 			}
 
-			if( !$this->saveDecisions( $commissionep_id, $data, $niveauDecision ) ) {
+			if( !$this->saveDecisions( $commissionep_id, $data, $niveauDecision ) && $themeTraite != "saisinepdoep66" ) {///FIXME : voir celui d'au dessus
 				return false;
 			}
 
