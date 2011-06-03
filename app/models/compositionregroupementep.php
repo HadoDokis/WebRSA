@@ -34,7 +34,7 @@
 
 		public function compositionValide( $regroupementep_id, $membreseps ) {
 			$return = true;
-			$message = null;
+			$error = null;
 
 			$compositionregroupementep = $this->Regroupementep->find(
 				'first',
@@ -49,7 +49,9 @@
 			);
 
 			$membreChoisi = false;
+			$compoCree = false;
 			foreach( $compositionregroupementep['Compositionregroupementep'] as $compo ) {
+				$compoCree = true;
 				if ( $compo['obligatoire'] == 1 ) {
 					$membresFonction = $this->Fonctionmembreep->find(
 						'first',
@@ -71,7 +73,7 @@
 				}
 			}
 
-			if ( !$membreChoisi ) {
+			if ( !$membreChoisi && $compoCree ) {
 				$return = false;
 				$error = "obligatoire";
 			}
