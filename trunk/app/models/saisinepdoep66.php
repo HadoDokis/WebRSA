@@ -366,7 +366,7 @@
 			}
 			elseif ( $niveauDecision == 'cg' ) {
 				foreach( $datas as $key => $dossierep ) {
-					if ( isset( $dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][1]['id'] ) ) {
+					if ( isset( $dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][1] ) ) {
 						$formData['Decisionsaisinepdoep66'][$key]['id'] = $dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][0]['id'];
 					}
 					$formData['Decisionsaisinepdoep66'][$key]['decisionpdo_id'] = $dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][0]['decisionpdo_id'];
