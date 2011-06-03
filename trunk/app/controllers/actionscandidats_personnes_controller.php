@@ -299,7 +299,7 @@
 // debug( class_registry_models_count() ); // 14
 
 				///Pour récupérer le référent lié à la personne s'il existe déjà
-				$personne_referent = $this->ActioncandidatPersonne->Personne->PersonneReferent->find( 'first', array( 'conditions' => array( 'PersonneReferent.personne_id' => $personne_id ), 'contain' => false ) );
+				$personne_referent = $this->ActioncandidatPersonne->Personne->PersonneReferent->find( 'first', array( 'conditions' => array( 'PersonneReferent.personne_id' => $personne_id, 'PersonneReferent.dfdesignation IS NULL' ), 'contain' => false ) );
 
 				$referentId = null;
 				if( !empty( $personne_referent ) ){
