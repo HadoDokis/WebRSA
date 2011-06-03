@@ -1130,6 +1130,14 @@ td.button.printConvocationBeneficiaire a, td.action a.printConvocationBeneficiai
 td.button.fichesynthese a, td.action a.fichesynthese, td span.button.fichesynthese, table.default2 td a.button.fichesynthese {
     background-image: url( ../img/icons/printer.png );
 }
+
+td.button.printFiche a, td.action a.printFiche, td span.button.printFiche, table.default2 td a.button.printFiche {
+    background-image: url( ../img/icons/printer.png );
+}
+
+td.button.printFiche.disabled a, td.action a.printFiche.disabled, td span.button.printFiche.disabled, table.default2 td a.button.printFiche.disabled {
+    background-image: url( ../img/icons/printer_disabled.png );
+}
 /**/
 
 td.boolean span, table tr:nth-child(2n) td.boolean span {

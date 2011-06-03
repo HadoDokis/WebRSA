@@ -463,6 +463,9 @@ msgstr "Convocation"
 
 msgid "Button::fichesynthese"
 msgstr "Fiche de synthèse"
+
+msgid "Button::printFiche"
+msgstr "Imprimer"
 ###############################################################################
 # Pagination
 # INFO: http://forum.cakephp-fr.org/viewtopic.php?id=878
