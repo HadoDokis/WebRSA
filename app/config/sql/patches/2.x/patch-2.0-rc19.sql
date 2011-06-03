@@ -327,6 +327,17 @@ DROP TYPE IF EXISTS TYPE_POSITIONFICHE;
 CREATE TYPE TYPE_POSITIONFICHE AS ENUM ( 'enattente', 'encours', 'nonretenue', 'sortie', 'annule' );
 ALTER TABLE actionscandidats_personnes ALTER COLUMN positionfiche TYPE TYPE_POSITIONFICHE USING CAST(positionfiche AS TYPE_POSITIONFICHE);
 
+-- *******************************************************************************************************
+-- 20110601: mise en place de l'état quorum pour le cg66
+-- *******************************************************************************************************
+
+ALTER TABLE commissionseps ALTER COLUMN etatcommissionep TYPE TEXT;
+ALTER TABLE commissionseps ALTER COLUMN etatcommissionep DROP DEFAULT;
+DROP TYPE IF EXISTS TYPE_ETATCOMMISSIONEP;
+CREATE TYPE TYPE_ETATCOMMISSIONEP AS ENUM ( 'cree', 'quorum', 'associe', 'valide', 'presence', 'decisionep', 'traiteep', 'decisioncg', 'traite', 'annule', 'reporte' );
+ALTER TABLE commissionseps ALTER COLUMN etatcommissionep TYPE TYPE_ETATCOMMISSIONEP USING CAST(etatcommissionep AS TYPE_ETATCOMMISSIONEP);
+ALTER TABLE commissionseps ALTER COLUMN etatcommissionep SET DEFAULT 'cree'::TYPE_ETATCOMMISSIONEP;
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

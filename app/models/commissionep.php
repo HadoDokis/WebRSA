@@ -570,7 +570,10 @@
 					'conditions' => array(
 						'Commissionep.id' => $commissionep_id
 					),
-					'contain' => false
+					'contain' => array(
+						'Ep',
+						'CommissionepMembreep'
+					)
 				)
 			);
 
@@ -618,6 +621,20 @@
 				$success = $this->save() && $success;
 			}
 
+			if ( Configure::read( 'Cg.departement' ) == 66 ) {
+				$listeMembrePresentRemplace = array();
+				foreach( $commissionep['CommissionepMembreep'] as $membre ) {
+					if ( $membre['reponse'] == 'confirme' || $membre['reponse'] == 'remplacepar' ) {
+						$listeMembrePresentRemplace[] = $membre['membreep_id'];
+					}
+				}
+				
+				$compositionValide = $this->Ep->Regroupementep->Compositionregroupementep->compositionValide( $commissionep['Ep']['regroupementep_id'], $listeMembrePresentRemplace );
+				if( !$compositionValide['check'] ) {
+					$this->set( 'etatcommissionep', 'quorum' );
+					$success = $this->save() && $success;
+				}
+			}
 			return $success;
 		}
 
