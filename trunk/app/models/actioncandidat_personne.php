@@ -155,7 +155,7 @@
             $issortie = Set::classicExtract( $data, 'ActioncandidatPersonne.issortie' );
 
             $positionfiche = null;
-            // 'encours', 'attvalid', 'annule', 'fincontrat', 'encoursbilan', 'attrenouv', 'perime'
+            // enattente,encours,nonretenue,sortie,annule
 
 
             if ( empty( $bilanrecu ) && empty( $bilanretenu ) && empty( $motifsortie ) ){

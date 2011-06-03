@@ -312,7 +312,8 @@
 		'decisioncontratcomplexeep93' => 'decisionscontratscomplexeseps93',
 		'motifsortie' => 'motifssortie',
 		'criterefichecandidature' => 'criteresfichescandidature',
-		'historiqueep' => 'historiqueseps'
+		'historiqueep' => 'historiqueseps',
+		'cohortefichecandidature66' => 'cohortesfichescandidature66',
 
 	);
 /**
