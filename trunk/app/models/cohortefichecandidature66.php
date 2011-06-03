@@ -42,8 +42,8 @@ App::import( 'Sanitize' );
             }
 
             /// Critères
-            $numeroapre = Set::extract( $criteresfichescandidature, 'ActioncandidatPersonne.actioncandidat_id' );
-            $referent = Set::extract( $criteresfichescandidature, 'ActioncandidatPersonne.referent_id' );
+            $action = Set::extract( $criteresfichescandidature, 'ACtioncandidat.name' );
+            $referent = Set::extract( $criteresfichescandidature, 'Actioncandidat.referent_id' );
             $locaadr = Set::extract( $criteresfichescandidature, 'Adresse.locaadr' );
             $numcomptt = Set::extract( $criteresfichescandidature, 'Adresse.numcomptt' );
             $numdemrsa = Set::extract( $criteresfichescandidature, 'Dossier.numdemrsa' );
@@ -68,15 +68,16 @@ App::import( 'Sanitize' );
                 $conditions[] = 'Adresse.numcomptt ILIKE \'%'.Sanitize::clean( $numcomptt ).'%\'';
             }
 
+            // Nom de l'action
+            if( !empty( $action ) ) {
+                $conditions[] = 'Actioncandidat.name ILIKE \'%'.Sanitize::clean( $action ).'%\'';
+            }
+
             // Correspondant de l'action lié à l'action
             if( !empty( $referent ) ) {
                 $conditions[] = 'Actioncandidat.referent_id = \''.Sanitize::clean( $referent ).'\'';
             }
 
-            // Référent lié à l'APRE
-            if( !empty( $referent ) ) {
-                $conditions[] = 'ActioncandidatPersonne.referent_id = \''.Sanitize::clean( $referent ).'\'';
-            }
             //Critères sur le dossier de l'allocataire - numdemrsa + matricule
             foreach( array( 'numdemrsa', 'matricule' ) as $critereDossier ) {
                 if( isset( $criteresfichescandidature['Dossier'][$critereDossier] ) && !empty( $criteresfichescandidature['Dossier'][$critereDossier] ) ) {
@@ -86,9 +87,9 @@ App::import( 'Sanitize' );
 
 
             /// Critères sur la date de signature de la fiche de candidature
-            if( isset( $criteresfichescandidature['ActioncandidatPersonne']['datesignature'] ) && !empty( $criteresfichescandidature['ActioncandidatPersonne']['datesignature'] ) ) {
-                $valid_from = ( valid_int( $criteresfichescandidature['ActioncandidatPersonne']['datesignature_from']['year'] ) && valid_int( $criteresfichescandidature['ActioncandidatPersonne']['datesignature_from']['month'] ) && valid_int( $criteresfichescandidature['ActioncandidatPersonne']['datesignature_from']['day'] ) );
-                $valid_to = ( valid_int( $criteresfichescandidature['ActioncandidatPersonne']['datesignature_to']['year'] ) && valid_int( $criteresfichescandidature['ActioncandidatPersonne']['datesignature_to']['month'] ) && valid_int( $criteresfichescandidature['ActioncandidatPersonne']['datesignature_to']['day'] ) );
+            if( isset( $criteresfichescandidature['Actioncandidat']['datesignature'] ) && !empty( $criteresfichescandidature['Actioncandidat']['datesignature'] ) ) {
+                $valid_from = ( valid_int( $criteresfichescandidature['Actioncandidat']['datesignature_from']['year'] ) && valid_int( $criteresfichescandidature['Actioncandidat']['datesignature_from']['month'] ) && valid_int( $criteresfichescandidature['Actioncandidat']['datesignature_from']['day'] ) );
+                $valid_to = ( valid_int( $criteresfichescandidature['Actioncandidat']['datesignature_to']['year'] ) && valid_int( $criteresfichescandidature['Actioncandidat']['datesignature_to']['month'] ) && valid_int( $criteresfichescandidature['Actioncandidat']['datesignature_to']['day'] ) );
                 if( $valid_from && $valid_to ) {
                     $conditions[] = 'ActioncandidatPersonne.datesignature BETWEEN \''.implode( '-', array( $criteresfichescandidature['ActioncandidatPersonne']['datesignature_from']['year'], $criteresfichescandidature['ActioncandidatPersonne']['datesignature_from']['month'], $criteresfichescandidature['ActioncandidatPersonne']['datesignature_from']['day'] ) ).'\' AND \''.implode( '-', array( $criteresfichescandidature['ActioncandidatPersonne']['datesignature_to']['year'], $criteresfichescandidature['ActioncandidatPersonne']['datesignature_to']['month'], $criteresfichescandidature['ActioncandidatPersonne']['datesignature_to']['day'] ) ).'\'';
                 }

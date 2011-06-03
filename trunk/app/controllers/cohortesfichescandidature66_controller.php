@@ -14,8 +14,7 @@
 
         public $helpers = array( 'Csv', 'Ajax', 'Default2' );
 
-//         var $components = array( 'Prg' => array( 'actions' => array( 'fichesenattente', 'fichesencours' ) ) );
-
+        public $components = array( 'Prg' => array( 'actions' => array( 'fichesenattente', 'fichesencours' ) ) );
 
         /**
         *

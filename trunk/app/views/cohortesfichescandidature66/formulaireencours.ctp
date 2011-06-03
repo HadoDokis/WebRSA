@@ -4,7 +4,7 @@
 
 <script type="text/javascript">
     document.observe("dom:loaded", function() {
-        observeDisableFieldsetOnCheckbox( 'ActioncandidatPersonneDatesignature', $( 'ActioncandidatPersonneDatesignatureFromDay' ).up( 'fieldset' ), false );
+        observeDisableFieldsetOnCheckbox( 'ActioncandidatDatesignature', $( 'ActioncandidatDatesignatureFromDay' ).up( 'fieldset' ), false );
     });
 </script>
 <?php
@@ -21,16 +21,16 @@
 <?php echo $xform->create( 'Cohortefichecandidature66', array( 'type' => 'post', 'action' => $this->action, 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );?>
 
     <fieldset>
-            <?php echo $xform->input( 'ActioncandidatPersonne.indexparams', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
+            <?php echo $xform->input( 'Actioncandidat.indexparams', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
 
             <legend>Filtrer par Fiche de candidature</legend>
             <?php
 
                 echo $default2->subform(
                     array(
-                        'ActioncandidatPersonne.actioncandidat_id' => array( 'type' => 'select', 'options' => $actions ),
+                        'Actioncandidat.name' => array( 'type' => 'select', 'options' => $actions ),
                         'Partenaire.libstruc' => array( 'type' => 'select', 'options' => $partenaires ),
-                        'ActioncandidatPersonne.referent_id' => array( 'type' => 'select', 'options' => $referents ),
+                        'Actioncandidat.referent_id' => array( 'type' => 'select', 'options' => $referents ),
                         'ActioncandidatPersonne.positionfiche' => array( 'type' => 'select', 'options' => $options['positionfiche'] ),
                         'Personne.nom' => array( 'label' => __d( 'personne', 'Personne.nom', true ), 'type' => 'text' ),
                         'Personne.prenom' => array( 'label' => __d( 'personne', 'Personne.prenom', true ), 'type' => 'text' ),
@@ -47,17 +47,16 @@
             ?>
         </fieldset>
 
-            <?php echo $xform->input( 'ActioncandidatPersonne.datesignature', array( 'label' => 'Filtrer par date de Fiche de candidature', 'type' => 'checkbox' ) );?>
+            <?php echo $xform->input( 'Actioncandidat.datesignature', array( 'label' => 'Filtrer par date de Fiche de candidature', 'type' => 'checkbox' ) );?>
             <fieldset>
                 <legend>Filtrer par période</legend>
                 <?php
-                    $datesignature_from = Set::check( $this->data, 'ActioncandidatPersonne.datesignature_from' ) ? Set::extract( $this->data, 'ActioncandidatPersonne.datesignature_from' ) : strtotime( '-1 week' );
-                    $datesignature_to = Set::check( $this->data, 'ActioncandidatPersonne.datesignature_to' ) ? Set::extract( $this->data, 'ActioncandidatPersonne.datesignature_to' ) : strtotime( 'now' );
+                    $datesignature_from = Set::check( $this->data, 'Actioncandidat.datesignature_from' ) ? Set::extract( $this->data, 'Actioncandidat.datesignature_from' ) : strtotime( '-1 week' );
+                    $datesignature_to = Set::check( $this->data, 'Actioncandidat.datesignature_to' ) ? Set::extract( $this->data, 'Actioncandidat.datesignature_to' ) : strtotime( 'now' );
                 ?>
-                <?php echo $xform->input( 'ActioncandidatPersonne.datesignature_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 10, 'selected' => $datesignature_from ) );?>
-                <?php echo $xform->input( 'ActioncandidatPersonne.datesignature_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 10, 'selected' => $datesignature_to ) );?>
+                <?php echo $xform->input( 'Actioncandidat.datesignature_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 10, 'selected' => $datesignature_from ) );?>
+                <?php echo $xform->input( 'Actioncandidat.datesignature_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 10, 'selected' => $datesignature_to ) );?>
             </fieldset>
-
     <div class="submit noprint">
         <?php echo $xform->button( 'Rechercher', array( 'type' => 'submit' ) );?>
         <?php echo $xform->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>
