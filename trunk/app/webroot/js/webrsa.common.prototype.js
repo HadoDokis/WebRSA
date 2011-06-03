@@ -951,3 +951,13 @@ function fireEvent(element,event) {
 		return !element.dispatchEvent(evt);
 	}
 }
+
+// http://snippets.dzone.com/posts/show/4653
+function in_array(p_val, p_array) {
+	for(var i = 0, l = p_array.length; i < l; i++) {
+		if(p_array[i] == p_val) {
+			return true;
+		}
+	}
+	return false;
+}
