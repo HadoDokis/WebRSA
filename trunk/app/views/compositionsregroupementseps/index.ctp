@@ -3,35 +3,53 @@
 <?php
 
 	if ( $compteurs['Regroupementep'] == 0 ) {
-		echo "<p class='error'>Merci d'ajouter au moins un regroupement avant d'ajouter une EP.</p>";
+		echo "<p class='error'>Merci d'ajouter au moins un regroupement avant d'en indiquer la composition.</p>";
 	}
-	if ( $compteurs['Fonctionmembreep'] == 0 ) {
-		echo "<p class='error'>Merci d'ajouter au moins un membre avant d'ajouter une EP.</p>";
+	elseif ( $compteurs['Fonctionmembreep'] == 0 ) {
+		echo "<p class='error'>Merci d'ajouter au moins un membre avant d'en indiquer la composition.</p>";
 	}
+	else {
+		echo '<table><thead>';
+			echo $xhtml->tag(
+				'tr',
+				$xhtml->tag(
+					'th',
+					__d( 'regroupementep', 'Regroupementep.name', true )
+				).
+				$xhtml->tag(
+					'th',
+					'Actions',
+					array(
+						'class' => 'action'
+					)
+				)
+			);
+		echo '</thead><tbody>';
+			foreach( $regroupementseps as $regroupementep ) {
+				echo $xhtml->tag(
+					'tr',
+					$xhtml->tag(
+						'td',
+						$regroupementep['Regroupementep']['name']
+					).
+					$xhtml->tag(
+						'td',
+						$xhtml->editLink( 'Modifier', array( 'controller' => 'compositionsregroupementseps', 'action' => 'edit', $regroupementep['Regroupementep']['id'] ) )
+					)
+				);
+			}
+		echo '</table>';
 
-	echo $default2->index(
-		$regroupementeps,
-		array(
-			'Regroupementep.name'
-		),
-		array(
-			'actions' => array(
-				'Regroupementseps::edit',
-				'Regroupementseps::delete'
+		echo $default->button(
+			'back',
+			array(
+				'controller' => 'gestionseps',
+				'action'     => 'index'
 			),
-			'add' => array( 'Regroupementseps.add', 'disabled' => ( $compteurs['Regroupementep'] == 0 || $compteurs['Fonctionmembreep'] == 0 ) ),
-			'options' => $options
-		)
-	);
+			array(
+				'id' => 'Back'
+			)
+		);
+	}
 
-	echo $default->button(
-		'back',
-		array(
-			'controller' => 'gestionseps',
-			'action'     => 'index'
-		),
-		array(
-			'id' => 'Back'
-		)
-	);
 ?>

@@ -4,7 +4,7 @@
 		public $helpers = array( 'Default', 'Default2' );
 
 		protected function _setOptions() {
-			$options = array();
+			$options = $this->Compositionregroupementep->enums();
 			$this->set( compact( 'options' ) );
 		}
 
@@ -15,7 +15,7 @@
 			);
 
 			$this->_setOptions();
-			$this->set( 'regroupementeps', $this->paginate( $this->Compositionregroupementep->Regroupementep ) );
+			$this->set( 'regroupementseps', $this->paginate( $this->Compositionregroupementep->Regroupementep ) );
 			$compteurs = array(
 				'Regroupementep' => $this->Compositionregroupementep->Regroupementep->find( 'count' ),
 				'Fonctionmembreep' => $this->Compositionregroupementep->Fonctionmembreep->find( 'count' )
@@ -27,47 +27,47 @@
 		*
 		*/
 
-		public function add() {
-			$args = func_get_args();
-			call_user_func_array( array( $this, '_add_edit' ), $args );
-		}
-
-		/**
-		*
-		*/
-
-		public function edit() {
-			$args = func_get_args();
-			call_user_func_array( array( $this, '_add_edit' ), $args );
-		}
-
-		/**
-		*
-		*/
-
-		protected function _add_edit( $id = null ) {
+		public function edit( $id = null ) {
 			if( !empty( $this->data ) ) {
-				$this->Fonctionmembreep->create( $this->data );
-				$success = $this->Fonctionmembreep->save();
+				$success = true;
+				$this->Compositionregroupementep->begin();
+				foreach( $this->data['Compositionregroupementep'] as $functionmembreep_id => $fields ) {
+// 					debug($fields);
+					$compositionregroupementep['Compositionregroupementep'] = $fields;
+					$compositionregroupementep['Compositionregroupementep']['regroupementep_id'] = $id;
+					$compositionregroupementep['Compositionregroupementep']['fonctionmembreep_id'] = $functionmembreep_id;
+					$this->Compositionregroupementep->create( $compositionregroupementep );
+					$success = $this->Compositionregroupementep->save() && $success;
+				}
 
 				$this->_setFlashResult( 'Save', $success );
 				if( $success ) {
+					$this->Compositionregroupementep->commit();
 					$this->redirect( array( 'action' => 'index' ) );
 				}
+				else{
+					$this->Compositionregroupementep->rollback();
+				}
 			}
-			else if( $this->action == 'edit' ) {
-				$this->data = $this->Fonctionmembreep->find(
+			else {
+				$regroupementep = $this->Compositionregroupementep->Regroupementep->find(
 					'first',
 					array(
-						'contain' => false,
-						'conditions' => array( 'Fonctionmembreep.id' => $id )
+						'conditions' => array( 'Regroupementep.id' => $id ),
+						'contain' => array(
+							'Compositionregroupementep'
+						)
 					)
 				);
-				$this->assert( !empty( $this->data ), 'error404' );
+				$this->assert( !empty( $regroupementep ), 'error404' );
+				$this->data['Regroupementep'] = $regroupementep['Regroupementep'];
+				foreach( $regroupementep['Compositionregroupementep'] as $compo ) {
+					$this->data['Compositionregroupementep'][$compo['fonctionmembreep_id']] = $compo;
+				}
 			}
-
+			$fonctionsmembreseps = $this->Compositionregroupementep->Fonctionmembreep->find( 'list' );
+			$this->set( compact( 'fonctionsmembreseps' ) );
 			$this->_setOptions();
-			$this->render( null, null, 'add_edit' );
 		}
 
 		/**

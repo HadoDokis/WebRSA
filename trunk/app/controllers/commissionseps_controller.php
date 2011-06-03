@@ -27,6 +27,13 @@
 				'commissionseps::delete',
 				'membreseps::printConvocationParticipant',
 			),
+			'quorum' => array(
+				'dossierseps::choose',
+				'membreseps::editliste',
+				'commissionseps::edit',
+				'commissionseps::delete',
+				'membreseps::printConvocationParticipant',
+			),
 			'associe' => array(
 				'commissionseps::ordredujour',
 				'dossierseps::choose',
@@ -561,11 +568,35 @@
 	// 					'Dossierep' => array(
 	// 						'Personne'
 	// 					),
-						'Ep' => array( 'Regroupementep'/*, 'Membreep'*/)
+						'Ep' => array( 'Regroupementep'/*, 'Membreep'*/),
+						'CommissionepMembreep'
 					)
 				)
 			);
 // 			debug( $commissionep );
+			if ( Configure::read( 'Cg.departement' ) == 66 ) {
+				$listeMembrePresentRemplace = array();
+				foreach( $commissionep['CommissionepMembreep'] as $membre ) {
+					if ( $membre['reponse'] == 'confirme' || $membre['reponse'] == 'remplacepar' ) {
+						$listeMembrePresentRemplace[] = $membre['membreep_id'];
+					}
+				}
+
+				$compositionValide = $this->Commissionep->Ep->Regroupementep->Compositionregroupementep->compositionValide( $commissionep['Ep']['regroupementep_id'], $listeMembrePresentRemplace );
+				if( !$compositionValide['check'] && isset( $compositionValide['error'] ) && !empty( $compositionValide['error'] ) ) {
+					$message = null;
+					if ( $compositionValide['error'] == 'obligatoire' ) {
+						$message = "Pour une commission de ce regroupement, il faut au moins un membre occuppant la fonction : ".implode( ' ou ', $this->Commissionep->Ep->Regroupementep->Compositionregroupementep->listeFonctionsObligatoires( $this->data['Ep']['regroupementep_id'] ) ).".";
+					}
+					elseif ( $compositionValide['error'] == 'nbminmembre' ) {
+						$message = "Il n'y a pas assez de membres qui ont accepté de venir ou qui se font remplacer pour que la commission puisse avoir lieu.";
+					}
+					elseif ( $compositionValide['error'] == 'nbmaxmembre' ) {
+						$message = "Il y a trop de membres qui ont accepté de venir ou qui se font remplacer pour que la commission puisse avoir lieu.";
+					}
+					$this->set( 'messageQuorum', $message );
+				}
+			}
 
 			list( $jourCommission, $heureCommission ) = explode( ' ', $commissionep['Commissionep']['dateseance'] );
 			$presencesPossible = ( date( 'Y-m-d' ) >= $jourCommission );

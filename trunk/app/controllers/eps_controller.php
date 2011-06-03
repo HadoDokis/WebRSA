@@ -79,11 +79,30 @@
 			if ( !empty( $this->data ) ) {
 				$success = true;
 				$this->Ep->begin();
-				if ( empty( $this->data['Membreep']['Membreep'] ) ) {
+				
+				if ( Configure::read( 'Cg.departement' ) == 66 ) {
+					$compositionValide = $this->Ep->Regroupementep->Compositionregroupementep->compositionValide( $this->data['Ep']['regroupementep_id'], $this->data['Membreep']['Membreep'] );
+					$success = $compositionValide['check'];
+					if ( !$success && isset( $compositionValide['error'] ) && !empty( $compositionValide['error'] ) ) {
+						$message = null;
+						if ( $compositionValide['error'] == 'obligatoire' ) {
+							$message = "Pour le regroupement sélectionné il faut au moins un membre : ".implode( ', ', $this->Ep->Regroupementep->Compositionregroupementep->listeFonctionsObligatoires( $this->data['Ep']['regroupementep_id'] ) ).".";
+						}
+						elseif ( $compositionValide['error'] == 'nbminmembre' ) {
+							$message = "Il n'y a pas assez de membres assignés pour le regroupement sélectionné.";
+						}
+						elseif ( $compositionValide['error'] == 'nbmaxmembre' ) {
+							$message = "Il y a trop de membres assignés pour le regroupement sélectionné.";
+						}
+						$this->Ep->invalidate( 'Membreep.Membreep', $message );
+					}
+				}
+				elseif ( empty( $this->data['Membreep']['Membreep'] ) ) {
 					$success = false;
 					$this->Ep->invalidate( 'Membreep.Membreep', 'Il est obligatoire de saisir au moins un membre pour participer à une commission d\'EP.' );
 				}
-				else {
+				
+				if ( $success ) {
 					$this->Ep->create( $this->data );
 					$success = $this->Ep->save() && $success;
 				}

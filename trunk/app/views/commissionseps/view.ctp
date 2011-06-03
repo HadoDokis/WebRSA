@@ -1,5 +1,15 @@
 <h1><?php	echo $this->pageTitle = '1. Affichage d\'une commission d\'EP'; ?></h1>
 <div  id="ficheCI">
+
+	<?php
+		if ( $commissionep['Commissionep']['etatcommissionep'] == 'quorum' ) {
+			echo "<p class='error'>Quorum atteint, la commission ne peut avoir lieu.</p>";
+			if ( isset( $messageQuorum ) && !empty( $messageQuorum ) ) {
+				echo "<p class='error'>{$messageQuorum}</p>";
+			}
+		}
+	?>
+
 	<ul class="actionMenu">
 	<?php
 		if( in_array( 'commissionseps::edit', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) ) {

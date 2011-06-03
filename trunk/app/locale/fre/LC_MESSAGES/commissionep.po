@@ -113,6 +113,9 @@ msgstr "État de la commission d'EP"
 msgid "ENUM::ETATCOMMISSIONEP::cree"
 msgstr "Créée"
 
+msgid "ENUM::ETATCOMMISSIONEP::quorum"
+msgstr "Quorum"
+
 msgid "ENUM::ETATCOMMISSIONEP::associe"
 msgstr "Associée"
 
