@@ -512,46 +512,6 @@
 		}
 		
 		/**
-		*   Fonction permettant de récupérer le nom de la classe parente
-		*   En cas de demande de modification du CG, possibilité de copier cette fonction dans 
-        *   la classe fille souhaitée afin de récupérer le chemin voulu
-		*/
-
-		protected function _courrierInformationPathPdf( $gedooo_data ) {
-            $parent_class = get_parent_class( $this );
-            return "{$parent_class}/courrierinformationavantep.odt";
-		}
-
-
-        /**
-        *    Récupération des informations propres au dossier devant passer en EP
-        *   avant liaison avec la commission d'EP
-        */
-        /*public function getCourrierInformationPdf( $dossierep_id ) {
-
-            $gedooo_data = $this->find(
-                'first',
-                array(
-                    'conditions' => array( 'Dossierep.id' => $dossierep_id ),
-                    'contain' => array(
-                        'Dossierep' => array(
-                            'Personne'
-                        ),
-                       'Orientstruct' => array(
-                            'Typeorient',
-                            'Structurereferente',
-                            'Referent'
-                        )
-                    )
-                )
-            );
-// debug($gedooo_data);
-// die();
-            $path = $this->_courrierInformationPathPdf( $gedooo_data );
-            return $this->ged( $gedooo_data, $path );
-        }*/
-
-		/**
 		* Récupération du courrier de convocation à l'allocataire pour un passage
 		* en commission donné.
 		* FIXME: spécifique par thématique

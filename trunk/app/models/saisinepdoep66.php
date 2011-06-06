@@ -117,25 +117,6 @@
 						$this->Traitementpdo->Propopdo->Decisionpropopdo->create($decisionpropopdo);
 						$success = $this->Traitementpdo->Propopdo->Decisionpropopdo->save() && $success;
 					}
-
-					/*$propopdo = $this->Traitementpdo->Propopdo->find(
-						'first',
-						array(
-							'conditions' => array(
-								'Propopdo.id' => $dossierep['Traitementpdo']['propopdo_id']
-							),
-							'contain' => false
-						)
-					);
-
-					$propopdo['Propopdo']['decision'] = '1';
-					$propopdo['Propopdo']['datedecisionpdo'] = $dossierep['Decisionsaisinepdoep66'][1]['datedecisionpdo'];
-					$propopdo['Propopdo']['decisionpdo_id'] = $dossierep['Decisionsaisinepdoep66'][1]['decisionpdo_id'];
-					//$propopdo['Propopdo']['motifpdo'] = $dossierep['Decisionsaisinepdoep66'][1]['motifpdo'];
-					//$propopdo['Propopdo']['nonadmis'] = $dossierep['Decisionsaisinepdoep66'][1]['nonadmis'];
-					$propopdo['Propopdo']['commentairepdo'] = $dossierep['Decisionsaisinepdoep66'][1]['commentaire'];
-
-					$success = $this->Traitementpdo->Propopdo->save($propopdo) && $success;*/
 				}
 			}
 			return $success;
@@ -468,33 +449,6 @@
 			);
 		}
 
-
-
-        /**
-        *    Récupération des informations propres au dossier devant passer en EP
-        *   avant liaison avec la commission d'EP
-        */
-        /*public function getCourrierInformationPdf( $dossierep_id ) {
-            $gedooo_data = $this->find(
-                'first',
-                array(
-                    'conditions' => array( 'Dossierep.id' => $dossierep_id ),
-                    'contain' => array(
-                        'Dossierep' => array(
-                            'Personne'
-                        ),
-                        'Traitementpdo' => array(
-                            'Descriptionpdo',
-                            'Propopdo' => array(
-                                'Situationpdo'
-                            )
-                        )
-                    )
-                )
-            );
-            return $this->ged( $gedooo_data, "{$this->alias}/courrierinformationavantep.odt" );
-        }*/
-
 		/**
 		* Récupération du courrier de convocation à l'allocataire pour un passage
 		* en commission donné.
@@ -519,8 +473,9 @@
 		}
 
 		/**
-		 * Fonction retournant un querydata qui va permettre de retrouver des dossiers d'EP
-		 */
+		* Fonction retournant un querydata qui va permettre de retrouver des dossiers d'EP
+		*/
+
 		public function qdListeDossier( $commissionep_id = null ) {
 			return array(
 				'fields' => array(

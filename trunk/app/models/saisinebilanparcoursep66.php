@@ -50,20 +50,6 @@
 				'fields' => '',
 				'order' => ''
 			),
-			/*'Motifreorientep93' => array(
-				'className' => 'Motifreorientep93',
-				'foreignKey' => 'motifreorientep93_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
-			),
-			'Orientstruct' => array(
-				'className' => 'Orientstruct',
-				'foreignKey' => 'orientstruct_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
-			),*/
 			'Structurereferente' => array(
 				'className' => 'Structurereferente',
 				'foreignKey' => 'structurereferente_id',
@@ -97,18 +83,18 @@
 		);
 
 		/**
-         *
-         */
-        public function containQueryData() {
-            return array(
-                'Saisinebilanparcoursep66' => array(
-                    'Decisionsaisinebilanparcoursep66'=>array(
-                        'Typeorient',
-                        'Structurereferente'
-                    ),
-                )
-            );
-        }
+		*
+		*/
+		public function containQueryData() {
+			return array(
+				'Saisinebilanparcoursep66' => array(
+					'Decisionsaisinebilanparcoursep66'=>array(
+						'Typeorient',
+						'Structurereferente'
+					),
+				)
+			);
+		}
 
 
 		/**
@@ -197,7 +183,7 @@
 						)
 					);
 
-                    // Enregistrement de la position du bilan de parcours suite au passage en EP
+					// Enregistrement de la position du bilan de parcours suite au passage en EP
 //                  $this->Bilanparcours66->updateAll(
 //                         array( 'Bilanparcours66.positionbilan' => '\'attcga\'' ),
 //                         array( '"Bilanparcours66"."id"' => $dossierep['Bilanparcours66']['id'] )
@@ -209,8 +195,8 @@
 		}
 
 		/**
-		 * INFO: Fonction inutile dans cette saisine donc elle retourne simplement true
-		 */
+		* INFO: Fonction inutile dans cette saisine donc elle retourne simplement true
+		*/
 
 		public function verrouiller( $commissionep_id, $etape ) {
 			return true;
@@ -494,33 +480,6 @@
 			);
 		}
 
-        /**
-        *    Récupération des informations propres au dossier devant passer en EP
-        *   avant liaison avec la commission d'EP
-        */
-        /*public function getCourrierInformationPdf( $dossierep_id ) {
-            $gedooo_data = $this->find(
-                'first',
-                array(
-                    'conditions' => array( 'Dossierep.id' => $dossierep_id ),
-                    'contain' => array(
-                        'Dossierep' => array(
-                            'Personne'
-                        ),
-                        'Typeorient',
-                        'Structurereferente',
-                        'Bilanparcours66' => array(
-                            'Orientstruct' => array(
-                                'Typeorient',
-                                'Structurereferente',
-                            ),
-                        )
-                    )
-                )
-            );
-            return $this->ged( $gedooo_data, "{$this->alias}/courrierinformationavantep.odt" );
-        }*/
-
 		/**
 		* Récupération du courrier de convocation à l'allocataire pour un passage
 		* en commission donné.
@@ -545,8 +504,8 @@
 		}
 
 		/**
-		 * Fonction retournant un querydata qui va permettre de retrouver des dossiers d'EP
-		 */
+		* Fonction retournant un querydata qui va permettre de retrouver des dossiers d'EP
+		*/
 		public function qdListeDossier( $commissionep_id = null ) {
 			return array(
 				'fields' => array(
