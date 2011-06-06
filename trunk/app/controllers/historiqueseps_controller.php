@@ -56,6 +56,7 @@
                         'Dossierep.themeep',
                         'Commissionep.dateseance',
                         'Passagecommissionep.id',
+                        'Passagecommissionep.commissionep_id',
                         'Passagecommissionep.etatdossierep',
                     ),
                     'joins' => array(
@@ -89,8 +90,16 @@
                     $modelTheme = Inflector::classify( Inflector::singularize( $theme ) );
                     $modelDecision = 'Decision'.Inflector::singularize( $theme );
                 }
+                
+//                 debug($tdossierEp);
+                $commissionep_id = Set::classicExtract( $tdossierEp, 'Passagecommissionep.commissionep_id' );
+                $niveauDecision = Set::classicExtract( $tdossierEp, 'Passagecommissionep.etatdossierep' );
+                //FIXME: voir si en utilisant ceci cela ne fonctionne pas mieux
+// debug( $this->Dossier->Foyer->Personne->Dossierep->Passagecommissionep->Commissionep->dossiersParListe( $commissionep_id, $niveauDecision ) );
+
 
                 foreach( $tdossierEp as $key => $dossierep ){
+
                     $decisionEP = $this->Dossier->Foyer->Personne->Dossierep->Passagecommissionep->{$modelDecision}->find(
                         'all',
                         array(
