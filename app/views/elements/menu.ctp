@@ -75,10 +75,10 @@
 								<?php  echo $xhtml->link( 'Orientation', '#' );?>
 									<ul>
 										<?php if( $permissions->check( 'cohortes', 'nouvelles' ) ): ?>
-											<li><?php echo $xhtml->link( 'Nouvelles demandes', array( 'controller' => 'cohortes', 'action' => 'nouvelles' ), array( 'title'=>'Nouvelles demandes' ) );?></li>
+											<li><?php echo $xhtml->link( 'Demandes non orientées', array( 'controller' => 'cohortes', 'action' => 'nouvelles' ), array( 'title'=>'Demandes non orientées' ) );?></li>
 										<?php endif; ?>
 										<?php if( $permissions->check( 'cohortes', 'enattente' ) ): ?>
-											<li><?php echo $xhtml->link( 'En attente', array( 'controller' => 'cohortes', 'action' => 'enattente' ), array( 'title'=>'Demandes en attente' ) );?></li>
+											<li><?php echo $xhtml->link( 'Demandes en attente de validation d\'orientation', array( 'controller' => 'cohortes', 'action' => 'enattente' ), array( 'title'=>'Demandes en attente de validation d\'orientation' ) );?></li>
 										<?php endif; ?>
 										<?php if( $permissions->check( 'cohortes', 'orientees' ) ): ?>
 											<li><?php echo $xhtml->link( 'Demandes orientées', array( 'controller' => 'cohortes', 'action' => 'orientees' ), array( 'title'=>'Demandes orientées' ) );?></li>
