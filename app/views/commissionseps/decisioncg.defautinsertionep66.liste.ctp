@@ -7,7 +7,6 @@ echo '<table id="Decisiondefautinsertionep66" class="tooltips"><thead>
 <th>Création du dossier EP</th>
 <th>Date d\'orientation</th>
 <th>Orientation actuelle</th>
-<!--<th colspan="2">Flux PE</th>-->
 <th>Origine</th>
 <th>Motif saisine</th>
 <th>Date de radiation</th>
