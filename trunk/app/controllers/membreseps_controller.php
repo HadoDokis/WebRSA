@@ -241,13 +241,11 @@
 // 							$success = $this->Membreep->CommissionepMembreep->save() && $success;
 						}
 					}
-					
 					$success = $this->Membreep->CommissionepMembreep->saveAll( $reponsesMembres, array( 'validate' => 'first', 'atomic' => false ) ) && $success;
 					$success = $this->Membreep->CommissionepMembreep->Commissionep->changeEtatCreeAssocie( $commissionep_id ) && $success;
 				}
 				else {
 					$success = false;
-					
 				}
 
 				$this->_setFlashResult( 'Save', $success );
