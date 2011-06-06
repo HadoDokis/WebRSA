@@ -17,5 +17,5 @@
     }
 
     Configure::write( 'debug', 0 );
-    echo $csv->render( 'actionscandidats_personnes-'.date( 'Ymd-Hhm' ).'.csv' );
+    echo $csv->render( 'fiches-candidature'.date( 'Ymd-Hhm' ).'.csv' );
 ?>

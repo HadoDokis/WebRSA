@@ -78,7 +78,7 @@
                 <th>Action engagée</th>
                 <th>Partenaire lié</th>
                 <th>Correspondant de l'action</th>
-                <th>Date de signature de la fiche</th>
+                <th>Date de signature</th>
                 <th>Venu(e) ?</th>
                 <th>Retenu(e) ?</th>
                 <th>Motif de sortie</th>
