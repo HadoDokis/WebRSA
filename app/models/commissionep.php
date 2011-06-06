@@ -577,7 +577,7 @@
 				)
 			);
 
-			if( empty( $commissionep ) || !in_array( $commissionep['Commissionep']['etatcommissionep'], array( 'cree', 'associe' ) ) ) {
+			if( empty( $commissionep ) || !in_array( $commissionep['Commissionep']['etatcommissionep'], array( 'cree', 'quorum', 'associe' ) ) ) {
 				return false;
 			}
 
@@ -612,11 +612,11 @@
 			);
 
 			$this->id = $commissionep_id;
-			if( ( $nbDossierseps > 0 ) && ( $nbMembresepsNonRenseignes == 0 ) && ( $nbMembresepsTotal > 0 ) && ( $commissionep['Commissionep']['etatcommissionep'] == 'cree' ) ) {
+			if( ( $nbDossierseps > 0 ) && ( $nbMembresepsNonRenseignes == 0 ) && ( $nbMembresepsTotal > 0 ) && ( $commissionep['Commissionep']['etatcommissionep'] == 'cree' || $commissionep['Commissionep']['etatcommissionep'] == 'quorum' ) ) {
 				$this->set( 'etatcommissionep', 'associe' );
 				$success = $this->save() && $success;
 			}
-			else if( ( ( $nbDossierseps == 0 ) || ( $nbMembresepsNonRenseignes > 0 ) || ( $nbMembresepsTotal == 0 ) ) && ( $commissionep['Commissionep']['etatcommissionep'] == 'associe' ) ) {
+			else if( ( ( $nbDossierseps == 0 ) || ( $nbMembresepsNonRenseignes > 0 ) || ( $nbMembresepsTotal == 0 ) ) && ( $commissionep['Commissionep']['etatcommissionep'] == 'associe' || $commissionep['Commissionep']['etatcommissionep'] == 'quorum' ) ) {
 				$this->set( 'etatcommissionep', 'cree' );
 				$success = $this->save() && $success;
 			}
@@ -628,7 +628,7 @@
 						$listeMembrePresentRemplace[] = $membre['membreep_id'];
 					}
 				}
-				
+
 				$compositionValide = $this->Ep->Regroupementep->Compositionregroupementep->compositionValide( $commissionep['Ep']['regroupementep_id'], $listeMembrePresentRemplace );
 				if( !$compositionValide['check'] ) {
 					$this->set( 'etatcommissionep', 'quorum' );
