@@ -3,7 +3,7 @@
 <?php  $this->pageTitle = 'Présence des membres à la commission d\'EP';?>
 
 	<h1><?php echo $this->pageTitle;?></h1>
-	
+
 	<?php echo $xform->create( 'Membreep', array( 'type' => 'post', 'url' => '/membreseps/editpresence/'.$seance_id ) ); ?>
 		<div class="aere">
 			<fieldset>
@@ -55,7 +55,7 @@
 									$html->tag(
 										'td',
 										$form->input(
-											'CommissionepMembreep.Membreep_id.'.$membre['Membreep']['id'].'.presence',
+											'CommissionepMembreep.'.$membre['Membreep']['id'].'.presence',
 											array(
 												'type' => 'select',
 												'label' => false,
@@ -72,7 +72,7 @@
 										'td',
 										
 										$form->input(
-											'CommissionepMembreep.Membreep_id.'.$membre['Membreep']['id'].'.suppleant_id',
+											'CommissionepMembreep.'.$membre['Membreep']['id'].'.presencesuppleant_id',
 											array(
 												'label' => false,
 												'type' => 'select',

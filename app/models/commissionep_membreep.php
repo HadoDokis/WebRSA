@@ -46,6 +46,21 @@
 				'order' => ''
 			),
 		);
+		
+		public $validate = array(
+			'reponsesuppleant_id' => array(
+				'notEmptyIf' => array(
+					'rule' => array( 'notEmptyIf', 'reponse', true, array( 'remplacepar' ) ),
+					'message' => 'Champ obligatoire',
+				)
+			),
+			'presencesuppleant_id' => array(
+				'notEmptyIf' => array(
+					'rule' => array( 'notEmptyIf', 'presence', true, array( 'remplacepar' ) ),
+					'message' => 'Champ obligatoire',
+				)
+			)
+		);
 
 		/**
 		 * Fonction qui retourne vrai si dans les données envoyées au moins 2 membres sont

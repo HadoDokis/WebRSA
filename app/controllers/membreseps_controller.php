@@ -128,59 +128,6 @@
 		* @param integer $ep_id Index de l'EP dont on veut récupérer tous les membres.
 		*/
 		public function editliste( $commissionep_id ) {
-			if( !empty( $this->data ) ) {
-				$success = true;
-				if ( !$this->Membreep->CommissionepMembreep->checkDoublon( $this->data['CommissionepMembreep']['Membreep_id'] ) ) {
-					$this->Membreep->CommissionepMembreep->begin();
-					foreach( $this->data['CommissionepMembreep']['Membreep_id'] as $membreep_id => $reponse ) {
-						$existeEnBase = $this->Membreep->CommissionepMembreep->find(
-							'first',
-							array(
-								'conditions'=>array(
-									'CommissionepMembreep.membreep_id'=>$membreep_id,
-									'CommissionepMembreep.commissionep_id'=>$commissionep_id
-								),
-								'contain' => false
-							)
-						);
-
-						if (!empty($existeEnBase)) {
-							$existeEnBase['CommissionepMembreep']['reponse'] = $reponse['reponse'];
-							if ( $reponse['reponse'] == 'remplacepar' ) {
-								$existeEnBase['CommissionepMembreep']['reponsesuppleant_id'] = $reponse['suppleant_id'];
-							}
-							$this->Membreep->CommissionepMembreep->create( $existeEnBase );
-							$success = $this->Membreep->CommissionepMembreep->save() && $success;
-						}
-						else {
-							$nouvelleEntree['CommissionepMembreep']['commissionep_id'] = $commissionep_id;
-							$nouvelleEntree['CommissionepMembreep']['membreep_id'] = $membreep_id;
-							$nouvelleEntree['CommissionepMembreep']['reponse'] = $reponse['reponse'];
-							if ( $reponse['reponse'] == 'remplacepar' ) {
-								$nouvelleEntree['CommissionepMembreep']['reponsesuppleant_id'] = $reponse['suppleant_id'];
-							}
-							$this->Membreep->CommissionepMembreep->create($nouvelleEntree);
-							$success = $this->Membreep->CommissionepMembreep->save() && $success;
-						}
-					}
-
-					$success = $this->Membreep->CommissionepMembreep->Commissionep->changeEtatCreeAssocie( $commissionep_id ) && $success;
-				}
-				else {
-					$success = false;
-					
-				}
-
-				$this->_setFlashResult( 'Save', $success );
-				if ($success) {
-					$this->Membreep->CommissionepMembreep->commit();
-					$this->redirect(array('controller'=>'commissionseps', 'action'=>'view', $commissionep_id));
-				}
-				else {
-					$this->Membreep->CommissionepMembreep->rollback();
-				}
-			}
-
 			$commissionep = $this->Membreep->CommissionepMembreep->Commissionep->find(
 				'first',
 				array(
@@ -249,6 +196,75 @@
 				)
 			);
 			$this->set('membres', $membres);
+
+			if( !empty( $this->data ) ) {
+				$success = true;
+				if ( !$this->Membreep->CommissionepMembreep->checkDoublon( $this->data['CommissionepMembreep'] ) ) {
+					$this->Membreep->CommissionepMembreep->begin();
+					$reponsesMembres = array();
+					foreach( $this->data['CommissionepMembreep'] as $membreep_id => $reponse ) {
+						$existeEnBase = $this->Membreep->CommissionepMembreep->find(
+							'first',
+							array(
+								'conditions'=>array(
+									'CommissionepMembreep.membreep_id'=>$membreep_id,
+									'CommissionepMembreep.commissionep_id'=>$commissionep_id
+								),
+								'contain' => false
+							)
+						);
+
+						if (!empty($existeEnBase)) {
+							$existeEnBase['CommissionepMembreep']['reponse'] = $reponse['reponse'];
+							$existeEnBase['CommissionepMembreep']['reponsesuppleant_id'] = null;
+							if ( $reponse['reponse'] == 'remplacepar' ) {
+								if ( isset( $reponse['reponsesuppleant_id'] ) && !empty( $reponse['reponsesuppleant_id'] ) ) {
+									$existeEnBase['CommissionepMembreep']['reponsesuppleant_id'] = $reponse['reponsesuppleant_id'];
+								}
+							}
+							$reponsesMembres[$membreep_id] = $existeEnBase;
+// 							$this->Membreep->CommissionepMembreep->create( $existeEnBase );
+// 							$success = $this->Membreep->CommissionepMembreep->save() && $success;
+						}
+						else {
+							$nouvelleEntree['CommissionepMembreep']['commissionep_id'] = $commissionep_id;
+							$nouvelleEntree['CommissionepMembreep']['membreep_id'] = $membreep_id;
+							$nouvelleEntree['CommissionepMembreep']['reponse'] = $reponse['reponse'];
+							$nouvelleEntree['CommissionepMembreep']['reponsesuppleant_id'] = null;
+							if ( $reponse['reponse'] == 'remplacepar' ) {
+								if ( isset( $reponse['reponsesuppleant_id'] ) && !empty( $reponse['reponsesuppleant_id'] ) ) {
+									$nouvelleEntree['CommissionepMembreep']['reponsesuppleant_id'] = $reponse['reponsesuppleant_id'];
+								}
+							}
+							$reponsesMembres[$membreep_id] = $nouvelleEntree;
+// 							$this->Membreep->CommissionepMembreep->create($nouvelleEntree);
+// 							$success = $this->Membreep->CommissionepMembreep->save() && $success;
+						}
+					}
+					
+					$success = $this->Membreep->CommissionepMembreep->saveAll( $reponsesMembres, array( 'validate' => 'first', 'atomic' => false ) ) && $success;
+					$success = $this->Membreep->CommissionepMembreep->Commissionep->changeEtatCreeAssocie( $commissionep_id ) && $success;
+				}
+				else {
+					$success = false;
+					
+				}
+
+				$this->_setFlashResult( 'Save', $success );
+				if ( $success ) {
+					$this->Membreep->CommissionepMembreep->commit();
+					$this->redirect(array('controller'=>'commissionseps', 'action'=>'view', $commissionep_id));
+				}
+				else {
+					$this->Membreep->CommissionepMembreep->rollback();
+				}
+			}
+			else {
+				$this->data = array();
+				foreach( $membres as $membre ) {
+					$this->data['CommissionepMembreep'][$membre['Membreep']['id']]['reponse'] = $membre['CommissionepMembreep']['reponse'];
+				}
+			}
 
 			$fonctionsmembres = $this->Membreep->Fonctionmembreep->find(
 				'all',
@@ -338,13 +354,14 @@
 			if( !empty( $this->data ) ) {
 				$success = true;
 				$this->Membreep->CommissionepMembreep->begin();
-				foreach($this->data['CommissionepMembreep']['Membreep_id'] as $membreep_id => $reponse) {
+				$reponsesMembres = array();
+				foreach($this->data['CommissionepMembreep'] as $membreep_id => $reponse) {
 					$existeEnBase = $this->Membreep->CommissionepMembreep->find(
 						'first',
 						array(
 							'conditions'=>array(
-								'CommissionepMembreep.membreep_id'=>$membreep_id,
-								'CommissionepMembreep.commissionep_id'=>$commissionep_id
+								'CommissionepMembreep.membreep_id' => $membreep_id,
+								'CommissionepMembreep.commissionep_id' => $commissionep_id
 							),
 							'contain' => false
 						)
@@ -352,23 +369,32 @@
 					if (!empty($existeEnBase)) {
 						$existeEnBase['CommissionepMembreep']['presence'] = $reponse['presence'];
 						if ( $reponse['presence'] == 'remplacepar' ) {
-							$existeEnBase['CommissionepMembreep']['presencesuppleant_id'] = $reponse['suppleant_id'];
+							$existeEnBase['CommissionepMembreep']['presencesuppleant_id'] = null;
+							if ( isset( $reponse['presencesuppleant_id'] ) && !empty( $reponse['presencesuppleant_id'] ) ) {
+								$existeEnBase['CommissionepMembreep']['presencesuppleant_id'] = $reponse['presencesuppleant_id'];
+							}
 						}
-						$this->Membreep->CommissionepMembreep->create( $existeEnBase );
-						$success = $this->Membreep->CommissionepMembreep->save() && $success;
+						$reponsesMembres[$membreep_id] = $existeEnBase;
+// 						$this->Membreep->CommissionepMembreep->create( $existeEnBase );
+// 						$success = $this->Membreep->CommissionepMembreep->save() && $success;
 					}
 					else {
 						$nouvelleEntree['CommissionepMembreep']['commissionep_id'] = $commissionep_id;
 						$nouvelleEntree['CommissionepMembreep']['membreep_id'] = $membreep_id;
 						$nouvelleEntree['CommissionepMembreep']['presence'] = $reponse['presence'];
 						if ( $reponse['presence'] == 'remplacepar' ) {
-							$nouvelleEntree['CommissionepMembreep']['presencesuppleant_id'] = $reponse['suppleant_id'];
+							$existeEnBase['CommissionepMembreep']['presencesuppleant_id'] = null;
+							if ( isset( $reponse['presencesuppleant_id'] ) && !empty( $reponse['presencesuppleant_id'] ) ) {
+								$nouvelleEntree['CommissionepMembreep']['presencesuppleant_id'] = $reponse['presencesuppleant_id'];
+							}
 						}
-						$this->Membreep->CommissionepMembreep->create($nouvelleEntree);
-						$success = $this->Membreep->CommissionepMembreep->save() && $success;
+						$reponsesMembres[$membreep_id] = $nouvelleEntree;
+// 						$this->Membreep->CommissionepMembreep->create($nouvelleEntree);
+// 						$success = $this->Membreep->CommissionepMembreep->save() && $success;
 					}
 				}
 
+				$success = $this->Membreep->CommissionepMembreep->saveAll( $reponsesMembres, array( 'validate' => 'first', 'atomic' => false ) ) && $success;
 				$success = $this->Membreep->CommissionepMembreep->Commissionep->changeEtatAssociePresence( $commissionep_id ) && $success;
 
 				$this->_setFlashResult( 'Save', $success );
