@@ -362,8 +362,6 @@
 			$this->set( 'personne', $personne );
 
 
-// debug( class_registry_models() );
-// debug( class_registry_models_count() ); //54
 			///Nombre d'enfants par foyer
 			$nbEnfants = $this->ActioncandidatPersonne->Personne->Foyer->nbEnfants( Set::classicExtract( $personne, 'Personne.foyer_id' ) );
 			$this->set( 'nbEnfants', $nbEnfants );
@@ -371,30 +369,25 @@
 			//Numéro Pôle Emploi :
 			$identifiantpe = ClassRegistry::init('Informationpe')->dernierIdentifiantpe( $personne_id);
 			$this->set( 'identifiantpe', $identifiantpe );
-// debug( class_registry_models() );
-// debug( class_registry_models_count() ); //55
-			///Récupération de la liste des structures référentes liés uniquement à l'APRE
+ 
+            ///Récupération de la liste des structures référentes liés uniquement à l'APRE
 			$structs = $this->ActioncandidatPersonne->Personne->Orientstruct->Structurereferente->listOptions( );
 			$this->set( 'structs', $structs );
-// debug( class_registry_models() );
-// debug( class_registry_models_count() ); //57
-			///Récupération de la liste des référents liés à l'APRE
+
+            ///Récupération de la liste des référents liés à l'APRE
 			$referents = $this->ActioncandidatPersonne->Personne->Referent->listOptions();
 			$this->set( 'referents', $referents );
 
-// debug( class_registry_models() );
-// debug( class_registry_models_count() ); //57
+
 			///Données Dsp
 			$dsp = $this->ActioncandidatPersonne->Personne->Dsp->findByPersonneId( $personne_id, null, null, -1  );
 			$this->set( compact( 'dsp' ) );
 
-// debug( class_registry_models() );
-// debug( class_registry_models_count() ); //57
             ///Récupération de la liste des actions avec une fiche de candidature
-            $actionsfiche = $this->{$this->modelClass}->Actioncandidat->listePourFicheCandidature();
+            $numcomptt = Set::classicExtract( $personne, 'Adresse.numcomptt' );
+            $actionsfiche = $this->{$this->modelClass}->Actioncandidat->listePourFicheCandidature( $numcomptt );
             $this->set( 'actionsfiche', $actionsfiche );
-// debug( class_registry_models() );
-// debug( class_registry_models_count() ); //57
+
 			$this->ActioncandidatPersonne->begin();
 
 			if( !empty( $this->data ) ){

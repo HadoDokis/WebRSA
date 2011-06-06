@@ -91,10 +91,39 @@
         *
         */
 
-        public function listePourFicheCandidature() {
-            ///Récupération de la liste des actions avec fiche de candidature
-            $avecfiche = $this->find( 'list', array( 'conditions' => array( 'Actioncandidat.hasfichecandidature' => 1 ) ) );
-            return $avecfiche;
+        public function listePourFicheCandidature( $numcomptt ) {
+
+            $actionscandidats = $this->find(
+                'list',
+                array(
+                    'conditions' => array(
+                        'Actioncandidat.hasfichecandidature' => 1,
+                        'Actioncandidat.id IN (
+                            '.$this->ActioncandidatZonegeographique->sq(
+                                array(
+                                    'alias' => 'actionscandidats_zonesgeographiques',
+                                    'fields' => array( 'actionscandidats_zonesgeographiques.actioncandidat_id' ),
+                                    'conditions' => array(
+                                        'actionscandidats_zonesgeographiques.zonegeographique_id IN ('.ClassRegistry::init( 'Canton' )->sq(
+                                            array(
+                                                'alias' => 'cantons',
+                                                'fields' => array( 'cantons.zonegeographique_id' ),
+                                                'conditions' => array(
+                                                    'cantons.numcomptt' => $numcomptt
+                                                ),
+                                                'contain' => false
+                                            )
+                                        ).' )'
+                                    )
+                                )
+                            ).'
+                        )'
+                    ),
+                    'recursive' => -1
+                )
+            );
+
+            return $actionscandidats;
         }
 
 		function afterFind($results,$primary = false)
