@@ -51,7 +51,7 @@
 	makeTabbed( 'tabbedWrapper', 2 );
 
 	function changeColspanAnnuleReporte( idColumnToChangeColspan, decision, colspanMax, idsNonRaisonpassage ) {
-		if ( in_array( decision, [ 'reporte', 'annule' ] ) ) {
+		if ( in_array( decision, [ 'reporte', 'annule', 'maintienref', 'refuse', 'suspensionnonrespect', 'suspensiondefaut', 'maintien' ] ) ) {
 			$( idColumnToChangeColspan ).writeAttribute( "colspan", colspanMax );
 			idsNonRaisonpassage.each( function ( id ) {
 				$( id ).hide();
