@@ -516,16 +516,21 @@
 				$this->redirect( $this->referer() );
 			}
 
-			$this->Commissionep->begin();
-			$success = $this->Commissionep->finaliser( $commissionep_id, $this->data, $niveauDecision, $this->Session->read( 'Auth.User.id' ) );
-
-			$this->_setFlashResult( 'Save', $success );
-			if( $success ) {
-				$this->Commissionep->commit();
-				$this->redirect( array( 'action' => "decision{$niveauDecision}", $commissionep_id ) );
+			if( !$this->_checkGedooo( true ) ) {
+				$this->Session->setFlash( 'Le serveur d\'impression n\'est pas disponible ou ne fonctionne pas correctement.', 'default', array( 'class' => 'error' ) );
 			}
 			else {
-				$this->Commissionep->rollback();
+				$this->Commissionep->begin();
+				$success = $this->Commissionep->finaliser( $commissionep_id, $this->data, $niveauDecision, $this->Session->read( 'Auth.User.id' ) );
+
+				$this->_setFlashResult( 'Save', $success );
+				if( $success ) {
+					$this->Commissionep->commit();
+					$this->redirect( array( 'action' => "decision{$niveauDecision}", $commissionep_id ) );
+				}
+				else {
+					$this->Commissionep->rollback();
+				}
 			}
 		}
 
