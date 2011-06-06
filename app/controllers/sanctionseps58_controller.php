@@ -122,7 +122,7 @@
 		 *
 		 */
 		public function nonrespectcer( $contratinsertion_id ) {
-			$contratinsertion = $this->Sanctionep58->Contratinsertion->find(
+			$contratinsertion = $this->Sanctionep58->Dossierep->Personne->Contratinsertion->find(
 				'first',
 				array(
 					'fields' => array(
@@ -185,7 +185,7 @@
 					)
 				)
 			);
-			
+
 			$success = true;
 			$this->Sanctionep58->begin();
 
@@ -199,7 +199,7 @@
 			else {
 				$this->Sanctionep58->rollback();
 			}
-			
+
 			$this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index', $dossierep['Dossierep']['personne_id'] ) );
 		}
 	}
