@@ -197,6 +197,7 @@
 
 
 				$this->paginate['Commissionep']['limit'] = 10;
+				$this->paginate['Commissionep']['order'] = array( 'Commissionep.dateseance DESC' );
 
 				switch( $etape ) {
 					case 'creationmodification':
