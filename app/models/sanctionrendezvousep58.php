@@ -15,12 +15,6 @@
 		public $actsAs = array(
 			'Autovalidate',
 			'ValidateTranslate',
-// 			'Enumerable' => array(
-// 				'fields' => array(
-// 					'origine',
-// 					'type'
-// 				)
-// 			),
 			'Formattable',
 			'Gedooo'
 		);
@@ -197,71 +191,49 @@
 			// Aucune action utile ?
 			return true;
 		}
-		        /**
-        *
-        */
+				/**
+		*
+		*/
 
-        public function qdProcesVerbal() {
-            return array(
-                'fields' => array(
-                    'Sanctionrendezvousep58.id',
-                    'Sanctionrendezvousep58.dossierep_id',
-                    'Sanctionrendezvousep58.rendezvous_id',
-                    'Sanctionrendezvousep58.commentaire',
-                    'Sanctionrendezvousep58.created',
-                    'Sanctionrendezvousep58.modified',
-                    //
-                    'Decisionsanctionrendezvousep58.id',
-                    'Decisionsanctionrendezvousep58.etape',
-                    'Decisionsanctionrendezvousep58.decision',
-                    'Decisionsanctionrendezvousep58.commentaire',
-                    'Decisionsanctionrendezvousep58.created',
-                    'Decisionsanctionrendezvousep58.modified',
-                    'Decisionsanctionrendezvousep58.raisonnonpassage',
-                ),
-                'joins' => array(
-                    array(
-                        'table'      => 'sanctionsrendezvouseps58',
-                        'alias'      => 'Sanctionrendezvousep58',
-                        'type'       => 'LEFT OUTER',
-                        'foreignKey' => false,
-                        'conditions' => array( 'Sanctionrendezvousep58.dossierep_id = Dossierep.id' ),
-                    ),
-                    array(
-                        'table'      => 'decisionssanctionsrendezvouseps58',
-                        'alias'      => 'Decisionsanctionrendezvousep58',
-                        'type'       => 'LEFT OUTER',
-                        'foreignKey' => false,
-                        'conditions' => array(
-                            'Decisionsanctionrendezvousep58.passagecommissionep_id = Passagecommissionep.id',
-                            'Decisionsanctionrendezvousep58.etape' => 'ep'
-                        ),
-                    ),
-                )
-            );
-        }
-
-        /**
-        *    Récupération des informations propres au dossier devant passer en EP
-        *   avant liaison avec la commission d'EP
-        */
-        /*public function getCourrierInformationPdf( $dossierep_id ) {
-            $gedooo_data = $this->find(
-                'first',
-                array(
-                    'conditions' => array( 'Dossierep.id' => $dossierep_id ),
-                    'contain' => array(
-                        'Dossierep' => array(
-                            'Personne'
-                        ),
-                        'Rendezvous' => array(
-                            'Typerdv'
-                        )
-                    )
-                )
-            );
-            return $this->ged( $gedooo_data, "{$this->alias}/courrierinformationavantep.odt" );
-        }*/
+		public function qdProcesVerbal() {
+			return array(
+				'fields' => array(
+					'Sanctionrendezvousep58.id',
+					'Sanctionrendezvousep58.dossierep_id',
+					'Sanctionrendezvousep58.rendezvous_id',
+					'Sanctionrendezvousep58.commentaire',
+					'Sanctionrendezvousep58.created',
+					'Sanctionrendezvousep58.modified',
+					//
+					'Decisionsanctionrendezvousep58.id',
+					'Decisionsanctionrendezvousep58.etape',
+					'Decisionsanctionrendezvousep58.decision',
+					'Decisionsanctionrendezvousep58.commentaire',
+					'Decisionsanctionrendezvousep58.created',
+					'Decisionsanctionrendezvousep58.modified',
+					'Decisionsanctionrendezvousep58.raisonnonpassage',
+				),
+				'joins' => array(
+					array(
+						'table'      => 'sanctionsrendezvouseps58',
+						'alias'      => 'Sanctionrendezvousep58',
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array( 'Sanctionrendezvousep58.dossierep_id = Dossierep.id' ),
+					),
+					array(
+						'table'      => 'decisionssanctionsrendezvouseps58',
+						'alias'      => 'Decisionsanctionrendezvousep58',
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array(
+							'Decisionsanctionrendezvousep58.passagecommissionep_id = Passagecommissionep.id',
+							'Decisionsanctionrendezvousep58.etape' => 'ep'
+						),
+					),
+				)
+			);
+		}
 
 		/**
 		* Récupération du courrier de convocation à l'allocataire pour un passage
@@ -287,9 +259,9 @@
 		}
 
 		/**
-		 * Fonction retournant ce qui va aller dans un contain permettant de retrouver la liste des
-		 * dossierseps liés à une commission
-		 */
+		* Fonction retournant ce qui va aller dans un contain permettant de retrouver la liste des
+		* dossierseps liés à une commission
+		*/
 		public function qdContainListeDossier() {
 			return array(
 				'Dossierep' => array(
@@ -310,8 +282,8 @@
 		}
 
 		/**
-		 * Fonction retournant un querydata qui va permettre de retrouver des dossiers d'EP
-		 */
+		* Fonction retournant un querydata qui va permettre de retrouver des dossiers d'EP
+		*/
 		public function qdListeDossier( $commissionep_id = null ) {
 			return array(
 				'fields' => array(

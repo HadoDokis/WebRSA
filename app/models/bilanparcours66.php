@@ -777,8 +777,7 @@
 			);
 
 			$data = $this->find( 'first', $queryData );
-// debug($data);
-// die();
+
 			$data['Personne']['qual'] = Set::enum( $data['Personne']['qual'], $qual );
 			$data['Adresse']['typevoie'] = Set::enum( $data['Adresse']['typevoie'], $typevoie );
 
@@ -790,7 +789,6 @@
 		*/
 
 		public function getPdfCourrierInformation( $id ) {
-
 			$gedooo_data = $this->getDataForPdf( $id );
 			$this->updateAll(
 				array( 'Bilanparcours66.datecourrierimpression' => "'".date( 'Y-m-d' )."'" ),
@@ -802,6 +800,5 @@
 
 			return $this->ged( $gedooo_data, 'Bilanparcours/courrierinformationavantep.odt'/*, true, $options*/ );
 		}
-
 	}
 ?>

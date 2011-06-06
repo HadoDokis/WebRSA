@@ -375,29 +375,6 @@
 		}
 
 		/**
-		*    Récupération des informations propres au dossier devant passer en EP
-		*   avant liaison avec la commission d'EP
-		*/
-		/*public function getCourrierInformationPdf( $dossierep_id ) {
-			$gedooo_data = $this->find(
-				'first',
-				array(
-					'conditions' => array( 'Dossierep.id' => $dossierep_id ),
-					'contain' => array(
-						'Dossierep' => array(
-							'Personne'
-						),
-						'Contratinsertion' => array(
-							'Structurereferente',
-						)
-					)
-				)
-			);
-            $modeleParent = get_parent_class( $this->alias );
-			return $this->ged( $gedooo_data, "{$modeleParent}/courrierinformationavantep.odt" );
-		}*/
-
-		/**
 		* Récupération du courrier de convocation à l'allocataire pour un passage
 		* en commission donné.
 		* FIXME: spécifique par thématique
@@ -421,8 +398,8 @@
 		}
 
 		/**
-		 * Fonction retournant un querydata qui va permettre de retrouver des dossiers d'EP
-		 */
+		* Fonction retournant un querydata qui va permettre de retrouver des dossiers d'EP
+		*/
 		public function qdListeDossier( $commissionep_id = null ) {
 			return array(
 				'fields' => array(

@@ -1953,17 +1953,6 @@
 			$dataFiche = Set::merge( $dossierep, $fichessynthetiques );
 
 			$options['Foyer']['sitfam'] = ClassRegistry::init( 'Option' )->sitfam();
-			
-// debug($dataFiche );
-// die();
-
-/*
-			return $this->ged(
-				$convocation,
-				"{$this->alias}/convocationep_participant.odt",
-				false,
-				$options
-			);*/
 
 			return $this->ged(
 				$dataFiche,

@@ -81,26 +81,10 @@
 			),
 		);
 
-// 		public $hasMany = array(
-// 			'Decisionreorientationep93' => array(
-// 				'className' => 'Decisionreorientationep93',
-// 				'foreignKey' => 'reorientationep93_id',
-// 				'dependent' => true,
-// 				'conditions' => '',
-// 				'fields' => '',
-// 				'order' => '',
-// 				'limit' => '',
-// 				'offset' => '',
-// 				'exclusive' => '',
-// 				'finderQuery' => '',
-// 				'counterQuery' => ''
-// 			),
-// 		);
-
 		/**
-		 * Retourne pour un personne_id donnée les queryDatas permettant de retrouver
-		 * ses réorientationseps93 si elle en a en cours
-		 */
+		* Retourne pour un personne_id donnée les queryDatas permettant de retrouver
+		* ses réorientationseps93 si elle en a en cours
+		*/
 		
 		public function qdReorientationEnCours( $personne_id ) {
 			return array(
@@ -251,16 +235,7 @@
 							)
 						)
 					),
-					'contain' => false /*array(
-						'Dossierep' => array(
-							'Decisionreorientationep93' => array(
-								'conditions' => array(
-									'Decisionreorientationep93.etape' => $etape
-								)
-							)
-						),
-						'Orientstruct'
-					)*/
+					'contain' => false
 				)
 			);
 			
@@ -329,17 +304,14 @@
 						)
 					);
 				}
-
-				// FIXME: à continuer
-				//$success = $this->generatePdfDecisionEp( $dossierep['Dossierep']['id'] ) && $success;
 			}
 
 			return $success;
 		}
 
 		/**
-		 * INFO: Fonction inutile dans cette saisine donc elle retourne simplement true
-		 */
+		* INFO: Fonction inutile dans cette saisine donc elle retourne simplement true
+		*/
 
 		public function verrouiller( $commissionep_id, $etape ) {
 			return true;
@@ -368,20 +340,6 @@
 			}
 
 			return array(
-				/*'fields' => array(
-					'Personne.qual',
-					'Personne.nom',
-					'Personne.prenom',
-					'Personne.dtnai',
-					'Adresse.numvoie',
-					'Adresse.typevoie',
-					'Adresse.nomvoie',
-					'Dossierep.created',
-					'Decisionreorientationep93.id',
-					'Decisionreorientationep93.decision',
-					'Decisionreorientationep93.typeorient_id',
-					'Decisionreorientationep93.structurereferente_id',
-				),*/
 				'conditions' => array(
 					'Dossierep.themeep' => Inflector::tableize( $this->alias ),
 					'Dossierep.id IN ( '.
@@ -752,28 +710,6 @@
 			);
 		}
 
-
-        /**
-        *    Récupération des informations propres au dossier devant passer en EP
-        *   avant liaison avec la commission d'EP
-        */
-        /*public function getCourrierInformationPdf( $dossierep_id ) {
-            $gedooo_data = $this->find(
-                'first',
-                array(
-                    'conditions' => array( 'Dossierep.id' => $dossierep_id ),
-                    'contain' => array(
-                        'Dossierep' => array(
-                            'Personne'
-                        ),
-                        'Typeorient',
-                        'Structurereferente',
-                    )
-                )
-            );
-            return $this->ged( $gedooo_data, "{$this->alias}/courrierinformationavantep.odt" );
-        }*/
-
 		/**
 		* Récupération du courrier de convocation à l'allocataire pour un passage
 		* en commission donné.
@@ -798,8 +734,9 @@
 		}
 
 		/**
-		 * Fonction retournant un querydata qui va permettre de retrouver des dossiers d'EP
-		 */
+		* Fonction retournant un querydata qui va permettre de retrouver des dossiers d'EP
+		*/
+
 		public function qdListeDossier( $commissionep_id = null ) {
 			return array(
 				'fields' => array(

@@ -20,11 +20,6 @@
 		public $actsAs = array(
 			'Autovalidate',
 			'ValidateTranslate',
-// 			'Formattable' => array(
-// 				'suffix' => array(
-// 					'structurereferente_id'
-// 				)
-// 			),
 			'Enumerable' => array(
 				'fields' => array(
 					'origine',
@@ -174,29 +169,6 @@
 				)
 			);
 		}
-		
-        /**
-        *    Récupération des informations propres au dossier devant passer en EP
-        *   avant liaison avec la commission d'EP
-        */
-		/*public function getCourrierInformationPdf( $dossierep_id ) {
-            $gedooo_data = $this->find(
-                'first',
-                array(
-                    'conditions' => array( 'Dossierep.id' => $dossierep_id ),
-                    'contain' => array(
-                        'Dossierep' => array(
-                            'Personne'
-                        ),
-                        'Bilanparcours66',
-                        'Contratinsertion',
-                        'Orientstruct'
-                    )
-                )
-            );
-
-            return $this->ged( $gedooo_data, "{$this->alias}/{$gedooo_data[$this->alias]['origine']}_courrierinformationavantep.odt" );
-		}*/
 
 		/**
 		*
@@ -640,10 +612,10 @@
 				$queryData['conditions'][] = array( 'Adresse.locaadr ILIKE' => $this->wildcard( $locaadr ) );
 			}
 			if ( !empty( $numcomptt ) ) {
-                $queryData['conditions'][] = array( 'Adresse.numcomptt' => $numcomptt );
+				$queryData['conditions'][] = array( 'Adresse.numcomptt' => $numcomptt );
 			}
 
-            /// Critères sur l'adresse - canton
+			/// Critères sur l'adresse - canton
 			if( Configure::read( 'CG.cantons' ) ) {
 				if( isset($canton ) && !empty( $canton ) ) {
 					$this->Canton = ClassRegistry::init( 'Canton' );
@@ -652,12 +624,12 @@
 			}
 
 			if ( !empty( $identifiantpe ) ) {
-                $queryData['conditions'][] = array( 'Historiqueetatpe.identifiantpe' => $identifiantpe );
-            }
-            if( $filtre_zone_geo ) {
-                $mesCodesInsee = ( !empty( $mesCodesInsee ) ? $mesCodesInsee : '0' );
-                $queryData['conditions'][] = 'Adresse.numcomptt IN ( \''.implode( '\', \'', $mesCodesInsee ).'\' )';
-            }
+				$queryData['conditions'][] = array( 'Historiqueetatpe.identifiantpe' => $identifiantpe );
+			}
+			if( $filtre_zone_geo ) {
+				$mesCodesInsee = ( !empty( $mesCodesInsee ) ? $mesCodesInsee : '0' );
+				$queryData['conditions'][] = 'Adresse.numcomptt IN ( \''.implode( '\', \'', $mesCodesInsee ).'\' )';
+			}
 
 			return $queryData;
 		}
@@ -678,48 +650,6 @@
 			return $queryData;
 		}
 
-		/*public function qdNonInscrits( $datas = array() ) {
-			$queryData = $this->_qdSelection( $datas );
-			// FIXME: à pouvoir paramétrer dans le webrsa.inc
-			// FIXME: et qui ne sont pas passés dans une EP pour ce motif depuis au moins 1 mois (?)
-			$queryData['conditions'][] = 'Orientstruct.date_valid > \''.date( 'Y-m-d', strtotime( '-2 month' ) ).'\'';
-			$queryData['conditions'][] = 'Personne.id NOT IN (
-					SELECT
-							personnes.id
-						FROM informationspe
-							INNER JOIN historiqueetatspe ON (
-								informationspe.id = historiqueetatspe.informationpe_id
-								AND historiqueetatspe.id IN (
-											SELECT h.id
-												FROM historiqueetatspe AS h
-												WHERE h.informationpe_id = informationspe.id
-												ORDER BY h.date DESC
-												LIMIT 1
-								)
-							)
-							INNER JOIN personnes ON (
-								(
-									personnes.nir IS NOT NULL
-									AND informationspe.nir IS NOT NULL
-									AND personnes.nir = informationspe.nir
-								)
-								OR (
-									personnes.nom = informationspe.nom
-									AND personnes.prenom = informationspe.prenom
-									AND personnes.dtnai = informationspe.dtnai
-								)
-							)
-						WHERE
-							personnes.id = Personne.id
-							AND historiqueetatspe.etat = \'inscription\'
-							AND historiqueetatspe.date >= Orientstruct.date_valid
-				)';
-
-			$queryData['order'] = array( 'Orientstruct.date_valid ASC' );
-
-			return $queryData;
-		}*/
-
 		/**
 		*
 		*/
@@ -735,53 +665,6 @@
 
 			return $queryData;
 		}
-
-		/*public function qdRadies( $datas ) {
-			// FIXME: et qui ne sont pas passés dans une EP pour ce motif depuis au moins 1 mois (?)
-			$queryData = $this->_qdSelection( $datas );
-			$queryData['joins'][] = array(
-				'table'      => 'informationspe', // FIXME:
-				'alias'      => 'Informationpe',
-				'type'       => 'INNER',
-				'foreignKey' => false,
-				'conditions' => array(
-					'OR' => array(
-						array(
-							'Informationpe.nir IS NOT NULL',
-							'Personne.nir IS NOT NULL',
-							'Informationpe.nir = Personne.nir',
-						),
-						array(
-							'Informationpe.nom = Personne.nom',
-							'Informationpe.prenom = Personne.prenom',
-							'Informationpe.dtnai = Personne.dtnai',
-						)
-					)
-				)
-			);
-			$queryData['joins'][] = array(
-				'table'      => 'historiqueetatspe', // FIXME:
-				'alias'      => 'Historiqueetatpe',
-				'type'       => 'INNER',
-				'foreignKey' => false,
-				'conditions' => array(
-					'Historiqueetatpe.informationpe_id = Informationpe.id',
-					'Historiqueetatpe.id IN (
-								SELECT h.id
-									FROM historiqueetatspe AS h
-									WHERE h.informationpe_id = Informationpe.id
-									ORDER BY h.date DESC
-									LIMIT 1
-					)'
-				)
-			);
-
-			// FIXME: seulement pour certains motifs
-			$queryData['conditions']['Historiqueetatpe.etat'] = 'radiation';
-			$queryData['order'] = array( 'Historiqueetatpe.date ASC' );
-
-			return $queryData;
-		}*/
 
 		/**
 		*
@@ -858,8 +741,8 @@
 		}
 
 		/**
-		 * Fonction retournant un querydata qui va permettre de retrouver des dossiers d'EP
-		 */
+		* Fonction retournant un querydata qui va permettre de retrouver des dossiers d'EP
+		*/
 		public function qdListeDossier( $commissionep_id = null ) {
 			return array(
 				'fields' => array(

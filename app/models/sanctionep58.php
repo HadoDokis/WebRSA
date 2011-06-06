@@ -20,11 +20,6 @@
 		public $actsAs = array(
 			'Autovalidate',
 			'ValidateTranslate',
-// 			'Formattable' => array(
-// 				'suffix' => array(
-// 					'structurereferente_id'
-// 				)
-// 			),
 			'Enumerable' => array(
 				'fields' => array(
 					'origine',
@@ -43,35 +38,7 @@
 				'fields' => '',
 				'order' => ''
 			),
-// 			'Contratinsertion' => array(
-// 				'className' => 'Contratinsertion',
-// 				'foreignKey' => 'contratinsertion_id',
-// 				'conditions' => '',
-// 				'fields' => '',
-// 				'order' => ''
-// 			),
-// 			'Historiqueetatpe' => array(
-// 				'className' => 'Historiqueetatpe',
-// 				'foreignKey' => 'historiqueetatpe_id',
-// 				'conditions' => '',
-// 				'fields' => '',
-// 				'order' => ''
-// 			)
 		);
-
-		/**
-		*
-		*/
-		/*public function containQueryData() {
-			return array(
-				'Sanctionep58' => array(
-					'Decisionsaisinebilanparcoursep66'=>array(
-						'Typeorient',
-						'Structurereferente'
-					),
-				)
-			);
-		}*/
 
 		/**
 		* FIXME: et qui n'ont pas de dossier EP en cours de traitement pour cette thématique
@@ -278,16 +245,6 @@
 			$queryData = $this->_qdSelection( 'noninscritpe' );
 			$qdNonInscrits = $this->Historiqueetatpe->Informationpe->qdNonInscrits();
 			$queryData['fields'] = array_merge( $queryData['fields'] ,$qdNonInscrits['fields'] );
-
-			/*$queryData['joins'][] = array(
-				'table'      => 'orientsstructs',
-				'alias'      => 'Orientstruct',
-				'type'       => 'INNER',
-				'foreignKey' => false,
-				'conditions' => array(
-					'Personne.id = Orientstruct.personne_id'
-				)
-			);*/
 			$queryData['joins'] = array_merge( $queryData['joins'] ,$qdNonInscrits['joins'] );
 
 			$queryData['conditions'] = array_merge( $queryData['conditions'] ,$qdNonInscrits['conditions'] );
@@ -528,73 +485,51 @@
 			// Aucune action utile ?
 			return true;
 		}
-        /**
-        *
-        */
+		/**
+		*
+		*/
 
-        public function qdProcesVerbal() {
-            return array(
-                'fields' => array(
-                    'Sanctionep58.id',
-                    'Sanctionep58.dossierep_id',
-                    'Sanctionep58.origine',
-                    'Sanctionep58.commentaire',
-                    'Sanctionep58.created',
-                    'Sanctionep58.modified',
-                    //
-                    'Decisionsanctionep58.id',
-                    'Decisionsanctionep58.listesanctionep58_id',
-                    'Decisionsanctionep58.etape',
-                    'Decisionsanctionep58.decision',
-                    'Decisionsanctionep58.commentaire',
-                    'Decisionsanctionep58.created',
-                    'Decisionsanctionep58.modified',
-                    'Decisionsanctionep58.raisonnonpassage',
+		public function qdProcesVerbal() {
+			return array(
+				'fields' => array(
+					'Sanctionep58.id',
+					'Sanctionep58.dossierep_id',
+					'Sanctionep58.origine',
+					'Sanctionep58.commentaire',
+					'Sanctionep58.created',
+					'Sanctionep58.modified',
+					//
+					'Decisionsanctionep58.id',
+					'Decisionsanctionep58.listesanctionep58_id',
+					'Decisionsanctionep58.etape',
+					'Decisionsanctionep58.decision',
+					'Decisionsanctionep58.commentaire',
+					'Decisionsanctionep58.created',
+					'Decisionsanctionep58.modified',
+					'Decisionsanctionep58.raisonnonpassage',
 
-                ),
-                'joins' => array(
-                    array(
-                        'table'      => 'sanctionseps58',
-                        'alias'      => 'Sanctionep58',
-                        'type'       => 'LEFT OUTER',
-                        'foreignKey' => false,
-                        'conditions' => array( 'Sanctionep58.dossierep_id = Dossierep.id' ),
-                    ),
-                    array(
-                        'table'      => 'decisionssanctionseps58',
-                        'alias'      => 'Decisionsanctionep58',
-                        'type'       => 'LEFT OUTER',
-                        'foreignKey' => false,
-                        'conditions' => array(
-                            'Decisionsanctionep58.passagecommissionep_id = Passagecommissionep.id',
-                            'Decisionsanctionep58.etape' => 'ep'
-                        ),
-                    )
-                )
-            );
-        }
-
-
-        /**
-        *    Récupération des informations propres au dossier devant passer en EP
-        *   avant liaison avec la commission d'EP
-        */
-        /*public function getCourrierInformationPdf( $dossierep_id ) {
-            $gedooo_data = $this->find(
-                'first',
-                array(
-                    'conditions' => array( 'Dossierep.id' => $dossierep_id ),
-                    'contain' => array(
-                        'Dossierep' => array(
-                            'Personne'
-                        ),
-                        'Listesanctionep58'
-                    )
-                )
-            );
-// debug($gedooo_data);
-            return $this->ged( $gedooo_data, "{$this->alias}/{$gedooo_data[$this->alias]['origine']}_courrierinformationavantep.odt" );
-        }*/
+				),
+				'joins' => array(
+					array(
+						'table'      => 'sanctionseps58',
+						'alias'      => 'Sanctionep58',
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array( 'Sanctionep58.dossierep_id = Dossierep.id' ),
+					),
+					array(
+						'table'      => 'decisionssanctionseps58',
+						'alias'      => 'Decisionsanctionep58',
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array(
+							'Decisionsanctionep58.passagecommissionep_id = Passagecommissionep.id',
+							'Decisionsanctionep58.etape' => 'ep'
+						),
+					)
+				)
+			);
+		}
 
 		/**
 		* Récupération du courrier de convocation à l'allocataire pour un passage
@@ -620,8 +555,8 @@
 		}
 
 		/**
-		 * Fonction retournant un querydata qui va permettre de retrouver des dossiers d'EP
-		 */
+		* Fonction retournant un querydata qui va permettre de retrouver des dossiers d'EP
+		*/
 		public function qdListeDossier( $commissionep_id = null ) {
 			return array(
 				'fields' => array(

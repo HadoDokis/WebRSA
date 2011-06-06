@@ -1,4 +1,6 @@
 <?php
+	App::import( 'Core', 'HttpSocket' );
+
 	/**
 	* Classe de vérification de l'installation et du paramétrage de WebRSA.
 	*/
@@ -24,6 +26,23 @@
 			$this->set( 'checkModelesOdtParametrables', $this->_checkModelesOdtParametrables() );
 			$this->set( 'checkExtensions', $this->_checkExtensions() );
 			$this->set( 'checkInis', $this->_checkInis() );
+			$this->set( 'checkGedooo', $this->_checkGedooo() );
+		}
+
+		/**
+		* Vérification de l'état du serveur Gedooo
+		*/
+
+		protected function _checkGedooo() {
+			$HttpSocket = new HttpSocket();
+			$result = $HttpSocket->get( GEDOOO_WSDL );
+
+			$response = array(
+				'status' => ( $HttpSocket->response['status']['code'] == 200 ),
+				'content-type' => ( $HttpSocket->response['header']['Content-Type'] == 'text/xml' ),
+			);
+
+			return $response;
 		}
 
 		/**
@@ -162,8 +181,6 @@
 				'APRE/apre.odt',								// app/controllers/gedooos_controller.php:889
 				'Candidature/fichecandidature.odt',				// app/controllers/actionscandidats_personnes_controller.php:588
 				'PDO/propositiondecision.odt',					// app/models/decisionpropopdo.php:250
-				'Commissionep/pv.odt',							// app/models/commissionep.php:513
-				'Commissionep/ordedujour.odt',					// app/models/commissionep.php:626
 			);
 
 			if( Configure::read( 'Cg.departement' ) == 58 ) {
@@ -173,13 +190,71 @@
 				$modeles[] = 'APRE/accordaide.odt';								// app/controllers/apres66_controller.php:705
 				$modeles[] = 'APRE/refusaide.odt';								// app/controllers/apres66_controller.php:709
 				$modeles[] = 'APRE/Relanceapre/relanceapre.odt';				// app/controllers/gedooos_controller.php:991
-				$modeles[] = 'Bilanparcours/courrierinformationavantep.odt';	// app/models/bilanparcours66.php:717
 				$modeles[] = 'Bilanparcours/bilanparcours.odt';					// app/models/bilanparcours66.php:582
 			}
 			else {
 				$modeles[] = 'APRE/apreforfaitaire.odt';						// app/controllers/etatsliquidatifs_controller.php:481 et app/controllers/etatsliquidatifs_controller.php:361
 			}
 
+			// Vérification des modèles nécessaires aux EPs
+			$modeles = Set::merge(
+				$modeles,
+				array(
+					'Convocationep/pv.odt',																	// app/models/commissionep.php:941
+					'Convocationep/ordedujour.odt',															// app/models/commissionep.php:1123
+					'Convocationep/convocationep_participant.odt',											// app/models/commissionep.php:1388
+					'Convocationep/ordredujour_participant_'.Configure::read( 'Cg.departement' ).'.odt',	// app/models/commissionep.php:1681
+					'Commissionep/decisionep.odt',															// app/models/commissionep.php:1822
+					'Commissionep/fichesynthese.odt',														// app/models/commissionep.php:1959
+					'Commissionep/convocationep_beneficiaire.odt',											// Dans chacun des modèles des thématiques
+				)
+			);
+
+			if( Configure::read( 'Cg.departement' ) == 58 ) {
+				$modeles = Set::merge(
+					$modeles,
+					array(
+					)
+				);
+			}
+			else if( Configure::read( 'Cg.departement' ) == 66 ) {
+				$modeles = Set::merge(
+					$modeles,
+					array(
+						'Bilanparcours/courrierinformationavantep.odt',										// app/models/bilanparcours66.php:801
+					)
+				);
+			}
+			else if( Configure::read( 'Cg.departement' ) == 93 ) {
+				$modeles = Set::merge(
+					$modeles,
+					array(
+						'Relancenonrespectsanctionep93/notification_contratinsertion_relance1.odt',			// app/models/relancenonrespectsanctionep93.php:1448
+						'Relancenonrespectsanctionep93/notification_contratinsertion_relance2.odt',
+						'Relancenonrespectsanctionep93/notification_orientstruct_relance1.odt',
+						'Relancenonrespectsanctionep93/notification_orientstruct_relance2.odt',
+						'Relancenonrespectsanctionep93/notification_orientstruct_relance3.odt',
+						'Nonrespectsanctionep93/convocationep_beneficiaire_1er_passage.odt', 				// app/models/nonrespectsanctionep93.php:699
+						'Nonrespectsanctionep93/convocationep_beneficiaire_2eme_passage_suite_delai.odt', 	// app/models/nonrespectsanctionep93.php:771
+						'Nonrespectsanctionep93/convocationep_beneficiaire_2eme_passage_suite_report.odt',	// app/models/nonrespectsanctionep93.php:774
+						'Nonrespectsanctionep93/convocationep_beneficiaire_2eme_passage.odt',				// app/models/nonrespectsanctionep93.php:777
+						'Nonrespectsanctionep93/decision_delai.odt',										// app/models/nonrespectsanctionep93.php:879
+						'Nonrespectsanctionep93/decision_reduction_pdv.odt',								// app/models/nonrespectsanctionep93.php:890-900
+						'Nonrespectsanctionep93/decision_reduction_ppae.odt',								// app/models/nonrespectsanctionep93.php:893-897
+						'Nonrespectsanctionep93/decision_maintien.odt',										// app/models/nonrespectsanctionep93.php:904
+						'Nonrespectsanctionep93/decision_suspensiontotale.odt',								// app/models/nonrespectsanctionep93.php:907
+						'Nonrespectsanctionep93/decision_suspensionpartielle.odt',							// app/models/nonrespectsanctionep93.php:910
+						'Nonrespectsanctionep93/decision_reporte.odt',										// app/models/nonrespectsanctionep93.php:913
+						'Nonrespectsanctionep93/decision_annule.odt',										// app/models/nonrespectsanctionep93.php:916
+						'Reorientationep93/decision_accepte.odt',											// app/models/reorientationep93.php:612
+						'Reorientationep93/decision_refuse.odt',											// app/models/reorientationep93.php:612
+						'Reorientationep93/decision_annule.odt',											// app/models/reorientationep93.php:612
+// 						'Reorientationep93/decision_reporte.odt',											// app/models/reorientationep93.php:612
+					)
+				);
+			}
+
+			// Vérification des fichiers sur le filesystem
 			foreach( $modeles as $modele ) {
 				$modele_notif_file = APP.DS.'vendors'.DS.'modelesodt'.DS.$modele;
 
