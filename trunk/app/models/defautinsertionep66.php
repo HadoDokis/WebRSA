@@ -167,7 +167,9 @@
 						'Historiqueetatpe'
 					),
 					'Passagecommissionep' => array(
-						'Decisiondefautinsertionep66'
+						'Decisiondefautinsertionep66' => array(
+							'order' => array( 'Decisiondefautinsertionep66.etape DESC' )
+						)
 					)
 				)
 			);
