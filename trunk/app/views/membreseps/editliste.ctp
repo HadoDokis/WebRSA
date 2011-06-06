@@ -11,7 +11,6 @@
 	}
 ?>
 	<h1><?php echo $this->pageTitle;?></h1>
-	
 	<?php echo $xform->create( 'Membreep', array( 'type' => 'post', 'url' => '/membreseps/editliste/'.$seance_id ) ); ?>
 		<div class="aere">
 			<fieldset>
@@ -30,8 +29,8 @@
 							)
 						);
 
-						foreach($membres as $membre) {
-							if ($membre['Membreep']['fonctionmembreep_id']==$fonction['Fonctionmembreep']['id']) {
+						foreach( $membres as $membre ) {
+							if ( $membre['Membreep']['fonctionmembreep_id'] == $fonction['Fonctionmembreep']['id'] ) {
 								echo $html->tag(
 									'tr',
 									$html->tag(
@@ -41,13 +40,12 @@
 									$html->tag(
 										'td',
 										$form->input(
-											'CommissionepMembreep.Membreep_id.'.$membre['Membreep']['id'].'.reponse',
+											'CommissionepMembreep.'.$membre['Membreep']['id'].'.reponse',
 											array(
-												'type'=>'select',
-												'label'=>false,
-												'default'=>'nonrenseigne',
-												'options'=>$options['CommissionepMembreep']['reponse'],
-												'value' => $membre['CommissionepMembreep']['reponse']
+												'type' => 'select',
+												'label' => false,
+												'default' => 'nonrenseigne',
+												'options' => $options['CommissionepMembreep']['reponse']
 											)
 										),
 										array(
@@ -56,7 +54,7 @@
 									).
 									$html->tag(
 										'td',
-										$form->input( 'CommissionepMembreep.Membreep_id.'.$membre['Membreep']['id'].'.suppleant_id', array( 'label' => false, 'type' => 'select', 'options' => @$membres_fonction[$membre['Membreep']['fonctionmembreep_id']] ) )
+										$form->input( 'CommissionepMembreep.'.$membre['Membreep']['id'].'.reponsesuppleant_id', array( 'label' => false, 'type' => 'select', 'options' => @$membres_fonction[$membre['Membreep']['fonctionmembreep_id']] ) )
 // 				        				implode(' ', array($membre['Suppleant']['qual'], $membre['Suppleant']['nom'], $membre['Suppleant']['prenom']))
 									)
 								);
@@ -87,7 +85,7 @@
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
 		<?php foreach( $membres as $membre ) { ?>
-			$( 'CommissionepMembreepMembreep_id<?php echo $membre['Membreep']['id'] ?>Reponse' ).observe( 'change', function() {
+			$( 'CommissionepMembreep<?php echo $membre['Membreep']['id'] ?>Reponse' ).observe( 'change', function() {
 				checkPresence( <?php echo $membre['Membreep']['id'] ?> );
 			} );
 			checkPresence( <?php echo $membre['Membreep']['id'] ?> );
@@ -95,15 +93,15 @@
 	} );
 	
 	function checkPresence( id ) {
-		if ( $( 'CommissionepMembreepMembreep_id'+id+'Reponse' ).getValue() == 'remplacepar' ) {
+		if ( $( 'CommissionepMembreep'+id+'Reponse' ).getValue() == 'remplacepar' ) {
 			$( 'reponse_membre_'+id ).writeAttribute('colspan', 1);
-			$( 'CommissionepMembreepMembreep_id'+id+'SuppleantId' ).writeAttribute( 'disabled', false );
-			$( 'CommissionepMembreepMembreep_id'+id+'SuppleantId' ).up('td').show();
+			$( 'CommissionepMembreep'+id+'ReponsesuppleantId' ).writeAttribute( 'disabled', false );
+			$( 'CommissionepMembreep'+id+'ReponsesuppleantId' ).up('td').show();
 		}
 		else {
 			$( 'reponse_membre_'+id ).writeAttribute('colspan', 2);
-			$( 'CommissionepMembreepMembreep_id'+id+'SuppleantId' ).writeAttribute( 'disabled', 'disabled' );
-			$( 'CommissionepMembreepMembreep_id'+id+'SuppleantId' ).up('td').hide();
+			$( 'CommissionepMembreep'+id+'ReponsesuppleantId' ).writeAttribute( 'disabled', 'disabled' );
+			$( 'CommissionepMembreep'+id+'ReponsesuppleantId' ).up('td').hide();
 		}
 	}
 </script>
