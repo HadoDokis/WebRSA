@@ -43,20 +43,20 @@
 				'fields' => '',
 				'order' => ''
 			),
-			'Contratinsertion' => array(
-				'className' => 'Contratinsertion',
-				'foreignKey' => 'contratinsertion_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
-			),
-			'Historiqueetatpe' => array(
-				'className' => 'Historiqueetatpe',
-				'foreignKey' => 'historiqueetatpe_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
-			)
+// 			'Contratinsertion' => array(
+// 				'className' => 'Contratinsertion',
+// 				'foreignKey' => 'contratinsertion_id',
+// 				'conditions' => '',
+// 				'fields' => '',
+// 				'order' => ''
+// 			),
+// 			'Historiqueetatpe' => array(
+// 				'className' => 'Historiqueetatpe',
+// 				'foreignKey' => 'historiqueetatpe_id',
+// 				'conditions' => '',
+// 				'fields' => '',
+// 				'order' => ''
+// 			)
 		);
 
 		/**
@@ -303,6 +303,7 @@
 		public function qdRadies() {
 			// FIXME: et qui ne sont pas passés dans une EP pour ce motif depuis au moins 1 mois (?)
 			$queryData = $this->_qdSelection( 'radiepe' );
+			$this->Historiqueetatpe = ClassRegistry::init( 'Historiqueetatpe' );
 			$qdRadies = $this->Historiqueetatpe->Informationpe->qdRadies();
 			$queryData['fields'] = array_merge( $queryData['fields'] ,$qdRadies['fields'] );
 			$queryData['joins'] = array_merge( $queryData['joins'] ,$qdRadies['joins'] );
