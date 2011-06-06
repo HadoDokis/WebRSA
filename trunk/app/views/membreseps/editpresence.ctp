@@ -114,17 +114,31 @@
 	<?php echo $xform->end( 'Enregistrer' );?>
 
 	<?php
-		echo $default->button(
-			'back',
-			array(
-				'controller' => 'commissionseps',
-				'action'     => 'view',
-				$seance_id
-			),
-			array(
-				'id' => 'Back'
-			)
-		);
+		if ( COnfigure::read( 'Cg.departement' ) == 93 ) {
+			echo $default->button(
+				'back',
+				array(
+					'controller' => 'commissionseps',
+					'action'     => 'arbitrageep'
+				),
+				array(
+					'id' => 'Back'
+				)
+			);
+		}
+		else {
+			echo $default->button(
+				'back',
+				array(
+					'controller' => 'commissionseps',
+					'action'     => 'view',
+					$seance_id
+				),
+				array(
+					'id' => 'Back'
+				)
+			);
+		}
 	?>
 
 <script type="text/javascript">
