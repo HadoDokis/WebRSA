@@ -89,6 +89,7 @@
                 'Contactpartenaire' => ClassRegistry::init( 'Contactpartenaire' )->find( 'count' )
             );
             $this->set( compact( 'compteurs' ) );
+            $this->render( $this->action, null, 'indexparams_'.Configure::read( 'ActioncandidatPersonne.suffixe' ) );
 		}
 
 		/**
