@@ -49,80 +49,70 @@
             $details = array();
 
             // Dernier passage effectif (lié à un passagecommissionep)
-            $tdossierEp = $this->Dossier->Foyer->Personne->Dossierep->find(
+            $tpassageEp = $this->Dossier->Foyer->Personne->Dossierep->Passagecommissionep->find(
                 'all',
                 array(
-                    'fields' => array(
-                        'Dossierep.themeep',
-                        'Commissionep.dateseance',
-                        'Passagecommissionep.id',
-                        'Passagecommissionep.commissionep_id',
-                        'Passagecommissionep.etatdossierep',
-                    ),
-                    'joins' => array(
-                        array(
-                            'table'      => 'passagescommissionseps',
-                            'alias'      => 'Passagecommissionep',
-                            'type'       => 'INNER',
-                            'foreignKey' => false,
-                            'conditions' => array( 'Passagecommissionep.dossierep_id = Dossierep.id' )
-                        ),
-                        array(
-                            'table'      => 'commissionseps',
-                            'alias'      => 'Commissionep',
-                            'type'       => 'INNER',
-                            'foreignKey' => false,
-                            'conditions' => array( 'Passagecommissionep.commissionep_id = Commissionep.id' )
-                        ),
-                    ),
                     'conditions' => array(
-                        'Dossierep.personne_id' => $personne_id
+                        'Passagecommissionep.dossierep_id IN ( '.$this->Dossier->Foyer->Personne->Dossierep->sq(
+                            array(
+                                'alias' => 'dossierseps',
+                                'fields' => array( 'dossierseps.id' ),
+                                'conditions' => array(
+                                    'dossierseps.personne_id' => $personne_id
+                                ),
+                                'contain' => false
+                            )
+                        ).' )'
                     ),
-                    'contain' => false,
-                    'order' => array(  )
+                    'contain' => array(
+                        'Dossierep' => array(
+                        )
+                    )
                 )
             );
 
             $decisionEP = array();
-            if( !empty( $tdossierEp ) ) {
-                $themeEP = Set::extract( $tdossierEp, '/Dossierep/themeep' );
-                foreach( $themeEP as $key => $theme ) {
-                    $modelTheme = Inflector::classify( Inflector::singularize( $theme ) );
-                    $modelDecision = 'Decision'.Inflector::singularize( $theme );
-                }
-                
-//                 debug($tdossierEp);
-                $commissionep_id = Set::classicExtract( $tdossierEp, 'Passagecommissionep.commissionep_id' );
-                $niveauDecision = Set::classicExtract( $tdossierEp, 'Passagecommissionep.etatdossierep' );
-                //FIXME: voir si en utilisant ceci cela ne fonctionne pas mieux
-// debug( $this->Dossier->Foyer->Personne->Dossierep->Passagecommissionep->Commissionep->dossiersParListe( $commissionep_id, $niveauDecision ) );
+            if( !empty( $tpassageEp ) ) {
 
+                foreach( $tpassageEp as $key => $passage ){
+// debug($passage);
+                    $modelTheme = Inflector::classify( Inflector::singularize( $passage['Dossierep']['themeep'] ) );
+                    $modelDecision = 'Decision'.Inflector::singularize( $passage['Dossierep']['themeep'] );
 
-                foreach( $tdossierEp as $key => $dossierep ){
+                    // Thématique
+                    $thematique = $this->Dossier->Foyer->Personne->Dossierep->{$modelTheme}->find(
+                        'first',
+                        array(
+                            'conditions' => array(
+                                "{$modelTheme}.dossierep_id" => $passage['Passagecommissionep']['dossierep_id']
+                            ),
+                            'contain' => false,
+                        )
+                    );
+                    $this->set( compact( 'thematique' ) );
 
-                    $decisionEP = $this->Dossier->Foyer->Personne->Dossierep->Passagecommissionep->{$modelDecision}->find(
+                    // Décisions par thème
+                    $decisionPassage = $this->Dossier->Foyer->Personne->Dossierep->Passagecommissionep->{$modelDecision}->find(
                         'all',
                         array(
                             'conditions' => array(
-                                "{$modelDecision}.passagecommissionep_id" => $dossierep['Passagecommissionep']['id']
+                                "{$modelDecision}.passagecommissionep_id" => $passage['Passagecommissionep']['id']
                             ),
                             'contain' => false,
-                            'order' => array( "{$modelDecision}.etape ASC" )
+                            'order' => array( "{$modelDecision}.created ASC" )
                         )
                     );
 
-                    $tdossierEp[$key][$modelDecision] = Set::classicExtract(  $decisionEP, "{n}.{$modelDecision}");
+                    $tpassageEp[$key] = Set::merge( $passage, $thematique, $decisionPassage  );
                 }
- 
-//                 $decisions = Set::merge( $decisionEP, $tdossierEp );
-                $this->set( 'decisions', $tdossierEp );
+                $this->set( 'decisions', $tpassageEp );
             }
 
             $this->set( 'personne_id', $personne_id );
             $this->_setOptions();
 
             $this->set( 'dossier_id', $dossier_id );
-            $this->set( 'tdossierEp', $tdossierEp );
+            $this->set( 'tpassageEp', $tpassageEp );
 
         }
 
