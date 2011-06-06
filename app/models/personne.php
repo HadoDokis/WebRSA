@@ -1027,6 +1027,7 @@
 						'Adresse.locaadr',
 						'Adresse.codepos',
 						'Adresse.nomvoie',
+						'Adresse.numcomptt',
 //                         'Modecontact.numtel',
 //                         'Modecontact.autorutitel',
 //                         'Modecontact.autorutiadrelec',
