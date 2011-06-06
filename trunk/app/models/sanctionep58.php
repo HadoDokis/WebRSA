@@ -377,17 +377,17 @@
 
 			$formData = array();
 			foreach( $datas as $key => $dossierep ) {
+				$formData[$this->alias][$key]['id'] = @$datas[$key][$this->alias]['id'];
+				$formData[$this->alias][$key]['dossierep_id'] = @$datas[$key][$this->alias]['dossierep_id'];
 				$formData['Decisionsanctionep58'][$key]['passagecommissionep_id'] = @$datas[$key]['Passagecommissionep'][0]['id'];
 
-				if( $niveauDecision == 'ep' ) {
-					if( isset( $datas[$key]['Passagecommissionep'][0]['Decisionsanctionep58'][0] ) ) { // Modification
-						$formData['Decisionsanctionep58'][$key]['id'] = @$datas[$key]['Passagecommissionep'][0]['Decisionsanctionep58'][0]['id'];
-						$formData['Decisionsanctionep58'][$key]['decision'] = @$datas[$key]['Passagecommissionep'][0]['Decisionsanctionep58'][0]['decision'];
-						$formData['Decisionsanctionep58'][$key]['raisonnonpassage'] = @$datas[$key]['Passagecommissionep'][0]['Decisionsanctionep58'][0]['raisonnonpassage'];
-						$formData['Decisionsanctionep58'][$key]['commentaire'] = @$datas[$key]['Passagecommissionep'][0]['Decisionsanctionep58'][0]['commentaire'];
-						$formData['Decisionsanctionep58'][$key]['listesanctionep58_id'] = @$datas[$key]['Passagecommissionep'][0]['Decisionsanctionep58'][0]['listesanctionep58_id'];
-					}
-					else {
+				// On modifie les enregistrements de cette étape
+				if( @$dossierep['Passagecommissionep'][0]['Decisionsanctionep58'][0]['etape'] == $niveauDecision ) {
+					$formData['Decisionsanctionep58'][$key] = @$dossierep['Passagecommissionep'][0]['Decisionsanctionep58'][0];
+				}
+				// On ajoute les enregistrements de cette étape
+				else {
+					if( $niveauDecision == 'ep' ) {
 						$nbdossierssanctions = $this->Dossierep->find(
 							'count',
 							array(
@@ -445,7 +445,6 @@
 					}
 				}
 			}
-
 			return $formData;
 		}
 

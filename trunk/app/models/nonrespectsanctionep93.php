@@ -227,28 +227,25 @@
 
 			$formData = array();
 			foreach( $datas as $key => $dossierep ) {
-				$formData['Nonrespectsanctionep93'][$key]['id'] = @$datas[$key]['Nonrespectsanctionep93']['id'];
-				$formData['Nonrespectsanctionep93'][$key]['dossierep_id'] = @$datas[$key]['Nonrespectsanctionep93']['dossierep_id'];
+				$formData[$this->alias][$key]['id'] = @$datas[$key][$this->alias]['id'];
+				$formData[$this->alias][$key]['dossierep_id'] = @$datas[$key][$this->alias]['dossierep_id'];
 				$formData['Decisionnonrespectsanctionep93'][$key]['passagecommissionep_id'] = @$datas[$key]['Passagecommissionep'][0]['id'];
 
 				// On modifie les enregistrements de cette étape
 				if( @$dossierep['Passagecommissionep'][0]['Decisionnonrespectsanctionep93'][0]['etape'] == $niveauDecision ) {
 					$formData['Decisionnonrespectsanctionep93'][$key] = @$dossierep['Passagecommissionep'][0]['Decisionnonrespectsanctionep93'][0];
 				}
-				// On ajoute les enregistrements de cette étape -> FIXME: manque les id ?
+				// On ajoute les enregistrements de cette étape
 				else {
 					if( $niveauDecision == 'ep' ) {
 						if( !empty( $datas[$key]['Passagecommissionep'][0]['Decisionnonrespectsanctionep93'][0] ) ) { // Modification
 							$formData['Decisionnonrespectsanctionep93'][$key]['decision'] = @$datas[$key]['Passagecommissionep'][0]['Decisionnonrespectsanctionep93'][0]['decision'];
 						}
-						else {
-							if( ( $dossierep['Personne']['Foyer']['nbenfants'] > 0 ) || ( $dossierep['Personne']['Foyer']['sitfam'] == 'MAR' ) ) {
-								$formData['Decisionnonrespectsanctionep93'][$key]['decision'] = '1maintien';
-							}
-							// FIXME: autre cas ?
+						elseif( ( $dossierep['Personne']['Foyer']['nbenfants'] > 0 ) || ( $dossierep['Personne']['Foyer']['sitfam'] == 'MAR' ) ) {
+							$formData['Decisionnonrespectsanctionep93'][$key]['decision'] = '1maintien';
 						}
 					}
-					else if( $niveauDecision == 'cg' ) {
+					elseif( $niveauDecision == 'cg' ) {
 						$formData['Decisionnonrespectsanctionep93'][$key]['decision'] = $dossierep['Passagecommissionep'][0]['Decisionnonrespectsanctionep93'][0]['decision'];
 						$formData['Decisionnonrespectsanctionep93'][$key]['decisionpcg'] = 'valide';
 						$formData['Decisionnonrespectsanctionep93'][$key]['raisonnonpassage'] = $dossierep['Passagecommissionep'][0]['Decisionnonrespectsanctionep93'][0]['raisonnonpassage'];

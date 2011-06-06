@@ -166,21 +166,20 @@
 			foreach( $datas as $key => $dossierep ) {
 				$formData[$this->alias][$key]['id'] = @$datas[$key][$this->alias]['id'];
 				$formData[$this->alias][$key]['dossierep_id'] = @$datas[$key][$this->alias]['dossierep_id'];
+				$formData[$modeleDecisions][$key]['passagecommissionep_id'] = @$datas[$key]['Passagecommissionep'][0]['id'];
 
 				// On modifie les enregistrements de cette étape
 				if( @$dossierep['Passagecommissionep'][0][$modeleDecisions][0]['etape'] == $niveauDecision ) {
 					$formData[$modeleDecisions][$key] = @$dossierep['Passagecommissionep'][0][$modeleDecisions][0];
 				}
-				// On ajoute les enregistrements de cette étape -> FIXME: manque les id ?
+				// On ajoute les enregistrements de cette étape
 				else {
-					$formData[$modeleDecisions][$key]['passagecommissionep_id'] = @$datas[$key]['Passagecommissionep'][0]['id'];
 					if( $niveauDecision == 'ep' ) {
 						if( ( $dossierep['Personne']['Foyer']['nbenfants'] > 0 ) || ( $dossierep['Personne']['Foyer']['sitfam'] == 'MAR' ) ) {
 							$formData[$modeleDecisions][$key]['decision'] = '1maintien';
 						}
-						// FIXME: autre cas ?
 					}
-					else if( $niveauDecision == 'cg' ) {
+					elseif( $niveauDecision == 'cg' ) {
 						$formData[$modeleDecisions][$key]['decision'] = $dossierep['Passagecommissionep'][0][$modeleDecisions][0]['decision'];
 						$formData[$modeleDecisions][$key]['decisionpcg'] = 'valide';
 						$formData[$modeleDecisions][$key]['raisonnonpassage'] = $dossierep['Passagecommissionep'][0][$modeleDecisions][0]['raisonnonpassage'];
@@ -188,7 +187,6 @@
 					}
 				}
 			}
-
 			return $formData;
 		}
 

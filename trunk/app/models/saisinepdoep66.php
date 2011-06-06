@@ -330,31 +330,27 @@
 			}
 
 			$formData = array();
-			if ( $niveauDecision == 'ep' ) {
-				foreach( $datas as $key => $dossierep ) {
-					if ( isset( $dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][0]['id'] ) ) {
-						$formData['Decisionsaisinepdoep66'][$key]['id'] = $dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][0]['id'];
+			foreach( $datas as $key => $dossierep ) {
+				$formData[$this->alias][$key]['id'] = @$datas[$key][$this->alias]['id'];
+				$formData[$this->alias][$key]['dossierep_id'] = @$datas[$key][$this->alias]['dossierep_id'];
+				$formData['Decisionsaisinepdoep66'][$key]['passagecommissionep_id'] = @$datas[$key]['Passagecommissionep'][0]['id'];
+
+				// On modifie les enregistrements de cette étape
+				if( @$dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][0]['etape'] == $niveauDecision ) {
+					$formData['Decisionsaisinepdoep66'][$key] = @$dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][0];
+				}
+				// On ajoute les enregistrements de cette étape
+				else {
+					if( $niveauDecision == 'ep' ) {
+						$formData['Decisionsaisinepdoep66'][$key]['decision'] = 'avis';
+					}
+					elseif( $niveauDecision == 'cg' ) {
 						$formData['Decisionsaisinepdoep66'][$key]['decisionpdo_id'] = $dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][0]['decisionpdo_id'];
 						$formData['Decisionsaisinepdoep66'][$key]['commentaire'] = $dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][0]['commentaire'];
+						$formData['Decisionsaisinepdoep66'][$key]['passagecommissionep_id'] = $dossierep['Passagecommissionep'][0]['id'];
 						$formData['Decisionsaisinepdoep66'][$key]['decision'] = $dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][0]['decision'];
 						$formData['Decisionsaisinepdoep66'][$key]['raisonnonpassage'] = $dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][0]['raisonnonpassage'];
 					}
-					else {
-						$formData['Decisionsaisinepdoep66'][$key]['decision'] = 'avis';
-					}
-					$formData['Decisionsaisinepdoep66'][$key]['passagecommissionep_id'] = $dossierep['Passagecommissionep'][0]['id'];
-				}
-			}
-			elseif ( $niveauDecision == 'cg' ) {
-				foreach( $datas as $key => $dossierep ) {
-					if ( isset( $dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][1] ) ) {
-						$formData['Decisionsaisinepdoep66'][$key]['id'] = $dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][0]['id'];
-					}
-					$formData['Decisionsaisinepdoep66'][$key]['decisionpdo_id'] = $dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][0]['decisionpdo_id'];
-					$formData['Decisionsaisinepdoep66'][$key]['commentaire'] = $dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][0]['commentaire'];
-					$formData['Decisionsaisinepdoep66'][$key]['passagecommissionep_id'] = $dossierep['Passagecommissionep'][0]['id'];
-					$formData['Decisionsaisinepdoep66'][$key]['decision'] = $dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][0]['decision'];
-						$formData['Decisionsaisinepdoep66'][$key]['raisonnonpassage'] = $dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][0]['raisonnonpassage'];
 				}
 			}
 			return $formData;
