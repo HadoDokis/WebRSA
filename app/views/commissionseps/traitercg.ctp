@@ -4,7 +4,7 @@
 <div id="tabbedWrapper" class="tabs">
 	<?php
 		echo $form->create( null, array( 'url' => Router::url( null, true ) ) );
-		echo $form->input( 'Commissionep.save', array( 'type' => 'hidden', 'value' => true ) );
+		echo '<div>'.$form->input( 'Commissionep.save', array( 'type' => 'hidden', 'value' => true ) ).'</div>';
 
 		foreach( array_keys( $dossiers ) as $theme ) {
 			$modeleDecision = Inflector::classify( 'Decision'.Inflector::underscore( $theme ) );

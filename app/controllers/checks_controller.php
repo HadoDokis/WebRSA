@@ -1,6 +1,4 @@
 <?php
-	App::import( 'Core', 'HttpSocket' );
-
 	/**
 	* Classe de vérification de l'installation et du paramétrage de WebRSA.
 	*/
@@ -27,22 +25,6 @@
 			$this->set( 'checkExtensions', $this->_checkExtensions() );
 			$this->set( 'checkInis', $this->_checkInis() );
 			$this->set( 'checkGedooo', $this->_checkGedooo() );
-		}
-
-		/**
-		* Vérification de l'état du serveur Gedooo
-		*/
-
-		protected function _checkGedooo() {
-			$HttpSocket = new HttpSocket();
-			$result = $HttpSocket->get( GEDOOO_WSDL );
-
-			$response = array(
-				'status' => ( $HttpSocket->response['status']['code'] == 200 ),
-				'content-type' => ( $HttpSocket->response['header']['Content-Type'] == 'text/xml' ),
-			);
-
-			return $response;
 		}
 
 		/**
