@@ -45,6 +45,12 @@
 					'rule' => array( 'notEmpty' )
 				)
 			),
+			'datedecisionpdo' => array(
+				array(
+					'rule' => 'date',
+					'message' => 'Veuillez entrer une date valide'
+				)
+			),
 			'decisionpdo_id' => array(
 				'notEmptyIf' => array(
 					'rule' => array( 'notEmptyIf', 'decision', true, array( 'avis' ) ),
