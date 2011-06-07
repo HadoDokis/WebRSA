@@ -1,4 +1,4 @@
-<h1><?php echo $this->pageTitle = 'Traitement de la commission du '.date('d/m/Y à H:i', strtotime($commissionep['Commissionep']['dateseance'])).' par l\'EP '; 
+<h1><?php echo $this->pageTitle = '3. Traitement de la commission du '.date('d/m/Y à H:i', strtotime($commissionep['Commissionep']['dateseance'])).' par l\'EP '; 
 ?></h1>
 <?php echo $javascript->link( 'dependantselect.js' ); ?>
 <br/>

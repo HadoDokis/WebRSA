@@ -410,15 +410,6 @@
 			<?php endif;?>
 			<!-- Fin du menu des maquettes offre d'insertion-->
 
-
-
-
-
-
-
-
-
-
 			<!-- Début du Nouveau menu pour les Equipes pluridisciplinaires -->
 
 			<?php if( $permissions->check( 'eps', 'liste' ) /*|| $permissions->check( 'referents', 'demandes_reorient' ) || $permissions->check( 'demandesreorient', 'index' ) || $permissions->check( 'parcoursdetectes', 'index' ) || $permissions->check( 'precosreorients', 'index' ) || $permissions->check( 'parcoursdetectes', 'equipe' ) || $permissions->check( 'precosreorients', 'conseil' ) || $permissions->check( 'parcoursdetectes', 'conseil' ) || $permissions->check( 'partseps', 'index' ) || $permissions->check( 'rolespartseps', 'index' ) */ ) :?>
@@ -429,7 +420,7 @@
 						<ul>
 							<li><?php echo $xhtml->link( 'Création des membres', array( 'controller' => 'membreseps', 'action' => 'index' ) );?></li>
 							<li><?php echo $xhtml->link( 'Création des EPs', array( 'controller' => 'eps', 'action' => 'index' ) );?></li>
-							<li><?php echo $xhtml->link( 'Création des Commissions', array( 'controller' => 'commissionseps', 'action' => 'creationmodification' ) );?></li>
+							<li><?php echo $xhtml->link( 'Création des Commissions', array( 'controller' => 'commissionseps', 'action' => 'add' ) );?></li>
 						</ul>
 					</li>
 					<li><?php echo $xhtml->link( '2. Constitution de la commission', array( 'controller' => 'commissionseps', 'action' => 'recherche' ) );?></li>

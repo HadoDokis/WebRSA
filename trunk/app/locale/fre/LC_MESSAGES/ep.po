@@ -23,7 +23,7 @@ msgid "Ep::index::empty"
 msgstr "Aucune équipe pluridisciplinaire n'a encore été créée."
 
 msgid "Ep.name"
-msgstr "Intitulé"
+msgstr "Intitulé EP"
 
 msgid "Ep.identifiant"
 msgstr "Identifiant EP"
