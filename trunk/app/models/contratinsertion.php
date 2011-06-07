@@ -359,6 +359,10 @@
 				'type'      => 'integer',
 				'postgres'  => 'DATE_PART( \'day\', NOW() - "%s"."df_ci" )'
 			),
+			'present' => array(
+				'type'      => 'boolean',
+				'postgres'  => '(CASE WHEN "%s"."id" IS NOT NULL THEN true ELSE false END )'
+			),
 		);
 
 		/**

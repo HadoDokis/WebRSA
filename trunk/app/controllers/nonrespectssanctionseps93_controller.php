@@ -340,6 +340,7 @@
 				}
 			}
 
+			$this->Nonrespectsanctionep93->Dossierep->Personne->forceVirtualFields = true;
 			$queryData = $this->Nonrespectsanctionep93->qdRadies();
 			$queryData['limit'] = 10;
 
