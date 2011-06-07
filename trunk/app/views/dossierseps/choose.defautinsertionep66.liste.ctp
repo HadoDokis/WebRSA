@@ -16,7 +16,10 @@
 			'options' => $options,
 			'hidden' => array( 'Dossierep.id', 'Passagecommissionep.id' ),
 			'paginate' => Inflector::classify( $theme ),
-			'actions' => array( 'Personnes::view' ),
+			'actions' => array(
+				'Personnes::view',
+				'Dossierseps::courrierInformation'
+			),
 			'id' => $theme,
 			'labelcohorte' => 'Enregistrer',
 			'cohortehidden' => array( 'Choose.theme' => array( 'value' => $theme ) )
