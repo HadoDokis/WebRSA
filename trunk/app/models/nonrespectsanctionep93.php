@@ -1002,7 +1002,7 @@
 		 * Fonction retournant un querydata qui va permettre de retrouver des dossiers d'EP
 		 */
 		public function qdListeDossier( $commissionep_id = null  ) {
-			return array(
+			$return = array(
 				'fields' => array(
 					'Dossierep.id',
 					'Dossier.numdemrsa',
@@ -1017,72 +1017,90 @@
 					'Passagecommissionep.id',
 					'Passagecommissionep.commissionep_id'
 				),
-				'joins' => array(
-					array(
-						'alias' => $this->alias,
-						'table' => Inflector::tableize( $this->alias ),
-						'type' => 'INNER',
-						'conditions' => array(
-							'Dossierep.id = '.$this->alias.'.dossierep_id'
-						)
-					),
-					array(
-						'alias' => 'Personne',
-						'table' => 'personnes',
-						'type' => 'INNER',
-						'conditions' => array(
-							'Dossierep.personne_id = Personne.id'
-						)
-					),
-					array(
-						'alias' => 'Foyer',
-						'table' => 'foyers',
-						'type' => 'INNER',
-						'conditions' => array(
-							'Personne.foyer_id = Foyer.id'
-						)
-					),
-					array(
-						'alias' => 'Dossier',
-						'table' => 'dossiers',
-						'type' => 'INNER',
-						'conditions' => array(
-							'Foyer.dossier_id = Dossier.id'
-						)
-					),
-					array(
-						'alias' => 'Adressefoyer',
-						'table' => 'adressesfoyers',
-						'type' => 'INNER',
-						'conditions' => array(
-							'Adressefoyer.foyer_id = Foyer.id',
-							'Adressefoyer.rgadr' => '01'
-						)
-					),
-					array(
-						'alias' => 'Adresse',
-						'table' => 'adresses',
-						'type' => 'INNER',
-						'conditions' => array(
-							'Adressefoyer.adresse_id = Adresse.id'
-						)
-					),
-					array(
-						'alias' => 'Passagecommissionep',
-						'table' => 'passagescommissionseps',
-						'type' => 'LEFT OUTER',
-						'conditions' => Set::merge(
-							array( 'Passagecommissionep.dossierep_id = Dossierep.id' ),
-							empty( $commissionep_id ) ? array() : array(
-								'OR' => array(
-									'Passagecommissionep.commissionep_id IS NULL',
-									'Passagecommissionep.commissionep_id' => $commissionep_id
-								)
+				'joins' => array()
+			);
+
+			if( !empty( $commissionep_id ) ) {
+				$join = array(
+					'alias' => 'Dossierep',
+					'table' => 'dossierseps',
+					'type' => 'INNER',
+					'conditions' => array(
+						'Dossierep.id = '.$this->alias.'.dossierep_id'
+					)
+				);
+			}
+			else {
+				$join = array(
+					'alias' => $this->alias,
+					'table' => Inflector::tableize( $this->alias ),
+					'type' => 'INNER',
+					'conditions' => array(
+						'Dossierep.id = '.$this->alias.'.dossierep_id'
+					)
+				);
+			}
+
+			$return['joins'] = array(
+				$join,
+				array(
+					'alias' => 'Personne',
+					'table' => 'personnes',
+					'type' => 'INNER',
+					'conditions' => array(
+						'Dossierep.personne_id = Personne.id'
+					)
+				),
+				array(
+					'alias' => 'Foyer',
+					'table' => 'foyers',
+					'type' => 'INNER',
+					'conditions' => array(
+						'Personne.foyer_id = Foyer.id'
+					)
+				),
+				array(
+					'alias' => 'Dossier',
+					'table' => 'dossiers',
+					'type' => 'INNER',
+					'conditions' => array(
+						'Foyer.dossier_id = Dossier.id'
+					)
+				),
+				array(
+					'alias' => 'Adressefoyer',
+					'table' => 'adressesfoyers',
+					'type' => 'INNER',
+					'conditions' => array(
+						'Adressefoyer.foyer_id = Foyer.id',
+						'Adressefoyer.rgadr' => '01'
+					)
+				),
+				array(
+					'alias' => 'Adresse',
+					'table' => 'adresses',
+					'type' => 'INNER',
+					'conditions' => array(
+						'Adressefoyer.adresse_id = Adresse.id'
+					)
+				),
+				array(
+					'alias' => 'Passagecommissionep',
+					'table' => 'passagescommissionseps',
+					'type' => 'LEFT OUTER',
+					'conditions' => Set::merge(
+						array( 'Passagecommissionep.dossierep_id = Dossierep.id' ),
+						empty( $commissionep_id ) ? array() : array(
+							'OR' => array(
+								'Passagecommissionep.commissionep_id IS NULL',
+								'Passagecommissionep.commissionep_id' => $commissionep_id
 							)
 						)
 					)
 				)
 			);
+
+			return $return;
 		}
 	}
 ?>

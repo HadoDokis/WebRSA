@@ -260,7 +260,7 @@
 // 								'Passagecommissionep.commissionep_id' => $commissionep_id
 // 							)
 						),
-						'limit' => 100,
+						'limit' => 10,
 						'order' => array( 'Dossierep.created ASC' )
 // 					)
 				);
@@ -293,7 +293,7 @@
 			$dossiers = array();
 			$countDossiers = 0;
 			$originalPaginate = $this->paginate;
-			foreach( $themesChoose as $theme ){
+			foreach( $themesChoose as $theme ) {
 				//$queryData = $this->paginate['Dossierep'];
 				$class = Inflector::classify( $theme );
 
@@ -308,10 +308,8 @@
 				$qd['limit'] = $queryData['limit'];
 				$qd['order'] = $queryData['order'];
 
-				$dossiers[$theme] = $this->Dossierep->find(
-					'all',
-					$qd
-				);
+				$this->paginate = $qd;
+				$dossiers[$theme] = $this->paginate( $this->Dossierep->{$class} );
 
 				//$queryData['conditions']['Dossierep.themeep'] = Inflector::tableize( $theme );
 				//$dossiers[$theme] = $this->paginate( $this->Dossierep );
