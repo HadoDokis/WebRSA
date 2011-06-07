@@ -16,7 +16,7 @@
 			'cohorte' => true,
 			'options' => $options,
 			'hidden' => array( 'Dossierep.id', 'Passagecommissionep.id' ),
-			'paginate' => 'Dossierep',
+			'paginate' => Inflector::classify( $theme ),
 			'id' => $theme,
 			'labelcohorte' => 'Enregistrer',
 			'cohortehidden' => array( 'Choose.theme' => array( 'value' => $theme ) )
