@@ -24,9 +24,10 @@
             $optionsactions = $this->ActioncandidatPersonne->Actioncandidat->allEnumLists();
             $actions = $this->ActioncandidatPersonne->Actioncandidat->find( 'list', array( 'fields' => array( 'name' ) ) );
             $partenaires = $this->Partenaire->find( 'list', array( 'fields' => array( 'libstruc' ) ) );
+            $motifssortie = $this->ActioncandidatPersonne->Motifsortie->find( 'list', array( 'fields' => array( 'name' ) ) );
             $options = $this->ActioncandidatPersonne->allEnumLists();
             $options = Set::merge( $options, $optionsactions );
-            $this->set( compact( 'actions', 'options', 'partenaires' ) );
+            $this->set( compact( 'actions', 'options', 'partenaires', 'motifssortie' ) );
 
             $this->set( 'referents', $this->ActioncandidatPersonne->Referent->find( 'list', array( 'recursive' => -1 ) ) );
         }
