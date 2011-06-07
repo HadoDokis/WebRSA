@@ -7,6 +7,13 @@
 
 		public $recursive = -1;
 
+		public $virtualFields = array(
+			'chosen' => array(
+				'type'      => 'boolean',
+				'postgres'  => '(CASE WHEN "%s"."id" IS NOT NULL THEN true ELSE false END )'
+			),
+		);
+
 		/**
 		*
 		*/

@@ -23,7 +23,10 @@
 		*/
 
 		public function sort( $title, $key = null, $options = array() ) {
-			$options = array_merge( array('url' => array(), 'model' => null), $options );
+			if( empty( $options ) ) {
+				$options = array();
+			}
+			$options = array_merge( array( 'url' => array(), 'model' => null ), $options );
 			$url = $options['url'];
 			unset($options['url']);
 
@@ -83,6 +86,7 @@
 			$page = Set::classicExtract( $this->params, "paging.{$classname}.page" );
 			$count = Set::classicExtract( $this->params, "paging.{$classname}.count" );
 			$limit = Set::classicExtract( $this->params, "paging.{$classname}.options.limit" );
+			$options = array( 'model' => $classname );
 
 			$controllerName = Inflector::camelize( $this->params['controller'] );
 
@@ -111,18 +115,18 @@
 			$pageCount = Set::classicExtract( $this->params, "paging.{$classname}.pageCount" );
 
 			if( $pageCount >= 1 ) {
-				$pagination = $this->Html->tag ( 'p', $this->counter( array( 'format' => __( $format, true ) ) ), array( 'class' => 'pagination counter' ) );
+				$pagination = $this->Html->tag ( 'p', $this->counter( array_merge( $options, array( 'format' => __( $format, true ) ) ) ), array( 'class' => 'pagination counter' ) );
 
 				if( $pageCount > 1 ) {
 					$links = array(
-						$this->first( __( '<<', true ) ),
-						$this->prev( __( '<', true ) ),
-						$this->numbers(),
-						$this->next( __( '>', true ) )
+						$this->first( __( '<<', true ), $options ),
+						$this->prev( __( '<', true ), $options ),
+						$this->numbers( $options ),
+						$this->next( __( '>', true ), $options )
 					);
 
 					if( !Configure::read( 'Optimisations.progressivePaginate' ) ) {
-						$links[] = $this->last( __( '>>', true ) );
+						$links[] = $this->last( __( '>>', true ), $options );
 					}
 
 					$links = implode( ' ', $links );

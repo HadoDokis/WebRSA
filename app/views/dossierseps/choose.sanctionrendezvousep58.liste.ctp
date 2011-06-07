@@ -2,7 +2,7 @@
 	echo $default2->index(
 		$dossiers[$theme],
 		array(
-			'Dossierep.chosen' => array( 'input' => 'checkbox' ),
+			'Passagecommissionep.chosen' => array( 'input' => 'checkbox' ),
 			'Personne.qual',
 			'Personne.nom',
 			'Personne.prenom',
