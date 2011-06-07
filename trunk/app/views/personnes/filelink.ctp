@@ -12,7 +12,7 @@
 <div class="with_treemenu">
     <?php
         echo $xhtml->tag( 'h1', $this->pageTitle );
-        echo $form->create( 'Dsp', array( 'type' => 'post', 'id' => 'personneform', 'url' => Router::url( null, true ) ) );
+        echo $form->create( 'Personne', array( 'type' => 'post', 'id' => 'personneform', 'url' => Router::url( null, true ) ) );
     ?>
         <fieldset>
     <legend><?php echo required( $default2->label( 'Personne.haspiecejointe' ) );?></legend>
