@@ -51,7 +51,7 @@
 			array(
 				'actions' => array(
 					'Dossierseps::view' => array( 'label' => 'Voir', 'url' => array( 'controller' => $controller, 'action' => 'index', '#Personne.id#' ), 'class' => 'external' ),
-					'Commissionseps::printConvocationBeneficiaire' => array( 'url' => array( 'controller' => 'commissionseps', 'action' => 'printConvocationBeneficiaire', '#Dossierep.id#' ), 'disabled' => empty( $disableConvocationBeneficiaire ))
+					'Commissionseps::printConvocationBeneficiaire' => array( 'url' => array( 'controller' => 'commissionseps', 'action' => 'printConvocationBeneficiaire', '#Passagecommissionep.id#' ), 'disabled' => empty( $disableConvocationBeneficiaire ))
 				),
 				'options' => $options,
 				'id' => $theme

@@ -409,7 +409,16 @@
 				)
 			);
 
+			if( empty( $passagecommission ) ) {
+				return false;
+			}
+
 			$theme = Inflector::classify( $passagecommission['Dossierep']['themeep'] );
+
+			if( empty( $theme ) ) {
+				return false;
+			}
+
 			$pdf = $this->{$theme}->getConvocationBeneficiaireEpPdf( $passagecommissionep_id );
 
 			if( !empty( $pdf ) ) {
