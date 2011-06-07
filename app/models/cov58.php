@@ -361,7 +361,9 @@
 					'Adresse.locaadr',
 					'Adresse.numcomptt',
 					'Adresse.codepos',
-					
+				),
+				'conditions' => array(
+					'Cov58.id' => $cov58_id
 				),
 				'joins' => array(
 					array(
