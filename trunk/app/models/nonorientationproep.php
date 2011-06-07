@@ -540,7 +540,7 @@
 		 * Fonction retournant un querydata qui va permettre de retrouver des dossiers d'EP
 		 */
 		public function qdListeDossier( $commissionep_id = null ) {
-			return array(
+			$return = array(
 				'fields' => array(
 					'Dossierep.id',
 					'Dossier.numdemrsa',
@@ -555,9 +555,33 @@
 					'Orientstruct.date_valid',
 					'Passagecommissionep.id',
 					'Passagecommissionep.commissionep_id'
-				),
-				'joins' => array(
-					array(
+				)
+			);
+
+			if( !empty( $commissionep_id ) ) {
+				$join = array(
+					'alias' => 'Dossierep',
+					'table' => 'dossierseps',
+					'type' => 'INNER',
+					'conditions' => array(
+						'Dossierep.id = '.$this->alias.'.dossierep_id'
+					)
+				);
+			}
+			else {
+				$join = array(
+					'alias' => $this->alias,
+					'table' => Inflector::tableize( $this->alias ),
+					'type' => 'INNER',
+					'conditions' => array(
+						'Dossierep.id = '.$this->alias.'.dossierep_id'
+					)
+				);
+			}
+
+			$return['joins'] = array(
+				$join,
+				array(
 						'alias' => $this->alias,
 						'table' => Inflector::tableize( $this->alias ),
 						'type' => 'INNER',
@@ -646,6 +670,8 @@
 					)
 				)
 			);
+
+			return $return;
 		}
 	}
 ?>
