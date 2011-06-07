@@ -13,9 +13,7 @@ echo '<table><thead>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
 
-		$hiddenFields = $form->input( "Nonorientationproep93.{$i}.id", array( 'type' => 'hidden', 'value' => $dossierep['Nonorientationproep93']['id'] ) ).
-						$form->input( "Nonorientationproep93.{$i}.dossierep_id", array( 'type' => 'hidden', 'value' => $dossierep['Dossierep']['id'] ) ).
-						$form->input( "Decisionnonorientationproep93.{$i}.id", array( 'type' => 'hidden', 'value' => @$this->data[$i]['id'] ) ).
+		$hiddenFields = $form->input( "Decisionnonorientationproep93.{$i}.id", array( 'type' => 'hidden', 'value' => @$this->data[$i]['id'] ) ).
 						$form->input( "Decisionnonorientationproep93.{$i}.etape", array( 'type' => 'hidden', 'value' => 'ep' ) ).
 						$form->input( "Decisionnonorientationproep93.{$i}.id", array( 'type' => 'hidden' ) ).
 						$form->input( "Decisionnonorientationproep93.{$i}.passagecommissionep_id", array( 'type' => 'hidden' ) ).

@@ -31,9 +31,7 @@ echo '<table id="Decisiondefautinsertionep66" class="tooltips"><thead>
 			</tbody>
 		</table>";
 
-		$hiddenFields = $form->input( "Defautinsertionep66.{$i}.id", array( 'type' => 'hidden' ) ).
-						$form->input( "Defautinsertionep66.{$i}.dossierep_id", array( 'type' => 'hidden', 'value' => $dossierep['Dossierep']['id'] ) ).
-						$form->input( "Decisiondefautinsertionep66.{$i}.id", array( 'type' => 'hidden' ) ).
+		$hiddenFields = $form->input( "Decisiondefautinsertionep66.{$i}.id", array( 'type' => 'hidden' ) ).
 						$form->input( "Decisiondefautinsertionep66.{$i}.etape", array( 'type' => 'hidden', 'value' => 'cg' ) ).
 						$form->input( "Decisiondefautinsertionep66.{$i}.passagecommissionep_id", array( 'type' => 'hidden', 'value' ) );
 

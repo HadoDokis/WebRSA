@@ -437,13 +437,18 @@
 
 			$formData = array();
 			foreach( $datas as $key => $dossierep ) {
-				$formData[$this->alias][$key]['id'] = @$datas[$key][$this->alias]['id'];
-				$formData[$this->alias][$key]['dossierep_id'] = @$datas[$key][$this->alias]['dossierep_id'];
 				$formData['Decisionreorientationep93'][$key]['passagecommissionep_id'] = @$datas[$key]['Passagecommissionep'][0]['id'];
 
 				// On modifie les enregistrements de cette étape
 				if( @$dossierep['Passagecommissionep'][0]['Decisionreorientationep93'][0]['etape'] == $niveauDecision ) {
 					$formData['Decisionreorientationep93'][$key] = @$dossierep['Passagecommissionep'][0]['Decisionreorientationep93'][0];
+					$formData['Decisionreorientationep93'][$key]['structurereferente_id'] = implode(
+						'_',
+						array(
+							$formData['Decisionreorientationep93'][$key]['typeorient_id'],
+							$formData['Decisionreorientationep93'][$key]['structurereferente_id']
+						)
+					);
 				}
 				// On ajoute les enregistrements de cette étape
 				else {
@@ -461,6 +466,9 @@
 						$formData['Decisionreorientationep93'][$key]['decision'] = ( $accord ? 'accepte' : 'refuse' );
 					}
 					elseif( $niveauDecision == 'cg' ) {
+						$formData['Decisionreorientationep93'][$key]['decision'] = $dossierep['Passagecommissionep'][0]['Decisionreorientationep93'][0]['decision'];
+						$formData['Decisionreorientationep93'][$key]['decisionpcg'] = 'valide';
+						$formData['Decisionreorientationep93'][$key]['commentaire'] = $dossierep['Passagecommissionep'][0]['Decisionreorientationep93'][0]['commentaire'];
 						$formData['Decisionreorientationep93'][$key]['typeorient_id'] = $dossierep['Passagecommissionep'][0]['Decisionreorientationep93'][0]['typeorient_id'];
 						$formData['Decisionreorientationep93'][$key]['structurereferente_id'] = implode(
 							'_',

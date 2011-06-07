@@ -227,8 +227,6 @@
 
 			$formData = array();
 			foreach( $datas as $key => $dossierep ) {
-				$formData[$this->alias][$key]['id'] = @$datas[$key][$this->alias]['id'];
-				$formData[$this->alias][$key]['dossierep_id'] = @$datas[$key][$this->alias]['dossierep_id'];
 				$formData['Decisionnonrespectsanctionep93'][$key]['passagecommissionep_id'] = @$datas[$key]['Passagecommissionep'][0]['id'];
 
 				// On modifie les enregistrements de cette étape
@@ -248,7 +246,8 @@
 					elseif( $niveauDecision == 'cg' ) {
 						$formData['Decisionnonrespectsanctionep93'][$key]['decision'] = $dossierep['Passagecommissionep'][0]['Decisionnonrespectsanctionep93'][0]['decision'];
 						$formData['Decisionnonrespectsanctionep93'][$key]['decisionpcg'] = 'valide';
-						$formData['Decisionnonrespectsanctionep93'][$key]['raisonnonpassage'] = $dossierep['Passagecommissionep'][0]['Decisionnonrespectsanctionep93'][0]['raisonnonpassage'];
+						$formData['Decisionnonrespectsanctionep93'][$key]['commentaire'] = $dossierep['Passagecommissionep'][0]['Decisionnonrespectsanctionep93'][0]['commentaire'];
+// 						$formData['Decisionnonrespectsanctionep93'][$key]['raisonnonpassage'] = $dossierep['Passagecommissionep'][0]['Decisionnonrespectsanctionep93'][0]['raisonnonpassage'];
 					}
 				}
 			}

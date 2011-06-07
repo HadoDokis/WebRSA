@@ -15,7 +15,6 @@ echo '<table><thead>
 
 		$hiddenFields = $form->input( "Decisionregressionorientationep58.{$i}.id", array( 'type' => 'hidden' ) ).
 						$form->input( "Decisionregressionorientationep58.{$i}.passagecommissionep_id", array( 'type' => 'hidden' ) ).
-						$form->input( "Decisionregressionorientationep58.{$i}.regressionorientationep58_id", array( 'type' => 'hidden' ) ).
 						$form->input( "Decisionregressionorientationep58.{$i}.etape", array( 'type' => 'hidden', 'value' => 'ep' ) );
 
 		echo $xhtml->tableCells(

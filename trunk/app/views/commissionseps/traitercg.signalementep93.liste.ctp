@@ -36,9 +36,7 @@ echo '<table id="Decisionsignalementep93" class="tooltips"><thead>
 			</tbody>
 		</table>";
 
-		$hiddenFields = $form->input( "Signalementep93.{$i}.id", array( 'type' => 'hidden' ) ).
-						$form->input( "Signalementep93.{$i}.dossierep_id", array( 'type' => 'hidden' ) ).
-						$form->input( "Decisionsignalementep93.{$i}.id", array( 'type' => 'hidden' ) ).
+		$hiddenFields = $form->input( "Decisionsignalementep93.{$i}.id", array( 'type' => 'hidden' ) ).
 						$form->input( "Decisionsignalementep93.{$i}.passagecommissionep_id", array( 'type' => 'hidden' ) ).
 						$form->input( "Decisionsignalementep93.{$i}.etape", array( 'type' => 'hidden', 'value' => 'cg' ) );
 

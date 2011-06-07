@@ -19,9 +19,7 @@ echo '<table><thead>
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
 // debug($dossierep);
 
-		$hiddenFields = $form->input( "Contratcomplexeep93.{$i}.id", array( 'type' => 'hidden' ) ).
-						$form->input( "Contratcomplexeep93.{$i}.dossierep_id", array( 'type' => 'hidden' ) ).
-						$form->input( "Decisioncontratcomplexeep93.{$i}.id", array( 'type' => 'hidden' ) ).
+		$hiddenFields = $form->input( "Decisioncontratcomplexeep93.{$i}.id", array( 'type' => 'hidden' ) ).
 						$form->input( "Decisioncontratcomplexeep93.{$i}.passagecommissionep_id", array( 'type' => 'hidden' ) ).
 						$form->input( "Decisioncontratcomplexeep93.{$i}.etape", array( 'type' => 'hidden', 'value' => 'ep' ) );
 

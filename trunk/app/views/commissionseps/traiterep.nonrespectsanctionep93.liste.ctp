@@ -22,9 +22,7 @@ echo '<table><thead>
 			}
 		}
 
-		$hiddenFields = $form->input( "Nonrespectsanctionep93.{$i}.id", array( 'type' => 'hidden' ) ).
-						$form->input( "Nonrespectsanctionep93.{$i}.dossierep_id", array( 'type' => 'hidden' ) ).
-						$form->input( "Decisionnonrespectsanctionep93.{$i}.id", array( 'type' => 'hidden' ) ).
+		$hiddenFields = $form->input( "Decisionnonrespectsanctionep93.{$i}.id", array( 'type' => 'hidden' ) ).
 						$form->input( "Decisionnonrespectsanctionep93.{$i}.passagecommissionep_id", array( 'type' => 'hidden' ) ).
 						$form->input( "Decisionnonrespectsanctionep93.{$i}.etape", array( 'type' => 'hidden', 'value' => 'ep' ) );
 

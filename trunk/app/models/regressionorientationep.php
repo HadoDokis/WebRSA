@@ -220,13 +220,18 @@
 
 			$formData = array();
 			foreach( $datas as $key => $dossierep ) {
-				$formData[$this->alias][$key]['id'] = @$datas[$key][$this->alias]['id'];
-				$formData[$this->alias][$key]['dossierep_id'] = @$datas[$key][$this->alias]['dossierep_id'];
 				$formData['Decision'.Inflector::underscore( $this->alias )][$key]['passagecommissionep_id'] = @$datas[$key]['Passagecommissionep'][0]['id'];
 
 				// On modifie les enregistrements de cette étape
 				if( @$dossierep['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0]['etape'] == $niveauDecision ) {
 					$formData['Decision'.Inflector::underscore( $this->alias )][$key] = @$dossierep['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0];
+					$formData['Decision'.Inflector::underscore( $this->alias )][$key]['structurereferente_id'] = implode(
+						'_',
+						array(
+							$formData['Decision'.Inflector::underscore( $this->alias )][$key]['typeorient_id'],
+							$formData['Decision'.Inflector::underscore( $this->alias )][$key]['structurereferente_id']
+						)
+					);
 				}
 				// On ajoute les enregistrements de cette étape
 				else {
@@ -278,9 +283,37 @@
 						$regressionorientation = $this->find(
 							'first',
 							array(
-								'conditions' => array(
-									$this->alias.'.id' => $data['Decision'.Inflector::underscore( $this->alias )][$key][Inflector::underscore( $this->alias ).'_id']
+								'fields' => array(
+									$this->alias.'.structurereferente_id',
+									$this->alias.'.referent_id'
 								),
+								'joins' => array(
+									array(
+										'table' => 'dossierseps',
+										'alias' => 'Dossierep',
+										'type' => 'INNER',
+										'conditions' => array(
+											$this->alias.'.dossierep_id = Dossierep.id'
+										)
+									),
+									array(
+										'table' => 'passagescommissionseps',
+										'alias' => 'Passagecommissionep',
+										'type' => 'INNER',
+										'conditions' => array(
+											'Passagecommissionep.dossierep_id = Dossierep.id'
+										)
+									),
+									array(
+										'table' => 'decisions'.Inflector::tableize( $this->alias ),
+										'alias' => 'Decision'.Inflector::underscore( $this->alias ),
+										'type' => 'INNER',
+										'conditions' => array(
+											'Decision'.Inflector::underscore( $this->alias ).'.passagecommissionep_id = Passagecommissionep.id'
+										)
+									)
+								),
+								'contain' => false
 							)
 						);
 

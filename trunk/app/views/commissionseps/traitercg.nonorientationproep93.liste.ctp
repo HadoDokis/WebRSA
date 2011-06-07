@@ -32,9 +32,7 @@ echo '<table id="Decisionnonorientationproep93" class="tooltips"><thead>
 			$avisep .= ' - '.implode( ' - ', Set::filter( array( $dossierep['Passagecommissionep'][0]['Decisionnonorientationproep93'][$niveau]['Typeorient']['lib_type_orient'], $dossierep['Passagecommissionep'][0]['Decisionnonorientationproep93'][$niveau]['Structurereferente']['lib_struc'] ) ) );
 		}
 
-		$hiddenFields = $form->input( "Nonorientationproep93.{$i}.id", array( 'type' => 'hidden', 'value' => $dossierep['Nonorientationproep93']['id'] ) ).
-						$form->input( "Nonorientationproep93.{$i}.dossierep_id", array( 'type' => 'hidden', 'value' => $dossierep['Dossierep']['id'] ) ).
-						$form->input( "Decisionnonorientationproep93.{$i}.id", array( 'type' => 'hidden' ) ).
+		$hiddenFields = $form->input( "Decisionnonorientationproep93.{$i}.id", array( 'type' => 'hidden' ) ).
 						$form->input( "Decisionnonorientationproep93.{$i}.passagecommissionep_id", array( 'type' => 'hidden' ) ).
 						$form->input( "Decisionnonorientationproep93.{$i}.etape", array( 'type' => 'hidden', 'value' => 'cg' ) );
 
