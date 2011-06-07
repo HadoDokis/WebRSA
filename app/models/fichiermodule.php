@@ -154,6 +154,16 @@
                 ),
                 'fields' => '',
                 'order' => ''
+            ),
+            'ActioncandidatPersonne' => array(
+                'className' => 'ActioncandidatPersonne',
+                'foreignKey' => false,
+                'conditions' => array(
+                    'Fichiermodule.modele = \'ActioncandidatPersonne\'',
+                    'Fichiermodule.fk_value = {$__cakeID__$}'
+                ),
+                'fields' => '',
+                'order' => ''
             )
         );
 

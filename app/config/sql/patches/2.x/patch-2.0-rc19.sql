@@ -338,6 +338,15 @@ CREATE TYPE TYPE_ETATCOMMISSIONEP AS ENUM ( 'cree', 'quorum', 'associe', 'valide
 ALTER TABLE commissionseps ALTER COLUMN etatcommissionep TYPE TYPE_ETATCOMMISSIONEP USING CAST(etatcommissionep AS TYPE_ETATCOMMISSIONEP);
 ALTER TABLE commissionseps ALTER COLUMN etatcommissionep SET DEFAULT 'cree'::TYPE_ETATCOMMISSIONEP;
 
+
+
+-- -----------------------------------------------------------------------------------------------
+-- 20110607: Ajout d'un champ pour sélectionner si on ajoute des fichiers ou non aux Fiches de candidatures / de liaison
+-- -----------------------------------------------------------------------------------------------
+SELECT add_missing_table_field ('public', 'actionscandidats_personnes', 'haspiecejointe', 'type_booleannumber');
+ALTER TABLE actionscandidats_personnes ALTER COLUMN haspiecejointe SET DEFAULT '0'::TYPE_BOOLEANNUMBER;
+UPDATE actionscandidats_personnes SET haspiecejointe = '0'::TYPE_BOOLEANNUMBER WHERE haspiecejointe IS NULL;
+ALTER TABLE actionscandidats_personnes ALTER COLUMN haspiecejointe SET NOT NULL;
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
