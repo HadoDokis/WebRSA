@@ -14,7 +14,7 @@
 
         public $helpers = array( 'Csv', 'Ajax', 'Default2' );
 
-        public $components = array( 'Prg' => array( 'actions' => array( 'fichesenattente', 'fichesencours' ) ) );
+        public $components = array( 'Prg' => array( 'actions' => array( 'fichesenattente' => array( 'filter' => 'Search' ), 'fichesencours' => array( 'filter' => 'Search' ) ) ) );
 
         /**
         *
@@ -67,14 +67,11 @@
 
             if( !empty( $this->data ) ) {
 
-//     debug($this->data);
-
                 /**
                 *
                 * Sauvegarde
                 *
                 */
-
                 // On a renvoyé  le formulaire de la cohorte
                 if( !empty( $this->data['ActioncandidatPersonne'] ) ) {
 
@@ -107,7 +104,7 @@
                 if( ( $statutFiche == 'Suivifiche::fichesenattente' ) || ( ( $statutFiche == 'Suivifiche::fichesencours' ) && !empty( $this->data ) ) ) {
                     $this->Dossier->begin(); // Pour les jetons
 
-                    $this->paginate = $this->Cohortefichecandidature66->search( $statutFiche, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
+                    $this->paginate = $this->Cohortefichecandidature66->search( $statutFiche, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data['Search'], $this->Jetons->ids() );
                     $this->paginate['limit'] = 10;
                     $cohortefichecandidature66 = $this->paginate( 'ActioncandidatPersonne' );
 
