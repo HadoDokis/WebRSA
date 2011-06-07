@@ -42,11 +42,13 @@ App::import( 'Sanitize' );
             }
 
             /// Critères
-            $action = Set::extract( $criteresfichescandidature, 'ACtioncandidat.name' );
-            $referent = Set::extract( $criteresfichescandidature, 'Actioncandidat.referent_id' );
+            $action = Set::extract( $criteresfichescandidature, 'Actioncandidat.name' );
+            $correspondant = Set::extract( $criteresfichescandidature, 'Actioncandidat.referent_id' );
+            $prescripteur = Set::extract( $criteresfichescandidature, 'ActioncandidatPersonne.referent_id' );
             $locaadr = Set::extract( $criteresfichescandidature, 'Adresse.locaadr' );
             $numcomptt = Set::extract( $criteresfichescandidature, 'Adresse.numcomptt' );
             $numdemrsa = Set::extract( $criteresfichescandidature, 'Dossier.numdemrsa' );
+            $codepartenaire = Set::extract( $criteresfichescandidature, 'Partenaire.codepartenaire' );
             $matricule = Set::extract( $criteresfichescandidature, 'Dossier.matricule' );
 
 
@@ -74,8 +76,18 @@ App::import( 'Sanitize' );
             }
 
             // Correspondant de l'action lié à l'action
-            if( !empty( $referent ) ) {
-                $conditions[] = 'Actioncandidat.referent_id = \''.Sanitize::clean( $referent ).'\'';
+            if( !empty( $prescripteur ) ) {
+                $conditions[] = 'ActioncandidatPersonne.referent_id = \''.Sanitize::clean( $prescripteur ).'\'';
+            }
+
+            // Correspondant de l'action lié à l'action
+            if( !empty( $correspondant ) ) {
+                $conditions[] = 'Actioncandidat.referent_id = \''.Sanitize::clean( $correspondant ).'\'';
+            }
+
+            // Correspondant de l'action lié à l'action
+            if( !empty( $codepartenaire ) ) {
+                $conditions[] = 'Partenaire.codepartenaire ILIKE \''.$this->wildcard( $codepartenaire ).'\'';
             }
 
             //Critères sur le dossier de l'allocataire - numdemrsa + matricule
@@ -135,7 +147,7 @@ App::import( 'Sanitize' );
                     'alias'      => 'Referent',
                     'type'       => 'INNER',
                     'foreignKey' => false,
-                    'conditions' => array( 'Referent.id = Actioncandidat.referent_id' ),
+                    'conditions' => array( 'Referent.id = ActioncandidatPersonne.referent_id' ),
                 ),
                 array(
                     'table'      => 'prestations',
@@ -199,6 +211,7 @@ App::import( 'Sanitize' );
                     'Actioncandidat.referent_id',
                     'Actioncandidat.name',
                     'Partenaire.libstruc',
+                    'Partenaire.codepartenaire',
                     'Dossier.id',
                     'Dossier.numdemrsa',
                     'Dossier.dtdemrsa',
