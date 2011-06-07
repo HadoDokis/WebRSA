@@ -225,10 +225,10 @@
                                     'td',
                                     $xhtml->editLink( 'Modifier', array( 'controller'=>'bilansparcours66', 'action'=>'edit', Set::classicExtract($bilanparcour66, 'Bilanparcours66.id') ), ( $permissions->check( 'bilansparcours66', 'edit' ) == 1 && $block ) )
                                 );
-                                echo $html->tag(
-                                    'td',
-                                    $xhtml->courrierLink( 'Courrier d\'information', array( 'controller'=>'bilansparcours66', 'action'=>'courrier_information', Set::classicExtract($bilanparcour66, 'Bilanparcours66.id') ), ( $permissions->check( 'bilansparcours66', 'courrier_information' ) == 1 && $block )  )
-                                );
+//                                 echo $html->tag(
+//                                     'td',
+//                                     $xhtml->courrierLink( 'Courrier d\'information', array( 'controller'=>'bilansparcours66', 'action'=>'courrier_information', Set::classicExtract($bilanparcour66, 'Bilanparcours66.id') ), ( $permissions->check( 'bilansparcours66', 'courrier_information' ) == 1 && $block )  )
+//                                 );
                                 echo $html->tag(
                                     'td',
                                     $xhtml->printLink( 'Imprimer', array( 'controller'=>'bilansparcours66', 'action'=>'bilanparcoursGedooo', Set::classicExtract($bilanparcour66, 'Bilanparcours66.id') ), ( $permissions->check( 'bilansparcours66', 'bilanparcoursGedooo' ) == 1 && $block )  )
