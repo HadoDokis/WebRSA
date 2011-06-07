@@ -440,14 +440,6 @@
 			$return['joins'] = array(
 				$join,
 				array(
-					'alias' => $this->alias,
-					'table' => Inflector::tableize( $this->alias ),
-					'type' => 'INNER',
-					'conditions' => array(
-						'Dossierep.id = '.$this->alias.'.dossierep_id'
-					)
-				),
-				array(
 					'alias' => 'Contratinsertion',
 					'table' => 'contratsinsertion',
 					'type' => 'INNER',
