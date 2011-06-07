@@ -430,7 +430,7 @@
 							<li><?php echo $xhtml->link( 'CG', array( 'controller' => 'commissionseps', 'action' => 'arbitragecg' ) );?></li>
 						</ul>
 					</li>
-					<li><?php echo $xhtml->link( '4. Consultation des décisions', array( 'controller' => 'commissionseps', 'action' => 'decisions' ) );?></li>
+					<li><?php echo $xhtml->link( '4. Consultation et impression des décisions', array( 'controller' => 'commissionseps', 'action' => 'decisions' ) );?></li>
 					<!-- <li>
 						<?php /*if( Configure::read( 'Cg.departement' ) == 58 ):?>
 							<a href="#">Motifs de saisine</a>
