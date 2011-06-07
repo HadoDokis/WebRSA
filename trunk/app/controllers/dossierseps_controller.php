@@ -480,7 +480,8 @@
 		/**
 		*    Génération et envoi du courrier d'information avant passage en EP
 		*/
-		/*public function courrierInformation( $dossierep_id ) {
+
+		public function courrierInformation( $dossierep_id ) {
 			$dossierep = $this->Dossierep->find(
 				'first',
 				array(
@@ -500,6 +501,6 @@
 				$this->Session->setFlash( 'Impossible de générer le courrier d\'information', 'default', array( 'class' => 'error' ) );
 				$this->redirect( $this->referer() );
 			}
-		}*/
+		}
 	}
 ?>
