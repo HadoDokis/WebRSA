@@ -31,7 +31,7 @@
                     'ActionscandidatsPersonnes::edit' => array( 'domain' => $domain, 'disabled' =>  '( "'.$permissions->check( 'actionscandidats_personnes', 'edit' ).'" != "1" )  || ( "#ActioncandidatPersonne.positionfiche#" == "annule" )' ),
                     'ActionscandidatsPersonnes::cancel' => array( 'domain' => $domain, 'disabled' =>  '( "'.$permissions->check( 'actionscandidats_personnes', 'cancel' ).'" != "1" ) '  ),
                     'ActionscandidatsPersonnes::printFiche' => array( 'domain' => $domain, 'disabled' =>  '( "'.$permissions->check( 'actionscandidats_personnes', 'printFiche' ).'" != "1" )  || ( "#ActioncandidatPersonne.positionfiche#" == "annule" ) '  ),
-                    'ActionscandidatsPersonnes::filelink' => array( 'disabled' => '( "'.$permissions->check( 'actionscandidats_personnes', 'filelink' ).'" != "1" ) ' )
+                    'ActionscandidatsPersonnes::filelink' => array( 'disabled' => '( "'.$permissions->check( 'actionscandidats_personnes', 'filelink' ).'" != "1" )  || ( "#ActioncandidatPersonne.positionfiche#" == "annule" ) ' )
                 ),
                 'add' => array( 'ActioncandidatPersonne.add' => array( 'controller'=>'actionscandidats_personnes', 'action'=>'add', $personne_id ) )
             )
