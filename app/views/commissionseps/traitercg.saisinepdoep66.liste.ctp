@@ -84,7 +84,7 @@ echo '<table id="Decisionsaisinepdoep66" class="tooltips"><thead>
 		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
 			observeDisableFieldsOnValue(
 				'Decisionsaisinepdoep66<?php echo $i;?>Decision',
-				[ 'Decisionsaisinepdoep66<?php echo $i;?>Datedecisionpdo', 'Decisionsaisinepdoep66<?php echo $i;?>DecisionpdoId' ],
+				[ 'Decisionsaisinepdoep66<?php echo $i;?>Datedecisionpdo', 'Decisionsaisinepdoep66<?php echo $i;?>DecisionpdoId', 'Decisionsaisinepdoep66<?php echo $i;?>DatedecisionpdoDay', 'Decisionsaisinepdoep66<?php echo $i;?>DatedecisionpdoMonth', 'Decisionsaisinepdoep66<?php echo $i;?>DatedecisionpdoYear' ],
 				'avis',
 				false
 			);
