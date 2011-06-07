@@ -28,16 +28,18 @@
 
                 echo $default2->subform(
                     array(
-                        'Actioncandidat.name' => array( 'type' => 'select', 'options' => $actions ),
+                        'Partenaire.codepartenaire' => array( 'type' => 'text' ),
                         'Partenaire.libstruc' => array( 'type' => 'select', 'options' => $partenaires ),
+                        'Actioncandidat.name' => array( 'type' => 'select', 'options' => $actions ),
                         'Actioncandidat.referent_id' => array( 'type' => 'select', 'options' => $referents ),
-                        'ActioncandidatPersonne.positionfiche' => array( 'type' => 'select', 'options' => $options['positionfiche'] ),
                         'Personne.nom' => array( 'label' => __d( 'personne', 'Personne.nom', true ), 'type' => 'text' ),
                         'Personne.prenom' => array( 'label' => __d( 'personne', 'Personne.prenom', true ), 'type' => 'text' ),
                         'Personne.nomnai' => array( 'label' => __d( 'personne', 'Personne.nomnai', true ), 'type' => 'text' ),
                         'Personne.nir' => array( 'label' => __d( 'personne', 'Personne.nir', true ), 'type' => 'text', 'maxlength' => 15 ),
                         'Dossier.matricule' => array( 'label' => __d( 'dossier', 'Dossier.matricule', true ), 'type' => 'text', 'maxlength' => 15 ),
                         'Dossier.numdemrsa' => array( 'label' => __d( 'dossier', 'Dossier.numdemrsa', true ), 'type' => 'text', 'maxlength' => 15 ),
+                        'ActioncandidatPersonne.referent_id' => array( 'type' => 'select', 'options' => $referents ),
+                        'ActioncandidatPersonne.positionfiche' => array( 'type' => 'select', 'options' => $options['positionfiche'] ),
 
                     ),
                     array(
@@ -78,7 +80,7 @@
                 <th>Commune de l'allocataire</th>
                 <th>Action engagée</th>
                 <th>Partenaire lié</th>
-                <th>Correspondant de l'action</th>
+                <th>Nom du prescripteur</th>
                 <th>Date de signature de la fiche</th>
                 <th>Venu(e) ?</th>
                 <th>Retenu(e) ?</th>
