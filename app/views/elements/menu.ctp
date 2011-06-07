@@ -424,12 +424,16 @@
 						</ul>
 					</li>
 					<li><?php echo $xhtml->link( '2. Constitution de la commission', array( 'controller' => 'commissionseps', 'action' => 'recherche' ) );?></li>
-					<li><a href="#">3. Arbitrage</a>
-						<ul>
-							<li><?php echo $xhtml->link( 'EP', array( 'controller' => 'commissionseps', 'action' => 'arbitrageep' ) );?></li>
-							<li><?php echo $xhtml->link( 'CG', array( 'controller' => 'commissionseps', 'action' => 'arbitragecg' ) );?></li>
-						</ul>
-					</li>
+					<?php if( Configure::read( 'Cg.departement' ) == 58 ): ?>
+						<li><?php echo $xhtml->link( '3. Arbitrage EP', array( 'controller' => 'commissionseps', 'action' => 'arbitrageep' ) );?></li>
+					<?php else: ?>
+						<li><a href="#">3. Arbitrage</a>
+							<ul>
+								<li><?php echo $xhtml->link( 'EP', array( 'controller' => 'commissionseps', 'action' => 'arbitrageep' ) );?></li>
+								<li><?php echo $xhtml->link( 'CG', array( 'controller' => 'commissionseps', 'action' => 'arbitragecg' ) );?></li>
+							</ul>
+						</li>
+					<?php endif; ?>
 					<li><?php echo $xhtml->link( '4. Consultation et impression des décisions', array( 'controller' => 'commissionseps', 'action' => 'decisions' ) );?></li>
 					<!-- <li>
 						<?php /*if( Configure::read( 'Cg.departement' ) == 58 ):?>

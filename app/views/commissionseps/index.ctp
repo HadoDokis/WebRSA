@@ -173,7 +173,12 @@
 						$lien = '<td>'.$xhtml->link( 'Arbitrage', array( 'controller' => 'commissionseps', 'action' => 'traitercg', $commissionep['Commissionep']['id'] ), array( 'enabled' => ( $commissionep['Commissionep']['etatcommissionep'] == 'traiteep' || $commissionep['Commissionep']['etatcommissionep'] == 'decisioncg' ) ) ).'</td>';
 						break;
                     case 'decisions':
-						$lien = '<td>'.$xhtml->link( 'Voir les décisions', array( 'controller' => 'commissionseps', 'action' => 'decisioncg', $commissionep['Commissionep']['id'] ), array( 'enabled' => $commissionep['Commissionep']['etatcommissionep'] == 'traite' ) ).'</td>';
+						if ( Configure::read( 'Cg.departement' ) == 58 ) {
+							$lien = '<td>'.$xhtml->link( 'Voir les décisions', array( 'controller' => 'commissionseps', 'action' => 'decisionep', $commissionep['Commissionep']['id'] ), array( 'enabled' => $commissionep['Commissionep']['etatcommissionep'] == 'traite' ) ).'</td>';
+						}
+						else {
+							$lien = '<td>'.$xhtml->link( 'Voir les décisions', array( 'controller' => 'commissionseps', 'action' => 'decisioncg', $commissionep['Commissionep']['id'] ), array( 'enabled' => $commissionep['Commissionep']['etatcommissionep'] == 'traite' ) ).'</td>';
+						}
                         break;
 					default:
 						$lien = '<td>'.$xhtml->link( 'Voir', array( 'controller' => 'commissionseps', 'action' => 'view', $commissionep['Commissionep']['id'] ) ).'</td>';
