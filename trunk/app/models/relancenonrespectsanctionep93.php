@@ -23,7 +23,7 @@
 				),
 				array(
 					'rule' => array( 'checkForRelance' ),
-					'message' => 'Date de relance trop récente'
+					'message' => 'Date de relance erronée'
 				)
 			)
 		);
