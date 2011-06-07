@@ -1016,8 +1016,7 @@
 					$this->alias.'.origine',
 					'Passagecommissionep.id',
 					'Passagecommissionep.commissionep_id'
-				),
-				'joins' => array()
+				)
 			);
 
 			if( !empty( $commissionep_id ) ) {
