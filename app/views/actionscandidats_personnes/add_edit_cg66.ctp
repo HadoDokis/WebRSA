@@ -32,7 +32,7 @@
 					'options' => $options
 				)
 			);
-// debug( ( $this->action == 'add' ) && !empty( $referentId )  );
+
 			echo $ajax->observeField( 'ActioncandidatPersonneActioncandidatId', array( 'update' => 'ActioncandidatPartenairePartenaireId', 'url' => Router::url( array( 'action' => 'ajaxpart' ), true ) ) );
 
 			echo $xhtml->tag(
@@ -42,7 +42,6 @@
 					'id' => 'ActioncandidatPartenairePartenaireId'
 				)
 			);
-//             echo $xhtml->tag( '/div' );
 
 			echo $xhtml->tag(
 				'div',
@@ -51,7 +50,6 @@
 					'id' => 'ActioncandidatPrescripteurReferentId'
 				)
 			);
-// 			echo $xhtml->tag( '/div' );
 
             echo $ajax->observeField( 'ActioncandidatPersonneReferentId', array( 'update' => 'ActioncandidatPrescripteurReferentId', 'url' => Router::url( array( 'action' => 'ajaxreferent' ), true ) ) );
 
@@ -215,7 +213,7 @@
 				);
 			?>
 		</fieldset>
-		<fieldset>
+		<fieldset id="blocsortie">
             <?php
                 echo $default2->subform(
                     array(
@@ -309,12 +307,21 @@
         );
 
         <?php  if( $this->action == 'edit' ):?>
-        observeDisableFieldsetOnCheckbox(
-            'ActioncandidatPersonneIssortie',
-            'issortie',
-            false,
-            true
-        );
+
+            observeDisableFieldsOnRadioValue(
+                'candidatureform',
+                'data[ActioncandidatPersonne][bilanvenu]',
+                [ 'ActioncandidatPersonneIssortie' ],
+                undefined,
+                false
+            );
+
+            observeDisableFieldsetOnCheckbox(
+                'ActioncandidatPersonneIssortie',
+                'issortie',
+                false,
+                true
+            );
         <?php endif;?>
     } );
 </script>
