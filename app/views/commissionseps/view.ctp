@@ -1,4 +1,4 @@
-<h1><?php	echo $this->pageTitle = '1. Affichage d\'une commission d\'EP'; ?></h1>
+<h1><?php	echo $this->pageTitle = '2. Affichage d\'une commission d\'EP'; ?></h1>
 <div  id="ficheCI">
 
 	<?php
@@ -106,12 +106,20 @@
 				<td><?php echo isset( $commissionep['Commissionep']['identifiant'] ) ? $commissionep['Commissionep']['identifiant'] : null ;?></td>
 			</tr>
 			<tr class="even">
+				<th><?php echo "Nom de la commission";?></th>
+				<td><?php echo isset( $commissionep['Commissionep']['name'] ) ? $commissionep['Commissionep']['name'] : null ;?></td>
+			</tr>
+			<tr class="odd">
 				<th><?php echo "Date de la commission";?></th>
 				<td><?php echo isset( $commissionep['Commissionep']['dateseance'] ) ? strftime( '%d/%m/%Y %H:%M', strtotime( $commissionep['Commissionep']['dateseance'])) : null ;?></td>
 			</tr>
-			<tr class="odd">
+			<tr class="even">
 				<th><?php echo "Nom de l'EP";?></th>
 				<td><?php echo isset( $commissionep['Ep']['name'] ) ? $commissionep['Ep']['name'] : null ;?></td>
+			</tr>
+			<tr class="odd">
+				<th><?php echo "Identifiant de l'EP";?></th>
+				<td><?php echo isset( $commissionep['Ep']['identifiant'] ) ? $commissionep['Ep']['identifiant'] : null ;?></td>
 			</tr>
 			<tr class="even">
 				<th><?php echo "Lieu de la commission";?></th>
@@ -148,7 +156,7 @@
 <div id="tabbedWrapper" class="tabs">
 	<?php if( isset( $membresepsseanceseps ) ):?>
 		<div id="participants">
-			<h2 class="title">2. Gestion des participants</h2>
+			<h2 class="title">Gestion des participants</h2>
 			<div>
 				<ul class="actionMenu">
 				<?php
@@ -277,7 +285,7 @@
 		</div>
 	<?php endif;?>
 		<div id="dossiers">
-			<h2 class="title">3. Liste des dossiers</h2>
+			<h2 class="title">Liste des dossiers</h2>
 			<?php
 				list( $jourCommission, $heureCommission ) = explode( ' ', $commissionep['Commissionep']['dateseance'] );
 				$convocationPossible = ( date( 'Y-m-d' ) < $jourCommission );

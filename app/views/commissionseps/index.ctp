@@ -9,13 +9,13 @@
 			$this->pageTitle = 'Attribution des dossiers à une commission d\'EP';
 			break;
 		case 'arbitrageep':
-			$this->pageTitle = 'Arbitrage d\'une commission d\'EP (niveau EP)';
+			$this->pageTitle = '3. Arbitrage d\'une commission d\'EP (niveau EP)';
 			break;
 		case 'arbitragecg':
-			$this->pageTitle = 'Arbitrage d\'une commission d\'EP (niveau CG)';
+			$this->pageTitle = '3. Arbitrage d\'une commission d\'EP (niveau CG)';
 			break;
         case 'decisions':
-            $this->pageTitle = 'Consultation des décisions';
+            $this->pageTitle = '4. Consultation des décisions';
             break;
 		default:
 			$this->pageTitle = 'Liste des commissions d\'EP';
@@ -138,6 +138,7 @@
 					<th>'.$xpaginator->sort( __d( 'ep', 'Ep.identifiant', true ), 'Ep.identifiant' ).'</th>
 					<th>'.$xpaginator->sort( __d( 'ep', 'Ep.name', true ), 'Ep.name' ).'</th>
 					<th>'.$xpaginator->sort( __d( 'commissionep', 'Commissionep.identifiant', true ), 'Commissionep.identifiant' ).'</th>
+					<th>'.$xpaginator->sort( __d( 'commissionep', 'Commissionep.name', true ), 'Commissionep.name' ).'</th>
 					<th>'.$xpaginator->sort( __d( 'commissionep', 'Commissionep.lieuseance', true ), 'Commissionep.lieuseance' ).'</th>
 					<th>'.$xpaginator->sort( __d( 'commissionep', 'Commissionep.dateseance', true ), 'Commissionep.dateseance' ).'</th>
 					<th>Nombre de participants</th>
@@ -182,6 +183,7 @@
 					<td>'.h( $commissionep['Ep']['identifiant'] ).'</td>
 					<td>'.h( $commissionep['Ep']['name'] ).'</td>
 					<td>'.h( $commissionep['Commissionep']['identifiant'] ).'</td>
+					<td>'.h( $commissionep['Commissionep']['name'] ).'</td>
 					<td>'.h( @$commissionep['Commissionep']['lieuseance'] ).'</td>
 					<td>'.h( $locale->date( '%d/%m/%Y %H:%M', $commissionep['Commissionep']['dateseance'] ) ).'</td>
 					<td>'.h( $commissionep['Commissionep']['nbparticipants'] ).'</td>

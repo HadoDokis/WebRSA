@@ -29,7 +29,7 @@ msgid "Commissionep.identifiant"
 msgstr "Identifiant commission"
 
 msgid "Commissionep.name"
-msgstr "Intitulé"
+msgstr "Intitulé commission"
 
 msgid "Commissionep.salle"
 msgstr "Salle"
