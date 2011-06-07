@@ -121,3 +121,15 @@ msgstr "En cours"
 msgid "ENUM::POSITIONFICHE::nonretenue"
 msgstr "Non retenu(e)"
 ###############################################################################
+###############################################################################
+msgid "ActionscandidatsPersonnes::filelink"
+msgstr "Liste des fichiers liés à la fiche"
+
+msgid "ActioncandidatPersonne.haspiecejointe"
+msgstr "Ajouter une pièce jointe"
+
+msgid "ENUM::HASPIECEJOINTE::1"
+msgstr "Oui"
+
+msgid "ENUM::HASPIECEJOINTE::0"
+msgstr "Non"

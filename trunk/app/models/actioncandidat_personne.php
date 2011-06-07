@@ -68,6 +68,9 @@
 					),
                     'positionfiche' => array(
                         'domain' => 'actioncandidat_personne'
+                    ),
+                    'haspiecejointe' => array(
+                        'domain' => 'actioncandidat_personne'
                     )
 				)
 			),
@@ -75,6 +78,27 @@
 			'Gedooo',
 			'Autovalidate'
 		);
+
+
+        public $hasMany = array(
+            'Fichiermodule' => array(
+                'className' => 'Fichiermodule',
+                'foreignKey' => false,
+                'dependent' => false,
+                'conditions' => array(
+                    'Fichiermodule.modele = \'ActioncandidatPersonne\'',
+                    'Fichiermodule.fk_value = {$__cakeID__$}'
+                ),
+                'fields' => '',
+                'order' => '',
+                'limit' => '',
+                'offset' => '',
+                'exclusive' => '',
+                'finderQuery' => '',
+                'counterQuery' => ''
+            )
+        );
+
 
 
 		public $validate = array(
