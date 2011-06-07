@@ -347,6 +347,9 @@ SELECT add_missing_table_field ('public', 'actionscandidats_personnes', 'haspiec
 ALTER TABLE actionscandidats_personnes ALTER COLUMN haspiecejointe SET DEFAULT '0'::TYPE_BOOLEANNUMBER;
 UPDATE actionscandidats_personnes SET haspiecejointe = '0'::TYPE_BOOLEANNUMBER WHERE haspiecejointe IS NULL;
 ALTER TABLE actionscandidats_personnes ALTER COLUMN haspiecejointe SET NOT NULL;
+
+ALTER TABLE partenaires ALTER COLUMN compladr DROP NOT NULL;
+ALTER TABLE partenaires ALTER COLUMN compladr SET DEFAULT NULL;
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
