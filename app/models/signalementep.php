@@ -164,8 +164,6 @@
 
 			$formData = array();
 			foreach( $datas as $key => $dossierep ) {
-				$formData[$this->alias][$key]['id'] = @$datas[$key][$this->alias]['id'];
-				$formData[$this->alias][$key]['dossierep_id'] = @$datas[$key][$this->alias]['dossierep_id'];
 				$formData[$modeleDecisions][$key]['passagecommissionep_id'] = @$datas[$key]['Passagecommissionep'][0]['id'];
 
 				// On modifie les enregistrements de cette étape

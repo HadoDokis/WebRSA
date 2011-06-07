@@ -31,9 +31,7 @@ echo '<table id="Decisionreorientationep93" class="tooltips"><thead>
 			</tbody>
 		</table>";
 
-		$hiddenFields = $form->input( "Reorientationep93.{$i}.id", array( 'type' => 'hidden' ) ).
-						$form->input( "Reorientationep93.{$i}.dossierep_id", array( 'type' => 'hidden' ) ).
-						$form->input( "Decisionreorientationep93.{$i}.id", array( 'type' => 'hidden' ) ).
+		$hiddenFields = $form->input( "Decisionreorientationep93.{$i}.id", array( 'type' => 'hidden' ) ).
 						$form->input( "Decisionreorientationep93.{$i}.etape", array( 'type' => 'hidden', 'value' => 'cg' ) ).
 						$form->input( "Decisionreorientationep93.{$i}.passagecommissionep_id", array( 'type' => 'hidden' ) );
 

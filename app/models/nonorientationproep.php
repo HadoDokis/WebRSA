@@ -332,13 +332,18 @@
 
 			$formData = array();
 			foreach( $datas as $key => $dossierep ) {
-				$formData[$this->alias][$key]['id'] = @$datas[$key][$this->alias]['id'];
-				$formData[$this->alias][$key]['dossierep_id'] = @$datas[$key][$this->alias]['dossierep_id'];
 				$formData['Decision'.Inflector::underscore( $this->alias )][$key]['passagecommissionep_id'] = @$datas[$key]['Passagecommissionep'][0]['id'];
 
 				// On modifie les enregistrements de cette étape
 				if( @$dossierep['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0]['etape'] == $niveauDecision ) {
 					$formData['Decision'.Inflector::underscore( $this->alias )][$key] = @$dossierep['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0];
+					$formData['Decision'.Inflector::underscore( $this->alias )][$key]['structurereferente_id'] = implode(
+						'_',
+						array(
+							$formData['Decision'.Inflector::underscore( $this->alias )][$key]['typeorient_id'],
+							$formData['Decision'.Inflector::underscore( $this->alias )][$key]['structurereferente_id']
+						)
+					);
 				}
 				// On ajoute les enregistrements de cette étape
 				else {

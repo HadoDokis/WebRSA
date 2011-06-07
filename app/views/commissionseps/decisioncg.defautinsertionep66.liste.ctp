@@ -49,8 +49,8 @@ echo '<table id="Decisiondefautinsertionep66" class="tooltips"><thead>
 				$avisEp,
 
 				array( implode( ' / ', Set::filter( array(
-					$options['Decisiondefautinsertionep66']['decision'][Set::classicExtract( $decisionep, "decision" )],
-					@$options['Decisiondefautinsertionep66']['decisionsup'][Set::classicExtract( $decisionep, "decisionsup" )]
+					$options['Decisiondefautinsertionep66']['decision'][Set::classicExtract( $decisioncg, "decision" )],
+					@$options['Decisiondefautinsertionep66']['decisionsup'][Set::classicExtract( $decisioncg, "decisionsup" )]
 				) ) ), array( 'id' => "Decisiondefautinsertionep66{$i}DecisionColumn" ) ),
 
 				array( @$liste_typesorients[Set::classicExtract( $decisioncg, "typeorient_id" )], array( 'id' => "Decisiondefautinsertionep66{$i}TypeorientId" ) ),

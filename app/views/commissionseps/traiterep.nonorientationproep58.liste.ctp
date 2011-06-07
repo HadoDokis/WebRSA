@@ -26,18 +26,18 @@ echo '<table><thead>
 				$locale->date( __( 'Locale->date', true ), $dossierep['Nonorientationproep58']['Orientstruct']['date_valid'] ),
 				implode(
 					' - ',
-					array(
+					Set::filter( array(
 						$dossierep['Nonorientationproep58']['Orientstruct']['Typeorient']['lib_type_orient'],
 						$dossierep['Nonorientationproep58']['Orientstruct']['Structurereferente']['lib_struc'],
 						implode(
 							' ',
-							array(
+							Set::filter( array(
 								@$dossierep['Nonorientationproep58']['Orientstruct']['Referent']['qual'],
 								@$dossierep['Nonorientationproep58']['Orientstruct']['Referent']['nom'],
 								@$dossierep['Nonorientationproep58']['Orientstruct']['Referent']['prenom']
-							)
+							) )
 						)
-					)
+					) )
 				),
 
 				array(
