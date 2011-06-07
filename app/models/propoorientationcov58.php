@@ -249,11 +249,13 @@
 				$dossier['Propoorientationcov58']['covstructurereferente_id'] = $structurereferente_id;
 				$dossier['Propoorientationcov58']['referent_id'] = $referent_id;
 			}
-			list($jour, $heure) = explode(' ', $cov58['Cov58']['datecommission']);
-			$dossier['Propoorientationcov58']['datevalidation'] = $jour;
 			
 			$dossier['Dossiercov58']['etapecov'] = 'finalise';
 			$success = $this->Dossiercov58->save($dossier['Dossiercov58']) && $success;
+
+			list($jour, $heure) = explode(' ', $cov58['Cov58']['datecommission']);
+			$dossier['Propoorientationcov58']['datevalidation'] = $jour;
+			$dossier['Propoorientationcov58']['decisioncov'] = $data['decisioncov'];
 			$success = $this->save($dossier['Propoorientationcov58']) && $success;
 			
 			$orientstruct = array(
