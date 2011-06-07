@@ -222,6 +222,10 @@
 
 			$dossier['Dossiercov58']['etapecov'] = 'finalise';
 			$success = $this->Dossiercov58->save($dossier['Dossiercov58']) && $success;
+
+			$dossier['Propocontratinsertioncov58']['decisioncov'] = $data['decisioncov'];
+			$dossier['Propocontratinsertioncov58']['observ_ci'] = $data['commentaire'];
+			$dossier['Propocontratinsertioncov58']['datevalidation_ci'] = $data['datevalidation'];
 			$success = $this->save($dossier['Propocontratinsertioncov58']) && $success;
 
 			if ( $data['decisioncov'] == 'accepte' ) {
