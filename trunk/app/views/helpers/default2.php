@@ -131,11 +131,16 @@
 			$thead = array();
 			$actions = Set::classicExtract( $params, 'actions' );
 
+			$options = array();
+			if( isset( $params['paginate'] ) && is_string( $params['paginate'] ) ) {
+				$options['model'] = $params['paginate'];
+			}
+
 			foreach( Set::normalize( $columns ) as $column => $options ) {
 				$label = $this->label( $column, $options );
 
 				if( Set::check( $this->Xpaginator2->params, 'paging' ) && ( !isset( $options['sort'] ) || $options['sort'] ) ) {
-					$thead[] = $this->Xpaginator2->sort( $label, $column );
+					$thead[] = $this->Xpaginator2->sort( $label, $column, $options );
 				}
 				else {
 					$thead[] = $label;
@@ -504,6 +509,10 @@
 
 			/// TODO
 			$paginateModel = $modelName;
+			if( isset( $params['paginate'] ) && is_string( $cohorteParams['paginate'] ) ) {
+				$paginateModel = $cohorteParams['paginate'];
+			}
+
 			if( Set::check( $cohorteParams, 'paginate' ) ) {
 				$paginateModel = Set::classicExtract( $cohorteParams, 'paginate' );
 			}

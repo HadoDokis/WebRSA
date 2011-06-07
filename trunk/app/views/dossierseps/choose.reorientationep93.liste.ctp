@@ -14,7 +14,7 @@
 			'Reorientationep93.accordallocataire' => array( 'type' => 'boolean' ),
 			'Reorientationep93.urgent' => array( 'type' => 'boolean' ),
 			'Reorientationep93.datedemande',
-			'Dossierep.chosen' => array( 'input' => 'checkbox' ),
+			'Passagecommissionep.chosen' => array( 'input' => 'checkbox' ),
 		),
 		array(
 			'cohorte' => true,

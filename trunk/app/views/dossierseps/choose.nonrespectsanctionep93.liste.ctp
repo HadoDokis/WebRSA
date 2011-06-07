@@ -10,7 +10,7 @@
 			'Personne.dtnai',
 			'Adresse.locaadr',
 			'Nonrespectsanctionep93.origine',
-			'Dossierep.chosen' => array( 'input' => 'checkbox' ),
+			'Passagecommissionep.chosen' => array( 'input' => 'checkbox' ),
 		),
 		array(
 			'cohorte' => true,

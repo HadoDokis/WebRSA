@@ -16,7 +16,7 @@
 			'Structurereferente.lib_struc',
 			'Contratinsertion.nature_projet',
 			'Contratinsertion.type_demande',
-			'Dossierep.chosen' => array( 'input' => 'checkbox' ),
+			'Passagecommissionep.chosen' => array( 'input' => 'checkbox' ),
 		),
 		array(
 			'cohorte' => true,

@@ -11,7 +11,7 @@
 			'Typeorient.lib_type_orient',
 			'Structurereferente.lib_struc',
 			'Orientstruct.date_valid',
-			'Dossierep.chosen' => array( 'input' => 'checkbox' ),
+			'Passagecommissionep.chosen' => array( 'input' => 'checkbox' ),
 		),
 		array(
 			'cohorte' => true,

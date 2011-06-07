@@ -22,6 +22,9 @@ msgstr ""
 msgid "Passagecommissionep.etatdossierep"
 msgstr "État du dossier d'EP"
 
+msgid "Passagecommissionep.chosen"
+msgstr "Sélectionner"
+
 msgid "ENUM::ETATDOSSIEREP::associe"
 msgstr "Associé"
 

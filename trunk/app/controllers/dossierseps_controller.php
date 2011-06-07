@@ -123,10 +123,10 @@
 				$ajouts = array();
 				$suppressions = array();
 				foreach( $this->data['Dossierep'] as $key => $dossierep ) {
-					if( empty( $dossierep['chosen'] ) && !empty( $this->data['Passagecommissionep'][$key]['id'] ) ) {
+					if( empty( $this->data['Passagecommissionep'][$key]['chosen'] ) && !empty( $this->data['Passagecommissionep'][$key]['id'] ) ) {
 						$suppressions[] = $this->data['Passagecommissionep'][$key]['id'];
 					}
-					else if( !empty( $dossierep['chosen'] ) && empty( $this->data['Passagecommissionep'][$key]['id'] ) ) {
+					else if( !empty( $this->data['Passagecommissionep'][$key]['chosen'] ) && empty( $this->data['Passagecommissionep'][$key]['id'] ) ) {
 						$ajouts[] = array(
 // 							'etatdossierep' => 'cree',
 							'commissionep_id' => $commissionep_id,
@@ -175,104 +175,89 @@
 				}
 
 				$queryData = array(
-// 					'Dossierep' => array(
-						'fields' => array(
-							'Dossierep.id',
-							'Personne.id',
-							'Personne.qual',
-							'Personne.nom',
-							'Personne.prenom',
-							'Commissionep.dateseance',
-							'Passagecommissionep.id',
-							'Passagecommissionep.commissionep_id',
-							'Passagecommissionep.dossierep_id',
-							'Dossierep.created',
-							'Dossierep.themeep',
+					'fields' => array(
+						'Dossierep.id',
+						'Personne.id',
+						'Personne.qual',
+						'Personne.nom',
+						'Personne.prenom',
+						'Commissionep.dateseance',
+						'Passagecommissionep.id',
+						'Passagecommissionep.commissionep_id',
+						'Passagecommissionep.dossierep_id',
+						'Dossierep.created',
+						'Dossierep.themeep',
+					),
+					'joins' => array(
+						array(
+							'table'      => 'commissionseps',
+							'alias'      => 'Commissionep',
+							'type'       => 'LEFT OUTER',
+							'foreignKey' => false,
+							'conditions' => array(
+								'Commissionep.id = Passagecommissionep.commissionep_id'
+							)
 						),
-						'joins' => array(
-							array(
-								'table'      => 'commissionseps',
-								'alias'      => 'Commissionep',
-								'type'       => 'LEFT OUTER',
-								'foreignKey' => false,
-								'conditions' => array(
-									'Commissionep.id = Passagecommissionep.commissionep_id'
-								)
-							),
-							array(
-								'table'      => 'eps',
-								'alias'      => 'Ep',
-								'type'       => 'LEFT OUTER',
-								'foreignKey' => false,
-								'conditions' => array(
-									'Commissionep.ep_id = Ep.id'
-								)
-							),
-							array(
-								'table'      => 'calculsdroitsrsa',
-								'alias'      => 'Calculdroitrsa',
-								'type'       => 'INNER',
-								'foreignKey' => false,
-								'conditions' => array(
-									'Personne.id = Calculdroitrsa.personne_id',
-									'Calculdroitrsa.toppersdrodevorsa' => 1
-								)
-							),
-							array(
-								'table'      => 'situationsdossiersrsa',
-								'alias'      => 'Situationdossierrsa',
-								'type'       => 'INNER',
-								'foreignKey' => false,
-								'conditions' => array(
-									'Situationdossierrsa.dossier_id = Dossier.id',
-									'Situationdossierrsa.etatdosrsa' => $this->Dossierep->Personne->Foyer->Dossier->Situationdossierrsa->etatOuvert()
-								)
-							),
+						array(
+							'table'      => 'eps',
+							'alias'      => 'Ep',
+							'type'       => 'LEFT OUTER',
+							'foreignKey' => false,
+							'conditions' => array(
+								'Commissionep.ep_id = Ep.id'
+							)
 						),
-						'conditions' => array(
-							$conditionsAdresses,
-							$listeThemes,
-							'Dossierep.id NOT IN ('.
-								$this->Dossierep->Passagecommissionep->sq(
-									array(
-										'fields' => array( 'passagescommissionseps.dossierep_id' ),
-										'alias' => 'passagescommissionseps',
-										'joins' => array(
-											array(
-												'table'      => 'commissionseps',
-												'alias'      => 'commissionseps',
-												'type'       => 'INNER',
-												'foreignKey' => false,
-												'conditions' => array( 'commissionseps.id = passagescommissionseps.commissionep_id' ),
-												'order'      => array( 'commissionseps.dateseance DESC' ),
-												'limit'      => 1,
-											),
+						array(
+							'table'      => 'calculsdroitsrsa',
+							'alias'      => 'Calculdroitrsa',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array(
+								'Personne.id = Calculdroitrsa.personne_id',
+								'Calculdroitrsa.toppersdrodevorsa' => 1
+							)
+						),
+						array(
+							'table'      => 'situationsdossiersrsa',
+							'alias'      => 'Situationdossierrsa',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array(
+								'Situationdossierrsa.dossier_id = Dossier.id',
+								'Situationdossierrsa.etatdosrsa' => $this->Dossierep->Personne->Foyer->Dossier->Situationdossierrsa->etatOuvert()
+							)
+						),
+					),
+					'conditions' => array(
+						$conditionsAdresses,
+						$listeThemes,
+						'Dossierep.id NOT IN ('.
+							$this->Dossierep->Passagecommissionep->sq(
+								array(
+									'fields' => array( 'passagescommissionseps.dossierep_id' ),
+									'alias' => 'passagescommissionseps',
+									'joins' => array(
+										array(
+											'table'      => 'commissionseps',
+											'alias'      => 'commissionseps',
+											'type'       => 'INNER',
+											'foreignKey' => false,
+											'conditions' => array( 'commissionseps.id = passagescommissionseps.commissionep_id' ),
+											'order'      => array( 'commissionseps.dateseance DESC' ),
+											'limit'      => 1,
 										),
-										'conditions' => array(
-											'commissionseps.id <> ' => $commissionep_id,
-											'passagescommissionseps.etatdossierep <>' => 'reporte'
-										)
+									),
+									'conditions' => array(
+										'commissionseps.id <> ' => $commissionep_id,
+										'passagescommissionseps.etatdossierep <>' => 'reporte'
 									)
 								)
-							.' )',
-// 							'OR' => array(
-// 								'Passagecommissionep.commissionep_id IS NULL',
-// 								'Passagecommissionep.commissionep_id' => $commissionep_id
-// 							)
-						),
-						'limit' => 10,
-						'order' => array( 'Dossierep.created ASC' )
-// 					)
+							)
+						.' )',
+					),
+					'limit' => 10,
+					'order' => array( 'Dossierep.created ASC' )
 				);
-
-				/*$dossierseps = $this->paginate( $this->Dossierep );
-
-				// INFO: pour avoir le formulaire pré-rempli ... à mettre dans le modèle également ?
-				if( empty( $this->data ) ) {
-					foreach( $dossierseps as $key => $dossierep ) {
-						$dossierseps[$key]['Dossierep']['chosen'] =  ( ( $dossierep['Passagecommissionep']['commissionep_id'] == $commissionep_id ) );
-					}
-				}*/
 
 				$options = $this->Dossierep->enums();
 				$options['Dossierep']['commissionep_id'] = $this->Dossierep->Passagecommissionep->Commissionep->find(
@@ -308,6 +293,7 @@
 				$qd['limit'] = $queryData['limit'];
 				$qd['order'] = $queryData['order'];
 
+				$this->Dossierep->{$class}->forceVirtualFields = true;
 				$this->paginate = $qd;
 				$dossiers[$theme] = $this->paginate( $this->Dossierep->{$class} );
 
@@ -317,7 +303,7 @@
 				// INFO: pour avoir le formulaire pré-rempli ... à mettre dans le modèle également ?
 				if( empty( $this->data ) ) {
 					foreach( $dossiers[$theme] as $key => $dossierep ) {
-						$dossiers[$theme][$key]['Dossierep']['chosen'] = ( ( $dossierep['Passagecommissionep']['commissionep_id'] == $commissionep_id ) );
+						$dossiers[$theme][$key]['Passagecommissionep']['chosen'] = ( ( $dossierep['Passagecommissionep']['commissionep_id'] == $commissionep_id ) );
 					}
 				}
 				$countDossiers += count($dossiers[$theme]);
