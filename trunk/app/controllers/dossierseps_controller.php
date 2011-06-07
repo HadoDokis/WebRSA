@@ -260,7 +260,7 @@
 // 								'Passagecommissionep.commissionep_id' => $commissionep_id
 // 							)
 						),
-// 						'limit' => 100,
+						'limit' => 100,
 						'order' => array( 'Dossierep.created ASC' )
 // 					)
 				);
