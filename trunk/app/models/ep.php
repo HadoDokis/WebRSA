@@ -97,7 +97,7 @@
 			)
 		);
 
-		public function listOptions() {
+		public function listOptions( $filtre_zone_geo, $zonesgeographiques ) {
 			$results = $this->find(
 				'list',
 				array(
@@ -114,6 +114,11 @@
 								'Regroupementep.name ASC'
 							)
 						)
+					),
+					'conditions' => $this->sqRestrictionsZonesGeographiques(
+						'Ep.id',
+						$filtre_zone_geo,
+						$zonesgeographiques
 					),
 					'order' => array(
 						'Ep.name'
@@ -154,6 +159,40 @@
 			}
 
 			return true;
+		}
+
+		/**
+		* Si l'utilisateur est restreint au niveau des zones géographiques qu'il peut voir,
+		* on va s'assurer qu'il puisse au moins voir une des zones que l'EP traite
+		*
+		* @param string $champ Le nom du champ contenant la valeur de la clé primaire de l'EP
+		* @param boolean $filtre_zone_geo Doit-on restreindre par zone géographique ?
+		* @param array $zonesgeographiques Un tableau associatif (id => numcomptt) des zones géographiques accessibles
+		* @return array Des conditions pour un queryData CakePHP
+		*/
+
+		public function sqRestrictionsZonesGeographiques( $champ, $filtre_zone_geo, $zonesgeographiques ) {
+			$conditions = array();
+
+			if( $filtre_zone_geo ) {
+				if( !empty( $zonesgeographiques ) ) {
+					$conditions[] = "{$champ} IN ( ".$this->EpZonegeographique->sq(
+						array(
+							'fields' => array( 'eps_zonesgeographiques.ep_id' ),
+							'alias' => 'eps_zonesgeographiques',
+							'conditions' => array(
+								'eps_zonesgeographiques.zonegeographique_id' => array_keys( $zonesgeographiques ),
+								"eps_zonesgeographiques.ep_id = {$champ}"
+							)
+						)
+					).' )';
+				}
+				else {
+					$conditions[] = "{$champ} IS NULL";
+				}
+			}
+
+			return $conditions;
 		}
 	}
 ?>

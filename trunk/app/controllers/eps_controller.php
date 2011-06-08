@@ -41,6 +41,11 @@
 				'contain' => array(
 					'Regroupementep'
 				),
+				'conditions' =>  $this->Ep->sqRestrictionsZonesGeographiques(
+					'Ep.id',
+					$this->Session->read( 'Auth.User.filtre_zone_geo' ),
+					$this->Session->read( 'Auth.Zonegeographique' )
+				),
 				'limit' => 10
 			);
 
@@ -79,8 +84,8 @@
 			if ( !empty( $this->data ) ) {
 				$success = true;
 				$this->Ep->begin();
-				
-				if ( Configure::read( 'Cg.departement' ) == 66 ) {
+
+				if ( !empty( $this->data['Ep']['regroupementep_id'] ) && Configure::read( 'Cg.departement' ) == 66 ) {
 					$compositionValide = $this->Ep->Regroupementep->Compositionregroupementep->compositionValide( $this->data['Ep']['regroupementep_id'], $this->data['Membreep']['Membreep'] );
 					$success = $compositionValide['check'];
 					if ( !$success && isset( $compositionValide['error'] ) && !empty( $compositionValide['error'] ) ) {
@@ -138,45 +143,26 @@
 			$this->set(compact('listeFonctionsMembres'));
 
 
-            /**
-            *
-            */
-            $fonctionsParticipants = $this->Ep->Membreep->Fonctionmembreep->find(
-                'all',
-                array(
-                    'contain' => array(
-                        'Membreep' => array(
-                            'fields' => array(
-                                'id',
-                                '( "Membreep"."qual" || \' \' || "Membreep"."nom" || \' \' || "Membreep"."prenom" ) AS "Membreep__name"'
-                            )
-                        )
-                    )
-                )
-            );
-            $this->set( compact( 'fonctionsParticipants' ) );
-//             debug($fonctionsParticipants);
+			/**
+			*
+			*/
+			$fonctionsParticipants = $this->Ep->Membreep->Fonctionmembreep->find(
+				'all',
+				array(
+					'contain' => array(
+						'Membreep' => array(
+							'fields' => array(
+								'id',
+								'( "Membreep"."qual" || \' \' || "Membreep"."nom" || \' \' || "Membreep"."prenom" ) AS "Membreep__name"'
+							)
+						)
+					)
+				)
+			);
 
-//             $listeParticipants = array();
-//             foreach( $participants as $participant ) {
-//                 $fontionsmembres = $this->Ep->Membreep->Fonctionmembreep->find( 'list', array( 'fields' => array( 'name' ) ) );
-//                 $fonctionMembre = Set::enum( $participant['Membreep']['fonctionmembreep_id'], $fontionsmembres );
-//                 $listeParticipants[$participant['Membreep']['id']] = implode( ' ', array( $participant['Membreep']['qual'], $participant['Membreep']['nom'], $participant['Membreep']['prenom'], ': ', $fonctionMembre ) );
-//             }
-//             $this->set( compact( 'listeParticipants' ) );
-            /**
-            *
-            */
-
-
-
-
-
-
-
-
-
+			$this->set( compact( 'fonctionsParticipants' ) );
 			$this->_setOptions();
+
 			$this->render( null, null, 'add_edit' );
 		}
 
@@ -191,8 +177,8 @@
 		}
 
 		/**
-		 *
-		 */
+		*
+		*/
 
 		public function addparticipant( $ep_id, $fonction_id ) {
 			if ( !empty( $this->data ) ) {
@@ -237,8 +223,8 @@
 
 			$listeParticipants = array();
 			foreach( $participants as $participant ) {
-                $fontionsmembres = $this->Ep->Membreep->Fonctionmembreep->find( 'list', array( 'fields' => array( 'name' ) ) );
-                $fonctionMembre = Set::enum( $participant['Membreep']['fonctionmembreep_id'], $fontionsmembres );
+				$fontionsmembres = $this->Ep->Membreep->Fonctionmembreep->find( 'list', array( 'fields' => array( 'name' ) ) );
+				$fonctionMembre = Set::enum( $participant['Membreep']['fonctionmembreep_id'], $fontionsmembres );
 				$listeParticipants[$participant['Membreep']['id']] = implode( ' ', array( $participant['Membreep']['qual'], $participant['Membreep']['nom'], $participant['Membreep']['prenom'], ': ', $fonctionMembre ) );
 			}
 			$this->set( compact( 'listeParticipants' ) );
@@ -246,8 +232,8 @@
 		}
 
 		/**
-		 *
-		 */
+		*
+		*/
 
 		public function deleteparticipant($ep_id, $participant_id) {
 			$success = $this->Ep->EpMembreep->deleteAll(

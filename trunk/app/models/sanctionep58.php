@@ -243,7 +243,7 @@
 
 		public function qdNonInscrits() {
 			$queryData = $this->_qdSelection( 'noninscritpe' );
-			$qdNonInscrits = $this->Historiqueetatpe->Informationpe->qdNonInscrits();
+			$qdNonInscrits = ClassRegistry::init( 'Informationpe' )->qdNonInscrits();
 			$queryData['fields'] = array_merge( $queryData['fields'] ,$qdNonInscrits['fields'] );
 			$queryData['joins'] = array_merge( $queryData['joins'] ,$qdNonInscrits['joins'] );
 
@@ -260,8 +260,7 @@
 		public function qdRadies() {
 			// FIXME: et qui ne sont pas passés dans une EP pour ce motif depuis au moins 1 mois (?)
 			$queryData = $this->_qdSelection( 'radiepe' );
-			$this->Historiqueetatpe = ClassRegistry::init( 'Historiqueetatpe' );
-			$qdRadies = $this->Historiqueetatpe->Informationpe->qdRadies();
+			$qdRadies = ClassRegistry::init( 'Informationpe' )->qdRadies();
 			$queryData['fields'] = array_merge( $queryData['fields'] ,$qdRadies['fields'] );
 			$queryData['joins'] = array_merge( $queryData['joins'] ,$qdRadies['joins'] );
 			$queryData['conditions'] = array_merge( $queryData['conditions'] ,$qdRadies['conditions'] );

@@ -90,7 +90,7 @@
 
 
 			$conditionsAdresses = array( 'OR' => array() );
-			// Début conditions zones géographiques CG 93
+			// Début conditions zones géographiques CG 58 et CG 93
 			if( Configure::read( 'CG.cantons' ) == false ) {
 				$zonesgeographiques = Set::extract(
 					$commissionep,
@@ -102,7 +102,7 @@
 					}
 				}
 			}
-			// Fin conditions zones géographiques CG 93
+			// Fin conditions zones géographiques CG 58 et CG 93
 			// Début conditions zones géographiques CG 66
 			else {
 			/// Critères sur l'adresse - canton
