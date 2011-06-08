@@ -58,8 +58,8 @@
 					<th><?php echo $xpaginator->sort( 'Orientation', 'Typeorient.lib_type_orient' );?></th>
 					<th><?php echo $xpaginator->sort( 'Structure', 'Structurereferente.lib_struc' );?></th>
 					<th><?php echo $xpaginator->sort( 'Décision', 'Orientstruct.statut_orient' );?></th>
-					<th><?php echo $xpaginator->sort( 'Date proposition', 'Orientstruct.date_propo' );?></th>
-					<th><?php echo $xpaginator->sort( 'Date dernier CI', 'Contratinsertion.dd_ci' );?></th>
+					<th><?php echo $xpaginator->sort( 'Date préOrientation', 'Orientstruct.date_propo' );?></th>
+					<th><?php echo $xpaginator->sort( 'Date d\'Orientation', 'Contratinsertion.dd_ci' );?></th>
 
 					<!--<th>Commune</th>
 					<th>Nom prenom</th>
