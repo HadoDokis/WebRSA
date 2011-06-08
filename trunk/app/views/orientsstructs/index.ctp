@@ -170,10 +170,16 @@
 				<tr>
 					<th>Nom</th>
 					<th>Prénom</th>
-					<th>Date de la demande</th>
-					<th>Date d'orientation</th>
-					<?php if( Configure::read( 'Cg.departement' ) == 93 ):?><th>Préconisation d'orientation</th><?php endif;?>
-					<th>Type d'orientation</th>
+					<?php if( Configure::read( 'Cg.departement' ) == 93 ):?>
+						<th>Date de préOrientation</th>
+						<th>Date d'orientation</th>
+						<th>PréOrientation</th>
+						<th>Orientation</th>
+					<?php else:?>
+						<th>Date de la demande</th>
+						<th>Date d'orientation</th>
+						<th>Type d'orientation</th>
+					<?php endif;?>
 					<th>Structure référente</th>
 					<th>Rang d'orientation</th>
  					<!--<?php if( Configure::read( 'nom_form_ci_cg' ) == 'cg58' ):?><th>Etat de l'orientation</th><?php endif;?>-->
