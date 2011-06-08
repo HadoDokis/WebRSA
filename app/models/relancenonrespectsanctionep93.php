@@ -250,34 +250,39 @@
 							$validationErrors[$this->alias][$i] = $this->validationErrors;
 						}
 
+						/// INFO: Modification après la suppression de la troisième relance
 						if( $data['Relance']['contrat'] == 1 ) {
 							$this->Nonrespectsanctionep93->Contratinsertion->id = $relance['contratinsertion_id'];
 							$personne_id = $this->Nonrespectsanctionep93->Contratinsertion->field( 'personne_id' );
-
-							$dossierep = array(
-								'Dossierep' => array(
-									'personne_id' => $personne_id,
-									'themeep' => 'nonrespectssanctionseps93',
-								),
-							);
-
-							$this->Nonrespectsanctionep93->Dossierep->create( $dossierep );
-							$success = $this->Nonrespectsanctionep93->Dossierep->save() && $success;
-
-							// Nonrespectsanctionep93
-							$nonrespectsanctionep93 = array(
-								'Nonrespectsanctionep93' => array(
-									'id' => $relance['nonrespectsanctionep93_id'],
-									'dossierep_id' => $this->Nonrespectsanctionep93->Dossierep->id,
-									'active' => 0,
-								)
-							);
-
-							$this->Nonrespectsanctionep93->create( $nonrespectsanctionep93 );
-							$success = $this->Nonrespectsanctionep93->save() && $success;
 						}
+						else {
+							$this->Nonrespectsanctionep93->Orientstruct->id = $relance['orientstruct_id'];
+							$personne_id = $this->Nonrespectsanctionep93->Orientstruct->field( 'personne_id' );
+						}
+
+						$dossierep = array(
+							'Dossierep' => array(
+								'personne_id' => $personne_id,
+								'themeep' => 'nonrespectssanctionseps93',
+							),
+						);
+
+						$this->Nonrespectsanctionep93->Dossierep->create( $dossierep );
+						$success = $this->Nonrespectsanctionep93->Dossierep->save() && $success;
+
+						// Nonrespectsanctionep93
+						$nonrespectsanctionep93 = array(
+							'Nonrespectsanctionep93' => array(
+								'id' => $relance['nonrespectsanctionep93_id'],
+								'dossierep_id' => $this->Nonrespectsanctionep93->Dossierep->id,
+								'active' => 0,
+							)
+						);
+
+						$this->Nonrespectsanctionep93->create( $nonrespectsanctionep93 );
+						$success = $this->Nonrespectsanctionep93->save() && $success;
 						break;
-					case 3:
+					/*case 3:
 						if( $data['Relance']['contrat'] == 0 ) {
 							$days = Configure::read( 'Nonrespectsanctionep93.relanceOrientstructCer3' );
 
@@ -322,7 +327,7 @@
 							$success = $this->Nonrespectsanctionep93->save() && $success;
 
 						}
-						break;
+						break;*/
 				}
 			}
 
@@ -635,7 +640,7 @@
 								WHERE
 									nonrespectssanctionseps93.active = \'0\'
 									AND nonrespectssanctionseps93.orientstruct_id = Orientstruct.id
-									AND dossierseps.id IN ( '.$this->Nonrespectsanctionep93->Dossierep->Passagecommissionep->sq(
+									AND dossierseps.id NOT IN ( '.$this->Nonrespectsanctionep93->Dossierep->Passagecommissionep->sq(
 										// Les états traite et annule étant des états finaux, on est certains
 										// qu'il s'agit du dernier passage en commission pour ces dossiers
 										array(
@@ -664,7 +669,7 @@
 							)';
 						break;
 					case 2:
-					case 3:
+// 					case 3:
 						$conditions[] = 'Orientstruct.id IN (
 							SELECT nonrespectssanctionseps93.orientstruct_id
 								FROM nonrespectssanctionseps93
@@ -769,7 +774,7 @@
 								WHERE
 									nonrespectssanctionseps93.active = \'0\'
 									AND nonrespectssanctionseps93.contratinsertion_id = Contratinsertion.id
-									AND dossierseps.id IN ( '.$this->Nonrespectsanctionep93->Dossierep->Passagecommissionep->sq(
+									AND dossierseps.id NOT IN ( '.$this->Nonrespectsanctionep93->Dossierep->Passagecommissionep->sq(
 										// Les états traite et annule étant des états finaux, on est certains
 										// qu'il s'agit du dernier passage en commission pour ces dossiers
 										array(
