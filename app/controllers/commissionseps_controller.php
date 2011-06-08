@@ -112,7 +112,10 @@
 				array( 'Foyer' => array( 'sitfam' => $this->Option->sitfam() ) )
 			);
 
-			$options[$this->modelClass]['ep_id'] = $this->{$this->modelClass}->Ep->listOptions();
+			$options[$this->modelClass]['ep_id'] = $this->{$this->modelClass}->Ep->listOptions(
+				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
+				$this->Session->read( 'Auth.Zonegeographique' )
+			);
 			$options['Ep']['regroupementep_id'] = $this->{$this->modelClass}->Ep->Regroupementep->find( 'list' );
 
 			// Ajout des enums pour les thématiques du CG uniquement
@@ -193,8 +196,11 @@
 
 		public function index( $etape = null ) {
 			if( !empty( $this->data ) ) {
-				$this->paginate['Commissionep'] = $this->Commissionep->search( $this->data );
-
+				$this->paginate['Commissionep'] = $this->Commissionep->search(
+					$this->data,
+					$this->Session->read( 'Auth.User.filtre_zone_geo' ),
+					$this->Session->read( 'Auth.Zonegeographique' )
+				);
 
 				$this->paginate['Commissionep']['limit'] = 10;
 				$this->paginate['Commissionep']['order'] = array( 'Commissionep.dateseance DESC' );

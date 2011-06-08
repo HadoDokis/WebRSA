@@ -76,7 +76,7 @@
 			);
 			$result = $this->Canton->queryConditionsByZonesgeographiques($zonesgeographiques);
 			$expected=array(
-				'or' => array(
+				'OR' => array(
 					'0' => array(
 						'OR' => array(
 							'Adresse.numcomptt' => 12345,

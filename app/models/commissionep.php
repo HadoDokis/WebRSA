@@ -113,10 +113,14 @@
 			)
 		);
 
-		public function search( $criteresseanceep ) {
+		public function search( $criteresseanceep, $filtre_zone_geo, $zonesgeographiques ) {
 			/// Conditions de base
 
-			$conditions = array();
+			$conditions = $this->Ep->sqRestrictionsZonesGeographiques(
+				'Commissionep.ep_id',
+				$filtre_zone_geo,
+				$zonesgeographiques
+			);
 
 			if ( isset($criteresseanceep['Ep']['regroupementep_id']) && !empty($criteresseanceep['Ep']['regroupementep_id']) ) {
 				$conditions[] = array('Ep.regroupementep_id'=>$criteresseanceep['Ep']['regroupementep_id']);

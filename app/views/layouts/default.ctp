@@ -148,6 +148,10 @@
 			<div id="pageFooter"<?php if( Configure::read( 'debug' ) > 0 ) { echo ' style="color: black;"'; }?>>
 				webrsa v. <?php echo app_version();?> 2009 - 2011 @ Adullact.
 				<?php
+					if( Configure::read( 'debug' ) > 0 ) {
+						echo '( CG '.Configure::read( 'Cg.departement' );
+						echo ', BDD '.ClassRegistry::init( 'User' )->dbo->config['database']." )\n";
+					}
 					echo sprintf(
 						"Page construite en %s secondes. %s / %s. %s modèles",
 						number_format( getMicrotime() - $GLOBALS['TIME_START'] , 2, ',', ' ' ),

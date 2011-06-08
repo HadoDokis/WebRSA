@@ -178,7 +178,7 @@
 				}
 				$_conditions[] = $_condition;
 			}
-			return array( 'or' => $_conditions );
+			return array( 'OR' => $_conditions );
 		}
 
 		/**
