@@ -70,7 +70,7 @@
 		echo $default2->subform(
 			array(
 	// 			'Relance.contrat' => array( 'label' => 'Présence contrat', 'type' => 'radio', 'options' => array( 0 => 'Personne orientée sans contrat', 1 => 'Personne orientée avec contrat' ), 'value' => ( isset( $this->data['Search']['Relance']['contrat'] ) ? @$this->data['Search']['Relance']['contrat'] : 0 ) ),
-				'Search.Relance.numrelance' => array( 'label' => 'Type de relance à réaliser', 'type' => 'radio', 'options' => array( 1 => 'Première relance', 2 => 'Seconde relance', 3 => /*'Troisième relance'*/'Confirmation passage en EP' ), 'value' => ( isset( $this->data['Search']['Relance']['numrelance'] ) ? @$this->data['Search']['Relance']['numrelance'] : 1 ) ),
+				'Search.Relance.numrelance' => array( 'label' => 'Type de relance à réaliser', 'type' => 'radio', 'options' => array( 1 => 'Première relance', 2 => 'Confirmation passage en EP'/*'Seconde relance', 3 => 'Confirmation passage en EP'*/ ), 'value' => ( isset( $this->data['Search']['Relance']['numrelance'] ) ? @$this->data['Search']['Relance']['numrelance'] : 1 ) ),
 			),
 			array(
 				'options' => $options
@@ -259,13 +259,13 @@
 
 	<?php if( isset( $results ) ):?>$( form ).hide();<?php endif;?>
 
-	observeDisableFieldsOnRadioValue2(
-		form,
-		'data[Search][Relance][contrat]',
-		[ 'SearchRelanceNumrelance3' ],
-		'1',
-		false
-	);
+// 	observeDisableFieldsOnRadioValue2(
+// 		form,
+// 		'data[Search][Relance][contrat]',
+// 		[ 'SearchRelanceNumrelance3' ],
+// 		'1',
+// 		false
+// 	);
 
 	observeDisableFieldsOnRadioValue(
 		form,
