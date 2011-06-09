@@ -449,10 +449,13 @@
 				
 				if ($cg=='cg58')
 					$difficultesLogement .= $dsphm->details( $dsp, 'Detailconfort', 'confort', null, $options['Detailconfort']['confort'] );
-				
+
+//     debug($dsp);
 				$difficultesLogement .= $default->view(
 					$dsp,
 					array(
+						'Dsp.demarlog',
+						'Dsp.statutoccupation',
 						'Dsp.demarlog'
 					),
 					array(
