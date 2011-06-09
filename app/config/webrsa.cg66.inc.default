@@ -10,7 +10,7 @@
 	Configure::write( 'FULL_BASE_URL', 'http://localhost/webrsa/trunk' );
 
 	Configure::write( 'Cg.departement', 66 );
-	Configure::write( 'Utilisateurs.multilogin', true );
+	Configure::write( 'Utilisateurs.multilogin', false );
 	Configure::write( 'with_parentid', true ); // true = cg66
 	Configure::write( 'nom_form_ci_cg', 'cg66' );
 	Configure::write( 'CG.cantons', true ); // false = cg93, true = cg66

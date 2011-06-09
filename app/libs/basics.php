@@ -60,26 +60,26 @@
 		}
 	}
 
-    /**
-        * ...
-        *
-        * @param array $array
-        * @param array $filterKeys
-        * @return array $newArray
-    */
+	/**
+		* ...
+		*
+		* @param array $array
+		* @param array $filterKeys
+		* @return array $newArray
+	*/
 
-    function array_filter_keys( array $array, array $filterKeys, $remove = false ) { // FIXME ?
-        $newArray = array();
-        foreach( $array as $key => $value) {
-            if( $remove && !in_array( $key, $filterKeys ) ) {
-                $newArray[$key] = $value;
-            }
-            else if( !$remove && in_array( $key, $filterKeys ) ) {
-                $newArray[$key] = $value;
-            }
-        }
-        return $newArray;
-    }
+	function array_filter_keys( array $array, array $filterKeys, $remove = false ) { // FIXME ?
+		$newArray = array();
+		foreach( $array as $key => $value) {
+			if( $remove && !in_array( $key, $filterKeys ) ) {
+				$newArray[$key] = $value;
+			}
+			else if( !$remove && in_array( $key, $filterKeys ) ) {
+				$newArray[$key] = $value;
+			}
+		}
+		return $newArray;
+	}
 
 	/**
 	* FIXME: remplacer la wootFonction dans AppModel
@@ -164,101 +164,145 @@
 	}
 
 	function valid_int( $value ) {
-        return !( !is_numeric( $value ) || !( (int)$value == $value ) );
-    }
+		return !( !is_numeric( $value ) || !( (int)$value == $value ) );
+	}
 
-    function date_short( $sqldate ) {
-        if( !empty( $sqldate ) ) {
-            return strftime( '%d/%m/%Y', strtotime( $sqldate ) );
-        }
-    }
+	function date_short( $sqldate ) {
+		if( !empty( $sqldate ) ) {
+			return strftime( '%d/%m/%Y', strtotime( $sqldate ) );
+		}
+	}
 
-    function required( $label ) {
-        return h( $label ).' '.REQUIRED_MARK;
-    }
+	function required( $label ) {
+		return h( $label ).' '.REQUIRED_MARK;
+	}
 
-    function cake_version() {
-        $versionData = explode( "\n", file_get_contents( ROOT.DS.'cake'.DS.'VERSION.txt' ) );
-        $version = explode( '.', $versionData[count( $versionData) - 1] );
-        return implode( '.', $version );
-    }
+	function cake_version() {
+		$versionData = explode( "\n", file_get_contents( ROOT.DS.'cake'.DS.'VERSION.txt' ) );
+		$version = explode( '.', $versionData[count( $versionData) - 1] );
+		return implode( '.', $version );
+	}
 
-    /**
-        Get real timeout (in seconds) based on core.php configuretion
-    */
-    function readTimeout() {
-        return ini_get( 'session.gc_maxlifetime' );
-        /*$timeout = Configure::read( 'Session.timeout' );
-        switch( Configure::read( 'Security.level' ) ) {
-            case 'high':    return ( $timeout * 10 );
-            case 'medium':  return ( $timeout * 100 );
-            case 'low':     return ( $timeout * 300 );
-        }*/
-    }
+	/**
+	* Get real timeout (in seconds) based on core.php configuration
+	*/
 
-    function suffix( $value, $separator = '_' ) { // FIXME: preg_escape separator + erreur si plus d'un caractère
-        return preg_replace( '/^(.*'.$separator.')([^'.$separator.']+)$/', '\2', $value );
-    }
+	function readTimeout() {
+		if( Configure::read( 'Session.save' ) == 'cake' ) {
+			App::import( 'Component', 'Session' );
+			$session = new SessionComponent();
+			return ( $session->sessionTime - $session->time );
+		}
+		else {
+			return ini_get( 'session.gc_maxlifetime' );
+		}
+	}
 
-    function array_depth( $array ) {
-        $max_depth = 1;
-        foreach ($array as $value) {
-            if (is_array($value)) {
-                $depth = array_depth($value) + 1;
+	/**
+	* Formatteun timestamp en H:M:S
+	*
+	* @see http://snipplr.com/view.php?codeview&id=4688
+	*/
 
-                if ($depth > $max_depth) {
-                    $max_depth = $depth;
-                }
-            }
-        }
-        return $max_depth;
-    }
+	function sec2hms( $sec, $padHours = false ) {
+		$hms = "";
 
-    function dateComplete( $data, $key ) {
-        $dateComplete = Set::extract( $data, $key );
-        if( !is_array( $dateComplete ) || empty( $dateComplete ) ) {
-            return !empty( $dateComplete );
-        }
-        else {
-            $empty = true;
-            foreach( $dateComplete as $tmp ) {
-                if( !empty( $tmp ) ) {
-                    $empty = false;
-                }
-            }
-            return !$empty;
-        }
-    }
+		// there are 3600 seconds in an hour, so if we
+		// divide total seconds by 3600 and throw away
+		// the remainder, we've got the number of hours
+		$hours = intval(intval($sec) / 3600); 
+
+		// add to $hms, with a leading 0 if asked for
+		$hms .= ($padHours) 
+				? str_pad($hours, 2, "0", STR_PAD_LEFT). ':'
+				: $hours. ':';
+			
+		// dividing the total seconds by 60 will give us
+		// the number of minutes, but we're interested in 
+		// minutes past the hour: to get that, we need to 
+		// divide by 60 again and keep the remainder
+		$minutes = intval(($sec / 60) % 60); 
+
+		// then add to $hms (with a leading 0 if needed)
+		$hms .= str_pad($minutes, 2, "0", STR_PAD_LEFT). ':';
+
+		// seconds are simple - just divide the total
+		// seconds by 60 and keep the remainder
+		$seconds = intval($sec % 60); 
+
+		// add to $hms, again with a leading 0 if needed
+		$hms .= str_pad($seconds, 2, "0", STR_PAD_LEFT);
+
+		return $hms;
+	}
+
+	/**
+	*
+	*/
+
+	function suffix( $value, $separator = '_' ) { // FIXME: preg_escape separator + erreur si plus d'un caractère
+		return preg_replace( '/^(.*'.$separator.')([^'.$separator.']+)$/', '\2', $value );
+	}
+
+	function array_depth( $array ) {
+		$max_depth = 1;
+		foreach ($array as $value) {
+			if (is_array($value)) {
+				$depth = array_depth($value) + 1;
+
+				if ($depth > $max_depth) {
+					$max_depth = $depth;
+				}
+			}
+		}
+		return $max_depth;
+	}
+
+	function dateComplete( $data, $key ) {
+		$dateComplete = Set::extract( $data, $key );
+		if( !is_array( $dateComplete ) || empty( $dateComplete ) ) {
+			return !empty( $dateComplete );
+		}
+		else {
+			$empty = true;
+			foreach( $dateComplete as $tmp ) {
+				if( !empty( $tmp ) ) {
+					$empty = false;
+				}
+			}
+			return !$empty;
+		}
+	}
 
 
-    /**
-        * ...
-        *
-        * @param array $array
-        * @param array $filterKeys
-        * @return array $newArray
-    */
+	/**
+		* ...
+		*
+		* @param array $array
+		* @param array $filterKeys
+		* @return array $newArray
+	*/
 
-    /*function array_filter_keys( array $array, array $filterKeys, $remove = false ) { // FIXME ?
-        $newArray = array();
-        foreach( $array as $key => $value) {
-            if( $remove && !in_array( $key, $filterKeys ) ) {
-                $newArray[$key] = $value;
-            }
-            else if( !$remove && in_array( $key, $filterKeys ) ) {
-                $newArray[$key] = $value;
-            }
-        }
-        return $newArray;
-    }*/
+	/*function array_filter_keys( array $array, array $filterKeys, $remove = false ) { // FIXME ?
+		$newArray = array();
+		foreach( $array as $key => $value) {
+			if( $remove && !in_array( $key, $filterKeys ) ) {
+				$newArray[$key] = $value;
+			}
+			else if( !$remove && in_array( $key, $filterKeys ) ) {
+				$newArray[$key] = $value;
+			}
+		}
+		return $newArray;
+	}*/
 
 
-    /**
-        @input  multisized array (eg. array( 'Foo' => array( 'Bar' => 'value' ) ) )
-        @output unisized array (eg. array( 'Foo__Bar' => 'value' ) )
-    */
-    function array_unisize( $array, $prefix = null ) {
-        $newArray = array();
+	/**
+		@input  multisized array (eg. array( 'Foo' => array( 'Bar' => 'value' ) ) )
+		@output unisized array (eg. array( 'Foo__Bar' => 'value' ) )
+	*/
+	function array_unisize( $array, $prefix = null ) {
+		$newArray = array();
 		if( is_array( $array ) && !empty( $array ) ) {
 			foreach( $array as $key => $value ) {
 				$newKey = ( !empty( $prefix ) ? $prefix.'__'.$key : $key );
@@ -270,37 +314,37 @@
 				}
 			}
 		}
-        return $newArray;
-    }
+		return $newArray;
+	}
 
-    /**
-        @output multisized array (eg. array( 'Foo' => array( 'Bar' => 'value' ) ) )
-        @input  unisized array (eg. array( 'Foo__Bar' => 'value' ) )
-    */
-    function array_multisize( array $array, $prefix = null ) {
-        $newArray = array();
+	/**
+		@output multisized array (eg. array( 'Foo' => array( 'Bar' => 'value' ) ) )
+		@input  unisized array (eg. array( 'Foo__Bar' => 'value' ) )
+	*/
+	function array_multisize( array $array, $prefix = null ) {
+		$newArray = array();
 		if( is_array( $array ) && !empty( $array ) ) {
 			foreach( $array as $key => $value ) {
 				$newArray = Set::insert( $newArray, implode( '.', explode( '__', $key ) ), $value );
 			}
 		}
-        return $newArray;
-    }
+		return $newArray;
+	}
 
-    function implode_assoc( $outer_glue, $inner_glue, $array, $allowempty = true ) {
-        $ret = array();
-        foreach( $array as $key => $value ) {
-            if( !empty( $value ) || $allowempty ) {
-                if( is_array( $value ) ) {
-                    $ret[] = $key.'[]'.$inner_glue.implode( $outer_glue.$key.'[]'.$inner_glue, $value );
-                }
-                else {
-                    $ret[] = $key.$inner_glue.$value;
-                }
-            }
-        }
-        return implode( $outer_glue, $ret );
-    }
+	function implode_assoc( $outer_glue, $inner_glue, $array, $allowempty = true ) {
+		$ret = array();
+		foreach( $array as $key => $value ) {
+			if( !empty( $value ) || $allowempty ) {
+				if( is_array( $value ) ) {
+					$ret[] = $key.'[]'.$inner_glue.implode( $outer_glue.$key.'[]'.$inner_glue, $value );
+				}
+				else {
+					$ret[] = $key.$inner_glue.$value;
+				}
+			}
+		}
+		return implode( $outer_glue, $ret );
+	}
 
 	/**
 	* SOURCE: http://fr2.php.net/manual/fr/function.array-sum.php#58441
@@ -323,35 +367,35 @@
 		return $return;
 	}
 
-    function array_intersects( array $needle, array $haystack ) {
-        $return = array();
-        foreach( $needle as $n ) {
-            if( in_array( $n, $haystack ) ) {
-                $return[] = $n;
-            }
-        }
-        return $return;
-    }
-    /**
-        * ...
-        *
-        * @param array $array
-        * @param array $filterValues
-        * @return array $newArray
-    */
+	function array_intersects( array $needle, array $haystack ) {
+		$return = array();
+		foreach( $needle as $n ) {
+			if( in_array( $n, $haystack ) ) {
+				$return[] = $n;
+			}
+		}
+		return $return;
+	}
+	/**
+		* ...
+		*
+		* @param array $array
+		* @param array $filterValues
+		* @return array $newArray
+	*/
 
-    function array_filter_values( array $array, array $filterValues, $remove = false ) { // FIXME ?
-        $newArray = array();
-        foreach( $array as $key => $value) {
-            if( $remove && !in_array( $value, $filterValues ) ) {
-                $newArray[$key] = $value;
-            }
-            else if( !$remove && in_array( $value, $filterValues ) ) {
-                $newArray[$key] = $value;
-            }
-        }
-        return $newArray;
-    }
+	function array_filter_values( array $array, array $filterValues, $remove = false ) { // FIXME ?
+		$newArray = array();
+		foreach( $array as $key => $value) {
+			if( $remove && !in_array( $value, $filterValues ) ) {
+				$newArray[$key] = $value;
+			}
+			else if( !$remove && in_array( $value, $filterValues ) ) {
+				$newArray[$key] = $value;
+			}
+		}
+		return $newArray;
+	}
 
 	/**
 	* Classes manipulation
@@ -451,8 +495,8 @@
 		return $newArray;
 	}
 
-    /** ************************************************************************
-    * Remplace les caractères accentués par des caractères non accentués
+	/** ************************************************************************
+	* Remplace les caractères accentués par des caractères non accentués
 	* dans une chaîne de caractères
 	* @param string $string chaîne de caractères à modifier
 	* @return string chaîne de caractères sans accents
@@ -461,10 +505,10 @@
 	* ATTENTION: il faut utiliser les fonctions mb_internal_encoding et mb_regex_encoding
 	*     pour que le système sache quels encodages il traite, afin que le remplacement
 	*     d'acents se passe bien.
-    *** ***********************************************************************/
+	*** ***********************************************************************/
 
-    function replace_accents( $string ) {
-        $accents = array(
+	function replace_accents( $string ) {
+		$accents = array(
 			'[ÂÀ]',
 			'[âà]',
 			'[Ç]',
@@ -479,7 +523,7 @@
 			'[ûù]'
 		);
 
-        $replace = array(
+		$replace = array(
 			'A',
 			'a',
 			'C',
@@ -494,12 +538,12 @@
 			'u'
 		);
 
-        foreach( $accents as $key => $accent ) {
-            $string = mb_ereg_replace( $accent, $replace[$key], $string );
-        }
+		foreach( $accents as $key => $accent ) {
+			$string = mb_ereg_replace( $accent, $replace[$key], $string );
+		}
 
-        return $string;
-    }
+		return $string;
+	}
 
 	/**
 	* Retourne true pour un RIB bien formé, false pour un RIB mal formé
@@ -537,11 +581,11 @@
 	* @return integer âge en années
 	*/
 
-    function age( $date ) {
-        list( $year, $month, $day ) = explode( '-', $date );
-        $today = time();
-        return date( 'Y', $today ) - $year + ( ( ( $month > date( 'm', $today ) ) || ( $month == date( 'm', $today ) && $day > date( 'd', $today ) ) ) ? -1 : 0 );
-    }
+	function age( $date ) {
+		list( $year, $month, $day ) = explode( '-', $date );
+		$today = time();
+		return date( 'Y', $today ) - $year + ( ( ( $month > date( 'm', $today ) ) || ( $month == date( 'm', $today ) && $day > date( 'd', $today ) ) ) ? -1 : 0 );
+	}
 
 	/**
 	* Calcule la clé pour un NIR donné

@@ -1,5 +1,5 @@
 <?php
-	$this->pageTitle = 'Test de l\'application';
+	$this->pageTitle = 'Vérification de l\'application';
 
 	function booleanIcon( $xhtml, $value ) {
 		return $xhtml->image( 'icons/'.( $value ? 'tick.png' : 'cross.png' ) ).' ';
@@ -9,9 +9,32 @@
 	$iconFalse = booleanIcon( $xhtml, false );
 ?>
 <div>
-    <h1><?php echo 'Test de l\'application';?></h1>
+	<h1><?php echo $this->pageTitle;?></h1>
+	<h2>Paramétrage de l'application</h2>
+	<table>
+		<tr>
+			<td>Durée du timeout</td>
+			<td><?php echo sec2hms( readTimeout(), true );?></td>
+		</tr>
+		<tr>
+			<td>Paramétrage actuellement utilisé</td>
+			<td>
+				<code>Configure::write( 'Session.save', '<?php echo Configure::read( 'Session.save' );?>' )</code> dans <code>app/config/core.php</code><br/>
+				<?php if( Configure::read( 'Session.save' ) == 'php' ):?>
+				<code>session.gc_maxlifetime</code> dans le <code>php.ini</code>
+				<?php elseif( Configure::read( 'Session.save' ) == 'cake' ):?>
+				<code>Configure::write( 'Session.timeout', '<?php echo Configure::read( 'Session.timeout' );?>' )</code> dans <code>app/config/core.php</code><br/>
+				<code>Configure::write( 'Security.level', '<?php echo Configure::read( 'Security.level' );?>' )</code> dans <code>app/config/core.php</code>
+				<?php endif;?>
+			</td>
+		</tr>
+	</table>
 
-    <div>
+	<?php if( Configure::read() ):?>
+	<?php endif;?>
+
+	<h2>Test de l'application</h2>
+	<div>
 		<table>
 			<h3>Paramétrage du php.ini ?</h3>
 			<table>

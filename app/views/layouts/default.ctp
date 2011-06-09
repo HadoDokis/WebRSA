@@ -71,7 +71,7 @@
 				} );
 
 				if ('<?php echo Router::url( "/users/login", true ); ?>' != location.href && '<?php echo Configure::read("alerteFinSession"); ?>' && '<?php echo ( Configure::read( 'debug' ) == 0 ); ?>') {
-					var sessionTime = parseInt('<?php echo ini_get("session.gc_maxlifetime") ?>');
+					var sessionTime = parseInt('<?php echo readTimeout(); ?>');
 					var warning5minutes = sessionTime - (5*60);
 					setTimeout(alert5minutes, warning5minutes*1000);
 					setTimeout(sessionEnd, sessionTime*1000);
