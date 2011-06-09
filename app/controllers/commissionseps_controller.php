@@ -27,13 +27,6 @@
 				'commissionseps::delete',
 				'membreseps::printConvocationParticipant',
 			),
-			'quorum' => array(
-				'dossierseps::choose',
-				'membreseps::editpresence',
-				'commissionseps::edit',
-				'commissionseps::delete',
-				'membreseps::printConvocationParticipant',
-			),
 			'associe' => array(
 				'commissionseps::ordredujour',
 				'dossierseps::choose',
@@ -52,6 +45,11 @@
 // 				'membreseps::printConvocationParticipant',
 				'commissionseps::printOrdreDuJour',
 				'commissionseps::delete',
+			),
+			'quorum' => array(
+				'membreseps::editpresence',
+				'commissionseps::delete',
+				'membreseps::printConvocationParticipant',
 			),
 			'presence' => array(
 // 				'commissionseps::ordredujour',
