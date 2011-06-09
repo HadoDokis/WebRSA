@@ -19,9 +19,8 @@
 		<tr>
 			<td>Paramétrage actuellement utilisé</td>
 			<td>
-				<code>Configure::write( 'Session.save', '<?php echo Configure::read( 'Session.save' );?>' )</code> dans <code>app/config/core.php</code><br/>
 				<?php if( Configure::read( 'Session.save' ) == 'php' ):?>
-				<code>session.gc_maxlifetime</code> dans le <code>php.ini</code>
+				<code>session.gc_maxlifetime</code> dans le <code>php.ini</code> (valeur actuelle: <em><?php echo ini_get( 'session.gc_maxlifetime' );?></em> secondes)
 				<?php elseif( Configure::read( 'Session.save' ) == 'cake' ):?>
 				<code>Configure::write( 'Session.timeout', '<?php echo Configure::read( 'Session.timeout' );?>' )</code> dans <code>app/config/core.php</code><br/>
 				<code>Configure::write( 'Security.level', '<?php echo Configure::read( 'Security.level' );?>' )</code> dans <code>app/config/core.php</code>
