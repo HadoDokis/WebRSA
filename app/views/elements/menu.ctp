@@ -429,8 +429,13 @@
 					<?php else: ?>
 						<li><a href="#">3. Arbitrage</a>
 							<ul>
-								<li><?php echo $xhtml->link( 'EP', array( 'controller' => 'commissionseps', 'action' => 'arbitrageep' ) );?></li>
-								<li><?php echo $xhtml->link( 'CG', array( 'controller' => 'commissionseps', 'action' => 'arbitragecg' ) );?></li>
+                                <?php if( Configure::read( 'Cg.departement' ) == 66 ): ?>
+                                    <li><?php echo $xhtml->link( 'Avis EP', array( 'controller' => 'commissionseps', 'action' => 'arbitrageep' ) );?></li>
+                                    <li><?php echo $xhtml->link( 'Décisions CG', array( 'controller' => 'commissionseps', 'action' => 'arbitragecg' ) );?></li>
+                                <?php else: ?>
+                                    <li><?php echo $xhtml->link( 'EP', array( 'controller' => 'commissionseps', 'action' => 'arbitrageep' ) );?></li>
+                                    <li><?php echo $xhtml->link( 'CG', array( 'controller' => 'commissionseps', 'action' => 'arbitragecg' ) );?></li>
+								<?php endif; ?>
 							</ul>
 						</li>
 					<?php endif; ?>
