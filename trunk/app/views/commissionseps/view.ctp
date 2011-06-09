@@ -288,8 +288,8 @@
 			<h2 class="title">Liste des dossiers</h2>
 			<?php
 				list( $jourCommission, $heureCommission ) = explode( ' ', $commissionep['Commissionep']['dateseance'] );
-				$convocationPossible = ( date( 'Y-m-d' ) < $jourCommission );
-				$disableConvocationBeneficiaire = in_array( 'commissionseps::printConvocationBeneficiaire', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) && !$convocationPossible;
+
+				$disableConvocationBeneficiaire = in_array( 'commissionseps::printConvocationBeneficiaire', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] );
 			?>
 			<div id="dossierseps">
 				<?php
