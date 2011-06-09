@@ -22,7 +22,7 @@
 				)
 			),
 			'Revision' => array('auto'=>false),
-			'Autovalidate'
+// 			'Autovalidate'
 		);
 	}
 ?>
