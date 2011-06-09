@@ -12,7 +12,7 @@
 				)
 			),
 			'Revision' => array('auto'=>false),
-			'Autovalidate'
+// 			'Autovalidate'
 		);
 
 		public $belongsTo = array(
