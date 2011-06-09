@@ -35,7 +35,7 @@
 						echo '<td>'.$xhtml->link($xhtml->image('icons/style.png', array()).' Voir les différences', '/dsps/view_diff/'.$histo['DspRev']['id'], array('escape'=>false)).'</td>';
 					else
 						echo '<td><span class="disabled">'.$xhtml->image('icons/style.png', array()).' Voir les différences</span></td>';
-                    echo "</td><td>".$xhtml->link($xhtml->image('icons/link.png', array()).'Fichiers liés', '/dsps/filelink/'.$histo['DspRev']['id'], array('escape'=>false))."</td>";
+                    echo "</td><td>".$xhtml->link($xhtml->image('icons/attach.png', array()).'Fichiers liés', '/dsps/filelink/'.$histo['DspRev']['id'], array('escape'=>false))."</td>";
 					echo "</tr>";
 				}
 			
