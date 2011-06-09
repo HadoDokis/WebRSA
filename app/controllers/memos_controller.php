@@ -56,11 +56,6 @@
         function _add_edit( $id = null ) {
             $this->assert( valid_int( $id ), 'invalidParameter' );
 
-            // Retour à la liste en cas d'annulation
-            if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
-                $this->redirect( array( 'action' => 'index', $id ) );
-            }
-
             // Récupération des id afférents
             if( $this->action == 'add' ) {
                 $personne_id = $id;
@@ -84,6 +79,11 @@
                 $this->Memo->rollback();
             }
             $this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
+
+            // Retour à la liste en cas d'annulation
+            if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
+                $this->redirect( array( 'action' => 'index', $personne_id ) );
+            }
 
             if( !empty( $this->data ) ){
 
