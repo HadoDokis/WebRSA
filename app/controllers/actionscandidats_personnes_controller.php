@@ -204,19 +204,6 @@
 
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 		/**
 		*   Ajout à la suite de l'utilisation des nouveaux helpers
 		*   - default.php
@@ -228,6 +215,32 @@
 			$dossierId = $this->ActioncandidatPersonne->Personne->dossierId( $personne_id );
 			$this->assert( !empty( $dossierId ), 'invalidParameter' );
 			$this->set( compact( 'dossierId' ) );
+
+            //Vérification de la présence d'une orientation ou d'un référent pour cet allocataire
+            $referentLie = $this->ActioncandidatPersonne->Personne->PersonneReferent->find(
+                'count',
+                array(
+                    'conditions' => array(
+                        'PersonneReferent.personne_id' => $personne_id
+                    ),
+                    'contain' => false
+                )
+            );
+            $this->set( compact( 'referentLie' ) );
+
+            $orientationLiee = $this->ActioncandidatPersonne->Personne->Orientstruct->find(
+                'count',
+                array(
+                    'conditions' => array(
+                        'Orientstruct.personne_id' => $personne_id
+                    ),
+                    'contain' => false
+                )
+            );
+            $this->set( compact( 'orientationLiee' ) );
+
+
+
 
             $this->ActioncandidatPersonne->forceVirtualFields = true;
 			$queryData = array(
@@ -259,6 +272,7 @@
 			$varname = Inflector::tableize( $this->name );
 			$this->set( $varname, $items );
 			$this->_setOptions();
+// debug($items);
 			$this->set( 'personne_id', $personne_id );
 // 			$this->render( $this->action, null, '/actionscandidats_personnes/index_'.Configure::read( 'nom_form_ci_cg' ) );
 
