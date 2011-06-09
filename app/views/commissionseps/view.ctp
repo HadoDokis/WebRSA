@@ -3,7 +3,7 @@
 
 	<?php
 		if ( $commissionep['Commissionep']['etatcommissionep'] == 'quorum' ) {
-			echo "<p class='error'>Quorum atteint, la commission ne peut avoir lieu.</p>";
+			echo "<p class='error'>Quorum non atteint, la commission ne peut avoir lieu.</p>";
 			if ( isset( $messageQuorum ) && !empty( $messageQuorum ) ) {
 				echo "<p class='error'>{$messageQuorum}</p>";
 			}

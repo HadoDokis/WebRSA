@@ -4,6 +4,15 @@
 
 	<h1><?php echo $this->pageTitle;?></h1>
 
+	<?php
+		if ( $commissionep['Commissionep']['etatcommissionep'] == 'quorum' ) {
+			echo "<p class='error'>Quorum non atteint, la commission ne peut avoir lieu.</p>";
+			if ( isset( $messageQuorum ) && !empty( $messageQuorum ) ) {
+				echo "<p class='error'>{$messageQuorum}</p>";
+			}
+		}
+	?>
+
 	<?php echo $xform->create( 'Membreep', array( 'type' => 'post', 'url' => '/membreseps/editpresence/'.$seance_id ) ); ?>
 		<div class="aere">
 			<fieldset>

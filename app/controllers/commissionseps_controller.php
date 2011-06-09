@@ -29,7 +29,7 @@
 			),
 			'quorum' => array(
 				'dossierseps::choose',
-				'membreseps::editliste',
+				'membreseps::editpresence',
 				'commissionseps::edit',
 				'commissionseps::delete',
 				'membreseps::printConvocationParticipant',
@@ -207,13 +207,13 @@
 
 				switch( $etape ) {
 					case 'creationmodification':
-						$this->paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'cree', 'quorum', 'associe' );
+						$this->paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'cree', 'associe' );
 						break;
 					case 'attributiondossiers':
-						$this->paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'cree', 'quorum', 'associe' );
+						$this->paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'cree', 'associe' );
 						break;
 					case 'arbitrageep':
-						$this->paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'associe', 'valide', 'presence', 'decisionep', 'traiteep'/*, 'decisioncg', 'traite'*/ );
+						$this->paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'associe', 'valide', 'quorum', 'presence', 'decisionep', 'traiteep'/*, 'decisioncg', 'traite'*/ );
 						break;
 					case 'arbitragecg':
 						$this->paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'traiteep', 'decisioncg'/*, 'traite'*/ );
@@ -598,7 +598,7 @@
 				if( !$compositionValide['check'] && isset( $compositionValide['error'] ) && !empty( $compositionValide['error'] ) ) {
 					$message = null;
 					if ( $compositionValide['error'] == 'obligatoire' ) {
-						$message = "Pour une commission de ce regroupement, il faut au moins un membre occuppant la fonction : ".implode( ' ou ', $this->Commissionep->Ep->Regroupementep->Compositionregroupementep->listeFonctionsObligatoires( $commissionep['Ep']['regroupementep_id'] ) ).".";
+						$message = "Pour une commission de ce regroupement, il faut au moins un membre occupant la fonction : ".implode( ' ou ', $this->Commissionep->Ep->Regroupementep->Compositionregroupementep->listeFonctionsObligatoires( $commissionep['Ep']['regroupementep_id'] ) ).".";
 					}
 					elseif ( $compositionValide['error'] == 'nbminmembre' ) {
 						$message = "Il n'y a pas assez de membres qui ont accepté de venir ou qui se font remplacer pour que la commission puisse avoir lieu.";

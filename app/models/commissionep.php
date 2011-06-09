@@ -624,21 +624,6 @@
 				$this->set( 'etatcommissionep', 'cree' );
 				$success = $this->save() && $success;
 			}
-
-			if ( Configure::read( 'Cg.departement' ) == 66 ) {
-				$listeMembrePresentRemplace = array();
-				foreach( $commissionep['CommissionepMembreep'] as $membre ) {
-					if ( $membre['reponse'] == 'confirme' || $membre['reponse'] == 'remplacepar' ) {
-						$listeMembrePresentRemplace[] = $membre['membreep_id'];
-					}
-				}
-
-				$compositionValide = $this->Ep->Regroupementep->Compositionregroupementep->compositionValide( $commissionep['Ep']['regroupementep_id'], $listeMembrePresentRemplace );
-				if( !$compositionValide['check'] ) {
-					$this->set( 'etatcommissionep', 'quorum' );
-					$success = $this->save() && $success;
-				}
-			}
 			return $success;
 		}
 
@@ -659,11 +644,14 @@
 					'conditions' => array(
 						'Commissionep.id' => $commissionep_id
 					),
-					'contain' => false
+					'contain' => array(
+						'Ep',
+						'CommissionepMembreep'
+					)
 				)
 			);
 
-			if( empty( $commissionep ) || !in_array( $commissionep['Commissionep']['etatcommissionep'], array( 'associe', 'valide', 'presence' ) ) ) {
+			if( empty( $commissionep ) || !in_array( $commissionep['Commissionep']['etatcommissionep'], array( 'associe', 'valide', 'quorum', 'presence' ) ) ) {
 				return false;
 			}
 
@@ -679,7 +667,7 @@
 			);
 
 			$this->id = $commissionep_id;
-			if( !empty( $nbMembreseps ) && in_array( $commissionep['Commissionep']['etatcommissionep'], array( 'associe', 'valide' ) ) ) {
+			if( !empty( $nbMembreseps ) && in_array( $commissionep['Commissionep']['etatcommissionep'], array( 'associe', 'valide', 'quorum' ) ) ) {
 				$this->set( 'etatcommissionep', 'presence' );
 				$success = $this->save() && $success;
 			}
@@ -693,9 +681,40 @@
 				$success = $this->save() && $success;
 			}
 
+			if ( Configure::read( 'Cg.departement' ) == 66 ) {
+				$listeMembrePresentRemplace = array();
+				foreach( $commissionep['CommissionepMembreep'] as $membre ) {
+					if ( $membre['presence'] == 'present' || $membre['presence'] == 'remplacepar' ) {
+						$listeMembrePresentRemplace[] = $membre['membreep_id'];
+					}
+				}
+
+				$compositionValide = $this->Ep->Regroupementep->Compositionregroupementep->compositionValide( $commissionep['Ep']['regroupementep_id'], $listeMembrePresentRemplace );
+				if( !$compositionValide['check'] ) {
+					$this->set( 'etatcommissionep', 'quorum' );
+					$success = $this->save() && $success;
+				}
+			}
+
 			return $success;
 		}
+		
+		/**
+		 *
+		 */
+		function checkEtat( $commissionep_id ) {
+			$commissionep = $this->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Commissionep.id' => $commissionep_id
+					),
+					'contain' => false
+				)
+			);
 
+			return $commissionep['Commissionep']['etatcommissionep'];
+		}
 
 		/**
 		* Retourne une chaîne de 12 caractères formattée comme suit:

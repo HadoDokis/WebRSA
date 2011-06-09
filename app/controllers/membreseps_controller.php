@@ -398,7 +398,9 @@
 				$this->_setFlashResult( 'Save', $success );
 				if ($success) {
 					$this->Membreep->CommissionepMembreep->commit();
-					$this->redirect(array('controller'=>'commissionseps', 'action'=>'traiterep', $commissionep_id));
+					if( $this->Membreep->CommissionepMembreep->Commissionep->checkEtat( $commissionep_id ) != 'quorum' ) {
+						$this->redirect( array( 'controller' => 'commissionseps', 'action' => 'traiterep', $commissionep_id ) );
+					}
 				}
 				else {
 					$this->Membreep->CommissionepMembreep->rollback();
@@ -406,14 +408,39 @@
 			}
 
 			$commissionep = $this->Membreep->CommissionepMembreep->Commissionep->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Commissionep.id' => $commissionep_id
-					),
-					'contain' => false
+				'first', array(
+					'conditions' => array( 'Commissionep.id' => $commissionep_id ),
+					'contain' => array(
+						'Ep' => array( 'Regroupementep'/*, 'Membreep'*/),
+						'CommissionepMembreep'
+					)
 				)
 			);
+// 			debug( $commissionep );
+			if ( Configure::read( 'Cg.departement' ) == 66 ) {
+				$listeMembrePresentRemplace = array();
+				foreach( $commissionep['CommissionepMembreep'] as $membre ) {
+					if ( $membre['reponse'] == 'confirme' || $membre['reponse'] == 'remplacepar' ) {
+						$listeMembrePresentRemplace[] = $membre['membreep_id'];
+					}
+				}
+
+				$compositionValide = $this->Membreep->CommissionepMembreep->Commissionep->Ep->Regroupementep->Compositionregroupementep->compositionValide( $commissionep['Ep']['regroupementep_id'], $listeMembrePresentRemplace );
+				if( !$compositionValide['check'] && isset( $compositionValide['error'] ) && !empty( $compositionValide['error'] ) ) {
+					$message = null;
+					if ( $compositionValide['error'] == 'obligatoire' ) {
+						$message = "Pour une commission de ce regroupement, il faut au moins un membre occupant la fonction : ".implode( ' ou ', $this->Commissionep->Ep->Regroupementep->Compositionregroupementep->listeFonctionsObligatoires( $commissionep['Ep']['regroupementep_id'] ) ).".";
+					}
+					elseif ( $compositionValide['error'] == 'nbminmembre' ) {
+						$message = "Il n'y a pas assez de membres qui ont accepté de venir ou qui se font remplacer pour que la commission puisse avoir lieu.";
+					}
+					elseif ( $compositionValide['error'] == 'nbmaxmembre' ) {
+						$message = "Il y a trop de membres qui ont accepté de venir ou qui se font remplacer pour que la commission puisse avoir lieu.";
+					}
+					$this->set( 'messageQuorum', $message );
+				}
+			}
+			$this->set( compact( 'commissionep' ) );
 			$ep_id = $commissionep['Commissionep']['ep_id'];
 
 			$membres = $this->Membreep->find(
