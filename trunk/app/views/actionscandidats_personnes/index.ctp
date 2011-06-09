@@ -15,27 +15,35 @@
 
     <?php
 //     debug($actionscandidats_personnes);
-        echo $default2->index(
-            $actionscandidats_personnes,
-            array(
-                'Actioncandidat.name',
-                'Referent.nom_complet' => array( 'type' => 'text' ),
-                'Actioncandidat.Contactpartenaire.Partenaire.libstruc',
-                'ActioncandidatPersonne.datesignature' => array( 'domain' => $domain ),
-                'ActioncandidatPersonne.positionfiche'
-            ),
-            array(
-                'options' => $options,
-                'actions' => array(
-//                     'ActioncandidatPersonne.view' => array( 'domain' => $domain ),
-                    'ActionscandidatsPersonnes::edit' => array( 'domain' => $domain, 'disabled' =>  '( "'.$permissions->check( 'actionscandidats_personnes', 'edit' ).'" != "1" )  || ( "#ActioncandidatPersonne.positionfiche#" == "annule" )' ),
-                    'ActionscandidatsPersonnes::cancel' => array( 'domain' => $domain, 'disabled' =>  '( "'.$permissions->check( 'actionscandidats_personnes', 'cancel' ).'" != "1" ) '  ),
-                    'ActionscandidatsPersonnes::printFiche' => array( 'domain' => $domain, 'disabled' =>  '( "'.$permissions->check( 'actionscandidats_personnes', 'printFiche' ).'" != "1" )  || ( "#ActioncandidatPersonne.positionfiche#" == "annule" ) '  ),
-                    'ActionscandidatsPersonnes::filelink' => array( 'disabled' => '( "'.$permissions->check( 'actionscandidats_personnes', 'filelink' ).'" != "1" )  || ( "#ActioncandidatPersonne.positionfiche#" == "annule" ) ' )
+        if( ( $orientationLiee == 0 ) ) {
+            echo '<p class="error">Cette personne ne possède pas d\'orientation. Impossible de créer une fiche de candidature</p>';
+        }
+        else if( ( $referentLie == 0 ) ) {
+            echo '<p class="error">Cette personne ne possède pas de référent lié. Impossible de créer une fiche de candidature</p>';
+        }
+        else{
+            echo $default2->index(
+                $actionscandidats_personnes,
+                array(
+                    'Actioncandidat.name',
+                    'Referent.nom_complet' => array( 'type' => 'text' ),
+                    'Actioncandidat.Contactpartenaire.Partenaire.libstruc',
+                    'ActioncandidatPersonne.datesignature' => array( 'domain' => $domain ),
+                    'ActioncandidatPersonne.positionfiche'
                 ),
-                'add' => array( 'ActioncandidatPersonne.add' => array( 'controller'=>'actionscandidats_personnes', 'action'=>'add', $personne_id ) )
-            )
-        );
+                array(
+                    'options' => $options,
+                    'actions' => array(
+    //                     'ActioncandidatPersonne.view' => array( 'domain' => $domain ),
+                        'ActionscandidatsPersonnes::edit' => array( 'domain' => $domain, 'disabled' =>  '( "'.$permissions->check( 'actionscandidats_personnes', 'edit' ).'" != "1" )  || ( "#ActioncandidatPersonne.positionfiche#" == "annule" )' ),
+                        'ActionscandidatsPersonnes::cancel' => array( 'domain' => $domain, 'disabled' =>  '( "'.$permissions->check( 'actionscandidats_personnes', 'cancel' ).'" != "1" ) '  ),
+                        'ActionscandidatsPersonnes::printFiche' => array( 'domain' => $domain, 'disabled' =>  '( "'.$permissions->check( 'actionscandidats_personnes', 'printFiche' ).'" != "1" )  || ( "#ActioncandidatPersonne.positionfiche#" == "annule" ) '  ),
+                        'ActionscandidatsPersonnes::filelink' => array( 'disabled' => '( "'.$permissions->check( 'actionscandidats_personnes', 'filelink' ).'" != "1" )  || ( "#ActioncandidatPersonne.positionfiche#" == "annule" ) ' )
+                    ),
+                    'add' => array( 'ActioncandidatPersonne.add' => array( 'controller'=>'actionscandidats_personnes', 'action'=>'add', $personne_id ) )
+                )
+            );
+        }
 
     ?>
 </div>
