@@ -115,17 +115,17 @@ SELECT add_missing_table_field ('public', 'decisionscontratscomplexeseps93', 'co
 SELECT add_missing_table_field ('public', 'defautsinsertionseps66', 'commentaire', 'TEXT');
 
 
--- *******************************************************************************************************
+-- *****************************************************************************
 -- 20110524, ajout de la valeur Absent pour les présences des participants à une commission EP
--- *******************************************************************************************************
+-- *****************************************************************************
 ALTER TABLE commissionseps_membreseps ALTER COLUMN presence TYPE TEXT;
 DROP TYPE TYPE_PRESENCESEANCEEP;
 CREATE TYPE TYPE_PRESENCESEANCEEP AS ENUM ( 'present', 'excuse', 'absent', 'remplacepar' );
 ALTER TABLE commissionseps_membreseps ALTER COLUMN presence TYPE TYPE_PRESENCESEANCEEP USING CAST(presence AS TYPE_PRESENCESEANCEEP);
 
--- *******************************************************************************************************
+-- *****************************************************************************
 -- 20110524, ajout d'un état à la commission pour la figée avant de prendre les présences
--- *******************************************************************************************************
+-- *****************************************************************************
 ALTER TABLE commissionseps ALTER COLUMN etatcommissionep TYPE TEXT;
 ALTER TABLE commissionseps ALTER COLUMN etatcommissionep DROP DEFAULT;
 DROP TYPE IF EXISTS TYPE_ETATCOMMISSIONEP;
@@ -133,41 +133,41 @@ CREATE TYPE TYPE_ETATCOMMISSIONEP AS ENUM ( 'cree', 'associe', 'valide', 'presen
 ALTER TABLE commissionseps ALTER COLUMN etatcommissionep TYPE TYPE_ETATCOMMISSIONEP USING CAST(etatcommissionep AS TYPE_ETATCOMMISSIONEP);
 ALTER TABLE commissionseps ALTER COLUMN etatcommissionep SET DEFAULT 'cree'::TYPE_ETATCOMMISSIONEP;
 
--- *******************************************************************************************************
+-- *****************************************************************************
 -- 20110524, ajout de l'organisme aux membres de l'EP
--- *******************************************************************************************************
+-- *****************************************************************************
 
 SELECT add_missing_table_field ('public', 'membreseps', 'organisme', 'VARCHAR(250)');
 ALTER TABLE membreseps ALTER COLUMN organisme SET DEFAULT NULL;
 
--- *******************************************************************************************************
+-- *****************************************************************************
 -- 20110524, ajout de la date d'impression de la décision d'un passage en EP
--- *******************************************************************************************************
+-- *****************************************************************************
 
 SELECT add_missing_table_field ('public', 'passagescommissionseps', 'impressiondecision', 'DATE');
 ALTER TABLE passagescommissionseps ALTER COLUMN impressiondecision SET DEFAULT NULL;
 
--- *******************************************************************************************************
+-- *****************************************************************************
 -- 20110525, ajout d'un champ pour la détection du statut de rdv qui va permettre en passage en
 -- epl audition
--- *******************************************************************************************************
+-- *****************************************************************************
 SELECT add_missing_table_field ('public', 'statutsrdvs', 'permetpassageepl', 'TYPE_BOOLEANNUMBER');
 ALTER TABLE statutsrdvs ALTER COLUMN permetpassageepl SET DEFAULT '0';
 UPDATE statutsrdvs SET permetpassageepl = '0' WHERE permetpassageepl IS NULL;
 ALTER TABLE statutsrdvs ALTER COLUMN permetpassageepl SET NOT NULL;
 
--- *******************************************************************************************************
+-- *****************************************************************************
 -- 20110525:
 --   * suppression des décision de la table nonrespectssanctionseps93
 --   * suppression des valeurs 1sursis et 2report des décisions des decisionsnonrespectssanctionseps93
 --   * suppression des valeurs 1sursis et 2report des décisions des decisionssignalementseps93
--- *******************************************************************************************************
+-- *****************************************************************************
 
 ALTER TABLE nonrespectssanctionseps93 DROP COLUMN decision;
 ALTER TABLE nonrespectssanctionseps93 DROP COLUMN montantreduction;
 ALTER TABLE nonrespectssanctionseps93 DROP COLUMN dureesursis;
 
--- -------------------------------------------------------------------------------------------------------
+-- *****************************************************************************
 
 UPDATE decisionsnonrespectssanctionseps93 SET decision = '1delai'::TYPE_DECISIONSANCTIONEP93 WHERE decision = '1sursis'::TYPE_DECISIONSANCTIONEP93;
 
@@ -177,7 +177,7 @@ DROP TYPE IF EXISTS TYPE_DECISIONSANCTIONEP93;
 CREATE TYPE TYPE_DECISIONSANCTIONEP93 AS ENUM ( '1reduction', '1maintien', '1pasavis', '1delai', '2suspensiontotale', '2suspensionpartielle', '2maintien', '2pasavis', 'annule', 'reporte' );
 ALTER TABLE decisionsnonrespectssanctionseps93 ALTER COLUMN decision TYPE TYPE_DECISIONSANCTIONEP93 USING CAST(decision AS TYPE_DECISIONSANCTIONEP93);
 
--- -------------------------------------------------------------------------------------------------------
+-- *****************************************************************************
 
 UPDATE decisionssignalementseps93 SET decision = '1delai'::TYPE_DECISIONSIGNALEMENTEP93 WHERE decision = '1sursis'::TYPE_DECISIONSIGNALEMENTEP93;
 
@@ -187,26 +187,26 @@ DROP TYPE IF EXISTS TYPE_DECISIONSIGNALEMENTEP93;
 CREATE TYPE TYPE_DECISIONSIGNALEMENTEP93 AS ENUM ( '1reduction', '1maintien', '1pasavis', '1delai', '2suspensiontotale', '2suspensionpartielle', '2maintien', '2pasavis', 'annule', 'reporte' );
 ALTER TABLE decisionssignalementseps93 ALTER COLUMN decision TYPE TYPE_DECISIONSIGNALEMENTEP93 USING CAST(decision AS TYPE_DECISIONSIGNALEMENTEP93);
 
--- *******************************************************************************************************
+-- *****************************************************************************
 -- 20110525, ajout de la date d'impression de la convocation de l'allocataire
--- *******************************************************************************************************
+-- *****************************************************************************
 
 SELECT add_missing_table_field ('public', 'passagescommissionseps', 'impressionconvocation', 'DATE');
 ALTER TABLE passagescommissionseps ALTER COLUMN impressionconvocation SET DEFAULT NULL;
 
 
--- *******************************************************************************************************
+-- *****************************************************************************
 -- 20110525, ajout des champs created et modified dans la table rendezvous
--- *******************************************************************************************************
+-- *****************************************************************************
 
 SELECT add_missing_table_field ('public', 'rendezvous', 'created', 'TIMESTAMP WITHOUT TIME ZONE');
 ALTER TABLE rendezvous ALTER COLUMN created SET DEFAULT NULL;
 SELECT add_missing_table_field ('public', 'rendezvous', 'modified', 'TIMESTAMP WITHOUT TIME ZONE');
 ALTER TABLE rendezvous ALTER COLUMN modified SET DEFAULT NULL;
 
--- *******************************************************************************************************
+-- *****************************************************************************
 -- 20110526, mise à jour des dates d'impression des convocations et des décsions des passages en EP.
--- *******************************************************************************************************
+-- *****************************************************************************
 
 UPDATE passagescommissionseps
 	SET impressionconvocation = (
@@ -227,9 +227,9 @@ UPDATE passagescommissionseps
 		impressiondecision IS NULL
 		AND etatdossierep IN ( 'traite', 'annule', 'reporte' );
 
--- *******************************************************************************************************
+-- *****************************************************************************
 -- 20110531: nettoyage des tables des décisions d'EP
--- *******************************************************************************************************
+-- *****************************************************************************
 
 -- Suppression du caractère obligatoire du champ decision des tables de décision
 ALTER TABLE decisionscontratscomplexeseps93 ALTER COLUMN decision DROP NOT NULL;
@@ -269,10 +269,10 @@ ALTER TABLE decisionsregressionsorientationseps93 ALTER COLUMN passagecommission
 -- Le champ regressionorientationep93_id de la table decisionsregressionsorientationseps93 ne sert à rien
 ALTER TABLE decisionsregressionsorientationseps93 DROP COLUMN regressionorientationep93_id;
 
--- *******************************************************************************************************
+-- *****************************************************************************
 -- 20110531: ces thématiques ne sont pas utilsées actuellement
 -- FIXME: supprimer les fichiers de modèle
--- *******************************************************************************************************
+-- *****************************************************************************
 
 DROP TABLE decisionsnonorientationsproseps66;
 DROP TABLE decisionsregressionsorientationseps93;
@@ -282,16 +282,16 @@ DROP TABLE regressionsorientationseps93;
 
 ALTER TABLE regroupementseps DROP COLUMN regressionorientationep93;
 
--- *******************************************************************************************************
+-- *****************************************************************************
 -- 20110601: suppression de la règle not null car ajout de la règle de validation dans le modèle
--- *******************************************************************************************************
+-- *****************************************************************************
 
 ALTER TABLE actionscandidats ALTER COLUMN nbpostedispo DROP NOT NULL;
 ALTER TABLE actionscandidats ALTER COLUMN nbpostedispo SET DEFAULT NULL;
 
--- *******************************************************************************************************
+-- *****************************************************************************
 -- 20110601: ajout de la notion de corum pour le cg66
--- *******************************************************************************************************
+-- *****************************************************************************
 
 SELECT add_missing_table_field ('public', 'regroupementseps', 'nbminmembre', 'INTEGER');
 UPDATE regroupementseps SET nbminmembre = 0 WHERE nbminmembre IS NULL;
@@ -327,9 +327,9 @@ DROP TYPE IF EXISTS TYPE_POSITIONFICHE;
 CREATE TYPE TYPE_POSITIONFICHE AS ENUM ( 'enattente', 'encours', 'nonretenue', 'sortie', 'annule' );
 ALTER TABLE actionscandidats_personnes ALTER COLUMN positionfiche TYPE TYPE_POSITIONFICHE USING CAST(positionfiche AS TYPE_POSITIONFICHE);
 
--- *******************************************************************************************************
+-- *****************************************************************************
 -- 20110601: mise en place de l'état quorum pour le cg66
--- *******************************************************************************************************
+-- *****************************************************************************
 
 ALTER TABLE commissionseps ALTER COLUMN etatcommissionep TYPE TEXT;
 ALTER TABLE commissionseps ALTER COLUMN etatcommissionep DROP DEFAULT;
@@ -338,11 +338,10 @@ CREATE TYPE TYPE_ETATCOMMISSIONEP AS ENUM ( 'cree', 'quorum', 'associe', 'valide
 ALTER TABLE commissionseps ALTER COLUMN etatcommissionep TYPE TYPE_ETATCOMMISSIONEP USING CAST(etatcommissionep AS TYPE_ETATCOMMISSIONEP);
 ALTER TABLE commissionseps ALTER COLUMN etatcommissionep SET DEFAULT 'cree'::TYPE_ETATCOMMISSIONEP;
 
-
-
--- -----------------------------------------------------------------------------------------------
--- 20110607: Ajout d'un champ pour sélectionner si on ajoute des fichiers ou non aux Fiches de candidatures / de liaison
--- -----------------------------------------------------------------------------------------------
+-- *****************************************************************************
+-- 20110607: Ajout d'un champ pour sélectionner si on ajoute des fichiers
+-- ou non aux Fiches de candidatures / de liaison
+-- *****************************************************************************
 SELECT add_missing_table_field ('public', 'actionscandidats_personnes', 'haspiecejointe', 'type_booleannumber');
 ALTER TABLE actionscandidats_personnes ALTER COLUMN haspiecejointe SET DEFAULT '0'::TYPE_BOOLEANNUMBER;
 UPDATE actionscandidats_personnes SET haspiecejointe = '0'::TYPE_BOOLEANNUMBER WHERE haspiecejointe IS NULL;
@@ -350,6 +349,20 @@ ALTER TABLE actionscandidats_personnes ALTER COLUMN haspiecejointe SET NOT NULL;
 
 ALTER TABLE partenaires ALTER COLUMN compladr DROP NOT NULL;
 ALTER TABLE partenaires ALTER COLUMN compladr SET DEFAULT NULL;
+
+-- *****************************************************************************
+-- 20110609: Ajout de champs pour la thématique saisinebilanparcoursep66
+-- *****************************************************************************
+SELECT add_missing_table_field ('public', 'saisinesbilansparcourseps66', 'choixparcours', 'TYPE_CHOIXPARCOURS');
+SELECT add_missing_table_field ('public', 'saisinesbilansparcourseps66', 'maintienorientparcours', 'TYPE_ORIENT');
+SELECT add_missing_table_field ('public', 'saisinesbilansparcourseps66', 'changementrefparcours', 'TYPE_NO');
+SELECT add_missing_table_field ('public', 'saisinesbilansparcourseps66', 'reorientation', 'TYPE_REORIENTATION');
+
+SELECT add_missing_table_field ('public', 'decisionssaisinesbilansparcourseps66', 'choixparcours', 'TYPE_CHOIXPARCOURS');
+SELECT add_missing_table_field ('public', 'decisionssaisinesbilansparcourseps66', 'maintienorientparcours', 'TYPE_ORIENT');
+SELECT add_missing_table_field ('public', 'decisionssaisinesbilansparcourseps66', 'changementrefparcours', 'TYPE_NO');
+SELECT add_missing_table_field ('public', 'decisionssaisinesbilansparcourseps66', 'reorientation', 'TYPE_REORIENTATION');
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
