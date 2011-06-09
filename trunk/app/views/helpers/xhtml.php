@@ -259,7 +259,7 @@
 
         public function fileLink( $title, $url, $enabled = true ) {
             $content = $this->image(
-                'icons/link.png',
+                'icons/attach.png',
                 array( 'alt' => '' )
             ).' Fichiers liés';
 
