@@ -26,6 +26,7 @@
 				<th>Date de signature de la fiche</th>
 				<th>Venu(e) ?</th>
 				<th>Retenu(e) ?</th>
+				<th>Informations complémentaires</th>
 				<th class="action">Action</th>
 			</tr>
 		</thead>
@@ -53,6 +54,8 @@
 						$form->input( 'ActioncandidatPersonne.'.$index.'.bilanvenu', array( 'label' => false, 'legend' => false, 'separator' => '<br />', 'empty' => true, 'type' => 'radio', 'options' => $options['bilanvenu'], 'value' => $ficheenattente['ActioncandidatPersonne']['bilanvenu'] ) ),
 
 						$form->input( 'ActioncandidatPersonne.'.$index.'.bilanretenu', array( 'label' => false, 'legend' => false, 'separator' => '<br />','type' => 'radio', 'value' => $ficheenattente['ActioncandidatPersonne']['bilanretenu'], 'options' =>  $options['bilanretenu'] ) ),
+
+						$form->input( 'ActioncandidatPersonne.'.$index.'.infocomplementaire', array( 'label' => false, 'type' => 'textarea', 'value' => $ficheenattente['ActioncandidatPersonne']['infocomplementaire'] ) ),
 // 
 //                         $form->input( 'Aideapre66.'.$index.'.motifrejetequipe', array( 'label' => false, 'type' => 'text', 'rows' => 2, 'value' => $ficheenattente['Aideapre66']['motifrejetequipe'] ) ),
 // 
