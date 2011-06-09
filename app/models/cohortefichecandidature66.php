@@ -207,6 +207,8 @@ App::import( 'Sanitize' );
                     'ActioncandidatPersonne.actioncandidat_id',
                     'ActioncandidatPersonne.referent_id',
                     'ActioncandidatPersonne.motifsortie_id',
+                    'ActioncandidatPersonne.infocomplementaire',
+                    'ActioncandidatPersonne.precisionmotif',
                     'Actioncandidat.contactpartenaire_id',
                     'Actioncandidat.referent_id',
                     'Actioncandidat.name',

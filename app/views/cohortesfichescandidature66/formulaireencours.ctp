@@ -26,6 +26,7 @@
 				<th>Date de signature</th>
 				<th>Venu(e) ?</th>
 				<th>Retenu(e) ?</th>
+				<th>Informations complémentaires</th>
 				<th>Motif de sortie</th>
 				<th>Date de sortie</th>
 				<th class="action">Action</th>
@@ -48,6 +49,7 @@ debug($options);*/
 						h( date_short( $ficheenattente['ActioncandidatPersonne']['datesignature'] ) ),
 						h( Set::enum( $ficheenattente['ActioncandidatPersonne']['bilanvenu'], $options['bilanvenu'] ) ),
 						h( Set::enum( $ficheenattente['ActioncandidatPersonne']['bilanretenu'], $options['bilanretenu'] ) ),
+						h( $ficheenattente['ActioncandidatPersonne']['infocomplementaire'] ),
 					);
 
 					$array2 = array(
@@ -57,6 +59,7 @@ debug($options);*/
 						$form->input( 'ActioncandidatPersonne.'.$index.'.referent_id', array( 'label' => false, 'type' => 'hidden', 'value' => $ficheenattente['ActioncandidatPersonne']['referent_id'] ) ).
 						$form->input( 'ActioncandidatPersonne.'.$index.'.bilanvenu', array( 'label' => false, 'type' => 'hidden', 'value' => $ficheenattente['ActioncandidatPersonne']['bilanvenu'] ) ).
 						$form->input( 'ActioncandidatPersonne.'.$index.'.bilanretenu', array( 'label' => false, 'type' => 'hidden', 'value' => $ficheenattente['ActioncandidatPersonne']['bilanretenu'] ) ).
+						$form->input( 'ActioncandidatPersonne.'.$index.'.infocomplementaire', array( 'label' => false, 'type' => 'hidden', 'value' => $ficheenattente['ActioncandidatPersonne']['infocomplementaire'] ) ).
 						$form->input( 'ActioncandidatPersonne.'.$index.'.issortie', array( 'label' => false, 'type' => 'hidden', 'value' => 1 ) ).
 						$form->input( 'ActioncandidatPersonne.'.$index.'.motifsortie_id', array( 'label' => false, 'empty' => true,  'type' => 'select', 'options' => $motifssortie, 'selected' => $ficheenattente['ActioncandidatPersonne']['motifsortie_id'] ) ),
 
