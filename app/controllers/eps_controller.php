@@ -94,7 +94,7 @@
 							$message = "Pour le regroupement sélectionné il faut au moins un membre : ".implode( ', ', $this->Ep->Regroupementep->Compositionregroupementep->listeFonctionsObligatoires( $this->data['Ep']['regroupementep_id'] ) ).".";
 						}
 						elseif ( $compositionValide['error'] == 'nbminmembre' ) {
-							$message = "Il n'y a pas assez de membres assignés pour le regroupement sélectionné.";
+							$message = "Il n'y a pas assez de membres prioritaires assignés pour le regroupement sélectionné.";
 						}
 						elseif ( $compositionValide['error'] == 'nbmaxmembre' ) {
 							$message = "Il y a trop de membres assignés pour le regroupement sélectionné.";

@@ -420,7 +420,7 @@
 			if ( Configure::read( 'Cg.departement' ) == 66 ) {
 				$listeMembrePresentRemplace = array();
 				foreach( $commissionep['CommissionepMembreep'] as $membre ) {
-					if ( $membre['reponse'] == 'confirme' || $membre['reponse'] == 'remplacepar' ) {
+					if ( $membre['presence'] == 'present' || $membre['presence'] == 'remplacepar' ) {
 						$listeMembrePresentRemplace[] = $membre['membreep_id'];
 					}
 				}
@@ -429,10 +429,10 @@
 				if( !$compositionValide['check'] && isset( $compositionValide['error'] ) && !empty( $compositionValide['error'] ) ) {
 					$message = null;
 					if ( $compositionValide['error'] == 'obligatoire' ) {
-						$message = "Pour une commission de ce regroupement, il faut au moins un membre occupant la fonction : ".implode( ' ou ', $this->Commissionep->Ep->Regroupementep->Compositionregroupementep->listeFonctionsObligatoires( $commissionep['Ep']['regroupementep_id'] ) ).".";
+						$message = "Pour une commission de ce regroupement, il faut au moins un membre occupant la fonction : ".implode( ' ou ', $this->Membreep->CommissionepMembreep->Commissionep->Ep->Regroupementep->Compositionregroupementep->listeFonctionsObligatoires( $commissionep['Ep']['regroupementep_id'] ) ).".";
 					}
 					elseif ( $compositionValide['error'] == 'nbminmembre' ) {
-						$message = "Il n'y a pas assez de membres qui ont accepté de venir ou qui se font remplacer pour que la commission puisse avoir lieu.";
+						$message = "Il n'y a pas assez de membres prioritaires qui ont accepté de venir ou qui se font remplacer pour que la commission puisse avoir lieu.";
 					}
 					elseif ( $compositionValide['error'] == 'nbmaxmembre' ) {
 						$message = "Il y a trop de membres qui ont accepté de venir ou qui se font remplacer pour que la commission puisse avoir lieu.";

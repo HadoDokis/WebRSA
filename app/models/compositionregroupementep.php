@@ -50,9 +50,11 @@
 
 			$membreChoisi = false;
 			$compoCree = false;
+			$nbPrioritaire = 0;
 			foreach( $compositionregroupementep['Compositionregroupementep'] as $compo ) {
 				$compoCree = true;
-				if ( $compo['obligatoire'] == 1 ) {
+
+				if( $compo['obligatoire'] == 1 || $compo['prioritaire'] == 1 ) {
 					$membresFonction = $this->Fonctionmembreep->find(
 						'first',
 						array(
@@ -67,7 +69,12 @@
 
 					foreach ( $membresFonction['Membreep'] as $membre ) {
 						if ( !empty( $membreseps ) && in_array( $membre['id'], $membreseps ) ) {
-							$membreChoisi = true;
+							if( $compo['obligatoire'] == 1 ) {
+								$membreChoisi = true;
+							}
+							if( $compo['prioritaire'] == 1 ) {
+								$nbPrioritaire++;
+							}
 						}
 					}
 				}
@@ -77,11 +84,11 @@
 				$return = false;
 				$error = "obligatoire";
 			}
-			if ( $compositionregroupementep['Regroupementep']['nbminmembre'] > 0 && count( $membreseps ) < $compositionregroupementep['Regroupementep']['nbminmembre'] ) {
+			elseif ( $compositionregroupementep['Regroupementep']['nbminmembre'] > 0 && $nbPrioritaire < $compositionregroupementep['Regroupementep']['nbminmembre'] ) {
 				$return = false;
 				$error = 'nbminmembre';
 			}
-			if ( $compositionregroupementep['Regroupementep']['nbmaxmembre'] > 0 && count( $membreseps ) > $compositionregroupementep['Regroupementep']['nbmaxmembre'] ) {
+			elseif ( $compositionregroupementep['Regroupementep']['nbmaxmembre'] > 0 && count( $membreseps ) > $compositionregroupementep['Regroupementep']['nbmaxmembre'] ) {
 				$return = false;
 				$error = 'nbmaxmembre';
 			}
