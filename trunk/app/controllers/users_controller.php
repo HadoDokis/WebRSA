@@ -71,7 +71,14 @@
 					else {
 						$otherConnection = $this->User->Connection->findByUserId( $authUser['User']['id'] );
 						$this->Session->delete( 'Auth' );
-						$this->Session->setFlash( 'Utilisateur déjà connecté jusqu\'au '.strftime( '%d/%m/%Y à %H:%M:%S', ( strtotime( $otherConnection['Connection']['modified'] ) + readTimeout() ) ), 'flash/error' );
+						$this->Session->setFlash(
+							sprintf(
+								'Utilisateur déjà connecté jusqu\'au %s (nous sommes actuellement le %s)',
+								strftime( '%d/%m/%Y à %H:%M:%S', ( strtotime( $otherConnection['Connection']['modified'] ) + readTimeout() ) ),
+								strftime( '%d/%m/%Y à %H:%M:%S' )
+							),
+							'flash/error'
+						);
 						$this->redirect( $this->Auth->logout() );
 					}
 				}
