@@ -75,7 +75,7 @@
 							sprintf(
 								'Utilisateur déjà connecté jusqu\'au %s (nous sommes actuellement le %s)',
 								strftime( '%d/%m/%Y à %H:%M:%S', ( strtotime( $otherConnection['Connection']['modified'] ) + readTimeout() ) ),
-								strftime( '%d/%m/%Y à %H:%M:%S' )
+								strftime( '%d/%m/%Y, il est %H:%M:%S' )
 							),
 							'flash/error'
 						);
