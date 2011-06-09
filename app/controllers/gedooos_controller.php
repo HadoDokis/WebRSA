@@ -198,6 +198,21 @@
 					)
 				)
 			);
+			
+            $typeorient = $this->Contratinsertion->Structurereferente->Typeorient->find(
+                'first',
+                array(
+                    'fields' => array( 'parentid' ),
+                    'conditions' => array(
+                        'Typeorient.id' => $contratinsertion['Structurereferente']['typeorient_id']
+                    ),
+                    'contain' => false
+                )
+            );
+            $contratinsertion['Structurereferente']['parent_id'] = $typeorient['Typeorient']['parentid'];
+// debug($contratinsertion);
+// die();
+
 			///Ajout pour distinguer un CER simple (particulier) d'un CER complexe
 			$modele = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.forme_ci' ), $forme_ci  );
 			///Fin ajout
@@ -515,8 +530,7 @@
 				}
 			}
 
-// debug($contratinsertion);
-// die();
+
 			if( Configure::read( 'nom_form_ci_cg' ) == 'cg58' ) {
 				$this->_ged( $contratinsertion, 'Contratinsertion/contratinsertioncg58.odt' );
 			}
