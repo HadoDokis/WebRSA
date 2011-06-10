@@ -223,8 +223,9 @@
 		*/
 
 		public function sauvegardeBilan( $data ) {
-			if (isset($data['Pe']['Bilanparcours66']))
+			if ( isset( $data['Pe']['Bilanparcours66'] ) ) {
 				$data = $data['Pe'];
+			}
 // debug( $data );
 			//$data[$this->alias]['saisineepparcours'] = !isset($data[$this->alias]['maintienorientation']);
 			$data[$this->alias]['saisineepparcours'] = ( @$data[$this->alias]['proposition'] == 'parcours' );
@@ -237,7 +238,6 @@
 			}
 			// Saisine de l'EP
 			else {
-
 				return $this->saisine( $data );
 			}
 		}
@@ -438,33 +438,15 @@
 							array(
 								'conditions' => array(
 									'Contratinsertion.personne_id' => $vxOrientstruct['Orientstruct']['personne_id'],
-									'Contratinsertion.structurereferente_id' => $vxOrientstruct['Orientstruct']['structurereferente_id']/*,
-									'Contratinsertion.df_ci >=' => date( 'Y-m-d' )*/
+									'Contratinsertion.structurereferente_id' => $vxOrientstruct['Orientstruct']['structurereferente_id']
 								),
 								'contain' => false
 							)
 						);
 
 						if( empty( $vxContratinsertion ) && ( $data[$this->alias]['choixparcours'] != 'reorientation' ) ) {
-							/*$nbPerimes = $this->Contratinsertion->find(
-								'count',
-								array(
-									'conditions' => array(
-										'Contratinsertion.personne_id' => $vxOrientstruct['Orientstruct']['personne_id'],
-										'Contratinsertion.structurereferente_id' => $vxOrientstruct['Orientstruct']['structurereferente_id'],
-										'Contratinsertion.df_ci <' => date( 'Y-m-d' )
-									),
-									'contain' => false
-								)
-							);*/
-//                           if( $nbPerimes == 0 ){
 								$this->invalidate( 'choixparcours', 'Cette personne ne possède aucun CER validé dans une structure référente liée à celle de sa dernière orientation validée.' );
-//                            }
-/*                            else{
-								$this->invalidate( 'examenaudition', 'Cette personne possède un CER validé mais dont la date de fin est dépassée.' );
-							}*/
 							return false;
-
 						}
 
 						// Sauvegarde du bilan
@@ -492,6 +474,17 @@
 					// Sauvegarde de la saisine
 					$data['Saisinebilanparcoursep66']['bilanparcours66_id'] = $this->id;
 					$data['Saisinebilanparcoursep66']['dossierep_id'] = $this->Saisinebilanparcoursep66->Dossierep->id;
+					$data['Saisinebilanparcoursep66']['choixparcours'] = $data['Bilanparcours66']['choixparcours'];
+					if ( isset( $data['Bilanparcours66']['maintienorientparcours'] ) ) {
+						$data['Saisinebilanparcoursep66']['maintienorientparcours'] = $data['Bilanparcours66']['maintienorientparcours'];
+					}
+					if ( isset( $data['Bilanparcours66']['changementrefparcours'] ) ) {
+						$data['Saisinebilanparcoursep66']['changementrefparcours'] = $data['Bilanparcours66']['changementrefparcours'];
+					}
+					if ( isset( $data['Bilanparcours66']['reorientation'] ) ) {
+						$data['Saisinebilanparcoursep66']['reorientation'] = $data['Bilanparcours66']['reorientation'];
+					}
+
 					$this->Saisinebilanparcoursep66->create( $data );
 					$success = $this->Saisinebilanparcoursep66->save() && $success;
 				}

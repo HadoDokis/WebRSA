@@ -26,13 +26,14 @@
 				)
 			),
 			'Gedooo',
-			'Enumerable'/* => array(
+			'Enumerable' => array(
 				'fields' => array(
-					'accordaccueil',
-					'accordallocataire',
-					'urgent',
+					'choixparcours',
+					'maintienorientparcours',
+					'changementrefparcours',
+					'reorientation'
 				)
-			)*/
+			)
 		);
 
 		public $belongsTo = array(
@@ -351,7 +352,7 @@
 				// On ajoute les enregistrements de cette étape
 				else {
 					if( $niveauDecision == 'ep' ) {
-						$formData['Decisionsaisinebilanparcoursep66'][$key]['decision'] = 'accepte';
+						$formData['Decisionsaisinebilanparcoursep66'][$key]['decision'] = $dossierep[$this->alias]['choixparcours'];
 						$formData['Decisionsaisinebilanparcoursep66'][$key]['checkcomm'] = 0;
 						if ( $dossierep[$this->alias]['Bilanparcours66']['choixparcours'] == 'maintien' ) {
 							$formData['Decisionsaisinebilanparcoursep66'][$key]['typeorient_id'] = $dossierep[$this->alias]['Bilanparcours66']['Orientstruct']['typeorient_id'];
@@ -385,7 +386,10 @@
 					}
 					elseif( $niveauDecision == 'cg' ) {
 						$formData['Decisionsaisinebilanparcoursep66'][$key]['decision'] = $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['decision'];
-						$formData['Decisionsaisinebilanparcoursep66'][$key]['raisonnonpassage'] = $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['raisonnonpassage'];
+						$formData['Decisionsaisinebilanparcoursep66'][$key]['reorientation'] = $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['reorientation'];
+						$formData['Decisionsaisinebilanparcoursep66'][$key]['maintienorientparcours'] = $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['maintienorientparcours'];
+						$formData['Decisionsaisinebilanparcoursep66'][$key]['changementrefparcours'] = $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['changementrefparcours'];
+// 						$formData['Decisionsaisinebilanparcoursep66'][$key]['raisonnonpassage'] = $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['raisonnonpassage'];
 						$formData['Decisionsaisinebilanparcoursep66'][$key]['commentaire'] = $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['commentaire'];
 						$formData['Decisionsaisinebilanparcoursep66'][$key]['typeorient_id'] = $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['typeorient_id'];
 						$formData['Decisionsaisinebilanparcoursep66'][$key]['referent_id'] = implode(

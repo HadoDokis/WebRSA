@@ -121,6 +121,19 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Bilanparcours66' => array(
+				'className' => 'Bilanparcours66',
+				'foreignKey' => 'structurereferente_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 			'Entretien' => array(
 				'className' => 'Entretien',
 				'foreignKey' => 'structurereferente_id',

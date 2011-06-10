@@ -501,6 +501,28 @@
 				)
 			);
 		?>
+
+		<?php
+			/*if ( $this->action == 'edit' ) {
+				if ( isset( $this->data['Saisinebilanparcoursep66']['Dossierep']['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['id'] ) && !empty( $this->data['Saisinebilanparcoursep66']['Dossierep']['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['id'] ) ) {
+					echo '<fieldset><legend>AVIS DE l\'EP Locale Commission Parcours du '.date( 'd/m/Y', strtotime( $this->data['Saisinebilanparcoursep66']['Dossierep']['Passagecommissionep'][0]['Commissionep']['dateseance'] ) ).'</legend>';
+						if ( $this->data['Saisinebilanparcoursep66']['Dossierep']['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['decision'] == 'accepte' ) {
+							if ( $this->data['Bilanparcours66']['choixparcours'] == 'reorientation' && $this->data['Bilanparcours66']['reorientation'] == 'SP' ) {
+								echo "Réorientation du SOCIAL vers le PROFESSIONNEL";
+							}
+							else {
+							
+							}
+						}
+					echo '</fieldset>';
+				}
+				elseif ( isset( $this->data['Defautinsertionep66']['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['id'] ) && !empty( $this->data['Defautinsertionep66']['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['id'] ) ) {
+					
+				}
+				debug($this->data);
+			}*/
+		?>
+
 	<div class="submit">
 		<?php echo $form->submit( 'Enregistrer', array( 'div' => false ) );?>
 		<?php echo $form->submit('Annuler', array( 'name' => 'Cancel', 'div' => false ) );?>

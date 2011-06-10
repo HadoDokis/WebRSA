@@ -19,14 +19,32 @@ msgstr ""
 
 ###############################################################################
 
-msgid "ENUM::DECISION::accepte"
-msgstr "Accepté"
+msgid "ENUM::DECISION::maintien"
+msgstr "Maintien"
 
-msgid "ENUM::DECISION::refuse"
-msgstr "Refusé"
+msgid "ENUM::DECISION::reorientation"
+msgstr "Réorientation"
 
 msgid "ENUM::DECISION::annule"
 msgstr "Annulé"
 
 msgid "ENUM::DECISION::reporte"
 msgstr "Reporté"
+
+msgid "ENUM::REORIENTATION::SP"
+msgstr "Réorientation du SOCIAL vers le PROFESSIONNEL"
+
+msgid "ENUM::REORIENTATION::PS"
+msgstr "Réorientation du PROFESSIONNEL vers le SOCIAL"
+
+msgid "ENUM::MAINTIENORIENTPARCOURS::social"
+msgstr "Sociale"
+
+msgid "ENUM::MAINTIENORIENTPARCOURS::prepro"
+msgstr "Prépro"
+
+msgid "ENUM::CHANGEMENTREFPARCOURS::O"
+msgstr "Avec changement de référent"
+
+msgid "ENUM::CHANGEMENTREFPARCOURS::N"
+msgstr "Sans changement de référent"

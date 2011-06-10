@@ -371,7 +371,32 @@
 					'first',
 					array(
 						'contain' => array(
-							'Saisinebilanparcoursep66'
+							'Saisinebilanparcoursep66' => array(
+								'Dossierep' => array(
+									'Passagecommissionep' => array(
+										'conditions' => array(
+											'Passagecommissionep.etatdossierep' => 'traite'
+										),
+										'Commissionep',
+										'Decisionsaisinebilanparcoursep66' => array(
+											'order' => 'Decisionsaisinebilanparcoursep66.etape ASC'
+										)
+									)
+								)
+							),
+							'Defautinsertionep66' => array(
+								'Dossierep' => array(
+									'Passagecommissionep' => array(
+										'conditions' => array(
+											'Passagecommissionep.etatdossierep' => 'traite'
+										),
+										'Commissionep',
+										'Decisiondefautinsertionep66' => array(
+											'order' => 'Decisiondefautinsertionep66.etape ASC'
+										)
+									)
+								)
+							)
 						),
 						'conditions' => array( 'Bilanparcours66.id' => $id )
 					)
@@ -381,6 +406,47 @@
 				$this->Bilanparcours66->Orientstruct->id = $bilanparcours66['Bilanparcours66']['orientstruct_id'];
 				$personne_id = $this->Bilanparcours66->Orientstruct->field( 'personne_id' );
 
+				if ( $bilanparcours66['Bilanparcours66']['proposition'] == 'parcours' ) {
+					$passagecommissionep = $this->Bilanparcours66->Dossierep->Passagecommissionep->find(
+						'first',
+						array(
+							'conditions' => array(
+								'Passagecommissionep.dossierep_id IN ( '.$this->Bilanparcours66->Dossierep->sq(
+									array(
+										'fields' => array(
+											'dossierseps.id'
+										),
+										'alias' => 'dossierseps',
+										'conditions' => array(
+											'dossierseps.themeep' => 'saisinesbilansparcourseps66'
+										),
+										'joins' => array(
+											array(
+												'table' => 'saisinesbilansparcourseps66',
+												'alias' => 'saisinesbilansparcourseps66',
+												'type' => 'INNER',
+												'conditions' => array(
+													'saisinesbilansparcourseps66.dossierep_id = dossierseps.id',
+													'saisinesbilansparcourseps66.bilanparcours66_id' => $id
+												)
+											)
+										)
+									)
+								).' )',
+								'Passagecommissionep.etatdossierep' => array( 'decisioncg', 'traite' )
+							),
+							'contain' => array(
+								'Decisionsaisinebilanparcoursep66' => array(
+									'order' => array( 'Decisionsaisinebilanparcoursep66.etape ASC' )
+								)
+							)
+						)
+					);
+					debug($passagecommissionep);
+				}
+				else {
+				
+				}
 			}
 
 			// INFO: pour passer de 74 à 29 modèles utilisés lors du find count
