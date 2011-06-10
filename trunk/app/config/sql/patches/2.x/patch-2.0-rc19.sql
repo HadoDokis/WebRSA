@@ -359,7 +359,8 @@ SELECT add_missing_table_field ('public', 'saisinesbilansparcourseps66', 'change
 SELECT add_missing_table_field ('public', 'saisinesbilansparcourseps66', 'reorientation', 'TYPE_REORIENTATION');
 
 ALTER TABLE decisionssaisinesbilansparcourseps66 ALTER COLUMN decision TYPE TEXT;
-CREATE TYPE TYPE_DECISIONSAISINEBILANPARCOURSEP66 AS ENUM ( 'maintienref', 'reorientation', 'annule', 'reporte' );
+DROP TYPE IF EXISTS TYPE_DECISIONSAISINEBILANPARCOURSEP66;
+CREATE TYPE TYPE_DECISIONSAISINEBILANPARCOURSEP66 AS ENUM ( 'maintien', 'reorientation', 'annule', 'reporte' );
 UPDATE decisionssaisinesbilansparcourseps66 SET decision = 'reorientation';
 ALTER TABLE decisionssaisinesbilansparcourseps66 ALTER COLUMN decision TYPE TYPE_DECISIONSAISINEBILANPARCOURSEP66 USING CAST(decision AS TYPE_DECISIONSAISINEBILANPARCOURSEP66);
 SELECT add_missing_table_field ('public', 'decisionssaisinesbilansparcourseps66', 'maintienorientparcours', 'TYPE_ORIENT');

@@ -142,15 +142,13 @@
 				}
 			}
 
-			if( in_array( $this->action, array( 'decisionep', 'decisioncg' ) ) ) {
-				$liste_typesorients = $this->Commissionep->Passagecommissionep->Dossierep->Personne->Orientstruct->Typeorient->find( 'list' );
-				$liste_structuresreferentes = $this->Commissionep->Passagecommissionep->Dossierep->Personne->Orientstruct->Structurereferente->find( 'list' );
-				$liste_referents = $this->Commissionep->Passagecommissionep->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->Referent->find( 'list' );
+			$liste_typesorients = $this->Commissionep->Passagecommissionep->Dossierep->Personne->Orientstruct->Typeorient->find( 'list' );
+			$liste_structuresreferentes = $this->Commissionep->Passagecommissionep->Dossierep->Personne->Orientstruct->Structurereferente->find( 'list' );
+			$liste_referents = $this->Commissionep->Passagecommissionep->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->Referent->find( 'list' );
 
-				$this->set( 'liste_typesorients', $liste_typesorients );
-				$this->set( 'liste_structuresreferentes', $liste_structuresreferentes );
-				$this->set( 'liste_referents', $liste_referents );
-			}
+			$this->set( 'liste_typesorients', $liste_typesorients );
+			$this->set( 'liste_structuresreferentes', $liste_structuresreferentes );
+			$this->set( 'liste_referents', $liste_referents );
 
 			// Suivant le CG
 			if( Configure::read( 'Cg.departement' ) == 66 ) {
@@ -163,6 +161,10 @@
 				$options = Set::merge(
 					$options,
 					$this->Commissionep->Passagecommissionep->Dossierep->Defautinsertionep66->enums()
+				);
+				$options = Set::merge(
+					$options,
+					$this->Commissionep->Passagecommissionep->Dossierep->Saisinebilanparcoursep66->enums()
 				);
 			}
 			else if( Configure::read( 'Cg.departement' ) == 93 ) {
