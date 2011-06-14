@@ -368,5 +368,31 @@ SELECT add_missing_table_field ('public', 'decisionssaisinesbilansparcourseps66'
 SELECT add_missing_table_field ('public', 'decisionssaisinesbilansparcourseps66', 'reorientation', 'TYPE_REORIENTATION');
 
 -- *****************************************************************************
+-- 20110614: Suppression des "doublons" de dossiers d'EP pour la thématique "nonrespectssanctionseps93"
+-- (sous-thématique "pdo") qui ne sont pas en cours de passage en EP.
+-- *****************************************************************************
+
+DELETE FROM dossierseps
+	WHERE dossierseps.id IN (
+		SELECT dossierseps.id
+			FROM dossierseps
+			WHERE
+				dossierseps.themeep = 'nonrespectssanctionseps93'
+				AND dossierseps.id NOT IN (
+					SELECT passagescommissionseps.dossierep_id
+						FROM passagescommissionseps
+						WHERE
+							passagescommissionseps.dossierep_id = dossierseps.id
+				)
+				AND dossierseps.id IN (
+					SELECT nonrespectssanctionseps93.dossierep_id
+						FROM nonrespectssanctionseps93
+						WHERE
+							nonrespectssanctionseps93.dossierep_id = dossierseps.id
+							AND nonrespectssanctionseps93.origine = 'pdo'
+				)
+	);
+
+-- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

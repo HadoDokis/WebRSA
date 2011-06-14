@@ -86,30 +86,51 @@
 									AND date_trunc( \'day\', contratsinsertion.datevalidation_ci ) >= Decisionpropopdo.datedecisionpdo
 									AND date_trunc( \'day\', contratsinsertion.datevalidation_ci ) <= ( Decisionpropopdo.datedecisionpdo + INTERVAL \''.Configure::read( 'Nonrespectsanctionep93.intervalleCerDo19' ).'\' )
 						)',
-						// Et qui ne sont pas en EP
-// 						'Propopdo.personne_id NOT IN (
-// 							SELECT dossierseps.personne_id
-// 								FROM dossierseps
-// 								WHERE
-// 									dossierseps.personne_id = Propopdo.personne_id
-//  									AND dossierseps.etapedossierep <> \'traite\'
-// 									AND dossierseps.themeep = \'nonrespectssanctionseps93\'
-// 						)',
+						// Qui n'ont pas de dossier d'EP pas encore associé à une commission
+						'Propopdo.personne_id NOT IN (
+							SELECT dossierseps.personne_id
+								FROM dossierseps
+								WHERE
+									dossierseps.personne_id = Propopdo.personne_id
+									AND dossierseps.themeep = \'nonrespectssanctionseps93\'
+									AND dossierseps.id NOT IN (
+										SELECT passagescommissionseps.dossierep_id
+											FROM passagescommissionseps
+											WHERE passagescommissionseps.dossierep_id = dossierseps.id
+									)
+						)',
+						// Et qui n'ont pas de dossier d'EP en train de passer en commission
 						'Propopdo.personne_id NOT IN (
 							SELECT dossierseps.personne_id
 								FROM dossierseps
 								INNER JOIN passagescommissionseps ON (
-									passagescommissionseps.dossierep_id = dossierseps.id )
+									passagescommissionseps.dossierep_id = dossierseps.id
+								)
 								WHERE
 									dossierseps.personne_id = Propopdo.personne_id
 									AND dossierseps.themeep = \'nonrespectssanctionseps93\'
-									-- AND passagescommissionseps.etatdossierep NOT IN ( \'traite\', \'annule\' )
+									AND passagescommissionseps.etatdossierep NOT IN ( \'traite\', \'annule\' )
 						)',
-
+						// Et qui n'ont pas de dossier d'EP passé en commission depuis moins que le délai entre deux passages en commission
+						'Propopdo.personne_id NOT IN (
+							SELECT dossierseps.personne_id
+								FROM dossierseps
+								INNER JOIN passagescommissionseps ON (
+									passagescommissionseps.dossierep_id = dossierseps.id
+								)
+								INNER JOIN commissionseps ON (
+									passagescommissionseps.commissionep_id = commissionseps.id
+								)
+								WHERE
+									dossierseps.personne_id = Propopdo.personne_id
+									AND dossierseps.themeep = \'nonrespectssanctionseps93\'
+									AND passagescommissionseps.etatdossierep IN ( \'traite\', \'annule\' )
+									AND ( commissionseps.dateseance + INTERVAL \''.Configure::read( 'Nonrespectsanctionep93.intervalleCerDo19' ).' days\' ) <= NOW()
+						)',
 					)
 				)
 			);
-// debug($propospdos);
+
 			if( count( $propospdos ) > 0 ) {
 				$this->Propopdo->begin();
 				$success = true;
