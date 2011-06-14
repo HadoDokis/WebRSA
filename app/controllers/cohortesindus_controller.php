@@ -56,7 +56,7 @@
 			$cmp = Set::extract( $this->data, 'Cohorteindu.compare' );
 			$this->assert( empty( $cmp ) || in_array( $cmp, array_keys( $comparators ) ), 'invalidParameter' );
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
+			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 			$this->Cohorteindu->create( $this->data );
 			if( !empty( $this->data ) && $this->Cohorteindu->validates() ) {
 				$this->Dossier->begin(); // Pour les jetons
@@ -88,7 +88,7 @@
 
 		public function exportcsv(){
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
+			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 
 			$_limit = 10;
 			$querydata = $this->Cohorteindu->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), array_multisize( $this->params['named'] ), $this->Jetons->ids() );

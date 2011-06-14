@@ -117,7 +117,8 @@
 			}
 
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
+			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
+
 			$personne_suivi = $this->Dossier->Foyer->Personne->Contratinsertion->find(
 				'list',
 				array(
@@ -232,7 +233,7 @@
 
 		public function exportcsv() {
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
+			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 
 			$querydata = $this->Cohorteci->search( 'Decisionci::valides', $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), array_multisize( $this->params['named'] ), $this->Jetons->ids() );
 			unset( $querydata['limit'] );

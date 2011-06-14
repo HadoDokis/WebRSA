@@ -6,21 +6,18 @@ App::import( 'Sanitize' );
 
         public $useTable = false;
 
+		public $actsAs = array( 'Conditionnable' );
+
         /**
         *
         */
 
         public function search( $mesCodesInsee, $filtre_zone_geo, $criteresentretiens, $lockedDossiers  ) {
             /// Conditions de base
-            $conditions = array(
-            );
+            $conditions = array( );
 
-
-            /// Cohortevalidationapre66 zone géographique
-            if( $filtre_zone_geo ) {
-                $mesCodesInsee = ( !empty( $mesCodesInsee ) ? $mesCodesInsee : '0' );
-                $conditions[] = 'Adresse.numcomptt IN ( \''.implode( '\', \'', $mesCodesInsee ).'\' )';
-            }
+			/// Critères zones géographiques
+			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
 
             /// Dossiers lockés
             if( !empty( $lockedDossiers ) ) {
@@ -84,42 +81,8 @@ App::import( 'Sanitize' );
                 $conditions[] = array('Entretien.referent_id'=>$criteresentretiens['Entretien']['referent_id']);
             }
 
-            // Trouver la dernière demande RSA pour chacune des personnes du jeu de résultats
-            if( $criteresentretiens['Dossier']['dernier'] ) {
-                $conditions[] = 'Dossier.id IN (
-                    SELECT
-                            dossiers.id
-                        FROM personnes
-                            INNER JOIN prestations ON (
-                                personnes.id = prestations.personne_id
-                                AND prestations.natprest = \'RSA\'
-                            )
-                            INNER JOIN foyers ON (
-                                personnes.foyer_id = foyers.id
-                            )
-                            INNER JOIN dossiers ON (
-                                dossiers.id = foyers.dossier_id
-                            )
-                        WHERE
-                            prestations.rolepers IN ( \'DEM\', \'CJT\' )
-                            AND (
-                                (
-                                    nir_correct( Personne.nir )
-                                    AND nir_correct( personnes.nir )
-                                    AND personnes.nir = Personne.nir
-                                    AND personnes.dtnai = Personne.dtnai
-                                )
-                                OR
-                                (
-                                    personnes.nom = Personne.nom
-                                    AND personnes.prenom = Personne.prenom
-                                    AND personnes.dtnai = Personne.dtnai
-                                )
-                            )
-                        ORDER BY dossiers.dtdemrsa DESC
-                        LIMIT 1
-                )';
-            }
+			// Trouver la dernière demande RSA pour chacune des personnes du jeu de résultats
+			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $criteresentretiens );
 
             /// Requête
             $this->Dossier = ClassRegistry::init( 'Dossier' );

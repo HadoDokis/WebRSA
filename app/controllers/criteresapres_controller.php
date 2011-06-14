@@ -68,7 +68,7 @@
 
 			$this->assert( !empty( $etatApre ), 'invalidParameter' );
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
+			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 
 			$params = $this->data;
 			if( !empty( $params ) ) {
@@ -170,7 +170,7 @@
 
 		public function exportcsv( $action = 'all' ) {
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
+			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 
 			$querydata = $this->Critereapre->search( "Critereapre::{$action}", $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), array_multisize( $this->params['named'] ), $this->Jetons->ids() );
 			unset( $querydata['limit'] );

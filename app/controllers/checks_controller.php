@@ -159,7 +159,6 @@
 				'Contratinsertion/notificationop.odt',			// app/controllers/contratsinsertion_controller.php:1089
 				'CUI/cui.odt',									// app/controllers/cuis_controller.php:305
 				'Contratinsertion/contratinsertion.odt',		// app/controllers/gedooos_controller.php:524
-				//'Relance/notifications_relances.odt',			// app/controllers/gedooos_controller.php:623 et app/controllers/gedooos_controller.php:645 (déprécié)
 				'APRE/apre.odt',								// app/controllers/gedooos_controller.php:889
 				'Candidature/fichecandidature.odt',				// app/controllers/actionscandidats_personnes_controller.php:588
 				'PDO/propositiondecision.odt',					// app/models/decisionpropopdo.php:250

@@ -2,15 +2,18 @@
 	class Indu extends AppModel
 	{
 		public $name = 'Indu';
+
 		public $useTable = 'infosfinancieres';
 
 		/**
 		*
 		*/
 
-		public function search( $mescodesinsee, $filtre_zone_geo, $criteres ) {
+		public function search( $mesCodesInsee, $filtre_zone_geo, $criteres ) {
 			/// Conditions de base
 			$conditions = array();
+
+			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
 
 			/// Critères
 			$mois = Set::extract( $criteres, 'Filtre.moismoucompta' );

@@ -3,13 +3,13 @@
 
     class CohortescuiController extends AppController
     {
-        var $name = 'Cohortescui';
-        var $uses = array( 'Canton', 'Cohortecui', 'Personne', 'Option', 'Cui', 'Typeorient', 'Action', 'Orientstruct', /*'Accoemploi',*/ 'Adresse', 'Serviceinstructeur', 'Suiviinstruction', 'Referent', 'Structurereferente', 'Zonegeographique', 'Dossier' );
-        var $aucunDroit = array( 'constReq', 'ajaxreferent' );
+        public $name = 'Cohortescui';
+        public $uses = array( 'Canton', 'Cohortecui', 'Personne', 'Option', 'Cui', 'Typeorient', 'Action', 'Orientstruct', /*'Accoemploi',*/ 'Adresse', 'Serviceinstructeur', 'Suiviinstruction', 'Referent', 'Structurereferente', 'Zonegeographique', 'Dossier' );
+        public $aucunDroit = array( 'constReq', 'ajaxreferent' );
 
-        var $helpers = array( 'Csv', 'Ajax' );
+        public $helpers = array( 'Csv', 'Ajax' );
 
-        var $paginate = array(
+        public $paginate = array(
             // FIXME
             'limit' => 20,
         );
@@ -65,7 +65,7 @@
             }
 
             $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-            $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
+            $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 
             $params = $this->data;
 
@@ -163,7 +163,7 @@
         /// Export du tableau en CSV
         function exportcsv() {
             $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-            $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
+            $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 
             $querydata = $this->Cohortecui->search( 'Decisioncui::valides', $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), array_multisize( $this->params['named'] ), $this->Jetons->ids() );
             unset( $querydata['limit'] );

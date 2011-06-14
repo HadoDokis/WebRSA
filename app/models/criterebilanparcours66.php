@@ -1,6 +1,6 @@
 <?php
     /**
-    * Séance d'équipe pluridisciplinaire.
+    * Moteur de recherche pour les bilans de parcours du CG 66
     *
     * PHP versions 5
     *
@@ -10,28 +10,21 @@
 
     class Criterebilanparcours66 extends AppModel
     {
-        var $name = 'Criterebilanparcours66';
-        var $useTable = false;
+        public $name = 'Criterebilanparcours66';
+
+        public $useTable = false;
+
+		public $actsAs = array( 'Conditionnable' );
 
 
-        public function search( $criteresbilansparcours66 ) {
+        public function search( $mesCodesInsee, $filtre_zone_geo, $criteresbilansparcours66 ) {
             /// Conditions de base
 
             $conditions = array();
 
-
-            foreach( array( 'nom', 'prenom', 'nomnai', 'nir' ) as $criterePersonne ) {
-                if( isset( $criteresbilansparcours66['Personne'][$criterePersonne] ) && !empty( $criteresbilansparcours66['Personne'][$criterePersonne] ) ) {
-                    $conditions[] = 'UPPER(Personne.'.$criterePersonne.') LIKE \''.$this->wildcard( strtoupper( replace_accents( $criteresbilansparcours66['Personne'][$criterePersonne] ) ) ).'\'';
-                }
-            }
-
-            foreach( array( 'numdemrsa', 'matricule' ) as $critereDossier ) {
-                if( isset( $criteresbilansparcours66['Dossier'][$critereDossier] ) && !empty( $criteresbilansparcours66['Dossier'][$critereDossier] ) ) {
-                    $conditions[] = 'Dossier.'.$critereDossier.' ILIKE \''.$this->wildcard( $criteresbilansparcours66['Dossier'][$critereDossier] ).'\'';
-                }
-            }
-
+			$conditions = $this->conditionsAdresse( $conditions, $criteresbilansparcours66, $filtre_zone_geo, $mesCodesInsee );
+			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $criteresbilansparcours66 );
+			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $criteresbilansparcours66 );
 
             if ( isset($criteresbilansparcours66['Bilanparcours66']['choixparcours']) && !empty($criteresbilansparcours66['Bilanparcours66']['choixparcours']) ) {
                 $conditions[] = array('Bilanparcours66.choixparcours'=>$criteresbilansparcours66['Bilanparcours66']['choixparcours']);
@@ -66,43 +59,6 @@
                 }
             }
 
-
-            // Trouver la dernière demande RSA pour chacune des personnes du jeu de résultats
-            if( $criteresbilansparcours66['Dossier']['dernier'] ) {
-                $conditions[] = 'Dossier.id IN (
-                    SELECT
-                            dossiers.id
-                        FROM personnes
-                            INNER JOIN prestations ON (
-                                personnes.id = prestations.personne_id
-                                AND prestations.natprest = \'RSA\'
-                            )
-                            INNER JOIN foyers ON (
-                                personnes.foyer_id = foyers.id
-                            )
-                            INNER JOIN dossiers ON (
-                                dossiers.id = foyers.dossier_id
-                            )
-                        WHERE
-                            prestations.rolepers IN ( \'DEM\', \'CJT\' )
-                            AND (
-                                (
-                                    nir_correct( Personne.nir )
-                                    AND nir_correct( personnes.nir )
-                                    AND personnes.nir = Personne.nir
-                                    AND personnes.dtnai = Personne.dtnai
-                                )
-                                OR
-                                (
-                                    personnes.nom = Personne.nom
-                                    AND personnes.prenom = Personne.prenom
-                                    AND personnes.dtnai = Personne.dtnai
-                                )
-                            )
-                        ORDER BY dossiers.dtdemrsa DESC
-                        LIMIT 1
-                )';
-            }
             $joins = array(
                 array(
                     'table'      => 'orientsstructs',
@@ -131,6 +87,25 @@
                     'type'       => 'INNER',
                     'foreignKey' => false,
                     'conditions' => array( 'Foyer.dossier_id = Dossier.id' )
+                ),
+                array(
+                    'table'      => 'adressesfoyers',
+                    'alias'      => 'Adressefoyer',
+                    'type'       => 'INNER',
+                    'foreignKey' => false,
+                    'conditions' => array(
+                        'Foyer.id = Adressefoyer.foyer_id',
+                        'Adressefoyer.id IN (
+                            '.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01('Adressefoyer.foyer_id').'
+                        )'
+                    )
+                ),
+                array(
+                    'table'      => 'adresses',
+                    'alias'      => 'Adresse',
+                    'type'       => 'INNER',
+                    'foreignKey' => false,
+                    'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
                 ),
                 array(
                     'table'      => 'referents',
@@ -197,7 +172,10 @@
                     'Structurereferente.lib_struc',
                     'Dossier.matricule',
                     'Dossier.numdemrsa',
-                    'Dossierep.themeep'
+                    'Dossierep.themeep',
+                    'Adresse.locaadr',
+                    'Adresse.codepos',
+                    'Adresse.numcomptt'
                 ),
                 'joins' => $joins,
                 'order' => array( '"Bilanparcours66"."datebilan" ASC' ),

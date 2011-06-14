@@ -32,7 +32,7 @@
 			)
 		);
 
-		public function searchNonReoriente($datas) {
+		public function searchNonReoriente( $mesCodesInsee, $filtre_zone_geo, $datas) {
 			$conditions = array();
 			$nbmois = Set::classicExtract($datas, 'Filtre.dureenonreorientation');
 
@@ -107,6 +107,7 @@
 				)'
 			);
 
+			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
 
 			$cohorte = array(
 				'fields' => array(

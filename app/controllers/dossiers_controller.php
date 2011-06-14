@@ -13,15 +13,13 @@
 			'limit' => 20
 		);
 
-		public $commeDroit = array(
-			'view' => 'Dossiers:index'
-		);
+		public $commeDroit = array( 'view' => 'Dossiers:index' );
 
 		/**
 		*
 		*/
 
-		function __construct() {
+		public function __construct() {
 			$this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'index' ) ) ) );
 			parent::__construct();
 		}
@@ -81,8 +79,10 @@
 		}
 
 		/**
+		*
 		*/
-		function beforeFilter() {
+
+		public function beforeFilter() {
 			ini_set('max_execution_time', 0);
 			ini_set('memory_limit', '512M');
 			$return = parent::beforeFilter();
@@ -90,15 +90,17 @@
 		}
 
 		/**
+		*
 		*/
-		function index() {
+
+		public function index() {
 			if( Configure::read( 'CG.cantons' ) ) {
 				$this->loadModel( 'Canton' );
 				$this->set( 'cantons', $this->Canton->selectList() );
 			}
 
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
+			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 
 			$params = $this->data;
 			if( !empty( $params ) ) {
@@ -141,7 +143,7 @@
 		*
 		*/
 
-		function menu() {
+		public function menu() {
 			$this->assert( isset( $this->params['requested'] ), 'error404' );
 			$conditions = array();
 
@@ -211,8 +213,10 @@
 		}
 
 		/**
+		*
 		*/
-		function view( $id = null ) {
+
+		public function view( $id = null ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
 			/** Tables necessaire à l'ecran de synthèse
@@ -410,9 +414,9 @@
 				)
 			);
 
-            $options = array(
-                'Passagecommissionep' => $this->Dossier->Foyer->Personne->Dossierep->Passagecommissionep->allEnumLists()
-            );
+			$options = array(
+				'Passagecommissionep' => $this->Dossier->Foyer->Personne->Dossierep->Passagecommissionep->allEnumLists()
+			);
 			$roles = Set::extract( '{n}.Prestation.rolepers', $personnesFoyer );
 			foreach( $roles as $index => $role ) {
 				$tPersReferent = $this->Dossier->Foyer->Personne->PersonneReferent->find(
@@ -505,13 +509,13 @@
 						),
 						'contain' => false,
 						'joins' => array(
-                            array(
-                                'table'      => 'nonrespectssanctionseps93',
-                                'alias'      => 'Nonrespectsanctionep93',
-                                'type'       => 'INNER',
-                                'foreignKey' => false,
-                                'conditions' => array( 'Nonrespectsanctionep93.id = Relancenonrespectsanctionep93.nonrespectsanctionep93_id' )
-                            ),
+							array(
+								'table'      => 'nonrespectssanctionseps93',
+								'alias'      => 'Nonrespectsanctionep93',
+								'type'       => 'INNER',
+								'foreignKey' => false,
+								'conditions' => array( 'Nonrespectsanctionep93.id = Relancenonrespectsanctionep93.nonrespectsanctionep93_id' )
+							),
 							array(
 								'table'      => 'orientsstructs',
 								'alias'      => 'Orientstruct',
@@ -559,67 +563,67 @@
 				$personnesFoyer[$index]['Nonrespectsanctionep93']['derniere'] = $tRelance;
 
 // debug($tRelance);
-                // EP
+				// EP
 
-                // Dernier passage effectif (lié à un passagecommissionep)
-                $tdossierEp = $this->Dossier->Foyer->Personne->Dossierep->find(
-                    'first',
-                    array(
-                        'fields' => array(
-                            'Dossierep.themeep',
-                            'Commissionep.dateseance',
-                            'Passagecommissionep.id',
-                            'Passagecommissionep.etatdossierep',
-                        ),
-                        'joins' => array(
-                            array(
-                                'table'      => 'passagescommissionseps',
-                                'alias'      => 'Passagecommissionep',
-                                'type'       => 'INNER',
-                                'foreignKey' => false,
-                                'conditions' => array( 'Passagecommissionep.dossierep_id = Dossierep.id' )
-                            ),
-                            array(
-                                'table'      => 'commissionseps',
-                                'alias'      => 'Commissionep',
-                                'type'       => 'INNER',
-                                'foreignKey' => false,
-                                'conditions' => array( 'Passagecommissionep.commissionep_id = Commissionep.id' )
-                            ),
-                        ),
-                        'conditions' => array(
-                            'Dossierep.personne_id' => $personnesFoyer[$index]['Personne']['id']
-                        ),
-                        'order' => array(
-                            'Commissionep.dateseance DESC'
-                        ),
-                        'contain' => false,
-                    )
-                );
+				// Dernier passage effectif (lié à un passagecommissionep)
+				$tdossierEp = $this->Dossier->Foyer->Personne->Dossierep->find(
+					'first',
+					array(
+						'fields' => array(
+							'Dossierep.themeep',
+							'Commissionep.dateseance',
+							'Passagecommissionep.id',
+							'Passagecommissionep.etatdossierep',
+						),
+						'joins' => array(
+							array(
+								'table'      => 'passagescommissionseps',
+								'alias'      => 'Passagecommissionep',
+								'type'       => 'INNER',
+								'foreignKey' => false,
+								'conditions' => array( 'Passagecommissionep.dossierep_id = Dossierep.id' )
+							),
+							array(
+								'table'      => 'commissionseps',
+								'alias'      => 'Commissionep',
+								'type'       => 'INNER',
+								'foreignKey' => false,
+								'conditions' => array( 'Passagecommissionep.commissionep_id = Commissionep.id' )
+							),
+						),
+						'conditions' => array(
+							'Dossierep.personne_id' => $personnesFoyer[$index]['Personne']['id']
+						),
+						'order' => array(
+							'Commissionep.dateseance DESC'
+						),
+						'contain' => false,
+					)
+				);
 
-                $decisionEP = array();
-                if( !empty( $tdossierEp ) ) {
-                    $themeEP = Set::classicExtract( $tdossierEp, 'Dossierep.themeep' );
-                    $modelTheme = Inflector::classify( Inflector::singularize( $themeEP ) );
-                    $modelDecision = 'Decision'.Inflector::singularize( $themeEP );
+				$decisionEP = array();
+				if( !empty( $tdossierEp ) ) {
+					$themeEP = Set::classicExtract( $tdossierEp, 'Dossierep.themeep' );
+					$modelTheme = Inflector::classify( Inflector::singularize( $themeEP ) );
+					$modelDecision = 'Decision'.Inflector::singularize( $themeEP );
 
-                    if( !isset( $options[$modelDecision] ) ) {
-                        $options[$modelDecision] = $this->Dossier->Foyer->Personne->Dossierep->Passagecommissionep->{$modelDecision}->allEnumLists();
-                    }
+					if( !isset( $options[$modelDecision] ) ) {
+						$options[$modelDecision] = $this->Dossier->Foyer->Personne->Dossierep->Passagecommissionep->{$modelDecision}->allEnumLists();
+					}
 
-                    $decisionEP = $this->Dossier->Foyer->Personne->Dossierep->Passagecommissionep->{$modelDecision}->find(
-                        'first',
-                        array(
-                            'conditions' => array(
-                                "{$modelDecision}.passagecommissionep_id" => $tdossierEp['Passagecommissionep']['id']
-                            ),
-                            'order' => array( "{$modelDecision}.etape DESC" ),
-                            'contain' => false
-                        )
-                    );
-                }
+					$decisionEP = $this->Dossier->Foyer->Personne->Dossierep->Passagecommissionep->{$modelDecision}->find(
+						'first',
+						array(
+							'conditions' => array(
+								"{$modelDecision}.passagecommissionep_id" => $tdossierEp['Passagecommissionep']['id']
+							),
+							'order' => array( "{$modelDecision}.etape DESC" ),
+							'contain' => false
+						)
+					);
+				}
 
-                $personnesFoyer[$index]['Dossierep']['derniere'] = Set::merge( $tdossierEp, $decisionEP );
+				$personnesFoyer[$index]['Dossierep']['derniere'] = Set::merge( $tdossierEp, $decisionEP );
 
 
 
@@ -700,21 +704,21 @@
 							),
 						),
 						'conditions' => array(
-                            'OR' => array(
-                                array(
-                                    'Personne.nir' => $personnesFoyer[$index]['Personne']['nir'],
-                                    //FIXME
-                                    'nir_correct( Personne.nir  ) = true',
-                                    'Personne.nir IS NOT NULL',
-                                    'Personne.dtnai' => $personnesFoyer[$index]['Personne']['dtnai']
-                                ),
-                                array(
-                                    'Personne.nom' => $personnesFoyer[$index]['Personne']['nom'],
-                                    'Personne.prenom' => $personnesFoyer[$index]['Personne']['prenom'],
-                                    'Personne.dtnai' => $personnesFoyer[$index]['Personne']['dtnai']
-                                )
-                            ),
-                            'Dossier.id NOT' => $details['Dossier']['id']
+							'OR' => array(
+								array(
+									'Personne.nir' => $personnesFoyer[$index]['Personne']['nir'],
+									//FIXME
+									'nir_correct( Personne.nir  ) = true',
+									'Personne.nir IS NOT NULL',
+									'Personne.dtnai' => $personnesFoyer[$index]['Personne']['dtnai']
+								),
+								array(
+									'Personne.nom' => $personnesFoyer[$index]['Personne']['nom'],
+									'Personne.prenom' => $personnesFoyer[$index]['Personne']['prenom'],
+									'Personne.dtnai' => $personnesFoyer[$index]['Personne']['dtnai']
+								)
+							),
+							'Dossier.id NOT' => $details['Dossier']['id']
 						),
 						'contain' => false,
 						'order' => 'Dossier.id DESC',
@@ -734,7 +738,7 @@
 // debug($details['DEM']['Dossiermultiple']);
 // debug($details['CJT']['Dossiermultiple']);
 			$this->set( 'details', $details );
-            $this->set( 'options', $options );
+			$this->set( 'options', $options );
 			$this->_setOptions();
 
 		}
@@ -745,7 +749,7 @@
 
 		public function exportcsv() {
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
+			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 
 			$querydata = $this->Dossier->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), array_multisize( $this->params['named'] ) );
 			unset( $querydata['limit'] );

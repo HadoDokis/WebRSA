@@ -17,10 +17,7 @@
 			$conditions[] = 'Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatAttente() ).'\' ) ';
 
 			/// Filtre zone géographique
-			if( $filtre_zone_geo ) {
-				$mesCodesInsee = ( !empty( $mesCodesInsee ) ? $mesCodesInsee : '0' );
-				$conditions[] = 'Adresse.numcomptt IN ( \''.implode( '\', \'', $mesCodesInsee ).'\' )';
-			}
+			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
 
 			/// Dossiers lockés
 			if( !empty( $lockedDossiers ) ) {
@@ -262,10 +259,7 @@
 			$conditions = array();
 
 			/// Filtre zone géographique
-			if( $filtre_zone_geo ) {
-				$mesCodesInsee = ( !empty( $mesCodesInsee ) ? $mesCodesInsee : '0' );
-				$conditions[] = 'Adresse.numcomptt IN ( \''.implode( '\', \'', $mesCodesInsee ).'\' )';
-			}
+			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
 
 			/// Dossiers lockés
 			if( !empty( $lockedDossiers ) ) {

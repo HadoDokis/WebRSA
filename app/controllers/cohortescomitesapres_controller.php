@@ -2,10 +2,10 @@
 	App::import('Sanitize');
 	class CohortescomitesapresController extends AppController
 	{
-		var $name = 'Cohortescomitesapres';
-		var $uses = array( 'Apre', 'Option', 'Personne', 'ApreComiteapre', 'Cohortecomiteapre', 'Comiteapre', 'Participantcomite', 'Apre', 'ComiteapreParticipantcomite', 'Adressefoyer', 'Tiersprestataireapre', 'Suiviaideapretypeaide', 'Referent', 'Dossier' );
-		var $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml' );
-		var $components = array( 'Gedooo' );
+		public $name = 'Cohortescomitesapres';
+		public $uses = array( 'Apre', 'Option', 'Personne', 'ApreComiteapre', 'Cohortecomiteapre', 'Comiteapre', 'Participantcomite', 'Apre', 'ComiteapreParticipantcomite', 'Adressefoyer', 'Tiersprestataireapre', 'Suiviaideapretypeaide', 'Referent', 'Dossier' );
+		public $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml' );
+		public $components = array( 'Gedooo' );
 
 		function __construct() {
 		//FIXME: voir si le fait d'appeler aviscomite ne va pas retourner tous les comités précédents comme au départ
@@ -134,7 +134,6 @@
 
 
 		function exportcsv() {
-
 			$querydata = $this->Cohortecomiteapre->search( null, array_multisize( $this->params['named'] ) );
 			unset( $querydata['limit'] );
 			$decisionscomites = $this->Comiteapre->find( 'all', $querydata );

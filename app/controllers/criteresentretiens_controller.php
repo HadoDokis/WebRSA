@@ -1,87 +1,88 @@
 <?php
-    class CriteresentretiensController extends AppController
-    {
-        public $name = 'Criteresentretiens';
+	class CriteresentretiensController extends AppController
+	{
+		public $name = 'Criteresentretiens';
 
-        public $uses = array(
-            'Critereentretien',
-            'Entretien'
-        );
+		public $uses = array(
+			'Critereentretien',
+			'Entretien'
+		);
 
-        public $helpers = array( 'Csv', 'Ajax', 'Default2' );
+		public $helpers = array( 'Csv', 'Ajax', 'Default2' );
 
-        var $components = array( 'Prg' => array( 'actions' => array( 'index' ) ) );
+		public $components = array( 'Prg' => array( 'actions' => array( 'index' ) ) );
 
 //         public $paginate = array( 'limit' => 20 );
 
 
-        /**
-        *
-        */
-        public function _setOptions() {
-            $this->set( 'options',  $this->Entretien->allEnumLists() );
-            $this->set( 'structs', $this->Entretien->Structurereferente->listOptions() );
-            $this->set( 'referents', $this->Entretien->Referent->listOptions() );
-        }
-        /**
-        *
-        */
+		/**
+		*
+		*/
+		public function _setOptions() {
+			$this->set( 'options',  $this->Entretien->allEnumLists() );
+			$this->set( 'structs', $this->Entretien->Structurereferente->listOptions() );
+			$this->set( 'referents', $this->Entretien->Referent->listOptions() );
+		}
+		/**
+		*
+		*/
 
-        public function index() {
-            if( Configure::read( 'CG.cantons' ) ) {
-                $this->set( 'cantons', ClassRegistry::init( 'Canton' )->selectList() );
-            }
+		public function index() {
+			if( Configure::read( 'CG.cantons' ) ) {
+				$this->set( 'cantons', ClassRegistry::init( 'Canton' )->selectList() );
+			}
 
-            $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-            $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
-            if( !empty( $this->data ) ) {
-                $this->Critereentretien->begin(); // Pour les jetons
+			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 
-                if( !empty( $this->data['Entretien']['referent_id'] )) {
-                    $referentId = suffix( $this->data['Entretien']['referent_id'] );
-                    $this->data['Entretien']['referent_id'] = $referentId;
-                }
+			if( !empty( $this->data ) ) {
+				$this->Critereentretien->begin(); // Pour les jetons
 
-                $this->paginate = $this->Critereentretien->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
+				if( !empty( $this->data['Entretien']['referent_id'] )) {
+					$referentId = suffix( $this->data['Entretien']['referent_id'] );
+					$this->data['Entretien']['referent_id'] = $referentId;
+				}
 
-                $this->paginate = $this->_qdAddFilters( $this->paginate );
+				$this->paginate = $this->Critereentretien->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
 
-                $this->paginate['limit'] = 10;
-                $entretiens = $this->paginate( 'Entretien' );
+				$this->paginate = $this->_qdAddFilters( $this->paginate );
 
-                $this->Critereentretien->commit();
+				$this->paginate['limit'] = 10;
+				$entretiens = $this->paginate( 'Entretien' );
 
-                $this->set( 'entretiens', $entretiens );
-            }
+				$this->Critereentretien->commit();
 
-            if( Configure::read( 'Zonesegeographiques.CodesInsee' ) ) {
-                $this->set( 'mesCodesInsee', ClassRegistry::init( 'Zonegeographique' )->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) ) );
-            }
-            else {
-                $this->set( 'mesCodesInsee', ClassRegistry::init( 'Adresse' )->listeCodesInsee() );
-            }
-            $this->_setOptions();
-        }
+				$this->set( 'entretiens', $entretiens );
+			}
 
-
-        /**
-        * Export du tableau en CSV
-        */
-
-        public function exportcsv() {
-            $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-            $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
-
-            $querydata = $this->Critereentretien->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), array_multisize( $this->params['named'] ), $this->Jetons->ids() );
-            unset( $querydata['limit'] );
-            $querydata = $this->_qdAddFilters( $querydata );
-
-            $entretiens = $this->Entretien->find( 'all', $querydata );
+			if( Configure::read( 'Zonesegeographiques.CodesInsee' ) ) {
+				$this->set( 'mesCodesInsee', ClassRegistry::init( 'Zonegeographique' )->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) ) );
+			}
+			else {
+				$this->set( 'mesCodesInsee', ClassRegistry::init( 'Adresse' )->listeCodesInsee() );
+			}
+			$this->_setOptions();
+		}
 
 
-            $this->layout = ''; // FIXME ?
-            $this->set( compact( 'entretiens' ) );
-            $this->_setOptions();
-        }
-    }
+		/**
+		* Export du tableau en CSV
+		*/
+
+		public function exportcsv() {
+			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
+
+			$querydata = $this->Critereentretien->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), array_multisize( $this->params['named'] ), $this->Jetons->ids() );
+			unset( $querydata['limit'] );
+			$querydata = $this->_qdAddFilters( $querydata );
+
+			$entretiens = $this->Entretien->find( 'all', $querydata );
+
+
+			$this->layout = ''; // FIXME ?
+			$this->set( compact( 'entretiens' ) );
+			$this->_setOptions();
+		}
+	}
 ?>

@@ -47,101 +47,18 @@
 		/**
 		*
 		*/
-/*
-		public function beforeFilter() {
-			$return = parent::beforeFilter();
-			$this->set( 'statutrdv', $this->Statutrdv->find( 'list' ) );
-			$this->set( 'struct', $this->Structurereferente->listOptions() );
-			$this->set( 'sr', $this->Structurereferente->find( 'list', array( 'recursive' => 1 ) ) );
-			$typerdv = $this->Typerdv->find( 'list', array( 'fields' => array( 'id', 'libelle' ) ) );
-			$this->set( 'typerdv', $typerdv );
-			$this->set( 'permanences', $this->Permanence->find( 'list' ) );
-			$this->set( 'natpf', $this->Option->natpf() );
-
-		}*/
-
-		/**
-		* Ajax pour lien référent - structure référente
-		*/
-/*
-		protected function _selectReferents( $structurereferente_id ) {
-			$conditions = array();
-
-			if( !empty( $structurereferente_id ) ) {
-				$conditions['Referent.structurereferente_id'] = $structurereferente_id;
-			}
-
-			$referents = $this->Referent->find(
-				'all',
-				array(
-					'conditions' => $conditions,
-					'recursive' => -1
-				)
-			);
-			return $referents;
-
-		}*/
-
-		/**
-		*
-		*/
-/*
-		public function ajaxreferent() { // FIXME
-			Configure::write( 'debug', 0 );
-			$referents = $this->_selectReferents( Set::classicExtract( $this->data, 'Critererdv.structurereferente_id' ) );
-			$options = array( '<option value=""></option>' );
-			foreach( $referents as $referent ) {
-				$options[] = '<option value="'.$referent['Referent']['id'].'">'.$referent['Referent']['nom'].' '.$referent['Referent']['prenom'].'</option>';
-			} ///FIXME: à mettre dans la vue
-			echo implode( '', $options );
-			$this->render( null, 'ajax' );
-		}*/
-
-		/**
-		* Ajax pour la permanence liée à la structure référente
-		*/
-//         protected function _selectPermanences( $structurereferente_id ) {
-//             $permanences = $this->Rendezvous->Structurereferente->Permanence->find(
-//                 'all',
-//                 array(
-//                     'conditions' => array(
-//                         'Permanence.structurereferente_id' => $structurereferente_id
-//                     ),
-//                     'recursive' => -1
-//                 )
-//             );
-//
-//             return $permanences;
-//
-//         }
-//
-//         public function ajaxperm() { // FIXME
-//             Configure::write( 'debug', 0 );
-//             $permanences = $this->_selectPermanences( Set::classicExtract( $this->data, 'Critererdv.structurereferente_id' ) );
-//
-//             $options = array( '<option value=""></option>' );
-//             foreach( $permanences as $permanence ) {
-//                 $options[] = '<option value="'.$permanence['Permanence']['id'].'">'.$permanence['Permanence']['libpermanence'].'</option>';
-//             }
-//             echo implode( '', $options );
-//             $this->render( null, 'ajax' );
-//         }
-
-		/**
-		*
-		*/
 
 		public function index() {
 			if( Configure::read( 'CG.cantons' ) ) {
 				$this->set( 'cantons', $this->Canton->selectList() );
 			}
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
+			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 
 			if( !empty( $this->data ) ) {
 				$this->Dossier->begin(); // Pour les jetons
 
-				$querydata = $this->Critererdv->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data );
+				$querydata = $this->Critererdv->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
 				$querydata['limit'] = 10;
 				$querydata = $this->_qdAddFilters( $querydata );
 				$this->paginate['Rendezvous'] = $querydata;
@@ -172,7 +89,7 @@
 
 		public function exportcsv() {
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
+			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 
 			$querydata = $this->Critererdv->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), array_multisize( $this->params['named'] ), $this->Jetons->ids() );
 			unset( $querydata['limit'] );

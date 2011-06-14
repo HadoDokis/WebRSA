@@ -105,19 +105,6 @@
 								</ul>
 							</li>
 						<?php endif;?>
-						<!--<?php if( $permissions->check( 'relances', 'relance' ) || $permissions->check( 'relances', 'arelancer' )): ?>
-							<li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
-								<?php echo $xhtml->link( 'Relances','#' );?>
-								<ul>
-									<?php if( $permissions->check( 'relances', 'arelancer' ) ): ?>
-										<li><?php echo $xhtml->link( 'Dossiers à relancer', array( 'controller' => 'relances', 'action' => 'arelancer' ), array( 'title' => 'Dossiers à relancer' ) );?></li>
-									<?php endif;?>
-									<?php if( $permissions->check( 'relances', 'relance' ) ): ?>
-										<li><?php echo $xhtml->link( 'Dossiers relancés', array( 'controller' => 'relances', 'action' => 'relance' ), array( 'title' => 'Dossiers relancés' ) );?></li>
-									<?php endif;?>
-								</ul>
-							</li>
-						<?php endif; ?>-->
 						<?php if( ( $permissions->check( 'cohortespdos', 'avisdemande' ) || $permissions->check( 'cohortespdos', 'valide' ) || $permissions->check( 'cohortespdos', 'enattente' ) ) && Configure::read( 'Cg.departement' ) == 93 ): ?>
                             <!-- AJOUT POUR LA GESTION DES PDOs (Cohorte) -->
                             <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">

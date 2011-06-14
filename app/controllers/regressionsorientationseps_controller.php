@@ -21,31 +21,7 @@
 			$this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'index' ) ) ) );
 			parent::__construct();
 		}
-
-		public function index() {
-			$cohorte = array();
-			if ( !empty( $this->data ) ) {
-				if ( isset( $this->data['Regressionsorientationseps'] ) ) {
-					$this->{$this->modelClass}->begin();
-					$success = $this->{$this->modelClass}->saveCohorte( $this->data );
-					$this->_setFlashResult( 'Save', $success );
-					if ( $success ) {
-						$this->{$this->modelClass}->commit();
-						$this->redirect( Set::merge( array( 'action' => 'index' ), Set::flatten( array( 'Filtre' => $this->data['Filtre'] ), '__' ) ) );
-					}
-					else {
-						$this->{$this->modelClass}->rollback();
-					}
-				}
-
-				$this->paginate = $this->{$this->modelClass}->searchNonReoriente($this->data);
-				$this->paginate['limit'] = 10;
-				$cohorte = $this->paginate( $this->{$this->modelClass}->Orientstruct );
-			}
-			$this->set( 'nbmoisnonreorientation', array( 0 => 'Aujourd\'hui', 6 => '6 mois', 12 => '12 mois', 24 => '24 mois' ) );
-			$this->set( compact( 'cohorte' ) );
-		}
-		
+	
 		/**
 		 *
 		 */

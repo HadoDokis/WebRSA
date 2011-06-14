@@ -1,109 +1,114 @@
 <?php
-    App::import('Sanitize');
+	App::import('Sanitize');
 
-    class RepsddtefpController extends AppController
-    {
-        var $name = 'Repsddtefp';
-        var $uses = array( 'Apre', 'Repddtefp', 'Option', 'Budgetapre', 'Etatliquidatif', 'Zonegeographique' );
-        var $helpers = array( 'Xform', 'Paginator', 'Locale', 'Xpaginator', 'Csv' );
-        var $aucunDroit = array( 'exportcsv' );
+	class RepsddtefpController extends AppController
+	{
+		public $name = 'Repsddtefp';
+		public $uses = array( 'Apre', 'Repddtefp', 'Option', 'Budgetapre', 'Etatliquidatif', 'Zonegeographique' );
+		public $helpers = array( 'Xform', 'Paginator', 'Locale', 'Xpaginator', 'Csv' );
+		public $aucunDroit = array( 'exportcsv' );
 
-        function __construct() {
-            $this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'suivicontrole' ) ) ) );
-            parent::__construct();
-        }
+		/**
+		*
+		*/
 
+		public function __construct() {
+			$this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'suivicontrole' ) ) ) );
+			parent::__construct();
+		}
 
-        function beforeFilter() {
+		/**
+		*
+		*/
+
+		public function beforeFilter() {
 			ini_set('max_execution_time', 0);
 			ini_set('memory_limit', '1024M');
-            parent::beforeFilter();
-            $this->set( 'sexe', $this->Option->sexe() );
-            $this->set( 'qual', $this->Option->qual() );
-            $this->set( 'natureAidesApres', $this->Option->natureAidesApres() );
-            $options = $this->Apre->allEnumLists();
-            $this->set( 'options', $options );
-            $this->set( 'sect_acti_emp', $this->Option->sect_acti_emp() );
+			parent::beforeFilter();
+			$this->set( 'sexe', $this->Option->sexe() );
+			$this->set( 'qual', $this->Option->qual() );
+			$this->set( 'natureAidesApres', $this->Option->natureAidesApres() );
+			$options = $this->Apre->allEnumLists();
+			$this->set( 'options', $options );
+			$this->set( 'sect_acti_emp', $this->Option->sect_acti_emp() );
 
-            $this->set( 'quinzaine', $this->Option->quinzaine() );
-        }
+			$this->set( 'quinzaine', $this->Option->quinzaine() );
+		}
 
-        /**
-        *   Données pour le premier reporting bi mensuel ddtefp
-        **/
-        function index() {
+		/**
+		*   Données pour le premier reporting bi mensuel ddtefp
+		*/
 
-            $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-            $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
+		public function index() {
 
-            if( !empty( $this->data ) ) {
-                $annee = Set::classicExtract( $this->data, 'Repddtefp.annee' );
-                $semestre = Set::classicExtract( $this->data, 'Repddtefp.semestre' );
-                $numcomptt = Set::classicExtract( $this->data, 'Repddtefp.numcomptt' );
+			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
 
-                $listeSexe = $this->Repddtefp->listeSexe( $annee, $semestre, $numcomptt );
-                $listeAge = $this->Repddtefp->listeAge( $annee, $semestre, $numcomptt );
+			if( !empty( $this->data ) ) {
+				$annee = Set::classicExtract( $this->data, 'Repddtefp.annee' );
+				$semestre = Set::classicExtract( $this->data, 'Repddtefp.semestre' );
+				$numcomptt = Set::classicExtract( $this->data, 'Repddtefp.numcomptt' );
 
-                $this->set( compact( 'listeSexe', 'listeAge', 'numcomptt' ) );
-            }
+				$listeSexe = $this->Repddtefp->listeSexe( $annee, $semestre, $numcomptt );
+				$listeAge = $this->Repddtefp->listeAge( $annee, $semestre, $numcomptt );
 
-            if( Configure::read( 'Zonesegeographiques.CodesInsee' ) ) {
-                $this->set( 'mesCodesInsee', $this->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) ) );
-            }
-            else {
-                $this->set( 'mesCodesInsee', $this->Dossier->Foyer->Adressefoyer->Adresse->listeCodesInsee() );
-            }
-        }
+				$this->set( compact( 'listeSexe', 'listeAge', 'numcomptt' ) );
+			}
 
-        /**
-        *   Données à envoyer pour afficehr reporting du suivi et controle de l'enveloppe apre
-        **/
-        function suivicontrole() {
+			if( Configure::read( 'Zonesegeographiques.CodesInsee' ) ) {
+				$this->set( 'mesCodesInsee', $this->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) ) );
+			}
+			else {
+				$this->set( 'mesCodesInsee', $this->Dossier->Foyer->Adressefoyer->Adresse->listeCodesInsee() );
+			}
+		}
 
-            $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-            $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
+		/**
+		*   Données à envoyer pour afficehr reporting du suivi et controle de l'enveloppe apre
+		*/
 
-            if( !empty( $this->data ) ) {
+		public function suivicontrole() {
 
-                /*$queryData = $this->Repddtefp->search( $this->data );
-                $queryData['limit'] = 10;
-                $this->paginate['Apre'] = $queryData;
-                $apres = $this->paginate( 'Apre' );*/
+			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
 
+			if( !empty( $this->data ) ) {
 				$queryData = $this->Repddtefp->search( $this->data );
-                $queryData['limit'] = 10;
-                $this->paginate['Etatliquidatif'] = $queryData;
-                $apres = $this->paginate( 'Etatliquidatif' );
+				$queryData['limit'] = 10;
+				$this->paginate['Etatliquidatif'] = $queryData;
+				$apres = $this->paginate( 'Etatliquidatif' );
 
-                ///Détails de l'enveloppe APRE
-                $detailsEnveloppe = $this->Repddtefp->detailsEnveloppe( $this->data );
-                $this->set( 'detailsEnveloppe', $detailsEnveloppe );
-
-
-                $this->set( 'apres', $apres );
-            }
+				///Détails de l'enveloppe APRE
+				$detailsEnveloppe = $this->Repddtefp->detailsEnveloppe( $this->data );
+				$this->set( 'detailsEnveloppe', $detailsEnveloppe );
 
 
-            if( Configure::read( 'Zonesegeographiques.CodesInsee' ) ) {
-                $this->set( 'mesCodesInsee', $this->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) ) );
-            }
-            else {
-                $this->set( 'mesCodesInsee', $this->Dossier->Foyer->Adressefoyer->Adresse->listeCodesInsee() );
-            }
-        }
+				$this->set( 'apres', $apres );
+			}
 
 
-        /// Export du tableau en CSV
-        function exportcsv() {
-            $queryData = $this->Repddtefp->search( array_multisize( $this->params['named'] ) );
-            unset( $queryData['limit'] );
+			if( Configure::read( 'Zonesegeographiques.CodesInsee' ) ) {
+				$this->set( 'mesCodesInsee', $this->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) ) );
+			}
+			else {
+				$this->set( 'mesCodesInsee', $this->Dossier->Foyer->Adressefoyer->Adresse->listeCodesInsee() );
+			}
+		}
+
+		/**
+		* Export du tableau en CSV
+		*/
+
+		public function exportcsv() {
+			$queryData = $this->Repddtefp->search( array_multisize( $this->params['named'] ) );
+			unset( $queryData['limit'] );
 
 			$this->Etatliquidatif->Apre->deepAfterFind = false;
-            $apres = $this->Etatliquidatif->find( 'all', $queryData );
+			$apres = $this->Etatliquidatif->find( 'all', $queryData );
 
-            $this->layout = '';
-            $this->set( compact( 'apres' ) );
+			$this->layout = '';
+			$this->set( compact( 'apres' ) );
 
-        }
-    }
+		}
+	}
 ?>

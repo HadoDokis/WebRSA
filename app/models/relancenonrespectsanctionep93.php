@@ -337,13 +337,16 @@
 		}
 
 		/**
-		 * Fonction de recherche des dossiers à relancer
-		 */
-		public function search( $search ) {
+		* Fonction de recherche des dossiers à relancer
+		*/
+
+		public function search( $mesCodesInsee, $filtre_zone_geo, $search ) {
 			unset( $search['page'], $search['sort'], $search['direction'] );
 
 			$conditions = array();
 			$joins = array();
+
+			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
 
 			// Personne orientée sans contrat
 			// FIXME: dernière orientation
@@ -391,68 +394,74 @@
 					'Contratinsertion.df_ci'
 				) );
 				$joins[] = array(
-							'table'      => 'personnes',
-							'alias'      => 'Personne',
-							'type'       => 'INNER',
-							'foreignKey' => false,
-							'conditions' => array( 'Personne.id = Contratinsertion.personne_id' )
-						);
+					'table'      => 'personnes',
+					'alias'      => 'Personne',
+					'type'       => 'INNER',
+					'foreignKey' => false,
+					'conditions' => array( 'Personne.id = Contratinsertion.personne_id' )
+				);
 			}
 			$joins[] = array(
-						'table'      => 'prestations',
-						'alias'      => 'Prestation',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array(
-							'Personne.id = Prestation.personne_id',
-							'Prestation.natprest' => 'RSA',
-							'Prestation.rolepers' => array( 'DEM', 'CJT' ),
-						)
-					);
+				'table'      => 'prestations',
+				'alias'      => 'Prestation',
+				'type'       => 'INNER',
+				'foreignKey' => false,
+				'conditions' => array(
+					'Personne.id = Prestation.personne_id',
+					'Prestation.natprest' => 'RSA',
+					'Prestation.rolepers' => array( 'DEM', 'CJT' ),
+				)
+			);
+
 			$joins[] = array(
-						'table'      => 'calculsdroitsrsa',
-						'alias'      => 'Calculdroitrsa',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array(
-							'Personne.id = Calculdroitrsa.personne_id',
-							'Calculdroitrsa.toppersdrodevorsa' => 1
-						)
-					);
+				'table'      => 'calculsdroitsrsa',
+				'alias'      => 'Calculdroitrsa',
+				'type'       => 'INNER',
+				'foreignKey' => false,
+				'conditions' => array(
+					'Personne.id = Calculdroitrsa.personne_id',
+					'Calculdroitrsa.toppersdrodevorsa' => 1
+				)
+			);
+
 			$joins[] = array(
-						'table'      => 'foyers',
-						'alias'      => 'Foyer',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Personne.foyer_id = Foyer.id' )
-					);
+				'table'      => 'foyers',
+				'alias'      => 'Foyer',
+				'type'       => 'INNER',
+				'foreignKey' => false,
+				'conditions' => array( 'Personne.foyer_id = Foyer.id' )
+			);
+
 			$joins[] = array(
-						'table'      => 'dossiers',
-						'alias'      => 'Dossier',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Dossier.id = Foyer.dossier_id' )
-					);
+				'table'      => 'dossiers',
+				'alias'      => 'Dossier',
+				'type'       => 'INNER',
+				'foreignKey' => false,
+				'conditions' => array( 'Dossier.id = Foyer.dossier_id' )
+			);
+
 			$joins[] = array(
-						'table'      => 'situationsdossiersrsa',
-						'alias'      => 'Situationdossierrsa',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array(
-							'Dossier.id = Situationdossierrsa.dossier_id',
-							'Situationdossierrsa.etatdosrsa' => $this->Nonrespectsanctionep93->Orientstruct->Personne->Foyer->Dossier->Situationdossierrsa->etatOuvert()
-						)
-					);
+				'table'      => 'situationsdossiersrsa',
+				'alias'      => 'Situationdossierrsa',
+				'type'       => 'INNER',
+				'foreignKey' => false,
+				'conditions' => array(
+					'Dossier.id = Situationdossierrsa.dossier_id',
+					'Situationdossierrsa.etatdosrsa' => $this->Nonrespectsanctionep93->Orientstruct->Personne->Foyer->Dossier->Situationdossierrsa->etatOuvert()
+				)
+			);
+
 			$joins[] = array(
-						'table'      => 'adressesfoyers',
-						'alias'      => 'Adressefoyer',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array(
-							'Adressefoyer.foyer_id = Foyer.id',
-							'Adressefoyer.rgadr' => '01'
-						)
-					);
+				'table'      => 'adressesfoyers',
+				'alias'      => 'Adressefoyer',
+				'type'       => 'INNER',
+				'foreignKey' => false,
+				'conditions' => array(
+					'Adressefoyer.foyer_id = Foyer.id',
+					'Adressefoyer.rgadr' => '01'
+				)
+			);
+
 			$joins[] = array(
 				'table'      => 'adresses',
 				'alias'      => 'Adresse',
@@ -870,11 +879,13 @@
 		* Fonction de recherche des dossiers déjà relancés.
 		*/
 
-		public function qdSearchRelances( $search ) {
+		public function qdSearchRelances( $mesCodesInsee, $filtre_zone_geo, $search ) {
 			$search = Set::flatten( $search );
 			$search = Set::filter( $search );
 
 			$conditions = array();
+
+			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
 
 			foreach( $search as $field => $condition ) {
 				if( in_array( $field, array( 'Personne.nom', 'Personne.prenom', 'Personne.nomnai' ) ) ) {
