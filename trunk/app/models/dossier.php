@@ -3,6 +3,8 @@
 	{
 		public $name = 'Dossier';
 
+        public $actsAs = array( 'Conditionnable' );
+
 		public $validate = array(
 			'numdemrsa' => array(
 				array(
@@ -241,42 +243,8 @@
 
 			$conditions = $this->conditionsAdresse( $conditions, $params, $filtre_zone_geo, $mesCodesInsee );
 			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $params );
+			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $params );
 
-			/*/// Filtre zone géographique
-			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
-
-			// Critères sur le dossier - numéro de dossier
-			if( isset( $params['Dossier']['numdemrsa'] ) && !empty( $params['Dossier']['numdemrsa'] ) ) {
-				$conditions[] = "Dossier.numdemrsa ILIKE '%".Sanitize::paranoid( $params['Dossier']['numdemrsa'] )."%'";
-			}
-
-			/// Critères sur le dossier - matricule
-			if( isset( $params['Dossier']['matricule'] ) && !empty( $params['Dossier']['matricule'] ) ) {
-				$conditions[] = "Dossier.matricule ILIKE '%".Sanitize::paranoid( $params['Dossier']['matricule'] )."%'";
-			}
-
-			/// Critères sur la personne - nir
-			if( isset( $params['Personne']['nir'] ) && !empty( $params['Personne']['nir'] ) ) {
-				$conditions[] = "Personne.nir ILIKE '%".Sanitize::paranoid( $params['Personne']['nir'] )."%'";
-			}
-
-			/// Critères sur l'adresse - nom de commune
-			if( isset( $params['Adresse']['locaadr'] ) && !empty( $params['Adresse']['locaadr'] ) ) {
-				$conditions[] = "Adresse.locaadr ILIKE '%".Sanitize::paranoid( $params['Adresse']['locaadr'] )."%'";
-			}
-
-			/// Critères sur l'adresse - code insee
-			if( isset( $params['Adresse']['numcomptt'] ) && !empty( $params['Adresse']['numcomptt'] ) ) {
-				$conditions[] = "Adresse.numcomptt ILIKE '%".Sanitize::paranoid( $params['Adresse']['numcomptt'] )."%'";
-			}
-
-			/// Critères sur l'adresse - canton
-			if( Configure::read( 'CG.cantons' ) ) {
-				if( isset( $params['Canton']['canton'] ) && !empty( $params['Canton']['canton'] ) ) {
-					$this->Canton = ClassRegistry::init( 'Canton' );
-					$conditions[] = $this->Canton->queryConditions( $params['Canton']['canton'] );
-				}
-			}*/
 
 			/// Critères sur la nature de la prestation - natpf
 			if( isset( $params['Detailcalculdroitrsa']['natpf'] ) && !empty( $params['Detailcalculdroitrsa']['natpf'] ) ) {
@@ -297,26 +265,6 @@
 				}
 			}
 
-			/// Critères sur une personne du foyer - nom, prénom, nom de jeune fille -> FIXME: seulement demandeur pour l'instant
-			$filtersPersonne = array();
-			foreach( array( 'nom', 'prenom', 'nomnai' ) as $criterePersonne ) {
-				if( isset( $params['Personne'][$criterePersonne] ) && !empty( $params['Personne'][$criterePersonne] ) ) {
-					$conditions[] = 'UPPER(Personne.'.$criterePersonne.') LIKE \''.$this->wildcard( strtoupper( replace_accents( $params['Personne'][$criterePersonne] ) ) ).'\'';
-				}
-			}
-
-			/// Critères sur une personne du foyer - date de naissance -> FIXME: seulement demandeur pour l'instant
-			if( isset( $params['Personne']['dtnai'] ) && !empty( $params['Personne']['dtnai'] ) ) {
-				if( valid_int( $params['Personne']['dtnai']['year'] ) ) {
-					$conditions[] = 'EXTRACT(YEAR FROM Personne.dtnai) = '.$params['Personne']['dtnai']['year'];
-				}
-				if( valid_int( $params['Personne']['dtnai']['month'] ) ) {
-					$conditions[] = 'EXTRACT(MONTH FROM Personne.dtnai) = '.$params['Personne']['dtnai']['month'];
-				}
-				if( valid_int( $params['Personne']['dtnai']['day'] ) ) {
-					$conditions[] = 'EXTRACT(DAY FROM Personne.dtnai) = '.$params['Personne']['dtnai']['day'];
-				}
-			}
 
 			/// FIXME: Critères sur le dossier - service instructeur
 			if( isset( $params['Serviceinstructeur']['id'] ) && !empty( $params['Serviceinstructeur']['id'] ) ) {
@@ -362,45 +310,6 @@
 					$conditions[] = '( SELECT COUNT(contratsinsertion.id) FROM contratsinsertion WHERE contratsinsertion.personne_id = "Personne"."id" ) = 0';
 				}
 			}
-
-
-			// Trouver la dernière demande RSA pour chacune des personnes du jeu de résultats
-			if( isset( $params['Dossier']['dernier'] ) && $params['Dossier']['dernier'] ) {
-				$conditions[] = 'Dossier.id IN (
-					SELECT
-							dossiers.id
-						FROM personnes
-							INNER JOIN prestations ON (
-								personnes.id = prestations.personne_id
-								AND prestations.natprest = \'RSA\'
-							)
-							INNER JOIN foyers ON (
-								personnes.foyer_id = foyers.id
-							)
-							INNER JOIN dossiers ON (
-								dossiers.id = foyers.dossier_id
-							)
-						WHERE
-							prestations.rolepers IN ( \'DEM\', \'CJT\' )
-							AND (
-								(
-									nir_correct( Personne.nir )
-									AND nir_correct( personnes.nir )
-									AND personnes.nir = Personne.nir
-									AND personnes.dtnai = Personne.dtnai
-								)
-								OR
-								(
-									personnes.nom = Personne.nom
-									AND personnes.prenom = Personne.prenom
-									AND personnes.dtnai = Personne.dtnai
-								)
-							)
-						ORDER BY dossiers.dtdemrsa DESC
-						LIMIT 1
-				)';
-			}
-
 
 			// Personne ne possédant pas d'orientation, ne possédant aucune entrée dans la table orientsstructs
 			if( isset( $params['Orientstruct']['sansorientation'] ) && $params['Orientstruct']['sansorientation'] ) {

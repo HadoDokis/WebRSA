@@ -68,15 +68,15 @@
 			}
 
 			/// Critères sur une personne du foyer - date de naissance
-			if( isset( $params['Personne']['dtnai'] ) && !empty( $params['Personne']['dtnai'] ) ) {
-				if( valid_int( $params['Personne']['dtnai']['year'] ) ) {
-					$conditions[] = 'EXTRACT(YEAR FROM Personne.dtnai) = '.$params['Personne']['dtnai']['year'];
+			if( isset( $search['Personne']['dtnai'] ) && !empty( $search['Personne']['dtnai'] ) ) {
+				if( valid_int( $search['Personne']['dtnai']['year'] ) ) {
+					$conditions[] = 'EXTRACT(YEAR FROM Personne.dtnai) = '.$search['Personne']['dtnai']['year'];
 				}
-				if( valid_int( $params['Personne']['dtnai']['month'] ) ) {
-					$conditions[] = 'EXTRACT(MONTH FROM Personne.dtnai) = '.$params['Personne']['dtnai']['month'];
+				if( valid_int( $search['Personne']['dtnai']['month'] ) ) {
+					$conditions[] = 'EXTRACT(MONTH FROM Personne.dtnai) = '.$search['Personne']['dtnai']['month'];
 				}
-				if( valid_int( $params['Personne']['dtnai']['day'] ) ) {
-					$conditions[] = 'EXTRACT(DAY FROM Personne.dtnai) = '.$params['Personne']['dtnai']['day'];
+				if( valid_int( $search['Personne']['dtnai']['day'] ) ) {
+					$conditions[] = 'EXTRACT(DAY FROM Personne.dtnai) = '.$search['Personne']['dtnai']['day'];
 				}
 			}
 
