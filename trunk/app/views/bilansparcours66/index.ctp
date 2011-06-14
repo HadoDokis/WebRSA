@@ -189,11 +189,11 @@
                                     echo "<td colspan='2'></td>";
                                     echo $xhtml->tag(
                                         'td',
-                                        Set::classicExtract( $typesorients, Set::classicExtract( $bilanparcour66, 'Defautinsertionep66.Decisiondefautinsertionep66.0.typeorient_id' ) )
+                                        Set::classicExtract( $typesorients, Set::classicExtract( $bilanparcour66, 'Defautinsertionep66.Dossierep.Passagecommissionep.0.Decisiondefautinsertionep66.0.typeorient_id' ) )
                                     );
                                     echo $xhtml->tag(
                                         'td',
-                                        Set::classicExtract( $structuresreferentes, Set::classicExtract( $bilanparcour66, 'Defautinsertionep66.Decisiondefautinsertionep66.0.structurereferente_id' ) )
+                                        Set::classicExtract( $structuresreferentes, Set::classicExtract( $bilanparcour66, 'Defautinsertionep66.Dossierep.Passagecommissionep.0.Decisiondefautinsertionep66.0.structurereferente_id' ) )
                                     );
                                     if ( isset( $bilanparcour66['Defautinsertionep66']['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1]['decision'] ) && ( $bilanparcour66['Defautinsertionep66']['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1]['decision'] == 'suspensionnonrespect' || $bilanparcour66['Defautinsertionep66']['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1]['decision'] == 'suspensiondefaut' || $bilanparcour66['Defautinsertionep66']['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1]['decision'] == 'maintien' ) ) {
                                         echo $xhtml->tag(
@@ -207,11 +207,11 @@
                                     else {
                                         echo $xhtml->tag(
                                             'td',
-                                            Set::classicExtract( $typesorients, Set::classicExtract( $bilanparcour66, 'Defautinsertionep66.Dossierep.0.Decisiondefautinsertionep66.1.typeorient_id' ) )
+                                            Set::classicExtract( $typesorients, Set::classicExtract( $bilanparcour66, 'Defautinsertionep66.Dossierep.Passagecommissionep.0.Decisiondefautinsertionep66.1.typeorient_id' ) )
                                         );
                                         echo $xhtml->tag(
                                             'td',
-                                            Set::classicExtract( $structuresreferentes, Set::classicExtract( $bilanparcour66, 'Defautinsertionep66.Dossierep.0.Decisiondefautinsertionep66.1.structurereferente_id' ) )
+                                            Set::classicExtract( $structuresreferentes, Set::classicExtract( $bilanparcour66, 'Defautinsertionep66.Dossierep.Passagecommissionep.0.Decisiondefautinsertionep66.1.structurereferente_id' ) )
                                         );
                                     }
                                 }

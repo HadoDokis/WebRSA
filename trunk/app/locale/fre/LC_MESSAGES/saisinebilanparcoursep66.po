@@ -31,6 +31,9 @@ msgstr "Proposition du référent"
 msgid "Saisinebilanparcoursep66.avisep"
 msgstr "Avis de l'EP"
 
+msgid "Saisinebilanparcoursep66.decisioncg"
+msgstr "Décision du CG"
+
 msgid "ENUM::CHOIXPARCOURS::reorientation"
 msgstr "Réorientation"
 

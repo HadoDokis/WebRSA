@@ -56,6 +56,9 @@
 			$this->set(compact('structuresreferentes'));
 			$autresstructuresreferentes = $this->{$this->modelClass}->Structurereferente->listOptions();
 			$this->set(compact('autresstructuresreferentes'));
+
+			$options = Set::merge( $options, $this->Bilanparcours66->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->enums() );
+			$options = Set::merge( $options, $this->Bilanparcours66->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->enums() );
 // debug($options);
 			$this->set( compact( 'options' ) );
 		}
@@ -436,16 +439,53 @@
 								'Passagecommissionep.etatdossierep' => array( 'decisioncg', 'traite' )
 							),
 							'contain' => array(
+								'Commissionep',
 								'Decisionsaisinebilanparcoursep66' => array(
 									'order' => array( 'Decisionsaisinebilanparcoursep66.etape ASC' )
 								)
 							)
 						)
 					);
-					debug($passagecommissionep);
+					$this->set( compact( 'passagecommissionep' ) );
 				}
-				else {
-				
+				elseif ( $bilanparcours66['Bilanparcours66']['proposition'] == 'audition' ) {
+					$passagecommissionep = $this->Bilanparcours66->Dossierep->Passagecommissionep->find(
+						'first',
+						array(
+							'conditions' => array(
+								'Passagecommissionep.dossierep_id IN ( '.$this->Bilanparcours66->Dossierep->sq(
+									array(
+										'fields' => array(
+											'dossierseps.id'
+										),
+										'alias' => 'dossierseps',
+										'conditions' => array(
+											'dossierseps.themeep' => 'defautsinsertionseps66'
+										),
+										'joins' => array(
+											array(
+												'table' => 'defautsinsertionseps66',
+												'alias' => 'defautsinsertionseps66',
+												'type' => 'INNER',
+												'conditions' => array(
+													'defautsinsertionseps66.dossierep_id = dossierseps.id',
+													'defautsinsertionseps66.bilanparcours66_id' => $id
+												)
+											)
+										)
+									)
+								).' )',
+								'Passagecommissionep.etatdossierep' => array( 'decisioncg', 'traite' )
+							),
+							'contain' => array(
+								'Commissionep',
+								'Decisiondefautinsertionep66' => array(
+									'order' => array( 'Decisiondefautinsertionep66.etape ASC' )
+								)
+							)
+						)
+					);
+					$this->set( compact( 'passagecommissionep' ) );
 				}
 			}
 
