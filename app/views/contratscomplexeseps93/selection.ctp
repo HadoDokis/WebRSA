@@ -9,6 +9,8 @@
 			'Personne.nom',
 			'Personne.prenom',
 			'Personne.dtnai',
+			'Personne.Foyer.Adressefoyer.0.Adresse.locaadr',
+			'Structurereferente.lib_struc',
 			'Contratinsertion.dd_ci',
 			'Contratinsertion.df_ci',
 		),

@@ -60,7 +60,17 @@
 			$this->paginate = array(
 				'Contratinsertion' => array(
 					'contain' => array(
-						'Personne'
+						'Structurereferente',
+						'Personne' => array(
+							'Foyer' => array(
+								'Adressefoyer' => array(
+									'conditions' => array(
+										'Adressefoyer.rgadr' => '01'
+									),
+									'Adresse'
+								)
+							)
+						),
 					),
 					'conditions' => array(
 						'Contratinsertion.decision_ci' => 'E',
