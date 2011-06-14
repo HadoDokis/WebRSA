@@ -228,13 +228,17 @@
 				$dtdemrsa = Set::extract( $criteres, 'Filtre.dtdemrsa' );
 				$date_impression = Set::extract( $criteres, 'Filtre.date_impression' );
 				$date_print = Set::extract( $criteres, 'Filtre.date_print' );
-				$modeles = Set::extract( $criteres, 'Filtre.typeorient' );
+				if ( isset( $criteres['Filtre']['typeorient'] ) && !empty( $criteres['Filtre']['typeorient'] ) ) {
+					$typeorient = Set::extract( $criteres, 'Filtre.typeorient' );
+				}
+				elseif ( isset( $criteres['Filtre']['propo_algo'] ) && !empty( $criteres['Filtre']['propo_algo'] ) ) {
+					$preorient = Set::extract( $criteres, 'Filtre.propo_algo' );
+				}
 				//-------------------------------------------------------
 				$cantons = Set::extract( $criteres, 'Filtre.cantons' );
 
 				/// FIXME: dans le modèle
-				$typeorient = Set::classicExtract( $criteres, 'Filtre.typeorient' );
-				if( !empty( $typeorient ) ) {
+				if( isset( $typeorient ) && !empty( $typeorient ) ) {
 					if( Configure::read( 'with_parentid' ) ) {//FIXME: subquery
 						$conditions[] = 'Orientstruct.typeorient_id IN ( SELECT typesorients.id FROM typesorients WHERE typesorients.parentid = \''.Sanitize::clean( $typeorient ).'\' )';
 					}
@@ -242,9 +246,14 @@
 						$conditions[] = 'Orientstruct.typeorient_id = \''.Sanitize::clean( $typeorient ).'\'';
 					}
 				}
-	//             if( !empty( $modeles ) ) {
-	//                 $conditions[] = 'orientsstructs.typeorient_id = \''.Sanitize::clean( $modeles ).'\'';
-	//             }
+	            elseif( isset( $preorient ) && !empty( $preorient ) ) {
+					if ( $preorient == 'NULL' ) {
+						$conditions[] = 'Orientstruct.propo_algo IS NULL';
+					}
+					else {
+						$conditions[] = 'Orientstruct.propo_algo = \''.Sanitize::clean( $preorient ).'\'';
+					}
+	            }
 				//-------------------------------------------------------
 
 				// Origine de la demande

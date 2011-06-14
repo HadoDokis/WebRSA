@@ -78,16 +78,18 @@
 			echo $form->input( 'Dossier.dernier', array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueDossierDernier ) );
 		?>
 	</fieldset>
-	<!--<fieldset>
+	<fieldset>
 		<?php
 			if ( Configure::read( 'Cg.departement' ) == 93 && ( $this->action == 'nouvelles' || $this->action == 'enattente' ) ) {
-				echo $form->input( 'Filtre.typeorient', array( 'label' => __( 'Type de préOrientation', true ), 'type' => 'select', 'options' => $modeles, 'empty' => true ) );
+				$modeles['NULL'] = 'Aucun';
+				asort($modeles);
+				echo $form->input( 'Filtre.propo_algo', array( 'label' => __( 'Type de préOrientation', true ), 'type' => 'select', 'options' => $modeles, 'empty' => true ) );
 			}
 			else {
 				echo $form->input( 'Filtre.typeorient', array( 'label' => __( 'Type d\'orientation', true ), 'type' => 'select', 'options' => $modeles, 'empty' => true ) );
 			}
 		?>
-	</fieldset>-->
+	</fieldset>
 	<div class="submit">
 		<?php echo $form->button( 'Filtrer', array( 'type' => 'submit' ) );?>
 		<?php echo $form->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>
