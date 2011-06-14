@@ -1078,11 +1078,11 @@ td.button.clore a, td.action a.clore, td span.button.clore, table.default2 td a.
 	background-image: url( ../img/icons/page_white_link.png );
 }
 
-td.button.print a, td.action a.print, td span.button.print, table.default2 td a.button.print {
+td.button.print a, td.action a.print, td span.button.print, table.default2 td a.button.print, ul.actions li a.button.printConvocationsBeneficiaires {
 	background-image: url( ../img/icons/printer.png );
 }
 
-td.button.print.disabled a, td.action a.print.disabled, td span.button.print.disabled, table.default2 td a.button.print.disabled {
+td.button.print.disabled a, td.action a.print.disabled, td span.button.print.disabled, table.default2 td a.button.print.disabled, ul.actions li a.button.printConvocationsBeneficiaires.disabled {
     background-image: url( ../img/icons/printer_disabled.png );
 }
 

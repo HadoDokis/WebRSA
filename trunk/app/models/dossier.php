@@ -3,7 +3,7 @@
 	{
 		public $name = 'Dossier';
 
-        public $actsAs = array( 'Conditionnable' );
+		public $actsAs = array( 'Conditionnable' );
 
 		public $validate = array(
 			'numdemrsa' => array(
