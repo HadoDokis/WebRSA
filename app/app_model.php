@@ -682,6 +682,25 @@
 		}
 
 		/**
+		 *
+		 */
+
+		public function greaterThanIfNotZero( array $data, $reference ) {
+			$data = array_values( $data );
+			$data_value = ( isset( $data[0] ) ? $data[0] : null );
+
+			$reference_value = Set::extract( $this->data, $this->name.'.'.$reference );
+
+			$return = true;
+
+			if ( $data_value > 0 ) {
+				( $data_value < $reference_value ) ? $return = false : $return = true;
+			}
+
+			return $return;
+		}
+
+		/**
 		* INFO: http://bakery.cakephp.org/articles/view/unbindall
 		*/
 

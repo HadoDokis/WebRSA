@@ -65,6 +65,11 @@
 				array(
 					'rule' => array( 'isUnique' ),
 				)
+			),
+			'nbmaxmembre' => array(
+				array(
+					'rule' => array( 'greaterThanIfNotZero', 'nbminmembre' )
+				)
 			)
 		);
 

@@ -147,6 +147,9 @@ msgstr "Veuillez entrer un nombre entier"
 msgid "Validate::numeric"
 msgstr "Veuillez entrer une valeur numérique"
 
+msgid "Validate::greaterThanIfNotZero"
+msgstr "Veuillez entrer une valeur plus grande"
+
 ###############################################################################
 # Forms/Index
 ###############################################################################
