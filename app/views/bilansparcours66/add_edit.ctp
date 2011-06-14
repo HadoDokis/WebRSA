@@ -479,8 +479,6 @@
 					'options' => $options
 				)
 			);
-		?>
-		<?php
 			echo $html->tag(
 				'p',
 				'Observations du bénéficiaire :',
@@ -488,8 +486,6 @@
 					'style' => 'text-align: center; font-size: 14px; font-weight:bold;'
 				)
 			);
-		?>
-		<?php
 			echo $default2->subform(
 				array(
 					'Bilanparcours66.observbenefrealisationbilan',
@@ -501,32 +497,6 @@
 				)
 			);
 		?>
-
-		<?php
-			/*if ( $this->action == 'edit' ) {
-				if ( isset( $this->data['Saisinebilanparcoursep66']['Dossierep']['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['id'] ) && !empty( $this->data['Saisinebilanparcoursep66']['Dossierep']['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['id'] ) ) {
-					echo '<fieldset><legend>AVIS DE l\'EP Locale Commission Parcours du '.date( 'd/m/Y', strtotime( $this->data['Saisinebilanparcoursep66']['Dossierep']['Passagecommissionep'][0]['Commissionep']['dateseance'] ) ).'</legend>';
-						if ( $this->data['Saisinebilanparcoursep66']['Dossierep']['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['decision'] == 'accepte' ) {
-							if ( $this->data['Bilanparcours66']['choixparcours'] == 'reorientation' && $this->data['Bilanparcours66']['reorientation'] == 'SP' ) {
-								echo "Réorientation du SOCIAL vers le PROFESSIONNEL";
-							}
-							else {
-							
-							}
-						}
-					echo '</fieldset>';
-				}
-				elseif ( isset( $this->data['Defautinsertionep66']['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['id'] ) && !empty( $this->data['Defautinsertionep66']['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['id'] ) ) {
-					
-				}
-				debug($this->data);
-			}*/
-		?>
-
-	<div class="submit">
-		<?php echo $form->submit( 'Enregistrer', array( 'div' => false ) );?>
-		<?php echo $form->submit('Annuler', array( 'name' => 'Cancel', 'div' => false ) );?>
-	</div>
 </fieldset>
 
 <fieldset id="bilanparcourspe">
@@ -668,11 +638,183 @@
 			)
 		);
 	?>
-	<div class="submit">
-		<?php echo $form->submit( 'Enregistrer', array( 'div' => false ) );?>
-		<?php echo $form->submit('Annuler', array( 'name' => 'Cancel', 'div' => false ) );?>
-	</div>
 </fieldset>
+
+<?php if ( $this->action == 'edit' && isset( $passagecommissionep['Decisionsaisinebilanparcoursep66'][0]['id'] ) && !empty( $passagecommissionep['Decisionsaisinebilanparcoursep66'][0]['id'] ) ) {
+	$avisep = $passagecommissionep['Decisionsaisinebilanparcoursep66'][0];
+	echo '<fieldset><legend><strong>AVIS DE L\'EP Locale Commission Parcours du '.date('d/m/Y', strtotime($passagecommissionep['Commissionep']['dateseance'])).'</strong></legend>';
+		if ( $avisep['decision'] == 'reorientation' ) {
+			echo $xhtml->tag(
+				'strong',
+				$options['Decisionsaisinebilanparcoursep66']['reorientation'][$avisep['reorientation']]
+			);
+		}
+		elseif ( $avisep['decision'] == 'maintien' ) {
+			echo $xhtml->tag(
+				'strong',
+				'Maintien de l\'orientation SOCIALE : '.$options['Decisionsaisinebilanparcoursep66']['maintienorientparcours'][$avisep['maintienorientparcours']]
+			);
+			echo $html->tag(
+				'p',
+				$options['Decisionsaisinebilanparcoursep66']['changementrefparcours'][$avisep['changementrefparcours']]
+			);
+		}
+		echo $html->tag(
+			'p',
+			"Argumentaire précis (avis motivé) de l'EP Locale :",
+			array(
+				'style' => 'font-weight:bold; text-decoration:underline'
+			)
+		);
+		echo $html->tag(
+			'p',
+			$avisep['commentaire']
+		);
+	echo '</fieldset>';
+}
+elseif ( $this->action == 'edit' && isset( $passagecommissionep['Decisiondefautinsertionep66'][0]['id'] ) && !empty( $passagecommissionep['Decisiondefautinsertionep66'][0]['id'] ) ) {
+	$avisep = $passagecommissionep['Decisiondefautinsertionep66'][0];
+	echo '<fieldset><legend><strong>AVIS DE L\'EP Locale Commission Audition du '.date('d/m/Y', strtotime($passagecommissionep['Commissionep']['dateseance'])).'</strong></legend>';
+		if ( isset( $passagecommissionep['Decisiondefautinsertionep66'][0]['decisionsup'] ) && !empty( $passagecommissionep['Decisiondefautinsertionep66'][0]['decisionsup'] ) ) {
+			echo $html->tag(
+				'p',
+				$options['Decisiondefautinsertionep66']['decisionsup'][$avisep['decisionsup']]
+			);
+		}
+		echo $html->tag(
+			'p',
+			$options['Decisiondefautinsertionep66']['decision'][$avisep['decision']]
+		);
+		echo $html->tag(
+			'p',
+			"Argumentaire précis (avis motivé) de l'EP Locale :",
+			array(
+				'style' => 'font-weight:bold; text-decoration:underline'
+			)
+		);
+		echo $html->tag(
+			'p',
+			$avisep['commentaire']
+		);
+	echo '</fieldset>';
+}?>
+
+<?php if ( $this->action == 'edit' && isset( $passagecommissionep['Decisionsaisinebilanparcoursep66'][1]['id'] ) && !empty( $passagecommissionep['Decisionsaisinebilanparcoursep66'][1]['id'] ) ) {
+	echo $html->tag(
+		'p',
+		'DECISION DU COORDINATEUR TECHNIQUE',
+		array(
+			'style' => 'text-align: center; font-size: 14px; font-weight:bold;'
+		)
+	);
+	$decisioncg = $passagecommissionep['Decisionsaisinebilanparcoursep66'][1];
+	echo '<fieldset><legend><strong>Suite à l\'avis de l\'EP Locale "Commission Parcours"</strong></legend>';
+		if ( $decisioncg['decision'] == 'reorientation' ) {
+			echo $xhtml->tag(
+				'strong',
+				$options['Decisionsaisinebilanparcoursep66']['reorientation'][$decisioncg['reorientation']]
+			);
+			$accord = ( $avisep['decision'] == $decisioncg['decision'] ) ? 'Oui' : 'Non';
+			echo $xhtml->tag(
+				'p',
+				"En accord avec l'avis de l'EPL commission Parcours : ".$accord
+			);
+		}
+		elseif ( $decisioncg['decision'] == 'maintien' ) {
+			echo $xhtml->tag(
+				'strong',
+				'Maintien de l\'orientation SOCIALE : '.$options['Decisionsaisinebilanparcoursep66']['maintienorientparcours'][$decisioncg['maintienorientparcours']]
+			);
+			echo $html->tag(
+				'p',
+				$options['Decisionsaisinebilanparcoursep66']['changementrefparcours'][$decisioncg['changementrefparcours']]
+			);
+		}
+		echo $html->tag(
+			'p',
+			"Commentaire :",
+			array(
+				'style' => 'font-weight:bold; text-decoration:underline'
+			)
+		);
+		echo $html->tag(
+			'p',
+			$avisep['commentaire']
+		);
+	echo '</fieldset>';
+}
+elseif ( $this->action == 'edit' && isset( $passagecommissionep['Decisiondefautinsertionep66'][1]['id'] ) && !empty( $passagecommissionep['Decisiondefautinsertionep66'][1]['id'] ) ) {
+	$decisioncg = $passagecommissionep['Decisiondefautinsertionep66'][1];
+	if ( isset( $passagecommissionep['Decisiondefautinsertionep66'][1]['decisionsup'] ) && !empty( $passagecommissionep['Decisiondefautinsertionep66'][1]['decisionsup'] ) ) {
+		echo $html->tag(
+			'p',
+			'DECISION DU COORDINATEUR TECHNIQUE',
+			array(
+				'style' => 'text-align: center; font-size: 14px; font-weight:bold;'
+			)
+		);
+		echo '<fieldset><legend><strong>Suite à l\'avis de l\'EP Locale "Commission Audition"</strong></legend>';
+			echo $xhtml->tag(
+				'p',
+				$options['Decisiondefautinsertionep66']['decision'][$decisioncg['decision']]
+			);
+			$accord = ( $avisep['decision'] == $decisioncg['decision'] ) ? 'Oui' : 'Non';
+			echo $xhtml->tag(
+				'p',
+				"En accord avec l'avis de l'EPL commission Audition : ".$accord
+			);
+			echo $html->tag(
+				'p',
+				"Commentaire :",
+				array(
+					'style' => 'font-weight:bold; text-decoration:underline'
+				)
+			);
+			echo $html->tag(
+				'p',
+				$avisep['commentaire']
+			);
+		echo '</fieldset>';
+	}
+
+	echo $html->tag(
+		'p',
+		'DECISION DE LA CGA',
+		array(
+			'style' => 'text-align: center; font-size: 14px; font-weight:bold;'
+		)
+	);
+
+	echo '<fieldset><legend>Suite à l\'avis de l\'EP Locale "Commission Audition"</legend>';
+		if ( isset( $passagecommissionep['Decisiondefautinsertionep66'][1]['decisionsup'] ) && !empty( $passagecommissionep['Decisiondefautinsertionep66'][1]['decisionsup'] ) ) {
+			echo $xhtml->tag(
+				'p',
+				$options['Decisiondefautinsertionep66']['decisionsup'][$decisioncg['decisionsup']]
+			);
+			$accord = ( $avisep['decisionsup'] == $decisioncg['decisionsup'] ) ? 'Oui' : 'Non';
+			echo $xhtml->tag(
+				'p',
+				"En accord avec l'avis de l'EPL commission Audition : ".$accord
+			);
+		}
+		else {
+			echo $xhtml->tag(
+				'p',
+				$options['Decisiondefautinsertionep66']['decision'][$decisioncg['decision']]
+			);
+			$accord = ( $avisep['decision'] == $decisioncg['decision'] || $avisep['decisionsup'] == $decisioncg['decisionsup'] || $avisep['decision'] == $decisioncg['decisionsup'] ) ? 'Oui' : 'Non';
+			echo $xhtml->tag(
+				'p',
+				"En accord avec l'avis de l'EPL commission Audition : ".$accord
+			);
+		}
+	echo '</fieldset>';
+} ?>
+
+<div class="submit">
+	<?php echo $form->submit( 'Enregistrer', array( 'div' => false ) );?>
+	<?php echo $form->submit('Annuler', array( 'name' => 'Cancel', 'div' => false ) );?>
+</div>
 
 	</div>
 	<?php echo $form->end();?>
