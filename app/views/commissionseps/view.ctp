@@ -299,7 +299,15 @@
 
 					if( Configure::read( 'Cg.departement' )  == 93 ){
 						echo "<div id=\"synthese\"><h3 class=\"title\">Synthèse</h3>";
-							if( isset($dossierseps) ){
+							if( isset($dossierseps) ) {
+								echo '<ul class="actions">';
+								echo '<li>'.$xhtml->link(
+									'Impression des convocations',
+									array( 'controller' => 'commissionseps', 'action' => 'printConvocationsBeneficiaires', $commissionep['Commissionep']['id'] ),
+									array( 'class' => 'button printConvocationsBeneficiaires', 'enabled' => in_array( 'commissionseps::printConvocationsBeneficiaires', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) )
+								).'</li>';
+								echo '</ul>';
+
 								echo $default2->index(
 									$dossierseps,
 									array(
