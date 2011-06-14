@@ -528,20 +528,22 @@ function setDateInterval2( masterPrefix, slavePrefix, nMonths, firstDay ) {
 function setDateIntervalCer( masterPrefix, slavePrefix, nMonths, firstDay ) {
     // Initialisation
     var d = new Date();
-    d.setDate( $F( masterPrefix + 'Day' ) );
-    d.setMonth( $F( masterPrefix + 'Month' ) - 1 );
-    d.setYear( $F( masterPrefix + 'Year' ) );
+	d.setYear( $F( masterPrefix + 'Year' ) );
 
-    // Ajout de trois mois, et retour au derenier jour du mois précédent
-    d.setMonth( d.getMonth() + nMonths );
-    d.setDate( d.getDate() - 1 );
+	d.setMonth( $F( masterPrefix + 'Month' ) - 1 );
+	d.setMonth( d.getMonth() + nMonths );
 
+	d.setDate( $F( masterPrefix + 'Day' ) );
+	d.setDate( d.getDate() - 1 );
+alert(d);
     // Assignation
-    var day = d.getDate();
+	var day = d.getDate();
+	$( slavePrefix + 'Year' ).value = d.getFullYear();
+
+	var month = d.getMonth() + 1;
+	$( slavePrefix + 'Month' ).value = ( month < 10 ) ? '0' + month : month;
+
     $( slavePrefix + 'Day' ).value = ( day < 10 ) ? '0' + day : day;
-    var month = d.getMonth() + 1;
-    $( slavePrefix + 'Month' ).value = ( month < 10 ) ? '0' + month : month;
-    $( slavePrefix + 'Year' ).value = d.getFullYear();
 }
 
 
