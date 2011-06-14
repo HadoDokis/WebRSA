@@ -11,7 +11,7 @@
         
         public $helpers = array( 'Default2' );
         
-		var $commeDroit = array(
+		public $commeDroit = array(
 			'view' => 'Descriptionspdos:index',
 			'add' => 'Descriptionspdos:edit'
 		);

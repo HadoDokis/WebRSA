@@ -619,10 +619,9 @@
 			if ( !empty( $identifiantpe ) ) {
 				$queryData['conditions'][] = array( 'Historiqueetatpe.identifiantpe' => $identifiantpe );
 			}
-			if( $filtre_zone_geo ) {
-				$mesCodesInsee = ( !empty( $mesCodesInsee ) ? $mesCodesInsee : '0' );
-				$queryData['conditions'][] = 'Adresse.numcomptt IN ( \''.implode( '\', \'', $mesCodesInsee ).'\' )';
-			}
+
+			/// Filtre zone géographique
+			$queryData['conditions'][] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
 
 			return $queryData;
 		}

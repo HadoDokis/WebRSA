@@ -239,11 +239,11 @@
 		public function search( $mesCodesInsee, $filtre_zone_geo, $params ) {
 			$conditions = array();
 
-			/// Filtre zone géographique
-			if( $filtre_zone_geo ) {
-				$mesCodesInsee = ( !empty( $mesCodesInsee ) ? $mesCodesInsee : array( null ) );
-				$conditions[] = '( Adresse.numcomptt IN ( \''.implode( '\', \'', $mesCodesInsee ).'\' ) /*OR ( Situationdossierrsa.etatdosrsa = \'Z\' ) */ )'; ///FIXME: passage de OR à AND car les dossiers à Z mais non présents dans le code insee apparaissaient !!!!!!!
-			}
+			$conditions = $this->conditionsAdresse( $conditions, $params, $filtre_zone_geo, $mesCodesInsee );
+			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $params );
+
+			/*/// Filtre zone géographique
+			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
 
 			// Critères sur le dossier - numéro de dossier
 			if( isset( $params['Dossier']['numdemrsa'] ) && !empty( $params['Dossier']['numdemrsa'] ) ) {
@@ -276,7 +276,7 @@
 					$this->Canton = ClassRegistry::init( 'Canton' );
 					$conditions[] = $this->Canton->queryConditions( $params['Canton']['canton'] );
 				}
-			}
+			}*/
 
 			/// Critères sur la nature de la prestation - natpf
 			if( isset( $params['Detailcalculdroitrsa']['natpf'] ) && !empty( $params['Detailcalculdroitrsa']['natpf'] ) ) {

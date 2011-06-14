@@ -12,7 +12,7 @@
 //         }
 //     }
 
-    $csv->addRow( array( 'Date du bilan de parcours', 'Nom de la personne', 'N° CAF', 'Type de structure', 'Nom du prescripteur', 'Type de commission', 'Position du bilan', 'Choix du parcours', 'Saisine EP' ) );
+    $csv->addRow( array( 'Date du bilan de parcours', 'Nom de la personne', 'N° CAF', 'Type de structure', 'Nom du prescripteur', 'Type de commission', 'Position du bilan', 'Choix du parcours', 'Saisine EP', 'Code INSEE', 'Localité' ) );
 
     foreach( $bilansparcours66 as $bilanparcours66 ) {
         $isSaisine = 'Non';
@@ -46,7 +46,9 @@
             Set::classicExtract( $options['proposition'], $bilanparcours66['Bilanparcours66']['proposition'] ),
             Set::enum( Set::classicExtract( $bilanparcours66, 'Bilanparcours66.positionbilan' ), $options['positionbilan'] ),
             $motif,
-            $isSaisine
+            $isSaisine,
+			$bilanparcours66['Adresse']['numcomptt'],
+			$bilanparcours66['Adresse']['locaadr']
         );
         $csv->addRow($row);
     }

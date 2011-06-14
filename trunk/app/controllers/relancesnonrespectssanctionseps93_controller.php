@@ -18,7 +18,7 @@
 			if( !$this->Session->check( 'Cache.mesCodesInsee' ) ) {
 				if( Configure::read( 'Zonesegeographiques.CodesInsee' ) ) {
 					$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-					$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
+					$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 					$listeCodesInseeLocalites = $this->Dossier->Foyer->Personne->Cui->Structurereferente->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) );
 				}
 				else {
@@ -170,6 +170,9 @@
 			if( !empty( $this->data ) ) {
 				$search = $this->data['Search'];
 
+				$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+				$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
+
 				/// Enregistrement de la cohorte de relances
 				if( isset( $this->data['Relancenonrespectsanctionep93'] ) ) {
 					$data = $this->data['Relancenonrespectsanctionep93'];
@@ -207,7 +210,12 @@
 				$search = Set::filter( $search );
 
 				if( $this->data['Search']['Relance']['contrat'] == 0 ) {
-					$this->paginate['Orientstruct'] = $this->Relancenonrespectsanctionep93->search( $search );
+					$this->paginate['Orientstruct'] = $this->Relancenonrespectsanctionep93->search(
+						$mesCodesInsee,
+						$this->Session->read( 'Auth.User.filtre_zone_geo' ),
+						$search
+					);
+
 					$results = $this->paginate( $this->Nonrespectsanctionep93->Orientstruct );
 
 					if( !empty( $results ) ) {
@@ -240,7 +248,12 @@
 					}
 				}
 				else if( $this->data['Search']['Relance']['contrat'] == 1 ) {
-					$this->paginate['Contratinsertion'] = $this->Relancenonrespectsanctionep93->search( $search );
+					$this->paginate['Contratinsertion'] = $this->Relancenonrespectsanctionep93->search(
+						$mesCodesInsee,
+						$this->Session->read( 'Auth.User.filtre_zone_geo' ),
+						$search
+					);
+
 					$results = $this->paginate( $this->Nonrespectsanctionep93->Contratinsertion );
 
 					if( !empty( $results ) ) {
@@ -469,7 +482,15 @@
 
 		public function impressions() {
 			if( !empty( $this->data ) ) {
-				$queryData = $this->Relancenonrespectsanctionep93->qdSearchRelances( $this->data );
+				$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+				$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
+
+				$queryData = $this->Relancenonrespectsanctionep93->qdSearchRelances(
+					$mesCodesInsee,
+					$this->Session->read( 'Auth.User.filtre_zone_geo' ),
+					$this->data
+				);
+
 				$queryData['limit'] = 10;
 
 				$this->Relancenonrespectsanctionep93->forceVirtualFields = true;
@@ -488,7 +509,14 @@
 		*/
 
 		public function exportcsv() {
-			$queryData = $this->Relancenonrespectsanctionep93->qdSearchRelances( Xset::bump( $this->params['named'], '__' ) );
+			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
+
+			$queryData = $this->Relancenonrespectsanctionep93->qdSearchRelances(
+				$mesCodesInsee,
+				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
+				Xset::bump( $this->params['named'], '__' )
+			);
 
 			$this->Relancenonrespectsanctionep93->forceVirtualFields = true;
 

@@ -15,7 +15,7 @@
 			}
 
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? array_values( $mesZonesGeographiques ) : array() );
+			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 
 			if( Configure::read( 'Zonesegeographiques.CodesInsee' ) ) {
 				$mesCodesInsee = ClassRegistry::init( 'Zonegeographique' )->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) );
@@ -26,7 +26,7 @@
 			$this->set( compact( 'mesCodesInsee' ) );
 
 			if( !empty( $this->data ) ) {
-				$queryData = $this->Defautinsertionep66->{$qdName}( $this->data, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) );
+				$queryData = $this->Defautinsertionep66->{$qdName}( $this->data, ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() ), $this->Session->read( 'Auth.User.filtre_zone_geo' ) );
 				$queryData['limit'] = 10;
 
 				$this->paginate = array( 'Personne' => $queryData );

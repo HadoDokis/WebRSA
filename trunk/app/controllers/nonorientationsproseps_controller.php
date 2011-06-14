@@ -22,6 +22,10 @@
 			parent::__construct();
 		}
 
+		/**
+		*
+		*/
+
 		public function index() {
 			$cohorte = array();
 			if ( !empty( $this->data ) ) {
@@ -38,7 +42,15 @@
 					}
 				}
 
-				$this->paginate = $this->{$this->modelClass}->searchNonReoriente($this->data);
+				$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+				$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
+
+				$this->paginate = $this->{$this->modelClass}->searchNonReoriente(
+					$mesCodesInsee,
+					$this->Session->read( 'Auth.User.filtre_zone_geo' ),
+					$this->data
+				);
+
 				$this->paginate['limit'] = 10;
 				$cohorte = $this->paginate( $this->{$this->modelClass}->Orientstruct );
 			}

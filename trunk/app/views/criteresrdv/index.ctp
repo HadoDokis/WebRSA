@@ -207,18 +207,6 @@
                     array( 'controller' => 'criteresrdv', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
                 );
             ?></li>
-            <li><?php
-//                 echo $xhtml->printCohorteLink(
-//                     'Imprimer la cohorte',
-//                     Set::merge(
-//                         array(
-//                             'controller' => 'gedooos',
-//                             'action'     => 'notifications_relances'
-//                         ),
-//                         array_unisize( $this->data )
-//                     )
-//                 );
-            ?></li>
         </ul>
      <?php echo $pagination;?>
 

@@ -80,7 +80,11 @@
 			)
 		);
 
-		public function search( $mescodesinsee, $filtre_zone_geo, $criteres ) {
+		/**
+		*
+		*/
+
+		public function search( $mesCodesInsee, $filtre_zone_geo, $criteres ) {
 			/// Conditions de base
 			$conditions = array();
 
@@ -118,15 +122,7 @@
 				$conditions[] = 'Adresse.numcomptt ILIKE \'%'.Sanitize::clean( $numcomptt ).'%\'';
 			}
 
-			/// Limitation suivant les zones géographiques visibles par l'utilisateur
-			if( $filtre_zone_geo ) {
-				if( !empty( $mescodesinsee ) ) {
-					$conditions[] = 'Adresse.numcomptt IN ( \''.implode( '\', \'', $mescodesinsee ).'\' )';
-				}
-				else {
-					$conditions[] = 'FALSE';
-				}
-			}
+			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
 
 			/// Requête
 			$this->Dossier = ClassRegistry::init( 'Dossier' );

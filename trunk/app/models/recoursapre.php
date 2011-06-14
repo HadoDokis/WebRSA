@@ -9,11 +9,13 @@
 		*
 		*/
 
-		public function search( $avisRecours, $criteresrecours ) {
+		public function search( $avisRecours, $mesCodesInsee, $filtre_zone_geo, $criteresrecours ) {
 
 			/// Conditions de base
-			$conditions = array(
-			);
+			$conditions = array();
+
+			/// Filtre zone géographique
+			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
 
 			if( !empty( $avisRecours ) ) {
 				if( $avisRecours == 'Recoursapre::demande' ) {

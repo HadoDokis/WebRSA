@@ -1,13 +1,11 @@
 <?php
 	App::import( 'Sanitize' );
-//     App::import( 'Dossier' );
-
-	// ************************************************************************
 
 	class Critere extends AppModel
 	{
-		var $name = 'Critere';
-		var $useTable = false;
+		public $name = 'Critere';
+
+		public $useTable = false;
 
 
 		function search( $mesCodesInsee, $filtre_zone_geo, $criteres, $lockedDossiers ) {
@@ -15,10 +13,7 @@
 			$conditions = array();
 
 			/// Critere zone géographique
-			if( $filtre_zone_geo ) {
-				$mesCodesInsee = ( !empty( $mesCodesInsee ) ? $mesCodesInsee : '0' );
-				$conditions[] = 'Adresse.numcomptt IN ( \''.implode( '\', \'', $mesCodesInsee ).'\' )';
-			}
+			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
 
 			/// Dossiers lockés
 			if( !empty( $lockedDossiers ) ) {

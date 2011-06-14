@@ -10,14 +10,20 @@
 
     class Criterefichecandidature extends AppModel
     {
-        var $name = 'Criterefichecandidature';
-        var $useTable = false;
+        public $name = 'Criterefichecandidature';
 
+        public $useTable = false;
 
-        public function search( $criteresfichescandidature ) {
+		public $actsAs = array( 'Conditionnable' );
+
+        public function search( $mesCodesInsee, $filtre_zone_geo, $criteresfichescandidature ) {
             /// Conditions de base
 
             $conditions = array();
+
+			$conditions = $this->conditionsAdresse( $conditions, $criteresfichescandidature, $filtre_zone_geo, $mesCodesInsee );
+			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $criteresfichescandidature );
+			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $criteresfichescandidature );
 
             if ( isset($criteresfichescandidature['ActioncandidatPersonne']['actioncandidat_id']) && !empty($criteresfichescandidature['ActioncandidatPersonne']['actioncandidat_id']) ) {
                 $conditions[] = array('ActioncandidatPersonne.actioncandidat_id'=>$criteresfichescandidature['ActioncandidatPersonne']['actioncandidat_id']);
@@ -34,23 +40,8 @@
             if ( isset($criteresfichescandidature['ActioncandidatPersonne']['positionfiche']) && !empty($criteresfichescandidature['ActioncandidatPersonne']['positionfiche']) ) {
                 $conditions[] = array('ActioncandidatPersonne.positionfiche'=>$criteresfichescandidature['ActioncandidatPersonne']['positionfiche']);
             }
-            // Critères sur une personne du foyer - nom, prénom, nom de jeune fille -> FIXME: seulement demandeur pour l'instant
-            $filtersPersonne = array();
-            foreach( array( 'nom', 'prenom', 'nomnai' ) as $criterePersonne ) {
-                if( isset( $criteresfichescandidature['Personne'][$criterePersonne] ) && !empty( $criteresfichescandidature['Personne'][$criterePersonne] ) ) {
-                    $conditions[] = 'Personne.'.$criterePersonne.' ILIKE \''.$this->wildcard( $criteresfichescandidature['Personne'][$criterePersonne] ).'\'';
-                }
-            }
 
-            // Critères sur une personne du foyer - nom, prénom, nom de jeune fille -> FIXME: seulement demandeur pour l'instant
-            $filtersDossier = array();
-            foreach( array( 'numdemrsa', 'matricule' ) as $critereDossier ) {
-                if( isset( $criteresfichescandidature['Dossier'][$critereDossier] ) && !empty( $criteresfichescandidature['Dossier'][$critereDossier] ) ) {
-                    $conditions[] = 'Dossier.'.$critereDossier.' ILIKE \''.$this->wildcard( $criteresfichescandidature['Dossier'][$critereDossier] ).'\'';
-                }
-            }
-
-            /// Critères sur la date de signature de la fiche de candidature
+            /// Critères sur la date de demande RSA
             if( isset( $criteresfichescandidature['Dossier']['dtdemrsa'] ) && !empty( $criteresfichescandidature['Dossier']['dtdemrsa'] ) ) {
                 $valid_from = ( valid_int( $criteresfichescandidature['Dossier']['dtdemrsa_from']['year'] ) && valid_int( $criteresfichescandidature['Dossier']['dtdemrsa_from']['month'] ) && valid_int( $criteresfichescandidature['Dossier']['dtdemrsa_from']['day'] ) );
                 $valid_to = ( valid_int( $criteresfichescandidature['Dossier']['dtdemrsa_to']['year'] ) && valid_int( $criteresfichescandidature['Dossier']['dtdemrsa_to']['month'] ) && valid_int( $criteresfichescandidature['Dossier']['dtdemrsa_to']['day'] ) );
@@ -68,43 +59,6 @@
                 }
             }
 
-
-            // Trouver la dernière demande RSA pour chacune des personnes du jeu de résultats
-            if( $criteresfichescandidature['Dossier']['dernier'] ) {
-                $conditions[] = 'Dossier.id IN (
-                    SELECT
-                            dossiers.id
-                        FROM personnes
-                            INNER JOIN prestations ON (
-                                personnes.id = prestations.personne_id
-                                AND prestations.natprest = \'RSA\'
-                            )
-                            INNER JOIN foyers ON (
-                                personnes.foyer_id = foyers.id
-                            )
-                            INNER JOIN dossiers ON (
-                                dossiers.id = foyers.dossier_id
-                            )
-                        WHERE
-                            prestations.rolepers IN ( \'DEM\', \'CJT\' )
-                            AND (
-                                (
-                                    nir_correct( Personne.nir )
-                                    AND nir_correct( personnes.nir )
-                                    AND personnes.nir = Personne.nir
-                                    AND personnes.dtnai = Personne.dtnai
-                                )
-                                OR
-                                (
-                                    personnes.nom = Personne.nom
-                                    AND personnes.prenom = Personne.prenom
-                                    AND personnes.dtnai = Personne.dtnai
-                                )
-                            )
-                        ORDER BY dossiers.dtdemrsa DESC
-                        LIMIT 1
-                )';
-            }
             $joins = array(
                 array(
                     'table'      => 'actionscandidats',
@@ -156,6 +110,25 @@
                     'conditions' => array( 'Foyer.dossier_id = Dossier.id' )
                 ),
                 array(
+                    'table'      => 'adressesfoyers',
+                    'alias'      => 'Adressefoyer',
+                    'type'       => 'INNER',
+                    'foreignKey' => false,
+                    'conditions' => array(
+                        'Foyer.id = Adressefoyer.foyer_id',
+                        'Adressefoyer.id IN (
+                            '.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01('Adressefoyer.foyer_id').'
+                        )'
+                    )
+                ),
+                array(
+                    'table'      => 'adresses',
+                    'alias'      => 'Adresse',
+                    'type'       => 'INNER',
+                    'foreignKey' => false,
+                    'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
+                ),
+                array(
                     'table'      => 'referents',
                     'alias'      => 'Referent',
                     'type'       => 'INNER',
@@ -191,7 +164,10 @@
                     'Referent.qual',
                     'Referent.nom',
                     'Referent.prenom',
-                    'Dossier.matricule'
+                    'Dossier.matricule',
+                    'Adresse.locaadr',
+                    'Adresse.codepos',
+                    'Adresse.numcomptt'
                 ),
                 'joins' => $joins,
                 'contain' => false,

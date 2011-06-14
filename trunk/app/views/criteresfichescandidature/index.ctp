@@ -60,6 +60,7 @@
                         )
                     );
                 ?>
+
                 <?php echo $xform->input( 'Dossier.dtdemrsa', array( 'label' => 'Filtrer par date de demande RSA', 'type' => 'checkbox' ) );?>
                 <fieldset>
                     <legend>Filtrer par période</legend>
@@ -70,6 +71,18 @@
                     <?php echo $xform->input( 'Dossier.dtdemrsa_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 10, 'selected' => $dtdemrsa_from ) );?>
                     <?php echo $xform->input( 'Dossier.dtdemrsa_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 10, 'selected' => $dtdemrsa_to ) );?>
                 </fieldset>
+
+				<fieldset>
+					<legend>Filtrer par adresse</legend>
+					<?php echo $form->input( 'Adresse.locaadr', array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );?>
+					<?php echo $form->input( 'Adresse.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );?>
+					<?php
+						if( Configure::read( 'CG.cantons' ) ) {
+							echo $form->input( 'Canton.canton', array( 'label' => 'Canton', 'type' => 'select', 'options' => $cantons, 'empty' => true ) );
+						}
+					?>
+				</fieldset>
+
                 <?php
                     $valueDossierDernier = isset( $this->data['Dossier']['dernier'] ) ? $this->data['Dossier']['dernier'] : true;
                     echo $form->input( 'Dossier.dernier', array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueDossierDernier ) );
@@ -120,7 +133,7 @@
 <?php if( isset( $actionscandidats_personnes ) ):?>
     <?php if( is_array( $actionscandidats_personnes ) && count( $actionscandidats_personnes ) > 0  ):?>
         <?php
-            echo '<table><thead>';
+            echo '<table id="searchResults" class="tooltips"><thead>';
                 echo '<tr>
                     <th>'.$xpaginator->sort( __d( 'actioncandidat_personne', 'ActioncandidatPersonne.actioncandidat_id', true ), 'ActioncandidatPersonne.actioncandidat_id' ).'</th>
                     <th>'.$xpaginator->sort( __d( 'partenaire', 'Partenaire.libstruc', true ), 'Partenaire.libstruc' ).'</th>
@@ -129,10 +142,23 @@
                     <th>'.$xpaginator->sort( __d( 'actioncandidat_personne', 'ActioncandidatPersonne.positionfiche', true ), 'ActioncandidatPersonne.positionfiche' ).'</th>
                     <th>'.$xpaginator->sort( __d( 'actioncandidat_personne', 'ActioncandidatPersonne.datesignature', true ), 'ActioncandidatPersonne.datesignature' ).'</th>
                     <th>Actions</th>
+					<th class="innerTableHeader noprint">Informations complémentaires</th>
                 </tr></thead><tbody>';
-            foreach( $actionscandidats_personnes as $actioncandidat_personne ) {
-                echo '<tr>
+            foreach( $actionscandidats_personnes as $index => $actioncandidat_personne ) {
+				$innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
+					<tbody>
+						<tr>
+							<th>Code INSEE</th>
+							<td>'.$actioncandidat_personne['Adresse']['numcomptt'].'</td>
+						</tr>
+						<tr>
+							<th>Localité</th>
+							<td>'.$actioncandidat_personne['Adresse']['locaadr'].'</td>
+						</tr>
+					</tbody>
+				</table>';
 
+                echo '<tr>
                     <td>'.h( $actioncandidat_personne['Actioncandidat']['name'] ).'</td>
                     <td>'.h( $actioncandidat_personne['Partenaire']['libstruc'] ).'</td>
                     <td>'.h( $actioncandidat_personne['Personne']['nom_complet'] ).'</td>
@@ -140,6 +166,7 @@
                     <td>'.h( Set::enum( Set::classicExtract( $actioncandidat_personne, 'ActioncandidatPersonne.positionfiche' ),  $options['positionfiche'] ) ).'</td>',
                     '<td>'.h( date_short( $actioncandidat_personne['ActioncandidatPersonne']['datesignature'] ) ).'</td>',
                     '<td>'.$xhtml->link( 'Voir', array( 'controller' => 'actionscandidats_personnes', 'action' => 'index', $actioncandidat_personne['ActioncandidatPersonne']['personne_id'] ) ).'</td>
+					<td class="innerTableCell noprint">'.$innerTable.'</td>
                 </tr>';
             }
             echo '</tbody></table>';

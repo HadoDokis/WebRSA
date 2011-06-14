@@ -759,5 +759,23 @@
 			}
 			return $return;
 		}
+
+		/**
+		* Filtre zone géographique
+		* FIXME: à supprimer et utiliser le ConditionnableBehavior
+		*/
+
+		public function conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee ) {
+			if( $filtre_zone_geo ) {
+				// Si on utilise la table des cantons plutôt que la table zonesgeographiques
+				if( Configure::read( 'CG.cantons' ) ) { // FIXME: est-ce bien la signification de la variable ?
+					return ClassRegistry::init( 'Canton' )->queryConditionsByZonesgeographiques( array_keys( $mesCodesInsee ) );
+				}
+				else {
+					$mesCodesInsee = ( !empty( $mesCodesInsee ) ? $mesCodesInsee : array( null ) );
+					return '( Adresse.numcomptt IN ( \''.implode( '\', \'', $mesCodesInsee ).'\' ) /*OR ( Situationdossierrsa.etatdosrsa = \'Z\' ) */ )'; ///FIXME: passage de OR à AND car les dossiers à Z mais non présents dans le code insee apparaissaient !!!!!!!
+				}
+			}
+		}
 	}
 ?>

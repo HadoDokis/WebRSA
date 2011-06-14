@@ -1,7 +1,7 @@
 <?php
     $csv->preserveLeadingZerosInExcel = true;
 
-    $csv->addRow( array( 'Date de signature de la fiche', 'Nom de la personne', 'N° CAF', 'Nom du prescripteur', 'Action engagée', 'Nom du partenaire', 'Position de la fiche de candidature', 'Date de sortie', 'Motif de sortie' ) );
+    $csv->addRow( array( 'Date de signature de la fiche', 'Nom de la personne', 'N° CAF', 'Nom du prescripteur', 'Action engagée', 'Nom du partenaire', 'Position de la fiche de candidature', 'Date de sortie', 'Motif de sortie', 'Code INSEE', 'Localité' ) );
 
     foreach( $actionscandidatsPersonnes as $actioncandidat_personne ) {
         $row = array(
@@ -14,6 +14,8 @@
             Set::enum( Set::classicExtract( $actioncandidat_personne, 'ActioncandidatPersonne.positionfiche' ), $options['positionfiche'] ),
             $locale->date( 'Date::short', Set::classicExtract( $actioncandidat_personne, 'ActioncandidatPersonne.sortiele' ) ),
             Set::enum( Set::classicExtract( $actioncandidat_personne, 'ActioncandidatPersonne.motifsortie_id' ), $motifssortie ),
+			$actioncandidat_personne['Adresse']['numcomptt'],
+			$actioncandidat_personne['Adresse']['locaadr'],
         );
         $csv->addRow($row);
     }

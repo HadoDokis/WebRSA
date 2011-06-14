@@ -49,7 +49,7 @@
                             'Bilanparcours66.positionbilan' => array( 'type' => 'select', 'options' => $options['positionbilan'] ),
                         ),
                         array(
-                            'options' => $options
+                            'options' => $options,
                         )
                     );
 
@@ -66,6 +66,18 @@
                 <?php echo $xform->input( 'Bilanparcours66.datebilan_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 10, 'selected' => $datebilan_from ) );?>
                 <?php echo $xform->input( 'Bilanparcours66.datebilan_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 10, 'selected' => $datebilan_to ) );?>
             </fieldset>
+
+			<fieldset>
+				<legend>Filtrer par adresse</legend>
+				<?php echo $form->input( 'Adresse.locaadr', array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );?>
+				<?php echo $form->input( 'Adresse.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );?>
+				<?php
+					if( Configure::read( 'CG.cantons' ) ) {
+						echo $form->input( 'Canton.canton', array( 'label' => 'Canton', 'type' => 'select', 'options' => $cantons, 'empty' => true ) );
+					}
+				?>
+			</fieldset>
+
             <?php
                 $valueDossierDernier = isset( $this->data['Dossier']['dernier'] ) ? $this->data['Dossier']['dernier'] : true;
                 echo $form->input( 'Dossier.dernier', array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueDossierDernier ) );
@@ -84,7 +96,7 @@
 <?php if( isset( $bilansparcours66 ) ):?>
     <?php if( is_array( $bilansparcours66 ) && count( $bilansparcours66 ) > 0  ):?>
         <?php
-            echo '<table><thead>';
+            echo '<table id="searchResults" class="tooltips"><thead>';
                 echo '<tr>
                     <th>'.$xpaginator->sort( __d( 'dossier', 'Dossier.numdemrsa', true ), 'Dossier.numdemrsa' ).'</th>
                     <th>'.$xpaginator->sort( __d( 'bilanparcours66', 'Bilanparcours66.datebilan', true ), 'Bilanparcours66.datebilan' ).'</th>
@@ -96,8 +108,21 @@
                     <th>'.$xpaginator->sort( __d( 'bilanparcours66', 'Bilanparcours66.choixparcours', true ), 'Bilanparcours66.choixparcours' ).'</th>
                     <th>Saisine EP</th>
                     <th>Actions</th>
+					<th class="innerTableHeader noprint">Informations complémentaires</th>
                 </tr></thead><tbody>';
-            foreach( $bilansparcours66 as $bilanparcour66 ) {
+            foreach( $bilansparcours66 as $index => $bilanparcour66 ) {
+				$innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
+					<tbody>
+						<tr>
+							<th>Code INSEE</th>
+							<td>'.$bilanparcour66['Adresse']['numcomptt'].'</td>
+						</tr>
+						<tr>
+							<th>Localité</th>
+							<td>'.$bilanparcour66['Adresse']['locaadr'].'</td>
+						</tr>
+					</tbody>
+				</table>';
 
                 $isSaisine = '0';
                 if( isset( $bilanparcour66['Dossierep']['themeep'] ) ){
@@ -131,6 +156,7 @@
                     <td>'.h( $motif ).'</td>'.
                     $default2->Type2->format( $isSaisine, 'Dossierep.themeep', array( 'type' => 'boolean', 'tag' => 'td' ) ).
                     '<td>'.$xhtml->link( 'Voir', array( 'controller' => 'bilansparcours66', 'action' => 'index', $bilanparcour66['Personne']['id'] ) ).'</td>
+					<td class="innerTableCell noprint">'.$innerTable.'</td>
                 </tr>';
             }
             echo '</tbody></table>';
