@@ -394,5 +394,14 @@ DELETE FROM dossierseps
 	);
 
 -- *****************************************************************************
+-- 20110614: Ajout d'un champ pour repérer les objets de RDV qui permettent de faire un bilan
+-- de parcours avec saisine de l'EPL Audition (non respect et non conclusion)
+-- *****************************************************************************
+SELECT add_missing_table_field ('public', 'typesrdv', 'nbabsaveplaudition', 'integer');
+ALTER TABLE typesrdv ALTER COLUMN nbabsaveplaudition SET DEFAULT 0;
+UPDATE typesrdv SET nbabsaveplaudition = 0 WHERE nbabsaveplaudition IS NULL;
+ALTER TABLE typesrdv ALTER COLUMN nbabsaveplaudition SET NOT NULL;
+
+-- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
