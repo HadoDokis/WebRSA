@@ -559,7 +559,15 @@
 		*/
 
 		public function impression_cohorte() {
-			$queryData = $this->Relancenonrespectsanctionep93->qdSearchRelances( Xset::bump( $this->params['named'], '__' ) );
+			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
+
+			$queryData = $this->Relancenonrespectsanctionep93->qdSearchRelances(
+				$mesCodesInsee,
+				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
+				Xset::bump( $this->params['named'], '__' )
+			);
+
 			$queryData['fields'] = array(
 				'Pdf.document',
 				'Pdf.cmspath',
