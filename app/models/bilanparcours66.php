@@ -529,28 +529,62 @@
 						return false;
 					}
 
-					$nbrdvsnonvenu = $this->Contratinsertion->Personne->Rendezvous->find(
+					$nbpassageeplaudition = $this->Defautinsertionep66->Dossierep->Passagecommissionep->find(
 						'count',
 						array(
 							'conditions' => array(
-								'Rendezvous.personne_id' => $data[$this->alias]['personne_id'],
-								'Statutrdv.permetpassageepl' => 1
-							),
-							'joins' => array(
-								array(
-									'alias' => 'Statutrdv',
-									'table' => 'statutsrdvs',
-									'type' => 'INNER',
-									'conditions' => array(
-										'Rendezvous.statutrdv_id = Statutrdv.id'
+								'Passagecommissionep.dossierep_id IN ('.$this->Defautinsertionep66->Dossierep->sq(
+									array(
+										'fields' => array( 'dossierseps.id' ),
+										'alias' => 'dossierseps',
+										'conditions' => array(
+											'dossierseps.themeep' => 'defautsinsertionseps66',
+											'dossierseps.personne_id' => $data['Bilanparcours66']['personne_id']
+										)
 									)
-								)
+								).' )',
+								'Passagecommissionep.etatdossierep' => 'traite'
+							)
+						)
+					);
+
+					$typesrdvs = $this->Contratinsertion->Personne->Rendezvous->Typerdv->find(
+						'all',
+						array(
+							'conditions' => array(
+								'Typerdv.nbabsaveplaudition >' => 0
 							),
 							'contain' => false
 						)
 					);
 
-					if ( $data[$this->alias]['examenaudition'] == 'DOD' && $nbrdvsnonvenu < 2 ) {
+					$nbPosPasEplAud = 0;
+					foreach( $typesrdvs as $typerdv ) {
+						$nbrdvsnonvenu = $this->Contratinsertion->Personne->Rendezvous->find(
+							'count',
+							array(
+								'conditions' => array(
+									'Rendezvous.personne_id' => $data[$this->alias]['personne_id'],
+									'Statutrdv.permetpassageepl' => 1,
+									'Rendezvous.typerdv_id' => $typerdv['Typerdv']['id']
+								),
+								'joins' => array(
+									array(
+										'alias' => 'Statutrdv',
+										'table' => 'statutsrdvs',
+										'type' => 'INNER',
+										'conditions' => array(
+											'Rendezvous.statutrdv_id = Statutrdv.id'
+										)
+									)
+								),
+								'contain' => false
+							)
+						);
+						$nbPosPasEplAud += floor( $nbrdvsnonvenu / $typerdv['Typerdv']['nbabsaveplaudition'] );
+					}
+
+					if ( $nbpassageeplaudition >= $nbPosPasEplAud ) {
 						$this->invalidate( 'examenaudition', 'Cette personne ne possède pas assez de rendez-vous où elle ne s\'est pas présentée.' );
 						return false;
 					}

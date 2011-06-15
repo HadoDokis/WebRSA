@@ -21,3 +21,12 @@ msgstr ""
 ###############################################################################
 msgid "Typerdv.libelle"
 msgstr "Objet du RDV"
+
+msgid "Typerdv.modelenotifrdv"
+msgstr "Modèle de notification du RDV"
+
+msgid "Typerdv.nbabsencesavpassageep"
+msgstr "Nombre d'absences non excusées avant passage en EP"
+
+msgid "Typerdv.passageeplaudition"
+msgstr "Nombre d'absences avant possible passage en EPL Audition"

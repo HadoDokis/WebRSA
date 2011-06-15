@@ -22,6 +22,9 @@
 	            	if ( Configure::read( 'Cg.departement' ) == 58 ) {
 	            		echo '<th>Nombre d\'absences non excusées avant passage en EP</th>';
 	            	}
+	            	elseif ( Configure::read( 'Cg.departement' ) == 66 ) {
+	            		echo '<th>Nombre d\'absences avant possible passage en EPL Audition</th>';
+	            	}
 	            ?>
 	            <th colspan="2" class="action">Actions</th>
 	        </tr>
@@ -41,6 +44,15 @@
 	            			)
 	            		);
 	            	}
+	            	elseif ( Configure::read( 'Cg.departement' ) == 66 ) {
+	            		$listefields = array_merge(
+	            			$listefields,
+	            			array(
+	            				h( $typerdv['Typerdv']['nbabsaveplaudition'] )
+	            			)
+	            		);
+	            	}
+
 	            	$listefields = array_merge(
 	            		$listefields,
 	            		array(
