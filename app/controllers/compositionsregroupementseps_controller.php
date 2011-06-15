@@ -31,13 +31,21 @@
 			if( !empty( $this->data ) ) {
 				$success = true;
 				$this->Compositionregroupementep->begin();
+				$prioritaireExist = false;
 				foreach( $this->data['Compositionregroupementep'] as $functionmembreep_id => $fields ) {
 // 					debug($fields);
+					if ( $this->data['Compositionregroupementep'][$functionmembreep_id]['prioritaire'] == 1 ) {
+						$prioritaireExist = true;
+					}
 					$compositionregroupementep['Compositionregroupementep'] = $fields;
 					$compositionregroupementep['Compositionregroupementep']['regroupementep_id'] = $id;
 					$compositionregroupementep['Compositionregroupementep']['fonctionmembreep_id'] = $functionmembreep_id;
 					$this->Compositionregroupementep->create( $compositionregroupementep );
 					$success = $this->Compositionregroupementep->save() && $success;
+				}
+				$success = $prioritaireExist && $success;
+				if ( !$prioritaireExist ) {
+					$this->set( 'prioritaireExist', 'error' );
 				}
 
 				$this->_setFlashResult( 'Save', $success );

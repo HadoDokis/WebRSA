@@ -7,7 +7,12 @@
 </h1>
 
 <?php
+	if ( isset( $prioritaireExist ) && !empty( $prioritaireExist ) ) {
+		echo "<p class='error'>Merci de mettre au moins un membre prioritaire (les mettre tous prioritaires si aucune gestion).</p>";
+	}
+
 	echo $xform->create( null );
+	echo $xform->input( 'Regroupementep.name', array( 'type' => 'hidden' ) );
 
 	foreach( $fonctionsmembreseps as $functionId => $functionName ) {
 		echo "<fieldset><legend>{$functionName}</legend>";
