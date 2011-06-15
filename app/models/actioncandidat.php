@@ -4,6 +4,8 @@
 		public $name = 'Actioncandidat';
 
 		public $displayField = 'name';
+		
+		public $recursive = -1;
 
 		public $actsAs = array(
 			'Autovalidate',
@@ -31,9 +33,22 @@
                 'conditions' => '',
                 'fields' => '',
                 'order' => ''
-            )
+            ),
+            'Chargeinsertion' => array(
+                'className' => 'User',
+                'foreignKey' => 'chargeinsertion_id',
+                'conditions' => '',
+                'fields' => '',
+                'order' => ''
+            ),
+            'Secretaire' => array(
+                'className' => 'User',
+                'foreignKey' => 'secretaire_id',
+                'conditions' => '',
+                'fields' => '',
+                'order' => ''
+            ),
         );
-
 
 
 		public $hasAndBelongsToMany = array(
@@ -144,7 +159,6 @@
 			}
 			return $resultset;
 		}		
-		
 
 		
 	}

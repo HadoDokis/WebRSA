@@ -11,6 +11,8 @@
         array(
             'Actioncandidat.name',
             'Actioncandidat.codeaction' => array('type'=>'text'),
+        	'Chargeinsertion.nom_complet' => array( 'domain' => 'actioncandidat' ),
+        	'Secretaire.nom_complet' => array( 'domain' => 'actioncandidat' ),
         	'Actioncandidat.lieuaction',
         	'Actioncandidat.cantonaction',
         	'Actioncandidat.ddaction',

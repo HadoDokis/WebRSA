@@ -58,6 +58,8 @@
 <?php    
     echo $default->subform(
         array(
+            'Actioncandidat.chargeinsertion_id' => array( 'domain' => 'actioncandidat', 'type' => 'select'),
+            'Actioncandidat.secretaire_id' => array( 'domain' => 'actioncandidat', 'type' => 'select'),
             'Actioncandidat.contractualisation' => array( 'domain' => 'actioncandidat', 'type' => 'select'),
             'Actioncandidat.lieuaction' => array( 'domain' => 'actioncandidat', 'required' => true ),
             'Actioncandidat.cantonaction' => array( 'domain' => 'actioncandidat', 'required' => true, 'options' => $cantons ),
@@ -71,9 +73,9 @@
         )
     );   
     
-	echo $html->tag('div', $form->input( 'Actioncandidat.filtre_zone_geo', array( 'label' => 'Restreindre les zones géographiques', 'type' => 'checkbox' ) )) ;
+// 	echo $html->tag('div', $form->input( 'Actioncandidat.filtre_zone_geo', array( 'label' => 'Restreindre les zones géographiques', 'type' => 'checkbox' ) )) ;
 	?>
-<fieldset class="col2" id="filtres_zone_geo">
+<fieldset class="col2">
     <legend>Zones géographiques</legend>
     <script type="text/javascript">
         function toutCocher() {
