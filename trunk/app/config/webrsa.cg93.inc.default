@@ -240,7 +240,7 @@
 	* Nombre de jours entre la date de première relance et
 	* l'envoi de la seconde relance pour le thème "non respect et sanctions du CG 93"
 	*/
-	Configure::write( 'Nonrespectsanctionep93.relanceOrientstructCer2', 60 );
+	Configure::write( 'Nonrespectsanctionep93.relanceOrientstructCer2', 30 );
 
 	/**
 	* Nombre de jours entre la date de seconde relance et
