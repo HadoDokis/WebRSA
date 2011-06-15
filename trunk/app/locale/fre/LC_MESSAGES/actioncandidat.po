@@ -98,3 +98,15 @@ msgstr "Avec fiche de candidature"
 
 msgid "Actioncandidat.contactpartenaire_id"
 msgstr "Contact lié à cette action ?"
+
+msgid "Actioncandidat.chargeinsertion_id"
+msgstr "Chargé d'insertion"
+
+msgid "Actioncandidat.secretaire_id"
+msgstr "Secrétaire"
+
+msgid "Chargeinsertion.nom_complet"
+msgstr "Chargé d'insertion"
+
+msgid "Secretaire.nom_complet"
+msgstr "Secrétaire"

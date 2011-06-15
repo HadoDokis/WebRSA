@@ -31,14 +31,17 @@
 				$options['Actioncandidat']['referent_id'] = $this->Actioncandidat->ActioncandidatPersonne->Referent->find('list');
 				$options['Zonegeographique'] = $this->Actioncandidat->Zonegeographique->find( 'list' );
                 $this->set( 'cantons', ClassRegistry::init( 'Canton' )->selectList() );
+
+                $options['Actioncandidat']['chargeinsertion_id'] = $this->Actioncandidat->Chargeinsertion->find('list', array( 'fields' => array( 'id', 'nom_complet' ), 'conditions' => array(  'Chargeinsertion.nom IS NOT NULL', 'Chargeinsertion.group_id = 7' ) ) );
+                $options['Actioncandidat']['secretaire_id'] = $this->Actioncandidat->Secretaire->find('list', array( 'fields' => array( 'id', 'nom_complet' ), 'conditions' => array(  'Secretaire.nom IS NOT NULL', 'Secretaire.group_id = 7' ) ) );
 			}
 			
-            foreach( array( 'Contactpartenaire' ) as $linkedModel ) {
+            foreach( array( 'Contactpartenaire') as $linkedModel ) {
                 $field = Inflector::singularize( Inflector::tableize( $linkedModel ) ).'_id';
                 $options = Set::insert( $options, "{$this->modelClass}.{$field}", $this->{$this->modelClass}->{$linkedModel}->find( 'list' ) );
             }
-			
-			
+
+// 			debug($options);
 			$this->set( compact( 'options' ) );
 		}
 
@@ -57,7 +60,9 @@
                 'contain' => array(
                     'Contactpartenaire' => array(
                         'Partenaire'
-                    )
+                    ),
+                    'Chargeinsertion',
+                    'Secretaire'
                 )
             );
 

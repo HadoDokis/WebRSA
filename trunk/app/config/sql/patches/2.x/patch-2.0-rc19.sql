@@ -393,6 +393,19 @@ DELETE FROM dossierseps
 				)
 	);
 
+
+-- *****************************************************************************
+-- 20110615: Ajout de champs pour les actions de fiche de candidature
+-- *****************************************************************************
+SELECT alter_table_drop_column_if_exists ('public', 'actionscandidats', 'filtre_zone_geo');
+
+SELECT add_missing_table_field ( 'public', 'actionscandidats', 'chargeinsertion_id', 'INTEGER' );
+SELECT add_missing_table_field ( 'public', 'actionscandidats', 'secretaire_id', 'INTEGER' );
+ALTER TABLE actionscandidats ALTER COLUMN chargeinsertion_id SET NOT NULL;
+ALTER TABLE actionscandidats ALTER COLUMN secretaire_id SET NOT NULL;
+ALTER TABLE actionscandidats ADD CONSTRAINT actionscandidats_chargeinsertion_id_fk FOREIGN KEY (chargeinsertion_id) REFERENCES users(id);
+ALTER TABLE actionscandidats ADD CONSTRAINT actionscandidats_secretaire_id_fk FOREIGN KEY (secretaire_id) REFERENCES users(id);
+
 -- *****************************************************************************
 -- 20110614: Ajout d'un champ pour repérer les objets de RDV qui permettent de faire un bilan
 -- de parcours avec saisine de l'EPL Audition (non respect et non conclusion)
