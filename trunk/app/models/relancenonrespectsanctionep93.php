@@ -1421,7 +1421,7 @@
 			$qual = $optionModel->qual();
 			$typevoie = $optionModel->typevoie();
 
-			$queryData = $this->qdSearchRelances( array( $this->alias => array( 'id' => $id ) ) );
+			$queryData = $this->qdSearchRelances( array(), false, array( $this->alias => array( 'id' => $id ) ) );
 			$queryData['fields'] = array(
 				'Dossier.matricule',
 				'Adresse.numvoie',
