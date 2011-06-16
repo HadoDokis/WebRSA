@@ -595,5 +595,129 @@
 
 			return $return;
 		}
+
+		/**
+		* Récupération de la décision suite au passage en commission d'un dossier
+		* d'EP pour un certain niveau de décision.
+		*/
+
+		public function getDecisionPdf( $passagecommissionep_id  ) {
+			$gedooo_data = $this->Dossierep->Passagecommissionep->find(
+				'first',
+				array(
+					'conditions' => array( 'Passagecommissionep.id' => $passagecommissionep_id ),
+					'contain' => array(
+						'Commissionep',
+						'Dossierep' => array(
+							'Personne' => array(
+								'Foyer' => array(
+									'Adressefoyer' => array(
+										'conditions' => array(
+											'Adressefoyer.id IN ( '.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01( 'Adressefoyer.foyer_id' ).' )'
+										),
+										'Adresse'
+									)
+								)
+							),
+							$this->alias => array(
+								'Typeorient',
+								'Structurereferente',
+								'Bilanparcours66' => array(
+									'Orientstruct' => array(
+										'Typeorient',
+										'Structurereferente',
+									),
+								)
+							),
+						),
+						'Decisionsaisinebilanparcoursep66' => array(
+							'Typeorient',
+							'Structurereferente',
+							'Referent',
+							'order' => array(
+								'Decisionsaisinebilanparcoursep66.etape DESC'
+							),
+							'limit' => 1
+						)
+					)
+				)
+			);
+
+			if( empty( $gedooo_data ) || !isset( $gedooo_data['Decisionsaisinebilanparcoursep66'][0] ) || empty( $gedooo_data['Decisionsaisinebilanparcoursep66'][0] ) ) {
+				return false;
+			}
+
+			// Choix du modèle de document
+			$decision = $gedooo_data['Decisionsaisinebilanparcoursep66'][0]['decision']; // maintien,reorientation,annule,reporte
+
+			if( $decision == 'maintien' ) {
+				if( $gedooo_data['Decisionsaisinebilanparcoursep66'][0]['changementrefparcours'] == 'O' ) {
+					$modeleOdt  = "{$this->alias}/decision_maintien_avec_changement.odt";
+				}
+				else if( $gedooo_data['Decisionsaisinebilanparcoursep66'][0]['changementrefparcours'] == 'N' ) {
+					$modeleOdt  = "{$this->alias}/decision_maintien_sans_changement.odt";
+				}
+			}
+			else if( $decision == 'reorientation' ) {
+				$modeleOdt  = "{$this->alias}/decision_reorientation.odt";
+			}
+			else if( $decision == 'reporte' ) {
+				$modeleOdt  = "{$this->alias}/decision_reporte.odt";
+			}
+			else if( $decision == 'annule' ) {
+				$modeleOdt  = "{$this->alias}/decision_annule.odt";
+			}
+
+			// Possède-t'on un PDF déjà stocké ?
+			$pdfModel = ClassRegistry::init( 'Pdf' );
+			$pdf = $pdfModel->find(
+				'first',
+				array(
+					'conditions' => array(
+						'modele' => 'Passagecommissionep',
+						'modeledoc' => $modeleOdt,
+						'fk_value' => $passagecommissionep_id
+					)
+				)
+			);
+
+			if( !empty( $pdf ) && empty( $pdf['Pdf']['document'] ) ) {
+				$cmisPdf = Cmis::read( "/Passagecommissionep/{$passagecommissionep_id}.pdf", true );
+				$pdf['Pdf']['document'] = $cmisPdf['content'];
+			}
+
+			if( !empty( $pdf['Pdf']['document'] ) ) {
+				return $pdf['Pdf']['document'];
+			}
+
+			// Traductions
+			$options = $this->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->enums();
+			$options['Personne']['qual'] = ClassRegistry::init( 'Option' )->qual();
+			$options['Adresse']['typevoie'] = ClassRegistry::init( 'Option' )->typevoie();
+			// INFO: c'est tricher, mais ça permet de traduire tous les Structurereferente.type_voie
+			$options['type']['voie'] = $options['Adresse']['typevoie'];
+
+			// Sinon, on génère le PDF
+			$pdf =  $this->ged(
+				$gedooo_data,
+				$modeleOdt,
+				false,
+				$options
+			);
+
+			$oldRecord['Pdf']['modele'] = 'Passagecommissionep';
+			$oldRecord['Pdf']['modeledoc'] = $modeleOdt;
+			$oldRecord['Pdf']['fk_value'] = $passagecommissionep_id;
+			$oldRecord['Pdf']['document'] = $pdf;
+
+			$pdfModel->create( $oldRecord );
+			$success = $pdfModel->save();
+
+			if( !$success ) {
+				return false;
+			}
+
+			return $pdf;
+		}
 	}
 ?>

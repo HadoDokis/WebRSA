@@ -465,10 +465,14 @@ msgid "Button::printConvocationBeneficiaire"
 msgstr "Convocation"
 
 msgid "Button::fichesynthese"
-msgstr "Fiche de synthèse"
+msgstr "Fiche synthétique"
 
 msgid "Button::printFiche"
 msgstr "Imprimer"
+
+msgid "Button::impressionDecision"
+msgstr "Décision"
+
 ###############################################################################
 # Pagination
 # INFO: http://forum.cakephp-fr.org/viewtopic.php?id=878

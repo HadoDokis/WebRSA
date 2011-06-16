@@ -34,9 +34,6 @@
 			$this->set( compact( 'options' ) );
 		}
 
-		public function beforeFilter() {
-		}
-
 		/**
 		*
 		*/
@@ -478,7 +475,8 @@
 
 
 		/**
-		*    Génération et envoi du courrier d'information avant passage en EP
+		* Génération et envoi du courrier d'information avant passage en EP pour
+		* la thématique defautinsertionep66.
 		*/
 
 		public function courrierInformation( $dossierep_id ) {
@@ -499,6 +497,45 @@
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer le courrier d\'information', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
+			}
+		}
+
+		/**
+		* Génération des courriers d'information avant passage en EP pour
+		* la thématique defautinsertionep66.
+		*/
+
+		public function courriersInformations( $commissionep_id ) {
+			$liste = $this->Dossierep->Passagecommissionep->find(
+				'all',
+				array(
+					'fields' => array(
+						'Passagecommissionep.id',
+						'Passagecommissionep.dossierep_id',
+					),
+					'conditions' => array(
+						'Passagecommissionep.commissionep_id' => $commissionep_id,
+						'Dossierep.themeep' => 'defautsinsertionseps66'
+					),
+					'contain' => array(
+						'Dossierep'
+					)
+				)
+			);
+
+			$pdfs = array();
+			foreach( Set::extract( '/Passagecommissionep/dossierep_id', $liste ) as $dossierep_id ) {
+				$pdfs[] = $this->Dossierep->Defautinsertionep66->getCourrierInformationPdf( $dossierep_id );
+			}
+
+			$pdfs = $this->Gedooo->concatPdfs( $pdfs, 'CourriersInformation' );
+
+			if( $pdfs ) {
+				$this->Gedooo->sendPdfContentToClient( $pdfs, 'CourriersInformation' );
+			}
+			else {
+				$this->Session->setFlash( 'Impossible de générer les courriers d\'information pour cette commission.', 'default', array( 'class' => 'error' ) );
 				$this->redirect( $this->referer() );
 			}
 		}

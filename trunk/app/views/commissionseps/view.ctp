@@ -160,22 +160,34 @@
 			<div>
 				<ul class="actionMenu">
 				<?php
+					$disableOrdredujour = !in_array( 'commissionseps::printOrdreDuJour', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] );
+
 					echo '<li>'.$xhtml->reponseLink(
 						__d('commissionep','Commissionep.reponse',true),
 						array( 'controller' => 'membreseps', 'action' => 'editliste', $commissionep['Commissionep']['id'] ),
 						in_array( 'membreseps::editliste', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] )
 					).' </li>';
+					echo '<li>'.$xhtml->link(
+						__d('commissionep','Commissionseps::printConvocationsParticipants',true),
+						array( 'controller' => 'commissionseps', 'action' => 'printConvocationsParticipants', $commissionep['Ep']['id'], $commissionep['Commissionep']['id'] ),
+						array( 'class' => 'button print', 'enabled' => ( in_array( 'membreseps::printConvocationsParticipants', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) ), )
+					).' </li>';
+					echo '<li>'.$xhtml->link(
+						__d('commissionep','Commissionseps::printOrdresDuJour',true),
+						array( 'controller' => 'commissionseps', 'action' => 'printOrdresDuJour', $commissionep['Commissionep']['id'] ),
+						array( 'class' => 'button print', 'enabled' => !$disableOrdredujour )
+					).' </li>';
 
-                    if( Configure::read( 'Cg.departement' ) != 93 ) {
-                        echo '<li>'.$xhtml->presenceLink(
-                            __d('commissionep','Commissionep::presence',true),
-                            array( 'controller' => 'membreseps', 'action' => 'editpresence', $commissionep['Commissionep']['id'] ),
-                            (
-                                in_array( 'membreseps::editpresence', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] )
-                                && $presencesPossible
-                            )
-                        ).' </li>';
-                    }
+					if( Configure::read( 'Cg.departement' ) != 93 ) {
+						echo '<li>'.$xhtml->presenceLink(
+							__d('commissionep','Commissionep::presence',true),
+							array( 'controller' => 'membreseps', 'action' => 'editpresence', $commissionep['Commissionep']['id'] ),
+							(
+								in_array( 'membreseps::editpresence', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] )
+								&& $presencesPossible
+							)
+						).' </li>';
+					}
 				?>
 				</ul>
 			<?php
@@ -198,7 +210,6 @@
 						)
 					);
 
-				$disableOrdredujour = !in_array( 'commissionseps::printOrdreDuJour', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] );
 				echo "<tbody>";
 				foreach($membresepsseanceseps as $membreepseanceep) {
 
@@ -235,7 +246,7 @@
 							'td',
 							$membreepseanceep['CommissionepMembreep']['reponsetxt']
 						);
-// debug($membreepseanceep['Membreep']);
+
 						$membreepseanceep['CommissionepMembreep']['presencetxt'] = "";
 						if (!empty($membreepseanceep['CommissionepMembreep']['presence'])) {
 							$membreepseanceep['CommissionepMembreep']['presencetxt'] = __d('commissionep_membreep', 'ENUM::PRESENCE::'.$membreepseanceep['CommissionepMembreep']['presence'], true);
@@ -297,16 +308,31 @@
 						require_once( "view.{$theme}.liste.ctp" );
 					}
 
-					if( Configure::read( 'Cg.departement' )  == 93 ){
+					if( in_array( Configure::read( 'Cg.departement' ), array( 58, 93 ) ) ) {
 						echo "<div id=\"synthese\"><h3 class=\"title\">Synthèse</h3>";
 							if( isset($dossierseps) ) {
 								echo '<ul class="actions">';
+								if( Configure::read( 'Cg.departement' ) == 93 ) {
+									echo '<li>'.$xhtml->link(
+										'Impression des fiches synthétiques',
+										array( 'controller' => 'commissionseps', 'action' => 'fichessynthese', $commissionep['Commissionep']['id'], true ),
+										array( 'class' => 'button fichessynthese' )
+									).'</li>';
+								}
 								echo '<li>'.$xhtml->link(
 									'Impression des convocations',
 									array( 'controller' => 'commissionseps', 'action' => 'printConvocationsBeneficiaires', $commissionep['Commissionep']['id'] ),
 									array( 'class' => 'button printConvocationsBeneficiaires', 'enabled' => in_array( 'commissionseps::printConvocationsBeneficiaires', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) )
 								).'</li>';
 								echo '</ul>';
+
+								$actions = array(
+									'Dossierseps::view' => array( 'label' => 'Voir', 'url' => array( 'controller' => $controller, 'action' => 'index', '#Dossierep.Personne.id#' ), 'class' => 'external' ),
+								);
+
+								if( Configure::read( 'Cg.departement' ) == 93 ) {
+									$actions['Dossierseps::fichesynthese'] = array( 'url' => array( 'controller' => 'commissionseps', 'action' => 'fichesynthese',  Set::classicExtract( $commissionep, 'Commissionep.id' ), '#Dossierep.id#', true ) );
+								}
 
 								echo $default2->index(
 									$dossierseps,
@@ -321,26 +347,19 @@
 										'Passagecommissionep.etatdossierep',
 									),
 									array(
-										'actions' => array(
-											'Dossierseps::view' => array( 'label' => 'Voir', 'url' => array( 'controller' => $controller, 'action' => 'index', '#Dossierep.Personne.id#' ), 'class' => 'external' ),
-											'Dossierseps::fichesynthese' => array( 'url' => array( 'controller' => 'commissionseps', 'action' => 'fichesynthese',  Set::classicExtract( $commissionep, 'Commissionep.id' ), '#Dossierep.id#' ) )
-										),
+										'actions' => $actions,
 										'options' => $options,
 										'id' => $theme
 									)
 								);
-								if( $commissionep['Commissionep']['etatcommissionep'] == 'associe' ) {
 
+								if( Configure::read( 'Cg.departement' ) == 93 && $commissionep['Commissionep']['etatcommissionep'] == 'associe' ) {
 									echo '<ul class="actionMenu center">';
 										echo '<li>'.$xhtml->link(
 											__d( 'commissionep','Commissionseps::validecommission', true ),
 											array( 'controller' => 'commissionseps', 'action' => 'validecommission', $commissionep['Commissionep']['id'] )
 										).' </li>';
 									echo '</ul>';
-	
-// 									echo $form->create( null, array( 'url' => Router::url( null, true ) ) );
-// 									echo $form->submit( 'Valider', array( 'name' => 'Valider' ) );
-// 									echo $form->end();
 								}
 							}
 							else {

@@ -1,4 +1,12 @@
 <?php
+	echo '<ul class="actions">';
+	echo '<li>'.$xhtml->link(
+		__d( 'commissionep','Commissionseps::impressionsDecisions', true ),
+		array( 'controller' => 'commissionseps', 'action' => 'impressionsDecisions', $commissionep['Commissionep']['id'] ),
+		array( 'class' => 'button impressionsDecisions' )
+	).' </li>';
+	echo '</ul>';
+
 echo '<table id="Decisionsaisinebilanparcoursep66" class="tooltips"><thead>
 <tr>
 <th>Nom du demandeur</th>
@@ -11,6 +19,7 @@ echo '<table id="Decisionsaisinebilanparcoursep66" class="tooltips"><thead>
 <th>Décision CG</th>
 <th colspan="4">Décision coordonnateur/CG</th>
 <th>Observations</th>
+<th>Action</th>
 <th class="innerTableHeader noprint">Avis EP</th>
 </tr>
 </thead><tbody>';
@@ -87,6 +96,7 @@ echo '<table id="Decisionsaisinebilanparcoursep66" class="tooltips"><thead>
 					array( @$options['Decisionsaisinebilanparcoursep66']['changementrefparcours'][Set::classicExtract( $decisioncg, "changementrefparcours" )], array( 'id' => "Decisionsaisinebilanparcoursep66{$i}Changementrefparcours" ) ),
 // 					array( Set::classicExtract( $decisioncg, "raisonnonpassage" ), array( 'colspan' => 3, 'id' => "Decisionsaisinebilanparcoursep66{$i}Raisonnonpassage" ) ),
 					array( Set::classicExtract( $decisioncg, "commentaire" ), array( 'id'  => "Decisionsaisinebilanparcoursep66{$i}Commentaire") ),
+					$xhtml->printLink( 'Imprimer', array( 'controller' => 'commissionseps', 'action' => 'impressionDecision', $dossierep['Passagecommissionep'][0]['id'] ) ),
 					array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
 				)
 			),

@@ -16,14 +16,21 @@
 	echo "<div id=\"$theme\"><h3 class=\"title\">".__d( 'dossierep',  'ENUM::THEMEEP::'.Inflector::tableize( $theme ), true )."</h3>";
 
 	if( in_array( 'dossierseps::choose', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) ) {
-		echo '<ul class="actionMenu"><li>'.$xhtml->affecteLink(
-            'Affecter les dossiers',
-            array( 'controller' => 'dossierseps', 'action' => 'choose', Set::classicExtract( $commissionep, 'Commissionep.id' ), "#{$theme}" )
-        ).' </li></ul>';
-    }
-    else {
-        echo '<li><span class="disabled"> Affecter les dossiers </span></li>';
-    }
+		echo '<ul class="actionMenu">';
+		echo '<li>'.$xhtml->affecteLink(
+			'Affecter les dossiers',
+			array( 'controller' => 'dossierseps', 'action' => 'choose', Set::classicExtract( $commissionep, 'Commissionep.id' ), "#{$theme}" )
+		).' </li>';
+		echo '<li>'.$xhtml->link(
+			'Impression des convocations',
+			array( 'controller' => 'commissionseps', 'action' => 'printConvocationsBeneficiaires', $commissionep['Commissionep']['id'] ),
+			array( 'class' => 'button printConvocationsBeneficiaires', 'enabled' => in_array( 'commissionseps::printConvocationsBeneficiaires', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) )
+		).'</li>';
+		echo '</ul>';
+	}
+	else {
+		echo '<li><span class="disabled"> Affecter les dossiers </span></li>';
+	}
 
 	if( empty( $dossiers[$theme] ) ) {
 		echo '<p class="notice">Il n\'existe aucun dossier de cette thématique associé à cette commission d\'EP.</p>';

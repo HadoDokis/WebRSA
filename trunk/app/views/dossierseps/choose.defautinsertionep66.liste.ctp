@@ -18,7 +18,6 @@
 			'paginate' => Inflector::classify( $theme ),
 			'actions' => array(
 				'Personnes::view',
-				'Dossierseps::courrierInformation'
 			),
 			'id' => $theme,
 			'labelcohorte' => 'Enregistrer',

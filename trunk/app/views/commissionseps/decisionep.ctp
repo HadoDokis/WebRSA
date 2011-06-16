@@ -15,16 +15,74 @@
 			echo '</div>';
 		}
 
-		echo '<ul class="actionMenu center">';
-			echo '<li>'.$xhtml->link(
-				__d( 'commissionep','Commissionseps::impressionpv', true ),
-				array( 'controller' => 'commissionseps', 'action' => 'impressionpv', $commissionep['Commissionep']['id'] )
-			).' </li>';
-		echo '</ul>';
+		if( in_array( Configure::read( 'Cg.departement' ), array( 58, 93 ) ) ) {
+			echo "<div id=\"synthese\"><h2 class=\"title\">Synthèse</h2>";
+				if( isset($syntheses) ) {
+					echo '<ul class="actions">';
+					if( Configure::read( 'Cg.departement' )  == 93 ) {
+						echo '<li>'.$xhtml->link(
+							'Impression des fiches synthétiques',
+							array( 'controller' => 'commissionseps', 'action' => 'fichessynthese', $commissionep['Commissionep']['id'], false ),
+							array( 'class' => 'button fichessynthese' )
+						).'</li>';
+					}
+					echo '<li>'.$xhtml->link(
+						__d( 'commissionep','Commissionseps::impressionpv', true ),
+						array( 'controller' => 'commissionseps', 'action' => 'impressionpv', $commissionep['Commissionep']['id'] ),
+						array( 'class' => 'button impressionpv' )
+					).' </li>';
+					echo '</ul>';
 
-// 		echo $form->create( null, array( 'url' => Router::url( null, true ) ) );
-// 		echo $form->submit( 'Imprimer le PV de la commission', array( 'name' => 'Imprimerpv' ) );
-// 		echo $form->end();
+					$actions = array(
+						'Dossierseps::view' => array( 'label' => 'Voir', 'url' => array( 'controller' => 'dossierseps', 'action' => 'index', '#Dossierep.Personne.id#' ), 'class' => 'external' ),
+					);
+
+					if( Configure::read( 'Cg.departement' )  == 93 ) {
+						$actions['Dossierseps::fichesynthese'] = array( 'url' => array( 'controller' => 'commissionseps', 'action' => 'fichesynthese',  Set::classicExtract( $commissionep, 'Commissionep.id' ), '#Dossierep.id#', false ) );
+					}
+
+					echo $default2->index(
+						$syntheses,
+						array(
+							'Dossierep.Personne.qual',
+							'Dossierep.Personne.nom',
+							'Dossierep.Personne.prenom',
+							'Dossierep.Personne.dtnai',
+							'Dossierep.Personne.Foyer.Adressefoyer.0.Adresse.locaadr',
+							'Dossierep.created',
+							'Dossierep.themeep',
+							'Passagecommissionep.etatdossierep',
+						),
+						array(
+							'actions' => $actions,
+							'options' => $options,
+							'id' => $theme
+						)
+					);
+
+					if( $commissionep['Commissionep']['etatcommissionep'] == 'associe' ) {
+						echo '<ul class="actionMenu center">';
+							echo '<li>'.$xhtml->link(
+								__d( 'commissionep','Commissionseps::validecommission', true ),
+								array( 'controller' => 'commissionseps', 'action' => 'validecommission', $commissionep['Commissionep']['id'] )
+							).' </li>';
+						echo '</ul>';
+					}
+				}
+				else {
+					echo '<p class="notice">Il n\'existe aucun dossier associé à cette commission d\'EP.</p>';
+				}
+			echo "</div>";
+		}
+		else {
+			echo '<ul class="actions center">';
+				echo '<li>'.$xhtml->link(
+					__d( 'commissionep','Commissionseps::impressionpv', true ),
+					array( 'controller' => 'commissionseps', 'action' => 'impressionpv', $commissionep['Commissionep']['id'] ),
+					array( 'class' => 'button impressionpv' )
+				).' </li>';
+			echo '</ul>';
+		}
 
 		echo $default->button(
 			'back',
