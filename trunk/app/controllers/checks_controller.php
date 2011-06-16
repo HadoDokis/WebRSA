@@ -226,11 +226,7 @@
 						'Nonrespectsanctionep93/decision_suspensiontotale.odt',								// app/models/nonrespectsanctionep93.php:907
 						'Nonrespectsanctionep93/decision_suspensionpartielle.odt',							// app/models/nonrespectsanctionep93.php:910
 						'Nonrespectsanctionep93/decision_reporte.odt',										// app/models/nonrespectsanctionep93.php:913
-						'Nonrespectsanctionep93/decision_annule.odt',										// app/models/nonrespectsanctionep93.php:916
-						'Reorientationep93/decision_accepte.odt',											// app/models/reorientationep93.php:612
-						'Reorientationep93/decision_refuse.odt',											// app/models/reorientationep93.php:612
-						'Reorientationep93/decision_annule.odt',											// app/models/reorientationep93.php:612
- 						'Reorientationep93/decision_reporte.odt',											// app/models/reorientationep93.php:612
+						'Nonrespectsanctionep93/decision_annule.odt'										// app/models/nonrespectsanctionep93.php:916
 					)
 				);
 			}
