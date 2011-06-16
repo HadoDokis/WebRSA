@@ -1,17 +1,18 @@
 <?php
 
-	class PropospdosController extends AppController{
+	class PropospdosController extends AppController
+	{
 
-		var $name = 'Propospdos';
-		var $uses = array( 'Propopdo', 'Situationdossierrsa', 'Option', 'Typepdo', 'Typenotifpdo', 'Decisionpdo', 'Suiviinstruction', 'Piecepdo',  'Traitementpdo', 'Originepdo',  'Statutpdo', 'Statutdecisionpdo', 'Situationpdo', 'Referent', 'Personne', 'Dossier', 'Pdf' );
+		public $name = 'Propospdos';
+		public $uses = array( 'Propopdo', 'Situationdossierrsa', 'Option', 'Typepdo', 'Typenotifpdo', 'Decisionpdo', 'Suiviinstruction', 'Piecepdo',  'Traitementpdo', 'Originepdo',  'Statutpdo', 'Statutdecisionpdo', 'Situationpdo', 'Referent', 'Personne', 'Dossier', 'Pdf' );
 
-		var $aucunDroit = array( 'ajaxstruct', 'ajaxetatpdo', 'ajaxetat1', 'ajaxetat2', 'ajaxetat3', 'ajaxetat4', 'ajaxetat5', 'ajaxfichecalcul' );
+		public $aucunDroit = array( 'ajaxstruct', 'ajaxetatpdo', 'ajaxetat1', 'ajaxetat2', 'ajaxetat3', 'ajaxetat4', 'ajaxetat5', 'ajaxfichecalcul' );
 
-        var $components = array( 'Fileuploader', 'Gedooo' );
+		public $components = array( 'Fileuploader', 'Gedooo' );
 
-		var $helpers = array( 'Default', 'Default2', 'Ajax', 'Fileuploader' );
+		public $helpers = array( 'Default', 'Default2', 'Ajax', 'Fileuploader' );
 
-		var $commeDroit = array(
+		public $commeDroit = array(
 			'view' => 'Propospdos:index',
 			'add' => 'Propospdos:edit'
 		);
@@ -187,92 +188,92 @@
 
 
 
-            $pdo = $this->Propopdo->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Propopdo.id' => $pdo_id
-                    ),
-                    'contain' => array(
-                        'Fichiermodule',
-                        'Typepdo'
-                    )
-                )
-            );
+			$pdo = $this->Propopdo->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Propopdo.id' => $pdo_id
+					),
+					'contain' => array(
+						'Fichiermodule',
+						'Typepdo'
+					)
+				)
+			);
 
 
-            // Afficahge des traitements liés à une PDO
-            $traitements = $this->{$this->modelClass}->Traitementpdo->find(
-                'all',
-                array(
-                    'conditions' => array(
-                        'propopdo_id' => $pdo_id
-                    ),
-                    'contain' => array(
-                        'Descriptionpdo',
-                        'Traitementtypepdo'
-                    )
-                )
-            );
-            $this->set( compact( 'traitements' ) );
+			// Afficahge des traitements liés à une PDO
+			$traitements = $this->{$this->modelClass}->Traitementpdo->find(
+				'all',
+				array(
+					'conditions' => array(
+						'propopdo_id' => $pdo_id
+					),
+					'contain' => array(
+						'Descriptionpdo',
+						'Traitementtypepdo'
+					)
+				)
+			);
+			$this->set( compact( 'traitements' ) );
 
 
-            // Afficahge des propositions de décisions liées à une PDO
-            $propositions = $this->{$this->modelClass}->Decisionpropopdo->find(
-                'all',
-                array(
-                    'conditions' => array(
-                        'propopdo_id' => $pdo_id
-                    ),
-                    'contain' => array(
-                        'Decisionpdo'
-                    )
-                )
-            );
-            $this->set( compact( 'propositions' ) );
+			// Afficahge des propositions de décisions liées à une PDO
+			$propositions = $this->{$this->modelClass}->Decisionpropopdo->find(
+				'all',
+				array(
+					'conditions' => array(
+						'propopdo_id' => $pdo_id
+					),
+					'contain' => array(
+						'Decisionpdo'
+					)
+				)
+			);
+			$this->set( compact( 'propositions' ) );
 
 
 // debug($pdo);
 
-            // Retour à la apge d'index une fois que l'on clique sur Retour
-            if( isset( $this->params['form']['Cancel'] ) ) {
-                $this->redirect( array( 'controller' => 'propospdos', 'action' => 'index', Set::classicExtract( $pdo, 'Propopdo.personne_id') ) );
-            }
+			// Retour à la apge d'index une fois que l'on clique sur Retour
+			if( isset( $this->params['form']['Cancel'] ) ) {
+				$this->redirect( array( 'controller' => 'propospdos', 'action' => 'index', Set::classicExtract( $pdo, 'Propopdo.personne_id') ) );
+			}
 			$this->set( 'pdo', $pdo );
 			$this->_setOptions();
 			$this->set( 'personne_id', $pdo['Propopdo']['personne_id'] );
 		}
 
-        /**
-        * http://valums.com/ajax-upload/
-        * http://doc.ubuntu-fr.org/modules_php
-        * increase post_max_size and upload_max_filesize to 10M
-        * debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
-        */
+		/**
+		* http://valums.com/ajax-upload/
+		* http://doc.ubuntu-fr.org/modules_php
+		* increase post_max_size and upload_max_filesize to 10M
+		* debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
+		*/
 
-        public function ajaxfileupload() {
-            $this->Fileuploader->ajaxfileupload();
-        }
+		public function ajaxfileupload() {
+			$this->Fileuploader->ajaxfileupload();
+		}
 
-        /**
-        * http://valums.com/ajax-upload/
-        * http://doc.ubuntu-fr.org/modules_php
-        * increase post_max_size and upload_max_filesize to 10M
-        * debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
-        * FIXME: traiter les valeurs de retour
-        */
+		/**
+		* http://valums.com/ajax-upload/
+		* http://doc.ubuntu-fr.org/modules_php
+		* increase post_max_size and upload_max_filesize to 10M
+		* debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
+		* FIXME: traiter les valeurs de retour
+		*/
 
-        public function ajaxfiledelete() {
-            $this->Fileuploader->ajaxfiledelete();
-        }
+		public function ajaxfiledelete() {
+			$this->Fileuploader->ajaxfiledelete();
+		}
 
-        /**
-        *   Fonction permettant de visualiser les fichiers chargés dans la vue avant leur envoi sur le serveur
-        */
+		/**
+		*   Fonction permettant de visualiser les fichiers chargés dans la vue avant leur envoi sur le serveur
+		*/
 
-        public function fileview( $id ) {
-            $this->Fileuploader->fileview( $id );
-        }
+		public function fileview( $id ) {
+			$this->Fileuploader->fileview( $id );
+		}
 
 
 		/** ********************************************************************
@@ -306,7 +307,7 @@
 
 			}
 
-            $fichiers = array();
+			$fichiers = array();
 			if( $this->action == 'add' ) {
 				$personne_id = $id;
 				$dossier_id = $this->Personne->dossierId( $personne_id );
@@ -396,10 +397,10 @@
 					( is_numeric( $decisionspropospdos[0]['Decisionpropopdo']['validationdecision'] ) ) ? $ajoutDecision = true : $ajoutDecision = false;
 				}
 				else{
-                    $lastDecisionId = null;
-                    $ajoutDecision = null;
+					$lastDecisionId = null;
+					$ajoutDecision = null;
 				}
-                $this->set( compact( 'ajoutDecision', 'lastDecisionId' ) );
+				$this->set( compact( 'ajoutDecision', 'lastDecisionId' ) );
 				$this->set( 'pdo_id', $pdo_id );
 			}
 
@@ -442,31 +443,35 @@
 
 				$this->data['Propopdo'] = Set::merge( $defaults, $this->data['Propopdo'] );
 
-                $saved = $this->Propopdo->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) );
-                if( $saved ) {
-                    // Sauvegarde des fichiers liés à une PDO
-                    $dir = $this->Fileuploader->dirFichiersModule( $this->action, $this->params['pass'][0] );
-                    $saved = $this->Fileuploader->saveFichiers( $dir, !Set::classicExtract( $this->data, "Propopdo.haspiece" ), $id ) && $saved;
-                }
+				$saved = $this->Propopdo->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) );
+				if( $saved ) {
+					// Sauvegarde des fichiers liés à une PDO
+					$dir = $this->Fileuploader->dirFichiersModule( $this->action, $this->params['pass'][0] );
+					$saved = $this->Fileuploader->saveFichiers(
+						$dir,
+						!Set::classicExtract( $this->data, "Propopdo.haspiece" ),
+						( ( $this->action == 'add' ) ? $this->Propopdo->id : $id )
+					) && $saved;
+				}
 
-                if( $saved ) {
-                    $this->Jetons->release( $dossier_id );
-                    $this->Propopdo->commit();
-                    $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-                    $this->redirect( array(  'controller' => 'propospdos','action' => 'index', $personne_id ) );
-                }
-                else {
-                    $fichiers = $this->Fileuploader->fichiers( $id );
-                    $this->Propopdo->rollback();
-                    $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
-                }
+				if( $saved ) {
+					$this->Jetons->release( $dossier_id );
+					$this->Propopdo->commit();
+					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+					$this->redirect( array(  'controller' => 'propospdos','action' => 'index', $personne_id ) );
+				}
+				else {
+					$fichiers = $this->Fileuploader->fichiers( $id );
+					$this->Propopdo->rollback();
+					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+				}
 			}
 			//Affichage des données
 			elseif( $this->action == 'edit' ) {
-                $this->data = $pdo;
-                $fichiers = $this->Fileuploader->fichiers( $pdo['Propopdo']['id'] );
+				$this->data = $pdo;
+				$fichiers = $this->Fileuploader->fichiers( $pdo['Propopdo']['id'] );
 
-                $this->set( 'etatdossierpdo', $pdo['Propopdo']['etatdossierpdo'] );
+				$this->set( 'etatdossierpdo', $pdo['Propopdo']['etatdossierpdo'] );
 			}
 			$this->Propopdo->commit();
 
@@ -477,33 +482,30 @@
 			$this->render( $this->action, null, 'add_edit_'.Configure::read( 'nom_form_pdo_cg' ) );
 		}
 
-        /**
-        *   Téléchargement des fichiers préalablement associés à un traitement donné
-        */
+		/**
+		*   Téléchargement des fichiers préalablement associés à un traitement donné
+		*/
 
-        public function download( $fichiermodule_id ) {
-            $this->assert( !empty( $fichiermodule_id ), 'error404' );
-            $this->Fileuploader->download( $fichiermodule_id );
-        }
-
-
-        /**
-        *    Génération du courrier de PDO pour le bénéficiaire
-        */
-        public function printCourrier( $propopdo_id ) {
-
-            $pdf = $this->Propopdo->getCourrierPdo( $propopdo_id );
-
-            if( $pdf ) {
-                $this->Gedooo->sendPdfContentToClient( $pdf, 'CourrierPdo' );
-            }
-            else {
-                $this->Session->setFlash( 'Impossible de générer le courrier d\'information', 'default', array( 'class' => 'error' ) );
-                $this->redirect( $this->referer() );
-            }
-        }
+		public function download( $fichiermodule_id ) {
+			$this->assert( !empty( $fichiermodule_id ), 'error404' );
+			$this->Fileuploader->download( $fichiermodule_id );
+		}
 
 
+		/**
+		*    Génération du courrier de PDO pour le bénéficiaire
+		*/
+		public function printCourrier( $propopdo_id ) {
 
+			$pdf = $this->Propopdo->getCourrierPdo( $propopdo_id );
+
+			if( $pdf ) {
+				$this->Gedooo->sendPdfContentToClient( $pdf, 'CourrierPdo' );
+			}
+			else {
+				$this->Session->setFlash( 'Impossible de générer le courrier d\'information', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
+			}
+		}
 	}
 ?>
