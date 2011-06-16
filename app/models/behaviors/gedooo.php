@@ -34,9 +34,9 @@
 			}
 
 			// Traduction des enums
-			if( preg_match( '/([^_]+)_([^_]+)$/', $key, $matches ) ) {
-				if( isset( $options[$matches[1]][$matches[2]] ) ) {
-					$value = Set::enum( $value, $options[$matches[1]][$matches[2]] );
+			if( preg_match( '/([^_]+)_([0-9]+_){0,1}([^_]+)$/', $key, $matches ) ) {
+				if( isset( $options[$matches[1]][$matches[3]] ) ) {
+					$value = Set::enum( $value, $options[$matches[1]][$matches[3]] );
 				}
 			}
 
