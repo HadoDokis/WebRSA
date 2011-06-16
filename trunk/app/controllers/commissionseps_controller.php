@@ -229,6 +229,9 @@
 				$this->paginate['Commissionep']['order'] = array( 'Commissionep.dateseance DESC' );
 
 				switch( $etape ) {
+					case 'recherche':
+						$this->paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'cree', 'associe' );
+						break;
 					case 'creationmodification':
 						$this->paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'cree', 'associe' );
 						break;
@@ -236,13 +239,13 @@
 						$this->paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'cree', 'associe' );
 						break;
 					case 'arbitrageep':
-						$this->paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'associe', 'valide', 'quorum', 'presence', 'decisionep', 'traiteep'/*, 'decisioncg', 'traite'*/ );
+						$this->paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'associe', 'valide', 'quorum', 'presence', 'decisionep', 'traiteep' );
 						break;
 					case 'arbitragecg':
-						$this->paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'traiteep', 'decisioncg'/*, 'traite'*/ );
+						$this->paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'traiteep', 'decisioncg' );
 						break;
-					case 'decisioncg':
-						$this->paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'traite' );
+					case 'decisions':
+						$this->paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'traite', 'annule' );
 						break;
 				}
 
