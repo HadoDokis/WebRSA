@@ -181,10 +181,9 @@
 			$modeles = Set::merge(
 				$modeles,
 				array(
-					'Convocationep/pv.odt',																	// app/models/commissionep.php:941
-					'Convocationep/ordedujour.odt',															// app/models/commissionep.php:1123
-					'Convocationep/convocationep_participant.odt',											// app/models/commissionep.php:1388
-					'Convocationep/ordredujour_participant_'.Configure::read( 'Cg.departement' ).'.odt',	// app/models/commissionep.php:1681
+					'Commissionep/pv.odt',																	// app/models/commissionep.php:941
+					'Commissionep/convocationep_participant.odt',											// app/models/commissionep.php:1388
+					'Commissionep/ordredujour_participant_'.Configure::read( 'Cg.departement' ).'.odt',	// app/models/commissionep.php:1681
 					'Commissionep/decisionep.odt',															// app/models/commissionep.php:1822
 					'Commissionep/fichesynthese.odt',														// app/models/commissionep.php:1959
 					'Commissionep/convocationep_beneficiaire.odt',											// Dans chacun des modèles des thématiques
@@ -210,11 +209,6 @@
 				$modeles = Set::merge(
 					$modeles,
 					array(
-						'Relancenonrespectsanctionep93/notification_contratinsertion_relance1.odt',			// app/models/relancenonrespectsanctionep93.php:1448
-						'Relancenonrespectsanctionep93/notification_contratinsertion_relance2.odt',
-						'Relancenonrespectsanctionep93/notification_orientstruct_relance1.odt',
-						'Relancenonrespectsanctionep93/notification_orientstruct_relance2.odt',
-						'Relancenonrespectsanctionep93/notification_orientstruct_relance3.odt',
 						'Nonrespectsanctionep93/convocationep_beneficiaire_1er_passage.odt', 				// app/models/nonrespectsanctionep93.php:699
 						'Nonrespectsanctionep93/convocationep_beneficiaire_2eme_passage_suite_delai.odt', 	// app/models/nonrespectsanctionep93.php:771
 						'Nonrespectsanctionep93/convocationep_beneficiaire_2eme_passage_suite_report.odt',	// app/models/nonrespectsanctionep93.php:774
