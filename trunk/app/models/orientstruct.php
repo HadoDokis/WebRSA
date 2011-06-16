@@ -167,22 +167,22 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
-            'Fichiermodule' => array(
-                'className' => 'Fichiermodule',
-                'foreignKey' => false,
-                'dependent' => false,
-                'conditions' => array(
-                    'Fichiermodule.modele = \'Orientstruct\'',
-                    'Fichiermodule.fk_value = {$__cakeID__$}'
-                ),
-                'fields' => '',
-                'order' => '',
-                'limit' => '',
-                'offset' => '',
-                'exclusive' => '',
-                'finderQuery' => '',
-                'counterQuery' => ''
-            )
+			'Fichiermodule' => array(
+				'className' => 'Fichiermodule',
+				'foreignKey' => false,
+				'dependent' => false,
+				'conditions' => array(
+					'Fichiermodule.modele = \'Orientstruct\'',
+					'Fichiermodule.fk_value = {$__cakeID__$}'
+				),
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			)
 		);
 
 		public $hasAndBelongsToMany = array(
@@ -328,12 +328,12 @@
 
 			$orientstruct['Dossier'] = $orientstruct['Personne']['Foyer']['Dossier'];
 			if( isset( $orientstruct['Adresse'] ) ){
-                $orientstruct['Adresse'] = $orientstruct['Personne']['Foyer']['Adressefoyer'][0]['Adresse'];
-                unset( $orientstruct['Personne']['Foyer'] );
-                $orientstruct['Adresse']['typevoie'] = Set::classicExtract( $typevoie, Set::classicExtract( $orientstruct, 'Adresse.typevoie' ) );
-            }
+				$orientstruct['Adresse'] = $orientstruct['Personne']['Foyer']['Adressefoyer'][0]['Adresse'];
+				unset( $orientstruct['Personne']['Foyer'] );
+				$orientstruct['Adresse']['typevoie'] = Set::classicExtract( $typevoie, Set::classicExtract( $orientstruct, 'Adresse.typevoie' ) );
+			}
 
-            $orientstruct['Structurereferente']['type_voie'] = Set::classicExtract( $typevoie, Set::classicExtract( $orientstruct, 'Structurereferente.type_voie' ) );
+			$orientstruct['Structurereferente']['type_voie'] = Set::classicExtract( $typevoie, Set::classicExtract( $orientstruct, 'Structurereferente.type_voie' ) );
 			$orientstruct['Personne']['qual'] = Set::classicExtract( $qual, Set::classicExtract( $orientstruct, 'Personne.qual' ) );
 
 
@@ -411,6 +411,36 @@
 		}
 
 		/**
+		* Construit les conditions pour ajout possible à partir de la configuration,
+		* du webrsa.inc, en prenant en compte le traitement spécial à appliquer
+		* pour la valeur NULL.
+		* ATTENTION: in_array confond null et 0
+		* @see http://fr.php.net/manual/en/function.in-array.php#99676
+		*/
+
+		protected function _conditionsAjoutOrientationPossible( $key, $values ) {
+			$hasNull = false;
+			foreach( $values as $value ) {
+				if( $value === null ) {
+					$hasNull = true;
+				}
+			}
+
+			$conditions = array( $key => array_diff( $values, array( null ) ) );
+
+			if( $hasNull ) {
+				$conditions = array(
+					'OR' => array(
+						$conditions,
+						"{$key} IS NULL"
+					)
+				);
+			}
+
+			return $conditions;
+		}
+
+		/**
 		* FIXME -> aucun dossier en cours, pour certains thèmes:
 		*		- CG 93
 		*			* Nonrespectsanctionep93 -> ne débouche pas sur une orientation: '1reduction', '1maintien', '1sursis', '2suspensiontotale', '2suspensionpartielle', '2maintien'
@@ -461,15 +491,23 @@
 				)
 			);
 
-			$toppersdrodevorsa = 1;
+			// Quelles sont les valeurs de Calculdroitrsa.toppersdrodevorsa pour lesquelles on peut ajouter une orientation ?
+			// Si la valeur null est dans l'array, il faut un traitement un peu spécial
+			$conditionsToppersdrodevorsa = array( 'Calculdroitrsa.toppersdrodevorsa' => 1 );
 			if( Configure::read( 'AjoutOrientationPossible.toppersdrodevorsa' ) != NULL ) {
-                $toppersdrodevorsa = Configure::read( 'AjoutOrientationPossible.toppersdrodevorsa' );
+				$conditionsToppersdrodevorsa = $this->_conditionsAjoutOrientationPossible(
+					'Calculdroitrsa.toppersdrodevorsa',
+					Configure::read( 'AjoutOrientationPossible.toppersdrodevorsa' )
+				);
 			}
 
-            $situationetatdosrsa = array( 'Z', '2', '3', '4' );
-            if( Configure::read( 'AjoutOrientationPossible.situationetatdosrsa' )  != NULL ) {
-                $situationetatdosrsa = Configure::read( 'AjoutOrientationPossible.situationetatdosrsa' );
-            }
+			$conditionsSituationetatdosrsa = array( 'Situationdossierrsa.etatdosrsa' => array( 'Z', '2', '3', '4' ) );
+			if( Configure::read( 'AjoutOrientationPossible.situationetatdosrsa' )  != NULL ) {
+				$conditionsSituationetatdosrsa = $this->_conditionsAjoutOrientationPossible(
+					'Situationdossierrsa.etatdosrsa',
+					Configure::read( 'AjoutOrientationPossible.situationetatdosrsa' )
+				);
+			}
 
 
 			$nbPersonnes = $this->Personne->find(
@@ -495,9 +533,9 @@
 							'alias'      => 'Calculdroitrsa',
 							'type'       => 'INNER',
 							'foreignKey' => false,
-							'conditions' => array(
-								'Personne.id = Calculdroitrsa.personne_id',
-								'Calculdroitrsa.toppersdrodevorsa' => $toppersdrodevorsa
+							'conditions' => Set::merge(
+								array( 'Personne.id = Calculdroitrsa.personne_id' ),
+								$conditionsToppersdrodevorsa
 							)
 						),
 						array(
@@ -519,9 +557,9 @@
 							'alias'      => 'Situationdossierrsa',
 							'type'       => 'INNER',
 							'foreignKey' => false,
-							'conditions' => array(
-								'Situationdossierrsa.dossier_id = Dossier.id',
-								'Situationdossierrsa.etatdosrsa' => $situationetatdosrsa
+							'conditions' => Set::merge(
+								array( 'Situationdossierrsa.dossier_id = Dossier.id' ),
+								$conditionsSituationetatdosrsa
 							)
 						),
 					),
