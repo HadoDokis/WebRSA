@@ -8,15 +8,18 @@
 		case 'attributiondossiers':
 			$this->pageTitle = 'Attribution des dossiers à une commission d\'EP';
 			break;
+		case 'recherche':
+			$this->pageTitle = '2. Constitution de la commission d\'EP';
+			break;
 		case 'arbitrageep':
 			$this->pageTitle = '3. Arbitrage d\'une commission d\'EP (niveau EP)';
 			break;
 		case 'arbitragecg':
 			$this->pageTitle = '3. Arbitrage d\'une commission d\'EP (niveau CG)';
 			break;
-        case 'decisions':
-            $this->pageTitle = '4. Consultation des décisions';
-            break;
+		case 'decisions':
+			$this->pageTitle = '4. Consultation des décisions';
+			break;
 		default:
 			$this->pageTitle = 'Liste des commissions d\'EP';
 	}
@@ -126,9 +129,9 @@
 				case 'arbitragecg':
 					$colspan = 1;
 					break;
-                case 'decisions':
-                    $colspan = 1;
-                    break;
+				case 'decisions':
+					$colspan = 1;
+					break;
 				default:
 					$colspan = 1;
 			}
@@ -172,14 +175,14 @@
 					case 'arbitragecg':
 						$lien = '<td>'.$xhtml->link( 'Arbitrage', array( 'controller' => 'commissionseps', 'action' => 'traitercg', $commissionep['Commissionep']['id'] ), array( 'enabled' => ( $commissionep['Commissionep']['etatcommissionep'] == 'traiteep' || $commissionep['Commissionep']['etatcommissionep'] == 'decisioncg' ) ) ).'</td>';
 						break;
-                    case 'decisions':
+					case 'decisions':
 						if ( Configure::read( 'Cg.departement' ) == 58 ) {
 							$lien = '<td>'.$xhtml->link( 'Voir les décisions', array( 'controller' => 'commissionseps', 'action' => 'decisionep', $commissionep['Commissionep']['id'] ), array( 'enabled' => $commissionep['Commissionep']['etatcommissionep'] == 'traite' ) ).'</td>';
 						}
 						else {
 							$lien = '<td>'.$xhtml->link( 'Voir les décisions', array( 'controller' => 'commissionseps', 'action' => 'decisioncg', $commissionep['Commissionep']['id'] ), array( 'enabled' => $commissionep['Commissionep']['etatcommissionep'] == 'traite' ) ).'</td>';
 						}
-                        break;
+						break;
 					default:
 						$lien = '<td>'.$xhtml->link( 'Voir', array( 'controller' => 'commissionseps', 'action' => 'view', $commissionep['Commissionep']['id'] ) ).'</td>';
 				}
