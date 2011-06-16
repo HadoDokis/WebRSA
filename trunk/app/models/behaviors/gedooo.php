@@ -55,7 +55,6 @@
 		public function ged( &$model, $datas, $document, $section = false, $options = array() ) {
 			// Définition des variables & maccros
 			$sMimeType  = "application/pdf";
-			// fixme: chemin ?
 			$path_model = PHPGEDOOO_DIR.'/../modelesodt/'.$document;
 
 			// Quel type de données a-t-on reçu ?
@@ -69,8 +68,6 @@
 				unset( $cohorteData[0] );
 			}
 
-// 			$availableFields = array();
-
 			//
 			// Organisation des données
 			//
@@ -80,27 +77,6 @@
 			if( !empty( $mainData ) ) {
 				foreach( Set::flatten( $mainData, '_' ) as $key => $value ) {
 					$oMainPart = $this->_addPartValue( $oMainPart, $key, $value, $options );
-					/*$type = 'text';
-					if( preg_match( '/[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{4}/', $value ) ) {
-						$type = 'date';
-					}
-					else if( preg_match( '/^([0-9]{4})-([0-9]{2})-([0-9]{2}) ([0-9]{2}:[0-9]{2}:[0-9]{2})$/', $value, $matches ) ) {
-						$type = 'date';
-						$value = "{$matches[3]}/{$matches[2]}/{$matches[1]}";
-						$oMainPart->addElement( new GDO_FieldType( strtolower( $key ).'_time', $matches[4], 'time' ) );
-					}
-
-					// Traduction des enums
-					if( preg_match( '/^([^_]+)_(.*)$/', $key, $matches ) ) {
-						if( isset( $options[$matches[1]][$matches[2]] ) ) {
-							$value = Set::enum( $value, $options[$matches[1]][$matches[2]] );
-						}
-					}
-
-// debug( $value );
-					$oMainPart->addElement( new GDO_FieldType( strtolower( $key ), $value, $type ) );
-
-// 					$availableFields[0][] = strtolower( $key );*/
 				}
 			}
 
@@ -116,22 +92,6 @@
 						$sectionData = Set::flatten( $sectionData, '_' );
 						foreach( $sectionData as $key => $value ) {
 							$oDevPart = $this->_addPartValue( $oDevPart, $key, $value, $options );
-							/*$type = 'text';
-							if( preg_match( '/[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{4}/', $value ) ) {
-								$type = 'date';
-							}
-
-							// Traduction des enums
-							if( preg_match( '/^([^_]+)_(.*)$/', $key, $matches ) ) {
-								if( isset( $options[$matches[1]][$matches[2]] ) ) {
-									$value = Set::enum( $value, $options[$matches[1]][$matches[2]] );
-								}
-							}
-
-							$sectionFields[] = strtolower( $key );
-							$oDevPart->addElement( new GDO_FieldType( strtolower( $key ), $value, $type ) );
-
-// 							$availableFields[$cohorteName][] = strtolower( $key );*/
 						}
 						$oIteration->addPart( $oDevPart );
 
@@ -140,9 +100,7 @@
 				}
 			}
 
-			// FIXME: une commande / config spéciale pour exporter, ou juste quand le debug > 0 ?
 			if( Configure::read( 'debug' ) > 0 ) {
-				//debug( $oMainPart );
 				$mainFields = array();
 				if( !empty( $oMainPart->field ) ) {
 					foreach( $oMainPart->field as $field ) {
@@ -190,9 +148,6 @@
 
 			$oFusion = new GDO_FusionType( $oTemplate, $sMimeType, $oMainPart );
 			$oFusion->process();
-
-			/*$oFusion->SendContentToClient();
-			return ( $oFusion->getCode() == 'OK' );*/
 
 			$success = ( $oFusion->getCode() == 'OK' );
 
