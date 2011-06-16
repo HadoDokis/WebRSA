@@ -10,6 +10,7 @@ echo '<table id="Decisioncontratcomplexeep93" class="tooltips"><thead>
 <th rowspan="2">Avis EP</th>
 <th colspan="4">Décision CG</th>
 <th rowspan="2">Observations</th>
+<th rowspan="2">Action</th>
 <th rowspan="2" class="innerTableHeader noprint">Avis EP</th>
 </tr>
 <tr>
@@ -58,6 +59,7 @@ echo '<table id="Decisioncontratcomplexeep93" class="tooltips"><thead>
 				array( Set::classicExtract( $decisioncg, "observ_ci" ), array( 'id' => "Decisioncontratcomplexeep93{$i}ObservCi" ) ),
 // 				array( Set::classicExtract( $decisioncg, "raisonnonpassage" ), array( 'colspan' => '2', 'id' => "Decisioncontratcomplexeep93{$i}Raisonnonpassage" ) ),
 				Set::classicExtract( $decisioncg, "commentaire" ),
+				$xhtml->printLink( 'Imprimer', array( 'controller' => 'commissionseps', 'action' => 'impressionDecision', $dossierep['Passagecommissionep'][0]['id'] ) ),
 				array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
 			),
 			array( 'class' => 'odd' ),

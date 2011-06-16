@@ -13,6 +13,7 @@ echo '<table id="Decisionreorientationep93" class="tooltips"><thead>
 <th>Avis EP</th>
 <th colspan=\'4\'>Décision CG</th>
 <th>Observations</th>
+<th>Action</th>
 <th class="innerTableHeader noprint">Avis EP</th>
 </tr>
 </thead><tbody>';
@@ -48,6 +49,7 @@ echo '<table id="Decisionreorientationep93" class="tooltips"><thead>
 				array( @$liste_structuresreferentes[Set::classicExtract( $decisioncg, "structurereferente_id" )], array( 'id' => "Decisionreorientationep93{$i}StructurereferenteId" ) ),
 // 				array( Set::classicExtract( $decisioncg, "raisonnonpassage" ), array( 'colspan' => '2', 'id' => "Decisionreorientationep93{$i}Raisonnonpassage" ) ),
 				Set::classicExtract( $decisioncg, "commentaire" ),
+				$xhtml->printLink( 'Imprimer', array( 'controller' => 'commissionseps', 'action' => 'impressionDecision', $dossierep['Passagecommissionep'][0]['id'] ) ),
 				array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
 			),
 			array( 'class' => 'odd' ),

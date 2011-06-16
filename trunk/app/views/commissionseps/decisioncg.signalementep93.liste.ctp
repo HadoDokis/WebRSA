@@ -15,6 +15,7 @@ echo '<table id="Decisionsignalementep93" class="tooltips"><thead>
 <th>Avis EP</th>
 <th colspan="2">Décision CG</th>
 <th>Observations</th>
+<th>Action</th>
 <th class="innerTableHeader noprint">Avis EP</th>
 </tr>
 </thead><tbody>';
@@ -65,6 +66,7 @@ echo '<table id="Decisionsignalementep93" class="tooltips"><thead>
 				$options['Decisionsignalementep93']['decisionpcg'][Set::classicExtract( $decisioncg, "decisionpcg" )], array( $options['Decisionsignalementep93']['decision'][Set::classicExtract( $decisionep, "decision" )], array( 'id' => "Decisionsignalementep93{$i}ColumnDecision" ) ),
 // 				array( Set::classicExtract( $decisioncg, "raisonnonpassage" ), array( 'id' => "Decisionsignalementep93{$i}Raisonnonpassage" ) ),
 				Set::classicExtract( $decisioncg, "commentaire" ),
+				$xhtml->printLink( 'Imprimer', array( 'controller' => 'commissionseps', 'action' => 'impressionDecision', $dossierep['Passagecommissionep'][0]['id'] ) ),
 				array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
 			),
 			array( 'class' => 'odd' ),

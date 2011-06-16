@@ -538,6 +538,120 @@
 		}
 
 		/**
+		* Récupération de la décision suite au passage en commission d'un dossier
+		* d'EP pour un certain niveau de décision.
+		* FIXME: spécifique par thématique
+		*/
+
+		public function getDecisionPdf( $passagecommissionep_id  ) {
+			$modele = 'Nonorientationproep'.Configure::read( 'Cg.departement' );
+			$modeleDecisions = 'Decisionnonorientationproep'.Configure::read( 'Cg.departement' );
+
+			$gedooo_data = $this->Dossierep->Passagecommissionep->find(
+				'first',
+				array(
+					'conditions' => array( 'Passagecommissionep.id' => $passagecommissionep_id ),
+					'contain' => array(
+						'Commissionep',
+						'Dossierep' => array(
+							'Personne' => array(
+								'Foyer' => array(
+									'Adressefoyer' => array(
+										'conditions' => array(
+											'Adressefoyer.id IN ( '.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01( 'Adressefoyer.foyer_id' ).' )'
+										),
+										'Adresse'
+									)
+								)
+							),
+							$modele
+						),
+						$modeleDecisions => array(
+							'Typeorient',
+							'Structurereferente',
+							'order' => array(
+								$modeleDecisions.'.etape DESC'
+							),
+							'limit' => 1
+						)
+					)
+				)
+			);
+
+			if( empty( $gedooo_data ) || !isset( $gedooo_data[$modeleDecisions][0] ) || empty( $gedooo_data[$modeleDecisions][0] ) ) {
+				return false;
+			}
+
+			// Choix du modèle de document
+			$decision = $gedooo_data[$modeleDecisions][0]['decision'];
+
+			if( $decision == 'annule' ) {
+				$modeleOdt  = "{$this->alias}/decision_annule.odt";
+			}
+			else if( $decision == 'reporte' ) {
+				$modeleOdt  = "{$this->alias}/decision_reporte.odt";
+			}
+			else {
+				$modeleOdt  = "{$this->alias}/decision_autre.odt";
+			}
+
+			// Calcul de la date de fin de sursis si besoin
+			$dateDepart = strtotime( $gedooo_data['Passagecommissionep']['impressiondecision'] );
+			if( empty( $dateDepart ) ) {
+				$dateDepart = mktime();
+			}
+
+			// Possède-t'on un PDF déjà stocké ?
+			$pdfModel = ClassRegistry::init( 'Pdf' );
+			$pdf = $pdfModel->find(
+				'first',
+				array(
+					'conditions' => array(
+						'modele' => 'Passagecommissionep',
+						'modeledoc' => $modeleOdt,
+						'fk_value' => $passagecommissionep_id
+					)
+				)
+			);
+
+			if( !empty( $pdf ) && empty( $pdf['Pdf']['document'] ) ) {
+				$cmisPdf = Cmis::read( "/Passagecommissionep/{$passagecommissionep_id}.pdf", true );
+				$pdf['Pdf']['document'] = $cmisPdf['content'];
+			}
+
+			if( !empty( $pdf['Pdf']['document'] ) ) {
+				return $pdf['Pdf']['document'];
+			}
+
+			// Traductions
+			$options = $this->Dossierep->Passagecommissionep->{$modeleDecisions}->enums();
+			$options['Personne']['qual'] = ClassRegistry::init( 'Option' )->qual();
+			$options['Adresse']['typevoie'] = ClassRegistry::init( 'Option' )->typevoie();
+
+			// Sinon, on génère le PDF
+			$pdf =  $this->ged(
+				$gedooo_data,
+				$modeleOdt,
+                false,
+                $options
+			);
+
+			$oldRecord['Pdf']['modele'] = 'Passagecommissionep';
+			$oldRecord['Pdf']['modeledoc'] = $modeleOdt;
+			$oldRecord['Pdf']['fk_value'] = $passagecommissionep_id;
+			$oldRecord['Pdf']['document'] = $pdf;
+
+			$pdfModel->create( $oldRecord );
+			$success = $pdfModel->save();
+
+			if( !$success ) {
+				return false;
+			}
+
+			return $pdf;
+		}
+
+		/**
 		 * Fonction retournant un querydata qui va permettre de retrouver des dossiers d'EP
 		 */
 		public function qdListeDossier( $commissionep_id = null ) {
