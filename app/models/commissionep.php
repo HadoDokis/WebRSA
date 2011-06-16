@@ -1198,9 +1198,6 @@
 
 			$convocation = Set::merge( $commissionep, $membreep );
 
-// debug($convocation);
-// die();
-
 			$options = $this->Membreep->enums();
 			$options['Membreep']['typevoie'] = ClassRegistry::init( 'Option' )->typevoie();
 
@@ -1646,35 +1643,11 @@
 			);
 		}
 
+		/**
+		* Impression de la fiche synthétique d'un allocataire pour un passage en commission d'EP
+		*/
 
-		public function getFicheSynthese( $commissionep_id, $dossierep_id ) {
-
-//             $commissionep = $this->find(
-//                 'first',
-//                 array(
-//                     'conditions' => array(
-//                         'Commissionep.id' => $commissionep_id
-//                     ),
-//                     'contain' => array(
-//                         'Ep' => array(
-//                              'Regroupementep'
-//                          )
-//                     )
-//                 )
-//             );
-// 
-//             $dossierep = $this->Passagecommissionep->Dossierep->find(
-//                 'first',
-//                 array(
-//                     'conditions' => array(
-//                         'Dossierep.id' => $dossierep_id
-//                     ),
-//                     'contain' => false
-//                 )
-//             );
-// 
-//             $fichesynthese = Set::merge( $commissionep, $dossierep );
-
+		public function getFicheSynthese( $commissionep_id, $dossierep_id, $anonymiser = false ) {
 			$queryData = array(
 				'fields' => array(
 					'Dossierep.id',
@@ -1773,7 +1746,13 @@
 			$dossierep = $this->Passagecommissionep->Dossierep->find( 'first', $queryData );
 			$dataFiche = Set::merge( $dossierep, $fichessynthetiques );
 
-			$options['Foyer']['sitfam'] = ClassRegistry::init( 'Option' )->sitfam();
+			$modeleOption = ClassRegistry::init( 'Option' );
+
+			$options['Foyer']['sitfam'] = $modeleOption->sitfam();
+			$options['Personne']['qual'] = $modeleOption->qual();
+			$options['Adresse']['typevoie'] = $modeleOption->typevoie();
+
+			$dataFiche['Dossierep']['anonymiser'] = ( $anonymiser ? 1 : 0 );
 
 			return $this->ged(
 				$dataFiche,

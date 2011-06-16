@@ -544,6 +544,8 @@
 			$return = array(
 				'fields' => array(
 					'Dossierep.id',
+					'Dossierep.created',
+					'Dossierep.themeep',
 					'Dossier.numdemrsa',
 					'Dossier.matricule',
 					'Personne.id',
@@ -551,11 +553,13 @@
 					'Personne.nom',
 					'Personne.prenom',
 					'Personne.dtnai',
+					'Adresse.locaadr',
 					'Typeorient.lib_type_orient',
 					'Structurereferente.lib_struc',
 					'Orientstruct.date_valid',
 					'Passagecommissionep.id',
-					'Passagecommissionep.commissionep_id'
+					'Passagecommissionep.commissionep_id',
+					'Passagecommissionep.etatdossierep'
 				)
 			);
 

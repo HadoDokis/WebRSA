@@ -58,7 +58,7 @@
 					array( 'class' => 'even' )
 				);
 
-				if( Configure::read( 'Cg.departement' ) !=  66 ) {
+				if( Configure::read( 'Cg.departement' ) ==  93 ) {
 					echo $xhtml->tableCells(
 						array(
 							h( 'Motifs de demandes de réorientation' ),

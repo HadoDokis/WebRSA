@@ -88,6 +88,12 @@ msgstr "10. Imprimer les décisions"
 msgid "Commissionseps::validecommission"
 msgstr "Valider la commission"
 
+msgid "Commissionseps::impressionDecision"
+msgstr "Impression de la décision"
+
+msgid "Commissionseps::impressionsDecisions"
+msgstr "Impression des décisions"
+
 msgid "ENUM::FINALISEE::cg"
 msgstr "Décision CG"
 
@@ -142,3 +148,9 @@ msgstr "Annulée"
 
 msgid "ENUM::ETATCOMMISSIONEP::reporte"
 msgstr "Reportée"
+
+msgid "Commissionseps::printConvocationsParticipants"
+msgstr "Impression des invitations"
+
+msgid "Commissionseps::printOrdresDuJour"
+msgstr "Impression des ordres du jour"

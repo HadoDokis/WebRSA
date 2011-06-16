@@ -34,6 +34,10 @@
 			exec( "pdftk {$pdfTmpDir}/*.pdf cat output {$pdfTmpDir}/all.pdf" ); // FIXME: nom de fichier cohorte-orientation-20100423-12h00.pdf
 
 			if( !file_exists( "{$pdfTmpDir}/all.pdf" ) ) {
+				// INFO: on nettoie quand même avant de partir
+				exec( "rm {$pdfTmpDir}/*.pdf" );
+				exec( "rmdir {$pdfTmpDir}" );
+
 				return false;
 			}
 

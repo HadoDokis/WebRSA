@@ -859,5 +859,15 @@
 
 			return $return;
 		}
+
+		/**
+		* Récupération de la décision suite au passage en commission d'un dossier
+		* d'EP pour un certain niveau de décision. On revoie la chaîne vide car on
+		* n'est pas sensés imprimer de décision pour la commission.
+		*/
+
+		public function getDecisionPdf( $passagecommissionep_id  ) {
+			return '';
+		}
 	}
 ?>

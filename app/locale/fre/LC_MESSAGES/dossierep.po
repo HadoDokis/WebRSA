@@ -47,7 +47,7 @@ msgid "Dossierseps::view"
 msgstr "Voir le dossier de la personne"
 
 msgid "Dossierseps::fichesynthese"
-msgstr "Imprimer la fiche de synthèse"
+msgstr "Imprimer la fiche synthétique"
 ###############################################################################
 # Enums
 ###############################################################################

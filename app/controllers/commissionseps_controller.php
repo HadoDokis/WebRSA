@@ -26,6 +26,7 @@
 				'commissionseps::edit',
 				'commissionseps::delete',
 				'membreseps::printConvocationParticipant',
+				'membreseps::printConvocationsParticipants',
 			),
 			'associe' => array(
 				'commissionseps::ordredujour',
@@ -33,6 +34,7 @@
 				'commissionseps::printConvocationBeneficiaire',
 				'commissionseps::printConvocationsBeneficiaires',
 				'membreseps::printConvocationParticipant',
+				'membreseps::printConvocationsParticipants',
 				'commissionseps::printOrdreDuJour',
 				'membreseps::editliste',
 				'membreseps::editpresence',
@@ -45,6 +47,7 @@
 				'commissionseps::printConvocationBeneficiaire',
 				'commissionseps::printConvocationsBeneficiaires',
 // 				'membreseps::printConvocationParticipant',
+// 				'membreseps::printConvocationsParticipants',
 				'commissionseps::printOrdreDuJour',
 				'commissionseps::delete',
 			),
@@ -52,6 +55,7 @@
 				'membreseps::editpresence',
 				'commissionseps::delete',
 				'membreseps::printConvocationParticipant',
+				'membreseps::printConvocationsParticipants',
 				'commissionseps::printConvocationBeneficiaire',
 				'commissionseps::printConvocationsBeneficiaires',
 			),
@@ -63,6 +67,7 @@
 // 				'commissionseps::printConvocationBeneficiaire',
 				'commissionseps::printOrdreDuJour',
 				'membreseps::printConvocationParticipant',
+				'membreseps::printConvocationsParticipants',
 				'commissionseps::printConvocationBeneficiaire',
 				'commissionseps::printConvocationsBeneficiaires',
 			),
@@ -75,11 +80,13 @@
 				'commissionseps::finaliserep',
 				'commissionseps::delete',
 				'membreseps::printConvocationParticipant',
+				'membreseps::printConvocationsParticipants',
 				'commissionseps::printConvocationBeneficiaire',
 				'commissionseps::printConvocationsBeneficiaires',
 			),
 			'traiteep' => array(
 				'membreseps::printConvocationParticipant',
+				'membreseps::printConvocationsParticipants',
 				'commissionseps::printOrdreDuJour',
 // 				'commissionseps::ordredujour',
 				'commissionseps::impressionpv',
@@ -89,6 +96,7 @@
 			),
 			'decisioncg' => array(
 				'membreseps::printConvocationParticipant',
+				'membreseps::printConvocationsParticipants',
 				'commissionseps::printOrdreDuJour',
 // 				'commissionseps::ordredujour',
 				'commissionseps::impressionpv',
@@ -99,6 +107,7 @@
 			),
 			'traite' => array(
 				'membreseps::printConvocationParticipant',
+				'membreseps::printConvocationsParticipants',
 				'commissionseps::printOrdreDuJour',
 // 				'commissionseps::ordredujour',
 				'commissionseps::impressionpv',
@@ -903,12 +912,11 @@
 		}
 
 		/**
-		*   Génération du document d'invitation à une  EP au participant.
-		*   Courrier contenant le lieu, date et heure de la commission EP
+		* Génération du document d'invitation à une  EP au participant.
+		* Courrier contenant le lieu, date et heure de la commission EP
 		*/
 
 		public function printConvocationParticipant( $commissionep_id, $membreep_id ) {
-
 			$pdf = $this->Commissionep->getPdfConvocationParticipant( $commissionep_id, $membreep_id );
 
 			if( $pdf ) {
@@ -920,6 +928,41 @@
 			}
 		}
 
+		/**
+		* Génération des documents d'invitation à une commission d'EP pour les participants.
+		* Courrier contenant le lieu, date et heure de la commission EP
+		*/
+
+		public function printConvocationsParticipants( $ep_id, $commissionep_id ) {
+			$liste = $this->Commissionep->Membreep->EpMembreep->find(
+				'list',
+				array(
+					'fields' => array(
+						'EpMembreep.id',
+						'EpMembreep.membreep_id'
+					),
+					'conditions' => array(
+						'EpMembreep.ep_id' => $ep_id,
+					),
+					'recursive' => -1
+				)
+			);
+
+			$pdfs = array();
+			foreach( array_values( $liste ) as $membreep_id ) {
+				$pdfs[] = $this->Commissionep->getPdfConvocationParticipant( $commissionep_id, $membreep_id );
+			}
+
+			$pdfs = $this->Gedooo->concatPdfs( $pdfs, 'ConvocationEPParticipant' );
+
+			if( $pdfs ) {
+				$this->Gedooo->sendPdfContentToClient( $pdfs, 'ConvocationEPParticipant' );
+			}
+			else {
+				$this->Session->setFlash( 'Impossible de générer les invitations pour les participants de cette commission.', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
+			}
+		}
 
 
 		/**
@@ -970,13 +1013,12 @@
 			}
 		}
 
-
 		/**
-		*   Impression des convocations pour les participants à la commission d'EP
+		* Vérification, pour une commission donnée, si on peut imprimer l'ordre du jour.
+		* Sinon, ajout d'un message d'erreur et redirection vers la page précédente.
 		*/
 
-		public function printOrdreDuJour( $commissionep_membreep_id ) {
-			$commissionep_id = $this->Commissionep->CommissionepMembreep->field( 'commissionep_id', array( 'CommissionepMembreep.id' => $commissionep_membreep_id ) );
+		protected function _checkPrintOrdreDuJour( $commissionep_id ) {
 			$this->assert( !empty( $commissionep_id ), 'invalidParameter' );
 
 			// Réponses prévisionnelles de participation
@@ -1012,11 +1054,54 @@
 				}
 				$this->redirect( $this->referer() );
 			}
+		}
+
+		/**
+		*   Impression des convocations pour les participants à la commission d'EP
+		*/
+
+		public function printOrdreDuJour( $commissionep_membreep_id ) {
+			$commissionep_id = $this->Commissionep->CommissionepMembreep->field( 'commissionep_id', array( 'CommissionepMembreep.id' => $commissionep_membreep_id ) );
+
+			$this->_checkPrintOrdreDuJour( $commissionep_id );
 
 			$pdf = $this->Commissionep->getPdfOrdredujour( $commissionep_membreep_id );
 
 			if( $pdf ) {
 				$this->Gedooo->sendPdfContentToClient( $pdf, 'ConvocationepParticipant' );
+			}
+			else {
+				$this->Session->setFlash( 'Impossible de générer les convocations du participant à la commission d\'EP', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
+			}
+		}
+
+		/**
+		*   Impression des convocations pour les participants à la commission d'EP
+		*/
+
+		public function printOrdresDuJour( $commissionep_id ) {
+			$this->_checkPrintOrdreDuJour( $commissionep_id );
+
+			$liste = $this->Commissionep->CommissionepMembreep->find(
+				'list',
+				array(
+					'conditions' => array(
+						'CommissionepMembreep.commissionep_id' => $commissionep_id,
+					),
+					'recursive' => -1
+				)
+			);
+
+			$pdfs = array();
+			foreach( array_keys( $liste ) as $commissionep_membreep_id ) {
+				$pdfs[] = $this->Commissionep->getPdfOrdredujour( $commissionep_membreep_id );
+			}
+
+			$pdfs = $this->Gedooo->concatPdfs( $pdfs, 'ConvocationepParticipant' );
+
+			if( $pdfs ) {
+				$this->Gedooo->sendPdfContentToClient( $pdfs, 'ConvocationepParticipant' );
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer les convocations du participant à la commission d\'EP', 'default', array( 'class' => 'error' ) );
@@ -1095,10 +1180,6 @@
 		*/
 
 		protected function _decision( $commissionep_id, $niveauDecision ) {
-			/*if( isset( $this->params['form']['Imprimerpv'] ) ) {
-				$this->impressionpv( $commissionep_id );
-			}*/
-
 			$commissionep = $this->Commissionep->find(
 				'first',
 				array(
@@ -1114,6 +1195,34 @@
 			$this->assert( !empty( $commissionep ), 'error404' );
 
 			$dossiers = $this->Commissionep->dossiersParListe( $commissionep_id, $niveauDecision );
+
+			if( in_array( Configure::read( 'Cg.departement' ), array( 58, 93 ) ) ) {
+				$syntheses = $this->Commissionep->Passagecommissionep->find(
+					'all',
+					array(
+						'conditions' => array(
+							'Passagecommissionep.commissionep_id' => $commissionep_id
+						),
+						'contain' => array(
+							'Dossierep' => array(
+								'Personne' => array(
+									'Foyer' => array(
+										'Adressefoyer' => array(
+											'conditions' => array(
+												'Adressefoyer.rgadr' => '01'
+											),
+											'Adresse'
+										)
+									)
+								)
+							)
+						)
+					)
+				);
+
+				$this->set( compact( 'syntheses' ) );
+				$this->set('etatsActions', $this->etatsActions);
+			}
 
 			$this->set( compact( 'commissionep', 'dossiers' ) );
 			$this->set( 'commissionep_id', $commissionep_id);
@@ -1138,17 +1247,92 @@
 		}
 
 		/**
+		* Génération des décisions pour tous les dossiers d'EP d'une commission.
+		*/
+
+		public function impressionsDecisions( $commissionep_id ) {
+			$liste = $this->Commissionep->Passagecommissionep->find(
+				'list',
+				array(
+					'fields' => array(
+						'Passagecommissionep.id',
+						'Passagecommissionep.dossierep_id',
+					),
+					'conditions' => array(
+						'Passagecommissionep.commissionep_id' => $commissionep_id,
+					),
+					'recursive' => -1
+				)
+			);
+
+			$pdfs = array();
+			foreach( array_keys( $liste ) as $passagecommissionep_id ) {
+				$pdfs[] = $this->Commissionep->Passagecommissionep->Dossierep->getDecisionPdf( $passagecommissionep_id  );
+			}
+
+			// INFO: pour le CG 66, on n'a pas de PDF de décision pour toutes les thématiques
+			if( Configure::read( 'Cg.departement' ) == 66 ) {
+				$pdfs = Set::filter( $pdfs );
+			}
+
+			$pdfs = $this->Gedooo->concatPdfs( $pdfs, 'DecisionsEPsBeneficiaire' );
+
+			if( $pdfs ) {
+				$this->Gedooo->sendPdfContentToClient( $pdfs, 'DecisionsEPsBeneficiaire' );
+			}
+			else {
+				$this->Session->setFlash( 'Impossible de générer les courriers de décision pour cette commission.', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
+			}
+		}
+
+		/**
 		* Génération de la fiche de synthèse des différents dossiers d'EP
 		*/
 
-		public function fichesynthese( $commissionep_id, $dossierep_id ) {
-			$pdf = $this->Commissionep->getFicheSynthese( $commissionep_id, $dossierep_id  );
+		public function fichesynthese( $commissionep_id, $dossierep_id, $anonymiser = false ) {
+			$pdf = $this->Commissionep->getFicheSynthese( $commissionep_id, $dossierep_id, $anonymiser );
 
 			if( $pdf ) {
 				$this->Gedooo->sendPdfContentToClient( $pdf, 'FicheSynthetique' );
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer le courrier d\'information', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
+			}
+		}
+
+		/**
+		* Génération de la cohorte des convocations de passage en commission d'EP aux allocataires.
+		*/
+
+		public function fichessynthese( $commissionep_id, $anonymiser = false ) {
+			$liste = $this->Commissionep->Passagecommissionep->find(
+				'list',
+				array(
+					'fields' => array(
+						'Passagecommissionep.id',
+						'Passagecommissionep.dossierep_id',
+					),
+					'conditions' => array(
+						'Passagecommissionep.commissionep_id' => $commissionep_id,
+					),
+					'recursive' => -1
+				)
+			);
+
+			$pdfs = array();
+			foreach( array_values( $liste ) as $dossierep_id ) {
+				$pdfs[] = $this->Commissionep->getFicheSynthese( $commissionep_id, $dossierep_id, $anonymiser );
+			}
+
+			$pdfs = $this->Gedooo->concatPdfs( $pdfs, 'Fichessynthese' );
+
+			if( $pdfs ) {
+				$this->Gedooo->sendPdfContentToClient( $pdfs, 'Fichessynthese' );
+			}
+			else {
+				$this->Session->setFlash( 'Impossible de générer les fiches de synthèse pour cette commission.', 'default', array( 'class' => 'error' ) );
 				$this->redirect( $this->referer() );
 			}
 		}
