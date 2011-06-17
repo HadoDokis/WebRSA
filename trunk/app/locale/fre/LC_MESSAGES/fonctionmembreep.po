@@ -27,3 +27,5 @@ msgstr "Index"
 msgid "Fonctionmembreep::index::empty" 
 msgstr "Aucune fonction de membre n'existe actuellement"
 
+msgid "Fonctionsmembreseps::delete::confirm" 
+msgstr "Confirmer la suppression d'une fonction de membre d'EP ?"

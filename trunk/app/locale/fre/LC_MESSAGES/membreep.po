@@ -86,3 +86,6 @@ msgstr "Suppléant"
 
 msgid "Membreep::index::empty"
 msgstr "Liste des membres pouvant participer aux EPs vide"
+
+msgid "Membreseps::delete::confirm"
+msgstr "Confirmer la suppression d'un membre d'EP ?"

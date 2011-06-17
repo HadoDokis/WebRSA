@@ -22,6 +22,9 @@ msgstr ""
 msgid "Ep::index::empty"
 msgstr "Aucune équipe pluridisciplinaire n'a encore été créée."
 
+msgid "Eps::delete::confirm"
+msgstr "Confirmer la suppression d'une EP ?"
+
 msgid "Ep.name"
 msgstr "Intitulé EP"
 
