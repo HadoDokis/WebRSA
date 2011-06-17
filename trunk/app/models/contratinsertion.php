@@ -489,6 +489,10 @@
 				}
 			}
 
+            //Modification décision cer
+            if( $this->data[$this->name]['decision_ci'] != 'V' ){
+                $this->data[$this->name]['datevalidation_ci'] = NULL;
+            }
 
 			//  Calcul de la position du cER
 			if( Configure::read( 'Cg.departement' ) == '66' ) {

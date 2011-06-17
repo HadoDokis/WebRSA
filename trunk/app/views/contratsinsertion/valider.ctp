@@ -37,3 +37,17 @@
 </div>
 
 <div class="clearer"><hr /></div>
+<script>
+    document.observe("dom:loaded", function() {
+            observeDisableFieldsOnValue(
+                'ContratinsertionDecisionCi',
+                [
+                    'ContratinsertionDatevalidationCiDay',
+                    'ContratinsertionDatevalidationCiMonth',
+                    'ContratinsertionDatevalidationCiYear'
+                ],
+                'V',
+                false
+            );
+        });
+</script>
