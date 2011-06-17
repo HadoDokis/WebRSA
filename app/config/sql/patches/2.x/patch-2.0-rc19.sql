@@ -410,10 +410,24 @@ ALTER TABLE actionscandidats ADD CONSTRAINT actionscandidats_secretaire_id_fk FO
 -- 20110614: Ajout d'un champ pour repérer les objets de RDV qui permettent de faire un bilan
 -- de parcours avec saisine de l'EPL Audition (non respect et non conclusion)
 -- *****************************************************************************
-SELECT add_missing_table_field ('public', 'typesrdv', 'nbabsaveplaudition', 'integer');
+SELECT add_missing_table_field ('public', 'typesrdv', 'nbabsaveplaudition', 'INTEGER');
 ALTER TABLE typesrdv ALTER COLUMN nbabsaveplaudition SET DEFAULT 0;
 UPDATE typesrdv SET nbabsaveplaudition = 0 WHERE nbabsaveplaudition IS NULL;
 ALTER TABLE typesrdv ALTER COLUMN nbabsaveplaudition SET NOT NULL;
+
+-- *****************************************************************************
+-- 20110616: Ajout du motif de passage en EP affichées dans la thématique
+-- sanctionsrendezvouseps58
+-- *****************************************************************************
+SELECT add_missing_table_field ('public', 'typesrdv', 'motifpassageep', 'VARCHAR(255)');
+
+ALTER TABLE decisionssanctionsrendezvouseps58 ALTER COLUMN decision TYPE TEXT;
+DROP TYPE IF EXISTS TYPE_DECISIONSANCTIONRDV58;
+CREATE TYPE TYPE_DECISIONSANCTIONRDV58 AS ENUM ( 'maintien', 'sanction', 'annule', 'reporte' );
+UPDATE decisionssanctionsrendezvouseps58 SET decision = 'maintien';
+ALTER TABLE decisionssanctionsrendezvouseps58 ALTER COLUMN decision TYPE TYPE_DECISIONSANCTIONRDV58 USING CAST(decision AS TYPE_DECISIONSANCTIONRDV58);
+SELECT add_missing_table_field ('public', 'decisionssanctionsrendezvouseps58', 'listesanctionep58_id', 'INTEGER');
+ALTER TABLE decisionssanctionsrendezvouseps58 ADD CONSTRAINT decisionssanctionsrendezvouseps58_listesanctionep58_id_fk FOREIGN KEY (listesanctionep58_id) REFERENCES listesanctionseps58(id);
 
 -- *****************************************************************************
 COMMIT;

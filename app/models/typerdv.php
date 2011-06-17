@@ -15,6 +15,10 @@
 			'modelenotifrdv' => array(
 				'rule' => 'notEmpty',
 				'message' => 'Champ obligatoire'
+			),
+			'motifpassageep' => array(
+				'rule' => array( 'notEmptyIf', 'nbabsencesavpassageep', false, array( 0 ) ),
+				'message' => 'Champ obligatoire',
 			)
 		);
 

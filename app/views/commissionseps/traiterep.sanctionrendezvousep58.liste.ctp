@@ -6,7 +6,7 @@ echo '<table><thead>
 <th>Date de naissance</th>
 <th>Création du dossier EP</th>
 <th>Origine du dossier</th>
-<th>Avis EPL</th>
+<th colspan=\'2\'>Avis EPL</th>
 <th>Observations</th>
 </tr>
 </thead><tbody>';
@@ -23,11 +23,15 @@ echo '<table><thead>
 				implode( ' ', array( $dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['numvoie'], isset( $typevoie[$dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie']] ) ? $typevoie[$dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie']] : null, $dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['nomvoie'] ) ),
 				$locale->date( __( 'Locale->date', true ), $dossierep['Personne']['dtnai'] ),
 				$locale->date( __( 'Locale->date', true ), $dossierep['Dossierep']['created'] ),
-				Set::classicExtract( $typesrdv, $dossierep['Sanctionrendezvousep58']['Rendezvous']['typerdv_id'], true),
+				$dossierep['Sanctionrendezvousep58']['Rendezvous']['Typerdv']['motifpassageep'],
 
 				array(
 					$form->input( "Decisionsanctionrendezvousep58.{$i}.decision", array( 'type' => 'select', 'label' => false, 'empty' => true, 'options' => @$options['Decisionsanctionrendezvousep58']['decision'], 'value' => @$dossierep['Sanctionep58']['Decisionsanctionrendezvousep58'][0]['decision'] ) ),
-					array( 'id' => "Decisionsanctionrendezvousep58{$i}ColumnDecision", 'class' => ( !empty( $this->validationErrors['Decisionsanctionrendezvousep58'][$i]['decision'] ) ? 'error' : '' ) )
+					array( 'id' => "Decisionsanctionrendezvousep58{$i}DecisionColumn", 'class' => ( !empty( $this->validationErrors['Decisionsanctionrendezvousep58'][$i]['decision'] ) ? 'error' : '' ) )
+				),
+				array(
+					$form->input( "Decisionsanctionrendezvousep58.{$i}.listesanctionep58_id", array( 'type' => 'select', 'label' => false, 'options' => $listesanctionseps58 ) ),
+					( !empty( $this->validationErrors['Decisionsanctionrendezvousep58'][$i]['listesanctionep58_id'] ) ? array( 'class' => 'error' ) : array() )
 				),
 				$form->input( "Decisionsanctionrendezvousep58.{$i}.commentaire", array( 'label' => false, 'type' => 'textarea' ) ).
 				$hiddenFields
@@ -42,6 +46,20 @@ echo '<table><thead>
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
 		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
+			observeDisableFieldsOnValue(
+				'Decisionsanctionrendezvousep58<?php echo $i;?>Decision',
+				[
+					'Decisionsanctionrendezvousep58<?php echo $i;?>Listesanctionep58Id'
+				],
+				'sanction',
+				false
+			);
+
+			$( 'Decisionsanctionrendezvousep58<?php echo $i;?>Decision' ).observe( 'change', function() {
+				changeColspanAnnuleReporte( 'Decisionsanctionrendezvousep58<?php echo $i;?>DecisionColumn', 2, 'Decisionsanctionrendezvousep58<?php echo $i;?>Decision', [ 'Decisionsanctionrendezvousep58<?php echo $i;?>Listesanctionep58Id' ] );
+			});
+			changeColspanAnnuleReporte( 'Decisionsanctionrendezvousep58<?php echo $i;?>DecisionColumn', 2, 'Decisionsanctionrendezvousep58<?php echo $i;?>Decision', [ 'Decisionsanctionrendezvousep58<?php echo $i;?>Listesanctionep58Id' ] );
+
 // 			$( 'Decisionsanctionrendezvousep58<?php echo $i;?>Decision' ).observe( 'change', function() {
 // 				changeColspanRaisonNonPassage( 'Decisionsanctionrendezvousep58<?php echo $i;?>ColumnDecision', 'Decisionsanctionrendezvousep58<?php echo $i;?>Decision', [ ], 'Decisionsanctionrendezvousep58<?php echo $i;?>Raisonnonpassage' );
 // 			});

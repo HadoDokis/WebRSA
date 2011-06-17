@@ -25,6 +25,19 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Decisionsanctionrendezvousep58' => array(
+				'className' => 'Decisionsanctionrendezvousep58',
+				'foreignKey' => 'listesanctionep58_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 		);
 
 		public function checkValideListe() {

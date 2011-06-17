@@ -8,7 +8,7 @@
 	
 	<?php
 		if( isset( $dossierep ) && !empty( $dossierep ) ) {
-			echo '<p class="error">Ce dossier est en cours de passage en EP : '.$dossierep['Sanctionrendezvousep58']['Rendezvous']['Typerdv']['libelle'].'.</p>';
+			echo '<p class="error">Ce dossier est en cours de passage en EP : '.$dossierep['Sanctionrendezvousep58']['Rendezvous']['Typerdv']['motifpassageep'].'.</p>';
 		}
 		if ( !isset( $dossierepLie ) ) {
 			$dossierepLie = 0;

@@ -117,6 +117,7 @@
 							'Passagecommissionep.commissionep_id' => $commissionep_id
 						),
 						'Decisionsanctionrendezvousep58' => array(
+							'Listesanctionep58',
 							'order' => array( 'etape DESC' )
 						)
 					)
@@ -154,7 +155,75 @@
 				// On ajoute les enregistrements de cette étape
 				else {
 					if( $niveauDecision == 'ep' ) {
-						$formData['Decisionsanctionrendezvousep58'][$key]['raisonnonpassage'] = null;
+						$nbdossierssanctions = $this->Dossierep->find(
+							'count',
+							array(
+								'conditions' => array(
+									'Dossierep.personne_id' => $dossierep['Personne']['id'],
+									'Dossierep.themeep' => 'sanctionsrendezvouseps58',
+									'Passagecommissionep.etatdossierep' => 'traite',
+									'Decisionsanctionrendezvousep58.decision' => 'sanction'
+								),
+								'joins' => array(
+									array(
+										'table' => 'sanctionsrendezvouseps58',
+										'alias' => 'Sanctionrendezvousep58',
+										'type' => 'INNER',
+										'conditions' => array(
+											'Sanctionrendezvousep58.dossierep_id = Dossierep.id'
+										)
+									),
+									array(
+										'table' => 'passagescommissionseps',
+										'alias' => 'Passagecommissionep',
+										'type' => 'INNER',
+										'conditions' => array(
+											'Passagecommissionep.dossierep_id = Dossierep.id'
+										)
+									),
+									array(
+										'table' => 'decisionssanctionsrendezvouseps58',
+										'alias' => 'Decisionsanctionrendezvousep58',
+										'type' => 'INNER',
+										'conditions' => array(
+											'Decisionsanctionrendezvousep58.passagecommissionep_id = Passagecommissionep.id'
+										)
+									)
+								),
+								'contain' => false
+							)
+						);
+
+						$listesanctionep58 = $this->Dossierep->Passagecommissionep->Decisionsanctionrendezvousep58->Listesanctionep58->find(
+							'first',
+							array(
+								'fields' => array(
+									'Listesanctionep58.id'
+								),
+								'conditions' => array(
+									'Listesanctionep58.rang' => $nbdossierssanctions + 1
+								),
+								'contain' => false
+							)
+						);
+						
+						if ( empty( $listesanctionep58 ) ) {
+							$listesanctionep58 = $this->Dossierep->Passagecommissionep->Decisionsanctionrendezvousep58->Listesanctionep58->find(
+								'first',
+								array(
+									'fields' => array(
+										'Listesanctionep58.id'
+									),
+									'order' => array(
+										'Listesanctionep58.rang DESC'
+									),
+									'contain' => false
+								)
+							);
+						}
+						
+						$formData['Decisionsanctionrendezvousep58'][$key]['listesanctionep58_id'] = $listesanctionep58['Listesanctionep58']['id'];
+// 						$formData['Decisionsanctionrendezvousep58'][$key]['raisonnonpassage'] = null;
 					}
 				}
 			}

@@ -21,6 +21,7 @@
 	            <?php
 	            	if ( Configure::read( 'Cg.departement' ) == 58 ) {
 	            		echo '<th>Nombre d\'absences non excusées avant passage en EP</th>';
+	            		echo '<th>Description du motif de passage en EP</th>';
 	            	}
 	            	elseif ( Configure::read( 'Cg.departement' ) == 66 ) {
 	            		echo '<th>Nombre d\'absences avant possible passage en EPL Audition</th>';
@@ -40,7 +41,8 @@
 	            		$listefields = array_merge(
 	            			$listefields,
 	            			array(
-	            				h( $typerdv['Typerdv']['nbabsencesavpassageep'] )
+	            				h( $typerdv['Typerdv']['nbabsencesavpassageep'] ),
+	            				h( $typerdv['Typerdv']['motifpassageep'] )
 	            			)
 	            		);
 	            	}
