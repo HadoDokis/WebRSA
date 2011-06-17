@@ -14,6 +14,23 @@
 			'Formattable'
 		);
 
+		public $validate = array(
+			'mail' => array(
+				array(
+					'rule' => 'email',
+					'allowEmpty' => true,
+					'message' => 'Le mail n\'est pas valide'
+				)
+			),
+			'tel' => array(
+				array(
+					'rule' => array( 'between', 10, 14 ),
+					'allowEmpty' => true,
+					'message' => 'Le numéro de téléphone est composé de 10 chiffres'
+				)
+			),
+		);
+
 		public $belongsTo = array(
 			'Fonctionmembreep' => array(
 				'className' => 'Fonctionmembreep',
