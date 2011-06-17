@@ -252,7 +252,7 @@
 							)
 						.' )',
 					),
-					'limit' => 10,
+					'limit' => 50,
 					'order' => array( 'Dossierep.created ASC' )
 				);
 
