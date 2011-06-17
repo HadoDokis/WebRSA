@@ -55,7 +55,7 @@
 		                <!--<th>Décision du Conseil Général</th>-->
 		                <th>Motif de la décision</th>
 		                <!--<th>Date de la décision CG</th>-->
-		                <th>Commentaire PDO</th>
+		                <th>Gestionnaire du dossier</th>
 		                <th>Etat du dossier PDO</th>
 		                <th colspan="2" class="action">Actions</th>
 					<?php }
@@ -74,14 +74,15 @@
                 <?php foreach( $pdos as $pdo ):?>
                     <?php
 						if (Configure::read( 'nom_form_pdo_cg' ) == 'cg66') {
+
 		                    echo $xhtml->tableCells(
 		                        array(
 		                            h( Set::enum( Set::classicExtract( $pdo, 'Propopdo.typepdo_id' ), $typepdo ) ),
 		                            h( date_short( Set::classicExtract( $pdo, 'Propopdo.datereceptionpdo' ) ) ),
 		                            //h( Set::enum( Set::classicExtract( $pdo, 'Propopdo.decisionpdo_id' ), $decisionpdo ) ),
-		                            h( Set::enum( Set::classicExtract( $pdo, 'Propopdo.motifpdo' ), $motifpdo ) ),
+		                            h( Set::enum( Set::classicExtract( $pdo, 'Decisionpropopdo.decisionpdo_id' ), $decisionpdo ) ),
 		                            //h( date_short( Set::classicExtract( $pdo, 'Propopdo.datedecisionpdo' ) ) ),
-		                            h( Set::classicExtract( $pdo, 'Propopdo.commentairepdo' ) ),
+		                            h( Set::enum( Set::classicExtract( $pdo, 'Propopdo.user_id' ), $gestionnaire ) ),
 		                            h( Set::enum( Set::classicExtract( $pdo, 'Propopdo.etatdossierpdo' ), $options['etatdossierpdo'] ) ),
 		                            $xhtml->viewLink(
 		                                'Voir le dossier',
