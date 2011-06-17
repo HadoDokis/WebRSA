@@ -22,6 +22,12 @@ msgstr ""
 msgid "Regroupementep::index::empty"
 msgstr "Aucun regroupement d'équipes pluridisciplinaires n'a encore été créé."
 
+msgid "Regroupementseps::index::empty"
+msgstr "Aucun regroupement d'équipes pluridisciplinaires n'a encore été créé."
+
+msgid "Regroupementseps::delete::confirm" 
+msgstr "Confirmer la suppression du regroupement d'EP ?"
+
 msgid "Regroupementep.name"
 msgstr "Nom du regroupement"
 
