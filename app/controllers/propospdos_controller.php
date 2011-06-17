@@ -196,12 +196,13 @@
 					),
 					'contain' => array(
 						'Fichiermodule',
-						'Typepdo'
+						'Typepdo',
+						'Decisionpropopdo'
 					)
 				)
 			);
 
-
+// debug($pdo);
 			// Afficahge des traitements liés à une PDO
 			$traitements = $this->{$this->modelClass}->Traitementpdo->find(
 				'all',
@@ -241,7 +242,10 @@
 			}
 			$this->set( 'pdo', $pdo );
 			$this->_setOptions();
+			$this->set( 'structs', $this->Propopdo->Structurereferente->find( 'list' ) );
 			$this->set( 'personne_id', $pdo['Propopdo']['personne_id'] );
+			
+			$this->render( $this->action, null, 'view_'.Configure::read( 'nom_form_pdo_cg' ) );
 		}
 
 		/**

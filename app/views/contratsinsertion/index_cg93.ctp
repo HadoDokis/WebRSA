@@ -201,6 +201,7 @@
 							array( 'class' => 'odd' ),
 							array( 'class' => 'even' )
 						);
+
 					?>
 				<?php endforeach;?>
 			</tbody>

@@ -14,26 +14,84 @@
 
         <div id="entretiens">
             <h2 class="title">Entretiens</h2>
-            <?php
-                echo $default2->index(
-                    $entretiens,
-                    array(
-                        'Entretien.dateentretien' ,
-                        'Structurereferente.lib_struc',
-                        'Referent.nom_complet' => array( 'type' => 'text' )
-                    ),
-                    array(
-                        'actions' => array(
-                            'Entretiens::view' => array( 'disabled' => '( "'.$permissions->check( 'entretiens', 'view' ).'" != "1" ) ' ),
-                            'Entretiens::edit' => array( 'disabled' => '( "'.$permissions->check( 'entretiens', 'edit' ).'" != "1" ) ' ),
-                            'Entretiens::delete' => array( 'disabled' => '( "'.$permissions->check( 'entretiens', 'delete' ).'" != "1" ) ' ),
-                            'Entretiens::filelink' => array( 'disabled' => '( "'.$permissions->check( 'entretiens', 'filelink' ).'" != "1" ) ' )
-                        ),
-                        'add' => array( 'Entretien.add' => array( 'controller'=>'entretiens', 'action'=>'add', $personne_id ) ),
-                    )
-                );
+                <?php if( $permissions->check( 'entretiens', 'add' ) ):?>
+                    <ul class="actionMenu">
+                        <?php
+                            echo '<li>'.
+                                $xhtml->addLink(
+                                    'Ajouter un entretien',
+                                    array( 'controller' => 'entretiens', 'action' => 'add', $personne_id )
+                                ).
+                            ' </li>';
+                        ?>
+                    </ul>
+                <?php endif;?>
+                <?php if( isset( $entretiens ) ):?>
+                    <?php if( empty( $entretiens ) ):?>
+                        <?php $message = 'Aucun entretien n\'a été trouvé.';?>
+                        <p class="notice"><?php echo $message;?></p>
+                    <?php else:?>
 
-            ?>
+                    <?php $pagination = $xpaginator->paginationBlock( 'Entretien', $this->passedArgs ); ?>
+                    <?php echo $pagination;?>
+                    <table id="searchResults" class="tooltips">
+                        <thead>
+                            <tr>
+                                <th>Date de l'entretien</th>
+                                <th>Structure référente</th>
+                                <th>Nom du prescripteur</th>
+                                <th>Type d'entretien</th>
+                                <th>Objet de l'entretien</th>
+                                <th>A revoir le</th>
+                                <th class="action" colspan="4">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <?php foreach( $entretiens as $index => $entretien ):?>
+                            <?php
+
+                                echo $xhtml->tableCells(
+                                        array(
+                                            h( date_short(  $entretien['Entretien']['dateentretien'] ) ),
+                                            h( $entretien['Structurereferente']['lib_struc'] ),
+                                            h( $entretien['Referent']['nom_complet'] ),
+                                            h( Set::enum( $entretien['Entretien']['typeentretien'], $options['Entretien']['typeentretien'] ) ),
+                                            h( $entretien['Objetentretien']['name'] ),
+                                            h( $locale->date( 'Date::miniLettre', $entretien['Entretien']['arevoirle'] ) ),
+                                            $xhtml->viewLink(
+                                                'Voir le contrat',
+                                                array( 'controller' => 'entretiens', 'action' => 'view', $entretien['Entretien']['id'] ),
+                                                $permissions->check( 'entretiens', 'index' )
+                                            ),
+                                            $xhtml->editLink(
+                                                'Editer l\'orientation',
+                                                array( 'controller' => 'entretiens', 'action' => 'edit', $entretien['Entretien']['id'] ),
+                                                $permissions->check( 'entretiens', 'edit' )
+                                            ),
+                                            $xhtml->deleteLink(
+                                                'Supprimer l\'entretien',
+                                                array( 'controller' => 'entretiens', 'action' => 'delete', $entretien['Entretien']['id'] ),
+                                                $permissions->check( 'entretiens', 'delete' )
+                                            ),
+                                            $xhtml->fileLink(
+                                                'Fichiers liés',
+                                                array( 'controller' => 'entretiens', 'action' => 'filelink', $entretien['Entretien']['id'] ),
+                                                $permissions->check( 'entretiens', 'filelink' )
+                                            )
+                                        ),
+                                        array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
+                                        array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
+                                    );
+                                ?>
+                            <?php endforeach;?>
+                        </tbody>
+                    </table>
+                    <?php endif?>
+                <?php endif?>
+
+
+
+
         </div><!-- Fin de div entretiens -->
 
 <!-- INFO : Fin de l'affichage des Entretiens -->

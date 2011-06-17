@@ -175,12 +175,16 @@
 						'Entretien.id',
 						'Entretien.personne_id',
 						'Entretien.dateentretien',
+						'Entretien.arevoirle',
+						'Entretien.typeentretien',
 						'Structurereferente.lib_struc',
-						'Referent.nom_complet'
+						'Referent.nom_complet',
+						'Objetentretien.name',
 					),
 					'contain' => array(
 						'Structurereferente',
-						'Referent'
+						'Referent',
+						'Objetentretien'
 					),
 					'conditions' => array(
 						'Entretien.personne_id' => $personne_id
@@ -188,6 +192,7 @@
 				)
 			);
 			$this->Entretien->forceVirtualFields = false;
+            $this->_setOptions();
 
 			$this->set( compact( 'entretiens' ) );
 			$this->set( 'personne_id', $personne_id );
