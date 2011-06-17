@@ -64,6 +64,12 @@ msgstr "Validé"
 msgid "ENUM::DECISIONPCG::enattente"
 msgstr "En attente"
 
+msgid "Decisionnonrespectsanctionep93.commentaire"
+msgstr "Commentaire"
+
+msgid "Decisionnonrespectsanctionep93.raisonnonpassage"
+msgstr "Raison de non passage"
+
 # msgid "ENUM::ETAPE::ep"
 # msgstr "EP"
 #

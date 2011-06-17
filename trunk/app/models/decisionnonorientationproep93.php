@@ -82,5 +82,16 @@
 				),
 			),
 		);
+
+		/**
+		* Modèles contenus pour l'historique des passages en EP
+		*/
+
+		public function containDecision() {
+			return array(
+				'Typeorient',
+				'Structurereferente',
+			);
+		}
 	}
 ?>

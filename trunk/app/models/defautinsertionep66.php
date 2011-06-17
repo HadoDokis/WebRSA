@@ -344,6 +344,8 @@
 								'contain' => false
 							)
 						);
+						$referent_id = $orientsstruct['Orientstruct']['referent_id'];
+
 						// FIXME: si on ne trouve pas l'orientation ?
 
 						// FIXME: referent_id -> champ obligatoire
@@ -363,6 +365,10 @@
 									'contain' => false
 								)
 							);
+
+							if( !empty( $bilanparcours66 ) ) {
+								$referent_id = $orientsstruct['Orientstruct']['referent_id'];
+							}
 						}
 
 						$nvdossierep = array(
@@ -375,9 +381,9 @@
 							'Bilanparcours66' => array(
 								'personne_id' => $dossierep['Dossierep']['personne_id'],
 								'typeformulaire' => 'cg',
-								'orientstruct_id' => $bilanparcours66['Bilanparcours66']['orientstruct_id'],
+								'orientstruct_id' => $orientsstruct['Orientstruct']['id'],
 // 								'structurereferente_id' => $bilanparcours66['Bilanparcours66']['structurereferente_id'],// FIXME: ?
-								'referent_id' => $bilanparcours66['Bilanparcours66']['referent_id'],// FIXME: ?
+								'referent_id' => $referent_id,// FIXME: ?
 								'presenceallocataire' => 1,// FIXME: vient des détails de la séance
 								'motifsaisine' => 'Proposition de réorientation suite à un passage en EP pour défaut d\'insertion',
 								'proposition' => 'parcours',

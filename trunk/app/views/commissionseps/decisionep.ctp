@@ -41,7 +41,7 @@
 					echo '</ul>';
 
 					$actions = array(
-						'Dossierseps::view' => array( 'label' => 'Voir', 'url' => array( 'controller' => 'dossierseps', 'action' => 'index', '#Dossierep.Personne.id#' ), 'class' => 'external' ),
+						'Dossierseps::view' => array( 'label' => 'Voir', 'url' => array( 'controller' => 'historiqueseps', 'action' => 'index', '#Dossierep.Personne.id#' ), 'class' => 'external' ),
 					);
 
 					if( Configure::read( 'Cg.departement' )  == 93 ) {

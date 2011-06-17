@@ -39,3 +39,9 @@ msgstr "Validé"
 
 msgid "ENUM::DECISIONPCG::enattente"
 msgstr "En attente"
+
+msgid "Decisionreorientationep93.commentaire"
+msgstr "Commentaire"
+
+msgid "Decisionreorientationep93.raisonnonpassage"
+msgstr "Raison de non passage"

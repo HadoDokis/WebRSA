@@ -937,5 +937,15 @@
 
 			return $return;
 		}
+
+		/**
+		* Modèles contenus pour l'historique des passages en EP
+		*/
+
+		public function containThematique() {
+			return array(
+				'Motifreorientep93'
+			);
+		}
 	}
 ?>

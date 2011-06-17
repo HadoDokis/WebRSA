@@ -420,6 +420,11 @@
 
 		protected function _conditionsAjoutOrientationPossible( $key, $values ) {
 			$hasNull = false;
+
+			if( !is_array( $values ) ) {
+				$values = array( $values );
+			}
+
 			foreach( $values as $value ) {
 				if( $value === null ) {
 					$hasNull = true;
