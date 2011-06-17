@@ -215,8 +215,7 @@
 						'Rendezvous.personne_id' => $personne_id
 					),
 					'contain' => false,
-					'order' => array( 'Rendezvous.daterdv DESC', 'Rendezvous.heurerdv DESC', 'Rendezvous.id DESC' ),
-					'limit' => $typerdv['Typerdv']['nbabsencesavpassageep']
+					'order' => array( 'Rendezvous.daterdv DESC', 'Rendezvous.heurerdv DESC', 'Rendezvous.id DESC' )
 				)
 			);
 			
@@ -257,7 +256,7 @@
 				)
 			);
 
-			return ( ( count( $rdvs ) == $typerdv['Typerdv']['nbabsencesavpassageep'] ) && $tousabsents && empty( $dossierep ) );
+			return ( ( count( $rdvs ) % $typerdv['Typerdv']['nbabsencesavpassageep'] ) == 0 && $tousabsents && empty( $dossierep ) );
 		}
 		
 		public function beforeSave( $options = array ( ) ) {

@@ -19,17 +19,11 @@ msgstr ""
 
 ###############################################################################
 
-msgid "ENUM::DECISION::nonrespectcontrat"
-msgstr "Non respect du contrat"
+msgid "ENUM::DECISION::maintien"
+msgstr "Maintien du droit"
 
-msgid "ENUM::DECISION::nonevaluation"
-msgstr "Evaluation non réalisée"
-
-msgid "ENUM::DECISION::refuscontrole"
-msgstr "Refus de se soumettre au contrôle"
-
-msgid "ENUM::DECISION::noncontrat"
-msgstr "Contrat non établi ou non renouvelé dans les délais"
+msgid "ENUM::DECISION::sanction"
+msgstr "Sanction"
 
 msgid "ENUM::DECISION::annule"
 msgstr "Annulé"

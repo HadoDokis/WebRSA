@@ -20,6 +20,7 @@
 		echo $xform->input( 'Typerdv.modelenotifrdv', array( 'label' =>  required( __d( 'typerdv', 'Typerdv.modelenotifrdv', true ) ), 'type' => 'text' ) );
 		if ( Configure::read( 'Cg.departement' ) == 58 ) {
 			echo $xform->input( 'Typerdv.nbabsencesavpassageep', array( 'label' =>  required( __d( 'typerdv', 'Typerdv.nbabsencesavpassageep', true ) ), 'type' => 'text' ) );
+			echo $xform->input( 'Typerdv.motifpassageep', array( 'label' =>  __d( 'typerdv', 'Typerdv.motifpassageep', true ), 'type' => 'text' ) );
 		}
 		if ( Configure::read( 'Cg.departement' ) == 66 ) {
 			echo $xform->input( 'Typerdv.nbabsaveplaudition', array( 'label' =>  required( __d( 'typerdv', 'Typerdv.passageeplaudition', true ) ), 'type' => 'text' ) );
