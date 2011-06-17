@@ -8,6 +8,7 @@ echo '<table><thead>
 <th>Origine du dossier</th>
 <th colspan=\'2\'>Avis EPL</th>
 <th>Observations</th>
+<th>Action</th>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
@@ -24,7 +25,8 @@ echo '<table><thead>
 				array( $options['Decisionsanctionrendezvousep58']['decision'][Set::classicExtract( $decisionep, "decision" )], array( 'id' => "Decisionsanctionrendezvousep58{$i}DecisionColumn" ) ),
 				array( @$listesanctionseps58[Set::classicExtract( $decisionep, "listesanctionep58_id" )], array( 'id' => "Decisionsanctionrendezvousep58{$i}Listesanctionep58Id" ) ),
 // 				array( Set::classicExtract( $decisionep, "raisonnonpassage" ), array( 'id' => "Decisionsanctionrendezvousep58{$i}Raisonnonpassage" ) ),
-				Set::classicExtract( $decisionep, "commentaire" )
+				Set::classicExtract( $decisionep, "commentaire" ),
+				$xhtml->printLink( 'Imprimer', array( 'controller' => 'commissionseps', 'action' => 'impressionDecision', $dossierep['Passagecommissionep'][0]['id'] ) ),
 			),
 			array( 'class' => 'odd' ),
 			array( 'class' => 'even' )

@@ -9,6 +9,7 @@ echo '<table><thead>
 <th>Orientation actuelle</th>
 <th colspan="3">Avis EPL</th>
 <th>Observations</th>
+<th>Action</th>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
@@ -41,7 +42,8 @@ echo '<table><thead>
 				array( @$liste_typesorients[Set::classicExtract( $decisionep, "typeorient_id" )], array( 'id' => "Decisionnonorientationproep58{$i}TypeorientId" ) ),
 				array( @$liste_structuresreferentes[Set::classicExtract( $decisionep, "structurereferente_id" )], array( 'id' => "Decisionnonorientationproep58{$i}StructurereferenteId" ) ),
 // 				array( Set::classicExtract( $decisionep, "raisonnonpassage" ), array( 'colspan' => '2', 'id' => "Decisionnonorientationproep58{$i}Raisonnonpassage" ) ),
-				Set::classicExtract( $decisionep, "commentaire" )
+				Set::classicExtract( $decisionep, "commentaire" ),
+				$xhtml->printLink( 'Imprimer', array( 'controller' => 'commissionseps', 'action' => 'impressionDecision', $dossierep['Passagecommissionep'][0]['id'] ) )
 			),
 			array( 'class' => 'odd' ),
 			array( 'class' => 'even' )

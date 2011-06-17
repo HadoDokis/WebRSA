@@ -26,6 +26,13 @@
 							array( 'class' => 'button fichessynthese' )
 						).'</li>';
 					}
+					elseif ( Configure::read( 'Cg.departement' )  == 58 ) {
+						echo '<li>'.$xhtml->link(
+							__d( 'commissionep','Commissionseps::impressionsDecisions', true ),
+							array( 'controller' => 'commissionseps', 'action' => 'impressionsDecisions', $commissionep['Commissionep']['id'] ),
+							array( 'class' => 'button impressionsDecisions' )
+						).' </li>';
+					}
 					echo '<li>'.$xhtml->link(
 						__d( 'commissionep','Commissionseps::impressionpv', true ),
 						array( 'controller' => 'commissionseps', 'action' => 'impressionpv', $commissionep['Commissionep']['id'] ),
@@ -39,6 +46,9 @@
 
 					if( Configure::read( 'Cg.departement' )  == 93 ) {
 						$actions['Dossierseps::fichesynthese'] = array( 'url' => array( 'controller' => 'commissionseps', 'action' => 'fichesynthese',  Set::classicExtract( $commissionep, 'Commissionep.id' ), '#Dossierep.id#', false ) );
+					}
+					elseif ( Configure::read( 'Cg.departement' )  == 58 ) {
+						$actions['Commissionseps::impressionDecision'] = array( 'url' => array( 'controller' => 'commissionseps', 'action' => 'impressionDecision',  '#Passagecommissionep.id#' ) );
 					}
 
 					echo $default2->index(
