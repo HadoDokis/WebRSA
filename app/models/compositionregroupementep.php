@@ -50,11 +50,11 @@
 
 			$membreChoisi = false;
 			$compoCree = false;
-			$nbPrioritaire = 0;
+// 			$nbPrioritaire = 0;
 			foreach( $compositionregroupementep['Compositionregroupementep'] as $compo ) {
 				$compoCree = true;
 
-				if( $compo['obligatoire'] == 1 || $compo['prioritaire'] == 1 ) {
+				if( $compo['obligatoire'] == 1 /*|| $compo['prioritaire'] == 1*/ ) {
 					$membresFonction = $this->Fonctionmembreep->find(
 						'first',
 						array(
@@ -72,9 +72,9 @@
 							if( $compo['obligatoire'] == 1 ) {
 								$membreChoisi = true;
 							}
-							if( $compo['prioritaire'] == 1 ) {
-								$nbPrioritaire++;
-							}
+// 							if( $compo['prioritaire'] == 1 ) {
+// 								$nbPrioritaire++;
+// 							}
 						}
 					}
 				}
@@ -84,7 +84,8 @@
 				$return = false;
 				$error = "obligatoire";
 			}
-			elseif ( $compositionregroupementep['Regroupementep']['nbminmembre'] > 0 && $nbPrioritaire < $compositionregroupementep['Regroupementep']['nbminmembre'] ) {
+			elseif ( $compositionregroupementep['Regroupementep']['nbminmembre'] > 0 && count( $membreseps ) < $compositionregroupementep['Regroupementep']['nbminmembre'] ) {
+// 			elseif ( $compositionregroupementep['Regroupementep']['nbminmembre'] > 0 && $nbPrioritaire < $compositionregroupementep['Regroupementep']['nbminmembre'] ) {
 				$return = false;
 				$error = 'nbminmembre';
 			}
