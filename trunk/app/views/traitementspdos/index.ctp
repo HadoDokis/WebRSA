@@ -29,6 +29,7 @@
             ),
             array(
                 'actions' => array(
+                    'Traitementspdos::view' => array( 'disabled' => '\'#Traitementpdo.clos#\' != 0' ),
                     'Traitementspdos::edit' => array( 'disabled' => '\'#Traitementpdo.clos#\' != 0' ),
                     'Traitementspdos::clore' => array( 'disabled' => '\'#Traitementpdo.clos#\' != 0' ),
                     'Traitementspdos::print' => array( 'controller' => 'traitementspdos', 'action' => 'gedooo' )

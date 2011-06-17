@@ -121,10 +121,10 @@
 		                            h( date_short( Set::classicExtract( $pdo, 'Decisionpropopdo.datedecisionpdo' ) ) ),
 		                            h( Set::classicExtract( $pdo, 'Decisionpropopdo.commentairepdo' ) ),
 // 		                            h( Set::enum( Set::classicExtract( $pdo, 'Propopdo.etatdossierpdo' ), $options['etatdossierpdo'] ) ),
-		                            $xhtml->treatmentLink(
-		                                'Traitements sur la PDO',
-		                                array( 'controller' => 'traitementspdos', 'action' => 'index', $pdo['Propopdo']['id'])
-		                            ),
+// 		                            $xhtml->treatmentLink(
+// 		                                'Traitements sur la PDO',
+// 		                                array( 'controller' => 'traitementspdos', 'action' => 'index', $pdo['Propopdo']['id'])
+// 		                            ),
 		                            $xhtml->viewLink(
 		                                'Voir le dossier PDO',
 		                                array( 'controller' => 'propospdos', 'action' => 'view', $pdo['Propopdo']['id']),
