@@ -498,7 +498,7 @@ App::import( 'Helper', 'Locale' );
 				
 				if ( !empty( $dossierep ) ) {
 					$success = $this->Rendezvous->Sanctionrendezvousep58->delete( $dossierep['Sanctionrendezvousep58']['id'] ) && $success;
-					$success = $this->Rendezvous->Sanctionrendezvousep58->Dossierep->delete( $dossierep['Sanctionrendezvousep58']['dossierep_id'] ) && $success;
+// 					$success = $this->Rendezvous->Sanctionrendezvousep58->Dossierep->delete( $dossierep['Sanctionrendezvousep58']['dossierep_id'] ) && $success;
 				}
 			}
 			$success = $this->Rendezvous->delete( $id ) && $success;
