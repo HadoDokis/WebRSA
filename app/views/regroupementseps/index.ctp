@@ -6,8 +6,10 @@
 		'Regroupementep.name'
 	);
 
-	foreach( $themes as $theme ) {
-		$fields[] = "Regroupementep.{$theme}";
+	if ( Configure::read( 'Cg.departement' ) != 93 ) {
+		foreach( $themes as $theme ) {
+			$fields[] = "Regroupementep.{$theme}";
+		}
 	}
 
 	if ( Configure::read( 'Cg.departement' ) == 66 ) {
