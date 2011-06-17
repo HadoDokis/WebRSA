@@ -295,7 +295,7 @@
 				$ageMax = 120;
 			}
 
-			if( !empty( $trancheAge )  ) {
+			if( is_numeric( $trancheAge )  ) {
 				$conditions[] = '( EXTRACT ( YEAR FROM AGE( Personne.dtnai ) ) ) BETWEEN '.$ageMin.' AND '.$ageMax;
 			}
 
