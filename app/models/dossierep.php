@@ -232,6 +232,25 @@
 		);*/
 
 		/**
+		* Retourne la liste des thèmes traités par le CG suivant la valeur
+		* de la configuration Cg.departement
+		*/
+
+		public function themesCg() {
+			$return = array();
+			$enums = $this->enums();
+			$ereg = '/eps'.Configure::read( 'Cg.departement' ).'$/';
+
+			foreach( $enums['Dossierep']['themeep'] as $key => $value ) {
+				if( preg_match( $ereg, $key ) ) {
+					$return[$key] = $value;
+				}
+			}
+
+			return $return;
+		}
+
+		/**
 		*
 		*/
 

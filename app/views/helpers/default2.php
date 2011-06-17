@@ -727,7 +727,7 @@
 			}
 
             if( !empty( $form ) ) {
-                $return .= $this->Xform->input( "Search.active", array( 'value' => true, 'type' => 'hidden' ) );
+                $return .= '<div>'.$this->Xform->input( "Search.active", array( 'value' => true, 'type' => 'hidden' ) ).'</div>';
                 $return .= $this->Xform->submit( __( 'Search', true ) );
                 $return .= $this->Xform->end();
             }

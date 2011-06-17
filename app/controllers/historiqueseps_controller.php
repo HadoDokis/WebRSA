@@ -1,120 +1,191 @@
 <?php
-    class HistoriquesepsController extends AppController
-    {
+	class HistoriquesepsController extends AppController
+	{
+		public $name = 'Historiqueseps';
 
-        var $name = 'Historiqueseps';
-        var $uses = array( 'Dossier', 'Personne', 'Option' );
-        var $helpers = array(  'Default2' );
+		public $uses = array( 'Dossierep', 'Option' );
 
-        /** ********************************************************************
-        *
-        *** *******************************************************************/
-        protected function _setOptions() {
-            $options['Dossierep'] = $this->Dossier->Foyer->Personne->Dossierep->allEnumLists();
-            $options['Passagecommissionep'] = $this->Dossier->Foyer->Personne->Dossierep->Passagecommissionep->allEnumLists();
+		public $helpers = array( 'Default2', 'Xpaginator2' );
 
-            // Ajout des enums pour les thématiques du CG uniquement
-            foreach( $this->Dossier->Foyer->Personne->Dossierep->Passagecommissionep->Commissionep->Ep->Regroupementep->themes() as $theme ) {
-                $modeleDecision = Inflector::classify( "decision{$theme}" );
-                if( in_array( 'Enumerable', $this->Dossier->Foyer->Personne->Dossierep->Passagecommissionep->Commissionep->Passagecommissionep->{$modeleDecision}->Behaviors->attached() ) ) {
-                    $options = Set::merge( $options, $this->Dossier->Foyer->Personne->Dossierep->Passagecommissionep->Commissionep->Passagecommissionep->{$modeleDecision}->enums() );
-                }
-            }
-            $this->set( compact( 'options' ) );
-        }
+		/**
+		*
+		*/
 
-        /** ********************************************************************
-        *
-        *** *******************************************************************/
+		protected function _setOptions( $modeleTheme = null, $modeleDecision = null ) {
+			$options = $this->Dossierep->Passagecommissionep->enums();
+			$options['Dossierep']['themeep'] = $this->Dossierep->themesCg();
 
-        function index( $personne_id = null ){
-            // Vérification du format de la variable
-            $this->assert( valid_int( $personne_id ), 'error404' );
+			if( !empty( $modeleTheme ) && in_array( 'Enumerable', $this->Dossierep->{$modeleTheme}->Behaviors->attached() ) ) {
+				$options = Set::merge(
+					$options,
+					$this->Dossierep->{$modeleTheme}->enums()
+				);
+			}
 
-            $personne = $this->Dossier->Foyer->Personne->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Personne.id' => $personne_id
-                    ),
-                    'contain' => array(
-                        'Foyer' => array(
-                            'Dossier'
-                        )
-                    )
-                )
-            );
+			if( !empty( $modeleDecision ) && in_array( 'Enumerable', $this->Dossierep->Passagecommissionep->{$modeleDecision}->Behaviors->attached() ) ) {
+				$options = Set::merge(
+					$options,
+					$this->Dossierep->Passagecommissionep->{$modeleDecision}->enums()
+				);
+			}
 
-            $dossier_id = Set::classicExtract( $personne, 'Foyer.Dossier.id' );
-            $details = array();
+			$this->set( compact( 'options' ) );
+		}
 
-            // Dernier passage effectif (lié à un passagecommissionep)
-            $tpassageEp = $this->Dossier->Foyer->Personne->Dossierep->Passagecommissionep->find(
-                'all',
-                array(
-                    'conditions' => array(
-                        'Passagecommissionep.dossierep_id IN ( '.$this->Dossier->Foyer->Personne->Dossierep->sq(
-                            array(
-                                'alias' => 'dossierseps',
-                                'fields' => array( 'dossierseps.id' ),
-                                'conditions' => array(
-                                    'dossierseps.personne_id' => $personne_id
-                                ),
-                                'contain' => false
-                            )
-                        ).' )'
-                    ),
-                    'contain' => array(
-                        'Dossierep' => array(
-                        )
-                    )
-                )
-            );
+		/**
+		* Affiche la liste des passages en commission d'EP pour une personne donnée.
+		* Possibilité de filtrer par thématique.
+		*/
 
-            $decisionEP = array();
-            if( !empty( $tpassageEp ) ) {
+		public function index( $personne_id = null ){
+			$this->assert( valid_int( $personne_id ), 'error404' );
 
-                foreach( $tpassageEp as $key => $passage ){
-// debug($passage);
-                    $modelTheme = Inflector::classify( Inflector::singularize( $passage['Dossierep']['themeep'] ) );
-                    $modelDecision = 'Decision'.Inflector::singularize( $passage['Dossierep']['themeep'] );
+			$queryData = array(
+				'conditions' => array(
+					'Dossierep.personne_id' => $personne_id
+				),
+				'contain' => array(
+					'Dossierep',
+					'Commissionep' => array(
+						'Ep'
+					),
+				),
+				'order' => array(
+					'Commissionep.dateseance DESC'
+				)
+			);
 
-                    // Thématique
-                    $thematique = $this->Dossier->Foyer->Personne->Dossierep->{$modelTheme}->find(
-                        'first',
-                        array(
-                            'conditions' => array(
-                                "{$modelTheme}.dossierep_id" => $passage['Passagecommissionep']['dossierep_id']
-                            ),
-                            'contain' => false,
-                        )
-                    );
-                    $this->set( compact( 'thematique' ) );
+			// Moteur de recherche
+			if( !empty( $this->data) ) { // FIXME: méthode search dans le modèle Historiqueep (à créer)
+				if( !empty( $this->data['Search']['Dossierep']['themeep'] ) ) {
+					$queryData['conditions']['Dossierep.themeep'] = $this->data['Search']['Dossierep']['themeep'];
+				}
+			}
 
-                    // Décisions par thème
-                    $decisionPassage = $this->Dossier->Foyer->Personne->Dossierep->Passagecommissionep->{$modelDecision}->find(
-                        'all',
-                        array(
-                            'conditions' => array(
-                                "{$modelDecision}.passagecommissionep_id" => $passage['Passagecommissionep']['id']
-                            ),
-                            'contain' => false,
-                            'order' => array( "{$modelDecision}.created ASC" )
-                        )
-                    );
+			$this->paginate = array( 'Passagecommissionep' => $queryData );
 
-                    $tpassageEp[$key] = Set::merge( $passage, $thematique, $decisionPassage  );
-                }
-                $this->set( 'decisions', $tpassageEp );
-            }
+			$passages = $this->paginate( $this->Dossierep->Passagecommissionep );
 
-            $this->set( 'personne_id', $personne_id );
-            $this->_setOptions();
+			$this->_setOptions();
+			$this->set( compact( 'passages' ) );
+			$this->set( 'personne_id', $personne_id );
+		}
 
-            $this->set( 'dossier_id', $dossier_id );
-            $this->set( 'tpassageEp', $tpassageEp );
+		/**
+		* Visualisation des détails du passage d'un dossier d'EP en commission d'EP
+		*/
 
-        }
+		public function view_passage( $passagecommssionep_id ) {
+			$this->assert( valid_int( $passagecommssionep_id ), 'error404' );
 
-    }
+			$passage = $this->Dossierep->Passagecommissionep->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Passagecommissionep.id' => $passagecommssionep_id
+					),
+					'contain' => array(
+						'Dossierep',
+						'Commissionep' => array(
+							'Ep'
+						),
+					)
+				)
+			);
+
+			$this->assert( !empty( $passage ), 'error404' );
+
+			// TODO: à factoriser avec view_dossier
+			$themeSingulier = Inflector::singularize( $passage['Dossierep']['themeep'] );
+			$modeleTheme = Inflector::classify( $themeSingulier );
+			$modeleDecision = Inflector::classify( "decision{$themeSingulier}" );
+
+			// Thématique
+			if( method_exists( $this->Dossierep->{$modeleTheme}, 'containThematique' ) ) {
+				$contain = $this->Dossierep->{$modeleTheme}->containThematique();
+			}
+			else {
+				$contain = false;
+			}
+
+			$this->Dossierep->{$modeleTheme}->forceVirtualFields = true;
+			$donneesTheme = $this->Dossierep->{$modeleTheme}->find(
+				'first',
+				array(
+					'conditions' => array(
+						"{$modeleTheme}.dossierep_id" => $passage['Dossierep']['id']
+					),
+					'contain' => $contain
+				)
+			);
+
+			// Décision
+			if( method_exists( $this->Dossierep->Passagecommissionep->{$modeleDecision}, 'containDecision' ) ) {
+				$contain = $this->Dossierep->Passagecommissionep->{$modeleDecision}->containDecision();
+			}
+			else {
+				$contain = false;
+			}
+
+			$this->Dossierep->Passagecommissionep->{$modeleDecision}->forceVirtualFields = true;
+			$donneesDecision = $this->Dossierep->Passagecommissionep->{$modeleDecision}->find(
+				'all',
+				array(
+					'conditions' => array(
+						"{$modeleDecision}.passagecommissionep_id" => $passage['Passagecommissionep']['id']
+					),
+					'contain' => $contain
+				)
+			);
+
+			foreach( $donneesDecision as $i => $data ) {
+				$donneesDecision[$i][$modeleDecision] = $data[$modeleDecision];
+				unset( $data[$i][$modeleDecision] );
+				$donneesDecision[$i][$modeleDecision] = Set::merge(
+					$donneesDecision[$i][$modeleDecision],
+					$data
+				);
+			}
+
+			$passage = Set::merge(
+				$passage,
+				$donneesTheme,
+				array( $modeleDecision => Set::classicExtract( $donneesDecision, "{n}.{$modeleDecision}" ) )
+			);
+
+			$this->_setOptions( $modeleTheme, $modeleDecision );
+			// Fin factorisation
+
+			$this->set( compact( 'modeleTheme', 'modeleDecision', 'passage' ) );
+		}
+
+		/**
+		* Visualisation des détails des passages d'un dossier d'EP en commissions d'EP
+		*/
+
+		/*public function view_dossier( $dossierep_id ) {
+			$this->assert( valid_int( $dossierep_id ), 'error404' );
+
+			$passages = $this->Dossierep->Passagecommissionep->find(
+				'all',
+				array(
+					'conditions' => array(
+						'Passagecommissionep.dossierep_id' => $dossierep_id
+					),
+					'contain' => array(
+						'Commissionep',
+						'Dossierep'
+					),
+					'order' => array(
+						'Commissionep.dateseance DESC'
+					)
+				)
+			);
+
+			$this->assert( !empty( $passages ), 'error404' );
+
+			$this->_setOptions();
+			$this->set( compact( 'passages' ) );
+		}*/
+	}
 ?>
