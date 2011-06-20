@@ -515,6 +515,9 @@
 				'fields' => array(
 					'Dossierep.id',
 					'Personne.id',
+					'Personne.qual',
+					'Personne.nom',
+					'Personne.prenom',
 					'Dossier.numdemrsa',
 					'Adresse.locaadr',
 					'Contratinsertion.num_contrat',

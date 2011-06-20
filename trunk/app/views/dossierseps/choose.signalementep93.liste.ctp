@@ -9,6 +9,9 @@
 		array(
 			'Dossier.numdemrsa',
 			'Adresse.locaadr',
+			'Personne.qual',
+			'Personne.nom',
+			'Personne.prenom',
 			'Contratinsertion.num_contrat',
 			'Contratinsertion.dd_ci',
 			'Contratinsertion.duree_engag',
