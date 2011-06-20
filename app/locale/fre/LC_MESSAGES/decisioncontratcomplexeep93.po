@@ -37,14 +37,14 @@ msgstr "Validé"
 msgid "ENUM::DECISIONPCG::enattente"
 msgstr "En attente"
 
-msgid "Decisioncontratcomplexeep93.decision"
-msgstr "Décision"
-
 msgid "Decisioncontratcomplexeep93.observ_ci"
 msgstr "Observations du contrat"
 
 msgid "Decisioncontratcomplexeep93.datevalidation_ci"
 msgstr "Date de validation du contrat"
+
+msgid "Decisioncontratcomplexeep93.decision"
+msgstr "Décision"
 
 msgid "Decisioncontratcomplexeep93.commentaire"
 msgstr "Commentaire"

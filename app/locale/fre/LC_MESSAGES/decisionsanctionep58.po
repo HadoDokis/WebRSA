@@ -30,3 +30,12 @@ msgstr "Annulé"
 
 msgid "ENUM::DECISION::reporte"
 msgstr "Reporté"
+
+msgid "Decisionsanctionep58.decision"
+msgstr "Décision"
+
+msgid "Decisionsanctionep58.commentaire"
+msgstr "Commentaire"
+
+msgid "Decisionsanctionep58.raisonnonpassage"
+msgstr "Raison de non passage"

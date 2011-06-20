@@ -258,7 +258,11 @@
 
 			return ( ( count( $rdvs ) % $typerdv['Typerdv']['nbabsencesavpassageep'] ) == 0 && $tousabsents && empty( $dossierep ) );
 		}
-		
+
+		/**
+		*
+		*/
+
 		public function beforeSave( $options = array ( ) ) {
 			$return = parent::beforeSave( $options );
 			
@@ -286,11 +290,7 @@
 							),
 							'contain' => array(
 								'Sanctionrendezvousep58' => array(
-									'Rendezvous' => array(
-										'conditions' => array(
-											'Rendezvous.typerdv_id' => $newTyperdv_id
-										)
-									)
+									'Rendezvous'
 								)
 							)
 						)
