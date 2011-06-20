@@ -430,5 +430,14 @@ SELECT add_missing_table_field ('public', 'decisionssanctionsrendezvouseps58', '
 ALTER TABLE decisionssanctionsrendezvouseps58 ADD CONSTRAINT decisionssanctionsrendezvouseps58_listesanctionep58_id_fk FOREIGN KEY (listesanctionep58_id) REFERENCES listesanctionseps58(id);
 
 -- *****************************************************************************
+-- 20110620: Transformation de champs char en varchar dans les tables de décisions
+-- des propositions pour la COV
+-- *****************************************************************************
+ALTER TABLE proposorientationscovs58 ALTER COLUMN decisioncov TYPE VARCHAR(10);
+UPDATE proposorientationscovs58 SET decisioncov = TRIM( BOTH ' ' FROM decisioncov );
+ALTER TABLE proposcontratsinsertioncovs58 ALTER COLUMN decisioncov TYPE VARCHAR(10);
+UPDATE proposcontratsinsertioncovs58 SET decisioncov = TRIM( BOTH ' ' FROM decisioncov );
+
+-- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
