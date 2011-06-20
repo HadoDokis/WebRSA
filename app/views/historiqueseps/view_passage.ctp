@@ -109,7 +109,6 @@
 				$detailsDecision[] = "{$modeleDecision}.Typeorient.lib_type_orient";
 				$detailsDecision[] = "{$modeleDecision}.Structurereferente.lib_struc";
 				$detailsDecision["{$modeleDecision}.Referent.nom_complet"] = array( 'type' => 'text' );
-				$detailsDecision[] = "{$modeleDecision}.raisonnonpassage";
 				$detailsDecision[] = "{$modeleDecision}.maintienorientparcours";
 				$detailsDecision[] = "{$modeleDecision}.changementrefparcours";
 				$detailsDecision[] = "{$modeleDecision}.reorientation";

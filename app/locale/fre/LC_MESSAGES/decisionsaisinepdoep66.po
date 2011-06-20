@@ -27,3 +27,21 @@ msgstr "Annulé"
 
 msgid "ENUM::DECISION::reporte"
 msgstr "Reporté"
+
+msgid "Decisionsaisinepdoep66.decision"
+msgstr "Décision"
+
+msgid "Decisionsaisinepdoep66.nonadmis"
+msgstr "Raison de non admission"
+
+msgid "Decisionsaisinepdoep66.motifpdo"
+msgstr "Motif de la PDO"
+
+msgid "Decisionsaisinepdoep66.datedecisionpdo"
+msgstr "Date de décision PDO"
+
+msgid "Decisionsaisinepdoep66.commentaire"
+msgstr "Commentaire"
+
+msgid "Decisionsaisinepdoep66.raisonnonpassage"
+msgstr "Raison de non passage"
