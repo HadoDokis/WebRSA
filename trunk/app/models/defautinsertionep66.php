@@ -367,7 +367,7 @@
 							);
 
 							if( !empty( $bilanparcours66 ) ) {
-								$referent_id = $orientsstruct['Orientstruct']['referent_id'];
+								$referent_id = $bilanparcours66['Bilanparcours66']['referent_id'];
 							}
 						}
 
@@ -403,8 +403,9 @@
 								'structurereferente_id' => @$dossierep['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['structurereferente_id'],
 							)
 						);
-
+debug( $success );
 						$success = $oBilanparcours66->sauvegardeBilan( $nvdossierep ) && $success;
+debug( $oBilanparcours66->validationErrors );
 					}
 					/*// TODO Si maintien, alors, RDV référent
 					else if( $defautinsertionep66['Defautinsertionep66']['decision'] == 'maintien' ) {
