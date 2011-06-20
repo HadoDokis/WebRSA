@@ -11,42 +11,38 @@
 	</h1>
 	<br />
 
-		<div id="dossierseps">
+	<div id="dossierseps">
 		<?php
-
 			if ( isset( $themeEmpty ) && $themeEmpty == true ) {
 				echo '<p class="notice">Veuillez attribuer des thèmes à l\'EP gérant la commission avant.</p>';
 			}
 			else {
-//debug($dossiers);
 				foreach( $themesChoose as $theme ){
-
 					echo "<div id=\"$theme\"><h3 class=\"title\">".__d( 'dossierep',  'ENUM::THEMEEP::'.Inflector::tableize( $theme ), true )."</h3>";
-
 					require_once( "choose.{$theme}.liste.ctp" );
-
+					if( !empty( $dossiers[$theme]) ) {
+						echo $form->button( 'Tout cocher', array( 'onclick' => "toutCocher( '#{$theme} input[type=\"checkbox\"]' )" ) );
+						echo $form->button( 'Tout décocher', array( 'onclick' => "toutDecocher( '#{$theme} input[type=\"checkbox\"]' )" ) );
+					}
 					echo "</div>";
-//         debug($theme);
 				}
 			}
-
 		?>
 		</div>
 	</div>
 </div>
 <?php
-
-			echo $default->button(
-				'back',
-				array(
-					'controller' => 'commissionseps',
-					'action'     => 'view',
-					$commissionep_id
-				),
-				array(
-					'id' => 'Back'
-				)
-			);
+	echo $default->button(
+		'back',
+		array(
+			'controller' => 'commissionseps',
+			'action'     => 'view',
+			$commissionep_id
+		),
+		array(
+			'id' => 'Back'
+		)
+	);
 ?>
 <?php
 	if( Configure::read( 'debug' ) > 0 ) {
@@ -58,8 +54,7 @@
 <script type="text/javascript">
 	makeTabbed( 'tabbedWrapper', 2 );
 	makeTabbed( 'dossierseps', 3 );
-</script>
-<script type="text/javascript">
+
 	$$( 'td.action a' ).each( function( elmt ) {
 		$( elmt ).addClassName( 'external' );
 	} );

@@ -1,7 +1,6 @@
 <h1><?php echo $this->pageTitle = __d( 'contratcomplexeep93', "{$this->name}::{$this->action}", true );?></h1>
 
 <?php
-// debug($contratsinsertion);
 	echo $default2->index(
 		$contratsinsertion,
 		array(
@@ -25,30 +24,8 @@
 			'labelcohorte' => 'Enregistrer'
 		)
 	);
-
-// 	debug( $contratsinsertion );
 ?>
 <?php if( !empty( $contratsinsertion) ):?>
-
- <script type="text/javascript">
-        function toutCocher() {
-
-            $$( 'input[type="checkbox"]' ).each( function( checkbox ) {
-                $( checkbox ).checked = true;
-            });
-        }
-
-        function toutDecocher() {
-            $$( 'input[type="checkbox"]' ).each( function( checkbox ) {
-                $( checkbox ).checked = false;
-            });
-        }
-
-        document.observe("dom:loaded", function() {
-            Event.observe( 'toutCocher', 'click', toutCocher );
-            Event.observe( 'toutDecocher', 'click', toutDecocher );
-        });
-    </script>
-    <?php echo $form->button( 'Tout cocher', array( 'id' => 'toutCocher' ) );?>
-    <?php echo $form->button( 'Tout décocher', array( 'id' => 'toutDecocher' ) );?>
+    <?php echo $form->button( 'Tout cocher', array( 'onclick' => 'toutCocher()' ) );?>
+    <?php echo $form->button( 'Tout décocher', array( 'onclick' => 'toutDecocher()' ) );?>
 <?php endif;?>

@@ -8,8 +8,7 @@
 			'Personne.prenom',
 			'Personne.dtnai',
 			'Adresse.locaadr',
-			'Dossierep.created',/*,
-			'Dossierep.themeep'*/
+			'Dossierep.created',
 		),
 		array(
 			'cohorte' => true,
@@ -23,27 +22,3 @@
 		)
 	);
 ?>
-
-<?php if( !empty( $dossiers[$theme]) ):?>
- <script type="text/javascript">
-        function toutCocher<?php echo $theme;?>() {
-
-            $$( '#<?php echo $theme;?> input[type="checkbox"]' ).each( function( checkbox ) {
-                $( checkbox ).checked = true;
-            });
-        }
-
-        function toutDecocher<?php echo $theme;?>() {
-            $$( '#<?php echo $theme;?> input[type="checkbox"]' ).each( function( checkbox ) {
-                $( checkbox ).checked = false;
-            });
-        }
-
-        document.observe("dom:loaded", function() {
-            Event.observe( 'toutCocher<?php echo $theme;?>', 'click', toutCocher<?php echo $theme;?> );
-            Event.observe( 'toutDecocher<?php echo $theme;?>', 'click', toutDecocher<?php echo $theme;?> );
-        });
-    </script>
-    <?php echo $form->button( 'Tout cocher', array( 'id' => 'toutCocher'.$theme ) );?>
-    <?php echo $form->button( 'Tout décocher', array( 'id' => 'toutDecocher'.$theme ) );?>
-<?php endif;?>
