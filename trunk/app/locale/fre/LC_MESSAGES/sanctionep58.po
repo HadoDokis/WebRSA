@@ -34,11 +34,17 @@ msgstr "Sélection des allocataires non inscrits à Pôle Emploi"
 msgid "Sanctionep58::index::empty"
 msgstr "Aucun dossier ne peut actuellement passer en EP"
 
-msgid "radiepe"
+msgid "ENUM::ORIGINE::radiepe"
 msgstr "Radiation de Pôle Emploi"
 
-msgid "noninscritpe"
+msgid "ENUM::ORIGINE::noninscritpe"
 msgstr "Non inscrit à Pôle Emploi"
 
-msgid "nonrespectcer"
+msgid "ENUM::ORIGINE::nonrespectcer"
 msgstr "Non respect du contrat"
+
+msgid "Sanctionep58.origine"
+msgstr "Origine"
+
+msgid "Sanctionep58.commentaire"
+msgstr "Commentaire"
