@@ -86,11 +86,6 @@ echo '<table id="Decisionsignalementep93" class="tooltips"><thead>
 				$( 'Decisionsignalementep93<?php echo $i;?>Decision' ).setValue( 'reporte' );
 				fireEvent( $( 'Decisionsignalementep93<?php echo $i;?>Decision' ),'change');
 			} );
-
-// 			$( 'Decisionsignalementep93<?php echo $i;?>Decision' ).observe( 'change', function() {
-// 				changeColspanRaisonNonPassage( 'Decisionsignalementep93<?php echo $i;?>ColumnDecision', 'Decisionsignalementep93<?php echo $i;?>Decision', [], 'Decisionsignalementep93<?php echo $i;?>Raisonnonpassage' );
-// 			});
-// 			changeColspanRaisonNonPassage( 'Decisionsignalementep93<?php echo $i;?>ColumnDecision', 'Decisionsignalementep93<?php echo $i;?>Decision', [], 'Decisionsignalementep93<?php echo $i;?>Raisonnonpassage' );
 		<?php endfor;?>
 	});
 </script>

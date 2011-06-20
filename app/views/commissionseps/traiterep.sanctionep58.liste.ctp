@@ -33,7 +33,6 @@ echo '<table><thead>
 					$form->input( "Decisionsanctionep58.{$i}.listesanctionep58_id", array( 'type' => 'select', 'label' => false, 'options' => $listesanctionseps58 ) ),
 					( !empty( $this->validationErrors['Decisionsanctionep58'][$i]['listesanctionep58_id'] ) ? array( 'class' => 'error' ) : array() )
 				),
-// 				$form->input( "Decisionsanctionep58.{$i}.raisonnonpassage", array( 'label' => false, 'type' => 'textarea', 'empty' => true ) ),
 				$form->input( "Decisionsanctionep58.{$i}.commentaire", array( 'label' => false, 'type' => 'textarea' ) ).
 				$hiddenFields
 			),
@@ -57,14 +56,9 @@ echo '<table><thead>
 			);
 			
 			$( 'Decisionsanctionep58<?php echo $i;?>Decision' ).observe( 'change', function() {
-				changeColspanAnnuleReporte( 'Decisionsanctionep58<?php echo $i;?>DecisionColumn', 2, 'Decisionsanctionep58<?php echo $i;?>Decision', [ 'Decisionsanctionep58<?php echo $i;?>Listesanctionep58Id' ] );
+				changeColspanFormAnnuleReporteEps( 'Decisionsanctionep58<?php echo $i;?>DecisionColumn', 2, 'Decisionsanctionep58<?php echo $i;?>Decision', [ 'Decisionsanctionep58<?php echo $i;?>Listesanctionep58Id' ] );
 			});
-			changeColspanAnnuleReporte( 'Decisionsanctionep58<?php echo $i;?>DecisionColumn', 2, 'Decisionsanctionep58<?php echo $i;?>Decision', [ 'Decisionsanctionep58<?php echo $i;?>Listesanctionep58Id' ] );
-			
-// 			$( 'Decisionsanctionep58<?php echo $i;?>Decision' ).observe( 'change', function() {
-// 				afficheRaisonpassage( 'Decisionsanctionep58<?php echo $i;?>Decision', [ 'Decisionsanctionep58<?php echo $i;?>Listesanctionep58Id' ], 'Decisionsanctionep58<?php echo $i;?>Raisonnonpassage' );
-// 			});
-// 			afficheRaisonpassage( 'Decisionsanctionep58<?php echo $i;?>Decision', [ 'Decisionsanctionep58<?php echo $i;?>Listesanctionep58Id' ], 'Decisionsanctionep58<?php echo $i;?>Raisonnonpassage' );
+			changeColspanFormAnnuleReporteEps( 'Decisionsanctionep58<?php echo $i;?>DecisionColumn', 2, 'Decisionsanctionep58<?php echo $i;?>Decision', [ 'Decisionsanctionep58<?php echo $i;?>Listesanctionep58Id' ] );
 		<?php endfor;?>
 	});
 </script>

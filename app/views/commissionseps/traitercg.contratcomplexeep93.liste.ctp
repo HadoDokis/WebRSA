@@ -95,22 +95,9 @@ echo '<table id="Decisioncontratcomplexeep93" class="tooltips"><thead>
 			} );
 
 			$( 'Decisioncontratcomplexeep93<?php echo $i;?>Decision' ).observe( 'change', function() {
-				changeColspanAnnuleReporte( 'Decisioncontratcomplexeep93<?php echo $i;?>DecisionColumn', 3, 'Decisioncontratcomplexeep93<?php echo $i;?>Decision', [ 'Decisioncontratcomplexeep93<?php echo $i;?>ObservCi', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiDay', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiMonth', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiYear' ] );
+				changeColspanFormAnnuleReporteEps( 'Decisioncontratcomplexeep93<?php echo $i;?>DecisionColumn', 3, 'Decisioncontratcomplexeep93<?php echo $i;?>Decision', [ 'Decisioncontratcomplexeep93<?php echo $i;?>ObservCi', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiDay', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiMonth', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiYear' ] );
 			});
-			changeColspanAnnuleReporte( 'Decisioncontratcomplexeep93<?php echo $i;?>DecisionColumn', 3, 'Decisioncontratcomplexeep93<?php echo $i;?>Decision', [ 'Decisioncontratcomplexeep93<?php echo $i;?>ObservCi', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiDay', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiMonth', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiYear' ] );
-
-// 			$( 'Decisioncontratcomplexeep93<?php echo $i;?>Decision' ).observe( 'change', function() {
-// 				afficheRaisonpassage(
-// 					'Decisioncontratcomplexeep93<?php echo $i;?>Decision',
-// 					[ 'Decisioncontratcomplexeep93<?php echo $i;?>ObservCi', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiDay', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiMonth', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiYear' ],
-// 					'Decisioncontratcomplexeep93<?php echo $i;?>Raisonnonpassage'
-// 				);
-// 			});
-// 			afficheRaisonpassage(
-// 				'Decisioncontratcomplexeep93<?php echo $i;?>Decision',
-// 				[ 'Decisioncontratcomplexeep93<?php echo $i;?>ObservCi', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiDay', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiMonth', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiYear' ],
-// 				'Decisioncontratcomplexeep93<?php echo $i;?>Raisonnonpassage'
-// 			);
+			changeColspanFormAnnuleReporteEps( 'Decisioncontratcomplexeep93<?php echo $i;?>DecisionColumn', 3, 'Decisioncontratcomplexeep93<?php echo $i;?>Decision', [ 'Decisioncontratcomplexeep93<?php echo $i;?>ObservCi', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiDay', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiMonth', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiYear' ] );
 		<?php endfor;?>
 	});
 </script>

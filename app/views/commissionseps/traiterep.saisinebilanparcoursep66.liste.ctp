@@ -82,7 +82,6 @@ echo '<table><thead>
 						$form->input( "Decisionsaisinebilanparcoursep66.{$i}.changementrefparcours", array( 'label' => false, 'options' => $options['Decisionsaisinebilanparcoursep66']['changementrefparcours'], 'empty' => true, 'type' => 'select' ) ),
 						( !empty( $this->validationErrors['Decisionsaisinebilanparcoursep66'][$i]['changementrefparcours'] ) ? array( 'class' => 'error' ) : array() )
 					),
-	// 				array( $form->input( "Decisionsaisinebilanparcoursep66.{$i}.raisonnonpassage", array( 'label' => false, 'empty' => true, 'type' => 'textarea' ) ), array( 'colspan' => 3 ) ),
 					$form->input( "Decisionsaisinebilanparcoursep66.{$i}.checkcomm", array( 'label' =>false, 'type' => 'checkbox' ) ).
 					$form->input( "Decisionsaisinebilanparcoursep66.{$i}.commentaire", array( 'label' =>false, 'type' => 'textarea' ) ).
 					$hiddenFields
@@ -121,16 +120,11 @@ echo '<table><thead>
 			}
 
 			$( 'Decisionsaisinebilanparcoursep66<?php echo $i;?>Decision' ).observe( 'change', function() {
-				changeColspanAnnuleReporte( 'Decisionsaisinebilanparcoursep66<?php echo $i;?>DecisionColumn', 5, 'Decisionsaisinebilanparcoursep66<?php echo $i;?>Decision', [ 'Decisionsaisinebilanparcoursep66<?php echo $i;?>TypeorientId', 'Decisionsaisinebilanparcoursep66<?php echo $i;?>StructurereferenteId', 'Decisionsaisinebilanparcoursep66<?php echo $i;?>ReferentId', 'Decisionsaisinebilanparcoursep66<?php echo $i;?>Reorientation', 'Decisionsaisinebilanparcoursep66<?php echo $i;?>Maintienorientparcours', 'Decisionsaisinebilanparcoursep66<?php echo $i;?>Changementrefparcours' ] );
+				changeColspanFormAnnuleReporteEps( 'Decisionsaisinebilanparcoursep66<?php echo $i;?>DecisionColumn', 5, 'Decisionsaisinebilanparcoursep66<?php echo $i;?>Decision', [ 'Decisionsaisinebilanparcoursep66<?php echo $i;?>TypeorientId', 'Decisionsaisinebilanparcoursep66<?php echo $i;?>StructurereferenteId', 'Decisionsaisinebilanparcoursep66<?php echo $i;?>ReferentId', 'Decisionsaisinebilanparcoursep66<?php echo $i;?>Reorientation', 'Decisionsaisinebilanparcoursep66<?php echo $i;?>Maintienorientparcours', 'Decisionsaisinebilanparcoursep66<?php echo $i;?>Changementrefparcours' ] );
 				checkValue( '<?php echo $i;?>' );
 			});
-			changeColspanAnnuleReporte( 'Decisionsaisinebilanparcoursep66<?php echo $i;?>DecisionColumn', 5, 'Decisionsaisinebilanparcoursep66<?php echo $i;?>Decision', [ 'Decisionsaisinebilanparcoursep66<?php echo $i;?>TypeorientId', 'Decisionsaisinebilanparcoursep66<?php echo $i;?>StructurereferenteId', 'Decisionsaisinebilanparcoursep66<?php echo $i;?>ReferentId', 'Decisionsaisinebilanparcoursep66<?php echo $i;?>Reorientation', 'Decisionsaisinebilanparcoursep66<?php echo $i;?>Maintienorientparcours', 'Decisionsaisinebilanparcoursep66<?php echo $i;?>Changementrefparcours' ] );
+			changeColspanFormAnnuleReporteEps( 'Decisionsaisinebilanparcoursep66<?php echo $i;?>DecisionColumn', 5, 'Decisionsaisinebilanparcoursep66<?php echo $i;?>Decision', [ 'Decisionsaisinebilanparcoursep66<?php echo $i;?>TypeorientId', 'Decisionsaisinebilanparcoursep66<?php echo $i;?>StructurereferenteId', 'Decisionsaisinebilanparcoursep66<?php echo $i;?>ReferentId', 'Decisionsaisinebilanparcoursep66<?php echo $i;?>Reorientation', 'Decisionsaisinebilanparcoursep66<?php echo $i;?>Maintienorientparcours', 'Decisionsaisinebilanparcoursep66<?php echo $i;?>Changementrefparcours' ] );
 			checkValue( '<?php echo $i;?>' );
-
-// 			$( 'Decisionsaisinebilanparcoursep66<?php echo $i;?>Decision' ).observe( 'change', function() {
-// 				afficheRaisonpassage( 'Decisionsaisinebilanparcoursep66<?php echo $i;?>Decision', [ 'Decisionsaisinebilanparcoursep66<?php echo $i;?>TypeorientId', 'Decisionsaisinebilanparcoursep66<?php echo $i;?>StructurereferenteId', 'Decisionsaisinebilanparcoursep66<?php echo $i;?>ReferentId' ], 'Decisionsaisinebilanparcoursep66<?php echo $i;?>Raisonnonpassage' );
-// 			});
-// 			afficheRaisonpassage( 'Decisionsaisinebilanparcoursep66<?php echo $i;?>Decision', [ 'Decisionsaisinebilanparcoursep66<?php echo $i;?>TypeorientId', 'Decisionsaisinebilanparcoursep66<?php echo $i;?>StructurereferenteId', 'Decisionsaisinebilanparcoursep66<?php echo $i;?>ReferentId' ], 'Decisionsaisinebilanparcoursep66<?php echo $i;?>Raisonnonpassage' );
 		<?php endfor;?>
 	});
 

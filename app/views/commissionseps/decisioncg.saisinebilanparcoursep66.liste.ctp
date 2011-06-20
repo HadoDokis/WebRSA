@@ -94,7 +94,6 @@ echo '<table id="Decisionsaisinebilanparcoursep66" class="tooltips"><thead>
 					array( @$liste_referents[Set::classicExtract( $decisioncg, "referent_id" )], array( 'id' => "Decisionsaisinebilanparcoursep66{$i}ReferentId" ) ),
 					array( @$options['Decisionsaisinebilanparcoursep66']['maintienorientparcours'][Set::classicExtract( $decisioncg, "maintienorientparcours" )], array( 'id' => "Decisionsaisinebilanparcoursep66{$i}Maintienorientparcours" ) ),
 					array( @$options['Decisionsaisinebilanparcoursep66']['changementrefparcours'][Set::classicExtract( $decisioncg, "changementrefparcours" )], array( 'id' => "Decisionsaisinebilanparcoursep66{$i}Changementrefparcours" ) ),
-// 					array( Set::classicExtract( $decisioncg, "raisonnonpassage" ), array( 'colspan' => 3, 'id' => "Decisionsaisinebilanparcoursep66{$i}Raisonnonpassage" ) ),
 					array( Set::classicExtract( $decisioncg, "commentaire" ), array( 'id'  => "Decisionsaisinebilanparcoursep66{$i}Commentaire") ),
 					$xhtml->printLink( 'Imprimer', array( 'controller' => 'commissionseps', 'action' => 'impressionDecision', $dossierep['Passagecommissionep'][0]['id'] ) ),
 					array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
@@ -111,7 +110,7 @@ echo '<table id="Decisionsaisinebilanparcoursep66" class="tooltips"><thead>
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
 		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
-			changeColspanAnnuleReporte( 'Decisionsaisinebilanparcoursep66<?php echo $i;?>DecisionColumn', '<?php echo Set::classicExtract( $dossiers, "{$theme}.liste.{$i}.Passagecommissionep.0.Decisionsaisinebilanparcoursep66.0.decision" );?>', 5, [ 'Decisionsaisinebilanparcoursep66<?php echo $i;?>TypeorientId', 'Decisionsaisinebilanparcoursep66<?php echo $i;?>StructurereferenteId', 'Decisionsaisinebilanparcoursep66<?php echo $i;?>ReferentId', 'Decisionsaisinebilanparcoursep66<?php echo $i;?>Reorientation', 'Decisionsaisinebilanparcoursep66<?php echo $i;?>Maintienorientparcours', 'Decisionsaisinebilanparcoursep66<?php echo $i;?>Changementrefparcours' ] );
+			changeColspanViewInfosEps( 'Decisionsaisinebilanparcoursep66<?php echo $i;?>DecisionColumn', '<?php echo Set::classicExtract( $dossiers, "{$theme}.liste.{$i}.Passagecommissionep.0.Decisionsaisinebilanparcoursep66.0.decision" );?>', 5, [ 'Decisionsaisinebilanparcoursep66<?php echo $i;?>TypeorientId', 'Decisionsaisinebilanparcoursep66<?php echo $i;?>StructurereferenteId', 'Decisionsaisinebilanparcoursep66<?php echo $i;?>ReferentId', 'Decisionsaisinebilanparcoursep66<?php echo $i;?>Reorientation', 'Decisionsaisinebilanparcoursep66<?php echo $i;?>Maintienorientparcours', 'Decisionsaisinebilanparcoursep66<?php echo $i;?>Changementrefparcours' ] );
 
 			if ( '<?php echo Set::classicExtract( $dossiers, "{$theme}.liste.{$i}.Passagecommissionep.0.Decisionsaisinebilanparcoursep66.0.decision" );?>' == 'maintien' ) {
 				$( 'Decisionsaisinebilanparcoursep66<?php echo $i;?>Reorientation' ).hide();
@@ -133,8 +132,6 @@ echo '<table id="Decisionsaisinebilanparcoursep66" class="tooltips"><thead>
 				$( 'Decisionsaisinebilanparcoursep66<?php echo $i;?>Changementrefparcours' ).writeAttribute( "colspan" );
 				$( 'Decisionsaisinebilanparcoursep66<?php echo $i;?>DecisionColumn' ).writeAttribute( "colspan" );
 			}
-
-// 			afficheRaisonpassage( '<?php echo Set::classicExtract( $dossiers, "{$theme}.liste.{$i}.Passagecommissionep.0.Decisionsaisinebilanparcoursep66.0.decision" );?>', [ 'Decisionsaisinebilanparcoursep66<?php echo $i;?>TypeorientId', 'Decisionsaisinebilanparcoursep66<?php echo $i;?>StructurereferenteId', 'Decisionsaisinebilanparcoursep66<?php echo $i;?>ReferentId' ], 'Decisionsaisinebilanparcoursep66<?php echo $i;?>Raisonnonpassage' );
 		<?php endfor;?>
 	});
 </script>
