@@ -59,13 +59,13 @@ msgid "ENUM::CHANGEMENTREFPARCOURS::N"
 msgstr "Sans changement de référent"
 
 msgid "Saisinebilanparcoursep66.choixparcours"
-msgstr ""
+msgstr "Choix du parcours"
 
 msgid "Saisinebilanparcoursep66.maintienorientparcours"
-msgstr ""
+msgstr "Maintien du parcours d'orientation"
 
 msgid "Saisinebilanparcoursep66.changementrefparcours"
-msgstr ""
+msgstr "Changement du référent du parcours"
 
 msgid "Saisinebilanparcoursep66.reorientation"
-msgstr ""
+msgstr "Type de réorientation"

@@ -47,3 +47,9 @@ msgstr "Non conclusion"
 
 msgid "ENUM::TYPE::DRD"
 msgstr "Non respect"
+
+msgid "Defautinsertionep66.origine"
+msgstr "Origine"
+
+msgid "Defautinsertionep66.type"
+msgstr "Motif saisine"

@@ -48,3 +48,21 @@ msgstr "Avec changement de référent"
 
 msgid "ENUM::CHANGEMENTREFPARCOURS::N"
 msgstr "Sans changement de référent"
+
+msgid "Decisionsaisinebilanparcoursep66.decision"
+msgstr "Décision"
+
+msgid "Decisionsaisinebilanparcoursep66.maintienorientparcours"
+msgstr "Maintien du parcours d'orientation"
+
+msgid "Decisionsaisinebilanparcoursep66.changementrefparcours"
+msgstr "Changement du référent du parcours"
+
+msgid "Decisionsaisinebilanparcoursep66.reorientation"
+msgstr "Type de réorientaion"
+
+msgid "Decisionsaisinebilanparcoursep66.commentaire"
+msgstr "Commentaire"
+
+msgid "Decisionsaisinebilanparcoursep66.raisonnonpassage"
+msgstr "Raison de non passage"
