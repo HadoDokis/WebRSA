@@ -995,3 +995,33 @@ function changeColspanFormAnnuleReporteEps( idColumnToChangeColspan, colspanMax,
 		});
 	}
 }
+
+/**
+* Permet de cocher un ensemble de cases à cocher.
+* @param selecteur Le sélecteur CSS pour obtenir les cases à cocher (default: input[type="checkbox"])
+*/
+
+function toutCocher( selecteur ) {
+	if( selecteur == undefined ) {
+		selecteur = 'input[type="checkbox"]';
+	}
+
+	$$( selecteur ).each( function( checkbox ) {
+		$( checkbox ).checked = true;
+	} );
+}
+
+/**
+* Permet de décocher un ensemble de cases à cocher.
+* @param selecteur Le sélecteur CSS pour obtenir les cases à cocher (default: input[type="checkbox"]) 
+*/
+
+function toutDecocher( selecteur ) {
+	if( selecteur == undefined ) {
+		selecteur = 'input[type="checkbox"]';
+	}
+
+	$$( selecteur ).each( function( checkbox ) {
+		$( checkbox ).checked = false;
+	} );
+}

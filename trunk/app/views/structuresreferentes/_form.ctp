@@ -11,27 +11,12 @@
 <fieldset class="col2" id="filtres_zone_geo">
     <legend>Zones géographiques</legend>
     <script type="text/javascript">
-        function toutCocher() {
-            $$( 'input[name="data[Zonegeographique][Zonegeographique][]"]' ).each( function( checkbox ) {
-                $( checkbox ).checked = true;
-            });
-        }
-
-        function toutDecocher() {
-            $$( 'input[name="data[Zonegeographique][Zonegeographique][]"]' ).each( function( checkbox ) {
-                $( checkbox ).checked = false;
-            });
-        }
-
-        document.observe("dom:loaded", function() {
-            Event.observe( 'toutCocher', 'click', toutCocher );
-            Event.observe( 'toutDecocher', 'click', toutDecocher );
+        document.observe( "dom:loaded", function() {
             observeDisableFieldsetOnCheckbox( 'StructurereferenteFiltreZoneGeo', 'filtres_zone_geo', false );
-        });
+        } );
     </script>
-    <?php echo $form->button( 'Tout cocher', array( 'id' => 'toutCocher' ) );?>
-    <?php echo $form->button( 'Tout décocher', array( 'id' => 'toutDecocher' ) );?>
-
+    <?php echo $form->button( 'Tout cocher', array( 'onclick' => "toutCocher( 'input[name=\"data[Zonegeographique][Zonegeographique][]\"]' )" ) );?>
+    <?php echo $form->button( 'Tout décocher', array( 'onclick' => "toutDecocher( 'input[name=\"data[Zonegeographique][Zonegeographique][]\"]' )" ) );?>
     <?php echo $form->input( 'Zonegeographique.Zonegeographique', array( 'label' => required( false ), 'multiple' => 'checkbox' , 'options' => $zglist ) );?>
 </fieldset>
 <fieldset class="col2">
