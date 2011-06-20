@@ -64,14 +64,9 @@ echo '<table><thead>
 			);
 
 			$( 'Decisionregressionorientationep58<?php echo $i;?>Decision' ).observe( 'change', function() {
-				changeColspanAnnuleReporte( 'Decisionregressionorientationep58<?php echo $i;?>DecisionColumn', 3, 'Decisionregressionorientationep58<?php echo $i;?>Decision', [ 'Decisionregressionorientationep58<?php echo $i;?>TypeorientId', 'Decisionregressionorientationep58<?php echo $i;?>StructurereferenteId' ] );
+				changeColspanFormAnnuleReporteEps( 'Decisionregressionorientationep58<?php echo $i;?>DecisionColumn', 3, 'Decisionregressionorientationep58<?php echo $i;?>Decision', [ 'Decisionregressionorientationep58<?php echo $i;?>TypeorientId', 'Decisionregressionorientationep58<?php echo $i;?>StructurereferenteId' ] );
 			});
-			changeColspanAnnuleReporte( 'Decisionregressionorientationep58<?php echo $i;?>DecisionColumn', 3, 'Decisionregressionorientationep58<?php echo $i;?>Decision', [ 'Decisionregressionorientationep58<?php echo $i;?>TypeorientId', 'Decisionregressionorientationep58<?php echo $i;?>StructurereferenteId' ] );
-
-// 			$( 'Decisionregressionorientationep58<?php echo $i;?>Decision' ).observe( 'change', function() {
-// 				afficheRaisonpassage( 'Decisionregressionorientationep58<?php echo $i;?>Decision', [ 'Decisionregressionorientationep58<?php echo $i;?>TypeorientId', 'Decisionregressionorientationep58<?php echo $i;?>StructurereferenteId' ], 'Decisionregressionorientationep58<?php echo $i;?>Raisonnonpassage' );
-// 			});
-// 			afficheRaisonpassage( 'Decisionregressionorientationep58<?php echo $i;?>Decision', [ 'Decisionregressionorientationep58<?php echo $i;?>TypeorientId', 'Decisionregressionorientationep58<?php echo $i;?>StructurereferenteId' ], 'Decisionregressionorientationep58<?php echo $i;?>Raisonnonpassage' );
+			changeColspanFormAnnuleReporteEps( 'Decisionregressionorientationep58<?php echo $i;?>DecisionColumn', 3, 'Decisionregressionorientationep58<?php echo $i;?>Decision', [ 'Decisionregressionorientationep58<?php echo $i;?>TypeorientId', 'Decisionregressionorientationep58<?php echo $i;?>StructurereferenteId' ] );
 		<?php endfor;?>
 	});
 </script>

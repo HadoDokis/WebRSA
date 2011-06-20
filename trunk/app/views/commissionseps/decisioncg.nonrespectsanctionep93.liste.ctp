@@ -56,7 +56,6 @@ echo '<table id="Decisionnonrespectsanctionep93" class="tooltips"><thead>
 					$options['Decisionnonrespectsanctionep93']['decision'][Set::classicExtract( $decisioncg, "decision" )],
 					array( 'id' => "Decisionnonrespectsanctionep93{$i}ColumnDecision", 'colspan' => 2 )
 				),
-//  				array( Set::classicExtract( $decisioncg, "raisonnonpassage" ), array( 'id' => "Decisionnonrespectsanctionep93{$i}Raisonnonpassage" ) ),
 				Set::classicExtract( $decisioncg, "commentaire" ),
 				$xhtml->printLink( 'Imprimer', array( 'controller' => 'commissionseps', 'action' => 'impressionDecision', $dossierep['Passagecommissionep'][0]['id'] ) ),
 				array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
@@ -67,11 +66,3 @@ echo '<table id="Decisionnonrespectsanctionep93" class="tooltips"><thead>
 	}
 	echo '</tbody></table>';
 ?>
-
-<script type="text/javascript">
-	document.observe("dom:loaded", function() {
-		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
-// 			changeColspanRaisonNonPassage( 'Decisionnonrespectsanctionep93<?php echo $i;?>ColumnDecision', '<?php echo Set::classicExtract( $dossiers, "{$theme}.liste.{$i}.Passagecommissionep.0.Decisionnonrespectsanctionep93.0.decision" );?>', [], 'Decisionnonrespectsanctionep93<?php echo $i;?>Raisonnonpassage' );
-		<?php endfor;?>
-	});
-</script>

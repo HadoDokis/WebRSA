@@ -38,7 +38,6 @@ echo '<table><thead>
 					$form->input( "Decisionsaisinepdoep66.{$i}.decisionpdo_id", array( 'label' => false, 'options' => @$options['Decisionsaisinepdoep66']['decisionpdo_id'], 'empty' => true ) ),
 					( !empty( $this->validationErrors['Decisionsaisinepdoep66'][$i]['decisionpdo_id'] ) ? array( 'class' => 'error' ) : array() )
 				),
-// 				array( $form->input( "Decisionsaisinepdoep66.{$i}.raisonnonpassage", array( 'label' => false, 'type' => 'textarea' ) ), array( 'colspan' => 2 ) ),
 				$form->input( "Decisionsaisinepdoep66.{$i}.commentaire", array( 'label' => false, 'type' => 'textarea' ) ).
 				$hiddenFields
 			),
@@ -62,14 +61,9 @@ echo '<table><thead>
 			);
 
 			$( 'Decisionsaisinepdoep66<?php echo $i;?>Decision' ).observe( 'change', function() {
-				changeColspanAnnuleReporte( 'Decisionsaisinepdoep66<?php echo $i;?>DecisionColumn', 2, 'Decisionsaisinepdoep66<?php echo $i;?>Decision', [ 'Decisionsaisinepdoep66<?php echo $i;?>DecisionpdoId' ] );
+				changeColspanFormAnnuleReporteEps( 'Decisionsaisinepdoep66<?php echo $i;?>DecisionColumn', 2, 'Decisionsaisinepdoep66<?php echo $i;?>Decision', [ 'Decisionsaisinepdoep66<?php echo $i;?>DecisionpdoId' ] );
 			});
-			changeColspanAnnuleReporte( 'Decisionsaisinepdoep66<?php echo $i;?>DecisionColumn', 2, 'Decisionsaisinepdoep66<?php echo $i;?>Decision', [ 'Decisionsaisinepdoep66<?php echo $i;?>DecisionpdoId' ] );
-
-// 			$( 'Decisionsaisinepdoep66<?php echo $i;?>Decision' ).observe( 'change', function() {
-// 				afficheRaisonpassage( 'Decisionsaisinepdoep66<?php echo $i;?>Decision', [ 'Decisionsaisinepdoep66<?php echo $i;?>DecisionpdoId', 'Decisionsaisinepdoep66<?php echo $i;?>Commentaire' ], 'Decisionsaisinepdoep66<?php echo $i;?>Raisonnonpassage' );
-// 			});
-// 			afficheRaisonpassage( 'Decisionsaisinepdoep66<?php echo $i;?>Decision', [ 'Decisionsaisinepdoep66<?php echo $i;?>DecisionpdoId', 'Decisionsaisinepdoep66<?php echo $i;?>Commentaire' ], 'Decisionsaisinepdoep66<?php echo $i;?>Raisonnonpassage' );
+			changeColspanFormAnnuleReporteEps( 'Decisionsaisinepdoep66<?php echo $i;?>DecisionColumn', 2, 'Decisionsaisinepdoep66<?php echo $i;?>Decision', [ 'Decisionsaisinepdoep66<?php echo $i;?>DecisionpdoId' ] );
 		<?php endfor;?>
 	});
 </script>

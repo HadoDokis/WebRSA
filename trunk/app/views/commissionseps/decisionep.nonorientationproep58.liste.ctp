@@ -41,7 +41,6 @@ echo '<table><thead>
 				array( $options['Decisionnonorientationproep58']['decision'][Set::classicExtract( $decisionep, "decision" )], array( 'id' => "Decisionnonorientationproep58{$i}DecisionColumn" ) ),
 				array( @$liste_typesorients[Set::classicExtract( $decisionep, "typeorient_id" )], array( 'id' => "Decisionnonorientationproep58{$i}TypeorientId" ) ),
 				array( @$liste_structuresreferentes[Set::classicExtract( $decisionep, "structurereferente_id" )], array( 'id' => "Decisionnonorientationproep58{$i}StructurereferenteId" ) ),
-// 				array( Set::classicExtract( $decisionep, "raisonnonpassage" ), array( 'colspan' => '2', 'id' => "Decisionnonorientationproep58{$i}Raisonnonpassage" ) ),
 				Set::classicExtract( $decisionep, "commentaire" ),
 				$xhtml->printLink( 'Imprimer', array( 'controller' => 'commissionseps', 'action' => 'impressionDecision', $dossierep['Passagecommissionep'][0]['id'] ) )
 			),
@@ -55,9 +54,7 @@ echo '<table><thead>
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
 		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
-			changeColspanAnnuleReporte( 'Decisionnonorientationproep58<?php echo $i;?>DecisionColumn', '<?php echo Set::classicExtract( $dossiers, "{$theme}.liste.{$i}.Passagecommissionep.0.Decisionnonorientationproep58.0.decision" );?>', 3, [ 'Decisionnonorientationproep58<?php echo $i;?>TypeorientId', 'Decisionnonorientationproep58<?php echo $i;?>StructurereferenteId' ] );
-
-// 			afficheRaisonpassage( '<?php echo Set::classicExtract( $dossiers, "{$theme}.liste.{$i}.Passagecommissionep.0.Decisionnonorientationproep58.0.decision" );?>', [ 'Decisionnonorientationproep58<?php echo $i;?>TypeorientId', 'Decisionnonorientationproep58<?php echo $i;?>StructurereferenteId' ], 'Decisionnonorientationproep58<?php echo $i;?>Raisonnonpassage' );
+			changeColspanViewInfosEps( 'Decisionnonorientationproep58<?php echo $i;?>DecisionColumn', '<?php echo Set::classicExtract( $dossiers, "{$theme}.liste.{$i}.Passagecommissionep.0.Decisionnonorientationproep58.0.decision" );?>', 3, [ 'Decisionnonorientationproep58<?php echo $i;?>TypeorientId', 'Decisionnonorientationproep58<?php echo $i;?>StructurereferenteId' ] );
 		<?php endfor;?>
 	});
 </script>

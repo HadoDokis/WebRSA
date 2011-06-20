@@ -109,44 +109,12 @@
 </div>
 
 <?php
-	//if( Configure::read( 'debug' ) > 0 ) {
+	if( Configure::read( 'debug' ) > 0 ) {
 		echo $javascript->link( 'prototype.livepipe.js' );
 		echo $javascript->link( 'prototype.tabs.js' );
-	//}
+	}
 ?>
 
 <script type="text/javascript">
 	makeTabbed( 'tabbedWrapper', 2 );
-
-	function changeColspanAnnuleReporte( idColumnToChangeColspan, decision, colspanMax, idsNonRaisonpassage ) {
-		if ( in_array( decision, [ 'reporte', 'annule', 'maintienref', 'refuse', 'suspensionnonrespect', 'suspensiondefaut', 'maintien' ] ) ) {
-			$( idColumnToChangeColspan ).writeAttribute( "colspan", colspanMax );
-			idsNonRaisonpassage.each( function ( id ) {
-				$( id ).hide();
-			});
-		}
-	}
-
-// 	function changeColspanRaisonNonPassage( idColumnToChangeColspan, decision, idsNonRaisonpassage, idRaisonpassage ) {
-// 		var colspan = $( idColumnToChangeColspan ).readAttribute( "colspan" );
-// 		if ( decision == 'reporte' || decision == 'annule' ) {
-// 			$( idColumnToChangeColspan ).writeAttribute( "colspan", parseInt( colspan ) - 1 );
-// 		}
-// 		afficheRaisonpassage( decision, idsNonRaisonpassage, idRaisonpassage );
-// 	}
-// 
-// 	function afficheRaisonpassage( decision, idsNonRaisonpassage, idRaisonpassage ) {
-// 		if ( decision == 'reporte' || decision == 'annule' ) {
-// 			idsNonRaisonpassage.each( function ( id ) {
-// 				$( id ).hide();
-// 			});
-// 			$( idRaisonpassage ).show();
-// 		}
-// 		else {
-// 			idsNonRaisonpassage.each( function ( id ) {
-// 				$( id ).show();
-// 			});
-// 			$( idRaisonpassage ).hide();
-// 		}
-// 	}
 </script>

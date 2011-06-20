@@ -56,14 +56,9 @@ echo '<table><thead>
 			);
 
 			$( 'Decisionsanctionrendezvousep58<?php echo $i;?>Decision' ).observe( 'change', function() {
-				changeColspanAnnuleReporte( 'Decisionsanctionrendezvousep58<?php echo $i;?>DecisionColumn', 2, 'Decisionsanctionrendezvousep58<?php echo $i;?>Decision', [ 'Decisionsanctionrendezvousep58<?php echo $i;?>Listesanctionep58Id' ] );
+				changeColspanFormAnnuleReporteEps( 'Decisionsanctionrendezvousep58<?php echo $i;?>DecisionColumn', 2, 'Decisionsanctionrendezvousep58<?php echo $i;?>Decision', [ 'Decisionsanctionrendezvousep58<?php echo $i;?>Listesanctionep58Id' ] );
 			});
-			changeColspanAnnuleReporte( 'Decisionsanctionrendezvousep58<?php echo $i;?>DecisionColumn', 2, 'Decisionsanctionrendezvousep58<?php echo $i;?>Decision', [ 'Decisionsanctionrendezvousep58<?php echo $i;?>Listesanctionep58Id' ] );
-
-// 			$( 'Decisionsanctionrendezvousep58<?php echo $i;?>Decision' ).observe( 'change', function() {
-// 				changeColspanRaisonNonPassage( 'Decisionsanctionrendezvousep58<?php echo $i;?>ColumnDecision', 'Decisionsanctionrendezvousep58<?php echo $i;?>Decision', [ ], 'Decisionsanctionrendezvousep58<?php echo $i;?>Raisonnonpassage' );
-// 			});
-// 			changeColspanRaisonNonPassage( 'Decisionsanctionrendezvousep58<?php echo $i;?>ColumnDecision', 'Decisionsanctionrendezvousep58<?php echo $i;?>Decision', [ ], 'Decisionsanctionrendezvousep58<?php echo $i;?>Raisonnonpassage' );
+			changeColspanFormAnnuleReporteEps( 'Decisionsanctionrendezvousep58<?php echo $i;?>DecisionColumn', 2, 'Decisionsanctionrendezvousep58<?php echo $i;?>Decision', [ 'Decisionsanctionrendezvousep58<?php echo $i;?>Listesanctionep58Id' ] );
 		<?php endfor;?>
 	});
 </script>

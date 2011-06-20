@@ -60,15 +60,6 @@ echo '<table id="Decisionsaisinepdoep66" class="tooltips"><thead>
 				),
 				$form->input( "Decisionsaisinepdoep66.{$i}.commentaire", array( 'label' =>false, 'type' => 'textarea' ) ).
 				$hiddenFields,
-// 				isset($dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][1]) ? 'Oui' : 'Non',
-// 				$xhtml->link(
-// 					'Décision',
-// 					array(
-// 						'controller'=>'dossierseps',
-// 						'action'=>'decisioncg',
-// 						$dossierep['Dossierep']['id']
-// 					)
-// 				),
 				array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
 			),
 			array( 'class' => 'odd' ),
@@ -90,9 +81,9 @@ echo '<table id="Decisionsaisinepdoep66" class="tooltips"><thead>
 			);
 
 			$( 'Decisionsaisinepdoep66<?php echo $i;?>Decision' ).observe( 'change', function() {
-				changeColspanAnnuleReporte( 'Decisionsaisinepdoep66<?php echo $i;?>DecisionColumn', 3, 'Decisionsaisinepdoep66<?php echo $i;?>Decision', [ 'Decisionsaisinepdoep66<?php echo $i;?>DatedecisionpdoDay', 'Decisionsaisinepdoep66<?php echo $i;?>DecisionpdoId' ] );
+				changeColspanFormAnnuleReporteEps( 'Decisionsaisinepdoep66<?php echo $i;?>DecisionColumn', 3, 'Decisionsaisinepdoep66<?php echo $i;?>Decision', [ 'Decisionsaisinepdoep66<?php echo $i;?>DatedecisionpdoDay', 'Decisionsaisinepdoep66<?php echo $i;?>DecisionpdoId' ] );
 			});
-			changeColspanAnnuleReporte( 'Decisionsaisinepdoep66<?php echo $i;?>DecisionColumn', 3, 'Decisionsaisinepdoep66<?php echo $i;?>Decision', [ 'Decisionsaisinepdoep66<?php echo $i;?>DatedecisionpdoDay', 'Decisionsaisinepdoep66<?php echo $i;?>DecisionpdoId' ] );
+			changeColspanFormAnnuleReporteEps( 'Decisionsaisinepdoep66<?php echo $i;?>DecisionColumn', 3, 'Decisionsaisinepdoep66<?php echo $i;?>Decision', [ 'Decisionsaisinepdoep66<?php echo $i;?>DatedecisionpdoDay', 'Decisionsaisinepdoep66<?php echo $i;?>DecisionpdoId' ] );
 		<?php endfor;?>
 	});
 </script>

@@ -17,8 +17,6 @@ echo '<table><thead>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
-// debug($dossierep);
-
 		$hiddenFields = $form->input( "Decisioncontratcomplexeep93.{$i}.id", array( 'type' => 'hidden' ) ).
 						$form->input( "Decisioncontratcomplexeep93.{$i}.passagecommissionep_id", array( 'type' => 'hidden' ) ).
 						$form->input( "Decisioncontratcomplexeep93.{$i}.etape", array( 'type' => 'hidden', 'value' => 'ep' ) );
@@ -65,32 +63,19 @@ echo '<table><thead>
 			);
 
 			$( 'Decisioncontratcomplexeep93<?php echo $i;?>Decision' ).observe( 'change', function() {
-				changeColspanAnnuleReporte(
+				changeColspanFormAnnuleReporteEps(
 				'Decisioncontratcomplexeep93<?php echo $i;?>DecisionColumn',
 					3,
 					'Decisioncontratcomplexeep93<?php echo $i;?>Decision',
 					[ 'Decisioncontratcomplexeep93<?php echo $i;?>ObservCi', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiDay' ]
 				);
 			});
-			changeColspanAnnuleReporte(
+			changeColspanFormAnnuleReporteEps(
 				'Decisioncontratcomplexeep93<?php echo $i;?>DecisionColumn',
 				3,
 				'Decisioncontratcomplexeep93<?php echo $i;?>Decision',
 				[ 'Decisioncontratcomplexeep93<?php echo $i;?>ObservCi', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiDay' ]
 			);
-
-// 			$( 'Decisioncontratcomplexeep93<?php echo $i;?>Decision' ).observe( 'change', function() {
-// 				afficheRaisonpassage(
-// 					'Decisioncontratcomplexeep93<?php echo $i;?>Decision',
-// 					[ 'Decisioncontratcomplexeep93<?php echo $i;?>ObservCi', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiDay' ],
-// 					'Decisioncontratcomplexeep93<?php echo $i;?>Raisonnonpassage'
-// 				);
-// 			});
-// 			afficheRaisonpassage(
-// 				'Decisioncontratcomplexeep93<?php echo $i;?>Decision',
-// 				[ 'Decisioncontratcomplexeep93<?php echo $i;?>ObservCi', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiDay' ],
-// 				'Decisioncontratcomplexeep93<?php echo $i;?>Raisonnonpassage'
-// 			);
 		<?php endfor;?>
 	});
 </script>

@@ -56,7 +56,6 @@ echo '<table id="Decisionnonrespectsanctionep93" class="tooltips"><thead>
 					$form->input( "Decisionnonrespectsanctionep93.{$i}.decision", array( 'type' => 'select', 'options' => $lineOptions, 'div' => false, 'label' => false ) ),
 					array( 'id' => "Decisionnonrespectsanctionep93{$i}ColumnDecision", 'colspan' => 2, 'class' => ( !empty( $this->validationErrors['Decisionnonrespectsanctionep93'][$i]['decision'] ) ? 'error' : '' ) )
 				),
-// 				$form->input( "Decisionnonrespectsanctionep93.{$i}.raisonnonpassage", array( 'label' => false, 'type' => 'textarea' ) ),
 				$form->input( "Decisionnonrespectsanctionep93.{$i}.commentaire", array( 'label' =>false, 'type' => 'textarea' ) ).
 				$hiddenFields,
 				array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
@@ -75,11 +74,6 @@ echo '<table id="Decisionnonrespectsanctionep93" class="tooltips"><thead>
 				$( 'Decisionnonrespectsanctionep93<?php echo $i;?>Decision' ).setValue( 'reporte' );
 				fireEvent( $( 'Decisionnonrespectsanctionep93<?php echo $i;?>Decision' ),'change');
 			} );
-
-// 			$( 'Decisionnonrespectsanctionep93<?php echo $i;?>Decision' ).observe( 'change', function() {
-// 				changeColspanRaisonNonPassage( 'Decisionnonrespectsanctionep93<?php echo $i;?>ColumnDecision', 'Decisionnonrespectsanctionep93<?php echo $i;?>Decision', [], 'Decisionnonrespectsanctionep93<?php echo $i;?>Raisonnonpassage' );
-// 			});
-// 			changeColspanRaisonNonPassage( 'Decisionnonrespectsanctionep93<?php echo $i;?>ColumnDecision', 'Decisionnonrespectsanctionep93<?php echo $i;?>Decision', [], 'Decisionnonrespectsanctionep93<?php echo $i;?>Raisonnonpassage' );
 		<?php endfor;?>
 	});
 </script>

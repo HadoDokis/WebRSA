@@ -40,7 +40,6 @@ echo '<table><thead>
 					$form->input( "Decisionnonorientationproep93.{$i}.structurereferente_id", array( 'label' => false, 'options' => $structuresreferentes, 'empty' => true, 'type' => 'select' ) ),
 					( !empty( $this->validationErrors['Decisionnonorientationproep93'][$i]['structurereferente_id'] ) ? array( 'class' => 'error' ) : array() )
 				),
-// 				array( $form->input( "Decisionnonorientationproep93.{$i}.raisonnonpassage", array( 'label' => false, 'type' => 'textarea' ) ), array( 'colspan' => '2' ) ),
 				$form->input( "Decisionnonorientationproep93.{$i}.commentaire", array( 'label' =>false, 'type' => 'textarea' ) ).
 				$hiddenFields
 			),
@@ -68,14 +67,9 @@ echo '<table><thead>
 			);
 
 			$( 'Decisionnonorientationproep93<?php echo $i;?>Decision' ).observe( 'change', function() {
-				changeColspanAnnuleReporte( 'Decisionnonorientationproep93<?php echo $i;?>DecisionColumn', 3, 'Decisionnonorientationproep93<?php echo $i;?>Decision', [ 'Decisionnonorientationproep93<?php echo $i;?>TypeorientId', 'Decisionnonorientationproep93<?php echo $i;?>StructurereferenteId' ] );
+				changeColspanFormAnnuleReporteEps( 'Decisionnonorientationproep93<?php echo $i;?>DecisionColumn', 3, 'Decisionnonorientationproep93<?php echo $i;?>Decision', [ 'Decisionnonorientationproep93<?php echo $i;?>TypeorientId', 'Decisionnonorientationproep93<?php echo $i;?>StructurereferenteId' ] );
 			});
-			changeColspanAnnuleReporte( 'Decisionnonorientationproep93<?php echo $i;?>DecisionColumn', 3, 'Decisionnonorientationproep93<?php echo $i;?>Decision', [ 'Decisionnonorientationproep93<?php echo $i;?>TypeorientId', 'Decisionnonorientationproep93<?php echo $i;?>StructurereferenteId' ] );
-
-// 			$( 'Decisionnonorientationproep93<?php echo $i;?>Decision' ).observe( 'change', function() {
-// 				afficheRaisonpassage( 'Decisionnonorientationproep93<?php echo $i;?>Decision', [ 'Decisionnonorientationproep93<?php echo $i;?>TypeorientId', 'Decisionnonorientationproep93<?php echo $i;?>StructurereferenteId' ], 'Decisionnonorientationproep93<?php echo $i;?>Raisonnonpassage' );
-// 			});
-// 			afficheRaisonpassage( 'Decisionnonorientationproep93<?php echo $i;?>Decision', [ 'Decisionnonorientationproep93<?php echo $i;?>TypeorientId', 'Decisionnonorientationproep93<?php echo $i;?>StructurereferenteId' ], 'Decisionnonorientationproep93<?php echo $i;?>Raisonnonpassage' );
+			changeColspanFormAnnuleReporteEps( 'Decisionnonorientationproep93<?php echo $i;?>DecisionColumn', 3, 'Decisionnonorientationproep93<?php echo $i;?>Decision', [ 'Decisionnonorientationproep93<?php echo $i;?>TypeorientId', 'Decisionnonorientationproep93<?php echo $i;?>StructurereferenteId' ] );
 		<?php endfor;?>
 	});
 </script>

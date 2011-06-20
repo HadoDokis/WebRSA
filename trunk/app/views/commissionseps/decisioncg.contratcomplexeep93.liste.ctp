@@ -57,7 +57,6 @@ echo '<table id="Decisioncontratcomplexeep93" class="tooltips"><thead>
 				array( $options['Decisioncontratcomplexeep93']['decision'][Set::classicExtract( $decisioncg, "decision" )], array( 'id' => "" ) ),
 				array( Set::classicExtract( $decisioncg, "datevalidation_ci" ), array( 'id' => "Decisioncontratcomplexeep93{$i}DatevalidationCi" ) ),
 				array( Set::classicExtract( $decisioncg, "observ_ci" ), array( 'id' => "Decisioncontratcomplexeep93{$i}ObservCi" ) ),
-// 				array( Set::classicExtract( $decisioncg, "raisonnonpassage" ), array( 'colspan' => '2', 'id' => "Decisioncontratcomplexeep93{$i}Raisonnonpassage" ) ),
 				Set::classicExtract( $decisioncg, "commentaire" ),
 				$xhtml->printLink( 'Imprimer', array( 'controller' => 'commissionseps', 'action' => 'impressionDecision', $dossierep['Passagecommissionep'][0]['id'] ) ),
 				array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
@@ -72,13 +71,7 @@ echo '<table id="Decisioncontratcomplexeep93" class="tooltips"><thead>
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
 		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
-			changeColspanAnnuleReporte( 'Decisioncontratcomplexeep93<?php echo $i;?>DecisionColumn', '<?php echo Set::classicExtract( $dossiers, "{$theme}.liste.{$i}.Passagecommissionep.0.Decisioncontratcomplexeep93.0.decision" );?>', 3, [ 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCi', 'Decisioncontratcomplexeep93<?php echo $i;?>ObservCi' ] );
-
-// 			afficheRaisonpassage(
-// 				'<?php echo Set::classicExtract( $dossiers, "{$theme}.liste.{$i}.Passagecommissionep.0.Decisioncontratcomplexeep93.0.decision" );?>',
-// 				[ 'Decisioncontratcomplexeep93<?php echo $i;?>ObservCi', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCi' ],
-// 				'Decisioncontratcomplexeep93<?php echo $i;?>Raisonnonpassage'
-// 			);
+			changeColspanViewInfosEps( 'Decisioncontratcomplexeep93<?php echo $i;?>DecisionColumn', '<?php echo Set::classicExtract( $dossiers, "{$theme}.liste.{$i}.Passagecommissionep.0.Decisioncontratcomplexeep93.0.decision" );?>', 3, [ 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCi', 'Decisioncontratcomplexeep93<?php echo $i;?>ObservCi' ] );
 		<?php endfor;?>
 	});
 </script>

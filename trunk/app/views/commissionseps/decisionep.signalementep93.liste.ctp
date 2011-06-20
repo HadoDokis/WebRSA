@@ -44,7 +44,6 @@ echo '<table><thead>
 					$options['Decisionsignalementep93']['decision'][Set::classicExtract( $decisionep, "decision" )],
 					array( 'id' => "Decisionsignalementep93{$i}ColumnDecision" )
 				),
-// 				array( Set::classicExtract( $decisionep, "raisonnonpassage" ), array( 'id' => "Decisionsignalementep93{$i}Raisonnonpassage" ) ),
 				Set::classicExtract( $decisionep, "commentaire" )
 			),
 			array( 'class' => 'odd' ),
@@ -53,11 +52,3 @@ echo '<table><thead>
 	}
 	echo '</tbody></table>';
 ?>
-
-<script type="text/javascript">
-	document.observe("dom:loaded", function() {
-		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
-// 			changeColspanRaisonNonPassage( 'Decisionsignalementep93<?php echo $i;?>ColumnDecision', '<?php echo Set::classicExtract( $dossiers, "{$theme}.liste.{$i}.Passagecommissionep.0.Decisionsignalementep93.0.decision" );?>', [], 'Decisionsignalementep93<?php echo $i;?>Raisonnonpassage' );
-		<?php endfor;?>
-	});
-</script>

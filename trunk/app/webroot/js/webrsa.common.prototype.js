@@ -963,3 +963,35 @@ function in_array(p_val, p_array) {
 	}
 	return false;
 }
+
+/**
+* Fonction pour la visualisation des décisions des EPs (app/views/commissionseps/decisionXXXX.ctp)
+*/
+
+function changeColspanViewInfosEps( idColumnToChangeColspan, decision, colspanMax, idsNonRaisonpassage ) {
+	if ( in_array( decision, [ 'reporte', 'annule', 'maintienref', 'refuse', 'suspensionnonrespect', 'suspensiondefaut', 'maintien' ] ) ) {
+		$( idColumnToChangeColspan ).writeAttribute( "colspan", colspanMax );
+		idsNonRaisonpassage.each( function ( id ) {
+			$( id ).hide();
+		});
+	}
+}
+
+/*
+* Fonction pour afficher/masquer les champs de décision complémentaires pour les EPs (app/views/commissionseps/traiterXXXX.ctp)
+*/
+
+function changeColspanFormAnnuleReporteEps( idColumnToChangeColspan, colspanMax, decision, idsNonRaisonpassage ) {
+	if ( $F( decision ) == 'reporte' || $F( decision ) == 'annule' ) {
+		$( idColumnToChangeColspan ).writeAttribute( "colspan", colspanMax );
+		idsNonRaisonpassage.each( function ( id ) {
+			$( id ).up(1).hide();
+		});
+	}
+	else {
+		$( idColumnToChangeColspan ).writeAttribute( "colspan", 1 );
+		idsNonRaisonpassage.each( function ( id ) {
+			$( id ).up(1).show();
+		});
+	}
+}

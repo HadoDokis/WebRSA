@@ -51,7 +51,6 @@ echo '<table id="Decisionsaisinepdoep66" class="tooltips"><thead>
 
 				@$decisioncg['Decisionpdo']['libelle'],
 				array( $cg, array( 'id' => "Decisionsaisinepdoep66{$i}Decisioncg" ) ),
-// 				array( Set::classicExtract( $decisioncg, "raisonnonpassage" ), array( 'id' => "Decisionsaisinepdoep66{$i}Raisonnonpassage" ) ),
 				Set::classicExtract( $decisioncg, "commentaire" ),
 				array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
 			),
@@ -62,11 +61,3 @@ echo '<table id="Decisionsaisinepdoep66" class="tooltips"><thead>
 	echo '</tbody></table>';
 
 ?>
-
-<script type="text/javascript">
-	document.observe("dom:loaded", function() {
-		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
-// 			afficheRaisonpassage( '<?php echo Set::classicExtract( $dossiers, "{$theme}.liste.{$i}.Passagecommissionep.0.Decisionsaisinepdoep66.0.decision" );?>', [ 'Decisionsaisinepdoep66<?php echo $i;?>Decisioncg' ], 'Decisionsaisinepdoep66<?php echo $i;?>Raisonnonpassage' );
-		<?php endfor;?>
-	});
-</script>
