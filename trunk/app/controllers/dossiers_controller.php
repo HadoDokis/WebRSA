@@ -625,42 +625,12 @@
 
 				$personnesFoyer[$index]['Dossierep']['derniere'] = Set::merge( $tdossierEp, $decisionEP );
 
-
-
 				/**
 				*   Utilisation des nouvelles tables de stockage des infos Pôle Emploi
 				*/
 
-				$tInfope = $this->Informationpe->find(
-					'first',
-					array(
-						'contain' => array(
-							'Historiqueetatpe' => array(
-								'order' => "Historiqueetatpe.date DESC",
-								'limit' => 1
-							)
-						),
-						'conditions' => array(
-							'OR' => array(
-								array(
-									'Informationpe.nir' => Set::classicExtract( $personnesFoyer[$index], 'Personne.nir' ),
-									'Informationpe.nir IS NOT NULL',
-									'LENGTH(Informationpe.nir) = 15',
-									'Informationpe.dtnai' => Set::classicExtract( $personnesFoyer[$index], 'Personne.dtnai' ),
-								),
-								array(
-									'Informationpe.nom' => Set::classicExtract( $personnesFoyer[$index], 'Personne.nom' ),
-									'Informationpe.prenom' => Set::classicExtract( $personnesFoyer[$index], 'Personne.prenom' ),
-									'Informationpe.dtnai' => Set::classicExtract( $personnesFoyer[$index], 'Personne.dtnai' ),
-								)
-							)
-
-						)
-					)
-				);
+				$tInfope = $this->Informationpe->derniereInformation($personnesFoyer[$index]);
 				$personnesFoyer[$index]['Informationpe'] = $tInfope['Historiqueetatpe'];
-
-
 
 				/**
 				*   Liste des anciens dossiers par demandeurs et conjoints
