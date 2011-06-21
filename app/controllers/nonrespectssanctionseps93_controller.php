@@ -12,7 +12,8 @@
 	{
 		public $helpers = array( 'Default', 'Default2', 'Csv' );
 
-		public $components = array( 'Prg' => array( 'actions' => array( 'index' ) ) );
+		public $components = array( 'Prg' => array( 'actions' => array( 'selectionradies' => array( 'filter' => 'Search' ), 'index' ) ) );
+		
 
 		/**
 		*
@@ -255,146 +256,117 @@
 		public function selectionradies() {
 // 			$this->_selectionPassageNonrespectsanctionep93( 'qdRadies', 'radiepe' );
 
+            $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+            $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
+
+            if( Configure::read( 'Zonesegeographiques.CodesInsee' ) ) {
+                $mesCodesInsee = ClassRegistry::init( 'Zonegeographique' )->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) );
+            }
+            else {
+                $mesCodesInsee = ClassRegistry::init( 'Adresse' )->listeCodesInsee();
+            }
+            $this->set( compact( 'mesCodesInsee' ) );
+
+
 			if( !empty( $this->data ) ) {
-				$success = true;
-				$this->Nonrespectsanctionep93->begin();
 
-				foreach( $this->data['Historiqueetatpe'] as $key => $item ) {
-					// La personne était-elle sélectionnée précédemment ?
-					$alreadyChecked = $this->Nonrespectsanctionep93->Dossierep->find(
-						'first',
-						array(
-							'conditions' => array(
-								// état 'cree' ?
-								'Dossierep.id NOT IN ( '
-									.$this->Nonrespectsanctionep93->Dossierep->Passagecommissionep->sq(
-										array(
-											'alias' => 'passagescommissionseps',
-											'fields' => array( 'passagescommissionseps.dossierep_id' ),
-											'conditions' => array(
-												'passagescommissionseps.dossierep_id = Dossierep.id',
-												'passagescommissionseps.etatdossierep <>' => 'reporte'
-											)
-										)
-									)
-								.' )',
-								'Dossierep.themeep' => 'nonrespectssanctionseps93',
-								'Dossierep.personne_id' => $this->data['Personne'][$key]['id'],
-								'Nonrespectsanctionep93.origine' => 'radiepe'
-							),
-							'contain' => array(
-								'Nonrespectsanctionep93'
-							)
-						)
-					);
+                if ( isset( $this->data['Historiqueetatpe'] ) ) {
+                    //Stockage des données dans les dossiers EPs
+                    $success = true;
+                    $this->Nonrespectsanctionep93->begin();
 
-					// Personnes non cochées que l'on sélectionne
-					if( empty( $alreadyChecked ) && !empty( $item['chosen'] ) ) {
-						$dossierep = array(
-							'Dossierep' => array(
-								'themeep' => 'nonrespectssanctionseps93',
-								'personne_id' => $this->data['Personne'][$key]['id']
-							)
-						);
-						$this->Nonrespectsanctionep93->Dossierep->create( $dossierep );
-						$success = $this->Nonrespectsanctionep93->Dossierep->save() && $success;
+                    foreach( $this->data['Historiqueetatpe'] as $key => $item ) {
+                        // La personne était-elle sélectionnée précédemment ?
+                        $alreadyChecked = $this->Nonrespectsanctionep93->Dossierep->find(
+                            'first',
+                            array(
+                                'conditions' => array(
+                                    // état 'cree' ?
+                                    'Dossierep.id NOT IN ( '
+                                        .$this->Nonrespectsanctionep93->Dossierep->Passagecommissionep->sq(
+                                            array(
+                                                'alias' => 'passagescommissionseps',
+                                                'fields' => array( 'passagescommissionseps.dossierep_id' ),
+                                                'conditions' => array(
+                                                    'passagescommissionseps.dossierep_id = Dossierep.id',
+                                                    'passagescommissionseps.etatdossierep <>' => 'reporte'
+                                                )
+                                            )
+                                        )
+                                    .' )',
+                                    'Dossierep.themeep' => 'nonrespectssanctionseps93',
+                                    'Dossierep.personne_id' => $this->data['Personne'][$key]['id'],
+                                    'Nonrespectsanctionep93.origine' => 'radiepe'
+                                ),
+                                'contain' => array(
+                                    'Nonrespectsanctionep93'
+                                )
+                            )
+                        );
 
-						$nbpassagespcd = $this->Nonrespectsanctionep93->find(
-							'count',
-							array(
-								'conditions' => array(
-									'Nonrespectsanctionep93.origine' => 'radiepe',
-									'historiqueetatpe_id' => $item['id']
-								),
-								'contain' => false
-							)
-						);
+                        // Personnes non cochées que l'on sélectionne
+                        if( empty( $alreadyChecked ) && !empty( $item['chosen'] ) ) {
+                            $dossierep = array(
+                                'Dossierep' => array(
+                                    'themeep' => 'nonrespectssanctionseps93',
+                                    'personne_id' => $this->data['Personne'][$key]['id']
+                                )
+                            );
+                            $this->Nonrespectsanctionep93->Dossierep->create( $dossierep );
+                            $success = $this->Nonrespectsanctionep93->Dossierep->save() && $success;
 
-						$nonrespectsanctionep93 = array(
-							'Nonrespectsanctionep93' => array(
-								'dossierep_id' => $this->Nonrespectsanctionep93->Dossierep->id,
-								'historiqueetatpe_id' => $item['id'],
-								'origine' => 'radiepe',
-								'rgpassage' => ( $nbpassagespcd + 1 ),
-								'active' => 0
-							)
-						);
+                            $nbpassagespcd = $this->Nonrespectsanctionep93->find(
+                                'count',
+                                array(
+                                    'conditions' => array(
+                                        'Nonrespectsanctionep93.origine' => 'radiepe',
+                                        'historiqueetatpe_id' => $item['id']
+                                    ),
+                                    'contain' => false
+                                )
+                            );
 
-						$this->Nonrespectsanctionep93->create( $nonrespectsanctionep93 );
-						$success = $this->Nonrespectsanctionep93->save() && $success;
-					}
-					// Personnes précédemment sélectionnées, que l'on désélectionne
-					else if( !empty( $alreadyChecked ) && empty( $item['chosen'] ) ) {
-						$success = $this->Nonrespectsanctionep93->Dossierep->delete( $alreadyChecked['Dossierep']['id'], true ) && $success;
-					}
-					// Personnes précédemment sélectionnées, que l'on garde sélectionnées -> rien à faire
-				}
+                            $nonrespectsanctionep93 = array(
+                                'Nonrespectsanctionep93' => array(
+                                    'dossierep_id' => $this->Nonrespectsanctionep93->Dossierep->id,
+                                    'historiqueetatpe_id' => $item['id'],
+                                    'origine' => 'radiepe',
+                                    'rgpassage' => ( $nbpassagespcd + 1 ),
+                                    'active' => 0
+                                )
+                            );
 
-				$this->_setFlashResult( 'Save', $success );
-				if( $success ) {
-					$this->data = array();
-					$this->Nonrespectsanctionep93->commit();
-				}
-				else {
-					$this->Nonrespectsanctionep93->rollback();
-				}
+                            $this->Nonrespectsanctionep93->create( $nonrespectsanctionep93 );
+                            $success = $this->Nonrespectsanctionep93->save() && $success;
+                        }
+                        // Personnes précédemment sélectionnées, que l'on désélectionne
+                        else if( !empty( $alreadyChecked ) && empty( $item['chosen'] ) ) {
+                            $success = $this->Nonrespectsanctionep93->Dossierep->delete( $alreadyChecked['Dossierep']['id'], true ) && $success;
+                        }
+                        // Personnes précédemment sélectionnées, que l'on garde sélectionnées -> rien à faire
+                    }
+
+                    $this->_setFlashResult( 'Save', $success );
+                    if( $success ) {
+                        $this->data = array( 'Search' => $this->data['Search'] );
+                        $this->Nonrespectsanctionep93->commit();
+                    }
+                    else {
+                        $this->Nonrespectsanctionep93->rollback();
+                    }
+                }
+
+                //Recherche des radiés de Pôle Emploi par critères
+                $this->Nonrespectsanctionep93->Dossierep->Personne->forceVirtualFields = true;
+                $queryData = $this->Nonrespectsanctionep93->qdRadies( $this->data['Search'], ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() ), $this->Session->read( 'Auth.User.filtre_zone_geo' ));
+                $queryData['limit'] = 10;
+
+                $this->paginate = array( 'Personne' => $queryData );
+                $radiespe = $this->paginate( $this->Nonrespectsanctionep93->Dossierep->Personne );
+// debug($this->data);
 			}
-
-			$this->Nonrespectsanctionep93->Dossierep->Personne->forceVirtualFields = true;
-			$queryData = $this->Nonrespectsanctionep93->qdRadies();
-			$queryData['limit'] = 10;
-
-			$this->paginate = array( 'Personne' => $queryData );
-			$personnes = $this->paginate( $this->Nonrespectsanctionep93->Dossierep->Personne );
-
-			if( empty( $this->data ) ) {
-				// Pré-remplissage des cases à cocher avec les dossiers sélectionnés,
-				// qui ne sont pas encore assocés à une séance. -> FIXME permettre jusqu'à l'étape avisep ?
-				$dossiers = $this->Nonrespectsanctionep93->Dossierep->find(
-					'all',
-					array(
-						'conditions' => array(
-							// état 'cree' ?
-							'Dossierep.id NOT IN ( '
-								.$this->Nonrespectsanctionep93->Dossierep->Passagecommissionep->sq(
-									array(
-										'alias' => 'passagescommissionseps',
-										'fields' => array( 'passagescommissionseps.dossierep_id' ),
-										'conditions' => array(
-											'passagescommissionseps.dossierep_id = Dossierep.id',
-											'passagescommissionseps.etatdossierep <>' => 'reporte'
-										)
-									)
-								)
-							.' )',
-							'Dossierep.themeep' => 'nonrespectssanctionseps93',
-							///FIXME !!!!!!!!!!!!!!!!!
-							'Dossierep.personne_id' => Set::extract( '/Personne/id', $personnes ),
-							'Nonrespectsanctionep93.origine' => 'radiepe'
-						),
-						'contain' => array(
-							'Nonrespectsanctionep93'
-						)
-					)
-				);
-
-				if( !empty( $dossiers ) ) {
-					$checked = Set::extract( '/Dossierep/personne_id', $dossiers );
-
-					foreach( $personnes as $i => $personne ) {
-						$this->data['Historiqueetatpe'][$i]['id'] = $personne['Historiqueetatpe']['id'];
-						$this->data['Personne'][$i]['id'] = $personne['Personne']['id'];
-						if( in_array( $personne['Personne']['id'], $checked ) ) {
-							$this->data['Historiqueetatpe'][$i]['chosen'] = '1';
-						}
-						else {
-							$this->data['Historiqueetatpe'][$i]['chosen'] = '0';
-						}
-					}
-				}
-			}
-
-			$this->set( compact( 'personnes' ) );
+// debug($this->data);
+			$this->set( compact( 'radiespe' ) );
 		}
 
 		/**
