@@ -179,3 +179,7 @@ h2.bilanparcours {
     font-size: 13px;
     padding: 0;
 }
+
+#dspform div.input.checkbox label {
+    width: auto;
+}
