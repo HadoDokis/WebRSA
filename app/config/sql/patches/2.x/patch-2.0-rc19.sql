@@ -439,5 +439,52 @@ ALTER TABLE proposcontratsinsertioncovs58 ALTER COLUMN decisioncov TYPE VARCHAR(
 UPDATE proposcontratsinsertioncovs58 SET decisioncov = TRIM( BOTH ' ' FROM decisioncov );
 
 -- *****************************************************************************
+-- 20110621: ajout d'une colonne origine dans la table orientations (CG 93)
+-- *****************************************************************************
+
+DROP TYPE IF EXISTS TYPE_ORIGINEORIENTSTRUCT;
+CREATE TYPE TYPE_ORIGINEORIENTSTRUCT AS ENUM( 'manuelle', 'cohorte', 'reorientation' );
+SELECT add_missing_table_field ( 'public', 'orientsstructs', 'origine', 'TYPE_ORIGINEORIENTSTRUCT' );
+ALTER TABLE orientsstructs ALTER COLUMN origine SET DEFAULT NULL;
+
+-- Traitement du passif:
+-- 1°) Les cohortes ont été faites le dimanche (que les premières orientations)
+UPDATE orientsstructs
+	SET origine = 'cohorte'
+	WHERE
+		orientsstructs.origine IS NULL
+		AND orientsstructs.date_valid IS NOT NULL
+		AND orientsstructs.rgorient = 1
+		AND EXTRACT( DOW FROM orientsstructs.date_valid ) = 0;
+
+-- 2°) Les orientations manuelles ont été faites un autre jour (que les premières orientations)
+UPDATE orientsstructs
+	SET origine = 'manuelle'
+	WHERE
+		orientsstructs.origine IS NULL
+		AND orientsstructs.date_valid IS NOT NULL
+		AND orientsstructs.rgorient = 1
+		AND EXTRACT( DOW FROM orientsstructs.date_valid ) <> 0;
+
+-- 3°) Les autres sont des réorientations
+UPDATE orientsstructs
+	SET origine = 'reorientation'
+	WHERE
+		orientsstructs.origine IS NULL
+		AND orientsstructs.date_valid IS NOT NULL
+		AND orientsstructs.rgorient > 1;
+
+ALTER TABLE orientsstructs ADD CONSTRAINT orientsstructs_origine_check CHECK(
+    ( origine IS NULL AND date_valid IS NULL )
+    OR (
+		( origine IS NOT NULL AND date_valid IS NOT NULL )
+		AND (
+			( rgorient = 1 AND origine IN ( 'manuelle', 'cohorte' ) )
+			OR ( rgorient > 1 AND origine = 'reorientation' )
+		)
+	)
+);
+
+-- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
