@@ -439,6 +439,19 @@ ALTER TABLE proposcontratsinsertioncovs58 ALTER COLUMN decisioncov TYPE VARCHAR(
 UPDATE proposcontratsinsertioncovs58 SET decisioncov = TRIM( BOTH ' ' FROM decisioncov );
 
 -- *****************************************************************************
+-- 20110621: Suppression de la colonne autrstructurereferente_id et ajout du lien
+-- avec la table structures référentes pour le bilan de parcours
+-- *****************************************************************************
+SELECT add_missing_table_field ( 'public', 'bilansparcours66', 'structurereferente_id', 'INTEGER' );
+UPDATE bilansparcours66 SET structurereferente_id = (
+    SELECT referents.structurereferente_id
+        FROM referents
+        WHERE referents.id = bilansparcours66.referent_id
+);
+ALTER TABLE bilansparcours66 ALTER COLUMN structurereferente_id SET NOT NULL;
+ALTER TABLE bilansparcours66 ADD CONSTRAINT bilansparcours66_structurereferente_id_fk FOREIGN KEY (structurereferente_id) REFERENCES structuresreferentes(id);
+SELECT alter_table_drop_column_if_exists ('public', 'bilansparcours66', 'autrestructurereferente_id');
+-- *****************************************************************************
 -- 20110621: ajout d'une colonne origine dans la table orientations (CG 93)
 -- *****************************************************************************
 

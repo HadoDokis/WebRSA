@@ -568,8 +568,7 @@
 							'contain'=>false
 						)
 					);
-					$this->data['Bilanparcours66']['structurereferente_id'] = $referent['Referent']['structurereferente_id'];
-					$this->data['Bilanparcours66']['referent_id'] = $referent['Referent']['structurereferente_id'].'_'.$bilanparcours66['Bilanparcours66']['referent_id'];
+					$this->data['Bilanparcours66']['referent_id'] = $bilanparcours66['Bilanparcours66']['structurereferente_id'].'_'.$bilanparcours66['Bilanparcours66']['referent_id'];
 				}
 				else {
 					$orientstruct = $this->Bilanparcours66->Orientstruct->find(
