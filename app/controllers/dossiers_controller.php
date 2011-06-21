@@ -60,6 +60,7 @@
 				$this->set( 'etatpe', $this->Informationpe->Historiqueetatpe->allEnumLists() );
 				$this->set( 'relance', $this->Dossier->Foyer->Personne->Orientstruct->Nonrespectsanctionep93->allEnumLists() );
 				$this->set( 'dossierep', $this->Dossier->Foyer->Personne->Dossierep->allEnumLists() );
+				$this->set( 'options', $this->Dossier->Foyer->Personne->Orientstruct->enums() );
 			}
 			else if( $this->action == 'exportcsv' ) {
 				$typesorient = $this->Dossier->Foyer->Personne->Orientstruct->Typeorient->find( 'list', array( 'fields' => array( 'id', 'lib_type_orient' ) ) );
@@ -476,6 +477,7 @@
 					'first',
 					array(
 						'fields' => array(
+							'Orientstruct.origine',
 							'Orientstruct.date_valid',
 							'Orientstruct.statut_orient',
 							'Orientstruct.rgorient',

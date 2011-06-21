@@ -54,6 +54,7 @@
 					<th><?php echo $xpaginator->sort( 'Présence DSP', 'Dsp.id' );?></th>
 					<th><?php echo $xpaginator->sort( 'Type de service instructeur', 'Suiviinstruction.typeserins' );?></th>
 					<!--<th><?php echo $xpaginator->sort( 'Service instructeur', 'Serviceinstructeur.lib_service' );?></th>-->
+					<?php if( Configure::read( 'Cg.departement' ) == 93 ):?><th><?php echo $xpaginator->sort( __d( 'orientstruct', 'Orientstruct.origine', true ), 'Orientstruct.origine' );?></th><?php endif;?>
 					<th><?php echo $xpaginator->sort( 'PréOrientation', 'Orientstruct.propo_algo' );?></th>
 					<th><?php echo $xpaginator->sort( 'Orientation', 'Typeorient.lib_type_orient' );?></th>
 					<th><?php echo $xpaginator->sort( 'Structure', 'Structurereferente.lib_struc' );?></th>
@@ -121,30 +122,39 @@
 							</tbody>
 						</table>';
 
-						echo $xhtml->tableCells(
-							array(
-								h( $personne['Adresse']['locaadr'] ),
-								h( $personne['Personne']['nom'].' '.$personne['Personne']['prenom'] ),
-								h( date_short( $personne['Dossier']['dtdemrsa'] ) ),
-								h( !empty( $personne['Dsp']['id'] ) ? 'Oui' : 'Non' ),
-								h( value( $typeserins, Set::classicExtract( $personne, 'Suiviinstruction.typeserins') ) ),
-// 								h( Set::classicExtract( $personne, 'Serviceinstructeur.lib_service' ) ),
-								//h( isset( $typesOrient[$personne['Orientstruct']['propo_algo']] ) ? $typesOrient[$personne['Orientstruct']['propo_algo']] : null),
-								h( Set::enum( $personne['Orientstruct']['propo_algo'], $typesOrient ) ),
-								h( $personne['Typeorient']['lib_type_orient'] ),
-								h( $personne['Structurereferente']['lib_struc'] ),
-								h( $personne['Orientstruct']['statut_orient'] ),
-								h( date_short( $personne['Orientstruct']['date_propo'] ) ),
-								h( date_short( $personne['Contratinsertion']['dd_ci'] ) ),
-								$xhtml->printLink(
-									'Imprimer la notification',
-									array( 'controller' => 'orientsstructs', 'action' => 'impression', $personne['Orientstruct']['id'] ),
-									$permissions->check( 'orientsstructs', 'impression' )
-									/*array( 'controller' => 'cohortes', 'action' => 'impression_individuelle', $personne['Orientstruct']['id'] ),
-									$permissions->check( 'cohortes', 'impression_individuelle' )*/
-								),
-								array( $innerTable, array( 'class' => 'innerTableCell' ) ),
+						$cells = array(
+							h( $personne['Adresse']['locaadr'] ),
+							h( $personne['Personne']['nom'].' '.$personne['Personne']['prenom'] ),
+							h( date_short( $personne['Dossier']['dtdemrsa'] ) ),
+							h( !empty( $personne['Dsp']['id'] ) ? 'Oui' : 'Non' ),
+							h( value( $typeserins, Set::classicExtract( $personne, 'Suiviinstruction.typeserins') ) ),
+						);
+
+						if( Configure::read( 'Cg.departement' ) == 93 ) {
+							array_push(
+								$cells,
+								h( Set::enum( $personne['Orientstruct']['origine'], $options['Orientstruct']['origine'] ) )
+							);
+						}
+
+						array_push(
+							$cells,
+							h( Set::enum( $personne['Orientstruct']['propo_algo'], $typesOrient ) ),
+							h( $personne['Typeorient']['lib_type_orient'] ),
+							h( $personne['Structurereferente']['lib_struc'] ),
+							h( $personne['Orientstruct']['statut_orient'] ),
+							h( date_short( $personne['Orientstruct']['date_propo'] ) ),
+							h( date_short( $personne['Contratinsertion']['dd_ci'] ) ),
+							$xhtml->printLink(
+								'Imprimer la notification',
+								array( 'controller' => 'orientsstructs', 'action' => 'impression', $personne['Orientstruct']['id'] ),
+								$permissions->check( 'orientsstructs', 'impression' )
 							),
+							array( $innerTable, array( 'class' => 'innerTableCell' ) )
+						);
+
+						echo $xhtml->tableCells(
+							$cells,
 							array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
 							array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
 						);

@@ -198,6 +198,10 @@
 				}
 			}
 
+			if( isset( $criteres['Critere']['origine'] ) && !empty( $criteres['Critere']['origine'] ) ) {
+				$conditions[] = 'Orientstruct.origine = \''.Sanitize::clean( $criteres['Critere']['origine'] ).'\'';
+			}
+
 
 			/// Requête
 			$Situationdossierrsa = ClassRegistry::init( 'Situationdossierrsa' );
@@ -215,6 +219,7 @@
 					'"Orientstruct"."date_valid"',
 					'"Orientstruct"."statut_orient"',
 					'"Orientstruct"."date_impression"',
+					'"Orientstruct"."origine"',
 					'"Dossier"."id"',
 					'"Dossier"."numdemrsa"',
 					'"Dossier"."matricule"',
