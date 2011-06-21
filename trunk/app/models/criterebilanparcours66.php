@@ -46,6 +46,10 @@
 				$conditions[] = array('Bilanparcours66.referent_id'=>$criteresbilansparcours66['Bilanparcours66']['referent_id']);
 			}
 
+            if ( isset($criteresbilansparcours66['Bilanparcours66']['structurereferente_id']) && !empty($criteresbilansparcours66['Bilanparcours66']['structurereferente_id']) ) {
+                $conditions[] = array('Bilanparcours66.structurereferente_id'=>$criteresbilansparcours66['Bilanparcours66']['structurereferente_id']);
+            }
+
 			if ( isset($criteresbilansparcours66['Bilanparcours66']['positionbilan']) && !empty($criteresbilansparcours66['Bilanparcours66']['positionbilan']) ) {
 				$conditions[] = array('Bilanparcours66.positionbilan'=>$criteresbilansparcours66['Bilanparcours66']['positionbilan']);
 			}
@@ -119,7 +123,7 @@
 					'alias'      => 'Structurereferente',
 					'type'       => 'INNER',
 					'foreignKey' => false,
-					'conditions' => array( 'Structurereferente.id = Referent.structurereferente_id' ),
+					'conditions' => array( 'Structurereferente.id = Bilanparcours66.structurereferente_id' ),
 				),
 				array(
 					'table'      => 'defautsinsertionseps66',
@@ -154,6 +158,7 @@
 				'fields' => array(
 					'Bilanparcours66.id',
 					'Bilanparcours66.orientstruct_id',
+					'Bilanparcours66.structurereferente_id',
 					'Bilanparcours66.referent_id',
 					'Bilanparcours66.datebilan',
 					'Bilanparcours66.choixparcours',
