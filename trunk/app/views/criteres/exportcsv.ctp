@@ -1,21 +1,49 @@
 <?php
-    $csv->preserveLeadingZerosInExcel = true;
+	$csv->preserveLeadingZerosInExcel = true;
 
-    function value( $array, $index ) {
-        $keys = array_keys( $array );
-        $index = ( ( $index == null ) ? '' : $index );
-        if( @in_array( $index, $keys ) && isset( $array[$index] ) ) {
-            return $array[$index];
-        }
-        else {
-            return null;
-        }
-    }
+	function value( $array, $index ) {
+		$keys = array_keys( $array );
+		$index = ( ( $index == null ) ? '' : $index );
+		if( @in_array( $index, $keys ) && isset( $array[$index] ) ) {
+			return $array[$index];
+		}
+		else {
+			return null;
+		}
+	}
 
-    $csv->addRow( array( 'N° Dossier', 'Nom/Prénom allocataire', 'NIR', 'Date de naissance', 'N° CAF', 'Identifiant Pôle Emploi', 'N° Téléphone', 'Adresse allocataire', 'Complément adresse', 'Code postal', 'Commune de l\'allocataire', 'Date d\'ouverture de droit', 'Etat du droit', 'Date de l\'orientation', 'Structure référente', 'Statut de l\'orientation', 'Soumis à droits et devoirs', 'Nature de la prestation' ) );
-// debug($orients);
-// die();
-    foreach( $orients as $orient ) {
+	$cells = array(
+		'N° Dossier',
+		'Nom/Prénom allocataire',
+		'NIR',
+		'Date de naissance',
+		'N° CAF',
+		'Identifiant Pôle Emploi',
+		'N° Téléphone',
+		'Adresse allocataire',
+		'Complément adresse',
+		'Code postal',
+		'Commune de l\'allocataire',
+		'Date d\'ouverture de droit',
+		'Etat du droit'
+	);
+
+	if( Configure::read( 'Cg.departement' ) == 93 ) {
+		array_push( $cells, __d( 'orientstruct', 'Orientstruct.origine', true ) );
+	}
+
+	array_push(
+		$cells,
+		'Date de l\'orientation',
+		'Structure référente',
+		'Statut de l\'orientation',
+		'Soumis à droits et devoirs',
+		'Nature de la prestation'
+	);
+
+	$csv->addRow( $cells );
+
+	foreach( $orients as $orient ) {
 		$toppersdrodevorsa = Set::classicExtract( $orient, 'Calculdroitrsa.toppersdrodevorsa' );
 		switch( $toppersdrodevorsa ) {
 			case '0':
@@ -28,29 +56,41 @@
 				$toppersdrodevorsa = 'Non défini';
 				break;
 		}
-        $row = array(
-            Set::classicExtract( $orient, 'Dossier.numdemrsa' ),
-            Set::classicExtract( $orient, 'Personne.nom' ).' '.Set::classicExtract( $orient, 'Personne.prenom'),
-            Set::classicExtract( $orient, 'Personne.nir' ),
-            date_short( Set::classicExtract( $orient, 'Personne.dtnai' ) ),
-            Set::classicExtract( $orient, 'Dossier.matricule' ),
-            Set::classicExtract( $orient, 'Infopoleemploi.identifiantpe' ),
-            Set::classicExtract( $orient, 'Modecontact.numtel' ),
-            Set::classicExtract( $orient, 'Adresse.numvoie' ).' '.Set::enum( Set::classicExtract( $orient, 'Adresse.typevoie' ), $typevoie ).' '.Set::classicExtract( $orient, 'Adresse.nomvoie' ),
-            Set::classicExtract( $orient, 'Adresse.complideadr' ).' '.Set::classicExtract( $orient, 'Adresse.compladr' ),
-            Set::classicExtract( $orient, 'Adresse.codepos' ),
-            Set::classicExtract( $orient, 'Adresse.locaadr' ),
-            date_short( Set::classicExtract( $orient, 'Dossier.dtdemrsa' ) ),
-            value( $etatdosrsa, Set::classicExtract( $orient, 'Situationdossierrsa.etatdosrsa' ) ),
-            date_short( Set::classicExtract( $orient, 'Orientstruct.date_valid' ) ),
-            Set::enum( Set::classicExtract( $orient, 'Orientstruct.structurereferente_id' ), $sr ),
-            Set::classicExtract( $orient, 'Orientstruct.statut_orient' ),
-            $toppersdrodevorsa,
-            Set::enum( Set::classicExtract( $orient, 'Detailcalculdroitrsa.natpf' ), $natpf )
-        );
-        $csv->addRow($row);
-    }
 
-    Configure::write( 'debug', 0 );
-    echo $csv->render( 'orientstructs-'.date( 'Ymd-Hhm' ).'.csv' );
+		$row = array(
+			Set::classicExtract( $orient, 'Dossier.numdemrsa' ),
+			Set::classicExtract( $orient, 'Personne.nom' ).' '.Set::classicExtract( $orient, 'Personne.prenom'),
+			Set::classicExtract( $orient, 'Personne.nir' ),
+			date_short( Set::classicExtract( $orient, 'Personne.dtnai' ) ),
+			Set::classicExtract( $orient, 'Dossier.matricule' ),
+			Set::classicExtract( $orient, 'Infopoleemploi.identifiantpe' ),
+			Set::classicExtract( $orient, 'Modecontact.numtel' ),
+			Set::classicExtract( $orient, 'Adresse.numvoie' ).' '.Set::enum( Set::classicExtract( $orient, 'Adresse.typevoie' ), $typevoie ).' '.Set::classicExtract( $orient, 'Adresse.nomvoie' ),
+			Set::classicExtract( $orient, 'Adresse.complideadr' ).' '.Set::classicExtract( $orient, 'Adresse.compladr' ),
+			Set::classicExtract( $orient, 'Adresse.codepos' ),
+			Set::classicExtract( $orient, 'Adresse.locaadr' ),
+			date_short( Set::classicExtract( $orient, 'Dossier.dtdemrsa' ) ),
+			value( $etatdosrsa, Set::classicExtract( $orient, 'Situationdossierrsa.etatdosrsa' ) )
+		);
+
+		if( Configure::read( 'Cg.departement' ) == 93 ) {
+			array_push(
+				$row,
+				value( $options['Orientstruct']['origine'], Set::extract( $orient, 'Orientstruct.origine' ) )
+			);
+		}
+
+		array_push(
+			$row,
+			date_short( Set::classicExtract( $orient, 'Orientstruct.date_valid' ) ),
+			Set::enum( Set::classicExtract( $orient, 'Orientstruct.structurereferente_id' ), $sr ),
+			Set::classicExtract( $orient, 'Orientstruct.statut_orient' ),
+			$toppersdrodevorsa,
+			Set::enum( Set::classicExtract( $orient, 'Detailcalculdroitrsa.natpf' ), $natpf )
+		);
+		$csv->addRow($row);
+	}
+
+	Configure::write( 'debug', 0 );
+	echo $csv->render( 'orientstructs-'.date( 'Ymd-Hhm' ).'.csv' );
 ?>

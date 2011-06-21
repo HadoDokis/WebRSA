@@ -87,6 +87,9 @@
 			}
 			else {
 				echo $form->input( 'Filtre.typeorient', array( 'label' => __( 'Type d\'orientation', true ), 'type' => 'select', 'options' => $modeles, 'empty' => true ) );
+				if( Configure::read( 'Cg.departement' ) == 93 ) {
+					echo $form->input( 'Filtre.origine', array( 'label' => __d( 'orientstruct', 'Orientstruct.origine', true ), 'type' => 'select', 'options' => $options['Orientstruct']['origine'], 'empty' => true ) );
+				}
 			}
 		?>
 	</fieldset>

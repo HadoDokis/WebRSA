@@ -15,6 +15,7 @@
 					),
 					'etatorient' => array( 'domain' => 'orientstruct' ),
 					'haspiecejointe' => array( 'domain' => 'orientstruct' ),
+					'origine',
 					/*'accordrefaccueil' => array(
 						'values' => array( 0, 1 )
 					),
@@ -608,7 +609,8 @@
 		}
 
 		/**
-		* Ajout du rang d'orientation à la sauvegarde, lorsqu'on passe en 'Orienté'
+		* Ajout du rang d'orientation à la sauvegarde, lorsqu'on passe en 'Orienté'.
+		* Mise à jour de l'origine suivant le statut et le rang de l'orientation.
 		*/
 
 		public function beforeSave( $options = array() ) {
@@ -625,6 +627,17 @@
 				// Nouvelle entrée
 				else if( isset( $this->data[$this->alias]['personne_id'] ) && !empty( $this->data[$this->alias]['personne_id'] ) ) {
 					$this->data[$this->alias]['rgorient'] = ( $this->rgorientMax( $this->data[$this->alias]['personne_id'] ) + 1 );
+				}
+			}
+
+			if( isset( $this->data[$this->alias]['statut_orient'] ) ) {
+				if( empty( $this->data[$this->alias]['statut_orient'] ) || in_array( $this->data[$this->alias]['statut_orient'], array( 'Non orienté', 'En attente' ) ) ) {
+					$this->data[$this->alias]['origine'] = null;
+				}
+				else if( $this->data[$this->alias]['statut_orient'] == 'Orienté' ) {
+					if( $this->data[$this->alias]['rgorient'] > 1 ) {
+						$this->data[$this->alias]['origine'] = 'reorientation';
+					}
 				}
 			}
 

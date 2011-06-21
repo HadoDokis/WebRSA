@@ -23,7 +23,7 @@
 			$options = array();
 			$options = $this->Orientstruct->allEnumLists();
 			$this->set( compact( 'options' ) );
-// debug($options);
+
 			//Ajout des structures et référents orientants
 			$this->set( 'refsorientants', $this->Referent->listOptions() );
 			$this->set( 'structsorientantes', $this->Structurereferente->listOptions( array( 'orientation' => 'O' ) ) );
@@ -32,8 +32,6 @@
 
 
 		/**
-		*
-		*
 		*
 		*/
 

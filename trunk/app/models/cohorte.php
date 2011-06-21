@@ -256,6 +256,10 @@
 	            }
 				//-------------------------------------------------------
 
+				if( isset( $criteres['Filtre']['origine'] ) && !empty( $criteres['Filtre']['origine'] ) ) {
+					$conditions[] = 'Orientstruct.origine = \''.Sanitize::clean( $criteres['Filtre']['origine'] ).'\'';
+				}
+
 				// Origine de la demande
 				if( !empty( $oridemrsa ) ) {
 					$conditions[] = 'Detaildroitrsa.oridemrsa IN ( \''.implode( '\', \'', $oridemrsa ).'\' )';
@@ -380,10 +384,6 @@
 				)';
 			}
 
-
-
-
-
 				$queryData = array(
 					'fields' => array(
 						'Dossier.id',
@@ -412,6 +412,7 @@
 						'Orientstruct.date_propo',
 						'Orientstruct.typeorient_id',
 						'Orientstruct.structurereferente_id',
+						'Orientstruct.origine',
 						'Typeorient.lib_type_orient',
 						'Structurereferente.lib_struc',
 						'Orientstruct.statut_orient',

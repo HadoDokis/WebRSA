@@ -174,6 +174,7 @@
 						<th>Date de préOrientation</th>
 						<th>Date d'orientation</th>
 						<th>PréOrientation</th>
+						<th><?php __d( 'orientstruct', 'Orientstruct.origine' );?></th>
 						<th>Orientation</th>
 					<?php else:?>
 						<th>Date de la demande</th>
@@ -212,6 +213,7 @@
 
 						if( Configure::read( 'Cg.departement' ) == 93 ) {
 							$cells[] = h( Set::enum( $orientstruct['Orientstruct']['propo_algo'], $typesorients ) );
+							$cells[] = h( Set::enum( $orientstruct['Orientstruct']['origine'], $options['origine'] ) );
 						}
 
 						array_push(

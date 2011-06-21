@@ -39,6 +39,9 @@
             echo $form->input( 'Orientstruct.id', array( 'type' => 'hidden' ) );
             echo '</div>';
         }
+		echo '<div>';
+		echo $form->input( 'Orientstruct.origine', array( 'type' => 'hidden', 'value' => 'manuelle' ) );
+		echo '</div>';
     ?>
 
 <?php include( '_form.ctp' ); ?>

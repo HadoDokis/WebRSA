@@ -96,31 +96,36 @@
                     <?php echo thead( 10 );?>
                         <tbody>
                             <tr class="odd">
+                                <th><?php __d( 'orientstruct', 'Orientstruct.origine' ) ?></th>
+                                <td><?php echo value( $options['Orientstruct']['origine'], Set::classicExtract( $details, 'DEM.Orientstruct.derniere.Orientstruct.origine' ) );?></td>
+                                <td><?php echo value( $options['Orientstruct']['origine'], Set::classicExtract( $details, 'CJT.Orientstruct.derniere.Orientstruct.origine' ) );?></td>
+							</tr>
+                            <tr class="even">
                                 <th>Type d'orientation</th>
                                 <td><?php echo Set::classicExtract( $details, 'DEM.Orientstruct.derniere.Typeorient.lib_type_orient' );?></td>
                                 <td><?php echo Set::classicExtract( $details, 'CJT.Orientstruct.derniere.Typeorient.lib_type_orient' );?></td>
 							</tr>
-                            <tr class="even">
+                            <tr class="odd">
                                 <th>Structure référente<!--Type de structure--></th>
                                 <td><?php echo Set::classicExtract( $details, 'DEM.Orientstruct.derniere.Structurereferente.lib_struc' );?></td>
                                 <td><?php echo Set::classicExtract( $details, 'CJT.Orientstruct.derniere.Structurereferente.lib_struc' );?></td>
                             </tr>
-                            <tr class="odd">
+                            <tr class="even">
                                 <th>Date de l'orientation</th>
                                 <td><?php echo date_short( Set::classicExtract( $details, 'DEM.Orientstruct.derniere.Orientstruct.date_valid' ) );?></td>
                                 <td><?php echo date_short( Set::classicExtract( $details, 'CJT.Orientstruct.derniere.Orientstruct.date_valid' ) );?></td>
                             </tr>
-                            <tr class="even">
+                            <tr class="odd">
                                 <th>Statut de l'orientation</th>
                                 <td><?php echo Set::classicExtract( $details, 'DEM.Orientstruct.derniere.Orientstruct.statut_orient' );?></td>
                                 <td><?php echo Set::classicExtract( $details, 'CJT.Orientstruct.derniere.Orientstruct.statut_orient' );?></td>
                             </tr>
-                            <tr class="odd">
+                            <tr class="even">
                                 <th>Rang de l'orientation</th>
                                 <td><?php echo Set::classicExtract( $details, 'DEM.Orientstruct.derniere.Orientstruct.rgorient' );?></td>
                                 <td><?php echo Set::classicExtract( $details, 'CJT.Orientstruct.derniere.Orientstruct.rgorient' );?></td>
                             </tr>
-                            <tr class="even">
+                            <tr class="odd">
                                 <th>Référent en cours</th>
                                 <?php foreach( array( 'DEM', 'CJT' ) as $rolepers ):?>
                                 <td><?php

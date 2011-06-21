@@ -55,3 +55,15 @@ msgstr "Oui"
 
 msgid "ENUM::HASPIECEJOINTE::0"
 msgstr "Non"
+
+msgid "ENUM::ORIGINE::manuelle"
+msgstr "Orientation manuelle"
+
+msgid "ENUM::ORIGINE::cohorte"
+msgstr "Orientation en cohorte"
+
+msgid "ENUM::ORIGINE::reorientation"
+msgstr "Réorientation"
+
+msgid "Orientstruct.origine"
+msgstr "Origine de l'orientation"
