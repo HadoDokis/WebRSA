@@ -71,7 +71,6 @@
 					'Bilanparcours66.orientstruct_id' => array( 'type' => 'hidden' ),
 					'Bilanparcours66.structurereferente_id',
 					'Bilanparcours66.referent_id',
-// 					'Bilanparcours66.autrestructurereferente_id' => array( 'type' => 'select', 'options' => $autresstructuresreferentes ),
 					'Bilanparcours66.presenceallocataire' => array('required'=>true)
 				),
 				array(
@@ -497,6 +496,10 @@
 				)
 			);
 		?>
+        <div class="submit">
+            <?php echo $form->submit( 'Enregistrer', array( 'div' => false ) );?>
+            <?php echo $form->submit('Annuler', array( 'name' => 'Cancel', 'div' => false ) );?>
+        </div>
 </fieldset>
 
 <fieldset id="bilanparcourspe">
@@ -638,6 +641,10 @@
 			)
 		);
 	?>
+	<div class="submit">
+        <?php echo $form->submit( 'Enregistrer', array( 'div' => false ) );?>
+        <?php echo $form->submit('Annuler', array( 'name' => 'Cancel', 'div' => false ) );?>
+    </div>
 </fieldset>
 
 <?php if ( $this->action == 'edit' && isset( $passagecommissionep['Decisionsaisinebilanparcoursep66'][0]['id'] ) && !empty( $passagecommissionep['Decisionsaisinebilanparcoursep66'][0]['id'] ) ) {
@@ -811,10 +818,7 @@ elseif ( $this->action == 'edit' && isset( $passagecommissionep['Decisiondefauti
 	echo '</fieldset>';
 } ?>
 
-<div class="submit">
-	<?php echo $form->submit( 'Enregistrer', array( 'div' => false ) );?>
-	<?php echo $form->submit('Annuler', array( 'name' => 'Cancel', 'div' => false ) );?>
-</div>
+
 
 	</div>
 	<?php echo $form->end();?>
