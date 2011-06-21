@@ -88,7 +88,7 @@
 		echo $xhtml->tag( 'h1', $this->pageTitle );
 
 		// Formulaire
-		echo $xform->create( null );
+		echo $xform->create( null, array( 'id' => 'dspform' ) );
 
 		// FIXME: id / personne_id
 		$tmp = '';
