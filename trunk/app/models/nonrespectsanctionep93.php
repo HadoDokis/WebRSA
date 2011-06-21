@@ -470,7 +470,7 @@
 		*
 		*/
 
-		public function qdRadies() {
+		public function qdRadies( $datas, $mesCodesInsee, $filtre_zone_geo ) {
 			$queryData = array(
 				'fields' => array(
 					'Personne.id',
@@ -648,11 +648,63 @@
 
 			$this->Historiqueetatpe = ClassRegistry::init('Historiqueetatpe');
 
-			$qdRadies = $this->Historiqueetatpe->Informationpe->qdRadies();
-			$queryData['fields'] = array_merge( $queryData['fields'] ,$qdRadies['fields'] );
-			$queryData['joins'] = array_merge( $queryData['joins'] ,$qdRadies['joins'] );
-			$queryData['conditions'] = array_merge( $queryData['conditions'] ,$qdRadies['conditions'] );
-			$queryData['order'] = $qdRadies['order'];
+            $nom = Set::classicExtract( $datas, 'Personne.nom' );
+            $prenom = Set::classicExtract( $datas, 'Personne.prenom' );
+            $dtnai = null;
+            if ( !empty( $datas['Personne']['dtnai']['day'] ) && !empty( $datas['Personne']['dtnai']['month'] ) && !empty( $datas['Personne']['dtnai']['year'] ) ) {
+                $dtnai = implode( '-', array( Set::classicExtract( $datas, 'Personne.dtnai.year' ), Set::classicExtract( $datas, 'Personne.dtnai.month' ), Set::classicExtract( $datas, 'Personne.dtnai.day' ) ) );
+            }
+            $nir = Set::classicExtract( $datas, 'Personne.nir' );
+            $matricule = Set::classicExtract( $datas, 'Dossier.matricule' );
+            $locaadr = Set::classicExtract( $datas, 'Adresse.locaadr' );
+            $numcomptt = Set::classicExtract( $datas, 'Adresse.numcomptt' );
+
+            $identifiantpe = Set::classicExtract( $datas, 'Historiqueetatpe.identifiantpe' );
+
+            if ( !empty( $nom ) ) {
+                $queryData['conditions'][] = array( 'Personne.nom ILIKE' => $this->wildcard( $nom ) );
+            }
+            if ( !empty( $prenom ) ) {
+                $queryData['conditions'][] = array( 'Personne.prenom ILIKE' => $this->wildcard( $prenom ) );
+            }
+            if ( !empty( $dtnai ) ) {
+                $queryData['conditions'][] = array( 'Personne.dtnai' => $dtnai );
+            }
+            if ( !empty( $nir ) ) {
+                $queryData['conditions'][] = array( 'Personne.nir' => $this->wildcard( $nir ) );
+            }
+            if ( !empty( $matricule ) ) {
+                $queryData['conditions'][] = array( 'Dossier.matricule' => $this->wildcard( $matricule ) );
+            }
+            if ( !empty( $locaadr ) ) {
+                $queryData['conditions'][] = array( 'Adresse.locaadr ILIKE' => $this->wildcard( $locaadr ) );
+            }
+            if ( !empty( $numcomptt ) ) {
+                $queryData['conditions'][] = array( 'Adresse.numcomptt' => $numcomptt );
+            }
+
+            /// Critères sur l'adresse - canton
+            if( Configure::read( 'CG.cantons' ) ) {
+                if( isset($canton ) && !empty( $canton ) ) {
+                    $this->Canton = ClassRegistry::init( 'Canton' );
+                    $queryData['conditions'][] = $this->Canton->queryConditions( $canton );
+                }
+            }
+
+            if ( !empty( $identifiantpe ) ) {
+                $queryData['conditions'][] = array( 'Historiqueetatpe.identifiantpe' => $identifiantpe );
+            }
+
+            /// Filtre zone géographique
+            $queryData['conditions'][] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
+
+
+
+            $qdRadies = $this->Historiqueetatpe->Informationpe->qdRadies();
+            $queryData['fields'] = array_merge( $queryData['fields'] ,$qdRadies['fields'] );
+            $queryData['joins'] = array_merge( $queryData['joins'] ,$qdRadies['joins'] );
+            $queryData['conditions'] = array_merge( $queryData['conditions'] ,$qdRadies['conditions'] );
+            $queryData['order'] = $qdRadies['order'];
 
 			return $queryData;
 		}

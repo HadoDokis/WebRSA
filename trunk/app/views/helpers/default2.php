@@ -549,7 +549,7 @@
 					if( !empty( $search ) ) {
 						$search = Set::flatten( array( 'Search' => $search ) );
 						foreach( $search as $path => $value ) {
-							$return .= $this->Xform->input( $path, array( 'type' => 'hidden' ) );
+							$return .= '<div>'.$this->Xform->input( $path, array( 'type' => 'hidden', 'id' => null ) ).'</div>';
 						}
 					}
 				}
