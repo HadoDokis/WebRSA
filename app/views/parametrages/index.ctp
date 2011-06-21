@@ -174,7 +174,7 @@
                     array( 'class' => 'odd' ),
                     array( 'class' => 'even' )
                 );
-                if ( Configure::read( 'Cg.departemenet' ) == 58 ) {
+                if ( Configure::read( 'Cg.departement' ) == 58 ) {
 					echo $xhtml->tableCells(
 						array(
 							h( 'Sites d\'actions médico-sociale COVs' ),
