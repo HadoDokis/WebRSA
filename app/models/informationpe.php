@@ -247,5 +247,37 @@
 			$result = $this->query( $query );
 			return array('Informationpe'=> Set::classicExtract( $result, '0.0' ) );
 		}
+
+		public function derniereInformation( $personne ) {
+			$infope = $this->find(
+				'first',
+				array(
+					'contain' => array(
+						'Historiqueetatpe' => array(
+							'order' => "Historiqueetatpe.date DESC",
+							'limit' => 1
+						)
+					),
+					'conditions' => array(
+						'OR' => array(
+							array(
+								'Informationpe.nir' => Set::classicExtract( $personne, 'Personne.nir' ),
+								'Informationpe.nir IS NOT NULL',
+								'LENGTH(Informationpe.nir) = 15',
+								'Informationpe.dtnai' => Set::classicExtract( $personne, 'Personne.dtnai' ),
+							),
+							array(
+								'Informationpe.nom' => Set::classicExtract( $personne, 'Personne.nom' ),
+								'Informationpe.prenom' => Set::classicExtract( $personne, 'Personne.prenom' ),
+								'Informationpe.dtnai' => Set::classicExtract( $personne, 'Personne.dtnai' ),
+							)
+						)
+
+					)
+				)
+			);
+			return $infope;
+		}
+
 	}
 ?>

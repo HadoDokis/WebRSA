@@ -228,6 +228,8 @@
 					'Adresse.locaadr',
 					'Adresse.numcomptt',
 					'Adresse.codepos',
+					'Dossier.numdemrsa',
+					'Dossier.dtdemrsa',
 				),
 				'joins' => array(
 					array(
@@ -259,6 +261,13 @@
 						'conditions' => array( 'Personne.foyer_id = Foyer.id' )
 					),
 					array(
+						'table'      => 'dossiers',
+						'alias'      => 'Dossier',
+						'type'       => 'INNER',
+						'foreignKey' => false,
+						'conditions' => array( 'Foyer.dossier_id = Dossier.id' )
+					),
+					array(
 						'table'      => 'adressesfoyers',
 						'alias'      => 'Adressefoyer',
 						'type'       => 'LEFT OUTER',
@@ -286,26 +295,58 @@
 			);
 
 			$options = array( 'Personne' => array( 'qual' => ClassRegistry::init( 'Option' )->qual() ) );
+			foreach( $this->Dossiercov58->Themecov58->find('list') as $theme ) {
+				$model = Inflector::classify( $theme );
+				if( in_array( 'Enumerable', $this->Dossiercov58->{$model}->Behaviors->attached() ) ) {
+					$options = Set::merge( $options, $this->Dossiercov58->{$model}->enums() );
+				}
+
+				$qdModele = $this->Dossiercov58->{$model}->qdOrdreDuJour();
+				foreach( array( 'fields', 'joins' ) as $key ) {
+					$queryData[$key] = array_merge( $queryData[$key], $qdModele[$key] );
+				}
+			}
 			$options = Set::merge( $options, $this->enums() );
-			$options = Set::merge( $options, $this->Dossiercov58->enums() );
 
 			$dossierscovs58 = $this->Dossiercov58->find( 'all', $queryData );
 			// FIXME: faire la traduction des enums dans les modèles correspondants ?
-
+			$this->Informationpe = ClassRegistry::init( 'Informationpe' );
 			foreach( $dossierscovs58 as $key => $dossiercov58 ) {
+				$dossierscovs58[$key]['Propoorientationcov58']['Typeorient'] = $dossierscovs58[$key]['Typeorient'];
+				$dossierscovs58[$key]['Propoorientationcov58']['Structurereferente'] = $dossierscovs58[$key]['Structurereferente'];
+				unset( $dossierscovs58[$key]['Typeorient'], $dossierscovs58[$key]['Structurereferente'] );
+
+				$champsOrientation = array_keys( $dossierscovs58[$key]['Propoorientationcov58'] );
+				$orientationVide = array_fill_keys( $champsOrientation, null );
+				$orientationVide['Typeorient'] = array_fill_keys( array_keys( $dossierscovs58[$key]['Propoorientationcov58']['Typeorient'] ), null );
+				$orientationVide['Structurereferente'] = array_fill_keys( array_keys( $dossierscovs58[$key]['Propoorientationcov58']['Structurereferente'] ), null );
+			
+				if ( isset( $dossiercov58['Propoorientationcov58']['decisioncov'] ) && !empty( $dossiercov58['Propoorientationcov58']['decisioncov'] ) && $dossiercov58['Propoorientationcov58']['rgorient'] > 0 ) {
+					$dossierscovs58[$key]['Proporeorientationcov58'] = $dossierscovs58[$key]['Propoorientationcov58'];
+					$dossierscovs58[$key]['Propoorientationcov58'] = $orientationVide;
+				}
+				else {
+					$dossierscovs58[$key]['Proporeorientationcov58'] = $orientationVide;
+				}
+
+				$infope = $this->Informationpe->derniereInformation( $dossiercov58 );
+				$dossierscovs58[$key]['Personne']['inscritpe'] = ( isset( $infope['Historiqueetatpe'][0]['etat'] ) && $infope['Historiqueetatpe'][0]['etat'] == 'inscription' ) ? 'Oui' : 'Non';
+
+				// Traduction ...
 				$dossierscovs58[$key]['Themecov58']['name'] = __d( 'dossiercov58', 'ENUM::THEMECOV::'.$dossiercov58['Themecov58']['name'], true );
 			}
 
+// debug( $cov58_data );
 // debug($dossierscovs58);
 // die();
 			return $this->ged(
 				array_merge(
 					array(
 						$cov58_data,
-						'Dossierscovs58' => $dossierscovs58
+						'Decisionscovs58' => $dossierscovs58
 					)
 				),
-				"{$this->alias}/ordedujour.odt",
+				"{$this->alias}/ordredujour.odt",
 				true,
 				$options
 			);
@@ -361,6 +402,8 @@
 					'Adresse.locaadr',
 					'Adresse.numcomptt',
 					'Adresse.codepos',
+					'Dossier.numdemrsa',
+					'Dossier.dtdemrsa',
 				),
 				'conditions' => array(
 					'Cov58.id' => $cov58_id
@@ -395,6 +438,13 @@
 						'conditions' => array( 'Personne.foyer_id = Foyer.id' )
 					),
 					array(
+						'table'      => 'dossiers',
+						'alias'      => 'Dossier',
+						'type'       => 'INNER',
+						'foreignKey' => false,
+						'conditions' => array( 'Foyer.dossier_id = Dossier.id' )
+					),
+					array(
 						'table'      => 'adressesfoyers',
 						'alias'      => 'Adressefoyer',
 						'type'       => 'LEFT OUTER',
@@ -425,8 +475,8 @@
 					$options = Set::merge( $options, $this->Dossiercov58->{$model}->enums() );
 				}
 
+				$qdModele = $this->Dossiercov58->{$model}->qdProcesVerbal();
 				foreach( array( 'fields', 'joins' ) as $key ) {
-					$qdModele = $this->Dossiercov58->{$model}->qdProcesVerbal();
 					$queryData[$key] = array_merge( $queryData[$key], $qdModele[$key] );
 				}
 			}
@@ -434,10 +484,36 @@
 
 			$dossierscovs58 = $this->Dossiercov58->find( 'all', $queryData );
 			// FIXME: faire la traduction des enums dans les modèles correspondants ?
-
+			$this->Informationpe = ClassRegistry::init( 'Informationpe' );
 			foreach( $dossierscovs58 as $key => $dossiercov58 ) {
+				$dossierscovs58[$key]['Propoorientationcov58']['Typeorient'] = $dossierscovs58[$key]['Typeorient'];
+				$dossierscovs58[$key]['Propoorientationcov58']['Structurereferente'] = $dossierscovs58[$key]['Structurereferente'];
+				unset( $dossierscovs58[$key]['Typeorient'], $dossierscovs58[$key]['Structurereferente'] );
+
+				$champsOrientation = array_keys( $dossierscovs58[$key]['Propoorientationcov58'] );
+				$orientationVide = array_fill_keys( $champsOrientation, null );
+				$orientationVide['Typeorient'] = array_fill_keys( array_keys( $dossierscovs58[$key]['Propoorientationcov58']['Typeorient'] ), null );
+				$orientationVide['Structurereferente'] = array_fill_keys( array_keys( $dossierscovs58[$key]['Propoorientationcov58']['Structurereferente'] ), null );
+			
+				if ( isset( $dossiercov58['Propoorientationcov58']['decisioncov'] ) && !empty( $dossiercov58['Propoorientationcov58']['decisioncov'] ) && $dossiercov58['Propoorientationcov58']['rgorient'] > 0 ) {
+					$dossierscovs58[$key]['Proporeorientationcov58'] = $dossierscovs58[$key]['Propoorientationcov58'];
+					$dossierscovs58[$key]['Propoorientationcov58'] = $orientationVide;
+				}
+				else {
+					$dossierscovs58[$key]['Proporeorientationcov58'] = $orientationVide;
+				}
+
+				$infope = $this->Informationpe->derniereInformation( $dossiercov58 );
+				$dossierscovs58[$key]['Personne']['inscritpe'] = ( isset( $infope['Historiqueetatpe'][0]['etat'] ) && $infope['Historiqueetatpe'][0]['etat'] == 'inscription' ) ? 'Oui' : 'Non';
+
+				// Traduction ...
 				$dossierscovs58[$key]['Themecov58']['name'] = __d( 'dossiercov58', 'ENUM::THEMECOV::'.$dossiercov58['Themecov58']['name'], true );
 			}
+
+			$decisionscovs = array( 'accepte' => 'Accepté', 'refus' => 'Refusé', 'ajourne' => 'Ajourné' );
+			$options['Propoorientationcov58']['decisioncov'] = $decisionscovs;
+			$options['Proporeorientationcov58']['decisioncov'] = $decisionscovs;
+			$options['Propocontratinsertioncov58']['decisioncov'] = $decisionscovs;
 
 // debug( $cov58_data );
 // debug($dossierscovs58);
