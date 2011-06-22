@@ -499,5 +499,10 @@ ALTER TABLE orientsstructs ADD CONSTRAINT orientsstructs_origine_check CHECK(
 );
 
 -- *****************************************************************************
+-- 20110622: ajout de l'index sur la colonne origine de la table orientsstructs
+-- *****************************************************************************
+CREATE INDEX orientsstructs_origine_idx ON orientsstructs( origine );
+
+-- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
