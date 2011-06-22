@@ -345,6 +345,7 @@
 										'Dossierep.created',
 										'Dossierep.themeep',
 										'Passagecommissionep.etatdossierep',
+										'Dossierep.Personne.Foyer.enerreur' => array( 'type' => 'string', 'class' => 'foyer_enerreur' ),
 									),
 									array(
 										'actions' => $actions,

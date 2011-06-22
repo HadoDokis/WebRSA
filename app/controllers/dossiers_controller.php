@@ -160,6 +160,8 @@
 			}
 			$this->assert( !empty( $conditions ), 'invalidParameter' );
 
+			$dossierForceVirtualFields = $this->Dossier->forceVirtualFields;
+			$this->Dossier->forceVirtualFields = true;
 			$dossier = $this->Dossier->find(
 				'first',
 				array(
@@ -168,6 +170,7 @@
 						'Dossier.matricule',
 						'Dossier.numdemrsa',
 						'Foyer.id',
+						'Foyer.enerreur',
 						'Situationdossierrsa.etatdosrsa'
 					),
 					'contain' => array(
@@ -177,6 +180,7 @@
 					'conditions' => $conditions
 				)
 			);
+			$this->Dossier->forceVirtualFields = $dossierForceVirtualFields;
 
 			$dossier['Dossier']['locked'] = $this->Jetons->locked( $dossier['Dossier']['id'] );
 

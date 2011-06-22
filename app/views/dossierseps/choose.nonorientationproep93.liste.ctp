@@ -11,6 +11,7 @@
 			'Typeorient.lib_type_orient',
 			'Structurereferente.lib_struc',
 			'Orientstruct.date_valid',
+			'Foyer.enerreur' => array( 'type' => 'string', 'class' => 'foyer_enerreur' ),
 			'Passagecommissionep.chosen' => array( 'input' => 'checkbox' ),
 		),
 		array(

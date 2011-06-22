@@ -3,6 +3,64 @@
 	{
 		public $name = 'Foyer';
 
+		public $virtualFields = array(
+			'enerreur' => array(
+				'type'      => 'string',
+				'postgres'  => "(
+					CASE WHEN NOT
+					(
+						(
+							SELECT COUNT(personnes.id)
+								FROM personnes
+									INNER JOIN prestations ON (
+										prestations.personne_id = personnes.id
+										AND prestations.natprest = 'RSA'
+										AND prestations.rolepers = 'DEM'
+									)
+								WHERE personnes.foyer_id = \"%s\".\"id\"
+						) = 1
+						AND 
+						(
+							SELECT COUNT(personnes.id)
+								FROM personnes
+									INNER JOIN prestations ON (
+										prestations.personne_id = personnes.id
+										AND prestations.natprest = 'RSA'
+										AND prestations.rolepers = 'CJT'
+									)
+								WHERE personnes.foyer_id = \"%s\".\"id\"
+						) <= 1
+					) THEN (
+						'Ce foyer comporte ' ||
+						(
+							(
+								SELECT COUNT(personnes.id)
+									FROM personnes
+										INNER JOIN prestations ON (
+											prestations.personne_id = personnes.id
+											AND prestations.natprest = 'RSA'
+											AND prestations.rolepers = 'DEM'
+										)
+									WHERE personnes.foyer_id = \"%s\".\"id\"
+							)
+							|| ' demandeur(s) et ' ||
+							(
+								SELECT COUNT(personnes.id)
+									FROM personnes
+										INNER JOIN prestations ON (
+											prestations.personne_id = personnes.id
+											AND prestations.natprest = 'RSA'
+											AND prestations.rolepers = 'CJT'
+										)
+									WHERE personnes.foyer_id = \"%s\".\"id\"
+							)
+						) || ' conjoint(s).'
+					) ELSE NULL
+					END
+				)"
+			),
+		);
+
 		public $validate = array(
 			'dossier_id' => array(
 				'numeric' => array(
@@ -334,6 +392,15 @@
 					return ( $montant < ( ( 1.5 * $F ) + ( 0.4 * $F * ( $X - 2 ) ) ) );
 				}
 			}
+		}
+
+		/**
+		* Retourne une requête, à utiliser en tant que champ virtuel, permettant de
+		* savoir si un foyer comporte un et un seul demandeur, et au maximum un conjoint.
+		*/
+
+		public function vfFoyerEnerreur( $modelAlias = 'Foyer', $fieldName = 'enerreur' ) {
+			return str_replace( '%s', $modelAlias, $this->virtualFields['enerreur']['postgres'] )." AS \"{$modelAlias}__{$fieldName}\"";
 		}
 	}
 ?>

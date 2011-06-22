@@ -45,6 +45,7 @@
 				'Reorientationep93.urgent' => array( 'type' => 'boolean' ),
 				'Reorientationep93.datedemande',
 // 				'Passagecommissionep.etatdossierep',
+				'Foyer.enerreur' => array( 'type' => 'string', 'class' => 'foyer_enerreur' ),
 			),
 			array(
 				'actions' => array(

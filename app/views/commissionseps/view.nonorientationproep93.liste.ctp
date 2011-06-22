@@ -42,6 +42,7 @@
 				'Structurereferente.lib_struc',
 				'Orientstruct.date_valid',
 // 				'Passagecommissionep.etatdossierep',
+				'Foyer.enerreur' => array( 'type' => 'string', 'class' => 'foyer_enerreur' ),
 			),
 			array(
 				'actions' => array(

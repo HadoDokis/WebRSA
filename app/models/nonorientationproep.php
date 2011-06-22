@@ -116,6 +116,7 @@
 					'Orientstruct.user_id',
 					'Typeorient.lib_type_orient',
 					'Structurereferente.lib_struc',
+					'Foyer.enerreur',
 					'Referent.qual',
 					'Referent.nom',
 					'Referent.prenom',

@@ -21,15 +21,15 @@
 	<fieldset>
 		<legend><?php  echo __d( 'nonorientationproep', 'Nonorientationsproseps'.Configure::read( 'Cg.departement' ).'::legend', true );?></legend>
 		<?php if( Configure::read( 'Cg.departement' ) == 58 ):?>
-        <?php
-            $df_ci_from = Set::check( $this->data, 'Filtre.df_ci_from' ) ? Set::extract( $this->data, 'Filtre.df_ci_from' ) : strtotime( '-1 week' );
-            $df_ci_to = Set::check( $this->data, 'Filtre.df_ci_to' ) ? Set::extract( $this->data, 'Filtre.df_ci_to' ) : strtotime( 'now' );
-        ?>
-        <?php echo $form->input( 'Filtre.df_ci_from', array( 'label' => 'Le (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $df_ci_from ) );?>
-        <?php echo $form->input( 'Filtre.df_ci_to', array( 'label' => 'Et le (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120,  'maxYear' => date( 'Y' ) + 5, 'selected' => $df_ci_to ) );?>
-        <?php else:?>
-            <?php echo $form->input( 'Filtre.dureenonreorientation', array( 'label' => 'Contrat pour l\'orientation sociale terminé depuis', 'type' => 'select', 'options' => $nbmoisnonreorientation ) );?>
-        <?php endif;?>
+		<?php
+			$df_ci_from = Set::check( $this->data, 'Filtre.df_ci_from' ) ? Set::extract( $this->data, 'Filtre.df_ci_from' ) : strtotime( '-1 week' );
+			$df_ci_to = Set::check( $this->data, 'Filtre.df_ci_to' ) ? Set::extract( $this->data, 'Filtre.df_ci_to' ) : strtotime( 'now' );
+		?>
+		<?php echo $form->input( 'Filtre.df_ci_from', array( 'label' => 'Le (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $df_ci_from ) );?>
+		<?php echo $form->input( 'Filtre.df_ci_to', array( 'label' => 'Et le (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120,  'maxYear' => date( 'Y' ) + 5, 'selected' => $df_ci_to ) );?>
+		<?php else:?>
+			<?php echo $form->input( 'Filtre.dureenonreorientation', array( 'label' => 'Contrat pour l\'orientation sociale terminé depuis', 'type' => 'select', 'options' => $nbmoisnonreorientation ) );?>
+		<?php endif;?>
 	</fieldset>
 	<div class="submit">
 		<?php echo $form->button( 'Filtrer', array( 'type' => 'submit' ) );?>
@@ -51,6 +51,7 @@
 					<th>Allocataire</th>
 					<th>Date de naissance</th>
 					<th>Code postal</th>
+					<th><?php echo __d( 'foyer', 'Foyer.enerreur', true );?></th>
 					<th>Date de validation de l'orientation</th>
 					<th>Nombre de jours depuis la fin du contrat lié</th>
 					<th>Type d'orientation</th>
@@ -68,6 +69,7 @@
 							echo $xhtml->tag( 'td', implode( ' ', array( $orientstruct['Personne']['qual'], $orientstruct['Personne']['nom'], $orientstruct['Personne']['prenom'] ) ) );
 							echo $xhtml->tag( 'td', $locale->date( __( 'Locale->date', true ), $orientstruct['Personne']['dtnai'] ) );
 							echo $xhtml->tag( 'td', $orientstruct['Adresse']['codepos'] );
+							echo $xhtml->tag( 'td', $orientstruct['Foyer']['enerreur'], array( 'class' => 'foyer_enerreur '.( empty( $orientstruct['Foyer']['enerreur'] ) ? 'empty' : null ) ) );
 							echo $xhtml->tag( 'td', $locale->date( __( 'Locale->date', true ), $orientstruct['Orientstruct']['date_valid'] ) );
 							echo $xhtml->tag( 'td', $orientstruct['Contratinsertion']['nbjours'] );
 							echo $xhtml->tag( 'td', $orientstruct['Structurereferente']['lib_struc'] );
@@ -95,8 +97,8 @@
 			}
 		?>
 		<?php echo $form->end( 'Enregistrer' );?>
-        <?php echo $form->button( 'Tout cocher', array( 'onclick' => 'toutCocher()' ) );?>
-        <?php echo $form->button( 'Tout décocher', array( 'onclick' => 'toutDecocher()' ) );?>
+		<?php echo $form->button( 'Tout cocher', array( 'onclick' => 'toutCocher()' ) );?>
+		<?php echo $form->button( 'Tout décocher', array( 'onclick' => 'toutDecocher()' ) );?>
 	<?php endif;?>
 
 <?php endif;?>

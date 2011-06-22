@@ -361,7 +361,8 @@
 				'Personne.nir',
 				'Personne.dtnai',
 				'Dossier.matricule',
-				'Adresse.locaadr'
+				'Adresse.locaadr',
+				'Foyer.enerreur',
 			);
 
 			/// Jointures de base
@@ -1056,6 +1057,7 @@
 				'fields' => array(
 					'Dossier.matricule',
 					'Adresse.locaadr',
+					'Foyer.enerreur',
 					'Personne.id',
 					'Personne.nom',
 					'Personne.prenom',

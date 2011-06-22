@@ -479,6 +479,7 @@
 					'Personne.prenom',
 					'Personne.dtnai',
 					'Personne.nir',
+					'Foyer.enerreur',
 					'Adresse.locaadr',
 					'Typeorient.lib_type_orient',
 					'Contratinsertion.present',

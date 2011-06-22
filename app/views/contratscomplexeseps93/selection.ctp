@@ -4,7 +4,6 @@
 	echo $default2->index(
 		$contratsinsertion,
 		array(
-			'Contratinsertion.chosen' => array( 'input' => 'checkbox', 'type' => 'boolean', 'domain' => 'contratcomplexeep93', 'sort' => false ),
 			'Personne.nom',
 			'Personne.prenom',
 			'Personne.dtnai',
@@ -12,6 +11,8 @@
 			'Structurereferente.lib_struc',
 			'Contratinsertion.dd_ci',
 			'Contratinsertion.df_ci',
+			'Personne.Foyer.enerreur' => array( 'type' => 'string', 'class' => 'foyer_enerreur' ),
+			'Contratinsertion.chosen' => array( 'input' => 'checkbox', 'type' => 'boolean', 'domain' => 'contratcomplexeep93', 'sort' => false ),
 		),
 		array(
 			'cohorte' => true,

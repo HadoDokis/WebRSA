@@ -14,6 +14,7 @@
 			'Reorientationep93.accordallocataire' => array( 'type' => 'boolean' ),
 			'Reorientationep93.urgent' => array( 'type' => 'boolean' ),
 			'Reorientationep93.datedemande',
+			'Foyer.enerreur' => array( 'type' => 'string', 'class' => 'foyer_enerreur' ),
 			'Passagecommissionep.chosen' => array( 'input' => 'checkbox' ),
 		),
 		array(

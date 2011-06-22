@@ -47,6 +47,7 @@
 				'Contratinsertion.nature_projet',
 				'Contratinsertion.type_demande',
 // 				'Passagecommissionep.etatdossierep',
+				'Foyer.enerreur' => array( 'type' => 'string', 'class' => 'foyer_enerreur' ),
 			),
 			array(
 				'actions' => array(
