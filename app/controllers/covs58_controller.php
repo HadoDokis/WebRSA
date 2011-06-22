@@ -262,5 +262,45 @@
 			}
 		}
 
+		/**
+		*
+		*/
+
+		public function impressiondecision( $dossiercov58_id ) {
+			$themecov58 = $this->Cov58->Dossiercov58->Themecov58->find(
+				'first',
+				array(
+					'fields' => array(
+						'Themecov58.name'
+					),
+					'conditions' => array(
+						'Themecov58.id IN ( '.$this->Cov58->Dossiercov58->sq(
+							array(
+								'fields' => array(
+									'dossierscovs58.themecov58_id'
+								),
+								'alias' => 'dossierscovs58',
+								'conditions' => array(
+									'dossierscovs58.id' => $dossiercov58_id
+								)
+							)
+						).' )'
+					),
+					'contain' => false
+				)
+			);
+			$modeleTheme = Inflector::classify( $themecov58['Themecov58']['name'] );
+
+ 			$pdf = $this->Cov58->Dossiercov58->{$modeleTheme}->getPdfDecision( $dossiercov58_id );
+
+			if( $pdf ) {
+				$this->Gedooo->sendPdfContentToClient( $pdf, 'pv' );
+			}
+			else {
+				$this->Session->setFlash( 'Impossible de générer le courrier de décision de la COV', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
+			}
+		}
+
 	}
 ?>

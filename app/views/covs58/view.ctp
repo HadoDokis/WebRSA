@@ -110,7 +110,8 @@
 						),
 						array(
                             'actions' => array(
-                                'Dossierscovs58::view' => array( 'label' => 'Voir', 'url' => array( 'controller' => $controller, 'action' => 'index', '#Personne.id#' ), 'class' => 'external' )
+                                'Dossierscovs58::view' => array( 'label' => 'Voir', 'url' => array( 'controller' => $controller, 'action' => 'index', '#Personne.id#' ) ),
+                                'Dossierscovs58::impressiondecision' => array( 'label' => 'Imprimer la décision', 'url' => array( 'controller' => 'covs58', 'action' => 'impressiondecision', '#Dossiercov58.id#' ) )
                             ),
 							'options' => $options
 						)
@@ -121,12 +122,6 @@
 		</div>
 	</div>
 </div>
-
-<script type="text/javascript">
-    $$( 'td.action a' ).each( function( elmt ) {
-        $( elmt ).addClassName( 'external' );
-    } );
-</script>
 
 <?php
 	if( Configure::read( 'debug' ) > 0 ) {

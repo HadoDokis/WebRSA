@@ -323,6 +323,15 @@
 				)
 			);
 		}
+
+		/**
+		*
+		*/
+
+		public function getPdfDecision( $dossiercov58_id ) {
+			///INFO : pour le moment aucun courrier donc à faire dès qu'on en aura
+			return false;
+		}
 		
 	}
 ?>
