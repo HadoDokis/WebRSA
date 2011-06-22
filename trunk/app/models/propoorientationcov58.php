@@ -462,6 +462,7 @@
 						'Covstructurereferente.lib_struc',
 						'Covstructurereferente.num_voie',
 						'Covstructurereferente.nom_voie',
+						'Covstructurereferente.type_voie',
 						'Covstructurereferente.code_postal',
 						'Covstructurereferente.ville',
 						'Sitecov58.name',
@@ -579,7 +580,8 @@
 
 			$options = array(
 				'Personne' => array( 'qual' => ClassRegistry::init( 'Option' )->qual() ),
-				'Adresse' => array( 'typevoie' => ClassRegistry::init( 'Option' )->typevoie() )
+				'Adresse' => array( 'typevoie' => ClassRegistry::init( 'Option' )->typevoie() ),
+				'type' => array( 'voie' => ClassRegistry::init( 'Option' )->typevoie() )
 			);
 			$options = Set::merge( $options, $this->Dossiercov58->enums() );
 
