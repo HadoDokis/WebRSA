@@ -266,6 +266,7 @@
 
 			if( is_string( $params['tag'] ) ) {
 				if( is_null( $value ) || trim( $value ) == '' ) {
+					$params = $this->addClass( $params, 'empty' );
 					$value = '&nbsp;';
 				}
 

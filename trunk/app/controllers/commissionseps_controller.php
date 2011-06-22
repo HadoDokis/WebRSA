@@ -660,6 +660,8 @@
 				$qd['joins'] = $qdListeDossier['joins'];
 				$qd['contain'] = false;
 
+				$qd['fields'][] = $this->Commissionep->Passagecommissionep->Dossierep->Personne->Foyer->vfFoyerEnerreur();
+
 				$dossiers[$theme] = $this->Commissionep->Passagecommissionep->Dossierep->find(
 					'all',
 					$qd
@@ -667,7 +669,7 @@
 
 				$countDossiers += count($dossiers[$theme]);
 			}
-// debug($dossiers);
+
 			$dossierseps = $this->Commissionep->Passagecommissionep->find(
 				'all',
 				array(
@@ -678,6 +680,9 @@
 						'Dossierep' => array(
 							'Personne' => array(
 								'Foyer' => array(
+									'fields' => array(
+										$this->Commissionep->Passagecommissionep->Dossierep->Personne->Foyer->vfFoyerEnerreur()
+									),
 									'Adressefoyer' => array(
 										'conditions' => array(
 											'Adressefoyer.rgadr' => '01'

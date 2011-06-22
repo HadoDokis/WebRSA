@@ -99,6 +99,7 @@
 						<th>'.$xpaginator->sort( 'Nom / Prénom Allocataire', 'Personne.nom' ).'</th><!-- FIXME -->
 						<th>'.$xpaginator->sort( 'NIR', 'Personne.nir' ).'</th>
 						<th>'.$xpaginator->sort( 'Nom de commune', 'Adresse.locaadr' ).'</th>
+						<th>'.$xpaginator->sort( __d( 'foyer', 'Foyer.enerreur', true ), 'Foyer.enerreur' ).'</th>
 						'.( ( $this->data['Search']['Relance']['contrat'] == 0 ) ? '<th>'.$xpaginator->sort( 'Date d\'orientation', 'Orientstruct.date_valid' ).'</th>' : '' ).'
 						'.( ( $this->data['Search']['Relance']['contrat'] == 0 ) ? '<th>'.$xpaginator->sort( 'Date de notification d\'orientation', 'Orientstruct.date_impression' ).'</th>' : '' ).'
 						'.( ( $this->data['Search']['Relance']['contrat'] == 0 ) ? '<th>'.$xpaginator->sort( 'Nombre de jours depuis la notification d\'orientation', 'Orientstruct.date_impression' ).'</th>' : '' ).'
@@ -128,7 +129,8 @@
 						h( @$result['Dossier']['matricule'] ),
 						h( @$result['Personne']['nom'].' '.@$result['Personne']['prenom'] ),
 						h( @$result['Personne']['nir'] ),
-						h( @$result['Adresse']['locaadr'] )
+						h( @$result['Adresse']['locaadr'] ),
+						array( h( @$result['Foyer']['enerreur'] ), array( 'class' => 'foyer_enerreur '.( empty( $result['Foyer']['enerreur'] ) ? 'empty' : null ) ) ),
 					);
 
 					if( $this->data['Search']['Relance']['contrat'] == 0 ) {

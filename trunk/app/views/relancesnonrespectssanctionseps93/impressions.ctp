@@ -88,6 +88,7 @@
 					<th><?php echo $xpaginator->sort( 'Nom / prénom bénéficiaire', 'Personne.nom' );?></th>
 					<th><?php echo $xpaginator->sort( __d( 'personne', 'Personne.nir', true ), 'Personne.nir' );?></th>
 					<th><?php echo $xpaginator->sort( 'Ville', 'Adresse.locaadr' );?></th>
+					<th><?php echo $xpaginator->sort( __d( 'foyer', 'Foyer.enerreur', true ), 'Foyer.enerreur' );?></th>
 					<th><?php echo $xpaginator->sort( 'Présence contrat ?', 'Contratinsertion.id' );?></th>
 					<th><?php echo $xpaginator->sort( 'Date de fin du dernier contrat', 'Contratinsertion.df_ci' );?></th>
 					<th><?php echo $xpaginator->sort( 'Nbre jours depuis la fin du dernier contrat', 'Contratinsertion.nbjours' );?></th>
@@ -116,6 +117,7 @@
 								h( "{$relance['Personne']['nom']} {$relance['Personne']['prenom']}" ),
 								h( $relance['Personne']['nir'] ),
 								h( $relance['Adresse']['locaadr'] ),
+								array( h( @$relance['Foyer']['enerreur'] ), array( 'class' => 'foyer_enerreur '.( empty( $relance['Foyer']['enerreur'] ) ? 'empty' : null ) ) ),
 								h( empty( $relance['Contratinsertion']['id'] ) ? 'Non' : 'Oui' ),
 								$locale->date( 'Locale->date', $relance['Contratinsertion']['df_ci'] ),
 								h( $relance['Contratinsertion']['nbjours'] ),

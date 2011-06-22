@@ -65,11 +65,11 @@ table th {
 }
 
 tr.even td {
-    background: #e6eef2;
+    background-color: #e6eef2;
 }
 
 tbody tr.even th {
-    background: #235f7d;
+    background-color: #235f7d;
 }
 
 table.cake-sql-log caption {
@@ -1166,3 +1166,14 @@ fieldset.partenaire.bilan div.input.radio.error {
 }
 
 div.selectall { text-align: right; margin-top: 1em; }
+
+td.foyer_enerreur {
+	background-repeat: no-repeat;
+	background-position: left center;
+	padding-left: 20px;
+	background-image: url( ../img/icons/exclamation.png );
+}
+
+td.foyer_enerreur.empty {
+	background-image: none;
+}

@@ -178,6 +178,7 @@
 						'Personne.qual',
 						'Personne.nom',
 						'Personne.prenom',
+						'Foyer.enerreur',
 						'Commissionep.dateseance',
 						'Passagecommissionep.id',
 						'Passagecommissionep.commissionep_id',

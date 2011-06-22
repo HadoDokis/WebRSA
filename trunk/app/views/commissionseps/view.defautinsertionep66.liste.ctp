@@ -52,6 +52,7 @@
 				'Dossierep.created',
 				'Dossierep.themeep',
 				'Passagecommissionep.etatdossierep',
+				'Foyer.enerreur' => array( 'type' => 'string', 'class' => 'foyer_enerreur' ),
 			),
 			array(
 				'actions' => array(

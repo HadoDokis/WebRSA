@@ -43,7 +43,9 @@
 			<?php endif;?>
 
 			<?php
-				echo $xhtml->link( 'Dossier RSA '.$dossier['Dossier']['numdemrsa'], array( 'controller' => 'dossiers', 'action' => 'view', $dossier['Dossier']['id'] ) ).( $dossier['Dossier']['locked'] ? $xhtml->image( 'icons/lock.png', array( 'alt' => '', 'title' => 'Dossier verrouillé' ) ) : null );
+				echo $xhtml->link( 'Dossier RSA '.$dossier['Dossier']['numdemrsa'], array( 'controller' => 'dossiers', 'action' => 'view', $dossier['Dossier']['id'] ) ).
+				( $dossier['Dossier']['locked'] ? $xhtml->image( 'icons/lock.png', array( 'alt' => '', 'title' => 'Dossier verrouillé' ) ) : null ).
+				( $dossier['Foyer']['enerreur'] ? $xhtml->image( 'icons/exclamation.png', array( 'alt' => '', 'title' => $dossier['Foyer']['enerreur'] ) ) : null );
 			?>
 		</h2>
 

@@ -1,7 +1,6 @@
 <?php
 	class Contratscomplexeseps93Controller extends AppController
 	{
-
 		/**
 		*
 		*/
@@ -63,6 +62,9 @@
 						'Structurereferente',
 						'Personne' => array(
 							'Foyer' => array(
+								'fields' => array(
+									$this->Contratcomplexeep93->Contratinsertion->Personne->Foyer->vfFoyerEnerreur()
+								),
 								'Adressefoyer' => array(
 									'conditions' => array(
 										'Adressefoyer.rgadr' => '01'

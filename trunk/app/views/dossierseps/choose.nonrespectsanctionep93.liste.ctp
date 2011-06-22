@@ -10,6 +10,7 @@
 			'Personne.dtnai',
 			'Adresse.locaadr',
 			'Nonrespectsanctionep93.origine',
+			'Foyer.enerreur' => array( 'type' => 'string', 'class' => 'foyer_enerreur' ),
 			'Passagecommissionep.chosen' => array( 'input' => 'checkbox' ),
 		),
 		array(

@@ -41,6 +41,7 @@
 				'Adresse.locaadr',
 				'Nonrespectsanctionep93.origine',
 // 				'Passagecommissionep.etatdossierep',
+				'Foyer.enerreur' => array( 'type' => 'string', 'class' => 'foyer_enerreur' ),
 			),
 			array(
 				'actions' => array(

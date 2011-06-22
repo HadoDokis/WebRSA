@@ -28,3 +28,6 @@ msgstr "N° CAF"
 
 msgid "Foyer.sitfam"
 msgstr "Situation familiale"
+
+msgid "Foyer.enerreur"
+msgstr "Alerte composition du foyer ?"
