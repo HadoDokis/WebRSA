@@ -25,8 +25,7 @@ echo '</tr></thead><tbody>';
 				$form->input( "{$theme}.{$i}.typeorient_id", array( 'type' => 'select', 'options' => $typesorients, 'label' => false, 'empty' => true ) ),
 				$form->input( "{$theme}.{$i}.structurereferente_id", array( 'type' => 'select', 'options' => $structuresreferentes, 'label' => false, 'empty' => true ) ),
 				$form->input( "{$theme}.{$i}.referent_id", array( 'type' => 'select', 'options' => $referents, 'label' => false, 'empty' => true ) ),
-				$form->input( "{$theme}.{$i}.commentaire", array( 'type' => 'textarea', 'label' => false ) ),
-				$xhtml->viewLink( 'Voir', array( 'controller' => 'orientsstructs', 'action' => 'index', $dossiercov['Personne']['id'] ), true, true )
+				$form->input( "{$theme}.{$i}.commentaire", array( 'type' => 'textarea', 'label' => false ) )z
 			)
 		);
 	}
