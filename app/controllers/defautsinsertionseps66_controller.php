@@ -26,6 +26,7 @@
 			$this->set( compact( 'mesCodesInsee' ) );
 
 			if( !empty( $this->data ) ) {
+// debug($this->data);
 				$queryData = $this->Defautinsertionep66->{$qdName}( $this->data, ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() ), $this->Session->read( 'Auth.User.filtre_zone_geo' ) );
 				$queryData['limit'] = 10;
 

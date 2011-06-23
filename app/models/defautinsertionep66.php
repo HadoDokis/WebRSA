@@ -403,9 +403,9 @@
 								'structurereferente_id' => @$dossierep['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['structurereferente_id'],
 							)
 						);
-debug( $success );
+// debug( $success );
 						$success = $oBilanparcours66->sauvegardeBilan( $nvdossierep ) && $success;
-debug( $oBilanparcours66->validationErrors );
+// debug( $oBilanparcours66->validationErrors );
 					}
 					/*// TODO Si maintien, alors, RDV référent
 					else if( $defautinsertionep66['Defautinsertionep66']['decision'] == 'maintien' ) {
@@ -590,6 +590,17 @@ debug( $oBilanparcours66->validationErrors );
 			$locaadr = Set::classicExtract( $datas, 'Adresse.locaadr' );
 			$numcomptt = Set::classicExtract( $datas, 'Adresse.numcomptt' );
 			$canton = Set::classicExtract( $datas, 'Adresse.canton' );
+
+
+            if( isset( $datas['Orientstruct']['date_valid'] ) && !empty( $datas['Orientstruct']['date_valid'] ) ) {
+                if( valid_int( $datas['Orientstruct']['date_valid']['year'] ) ) {
+                   $queryData['conditions'][] = 'EXTRACT(YEAR FROM Orientstruct.date_valid) = '.$datas['Orientstruct']['date_valid']['year'];
+                }
+                if( valid_int( $datas['Orientstruct']['date_valid']['month'] ) ) {
+                    $queryData['conditions'][] = 'EXTRACT(MONTH FROM Orientstruct.date_valid) = '.$datas['Orientstruct']['date_valid']['month'];
+                }
+            }
+
 
 			$identifiantpe = Set::classicExtract( $datas, 'Historiqueetatpe.identifiantpe' );
 
