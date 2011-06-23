@@ -28,12 +28,13 @@
         <?php echo $form->input( 'Dossier.matricule', array( 'label' => 'N° CAF', 'maxlength' => 15 ) );?>
         <?php echo $form->input( 'Adresse.locaadr', array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );?>
         <?php echo $form->input( 'Adresse.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );?>
-        <?php echo $form->input( 'Orientstruct.date_valid', array( 'label' => 'Mois d\'orientation', 'type' => 'date', 'dateFormat' => 'MY', 'minYear' => date( 'Y' ) - 5, 'maxYear' => date( 'Y' ) + 1, 'empty' => true ) );?>
+
         <?php
 			if( Configure::read( 'CG.cantons' ) ) {
 				echo $form->input( 'Adresse.canton', array( 'label' => 'Canton', 'type' => 'select', 'options' => $cantons, 'empty' => true ) );
 			}
 		?>
+        <?php echo $form->input( 'Orientstruct.date_valid', array( 'label' => 'Mois d\'orientation', 'type' => 'date', 'dateFormat' => 'MY', 'minYear' => date( 'Y' ) - 5, 'maxYear' => date( 'Y' ) + 1, 'empty' => true ) );?>
     </fieldset>
 
     <div class="submit noprint">
