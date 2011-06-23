@@ -25,7 +25,7 @@ echo '</tr></thead><tbody>';
 				$form->input( "{$theme}.{$i}.typeorient_id", array( 'type' => 'select', 'options' => $typesorients, 'label' => false, 'empty' => true ) ),
 				$form->input( "{$theme}.{$i}.structurereferente_id", array( 'type' => 'select', 'options' => $structuresreferentes, 'label' => false, 'empty' => true ) ),
 				$form->input( "{$theme}.{$i}.referent_id", array( 'type' => 'select', 'options' => $referents, 'label' => false, 'empty' => true ) ),
-				$form->input( "{$theme}.{$i}.commentaire", array( 'type' => 'textarea', 'label' => false ) )z
+				$form->input( "{$theme}.{$i}.commentaire", array( 'type' => 'textarea', 'label' => false ) )
 			)
 		);
 	}
