@@ -22,7 +22,8 @@
 					echo '<li>'.$xhtml->link(
 						__d( 'commissionep','Commissionseps::impressionsDecisions', true ),
 						array( 'controller' => 'commissionseps', 'action' => 'impressionsDecisions', $commissionep['Commissionep']['id'] ),
-						array( 'class' => 'button impressionsDecisions' )
+						array( 'class' => 'button impressionsDecisions' ),
+                        'Etes-vous sûr de vouloir imprimer les décisions ?'
 					).' </li>';
 					echo '</ul>';
 

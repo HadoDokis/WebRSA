@@ -23,20 +23,23 @@
 						echo '<li>'.$xhtml->link(
 							'Impression des fiches synthétiques',
 							array( 'controller' => 'commissionseps', 'action' => 'fichessynthese', $commissionep['Commissionep']['id'], false ),
-							array( 'class' => 'button fichessynthese' )
+							array( 'class' => 'button fichessynthese' ),
+                            'Etes-vous sûr de vouloir imprimer les fiches synthétiques ?'
 						).'</li>';
 					}
 					elseif ( Configure::read( 'Cg.departement' )  == 58 ) {
 						echo '<li>'.$xhtml->link(
 							__d( 'commissionep','Commissionseps::impressionsDecisions', true ),
 							array( 'controller' => 'commissionseps', 'action' => 'impressionsDecisions', $commissionep['Commissionep']['id'] ),
-							array( 'class' => 'button impressionsDecisions' )
+							array( 'class' => 'button impressionsDecisions' ),
+                            'Etes-vous sûr de vouloir imprimer les décisions ?'
 						).' </li>';
 					}
 					echo '<li>'.$xhtml->link(
 						__d( 'commissionep','Commissionseps::impressionpv', true ),
 						array( 'controller' => 'commissionseps', 'action' => 'impressionpv', $commissionep['Commissionep']['id'] ),
-						array( 'class' => 'button impressionpv' )
+						array( 'class' => 'button impressionpv' ),
+                        'Etes-vous sûr de vouloir imprimer le PV de la commission ?'
 					).' </li>';
 					echo '</ul>';
 
@@ -89,7 +92,8 @@
 				echo '<li>'.$xhtml->link(
 					__d( 'commissionep','Commissionseps::impressionpv', true ),
 					array( 'controller' => 'commissionseps', 'action' => 'impressionpv', $commissionep['Commissionep']['id'] ),
-					array( 'class' => 'button impressionpv' )
+					array( 'class' => 'button impressionpv' ),
+                    'Etes-vous sûr de vouloir imprimer le PV de la commission ?'
 				).' </li>';
 			echo '</ul>';
 		}

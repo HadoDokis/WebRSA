@@ -163,7 +163,6 @@
 			</tbody>
 		</table>
 		<?php echo $pagination;?>
-		<?php echo $this->element( 'popup' );?>
 
 		<?php
 			/*echo $popup->link(
@@ -176,31 +175,17 @@
 
 		<ul class="actionMenu">
 			<li><?php
-				echo $default->button(
-					'printcohorte',
-					Set::merge(
-						array(
-							'controller' => 'cohortes',
-							'action'     => 'cohortegedooo'
-						),
-						array_unisize( $this->data )
-					),
-					array(
-						'id' => 'Cohorteoriente',
-						'onclick' => 'impressionCohorte( this );'
-					)
-				);
-				/*echo $xhtml->printCohorteLink(
-					'Imprimer la cohorte',
-					Set::merge(
-						array(
-							'controller' => 'cohortes',
-							'action'     => 'cohortegedooo',
-							'id' => 'Cohorteoriente'
-						),
-						array_unisize( $this->data )
-					)
-				);*/
+				echo $xhtml->printCohorteLink(
+                    'Imprimer la cohorte',
+                    Set::merge(
+                        array(
+                            'controller' => 'cohortes',
+                            'action'     => 'cohortegedooo',
+                            'id' => 'Cohorteoriente'
+                        ),
+                        Set::flatten( $this->data )
+                    )
+                );
 			?></li>
 
 

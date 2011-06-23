@@ -85,6 +85,9 @@ msgstr "9. Finaliser la décision CG"
 msgid "Commissionseps::printDecision"
 msgstr "10. Imprimer les décisions"
 
+msgid "Commissionseps::printConvocationBeneficiaire"
+msgstr "Imprimer la convocation pour le bénéficiaire"
+
 msgid "Commissionseps::validecommission"
 msgstr "Valider la commission"
 

@@ -170,12 +170,14 @@
 					echo '<li>'.$xhtml->link(
 						__d('commissionep','Commissionseps::printConvocationsParticipants',true),
 						array( 'controller' => 'commissionseps', 'action' => 'printConvocationsParticipants', $commissionep['Ep']['id'], $commissionep['Commissionep']['id'] ),
-						array( 'class' => 'button print', 'enabled' => ( in_array( 'membreseps::printConvocationsParticipants', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) ), )
+						array( 'class' => 'button print', 'enabled' => ( in_array( 'membreseps::printConvocationsParticipants', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) ), ),
+                        'Etes-vous sûr de vouloir imprimer les invitations ?'
 					).' </li>';
 					echo '<li>'.$xhtml->link(
 						__d('commissionep','Commissionseps::printOrdresDuJour',true),
 						array( 'controller' => 'commissionseps', 'action' => 'printOrdresDuJour', $commissionep['Commissionep']['id'] ),
-						array( 'class' => 'button print', 'enabled' => !$disableOrdredujour )
+						array( 'class' => 'button print', 'enabled' => !$disableOrdredujour ),
+						'Etes-vous sûr de vouloir imprimer l\'ordre du jour ?'
 					).' </li>';
 
 					if( Configure::read( 'Cg.departement' ) != 93 ) {
@@ -316,13 +318,15 @@
 									echo '<li>'.$xhtml->link(
 										'Impression des fiches synthétiques',
 										array( 'controller' => 'commissionseps', 'action' => 'fichessynthese', $commissionep['Commissionep']['id'], true ),
-										array( 'class' => 'button fichessynthese' )
+										array( 'class' => 'button fichessynthese' ),
+                                        'Etes-vous sûr de vouloir imprimer les fiches synthétiques ?'
 									).'</li>';
 								}
 								echo '<li>'.$xhtml->link(
 									'Impression des convocations',
 									array( 'controller' => 'commissionseps', 'action' => 'printConvocationsBeneficiaires', $commissionep['Commissionep']['id'] ),
-									array( 'class' => 'button printConvocationsBeneficiaires', 'enabled' => in_array( 'commissionseps::printConvocationsBeneficiaires', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) )
+									array( 'class' => 'button printConvocationsBeneficiaires', 'enabled' => in_array( 'commissionseps::printConvocationsBeneficiaires', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) ),
+                                    'Etes-vous sûr de vouloir imprimer les convocations ?'
 								).'</li>';
 								echo '</ul>';
 
@@ -358,7 +362,9 @@
 									echo '<ul class="actionMenu center">';
 										echo '<li>'.$xhtml->link(
 											__d( 'commissionep','Commissionseps::validecommission', true ),
-											array( 'controller' => 'commissionseps', 'action' => 'validecommission', $commissionep['Commissionep']['id'] )
+											array( 'controller' => 'commissionseps', 'action' => 'validecommission', $commissionep['Commissionep']['id'] ),
+											array(),
+                                            'Etes-vous sûr de vouloir valider la commission ?'
 										).' </li>';
 									echo '</ul>';
 								}

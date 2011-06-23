@@ -545,7 +545,7 @@
 		*
 		*/
 
-		public function printCohorteLink( $title, $url, $enabled = true ) {
+		public function printCohorteLink( $title, $url, $enabled = true, $confirmMessage = 'Etes-vous sûr de vouloir imprimer la cohorte ?' ) {
 			$content = $this->image(
 				'icons/printer.png',
 				array( 'alt' => '' )
@@ -559,8 +559,7 @@
 					array(
 						'escape' => false,
 						'title' => $title,
-						/* 'class' => 'external',*/
-						'onclick' => 'impressionCohorte( this );'
+						'onclick' => "var conf = confirm( '".str_replace( "'", "\\'", $confirmMessage )."' ); if( conf ) { impressionCohorte( this ); } return conf;"
 					)
 				);
 			}
