@@ -737,6 +737,9 @@ debug( $oBilanparcours66->validationErrors );
 				)
 			);
 
+			$this->id = $gedooo_data['Defautinsertionep66']['id'];
+			$this->saveField( 'dateimpressionconvoc', date( 'Y-m-d' ) );
+
 			return $this->ged( $gedooo_data, "{$this->alias}/{$gedooo_data[$this->alias]['origine']}_courrierinformationavantep.odt" );
 		}
 
