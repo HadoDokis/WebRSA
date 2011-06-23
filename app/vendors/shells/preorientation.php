@@ -10,7 +10,7 @@
 
 		/// Aide sur les paramètres
 		public $help = array(
-			//'limit' => "Nombre d'enregistrements à traiter. Doit être un nombre entier positif. Par défaut: 0. Utiliser 0 ou null pour ne pas avoir de limite et traiter tous les enregistrements.",
+			'limit' => "Nombre d'enregistrements à traiter. Doit être un nombre entier positif. Par défaut: 0. Utiliser 0 ou null pour ne pas avoir de limite et traiter tous les enregistrements.",
 			'force' => 'Doit-on forcer le calcul de la préorientation même si une préorientation a déjà été calculée ?',
 		);
 
@@ -209,6 +209,9 @@
 			$personnes = $this->Orientstruct->query(
 				"SELECT
 						personnes.id AS \"Personne__id\",
+						personnes.nom AS \"Personne__nom\",
+						personnes.prenom AS \"Personne__prenom\",
+						personnes.nir AS \"Personne__nir\",
 						personnes.dtnai AS \"Personne__dtnai\",
 						orientsstructs.id AS \"Orientstruct__id\",
 						orientsstructs.personne_id AS \"Orientstruct__personne_id\"
@@ -238,6 +241,7 @@
 				$this->Orientstruct->create( $orientstruct );
 				$this->Orientstruct->validate = array();
 				$tmpSuccess = $this->Orientstruct->save();
+
 				if( !$tmpSuccess ) {
 					$nErrors++;
 				}

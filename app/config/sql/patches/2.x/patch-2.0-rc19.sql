@@ -23,23 +23,23 @@ SELECT add_missing_table_field ('public', 'proposorientationscovs58', 'decisionc
 SELECT add_missing_table_field ('public', 'proposcontratsinsertioncovs58', 'decisioncov', 'VARCHAR(10)');
 
 UPDATE contratsinsertion 
-    SET decision_ci = 'N'
-    WHERE decision_ci IN ( 'A', 'R' );
+	SET decision_ci = 'N'
+	WHERE decision_ci IN ( 'A', 'R' );
 
 UPDATE contratsinsertion 
-    SET datevalidation_ci = null
-    WHERE decision_ci IN ( 'N', 'E' );
+	SET datevalidation_ci = null
+	WHERE decision_ci IN ( 'N', 'E' );
 
 UPDATE contratsinsertion 
-    SET datevalidation_ci = dd_ci
-    WHERE
-        decision_ci = 'V'
-        AND datevalidation_ci IS NULL;
+	SET datevalidation_ci = dd_ci
+	WHERE
+		decision_ci = 'V'
+		AND datevalidation_ci IS NULL;
 
 
 ALTER TABLE contratsinsertion ADD CONSTRAINT contratsinsertion_decision_ci_datevalidation_ci_check CHECK(
-    ( decision_ci = 'V' AND datevalidation_ci IS NOT NULL )
-    OR ( decision_ci <> 'V' AND datevalidation_ci IS NULL )
+	( decision_ci = 'V' AND datevalidation_ci IS NOT NULL )
+	OR ( decision_ci <> 'V' AND datevalidation_ci IS NULL )
 );
 
 
@@ -444,13 +444,73 @@ UPDATE proposcontratsinsertioncovs58 SET decisioncov = TRIM( BOTH ' ' FROM decis
 -- *****************************************************************************
 SELECT add_missing_table_field ( 'public', 'bilansparcours66', 'structurereferente_id', 'INTEGER' );
 UPDATE bilansparcours66 SET structurereferente_id = (
-    SELECT referents.structurereferente_id
-        FROM referents
-        WHERE referents.id = bilansparcours66.referent_id
+	SELECT referents.structurereferente_id
+		FROM referents
+		WHERE referents.id = bilansparcours66.referent_id
 );
 ALTER TABLE bilansparcours66 ALTER COLUMN structurereferente_id SET NOT NULL;
 ALTER TABLE bilansparcours66 ADD CONSTRAINT bilansparcours66_structurereferente_id_fk FOREIGN KEY (structurereferente_id) REFERENCES structuresreferentes(id);
 SELECT alter_table_drop_column_if_exists ('public', 'bilansparcours66', 'autrestructurereferente_id');
+
+-- *****************************************************************************
+-- 20110623: nettoyage de la table orientsstructs - suppression des entrées
+-- contenant uniquement une préconisation et recalcul du rang de l'orientation
+-- cake/console/cake refresh -ressources false -soumis false
+-- *****************************************************************************
+
+DROP INDEX orientsstructs_personne_id_rgorient_idx;
+ALTER TABLE orientsstructs DROP CONSTRAINT orientsstructs_statut_orient_oriente_rgorient_not_null_chk;
+
+UPDATE orientsstructs
+	SET statut_orient = 'Orienté'
+	WHERE
+		typeorient_id IS NOT NULL
+		AND structurereferente_id IS NOT NULL
+		AND date_valid IS NOT NULL;
+
+-- Suppression des entrée non orientées d'orientstructs pour les personnes
+-- possédant déjà une entrée orientée
+DELETE
+	FROM orientsstructs
+	WHERE personne_id IN(
+			SELECT o1.personne_id
+				FROM orientsstructs AS o1
+				WHERE
+					o1.statut_orient = 'Orienté'
+		INTERSECT
+			SELECT o2.personne_id
+				FROM orientsstructs AS o2
+				WHERE
+					o2.statut_orient <> 'Orienté'
+	)
+	AND orientsstructs.statut_orient <> 'Orienté';
+
+UPDATE orientsstructs SET rgorient = NULL;
+UPDATE orientsstructs
+	SET rgorient = (
+		SELECT ( COUNT(orientsstructspcd.id) + 1 )
+			FROM orientsstructs AS orientsstructspcd
+			WHERE orientsstructspcd.personne_id = orientsstructs.personne_id
+				AND orientsstructspcd.id <> orientsstructs.id
+				AND orientsstructs.date_valid IS NOT NULL
+				AND orientsstructspcd.date_valid IS NOT NULL
+				AND (
+					orientsstructspcd.date_valid < orientsstructs.date_valid
+					OR ( orientsstructspcd.date_valid = orientsstructs.date_valid AND orientsstructspcd.id < orientsstructs.id )
+				)
+				AND orientsstructs.statut_orient = 'Orienté'
+				AND orientsstructspcd.statut_orient = 'Orienté'
+	)
+	WHERE
+		orientsstructs.date_valid IS NOT NULL
+		AND orientsstructs.statut_orient = 'Orienté';
+
+CREATE UNIQUE INDEX orientsstructs_personne_id_rgorient_idx ON orientsstructs( personne_id, rgorient ) WHERE rgorient IS NOT NULL;
+
+ALTER TABLE orientsstructs ADD CONSTRAINT orientsstructs_statut_orient_oriente_rgorient_not_null_chk CHECK (
+	statut_orient <> 'Orienté' OR ( statut_orient = 'Orienté' AND rgorient IS NOT NULL )
+); 
+
 -- *****************************************************************************
 -- 20110621: ajout d'une colonne origine dans la table orientations (CG 93)
 -- *****************************************************************************
@@ -488,8 +548,8 @@ UPDATE orientsstructs
 		AND orientsstructs.rgorient > 1;
 
 ALTER TABLE orientsstructs ADD CONSTRAINT orientsstructs_origine_check CHECK(
-    ( origine IS NULL AND date_valid IS NULL )
-    OR (
+	( origine IS NULL AND date_valid IS NULL )
+	OR (
 		( origine IS NOT NULL AND date_valid IS NOT NULL )
 		AND (
 			( rgorient = 1 AND origine IN ( 'manuelle', 'cohorte' ) )
@@ -502,7 +562,6 @@ ALTER TABLE orientsstructs ADD CONSTRAINT orientsstructs_origine_check CHECK(
 -- 20110622: ajout de l'index sur la colonne origine de la table orientsstructs
 -- *****************************************************************************
 CREATE INDEX orientsstructs_origine_idx ON orientsstructs( origine );
-);
 
 -- *****************************************************************************
 -- 20110623: ajout de la date d'impression de la convocation des bénéficiaires

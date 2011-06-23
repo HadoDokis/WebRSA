@@ -149,28 +149,6 @@
 			$this->Foyer->begin();
 			$success = true;
 
-			/** ****************************************************************
-			*   Réparation des données du flux CAF (les rgadr ne sont pas sur deux chiffres)
-			*   Si le rang est bien formé, il n'y a pas de mise à jour
-			*** ***************************************************************/
-//             $this->hr();
-//
-//             $this->out( 'Debut de la mise a jour des rangs adresse: '.number_format( microtime( true ) - $this_start, 2 ) );
-//
-//             $adressesFoyers = $this->Foyer->Adressefoyer->find( 'list', array( 'fields' => array( 'Adressefoyer.id', 'Adressefoyer.rgadr' ) ) );
-//             foreach( $adressesFoyers as $id => $rgadr ) {
-//                 $rgadr = trim( $rgadr );
-//                 if( strlen( $rgadr ) == 1 ) {
-//                     $rgadr = '0'.$rgadr;
-//                     $this->Foyer->Adressefoyer->create( array( 'Adressefoyer' => array( 'id' => $id, 'rgadr' => $rgadr ) ) );
-//                     $success = $this->Foyer->Adressefoyer->save() && $success;
-//                 }
-//             }
-//
-//             $this->out( 'Fin de la mise a jour des rangs adresse: '.number_format( microtime( true ) - $this_start, 2 ) );
-
-			//------------------------------------------------------------------
-
 			$this->out( "Ajout d'entrée dans la table orientsstructs pour les DEM ou CJT RSA n'en possédant pas." );
 			$t = $this->Orientstruct->fillAllocataire();
 
@@ -334,7 +312,6 @@
 									'foreignKey' => false,
 									'conditions' => array(
 										'Orientstruct.personne_id = Personne.id',
-										'Orientstruct.id = Orientstruct.id',
 										'Orientstruct.statut_orient <> \'Orienté\'',
 										'Orientstruct.propo_algo' => null
 									)
@@ -351,8 +328,10 @@
 						$countTypesOrient[$preOrientation]++;
 
 						$orientstruct = array( 'Orientstruct' => Set::classicExtract( $personne, 'Orientstruct' ) );
+						$orientstruct['Orientstruct']['date_propo'] = date( 'Y-m-d' );
 						$orientstruct['Orientstruct']['propo_algo_texte'] = $preOrientationTexte;
 						$orientstruct['Orientstruct']['propo_algo'] = $preOrientation;
+						// FIXME
 						( !empty( $orientstruct['Orientstruct']['rgorient'] ) ) ? $orientstruct['Orientstruct']['rgorient']++ : $orientstruct['Orientstruct']['rgorient'] = 1;
 
 						$this->Orientstruct->create( $orientstruct );
