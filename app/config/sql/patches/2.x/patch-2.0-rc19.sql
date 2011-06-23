@@ -502,6 +502,13 @@ ALTER TABLE orientsstructs ADD CONSTRAINT orientsstructs_origine_check CHECK(
 -- 20110622: ajout de l'index sur la colonne origine de la table orientsstructs
 -- *****************************************************************************
 CREATE INDEX orientsstructs_origine_idx ON orientsstructs( origine );
+);
+
+-- *****************************************************************************
+-- 20110623: ajout de la date d'impression de la convocation des bénéficiaires
+-- pour la thématique defautinsertionep66
+-- *****************************************************************************
+SELECT add_missing_table_field ('public', 'defautsinsertionseps66', 'dateimpressionconvoc', 'DATE');
 
 -- *****************************************************************************
 COMMIT;
