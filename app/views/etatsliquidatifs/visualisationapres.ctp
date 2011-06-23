@@ -100,12 +100,12 @@
                 Set::classicExtract( $apre, 'Personne.prenom' ),
                 Set::classicExtract( $apre, 'Adresse.locaadr' ),
                 $libelleNatureaide,
-                $theme->button( 'print', array( 'controller' => 'etatsliquidatifs', 'action' => 'impressiongedoooapres', Set::classicExtract( $apre, 'Apre.id' ), $this->params['pass'][0], 'dest' => 'beneficiaire' ) /*array( 'enabled' =>  !$isTiers )*/ ),
-                $theme->button( 'print', array( 'controller' => 'etatsliquidatifs', 'action' => 'impressiongedoooapres', Set::classicExtract( $apre, 'Apre.id' ), $this->params['pass'][0], 'dest' => 'tiersprestataire' ), array( 'enabled' =>  $isTiers ) ),
+                $xhtml->printLink( 'Imprimer', array( 'controller' => 'etatsliquidatifs', 'action' => 'impressiongedoooapres', Set::classicExtract( $apre, 'Apre.id' ), $this->params['pass'][0], 'dest' => 'beneficiaire' ) /*array( 'enabled' =>  !$isTiers )*/ ),
+                $xhtml->printLink( 'Imprimer', array( 'controller' => 'etatsliquidatifs', 'action' => 'impressiongedoooapres', Set::classicExtract( $apre, 'Apre.id' ), $this->params['pass'][0], 'dest' => 'tiersprestataire' ), $isTiers ),
+
             );
         }
         $tbody = $xhtml->tag( 'tbody', $xhtml->tableCells( $rows, array( 'class' => 'odd' ), array( 'class' => 'even' ) ) );
-
 
         echo $pagination;
         echo $xhtml->tag( 'table', $thead.$tbody );
