@@ -19,7 +19,7 @@ BEGIN;
 DELETE
 	FROM orientsstructs
 	WHERE
-		statut_orient = 'Non orienté'
+		statut_orient IN ( 'Non orienté', 'En attente' )
 		AND date_valid IS NULL;
 
 -- *****************************************************************************
