@@ -101,11 +101,11 @@
 		<body>
 	<?php endif; ?>
 
-<script type="text/javascript">
+<!--<script type="text/javascript">
     function impressionCohorte( link ) {
         $( 'alertEndSession' ).show();
     }
-</script>
+</script>-->
 
 <!-- Partie nécessaire pour l'affichage du popup lors du lancement des impressions en cohorte -->
 <div id="alertEndSession" style="display: none;">

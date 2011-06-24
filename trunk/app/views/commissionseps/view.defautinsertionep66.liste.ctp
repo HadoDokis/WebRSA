@@ -24,12 +24,14 @@
 		echo '<li>'.$xhtml->link(
 			'Imprimer les courriers d\'information',
 			array( 'controller' => 'dossierseps', 'action' => 'courriersInformations', Set::classicExtract( $commissionep, 'Commissionep.id' ) ),
-			array( 'class' => 'button print' )
+			array( 'class' => 'button print' ),
+			'Etes-vous sûr de vouloir imprimer les courriers d\'information ?'
 		).' </li>';
 		echo '<li>'.$xhtml->link(
 			'Impression des convocations',
 			array( 'controller' => 'commissionseps', 'action' => 'printConvocationsBeneficiaires', $commissionep['Commissionep']['id'] ),
-			array( 'class' => 'button printConvocationsBeneficiaires', 'enabled' => in_array( 'commissionseps::printConvocationsBeneficiaires', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) )
+			array( 'class' => 'button printConvocationsBeneficiaires', 'enabled' => in_array( 'commissionseps::printConvocationsBeneficiaires', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) ),
+            'Etes-vous sûr de vouloir imprimer les convocations?'
 		).'</li>';
 		echo '</ul>';
 	}
