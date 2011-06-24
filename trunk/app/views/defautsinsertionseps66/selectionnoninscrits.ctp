@@ -53,7 +53,8 @@
 				'Personne.nom',
 				'Personne.prenom',
 				'Personne.dtnai',
-				'Orientstruct.date_valid'
+				'Orientstruct.date_valid',
+				'Foyer.enerreur' => array( 'type' => 'string', 'class' => 'foyer_enerreur' )
 			),
 			array(
 				'cohorte' => false,

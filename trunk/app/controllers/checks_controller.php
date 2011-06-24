@@ -621,7 +621,6 @@
 
 		protected function _checkWebrsaIncEps66() {
 			$keys = array(
-				'traitementResultatId' => 'integer',
 				'traitementEnCoursId' => 'integer',
 				'traitementClosId' => 'integer',
 				'Traitementpdo.fichecalcul_coefannee1' => 'numeric',// %
