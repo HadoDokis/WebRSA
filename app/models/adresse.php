@@ -96,7 +96,7 @@
 					"{$this->name}.numcomptt IS NOT NULL",
 					"{$this->name}.numcomptt <> ''"
 				),
-				'sort' => array(
+				'order' => array(
 					"{$this->name}.numcomptt ASC",
 					"{$this->name}.locaadr ASC"
 				),

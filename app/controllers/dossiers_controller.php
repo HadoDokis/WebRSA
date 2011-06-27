@@ -20,7 +20,7 @@
 		*/
 
 		public function __construct() {
-			$this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'index' ) ) ) );
+			$this->components = Set::merge( $this->components, array( 'Gestionzonesgeos', 'Prg' => array( 'actions' => array( 'index' ) ) ) );
 			parent::__construct();
 		}
 
@@ -120,22 +120,7 @@
 				$this->set( 'dossiers', $dossiers );
 			}
 
-			/// Mise en cache (session) de la liste des codes Insee pour les selects
-			/// TODO: Une fonction ?
-			/// TODO: Voir où l'utiliser ailleurs
-			if( !$this->Session->check( 'Cache.mesCodesInsee' ) ) {
-				if( Configure::read( 'Zonesegeographiques.CodesInsee' ) ) {
-					$listeCodesInseeLocalites = $this->Dossier->Foyer->Personne->Cui->Structurereferente->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) );
-				}
-				else {
-					$listeCodesInseeLocalites = $this->Dossier->Foyer->Adressefoyer->Adresse->listeCodesInsee();
-				}
-				$this->Session->write( 'Cache.mesCodesInsee', $listeCodesInseeLocalites );
-			}
-			else {
-				$listeCodesInseeLocalites = $this->Session->read( 'Cache.mesCodesInsee' );
-			}
-			$this->set( 'mesCodesInsee', $listeCodesInseeLocalites );
+			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
 
 			$this->_setOptions();
 		}

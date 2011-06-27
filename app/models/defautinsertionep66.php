@@ -27,7 +27,8 @@
 				)
 			),
 			'Formattable',
-			'Gedooo'
+			'Gedooo',
+			'Conditionnable'
 		);
 
 		public $belongsTo = array(
@@ -891,5 +892,86 @@
 		public function getDecisionPdf( $passagecommissionep_id  ) {
 			return '';
 		}
+
+		/**
+		 *
+		 */
+		public function search( $mesCodesInsee, $filtre_zone_geo, $params ) {
+			$conditions = array();
+
+			$conditions = $this->conditionsAdresse( $conditions, $params, $filtre_zone_geo, $mesCodesInsee );
+			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $params );
+			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $params );
+
+			$conditions[] = "Defautinsertionep66.dateimpressionconvoc IS NULL";
+
+			$query = array(
+				'fields' => array(
+					'Dossierep.id',
+					'Dossierep.created',
+					'Defautinsertionep66.id',
+					'Dossier.matricule',
+					'Personne.nir',
+					'Personne.qual',
+					'Personne.nom',
+					'Personne.prenom',
+					'Personne.dtnai',
+					'Adresse.numcomptt',
+					'Adresse.locaadr'
+				),
+				'conditions' => $conditions,
+				'joins' => array(
+					array(
+						'table' => 'defautsinsertionseps66',
+						'alias' => 'Defautinsertionep66',
+						'type' => 'INNER',
+						'conditions' => array( 'Dossierep.id = Defautinsertionep66.dossierep_id' )
+					),
+					array(
+						'alias' => 'Personne',
+						'table' => 'personnes',
+						'type' => 'INNER',
+						'conditions' => array( 'Dossierep.personne_id = Personne.id' )
+					),
+					array(
+						'alias' => 'Foyer',
+						'table' => 'foyers',
+						'type' => 'INNER',
+						'conditions' => array(
+							'Personne.foyer_id = Foyer.id'
+						)
+					),
+					array(
+						'alias' => 'Dossier',
+						'table' => 'dossiers',
+						'type' => 'INNER',
+						'conditions' => array(
+							'Foyer.dossier_id = Dossier.id'
+						)
+					),
+					array(
+						'alias' => 'Adressefoyer',
+						'table' => 'adressesfoyers',
+						'type' => 'INNER',
+						'conditions' => array(
+							'Adressefoyer.foyer_id = Foyer.id',
+							'Adressefoyer.rgadr' => '01'
+						)
+					),
+					array(
+						'alias' => 'Adresse',
+						'table' => 'adresses',
+						'type' => 'INNER',
+						'conditions' => array(
+							'Adressefoyer.adresse_id = Adresse.id'
+						)
+					)
+				),
+				'contain' => false
+			);
+
+			return $query;
+		}
+		
 	}
 ?>

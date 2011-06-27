@@ -1,7 +1,7 @@
 <?php
 	class Defautsinsertionseps66Controller extends AppController
 	{
-		public $components = array( 'Prg' => array( 'actions' => array( 'selectionnoninscrits', 'selectionradies' ) ) );
+		public $components = array( 'Prg' => array( 'actions' => array( 'selectionnoninscrits', 'selectionradies', 'courriersinformations' ) ), 'Gestionzonesgeos', 'Gedooo' );
 
 		public $helpers = array( 'Default2' );
 
@@ -55,6 +55,70 @@
 
 		public function selectionradies() {
 			$this->_selectionPassageDefautinsertionep66( 'qdRadies', 'radiationpe' );
+		}
+
+		/**
+		*
+		*/
+
+		public function courriersinformations() {
+			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
+			
+			if( Configure::read( 'CG.cantons' ) ) {
+				$this->set( 'cantons', ClassRegistry::init( 'Canton' )->selectList() );
+			}
+
+			if( !empty( $this->data ) ) {
+				$search = $this->data['Search'];
+
+				if ( !empty( $search ) ) {
+					$this->paginate['Dossierep'] = $this->Defautinsertionep66->search(
+						$mesCodesInsee,
+						$this->Session->read( 'Auth.User.filtre_zone_geo' ),
+						$search
+					);
+
+					$results = $this->paginate( $this->Defautinsertionep66->Dossierep );
+					$this->set( compact( 'results' ) );
+				}
+			}
+			
+			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
+		}
+
+		public function printCourriersInformations() {
+			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
+			
+			if( Configure::read( 'CG.cantons' ) ) {
+				$this->set( 'cantons', ClassRegistry::init( 'Canton' )->selectList() );
+			}
+
+			$querydata = $this->Defautinsertionep66->search(
+				$mesCodesInsee,
+				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
+				array_multisize( $this->params['named'] )
+			);
+			unset( $querydata['limit'] );
+
+			$defautsinsertionseps66 = $this->Defautinsertionep66->Dossierep->find( 'all', $querydata );
+
+			$pdfs = array();
+			foreach( Set::extract( '/Dossierep/id', $defautsinsertionseps66 ) as $dossierep_id ) {
+				$pdfs[] = $this->Defautinsertionep66->getCourrierInformationPdf( $dossierep_id );
+			}
+
+			$pdfs = $this->Gedooo->concatPdfs( $pdfs, 'CourriersInformation' );
+
+			if( $pdfs ) {
+				$this->Gedooo->sendPdfContentToClient( $pdfs, 'CourriersInformation' );
+			}
+			else {
+				$this->Session->setFlash( 'Impossible de générer les courriers d\'information pour cette commission.', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
+			}
+			
 		}
 	}
 ?>

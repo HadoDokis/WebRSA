@@ -252,6 +252,18 @@
 								)
 							)
 						.' )',
+						///FIXME: à mettre plus tard dans le model de la thématique ?
+						'Dossierep.id NOT IN ('.
+							$this->Dossierep->Defautinsertionep66->sq(
+								array(
+									'fields' => array( 'defautsinsertionseps66.dossierep_id' ),
+									'alias' => 'defautsinsertionseps66',
+									'conditions' => array(
+										'defautsinsertionseps66.dateimpressionconvoc IS NULL'
+									)
+								)
+							)
+						.' )',
 					),
 					'limit' => 50,
 					'order' => array( 'Dossierep.created ASC' )

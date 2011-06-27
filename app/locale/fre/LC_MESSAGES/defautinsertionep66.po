@@ -25,6 +25,9 @@ msgstr ""
 msgid "Orientstruct.chosen"
 msgstr "Sélectionné ?"
 
+msgid "Defautsinsertionseps66::courriersinformations"
+msgstr "Recherche des courriers d'informations à imprimer"
+
 msgid "Defautsinsertionseps66::selectionradies"
 msgstr "Sélection des allocataires radiés de Pôle Emploi"
 
