@@ -95,10 +95,7 @@
 		*/
 
 		public function index() {
-			if( Configure::read( 'CG.cantons' ) ) {
-				$this->loadModel( 'Canton' );
-				$this->set( 'cantons', $this->Canton->selectList() );
-			}
+			$this->Gestionzonesgeos->setCantons();
 
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
 			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
