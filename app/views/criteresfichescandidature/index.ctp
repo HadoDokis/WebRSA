@@ -36,7 +36,9 @@
                         array(
                             'Personne.nom' => array( 'type' => 'text' ),
                             'Personne.prenom' => array( 'type' => 'text' ),
-                            'Personne.dtnai' => array( 'type' => 'date', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 100 )
+                            'Personne.nomnai' => array( 'type' => 'text' ),
+                            'Personne.dtnai' => array( 'type' => 'date', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 100 ),
+                            'Personne.nir' => array( 'type' => 'text' )
                         ),
                         array(
                             'options' => $options
