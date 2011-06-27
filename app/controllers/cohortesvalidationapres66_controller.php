@@ -10,10 +10,11 @@
 			'Aideapre66',
 			'Zonegeographique',
 			'Dossier',
+			'Option',
 			'Canton'
 		);
 
-		public $helpers = array( 'Csv', 'Ajax', 'Default2' );
+		public $helpers = array( 'Csv', 'Ajax', 'Default2', 'Locale' );
 
 		public $components = array( 'Prg' => array( 'actions' => array( 'validees' ) ) );
 
@@ -25,6 +26,8 @@
 		*/
 		public function _setOptions() {
 			$this->set( 'options',  $this->Apre66->allEnumLists() );
+
+			$this->set( 'qual',  $this->Option->qual() );
 			$this->set( 'optionsaideapre66',  $this->Aideapre66->allEnumLists() );
 			$this->set( 'referents',  $this->Apre->Referent->find( 'list' ) );
 		}
@@ -152,8 +155,26 @@
 					$this->render( $this->action, null, 'visualisation' );
 					break;
 			}
-
-
 		}
+
+
+        /**
+        * Export du tableau en CSV
+        */
+
+        public function exportcsv() {
+            $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+            $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
+
+            $querydata = $this->Cohortevalidationapre66->search( 'Validationapre::validees', $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), array_multisize( $this->params['named'] ), $this->Jetons->ids() );
+            unset( $querydata['limit'] );
+            $apres = $this->Dossier->Foyer->Personne->Apre->find( 'all', $querydata );
+
+// debug($apres);
+// die();
+            $this->_setOptions();
+            $this->layout = '';
+            $this->set( compact( 'apres' ) );
+        }
 	}
 ?>
