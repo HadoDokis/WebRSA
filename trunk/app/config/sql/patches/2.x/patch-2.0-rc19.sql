@@ -508,7 +508,8 @@ UPDATE orientsstructs
 CREATE UNIQUE INDEX orientsstructs_personne_id_rgorient_idx ON orientsstructs( personne_id, rgorient ) WHERE rgorient IS NOT NULL;
 
 ALTER TABLE orientsstructs ADD CONSTRAINT orientsstructs_statut_orient_oriente_rgorient_not_null_chk CHECK (
-	statut_orient <> 'Orienté' OR ( statut_orient = 'Orienté' AND rgorient IS NOT NULL )
+	( statut_orient <> 'Orienté' AND rgorient IS NULL )
+	OR ( statut_orient = 'Orienté' AND rgorient IS NOT NULL )
 ); 
 
 -- *****************************************************************************

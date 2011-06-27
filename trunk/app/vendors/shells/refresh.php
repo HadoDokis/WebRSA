@@ -331,8 +331,9 @@
 						$orientstruct['Orientstruct']['date_propo'] = date( 'Y-m-d' );
 						$orientstruct['Orientstruct']['propo_algo_texte'] = $preOrientationTexte;
 						$orientstruct['Orientstruct']['propo_algo'] = $preOrientation;
+						$orientstruct['Orientstruct']['rgorient'] = null;
 						// FIXME
-						( !empty( $orientstruct['Orientstruct']['rgorient'] ) ) ? $orientstruct['Orientstruct']['rgorient']++ : $orientstruct['Orientstruct']['rgorient'] = 1;
+// 						( !empty( $orientstruct['Orientstruct']['rgorient'] ) ) ? $orientstruct['Orientstruct']['rgorient']++ : $orientstruct['Orientstruct']['rgorient'] = 1;
 
 						$this->Orientstruct->create( $orientstruct );
 						$this->Orientstruct->validate = array();
