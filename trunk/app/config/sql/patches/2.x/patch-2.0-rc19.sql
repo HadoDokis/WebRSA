@@ -571,5 +571,50 @@ CREATE INDEX orientsstructs_origine_idx ON orientsstructs( origine );
 SELECT add_missing_table_field ('public', 'defautsinsertionseps66', 'dateimpressionconvoc', 'DATE');
 
 -- *****************************************************************************
+-- 20110627: rennomage des enums pour les décisions d'EP
+-- *****************************************************************************
+ALTER TABLE decisionsnonorientationsproseps58 ALTER COLUMN decision TYPE TEXT;
+DROP TYPE IF EXISTS TYPE_DECISIONNONORIENTATIONPRO58;
+DROP TYPE IF EXISTS TYPE_DECISIONNONORIENTATIONPROEP58;
+CREATE TYPE TYPE_DECISIONNONORIENTATIONPROEP58 AS ENUM ( 'reorientation', 'maintienref', 'annule', 'reporte' );
+ALTER TABLE decisionsnonorientationsproseps58 ALTER COLUMN decision TYPE TYPE_DECISIONNONORIENTATIONPROEP58 USING CAST(decision AS TYPE_DECISIONNONORIENTATIONPROEP58);
+
+ALTER TABLE decisionsregressionsorientationseps58 ALTER COLUMN decision TYPE TEXT;
+ALTER TABLE decisionsreorientationseps93 ALTER COLUMN decision TYPE TEXT;
+DROP TYPE IF EXISTS TYPE_DECISIONEP;
+DROP TYPE IF EXISTS TYPE_DECISIONREGRESSIONORIENTATIONEP58;
+DROP TYPE IF EXISTS TYPE_DECISIONREORIENTATIONEP93;
+CREATE TYPE TYPE_DECISIONREGRESSIONORIENTATIONEP58 AS ENUM ( 'accepte', 'refuse', 'annule', 'reporte' );
+CREATE TYPE TYPE_DECISIONREORIENTATIONEP93 AS ENUM ( 'accepte', 'refuse', 'annule', 'reporte' );
+ALTER TABLE decisionsregressionsorientationseps58 ALTER COLUMN decision TYPE TYPE_DECISIONREGRESSIONORIENTATIONEP58 USING CAST(decision AS TYPE_DECISIONREGRESSIONORIENTATIONEP58);
+ALTER TABLE decisionsreorientationseps93 ALTER COLUMN decision TYPE TYPE_DECISIONREORIENTATIONEP93 USING CAST(decision AS TYPE_DECISIONREORIENTATIONEP93);
+
+ALTER TABLE decisionssanctionsrendezvouseps58 ALTER COLUMN decision TYPE TEXT;
+DROP TYPE IF EXISTS TYPE_DECISIONSANCTIONRDV58;
+DROP TYPE IF EXISTS TYPE_DECISIONSANCTIONRENDEZVOUSEP58;
+CREATE TYPE TYPE_DECISIONSANCTIONRENDEZVOUSEP58 AS ENUM ( 'maintien', 'sanction', 'annule', 'reporte' );
+ALTER TABLE decisionssanctionsrendezvouseps58 ALTER COLUMN decision TYPE TYPE_DECISIONSANCTIONRENDEZVOUSEP58 USING CAST(decision AS TYPE_DECISIONSANCTIONRENDEZVOUSEP58);
+
+ALTER TABLE decisionsdefautsinsertionseps66 ALTER COLUMN decision TYPE TEXT;
+ALTER TABLE decisionspropospdos ALTER COLUMN decisionreponseep TYPE TEXT;
+DROP TYPE IF EXISTS TYPE_DECISIONDEFAUTEP66;
+DROP TYPE IF EXISTS TYPE_DECISIONDEFAUTINSERTIONEP66;
+CREATE TYPE TYPE_DECISIONDEFAUTINSERTIONEP66 AS ENUM ( 'suspensionnonrespect', 'suspensiondefaut', 'maintien', 'reorientationprofverssoc', 'reorientationsocversprof', 'annule', 'reporte' );
+ALTER TABLE decisionsdefautsinsertionseps66 ALTER COLUMN decision TYPE TYPE_DECISIONDEFAUTINSERTIONEP66 USING CAST(decision AS TYPE_DECISIONDEFAUTINSERTIONEP66);
+ALTER TABLE decisionspropospdos ALTER COLUMN decisionreponseep TYPE TYPE_DECISIONDEFAUTINSERTIONEP66 USING CAST(decisionreponseep AS TYPE_DECISIONDEFAUTINSERTIONEP66);
+
+ALTER TABLE decisionsnonrespectssanctionseps93 ALTER COLUMN decision TYPE TEXT;
+DROP TYPE IF EXISTS TYPE_DECISIONSANCTIONEP93;
+DROP TYPE IF EXISTS TYPE_DECISIONNONRESPECTSANCTIONEP93;
+CREATE TYPE TYPE_DECISIONNONRESPECTSANCTIONEP93 AS ENUM ( '1reduction', '1maintien', '1sursis', '1pasavis', '1delai', '2suspensiontotale', '2suspensionpartielle', '2maintien', '2pasavis', '2report', 'annule', 'reporte' );
+ALTER TABLE decisionsnonrespectssanctionseps93 ALTER COLUMN decision TYPE TYPE_DECISIONNONRESPECTSANCTIONEP93 USING CAST(decision AS TYPE_DECISIONNONRESPECTSANCTIONEP93);
+
+ALTER TABLE decisionsnonorientationsproseps93 ALTER COLUMN decision TYPE TEXT;
+DROP TYPE IF EXISTS TYPE_DECISIONNONORIENTATIONPRO93;
+DROP TYPE IF EXISTS TYPE_DECISIONNONORIENTATIONPROEP93;
+CREATE TYPE TYPE_DECISIONNONORIENTATIONPROEP93 AS ENUM ( 'reorientation', 'maintienref', 'annule', 'reporte' );
+ALTER TABLE decisionsnonorientationsproseps93 ALTER COLUMN decision TYPE TYPE_DECISIONNONORIENTATIONPROEP93 USING CAST(decision AS TYPE_DECISIONNONORIENTATIONPROEP93);
+
+-- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
