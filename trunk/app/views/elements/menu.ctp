@@ -233,6 +233,9 @@
 									</ul>
 								</li>
 							<?php endif;?>
+							<?php if( $permissions->check( 'defautsinsertionseps66', 'courriersinformations' ) ):?>
+								<li><?php echo $xhtml->link( 'Courriers d\'information',  array( 'controller' => 'defautsinsertionseps66', 'action' => 'courriersinformations'  ) );?></li>
+							<?php endif;?>
 						<?php endif;?>
 					</ul>
 				</li>
