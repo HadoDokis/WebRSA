@@ -65,9 +65,7 @@
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
 			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 			
-			if( Configure::read( 'CG.cantons' ) ) {
-				$this->set( 'cantons', ClassRegistry::init( 'Canton' )->selectList() );
-			}
+			$this->Gestionzonesgeos->setCantonsIfConfigured();
 
 			if( !empty( $this->data ) ) {
 				$search = $this->data['Search'];

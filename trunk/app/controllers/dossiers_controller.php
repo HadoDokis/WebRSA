@@ -95,7 +95,7 @@
 		*/
 
 		public function index() {
-			$this->Gestionzonesgeos->setCantons();
+			$this->Gestionzonesgeos->setCantonsIfConfigured();
 
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
 			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );

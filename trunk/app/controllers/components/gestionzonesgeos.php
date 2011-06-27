@@ -45,7 +45,7 @@
 		/**
 		 *
 		 */
-		public function setCantons() {
+		public function setCantonsIfConfigured() {
 			if( Configure::read( 'CG.cantons' ) ) {
 				$this->set( 'cantons', $this->ClassRegistry::init( 'Canton' )->selectList() );
 			}
