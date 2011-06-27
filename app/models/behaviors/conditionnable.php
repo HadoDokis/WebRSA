@@ -88,7 +88,7 @@
 		*/
 
 		public function conditionsDernierDossierAllocataire( &$model, $conditions, $search ) {
-			if( $search['Dossier']['dernier'] ) {
+			if( isset( $search['Dossier']['dernier'] ) && $search['Dossier']['dernier'] ) {
 				$conditions[] = 'Dossier.id IN (
 					SELECT
 							dossiers.id
