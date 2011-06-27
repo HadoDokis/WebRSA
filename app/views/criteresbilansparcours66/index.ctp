@@ -16,7 +16,11 @@
         array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 'Search' ).toggle(); return false;" )
     ).'</li></ul>';
 ?>
-<?php echo $javascript->link( 'dependantselect.js' ); ?>
+<?php
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
+	}
+?>
 <script type="text/javascript">
     document.observe("dom:loaded", function() {
         observeDisableFieldsetOnCheckbox( 'Bilanparcours66Datebilan', $( 'Bilanparcours66DatebilanFromDay' ).up( 'fieldset' ), false );

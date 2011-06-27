@@ -20,18 +20,20 @@
         $checked = ( ( !empty( $notEmptyValues ) ) ? 'checked="checked"' : '' );
         return "<label><input type=\"radio\" name=\"{$name}\" value=\"{$value}\" {$checked} />{$label}</label>";
     }
+
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
+	}
 ?>
-<!--/************************************************************************/ -->
-    <?php echo $javascript->link( 'dependantselect.js' ); ?>
-    <script type="text/javascript">
-        document.observe("dom:loaded", function() {
-            dependantSelect(
-                '<?php echo $this->modelClass;?>ReferentId',
-                '<?php echo $this->modelClass;?>StructurereferenteId'
-            );
-        });
-    </script>
-<!--/************************************************************************/ -->
+
+<script type="text/javascript">
+	document.observe("dom:loaded", function() {
+		dependantSelect(
+			'<?php echo $this->modelClass;?>ReferentId',
+			'<?php echo $this->modelClass;?>StructurereferenteId'
+		);
+	});
+</script>
 
 <script type="text/javascript">
     document.observe("dom:loaded", function() {

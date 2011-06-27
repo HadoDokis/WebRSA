@@ -29,7 +29,6 @@
 
     <?php
         if( $this->action == 'add' ) {
-
             echo $form->create( 'Contratinsertion', array( 'type' => 'post', 'id' => 'testform', 'url' => Router::url( null, true ) ) );
             echo '<div>';
             echo $form->input( 'Contratinsertion.id', array( 'type' => 'hidden', 'value' => '' ) );
@@ -37,7 +36,6 @@
             echo $form->input( 'Contratinsertion.personne_id', array( 'type' => 'hidden', 'value' => Set::classicExtract( $personne, 'Personne.id' ) ) );
             echo $form->input( 'Contratinsertion.rg_ci', array( 'type' => 'hidden'/*, 'value' => '' */) );
             echo '</div>';
-
         }
         else {
             echo $form->create( 'Contratinsertion', array( 'type' => 'post', 'id' => 'testform', 'url' => Router::url( null, true ) ) );
@@ -52,21 +50,24 @@
 
     ?>
 
-<!--/************************************************************************/ -->
-
 <script type="text/javascript">
     document.observe("dom:loaded", function() {
         observeDisableFieldsOnValue( 'ContratinsertionRgCi', [ 'ContratinsertionTypocontratId' ], 1, true );
     });
 </script>
-<!--/************************************************************************/ -->
-    <?php echo $javascript->link( 'dependantselect.js' ); ?>
-    <script type="text/javascript">
-        document.observe("dom:loaded", function() {
-            dependantSelect( 'ContratinsertionReferentId', 'ContratinsertionStructurereferenteId' );
-        });
-    </script>
-<!--/************************************************************************/ -->
+
+<?php
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
+	}
+?>
+
+<script type="text/javascript">
+	document.observe("dom:loaded", function() {
+		dependantSelect( 'ContratinsertionReferentId', 'ContratinsertionStructurereferenteId' );
+	});
+</script>
+
 <script type="text/javascript">
     function checkDatesToRefresh() {
         if( ( $F( 'ContratinsertionDdCiMonth' ) ) && ( $F( 'ContratinsertionDdCiYear' ) ) && ( $F( 'ContratinsertionDureeEngag' ) ) ) {

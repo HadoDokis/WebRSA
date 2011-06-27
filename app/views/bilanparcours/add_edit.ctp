@@ -28,27 +28,29 @@
 <div class="with_treemenu">
     <h1><?php echo $this->pageTitle;?></h1>
 
-    <?php
-        if( $this->action == 'add' ) {
-            echo $form->create( 'Bilanparcours', array( 'type' => 'post', 'url' => Router::url( null, true ),  'id' => 'Bilan' ) );
-        }
-        else {
-            echo $form->create( 'Bilanparcours', array( 'type' => 'post', 'url' => Router::url( null, true ), 'id' => 'Bilan' ) );
-            echo '<div>';
-            echo $form->input( 'Bilanparcours.id', array( 'type' => 'hidden' ) );
-            echo '</div>';
-        }
-        echo '<div>';
-        echo $form->input( 'Bilanparcours.personne_id', array( 'type' => 'hidden', 'value' => $personne_id ) );
-        echo '</div>';
-    ?>
+	<?php
+		if( $this->action == 'add' ) {
+			echo $form->create( 'Bilanparcours', array( 'type' => 'post', 'url' => Router::url( null, true ),  'id' => 'Bilan' ) );
+		}
+		else {
+			echo $form->create( 'Bilanparcours', array( 'type' => 'post', 'url' => Router::url( null, true ), 'id' => 'Bilan' ) );
+			echo '<div>';
+			echo $form->input( 'Bilanparcours.id', array( 'type' => 'hidden' ) );
+			echo '</div>';
+		}
+		echo '<div>';
+		echo $form->input( 'Bilanparcours.personne_id', array( 'type' => 'hidden', 'value' => $personne_id ) );
+		echo '</div>';
 
-<?php echo $javascript->link( 'dependantselect.js' ); ?>
-<script type="text/javascript">
-    document.observe("dom:loaded", function() {
-        dependantSelect( 'BilanparcoursReferentId', 'BilanparcoursStructurereferenteId' );
-    });
-</script>
+		if( Configure::read( 'debug' ) > 0 ) {
+			echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
+		}
+	?>
+	<script type="text/javascript">
+		document.observe("dom:loaded", function() {
+			dependantSelect( 'BilanparcoursReferentId', 'BilanparcoursStructurereferenteId' );
+		});
+	</script>
 
     <div class="aere">
     <fieldset class="aere">

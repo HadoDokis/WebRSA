@@ -10,9 +10,11 @@
     else {
         $this->pageTitle = 'Édition de l\'orientation';
     }
-?>
 
-<?php echo $javascript->link( 'dependantselect.js' ); ?>
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
+	}
+?>
 <script type="text/javascript">
     document.observe("dom:loaded", function() {
         dependantSelect( 'Propoorientationcov58StructurereferenteId', 'Propoorientationcov58TypeorientId' );

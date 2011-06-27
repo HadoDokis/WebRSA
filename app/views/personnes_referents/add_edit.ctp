@@ -4,14 +4,17 @@
 
 <?php echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );?>
 
-<?php /*if( $this->action == 'add' ):*/?>
-    <?php echo $javascript->link( 'dependantselect.js' ); ?>
-    <script type="text/javascript">
-        document.observe("dom:loaded", function() {
-            dependantSelect( 'PersonneReferentReferentId', 'StructurereferenteId' );
-        });
-    </script>
-<?php /*endif;*/?>
+<?php
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
+	}
+?>
+<script type="text/javascript">
+	document.observe("dom:loaded", function() {
+		dependantSelect( 'PersonneReferentReferentId', 'StructurereferenteId' );
+	});
+</script>
+
 <div class="with_treemenu">
     <h1><?php echo $this->pageTitle;?></h1>
 <?php 

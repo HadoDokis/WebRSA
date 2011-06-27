@@ -11,7 +11,11 @@
         $this->pageTitle = 'Édition d\'un CER';
     }
 ?>
-<?php echo $javascript->link( 'dependantselect.js' ); ?>
+<?php
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
+	}
+?>
 <script type="text/javascript">
     document.observe("dom:loaded", function() {
         dependantSelect( 'Propocontratinsertioncov58ReferentId', 'Propocontratinsertioncov58StructurereferenteId' );
