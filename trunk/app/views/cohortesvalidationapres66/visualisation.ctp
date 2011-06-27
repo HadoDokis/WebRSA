@@ -137,6 +137,19 @@
         </tbody>
     </table>
     <?php echo $pagination;?>
-
+    <ul class="actionMenu">
+        <li><?php
+            echo $xhtml->printLinkJs(
+                'Imprimer le tableau',
+                array( 'onclick' => 'printit(); return false;', 'class' => 'noprint' )
+            );
+        ?></li>
+        <li><?php
+            echo $xhtml->exportLink(
+                'Télécharger le tableau',
+                array( 'controller' => 'cohortesvalidationapres66', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
+            );
+        ?></li>
+    </ul>
 <?php endif?>
 <?php endif?>
