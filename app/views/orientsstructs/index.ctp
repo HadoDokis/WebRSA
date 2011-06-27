@@ -19,52 +19,45 @@
 		elseif( !empty( $en_procedure_relance ) ) {
 			echo '<p class="notice">Cette personne est en cours de procédure de relance.</p>';
 		}
-
 	?>
 
 	<!-- Pour le CG 93, les orientations de rang >= 1 doivent passer en EP, donc il faut utiliser Reorientationseps93Controller::add -->
 	<?php if( Configure::read( 'Cg.departement' ) == 93 && $rgorient_max >= 1 ):?>
-		<?php if( $permissions->check( 'reorientationseps93', 'add' ) ):?>
-			<ul class="actionMenu">
-				<?php
-					echo '<li>'.
-						$xhtml->addLink(
-							'Préconiser une orientation',
-							array( 'controller' => 'reorientationseps93', 'action' => 'add', $last_orientstruct_id ),
-							$ajout_possible
-						).
-					' </li>';
-				?>
-			</ul>
-		<?php endif;?>
+		<ul class="actionMenu">
+			<?php
+				echo '<li>'.
+					$xhtml->addLink(
+						'Préconiser une orientation',
+						array( 'controller' => 'reorientationseps93', 'action' => 'add', $last_orientstruct_id ),
+						$ajout_possible && $permissions->check( 'reorientationseps93', 'add' )
+					).
+				' </li>';
+			?>
+		</ul>
 	<?php elseif( Configure::read( 'Cg.departement' ) == 58 ):?>
-		<?php if( $permissions->check( 'proposorientationscovs58', 'add' ) ):?>
-			<ul class="actionMenu">
-				<?php
-					echo '<li>'.
-						$xhtml->addLink(
-							'Préconiser une orientation',
-							array( 'controller' => 'proposorientationscovs58', 'action' => 'add', $personne_id ),
-							$ajout_possible
-						).
-					' </li>';
-				?>
-			</ul>
-		<?php endif;?>
+		<ul class="actionMenu">
+			<?php
+				echo '<li>'.
+					$xhtml->addLink(
+						'Préconiser une orientation',
+						array( 'controller' => 'proposorientationscovs58', 'action' => 'add', $personne_id ),
+						$ajout_possible && $permissions->check( 'proposorientationscovs58', 'add' )
+					).
+				' </li>';
+			?>
+		</ul>
 	<?php else:?>
-		<?php if( $permissions->check( 'orientsstructs', 'add' ) ):?>
-			<ul class="actionMenu">
-				<?php
-					echo '<li>'.
-						$xhtml->addLink(
-							'Préconiser une orientation',
-							array( 'controller' => 'orientsstructs', 'action' => 'add', $personne_id ),
-							$ajout_possible
-						).
-					' </li>';
-				?>
-			</ul>
-		<?php endif;?>
+		<ul class="actionMenu">
+			<?php
+				echo '<li>'.
+					$xhtml->addLink(
+						'Préconiser une orientation',
+						array( 'controller' => 'orientsstructs', 'action' => 'add', $personne_id ),
+						$ajout_possible && $permissions->check( 'orientsstructs', 'add' )
+					).
+				' </li>';
+			?>
+		</ul>
 	<?php endif;?>
 
 	<?php if( Configure::read( 'Cg.departement' ) == 93 && isset( $reorientationep93 ) && !empty( $reorientationep93 ) ):?>
