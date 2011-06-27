@@ -42,6 +42,15 @@
 			}
 		}
 
+		/**
+		 *
+		 */
+		public function setCantons() {
+			if( Configure::read( 'CG.cantons' ) ) {
+				$this->set( 'cantons', $this->ClassRegistry::init( 'Canton' )->selectList() );
+			}
+		}
+
 		/** *******************************************************************
 			The beforeRedirect method is invoked when the controller's redirect method
 			is called but before any further action. If this method returns false the
