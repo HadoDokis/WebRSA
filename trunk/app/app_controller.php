@@ -3,9 +3,9 @@
 
 	class AppController extends Controller
 	{
-		public $components = array( 'Session', 'Auth', 'Acl', 'Droits', 'Cookie', 'Jetons'/*, 'Xcontroller'*/, 'Default' );
+		public $components = array( 'Session', 'Auth', 'Acl', 'Droits', 'Cookie', 'Jetons', 'Default' );
 		public $helpers = array( 'Xhtml', 'Form', 'Javascript', 'Permissions', 'Widget', 'Locale', 'Theme', 'Default', 'Number', 'Xpaginator' );
-		public $uses = array( 'User', 'Connection', 'Avispcgdroitrsa' );
+		public $uses = array( 'User', 'Connection' );
 
 		/**
 		* Vérification de l'état du serveur Gedooo
@@ -195,22 +195,30 @@
 		}
 
 		/**
-		* Utilisateurs concurrents, mise à jour du dernier accès pour la connection
+		* Utilisateurs concurrents, mise à jour du dernier accès pour la connection.
+		* Si la session a expiré, on redirige sur UsersController::logout
 		*/
 
 		protected function _updateConnection() {
 			if( Configure::read( 'Utilisateurs.multilogin' ) == false ) {
-				$connection_id = $this->Session->read( 'Auth.Connection.id' );
+				if( !( $this->name == 'Users' && in_array( $this->action, array( 'login', 'logout' ) ) ) ) {
+					$connection_id = $this->Connection->field(
+						'id',
+						array(
+							'user_id' => $this->Session->read( 'Auth.User.id' ),
+							'php_sid' => $this->Session->id(),
+							'( Connection.modified + INTERVAL \''.readTimeout().' seconds\' ) >= NOW()'
+						)
+					);
 
-				if( empty( $connection_id ) ) {
-					$connection_id = $this->Connection->field( 'id', array( 'user_id' => $this->Session->read( 'Auth.User.id' ) ) );
-					$this->Session->write( 'Auth.Connection.id', $connection_id );
-				}
-
-				if( !empty( $connection_id ) ) {
-					$this->Connection->create( array( 'id' => $connection_id ) );
-					if( $this->Connection->exists() ) {
-						$this->Connection->saveField( 'modified', null );
+					if( !empty( $connection_id ) ) {
+						$this->Connection->create( array( 'id' => $connection_id ) );
+						if( $this->Connection->exists() ) {
+							$this->Connection->saveField( 'modified', null );
+						}
+					}
+					else {
+						$this->redirect( array( 'controller' => 'users', 'action' => 'logout' ) );
 					}
 				}
 			}
