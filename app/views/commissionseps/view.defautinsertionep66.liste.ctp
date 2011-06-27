@@ -21,12 +21,12 @@
 			'Affecter les dossiers',
 			array( 'controller' => 'dossierseps', 'action' => 'choose', Set::classicExtract( $commissionep, 'Commissionep.id' ), "#{$theme}" )
 		).' </li>';
-		echo '<li>'.$xhtml->link(
-			'Imprimer les courriers d\'information',
-			array( 'controller' => 'dossierseps', 'action' => 'courriersInformations', Set::classicExtract( $commissionep, 'Commissionep.id' ) ),
-			array( 'class' => 'button print' ),
-			'Etes-vous sûr de vouloir imprimer les courriers d\'information ?'
-		).' </li>';
+// 		echo '<li>'.$xhtml->link(
+// 			'Imprimer les courriers d\'information',
+// 			array( 'controller' => 'dossierseps', 'action' => 'courriersInformations', Set::classicExtract( $commissionep, 'Commissionep.id' ) ),
+// 			array( 'class' => 'button print' ),
+// 			'Etes-vous sûr de vouloir imprimer les courriers d\'information ?'
+// 		).' </li>';
 		echo '<li>'.$xhtml->link(
 			'Impression des convocations',
 			array( 'controller' => 'commissionseps', 'action' => 'printConvocationsBeneficiaires', $commissionep['Commissionep']['id'] ),
@@ -59,7 +59,7 @@
 			array(
 				'actions' => array(
 					'Dossierseps::view' => array( 'label' => 'Voir', 'url' => array( 'controller' => $controller, 'action' => 'index', '#Personne.id#' ), 'class' => 'external' ),
-					'Dossierseps::courrierInformation',
+// 					'Dossierseps::courrierInformation',
 					'Commissionseps::printConvocationBeneficiaire' => array( 'url' => array( 'controller' => 'commissionseps', 'action' => 'printConvocationBeneficiaire', '#Passagecommissionep.id#' ), 'disabled' => empty( $disableConvocationBeneficiaire ))
 				),
 				'options' => $options,
