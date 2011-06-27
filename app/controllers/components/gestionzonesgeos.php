@@ -43,12 +43,28 @@
 		}
 
 		/**
-		 *
+		 * Envoie à la vue de la liste des cantons si la variable CG.cantons est à vrai dans
+		 * le webrsa.inc
 		 */
-		public function setCantonsIfConfigured() {
+
+		public function setCantonsIfConfigured( $varname = 'cantons' ) {
 			if( Configure::read( 'CG.cantons' ) ) {
-				$this->Canton = ClassRegistry::init( 'Canton' );
-				$this->controller->set( 'cantons', $this->Canton->selectList() );
+				if ( !$this->controller->Session->check( 'Cache.cantons' ) ) {
+					$mesZonesGeographiques = $this->controller->Session->read( 'Auth.Zonegeographique' );
+					$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
+
+					$cantonModel = ClassRegistry::init( 'Canton' );
+					$cantons = $cantonModel->selectList(
+						$this->controller->Session->read( 'Auth.User.filtre_zone_geo' ),
+						array_keys( $mesCodesInsee )
+					);
+
+					$this->controller->Session->write( 'Cache.cantons', $cantons );
+					$this->controller->set( $varname, $cantons );
+				}
+				else {
+					$this->controller->set( $varname, $this->controller->Session->read( 'Cache.cantons' ) );
+				}
 			}
 		}
 

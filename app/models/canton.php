@@ -61,10 +61,16 @@
 		*	FIXME: docs
 		*/
 
-		public function selectList() {
+		public function selectList( $filtre_zone_geo = false, $zonesgeographiques = array() ) {
+			$conditions = array( 'Canton.canton IS NOT NULL', 'Canton.canton <> \'\'' );
+
+			if( $filtre_zone_geo ) {
+				$conditions['Canton.zonegeographique_id'] = $zonesgeographiques;
+			}
+
 			$queryData = array(
 				'fields' => array( 'DISTINCT Canton.canton' ),
-				'conditions' => array( 'Canton.canton IS NOT NULL', 'Canton.canton <> \'\'' ),
+				'conditions' => $conditions,
 				'recursive' => -1,
 				'order' => array( 'Canton.canton ASC' )
 			);
