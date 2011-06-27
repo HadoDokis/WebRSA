@@ -65,11 +65,6 @@ function dependantSelect( select2Id, select1Id ) {
 			}
 		} );
 
-		// INFO: fonctionne quand même, mais génère une erreur
-		try {
-			$( select2Id ).onchange();
-		}
-		catch(id) {
-		}
+		$( select2Id ).simulate( 'change' );
 	} );
 }

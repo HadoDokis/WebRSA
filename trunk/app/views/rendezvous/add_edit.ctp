@@ -11,8 +11,11 @@
     else {
         $this->pageTitle = 'Édition Rendez-vous';
     }
+
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
+	}
 ?>
-<?php echo $javascript->link( 'dependantselect.js' ); ?>
 <script type="text/javascript">
     document.observe("dom:loaded", function() {
         dependantSelect( 'RendezvousPermanenceId', 'RendezvousStructurereferenteId' );

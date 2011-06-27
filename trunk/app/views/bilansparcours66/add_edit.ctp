@@ -825,7 +825,11 @@ elseif ( $this->action == 'edit' && isset( $passagecommissionep['Decisiondefauti
 </div>
 <div class="clearer"><hr /></div>
 
-<?php echo $javascript->link( 'dependantselect.js' ); ?>
+<?php
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
+	}
+?>
 
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {

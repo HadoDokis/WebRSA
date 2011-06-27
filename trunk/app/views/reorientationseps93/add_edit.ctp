@@ -14,7 +14,7 @@
 	<?php
 		if( Configure::read( 'debug' ) > 0 ) {
 			echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
-			echo $javascript->link( 'dependantselect.js' );
+			echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
 		}
 	?>
 

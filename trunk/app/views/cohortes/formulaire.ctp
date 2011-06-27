@@ -24,7 +24,11 @@
 ?>
 
 <?php if( isset( $cohorte ) ):?>
-	<?php echo $javascript->link( 'dependantselect.js' ); ?>
+	<?php
+		if( Configure::read( 'debug' ) > 0 ) {
+			echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
+		}
+	?>
 	<script type="text/javascript">
 		var structAuto = new Array();
 		<?php foreach( $structuresAutomatiques as $typeId => $structureAutomatique ):?>

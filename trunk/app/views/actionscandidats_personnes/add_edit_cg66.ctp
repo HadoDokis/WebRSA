@@ -4,7 +4,12 @@
 	echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
 ?>
 
-<?php echo $javascript->link( 'dependantselect.js' ); ?>
+<?php
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
+	}
+?>
+
 <div class="with_treemenu">
 	<?php
 		echo $xhtml->tag(

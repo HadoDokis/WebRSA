@@ -1,5 +1,9 @@
 <h1><?php echo $this->pageTitle = '4. Décisions de la commission du '.date('d/m/Y à H:i', strtotime($commissionep['Commissionep']['dateseance'])).' par le CG '; ?></h1>
-<?php echo $javascript->link( 'dependantselect.js' ); ?>
+<?php
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
+	}
+?>
 <br/>
 <div id="tabbedWrapper" class="tabs">
 	<?php
