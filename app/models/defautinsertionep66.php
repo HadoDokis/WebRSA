@@ -357,7 +357,7 @@
 								array(
 									'fields' => array(
 										'Bilanparcours66.orientstruct_id',
-// 										'Bilanparcours66.structurereferente_id',
+										'Bilanparcours66.structurereferente_id',
 										'Bilanparcours66.referent_id'
 									),
 									'conditions' => array(
@@ -383,7 +383,7 @@
 								'personne_id' => $dossierep['Dossierep']['personne_id'],
 								'typeformulaire' => 'cg',
 								'orientstruct_id' => $orientsstruct['Orientstruct']['id'],
-// 								'structurereferente_id' => $bilanparcours66['Bilanparcours66']['structurereferente_id'],// FIXME: ?
+								'structurereferente_id' => $bilanparcours66['Bilanparcours66']['structurereferente_id'],
 								'referent_id' => $referent_id,// FIXME: ?
 								'presenceallocataire' => 1,// FIXME: vient des détails de la séance
 								'motifsaisine' => 'Proposition de réorientation suite à un passage en EP pour défaut d\'insertion',
@@ -404,13 +404,10 @@
 								'structurereferente_id' => @$dossierep['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['structurereferente_id'],
 							)
 						);
-// debug( $success );
+
 						$success = $oBilanparcours66->sauvegardeBilan( $nvdossierep ) && $success;
-// debug( $oBilanparcours66->validationErrors );
+
 					}
-					/*// TODO Si maintien, alors, RDV référent
-					else if( $defautinsertionep66['Defautinsertionep66']['decision'] == 'maintien' ) {
-					}*/
 
 					$this->create( $defautinsertionep66 );
 					$success = $this->save() && $success;

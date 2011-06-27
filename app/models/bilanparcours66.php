@@ -207,8 +207,6 @@
 
 		}
 
-
-
 		/**
 		* Sauvegarde du bilan de parcours d'un allocataire.
 		*
@@ -450,8 +448,11 @@
 						}
 
 						// Sauvegarde du bilan
-		// 				$data[$this->alias]['referent_id'] = $vxOrientstruct['Orientstruct']['referent_id'];//FIXME: si changement  de référent
 						$data[$this->alias]['contratinsertion_id'] = @$vxContratinsertion['Contratinsertion']['id'];
+					}
+
+					if( $data[$this->alias]['origine'] == 'Defautinsertionep66' && !isset( $data[$this->alias]['structurereferente_id'] ) ) {
+						$data[$this->alias]['structurereferente_id'] = $vxOrientstruct['Orientstruct']['structurereferente_id'];
 					}
 
 					$this->create( $data );
