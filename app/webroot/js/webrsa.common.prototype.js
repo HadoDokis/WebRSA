@@ -299,19 +299,21 @@ function disableFieldsOnCheckbox( cbId, fieldsIds, condition ) {
 	var checked = ( ( $F( cb ) == null ) ? false : true );
 	fieldsIds.each( function ( fieldId ) {
 		var field = $( fieldId );
-		if( checked != condition ) {
-			field.enable();
-			if( input = field.up( 'div.input' ) )
-				input.removeClassName( 'disabled' );
-			else if( input = field.up( 'div.checkbox' ) )
-				input.removeClassName( 'disabled' );
-		}
-		else {
-			field.disable();
-			if( input = field.up( 'div.input' ) )
-				input.addClassName( 'disabled' );
-			else if( input = field.up( 'div.checkbox' ) )
-				input.addClassName( 'disabled' );
+		if( field != null ) {
+			if( checked != condition ) {
+				field.enable();
+				if( input = field.up( 'div.input' ) )
+					input.removeClassName( 'disabled' );
+				else if( input = field.up( 'div.checkbox' ) )
+					input.removeClassName( 'disabled' );
+			}
+			else {
+				field.disable();
+				if( input = field.up( 'div.input' ) )
+					input.addClassName( 'disabled' );
+				else if( input = field.up( 'div.checkbox' ) )
+					input.addClassName( 'disabled' );
+			}
 		}
 	} );
 }
