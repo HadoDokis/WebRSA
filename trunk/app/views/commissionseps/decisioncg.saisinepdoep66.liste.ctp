@@ -10,6 +10,7 @@ echo '<table id="Decisionsaisinepdoep66" class="tooltips"><thead>
 <th colspan=\'2\'>Avis de l\'EP</th>
 <th>Décision du CG</th>
 <th>Observations</th>
+<th>Action</th>
 <th class="innerTableHeader noprint">Avis EP</th>
 </tr>
 </thead><tbody>';

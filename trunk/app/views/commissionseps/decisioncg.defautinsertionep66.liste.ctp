@@ -14,6 +14,7 @@ echo '<table id="Decisiondefautinsertionep66" class="tooltips"><thead>
 <th>Avis EPL</th>
 <th colspan="4">Décision CG</th>
 <th>Observations</th>
+<th>Action</th>
 <th class="innerTableHeader noprint">Avis EP</th>
 </tr>
 </thead><tbody>';

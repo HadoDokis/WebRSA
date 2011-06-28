@@ -291,12 +291,13 @@
 					'rgorient' => $dossier['Propoorientationcov58']['rgorient'],
 					'statut_orient' => 'Orienté',
 					'etatorient' => 'decision',
+					'origine' => 'manuelle',
 					'user_id' => $dossier['Propoorientationcov58']['user_id']
 				)
 			);
+
 			$this->Dossiercov58->Personne->Orientstruct->create( $orientstruct );
 			$success = $this->Dossiercov58->Personne->Orientstruct->save() && $success;
-// 			$success = $this->Dossiercov58->Personne->Orientstruct->generatePdf( $this->Dossiercov58->Personne->Orientstruct->id, $dossier['Propoorientationcov58']['user_id'] ) && $success;
 			
 			return $success;
 		}
