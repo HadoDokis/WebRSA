@@ -621,5 +621,11 @@ ALTER TABLE decisionsnonorientationsproseps93 ALTER COLUMN decision TYPE TYPE_DE
 ALTER TABLE tiersprestatairesapres ALTER COLUMN clerib TYPE VARCHAR(2);
 
 -- *****************************************************************************
+-- 20110628: ajout d'un champ dans les dsps
+-- *****************************************************************************
+SELECT add_missing_table_field ('public', 'dsps', 'suivimedical', 'TYPE_NO');
+SELECT add_missing_table_field ('public', 'dsps_revs', 'suivimedical', 'TYPE_NO');
+
+-- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

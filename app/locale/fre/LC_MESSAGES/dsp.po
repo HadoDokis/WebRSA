@@ -651,13 +651,13 @@ msgid "ENUM::DIFSOCPRO::2103"
 msgstr "Familiale"
 
 msgid "ENUM::DIFSOCPRO::2104"
-msgstr "Surendettement"
+msgstr "Endettement"
 
 msgid "ENUM::DIFSOCPRO::2105"
-msgstr "Administratif"
+msgstr "Démarches et formalités administratives"
 
 msgid "ENUM::DIFSOCPRO::2106"
-msgstr "Linguistique"
+msgstr "Lecture, écriture ou compréhension du français"
 
 msgid "ENUM::DIFSOCPRO::2107"
 msgstr "Mobilisation"
@@ -780,7 +780,6 @@ msgstr "Salle d'eau"
 msgid "Dsp::index::empty"
 msgstr "Aucun historique de DSP pour cette personne"
 
-
 ###############################################################################
 msgid "Dsp.statutoccupation"
 msgstr "Statut d'occupation "
@@ -790,3 +789,16 @@ msgstr "Propriétaire"
 
 msgid "ENUM::STATUTOCCUPATION::locataire"
 msgstr "Locataire"
+
+msgid "Dsp::index::empty"
+msgstr "Aucun historique de DSP pour cette personne"
+
+###############################################################################
+msgid "Dsp.suivimedical"
+msgstr "Suivi médical ?"
+
+msgid "ENUM::SUIVIMEDICAL::N"
+msgstr "Non"
+
+msgid "ENUM::SUIVIMEDICAL::O"
+msgstr "Oui"
