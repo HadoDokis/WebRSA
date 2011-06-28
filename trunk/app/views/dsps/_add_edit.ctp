@@ -320,7 +320,7 @@ Plan:
 
 		<?php
 			// DifficulteLogement - DetailDifficulteLogement
-			if ( Configure::read( 'Cg.departement' ) == 58 ) {
+			if ( $cg == 'cg58' ) {
 				echo $dsphm->fieldset( 'Detaildiflog', 'diflog', null, $dsp_id, null, $options['Detaildiflog']['diflog'] );
 			}
 			else {
