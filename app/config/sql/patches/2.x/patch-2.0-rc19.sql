@@ -616,5 +616,10 @@ CREATE TYPE TYPE_DECISIONNONORIENTATIONPROEP93 AS ENUM ( 'reorientation', 'maint
 ALTER TABLE decisionsnonorientationsproseps93 ALTER COLUMN decision TYPE TYPE_DECISIONNONORIENTATIONPROEP93 USING CAST(decision AS TYPE_DECISIONNONORIENTATIONPROEP93);
 
 -- *****************************************************************************
+-- 20110628: modification du type du champ clerib pour la table tiersprestatairesapres
+-- *****************************************************************************
+ALTER TABLE tiersprestatairesapres ALTER COLUMN clerib TYPE VARCHAR(2);
+
+-- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
