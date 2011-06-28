@@ -606,7 +606,7 @@ ALTER TABLE decisionspropospdos ALTER COLUMN decisionreponseep TYPE TYPE_DECISIO
 ALTER TABLE decisionsnonrespectssanctionseps93 ALTER COLUMN decision TYPE TEXT;
 DROP TYPE IF EXISTS TYPE_DECISIONSANCTIONEP93;
 DROP TYPE IF EXISTS TYPE_DECISIONNONRESPECTSANCTIONEP93;
-CREATE TYPE TYPE_DECISIONNONRESPECTSANCTIONEP93 AS ENUM ( '1reduction', '1maintien', '1sursis', '1pasavis', '1delai', '2suspensiontotale', '2suspensionpartielle', '2maintien', '2pasavis', '2report', 'annule', 'reporte' );
+CREATE TYPE TYPE_DECISIONNONRESPECTSANCTIONEP93 AS ENUM ( '1reduction', '1maintien', '1pasavis', '1delai', '2suspensiontotale', '2suspensionpartielle', '2maintien', '2pasavis', 'annule', 'reporte' );
 ALTER TABLE decisionsnonrespectssanctionseps93 ALTER COLUMN decision TYPE TYPE_DECISIONNONRESPECTSANCTIONEP93 USING CAST(decision AS TYPE_DECISIONNONRESPECTSANCTIONEP93);
 
 ALTER TABLE decisionsnonorientationsproseps93 ALTER COLUMN decision TYPE TEXT;
