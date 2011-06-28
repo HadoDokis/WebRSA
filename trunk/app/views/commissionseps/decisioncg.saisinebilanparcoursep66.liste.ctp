@@ -20,7 +20,7 @@ echo '<table id="Decisionsaisinebilanparcoursep66" class="tooltips"><thead>
 <th>Décision CG</th>
 <th colspan="4">Décision coordonnateur/CG</th>
 <th>Observations</th>
-<th>Action</th>
+<th colspan="2">Actions</th>
 <th class="innerTableHeader noprint">Avis EP</th>
 </tr>
 </thead><tbody>';
@@ -96,6 +96,7 @@ echo '<table id="Decisionsaisinebilanparcoursep66" class="tooltips"><thead>
 					array( @$options['Decisionsaisinebilanparcoursep66']['maintienorientparcours'][Set::classicExtract( $decisioncg, "maintienorientparcours" )], array( 'id' => "Decisionsaisinebilanparcoursep66{$i}Maintienorientparcours" ) ),
 					array( @$options['Decisionsaisinebilanparcoursep66']['changementrefparcours'][Set::classicExtract( $decisioncg, "changementrefparcours" )], array( 'id' => "Decisionsaisinebilanparcoursep66{$i}Changementrefparcours" ) ),
 					array( Set::classicExtract( $decisioncg, "commentaire" ), array( 'id'  => "Decisionsaisinebilanparcoursep66{$i}Commentaire") ),
+					array( $xhtml->link( 'Voir', array( 'controller' => 'historiqueseps', 'action' => 'view_passage', $dossierep['Passagecommissionep'][0]['id'] ), array( 'class' => 'external' ) ), array( 'class' => 'button view' ) ),
 					$xhtml->printLink( 'Imprimer', array( 'controller' => 'commissionseps', 'action' => 'impressionDecision', $dossierep['Passagecommissionep'][0]['id'] ) ),
 					array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
 				)

@@ -334,6 +334,7 @@
 				// On modifie les enregistrements de cette étape
 				if( @$dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['etape'] == $niveauDecision ) {
 					$formData['Decisionsaisinebilanparcoursep66'][$key] = @$dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0];
+					$formData['Decisionsaisinebilanparcoursep66'][$key]['checkcomm'] = !empty( $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['commentaire'] );
 					$formData['Decisionsaisinebilanparcoursep66'][$key]['referent_id'] = implode(
 						'_',
 						array(
@@ -353,6 +354,7 @@
 				else {
 					if( $niveauDecision == 'ep' ) {
 						$formData['Decisionsaisinebilanparcoursep66'][$key]['decision'] = $dossierep[$this->alias]['choixparcours'];
+						$formData['Decisionsaisinebilanparcoursep66'][$key]['reorientation'] = $dossierep[$this->alias]['reorientation'];
 						$formData['Decisionsaisinebilanparcoursep66'][$key]['checkcomm'] = 0;
 						if ( $dossierep[$this->alias]['Bilanparcours66']['choixparcours'] == 'maintien' ) {
 							$formData['Decisionsaisinebilanparcoursep66'][$key]['typeorient_id'] = $dossierep[$this->alias]['Bilanparcours66']['Orientstruct']['typeorient_id'];
@@ -391,6 +393,7 @@
 						$formData['Decisionsaisinebilanparcoursep66'][$key]['changementrefparcours'] = $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['changementrefparcours'];
 // 						$formData['Decisionsaisinebilanparcoursep66'][$key]['raisonnonpassage'] = $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['raisonnonpassage'];
 						$formData['Decisionsaisinebilanparcoursep66'][$key]['commentaire'] = $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['commentaire'];
+						$formData['Decisionsaisinebilanparcoursep66'][$key]['checkcomm'] = !empty( $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['commentaire'] );
 						$formData['Decisionsaisinebilanparcoursep66'][$key]['typeorient_id'] = $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['typeorient_id'];
 						$formData['Decisionsaisinebilanparcoursep66'][$key]['referent_id'] = implode(
 							'_',
@@ -409,6 +412,7 @@
 					}
 				}
 			}
+
 			return $formData;
 		}
 

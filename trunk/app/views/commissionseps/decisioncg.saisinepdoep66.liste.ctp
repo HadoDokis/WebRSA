@@ -52,6 +52,7 @@ echo '<table id="Decisionsaisinepdoep66" class="tooltips"><thead>
 				@$decisioncg['Decisionpdo']['libelle'],
 				array( $cg, array( 'id' => "Decisionsaisinepdoep66{$i}Decisioncg" ) ),
 				Set::classicExtract( $decisioncg, "commentaire" ),
+				array( $xhtml->link( 'Voir', array( 'controller' => 'historiqueseps', 'action' => 'view_passage', $dossierep['Passagecommissionep'][0]['id'] ), array( 'class' => 'external' ) ), array( 'class' => 'button view' ) ),
 				array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
 			),
 			array( 'class' => 'odd' ),

@@ -45,7 +45,7 @@
 						),
 						array(
 							'actions' => array(
-								'Dossierseps::view' => array( 'label' => 'Voir', 'url' => array( 'controller' => 'historiqueseps', 'action' => 'index', '#Dossierep.Personne.id#' ), 'class' => 'external' ),
+								'Dossierseps::view' => array( 'label' => 'Voir', 'url' => array( 'controller' => 'historiqueseps', 'action' => 'view_passage', '#Passagecommissionep.id#' ), 'class' => 'external' ),
 								'Commissionseps::impressionDecision' => array( 'url' => array( 'controller' => 'commissionseps', 'action' => 'impressionDecision',  '#Passagecommissionep.id#' ) )
 							),
 							'options' => $options,
