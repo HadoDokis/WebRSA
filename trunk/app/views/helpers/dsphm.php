@@ -1,13 +1,13 @@
 <?php
-    class DsphmHelper extends AppHelper
-    {
-        var $helpers = array( 'Xform', 'Xhtml' );
+	class DsphmHelper extends AppHelper
+	{
+		public $helpers = array( 'Xform', 'Xhtml' );
 
-        /** ********************************************************************
-        *
-        *** *******************************************************************/
+		/** ********************************************************************
+		*
+		*** *******************************************************************/
 
-        function fieldset( $model, $code, $libdetails, $dsp_id, $code_autre, $options ) {
+		function fields( $model, $code, $libdetails, $dsp_id, $code_autre, $options ) {
 			$i = 0;
 			$return = '';
 			foreach( $options as $value => $label ) {
@@ -33,14 +33,23 @@
 				$i++;
 			}
 
+			return $return;
+		}
+
+		/** ********************************************************************
+		*
+		*** *******************************************************************/
+
+		function fieldset( $model, $code, $libdetails, $dsp_id, $code_autre, $options ) {
+			$return = $this->fields( $model, $code, $libdetails, $dsp_id, $code_autre, $options );
 			return $this->Xhtml->tag( 'fieldset', $this->Xhtml->tag( 'legend', __d( 'dsp', "{$model}.{$code}", true ) ).$return );
-        }
+		}
 
-        /** ********************************************************************
-        *
-        *** *******************************************************************/
+		/** ********************************************************************
+		*
+		*** *******************************************************************/
 
-        function details( $dsp, $model, $code, $libdetails, $options ) {
+		function details( $dsp, $model, $code, $libdetails, $options ) {
 			$answers = array();
 
 			$items = Set::extract( $dsp, "/{$model}/{$code}" );
@@ -77,6 +86,6 @@
 			}
 
 			return $this->Xhtml->details( $answers, array( 'type' => 'list', 'empty' => true ) );
-        }
-    }
+		}
+	}
 ?>

@@ -181,12 +181,6 @@
 		);
 
 		public $validate = array(
-			'hispro' => array(
-				array(
-					'rule' => 'notEmpty',
-					'message' => 'Champ obligatoire'
-				)
-			),
 			'annobtnivdipmax' => array(
 				'rule' => array( 'inclusiveRange', ANNOBTNIVDIPMAX_MIN_YEAR, ANNOBTNIVDIPMAX_MAX_YEAR ),
 				'message' => ANNOBTNIVDIPMAX_MESSAGE,
@@ -252,7 +246,8 @@
 					'soutdemarsoc' => array( 'type' => 'nov', 'domain' => 'default' ),
 					'concoformqualiemploi' => array( 'type' => 'nos', 'domain' => 'default' ),
 					'drorsarmianta2' => array( 'type' => 'nos', 'domain' => 'default' ),
-					'statutoccupation' => array( 'values' => array('proprietaire', 'locataire') )
+					'statutoccupation' => array( 'values' => array('proprietaire', 'locataire') ),
+					'suivimedical'
 				)
 			),
 			'Revision' => array('auto' => false)
