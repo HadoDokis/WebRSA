@@ -90,7 +90,7 @@
 			return array(
 				'Typeorient',
 				'Structurereferente',
-				'Referent',
+// 				'Referent',
 			);
 		}
 	}

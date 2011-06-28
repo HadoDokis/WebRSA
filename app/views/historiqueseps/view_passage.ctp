@@ -147,7 +147,11 @@
 			}
 		}
 
-		// TODO: bouton/lien retour
+		echo '<p>'.$default->button(
+			'back',
+			array( 'action' => 'index', $passage['Dossierep']['personne_id'] ),
+			array( 'id' => 'Back' )
+		).'</p>';
 	?>
 </div>
 <div class="clearer"><hr /></div>
