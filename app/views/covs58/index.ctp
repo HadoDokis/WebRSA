@@ -75,32 +75,9 @@
 			array(
 				'actions' => array(
 					'Covs58::view'
-				)
+				),
+				'options' => $options
 			)
 		);
-
-		/*if( empty( $covs58 ) ) {
-			echo $xhtml->tag( 'p', 'Aucun résultat ne correspond aux critères choisis.', array( 'class' => 'notice' ) );
-		}
-		else {
-			echo '<table><thead>';
-				echo '<tr>
-					<th>'.$xpaginator->sort( __d( 'cov58', 'Cov58.name', true ), 'Cov58.name' ).'</th>
-					<th>'.$xpaginator->sort( __d( 'cov58', 'Cov58.datecommission', true ), 'Cov58.datecommission' ).'</th>
-					<th>'.$xpaginator->sort( __d( 'cov58', 'Cov58.etatcov', true ), 'Cov58.finalisee' ).'</th>
-					<th>'.$xpaginator->sort( __d( 'cov58', 'Cov58.observation', true ), 'Cov58.observations' ).'</th>
-					<th colspan="2">Actions</th>
-				</tr></thead><tbody>';
-			foreach( $covs58 as $cov58 ) {
-				echo '<tr>
-					<td>'.h( $cov58['Cov58']['name'] ).'</td>
-					<td>'.h( $locale->date( 'Date::short', $cov58['Cov58']['datecommission'] ) ).' à '.h( $locale->date( 'Time::short', $cov58['Cov58']['datecommission'] ) ).'</td>
-					<td>'.h( $cov58['Cov58']['etatcov'] ).'</td>
-					<td>'.h( $cov58['Cov58']['observation'] ).'</td>
-					<td>'.$xhtml->link( 'Voir', array( 'controller' => 'covs58', 'action' => 'view', $cov58['Cov58']['id'] ) ).'</td>
-				</tr>';
-			}
-			echo '</tbody></table>';
-		}*/
 	}
 ?>

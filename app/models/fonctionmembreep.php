@@ -37,5 +37,13 @@
 				'counterQuery' => ''
 			)
 		);
+
+		public $validate = array(
+			'name' => array(
+				array(
+					'rule' => array( 'isUnique' )
+				)
+			)
+		);
 	}
 ?>
