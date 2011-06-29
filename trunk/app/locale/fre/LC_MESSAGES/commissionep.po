@@ -46,7 +46,7 @@ msgstr "Lieu de la commission"
 msgid "Commissionep.reponse"
 msgstr "Saisir les réponses des participants à l'EP"
 
-msgid "Commissionep.presence"
+msgid "Commissionep::presence"
 msgstr "Noter les presences des participants à l'EP"
 
 msgid "Commissionep::index::empty"
