@@ -89,12 +89,12 @@
 		<div id="dossierscovs">
 			<?php
 				foreach( $themes as $theme ) {
-                    if( $theme == 'proposorientationscovs58' ){
-                        $controller = 'orientsstructs';
-                    }
-                    else if( $theme == 'proposcontratsinsertioncovs58' ){
-                        $controller = 'contratsinsertion';
-                    }
+					if( $theme == 'proposorientationscovs58' ){
+						$controller = 'orientsstructs';
+					}
+					else if( $theme == 'proposcontratsinsertioncovs58' ){
+						$controller = 'contratsinsertion';
+					}
 					$class = Inflector::classify( $theme );
 					echo "<div id=\"$theme\"><h3 class=\"title\">".__d( 'dossiercov58', 'ENUM::THEMECOV::'.$theme, true )."</h3>";
 					echo $default2->index(
@@ -109,10 +109,10 @@
 							'Dossiercov58.etapecov'
 						),
 						array(
-                            'actions' => array(
-                                'Dossierscovs58::view' => array( 'label' => 'Voir', 'url' => array( 'controller' => $controller, 'action' => 'index', '#Personne.id#' ) ),
-                                'Dossierscovs58::impressiondecision' => array( 'label' => 'Imprimer la décision', 'url' => array( 'controller' => 'covs58', 'action' => 'impressiondecision', '#Dossiercov58.id#' ) )
-                            ),
+							'actions' => array(
+								'Dossierscovs58::view' => array( 'label' => 'Voir', 'url' => array( 'controller' => $controller, 'action' => 'index', '#Personne.id#' ) ),
+								'Dossierscovs58::impressiondecision' => array( 'label' => 'Imprimer la décision', 'url' => array( 'controller' => 'covs58', 'action' => 'impressiondecision', '#Dossiercov58.id#' ), 'disabled' => '"#Dossiercov58.etapecov#" != "finalise" || "#Themecov58.name#" == "proposcontratsinsertioncovs58"' )
+							),
 							'options' => $options
 						)
 					);

@@ -1085,11 +1085,11 @@ td.button.clore a, td.action a.clore, td span.button.clore, table.default2 td a.
 	background-image: url( ../img/icons/page_white_link.png );
 }
 
-td.button.print a, td.action a.print, td span.button.print, table.default2 td a.button.print, ul li a.button.printConvocationsBeneficiaires, ul.actions li a.button.fichessynthese, ul li a.button.impressionpv, td a.button.impressionDecision, ul li a.button.impressionsDecisions, ul.actionMenu li a.button.print {
+td.button.print a, td.action a.print, td.action a.impressiondecision, td span.button.print, table.default2 td a.button.print, ul li a.button.printConvocationsBeneficiaires, ul.actions li a.button.fichessynthese, ul li a.button.impressionpv, td a.button.impressionDecision, ul li a.button.impressionsDecisions, ul.actionMenu li a.button.print {
 	background-image: url( ../img/icons/printer.png );
 }
 
-td.button.print.disabled a, td.action span.print.disabled, td span.button.print.disabled, table.default2 td span.button.print.disabled, span.button.printConvocationsBeneficiaires.disabled, ul.actions li span.button.fichessynthese.disabled, ul li span.button.impressionpv.disabled, td span.button.impressionDecision.disabled, ul li span.button.impressionsDecisions.disabled, ul.actionMenu li span.button.print.disabled {
+td.button.print.disabled a, td.action span.impressiondecision.disabled, td.action span.print.disabled, td span.button.print.disabled, table.default2 td span.button.print.disabled, span.button.printConvocationsBeneficiaires.disabled, ul.actions li span.button.fichessynthese.disabled, ul li span.button.impressionpv.disabled, td span.button.impressionDecision.disabled, ul li span.button.impressionsDecisions.disabled, ul.actionMenu li span.button.print.disabled {
     background-image: url( ../img/icons/printer_disabled.png );
 }
 
