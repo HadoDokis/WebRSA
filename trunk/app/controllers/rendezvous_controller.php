@@ -563,10 +563,14 @@ App::import( 'Helper', 'Locale' );
 				'first',
 				array(
 					'conditions' => array(
-						'Dossier.id' => $rdv['Personne']['foyer_id']
+						'Foyer.id' => $rdv['Personne']['foyer_id']
+					),
+					'contain' => array(
+						'Foyer'
 					)
 				)
 			);
+
 			$rdv['Dossier_RSA'] = $dossier['Dossier'];
 
 			///Pour la qualité de la personne
