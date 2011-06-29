@@ -11,7 +11,7 @@
 
 	echo $xform->input( 'Etatliquidatif.budgetapre_id', array( 'required' => true, 'options' => $budgetsapres, 'empty' => true, 'domain' => 'apre' ) );
 	echo $xform->input( 'Etatliquidatif.typeapre', array( 'required' => true, 'options' => $typesapres /* FIXME */, 'empty' => true, 'domain' => 'apre' ) );
-	echo $xform->input( 'Etatliquidatif.commentaire', array( 'domain' => 'apre' ) );
+	echo $xform->input( 'Etatliquidatif.commentaire', array( 'domain' => 'apre', 'required' => true ) );
 
 	echo $xform->submit( 'Enregistrer' );
 	echo $xform->end();

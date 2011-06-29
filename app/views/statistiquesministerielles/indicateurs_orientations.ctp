@@ -1,5 +1,8 @@
-<?php //debug($results);?>
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false ); ?>
+<?php
+	$this->pageTitle = 'Indicateurs d\'orientations';
+	echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+?>
+<?php echo $xhtml->tag( 'h1', $this->pageTitle ); ?>
 <?php
 //if( is_array( $this->data ) ) {
 echo '<ul class="actionMenu"><li>'.$xhtml->link(
@@ -12,7 +15,7 @@ array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 
 ).'</ul>';
 //}
 ?>
-<?php echo $form->create( 'Statistiquesministerielle', array( 'type' => 'post', 'action' => Router::url( null, true ), 'id' => 'Search', 'class' => ( !empty( $this->data ) ? 'folded' : 'unfolded' ) ) );?>
+<?php echo $form->create( 'Statistiquesministerielle', array( 'type' => 'post', 'action' => '/indicateursOrientations/', 'id' => 'Search', 'class' => ( !empty( $this->data ) ? 'folded' : 'unfolded' ) ) );?>
 <fieldset><legend>Critères</legend>
 <?php echo $form->input( 'Statistiquesministerielle.localisation', array('disabled'=>true, 'label' => 'Localité') ); ?>
 <?php echo $form->input( 'Statistiquesministerielle.service', array('disabled'=>true, 'label' => __( 'lib_service', true ), 'type' => 'select' , 'options' => $typeservice, 'empty' => true ) ); ?>
@@ -23,12 +26,6 @@ array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 
 </div>
 <?php echo $form->end();?>
 <?php if( !empty( $this->data ) ):?>
-<?php
-echo $xhtml->tag(
-        'h1',
-$this->pageTitle = 'Indicateurs d\'orientations'
-)
-?>
 <p class="p"><strong>1. Bénéficiaires du RSA dans le champ des Droits et Devoirs (L262-28)
  au 31 décembre de l'année, selon le parcours d'insertion envisagé par le Conseil général.
 </strong></p>

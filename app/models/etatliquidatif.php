@@ -6,6 +6,7 @@
 		public $displayField = 'etatliquidatif';
 
 		public $actsAs = array(
+			'ValidateTranslate',
 			'Frenchfloat' => array(
 				'fields' => array(
 					'montanttotalapre'
@@ -30,8 +31,8 @@
 				),
 			),
 			'entitefi' => array(
-				'notempty' => array(
-					'rule' => array('notempty'),
+				'notEmpty' => array(
+					'rule' => array('notEmpty'),
 					//'message' => 'Your custom message here',
 					//'allowEmpty' => false,
 					//'required' => false,
@@ -40,8 +41,8 @@
 				),
 			),
 			'tiers' => array(
-				'notempty' => array(
-					'rule' => array('notempty'),
+				'notEmpty' => array(
+					'rule' => array('notEmpty'),
 					//'message' => 'Your custom message here',
 					//'allowEmpty' => false,
 					//'required' => false,
@@ -50,8 +51,8 @@
 				),
 			),
 			'codecdr' => array(
-				'notempty' => array(
-					'rule' => array('notempty'),
+				'notEmpty' => array(
+					'rule' => array('notEmpty'),
 					//'message' => 'Your custom message here',
 					//'allowEmpty' => false,
 					//'required' => false,
@@ -60,8 +61,8 @@
 				),
 			),
 			'libellecdr' => array(
-				'notempty' => array(
-					'rule' => array('notempty'),
+				'notEmpty' => array(
+					'rule' => array('notEmpty'),
 					//'message' => 'Your custom message here',
 					//'allowEmpty' => false,
 					//'required' => false,
@@ -70,8 +71,8 @@
 				),
 			),
 			'natureanalytique' => array(
-				'notempty' => array(
-					'rule' => array('notempty'),
+				'notEmpty' => array(
+					'rule' => array('notEmpty'),
 					//'message' => 'Your custom message here',
 					//'allowEmpty' => false,
 					//'required' => false,
@@ -80,8 +81,8 @@
 				),
 			),
 			'programme' => array(
-				'notempty' => array(
-					'rule' => array('notempty'),
+				'notEmpty' => array(
+					'rule' => array('notEmpty'),
 					//'message' => 'Your custom message here',
 					//'allowEmpty' => false,
 					//'required' => false,
@@ -90,8 +91,8 @@
 				),
 			),
 			'lib_programme' => array(
-				'notempty' => array(
-					'rule' => array('notempty'),
+				'notEmpty' => array(
+					'rule' => array('notEmpty'),
 					//'message' => 'Your custom message here',
 					//'allowEmpty' => false,
 					//'required' => false,
@@ -100,8 +101,8 @@
 				),
 			),
 			'apreforfait' => array(
-				'notempty' => array(
-					'rule' => array('notempty'),
+				'notEmpty' => array(
+					'rule' => array('notEmpty'),
 					//'message' => 'Your custom message here',
 					//'allowEmpty' => false,
 					//'required' => false,
@@ -110,8 +111,8 @@
 				),
 			),
 			'natureimput' => array(
-				'notempty' => array(
-					'rule' => array('notempty'),
+				'notEmpty' => array(
+					'rule' => array('notEmpty'),
 					//'message' => 'Your custom message here',
 					//'allowEmpty' => false,
 					//'required' => false,
@@ -120,8 +121,8 @@
 				),
 			),
 			'operation' => array(
-				'notempty' => array(
-					'rule' => array('notempty'),
+				'notEmpty' => array(
+					'rule' => array('notEmpty'),
 					//'message' => 'Your custom message here',
 					//'allowEmpty' => false,
 					//'required' => false,
@@ -130,8 +131,8 @@
 				),
 			),
 			'commentaire' => array(
-				'notempty' => array(
-					'rule' => array('notempty'),
+				'notEmpty' => array(
+					'rule' => array('notEmpty'),
 					//'message' => 'Your custom message here',
 					//'allowEmpty' => false,
 					//'required' => false,
