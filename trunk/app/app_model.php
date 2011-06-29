@@ -701,6 +701,28 @@
 		}
 
 		/**
+		 * 
+		 */
+
+		public function compareDates( array $data, $reference, $comparator ) {
+			$data = array_values( $data );
+
+			$data_value = strtotime( isset( $data[0] ) ? $data[0] : null );
+			$reference_value = strtotime( Set::extract( $this->data, $this->alias.'.'.$reference ) );
+
+			if ( in_array( $comparator, array( '>', '<', '==', '<=', '>=' ) ) ) {
+				if ( !( eval( "return \$data_value $comparator \$reference_value ;" ) ) ) {
+					return false;
+				}
+			}
+			else {
+				return false;
+			}
+
+			return true;
+		}
+
+		/**
 		* INFO: http://bakery.cakephp.org/articles/view/unbindall
 		*/
 
