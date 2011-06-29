@@ -15,7 +15,8 @@ UPDATE regroupementseps
 	SET
 		nonorientationproep58 = 'decisionep',
 		regressionorientationep58 = 'decisionep',
-		sanctionep58 = 'decisionep';
+		sanctionep58 = 'decisionep',
+		sanctionrendezvousep58 = 'decisionep';
 
 -- *****************************************************************************
 COMMIT;
