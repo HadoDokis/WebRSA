@@ -28,6 +28,17 @@
 					'rule' => 'date',
 					'message' => 'Veuillez vérifier le format de la date.'
 				)
+			),
+			'dfdesignation' => array(
+				array(
+					'rule' => 'date',
+					'message' => 'Veuillez vérifier le format de la date.',
+					'empty' => true,
+				),
+				array(
+					'rule' => array( 'compareDates', 'dddesignation', '>=' ),
+					'message' => 'La date de fin de désignation doit être au moins la même que la date de début de désignation'
+				)
 			)
 		);
 
