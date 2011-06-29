@@ -1,5 +1,8 @@
-<?php //debug($results);?>
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false ); ?>
+<?php
+	$this->pageTitle = 'Indicateurs de réorientations';
+	echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+?>
+<?php echo $xhtml->tag( 'h1', $this->pageTitle ); ?>
 <?php
 //if( is_array( $this->data ) ) {
 echo '<ul class="actionMenu"><li>'.$xhtml->link(
@@ -23,12 +26,6 @@ array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 
 </div>
 <?php echo $form->end();?>
 <?php if( !empty( $this->data ) ):?>
-<?php
-echo $xhtml->tag(
-        'h1',
-$this->pageTitle = 'Indicateurs de réorientations'
-)
-?>
 <p class="p"><strong>4. Bénéficiaires du RSA réorientées au cours de l'année.
 </strong></p>
 <table class="tooltips_oupas">

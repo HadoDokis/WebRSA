@@ -1069,6 +1069,11 @@ td.button a, td.action a, td.button span, td span.button, table.default2 td a.bu
 	display: block;
 }
 
+table.nocssicons td span.button {
+	background-image: none;
+	padding-left: 0.25em;
+}
+
 td span.button.disabled {
 	color: silver;
 }

@@ -1,5 +1,8 @@
-<?php //debug($results);?>
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false ); ?>
+<?php
+	$this->pageTitle = 'Indicateurs d\'organismes';
+	echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+?>
+<?php echo $xhtml->tag( 'h1', $this->pageTitle ); ?>
 <?php
 //if( is_array( $this->data ) ) {
 echo '<ul class="actionMenu"><li>'.$xhtml->link(
@@ -23,12 +26,6 @@ array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 
 </div>
 <?php echo $form->end();?>
 <?php if( !empty( $this->data ) ):?>
-<?php
-echo $xhtml->tag(
-        'h1',
-$this->pageTitle = 'Indicateurs d\'organismes'
-)
-?>
 <p class="p"><strong>2. Bénéficiaires du Rsa dans le champ des Droits et
 Devoirs (L262-28) au 31 décembre de l'année selon l'organisme de prise
 en charge où a été désigné le référent unique.</strong></p>

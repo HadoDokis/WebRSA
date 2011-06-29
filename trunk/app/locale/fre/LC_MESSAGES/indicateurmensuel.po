@@ -62,3 +62,6 @@ msgstr "Nombre de contrats d'insertion pour les nouveaux entrants CG"
 
 msgid "Indicateurmensuel.nbrSuspensionsDroits"
 msgstr "Nombre de suspensions de droits"
+
+msgid "Indicateursmensuels::index"
+msgstr "Indicateurs de suivis mensuels"

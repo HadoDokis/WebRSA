@@ -93,7 +93,7 @@
 
 		///
 		echo $pagination;
-		echo $xhtml->tag( 'table', $thead.$tbody );
+		echo $xhtml->tag( 'table', $thead.$tbody, array( 'class' => 'nocssicons' ) );
 		echo $pagination;
 	}
 ?>
