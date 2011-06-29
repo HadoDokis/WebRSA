@@ -49,6 +49,11 @@
 		}
 
 		public function main() {
+			if( Configure::read( 'Cg.departement' ) != 93 ) {
+				$this->out( 'Ce shell n\'est utile que pour le CG 93' );
+				$this->_stop( 1 );
+			}
+
 			$this->Propopdo = ClassRegistry::init( 'Propopdo' );
 			$this->Nonrespectsanctionep93 = ClassRegistry::init( 'Nonrespectsanctionep93' );
 
