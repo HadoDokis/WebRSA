@@ -20,8 +20,7 @@ echo '<table><thead>
 				implode( ' ', array( $dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['numvoie'], isset( $typevoie[$dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie']] ) ? $typevoie[$dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie']] : null, $dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['nomvoie'] ) ),
 				$locale->date( __( 'Locale->date', true ), $dossierep['Personne']['dtnai'] ),
 				$locale->date( __( 'Locale->date', true ), $dossierep['Dossierep']['created'] ),
-				__d( 'sanctionep58', $dossierep['Sanctionep58']['origine'], true),
-
+				$options['Sanctionep58']['origine'][$dossierep['Sanctionep58']['origine']],
 				array( $options['Decisionsanctionep58']['decision'][Set::classicExtract( $decisionep, "decision" )], array( 'id' => "Decisionsanctionep58{$i}DecisionColumn" ) ),
 				array( @$listesanctionseps58[Set::classicExtract( $decisionep, "listesanctionep58_id" )], array( 'id' => "Decisionsanctionep58{$i}Listesanctionep58Id" ) ),
 				Set::classicExtract( $decisionep, "commentaire" ),

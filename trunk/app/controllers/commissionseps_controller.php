@@ -141,10 +141,10 @@
 
 			// Ajout des enums pour les thématiques du CG uniquement
 			foreach( $this->Commissionep->Ep->Regroupementep->themes() as $theme ) {
-				/*$model = Inflector::classify( $theme );
-				if( in_array( 'Enumerable', $this->Passagecommissionep->Dossierep->{$model}->Behaviors->attached() ) ) {
-					$options = Set::merge( $options, $this->Passagecommissionep->Dossierep->{$model}->enums() );
-				}*/
+				$model = Inflector::classify( $theme );
+				if( in_array( 'Enumerable', $this->Commissionep->Passagecommissionep->Dossierep->{$model}->Behaviors->attached() ) ) {
+					$options = Set::merge( $options, $this->Commissionep->Passagecommissionep->Dossierep->{$model}->enums() );
+				}
 
 				$modeleDecision = Inflector::classify( "decision{$theme}" );
 				if( in_array( 'Enumerable', $this->Commissionep->Passagecommissionep->{$modeleDecision}->Behaviors->attached() ) ) {
@@ -154,9 +154,6 @@
 
 			// Suivant l'action demandée
 			if( !in_array( $this->action, array( 'add', 'edit', 'index' ) ) ) {
-// 				$options['Commissionep']['typeorient_id'] = $this->Commissionep->Passagecommissionep->Dossierep->Personne->Orientstruct->Typeorient->listOptions();
-// 				$options['Commissionep']['structurereferente_id'] = $this->Commissionep->Passagecommissionep->Dossierep->Personne->Orientstruct->Structurereferente->list1Options();
-// 				$options['Commissionep']['referent_id'] = $this->Commissionep->Passagecommissionep->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->Referent->listOptions();
 				$typesorients = $this->Commissionep->Passagecommissionep->Dossierep->Personne->Orientstruct->Typeorient->listOptions();
 				$structuresreferentes = $this->Commissionep->Passagecommissionep->Dossierep->Personne->Orientstruct->Structurereferente->list1Options();
 				$referents = $this->Commissionep->Passagecommissionep->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->Referent->listOptions();

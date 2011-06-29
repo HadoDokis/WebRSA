@@ -62,4 +62,4 @@ msgid "ENUM::ETATCOV::traitement"
 msgstr "En cours de traitement"
 
 msgid "ENUM::ETATCOV::finalise"
-msgstr "Finalisé"
+msgstr "Finalisée"

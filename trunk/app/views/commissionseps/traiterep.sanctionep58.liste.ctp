@@ -23,7 +23,7 @@ echo '<table><thead>
 				implode( ' ', array( $dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['numvoie'], isset( $typevoie[$dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie']] ) ? $typevoie[$dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie']] : null, $dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['nomvoie'] ) ),
 				$locale->date( __( 'Locale->date', true ), $dossierep['Personne']['dtnai'] ),
 				$locale->date( __( 'Locale->date', true ), $dossierep['Dossierep']['created'] ),
-				__d( 'sanctionep58', $dossierep['Sanctionep58']['origine'], true),
+				$options['Sanctionep58']['origine'][$dossierep['Sanctionep58']['origine']],
 
 				array(
 					$form->input( "Decisionsanctionep58.{$i}.decision", array( 'type' => 'select', 'label' => false, 'empty' => true, 'options' => @$options['Decisionsanctionep58']['decision'] ) ),
