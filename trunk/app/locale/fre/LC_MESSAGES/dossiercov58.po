@@ -19,6 +19,12 @@ msgstr ""
 
 ###############################################################################
 
+msgid "Dossierscovs58::view"
+msgstr "Voir"
+
+msgid "Dossierscovs58::impressiondecision"
+msgstr "Imprimer la décision"
+
 msgid "Dossiercov58.etapecov"
 msgstr "Etat du dossier"
 

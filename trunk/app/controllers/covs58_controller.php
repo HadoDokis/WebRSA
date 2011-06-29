@@ -141,6 +141,7 @@
 							'Dossiercov58.themecov58_id' => $key
 						),
 						'contain' => array(
+							'Themecov58',
 							$class,
 							'Personne' => array(
 								'Foyer' => array(
