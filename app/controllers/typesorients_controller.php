@@ -25,7 +25,7 @@
 
 			App::import( 'Behaviors', array( 'Occurences' ) );
 			$this->Typeorient->Behaviors->attach( 'Occurences' );
-			$this->set( 'occurences', $this->Typeorient->occurences() );
+			$this->set( 'occurences', $this->Typeorient->occurencesExists() );
 
 			$this->set( 'typesorients', $typesorients );
 		}

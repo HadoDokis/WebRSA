@@ -27,8 +27,7 @@
 		<tbody>
 			<?php foreach( $typesorients as $typeorient ):?>
 				<?php
-					$nbOccurences = Set::enum( $typeorient['Typeorient']['id'], $occurences );
-					$nbOccurences = ( is_numeric( $nbOccurences ) ? $nbOccurences : 0 );
+					$occurenceExists = Set::enum( $typeorient['Typeorient']['id'], $occurences );
 
 					echo $xhtml->tableCells(
 							array(
@@ -44,7 +43,7 @@
 								$xhtml->deleteLink(
 									'Supprimer le type d\'orientation',
 									array( 'controller' => 'typesorients', 'action' => 'delete', $typeorient['Typeorient']['id'] ),
-									( $permissions->check( 'typesorients', 'delete' ) && ( $nbOccurences == 0 ) )
+									( $permissions->check( 'typesorients', 'delete' ) && !$occurenceExists )
 								)
 							),
 							array( 'class' => 'odd' ),
