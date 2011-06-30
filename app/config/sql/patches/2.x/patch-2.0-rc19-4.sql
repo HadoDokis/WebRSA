@@ -703,6 +703,9 @@ CREATE UNIQUE INDEX typesorients_lib_type_orient_idx ON typesorients (lib_type_o
 DROP INDEX IF EXISTS typespdos_libelle_idx;
 CREATE UNIQUE INDEX typespdos_libelle_idx ON typespdos (libelle);
 
+DROP INDEX IF EXISTS servicesinstructeurs_lib_service_idx;
+CREATE UNIQUE INDEX servicesinstructeurs_libelle_idx ON servicesinstructeurs (lib_service);
+
 -- *****************************************************************************
 -- 20110630: ajout d'indexes pour les performances
 -- *****************************************************************************
