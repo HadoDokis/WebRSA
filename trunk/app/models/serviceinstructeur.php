@@ -17,7 +17,11 @@
 				array(
 					'rule' => 'notEmpty',
 					'message' => 'Champ obligatoire'
-				)
+				),
+				array(
+					'rule' => 'isUnique',
+					'message' => 'Valeur déjà utilisée'
+				),
 			),
 			'type_voie' => array(
 				array(
