@@ -24,6 +24,9 @@ msgstr "Description des traitements PDO"
 msgid "Descriptionpdo::index::empty"
 msgstr "Aucune description de traitement présente"
 
+msgid "descriptionspdos::delete::confirm"
+msgstr "Confirmer la suppression ?"
+
 msgid "Descriptionpdo::add"
 msgstr "Ajouter une nouvelle description de traitement PDO"
 
@@ -32,6 +35,12 @@ msgstr "Ajout d'une description de traitement PDO"
 
 msgid "Descriptionspdos::edit"
 msgstr "Modification d'une description de traitement PDO"
+
+msgid "descriptionspdos::edit"
+msgstr "Modification d'une description de traitement PDO"
+
+msgid "descriptionspdos::delete"
+msgstr "Suppression d'une description de traitement PDO"
 
 msgid "Descriptionpdo.name"
 msgstr "Intitulé de la description du traitement"

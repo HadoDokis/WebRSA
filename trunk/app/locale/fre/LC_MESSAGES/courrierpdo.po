@@ -33,6 +33,12 @@ msgstr "Ajout d'un courrier"
 msgid "Courrierspdos::edit"
 msgstr "Modification d'un courrier"
 
+msgid "courrierspdos::edit"
+msgstr "Modification d'un courrier"
+
+msgid "courrierspdos::delete"
+msgstr "Suppression d'un courrier"
+
 msgid "Courrierpdo.name"
 msgstr "Nom du courrier"
 

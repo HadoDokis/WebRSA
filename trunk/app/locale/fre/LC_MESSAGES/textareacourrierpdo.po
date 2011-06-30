@@ -31,6 +31,12 @@ msgstr "Aucune zone supplémentaire présente"
 msgid "Textareacourrierpdo::add"
 msgstr "Ajout d'une zone de commentaire"
 
+msgid "textareascourrierspdos::edit"
+msgstr "Modification d'une zone de commentaire"
+
+msgid "textareascourrierspdos::delete"
+msgstr "Suppression d'une zone de commentaire"
+
 msgid "Textareascourrierspdos::edit"
 msgstr "Modification d'une zone de commentaire"
 

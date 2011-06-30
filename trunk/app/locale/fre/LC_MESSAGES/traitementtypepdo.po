@@ -33,6 +33,12 @@ msgstr "Ajout d'un type de traitement"
 msgid "Traitementstypespdos::edit"
 msgstr "Modification d'une traitement"
 
+msgid "Traitementstypespdos::delete"
+msgstr "Suppression d'une traitement"
+
+msgid "Traitementstypespdos::delete::confirm"
+msgstr "Confirmer la suppression ?"
+
 msgid "Traitementtypepdo.name"
 msgstr "Intitulé du type de traitement"
 

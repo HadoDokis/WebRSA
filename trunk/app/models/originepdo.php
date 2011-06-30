@@ -6,7 +6,17 @@
 		public $displayField = 'libelle';
 
 		public $actsAs = array(
-			'ValidateTranslate'
+			'ValidateTranslate',
+			'Autovalidate'
+		);
+
+		public $validate = array(
+			'libelle' => array(
+				array(
+						'rule' => 'isUnique',
+						'message' => 'Valeur déjà utilisée'
+				),
+			)
 		);
 
 		public $hasMany = array(
