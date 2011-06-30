@@ -10,10 +10,14 @@
 		public $validate = array(
 			'libelle' => array(
 				array(
+					'rule' => 'isUnique',
+					'message' => 'Cette valeur est déjà utilisée'
+				),
+				array(
 					'rule' => 'notEmpty',
 					'message' => 'Champ obligatoire'
-				)
-			)
+				),
+			),
 		);
 
 		public $hasAndBelongsToMany = array(
@@ -34,6 +38,5 @@
 				'with' => 'ActprofPieceactprof'
 			)
 		);
-
 	}
 ?>

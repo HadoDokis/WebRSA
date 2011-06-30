@@ -22,15 +22,15 @@ ALTER TABLE actionscandidats ALTER COLUMN contractualisation SET NOT NULL;
 SELECT add_missing_table_field ('public', 'proposorientationscovs58', 'decisioncov', 'CHAR(10)');
 SELECT add_missing_table_field ('public', 'proposcontratsinsertioncovs58', 'decisioncov', 'VARCHAR(10)');
 
-UPDATE contratsinsertion 
+UPDATE contratsinsertion
 	SET decision_ci = 'N'
 	WHERE decision_ci IN ( 'A', 'R' );
 
-UPDATE contratsinsertion 
+UPDATE contratsinsertion
 	SET datevalidation_ci = null
 	WHERE decision_ci IN ( 'N', 'E' );
 
-UPDATE contratsinsertion 
+UPDATE contratsinsertion
 	SET datevalidation_ci = dd_ci
 	WHERE
 		decision_ci = 'V'
@@ -510,7 +510,7 @@ CREATE UNIQUE INDEX orientsstructs_personne_id_rgorient_idx ON orientsstructs( p
 ALTER TABLE orientsstructs ADD CONSTRAINT orientsstructs_statut_orient_oriente_rgorient_not_null_chk CHECK (
 	( statut_orient <> 'Orienté' AND rgorient IS NULL )
 	OR ( statut_orient = 'Orienté' AND rgorient IS NOT NULL )
-); 
+);
 
 -- *****************************************************************************
 -- 20110621: ajout d'une colonne origine dans la table orientations (CG 93)
@@ -635,83 +635,73 @@ CREATE UNIQUE INDEX actions_libelle_idx ON actions( libelle );
 DROP INDEX IF EXISTS actions_code_idx;
 CREATE UNIQUE INDEX actions_code_idx ON actions( code );
 
-DROP INDEX IF EXISTS decisionspdos_libelle_idx;                                                                                                                                                            
-CREATE UNIQUE INDEX decisionspdos_libelle_idx ON decisionspdos (libelle);                                                                                                                                  
-                                                                                                                                                                                                           
-DROP INDEX IF EXISTS parametresfinanciers_libellecdr_idx;                                                                                                                                                  
-CREATE UNIQUE INDEX parametresfinanciers_libellecdr_idx ON parametresfinanciers (libellecdr);                                                                                                              
-DROP INDEX IF EXISTS parametresfinanciers_lib_natureanalytique_idx;                                                                                                                                        
-CREATE UNIQUE INDEX parametresfinanciers_lib_natureanalytique_idx ON parametresfinanciers (lib_natureanalytique);                                                                                          
-DROP INDEX IF EXISTS parametresfinanciers_lib_programme_idx;                                                                                                                                               
-CREATE UNIQUE INDEX parametresfinanciers_lib_programme_idx ON parametresfinanciers (lib_programme);                                                                                                        
-                                                                                                                                                                                                           
-DROP INDEX IF EXISTS partenaires_libstruc_idx;                                                                                                                                                             
-CREATE UNIQUE INDEX partenaires_libstruc_idx ON partenaires (libstruc);                                                                                                                                    
-                                                                                                                                                                                                           
-DROP INDEX IF EXISTS piecesaccscreaentr_libelle_idx;                                                                                                                                                       
-CREATE UNIQUE INDEX piecesaccscreaentr_libelle_idx ON piecesaccscreaentr (libelle);                                                                                                                        
-                                                                                                                                                                                                           
-DROP INDEX IF EXISTS piecesacqsmatsprofs_libelle_idx;                                                                                                                                                      
-CREATE UNIQUE INDEX piecesacqsmatsprofs_libelle_idx ON piecesacqsmatsprofs (libelle);                                                                                                                      
-                                                                                                                                                                                                           
-DROP INDEX IF EXISTS piecesactsprofs_libelle_idx;                                                                                                                                                          
-CREATE UNIQUE INDEX piecesactsprofs_libelle_idx ON piecesactsprofs (libelle);                                                                                                                              
-                                                                                                                                                                                                           
-DROP INDEX IF EXISTS piecesaides66_name_idx;                                                                                                                                                               
-CREATE UNIQUE INDEX piecesaides66_name_idx ON piecesaides66 (name);                                                                                                                                        
-                                                                                                                                                                                                           
-DROP INDEX IF EXISTS piecesamenagslogts_libelle_idx;                                                                                                                                                       
-CREATE UNIQUE INDEX piecesamenagslogts_libelle_idx ON piecesamenagslogts (libelle);                                                                                                                        
-                                                                                                                                                                                                           
-DROP INDEX IF EXISTS piecesapre_libelle_idx;                                                                                                                                                               
-CREATE UNIQUE INDEX piecesapre_libelle_idx ON piecesapre (libelle);                                                                                                                                        
-                                                                                                                                                                                                           
-DROP INDEX IF EXISTS piecesformspermsfimo_libelle_idx;                                                                                                                                                     
-CREATE UNIQUE INDEX piecesformspermsfimo_libelle_idx ON piecesformspermsfimo (libelle);                                                                                                                    
-                                                                                                                                                                                                           
-DROP INDEX IF EXISTS piecesformsqualifs_libelle_idx;                                                                                                                                                       
-CREATE UNIQUE INDEX piecesformsqualifs_libelle_idx ON piecesformsqualifs (libelle);                                                                                                                        
-                                                                                                                                                                                                           
-DROP INDEX IF EXISTS pieceslocsvehicinsert_libelle_idx;                                                                                                                                                    
-CREATE UNIQUE INDEX pieceslocsvehicinsert_libelle_idx ON pieceslocsvehicinsert (libelle);                                                                                                                  
-                                                                                                                                                                                                           
-DROP INDEX IF EXISTS piecespermisb_libelle_idx;                                                                                                                                                            
-CREATE UNIQUE INDEX piecespermisb_libelle_idx ON piecespermisb (libelle);                                                                                                                                  
-                                                                                                                                                                                                           
-DROP INDEX IF EXISTS regroupementszonesgeo_lib_rgpt_idx;                                                                                                                                                   
-CREATE UNIQUE INDEX regroupementszonesgeo_lib_rgpt_idx ON regroupementszonesgeo (lib_rgpt);                                                                                                                
-                                                                                                                                                                                                           
-DROP INDEX IF EXISTS statintegrationbeneficiaire_liberalites_idx;                                                                                                                                          
-CREATE UNIQUE INDEX statintegrationbeneficiaire_liberalites_idx ON statintegrationbeneficiaire (liberalites);                                                                                              
-                                                                                                                                                                                                           
-DROP INDEX IF EXISTS statutsrdvs_libelle_idx;                                                                                                                                                              
-CREATE UNIQUE INDEX statutsrdvs_libelle_idx ON statutsrdvs (libelle);                                                                                                                                      
-                                                                                                                                                                                                           
-DROP INDEX IF EXISTS themescovs58_name_idx;                                                                                                                                                                
-CREATE UNIQUE INDEX themescovs58_name_idx ON themescovs58 (name);                                                                                                                                          
+DROP INDEX IF EXISTS decisionspdos_libelle_idx;
+CREATE UNIQUE INDEX decisionspdos_libelle_idx ON decisionspdos (libelle);
+
+DROP INDEX IF EXISTS partenaires_libstruc_idx;
+CREATE UNIQUE INDEX partenaires_libstruc_idx ON partenaires (libstruc);
+
+DROP INDEX IF EXISTS piecesaccscreaentr_libelle_idx;
+CREATE UNIQUE INDEX piecesaccscreaentr_libelle_idx ON piecesaccscreaentr (libelle);
+
+DROP INDEX IF EXISTS piecesacqsmatsprofs_libelle_idx;
+CREATE UNIQUE INDEX piecesacqsmatsprofs_libelle_idx ON piecesacqsmatsprofs (libelle);
+
+DROP INDEX IF EXISTS piecesactsprofs_libelle_idx;
+CREATE UNIQUE INDEX piecesactsprofs_libelle_idx ON piecesactsprofs (libelle);
+
+DROP INDEX IF EXISTS piecesaides66_name_idx;
+CREATE UNIQUE INDEX piecesaides66_name_idx ON piecesaides66 (name);
+
+DROP INDEX IF EXISTS piecesamenagslogts_libelle_idx;
+CREATE UNIQUE INDEX piecesamenagslogts_libelle_idx ON piecesamenagslogts (libelle);
+
+DROP INDEX IF EXISTS piecesapre_libelle_idx;
+CREATE UNIQUE INDEX piecesapre_libelle_idx ON piecesapre (libelle);
+
+DROP INDEX IF EXISTS piecesformspermsfimo_libelle_idx;
+CREATE UNIQUE INDEX piecesformspermsfimo_libelle_idx ON piecesformspermsfimo (libelle);
+
+DROP INDEX IF EXISTS piecesformsqualifs_libelle_idx;
+CREATE UNIQUE INDEX piecesformsqualifs_libelle_idx ON piecesformsqualifs (libelle);
+
+DROP INDEX IF EXISTS pieceslocsvehicinsert_libelle_idx;
+CREATE UNIQUE INDEX pieceslocsvehicinsert_libelle_idx ON pieceslocsvehicinsert (libelle);
+
+DROP INDEX IF EXISTS piecespermisb_libelle_idx;
+CREATE UNIQUE INDEX piecespermisb_libelle_idx ON piecespermisb (libelle);
+
+DROP INDEX IF EXISTS regroupementszonesgeo_lib_rgpt_idx;
+CREATE UNIQUE INDEX regroupementszonesgeo_lib_rgpt_idx ON regroupementszonesgeo (lib_rgpt);
+
+DROP INDEX IF EXISTS statutsrdvs_libelle_idx;
+CREATE UNIQUE INDEX statutsrdvs_libelle_idx ON statutsrdvs (libelle);
+
+DROP INDEX IF EXISTS themescovs58_name_idx;
+CREATE UNIQUE INDEX themescovs58_name_idx ON themescovs58 (name);
 
 DROP INDEX IF EXISTS tiersprestatairesapres_nomtiers_idx;
 CREATE UNIQUE INDEX tiersprestatairesapres_nomtiers_idx ON tiersprestatairesapres( nomtiers );
 DROP INDEX IF EXISTS tiersprestatairesapres_siret_idx;
 CREATE UNIQUE INDEX tiersprestatairesapres_siret_idx ON tiersprestatairesapres( siret );
-                                                                                                                                                                            
-DROP INDEX IF EXISTS traitementstypespdos_name_idx;                                                                                                                                                        
-CREATE UNIQUE INDEX traitementstypespdos_name_idx ON traitementstypespdos (name);                                                                                                                          
-                                                                                                                                                                                                           
-DROP INDEX IF EXISTS typesactions_libelle_idx;                                                                                                                                                             
-CREATE UNIQUE INDEX typesactions_libelle_idx ON typesactions (libelle);                                                                                                                                    
+
+DROP INDEX IF EXISTS traitementstypespdos_name_idx;
+CREATE UNIQUE INDEX traitementstypespdos_name_idx ON traitementstypespdos (name);
+
+DROP INDEX IF EXISTS typesactions_libelle_idx;
+CREATE UNIQUE INDEX typesactions_libelle_idx ON typesactions (libelle);
 
 DROP INDEX IF EXISTS typesaidesapres66_name_idx;
 CREATE UNIQUE INDEX typesaidesapres66_name_idx ON typesaidesapres66( name );
-                                                                                                                                                                                                           
-DROP INDEX IF EXISTS typesnotifspdos_libelle_idx;                                                                                                                                                          
-CREATE UNIQUE INDEX typesnotifspdos_libelle_idx ON typesnotifspdos (libelle);                                                                                                                              
-                                                                                                                                                                                                           
-DROP INDEX IF EXISTS typesorients_lib_type_orient_idx;                                                                                                                                                     
-CREATE UNIQUE INDEX typesorients_lib_type_orient_idx ON typesorients (lib_type_orient);                                                                                                                    
-                                                                                                                                                                                                           
-DROP INDEX IF EXISTS typespdos_libelle_idx;                                                                                                                                                                
-CREATE UNIQUE INDEX typespdos_libelle_idx ON typespdos (libelle);  
+
+DROP INDEX IF EXISTS typesnotifspdos_libelle_idx;
+CREATE UNIQUE INDEX typesnotifspdos_libelle_idx ON typesnotifspdos (libelle);
+
+DROP INDEX IF EXISTS typesorients_lib_type_orient_idx;
+CREATE UNIQUE INDEX typesorients_lib_type_orient_idx ON typesorients (lib_type_orient);
+
+DROP INDEX IF EXISTS typespdos_libelle_idx;
+CREATE UNIQUE INDEX typespdos_libelle_idx ON typespdos (libelle);
 
 -- *****************************************************************************
 -- 20110630: ajout d'indexes pour les performances
@@ -719,47 +709,47 @@ CREATE UNIQUE INDEX typespdos_libelle_idx ON typespdos (libelle);
 
 DROP INDEX IF EXISTS actionscandidats_partenaires_actioncandidat_id_idx;
 CREATE INDEX actionscandidats_partenaires_actioncandidat_id_idx ON actionscandidats_partenaires (actioncandidat_id);
-DROP INDEX IF EXISTS actionscandidats_partenaires_partenaire_id_idx;                                                                                                                                       
-CREATE INDEX actionscandidats_partenaires_partenaire_id_idx ON actionscandidats_partenaires (partenaire_id);                                                                                               
-                                                                                                                                                                                                           
-DROP INDEX IF EXISTS actionscandidats_zonesgeographiques_actioncandidat_id_idx;                                                                                                                            
-CREATE INDEX actionscandidats_zonesgeographiques_actioncandidat_id_idx ON actionscandidats_zonesgeographiques (actioncandidat_id);                                                                         
-DROP INDEX IF EXISTS actionscandidats_zonesgeographiques_zonegeographique_id_idx;                                                                                                                          
-CREATE INDEX actionscandidats_zonesgeographiques_zonegeographique_id_idx ON actionscandidats_zonesgeographiques (zonegeographique_id);                                                                     
+DROP INDEX IF EXISTS actionscandidats_partenaires_partenaire_id_idx;
+CREATE INDEX actionscandidats_partenaires_partenaire_id_idx ON actionscandidats_partenaires (partenaire_id);
+
+DROP INDEX IF EXISTS actionscandidats_zonesgeographiques_actioncandidat_id_idx;
+CREATE INDEX actionscandidats_zonesgeographiques_actioncandidat_id_idx ON actionscandidats_zonesgeographiques (actioncandidat_id);
+DROP INDEX IF EXISTS actionscandidats_zonesgeographiques_zonegeographique_id_idx;
+CREATE INDEX actionscandidats_zonesgeographiques_zonegeographique_id_idx ON actionscandidats_zonesgeographiques (zonegeographique_id);
 
 DROP INDEX IF EXISTS bilansparcours66_structurereferente_id_idx;
 CREATE INDEX bilansparcours66_structurereferente_id_idx ON bilansparcours66( structurereferente_id );
-                                                                                                                                                                                                           
-DROP INDEX IF EXISTS compositionsregroupementseps_fonctionmembreep_id_idx;                                                                                                                                 
-CREATE INDEX compositionsregroupementseps_fonctionmembreep_id_idx ON compositionsregroupementseps (fonctionmembreep_id);                                                                                   
-DROP INDEX IF EXISTS compositionsregroupementseps_regroupementep_id_idx;                                                                                                                                   
-CREATE INDEX compositionsregroupementseps_regroupementep_id_idx ON compositionsregroupementseps (regroupementep_id);                                                                                       
-                                                                                                                                                                                                           
-DROP INDEX IF EXISTS conditionsactivitesprealables_personne_id_idx;                                                                                                                                        
-CREATE INDEX conditionsactivitesprealables_personne_id_idx ON conditionsactivitesprealables (personne_id);                                                                                                 
-                                                                                                                                                                                                           
-DROP INDEX IF EXISTS covs58_sitecov58_id_idx;                                                                                                                                                              
-CREATE INDEX covs58_sitecov58_id_idx ON covs58 (sitecov58_id);                                                                                                                                             
-                                                                                                                                                                                                           
-DROP INDEX IF EXISTS decisionsnonrespectssanctionseps93_passagecommissionep_id_idx;                                                                                                                        
-CREATE INDEX decisionsnonrespectssanctionseps93_passagecommissionep_id_idx ON decisionsnonrespectssanctionseps93 (passagecommissionep_id);                                                                 
-                                                                                                                                                                                                           
-DROP INDEX IF EXISTS detailsressourcesmensuelles_ressourcesmensuelles_detailressourcemensuelle_id_idx;                                                                                                     
-CREATE INDEX detailsressourcesmensuelles_ressourcesmensuelles_detailressourcemensuelle_id_idx ON detailsressourcesmensuelles_ressourcesmensuelles (detailressourcemensuelle_id);                           
-DROP INDEX IF EXISTS detailsressourcesmensuelles_ressourcesmensuelles_ressourcemensuelle_id_idx;                                                                                                           
-CREATE INDEX detailsressourcesmensuelles_ressourcesmensuelles_ressourcemensuelle_id_idx ON detailsressourcesmensuelles_ressourcesmensuelles (ressourcemensuelle_id);                                       
+
+DROP INDEX IF EXISTS compositionsregroupementseps_fonctionmembreep_id_idx;
+CREATE INDEX compositionsregroupementseps_fonctionmembreep_id_idx ON compositionsregroupementseps (fonctionmembreep_id);
+DROP INDEX IF EXISTS compositionsregroupementseps_regroupementep_id_idx;
+CREATE INDEX compositionsregroupementseps_regroupementep_id_idx ON compositionsregroupementseps (regroupementep_id);
+
+DROP INDEX IF EXISTS conditionsactivitesprealables_personne_id_idx;
+CREATE INDEX conditionsactivitesprealables_personne_id_idx ON conditionsactivitesprealables (personne_id);
+
+DROP INDEX IF EXISTS covs58_sitecov58_id_idx;
+CREATE INDEX covs58_sitecov58_id_idx ON covs58 (sitecov58_id);
+
+DROP INDEX IF EXISTS decisionsnonrespectssanctionseps93_passagecommissionep_id_idx;
+CREATE INDEX decisionsnonrespectssanctionseps93_passagecommissionep_id_idx ON decisionsnonrespectssanctionseps93 (passagecommissionep_id);
+
+DROP INDEX IF EXISTS detailsressourcesmensuelles_ressourcesmensuelles_detailressourcemensuelle_id_idx;
+CREATE INDEX detailsressourcesmensuelles_ressourcesmensuelles_detailressourcemensuelle_id_idx ON detailsressourcesmensuelles_ressourcesmensuelles (detailressourcemensuelle_id);
+DROP INDEX IF EXISTS detailsressourcesmensuelles_ressourcesmensuelles_ressourcemensuelle_id_idx;
+CREATE INDEX detailsressourcesmensuelles_ressourcesmensuelles_ressourcemensuelle_id_idx ON detailsressourcesmensuelles_ressourcesmensuelles (ressourcemensuelle_id);
 
 DROP INDEX IF EXISTS decisionsnonorientationsproseps58_structurereferente_id_idx;
 CREATE INDEX decisionsnonorientationsproseps58_structurereferente_id_idx ON decisionsnonorientationsproseps58( structurereferente_id );
 
 DROP INDEX IF EXISTS decisionsnonorientationsproseps93_structurereferente_id_idx;
 CREATE INDEX decisionsnonorientationsproseps93_structurereferente_id_idx ON decisionsnonorientationsproseps93( structurereferente_id );
-                                                                                                                                                                                                           
-DROP INDEX IF EXISTS regroupementszonesgeo_zonesgeographiques_regroupementzonegeo_id_idx;                                                                                                                  
-CREATE INDEX regroupementszonesgeo_zonesgeographiques_regroupementzonegeo_id_idx ON regroupementszonesgeo_zonesgeographiques (regroupementzonegeo_id);                                                     
-DROP INDEX IF EXISTS regroupementszonesgeo_zonesgeographiques_zonegeographique_id_idx;                                                                                                                     
-CREATE INDEX regroupementszonesgeo_zonesgeographiques_zonegeographique_id_idx ON regroupementszonesgeo_zonesgeographiques (zonegeographique_id);                                                           
-                                                                                                                                                                                                           
+
+DROP INDEX IF EXISTS regroupementszonesgeo_zonesgeographiques_regroupementzonegeo_id_idx;
+CREATE INDEX regroupementszonesgeo_zonesgeographiques_regroupementzonegeo_id_idx ON regroupementszonesgeo_zonesgeographiques (regroupementzonegeo_id);
+DROP INDEX IF EXISTS regroupementszonesgeo_zonesgeographiques_zonegeographique_id_idx;
+CREATE INDEX regroupementszonesgeo_zonesgeographiques_zonegeographique_id_idx ON regroupementszonesgeo_zonesgeographiques (zonegeographique_id);
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

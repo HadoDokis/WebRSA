@@ -1,5 +1,4 @@
 <?php
-
 	class Themecov58 extends AppModel
 	{
 		public $name = 'Themecov58';
@@ -25,6 +24,18 @@
 				'counterQuery' => ''
 			),
 		);
-		
+
+		public $validate = array(
+			'name' => array(
+				array(
+					'rule' => 'isUnique',
+					'message' => 'Cette valeur est déjà utilisée'
+				),
+				array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+				)
+			)
+		);
 	}
 ?>

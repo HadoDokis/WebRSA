@@ -63,12 +63,19 @@
 					$counts[] = "COUNT({$sq}{$assoc['with']}{$eq}.{$sq}id{$eq})";
 				}
 			}
+
+			if( !empty( $counts ) ) {
+				$implodeCounts = implode( $counts, ' + ' );
+			}
+			else {
+				$implodeCounts = '0';
+			}
 	
 			// création du queryData
 			$queryData = array(
 				'fields' => array(
 					"{$model->alias}.{$model->primaryKey}",
-					implode( $counts, ' + ' )." AS {$sq}{$model->alias}__occurences{$eq}",
+					"{$implodeCounts} AS {$sq}{$model->alias}__occurences{$eq}",
 				),
 				'joins' => $joins,
 				'recursive' => -1,
@@ -111,12 +118,19 @@
 					$exists[] = "EXISTS( SELECT {$table}.{$assoc['foreignKey']} FROM {$table} WHERE {$table}.{$assoc['foreignKey']} = {$sq}{$model->alias}{$eq}.{$sq}{$model->primaryKey}{$eq} )";
 				}
 			}
+
+			if( !empty( $exists ) ) {
+				$implodeExists = implode( $exists, ' OR ' );
+			}
+			else {
+				$implodeExists = 'false';
+			}
 	
 			// création du queryData
 			$queryData = array(
 				'fields' => array(
 					"{$model->alias}.{$model->primaryKey}",
-					implode( $exists, ' OR ' )." AS {$sq}{$model->alias}__occurences{$eq}",
+					"{$implodeExists} AS {$sq}{$model->alias}__occurences{$eq}",
 				),
 				'recursive' => -1,
 				'conditions' => $conditions,
