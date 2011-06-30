@@ -70,8 +70,14 @@
 
 		public $validate = array(
 			'nomtiers' => array(
+				array(
 					'rule' => 'notEmpty',
 					'message' => 'Champ obligatoire'
+				),
+				array(
+					'rule' => 'isUnique',
+					'message' => 'Cette valeur est déjà utilisée'
+				),
 			),
 			'siret' => array(
 				array(
@@ -87,10 +93,6 @@
 					'message' => 'Le numéro SIRET est composé de 14 chiffres'
 				)
 			),
-//             'numvoie' => array(
-//                     'rule' => 'notEmpty',
-//                     'message' => 'Champ obligatoire'
-//             ),
 			'typevoie' => array(
 					'rule' => 'notEmpty',
 					'message' => 'Champ obligatoire'

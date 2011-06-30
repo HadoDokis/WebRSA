@@ -68,6 +68,15 @@
 			)
 		);
 
+		public $validate = array(
+			'name' => array(
+				array(
+					'rule' => 'isUnique',
+					'message' => 'Cette valeur est déjà utilisée'
+				),
+			),
+		);
+
 		/**
 		*
 		*/
