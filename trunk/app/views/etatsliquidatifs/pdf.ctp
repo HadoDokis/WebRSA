@@ -109,3 +109,15 @@
 		</tr>
 	</tbody>
 </table>
+	<?php
+		echo $default->button(
+		    'back',
+		    array(
+		        'controller' => 'etatsliquidatifs',
+		        'action'     => 'index'
+		    ),
+		    array(
+		        'id' => 'Back'
+		    )
+		);
+	?>
