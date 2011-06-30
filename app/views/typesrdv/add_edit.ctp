@@ -30,3 +30,15 @@
 
 	<?php echo $form->submit( 'Enregistrer' );?>
 <?php echo $form->end();?>
+<?php
+	echo $default->button(
+		'back',
+		array(
+			'controller' => 'typesrdv',
+			'action'     => 'index'
+		),
+		array(
+			'id' => 'Back'
+		)
+	);
+?>

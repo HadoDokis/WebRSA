@@ -57,7 +57,7 @@
 					array( 'class' => 'odd' ),
 					array( 'class' => 'even' )
 				);
-				if( Configure::read( 'ActioncandidatPersonne.suffixe' ) == 'cg66' ){
+				if( Configure::read( 'Cg.departement' ) == 66 ){
 					echo $xhtml->tableCells(
 						array(
 							h( 'Fiches de Candidature' ),
@@ -70,7 +70,7 @@
 						array( 'class' => 'even' )
 					);
 				}
-				else if( Configure::read( 'ActioncandidatPersonne.suffixe' ) == 'cg93' ){
+				else if( Configure::read( 'Cg.departement' ) == 93 ){
 					echo $xhtml->tableCells(
 						array(
 							h( 'Fiches de Liaison' ),

@@ -28,3 +28,15 @@
 
 	<?php echo $form->submit( 'Enregistrer' );?>
 <?php echo $form->end();?>
+<?php
+	echo $default->button(
+		'back',
+		array(
+			'controller' => 'statutsrdvs',
+			'action'     => 'index'
+		),
+		array(
+			'id' => 'Back'
+		)
+	);
+?>
