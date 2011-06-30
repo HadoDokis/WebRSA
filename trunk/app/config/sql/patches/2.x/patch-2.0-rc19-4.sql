@@ -704,7 +704,10 @@ DROP INDEX IF EXISTS typespdos_libelle_idx;
 CREATE UNIQUE INDEX typespdos_libelle_idx ON typespdos (libelle);
 
 DROP INDEX IF EXISTS servicesinstructeurs_lib_service_idx;
-CREATE UNIQUE INDEX servicesinstructeurs_libelle_idx ON servicesinstructeurs (lib_service);
+CREATE UNIQUE INDEX servicesinstructeurs_lib_service_idx ON servicesinstructeurs (lib_service);
+
+DROP INDEX IF EXISTS permanences_libpermanence_idx;
+CREATE UNIQUE INDEX permanences_libpermanence_idx ON servicesinstructeurs (libpermanence);
 
 -- *****************************************************************************
 -- 20110630: ajout d'indexes pour les performances
