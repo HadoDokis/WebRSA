@@ -16,10 +16,6 @@
 					'rule' => 'notEmpty',
 					'message' => 'Champ obligatoire'
 				),
-				array(
-					'rule' => 'isUnique',
-					'message' => 'Valeur déjà utilisée'
-				)
 			),
 			'typevoie' => array(
 				array(

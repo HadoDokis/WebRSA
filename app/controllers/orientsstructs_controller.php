@@ -352,8 +352,10 @@
 			$this->_setOptions();
 			$this->set( 'personne_id', $personne_id );
 
-			$this->set( 'rgorient_max', $this->Orientstruct->rgorientMax( $personne_id ) );
-			if ( Configure::read( 'Cg.departement' ) == 58 && $this->Orientstruct->rgorientMax( $personne_id ) <=1 ) {
+			$force_edit = false;
+			$rgorient_max = $this->Orientstruct->rgorientMax( $personne_id );
+
+			if ( Configure::read( 'Cg.departement' ) == 58 && $rgorient_max <=1 ) {
 				$ajout_possible = $this->Orientstruct->Personne->Dossiercov58->ajoutPossible( $personne_id ) && $this->Orientstruct->ajoutPossible( $personne_id );
 				$nbdossiersnonfinalisescovs = $this->Orientstruct->Personne->Dossiercov58->find(
 					'count',
@@ -380,6 +382,13 @@
 			else {
 				$this->set( 'ajout_possible', $this->Orientstruct->ajoutPossible( $personne_id ) );
 			}
+
+			if( Configure::read( 'Cg.departement' ) == 93 ) {
+				$force_edit = ( $rgorient_max == 0 );
+			}
+
+			$this->set( 'force_edit', $force_edit );
+			$this->set( 'rgorient_max', $rgorient_max );
 			$this->set( 'last_orientstruct_id', @$orientstructs[0]['Orientstruct']['id'] );
 		}
 

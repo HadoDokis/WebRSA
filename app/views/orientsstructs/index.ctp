@@ -53,7 +53,7 @@
 					$xhtml->addLink(
 						'Préconiser une orientation',
 						array( 'controller' => 'orientsstructs', 'action' => 'add', $personne_id ),
-						$ajout_possible && $permissions->check( 'orientsstructs', 'add' )
+						!$force_edit && $ajout_possible && $permissions->check( 'orientsstructs', 'add' )
 					).
 				' </li>';
 			?>
