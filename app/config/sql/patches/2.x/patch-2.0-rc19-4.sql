@@ -716,6 +716,9 @@ CREATE UNIQUE INDEX originespdos_libelle_idx ON originespdos (libelle);
 DROP INDEX IF EXISTS statutspdos_libelle_idx;
 CREATE UNIQUE INDEX statutspdos_libelle_idx ON statutspdos (libelle);
 
+DROP INDEX IF EXISTS motifssortie_name_idx;
+CREATE UNIQUE INDEX motifssortie_name_idx ON motifssortie (name);
+
 -- *****************************************************************************
 -- 20110630: ajout d'indexes pour les performances
 -- *****************************************************************************
@@ -767,6 +770,7 @@ CREATE INDEX regroupementszonesgeo_zonesgeographiques_zonegeographique_id_idx ON
 -- 20110630: ajout de contraintes not null
 -- *****************************************************************************
 ALTER TABLE originespdos ALTER COLUMN libelle SET NOT NULL;
+ALTER TABLE motifssortie ALTER COLUMN name SET NOT NULL;
 
 -- *****************************************************************************
 COMMIT;

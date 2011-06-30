@@ -1,53 +1,53 @@
 <?php
 
-    class MotifssortieController extends AppController 
-    {
-        var $name = 'Motifssortie';
-        var $uses = array( 'Motifsortie', 'Option' );
-        var $helpers = array( 'Xform', 'Default', 'Theme' );
-        var $components = array( 'Default' );
-        
-		var $commeDroit = array(
+	class MotifssortieController extends AppController 
+	{
+		public $name = 'Motifssortie';
+		public $uses = array( 'Motifsortie', 'Option' );
+		public $helpers = array( 'Xform', 'Default', 'Default2', 'Theme' );
+		public $components = array( 'Default' );
+		
+		public $commeDroit = array(
 			'view' => 'Motifssortie:index',
 			'add' => 'Motifssortie:edit'
 		);
 
-        /**
-        *   Ajout à la suite de l'utilisation des nouveaux helpers
-        *   - default.php
-        *   - theme.php
-        */
+		/**
+		*   Ajout à la suite de l'utilisation des nouveaux helpers
+		*   - default.php
+		*   - theme.php
+		*/
 
-        public function index() {
-            $this->set(
-                Inflector::tableize( $this->modelClass ),
-                $this->paginate( $this->modelClass )
-            );
-        }
+		public function index() {
+			$this->set(
+				Inflector::tableize( $this->modelClass ),
+				$this->paginate( $this->modelClass )
+			);
+		}
 
-        /**
-        *
-        */
+		/**
+		*
+		*/
 
-        public function add() {
-            $args = func_get_args();
-            call_user_func_array( array( $this, '_add_edit' ), $args );
-        }
+		public function add() {
+			$args = func_get_args();
+			call_user_func_array( array( $this, '_add_edit' ), $args );
+		}
 
-        /**
-        *
-        */
+		/**
+		*
+		*/
 
-        public function edit() {
-            $args = func_get_args();
-            call_user_func_array( array( $this, '_add_edit' ), $args );
-        }
+		public function edit() {
+			$args = func_get_args();
+			call_user_func_array( array( $this, '_add_edit' ), $args );
+		}
 
-        /**
-        *
-        */
+		/**
+		*
+		*/
 
-        function _add_edit( $id = null){
+		function _add_edit( $id = null){
 //            $args = func_get_args();
 //            $this->Default->{$this->action}( $args );
 			if( !empty( $this->data ) ) {
@@ -71,24 +71,24 @@
 			}
 
 			$this->render( null, null, 'add_edit' );            
-        }
+		}
 
-        /**
-        *
-        */
+		/**
+		*
+		*/
 
-        public function delete( $id ) {
-            $this->Default->delete( $id );
-        }
+		public function delete( $id ) {
+			$this->Default->delete( $id );
+		}
 
-        /**
-        *
-        */
+		/**
+		*
+		*/
 
-        public function view( $id ) {
+		public function view( $id ) {
 
-            $this->Default->view( $id );
-        }
+			$this->Default->view( $id );
+		}
 
-    }
+	}
 ?>
