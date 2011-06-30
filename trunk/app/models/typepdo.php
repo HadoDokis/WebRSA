@@ -9,8 +9,14 @@
 
 		public $validate = array(
 			'libelle' => array(
+				array(
 					'rule' => 'notEmpty',
 					'message' => 'Champ obligatoire'
+				),
+				array(
+					'rule' => 'isUnique',
+					'message' => 'Valeur déjà utilisée'
+				),
 			)
 		);
 

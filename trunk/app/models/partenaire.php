@@ -12,6 +12,10 @@
 		public $validate = array(
 			'libstruc' => array(
 				array(
+					'rule' => 'isUnique',
+					'message' => 'Cette valeur est déjà utilisée'
+				),
+				array(
 					'rule' => array('notEmpty'),
 				),
 			),
