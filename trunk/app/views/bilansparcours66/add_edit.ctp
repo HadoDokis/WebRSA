@@ -55,7 +55,7 @@
 		<?php
 			echo $default->subform(
 				array(
-					'Bilanparcours66.typeformulaire' => array( 'type' => 'radio' )
+					'Bilanparcours66.typeformulaire' => array( 'type' => 'radio', 'value' => $typeformulaire )
 				),
 				array(
 					'options' => $options
@@ -964,6 +964,19 @@ elseif ( $this->action == 'edit' && isset( $passagecommissionep['Decisiondefauti
 			false,
 			true
 		);
+
+
+		observeDisableFieldsOnRadioValue(
+                    'Bilan',
+                    'data[Bilanparcours66][proposition]',
+                    [ 
+                        'Bilanparcours66Observbenefcompterendu'
+		    ],
+                    ['parcours', 'traitement', undefined],
+                    false,
+		    true
+                );
+
 
 		/*observeDisableFieldsetOnRadioValue(
 			'Bilan',
