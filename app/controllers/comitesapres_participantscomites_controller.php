@@ -99,6 +99,7 @@
                         $this->data['Comiteapre']['id'] = $comiteapre_id;
                     }
                 }
+                $this->set( 'comiteapre_id', $comiteapre_id );
                 $this->_setOptions();
                 $this->Comiteapre->commit();
                 $this->render( $this->action, null, 'add_edit' );

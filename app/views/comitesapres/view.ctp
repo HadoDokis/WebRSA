@@ -97,6 +97,7 @@
 						).' </li>';
 					?>
 				</ul>
+				<p class="notice">Aucun participant présent.</p>
 			<?php endif;?>
 		</div>
 	<?php endif;?>
@@ -156,21 +157,21 @@
 									$apre = $apre['Apre'];
 									$isRecours = Set::classicExtract( $apre, 'ApreComiteapre.comite_pcd_id' );
 									$isRecours = !empty( $isRecours );
-//                                     debug($apre);
+// 			debug($apre);
 									if( !$isRecours ) {
 										echo $xhtml->tableCells(
 											array(
 												h( Set::classicExtract( $apre, 'numeroapre' ) ),
 												h( Set::classicExtract( $apre, 'Personne.nir' ) ),
 												h( Set::classicExtract( $apre, 'Personne.qual' ).' '.Set::classicExtract( $apre, 'Personne.nom' ).' '.Set::classicExtract( $apre, 'Personne.prenom' ) ),
-												h( Set::classicExtract( $apre, 'Adresse.locaadr' ) ),
+												h( Set::classicExtract( $apre, 'Personne.Foyer.Adressefoyer.0.Adresse.locaadr' ) ),
 												h( Set::enum( Set::classicExtract( $apre, 'referent_id' ), $referent) ),
 												h( date_short( Set::classicExtract( $apre, 'datedemandeapre' ) ) ),
 												h( Set::classicExtract( $apre, 'quota' ) ),
 												$xhtml->viewLink(
 													'Voir les apres',
 													array( 'controller' => 'apres', 'action' => 'index', Set::classicExtract( $apre, 'personne_id' ) ),
-													$permissions->check( 'comitesapres', 'index' )
+													$permissions->check( 'apres', 'index' )
 												)
 											),
 											array( 'class' => 'odd' ),
@@ -236,7 +237,7 @@
 												h( Set::classicExtract( $apre, 'numeroapre' ) ),
 												h( Set::classicExtract( $apre, 'Personne.nir' ) ),
 												h( Set::classicExtract( $apre, 'Personne.qual' ).' '.Set::classicExtract( $apre, 'Personne.nom' ).' '.Set::classicExtract( $apre, 'Personne.prenom' ) ),
-												h( Set::classicExtract( $apre, 'Adresse.locaadr' ) ),
+												h( Set::classicExtract( $apre, 'Personne.Foyer.Adressefoyer.0.Adresse.locaadr' ) ),
 												h( Set::enum( Set::classicExtract( $apre, 'referent_id' ), $referent ) ),
 												h( date_short( Set::classicExtract( $apre, 'datedemandeapre' ) ) ),
 												h( Set::enum( Set::classicExtract( $apre, 'ApreComiteapre.recoursapre' ), $options['recoursapre'] ) ),

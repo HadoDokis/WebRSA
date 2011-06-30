@@ -76,7 +76,22 @@
 
         <?php echo $xform->submit( 'Enregistrer' );?>
     <?php echo $xform->end();?>
+
+
         <?php endif;?>
+	<?php
+		echo $default->button(
+		    'back',
+		    array(
+		        'controller' => 'comitesapres',
+		        'action'     => 'view',
+		        $comiteapre_id
+		    ),
+		    array(
+		        'id' => 'Back'
+		    )
+		);
+	?>        
 <script type="text/javascript">
 //<![CDATA[
     function allCheckboxes( checked ) {
