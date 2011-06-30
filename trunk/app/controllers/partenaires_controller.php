@@ -1,96 +1,87 @@
 <?php
 
-    class PartenairesController extends AppController 
-    {
-        var $name = 'Partenaires';
-        var $uses = array( 'Partenaire', 'ActioncandidatPartenaire', 'Option', 'Personne' );
-        var $helpers = array( 'Xform', 'Default', 'Theme' );
-        var $components = array( 'Default' );
-        
-		var $commeDroit = array(
+	class PartenairesController extends AppController 
+	{
+		public $name = 'Partenaires';
+		public $uses = array( 'Partenaire', 'ActioncandidatPartenaire', 'Option', 'Personne' );
+		public $helpers = array( 'Xform', 'Default', 'Default2', 'Theme' );
+		public $components = array( 'Default' );
+		
+		public $commeDroit = array(
 			'view' => 'Partenaires:index',
 			'add' => 'Partenaires:edit'
 		);
 
-        /**
-        *
-        */
+		/**
+		*
+		*/
 
-        function beforeFilter() {
-            $return = parent::beforeFilter();
+		public function beforeFilter() {
+			$return = parent::beforeFilter();
 
-            $options = array();
-            /*foreach( $this->{$this->modelClass}->allEnumLists() as $field => $values ) {
-                $options = Set::insert( $options, "{$this->modelClass}.{$field}", $values );
-            }*/
-            $options = Set::insert( $options, 'Partenaire.typevoie', $this->Option->typevoie() );
+			$options = array();
+			$options = Set::insert( $options, 'Partenaire.typevoie', $this->Option->typevoie() );
 
-//             $this->set( 'typevoie', $this->Option->typevoie() );
-
-            $this->set( compact( 'options'/*, 'typevoie'*/ ) );
-// debug($options);
-            return $return;
-        }
+			$this->set( compact( 'options' ) );
+			return $return;
+		}
 
 
-        /**
-        *   Ajout à la suite de l'utilisation des nouveaux helpers
-        *   - default.php
-        *   - theme.php
-        */
+		/**
+		*   Ajout à la suite de l'utilisation des nouveaux helpers
+		*   - default.php
+		*   - theme.php
+		*/
 
-        public function index() {
-            $this->set(
-                Inflector::tableize( $this->modelClass ),
-                $this->paginate( $this->modelClass )
-            );
-        }
+		public function index() {
+			$this->set(
+				Inflector::tableize( $this->modelClass ),
+				$this->paginate( $this->modelClass )
+			);
+		}
 
-        /**
-        *
-        */
+		/**
+		*
+		*/
 
-        public function add() {
-            $args = func_get_args();
-            call_user_func_array( array( $this, '_add_edit' ), $args );
-        }
+		public function add() {
+			$args = func_get_args();
+			call_user_func_array( array( $this, '_add_edit' ), $args );
+		}
 
-        /**
-        *
-        */
+		/**
+		*
+		*/
 
-        public function edit() {
-            $args = func_get_args();
-            call_user_func_array( array( $this, '_add_edit' ), $args );
-        }
+		public function edit() {
+			$args = func_get_args();
+			call_user_func_array( array( $this, '_add_edit' ), $args );
+		}
 
-        /**
-        *
-        */
+		/**
+		*
+		*/
 
-        function _add_edit(){
-            $args = func_get_args();
-            $this->Default->{$this->action}( $args );
-        }
+		function _add_edit(){
+			$args = func_get_args();
+			$this->Default->{$this->action}( $args );
+		}
 
-        /**
-        *
-        */
+		/**
+		*
+		*/
 
-        public function delete( $id ) {
-            $this->Default->delete( $id );
-        }
+		public function delete( $id ) {
+			$this->Default->delete( $id );
+		}
 
-        /**
-        *
-        */
+		/**
+		*
+		*/
 
-        public function view( $id ) {
-//          debug( $this->{$this->modelClass}->getColumnType( 'count_posts', true ) );
-//          debug( $this->{$this->modelClass}->getColumnTypes( true ) );
-//          debug( $this->{$this->modelClass}->findById( $id, null, null, 2 ) ); // FIXME: virtual fields avec recursive => 2
-            $this->Default->view( $id );
-        }
+		public function view( $id ) {
+			$this->Default->view( $id );
+		}
 
-    }
+	}
 ?>

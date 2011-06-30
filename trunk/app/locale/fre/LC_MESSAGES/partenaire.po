@@ -33,6 +33,9 @@ msgstr "Ajouter un partenaire"
 msgid "Partenaires::edit"
 msgstr "Modification d'un partenaire"
 
+msgid "Partenaires::delete"
+msgstr "Suppression d'un partenaire"
+
 msgid "Partenaire::edit"
 msgstr "Modifier le partenaire"
 
@@ -40,6 +43,9 @@ msgid "Partenaire::delete"
 msgstr "Supprimer le partenaire"
 
 msgid "Partenaire::delete::confirm"
+msgstr "Confirmer la suppression du partenaire ?"
+
+msgid "Partenaires::delete::confirm"
 msgstr "Confirmer la suppression du partenaire ?"
 
 msgid "Partenaire.libstruc"
