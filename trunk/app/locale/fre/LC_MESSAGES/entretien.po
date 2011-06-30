@@ -74,7 +74,7 @@ msgid "ENUM::RENDEZVOUSPREVU::N"
 msgstr "Non"
 
 msgid "Entretien.structurereferente_id"
-msgstr "Lieu de l'entretien"
+msgstr "Structure référente"
 
 msgid "Entretien.referent_id"
 msgstr "Réalisé par"
