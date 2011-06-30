@@ -40,5 +40,11 @@
 		</tbody>
 	</table>
 
-	<?php echo $form->submit( 'Enregistrer' );?>
+	<div class="submit">
+		<?php
+			echo $xform->submit( 'Enregistrer', array( 'div' => false ) );
+			echo $xform->submit( 'Annuler', array( 'name' => 'Cancel', 'div' => false ) );
+		?>
+	</div>
+
 <?php echo $form->end();?>

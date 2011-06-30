@@ -31,6 +31,11 @@
 		}
 
 		public function add() {
+			// Retour à l'index en cas d'annulation
+			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
+				$this->redirect( array( 'action' => 'index' ) );
+			}
+
 			$this->set( 'options', $this->Typeorient->listOptions() );
 
 			$typesorients = $this->Typeorient->find(
@@ -63,11 +68,15 @@
 				}
 			}
 
-
-		$this->render( $this->action, null, 'add_edit' );
+			$this->render( $this->action, null, 'add_edit' );
 		}
 
 		public function edit( $typeorient_id = null ) {
+			// Retour à l'index en cas d'annulation
+			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
+				$this->redirect( array( 'action' => 'index' ) );
+			}
+
 			// TODO : vérif param
 			// Vérification du format de la variable
 			$this->assert( valid_int( $typeorient_id ), 'error404' );
