@@ -59,8 +59,12 @@
             <?php echo $form->input( 'Filtre.structurereferente_id', array( 'label' => __d( 'rendezvous', 'Rendezvous.lib_struct', true ), 'type' => 'select', 'options' => $struct, 'empty' => true ) ); ?>
             <?php echo $form->input( 'Filtre.referent_id', array( 'label' => __( 'Nom du référent', true ), 'type' => 'select', 'options' => $referents, 'empty' => true ) ); ?>
             <?php echo $ajax->observeField( 'FiltreStructurereferenteId', array( 'update' => 'FiltreReferentId', 'url' => Router::url( array( 'action' => 'ajaxreferent' ), true ) ) );?>
-            <?php echo $form->input( 'Filtre.decisioncui', array( 'label' => 'Statut du contrat', 'type' => 'select', 'options' => $options['decisioncui'], 'empty' => true ) ); ?>
-            <?php echo $form->input( 'Filtre.datevalidationcui', array( 'label' => '', 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true)  ); ?>
+            <?php
+				if( ( $this->action == 'valides' || $this->action == 'enattente' ) ) {
+					echo $form->input( 'Filtre.decisioncui', array( 'label' => 'Statut du contrat', 'type' => 'select', 'options' => $options['decisioncui'], 'empty' => true ) );
+					echo $form->input( 'Filtre.datevalidationcui', array( 'label' => '', 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true)  );
+				}
+			?>
 
     </fieldset>
 
