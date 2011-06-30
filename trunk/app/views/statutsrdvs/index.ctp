@@ -55,7 +55,7 @@
 								array( 'controller' => 'statutsrdvs', 'action' => 'edit', $statutrdv['Statutrdv']['id'] )
 							),
 							$xhtml->deleteLink(
-								'Supprimer le type d\'action',
+								'Supprimer le statut',
 								array( 'controller' => 'statutsrdvs', 'action' => 'delete', $statutrdv['Statutrdv']['id'] )
 							)
 						)
