@@ -141,6 +141,7 @@
 		    array(
 		        'controller' => 'etatsliquidatifs',
 		        'action'     => 'index'
+			),
 		    array(
 		        'id' => 'Back'
 		    )

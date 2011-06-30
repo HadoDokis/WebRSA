@@ -17,3 +17,15 @@
 	echo $xform->submit( 'Enregistrer' );
 	echo $xform->end();
 ?>
+<?php
+	echo $default->button(
+		'back',
+		array(
+			'controller' => 'budgetsapres',
+			'action'     => 'index'
+		),
+		array(
+			'id' => 'Back'
+		)
+	);
+?>
