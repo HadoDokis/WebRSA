@@ -34,10 +34,13 @@ msgstr "Ajouter un motif de sortie"
 msgid "Motifsortie::edit"
 msgstr "Modifier le motif de sortie"
 
-msgid "Motifsortie::delete"
+msgid "Motifssortie::delete"
 msgstr "Supprimer le motif de sortie"
 
 msgid "Motifsortie::delete::confirm"
+msgstr "Êtes-vous sûr de vouloir supprimer le motif de sortie ?"
+
+msgid "Motifssortie::delete::confirm"
 msgstr "Êtes-vous sûr de vouloir supprimer le motif de sortie ?"
 
 msgid "Motifssortie::add"
