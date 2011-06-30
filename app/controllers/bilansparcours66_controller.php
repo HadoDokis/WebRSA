@@ -724,11 +724,35 @@
 					)
 				)
 			);
+			
+			
+			//Précochage du bouton radio selon le type d'orientation de l'allocataire
+			$typeformulaire = 'cg';
+			$orientation = $this->Bilanparcours66->Orientstruct->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Orientstruct.personne_id' => $personne_id
+					),
+					'contain' => array(
+						'Typeorient'
+					)
+				)
+			);
+			$typeorient_id = Set::classicExtract( $orientation, 'Typeorient.id' );
+			
+			if( $this->Bilanparcours66->Orientstruct->Typeorient->isProOrientation($typeorient_id) ){
+				$typeformulaire = 'pe';
+			}
+
+
+
 
 			$this->set( 'typevoie', $this->Option->typevoie() );
 			$this->set( 'rolepers', $this->Option->rolepers() );
 			$this->set( 'qual', $this->Option->qual() );
 			$this->set( 'nationalite', $this->Option->nationalite() );
+			$this->set( 'typeformulaire', $typeformulaire );
 
 			$this->set( compact( 'personne' ) );
 			$this->_setOptions();
