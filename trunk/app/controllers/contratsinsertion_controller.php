@@ -618,6 +618,7 @@
 						'Contratinsertion.date_saisi_ci',
 						'Contratinsertion.lieu_saisi_ci',
 						'Action.libelle',
+						'Actioninsertion.dd_action',
 						'Structurereferente.lib_struc',
 						'Structurereferente.typeorient_id',
 						'Referent.nom_complet',
@@ -634,6 +635,13 @@
 							'type'       => 'LEFT OUTER',
 							'foreignKey' => false,
 							'conditions' => array( 'Contratinsertion.engag_object = Action.code' )
+						),
+						array(
+							'table'      => 'actionsinsertion', // FIXME
+							'alias'      => 'Actioninsertion',
+							'type'       => 'LEFT OUTER',
+							'foreignKey' => false,
+							'conditions' => array( 'Actioninsertion.contratinsertion_id = Contratinsertion.id' )
 						)
 					),
 					'recursive' => 0
@@ -998,9 +1006,9 @@
 
 				if( isset( $this->data['Actioninsertion'] ) ) {
 					$isActioninsertion = Set::filter( $this->data['Actioninsertion'] );
-					if( $this->action == 'add' ) {
+// 					if( $this->action == 'add' ) {
 						$this->{$this->modelClass}->Actioninsertion->set( 'contratinsertion_id', $this->{$this->modelClass}->id );
-					}
+// 					}
 
 					if( !empty( $isActioninsertion ) ){
 						$success = $this->Contratinsertion->Actioninsertion->save( array( 'Actioninsertion' => $this->data['Actioninsertion'] ) ) && $success;
@@ -1229,7 +1237,20 @@
 		*/
 
 		public function delete( $id ) {
-			$this->Default->delete( $id );
+
+			$this->{$this->modelClass}->begin();
+			$success = $this->{$this->modelClass}->Actioninsertion->deleteAll( array( 'Actioninsertion.contratinsertion_id' => $id ) );
+			$success = $this->{$this->modelClass}->delete( $id ) && $success;
+			$this->_setFlashResult( 'Delete', $success );
+
+			if( $success ) {
+				$this->{$this->modelClass}->commit();
+			}
+			else {
+				$this->{$this->modelClass}->rollback();
+			}
+
+			$this->redirect( Router::url( $this->referer(), true ) );
 		}
 
 

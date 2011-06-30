@@ -73,6 +73,7 @@
 					'Contratinsertion.obsta_renc',
 					'Contratinsertion.nature_projet',
 					'Action.libelle' => array( 'label' => 'Action engagée' ),
+					'Actioninsertion.dd_action' => array( 'label' => 'Date de début de l\'action' ),
 					'Contratinsertion.duree_engag' => array( 'type' => 'text', 'value' => $duree ),
 					'Contratinsertion.dd_ci',
 					'Contratinsertion.df_ci',
