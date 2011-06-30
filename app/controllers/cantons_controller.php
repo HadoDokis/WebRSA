@@ -76,6 +76,11 @@
         */
 
         protected function _add_edit( $id = null ) {
+			// Retour à l'index en cas d'annulation
+			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
+				$this->redirect( array( 'action' => 'index' ) );
+			}
+
             if( $this->action == 'edit' ) {
                 $canton = $this->Canton->findById( $id, null, null, -1 );
                 $this->assert( !empty( $canton ), 'invalidParameter' );
