@@ -706,8 +706,9 @@ CREATE UNIQUE INDEX typespdos_libelle_idx ON typespdos (libelle);
 DROP INDEX IF EXISTS servicesinstructeurs_lib_service_idx;
 CREATE UNIQUE INDEX servicesinstructeurs_lib_service_idx ON servicesinstructeurs (lib_service);
 
-DROP INDEX IF EXISTS permanences_libpermanence_idx;
-CREATE UNIQUE INDEX permanences_libpermanence_idx ON permanences (libpermanence);
+-- FIXME: ne passe pas actuellement au CG 66
+-- DROP INDEX IF EXISTS permanences_structurereferente_id_libpermanence_idx;
+-- CREATE UNIQUE INDEX permanences_structurereferente_id_libpermanence_idx ON permanences (structurereferente_id, libpermanence);
 
 DROP INDEX IF EXISTS originespdos_libelle_idx;
 CREATE UNIQUE INDEX originespdos_libelle_idx ON originespdos (libelle);
