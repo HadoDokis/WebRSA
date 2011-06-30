@@ -152,7 +152,7 @@
 		*
 		*/
 
-		public function occurences() {
+		/*public function occurences() {
 			// Orientstruct
 			$queryData = array(
 				'fields' => array(
@@ -181,7 +181,7 @@
 			$results = $this->find( 'all', $queryData );
 
 			return Set::combine( $results, '{n}.Typeorient.id', '{n}.Typeorient.occurences' );
-		}
+		}*/
 
 		/**
 		*   Recherche du type d'orientation qui n'a plus de parent
