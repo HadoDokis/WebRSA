@@ -241,34 +241,10 @@
                 if( !empty( $apre_etatliquidatif ) ){
                     $this->set( 'apre_etatliquidatif', $apre_etatliquidatif );
                 }
-
-// 		$aidesApre = array();
-// 		foreach( $apres as $key => $apre ) {
-// 		  $modelLie = Set::classicExtract( $apre, 'Apre.Natureaide' );
-//
-// 		    foreach( $modelLie as $natureaide => $nombre ) {
-// 		      if( $nombre > 0 ) {
-// 			$aidesApre = $natureaide;
-// // 			foreach( $natureaide as $model ){
-// 			  if( in_array( $natureaide, $this->Apre->modelsFormation ) ){
-// //       		      debug($natureaide);
-// 			      $dest = 'tiersprestataire';
-// 			  }
-// 			  else{
-// 			      $dest = 'beneficiaire';
-// 			  }
-// 		    $this->set( 'dest', $dest );
-//
-// 			}
-//
-//                     }
-// 		  }
-// 		}
-
             }
 
-// debug($apres);
-            $this->set( compact( 'apres' ) );
+
+            $this->set( compact( 'apres', 'etatliquidatif' ) );
         }
 
         /**
@@ -362,19 +338,25 @@
 				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'apreforfaitaire-%s.pdf', date( 'Y-m-d' ) ) );
             }
             else if( $typeapre == 'C' && $dest == 'tiersprestataire' ) {
-                // FIXME: dans le modèle
-                $apre['Apre']['pourcentallocation'] = round( Set::classicExtract( $apre, 'Apre.allocation' ) / Set::classicExtract( $apre, 'Apre.montantaverser' ) * 100, 0 );
-                //$apre['Apre']['restantallocation'] = number_format( Set::classicExtract( $apre, 'Apre.montantaverser' ) - Set::classicExtract( $apre, 'Apre.allocation' ), 2 );
-                $apre['Apre']['restantallocation'] = number_format( Set::classicExtract( $apre, 'Apre.montantdejaverse' ) - Set::classicExtract( $apre, 'Apre.montantaverser' ), 2 );
+				$montantaverser = Set::classicExtract( $apre, 'Apre.montantaverser' );
+				if( $montantaverser != 0 ){
+					// FIXME: dans le modèle
+					$apre['Apre']['pourcentallocation'] = round( Set::classicExtract( $apre, 'Apre.allocation' ) / Set::classicExtract( $apre, 'Apre.montantaverser' ) * 100, 0 );
+					//$apre['Apre']['restantallocation'] = number_format( Set::classicExtract( $apre, 'Apre.montantaverser' ) - Set::classicExtract( $apre, 'Apre.allocation' ), 2 );
+					$apre['Apre']['restantallocation'] = number_format( Set::classicExtract( $apre, 'Apre.montantdejaverse' ) - Set::classicExtract( $apre, 'Apre.montantaverser' ), 2 );
+				}
 
 				$pdf = $this->Etatliquidatif->Apre->ged( $apre, 'APRE/Paiement/paiement_'.$dest.'.odt' );
 				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'paiement_'.$dest.'-%s.pdf', date( 'Y-m-d' ) ) );
             }
             else if( $typeapre == 'C' && $dest == 'beneficiaire' ) {
-                // FIXME: dans le modèle
-                $apre['Apre']['pourcentallocation'] = round( Set::classicExtract( $apre, 'Apre.allocation' ) / Set::classicExtract( $apre, 'Apre.montantaverser' ) * 100, 0 );
-                //$apre['Apre']['restantallocation'] = number_format( Set::classicExtract( $apre, 'Apre.montantaverser' ) - Set::classicExtract( $apre, 'Apre.allocation' ), 2 );
-                $apre['Apre']['restantallocation'] = number_format( Set::classicExtract( $apre, 'Apre.montantdejaverse' ) - Set::classicExtract( $apre, 'Apre.montantaverser' ), 2 );
+				$montantaverser = Set::classicExtract( $apre, 'Apre.montantaverser' );
+				if( $montantaverser != 0 ){
+					// FIXME: dans le modèle
+					$apre['Apre']['pourcentallocation'] = round( Set::classicExtract( $apre, 'Apre.allocation' ) / Set::classicExtract( $apre, 'Apre.montantaverser' ) * 100, 0 );
+					//$apre['Apre']['restantallocation'] = number_format( Set::classicExtract( $apre, 'Apre.montantaverser' ) - Set::classicExtract( $apre, 'Apre.allocation' ), 2 );
+					$apre['Apre']['restantallocation'] = number_format( Set::classicExtract( $apre, 'Apre.montantdejaverse' ) - Set::classicExtract( $apre, 'Apre.montantaverser' ), 2 );
+				}
 
 				$pdf = $this->Etatliquidatif->Apre->ged( $apre, 'APRE/Paiement/paiement_'.$typeformation.'_'.$dest.'.odt' );
 				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'paiement_'.$typeformation.'_'.$dest.'-%s.pdf', date( 'Y-m-d' ) ) );
