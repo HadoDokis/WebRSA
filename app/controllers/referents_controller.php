@@ -2,11 +2,11 @@
 	class ReferentsController extends AppController
 	{
 
-		var $name = 'Referents';
-		var $uses = array( 'Referent', 'Structurereferente', 'Option' );
-		var $helpers = array( 'Xform' );
+		public $name = 'Referents';
+		public $uses = array( 'Referent', 'Structurereferente', 'Option' );
+		public $helpers = array( 'Xform' );
 
-		var $commeDroit = array(
+		public $commeDroit = array(
 			'add' => 'Referents:edit'
 		);
 
@@ -77,6 +77,10 @@
 		*/
 
 		public function _add_edit() {
+			// Retour à l'index en cas d'annulation
+			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
+				$this->redirect( array( 'action' => 'index' ) );
+			}
 			$sr = $this->Structurereferente->find(
 				'list',
 				array(
