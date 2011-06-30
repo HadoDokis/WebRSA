@@ -156,7 +156,7 @@
                     ),
                     'contain' => array(
                         'Fichiermodule' => array(
-                            'fields' => array( 'name', 'id' )
+                            'fields' => array( 'name', 'id', 'created', 'modified' )
                         )
                     )
                 )
