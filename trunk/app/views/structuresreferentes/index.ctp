@@ -32,8 +32,7 @@
 		<tbody>
 			<?php foreach( $structuresreferentes as $structurereferente ):?>
 				<?php
-// 					$nbOccurences = Set::enum( $structurereferente['Structurereferente']['id'], $occurences );
-// 					$nbOccurences = ( is_numeric( $nbOccurences ) ? $nbOccurences : 0 );
+					$occurenceExists = Set::enum( $structurereferente['Structurereferente']['id'], $occurences );
 
 					echo $xhtml->tableCells(
 						array(
@@ -52,7 +51,7 @@
 							$xhtml->deleteLink(
 								'Supprimer la structure référente ',
 								array( 'controller' => 'structuresreferentes', 'action' => 'delete', $structurereferente['Structurereferente']['id'] ),
-								( $permissions->check( 'structuresreferentes', 'delete' ) /*&& ( $nbOccurences == 0 )*/ )
+								( $permissions->check( 'structuresreferentes', 'delete' ) && !$occurenceExists )
 							)
 						),
 						array( 'class' => 'odd' ),
