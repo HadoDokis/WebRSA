@@ -30,7 +30,7 @@
 				array( 'id' => 'vueContrat' )
 			);
 		}
-		else{
+		else if( Configure::read( 'Cg.departement' ) == 66 ) {
 			echo $default2->view(
 				$contratinsertion,
 				array(
@@ -55,6 +55,34 @@
 				array( 'id' => 'vueContrat' )
 			);
 		}
+		else if( Configure::read( 'Cg.departement' ) == 93 ) {
+			echo $default2->view(
+				$contratinsertion,
+				array(
+					'Personne.nom_complet' => array( 'type' => 'text' ),
+					'Contratinsertion.forme_ci' => array( 'type' => 'text', 'value' => $forme  ),
+					'Contratinsertion.num_contrat' => array( 'type' => 'text', 'value' => $num ),
+					'Typeorient.lib_type_orient',
+					'Structurereferente.lib_struc',
+					'Referent.nom_complet' => array( 'type' => 'text' ),
+					'Contratinsertion.rg_ci' => array( 'type' => 'text' ),
+					'Contratinsertion.diplomes',
+					'Contratinsertion.expr_prof',
+					'Contratinsertion.form_compl',
+					'Contratinsertion.actions_prev' => array( 'type' => 'boolean' ),
+					'Contratinsertion.obsta_renc',
+					'Contratinsertion.nature_projet',
+					'Action.libelle' => array( 'label' => 'Action engagée' ),
+					'Contratinsertion.duree_engag' => array( 'type' => 'text', 'value' => $duree ),
+					'Contratinsertion.dd_ci',
+					'Contratinsertion.df_ci',
+					'Contratinsertion.lieu_saisi_ci' => array( 'type' => 'text' ),
+					'Contratinsertion.date_saisi_ci',
+				)/*,
+				array( 'id' => 'vueContrat' )*/
+			);
+		}
+// debug($contratinsertion);
 	?>
 	<div class="submit">
 		<?php echo $xform->submit( 'Retour', array( 'name' => 'Cancel', 'div' => false ) ); ?>
