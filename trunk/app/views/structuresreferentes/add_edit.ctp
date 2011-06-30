@@ -66,10 +66,10 @@
 	<?php echo $xform->enum( 'Structurereferente.pdo', array(  'legend' => false, 'type' => 'radio', 'separator' => '<br />', 'options' => $optionsradio['pdo'] ) );?>
 </fieldset>
 
-		<div class="submit">
-			<?php
-				echo $xform->submit( 'Enregistrer', array( 'div' => false ) );
-				echo $xform->submit( 'Annuler', array( 'name' => 'Cancel', 'div' => false ) );
-			?>
-		</div>
+	<div class="submit">
+		<?php
+			echo $xform->submit( 'Enregistrer', array( 'div' => false ) );
+			echo $xform->submit( 'Annuler', array( 'name' => 'Cancel', 'div' => false ) );
+		?>
+	</div>
 <?php echo $form->end();?>
