@@ -1,114 +1,128 @@
 <?php
-
-    class ActionsController extends AppController
-    {
-
-        var $name = 'Actions';
-        var $uses = array( 'Actioninsertion', 'Aidedirecte', 'Prestform', 'Option', 'Refpresta', 'Action', 'Typeaction' );
-        var $helpers = array( 'Xform' );
-        
-		var $commeDroit = array(
+	class ActionsController extends AppController
+	{
+		public $name = 'Actions';
+		public $uses = array( 'Actioninsertion', 'Aidedirecte', 'Prestform', 'Option', 'Refpresta', 'Action', 'Typeaction' );
+		public $helpers = array( 'Xform' );
+		
+		public $commeDroit = array(
 			'add' => 'Actions:edit'
 		);
 
-        function beforeFilter() {
-            parent::beforeFilter();
-            $libtypaction = $this->Typeaction->find( 'list', array( 'fields' => array( 'libelle' ) ) );
-            $this->set( 'libtypaction', $libtypaction );
-        }
+		/**
+		*
+		*/
 
-        function index() {
-            // Retour à la liste en cas d'annulation
-            if( isset( $this->params['form']['Cancel'] ) ) {
-                $this->redirect( array( 'controller' => 'parametrages', 'action' => 'index' ) );
-            }
+		public function beforeFilter() {
+			parent::beforeFilter();
+			$libtypaction = $this->Typeaction->find( 'list', array( 'fields' => array( 'libelle' ) ) );
+			$this->set( 'libtypaction', $libtypaction );
+		}
 
-            $actions = $this->Action->find(
-                'all',
-                array(
-                    'recursive' => 1
-                )
-            );
-            $this->set( 'actions', $actions );
-        }
+		/**
+		*
+		*/
 
-        function add() {
-            if( !empty( $this->data ) ) {
-                $this->Action->begin();
-                if( $this->Action->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
-                    $this->Action->commit();
-                    $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-                    $this->redirect( array( 'controller' => 'actions', 'action' => 'index' ) );
-                }
-                else {
-                    $this->Action->rollback();
-                    $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
-                }
-            }
+		public function index() {
+			// Retour à la liste en cas d'annulation
+			if( isset( $this->params['form']['Cancel'] ) ) {
+				$this->redirect( array( 'controller' => 'parametrages', 'action' => 'index' ) );
+			}
 
-            $this->render( $this->action, null, 'add_edit' );
-        }
+			$actions = $this->Action->find(
+				'all',
+				array(
+					'recursive' => 1
+				)
+			);
 
-        function edit( $action_id = null ){
-            // TODO : vérif param
-            // Vérification du format de la variable
-            $this->assert( valid_int( $action_id ), 'invalidParameter' );
+			$this->set( 'actions', $actions );
+		}
 
-            $action = $this->Action->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Action.id' => $action_id
-                    ),
-                    'recursive' => 2
-                )
-            );
+		/**
+		*
+		*/
 
-            // Si action n'existe pas -> 404
-            if( empty( $action ) ) {
-                $this->cakeError( 'error404' );
-            }
+		public function add() {
+			if( !empty( $this->data ) ) {
+				$this->Action->begin();
+				if( $this->Action->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
+					$this->Action->commit();
+					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+					$this->redirect( array( 'controller' => 'actions', 'action' => 'index' ) );
+				}
+				else {
+					$this->Action->rollback();
+					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+				}
+			}
 
-            if( !empty( $this->data ) ) {
-                if( $this->Action->saveAll( $this->data ) ) {
-                    $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-                    $this->redirect( array( 'controller' => 'actions', 'action' => 'index', $action['Action']['id']) );
-                }
-            }
-            else {
-                $this->data = $action;
-            }
-            $this->render( $this->action, null, 'add_edit' );
-        }
+			$this->render( $this->action, null, 'add_edit' );
+		}
 
+		/**
+		*
+		*/
 
-        /** ********************************************************************
-        *
-        *** *******************************************************************/
+		public function edit( $action_id = null ){
+			// TODO : vérif param
+			// Vérification du format de la variable
+			$this->assert( valid_int( $action_id ), 'invalidParameter' );
 
-        function delete( $action_id = null ) {
-            // Vérification du format de la variable
-            if( !valid_int( $action_id ) ) {
-                $this->cakeError( 'error404' );
-            }
+			$action = $this->Action->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Action.id' => $action_id
+					),
+					'recursive' => 2
+				)
+			);
 
-            // Recherche de la personne
-            $action = $this->Action->find(
-                'first',
-                array( 'conditions' => array( 'Action.id' => $action_id )
-                )
-            );
+			// Si action n'existe pas -> 404
+			if( empty( $action ) ) {
+				$this->cakeError( 'error404' );
+			}
 
-            // Mauvais paramètre
-            if( empty( $action_id ) ) {
-                $this->cakeError( 'error404' );
-            }
+			if( !empty( $this->data ) ) {
+				if( $this->Action->saveAll( $this->data ) ) {
+					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+					$this->redirect( array( 'controller' => 'actions', 'action' => 'index', $action['Action']['id']) );
+				}
+			}
+			else {
+				$this->data = $action;
+			}
+			$this->render( $this->action, null, 'add_edit' );
+		}
 
-            // Tentative de suppression ... FIXME
-            if( $this->Action->deleteAll( array( 'Action.id' => $action_id ), true ) ) {
-                $this->Session->setFlash( 'Suppression effectuée', 'flash/success' );
-                $this->redirect( array( 'controller' => 'actions', 'action' => 'index' ) );
-            }
-        }
-    }
+		/**
+		*
+		*/
+
+		public function delete( $action_id = null ) {
+			// Vérification du format de la variable
+			if( !valid_int( $action_id ) ) {
+				$this->cakeError( 'error404' );
+			}
+
+			// Recherche de la personne
+			$action = $this->Action->find(
+				'first',
+				array( 'conditions' => array( 'Action.id' => $action_id )
+				)
+			);
+
+			// Mauvais paramètre
+			if( empty( $action_id ) ) {
+				$this->cakeError( 'error404' );
+			}
+
+			// Tentative de suppression ... FIXME
+			if( $this->Action->deleteAll( array( 'Action.id' => $action_id ), true ) ) {
+				$this->Session->setFlash( 'Suppression effectuée', 'flash/success' );
+				$this->redirect( array( 'controller' => 'actions', 'action' => 'index' ) );
+			}
+		}
+	}
 ?>
