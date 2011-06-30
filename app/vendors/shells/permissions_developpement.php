@@ -8,6 +8,8 @@
 	App::import( 'Component', 'Dbdroits' );
 	App::import( 'Controller', 'App' );
 	App::import( 'Controller', 'User' );
+	App::import( 'Core', 'Router' );
+	include CONFIGS . 'routes.php';
 
     class PermissionsDeveloppementShell extends AppShell
     {
@@ -355,9 +357,15 @@
 					'conditions' => array( 'Aco.alias LIKE' => 'Module:%' )
 				)
 			);
+
 			foreach( $acos as $id => $moduleAlias ) {
 				$this->Controller->Acl->allow( 'Administrateurs', $moduleAlias );
 			}
+
+			// Soyons certains de donner l'accès à la page d'accueil
+			$slash = Router::parse( '/' );
+			$slashAlias = Inflector::camelize( $slash['controller'] ).':'.$slash['action'];
+			$this->Controller->Acl->allow( 'Administrateurs', $slashAlias );
 
 			$this->_stop( !$success );
 		}

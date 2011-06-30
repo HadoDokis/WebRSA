@@ -2,7 +2,9 @@
 	class Action extends AppModel
 	{
 		public $name = 'Action';
+
 		public $displayField = 'libelle';
+
 		public $validate = array(
 			'code' => array(
 				array(

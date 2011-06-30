@@ -30,33 +30,35 @@
 
 		public $validate = array(
 			'nom' => array(
-					'rule' => 'notEmpty',
-					'message' => 'Champ obligatoire'
+				'rule' => 'notEmpty',
+				'message' => 'Champ obligatoire'
 			),
 			'qual' => array(
-					'rule' => 'notEmpty',
-					'message' => 'Champ obligatoire'
+				'rule' => 'notEmpty',
+				'message' => 'Champ obligatoire'
 			),
 			'prenom' => array(
-					'rule' => 'notEmpty',
-					'message' => 'Champ obligatoire'
+				'rule' => 'notEmpty',
+				'message' => 'Champ obligatoire'
 			),
 			'organisme' => array(
-					'rule' => 'notEmpty',
-					'message' => 'Champ obligatoire'
+				'rule' => 'notEmpty',
+				'message' => 'Champ obligatoire'
 			),
 			'fonction' => array(
-					'rule' => 'notEmpty',
-					'message' => 'Champ obligatoire'
+				'rule' => 'notEmpty',
+				'message' => 'Champ obligatoire'
 			),
-//             'numtel' => array(
-//                     'rule' => 'notEmpty',
-//                     'message' => 'Champ obligatoire'
-//             ),
-//             'mail' => array(
-//                     'rule' => 'notEmpty',
-//                     'message' => 'Champ obligatoire'
-//             )
+			'numtel' => array(
+				'rule' => 'phoneFr',
+				'allowEmpty' => true,
+				'message' => 'Veuillez entrer un n° de téléphone français'
+			),
+			'mail' => array(
+				'rule' => 'email',
+				'allowEmpty' => true,
+				'message' => 'Le mail n\'est pas valide'
+			)
 		);
 	}
 ?>
