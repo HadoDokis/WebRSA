@@ -816,7 +816,7 @@
 		}
 
 		/**
-		*   Détails propre à la personne pour l'APRE
+		* Détails propres à la personne pour l'APRE
 		*/
 
 		public function detailsApre( $personne_id, $user_id = null ){
@@ -827,7 +827,13 @@
 						'Personne.id' => $personne_id
 					),
 					'contain' => array(
+						'Prestation' => array(
+							'conditions' => array(
+								'natprest' => 'RSA'
+							)
+						),
 						'Foyer' => array(
+							'Dossier',
 							'Modecontact',
 							'Adressefoyer' => array(
 								'conditions' => array(
@@ -846,11 +852,14 @@
 							'order' => 'Orientstruct.date_propo DESC',
 							'limit' => 1,
 							'Structurereferente'
+						),
+						'Activite' => array(
+							'order' => 'Activite.dfact DESC',
+							'limit' => 1
 						)
 					)
 				)
 			);
-
 
 			if( isset( $personne['Foyer']['Adressefoyer'][0]['Adresse'] ) ) {
 				$personne['Adresse'] = @$personne['Foyer']['Adressefoyer'][0]['Adresse'];
