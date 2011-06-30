@@ -707,7 +707,7 @@ DROP INDEX IF EXISTS servicesinstructeurs_lib_service_idx;
 CREATE UNIQUE INDEX servicesinstructeurs_lib_service_idx ON servicesinstructeurs (lib_service);
 
 DROP INDEX IF EXISTS permanences_libpermanence_idx;
-CREATE UNIQUE INDEX permanences_libpermanence_idx ON servicesinstructeurs (libpermanence);
+CREATE UNIQUE INDEX permanences_libpermanence_idx ON permanences (libpermanence);
 
 -- *****************************************************************************
 -- 20110630: ajout d'indexes pour les performances
