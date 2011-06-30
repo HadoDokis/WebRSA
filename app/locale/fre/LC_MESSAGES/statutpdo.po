@@ -33,8 +33,14 @@ msgstr "Ajout d'un statut"
 msgid "Statutspdos::edit"
 msgstr "Modification d'un statut"
 
+msgid "Statutspdos::delete"
+msgstr "Suppression d'un statut"
+
 msgid "Statutpdo.libelle"
 msgstr "Intitulé du statut"
+
+msgid "Statutspdos::delete::confirm"
+msgstr "Confirmer la suppression ?"
 
 
 ###############################################################################

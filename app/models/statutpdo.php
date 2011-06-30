@@ -7,7 +7,11 @@
 
 		public $validate = array(
 			'libelle' => array(
-				array( 'rule' => 'notEmpty' )
+				array( 'rule' => 'notEmpty' ),
+				array(
+						'rule' => 'isUnique',
+						'message' => 'Valeur déjà utilisée'
+				)
 			)
 		);
 

@@ -33,8 +33,14 @@ msgstr "Ajout d'une situation"
 msgid "Situationspdos::edit"
 msgstr "Modification d'une situation"
 
+msgid "Situationspdos::delete"
+msgstr "Suppression d'une situation"
+
 msgid "Situationpdo.libelle"
 msgstr "Intitulé de la situation"
+
+msgid "Situationspdos::delete::confirm"
+msgstr "Confirmer la suppression ?"
 
 msgid "Situationpdo.declencheepd"
 msgstr "Déclenche une EPD ?"

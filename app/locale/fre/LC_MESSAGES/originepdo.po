@@ -29,8 +29,14 @@ msgstr "Ajout d'une origine"
 msgid "Originespdos::edit"
 msgstr "Modifier l'origine"
 
+msgid "Originespdos::delete"
+msgstr "Supprimer l'origine"
+
 msgid "Originepdo::index::empty"
 msgstr "Aucune origine des PDOs présente"
+
+msgid "Originespdos::delete::confirm"
+msgstr "Confirmer la suppression ?"
 
 msgid "Originepdo::add"
 msgstr "Ajouter une origine"
