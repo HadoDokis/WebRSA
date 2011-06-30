@@ -50,11 +50,11 @@
 		}
 
 		function add() {
-			$this->set( 'options', $this->Typeorient->listOptions() );
 			// Retour à l'index en cas d'annulation
 			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
 				$this->redirect( array( 'action' => 'index' ) );
 			}
+			$this->set( 'options', $this->Typeorient->listOptions() );
 			$zg = $this->Zonegeographique->find(
 				'list',
 				array(
@@ -91,14 +91,14 @@
 		}
 
 		function edit( $structurereferente_id = null ) {
-			// TODO : vérif param
-			// Vérification du format de la variable
-			$this->assert( valid_int( $structurereferente_id ), 'error404' );
-			$this->set( 'options', $this->Typeorient->listOptions() );
 			// Retour à l'index en cas d'annulation
 			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
 				$this->redirect( array( 'action' => 'index' ) );
 			}
+			// TODO : vérif param
+			// Vérification du format de la variable
+			$this->assert( valid_int( $structurereferente_id ), 'error404' );
+			$this->set( 'options', $this->Typeorient->listOptions() );
 			$zg = $this->Zonegeographique->find(
 				'list',
 				array(
