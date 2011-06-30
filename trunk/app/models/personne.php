@@ -820,95 +820,52 @@
 		*/
 
 		public function detailsApre( $personne_id, $user_id = null ){
-			// TODO: début dans le modèle
-			///Recup personne
-			$this->unbindModel(
-				array(
-					'hasOne' => array( 'Avispcgpersonne', 'Dossiercaf', 'Dsp' ),
-					'hasMany' => array( 'Rendezvous', 'Activite', 'Contratinsertion', 'Orientstruct' , 'Apre' )
-				)
-			);
-			$this->bindModel( array( 'belongsTo' => array( 'Foyer' ) ) ); // FIXME
-			$this->Foyer->unbindModel(
-				array(
-					'hasMany' => array( 'Personne',/* 'Modecontact',*/ 'Adressefoyer' ),
-					'hasAndBelongsToMany' => array( 'Creance' )
-				)
-			);
-			$this->Foyer->Dossier->unbindModelAll();
-			$this->Prestation->unbindModelAll();
-			$this->Dsp->unbindModelAll();
-
-			$personne = $this->findById( $personne_id, null, null, 2 );
-
-			/// Recherche des informations financières
-		//             $infofinancieres = $this->Foyer->Dossier->Infofinanciere->find(
-		//                 'all',
-		//                 array(
-		//                     'recursive' => -1,
-		//                     'order' => array( 'Infofinanciere.moismoucompta DESC' )
-		//                 )
-		//             );
-		//             $personne['Foyer']['Dossier']['Infofinanciere'] = Set::classicExtract( $infofinancieres, '{n}.Infofinanciere' );
-
-			// FIXME -> comment distinguer ? + FIXME autorutitel / autorutiadrelec
-			$modecontact = $this->Foyer->Modecontact->find(
-				'all',
+			$personne = $this->find(
+				'first',
 				array(
 					'conditions' => array(
-						'Modecontact.foyer_id' => $personne['Foyer']['id']
+						'Personne.id' => $personne_id
 					),
-					'recursive' => -1
-				)
-			);
-		// debug($modecontact);
-			if( !empty( $modecontact ) ) {
-				//$personne['Foyer']['Modecontact'] = $modecontact[0]['Modecontact'];
-				$personne['Foyer']['Modecontact'] = Set::extract( $modecontact, '{n}.Modecontact' );
-			}
-
-		// debug($personne);
-			/// Récupération de l'adresse lié à la personne
-			$this->Foyer->Adressefoyer->bindModel(
-				array(
-					'belongsTo' => array(
-						'Adresse' => array(
-							'className'     => 'Adresse',
-							'foreignKey'    => 'adresse_id'
+					'contain' => array(
+						'Foyer' => array(
+							'Modecontact',
+							'Adressefoyer' => array(
+								'conditions' => array(
+									'Adressefoyer.rgadr' => '01',
+								),
+								'Adresse' => array(
+									'limit' => 1
+								)
+							)
+						),
+						'Orientstruct' => array(
+							'conditions' => array(
+								'Orientstruct.personne_id' => $personne_id,
+								'Orientstruct.date_propo IS NOT NULL'
+							),
+							'order' => 'Orientstruct.date_propo DESC',
+							'limit' => 1,
+							'Structurereferente'
 						)
 					)
 				)
 			);
 
-			$adresse = $this->Foyer->Adressefoyer->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Adressefoyer.foyer_id' => $personne['Personne']['foyer_id'],
-						'Adressefoyer.rgadr' => '01',
-					)
-				)
-			);
-			if( !empty( $adresse ) ) {
-				$personne['Adresse'] = $adresse['Adresse'];
+
+			if( isset( $personne['Foyer']['Adressefoyer'][0]['Adresse'] ) ) {
+				$personne['Adresse'] = @$personne['Foyer']['Adressefoyer'][0]['Adresse'];
+				unset( $personne['Foyer']['Adressefoyer'][0]['Adresse'] );
 			}
-		// debug($personne);
+
 			// Recherche de la structure référente
-			$this->Orientstruct->unbindModelAll();
-			$this->Orientstruct->bindModel( array( 'belongsTo' => array( 'Structurereferente' ) ) );
-			$orientstruct = $this->Orientstruct->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Orientstruct.personne_id' => $personne_id,
-						'Orientstruct.date_propo IS NOT NULL'
-					),
-					'order' => 'Orientstruct.date_propo DESC',
-					'recursive' => 0
-				)
-			);
-			if( !empty( $orientstruct ) ) {
-				$personne = Set::merge( $personne, $orientstruct );
+			if( isset( $personne['Orientstruct'][0] ) ) {
+				$personne['Orientstruct'] = $personne['Orientstruct'][0];
+				unset( $personne['Orientstruct'][0] );
+			}
+
+			if( isset( $personne['Orientstruct']['Structurereferente'] ) ) {
+				$personne['Structurereferente'] = $personne['Orientstruct']['Structurereferente'];
+				unset( $personne['Orientstruct']['Structurereferente'] );
 			}
 
 			///Récupération des données propres au contrat d'insertion, notammenrt le premier contrat validé ainsi que le dernier.
@@ -948,8 +905,6 @@
 			);
 			$personne['Dsp'] = $dsp['Dsp'];
 
-
-
 			// Récupération du service instructeur
 			$suiviinstruction = $this->Foyer->Dossier->Suiviinstruction->find(
 				'first',
@@ -978,16 +933,12 @@
 
 			$personne = Set::merge( $personne, $suiviinstruction );
 
-			//On ajout l'ID de l'utilisateur connecté afind e récupérer son service instructeur
+			//On ajout l'ID de l'utilisateur connecté afin de récupérer son service instructeur
 			if( empty( $suiviinstruction ) && is_int( $user_id ) ) {
 				$user = $this->Contratinsertion->User->findById( $user_id, null, null, 0 );
 				$personne = Set::merge( $personne, $user );
 			}
 
-
-
-
-		// debug($personne);
 			return $personne;
 		}
 
