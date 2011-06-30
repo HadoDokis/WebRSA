@@ -83,4 +83,18 @@
         <?php echo $xform->submit( 'Enregistrer' );?>
     <?php echo $xform->end();?>
 
+	<?php
+		echo $default->button(
+		    'back',
+		    array(
+		        'controller' => 'comitesapres',
+		        'action'     => 'view',
+		        $comiteapre_id
+		    ),
+		    array(
+		        'id' => 'Back'
+		    )
+		);
+	?>
+
 <div class="clearer"><hr /></div>

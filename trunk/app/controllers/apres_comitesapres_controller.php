@@ -54,7 +54,7 @@
 
 
                 if( $isRecours ) {
-                    $conditions = array( 'Apre.id IN ( SELECT apres_comitesapres.apre_id FROM apres_comitesapres WHERE apres_comitesapres.decisioncomite = \'REF\' ) AND Apre.id NOT IN ( SELECT apres_comitesapres.apre_id FROM apres_comitesapres WHERE apres_comitesapres.comite_pcd_id IS NOT NULL ) AND Apre.statutapre = \'C\'' );
+                    $conditions = array( 'Apre.id IN ( SELECT apres_comitesapres.apre_id FROM apres_comitesapres WHERE apres_comitesapres.decisioncomite = \'REF\' AND apres_comitesapres.recoursapre = \'O\' ) AND Apre.id NOT IN ( SELECT apres_comitesapres.apre_id FROM apres_comitesapres WHERE apres_comitesapres.comite_pcd_id IS NOT NULL ) AND Apre.statutapre = \'C\'' );
                 }
                 else {
                     $conditions = array(
@@ -208,6 +208,7 @@
                         $this->data['Comiteapre']['id'] = $comiteapre_id;
                     }
                 }
+                $this->set( 'comiteapre_id', $comiteapre_id );
                 $this->Comiteapre->commit();
                 $this->render( $this->action, null, 'add_edit' );
             }

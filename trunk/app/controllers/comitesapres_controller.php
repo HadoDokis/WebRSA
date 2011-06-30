@@ -87,29 +87,40 @@
                 'first',
                 array(
                     'conditions' => array( 'Comiteapre.id' => $comiteapre_id ),
-                    'recursive' => 2
+                    'contain' => array(
+						'Apre' => array(
+							'Personne' => array(
+								'Foyer' => array(
+									'Adressefoyer' => array(
+										'Adresse'
+									)
+								)
+							)
+						),
+						'Participantcomite'
+                    )
                 )
             );
-//             debug($comiteapre);die();
+// debug($comiteapre);
             $this->assert( !empty( $comiteapre ), 'invalidParameter' );
 
-            foreach( $comiteapre['Apre'] as $key => $apre ) {
-                // Personne
-                $personne = $this->Apre->Personne->findById( $apre['personne_id'], null, null, -1 );
-                $comiteapre['Apre'][$key] = Set::merge( $comiteapre['Apre'][$key], $personne );
-
-                // Foyer
-                $foyer = $this->Apre->Personne->Foyer->findById( $personne['Personne']['foyer_id'], null, null, -1 );
-                $comiteapre['Apre'][$key] = Set::merge( $comiteapre['Apre'][$key], $foyer );
-
-                // Dossier
-                $dossier = $this->Apre->Personne->Foyer->Dossier->findById( $foyer['Foyer']['dossier_id'], null, null, -1 );
-                $comiteapre['Apre'][$key] = Set::merge( $comiteapre['Apre'][$key], $dossier );
-
-                // Adresse
-                $adresse = $this->Apre->Personne->Foyer->Adressefoyer->Adresse->findById( $foyer['Foyer']['id'], null, null, -1 );
-                $comiteapre['Apre'][$key] = Set::merge( $comiteapre['Apre'][$key], $adresse );
-            }
+//             foreach( $comiteapre['Apre'] as $key => $apre ) {
+//                 // Personne
+//                 $personne = $this->Apre->Personne->findById( $apre['personne_id'], null, null, -1 );
+//                 $comiteapre['Apre'][$key] = Set::merge( $comiteapre['Apre'][$key], $personne );
+// 
+//                 // Foyer
+//                 $foyer = $this->Apre->Personne->Foyer->findById( $personne['Personne']['foyer_id'], null, null, -1 );
+//                 $comiteapre['Apre'][$key] = Set::merge( $comiteapre['Apre'][$key], $foyer );
+// 
+//                 // Dossier
+//                 $dossier = $this->Apre->Personne->Foyer->Dossier->findById( $foyer['Foyer']['dossier_id'], null, null, -1 );
+//                 $comiteapre['Apre'][$key] = Set::merge( $comiteapre['Apre'][$key], $dossier );
+// 
+//                 // Adresse
+//                 $adresse = $this->Apre->Personne->Foyer->Adressefoyer->Adresse->findById( $foyer['Foyer']['id'], null, null, -1 );
+//                 $comiteapre['Apre'][$key] = Set::merge( $comiteapre['Apre'][$key], $adresse );
+//             }
 // debug($comiteapre);
             $this->set( 'comiteapre', $comiteapre );
             $this->_setOptions();
@@ -129,27 +140,38 @@
                 'first',
                 array(
                     'conditions' => array( 'Comiteapre.id' => $comiteapre_id ),
-                    'recursive' => 2
+                    'contain' => array(
+						'Apre' => array(
+							'Personne' => array(
+								'Foyer' => array(
+									'Adressefoyer' => array(
+										'Adresse'
+									)
+								)
+							)
+						),
+						'Participantcomite'
+                    )
                 )
             );
 
-            foreach( $comiteapre['Apre'] as $key => $apre ) {
-                // Personne
-                $personne = $this->Apre->Personne->findById( $apre['personne_id'], null, null, -1 );
-                $comiteapre['Apre'][$key] = Set::merge( $comiteapre['Apre'][$key], $personne );
-
-                // Foyer
-                $foyer = $this->Apre->Personne->Foyer->findById( $personne['Personne']['foyer_id'], null, null, -1 );
-                $comiteapre['Apre'][$key] = Set::merge( $comiteapre['Apre'][$key], $foyer );
-
-                // Dossier
-                $dossier = $this->Apre->Personne->Foyer->Dossier->findById( $foyer['Foyer']['dossier_id'], null, null, -1 );
-                $comiteapre['Apre'][$key] = Set::merge( $comiteapre['Apre'][$key], $dossier );
-
-                // Adresse
-                $adresse = $this->Apre->Personne->Foyer->Adressefoyer->Adresse->findById( $foyer['Foyer']['id'], null, null, -1 );
-                $comiteapre['Apre'][$key] = Set::merge( $comiteapre['Apre'][$key], $adresse );
-            }
+//             foreach( $comiteapre['Apre'] as $key => $apre ) {
+//                 // Personne
+//                 $personne = $this->Apre->Personne->findById( $apre['personne_id'], null, null, -1 );
+//                 $comiteapre['Apre'][$key] = Set::merge( $comiteapre['Apre'][$key], $personne );
+// 
+//                 // Foyer
+//                 $foyer = $this->Apre->Personne->Foyer->findById( $personne['Personne']['foyer_id'], null, null, -1 );
+//                 $comiteapre['Apre'][$key] = Set::merge( $comiteapre['Apre'][$key], $foyer );
+// 
+//                 // Dossier
+//                 $dossier = $this->Apre->Personne->Foyer->Dossier->findById( $foyer['Foyer']['dossier_id'], null, null, -1 );
+//                 $comiteapre['Apre'][$key] = Set::merge( $comiteapre['Apre'][$key], $dossier );
+// 
+//                 // Adresse
+//                 $adresse = $this->Apre->Personne->Foyer->Adressefoyer->Adresse->findById( $foyer['Foyer']['id'], null, null, -1 );
+//                 $comiteapre['Apre'][$key] = Set::merge( $comiteapre['Apre'][$key], $adresse );
+//             }
 
             $this->set( 'comiteapre', $comiteapre );
             $this->_setOptions();
