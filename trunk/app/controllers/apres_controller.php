@@ -440,7 +440,24 @@
 			}
 			else if( $this->action == 'edit' ) {
 				$apre_id = $id;
-				$apre = $this->Apre->findById( $apre_id, null, null, 2 );
+// 				$apre = $this->Apre->findById( $apre_id, null, null, 2 );
+
+				$contain = array( 'Pieceapre' );
+				foreach( $this->Apre->aidesApre as $modelAideAlias ) {
+					$modelPieceAlias = 'Piece'.Inflector::underscore( $modelAideAlias );
+					$contain[$modelAideAlias] = array( $modelPieceAlias );
+				}
+
+
+				$apre = $this->Apre->find(
+					'first',
+					array(
+						'conditions' => array(
+							'Apre.id' => $apre_id
+						),
+						'contain' => $contain
+					)
+				);
 				$this->assert( !empty( $apre ), 'invalidParameter' );
 
 				$personne_id = $apre['Apre']['personne_id'];
@@ -448,7 +465,8 @@
 
 				$this->set( 'numapre', Set::extract( $apre, 'Apre.numeroapre' ) );
 			}
-
+// debug($apre);
+// die();
 			// Retour à la liste en cas d'annulation
 			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
 				$this->redirect( array( 'action' => 'index', $personne_id ) );
@@ -472,6 +490,7 @@
 			///On ajout l'ID de l'utilisateur connecté afind e récupérer son service instructeur
 			$user = $this->User->findById( $this->Session->read( 'Auth.User.id' ), null, null, 0 );
 			$user_id = Set::classicExtract( $user, 'User.id' );
+
 			$personne = $this->{$this->modelClass}->Personne->detailsApre( $personne_id, $user_id );
 			$this->set( 'personne', $personne );
 // debug($personne);
