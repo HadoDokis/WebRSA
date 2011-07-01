@@ -289,6 +289,7 @@
 				$this->data = $personne;
 			}
 			$this->_setOptions();
+			$this->set( 'personne', $personne );
 		}
 	}
 ?>
