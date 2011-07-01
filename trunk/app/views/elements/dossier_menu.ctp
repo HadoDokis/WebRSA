@@ -63,7 +63,7 @@
 		if( Configure::read( 'UI.menu.lienDemandeur' ) ) {
 			echo $xhtml->tag(
 				'p',
-				$xhtml->link( h( $personneDossier ), sprintf( Configure::read( 'UI.menu.lienDemandeur' ), $dossier['Dossier']['matricule'] ), array(  'class' => 'external' ) ),
+				$xhtml->link( $personneDossier, sprintf( Configure::read( 'UI.menu.lienDemandeur' ), $dossier['Dossier']['matricule'] ), array(  'class' => 'external' ) ),
 				array( 'class' => 'etatDossier' ),
 				false,
 				false
@@ -88,7 +88,7 @@
 				<?php foreach( $dossier['Foyer']['Personne'] as $personne ):?>
 					<li><?php
 							echo $xhtml->link(
-								h( implode( ' ', array( $personne['qual'], $personne['nom'], $personne['prenom'] ) ) ),
+								implode( ' ', array( $personne['qual'], $personne['nom'], $personne['prenom'] ) ),
 								array( 'controller' => 'personnes', 'action' => 'view', $personne['id'] )
 							);
 						?>
@@ -132,7 +132,7 @@
 												<li>
 													<?php
 														echo $xhtml->link(
-															h( 'DSP CAF' ),
+															'DSP CAF',
 															array( 'controller' => 'dspps', 'action' => 'view', $personne['id'] )
 														);?>
 												</li>
@@ -154,7 +154,7 @@
 													<li>
 														<?php
 															echo $xhtml->link(
-																h( 'Orientation' ),
+																'Orientation',
 																array( 'controller' => 'orientsstructs', 'action' => 'index', $personne['id'] )
 															);
 														?>
@@ -167,7 +167,7 @@
 													<li>
 														<?php
 															echo $xhtml->link(
-																h( 'Orientation' ),
+																'Orientation',
 																array( 'controller' => 'orientsstructs', 'action' => 'index', $personne['id'] )
 															);
 														?>
@@ -190,7 +190,7 @@
 													<li>
 														<?php
 															echo $xhtml->link(
-																h( 'Orientation' ),
+																'Orientation',
 																array( 'controller' => 'orientsstructs', 'action' => 'index', $personne['id'] )
 															);
 														?>
@@ -220,7 +220,7 @@
 											<li>
 												<?php
 													echo $xhtml->link(
-														h( 'Chronologie parcours' ),
+														'Chronologie parcours',
 														'#'
 //                                                         array( 'controller' => '#', 'action' => '#', $personne['id'] )
 													);
@@ -230,7 +230,7 @@
 											<li>
 												<?php
 													echo $xhtml->link(
-														h( 'Référent du parcours' ),
+														'Référent du parcours',
 														array( 'controller' => 'personnes_referents', 'action' => 'index', $personne['id'] )
 													);
 												?>
@@ -240,7 +240,7 @@
 											<li>
 												<?php
 													echo $xhtml->link(
-														h( 'Gestion RDV' ),
+														'Gestion RDV',
 														array( 'controller' => 'rendezvous', 'action' => 'index', $personne['id'] )
 													);
 												?>
@@ -441,7 +441,7 @@
 								<li>
 									<?php
 										echo $xhtml->link(
-											h( 'Dossier CAF' ),
+											'Dossier CAF',
 											array( 'controller' => 'dossierscaf', 'action' => 'view', $personne['id'] )
 										);
 									?>
@@ -480,7 +480,7 @@
 								<ul>
 									<?php foreach( $dossier['Foyer']['AdressesFoyer'] as $AdressesFoyer ):?>
 										<li><?php echo $xhtml->link(
-												h( implode( ' ', array( $AdressesFoyer['Adresse']['numvoie'], isset( $typevoie[$AdressesFoyer['Adresse']['typevoie']] ) ? $typevoie[$AdressesFoyer['Adresse']['typevoie']] : null, $AdressesFoyer['Adresse']['nomvoie'] ) ) ),
+												implode( ' ', array( $AdressesFoyer['Adresse']['numvoie'], isset( $typevoie[$AdressesFoyer['Adresse']['typevoie']] ) ? $typevoie[$AdressesFoyer['Adresse']['typevoie']] : null, $AdressesFoyer['Adresse']['nomvoie'] ) ),
 												array( 'controller' => 'adressesfoyers', 'action' => 'view', $AdressesFoyer['id'] ) );
 											;?></li>
 									<?php endforeach;?>
