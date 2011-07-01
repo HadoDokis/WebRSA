@@ -7,7 +7,19 @@
             // Masquage des champs select si Statut = non orienté
         observeDisableFieldsOnValue( 'Orientstruct0StatutOrient', [ 'Orientstruct0TypeorientId', 'Orientstruct0StructurereferenteId','Orientstruct0ReferentorientantId', 'Orientstruct0StructureorientanteId'  ], 'Non orienté', true );
 //         observeDisableFieldsOnValue( 'Orientstruct1StatutOrient', [ 'Orientstruct1TypeorientId', 'Orientstruct1StructurereferenteId', 'Orientstruct0ReferentorientantId', 'Orientstruct0StructureorientanteId'  ], 'Non orienté', true );
-        observeDisableFieldsOnValue( 'CalculdroitrsaToppersdrodevorsa', [ 'Orientstruct0StatutOrient', 'Orientstruct0TypeorientId', 'Orientstruct0StructurereferenteId', 'Orientstruct0ReferentorientantId', 'Orientstruct0StructureorientanteId'  ], 0, true );
+        observeDisableFieldsOnValue(
+			'CalculdroitrsaToppersdrodevorsa',
+			[
+				'Orientstruct0StatutOrient',
+				'Orientstruct0TypeorientId',
+				'Orientstruct0StructurereferenteId',
+				'Orientstruct0ReferentorientantId',
+				'Orientstruct0StructureorientanteId',
+				'ButtonSubmit'
+			],
+			0,
+			true
+		);
 
     });
 </script>
@@ -31,7 +43,7 @@
         <fieldset>
             <h2>Dossier RSA</h2>
             <p><?php echo "Numéro de demande RSA : $numdossierrsa";?></p>
-            <p><?php echo "Date de demande du dossier : $datdemdossrsa";?></p>
+            <p><?php echo "Date de demande du dossier : ".date_short( $datdemdossrsa );?></p>
             <p><?php echo "N° CAF : $matricule";?></p>
         </fieldset>
         <fieldset>
@@ -70,9 +82,31 @@
             <?php $this->data['Orientstruct'][0]['structurereferente_id'] = Set::classicExtract( $this->data, 'Orientstruct.0.typeorient_id' ).'_'.Set::classicExtract( $this->data, 'Orientstruct.0.structurereferente_id' ); ?>
             <?php echo $form->input( 'Orientstruct.0.structurereferente_id', array( 'label' => __d( 'structurereferente', 'Structurereferente.structure_referente_'.Configure::read( 'nom_form_ci_cg' ), true ), 'type' => 'select', 'selected' => $this->data['Orientstruct'][0]['structurereferente_id'], 'options' => $structures, 'empty' => true ) );?>
         </fieldset>
-
-        <?php echo $form->submit( 'Enregistrer' );?>
+        
+        
+		<?php
+// 			$disable = false;
+// 			if( $personne['Calculdroitrsa']['toppersdrodevorsa']== 0 ) { 
+// 				$disable = true;
+// 			}
+		?>
+		
+		
+        <?php echo $form->submit( 'Enregistrer', array( 'id' => 'ButtonSubmit' ) );?>
     <?php echo $form->end();?>
+    <?php
+		echo $default->button(
+			'back',
+			array(
+				'controller' => 'dossierssimplifies',
+				'action'     => 'view',
+				$personne['Foyer']['dossier_id']
+			),
+			array(
+				'id' => 'Back'
+			)
+		);
+	?>
 </div>
 
 <div class="clearer"><hr /></div>
