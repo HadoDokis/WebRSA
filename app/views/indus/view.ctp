@@ -100,5 +100,18 @@
                 ?>
             </li>
         </ul>
+        <?php
+			echo $default->button(
+				'back',
+				array(
+					'controller' => 'indus',
+					'action'     => 'index',
+					$dossier_id
+				),
+				array(
+					'id' => 'Back'
+				)
+			);
+		?>
 </div>
 <div class="clearer"><hr /></div>
