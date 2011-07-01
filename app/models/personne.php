@@ -912,8 +912,28 @@
 					'recursive' => -1
 				)
 			);
-			$personne['Dsp'] = $dsp['Dsp'];
+			$dsp_id = Set::classicExtract( $dsp, 'Dsp.id' );
 
+			if( !empty( $dsp_id ) ){
+				$dspRevModel = ClassRegistry::init( 'DspRev' );
+				$dspRev = $dspRevModel->find(
+					'first',
+					array(
+						'conditions' => array(
+							'DspRev.dsp_id' => $dsp_id,
+							'DspRev.personne_id' => $personne_id
+						),
+						'recursive' => -1,
+						'order' => 'DspRev.modified DESC'
+					)
+				);
+
+				if( !empty( $dspRev ) ) {
+					$dsp['Dsp'] = $dspRev['DspRev'];
+				}
+			}
+			$personne['Dsp'] = $dsp['Dsp'];
+// debug($dsp);
 			// Récupération du service instructeur
 			$suiviinstruction = $this->Foyer->Dossier->Suiviinstruction->find(
 				'first',
