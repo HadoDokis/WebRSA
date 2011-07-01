@@ -773,5 +773,32 @@ ALTER TABLE originespdos ALTER COLUMN libelle SET NOT NULL;
 ALTER TABLE motifssortie ALTER COLUMN name SET NOT NULL;
 
 -- *****************************************************************************
+-- 20110701: nettoyage des valeurs du contratinsertion
+-- *****************************************************************************
+
+UPDATE contratsinsertion
+	SET
+		duree_cdd = NULL
+	WHERE
+		nat_cont_trav <> 'TCT3'
+		AND duree_cdd IS NOT NULL;
+
+UPDATE contratsinsertion
+	SET
+		sect_acti_emp = NULL,
+		emp_occupe = NULL,
+		duree_hebdo_emp = NULL,
+		nat_cont_trav = NULL,
+		duree_cdd = NULL
+	WHERE (
+		sect_acti_emp IS NOT NULL
+		OR emp_occupe IS NOT NULL
+		OR duree_hebdo_emp IS NOT NULL
+		OR nat_cont_trav IS NOT NULL
+		OR duree_cdd IS NOT NULL
+	)
+	AND emp_trouv <> TRUE;
+
+-- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

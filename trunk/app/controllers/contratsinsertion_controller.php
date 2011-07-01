@@ -14,7 +14,6 @@
 
 	class ContratsinsertionController extends AppController
 	{
-
 		public $name = 'Contratsinsertion';
 		public $uses = array( 'Contratinsertion', 'Option', 'Action', 'Referent', 'Personne', 'Dossier', 'Structurereferente', 'Dsp', 'Typeorient', 'Orientstruct', 'Serviceinstructeur', 'Action', 'Adressefoyer', 'Actioninsertion', 'Prestform', 'Refpresta', 'PersonneReferent' );
 		public $helpers = array( 'Default2', 'Ajax', 'Fileuploader' );
@@ -29,6 +28,7 @@
 		/**
 		*
 		*/
+
 		protected function _setOptions() {
 			$options = $this->Contratinsertion->allEnumLists();
 
@@ -81,7 +81,7 @@
 				$optionsautreavissuspension = $this->Contratinsertion->Autreavissuspension->allEnumLists();
 				$optionsautreavisradiation = $this->Contratinsertion->Autreavisradiation->allEnumLists();
 				$this->set( 'fiches', $this->Contratinsertion->Personne->ActioncandidatPersonne->Actioncandidat->allEnumLists() );
-// 				debug($fiches);
+
 				$options = array_merge( $options, $optionsautreavissuspension );
 				$options = array_merge( $options, $optionsautreavisradiation );
 
@@ -106,7 +106,6 @@
 				)
 			);
 
-			//$this->assert( !empty( $typeOrientation ), 'error500' );
 			return Set::classicExtract( $typeOrientation, 'Typeorient.lib_type_orient' );
 		}
 
@@ -170,11 +169,6 @@
 			$this->set( 'struct', $struct );
 			$this->render( 'ajaxstruct', 'ajax' );
 		}
-
-
-
-
-
 
 		/**
 		* http://valums.com/ajax-upload/
@@ -563,7 +557,6 @@
 		*/
 
 		public function view( $contratinsertion_id = null ) {
-
 			// On a seulement besoin des modèles liés Structurereferente, Referent et Typeorient
 			$binds = array(
 				'belongsTo' => array(
@@ -696,12 +689,9 @@
 				)
 			);
 
-//             $dspData = Set::filter( $dsp['Dsp'] );
-
-			if( empty( $dsp )/* && !empty( $dspData )*/  ){
+			if( empty( $dsp ) ){
 				$dsp = array( 'Dsp' => array( 'personne_id' => $personne_id ) );
 
-// debug($dsp);
 				$this->Contratinsertion->Personne->Dsp->set( $dsp );
 				if( $this->Contratinsertion->Personne->Dsp->save( $dsp ) ) {
 					$dsp = $this->Contratinsertion->Personne->Dsp->findByPersonneId( $personne_id, null, null, 1 );
@@ -770,8 +760,6 @@
 					)
 				);
 				$this->assert( !empty( $contratinsertion ), 'invalidParameter' );
-// debug($contratinsertion);
-
 
 				$personne_id = Set::classicExtract( $contratinsertion, 'Contratinsertion.personne_id' );
 				$valueFormeci = Set::classicExtract( $contratinsertion, 'Contratinsertion.forme_ci' );
@@ -782,9 +770,7 @@
 			}
 			$this->set( 'nbContratsPrecedents',  $nbContratsPrecedents );
 
-			/**
-			*   Détails des précédents contrats
-			*/
+			/// Détails des précédents contrats
 			$lastContrat = $this->Contratinsertion->find(
 				'all',
 				array(
@@ -883,49 +869,44 @@
 			);
 			$this->set( compact( 'situationdossierrsa', 'suspension' ) );
 
-// debug($suspension);
-
 			//On ajout l'ID de l'utilisateur connecté afind e récupérer son service instructeur
 			$personne = $this->Contratinsertion->Personne->newDetailsCi( $personne_id, $this->Session->read( 'Auth.User.id' ) );
 			$this->set( 'personne', $personne );
 
-            /// Calcul du numéro du contrat d'insertion
-            $nbrCi = $this->Contratinsertion->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ) ) );
+			/// Calcul du numéro du contrat d'insertion
+			$nbrCi = $this->Contratinsertion->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ) ) );
 
 
 
-            $numouverturedroit = $this->Contratinsertion->checkNumDemRsa( $personne_id );
-            $this->set( 'numouverturedroit', $numouverturedroit );
+			$numouverturedroit = $this->Contratinsertion->checkNumDemRsa( $personne_id );
+			$this->set( 'numouverturedroit', $numouverturedroit );
 
 			$this->set( 'valueFormeci', $valueFormeci );
 
 
-            /**
-            *   Utilisé pour les détections de fiche de candidature
-            *   pour savoir si des actions sont en cours ou non
-            */
-            $fichescandidature = $this->Contratinsertion->Personne->ActioncandidatPersonne->find(
-                'all',
-                array(
-                    'conditions' => array(
-                        'ActioncandidatPersonne.personne_id' => $personne_id
-                    ),
-                    'contain' => array(
-                        'Actioncandidat'
-                    )
-                )
-            );
-            $this->set( compact( 'fichescandidature' ) );
-
-
-
+			/**
+			*   Utilisé pour les détections de fiche de candidature
+			*   pour savoir si des actions sont en cours ou non
+			*/
+			$fichescandidature = $this->Contratinsertion->Personne->ActioncandidatPersonne->find(
+				'all',
+				array(
+					'conditions' => array(
+						'ActioncandidatPersonne.personne_id' => $personne_id
+					),
+					'contain' => array(
+						'Actioncandidat'
+					)
+				)
+			);
+			$this->set( compact( 'fichescandidature' ) );
 
 			/// Essai de sauvegarde
 			if( !empty( $this->data ) ) {
 
-                if( $this->action == 'add' ) {
-                    $this->data['Contratinsertion']['rg_ci'] = $nbrCi + 1;
-                }
+				if( $this->action == 'add' ) {
+					$this->data['Contratinsertion']['rg_ci'] = $nbrCi + 1;
+				}
 
 				if( Configure::read( 'nom_form_ci_cg' ) == 'cg58' ) {
 					$this->data['Contratinsertion']['forme_ci'] = 'S';
@@ -961,6 +942,7 @@
 				if( isset( $suspension ) && !empty( $suspension ) ){
 					$this->data['Contratinsertion']['datesuspensionparticulier'] = $suspension[0]['Suspensiondroit']['ddsusdrorsa'];
 				}
+
 				$success = $this->Contratinsertion->save( $this->data );
 
 				if( Configure::read( 'nom_form_ci_cg' ) != 'cg66' ) {
@@ -975,7 +957,6 @@
 						$success = $this->Contratinsertion->Personne->Dsp->save( array( 'Dsp' => $this->data['Dsp'] ) ) && $success;
 					}
 				}
-
 
 				$models = array( 'Autreavissuspension', 'Autreavisradiation' );
 				foreach( $models as $model ) {
@@ -1006,19 +987,12 @@
 
 				if( isset( $this->data['Actioninsertion'] ) ) {
 					$isActioninsertion = Set::filter( $this->data['Actioninsertion'] );
-// 					if( $this->action == 'add' ) {
-						$this->{$this->modelClass}->Actioninsertion->set( 'contratinsertion_id', $this->{$this->modelClass}->id );
-// 					}
+					$this->{$this->modelClass}->Actioninsertion->set( 'contratinsertion_id', $this->{$this->modelClass}->id );
 
 					if( !empty( $isActioninsertion ) ){
 						$success = $this->Contratinsertion->Actioninsertion->save( array( 'Actioninsertion' => $this->data['Actioninsertion'] ) ) && $success;
 					}
 				}
-
-
-
-// debug($this->data);
-// debug($success);
 
 				if( $success ) {
 					$saved = true;
@@ -1081,17 +1055,16 @@
 						$this->data['Contratinsertion']['avisraison_radiation_ci'] =  $this->data['Contratinsertion']['avisraison_ci'];
 					}
 
-                    /// Si on est en présence d'un deuxième contrat -> Alors renouvellement
-//                     $this->data['Contratinsertion']['rg_ci'] = $nbrCi - 1;
-                    $nbrCi = $contratinsertion['Contratinsertion']['rg_ci'];
+					/// Si on est en présence d'un deuxième contrat -> Alors renouvellement
+					$nbrCi = $contratinsertion['Contratinsertion']['rg_ci'];
 				}
 
 				$this->data = Set::merge( $this->data, $this->_getDsp( $personne_id ) );
 
 
 			}
-// debug( $this->data );
-            $this->set( 'nbrCi', $nbrCi );
+
+			$this->set( 'nbrCi', $nbrCi );
 			// Doit-on setter les valeurs par défault ?
 			$dataStructurereferente_id = Set::classicExtract( $this->data, "{$this->Contratinsertion->alias}.structurereferente_id" );
 			$dataReferent_id = Set::classicExtract( $this->data, "{$this->Contratinsertion->alias}.referent_id" );
@@ -1118,7 +1091,6 @@
 					$this->data = Set::insert( $this->data, "{$this->Contratinsertion->alias}.referent_id", preg_replace( '/^_$/', '', "{$structurereferente_id}_{$referent_id}" ) );
 				}
 			}
-
 
 			$struct_id = Set::classicExtract( $this->data, 'Contratinsertion.structurereferente_id' );
 			$this->set( 'struct_id', $struct_id );
@@ -1168,9 +1140,8 @@
 				$this->set( 'ReferentEmail', $referent['Referent']['email']. '<br/>' .$referent['Referent']['numero_poste'] );
 				$this->set( 'ReferentFonction', $referent['Referent']['fonction'] );
 				$this->set( 'ReferentNom', $referent['Referent']['nom'].' '.$referent['Referent']['prenom'] );
-// debug($contratinsertion);
 			}
-// debug($this->data);
+
 			$this->Contratinsertion->commit();
 			$this->_setOptions();
 			$this->set( compact( 'structures', 'referents' ) );
@@ -1188,7 +1159,6 @@
 		*/
 
 		public function valider( $contratinsertion_id = null ) {
-
 			$contratinsertion = $this->Contratinsertion->find(
 				'first',
 				array(
@@ -1225,10 +1195,9 @@
 				}
 			}
 			else {
-
 				$this->data = $contratinsertion;
 			}
-//                         debug($this->data);
+
 			$this->_setOptions();
 		}
 
@@ -1237,7 +1206,6 @@
 		*/
 
 		public function delete( $id ) {
-
 			$this->{$this->modelClass}->begin();
 			$success = $this->{$this->modelClass}->Actioninsertion->deleteAll( array( 'Actioninsertion.contratinsertion_id' => $id ) );
 			$success = $this->{$this->modelClass}->delete( $id ) && $success;
@@ -1270,7 +1238,6 @@
 			);
 			$this->redirect( array( 'action' => 'index', $contrat['Contratinsertion']['personne_id'] ) );
 		}
-
 
 		/**
 		*

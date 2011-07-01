@@ -11,8 +11,6 @@
 					'typeinsertion' => array( 'type' => 'insertion', 'domain' => 'contratinsertion' ),
 					'positioncer' => array( 'domain' => 'contratinsertion' ),
 					'haspiecejointe' => array( 'domain' => 'contratinsertion' ),
-// 					'autreavissuspension',
-// 					'autreavisradiation'
 				)
 			),
 			'Formattable' => array(
@@ -449,7 +447,7 @@
 		);
 
 		/**
-		*   BeforeSave
+		* BeforeSave
 		*/
 
 		public function beforeSave( $options = array() ) {
@@ -483,16 +481,29 @@
 				}
 			}
 
+			// Si aucun emploi trouvé, alors il faut éventuellement vider certaines valeurs
+			if( isset( $this->data[$this->name]['emp_trouv'] ) && $this->data[$this->name]['emp_trouv'] != 'O' ) {
+				$champs = array( 'sect_acti_emp', 'emp_occupe', 'duree_hebdo_emp', 'nat_cont_trav', 'duree_cdd' );
+				foreach( $champs as $champ ) {
+					$this->data[$this->name][$champ] = null;
+				}
+			}
+
 			foreach( array( 'emp_trouv' ) as $key ) {
 				if( isset( $this->data[$this->name][$key] ) ) {
 					$this->data[$this->name][$key] = Set::enum( $this->data[$this->name][$key], array( 'O' => true, 'N' => false ) );
 				}
 			}
 
-            //Modification décision cer
-            if( $this->data[$this->name]['decision_ci'] != 'V' ){
-                $this->data[$this->name]['datevalidation_ci'] = NULL;
-            }
+			//Modification décision cer
+			if( isset( $this->data[$this->name]['decision_ci'] ) && $this->data[$this->name]['decision_ci'] != 'V' ){
+				$this->data[$this->name]['datevalidation_ci'] = NULL;
+			}
+
+			// Si la nature du contrat de travail n'est pas un CDD, alors il faut éventuellement vider la valeur de la durée du CDD
+			if( isset( $this->data[$this->name]['nat_cont_trav'] ) && $this->data[$this->name]['nat_cont_trav'] != 'TCT3' ){
+				$this->data[$this->name]['duree_cdd'] = NULL;
+			}
 
 			//  Calcul de la position du cER
 			if( Configure::read( 'Cg.departement' ) == '66' ) {
@@ -576,30 +587,29 @@
 			// Mise à jour des APREs
 			$return = $this->query( "UPDATE apres SET eligibiliteapre = 'O' WHERE apres.personne_id = ".$this->data[$this->name]['personne_id']." AND apres.etatdossierapre = 'COM';" ) && $return;
 			$return = $this->query( "UPDATE apres SET eligibiliteapre = 'N' WHERE apres.personne_id = ".$this->data[$this->name]['personne_id']." AND apres.etatdossierapre = 'INC';" ) && $return;
-// debug($created);
 
 			return $return;
 		}
 
+		/**
+		*
+		*/
 
-		protected function _calculPosition( $data ){
-
+		protected function _calculPosition( $data ) {
 			$formeCi = Set::classicExtract( $data, 'Contratinsertion.forme_ci' );
 			$sitproCi = Set::classicExtract( $data, 'Contratinsertion.sitpro_ci' );
-// debug($data);
-            $personne_id = Set::classicExtract( $data, 'Contratinsertion.personne_id' );
-            $dernierContrat = $this->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Contratinsertion.personne_id' => $personne_id
-                    ),
-                    'order' => 'Contratinsertion.rg_ci DESC',
-                    'contain' => false
-                )
-            );
-//     debug($dernierContrat);
-//     die();
+
+			$personne_id = Set::classicExtract( $data, 'Contratinsertion.personne_id' );
+			$dernierContrat = $this->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Contratinsertion.personne_id' => $personne_id
+					),
+					'order' => 'Contratinsertion.rg_ci DESC',
+					'contain' => false
+				)
+			);
 
 			$positioncer = null;
 			// 'encours', 'attvalid', 'annule', 'fincontrat', 'encoursbilan', 'attrenouv', 'perime'
@@ -611,87 +621,85 @@
 			elseif ( !empty( $sitproCi ) )
 				$positioncer = 'annule';
 
-            if( !empty( $dernierContrat ) ) {
+			if( !empty( $dernierContrat ) ) {
 //                 $dernierContrat['Contratinsertion']['positioncer'] = 'fincontrat';
-                $this->updateAll(
-                    array( 'Contratinsertion.positioncer' => '\'fincontrat\'' ),
-                    array(
-                        '"Contratinsertion"."personne_id"' => $personne_id,
-                        '"Contratinsertion"."id"' => $dernierContrat['Contratinsertion']['id']
-                    )
-                );
-            }
+				$this->updateAll(
+					array( 'Contratinsertion.positioncer' => '\'fincontrat\'' ),
+					array(
+						'"Contratinsertion"."personne_id"' => $personne_id,
+						'"Contratinsertion"."id"' => $dernierContrat['Contratinsertion']['id']
+					)
+				);
+			}
 			return $positioncer;
 		}
 
-        /**
-        *   Liste des anciennes demandes d'ouverture de droit pour un allocataire
-        *   TODO
-        */
-        public function checkNumDemRsa( $personne_id ) {
+		/**
+		*   Liste des anciennes demandes d'ouverture de droit pour un allocataire
+		*   TODO
+		*/
 
-            $personne = $this->Personne->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Personne.id' => $personne_id
-                    ),
-                    'contain' => array(
-                        'Foyer' => array(
-                            'Dossier'
-                        )
-                    )
-                )
-            );
-            $this->set( compact( 'personne' ) );
+		public function checkNumDemRsa( $personne_id ) {
 
-            $autreNumdemrsa = $this->Personne->Foyer->Dossier->find(
-                'all',
-                array(
-                    'fields' => array(
-                        'COUNT(DISTINCT "Dossier"."id") AS "count"'
-                    ),
-                    'joins' => array(
-                        array(
-                            'table'      => 'foyers',
-                            'alias'      => 'Foyer',
-                            'type'       => 'INNER',
-                            'foreignKey' => false,
-                            'conditions' => array( 'Foyer.dossier_id = Dossier.id' )
-                        ),
-                        array(
-                            'table'      => 'personnes',
-                            'alias'      => 'Personne',
-                            'type'       => 'INNER',
-                            'foreignKey' => false,
-                            'conditions' => array( 'Personne.foyer_id = Foyer.id' )
-                        )
-                    ),
-                    'conditions' => array(
-                        'OR' => array(
-                            array(
-                                'Personne.nir' => $personne['Personne']['nir'],
-                                //FIXME
-                                'nir_correct( Personne.nir  ) = true',
-                                'Personne.nir IS NOT NULL',
-                                'Personne.dtnai' => $personne['Personne']['dtnai']
-                            ),
-                            array(
-                                'Personne.nom' => $personne['Personne']['nom'],
-                                'Personne.prenom' => $personne['Personne']['prenom'],
-                                'Personne.dtnai' => $personne['Personne']['dtnai']
-                            )
-                        )
-                    ),
-                    'contain' => false,
-                    'recursive' => -1
-                )
-            );
+			$personne = $this->Personne->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Personne.id' => $personne_id
+					),
+					'contain' => array(
+						'Foyer' => array(
+							'Dossier'
+						)
+					)
+				)
+			);
+			$this->set( compact( 'personne' ) );
 
-            return $autreNumdemrsa[0][0]['count'];
-        }
+			$autreNumdemrsa = $this->Personne->Foyer->Dossier->find(
+				'all',
+				array(
+					'fields' => array(
+						'COUNT(DISTINCT "Dossier"."id") AS "count"'
+					),
+					'joins' => array(
+						array(
+							'table'      => 'foyers',
+							'alias'      => 'Foyer',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array( 'Foyer.dossier_id = Dossier.id' )
+						),
+						array(
+							'table'      => 'personnes',
+							'alias'      => 'Personne',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array( 'Personne.foyer_id = Foyer.id' )
+						)
+					),
+					'conditions' => array(
+						'OR' => array(
+							array(
+								'Personne.nir' => $personne['Personne']['nir'],
+								//FIXME
+								'nir_correct( Personne.nir  ) = true',
+								'Personne.nir IS NOT NULL',
+								'Personne.dtnai' => $personne['Personne']['dtnai']
+							),
+							array(
+								'Personne.nom' => $personne['Personne']['nom'],
+								'Personne.prenom' => $personne['Personne']['prenom'],
+								'Personne.dtnai' => $personne['Personne']['dtnai']
+							)
+						)
+					),
+					'contain' => false,
+					'recursive' => -1
+				)
+			);
 
-
-
+			return $autreNumdemrsa[0][0]['count'];
+		}
 	}
 ?>
