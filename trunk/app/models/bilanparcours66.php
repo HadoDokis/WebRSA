@@ -410,7 +410,7 @@
 
 		public function saisine( $data ) {
 			// Saisine parcours
-			$success = false;
+			$success = true;
 			if( isset($data['Bilanparcours66']['proposition']) && $data['Bilanparcours66']['proposition'] == 'parcours' ) {
 				$data[$this->alias]['saisineepparcours'] = ( empty( $data[$this->alias]['maintienorientation'] ) ? '1' : '0' );
 				$this->create( $data );
@@ -451,7 +451,7 @@
 						$data[$this->alias]['contratinsertion_id'] = @$vxContratinsertion['Contratinsertion']['id'];
 					}
 
-					if( $data[$this->alias]['origine'] == 'Defautinsertionep66' && !isset( $data[$this->alias]['structurereferente_id'] ) ) {
+					if( isset( $data[$this->alias]['origine'] ) && $data[$this->alias]['origine'] == 'Defautinsertionep66' && !isset( $data[$this->alias]['structurereferente_id'] ) ) {
 						$data[$this->alias]['structurereferente_id'] = $vxOrientstruct['Orientstruct']['structurereferente_id'];
 					}
 
@@ -682,7 +682,8 @@
 				}
 			}
 			else {
-				$this->save($data);
+				$success = $this->save($data) && $success;
+				debug($this->validationErrors);
 			}
 			
 			return $success;

@@ -51,16 +51,17 @@
 	?>
 
 	<div class="aere">
-	
+
 		<?php
 			echo $default->subform(
 				array(
-					'Bilanparcours66.typeformulaire' => array( 'type' => 'radio', 'value' => $typeformulaire )
+					'Bilanparcours66.typeformulaire' => array( 'type' => 'radio', 'value' => $typeformulaire, 'disabled' => true )
 				),
 				array(
 					'options' => $options
 				)
 			);
+			echo $xform->input( 'Bilanparcours66.typeformulaire', array( 'type' => 'hidden', 'value' => $typeformulaire, 'id' => 'Bilanparcours66TypeformulaireHidden' ) );
 		?>
 
 <fieldset id="bilanparcourscg">
@@ -632,14 +633,24 @@
 		?>
 	</fieldset>
 	<?php
-		echo $default2->subform(
+
+		echo '<div class ="input date';
+		if (isset($this->validationErrors['Bilanparcours66']['datebilan'])) echo ' error';
+		echo '">';
+		echo $default->subform(
 			array(
-				'Pe.Bilanparcours66.datebilan' => array( 'dateFormat' => 'DMY', 'maxYear' => date('Y'), 'minYear' => date('Y') - 2, 'empty' => true, 'required' => true )
+				'Pe.Bilanparcours66.datebilan' => array( 'dateFormat' => 'DMY', 'maxYear' => date('Y'), 'minYear' => date('Y') - 2, 'empty' => true, 'required' => true, 'div' => false )
 			),
 			array(
 				'options' => $options
 			)
 		);
+		if (isset($this->validationErrors['Bilanparcours66']['datebilan'])) echo '<div class="error-message">'.$this->validationErrors['Bilanparcours66']['datebilan'].'</div>';
+		echo '</div>';
+
+		echo $xform->input( 'Pe.Bilanparcours66.proposition', array( 'type' => 'hidden', 'value' => 'parcours' ) );
+		echo $xform->input( 'Pe.Bilanparcours66.maintienorientation', array( 'type' => 'hidden', 'value' => true ) );
+		echo $xform->input( 'Pe.Bilanparcours66.choixparcours', array( 'type' => 'hidden', 'value' => 'reorientation' ) );
 	?>
 	<div class="submit">
         <?php echo $form->submit( 'Enregistrer', array( 'div' => false ) );?>
