@@ -88,8 +88,8 @@
                             ?>
                         <br />
                         <!-- Si on n'autorise pas la diffusion de l'email, on n'affiche rien -->
-                        <?php if( Set::extract( $personne, 'Foyer.Modecontact.0.Modecontact.autorutiadrelec' ) == 'A' ):?>
-                            <strong>Adresse électronique : </strong><?php echo Set::extract( $personne, 'Foyer.Modecontact.0.Modecontact.adrelec' );?>
+                        <?php if( Set::extract( $personne, 'Foyer.Modecontact.0.autorutiadrelec' ) == 'A' ):?>
+                            <strong>Adresse électronique : </strong><?php echo Set::extract( $personne, 'Foyer.Modecontact.0.adrelec' );?>
                         <?php endif;?>
                     </td>
                     <td class="mediumSize noborder">
@@ -103,10 +103,10 @@
                         ?>
                         <br />
                         <!-- Si on n'autorise aps la diffusion du téléphone, on n'affiche rien -->
-                        <?php if( Set::extract( $personne, 'Foyer.Modecontact.0.Modecontact.autorutitel' ) == 'A' ):?>
-                            <strong>Numéro de téléphone 1 : </strong><?php echo Set::extract( $personne, 'Foyer.Modecontact.0.Modecontact.numtel' );?>
+                        <?php if( Set::extract( $personne, 'Foyer.Modecontact.0.autorutitel' ) == 'A' ):?>
+                            <strong>Numéro de téléphone 1 : </strong><?php echo Set::extract( $personne, 'Foyer.Modecontact.0.numtel' );?>
                             <br />
-                            <strong>Numéro de téléphone 2 : </strong><?php echo Set::extract( $personne, 'Foyer.Modecontact.1.Modecontact.numtel' );?>
+                            <strong>Numéro de téléphone 2 : </strong><?php echo Set::extract( $personne, 'Foyer.Modecontact.1.numtel' );?>
                         <?php endif;?>
                     </td>
                 </tr>

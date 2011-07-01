@@ -834,7 +834,9 @@
 						),
 						'Foyer' => array(
 							'Dossier',
-							'Modecontact',
+							'Modecontact' => array(
+								'order' => 'Modecontact.id ASC'
+							),
 							'Adressefoyer' => array(
 								'conditions' => array(
 									'Adressefoyer.rgadr' => '01',

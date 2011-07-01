@@ -493,7 +493,6 @@
 
 			$personne = $this->{$this->modelClass}->Personne->detailsApre( $personne_id, $user_id );
 			$this->set( 'personne', $personne );
-// debug($personne);
 
 			/// Recherche du type d'orientation
 			$orientstruct = $this->Apre->Structurereferente->Orientstruct->find(

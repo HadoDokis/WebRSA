@@ -297,8 +297,6 @@
                                 echo Set::extract( $personne, 'Foyer.Modecontact.1.numtel' );
                             }
                             else{
-//                                 echo $xform->input( 'Foyer.Modecontact.1.foyer_id', array( 'label' => false, 'type' => 'hidden', 'value' => $foyer_id ) );
-//                                 echo $xform->input( 'Foyer.Modecontact.1.id', array( 'label' => false, 'type' => 'hidden' ) );
                                 echo $xform->input( 'Modecontact.1.numtel', array( 'label' => false, 'type' => 'text' ) );
                             }
                         ?>
@@ -313,12 +311,9 @@
                                 echo Set::extract( $personne, 'Foyer.Modecontact.0.adrelec' );
                             }
                             else{
-//                                 echo $xform->input( 'Foyer.Modecontact.0.id', array( 'label' => false, 'type' => 'hidden' ) );
-//                                 echo $xform->input( 'Foyer.Modecontact.foyer_id', array( 'label' => false, 'type' => 'hidden', 'value' => $foyer_id ) );
                                 echo $xform->input( 'Modecontact.0.adrelec', array( 'label' => false, 'type' => 'text' ) );
                             }
-//                             echo Set::extract( $personne, 'Foyer.Foyer.Modecontact.0.numtel' );
-                        ?> <!-- FIXME -->
+                        ?>
                     </td>
                 </tr>
             </table>
