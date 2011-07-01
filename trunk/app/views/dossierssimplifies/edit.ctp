@@ -82,16 +82,7 @@
             <?php $this->data['Orientstruct'][0]['structurereferente_id'] = Set::classicExtract( $this->data, 'Orientstruct.0.typeorient_id' ).'_'.Set::classicExtract( $this->data, 'Orientstruct.0.structurereferente_id' ); ?>
             <?php echo $form->input( 'Orientstruct.0.structurereferente_id', array( 'label' => __d( 'structurereferente', 'Structurereferente.structure_referente_'.Configure::read( 'nom_form_ci_cg' ), true ), 'type' => 'select', 'selected' => $this->data['Orientstruct'][0]['structurereferente_id'], 'options' => $structures, 'empty' => true ) );?>
         </fieldset>
-        
-        
-		<?php
-// 			$disable = false;
-// 			if( $personne['Calculdroitrsa']['toppersdrodevorsa']== 0 ) { 
-// 				$disable = true;
-// 			}
-		?>
-		
-		
+
         <?php echo $form->submit( 'Enregistrer', array( 'id' => 'ButtonSubmit' ) );?>
     <?php echo $form->end();?>
     <?php
