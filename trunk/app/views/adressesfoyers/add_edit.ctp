@@ -41,5 +41,18 @@
 
         <?php echo $form->submit( 'Enregistrer' );?>
     <?php echo $form->end();?>
+     <?php
+		echo $default->button(
+			'back',
+			array(
+				'controller' => 'adressesfoyers',
+				'action'     => 'index',
+				$foyer_id
+			),
+			array(
+				'id' => 'Back'
+			)
+		);
+	?>
 </div>
 <div class="clearer"><hr /></div>

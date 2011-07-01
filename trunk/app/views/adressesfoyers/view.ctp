@@ -104,5 +104,19 @@
             </tbody>
         </table>
     </div>
+    <?php
+		echo $default->button(
+			'back',
+			array(
+				'controller' => 'adressesfoyers',
+				'action'     => 'index',
+				$adresse['Adressefoyer']['foyer_id']
+			),
+			array(
+				'id' => 'Back'
+			)
+		);
+	?>
 </div>
+
 <div class="clearer"><hr /></div>
