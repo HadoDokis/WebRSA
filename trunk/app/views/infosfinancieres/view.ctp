@@ -62,8 +62,8 @@
                     <td><?php echo h( date_short( $infofinanciere['Infofinanciere']['dttraimoucompta'] ) );?></td>
                 </tr>
                 <tr class="even">
-                    <th ><?php __( 'heutraimoucompta' );?></th>
-                    <td><?php echo (  date_short( $infofinanciere['Infofinanciere']['heutraimoucompta'] ) );?></td>
+                    <th ><?php __d( 'infofinanciere', 'Infofinanciere.heutraimoucompta' );?></th>
+                    <td><?php echo (  $locale->date( 'Time::short', $infofinanciere['Infofinanciere']['heutraimoucompta'] ) );?></td>
                 </tr>
             </tbody>
         </table>
