@@ -205,12 +205,12 @@
 						<strong>Tél. fixe : </strong><?php echo Set::extract( $personne, 'Foyer.Modecontact.0.numtel' );?>
 					</td>
 					<td class="mediumSize noborder">
-						<strong>Tél. portable : </strong><?php echo ''/*.Set::extract( $foyer, 'Modecontact.0.numtel' );*/?>
+						<strong>Tél. portable : </strong>
 					</td>
 				</tr>
 				<tr>
 					<td colspan="2" class="mediumSize noborder">
-						<strong>Adresse mail : </strong><?php echo Set::extract( $personne, 'Foyer.Modecontact.0.numtel' );?> <!-- FIXME -->
+						<strong>Adresse mail : </strong><?php echo Set::extract( $personne, 'Foyer.Modecontact.0.numtel' );?>
 					</td>
 				</tr>
 			</table>
