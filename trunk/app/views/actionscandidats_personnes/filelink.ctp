@@ -6,7 +6,7 @@
     }
 
     $this->pageTitle =  __d( 'actioncandidat_personne', "ActionscandidatsPersonnes::{$this->action}", true );
-    echo $this->element( 'dossier_menu', array( 'personne_id' => $id ) );
+    echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
 
 ?>
 <div class="with_treemenu">
