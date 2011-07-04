@@ -112,7 +112,7 @@
 						);
 						echo $xhtml->tag(
 							'td',
-							$result['Dossierep']['created']
+							$locale->date( 'Datetime::short', $result['Dossierep']['created'] )
 						);
 						echo $xhtml->tag(
 							'td',
