@@ -156,7 +156,7 @@
             );
 
 
-            $dossier_id = $this->ActioncandidatPersonne->Personne->dossierId( $id );
+            $dossier_id = $this->ActioncandidatPersonne->Personne->dossierId( $actioncandidat_personne['ActioncandidatPersonne']['personne_id'] );
             $this->assert( !empty( $dossier_id ), 'invalidParameter' );
             $personne_id = Set::classicExtract( $actioncandidat_personne, 'ActioncandidatPersonne.personne_id' );
 
@@ -201,6 +201,7 @@
 
             $this->_setOptions();
             $this->set( compact( 'dossier_id', 'id', 'fichiers', 'actioncandidat_personne' ) );
+			$this->set( 'personne_id', $personne_id );
 
         }
 
