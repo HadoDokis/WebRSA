@@ -78,6 +78,18 @@
 					'required' => true,
 					'on' => 'create'
 				)
+			),
+			'bilanparcoursinsertion' => array(
+				'notEmptyIf' => array(
+					'rule' => array( 'notEmptyIf', 'motifep', true, array( '0' ) ),
+					'message' => 'Veuillez saisir une information',
+				)
+			),
+			'motifep' => array(
+				'notEmptyIf' => array(
+					'rule' => array( 'notEmptyIf', 'bilanparcoursinsertion', true, array( '0' ) ),
+					'message' => 'Veuillez saisir une information',
+				)
 			)
 		);
 
