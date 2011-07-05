@@ -675,11 +675,13 @@
                         <td><?php echo @$detailsEp['DEM']['themeEp'];?></td>
                         <td><?php echo @$detailsEp['DEM']['etatDossierep'];?></td>
                         <td><?php echo @$detailsEp['DEM']['decisionEp'];?></td>
+						<td><?php echo $xhtml->boolean( !empty( $detailsEp['DEM']['decisionCG'] ) );?></td>
 
                         <td><?php echo @$detailsEp['CJT']['dateEp'];?></td>
                         <td><?php echo @$detailsEp['CJT']['themeEp'];?></td>
                         <td><?php echo @$detailsEp['CJT']['etatDossierep'];?></td>
                         <td><?php echo @$detailsEp['CJT']['decisionEp'];?></td>
+						<td><?php echo $xhtml->boolean( !empty( $detailsEp['CJT']['decisionCG'] ) );?></td>
                     </tr>
                 </tbody>
             </table>
