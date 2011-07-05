@@ -482,17 +482,19 @@
 			);
 
 			$detaildroitrsa = $this->Personne->Foyer->Dossier->Detaildroitrsa->findByDossierId( $dossier_id, null, null, -1 );
-			$detaildroitrsa_id = Set::classicExtract( $detaildroitrsa, 'Detaildroitrsa.id' );
-			$detailscalculsdroitrsa = $this->Personne->Foyer->Dossier->Detaildroitrsa->Detailcalculdroitrsa->find(
-				'all',
-				array(
-					'conditions' => array(
-						'Detailcalculdroitrsa.detaildroitrsa_id' => $detaildroitrsa_id
-					),
-					'recursive' => -1,
-					'order' => 'Detailcalculdroitrsa.dtderrsavers DESC'
-				)
-			);
+			if( !empty( $detaildroitrsa ) ) {
+				$detaildroitrsa_id = Set::classicExtract( $detaildroitrsa, 'Detaildroitrsa.id' );
+				$detailscalculsdroitrsa = $this->Personne->Foyer->Dossier->Detaildroitrsa->Detailcalculdroitrsa->find(
+					'all',
+					array(
+						'conditions' => array(
+							'Detailcalculdroitrsa.detaildroitrsa_id' => $detaildroitrsa_id
+						),
+						'recursive' => -1,
+						'order' => 'Detailcalculdroitrsa.dtderrsavers DESC'
+					)
+				);
+			}
 
 			$rsaSocleValues = array();
 			if( !empty( $infosfinancieres ) ) {
