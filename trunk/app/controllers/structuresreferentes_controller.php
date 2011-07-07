@@ -121,6 +121,7 @@
 			$this->set( 'type', $type );
 
 			if( !empty( $this->data ) ) {
+
 				if( $this->Structurereferente->saveAll( $this->data ) ) {
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 					$this->redirect( array( 'controller' => 'structuresreferentes', 'action' => 'index' ) );
@@ -133,7 +134,9 @@
 						'conditions' => array(
 							'Structurereferente.id' => $structurereferente_id,
 						),
-						'contain' => false
+						'contain' => array(
+							'Zonegeographique'
+						)
 					)
 				);
 				$this->data = $structurereferente;
