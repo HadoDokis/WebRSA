@@ -132,7 +132,8 @@
 					array(
 						'conditions' => array(
 							'Structurereferente.id' => $structurereferente_id,
-						)
+						),
+						'contain' => false
 					)
 				);
 				$this->data = $structurereferente;
