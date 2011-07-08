@@ -20,7 +20,7 @@ msgstr ""
 ###############################################################################
 
 msgid "Motifssortie::index"
-msgstr "Liste des motifs de sortie"
+msgstr "Motifs de sortie"
 
 msgid "Motifsortie::index::empty"
 msgstr "Aucun motif de sortie enregistré"
