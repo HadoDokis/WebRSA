@@ -436,7 +436,32 @@ App::import( 'Helper', 'Locale' );
 			else{
 				if( $this->action == 'edit' ) {
 					$this->data = $rdv;
+				}
+				else{					
+					//Récupération de la structure référente liée à l'orientation
+					$orientstruct = $this->Rendezvous->Structurereferente->Orientstruct->find(
+						'first',
+						array(
+							'fields' => array(
+								'Orientstruct.id',
+								'Orientstruct.personne_id',
+								'Orientstruct.structurereferente_id'
+							),
+							'conditions' => array(
+								'Orientstruct.personne_id' => $personne_id,
+								'Orientstruct.date_valid IS NOT NULL'
+							),
+							'contain' => array(
+								'Structurereferente',
+								'Referent'
+							),
+							'order' => array( 'Orientstruct.date_valid DESC' )
+						)
+					);
 
+					if( !empty( $orientstruct ) ){
+						$this->data['Rendezvous']['structurereferente_id'] = $orientstruct['Orientstruct']['structurereferente_id'];
+					}
 				}
 			}
 			$this->Rendezvous->commit();
