@@ -328,7 +328,7 @@
 			}
 
 			$orientstruct['Dossier'] = $orientstruct['Personne']['Foyer']['Dossier'];
-			if( isset( $orientstruct['Adresse'] ) ){
+			if( isset( $orientstruct['Personne']['Foyer']['Adressefoyer'][0]['Adresse'] ) ){
 				$orientstruct['Adresse'] = $orientstruct['Personne']['Foyer']['Adressefoyer'][0]['Adresse'];
 				unset( $orientstruct['Personne']['Foyer'] );
 				$orientstruct['Adresse']['typevoie'] = Set::classicExtract( $typevoie, Set::classicExtract( $orientstruct, 'Adresse.typevoie' ) );
