@@ -55,18 +55,23 @@
 				array( 'class' => 'aere', 'id' => 'vueContrat' )
 			);
 			echo '<h2 >Actions déjà en cours</h2>';
-			foreach( $fichescandidature as $fichecandidature ){
-				echo $default2->view(
-					$fichecandidature,
-					array(
-						'Actioncandidat.name' => array( 'type' => 'text' ),
-						'Actioncandidat.Contactpartenaire.Partenaire.libstruc' => array( 'type' => 'text' ),
-						'Referent.nom' => array( 'type' => 'text', 'value' => '#Referent.qual# #Referent.nom# #Referent.prenom#' ),
-						'Actioncandidat.ddaction',
-						'Actioncandidat.hasfichecandidature' => array( 'type' => 'boolean' )
-					),
-					array( 'id' => 'vueContrat' )
-				);
+			if( !empty( $fichescandidature ) ) {
+				foreach( $fichescandidature as $fichecandidature ){
+					echo $default2->view(
+						$fichecandidature,
+						array(
+							'Actioncandidat.name' => array( 'type' => 'text' ),
+							'Actioncandidat.Contactpartenaire.Partenaire.libstruc' => array( 'type' => 'text' ),
+							'Referent.nom' => array( 'type' => 'text', 'value' => '#Referent.qual# #Referent.nom# #Referent.prenom#' ),
+							'Actioncandidat.ddaction',
+							'Actioncandidat.hasfichecandidature' => array( 'type' => 'boolean' )
+						),
+						array( 'id' => 'vueContrat' )
+					);
+				}
+			}
+			else{
+				echo '<p class="notice">Aucune action en cours</p>';
 			}
 		}
 		else if( Configure::read( 'Cg.departement' ) == 93 ) {
