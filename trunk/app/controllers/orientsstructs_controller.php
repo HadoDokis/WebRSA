@@ -480,8 +480,10 @@
 						$this->data['Calculdroitrsa']['personne_id'] = $personne_id;
 						$this->data['Orientstruct']['personne_id'] = $personne_id;
 						$this->data['Orientstruct']['valid_cg'] = true;
-						$this->data['Orientstruct']['date_propo'] = date( 'Y-m-d' );
-						$this->data['Orientstruct']['date_valid'] = date( 'Y-m-d' );
+						if( Configure::read( 'Cg.departement' ) != 66 ) {
+							$this->data['Orientstruct']['date_propo'] = date( 'Y-m-d' );
+							$this->data['Orientstruct']['date_valid'] = date( 'Y-m-d' );
+						}
 						$this->data['Orientstruct']['statut_orient'] = 'Orienté';
 
 						$saved = $this->Orientstruct->Personne->Calculdroitrsa->save( $this->data );
