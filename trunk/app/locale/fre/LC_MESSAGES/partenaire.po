@@ -19,7 +19,7 @@ msgstr ""
 
 # #############################################################################
 msgid "Partenaires::index"
-msgstr "Partenaires pour les fiches de candidature"
+msgstr "Création des partenaires / prestataires"
 
 msgid "Partenaire::index::empty"
 msgstr "Aucun partenaire présent"

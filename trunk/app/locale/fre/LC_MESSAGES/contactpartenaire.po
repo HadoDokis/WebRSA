@@ -19,7 +19,7 @@ msgstr ""
 
 ###############################################################################
 msgid "Contactspartenaires::index"
-msgstr "Contacts liés aux partenaires"
+msgstr "Création des contacts"
 
 msgid "Contactpartenaire::index::empty"
 msgstr "Aucun contact présent"

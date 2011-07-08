@@ -19,7 +19,7 @@ msgstr ""
 
 # 20110503 : remplace "Actions pour les fiches"
 msgid "Actionscandidats::index"
-msgstr "Saisie des actions d'insertion"
+msgstr "Création des actions d'insertion"
 
 msgid "Actioncandidat::index::empty"
 msgstr "Aucune action d'insertion présente"
