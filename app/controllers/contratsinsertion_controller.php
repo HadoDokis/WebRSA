@@ -892,10 +892,16 @@
 				'all',
 				array(
 					'conditions' => array(
-						'ActioncandidatPersonne.personne_id' => $personne_id
+						'ActioncandidatPersonne.personne_id' => $personne_id,
+						'ActioncandidatPersonne.positionfiche = \'encours\'',
 					),
 					'contain' => array(
-						'Actioncandidat'
+						'Actioncandidat' => array(
+							'Contactpartenaire' => array(
+								'Partenaire'
+							)
+						),
+						'Referent'
 					)
 				)
 			);
