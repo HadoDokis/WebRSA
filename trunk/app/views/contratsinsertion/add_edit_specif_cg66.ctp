@@ -46,10 +46,9 @@
 							<thead>
 								<tr>
 									<th>Action engagée</th>
-									<th>Code de l'action</th>
-									<th>Contractualisation</th>
+									<th>Partenaire / Prestataire</th>
+									<th>Prescripteur</th>
 									<th>Date de début de l'action</th>
-									<th>Date de fin de l'action</th>
 									<th>Fiche de candidature ?</th>
 									<th>Action</th>
 								</tr>
@@ -60,10 +59,9 @@
 									{
 										echo '<tr>';
 											echo $xhtml->tag('td', $fiche['Actioncandidat']['name']);
-											echo $xhtml->tag('td', $fiche['Actioncandidat']['themecode'].''.$fiche['Actioncandidat']['codefamille'].''.$fiche['Actioncandidat']['numcodefamille']);
-											echo $xhtml->tag('td', Set::enum( $fiche['Actioncandidat']['contractualisation'], $fiches['contractualisation'] ) );
+											echo $xhtml->tag('td', $fiche['Actioncandidat']['Contactpartenaire']['Partenaire']['libstruc'] );
+											echo $xhtml->tag('td', $fiche['Referent']['qual'].' '.$fiche['Referent']['nom'].' '.$fiche['Referent']['prenom'] );
 											echo $xhtml->tag('td', date_short( $fiche['Actioncandidat']['ddaction'] ) );
-											echo $xhtml->tag('td', date_short( $fiche['Actioncandidat']['dfaction'] ) );
 											echo $xhtml->tag('td', $fiche['Actioncandidat']['hasfichecandidature'] ? 'Oui' : 'Non' );
 											echo $xhtml->tag('td', $xhtml->viewLink( 'Voir', array( 'controller' => 'actionscandidats_personnes', 'action' => 'index', $fiche['ActioncandidatPersonne']['personne_id'] ) ) );
 										echo '</tr>';
