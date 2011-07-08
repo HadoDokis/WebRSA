@@ -645,6 +645,31 @@
 
 			$this->set( 'contratinsertion', $contratinsertion );
 
+			/**
+			*   Utilisé pour les détections de fiche de candidature
+			*   pour savoir si des actions sont en cours ou non
+			*/
+			$fichescandidature = $this->Contratinsertion->Personne->ActioncandidatPersonne->find(
+				'all',
+				array(
+					'conditions' => array(
+						'ActioncandidatPersonne.personne_id' => $contratinsertion['Contratinsertion']['personne_id'],
+						'ActioncandidatPersonne.positionfiche = \'encours\'',
+					),
+					'contain' => array(
+						'Actioncandidat' => array(
+							'Contactpartenaire' => array(
+								'Partenaire'
+							)
+						),
+						'Referent'
+					)
+				)
+			);
+// 			debug($fichescandidature);
+			$this->set( compact( 'fichescandidature' ) );
+
+
 			$this->_setOptions();
 			$this->set( 'personne_id', $contratinsertion['Contratinsertion']['personne_id'] );
 

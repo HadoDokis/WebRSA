@@ -52,8 +52,22 @@
 					'Contratinsertion.lieu_saisi_ci' => array( 'type' => 'text' ),
 					'Contratinsertion.date_saisi_ci',
 				),
-				array( 'id' => 'vueContrat' )
+				array( 'class' => 'aere', 'id' => 'vueContrat' )
 			);
+			echo '<h2 >Actions déjà en cours</h2>';
+			foreach( $fichescandidature as $fichecandidature ){
+				echo $default2->view(
+					$fichecandidature,
+					array(
+						'Actioncandidat.name' => array( 'type' => 'text' ),
+						'Actioncandidat.Contactpartenaire.Partenaire.libstruc' => array( 'type' => 'text' ),
+						'Referent.nom' => array( 'type' => 'text', 'value' => '#Referent.qual# #Referent.nom# #Referent.prenom#' ),
+						'Actioncandidat.ddaction',
+						'Actioncandidat.hasfichecandidature' => array( 'type' => 'boolean' )
+					),
+					array( 'id' => 'vueContrat' )
+				);
+			}
 		}
 		else if( Configure::read( 'Cg.departement' ) == 93 ) {
 			echo $default2->view(
