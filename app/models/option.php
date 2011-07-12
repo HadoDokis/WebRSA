@@ -264,14 +264,26 @@
 			);
 		}
 
+
 		public function decision_ci() {
-			return array(
-				'E' => 'En attente de décision',
-				'V' => 'Validation le',
-				/*'A' => 'Ajournement',
-				'R' => 'Rejet'*/
-				'N' => 'Non validé'
-			);
+			if( Configure::read( 'Cg.departement' ) == 66 ){
+				return array(
+					'E' => 'En attente de décision',
+					'V' => 'Validation le',
+					/*'A' => 'Ajournement',
+					'R' => 'Rejet'*/
+					'N' => 'Non validé'
+				);
+			}
+			else{
+				return array(
+					'E' => 'En attente de décision',
+					'V' => 'Validation à compter du',
+					'A' => 'Ajournement',
+					'R' => 'Rejet'/*,
+					'N' => 'Non validé'*/
+				);
+			}
 		}
 
 		public function demarlog() {
