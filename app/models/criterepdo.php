@@ -4,6 +4,7 @@
 		public $name = 'Criterepdo';
 
 		public $useTable = false;
+		public $actsAs = array( 'Conditionnable' );
 
 		/**
 		*
@@ -77,13 +78,14 @@
 				$conditions[] = "Dossier.dtdemrsa BETWEEN '{$dtdemrsa_from}' AND '{$dtdemrsa_to}'";
 			}
 
+
 			// ...
 			if( !empty( $matricule ) ) {
-				$conditions[] = 'Dossier.matricule = \''.Sanitize::clean( $matricule ).'\'';
+				$conditions[] = 'Dossier.matricule ILIKE \''.$this->wildcard( $matricule ).'\'';
 			}
 			// ...
 			if( !empty( $numdemrsa ) ) {
-				$conditions[] = 'Dossier.numdemrsa = \''.Sanitize::clean( $numdemrsa ).'\'';
+				$conditions[] = 'Dossier.numdemrsa ILIKE \''.$this->wildcard( $numdemrsa ).'\'';
 			}
 
 			/// Critères sur l'adresse - canton
@@ -313,13 +315,16 @@
 				$conditions[] = 'Adresse.locaadr ILIKE \'%'.Sanitize::clean( $locaadr ).'%\'';
 			}
 
+
+// 			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $criterespdos );
+
 			// ...
 			if( !empty( $matricule ) ) {
-				$conditions[] = 'Dossier.matricule = \''.Sanitize::clean( $matricule ).'\'';
+				$conditions[] = 'Dossier.matricule ILIKE \''.$this->wildcard( $matricule ).'\'';
 			}
 			// ...
 			if( !empty( $numdemrsa ) ) {
-				$conditions[] = 'Dossier.numdemrsa = \''.Sanitize::clean( $numdemrsa ).'\'';
+				$conditions[] = 'Dossier.numdemrsa ILIKE \''.$this->wildcard( $numdemrsa ).'\'';
 			}
 
 			/// Critères sur l'adresse - canton
