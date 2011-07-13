@@ -271,7 +271,7 @@
 			$decisionpdo = Set::extract( $criterespdos, 'Search.Decisionpropopdo.decisionpdo_id' );
 			$motifpdo = Set::extract( $criterespdos, 'Search.Propopdo.motifpdo' );
 			$originepdo = Set::extract( $criterespdos, 'Search.Propopdo.originepdo_id' );
-			$nir = Set::extract( $criterespdos, 'Search.Propopdo.nir' );
+			$nir = Set::extract( $criterespdos, 'Search.Personne.nir' );
 			$nom = Set::extract( $criterespdos, 'Search.Personne.nom' );
 			$prenom = Set::extract( $criterespdos, 'Search.Personne.prenom' );
 			$matricule = Set::extract( $criterespdos, 'Search.Dossier.matricule' );
