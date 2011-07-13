@@ -43,6 +43,7 @@
 			$motifpdo = Set::extract( $criterespdo, 'Cohortepdo.motifpdo' );
 			$datedecisionpdo = Set::extract( $criterespdo, 'Cohortepdo.datedecisionpdo' );
 			$matricule = Set::extract( $criterespdo, 'Cohortepdo.matricule' );
+			$numdemrsa = Set::extract( $criterespdo, 'Cohortepdo.numdemrsa' );
 			$numcomptt = Set::extract( $criterespdo, 'Cohortepdo.numcomptt' );
 			$gestionnaire = Set::extract( $criterespdo, 'Cohortepdo.user_id' );
 
@@ -82,9 +83,13 @@
 				$conditions[] = 'Propopdo.motifpdo ILIKE \'%'.Sanitize::clean( $motifpdo ).'%\'';
 			}
 
-			// N° CAF
+			// ...
 			if( !empty( $matricule ) ) {
-				$conditions[] = 'Dossier.matricule ILIKE \'%'.Sanitize::clean( $matricule ).'%\'';
+				$conditions[] = 'Dossier.matricule ILIKE \''.$this->wildcard( $matricule ).'\'';
+			}
+			// ...
+			if( !empty( $numdemrsa ) ) {
+				$conditions[] = 'Dossier.numdemrsa ILIKE \''.$this->wildcard( $numdemrsa ).'\'';
 			}
 
 			// Commune au sens INSEE

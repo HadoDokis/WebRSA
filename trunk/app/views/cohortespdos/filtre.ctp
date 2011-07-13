@@ -25,6 +25,8 @@
 		<legend>Recherche par personne</legend>
 		<?php echo $form->input( 'Cohortepdo.nom', array( 'label' => 'Nom ', 'type' => 'text' ) );?>
 		<?php echo $form->input( 'Cohortepdo.prenom', array( 'label' => 'Prénom ', 'type' => 'text' ) );?>
+		<?php echo $form->input( 'Cohortepdo.matricule', array( 'label' => 'N° CAF', 'type' => 'text', 'maxlength' => 15 ) );?>
+		<?php echo $form->input( 'Cohortepdo.numdemrsa', array( 'label' => 'N° demande RSA', 'type' => 'text', 'maxlength' => 11 ) );?>
 		<?php
             $valueDossierDernier = isset( $this->data['Dossier']['dernier'] ) ? $this->data['Dossier']['dernier'] : true;
             echo $form->input( 'Dossier.dernier', array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueDossierDernier ) );
@@ -34,7 +36,6 @@
 		<legend>Recherche PDO</legend>
 		<?php /*echo $form->input( 'Cohortepdo.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );*/?>
 		<?php if( $this->action == 'avisdemande' ):?>
-			<?php echo $form->input( 'Cohortepdo.matricule', array( 'label' => 'N° CAF', 'type' => 'text', 'maxlength' => 15 ) );?>
 			<?php echo $form->input( 'Cohortepdo.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );?>
 			<?php
 				if( Configure::read( 'CG.cantons' ) ) {
