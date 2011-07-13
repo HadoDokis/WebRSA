@@ -362,7 +362,8 @@
 				'Personne.dtnai',
 				'Dossier.matricule',
 				'Adresse.locaadr',
-				'Foyer.enerreur',
+				'Orientstruct.typeorient_id',
+				'Foyer.enerreur'
 			);
 
 			/// Jointures de base
@@ -400,6 +401,14 @@
 					'type'       => 'INNER',
 					'foreignKey' => false,
 					'conditions' => array( 'Personne.id = Contratinsertion.personne_id' )
+				);
+				//FIXME: voir si cela ne génère pas des doublons d'affichage d'orientation
+				$joins[] = array(
+					'table'      => 'orientsstructs',
+					'alias'      => 'Orientstruct',
+					'type'       => 'INNER',
+					'foreignKey' => false,
+					'conditions' => array( 'Orientstruct.personne_id = Personne.id' )
 				);
 			}
 			$joins[] = array(
@@ -462,7 +471,7 @@
 					'Adressefoyer.rgadr' => '01'
 				)
 			);
-
+			
 			$joins[] = array(
 				'table'      => 'adresses',
 				'alias'      => 'Adresse',
@@ -470,6 +479,7 @@
 				'foreignKey' => false,
 				'conditions' => array( 'Adressefoyer.adresse_id = Adresse.id' )
 			);
+
 
 			if( ( isset( $search['Dossiercaf.nomtitulaire'] ) && !empty( $search['Dossiercaf.nomtitulaire'] ) ) ||
 				( isset( $search['Dossiercaf.prenomtitulaire'] ) && !empty( $search['Dossiercaf.prenomtitulaire'] ) ) ) {
@@ -605,6 +615,16 @@
 						ORDER by orientsstructs.date_valid DESC
 						LIMIT 1
 				)';
+
+
+
+				//Ajout suite au bug #5293 du 12/07/2011
+				// Toutes les orientations sauf emploi
+				$conditions[] = 'Orientstruct.typeorient_id NOT IN (
+							SELECT t.id
+								FROM typesorients AS t
+								WHERE t.lib_type_orient LIKE \'Emploi%\'
+						)';
 
 				// On accepte les orientations validées durant le CER, si c'est pour la même structure référente
 				$conditions[] = 'Orientstruct.personne_id NOT IN (
@@ -750,6 +770,14 @@
 				if( !empty( $search['Relance.compare1'] ) && !empty( $search['Relance.nbjours1'] ) ) {
 					$conditions[] = '( DATE( NOW() ) - Contratinsertion.df_ci ) '.$search['Relance.compare1'].' '.$search['Relance.nbjours1'];
 				}
+
+				//Ajout suite au bug #5293 du 12/07/2011
+				// Toutes les orientations sauf emploi
+				$conditions[] = 'Orientstruct.typeorient_id NOT IN (
+							SELECT t.id
+								FROM typesorients AS t
+								WHERE t.lib_type_orient LIKE \'Emploi%\'
+						)';
 
 				switch( $search['Relance.numrelance'] ) {
 					case 1:
