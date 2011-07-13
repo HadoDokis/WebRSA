@@ -29,7 +29,7 @@
 			$this->set( 'typeserins', $this->Option->typeserins() );
 			$this->set( 'typepdo', $this->Typepdo->find( 'list' ) );
 			$this->set( 'typenotifpdo', $this->Typenotifpdo->find( 'list' ) );
-			$this->set( 'decisionpdo', $this->Decisionpdo->find( 'list', array( 'order' => 'Decisionpdo.libelle ASC' ) ) );
+			$this->set( 'decisionpdo', $this->Decisionpdo->find( 'list'/*, array( 'order' => 'Decisionpdo.libelle ASC' )*/ ) );
 // 			$this->set( 'decision', $this->Decisionpdo->Decisionpropopdo->allEnumLists() );
 // 			$this->set( 'description', $this->Propopdo->Traitementpdo->Descriptionpdo->find( 'list' ) );
 			$this->set( 'typetraitement', $this->Propopdo->Traitementpdo->Traitementtypepdo->find( 'list' ) );
