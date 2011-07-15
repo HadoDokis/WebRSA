@@ -19,55 +19,63 @@
 	$montantdejaverse = Set::classicExtract( $apre, 'Apre.montantdejaverse' );
 	$montantrestant = ( $montantaverser - $montantdejaverse );
 ?>
-
-<div id="ficheCI">
-		<table>
-			<tbody>
-				<tr class="even">
-					<th><?php __( 'N° dossier APRE');?></th>
-					<td><?php echo Set::classicExtract( $apre, 'Apre.numeroapre' );?></td>
-				</tr>
-				<tr class="odd">
-					<th><?php __( 'Nom / Prénom bénéficiare' );?></th>
-					<td><?php echo ( $apre['Personne']['nom'].' '.$apre['Personne']['prenom'] );?></td>
-				</tr>
-				<tr class="even">
-					<th><?php __( 'Type de demande' );?></th>
-					<td><?php echo Set::enum( Set::classicExtract( $apre, 'Apre.typedemandeapre' ), $options['typedemandeapre'] );?></td>
-				</tr>
-				<tr class="odd">
-					<th><?php __( 'Date de demande au CG' );?></th>
-					<td><?php echo date_short( Set::classicExtract( $apre, 'Apre.datedemandeapre' ) );?></td>
-				</tr>
-				<tr class="even">
-					<th><?php __( 'Montant aide complémentaire demandée');?></th>
-					<td><?php echo Set::classicExtract( $apre, 'Apre.montantaverser' );?></td>
-				</tr>
-				<?php if( Configure::read( 'Cg.departement' ) != 66 ):?>
-					<tr class="odd">
-						<th><?php __( 'Avis du comité d\'examen' );?></th>
-						<td><?php if( Set::classicExtract( $aprecomiteapre, 'ApreComiteapre.decisioncomite' ) ) { echo Set::enum( Set::classicExtract( $aprecomiteapre, 'ApreComiteapre.decisioncomite' ), $optionsaprecomite['decisioncomite']); }?></td>
-					</tr>
-					<tr class="even">
-						<th><?php __( 'Montant aide complémentaire accordée' );?></th>
-						<td><?php echo Set::classicExtract( $aprecomiteapre, 'ApreComiteapre.montantattribue' );?></td>
-					</tr>
-				<?php endif;?>
-				<tr class="odd">
-					<th><?php __( 'Montant aide complémentaire déjà versé' );?></th>
-					<td><?php echo Set::classicExtract( $apre, 'Apre.montantdejaverse' );?></td>
-				</tr>
-				<tr class="even">
-					<th><?php __( 'Date du versement' );?></th>
-					<td><?php echo date_short( Set::classicExtract( $apre, 'Comiteapre.decisioncomite' ) );?></td>
-				</tr>
-				<tr class="odd">
-					<th><?php __( 'Montant restant à payer' );?></th>
-					<td><?php echo $montantrestant;?></td>
-				</tr>
-			</tbody>
-		</table>
-</div>
+<?php
+		$typedemandeapre = Set::enum( $apre['Apre']['typedemandeapre'], $options['typedemandeapre'] );
+		$naturelogement = Set::enum( $apre['Apre']['naturelogement'], $options['naturelogement'] );
+		$activitebeneficiaire = Set::enum( $apre['Apre']['activitebeneficiaire'], $options['activitebeneficiaire'] );
+		$typecontrat = Set::enum( $apre['Apre']['typecontrat'], $options['typecontrat'] );
+		$statutapre = Set::enum( $apre['Apre']['statutapre'], $options['statutapre'] );
+		$etatdossierapre = Set::enum( $apre['Apre']['etatdossierapre'], $options['etatdossierapre'] );
+		$eligibiliteapre = Set::enum( $apre['Apre']['eligibiliteapre'], $options['eligibiliteapre'] );
+		$justificatif = Set::enum( $apre['Apre']['justificatif'], $options['justificatif'] );
+		$isdecision = Set::enum( $apre['Apre']['isdecision'], $options['isdecision'] );
+		$referent = Set::enum( $apre['Apre']['referent_id'], $referents );
+		$struct = Set::enum( $apre['Apre']['structurereferente_id'], $structs );
+		$cessderact = Set::enum( $apre['Apre']['cessderact'], $optionsdsps['cessderact'] );
+		
+// 		debug( $apre );
+		echo $default2->view(
+			$apre,
+			array(
+				'Personne.nom_complet' => array( 'type' => 'text' ),
+				'Apre.numeroapre',
+				'Apre.typedemandeapre' => array( 'value' => $typedemandeapre ),
+				'Apre.datedemandeapre',
+				'Apre.naturelogement' => array( 'value' => $naturelogement ),
+				'Apre.precisionsautrelogement',
+				'Apre.anciennetepoleemploi' => array( 'type' => 'text' ),
+				'Apre.projetprofessionnel' => array( 'type' => 'text' ),
+				'Apre.secteurprofessionnel' => array( 'type' => 'text' ),
+				'Apre.activitebeneficiaire' => array( 'value' => $activitebeneficiaire ),
+				'Apre.dateentreeemploi',
+				'Apre.typecontrat' => array( 'value' => $typecontrat ),
+				'Apre.precisionsautrecontrat' => array( 'type' => 'text' ),
+				'Apre.nbheurestravaillees' => array( 'type' => 'text' ),
+				'Apre.nomemployeur' => array( 'type' => 'text' ),
+				'Apre.adresseemployeur' => array( 'type' => 'text' ),
+				'Apre.avistechreferent' => array( 'type' => 'text' ),
+				'Apre.etatdossierapre' => array( 'value' => $etatdossierapre ),
+				'Apre.eligibiliteapre' => array( 'value' => $eligibiliteapre ),
+				'Apre.secteuractivite' => array( 'type' => 'text' ),
+				'Apre.nbenf12' => array( 'type' => 'text' ),
+				'Apre.statutapre' => array( 'value' => $statutapre ),
+				'Apre.justificatif' => array( 'value' => $justificatif ),
+				'Apre.structurereferente_id' => array( 'type' => 'text', 'value' => $struct ),
+				'Apre.referent_id' => array( 'type' => 'text', 'value' => $referent ),
+				'Apre.montantaverser' => array( 'type' => 'text' ),
+				'Apre.nbpaiementsouhait' => array( 'type' => 'text' ),
+				'Apre.montantdejaverse' => array( 'type' => 'text' ),
+				'Apre.cessderact' => array( 'value' => $cessderact  ),
+				'Apre.isdecision' => array( 'value' => $isdecision )
+			),
+			array(
+				'class' => 'aere',
+				'id' => 'vueContrat',
+				'domain' => 'apre'
+			)
+		);
+// debug( $options );
+?>
 <?php
 	echo $default->button(
 		'back',

@@ -52,6 +52,60 @@ msgstr "Activité du bénéficiaire "
 msgid "Apre.projetprofessionnel"
 msgstr "Projet professionnel "
 
+msgid "Apre.dateentreeemploi"
+msgstr "Date de l'emploi prévue "
+
+msgid "Apre.typecontrat"
+msgstr "Type de contrat"
+
+msgid "Apre.precisionsautrecontrat"
+msgstr "Si autre, précisez"
+
+msgid "Apre.nbheurestravaillees"
+msgstr "Nombre d'heures travaillées"
+
+msgid "Apre.nomemployeur"
+msgstr "Nom de l'employeur"
+
+msgid "Apre.adresseemployeur"
+msgstr "Adresse de l'employeur"
+
+msgid "Apre.cessderact"
+msgstr "Date de dernière cessation d'activité"
+
+msgid "Apre.montantaverser"
+msgstr "Montant à verser"
+
+msgid "Apre.etatdossierapre"
+msgstr "Etat du dossier APRE"
+
+msgid "Apre.isdecision"
+msgstr "Décision prise ?"
+
+msgid "Apre.structurereferente_id"
+msgstr "Structure référente"
+
+msgid "Apre.avistechreferent"
+msgstr "Avis technique du référent"
+
+msgid "Apre.nbenf12"
+msgstr "Nombre d'enfants de moins de 12 ans"
+
+msgid "Apre.secteuractivite"
+msgstr "Secteur d'activité"
+
+msgid "Apre.montantdejaverse"
+msgstr "Montant déjà versé"
+
+msgid "Apre.statutapre"
+msgstr "Statut de l'APRE"
+
+msgid "Apre.justificatif"
+msgstr "Justificatif"
+
+msgid "Apre.nbpaiementsouhait"
+msgstr "Nombre de paiement souhaité"
+
 msgid "Apre.secteurprofessionnel"
 msgstr "Secteur professionnel en lien avec la demande "
 
