@@ -147,8 +147,10 @@
 								<th>Localité</th>
 								<th>Préscripteur/Préinscripteur</th>
 								<th>Date demande APRE</th>
+<!--								<th>Type d'aide</th>
+								<th>Montant demandé</th>-->
 								<th>Quota</th>
-								<th class="action">Action</th>
+								<th class="action" colspan="2">Action</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -167,11 +169,18 @@
 												h( Set::classicExtract( $apre, 'Personne.Foyer.Adressefoyer.0.Adresse.locaadr' ) ),
 												h( Set::enum( Set::classicExtract( $apre, 'referent_id' ), $referent) ),
 												h( date_short( Set::classicExtract( $apre, 'datedemandeapre' ) ) ),
+// 												h( date_short( Set::classicExtract( $apre, 'datedemandeapre' ) ) ),
+// 												h( date_short( Set::classicExtract( $apre, 'datedemandeapre' ) ) ),
 												h( Set::classicExtract( $apre, 'quota' ) ),
 												$xhtml->viewLink(
 													'Voir les apres',
 													array( 'controller' => 'apres', 'action' => 'index', Set::classicExtract( $apre, 'personne_id' ) ),
 													$permissions->check( 'apres', 'index' )
+												),
+												$xhtml->printLink(
+													'Imprimer l\'apre',
+													array( 'controller' => 'gedooos', 'action' => 'apre', Set::classicExtract( $apre, 'id' ) ),
+													$permissions->check( 'gedooos', 'apre' )
 												)
 											),
 											array( 'class' => 'odd' ),
