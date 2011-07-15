@@ -43,9 +43,6 @@ msgstr "Si autres, préciser "
 msgid "Apre.referent_id"
 msgstr "Référent lié"
 
-msgid "Apre.referent_id"
-msgstr "Référent lié"
-
 msgid "Apre.anciennetepoleemploi"
 msgstr "Ancienneté pôle emploi "
 
