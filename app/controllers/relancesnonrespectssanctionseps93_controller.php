@@ -52,7 +52,7 @@
 
 			$erreurs = $this->Relancenonrespectsanctionep93->erreursPossibiliteAjout( $personne_id );
 
-			$conditions = array( 'OR' => array(), 'origine' => array( 'orientstruct', 'contratinsertion' ) );
+			$conditions = array( 'OR' => array(), 'Nonrespectsanctionep93.origine' => array( 'orientstruct', 'contratinsertion' ) );
 
 			$orientsstructs = $this->Orientstruct->find(
 				'list',
