@@ -25,7 +25,7 @@
 			$this->set( 'optionsacts', $optionsacts );
 			$optionsdsps = $this->Dsp->allEnumLists();
 			$this->set( 'optionsdsps', $optionsdsps );
-
+// debug( $optionsdsps );
 			$optionslogts = $this->Amenaglogt->allEnumLists();
 			$this->set( 'optionslogts', $optionslogts );
 			$optionscrea = $this->Acccreaentr->allEnumLists();
@@ -370,14 +370,19 @@
 		*** *******************************************************************/
 
 		function view( $apre_id = null ){
+		
+			$this->Apre->forceVirtualFields = true;
 			$apre = $this->Apre->findById( $apre_id );
 			$this->assert( !empty( $apre ), 'invalidParameter' );
+			$this->Apre->forceVirtualFields = false;
 
 			$aprecomiteapre = $this->Apre->ApreComiteapre->findByApreId( $apre_id, null, null, -1 );
 			$this->set( 'aprecomiteapre', $aprecomiteapre );
 
 			$referents = $this->Referent->find( 'list' );
 			$this->set( 'referents', $referents );
+			$structs = $this->Structurereferente->listeParType( array( 'apre' => true ) );
+			$this->set( 'structs', $structs );
 
 			$this->set( 'apre', $apre );
 			$this->_setOptions();
