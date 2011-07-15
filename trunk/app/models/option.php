@@ -266,7 +266,7 @@
 
 
 		public function decision_ci() {
-			if( Configure::read( 'Cg.departement' ) == 66 ){
+			if( Configure::read( 'Cg.departement' ) != 93 ){
 				return array(
 					'E' => 'En attente de décision',
 					'V' => 'Validation le',

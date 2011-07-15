@@ -241,7 +241,7 @@
 					<td class="mediumsize noborder"><strong>Date de dernière cessation d'activité : </strong></td>
 					<td class="mediumsize noborder">
 						<?php /*echo Set::enum( Set::classicExtract( $personne, 'Dsp.cessderact' ), $optionsdsps['cessderact'] );*/?>
-						<?php echo $xform->input( 'Dsp.cessderact', array( 'label' => false, 'type' => 'select', 'options' => $optionsdsps['cessderact'], 'empty' => true, 'selected' => Set::classicExtract( $personne, 'Dsp.cessderact' ) ) );?>
+						<?php echo $xform->input( 'Apre.cessderact', array( 'label' => false, 'type' => 'select', 'options' => $optionsdsps['cessderact'], 'empty' => true ) );?>
 					</td>
 				</tr>
 				<tr>
