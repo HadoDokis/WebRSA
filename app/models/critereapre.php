@@ -101,15 +101,15 @@
 				$conditions[] = 'Adresse.numcomptt ILIKE \'%'.Sanitize::clean( $numcomptt ).'%\'';
 			}
 
-			// N° Dossier RSA
+			// ...
+			if( !empty( $matricule ) ) {
+				$conditions[] = 'Dossier.matricule ILIKE \''.$this->wildcard( $matricule ).'\'';
+			}
+			// ...
 			if( !empty( $numdemrsa ) ) {
-				$conditions[] = 'Dossier.numdemrsa ILIKE \'%'.Sanitize::clean( $numdemrsa ).'%\'';
+				$conditions[] = 'Dossier.numdemrsa ILIKE \''.$this->wildcard( $numdemrsa ).'\'';
 			}
 
-			// N° CAF
-			if( !empty( $matricule ) ) {
-				$conditions[] = 'Dossier.matricule ILIKE \'%'.Sanitize::clean( $matricule ).'%\'';
-			}
 
 			//Type de demande
 			if( !empty( $typedemandeapre ) ) {
