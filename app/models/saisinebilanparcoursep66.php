@@ -67,22 +67,6 @@
 			),
 		);
 
-		public $hasMany = array(
-			'Decisionsaisinebilanparcoursep66' => array(
-				'className' => 'Decisionsaisinebilanparcoursep66',
-				'foreignKey' => 'saisinebilanparcoursep66_id',
-				'dependent' => true,
-				'conditions' => '',
-				'fields' => '',
-				'order' => '',
-				'limit' => '',
-				'offset' => '',
-				'exclusive' => '',
-				'finderQuery' => '',
-				'counterQuery' => ''
-			),
-		);
-
 		/**
 		*
 		*/

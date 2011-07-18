@@ -43,6 +43,7 @@
 			echo $form->create( 'Bilanparcours66', array( 'type' => 'post', 'url' => Router::url( null, true ), 'id' => 'Bilan' ) );
 			echo '<div>';
 			echo $form->input( 'Bilanparcours66.id', array( 'type' => 'hidden' ) );
+			echo $form->input( 'Pe.Bilanparcours66.id', array( 'type' => 'hidden' ) );
 			echo '</div>';
 		}
 		echo '<div>';
@@ -623,8 +624,8 @@
 		<?php
 			echo $default->subform(
 				array(
-					'Pe.Saisinebilanparcoursep66.typeorient_id' => array('domain'=>'bilanparcours66'),
-					'Pe.Saisinebilanparcoursep66.structurereferente_id' => array('domain'=>'bilanparcours66')
+					'Pe.Saisinebilanparcoursep66.typeorient_id' => array( 'domain' => 'bilanparcours66' ),
+					'Pe.Saisinebilanparcoursep66.structurereferente_id' => array( 'domain' => 'bilanparcours66' )
 				),
 				array(
 					'options' => $options
@@ -633,7 +634,6 @@
 		?>
 	</fieldset>
 	<?php
-
 		echo '<div class ="input date';
 		if (isset($this->validationErrors['Bilanparcours66']['datebilan'])) echo ' error';
 		echo '">';
@@ -829,8 +829,6 @@ elseif ( $this->action == 'edit' && isset( $passagecommissionep['Decisiondefauti
 	echo '</fieldset>';
 } ?>
 
-
-
 	</div>
 	<?php echo $form->end();?>
 </div>
@@ -897,16 +895,6 @@ elseif ( $this->action == 'edit' && isset( $passagecommissionep['Decisiondefauti
 			);
 		} );
 
-		// Partie en cas de changement ou non du référent
-		/*observeDisableFieldsetOnRadioValue(
-			'Bilan',
-			'data[Bilanparcours66][changementrefsansep]',
-			$( 'NvReferent' ),
-			'O',
-			false,
-			true
-		);*/
-
 		observeDisableFieldsetOnRadioValue(
 			'Bilan',
 			'data[Bilanparcours66][changementrefsansep]',
@@ -954,9 +942,6 @@ elseif ( $this->action == 'edit' && isset( $passagecommissionep['Decisiondefauti
 			true
 		);
 
-
-
-
 		// Partie en cas de maintien en social ou prépro
 		observeDisableFieldsetOnRadioValue(
 			'Bilan',
@@ -978,36 +963,17 @@ elseif ( $this->action == 'edit' && isset( $passagecommissionep['Decisiondefauti
 
 
 		observeDisableFieldsOnRadioValue(
-                    'Bilan',
-                    'data[Bilanparcours66][proposition]',
-                    [ 
-                        'Bilanparcours66Observbenefcompterendu'
-		    ],
-                    ['parcours', 'traitement', undefined],
-                    false,
-		    true
-                );
-
-
-		/*observeDisableFieldsetOnRadioValue(
 			'Bilan',
-			'data[Bilanparcours66][changementrefparcours]',
-			$( 'NvparcoursReferent' ),
-			'O',
+			'data[Bilanparcours66][proposition]',
+			[ 
+				'Bilanparcours66Observbenefcompterendu'
+			],
+			['parcours', 'traitement', undefined],
 			false,
 			true
-		);*/
-
-// 		observeDisableFieldsetOnRadioValue(
-// 		    'Bilan',
-// 		    'data[Bilanparcours66][changementrefparcours]',
-// 		    $( 'TypeAccompagnement' ),
-// 		    'N',
-// 		    false,
-// 		    true
-// 		);
+		);
 		
-		<?php if ($this->action=='edit') { ?>
+		<?php if ( isset( $passagecommissionep ) && !empty( $passagecommissionep ) ) { ?>
 			['traitement', 'parcours', 'audition', 'auditionpe' ].each( function( proposition ) {
 				$( proposition ).up().getElementsBySelector( 'input', 'select' ).each( function( elmt ) {
 					$( elmt ).writeAttribute('disabled', 'disabled');
