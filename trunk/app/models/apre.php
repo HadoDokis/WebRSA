@@ -545,6 +545,18 @@
 		*
 		*/
 
+		public function supprimeAidesObsoletes( $apre ) {
+			foreach( $this->aidesApre as $formation ) {
+				if( !isset( $apre[$formation] ) ) {
+					$this->{$formation}->deleteAll( array( "{$formation}.apre_id" => Set::classicExtract( $apre, 'Apre.id' ) ), true, true );
+				}
+			}
+		}
+
+		/**
+		*
+		*/
+
 
 		public function afterSave( $created ) {
 			$return = parent::afterSave( $created );

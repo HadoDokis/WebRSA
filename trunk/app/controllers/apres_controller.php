@@ -571,7 +571,7 @@
 					}
 
 					if( $saved ) {
-						$this->Apre->supprimeFormationsObsoletes( $this->data );
+						$this->Apre->supprimeAidesObsoletes( $this->data );
 						$this->Jetons->release( $dossier_id );
 						$this->Apre->commit(); // FIXME
 						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
