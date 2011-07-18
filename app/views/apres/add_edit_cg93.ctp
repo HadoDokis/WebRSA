@@ -252,7 +252,8 @@
 					<td class="mediumsize noborder"><strong>Niveau d'étude </strong></td>
 					<td class="mediumsize noborder">
 						<?php /*echo Set::enum( Set::classicExtract( $personne, 'Dsp.nivetu' ), $optionsdsps['nivetu'] );*/?>
-						<?php echo $xform->input( 'Dsp.nivetu', array( 'label' => false, 'type' => 'select', 'options' => $optionsdsps['nivetu'], 'empty' => true, 'selected' => Set::classicExtract( $personne, 'Dsp.nivetu' ) ) );?>
+						<?php /*echo $xform->input( 'Dsp.nivetu', array( 'label' => false, 'type' => 'select', 'options' => $optionsdsps['nivetu'], 'empty' => true, 'selected' => Set::classicExtract( $personne, 'Dsp.nivetu' ) ) );*/ ?> 
+						<?php echo $xform->input( 'Apre.nivetu', array( 'label' => false, 'type' => 'select', 'options' => $optionsdsps['nivetu'], 'empty' => true ) );?>
 					</td>
 				</tr>
 				<tr>
