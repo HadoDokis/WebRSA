@@ -416,6 +416,9 @@
 				?>
 				<?php
 					$selected = Set::extract( $this->data, '/Formqualif/Pieceformqualif/id' );
+					if ( empty( $selected ) ) {
+						$selected = Set::extract( $this->data, '/Pieceformqualif/Pieceformqualif' );
+					}
 					echo $xform->input( 'Pieceformqualif.Pieceformqualif', array( 'options' => $piecesformqualif, 'multiple' => 'checkbox', 'label' => 'Pièces jointes','selected' => $selected ) );
 				?>
 			</fieldset>
@@ -452,6 +455,9 @@
 				?>
 				<?php
 					$selected = Set::extract( $this->data, '/Formpermfimo/Pieceformpermfimo/id' );
+					if ( empty( $selected ) ) {
+						$selected = Set::extract( $this->data, '/Pieceformpermfimo/Pieceformpermfimo' );
+					}
 					echo $xform->input( 'Pieceformpermfimo.Pieceformpermfimo', array( 'options' => $piecesformpermfimo, 'multiple' => 'checkbox', 'label' => 'Pièces jointes', 'selected' => $selected ) );
 				?>
 			</fieldset>
@@ -491,6 +497,9 @@
 				?>
 				<?php
 					$selected = Set::extract( $this->data, '/Actprof/Pieceactprof/id' );
+					if ( empty( $selected ) ) {
+						$selected = Set::extract( $this->data, '/Pieceactprof/Pieceactprof' );
+					}
 					echo $xform->input( 'Pieceactprof.Pieceactprof', array( 'options' => $piecesactprof, 'multiple' => 'checkbox', 'label' => 'Pièces jointes', 'selected' => $selected ) );
 				?>
 			</fieldset>
@@ -528,6 +537,9 @@
 				?>
 				<?php
 					$selected = Set::extract( $this->data, '/Permisb/Piecepermisb/id' );
+					if ( empty( $selected ) ) {
+						$selected = Set::extract( $this->data, '/Piecepermisb/Piecepermisb' );
+					}
 					echo $xform->input( 'Piecepermisb.Piecepermisb', array( 'options' => $piecespermisb, 'multiple' => 'checkbox', 'label' => 'Pièces jointes', 'selected' => $selected ) );
 				?>
 			</fieldset>
@@ -559,6 +571,9 @@
 
 				<?php
 					$selected = Set::extract( $this->data, '/Amenaglogt/Pieceamenaglogt/id' );
+					if ( empty( $selected ) ) {
+						$selected = Set::extract( $this->data, '/Pieceamenaglogt/Pieceamenaglogt' );
+					}
 					echo $xform->input( 'Pieceamenaglogt.Pieceamenaglogt', array( 'options' => $piecesamenaglogt, 'multiple' => 'checkbox', 'label' => 'Pièces jointes', 'selected' => $selected ) );
 				?>
 			</fieldset>
@@ -583,6 +598,9 @@
 				?>
 				<?php
 					$selected = Set::extract( $this->data, '/Acccreaentr/Pieceacccreaentr/id' );
+					if ( empty( $selected ) ) {
+						$selected = Set::extract( $this->data, '/Pieceacccreaentr/Pieceacccreaentr' );
+					}
 					echo $xform->input( 'Pieceacccreaentr.Pieceacccreaentr', array( 'options' => $piecesacccreaentr, 'multiple' => 'checkbox', 'label' => 'Pièces jointes', 'selected' => $selected ) );
 				?>
 			</fieldset>
@@ -606,6 +624,9 @@
 
 				<?php
 					$selected = Set::extract( $this->data, '/Acqmatprof/Pieceacqmatprof/id' );
+					if ( empty( $selected ) ) {
+						$selected = Set::extract( $this->data, '/Pieceacqmatprof/Pieceacqmatprof' );
+					}
 					echo $xform->input( 'Pieceacqmatprof.Pieceacqmatprof', array( 'options' => $piecesacqmatprof, 'multiple' => 'checkbox', 'label' => 'Pièces jointes', 'selected' => $selected ) );
 				?>
 			</fieldset>
@@ -629,6 +650,9 @@
 				?>
 				<?php
 					$selected = Set::extract( $this->data, '/Locvehicinsert/Piecelocvehicinsert/id' );
+					if ( empty( $selected ) ) {
+						$selected = Set::extract( $this->data, '/Piecelocvehicinsert/Piecelocvehicinsert' );
+					}
 					echo $xform->input( 'Piecelocvehicinsert.Piecelocvehicinsert', array( 'options' => $pieceslocvehicinsert, 'multiple' => 'checkbox', 'label' => 'Pièces jointes', 'selected' => $selected ) );
 				?>
 			</fieldset>
