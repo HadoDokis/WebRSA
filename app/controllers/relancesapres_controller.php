@@ -86,6 +86,11 @@
             $this->assert( !empty( $dossier_id ), 'invalidParameter' );
             $this->set( 'dossier_id', $dossier_id );
 
+			// Retour à l'index en cas d'annulation
+			if( isset( $this->params['form']['Cancel'] ) ) {
+				$this->redirect( array( 'controller' => 'apres', 'action' => 'index', $personne_id ) );
+			}
+
 
             if( !$this->Jetons->check( $dossier_id ) ) {
                 $this->Relanceapre->rollback();

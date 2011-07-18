@@ -15,6 +15,8 @@ ALTER TABLE apres ALTER COLUMN precisionsautrelogement TYPE VARCHAR(150);
 SELECT add_missing_table_field ('public', 'apres', 'cessderact', 'VARCHAR(4)');
 SELECT add_missing_table_field ('public', 'apres', 'nivetu', 'VARCHAR(4)');
 
+SELECT add_missing_table_field ('public', 'relancesapres', 'listepiecemanquante', 'TEXT' );
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
