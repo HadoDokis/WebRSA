@@ -144,11 +144,12 @@
 								<th>N° demande APRE</th>
 								<th>NIR</th>
 								<th>Nom/Prénom</th>
+								<th>Date de naissance</th>
 								<th>Localité</th>
 								<th>Préscripteur/Préinscripteur</th>
+								<th>Type d'aide</th>
+								<th>Montant demandé</th>
 								<th>Date demande APRE</th>
-<!--								<th>Type d'aide</th>
-								<th>Montant demandé</th>-->
 								<th>Quota</th>
 								<th class="action" colspan="2">Action</th>
 							</tr>
@@ -157,20 +158,26 @@
 							<?php
 								foreach( $apresSansRecours as $apre ) {
 									$apre = $apre['Apre'];
+									foreach( $listeAidesApre as $key => $aideApre ) {
+										if ( !empty( $apre[$aideApre] ) ) {
+											$apre['typeaideapre'] = $aideApre;
+											$apre['montantdemande'] = $apre[$aideApre]['montantaide'];
+										}
+									}
 									$isRecours = Set::classicExtract( $apre, 'ApreComiteapre.comite_pcd_id' );
 									$isRecours = !empty( $isRecours );
-// 			debug($apre);
 									if( !$isRecours ) {
 										echo $xhtml->tableCells(
 											array(
 												h( Set::classicExtract( $apre, 'numeroapre' ) ),
 												h( Set::classicExtract( $apre, 'Personne.nir' ) ),
 												h( Set::classicExtract( $apre, 'Personne.qual' ).' '.Set::classicExtract( $apre, 'Personne.nom' ).' '.Set::classicExtract( $apre, 'Personne.prenom' ) ),
+												h( date_short( Set::classicExtract( $apre, 'Personne.dtnai' ) ) ),
 												h( Set::classicExtract( $apre, 'Personne.Foyer.Adressefoyer.0.Adresse.locaadr' ) ),
 												h( Set::enum( Set::classicExtract( $apre, 'referent_id' ), $referent) ),
+												h( __d( 'apre', Set::classicExtract( $apre, 'typeaideapre' ), true ) ),
+												h( Set::classicExtract( $apre, 'montantdemande' ) ),
 												h( date_short( Set::classicExtract( $apre, 'datedemandeapre' ) ) ),
-// 												h( date_short( Set::classicExtract( $apre, 'datedemandeapre' ) ) ),
-// 												h( date_short( Set::classicExtract( $apre, 'datedemandeapre' ) ) ),
 												h( Set::classicExtract( $apre, 'quota' ) ),
 												$xhtml->viewLink(
 													'Voir les apres',
