@@ -233,15 +233,18 @@
 		*/
 
 		public function sauvegardeBilan( $data ) {
-			if ( isset( $data['Pe']['Bilanparcours66'] ) ) {
-				$data = $data['Pe'];
+			if ( isset( $data['Pe']['Bilanparcours66']['id'] ) ) {
+				$id = $data['Pe']['Bilanparcours66']['id'];
+				unset( $data['Pe']['Bilanparcours66']['id'] );
 			}
-// debug( $data );
-			//$data[$this->alias]['saisineepparcours'] = !isset($data[$this->alias]['maintienorientation']);
+			if ( isset( $data['Pe']['Bilanparcours66'] ) && !empty( $data['Pe']['Bilanparcours66'] ) ) {
+				$data = $data['Pe'];
+				$data['Bilanparcours66']['id'] = $id;
+			}
+
 			$data[$this->alias]['saisineepparcours'] = ( @$data[$this->alias]['proposition'] == 'parcours' );
 			// Recondution du contrat
-			//if( !empty( $data[$this->alias]['maintienorientation'] ) ) {
-			if( @$data[$this->alias]['proposition'] == 'traitement' ) {
+			if( isset( $data[$this->alias]['proposition'] ) && $data[$this->alias]['proposition'] == 'traitement' ) {
 				$cleanedData = $data;
 				unset( $cleanedData['Saisinebilanparcoursep66'] );
 				return $this->maintien( $cleanedData );

@@ -27,7 +27,6 @@
 
 		protected function _setOptions() {
 			$options = array();
-			//$options = $this->Bilanparcours66->allEnumLists();
 
 			$options = $this->Bilanparcours66->enums();
 			$typevoie = $this->Option->typevoie();
@@ -59,7 +58,7 @@
 
 			$options = Set::merge( $options, $this->Bilanparcours66->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->enums() );
 			$options = Set::merge( $options, $this->Bilanparcours66->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->enums() );
-// debug($options);
+
 			$this->set( compact( 'options' ) );
 		}
 
@@ -131,9 +130,7 @@
 			);
 
 			$personne_id = Set::classicExtract( $bilanparcours66, 'Orientstruct.personne_id' );
-// debug($bilanparcours66);
-// debug($personne_id);
-//             $personne_id = $bilanparcours66['Bilanparcours66']['personne_id'];
+
 			$dossier_id = $this->Bilanparcours66->Orientstruct->Personne->dossierId( $personne_id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
 
@@ -178,16 +175,9 @@
 			}
 
 			$this->_setOptions();
-//             $this->Bilanparcours66->commit();
 			$this->set( compact( 'dossier_id', 'personne_id', 'fichiers', 'bilanparcours66' ) );
 
 		}
-
-
-
-
-
-
 
 		/**
 		*
@@ -207,27 +197,6 @@
 			);
 
 			$this->paginate = array(
-// 				'fields' => array(
-// // 					'Bilanparcours66.id',
-// // 					'Bilanparcours66.referent_id',
-// // 					'Bilanparcours66.orientstruct_id',
-// // 					'Bilanparcours66.contratinsertion_id',
-// // 					'Bilanparcours66.presenceallocataire',
-// // 					'Bilanparcours66.situationallocataire',
-// // 					'Bilanparcours66.saisineepparcours',
-// // 					'Bilanparcours66.maintienorientation',
-// // 					'Bilanparcours66.changereferent',
-// // 					'Bilanparcours66.proposition',
-// // 					'Bilanparcours66.choixparcours',
-// // 					'Bilanparcours66.maintienorientation',
-// // 					'Bilanparcours66.examenaudition',
-// // 					'Bilanparcours66.datebilan',
-// // 					'Bilanparcours66.created',
-// // 					'Bilanparcours66.positionbilan',
-// // 					'Saisinebilanparcoursep66.id',
-// // 					'Saisinebilanparcoursep66.typeorient_id',
-// // 					'Saisinebilanparcoursep66.structurereferente_id'
-// 				),
 				'contain' => array(
 					'Orientstruct' => array(
 						'Typeorient',
@@ -303,7 +272,6 @@
 				);
 
 			}
-// debug($bilansparcours66);
 			$this->_setOptions();
 			$this->set( compact( 'bilansparcours66', 'nborientstruct', 'struct' )  );
 		}
@@ -405,6 +373,7 @@
 				$personne_id = $this->Bilanparcours66->Orientstruct->field( 'personne_id' );
 
 				if ( $bilanparcours66['Bilanparcours66']['proposition'] == 'parcours' ) {
+					$bilanparcours66['Saisinebilanparcoursep66']['structurereferente_id'] = implode( '_', array( $bilanparcours66['Saisinebilanparcoursep66']['typeorient_id'], $bilanparcours66['Saisinebilanparcoursep66']['structurereferente_id']) );
 					$passagecommissionep = $this->Bilanparcours66->Dossierep->Passagecommissionep->find(
 						'first',
 						array(
@@ -431,7 +400,7 @@
 										)
 									)
 								).' )',
-								'Passagecommissionep.etatdossierep' => array( 'decisioncg', 'traite' )
+// 								'Passagecommissionep.etatdossierep' => array( 'decisioncg', 'traite' )
 							),
 							'contain' => array(
 								'Commissionep',
@@ -470,7 +439,7 @@
 										)
 									)
 								).' )',
-								'Passagecommissionep.etatdossierep' => array( 'decisioncg', 'traite' )
+// 								'Passagecommissionep.etatdossierep' => array( 'decisioncg', 'traite' )
 							),
 							'contain' => array(
 								'Commissionep',
@@ -508,17 +477,39 @@
 					'order' => 'Contratinsertion.date_saisi_ci DESC'
 				)
 			);
-// debug($contrat);
 
 			// Si le formulaire a été renvoyé
 			if( !empty( $this->data ) ) {
 				$this->Bilanparcours66->begin();
 
-				if ($this->action=='add') {
+				if ( ( !isset( $passagecommissionep ) || empty( $passagecommissionep ) ) && $this->action == 'edit' ) {
+					$dossierep = $this->Bilanparcours66->Dossierep->Saisinebilanparcoursep66->find(
+						'first',
+						array(
+							'Saisinebilanparcoursep66.bilanparcours66_id' => $id
+						)
+					);
+					if ( !empty( $dossierep ) ) {
+						$this->Bilanparcours66->Dossierep->Saisinebilanparcoursep66->deleteAll( array( 'Saisinebilanparcoursep66.bilanparcours66_id' => $id ) );
+						$this->Bilanparcours66->Dossierep->delete( $dossierep['Saisinebilanparcoursep66']['dossierep_id'] );
+					}
+					else {
+						$dossierep = $this->Bilanparcours66->Dossierep->Defautinsertionep66->find(
+							'first',
+							array(
+								'Defautinsertionep66.bilanparcours66_id' => $id
+							)
+						);
+						$this->Bilanparcours66->Dossierep->Defautinsertionep66->deleteAll( array( 'Defautinsertionep66.bilanparcours66_id' => $id ) );
+						$this->Bilanparcours66->Dossierep->delete( $dossierep['Defautinsertionep66']['dossierep_id'] );
+					}
 					$success = $this->Bilanparcours66->sauvegardeBilan( $this->data );
 				}
-				else {
+				elseif ( $this->action == 'edit' ) {
 					$success = $this->Bilanparcours66->save( $this->data );
+				}
+				elseif ( $this->action == 'add' ) {
+					$success = $this->Bilanparcours66->sauvegardeBilan( $this->data );
 				}
 
 				$this->_setFlashResult( 'Save', $success );
@@ -591,25 +582,6 @@
 					//ajout arnaud
 					$this->data['Bilanparcours66']['structurereferente_id'] = $orientstruct['Orientstruct']['structurereferente_id'];
 					$this->data['Bilanparcours66']['referent_id'] = $orientstruct['Structurereferente']['id'].'_'.$orientstruct['Referent']['id'];
-
-// 					$contratinsertion = $this->Bilanparcours66->Orientstruct->Personne->Contratinsertion->find(
-// 						'first',
-// 						array(
-// 							'conditions'=>array(
-// 								'Contratinsertion.personne_id' => $personne_id
-// 							),
-// 							'order'=>array(
-// 								'Contratinsertion.rg_ci DESC'
-// 							),
-// 							'contain'=>array(
-// 								'Structurereferente',
-// 								'Referent'
-// 							)
-// 						)
-// 					);
-//
-// 					$this->data['Bilanparcours66']['structurereferente_id'] = $contratinsertion['Structurereferente']['id'];
-// 					$this->data['Bilanparcours66']['referent_id'] = $contratinsertion['Structurereferente']['id'].'_'.$contratinsertion['Referent']['id'];
 				}
 
 				$this->data = Set::insert($this->data, 'Pe', $this->data);
