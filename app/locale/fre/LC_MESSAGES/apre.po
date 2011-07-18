@@ -73,6 +73,9 @@ msgstr "Adresse de l'employeur"
 msgid "Apre.cessderact"
 msgstr "Date de dernière cessation d'activité"
 
+msgid "Apre.nivetu"
+msgstr "Niveau d'étude"
+
 msgid "Apre.montantaverser"
 msgstr "Montant à verser"
 
