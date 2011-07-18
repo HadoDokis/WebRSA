@@ -1025,6 +1025,32 @@
 					}
 				}
 
+				if ( Configure::read( 'Cg.departement' ) == 93 && $this->data['Contratinsertion']['forme_ci'] == 'C' ) {
+					$dossierep = array(
+						'Dossierep' => array(
+							'themeep' => 'contratscomplexeseps93',
+							'personne_id' => $personne_id
+						)
+					);
+
+					$this->Contratinsertion->Personne->Dossierep->create( $dossierep );
+					$tmpSuccess = $this->Contratinsertion->Personne->Dossierep->save();
+
+					// Sauvegarde des données de la thématique
+					if( $tmpSuccess ) {
+						$contratcomplexeep93 = array(
+							'Contratcomplexeep93' => array(
+								'dossierep_id' => $this->Contratinsertion->Personne->Dossierep->id,
+								'contratinsertion_id' => $this->Contratinsertion->id
+							)
+						);
+
+						$this->Contratinsertion->Personne->Dossierep->Contratcomplexeep93->create( $contratcomplexeep93 );
+						$success = $this->Contratinsertion->Personne->Dossierep->Contratcomplexeep93->save() && $success;
+					}
+					$success = $success && $tmpSuccess;
+				}
+
 				if( $success ) {
 					$saved = true;
 
@@ -1057,6 +1083,10 @@
 						$this->Contratinsertion->rollback();
 						$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 					}
+				}
+				else {
+					$this->Contratinsertion->rollback();
+					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 				}
 			}
 			else {

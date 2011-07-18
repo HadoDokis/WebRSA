@@ -131,9 +131,6 @@
                                 <?php if( $permissions->check( 'nonrespectssanctionseps93', 'selectionradies' ) ): ?>
                                     <li> <?php echo $xhtml->link( 'Radiés de Pôle Emploi',  array( 'controller' => 'nonrespectssanctionseps93', 'action' => 'selectionradies'  ) );?> </li>
                                 <?php endif;?>
-                                <?php if( $permissions->check( 'contratscomplexeseps93', 'selection' ) ): ?>
-                                    <li><?php echo $xhtml->link( 'CER complexes', array( 'controller' => 'contratscomplexeseps93', 'action' => 'selection' ) );?></li>
-                                <?php endif;?>
                                 </ul>
                             </li>
                         <?php endif;?>
