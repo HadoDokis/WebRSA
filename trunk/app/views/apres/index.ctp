@@ -210,11 +210,17 @@
                             }
                         }
 
+						$piecesRestantes = '';
+						$piecesRelances = Set::classicExtract( $relanceapre, 'Relanceapre.listepiecemanquante' );
+// 						debug( $piecesRelances);
+                        $piecesRestantes .= $xhtml->tag( 'h3', __d( 'apre', $model, true ) ).$piecesRelances;
+
                         echo $xhtml->tableCells(
                             array(
                                 h( Set::classicExtract( $relanceapre, "{$this->modelClass}.numeroapre" ) ),
                                 h( date_short( Set::classicExtract( $relanceapre, 'Relanceapre.daterelance' ) ) ),
-                                $textePiecesManquantes,
+//                                 $textePiecesManquantes,
+								$piecesRestantes,
                                 h( Set::classicExtract( $relanceapre, 'Relanceapre.commentairerelance' ) ),
 //                                 $xhtml->viewLink(
 //                                     'Voir la relance',

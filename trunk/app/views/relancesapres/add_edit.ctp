@@ -45,48 +45,46 @@
     ?>
 
     <div class="aere">
+		<fieldset>
+			<?php
+				$piecesManquantes = array();
+				$piecesManquantesAides = array();
+				$naturesaide = Set::classicExtract( $apre, 'Apre.Piecemanquante' );
+// debug($apre);
+				$piecesManquantes = Set::classicExtract( $apre, 'Apre.Piece.Manquante.Apre' );
+				foreach( $naturesaide as $natureaide => $nombre ) {
+					if( $nombre > 0 ) {
+						$piecesManquantesAides = Set::classicExtract( $apre, "Apre.Piece.Manquante.{$natureaide}" );
+					}
+				}
 
-    <fieldset>
-        <?php
-            $piecesManquantes = array();
-            $piecesManquantesAides = array();
-            $naturesaide = Set::classicExtract( $apre, 'Apre.Piecemanquante' );
 
-            $piecesManquantes = Set::classicExtract( $apre, 'Apre.Piece.Manquante.Apre' );
-            foreach( $naturesaide as $natureaide => $nombre ) {
-                if( $nombre > 0 ) {
-                    $piecesManquantesAides = Set::classicExtract( $apre, "Apre.Piece.Manquante.{$natureaide}" );
-                }
-            }
+				echo $xform->input( 'Relanceapre.daterelance', array( 'domain' => 'apre', 'dateFormat' => 'DMY' ) );
+				echo $xform->input( 'Relanceapre.commentairerelance', array( 'domain' => 'apre' ) );
+				
+			?>
+		</fieldset>
+		<fieldset>
+			<legend>Pièces jointes manquantes</legend>
+			<?php
+				$piecesManquantesAides = Set::classicExtract( $apre, "Apre.Piece.Manquante" );
+				foreach( $piecesManquantesAides as $model => $pieces ) {
+					if( !empty( $pieces ) ) {
+						echo $xhtml->tag( 'h2', __d( 'apre', $model, true ) );
+						echo '<ul><li>'.implode( '</li><li>', $pieces ).'</li></ul>';
+					}
+				}
+// 				debug(implode( '<br>', $pieces ) );
+				echo $xform->input( 'Relanceapre.listepiecemanquante', array( 'domain' => 'apre', 'type' => 'hidden', 'value' => implode( '<br>', $pieces ) ) );
 
-
-            echo $xform->input( 'Relanceapre.daterelance', array( 'domain' => 'apre', 'dateFormat' => 'DMY' ) );
-            echo $xform->input( 'Relanceapre.commentairerelance', array( 'domain' => 'apre' ) );
-        ?>
-    </fieldset>
-    <fieldset>
-        <legend>Pièces jointes manquantes</legend>
-        <?php
-            $piecesManquantesAides = Set::classicExtract( $apre, "Apre.Piece.Manquante" );
-            foreach( $piecesManquantesAides as $model => $pieces ) {
-                if( !empty( $pieces ) ) {
-                    echo $xhtml->tag( 'h2', __d( 'apre', $model, true ) );
-                    echo '<ul><li>'.implode( '</li><li>', $pieces ).'</li></ul>';
-                }
-            }
-/*
-            if( !empty( $piecesManquantes ) ) {
-                echo '<ul><li>'.implode( '</li><li>', $piecesManquantes ).'</li></ul>';
-            }
-            if( !empty( $piecesManquantesAides ) ) {
-                echo '<ul>'.$naturesaide.'</ul> ';
-                echo '<ul><li>'.implode( '</li><li>', $piecesManquantesAides ).'</li></ul>';
-            }*/
-        ?>
-    </fieldset>
+			?>
+		</fieldset>
     </div>
 
-    <?php echo $form->submit( 'Enregistrer' );?>
+	<div class="submit">
+		<?php echo $form->submit( 'Enregistrer', array( 'div' => false ) );?>
+		<?php echo $form->submit('Annuler', array( 'name' => 'Cancel', 'div' => false ) );?>
+	</div>
 <?php echo $form->end();?>
 </div>
 <div class="clearer"><hr /></div>
