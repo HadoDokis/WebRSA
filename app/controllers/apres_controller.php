@@ -543,7 +543,7 @@
 // 				$saveApre['Dsp'] = $this->data['Dsp'];
 				$saveApre['Pieceapre'] = $this->data['Pieceapre'];
 
-// 				if( $this->Apre->saveAll( $saveApre, array( 'validate' => 'only', 'atomic' => false ) ) ) {
+				if( $this->Apre->saveAll( $saveApre, array( 'validate' => 'only', 'atomic' => false ) ) ) {
 // debug( $this->data );
 					$saved = $this->Apre->saveAll( $saveApre, array( 'validate' => 'first', 'atomic' => false ) );
 					
@@ -582,11 +582,11 @@
 						$this->Apre->rollback();
 						$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 					}
-// 				}
-// 				else {
-// 					$this->Apre->rollback();
-// 					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
-// 				}
+				}
+				else {
+					$this->Apre->rollback();
+					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+				}
 			}
 			else{
 				if( $this->action == 'edit' ) {
