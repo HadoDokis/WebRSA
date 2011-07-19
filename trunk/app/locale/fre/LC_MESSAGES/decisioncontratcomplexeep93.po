@@ -26,7 +26,7 @@ msgid "ENUM::DECISION::rejete"
 msgstr "Rejeté"
 
 msgid "ENUM::DECISION::annule"
-msgstr "Annulé"
+msgstr "Remobilisation"
 
 msgid "ENUM::DECISION::reporte"
 msgstr "Reporté"
