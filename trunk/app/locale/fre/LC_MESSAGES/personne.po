@@ -20,6 +20,9 @@ msgstr ""
 
 ###############################################################################
 
+msgid "Personne.id"
+msgstr "Personne"
+
 msgid "Personne.qual"
 msgstr "Civilité"
 
