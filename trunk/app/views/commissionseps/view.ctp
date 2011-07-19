@@ -137,15 +137,29 @@
 				<th><?php echo "Ville de la commission";?></th>
 				<td><?php echo isset( $commissionep['Commissionep']['villeseance'] ) ? $commissionep['Commissionep']['villeseance'] : null ;?></td>
 			</tr>
-			<tr class="even">
+			<?php if( Configure::read( 'Cg.departement' ) == 93 ):?>
+				<tr class="even">
+					<th><?php echo "Chargé(e) de suivi de la commission";?></th>
+					<td><?php echo isset( $commissionep['Commissionep']['chargesuivi'] ) ? $commissionep['Commissionep']['chargesuivi'] : null ;?></td>
+				</tr>
+				<tr class="odd">
+					<th><?php echo "Gestionnaire BAT de la commission";?></th>
+					<td><?php echo isset( $commissionep['Commissionep']['gestionnairebat'] ) ? $commissionep['Commissionep']['gestionnairebat'] : null ;?></td>
+				</tr>
+				<tr class="even">
+					<th><?php echo "Gestionnaire BADA de la commission";?></th>
+					<td><?php echo isset( $commissionep['Commissionep']['gestionnairebada'] ) ? $commissionep['Commissionep']['gestionnairebada'] : null ;?></td>
+				</tr>
+			<?php endif;?>
+			<tr class="odd">
 				<th><?php echo "Salle de la commission";?></th>
 				<td><?php echo isset( $commissionep['Commissionep']['salle'] ) ? $commissionep['Commissionep']['salle'] : null ;?></td>
 			</tr>
-			<tr class="odd">
+			<tr class="even">
 				<th><?php echo "Observations de la commission";?></th>
 				<td><?php echo isset( $commissionep['Commissionep']['observations'] ) ? $commissionep['Commissionep']['observations'] : null ;?></td>
 			</tr>
-			<tr class="even">
+			<tr class="odd">
 				<th><?php echo "État de la commission";?></th>
 				<td><?php echo /*debug($options);*/ Set::enum( $commissionep['Commissionep']['etatcommissionep'], $options['Commissionep']['etatcommissionep'] );?></td>
 			</tr>

@@ -40,16 +40,24 @@
 			'Commissionep.lieuseance',
 			'Commissionep.adresseseance',
 			'Commissionep.codepostalseance',
-			'Commissionep.villeseance',
-			'Commissionep.chargesuivi',
-			'Commissionep.gestionnairebat',
-			'Commissionep.gestionnairebada',
+			'Commissionep.villeseance'
 		),
 		array(
 			'options' => $options
 		)
 	);
-
+	if( Configure::read( 'Cg.departement' ) == 93 ){
+		echo $default->subform(
+			array(
+				'Commissionep.chargesuivi',
+				'Commissionep.gestionnairebat',
+				'Commissionep.gestionnairebada',
+			),
+			array(
+				'options' => $options
+			)
+		);
+	}
 // 	echo $ajax->observeField( 'CommissionepStructurereferenteId', array( 'update' => 'Adresse', 'url' => Router::url( '/', true ).'commissionseps/ajaxadresse' ) );
 //
 // 	echo $html->tag(
