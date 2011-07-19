@@ -598,7 +598,7 @@
 					if( !isset( $options[$modelDecision] ) ) {
 						$options[$modelDecision] = $this->Dossier->Foyer->Personne->Dossierep->Passagecommissionep->{$modelDecision}->allEnumLists();
 					}
-
+// debug($options);
 					$decisionEP = $this->Dossier->Foyer->Personne->Dossierep->Passagecommissionep->{$modelDecision}->find(
 						'first',
 						array(
@@ -696,8 +696,9 @@
 // debug($details['DEM']['Dossiermultiple']);
 // debug($details['CJT']['Dossiermultiple']);
 			$this->set( 'details', $details );
-			$this->set( 'options', $options );
+			
 			$this->_setOptions();
+			$this->set( 'options', $options );
 
 		}
 
