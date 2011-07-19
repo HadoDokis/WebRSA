@@ -32,6 +32,7 @@
 			$fields = array(
 				'Ep.id',
 				'Ep.name',
+				'Ep.adressemail',
 				'Ep.identifiant',
 				'Regroupementep.name'
 			);
