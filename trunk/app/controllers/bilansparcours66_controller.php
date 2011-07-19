@@ -486,7 +486,9 @@
 					$dossierep = $this->Bilanparcours66->Dossierep->Saisinebilanparcoursep66->find(
 						'first',
 						array(
-							'Saisinebilanparcoursep66.bilanparcours66_id' => $id
+							'conditions' => array(
+								'Saisinebilanparcoursep66.bilanparcours66_id' => $id
+							)
 						)
 					);
 					if ( !empty( $dossierep ) ) {
@@ -497,7 +499,9 @@
 						$dossierep = $this->Bilanparcours66->Dossierep->Defautinsertionep66->find(
 							'first',
 							array(
-								'Defautinsertionep66.bilanparcours66_id' => $id
+								'conditions' => array(
+									'Defautinsertionep66.bilanparcours66_id' => $id
+								)
 							)
 						);
 						$this->Bilanparcours66->Dossierep->Defautinsertionep66->deleteAll( array( 'Defautinsertionep66.bilanparcours66_id' => $id ) );
