@@ -17,6 +17,12 @@ SELECT add_missing_table_field ('public', 'apres', 'nivetu', 'VARCHAR(4)');
 
 SELECT add_missing_table_field ('public', 'relancesapres', 'listepiecemanquante', 'TEXT' );
 
+
+SELECT add_missing_table_field ('public', 'commissionseps', 'chargesuivi', 'VARCHAR(100)' );
+SELECT add_missing_table_field ('public', 'commissionseps', 'gestionnairebat', 'VARCHAR(100)' );
+SELECT add_missing_table_field ('public', 'commissionseps', 'gestionnairebada', 'VARCHAR(100)' );
+
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
