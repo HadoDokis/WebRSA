@@ -1098,6 +1098,11 @@ td.button.print.disabled a, td.action span.impressiondecision.disabled, td.actio
     background-image: url( ../img/icons/printer_disabled.png );
 }
 
+ul li a.button.view {
+	background-image: url( ../img/icons/zoom.png );
+	margin-bottom: 10px;
+}
+
 td.button.gedooo a, td.action a.gedooo, td span.button.gedooo, table.default2 td a.button.gedooo {
     background-image: url( ../img/icons/printer.png );
 }

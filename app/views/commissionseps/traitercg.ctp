@@ -5,6 +5,19 @@
 	}
 ?>
 <br/>
+
+<?php
+	if( Configure::read( 'Cg.departement' ) == 93 ) {
+		echo '<ul class="actionMenu">';
+			echo '<li>'.$xhtml->link(
+				__d( 'commissionep', 'Commissionseps::view', true ),
+				array( 'controller' => 'commissionseps', 'action' => 'view', $commissionep['Commissionep']['id'] ),
+				array( 'class' => 'button view external' )
+			).' </li>';
+		echo '</ul>';
+	}
+?>
+
 <div id="tabbedWrapper" class="tabs">
 	<?php
 		echo $form->create( null, array( 'url' => Router::url( null, true ) ) );
