@@ -232,7 +232,6 @@
 				)
 			);
 
-
 			$personne_id = $contratinsertion['Contratinsertion']['personne_id'];
 			$dossier_id = $this->Contratinsertion->Personne->dossierId( $personne_id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
@@ -249,7 +248,6 @@
 			}
 
 			if( !empty( $this->data ) ) {
-
 				$saved = $this->Contratinsertion->updateAll(
 					array( 'Contratinsertion.haspiecejointe' => '\''.$this->data['Contratinsertion']['haspiecejointe'].'\'' ),
 					array(
@@ -851,7 +849,6 @@
 
 			$this->set( 'tc', $tc );
 
-
 			/// Peut-on prendre le jeton ?
 			$this->Contratinsertion->begin();
 			$dossier_id = $this->Contratinsertion->Personne->dossierId( $personne_id );
@@ -860,8 +857,6 @@
 			}
 			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
 			$this->set( 'dossier_id', $dossier_id );
-
-
 
 			/**
 			*   Utilisé pour les dates de suspension et de radiation
@@ -901,13 +896,10 @@
 			/// Calcul du numéro du contrat d'insertion
 			$nbrCi = $this->Contratinsertion->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ) ) );
 
-
-
 			$numouverturedroit = $this->Contratinsertion->checkNumDemRsa( $personne_id );
 			$this->set( 'numouverturedroit', $numouverturedroit );
 
 			$this->set( 'valueFormeci', $valueFormeci );
-
 
 			/**
 			*   Utilisé pour les détections de fiche de candidature
@@ -934,7 +926,6 @@
 
 			/// Essai de sauvegarde
 			if( !empty( $this->data ) ) {
-
 				if( $this->action == 'add' ) {
 					$this->data['Contratinsertion']['rg_ci'] = $nbrCi + 1;
 				}
@@ -1053,6 +1044,79 @@
 
 				if( $success ) {
 					$saved = true;
+
+					if ( Configure::read( 'Cg.departement' ) == 93 ) {
+						$dossierep = $this->Contratinsertion->Nonrespectsanctionep93->Dossierep->find(
+							'first',
+							array(
+								'fields' => array(
+									'Dossierep.id',
+									'Passagecommissionep.id',
+									'Nonrespectsanctionep93.id'
+								),
+								'conditions' => array(
+									'Dossierep.id NOT IN ( '.$this->Contratinsertion->Nonrespectsanctionep93->Dossierep->Passagecommissionep->sq(
+										array(
+											'fields' => array(
+												'passagescommissionseps.dossierep_id'
+											),
+											'alias' => 'passagescommissionseps',
+											'conditions' => array(
+												'dossierseps.themeep' => 'nonrespectssanctionseps93',
+												'dossierseps.personne_id' => $personne_id,
+												'commissionseps.etatcommissionep' => array( 'valide', 'presence', 'decisionep', 'traiteep', 'decisioncg', 'traite', 'annule', 'reporte' )
+											),
+											'joins' => array(
+												array(
+													'table' => 'dossierseps',
+													'alias' => 'dossierseps',
+													'type' => 'INNER',
+													'conditions' => array(
+														'passagescommissionseps.dossierep_id = dossierseps.id'
+													)
+												),
+												array(
+													'table' => 'commissionseps',
+													'alias' => 'commissionseps',
+													'type' => 'INNER',
+													'conditions' => array(
+														'passagescommissionseps.commissionep_id = commissionseps.id'
+													)
+												)
+											)
+										)
+									).' )',
+									'Dossierep.personne_id' => $personne_id,
+									'Nonrespectsanctionep93.origine' => array( 'orientstruct', 'contratinsertion' )
+								),
+								'joins' => array(
+									array(
+										'table' => 'nonrespectssanctionseps93',
+										'alias' => 'Nonrespectsanctionep93',
+										'type' => 'INNER',
+										'conditions' => array(
+											'Nonrespectsanctionep93.dossierep_id = Dossierep.id'
+										)
+									),
+									array(
+										'table' => 'passagescommissionseps',
+										'alias' => 'Passagecommissionep',
+										'type' => 'LEFT OUTER',
+										'conditions' => array(
+											'Passagecommissionep.dossierep_id = Dossierep.id'
+										)
+									)
+								)
+							)
+						);
+						if ( !empty( $dossierep ) ) {
+							if ( !empty( $dossierep['Passagecommissionep']['id'] ) ) {
+								$this->Contratinsertion->Nonrespectsanctionep93->Dossierep->Passagecommissionep->delete( $dossierep['Passagecommissionep']['id'] );
+							}
+							$this->Contratinsertion->Nonrespectsanctionep93->Dossierep->delete( $dossierep['Dossierep']['id'] );
+							$this->Contratinsertion->Nonrespectsanctionep93->delete( $dossierep['Dossierep']['id'] );
+						}
+					}
 
 					$lastrdvorient = $this->Contratinsertion->Referent->Rendezvous->find(
 						'first',
