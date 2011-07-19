@@ -401,7 +401,7 @@
 				)
 			);
 
-			$options = array(
+			$optionsep = array(
 				'Passagecommissionep' => $this->Dossier->Foyer->Personne->Dossierep->Passagecommissionep->allEnumLists()
 			);
 			$roles = Set::extract( '{n}.Prestation.rolepers', $personnesFoyer );
@@ -595,10 +595,10 @@
 					$modelTheme = Inflector::classify( Inflector::singularize( $themeEP ) );
 					$modelDecision = 'Decision'.Inflector::singularize( $themeEP );
 
-					if( !isset( $options[$modelDecision] ) ) {
-						$options[$modelDecision] = $this->Dossier->Foyer->Personne->Dossierep->Passagecommissionep->{$modelDecision}->allEnumLists();
+					if( !isset( $optionsep[$modelDecision] ) ) {
+						$optionsep[$modelDecision] = $this->Dossier->Foyer->Personne->Dossierep->Passagecommissionep->{$modelDecision}->allEnumLists();
 					}
-// debug($options);
+// debug($optionsep);
 					$decisionEP = $this->Dossier->Foyer->Personne->Dossierep->Passagecommissionep->{$modelDecision}->find(
 						'first',
 						array(
@@ -698,7 +698,7 @@
 			$this->set( 'details', $details );
 			
 			$this->_setOptions();
-			$this->set( 'options', $options );
+			$this->set( 'optionsep', $optionsep );
 
 		}
 
