@@ -40,7 +40,10 @@
 			'Commissionep.lieuseance',
 			'Commissionep.adresseseance',
 			'Commissionep.codepostalseance',
-			'Commissionep.villeseance'
+			'Commissionep.villeseance',
+			'Commissionep.chargesuivi',
+			'Commissionep.gestionnairebat',
+			'Commissionep.gestionnairebada',
 		),
 		array(
 			'options' => $options

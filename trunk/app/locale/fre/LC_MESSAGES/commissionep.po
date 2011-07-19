@@ -103,9 +103,17 @@ msgstr "Décision CG"
 msgid "ENUM::FINALISEE::ep"
 msgstr "Avis de l'EP"
 
-
 msgid "Commissionep.lieuseance"
 msgstr "Lieu de la commission"
+
+msgid "Commissionep.chargesuivi"
+msgstr "Chargé(e) de suivi de la commission"
+
+msgid "Commissionep.gestionnairebat"
+msgstr "Gestionnaire BAT de la commission"
+
+msgid "Commissionep.gestionnairebada"
+msgstr "Gestionnaire BADA de la commission"
 
 msgid "Commissionep.adresseseance"
 msgstr "Adresse de la commission"
