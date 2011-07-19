@@ -9,22 +9,44 @@
 		echo "<p class='error'>Merci d'ajouter au moins un membre avant d'ajouter une EP.</p>";
 	}
 
-	echo $default2->index(
-		$eps,
-		array(
-			'Ep.identifiant',
-			'Regroupementep.name',
-			'Ep.name'
-		),
-		array(
-			'actions' => array(
-				'Eps::edit',
-				'Eps::delete'
+
+	if( Configure::read( 'Cg.departement' ) == 93  ){
+		echo $default2->index(
+			$eps,
+			array(
+				'Ep.identifiant',
+				'Ep.adressemail',
+				'Regroupementep.name',
+				'Ep.name'
 			),
-			'add' => array( 'Ep.add', 'disabled' => ( $compteurs['Regroupementep'] == 0 || $compteurs['Membreep'] == 0 ) ),
-			'options' => $options
-		)
-	);
+			array(
+				'actions' => array(
+					'Eps::edit',
+					'Eps::delete'
+				),
+				'add' => array( 'Ep.add', 'disabled' => ( $compteurs['Regroupementep'] == 0 || $compteurs['Membreep'] == 0 ) ),
+				'options' => $options
+			)
+		);
+	}
+	else{
+		echo $default2->index(
+			$eps,
+			array(
+				'Ep.identifiant',
+				'Regroupementep.name',
+				'Ep.name'
+			),
+			array(
+				'actions' => array(
+					'Eps::edit',
+					'Eps::delete'
+				),
+				'add' => array( 'Ep.add', 'disabled' => ( $compteurs['Regroupementep'] == 0 || $compteurs['Membreep'] == 0 ) ),
+				'options' => $options
+			)
+		);
+	}
 
 // 	echo $default->button(
 // 		'back',

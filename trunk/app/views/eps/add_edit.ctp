@@ -17,16 +17,31 @@
 	if (isset($this->data['Ep']['id']))
 		echo $form->input('Ep.id', array('type'=>'hidden'));
 
-	echo $default->subform(
-		array(
-// 			'Ep.identifiant' => array('required' => true),
-			'Ep.name' => array('required' => true),
-			'Ep.regroupementep_id' => array('required' => true, 'type' => 'select'),
-		),
-		array(
-			'options' => $options
-		)
-	);
+	if( Configure::read( 'Cg.departement' ) == 93 ){
+		echo $default->subform(
+			array(
+	// 			'Ep.identifiant' => array('required' => true),
+				'Ep.name' => array('required' => true),
+				'Ep.adressemail',
+				'Ep.regroupementep_id' => array('required' => true, 'type' => 'select'),
+			),
+			array(
+				'options' => $options
+			)
+		);
+	}
+	else{
+		echo $default->subform(
+			array(
+	// 			'Ep.identifiant' => array('required' => true),
+				'Ep.name' => array('required' => true),
+				'Ep.regroupementep_id' => array('required' => true, 'type' => 'select'),
+			),
+			array(
+				'options' => $options
+			)
+		);
+	}
 
 	echo $html->tag(
 		'div',

@@ -22,6 +22,8 @@ SELECT add_missing_table_field ('public', 'commissionseps', 'chargesuivi', 'VARC
 SELECT add_missing_table_field ('public', 'commissionseps', 'gestionnairebat', 'VARCHAR(100)' );
 SELECT add_missing_table_field ('public', 'commissionseps', 'gestionnairebada', 'VARCHAR(100)' );
 
+SELECT add_missing_table_field ('public', 'eps', 'adressemail', 'VARCHAR(100)' );
+
 
 -- *****************************************************************************
 COMMIT;
