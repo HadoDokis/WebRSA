@@ -1,6 +1,7 @@
 <?php
 echo '<table id="Decisionnonrespectsanctionep93" class="tooltips"><thead>
 <tr>
+<th>Personne</th>
 <th>Nom du demandeur</th>
 <th>Adresse</th>
 <th>Date de naissance</th>
@@ -40,6 +41,7 @@ echo '<table id="Decisionnonrespectsanctionep93" class="tooltips"><thead>
 
 		echo $xhtml->tableCells(
 			array(
+				$dossierep['Personne']['id'],
 				implode( ' ', array( $dossierep['Personne']['qual'], $dossierep['Personne']['nom'], $dossierep['Personne']['prenom'] ) ),
 				implode( ' ', array( $dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['numvoie'], isset( $typevoie[$dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie']] ) ? $typevoie[$dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie']] : null, $dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['nomvoie'] ) ),
 				$locale->date( __( 'Locale->date', true ), $dossierep['Personne']['dtnai'] ),

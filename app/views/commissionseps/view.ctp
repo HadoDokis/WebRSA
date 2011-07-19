@@ -32,72 +32,8 @@
 			echo '<li><span class="disabled"> '.__d( 'commissionep','Commissionseps::delete',true ).'</span></li>';
 		}
 
-
-// 		if( in_array( 'commissionseps::traiterep', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) ) {
-// 			echo '<li>'.$xhtml->link(
-// 				__d( 'commissionep','Commissionseps::traiterep',true ),
-// 				array( 'controller' => 'commissionseps', 'action' => 'traiterep', $commissionep['Commissionep']['id'] )
-// 			).' </li>';
-// 		}
-// 		else {
-// 			echo '<li><span class="disabled"> '.__d( 'commissionep','Commissionseps::traiterep',true ).'</span></li>';
-// 		}
-// 
-// 		if( in_array( 'commissionseps::finaliserep', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) ) {
-// 			echo '<li>'.$xhtml->link(
-// 				__d( 'commissionep','Commissionseps::finaliserep',true ),
-// 				array( 'controller' => 'commissionseps', 'action' => 'finaliserep', $commissionep['Commissionep']['id'] )
-// 			).' </li>';
-// 		}
-// 		else {
-// 			echo '<li><span class="disabled"> '.__d( 'commissionep','Commissionseps::finaliserep',true ).'</span></li>';
-// 		}
-
 	?>
-	</ul><!--<ul class="actionMenu">-->
-	<?php
-
-// 		if( in_array( 'commissionseps::impressionpv', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) ) {
-// 			echo '<li>'.$xhtml->link(
-// 				__d( 'commissionep','Commissionseps::impressionpv', true ),
-// 				array( 'controller' => 'commissionseps', 'action' => 'impressionpv', $commissionep['Commissionep']['id'] )
-// 			).' </li>';
-// 		}
-// 		else {
-// 			echo '<li><span class="disabled"> '.__d( 'commissionep','Commissionseps::impressionpv',true ).'</span></li>';
-// 		}
-// 
-// 		if( in_array( 'commissionseps::traitercg', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) ) {
-// 			echo '<li>'.$xhtml->link(
-// 				__d( 'commissionep','Commissionseps::traitercg',true ),
-// 				array( 'controller' => 'commissionseps', 'action' => 'traitercg', $commissionep['Commissionep']['id'] )
-// 			).' </li>';
-// 		}
-// 		else {
-// 			echo '<li><span class="disabled"> '.__d( 'commissionep','Commissionseps::traitercg',true ).'</span></li>';
-// 		}
-// 
-// 		if( in_array( 'commissionseps::finalisercg', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) ) {
-// 			echo '<li>'.$xhtml->link(
-// 				__d( 'commissionep','Commissionseps::finalisercg',true ),
-// 				array( 'controller' => 'commissionseps', 'action' => 'finalisercg', $commissionep['Commissionep']['id'] )
-// 			).' </li>';
-// 		}
-// 		else {
-// 			echo '<li><span class="disabled"> '.__d( 'commissionep','Commissionseps::finalisercg',true ).'</span></li>';
-// 		}
-// 
-// 		if( in_array( 'commissionseps::printDecision', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) ) {
-// 			echo '<li>'.$xhtml->link(
-// 				__d( 'commissionep','Commissionseps::printDecision',true ),
-// 				array( 'controller' => 'commissionseps', 'action' => 'printDecision', $commissionep['Commissionep']['id'] )
-// 			).' </li>';
-// 		}
-// 		else {
-// 			echo '<li><span class="disabled"> '.__d( 'commissionep','Commissionseps::printDecision',true ).'</span></li>';
-// 		}
-	?>
-<!-- 	</ul> -->
+	</ul>
 
 	<table>
 		<tbody>
@@ -348,23 +284,37 @@
 									'Dossierseps::view' => array( 'label' => 'Voir', 'url' => array( 'controller' => $controller, 'action' => 'index', '#Dossierep.Personne.id#' ), 'class' => 'external' ),
 								);
 
+								$fields = array(
+									'Dossierep.Personne.qual',
+									'Dossierep.Personne.nom',
+									'Dossierep.Personne.prenom'
+								);
+
 								if( Configure::read( 'Cg.departement' ) == 93 ) {
 									$actions['Dossierseps::fichesynthese'] = array( 'url' => array( 'controller' => 'commissionseps', 'action' => 'fichesynthese',  Set::classicExtract( $commissionep, 'Commissionep.id' ), '#Dossierep.id#', true ) );
+									$fields = array_merge(
+										$fields,
+										array(
+											'Dossierep.Personne.id'
+										)
+									);
 								}
 
-								echo $default2->index(
-									$dossierseps,
+								$fields = array_merge(
+									$fields,
 									array(
-										'Dossierep.Personne.qual',
-										'Dossierep.Personne.nom',
-										'Dossierep.Personne.prenom',
 										'Dossierep.Personne.dtnai',
 										'Dossierep.Personne.Foyer.Adressefoyer.0.Adresse.locaadr',
 										'Dossierep.created',
 										'Dossierep.themeep',
 										'Passagecommissionep.etatdossierep',
-										'Dossierep.Personne.Foyer.enerreur' => array( 'type' => 'string', 'class' => 'foyer_enerreur' ),
-									),
+										'Dossierep.Personne.Foyer.enerreur' => array( 'type' => 'string', 'class' => 'foyer_enerreur' )
+									)
+								);
+
+								echo $default2->index(
+									$dossierseps,
+									$fields,
 									array(
 										'actions' => $actions,
 										'options' => $options,
