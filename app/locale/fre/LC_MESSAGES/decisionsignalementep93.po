@@ -44,7 +44,7 @@ msgid "ENUM::DECISION::2pasavis"
 msgstr "Pas d'avis"
 
 msgid "ENUM::DECISION::annule"
-msgstr "Annulé"
+msgstr "Remobilisation"
 
 msgid "ENUM::DECISION::reporte"
 msgstr "Reporté"
