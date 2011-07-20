@@ -65,8 +65,7 @@
 							'Referent.nom' => array( 'type' => 'text', 'value' => '#Referent.qual# #Referent.nom# #Referent.prenom#' ),
 							'Actioncandidat.ddaction',
 							'Actioncandidat.hasfichecandidature' => array( 'type' => 'boolean' )
-						),
-						array( 'id' => 'vueContrat' )
+						)
 					);
 				}
 			}
