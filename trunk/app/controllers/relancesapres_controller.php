@@ -70,6 +70,7 @@
                 $apre = $this->Apre->find( 'first', array( 'conditions' => array( 'Apre.id' => $id ) ) );
                 $this->set( 'apre', $apre );
 
+                $personne_id = Set::classicExtract( $apre, 'Apre.personne_id' );
                 $dossier_id = $this->Personne->dossierId( Set::classicExtract( $apre, 'Apre.personne_id' ) );
             }
             else if( $this->action == 'edit' ) {
