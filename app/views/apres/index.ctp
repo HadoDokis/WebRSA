@@ -193,7 +193,6 @@
                     <th>N° Apre</th>
                     <th>Date de relance</th>
                     <th>Liste des pièces manquantes</th>
-                    <th>Liste des pièces d'aide</th>
                     <th>Commentaire</th>
                     <th colspan="3" class="action">Actions</th>
                 </tr>
