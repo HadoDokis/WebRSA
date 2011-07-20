@@ -28,7 +28,7 @@
 		echo '<div class="submit">';
 			echo $form->submit( 'Enregistrer', array( 'div' => false ) );
 			if ( $commissionep['Commissionep']['etatcommissionep'] == 'decisionep' ) {
-				echo '<br/><br/>'.$form->submit( 'Valider', array( 'name' => 'Valider', 'div' => false, 'onclick' => 'return confirm( \'Êtes-vous sûr de vouloir valider les décision ?\' );' ) );
+				echo '<br/><br/>'.$form->submit( 'Valider', array( 'name' => 'Valider', 'div' => false, 'onclick' => 'return confirm( \'Êtes-vous sûr de vouloir valider les décisions ?\' );' ) );
 			}
 		echo '</div>';
 		echo $form->end();
