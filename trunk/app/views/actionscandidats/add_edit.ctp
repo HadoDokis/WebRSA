@@ -81,7 +81,16 @@
 	</script>
 	<?php echo $form->button( 'Tout cocher', array( 'onclick' => "toutCocher( 'input[name=\"data[Zonegeographique][Zonegeographique][]\"]' )" ) );?>
 	<?php echo $form->button( 'Tout décocher', array( 'onclick' => "toutDecocher( 'input[name=\"data[Zonegeographique][Zonegeographique][]\"]' )" ) );?>
-	<?php echo $form->input( 'Zonegeographique.Zonegeographique', array( 'label' => false, 'multiple' => 'checkbox' , 'options' => $options['Zonegeographique'] ) );
+	
+	<?php
+		$selected = array();
+		if( $this->action == 'add' ){
+			$selected = $zonesselected;
+		}
+		else if( $this->action == 'edit' ){
+			$selected = $this->data['Zonegeographique']['Zonegeographique'];
+		}
+		echo $form->input( 'Zonegeographique.Zonegeographique', array( 'label' => false, 'multiple' => 'checkbox' , 'options' => $options['Zonegeographique'], 'selected' => $selected ) );
 	?>
 </fieldset>
 <?php
