@@ -47,16 +47,16 @@
     <div class="aere">
 		<fieldset>
 			<?php
-				$piecesManquantes = array();
-				$piecesManquantesAides = array();
-				$naturesaide = Set::classicExtract( $apre, 'Apre.Piecemanquante' );
-// debug($apre);
-				$piecesManquantes = Set::classicExtract( $apre, 'Apre.Piece.Manquante.Apre' );
-				foreach( $naturesaide as $natureaide => $nombre ) {
-					if( $nombre > 0 ) {
-						$piecesManquantesAides = Set::classicExtract( $apre, "Apre.Piece.Manquante.{$natureaide}" );
-					}
-				}
+// 				$piecesManquantes = array();
+// 				$piecesManquantesAides = array();
+// 				$naturesaide = Set::classicExtract( $apre, 'Apre.Piecemanquante' );
+// // debug($apre);
+// 				$piecesManquantes = Set::classicExtract( $apre, 'Apre.Piece.Manquante.Apre' );
+// 				foreach( $naturesaide as $natureaide => $nombre ) {
+// 					if( $nombre > 0 ) {
+// 						$piecesManquantesAides = Set::classicExtract( $apre, "Apre.Piece.Manquante.{$natureaide}" );
+// 					}
+// 				}
 
 
 				echo $xform->input( 'Relanceapre.daterelance', array( 'domain' => 'apre', 'dateFormat' => 'DMY' ) );
@@ -68,14 +68,17 @@
 			<legend>Pièces jointes manquantes</legend>
 			<?php
 				$piecesManquantesAides = Set::classicExtract( $apre, "Apre.Piece.Manquante" );
+// debug( $piecesManquantesAides );
+				$listeParAides = '';
 				foreach( $piecesManquantesAides as $model => $pieces ) {
 					if( !empty( $pieces ) ) {
-						echo $xhtml->tag( 'h2', __d( 'apre', $model, true ) );
-						echo '<ul><li>'.implode( '</li><li>', $pieces ).'</li></ul>';
+						echo $xhtml->tag( 'h2', __d( 'apre', $model, true ) ).'<ul><li>'.implode( '</li><li>', $pieces ).'</li></ul>';
+						$listeParAides .= $xhtml->tag( 'h2', __d( 'apre', $model, true ) ).'<ul><li>'.implode( '</li><li>', $pieces ).'</li></ul>';
 					}
 				}
-// 				debug(implode( '<br>', $pieces ) );
-				echo $xform->input( 'Relanceapre.listepiecemanquante', array( 'domain' => 'apre', 'type' => 'hidden', 'value' => implode( '<br>', $pieces ) ) );
+
+				echo $xform->input( 'Relanceapre.listepiecemanquante', array( 'domain' => 'apre', 'type' => 'hidden', 'value' => $listeParAides ) );
+
 
 			?>
 		</fieldset>

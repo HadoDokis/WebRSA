@@ -193,6 +193,7 @@
                     <th>N° Apre</th>
                     <th>Date de relance</th>
                     <th>Liste des pièces manquantes</th>
+                    <th>Liste des pièces d'aide</th>
                     <th>Commentaire</th>
                     <th colspan="3" class="action">Actions</th>
                 </tr>
@@ -209,11 +210,10 @@
                                 $textePiecesManquantes .= $xhtml->tag( 'h3', __d( 'apre', $model, true ) ).'<ul><li>'.implode( '</li><li>', $pieces ).'</li></ul>';
                             }
                         }
-
+								
 						$piecesRestantes = '';
 						$piecesRelances = Set::classicExtract( $relanceapre, 'Relanceapre.listepiecemanquante' );
-// 						debug( $piecesRelances);
-                        $piecesRestantes .= $xhtml->tag( 'h3', __d( 'apre', $model, true ) ).$piecesRelances;
+						$piecesRestantes .= $xhtml->tag( 'h3', '' ).$piecesRelances;
 
                         echo $xhtml->tableCells(
                             array(
