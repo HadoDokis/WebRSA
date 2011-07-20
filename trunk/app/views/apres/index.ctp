@@ -229,7 +229,7 @@
                                 $xhtml->editLink(
                                     'Editer la relance',
                                     array( 'controller' => 'relancesapres', 'action' => 'edit', Set::classicExtract( $relanceapre, 'Relanceapre.id' ) ),
-                                    $permissions->check( 'relancesapres', 'edit' )
+                                    ( $permissions->check( 'relancesapres', 'edit' ) && Set::classicExtract( $relanceapre, 'Relanceapre.id' ) == $lastrelance_id  )
                                 ),
                                 $xhtml->printLink(
                                     'Imprimer la notification de relance',

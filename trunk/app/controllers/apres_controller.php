@@ -211,10 +211,19 @@
 							'Relanceapre.apre_id' => Set::extract( $apres, '/Apre/id' ),
 							'Apre.statutapre = \'C\''
 						),
-						'recursive' => 0
+						'recursive' => 0,
+						'order' => 'Relanceapre.id DESC'
 					)
 				);
-//                 debug($relancesapres);
+
+				if ( isset( $relancesapres['0']['Relanceapre']['id'] ) && !empty( $relancesapres['0']['Relanceapre']['id'] ) ) {
+					$lastrelance_id = $relancesapres['0']['Relanceapre']['id'];
+				}
+				else {
+					$lastrelance_id = 0;
+				}
+				$this->set( 'lastrelance_id', $lastrelance_id );
+
 			}
 			else {
 				$relancesapres = array();
