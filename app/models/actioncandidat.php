@@ -106,8 +106,7 @@
         *
         */
 
-        public function listePourFicheCandidature( $numcomptt ) {
-
+        public function listePourFicheCandidature( $codelocalite ) {
             $actionscandidats = $this->find(
                 'list',
                 array(
@@ -124,7 +123,7 @@
                                                 'alias' => 'cantons',
                                                 'fields' => array( 'cantons.zonegeographique_id' ),
                                                 'conditions' => array(
-                                                    'cantons.numcomptt' => $numcomptt
+                                                    'cantons.numcomptt' => $codelocalite
                                                 ),
                                                 'contain' => false
                                             )

@@ -525,8 +525,10 @@
 			$this->set( compact( 'dsp' ) );
 
             ///Récupération de la liste des actions avec une fiche de candidature
-            $numcomptt = Set::classicExtract( $personne, 'Adresse.numcomptt' );
-            $actionsfiche = $this->{$this->modelClass}->Actioncandidat->listePourFicheCandidature( $numcomptt );
+//             $numcomptt = Set::classicExtract( $personne, 'Adresse.numcomptt' );
+			$user = $this->User->findById( $this->Session->read( 'Auth.User.id' ), null, null, 0 );
+			$codeinseeUser = Set::classicExtract( $user, 'Serviceinstructeur.code_insee' );
+            $actionsfiche = $this->{$this->modelClass}->Actioncandidat->listePourFicheCandidature( $codeinseeUser );
             $this->set( 'actionsfiche', $actionsfiche );
 
 			$this->ActioncandidatPersonne->begin();
