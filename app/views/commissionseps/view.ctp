@@ -112,23 +112,44 @@
 				<?php
 					$disableOrdredujour = !in_array( 'commissionseps::printOrdreDuJour', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] );
 
-					echo '<li>'.$xhtml->reponseLink(
-						__d('commissionep','Commissionep.reponse',true),
-						array( 'controller' => 'membreseps', 'action' => 'editliste', $commissionep['Commissionep']['id'] ),
-						in_array( 'membreseps::editliste', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] )
-					).' </li>';
-					echo '<li>'.$xhtml->link(
-						__d('commissionep','Commissionseps::printConvocationsParticipants',true),
-						array( 'controller' => 'commissionseps', 'action' => 'printConvocationsParticipants', $commissionep['Ep']['id'], $commissionep['Commissionep']['id'] ),
-						array( 'class' => 'button print', 'enabled' => ( in_array( 'membreseps::printConvocationsParticipants', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) ), ),
-                        'Etes-vous sûr de vouloir imprimer les invitations ?'
-					).' </li>';
-					echo '<li>'.$xhtml->link(
-						__d('commissionep','Commissionseps::printOrdresDuJour',true),
-						array( 'controller' => 'commissionseps', 'action' => 'printOrdresDuJour', $commissionep['Commissionep']['id'] ),
-						array( 'class' => 'button print', 'enabled' => !$disableOrdredujour ),
-						'Etes-vous sûr de vouloir imprimer l\'ordre du jour ?'
-					).' </li>';
+					if( Configure::read( 'Cg.departement' ) == 66 ) {
+						echo '<li>'.$xhtml->link(
+							__d('commissionep','Commissionseps::printConvocationsParticipants',true),
+							array( 'controller' => 'commissionseps', 'action' => 'printConvocationsParticipants', $commissionep['Ep']['id'], $commissionep['Commissionep']['id'] ),
+							array( 'class' => 'button print', 'enabled' => ( in_array( 'membreseps::printConvocationsParticipants', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) ), ),
+							'Etes-vous sûr de vouloir imprimer les invitations ?'
+						).' </li>';
+						echo '<li>'.$xhtml->reponseLink(
+							__d('commissionep','Commissionep.reponse',true),
+							array( 'controller' => 'membreseps', 'action' => 'editliste', $commissionep['Commissionep']['id'] ),
+							in_array( 'membreseps::editliste', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] )
+						).' </li>';
+						echo '<li>'.$xhtml->link(
+							__d('commissionep','Commissionseps::printOrdresDuJour',true),
+							array( 'controller' => 'commissionseps', 'action' => 'printOrdresDuJour', $commissionep['Commissionep']['id'] ),
+							array( 'class' => 'button print', 'enabled' => !$disableOrdredujour ),
+							'Etes-vous sûr de vouloir imprimer l\'ordre du jour ?'
+						).' </li>';
+					}
+					else{
+						echo '<li>'.$xhtml->reponseLink(
+							__d('commissionep','Commissionep.reponse',true),
+							array( 'controller' => 'membreseps', 'action' => 'editliste', $commissionep['Commissionep']['id'] ),
+							in_array( 'membreseps::editliste', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] )
+						).' </li>';
+						echo '<li>'.$xhtml->link(
+							__d('commissionep','Commissionseps::printConvocationsParticipants',true),
+							array( 'controller' => 'commissionseps', 'action' => 'printConvocationsParticipants', $commissionep['Ep']['id'], $commissionep['Commissionep']['id'] ),
+							array( 'class' => 'button print', 'enabled' => ( in_array( 'membreseps::printConvocationsParticipants', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) ), ),
+							'Etes-vous sûr de vouloir imprimer les invitations ?'
+						).' </li>';
+						echo '<li>'.$xhtml->link(
+							__d('commissionep','Commissionseps::printOrdresDuJour',true),
+							array( 'controller' => 'commissionseps', 'action' => 'printOrdresDuJour', $commissionep['Commissionep']['id'] ),
+							array( 'class' => 'button print', 'enabled' => !$disableOrdredujour ),
+							'Etes-vous sûr de vouloir imprimer l\'ordre du jour ?'
+						).' </li>';
+					}
 
 					if( Configure::read( 'Cg.departement' ) != 93 ) {
 						echo '<li>'.$xhtml->presenceLink(
