@@ -566,10 +566,14 @@
 			$personne_id = Set::classicExtract( $this->data, "{$this->alias}.personne_id" );
 			$statutapre = Set::classicExtract( $this->data, "{$this->alias}.statutapre" );
 
-			if( !empty( $personne_id ) && ( $statutapre == 'C' ) ){
+			if( !empty( $personne_id ) && ( $statutapre == 'C' ) && Configure::read( 'Cg.departement' ) == 66 ){
 				$return = $this->query( "UPDATE apres SET eligibiliteapre = 'O' WHERE apres.personne_id = {$personne_id} AND apres.etatdossierapre = 'COM' AND ( SELECT COUNT(contratsinsertion.id) FROM contratsinsertion WHERE contratsinsertion.personne_id = {$personne_id} ) > 0;" ) && $return;
 
 				$return = $this->query( "UPDATE apres SET eligibiliteapre = 'N' WHERE apres.personne_id = {$personne_id} AND NOT ( apres.etatdossierapre = 'COM' AND ( SELECT COUNT(contratsinsertion.id) FROM contratsinsertion WHERE contratsinsertion.personne_id = {$personne_id} ) > 0 );" ) && $return;
+			}
+			else if( Configure::read( 'Cg.departement' ) == 93 ){
+				$return = $this->query( "UPDATE apres SET eligibiliteapre = 'O' WHERE apres.personne_id = {$personne_id} AND apres.etatdossierapre = 'COM';" ) && $return;
+				$return = $this->query( "UPDATE apres SET eligibiliteapre = 'N' WHERE apres.personne_id = {$personne_id} AND NOT ( apres.etatdossierapre = 'COM' );" ) && $return;
 			}
 
 			// FIXME: return ?
