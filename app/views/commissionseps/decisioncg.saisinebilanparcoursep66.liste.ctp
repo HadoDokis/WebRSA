@@ -84,6 +84,14 @@ echo '<table id="Decisionsaisinebilanparcoursep66" class="tooltips"><thead>
 			@$liste_referents[Set::classicExtract( $decisionep, "referent_id" )]
 		) ) );
 
+		$enabled = true;
+		if( $decisioncg['decision'] == 'maintien' ){
+			$enabled = false;
+		}
+		else{
+			$enabled = $enabled;
+		}
+
 		echo $xhtml->tableCells(
 			array_merge(
 				$listeFields,
@@ -97,7 +105,7 @@ echo '<table id="Decisionsaisinebilanparcoursep66" class="tooltips"><thead>
 					array( @$options['Decisionsaisinebilanparcoursep66']['changementrefparcours'][Set::classicExtract( $decisioncg, "changementrefparcours" )], array( 'id' => "Decisionsaisinebilanparcoursep66{$i}Changementrefparcours" ) ),
 					array( Set::classicExtract( $decisioncg, "commentaire" ), array( 'id'  => "Decisionsaisinebilanparcoursep66{$i}Commentaire") ),
 					array( $xhtml->link( 'Voir', array( 'controller' => 'historiqueseps', 'action' => 'view_passage', $dossierep['Passagecommissionep'][0]['id'] ), array( 'class' => 'external' ) ), array( 'class' => 'button view' ) ),
-					$xhtml->printLink( 'Imprimer', array( 'controller' => 'commissionseps', 'action' => 'impressionDecision', $dossierep['Passagecommissionep'][0]['id'] ) ),
+					$xhtml->printLink( 'Imprimer', array( 'controller' => 'commissionseps', 'action' => 'impressionDecision', $dossierep['Passagecommissionep'][0]['id'] ), ( $enabled ) ),
 					array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
 				)
 			),
