@@ -24,7 +24,29 @@ SELECT add_missing_table_field ('public', 'commissionseps', 'gestionnairebada', 
 
 SELECT add_missing_table_field ('public', 'eps', 'adressemail', 'VARCHAR(100)' );
 
+ALTER TABLE actionscandidats ALTER COLUMN contractualisation DROP NOT NULL;
+ALTER TABLE actionscandidats ALTER COLUMN contractualisation SET DEFAULT NULL;
 
+ALTER TABLE actionscandidats ALTER COLUMN lieuaction DROP NOT NULL;
+ALTER TABLE actionscandidats ALTER COLUMN lieuaction SET DEFAULT NULL;
+
+ALTER TABLE actionscandidats ALTER COLUMN cantonaction DROP NOT NULL;
+ALTER TABLE actionscandidats ALTER COLUMN cantonaction SET DEFAULT NULL;
+
+ALTER TABLE actionscandidats ALTER COLUMN ddaction DROP NOT NULL;
+ALTER TABLE actionscandidats ALTER COLUMN ddaction SET DEFAULT NULL;
+
+ALTER TABLE actionscandidats ALTER COLUMN dfaction DROP NOT NULL;
+ALTER TABLE actionscandidats ALTER COLUMN dfaction SET DEFAULT NULL;
+
+ALTER TABLE actionscandidats ALTER COLUMN contactpartenaire_id DROP NOT NULL;
+ALTER TABLE actionscandidats ALTER COLUMN contactpartenaire_id SET DEFAULT NULL;
+
+ALTER TABLE actionscandidats ALTER COLUMN chargeinsertion_id DROP NOT NULL;
+ALTER TABLE actionscandidats ALTER COLUMN chargeinsertion_id SET DEFAULT NULL;
+
+ALTER TABLE actionscandidats ALTER COLUMN secretaire_id DROP NOT NULL;
+ALTER TABLE actionscandidats ALTER COLUMN secretaire_id SET DEFAULT NULL;
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

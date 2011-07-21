@@ -23,6 +23,54 @@
                     'rule' => array( 'notEmptyIf', 'hasfichecandidature', true, array( '1' ) ),
                     'message' => 'Champ obligatoire',
                 ),
+			),
+			'chargeinsertion_id' => array(
+				'notEmptyIf' => array(
+                    'rule' => array( 'notEmptyIf', 'hasfichecandidature', true, array( '1' ) ),
+                    'message' => 'Champ obligatoire',
+                ),
+			),
+			'secretaire_id' => array(
+				'notEmptyIf' => array(
+                    'rule' => array( 'notEmptyIf', 'hasfichecandidature', true, array( '1' ) ),
+                    'message' => 'Champ obligatoire',
+                ),
+			),
+			'contractualisation' => array(
+				'notEmptyIf' => array(
+                    'rule' => array( 'notEmptyIf', 'hasfichecandidature', true, array( '1' ) ),
+                    'message' => 'Champ obligatoire',
+                ),
+			),
+			'lieuaction' => array(
+				'notEmptyIf' => array(
+                    'rule' => array( 'notEmptyIf', 'hasfichecandidature', true, array( '1' ) ),
+                    'message' => 'Champ obligatoire',
+                ),
+			),
+			'cantonaction' => array(
+				'notEmptyIf' => array(
+                    'rule' => array( 'notEmptyIf', 'hasfichecandidature', true, array( '1' ) ),
+                    'message' => 'Champ obligatoire',
+                ),
+			),
+			'ddaction' => array(
+				'notEmptyIf' => array(
+                    'rule' => array( 'notEmptyIf', 'hasfichecandidature', true, array( '1' ) ),
+                    'message' => 'Champ obligatoire',
+                ),
+			),
+			'dfaction' => array(
+				'notEmptyIf' => array(
+                    'rule' => array( 'notEmptyIf', 'hasfichecandidature', true, array( '1' ) ),
+                    'message' => 'Champ obligatoire',
+                ),
+			),
+			'contactpartenaire_id' => array(
+				'notEmptyIf' => array(
+                    'rule' => array( 'notEmptyIf', 'hasfichecandidature', true, array( '1' ) ),
+                    'message' => 'Champ obligatoire',
+                ),
 			)
 		);
 
