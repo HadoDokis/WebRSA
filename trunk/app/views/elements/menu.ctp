@@ -230,9 +230,6 @@
 									</ul>
 								</li>
 							<?php endif;?>
-							<?php if( $permissions->check( 'defautsinsertionseps66', 'courriersinformations' ) ):?>
-								<li><?php echo $xhtml->link( 'Courriers d\'information',  array( 'controller' => 'defautsinsertionseps66', 'action' => 'courriersinformations'  ) );?></li>
-							<?php endif;?>
 						<?php endif;?>
 					</ul>
 				</li>
@@ -427,6 +424,10 @@
 						</li>
 					<?php endif; ?>
 					<li><?php echo $xhtml->link( '4. Consultation et impression des décisions', array( 'controller' => 'commissionseps', 'action' => 'decisions' ) );?></li>
+					<?php if( Configure::read( 'Cg.departement' ) == 66 && $permissions->check( 'defautsinsertionseps66', 'courriersinformations' ) ):?>
+						<li><?php echo $xhtml->link( '5. Courriers d\'information avant EPL Audition',  array( 'controller' => 'defautsinsertionseps66', 'action' => 'courriersinformations'  ) );?></li>
+					<?php endif;?>
+
 					<!-- <li>
 						<?php /*if( Configure::read( 'Cg.departement' ) == 58 ):?>
 							<a href="#">Motifs de saisine</a>
