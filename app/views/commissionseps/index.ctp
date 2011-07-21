@@ -124,7 +124,7 @@
 					$colspan = 1;
 					break;
 				case 'arbitrageep':
-					$colspan = 3;
+					$colspan = 4;
 					break;
 				case 'arbitragecg':
 					$colspan = 1;
@@ -166,7 +166,10 @@
 						list( $jourCommission, $heureCommission ) = explode( ' ', $commissionep['Commissionep']['dateseance'] );
 						$presencesPossible = ( date( 'Y-m-d' ) >= $jourCommission );
 
-						$lien = '<td>'.$xhtml->link( 'Présences', array( 'controller' => 'membreseps', 'action' => 'editpresence', $commissionep['Commissionep']['id'] ), array( 'enabled' => ( ( $commissionep['Commissionep']['etatcommissionep'] == 'associe' || $commissionep['Commissionep']['etatcommissionep'] == 'quorum' || $commissionep['Commissionep']['etatcommissionep'] == 'presence' || $commissionep['Commissionep']['etatcommissionep'] == 'valide' ) && $presencesPossible ) ) ).'</td>';
+						//Ajout de l'ordre du jour
+						$lien = '<td>'.$xhtml->link( 'Ordre du jour', array( 'controller' => 'commissionseps', 'action' => 'printOrdresDuJour', $commissionep['Commissionep']['id'] ), array( 'enabled' => true ) ).'</td>';
+
+						$lien .= '<td>'.$xhtml->link( 'Présences', array( 'controller' => 'membreseps', 'action' => 'editpresence', $commissionep['Commissionep']['id'] ), array( 'enabled' => ( ( $commissionep['Commissionep']['etatcommissionep'] == 'associe' || $commissionep['Commissionep']['etatcommissionep'] == 'quorum' || $commissionep['Commissionep']['etatcommissionep'] == 'presence' || $commissionep['Commissionep']['etatcommissionep'] == 'valide' ) && $presencesPossible ) ) ).'</td>';
 						
 						$lien .= '<td>'.$xhtml->link( 'Arbitrage', array( 'controller' => 'commissionseps', 'action' => 'traiterep', $commissionep['Commissionep']['id'] ), array( 'enabled' => ( $commissionep['Commissionep']['etatcommissionep'] == 'presence' || $commissionep['Commissionep']['etatcommissionep'] == 'decisionep' ) ) ).'</td>';
 						
@@ -186,7 +189,7 @@
 					default:
 						$lien = '<td>'.$xhtml->link( 'Voir', array( 'controller' => 'commissionseps', 'action' => 'view', $commissionep['Commissionep']['id'] ) ).'</td>';
 				}
-
+// debug( $commissionep );
 				echo '<tr>
 					<td>'.h( $commissionep['Ep']['identifiant'] ).'</td>
 					<td>'.h( $commissionep['Ep']['name'] ).'</td>
