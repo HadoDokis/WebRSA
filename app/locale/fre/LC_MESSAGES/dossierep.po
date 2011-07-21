@@ -56,7 +56,7 @@ msgid "ENUM::THEMEEP::reorientationseps93"
 msgstr "Réorientations"
 
 msgid "ENUM::THEMEEP::saisinesbilansparcourseps66"
-msgstr "Demande de réorientation"
+msgstr "Demande de réorientation ou maintien"
 
 msgid "ENUM::THEMEEP::suspensionreductionallocations93"
 msgstr "Thème du dossier"
