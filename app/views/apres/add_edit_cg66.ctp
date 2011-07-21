@@ -35,23 +35,23 @@
             );
 
 
-                observeDisableFieldsOnRadioValue(
-                    'Apre',
-                    'data[Apre66][activitebeneficiaire]',
-                    [ 
-                        '<?php echo $this->modelClass;?>Typecontrat_',
-                        '<?php echo $this->modelClass;?>TypecontratCDI',
-                        '<?php echo $this->modelClass;?>TypecontratCDD',
-                        '<?php echo $this->modelClass;?>TypecontratCON',
-                        '<?php echo $this->modelClass;?>TypecontratAUT',
-                        '<?php echo $this->modelClass;?>Dureecontrat',
-                        //'<?php echo $this->modelClass;?>Nbheurestravaillees',
-                        '<?php echo $this->modelClass;?>Nomemployeur',
-                        '<?php echo $this->modelClass;?>Adresseemployeur'
-                    ],
-                    ['C', 'P', 'F', undefined],
-                    false
-                );
+//                 observeDisableFieldsOnRadioValue(
+//                     'Apre',
+//                     'data[Apre66][activitebeneficiaire]',
+//                     [ 
+//                         '<?php echo $this->modelClass;?>Typecontrat_',
+//                         '<?php echo $this->modelClass;?>TypecontratCDI',
+//                         '<?php echo $this->modelClass;?>TypecontratCDD',
+//                         '<?php echo $this->modelClass;?>TypecontratCON',
+//                         '<?php echo $this->modelClass;?>TypecontratAUT',
+//                         '<?php echo $this->modelClass;?>Dureecontrat',
+//                         //'<?php echo $this->modelClass;?>Nbheurestravaillees',
+//                         '<?php echo $this->modelClass;?>Nomemployeur',
+//                         '<?php echo $this->modelClass;?>Adresseemployeur'
+//                     ],
+//                     ['C', 'P', 'F', undefined],
+//                     false
+//                 );
 
 /***************************************************************************/
 
@@ -108,33 +108,33 @@
 <script type="text/javascript">
     document.observe("dom:loaded", function() {
         //Données pour le type d'activité du bénéficiare
-        ['CDD', 'CDI', 'CON' ].each( function( letter ) {
-            observeDisableFieldsOnValue(
-                '<?php echo $this->modelClass;?>Typecontrat' + letter,
-                [
-                    '<?php echo $this->modelClass;?>Precisionsautrecontrat'
-                ],
-                letter,
-                true
-            );
-        } );
-        observeDisableFieldsOnValue(
-            '<?php echo $this->modelClass;?>TypecontratAUT',
-            [
-                '<?php echo $this->modelClass;?>Precisionsautrecontrat'
-            ],
-            'AUT',
-            false
-        );
-
-        observeDisableFieldsOnValue(
-            '<?php echo $this->modelClass;?>TypecontratAUT',
-            [
-                '<?php echo $this->modelClass;?>Precisionsautrecontrat'
-            ],
-            'AUT',
-            false
-        );
+//         ['CDD', 'CDI', 'CON' ].each( function( letter ) {
+//             observeDisableFieldsOnValue(
+//                 '<?php echo $this->modelClass;?>Typecontrat' + letter,
+//                 [
+//                     '<?php echo $this->modelClass;?>Precisionsautrecontrat'
+//                 ],
+//                 letter,
+//                 true
+//             );
+//         } );
+//         observeDisableFieldsOnValue(
+//             '<?php echo $this->modelClass;?>TypecontratAUT',
+//             [
+//                 '<?php echo $this->modelClass;?>Precisionsautrecontrat'
+//             ],
+//             'AUT',
+//             false
+//         );
+// 
+//         observeDisableFieldsOnValue(
+//             '<?php echo $this->modelClass;?>TypecontratAUT',
+//             [
+//                 '<?php echo $this->modelClass;?>Precisionsautrecontrat'
+//             ],
+//             'AUT',
+//             false
+//         );
 
         observeDisableFieldsOnValue(
             'Aideapre66DecisionapreREF',
@@ -355,7 +355,7 @@
                     <td class="mediumsize noborder"><strong>Type d'activité </strong></td>
                     <td class="mediumsize noborder"><?php echo $xform->enum( "{$this->modelClass}.activitebeneficiaire", array( 'legend' => __d( 'apre', 'Apre.activitebeneficiaire', true ), 'type' => 'radio', 'separator' => '<br />', 'options' => /*$options['activitebeneficiaire']*/array( 'P' => 'Recherche d\'Emploi', 'E' => 'Emploi' , 'F' => 'Formation', 'C' => 'Création d\'Entreprise' ) ) );?></td> <!-- FIXME: trouver mieux car activite  = enum mais pour cg93 un champ de + est présent -->
                 </tr>
-                <tr>
+                <!-- <tr>
                     <td class="mediumsize noborder"><strong>Date prévue de l'entrée en emploi,<br /> en formation ou du rendez-vous</strong></td>
                     <td class="mediumsize noborder"><?php echo $xform->input( "{$this->modelClass}.dateentreeemploi", array( 'domain' => 'apre', 'label' => false, 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => true ) );?></td>
                 </tr>
@@ -371,24 +371,21 @@
                     <td class="mediumsize noborder"><strong>Durée ( mois ) si CDD, CTT, ...</strong></td>
                     <td class="mediumsize noborder"><?php echo $xform->input( "{$this->modelClass}.dureecontrat", array( 'domain' => 'apre', 'label' => false, 'type' => 'text' ) );?></td>
                 </tr>
-               <!-- <tr>
-                    <td class="activiteSize noborder" colspan="2"><strong>Secteur d'activité  </strong></td>
-                </tr>
-                <tr>
-                    <td class="activiteSize noborder" colspan="2"><?php /*echo $xform->input( "{$this->modelClass}.secteuractivite", array( 'domain' => 'apre', 'label' => false, 'type' => 'select', 'class' => 'activiteSize', 'options' => $sect_acti_emp, 'empty' => true ) );*/?></td>
-                </tr> -->
-
-                <!--<tr>
-                    <td class="mediumsize noborder"><strong>Quotité de travail hebdomadaire </strong></td>
-                    <td class="mediumsize noborder"><?php echo $xform->input( "{$this->modelClass}.nbheurestravaillees", array( 'domain' => 'apre', 'label' => false, 'type' => 'text' ) );?></td>
-                </tr>-->
                 <tr>
                     <td class="mediumsize noborder"><strong>Localisation de l'activité ( nom et adresse ) </strong></td>
                     <td class="mediumsize noborder"><?php echo $xform->input(  "{$this->modelClass}.nomemployeur", array( 'domain' => 'apre', 'label' => false, 'type' => 'text' ) );?><?php echo $xform->input(  "{$this->modelClass}.adresseemployeur", array( 'domain' => 'apre', 'label' => false, 'type' => 'textarea' ) );?></td>
-                </tr>
+                </tr> -->
             </table>
         </fieldset>
 
+		<fieldset>
+			<?php
+				//Ajout des 3 checkbox pour les APREs 66 concernant le droit ou non à une APRE
+				echo $xform->input( "{$this->modelClass}.isbeneficiaire", array( 'label' => __d( 'apre', 'Apre66.isbeneficiaire', true ), 'type' => 'checkbox' ) );
+				echo $xform->input( "{$this->modelClass}.hascer", array( 'label' => __d( 'apre', 'Apre66.hascer', true ), 'type' => 'checkbox' ) );
+				echo $xform->input( "{$this->modelClass}.respectdelais", array( 'label' => __d( 'apre', 'Apre66.respectdelais', true ), 'type' => 'checkbox' ) );
+			?>
+		</fieldset>
 <fieldset>
     <legend><strong>Aide demandée</strong></legend>
     <?php

@@ -47,6 +47,10 @@ ALTER TABLE actionscandidats ALTER COLUMN chargeinsertion_id SET DEFAULT NULL;
 
 ALTER TABLE actionscandidats ALTER COLUMN secretaire_id DROP NOT NULL;
 ALTER TABLE actionscandidats ALTER COLUMN secretaire_id SET DEFAULT NULL;
+
+SELECT add_missing_table_field ('public', 'apres', 'isbeneficiaire', 'TYPE_BOOLEANNUMBER');
+SELECT add_missing_table_field ('public', 'apres', 'hascer', 'TYPE_BOOLEANNUMBER');
+SELECT add_missing_table_field ('public', 'apres', 'respectdelais', 'TYPE_BOOLEANNUMBER');
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
