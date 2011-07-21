@@ -611,7 +611,7 @@
 
             $libelleDecision = Set::classicExtract( $propopdo, 'Decisionpdo.libelle' );
 
-            if( ereg("DO 10", $libelleDecision ) ) {
+            if( ereg("AJ 7a", $libelleDecision ) ) {
                 $nomModele = 'pdo_etudiant';
             }
             else if( ereg("DO 19", $libelleDecision ) ) {
