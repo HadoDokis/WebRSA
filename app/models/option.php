@@ -1696,7 +1696,7 @@
 
 		public function typeserins() {
 			return array(
-				'' => 'Hors département',
+				'' => 'Non renseigné',
 				'A' => 'Organisme agréé',
 				'C' => 'Centre Communal d\'Action Sociale',
 				'F' => 'Caisse d\'Allocation Familiale',
