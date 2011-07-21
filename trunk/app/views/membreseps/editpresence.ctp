@@ -1,6 +1,6 @@
 <?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 
-<?php  $this->pageTitle = 'Présence des membres à la commission d\'EP';?>
+<?php  $this->pageTitle = 'Présence des membres à la commission d\'EP du : '.$locale->date( "Datetime::short", $commissionep['Commissionep']['dateseance']);?>
 
 	<h1><?php echo $this->pageTitle;?></h1>
 
