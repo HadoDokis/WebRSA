@@ -1,4 +1,4 @@
-<h1><?php	echo $this->pageTitle = '2. Affichage d\'une commission d\'EP'; ?></h1>
+<h1><?php	echo $this->pageTitle = '2. Affichage de la commission d\'EP : "'.$commissionep['Ep']['name'].'"'; ?></h1>
 <div  id="ficheCI">
 
 	<?php
