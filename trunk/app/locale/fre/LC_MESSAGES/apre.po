@@ -749,3 +749,13 @@ msgstr "Oui"
 
 msgid "ENUM::HASPIECEJOINTE::0"
 msgstr "Non"
+
+
+msgid "Apre66.isbeneficiaire"
+msgstr "Le demandeur est bénéficiaire du rSa soumis à droit et devoirs à la date de la demande"
+
+msgid "Apre66.hascer"
+msgstr "Avec CER"
+
+msgid "Apre66.respectdelais"
+msgstr "Respect des délais"
