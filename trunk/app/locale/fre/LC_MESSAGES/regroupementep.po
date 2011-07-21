@@ -46,7 +46,7 @@ msgstr "Regroupements des EPs"
 # Spécifique CG 66
 
 msgid "Regroupementep.saisinebilanparcoursep66"
-msgstr "Demande de réorientation"
+msgstr "Demande de réorientation ou maintien"
 
 msgid "ENUM::SAISINEBILANPARCOURSEP66::nontraite"
 msgstr "Décision non traitée"
