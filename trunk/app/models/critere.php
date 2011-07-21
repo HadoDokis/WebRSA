@@ -187,7 +187,6 @@
 
 
 			$hasContrat  = Set::extract( $criteres, 'Critere.hascontrat' );
-
 			/// Statut contrat engagement reciproque
 			if( !empty( $hasContrat ) && in_array( $hasContrat, array( 'O', 'N' ) ) ) {
 				if( $hasContrat == 'O' ) {
@@ -195,6 +194,32 @@
 				}
 				else {
 					$conditions[] = '( SELECT COUNT(contratsinsertion.id) FROM contratsinsertion WHERE contratsinsertion.personne_id = "Personne"."id" ) = 0';
+				}
+			}
+
+
+			$hasReferent  = Set::extract( $criteres, 'Critere.hasreferent' );
+			/// Statut contrat engagement reciproque
+			if( !empty( $hasReferent ) && in_array( $hasReferent, array( 'O', 'N' ) ) ) {
+				if( $hasReferent == 'O' ) {
+					$conditions[] = '( SELECT COUNT(personnes_referents.id) FROM personnes_referents WHERE personnes_referents.personne_id = "Personne"."id" AND personnes_referents.dfdesignation IS NULL  ) > 0';
+				}
+				else {
+					$conditions[] = '(
+						( SELECT personnes_referents.dfdesignation
+							FROM personnes_referents 
+							WHERE 
+								personnes_referents.personne_id = "Personne"."id"
+							ORDER BY personnes_referents.dddesignation DESC,
+									personnes_referents.id DESC
+							LIMIT 1
+						) IS NOT NULL
+						OR
+						( SELECT COUNT(personnes_referents.id)
+							FROM personnes_referents
+							WHERE personnes_referents.personne_id = "Personne"."id"
+						) = 0
+					)';
 				}
 			}
 
