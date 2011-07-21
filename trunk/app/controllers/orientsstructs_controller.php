@@ -47,117 +47,117 @@
 			return $return;
 		}
 
-        /**
-        * http://valums.com/ajax-upload/
-        * http://doc.ubuntu-fr.org/modules_php
-        * increase post_max_size and upload_max_filesize to 10M
-        * debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
-        */
+		/**
+		* http://valums.com/ajax-upload/
+		* http://doc.ubuntu-fr.org/modules_php
+		* increase post_max_size and upload_max_filesize to 10M
+		* debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
+		*/
 
-        public function ajaxfileupload() {
-            $this->Fileuploader->ajaxfileupload();
-        }
+		public function ajaxfileupload() {
+			$this->Fileuploader->ajaxfileupload();
+		}
 
-        /**
-        * http://valums.com/ajax-upload/
-        * http://doc.ubuntu-fr.org/modules_php
-        * increase post_max_size and upload_max_filesize to 10M
-        * debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
-        * FIXME: traiter les valeurs de retour
-        */
+		/**
+		* http://valums.com/ajax-upload/
+		* http://doc.ubuntu-fr.org/modules_php
+		* increase post_max_size and upload_max_filesize to 10M
+		* debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
+		* FIXME: traiter les valeurs de retour
+		*/
 
-        public function ajaxfiledelete() {
-            $this->Fileuploader->ajaxfiledelete();
-        }
+		public function ajaxfiledelete() {
+			$this->Fileuploader->ajaxfiledelete();
+		}
 
-        /**
-        *   Fonction permettant de visualiser les fichiers chargés dans la vue avant leur envoi sur le serveur
-        */
+		/**
+		*   Fonction permettant de visualiser les fichiers chargés dans la vue avant leur envoi sur le serveur
+		*/
 
-        public function fileview( $id ) {
-            $this->Fileuploader->fileview( $id );
-        }
+		public function fileview( $id ) {
+			$this->Fileuploader->fileview( $id );
+		}
 
-        /**
-        *   Téléchargement des fichiers préalablement associés à un traitement donné
-        */
+		/**
+		*   Téléchargement des fichiers préalablement associés à un traitement donné
+		*/
 
-        public function download( $fichiermodule_id ) {
-            $this->assert( !empty( $fichiermodule_id ), 'error404' );
-            $this->Fileuploader->download( $fichiermodule_id );
-        }
+		public function download( $fichiermodule_id ) {
+			$this->assert( !empty( $fichiermodule_id ), 'error404' );
+			$this->Fileuploader->download( $fichiermodule_id );
+		}
 
-        /**
-        *   Fonction permettant d'accéder à la page pour lier les fichiers à l'Orientation
-        */
+		/**
+		*   Fonction permettant d'accéder à la page pour lier les fichiers à l'Orientation
+		*/
 
-        public function filelink( $id ){
-            $this->assert( valid_int( $id ), 'invalidParameter' );
+		public function filelink( $id ){
+			$this->assert( valid_int( $id ), 'invalidParameter' );
 
-            $fichiers = array();
-            $orientstruct = $this->Orientstruct->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Orientstruct.id' => $id
-                    ),
-                    'contain' => array(
-                        'Fichiermodule' => array(
-                            'fields' => array( 'name', 'id', 'created', 'modified' )
-                        )
-                    )
-                )
-            );
+			$fichiers = array();
+			$orientstruct = $this->Orientstruct->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Orientstruct.id' => $id
+					),
+					'contain' => array(
+						'Fichiermodule' => array(
+							'fields' => array( 'name', 'id', 'created', 'modified' )
+						)
+					)
+				)
+			);
 
-            $personne_id = $orientstruct['Orientstruct']['personne_id'];
-            $dossier_id = $this->Orientstruct->Personne->dossierId( $personne_id );
-            $this->assert( !empty( $dossier_id ), 'invalidParameter' );
+			$personne_id = $orientstruct['Orientstruct']['personne_id'];
+			$dossier_id = $this->Orientstruct->Personne->dossierId( $personne_id );
+			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
 
-            $this->Orientstruct->begin();
-            if( !$this->Jetons->check( $dossier_id ) ) {
-                $this->Orientstruct->rollback();
-            }
-            $this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
+			$this->Orientstruct->begin();
+			if( !$this->Jetons->check( $dossier_id ) ) {
+				$this->Orientstruct->rollback();
+			}
+			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
 
-            // Retour à l'index en cas d'annulation
-            if( isset( $this->params['form']['Cancel'] ) ) {
-                $this->redirect( array( 'action' => 'index', $personne_id ) );
-            }
+			// Retour à l'index en cas d'annulation
+			if( isset( $this->params['form']['Cancel'] ) ) {
+				$this->redirect( array( 'action' => 'index', $personne_id ) );
+			}
 
-            if( !empty( $this->data ) ) {
+			if( !empty( $this->data ) ) {
 
-                $saved = $this->Orientstruct->updateAll(
-                    array( 'Orientstruct.haspiecejointe' => '\''.$this->data['Orientstruct']['haspiecejointe'].'\'' ),
-                    array(
-                        '"Orientstruct"."personne_id"' => $personne_id,
-                        '"Orientstruct"."id"' => $id
-                    )
-                );
+				$saved = $this->Orientstruct->updateAll(
+					array( 'Orientstruct.haspiecejointe' => '\''.$this->data['Orientstruct']['haspiecejointe'].'\'' ),
+					array(
+						'"Orientstruct"."personne_id"' => $personne_id,
+						'"Orientstruct"."id"' => $id
+					)
+				);
 
-                if( $saved ){
-                    // Sauvegarde des fichiers liés à une PDO
-                    $dir = $this->Fileuploader->dirFichiersModule( $this->action, $this->params['pass'][0] );
-                    $saved = $this->Fileuploader->saveFichiers( $dir, !Set::classicExtract( $this->data, "Orientstruct.haspiecejointe" ), $id ) && $saved;
-                }
+				if( $saved ){
+					// Sauvegarde des fichiers liés à une PDO
+					$dir = $this->Fileuploader->dirFichiersModule( $this->action, $this->params['pass'][0] );
+					$saved = $this->Fileuploader->saveFichiers( $dir, !Set::classicExtract( $this->data, "Orientstruct.haspiecejointe" ), $id ) && $saved;
+				}
 
-                if( $saved ) {
-                    $this->Jetons->release( $dossier_id );
-                    $this->Orientstruct->commit();
-                    $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-                    $this->redirect( array(  'controller' => 'orientsstructs','action' => 'index', $personne_id ) );
-                }
-                else {
-                    $fichiers = $this->Fileuploader->fichiers( $id );
-                    $this->Orientstruct->rollback();
-                    $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
-                }
-            }
+				if( $saved ) {
+					$this->Jetons->release( $dossier_id );
+					$this->Orientstruct->commit();
+					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+					$this->redirect( array(  'controller' => 'orientsstructs','action' => 'index', $personne_id ) );
+				}
+				else {
+					$fichiers = $this->Fileuploader->fichiers( $id );
+					$this->Orientstruct->rollback();
+					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+				}
+			}
 
 //             $this->Orientstruct->commit();
-            $this->set( compact( 'dossier_id', 'personne_id', 'fichiers', 'orientstruct' ) );
+			$this->set( compact( 'dossier_id', 'personne_id', 'fichiers', 'orientstruct' ) );
 
-            $this->_setOptions();
-        }
+			$this->_setOptions();
+		}
 
 
 		/**
@@ -488,6 +488,10 @@
 
 						$saved = $this->Orientstruct->Personne->Calculdroitrsa->save( $this->data );
 						$saved = $this->Orientstruct->save( $this->data['Orientstruct'] ) && $saved;
+					}
+
+					if ( Configure::read( 'Cg.departement' ) == 66 && $saved && !empty( $this->data['Orientstruct']['referent_id'] ) ) {
+						$saved = $this->Orientstruct->Referent->PersonneReferent->referentParOrientstruct( $this->data ) && $saved;
 					}
 
 					if( $saved ) {

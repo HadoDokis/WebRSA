@@ -157,5 +157,43 @@
 					LIMIT 1
 			";
 		}
+		
+		/**
+		 * Lors de l'ajout d'une orientation, on ajoute un nouveau référent de parcours
+		 * si celui-ci a été précisé lors de la création de l'orientation
+		 */
+
+		public function referentParOrientstruct( $data ) {
+			$saved = true;
+
+			$last_referent = $this->find(
+				'first',
+				array(
+					'conditions' => array(
+						'PersonneReferent.personne_id'=> $data['Orientstruct']['personne_id']
+					),
+					'order' => array(
+						'PersonneReferent.dddesignation DESC'
+					),
+					'contain' => false
+				)
+			);
+			if ( empty( $last_referent['PersonneReferent']['dfdesignation'] ) ) {
+				$last_referent['PersonneReferent']['dfdesignation'] = $data['Orientstruct']['date_valid'];
+				$this->create( $last_referent );
+				$saved = $this->save( $last_referent ) && $saved;
+			}
+			list( $structurereferente_id, $referent_id ) = explode( '_', $data['Orientstruct']['referent_id'] );
+			$personnereferent['PersonneReferent'] = array(
+				'personne_id' => $data['Orientstruct']['personne_id'],
+				'referent_id' => $referent_id,
+				'structurereferente_id' => $structurereferente_id,
+				'dddesignation' => $data['Orientstruct']['date_valid']
+			);
+			$this->create( $personnereferent );
+			$saved = $this->save( $personnereferent ) && $saved;
+
+			return $saved;
+		}
 	}
 ?>
