@@ -271,7 +271,7 @@
 				return true;
 			}
 			else {
-				$success = $this->Decisionsaisinebilanparcoursep66->saveAll( $themeData, array( 'atomic' => false ) );
+				$success = $this->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->saveAll( $themeData, array( 'atomic' => false ) );
 
 				$this->Dossierep->Passagecommissionep->updateAll(
 					array( 'Passagecommissionep.etatdossierep' => '\'decision'.$niveauDecision.'\'' ),
