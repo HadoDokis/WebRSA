@@ -173,25 +173,31 @@
 						'PersonneReferent.personne_id'=> $data['Orientstruct']['personne_id']
 					),
 					'order' => array(
-						'PersonneReferent.dddesignation DESC'
+						'PersonneReferent.dddesignation DESC',
+						'PersonneReferent.id DESC'
 					),
 					'contain' => false
 				)
 			);
-			if ( isset( $last_referent['PersonneReferent']['dfdesignation'] ) && empty( $last_referent['PersonneReferent']['dfdesignation'] ) ) {
-				$last_referent['PersonneReferent']['dfdesignation'] = $data['Orientstruct']['date_valid'];
-				$this->create( $last_referent );
-				$saved = $this->save( $last_referent ) && $saved;
-			}
+	
 			list( $structurereferente_id, $referent_id ) = explode( '_', $data['Orientstruct']['referent_id'] );
-			$personnereferent['PersonneReferent'] = array(
-				'personne_id' => $data['Orientstruct']['personne_id'],
-				'referent_id' => $referent_id,
-				'structurereferente_id' => $structurereferente_id,
-				'dddesignation' => $data['Orientstruct']['date_valid']
-			);
-			$this->create( $personnereferent );
-			$saved = $this->save( $personnereferent ) && $saved;
+
+			if ( !empty( $referent_id ) && ( empty( $last_referent ) || ( isset( $last_referent['PersonneReferent']['referent_id'] ) && !empty( $last_referent['PersonneReferent']['referent_id'] ) && $last_referent['PersonneReferent']['referent_id'] != $referent_id ) ) ) {
+				if ( !empty( $last_referent ) && empty( $last_referent['PersonneReferent']['dfdesignation'] ) ) {
+					$last_referent['PersonneReferent']['dfdesignation'] = $data['Orientstruct']['date_valid'];
+					$this->create( $last_referent );
+					$saved = $this->save( $last_referent ) && $saved;
+				}
+
+				$personnereferent['PersonneReferent'] = array(
+					'personne_id' => $data['Orientstruct']['personne_id'],
+					'referent_id' => $referent_id,
+					'structurereferente_id' => $structurereferente_id,
+					'dddesignation' => $data['Orientstruct']['date_valid']
+				);
+				$this->create( $personnereferent );
+				$saved = $this->save( $personnereferent ) && $saved;
+			}
 
 			return $saved;
 		}

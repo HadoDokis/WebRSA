@@ -629,8 +629,10 @@
 				if( isset( $this->data[$this->alias]['id'] ) && !empty( $this->data[$this->alias]['id'] ) ) {
 					$tuple_pcd = $this->find( 'first', array( 'conditions' => array( "{$this->alias}.{$this->primaryKey}" => $this->data[$this->alias]['id'] ), 'contain' => false ) );
 					if( $tuple_pcd[$this->alias]['statut_orient'] != 'Orienté' ) {
-						//$rgprecedent = $this->find( 'count', array( 'conditions' => array( "{$this->alias}.statut_orient" => 'Orienté', "{$this->alias}.personne_id" => $this->data[$this->alias]['personne_id'] ), 'contain' => false ) );
 						$this->data[$this->alias]['rgorient'] = ( $this->rgorientMax( $this->data[$this->alias]['personne_id'] ) + 1 );
+					}
+					else {
+						$this->data[$this->alias]['rgorient'] = $tuple_pcd[$this->alias]['rgorient'];
 					}
 				}
 				// Nouvelle entrée
