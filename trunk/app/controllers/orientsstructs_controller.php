@@ -565,7 +565,6 @@
 //             $this->set( 'options2', $this->Structurereferente->list1Options( array( 'orientation' => 'O' ) ) );
 //             $this->set( 'referents', $this->Referent->listOptions() );
 
-
 			// Essai de sauvegarde
 			if( !empty( $this->data ) ) {
 				$this->data['Orientstruct']['user_id'] = $this->Session->read( 'Auth.User.id' );
@@ -580,9 +579,15 @@
 				$valid = $this->Orientstruct->validates() && $valid;
 
 				if( $valid ) {
-					if( $this->Orientstruct->Personne->Calculdroitrsa->save( $this->data )
-						&& $this->Orientstruct->save( $this->data )
-					) {
+					$saved = true;
+					$saved = $this->Orientstruct->Personne->Calculdroitrsa->save( $this->data ) && $saved;
+					$saved = $this->Orientstruct->save( $this->data ) && $saved;
+	
+					if ( Configure::read( 'Cg.departement' ) == 66 && $saved && !empty( $this->data['Orientstruct']['referent_id'] ) ) {
+						$saved = $this->Orientstruct->Referent->PersonneReferent->referentParOrientstruct( $this->data ) && $saved;
+					}
+
+					if( $saved ) {
 						$this->Jetons->release( $dossier_id );
 						$this->Orientstruct->commit();
 						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
