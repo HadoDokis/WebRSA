@@ -178,7 +178,7 @@
 					'contain' => false
 				)
 			);
-			if ( empty( $last_referent['PersonneReferent']['dfdesignation'] ) ) {
+			if ( isset( $last_referent['PersonneReferent']['dfdesignation'] ) && empty( $last_referent['PersonneReferent']['dfdesignation'] ) ) {
 				$last_referent['PersonneReferent']['dfdesignation'] = $data['Orientstruct']['date_valid'];
 				$this->create( $last_referent );
 				$saved = $this->save( $last_referent ) && $saved;
