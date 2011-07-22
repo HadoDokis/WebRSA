@@ -567,6 +567,10 @@
 						$valide = ( $nbpieces == $nbNormalPieces['Typeaideapre66'] );
 					}
 				}
+				$fields = array( 'isbeneficiaire', 'hascer', 'respectdelais' );
+				foreach( $fields as $field ) {
+					$valide = $this->data['Apre66'][$field] && $valide;
+				}
 
 				$this->data['Apre66']['etatdossierapre'] = ( $valide ? 'COM' : 'INC' );
 
