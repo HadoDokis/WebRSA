@@ -76,6 +76,10 @@
 	</fieldset>
 	<fieldset>
 		<legend>Recherche par orientation</legend>
+		<?php
+			$valueOrientstructDerniere = isset( $this->data['Orientstruct']['derniere'] ) ? $this->data['Orientstruct']['derniere'] : false;
+			echo $form->input( 'Orientstruct.derniere', array( 'label' => 'Uniquement la dernière orientation pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueOrientstructDerniere ) );
+		?>
 		<?php echo $form->input( 'Critere.date_valid', array( 'label' => 'Filtrer par date d\'orientation', 'type' => 'checkbox' ) );?>
 			<fieldset>
 				<legend>Date d'orientation</legend>
