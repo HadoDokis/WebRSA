@@ -7,10 +7,12 @@
         var $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Fileuploader', 'Default2'  );
         var $components = array( 'Fileuploader' );
         var $aucunDroit = array( 'ajaxreferent', 'ajaxreffonct', 'ajaxperm' );
-        
-		var $commeDroit = array(
+		
+		public $commeDroit = array(
 			'add' => 'PersonnesReferents:edit'
 		);
+
+		public $aucunDroit = array( 'ajaxreferent', 'ajaxreffonct', 'ajaxperm', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
 
         /** ********************************************************************
         *

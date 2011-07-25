@@ -9,6 +9,11 @@
 
 		public $components = array( 'Prg' => array( 'actions' => array( 'index' ) ), 'Gedooo' );
 
+		public $commeDroit = array(
+			'add' => 'Covs58:edit',
+			'view' => 'Covs58:index'
+		);
+
 		/**
 		*
 		*/

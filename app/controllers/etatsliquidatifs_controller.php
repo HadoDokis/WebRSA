@@ -8,11 +8,12 @@
 		var $uses = array( 'Etatliquidatif', 'Parametrefinancier', 'Suiviaideapretypeaide', 'Apre', 'Option', 'Adressefoyer', 'ApreEtatliquidatif' );
         var $components = array( 'Gedooo' );
 		var $helpers = array( 'Xform', 'Locale', 'Paginator', 'Apreversement' );
-        var $aucunDroit = array( 'ajaxmontant' );
 
-		var $commeDroit = array(
+		public $commeDroit = array(
 			'add' => 'Etatsliquidatifs:edit'
 		);
+
+		public $aucunDroit = array( 'ajaxmontant' );
 
 		/**
 		*

@@ -3,6 +3,10 @@
 	{
 		public $helpers = array( 'Default', 'Default2' );
 
+		public $commeDroit = array(
+			'add' => 'Fonctionsmembreseps:edit'
+		);
+
 		protected function _setOptions() {
 			$options = array();
 			$this->set( compact( 'options' ) );

@@ -29,11 +29,12 @@
 
 		public $helpers = array( 'Default', 'Locale', 'Csv', 'Ajax', 'Xform', 'Default2', 'Fileuploader' );
 
-		public $aucunDroit = array( 'ajaxpart', 'ajaxstruct', 'ajaxreferent', 'ajaxreffonct' );
-
 		public $components = array( 'Default', 'Gedooo', 'Fileuploader' );
 
+		public $aucunDroit = array( 'ajaxpart', 'ajaxstruct', 'ajaxreferent', 'ajaxreffonct', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
+
 		public $commeDroit = array(
+			'view' => 'ActionscandidatsPersonnes:index',
 			'add' => 'ActionscandidatsPersonnes:edit'
 		);
 

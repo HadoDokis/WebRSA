@@ -11,6 +11,8 @@
 			'add' => 'Orientsstructs:edit'
 		);
 
+		public $aucunDroit = array( 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
+
 		protected function _setOptions() {
 			$this->set( 'pays', $this->Option->pays() );
 			$this->set( 'qual', $this->Option->qual() );

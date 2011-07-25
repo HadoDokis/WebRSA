@@ -15,6 +15,10 @@
 
 		public $components = array( 'Prg' => array( 'actions' => array( 'index' ) ) );
 
+		public $commeDroit = array(
+			'add' => 'Reorientationseps93:edit'
+		);
+
 		/**
 		* FIXME: evite les droits
 		*/

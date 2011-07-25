@@ -6,8 +6,6 @@
 		public $name = 'Propospdos';
 		public $uses = array( 'Propopdo', 'Situationdossierrsa', 'Option', 'Typepdo', 'Typenotifpdo', 'Decisionpdo', 'Suiviinstruction', 'Piecepdo',  'Traitementpdo', 'Originepdo',  'Statutpdo', 'Statutdecisionpdo', 'Situationpdo', 'Referent', 'Personne', 'Dossier', 'Pdf' );
 
-		public $aucunDroit = array( 'ajaxstruct', 'ajaxetatpdo', 'ajaxetat1', 'ajaxetat2', 'ajaxetat3', 'ajaxetat4', 'ajaxetat5', 'ajaxfichecalcul' );
-
 		public $components = array( 'Fileuploader', 'Gedooo' );
 
 		public $helpers = array( 'Default', 'Default2', 'Ajax', 'Fileuploader' );
@@ -16,6 +14,8 @@
 			'view' => 'Propospdos:index',
 			'add' => 'Propospdos:edit'
 		);
+
+		public $aucunDroit = array( 'ajaxstruct', 'ajaxetatpdo', 'ajaxetat1', 'ajaxetat2', 'ajaxetat3', 'ajaxetat4', 'ajaxetat5', 'ajaxfichecalcul', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
 
 		protected function _setOptions() {
 			$this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
