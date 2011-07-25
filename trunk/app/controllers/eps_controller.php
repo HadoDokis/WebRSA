@@ -2,6 +2,10 @@
 	class EpsController extends AppController
 	{
 		public $helpers = array( 'Default', 'Default2' );
+		
+		public $commeDroit = array(
+			'add' => 'Eps:edit'
+		);
 
 		/**
 		* FIXME: evite les droits
