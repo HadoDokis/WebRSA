@@ -7,6 +7,8 @@
 
 		public $useTable = false;
 
+		public $actsAs = array( 'Conditionnable' );
+
 		/**
 		*
 		*/
@@ -107,11 +109,27 @@
 				}
 			}
 
+			// Trouver le dernier contrat d'insertion pour chacune des personnes du jeu de résultats
+			if( isset( $criteresci['Contratinsertion']['dernier'] ) && $criteresci['Contratinsertion']['dernier'] ) {
+				$conditions[] = 'Contratinsertion.id IN (
+					SELECT
+						contratsinsertion.id
+					FROM
+						contratsinsertion
+						WHERE
+							contratsinsertion.personne_id = Contratinsertion.personne_id
+						ORDER BY
+							contratsinsertion.rg_ci DESC,
+							contratsinsertion.id DESC
+						LIMIT 1
+				)';
+			}
+
 			// Critères sur une personne du foyer - nom, prénom, nom de jeune fille -> FIXME: seulement demandeur pour l'instant
 			$filtersPersonne = array();
 			foreach( array( 'nom', 'prenom', 'nomnai' ) as $criterePersonne ) {
 				if( isset( $criteresci['Filtre'][$criterePersonne] ) && !empty( $criteresci['Filtre'][$criterePersonne] ) ) {
-					$conditions[] = 'Personne.'.$criterePersonne.' ILIKE \''.$this->wildcard( $criteresci['Filtre'][$criterePersonne] ).'\'';
+					$conditions[] = 'UPPER( Personne.'.$criterePersonne.' ) LIKE \''.$this->wildcard( strtoupper( $criteresci['Filtre'][$criterePersonne] ) ).'\'';
 				}
 			}
 
@@ -155,11 +173,15 @@
 
 			// Nature de la prestation
 			if( !empty( $natpf ) ) {
-				//$conditions[] = 'detailscalculsdroitsrsa.natpf ILIKE \'%'.Sanitize::clean( $natpf ).'%\'';
 				$conditions[] = 'Detaildroitrsa.id IN (
 									SELECT detailscalculsdroitsrsa.detaildroitrsa_id
 										FROM detailscalculsdroitsrsa
-										WHERE detailscalculsdroitsrsa.natpf ILIKE \'%'.Sanitize::clean( $natpf ).'%\'
+											INNER JOIN detailsdroitsrsa ON (
+												detailscalculsdroitsrsa.detaildroitrsa_id = detailsdroitsrsa.id
+											)
+										WHERE
+											detailsdroitsrsa.dossier_id = Dossier.id
+											AND detailscalculsdroitsrsa.natpf ILIKE \'%'.Sanitize::clean( $natpf ).'%\'
 								)';
 			}
 
@@ -217,47 +239,8 @@
 					AND adresses.locaadr ILIKE '%denis%'
 			*/
 
-
-            // Trouver la dernière demande RSA pour chacune des personnes du jeu de résultats
-            if( @$criteresci['Dossier']['dernier'] ) {
-                $conditions[] = 'Dossier.id IN (
-                    SELECT
-                            dossiers.id
-                        FROM personnes
-                            INNER JOIN prestations ON (
-                                personnes.id = prestations.personne_id
-                                AND prestations.natprest = \'RSA\'
-                            )
-                            INNER JOIN foyers ON (
-                                personnes.foyer_id = foyers.id
-                            )
-                            INNER JOIN dossiers ON (
-                                dossiers.id = foyers.dossier_id
-                            )
-                        WHERE
-                            prestations.rolepers IN ( \'DEM\', \'CJT\' )
-                            AND (
-                                (
-                                    nir_correct( Personne.nir )
-                                    AND nir_correct( personnes.nir )
-                                    AND personnes.nir = Personne.nir
-                                    AND personnes.dtnai = Personne.dtnai
-                                )
-                                OR
-                                (
-                                    personnes.nom = Personne.nom
-                                    AND personnes.prenom = Personne.prenom
-                                    AND personnes.dtnai = Personne.dtnai
-                                )
-                            )
-                        ORDER BY dossiers.dtdemrsa DESC
-                        LIMIT 1
-                )';
-            }
-
-
-
-
+			// Trouver la dernière demande RSA pour chacune des personnes du jeu de résultats
+			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $criteresci );
 
 			/// Requête
 			$Situationdossierrsa = ClassRegistry::init( 'Situationdossierrsa' );

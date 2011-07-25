@@ -80,6 +80,20 @@
 				}
 			}
 
+			/// Nature de la prestation
+			if( isset( $search['Detailcalculdroitrsa']['natpf'] ) && !empty( $search['Detailcalculdroitrsa']['natpf'] ) ) {
+				$conditions[] = 'Detaildroitrsa.id IN (
+									SELECT detailscalculsdroitsrsa.detaildroitrsa_id
+										FROM detailscalculsdroitsrsa
+											INNER JOIN detailsdroitsrsa ON (
+												detailscalculsdroitsrsa.detaildroitrsa_id = detailsdroitsrsa.id
+											)
+										WHERE
+											detailsdroitsrsa.dossier_id = Dossier.id
+											AND detailscalculsdroitsrsa.natpf ILIKE \'%'.Sanitize::clean( $search['Detailcalculdroitrsa']['natpf'] ).'%\'
+								)';
+			}
+
 			return $conditions;
 		}
 
