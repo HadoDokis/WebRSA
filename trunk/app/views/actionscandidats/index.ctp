@@ -18,6 +18,7 @@
         	'Actioncandidat.ddaction',
         	'Actioncandidat.dfaction',
         	'Actioncandidat.nbpostedispo',
+        	'Actioncandidat.nbheuredispo',
         	'Actioncandidat.hasfichecandidature',
         	'Contactpartenaire.Partenaire.libstruc',
         	'Contactpartenaire.nom_candidat'

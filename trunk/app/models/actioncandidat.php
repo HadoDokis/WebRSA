@@ -12,7 +12,7 @@
 			'ValidateTranslate',
 			'Enumerable' => array(
 				'fields' => array(
-					'contractualisation', 'correspondantaction', 'hasfichecandidature'
+					'contractualisation', 'correspondantaction', 'hasfichecandidature', 'typeaction'
 				)
 			)
 		);
@@ -67,6 +67,12 @@
                 ),
 			),
 			'contactpartenaire_id' => array(
+				'notEmptyIf' => array(
+                    'rule' => array( 'notEmptyIf', 'hasfichecandidature', true, array( '1' ) ),
+                    'message' => 'Champ obligatoire',
+                ),
+			),
+			'typeaction' => array(
 				'notEmptyIf' => array(
                     'rule' => array( 'notEmptyIf', 'hasfichecandidature', true, array( '1' ) ),
                     'message' => 'Champ obligatoire',
