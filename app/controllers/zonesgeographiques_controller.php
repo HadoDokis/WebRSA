@@ -29,15 +29,15 @@
 
 		public function add() {
 			$args = func_get_args();
-			call_user_func_array( array( $this, 'add_edit' ), $args );
+			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
 		public function edit() {
 			$args = func_get_args();
-			call_user_func_array( array( $this, 'add_edit' ), $args );
+			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
-		public function add_edit( $zone_id = null ) {
+		protected function _add_edit( $zone_id = null ) {
 			// Retour à la liste en cas d'annulation
 			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
 				$this->redirect( array( 'action' => 'index' ) );
