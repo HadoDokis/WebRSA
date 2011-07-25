@@ -7,8 +7,13 @@
 
 		public $useTable = false;
 
+		public $actsAs = array( 'Conditionnable' );
 
-		function search( $mesCodesInsee, $filtre_zone_geo, $criteres, $lockedDossiers ) {
+		/**
+		*
+		*/
+
+		public function search( $mesCodesInsee, $filtre_zone_geo, $criteres, $lockedDossiers ) {
 			/// Conditions de base
 			$conditions = array();
 
@@ -45,6 +50,22 @@
 				}
 			}
 
+			// Trouver la dernière orientation pour chacune des personnes du jeu de résultats
+			if( isset( $criteres['Orientstruct']['derniere'] ) && $criteres['Orientstruct']['derniere'] ) {
+				$conditions[] = 'Orientstruct.id IN (
+					SELECT
+						orientsstructs.id
+					FROM
+						orientsstructs
+						WHERE
+							orientsstructs.personne_id = Orientstruct.personne_id
+						ORDER BY
+							orientsstructs.date_valid DESC,
+							orientsstructs.id DESC
+						LIMIT 1
+				)';
+			}
+
 			// Critères sur le dossier - date de demande
 			if( isset( $criteres['Critere']['dtdemrsa'] ) && !empty( $criteres['Critere']['dtdemrsa'] ) ) {
 				$valid_from = ( valid_int( $criteres['Critere']['dtdemrsa_from']['year'] ) && valid_int( $criteres['Critere']['dtdemrsa_from']['month'] ) && valid_int( $criteres['Critere']['dtdemrsa_from']['day'] ) );
@@ -58,7 +79,7 @@
 			$filtersPersonne = array();
 			foreach( array( 'nom', 'prenom', 'nomnai', 'nir' ) as $criterePersonne ) {
 				if( isset( $criteres['Critere'][$criterePersonne] ) && !empty( $criteres['Critere'][$criterePersonne] ) ) {
-					$conditions[] = 'Personne.'.$criterePersonne.' ILIKE \''.$this->wildcard( replace_accents( $criteres['Critere'][$criterePersonne] ) ).'\'';
+					$conditions[] = 'UPPER(Personne.'.$criterePersonne.') LIKE \''.$this->wildcard( strtoupper( replace_accents( $criteres['Critere'][$criterePersonne] ) ) ).'\'';
 				}
 			}
 
@@ -104,11 +125,15 @@
 
 			// ...
 			if( !empty( $natpf ) ) {
-//                 $conditions[] = 'Detailcalculdroitrsa.natpf = \''.Sanitize::clean( $natpf ).'\'';
 				$conditions[] = 'Detaildroitrsa.id IN (
 									SELECT detailscalculsdroitsrsa.detaildroitrsa_id
 										FROM detailscalculsdroitsrsa
-										WHERE detailscalculsdroitsrsa.natpf ILIKE \'%'.Sanitize::clean( $natpf ).'%\'
+											INNER JOIN detailsdroitsrsa ON (
+												detailscalculsdroitsrsa.detaildroitrsa_id = detailsdroitsrsa.id
+											)
+										WHERE
+											detailsdroitsrsa.dossier_id = Dossier.id
+											AND detailscalculsdroitsrsa.natpf ILIKE \'%'.Sanitize::clean( $natpf ).'%\'
 								)';
 			}
 
@@ -149,42 +174,7 @@
 
 
 			// Trouver la dernière demande RSA pour chacune des personnes du jeu de résultats
-			if( isset( $criteres['Dossier']['dernier'] ) && $criteres['Dossier']['dernier'] ) {
-				$conditions[] = 'Dossier.id IN (
-					SELECT
-							dossiers.id
-						FROM personnes
-							INNER JOIN prestations ON (
-								personnes.id = prestations.personne_id
-								AND prestations.natprest = \'RSA\'
-							)
-							INNER JOIN foyers ON (
-								personnes.foyer_id = foyers.id
-							)
-							INNER JOIN dossiers ON (
-								dossiers.id = foyers.dossier_id
-							)
-						WHERE
-							prestations.rolepers IN ( \'DEM\', \'CJT\' )
-							AND (
-								(
-									nir_correct( Personne.nir )
-									AND nir_correct( personnes.nir )
-									AND personnes.nir = Personne.nir
-									AND personnes.dtnai = Personne.dtnai
-								)
-								OR
-								(
-									personnes.nom = Personne.nom
-									AND personnes.prenom = Personne.prenom
-									AND personnes.dtnai = Personne.dtnai
-								)
-							)
-						ORDER BY dossiers.dtdemrsa DESC
-						LIMIT 1
-				)';
-			}
-
+			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $criteres );
 
 			$hasContrat  = Set::extract( $criteres, 'Critere.hascontrat' );
 			/// Statut contrat engagement reciproque
@@ -281,13 +271,6 @@
 						'type'       => 'INNER',
 						'foreignKey' => false,
 						'conditions' => array( 'Personne.id = Orientstruct.personne_id' )
-					),
-					array(
-						'table'      => 'contratsinsertion',
-						'alias'      => 'Contratinsertion',
-						'type'       => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array( 'Contratinsertion.personne_id = Personne.id' )
 					),
 					array(
 						'table'      => 'prestations',
@@ -391,13 +374,6 @@
 						'foreignKey' => false,
 						'conditions' => array( 'Detaildroitrsa.dossier_id = Dossier.id' )
 					),
-					/*array(
-						'table'      => 'detailscalculsdroitsrsa',
-						'alias'      => 'Detailcalculdroitrsa',
-						'type'       => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array( 'Detailcalculdroitrsa.detaildroitrsa_id = Detaildroitrsa.id' )
-					),*/
 					array(
 						'table'      => 'personnes_referents',
 						'alias'      => 'PersonneReferent',
