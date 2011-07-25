@@ -110,3 +110,18 @@ msgstr "Chargé d'insertion"
 
 msgid "Secretaire.nom_complet"
 msgstr "Secrétaire"
+
+msgid "Actioncandidat.typeaction"
+msgstr "Données de l'action"
+
+msgid "ENUM::TYPEACTION::heure"
+msgstr "En nombre d'heures"
+
+msgid "ENUM::TYPEACTION::poste"
+msgstr "En nombre de postes"
+
+msgid "Actioncandidat.nbheuredispo"
+msgstr "Nombre d'heures disponibles"
+
+msgid "Actioncandidat.nbheurerestante"
+msgstr "Nombre d'heures restantes"

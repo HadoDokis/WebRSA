@@ -47,6 +47,25 @@
 				false,
 				true
 			);
+
+			observeDisableFieldsetOnRadioValue(
+				'ActioncandidatAddEditForm',
+				'data[Actioncandidat][typeaction]',
+				$( 'nbposte' ),
+				'poste',
+				false,
+				true
+			);
+			
+			observeDisableFieldsetOnRadioValue(
+				'ActioncandidatAddEditForm',
+				'data[Actioncandidat][typeaction]',
+				$( 'nbheure' ),
+				'heure',
+				false,
+				true
+			);
+
 		} );
 	</script>
 	<fieldset class="invisible" id="avecfichecandidature">
@@ -79,15 +98,50 @@
 					'Actioncandidat.lieuaction' => array( 'domain' => 'actioncandidat', 'required' => true ),
 					'Actioncandidat.cantonaction' => array( 'domain' => 'actioncandidat', 'required' => true, 'options' => $cantons ),
 					'Actioncandidat.ddaction' => array( 'domain' => 'actioncandidat', 'required' => true, 'minYear' => date( 'Y' ) - 1, 'maxYear' => date( 'Y' ) + 5 ),
-					'Actioncandidat.dfaction' => array( 'domain' => 'actioncandidat', 'required' => true, 'minYear' => date( 'Y' ) - 1, 'maxYear' => date( 'Y' ) + 5 ),
-					'Actioncandidat.nbpostedispo' => array( 'domain' => 'actioncandidat', 'required' => true ),
-					'Actioncandidat.nbposterestant' => array( 'domain' => 'actioncandidat')
+					'Actioncandidat.dfaction' => array( 'domain' => 'actioncandidat', 'required' => true, 'minYear' => date( 'Y' ) - 1, 'maxYear' => date( 'Y' ) + 5 )
 				),
 				array(
 					'options' => $options
 				)
 			);
 		?>
+		<?php 
+			echo $default->subform(
+				array(
+					'Actioncandidat.typeaction' => array( 'domain' => 'actioncandidat', 'type' => 'radio', 'options' => $options['Actioncandidat']['typeaction'], 'required' => true )
+				),
+				array(
+					'options' => $options
+				)
+			);
+		?>
+		<fieldset id="nbposte">
+			<?php
+				echo $default->subform(
+					array(
+						'Actioncandidat.nbpostedispo' => array( 'domain' => 'actioncandidat', 'required' => true ),
+						'Actioncandidat.nbposterestant' => array( 'domain' => 'actioncandidat')
+						),
+					array(
+						'options' => $options
+					)
+				);
+			?>
+		</fieldset>
+		<fieldset id="nbheure">
+			<?php
+				echo $default->subform(
+					array(
+						'Actioncandidat.nbheuredispo' => array( 'type' => 'text', 'domain' => 'actioncandidat', 'required' => true ),
+						'Actioncandidat.nbheurerestante' => array( 'type' => 'text', 'domain' => 'actioncandidat')
+						),
+					array(
+						'options' => $options
+					)
+				);
+			?>
+		</fieldset>
+
 		<fieldset class="col2">
 			<legend>Zones géographiques</legend>
 			<script type="text/javascript">

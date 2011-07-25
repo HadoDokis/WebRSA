@@ -51,6 +51,12 @@ ALTER TABLE actionscandidats ALTER COLUMN secretaire_id SET DEFAULT NULL;
 SELECT add_missing_table_field ('public', 'apres', 'isbeneficiaire', 'TYPE_BOOLEANNUMBER');
 SELECT add_missing_table_field ('public', 'apres', 'hascer', 'TYPE_BOOLEANNUMBER');
 SELECT add_missing_table_field ('public', 'apres', 'respectdelais', 'TYPE_BOOLEANNUMBER');
+
+DROP TYPE IF EXISTS TYPE_ACTION;
+CREATE TYPE TYPE_ACTION AS ENUM ( 'heure', 'poste' );
+SELECT add_missing_table_field ('public', 'actionscandidats', 'typeaction', 'TYPE_ACTION' );
+SELECT add_missing_table_field ('public', 'actionscandidats', 'nbheuredispo', 'FLOAT' );
+SELECT add_missing_table_field ('public', 'actionscandidats', 'nbheurerestante', 'FLOAT' );
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
