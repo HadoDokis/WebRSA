@@ -19,5 +19,19 @@ msgstr ""
 
 ###############################################################################
 
-msgid "Droits::edit"
-msgstr "Gestion des droits"
+msgid "Menu:Accueil"
+msgstr "Page d'accueil"
+
+###############################################################################
+
+msgid "Module:Actions"
+msgstr "Actions"
+
+msgid "Actions:index"
+msgstr "Index des actions"
+
+msgid "Actions:edit"
+msgstr "Ajout/Édition d'une action"
+
+msgid "Actions:delete"
+msgstr "Suppression d'une action"
