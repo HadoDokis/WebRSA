@@ -6,7 +6,6 @@
         var $uses = array( 'PersonneReferent', 'Option', 'Personne', 'Orientstruct', 'Structurereferente', 'Typerdv', 'Statutrdv', 'Referent' );
         var $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Fileuploader', 'Default2'  );
         var $components = array( 'Fileuploader' );
-        var $aucunDroit = array( 'ajaxreferent', 'ajaxreffonct', 'ajaxperm' );
 		
 		public $commeDroit = array(
 			'add' => 'PersonnesReferents:edit'
