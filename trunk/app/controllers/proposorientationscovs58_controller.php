@@ -5,6 +5,10 @@
 		public $name = "Proposorientationscovs58";
 		
 		public $helpers = array( 'Default', 'Default2' );
+
+		public $commeDroit = array(
+			'add' => 'Proposorientationscovs58:edit'
+		);
 		
 		protected function _setOptions() {
 			$this->set( 'referents', $this->Propoorientationcov58->Referent->listOptions() );

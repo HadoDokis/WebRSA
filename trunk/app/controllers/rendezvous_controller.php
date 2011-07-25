@@ -8,12 +8,13 @@ App::import( 'Helper', 'Locale' );
 		
 		public $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Default2', 'Fileuploader' );
 		public $components = array( 'Gedooo', 'Fileuploader' );
-		public $aucunDroit = array( 'ajaxreferent', 'ajaxreffonct', 'ajaxperm' );
 
 		public $commeDroit = array(
 			'view' => 'Rendezvous:index',
 			'add' => 'Rendezvous:edit'
 		);
+
+		public $aucunDroit = array( 'ajaxreferent', 'ajaxreffonct', 'ajaxperm', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
 
 		/**
 		*

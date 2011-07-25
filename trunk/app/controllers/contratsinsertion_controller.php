@@ -18,12 +18,13 @@
 		public $uses = array( 'Contratinsertion', 'Option', 'Action', 'Referent', 'Personne', 'Dossier', 'Structurereferente', 'Dsp', 'Typeorient', 'Orientstruct', 'Serviceinstructeur', 'Action', 'Adressefoyer', 'Actioninsertion', 'Prestform', 'Refpresta', 'PersonneReferent' );
 		public $helpers = array( 'Default2', 'Ajax', 'Fileuploader' );
 		public $components = array( 'RequestHandler', 'Gedooo', 'Fileuploader' );
-		public $aucunDroit = array( 'ajax', 'ajaxref', 'ajaxstruct', 'ajaxraisonci', 'notificationsop' );
 
 		public $commeDroit = array(
 			'view' => 'Contratsinsertion:index',
 			'add' => 'Contratsinsertion:edit'
 		);
+
+		public $aucunDroit = array( 'ajax', 'ajaxref', 'ajaxstruct', 'ajaxraisonci', 'notificationsop', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
 
 		/**
 		*

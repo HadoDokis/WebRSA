@@ -11,6 +11,8 @@
 			'add' => 'Personnes:edit'
 		);
 
+		public $aucunDroit = array( 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
+
 		/**
 		*
 		*/

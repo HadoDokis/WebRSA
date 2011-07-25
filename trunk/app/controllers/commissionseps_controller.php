@@ -13,6 +13,12 @@
 		public $helpers = array( 'Default', 'Default2', 'Ajax' );
 		public $uses = array( 'Commissionep', 'Option' );
 		public $components = array( 'Prg' => array( 'actions' => array( 'index', 'creationmodification', 'attributiondossiers', 'arbitrageep', 'arbitragecg', 'recherche', 'decisions' ) ), 'Gedooo' );
+
+		public $commeDroit = array(
+			'edit' => 'Commissionseps:add',
+			'view' => 'Commissionseps:index'
+		);
+
 		public $aucunDroit = array( 'ajaxadresse' );
 
 		/**

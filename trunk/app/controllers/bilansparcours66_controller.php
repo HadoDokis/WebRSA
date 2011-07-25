@@ -15,7 +15,11 @@
 		public $uses = array( 'Bilanparcours66', 'Option', 'Pdf'  );
 		public $components = array( 'Gedooo', 'Fileuploader' );
 
-		public $aucunDroit = array( 'choixformulaire' );
+		public $commeDroit = array(
+			'add' => 'Bilansparcours66:edit'
+		);
+
+		public $aucunDroit = array( 'choixformulaire', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
 
 		/// FIXME: evite les droits
 		public function beforeFilter() {

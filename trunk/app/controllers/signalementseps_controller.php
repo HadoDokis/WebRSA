@@ -3,6 +3,10 @@
 	{
 		
 		public $uses = array( 'Signalementep93' );
+
+		public $commeDroit = array(
+			'add' => 'Signalementseps:edit'
+		);
 		
 		/**
 		*

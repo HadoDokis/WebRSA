@@ -3,6 +3,10 @@
 	{
 		public $helpers = array( 'Default', 'Default2' );
 
+		public $commeDroit = array(
+			'add' => 'Motifsreorientseps93:edit'
+		);
+
 		public function index() {
 			$this->paginate = array(
 				'fields' => array(

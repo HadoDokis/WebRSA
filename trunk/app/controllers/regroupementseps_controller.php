@@ -3,6 +3,10 @@
 	{
 		public $helpers = array( 'Default', 'Default2' );
 
+		public $commeDroit = array(
+			'add' => 'Regroupementseps:edit'
+		);
+
 		public function beforeFilter() {
 		}
 

@@ -11,6 +11,8 @@
 			'add' => 'Entretiens:edit'
 		);
 
+		public $aucunDroit = array( 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
+
 		/**
 		*
 		*/

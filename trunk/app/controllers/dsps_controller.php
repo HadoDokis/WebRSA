@@ -66,9 +66,11 @@
 			'Detailfconfort' => null
 		);
 
-		var $commeDroit = array(
+		public $commeDroit = array(
 			'add' => 'Dsps:edit'
 		);
+
+		public $aucunDroit = array( 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
 
 		/**
 		*

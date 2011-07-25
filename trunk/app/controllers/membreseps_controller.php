@@ -3,6 +3,10 @@
 	{
 		public $helpers = array( 'Default', 'Default2', 'Ajax' );
 
+		public $commeDroit = array(
+			'add' => 'Membreseps:edit'
+		);
+
 		public function beforeFilter() {
 		}
 

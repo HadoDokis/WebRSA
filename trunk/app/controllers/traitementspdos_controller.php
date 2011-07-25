@@ -18,7 +18,7 @@
 			'add' => 'Traitementspdos:edit'
 		);
 
-		public $aucunDroit = array( 'ajaxstatutpersonne', 'ajaxnbtextareacourrier' );
+		public $aucunDroit = array( 'ajaxstatutpersonne', 'ajaxnbtextareacourrier', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
 
 		/**
 		*

@@ -8,11 +8,13 @@
 
 		public $helpers = array( 'Default', 'Locale', 'Csv', 'Ajax', 'Xform' );
 		public $components = array( 'RequestHandler', 'Gedooo' );
-		public $aucunDroit = array( 'gedooo' );
 
 		public $commeDroit = array(
-			'add' => 'Cuis:edit'
+			'add' => 'Cuis:edit',
+			'view' => 'Cuis:index'
 		);
+
+		public $aucunDroit = array( 'gedooo' );
 
 		/**
 		*

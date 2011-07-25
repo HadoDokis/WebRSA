@@ -3,6 +3,10 @@
 	class Listesanctionseps58Controller extends AppController {
 	
 		public $helpers = array( 'Default', 'Default2', 'Xhtml' );
+
+		public $commeDroit = array(
+			'add' => 'Listesanctionseps58:edit'
+		);
 		
 		public function beforeFilter() {
 			parent::beforeFilter();
