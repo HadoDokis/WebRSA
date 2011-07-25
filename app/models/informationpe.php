@@ -279,5 +279,38 @@
 			return $infope;
 		}
 
+		/**
+		* Retourne une array à utiliser comme jointure entre la table personnes
+		* et la table informationspe.
+		*
+		* @param string $aliasPersonne Alias pour la table personnes
+		* @param string $aliasInformationpe Alias pour la table informationspe
+		* @param string $type Type de jointure à effectuer
+		* @return array
+		*/
+
+		public function joinPersonneInformationpe( $aliasPersonne = 'Personne', $aliasInformationpe = 'Informationpe', $type = 'LEFT OUTER' ) {
+			return array(
+				'table'      => 'informationspe',
+				'alias'      => $aliasInformationpe,
+				'type'       => $type,
+				'foreignKey' => false,
+				'conditions' => array(
+					'OR' => array(
+						array(
+							"{$aliasInformationpe}.nir IS NOT NULL",
+							"LENGTH({$aliasInformationpe}.nir) = 15",
+							"{$aliasInformationpe}.nir = {$aliasPersonne}.nir",
+							"{$aliasInformationpe}.dtnai = {$aliasPersonne}.dtnai",
+						),
+						array(
+							"UPPER({$aliasInformationpe}.nom) = UPPER({$aliasPersonne}.nom)",
+							"UPPER({$aliasInformationpe}.prenom) = UPPER({$aliasPersonne}.prenom)",
+							"{$aliasInformationpe}.dtnai = {$aliasPersonne}.dtnai"
+						)
+					)
+				)
+			);
+		}
 	}
 ?>

@@ -128,8 +128,8 @@
 								)
 								OR
 								(
-									personnes.nom = Personne.nom
-									AND personnes.prenom = Personne.prenom
+									UPPER(personnes.nom) = UPPER(Personne.nom)
+									AND UPPER(personnes.prenom) = UPPER(Personne.prenom)
 									AND personnes.dtnai = Personne.dtnai
 								)
 							)

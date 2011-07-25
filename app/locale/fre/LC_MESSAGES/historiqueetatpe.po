@@ -20,6 +20,11 @@ msgstr ""
 
 ###############################################################################
 
+msgid "Historiqueetatpe.identifiantpe"
+msgstr "Identifiant Pôle Emploi"
+
+#------------------------------------------------------------------------------
+
 msgid "ENUM::ETAT::inscription"
 msgstr "Inscription"
 

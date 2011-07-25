@@ -137,9 +137,9 @@
 								)';
 			}
 
-			// ...
+			// Recherche par identifiant Pôle Emploi
 			if( !empty( $identifiantpe ) ) {
-				$conditions[] = 'Infopoleemploi.identifiantpe = \''.Sanitize::clean( $identifiantpe ).'\'';
+				$conditions[] = ClassRegistry::init( 'Historiqueetatpe' )->conditionIdentifiantpe( $identifiantpe );
 			}
 
 			// ...
@@ -259,9 +259,8 @@
 					'"Serviceinstructeur"."lib_service"',
 					'"Situationdossierrsa"."etatdosrsa"',
 					'"Calculdroitrsa"."toppersdrodevorsa"',
-//                     '"Detailcalculdroitrsa"."natpf"',
 					'"PersonneReferent"."referent_id"',
-					'"Infopoleemploi"."identifiantpe"'
+					'Historiqueetatpe.identifiantpe'
 				),
 				'recursive' => -1,
 				'joins' => array(
@@ -282,18 +281,8 @@
 							'Prestation.natprest = \'RSA\''
 						)
 					),
-					array(
-						'table'      => 'infospoleemploi',
-						'alias'      => 'Infopoleemploi',
-						'type'       => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array(
-							'Infopoleemploi.personne_id = Personne.id',
-							'Infopoleemploi.personne_id IN (
-								'.ClassRegistry::init( 'Infopoleemploi' )->sqDerniere('Infopoleemploi.personne_id').'
-							)'
-						)
-					),
+					ClassRegistry::init( 'Informationpe' )->joinPersonneInformationpe(),
+					ClassRegistry::init( 'Historiqueetatpe' )->joinInformationpeHistoriqueetatpe(),
 					array(
 						'table'      => 'calculsdroitsrsa',
 						'alias'      => 'Calculdroitrsa',

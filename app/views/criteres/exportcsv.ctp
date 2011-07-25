@@ -63,7 +63,7 @@
 			Set::classicExtract( $orient, 'Personne.nir' ),
 			date_short( Set::classicExtract( $orient, 'Personne.dtnai' ) ),
 			Set::classicExtract( $orient, 'Dossier.matricule' ),
-			Set::classicExtract( $orient, 'Infopoleemploi.identifiantpe' ),
+			Set::classicExtract( $orient, 'Historiqueetatpe.identifiantpe' ),
 			Set::classicExtract( $orient, 'Modecontact.numtel' ),
 			Set::classicExtract( $orient, 'Adresse.numvoie' ).' '.Set::enum( Set::classicExtract( $orient, 'Adresse.typevoie' ), $typevoie ).' '.Set::classicExtract( $orient, 'Adresse.nomvoie' ),
 			Set::classicExtract( $orient, 'Adresse.complideadr' ).' '.Set::classicExtract( $orient, 'Adresse.compladr' ),
