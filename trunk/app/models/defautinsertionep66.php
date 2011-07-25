@@ -634,7 +634,7 @@
 			}
 
 			if ( !empty( $identifiantpe ) ) {
-				$queryData['conditions'][] = array( 'Historiqueetatpe.identifiantpe' => $identifiantpe );
+				$queryData['conditions'][] = ClassRegistry::init( 'Historiqueetatpe' )->conditionIdentifiantpe( $identifiantpe );
 			}
 
 			/// Filtre zone géographique

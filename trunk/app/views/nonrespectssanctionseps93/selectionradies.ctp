@@ -26,6 +26,7 @@
 						'Search.Personne.nir' => array( 'label' => __d( 'personne', 'Personne.nir', true ), 'type' => 'text', 'maxlength' => 15 ),
 						'Search.Dossier.matricule' => array( 'label' => __d( 'dossier', 'Dossier.matricule', true ), 'type' => 'text', 'maxlength' => 15 ),
 						'Search.Dossier.numdemrsa' => array( 'label' => __d( 'dossier', 'Dossier.numdemrsa', true ), 'type' => 'text', 'maxlength' => 15 ),
+						'Search.Historiqueetatpe.identifiantpe' => array( 'label' => __d( 'historiqueetatpe', 'Historiqueetatpe.identifiantpe', true ), 'type' => 'text', 'maxlength' => 11 ),
 						'Search.Adresse.locaadr' => array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ),
 						'Search.Adresse.numcomptt' => array( 'label' => 'Numéro de commune au sens INSEE ', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true )
 					)

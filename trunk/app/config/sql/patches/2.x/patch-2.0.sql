@@ -57,6 +57,12 @@ CREATE TYPE TYPE_ACTION AS ENUM ( 'heure', 'poste' );
 SELECT add_missing_table_field ('public', 'actionscandidats', 'typeaction', 'TYPE_ACTION' );
 SELECT add_missing_table_field ('public', 'actionscandidats', 'nbheuredispo', 'FLOAT' );
 SELECT add_missing_table_field ('public', 'actionscandidats', 'nbheurerestante', 'FLOAT' );
+
+CREATE INDEX informationspe_upper_nom_idx ON informationspe USING btree (UPPER(nom) varchar_pattern_ops);
+CREATE INDEX informationspe_upper_prenom_idx ON informationspe USING btree (UPPER(prenom) varchar_pattern_ops);
+CREATE INDEX historiqueetatspe_upper_identifiantpe_idx ON historiqueetatspe USING btree (UPPER(identifiantpe) varchar_pattern_ops);
+CREATE INDEX historiqueetatspe_upper_identifiantpe_court_idx ON historiqueetatspe USING btree (SUBSTRING(UPPER(historiqueetatspe.identifiantpe) FROM 4 FOR 8) varchar_pattern_ops);
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

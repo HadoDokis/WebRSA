@@ -377,12 +377,6 @@
 						'Dsp.id',
 						'Dossiercaf.ddratdos',
 						'Dossiercaf.dfratdos',
-// 						'Infopoleemploi.dateinscription',
-// 						'Infopoleemploi.categoriepe',
-// 						'Infopoleemploi.datecessation',
-// 						'Infopoleemploi.motifcessation',
-// 						'Infopoleemploi.dateradiation',
-// 						'Infopoleemploi.motifradiation',
 						'Calculdroitrsa.toppersdrodevorsa',
 						'Prestation.rolepers'
 					),

@@ -170,7 +170,7 @@
 								</tr>
 								<tr>
 									<th>Identifiant Pôle Emploi</th>
-									<td>'.$orient['Infopoleemploi']['identifiantpe'].'</td>
+									<td>'.$orient['Historiqueetatpe']['identifiantpe'].'</td>
 								</tr>
 								<tr>
 									<th>N° Téléphone</th>

@@ -235,4 +235,14 @@
     */
     Configure::write( 'AjoutOrientationPossible.toppersdrodevorsa', array( null, 0, 1 ) ); // aucune distincton sur le soumis à droit et devoir
     Configure::write( 'AjoutOrientationPossible.situationetatdosrsa', array( 'Z', 0, 1, 2, 3, 4, 5, 6 ) );// on prend toutes les valeurs possibles de l'état du dossier RSA
+
+	/**
+	* Permet de spécifier si les recherches sur l'identifiant Pôle Emploi d'un
+	* allocataire doivent se faire sur les 8 derniers chiffres de l'identifiant
+	* (true) ou sur la totalité de celui-ci (false).
+	*
+	* @default false
+	*/
+
+	Configure::write( 'Recherche.identifiantpecourt', true );
 ?>
