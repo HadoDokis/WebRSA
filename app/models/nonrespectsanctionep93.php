@@ -647,7 +647,7 @@
 				)
 			);
 
-			$this->Historiqueetatpe = ClassRegistry::init('Historiqueetatpe');
+			$modeleHistoriqueetatpe = ClassRegistry::init( 'Historiqueetatpe' );
 
             $nom = Set::classicExtract( $datas, 'Personne.nom' );
             $prenom = Set::classicExtract( $datas, 'Personne.prenom' );
@@ -693,7 +693,7 @@
             }
 
             if ( !empty( $identifiantpe ) ) {
-				$queryData['conditions'][] = ClassRegistry::init( 'Historiqueetatpe' )->conditionIdentifiantpe( $identifiantpe );
+				$queryData['conditions'][] = $modeleHistoriqueetatpe->conditionIdentifiantpe( $identifiantpe );
             }
 
             /// Filtre zone géographique
@@ -701,7 +701,7 @@
 
 
 
-            $qdRadies = $this->Historiqueetatpe->Informationpe->qdRadies();
+            $qdRadies = $modeleHistoriqueetatpe->Informationpe->qdRadies();
             $queryData['fields'] = array_merge( $queryData['fields'] ,$qdRadies['fields'] );
             $queryData['joins'] = array_merge( $queryData['joins'] ,$qdRadies['joins'] );
             $queryData['conditions'] = array_merge( $queryData['conditions'] ,$qdRadies['conditions'] );
