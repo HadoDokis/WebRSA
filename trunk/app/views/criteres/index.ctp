@@ -197,7 +197,7 @@
 							h( Set::enum( $orient['Orientstruct']['typeorient_id'], $typeorient ) ),
 							h( isset( $sr[$orient['Orientstruct']['structurereferente_id']] ) ? $sr[$orient['Orientstruct']['structurereferente_id']] : null ),
 							h( $orient['Orientstruct']['statut_orient'] ),
-							$xhtml->boolean( $orient['Calculdroitrsa']['toppersdrodevorsa'] ),
+							( is_null( $orient['Calculdroitrsa']['toppersdrodevorsa'] ) ? $xhtml->image( 'icons/help.png', array( 'alt' => '' ) ).' Non défini' : $xhtml->boolean( $orient['Calculdroitrsa']['toppersdrodevorsa'] ) ),
 							array(
 								$xhtml->viewLink(
 									'Voir le dossier « '.$orient['Dossier']['numdemrsa'].' »',

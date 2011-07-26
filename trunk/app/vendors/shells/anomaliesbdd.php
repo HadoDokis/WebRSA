@@ -1,6 +1,8 @@
 <?php
     @ini_set( 'memory_limit', '2048M' );
 
+	App::import( 'Core', array( 'Helper' ) );
+
 	/**
 	* INFO:
 	*	- base de données d'environ 200 Mo, datée du 04/11/2009

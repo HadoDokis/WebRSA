@@ -36,7 +36,7 @@
 			$this->set( 'statudemrsa', $this->Option->statudemrsa() );
 			$this->set( 'moticlorsa', $this->Option->moticlorsa() );
 			$this->set( 'typeserins', $this->Option->typeserins() );
-			$this->set( 'toppersdrodevorsa', $this->Option->toppersdrodevorsa() );
+			$this->set( 'toppersdrodevorsa', array_merge( $this->Option->toppersdrodevorsa(), array( 'NULL' => 'Non défini' ) ) );
 			$this->set( 'typevoie', $this->Option->typevoie() );
 			$this->set( 'sitfam', $this->Option->sitfam() );
 			$this->set( 'couvsoc', $this->Option->couvsoc() ); // INFO: pas dans view

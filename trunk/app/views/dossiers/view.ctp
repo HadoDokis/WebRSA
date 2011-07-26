@@ -45,6 +45,35 @@
 		}
 	}
 
+	function textToppersdrodevorsa( $calculdroitrsa ) {
+		if( !isset( $calculdroitrsa['toppersdrodevorsa'] ) ) {
+			return null;
+		}
+
+		if( is_null( $calculdroitrsa['toppersdrodevorsa'] ) ) {
+			return 'Non défini';
+		}
+		else if( $calculdroitrsa['toppersdrodevorsa'] == 1 ) {
+			return 'Oui';
+		}
+		else {
+			return 'Non';
+		}
+	}
+
+	function textPresenceDsp( $allocataire ) {
+		if( !isset( $allocataire['Personne']['id'] ) ) {
+			return null;
+		}
+
+		if( isset( $allocataire['Dsp']['id'] ) ) {
+			return 'Oui';
+		}
+		else {
+			return 'Non';
+		}
+	}
+
 	/////  Récupération données du Contratinsertion pour le DEM et le CJT
 	$DT = Set::extract( 'DEM.Contratinsertion.num_contrat', $details);
 	$CT = Set::extract( 'CJT.Contratinsertion.num_contrat', $details);
@@ -175,13 +204,13 @@
 							</tr>
 							<tr class="even">
 								<th>Soumis à droits et devoirs</th>
-								<td><?php echo value( $toppersdrodevorsa, Set::extract( 'DEM.Calculdroitrsa.toppersdrodevorsa', $details ) );?></td>
-								<td><?php echo value( $toppersdrodevorsa, Set::extract( 'CJT.Calculdroitrsa.toppersdrodevorsa', $details ) );?></td>
+								<td><?php echo textToppersdrodevorsa( Set::extract( 'DEM.Calculdroitrsa', $details ) );?></td>
+								<td><?php echo textToppersdrodevorsa( Set::extract( 'CJT.Calculdroitrsa', $details ) );?></td>
 							</tr>
 							<tr class="odd">
 								<th>DSP</th>
-								<td><?php echo h( isset( $details['DEM']['Dsp']['id'] ) ? 'Oui' : 'Non');?></td>
-								<td><?php echo h( isset( $details['CJT']['Dsp']['id'] ) ? 'Oui' : 'Non');?></td>
+								<td><?php echo h( textPresenceDsp( @$details['DEM'] ) );?></td>
+								<td><?php echo h( textPresenceDsp( @$details['CJT'] ) );?></td>
 							</tr>
 						</tbody>
 					</table>
