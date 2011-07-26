@@ -69,6 +69,7 @@
         <fieldset>
             <h3>Orientation</h3>
             <div><?php echo $form->input( 'Orientstruct.0.personne_id', array( 'label' => false, 'type' => 'hidden') );?></div>
+			<div><?php echo $form->input( 'Orientstruct.0.origine', array( 'label' => false, 'type' => 'hidden', 'value' => 'manuelle' ) );?></div>
             <?php 
                 if( Configure::read( 'Cg.departement' ) == 66 ){
                     $this->data['Orientstruct'][0]['referentorientant_id'] = Set::classicExtract( $this->data, 'Orientstruct.0.structureorientante_id' ).'_'.Set::classicExtract( $this->data, 'Orientstruct.0.referentorientant_id' );
