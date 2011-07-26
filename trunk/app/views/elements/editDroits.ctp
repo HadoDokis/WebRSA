@@ -27,17 +27,52 @@
 <input type="button" value="Tout décocher" onclick="GereChkbox('tableEditDroits','decocher');" />&nbsp;&nbsp;&nbsp;
 <input type="button" value="Inverser la sélection" onclick="GereChkbox('tableEditDroits','inverser');" />
 <?php
+	function cmpTranslatedTilte( $a, $b ) {
+		return ( strcmp( $a['translatedTitle'], $b['translatedTitle'] ) );
+	}
+
 	echo $javascript->link('droits', true);
 	echo '<table cellspacing="0" cellpadding="0" style="margin-top:20px;" class="table" id="tableEditDroits">';
+
 	$parentCtrlAction = '';
+	$listeTranslatedCtrlAction = array();
+	$row = -1;
 	foreach($listeCtrlAction as $rownum => $ctrlAction) {
-		$classTd = 'niveau'.$ctrlAction['niveau'];
 		if ( $ctrlAction['niveau'] == 0 ) {
+			$row++;
 			list( $module, $parentCtrlAction ) = explode( ':', $ctrlAction['title'] );
-			$ctrlAction['title'] = '<b>'.__d( 'droit', $ctrlAction['title'], true ).'</b>';
+			$listeTranslatedCtrlAction[$row] = $ctrlAction;
+			$listeTranslatedCtrlAction[$row]['translatedTitle'] = __d( 'droit', $ctrlAction['title'], true );
 		}
 		else {
-			$ctrlAction['title'] = __d( 'droit', $parentCtrlAction.':'.$ctrlAction['title'], true );
+			$listeTranslatedCtrlAction[$row][] = array_merge(
+				$ctrlAction,
+				array( 'translatedTitle' => __d( 'droit', $parentCtrlAction.':'.$ctrlAction['title'], true ) )
+			);
+		}
+	}
+	usort($listeTranslatedCtrlAction, "cmpTranslatedTilte");
+
+	$newListeCtrlAction = array();
+	$rownum = 0;
+	foreach( $listeTranslatedCtrlAction as $ctrlAction ) {
+		$newListeCtrlAction[$rownum] = $ctrlAction;
+		foreach( $ctrlAction as $row => $subCtrlAction ) {
+			if ( is_numeric( $row ) ) {
+				$rownum++;
+				$newListeCtrlAction[$rownum] = $subCtrlAction;
+			}
+		}
+		$rownum++;
+	}
+
+	foreach($newListeCtrlAction as $rownum => $ctrlAction) {
+		$classTd = 'niveau'.$ctrlAction['niveau'];
+		if ( $ctrlAction['niveau'] == 0 ) {
+			$ctrlAction['title'] = '<b>'.$ctrlAction['translatedTitle'].'</b>';
+		}
+		else {
+			$ctrlAction['title'] = $ctrlAction['translatedTitle'];
 		}
 		$indentation = str_repeat( '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;', $ctrlAction['niveau'] );
 		$optionsCheckBox = array(
