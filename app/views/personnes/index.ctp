@@ -48,6 +48,16 @@
                             </tbody>
                         </table>';
 
+						if( is_null( $personne['Calculdroitrsa']['toppersdrodevorsa'] ) ) {
+							$toppersdrodevorsa = 'Non défini';
+						}
+						else if( $personne['Calculdroitrsa']['toppersdrodevorsa'] == 1 ) {
+							$toppersdrodevorsa = 'Oui';
+						}
+						else {
+							$toppersdrodevorsa = 'Non';
+						}
+
                         echo $xhtml->tableCells(
                             array(
                                 h( $rolepers[$personne['Prestation']['rolepers']] ),
@@ -55,7 +65,7 @@
                                 h( $personne['Personne']['nom'] ),
                                 h( $personne['Personne']['prenom'] ),
                                 h( $locale->date( 'Date::short', $personne['Personne']['dtnai'] ) ),
-                                h( $personne['Calculdroitrsa']['toppersdrodevorsa'] ? 'Oui' : 'Non' ),
+                                h( $toppersdrodevorsa ),
                                 $xhtml->viewLink(
                                     'Voir la personne « '.$title.' »',
                                     array( 'controller' => 'personnes', 'action' => 'view', $personne['Personne']['id'] ),

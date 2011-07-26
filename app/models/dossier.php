@@ -252,8 +252,13 @@
 			}
 
 			/// Critères sur Soumis à Droit et Devoir - toppersdrodevorsa
-			if( isset( $params['Calculdroitrsa']['toppersdrodevorsa'] ) && is_numeric( $params['Calculdroitrsa']['toppersdrodevorsa'] ) ) {
-				$conditions[] = array('Calculdroitrsa.toppersdrodevorsa'=>$params['Calculdroitrsa']['toppersdrodevorsa']);
+			if( isset( $params['Calculdroitrsa']['toppersdrodevorsa'] ) ) {
+				if( is_numeric( $params['Calculdroitrsa']['toppersdrodevorsa'] ) ) {
+					$conditions[] = array( 'Calculdroitrsa.toppersdrodevorsa' => $params['Calculdroitrsa']['toppersdrodevorsa'] );
+				}
+				else if( $params['Calculdroitrsa']['toppersdrodevorsa'] == 'NULL' ) {
+					$conditions[] = array( 'Calculdroitrsa.toppersdrodevorsa IS NULL' );
+				}
 			}
 
 			/// Critères sur le dossier - date de demande
