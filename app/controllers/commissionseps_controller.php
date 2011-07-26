@@ -220,7 +220,7 @@
 		*
 		*/
 
-		public function index( $etape = null ) {
+		protected function _index( $etape = null ) {
 			if( !empty( $this->data ) ) {
 				$this->paginate['Commissionep'] = $this->Commissionep->search(
 					$this->data,
@@ -299,7 +299,7 @@
 		*/
 
 		public function creationmodification() {
-			$this->index( $this->action );
+			$this->_index( $this->action );
 		}
 
 		/**
@@ -307,7 +307,7 @@
 		*/
 
 		public function attributiondossiers() {
-			$this->index( $this->action );
+			$this->_index( $this->action );
 		}
 
 		/**
@@ -315,7 +315,7 @@
 		*/
 
 		public function arbitrageep() {
-			$this->index( $this->action );
+			$this->_index( $this->action );
 		}
 
 		/**
@@ -323,7 +323,7 @@
 		*/
 
 		public function arbitragecg() {
-			$this->index( $this->action );
+			$this->_index( $this->action );
 		}
 
 
@@ -332,7 +332,7 @@
 		*/
 
 		public function decisions() {
-			$this->index( $this->action );
+			$this->_index( $this->action );
 		}
 
 		/**
@@ -340,7 +340,7 @@
 		*/
 
 		public function recherche() {
-			$this->index( $this->action );
+			$this->_index( $this->action );
 		}
 
 		/**
