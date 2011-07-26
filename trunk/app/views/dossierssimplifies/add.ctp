@@ -86,6 +86,7 @@
         </fieldset>
         <fieldset>
             <h3>Orientation</h3>
+			<div><?php echo $form->input( 'Orientstruct.1.origine', array( 'label' => false, 'type' => 'hidden', 'value' => 'manuelle' ) );?></div>
             <?php 
                 if( Configure::read( 'Cg.departement' ) == 66 ){
                     echo $form->input( 'Orientstruct.1.structureorientante_id', array( 'label' =>  'Structure orientante', 'type' => 'select', 'options' => $structsReferentes, 'empty' => true ) );
