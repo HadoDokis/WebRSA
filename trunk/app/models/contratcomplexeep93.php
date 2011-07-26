@@ -153,7 +153,6 @@
 						$formData[$modeleDecisions][$key]['datevalidation_ci'] = $dossierep['Passagecommissionep'][0][$modeleDecisions][0]['datevalidation_ci'];
 						$formData[$modeleDecisions][$key]['observ_ci'] = $dossierep['Passagecommissionep'][0][$modeleDecisions][0]['observ_ci'];
 						$formData[$modeleDecisions][$key]['raisonnonpassage'] = $dossierep['Passagecommissionep'][0][$modeleDecisions][0]['raisonnonpassage'];
-						$formData[$modeleDecisions][$key]['commentaire'] = $dossierep['Passagecommissionep'][0][$modeleDecisions][0]['commentaire'];
 						$formData[$modeleDecisions][$key]['decisionpcg'] = 'valide';
 					}
 				}

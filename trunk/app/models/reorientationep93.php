@@ -468,7 +468,6 @@
 					elseif( $niveauDecision == 'cg' ) {
 						$formData['Decisionreorientationep93'][$key]['decision'] = $dossierep['Passagecommissionep'][0]['Decisionreorientationep93'][0]['decision'];
 						$formData['Decisionreorientationep93'][$key]['decisionpcg'] = 'valide';
-						$formData['Decisionreorientationep93'][$key]['commentaire'] = $dossierep['Passagecommissionep'][0]['Decisionreorientationep93'][0]['commentaire'];
 						if ( $formData['Decisionreorientationep93'][$key]['decision'] == 'accepte' ) {
 							$formData['Decisionreorientationep93'][$key]['typeorient_id'] = $dossierep['Passagecommissionep'][0]['Decisionreorientationep93'][0]['typeorient_id'];
 							$formData['Decisionreorientationep93'][$key]['structurereferente_id'] = implode(
