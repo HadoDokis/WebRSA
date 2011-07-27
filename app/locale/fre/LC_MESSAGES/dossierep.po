@@ -77,7 +77,7 @@ msgid "ENUM::THEMEEP::nonorientationsproseps93"
 msgstr "Parcours social sans réorientation"
 
 msgid "ENUM::THEMEEP::regressionsorientationseps58"
-msgstr "Orientation du professionnelle vers le social"
+msgstr "Orientation du professionnel vers le social"
 
 msgid "ENUM::THEMEEP::sanctionseps58"
 msgstr "Passage en EP pour sanction"
