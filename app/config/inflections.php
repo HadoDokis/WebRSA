@@ -245,7 +245,6 @@
 		'reorientationep93' => 'reorientationseps93',
 		'saisinebilanparcoursep66' => 'saisinesbilansparcourseps66',
 		'saisinepdoep66' => 'saisinespdoseps66',
-		'maintienreorientep' => 'maintiensreorientseps',
 		'dossierep' => 'dossierseps',
 		'ep_zonegeographique' => 'eps_zonesgeographiques',
 		'membreep' => 'membreseps',
