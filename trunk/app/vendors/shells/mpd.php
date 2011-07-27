@@ -127,46 +127,6 @@
 					$conditions = array( "information_schema.tables.table_schema = '{$schema['Schema']['name']}'" );
 
 					if( $schema['Schema']['name'] == 'public' && $this->module == 'eps' ) {
-						/*$tables_eps = array(
-							'personnes',
-							// EPs
-							'dossierseps',
-							// Thèmes
-							'defautsinsertionseps66',
-							'nonrespectssanctionseps93',
-							'saisinespdoseps66',
-							'saisinesbilansparcourseps66',
-							'reorientationseps93',
-							'saisinesepssignalementsnrscers93',
-							'saisineseps66',
-							// Autres informations
-							'relancesdetectionscontrats93',
-							'bilansparcours66',
-							// Paramétrage
-							'motifsreorientseps93',
-							'maintiensreorientseps',
-							'relancesnonrespectssanctionseps93',
-							// Décisions
-							'decisionsdefautsinsertionseps66',
-							'decisionsnonrespectssanctionseps93',
-							'decisionssaisinespdoseps66',
-							'decisionssaisinesbilansparcourseps66',
-							'decisionsreorientationseps93',
-							'avissrmreps93',
-							// Séances
-							'commissionseps', // FIXME: dossierseps_seanceseps ?
-							// EPs
-							'regroupementseps',
-							'eps',
-							'eps_zonesgeographiques',
-							'eps_membreseps',
-							'membreseps',
-							'fonctionsmembreseps',
-							'commissionseps_membreseps',
-						);
-
-						$conditions[] = "information_schema.tables.table_name IN ( '".implode( "',\n'", $tables_eps )."' )\n";*/
-
 						$conditions[] = "( information_schema.tables.table_name ~ '.*eps[0-9]{0,2}$' ) OR ( information_schema.tables.table_name ~ '.*eps[0-9]{0,2}_.*$' )\n";
 					}
 					else if( $schema['Schema']['name'] == 'public' && $this->module == 'apres' ) {

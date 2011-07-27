@@ -67,7 +67,8 @@
 		);
 
 		public $commeDroit = array(
-			'add' => 'Dsps:edit'
+			'add' => 'Dsps:edit',
+			'findPersonne' => 'Dsps:view'
 		);
 
 		public $aucunDroit = array( 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );

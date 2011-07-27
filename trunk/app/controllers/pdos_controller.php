@@ -18,11 +18,6 @@
 
         }
 
-
-        function edit( $param = null ) {
-
-        }
-
     }
 
 ?>
