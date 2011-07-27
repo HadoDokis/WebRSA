@@ -42,7 +42,12 @@
 			$row++;
 			list( $module, $parentCtrlAction ) = explode( ':', $ctrlAction['title'] );
 			$listeTranslatedCtrlAction[$row] = $ctrlAction;
-			$listeTranslatedCtrlAction[$row]['translatedTitle'] = __d( 'droit', $ctrlAction['title'], true );
+			if ( $rownum == 0 ) {
+				$listeTranslatedCtrlAction[$row]['translatedTitle'] = '&nbsp;'.__d( 'droit', $ctrlAction['title'], true );
+			}
+			else {
+				$listeTranslatedCtrlAction[$row]['translatedTitle'] = __d( 'droit', $ctrlAction['title'], true );
+			}
 		}
 		else {
 			$listeTranslatedCtrlAction[$row][] = array_merge(
