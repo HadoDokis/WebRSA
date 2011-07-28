@@ -63,6 +63,9 @@ CREATE INDEX informationspe_upper_prenom_idx ON informationspe USING btree (UPPE
 CREATE INDEX historiqueetatspe_upper_identifiantpe_idx ON historiqueetatspe USING btree (UPPER(identifiantpe) varchar_pattern_ops);
 CREATE INDEX historiqueetatspe_upper_identifiantpe_court_idx ON historiqueetatspe USING btree (SUBSTRING(UPPER(historiqueetatspe.identifiantpe) FROM 4 FOR 8) varchar_pattern_ops);
 
+DROP INDEX IF EXISTS typesaidesapres66_name_idx;
+CREATE INDEX typesaidesapres66_name_idx ON typesaidesapres66(name);
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
