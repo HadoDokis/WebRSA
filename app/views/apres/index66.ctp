@@ -59,7 +59,7 @@
 
                     $buttonEnabled = true;
                     
-                    ($etat == 'Complet') ? $buttonEnabledInc = true : $buttonEnabledInc = false;
+                    ($etat != 'Incomplet') ? $buttonEnabledInc = true : $buttonEnabledInc = false;
                     
 					($apre['Apre66']['isdecision']=='N') ? $buttonEnabledNotif = false : $buttonEnabledNotif = true;
 
