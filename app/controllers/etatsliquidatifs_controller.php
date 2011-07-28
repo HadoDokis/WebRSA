@@ -3,11 +3,11 @@
 
 	class EtatsliquidatifsController extends AppController
 	{
-		var $name = 'Etatsliquidatifs';
+		public $name = 'Etatsliquidatifs';
 
-		var $uses = array( 'Etatliquidatif', 'Parametrefinancier', 'Suiviaideapretypeaide', 'Apre', 'Option', 'Adressefoyer', 'ApreEtatliquidatif' );
-        var $components = array( 'Gedooo' );
-		var $helpers = array( 'Xform', 'Locale', 'Paginator', 'Apreversement' );
+		public $uses = array( 'Etatliquidatif', 'Parametrefinancier', 'Suiviaideapretypeaide', 'Apre', 'Option', 'Adressefoyer', 'ApreEtatliquidatif' );
+        public $components = array( 'Gedooo' );
+		public $helpers = array( 'Xform', 'Locale', 'Paginator', 'Apreversement' );
 
 		public $commeDroit = array(
 			'add' => 'Etatsliquidatifs:edit'
@@ -19,7 +19,7 @@
 		*
 		*/
 
-		function beforeFilter() {
+		public function beforeFilter() {
 			ini_set('max_execution_time', 0);
 			ini_set('memory_limit', '1024M');
 			ini_set('default_socket_timeout', 3660);
@@ -79,7 +79,7 @@
         *
         */
 
-        function _add_edit( $id = null ) {
+        protected function _add_edit( $id = null ) {
 			$parametrefinancier = $this->Parametrefinancier->find( 'first' );
 			if( empty( $parametrefinancier ) ) {
 				$this->Session->setFlash( __( 'Impossible de créer ou de modifier un état liquidatif si les paramètres financiers ne sont pas enregistrés.', true ), 'flash/error' );
@@ -136,7 +136,7 @@
 		*
 		*/
 
-		function selectionapres( $id = null ) {
+		public function selectionapres( $id = null ) {
 			$etatliquidatif = $this->{$this->modelClass}->findById( $id, null, null, -1 );
 			$this->assert( !empty( $etatliquidatif ), 'invalidParameter' );
 
@@ -194,7 +194,7 @@
         *
         */
 
-        function visualisationapres( $id = null ) {
+        public function visualisationapres( $id = null ) {
             $etatliquidatif = $this->{$this->modelClass}->findById( $id, null, null, -1 );
             $this->assert( !empty( $etatliquidatif ), 'invalidParameter' );
 
@@ -252,7 +252,7 @@
         *
         */
 
-        function impressiongedoooapres( $apre_id, $etatliquidatif_id ) {
+        public function impressiongedoooapres( $apre_id, $etatliquidatif_id ) {
             $qual = $this->Option->qual();
             $typevoie = $this->Option->typevoie();
             $natureAidesApres = $this->Option->natureAidesApres();
@@ -367,7 +367,8 @@
         /**
         *
         **/
-        function impressioncohorte( $id ) {
+
+        public function impressioncohorte( $id ) {
             $etatliquidatif = $this->{$this->modelClass}->findById( $id, null, null, -1 );
 
             $typeapre = ( ( Set::classicExtract( $etatliquidatif, 'Etatliquidatif.typeapre' ) == 'forfaitaire' ) ? 'F' : 'C' );
@@ -481,7 +482,7 @@
 		*
 		*/
 
-		function validation( $id = null ) {
+		public function validation( $id = null ) {
 			$etatliquidatif = $this->{$this->modelClass}->findById( $id, null, null, -1 );
 			$this->assert( !empty( $etatliquidatif ), 'invalidParameter' );
 
@@ -545,7 +546,7 @@
 		*
 		*/
 
-		function hopeyra( $id = null ) {
+		public function hopeyra( $id = null ) {
 			$etatliquidatif = $this->{$this->modelClass}->findById( $id, null, null, -1 );
 			$this->assert( !empty( $etatliquidatif ), 'invalidParameter' );
 
@@ -566,7 +567,7 @@
 		*   PDF pour les APREs Forfaitaires
 		*/
 
-		function pdf( $id = null ) {
+		public function pdf( $id = null ) {
 			$etatliquidatif = $this->{$this->modelClass}->findById( $id, null, null, 0 );
 			$this->assert( !empty( $etatliquidatif ), 'invalidParameter' );
 
@@ -576,12 +577,12 @@
 				$this->redirect( array( 'action' => 'index' ) );
 			}
 
-            $elements = $this->{$this->modelClass}->pdf( $id, $etatliquidatif['Etatliquidatif']['typeapre'] );
+			$elements = $this->{$this->modelClass}->pdf( $id, $etatliquidatif['Etatliquidatif']['typeapre'], true );
 
-            $qual = $this->Option->qual();
-            $typevoie = $this->Option->typevoie();
+			$qual = $this->Option->qual();
+			$typevoie = $this->Option->typevoie();
 
-            $this->set( compact( 'elements', 'etatliquidatif', 'qual', 'typevoie' ) );
+			$this->set( compact( 'elements', 'etatliquidatif', 'qual', 'typevoie' ) );
 
 			Configure::write( 'debug', 0 );
 		}
@@ -590,7 +591,7 @@
         *
         */
 
-        function ajaxmontant( $etatliquidatif_id, $apre_id, $index ) { // FIXME
+        public function ajaxmontant( $etatliquidatif_id, $apre_id, $index ) { // FIXME
             Configure::write( 'debug', 0 );
             $nbpaiementsouhait = $this->data['Apre'][$index]['nbpaiementsouhait'];
 
@@ -669,7 +670,7 @@
         *
         */
 
-        function versementapres( $id = null ) {
+        public function versementapres( $id = null ) {
             // Retour à la liste en cas d'annulation
             if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
                 $this->redirect( array( 'action' => 'index' ) );

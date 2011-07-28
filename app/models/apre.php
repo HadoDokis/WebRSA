@@ -354,6 +354,52 @@
 		*
 		*/
 
+		public function qdFormationsPourPdf() {
+			$querydata = array();
+			$conditionsTiersprestataireapre = array();
+
+			foreach( $this->modelsFormation as $modelAide ) {
+				$querydata['joins'][] = array(
+					'table'      => Inflector::tableize( $modelAide ),
+					'alias'      => $modelAide,
+					'type'       => 'LEFT OUTER',
+					'foreignKey' => false,
+					'conditions' => array( "Apre.id = {$modelAide}.apre_id" )
+				);
+
+				$conditionsTiersprestataireapre[] = "{$modelAide}.tiersprestataireapre_id = Tiersprestataireapre.id";
+			}
+
+			$querydata['fields'] = array(
+				'Tiersprestataireapre.nomtiers',
+				'Tiersprestataireapre.numvoie',
+				'Tiersprestataireapre.typevoie',
+				'Tiersprestataireapre.nomvoie',
+				'Tiersprestataireapre.compladr',
+				'Tiersprestataireapre.codepos',
+				'Tiersprestataireapre.ville',
+				'Tiersprestataireapre.nomtiturib',
+				'Tiersprestataireapre.guiban',
+				'Tiersprestataireapre.etaban',
+				'Tiersprestataireapre.numcomptban',
+				'Tiersprestataireapre.clerib'
+			);
+
+			$querydata['joins'][] = array(
+				'table'      => Inflector::tableize( 'Tiersprestataireapre' ),
+				'alias'      => 'Tiersprestataireapre',
+				'type'       => 'LEFT OUTER',
+				'foreignKey' => false,
+				'conditions' => array( 'OR' => $conditionsTiersprestataireapre )
+			);
+
+			return $querydata;
+		}
+
+		/**
+		*
+		*/
+
 		public function dossierId( $apre_id ){
 			$this->unbindModelAll();
 			$this->bindModel(
