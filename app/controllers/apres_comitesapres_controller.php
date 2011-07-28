@@ -53,15 +53,57 @@
 
 
 
-                if( $isRecours ) {
-                    $conditions = array( 'Apre.id IN ( SELECT apres_comitesapres.apre_id FROM apres_comitesapres WHERE apres_comitesapres.decisioncomite = \'REF\' AND apres_comitesapres.recoursapre = \'O\' ) AND Apre.id NOT IN ( SELECT apres_comitesapres.apre_id FROM apres_comitesapres WHERE apres_comitesapres.comite_pcd_id IS NOT NULL ) AND Apre.statutapre = \'C\'' );
-                }
-                else {
-                    $conditions = array(
-                        '( Apre.id NOT IN ( SELECT apres_comitesapres.apre_id FROM apres_comitesapres WHERE apres_comitesapres.decisioncomite IS NOT NULL )
-                        OR Apre.id IN ( SELECT apres_comitesapres.apre_id FROM apres_comitesapres WHERE apres_comitesapres.decisioncomite = \'AJ\' ) )
-                        AND Apre.statutapre = \'C\'
-			AND Apre.etatdossierapre = \'COM\''
+				if( $isRecours ) {
+					$conditions = array(
+						'Apre.id IN (
+							SELECT
+									apres_comitesapres.apre_id
+								FROM apres_comitesapres
+								WHERE
+									apres_comitesapres.decisioncomite = \'REF\'
+									AND apres_comitesapres.recoursapre = \'O\'
+						)
+						AND Apre.id NOT IN (
+							SELECT
+									apres_comitesapres.apre_id
+								FROM apres_comitesapres
+								WHERE
+									apres_comitesapres.comite_pcd_id IS NOT NULL
+						) 
+						AND Apre.statutapre = \'C\''
+					);
+				}
+				else {
+					$conditions = array(
+						'(
+							Apre.id NOT IN (
+								SELECT
+										apres_comitesapres.apre_id
+									FROM apres_comitesapres
+									WHERE apres_comitesapres.decisioncomite IS NOT NULL
+							)
+							OR
+							Apre.id IN (
+								SELECT
+										apres_comitesapres.apre_id
+									FROM apres_comitesapres
+									WHERE
+										apres_comitesapres.decisioncomite = \'AJ\'
+										AND apres_comitesapres.apre_id = Apre.id
+										AND apres_comitesapres.id IN (
+											SELECT
+												apres_comitesapres.id
+												FROM apres_comitesapres
+													INNER JOIN comitesapres ON ( apres_comitesapres.comiteapre_id = comitesapres.id )
+												WHERE
+													apres_comitesapres.apre_id = Apre.id
+												ORDER BY comitesapres.datecomite DESC
+												LIMIT 1
+										)
+							)
+						)
+						AND Apre.statutapre = \'C\'
+						AND Apre.etatdossierapre = \'COM\''
                     );
                 }
 
