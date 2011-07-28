@@ -1,4 +1,4 @@
-<h1>Etat de liquidation</h1>
+<h1><?php echo $this->pageTitle = 'Etat de liquidation';?></h1>
 
 <?php
     $etatliquidatif['Etatliquidatif']['tranche'] = ( ( $etatliquidatif['Etatliquidatif']['typeapre'] == 'forfaitaire' ) ? 'T01' : 'T02' );
@@ -28,6 +28,17 @@
 		return ( count( $keys ) == count( $requiredKeys ) );
 	}
 
+	function paiementorganismeComplet( $paiementorganisme ) {
+		$filtered = Set::filter( $paiementorganisme );
+		$requiredKeys = array( 'nomtiturib', 'guiban', 'etaban', 'numcomptban', 'clerib' );
+		foreach( $requiredKeys as $requiredKey ) {
+			if( !isset( $filtered[$requiredKey] ) ) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	/// Vérification de données manquantes FIXME: déléguer dans le modèle ?
 	$nbrAttentdu = count( Set::extract( $elements, '/Apre' ) );
 	$nbrLibellesDomicialiation = count( Set::filter( Set::extract( $elements, '/Domiciliationbancaire/libelledomiciliation' ) ) );
@@ -54,11 +65,11 @@
 <table class="etatliquidatif apres">
 	<thead>
 		<tr>
-			<th>Titre</th>
-			<th>Nom Prénom</th>
+			<th>Titre Nom Prénom</th>
 			<th>Adresse</th>
 			<th>C.P.</th>
 			<th>Ville</th>
+			<th>Versé à</th>
 			<th>Banque</th>
 			<th>Guichet</th>
 			<th>Compte</th>
@@ -68,38 +79,71 @@
 	</thead>
 	<tbody>
 		<?php foreach( $elements as $element ):?>
-            <?php
-                // Formattage élément
-                $element['Adresse']['adresse'] = implode(
-                    ' ',
-                    array(
-                        Set::classicExtract( $element, 'Adresse.numvoie' ),
-                        mb_convert_case( Set::enum( Set::classicExtract( $element, 'Adresse.typevoie' ), $typevoie ), MB_CASE_UPPER, Configure::read( 'App.encoding' ) ),
-                        Set::classicExtract( $element, 'Adresse.nomvoie' ),
-                        Set::classicExtract( $element, 'Adresse.complideadr' ),
-                        Set::classicExtract( $element, 'Adresse.compladr' ),
-                    )
-                );
-
-                $element['Paiementfoyer']['clerib'] = str_pad( $element['Paiementfoyer']['clerib'], 2, '0', STR_PAD_LEFT );
-
-				/// Vérification de données manquantes FIXME: déléguer dans le modèle ?
+			<?php
+				$adresse = null;
 				$trClass = null;
-				$libelledomiciliation = Set::filter( Set::classicExtract( $element, 'Domiciliationbancaire.libelledomiciliation' ) );
-				if( empty( $libelledomiciliation ) || !paiementfoyerComplet( Set::extract( $element, 'Paiementfoyer' ) ) ) {
-					$trClass = 'error';
+				// Le destinataire est-il l'allocataire (true) ou l'organisme de formation (false)
+				$destinataireAllocataire = !( $etatliquidatif['Etatliquidatif']['typeapre'] == 'complementaire' && !empty( $element['Tiersprestataireapre']['guiban'] ) );
+
+				if( $destinataireAllocataire ) {
+					// Formattage élément
+					$adresse = implode(
+						' ',
+						array(
+							Set::classicExtract( $element, 'Adresse.numvoie' ),
+							mb_convert_case( Set::enum( Set::classicExtract( $element, 'Adresse.typevoie' ), $typevoie ), MB_CASE_UPPER, Configure::read( 'App.encoding' ) ),
+							Set::classicExtract( $element, 'Adresse.nomvoie' ),
+							Set::classicExtract( $element, 'Adresse.complideadr' ),
+							Set::classicExtract( $element, 'Adresse.compladr' ),
+						)
+					);
+
+					/// Vérification de données manquantes FIXME: déléguer dans le modèle ?
+					$libelledomiciliation = Set::filter( Set::classicExtract( $element, 'Domiciliationbancaire.libelledomiciliation' ) );
+					if( empty( $libelledomiciliation ) || !paiementfoyerComplet( Set::extract( $element, 'Paiementfoyer' ) ) ) {
+						$trClass = 'error';
+					}
 				}
-            ?>
+				else {
+					// Formattage élément
+					$adresse = implode(
+						' ',
+						array(
+							Set::classicExtract( $element, 'Tiersprestataireapre.numvoie' ),
+							mb_convert_case( Set::enum( Set::classicExtract( $element, 'Tiersprestataireapre.typevoie' ), $typevoie ), MB_CASE_UPPER, Configure::read( 'App.encoding' ) ),
+							Set::classicExtract( $element, 'Tiersprestataireapre.nomvoie' ),
+							Set::classicExtract( $element, 'Tiersprestataireapre.compladr' ),
+						)
+					);
+
+					/// Vérification de données manquantes FIXME: déléguer dans le modèle ?
+					if( !paiementorganismeComplet( Set::extract( $element, 'Tiersprestataireapre' ) ) ) {
+						$trClass = 'error';
+					}
+				}
+			?>
 			<tr<?php if( !empty( $trClass ) ) echo ' class="'.$trClass.'" style="color: red;"';?>>
-				<td><?php echo $element['Paiementfoyer']['titurib'];?></td>
-				<td><?php echo $element['Paiementfoyer']['nomprenomtiturib'];?></td>
-				<td><?php echo $element['Adresse']['adresse'];?></td>
-				<td><?php echo $element['Adresse']['codepos'];?></td>
-				<td><?php echo $element['Adresse']['locaadr'];?></td>
-				<td><?php echo $element['Paiementfoyer']['etaban'];?></td>
-				<td><?php echo $element['Paiementfoyer']['guiban'];?></td>
-				<td><?php echo $element['Paiementfoyer']['numcomptban'];?></td>
-				<td><?php echo $element['Paiementfoyer']['clerib'];?></td>
+				<?php if( $destinataireAllocataire ):?>
+					<td><?php echo $element['Paiementfoyer']['titurib'].' '.$element['Paiementfoyer']['nomprenomtiturib'];?></td>
+					<td><?php echo $adresse;?></td>
+					<td><?php echo $element['Adresse']['codepos'];?></td>
+					<td><?php echo $element['Adresse']['locaadr'];?></td>
+					<td>Allocataire</td>
+					<td><?php echo $element['Paiementfoyer']['etaban'];?></td>
+					<td><?php echo $element['Paiementfoyer']['guiban'];?></td>
+					<td><?php echo $element['Paiementfoyer']['numcomptban'];?></td>
+					<td><?php echo str_pad( $element['Paiementfoyer']['clerib'], 2, '0', STR_PAD_LEFT );?></td>
+				<?php else:?>
+					<td><?php echo $element['Tiersprestataireapre']['nomtiturib'];?></td>
+					<td><?php echo $adresse;?></td>
+					<td><?php echo $element['Tiersprestataireapre']['codepos'];?></td>
+					<td><?php echo $element['Tiersprestataireapre']['ville'];?></td>
+					<td>Organisme: <?php echo $element['Tiersprestataireapre']['nomtiers'];?></td>
+					<td><?php echo $element['Tiersprestataireapre']['etaban'];?></td>
+					<td><?php echo $element['Tiersprestataireapre']['guiban'];?></td>
+					<td><?php echo $element['Tiersprestataireapre']['numcomptban'];?></td>
+					<td><?php echo str_pad( $element['Tiersprestataireapre']['clerib'], 2, '0', STR_PAD_LEFT );?></td>
+				<?php endif;?>
 				<td class="number"><?php echo str_replace( ' ', '&nbsp;', $locale->money( $element['Apre']['allocation'] ) );?></td>
 			</tr>
 		<?php endforeach;?>

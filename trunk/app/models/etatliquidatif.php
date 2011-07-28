@@ -628,12 +628,11 @@
 
 
 		/**
-		*   Récupération de la liste des APREs pour le fichier PDF selon un état liquidatif donné ( $id )
-		*   @param int $id
+		* Récupération de la liste des APREs pour le fichier PDF selon un état liquidatif donné ( $id )
+		* @param int $id
 		*/
 
-		public function pdf( $id, $typeapre ) {
-
+		public function pdf( $id, $typeapre, $qdTiersprestataireapreFormations = false ) {
 			$champAllocation = null;
 			if( $typeapre == 'forfaitaire' ) {
 				$champAllocation = '"Apre"."mtforfait" AS "Apre__allocation"';
@@ -645,118 +644,126 @@
 				$this->cakeError( 'error500' );
 			}
 
-			$this->Apre->unbindModelAll();
-			return $this->Apre->find(
-				'all',
-				array(
-					'fields' => array(
-						'Personne.id',
-						'Paiementfoyer.titurib',
-						'Paiementfoyer.nomprenomtiturib', // FIXME ?
-						'Adresse.numvoie',
-						'Adresse.typevoie',
-						'Adresse.nomvoie',
-						'Adresse.complideadr',
-						'Adresse.compladr',
-						'Adresse.compladr',
-						'Adresse.codepos',
-						'Adresse.locaadr',
-						'Paiementfoyer.etaban',
-						'Paiementfoyer.guiban',
-						'Paiementfoyer.numcomptban',
-						'Paiementfoyer.clerib',
-						'Domiciliationbancaire.libelledomiciliation',
-						$champAllocation
+			$querydata = array(
+				'fields' => array(
+					'Personne.id',
+					'Paiementfoyer.titurib',
+					'Paiementfoyer.nomprenomtiturib', // FIXME ?
+					'Adresse.numvoie',
+					'Adresse.typevoie',
+					'Adresse.nomvoie',
+					'Adresse.complideadr',
+					'Adresse.compladr',
+					'Adresse.compladr',
+					'Adresse.codepos',
+					'Adresse.locaadr',
+					'Paiementfoyer.etaban',
+					'Paiementfoyer.guiban',
+					'Paiementfoyer.numcomptban',
+					'Paiementfoyer.clerib',
+					'Domiciliationbancaire.libelledomiciliation',
+					$champAllocation
+				),
+				'joins' => array(
+					array(
+						'table'      => 'personnes',
+						'alias'      => 'Personne',
+						'type'       => 'INNER',
+						'foreignKey' => false,
+						'conditions' => array( 'Apre.personne_id = Personne.id' )
 					),
-					'joins' => array(
-						array(
-							'table'      => 'personnes',
-							'alias'      => 'Personne',
-							'type'       => 'INNER',
-							'foreignKey' => false,
-							'conditions' => array( 'Apre.personne_id = Personne.id' )
-						),
-						array(
-							'table'      => 'foyers',
-							'alias'      => 'Foyer',
-							'type'       => 'INNER',
-							'foreignKey' => false,
-							'conditions' => array( 'Personne.foyer_id = Foyer.id' )
-						),
-						array(
-							'table'      => 'adressesfoyers',
-							'alias'      => 'Adressefoyer',
-							'type'       => 'INNER',
-							'foreignKey' => false,
-							'conditions' => array(
-								'Foyer.id = Adressefoyer.foyer_id', 'Adressefoyer.rgadr = \'01\'',
-								// FIXME: voir ailleurs, quand on utilise adressesfoyers
-								// INFO: C'EST JUSTE LE DERNIER POUR LE FOYER
-								'Adressefoyer.id IN ( SELECT MAX(adressesfoyers.id)
-									FROM adressesfoyers
-									WHERE adressesfoyers.rgadr = \'01\'
-									GROUP BY adressesfoyers.foyer_id
-								)'
-							)
-						),
-						array(
-							'table'      => 'adresses',
-							'alias'      => 'Adresse',
-							'type'       => 'INNER',
-							'foreignKey' => false,
-							'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
-						),
-						array(
-							'table'      => 'paiementsfoyers',
-							'alias'      => 'Paiementfoyer',
-							'type'       => 'LEFT OUTER',
+					array(
+						'table'      => 'foyers',
+						'alias'      => 'Foyer',
+						'type'       => 'INNER',
+						'foreignKey' => false,
+						'conditions' => array( 'Personne.foyer_id = Foyer.id' )
+					),
+					array(
+						'table'      => 'adressesfoyers',
+						'alias'      => 'Adressefoyer',
+						'type'       => 'INNER',
+						'foreignKey' => false,
+						'conditions' => array(
+							'Foyer.id = Adressefoyer.foyer_id', 'Adressefoyer.rgadr = \'01\'',
+							// FIXME: voir ailleurs, quand on utilise adressesfoyers
+							// INFO: C'EST JUSTE LE DERNIER POUR LE FOYER
+							'Adressefoyer.id IN ( SELECT MAX(adressesfoyers.id)
+								FROM adressesfoyers
+								WHERE adressesfoyers.rgadr = \'01\'
+								GROUP BY adressesfoyers.foyer_id
+							)'
+						)
+					),
+					array(
+						'table'      => 'adresses',
+						'alias'      => 'Adresse',
+						'type'       => 'INNER',
+						'foreignKey' => false,
+						'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
+					),
+					array(
+						'table'      => 'paiementsfoyers',
+						'alias'      => 'Paiementfoyer',
+						'type'       => 'LEFT OUTER',
 // 							'type'       => 'INNER',
-							'foreignKey' => false,
-							'conditions' => array(
-								'Paiementfoyer.foyer_id = Foyer.id',
-								// FIXME: voir ailleurs, quand on utilise paiementsfoyers
-								// INFO: C'EST JUSTE LE DERNIER POUR LE FOYER
-								// FIXME: à faire dans importcsvapres
-								// FIXME: DEM ou CJT
-								'Paiementfoyer.id IN ( SELECT MAX(paiementsfoyers.id)
-									FROM paiementsfoyers
-									WHERE paiementsfoyers.topribconj = (
-										CASE WHEN (
-											SELECT prestations.rolepers
-												FROM prestations
-												WHERE prestations.personne_id = "Personne"."id"
-													AND prestations.natprest = \'RSA\'
-													AND prestations.rolepers IN ( \'DEM\', \'CJT\' )
-										)
-										= \'DEM\' THEN false ELSE true END
+						'foreignKey' => false,
+						'conditions' => array(
+							'Paiementfoyer.foyer_id = Foyer.id',
+							// FIXME: voir ailleurs, quand on utilise paiementsfoyers
+							// INFO: C'EST JUSTE LE DERNIER POUR LE FOYER
+							// FIXME: à faire dans importcsvapres
+							// FIXME: DEM ou CJT
+							'Paiementfoyer.id IN ( SELECT MAX(paiementsfoyers.id)
+								FROM paiementsfoyers
+								WHERE paiementsfoyers.topribconj = (
+									CASE WHEN (
+										SELECT prestations.rolepers
+											FROM prestations
+											WHERE prestations.personne_id = "Personne"."id"
+												AND prestations.natprest = \'RSA\'
+												AND prestations.rolepers IN ( \'DEM\', \'CJT\' )
 									)
-									GROUP BY paiementsfoyers.foyer_id
-								)'
-							)
-						),
-						array(
-							'table'      => 'apres_etatsliquidatifs',
-							'alias'      => 'ApreEtatliquidatif',
-							'type'       => 'INNER',
-							'foreignKey' => false,
-							'conditions' => array( 'Apre.id = ApreEtatliquidatif.apre_id' )
-						),
-						array(
-							'table'      => 'domiciliationsbancaires',
-							'alias'      => 'Domiciliationbancaire',
-							'type'       => 'LEFT OUTER',
-							'foreignKey' => false,
-							'conditions' => array(
-								'Domiciliationbancaire.codebanque = Paiementfoyer.etaban',
-								'Domiciliationbancaire.codeagence = Paiementfoyer.guiban'
-							)
-						),
+									= \'DEM\' THEN false ELSE true END
+								)
+								GROUP BY paiementsfoyers.foyer_id
+							)'
+						)
 					),
-					'recursive' => 1,
-					'conditions' => array( 'ApreEtatliquidatif.etatliquidatif_id' => Sanitize::clean( $id ) ),
-					'order' => array( 'Paiementfoyer.nomprenomtiturib ASC', 'Foyer.id ASC' )
-				)
+					array(
+						'table'      => 'apres_etatsliquidatifs',
+						'alias'      => 'ApreEtatliquidatif',
+						'type'       => 'INNER',
+						'foreignKey' => false,
+						'conditions' => array( 'Apre.id = ApreEtatliquidatif.apre_id' )
+					),
+					array(
+						'table'      => 'domiciliationsbancaires',
+						'alias'      => 'Domiciliationbancaire',
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array(
+							'Domiciliationbancaire.codebanque = Paiementfoyer.etaban',
+							'Domiciliationbancaire.codeagence = Paiementfoyer.guiban'
+						)
+					),
+				),
+				'recursive' => 1,
+				'conditions' => array( 'ApreEtatliquidatif.etatliquidatif_id' => Sanitize::clean( $id ) ),
+				'order' => array( 'Paiementfoyer.nomprenomtiturib ASC', 'Foyer.id ASC' )
 			);
+
+			if( $qdTiersprestataireapreFormations && $typeapre == 'complementaire' ) {
+				$qdForm = $this->Apre->qdFormationsPourPdf();
+				foreach( $qdForm as $key => $value ) {
+					foreach( $value as $v ) {
+						$querydata[$key][] = $v;
+					}
+				}
+			}
+
+			$this->Apre->unbindModelAll();
+			return $this->Apre->find( 'all', $querydata );
 		}
 	}
 ?>
