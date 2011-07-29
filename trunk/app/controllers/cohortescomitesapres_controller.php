@@ -57,9 +57,8 @@
 		*/
 
 		function _index( $avisComite = null ) {
-// debug( $this->data );
 			$this->set( 'comitesapre', $this->Comiteapre->find( 'list' ) );
-            $this->Comiteapre->Apre->deepAfterFind = true;
+			$this->Comiteapre->Apre->deepAfterFind = true;
 
 			$isRapport = ( Set::classicExtract( $this->params, 'named.rapport' ) == 1 );
 			$idRapport = Set::classicExtract( $this->params, 'named.Cohortecomiteapre__id' );
@@ -71,6 +70,14 @@
 				if( !empty( $this->data['ApreComiteapre'] ) ) {
 					$data = Set::extract( $this->data, '/ApreComiteapre' );
 					$dataApre = Set::combine( $this->data, 'ApreComiteapre.{n}.apre_id', 'ApreComiteapre.{n}.montantattribue' );
+
+					// On oblige le comité à prendre une décision
+					$this->ApreComiteapre->validate['decisioncomite'][] = array(
+						'rule' => array( 'notEmpty' ),
+						'required' => true,
+						'message' => 'Champ obligatoire',
+					);
+
 					$return = $this->ApreComiteapre->saveAll( $data, array( 'validate' => 'only', 'atomic' => false ) );
 
 					if( $return ) {

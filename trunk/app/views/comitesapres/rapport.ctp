@@ -173,7 +173,7 @@
                                     $xhtml->editLink(
                                         'Modifier la décision',
                                         array( 'controller' => 'cohortescomitesapres', 'action' => 'editdecision', Set::classicExtract( $apre, 'id' ) ),
-                                        $permissions->check( 'comitesapres', 'index' )
+                                        false && $permissions->check( 'comitesapres', 'index' )
                                     ),
                                     $xhtml->notificationsApreLink(
                                         'Notifier la décision',
