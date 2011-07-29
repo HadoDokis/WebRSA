@@ -18,9 +18,9 @@ echo '<table id="Decisionreorientationep93" class="tooltips"><thead>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
-		$decisionep = $dossierep['Passagecommissionep'][0]['Decisionreorientationep93'][1];
-		$decisioncg = $dossierep['Passagecommissionep'][0]['Decisionreorientationep93'][0];
-		
+		$decisionep = @$dossierep['Passagecommissionep'][0]['Decisionreorientationep93'][1];
+		$decisioncg = @$dossierep['Passagecommissionep'][0]['Decisionreorientationep93'][0];
+
 		$innerTable = "<table id=\"innerTableDecisionreorientationep93{$i}\" class=\"innerTable\">
 			<tbody>
 				<tr>
@@ -41,14 +41,14 @@ echo '<table id="Decisionreorientationep93" class="tooltips"><thead>
 				$dossierep['Reorientationep93']['Orientstruct']['Structurereferente']['lib_struc'],
 				@$dossierep['Reorientationep93']['Typeorient']['lib_type_orient'],
 				@$dossierep['Reorientationep93']['Structurereferente']['lib_struc'],
-				implode( ' / ', Set::filter( array( $options['Decisionreorientationep93']['decision'][$decisionep['decision']], @$decisionep['Typeorient']['lib_type_orient'], @$decisionep['Structurereferente']['lib_struc'], $decisionep['raisonnonpassage'] ) ) ),
+				implode( ' / ', Set::filter( array( @$options['Decisionreorientationep93']['decision'][$decisionep['decision']], @$decisionep['Typeorient']['lib_type_orient'], @$decisionep['Structurereferente']['lib_struc'], @$decisionep['raisonnonpassage'] ) ) ),
 
-				$options['Decisionreorientationep93']['decisionpcg'][Set::classicExtract( $decisioncg, "decisionpcg" )],
-				array( $options['Decisionreorientationep93']['decision'][Set::classicExtract( $decisioncg, "decision" )], array( 'id' => "Decisionreorientationep93{$i}DecisionColumn" ) ),
+				@$options['Decisionreorientationep93']['decisionpcg'][Set::classicExtract( $decisioncg, "decisionpcg" )],
+				array( @$options['Decisionreorientationep93']['decision'][Set::classicExtract( $decisioncg, "decision" )], array( 'id' => "Decisionreorientationep93{$i}DecisionColumn" ) ),
 				array( @$liste_typesorients[Set::classicExtract( $decisioncg, "typeorient_id" )], array( 'id' => "Decisionreorientationep93{$i}TypeorientId" ) ),
 				array( @$liste_structuresreferentes[Set::classicExtract( $decisioncg, "structurereferente_id" )], array( 'id' => "Decisionreorientationep93{$i}StructurereferenteId" ) ),
 				Set::classicExtract( $decisioncg, "commentaire" ),
-				$xhtml->printLink( 'Imprimer', array( 'controller' => 'commissionseps', 'action' => 'impressionDecision', $dossierep['Passagecommissionep'][0]['id'] ) ),
+				$xhtml->printLink( 'Imprimer', array( 'controller' => 'commissionseps', 'action' => 'impressionDecision', $dossierep['Passagecommissionep'][0]['id'] ), ( $commissionep['Commissionep']['etatcommissionep'] != 'annule' ) ),
 				array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
 			),
 			array( 'class' => 'odd' ),

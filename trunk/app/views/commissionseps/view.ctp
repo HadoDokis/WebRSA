@@ -99,6 +99,12 @@
 				<th><?php echo "État de la commission";?></th>
 				<td><?php echo /*debug($options);*/ Set::enum( $commissionep['Commissionep']['etatcommissionep'], $options['Commissionep']['etatcommissionep'] );?></td>
 			</tr>
+			<?php if( $commissionep['Commissionep']['etatcommissionep'] == 'annule' ):?>
+			<tr class="even">
+				<th><?php echo "Raison de l'annulation";?></th>
+				<td><?php echo h( $commissionep['Commissionep']['raisonannulation'] );?></td>
+			</tr>
+			<?php endif;?>
 		</tbody>
 	</table>
 </div>

@@ -19,8 +19,8 @@ echo '<table id="Decisiondefautinsertionep66" class="tooltips"><thead>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
-		$decisionep = $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1];
-		$decisioncg = $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0];
+		$decisionep = @$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1];
+		$decisioncg = @$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0];
 
 		$avisEp = implode( ' - ', Set::filter( array( Set::enum( @$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1]['decision'], $options['Decisiondefautinsertionep66']['decision'] ), Set::enum( @$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1]['decisionsup'], $options['Decisiondefautinsertionep66']['decisionsup'] ), @$listeTypesorients[@$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1]['typeorient_id']], @$listeStructuresreferentes[@$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1]['structurereferente_id']], @$listeReferents[@$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1]['referent_id']] ) ) );
 
@@ -50,7 +50,7 @@ echo '<table id="Decisiondefautinsertionep66" class="tooltips"><thead>
 				$avisEp,
 
 				array( implode( ' / ', Set::filter( array(
-					$options['Decisiondefautinsertionep66']['decision'][Set::classicExtract( $decisioncg, "decision" )],
+					@$options['Decisiondefautinsertionep66']['decision'][Set::classicExtract( $decisioncg, "decision" )],
 					@$options['Decisiondefautinsertionep66']['decisionsup'][Set::classicExtract( $decisioncg, "decisionsup" )]
 				) ) ), array( 'id' => "Decisiondefautinsertionep66{$i}DecisionColumn" ) ),
 

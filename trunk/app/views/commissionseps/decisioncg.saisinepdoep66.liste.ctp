@@ -15,8 +15,8 @@ echo '<table id="Decisionsaisinepdoep66" class="tooltips"><thead>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
-		$decisionep = $dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][1];
-		$decisioncg = $dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][0];
+		$decisionep = @$dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][1];
+		$decisioncg = @$dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][0];
 
 		$listeSituationPdo = array();
 		foreach($dossierep['Saisinepdoep66']['Traitementpdo']['Propopdo']['Situationpdo'] as $situationpdo) {
@@ -48,7 +48,7 @@ echo '<table id="Decisionsaisinepdoep66" class="tooltips"><thead>
 				implode(' / ', $listeSituationPdo),
 				$dossierep['Saisinepdoep66']['Traitementpdo']['Descriptionpdo']['name'],
 
-				array( $options['Decisionsaisinepdoep66']['decision'][Set::classicExtract( $decisioncg, "decision" )], array( 'id' => "Decisionsaisinepdoep66{$i}DecisionColumn" ) ),
+				array( @$options['Decisionsaisinepdoep66']['decision'][Set::classicExtract( $decisioncg, "decision" )], array( 'id' => "Decisionsaisinepdoep66{$i}DecisionColumn" ) ),
 
 				@$decisioncg['Decisionpdo']['libelle'],
 				array( $cg, array( 'id' => "Decisionsaisinepdoep66{$i}Decisioncg" ) ),

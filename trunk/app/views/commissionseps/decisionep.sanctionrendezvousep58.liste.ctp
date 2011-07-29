@@ -12,7 +12,7 @@ echo '<table><thead>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
-		$decisionep = $dossierep['Passagecommissionep'][0]['Decisionsanctionrendezvousep58'][0];
+		$decisionep = @$dossierep['Passagecommissionep'][0]['Decisionsanctionrendezvousep58'][0];
 		
 		echo $xhtml->tableCells(
 			array(
@@ -22,10 +22,10 @@ echo '<table><thead>
 				$locale->date( __( 'Locale->date', true ), $dossierep['Dossierep']['created'] ),
 				Set::classicExtract( $typesrdv, $dossierep['Sanctionrendezvousep58']['Rendezvous']['typerdv_id'], true),
 
-				array( $options['Decisionsanctionrendezvousep58']['decision'][Set::classicExtract( $decisionep, "decision" )], array( 'id' => "Decisionsanctionrendezvousep58{$i}DecisionColumn" ) ),
+				array( @$options['Decisionsanctionrendezvousep58']['decision'][Set::classicExtract( $decisionep, "decision" )], array( 'id' => "Decisionsanctionrendezvousep58{$i}DecisionColumn" ) ),
 				array( @$listesanctionseps58[Set::classicExtract( $decisionep, "listesanctionep58_id" )], array( 'id' => "Decisionsanctionrendezvousep58{$i}Listesanctionep58Id" ) ),
 				Set::classicExtract( $decisionep, "commentaire" ),
-				$xhtml->printLink( 'Imprimer', array( 'controller' => 'commissionseps', 'action' => 'impressionDecision', $dossierep['Passagecommissionep'][0]['id'] ) ),
+				$xhtml->printLink( 'Imprimer', array( 'controller' => 'commissionseps', 'action' => 'impressionDecision', $dossierep['Passagecommissionep'][0]['id'] ), ( $commissionep['Commissionep']['etatcommissionep'] != 'annule' ) ),
 			),
 			array( 'class' => 'odd' ),
 			array( 'class' => 'even' )

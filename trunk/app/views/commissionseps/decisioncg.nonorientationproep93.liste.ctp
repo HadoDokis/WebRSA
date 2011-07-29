@@ -15,10 +15,10 @@ echo '<table id="Decisionnonorientationproep93" class="tooltips"><thead>
 </tr>
 </thead><tbody>';
 foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
-		$decisionep = $dossierep['Passagecommissionep'][0]['Decisionnonorientationproep93'][1];
-		$decisioncg = $dossierep['Passagecommissionep'][0]['Decisionnonorientationproep93'][0];
+		$decisionep = @$dossierep['Passagecommissionep'][0]['Decisionnonorientationproep93'][1];
+		$decisioncg = @$dossierep['Passagecommissionep'][0]['Decisionnonorientationproep93'][0];
 
-		$avisep = $options['Decisionnonorientationproep93']['decision'][Set::classicExtract( $decisionep, "decision" )];
+		$avisep = @$options['Decisionnonorientationproep93']['decision'][Set::classicExtract( $decisionep, "decision" )];
 		if ( $decisionep['decision'] == 'maintienref' ) {
 			$avisep .= ' - '.$dossierep['Nonorientationproep93']['Orientstruct']['Typeorient']['lib_type_orient'].' - '.$dossierep['Nonorientationproep93']['Orientstruct']['Structurereferente']['lib_struc'];
 		}
@@ -46,12 +46,12 @@ foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
 
 				$avisep,
 
-				$options['Decisionnonorientationproep93']['decisionpcg'][Set::classicExtract( $decisioncg, "decisionpcg" )],
-				array( $options['Decisionnonorientationproep93']['decision'][Set::classicExtract( $decisioncg, "decision" )], array( 'id' => "Decisionnonorientationproep93{$i}DecisionColumn" ) ),
+				@$options['Decisionnonorientationproep93']['decisionpcg'][Set::classicExtract( $decisioncg, "decisionpcg" )],
+				@array( $options['Decisionnonorientationproep93']['decision'][Set::classicExtract( $decisioncg, "decision" )], array( 'id' => "Decisionnonorientationproep93{$i}DecisionColumn" ) ),
 				array( @$liste_typesorients[Set::classicExtract( $decisioncg, "typeorient_id" )], array( 'id' => "Decisionnonorientationproep93{$i}TypeorientId" ) ),
 				array( @$liste_structuresreferentes[Set::classicExtract( $decisioncg, "structurereferente_id" )], array( 'id' => "Decisionnonorientationproep93{$i}StructurereferenteId" ) ),
 				Set::classicExtract( $decisioncg, "commentaire" ),
-				$xhtml->printLink( 'Imprimer', array( 'controller' => 'commissionseps', 'action' => 'impressionDecision', $dossierep['Passagecommissionep'][0]['id'] ) ),
+				$xhtml->printLink( 'Imprimer', array( 'controller' => 'commissionseps', 'action' => 'impressionDecision', $dossierep['Passagecommissionep'][0]['id'] ), ( $commissionep['Commissionep']['etatcommissionep'] != 'annule' ) ),
 				array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
 			),
 			array( 'class' => 'odd' ),

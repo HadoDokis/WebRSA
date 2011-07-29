@@ -18,8 +18,8 @@ echo '<table id="Decisionnonrespectsanctionep93" class="tooltips"><thead>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
-		$decisionep = $dossierep['Passagecommissionep'][0]['Decisionnonrespectsanctionep93'][1];
-		$decisioncg = $dossierep['Passagecommissionep'][0]['Decisionnonrespectsanctionep93'][0];
+		$decisionep = @$dossierep['Passagecommissionep'][0]['Decisionnonrespectsanctionep93'][1];
+		$decisioncg = @$dossierep['Passagecommissionep'][0]['Decisionnonrespectsanctionep93'][0];
 
 		$lineOptions = array();
 		foreach( $options['Decisionnonrespectsanctionep93']['decision'] as $key => $label ) {
@@ -51,13 +51,13 @@ echo '<table id="Decisionnonrespectsanctionep93" class="tooltips"><thead>
 				
 				Set::enum( @$decisionep['decision'], $options['Decisionnonrespectsanctionep93']['decision'] ),
 
-				$options['Decisionnonrespectsanctionep93']['decisionpcg'][Set::classicExtract( $decisioncg, "decisionpcg" )],
+				@$options['Decisionnonrespectsanctionep93']['decisionpcg'][Set::classicExtract( $decisioncg, "decisionpcg" )],
 				array(
-					$options['Decisionnonrespectsanctionep93']['decision'][Set::classicExtract( $decisioncg, "decision" )],
+					@$options['Decisionnonrespectsanctionep93']['decision'][Set::classicExtract( $decisioncg, "decision" )],
 					array( 'id' => "Decisionnonrespectsanctionep93{$i}ColumnDecision", 'colspan' => 2 )
 				),
 				Set::classicExtract( $decisioncg, "commentaire" ),
-				$xhtml->printLink( 'Imprimer', array( 'controller' => 'commissionseps', 'action' => 'impressionDecision', $dossierep['Passagecommissionep'][0]['id'] ) ),
+				$xhtml->printLink( 'Imprimer', array( 'controller' => 'commissionseps', 'action' => 'impressionDecision', $dossierep['Passagecommissionep'][0]['id'] ), ( $commissionep['Commissionep']['etatcommissionep'] != 'annule' ) ),
 				array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
 			),
 			array( 'class' => 'odd' ),

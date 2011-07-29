@@ -3,7 +3,7 @@
 	echo '<li>'.$xhtml->link(
 		__d( 'commissionep','Commissionseps::impressionsDecisions', true ),
 		array( 'controller' => 'commissionseps', 'action' => 'impressionsDecisions', $commissionep['Commissionep']['id'] ),
-		array( 'class' => 'button impressionsDecisions' ),
+		array( 'class' => 'button impressionsDecisions', 'enabled' => $commissionep['Commissionep']['etatcommissionep'] != 'annule' ),
         'Etes-vous sûr de vouloir imprimer les décisions ?'
 	).' </li>';
 	echo '</ul>';
@@ -25,8 +25,8 @@ echo '<table id="Decisionsaisinebilanparcoursep66" class="tooltips"><thead>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
-		$decisionep = $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][1];
-		$decisioncg = $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0];
+		$decisionep = @$dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][1];
+		$decisioncg = @$dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0];
 
 		$innerTable = "<table id=\"innerTableDecisionsaisinebilanparcoursep66{$i}\" class=\"innerTable\">
 			<tbody>
@@ -55,14 +55,14 @@ echo '<table id="Decisionsaisinebilanparcoursep66" class="tooltips"><thead>
 
 		if ( $dossierep['Saisinebilanparcoursep66']['choixparcours'] == 'maintien' ) {
 			$propoReferent = array(
-				array( $options['Saisinebilanparcoursep66']['choixparcours'][Set::classicExtract( $dossierep, "Saisinebilanparcoursep66.choixparcours" )], array( 'colspan' => 2 ) ),
-				$options['Saisinebilanparcoursep66']['maintienorientparcours'][Set::classicExtract( $dossierep, "Saisinebilanparcoursep66.maintienorientparcours" )],
-				$options['Saisinebilanparcoursep66']['changementrefparcours'][Set::classicExtract( $dossierep, "Saisinebilanparcoursep66.changementrefparcours" )]
+				array( @$options['Saisinebilanparcoursep66']['choixparcours'][Set::classicExtract( $dossierep, "Saisinebilanparcoursep66.choixparcours" )], array( 'colspan' => 2 ) ),
+				@$options['Saisinebilanparcoursep66']['maintienorientparcours'][Set::classicExtract( $dossierep, "Saisinebilanparcoursep66.maintienorientparcours" )],
+				@$options['Saisinebilanparcoursep66']['changementrefparcours'][Set::classicExtract( $dossierep, "Saisinebilanparcoursep66.changementrefparcours" )]
 			);
 		}
 		else {
 			$propoReferent = array(
-				$options['Saisinebilanparcoursep66']['choixparcours'][Set::classicExtract( $dossierep, "Saisinebilanparcoursep66.choixparcours" )],
+				@$options['Saisinebilanparcoursep66']['choixparcours'][Set::classicExtract( $dossierep, "Saisinebilanparcoursep66.choixparcours" )],
 				@$options['Saisinebilanparcoursep66']['reorientation'][Set::classicExtract( $dossierep, "Saisinebilanparcoursep66.reorientation" )],
 				$liste_typesorients[Set::classicExtract( $dossierep, "Saisinebilanparcoursep66.typeorient_id" )],
 				$liste_structuresreferentes[Set::classicExtract( $dossierep, "Saisinebilanparcoursep66.structurereferente_id" )]
@@ -84,7 +84,7 @@ echo '<table id="Decisionsaisinebilanparcoursep66" class="tooltips"><thead>
 			@$liste_referents[Set::classicExtract( $decisionep, "referent_id" )]
 		) ) );
 
-		$enabled = true;
+		$enabled = ( $commissionep['Commissionep']['etatcommissionep'] != 'annule' );
 		if( $decisioncg['decision'] == 'maintien' ){
 			$enabled = false;
 		}
@@ -96,7 +96,7 @@ echo '<table id="Decisionsaisinebilanparcoursep66" class="tooltips"><thead>
 			array_merge(
 				$listeFields,
 				array(
-					array( $options['Decisionsaisinebilanparcoursep66']['decision'][Set::classicExtract( $decisioncg, "decision" )], array( 'id' => "Decisionsaisinebilanparcoursep66{$i}DecisionColumn" ) ),
+					array( @$options['Decisionsaisinebilanparcoursep66']['decision'][Set::classicExtract( $decisioncg, "decision" )], array( 'id' => "Decisionsaisinebilanparcoursep66{$i}DecisionColumn" ) ),
 					array( @$options['Decisionsaisinebilanparcoursep66']['reorientation'][Set::classicExtract( $decisioncg, "reorientation" )], array( 'id' => "Decisionsaisinebilanparcoursep66{$i}Reorientation" ) ),
 					array( @$liste_typesorients[Set::classicExtract( $decisioncg, "typeorient_id" )], array( 'id' => "Decisionsaisinebilanparcoursep66{$i}TypeorientId" ) ),
 					array( @$liste_structuresreferentes[Set::classicExtract( $decisioncg, "structurereferente_id" )], array( 'id' => "Decisionsaisinebilanparcoursep66{$i}StructurereferenteId" ) ),
@@ -114,7 +114,6 @@ echo '<table id="Decisionsaisinebilanparcoursep66" class="tooltips"><thead>
 		);
 	}
 	echo '</tbody></table>';
-
 ?>
 
 <script type="text/javascript">
@@ -140,6 +139,16 @@ echo '<table id="Decisionsaisinebilanparcoursep66" class="tooltips"><thead>
 				$( 'Decisionsaisinebilanparcoursep66<?php echo $i;?>Maintienorientparcours' ).hide();
 				$( 'Decisionsaisinebilanparcoursep66<?php echo $i;?>Changementrefparcours' ).hide();
 				$( 'Decisionsaisinebilanparcoursep66<?php echo $i;?>Changementrefparcours' ).writeAttribute( "colspan" );
+				$( 'Decisionsaisinebilanparcoursep66<?php echo $i;?>DecisionColumn' ).writeAttribute( "colspan" );
+			}
+			else if ( '<?php echo Set::classicExtract( $dossiers, "{$theme}.liste.{$i}.Passagecommissionep.0.etatdossierep" );?>' == 'reporte' ) {
+				$( 'Decisionsaisinebilanparcoursep66<?php echo $i;?>Reorientation' ).hide();
+				$( 'Decisionsaisinebilanparcoursep66<?php echo $i;?>TypeorientId' ).hide();
+				$( 'Decisionsaisinebilanparcoursep66<?php echo $i;?>StructurereferenteId' ).hide();
+				$( 'Decisionsaisinebilanparcoursep66<?php echo $i;?>ReferentId' ).hide();
+				$( 'Decisionsaisinebilanparcoursep66<?php echo $i;?>Maintienorientparcours' ).show();
+				$( 'Decisionsaisinebilanparcoursep66<?php echo $i;?>Changementrefparcours' ).show();
+				$( 'Decisionsaisinebilanparcoursep66<?php echo $i;?>Changementrefparcours' ).writeAttribute( "colspan", 3 );
 				$( 'Decisionsaisinebilanparcoursep66<?php echo $i;?>DecisionColumn' ).writeAttribute( "colspan" );
 			}
 		<?php endfor;?>
