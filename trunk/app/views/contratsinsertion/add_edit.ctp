@@ -253,7 +253,16 @@
                 <strong>Date de naissance : </strong><?php echo date_short( Set::classicExtract( $personne, 'Personne.dtnai' ) );?>
             </td>
             <td class="mediumSize noborder">
-                <strong>N° Service instructeur : </strong><?php echo Set::classicExtract( $personne, 'Serviceinstructeur.lib_service');?>
+                <strong>N° Service instructeur : </strong>
+                <?php
+					$libservice = Set::enum( Set::classicExtract( $personne, 'Suiviinstruction.typeserins' ),  $typeserins );
+					if( isset( $libservice ) ) {
+						echo $libservice;
+					}
+					else{
+						echo 'Non renseigné';
+					}
+                ?>
                 <br />
                 <strong>N° demandeur : </strong><?php echo Set::classicExtract( $personne, 'Dossier.numdemrsa' );?>
                 <br />
