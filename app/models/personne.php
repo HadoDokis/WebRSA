@@ -1010,11 +1010,12 @@
 						'Adresse.codepos',
 						'Adresse.nomvoie',
 						'Adresse.numcomptt',
-//                         'Modecontact.numtel',
-//                         'Modecontact.autorutitel',
-//                         'Modecontact.autorutiadrelec',
-		//                         'Activite.act',
 						'Serviceinstructeur.lib_service',
+						'Serviceinstructeur.numdepins',
+						'Serviceinstructeur.typeserins',
+						'Serviceinstructeur.numcomins',
+						'Serviceinstructeur.numagrins',
+						'Suiviinstruction.typeserins'
 					),
 					'conditions' => array(
 						'Personne.id' => $personne_id
@@ -1059,20 +1060,6 @@
 							'foreignKey' => false,
 							'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
 						),
-//                         array(
-//                             'table'      => 'modescontact',
-//                             'alias'      => 'Modecontact',
-//                             'type'       => 'LEFT OUTER',
-//                             'foreignKey' => false,
-//                             'conditions' => array( 'Foyer.id = Modecontact.foyer_id' )
-//                         ),
-		//                         array(
-		//                             'table'      => 'activites',
-		//                             'alias'      => 'Activite',
-		//                             'type'       => 'LEFT OUTER',
-		//                             'foreignKey' => false,
-		//                             'conditions' => array( 'Activite.personne_id = Personne.id' )
-		//                         ),
 						array(
 							'table'      => 'suivisinstruction',
 							'alias'      => 'Suiviinstruction',
@@ -1092,7 +1079,7 @@
 				)
 			);
 
-		//             FIXME -> comment distinguer ? + FIXME autorutitel / autorutiadrelec
+			// FIXME -> comment distinguer ? + FIXME autorutitel / autorutiadrelec
 			$modecontact = $this->Foyer->Modecontact->find(
 				'all',
 				array(

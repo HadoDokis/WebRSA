@@ -72,6 +72,8 @@
 				$this->set( 'fonction_pers', $this->Option->fonction_pers() );
 				$this->set( 'nivetus', $this->Contratinsertion->Personne->Dsp->enumList( 'nivetu' ) );
 				$this->set( 'nivdipmaxobt', $this->Contratinsertion->Personne->Dsp->enumList( 'nivdipmaxobt' ) );
+// 				$this->set( 'typeserins', $this->Contratinsertion->Personne->Orientstruct->Serviceinstructeur->find( 'list', array( 'fields' => array( 'lib_service' ) ) ) );
+				$this->set( 'typeserins', $this->Option->typeserins() );
 
 				$this->set( 'lib_action', $this->Option->lib_action() );
 				$this->set( 'typo_aide', $this->Option->typo_aide() );
