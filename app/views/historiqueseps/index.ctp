@@ -35,6 +35,12 @@
 					)
 				)
 			);
+
+			$actionDecisionsCommission = 'decisioncg';
+			if( Configure::read( 'Cg.departement' ) == 58 ) {
+				$actionDecisionsCommission = 'decisionep';
+			}
+
 			echo '</thead><tbody>';
 			foreach( $passages as $passsage ) {
 				echo $xhtml->tableCells(
@@ -48,7 +54,7 @@
 						$xhtml->link( 'Passage', array( 'controller' => 'historiqueseps', 'action' => 'view_passage', $passsage['Passagecommissionep']['id'] ), array( 'class' => 'button view', 'enabled' => $permissions->check( 'historiqueseps', 'view_passage' ) ) ),
 						// FIXME
 // 						$xhtml->link( 'Dossier', array( 'controller' => 'historiqueseps', 'action' => 'view_dossier', $passsage['Dossierep']['id'] ), array( 'class' => 'button view', 'enabled' => $permissions->check( 'historiqueseps', 'view_dossier' ) ) ),
-						$xhtml->link( 'Commission', array( 'controller' => 'commissionseps', 'action' => 'decisioncg', $passsage['Commissionep']['id'] ), array( 'class' => 'button view', 'enabled' => $permissions->check( 'commissionseps', 'decisioncg' ) ) ),
+						$xhtml->link( 'Commission', array( 'controller' => 'commissionseps', 'action' => $actionDecisionsCommission, $passsage['Commissionep']['id'] ), array( 'class' => 'button view', 'enabled' => $permissions->check( 'commissionseps', $actionDecisionsCommission ) ) ),
 					),
 					array( 'class' => 'odd' ),
 					array( 'class' => 'even' )

@@ -4,7 +4,12 @@
 		echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
 	}
 ?>
-<br/>
+
+<?php
+	if( $commissionep['Commissionep']['etatcommissionep'] == 'annule' ) {
+		echo $html->tag( 'p', "Commission annulée: {$commissionep['Commissionep']['raisonannulation']}", array( 'class' => 'notice' ) );
+	}
+?>
 
 <?php
 	if( Configure::read( 'Cg.departement' ) == 93 ) {
@@ -39,7 +44,7 @@
 					echo '<li>'.$xhtml->link(
 						__d( 'commissionep','Commissionseps::impressionsDecisions', true ),
 						array( 'controller' => 'commissionseps', 'action' => 'impressionsDecisions', $commissionep['Commissionep']['id'] ),
-						array( 'class' => 'button impressionsDecisions' ),
+						array( 'class' => 'button impressionsDecisions', 'enabled' => $commissionep['Commissionep']['etatcommissionep'] != 'annule' ),
                         'Etes-vous sûr de vouloir imprimer les décisions ?'
 					).' </li>';
 					echo '</ul>';
@@ -59,7 +64,10 @@
 						array(
 							'actions' => array(
 								'Dossierseps::view' => array( 'label' => 'Voir', 'url' => array( 'controller' => 'historiqueseps', 'action' => 'view_passage', '#Passagecommissionep.id#' ), 'class' => 'external' ),
-								'Commissionseps::impressionDecision' => array( 'url' => array( 'controller' => 'commissionseps', 'action' => 'impressionDecision',  '#Passagecommissionep.id#' ) )
+								'Commissionseps::impressionDecision' => array(
+									'url' => array( 'controller' => 'commissionseps', 'action' => 'impressionDecision',  '#Passagecommissionep.id#' ), 
+									'disabled' => ( $commissionep['Commissionep']['etatcommissionep'] == 'annule' )
+								)
 							),
 							'options' => $options,
 							'id' => $theme

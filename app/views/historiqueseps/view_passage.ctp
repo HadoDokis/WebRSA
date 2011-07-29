@@ -140,24 +140,29 @@
 			$maxPassages = 1;
 		}
 
-		for( $i = 0 ; $i <= $maxPassages ; $i++ ) {
-			if( !empty( $passage[$modeleDecision][$i] ) ) {
-				if( Configure::read( 'Cg.departement' ) == 58 ) {
-					$label = 'Décision EP';
-				}
-				else {
-					$label = ( ( $i == 0 ) ? 'Avis EP' : 'Décision PCG' );
-				}
+		if( $passage['Commissionep']['etatcommissionep'] == 'annule' ) {
+			echo $html->tag( 'p', "Commission annulée: {$passage['Commissionep']['raisonannulation']}", array( 'class' => 'notice' ) );
+		}
+		else {
+			for( $i = 0 ; $i <= $maxPassages ; $i++ ) {
+				if( !empty( $passage[$modeleDecision][$i] ) ) {
+					if( Configure::read( 'Cg.departement' ) == 58 ) {
+						$label = 'Décision EP';
+					}
+					else {
+						$label = ( ( $i == 0 ) ? 'Avis EP' : 'Décision PCG' );
+					}
 
-				echo '<h2>'.$label.'</h2>';
-				echo $default2->view(
-					array( $modeleDecision => $passage[$modeleDecision][$i] ),
-					$detailsDecision,
-					array(
-						'options' => $options,
-						'class' => 'aere'
-					)
-				);
+					echo '<h2>'.$label.'</h2>';
+					echo $default2->view(
+						array( $modeleDecision => $passage[$modeleDecision][$i] ),
+						$detailsDecision,
+						array(
+							'options' => $options,
+							'class' => 'aere'
+						)
+					);
+				}
 			}
 		}
 

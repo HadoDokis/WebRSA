@@ -21,8 +21,8 @@ echo '<table id="Decisioncontratcomplexeep93" class="tooltips"><thead>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
-		$decisionep = $dossierep['Passagecommissionep'][0]['Decisioncontratcomplexeep93'][1];
-		$decisioncg = $dossierep['Passagecommissionep'][0]['Decisioncontratcomplexeep93'][0];
+		$decisionep = @$dossierep['Passagecommissionep'][0]['Decisioncontratcomplexeep93'][1];
+		$decisioncg = @$dossierep['Passagecommissionep'][0]['Decisioncontratcomplexeep93'][0];
 
 		$innerTable = "<table id=\"innerTableDecisioncontratcomplexeep93{$i}\" class=\"innerTable\">
 			<tbody>
@@ -53,12 +53,12 @@ echo '<table id="Decisioncontratcomplexeep93" class="tooltips"><thead>
 					)
 				),
 
-				$options['Decisioncontratcomplexeep93']['decisionpcg'][Set::classicExtract( $decisioncg, "decisionpcg" )],
-				array( $options['Decisioncontratcomplexeep93']['decision'][Set::classicExtract( $decisioncg, "decision" )], array( 'id' => "" ) ),
+				@$options['Decisioncontratcomplexeep93']['decisionpcg'][Set::classicExtract( $decisioncg, "decisionpcg" )],
+				array( @$options['Decisioncontratcomplexeep93']['decision'][Set::classicExtract( $decisioncg, "decision" )], array( 'id' => "" ) ),
 				array( Set::classicExtract( $decisioncg, "datevalidation_ci" ), array( 'id' => "Decisioncontratcomplexeep93{$i}DatevalidationCi" ) ),
 				array( Set::classicExtract( $decisioncg, "observ_ci" ), array( 'id' => "Decisioncontratcomplexeep93{$i}ObservCi" ) ),
 				Set::classicExtract( $decisioncg, "commentaire" ),
-				$xhtml->printLink( 'Imprimer', array( 'controller' => 'commissionseps', 'action' => 'impressionDecision', $dossierep['Passagecommissionep'][0]['id'] ) ),
+				$xhtml->printLink( 'Imprimer', array( 'controller' => 'commissionseps', 'action' => 'impressionDecision', $dossierep['Passagecommissionep'][0]['id'] ), ( $commissionep['Commissionep']['etatcommissionep'] != 'annule' ) ),
 				array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
 			),
 			array( 'class' => 'odd' ),

@@ -35,14 +35,14 @@
 						echo '<li>'.$xhtml->link(
 							__d( 'commissionep','Commissionseps::impressionsDecisions', true ),
 							array( 'controller' => 'commissionseps', 'action' => 'impressionsDecisions', $commissionep['Commissionep']['id'] ),
-							array( 'class' => 'button impressionsDecisions' ),
+							array( 'class' => 'button impressionsDecisions', 'enabled' => ( $commissionep['Commissionep']['etatcommissionep'] != 'annule' ) ),
                             'Etes-vous sûr de vouloir imprimer les décisions ?'
 						).' </li>';
 					}
 					echo '<li>'.$xhtml->link(
 						__d( 'commissionep','Commissionseps::impressionpv', true ),
 						array( 'controller' => 'commissionseps', 'action' => 'impressionpv', $commissionep['Commissionep']['id'] ),
-						array( 'class' => 'button impressionpv' ),
+						array( 'class' => 'button impressionpv', 'enabled' => ( $commissionep['Commissionep']['etatcommissionep'] != 'annule' ) ),
                         'Etes-vous sûr de vouloir imprimer le PV de la commission ?'
 					).' </li>';
 					echo '</ul>';
@@ -55,7 +55,7 @@
 						$actions['Dossierseps::fichesynthese'] = array( 'url' => array( 'controller' => 'commissionseps', 'action' => 'fichesynthese',  Set::classicExtract( $commissionep, 'Commissionep.id' ), '#Dossierep.id#', false ) );
 					}
 					elseif ( Configure::read( 'Cg.departement' )  == 58 ) {
-						$actions['Commissionseps::impressionDecision'] = array( 'url' => array( 'controller' => 'commissionseps', 'action' => 'impressionDecision',  '#Passagecommissionep.id#' ) );
+						$actions['Commissionseps::impressionDecision'] = array( 'url' => array( 'controller' => 'commissionseps', 'action' => 'impressionDecision',  '#Passagecommissionep.id#' ), 'disabled' => ( $commissionep['Commissionep']['etatcommissionep'] == 'annule' ) );
 					}
 
 					echo $default2->index(

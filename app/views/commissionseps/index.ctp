@@ -180,10 +180,10 @@
 						break;
 					case 'decisions':
 						if ( Configure::read( 'Cg.departement' ) == 58 ) {
-							$lien = '<td>'.$xhtml->link( 'Voir les décisions', array( 'controller' => 'commissionseps', 'action' => 'decisionep', $commissionep['Commissionep']['id'] ), array( 'enabled' => $commissionep['Commissionep']['etatcommissionep'] == 'traite' ) ).'</td>';
+							$lien = '<td>'.$xhtml->link( 'Voir les décisions', array( 'controller' => 'commissionseps', 'action' => 'decisionep', $commissionep['Commissionep']['id'] ), array( 'enabled' => in_array( $commissionep['Commissionep']['etatcommissionep'], array( 'traite', 'annule' ) ) ) ).'</td>';
 						}
 						else {
-							$lien = '<td>'.$xhtml->link( 'Voir les décisions', array( 'controller' => 'commissionseps', 'action' => 'decisioncg', $commissionep['Commissionep']['id'] ), array( 'enabled' => $commissionep['Commissionep']['etatcommissionep'] == 'traite' ) ).'</td>';
+							$lien = '<td>'.$xhtml->link( 'Voir les décisions', array( 'controller' => 'commissionseps', 'action' => 'decisioncg', $commissionep['Commissionep']['id'] ), array( 'enabled' => in_array( $commissionep['Commissionep']['etatcommissionep'], array( 'traite', 'annule' ) ) ) ).'</td>';
 						}
 						break;
 					default:
@@ -199,9 +199,8 @@
 					<td>'.h( $locale->date( '%d/%m/%Y %H:%M', $commissionep['Commissionep']['dateseance'] ) ).'</td>
 					<td>'.h( $commissionep['Commissionep']['nbparticipants'] ).'</td>
 					<td>'.h( $commissionep['Commissionep']['nbabsents'] ).'</td>
-					<!--<td>'.h( Set::enum( $commissionep['Commissionep']['etatcommissionep'], $options['Commissionep']['etatcommissionep'] ) ).'</td>-->
 					<td>'.h( ( $commissionep['Commissionep']['etatcommissionep'] == 'cree' || $commissionep['Commissionep']['etatcommissionep'] == 'quorum' || $commissionep['Commissionep']['etatcommissionep']  == 'associe' || $commissionep['Commissionep']['etatcommissionep']  == 'valide' ) ? 'Non validée' : 'Validée' ).'</td>
-					<td>'.h( ( $commissionep['Commissionep']['etatcommissionep'] == 'traite') ? 'Traitée' : 'En cours' ).'</td>
+					<td>'.h( Set::enum( $commissionep['Commissionep']['etatcommissionep'], $options['Commissionep']['etatcommissionep'] ) ).'</td>
 					<td>'.h( $commissionep['Commissionep']['observations'] ).'</td>
 					'.$lien.'
 				</tr>';
