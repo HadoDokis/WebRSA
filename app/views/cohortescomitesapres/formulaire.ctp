@@ -133,7 +133,7 @@
             </tbody>
         </table>
     <?php echo $pagination;?>
-        <?php echo $xform->submit( 'Validation de la liste' );?>
+        <?php echo $xform->submit( 'Validation de la liste', array( 'onclick' => 'return confirm( "Êtes-vous sûr de vouloir valider ?" )' ) );?>
         <?php echo $xform->end();?>
 
 
