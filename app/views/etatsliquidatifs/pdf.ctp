@@ -1,9 +1,9 @@
 <h1><?php echo $this->pageTitle = 'Etat de liquidation';?></h1>
 
 <?php
-    $etatliquidatif['Etatliquidatif']['tranche'] = ( ( $etatliquidatif['Etatliquidatif']['typeapre'] == 'forfaitaire' ) ? 'T01' : 'T02' );
-    $etatliquidatif['Etatliquidatif']['objet'] = $etatliquidatif['Etatliquidatif']['lib_programme'].' '.date( 'm/Y', strtotime( $etatliquidatif['Etatliquidatif']['datecloture'] ) );
-    $etatliquidatif['Etatliquidatif']['montanttotalapre'] = $locale->money( $etatliquidatif['Etatliquidatif']['montanttotalapre'] );
+	$etatliquidatif['Etatliquidatif']['tranche'] = ( ( $etatliquidatif['Etatliquidatif']['typeapre'] == 'forfaitaire' ) ? 'T01' : 'T02' );
+	$etatliquidatif['Etatliquidatif']['objet'] = $etatliquidatif['Etatliquidatif']['lib_programme'].' '.date( 'm/Y', strtotime( $etatliquidatif['Etatliquidatif']['datecloture'] ) );
+	$etatliquidatif['Etatliquidatif']['montanttotalapre'] = $locale->money( $etatliquidatif['Etatliquidatif']['montanttotalapre'] );
 ?>
 
 <table class="etatliquidatif header">
@@ -30,7 +30,7 @@
 
 	function paiementorganismeComplet( $paiementorganisme ) {
 		$filtered = Set::filter( $paiementorganisme );
-		$requiredKeys = array( 'nomtiturib', 'guiban', 'etaban', 'numcomptban', 'clerib' );
+		$requiredKeys = array( 'guiban', 'etaban', 'numcomptban', 'clerib' );
 		foreach( $requiredKeys as $requiredKey ) {
 			if( !isset( $filtered[$requiredKey] ) ) {
 				return false;
@@ -65,7 +65,8 @@
 <table class="etatliquidatif apres">
 	<thead>
 		<tr>
-			<th>Titre Nom Prénom</th>
+			<th>Titre</th>
+			<th>Nom Prénom</th>
 			<th>Adresse</th>
 			<th>C.P.</th>
 			<th>Ville</th>
@@ -85,19 +86,20 @@
 				// Le destinataire est-il l'allocataire (true) ou l'organisme de formation (false)
 				$destinataireAllocataire = !( $etatliquidatif['Etatliquidatif']['typeapre'] == 'complementaire' && !empty( $element['Tiersprestataireapre']['guiban'] ) );
 
-				if( $destinataireAllocataire ) {
-					// Formattage élément
-					$adresse = implode(
-						' ',
-						array(
-							Set::classicExtract( $element, 'Adresse.numvoie' ),
-							mb_convert_case( Set::enum( Set::classicExtract( $element, 'Adresse.typevoie' ), $typevoie ), MB_CASE_UPPER, Configure::read( 'App.encoding' ) ),
-							Set::classicExtract( $element, 'Adresse.nomvoie' ),
-							Set::classicExtract( $element, 'Adresse.complideadr' ),
-							Set::classicExtract( $element, 'Adresse.compladr' ),
-						)
-					);
+				// Formattage élément
+				$adresse = implode(
+					' ',
+					array(
+						Set::classicExtract( $element, 'Adresse.numvoie' ),
+						mb_convert_case( Set::enum( Set::classicExtract( $element, 'Adresse.typevoie' ), $typevoie ), MB_CASE_UPPER, Configure::read( 'App.encoding' ) ),
+						Set::classicExtract( $element, 'Adresse.nomvoie' ),
+						Set::classicExtract( $element, 'Adresse.complideadr' ),
+						Set::classicExtract( $element, 'Adresse.compladr' ),
+					)
+				);
 
+
+				if( $destinataireAllocataire ) {
 					/// Vérification de données manquantes FIXME: déléguer dans le modèle ?
 					$libelledomiciliation = Set::filter( Set::classicExtract( $element, 'Domiciliationbancaire.libelledomiciliation' ) );
 					if( empty( $libelledomiciliation ) || !paiementfoyerComplet( Set::extract( $element, 'Paiementfoyer' ) ) ) {
@@ -105,17 +107,6 @@
 					}
 				}
 				else {
-					// Formattage élément
-					$adresse = implode(
-						' ',
-						array(
-							Set::classicExtract( $element, 'Tiersprestataireapre.numvoie' ),
-							mb_convert_case( Set::enum( Set::classicExtract( $element, 'Tiersprestataireapre.typevoie' ), $typevoie ), MB_CASE_UPPER, Configure::read( 'App.encoding' ) ),
-							Set::classicExtract( $element, 'Tiersprestataireapre.nomvoie' ),
-							Set::classicExtract( $element, 'Tiersprestataireapre.compladr' ),
-						)
-					);
-
 					/// Vérification de données manquantes FIXME: déléguer dans le modèle ?
 					if( !paiementorganismeComplet( Set::extract( $element, 'Tiersprestataireapre' ) ) ) {
 						$trClass = 'error';
@@ -123,21 +114,18 @@
 				}
 			?>
 			<tr<?php if( !empty( $trClass ) ) echo ' class="'.$trClass.'" style="color: red;"';?>>
+				<td><?php echo $element['Paiementfoyer']['titurib'];?></td>
+				<td><?php echo $element['Paiementfoyer']['nomprenomtiturib'];?></td>
+				<td><?php echo $adresse;?></td>
+				<td><?php echo $element['Adresse']['codepos'];?></td>
+				<td><?php echo $element['Adresse']['locaadr'];?></td>
 				<?php if( $destinataireAllocataire ):?>
-					<td><?php echo $element['Paiementfoyer']['titurib'].' '.$element['Paiementfoyer']['nomprenomtiturib'];?></td>
-					<td><?php echo $adresse;?></td>
-					<td><?php echo $element['Adresse']['codepos'];?></td>
-					<td><?php echo $element['Adresse']['locaadr'];?></td>
 					<td>Allocataire</td>
 					<td><?php echo $element['Paiementfoyer']['etaban'];?></td>
 					<td><?php echo $element['Paiementfoyer']['guiban'];?></td>
 					<td><?php echo $element['Paiementfoyer']['numcomptban'];?></td>
 					<td><?php echo str_pad( $element['Paiementfoyer']['clerib'], 2, '0', STR_PAD_LEFT );?></td>
 				<?php else:?>
-					<td><?php echo $element['Tiersprestataireapre']['nomtiturib'];?></td>
-					<td><?php echo $adresse;?></td>
-					<td><?php echo $element['Tiersprestataireapre']['codepos'];?></td>
-					<td><?php echo $element['Tiersprestataireapre']['ville'];?></td>
 					<td>Organisme: <?php echo $element['Tiersprestataireapre']['nomtiers'];?></td>
 					<td><?php echo $element['Tiersprestataireapre']['etaban'];?></td>
 					<td><?php echo $element['Tiersprestataireapre']['guiban'];?></td>
@@ -153,15 +141,15 @@
 		</tr>
 	</tbody>
 </table>
-	<?php
-		echo $default->button(
-		    'back',
-		    array(
-		        'controller' => 'etatsliquidatifs',
-		        'action'     => 'index'
-		    ),
-		    array(
-		        'id' => 'Back'
-		    )
-		);
-	?>
+<?php
+	echo $default->button(
+		'back',
+		array(
+			'controller' => 'etatsliquidatifs',
+			'action'     => 'index'
+		),
+		array(
+			'id' => 'Back'
+		)
+	);
+?>

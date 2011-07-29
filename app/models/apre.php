@@ -372,13 +372,6 @@
 
 			$querydata['fields'] = array(
 				'Tiersprestataireapre.nomtiers',
-				'Tiersprestataireapre.numvoie',
-				'Tiersprestataireapre.typevoie',
-				'Tiersprestataireapre.nomvoie',
-				'Tiersprestataireapre.compladr',
-				'Tiersprestataireapre.codepos',
-				'Tiersprestataireapre.ville',
-				'Tiersprestataireapre.nomtiturib',
 				'Tiersprestataireapre.guiban',
 				'Tiersprestataireapre.etaban',
 				'Tiersprestataireapre.numcomptban',
