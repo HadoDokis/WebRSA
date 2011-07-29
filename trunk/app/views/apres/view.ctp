@@ -33,7 +33,7 @@
 		$struct = Set::enum( $apre['Apre']['structurereferente_id'], $structs );
 		$cessderact = Set::enum( $apre['Apre']['cessderact'], $optionsdsps['cessderact'] );
 		
-// 		debug( $apre );
+// 		debug( $apre['Comiteapre'] );
 		echo $default2->view(
 			$apre,
 			array(
@@ -74,7 +74,29 @@
 				'domain' => 'apre'
 			)
 		);
-// debug( $options );
+		
+		if( Configure::read( 'Cg.departement' ) == 93 ) {
+			echo '<h2>Liste des décisions de comités d\'APRE</h2>';
+			if( isset( $apre['Comiteapre'] ) && !empty( $apre['Comiteapre'] ) ) {
+				foreach( $apre['Comiteapre'] as $key => $comite ){
+					echo $default2->view(
+						$comite,
+						array(
+							'Comiteapre.datecomite' => array( 'domain' => 'apre', 'value' => Set::classicExtract( $comite, 'datecomite' ) ),
+							'ApreComiteapre.decisioncomite' => array( 'domain' => 'apre', 'type' => 'text', 'value' => Set::enum( Set::classicExtract( $comite, 'ApreComiteapre.decisioncomite' ), $optionsaprecomite['decisioncomite'] ) )
+						),
+						array(
+							'class' => 'aere',
+							'domain' => 'apre'
+						)
+					);
+				}
+			}
+			else{
+				echo '<p class="notice">Aucune décision émise pour le moment</p>';
+			}
+		}
+
 ?>
 <?php
 	echo $default->button(

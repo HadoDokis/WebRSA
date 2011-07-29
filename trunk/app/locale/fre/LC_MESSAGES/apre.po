@@ -759,3 +759,12 @@ msgstr "Avec CER"
 
 msgid "Apre66.respectdelais"
 msgstr "Respect des délais"
+
+
+
+
+msgid "Comiteapre.datecomite"
+msgstr "Date du comité d'APRE"
+
+msgid "ApreComiteapre.decisioncomite"
+msgstr "Décision du comité"
