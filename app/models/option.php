@@ -1501,9 +1501,9 @@
 			);
 		}
 
-		public function toppersdrodevorsa() {
+		public function toppersdrodevorsa( $nullEnLettre = false ) {
 			return array(
-				'' => 'Non défini',
+				( $nullEnLettre ? 'NULL' : '' ) => 'Non défini',
 				'1' => 'Oui',
 				'0' => 'Non'
 			);
