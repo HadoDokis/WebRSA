@@ -19,16 +19,26 @@
 			$propo_algo = null;
 
 			/// Inscription Pôle Emploi ?
-// debug( $element['Personne']['id'] );
 			$this->Informationpe = Classregistry::init( 'Informationpe' );
 			$informationpe = $this->Informationpe->find(
 				'first',
 				array(
+					'fields' => array(
+						'(
+							SELECT
+									"Historiqueetatpe"."etat"
+								FROM "historiqueetatspe" AS "Historiqueetatpe"
+								WHERE
+									"Historiqueetatpe"."informationpe_id" = "Informationpe"."id"
+									ORDER BY "Historiqueetatpe"."date" DESC LIMIT 1
+						) AS "Historiqueetatpe__dernieretat"'
+					),
 					'conditions' => array(
 						'OR' => array(
 							array(
 								'Informationpe.nir IS NOT NULL',
-								'Informationpe.nir' => $element['Personne']['nir']
+								'Informationpe.nir' => $element['Personne']['nir'],
+								'Informationpe.dtnai' => $element['Personne']['dtnai']
 							),
 							array(
 								'Informationpe.nom' => $element['Personne']['nom'],
@@ -37,148 +47,132 @@
 							)
 						)
 					),
-					'contain' => array(
-						'Historiqueetatpe' => array(
-							'order' => array( 'date DESC' ),
-							'limit' => 1
-						)
-					)
+					'contain' => false
 				)
 			);
 
 			// La personne se retrouve préorientée en emploi si la dernière information
 			// venant de Pôle Emploi la concernant est une inscription
 			if( !empty( $informationpe ) ) {
-				if( @$informationpe['Historiqueetatpe'][0]['etat'] == 'inscription' ) {
-					$propo_algo = 'Emploi';
+				if( @$informationpe['Historiqueetatpe']['dernieretat'] == 'inscription' ) {
+					return 'Emploi';
 				}
 			}
+
 			// On ne peut pas préorienter à partir des informations Pôle Emploi
 			if( is_null( $propo_algo ) ) {
 				/// Dsp
 				$this->Dsp = Classregistry::init( 'Dsp' );
-				$this->Dsp->unbindModel( array( 'belongsTo' => array( 'Personne' ) ) );
 				$dsp = $this->Dsp->find(
 					'first',
 					array(
+						'fields' => array(
+							'Dsp.natlog',
+							'Dsp.sitpersdemrsa',
+							'Dsp.cessderact',
+							'Dsp.hispro',
+							'Detaildiflog.diflog',
+						),
 						'conditions' => array( 'Dsp.personne_id' => $element['Personne']['id'] ),
-						'recursive' => 1
+						'contain' => false,
+						'joins' => array(
+							array(
+								'table'      => 'detailsdiflogs',
+								'alias'      => 'Detaildiflog',
+								'type'       => 'LEFT OUTER',
+								'foreignKey' => false,
+								'conditions' => array(
+									'Detaildiflog.dsp_id = Dsp.id',
+									'Detaildiflog.diflog' => '1006'
+								)
+							),
+						)
 					)
 				);
 
-	// 			$element['Personne'] = Set::merge( $element['Personne'], $dsp );
-
-				/// Règles de gestion
-
-				// Règle 1 (Prioritaire) : Code XML instruction : « NATLOG ». Nature du logement ?
-				// 0904 = Logement d'urgence : CHRS → Orientation vers le Social
-				// 0911 = Logement précaire : résidence sociale → Orientation vers le Social
-				$natlog = Set::classicExtract( $dsp, 'Dsp.natlog' );
-				if( empty( $propo_algo ) && !empty( $natlog ) ) {
-					if( in_array( $natlog, array( '0904', '0911' ) ) ) {
-						$propo_algo = 'Social';
-					}
-				}
-
-				// Règle 2 (Prioritaire)  : Code XML instruction : « DIFLOG ». Difficultés logement ?
-				// 1006 = Fin de bail, expulsion → Orientation vers le Service Social
-				$diflog = Set::extract( $dsp, '/Detaildiflog/diflog' );
-				if( empty( $propo_algo ) && !empty( $diflog ) ) {
-					if( in_array( '1006', $diflog ) ) {
-						$propo_algo = 'Social';
-					}
-				}
-
-				//
-				// Règle 3 (Prioritaire)  : Code XML instruction : « sitpersdemrsa ». "Quel est le motif de votre demande de rSa ?"
-				// 0102 = Fin de droits AAH → Orientation vers le Social
-				// 0105 = Attente de pension vieillesse ou invalidité‚ ou d'allocation handicap → Orientation vers le Social
-				// 0109 = Fin d'études → Orientation vers le Pôle Emploi
-				// 0101 = Fin de droits ASSEDIC → Orientation vers le Pôle Emploi
-				$sitpersdemrsa = Set::extract( $dsp, 'Dsp.sitpersdemrsa' );
-				if( empty( $propo_algo ) && !empty( $sitpersdemrsa ) ) {
-					if( in_array( $sitpersdemrsa, array( '0102', '0105' ) ) ) {
-						$propo_algo = 'Social';
-					}
-					else if( in_array( $sitpersdemrsa, array( '0109', '0101' ) ) ) {
-						$propo_algo = 'Emploi';
-					}
-				}
-
-				// Règle 4 : Code XML instruction : « DTNAI ». Date de Naissance.
-				$dtnai = Set::extract( $element, 'Personne.dtnai' );
-				/// FIXME: change chaque année ...
-				$cessderact = Set::extract( $dsp, 'Dsp.cessderact' );
-
-				// Si le code CESSDERACT n'est pas renseigné : Règle 5
-				if( empty( $propo_algo ) && !empty( $cessderact ) ) {
-					$age = age( $dtnai );
-
-					// Si - de 57 a :
-					// "2701" : Encore en activité ou cessation depuis moins d'un an ->Pôle Emploi
-					// "2702" : Cessation d'activité depuis plus d'un an -> PDV
-					if( $age < 57 ) {
-						if( $cessderact == '2701' ) {
-							$propo_algo = 'Emploi';
-						}
-						else if( $cessderact == '2702' ) {
-							$propo_algo = 'Socioprofessionnelle';
-						}
-					}
-
-					// Si + de 57 a :
-					// "2701" : Encore en activité ou cessation depuis moins d'un an -> PDV
-					// "2702" : Cessation d'activité depuis plus d'un an ->Service Social
-					else if( $age >= 57 ) {
-						if( $cessderact == '2701' ) {
-							$propo_algo = 'Socioprofessionnelle';
-						}
-						else if( $cessderact == '2702' ) {
+				/// Règles de gestion déduites depuis les DSP
+				if( !empty( $dsp ) ) {
+					// Règle 1 (Prioritaire) : Code XML instruction : « NATLOG ». Nature du logement ?
+					// 0904 = Logement d'urgence : CHRS → Orientation vers le Social
+					// 0911 = Logement précaire : résidence sociale → Orientation vers le Social
+					$natlog = Set::classicExtract( $dsp, 'Dsp.natlog' );
+					if( empty( $propo_algo ) && !empty( $natlog ) ) {
+						if( in_array( $natlog, array( '0904', '0911' ) ) ) {
 							$propo_algo = 'Social';
 						}
 					}
 
-					/*// + 57 Ans ( Date du jour) :
-					// Code XML instruction : « DFDERACT » (Date éventuelle de cessation de cette activité) = -1ans ( Date du jour) → Orientation vers le PDV
-					// Code XML instruction : « DFDERACT» (Date éventuelle de cessation de cette activité) = +1ans ( Date du jour) → Orientation vers le Service Social
-					if( $age >= 57 ) {
-						if( $cessderact == '2701' ) {
-							$propo_algo = 'Socioprofessionnelle';
-						}
-						else {
+					// Règle 2 (Prioritaire)  : Code XML instruction : « DIFLOG ». Difficultés logement ?
+					// 1006 = Fin de bail, expulsion → Orientation vers le Service Social
+					$diflog = Set::classicExtract( $dsp, 'Detaildiflog.diflog' );
+					if( empty( $propo_algo ) && !empty( $diflog ) ) {
+						if( $diflog == '1006' ) {
 							$propo_algo = 'Social';
 						}
 					}
-					// -57 Ans ( Date du jour) :
-					// Code XML instruction : « DFDERACT» (Date éventuelle de cessation de cette activité) = -1ans ( Date du jour)→ Orientation vers le Pôle Emploi
-					// Code XML instruction : « DFDERACT »  (Date éventuelle de cessation de cette activité) = entre 1 et 5 ans ( Date du jour) → Orientation vers le PDV
-					// Code XML instruction : « DFDERACT »  (Date éventuelle de cessation de cette activité) = +5 ans ( Date du jour) → Orientation vers le Service Social
-					else {
-						if( $cessderact == '2701' ) {
+
+					// Règle 3 (Prioritaire)  : Code XML instruction : « sitpersdemrsa ». "Quel est le motif de votre demande de rSa ?"
+					// 0102 = Fin de droits AAH → Orientation vers le Social
+					// 0105 = Attente de pension vieillesse ou invalidité‚ ou d'allocation handicap → Orientation vers le Social
+					// 0109 = Fin d'études → Orientation vers le Pôle Emploi
+					// 0101 = Fin de droits ASSEDIC → Orientation vers le Pôle Emploi
+					$sitpersdemrsa = Set::extract( $dsp, 'Dsp.sitpersdemrsa' );
+					if( empty( $propo_algo ) && !empty( $sitpersdemrsa ) ) {
+						if( in_array( $sitpersdemrsa, array( '0102', '0105' ) ) ) {
+							$propo_algo = 'Social';
+						}
+						else if( in_array( $sitpersdemrsa, array( '0109', '0101' ) ) ) {
 							$propo_algo = 'Emploi';
 						}
-						// FIXME: on ne peut plus savoir avec les nouvelles DSP
-						// else if( $cessderact < 5 ) {
-						// 	$propo_algo = 'Socioprofessionnelle';
-						// }
-						// else {
-						// 	$propo_algo = 'Social';
-						// }
-					}*/
-				}
-
-				// Règle 5 : Code XML instruction : « HISPRO ». Question : Passé professionnel ?
-				// 1901 = Oui → Orientation vers le Pôle Emploi
-				// 1902 = Oui → Orientation vers le PDV
-				// 1903 = Oui → Orientation vers le PDV
-				// 1904 = Oui → Orientation vers le PDV
-				$hispro = Set::extract( $dsp, 'Dsp.hispro' );
-				if( empty( $propo_algo ) && !empty( $hispro ) ) {
-					if( $hispro == '1901' ) {
-						$propo_algo = 'Emploi';
 					}
-					else if( in_array( $hispro, array( '1902', '1903', '1904' ) ) ) {
-						$propo_algo = 'Socioprofessionnelle';
+
+					// Règle 4 : Code XML instruction : « DTNAI ». Date de Naissance.
+					$dtnai = Set::extract( $element, 'Personne.dtnai' );
+					/// FIXME: change chaque année ...
+					$cessderact = Set::extract( $dsp, 'Dsp.cessderact' );
+
+					// Si le code CESSDERACT n'est pas renseigné : Règle 5
+					if( empty( $propo_algo ) && !empty( $cessderact ) ) {
+						$age = age( $dtnai );
+
+						// Si - de 57 a :
+						// "2701" : Encore en activité ou cessation depuis moins d'un an ->Pôle Emploi
+						// "2702" : Cessation d'activité depuis plus d'un an -> PDV
+						if( $age < 57 ) {
+							if( $cessderact == '2701' ) {
+								$propo_algo = 'Emploi';
+							}
+							else if( $cessderact == '2702' ) {
+								$propo_algo = 'Socioprofessionnelle';
+							}
+						}
+
+						// Si + de 57 a :
+						// "2701" : Encore en activité ou cessation depuis moins d'un an -> PDV
+						// "2702" : Cessation d'activité depuis plus d'un an ->Service Social
+						else if( $age >= 57 ) {
+							if( $cessderact == '2701' ) {
+								$propo_algo = 'Socioprofessionnelle';
+							}
+							else if( $cessderact == '2702' ) {
+								$propo_algo = 'Social';
+							}
+						}
+					}
+
+					// Règle 5 : Code XML instruction : « HISPRO ». Question : Passé professionnel ?
+					// 1901 = Oui → Orientation vers le Pôle Emploi
+					// 1902 = Oui → Orientation vers le PDV
+					// 1903 = Oui → Orientation vers le PDV
+					// 1904 = Oui → Orientation vers le PDV
+					$hispro = Set::extract( $dsp, 'Dsp.hispro' );
+					if( empty( $propo_algo ) && !empty( $hispro ) ) {
+						if( $hispro == '1901' ) {
+							$propo_algo = 'Emploi';
+						}
+						else if( in_array( $hispro, array( '1902', '1903', '1904' ) ) ) {
+							$propo_algo = 'Socioprofessionnelle';
+						}
 					}
 				}
 			}
@@ -246,14 +240,14 @@
 						$conditions[] = 'Orientstruct.typeorient_id = \''.Sanitize::clean( $typeorient ).'\'';
 					}
 				}
-	            elseif( isset( $preorient ) && !empty( $preorient ) ) {
+				elseif( isset( $preorient ) && !empty( $preorient ) ) {
 					if ( $preorient == 'NULL' ) {
 						$conditions[] = 'Orientstruct.propo_algo IS NULL';
 					}
 					else {
 						$conditions[] = 'Orientstruct.propo_algo = \''.Sanitize::clean( $preorient ).'\'';
 					}
-	            }
+				}
 				//-------------------------------------------------------
 
 				if( isset( $criteres['Filtre']['origine'] ) && !empty( $criteres['Filtre']['origine'] ) ) {
@@ -344,45 +338,42 @@
 					$conditions[] = 'Orientstruct.date_impression BETWEEN \''.$date_impression_from.'\' AND \''.$date_impression_to.'\'';
 				}
 
-
-
-
-			// Trouver la dernière demande RSA pour chacune des personnes du jeu de résultats
-			if( @$criteres['Dossier']['dernier'] ) {
-				$conditions[] = 'Dossier.id IN (
-					SELECT
-							dossiers.id
-						FROM personnes
-							INNER JOIN prestations ON (
-								personnes.id = prestations.personne_id
-								AND prestations.natprest = \'RSA\'
-							)
-							INNER JOIN foyers ON (
-								personnes.foyer_id = foyers.id
-							)
-							INNER JOIN dossiers ON (
-								dossiers.id = foyers.dossier_id
-							)
-						WHERE
-							prestations.rolepers IN ( \'DEM\', \'CJT\' )
-							AND (
-								(
-									nir_correct( Personne.nir )
-									AND nir_correct( personnes.nir )
-									AND personnes.nir = Personne.nir
-									AND personnes.dtnai = Personne.dtnai
+				// Trouver la dernière demande RSA pour chacune des personnes du jeu de résultats
+				if( @$criteres['Dossier']['dernier'] ) {
+					$conditions[] = 'Dossier.id IN (
+						SELECT
+								dossiers.id
+							FROM personnes
+								INNER JOIN prestations ON (
+									personnes.id = prestations.personne_id
+									AND prestations.natprest = \'RSA\'
 								)
-								OR
-								(
-									personnes.nom = Personne.nom
-									AND personnes.prenom = Personne.prenom
-									AND personnes.dtnai = Personne.dtnai
+								INNER JOIN foyers ON (
+									personnes.foyer_id = foyers.id
 								)
-							)
-						ORDER BY dossiers.dtdemrsa DESC
-						LIMIT 1
-				)';
-			}
+								INNER JOIN dossiers ON (
+									dossiers.id = foyers.dossier_id
+								)
+							WHERE
+								prestations.rolepers IN ( \'DEM\', \'CJT\' )
+								AND (
+									(
+										nir_correct( Personne.nir )
+										AND nir_correct( personnes.nir )
+										AND personnes.nir = Personne.nir
+										AND personnes.dtnai = Personne.dtnai
+									)
+									OR
+									(
+										personnes.nom = Personne.nom
+										AND personnes.prenom = Personne.prenom
+										AND personnes.dtnai = Personne.dtnai
+									)
+								)
+							ORDER BY dossiers.dtdemrsa DESC
+							LIMIT 1
+					)';
+				}
 
 				$queryData = array(
 					'fields' => array(
@@ -405,7 +396,6 @@
 						'Situationdossierrsa.dtclorsa',
 						'Situationdossierrsa.moticlorsa',
 						'Suiviinstruction.typeserins',
-// 						'Serviceinstructeur.lib_service',
 						'Orientstruct.id',
 						'Orientstruct.date_valid',
 						'Orientstruct.propo_algo',
@@ -474,18 +464,6 @@
 								)'
 							)
 						),
-						/*array(
-							'table' => 'servicesinstructeurs',
-							'alias' => 'Serviceinstructeur',
-							'type' => 'LEFT OUTER',
-							'foreignKey' => false,
-							'conditions' => array(
-								'Serviceinstructeur.numdepins  = Suiviinstruction.numdepins',
-								'Serviceinstructeur.typeserins  = Suiviinstruction.typeserins',
-								'Serviceinstructeur.numcomins  = Suiviinstruction.numcomins',
-								'Serviceinstructeur.numagrins  = Suiviinstruction.numagrins',
-							)
-						),*/
 						array(
 							'table' => 'adressesfoyers',
 							'alias' => 'Adressefoyer',
@@ -591,7 +569,6 @@
 		*/
 
 		function search( $statutOrientation, $mesCodesInsee, $filtre_zone_geo, $criteres, $lockedDossiers, $limit = PHP_INT_MAX ) {
-// debug( array( $statutOrientation, $mesCodesInsee, $filtre_zone_geo, $criteres, $lockedDossiers, $limit ) );
 			/// Requête
 			$Situationdossierrsa = ClassRegistry::init( 'Situationdossierrsa' );
 
@@ -644,10 +621,6 @@
 					$conditions[] = 'orientsstructs.typeorient_id = \''.Sanitize::clean( $typeorient ).'\'';
 				}
 			}
-//             if( !empty( $modeles ) ) {
-//                 $conditions[] = 'orientsstructs.typeorient_id = \''.Sanitize::clean( $modeles ).'\'';
-//             }
-			//-------------------------------------------------------
 
 			// Origine de la demande
 			if( !empty( $oridemrsa ) ) {
@@ -733,8 +706,6 @@
 				$conditions[] = 'orientsstructs.date_impression BETWEEN \''.$date_impression_from.'\' AND \''.$date_impression_to.'\'';
 			}
 
-//             INNER JOIN situationsdossiersrsa ON ( situationsdossiersrsa.dossier_id = dossiers.id )
-//             LEFT OUTER JOIN suivisinstruction ON ( suivisinstruction.dossier_id = dossiers.id )
 			$this->Dossier = ClassRegistry::init( 'Dossier' );
 
 			$sql = 'SELECT orientsstructs.id
@@ -753,23 +724,6 @@
 					LIMIT '.$limit;
 
 			$cohorte = $this->Dossier->query( $sql );
-//             $this->Dossier = ClassRegistry::init( 'Dossier' );
-//             $sql = 'SELECT DISTINCT personnes.id
-//                     FROM personnes
-//                         INNER JOIN prestations ON ( prestations.personne_id = personnes.id AND prestations.natprest = \'RSA\' AND ( prestations.rolepers = \'DEM\' OR prestations.rolepers = \'CJT\' ) )
-//                         INNER JOIN calculsdroitsrsa ON ( calculsdroitsrsa.personne_id = personnes.id )
-//                         '.( ( $statutOrientation == 'Non orienté' ) ? 'INNER JOIN  dsps ON ( dsps.personne_id = personnes.id )' : '' ).'
-//                         INNER JOIN foyers ON ( personnes.foyer_id = foyers.id )
-//                         INNER JOIN dossiers ON ( foyers.dossier_id = dossiers.id )
-//                         INNER JOIN adressesfoyers ON ( adressesfoyers.foyer_id = foyers.id AND adressesfoyers.rgadr = \'01\' )
-//                         INNER JOIN adresses as Adresse ON ( adressesfoyers.adresse_id = Adresse.id)
-//                         INNER JOIN orientsstructs ON ( orientsstructs.personne_id = personnes.id )
-//                         INNER JOIN detailsdroitsrsa ON ( detailsdroitsrsa.dossier_id = dossiers.id )
-//                         INNER JOIN situationsdossiersrsa ON ( situationsdossiersrsa.dossier_id = dossiers.id AND ( situationsdossiersrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatOuvert() ).'\' ) ) )
-//                     WHERE '.implode( ' AND ', $conditions ).'
-//                     LIMIT '.$limit;
-//
-//             $cohorte = $this->Dossier->query( $sql );
 
 			return Set::extract( $cohorte, '{n}.0.id' );
 		}
@@ -810,11 +764,6 @@
 				$conditions[] = 'Adresse.numcomptt IN ( \''.implode( '\', \'', $mesCodesInsee ).'\' )';
 			}
 
-			/// Dossiers lockés
-//             if( !empty( $lockedDossiers ) ) {
-//                 $conditions[] = 'Dossier.id NOT IN ( '.implode( ', ', $lockedDossiers ).' )';
-//             }
-
 			/// Critères
 			$oridemrsa = Set::extract( $criteres, 'Filtre.oridemrsa' );
 			$locaadr = Set::extract( $criteres, 'Filtre.locaadr' );
@@ -827,7 +776,6 @@
 			//-------------------------------------------------------
 			$cantons = Set::extract( $criteres, 'Filtre.cantons' );
 
-
 			/// FIXME: dans le modèle
 			$typeorient = Set::classicExtract( $criteres, 'Filtre.typeorient' );
 			if( !empty( $typeorient ) ) {
@@ -838,10 +786,6 @@
 					$conditions[] = 'Orientstruct.typeorient_id = \''.Sanitize::clean( $typeorient ).'\'';
 				}
 			}
-			/*if( !empty( $modeles ) ) {
-				$conditions[] = 'orientsstructs.typeorient_id = \''.Sanitize::clean( $modeles ).'\'';
-			}*/
-			//-------------------------------------------------------
 
 			// Origine de la demande
 			if( !empty( $oridemrsa ) ) {
@@ -1064,7 +1008,6 @@
 						'foreignKey' => false,
 						'conditions' => array(
 							'Personne.id = Contratinsertion.personne_id',
-							// Dernier Contratinsertion
 							'Contratinsertion.id IN (
 								SELECT contratsinsertion.id
 									FROM contratsinsertion
@@ -1101,11 +1044,7 @@
 		*/
 
 		public function structuresAutomatiques() {
-			/*App::import( 'Model', 'Structurereferente' );
-			$this->Structurereferente = new Structurereferente();*/
 			$this->Structurereferente = ClassRegistry::init( 'Structurereferente' );
-			/*App::import( 'Model', 'Typeorient' );
-			$this->Typeorient = new Typeorient();*/
 			$this->Typeorient = ClassRegistry::init( 'Typeorient' );
 
 			// FIXME: valeurs magiques
