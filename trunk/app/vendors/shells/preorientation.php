@@ -3,9 +3,9 @@
 	*
 	*/
 
-    class PreorientationShell extends Shell
-    {
-        public $uses = array( 'Orientstruct', 'Cohorte', 'Typeorient' );
+	class PreorientationShell extends Shell
+	{
+		public $uses = array( 'Orientstruct', 'Cohorte', 'Typeorient' );
 		public $script = null;
 
 		/// Aide sur les paramètres
@@ -24,11 +24,11 @@
 		public $force = true;
 		public $startTime = null;
 
-        /**
-        *
-        */
+		/**
+		*
+		*/
 
-        public function err( $string ) {
+		public function err( $string ) {
 			parent::err( $string );
 
 			if( !empty( $this->outfile ) ) {
@@ -36,11 +36,11 @@
 			}
 		}
 
-        /**
-        *
-        */
+		/**
+		*
+		*/
 
-        public function out( $string ) {
+		public function out( $string ) {
 			parent::out( $string );
 
 			if( !empty( $this->outfile ) ) {
@@ -48,11 +48,11 @@
 			}
 		}
 
-        /**
-        *
-        */
+		/**
+		*
+		*/
 
-        public function exportlog() {
+		public function exportlog() {
 			file_put_contents( $this->outfile, $this->output );
 		}
 
@@ -90,12 +90,12 @@
 			exit( 0 );
 		}
 
-        /**
-        *
-        *
-        */
+		/**
+		*
+		*
+		*/
 
-        public function startup() {
+		public function startup() {
 			$this->script = strtolower( preg_replace( '/Shell$/', '', $this->name ) );
 
 			/// Demande d'aide ?
@@ -105,19 +105,6 @@
 			}
 
 			/// Paramétrage
-			/*// Limit
-			if( isset( $this->params['limit'] ) ) {
-				if( is_numeric( $this->params['limit'] ) && ( (int)$this->params['limit'] == ( $this->params['limit'] * 1 ) ) && ( $this->params['limit'] != 0 ) ) {
-					$this->limit = $this->params['limit'];
-				}
-				else if( empty( $this->params['limit'] ) || ( $this->params['limit'] == 'null' ) ) {
-					$this->limit = null;
-				}
-				else {
-					$this->err( sprintf( "Veuillez entrer un nombre comme valeur du paramètre limit (valeur entrée: %s)", $this->params['limit'] ) );
-					exit( 2 );
-				}
-			}*/
 			foreach( $this->possibleParams as $paramName => $paramValues ) {
 				if( isset( $this->params[$paramName] ) ) {
 					if( is_string( $this->params[$paramName] ) && in_array( strtolower( trim( $this->params[$paramName] ) ), $this->possibleParams[$paramName] ) ) {
@@ -134,13 +121,13 @@
 			/// Nom du fichier et titre de la page
 			$this->outfile = sprintf( '%s-%s.log', $this->script, date( 'Ymd-His' ) );
 			$this->outfile = APP_DIR.'/tmp/logs/'.$this->outfile;
-        }
+		}
 
-        /**
-        *
-        */
+		/**
+		*
+		*/
 
-        public function main() {
+		public function main() {
 			$success = true;
 			$compteur = 0;
 			$nSuccess = 0;
@@ -201,10 +188,22 @@
 
 			//------------------------------------------------------------------
 
+			$this->out( sprintf( "Initialisation: %s secondes", number_format( microtime( true ) - $this->startTime, 2 ) ) );
+			$taskStartTime = microtime( true );
+
 			$nPersonnes = $this->Orientstruct->query( "SELECT COUNT( personnes.id ) {$sqlCommon}" );
 			$nPersonnes = $nPersonnes[0][0]['count'];
-			$this->out( "{$nPersonnes} personnes à traiter" );
+			if( !empty( $this->limit ) ) {
+				$this->out( sprintf( "%s personnes à traiter (sur %s au total)", min( $nPersonnes, $this->limit ), $nPersonnes ) );
+				$nPersonnes = min( $nPersonnes, $this->limit );
+			}
+			else {
+				$this->out( "{$nPersonnes} personnes à traiter" );
+			}
 			$this->hr();
+
+			$this->out(  sprintf( "Comptage: %s secondes", number_format( microtime( true ) - $taskStartTime, 2 ) ) );
+			$taskStartTime = microtime( true );
 
 			$personnes = $this->Orientstruct->query(
 				"SELECT
@@ -218,6 +217,9 @@
 					{$sqlCommon}"
 			);
 
+			$this->out(  sprintf( "Recherche: %s secondes", number_format( microtime( true ) - $taskStartTime, 2 ) ) );
+			$taskStartTime = microtime( true );
+
 			$tranche = ( 1 / 100 );
 			$periode = max( 1, round( $nPersonnes * $tranche ) );
 
@@ -226,21 +228,20 @@
 				$preOrientation = Set::enum( $preOrientationTexte, $typesOrient );
 				$countTypesOrient[$preOrientation]++;
 
-				$orientstruct = array( 'Orientstruct' => Set::classicExtract( $personne, 'Orientstruct' ) );
-				$orientstruct['Orientstruct']['date_propo'] = date( 'Y-m-d' );
-				$orientstruct['Orientstruct']['propo_algo_texte'] = $preOrientationTexte;
-				$orientstruct['Orientstruct']['propo_algo'] = $preOrientation;
-
-				if( empty( $orientstruct['Orientstruct']['propo_algo'] ) ) {
+				if( empty( $preOrientation ) ) {
 					$nUndefined++;
 				}
 				else {
 					$nSuccess++;
 				}
 
-				$this->Orientstruct->create( $orientstruct );
-				$this->Orientstruct->validate = array();
-				$tmpSuccess = $this->Orientstruct->save();
+				$sql = "UPDATE orientsstructs
+							SET
+								date_propo = '".date( 'Y-m-d' )."',
+								propo_algo = ".( !empty( $preOrientation ) ? $preOrientation : 'NULL' )."
+							WHERE id = {$personne['Orientstruct']['id']}";
+
+				$tmpSuccess = ( $this->Orientstruct->query( $sql ) !== false );
 
 				if( !$tmpSuccess ) {
 					$nErrors++;
@@ -253,22 +254,28 @@
 				}
 			}
 
+			$this->hr();
+
+			$taskEndTime = microtime( true );
+			$delta = $taskEndTime - $taskStartTime;
+			$this->out(  sprintf( "Temps de traitement: %s secondes (%s par itération)", number_format( $delta, 2 ), number_format( $delta / $nPersonnes, 4 ) ) );
+
 			//------------------------------------------------------------------
 
 			$this->hr();
 
 			$endTime = number_format( microtime( true ) - $this->startTime, 2 );
 
-            /// Fin de la transaction
+			/// Fin de la transaction
 			$message = "%s ({$compteur} enregistrements traités en {$endTime} secondes; {$nSuccess} préorientations calculées, {$nUndefined} préorietations incalculables ({$nErrors} erreurs)";
-            if( $success ) {
-                $this->out( sprintf( $message, "Script terminé avec succès" ) );
-                $this->Orientstruct->commit();
-            }
-            else {
-                $this->out( sprintf( $message, "Script terminé avec erreurs" ) );
-                $this->Orientstruct->rollback();
-            }
+			if( $success ) {
+				$this->out( sprintf( $message, "Script terminé avec succès" ) );
+				$this->Orientstruct->commit();
+			}
+			else {
+				$this->out( sprintf( $message, "Script terminé avec erreurs" ) );
+				$this->Orientstruct->rollback();
+			}
 
 			$this->exportlog();
 
@@ -276,6 +283,6 @@
 			$this->out( "Le fichier de log se trouve dans {$this->outfile}" );
 
 			exit( ( $success ? 0 : 1 ) );
-        }
-    }
+		}
+	}
 ?>
