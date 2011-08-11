@@ -108,7 +108,7 @@
 
                         $decisionPrise = true;
                         // debug($comiteapre);
-                        $decision = Set::extract( $comiteapre, '/Apre/ApreComiteapre/decisioncomite' );
+                        $decision = Set::filter( Set::extract( $comiteapre, '/Apre/ApreComiteapre/decisioncomite' ) );
 //                         debug($decision);
                         if( !empty( $decision ) ) {
                             $decisionPrise = false;
