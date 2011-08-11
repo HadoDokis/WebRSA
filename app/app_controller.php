@@ -13,7 +13,7 @@
 		* @param $asBoolean boolean Doit-on renvoyer un array avec les différentes vérifications, ou un résumé
 		*/
 
-		protected function _checkGedooo( $asBoolean = false ) {
+		protected function _checkGedooo( $asBoolean = false, $setFlash = false ) {
 			$HttpSocket = new HttpSocket();
 			$result = $HttpSocket->get( GEDOOO_WSDL );
 
@@ -21,8 +21,11 @@
 				'status' => ( $HttpSocket->response['status']['code'] == 200 ),
 				'content-type' => ( $HttpSocket->response['header']['Content-Type'] == 'text/xml' ),
 			);
-
-			if( $asBoolean ) {
+			
+			if( $setFlash && !( $response['status'] && $response['content-type'] ) ) {
+				$this->Session->setFlash( 'Impossible de se connecter au serveur Gedooo. Veuillez contacter votre administrateur système.', 'default', array( 'class' => 'error' ) );
+			}
+			else if( $asBoolean ) {
 				return ( $response['status'] && $response['content-type'] );
 			}
 			else {
