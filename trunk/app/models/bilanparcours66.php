@@ -239,7 +239,9 @@
 			}
 			if ( isset( $data['Pe']['Bilanparcours66'] ) && !empty( $data['Pe']['Bilanparcours66'] ) ) {
 				$data = $data['Pe'];
-				$data['Bilanparcours66']['id'] = $id;
+				if ( isset( $id ) ) {
+					$data['Bilanparcours66']['id'] = $id;
+				}
 			}
 
 			$data[$this->alias]['saisineepparcours'] = ( @$data[$this->alias]['proposition'] == 'parcours' );
