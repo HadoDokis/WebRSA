@@ -229,7 +229,7 @@
 
 			<br/>
 			<h3>Serveur Gedooo nécessaires pour les impressions</h3>
-			<p><?php echo booleanIcon( $xhtml, ( $checkGedooo['status'] && $checkGedooo['content-type'] ) ).( $checkGedooo['status'] && $checkGedooo['content-type'] ? 'Oui' : 'Non' );?></p>
+			<p><?php echo booleanIcon( $xhtml, ( $checkGedooo['status'] && $checkGedooo['content-type'] && $checkGedooo['print'] ) ).( $checkGedooo['status'] && $checkGedooo['content-type'] && $checkGedooo['print'] ? 'Oui' : 'Non' );?></p>
 			<table>
 				<tr>
 					<td>Accès au service</td>
@@ -238,6 +238,10 @@
 				<tr>
 					<td>Retour du service</td>
 					<td><?php echo booleanIcon( $xhtml, $checkGedooo['content-type'] );?></td>
+				</tr>
+				<tr>
+					<td>Test d'impression</td>
+					<td><?php echo booleanIcon( $xhtml, $checkGedooo['print'] );?></td>
 				</tr>
 			</table>
 

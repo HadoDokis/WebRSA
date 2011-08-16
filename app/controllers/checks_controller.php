@@ -24,7 +24,7 @@
 			$this->set( 'checkModelesOdtParametrables', $this->_checkModelesOdtParametrables() );
 			$this->set( 'checkExtensions', $this->_checkExtensions() );
 			$this->set( 'checkInis', $this->_checkInis() );
-			$this->set( 'checkGedooo', $this->_checkGedooo() );
+			$this->set( 'checkGedooo', $this->Gedooo->check( false, false, true ) );
 		}
 
 		/**

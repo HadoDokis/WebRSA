@@ -3,35 +3,9 @@
 
 	class AppController extends Controller
 	{
-		public $components = array( 'Session', 'Auth', 'Acl', 'Droits', 'Cookie', 'Jetons', 'Default' );
+		public $components = array( 'Session', 'Auth', 'Acl', 'Droits', 'Cookie', 'Jetons', 'Default', 'Gedooo' );
 		public $helpers = array( 'Xhtml', 'Form', 'Javascript', 'Permissions', 'Widget', 'Locale', 'Theme', 'Default', 'Number', 'Xpaginator' );
 		public $uses = array( 'User', 'Connection' );
-
-		/**
-		* Vérification de l'état du serveur Gedooo
-		*
-		* @param $asBoolean boolean Doit-on renvoyer un array avec les différentes vérifications, ou un résumé
-		*/
-
-		protected function _checkGedooo( $asBoolean = false, $setFlash = false ) {
-			$HttpSocket = new HttpSocket();
-			$result = $HttpSocket->get( GEDOOO_WSDL );
-
-			$response = array(
-				'status' => ( $HttpSocket->response['status']['code'] == 200 ),
-				'content-type' => ( $HttpSocket->response['header']['Content-Type'] == 'text/xml' ),
-			);
-			
-			if( $setFlash && !( $response['status'] && $response['content-type'] ) ) {
-				$this->Session->setFlash( 'Impossible de se connecter au serveur Gedooo. Veuillez contacter votre administrateur système.', 'default', array( 'class' => 'error' ) );
-			}
-			else if( $asBoolean ) {
-				return ( $response['status'] && $response['content-type'] );
-			}
-			else {
-				return $response;
-			}
-		}
 
 		/**
 		* Permet de rajouter des conditions aux conditions de recherches suivant

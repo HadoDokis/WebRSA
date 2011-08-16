@@ -67,7 +67,7 @@
 		*/
 
 		public function nouvelles() {
-			$this->_checkGedooo( null, true );
+			$this->Gedooo->check( false, true, true );
 			$this->_index( 'Non orienté' );
 		}
 
@@ -84,7 +84,7 @@
 		*/
 
 		public function enattente() {
-			$this->_checkGedooo( null, true );
+			$this->Gedooo->check( false, true, true );
 			$this->_index( 'En attente' );
 		}
 
