@@ -1,12 +1,14 @@
 <?php
-	App::import('Sanitize');
+	App::import( 'Sanitize' );
 
 	class RecoursapresController extends AppController
 	{
 		public $name = 'Recoursapres';
+
 		public $uses = array( 'Canton', 'Dossier', 'Recoursapre', 'Foyer', 'Adresse', 'Comiteapre', 'Personne', 'ApreComiteapre', 'Apre', 'Option', 'Adressefoyer' );
 
-		public $components = array( 'Gedooo' );
+		public $components = array( 'Gedooo', 'Prg' => array( 'actions' => array( 'demande', 'visualisation' ) ) );
+
 		public $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml' );
 
 		/**
