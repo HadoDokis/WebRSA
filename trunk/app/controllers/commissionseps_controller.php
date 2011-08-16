@@ -551,7 +551,7 @@
 				$this->redirect( $this->referer() );
 			}
 
-			if( !$this->_checkGedooo( true ) ) {
+			if( !$this->Gedooo->check( true, false, true ) ) {
 				$this->Session->setFlash( 'Le serveur d\'impression n\'est pas disponible ou ne fonctionne pas correctement.', 'default', array( 'class' => 'error' ) );
 			}
 			else {

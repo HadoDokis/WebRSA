@@ -1,4 +1,6 @@
 <?php
+	App::import( 'Core', 'HttpSocket' );
+
 	@set_time_limit( 0 );
 	// Mémoire maximum allouée à l'exécution de ce script
 	@ini_set( 'memory_limit', '512M' );
@@ -47,6 +49,58 @@
 			exec( "rmdir {$pdfTmpDir}" );
 
 			return $c; /// FIXME: false si problème
+		}
+
+		/**
+		* Vérification de l'état du serveur Gedooo.
+		*
+		* @param $asBoolean boolean Doit-on renvoyer un array avec les différentes vérifications, ou un résumé
+		* @param $setFlash boolean Doit-on afficher un message d'erreur s'il Gedooo est mal configuré
+		* @param $testServer boolean Doit-on tester une impression pour voir si Gedoo fonctionne correctement ?
+		*/
+
+		public function check( $asBoolean = false, $setFlash = false, $testServer = false ) {
+			$HttpSocket = new HttpSocket();
+			$result = @$HttpSocket->get( GEDOOO_WSDL );
+
+			$response = array(
+				'status' => ( $HttpSocket->response['status']['code'] == 200 ),
+				'content-type' => ( $HttpSocket->response['header']['Content-Type'] == 'text/xml' ),
+			);
+
+			// Testons une impression, n'importe laquelle
+			if( $testServer ) {
+				$response['print'] = false;
+
+				if( $response['status'] && $response['content-type'] ) {
+					$User = ClassRegistry::init( 'User' );
+					if( !in_array( 'Gedooo', array_keys( Set::normalize( $User->actsAs ) ) ) ) {
+						$User->Behaviors->attach( 'Gedooo' );
+					}
+					$response['print'] = $User->ged( array(), 'test_gedooo.odt' );
+					$response['print'] = preg_match( '/^%PDF\-[0-9]/m', $response['print'] );
+				}
+			}
+			
+			if( $setFlash ) {
+				if( !( $response['status'] && $response['content-type'] ) ) {
+					$this->controller->Session->setFlash( 'Impossible de se connecter au serveur Gedooo. Veuillez contacter votre administrateur système.', 'default', array( 'class' => 'error' ) );
+				}
+				else if( $testServer && !$response['print'] ) { // FIXME: même message si le modèle odt n'a pas été trouvé
+					$this->controller->Session->setFlash( 'Impossible d\'imprimer avec le serveur Gedooo. Veuillez contacter votre administrateur système.', 'default', array( 'class' => 'error' ) );
+				}
+			}
+			else if( $asBoolean ) {
+				foreach( $response as $return ) {
+					if( !$return ) {
+						return false;
+					}
+				}
+				return true;
+			}
+			else {
+				return $response;
+			}
 		}
 
 		/**
