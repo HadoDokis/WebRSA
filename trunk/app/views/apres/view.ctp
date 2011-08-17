@@ -29,8 +29,8 @@
 		$eligibiliteapre = Set::enum( $apre['Apre']['eligibiliteapre'], $options['eligibiliteapre'] );
 		$justificatif = Set::enum( $apre['Apre']['justificatif'], $options['justificatif'] );
 		$isdecision = Set::enum( $apre['Apre']['isdecision'], $options['isdecision'] );
-		$referent = Set::enum( $apre['Apre']['referent_id'], $referents );
-		$struct = Set::enum( $apre['Apre']['structurereferente_id'], $structs );
+		/*$referent = Set::enum( $apre['Apre']['referent_id'], $referents );
+		$struct = Set::enum( $apre['Apre']['structurereferente_id'], $structs );*/
 		$cessderact = Set::enum( $apre['Apre']['cessderact'], $optionsdsps['cessderact'] );
 		
 // 		debug( $apre['Comiteapre'] );
@@ -60,8 +60,8 @@
 				'Apre.nbenf12' => array( 'type' => 'text' ),
 				'Apre.statutapre' => array( 'value' => $statutapre ),
 				'Apre.justificatif' => array( 'value' => $justificatif ),
-				'Apre.structurereferente_id' => array( 'type' => 'text', 'value' => $struct ),
-				'Apre.referent_id' => array( 'type' => 'text', 'value' => $referent ),
+				'Apre.structurereferente_id' => array( 'type' => 'text', 'value' => $apre['Structurereferente']['lib_struc'] ),
+				'Apre.referent_id' => array( 'type' => 'text', 'value' => $apre['Referent']['nom_complet'] ),
 				'Apre.montantaverser' => array( 'type' => 'text' ),
 				'Apre.nbpaiementsouhait' => array( 'type' => 'text' ),
 				'Apre.montantdejaverse' => array( 'type' => 'text' ),
