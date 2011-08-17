@@ -382,17 +382,37 @@
 		function view( $apre_id = null ){
 		
 			$this->Apre->forceVirtualFields = true;
-			$apre = $this->Apre->findById( $apre_id );
+
+			$apre = $this->Apre->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Apre.id' => $apre_id
+					),
+					'contain' => array(
+						'Personne',
+						'Comiteapre' => array(
+							'order' => array(
+								'Comiteapre.datecomite DESC',
+								'Comiteapre.heurecomite DESC'
+							)
+						),
+						'Referent',
+						'Structurereferente'
+					)
+				)
+			);
+
 			$this->assert( !empty( $apre ), 'invalidParameter' );
 			$this->Apre->forceVirtualFields = false;
 
-			$aprecomiteapre = $this->Apre->ApreComiteapre->findByApreId( $apre_id, null, null, -1 );
-			$this->set( 'aprecomiteapre', $aprecomiteapre );
+			/*$aprecomiteapre = $this->Apre->ApreComiteapre->findByApreId( $apre_id, null, null, -1 );
+			$this->set( 'aprecomiteapre', $aprecomiteapre );*/
 
-			$referents = $this->Referent->find( 'list' );
+			/*$referents = $this->Referent->find( 'list' );
 			$this->set( 'referents', $referents );
 			$structs = $this->Structurereferente->listeParType( array( 'apre' => true ) );
-			$this->set( 'structs', $structs );
+			$this->set( 'structs', $structs );*/
 
 			$this->set( 'apre', $apre );
 			$this->_setOptions();
