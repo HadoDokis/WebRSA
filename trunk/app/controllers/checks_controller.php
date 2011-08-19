@@ -64,7 +64,8 @@
 			$modeles = array();
 
 			if( Configure::read( 'Cg.departement' ) == 93 ) {
-				// app/models/reorientationep93.php:498
+				// app/models/reorientationep93.php:774
+				$modeles[] = "Reorientationep93/decision_accepte_poleemploi.odt";
 				$enums = ClassRegistry::init( 'Decisionreorientationep93' )->enums();
 				foreach( array_keys( $enums['Decisionreorientationep93']['decision'] ) as $decision ) {
 					$modeles[] = "Reorientationep93/decision_{$decision}.odt";
@@ -73,12 +74,7 @@
 				// app/models/relancenonrespectsanctionep93.php:1330
 				$enums = ClassRegistry::init( 'Nonrespectsanctionep93' )->enums();
 				foreach( array_keys( $enums['Nonrespectsanctionep93']['origine'] ) as $origine ) {
-					if( $origine == 'orientstruct' ) {
-						$numrelance = 3;
-					}
-					else {
-						$numrelance = 2;
-					}
+					$numrelance = 2;
 
 					for( $i = 1 ; $i <= $numrelance ; $i++ ) {
 						$modeles[] = "Relancenonrespectsanctionep93/notification_{$origine}_relance{$i}.odt";

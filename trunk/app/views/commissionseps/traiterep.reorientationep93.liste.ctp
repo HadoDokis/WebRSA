@@ -19,7 +19,8 @@ echo '<table><thead>
 
 		$hiddenFields = $form->input( "Decisionreorientationep93.{$i}.id", array( 'type' => 'hidden' ) ).
 						$form->input( "Decisionreorientationep93.{$i}.passagecommissionep_id", array( 'type' => 'hidden' ) ).
-						$form->input( "Decisionreorientationep93.{$i}.etape", array( 'type' => 'hidden', 'value' => 'ep' ) );
+						$form->input( "Decisionreorientationep93.{$i}.etape", array( 'type' => 'hidden', 'value' => 'ep' ) ).
+						$form->input( "Decisionreorientationep93.{$i}.user_id", array( 'type' => 'hidden', 'value' => $session->read( 'Auth.User.id' ) ) );
 
 		echo $xhtml->tableCells(
 			array(

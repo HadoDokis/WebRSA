@@ -204,6 +204,7 @@
 				}
 				
 				$reorientationep93['Reorientationep93'] = $this->data['Reorientationep93'];
+				$reorientationep93['Reorientationep93']['user_id'] = $this->Session->read( 'Auth.User.id' );
 				$this->Reorientationep93->create( $reorientationep93 );
 				$success = $this->Reorientationep93->save() && $success;
 
