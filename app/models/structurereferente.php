@@ -16,7 +16,9 @@
 					'pdo' => array( 'type' => 'no', 'domain' => 'default' )
 				)
 			),
-			'Formattable'
+			'Formattable' => array(
+				'phone' => array( 'numtel' )
+			)
 		);
 
 		public $validate = array(
@@ -65,6 +67,11 @@
 			'contratengagement' => array(
 				'rule' => 'notEmpty',
 				'message' => 'Champ obligatoire'
+			),
+			'numtel' => array(
+				'rule' => 'phoneFr',
+				'allowEmpty' => true,
+				'message' => 'Ce numéro de téléphone n\'est pas valide'
 			)
 		);
 

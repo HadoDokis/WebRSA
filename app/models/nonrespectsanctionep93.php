@@ -722,9 +722,11 @@
 				array(
 					'conditions' => array( 'Passagecommissionep.id' => $passagecommissionep_id ),
 					'contain' => array(
+						'User',
 						'Dossierep' => array(
 							'Personne' => array(
 								'Foyer' => array(
+									'Dossier',
 									'Adressefoyer' => array(
 										'conditions' => array(
 											'Adressefoyer.rgadr' => '01' // FIXME
@@ -863,10 +865,12 @@
 											'Adressefoyer.id IN ( '.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01( 'Adressefoyer.foyer_id' ).' )'
 										),
 										'Adresse'
-									)
+									),
+									'Dossier'
 								)
 							),
 							'Nonrespectsanctionep93' => array(
+								'Relancenonrespectsanctionep93',
 								'Orientstruct' => array(
 									'Typeorient',
 									'Structurereferente'
@@ -885,6 +889,7 @@
 							),
 						),
 						'Decisionnonrespectsanctionep93' => array(
+							'User',
 							/*'conditions' => array(
 								'Decisionnonrespectsanctionep93.etape' => $etape
 							)*/
@@ -926,6 +931,8 @@
 			$origine = $gedooo_data['Dossierep']['Nonrespectsanctionep93']['origine'];
 
 			if( $decision == '1delai' ) {
+				$delairelance = Configure::read( 'Nonrespectsanctionep93.decisionep.delai' );
+				$gedooo_data['Dossierep']['Nonrespectsanctionep93']['datedelaisuppl'] = date( 'Y-m-d', strtotime( "+{$delairelance} days", strtotime( $gedooo_data['Dossierep']['Passagecommissionep']['inpressiondecision'] ) ) );
 				$modeleOdt  = "{$this->alias}/decision_delai.odt";
 			}
 			else if( $decision == '1reduction' ) {

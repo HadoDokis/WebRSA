@@ -75,7 +75,7 @@
 		*/
 
 		public function afterSave( &$model, $created ) {
-			return $model->generatePdf( $model->id );
+			return $this->generatePdf( $model, $model->id );
 		}
 
 		/**

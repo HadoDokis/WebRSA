@@ -43,6 +43,13 @@
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
+			),
+			'User' => array(
+				'className' => 'User',
+				'foreignKey' => 'user_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
 			)
 		);
 
@@ -188,7 +195,9 @@
 								'Relancenonrespectsanctionep93' => array(
 									array(
 										'numrelance' => $relance['numrelance'],
-										'daterelance' => $relance['daterelance']
+										'daterelance' => $relance['daterelance'],
+										'dateimpression' => date( 'Y-m-d' ),///FIXME: à corriger !!!
+										'user_id' => $relance['user_id']
 									)
 								)
 							);
@@ -217,7 +226,9 @@
 								'Relancenonrespectsanctionep93' => array(
 									array(
 										'numrelance' => $relance['numrelance'],
-										'daterelance' => $relance['daterelance']
+										'daterelance' => $relance['daterelance'],
+										'dateimpression' => date( 'Y-m-d' ),///FIXME: à corriger !!!
+										'user_id' => $relance['user_id']
 									)
 								)
 							);
@@ -240,7 +251,9 @@
 							'Relancenonrespectsanctionep93' => array(
 								'nonrespectsanctionep93_id' => $relance['nonrespectsanctionep93_id'],
 								'numrelance' => $relance['numrelance'],
-								'daterelance' => $relance['daterelance']
+								'daterelance' => $relance['daterelance'],
+								'dateimpression' => date( 'Y-m-d' ),///FIXME: à corriger !!!
+								'user_id' => $relance['user_id']
 							)
 						);
 						$this->create( $item );
@@ -1446,12 +1459,15 @@
 		*/
 
 		public function getDataForPdf( $id ) {
+// 			$this->id = $id;
+// 			$this->saveField( 'dateimpression', date( 'Y-m-d' ) );
+
 			// TODO: error404/error500 si on ne trouve pas les données
 			$optionModel = ClassRegistry::init( 'Option' );
 			$qual = $optionModel->qual();
 			$typevoie = $optionModel->typevoie();
 
-			$queryData = $this->qdSearchRelances( array(), false, array( $this->alias => array( 'id' => $id ) ) );
+			/*$queryData = $this->qdSearchRelances( array(), false, array( $this->alias => array( 'id' => $id ) ) );
 			$queryData['fields'] = array(
 				'Dossier.matricule',
 				'Adresse.numvoie',
@@ -1478,10 +1494,67 @@
 				'Relancenonrespectsanctionep93.numrelance',
 			);
 
-			$data = $this->find( 'first', $queryData );
+			$data = $this->find( 'first', $queryData );*/
 
-			$data['Personne']['qual'] = Set::enum( $data['Personne']['qual'], $qual );
-			$data['Adresse']['typevoie'] = Set::enum( $data['Adresse']['typevoie'], $typevoie );
+			$qdPersonne = array(
+				'Foyer' => array(
+					'Dossier',
+					'Adressefoyer' => array(
+						'conditions' => array(
+							'Adressefoyer.id IN ( '.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01( 'Adressefoyer.foyer_id' ).' )'
+						),
+						'Adresse'
+					)
+				)
+			);
+
+			$data = $this->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Relancenonrespectsanctionep93.id' => $id
+					),
+					'contain' => array(
+						'User',
+						'Nonrespectsanctionep93' => array(
+							'Orientstruct' => array(
+								'Structurereferente',
+								'Personne' => $qdPersonne
+							),
+							'Contratinsertion' => array(
+								'Structurereferente',
+								'Personne' => $qdPersonne
+							),
+							'Dossierep'
+						)
+					)
+				)
+			);
+
+			if( !empty( $data ) ) {
+				if( !empty( $data['Nonrespectsanctionep93']['Orientstruct'] ) && !empty( $data['Nonrespectsanctionep93']['Orientstruct']['Personne'] ) ) {
+					$data['Nonrespectsanctionep93']['Personne'] = $data['Nonrespectsanctionep93']['Orientstruct']['Personne'];
+					unset( $data['Nonrespectsanctionep93']['Orientstruct']['Personne'] );
+					if ( $data['Relancenonrespectsanctionep93']['numrelance'] == 1 ) {
+						$delairelance = Configure::read( 'Nonrespectsanctionep93.relanceOrientstructCer1' );
+						$data['Relancenonrespectsanctionep93']['dateseconderelance'] = date( 'Y-m-d', strtotime( "+{$delairelance} days", strtotime( $data['Relancenonrespectsanctionep93']['dateimpression'] ) ) );
+					}
+				}
+				else if( !empty( $data['Nonrespectsanctionep93']['Contratinsertion'] ) && !empty( $data['Nonrespectsanctionep93']['Contratinsertion']['Personne'] ) ) {
+					$data['Nonrespectsanctionep93']['Personne'] = $data['Nonrespectsanctionep93']['Contratinsertion']['Personne'];
+					unset( $data['Nonrespectsanctionep93']['Contratinsertion']['Personne'] );
+					if ( $data['Relancenonrespectsanctionep93']['numrelance'] == 1 ) {
+						$delairelance = Configure::read( 'Nonrespectsanctionep93.relanceCerCer1' );
+						$data['Relancenonrespectsanctionep93']['dateseconderelance'] = date( 'Y-m-d', strtotime( "+{$delairelance} days", strtotime( $data['Relancenonrespectsanctionep93']['dateimpression'] ) ) );
+					}
+				}
+			}
+			else {
+				return null;
+			}
+
+			$data['Nonrespectsanctionep93']['Personne']['qual'] = Set::enum( $data['Nonrespectsanctionep93']['Personne']['qual'], $qual );
+			$data['Nonrespectsanctionep93']['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie'] = Set::enum( $data['Nonrespectsanctionep93']['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie'], $typevoie );
 
 			return $data;
 		}

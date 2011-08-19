@@ -291,6 +291,12 @@
 	Configure::write( 'Nonrespectsanctionep93.delaiRegularisation', 60 );
 
 	/**
+	* Durée du délai (en jours) accordé après un passage en EP dont la décision a été
+	* d'accorder un délai supplémentaire pour le thème "non respect et sanctions du CG 93"
+	*/
+	Configure::write( 'Nonrespectsanctionep93.decisionep.delai', 40 );
+
+	/**
 	* Montant de la réduction d'allocation lors d'un premier passage en EP pour
 	* le thème "non respect des termes du CER du CG 93"
 	*/

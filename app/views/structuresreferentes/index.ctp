@@ -25,6 +25,7 @@
 				<th>Code postal</th>
 				<th>Ville</th>
 				<th>Code insee</th>
+				<th>Téléphone</th>
 				<th>Type d'orientation</th>
 				<th colspan="2" class="action">Actions</th>
 			</tr>
@@ -43,6 +44,7 @@
 							h( $structurereferente['Structurereferente']['code_postal'] ),
 							h( $structurereferente['Structurereferente']['ville'] ),
 							h( $structurereferente['Structurereferente']['code_insee'] ),
+							h( $structurereferente['Structurereferente']['numtel'] ),
 							h( $typeorient[$structurereferente['Structurereferente']['typeorient_id']] ),
 							$xhtml->editLink(
 								'Éditer la structure référente ',

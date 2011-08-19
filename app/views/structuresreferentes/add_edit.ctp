@@ -26,10 +26,11 @@
 	<?php echo $form->input( 'Structurereferente.lib_struc', array( 'label' => required( __d( 'structurereferente', 'Structurereferente.lib_struc', true ) ), 'type' => 'text' ) );?>
 	<?php echo $form->input( 'Structurereferente.num_voie', array( 'label' => required( __( 'num_voie', true ) ), 'type' => 'text', 'maxlength' => 15 ) );?>
 	<?php echo $form->input( 'Structurereferente.type_voie', array( 'label' => required( __( 'type_voie', true ) ), 'type' => 'select', 'options' => $typevoie, 'empty' => true ) );?>
-	<?php echo $form->input( 'Structurereferente.nom_voie', array( 'label' => required(  __( 'nom_voie', true ) ), 'type' => 'text', 'maxlength' => 50 ) );?> 
-	<?php echo $form->input( 'Structurereferente.code_postal', array( 'label' => required( __( 'code_postal', true ) ), 'type' => 'text', 'maxlength' => 5 ) );?> 
-	<?php echo $form->input( 'Structurereferente.ville', array( 'label' => required( __( 'ville', true ) ), 'type' => 'text' ) );?> 
-	<?php echo $form->input( 'Structurereferente.code_insee', array( 'label' => required( __( 'code_insee', true ) ), 'type' => 'text', 'maxlength' => 5 ) );?> 
+	<?php echo $form->input( 'Structurereferente.nom_voie', array( 'label' => required(  __( 'nom_voie', true ) ), 'type' => 'text', 'maxlength' => 50 ) );?>
+	<?php echo $form->input( 'Structurereferente.code_postal', array( 'label' => required( __( 'code_postal', true ) ), 'type' => 'text', 'maxlength' => 5 ) );?>
+	<?php echo $form->input( 'Structurereferente.ville', array( 'label' => required( __( 'ville', true ) ), 'type' => 'text' ) );?>
+	<?php echo $form->input( 'Structurereferente.code_insee', array( 'label' => required( __( 'code_insee', true ) ), 'type' => 'text', 'maxlength' => 5 ) );?>
+	<?php echo $form->input( 'Structurereferente.numtel', array( 'label' => __( 'numtel', true ), 'type' => 'text', 'maxlength' => 19 ) );?>
 </fieldset>
 <div><?php echo $form->input( 'Structurereferente.filtre_zone_geo', array( 'label' => 'Restreindre les zones géographiques', 'type' => 'checkbox' ) );?></div>
 <fieldset class="col2" id="filtres_zone_geo">
