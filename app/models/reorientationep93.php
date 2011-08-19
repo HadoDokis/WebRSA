@@ -79,6 +79,13 @@
 				'fields' => '',
 				'order' => ''
 			),
+			'User' => array(
+				'className' => 'User',
+				'foreignKey' => 'user_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
 		);
 
 		/**
@@ -198,6 +205,7 @@
 						'Passagecommissionep.dossierep_id',
 						'Passagecommissionep.etatdossierep',
 						'Dossierep.personne_id',
+						'Decisionreorientationep93.id',
 						'Decisionreorientationep93.decision',
 						'Decisionreorientationep93.typeorient_id',
 						'Decisionreorientationep93.structurereferente_id',
@@ -238,7 +246,7 @@
 					'contain' => false
 				)
 			);
-			
+
 			$success = true;
 			foreach( $dossierseps as $dossierep ) {
 				if( $dossierep['Decisionreorientationep93']['decision'] == 'accepte' ) {
@@ -252,7 +260,7 @@
 							'date_propo' => date( 'Y-m-d' ),
 							'date_valid' => date( 'Y-m-d' ),
 							'statut_orient' => 'Orienté',
-							'user_id' => $user_id,
+							'user_id' => $dossierep['Reorientationep93']['user_id'], // L'utilisateur à l'origine de la demande de réorientation devient l'utilisateur de la nouvelle orientsstruct
 						)
 					);
 
@@ -270,6 +278,12 @@
 
 					$this->Orientstruct->create( $orientstruct );
 					$success = $this->Orientstruct->save() && $success;
+
+					// On enregistre l'orientstruct liée dans la décision
+					$this->Dossierep->Decisionreorientationep93->updateAll(
+						array( 'Decisionreorientationep93.orientstruct_id' => $this->Orientstruct->id ),
+						array( 'Decisionreorientationep93.id' => $dossierep['Decisionreorientationep93']['id'] )
+					);
 
 					// Recherche dernier CER
 					$dernierCerId = $this->Orientstruct->Personne->Contratinsertion->find(
@@ -726,6 +740,7 @@
 						'Dossierep' => array(
 							'Personne' => array(
 								'Foyer' => array(
+									'Dossier',
 									'Adressefoyer' => array(
 										'conditions' => array(
 											'Adressefoyer.id IN ( '.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01( 'Adressefoyer.foyer_id' ).' )'
@@ -742,6 +757,7 @@
 						'Decisionreorientationep93' => array(
 							'Typeorient',
 							'Structurereferente',
+							'User',
 							'order' => array(
 								'Decisionreorientationep93.etape DESC'
 							),
@@ -758,20 +774,22 @@
 			// Choix du modèle de document
 			$decision = $gedooo_data['Decisionreorientationep93'][0]['decision'];
 
-			if( $decision == 'annule' ) {
-				$modeleOdt  = "{$this->alias}/decision_annule.odt";
+			if( $decision == 'accepte' ) {
+				if( preg_match( '/emploi/i', $gedooo_data['Decisionreorientationep93'][0]['Typeorient']['lib_type_orient'] ) ) {
+					$modeleOdt  = "{$this->alias}/decision_accepte_poleemploi.odt";
+				}
+				else {
+					$modeleOdt  = "{$this->alias}/decision_accepte.odt";
+				}
 			}
-			else if( $decision == 'reporte' ) {
-				$modeleOdt  = "{$this->alias}/decision_reporte.odt";
-			}
-			else {
-				$modeleOdt  = "{$this->alias}/decision_autre.odt";
+			else { // annule (remobilisation), reporte, refuse
+				$modeleOdt  = "{$this->alias}/decision_{$decision}.odt";
 			}
 
-			// Calcul de la date de fin de sursis si besoin
-			$dateDepart = strtotime( $gedooo_data['Passagecommissionep']['impressiondecision'] );
-			if( empty( $dateDepart ) ) {
-				$dateDepart = mktime();
+			// La date d'impression sera enregistrée par Dossierep::getDecisionPdf()
+			// après le retour de cette méthode-ci lorsqu'elle n'existe pas.
+			if( empty( $gedooo_data['Passagecommissionep']['impressiondecision'] ) ) {
+				$gedooo_data['Passagecommissionep']['impressiondecision'] = date( 'Y-m-d' );
 			}
 
 			// Possède-t'on un PDF déjà stocké ?
