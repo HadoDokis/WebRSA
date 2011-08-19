@@ -37,7 +37,8 @@ echo '<table id="Decisionnonrespectsanctionep93" class="tooltips"><thead>
 
 		$hiddenFields = $form->input( "Decisionnonrespectsanctionep93.{$i}.id", array( 'type' => 'hidden' ) ).
 						$form->input( "Decisionnonrespectsanctionep93.{$i}.passagecommissionep_id", array( 'type' => 'hidden' ) ).
-						$form->input( "Decisionnonrespectsanctionep93.{$i}.etape", array( 'type' => 'hidden', 'value' => 'cg' ) );
+						$form->input( "Decisionnonrespectsanctionep93.{$i}.etape", array( 'type' => 'hidden', 'value' => 'cg' ) ).
+						$form->input( "Decisionnonrespectsanctionep93.{$i}.user_id", array( 'type' => 'hidden', 'value' => $session->read( 'Auth.User.id' ) ) );
 
 		echo $xhtml->tableCells(
 			array(

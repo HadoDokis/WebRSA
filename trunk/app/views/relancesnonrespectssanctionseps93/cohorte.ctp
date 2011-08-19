@@ -156,6 +156,7 @@
 							$xform->input( "Relancenonrespectsanctionep93.{$index}.numrelance", array( 'type' => 'hidden', 'value' => @$this->data['Search']['Relance']['numrelance'] ) ).
 							$xform->input( "Relancenonrespectsanctionep93.{$index}.orientstruct_id", array( 'type' => 'hidden', 'value' => @$result['Orientstruct']['id'] ) ).
 							$xform->input( "Relancenonrespectsanctionep93.{$index}.contratinsertion_id", array( 'type' => 'hidden', 'value' => @$result['Contratinsertion']['id'] ) ).
+							$xform->input( "Relancenonrespectsanctionep93.{$index}.user_id", array( 'type' => 'hidden', 'value' => $session->read( 'Auth.User.id' ) ) ).
 							$xform->input( "Relancenonrespectsanctionep93.{$index}.daterelance", array( 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 5, 'label' => false ) ),
 							$xform->input( "Relancenonrespectsanctionep93.{$index}.arelancer", array( 'type' => 'radio', 'options' => array( 'R' => 'Relancer', 'E' => 'En attente' ), 'legend' => false, 'div' => false, 'separator' => '<br />', 'value' => ( isset( $this->data['Relancenonrespectsanctionep93'][$index]['arelancer'] ) ? @$this->data['Relancenonrespectsanctionep93'][$index]['arelancer'] : 'E' ) ) ),
 							array( $innerTable, array( 'class' => 'innerTableCell' ) )

@@ -128,6 +128,7 @@
 // 							'etatdossierep' => 'cree',
 							'commissionep_id' => $commissionep_id,
 							'dossierep_id' => $this->data['Dossierep'][$key]['id'],
+							'user_id' => $this->Session->read( 'Auth.User.id' )
 						);
 					}
 				}
