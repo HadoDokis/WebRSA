@@ -47,7 +47,11 @@
 	// Branche de CakePHP que l'on utilise: 1.1, 1.2, 1.3
 	define( 'CAKE_BRANCH', preg_replace( '/^([0-9]+\.[0-9]+)(?![0-9]).*$/', '\1', Configure::version() ) );
 
-    define( 'REQUIRED_MARK', '<abbr class="required" title="Champ obligatoire">*</abbr>' );
+	define( 'REQUIRED_MARK', '<abbr class="required" title="Champ obligatoire">*</abbr>' );
+
+	define( 'PHPGEDOOO_DIR', APP.'vendors'.DS.'phpgedooo'.DS );
+	define( 'MODELESODT_DIR', PHPGEDOOO_DIR.'..'.DS.'modelesodt'.DS );
+	define( 'GEDOOO_TEST_FILE', MODELESODT_DIR.'test_gedooo.odt' );
 
     // Messages en français
     App::import( 'l10n' );
