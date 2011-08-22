@@ -53,26 +53,13 @@
 					<th><?php echo $xpaginator->sort( 'Date demande', 'Dossier.dtdemrsa' );?></th>
 					<th><?php echo $xpaginator->sort( 'Présence DSP', 'Dsp.id' );?></th>
 					<th><?php echo $xpaginator->sort( 'Type de service instructeur', 'Suiviinstruction.typeserins' );?></th>
-					<!--<th><?php echo $xpaginator->sort( 'Service instructeur', 'Serviceinstructeur.lib_service' );?></th>-->
 					<?php if( Configure::read( 'Cg.departement' ) == 93 ):?><th><?php echo $xpaginator->sort( __d( 'orientstruct', 'Orientstruct.origine', true ), 'Orientstruct.origine' );?></th><?php endif;?>
 					<th><?php echo $xpaginator->sort( 'PréOrientation', 'Orientstruct.propo_algo' );?></th>
 					<th><?php echo $xpaginator->sort( 'Orientation', 'Typeorient.lib_type_orient' );?></th>
 					<th><?php echo $xpaginator->sort( 'Structure', 'Structurereferente.lib_struc' );?></th>
 					<th><?php echo $xpaginator->sort( 'Décision', 'Orientstruct.statut_orient' );?></th>
 					<th><?php echo $xpaginator->sort( 'Date préOrientation', 'Orientstruct.date_propo' );?></th>
-					<th><?php echo $xpaginator->sort( 'Date d\'Orientation', 'Contratinsertion.dd_ci' );?></th>
-
-					<!--<th>Commune</th>
-					<th>Nom prenom</th>
-					<th>Date demande</th>
-					<th>Présence DSP</th>
-					<th>Service instructeur</th>
-					<th>PréOrientation</th>
-					<th>Orientation</th>
-					<th>Structure</th>
-					<th>Décision</th>
-					<th>Date proposition</th>
-					<th>Date dernier CI</th> -->
+					<th><?php echo $xpaginator->sort( 'Date d\'Orientation', 'Orientstruct.date_valid' );?></th>
 					<th class="action">Action</th>
 					<th class="innerTableHeader">Informations complémentaires</th>
 				</tr>
@@ -144,7 +131,7 @@
 							h( $personne['Structurereferente']['lib_struc'] ),
 							h( $personne['Orientstruct']['statut_orient'] ),
 							h( date_short( $personne['Orientstruct']['date_propo'] ) ),
-							h( date_short( $personne['Contratinsertion']['dd_ci'] ) ),
+							h( date_short( $personne['Orientstruct']['date_valid'] ) ),
 							$xhtml->printLink(
 								'Imprimer la notification',
 								array( 'controller' => 'orientsstructs', 'action' => 'impression', $personne['Orientstruct']['id'] ),
