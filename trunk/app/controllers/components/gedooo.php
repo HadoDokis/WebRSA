@@ -64,6 +64,7 @@
 			$result = @$HttpSocket->get( GEDOOO_WSDL );
 
 			$response = array(
+				'file_exists' => file_exists( GEDOOO_TEST_FILE ),
 				'status' => ( $HttpSocket->response['status']['code'] == 200 ),
 				'content-type' => ( $HttpSocket->response['header']['Content-Type'] == 'text/xml' ),
 			);
@@ -77,13 +78,16 @@
 					if( !in_array( 'Gedooo', array_keys( Set::normalize( $User->actsAs ) ) ) ) {
 						$User->Behaviors->attach( 'Gedooo' );
 					}
-					$response['print'] = $User->ged( array(), 'test_gedooo.odt' );
+					$response['print'] = $User->ged( array(), basename( GEDOOO_TEST_FILE ) );
 					$response['print'] = preg_match( '/^%PDF\-[0-9]/m', $response['print'] );
 				}
 			}
 			
 			if( $setFlash ) {
-				if( !( $response['status'] && $response['content-type'] ) ) {
+				if( !$response['file_exists'] ) {
+					$this->controller->Session->setFlash( 'Il n\'est pas certain que le serveur Gedooo fonctionne. Veuillez contacter votre administrateur système.', 'default', array( 'class' => 'notice' ) );
+				}
+				else if( !( $response['status'] && $response['content-type'] ) ) {
 					$this->controller->Session->setFlash( 'Impossible de se connecter au serveur Gedooo. Veuillez contacter votre administrateur système.', 'default', array( 'class' => 'error' ) );
 				}
 				else if( $testServer && !$response['print'] ) { // FIXME: même message si le modèle odt n'a pas été trouvé

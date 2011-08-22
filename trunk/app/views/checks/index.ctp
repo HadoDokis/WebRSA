@@ -229,21 +229,25 @@
 
 			<br/>
 			<h3>Serveur Gedooo nécessaires pour les impressions</h3>
-			<p><?php echo booleanIcon( $xhtml, ( $checkGedooo['status'] && $checkGedooo['content-type'] && $checkGedooo['print'] ) ).( $checkGedooo['status'] && $checkGedooo['content-type'] && $checkGedooo['print'] ? 'Oui' : 'Non' );?></p>
-			<table>
-				<tr>
-					<td>Accès au service</td>
-					<td><?php echo booleanIcon( $xhtml, $checkGedooo['status'] );?></td>
-				</tr>
-				<tr>
-					<td>Retour du service</td>
-					<td><?php echo booleanIcon( $xhtml, $checkGedooo['content-type'] );?></td>
-				</tr>
-				<tr>
-					<td>Test d'impression</td>
-					<td><?php echo booleanIcon( $xhtml, $checkGedooo['print'] );?></td>
-				</tr>
-			</table>
+			<?php if( !$checkGedooo['file_exists'] ):?>
+				<p class="error">Le fichier de test <code><?php echo GEDOOO_TEST_FILE;?></code> n'est pas présent, impossible de tester l'impression avec Gedooo.</p>
+			<?php else:?>
+				<p><?php echo booleanIcon( $xhtml, ( $checkGedooo['status'] && $checkGedooo['content-type'] && $checkGedooo['print'] ) ).( $checkGedooo['status'] && $checkGedooo['content-type'] && $checkGedooo['print'] ? 'Oui' : 'Non' );?></p>
+				<table>
+					<tr>
+						<td>Accès au service</td>
+						<td><?php echo booleanIcon( $xhtml, $checkGedooo['status'] );?></td>
+					</tr>
+					<tr>
+						<td>Retour du service</td>
+						<td><?php echo booleanIcon( $xhtml, $checkGedooo['content-type'] );?></td>
+					</tr>
+					<tr>
+						<td>Test d'impression</td>
+						<td><?php echo booleanIcon( $xhtml, $checkGedooo['print'] );?></td>
+					</tr>
+				</table>
+			<?php endif;?>
 
 			<br/>
 

@@ -17,6 +17,7 @@
 		const success = 0;
 		const serverError = 1;
 		const generationError = 2;
+		const fileExistsError = 3;
 
 		public $Controller = null;
 
@@ -36,6 +37,11 @@
 
 		public function main() {
 			$response = $this->Controller->Gedooo->check( false, false, true );
+
+			if( !$response['file_exists'] ) {
+				$this->err( 'Le fichier '.GEDOOO_TEST_FILE.' n\'existe pas. Impossible de tester le serveur Gedooo.' );
+				$this->_stop( TestGedoooShell::fileExistsError );
+			}
 
 			if( ( $response['status'] != 200 ) || ( $response['content-type'] != 'text/xml') ) {
 				$this->err( 'Impossible de se connecter au serveur Gedooo. Veuillez contacter votre administrateur système.' );

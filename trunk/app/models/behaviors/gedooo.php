@@ -1,6 +1,4 @@
 <?php
-	define( 'PHPGEDOOO_DIR', APP.'vendors'.DS.'phpgedooo'.DS );
-
 	// Inclusion des fichiers nécessaires à GEDOOo
 	require_once( PHPGEDOOO_DIR.'GDO_Utility.class' );
 	require_once( PHPGEDOOO_DIR.'GDO_FieldType.class' );
@@ -55,7 +53,7 @@
 		public function ged( &$model, $datas, $document, $section = false, $options = array() ) {
 			// Définition des variables & maccros
 			$sMimeType  = "application/pdf";
-			$path_model = PHPGEDOOO_DIR.'/../modelesodt/'.$document;
+			$path_model = MODELESODT_DIR.$document;
 
 			// Quel type de données a-t-on reçu ?
 			if( !$section ) {
