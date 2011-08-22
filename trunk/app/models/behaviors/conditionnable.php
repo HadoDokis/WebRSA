@@ -63,7 +63,7 @@
 
 			foreach( array( 'numdemrsa', 'matricule' ) as $critereDossier ) {
 				if( isset( $search['Dossier'][$critereDossier] ) && !empty( $search['Dossier'][$critereDossier] ) ) {
-					$conditions[] = 'Dossier.'.$critereDossier.' ILIKE \''.$model->wildcard( $search['Dossier'][$critereDossier] ).'\'';
+					$conditions[] = 'Dossier.'.$critereDossier.' ILIKE \''.$model->wildcard( "*{$search['Dossier'][$critereDossier]}*" ).'\'';
 				}
 			}
 
