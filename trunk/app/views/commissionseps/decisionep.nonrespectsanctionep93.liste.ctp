@@ -15,6 +15,8 @@ echo '<table><thead>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
+		$multiple = ( count( $dossiersAllocataires[$dossierep['Personne']['id']] ) > 1 ? 'multipleDossiers' : null );
+
 		$decisionep = $dossierep['Passagecommissionep'][0]['Decisionnonrespectsanctionep93'][0];
 
 		$lineOptions = array();
@@ -39,8 +41,8 @@ echo '<table><thead>
 				array( $options['Decisionnonrespectsanctionep93']['decision'][Set::classicExtract( $decisionep, "decision" )], array( 'id' => "Decisionnonrespectsanctionep93{$i}ColumnDecision" ) ),
 				Set::classicExtract( $decisionep, "commentaire" )
 			),
-			array( 'class' => 'odd' ),
-			array( 'class' => 'even' )
+			array( 'class' => "odd {$multiple}" ),
+			array( 'class' => "even {$multiple}" )
 		);
 	}
 	echo '</tbody></table>';

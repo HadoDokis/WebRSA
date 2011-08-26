@@ -18,6 +18,8 @@ echo '<table id="Decisionnonrespectsanctionep93" class="tooltips"><thead>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
+		$multiple = ( count( $dossiersAllocataires[$dossierep['Personne']['id']] ) > 1 ? 'multipleDossiers' : null );
+
 		$decisionep = @$dossierep['Passagecommissionep'][0]['Decisionnonrespectsanctionep93'][1];
 		$decisioncg = @$dossierep['Passagecommissionep'][0]['Decisionnonrespectsanctionep93'][0];
 
@@ -60,8 +62,8 @@ echo '<table id="Decisionnonrespectsanctionep93" class="tooltips"><thead>
 				$xhtml->printLink( 'Imprimer', array( 'controller' => 'commissionseps', 'action' => 'impressionDecision', $dossierep['Passagecommissionep'][0]['id'] ), ( $commissionep['Commissionep']['etatcommissionep'] != 'annule' ) ),
 				array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
 			),
-			array( 'class' => 'odd' ),
-			array( 'class' => 'even' )
+			array( 'class' => "odd {$multiple}" ),
+			array( 'class' => "even {$multiple}" )
 		);
 	}
 	echo '</tbody></table>';

@@ -20,6 +20,13 @@
 
 <div id="tabbedWrapper" class="tabs">
 	<?php
+		// L'allocataire passe-t'il plusieurs fois dans cette commission
+		foreach( $dossiers as $thmeme => $dossiersTmp ) {
+			foreach( $dossiersTmp['liste'] as $dossier ) {
+				$dossiersAllocataires[$dossier['Personne']['id']][] = $dossier['Dossierep']['themeep'];
+			}
+		}
+
 		echo $form->create( null, array( 'url' => Router::url( null, true ) ) );
 		echo '<div>'.$form->input( 'Commissionep.save', array( 'type' => 'hidden', 'value' => true ) ).'</div>';
 

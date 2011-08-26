@@ -53,6 +53,7 @@
 					'Commissionseps::printConvocationBeneficiaire' => array( 'url' => array( 'controller' => 'commissionseps', 'action' => 'printConvocationBeneficiaire', '#Passagecommissionep.id#' ), 'disabled' => empty( $disableConvocationBeneficiaire ))
 				),
 				'options' => $options,
+				'trClass' => $trClass,
 				'id' => $theme
 			)
 		);

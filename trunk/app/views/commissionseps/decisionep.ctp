@@ -7,6 +7,13 @@
 <br/>
 <div id="tabbedWrapper" class="tabs">
 	<?php
+		// L'allocataire passe-t'il plusieurs fois dans cette commission
+		foreach( $dossiers as $thmeme => $dossiersTmp ) {
+			foreach( $dossiersTmp['liste'] as $dossier ) {
+				$dossiersAllocataires[$dossier['Personne']['id']][] = $dossier['Dossierep']['themeep'];
+			}
+		}
+
 		foreach( array_keys( $dossiers ) as $theme ) {
 			$file = sprintf( 'decisionep.%s.liste.ctp', Inflector::underscore( $theme ) );
 			echo '<div id="'.$theme.'"><h2 class="title">'.__d( 'dossierep', 'ENUM::THEMEEP::'.Inflector::tableize( $theme ), true ).'</h2>';
@@ -73,7 +80,11 @@
 						array(
 							'actions' => $actions,
 							'options' => $options,
-							'id' => $theme
+							'id' => $theme,
+							'trClass' => array(
+								'eval' => 'count($dossiersAllocataires[#Dossierep.personne_id#]) > 1 ? "multipleDossiers" : null',
+								'params' => array( 'dossiersAllocataires' => $dossiersAllocataires )
+							)
 						)
 					);
 

@@ -17,6 +17,8 @@ echo '<table id="Decisionreorientationep93" class="tooltips"><thead>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
+		$multiple = ( count( $dossiersAllocataires[$dossierep['Personne']['id']] ) > 1 ? 'multipleDossiers' : null );
+
 		$decisionep = $dossierep['Passagecommissionep'][0]['Decisionreorientationep93'][count($dossierep['Passagecommissionep'][0]['Decisionreorientationep93'])-1];
 		if( $decisionep['decision'] != 'accepte' ) {
 			$decisionep['Typeorient']['lib_type_orient'] = null;
@@ -68,8 +70,8 @@ echo '<table id="Decisionreorientationep93" class="tooltips"><thead>
 				$hiddenFields,
 				array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
 			),
-			array( 'class' => 'odd' ),
-			array( 'class' => 'even' )
+			array( 'class' => "odd {$multiple}" ),
+			array( 'class' => "even {$multiple}" )
 		);
 	}
 	echo '</tbody></table>';
