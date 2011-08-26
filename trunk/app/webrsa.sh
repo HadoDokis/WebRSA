@@ -164,12 +164,15 @@ function __patch() {
 
 	REFERENCE_ESCAPED=`echo $REFERENCE | sed 's/\//\\\\\//g'`
 
-	for serverfile in `svn diff "$REFERENCE" "$TRUNK" --summarize | grep -e '^M ' -e '^A ' -e '^AM ' | sed 's/^\(A\|M\|AM\) \+//'`; do
-		file=`echo $serverfile | sed "s/"$REFERENCE_ESCAPED"\///"`
-		dir=`dirname $file`
-		mkdir -p "$DESTINATION/$dir" >> "/dev/null" 2>&1
-		svn export "$TRUNK/$file" "$DESTINATION/$file" >> "/dev/null" 2>&1
-	done
+	(
+		IFS=$'\n'
+		for serverfile in `svn diff "$REFERENCE" "$TRUNK" --summarize | grep -e '^M ' -e '^A ' -e '^AM ' | sed 's/^\(A\|M\|AM\) \+//'`; do
+			file="`echo $serverfile | sed "s/"$REFERENCE_ESCAPED"\///"`"
+			dir="`dirname $file`"
+			mkdir -p "$DESTINATION/$dir" >> "/dev/null" 2>&1
+			svn export "$TRUNK/$file" "$DESTINATION/$file" >> "/dev/null" 2>&1
+		done
+	)
 
 	__cleanFilesForRelease "$DESTINATION" "$versionTrunk"
 	__changelog "$versionTrunk" "$DESTINATION/app"
