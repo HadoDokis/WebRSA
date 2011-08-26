@@ -211,6 +211,7 @@
 						'Decisionreorientationep93.structurereferente_id',
 						'Reorientationep93.structurereferente_id',
 						'Reorientationep93.referent_id',
+						'Reorientationep93.user_id',
 						'Reorientationep93.datedemande'
 					),
 					'conditions' => array(
@@ -280,7 +281,7 @@
 					$success = $this->Orientstruct->save() && $success;
 
 					// On enregistre l'orientstruct liée dans la décision
-					$this->Dossierep->Decisionreorientationep93->updateAll(
+					$this->Dossierep->Passagecommissionep->Decisionreorientationep93->updateAll(
 						array( 'Decisionreorientationep93.orientstruct_id' => $this->Orientstruct->id ),
 						array( 'Decisionreorientationep93.id' => $dossierep['Decisionreorientationep93']['id'] )
 					);
@@ -319,7 +320,9 @@
 					);
 				}
 			}
-
+// debug( $dossierep );
+// debug( $orientstruct );
+// die();
 			return $success;
 		}
 
