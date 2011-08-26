@@ -49,6 +49,7 @@
 					'Dossierseps::view' => array( 'label' => 'Voir', 'url' => array( 'controller' => $controller, 'action' => 'index', '#Personne.id#' ), 'class' => 'external' )
 				),
 				'options' => $options,
+				'trClass' => $trClass,
 				'id' => $theme
 			)
 		);

@@ -21,6 +21,8 @@ echo '<table id="Decisioncontratcomplexeep93" class="tooltips"><thead>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
+		$multiple = ( count( $dossiersAllocataires[$dossierep['Personne']['id']] ) > 1 ? 'multipleDossiers' : null );
+
 		$indexDecision = count( $dossierep['Passagecommissionep'][0]['Decisioncontratcomplexeep93'] ) - 1;
 
 		$innerTable = "<table id=\"innerTableDecisioncontratcomplexeep93{$i}\" class=\"innerTable\">
@@ -74,8 +76,8 @@ echo '<table id="Decisioncontratcomplexeep93" class="tooltips"><thead>
 				$hiddenFields,
 				array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
 			),
-			array( 'class' => 'odd' ),
-			array( 'class' => 'even' )
+			array( 'class' => "odd {$multiple}" ),
+			array( 'class' => "even {$multiple}" )
 		);
 	}
 	echo '</tbody></table>';

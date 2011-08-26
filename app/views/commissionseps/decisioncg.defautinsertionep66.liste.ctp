@@ -19,6 +19,8 @@ echo '<table id="Decisiondefautinsertionep66" class="tooltips"><thead>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
+		$multiple = ( count( $dossiersAllocataires[$dossierep['Personne']['id']] ) > 1 ? 'multipleDossiers' : null );
+
 		$decisionep = @$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1];
 		$decisioncg = @$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0];
 
@@ -61,8 +63,8 @@ echo '<table id="Decisiondefautinsertionep66" class="tooltips"><thead>
 				array( $xhtml->link( 'Voir', array( 'controller' => 'historiqueseps', 'action' => 'view_passage', $dossierep['Passagecommissionep'][0]['id'] ), array( 'class' => 'external' ) ), array( 'class' => 'button view' ) ),
 				array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
 			),
-			array( 'class' => 'odd' ),
-			array( 'class' => 'even' )
+			array( 'class' => "odd {$multiple}" ),
+			array( 'class' => "even {$multiple}" )
 		);
 	}
 	echo '</tbody></table>';

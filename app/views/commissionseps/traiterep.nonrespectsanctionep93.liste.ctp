@@ -16,6 +16,8 @@ echo '<table><thead>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
+		$multiple = ( count( $dossiersAllocataires[$dossierep['Personne']['id']] ) > 1 ? 'multipleDossiers' : null );
+
 		$lineOptions = array();
 		foreach( $options['Decisionnonrespectsanctionep93']['decision'] as $key => $label ) {
 			if( !in_array( $key[0], array( 1, 2 ) ) || ( $key[0] == min( 2, $dossierep['Nonrespectsanctionep93']['rgpassage'] ) ) ) {
@@ -49,8 +51,8 @@ echo '<table><thead>
 				$form->input( "Decisionnonrespectsanctionep93.{$i}.commentaire", array( 'label' =>false, 'type' => 'textarea' ) ).
 				$hiddenFields
 			),
-			array( 'class' => 'odd' ),
-			array( 'class' => 'even' )
+			array( 'class' => "odd {$multiple}" ),
+			array( 'class' => "even {$multiple}" )
 		);
 	}
 	echo '</tbody></table>';

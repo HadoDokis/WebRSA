@@ -19,6 +19,8 @@ echo '<table id="Decisiondefautinsertionep66" class="tooltips"><thead>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
+		$multiple = ( count( $dossiersAllocataires[$dossierep['Personne']['id']] ) > 1 ? 'multipleDossiers' : null );
+
 		$decisionep = $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][count($dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'])-1];
 		$avisEp = implode( ' - ', Set::filter( array( Set::enum( @$decisionep['decision'], $options['Decisiondefautinsertionep66']['decision'] ), Set::enum( @$decisionep['decisionsup'], $options['Decisiondefautinsertionep66']['decisionsup'] ), @$listeTypesorients[@$decisionep['typeorient_id']], @$listeStructuresreferentes[@$decisionep['structurereferente_id']], @$listeReferents[@$decisionep['referent_id']] ) ) );
 
@@ -76,8 +78,8 @@ echo '<table id="Decisiondefautinsertionep66" class="tooltips"><thead>
 				$hiddenFields,
 				array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
 			),
-			array( 'class' => 'odd' ),
-			array( 'class' => 'even' )
+			array( 'class' => "odd {$multiple}" ),
+			array( 'class' => "even {$multiple}" )
 		);
 	}
 	echo '</tbody></table>';

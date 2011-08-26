@@ -271,6 +271,15 @@
 		}
 
 		/**
+		*
+		*/
+
+		protected function _evalTrClass( $data, $params ) {
+			extract( $params['params'] );
+			return eval( 'return '.dataTranslate( $data, $params['eval'] ).';' );
+		}
+
+		/**
 		* @param array $datas
 		* @param array $cells ie. array( 'User.status' => array( 'domain' => 'Cohorte' ), 'User.userae' )
 		* @param array $params
@@ -440,6 +449,11 @@
 				$trOptions = ( ( ( $key + 1 ) % 2 ) ?  $oddOptions : $evenOptions );
 				/// TODO: prefixer l'id du conteneur si présent + si l'id est à false -> pas d'id, sinon calcul auto
 				$trOptions['id'] = $containerId.'Row'.( $key + 1 );
+
+				if( isset( $cohorteParams['trClass'] ) ) {
+					$trOptions = $this->addClass( $trOptions, $this->_evalTrClass( $data, $cohorteParams['trClass'] ) );
+				}
+
 				$trs[] = $this->Html->tag( 'tr', $line, $trOptions );
 			}
 

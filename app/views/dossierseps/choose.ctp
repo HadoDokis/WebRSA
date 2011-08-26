@@ -17,6 +17,17 @@
 				echo '<p class="notice">Veuillez attribuer des thèmes à l\'EP gérant la commission avant.</p>';
 			}
 			else {
+				// L'allocataire passe-t'il plusieurs fois dans cette commission
+				foreach( $dossiers as $thmeme => $dossiersTmp ) {
+					foreach( $dossiersTmp as $dossier ) {
+						$dossiersAllocataires[$dossier['Personne']['id']][] = $dossier['Dossierep']['themeep'];
+					}
+				}
+				$trClass = array(
+					'eval' => 'count($dossiersAllocataires[#Personne.id#]) > 1 ? "multipleDossiers" : null',
+					'params' => array( 'dossiersAllocataires' => $dossiersAllocataires )
+				);
+
 				foreach( $themesChoose as $theme ){
 					echo "<div id=\"$theme\"><h3 class=\"title\">".__d( 'dossierep',  'ENUM::THEMEEP::'.Inflector::tableize( $theme ), true )."</h3>";
 					require_once( "choose.{$theme}.liste.ctp" );

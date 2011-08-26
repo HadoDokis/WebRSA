@@ -12,6 +12,8 @@ echo '<table><thead>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
+		$multiple = ( count( $dossiersAllocataires[$dossierep['Personne']['id']] ) > 1 ? 'multipleDossiers' : null );
+
 		$listeSituationPdo = array();
 		foreach($dossierep['Saisinepdoep66']['Traitementpdo']['Propopdo']['Situationpdo'] as $situationpdo) {
 			$listeSituationPdo[] = $situationpdo['libelle'];
@@ -41,8 +43,8 @@ echo '<table><thead>
 				$form->input( "Decisionsaisinepdoep66.{$i}.commentaire", array( 'label' => false, 'type' => 'textarea' ) ).
 				$hiddenFields
 			),
-			array( 'class' => 'odd' ),
-			array( 'class' => 'even' )
+			array( 'class' => "odd {$multiple}" ),
+			array( 'class' => "even {$multiple}" )
 		);
 	}
 	echo '</tbody></table>';

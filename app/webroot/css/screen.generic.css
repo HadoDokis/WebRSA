@@ -1187,3 +1187,6 @@ td.foyer_enerreur {
 td.foyer_enerreur.empty {
 	background-image: none;
 }
+
+tr.odd.multipleDossiers td { background: #fffdcc; }
+tr.even.multipleDossiers td { background: #ffebcc; }

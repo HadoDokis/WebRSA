@@ -12,6 +12,8 @@ echo '<table><thead>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
+		$multiple = ( count( $dossiersAllocataires[$dossierep['Personne']['id']] ) > 1 ? 'multipleDossiers' : null );
+
 		$decisionep = $dossierep['Passagecommissionep'][0]['Decisionsaisinepdoep66'][0];
 
 		$listeSituationPdo = array();
@@ -31,8 +33,8 @@ echo '<table><thead>
 				array( @$options['Decisionsaisinepdoep66']['decisionpdo_id'][Set::classicExtract( $decisionep, "decisionpdo_id" )], array( 'id' => "Decisionsaisinepdoep66{$i}DecisionpdoId" ) ),
 				Set::classicExtract( $decisionep, "commentaire" )
 			),
-			array( 'class' => 'odd' ),
-			array( 'class' => 'even' )
+			array( 'class' => "odd {$multiple}" ),
+			array( 'class' => "even {$multiple}" )
 		);
 	}
 	echo '</tbody></table>';

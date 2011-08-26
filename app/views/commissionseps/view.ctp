@@ -283,6 +283,15 @@
 			?>
 			<div id="dossierseps">
 				<?php
+					// L'allocataire passe-t'il plusieurs fois dans cette commission
+					foreach( $dossierseps as $dossiersep ) {
+						$dossiersAllocataires[$dossiersep['Dossierep']['personne_id']][] = $dossiersep['Dossierep']['themeep'];
+					}
+					$trClass = array(
+						'eval' => 'count($dossiersAllocataires[#Personne.id#]) > 1 ? "multipleDossiers" : null',
+						'params' => array( 'dossiersAllocataires' => $dossiersAllocataires )
+					);
+
 					foreach( $themes as $theme ) {
 						require_once( "view.{$theme}.liste.ctp" );
 					}
@@ -345,6 +354,10 @@
 									array(
 										'actions' => $actions,
 										'options' => $options,
+										'trClass' => array(
+											'eval' => 'count($dossiersAllocataires[#Dossierep.personne_id#]) > 1 ? "multipleDossiers" : null',
+											'params' => array( 'dossiersAllocataires' => $dossiersAllocataires )
+										),
 										'id' => $theme
 									)
 								);

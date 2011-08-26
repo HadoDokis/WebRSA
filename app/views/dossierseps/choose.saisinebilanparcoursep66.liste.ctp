@@ -19,7 +19,8 @@
 			'actions' => array( 'Personnes::view' ),
 			'id' => $theme,
 			'labelcohorte' => 'Enregistrer',
-			'cohortehidden' => array( 'Choose.theme' => array( 'value' => $theme ) )
+			'cohortehidden' => array( 'Choose.theme' => array( 'value' => $theme ) ),
+			'trClass' => $trClass,
 		)
 	);
 ?>
