@@ -572,7 +572,8 @@ msgid "Detaildiflog.diflog"
 msgstr "Difficultés logement ?"
 
 msgid "Detaildiflog.libautrdiflog"
-msgstr "Autres difficultés de logement ? (100 carac. max)"
+# msgstr "Autres difficultés de logement ? (100 carac. max)"
+msgstr "Veuillez préciser quelles sont les autres situations particulières (100 carac. max)"
 
 ###############################################################################
 

@@ -43,7 +43,7 @@
             }
             else {
 
-                if( $permissions->check( 'dsps', 'edit' ) && ( (isset($rev)) && (!$rev) || ( $this->action == 'view_revs' ) ) ) {
+                if( $permissions->check( 'dsps', 'edit' ) && ( (isset($rev)) && (!$rev) /*|| ( $this->action == 'view_revs' ) */) ) {
                     echo '<ul class="actionMenu">
                             <li>'.$xhtml->editLink(
                                 'Modifier cette DSP',
@@ -109,6 +109,15 @@
                 if ($cg=='cg58') {
 //                     echo $xhtml->tag( 'h3', 'Difficultés sociales décelées par le professionel' );
                     echo $dsphm->details( $dsp, 'Detaildifsocpro', 'difsocpro', 'libautrdifsocpro', $options['Detaildifsocpro']['difsocpro'] );
+                    echo $default->view(
+						$dsp,
+						array(
+							'Dsp.suivimedical'
+						),
+						array(
+							'options' => $options
+						)
+					);
                 }
 
                 // SituationSociale - DetailAccompagnementSocialFamilial (0-n)

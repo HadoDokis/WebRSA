@@ -320,12 +320,12 @@ Plan:
 
 		<?php
 			// DifficulteLogement - DetailDifficulteLogement
-			if ( $cg == 'cg58' ) {
-				echo $dsphm->fieldset( 'Detaildiflog', 'diflog', null, $dsp_id, null, $options['Detaildiflog']['diflog'] );
-			}
-			else {
+// 			if ( $cg == 'cg58' ) {
+// 				echo $dsphm->fieldset( 'Detaildiflog', 'diflog', null, $dsp_id, null, $options['Detaildiflog']['diflog'] );
+// 			}
+// 			else {
 				echo $dsphm->fieldset( 'Detaildiflog', 'diflog', 'libautrdiflog', $dsp_id, '1009', $options['Detaildiflog']['diflog'] );
-			}
+// 			}
 		?>
 	</fieldset>
 
