@@ -632,7 +632,7 @@
             <?php endif;?>
         <?php endif;?>
     
-        <?php if( Configure::read( 'Cg.departement' ) == 66 ):?>
+        <?php if( Configure::read( 'Cg.departement' ) != 93 ):?>
             <h2>Etape 8: Dernier passage en EP</h2>
             <?php
                 $detailsEp = array();
