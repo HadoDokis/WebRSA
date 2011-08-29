@@ -714,7 +714,7 @@
 			);
 			$typeorient_id = Set::classicExtract( $orientation, 'Typeorient.id' );
 
-			if( $this->Bilanparcours66->Orientstruct->Typeorient->isProOrientation($typeorient_id) ){
+			if( $this->Bilanparcours66->Orientstruct->Typeorient->isProOrientation($typeorient_id) && ( !isset( $this->params['named'] ) || empty( $this->params['named'] ) ) ){
 				$typeformulaire = 'pe';
 			}
 
