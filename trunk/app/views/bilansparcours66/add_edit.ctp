@@ -986,7 +986,7 @@ elseif ( $this->action == 'edit' && isset( $passagecommissionep['Decisiondefauti
 		
 		<?php if ( isset( $this->params['named']['Bilanparcours66__examenauditionpe'] ) && in_array( $this->params['named']['Bilanparcours66__examenauditionpe'], array( 'radiationpe', 'noninscriptionpe' ) ) ) { ?>
 			$( 'Bilanparcours66TypeformulaireCg' ).click();
-			[ 'radiotraitement', 'radioparcours', 'radioaudition', 'Bilanparcours66TypeformulairePe', 'Bilanparcours66Bilanparcoursinsertion', 'Bilanparcours66Motifep' ].each( function ( elmt ) {
+			[ 'radiotraitement', 'radioparcours', 'radioaudition', 'Bilanparcours66TypeformulairePe' ].each( function ( elmt ) {
 				$( elmt ).writeAttribute( 'disabled', 'disabled');
 			} );
 			$( 'radioauditionpe' ).click();
