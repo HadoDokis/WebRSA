@@ -149,7 +149,10 @@
 			// If field is of "type enum", translate it
 			if( Set::check( $params, "options.{$modelName}.{$fieldName}" ) ) {
 				$domain = Inflector::singularize( Inflector::tableize( $modelName ) );
-				$value = Set::enum( $value, Set::classicExtract( $params, "options.{$modelName}.{$fieldName}" ) );
+				$paramValues = Set::classicExtract( $params, "options.{$modelName}.{$fieldName}" );
+				if( isset( $paramValues[$value] ) ) {
+					$value = $paramValues[$value];
+				}
 				$value = __d( $domain, $value, true );
 			}
 			/// FIXME
