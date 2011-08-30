@@ -36,7 +36,7 @@
 		* @return array
 		*/
 
-		public function joinInformationpeHistoriqueetatpe( $dernier = true, $aliasInformationpe = 'Informationpe', $aliasHistoriqueetatpe = 'Historiqueetatpe', $type = 'INNER' ) {
+		public function joinInformationpeHistoriqueetatpe( $dernier = true, $aliasInformationpe = 'Informationpe', $aliasHistoriqueetatpe = 'Historiqueetatpe', $type = 'LEFT OUTER' ) {
 			$join = array(
 				'table'      => 'historiqueetatspe',
 				'alias'      => $aliasHistoriqueetatpe,

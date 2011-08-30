@@ -234,7 +234,7 @@
 					</ul>
 				</li>
 			<?php endif;?>
-			<?php if( $permissions->check( 'criteresapres', 'index' ) || $permissions->check( 'repsddtefp', 'index' ) || $permissions->check( 'comitesapres', 'index' ) || $permissions->check( 'recoursapres', 'index' ) ) :?>
+			<?php if( /*( Configure::read( 'Cg.departement' ) != 58 )  &&*/ ( $permissions->check( 'criteresapres', 'index' ) || $permissions->check( 'repsddtefp', 'index' ) || $permissions->check( 'comitesapres', 'index' ) || $permissions->check( 'recoursapres', 'index' ) ) ) :?>
 				<li id="menu3one" >
 					<?php echo $xhtml->link( 'APRE', '#' );?>
 					<ul>
