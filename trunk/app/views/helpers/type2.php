@@ -61,7 +61,7 @@
 					$params['dateFormat'] = __( 'Locale->dateFormat', true );
 				}
 			}
-			else if( isset( $params['options'] ) ) {
+			else if( isset( $params['options'] ) && !( isset( $params['type'] ) && $params['type'] == 'hidden' ) ) {
 				if( !isset( $params['type'] ) || $params['type'] != 'radio' ) {
 					$params['type'] = 'select';
 				}
