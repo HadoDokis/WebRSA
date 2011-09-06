@@ -206,24 +206,30 @@
 					'contain' => false
 				)
 			);
-			
+
 			$rdvs = $this->find(
 				'all',
 				array(
 					'conditions' => array(
 						'Rendezvous.typerdv_id' => $newTyperdv_id,
-						'Rendezvous.personne_id' => $personne_id
+						'Rendezvous.personne_id' => $personne_id,
+						'Rendezvous.statutrdv_id IN ('.$this->Statutrdv->sq(
+							array(
+								'alias' => 'statutsrdvs',
+								'fields' => array(
+									'statutsrdvs.id'
+								),
+								'conditions' => array(
+									'statutsrdvs.provoquepassageep' => 1
+								)
+							)
+						).' )'
 					),
 					'contain' => false,
 					'order' => array( 'Rendezvous.daterdv DESC', 'Rendezvous.heurerdv DESC', 'Rendezvous.id DESC' )
 				)
 			);
-			
-			$tousabsents = true;
-			foreach( $rdvs as $rdv) {
-				$tousabsents = $this->Statutrdv->provoquePassageEp( $rdv['Rendezvous']['statutrdv_id'] ) && $tousabsents;
-			}
-			
+
 			$dossierep = $this->Personne->Dossierep->find(
 				'first',
 				array(
@@ -256,7 +262,7 @@
 				)
 			);
 
-			return ( ( count( $rdvs ) % $typerdv['Typerdv']['nbabsencesavpassageep'] ) == 0 && $tousabsents && empty( $dossierep ) );
+			return ( ( count( $rdvs ) % $typerdv['Typerdv']['nbabsencesavpassageep'] ) == 0 && empty( $dossierep ) );
 		}
 
 		/**
