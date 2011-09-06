@@ -22,7 +22,7 @@
 		echo '</ul>';
 	}
 ?>
-
+<br/>
 <div id="tabbedWrapper" class="tabs">
 	<?php
 		// L'allocataire passe-t'il plusieurs fois dans cette commission

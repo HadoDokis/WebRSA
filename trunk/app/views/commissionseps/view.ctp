@@ -283,10 +283,22 @@
 			?>
 			<div id="dossierseps">
 				<?php
+					$dossiersAllocataires = array();
 					// L'allocataire passe-t'il plusieurs fois dans cette commission
-					foreach( $dossierseps as $dossiersep ) {
-						$dossiersAllocataires[$dossiersep['Dossierep']['personne_id']][] = $dossiersep['Dossierep']['themeep'];
+					if( in_array( Configure::read( 'Cg.departement' ), array( 58, 93 ) ) ) {
+						foreach( $dossierseps as $dossiersep ) {
+							$dossiersAllocataires[$dossiersep['Dossierep']['personne_id']][] = $dossiersep['Dossierep']['themeep'];
+						}
 					}
+					// CG 66
+					else {
+						foreach( $dossiers as $tmpDossiers ) {
+							foreach( $tmpDossiers as $tmpDossier ) {
+								$dossiersAllocataires[$tmpDossier['Personne']['id']][] = $tmpDossier['Dossierep']['themeep'];
+							}
+						}
+					}
+
 					$trClass = array(
 						'eval' => 'count($dossiersAllocataires[#Personne.id#]) > 1 ? "multipleDossiers" : null',
 						'params' => array( 'dossiersAllocataires' => $dossiersAllocataires )

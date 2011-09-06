@@ -17,6 +17,7 @@
 				echo '<p class="notice">Veuillez attribuer des thèmes à l\'EP gérant la commission avant.</p>';
 			}
 			else {
+				$dossiersAllocataires = array();
 				// L'allocataire passe-t'il plusieurs fois dans cette commission
 				foreach( $dossiers as $thmeme => $dossiersTmp ) {
 					foreach( $dossiersTmp as $dossier ) {
