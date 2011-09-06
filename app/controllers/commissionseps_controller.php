@@ -162,15 +162,15 @@
 			if( !in_array( $this->action, array( 'add', 'edit', 'index' ) ) ) {
 				$typesorients = $this->Commissionep->Passagecommissionep->Dossierep->Personne->Orientstruct->Typeorient->listOptions();
 				$structuresreferentes = $this->Commissionep->Passagecommissionep->Dossierep->Personne->Orientstruct->Structurereferente->list1Options();
-				$referents = $this->Commissionep->Passagecommissionep->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->Referent->listOptions();
+				$referents = $this->Commissionep->Passagecommissionep->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->Referent->listOptions();
 				if( Configure::read( 'Cg.departement' ) == 66 ) {
-					$options['Decisionsaisinepdoep66']['decisionpdo_id'] = $this->Commissionep->Passagecommissionep->Dossierep->Saisinepdoep66->Decisionsaisinepdoep66->Decisionpdo->find('list');
+					$options['Decisionsaisinepdoep66']['decisionpdo_id'] = $this->Commissionep->Passagecommissionep->Dossierep->Passagecommissionep->Decisionsaisinepdoep66->Decisionpdo->find('list');
 				}
 			}
 
 			$liste_typesorients = $this->Commissionep->Passagecommissionep->Dossierep->Personne->Orientstruct->Typeorient->find( 'list' );
 			$liste_structuresreferentes = $this->Commissionep->Passagecommissionep->Dossierep->Personne->Orientstruct->Structurereferente->find( 'list' );
-			$liste_referents = $this->Commissionep->Passagecommissionep->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->Referent->find( 'list' );
+			$liste_referents = $this->Commissionep->Passagecommissionep->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->Referent->find( 'list' );
 
 			$this->set( 'liste_typesorients', $liste_typesorients );
 			$this->set( 'liste_structuresreferentes', $liste_structuresreferentes );
@@ -178,9 +178,9 @@
 
 			// Suivant le CG
 			if( Configure::read( 'Cg.departement' ) == 66 ) {
-				$listeTypesorients = $this->Commissionep->Passagecommissionep->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->Typeorient->find( 'list' );
-				$listeStructuresreferentes = $this->Commissionep->Passagecommissionep->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->Structurereferente->find( 'list' );
-				$listeReferents = $this->Commissionep->Passagecommissionep->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->Referent->find( 'list' );
+				$listeTypesorients = $this->Commissionep->Passagecommissionep->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->Typeorient->find( 'list' );
+				$listeStructuresreferentes = $this->Commissionep->Passagecommissionep->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->Structurereferente->find( 'list' );
+				$listeReferents = $this->Commissionep->Passagecommissionep->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->Referent->find( 'list' );
 				$this->set( compact( 'listeTypesorients' ) );
 				$this->set( compact( 'listeStructuresreferentes' ) );
 				$this->set( compact( 'listeReferents' ) );
@@ -560,6 +560,7 @@
 
 				$this->_setFlashResult( 'Save', $success );
 				if( $success ) {
+					//$this->Commissionep->rollback();
 					$this->Commissionep->commit();
 					$this->redirect( array( 'action' => "decision{$niveauDecision}", $commissionep_id ) );
 				}
@@ -699,9 +700,7 @@
 				)
 			);
 
-			if( !empty( $dossierseps ) ){
-				$this->set( compact( 'dossierseps' ) );
-			}
+			$this->set( compact( 'dossierseps' ) );
 			$this->set(compact('dossiers'));
 			$this->set(compact('countDossiers'));
 
