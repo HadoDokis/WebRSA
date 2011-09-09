@@ -3,42 +3,38 @@
 	<legend>Prescripteur</legend>
     <table class="wide noborder">
 		<tr>
-			<td rowspan="3" class="wide noborder"><strong>Adresse : </strong></td>
+			<td rowspan="3" class="wide noborder" style="width: 400px"><strong>Adresse : </strong></td>
 			<td class="wide noborder">
-			<?php echo $prescripteur['Structurereferente']['lib_struc']; ?>
+				<?php echo $prescripteur['Structurereferente']['lib_struc']; ?>
 			</td>
 		</tr>        
 		<tr>
 			<td class="wide noborder">
-			<?php 
-				echo $prescripteur['Structurereferente']['num_voie'] . ' ';
-				echo Set::enum( $prescripteur['Structurereferente']['type_voie'], $typevoie ) .  ' ';
-				echo $prescripteur['Structurereferente']['nom_voie'] . ' ';
-			?>
+				<?php 
+					echo $prescripteur['Structurereferente']['num_voie'] . ' ';
+					echo Set::enum( $prescripteur['Structurereferente']['type_voie'], $typevoie ) .  ' ';
+					echo $prescripteur['Structurereferente']['nom_voie'] . ' ';
+				?>
 			</td>
 		</tr>
 		<tr>
 			<td class="wide noborder">
-			<?php 
-				echo $prescripteur['Structurereferente']['code_postal'];
-				echo $prescripteur['Structurereferente']['ville'];
-			?>
+				<?php 
+					echo $prescripteur['Structurereferente']['code_postal'];
+					echo $prescripteur['Structurereferente']['ville'];
+				?>
 			</td>
 		</tr>	
 		<tr>
 			<td class="wide noborder"><strong>N° poste : </strong></td>
 			<td class="wide noborder">
-			<?php 
-				echo $prescripteur['Referent']['numero_poste'];
-			?>
+				<?php echo $prescripteur['Referent']['numero_poste']; ?>
 			</td>
 		</tr>
 		<tr>
 			<td class="wide noborder"><strong>Courriel : </strong></td>
 			<td class="wide noborder">
-			<?php 
-				echo $prescripteur['Referent']['email'];
-			?>
+				<?php echo $prescripteur['Referent']['email']; ?>
 			</td>
 		</tr>
 	</table>
