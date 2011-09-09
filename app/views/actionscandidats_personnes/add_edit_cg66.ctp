@@ -56,8 +56,7 @@
 				)
 			);
 
-            echo $ajax->observeField( 'ActioncandidatPersonneReferentId', array( 'update' => 'ActioncandidatPrescripteurReferentId', 'url' => Router::url( array( 'action' => 'ajaxreferent' ), true ) ) );
-
+			echo $ajax->observeField( 'ActioncandidatPersonneReferentId', array( 'update' => 'ActioncandidatPrescripteurReferentId', 'url' => Router::url( array( 'action' => 'ajaxreferent' ), true ) ) );
 
 		?>
 	</fieldset>
@@ -100,7 +99,6 @@
 				);
 			}
 
-			
 			echo $xhtml->tag(
 				'dl',
 				$xhtml->tag( 'dt', 'Adresse' ).
@@ -133,7 +131,7 @@
 			echo $default->subform(
 				array(
 					'ActioncandidatPersonne.mobile' => array( 'type' => 'radio' , 'legend' => 'Etes-vous mobile ?', 'div' => false, 'options' => array( '0' => 'Non', '1' => 'Oui' ) ),
-					'ActioncandidatPersonne.naturemobile' => array( 'label' => 'Nature de la mobilité', 'empty' => true ),
+					'ActioncandidatPersonne.naturemobile' => array( 'label' => 'Nature de la mobilité', 'options' => $options['ActioncandidatPersonne']['naturemobile'], 'empty' => true ),
 					'ActioncandidatPersonne.typemobile'=> array( 'label' => 'Type de mobilité ' ),
 				),
 				array(
@@ -219,31 +217,31 @@
 			?>
 		</fieldset>
 		<fieldset id="blocsortie">
-            <?php
-                echo $default2->subform(
-                    array(
-                        'ActioncandidatPersonne.issortie' => array( 'label' =>  'Sortie', 'type' => 'checkbox' ),
-                        ),
-                    array(
-                        'options' => $options
-                    )
-                );
-            ?>
-            <fieldset id="issortie" class="invisible">
-                <?php 
-                    echo $default->subform(
-                        array(
-                            'ActioncandidatPersonne.sortiele',
-                            'ActioncandidatPersonne.motifsortie_id'
-                        ),
-                        array(
-                            'domain' => $domain,
-                            'options' => $options
-                        )
-                    );
-                ?>
-            </fieldset>
-        </fieldset>
+			<?php
+				echo $default2->subform(
+					array(
+						'ActioncandidatPersonne.issortie' => array( 'label' =>  'Sortie', 'type' => 'checkbox' ),
+						),
+					array(
+						'options' => $options
+					)
+				);
+			?>
+			<fieldset id="issortie" class="invisible">
+				<?php 
+					echo $default->subform(
+						array(
+							'ActioncandidatPersonne.sortiele',
+							'ActioncandidatPersonne.motifsortie_id'
+						),
+						array(
+							'domain' => $domain,
+							'options' => $options
+						)
+					);
+				?>
+			</fieldset>
+		</fieldset>
 		
 		
 	<?php endif;?>
@@ -258,76 +256,76 @@
 <div class="clearer"><hr /></div>
 
 <script type="text/javascript">
-    document.observe( "dom:loaded", function() {
-        <?php
-            echo $ajax->remoteFunction(
-                array(
-                    'update' => 'ActioncandidatPartenairePartenaireId',
-                    'url' => Router::url( array( 'action' => 'ajaxpart', Set::extract( $this->data, 'ActioncandidatPersonne.actioncandidat_id' ) ), true )
-                )
-            );
-        ?>;
-        <?php
-            if( ( $this->action == 'add' ) && !empty( $referentId ) ) {
-                echo $ajax->remoteFunction(
-                    array(
-                        'update' => 'ActioncandidatPrescripteurReferentId',
-                        'url' => Router::url( array( 'action' => 'ajaxreferent', $referentId ), true)
-                    )
-                );
-            }
-            else {
-                echo $ajax->remoteFunction(
-                    array(
-                        'update' => 'ActioncandidatPrescripteurReferentId',
-                        'url' => Router::url( array( 'action' => 'ajaxreferent', Set::extract( $this->data, 'ActioncandidatPersonne.referent_id' ) ), true)
-                    )
-                );
-            }
-        ?>
+	document.observe( "dom:loaded", function() {
+		<?php
+			echo $ajax->remoteFunction(
+				array(
+					'update' => 'ActioncandidatPartenairePartenaireId',
+					'url' => Router::url( array( 'action' => 'ajaxpart', Set::extract( $this->data, 'ActioncandidatPersonne.actioncandidat_id' ) ), true )
+				)
+			);
+		?>;
+		<?php
+			if( ( $this->action == 'add' ) && !empty( $referentId ) ) {
+				echo $ajax->remoteFunction(
+					array(
+						'update' => 'ActioncandidatPrescripteurReferentId',
+						'url' => Router::url( array( 'action' => 'ajaxreferent', $referentId ), true)
+					)
+				);
+			}
+			else {
+				echo $ajax->remoteFunction(
+					array(
+						'update' => 'ActioncandidatPrescripteurReferentId',
+						'url' => Router::url( array( 'action' => 'ajaxreferent', Set::extract( $this->data, 'ActioncandidatPersonne.referent_id' ) ), true)
+					)
+				);
+			}
+		?>
 
-        observeDisableFieldsOnRadioValue(
-            'candidatureform',
-            'data[ActioncandidatPersonne][rendezvouspartenaire]',
-            [
-                    'ActioncandidatPersonneHorairerdvpartenaireDay',
-                    'ActioncandidatPersonneHorairerdvpartenaireMonth',
-                    'ActioncandidatPersonneHorairerdvpartenaireYear',
-                    'ActioncandidatPersonneHorairerdvpartenaireHour',
-                    'ActioncandidatPersonneHorairerdvpartenaireMin',
-            ],
-            '1',
-            true
-        );
+		observeDisableFieldsOnRadioValue(
+			'candidatureform',
+			'data[ActioncandidatPersonne][rendezvouspartenaire]',
+			[
+					'ActioncandidatPersonneHorairerdvpartenaireDay',
+					'ActioncandidatPersonneHorairerdvpartenaireMonth',
+					'ActioncandidatPersonneHorairerdvpartenaireYear',
+					'ActioncandidatPersonneHorairerdvpartenaireHour',
+					'ActioncandidatPersonneHorairerdvpartenaireMin',
+			],
+			'1',
+			true
+		);
 
-        observeDisableFieldsOnRadioValue(
-            'candidatureform',
-            'data[ActioncandidatPersonne][mobile]',
-            [
-                'ActioncandidatPersonneTypemobile',
-                'ActioncandidatPersonneNaturemobile'
-            ],
-            '1',
-            true
-        );
+		observeDisableFieldsOnRadioValue(
+			'candidatureform',
+			'data[ActioncandidatPersonne][mobile]',
+			[
+				'ActioncandidatPersonneTypemobile',
+				'ActioncandidatPersonneNaturemobile'
+			],
+			'1',
+			true
+		);
 
-        <?php  if( $this->action == 'edit' ):?>
+		<?php  if( $this->action == 'edit' ):?>
 
-            observeDisableFieldsOnRadioValue(
-                'candidatureform',
-                'data[ActioncandidatPersonne][bilanvenu]',
-                [ 'ActioncandidatPersonneIssortie' ],
-                undefined,
-                false
-            );
+			observeDisableFieldsOnRadioValue(
+				'candidatureform',
+				'data[ActioncandidatPersonne][bilanvenu]',
+				[ 'ActioncandidatPersonneIssortie' ],
+				undefined,
+				false
+			);
 
-            observeDisableFieldsetOnCheckbox(
-                'ActioncandidatPersonneIssortie',
-                'issortie',
-                false,
-                true
-            );
-        <?php endif;?>
-    } );
+			observeDisableFieldsetOnCheckbox(
+				'ActioncandidatPersonneIssortie',
+				'issortie',
+				false,
+				true
+			);
+		<?php endif;?>
+	} );
 </script>
 <!--/************************************************************************/ -->
