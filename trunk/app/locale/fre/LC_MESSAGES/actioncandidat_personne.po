@@ -133,3 +133,15 @@ msgstr "Oui"
 
 msgid "ENUM::HASPIECEJOINTE::0"
 msgstr "Non"
+
+msgid "ENUM::NATUREMOBILE::commune"
+msgstr "Sur la commune"
+
+msgid "ENUM::NATUREMOBILE::canton"
+msgstr "Sur le canton"
+
+msgid "ENUM::NATUREMOBILE::dept"
+msgstr "Sur le département"
+
+msgid "ENUM::NATUREMOBILE::horsdept"
+msgstr "Hors du département"

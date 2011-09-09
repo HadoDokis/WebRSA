@@ -121,6 +121,18 @@ SELECT public.alter_enumtype ( 'TYPE_REORIENTATION', ARRAY['SP', 'PS', 'PP'] );
 -- simplement à terme.
 -- SELECT public.alter_enumtype ( 'TYPE_POSITIONCER', ARRAY['encours', 'attvalid', 'annule', 'fincontrat', 'encoursbilan', 'attrenouv', 'perime', 'termine'] );
 
+-- ----------------------------------------------------------------------------
+-- 09/09/2011:
+-- ----------------------------------------------------------------------------
+ALTER TABLE actionscandidats_personnes ALTER COLUMN naturemobile TYPE TEXT;
+DROP TYPE IF EXISTS TYPE_FICHELIAISONNATUREMOBILE;
+CREATE TYPE TYPE_FICHELIAISONNATUREMOBILE AS ENUM ( 'commune', 'canton', 'dept', 'horsdept' );
+UPDATE actionscandidats_personnes SET naturemobile = 'commune' WHERE naturemobile = '2501';
+UPDATE actionscandidats_personnes SET naturemobile = 'dept' WHERE naturemobile = '2502';
+UPDATE actionscandidats_personnes SET naturemobile = 'horsdept' WHERE naturemobile = '2503';
+UPDATE actionscandidats_personnes SET naturemobile = null WHERE naturemobile = '2504';
+ALTER TABLE actionscandidats_personnes ALTER COLUMN naturemobile TYPE TYPE_FICHELIAISONNATUREMOBILE USING CAST(naturemobile AS TYPE_FICHELIAISONNATUREMOBILE);
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

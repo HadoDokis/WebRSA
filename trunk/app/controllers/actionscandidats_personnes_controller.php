@@ -38,7 +38,6 @@
 			'add' => 'ActionscandidatsPersonnes:edit'
 		);
 
-
 		/**
 		*
 		*/
@@ -47,7 +46,6 @@
 			$options = array();
 			foreach( $this->{$this->modelClass}->allEnumLists() as $field => $values ) {
 				$options = Set::insert( $options, "{$this->modelClass}.{$field}", $values );
-//                 debug($options);
 			}
 
 			$options = Set::insert( $options, 'Adresse.typevoie', $this->Option->typevoie() );
@@ -62,8 +60,7 @@
 			App::import( 'Helper', 'Locale' );
 			$this->Locale = new LocaleHelper();
 
-			$options = Set::insert( $options, 'ActioncandidatPersonne.naturemobile', $this->ActioncandidatPersonne->Personne->Dsp->Detailnatmob->enumList( 'natmob' ) );
-
+// 			$options = Set::insert( $options, 'ActioncandidatPersonne.naturemobile', $this->ActioncandidatPersonne->Personne->Dsp->Detailnatmob->enumList( 'natmob' ) );
 
 			$this->set( 'typevoie', $this->Option->typevoie() );
 			$this->set( 'qual', $this->Option->qual() );
@@ -73,7 +70,6 @@
 			$this->set( 'rolepers', $this->Option->rolepers() );
 			$this->set( 'typeservice', $this->ActioncandidatPersonne->Personne->Orientstruct->Serviceinstructeur->find( 'first' ) );
 			$this->set( compact( 'options', 'typevoie' ) );
-// debug($options);
 		}
 
   /**
