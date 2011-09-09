@@ -151,7 +151,8 @@
 						'type' => 'datetime',
 						'label' => 'Rendez-vous fixé le ',
 						'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 2, 'maxYear' => date( 'Y' ) + 2,
-						'timeFormat'=>24,
+						'timeFormat' => 24,
+						'hourRange' => array( 8, 19 ),
 						'interval' => 5,
 						'empty' => true
 					),
