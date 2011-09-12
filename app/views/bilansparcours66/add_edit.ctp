@@ -301,7 +301,7 @@
 				?>
 			</fieldset>-->
 			<fieldset id="Contratreconduit">
-				<legend>Reconduction du contrat librement débattu</legend>
+				<legend>Reconduction du contrat d'engagement réciproque</legend>
 				<?php
 					echo $default2->subform(
 						array(
