@@ -21,6 +21,7 @@
 				<th>Parent</th>
 				<th>Modèle de notification</th>
 				<th>Modèle de notification pour cohorte</th>
+				<th>Actif</th>
 				<th colspan="2" class="action">Actions</th>
 			</tr>
 		</thead>
@@ -36,6 +37,7 @@
 								h( $typeorient['Typeorient']['parentid'] ),
 								h( $typeorient['Typeorient']['modele_notif'] ),
 								h( $typeorient['Typeorient']['modele_notif_cohorte'] ),
+								h( Set::enum( $typeorient['Typeorient']['actif'], $options['actif'] ) ),
 								$xhtml->editLink(
 									'Éditer le type d\'orientation',
 									array( 'controller' => 'typesorients', 'action' => 'edit', $typeorient['Typeorient']['id'] )

@@ -5,6 +5,14 @@
 
 		public $displayField = 'lib_type_orient';
 
+		public $actsAs = array(
+			'Enumerable' => array(
+				'fields' => array(
+					'actif' => array( 'type' => 'no', 'domain' => 'default' ),
+				)
+			)
+		);
+
 		public $hasMany = array(
 			'Decisionparcours' => array(
 				'className' => 'Decisionparcours',
@@ -123,7 +131,10 @@
 						'Typeorient.id',
 						'Typeorient.lib_type_orient'
 					),
-					'conditions' => array( 'Typeorient.parentid' => NULL ),
+					'conditions' => array(
+						'Typeorient.parentid' => NULL,
+						'Typeorient.actif' => 'O'
+					),
 					'order'  => array( 'Typeorient.lib_type_orient ASC' )
 				)
 			);
@@ -139,7 +150,10 @@
 								'Typeorient.lib_type_orient'/*,
 								'Typeorient.parentid'*/
 							),
-							'conditions' => array( 'Typeorient.parentid' => $key ),
+							'conditions' => array(
+								'Typeorient.parentid' => $key,
+								'Typeorient.actif' => 'O'
+							),
 							'order'  => array( 'Typeorient.lib_type_orient ASC' )
 						)
 					);

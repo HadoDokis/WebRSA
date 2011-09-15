@@ -133,6 +133,12 @@ UPDATE actionscandidats_personnes SET naturemobile = 'horsdept' WHERE naturemobi
 UPDATE actionscandidats_personnes SET naturemobile = null WHERE naturemobile = '2504';
 ALTER TABLE actionscandidats_personnes ALTER COLUMN naturemobile TYPE TYPE_FICHELIAISONNATUREMOBILE USING CAST(naturemobile AS TYPE_FICHELIAISONNATUREMOBILE);
 
+
+
+
+SELECT add_missing_table_field ('public', 'typesorients', 'actif', 'type_no');
+ALTER TABLE typesorients ALTER COLUMN actif SET DEFAULT 'O';
+UPDATE typesorients SET actif = 'O' WHERE actif IS NULL;
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

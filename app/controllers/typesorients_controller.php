@@ -10,6 +10,11 @@
 			'add' => 'Typesorients:edit'
 		);
 
+		public function _setOptions() {
+			$options = $this->Typeorient->allEnumLists();
+			$this->set( compact( 'options' ) );
+		}
+
 		public function index() {
 			// Retour à la liste en cas d'annulation
 			if( isset( $this->params['form']['Cancel'] ) ) {
@@ -26,6 +31,7 @@
 			App::import( 'Behaviors', array( 'Occurences' ) );
 			$this->Typeorient->Behaviors->attach( 'Occurences' );
 			$this->set( 'occurences', $this->Typeorient->occurencesExists() );
+			$this->_setOptions();
 
 			$this->set( 'typesorients', $typesorients );
 		}
@@ -67,6 +73,7 @@
 					$this->redirect( array( 'controller' => 'typesorients', 'action' => 'index' ) );
 				}
 			}
+			$this->_setOptions();
 
 			$this->render( $this->action, null, 'add_edit' );
 		}
@@ -135,6 +142,7 @@
 				);
 				$this->data = $typeorient;
 			}
+			$this->_setOptions();
 
 			$this->render( $this->action, null, 'add_edit' );
 		}
