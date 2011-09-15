@@ -11,6 +11,7 @@
 		<?php echo $form->input( 'Typeorient.parentid', array( 'label' =>  __( 'parentid', true ), 'type' => 'select', 'options' => $parentid, 'empty' => true )  );?>
 		<?php echo $form->input( 'Typeorient.modele_notif', array( 'label' => required( __d( 'typeorient', 'Typeorient.modele_notif', true ) ), 'type' => 'text' )  );?>
 	<?php echo $form->input( 'Typeorient.modele_notif_cohorte', array( 'label' => required( __d( 'typeorient', 'Typeorient.modele_notif_cohorte', true ) ), 'type' => 'text' ) );?>
+	<?php echo $form->input( 'Typeorient.actif', array( 'label' => required( __d( 'typeorient', 'Typeorient.actif', true ) ), 'type' => 'radio', 'options' => $options['actif'] ) ); ?>
 	</fieldset>
 	<table>
 	<thead>
@@ -20,6 +21,7 @@
 			<th>Parent</th>
 			<th>Modèle de notification</th>
 			<th>Modèle de notification pour cohorte</th>
+			<th>Actif</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -31,6 +33,7 @@
 							h( $typeorient['Typeorient']['parentid'] ),
 							h( $typeorient['Typeorient']['modele_notif'] ),
 							h( $typeorient['Typeorient']['modele_notif_cohorte'] ),
+							h( Set::enum( $typeorient['Typeorient']['actif'], $options['actif'] ) ),
 						),
 						array( 'class' => 'odd' ),
 						array( 'class' => 'even' )
