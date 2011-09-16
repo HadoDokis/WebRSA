@@ -17,20 +17,25 @@ msgstr ""
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
 
-
 ###############################################################################
 
-msgid "Foyer.Modecontact.numtel"
-msgstr "N° de téléphone"
+msgid "Objetcontratprecedent.objetcerprec"
+msgstr "Le précédent contrat portait sur : "
 
-msgid "Foyer.Dossier.matricule"
-msgstr "N° CAF"
+msgid "ENUM::OBJETCERPREC::emploi"
+msgstr "L'emploi"
 
-msgid "Foyer.sitfam"
-msgstr "Situation familiale"
+msgid "ENUM::OBJETCERPREC::formation"
+msgstr "La formation"
 
-msgid "Foyer.typeocclog"
-msgstr "Conditions de logement"
+msgid "ENUM::OBJETCERPREC::autonomiesoc"
+msgstr "L'autonomie sociale"
 
-msgid "Foyer.enerreur"
-msgstr "Alerte composition du foyer ?"
+msgid "ENUM::OBJETCERPREC::sante"
+msgstr "La santé"
+
+msgid "ENUM::OBJETCERPREC::logement"
+msgstr "Le logement"
+
+msgid "ENUM::OBJETCERPREC::autre"
+msgstr "Autre"

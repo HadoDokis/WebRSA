@@ -140,5 +140,25 @@ SELECT add_missing_table_field ('public', 'typesorients', 'actif', 'type_no');
 ALTER TABLE typesorients ALTER COLUMN actif SET DEFAULT 'O';
 UPDATE typesorients SET actif = 'O' WHERE actif IS NULL;
 -- *****************************************************************************
+-- 20110914 -- Nouveaux champs dans le CER pour le cg93
+-- *****************************************************************************
+SELECT add_missing_table_field ('public', 'contratsinsertion', 'sitfam', 'VARCHAR(3)');
+SELECT add_missing_table_field ('public', 'contratsinsertion', 'typeocclog', 'VARCHAR(3)');
+SELECT add_missing_table_field ('public', 'contratsinsertion', 'persacharge', 'TEXT');
+CREATE TYPE TYPE_CERCMU AS ENUM ( 'oui', 'non', 'encours' );
+SELECT add_missing_table_field ('public', 'contratsinsertion', 'cmu', 'TYPE_CERCMU');
+CREATE TYPE TYPE_CERCMUC AS ENUM ( 'oui', 'non', 'encours' );
+SELECT add_missing_table_field ('public', 'contratsinsertion', 'cmuc', 'TYPE_CERCMUC');
+SELECT add_missing_table_field ('public', 'contratsinsertion', 'objetcerprecautre', 'VARCHAR(50)');
+
+CREATE TYPE TYPE_OBJETCERPREC AS ENUM ( 'emploi', 'formation', 'autonomiesoc', 'sante', 'logement', 'autre' );
+
+CREATE TABLE objetscontratsprecedents (
+	id								SERIAL NOT NULL PRIMARY KEY,
+	contratinsertion_id				INTEGER NOT NULL REFERENCES contratsinsertion(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	objetcerprec					TYPE_OBJETCERPREC DEFAULT NULL
+);
+
+-- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

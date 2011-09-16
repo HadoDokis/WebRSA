@@ -7,9 +7,6 @@
 		* Prend une mauvaise valeur:
 			* Suivi d'insertion -> CI en alternance
 	**/
-//     @ini_set( 'max_execution_time', 0 );
-//     @ini_set( 'memory_limit', '512M' );
-//     App::import( 'Sanitize' );
 	App::import( 'Helper', 'Locale' );
 
 	class ContratsinsertionController extends AppController
@@ -72,13 +69,15 @@
 				$this->set( 'fonction_pers', $this->Option->fonction_pers() );
 				$this->set( 'nivetus', $this->Contratinsertion->Personne->Dsp->enumList( 'nivetu' ) );
 				$this->set( 'nivdipmaxobt', $this->Contratinsertion->Personne->Dsp->enumList( 'nivdipmaxobt' ) );
-// 				$this->set( 'typeserins', $this->Contratinsertion->Personne->Orientstruct->Serviceinstructeur->find( 'list', array( 'fields' => array( 'lib_service' ) ) ) );
 				$this->set( 'typeserins', $this->Option->typeserins() );
 
 				$this->set( 'lib_action', $this->Option->lib_action() );
 				$this->set( 'typo_aide', $this->Option->typo_aide() );
 				$this->set( 'soclmaj', $this->Option->natpfcre( 'soclmaj' ) );
 				$this->set( 'rolepers', $this->Option->rolepers() );
+				$this->set( 'sitfam', $this->Option->sitfam() );
+				$this->set( 'typeocclog', $this->Option->typeocclog() );
+				$this->set( 'emp_trouv', array( 'N' => 'Non', 'O' => 'Oui' ) );
 				$this->set( 'zoneprivilegie', ClassRegistry::init( 'Zonegeographique' )->find( 'list' ) );
 				$this->set( 'actions', $this->Action->grouplist( 'prest' ) );
 				$optionsautreavissuspension = $this->Contratinsertion->Autreavissuspension->allEnumLists();
@@ -89,6 +88,14 @@
 				$options = array_merge( $options, $optionsautreavisradiation );
 
 			}
+			$options = array_merge(
+				$this->Contratinsertion->enums(),
+				$options
+			);
+			$options = array_merge(
+				$this->Contratinsertion->Objetcontratprecedent->enums(),
+				$options
+			);
 			$this->set( 'options', $options );
 		}
 
@@ -108,7 +115,6 @@
 					)
 				)
 			);
-
 			return Set::classicExtract( $typeOrientation, 'Typeorient.lib_type_orient' );
 		}
 
@@ -280,7 +286,7 @@
 
 			$this->_setOptions();
 			$this->set( compact( 'dossier_id', 'personne_id', 'fichiers', 'contratinsertion' ) );
-
+			$this->set( 'urlmenu', '/contratsinsertion/index/'.$personne_id );
 		}
 
 		/**
@@ -358,30 +364,28 @@
 
 			// Recherche du nombre de référent lié au parcours de la personne
 			// Si aucun alors message d'erreur signalant l'absence de référent (cg66)
-// 			if( Configure::read( 'Cg.departement' ) != 93 ) {
-				$orientstruct = $this->Orientstruct->find(
-					'count',
-					array(
-						'conditions' => array(
-							'Orientstruct.personne_id' => $personne_id,
-							'Orientstruct.statut_orient' => 'Orienté'
-						),
-						'recursive' => -1
-					)
-				);
-				$this->set( compact( 'orientstruct' ) );
+			$orientstruct = $this->Orientstruct->find(
+				'count',
+				array(
+					'conditions' => array(
+						'Orientstruct.personne_id' => $personne_id,
+						'Orientstruct.statut_orient' => 'Orienté'
+					),
+					'recursive' => -1
+				)
+			);
+			$this->set( compact( 'orientstruct' ) );
 
-				$persreferent = $this->PersonneReferent->find(
-					'count',
-					array(
-						'conditions' => array(
-							'PersonneReferent.personne_id' => $personne_id
-						),
-						'recursive' => -1
-					)
-				);
-				$this->set( compact( 'persreferent' ) );
-// 			}
+			$persreferent = $this->PersonneReferent->find(
+				'count',
+				array(
+					'conditions' => array(
+						'PersonneReferent.personne_id' => $personne_id
+					),
+					'recursive' => -1
+				)
+			);
+			$this->set( compact( 'persreferent' ) );
 
 			$contratsinsertion = $this->Contratinsertion->find(
 				'all',
@@ -396,12 +400,14 @@
 						'Contratinsertion.df_ci',
 						'Contratinsertion.date_saisi_ci',
 						'Contratinsertion.datevalidation_ci',
+						'Contratinsertion.avenant_id'
 					),
 					'conditions' => array(
 						'Contratinsertion.personne_id' => $personne_id
 					),
 					'order' => array(
-						'Contratinsertion.df_ci DESC'
+						'Contratinsertion.df_ci DESC',
+						'Contratinsertion.id DESC'
 					),
 					'recursive' => -1
 				)
@@ -422,6 +428,7 @@
 							'Propocontratinsertioncov58.num_contrat',
 							'Propocontratinsertioncov58.dd_ci',
 							'Propocontratinsertioncov58.df_ci',
+							'Propocontratinsertioncov58.avenant_id',
 							'Dossiercov58.personne_id',
 							'Dossiercov58.etapecov',
 							'Personne.id',
@@ -486,7 +493,7 @@
 					)
 				);
 				$this->set( 'nbdossiersnonfinalisescovs', $nbdossiersnonfinalisescovs );
-				
+
 				$queryData = $this->_qdThematiqueEp( 'Sanctionep58', $personne_id );
 				$queryData['fields'] = Set::merge(
 					$queryData['fields'],
@@ -667,12 +674,11 @@
 					)
 				)
 			);
-// 			debug($fichescandidature);
 			$this->set( compact( 'fichescandidature' ) );
-
 
 			$this->_setOptions();
 			$this->set( 'personne_id', $contratinsertion['Contratinsertion']['personne_id'] );
+			$this->set( 'urlmenu', '/contratsinsertion/index/'.$contratinsertion['Contratinsertion']['personne_id'] );
 
 			// Retour à la liste en cas d'annulation
 			if(  isset( $this->params['form']['Cancel'] ) ) {
@@ -688,7 +694,6 @@
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
-
 
 		public function edit() {
 			$args = func_get_args();
@@ -769,7 +774,6 @@
 				else {
 					$tc = 'PRE';
 				}
-
 			}
 			else if( $this->action == 'edit' ) {
 				$contratinsertion_id = $id;
@@ -781,7 +785,8 @@
 						),
 						'contain' => array(
 							'Autreavissuspension',
-							'Autreavisradiation'
+							'Autreavisradiation',
+							'Objetcontratprecedent'
 						)
 					)
 				);
@@ -970,6 +975,16 @@
 
 				$success = $this->Contratinsertion->save( $this->data );
 
+				$contratinsertion_id = $this->Contratinsertion->id;
+				foreach( $this->data['Objetcontratprecedent']['Objetcontratprecedent'] as $objet ) {
+					$objetcontratprecedant['Objetcontratprecedent'] = array(
+						'contratinsertion_id' => $contratinsertion_id,
+						'objetcerprec' => $objet
+					);
+					$this->Contratinsertion->Objetcontratprecedent->create( $objetcontratprecedant );
+					$success = $this->Contratinsertion->Objetcontratprecedent->save();
+				}
+
 				if( Configure::read( 'nom_form_ci_cg' ) != 'cg66' ) {
 					$dspStockees = $this->_getDsp( $personne_id );
 					$this->data['Dsp'] = Set::merge(
@@ -991,7 +1006,6 @@
 					else if ( $this->action == 'edit' ){
 						$this->Contratinsertion->{$model}->deleteAll( array( "{$model}.contratinsertion_id" => $this->Contratinsertion->id ) );
 					}
-
 
 					if( isset( $this->data[$model] ) ){
 						$is{$model} = Set::filter( $this->data[$model] );
@@ -1047,7 +1061,6 @@
 
 				if( $success ) {
 					$saved = true;
-
 					if ( Configure::read( 'Cg.departement' ) == 93 ) {
 						$dossierep = $this->Contratinsertion->Nonrespectsanctionep93->Dossierep->find(
 							'first',
@@ -1158,7 +1171,6 @@
 			}
 			else {
 				if( $this->action == 'edit' ) {
-
 					$this->data = $contratinsertion;
 
 					/// FIXME
@@ -1186,10 +1198,35 @@
 					/// Si on est en présence d'un deuxième contrat -> Alors renouvellement
 					$nbrCi = $contratinsertion['Contratinsertion']['rg_ci'];
 				}
+				else {
+					$foyer = $this->Contratinsertion->Personne->Foyer->find(
+						'first',
+						array(
+							'fields' => array(
+								'Foyer.sitfam',
+								'Foyer.typeocclog'
+							),
+							'conditions' => array(
+								'Personne.id' => $personne_id
+							),
+							'joins' => array(
+								array(
+									'table' => 'personnes',
+									'alias' => 'Personne',
+									'type' => 'INNER',
+									'conditions' => array(
+										'Personne.foyer_id = Foyer.id'
+									)
+								)
+							),
+							'contain' => false
+						)
+					);
+					$this->data['Contratinsertion']['sitfam'] = $foyer['Foyer']['sitfam'];
+					$this->data['Contratinsertion']['typeocclog'] = $foyer['Foyer']['typeocclog'];
+				}
 
 				$this->data = Set::merge( $this->data, $this->_getDsp( $personne_id ) );
-
-
 			}
 
 			$this->set( 'nbrCi', $nbrCi );
@@ -1210,7 +1247,6 @@
 					$structurereferente_id = Set::classicExtract( $orientstruct, "{$this->Orientstruct->alias}.structurereferente_id" );
 					$referent_id = Set::classicExtract( $orientstruct, "{$this->Orientstruct->alias}.referent_id" );
 				}
-
 
 				if( !empty( $structurereferente_id ) ) {
 					$this->data = Set::insert( $this->data, "{$this->Contratinsertion->alias}.structurereferente_id", $structurereferente_id );
@@ -1273,13 +1309,9 @@
 			$this->Contratinsertion->commit();
 			$this->_setOptions();
 			$this->set( compact( 'structures', 'referents' ) );
+			$this->set( 'urlmenu', '/contratsinsertion/index/'.$personne_id );
 
-			if( Configure::read( 'nom_form_ci_cg' ) == 'cg58' ) {
-				$this->render( $this->action, null, 'add_edit_specif_cg58' );
-			}
-			else {
-				$this->render( $this->action, null, 'add_edit' );
-			}
+			$this->render( $this->action, null, 'add_edit_specif_cg'.Configure::read( 'Cg.departement' ) );
 		}
 
 		/**
@@ -1310,7 +1342,6 @@
 
 			$this->set( 'personne_id', $contratinsertion['Contratinsertion']['personne_id'] );
 
-
 			// Retour à la liste en cas d'annulation
 			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
 				$this->redirect( array( 'action' => 'index', $contratinsertion['Contratinsertion']['personne_id'] ) );
@@ -1327,6 +1358,7 @@
 			}
 
 			$this->_setOptions();
+			$this->set( 'urlmenu', '/contratsinsertion/index/'.$contratinsertion['Contratinsertion']['personne_id'] );
 		}
 
 		/**
@@ -1348,7 +1380,6 @@
 
 			$this->redirect( Router::url( $this->referer(), true ) );
 		}
-
 
 		/**
 		*   Fonction pour annuler le CER pour le CG66
@@ -1430,7 +1461,6 @@
 			$contratinsertion['Dossier'] = $dossier['Dossier'];
 
 			$contratinsertion_id = Set::classicExtract( $contratinsertion, 'Actioncandidat.id' );
-
 
 			$LocaleHelper = new LocaleHelper();
 			///Traduction pour les données de la Personne/Contact/Partenaire/Référent
