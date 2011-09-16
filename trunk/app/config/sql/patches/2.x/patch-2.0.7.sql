@@ -10,6 +10,11 @@ SET default_with_oids = false;
 -- *****************************************************************************
 BEGIN;
 -- *****************************************************************************
+DROP TYPE IF EXISTS TYPE_CERCMU CASCADE;
+DROP TYPE IF EXISTS TYPE_CERCMUC CASCADE;
+DROP TYPE IF EXISTS TYPE_OBJETCERPREC CASCADE;
+
+DROP TABLE IF EXISTS objetscontratsprecedents CASCADE;
 
 CREATE OR REPLACE FUNCTION public.alter_enumtype ( p_enumtypename text, p_values text[] ) RETURNS void AS
 $$
