@@ -399,8 +399,7 @@
 						'Contratinsertion.positioncer',
 						'Contratinsertion.df_ci',
 						'Contratinsertion.date_saisi_ci',
-						'Contratinsertion.datevalidation_ci',
-						'Contratinsertion.avenant_id'
+						'Contratinsertion.datevalidation_ci'
 					),
 					'conditions' => array(
 						'Contratinsertion.personne_id' => $personne_id
@@ -976,13 +975,15 @@
 				$success = $this->Contratinsertion->save( $this->data );
 
 				$contratinsertion_id = $this->Contratinsertion->id;
-				foreach( $this->data['Objetcontratprecedent']['Objetcontratprecedent'] as $objet ) {
-					$objetcontratprecedant['Objetcontratprecedent'] = array(
-						'contratinsertion_id' => $contratinsertion_id,
-						'objetcerprec' => $objet
-					);
-					$this->Contratinsertion->Objetcontratprecedent->create( $objetcontratprecedant );
-					$success = $this->Contratinsertion->Objetcontratprecedent->save();
+				if ( isset( $this->data['Objetcontratprecedent']['Objetcontratprecedent'] ) && !empty( $this->data['Objetcontratprecedent']['Objetcontratprecedent'] ) ) {
+					foreach( $this->data['Objetcontratprecedent']['Objetcontratprecedent'] as $objet ) {
+						$objetcontratprecedant['Objetcontratprecedent'] = array(
+							'contratinsertion_id' => $contratinsertion_id,
+							'objetcerprec' => $objet
+						);
+						$this->Contratinsertion->Objetcontratprecedent->create( $objetcontratprecedant );
+						$success = $this->Contratinsertion->Objetcontratprecedent->save();
+					}
 				}
 
 				if( Configure::read( 'nom_form_ci_cg' ) != 'cg66' ) {
