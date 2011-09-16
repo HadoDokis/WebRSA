@@ -11,6 +11,10 @@
 					'typeinsertion' => array( 'type' => 'insertion', 'domain' => 'contratinsertion' ),
 					'positioncer' => array( 'domain' => 'contratinsertion' ),
 					'haspiecejointe' => array( 'domain' => 'contratinsertion' ),
+					'cmu',
+					'cmuc',
+					'emploi_act',
+					'objetcerprec'
 				)
 			),
 			'Formattable' => array(
@@ -158,24 +162,6 @@
 			/**
 			* Régle ajoutée suite à la demande du CG66
 			*/
-	//             'sitfam_ci' => array(
-	//                 'maxLength' => array(
-	//                     'rule' => array( 'maxLength', 500 ),
-	//                     'message' => '500 carac. max'
-	//                 )
-	//             ),
-	//             'sitpro_ci' => array(
-	//                 'maxLength' => array(
-	//                     'rule' => array( 'maxLength', 500 ),
-	//                     'message' => '500 carac. max'
-	//                 )
-	//             ),
-	//             'observ_benef' => array(
-	//                 'maxLength' => array(
-	//                     'rule' => array( 'maxLength', 500 ),
-	//                     'message' => '500 carac. max'
-	//                 )
-	//            ),
 			'nature_projet' => array(
 				'notEmpty' => array(
 					'rule' => 'notEmpty',
@@ -330,8 +316,20 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Objetcontratprecedent' => array(
+				'className' => 'Objetcontratprecedent',
+				'foreignKey' => 'contratinsertion_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 		);
-
 
 		public $hasAndBelongsToMany = array(
 			'User' => array(
@@ -410,7 +408,6 @@
 						'conditions' => array(
 							'Personne.id = Prestation.personne_id',
 							'Prestation.natprest = \'RSA\'',
-	//                             '( Prestation.natprest = \'RSA\' OR Prestation.natprest = \'PFA\' )',
 							'( Prestation.rolepers = \'DEM\' OR Prestation.rolepers = \'CJT\' )',
 						)
 					),
@@ -622,7 +619,6 @@
 				$positioncer = 'annule';
 
 			if( !empty( $dernierContrat ) ) {
-//                 $dernierContrat['Contratinsertion']['positioncer'] = 'fincontrat';
 				$this->updateAll(
 					array( 'Contratinsertion.positioncer' => '\'fincontrat\'' ),
 					array(

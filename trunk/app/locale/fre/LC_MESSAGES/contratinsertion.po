@@ -49,7 +49,7 @@ msgid "Contratinsertion.datevalidation_ci"
 msgstr "Date décision"
 
 msgid "Contratinsertion.diplomes"
-msgstr "Diplômes (scolaires, universitaires et/ou professionnels)"
+msgstr "Diplômes (scolaires, universitaires et/ou professionnels) + Années d'obtention (préciser si obtenu à l'étranger)"
 
 msgid "Contratinsertion.expr_prof"
 msgstr "Quelles expériences professionnelles avez-vous ( emploi occupé, dates, ...) ?"
@@ -251,3 +251,63 @@ msgstr "Non"
 
 msgid "Contratinsertion.present"
 msgstr "Présence d'un contrat ?"
+
+msgid "Contratinsertion.cmu"
+msgstr "CMU"
+
+msgid "ENUM::CMU::oui"
+msgstr "Oui"
+
+msgid "ENUM::CMU::non"
+msgstr "Non"
+
+msgid "ENUM::CMU::encours"
+msgstr "En cours"
+
+msgid "Contratinsertion.cmuc"
+msgstr "CMU-C"
+
+msgid "ENUM::CMUC::oui"
+msgstr "Oui"
+
+msgid "ENUM::CMUC::non"
+msgstr "Non"
+
+msgid "ENUM::CMUC::encours"
+msgstr "En cours"
+
+msgid "Contratinsertion.persacharge"
+msgstr "Nombre et âge des personnes à charge"
+
+msgid "Contratinsertion.emploi_act"
+msgstr "Occupez-vous un emploi actuellement ?"
+
+msgid "ENUM::EMPLOI_ACT::O"
+msgstr "Oui"
+
+msgid "ENUM::EMPLOI_ACT::N"
+msgstr "Non"
+
+msgid "Contratinsertion.precemploiact"
+msgstr "Occupez-vous un emploi actuellement ?"
+
+msgid "Contratinsertion.objetcerprec"
+msgstr "Le précédent contrat portait sur : "
+
+msgid "ENUM::OBJETCERPREC::emploi"
+msgstr "L'emploi"
+
+msgid "ENUM::OBJETCERPREC::formation"
+msgstr "La formation"
+
+msgid "ENUM::OBJETCERPREC::autonomiesoc"
+msgstr "L'autonomie sociale"
+
+msgid "ENUM::OBJETCERPREC::sante"
+msgstr "La santé"
+
+msgid "ENUM::OBJETCERPREC::logement"
+msgstr "Le logement"
+
+msgid "ENUM::OBJETCERPREC::autre"
+msgstr "Autre"

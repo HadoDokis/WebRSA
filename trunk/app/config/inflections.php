@@ -278,6 +278,7 @@
 		'decisionsanctionep93' => 'decisionssanctionseps93',
 		'sanctionrendezvousep58' => 'sanctionsrendezvouseps58',
 		'decisionsanctionrendezvousep58' => 'decisionssanctionsrendezvouseps58',
+		'objetcontratprecedent' => 'objetscontratsprecedents',
 		// Données flux Pôle Emploi
 		'informationpe' => 'informationspe',
 		'historiqueetatpe' => 'historiqueetatspe',
@@ -314,6 +315,24 @@
 		'historiqueep' => 'historiqueseps',
 		'cohortefichecandidature66' => 'cohortesfichescandidature66',
 
+		// Dossiers PCGs
+		'dossierpcg66' => 'dossierspcgs66',
+		'criteredossierpcg66' => 'criteresdossierspcgs66',
+		'decisiondossierpcg66' => 'decisionsdossierspcgs66',
+		'personnepcg66' => 'personnespcgs66',
+		'decisiontraitementpcg66' => 'decisionstraitementspcgs66',
+		'traitementpcg66' => 'traitementspcgs66',
+		'personnepcg66_situationpdo' => 'personnespcgs66_situationspdos',
+		'personnepcg66_statutpdo' => 'personnespcgs66_statutspdos',
+		'courrierpdo_traitementpcg66' => 'courrierspdos_traitementspcgs66',
+		'compofoyerpcg66' => 'composfoyerspcgs66',
+		'decisionpcg66' => 'decisionspcgs66',
+		'questionpcg66' => 'questionspcgs66',
+		'decisiondossierpcg66_decisiontraitementpcg66' => 'decisionsdossierspcgs66_decisionstraitementspcgs66',
+
+		// DSPS cg66
+		'coderomemetierdsp66' => 'codesromemetiersdsps66',
+		'coderomesecteurdsp66' => 'codesromesecteursdsps66',
 	);
 /**
 * This is a key => value array of regex used to match words.
