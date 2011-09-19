@@ -187,7 +187,8 @@
                             ).'
                         )'
                     ),
-                    'recursive' => -1
+                    'recursive' => -1,
+					'order' => 'name'
                 )
             );
 
