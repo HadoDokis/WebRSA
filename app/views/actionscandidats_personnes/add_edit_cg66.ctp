@@ -23,7 +23,7 @@
 			echo $xform->input( 'ActioncandidatPersonne.id', array( 'type' => 'hidden' ) );
 		}
 	?>
-	<fieldset>
+	<fieldset id="infocandidature">
 		<legend>Informations de candidature</legend>
 		<?php
 			echo $default->subform(
@@ -60,7 +60,7 @@
 
 		?>
 	</fieldset>
-	<fieldset>
+	<fieldset id="infocandidat">
 		<legend>Informations du candidat</legend>
 		<?php
 			echo $default->view(
@@ -112,7 +112,7 @@
 			);
 		?>
 	</fieldset>
-	<fieldset>
+	<fieldset id="motifdemande">
 		<legend><?php echo required( 'Motif de la demande' ); ?></legend>
 			<?php
 				echo $default->subform(
@@ -125,7 +125,7 @@
 				);
 			?>
 	</fieldset>
-	<fieldset>
+	<fieldset id="mobilite">
 		<legend>Mobilité</legend>
 		<?php
 			echo $default->subform(
@@ -141,7 +141,7 @@
 			);
 		?>
 	</fieldset>
-	<fieldset>
+	<fieldset id="rdv">
 		<legend>Rendez-vous</legend>
 		<?php 
 			echo $default->subform(
@@ -165,7 +165,7 @@
 		?>
 	</fieldset>
 
-	<fieldset class="loici">
+	<fieldset id="engagement" class="loici">
 		<p>
 			<strong>Engagement:</strong><br />
 			<em>Je m’engage à me rendre disponible afin d’être présent à la prestation ou au rendez vous qui me sera fixé. En cas de force majeure, je m’engage à prévenir le conseiller d’insertion ou l’assistante sociale chargé de mon suivi.<br />
@@ -326,7 +326,29 @@
 				false,
 				true
 			);
+
 		<?php endif;?>
+
+		// Mise en disabled des champs lors du passage du formulaire en édition
+		<?php if ($this->action=='edit') { ?>
+
+			function disableFormPart( formpartid ) {
+				$( formpartid ).addClassName( 'disabled' );
+				
+				$( formpartid ).getElementsBySelector( 'div.input', 'radio' ).each( function( elmt ) {
+					elmt.addClassName( 'disabled' );
+				} );
+					
+				$( formpartid ).getElementsBySelector( 'input', 'select', 'button', 'textarea' ).each( function( elmt ) {
+					elmt.disable();
+				} );
+			}
+
+			['infocandidature', 'infocandidat', 'motifdemande', 'mobilite', 'rdv', 'engagement' ].each( function( formpartid ) {
+				disableFormPart( formpartid );
+			});
+		<?php } ?>
+
 	} );
 </script>
 <!--/************************************************************************/ -->
