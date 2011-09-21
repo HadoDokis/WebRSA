@@ -23,7 +23,7 @@
 			$options = array();
 			$optionsactions = $this->ActioncandidatPersonne->Actioncandidat->allEnumLists();
 			$actions = $this->ActioncandidatPersonne->Actioncandidat->find( 'list', array( 'fields' => array( 'name' ), 'order' => array( 'Actioncandidat.name ASC' ) ) );
-			$partenaires = $this->Partenaire->find( 'list', array( 'fields' => array( 'libstruc' ) ) );
+			$partenaires = $this->Partenaire->find( 'list', array( 'fields' => array( 'libstruc' ), 'order' => array( 'Partenaire.libstruc ASC' ) ) );
 			$motifssortie = $this->ActioncandidatPersonne->Motifsortie->find( 'list', array( 'fields' => array( 'name' ) ) );
 			$options = $this->ActioncandidatPersonne->allEnumLists();
 			$options = Set::merge( $options, $optionsactions );
