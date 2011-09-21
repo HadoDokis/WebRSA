@@ -18,13 +18,8 @@
             <?php if( empty( $persreferent ) ) :?>
                 <p class="error">Aucun référent n'est lié au parcours de cette personne.</p>
             <?php endif;?>
-<!--            <?php if( empty( $contratsinsertion ) ):?>
-                <p class="notice">Cette personne ne possède pas encore de CER.</p>
-            <?php endif;?>-->
-
-    <!-- <?php /*if( !empty( $contratsinsertion ) ): */?> -->
-    <?php /*if( !empty( $contratsinsertion ) ):*/?>
-    <?php
+    <?php endif;?>
+	<?php
         $block = false;
         $options['forme_ci'] = $forme_ci;
         $options['decision_ci'] = $decision_ci;
@@ -66,7 +61,6 @@
             )
         );
     ?>   
-    <?php endif;?>
 
 </div>
 <div class="clearer"><hr /></div>
