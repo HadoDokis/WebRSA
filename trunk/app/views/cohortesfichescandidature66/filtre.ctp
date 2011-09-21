@@ -1,9 +1,3 @@
-<script type="text/javascript">
-	document.observe("dom:loaded", function() {
-		observeDisableFieldsetOnCheckbox( 'SearchActioncandidatPersonneDatesignature', $( 'SearchActioncandidatPersonneDatesignatureFromDay' ).up( 'fieldset' ), false );
-	});
-</script>
-
 <?php
 	echo '<ul class="actionMenu"><li>'.$xhtml->link(
 		$xhtml->image(
@@ -14,6 +8,11 @@
 		array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "var form = $$( 'form' ); form = form[0]; $( form ).toggle(); return false;" )
 	).'</li></ul>';
 ?>
+<script type="text/javascript">
+	document.observe("dom:loaded", function() {
+		observeDisableFieldsetOnCheckbox( 'SearchActioncandidatPersonneDatesignature', $( 'SearchActioncandidatPersonneDatesignatureFromDay' ).up( 'fieldset' ), false );
+	});
+</script>
 
 <?php echo $xform->create( 'Cohortefichecandidature66', array( 'type' => 'post', 'action' => $this->action, 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );?>
 	<fieldset>
@@ -24,9 +23,9 @@
 				echo $default2->subform(
 					array(
 						'Search.Partenaire.codepartenaire' => array( 'type' => 'text', 'label' => __d( 'partenaire', 'Partenaire.codepartenaire', true ) ),
-						'Search.Partenaire.libstruc' => array( 'label' => __d( 'partenaire', 'Partenaire.libstruc', true ), 'type' => 'select', 'options' => $options['partenaires'] ),
+						'Search.Partenaire.id' => array( 'label' => __d( 'partenaire', 'Partenaire.libstruc', true ), 'type' => 'select', 'options' => $options['partenaires'] ),
 						'Search.Actioncandidat.name' => array( 'label' => __d( 'actioncandidat', 'Actioncandidat.name', true ), 'type' => 'select', 'options' => $options['actions'] ),
-						'Search.Actioncandidat.referent_id' => array( 'label' => __d( 'actioncandidat', 'Actioncandidat.referent_id', true ), 'type' => 'select', 'options' => $options['referents'] ),
+						//'Search.Actioncandidat.referent_id' => array( 'label' => __d( 'actioncandidat', 'Actioncandidat.referent_id', true ), 'type' => 'select', 'options' => $options['referents'] ),
 						'Search.Personne.nom' => array( 'label' => __d( 'personne', 'Personne.nom', true ), 'type' => 'text' ),
 						'Search.Personne.prenom' => array( 'label' => __d( 'personne', 'Personne.prenom', true ), 'type' => 'text' ),
 						'Search.Personne.nomnai' => array( 'label' => __d( 'personne', 'Personne.nomnai', true ), 'type' => 'text' ),

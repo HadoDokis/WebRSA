@@ -47,6 +47,7 @@ App::import( 'Sanitize' );
             $numdemrsa = Set::extract( $criteresfichescandidature, 'Dossier.numdemrsa' );
             $codepartenaire = Set::extract( $criteresfichescandidature, 'Partenaire.codepartenaire' );
             $matricule = Set::extract( $criteresfichescandidature, 'Dossier.matricule' );
+            $partenaire = Set::extract( $criteresfichescandidature, 'Partenaire.id' );
 
 
             // Critères sur une personne du foyer - nom, prénom, nom de jeune fille -> FIXME: seulement demandeur pour l'instant
@@ -69,7 +70,7 @@ App::import( 'Sanitize' );
 
             // Nom de l'action
             if( !empty( $action ) ) {
-                $conditions[] = 'Actioncandidat.name ILIKE \'%'.Sanitize::clean( $action ).'%\'';
+                $conditions[] = 'Actioncandidat.id = \''.Sanitize::clean( $action ).'\'';
             }
 
             // Correspondant de l'action lié à l'action
@@ -81,7 +82,10 @@ App::import( 'Sanitize' );
             if( !empty( $correspondant ) ) {
                 $conditions[] = 'Actioncandidat.referent_id = \''.Sanitize::clean( $correspondant ).'\'';
             }
-
+            // PArtenaire lié à l'action
+            if( !empty( $partenaire ) ) {
+                $conditions[] = 'Partenaire.id  = \''.Sanitize::clean( $partenaire ).'\'';
+            }
             // Correspondant de l'action lié à l'action
             if( !empty( $codepartenaire ) ) {
                 $conditions[] = 'Partenaire.codepartenaire ILIKE \''.$this->wildcard( $codepartenaire ).'\'';
