@@ -19,12 +19,29 @@ msgstr ""
 
 
 ###############################################################################
+msgid "Modecontact::index::empty"
+msgstr "Aucun mode de contact présent pour ce foyer"
+
+msgid "Modescontact::index"
+msgstr "Modes de contact"
+
+msgid "Modescontact::add"
+msgstr "Ajouter un mode de contact"
+
+msgid "Modescontact::edit"
+msgstr "Modifier un mode de contact"
+
+msgid "Modescontact::view"
+msgstr "Visualiser un mode de contact"
 
 msgid "Modecontact.numposte"
 msgstr "Numéro de poste"
 
 msgid "Modecontact.nattel"
 msgstr "Nature du téléphone"
+
+msgid "Modecontact.numtel"
+msgstr "Numéro de téléphone"
 
 msgid "Modecontact.matetel"
 msgstr "Type de téléphone"

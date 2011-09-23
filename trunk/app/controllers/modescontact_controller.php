@@ -2,22 +2,22 @@
     class ModescontactController extends AppController
     {
 
-        var $name = 'Modescontact';
-        var $uses = array( 'Modecontact',  'Option' , 'Foyer');
-        
-		var $commeDroit = array(
+        public $name = 'Modescontact';
+        public $uses = array( 'Modecontact',  'Option' , 'Foyer');
+        public $helpers = array( 'Xform','Default2',  'Default', 'Theme' );
+		public $commeDroit = array(
 			'view' => 'Modescontact:index',
 			'add' => 'Modescontact:edit'
 		);
 
-        function beforeFilter() {
-            parent::beforeFilter();
-                $this->set( 'nattel', $this->Option->nattel() );
-                $this->set( 'matetel', $this->Option->matetel() );
-                $this->set( 'autorutitel', $this->Option->autorutitel() );
-                $this->set( 'autorutiadrelec', $this->Option->autorutiadrelec() );
-        }
-
+       	protected function _setOptions() {
+			$options = array();
+			$options['Modecontact']['nattel'] = $this->Option->nattel();
+			$options['Modecontact']['matetel'] = $this->Option->matetel();
+			$options['Modecontact']['autorutitel'] = $this->Option->autorutitel();
+			$options['Modecontact']['autorutiadrelec'] = $this->Option->autorutiadrelec();
+			$this->set( compact( 'options' ) );
+		}
 
         function index( $foyer_id = null ){
             // TODO : vérif param
@@ -29,13 +29,14 @@
                 'all',
                 array(
                     'conditions' => array( 'Modecontact.foyer_id' => $foyer_id ),
-                    'recursive' => 2
+                    'contain' => false
                 )
             );
 
             // Assignations à la vue
             $this->set( 'foyer_id', $foyer_id );
             $this->set( 'modescontact', $modescontact );
+            $this->_setOptions();
         }
 
         function add( $foyer_id = null ){
@@ -70,6 +71,7 @@
             $this->data['Modecontact']['foyer_id'] = $foyer_id;
 
             $this->Modecontact->commit();
+            $this->_setOptions();
             $this->render( $this->action, null, 'add_edit' );
         }
 
@@ -107,7 +109,7 @@
                     'first',
                     array(
                         'conditions' => array( 'Modecontact.id' => $id ),
-                        'recursive' => 2
+                        'contain' => false
                     )
                 );
                 $this->assert( !empty( $modecontact ), 'invalidParameter' );
@@ -117,6 +119,7 @@
             }
 
             $this->Modecontact->commit();
+            $this->_setOptions();
             $this->render( $this->action, null, 'add_edit' );
 
         }
@@ -141,6 +144,7 @@
             // Assignations à la vue
             $this->set( 'foyer_id', $modecontact['Modecontact']['foyer_id'] );
             $this->set( 'modecontact', $modecontact );
+            $this->_setOptions();
 
         }
 }
