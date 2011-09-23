@@ -974,15 +974,17 @@
 
 				$success = $this->Contratinsertion->save( $this->data );
 
-				$contratinsertion_id = $this->Contratinsertion->id;
-				if ( isset( $this->data['Objetcontratprecedent']['Objetcontratprecedent'] ) && !empty( $this->data['Objetcontratprecedent']['Objetcontratprecedent'] ) ) {
-					foreach( $this->data['Objetcontratprecedent']['Objetcontratprecedent'] as $objet ) {
-						$objetcontratprecedant['Objetcontratprecedent'] = array(
-							'contratinsertion_id' => $contratinsertion_id,
-							'objetcerprec' => $objet
-						);
-						$this->Contratinsertion->Objetcontratprecedent->create( $objetcontratprecedant );
-						$success = $this->Contratinsertion->Objetcontratprecedent->save();
+				if( $success ) {
+					$contratinsertion_id = $this->Contratinsertion->id;
+					if ( isset( $this->data['Objetcontratprecedent']['Objetcontratprecedent'] ) && !empty( $this->data['Objetcontratprecedent']['Objetcontratprecedent'] ) ) {
+						foreach( $this->data['Objetcontratprecedent']['Objetcontratprecedent'] as $objet ) {
+							$objetcontratprecedant['Objetcontratprecedent'] = array(
+								'contratinsertion_id' => $contratinsertion_id,
+								'objetcerprec' => $objet
+							);
+							$this->Contratinsertion->Objetcontratprecedent->create( $objetcontratprecedant );
+							$success = $this->Contratinsertion->Objetcontratprecedent->save() && $success;
+						}
 					}
 				}
 
