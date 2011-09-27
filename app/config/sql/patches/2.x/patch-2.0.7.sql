@@ -164,6 +164,17 @@ CREATE TABLE objetscontratsprecedents (
 	objetcerprec					TYPE_OBJETCERPREC DEFAULT NULL
 );
 
+
+-- *****************************************************************************
+-- 20110705 : mise en place de la notion d'avenant pour les CER du cg58
+-- *****************************************************************************
+SELECT add_missing_table_field ('public', 'contratsinsertion', 'avenant_id', 'INTEGER');
+SELECT add_missing_constraint ('public', 'contratsinsertion', 'contratsinsertion_avenant_id_fkey', 'contratsinsertion', 'avenant_id');
+ALTER TABLE contratsinsertion ALTER COLUMN avenant_id SET DEFAULT NULL;
+
+SELECT add_missing_table_field ('public', 'proposcontratsinsertioncovs58', 'avenant_id', 'INTEGER');
+SELECT add_missing_constraint ('public', 'proposcontratsinsertioncovs58', 'proposcontratsinsertioncovs58_avenant_id_fkey', 'contratsinsertion', 'avenant_id');
+ALTER TABLE proposcontratsinsertioncovs58 ALTER COLUMN avenant_id SET DEFAULT NULL;
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
