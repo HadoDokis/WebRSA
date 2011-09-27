@@ -45,7 +45,9 @@
 			$natureaidesapres = Set::extract( $criteresapres, 'Filtre.natureaidesapres' );
 			$statutapre = Set::extract( $criteresapres, 'Filtre.statutapre' );
 			$tiers = Set::extract( $criteresapres, 'Filtre.tiersprestataire' );
-
+			$isdecision = Set::extract( $criteresapres, 'Filtre.isdecision' );
+			$decisionapre = Set::extract( $criteresapres, 'Filtre.decisionapre' );
+// debug($criteresapres);
 			/// Critères sur la demande APRE - date de demande
 			if( isset( $criteresapres['Filtre']['datedemandeapre'] ) && !empty( $criteresapres['Filtre']['datedemandeapre'] ) ) {
 				$valid_from = ( valid_int( $criteresapres['Filtre']['datedemandeapre_from']['year'] ) && valid_int( $criteresapres['Filtre']['datedemandeapre_from']['month'] ) && valid_int( $criteresapres['Filtre']['datedemandeapre_from']['day'] ) );
@@ -136,6 +138,17 @@
 				$conditions[] = 'Apre.statutapre = \''.Sanitize::clean( $statutapre ).'\'';
 			}
 
+			//Décision émise sur le dossier APRE
+			if( !empty( $isdecision ) ) {
+				$conditions[] = 'Apre.isdecision = \''.Sanitize::clean( $isdecision ).'\'';
+			}
+
+			//Accord ou Rejet
+			if( !empty( $decisionapre ) ) {
+				$conditions[] = 'Aideapre66.decisionapre = \''.Sanitize::clean( $decisionapre ).'\'';
+			}
+
+
 			//Nature de l'aide
 			if( !empty( $natureaidesapres ) ) {
 				$table = Inflector::tableize( $natureaidesapres );
@@ -200,6 +213,7 @@
 					'"Apre"."typecontrat"',
 					'"Apre"."statutapre"',
 					'"Apre"."mtforfait"',
+					'"Apre"."isdecision"',
 					'"Apre"."nbenf12"',
 					'"Dossier"."id"',
 					'"Dossier"."numdemrsa"',
@@ -216,7 +230,9 @@
 					'"Adresse"."codepos"',
 					'"Adressefoyer"."rgadr"',
 					'"Adresse"."numcomptt"',
-// 					'"Relanceapre"."id"',
+					'"Aideapre66"."decisionapre"',
+					'"Aideapre66"."datedemande"',
+					'"Apre"."isdecision"',
 // 					'"Relanceapre"."daterelance"',
 	//                     '"ApreComiteapre"."comiteapre_id"',
 	//                     '"ApreComiteapre"."apre_id"',
@@ -299,15 +315,15 @@
 						'foreignKey' => false,
 						'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
 					),
-					/*array(
-						'table'      => 'tiersprestatairesapres',
-						'alias'      => 'Tiersprestataireapre',
+					array(
+						'table'      => 'aidesapres66',
+						'alias'      => 'Aideapre66',
 						'type'       => 'LEFT OUTER',
 						'foreignKey' => false,
 						'conditions' => array(
-								"Tiersprestataireapre.id = {$model}.tiersprestataireapre_id"
+								"Aideapre66.apre_id = Apre.id"
 						)
-					)*//*,
+					)/*,
 					array(
 						'table'      => 'situationsdossiersrsa',
 						'alias'      => 'Situationdossierrsa',
