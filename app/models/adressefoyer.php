@@ -53,26 +53,8 @@
 
         //*********************************************************************
         /**
-        *   Foyers avec plusieurs adressesfoyers.rgadr = 01
-        *   donc on s'assure de n'en prendre qu'un seul et celui dont l'ID est le + élevé
-        *   FIXME: c'est un hack pour n'avoir qu'une seule adresse de range 01 par foyer!
-        */
-
-        public function sqlFoyerActuelUnique() {
-            return '(
-                SELECT tmpadressesfoyers.id FROM (
-                    SELECT MAX(adressesfoyers.id) AS id, adressesfoyers.foyer_id
-                        FROM adressesfoyers
-                        WHERE adressesfoyers.rgadr = \'01\'
-                        GROUP BY adressesfoyers.foyer_id
-                        ORDER BY adressesfoyers.foyer_id
-                ) AS tmpadressesfoyers
-            )';
-        }
-
-        /*
-        *
-        * Remarque: envoie moins de résultat de la précédente à vérifier
+        * Foyers avec plusieurs adressesfoyers.rgadr = 01
+        * donc on s'assure de n'en prendre qu'un seul dont la dtemm est la plus récente
         */
 
         public function sqDerniereRgadr01($field) {
