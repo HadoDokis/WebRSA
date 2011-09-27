@@ -998,5 +998,27 @@
 			}
 		}
 
+		/**
+		*
+		*/
+
+		public function avenantLink( $title, $url, $enabled = true ) {
+			$content = $this->image(
+				'icons/add.png',
+				array( 'alt' => '' )
+			).' Avenant';
+
+			if( $enabled ) {
+				return $this->link(
+					$content,
+					$url,
+					array( 'escape' => false, 'title' => $title )
+				);
+			}
+			else {
+				return '<span class="disabled">'.$content.'</span>';
+			}
+		}
+
 	}
 ?>
