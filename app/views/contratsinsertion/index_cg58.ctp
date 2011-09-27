@@ -12,50 +12,47 @@
 ?>
 <div class="with_treemenu">
 	<h1 class="aere"><?php  echo 'CER  ';?></h1>
-            <?php if( isset( $sanctionseps58 ) && !empty( $sanctionseps58 ) ):?>
-                <h2>Signalements pour non respect du contrat</h2>
-                <table class="tooltips">
-                    <thead>
-                        <tr>
-                            <th>Date début contrat</th>
-                            <th>Date fin contrat</th>
-                            <th>Date signalement</th>
-                            <th>État dossier EP</th>
-                            <th colspan="1" class="action">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    <?php foreach( $sanctionseps58 as $sanctionep58 ):?>
-                        <?php
-                            $etatdossierep = Set::enum( $sanctionep58['Passagecommissionep']['etatdossierep'], $optionsdossierseps['Passagecommissionep']['etatdossierep'] );
-                            if( empty( $etatdossierep ) ) {
-                                $etatdossierep = 'En attente';
-                            }
-                        ?>
-                        <tr>
-                            <td><?php echo $locale->date( 'Locale->date', $sanctionep58['Contratinsertion']['dd_ci'] );?></td>
-                            <td><?php echo $locale->date( 'Locale->date', $sanctionep58['Contratinsertion']['df_ci'] );?></td>
-                            <td><?php echo $locale->date( 'Locale->date', $sanctionep58['Sanctionep58']['created'] );?></td>
-                            <td><?php echo h( $etatdossierep );?></td>
-<!--                            <td class="action"><?php echo $default->button( 'edit', array( 'controller' => 'sanctionseps58', 'action' => 'edit', $sanctionep58['Sanctionep58']['id'] ), array( 'enabled' => ( empty( $sanctionep58['Passagecommissionep']['etatdossierep'] ) ) ) );?></td> -->
-                            <td class="action"><?php echo $default->button( 'delete', array( 'controller' => 'sanctionseps58', 'action' => 'deleteNonrespectcer', $sanctionep58['Sanctionep58']['id'] ), array( 'enabled' => ( empty( $sanctionep58['Passagecommissionep']['etatdossierep'] ) ), 'confirm' => 'Confirmer la suppession ?' ) );?></td>
-                        </tr>
-                    <?php endforeach;?>
-                    </tbody>
-                </table>
-            <?php endif;?>
+			<?php if( isset( $sanctionseps58 ) && !empty( $sanctionseps58 ) ):?>
+				<h2>Signalements pour non respect du contrat</h2>
+				<table class="tooltips">
+					<thead>
+						<tr>
+							<th>Date début contrat</th>
+							<th>Date fin contrat</th>
+							<th>Date signalement</th>
+							<th>État dossier EP</th>
+							<th colspan="1" class="action">Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+					<?php foreach( $sanctionseps58 as $sanctionep58 ):?>
+						<?php
+							$etatdossierep = Set::enum( $sanctionep58['Passagecommissionep']['etatdossierep'], $optionsdossierseps['Passagecommissionep']['etatdossierep'] );
+							if( empty( $etatdossierep ) ) {
+								$etatdossierep = 'En attente';
+							}
+						?>
+						<tr>
+							<td><?php echo $locale->date( 'Locale->date', $sanctionep58['Contratinsertion']['dd_ci'] );?></td>
+							<td><?php echo $locale->date( 'Locale->date', $sanctionep58['Contratinsertion']['df_ci'] );?></td>
+							<td><?php echo $locale->date( 'Locale->date', $sanctionep58['Sanctionep58']['created'] );?></td>
+							<td><?php echo h( $etatdossierep );?></td>
+							<td class="action"><?php echo $default->button( 'delete', array( 'controller' => 'sanctionseps58', 'action' => 'deleteNonrespectcer', $sanctionep58['Sanctionep58']['id'] ), array( 'enabled' => ( empty( $sanctionep58['Passagecommissionep']['etatdossierep'] ) ), 'confirm' => 'Confirmer la suppession ?' ) );?></td>
+						</tr>
+					<?php endforeach;?>
+					</tbody>
+				</table>
+			<?php endif;?>
 		<?php if( empty( $orientstruct ) ) :?>
 			<p class="error">Cette personne ne possède pas d'orientation. Impossible de créer un CER.</p>
 		<?php else:?>
 			<?php if( $nbdossiersnonfinalisescovs > 0 ):?>
 				<p class="notice">Cette personne possède un contrat d'engagement réciproque en attente de passage en COV.</p>
 			<?php endif;?>
-			
+
 			<?php if( empty( $contratsinsertion ) ):?>
 				<p class="notice">Cette personne ne possède pas encore de contrat d'engagement réciproque.</p>
 			<?php endif;?>
-
-
 
 			<?php if( $permissions->check( 'proposcontratsinsertioncovs58', 'add' ) && $nbdossiersnonfinalisescovs == 0 ):?>
 				<ul class="actionMenu">
@@ -89,7 +86,11 @@
 					<td><?php echo h( $propocontratinsertioncov58['Personne']['prenom'] );?></td>
 					<td><?php echo $locale->date( __( 'Date::short', true ), $propocontratinsertioncov58['Propocontratinsertioncov58']['dd_ci'] );?></td>
 					<td><?php echo $locale->date( __( 'Date::short', true ), $propocontratinsertioncov58['Propocontratinsertioncov58']['df_ci'] );?></td>
-					<td><?php echo h( Set::enum( $propocontratinsertioncov58['Propocontratinsertioncov58']['num_contrat'], $optionsdossierscovs58['Propocontratinsertioncov58']['num_contrat'] ) );?></td>
+					<?php if ( isset( $propocontratinsertioncov58['Propocontratinsertioncov58']['avenant_id'] ) && !empty( $propocontratinsertioncov58['Propocontratinsertioncov58']['avenant_id'] ) ) { ?>
+						<td>Avenant</td>
+					<?php } else { ?>
+						<td><?php echo h( Set::enum( $propocontratinsertioncov58['Propocontratinsertioncov58']['num_contrat'], $optionsdossierscovs58['Propocontratinsertioncov58']['num_contrat'] ) );?></td>
+					<?php } ?>
 					<td><?php echo h( Set::enum( $propocontratinsertioncov58['Dossiercov58']['etapecov'], $optionsdossierscovs58['Dossiercov58']['etapecov'] ) );?></td>
 					<td><?php echo $default->button( 'edit', array( 'controller' => 'proposcontratsinsertioncovs58', 'action' => 'edit', $propocontratinsertioncov58['Personne']['id'] ), array( 'enabled' => ( $propocontratinsertioncov58['Dossiercov58']['etapecov'] == 'cree' ) ) );?></td>
 					<td><?php echo $default->button( 'delete', array( 'controller' => 'proposcontratsinsertioncovs58', 'action' => 'delete', $propocontratinsertioncov58['Personne']['id'] ), array( 'enabled' => ( $propocontratinsertioncov58['Dossiercov58']['etapecov'] == 'cree' ) ), 'Confirmer ?' );?></td>
@@ -103,12 +104,11 @@
 		<table class="tooltips">
 			<thead>
 				<tr>
-					<!-- <th>N° Contrat</th> -->
 					<th>Rang contrat</th>
 					<th>Date début</th>
 					<th>Date fin</th>
 					<th>Décision</th>
-					<th colspan="6" class="action">Actions</th>
+					<th colspan="7" class="action">Actions</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -129,16 +129,19 @@
 
 						$contratenep = in_array( $contratinsertion['Contratinsertion']['id'], $contratsenep );
 
+						if ( isset( $contratinsertion['Contratinsertion']['avenant_id'] ) && !empty( $contratinsertion['Contratinsertion']['avenant_id'] ) ) {
+							$numcontrat = 'Avenant';
+						}
+						else {
+							$numcontrat = h( Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.num_contrat' ),  $options['num_contrat'] ) );
+						}
+
 						echo $xhtml->tableCells(
 							array(
-								h( Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.num_contrat' ),  $options['num_contrat'] ) ),
+								$numcontrat,
 								h( date_short( isset( $contratinsertion['Contratinsertion']['dd_ci'] ) ) ? date_short( $contratinsertion['Contratinsertion']['dd_ci']  ) : null ),
 								h( date_short( isset( $contratinsertion['Contratinsertion']['df_ci'] ) ) ? date_short( $contratinsertion['Contratinsertion']['df_ci'] ) : null ),
 								h( Set::enum( Set::extract( $contratinsertion, 'Contratinsertion.decision_ci' ), $decision_ci ).' '.$locale->date( 'Date::short', Set::extract( $contratinsertion, 'Contratinsertion.datevalidation_ci' ) ) ),
-//                                 $xhtml->validateLink(
-//                                     'Valider le CER ',
-//                                     array( 'controller' => 'contratsinsertion', 'action' => 'valider', $contratinsertion['Contratinsertion']['id'] )
-//                                 ),
 								$xhtml->viewLink(
 									'Voir le CER',
 									array( 'controller' => 'contratsinsertion', 'action' => 'view', $contratinsertion['Contratinsertion']['id']),
@@ -147,10 +150,8 @@
 								$xhtml->editLink(
 									'Éditer le CER ',
 									array( 'controller' => 'contratsinsertion', 'action' => 'edit', $contratinsertion['Contratinsertion']['id'] ),
-//                                     array(
-										$block,
-										$permissions->check( 'contratsinsertion', 'edit' )
-//                                     )
+									$block
+									&& $permissions->check( 'contratsinsertion', 'edit' )
 								),
 								$xhtml->printLink(
 									'Imprimer le CER',
@@ -162,11 +163,11 @@
 									array( 'controller' => 'contratsinsertion', 'action' => 'delete', $contratinsertion['Contratinsertion']['id'] ),
 									$permissions->check( 'contratsinsertion', 'delete' )
 								),
-                                $xhtml->fileLink(
-                                    'Fichiers liés',
-                                    array( 'controller' => 'contratsinsertion', 'action' => 'filelink', $contratinsertion['Contratinsertion']['id'] ),
-                                    $permissions->check( 'contratsinsertion', 'filelink' )
-                                ),
+								$xhtml->fileLink(
+									'Fichiers liés',
+									array( 'controller' => 'contratsinsertion', 'action' => 'filelink', $contratinsertion['Contratinsertion']['id'] ),
+									$permissions->check( 'contratsinsertion', 'filelink' )
+								),
 								$xhtml->saisineEpLink(
 									'Sanction',
 									array( 'controller' => 'sanctionseps58', 'action' => 'nonrespectcer', $contratinsertion['Contratinsertion']['id'] ),
@@ -177,6 +178,12 @@
 									&& ( !isset( $sanctionseps58 ) || empty( $sanctionseps58 ) )
 									&& empty( $erreursCandidatePassage )
 									&& !$contratenep
+								),
+								$xhtml->avenantLink(
+									'Créer un avenant',
+									array( 'controller' => 'proposcontratsinsertioncovs58', 'action' => 'add', $personne_id, $contratinsertion['Contratinsertion']['id'] ),
+									$permissions->check( 'contratsinsertion', 'add' )
+									&& ( $contratinsertion['Contratinsertion']['id'] == $contratsinsertion[0]['Contratinsertion']['id'] )
 								)
 							),
 							array( 'class' => 'odd' ),
@@ -186,7 +193,6 @@
 				<?php endforeach;?>
 			</tbody>
 		</table>
-		<?php  endif;?>
-	<?php /*endif;*/?>
+	<?php  endif;?>
 </div>
 <div class="clearer"><hr /></div>

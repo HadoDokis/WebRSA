@@ -157,7 +157,7 @@
 			$rolepers = $this->Option->rolepers();
 			$this->set( 'rolepers', $rolepers );
 
-			if( Configure::read( 'nom_form_ci_cg' ) == 'cg93' ){
+			if( Configure::read( 'nom_form_ci_cg' ) != 'cg66' ){
 				$forme_ci = array( 'S' => 'Simple', 'C' => 'Complexe' );
 			}
 			else if( Configure::read( 'nom_form_ci_cg' ) == 'cg66' ) {
@@ -214,8 +214,11 @@
 // die();
 
 			///Ajout pour distinguer un CER simple (particulier) d'un CER complexe
-			$modele = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.forme_ci' ), $forme_ci  );
+			if( !empty( $contratinsertion['Contratinsertion']['forme_ci'] ) ){
+				$modele = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.forme_ci' ), $forme_ci  );
+			}
 			///Fin ajout
+
 
 
 			//////////////////////////////////////////////////////////////////////////

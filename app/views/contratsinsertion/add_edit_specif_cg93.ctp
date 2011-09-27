@@ -607,7 +607,7 @@
 
 <fieldset>
 	<?php
-		echo $form->input( 'Contratinsertion.nature_projet', array( 'label' => required( __d( 'contratinsertion', 'Contratinsertion.nature_projet', true ) ), 'type' => 'textarea', 'rows' => 6) );
+		echo $form->input( 'Contratinsertion.nature_projet', array( 'label' => required( 'Observations complémentaires'/*__d( 'contratinsertion', 'Contratinsertion.nature_projet', true )*/ ), 'type' => 'textarea', 'rows' => 6) );
 		echo $form->input( 'Contratinsertion.lieu_saisi_ci', array( 'label' => required( __d( 'contratinsertion', 'Contratinsertion.lieu_saisi_ci', true ) ), 'type' => 'text', 'maxlength' => 50 ) );
 	?><br /><?php
 		echo $form->input( 'Contratinsertion.date_saisi_ci', array( 'label' => required( __d( 'contratinsertion', 'Contratinsertion.date_saisi_ci', true ) ), 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date('Y')+10, 'minYear' => date('Y')-10 , 'empty' => true) );
