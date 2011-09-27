@@ -5,7 +5,7 @@
 	{
 		public $name = 'Criteresapres';
 
-		public $uses = array( 'Canton', 'Critereapre', 'Apre', 'Tiersprestataireapre', 'Option', 'Zonegeographique' );
+		public $uses = array( 'Canton', 'Critereapre', 'Aideapre66', 'Apre',  'Apre66', 'Tiersprestataireapre', 'Option', 'Zonegeographique' );
 
 		public $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml', 'Xpaginator' );
 
@@ -33,6 +33,8 @@
 
 		protected function _setOptions() {
 			$options = $this->Apre->allEnumLists();
+// 			$optionsaides = $this->Apre->Aideapre66->allEnumLists();
+			$options = Set::merge( $options, $this->Apre66->Aideapre66->allEnumLists() );
 			$this->set( 'options', $options );
 			$this->set( 'natureAidesApres', $this->Option->natureAidesApres() );
 
@@ -149,7 +151,12 @@
 						$this->render( $this->action, null, 'forfaitaire' );
 					}
 					else {
-						$this->render( $this->action, null, 'formulaire' );
+						if( Configure::read( 'Cg.departement' ) == 93 ){
+							$this->render( $this->action, null, 'formulaire' );
+						}
+						else{
+							$this->render( $this->action, null, 'formulaire66' );
+						}
 					}
 					break;
 				case 'Critereapre::forfaitaire':
