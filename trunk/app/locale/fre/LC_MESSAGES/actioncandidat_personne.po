@@ -145,3 +145,38 @@ msgstr "Sur le département"
 
 msgid "ENUM::NATUREMOBILE::horsdept"
 msgstr "Hors du département"
+
+
+
+msgid "ActioncandidatPersonne.sortiele"
+msgstr "Sortie le"
+
+msgid "ActioncandidatPersonne.motifdemande"
+msgstr "Motif de la demande"
+
+msgid "ActioncandidatPersonne.mobile"
+msgstr "Mobilite ?"
+
+msgid "ActioncandidatPersonne.naturemobile"
+msgstr "Nature de la mobilité"
+
+msgid "ActioncandidatPersonne.typemobile"
+msgstr "Type de mobilité"
+
+msgid "ActioncandidatPersonne.rendezvouspartenaire"
+msgstr "Rendez-vous prévu avec le partenaire ?"
+
+msgid "ActioncandidatPersonne.horairerdvpartenaire"
+msgstr "Date et heure du rendez-vous prévu avec le partenaire"
+
+msgid "ActioncandidatPersonne.bilanvenu"
+msgstr "La personne est-elle venue ?"
+
+msgid "ActioncandidatPersonne.datebilan"
+msgstr "Date du bilan d'accueil"
+
+msgid "ActioncandidatPersonne.bilanretenu"
+msgstr "La personne a-t-elle été retenue ?"
+
+msgid "ActioncandidatPersonne.infocomplementaire"
+msgstr "Informations complémentaires"

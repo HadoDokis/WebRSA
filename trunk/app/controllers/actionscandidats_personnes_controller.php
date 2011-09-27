@@ -586,79 +586,6 @@
 			}
 		}
 
-
-
-
-
-
-
-		/**
-		*
-		*/
-
-		/*public function gedooo( $id = null ) {
-			$qual = $this->Option->qual();
-			$typevoie = $this->Option->typevoie();
-			$mobilites = $this->ActioncandidatPersonne->Personne->Dsp->Detailnatmob->enumList( 'natmob' );
-
-			$actioncandidat_personne = $this->ActioncandidatPersonne->find(
-				'first',
-				array(
-					'conditions' => array(
-						'ActioncandidatPersonne.id' => $id
-					),
-					'recursive' => 0
-				)
-			);
-
-			$this->ActioncandidatPersonne->Personne->Foyer->Adressefoyer->bindModel(
-				array(
-					'belongsTo' => array(
-						'Adresse' => array(
-							'className'     => 'Adresse',
-							'foreignKey'    => 'adresse_id'
-						)
-					)
-				)
-			);
-
-			$adresse = $this->ActioncandidatPersonne->Personne->Foyer->Adressefoyer->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Adressefoyer.foyer_id' => Set::classicExtract( $actioncandidat_personne, 'Personne.foyer_id' ),
-						'Adressefoyer.rgadr' => '01',
-					)
-				)
-			);
-			$actioncandidat_personne['Adresse'] = $adresse['Adresse'];
-
-			if( Configure::read( 'Cg.departement' ) == 66 ) {
-				$actioncandidat_id = Set::classicExtract( $actioncandidat_personne, 'Actioncandidat.id' );
-				$actioncandidatpartenaire = $this->ActioncandidatPersonne->Actioncandidat->ActioncandidatPartenaire->findByActioncandidatId( $actioncandidat_id, null, null, -1 );
-				$partenaire_id = Set::classicExtract( $actioncandidatpartenaire, 'ActioncandidatPartenaire.partenaire_id' );
-				$partenaire = $this->ActioncandidatPersonne->Actioncandidat->ActioncandidatPartenaire->Partenaire->findById( $partenaire_id, null, null, -1 );
-
-				$actioncandidat_personne = Set::merge( $actioncandidat_personne, $partenaire );
-
-				$contactpartenaire = $this->ActioncandidatPersonne->Actioncandidat->ActioncandidatPartenaire->Partenaire->Contactpartenaire->findByPartenaireId( $partenaire_id, null, null, -1 );
-				$actioncandidat_personne = Set::merge( $actioncandidat_personne, $contactpartenaire );
-			}
-debug($actioncandidat_personne);
-die();
-			///Traduction pour les données de la Personne/Contact/Partenaire/Référent
-			$actioncandidat_personne['Personne']['qual'] = Set::enum( Set::classicExtract( $actioncandidat_personne, 'Personne.qual' ), $qual );
-			$actioncandidat_personne['Referent']['qual'] = Set::enum( Set::classicExtract( $actioncandidat_personne, 'Referent.qual' ), $qual );
-			$actioncandidat_personne['Contactpartenaire']['qual'] = Set::enum( Set::classicExtract( $actioncandidat_personne, 'Contactpartenaire.qual' ), $qual );
-			$actioncandidat_personne['Partenaire']['typevoie'] = Set::enum( Set::classicExtract( $actioncandidat_personne, 'Partenaire.typevoie' ), $typevoie );
-			$actioncandidat_personne['ActioncandidatPersonne']['naturemobile'] = Set::enum( Set::classicExtract( $actioncandidat_personne, 'ActioncandidatPersonne.naturemobile' ), $mobilites );
-
-// correspondantaction_nom_complet
-
-			$pdf = $this->ActioncandidatPersonne->ged( $actioncandidat_personne, 'Candidature/fichecandidature.odt' );
-			$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'actioncandidat_personne-%s.pdf', date( 'Y-m-d' ) ) );
-		}*/
-
 		
 		public function delete( $id )
 		{
@@ -667,7 +594,7 @@ die();
 
 
 		/**
-		*   Fonction pour annuler le CER pour le CG66
+		*   Fonction pour annuler la fiche de candidature pour le CG66
 		*/
 
 		public function cancel( $id ) {
@@ -687,11 +614,46 @@ die();
 
 		public function view( $id )
 		{
+			$this->ActioncandidatPersonne->forceVirtualFields = true;
 			$personne_id = $this->ActioncandidatPersonne->field('personne_id', array('id' => $id));
 			$dossierId = $this->ActioncandidatPersonne->Personne->dossierId( $personne_id );
+			$this->ActioncandidatPersonne->forceVirtualFields = false;
 			$this->assert( !empty( $dossierId ), 'invalidParameter' );
 			$this->set( compact( 'dossierId', 'personne_id' ) );
-			$this->Default->view( $id );
+
+
+			$actionscandidatspersonne = $this->ActioncandidatPersonne->find(
+				'first',
+				array(
+					'conditions' => array(
+						'ActioncandidatPersonne.id' => $id
+					),
+					'contain' => array(
+						'Personne',
+						'Referent',
+						'Actioncandidat',
+						'Motifsortie'
+					)
+				)
+			);
+
+			if( ($actionscandidatspersonne['Actioncandidat']['correspondantaction'] == 1) && !empty($actionscandidatspersonne['Actioncandidat']['referent_id']))
+			{
+				$this->ActioncandidatPersonne->Personne->Referent->recursive = -1;
+				$referent = $this->ActioncandidatPersonne->Personne->Referent->read(null, $actionscandidatspersonne['Actioncandidat']['referent_id'] );
+			}
+			if( !empty( $referent ) ){
+				$actionscandidatspersonne['Actioncandidat']['referent_id'] = $referent['Referent']['nom_complet'];
+			}
+			else{
+				$actionscandidatspersonne['Actioncandidat']['referent_id'] = '';
+			}
+			$this->set( compact( 'actionscandidatspersonne' ) );
+			$this->_setOptions();
+			// Retour à la liste en cas d'annulation
+			if(  isset( $this->params['form']['Cancel'] ) ) {
+				$this->redirect( array( 'action' => 'index', $personne_id ) );
+			}
 		}	
 		
 		
