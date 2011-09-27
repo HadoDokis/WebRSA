@@ -99,8 +99,29 @@
 			),
             array(
                 'widget' => 'table',
+                'class' => 'aere'
             )
 		);
+
+
+
+        echo '<h2>Pièces jointes</h2>';
+        if( !empty( $actionscandidatspersonne['Fichiermodule'] ) ){
+            $fichiersLies = Set::extract( $actionscandidatspersonne, 'ActioncandidatPersonne/Fichiermodule' );
+            echo '<table class="aere"><tbody>';
+                echo '<tr><th>Nom de la pièce jointe</th><th>Date de l\'ajout</th><th>Action</th></tr>';
+                if( isset( $fichiersLies ) ){
+                    foreach( $fichiersLies as $i => $fichiers ){
+                        echo '<tr><td>'.$fichiers['Fichiermodule']['name'].'</td>';
+                        echo '<td>'.date_short( $fichiers['Fichiermodule']['created'] ).'</td>';
+                        echo '<td>'.$xhtml->link( 'Télécharger', array( 'action' => 'download', $fichiers['Fichiermodule']['id']    ) ).'</td></tr>';
+                    }
+                }
+            echo '</tbody></table>';
+        }
+        else{
+            echo '<p class="notice aere">Aucun élément.</p>';
+        }
 
 ?>
 </div>
