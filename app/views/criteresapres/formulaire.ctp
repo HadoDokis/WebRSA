@@ -14,26 +14,7 @@
     });
 </script>
 
-<?php
-
-//     if( isset( $apres ) ) {
-//         $xpaginator->options( array( 'url' => $this->params['named'] ) );
-//         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
-//         $pagination = $xhtml->tag( 'p', $xpaginator->counter( $params ) );
-// 
-//         $pages = $xpaginator->first( '<< ' );
-//         $pages .= $xpaginator->prev( '< ' );
-//         $pages .= $xpaginator->numbers();
-//         $pages .= $xpaginator->next( ' >' );
-//         $pages .= $xpaginator->last( ' >>' );
-// 
-//         $pagination .= $xhtml->tag( 'p', $pages );
-//     }
-//     else {
-//         $pagination = '';
-//     }
-$pagination = $xpaginator->paginationBlock( 'Apre', $this->passedArgs );
-?>
+<?php $pagination = $xpaginator->paginationBlock( 'Apre', $this->passedArgs );?>
 <?php
     if( is_array( $this->data ) ) {
         echo '<ul class="actionMenu"><li>'.$xhtml->link(
@@ -65,10 +46,12 @@ $pagination = $xpaginator->paginationBlock( 'Apre', $this->passedArgs );
     <fieldset>
         <legend>Recherche par demande APRE</legend>
             <?php echo $xform->input( 'Filtre.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
-            <?php echo $xform->enum( 'Filtre.statutapre', array(  'label' => 'Statut de l\'APRE', 'options' => $options['statutapre'], 'empty' => false  ) );?>
             <?php
                 if( Configure::read( 'Cg.departement' ) == 93 ){
+					echo $xform->enum( 'Filtre.statutapre', array(  'label' => 'Statut de l\'APRE', 'options' => $options['statutapre'], 'empty' => false  ) );
                     echo $xform->enum( 'Filtre.tiersprestataire', array(  'label' => 'Tiers prestataire', 'options' => $tiers, 'empty' => true  ) );
+                    echo $xform->enum( 'Filtre.typedemandeapre', array(  'label' => 'Type de demande', 'options' => $options['typedemandeapre'] ) );
+                    echo $xform->enum( 'Filtre.activitebeneficiaire', array(  'label' => 'Activité du bénéficiaire', 'options' => $options['activitebeneficiaire'] ) );
                 }
             ?>
             <?php echo $xform->input( 'Filtre.datedemandeapre', array( 'label' => 'Filtrer par date de demande APRE', 'type' => 'checkbox' ) );?>
@@ -82,8 +65,9 @@ $pagination = $xpaginator->paginationBlock( 'Apre', $this->passedArgs );
                 <?php echo $xform->input( 'Filtre.datedemandeapre_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 5, 'minYear' => date( 'Y' ) - 120, 'selected' => $datedemandeapre_to ) );?>
             </fieldset>
 
-            <?php echo $xform->enum( 'Filtre.typedemandeapre', array(  'label' => 'Type de demande', 'options' => $options['typedemandeapre'] ) );?>
-            <?php echo $xform->enum( 'Filtre.activitebeneficiaire', array(  'label' => 'Activité du bénéficiaire', 'options' => $options['activitebeneficiaire'] ) );?>
+            <?php ?>
+            
+            <?php echo $xform->enum( 'Filtre.activitebeneficiaire', array(  'label' => 'Activité du bénéficiaire', 'options' => array( 'P' => 'Recherche d\'Emploi', 'E' => 'Emploi' , 'F' => 'Formation', 'C' => 'Création d\'Entreprise' ) ) );?>
             <?php echo $xform->enum( 'Filtre.natureaidesapres', array(  'label' => 'Nature de l\'aide', 'options' => $natureAidesApres, 'empty' => true ) );?>
 
             <?php echo $xform->input( 'Filtre.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );?>
@@ -184,6 +168,12 @@ $pagination = $xpaginator->paginationBlock( 'Apre', $this->passedArgs );
                                 $aidesApre[] = h( Set::classicExtract( $natureAidesApres, $natureaide ) );
                             }
                         }
+                        if( Configure::read( 'Cg.departement') == 93 ){
+							$activites = $options['activitebeneficiaire']; 
+						}
+						else{
+							$activites = array( 'P' => 'Recherche d\'Emploi', 'E' => 'Emploi' , 'F' => 'Formation', 'C' => 'Création d\'Entreprise' );
+						}
 
                         echo $xhtml->tableCells(
                             array(
@@ -194,7 +184,7 @@ $pagination = $xpaginator->paginationBlock( 'Apre', $this->passedArgs );
                                 h( $locale->date( 'Date::short', Set::extract( $apre, 'Apre.datedemandeapre' ) ) ),
                                 ( empty( $aidesApre ) ? null :'<ul><li>'.implode( '</li><li>', $aidesApre ).'</li></ul>' ),
                                 h( Set::enum( Set::classicExtract( $apre, 'Apre.typedemandeapre' ), $options['typedemandeapre'] ) ),
-                                h( Set::enum( Set::classicExtract( $apre, 'Apre.activitebeneficiaire' ), $options['activitebeneficiaire'] ) ),
+                                h( Set::enum( Set::classicExtract( $apre, 'Apre.activitebeneficiaire' ), $activites ) ),
                                 h( Set::enum( Set::classicExtract( $apre, 'Apre.etatdossierapre' ), $options['etatdossierapre'] ) ),
                                 array(
                                     $xhtml->viewLink(
