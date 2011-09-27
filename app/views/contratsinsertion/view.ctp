@@ -9,7 +9,12 @@
 		echo $form->create( 'Contratsinsertionview', array( 'type' => 'post', 'id' => 'contratform', 'url' => Router::url( null, true ) ) );
 
 		$duree_engag = 'duree_engag_'.Configure::read( 'nom_form_ci_cg' );
-		$num = Set::enum( $contratinsertion['Contratinsertion']['num_contrat'], $options['num_contrat'] );
+		if ( isset( $contratinsertion['Contratinsertion']['avenant_id'] ) && !empty( $contratinsertion['Contratinsertion']['avenant_id'] ) ) {
+			$num = 'Avenant';
+		}
+		else{
+			$num = Set::enum( $contratinsertion['Contratinsertion']['num_contrat'], $options['num_contrat'] );
+		}
 		$duree = Set::enum( $contratinsertion['Contratinsertion']['duree_engag'], $$duree_engag );
 		$forme = Set::enum( $contratinsertion['Contratinsertion']['forme_ci'], $forme_ci );
 
