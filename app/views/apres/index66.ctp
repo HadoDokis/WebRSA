@@ -58,8 +58,10 @@
                     $mtattribue = Set::classicExtract( $apre, 'Aideapre66.montantaccorde' );
 
                     $buttonEnabled = true;
+                    $editButton = true;
                     
                     ($etat != 'Incomplet') ? $buttonEnabledInc = true : $buttonEnabledInc = false;
+                    ($etat == 'Validée') ? $editButton = false : $editButton = true;
                     
 					($apre['Apre66']['isdecision']=='N') ? $buttonEnabledNotif = false : $buttonEnabledNotif = true;
 
@@ -101,7 +103,7 @@
                             $xhtml->editLink(
                                 'Editer la demande APRE',
                                 array( 'controller' => 'apres'.Configure::read( 'Apre.suffixe' ), 'action' => 'edit', $apre[$this->modelClass]['id'] ),
-                                $buttonEnabled,
+                                $editButton,
                                 $permissions->check( 'apres'.Configure::read( 'Apre.suffixe' ), 'edit' )
                             ),
                             $xhtml->notificationsApreLink(
