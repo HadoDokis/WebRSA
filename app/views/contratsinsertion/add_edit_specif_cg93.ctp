@@ -559,7 +559,16 @@
 	<fieldset>
 		<legend><?php echo __d( 'contratinsertion', 'Contratinsertion.emploi_act', true ); ?></legend>
 		<?php
-			echo $form->input( 'Contratinsertion.emp_trouv', array( 'legend' => required( __d( 'contratinsertion', 'Contratinsertion.emp_trouv', true ) ), 'type' => 'radio', 'options' => $emp_trouv ) );
+			$emp_trouv_value = null;
+			if( isset( $this->data['Contratinsertion']['emp_trouv'] ) ) {
+				if( $this->data['Contratinsertion']['emp_trouv'] === true ) {
+					$emp_trouv_value = 'O';
+				}
+				else if( $this->data['Contratinsertion']['emp_trouv'] === false ) {
+					$emp_trouv_value = 'N';
+				}
+			}
+			echo $form->input( 'Contratinsertion.emp_trouv', array( 'legend' => required( __d( 'contratinsertion', 'Contratinsertion.emp_trouv', true ) ), 'type' => 'radio', 'options' => $emp_trouv, 'value' => $emp_trouv_value ) );
 		?>
 		Si oui, veuillez préciser :
 		<?php
@@ -574,8 +583,13 @@
 
 <fieldset>
 	<legend> BILAN DU CONTRAT PRÉCÉDENT</legend>
-		<?php 
-			echo $xform->input( 'Objetcontratprecedent.Objetcontratprecedent', array( 'label' => __d( 'objetcontratprecedent', 'Objetcontratprecedent.objetcerprec', true ), 'options' => $options['Objetcontratprecedent']['objetcerprec'], 'multiple' => 'checkbox', 'selected' => Set::extract( $this->data, '/Objetcontratprecedent/objetcerprec' ) ) );
+		<?php
+			$selected = Set::merge(
+				Set::extract( $this->data, '/Objetcontratprecedent/Objetcontratprecedent' ),
+				Set::extract( $this->data, '/Objetcontratprecedent/objetcerprec' )
+			);
+
+			echo $xform->input( 'Objetcontratprecedent.Objetcontratprecedent', array( 'label' => __d( 'objetcontratprecedent', 'Objetcontratprecedent.objetcerprec', true ), 'options' => $options['Objetcontratprecedent']['objetcerprec'], 'multiple' => 'checkbox', 'selected' => $selected ) );
 			echo $form->input( 'Contratinsertion.autreobjetcerprec', array( 'label' => 'Si autre (préciser)', 'type' => 'text'));
 		?>
 		<?php echo $form->input( 'Contratinsertion.obsta_renc', array( 'label' => 'Quel bilan faites vous des actions précisées dans le précédent contrat (les avancées et/ou les freins)  ? ', 'type' => 'textarea', 'rows' => 3)  ); ?>

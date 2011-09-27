@@ -976,6 +976,21 @@
 
 				if( $success ) {
 					$contratinsertion_id = $this->Contratinsertion->id;
+
+					// Si on avat des entrées Objetcontratprecedent pour le CER, on commence par les supprimer
+					$recordFound = $this->Contratinsertion->Objetcontratprecedent->find(
+						'first',
+						array(
+							'conditions' => array( 'Objetcontratprecedent.contratinsertion_id' => $contratinsertion_id ),
+							'contain' => false
+						)
+					);
+					if( !empty( $recordFound ) ) {
+						$success = $this->Contratinsertion->Objetcontratprecedent->deleteAll(
+							array( 'Objetcontratprecedent.contratinsertion_id' => $contratinsertion_id )
+						) && $success;
+					}
+
 					if ( isset( $this->data['Objetcontratprecedent']['Objetcontratprecedent'] ) && !empty( $this->data['Objetcontratprecedent']['Objetcontratprecedent'] ) ) {
 						foreach( $this->data['Objetcontratprecedent']['Objetcontratprecedent'] as $objet ) {
 							$objetcontratprecedant['Objetcontratprecedent'] = array(

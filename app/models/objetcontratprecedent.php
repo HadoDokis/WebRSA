@@ -8,7 +8,9 @@
 				'fields' => array(
 					'objetcerprec'
 				)
-			)
+			),
+			'Autovalidate',
+			'ValidateTranslate'
 		);
 
 		public $belongsTo = array(
