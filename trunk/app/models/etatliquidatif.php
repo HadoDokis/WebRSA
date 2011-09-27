@@ -240,12 +240,8 @@
 						'foreignKey' => false,
 						'conditions' => array(
 							'Foyer.id = Adressefoyer.foyer_id', 'Adressefoyer.rgadr = \'01\'',
-							// FIXME: voir ailleurs, quand on utilise adressesfoyers
-							// INFO: C'EST JUSTE LE DERNIER POUR LE FOYER
-							'Adressefoyer.id IN ( SELECT MAX(adressesfoyers.id)
-								FROM adressesfoyers
-								WHERE adressesfoyers.rgadr = \'01\'
-								GROUP BY adressesfoyers.foyer_id
+							'Adressefoyer.id IN (
+								'.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01('Adressefoyer.foyer_id').'
 							)'
 						)
 					),
@@ -686,12 +682,8 @@
 						'foreignKey' => false,
 						'conditions' => array(
 							'Foyer.id = Adressefoyer.foyer_id', 'Adressefoyer.rgadr = \'01\'',
-							// FIXME: voir ailleurs, quand on utilise adressesfoyers
-							// INFO: C'EST JUSTE LE DERNIER POUR LE FOYER
-							'Adressefoyer.id IN ( SELECT MAX(adressesfoyers.id)
-								FROM adressesfoyers
-								WHERE adressesfoyers.rgadr = \'01\'
-								GROUP BY adressesfoyers.foyer_id
+							'Adressefoyer.id IN (
+								'.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01('Adressefoyer.foyer_id').'
 							)'
 						)
 					),
