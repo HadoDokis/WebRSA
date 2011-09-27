@@ -632,7 +632,8 @@
 						'Personne',
 						'Referent',
 						'Actioncandidat',
-						'Motifsortie'
+						'Motifsortie',
+						'Fichiermodule'
 					)
 				)
 			);
