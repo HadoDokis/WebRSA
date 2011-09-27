@@ -37,6 +37,9 @@ msgstr "Ajouter une fiche de candidature"
 msgid "ActioncandidatPersonne::edit"
 msgstr "Modifier la fiche de candidature"
 
+msgid "ActionscandidatsPersonnes::view"
+msgstr "Visualisation de la fiche de candidature"
+
 msgid "ActioncandidatPersonne::gedooo"
 msgstr "Imprimer la fiche de candidature"
 

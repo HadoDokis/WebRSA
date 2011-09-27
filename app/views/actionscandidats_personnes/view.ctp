@@ -13,8 +13,8 @@
     ?>
 <?php 
 	echo $xform->create( 'ActioncandidatPersonne', array( 'id' => 'viewForm' ) );
-//$this->log( $actionscandidatspersonne);
-		echo $html->tag('div', $html->tag('strong', 'Action candidat Personne'));
+
+		echo $html->tag('div', $html->tag('strong', 'Action engagée'));
         echo $default->view(
         	$actionscandidatspersonne,
             array(
@@ -24,32 +24,73 @@
 				'Actioncandidat.cantonaction',
 				'Actioncandidat.ddaction',
 				'Actioncandidat.dfaction',
-				'Actioncandidat.nbpostedispo',
-				'Actioncandidat.nbposterestant', 
-				'Actioncandidat.correspondantaction',
-				'Actioncandidat.hasfichecandidature',
+				'Actioncandidat.nbpostedispo'=> array( 'type'=>'text' ),
+				'Actioncandidat.referent_id' => array('type'=>'text' ),
+				'Actioncandidat.nbposterestant',
 				'Actioncandidat.codeaction' => array('type'=>'text')
 			),
             array(
                 'widget' => 'table',
+                'class' => 'aere'
             )
 		);
-		echo $html->tag('div', $html->tag('strong', ''));
+		echo $html->tag('div', $html->tag('strong', 'Nom du prescripteur de la fiche' ) );
         echo $default->view(
         	$actionscandidatspersonne,
             array(
+            'Referent.qual',
             'Referent.nom',
             'Referent.prenom',
             'Referent.numero_poste',
             'Referent.email',
-            'Referent.qual',
             'Referent.fonction',
 			),
-                array(
-                'widget' => 'table',
-                )
+			array(
+			'widget' => 'table',
+			'class' => 'aere'
+			)
 		);
-		echo $html->tag('div', $html->tag('strong', ''));
+
+
+		$naturemobile = Set::enum( $actionscandidatspersonne['ActioncandidatPersonne']['naturemobile'], $options['ActioncandidatPersonne']['naturemobile'] );
+
+		echo $html->tag('div', $html->tag('strong', 'Fiche descriptive de la demande'));
+        echo $default2->view(
+        	$actionscandidatspersonne,
+            array(
+				'ActioncandidatPersonne.motifdemande',
+				'ActioncandidatPersonne.mobile' => array( 'type' => 'boolean' ),
+				'ActioncandidatPersonne.naturemobile' => array( 'type'=>'text', 'value' => $naturemobile ),
+				'ActioncandidatPersonne.typemobile',
+				'ActioncandidatPersonne.rendezvouspartenaire' => array( 'type' => 'boolean' ),
+				'ActioncandidatPersonne.horairerdvpartenaire'
+			),
+            array(
+                'widget' => 'table',
+                'domain' => $domain,
+                'class' => 'aere'
+            )
+		);	
+
+		$venu = Set::enum( $actionscandidatspersonne['ActioncandidatPersonne']['bilanvenu'], $options['ActioncandidatPersonne']['bilanvenu'] );
+		$retenu = Set::enum( $actionscandidatspersonne['ActioncandidatPersonne']['bilanretenu'], $options['ActioncandidatPersonne']['bilanretenu'] );
+		
+		echo $html->tag('div', $html->tag('strong', 'Bilan du rendez-vous'));
+        echo $default2->view(
+        	$actionscandidatspersonne,
+            array(
+                'ActioncandidatPersonne.bilanvenu' => array( 'type'=>'text', 'value' => $venu ),
+                'ActioncandidatPersonne.bilanretenu' => array( 'type'=>'text', 'value' => $retenu ),
+                'ActioncandidatPersonne.infocomplementaire',
+				'ActioncandidatPersonne.datebilan'
+			),
+            array(
+                'widget' => 'table',
+                'class' => 'aere'
+            )
+		);
+
+		echo $html->tag('div', $html->tag('strong', 'Sortie'));
         echo $default->view(
         	$actionscandidatspersonne,
             array(
@@ -59,40 +100,8 @@
             array(
                 'widget' => 'table',
             )
-		);	
+		);
 
-		echo $html->tag('div', $html->tag('strong', ''));
-        echo $default->view(
-        	$actionscandidatspersonne,
-            array(
-            'ActioncandidatPersonne.ddaction',
-            'ActioncandidatPersonne.dfaction',
-            'ActioncandidatPersonne.motifdemande',
-            'ActioncandidatPersonne.enattente',
-            'ActioncandidatPersonne.datesignature',
-            'ActioncandidatPersonne.bilanvenu',
-            'ActioncandidatPersonne.bilanretenu',
-            'ActioncandidatPersonne.infocomplementaire',
-            'ActioncandidatPersonne.datebilan',
-            'ActioncandidatPersonne.rendezvouspartenaire',
-            'ActioncandidatPersonne.mobile',
-            'ActioncandidatPersonne.naturemobile',
-            'ActioncandidatPersonne.typemobile',
-            'ActioncandidatPersonne.bilanrecu',
-            'ActioncandidatPersonne.daterecu',
-            'ActioncandidatPersonne.personnerecu',
-            'ActioncandidatPersonne.pieceallocataire',
-            'ActioncandidatPersonne.autrepiece',
-            'ActioncandidatPersonne.precisionmotif',
-            'ActioncandidatPersonne.presencecontrat',
-            'ActioncandidatPersonne.integrationaction',
-            'ActioncandidatPersonne.horairerdvpartenaire',
-            
-			),
-            array(
-                'widget' => 'table',
-            )
-		);			
 ?>
 </div>
     <div class="submit">
