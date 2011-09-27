@@ -43,7 +43,7 @@
                 <th>Montant demandé</th>
                 <th>Montant accordé</th>
                 <th>Décision</th>
-                <th colspan="4" class="action">Actions</th>
+                <th colspan="5" class="action">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -95,11 +95,11 @@
                             h( $locale->money( $mtforfait ) ),
                             h( $locale->money( $mtattribue ) ),
                             h(  Set::enum( Set::classicExtract( $apre, 'Aideapre66.decisionapre' ), $options['decisionapre'] ) ),
-//                             $xhtml->viewLink(
-//                                 'Voir la demande APRE',
-//                                 array( 'controller' => 'apres'.Configure::read( 'Apre.suffixe' ), 'action' => 'view', $apre[$this->modelClass]['id'] ),
-//                                 $permissions->check( 'apres'.Configure::read( 'Apre.suffixe' ), 'view' )
-//                             ),
+                            $xhtml->viewLink(
+                                'Voir la demande APRE',
+                                array( 'controller' => 'apres'.Configure::read( 'Apre.suffixe' ), 'action' => 'view'.Configure::read( 'Cg.departement' ), $apre[$this->modelClass]['id'] ),
+                                $permissions->check( 'apres'.Configure::read( 'Apre.suffixe' ), 'view' )
+                            ),
                             $xhtml->editLink(
                                 'Editer la demande APRE',
                                 array( 'controller' => 'apres'.Configure::read( 'Apre.suffixe' ), 'action' => 'edit', $apre[$this->modelClass]['id'] ),

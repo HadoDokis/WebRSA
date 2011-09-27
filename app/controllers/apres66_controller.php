@@ -7,7 +7,7 @@
 		public $components = array( 'Default', 'Gedooo', 'Fileuploader' );
 
 		public $commeDroit = array(
-			'view' => 'Apres66:index',
+			'view66' => 'Apres66:index',
 			'add' => 'Apres66:edit'
 		);
 
@@ -397,19 +397,33 @@
 		* Visualisation de l'APRE
 		*/
 
-		public function view( $apre_id = null ){
-			$apre = $this->{$this->modelClass}->findById( $apre_id );
-			$this->assert( !empty( $apre ), 'invalidParameter' );
+		public function view66( $apre_id = null ){
+			$this->Apre66->forceVirtualFields = true;
 
-			$referents = $this->Referent->find( 'list' );
-			$this->set( 'referents', $referents );
+			$apre = $this->Apre66->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Apre66.id' => $apre_id
+					),
+					'contain' => array(
+						'Personne',
+						'Referent',
+						'Structurereferente',
+						'Aideapre66'
+					)
+				)
+			);
+
+			$this->assert( !empty( $apre ), 'invalidParameter' );
+			$this->Apre66->forceVirtualFields = false;
 
 			$this->set( 'apre', $apre );
-
-			$this->set( 'personne_id', $apre[$this->modelClass]['personne_id'] );
-
+// 			debug( $apre );
+			$this->set( 'personne_id', $apre['Apre66']['personne_id'] );
 			$this->_setOptions();
-			$this->render( $this->action, null, '/apres/view' );
+			$this->set( 'urlmenu', '/apres66/index/'.$apre['Personne']['id'] );
+			$this->render( $this->action, null, '/apres/view66' );
 		}
 
 		/**
