@@ -147,6 +147,11 @@
 						<?php if( $permissions->check( 'criteres', 'index' ) ):?>
 							<li><?php echo $xhtml->link( 'Par Orientation', array( 'controller' => 'criteres', 'action' => 'index' )  );?></li>
 						<?php endif;?>
+						<?php if( Configure::read( 'Cg.departement' ) == 66 ): ?>
+							<?php if( $permissions->check( 'criteresapres', 'index' ) ): ?>
+								<li><?php echo $xhtml->link( 'Par APREs', array( 'controller' => 'criteresapres', 'action' => 'all' ) );?></li>
+							<?php endif;?>
+						<?php endif;?>
 						<?php if( $permissions->check( 'criteresci', 'index' ) || $permissions->check( 'criterescuis', 'index' ) ):?>
 							<li>
 								<?php echo $xhtml->link( 'Par Contrats', '#' );?>
@@ -234,7 +239,7 @@
 					</ul>
 				</li>
 			<?php endif;?>
-			<?php if( /*( Configure::read( 'Cg.departement' ) != 58 )  &&*/ ( $permissions->check( 'criteresapres', 'index' ) || $permissions->check( 'repsddtefp', 'index' ) || $permissions->check( 'comitesapres', 'index' ) || $permissions->check( 'recoursapres', 'index' ) ) ) :?>
+			<?php if( ( Configure::read( 'Cg.departement' ) == 93 )  && ( $permissions->check( 'criteresapres', 'index' ) || $permissions->check( 'repsddtefp', 'index' ) || $permissions->check( 'comitesapres', 'index' ) || $permissions->check( 'recoursapres', 'index' ) ) ) :?>
 				<li id="menu3one" >
 					<?php echo $xhtml->link( 'APRE', '#' );?>
 					<ul>
