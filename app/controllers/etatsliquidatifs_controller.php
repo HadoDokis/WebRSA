@@ -220,8 +220,14 @@
             $this->{$this->modelClass}->Apre->unbindModelAll( false );
             $this->paginate['Apre'] = $queryData;
 
+			if( $typeapre  == 'F' ) {
+				$deepAfterFind = $this->Apre->deepAfterFind;
+				$this->Apre->deepAfterFind = false;
+			}
             $apres = $this->paginate( 'Apre' );
-// debug( $apres );
+			if( $typeapre  == 'F' ) {
+				$this->Apre->deepAfterFind = $deepAfterFind;
+			}
 
             if( $typeapre  == 'C' ) {
                 foreach( $apres as $i => $apre ) {
@@ -385,7 +391,16 @@
             $this->{$this->modelClass}->Apre->unbindModelAll( false );
             $this->{$this->modelClass}->Apre->bindModel( array( 'hasOne' => array( 'ApreEtatliquidatif' ) ) );
             $this->paginate['Apre'] = $queryData;
+
+			if( $typeapre  == 'F' ) {
+				$deepAfterFind = $this->Apre->deepAfterFind;
+				$this->Apre->deepAfterFind = false;
+			}
             $apres = $this->paginate( 'Apre' );
+			if( $typeapre  == 'F' ) {
+				$this->Apre->deepAfterFind = $deepAfterFind;
+			}
+
             $params = array_multisize( $this->params['named'] );
 
             //------------------------------------------------------------------
@@ -427,21 +442,23 @@
                 }
 
 ////////////////////////////////////////////////////////////////////////////////////////
-                $aidesApre = array();
-                $modelsFormation = array( 'Formqualif', 'Formpermfimo', 'Permisb', 'Actprof' );
-                $modelLie = Set::classicExtract( $datas, 'Apre.Natureaide' );
-    //             debug($modelLie);
-                foreach( $modelLie as $natureaide => $nombre ) {
-                    if( $nombre > 0 ) {
-                        $aidesApre = $natureaide;
-                        if( in_array( $natureaide, $modelsFormation ) ){
-                            $dest = 'tiersprestataire';
-                        }
-                        else{
-                            $dest = 'beneficiaire';
-                        }
-                    }
-                }
+				if( $typeapre  == 'C' ) {
+					$aidesApre = array();
+					$modelsFormation = array( 'Formqualif', 'Formpermfimo', 'Permisb', 'Actprof' );
+					$modelLie = Set::classicExtract( $datas, 'Apre.Natureaide' );
+		//             debug($modelLie);
+					foreach( $modelLie as $natureaide => $nombre ) {
+						if( $nombre > 0 ) {
+							$aidesApre = $natureaide;
+							if( in_array( $natureaide, $modelsFormation ) ){
+								$dest = 'tiersprestataire';
+							}
+							else{
+								$dest = 'beneficiaire';
+							}
+						}
+					}
+				}
 ////////////////////////////////////////////////////////////////////////////////////////
 
 
