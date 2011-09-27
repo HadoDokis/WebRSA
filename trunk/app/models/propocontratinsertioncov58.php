@@ -244,7 +244,8 @@
 						'observ_ci' => $data['commentaire'],
 						'date_saisi_ci' => $dossier['Propocontratinsertioncov58']['datedemande'],
 						'datevalidation_ci' => $data['datevalidation'],
-						'decision_ci' => 'V'
+						'decision_ci' => 'V',
+						'avenant_id' => $dossier['Propocontratinsertioncov58']['avenant_id']
 					)
 				);
 				$this->Dossiercov58->Personne->Contratinsertion->create( $contratinsertion ) && $success;

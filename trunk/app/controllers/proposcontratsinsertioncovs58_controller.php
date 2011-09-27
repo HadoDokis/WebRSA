@@ -3,9 +3,9 @@
 	App::import( 'Helper', 'Locale' );
 
 	class Proposcontratsinsertioncovs58Controller extends AppController {
-		
+
 		public $name = "Proposcontratsinsertioncovs58";
-		
+
 		public $uses = array( 'Propocontratinsertioncov58', 'Option', 'Action' );
 		public $helpers = array( 'Ajax' );
 		public $components = array( 'RequestHandler' );
@@ -113,7 +113,6 @@
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
-
 		public function edit() {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
@@ -123,40 +122,32 @@
 		*
 		*/
 
-		protected function _add_edit( $id = null ) {
+		protected function _add_edit( $id = null, $avenant_id ) {
 			// Retour à la liste en cas d'annulation
 			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
 				$this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index', $id ) );
 			}
 
 			$valueFormeci = null;
-			//if( $this->action == 'add' ) {
-				$contratinsertion_id = null;
-				$personne_id = $id;
-				$nbrPersonnes = $this->Propocontratinsertioncov58->Dossiercov58->Personne->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ), 'recursive' => -1 ) );
-				$this->assert( ( $nbrPersonnes == 1 ), 'invalidParameter' );
-				$valueFormeci = 'S';
 
-				$nbContratsPrecedents = $this->Propocontratinsertioncov58->Dossiercov58->Personne->Contratinsertion->find( 'count', array( 'recursive' => -1, 'conditions' => array( 'Contratinsertion.personne_id' => $personne_id ) ) );
-				if( $nbContratsPrecedents >= 1 ) {
-					$tc = 'REN';
-				}
-				else {
-					$tc = 'PRE';
-				}
+			$contratinsertion_id = null;
+			$personne_id = $id;
+			$nbrPersonnes = $this->Propocontratinsertioncov58->Dossiercov58->Personne->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ), 'recursive' => -1 ) );
+			$this->assert( ( $nbrPersonnes == 1 ), 'invalidParameter' );
+			$valueFormeci = 'S';
 
-			/*}
-			else if( $this->action == 'edit' ) {
-				$contratinsertion_id = $id;
-				$contratinsertion = $this->Propocontratinsertioncov58->Dossiercov58->Personne->Contratinsertion->findById( $contratinsertion_id, null, null, -1 );
-				$this->assert( !empty( $contratinsertion ), 'invalidParameter' );
-				$personne_id = Set::classicExtract( $contratinsertion, 'Contratinsertion.personne_id' );
-				$valueFormeci = Set::classicExtract( $contratinsertion, 'Contratinsertion.forme_ci' );
+			$nbContratsPrecedents = $this->Propocontratinsertioncov58->Dossiercov58->Personne->Contratinsertion->find( 'count', array( 'recursive' => -1, 'conditions' => array( 'Contratinsertion.personne_id' => $personne_id ) ) );
+			if( $nbContratsPrecedents >= 1 ) {
+				$tc = 'REN';
+			}
+			else {
+				$tc = 'PRE';
+			}
 
-				$nbContratsPrecedents = $this->Propocontratinsertioncov58->Dossiercov58->Personne->Contratinsertion->find( 'count', array( 'recursive' => -1, 'conditions' => array( 'Contratinsertion.personne_id' => $personne_id ) ) );
+			if ( isset( $avenant_id ) && !empty( $avenant_id ) ) {
+				$this->set( 'avenant_id', $avenant_id );
+			}
 
-				$tc = Set::classicExtract( $contratinsertion, 'Contratinsertion.num_contrat' );
-			}*/
 			$this->set( 'nbContratsPrecedents',  $nbContratsPrecedents );
 			/**
 			*   Détails des précédents contrats
@@ -211,13 +202,11 @@
 					'recursive' => -1
 				)
 			);
-			//$this->set( 'personne_referent', $personne_referent );
 
 			$structures = $this->Propocontratinsertioncov58->Structurereferente->listOptions();
 			$referents = $this->Propocontratinsertioncov58->Referent->listOptions();
 
 			$this->set( 'tc', $tc );
-
 
 			/// Peut-on prendre le jeton ?
 			$this->Propocontratinsertioncov58->begin();
@@ -227,7 +216,6 @@
 			}
 			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
 			$this->set( 'dossier_id', $dossier_id );
-
 
 			$situationdossierrsa = $this->Propocontratinsertioncov58->Dossiercov58->Personne->Foyer->Dossier->Situationdossierrsa->find(
 				'first',
@@ -257,9 +245,9 @@
 
 			/// Essai de sauvegarde
 			if( !empty( $this->data ) ) {
-			
+
 				$success = true;
-				
+
 				if ( $this->action == 'add' ) {
 					$themecov58 = $this->Propocontratinsertioncov58->Dossiercov58->Themecov58->find(
 						'first',
@@ -272,7 +260,7 @@
 					);
 					$dossiercov58['Dossiercov58']['themecov58_id'] = $themecov58['Themecov58']['id'];
 					$dossiercov58['Dossiercov58']['personne_id'] = $personne_id;
-					
+
 					$success = $this->Propocontratinsertioncov58->Dossiercov58->save($dossiercov58) && $success;
 					$this->data['Propocontratinsertioncov58']['dossiercov58_id'] = $this->Propocontratinsertioncov58->Dossiercov58->id;
 				}
@@ -280,7 +268,7 @@
 				$this->data['Propocontratinsertioncov58']['rg_ci'] = $nbrCi + 1;
 
 				$this->data['Propocontratinsertioncov58']['forme_ci'] = 'S';
-				
+
 				$this->data['Propocontratinsertioncov58']['datedemande'] = Set::classicExtract( $this->data, 'Propocontratinsertioncov58.dd_ci' );
 
 				$contratinsertionRaisonCi = Set::classicExtract( $this->data, 'Propocontratinsertioncov58.raison_ci' );
@@ -292,30 +280,9 @@
 				}
 				/// Validation
 				$success = $this->Propocontratinsertioncov58->save( $this->data ) && $success;
-				
-// debug($success);
+
 				if( $success ) {
 					$saved = true;
-					
-					/// FIXME: se rappeler de le mettre en place lorsque le CER sera effectif
-					/*$lastrdvorient = $this->Propocontratinsertioncov58->Dossiercov58->Personne->Contratinsertion->Referent->Rendezvous->find(
-						'first',
-						array(
-							'fields'=>array(
-								'Rendezvous.id'
-							),
-							'conditions'=>array(
-								'Rendezvous.typerdv_id' => 1,
-								'Rendezvous.personne_id' => $this->data['Contratinsertion']['personne_id'],
-								'Rendezvous.statutrdv_id' => 17
-							),
-							'contain'=>false
-						)
-					);
-					if( !empty( $lastrdvorient ) ){
-								$lastrdvorient['Rendezvous']['statutrdv_id'] = 1;
-								$saved = $this->Propocontratinsertioncov58->Dossiercov58->Personne->Contratinsertion->Referent->Rendezvous->save($lastrdvorient) && $saved;
-					}*/
 					if( $saved ) {
 						$this->Jetons->release( $dossier_id );
 						$this->Propocontratinsertioncov58->commit();
@@ -384,7 +351,6 @@
 				}
 			}
 
-
 			$struct_id = Set::classicExtract( $this->data, 'Propocontratinsertioncov58.structurereferente_id' );
 			$this->set( 'struct_id', $struct_id );
 
@@ -433,12 +399,11 @@
 				$this->set( 'ReferentEmail', $referent['Referent']['email']. '<br/>' .$referent['Referent']['numero_poste'] );
 				$this->set( 'ReferentFonction', $referent['Referent']['fonction'] );
 				$this->set( 'ReferentNom', $referent['Referent']['nom'].' '.$referent['Referent']['prenom'] );
-// debug($contratinsertion);
 			}
-// debug($this->data);
 			$this->Propocontratinsertioncov58->commit();
 			$this->_setOptions();
 			$this->set( compact( 'structures', 'referents' ) );
+			$this->set( 'urlmenu', '/contratsinsertion/index/'.$personne_id );
 
 			if( Configure::read( 'nom_form_ci_cg' ) == 'cg58' ) {
 				$this->render( $this->action, null, 'add_edit_specif_cg58' );
@@ -447,7 +412,7 @@
 				$this->render( $this->action, null, 'add_edit' );
 			}
 		}
-		
+
 		public function delete( $personne_id ) {
 			$propocontratinsertioncov58 = $this->Propocontratinsertioncov58->find(
 				'first',
@@ -472,16 +437,14 @@
 					'order' => array( 'Propocontratinsertioncov58.df_ci DESC' )
 				)
 			);
-			
+
 			$success = true;
 			$success = $this->Propocontratinsertioncov58->delete( $propocontratinsertioncov58['Propocontratinsertioncov58']['id'] ) && $success;
 			$success = $this->Propocontratinsertioncov58->Dossiercov58->delete( $propocontratinsertioncov58['Propocontratinsertioncov58']['dossiercov58_id'] ) && $success;
-			
+
 			$this->_setFlashResult( 'Save', $success );
-			
+
 			$this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index', $personne_id ) );
 		}
-		
 	}
-
 ?>
