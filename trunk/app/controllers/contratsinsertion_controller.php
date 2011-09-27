@@ -615,6 +615,7 @@
 						'Contratinsertion.duree_cdd',
 						'Contratinsertion.duree_engag',
 						'Contratinsertion.nature_projet',
+						'Contratinsertion.avenant_id',
 						'Contratinsertion.engag_object',
 						'Contratinsertion.date_saisi_ci',
 						'Contratinsertion.lieu_saisi_ci',
