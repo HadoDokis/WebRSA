@@ -707,7 +707,6 @@
 			}
 
 			$this->Dossier = ClassRegistry::init( 'Dossier' );
-
 			$sql = 'SELECT orientsstructs.id
 					FROM personnes
 						INNER JOIN prestations ON ( prestations.personne_id = personnes.id AND prestations.natprest = \'RSA\' AND ( prestations.rolepers = \'DEM\' OR prestations.rolepers = \'CJT\' ) )
@@ -715,7 +714,13 @@
 						'.( ( $statutOrientation == 'Non orienté' ) ? 'INNER JOIN  dsps ON ( dsps.personne_id = personnes.id )' : '' ).'
 						INNER JOIN foyers ON ( personnes.foyer_id = foyers.id )
 						INNER JOIN dossiers ON ( foyers.dossier_id = dossiers.id )
-						INNER JOIN adressesfoyers ON ( adressesfoyers.foyer_id = foyers.id AND adressesfoyers.rgadr = \'01\' AND adressesfoyers.id IN '.ClassRegistry::init( 'Adressefoyer' )->sqlFoyerActuelUnique().' )
+						INNER JOIN adressesfoyers ON (
+							adressesfoyers.foyer_id = foyers.id
+							AND adressesfoyers.rgadr = \'01\'
+							AND adressesfoyers.id IN (
+								'.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01( 'foyers.id' ).'
+							)
+						)
 						INNER JOIN adresses as Adresse ON ( adressesfoyers.adresse_id = Adresse.id)
 						INNER JOIN orientsstructs ON ( orientsstructs.personne_id = personnes.id )
 						INNER JOIN detailsdroitsrsa ON ( detailsdroitsrsa.dossier_id = dossiers.id )

@@ -31,21 +31,5 @@
         	";
 			$this->assertEqual($expected, $this->Adressefoyer->SqDerniereRgadr01($field));
 		}
-
-		// test SqlFoyerUnique
-		function testSqlFoyerActuelUnique() {
-			$expected = '(
-                SELECT tmpadressesfoyers.id FROM (
-                    SELECT MAX(adressesfoyers.id) AS id, adressesfoyers.foyer_id
-                        FROM adressesfoyers
-                        WHERE adressesfoyers.rgadr = \'01\'
-                        GROUP BY adressesfoyers.foyer_id
-                        ORDER BY adressesfoyers.foyer_id
-                ) AS tmpadressesfoyers
-            )';
-			$result = $this->Adressefoyer->sqlFoyerActuelUnique("couverture_de_code");
-			$this->assertEqual($expected, $result);			
-		}
-
 	}
 ?>
