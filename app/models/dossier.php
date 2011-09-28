@@ -425,6 +425,7 @@
 					),
 				),
 				'limit' => 10,
+				'order' => array( 'Dossier.dtdemrsa DESC' ),
 				'conditions' => $conditions
 			);
 			return $query;
