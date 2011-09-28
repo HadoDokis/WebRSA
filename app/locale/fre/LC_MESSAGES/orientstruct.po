@@ -42,7 +42,7 @@ msgid "Orientstruct.structureorientante_id"
 msgstr "Structure"
 
 msgid "Orientstruct.referentorientant_id"
-msgstr "Référent"
+msgstr "Nom du professionnel"
 
 msgid "Orientsstructs::filelink"
 msgstr "Liste des fichiers liés à l'orientation"
