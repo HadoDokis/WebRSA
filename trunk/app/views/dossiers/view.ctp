@@ -116,6 +116,12 @@
 								<th>Statut du demandeur</th>
 								<td><?php echo value( $statudemrsa, Set::extract( 'Dossier.statudemrsa', $details ) );?></td>
 							</tr>
+							<?php if( Configure::read( 'Cg.departement' ) == 58 ):?>
+								<tr class="even">
+									<th>Numéro allocataire</th>
+									<td><?php echo Set::extract( 'Dossier.matricule', $details );;?></td>
+								</tr>
+							<?php endif;?>
 						</tbody>
 					</table>
 				</td>
@@ -262,10 +268,12 @@
 					<h2>Informations CAF</h2>
 					<table >
 						<tbody>
-							<tr class="even">
-								<th>Numéro CAF</th>
-								<td><?php echo Set::extract( 'Dossier.matricule', $details );;?></td>
-							</tr>
+							<?php if( Configure::read( 'Cg.departement' ) != 58 ):?>
+								<tr class="even">
+									<th>Numéro CAF</th>
+									<td><?php echo Set::extract( 'Dossier.matricule', $details );;?></td>
+								</tr>
+							<?php endif;?>
 							<tr class="odd">
 								<th>Date d'ouverture des droits</th>
 								<td><?php echo h( date_short( Set::extract( 'Dossier.dtdemrsa', $details ) ) );?></td>
