@@ -282,7 +282,15 @@
 		* Ajax pour les coordonnées du référent APRE
 		*/
 
-		public function ajaxpiece( $typeaideapre66_id = null, $aideapre66_id = null ) { // FIXME
+		//public function ajaxpiece( $typeaideapre66_id = null, $aideapre66_id = null, $pieceadmin = null, $piececomptable = null ) { // FIXME
+		public function ajaxpiece() { // FIXME
+			$typeaideapre66_id = Set::classicExtract( $this->params, 'named.typeaideapre66_id' );
+			$pieceadmin = explode( ',', Set::classicExtract( $this->params, 'named.pieceadmin' ) );
+			$piececomptable = explode( ',', Set::classicExtract( $this->params, 'named.piececomptable' ) );
+
+			$this->data['Pieceaide66']['Pieceaide66'] = $pieceadmin;
+			$this->data['Piececomptable66']['Piececomptable66'] = $piececomptable;
+
 			if( !empty( $typeaideapre66_id ) ) {
 				$typeaideapre66_id = suffix( $typeaideapre66_id );
 
@@ -336,7 +344,7 @@
 			}
 
 			// Cases déjà cochées
-			$checked = array();
+			/*$checked = array();
 			$aideapre_id = Set::classicExtract( $this->params, 'named.aideapre_id' );
 			if( !empty( $aideapre_id ) ) {
 				$checked = $this->{$this->modelClass}->Aideapre66->Pieceaide66->find(
@@ -382,7 +390,7 @@
 				);
 
 				$this->data['Piececomptable66']['Piececomptable66'] = Set::extract( $checkedcomptable, '/Piececomptable66/id' );
-			}
+			}*/
 
 			$typeaideapre = array();
 			if( is_int( $typeaideapre66_id ) ) {
@@ -390,6 +398,7 @@
 			}
 			Configure::write( 'debug', 0 );
 			$this->set( compact( 'piecesadmin', 'piecescomptable', 'typeaideapre' ) );
+
 			$this->render( $this->action, 'ajax', '/apres/ajaxpiece' );
 		}
 
@@ -556,8 +565,7 @@
 
 			///Nombre d'enfants par foyer
 			$nbEnfants = $this->Foyer->nbEnfants( Set::classicExtract( $personne, 'Foyer.id' ) );
-			$this->set( 'nbEnfants', $nbEnfants );
-
+			$this->set( 'nbEnfants', $nbEnfants ); 
 
 			if( !empty( $this->data ) ) {
 				/// Pour le nombre de pièces afin de savoir si le dossier est complet ou non
@@ -621,9 +629,13 @@
 				}
 
 
-
+/*
 				$Modecontact = Xset::bump( Set::filter( Set::flatten( $this->data['Modecontact'] ) ) );
-				$success = $this->{$this->modelClass}->Personne->Foyer->Modecontact->saveAll( $Modecontact, array( 'validate' => 'first', 'atomic' => false ) ) && $success;
+debug($Modecontact);
+die();
+				if( !empty( $Modecontact ) ){
+					$success = $this->{$this->modelClass}->Personne->Foyer->Modecontact->saveAll( $Modecontact, array( 'validate' => 'first', 'atomic' => false ) ) && $success;
+				}*/
 
 				// Tentative d'enregistrement des pièces liées à une APRE selon ne aide donnée
 				if( !empty( $this->data['Pieceaide66'] ) ) {
@@ -649,6 +661,7 @@
 				}
 			}
 			else if( $this->action == 'edit' ) {
+
 				/// FIXME
 				$this->data = $apre;
 				$this->data = Set::insert(
@@ -669,6 +682,9 @@
 				if( !empty( $this->data['Modecontact'] ) ) {
 					$this->data['Modecontact'] = $personne['Foyer']['Modecontact'];
 				}
+				
+				$this->data['Pieceaide66']['Pieceaide66'] = Set::extract( $apre, '/Aideapre66/Pieceaide66/id' );
+				$this->data['Piececomptable66']['Piececomptable66'] = Set::extract( $apre, '/Aideapre66/Piececomptable66/id' );
 			}
 
 			// Doit-on setter les valeurs par défault ?
@@ -705,7 +721,7 @@
 
 			$this->{$this->modelClass}->commit();
 
-
+			
 			$this->set( 'personne_id', $personne_id );
 			$this->_setOptions();
 			$this->render( $this->action, null, '/apres/add_edit_'.Configure::read( 'nom_form_apre_cg' ) );
