@@ -37,6 +37,7 @@
 			$options = Set::merge( $options, $this->Apre66->Aideapre66->allEnumLists() );
 			$this->set( 'options', $options );
 			$this->set( 'natureAidesApres', $this->Option->natureAidesApres() );
+			$this->set( 'printed', $this->Option->printed() );
 
 			/// Liste des tiers prestataires
 			$this->set( 'tiers', $this->Tiersprestataireapre->find( 'list' ) );
