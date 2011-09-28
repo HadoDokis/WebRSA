@@ -42,7 +42,10 @@
     </div>
     <?php include( '_form.ctp' );?>
 
-    <?php echo $form->submit( 'Enregistrer' );?>
+	<div class="submit">
+		<?php echo $form->submit( 'Enregistrer', array( 'div' => false ) );?>
+		<?php echo $form->submit('Annuler', array( 'name' => 'Cancel', 'div' => false ) );?>
+	</div>
     <?php echo $form->end();?>
 </div>
 <div class="clearer"><hr /></div>
