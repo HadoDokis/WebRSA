@@ -425,7 +425,7 @@
 					),
 				),
 				'limit' => 10,
-				'order' => array( 'Dossier.dtdemrsa DESC' ),
+				'order' => array( 'Personne.nom ASC' ),
 				'conditions' => $conditions
 			);
 			return $query;
