@@ -45,6 +45,10 @@
 						}
 						echo "</tbody></table>";
 					}
+					if( !empty( $dossiercov[$class]) ) {
+						echo $form->button( 'Tout cocher', array( 'onclick' => "toutCocher( '#{$theme} input[type=\"checkbox\"]' )" ) );
+						echo $form->button( 'Tout décocher', array( 'onclick' => "toutDecocher( '#{$theme} input[type=\"checkbox\"]' )" ) );
+					}
 				echo "</div>";
 			}
 		?>
