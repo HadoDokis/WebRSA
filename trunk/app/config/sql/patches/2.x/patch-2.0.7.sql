@@ -175,6 +175,14 @@ ALTER TABLE contratsinsertion ALTER COLUMN avenant_id SET DEFAULT NULL;
 SELECT add_missing_table_field ('public', 'proposcontratsinsertioncovs58', 'avenant_id', 'INTEGER');
 SELECT add_missing_constraint ('public', 'proposcontratsinsertioncovs58', 'proposcontratsinsertioncovs58_avenant_id_fkey', 'contratsinsertion', 'avenant_id');
 ALTER TABLE proposcontratsinsertioncovs58 ALTER COLUMN avenant_id SET DEFAULT NULL;
+
+-- *****************************************************************************
+-- 20110928 : ajout de la date d'impression pour les demandes d'APRE
+-- *****************************************************************************
+SELECT add_missing_table_field ('public', 'apres', 'dateimpressionapre', 'DATE');
+
+
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

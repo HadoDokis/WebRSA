@@ -64,6 +64,24 @@
             <fieldset class="noborder" id="avisdecision">
 				<?php echo $xform->input( 'Filtre.decisionapre', array( 'label' => 'Accord/Rejet', 'type' => 'radio', 'options' => $options['decisionapre'] ) ); ?>
             </fieldset>
+
+<!--            <fieldset>
+				<legend>Imprimé/Non imprimé</legend>
+				<?php echo $form->input( 'Filtre.dateimpressionapre', array( 'label' => 'Filtrer par impression', 'type' => 'select', 'options' => $printed, 'empty' => true ) );?>
+				<?php echo $form->input( 'Filtre.dateprint', array( 'label' => 'Filtrer par date d\'impression', 'type' => 'checkbox' ) );?>
+				<fieldset>
+					<legend>Date d'impression</legend>
+					<?php
+						$dateImpressionFromSelected = array();
+						if( !dateComplete( $this->data, 'Filtre.dateimpressionapre_from' ) ) {
+							$dateImpressionFromSelected = array( 'selected' => strtotime( '-1 week' ) );
+						}
+						echo $form->input( 'Filtre.dateimpressionapre_from', Set::merge( array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 5 ), $dateImpressionFromSelected ) );
+
+						echo $form->input( 'Filtre.dateimpressionapre_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 5, 'minYear' => date( 'Y' ) - 5 ) );
+					?>
+				</fieldset>
+			</fieldset>-->
     </fieldset>
 
     <div class="submit noprint">
@@ -183,6 +201,7 @@
 <script type="text/javascript">
     document.observe("dom:loaded", function() {
         observeDisableFieldsetOnCheckbox( 'FiltreDatedemandeapre', $( 'FiltreDatedemandeapreFromDay' ).up( 'fieldset' ), false );
+//         observeDisableFieldsetOnCheckbox( 'FiltreDateprint', $( 'FiltreDateimpressionapreFromDay' ).up( 'fieldset' ), false );
 
 
 		observeDisableFieldsetOnRadioValue(

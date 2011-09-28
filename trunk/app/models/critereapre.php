@@ -47,6 +47,12 @@
 			$tiers = Set::extract( $criteresapres, 'Filtre.tiersprestataire' );
 			$isdecision = Set::extract( $criteresapres, 'Filtre.isdecision' );
 			$decisionapre = Set::extract( $criteresapres, 'Filtre.decisionapre' );
+			$dateimpressionapre = Set::extract( $criteresapres, 'Filtre.dateimpressionapre' );
+			$dateprint = Set::extract( $criteresapres, 'Filtre.dateprint' );
+			
+			
+			
+			
 // debug($criteresapres);
 			/// Critères sur la demande APRE - date de demande
 			if( isset( $criteresapres['Filtre']['datedemandeapre'] ) && !empty( $criteresapres['Filtre']['datedemandeapre'] ) ) {
@@ -153,6 +159,28 @@
 			if( !empty( $natureaidesapres ) ) {
 				$table = Inflector::tableize( $natureaidesapres );
 				$conditions[] = "Apre.id IN ( SELECT $table.apre_id FROM $table )";
+			}
+
+
+			// Statut impression
+			if( !empty( $dateimpressionapre ) && in_array( $dateimpressionapre, array( 'I', 'N' ) ) ) {
+				if( $dateimpressionapre == 'I' ) {
+					$conditions[] = 'Apre.dateimpressionapre IS NOT NULL';
+				}
+				else {
+					$conditions[] = 'Apre.dateimpressionapre IS NULL';
+				}
+			}
+
+			// Date d'impression
+			if( !empty( $dateprint ) && $dateprint != 0 ) {
+				$dateimpressionapre_from = Set::extract( $criteres, 'Filtre.dateimpressionapre_from' );
+				$dateimpressionapre_to = Set::extract( $criteres, 'Filtre.dateimpressionapre_to' );
+				// FIXME: vérifier le bon formatage des dates
+				$dateimpressionapre_from = $dateimpressionapre_from['year'].'-'.$dateimpressionapre_from['month'].'-'.$dateimpressionapre_from['day'];
+				$dateimpressionapre_to = $dateimpressionapre_to['year'].'-'.$dateimpressionapre_to['month'].'-'.$dateimpressionapre_to['day'];
+
+				$conditions[] = 'Apre.dateimpressionapre BETWEEN \''.$dateimpressionapre_from.'\' AND \''.$dateimpressionapre_to.'\'';
 			}
 
            // Trouver la dernière demande RSA pour chacune des personnes du jeu de résultats
