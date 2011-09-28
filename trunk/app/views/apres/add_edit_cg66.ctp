@@ -85,17 +85,20 @@
 
 
     <?php
+		$url = Router::url(
+			array(
+				'action' => 'ajaxpiece',
+				'typeaideapre66_id' => Set::classicExtract( $this->data, 'Aideapre66.typeaideapre66_id' ),
+				'pieceadmin' => implode( ',', ( isset( $this->data['Pieceaide66']['Pieceaide66'] ) ? (array)$this->data['Pieceaide66']['Pieceaide66'] : array() ) ),
+				'piececomptable' => implode( ',', ( isset( $this->data['Piececomptable66']['Piececomptable66'] ) ? (array)$this->data['Piececomptable66']['Piececomptable66'] : array() ) )
+			),
+			true
+		);
+
         echo $ajax->remoteFunction(
             array(
                 'update' => 'Piece66',
-                'url' => Router::url(
-                    array(
-                        'action' => 'ajaxpiece',
-                        Set::extract( $this->data, 'Aideapre66.typeaideapre66_id' ),
-                        'aideapre_id' => Set::classicExtract( $this->data, 'Aideapre66.id' )
-                    ),
-                    true
-                )
+                'url' => $url
             )
         );
     ?>
@@ -353,28 +356,8 @@
             <table class="wide noborder">
                 <tr>
                     <td class="mediumsize noborder"><strong>Type d'activité </strong></td>
-                    <td class="mediumsize noborder"><?php echo $xform->enum( "{$this->modelClass}.activitebeneficiaire", array( 'legend' => __d( 'apre', 'Apre.activitebeneficiaire', true ), 'type' => 'radio', 'separator' => '<br />', 'options' => /*$options['activitebeneficiaire']*/array( 'P' => 'Recherche d\'Emploi', 'E' => 'Emploi' , 'F' => 'Formation', 'C' => 'Création d\'Entreprise' ) ) );?></td> <!-- FIXME: trouver mieux car activite  = enum mais pour cg93 un champ de + est présent -->
+                    <td class="mediumsize noborder"><?php echo $xform->enum( "{$this->modelClass}.activitebeneficiaire", array( 'legend' => __d( 'apre', 'Apre.activitebeneficiaire', true ), 'type' => 'radio', 'separator' => '<br />', 'options' => array( 'P' => 'Recherche d\'Emploi', 'E' => 'Emploi' , 'F' => 'Formation', 'C' => 'Création d\'Entreprise' ) ) );?></td>
                 </tr>
-                <!-- <tr>
-                    <td class="mediumsize noborder"><strong>Date prévue de l'entrée en emploi,<br /> en formation ou du rendez-vous</strong></td>
-                    <td class="mediumsize noborder"><?php echo $xform->input( "{$this->modelClass}.dateentreeemploi", array( 'domain' => 'apre', 'label' => false, 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => true ) );?></td>
-                </tr>
-                <tr>
-                    <td class="mediumsize noborder"><strong>Type de contrat </strong></td>
-                    <td class="mediumsize noborder"><?php echo $xform->enum( "{$this->modelClass}.typecontrat", array(  'legend' => false, 'type' => 'radio', 'separator' => '<br />', 'options' => $options['typecontrat'] ) );?></td>
-                </tr>
-                <tr>
-                    <td class="mediumsize noborder"><strong>Si autres, préciser  </strong></td>
-                    <td class="mediumsize noborder"><?php echo $xform->input( "{$this->modelClass}.precisionsautrecontrat", array( 'domain' => 'apre', 'label' => false, 'type' => 'textarea' ) );?></td>
-                </tr>
-                <tr>
-                    <td class="mediumsize noborder"><strong>Durée ( mois ) si CDD, CTT, ...</strong></td>
-                    <td class="mediumsize noborder"><?php echo $xform->input( "{$this->modelClass}.dureecontrat", array( 'domain' => 'apre', 'label' => false, 'type' => 'text' ) );?></td>
-                </tr>
-                <tr>
-                    <td class="mediumsize noborder"><strong>Localisation de l'activité ( nom et adresse ) </strong></td>
-                    <td class="mediumsize noborder"><?php echo $xform->input(  "{$this->modelClass}.nomemployeur", array( 'domain' => 'apre', 'label' => false, 'type' => 'text' ) );?><?php echo $xform->input(  "{$this->modelClass}.adresseemployeur", array( 'domain' => 'apre', 'label' => false, 'type' => 'textarea' ) );?></td>
-                </tr> -->
             </table>
         </fieldset>
 
@@ -412,8 +395,24 @@
                 'options' => $options
             )
         );
-
-        echo $ajax->observeField( 'Aideapre66Typeaideapre66Id', array( 'update' => 'Piece66', 'url' => Router::url( array( 'action' => 'ajaxpiece', 'aideapre_id' => Set::classicExtract( $this->data, 'Aideapre66.id' ) ), true ) ) );
+        
+		$url = Router::url(
+			array(
+				'action' => 'ajaxpiece',
+				'typeaideapre66_id' => Set::classicExtract( $this->data, 'Aideapre66.typeaideapre66_id' ),
+				'pieceadmin' => implode( ',', ( isset( $this->data['Pieceaide66']['Pieceaide66'] ) ? (array)$this->data['Pieceaide66']['Pieceaide66'] : array() ) ),
+				'piececomptable' => implode( ',', ( isset( $this->data['Piececomptable66']['Piececomptable66'] ) ? (array)$this->data['Piececomptable66']['Piececomptable66'] : array() ) )
+			),
+			true
+		);
+// debug( $url );
+        echo $ajax->observeField(
+			'Aideapre66Typeaideapre66Id',
+			array(
+				'update' => 'Piece66',
+				'url' => $url
+			)
+		);
 
         echo $xhtml->tag( 'div', null, array( 'id' => 'Piece66' ) );
         echo $xhtml->tag( '/div' );
@@ -424,8 +423,7 @@
                 'Aideapre66.motivdem',
                 'Aideapre66.montantaide' => array( 'type' => 'text' ),
                 'Aideapre66.virement' => array( 'domain' => 'aideapre66', 'type' => 'radio', 'options' => $options['virement'], 'separator' => '<br />' ),
-                'Aideapre66.versement' => array( 'domain' => 'aideapre66', 'type' => 'radio', 'options' => $options['versement'], 'separator' => '<br />' ),
-//                 'Aideapre66.autorisationvers' => array( 'legend' => 'Autorisation de paiement au tiers', 'domain' => 'aideapre66', 'options' => $options['autorisationvers'], 'type' => 'radio', 'separator' => '<br />' )
+                'Aideapre66.versement' => array( 'domain' => 'aideapre66', 'type' => 'radio', 'options' => $options['versement'], 'separator' => '<br />' )
             ),
             array(
                 'options' => $options
@@ -636,7 +634,7 @@
                 array(
                     'Aideapre66.decisionapre' => array( 'legend' => false, 'type' => 'radio', 'options' => $options['decisionapre'], 'separator' => '<br />' ),
                     'Aideapre66.montantaccorde' => array( 'type' => 'text' ),
-                    'Aideapre66.motifrejetequipe' => array( 'type' => 'textarea'/*, 'required'=>true*/ ),
+                    'Aideapre66.motifrejetequipe' => array( 'type' => 'textarea' ),
                     'Aideapre66.datemontantaccorde' => array( 'empty' => false )
                 ),
                 array(
