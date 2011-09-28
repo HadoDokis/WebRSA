@@ -3,16 +3,6 @@
 
 <h1>Recherche de demande APRE</h1>
 
-<script type="text/javascript">
-    document.observe("dom:loaded", function() {
-        observeDisableFieldsetOnCheckbox( 'FiltreDatedemandeapre', $( 'FiltreDatedemandeapreFromDay' ).up( 'fieldset' ), false );
-        observeDisableFieldsetOnCheckbox( 'FiltreDaterelance', $( 'FiltreDaterelanceFromDay' ).up( 'fieldset' ), false );
-
-        observeDisableFieldsOnValue( 'FiltreStatutapre', [ 'FiltreTiersprestataire' ], 'F', true );
-
-
-    });
-</script>
 
 <?php $pagination = $xpaginator->paginationBlock( 'Apre', $this->passedArgs );?>
 <?php
@@ -23,14 +13,14 @@
                 array( 'alt' => '' )
             ).' Formulaire',
             '#',
-            array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 'Critereapre' ).toggle(); return false;" )
+            array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 'critereapreform' ).toggle(); return false;" )
         ).'</li></ul>';
     }
 
 ?>
 
 <?php /*echo $xform->create( 'Critereapre', array( 'type' => 'post', 'action' => '/formulaire/', 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );*/
-    echo $xform->create( 'Critereapre', array( 'url'=> Router::url( null, true ), 'id' => 'Critereapre', 'class' => ( !empty( $this->data ) ? 'folded' : 'unfolded' ) ) );?>
+    echo $xform->create( 'Critereapre', array( 'url'=> Router::url( null, true ), 'id' => 'critereapreform', 'class' => ( !empty( $this->data ) ? 'folded' : 'unfolded' ) ) );?>
     <fieldset>
         <legend>Recherche par personne</legend>
         <?php echo $xform->input( 'Filtre.nom', array( 'label' => 'Nom ', 'type' => 'text' ) );?>
@@ -67,12 +57,13 @@
                 if( Configure::read( 'CG.cantons' ) ) {
                     echo $xform->input( 'Canton.canton', array( 'label' => 'Canton', 'type' => 'select', 'options' => $cantons, 'empty' => true ) );
                 }
-                if( Configure::read( 'Cg.departement' ) == 66 ){
-					echo $xform->enum( 'Filtre.etatdossierapre', array(  'label' => 'Etat du dossier APRE', 'options' => 	$options['etatdossierapre'] ) );
-					echo $xform->enum( 'Filtre.isdecision', array(  'label' => 'Décision émise concernant le dossier APRE', 'type' => 'radio', 'options' => $options['isdecision'] ) );
-					echo $xform->enum( 'Filtre.decisionapre', array(  'label' => 'Accord/Rejet', 'type' => 'radio', 'options' => $options['decisionapre'] ) );
-				}
+				echo $xform->enum( 'Filtre.etatdossierapre', array(  'label' => 'Etat du dossier APRE', 'options' => 	$options['etatdossierapre'] ) );
+				echo $xform->enum( 'Filtre.isdecision', array(  'label' => 'Décision émise concernant le dossier APRE', 'type' => 'radio', 'options' => $options['isdecision'] ) );
+					
             ?>
+            <fieldset class="noborder" id="avisdecision">
+				<?php echo $xform->input( 'Filtre.decisionapre', array( 'label' => 'Accord/Rejet', 'type' => 'radio', 'options' => $options['decisionapre'] ) ); ?>
+            </fieldset>
     </fieldset>
 
     <div class="submit noprint">
@@ -188,3 +179,19 @@
     <?php endif?>
 
 <?php endif?>
+
+<script type="text/javascript">
+    document.observe("dom:loaded", function() {
+        observeDisableFieldsetOnCheckbox( 'FiltreDatedemandeapre', $( 'FiltreDatedemandeapreFromDay' ).up( 'fieldset' ), false );
+
+
+		observeDisableFieldsetOnRadioValue(
+			'critereapreform',
+			'data[Filtre][isdecision]',
+			$( 'avisdecision' ),
+			'O',
+			false,
+			true
+		);
+    });
+</script>
