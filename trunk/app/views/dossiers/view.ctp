@@ -195,25 +195,30 @@
 								<td><?php echo Set::extract( 'CJT.Personne.prenom', $details );?></td>
 							</tr>
 							<tr class="odd">
+								<th><?php __d( 'personne', 'Personne.dtnai' );?></th>
+								<td><?php echo date_short( Set::extract( 'DEM.Personne.dtnai', $details ) );?></td>
+								<td><?php echo date_short( Set::extract( 'CJT.Personne.dtnai', $details ) );?></td>
+							</tr>
+							<tr class="even">
 								<th><?php __d( 'foyer', 'Foyer.sitfam' );?></th>
 								<td colspan="2"><?php echo ( isset( $sitfam[$details['Foyer']['sitfam']] ) ?  $sitfam[$details['Foyer']['sitfam']] : null );?></td>
 							</tr>
-							<tr class="even">
+							<tr class="odd">
 								<th><?php __( 'adresse' );?></th>
 								<td colspan="2">
 									<?php echo $details['Adresse']['numvoie'].' '.( isset( $typevoie[$details['Adresse']['typevoie']] ) ? $typevoie[$details['Adresse']['typevoie']] : null ).' '. $details['Adresse']['nomvoie'];?>
 								</td>
 							</tr>
-							<tr class="odd">
+							<tr class="even">
 								<th><?php __d( 'adresse', 'Adresse.locaadr' );?></th>
 								<td colspan="2"><?php echo ( isset( $details['Adresse']['locaadr'] ) ? $details['Adresse']['locaadr'] : null );?></td>
 							</tr>
-							<tr class="even">
+							<tr class="odd">
 								<th>Soumis à droits et devoirs</th>
 								<td><?php echo textToppersdrodevorsa( Set::extract( 'DEM.Calculdroitrsa', $details ) );?></td>
 								<td><?php echo textToppersdrodevorsa( Set::extract( 'CJT.Calculdroitrsa', $details ) );?></td>
 							</tr>
-							<tr class="odd">
+							<tr class="even">
 								<th>DSP</th>
 								<td><?php echo h( textPresenceDsp( @$details['DEM'] ) );?></td>
 								<td><?php echo h( textPresenceDsp( @$details['CJT'] ) );?></td>
