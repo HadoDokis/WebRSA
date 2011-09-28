@@ -39,10 +39,10 @@
             array(
                 'actions' => array(
                     'Contratsinsertion::valider' => array(
-                        'disabled' => '( "'.$permissions->check( 'contratsinsertion', 'valider' ).'" != "1" ) || ( "#Contratinsertion.decision_ci#" == "V" ) || ( "#Contratinsertion.forme_ci#" == "S" ) || ( "#Contratinsertion.positioncer#" == "annule" ) || ( "#Contratinsertion.positioncer#" == "fincontrat" )'
+                        'disabled' => '( "'.$permissions->check( 'contratsinsertion', 'valider' ).'" != "1" ) || ( "#Contratinsertion.decision_ci#" == "V" ) || ( "#Contratinsertion.positioncer#" == "annule" ) || ( "#Contratinsertion.positioncer#" == "fincontrat" )'
                     ),
                     'Contratsinsertion::view',
-                    'Contratsinsertion::edit' => array( 'disabled' => '( "'.$permissions->check( 'contratsinsertion', 'edit' ).'" != "1" ) || ( "#Contratinsertion.decision_ci#" == "V" ) || ( "#Contratinsertion.forme_ci#" == "S" ) || ( "#Contratinsertion.positioncer#" == "annule" ) || ( "#Contratinsertion.positioncer#" == "fincontrat" )' ),
+                    'Contratsinsertion::edit' => array( 'disabled' => '( "'.$permissions->check( 'contratsinsertion', 'edit' ).'" != "1" ) || ( "#Contratinsertion.decision_ci#" == "V" ) ||  ( "#Contratinsertion.positioncer#" == "annule" ) || ( "#Contratinsertion.positioncer#" == "fincontrat" )' ),
                     'Contratsinsertion::notifop' => array(
                         'label' => 'Notification OP',
                         'url' => array( 'controller' => 'contratsinsertion', 'action'=>'notificationsop' ),
