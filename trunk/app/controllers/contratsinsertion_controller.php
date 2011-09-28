@@ -952,14 +952,14 @@
 					$this->data['Contratinsertion']['avisraison_ci'] = Set::classicExtract( $this->data, 'Contratinsertion.avisraison_radiation_ci' );
 				}
 
-				if( Configure::read( 'nom_form_ci_cg' ) == 'cg66' ) {
-					$contratinsertionDecisionCi = Set::classicExtract( $this->data, 'Contratinsertion.forme_ci' );
-					if( $contratinsertionDecisionCi == 'S' ) {
-						///Validation si le contrat est simple (CG66)
-						$this->data['Contratinsertion']['decision_ci'] = 'V';
-						$this->data['Contratinsertion']['datevalidation_ci'] = $this->data['Contratinsertion']['date_saisi_ci'];
-					}
-				}
+// 				if( Configure::read( 'nom_form_ci_cg' ) == 'cg66' ) {
+// 					$contratinsertionDecisionCi = Set::classicExtract( $this->data, 'Contratinsertion.forme_ci' );
+// 					if( $contratinsertionDecisionCi == 'S' ) {
+// 						///Validation si le contrat est simple (CG66)
+// 						$this->data['Contratinsertion']['decision_ci'] = 'V';
+// 						$this->data['Contratinsertion']['datevalidation_ci'] = $this->data['Contratinsertion']['date_saisi_ci'];
+// 					}
+// 				}
 
 				/**
 				*   Utilisé pour les dates de suspension et de radiation

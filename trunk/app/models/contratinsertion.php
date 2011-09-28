@@ -612,7 +612,7 @@
 			// 'encours', 'attvalid', 'annule', 'fincontrat', 'encoursbilan', 'attrenouv', 'perime'
 
 			if ( $formeCi == 'S' )
-				$positioncer = 'encours';
+				$positioncer = 'attvalid';
 			elseif ( $formeCi == 'C' )
 				$positioncer = 'attvalid';
 			elseif ( !empty( $sitproCi ) )
