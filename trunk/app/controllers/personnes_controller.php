@@ -187,6 +187,7 @@
 			// Vérification du format de la variable
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
+
 			$queryData = array(
 				'fields' => array(
 					'Personne.id',
@@ -246,6 +247,12 @@
 		public function add( $foyer_id = null ){
 			// Vérification du format de la variable
 			$this->assert( valid_int( $foyer_id ), 'invalidParameter' );
+    
+			// Retour à la liste en cas d'annulation
+			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
+				$this->redirect( array( 'controller' => 'personnes', 'action' => 'index', $foyer_id ) );
+			}
+
 
 			$dossier_id = $this->Foyer->dossierId( $foyer_id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
@@ -338,6 +345,11 @@
 			// Vérification du format de la variable
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
+			$foyer_id = Set::classicExtract( $this->data, 'Personne.foyer_id' );
+			// Retour à la liste en cas d'annulation
+			if( isset( $this->params['form']['Cancel'] ) ) {
+				$this->redirect( array( 'controller' => 'personnes', 'action' => 'index', $foyer_id ) );
+			}
 			$dossier_id = $this->Personne->dossierId( $id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
 
@@ -404,6 +416,7 @@
 				$this->set( 'personne', $personne );
 				$this->Personne->commit();
 			}
+
 
 			$this->_setOptions();
 			$this->Personne->commit();
