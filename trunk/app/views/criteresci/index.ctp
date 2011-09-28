@@ -55,7 +55,10 @@
 				echo $form->input( 'Contratinsertion.dernier', array( 'label' => 'Uniquement le dernier contrat d\'insertion pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueContratinsertionDernier ) );
 			?>
 			<?php echo $form->input( 'Filtre.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
-			<?php echo $form->input( 'Filtre.forme_ci', array(  /*'label' => false,*/ 'type' => 'radio', 'options' => $forme_ci /*array( 'S' => 'Simple', 'C' => 'Complexe' )*/, 'legend' => 'Forme du contrat', 'default' => 'S', 'div' => false, ) ); ?>
+			<?php if(Configure::read( 'Cg.departement' ) != 58 ){
+					echo $form->input( 'Filtre.forme_ci', array(  /*'label' => false,*/ 'type' => 'radio', 'options' => $forme_ci /*array( 'S' => 'Simple', 'C' => 'Complexe' )*/, 'legend' => 'Forme du contrat', 'default' => 'S', 'div' => false, ) );
+				}
+			?>
 			<?php echo $form->input( 'Filtre.date_saisi_ci', array( 'label' => 'Filtrer par date de saisie du contrat', 'type' => 'checkbox' ) );?>
 			<fieldset>
 				<legend>Date de saisie du contrat</legend>
