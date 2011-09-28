@@ -30,6 +30,7 @@
 
 		protected function _setOptions() {
 			$this->set( 'natpf', $this->Option->natpf() );
+			$this->set( 'qual', $this->Option->qual() );
 			$this->set( 'decision_ci', $this->Option->decision_ci() );
 			$this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
 			$this->set( 'rolepers', $this->Option->rolepers() );
@@ -370,6 +371,7 @@
 				array(
 					'fields' => array(
 						'Personne.id',
+						'Personne.qual',
 						'Personne.nom',
 						'Personne.prenom',
 						'Personne.dtnai',

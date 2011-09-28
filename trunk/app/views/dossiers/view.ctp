@@ -184,6 +184,11 @@
 					<table>
 						<?php echo thead( 10 );?>
 						<tbody>
+							<tr class="even">
+								<th><?php __d( 'personne', 'Personne.qual' );?></th>
+								<td><?php echo value( $qual,  Set::extract( 'DEM.Personne.qual', $details ) );?></td>
+								<td><?php echo value( $qual,  Set::extract( 'CJT.Personne.qual', $details ) );?></td>
+							</tr>
 							<tr class="odd">
 								<th><?php __d( 'personne', 'Personne.nom' );?></th>
 								<td><?php echo Set::extract( 'DEM.Personne.nom', $details );?></td>
