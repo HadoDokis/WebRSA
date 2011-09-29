@@ -188,14 +188,3 @@
 </div>
 
 <div class="clearer"><hr /></div>
-<script type="text/javascript">
-	Event.observe( $( 'Propocontratinsertioncov58DdCiDay' ), 'change', function( event ) {
-		$( 'Propocontratinsertioncov58DatedemandeDay' ).value = $F( 'Propocontratinsertioncov58DdCiDay' );
-	} );
-	Event.observe( $( 'Propocontratinsertioncov58DdCiMonth' ), 'change', function( event ) {
-		$( 'Propocontratinsertioncov58DatedemandeMonth' ).value = $F( 'Propocontratinsertioncov58DdCiMonth' );
-	} );
-	Event.observe( $( 'Propocontratinsertioncov58DdCiYear' ), 'change', function( event ) {
-		$( 'Propocontratinsertioncov58DatedemandeYear' ).value = $F( 'Propocontratinsertioncov58DdCiYear' );
-	} );
-</script>
