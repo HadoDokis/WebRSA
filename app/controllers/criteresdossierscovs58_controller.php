@@ -22,6 +22,8 @@
 		public function _setOptions() {
 			$this->set( 'options', $this->Dossiercov58->allEnumLists() );
 			$this->set( 'themes', $this->Dossiercov58->Themecov58->find( 'list' ) );
+			$sitescovs58 = $this->Dossiercov58->Cov58->Sitecov58->find( 'list', array( 'fields' => array( 'name' ) ) );
+			$this->set( compact( 'sitescovs58' ) );
 		}
 
 

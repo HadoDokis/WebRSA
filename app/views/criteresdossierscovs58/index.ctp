@@ -17,6 +17,11 @@
     ).'</li></ul>';
 ?>
 
+<script type="text/javascript">
+	document.observe("dom:loaded", function() {
+		observeDisableFieldsetOnCheckbox( 'Cov58Datecommission', $( 'Cov58DatecommissionFromDay' ).up( 'fieldset' ), false );
+	});
+</script>
 <?php echo $xform->create( 'Criteredossiercov58', array( 'type' => 'post', 'action' => 'index', 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );?>
 
         <?php  echo $xform->input( 'Criteredossiercov58.index', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
@@ -46,8 +51,26 @@
                     )
                 );
             ?>
-        </fieldset>
 
+        </fieldset>
+		<fieldset>
+			<legend>Filtrer par Commission</legend>
+			<?php echo $default2->subform(
+				array(
+					'Cov58.sitecov58_id' => array( 'type' => 'select', 'option' => $sitescovs58, 'empty' => true )
+				)
+			); ?>
+		</fieldset>
+			<?php echo $xform->input( 'Cov58.datecommission', array( 'label' => 'Filtrer par date de Commission', 'type' => 'checkbox' ) );?>
+			<fieldset>
+				<legend>Filtrer par période</legend>
+				<?php
+					$datecommission_from = Set::check( $this->data, 'Cov58.datecommission_from' ) ? Set::extract( $this->data, 'Cov58.datecommission_from' ) : strtotime( '-1 week' );
+					$datecommission_to = Set::check( $this->data, 'Cov58.datecommission_to' ) ? Set::extract( $this->data, 'Cov58.datecommission_to' ) : strtotime( 'now' );
+				?>
+				<?php echo $xform->input( 'Cov58.datecommission_from', array( 'label' => 'Du', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 10, 'selected' => $datecommission_from ) );?>
+				<?php echo $xform->input( 'Cov58.datecommission_to', array( 'label' => 'Au', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 10, 'selected' => $datecommission_to ) );?>
+		</fieldset>
     <div class="submit noprint">
         <?php echo $xform->button( 'Rechercher', array( 'type' => 'submit' ) );?>
         <?php echo $xform->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>
