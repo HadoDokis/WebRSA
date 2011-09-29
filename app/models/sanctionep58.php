@@ -678,6 +678,7 @@
 					'Adresse.locaadr',
 					'Dossierep.created',
 					'Dossierep.themeep',
+					$this->alias.'.origine',
 					'Passagecommissionep.id',
 					'Passagecommissionep.commissionep_id',
 					'Passagecommissionep.etatdossierep',

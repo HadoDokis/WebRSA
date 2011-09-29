@@ -479,6 +479,7 @@
 					'Passagecommissionep.id',
 					'Passagecommissionep.commissionep_id',
 					'Passagecommissionep.etatdossierep',
+					'Typerdv.motifpassageep',
 				)
 			);
 
@@ -559,7 +560,25 @@
 							)
 						)
 					)
-				)
+				),/*,
+				array(
+					'alias' => 'Rendezvous',
+					'table' => 'rendezvous',
+					'type' => 'INNER',
+					'conditions' => array(
+						'Rendezvous.id = Sanctionrendezvousep58.rendezvous_id'
+					)
+				),
+				array(
+					'alias' => 'Typerdv',
+					'table' => 'typesrdv',
+					'type' => 'INNER',
+					'conditions' => array(
+						'Rendezvous.typerdv_id = Typerdv.id'
+					)
+				),*/
+				$this->join( 'Rendezvous', array( 'type' => 'INNER' ) ),
+				$this->Rendezvous->join( 'Typerdv', array( 'type' => 'INNER' ) )
 			);
 
 			return $return;
