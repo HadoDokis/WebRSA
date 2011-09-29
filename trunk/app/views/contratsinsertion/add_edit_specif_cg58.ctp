@@ -185,14 +185,3 @@
 </div>
 
 <div class="clearer"><hr /></div>
-<script type="text/javascript">
-	Event.observe( $( 'ContratinsertionDdCiDay' ), 'change', function( event ) {
-		$( 'ContratinsertionDateSaisiCiDay' ).value = $F( 'ContratinsertionDdCiDay' );
-	} );
-	Event.observe( $( 'ContratinsertionDdCiMonth' ), 'change', function( event ) {
-		$( 'ContratinsertionDateSaisiCiMonth' ).value = $F( 'ContratinsertionDdCiMonth' );
-	} );
-	Event.observe( $( 'ContratinsertionDdCiYear' ), 'change', function( event ) {
-		$( 'ContratinsertionDateSaisiCiYear' ).value = $F( 'ContratinsertionDdCiYear' );
-	} );
-</script>
