@@ -45,6 +45,18 @@
 				}
 			}
 
+			if ( isset($criteresdossierscovs58['Cov58']['sitecov58_id']) && !empty($criteresdossierscovs58['Cov58']['sitecov58_id']) ) {
+				$conditions[] = array('Cov58.sitecov58_id'=>$criteresdossierscovs58['Cov58']['sitecov58_id']);
+			}
+
+			/// Critères sur la date de la COV
+			if( isset( $criteresdossierscovs58['Cov58']['datecommission'] ) && !empty( $criteresdossierscovs58['Cov58']['datecommission'] ) ) {
+				$valid_from = ( valid_int( $criteresdossierscovs58['Cov58']['datecommission_from']['year'] ) && valid_int( $criteresdossierscovs58['Cov58']['datecommission_from']['month'] ) && valid_int( $criteresdossierscovs58['Cov58']['datecommission_from']['day'] ) );
+				$valid_to = ( valid_int( $criteresdossierscovs58['Cov58']['datecommission_to']['year'] ) && valid_int( $criteresdossierscovs58['Cov58']['datecommission_to']['month'] ) && valid_int( $criteresdossierscovs58['Cov58']['datecommission_to']['day'] ) );
+				if( $valid_from && $valid_to ) {
+					$conditions[] = 'Cov58.datecommission BETWEEN \''.implode( '-', array( $criteresdossierscovs58['Cov58']['datecommission_from']['year'], $criteresdossierscovs58['Cov58']['datecommission_from']['month'], $criteresdossierscovs58['Cov58']['datecommission_from']['day'] ) ).'\' AND \''.implode( '-', array( $criteresdossierscovs58['Cov58']['datecommission_to']['year'], $criteresdossierscovs58['Cov58']['datecommission_to']['month'], $criteresdossierscovs58['Cov58']['datecommission_to']['day'] ) ).'\'';
+				}
+			}
 
 			$joins = array(
 				array(
@@ -67,7 +79,15 @@
 					'type'       => 'INNER',
 					'foreignKey' => false,
 					'conditions' => array( 'Foyer.dossier_id = Dossier.id' ),
-				)/*,
+				),
+				array(
+					'table'      => 'covs58',
+					'alias'      => 'Cov58',
+					'type'       => 'INNER',
+					'foreignKey' => false,
+					'conditions' => array( 'Cov58.id = Dossiercov58.cov58_id' ),
+				),
+				/*,
 				array(
 					'table'      => 'referents',
 					'alias'      => 'Referent',
