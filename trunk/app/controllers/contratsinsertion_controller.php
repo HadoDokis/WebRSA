@@ -400,7 +400,7 @@
 						'Contratinsertion.df_ci',
 						'Contratinsertion.date_saisi_ci',
 						'Contratinsertion.datevalidation_ci',
-						'Contratinsertion.avenant_id'
+// 						'Contratinsertion.avenant_id'
 					),
 					'conditions' => array(
 						'Contratinsertion.personne_id' => $personne_id
