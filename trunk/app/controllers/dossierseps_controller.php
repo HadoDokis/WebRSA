@@ -18,6 +18,7 @@
 
 			$options = $this->Propopdo->allEnumLists();
 
+
 			// Ajout des enums pour les thématiques du CG uniquement
 			foreach( $this->Dossierep->Passagecommissionep->Commissionep->Ep->Regroupementep->themes() as $theme ) {
 				/*$model = Inflector::classify( $theme );
@@ -32,6 +33,7 @@
 			}
 
 			$this->set( compact( 'options' ) );
+
 		}
 
 		/**
@@ -279,6 +281,7 @@
 						)
 					)
 				);
+
 			}
 			else {
 				$this->set( 'themeEmpty', true );
@@ -335,7 +338,11 @@
 				);
 				$this->set( 'duree_engag_cg93', $this->Option->duree_engag_cg93() );
 			}
-
+				
+							
+			if( Configure::read( 'Cg.departement' ) == 58 ){
+				$options = Set::merge( $options, $this->Dossierep->Sanctionep58->enums() );
+			}
 			$this->set( compact( 'options', 'dossierseps', 'commissionep' ) );
 			$this->set( 'commissionep_id', $commissionep_id);
 		}

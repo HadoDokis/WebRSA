@@ -71,7 +71,7 @@ msgid "ENUM::THEMEEP::defautsinsertionseps66"
 msgstr "Défaut d'insertion"
 
 msgid "ENUM::THEMEEP::nonorientationsproseps58"
-msgstr "Non orientation professionnelle"
+msgstr "Maintien dans le social"
 
 msgid "ENUM::THEMEEP::nonorientationsproseps93"
 msgstr "Parcours social sans réorientation"

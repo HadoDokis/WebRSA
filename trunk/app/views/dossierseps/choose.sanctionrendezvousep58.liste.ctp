@@ -1,12 +1,15 @@
 <?php
+
 	echo $default2->index(
 		$dossiers[$theme],
 		array(
+			'Dossierep.id' => array( 'label' => 'N° de dossier' ),
 			'Personne.qual',
 			'Personne.nom',
 			'Personne.prenom',
 			'Personne.dtnai',
 			'Adresse.locaadr',
+			'Typerdv.motifpassageep',
 			'Dossierep.created',
 			'Foyer.enerreur' => array( 'type' => 'string', 'class' => 'foyer_enerreur' ),
 			'Passagecommissionep.chosen' => array( 'input' => 'checkbox' ),
