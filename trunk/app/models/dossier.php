@@ -322,6 +322,11 @@
 			}
 
 
+			$etatdossier = Set::extract( $params, 'Situationdossierrsa.etatdosrsa' );
+			if( isset( $params['Situationdossierrsa']['etatdosrsa'] ) && !empty( $params['Situationdossierrsa']['etatdosrsa'] ) ) {
+				$conditions[] = '( Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $etatdossier ).'\' ) )';
+			}
+
 			/**
 			*	FIXME: pour les tests de performance
 			*	'Z' => 'Non défini',

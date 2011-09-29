@@ -70,7 +70,18 @@
 		<?php
 			$valueDossierDernier = isset( $this->data['Dossier']['dernier'] ) ? $this->data['Dossier']['dernier'] : true;
 			echo $form->input( 'Dossier.dernier', array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueDossierDernier ) );
+			
 		?>
+		<fieldset><legend>Etat du dossier RSA</legend>
+			<?php
+				//Etat du droit du dossier
+				$etatsCoches = Set::extract( $this->data, 'Situationdossierrsa.etatdosrsa' );
+				if( empty( $etatsCoches ) ) {
+					$etatsCoches = array_keys( $etatdosrsa );
+				}
+				echo $form->input( 'Situationdossierrsa.etatdosrsa', array( 'label' => false, 'type' => 'select', 'multiple' => 'checkbox', 'options' => $etatdosrsa, 'value' => $etatsCoches ) );
+			?>
+		</fieldset>
     </fieldset>
     <fieldset>
         <legend>Recherche par Adresse</legend>
