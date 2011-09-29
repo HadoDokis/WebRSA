@@ -5,7 +5,7 @@
 	class AppModel extends LazyModel
 	{
 		// début champs virtuels
-		public $actsAs = array( 'Containable', 'Subquery' );
+		public $actsAs = array( 'Containable', /*'Subquery',*/ 'DatabaseTable' );
 
 		public $virtualFields = array();
 
@@ -16,6 +16,17 @@
 		*/
 
 		public $forceVirtualFields = false;
+
+		/**
+		* Exécute les différentes méthods du modèle permettant la mise en cache.
+		* Utilisé au préchargement de l'application (/prechargements/index).
+		*
+		* @return boolean true en cas de succès, false sinon.
+		*/
+
+		public function prechargement() {
+			return true;
+		}
 
 		/**
 		* INFO: avec PostgreSQL, on s'assure un accès exclusif à la table "jetons"
