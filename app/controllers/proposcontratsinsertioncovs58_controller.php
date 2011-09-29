@@ -122,7 +122,7 @@
 		*
 		*/
 
-		protected function _add_edit( $id = null, $avenant_id ) {
+		protected function _add_edit( $id = null, $avenant_id = null ) {
 			// Retour à la liste en cas d'annulation
 			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
 				$this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index', $id ) );
@@ -269,7 +269,7 @@
 
 				$this->data['Propocontratinsertioncov58']['forme_ci'] = 'S';
 
-				$this->data['Propocontratinsertioncov58']['datedemande'] = Set::classicExtract( $this->data, 'Propocontratinsertioncov58.dd_ci' );
+				$this->data['Propocontratinsertioncov58']['datedemande'] = date( 'Y-m-d' );
 
 				$contratinsertionRaisonCi = Set::classicExtract( $this->data, 'Propocontratinsertioncov58.raison_ci' );
 				if( $contratinsertionRaisonCi == 'S' ) {
