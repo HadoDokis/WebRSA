@@ -114,7 +114,7 @@
                             ),
                             $xhtml->printLink(
                                 'Imprimer la demande APRE',
-                                array( 'controller' => 'gedooos', 'action' => 'apre', $apre[$this->modelClass]['id'] ),
+                                array( 'controller' => 'apres66', 'action' => 'apre', $apre[$this->modelClass]['id'] ),
                                 $buttonEnabledInc,
                                 $permissions->check( 'gedooos', 'apre' )
                             ),
