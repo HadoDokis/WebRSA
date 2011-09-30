@@ -200,7 +200,7 @@
 							'Orientstruct.typeorient_id IN (
 								SELECT t.id
 									FROM typesorients AS t
-									WHERE t.lib_type_orient LIKE \'Emploi%\'
+									WHERE t.id = '.Configure::read( 'Typeorient.emploi_id' ).'
 							)'// FIXME
 						)
 					)

@@ -166,26 +166,6 @@
 			}
 		}
 
-		public function listRadiosOptionsPrincipales( $listeIds ) {
-			$options = $this->find(
-				'list',
-				array (
-					'fields' => array(
-						'Typeorient.id',
-						'Typeorient.lib_type_orient'
-					),
-					'conditions' => array(
-						'Typeorient.parentid' => NULL,
-						'Typeorient.actif' => 'O',
-						'Typeorient.id' => $listeIds
-					),
-					'contain' => false,
-					'order'  => array( 'Typeorient.lib_type_orient ASC' )
-				)
-			);
-			return $options;
-		}
-
 		/**
 		*
 		*/
@@ -264,67 +244,25 @@
 		*/
 		
 		public function isProOrientation( $typeorient_id ) {
-			$typeorient = $this->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Typeorient.id' => $typeorient_id,
-						'Typeorient.lib_type_orient LIKE' => 'Emploi%'
-					),
-					'contain' => false
-				)
-			);
-			
-			return ( !empty( $typeorient ) );
-		}
 
-		public function listOptionsUnderParent() {
-			$typesorients = $this->find(
-				'all',
-				array (
-					'fields' => array(
-						'Typeorient.id',
-						'Typeorient.lib_type_orient',
-						'Typeorient.parentid'
-					),
-					'conditions' => array(
-						'Typeorient.parentid NOT' => NULL,
-						'Typeorient.actif' => 'O'
-					),
-					'contain' => false,
-					'order'  => array( 'Typeorient.lib_type_orient ASC' )
-				)
-			);
-			$options = array();
-			foreach( $typesorients as $typeorient ) {
-				$options[$typeorient['Typeorient']['parentid']][$typeorient['Typeorient']['id']] = $typeorient['Typeorient']['lib_type_orient'];
+			if( Configure::read( 'Cg.departement' ) == 58 ){
+				$return =  ( $typeorient_id === Configure::read( 'Typeorient.emploi_id' ) );
 			}
-			return $options;
-		}
-
-		public function list1Options() {
-			$typesorients = $this->find(
-				'all',
-				array (
-					'fields' => array(
-						'Typeorient.id',
-						'Typeorient.lib_type_orient',
-						'Typeorient.parentid'
-					),
-					'conditions' => array(
-						'Typeorient.parentid NOT' => NULL,
-						'Typeorient.actif' => 'O'
-					),
-					'contain' => false,
-					'order'  => array( 'Typeorient.lib_type_orient ASC' )
-				)
-			);
-			$options = array();
-			foreach( $typesorients as $typeorient ) {
-				$options[$typeorient['Typeorient']['parentid'].'_'.$typeorient['Typeorient']['id']] = $typeorient['Typeorient']['lib_type_orient'];
+			else{
+				$typeorient = $this->find(
+					'first',
+					array(
+						'conditions' => array(
+							'Typeorient.id' => $typeorient_id,
+							'Typeorient.lib_type_orient LIKE' => 'Emploi%'
+						),
+						'contain' => false
+					)
+				);
+				$return = ( !empty( $typeorient ) );
 			}
-			return $options;
+			return $return;
 		}
-
+		
 	}
 ?>
