@@ -248,6 +248,19 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Bilanparcours66' => array(
+				'className' => 'Bilanparcours66',
+				'foreignKey' => 'contratinsertion_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 			'Fichiermodule' => array(
 				'className' => 'Fichiermodule',
 				'foreignKey' => false,
@@ -442,6 +455,63 @@
 				)
 			)
 		);
+
+		/**
+		* Recalcul des rangs des contrats pour une personne donnée ou pour
+		* l'ensemble des personnes.
+		*/
+
+		protected function _updateRangsContrats( $personne_id = null ) {
+			$condition = ( is_null( $personne_id ) ? "" : "contratsinsertion.personne_id = {$personne_id}" );
+
+			$sql = "UPDATE contratsinsertion
+						SET rg_ci = NULL".( !empty( $condition ) ? " WHERE {$condition}" : "" ).";";
+			$success = ( $this->query( $sql ) !== false );
+
+			$sql = "UPDATE contratsinsertion
+						SET rg_ci = (
+							SELECT ( COUNT(contratsinsertionpcd.id) + 1 )
+								FROM contratsinsertion AS contratsinsertionpcd
+								WHERE contratsinsertionpcd.personne_id = contratsinsertion.personne_id
+									AND contratsinsertionpcd.id <> contratsinsertion.id
+									AND contratsinsertionpcd.decision_ci = 'V'
+									AND contratsinsertionpcd.dd_ci IS NOT NULL
+									AND contratsinsertionpcd.dd_ci < contratsinsertion.dd_ci
+									AND (
+										contratsinsertion.positioncer IS NULL
+										OR contratsinsertion.positioncer <> 'annule'
+									)
+						)
+						WHERE
+							contratsinsertion.dd_ci IS NOT NULL
+							".( !empty( $condition ) ? " AND {$condition}" : "" )."
+							AND contratsinsertion.decision_ci = 'V'
+							AND (
+								contratsinsertion.positioncer IS NULL
+								OR contratsinsertion.positioncer <> 'annule'
+							);";
+
+			$success = ( $this->query( $sql ) !== false ) && $success;
+
+			return $success;
+		}
+
+		/**
+		* Recalcul des rangs des contrats pour une personne donnée.
+		* afterSave, afterDelete, valider, annuler
+		*/
+
+		public function updateRangsContratsPersonne( $personne_id ) {
+			return $this->_updateRangsContrats( $personne_id  );
+		}
+
+		/**
+		* Recalcul des rangs des contrats pour l'ensemble des personnes.
+		*/
+
+		public function updateRangsContrats() {
+			return $this->_updateRangsContrats();
+		}
 
 		/**
 		* BeforeSave
@@ -696,6 +766,16 @@
 			);
 
 			return $autreNumdemrsa[0][0]['count'];
+		}
+
+		/**
+		* Vérifie l'intervalle, par-rapport à la date de fin d'un CER, en deçà duquel
+		* un CER sera positionné « En cours:Bilan à réaliser » grâce au shell
+		* positioncer66.
+		*/
+
+		public function checkConfigUpdateEncoursbilanCg66() {
+			return $this->_checkSqlIntervalSyntax( Configure::read( 'Contratinsertion.Cg66.updateEncoursbilan' ) );
 		}
 	}
 ?>

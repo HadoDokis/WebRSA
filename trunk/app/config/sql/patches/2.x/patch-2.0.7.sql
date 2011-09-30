@@ -117,6 +117,18 @@ SELECT public.alter_enumtype ( 'TYPE_POSITIONBILAN', ARRAY['eplaudit', 'eplparc'
 SELECT public.alter_enumtype ( 'TYPE_ORIENT', ARRAY['social','prepro','pro'] );
 SELECT public.alter_enumtype ( 'TYPE_REORIENTATION', ARRAY['SP', 'PS', 'PP'] );
 
+
+-- *****************************************************************************
+-- 20110705 : mise en place de la notion d'avenant pour les CER du cg58
+-- *****************************************************************************
+SELECT add_missing_table_field ('public', 'contratsinsertion', 'avenant_id', 'INTEGER');
+SELECT add_missing_constraint ('public', 'contratsinsertion', 'contratsinsertion_avenant_id_fkey', 'contratsinsertion', 'avenant_id');
+ALTER TABLE contratsinsertion ALTER COLUMN avenant_id SET DEFAULT NULL;
+
+SELECT add_missing_table_field ('public', 'proposcontratsinsertioncovs58', 'avenant_id', 'INTEGER');
+SELECT add_missing_constraint ('public', 'proposcontratsinsertioncovs58', 'proposcontratsinsertioncovs58_avenant_id_fkey', 'contratsinsertion', 'avenant_id');
+ALTER TABLE proposcontratsinsertioncovs58 ALTER COLUMN avenant_id SET DEFAULT NULL;
+
 -- ----------------------------------------------------------------------------
 -- 06/09/2011:
 -- ----------------------------------------------------------------------------
@@ -137,9 +149,6 @@ UPDATE actionscandidats_personnes SET naturemobile = 'dept' WHERE naturemobile =
 UPDATE actionscandidats_personnes SET naturemobile = 'horsdept' WHERE naturemobile = '2503';
 UPDATE actionscandidats_personnes SET naturemobile = null WHERE naturemobile = '2504';
 ALTER TABLE actionscandidats_personnes ALTER COLUMN naturemobile TYPE TYPE_FICHELIAISONNATUREMOBILE USING CAST(naturemobile AS TYPE_FICHELIAISONNATUREMOBILE);
-
-
-
 
 SELECT add_missing_table_field ('public', 'typesorients', 'actif', 'type_no');
 ALTER TABLE typesorients ALTER COLUMN actif SET DEFAULT 'O';
@@ -164,17 +173,30 @@ CREATE TABLE objetscontratsprecedents (
 	objetcerprec					TYPE_OBJETCERPREC DEFAULT NULL
 );
 
-
 -- *****************************************************************************
--- 20110705 : mise en place de la notion d'avenant pour les CER du cg58
+-- 20110919 -- Modification: on enregistre plus un enum pour savoir le type de
+-- l'orientation mais l'id du type principal d'orientation (SOCIAL ou Emploi)
 -- *****************************************************************************
-SELECT add_missing_table_field ('public', 'contratsinsertion', 'avenant_id', 'INTEGER');
-SELECT add_missing_constraint ('public', 'contratsinsertion', 'contratsinsertion_avenant_id_fkey', 'contratsinsertion', 'avenant_id');
-ALTER TABLE contratsinsertion ALTER COLUMN avenant_id SET DEFAULT NULL;
+SELECT add_missing_table_field ('public', 'bilansparcours66', 'accompagnement', 'TEXT');
+ALTER TABLE bilansparcours66 ALTER COLUMN accompagnement TYPE TEXT;
+ALTER TABLE bilansparcours66 DROP COLUMN accompagnement;
+DROP TYPE IF EXISTS type_accompagnement;
 
-SELECT add_missing_table_field ('public', 'proposcontratsinsertioncovs58', 'avenant_id', 'INTEGER');
-SELECT add_missing_constraint ('public', 'proposcontratsinsertioncovs58', 'proposcontratsinsertioncovs58_avenant_id_fkey', 'contratsinsertion', 'avenant_id');
-ALTER TABLE proposcontratsinsertioncovs58 ALTER COLUMN avenant_id SET DEFAULT NULL;
+SELECT add_missing_table_field ('public', 'bilansparcours66', 'typeorientprincipale_id', 'INTEGER');
+SELECT add_missing_constraint ('public', 'bilansparcours66', 'bilansparcours66_typeorientprincipale_id_fkey', 'typesorients', 'typeorientprincipale_id');
+SELECT add_missing_table_field ('public', 'bilansparcours66', 'nvtypeorient_id', 'INTEGER');
+SELECT add_missing_constraint ('public', 'bilansparcours66', 'bilansparcours66_nvtypeorient_id_fkey', 'typesorients', 'nvtypeorient_id');
+SELECT add_missing_table_field ('public', 'bilansparcours66', 'nvstructurereferente_id', 'INTEGER');
+SELECT add_missing_constraint ('public', 'bilansparcours66', 'bilansparcours66_nvstructurereferente_id_fkey', 'structuresreferentes', 'nvstructurereferente_id');
+
+SELECT add_missing_table_field ('public', 'bilansparcours66', 'changementref', 'TYPE_NO');
+
+SELECT add_missing_table_field ('public', 'saisinesbilansparcourseps66', 'typeorientprincipale_id', 'INTEGER');
+SELECT add_missing_constraint ('public', 'saisinesbilansparcourseps66', 'saisinesbilansparcourseps66_typeorientprincipale_id_fkey', 'typesorients', 'typeorientprincipale_id');
+
+SELECT add_missing_table_field ('public', 'decisionssaisinesbilansparcourseps66', 'typeorientprincipale_id', 'INTEGER');
+SELECT add_missing_constraint ('public', 'decisionssaisinesbilansparcourseps66', 'decisionssaisinesbilansparcourseps66_typeorientprincipale_id_fkey', 'typesorients', 'typeorientprincipale_id');
+
 
 -- *****************************************************************************
 -- 20110928 : ajout de la date d'impression pour les demandes d'APRE

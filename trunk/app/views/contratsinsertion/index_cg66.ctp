@@ -20,7 +20,7 @@
             <?php endif;?>
     <?php endif;?>
 	<?php
-        $block = false;
+        $block = empty( $orientstruct );
         $options['forme_ci'] = $forme_ci;
         $options['decision_ci'] = $decision_ci;
 

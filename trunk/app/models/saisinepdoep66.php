@@ -41,21 +41,21 @@
 			)
 		);
 
-		public $hasMany = array(
-			'Decisionsaisinepdoep66' => array(
-				'className' => 'Decisionsaisinepdoep66',
-				'foreignKey' => 'saisinepdoep66_id',
-				'dependent' => true,
-				'conditions' => '',
-				'fields' => '',
-				'order' => '',
-				'limit' => '',
-				'offset' => '',
-				'exclusive' => '',
-				'finderQuery' => '',
-				'counterQuery' => ''
-			),
-		);
+// 		public $hasMany = array(
+// 			'Decisionsaisinepdoep66' => array(
+// 				'className' => 'Decisionsaisinepdoep66',
+// 				'foreignKey' => 'saisinepdoep66_id',
+// 				'dependent' => true,
+// 				'conditions' => '',
+// 				'fields' => '',
+// 				'order' => '',
+// 				'limit' => '',
+// 				'offset' => '',
+// 				'exclusive' => '',
+// 				'finderQuery' => '',
+// 				'counterQuery' => ''
+// 			),
+// 		);
 
 		/**
 		* TODO: comment finaliser l'orientation précédente ?
@@ -257,6 +257,9 @@
 						)
 					),
 					'Passagecommissionep' => array(
+						'conditions' => array(
+							'Passagecommissionep.commissionep_id' => $commissionep_id
+						),
 						'Decisionsaisinepdoep66'=>array(
 							'order' => array(
 								'Decisionsaisinepdoep66.etape DESC'
@@ -297,7 +300,7 @@
 				return true;
 			}
 			else {
-				$success = $this->Decisionsaisinepdoep66->saveAll( $themeData, array( 'atomic' => false ) );
+				$success = $this->Dossierep->Passagecommissionep->Decisionsaisinepdoep66->saveAll( $themeData, array( 'atomic' => false ) );
 
 				$this->Dossierep->Passagecommissionep->updateAll(
 					array( 'Passagecommissionep.etatdossierep' => '\'decision'.$niveauDecision.'\'' ),
@@ -376,7 +379,7 @@
 		*/
 
 		public function saveDecisionUnique( $data, $niveauDecision ) {
-			$success = $this->Decisionsaisinepdoep66->save( $data, array( 'atomic' => false ) );
+			$success = $this->Dossierep->Passagecommissionep->Decisionsaisinepdoep66->save( $data, array( 'atomic' => false ) );
 
 			$this->Dossierep->Passagecommissionep->updateAll(
 				array( 'Passagecommissionep.etatdossierep' => '\'decision'.$niveauDecision.'\'' ),

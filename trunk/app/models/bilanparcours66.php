@@ -20,7 +20,8 @@
 			'Formattable' => array(
 				'suffix' => array(
 					'structurereferente_id',
-					'referent_id'
+					'referent_id',
+					'nvstructurereferente_id'
 				)
 			),
 			'Enumerable' => array(
@@ -89,6 +90,82 @@
 				'notEmptyIf' => array(
 					'rule' => array( 'notEmptyIf', 'bilanparcoursinsertion', true, array( '0' ) ),
 					'message' => 'Veuillez saisir une information',
+				)
+			),
+			'sansep_typeorientprincipale_id' => array(
+				array(
+					'rule' => array( 'notEmptyIf', 'proposition', true, array( 'traitement' ) ),
+					'message' => 'Champ obligatoire',
+				)
+			),
+			'avecep_typeorientprincipale_id' => array(
+				array(
+					'rule' => array( 'notEmptyIf', 'typeformulaire', true, array( 'pe' ) ),
+					'message' => 'Champ obligatoire',
+				),
+				array(
+					'rule' => array( 'notEmptyIf', 'proposition', true, array( 'parcours' ) ),
+					'message' => 'Champ obligatoire',
+				)
+			),
+			'nvtypeorient_id' => array(
+				array(
+					'rule' => array( 'notEmptyIf', 'typeformulaire', true, array( 'pe' ) ),
+					'message' => 'Champ obligatoire',
+				),
+				array(
+					'rule' => array( 'notEmptyIf', 'proposition', true, array( 'traitement', 'parcours' ) ),
+					'message' => 'Champ obligatoire',
+				)
+			),
+			'nvstructurereferente_id' => array(
+				array(
+					'rule' => array( 'notEmptyIf', 'typeformulaire', true, array( 'pe' ) ),
+					'message' => 'Champ obligatoire',
+				),
+				array(
+					'rule' => array( 'notEmptyIf', 'proposition', true, array( 'traitement', 'parcours' ) ),
+					'message' => 'Champ obligatoire',
+				)
+			),
+			'choixparcours' => array(
+				array(
+					'rule' => array( 'notEmptyIf', 'typeformulaire', true, array( 'pe' ) ),
+					'message' => 'Champ obligatoire',
+				),
+				array(
+					'rule' => array( 'notEmptyIf', 'proposition', true, array( 'parcours' ) ),
+					'message' => 'Champ obligatoire',
+				)
+			),
+			'duree_engag' => array(
+				array(
+					'rule' => array( 'notEmptyIf', 'changementrefsansep', true, array( 'N' ) ),
+					'message' => 'Champ obligatoire',
+				),
+				array(
+					'rule' => array( 'notEmptyIf', 'changementrefavecep', true, array( 'N' ) ),
+					'message' => 'Champ obligatoire',
+				)
+			),
+			'ddreconductoncontrat' => array(
+				array(
+					'rule' => array( 'notEmptyIf', 'changementrefsansep', true, array( 'N' ) ),
+					'message' => 'Champ obligatoire',
+				),
+				array(
+					'rule' => array( 'notEmptyIf', 'changementrefavecep', true, array( 'N' ) ),
+					'message' => 'Champ obligatoire',
+				)
+			),
+			'dfreconductoncontrat' => array(
+				array(
+					'rule' => array( 'notEmptyIf', 'changementrefsansep', true, array( 'N' ) ),
+					'message' => 'Champ obligatoire',
+				),
+				array(
+					'rule' => array( 'notEmptyIf', 'changementrefavecep', true, array( 'N' ) ),
+					'message' => 'Champ obligatoire',
 				)
 			)
 		);
@@ -189,8 +266,15 @@
 			return $return;
 		}
 
+		/**
+		*
+		*/
 
-		protected function _calculPositionBilan( $data ){
+		protected function _calculPositionBilan( $data ) {
+			// Si on nous donne la position du bilan, on ne la recalcule pas
+			if( isset( $data[$this->alias]['positionbilan'] ) && !empty( $data[$this->alias]['positionbilan'] ) ) {
+				return $data[$this->alias]['positionbilan'];
+			}
 
 			$traitement = Set::classicExtract( $data, 'Bilanparcours66.proposition' );
 // debug($data);
@@ -220,6 +304,113 @@
 		}
 
 		/**
+		* Récupère une liste des ids des bilans de parcours à partir d'une liste d'ids
+		* d'entrées de passages en commissions EP.
+		*/
+
+		protected function _bilansparcours66IdsDepuisPassagescommissionsepsIds( $modeleThematique, $passagescommissionseps_ids ) {
+			return $this->{$modeleThematique}->find(
+				'list',
+				array(
+					'fields' => array( "{$modeleThematique}.id", "{$modeleThematique}.bilanparcours66_id" ),
+					'conditions' => array(
+						"{$modeleThematique}.dossierep_id IN ("
+							.$this->Dossierep->sq(
+								array(
+									'alias' => 'dossierseps',
+									'fields' => array( 'dossierseps.id' ),
+									'conditions' => array(
+										'dossierseps.id IN ('
+											.$this->Dossierep->Passagecommissionep->sq(
+												array(
+													'alias' => 'passagescommissionseps',
+													'fields' => array( 'passagescommissionseps.dossierep_id' ),
+													'conditions' => array(
+														'passagescommissionseps.id' => $passagescommissionseps_ids
+													),
+													'contain' => false
+												)
+											)
+										.')'
+									),
+									'contain' => false
+								)
+							)
+						.')'
+					),
+					'contain' => false
+				)
+			);
+		}
+
+		/**
+		* Mise à jour de la position du bilan de parcours à partir de la cohorte de
+		* décisions (niveau EP ou niveau CG) des EPs.
+		*/
+
+		public function updatePositionBilanDecisionsEp( $modeleThematique, $datas, $niveauDecision, $passagescommissionseps_ids ) {
+			$success = true;
+
+			// Niveau EP
+			if( $niveauDecision == 'ep' ) {
+				$bilansparcours66_ids = $this->_bilansparcours66IdsDepuisPassagescommissionsepsIds( $modeleThematique, $passagescommissionseps_ids );
+
+				$position = ( ( $modeleThematique == 'Defautinsertionep66' ) ? 'attcga' : 'attct' );
+				$success = $this->updateAll(
+					array( 'Bilanparcours66.positionbilan' => "'{$position}'" ),
+					array( '"Bilanparcours66"."id"' => array_values( $bilansparcours66_ids ) )
+				) && $success;
+			}
+			// Niveau CG
+			else {
+				$passagescommissionseps_ids_annule = array();
+				$passagescommissionseps_ids_reporte = array();
+				$passagescommissionseps_ids_autre = array();
+
+				$modeleDecisionName = 'Decision'.Inflector::underscore( $modeleThematique );
+
+				foreach( $datas as $themeTmpData ) {
+					switch( $themeTmpData[$modeleDecisionName]['decision'] ) {
+						case 'annule':
+							$passagescommissionseps_ids_annule[] = $themeTmpData[$modeleDecisionName]['passagecommissionep_id'];
+							break;
+						case 'reporte':
+							$passagescommissionseps_ids_reporte[] = $themeTmpData[$modeleDecisionName]['passagecommissionep_id'];
+							break;
+						default:
+							$passagescommissionseps_ids_autre[] = $themeTmpData[$modeleDecisionName]['passagecommissionep_id'];
+					}
+				}
+
+				if( !empty( $passagescommissionseps_ids_annule ) ) {
+					$bilansparcours66_ids = $this->_bilansparcours66IdsDepuisPassagescommissionsepsIds( $modeleThematique, $passagescommissionseps_ids_annule );
+					$success = $this->updateAll(
+						array( 'Bilanparcours66.positionbilan' => '\'annule\'' ),
+						array( '"Bilanparcours66"."id"' => array_values( $bilansparcours66_ids ) )
+					) && $success;
+				}
+
+				if( !empty( $passagescommissionseps_ids_reporte ) ) {
+					$bilansparcours66_ids = $this->_bilansparcours66IdsDepuisPassagescommissionsepsIds( $modeleThematique, $passagescommissionseps_ids_reporte );
+					$success = $this->updateAll(
+						array( 'Bilanparcours66.positionbilan' => '\'ajourne\'' ),
+						array( '"Bilanparcours66"."id"' => array_values( $bilansparcours66_ids ) )
+					) && $success;
+				}
+
+				if( !empty( $passagescommissionseps_ids_autre ) ) {
+					$bilansparcours66_ids = $this->_bilansparcours66IdsDepuisPassagescommissionsepsIds( $modeleThematique, $passagescommissionseps_ids_autre );
+					$success = $this->updateAll(
+						array( 'Bilanparcours66.positionbilan' => '\'traite\'' ),
+						array( '"Bilanparcours66"."id"' => array_values( $bilansparcours66_ids ) )
+					) && $success;
+				}
+			}
+
+			return $success;
+		}
+
+		/**
 		* Sauvegarde du bilan de parcours d'un allocataire.
 		*
 		* Le bilan de parcours entraîne:
@@ -238,7 +429,9 @@
 				unset( $data['Pe']['Bilanparcours66']['id'] );
 			}
 			if ( isset( $data['Pe']['Bilanparcours66'] ) && !empty( $data['Pe']['Bilanparcours66'] ) ) {
-				$data = $data['Pe'];
+				$datape = $data['Pe'];
+				unset($data['Pe']);
+				$data = Set::merge( $data, $datape );
 				if ( isset( $id ) ) {
 					$data['Bilanparcours66']['id'] = $id;
 				}
@@ -273,6 +466,8 @@
 
 		public function maintien( $data ) {
 			$data[$this->alias]['saisineepparcours'] = ( empty( $data[$this->alias]['maintienorientation'] ) ? '1' : '0' );
+			$data[$this->alias]['positionbilan'] = 'traite';
+
 			$this->create( $data );
 			if( $success = $this->validates() ) {
 				// Recherche de l'ancienne orientation
@@ -298,62 +493,45 @@
 						array(
 							'conditions' => array(
 								'Contratinsertion.personne_id' => $vxOrientstruct['Orientstruct']['personne_id'],
-								'Contratinsertion.structurereferente_id' => $vxOrientstruct['Orientstruct']['structurereferente_id'],
-								//'Contratinsertion.df_ci >=' => date( 'Y-m-d' )
+								'Contratinsertion.structurereferente_id' => $vxOrientstruct['Orientstruct']['structurereferente_id']
 							),
 							'contain' => false
 						)
 					);
 
 					if( empty( $vxContratinsertion ) ) {
-						$this->invalidate( 'changementrefsansep', 'Cette personne ne possède aucune contrat d\'insertion validé dans une structure référente liée à celle de sa dernière orientation validée.' );
+						$this->invalidate( 'changementref', 'Cette personne ne possède aucune contrat d\'insertion validé dans une structure référente liée à celle de sa dernière orientation validée.' );
 						return false;
 					}
 				}
 
-				// Sauvegarde de la nouvelle orientation
-				$orientstruct = array(
-					'Orientstruct' => array(
-						'personne_id' => $vxOrientstruct['Orientstruct']['personne_id'],
-						'typeorient_id' => $vxOrientstruct['Orientstruct']['typeorient_id'],
-						'structurereferente_id' => $vxOrientstruct['Orientstruct']['structurereferente_id'],
-						'referent_id' => $vxOrientstruct['Orientstruct']['referent_id'],
-						'date_propo' => date( 'Y-m-d' ),
-						'date_valid' => date( 'Y-m-d' ),
-						'statut_orient' => 'Orienté',
-						'user_id' => $vxOrientstruct['Orientstruct']['user_id']
-					)
-				);
-				$this->Orientstruct->create( $orientstruct );
-				$success = $this->Orientstruct->save() && $success;
-
-				if( !empty( $this->validationErrors ) ) {
-					debug( $this->validationErrors );
+				if ( $data['Bilanparcours66']['changementrefsansep'] == 'O' ) {
+					list( $typeorient_id, $structurereferente_id ) = explode( '_', $data['Bilanparcours66']['nvstructurereferente_id'] );
+					// Sauvegarde de la nouvelle orientation
+					$orientstruct = array(
+						'Orientstruct' => array(
+							'personne_id' => $vxOrientstruct['Orientstruct']['personne_id'],
+							'typeorient_id' => $typeorient_id,
+							'structurereferente_id' => $structurereferente_id,
+							'date_propo' => date( 'Y-m-d' ),
+							'date_valid' => date( 'Y-m-d' ),
+							'statut_orient' => 'Orienté',
+							'user_id' => $data['Bilanparcours66']['nvuser_id']
+						)
+					);
+					$this->Orientstruct->create( $orientstruct );
+					$success = $this->Orientstruct->save() && $success;
 				}
-
-				if( !empty( $vxContratinsertion ) ) {
-					// Suppression des règles de validation pour la copie du contrat
-					$validateContratinsertion = $this->Contratinsertion->validate;
-					$this->Contratinsertion->validate = array();
-
-					// Clôture de l'ancien contrat à la date d'aujourd'hui
-					$vxContratinsertion['Contratinsertion']['df_ci'] = date( 'Y-m-d' );
-					$this->Contratinsertion->create( $vxContratinsertion );
-					$success = $this->Contratinsertion->save() && $success;
-
-					// Création du nouveau contrat avec les dates préconisées
+				else {
 					$contratinsertion = $vxContratinsertion;
 					unset( $contratinsertion['Contratinsertion']['id'] );
-					$contratinsertion['Contratinsertion']['dd_ci'] = $data[$this->alias]['ddreconductoncontrat'];
-					$contratinsertion['Contratinsertion']['df_ci'] = $data[$this->alias]['dfreconductoncontrat'];
-
-					/// FIXME: recherche de l'id du type de contrat "Renouvellement" (changer par un enum)
+					$contratinsertion['Contratinsertion']['dd_ci'] = $data['Bilanparcours66']['ddreconductoncontrat'];
+					$contratinsertion['Contratinsertion']['df_ci'] = $data['Bilanparcours66']['dfreconductoncontrat'];
+					$contratinsertion['Contratinsertion']['duree_engag'] = $data['Bilanparcours66']['duree_engag'];
+					
 					$idRenouvellement = $this->Contratinsertion->Typocontrat->field( 'Typocontrat.id', array( 'Typocontrat.lib_typo' => 'Renouvellement' ) );
-
-					// Incrémentation rang du contrat et du type de contrat
-					$contratinsertion['Contratinsertion']['rg_ci'] = ( $contratinsertion['Contratinsertion']['rg_ci'] + 1 );
 					$contratinsertion['Contratinsertion']['typocontrat_id'] = $idRenouvellement;
-					$contratinsertion['Contratinsertion']['num_contrat'] = 'REN';
+					$contratinsertion['Contratinsertion']['rg_ci'] = ( $contratinsertion['Contratinsertion']['rg_ci'] + 1 );
 
 					// La date de validation est à null afin de pouvoir modifier le contrat
 					$contratinsertion['Contratinsertion']['datevalidation_ci'] = null;
@@ -363,49 +541,35 @@
 					unset($contratinsertion['Contratinsertion']['decision_ci']);
 					unset($contratinsertion['Contratinsertion']['datevalidation_ci']);
 
-					// Sauvegarde du nouveau contrat d'insertion
+					$fields = array( 'actions_prev', 'aut_expr_prof', 'emp_trouv', 'sect_acti_emp', 'emp_occupe', 'duree_hebdo_emp', 'nat_cont_trav', 'duree_cdd', 'niveausalaire' ); // FIXME: une variable du modèle
+					foreach( $fields as $field ) {
+						unset( $contratinsertion['Contratinsertion'][$field] );
+					}
+
 					$this->Contratinsertion->create( $contratinsertion );
 					$success = $this->Contratinsertion->save() && $success;
 
-					// Remise des règles de validation pour la copie du contrat
-					$this->Contratinsertion->validate = $validateContratinsertion;
-
-
-					/*// Recherche du référent -> FIXME: une fonction ?
-					$referent_id = $vxOrientstruct['Orientstruct']['referent_id'];
-
-					// Recherche référent lié au CER
-					if( empty( $referent_id ) ) {
-						$referent_id = $contratinsertion['Contratinsertion']['referent_id'];
-					}
-
-					// Recherche du référent lié au parcours
-					if( empty( $referent_id ) ) {
-						$personneReferent = $this->Contratinsertion->Personne->PersonneReferent->find(
-							'first',
-							array(
-								'conditions' => array(
-									'PersonneReferent.personne_id' => $vxOrientstruct['Orientstruct']['personne_id']
-								)
-							)
-						);
-						if( !empty( $personneReferent ) ) {
-							$referent_id = $personneReferent['PersonneReferent']['referent_id'];
-						}
-					}
-
-					// Sauvegarde du bilan
-					$data[$this->alias]['referent_id'] = $referent_id;//FIXME: si changement  de référent*/
-
 					$data[$this->alias]['contratinsertion_id'] = $vxContratinsertion['Contratinsertion']['id'];
 				}
+
+				if( !empty( $this->validationErrors ) ) {
+					debug( $this->validationErrors );
+				}
+
+				$data['Bilanparcours66']['typeorientprincipale_id'] = $data['Bilanparcours66']['sansep_typeorientprincipale_id'];
+				$data['Bilanparcours66']['changementref'] = $data['Bilanparcours66']['changementrefsansep'];
 
 				$this->create( $data );
 				$success = $this->save() && $success;
 			}
 			else {
-				debug( $this->validationErrors );
-				debug( $data );
+				// S'il manque l'information "Bilan du parcours d'insertion", on supprime
+				// l'erreur concernant les "Motifs de la saisine de l'équipe pluridisciplinaire"
+				// car les caractères obligatoires de ces champs cont mutuellement exclusifs
+				// et que les motifs n'ont normalement aucun sens lorsqu'on maintient
+				if( isset( $this->validationErrors['bilanparcoursinsertion'] ) ) {
+					unset( $this->validationErrors['motifep'] );
+				}
 			}
 
 			return $success;
@@ -430,6 +594,7 @@
 			$success = true;
 			if( isset($data['Bilanparcours66']['proposition']) && $data['Bilanparcours66']['proposition'] == 'parcours' ) {
 				$data[$this->alias]['saisineepparcours'] = ( empty( $data[$this->alias]['maintienorientation'] ) ? '1' : '0' );
+
 				$this->create( $data );
 				if( $success = $this->validates() ) {
 					$vxOrientstruct = $this->Orientstruct->find(
@@ -459,8 +624,8 @@
 							)
 						);
 
-						if( empty( $vxContratinsertion ) && ( $data[$this->alias]['choixparcours'] != 'reorientation' ) ) {
-								$this->invalidate( 'choixparcours', 'Cette personne ne possède aucun CER validé dans une structure référente liée à celle de sa dernière orientation validée.' );
+						if( empty( $vxContratinsertion ) && ( $data['Bilanparcours66']['changementrefavecep'] == 'N' ) ) {
+							$this->invalidate( 'changementref', 'Cette personne ne possède aucun CER validé dans une structure référente liée à celle de sa dernière orientation validée.' );
 							return false;
 						}
 
@@ -472,11 +637,15 @@
 						$data[$this->alias]['structurereferente_id'] = $vxOrientstruct['Orientstruct']['structurereferente_id'];
 					}
 
+					$data['Bilanparcours66']['typeorientprincipale_id'] = $data['Bilanparcours66']['avecep_typeorientprincipale_id'];
+					$data['Bilanparcours66']['changementref'] = $data['Bilanparcours66']['changementrefavecep'];
+
 					$this->create( $data );
 					$success = $this->save() && $success;
 
 					if( !empty( $this->validationErrors ) ) {
-						debug( $this->validationErrors );
+						return false;
+// 						debug( $this->validationErrors );
 					}
 
 					// Sauvegarde du dossier d'EP
@@ -492,12 +661,16 @@
 					// Sauvegarde de la saisine
 					$data['Saisinebilanparcoursep66']['bilanparcours66_id'] = $this->id;
 					$data['Saisinebilanparcoursep66']['dossierep_id'] = $this->Saisinebilanparcoursep66->Dossierep->id;
-					$data['Saisinebilanparcoursep66']['choixparcours'] = $data['Bilanparcours66']['choixparcours'];
-					if ( isset( $data['Bilanparcours66']['maintienorientparcours'] ) ) {
-						$data['Saisinebilanparcoursep66']['maintienorientparcours'] = $data['Bilanparcours66']['maintienorientparcours'];
+
+					$data['Saisinebilanparcoursep66']['typeorientprincipale_id'] = $data['Bilanparcours66']['typeorientprincipale_id'];
+					$data['Saisinebilanparcoursep66']['typeorient_id'] = $data['Bilanparcours66']['nvtypeorient_id'];
+					$data['Saisinebilanparcoursep66']['structurereferente_id'] = $data['Bilanparcours66']['nvstructurereferente_id'];
+
+					if ( isset( $data['Bilanparcours66']['choixparcours'] ) ) {
+						$data['Saisinebilanparcoursep66']['choixparcours'] = $data['Bilanparcours66']['choixparcours'];
 					}
-					if ( isset( $data['Bilanparcours66']['changementrefparcours'] ) ) {
-						$data['Saisinebilanparcoursep66']['changementrefparcours'] = $data['Bilanparcours66']['changementrefparcours'];
+					if ( isset( $data['Bilanparcours66']['changementrefavecep'] ) ) {
+						$data['Saisinebilanparcoursep66']['changementrefparcours'] = $data['Bilanparcours66']['changementref'];
 					}
 					if ( isset( $data['Bilanparcours66']['reorientation'] ) ) {
 						$data['Saisinebilanparcoursep66']['reorientation'] = $data['Bilanparcours66']['reorientation'];
@@ -669,6 +842,17 @@
 				$this->create( $data );
 				if( $success = $this->validates() ) {
 					$success = $this->save() && $success;
+
+					// Avant de sauvegarder le dossier d'EP, on va rechercher
+					// la radiation PE qui nous a conduit ici (si nécessaire)
+					$historiqueetatpe_id = null;
+					if( $data['Bilanparcours66']['examenauditionpe'] == 'radiationpe' ) {
+						$queryDataPersonne = $this->Defautinsertionep66->qdRadies( array(), array(), array() );
+						$queryDataPersonne['fields'] = array( 'Historiqueetatpe.id' );
+						$queryDataPersonne['conditions']['Personne.id'] = $data['Bilanparcours66']['personne_id'];
+						$historiqueetatpe = $this->Defautinsertionep66->Dossierep->Personne->find( 'first', $queryDataPersonne );
+						$historiqueetatpe_id = $historiqueetatpe['Historiqueetatpe']['id'];
+					}
 					
 					$dossierep = array(
 						'Dossierep' => array(
@@ -684,25 +868,17 @@
 							'dossierep_id' => $this->Defautinsertionep66->Dossierep->id,
 							'orientstruct_id' => $data['Bilanparcours66']['orientstruct_id'],
 							'bilanparcours66_id' => $this->id,
-							'origine' => $data['Bilanparcours66']['examenauditionpe']
+							'origine' => $data['Bilanparcours66']['examenauditionpe'],
+							'historiqueetatpe_id' => $historiqueetatpe_id
 						)
 					);
-					
-					if( $data['Bilanparcours66']['examenauditionpe'] == 'radiationpe' ) {
-						$queryDataPersonne = $this->Defautinsertionep66->qdRadies( array(), array(), array() );
-						$queryDataPersonne['fields'][] = 'Historiqueetatpe.id';
-						$queryDataPersonne['conditions']['Personne.id'] = $data['Bilanparcours66']['personne_id'];
-						$historiqueetatpe = $this->Defautinsertionep66->Dossierep->Personne->find( 'first', $queryDataPersonne );
-						$defautinsertionep66['Defautinsertionep66']['historiqueetatpe_id'] = $historiqueetatpe['Historiqueetatpe']['id'];
-					}
-					
+				
 					$this->Defautinsertionep66->create( $defautinsertionep66 );
 					$success = $this->Defautinsertionep66->save() && $success;
 				}
 			}
 			else {
 				$success = $this->save($data) && $success;
-				debug($this->validationErrors);
 			}
 			
 			return $success;

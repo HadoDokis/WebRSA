@@ -1161,5 +1161,15 @@
 
 			return $return;
 		}
+
+		/**
+		* Vérifie le délai (intervalle) accordé pour pour la détection des DO 19
+		* pour le thème "non respect et sanctions du CG 93" grâce au shell
+		* automatisationseps.
+		*/
+
+		public function checkConfigUpdateIntervalleCerDo19Cg93() {
+			return $this->_checkSqlIntervalSyntax( Configure::read( 'Nonrespectsanctionep93.intervalleCerDo19' ) );
+		}
 	}
 ?>

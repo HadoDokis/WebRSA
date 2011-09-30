@@ -271,10 +271,14 @@
 	*/
 	Configure::write( 'Nonrespectsanctionep93.dureeSursis', 31 );
 
-    /**
-    * Durée du délai (en mois) accordé pour pour la détection des DO 19
-    * pour le thème "non respect et sanctions du CG 93"
-    */
+	/**
+	* Durée du délai (intervalle) accordé pour pour la détection des DO 19
+	* pour le thème "non respect et sanctions du CG 93" grâce au shell
+	* automatisationseps
+	*
+	* Voir le document app/docs/Documentation administrateurs.odt, partie
+	* "Intervalles PostgreSQL"
+	*/
     Configure::write( 'Nonrespectsanctionep93.intervalleCerDo19', '1 month' );
 
 	/**

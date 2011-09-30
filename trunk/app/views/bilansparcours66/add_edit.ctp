@@ -48,11 +48,11 @@
 		}
 		echo '<div>';
 		echo $form->input( 'Bilanparcours66.personne_id', array( 'type' => 'hidden', 'value' => Set::classicExtract( $personne, 'Personne.id') ) );
+		echo $form->input( 'Bilanparcours66.nvuser_id', array( 'type' => 'hidden', 'value' => $session->read( 'Auth.User.id' ) ) );
 		echo '</div>';
 	?>
 
 	<div class="aere">
-
 		<?php
 			echo $default->subform(
 				array(
@@ -220,7 +220,7 @@
 		?>
 	</fieldset>
 </fieldset>
-			
+
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
 
@@ -247,7 +247,7 @@
 				'style' => 'text-align: center; font-size: 14px; font-weight:bold;'
 			)
 		);
-		
+
 		if (isset($this->validationErrors['Bilanparcours66']['proposition'])) {
 			echo $xhtml->tag(
 				'div',
@@ -264,10 +264,10 @@
 			);
 		}
 
-	if ($this->action == 'edit'){
-		echo $xform->input( 'Bilanparcours66.proposition', array( 'type' => 'hidden' ) );
-		echo $xform->input( 'Bilanparcours66.maintienorientation', array( 'type' => 'hidden' ) );
-	}
+		if ( $this->action == 'edit' ){
+			echo $xform->input( 'Bilanparcours66.proposition', array( 'type' => 'hidden' ) );
+			echo $xform->input( 'Bilanparcours66.maintienorientation', array( 'type' => 'hidden' ) );
+		}
 	?>
 
 	<fieldset>
@@ -277,56 +277,91 @@
 			echo $xhtml->tag( 'h3', $tmp );
 		?>
 		<fieldset id="traitement" class="invisible">
-			<?php
-				echo $default2->subform(
-					array(
-						'Bilanparcours66.maintienorientation' => array( 'type' => 'radio', 'required' => true ),
-						'Bilanparcours66.changementrefsansep' => array( 'type' => 'radio', 'required' => true )
-					),
-					array(
-						'options' => $options
-					)
-				);
-			?>
-			<!--<fieldset id="NvReferent">
+			<fieldset id="cgOrientationActuelle">
+				<legend>Maintien de l'orientation SOCIALE</legend>
 				<?php
-					echo $default->subform(
-						array(
-							'Bilanparcours66.nvsansep_referent_id'
-						),
-						array(
-							'options' => $options
-						)
-					);
-				?>
-			</fieldset>-->
-			<fieldset id="Contratreconduit">
-				<legend>Reconduction du contrat d'engagement réciproque</legend>
-				<?php
+					if ( $this->action == 'edit' ) {
+						$defaultvaluetypeorient_id = $this->data['Bilanparcours66']['nvtypeorient_id'];
+						$defaultvaluestructurereferente_id = implode( '_', array( $this->data['Bilanparcours66']['nvtypeorient_id'], $this->data['Bilanparcours66']['nvstructurereferente_id'] ) );
+
+						echo $xhtml->tag(
+							'p',
+							'Orientation SOCIALE (au moment de la création du bilan de parcours) : '.Set::extract( $this->data, 'Orientstruct.Typeorient.lib_type_orient' )
+						);
+					}
+					else {
+						$defaultvaluetypeorient_id = $personne['Orientstruct'][0]['typeorient_id'];
+						$defaultvaluestructurereferente_id = implode( '_', array( $personne['Orientstruct'][0]['typeorient_id'], $personne['Orientstruct'][0]['structurereferente_id'] ) );
+
+						echo $xhtml->tag(
+							'p',
+							'Orientation SOCIALE actuelle : '.Set::extract( $personne, 'Orientstruct.0.Typeorient.lib_type_orient' )
+						);
+					}
+
 					echo $default2->subform(
 						array(
-							'Bilanparcours66.duree_engag',
-							'Bilanparcours66.ddreconductoncontrat',
-							'Bilanparcours66.dfreconductoncontrat'
+							'Bilanparcours66.sansep_typeorientprincipale_id' => array( 'type' => 'radio', 'options' => $options['Bilanparcours66']['typeorientprincipale_id'], 'required' => true, 'value' => ( ( isset( $this->data['Bilanparcours66']['typeorientprincipale_id'] ) ) ? $this->data['Bilanparcours66']['typeorientprincipale_id'] : null ) )
 						),
 						array(
 							'options' => $options,
 							'domain' => $domain
 						)
 					);
+
+					foreach( $options['Bilanparcours66']['typeorientprincipale_id'] as $key => $value ) {
+						echo "<div id='maintienOrientSansEp{$key}'>";
+						echo $default2->subform(
+							array(
+								'Bilanparcours66.nvtypeorient_id' => array( 'required'=> true, 'id' => 'Bilanparcours66NvtypeorientIdSansEp'.$key, 'options' => $options['Bilanparcours66']['nvtypeorient_id'][$key], 'value' => $defaultvaluetypeorient_id ),
+								'Bilanparcours66.nvstructurereferente_id' => array( 'required'=> true, 'id' => 'Bilanparcours66NvstructurereferenteIdSansEp'.$key, 'options' => $options['Bilanparcours66']['nvstructurereferente_id'], 'value' => $defaultvaluestructurereferente_id )
+							),
+							array(
+								'options' => $options,
+								'domain' => $domain
+							)
+						);
+						echo "</div>";
+					}
+					echo "<div id='cgMaintienOrientSansEpMemeRef' class='aere";
+						if ( isset( $this->validationErrors['Bilanparcours66']['changementref'] ) && !empty( $this->validationErrors['Bilanparcours66']['changementref'] ) ) {
+							echo " error";
+						}
+					echo "'>";
+						echo $xform->input( 'Bilanparcours66.changementrefsansep', array( 'type' => 'hidden', 'value' => 'N' ) );
+						echo "Sans changement de référent.";
+						if ( isset( $this->validationErrors['Bilanparcours66']['changementref'] ) && !empty( $this->validationErrors['Bilanparcours66']['changementref'] ) ) {
+							echo $xhtml->tag(
+								'div',
+								$this->validationErrors['Bilanparcours66']['changementref'],
+								array(
+									'class' => 'error-message'
+								)
+							);
+						}
+					echo "</div>";
+					echo "<div id='cgMaintienOrientSansEpChangementRef' class='aere'>";
+						echo $xform->input( 'Bilanparcours66.changementrefsansep', array( 'type' => 'hidden', 'value' => 'O' ) );
+						echo "Avec changement de référent.";
+					echo "</div>";
 				?>
+				<fieldset id="cgContratReconduitSansEp">
+					<legend>Reconduction du contrat librement débattu</legend>
+					<?php
+						echo $default2->subform(
+							array(
+								'Bilanparcours66.duree_engag' => array( 'required' => true, 'id' => 'Bilanparcours66DureeEngagSansEp' ),
+								'Bilanparcours66.ddreconductoncontrat' => array( 'required' => true, 'id' => 'Bilanparcours66DdreconductoncontratSansEp' ),
+								'Bilanparcours66.dfreconductoncontrat' => array( 'required' => true, 'id' => 'Bilanparcours66DfreconductoncontratSansEp' )
+							),
+							array(
+								'options' => $options,
+								'domain' => $domain
+							)
+						);
+					?>
+				</fieldset>
 			</fieldset>
-			<?php
-				echo $default2->subform(
-					array(
-						'Bilanparcours66.accompagnement' => array( 'type' => 'radio' )
-					),
-					array(
-						'options' => $options,
-						'domain' => $domain
-					)
-				);
-			?>
 		</fieldset>
 	</fieldset>
 	<fieldset>
@@ -346,87 +381,120 @@
 					)
 				);
 			?>
-			
-			<?php
-				//FIXME: Récupération de la dernière orientation en cours pour le maintien d'orientation
-				echo $xhtml->tag(
-					'p',
-					'Orientation SOCIALE actuelle : '.Set::extract( $personne, 'Orientstruct.0.Typeorient.lib_type_orient' ),
-					array(
-						'id' => 'orientationactuelle'
-					)
-				);
-			?>
-			
-			
-			
-			<fieldset id="Maintien" class="invisible">
+			<fieldset id="cgMaintienOrientationAvecEp">
+				<legend>Maintien de l'orientation SOCIALE</legend>
 				<?php
+					if ( $this->action == 'edit' ) {
+						$defaultvaluetypeorient_id = $this->data['Bilanparcours66']['nvtypeorient_id'];
+						$defaultvaluestructurereferente_id = implode( '_', array( $this->data['Bilanparcours66']['nvtypeorient_id'], $this->data['Bilanparcours66']['nvstructurereferente_id'] ) );
+
+						echo $xhtml->tag(
+							'p',
+							'Orientation SOCIALE (au moment de la création du bilan de parcours) : '.Set::extract( $this->data, 'Orientstruct.Typeorient.lib_type_orient' )
+						);
+					}
+					else {
+						$defaultvaluetypeorient_id = $personne['Orientstruct'][0]['typeorient_id'];
+						$defaultvaluestructurereferente_id = implode( '_', array( $personne['Orientstruct'][0]['typeorient_id'], $personne['Orientstruct'][0]['structurereferente_id'] ) );
+
+						echo $xhtml->tag(
+							'p',
+							'Orientation SOCIALE actuelle : '.Set::extract( $personne, 'Orientstruct.0.Typeorient.lib_type_orient' )
+						);
+					}
+
 					echo $default2->subform(
 						array(
-							'Bilanparcours66.maintienorientparcours' => array( 'type' => 'radio', 'required' => true ),
-							'Bilanparcours66.changementrefparcours' => array( 'type' => 'radio', 'required' => true )
+							'Bilanparcours66.avecep_typeorientprincipale_id' => array( 'type' => 'radio', 'options' => $options['Bilanparcours66']['typeorientprincipale_id'], 'required' => true, 'value' => ( ( isset( $this->data['Bilanparcours66']['typeorientprincipale_id'] ) ) ? $this->data['Bilanparcours66']['typeorientprincipale_id'] : null ) )
 						),
 						array(
-							'options' => $options
+							'options' => $options,
+							'domain' => $domain
 						)
 					);
+
+					foreach( $options['Bilanparcours66']['typeorientprincipale_id'] as $key => $value ) {
+						echo "<div id='cgMaintienOrientAvecEp{$key}'>";
+						echo $default2->subform(
+							array(
+								'Bilanparcours66.nvtypeorient_id' => array( 'required'=> true, 'id' => 'Bilanparcours66NvtypeorientIdAvecEp'.$key, 'options' => $options['Bilanparcours66']['nvtypeorient_id'][$key], 'value' => $defaultvaluetypeorient_id ),
+								'Bilanparcours66.nvstructurereferente_id' => array( 'required'=> true, 'id' => 'Bilanparcours66NvstructurereferenteIdAvecEp'.$key, 'options' => $options['Bilanparcours66']['nvstructurereferente_id'], 'value' => $defaultvaluestructurereferente_id )
+							),
+							array(
+								'options' => $options,
+								'domain' => $domain
+							)
+						);
+						echo "</div>";
+					}
+					echo "<div id='cgMaintienOrientAvecEpMemeRef' class='aere";
+						if ( isset( $this->validationErrors['Bilanparcours66']['changementref'] ) && !empty( $this->validationErrors['Bilanparcours66']['changementref'] ) ) {
+							echo " error";
+						}
+					echo "'>";
+						echo $xform->input( 'Bilanparcours66.changementrefavecep', array( 'type' => 'hidden', 'value' => 'N' ) );
+						echo "Sans changement de référent.";
+						if ( isset( $this->validationErrors['Bilanparcours66']['changementref'] ) && !empty( $this->validationErrors['Bilanparcours66']['changementrefsansep'] ) ) {
+							echo $xhtml->tag(
+								'div',
+								$this->validationErrors['Bilanparcours66']['changementrefavecep'],
+								array(
+									'class' => 'error-message'
+								)
+							);
+						}
+					echo "</div>";
+					echo "<div id='cgMaintienOrientAvecEpChangementRef' class='aere'>";
+						echo $xform->input( 'Bilanparcours66.changementrefavecep', array( 'type' => 'hidden', 'value' => 'O' ) );
+						echo "Avec changement de référent.";
+					echo "</div>";
 				?>
-				<!--<fieldset id="NvparcoursReferent">
+				<fieldset id="cgContratReconduitAvecEp">
+					<legend>Reconduction du contrat librement débattu</legend>
 					<?php
 						echo $default2->subform(
 							array(
-								'Bilanparcours66.nvparcours_referent_id'
+								'Bilanparcours66.duree_engag' => array( 'required' => true, 'id' => 'Bilanparcours66DureeEngagAvecEp' ),
+								'Bilanparcours66.ddreconductoncontrat' => array( 'required' => true, 'id' => 'Bilanparcours66DdreconductoncontratAvecEp' ),
+								'Bilanparcours66.dfreconductoncontrat' => array( 'required' => true, 'id' => 'Bilanparcours66DfreconductoncontratAvecEp' )
 							),
 							array(
-								'options' => $options
+								'options' => $options,
+								'domain' => $domain
 							)
 						);
 					?>
-				</fieldset>-->
-				<fieldset id="TypeAccompagnementSocial" class="invisible">
-					<?php
-						echo $xhtml->tag( 'h2', 'Pour un accompagnement Social', array( 'class' => 'bilanparcours' ) );
-// 		                echo $default2->subform(
-// 		                    array(
-// 								'Bilanparcours66.accompagnement' => array( 'type' => 'radio' )
-// 		                    ),
-// 		                    array(
-// 		                        'options' => $options
-// 		                    )
-// 		                );
-					?>
-				</fieldset>
-				<fieldset id="TypeAccompagnementPrepro" class="invisible">
-					<?php
-						echo $xhtml->tag( 'h2', 'Pour un accompagnement Prépro', array( 'class' => 'bilanparcours' ) );
-					?>
 				</fieldset>
 			</fieldset>
-			<fieldset id="Reorientation" class="noborder">
+			<fieldset id="cgReorientationAvecEp">
+				<legend>Réorientation du SOCIAL vers le professionnel</legend>
 				<?php
-					echo $default2->subform(
-						array(
-							'Bilanparcours66.reorientation' => array ( 'type' => 'radio', 'separator' =>'<br />' )
-						),
-						array(
-							'options' => $options
-						)
-					);
-				?>
-			</fieldset>
-			<fieldset id="Precoreorient">
-				<legend>Préconisation de réorientation</legend>
-				<?php
+					if ( $this->action == 'edit' ) {
+						$defaultvaluetypeorient_id = $this->data['Bilanparcours66']['nvtypeorient_id'];
+						$defaultvaluestructurereferente_id = implode( '_', array( $this->data['Bilanparcours66']['nvtypeorient_id'], $this->data['Bilanparcours66']['nvstructurereferente_id'] ) );
+					}
+					else {
+						$defaultvaluetypeorient_id = null;
+						$defaultvaluestructurereferente_id = null;
+					}
+
+					$typeorientprincipale = Configure::read( 'Orientstruct.typeorientprincipale' );
+					$typeorientemploiId = $typeorientprincipale['Emploi'][0];
+
 					echo $default->subform(
 						array(
-							'Saisinebilanparcoursep66.typeorient_id',
-							'Saisinebilanparcoursep66.structurereferente_id'
+							'Bilanparcours66.avecep_typeorientprincipale_id' => array( 'type' => 'hidden', 'value' => $typeorientemploiId ),
+							'Bilanparcours66.nvtypeorient_id' => array( 'required' => true, 'options' => $options['Bilanparcours66']['nvtypeorient_id'][$typeorientemploiId], 'value' => $defaultvaluetypeorient_id, 'id' => 'Saisinebilanparcoursep66TypeorientId' ),
+							'Bilanparcours66.nvstructurereferente_id' => array( 'required' => true, 'value' => $defaultvaluestructurereferente_id, 'id' => 'Saisinebilanparcoursep66StructurereferenteId' )
 						),
 						array(
 							'options' => $options
 						)
 					);
+					echo "<div id='cgReorientAvecEpChangementRef' class='aere'>";
+						echo $xform->input( 'Bilanparcours66.changementrefavecep', array( 'type' => 'hidden', 'value' => 'O' ) );
+						echo "Avec changement de référent.";
+					echo "</div>";
 				?>
 			</fieldset>
 		</fieldset>
@@ -450,7 +518,7 @@
 			?>
 		</fieldset>
 	</fieldset>
-	
+
 	<fieldset>
 		<?php
 			/// "Commission Audition PE": Examen du dossier par la commission EP Locale
@@ -470,7 +538,7 @@
 			?>
 		</fieldset>
 	</fieldset>
-	
+
 		<?php
 			echo $default2->subform(
 				array(
@@ -498,10 +566,10 @@
 				)
 			);
 		?>
-        <div class="submit">
-            <?php echo $form->submit( 'Enregistrer', array( 'div' => false ) );?>
-            <?php echo $form->submit('Annuler', array( 'name' => 'Cancel', 'div' => false ) );?>
-        </div>
+		<div class="submit">
+			<?php echo $form->submit( 'Enregistrer', array( 'div' => false ) );?>
+			<?php echo $form->submit('Annuler', array( 'name' => 'Cancel', 'div' => false ) );?>
+		</div>
 </fieldset>
 
 <fieldset id="bilanparcourspe">
@@ -516,9 +584,9 @@
 					'options' => $options
 				)
 			);
-			
+
 			echo '<div class ="input select';
-			if (isset($this->validationErrors['Bilanparcours66']['referent_id'])) echo ' error';
+				if (isset($this->validationErrors['Bilanparcours66']['referent_id'])) echo ' error';
 			echo '">';
 			echo $default->subform(
 				array(
@@ -528,15 +596,17 @@
 					'options' => $options
 				)
 			);
-			if (isset($this->validationErrors['Bilanparcours66']['referent_id'])) echo '<div class="error-message">'.$this->validationErrors['Bilanparcours66']['referent_id'].'</div>';
+			if (isset($this->validationErrors['Bilanparcours66']['referent_id'])) {
+				echo '<div class="error-message">'.$this->validationErrors['Bilanparcours66']['referent_id'].'</div>';
+			}
 			echo '</div>';
-			
+
 			echo '<div class ="input select';
 			if (isset($this->validationErrors['Bilanparcours66']['presenceallocataire'])) echo ' error';
 			echo '">';
 			echo $default->subform(
 				array(
-					'Pe.Bilanparcours66.presenceallocataire' => array('required'=>true, 'div'=>false)
+					'Pe.Bilanparcours66.presenceallocataire' => array( 'required' => true, 'div' => false )
 				),
 				array(
 					'options' => $options
@@ -545,12 +615,6 @@
 			if (isset($this->validationErrors['Bilanparcours66']['presenceallocataire'])) echo '<div class="error-message">'.$this->validationErrors['Bilanparcours66']['presenceallocataire'].'</div>';
 			echo '</div>';
 		?>
-
-<!--<div class="input select error"><label for="Bilanparcours66Presenceallocataire">Allocataire est-il présent ? <abbr title="Champ obligatoire" class="required">*</abbr></label><select class="form-error" id="Bilanparcours66Presenceallocataire" name="data[Bilanparcours66][presenceallocataire]">
-<option value=""></option>
-<option value="0">Non</option>
-<option value="1">Oui</option>
-</select><div class="error-message">Champ obligatoire</div></div>-->
 
 	<fieldset>
 		<legend>Situation de l'allocataire</legend>
@@ -612,50 +676,275 @@
 		echo $default2->subform(
 			array(
 				'Pe.Bilanparcours66.textbilanparcours',
-				'Pe.Bilanparcours66.observbenef'
+				'Pe.Bilanparcours66.observbenef',
+				'Pe.Bilanparcours66.proposition' => array( 'type' => 'hidden', 'value' => 'parcours' )
 			),
 			array(
 				'options' => $options
 			)
 		);
 	?>
-	<fieldset id="Precoreorient">
-		<legend>Préconisation de réorientation</legend>
+
+	<fieldset id="peParcours" class="invisible">
 		<?php
+			echo '<div class ="input radio';
+				if (isset($this->validationErrors['Bilanparcours66']['choixparcours'])) echo ' error';
+			echo '">';
 			echo $default->subform(
 				array(
-					'Pe.Saisinebilanparcoursep66.typeorient_id' => array( 'domain' => 'bilanparcours66' ),
-					'Pe.Saisinebilanparcoursep66.structurereferente_id' => array( 'domain' => 'bilanparcours66' )
+					'Pe.Bilanparcours66.choixparcours' => array( 'div' => false, 'type' => 'radio', 'required' => true )
 				),
 				array(
 					'options' => $options
 				)
 			);
+			if (isset($this->validationErrors['Bilanparcours66']['choixparcours'])) {
+				echo '<div class="error-message">'.$this->validationErrors['Bilanparcours66']['choixparcours'].'</div>';
+			}
+			echo '</div>';
+		?>
+		<fieldset id="peMaintienOrientationAvecEp">
+			<legend>Maintien de l'orientation PROFESSIONNELLE</legend>
+			<?php
+				if ( $this->action == 'edit' && !isset( $this->data['Pe']['Bilanparcours66']['nvstructurereferente_id'] ) ) {
+					$defaultvaluetypeorient_id = $this->data['Bilanparcours66']['nvtypeorient_id'];
+					$defaultvaluestructurereferente_id = implode( '_', array( $this->data['Bilanparcours66']['nvtypeorient_id'], $this->data['Bilanparcours66']['nvstructurereferente_id'] ) );
+
+					echo $xhtml->tag(
+						'p',
+						'Orientation PROFESSIONNELLE (au moment de la création du bilan de parcours) : '.Set::extract( $this->data, 'Orientstruct.Typeorient.lib_type_orient' )
+					);
+				}
+				elseif ( !isset( $this->data['Pe']['Bilanparcours66']['nvstructurereferente_id'] ) ) {
+					$defaultvaluetypeorient_id = $personne['Orientstruct'][0]['typeorient_id'];
+					$defaultvaluestructurereferente_id = implode( '_', array( $personne['Orientstruct'][0]['typeorient_id'], $personne['Orientstruct'][0]['structurereferente_id'] ) );
+
+					echo $xhtml->tag(
+						'p',
+						'Orientation PROFESSIONNELLE actuelle : '.Set::extract( $personne, 'Orientstruct.0.Typeorient.lib_type_orient' )
+					);
+				}
+
+				$typeorientprincipale = Configure::read( 'Orientstruct.typeorientprincipale' );
+				$typeorientemploiId = $typeorientprincipale['Emploi'][0];
+
+				echo '<div class = "input">';
+				echo $default->subform(
+					array(
+						'Pe.Bilanparcours66.avecep_typeorientprincipale_id' => array( 'type' => 'hidden', 'value' => $typeorientemploiId )
+					),
+					array(
+						'options' => $options
+					)
+				);
+				echo '</div>';
+
+				echo '<div class ="input select';
+					if (isset($this->validationErrors['Bilanparcours66']['nvtypeorient_id'])) echo ' error';
+				echo '">';
+				echo $default->subform(
+					array(
+						'Pe.Bilanparcours66.nvtypeorient_id' => array( 'required' => true, 'options' => $options['Bilanparcours66']['nvtypeorient_id'][$typeorientemploiId], 'value' => $defaultvaluetypeorient_id, 'id' => 'PeSaisinebilanparcoursep66TypeorientId' )
+					),
+					array(
+						'options' => $options
+					)
+				);
+				if (isset($this->validationErrors['Bilanparcours66']['nvtypeorient_id'])) {
+					echo '<div class="error-message">'.$this->validationErrors['Bilanparcours66']['nvtypeorient_id'].'</div>';
+				}
+				echo '</div>';
+
+				echo '<div class ="input select';
+					if (isset($this->validationErrors['Bilanparcours66']['nvstructurereferente_id'])) echo ' error';
+				echo '">';
+				echo $default->subform(
+					array(
+						'Pe.Bilanparcours66.nvstructurereferente_id' => array( 'required' => true, 'value' => $defaultvaluestructurereferente_id, 'id' => 'PeSaisinebilanparcoursep66StructurereferenteId' )
+					),
+					array(
+						'options' => $options
+					)
+				);
+				if (isset($this->validationErrors['Bilanparcours66']['nvstructurereferente_id'])) {
+					echo '<div class="error-message">'.$this->validationErrors['Bilanparcours66']['nvstructurereferente_id'].'</div>';
+				}
+				echo '</div>';
+
+				echo "<div id='peMaintienOrientAvecEpMemeRef' class='aere";
+					if ( isset( $this->validationErrors['Bilanparcours66']['changementref'] ) && !empty( $this->validationErrors['Bilanparcours66']['changementref'] ) ) {
+						echo " error";
+					}
+				echo "'>";
+					echo $xform->input( 'Pe.Bilanparcours66.changementrefavecep', array( 'type' => 'hidden', 'value' => 'N' ) );
+					echo "Sans changement de référent.";
+					if ( isset( $this->validationErrors['Bilanparcours66']['changementref'] ) && !empty( $this->validationErrors['Bilanparcours66']['changementrefsansep'] ) ) {
+						echo $xhtml->tag(
+							'div',
+							$this->validationErrors['Bilanparcours66']['changementrefavecep'],
+							array(
+								'class' => 'error-message'
+							)
+						);
+					}
+				echo "</div>";
+				echo "<div id='peMaintienOrientAvecEpChangementRef' class='aere'>";
+					echo $xform->input( 'Pe.Bilanparcours66.changementrefavecep', array( 'type' => 'hidden', 'value' => 'O' ) );
+					echo "Avec changement de référent.";
+				echo "</div>";
+			?>
+			<fieldset id="peContratReconduitAvecEp">
+				<legend>Reconduction du contrat librement débattu</legend>
+				<?php
+					echo '<div class ="input select';
+						if (isset($this->validationErrors['Bilanparcours66']['duree_engag'])) echo ' error';
+					echo '">';
+					echo $default->subform(
+						array(
+							'Pe.Bilanparcours66.duree_engag' => array( 'div' => false, 'required' => true, 'id' => 'PeBilanparcours66DureeEngagAvecEp' )
+						),
+						array(
+							'options' => $options
+						)
+					);
+					if (isset($this->validationErrors['Bilanparcours66']['duree_engag'])) {
+						echo '<div class="error-message">'.$this->validationErrors['Bilanparcours66']['duree_engag'].'</div>';
+					}
+					echo '</div>';
+
+					echo '<div class ="input date';
+						if (isset($this->validationErrors['Bilanparcours66']['ddreconductoncontrat'])) echo ' error';
+					echo '">';
+					echo $default->subform(
+						array(
+							'Pe.Bilanparcours66.ddreconductoncontrat' => array( 'div' => false, 'required' => true, 'id' => 'PeBilanparcours66DdreconductoncontratAvecEp' )
+						),
+						array(
+							'options' => $options
+						)
+					);
+					if (isset($this->validationErrors['Bilanparcours66']['ddreconductoncontrat'])) {
+						echo '<div class="error-message">'.$this->validationErrors['Bilanparcours66']['ddreconductoncontrat'].'</div>';
+					}
+					echo '</div>';
+
+					echo '<div class ="input date';
+						if (isset($this->validationErrors['Bilanparcours66']['dfreconductoncontrat'])) echo ' error';
+					echo '">';
+					echo $default->subform(
+						array(
+							'Pe.Bilanparcours66.dfreconductoncontrat' => array( 'div' => false, 'required' => true, 'id' => 'PeBilanparcours66DfreconductoncontratAvecEp' )
+						),
+						array(
+							'options' => $options
+						)
+					);
+					if (isset($this->validationErrors['Bilanparcours66']['dfreconductoncontrat'])) {
+						echo '<div class="error-message">'.$this->validationErrors['Bilanparcours66']['dfreconductoncontrat'].'</div>';
+					}
+					echo '</div>';
+				?>
+			</fieldset>
+		</fieldset>
+		<fieldset id="peReorientationAvecEp">
+			<legend>Réorientation du PROFESSIONEL vers le SOCIAL</legend>
+			<?php
+				if ( $this->action == 'edit' ) {
+					$defaultvaluetypeorient_id = $this->data['Bilanparcours66']['nvtypeorient_id'];
+					$defaultvaluestructurereferente_id = implode( '_', array( $this->data['Bilanparcours66']['nvtypeorient_id'], $this->data['Bilanparcours66']['nvstructurereferente_id'] ) );
+				}
+				else {
+					$defaultvaluetypeorient_id = null;
+					$defaultvaluestructurereferente_id = null;
+				}
+
+				// INFO: pour les cas où le champ caché n'apparaîtra pas (cf. FormHelper::radio )
+				if( isset( $this->data['Pe']['Bilanparcours66']['avecep_typeorientprincipale_id'] ) && !empty( $this->data['Pe']['Bilanparcours66']['avecep_typeorientprincipale_id'] ) ) {
+					echo $xform->input( 'Pe.Bilanparcours66.avecep_typeorientprincipale_id', array( 'type' => 'hidden', 'value' => '' ) );
+				}
+
+				echo '<div class ="input radio';
+					if (isset($this->validationErrors['Bilanparcours66']['avecep_typeorientprincipale_id'])) echo ' error';
+				echo '">';
+				echo $default->subform(
+					array(
+						'Pe.Bilanparcours66.avecep_typeorientprincipale_id' => array( 'div' => false, 'options' => $options['Bilanparcours66']['typeorientprincipale_id'], 'type' => 'radio', 'required' => true )
+					),
+					array(
+						'options' => $options
+					)
+				);
+				if (isset($this->validationErrors['Bilanparcours66']['avecep_typeorientprincipale_id'])) {
+					echo '<div class="error-message">'.$this->validationErrors['Bilanparcours66']['avecep_typeorientprincipale_id'].'</div>';
+				}
+				echo '</div>';
+
+				foreach( $options['Bilanparcours66']['typeorientprincipale_id'] as $key => $value ) {
+					echo "<div id='peMaintienOrientAvecEp{$key}'>";
+
+						echo '<div class ="input select';
+							if (isset($this->validationErrors['Bilanparcours66']['nvtypeorient_id'])) echo ' error';
+						echo '">';
+						echo $default->subform(
+							array(
+								'Pe.Bilanparcours66.nvtypeorient_id' => array( 'div' => false, 'required'=> true, 'id' => 'PeBilanparcours66NvtypeorientIdAvecEp'.$key, 'options' => $options['Bilanparcours66']['nvtypeorient_id'][$key], 'value' => $defaultvaluetypeorient_id )
+							),
+							array(
+								'options' => $options
+							)
+						);
+						if (isset($this->validationErrors['Bilanparcours66']['nvtypeorient_id'])) {
+							echo '<div class="error-message">'.$this->validationErrors['Bilanparcours66']['nvtypeorient_id'].'</div>';
+						}
+						echo '</div>';
+
+						echo '<div class ="input select';
+							if (isset($this->validationErrors['Bilanparcours66']['nvstructurereferente_id'])) echo ' error';
+						echo '">';
+						echo $default->subform(
+							array(
+								'Pe.Bilanparcours66.nvstructurereferente_id' => array( 'div' => false, 'required'=> true, 'id' => 'PeBilanparcours66NvstructurereferenteIdAvecEp'.$key, 'options' => $options['Bilanparcours66']['nvstructurereferente_id'], 'value' => $defaultvaluestructurereferente_id )
+							),
+							array(
+								'options' => $options
+							)
+						);
+						if (isset($this->validationErrors['Bilanparcours66']['nvstructurereferente_id'])) {
+							echo '<div class="error-message">'.$this->validationErrors['Bilanparcours66']['nvstructurereferente_id'].'</div>';
+						}
+						echo '</div>';
+
+					echo "</div>";
+				}
+				echo "<div id='peReorientAvecEpChangementRef' class='aere'>";
+					echo $xform->input( 'Pe.Bilanparcours66.changementrefavecep', array( 'type' => 'hidden', 'value' => 'O' ) );
+					echo "Avec changement de référent.";
+				echo "</div>";
+			?>
+		</fieldset>
+		<?php
+			echo '<div class ="input date';
+				if (isset($this->validationErrors['Bilanparcours66']['datebilan'])) echo ' error';
+			echo '">';
+			echo $default->subform(
+				array(
+					'Pe.Bilanparcours66.datebilan' => array( 'dateFormat' => 'DMY', 'maxYear' => date('Y'), 'minYear' => date('Y') - 2, 'empty' => true, 'required' => true, 'div' => false )
+				),
+				array(
+					'options' => $options
+				)
+			);
+			if (isset($this->validationErrors['Bilanparcours66']['datebilan'])) {
+				echo '<div class="error-message">'.$this->validationErrors['Bilanparcours66']['datebilan'].'</div>';
+			}
+			echo '</div>';
 		?>
 	</fieldset>
-	<?php
-		echo '<div class ="input date';
-		if (isset($this->validationErrors['Bilanparcours66']['datebilan'])) echo ' error';
-		echo '">';
-		echo $default->subform(
-			array(
-				'Pe.Bilanparcours66.datebilan' => array( 'dateFormat' => 'DMY', 'maxYear' => date('Y'), 'minYear' => date('Y') - 2, 'empty' => true, 'required' => true, 'div' => false )
-			),
-			array(
-				'options' => $options
-			)
-		);
-		if (isset($this->validationErrors['Bilanparcours66']['datebilan'])) echo '<div class="error-message">'.$this->validationErrors['Bilanparcours66']['datebilan'].'</div>';
-		echo '</div>';
 
-		echo $xform->input( 'Pe.Bilanparcours66.proposition', array( 'type' => 'hidden', 'value' => 'parcours' ) );
-		echo $xform->input( 'Pe.Bilanparcours66.maintienorientation', array( 'type' => 'hidden', 'value' => true ) );
-		echo $xform->input( 'Pe.Bilanparcours66.choixparcours', array( 'type' => 'hidden', 'value' => 'reorientation' ) );
-	?>
 	<div class="submit">
-        <?php echo $form->submit( 'Enregistrer', array( 'div' => false ) );?>
-        <?php echo $form->submit('Annuler', array( 'name' => 'Cancel', 'div' => false ) );?>
-    </div>
+		<?php echo $form->submit( 'Enregistrer', array( 'div' => false ) );?>
+		<?php echo $form->submit('Annuler', array( 'name' => 'Cancel', 'div' => false ) );?>
+	</div>
 </fieldset>
 
 <?php if ( $this->action == 'edit' && isset( $passagecommissionep['Decisionsaisinebilanparcoursep66'][0]['id'] ) && !empty( $passagecommissionep['Decisionsaisinebilanparcoursep66'][0]['id'] ) ) {
@@ -715,9 +1004,9 @@ elseif ( $this->action == 'edit' && isset( $passagecommissionep['Decisiondefauti
 			$avisep['commentaire']
 		);
 	echo '</fieldset>';
-}?>
+}
 
-<?php if ( $this->action == 'edit' && isset( $passagecommissionep['Decisionsaisinebilanparcoursep66'][1]['id'] ) && !empty( $passagecommissionep['Decisionsaisinebilanparcoursep66'][1]['id'] ) ) {
+if ( $this->action == 'edit' && isset( $passagecommissionep['Decisionsaisinebilanparcoursep66'][1]['id'] ) && !empty( $passagecommissionep['Decisionsaisinebilanparcoursep66'][1]['id'] ) ) {
 	echo $html->tag(
 		'p',
 		'DECISION DU COORDINATEUR TECHNIQUE',
@@ -842,16 +1131,6 @@ elseif ( $this->action == 'edit' && isset( $passagecommissionep['Decisiondefauti
 
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
-		dependantSelect( 'Saisinebilanparcoursep66StructurereferenteId', 'Saisinebilanparcoursep66TypeorientId' );
-		try { $( 'Saisinebilanparcoursep66StructurereferenteId' ).onchange(); } catch(id) { }
-
-		dependantSelect( 'Bilanparcours66ReferentId', 'Bilanparcours66StructurereferenteId' );
-
-		dependantSelect( 'PeSaisinebilanparcoursep66StructurereferenteId', 'PeSaisinebilanparcoursep66TypeorientId' );
-		try { $( 'PeSaisinebilanparcoursep66StructurereferenteId' ).onchange(); } catch(id) { }
-
-		dependantSelect( 'PeBilanparcours66ReferentId', 'PeBilanparcours66StructurereferenteId' );
-		
 		observeDisableFieldsetOnRadioValue(
 			'Bilan',
 			'data[Bilanparcours66][typeformulaire]',
@@ -870,19 +1149,6 @@ elseif ( $this->action == 'edit' && isset( $passagecommissionep['Decisiondefauti
 			true
 		);
 
-		$( 'Bilanparcours66DdreconductoncontratYear' ).observe( 'change', function(event) {
-			checkDatesToRefresh();
-		} );
-		$( 'Bilanparcours66DdreconductoncontratMonth' ).observe( 'change', function(event) {
-			checkDatesToRefresh();
-		} );
-		$( 'Bilanparcours66DdreconductoncontratDay' ).observe( 'change', function(event) {
-			checkDatesToRefresh();
-		} );
-		$( 'Bilanparcours66DureeEngag' ).observe( 'change', function(event) {
-			checkDatesToRefresh();
-		} );
-
 		// Javascript pour les aides liées à l'APRE
 		['traitement', 'parcours', 'audition', 'auditionpe' ].each( function( proposition ) {
 			observeDisableFieldsetOnRadioValue(
@@ -895,72 +1161,93 @@ elseif ( $this->action == 'edit' && isset( $passagecommissionep['Decisiondefauti
 			);
 		} );
 
-		observeDisableFieldsetOnRadioValue(
-			'Bilan',
-			'data[Bilanparcours66][changementrefsansep]',
-			$( 'Contratreconduit' ),
-			'N',
-			false,
-			true
-		);
+		$( 'Bilan' ).getInputs( 'radio', 'data[Bilanparcours66][sansep_typeorientprincipale_id]' ).each( function ( observeRadio ) {
+			$( observeRadio ).observe( 'change', function(event) {
+				checkOrientstructTypeorientId( 'data[Bilanparcours66][sansep_typeorientprincipale_id]', 'maintienOrientSansEp' );
+			} );
+		} );
+		checkOrientstructTypeorientId( 'data[Bilanparcours66][sansep_typeorientprincipale_id]', 'maintienOrientSansEp' );
+
+		disableAndHideFormPart( 'cgContratReconduitSansEp' );
+		disableAndHideFormPart( 'cgMaintienOrientSansEpChangementRef' );
+		disableAndHideFormPart( 'cgMaintienOrientSansEpMemeRef' );
+		<?php foreach( $options['Bilanparcours66']['typeorientprincipale_id'] as $key => $value ) { ?>
+			dependantSelect( 'Bilanparcours66NvstructurereferenteIdSansEp<?php echo $key ?>', 'Bilanparcours66NvtypeorientIdSansEp<?php echo $key ?>' );
+			try { $( 'Bilanparcours66NvstructurereferenteIdSansEp<?php echo $key ?>' ).onchange(); } catch(id) { }
+			observeMemeReorientation( 'Bilanparcours66SansepTypeorientprincipaleId<?php echo $key ?>', 'Bilanparcours66NvstructurereferenteIdSansEp<?php echo $key ?>', 'Bilanparcours66NvtypeorientIdSansEp<?php echo $key ?>', 'cgContratReconduitSansEp', 'cgMaintienOrientSansEpMemeRef', 'cgMaintienOrientSansEpChangementRef' );
+		<?php } ?>
+
+		dependantSelect( 'Saisinebilanparcoursep66StructurereferenteId', 'Saisinebilanparcoursep66TypeorientId' );
+		try { $( 'Saisinebilanparcoursep66StructurereferenteId' ).onchange(); } catch(id) { }
+
+		dependantSelect( 'Bilanparcours66ReferentId', 'Bilanparcours66StructurereferenteId' );
+
+		dependantSelect( 'PeSaisinebilanparcoursep66StructurereferenteId', 'PeSaisinebilanparcoursep66TypeorientId' );
+		try { $( 'PeSaisinebilanparcoursep66StructurereferenteId' ).onchange(); } catch(id) { }
+
+		dependantSelect( 'PeBilanparcours66ReferentId', 'PeBilanparcours66StructurereferenteId' );
+
+		$( 'Bilanparcours66DdreconductoncontratSansEpYear' ).observe( 'change', function(event) {
+			checkDatesToRefresh( '', 'SansEp' );
+		} );
+		$( 'Bilanparcours66DdreconductoncontratSansEpMonth' ).observe( 'change', function(event) {
+			checkDatesToRefresh( '', 'SansEp' );
+		} );
+		$( 'Bilanparcours66DdreconductoncontratSansEpDay' ).observe( 'change', function(event) {
+			checkDatesToRefresh( '', 'SansEp' );
+		} );
+		$( 'Bilanparcours66DureeEngagSansEp' ).observe( 'change', function(event) {
+			checkDatesToRefresh( '', 'SansEp' );
+		} );
+
+		// ---------------------------------------------------------------------
 
 		// Partie en cas de maintien ou  de réorientation
 		observeDisableFieldsetOnRadioValue(
 			'Bilan',
 			'data[Bilanparcours66][choixparcours]',
-			$( 'Maintien' ),
+			$( 'cgMaintienOrientationAvecEp' ),
 			'maintien',
 			false,
 			true
 		);
 
-		// Partie en cas de maintien ou  de réorientation
 		observeDisableFieldsetOnRadioValue(
 			'Bilan',
 			'data[Bilanparcours66][choixparcours]',
-			$( 'orientationactuelle' ),
-			'maintien',
-			false,
-			true
-		);
-		
-		observeDisableFieldsetOnRadioValue(
-			'Bilan',
-			'data[Bilanparcours66][choixparcours]',
-			$( 'Reorientation' ),
+			$( 'cgReorientationAvecEp' ),
 			'reorientation',
 			false,
 			true
 		);
 
-		observeDisableFieldsetOnRadioValue(
-			'Bilan',
-			'data[Bilanparcours66][choixparcours]',
-			$( 'Precoreorient' ),
-			'reorientation',
-			false,
-			true
-		);
+		$( 'Bilan' ).getInputs( 'radio', 'data[Bilanparcours66][avecep_typeorientprincipale_id]' ).each( function ( observeRadio ) {
+			$( observeRadio ).observe( 'change', function(event) {
+				checkOrientstructTypeorientId( 'data[Bilanparcours66][avecep_typeorientprincipale_id]', 'cgMaintienOrientAvecEp' );
+			} );
+		} );
+		checkOrientstructTypeorientId( 'data[Bilanparcours66][avecep_typeorientprincipale_id]', 'cgMaintienOrientAvecEp' );
 
-		// Partie en cas de maintien en social ou prépro
-		observeDisableFieldsetOnRadioValue(
-			'Bilan',
-			'data[Bilanparcours66][maintienorientparcours]',
-			$( 'TypeAccompagnementSocial' ),
-			'social',
-			false,
-			true
-		);
-		// Partie en cas de maintien en social ou prépro
-		observeDisableFieldsetOnRadioValue(
-			'Bilan',
-			'data[Bilanparcours66][maintienorientparcours]',
-			$( 'TypeAccompagnementPrepro' ),
-			'prepro',
-			false,
-			true
-		);
-
+		disableAndHideFormPart( 'cgContratReconduitAvecEp' );
+		disableAndHideFormPart( 'cgMaintienOrientAvecEpChangementRef' );
+		disableAndHideFormPart( 'cgMaintienOrientAvecEpMemeRef' );
+		<?php foreach( $options['Bilanparcours66']['typeorientprincipale_id'] as $key => $value ) { ?>
+			dependantSelect( 'Bilanparcours66NvstructurereferenteIdAvecEp<?php echo $key ?>', 'Bilanparcours66NvtypeorientIdAvecEp<?php echo $key ?>' );
+			try { $( 'Bilanparcours66NvstructurereferenteIdAvecEp<?php echo $key ?>' ).onchange(); } catch(id) { }
+			observeMemeReorientation( 'Bilanparcours66AvecepTypeorientprincipaleId<?php echo $key ?>', 'Bilanparcours66NvstructurereferenteIdAvecEp<?php echo $key ?>', 'Bilanparcours66NvtypeorientIdAvecEp<?php echo $key ?>', 'cgContratReconduitAvecEp', 'cgMaintienOrientAvecEpMemeRef', 'cgMaintienOrientAvecEpChangementRef' );
+		<?php } ?>
+		$( 'Bilanparcours66DdreconductoncontratAvecEpYear' ).observe( 'change', function(event) {
+			checkDatesToRefresh( '', 'AvecEp' );
+		} );
+		$( 'Bilanparcours66DdreconductoncontratAvecEpMonth' ).observe( 'change', function(event) {
+			checkDatesToRefresh( '', 'AvecEp' );
+		} );
+		$( 'Bilanparcours66DdreconductoncontratAvecEpDay' ).observe( 'change', function(event) {
+			checkDatesToRefresh( '', 'AvecEp' );
+		} );
+		$( 'Bilanparcours66DureeEngagAvecEp' ).observe( 'change', function(event) {
+			checkDatesToRefresh( '', 'AvecEp' );
+		} );
 
 		observeDisableFieldsOnRadioValue(
 			'Bilan',
@@ -972,7 +1259,64 @@ elseif ( $this->action == 'edit' && isset( $passagecommissionep['Decisiondefauti
 			false,
 			true
 		);
-		
+
+		// ---------------------------------------------------------------------
+
+		observeDisableFieldsetOnRadioValue(
+			'Bilan',
+			'data[Pe][Bilanparcours66][choixparcours]',
+			$( 'peMaintienOrientationAvecEp' ),
+			'maintien',
+			false,
+			true
+		);
+
+		observeDisableFieldsetOnRadioValue(
+			'Bilan',
+			'data[Pe][Bilanparcours66][choixparcours]',
+			$( 'peReorientationAvecEp' ),
+			'reorientation',
+			false,
+			true
+		);
+
+		disableAndHideFormPart( 'peContratReconduitAvecEp' );
+		disableAndHideFormPart( 'peMaintienOrientAvecEpChangementRef' );
+		disableAndHideFormPart( 'peMaintienOrientAvecEpMemeRef' );
+
+		observeMemeReorientation( 'PeBilanparcours66ChoixparcoursMaintien', 'PeSaisinebilanparcoursep66StructurereferenteId', 'PeSaisinebilanparcoursep66TypeorientId', 'peContratReconduitAvecEp', 'peMaintienOrientAvecEpMemeRef', 'peMaintienOrientAvecEpChangementRef' );
+
+		dependantSelect( 'PeSaisinebilanparcoursep66StructurereferenteId', 'PeSaisinebilanparcoursep66TypeorientId' );
+		try { $( 'PeSaisinebilanparcoursep66StructurereferenteId' ).onchange(); } catch(id) { }
+
+		$( 'PeBilanparcours66DdreconductoncontratAvecEpYear' ).observe( 'change', function(event) {
+			checkDatesToRefresh( 'Pe', 'AvecEp' );
+		} );
+		$( 'PeBilanparcours66DdreconductoncontratAvecEpMonth' ).observe( 'change', function(event) {
+			checkDatesToRefresh( 'Pe', 'AvecEp' );
+		} );
+		$( 'PeBilanparcours66DdreconductoncontratAvecEpDay' ).observe( 'change', function(event) {
+			checkDatesToRefresh( 'Pe', 'AvecEp' );
+		} );
+		$( 'PeBilanparcours66DureeEngagAvecEp' ).observe( 'change', function(event) {
+			checkDatesToRefresh( 'Pe', 'AvecEp' );
+		} );
+
+		// ---------------------------------------------------------------------
+
+		$( 'Bilan' ).getInputs( 'radio', 'data[Pe][Bilanparcours66][avecep_typeorientprincipale_id]' ).each( function ( observeRadio ) {
+			$( observeRadio ).observe( 'change', function(event) {
+				checkOrientstructTypeorientId( 'data[Pe][Bilanparcours66][avecep_typeorientprincipale_id]', 'peMaintienOrientAvecEp' );
+			} );
+		} );
+		checkOrientstructTypeorientId( 'data[Pe][Bilanparcours66][avecep_typeorientprincipale_id]', 'peMaintienOrientAvecEp' );
+		<?php foreach( $options['Bilanparcours66']['typeorientprincipale_id'] as $key => $value ) { ?>
+			dependantSelect( 'PeBilanparcours66NvstructurereferenteIdAvecEp<?php echo $key ?>', 'PeBilanparcours66NvtypeorientIdAvecEp<?php echo $key ?>' );
+			try { $( 'PeBilanparcours66NvstructurereferenteIdAvecEp<?php echo $key ?>' ).onchange(); } catch(id) { }
+		<?php } ?>
+
+		// ---------------------------------------------------------------------
+
 		<?php if ( isset( $passagecommissionep ) && !empty( $passagecommissionep ) ) { ?>
 			['traitement', 'parcours', 'audition', 'auditionpe' ].each( function( proposition ) {
 				$( proposition ).up().getElementsBySelector( 'input', 'select' ).each( function( elmt ) {
@@ -983,7 +1327,7 @@ elseif ( $this->action == 'edit' && isset( $passagecommissionep['Decisiondefauti
 				$( elmt ).writeAttribute('disabled', 'disabled');
 			} );
 		<?php } ?>
-		
+
 		<?php if ( isset( $this->params['named']['Bilanparcours66__examenauditionpe'] ) && in_array( $this->params['named']['Bilanparcours66__examenauditionpe'], array( 'radiationpe', 'noninscriptionpe' ) ) ) { ?>
 			$( 'Bilanparcours66TypeformulaireCg' ).click();
 			[ 'radiotraitement', 'radioparcours', 'radioaudition', 'Bilanparcours66TypeformulairePe' ].each( function ( elmt ) {
@@ -999,22 +1343,83 @@ elseif ( $this->action == 'edit' && isset( $passagecommissionep['Decisiondefauti
 				$( 'Bilanparcours66ExamenauditionpeRadiationpe' ).writeAttribute( 'disabled', 'disabled');
 			<?php }
 		} ?>
-	
 	});
-	
-	function checkDatesToRefresh() {
-		if( ( $F( 'Bilanparcours66DdreconductoncontratMonth' ) ) && ( $F( 'Bilanparcours66DdreconductoncontratYear' ) ) && ( $F( 'Bilanparcours66DureeEngag' ) ) ) {
+
+	function checkDatesToRefresh( prefixe, suffixe ) {
+		if( ( $F( prefixe+'Bilanparcours66Ddreconductoncontrat'+suffixe+'Month' ) ) && ( $F( prefixe+'Bilanparcours66Ddreconductoncontrat'+suffixe+'Year' ) ) && ( $F( prefixe+'Bilanparcours66DureeEngag'+suffixe ) ) ) {
 			var correspondances = new Array();
 			<?php
 				foreach( $options['Bilanparcours66']['duree_engag'] as $index => $duree ):?>correspondances[<?php echo $index;?>] = <?php echo str_replace( ' mois', '' ,$duree );?>;<?php endforeach;?>
 
 			setDateIntervalCer(
-				'Bilanparcours66Ddreconductoncontrat',
-				'Bilanparcours66Dfreconductoncontrat',
-				correspondances[$F( 'Bilanparcours66DureeEngag' )],
+				prefixe+'Bilanparcours66Ddreconductoncontrat'+suffixe,
+				prefixe+'Bilanparcours66Dfreconductoncontrat'+suffixe,
+				correspondances[$F( prefixe+'Bilanparcours66DureeEngag'+suffixe )],
 				false
 			);
 		}
-		
+	}
+
+	function checkOrientstructTypeorientId( radioName, divFormPartId ) {
+		var v = $( 'Bilan' ).getInputs( 'radio', radioName );
+		var currentValue = undefined;
+		$( v ).each( function( radio ) {
+			if( radio.checked ) {
+				currentValue = radio.value;
+			}
+		} );
+		<?php foreach( $options['Bilanparcours66']['typeorientprincipale_id'] as $key => $value ) { ?>
+			if ( currentValue == <?php echo $key ?> ) {
+				enableAndShowFormPart( divFormPartId+'<?php echo $key ?>' );
+			}
+			else {
+				disableAndHideFormPart( divFormPartId+'<?php echo $key ?>' );
+			}
+		<?php } ?>
+	}
+
+	function observeMemeReorientation( radioprecedente, structurereferenteId, typeorientId, contractualisationFieldset, maintienOrientMemeRefDiv, maintienOrientChangementRefDiv ) {
+		[ radioprecedente, typeorientId, structurereferenteId ].each( function( elmt ) {
+			$( elmt ).observe( 'change', function(event) {
+				checkMemeReorientation( structurereferenteId, typeorientId, contractualisationFieldset, maintienOrientMemeRefDiv, maintienOrientChangementRefDiv );
+			} );
+		} );
+		checkMemeReorientation( structurereferenteId, typeorientId, contractualisationFieldset, maintienOrientMemeRefDiv, maintienOrientChangementRefDiv );
+	}
+
+	function checkMemeReorientation( structurereferenteId, typeorientId, contractualisationFieldset, maintienOrientMemeRefDiv, maintienOrientChangementRefDiv ) {
+		if ( ( $F( structurereferenteId ) != '' || $F( typeorientId ) != '' ) && $( structurereferenteId ).up(1).hasClassName( 'disabled' ) == false ) {
+			<?php if ( $this->action == 'edit' && $this->data['Bilanparcours66']['changementref'] == 'O' ) { ?>
+				var typeorient_id = '<?php echo $this->data['Orientstruct']['typeorient_id'] ?>';
+				var structurereferente_id = '<?php echo $this->data['Orientstruct']['structurereferente_id'] ?>';
+			<?php } elseif ( $this->action == 'edit' ) { ?>
+				var typeorient_id = '<?php echo $this->data['Bilanparcours66']['nvtypeorient_id'] ?>';
+				var structurereferente_id = '<?php echo $this->data['Bilanparcours66']['nvstructurereferente_id'] ?>';
+			<?php } else { ?>
+				var typeorient_id = '<?php echo $personne['Orientstruct'][0]['typeorient_id'] ?>';
+				var structurereferente_id = '<?php echo $personne['Orientstruct'][0]['structurereferente_id'] ?>';
+			<?php } ?>
+			var explose = $F( structurereferenteId ).split('_');
+			if ( explose[1] == structurereferente_id ) {
+				enableAndShowFormPart( contractualisationFieldset );
+				enableAndShowFormPart( maintienOrientMemeRefDiv );
+				disableAndHideFormPart( maintienOrientChangementRefDiv );
+			}
+			else if ( $F( typeorientId ) != typeorient_id || ( $F( typeorientId ) == typeorient_id && explose[1] != structurereferente_id && $F( structurereferenteId ) != '' ) ) {
+				disableAndHideFormPart( contractualisationFieldset );
+				enableAndShowFormPart( maintienOrientChangementRefDiv );
+				disableAndHideFormPart( maintienOrientMemeRefDiv );
+			}
+			else {
+				disableAndHideFormPart( contractualisationFieldset );
+				disableAndHideFormPart( maintienOrientChangementRefDiv );
+				disableAndHideFormPart( maintienOrientMemeRefDiv );
+			}
+		}
+		else if ( $( structurereferenteId ).up(1).hasClassName( 'disabled' ) == false ) {
+			disableAndHideFormPart( contractualisationFieldset );
+			disableAndHideFormPart( maintienOrientChangementRefDiv );
+			disableAndHideFormPart( maintienOrientMemeRefDiv );
+		}
 	}
 </script>

@@ -192,6 +192,9 @@
 					$options,
 					$this->Commissionep->Passagecommissionep->Dossierep->Saisinebilanparcoursep66->enums()
 				);
+				$options['Saisinebilanparcoursep66']['typeorientprincipale_id'] = $this->Commissionep->Passagecommissionep->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->Typeorient->listRadiosOptionsPrincipales( array_values( Set::flatten( Configure::read( 'Orientstruct.typeorientprincipale' ) ) ) );
+				$options['Saisinebilanparcoursep66']['typeorient_id'] = $this->Commissionep->Passagecommissionep->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->Typeorient->list1Options();
+				$options['Saisinebilanparcoursep66']['structurereferente_id'] = $this->Commissionep->Passagecommissionep->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->Structurereferente->list1Options( array( 'orientation' => 'O' ) );
 			}
 			else if( Configure::read( 'Cg.departement' ) == 93 ) {
 				$options = Set::merge(

@@ -597,16 +597,10 @@
 			
             $errors = $this->__configureReadError( $keys );
 
-            // Vérification d'un intervalle au sens PostgreSQL
-            $intervalResult = false;
-            try {
-                $intervalResult = @$this->Structurereferente->query( 'EXPLAIN SELECT ( INTERVAL \''.Configure::read( 'Nonrespectsanctionep93.intervalleCerDo19' ).'\' );' );
-            } catch( Exception $e ) {
-            }
-
-            if( !$intervalResult ) {
-                $errors['Nonrespectsanctionep93.intervalleCerDo19'] = 'interval incorrect';
-            }
+			$return = ClassRegistry::init( 'Nonrespectsanctionep93' )->checkConfigUpdateIntervalleCerDo19Cg93();
+			if( $return !== true ) {
+				$errors['Nonrespectsanctionep93.intervalleCerDo19'] = $return;
+			}
 
 			return $errors;
 		}
@@ -628,7 +622,14 @@
 				'Traitementpdo.fichecalcul_abattbncsrv' => 'numeric',// %
 			);
 
-			return $this->__configureReadError( $keys );
+			$errors = $this->__configureReadError( $keys );
+
+			$return = ClassRegistry::init( 'Contratinsertion' )->checkConfigUpdateEncoursbilanCg66();
+            if( $return !== true ) {
+                $errors['Contratinsertion.Cg66.updateEncoursbilan'] = $return;
+            }
+
+			return $errors;
 		}
 
 		/**

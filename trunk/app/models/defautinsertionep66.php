@@ -69,21 +69,21 @@
 			),
 		);
 
-		public $hasMany = array(
-			'Decisiondefautinsertionep66' => array(
-				'className' => 'Decisiondefautinsertionep66',
-				'foreignKey' => 'defautinsertionep66_id',
-				'dependent' => true,
-				'conditions' => '',
-				'fields' => '',
-				'order' => '',
-				'limit' => '',
-				'offset' => '',
-				'exclusive' => '',
-				'finderQuery' => '',
-				'counterQuery' => ''
-			)
-		);
+// 		public $hasMany = array(
+// 			'Decisiondefautinsertionep66' => array(
+// 				'className' => 'Decisiondefautinsertionep66',
+// 				'foreignKey' => 'defautinsertionep66_id',
+// 				'dependent' => true,
+// 				'conditions' => '',
+// 				'fields' => '',
+// 				'order' => '',
+// 				'limit' => '',
+// 				'offset' => '',
+// 				'exclusive' => '',
+// 				'finderQuery' => '',
+// 				'counterQuery' => ''
+// 			)
+// 		);
 
 		/**
 		*
@@ -163,6 +163,9 @@
 						'Historiqueetatpe'
 					),
 					'Passagecommissionep' => array(
+						'conditions' => array(
+							'Passagecommissionep.commissionep_id' => $commissionep_id
+						),
 						'Decisiondefautinsertionep66' => array(
 							'order' => array( 'Decisiondefautinsertionep66.etape DESC' )
 						)
@@ -172,31 +175,28 @@
 		}
 
 		/**
-		*
+		* FIXME: type_positionbilan -> {eplaudit,eplparc,attcga,attct,ajourne,annule} => ajouter traite
 		*/
 
 		public function saveDecisions( $data, $niveauDecision ) {
-			// FIXME: filtrer les données
+			// Filtrage des données
 			$themeData = Set::extract( $data, '/Decisiondefautinsertionep66' );
 			if( empty( $themeData ) ) {
 				return true;
 			}
 			else {
-				$this->Decisiondefautinsertionep66->begin();
+				$success = $this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->saveAll( $themeData, array( 'atomic' => false ) );
 
-				$success = $this->Decisiondefautinsertionep66->saveAll( $themeData, array( 'atomic' => false ) );
+				$passagescommissionseps_ids = Set::extract( $themeData, '/Decision'.Inflector::underscore( $this->alias ).'/passagecommissionep_id' );
 
-				$this->Dossierep->Passagecommissionep->updateAll(
+				// Mise à jour de l'état du passage en commission EP
+				$success = $this->Dossierep->Passagecommissionep->updateAll(
 					array( 'Passagecommissionep.etatdossierep' => '\'decision'.$niveauDecision.'\'' ),
-					array( '"Passagecommissionep"."id"' => Set::extract( $data, '/Decision'.Inflector::underscore( $this->alias ).'/passagecommissionep_id' ) )
-				);
+					array( '"Passagecommissionep"."id"' => $passagescommissionseps_ids )
+				) && $success;
 
-				if( $success ) {
-					$this->Decisiondefautinsertionep66->commit();
-				}
-				else {
-					$this->Decisiondefautinsertionep66->rollback();
-				}
+				// Mise à jour de la position du bilan de parcours
+				$success = $this->Bilanparcours66->updatePositionBilanDecisionsEp( $this->name, $themeData, $niveauDecision, $passagescommissionseps_ids ) && $success;
 
 				return $success;
 			}
@@ -418,7 +418,6 @@
 		}
 
 		/**
-		* FIXME: et qui n'ont pas de dossier EP en cours de traitement pour cette thématique
 		* FIXME: et qui ne sont pas passés en EP pour ce motif dans un délai de moins de 1 mois (paramétrable)
 		*/
 
@@ -527,27 +526,31 @@
 					),
 				),
 				'conditions' => array(
+					// On ne veut pas les personnes ayant un dossier d'EP en cours de traitement
 					'Personne.id NOT IN ('.$this->Dossierep->sq(
 						array(
-							'fields' => array( 'dossierseps1.id' ),
+							'fields' => array( 'dossierseps1.personne_id' ),
 							'alias' => 'dossierseps1',
 							'conditions' => array(
 								'dossierseps1.personne_id = Personne.id',
+								'dossierseps1.themeep' => 'defautsinsertionseps66',
 								'dossierseps1.id IN ('.$this->Dossierep->Passagecommissionep->sq(
 									array(
 										'fields' => array( 'passagescommissionseps1.dossierep_id' ),
 										'alias' => 'passagescommissionseps1',
 										'conditions' => array(
-											'passagescommissionseps1.etatdossierep' => array( 'associe', 'decisionep', 'decisioncg' )
+											'passagescommissionseps1.dossierep_id = dossierseps1.id',
+											'passagescommissionseps1.etatdossierep' => array( 'associe', 'decisionep', 'decisioncg', 'reporte' )
 										)
 									)
 								).')'
 							)
 						)
 					).')',
+					// Ni celles qui ont un dossier d'EP ayant été traité en commission plus récemment que 2 mois
 					'Personne.id NOT IN ('.$this->Dossierep->sq(
 						array(
-							'fields' => array( 'dossierseps2.id' ),
+							'fields' => array( 'dossierseps2.personne_id' ),
 							'alias' => 'dossierseps2',
 							'conditions' => array(
 								'dossierseps2.personne_id = Personne.id',
@@ -557,7 +560,8 @@
 										'fields' => array( 'passagescommissionseps2.dossierep_id' ),
 										'alias' => 'passagescommissionseps2',
 										'conditions' => array(
-											'passagescommissionseps2.etatdossierep' => 'traite'
+											'passagescommissionseps2.dossierep_id = dossierseps2.id',
+											'passagescommissionseps2.etatdossierep' => array( 'traite', 'annule' )
 										),
 										'joins' => array(
 											array(
@@ -566,7 +570,7 @@
 												'type' => 'INNER',
 												'conditions' => array(
 													'commissionseps.id = passagescommissionseps2.commissionep_id',
-													'commissionseps.dateseance >=' => date( 'Y-m-d', strtotime( '-2 mons' ) )
+													'commissionseps.dateseance >=' => date( 'Y-m-d', strtotime( '-2 mons' ) ) // FIXME: paramétrage
 												)
 											)
 										)
@@ -574,8 +578,28 @@
 								).')'
 							)
 						)
-					).')'
-				) // FIXME: paramétrage
+					).')',
+					// Ni celles dont le dossier n'a pas encore été associé à une commission
+					'Personne.id NOT IN ('.$this->Dossierep->sq(
+						array(
+							'fields' => array( 'dossierseps3.personne_id' ),
+							'alias' => 'dossierseps3',
+							'conditions' => array(
+								'dossierseps3.personne_id = Personne.id',
+								'dossierseps3.themeep' => 'defautsinsertionseps66',
+								'dossierseps3.id NOT IN ('.$this->Dossierep->Passagecommissionep->sq(
+									array(
+										'fields' => array( 'passagescommissionseps3.dossierep_id' ),
+										'alias' => 'passagescommissionseps3',
+										'conditions' => array(
+											'passagescommissionseps3.dossierep_id = dossierseps3.id',
+										)
+									)
+								).')'
+							)
+						)
+					).')',
+				)
 			);
 
 			$nom = Set::classicExtract( $datas, 'Personne.nom' );

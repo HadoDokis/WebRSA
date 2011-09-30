@@ -7,10 +7,6 @@
 			'add' => 'Regroupementseps:edit'
 		);
 
-		public function beforeFilter() {
-		}
-
-
 		protected function _setOptions() {
 			$options = $this->Regroupementep->enums();
 			$this->set( compact( 'options' ) );

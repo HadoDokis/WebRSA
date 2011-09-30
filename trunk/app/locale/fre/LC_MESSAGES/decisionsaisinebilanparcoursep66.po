@@ -37,11 +37,17 @@ msgstr "Réorientation du SOCIAL vers le PROFESSIONNEL"
 msgid "ENUM::REORIENTATION::PS"
 msgstr "Réorientation du PROFESSIONNEL vers le SOCIAL"
 
+msgid "ENUM::REORIENTATION::PP"
+msgstr "Maintien de l'orientation en PROFESSIONNEL"
+
 msgid "ENUM::MAINTIENORIENTPARCOURS::social"
 msgstr "Sociale"
 
 msgid "ENUM::MAINTIENORIENTPARCOURS::prepro"
 msgstr "Prépro"
+
+msgid "ENUM::MAINTIENORIENTPARCOURS::pro"
+msgstr "Professionnel"
 
 msgid "ENUM::CHANGEMENTREFPARCOURS::O"
 msgstr "Avec changement de référent"
@@ -59,7 +65,7 @@ msgid "Decisionsaisinebilanparcoursep66.changementrefparcours"
 msgstr "Changement du référent du parcours"
 
 msgid "Decisionsaisinebilanparcoursep66.reorientation"
-msgstr "Type de réorientaion"
+msgstr "Type de réorientation"
 
 msgid "Decisionsaisinebilanparcoursep66.commentaire"
 msgstr "Commentaire"
