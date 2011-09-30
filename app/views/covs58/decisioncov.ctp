@@ -1,4 +1,4 @@
-<h1><?php echo $this->pageTitle = 'Commission du '.date('d-m-Y à h:i', strtotime($cov58['Cov58']['datecommission'])).' de la COV '; ?></h1>
+<h1><?php echo $this->pageTitle = 'COV du '.date('d-m-Y à h:i', strtotime($cov58['Cov58']['datecommission'])); ?></h1>
 <?php
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );

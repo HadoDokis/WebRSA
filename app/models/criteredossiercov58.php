@@ -138,6 +138,7 @@
 					'Dossiercov58.themecov58_id',
 					'Dossiercov58.cov58_id',
 					'Dossiercov58.etapecov',
+					'Cov58.datecommission',
 					'Personne.id',
 					'Personne.qual',
 					'Personne.nom',

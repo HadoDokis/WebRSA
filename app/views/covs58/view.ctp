@@ -1,4 +1,4 @@
-<h1><?php	echo $this->pageTitle = 'Affichage commission de COV'; ?></h1>
+<h1><?php	echo $this->pageTitle = 'Affichage de la COV'; ?></h1>
 <div  id="ficheCI">
 	<ul class="actionMenu">
 	<?php
