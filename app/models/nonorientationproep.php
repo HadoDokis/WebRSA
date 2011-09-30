@@ -109,6 +109,15 @@
 
 			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
 
+			if( Configure::read( 'Cg.departement' ) == 58 ) {
+				$conditionJoinTypeorient = 'Typeorient.id <>';
+				$valueJoinTypeorient = Configure::read( 'Typeorient.emploi_id' );
+			}
+			else {
+				$conditionJoinTypeorient = 'Typeorient.lib_type_orient NOT LIKE';
+				$valueJoinTypeorient = 'Emploi%';
+			}
+
 			$cohorte = array(
 				'fields' => array(
 					'Orientstruct.id',
@@ -147,7 +156,7 @@
 						'type' => 'INNER',
 						'conditions' => array(
 							'Structurereferente.typeorient_id = Typeorient.id',
-							'Typeorient.lib_type_orient NOT LIKE' => 'Emploi%'
+							$conditionJoinTypeorient => $valueJoinTypeorient
 						)
 					),
 					array(

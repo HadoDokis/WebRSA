@@ -609,7 +609,7 @@
 					)
 				);
 
-				if( !empty($lastOrient) && strcmp( 'Emploi', $lastOrient['Typeorient']['lib_type_orient'] ) != -1 ) {
+				if( !empty($lastOrient) && ( Configure::read( 'Typeorient.emploi_id' ) == $lastOrient['Typeorient']['id'] ) ) {
 					$return = true;
 				}
 			}
