@@ -49,7 +49,7 @@
         <?php echo $form->input( 'Dossier.matricule', array( 'label' => 'Numéro CAF', 'maxlength' => 15 ) );?>
         <?php echo $form->input( 'Detailcalculdroitrsa.natpf', array( 'label' => 'Nature de la prestation', 'type' => 'select', 'options' => $natpf, 'empty' => true ) );?>
         <?php if(Configure::read( 'Cg.departement') == 58 ):?>
-			<?php echo $form->input( 'Calculdroitrsa.toppersdrodevorsa', array( 'label' => 'Soumis à Droit et Devoir', 'type' => 'select', 'options' => $toppersdrodevorsa, 'value' => ( isset( $this->data['Calculdroitrsa']['toppersdrodevorsa'] ) ?  $this->data['Calculdroitrsa']['toppersdrodevorsa'] : 1 ), 'empty' => true ) );?>
+			<?php echo $form->input( 'Calculdroitrsa.toppersdrodevorsa', array( 'label' => 'Soumis à Droit et Devoir', 'type' => 'select', 'options' => $toppersdrodevorsa, 'selected' => ( !empty( $this->data ) ? @$this->data['Calculdroitrsa']['toppersdrodevorsa'] : 1 ), 'empty' => true ) );?>
 		<?php else:?>
 			<?php echo $form->input( 'Calculdroitrsa.toppersdrodevorsa', array( 'label' => 'Soumis à Droit et Devoir', 'type' => 'select', 'options' => $toppersdrodevorsa, 'empty' => true ) );?>
 		<?php endif;?>
