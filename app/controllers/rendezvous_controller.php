@@ -404,7 +404,7 @@ App::import( 'Helper', 'Locale' );
 			if( !empty( $this->data ) ){
 				if( $this->Rendezvous->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
 					if( $this->Rendezvous->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
-						if ( $this->Rendezvous->Statutrdv->provoquePassageEp( $this->data['Rendezvous']['statutrdv_id'] ) && Configure::read( 'Cg.departement' ) == 58 ) {
+						if ( !empty( $this->data['Rendezvous']['statutrdv_id'] ) && $this->Rendezvous->Statutrdv->provoquePassageEp( $this->data['Rendezvous']['statutrdv_id'] ) && Configure::read( 'Cg.departement' ) == 58 ) {
 							if ( $this->Rendezvous->passageEp( $personne_id, $this->data['Rendezvous']['typerdv_id'] ) ) {
 								$dossierep = array(
 									'Dossierep' => array(

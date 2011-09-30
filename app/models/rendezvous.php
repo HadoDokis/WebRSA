@@ -42,12 +42,12 @@
 					'message' => 'Champ obligatoire'
 				)
 			),
-			'statutrdv_id' => array(
-				array(
-					'rule' => 'notEmpty',
-					'message' => 'Champ obligatoire'
-				)
-			)
+// 			'statutrdv_id' => array(
+// 				array(
+// 					'rule' => 'notEmpty',
+// 					'message' => 'Champ obligatoire'
+// 				)
+// 			)
 		);
 
 		public $belongsTo = array(
@@ -334,5 +334,26 @@
 			return $return;
 		}
 		
+
+		/**
+		* Règle de validation sur le statut du RDV uniquement si pas CG58
+		*/
+
+		public function beforeValidate( $options = array() ) {
+			$return = parent::beforeValidate( $options );
+
+			if( Configure::read( 'Cg.departement' ) != 58 ){
+				$rule = array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire',
+				);
+
+				$this->validate['statutrdv_id'][] = $rule;
+			}
+
+
+			return $return;
+		}
+
 	}
 ?>
