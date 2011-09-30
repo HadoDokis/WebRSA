@@ -124,7 +124,7 @@ msgstr "Non"
 msgid "ENUM::ACCORDPROJET::1"
 msgstr "Oui"
 
-msgid "Bilanparcours66.choixparcours"
+msgid "Pe.Bilanparcours66.choixparcours"
 msgstr "Choix du parcours"
 
 msgid "ENUM::CHOIXPARCOURS::maintien"
@@ -160,6 +160,9 @@ msgstr "Réorientation du SOCIAL vers le PROFESSIONNEL"
 
 msgid "ENUM::REORIENTATION::PS"
 msgstr "Réorientation du PROFESSIONNEL vers le SOCIAL"
+
+msgid "ENUM::REORIENTATION::PP"
+msgstr "Maintien de l'orientation en PROFESSIONNEL"
 
 msgid "Bilanparcours66.examenaudition"
 msgstr "Raison d'examen du dossier"
@@ -199,6 +202,9 @@ msgstr "Social"
 
 msgid "ENUM::MAINTIENORIENTAVISEP::prepro"
 msgstr "Prépro"
+
+msgid "ENUM::MAINTIENORIENTPARCOURS::pro"
+msgstr "Professionnel"
 
 msgid "Bilanparcours66.changementrefeplocale"
 msgstr "Changement de référent"
@@ -436,6 +442,9 @@ msgstr "Ajourné"
 msgid "ENUM::POSITIONBILAN::annule"
 msgstr "Annulé"
 
+msgid "ENUM::POSITIONBILAN::traite"
+msgstr "Traité"
+
 msgid "Bilansparcours66::filelink"
 msgstr "Liste des fichiers liés au bilan de parcours"
 
@@ -447,3 +456,33 @@ msgstr "Oui"
 
 msgid "ENUM::HASPIECEJOINTE::0"
 msgstr "Non"
+
+msgid "Bilanparcours66.avecep_typeorientprincipale_id"
+msgstr "Pour un accompagnement"
+
+msgid "Bilanparcours66.sansep_typeorientprincipale_id"
+msgstr "Pour un accompagnement"
+
+msgid "Bilanparcours66.nvtypeorient_id"
+msgstr "Type d'orientation"
+
+msgid "Bilanparcours66.nvstructurereferente_id"
+msgstr "Structure référente"
+
+msgid "Pe.Bilanparcours66.nvtypeorient_id"
+msgstr "Type d'orientation"
+
+msgid "Pe.Bilanparcours66.nvstructurereferente_id"
+msgstr "Structure référente"
+
+msgid "Pe.Bilanparcours66.duree_engag"
+msgstr "Durée de la reconduction du contrat"
+
+msgid "Pe.Bilanparcours66.ddreconductoncontrat"
+msgstr "Date de début de reconduction du contrat"
+
+msgid "Pe.Bilanparcours66.dfreconductoncontrat"
+msgstr "Date de fin de reconduction du contrat"
+
+msgid "Pe.Bilanparcours66.avecep_typeorientprincipale_id"
+msgstr "Pour un accompagnement"

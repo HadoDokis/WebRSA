@@ -49,8 +49,6 @@
 
 			$this->set( 'rsaSocle', $this->Option->natpf() );
 
-			$options['Saisinebilanparcoursep66']['typeorient_id'] = $this->Bilanparcours66->Typeorient->listOptions();
-			$options['Saisinebilanparcoursep66']['structurereferente_id'] = $this->Bilanparcours66->Structurereferente->list1Options( array( 'orientation' => 'O' ) );
 			$options['Bilanparcours66']['duree_engag'] = $this->Option->duree_engag_cg66();
 
 			$typesorients = $this->Bilanparcours66->Typeorient->find('list');
@@ -62,6 +60,14 @@
 
 			$options = Set::merge( $options, $this->Bilanparcours66->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->enums() );
 			$options = Set::merge( $options, $this->Bilanparcours66->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->enums() );
+
+			$typeorientprincipale = Configure::read( 'Orientstruct.typeorientprincipale' );
+			$options['Bilanparcours66']['typeorientprincipale_id'] = $this->Bilanparcours66->Typeorient->listRadiosOptionsPrincipales( $typeorientprincipale['SOCIAL'] );
+
+			$options['Bilanparcours66']['nvtypeorient_id'] = $this->Bilanparcours66->Typeorient->listOptionsUnderParent();
+			$options['Bilanparcours66']['nvstructurereferente_id'] = $this->Bilanparcours66->Structurereferente->list1Options( array( 'orientation' => 'O' ) );
+			$options['Saisinebilanparcoursep66']['typeorient_id'] = $options['Bilanparcours66']['nvtypeorient_id'];
+			$options['Saisinebilanparcoursep66']['structurereferente_id'] = $options['Bilanparcours66']['nvstructurereferente_id'];
 
 			$this->set( compact( 'options' ) );
 		}
@@ -366,6 +372,11 @@
 										)
 									)
 								)
+							),
+							'Contratinsertion',
+							'Orientstruct' => array(
+								'Typeorient',
+								'Structurereferente'
 							)
 						),
 						'conditions' => array( 'Bilanparcours66.id' => $id )
@@ -520,20 +531,20 @@
 					$success = $this->Bilanparcours66->sauvegardeBilan( $this->data );
 				}
 
+				if( !empty( $contrat['Contratinsertion'] ) ) {
+					//Modification de la position du CER lorsque le bilan est créé et que le CER existe
+					$success = $this->{$this->modelClass}->Contratinsertion->updateAll(
+						array( 'Contratinsertion.positioncer' => '\'attrenouv\'' ),
+						array(
+							'"Contratinsertion"."personne_id"' => $contrat['Contratinsertion']['personne_id'],
+							'"Contratinsertion"."id"' => $contrat['Contratinsertion']['id']
+						)
+					) && $success;
+				}
+
 				$this->_setFlashResult( 'Save', $success );
 				if( $success ) {
 					$this->Bilanparcours66->commit();
-
-					if( !empty( $contrat['Contratinsertion'] ) ) {
-						//Modification de la position du CER lorsque le bilan est créé et que le CER existe
-						$this->{$this->modelClass}->Contratinsertion->updateAll(
-							array( 'Contratinsertion.positioncer' => '\'attrenouv\'' ),
-							array(
-								'"Contratinsertion"."personne_id"' => $contrat['Contratinsertion']['personne_id'],
-								'"Contratinsertion"."id"' => $contrat['Contratinsertion']['id']
-							)
-						);
-					}
 
 					if ( isset( $this->data['Bilanparcours66']['proposition'] ) && $this->data['Bilanparcours66']['proposition'] == 'traitement' && isset( $this->data['Bilanparcours66']['maintienorientation'] ) && $this->data['Bilanparcours66']['maintienorientation'] == 1 ) {
 						$this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index', $personne_id ) );
@@ -541,7 +552,6 @@
 					else {
 						$this->redirect( array( 'controller' => 'bilansparcours66', 'action' => 'index', $personne_id ) );
 					}
-
 				}
 				else {
 					$this->Bilanparcours66->rollback();
@@ -649,7 +659,7 @@
 					'conditions' => array( 'Personne.id' => $personne_id ),
 					'contain' => array(
 						'Orientstruct' => array(
-							'fields' => array( 'typeorient_id', 'date_valid' ),
+							'fields' => array( 'typeorient_id', 'structurereferente_id', 'date_valid' ),
 								'Typeorient' => array(
 									'fields' => array(
 										'lib_type_orient'
@@ -699,23 +709,28 @@
 				)
 			);
 
-			//Précochage du bouton radio selon le type d'orientation de l'allocataire
-			$typeformulaire = 'cg';
-			$orientation = $this->Bilanparcours66->Orientstruct->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Orientstruct.personne_id' => $personne_id
-					),
-					'contain' => array(
-						'Typeorient'
+			//Précochage du bouton radio selon l'origine du bilan de parcours ou le type d'orientation de l'allocataire
+			if( isset( $bilanparcours66 ) && in_array( $bilanparcours66['Bilanparcours66']['examenauditionpe'], array( 'noninscriptionpe', 'radiationpe' ) ) ) {
+				$typeformulaire = 'cg';
+			}
+			else {
+				$typeformulaire = 'cg';
+				$orientation = $this->Bilanparcours66->Orientstruct->find(
+					'first',
+					array(
+						'conditions' => array(
+							'Orientstruct.personne_id' => $personne_id
+						),
+						'contain' => array(
+							'Typeorient'
+						)
 					)
-				)
-			);
-			$typeorient_id = Set::classicExtract( $orientation, 'Typeorient.id' );
+				);
+				$typeorient_id = Set::classicExtract( $orientation, 'Typeorient.id' );
 
-			if( $this->Bilanparcours66->Orientstruct->Typeorient->isProOrientation($typeorient_id) && ( !isset( $this->params['named'] ) || empty( $this->params['named'] ) ) ){
-				$typeformulaire = 'pe';
+				if( $this->Bilanparcours66->Orientstruct->Typeorient->isProOrientation($typeorient_id) && ( !isset( $this->params['named'] ) || empty( $this->params['named'] ) ) ){
+					$typeformulaire = 'pe';
+				}
 			}
 
 			$this->set( 'typevoie', $this->Option->typevoie() );

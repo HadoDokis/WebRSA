@@ -67,3 +67,9 @@ msgstr "Réorientation"
 
 msgid "Orientstruct.origine"
 msgstr "Origine de l'orientation"
+
+msgid "Orientstruct.typeorient_id"
+msgstr "Type d'orientation"
+
+msgid "Orientstruct.structurereferente_id"
+msgstr "Structure référente"

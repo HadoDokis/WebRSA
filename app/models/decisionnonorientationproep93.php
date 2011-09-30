@@ -28,13 +28,13 @@
 		);
 
 		public $belongsTo = array(
-			'Nonorientationproep93' => array(
-				'className' => 'Nonorientationproep93',
-				'foreignKey' => 'nonorientationproep93_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
-			),
+// 			'Nonorientationproep93' => array(
+// 				'className' => 'Nonorientationproep93',
+// 				'foreignKey' => 'nonorientationproep93_id',
+// 				'conditions' => '',
+// 				'fields' => '',
+// 				'order' => ''
+// 			),
 			'Typeorient' => array(
 				'className' => 'Typeorient',
 				'foreignKey' => 'typeorient_id',

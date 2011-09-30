@@ -86,6 +86,8 @@
 		}
 
 		public function printCourriersInformations() {
+			$this->Defautinsertionep66->begin();
+
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
 			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 			
@@ -110,9 +112,11 @@
 			$pdfs = $this->Gedooo->concatPdfs( $pdfs, 'CourriersInformation' );
 
 			if( $pdfs ) {
+				$this->Defautinsertionep66->commit();
 				$this->Gedooo->sendPdfContentToClient( $pdfs, 'CourriersInformation' );
 			}
 			else {
+				$this->Defautinsertionep66->rollback();
 				$this->Session->setFlash( 'Impossible de générer les courriers d\'information pour cette commission.', 'default', array( 'class' => 'error' ) );
 				$this->redirect( $this->referer() );
 			}

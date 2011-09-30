@@ -971,7 +971,7 @@ function in_array(p_val, p_array) {
 */
 
 function changeColspanViewInfosEps( idColumnToChangeColspan, decision, colspanMax, idsNonRaisonpassage ) {
-	if ( in_array( decision, [ 'reporte', 'annule', 'maintienref', 'refuse', 'suspensionnonrespect', 'suspensiondefaut', 'maintien' ] ) ) {
+	if ( in_array( decision, [ 'reporte', 'annule', 'maintienref', 'refuse', 'suspensionnonrespect', 'suspensiondefaut'/*, 'maintien'*/ ] ) ) {
 		$( idColumnToChangeColspan ).writeAttribute( "colspan", colspanMax );
 		idsNonRaisonpassage.each( function ( id ) {
 			$( id ).hide();
@@ -987,13 +987,13 @@ function changeColspanFormAnnuleReporteEps( idColumnToChangeColspan, colspanMax,
 	if ( $F( decision ) == 'reporte' || $F( decision ) == 'annule' ) {
 		$( idColumnToChangeColspan ).writeAttribute( "colspan", colspanMax );
 		idsNonRaisonpassage.each( function ( id ) {
-			$( id ).up(1).hide();
+			$( id ).disable().up(1).hide();
 		});
 	}
 	else {
 		$( idColumnToChangeColspan ).writeAttribute( "colspan", 1 );
 		idsNonRaisonpassage.each( function ( id ) {
-			$( id ).up(1).show();
+			$( id ).enable().up(1).show();
 		});
 	}
 }
@@ -1025,5 +1025,39 @@ function toutDecocher( selecteur ) {
 
 	$$( selecteur ).each( function( checkbox ) {
 		$( checkbox ).checked = false;
+	} );
+}
+
+/**
+* Active et affiche une partie d'un formulaire contenu dans une balise 
+*/
+
+function enableAndShowFormPart( formpartid ) {
+	$( formpartid ).removeClassName( 'disabled' );
+	$( formpartid ).show();
+	
+	$( formpartid ).getElementsBySelector( 'div.input' ).each( function( elmt ) {
+		$( elmt ).removeClassName( 'disabled' );
+	} );
+		
+	$( formpartid ).getElementsBySelector( 'input', 'select', 'button', 'textarea', 'radio' ).each( function( elmt ) {
+		$( elmt ).enable();
+	} );
+}
+
+/**
+* Désactive et cache une partie d'un formulaire contenu dans une balise 
+*/
+
+function disableAndHideFormPart( formpartid ) {
+	$( formpartid ).addClassName( 'disabled' );
+	$( formpartid ).hide();
+	
+	$( formpartid ).getElementsBySelector( 'div.input' ).each( function( elmt ) {
+		$( elmt ).addClassName( 'disabled' );
+	} );
+		
+	$( formpartid ).getElementsBySelector( 'input', 'select', 'button', 'textarea', 'radio' ).each( function( elmt ) {
+		$( elmt ).disable();
 	} );
 }

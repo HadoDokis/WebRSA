@@ -17,35 +17,35 @@
 
 		public $forceVirtualFields = false;
 
+
+
 		/**
 		* Exécute les différentes méthods du modèle permettant la mise en cache.
 		* Utilisé au préchargement de l'application (/prechargements/index).
 		*
 		* @return boolean true en cas de succès, false sinon.
-		*/
+			*/
 
 		public function prechargement() {
 			return true;
 		}
 
 		/**
-		* INFO: avec PostgreSQL, on s'assure un accès exclusif à la table "jetons"
-		* INFO: Valeble seulement pour PostgreSQL
+		*
 		*/
 
 		public function begin() {
-			$return = $this->getDataSource()->begin($this);
-//             $this->query( 'LOCK TABLE "jetons" IN ACCESS EXCLUSIVE MODE;' );
+			$return = $this->getDataSource( $this->useDbConfig )->begin($this);
 			return $return;
 		}
 
 		public function commit() {
-			$return = $this->getDataSource()->commit($this);
+			$return = $this->getDataSource( $this->useDbConfig )->commit($this);
 			return $return;
 		}
 
 		public function rollback() {
-			$return = $this->getDataSource()->rollback($this);
+			$return = $this->getDataSource( $this->useDbConfig )->rollback($this);
 			return $return;
 		}
 
@@ -828,6 +828,33 @@
 					return '( Adresse.numcomptt IN ( \''.implode( '\', \'', $mesCodesInsee ).'\' ) /*OR ( Situationdossierrsa.etatdosrsa = \'Z\' ) */ )'; ///FIXME: passage de OR à AND car les dossiers à Z mais non présents dans le code insee apparaissaient !!!!!!!
 				}
 			}
+		}
+
+		/**
+		* Permet de vérifier la syntaxe d'un intervalle au sens PostgreSQL.
+		*
+		* @param string $interval L'intervalle à tester.
+		* @return mixed true si la syntaxe est correcte, sinon une chaîne de
+		*         caractères contenant l'erreur.
+		*/
+
+		protected function _checkSqlIntervalSyntax( $interval ) {
+			$sql = "EXPLAIN SELECT NOW() + interval '{$interval}'";
+			$result = false;
+			try {
+				$result = ( @$this->query( $sql ) !== false );
+			} catch( Exception $e ) {
+			}
+
+			if( !$result ) {
+				$ds = $this->getDataSource( $this->useDbConfig );
+				$result = ( ( $ds->config['driver'] == 'postgres' ) ? pg_last_error() : null );
+			}
+			else {
+				$result = true;
+			}
+
+			return $result;
 		}
 	}
 ?>

@@ -482,11 +482,11 @@
 			// FIXME: plus générique
 			$decisions = array(
 				// CG 66
-				'Defautinsertionep66' => $this->Dossierep->Defautinsertionep66->Decisiondefautinsertionep66->enumList( 'decision' ),
-				'Saisinebilanparcoursep66' => $this->Dossierep->Saisinebilanparcoursep66->Decisionsaisinebilanparcoursep66->enumList( 'decision' ),
+				'Defautinsertionep66' => $this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->enumList( 'decision' ),
+				'Saisinebilanparcoursep66' => $this->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->enumList( 'decision' ),
 				// CG 93
-				'Nonrespectsanctionep93' => $this->Dossierep->Nonrespectsanctionep93->Decisionnonrespectsanctionep93->enumList( 'decision' ),
-				'Reorientationep93' => $this->Dossierep->Reorientationep93->Decisionreorientationep93->enumList( 'decision' )
+				'Nonrespectsanctionep93' => $this->Dossierep->Passagecommissionep->Decisionnonrespectsanctionep93->enumList( 'decision' ),
+				'Reorientationep93' => $this->Dossierep->Passagecommissionep->Decisionreorientationep93->enumList( 'decision' )
 			);
 // debug( $decisions );
 			$this->set( compact( 'decisions' ) );

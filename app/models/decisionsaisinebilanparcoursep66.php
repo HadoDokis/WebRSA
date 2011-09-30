@@ -10,6 +10,7 @@
 			'ValidateTranslate',
 			'Formattable' => array(
 				'suffix' => array(
+					'typeorient_id',
 					'structurereferente_id',
 					'referent_id'
 				)
@@ -69,31 +70,37 @@
 			),
 			'typeorient_id' => array(
 				'notEmptyIf' => array(
-					'rule' => array( 'notEmptyIf', 'decision', true, array( 'reorientation' ) ),
+					'rule' => array( 'notEmptyIf', 'decision', true, array( 'maintien', 'reorientation' ) ),
 					'message' => 'Champ obligatoire',
 				),
 			),
 			'structurereferente_id' => array(
 				'notEmptyIf' => array(
-					'rule' => array( 'notEmptyIf', 'decision', true, array( 'reorientation' ) ),
+					'rule' => array( 'notEmptyIf', 'decision', true, array( 'maintien', 'reorientation' ) ),
 					'message' => 'Champ obligatoire',
 				),
 			),
-			'reorientation' => array(
-				'notEmptyIf' => array(
-					'rule' => array( 'notEmptyIf', 'decision', true, array( 'reorientation' ) ),
-					'message' => 'Champ obligatoire',
-				),
-			),
-			'maintienorientparcours' => array(
-				'notEmptyIf' => array(
-					'rule' => array( 'notEmptyIf', 'decision', true, array( 'maintien' ) ),
-					'message' => 'Champ obligatoire',
-				),
-			),
+// 			'reorientation' => array(
+// 				'notEmptyIf' => array(
+// 					'rule' => array( 'notEmptyIf', 'decision', true, array( 'reorientation' ) ),
+// 					'message' => 'Champ obligatoire',
+// 				),
+// 			),
+// 			'maintienorientparcours' => array(
+// 				'notEmptyIf' => array(
+// 					'rule' => array( 'notEmptyIf', 'decision', true, array( 'maintien' ) ),
+// 					'message' => 'Champ obligatoire',
+// 				),
+// 			),
 			'changementrefparcours' => array(
 				'notEmptyIf' => array(
-					'rule' => array( 'notEmptyIf', 'decision', true, array( 'maintien' ) ),
+					'rule' => array( 'notEmptyIf', 'decision', true, array( 'maintien', 'reorientation' ) ),
+					'message' => 'Champ obligatoire',
+				),
+			),
+			'typeorientprincipale_id' => array(
+				'notEmptyIf' => array(
+					'rule' => array( 'notEmptyIf', 'decision', true, array( 'maintien', 'reorientation' ) ),
 					'message' => 'Champ obligatoire',
 				),
 			),

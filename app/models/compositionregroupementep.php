@@ -50,11 +50,13 @@
 
 			$membreChoisi = false;
 			$compoCree = false;
+			$uneCompoObligatoire = false;
 // 			$nbPrioritaire = 0;
 			foreach( $compositionregroupementep['Compositionregroupementep'] as $compo ) {
 				$compoCree = true;
 
 				if( $compo['obligatoire'] == 1 /*|| $compo['prioritaire'] == 1*/ ) {
+					$uneCompoObligatoire = true;
 					$membresFonction = $this->Fonctionmembreep->find(
 						'first',
 						array(
@@ -80,7 +82,7 @@
 				}
 			}
 
-			if ( !$membreChoisi && $compoCree ) {
+			if ( !$membreChoisi && $compoCree && $uneCompoObligatoire ) {
 				$return = false;
 				$error = "obligatoire";
 			}

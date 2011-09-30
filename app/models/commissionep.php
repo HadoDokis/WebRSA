@@ -249,28 +249,36 @@
 
 			$success = true;
 
-			// FIXME: ne sert à rien ?
-			// FIXME: ça va casser ailleurs ?
-			/*foreach( $data as $thematique => $dossierseps ) {
-				foreach( $dossierseps as $key => $dossierep ) {
-					if( empty( $dossierep['decision'] ) ) {
-						unset( $dossierseps[$key] );
-					}
-				}
-				if( empty( $dossierseps ) ) {
-					unset( $data[$thematique] );
-				}
-			}*/
+			// Champs à conserver en cas d'annulation ou de report
+			$champsAGarder = array( 'id', 'etape', 'passagecommissionep_id', 'created', 'modified' );
+			$champsAGarderPourNonDecision = Set::merge( $champsAGarder, array( 'decision', 'commentaire', 'raisonnonpassage' ) );
 
 			foreach( $this->themesTraites( $commissionep_id ) as $theme => $decision ) {
 				$model = Inflector::classify( $theme );
 				$modeleDecision = Inflector::classify( "decision{$theme}" );
-				if( isset( $data[$model] ) || isset( $data[$modeleDecision] ) ) { // FIXME: && $data['Decision..] ?
+				if( isset( $data[$model] ) || isset( $data[$modeleDecision] ) && !empty( $data[$modeleDecision] ) ) {
+					// Mise à NULL de certains champs de décision
+					$champsDecision = array_keys( $this->Passagecommissionep->{$modeleDecision}->schema( true ) );
+					$champsANull = array_fill_keys( array_diff( $champsDecision, $champsAGarder ), null );
+					$champsANullPourNonDecision = array_diff( $champsDecision, $champsAGarderPourNonDecision );
+					foreach( $data[$modeleDecision] as $i => $decision ) {
+						// 1°) En cas d'annulation ou de report
+						if( in_array( $decision['decision'], array( 'annule', 'reporte' ) ) ) {
+							foreach( $champsANullPourNonDecision as $champ ) {
+								$data[$modeleDecision][$i][$champ] = null;
+							}
+						}
+						// 2°) Dans les autres cas
+						else {
+							$data[$modeleDecision][$i] = Set::merge( $champsANull, $decision );
+						}
+					}
+
 					$success = $this->Passagecommissionep->Dossierep->{$model}->saveDecisions( $data, $niveauDecision ) && $success;
 				}
 			}
 
-			///FIXME : calculer si tous les dossiers ont bien une décision avant de chager l'état ?
+			///FIXME : calculer si tous les dossiers ont bien une décision avant de changer l'état ?
 			$this->id = $commissionep_id;
 			$this->set( 'etatcommissionep', "decision{$niveauDecision}" );
 			$success = $this->save() && $success;

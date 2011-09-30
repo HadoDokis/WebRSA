@@ -166,6 +166,26 @@
 			}
 		}
 
+		public function listRadiosOptionsPrincipales( $listeIds ) {
+			$options = $this->find(
+				'list',
+				array (
+					'fields' => array(
+						'Typeorient.id',
+						'Typeorient.lib_type_orient'
+					),
+					'conditions' => array(
+						'Typeorient.parentid' => NULL,
+						'Typeorient.actif' => 'O',
+						'Typeorient.id' => $listeIds
+					),
+					'contain' => false,
+					'order'  => array( 'Typeorient.lib_type_orient ASC' )
+				)
+			);
+			return $options;
+		}
+
 		/**
 		*
 		*/
@@ -257,6 +277,54 @@
 			
 			return ( !empty( $typeorient ) );
 		}
-		
+
+		public function listOptionsUnderParent() {
+			$typesorients = $this->find(
+				'all',
+				array (
+					'fields' => array(
+						'Typeorient.id',
+						'Typeorient.lib_type_orient',
+						'Typeorient.parentid'
+					),
+					'conditions' => array(
+						'Typeorient.parentid NOT' => NULL,
+						'Typeorient.actif' => 'O'
+					),
+					'contain' => false,
+					'order'  => array( 'Typeorient.lib_type_orient ASC' )
+				)
+			);
+			$options = array();
+			foreach( $typesorients as $typeorient ) {
+				$options[$typeorient['Typeorient']['parentid']][$typeorient['Typeorient']['id']] = $typeorient['Typeorient']['lib_type_orient'];
+			}
+			return $options;
+		}
+
+		public function list1Options() {
+			$typesorients = $this->find(
+				'all',
+				array (
+					'fields' => array(
+						'Typeorient.id',
+						'Typeorient.lib_type_orient',
+						'Typeorient.parentid'
+					),
+					'conditions' => array(
+						'Typeorient.parentid NOT' => NULL,
+						'Typeorient.actif' => 'O'
+					),
+					'contain' => false,
+					'order'  => array( 'Typeorient.lib_type_orient ASC' )
+				)
+			);
+			$options = array();
+			foreach( $typesorients as $typeorient ) {
+				$options[$typeorient['Typeorient']['parentid'].'_'.$typeorient['Typeorient']['id']] = $typeorient['Typeorient']['lib_type_orient'];
+			}
+			return $options;
+		}
+
 	}
 ?>

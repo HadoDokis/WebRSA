@@ -114,7 +114,100 @@
 									echo $type2->format( $bilanparcour66, 'Bilanparcours66.choixparcours', array( 'tag' => 'td', 'options' => $options ) );
 								}
 
-								if ( isset( $bilanparcour66['Saisinebilanparcoursep66']['typeorient_id'] ) && !empty( $bilanparcour66['Saisinebilanparcoursep66']['typeorient_id'] ) ) {
+								// FIXME: en cas de plusieurs passages ?
+								$thematique = array_values( Set::filter( Set::classicExtract( $bilanparcour66, '{s}.Dossierep.themeep' ) ) );
+								$thematique = @$thematique[0];
+
+								if( $thematique == 'saisinesbilansparcourseps66' ) {
+									// Proposition du référent
+									echo $xhtml->tag(
+										'td',
+										( !empty( $bilanparcour66['Saisinebilanparcoursep66']['typeorient_id'] ) ) ? Set::classicExtract( $typesorients, Set::classicExtract( $bilanparcour66, 'Saisinebilanparcoursep66.typeorient_id' ) ) : null
+									);
+									echo $xhtml->tag(
+										'td',
+										( !empty( $bilanparcour66['Saisinebilanparcoursep66']['structurereferente_id'] ) ) ? Set::classicExtract( $structuresreferentes, Set::classicExtract( $bilanparcour66, 'Saisinebilanparcoursep66.structurereferente_id' ) ) : null
+									);
+
+									// Avis de l'EP, décision du CG - FIXME: passage 0 ? voir le tri
+									$iDernierpassage = count( $bilanparcour66['Saisinebilanparcoursep66']['Dossierep']['Passagecommissionep'] ) - 1;
+									foreach( array( 0, 1 ) as $niveauDecision ) {
+										if( !isset( $bilanparcour66['Saisinebilanparcoursep66']['Dossierep']['Passagecommissionep'][$iDernierpassage]['Decisionsaisinebilanparcoursep66'][$niveauDecision] ) ) {
+											echo '<td colspan="2"></td>';
+										}
+										else {
+											$decision = $bilanparcour66['Saisinebilanparcoursep66']['Dossierep']['Passagecommissionep'][$iDernierpassage]['Decisionsaisinebilanparcoursep66'][$niveauDecision];
+											if( in_array( $decision['decision'], array( 'maintien', 'annule', 'reporte' ) ) ) {
+												echo $xhtml->tag(
+													'td',
+													__d( 'decisionsaisinebilanparcoursep66', 'ENUM::DECISION::'.$decision['decision'], true ),
+													array(
+														'colspan' => 2
+													)
+												);
+											}
+											else { // reorientation
+												echo $xhtml->tag(
+													'td',
+													Set::classicExtract( $typesorients, $decision['typeorient_id'] )
+												);
+												echo $xhtml->tag(
+													'td',
+													Set::classicExtract( $structuresreferentes, $decision['structurereferente_id'] )
+												);
+											}
+										}
+									}
+								}
+								else if( $thematique == 'defautsinsertionseps66' ) {
+									// Proposition du référent
+									// FIXME: vide ??
+									echo '<td colspan="2"></td>';
+									/*echo $xhtml->tag(
+										'td',
+										Set::classicExtract( $typesorients, Set::classicExtract( $bilanparcour66, 'Saisinebilanparcoursep66.typeorient_id' ) )
+									);
+									echo $xhtml->tag(
+										'td',
+										Set::classicExtract( $structuresreferentes, Set::classicExtract( $bilanparcour66, 'Saisinebilanparcoursep66.structurereferente_id' ) )
+									);*/
+
+									// Avis de l'EP, décision du CG - FIXME: passage 0 ? voir le tri
+									$iDernierpassage = count( $bilanparcour66['Defautinsertionep66']['Dossierep']['Passagecommissionep'] ) - 1;
+									foreach( array( 0, 1 ) as $niveauDecision ) {
+										if( !isset( $bilanparcour66['Defautinsertionep66']['Dossierep']['Passagecommissionep'][$iDernierpassage]['Decisiondefautinsertionep66'][$niveauDecision] ) ) {
+											echo '<td colspan="2"></td>';
+										}
+										else {
+											$decision = $bilanparcour66['Defautinsertionep66']['Dossierep']['Passagecommissionep'][$iDernierpassage]['Decisiondefautinsertionep66'][$niveauDecision];
+											if( in_array( $decision['decision'], array( 'suspensionnonrespect', 'suspensiondefaut', 'maintien', 'annule', 'reporte' ) ) ) {
+												echo $xhtml->tag(
+													'td',
+													__d( 'decisiondefautinsertionep66', 'ENUM::DECISION::'.$decision['decision'], true ),
+													array(
+														'colspan' => 2
+													)
+												);
+											}
+											else { // reorientationprofverssoc, reorientationsocversprof
+												echo $xhtml->tag(
+													'td',
+													Set::classicExtract( $typesorients, $decision['typeorient_id'] )
+												);
+												echo $xhtml->tag(
+													'td',
+													Set::classicExtract( $structuresreferentes, $decision['structurereferente_id'] )
+												);
+											}
+										}
+									}
+									//debug( $bilanparcour66['Defautinsertionep66'] );
+								}
+								else { // Sans passage en EP
+									echo '<td colspan="2"></td>'; // Proposition du référent
+								}
+
+								/*if ( isset( $bilanparcour66['Saisinebilanparcoursep66']['typeorient_id'] ) && !empty( $bilanparcour66['Saisinebilanparcoursep66']['typeorient_id'] ) ) {
 									echo $xhtml->tag(
 										'td',
 										Set::classicExtract( $typesorients, Set::classicExtract( $bilanparcour66, 'Saisinebilanparcoursep66.typeorient_id' ) )
@@ -150,16 +243,16 @@
 										echo "<td colspan='2'></td>";
 									}
 								}
-								elseif ( isset( $bilanparcour66['Defautinsertionep66']['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1]['decision'] ) && ( $bilanparcour66['Defautinsertionep66']['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1]['decision'] == 'suspensionnonrespect' || $bilanparcour66['Defautinsertionep66']['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1]['decision'] == 'suspensiondefaut' || $bilanparcour66['Defautinsertionep66']['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1]['decision'] == 'maintien' ) ) {
+								elseif ( isset( $bilanparcour66['Defautinsertionep66']['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1]['decision'] ) && in_array( $bilanparcour66['Defautinsertionep66']['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['decision'], array( 'suspensionnonrespect', 'suspensiondefaut', 'maintien', 'annule' ) )  ) {
 									echo "<td colspan='2'></td>";
 									echo $xhtml->tag(
 										'td',
-										__d( 'decisiondefautinsertionep66', 'ENUM::DECISION::'.$bilanparcour66['Defautinsertionep66']['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1]['decision'], true ),
+										__d( 'decisiondefautinsertionep66', 'ENUM::DECISION::'.$bilanparcour66['Defautinsertionep66']['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['decision'], true ),
 										array(
 											'colspan' => 2
 										)
 									);
-									if ( isset( $bilanparcour66['Defautinsertionep66']['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1]['decision'] ) && ( $bilanparcour66['Defautinsertionep66']['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1]['decision'] == 'suspensionnonrespect' || $bilanparcour66['Defautinsertionep66']['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1]['decision'] == 'suspensiondefaut' || $bilanparcour66['Defautinsertionep66']['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1]['decision'] == 'maintien' ) ) {
+									if ( isset( $bilanparcour66['Defautinsertionep66']['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1]['decision'] ) && in_array( $bilanparcour66['Defautinsertionep66']['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1]['decision'], array( 'suspensionnonrespect', 'suspensiondefaut', 'maintien', 'annule' ) ) ) {
 										echo $xhtml->tag(
 											'td',
 											__d( 'decisiondefautinsertionep66', 'ENUM::DECISION::'.$bilanparcour66['Defautinsertionep66']['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1]['decision'], true ),
@@ -213,7 +306,7 @@
 									echo "<td colspan='2'></td>";
 									echo "<td colspan='2'></td>";
 									echo "<td colspan='2'></td>";
-								}
+								}*/
 								
 								echo $html->tag(
 									'td',

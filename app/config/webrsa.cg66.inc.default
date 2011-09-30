@@ -227,13 +227,13 @@
 	Configure::write( 'Recherche.qdFilters.Serviceinstructeur', ( Configure::read( 'Cg.departement' ) == 58 ) );
 	
 
-    /**
-    *   Permet de définir si on peut ou non ajouter une nouvelle orientation à un dossier
-    *   - toppersdrodevorsa     --> par défaut 1 (personne soumise à droit et devoir) 
-    *   - situationetatdosrsa   --> par défaut array( 'Z', 2, 3, 4) (dossier dans un droit ouvert et versable)
-    */
-    Configure::write( 'AjoutOrientationPossible.toppersdrodevorsa', array( null, 0, 1 ) ); // aucune distincton sur le soumis à droit et devoir
-    Configure::write( 'AjoutOrientationPossible.situationetatdosrsa', array( 'Z', 0, 1, 2, 3, 4, 5, 6 ) );// on prend toutes les valeurs possibles de l'état du dossier RSA
+	/**
+	*   Permet de définir si on peut ou non ajouter une nouvelle orientation à un dossier
+	*   - toppersdrodevorsa     --> par défaut 1 (personne soumise à droit et devoir) 
+	*   - situationetatdosrsa   --> par défaut array( 'Z', 2, 3, 4) (dossier dans un droit ouvert et versable)
+	*/
+	Configure::write( 'AjoutOrientationPossible.toppersdrodevorsa', array( null, 0, 1 ) ); // aucune distincton sur le soumis à droit et devoir
+	Configure::write( 'AjoutOrientationPossible.situationetatdosrsa', array( 'Z', 0, 1, 2, 3, 4, 5, 6 ) );// on prend toutes les valeurs possibles de l'état du dossier RSA
 
 	/**
 	* Permet de spécifier si les recherches sur l'identifiant Pôle Emploi d'un
@@ -244,4 +244,21 @@
 	*/
 
 	Configure::write( 'Recherche.identifiantpecourt', true );
+
+	/**
+	* Spécifie l'intervalle, par-rapport à la date de fin d'un CER, en deçà duquel
+	* un CER sera positionné « En cours:Bilan à réaliser » grâce au shell
+	* positioncer66.
+	*
+	* Voir le document app/docs/Documentation administrateurs.odt, partie
+	* "Intervalles PostgreSQL"
+	*/
+
+	Configure::write( 'Contratinsertion.Cg66.updateEncoursbilan', '2 month' );
+
+	/**
+	* Variable contenant un array avec les id des typesorients du grand social et de l'emploi
+	*/
+	Configure::write( 'Orientstruct.typeorientprincipale', array( 'SOCIAL' => array( 4, 6 ), 'Emploi' => array( 1 ) ) );
+
 ?>
