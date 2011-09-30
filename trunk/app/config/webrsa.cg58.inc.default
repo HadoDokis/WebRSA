@@ -258,4 +258,11 @@
 	*/
 
 	Configure::write( 'Recherche.identifiantpecourt', false );
+
+
+	/**
+	* Variable contenant un array avec les id des typesorients du grand social et de l'emploi
+	*/
+	Configure::write( 'Typeorient.emploi_id', 1 );
+
 ?>
