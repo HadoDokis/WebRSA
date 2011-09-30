@@ -10,10 +10,13 @@
 	echo $xhtml->tag( 'th', __d( Inflector::underscore(Inflector::classify($theme)), $theme.'.datevalidation', true ) );
 	echo $xhtml->tag( 'th', __d( Inflector::underscore(Inflector::classify($theme)), $theme.'.commentaire', true ) );
 	echo $xhtml->tag( 'th', 'Actions' );
+		
+		
+// 	$datecommission = preg_replace( '/^([^ ]+) .*$/', '\1', $cov58['Cov58']['datecommission'] );
 
 echo '</tr></thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossiercov ) {
-// debug($dossiercov);
+// debug( $d );
 		echo $form->input( "{$theme}.{$i}.id", array( 'type' => 'hidden', 'value' => $dossiercov[$theme]['id'] ) );
 		echo $xhtml->tableCells(
 			array(
@@ -21,9 +24,8 @@ echo '</tr></thead><tbody>';
 				implode( ' ', array( $dossiercov['Personne']['qual'], $dossiercov['Personne']['nom'], $dossiercov['Personne']['prenom'] ) ),
 				implode( ' ', array( $dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['numvoie'], isset( $typevoie[$dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie']] ) ? $typevoie[$dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie']] : null, $dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['nomvoie'], $dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['codepos'], $dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['locaadr'] ) ),
 				implode( ' ', array( $dossiercov['Referent']['qual'], $dossiercov['Referent']['nom'], $dossiercov['Referent']['prenom'] ) ),
-// 				$locale->date( __( 'Locale->date', true ), $dossiercov[$theme]['datedemande'] ),
 				$form->input( "{$theme}.{$i}.decisioncov", array( 'type' => 'select', 'options' => $decisionscovs, 'label' => false, 'empty' => true ) ),
-				$form->input( "{$theme}.{$i}.datevalidation", array( 'type' => 'date', 'empty' => false, 'dateFormat' => 'DMY', 'label' => false, 'maxYear'=>date('Y')+2, 'minYear'=>date('Y')-2 ) ),
+				$form->input( "{$theme}.{$i}.datevalidation", array( 'type' => 'date', 'selected' => $cov58['Cov58']['datecommission'], 'dateFormat' => 'DMY', 'label' => false, 'maxYear'=>date('Y')+2, 'minYear'=>date('Y')-2 ) ),
 				$form->input( "{$theme}.{$i}.commentaire", array( 'type' => 'textarea', 'label' => false ) ),
 				$xhtml->viewLink( 'Voir', array( 'controller' => 'contratsinsertion', 'action' => 'index', $dossiercov['Personne']['id'] ), true, true )
 			)
