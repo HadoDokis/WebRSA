@@ -727,7 +727,83 @@ die();
 			$this->render( $this->action, null, '/apres/add_edit_'.Configure::read( 'nom_form_apre_cg' ) );
 		}
 
+		/**
+		*
+		*/
 
+		public function apre( $id = null ) {
+			$qual = $this->Option->qual();
+			$typevoie = $this->Option->typevoie();
+
+			$apre = $this->{$this->modelClass}->find(
+				'first',
+				array(
+					'conditions' => array(
+						"{$this->modelClass}.id" => $id
+					),
+					'contain' => array(
+						'Personne',
+						'Structurereferente',
+						'Referent',
+						'Aideapre66' => array(
+							'Fraisdeplacement66',
+							'Piececomptable66',
+							'Pieceaide66',
+						)
+					)
+				)
+			);
+
+			$piecesPresentes = Set::classicExtract($apre, 'Aideapre66.Piececomptable66.{n}.id');
+
+			$conditions = array();
+			if( !empty( $piecesPresentes ) ) {
+				$conditions = array( 'NOT' => array( 'Piececomptable66.id' => $piecesPresentes ) );
+			}
+
+			$piecesAbsentes = $this->Piececomptable66->find( 'list', array( 'conditions' => $conditions, 'contain' => false ) );
+			$apre['Aideapre66']['Piececomptable66']='';
+			foreach( $piecesAbsentes as $model => $pieces ) {
+				if( !empty( $pieces ) ) {
+					$apre['Aideapre66']['Piececomptable66'] .= "\n" .'- '.implode( "\n- ", array($pieces) ).',';
+				}
+			}
+
+			$this->Adressefoyer->bindModel(
+				array(
+					'belongsTo' => array(
+						'Adresse' => array(
+							'className'     => 'Adresse',
+							'foreignKey'    => 'adresse_id'
+						)
+					)
+				)
+			);
+
+			$adresse = $this->Adressefoyer->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Adressefoyer.foyer_id' => Set::classicExtract( $apre, 'Personne.foyer_id' ),
+						'Adressefoyer.rgadr' => '01',
+					)
+				)
+			);
+			$apre['Adresse'] = $adresse['Adresse'];
+
+			$apre_id = Set::classicExtract( $apre, "{$this->modelClass}.id" );
+
+			///Traduction pour les données de la Personne/Contact/Partenaire/Référent
+			$apre['Personne']['qual'] = Set::enum( Set::classicExtract( $apre, 'Personne.qual' ), $qual );
+			$apre['Referent']['qual'] = Set::enum( Set::classicExtract( $apre, 'Referent.qual' ), $qual );
+
+			$apre['Structurereferente']['adresse'] = Set::classicExtract( $apre, 'Structurereferente.num_voie').' '.Set::enum( Set::classicExtract( $apre, 'Structurereferente.type_voie'), $typevoie ).' '.Set::classicExtract( $apre, 'Structurereferente.nom_voie').' '.Set::classicExtract( $apre, 'Structurereferente.code_postal').' '.Set::classicExtract( $apre, 'Structurereferente.ville');
+
+// debug($apre);
+// die();
+			$pdf = $this->Apre66->ged( $apre, 'APRE/apre.odt' );
+			$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'apre-%s.pdf', date( 'Y-m-d' ) ) );
+		}
 		/**
 		*
 		*/
