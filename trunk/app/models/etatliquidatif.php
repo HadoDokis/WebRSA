@@ -788,6 +788,8 @@
 		*/
 
 		protected function _qdDonneesApre() {
+			$dbo = $this->getDataSource( $this->useDbConfig );
+
 			$querydata = array(
 				'fields' => Set::merge(
 					$this->Apre->fields(),
@@ -826,6 +828,39 @@
 					'Adressefoyer.id IN ('
 						.$this->Apre->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).
 					')',
+					'OR' => array(
+						'Apre.statutapre' => 'F',
+						'AND' => array(
+							'Apre.statutapre' => 'C',
+							'ApreComiteapre.id IN ('
+								.$this->Apre->ApreComiteapre->sq(
+									array(
+										'fields' => array( 'apres_comitesapres.id' ),
+										'alias' => 'apres_comitesapres',
+										'joins' => array(
+											array(
+												'table' => $dbo->fullTableName( $this->Apre->ApreComiteapre->Comiteapre, true ),
+												'alias' => 'comitesapres',
+												'type' => 'INNER',
+												'conditions' => array(
+													'"apres_comitesapres"."comiteapre_id" = "comitesapres"."id"'
+												)
+											)
+										),
+										'conditions' => array(
+											'apres_comitesapres.apre_id = Apre.id',
+											'apres_comitesapres.decisioncomite' => 'ACC'
+										),
+										'order' => array(
+											'comitesapres.datecomite DESC',
+											'comitesapres.heurecomite DESC',
+										),
+										'limit' => 1
+									)
+								)
+							.')',
+						)
+					),
 					'Apre.eligibiliteapre' => 'O',
 					'Etatliquidatif.datecloture IS NOT NULL'
 				)
