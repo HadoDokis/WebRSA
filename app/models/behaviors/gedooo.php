@@ -72,6 +72,12 @@
 			$u = new GDO_Utility();
 			$oMainPart = new GDO_PartType();
 
+			$bTemplate = $u->ReadFile($path_model);
+			if( empty( $bTemplate ) ) {
+				$this->log( sprintf( "Le modèle de document %s n'existe pas ou n'est pas lisible.", $path_model ), LOG_ERROR );
+				return false;
+			}
+
 			if( !empty( $mainData ) ) {
 				foreach( Set::flatten( $mainData, '_' ) as $key => $value ) {
 					$oMainPart = $this->_addPartValue( $oMainPart, $key, $value, $options );
@@ -135,7 +141,6 @@
 				umask( $oldMask );
 			}
 
-			$bTemplate = $u->ReadFile($path_model);
 			$oTemplate = new GDO_ContentType(
 				"",
 				"modele.ott",
@@ -146,12 +151,14 @@
 
 			$oFusion = new GDO_FusionType( $oTemplate, $sMimeType, $oMainPart );
 			$oFusion->process();
-
 			$success = ( $oFusion->getCode() == 'OK' );
 
 			if( $success ) {
 				$content = $oFusion->getContent();
 				return $content->binary;
+			}
+			else {
+				$this->log( sprintf( "Erreur lors de la génération du document (%s num. %s: %s).", $oFusion->getCode(), $oFusion->errNum, $oFusion->getMessage() ), LOG_ERROR );
 			}
 
 			return $success;
