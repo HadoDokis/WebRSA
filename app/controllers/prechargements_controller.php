@@ -21,18 +21,6 @@
 
 		protected function _getModels() {
 			$models = Configure::listObjects( 'model' );
-			/*$plugins = Configure::listObjects('plugin');
-			if (!empty($plugins)) {
-				foreach ($plugins as $plugin) {
-					$pPath = APP . 'plugins' . DS . Inflector::underscore($plugin) . DS . 'models' . DS;
-					$pluginModels = Configure::listObjects('model', $pPath, false);
-					if (!empty($pluginModels)) {
-						foreach ($pluginModels as $model) {
-							$models[] = "$plugin.$model";
-						}
-					}
-				}
-			}*/
 			return $models;
 		}
 
@@ -44,7 +32,6 @@
 			$tables = $this->Connection->query( 'SELECT table_name as name FROM INFORMATION_SCHEMA.tables WHERE table_schema = \'public\' ORDER BY name ASC;' );
 			return Set::extract( $tables, '{n}.0.name' );
 		}
-
 
 		/**
 		*
@@ -65,9 +52,6 @@
 				if( $attributes['useTable'] === false ) {
 					$init = false;
 				}
-// 				else if( !is_null( $attributes['useTable'] ) ) {
-// 					$init = false;
-// 				}
 				else if( $attributes['useDbConfig'] != 'default' ) {
 					$init = false;
 				}
