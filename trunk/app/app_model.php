@@ -856,5 +856,21 @@
 
 			return $result;
 		}
+
+		/**
+		* Retourne la sous-requête d'un des champs virtuels se trouvant dans $this->virtualFields
+		*
+		* @return string
+		*/
+
+		public function sqVirtualField( $field ) {
+			$virtualField = Set::classicExtract( $this->virtualFields, $field );
+			if( empty( $virtualField ) ) {
+				throw new Exception( "Virtual field \"{$field}\" does not exist in model \"{$this->alias}\"." );
+				return null;
+			}
+
+			return preg_replace( $virtualField['regex'], $virtualField['alias'], "{$this->alias}.{$field}" );
+		}
 	}
 ?>

@@ -324,6 +324,32 @@
 		*
 		*/
 
+		public function sqApreNomaide() {
+			$dbo = $this->getDataSource( $this->useDbConfig );
+			$natureAidesApres = ClassRegistry::init( 'Option' )->natureAidesApres();
+
+			$case = "CASE \n";
+			foreach( array_keys( $natureAidesApres ) as $aideModel ) {
+				$tableName = $dbo->fullTableName( $this->{$aideModel}, false );
+				$case .= "WHEN EXISTS( SELECT * FROM {$tableName} AS \"{$aideModel}\" WHERE \"Apre\".\"id\" = \"{$aideModel}\".\"apre_id\" ) THEN '{$aideModel}'\n";
+			}
+			$case .= 'ELSE NULL END';
+
+			return $case;
+		}
+
+		/**
+		*
+		*/
+
+		public function sqApreAllocation() {
+			return "CASE WHEN \"Apre\".\"statutapre\" = 'F' THEN \"Apre\".\"mtforfait\" ELSE \"ApreEtatliquidatif\".\"montantattribue\" END";
+		}
+
+		/**
+		*
+		*/
+
 		public function sousRequeteMontanttotal() {
 			$fieldTotal = array();
 			foreach( $this->aidesApre as $modelAide ) {
@@ -817,6 +843,5 @@
 
 			return $apre;
 		}
-
 	}
 ?>

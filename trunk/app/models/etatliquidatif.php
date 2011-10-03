@@ -174,6 +174,31 @@
 		public $sousRequeteApreNbpaiementeff = '( SELECT COUNT( apres_etatsliquidatifs.id ) FROM apres_etatsliquidatifs WHERE apres_etatsliquidatifs.apre_id = "Apre"."id" AND apres_etatsliquidatifs.montantattribue IS NOT NULL GROUP BY apres_etatsliquidatifs.apre_id )';
 
 		/**
+		* Exécute les différentes méthods du modèle permettant la mise en cache.
+		* Utilisé au préchargement de l'application (/prechargements/index).
+		*
+		* @return boolean true en cas de succès, false sinon.
+		*/
+
+		public function prechargement() {
+			$success = parent::prechargement();
+
+			$return = $this->qdDonneesApreForfaitaire( NULL );
+			$success = !empty( $return ) && $success;
+
+			$return = $this->qdDonneesApreForfaitaireGedooo( NULL );
+			$success = !empty( $return ) && $success;
+
+			$return = $this->qdDonneesApreComplementaire( NULL );
+			$success = !empty( $return ) && $success;
+
+			$return = $this->qdDonneesApreComplementaireGedooo( NULL );
+			$success = !empty( $return ) && $success;
+
+			return $return;
+		}
+
+		/**
 		*   Récupération de la liste de toutes les APREs selon des conditions
 		*   @param array $conditions
 		*/
@@ -756,6 +781,368 @@
 
 			$this->Apre->unbindModelAll();
 			return $this->Apre->find( 'all', $querydata );
+		}
+
+		/**
+		*
+		*/
+
+		protected function _qdDonneesApre() {
+			$querydata = array(
+				'fields' => Set::merge(
+					$this->Apre->fields(),
+					$this->Apre->Personne->fields(),
+					$this->ApreEtatliquidatif->fields(),
+					$this->fields(),
+					$this->Apre->Personne->Foyer->Adressefoyer->Adresse->fields(),
+					array(
+						$this->Apre->Personne->Foyer->Adressefoyer->Adresse->sqVirtualField( 'localite' )
+					),
+					$this->Apre->Personne->Foyer->Dossier->fields(),
+					// begin FIXME: ne concerne que les apres complémentaires
+					$this->Apre->ApreComiteapre->fields(),
+					$this->Apre->ApreComiteapre->Comiteapre->fields(),
+					$this->Apre->Structurereferente->fields(),
+					$this->Apre->Structurereferente->Referent->fields()
+					// end FIXME: ne concerne que les apres complémentaires
+				),
+				'contain' => false,
+				'joins' => array(
+					$this->join( 'ApreEtatliquidatif', array( 'type' => 'INNER' ) ),
+					$this->ApreEtatliquidatif->join( 'Apre', array( 'type' => 'INNER' ) ),
+					// begin FIXME: ne concerne que les apres complémentaires
+					$this->Apre->join( 'ApreComiteapre' ),
+					$this->Apre->ApreComiteapre->join( 'Comiteapre' ),
+					$this->Apre->join( 'Structurereferente' ),
+					$this->Apre->join( 'Referent' ),
+					// end FIXME: ne concerne que les apres complémentaires
+					$this->Apre->join( 'Personne', array( 'type' => 'INNER' ) ),
+					$this->Apre->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
+					$this->Apre->Personne->Foyer->join( 'Adressefoyer' ),
+					$this->Apre->Personne->Foyer->Adressefoyer->join( 'Adresse' ),
+					$this->Apre->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
+				),
+				'conditions' => array(
+					'Adressefoyer.id IN ('
+						.$this->Apre->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).
+					')',
+					'Apre.eligibiliteapre' => 'O',
+					'Etatliquidatif.datecloture IS NOT NULL'
+				)
+			);
+
+			return $querydata;
+		}
+
+		/**
+		*
+		*/
+
+		public function qdDonneesApreForfaitaire() {
+			$cacheKey = $this->useDbConfig.'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ );
+			$querydata = Cache::read( $cacheKey );
+
+			if( $querydata === false ) {
+				$querydata = $this->qdDonneesApreForfaitaireGedooo();
+
+				/*$querydata['fields'] = array(
+					'Dossier.numdemrsa',
+					'Apre.id',
+					'Apre.numeroapre',
+					'Apre.datedemandeapre',
+					'Apre.mtforfait',
+					'Apre.nbenf12',
+					'NULL AS "Apre__nomaide"',
+					'NULL AS "Apre__natureaide"',
+					'"Apre"."mtforfait" AS "Apre__allocation"',
+					'Personne.nom',
+					'Personne.prenom',
+					'Adresse.locaadr',
+					'ApreEtatliquidatif.montantattribue',
+					'Etatliquidatif.id',
+					'Etatliquidatif.typeapre',
+				);*/
+				// INFO: ce sont les seules infos envoyées à Gedooo dans EtatsliquidatifsController::impressioncohorte
+				$querydata['fields'] = array(
+					'Apre.id',
+					'Apre.personne_id',
+					'Apre.numeroapre',
+					'Apre.statutapre',
+					'Apre.datedemandeapre',
+					'Apre.mtforfait',
+					'Apre.montantaverser',
+					'Apre.nbenf12',
+					'Apre.nbpaiementsouhait',
+					'Apre.montantdejaverse',
+					'NULL AS "Apre__nomaide"',
+					'NULL AS "Apre__natureaide"',
+					'"Apre"."mtforfait" AS "Apre__allocation"',
+					'Personne.nom',
+					'Personne.prenom',
+					'Personne.qual',
+					'Dossier.numdemrsa',
+					'Adresse.locaadr',
+					'Adresse.numvoie',
+					'Adresse.nomvoie',
+					'Adresse.complideadr',
+					'Adresse.compladr',
+					'Adresse.typevoie',
+					'Adresse.codepos',
+				);
+
+				Cache::write( $cacheKey, $querydata );
+			}
+
+			return $querydata;
+		}
+
+		/**
+		*
+		*/
+
+		public function qdDonneesApreForfaitaireGedooo() {
+			$cacheKey = $this->useDbConfig.'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ );
+			$querydata = Cache::read( $cacheKey );
+
+			if( $querydata === false ) {
+				$querydata = $this->_qdDonneesApre();
+
+				/*$querydata['fields'] = Set::merge(
+					$querydata['fields'],
+					array(
+						'NULL AS "Apre__nomaide"',
+						'NULL AS "Apre__natureaide"',
+						'"Apre"."mtforfait" AS "Apre__allocation"'
+					)
+				);*/
+				// INFO: ce sont les seules infos envoyées à Gedooo dans EtatsliquidatifsController::impressioncohorte
+				$querydata['fields'] = array(
+					'Apre.id',
+					'Apre.personne_id',
+					'Apre.numeroapre',
+					'Apre.statutapre',
+					'Apre.datedemandeapre',
+					'Apre.mtforfait',
+					'Apre.montantaverser',
+					'Apre.nbenf12',
+					'Apre.nbpaiementsouhait',
+					'Apre.montantdejaverse',
+					'NULL AS "Apre__nomaide"',
+					'NULL AS "Apre__natureaide"',
+					'"Apre"."mtforfait" AS "Apre__allocation"',
+					'Personne.nom',
+					'Personne.prenom',
+					'Personne.qual',
+					'Dossier.numdemrsa',
+					'Adresse.locaadr',
+					'Adresse.numvoie',
+					'Adresse.nomvoie',
+					'Adresse.complideadr',
+					'Adresse.compladr',
+					'Adresse.typevoie',
+					'Adresse.codepos',
+				);
+
+				Cache::write( $cacheKey, $querydata );
+			}
+
+			return $querydata;
+		}
+
+		/**
+		*
+		*/
+
+		public function qdDonneesApreComplementaire() {
+			$cacheKey = $this->useDbConfig.'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ );
+			$querydata = Cache::read( $cacheKey );
+
+			if( $querydata === false ) {
+				$querydata = $this->qdDonneesApreForfaitaireGedooo();
+
+				$querydata['fields'] = array(
+					'Dossier.numdemrsa',
+					'Apre.id',
+					'Apre.numeroapre',
+					'Apre.datedemandeapre',
+					'Apre.mtforfait',
+					'Apre.nbenf12',
+// 					'NULL AS "Apre__nomaide"',
+					$this->Apre->sqApreNomaide().' AS "Apre__natureaide"',
+					$this->Apre->sqApreNomaide().' AS "Apre__nomaide"',
+					'Personne.nom',
+					'Personne.prenom',
+					'Adresse.locaadr',
+					'ApreEtatliquidatif.montantattribue',
+					'Etatliquidatif.id',
+					'Etatliquidatif.typeapre',
+				);
+
+				$querydata['conditions']['ApreComiteapre.decisioncomite'] = 'ACC';
+
+				Cache::write( $cacheKey, $querydata );
+			}
+
+			return $querydata;
+		}
+
+		/**
+		*
+		*/
+
+		public function qdDonneesApreComplementaireGedooo() {
+			$cacheKey = $this->useDbConfig.'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ );
+			$querydata = Cache::read( $cacheKey );
+
+			if( $querydata === false ) {
+				$dbo = $this->getDataSource( $this->useDbConfig );
+				$querydata = $this->_qdDonneesApre();
+
+				$querydata['fields'] = Set::merge(
+					$querydata['fields'],
+					array(
+						$this->Apre->sqApreNomaide().' AS "Apre__nomaide"',
+						$this->Apre->sqApreNomaide().' AS "Apre__natureaide"',
+						'"ApreEtatliquidatif"."montantattribue" AS "Apre__allocation"'
+					)
+				);
+
+				$querydata['conditions']['ApreComiteapre.decisioncomite'] = 'ACC';
+				// FIXME ?
+				$querydata['conditions'][] = 'ApreComiteapre.id IN ('
+					.$this->Apre->ApreComiteapre->sq(
+						array(
+							'alias' => 'apres_comitesapres',
+							'fields' => array( 'apres_comitesapres.id' ),
+							'joins' => array(
+								array (
+									'table' => $dbo->fullTableName( $this->Apre->ApreComiteapre->Comiteapre, true ),
+									'alias' => 'comitesapres',
+									'type' => 'INNER',
+									'conditions' => 'apres_comitesapres.comiteapre_id = comitesapres.id',
+								)
+							),
+							'conditions' => array(
+								'apres_comitesapres.apre_id = Apre.id'
+							),
+							'order' => array(
+								'comitesapres.datecomite DESC',
+								'comitesapres.heurecomite DESC'
+							),
+							'contain' => false,
+							'limit' => 1
+						)
+					)
+				.')';
+
+				// Population Modellie
+				foreach( array( 'ddform', 'dfform', 'dureeform' ) as $field ) {
+					$case = "CASE ";
+					if( $field != 'dureeform' ) {
+						$models = array( 'Formqualif', 'Formpermfimo', 'Actprof' );
+					}
+					else {
+						$models = array( 'Formqualif', 'Formpermfimo', 'Permisb', 'Actprof' );
+					}
+					foreach( $models as $aideModel ) {
+						$tableName = $dbo->fullTableName( $this->Apre->{$aideModel}, false );
+						$case .= "WHEN EXISTS( SELECT * FROM {$tableName} AS \"{$aideModel}\" WHERE \"Apre\".\"id\" = \"{$aideModel}\".\"apre_id\" ) THEN \"{$aideModel}\".\"{$field}\" ";
+					}
+					$case .= 'ELSE NULL END';
+					$querydata['fields'][] = "{$case} AS \"Modellie__{$field}\"";
+				}
+
+				foreach( $this->Apre->aidesApre as $modelAide ) {
+					$querydata['joins'][] = $this->Apre->join( $modelAide );
+					$querydata['fields'] = Set::merge( $querydata['fields'], $this->Apre->{$modelAide}->fields() );
+				}
+
+				// Tiersprestataireapre
+				$TiersprestataireapreModel = ClassRegistry::init( 'Tiersprestataireapre' );
+				$join = array(
+					'table' => $dbo->fullTableName( $TiersprestataireapreModel, true ),
+					'alias' => 'Tiersprestataireapre',
+					'type' => 'LEFT',
+					'conditions' => array()
+				);
+
+				foreach( $this->Apre->modelsFormation as $modelAide ) {
+					$join['conditions']['OR'][] = "( {$modelAide}.tiersprestataireapre_id IS NOT NULL AND  Tiersprestataireapre.id = {$modelAide}.tiersprestataireapre_id )";
+				}
+				$querydata['joins'][] = $join;
+
+				$querydata['fields'] = Set::merge(
+					$querydata['fields'],
+					$TiersprestataireapreModel->fields()
+				);
+
+				// Données concernant les coordonées bancaires du tiers
+				$DomiciliationbancaireModel = ClassRegistry::init( 'Domiciliationbancaire' );
+				$querydata['joins'][] = array(
+					'table'      => $dbo->fullTableName( $DomiciliationbancaireModel, true ),
+					'alias'      => 'Domiciliationbancaire',
+					'type'       => 'LEFT OUTER',
+					'foreignKey' => false,
+					'conditions' => array(
+						'Domiciliationbancaire.codebanque = Tiersprestataireapre.etaban',
+						'Domiciliationbancaire.codeagence = Tiersprestataireapre.guiban'
+					)
+				);
+
+				$querydata['fields'] = Set::merge(
+					$querydata['fields'],
+					$DomiciliationbancaireModel->fields()
+				);
+
+				// Suivi
+				$SuiviaideapretypeaideModel = ClassRegistry::init( 'Suiviaideapretypeaide' );
+				$querydata['joins'][] = array(
+					'table'      => $dbo->fullTableName( $SuiviaideapretypeaideModel, true ),
+					'alias'      => 'Suiviaideapretypeaide',
+					'type'       => 'LEFT OUTER',
+					'foreignKey' => false,
+					'conditions' => array(
+						'Suiviaideapretypeaide.typeaide = ( '.$this->Apre->sqApreNomaide().' )'
+					)
+				);
+				$join = $SuiviaideapretypeaideModel->join( 'Suiviaideapre' );
+				$join['conditions'] = array( $join['conditions'], 'Suiviaideapre.deleted = \'0\'' );
+				$querydata['joins'][] = $join;
+				foreach( array_keys( $SuiviaideapretypeaideModel->Suiviaideapre->schema() ) as $field ) {
+					$querydata['fields'][] = "\"{$SuiviaideapretypeaideModel->Suiviaideapre->alias}\".\"{$field}\" AS \"Dataperssuivi__{$field}suivi\"";
+				}
+
+				// Montants
+				$querydata['fields'][] = 'ROUND( ( '.$this->Apre->sqApreAllocation().' ) / ( CASE WHEN "Apre"."montantaverser" <> 0 THEN "Apre"."montantaverser" ELSE 1 END ) * 100, 0 ) AS "Apre__pourcentallocation"';
+				$querydata['fields'][] = 'ROUND( "Apre"."montantdejaverse" - "Apre"."montantaverser", 2 ) AS "Apre__restantallocation"';
+
+
+				Cache::write( $cacheKey, $querydata );
+			}
+
+			return $querydata;
+		}
+
+		/**
+		*
+		*/
+
+		public function getTypeapre( $id ) {
+			$etatliquidatif = $this->find(
+				'first',
+				array(
+					'fields' => array(
+						'Etatliquidatif.id',
+						'Etatliquidatif.typeapre'
+					),
+					'conditions' => array(
+						'Etatliquidatif.id' => $id,
+					),
+					'contain' => false
+				)
+			);
+
+			return Set::classicExtract( $etatliquidatif, 'Etatliquidatif.typeapre' );
 		}
 	}
 ?>

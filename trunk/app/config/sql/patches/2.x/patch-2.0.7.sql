@@ -203,7 +203,36 @@ SELECT add_missing_constraint ('public', 'decisionssaisinesbilansparcourseps66',
 -- *****************************************************************************
 SELECT add_missing_table_field ('public', 'apres', 'dateimpressionapre', 'DATE');
 
+-- *****************************************************************************
+-- 20110930 : Création d'indexes uniques pour les APREs
+-- *****************************************************************************
 
+DROP INDEX IF EXISTS apres_comitesapres_apre_id_comiteapre_id;
+CREATE UNIQUE INDEX apres_comitesapres_apre_id_comiteapre_id ON apres_comitesapres( apre_id, comiteapre_id );
+
+DROP INDEX formsqualifs_apre_id_idx;
+CREATE UNIQUE INDEX formsqualifs_apre_id_idx ON formsqualifs(apre_id);
+
+DROP INDEX formspermsfimo_apre_id_idx;
+CREATE UNIQUE INDEX formspermsfimo_apre_id_idx ON formspermsfimo(apre_id);
+
+DROP INDEX actsprofs_apre_id_idx;
+CREATE UNIQUE INDEX actsprofs_apre_id_idx ON actsprofs(apre_id);
+
+DROP INDEX permisb_apre_id_idx;
+CREATE UNIQUE INDEX permisb_apre_id_idx ON permisb(apre_id);
+
+DROP INDEX amenagslogts_apre_id_idx;
+CREATE UNIQUE INDEX amenagslogts_apre_id_idx ON amenagslogts(apre_id);
+
+DROP INDEX accscreaentr_apre_id_idx;
+CREATE UNIQUE INDEX accscreaentr_apre_id_idx ON accscreaentr(apre_id);
+
+DROP INDEX acqsmatsprofs_apre_id_idx;
+CREATE UNIQUE INDEX acqsmatsprofs_apre_id_idx ON acqsmatsprofs(apre_id);
+
+DROP INDEX locsvehicinsert_apre_id_idx;
+CREATE UNIQUE INDEX locsvehicinsert_apre_id_idx ON locsvehicinsert(apre_id);
 
 -- *****************************************************************************
 COMMIT;
