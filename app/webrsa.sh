@@ -229,6 +229,42 @@ function __minify() {
 
 # ------------------------------------------------------------------------------
 
+# function __svnbackup() {
+# 	APP_DIR="`readlink -f "$1"`"
+#
+# 	NOW=`date +"%Y%m%d-%H%M%S"` # FIXME: M sur 2 chars
+# 	PATCH_DIR="$APP_DIR/../svnbackup_$NOW"
+# 	PATCH_DIR="`readlink -f "$PATCH_DIR"`"
+#
+# 	mkdir -p "$PATCH_DIR"
+#
+# 	revision="`svn info $APP_DIR | grep "Revision" | sed 's/^Revision: \(.\+\)$/\1/g'`";
+# 	project="`svn info $APP_DIR | grep "Repository Root:" | sed 's/^Repository Root: .\+\/\([^\/]\+\)$/\1/g'`";
+# echo "$revision"
+# echo "$project"
+# rmdir "$PATCH_DIR"
+# exit
+# 	(
+# 		cd "$APP_DIR"
+# 		status="`svn status . | grep -v "^!" | sed 's/^\(.\) \+\(.*\)$/\2/'`";
+# 		for file in `echo "$status"`; do
+# 			dir="`dirname "$file" | sed "s@^./@$PWD@"|sed "s@^/@@"`"
+# 			if [ "$dir" != '.' ] ; then
+# 				mkdir -p "$PATCH_DIR/app/$dir"
+# 			fi
+# # 			echo "cp \"$file\" \"$PATCH_DIR/app/$dir\""
+# 			cp -R "$file" "$PATCH_DIR/app/$dir"
+# 		done
+# 	)
+#
+# 	(
+# 		cd "$PATCH_DIR"
+# 		zip -o -r -m "../svnbackup-$project-r$revision-$NOW.zip" app >> "/dev/null" 2>&1
+# 		cd ..
+# 		rmdir "$PATCH_DIR"
+# 	)
+# }
+
 function __svnbackup() {
 	APP_DIR="`readlink -f "$1"`"
 
@@ -238,25 +274,31 @@ function __svnbackup() {
 
 	mkdir -p "$PATCH_DIR"
 
-	revision="`svn info $APP_DIR | grep "Revision" | sed 's/^Revision: \(.\+\)$/\1/g'`";
-	project="`svn info $APP_DIR | grep "Repository Root:" | sed 's/^Repository Root: .\+\/\([^\/]\+\)$/\1/g'`";
+	xml="`svn info --xml app | sed ':a;N;$!ba;s/\n/ /g'`"
+	revision="`echo $xml| sed 's/^.*<entry [^>]* revision="\([^"]\+\)">.*$/\1/g'`"
+	project="`echo $xml| sed 's/^.*<root>.*\/\([^\/]\+\)<\/root>.*$/\1/g'`"
+	subfolder="`echo $xml| sed 's/^.*<url>.*\/\([^\/]\+\)\/app<\/url>.*$/\1/g'`"
 
 	(
 		cd "$APP_DIR"
+		local SAVEIFS=$IFS
+		IFS=$(echo -en "\n\b")
+
 		status="`svn status . | grep -v "^!" | sed 's/^\(.\) \+\(.*\)$/\2/'`";
 		for file in `echo "$status"`; do
-			dir="`dirname "$file" | sed "s@^./@$PWD@"|sed "s@^/@@"`"
+			dir="`dirname "$file" | sed "s@^\./@$PWD@"`"
 			if [ "$dir" != '.' ] ; then
 				mkdir -p "$PATCH_DIR/app/$dir"
 			fi
 # 			echo "cp \"$file\" \"$PATCH_DIR/app/$dir\""
 			cp -R "$file" "$PATCH_DIR/app/$dir"
 		done
+		IFS=$SAVEIFS
 	)
 
 	(
 		cd "$PATCH_DIR"
-		zip -o -r -m "../$project-svnbackup-r$revision-$NOW.zip" app >> "/dev/null" 2>&1
+		zip -o -r -m "../svnbackup-${project}_${subfolder}-r${revision}-${NOW}.zip" app >> "/dev/null" 2>&1
 		cd ..
 		rmdir "$PATCH_DIR"
 	)
