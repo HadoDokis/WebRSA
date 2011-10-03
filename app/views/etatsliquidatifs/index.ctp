@@ -10,7 +10,7 @@
 				'li',
 				$xhtml->addLink(
 					'Ajouter un état liquidatif',
-					array( 'controller' => 'etatsliquidatifs', 'action' => 'add' )
+					array( 'action' => 'add' )
 				)
 			),
 			array( 'class' => 'actionMenu' )
@@ -21,7 +21,7 @@
 		echo $xhtml->tag( 'p', 'Aucun état liquidatif pour l\'instant.', array( 'class' => 'notice' ) );
 	}
 	else {
-        $pagination = $xpaginator->paginationBlock( 'Etatliquidatif', $this->passedArgs );
+		$pagination = $xpaginator->paginationBlock( 'Etatliquidatif', $this->passedArgs );
 // 		$paginator->options( array( 'url' => $this->passedArgs ) );
 // 		$params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
 // 		$pagination = $xhtml->tag( 'p', $paginator->counter( $params ) );
@@ -54,16 +54,16 @@
 
 		/// Corps du tableau
 		$rows = array();
-        $isComplementaire = false;
+		$isComplementaire = false;
 		foreach( $etatsliquidatifs as $etatliquidatif ) {
 
-            $statut = Set::classicExtract( $etatliquidatif, 'Etatliquidatif.typeapre' );
-            if( $statut == 'complementaire' ){
-                $isComplementaire = true;
-            }
-            else if( $statut == 'forfaitaire' ) {
-                $isComplementaire = false;
-            }
+			$statut = Set::classicExtract( $etatliquidatif, 'Etatliquidatif.typeapre' );
+			if( $statut == 'complementaire' ){
+				$isComplementaire = true;
+			}
+			else if( $statut == 'forfaitaire' ) {
+				$isComplementaire = false;
+			}
 
 
 			$cloture = Set::classicExtract( $etatliquidatif, 'Etatliquidatif.datecloture' );
@@ -77,16 +77,16 @@
 				Set::classicExtract( $etatliquidatif, 'Etatliquidatif.commentaire' ),
 				$locale->date( 'Date::short', Set::classicExtract( $etatliquidatif, 'Etatliquidatif.datecloture' ) ),
 				// FIXME: droits
-				$theme->button( 'edit', array( 'controller' => 'etatsliquidatifs', 'action' => 'edit', Set::classicExtract( $etatliquidatif, 'Etatliquidatif.id' ) ), array( 'text' => 'Modifier', 'title' => 'Modifier l\'état liquidatif', 'enabled' => !$cloture ) ),
-				$theme->button( 'selection', array( 'controller' => 'etatsliquidatifs', 'action' => 'selectionapres', Set::classicExtract( $etatliquidatif, 'Etatliquidatif.id' ) ), array( 'text' => 'Sélection APREs', 'enabled' => !$cloture ) ),
+				$theme->button( 'edit', array( 'action' => 'edit', Set::classicExtract( $etatliquidatif, 'Etatliquidatif.id' ) ), array( 'text' => 'Modifier', 'title' => 'Modifier l\'état liquidatif', 'enabled' => !$cloture ) ),
+				$theme->button( 'selection', array( 'action' => 'selectionapres', Set::classicExtract( $etatliquidatif, 'Etatliquidatif.id' ) ), array( 'text' => 'Sélection APREs', 'enabled' => !$cloture ) ),
 
-                $theme->button( 'money', array( 'controller' => 'etatsliquidatifs', 'action' => 'versementapres', Set::classicExtract( $etatliquidatif, 'Etatliquidatif.id' ) ), array( 'text' => 'Versements', 'enabled' => ( $isComplementaire && !$cloture && !empty( $apres_etatsliquidatifs ) ) ) ),
+				$theme->button( 'money', array( 'action' => 'versementapres', Set::classicExtract( $etatliquidatif, 'Etatliquidatif.id' ) ), array( 'text' => 'Versements', 'enabled' => ( $isComplementaire && !$cloture && !empty( $apres_etatsliquidatifs ) ) ) ),
 
-				$theme->button( 'validate', array( 'controller' => 'etatsliquidatifs', 'action' => 'validation', Set::classicExtract( $etatliquidatif, 'Etatliquidatif.id' ) ), array( 'enabled' => ( !$cloture && !empty( $apres_etatsliquidatifs ) ) ) ),
+				$theme->button( 'validate', array( 'action' => 'validation', Set::classicExtract( $etatliquidatif, 'Etatliquidatif.id' ) ), array( 'enabled' => ( !$cloture && !empty( $apres_etatsliquidatifs ) ) ) ),
 
-				$theme->button( 'table', array( 'controller' => 'etatsliquidatifs', 'action' => 'hopeyra', Set::classicExtract( $etatliquidatif, 'Etatliquidatif.id' ) ), array( 'text' => 'HOPEYRA', 'enabled' => ( $cloture && !$isComplementaire ) ) ),
-				$theme->button( 'pdf', array( 'controller' => 'etatsliquidatifs', 'action' => 'pdf', Set::classicExtract( $etatliquidatif, 'Etatliquidatif.id' ) ), array( 'text' => 'PDF', 'title' => 'Etat liquidatif', 'enabled' => $cloture ) ),
-                $theme->button( 'table', array( 'controller' => 'etatsliquidatifs', 'action' => 'visualisationapres', Set::classicExtract( $etatliquidatif, 'Etatliquidatif.id' ) ), array( 'text' => 'Notifications', 'enabled' => $cloture ) )
+				$theme->button( 'table', array( 'action' => 'hopeyra', Set::classicExtract( $etatliquidatif, 'Etatliquidatif.id' ) ), array( 'text' => 'HOPEYRA', 'enabled' => ( $cloture && !$isComplementaire ) ) ),
+				$theme->button( 'pdf', array( 'action' => 'pdf', Set::classicExtract( $etatliquidatif, 'Etatliquidatif.id' ) ), array( 'text' => 'PDF', 'title' => 'Etat liquidatif', 'enabled' => $cloture ) ),
+				$theme->button( 'table', array( 'action' => 'visualisationapres', Set::classicExtract( $etatliquidatif, 'Etatliquidatif.id' ) ), array( 'text' => 'Notifications', 'enabled' => $cloture ) )
 			);
 		}
 		$tbody = $xhtml->tag( 'tbody', $xhtml->tableCells( $rows, array( 'class' => 'odd' ), array( 'class' => 'even' ) ) );

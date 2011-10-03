@@ -5,8 +5,8 @@
 	{
 		public $name = 'Etatsliquidatifs';
 
-		public $uses = array( 'Etatliquidatif', 'Parametrefinancier', 'Suiviaideapretypeaide', 'Apre', 'Option', 'Adressefoyer', 'ApreEtatliquidatif' );
-        public $components = array( 'Gedooo' );
+		public $uses = array( 'Etatliquidatif', 'Parametrefinancier', 'Option' );
+		public $components = array( 'Gedooo' );
 		public $helpers = array( 'Xform', 'Locale', 'Paginator', 'Apreversement' );
 
 		public $commeDroit = array(
@@ -26,79 +26,82 @@
 			parent::beforeFilter();
 		}
 
+		/**
+		*
+		*/
+
 		public function index() {
 			$conditions = array();
 
 			$budgetapre_id = Set::classicExtract( $this->params, 'named.budgetapre_id' );
 			if( !empty( $budgetapre_id ) ) {
-				$conditions["{$this->modelClass}.budgetapre_id"] = $budgetapre_id;
+				$conditions["Etatliquidatif.budgetapre_id"] = $budgetapre_id;
 			}
 
 			$this->paginate[$this->modelClass] = array(
 				'limit' => 10,
-				'order' => array( "{$this->modelClass}.id ASC" ),
+				'order' => array( "Etatliquidatif.id ASC" ),
 				'conditions' => $conditions,
 				'recursive' => 0,
 			);
 
 			$etatsliquidatifs = $this->paginate( $this->modelClass );
 
-            if( !empty( $etatsliquidatifs ) ){
-                $apres_etatsliquidatifs = $this->{$this->modelClass}->ApreEtatliquidatif->find(
-                    'all',
-                    array(
-                        'conditions' => array(
-                            'ApreEtatliquidatif.etatliquidatif_id' => Set::extract( $etatsliquidatifs, '/Etatliquidatif/id' )
-                        ),
-                        'recursive' => -1
-                    )
-                );
-                $this->set( 'apres_etatsliquidatifs', $apres_etatsliquidatifs);
-            }
-//             debug($etatsliquidatifs);
+			if( !empty( $etatsliquidatifs ) ){
+				$apres_etatsliquidatifs = $this->Etatliquidatif->ApreEtatliquidatif->find(
+					'all',
+					array(
+						'conditions' => array(
+							'ApreEtatliquidatif.etatliquidatif_id' => Set::extract( $etatsliquidatifs, '/Etatliquidatif/id' )
+						),
+						'recursive' => -1
+					)
+				);
+				$this->set( 'apres_etatsliquidatifs', $apres_etatsliquidatifs);
+			}
 
 			$this->set( compact( 'etatsliquidatifs' ) );
 		}
 
-        /**
-        *
-        */
+		/**
+		*
+		*/
 
-        public function add() {
-            $args = func_get_args();
-            call_user_func_array( array( $this, '_add_edit' ), $args );
-        }
+		public function add() {
+			$args = func_get_args();
+			call_user_func_array( array( $this, '_add_edit' ), $args );
+		}
 
 
-        public function edit() {
-            $args = func_get_args();
-            call_user_func_array( array( $this, '_add_edit' ), $args );
-        }
+		public function edit() {
+			$args = func_get_args();
+			call_user_func_array( array( $this, '_add_edit' ), $args );
+		}
 
-        /**
-        *
-        */
+		/**
+		*
+		*/
 
-        protected function _add_edit( $id = null ) {
+		protected function _add_edit( $id = null ) {
 			$parametrefinancier = $this->Parametrefinancier->find( 'first' );
 			if( empty( $parametrefinancier ) ) {
 				$this->Session->setFlash( __( 'Impossible de créer ou de modifier un état liquidatif si les paramètres financiers ne sont pas enregistrés.', true ), 'flash/error' );
 				$this->redirect( array( 'action' => 'index', max( 1, Set::classicExtract( $this->params, 'named.page' ) ) ) );
 			}
 
-			$budgetsapres = $this->{$this->modelClass}->Budgetapre->find( 'list' );
+			$budgetsapres = $this->Etatliquidatif->Budgetapre->find( 'list' );
 			if( empty( $budgetsapres ) ) {
 				$this->Session->setFlash( __( 'Impossible de créer ou de modifier un état liquidatif s\'il n\'existe pas de budget APRE.', true ), 'flash/error' );
 				$this->redirect( array( 'action' => 'index', max( 1, Set::classicExtract( $this->params, 'named.page' ) ) ) );
 			}
 
 			if( $this->action == 'edit' ) {
-				$etatliquidatif = $this->{$this->modelClass}->findById( $id, null, null, -1 );
+				$etatliquidatif = $this->Etatliquidatif->findById( $id, null, null, -1 );
 				$this->assert( !empty( $etatliquidatif ), 'invalidParameter' );
 			}
 			else {
 				// Aucun autre état liquidatif ouvert
-				$nEtatsliquidatifs = $this->{$this->modelClass}->find( 'count', array( 'conditions' => array( 'Etatliquidatif.datecloture IS NULL' ) ) );
+				$nEtatsliquidatifs = $this->Etatliquidatif->find( 'count', array( 'conditions' => array( 'Etatliquidatif.datecloture IS NULL' ) ) );
 				if( $nEtatsliquidatifs > 0 ) {
 					$this->Session->setFlash( __( 'Impossible de créer un état liquidatif lorsqu\'il existe un autre état liquidatif non validé.', true ), 'flash/error' );
 					$this->redirect( array( 'action' => 'index', max( 1, Set::classicExtract( $this->params, 'named.page' ) ) ) );
@@ -109,7 +112,7 @@
 				$parametrefinancier = $this->Parametrefinancier->find( 'first' );
 
 				// Copie
-				$etatliquidatifFields = array_keys( $this->{$this->modelClass}->schema() );
+				$etatliquidatifFields = array_keys( $this->Etatliquidatif->schema() );
 				foreach( $parametrefinancier['Parametrefinancier'] as $field => $value ) {
 					if( ( $field != 'id' ) && in_array( $field, $etatliquidatifFields ) ) {
 						$this->data[$this->modelClass][$field] = $value;
@@ -117,8 +120,8 @@
 				}
 				$this->data[$this->modelClass]['operation'] = ( ( $this->data[$this->modelClass]['typeapre'] == 'forfaitaire' ) ? $this->data[$this->modelClass]['apreforfait'] : $this->data[$this->modelClass]['aprecomplem'] );
 
-				$this->{$this->modelClass}->create( $this->data );
-				if( $this->{$this->modelClass}->save() ) {
+				$this->Etatliquidatif->create( $this->data );
+				if( $this->Etatliquidatif->save() ) {
 					$this->Session->setFlash( __( 'Enregistrement effectué', true ), 'flash/success' );
 					$this->redirect( array( 'action' => 'index', max( 1, Set::classicExtract( $this->params, 'named.page' ) ) ) );
 				}
@@ -129,7 +132,7 @@
 
 			$this->set( 'typesapres', array( 'forfaitaire' => 'APREs forfaitaires', 'complementaire' => 'APREs complémentaires' ) ); // TODO: enum
 			$this->set( 'budgetsapres', $budgetsapres );
-            $this->render( $this->action, null, 'add_edit' );
+			$this->render( $this->action, null, 'add_edit' );
 		}
 
 		/**
@@ -137,13 +140,13 @@
 		*/
 
 		public function selectionapres( $id = null ) {
-			$etatliquidatif = $this->{$this->modelClass}->findById( $id, null, null, -1 );
+			$etatliquidatif = $this->Etatliquidatif->findById( $id, null, null, -1 );
 			$this->assert( !empty( $etatliquidatif ), 'invalidParameter' );
 
-            // Retour à la liste en cas d'annulation
-            if( /*!empty( $this->data ) && */isset( $this->params['form']['Cancel'] ) ) {
-                $this->redirect( array( 'action' => 'index' ) );
-            }
+			// Retour à la liste en cas d'annulation
+			if( isset( $this->params['form']['Cancel'] ) ) {
+				$this->redirect( array( 'action' => 'index' ) );
+			}
 
 			// État liquidatif pas encore validé
 			if( !empty( $etatliquidatif['Etatliquidatif']['datecloture'] ) ) {
@@ -159,7 +162,7 @@
 					}
 				}
 
-				if( $this->{$this->modelClass}->saveAll( $this->data ) ) {
+				if( $this->Etatliquidatif->saveAll( $this->data ) ) {
 					$this->Session->setFlash( __( 'Enregistrement effectué', true ), 'flash/success' );
 					$this->redirect( array( 'action' => 'index', max( 1, Set::classicExtract( $this->params, 'named.page' ) ) ) );
 
@@ -168,17 +171,17 @@
 
 			$typeapre = ( ( Set::classicExtract( $etatliquidatif, 'Etatliquidatif.typeapre' ) == 'forfaitaire' ) ? 'F' : 'C' );
 
-             $queryData = $this->Etatliquidatif->listeApresPourEtatLiquidatif( $id, array( 'Apre.statutapre' => $typeapre ) );
+			$queryData = $this->Etatliquidatif->listeApresPourEtatLiquidatif( $id, array( 'Apre.statutapre' => $typeapre ) );
 
 			$etatliquidatifLimit = Configure::read( 'Etatliquidatif.limit' );
 			if( !empty( $etatliquidatifLimit ) ) {
 				$queryData['limit'] = $etatliquidatifLimit;
 			}
 
-			$this->{$this->modelClass}->Apre->unbindModelAll();
-			$apres = $this->{$this->modelClass}->Apre->find( 'all', $queryData );
+			$this->Etatliquidatif->Apre->unbindModelAll();
+			$apres = $this->Etatliquidatif->Apre->find( 'all', $queryData );
 
-			$apres_etatsliquidatifs = $this->{$this->modelClass}->ApreEtatliquidatif->find(
+			$apres_etatsliquidatifs = $this->Etatliquidatif->ApreEtatliquidatif->find(
 				'all',
 				array(
 					'conditions' => array( 'ApreEtatliquidatif.etatliquidatif_id' => $id ),
@@ -190,317 +193,182 @@
 			$this->set( compact( 'apres', 'typeapre' ) );
 		}
 
-        /**
-        *
-        */
+		/**
+		*
+		*/
 
-        public function visualisationapres( $id = null ) {
-            $etatliquidatif = $this->{$this->modelClass}->findById( $id, null, null, -1 );
-            $this->assert( !empty( $etatliquidatif ), 'invalidParameter' );
+		public function visualisationapres( $id = null ) {
+			$typeapre = $this->Etatliquidatif->getTypeapre( $id );
+			$this->assert( !empty( $typeapre ), 'invalidParameter' );
 
-            $natureAidesApres = $this->Option->natureAidesApres();
-            if( !empty( $this->data ) ) {
-                foreach( $this->data['Apre']['Apre'] as $i => $value ) {
-                    if( empty( $value ) ) {
-                        unset( $this->data['Apre']['Apre'][$i] );
-                    }
-                }
+			$method = 'qdDonneesApre'.Inflector::camelize( $typeapre );
+			$querydata = $this->Etatliquidatif->{$method}();
+			$querydata = Set::merge(
+				$querydata,
+				array(
+					'conditions' => array(
+						'Etatliquidatif.id' => $id
+					),
+					'limit' => 100
+				)
+			);
 
-                if( $this->{$this->modelClass}->saveAll( $this->data ) ) {
-                    $this->Session->setFlash( __( 'Enregistrement effectué', true ), 'flash/success' );
-                    $this->redirect( array( 'action' => 'index' ) );
-                }
-            }
+			$this->paginate = $querydata;
+			$deepAfterFind = $this->Etatliquidatif->Apre->deepAfterFind;
+			$this->Etatliquidatif->Apre->deepAfterFind = false;
+			$apres = $this->paginate( $this->Etatliquidatif );
+			$this->Etatliquidatif->Apre->deepAfterFind = $deepAfterFind;
 
-            $typeapre = ( ( Set::classicExtract( $etatliquidatif, 'Etatliquidatif.typeapre' ) == 'forfaitaire' ) ? 'F' : 'C' );
-            $this->set( 'typeapre', $typeapre );
-            $queryData = $this->Etatliquidatif->listeApresEtatLiquidatif( array( 'Apre.statutapre' => $typeapre ), $id );
-            $queryData['limit'] = 100;
+			$this->set( 'natureAidesApres', $this->Option->natureAidesApres() );
+			$this->set( 'typeapre', ( $typeapre == 'forfaitaire' ? 'F' : 'C' ) );
+			$this->set( compact( 'apres' ) );
+		}
 
-            $this->{$this->modelClass}->Apre->unbindModelAll( false );
-            $this->paginate['Apre'] = $queryData;
+		/**
+		*
+		*/
 
-			if( $typeapre  == 'F' ) {
-				$deepAfterFind = $this->Apre->deepAfterFind;
-				$this->Apre->deepAfterFind = false;
+		public function impressiongedoooapres( $apre_id, $etatliquidatif_id ) {
+			$typeapre = $this->Etatliquidatif->getTypeapre( $etatliquidatif_id );
+			$this->assert( !empty( $typeapre ), 'invalidParameter' );
+
+			$method = 'qdDonneesApre'.Inflector::camelize( $typeapre ).'Gedooo';
+
+			$querydata = $this->Etatliquidatif->{$method}();
+			$querydata = Set::merge(
+				$querydata,
+				array(
+					'conditions' => array(
+						'Etatliquidatif.id' => $etatliquidatif_id,
+						'Apre.id' => $apre_id
+					)
+				)
+			);
+
+			$deepAfterFind = $this->Etatliquidatif->Apre->deepAfterFind;
+			$this->Etatliquidatif->Apre->deepAfterFind = false;
+			$apre = $this->Etatliquidatif->find( 'first', $querydata );
+			$this->Etatliquidatif->Apre->deepAfterFind = $deepAfterFind;
+
+			$this->assert( !empty( $apre ), 'invalidParameter' );
+
+			$typeapre = Set::classicExtract( $apre, 'Apre.statutapre' );
+			$dest = Set::classicExtract( $this->params, 'named.dest' );
+
+			if( !empty( $apre['Apre']['nomaide'] ) && in_array( $apre['Apre']['nomaide'], $this->Etatliquidatif->Apre->modelsFormation ) ) {
+				$typeformation = 'formation';
 			}
-            $apres = $this->paginate( 'Apre' );
-			if( $typeapre  == 'F' ) {
-				$this->Apre->deepAfterFind = $deepAfterFind;
-			}
-
-            if( $typeapre  == 'C' ) {
-                foreach( $apres as $i => $apre ) {
-                    $apre_etatliquidatif = $this->ApreEtatliquidatif->find(
-                        'first',
-                        array(
-                            'conditions' => array(
-                                'ApreEtatliquidatif.etatliquidatif_id' => $id,
-                                'ApreEtatliquidatif.apre_id' => Set::extract( $apre, '/Apre/id' )
-                            ),
-                            'recursive' => -1
-                        )
-                    );
-                    $apre = Set::merge( $apre, $apre_etatliquidatif );
-// debug( $apre );
-                    $apres[$i] = $apre;
-                }
-                if( !empty( $apre_etatliquidatif ) ){
-                    $this->set( 'apre_etatliquidatif', $apre_etatliquidatif );
-                }
-            }
-
-
-            $this->set( compact( 'apres', 'etatliquidatif' ) );
-        }
-
-        /**
-        *
-        */
-
-        public function impressiongedoooapres( $apre_id, $etatliquidatif_id ) {
-            $qual = $this->Option->qual();
-            $typevoie = $this->Option->typevoie();
-            $natureAidesApres = $this->Option->natureAidesApres();
-
-            $apre = $this->Apre->donneesForfaitaireGedooo( $apre_id, $etatliquidatif_id );
-            $this->assert( !empty( $apre ), 'invalidParameter' );
-
-
-
-            ///Données nécessaire pour savoir quelles sont les aides liées à l'APRE Complémentaire + la pers chargée du suivi
-            $apre['Dataperssuivi'] = array();
-
-            foreach( $this->Apre->aidesApre as $model ) {
-                if( isset( $apre['Apre']['Natureaide'][$model] ) && ( $apre['Apre']['Natureaide'][$model] == 0 ) ){
-                   unset( $apre['Apre']['Natureaide'][$model] );
-
-                }
-            }
-
-            $model = null;
-            if( isset( $apre['Apre']['Natureaide'][0] ) ) {
-                $model = $apre['Apre']['Natureaide'][0];
-                $personne = $this->Suiviaideapretypeaide->findByTypeaide( $model );
-                if( !empty( $personne['Suiviaideapre'] ) ){
-                    foreach( array_keys( $personne['Suiviaideapre'] ) as $key ) {
-                        if( $key != 'id' ) {
-                            $apre['Dataperssuivi']["{$key}suivi"] = $personne['Suiviaideapre'][$key];
-                        }
-                    }
-                }
-            }
-
-            $aidesApre = array();
-            $isTiers = false;
-
-            $modelsFormation = array( 'Formqualif', 'Formpermfimo', 'Permisb', 'Actprof' );
-            $modelLie = Set::classicExtract( $apre, 'Apre.Natureaide' );
-
-
-            ///Paramètre nécessaire pour connaitre le type de formation du bénéficiaire (Formation / Hors Formation )
-            if( isset( $apre['Apre']['Natureaide'][0] ) && in_array( $apre['Apre']['Natureaide'][0], $modelsFormation ) ) {
-                $typeformation = 'formation';
-            }
-            else {
-                $typeformation = 'horsformation';
-            }
-            $this->set( 'typeformation', $typeformation );
-
-            /*
-                Traduction des codes en français
-            */
-            $typeapre = Set::classicExtract( $apre, 'Apre.statutapre' );
-
-            $apre['Personne']['qual'] = Set::classicExtract( $qual, Set::classicExtract( $apre, 'Personne.qual' ) );
-            $apre['Adresse']['typevoie'] = Set::classicExtract( $typevoie, Set::classicExtract( $apre, 'Adresse.typevoie' ) );
-
-            /**
-            *   Partie nécessaire en cas d'APRE Complémentaire
-            */
-            ///Paramètre nécessaire pour le bon choix du document à éditer
-            $dest = Set::classicExtract( $this->params, 'named.dest' );
-
-            ///Traduction des intitulés des noms des adresses + bon format de date
-            if( !empty( $apre['Tiersprestataireapre'] ) ) {
-                $apre['Tiersprestataireapre']['typevoie'] = Set::classicExtract( $typevoie, Set::classicExtract( $apre, 'Tiersprestataireapre.typevoie' ) );
-            }
-            $apre['Modellie']['ddform'] = date_short( Set::classicExtract( $apre, 'Modellie.ddform' ) );
-            $apre['Modellie']['dfform'] = date_short( Set::classicExtract( $apre, 'Modellie.dfform' ) );
-            $apre['Comiteapre']['datecomite'] = date_short( Set::classicExtract( $apre, 'Comiteapre.datecomite' ) );
-
-            ///Traduction des noms de table en libellés de l'aide
-            foreach( $apre['Apre']['Natureaide'] as $i => $aides ){
-                $apre['Apre']['Natureaide'][$i] = Set::enum( $aides, $natureAidesApres );
-            }
-            $apre['Apre']['Natureaide'] = '  '.implode( "\n  - ", $apre['Apre']['Natureaide'] )."\n";
-
-
-            $etatliquidatif = $this->Etatliquidatif->findById( $etatliquidatif_id, null, null, -1 );
-            $etatliquidatif['Etatliquidatif']['datecloture'] = date_short( Set::classicExtract( $etatliquidatif, 'Etatliquidatif.datecloture' ) );
-            $apre = Set::merge( $apre, $etatliquidatif );
-
-            if( $typeapre == 'F' ) {
-				$pdf = $this->Etatliquidatif->Apre->ged( $apre, 'APRE/apreforfaitaire.odt' );
-				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'apreforfaitaire-%s.pdf', date( 'Y-m-d' ) ) );
-            }
-            else if( $typeapre == 'C' && $dest == 'tiersprestataire' ) {
-				$montantaverser = Set::classicExtract( $apre, 'Apre.montantaverser' );
-				if( $montantaverser != 0 ){
-					// FIXME: dans le modèle
-					$apre['Apre']['pourcentallocation'] = round( Set::classicExtract( $apre, 'Apre.allocation' ) / Set::classicExtract( $apre, 'Apre.montantaverser' ) * 100, 0 );
-					//$apre['Apre']['restantallocation'] = number_format( Set::classicExtract( $apre, 'Apre.montantaverser' ) - Set::classicExtract( $apre, 'Apre.allocation' ), 2 );
-					$apre['Apre']['restantallocation'] = number_format( Set::classicExtract( $apre, 'Apre.montantdejaverse' ) - Set::classicExtract( $apre, 'Apre.montantaverser' ), 2 );
-				}
-
-				$pdf = $this->Etatliquidatif->Apre->ged( $apre, 'APRE/Paiement/paiement_'.$dest.'.odt' );
-				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'paiement_'.$dest.'-%s.pdf', date( 'Y-m-d' ) ) );
-            }
-            else if( $typeapre == 'C' && $dest == 'beneficiaire' ) {
-				$montantaverser = Set::classicExtract( $apre, 'Apre.montantaverser' );
-				if( $montantaverser != 0 ){
-					// FIXME: dans le modèle
-					$apre['Apre']['pourcentallocation'] = round( Set::classicExtract( $apre, 'Apre.allocation' ) / Set::classicExtract( $apre, 'Apre.montantaverser' ) * 100, 0 );
-					//$apre['Apre']['restantallocation'] = number_format( Set::classicExtract( $apre, 'Apre.montantaverser' ) - Set::classicExtract( $apre, 'Apre.allocation' ), 2 );
-					$apre['Apre']['restantallocation'] = number_format( Set::classicExtract( $apre, 'Apre.montantdejaverse' ) - Set::classicExtract( $apre, 'Apre.montantaverser' ), 2 );
-				}
-
-				$pdf = $this->Etatliquidatif->Apre->ged( $apre, 'APRE/Paiement/paiement_'.$typeformation.'_'.$dest.'.odt' );
-				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'paiement_'.$typeformation.'_'.$dest.'-%s.pdf', date( 'Y-m-d' ) ) );
-            }
-        }
-
-        /**
-        *
-        **/
-
-        public function impressioncohorte( $id ) {
-            $etatliquidatif = $this->{$this->modelClass}->findById( $id, null, null, -1 );
-
-            $typeapre = ( ( Set::classicExtract( $etatliquidatif, 'Etatliquidatif.typeapre' ) == 'forfaitaire' ) ? 'F' : 'C' );
-
-            $queryData = $this->Etatliquidatif->listeApresEtatLiquidatif(
-                array(
-                    'Apre.statutapre' => $typeapre // FIXME
-                ),
-                $id
-            );
-
-            $queryData['limit'] = 100;
-
-            $this->{$this->modelClass}->Apre->unbindModelAll( false );
-            $this->{$this->modelClass}->Apre->bindModel( array( 'hasOne' => array( 'ApreEtatliquidatif' ) ) );
-            $this->paginate['Apre'] = $queryData;
-
-			if( $typeapre  == 'F' ) {
-				$deepAfterFind = $this->Apre->deepAfterFind;
-				$this->Apre->deepAfterFind = false;
-			}
-            $apres = $this->paginate( 'Apre' );
-			if( $typeapre  == 'F' ) {
-				$this->Apre->deepAfterFind = $deepAfterFind;
+			else {
+				$typeformation = 'horsformation';
 			}
 
-            $params = array_multisize( $this->params['named'] );
+			$options = array(
+				'Adresse' => array(
+					'typevoie' => $this->Option->typevoie()
+				),
+				'Apre' => array(
+					'natureaide' => $this->Option->natureAidesApres()
+				),
+				'Personne' => array(
+					'qual' => $this->Option->qual()
+				),
+				'Tiersprestataireapre' => array(
+					'typevoie' => $this->Option->typevoie()
+				)
+			);
 
-            //------------------------------------------------------------------
+			if( $typeapre == 'F' ) {
+				$modeleodt = 'APRE/apreforfaitaire.odt';
+				$nomfichierpdf = sprintf( 'apreforfaitaire-%s.pdf', date( 'Y-m-d' ) );
+			}
+			else if( $typeapre == 'C' && $dest == 'tiersprestataire' ) {
+				$modeleodt = 'APRE/Paiement/paiement_'.$dest.'.odt';
+				$nomfichierpdf = sprintf( 'paiement_'.$dest.'-%s.pdf', date( 'Y-m-d' ) );
+			}
+			else if( $typeapre == 'C' && $dest == 'beneficiaire' ) {
+				$modeleodt = 'APRE/Paiement/paiement_'.$typeformation.'_'.$dest.'.odt';
+				$nomfichierpdf = sprintf( 'paiement_'.$typeformation.'_'.$dest.'-%s.pdf', date( 'Y-m-d' ) );
+			}
 
-            $qual = $this->Option->qual();
-            $typevoie = $this->Option->typevoie();
+			$pdf = $this->Etatliquidatif->Apre->ged( $apre, $modeleodt, false, $options );
+			$this->assert( !empty( $pdf ), 'error500' );
 
-            if( $typeapre  == 'C' ) {
-                    $apre_etatliquidatif = $this->ApreEtatliquidatif->find(
-                        'all',
-                        array(
-                            'conditions' => array(
-                                'ApreEtatliquidatif.etatliquidatif_id' => $id,
-                                'ApreEtatliquidatif.apre_id' => Set::extract( $apres, '/Apre/id' )
-                            )
-                        )
-                    );
-                    $this->set( 'apre_etatliquidatif', $apre_etatliquidatif );
-                    $apres= Set::merge( $apres, $apre_etatliquidatif );
-            }
+			$this->Gedooo->sendPdfContentToClient( $pdf, $nomfichierpdf );
+		}
 
-            foreach( $apres as $key => $datas ) {
-                unset( $datas['Apre']['Piecemanquante'] );
-                unset( $datas['Apre']['Piecepresente'] );
-                unset( $datas['Apre']['Piece'] );
-                unset( $datas['Pieceapre'] );
-                unset( $datas['Comiteapre'] );
-                unset( $datas['Relanceapre'] );
-//                 unset( $datas['Apre']['Natureaide'] );
+		/**
+		*
+		*/
 
-                if( $datas['Apre']['statutapre'] == 'F' ) {
-                    $datas['Apre']['allocation'] = $datas['Apre']['mtforfait'];
-                }
-                else if( $datas['Apre']['statutapre'] == 'C' ) {
-                    $datas['Apre']['allocation'] = $datas['ApreEtatliquidatif']['montantattribue'];
-                }
-                else {
-                    $this->cakeError( 'error500' );
-                }
+		public function impressioncohorte( $id ) {
+			$typeapre = $this->Etatliquidatif->getTypeapre( $id );
+			$this->assert( !empty( $typeapre ), 'invalidParameter' );
 
-////////////////////////////////////////////////////////////////////////////////////////
-				if( $typeapre  == 'C' ) {
-					$aidesApre = array();
-					$modelsFormation = array( 'Formqualif', 'Formpermfimo', 'Permisb', 'Actprof' );
-					$modelLie = Set::classicExtract( $datas, 'Apre.Natureaide' );
-		//             debug($modelLie);
-					foreach( $modelLie as $natureaide => $nombre ) {
-						if( $nombre > 0 ) {
-							$aidesApre = $natureaide;
-							if( in_array( $natureaide, $modelsFormation ) ){
-								$dest = 'tiersprestataire';
-							}
-							else{
-								$dest = 'beneficiaire';
-							}
-						}
-					}
-				}
-////////////////////////////////////////////////////////////////////////////////////////
+			$dest = 'beneficiaire';//FIXME
 
+			$options = array(
+				'Adresse' => array(
+					'typevoie' => $this->Option->typevoie()
+				),
+				'Apre' => array(
+					'natureaide' => $this->Option->natureAidesApres()
+				),
+				'Personne' => array(
+					'qual' => $this->Option->qual()
+				),
+				'Tiersprestataireapre' => array(
+					'typevoie' => $this->Option->typevoie()
+				)
+			);
 
+			$method = 'qdDonneesApre'.Inflector::camelize( $typeapre ).'Gedooo';
+			$querydata = $this->Etatliquidatif->{$method}();
+			$querydata = Set::merge(
+				$querydata,
+				array(
+					'conditions' => array(
+						'Etatliquidatif.id' => $id,
+					),
+					'limit' => 100
+				)
+			);
 
-                /*
-                    Traduction des codes en français
-                */
+			Configure::write( "Optimisations.{$this->name}_{$this->action}.progressivePaginate", true );
+			$this->paginate = $querydata;
+			$deepAfterFind = $this->Etatliquidatif->Apre->deepAfterFind;
+			$this->Etatliquidatif->Apre->deepAfterFind = false;
+			$apres = $this->paginate( $this->Etatliquidatif );
+			$this->Etatliquidatif->Apre->deepAfterFind = $deepAfterFind;
 
-                $datas['Personne']['qual'] = Set::enum( Set::classicExtract( $datas, 'Personne.qual' ),$qual );
-                $datas['Adresse']['typevoie'] = Set::enum( Set::classicExtract( $datas, 'Adresse.typevoie' ),$typevoie );
-//                 $datas['Apre']['paiement'] = $dest;
-                $apres[$key] = $datas;
-            }
+			$typeapre = ( $typeapre == 'forfaitaire' ? 'F' : 'C' );
+			if( $typeapre == 'F' ) {
+				$key = 'forfaitaire';
+				$modeleodt = 'APRE/apreforfaitaire.odt';
+				$nomfichierpdf = sprintf( 'apreforfaitaire-%s.pdf', date( 'Y-m-d' ) );
+			}
+			else if( $typeapre == 'C' && $dest == 'tiersprestataire' ) {
+				$key = 'etatliquidatif_tiers';
+				$modeleodt = 'APRE/Paiement/paiement_'.$dest.'.odt';
+				$nomfichierpdf = sprintf( 'paiement_'.$dest.'-%s.pdf', date( 'Y-m-d' ) );
+			}
+			else if( $typeapre == 'C' && $dest == 'beneficiaire' ) {
+				$key = 'apreforfaitaire';
+				$modeleodt = 'APRE/Paiement/paiement_'.$typeformation.'_'.$dest.'.odt';
+				$nomfichierpdf = sprintf( 'paiement_'.$typeformation.'_'.$dest.'-%s.pdf', date( 'Y-m-d' ) );
+			}
 
-            //------------------------------------------------------------------
-// $dests = ( Set::extract( $apres, '/Apre/paiement' ) );
-//
-// debug($typeapre);
-// die();
-            if( $typeapre  == 'F' ) {
-				$pdf = $this->Etatliquidatif->Apre->ged( array( 'forfaitaire' => $apres ), 'APRE/apreforfaitaire.odt', true );
-				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'apreforfaitaire-%s.pdf', date( 'Y-m-d' ) ) );
-            }
-            else if( $typeapre  == 'C' && !empty( $dest ) ) {
-                if( $dest == 'tiersprestataire' ) {
-					$pdf = $this->Etatliquidatif->Apre->ged( array( 'etatliquidatif_tiers' => $apres ), 'APRE/Paiement/paiement_'.$dest.'.odt', true );
-					$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'paiement_'.$dest.'-%s.pdf', date( 'Y-m-d' ) ) );
+			$pdf = $this->Etatliquidatif->Apre->ged( array( $key => $apres ), $modeleodt, true, $options );
+			$this->assert( !empty( $pdf ), 'error500' );
 
-                }
-                else if( $dest == 'beneficiaire' ) {
-					$pdf = $this->Etatliquidatif->Apre->ged( array( 'apreforfaitaire' => $apres ), 'APRE/Paiement/paiement_'.$dest.'.odt', true );
-					$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'paiement_'.$dest.'-%s.pdf', date( 'Y-m-d' ) ) );
-                }
-            }
-        }
+			$this->Gedooo->sendPdfContentToClient( $pdf, $nomfichierpdf );
+		}
 
 		/**
 		*
 		*/
 
 		public function validation( $id = null ) {
-			$etatliquidatif = $this->{$this->modelClass}->findById( $id, null, null, -1 );
+			$etatliquidatif = $this->Etatliquidatif->findById( $id, null, null, -1 );
 			$this->assert( !empty( $etatliquidatif ), 'invalidParameter' );
 
 			// État liquidatif pas encore validé
@@ -511,20 +379,20 @@
 
 			// État liquidatif sans APRE ?
 			// FIXME: doit-il y avoir obligatoirement des apres dans un état liquidatif
-			$nApres = $this->{$this->modelClass}->ApreEtatliquidatif->find( 'count', array( 'conditions' => array( 'ApreEtatliquidatif.etatliquidatif_id' => $id ) ) );
+			$nApres = $this->Etatliquidatif->ApreEtatliquidatif->find( 'count', array( 'conditions' => array( 'ApreEtatliquidatif.etatliquidatif_id' => $id ) ) );
 			if( $nApres == 0 ) {
 				$this->Session->setFlash( __( 'Impossible de valider un état liquidatif n\'étant associé à aucune APRE.', true ), 'flash/error' );
 				$this->redirect( array( 'action' => 'index' ) );
 			}
 
 			// TODO -> dans le modèle
-			$this->{$this->modelClass}->Apre->unbindModelAll();
-			$montanttotalapre = $this->{$this->modelClass}->Apre->find(
+			$this->Etatliquidatif->Apre->unbindModelAll();
+			$montanttotalapre = $this->Etatliquidatif->Apre->find(
 				'all',
 				array(
 					'fields' => array(
 						'Apre.mtforfait',
-                        'ApreEtatliquidatif.montantattribue',
+						'ApreEtatliquidatif.montantattribue',
 					),
 					'joins' => array(
 						array(
@@ -542,18 +410,18 @@
 
 			$etatliquidatif['Etatliquidatif']['datecloture'] = date( 'Y-m-d' );
 
-            if( $etatliquidatif['Etatliquidatif']['typeapre'] == 'forfaitaire' ) {
-                $etatliquidatif['Etatliquidatif']['montanttotalapre'] = array_sum( Set::extract( $montanttotalapre, '/Apre/mtforfait' ) );
-            }
-            else if( $etatliquidatif['Etatliquidatif']['typeapre'] == 'complementaire' ) {
-                $etatliquidatif['Etatliquidatif']['montanttotalapre'] = array_sum( Set::extract( $montanttotalapre, '/ApreEtatliquidatif/montantattribue' ) );
-            }
-            else {
-                $this->cakeError( 'error500' );
-            }
+			if( $etatliquidatif['Etatliquidatif']['typeapre'] == 'forfaitaire' ) {
+				$etatliquidatif['Etatliquidatif']['montanttotalapre'] = array_sum( Set::extract( $montanttotalapre, '/Apre/mtforfait' ) );
+			}
+			else if( $etatliquidatif['Etatliquidatif']['typeapre'] == 'complementaire' ) {
+				$etatliquidatif['Etatliquidatif']['montanttotalapre'] = array_sum( Set::extract( $montanttotalapre, '/ApreEtatliquidatif/montantattribue' ) );
+			}
+			else {
+				$this->cakeError( 'error500' );
+			}
 
-			$this->{$this->modelClass}->create( $etatliquidatif );
-			if( $this->{$this->modelClass}->save() ) {
+			$this->Etatliquidatif->create( $etatliquidatif );
+			if( $this->Etatliquidatif->save() ) {
 				$this->Session->setFlash( __( 'Enregistrement effectué', true ), 'flash/success' );
 				$this->redirect( array( 'action' => 'index', max( 1, Set::classicExtract( $this->params, 'named.page' ) ) ) );
 			}
@@ -564,7 +432,7 @@
 		*/
 
 		public function hopeyra( $id = null ) {
-			$etatliquidatif = $this->{$this->modelClass}->findById( $id, null, null, -1 );
+			$etatliquidatif = $this->Etatliquidatif->findById( $id, null, null, -1 );
 			$this->assert( !empty( $etatliquidatif ), 'invalidParameter' );
 
 			// État liquidatif pas encore validé
@@ -573,11 +441,11 @@
 				$this->redirect( array( 'action' => 'index' ) );
 			}
 
-            $apres = $this->{$this->modelClass}->hopeyra( $id, $etatliquidatif['Etatliquidatif']['typeapre'] );
+			$apres = $this->Etatliquidatif->hopeyra( $id, $etatliquidatif['Etatliquidatif']['typeapre'] );
 
-            $this->set( compact( 'apres' ) );
+			$this->set( compact( 'apres' ) );
 
-            $this->render( null, 'ajax' ); // FIXME: pas ajax
+			$this->render( null, 'ajax' ); // FIXME: pas ajax
 		}
 
 		/**
@@ -585,7 +453,7 @@
 		*/
 
 		public function pdf( $id = null ) {
-			$etatliquidatif = $this->{$this->modelClass}->findById( $id, null, null, 0 );
+			$etatliquidatif = $this->Etatliquidatif->findById( $id, null, null, 0 );
 			$this->assert( !empty( $etatliquidatif ), 'invalidParameter' );
 
 			// État liquidatif pas encore validé
@@ -594,7 +462,7 @@
 				$this->redirect( array( 'action' => 'index' ) );
 			}
 
-			$elements = $this->{$this->modelClass}->pdf( $id, $etatliquidatif['Etatliquidatif']['typeapre'], true );
+			$elements = $this->Etatliquidatif->pdf( $id, $etatliquidatif['Etatliquidatif']['typeapre'], true );
 
 			$qual = $this->Option->qual();
 			$typevoie = $this->Option->typevoie();
@@ -604,166 +472,107 @@
 			Configure::write( 'debug', 0 );
 		}
 
-        /**
-        *
-        */
+		/**
+		*
+		*/
 
-        public function ajaxmontant( $etatliquidatif_id, $apre_id, $index ) { // FIXME
-            Configure::write( 'debug', 0 );
-            $nbpaiementsouhait = $this->data['Apre'][$index]['nbpaiementsouhait'];
+		public function ajaxmontant( $etatliquidatif_id, $apre_id, $index ) { // FIXME
+			Configure::write( 'debug', 0 );
+			$nbpaiementsouhait = $this->data['Apre'][$index]['nbpaiementsouhait'];
 
-            $queryData = $this->Etatliquidatif->listeApresEtatLiquidatifNonTermine( array( 'Apre.statutapre' => 'C', 'Apre.id' => $apre_id ), $etatliquidatif_id );
-            $queryData['recursive'] = -1;
+			$queryData = $this->Etatliquidatif->listeApresEtatLiquidatifNonTermine( array( 'Apre.statutapre' => 'C', 'Apre.id' => $apre_id ), $etatliquidatif_id );
+			$queryData['recursive'] = -1;
 
-            $apre = $this->Apre->find( 'first', $queryData );
+			$apre = $this->Etatliquidatif->Apre->find( 'first', $queryData );
 
-            $apre_etatliquidatif = $this->ApreEtatliquidatif->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'ApreEtatliquidatif.etatliquidatif_id' => $etatliquidatif_id,
-                        'ApreEtatliquidatif.apre_id' => $apre_id
-                    )
-                )
-            );
-            $this->set( 'apre_etatliquidatif', $apre_etatliquidatif );
+			$apre_etatliquidatif = $this->Etatliquidatif->ApreEtatliquidatif->find(
+				'first',
+				array(
+					'conditions' => array(
+						'ApreEtatliquidatif.etatliquidatif_id' => $etatliquidatif_id,
+						'ApreEtatliquidatif.apre_id' => $apre_id
+					)
+				)
+			);
+			$this->set( 'apre_etatliquidatif', $apre_etatliquidatif );
 
-            // Calcul -> FIXME: dans le modèle
-            $montanttotal = Set::classicExtract( $apre, 'Apre.montantaverser' );
-            if( $nbpaiementsouhait == 1 ) {
-                /*$apre['Apre']['montantaverser'] = */$apre_etatliquidatif['ApreEtatliquidatif']['montantattribue'] /*= $apre['Apre']['montantdejaverse']*/ = $montanttotal;
-            }
-            else if( $nbpaiementsouhait == 2 ) {
+			// Calcul -> FIXME: dans le modèle
+			$montanttotal = Set::classicExtract( $apre, 'Apre.montantaverser' );
+			if( $nbpaiementsouhait == 1 ) {
+				/*$apre['Apre']['montantaverser'] = */$apre_etatliquidatif['ApreEtatliquidatif']['montantattribue'] /*= $apre['Apre']['montantdejaverse']*/ = $montanttotal;
+			}
+			else if( $nbpaiementsouhait == 2 ) {
 //                 /*$apre['Apre']['montantaverser'] = */$apre_etatliquidatif['ApreEtatliquidatif']['montantattribue'] = 40 * ( Set::classicExtract( $apre, 'Apre.montantaverser' ) ) / 100;
 
-            /**
-            *   INFO: remplacement du pourcentage de 40 -> 60 % pour les versements en 2 fois (du coup ajout d'un paramétrage)
-            */
-                $apre_etatliquidatif['ApreEtatliquidatif']['montantattribue'] = Configure::read( 'Apre.pourcentage.montantversement' ) * ( Set::classicExtract( $apre, 'Apre.montantaverser' ) ) / 100;
-            }
+			/**
+			*   INFO: remplacement du pourcentage de 40 -> 60 % pour les versements en 2 fois (du coup ajout d'un paramétrage)
+			*/
+				$apre_etatliquidatif['ApreEtatliquidatif']['montantattribue'] = Configure::read( 'Apre.pourcentage.montantversement' ) * ( Set::classicExtract( $apre, 'Apre.montantaverser' ) ) / 100;
+			}
 
-            $nbpaiementsouhait = array( '1' => 1, '2' => 2 );// FIXME: dans le modèle et au pluriel
+			$nbpaiementsouhait = array( '1' => 1, '2' => 2 );// FIXME: dans le modèle et au pluriel
 
-            $apre = Set::merge( $apre, $apre_etatliquidatif );
-            $this->set( 'apre', $apre );
+			$apre = Set::merge( $apre, $apre_etatliquidatif );
+			$this->set( 'apre', $apre );
 
-            $this->set( 'i', $index );
-            $this->set( 'nbpaiementsouhait', $nbpaiementsouhait );
+			$this->set( 'i', $index );
+			$this->set( 'nbpaiementsouhait', $nbpaiementsouhait );
 
-            $this->render( null, 'ajax' );
-        }
+			$this->render( null, 'ajax' );
+		}
 
-        /*function test() {
-            $this->data = array(
-                0 => array(
-                    'Apre' => array(
-                        'id' => 126,
-                        'personne_id' => 1,
-                        'nbpaiementsouhait' => 2,
-                    ),
-                    'ApreEtatliquidatif' => array (
-                        'id' => 183,
-                        'etatliquidatif_id' => 87,
-                        'apre_id' => 126,
-                        'montanttotal' => 1542,
-                        'montantattribue' => 1//'choucroute'
-                    )
-                ),
-            );
+		/**
+		*
+		*/
 
-            debug( $this->data );
-            $this->ApreEtatliquidatif->begin();
+		public function versementapres( $id = null ) {
+			// Retour à la liste en cas d'annulation
+			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
+				$this->redirect( array( 'action' => 'index' ) );
+			}
 
-            //$this->ApreEtatliquidatif->create( $this->data );
-            debug( $this->ApreEtatliquidatif->saveAll( $this->data, array( 'atomic' => false ) ) );
+			$etatliquidatif = $this->Etatliquidatif->findById( $id, null, null, -1 );
+			$this->assert( !empty( $etatliquidatif ), 'invalidParameter' );
 
-            $this->ApreEtatliquidatif->rollback();
-
-            //debug( $this->ApreEtatliquidatif->validate );
-            debug( $this->ApreEtatliquidatif->validationErrors );
-        }*/
-
-        /**
-        *
-        */
-
-        public function versementapres( $id = null ) {
-            // Retour à la liste en cas d'annulation
-            if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
-                $this->redirect( array( 'action' => 'index' ) );
-            }
-
-            $etatliquidatif = $this->{$this->modelClass}->findById( $id, null, null, -1 );
-            $this->assert( !empty( $etatliquidatif ), 'invalidParameter' );
-
-            $nbpaiementsouhait = array( '1' => 1, '2' => 2 );
-            $this->set( 'nbpaiementsouhait', $nbpaiementsouhait );
+			$nbpaiementsouhait = array( '1' => 1, '2' => 2 );
+			$this->set( 'nbpaiementsouhait', $nbpaiementsouhait );
 
 
-            $queryData = $this->Etatliquidatif->listeApresEtatLiquidatifNonTerminePourVersement( array( 'Apre.statutapre' => 'C' ), $id );
-            $queryData['limit'] = 100;
+			$queryData = $this->Etatliquidatif->listeApresEtatLiquidatifNonTerminePourVersement( array( 'Apre.statutapre' => 'C' ), $id );
+			$queryData['limit'] = 100;
 
-            $this->{$this->modelClass}->Apre->unbindModelAll( false );
-            $this->paginate['Apre'] = $queryData;
-            $apres = $this->paginate( 'Apre' );
-            $this->set( compact( 'apres', 'queryData' ) );
+			$this->Etatliquidatif->Apre->unbindModelAll( false );
+			$this->paginate['Apre'] = $queryData;
+			$apres = $this->paginate( 'Apre' );
+			$this->set( compact( 'apres', 'queryData' ) );
 
 
-            if( !empty( $this->data ) ) {
-                $this->ApreEtatliquidatif->begin();
+			if( !empty( $this->data ) ) {
+				$this->Etatliquidatif->ApreEtatliquidatif->begin();
 
-                $apre_ids = Set::extract( $this->data, '/ApreEtatliquidatif/apre_id' );
-                $apres = Set::extract( $this->data, '/Apre' );
-                $this->data = Set::extract( $this->data, '/ApreEtatliquidatif' );
-                $return = $this->ApreEtatliquidatif->saveAll( $this->data, array( 'atomic' => false ) );
-                if( $return ) {
-                    // FIXME: dans le afterSave de ApreEtatliquidatif ?
-                    $return = $this->Apre->saveAll( $apres, array( 'atomic' => false ) );
-                    if( $return ) {
-                        $this->Apre->calculMontantsDejaVerses( $apre_ids );
-                        $this->ApreEtatliquidatif->commit();
-                        $this->redirect( array( 'action' => 'index', max( 1, Set::classicExtract( $this->params, 'named.page' ) ) ) );
+				$apre_ids = Set::extract( $this->data, '/ApreEtatliquidatif/apre_id' );
+				$apres = Set::extract( $this->data, '/Apre' );
+				$this->data = Set::extract( $this->data, '/ApreEtatliquidatif' );
+				$return = $this->Etatliquidatif->ApreEtatliquidatif->saveAll( $this->data, array( 'atomic' => false ) );
+				if( $return ) {
+					// FIXME: dans le afterSave de ApreEtatliquidatif ?
+					$return = $this->Etatliquidatif->Apre->saveAll( $apres, array( 'atomic' => false ) );
+					if( $return ) {
+						$this->Etatliquidatif->Apre->calculMontantsDejaVerses( $apre_ids );
+						$this->Etatliquidatif->ApreEtatliquidatif->commit();
+						$this->redirect( array( 'action' => 'index', max( 1, Set::classicExtract( $this->params, 'named.page' ) ) ) );
 
-                    }
-                    else {
-                        $this->ApreEtatliquidatif->rollback();
-                        $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
-                    }
-                }
-                else {
-                    $this->ApreEtatliquidatif->rollback();
-                    $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
-                }
-
-                /*if( !empty( $this->data['Apre'] ) && !empty( $this->data['ApreEtatliquidatif'] ) ) {
-
-                    $valid = $this->Dossier->Foyer->Personne->Apre->saveAll( $this->data['Apre'], array( 'validate' => 'only', 'atomic' => false ) );
-                    $valid = $this->ApreEtatliquidatif->saveAll( $this->data['ApreEtatliquidatif'], array( 'validate' => 'only', 'atomic' => false ) ) && $valid;
-
-debug($valid);
-                    if( $valid ) {
-                        $data = Set::extract( $this->data, '/Apre' );
-                        $dataApreLiquidatif = Set::extract( $this->data, '/ApreEtatliquidatif' );
-
-                        $saved = $this->Dossier->Foyer->Personne->Apre->saveAll( $data, array( 'validate' => 'first', 'atomic' => false ) );
-                        $saved = $this->ApreEtatliquidatif->saveAll( $dataApreLiquidatif, array( 'validate' => 'first', 'atomic' => false ) ) && $saved;
-
-                        $apre_ids = Set::extract( $this->data, '/Apre/id' );
-                        $saved = $this->Apre->calculMontantsDejaVerses( $apre_ids ) && $saved;
-debug($saved);
-                        //Mise à jour des montants déjà versés pour chacune des APREs
-                        if( $saved ) {
-
-                            $this->Dossier->commit();
-                            $this->redirect( array( 'action' => 'index', max( 1, Set::classicExtract( $this->params, 'named.page' ) ) ) );
-                        }
-                        else {
-                            $this->Dossier->rollback();
-                            $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
-                        }
-                    }
-                }*/
-            }
-        }
+					}
+					else {
+						$this->Etatliquidatif->ApreEtatliquidatif->rollback();
+						$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+					}
+				}
+				else {
+					$this->Etatliquidatif->ApreEtatliquidatif->rollback();
+					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+				}
+			}
+		}
 	}
 ?>
