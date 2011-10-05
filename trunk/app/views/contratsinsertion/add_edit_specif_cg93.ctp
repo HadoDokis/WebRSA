@@ -590,7 +590,7 @@
 			);
 
 			echo $xform->input( 'Objetcontratprecedent.Objetcontratprecedent', array( 'label' => __d( 'objetcontratprecedent', 'Objetcontratprecedent.objetcerprec', true ), 'options' => $options['Objetcontratprecedent']['objetcerprec'], 'multiple' => 'checkbox', 'selected' => $selected ) );
-			echo $form->input( 'Contratinsertion.autreobjetcerprec', array( 'label' => 'Si autre (préciser)', 'type' => 'text'));
+			echo $form->input( 'Contratinsertion.objetcerprecautre', array( 'label' => 'Si autre (préciser)', 'type' => 'text'));
 		?>
 		<?php echo $form->input( 'Contratinsertion.obsta_renc', array( 'label' => 'Quel bilan faites vous des actions précisées dans le précédent contrat (les avancées et/ou les freins)  ? ', 'type' => 'textarea', 'rows' => 3)  ); ?>
 </fieldset>
@@ -647,8 +647,8 @@
 		);
 
 		observeDisableFieldsOnCheckbox(
-			'ObjetcontratprecedentObjetcerprecAutre',
-			[ 'ContratinsertionAutreobjetcerprec' ],
+			'ObjetcontratprecedentObjetcontratprecedentAutre',
+			[ 'ContratinsertionObjetcerprecautre' ],
 			false
 		);
 	} );
