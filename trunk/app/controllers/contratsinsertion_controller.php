@@ -975,7 +975,7 @@
 				}
 
 				// Si Contratinsertion.objetcerprecautre est disabled, on enregistre null
-				$this->data = Set::merge( $this->data, array( 'Contratinsertion' => array( 'objetcerprecautre' => null ) ) );
+				$this->data = Set::merge( array( 'Contratinsertion' => array( 'objetcerprecautre' => null ) ), $this->data );
 
 				$success = $this->Contratinsertion->save( $this->data );
 
