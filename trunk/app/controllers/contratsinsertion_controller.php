@@ -974,6 +974,9 @@
 					$this->data['Contratinsertion']['datesuspensionparticulier'] = $suspension[0]['Suspensiondroit']['ddsusdrorsa'];
 				}
 
+				// Si Contratinsertion.objetcerprecautre est disabled, on enregistre null
+				$this->data = Set::merge( $this->data, array( 'Contratinsertion' => array( 'objetcerprecautre' => null ) ) );
+
 				$success = $this->Contratinsertion->save( $this->data );
 
 				if( $success ) {
