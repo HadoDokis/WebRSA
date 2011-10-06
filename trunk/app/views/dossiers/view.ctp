@@ -228,6 +228,13 @@
 								<td><?php echo h( textPresenceDsp( @$details['DEM'] ) );?></td>
 								<td><?php echo h( textPresenceDsp( @$details['CJT'] ) );?></td>
 							</tr>
+							<?php if( Configure::read( 'Cg.departement' ) == 58 ):?>
+								<tr class="odd">
+									<th>Code activité</th>
+									<td><?php echo value( $act,  Set::extract( 'DEM.Activite.act', $details ) );?></td>
+									<td><?php echo value( $act,  Set::extract( 'CJT.Activite.act', $details ) );?></td>
+								</tr>
+							<?php endif;?>
 						</tbody>
 					</table>
 				</td>
