@@ -828,19 +828,32 @@ die();
 				)
 			);
 
+			$typeaideapre66_id = Set::classicExtract( $apre, 'Aideapre66.typeaideapre66_id' );
+
 			$piecesPresentes = Set::classicExtract($apre, 'Aideapre66.Piececomptable66.{n}.id');
 
-			$conditions = array();
+			// Recherche des pièces nécessaires pour cette aide, et qui ne sont pas présentes
+			$querydata = array(
+				'joins' => array(
+					$this->Piececomptable66->join( 'Piececomptable66Typeaideapre66' )
+				),
+				'conditions' => array(
+					'Piececomptable66Typeaideapre66.typeaideapre66_id' => $typeaideapre66_id
+				),
+				'contain' => false
+			);
+			
 			if( !empty( $piecesPresentes ) ) {
-				$conditions = array( 'NOT' => array( 'Piececomptable66.id' => $piecesPresentes ) );
+				$querydata['conditions']['NOT'] = array( 'Piececomptable66.id' => $piecesPresentes );
 			}
 
-			$piecesAbsentes = $this->Piececomptable66->find( 'list', array( 'conditions' => $conditions, 'contain' => false ) );
-			$apre['Aideapre66']['Piececomptable66']='';
-			foreach( $piecesAbsentes as $model => $pieces ) {
-				if( !empty( $pieces ) ) {
-					$apre['Aideapre66']['Piececomptable66'] .= "\n" .'- '.implode( "\n- ", array($pieces) ).',';
-				}
+
+			$apre['Aideapre66']['Piececomptable66'] = null;
+
+			$pieces = $this->Piececomptable66->find( 'list', $querydata );
+
+			if( !empty( $pieces ) ) {
+				$apre['Aideapre66']['Piececomptable66'] .= "\n" .'- '.implode( "\n- ", $pieces ).',';
 			}
 
 			$this->Adressefoyer->bindModel(
@@ -872,6 +885,7 @@ die();
 			$apre['Referent']['qual'] = Set::enum( Set::classicExtract( $apre, 'Referent.qual' ), $qual );
 
 			$apre['Structurereferente']['adresse'] = Set::classicExtract( $apre, 'Structurereferente.num_voie').' '.Set::enum( Set::classicExtract( $apre, 'Structurereferente.type_voie'), $typevoie ).' '.Set::classicExtract( $apre, 'Structurereferente.nom_voie').' '.Set::classicExtract( $apre, 'Structurereferente.code_postal').' '.Set::classicExtract( $apre, 'Structurereferente.ville');
+
 
 			if ($apre['Aideapre66']['decisionapre']=='ACC') {
 				$pdf = $this->Apre66->ged( $apre, 'APRE/accordaide.odt' );
