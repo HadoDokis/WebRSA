@@ -842,10 +842,6 @@ die();
 				),
 				'contain' => false
 			);
-			
-			if( !empty( $piecesPresentes ) ) {
-				$querydata['conditions']['NOT'] = array( 'Piececomptable66.id' => $piecesPresentes );
-			}
 
 
 			$apre['Aideapre66']['Piececomptable66'] = null;
