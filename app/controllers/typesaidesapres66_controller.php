@@ -2,10 +2,12 @@
     class Typesaidesapres66Controller extends AppController
     {
         public $name = 'Typesaidesapres66';
-
-        var $uses = array( 'Typeaideapre66', 'Themeapre66', 'Pieceaide66', 'Piececomptable66' );
         
-		var $commeDroit = array(
+        public $helpers = array( 'Default', 'Default2' );
+
+        public $uses = array( 'Typeaideapre66', 'Themeapre66', 'Pieceaide66', 'Piececomptable66' );
+        
+		public $commeDroit = array(
 			'view' => 'Typesaidesapres66:index',
 			'add' => 'Typesaidesapres66:edit'
 		);
@@ -53,9 +55,36 @@
         }
 
 
+//         public function index() {
+// 
+// 			$this->set( 'occurences', $this->Typeaideapre66->occurences() );
+// // 			debug( $this->Typeaideapre66->occurences() );
+// 			$queryData = array(
+// 				'Typeaideapre66' => array(
+// 					'order' => array( 'Themeapre66.name ASC', 'Typeaideapre66.name ASC' )
+// 				)
+// 			);
+//             $this->Default->index( $queryData );
+//         }
+
         public function index() {
+
+			$this->set( 'occurences', $this->Typeaideapre66->occurences() );
+// 			debug( $this->Typeaideapre66->occurences() );
 			$queryData = array(
 				'Typeaideapre66' => array(
+					'fields' => array(
+						'Typeaideapre66.id',
+						'Typeaideapre66.name',
+						'Themeapre66.name',
+						'COUNT("Aideapre66"."id") AS "Typeaideapre66__occurences"',
+					),
+					'joins' => array( 
+						$this->Typeaideapre66->join( 'Aideapre66' ),
+						$this->Typeaideapre66->join( 'Themeapre66' ),
+					),
+					'recursive' => -1,
+					'group' => array(  'Typeaideapre66.id', 'Typeaideapre66.name', 'Themeapre66.name' ),
 					'order' => array( 'Themeapre66.name ASC', 'Typeaideapre66.name ASC' )
 				)
 			);

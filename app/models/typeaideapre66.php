@@ -93,5 +93,24 @@
 			}
 			return $return;
 		}
+
+
+		public function occurences() {
+
+			$queryData = array(
+				'fields' => array(
+					'"Typeaideapre66"."id"',
+					'COUNT("Aideapre66"."id") AS "Typeaideapre66__occurences"',
+				),
+				'joins' => array( 
+					$this->join( 'Aideapre66' )
+				),
+				'recursive' => -1,
+				'group' => array(  '"Typeaideapre66"."id"', '"Typeaideapre66"."name"' )
+			);
+			$results = $this->find( 'all', $queryData );
+
+			return Set::combine( $results, '{n}.Typeaideapre66.id', '{n}.Typeaideapre66.occurences' );
+		}
 	}
 ?>
