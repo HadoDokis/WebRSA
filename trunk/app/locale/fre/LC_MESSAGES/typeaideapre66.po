@@ -37,6 +37,9 @@ msgstr "Modifier l'aide"
 msgid "Typeaideapre66::delete"
 msgstr "Supprimer l'aide"
 
+msgid "Typesaidesapres66::delete"
+msgstr "Supprimer l'aide"
+
 msgid "Typesaidesapres66::edit"
 msgstr "Modification de l'aide"
 
@@ -51,6 +54,9 @@ msgstr "Plafond de l'aide"
 
 msgid "Typeaideapre66.objetaide"
 msgstr "Objet de l'aide"
+
+msgid "Typesaidesapres66::delete::confirm"
+msgstr "Confirmer la suppression ?"
 
 msgid "Typeaideapre66::delete::confirm"
 msgstr "Confirmer la suppression ?"
