@@ -12,6 +12,7 @@
 
 	echo $default->subform(
 		array(
+			'Typeaideapre66.id' => array( 'type' => 'hidden' ),
 			'Typeaideapre66.themeapre66_id',
 			'Typeaideapre66.name',
 			'Typeaideapre66.objetaide' => array( 'type' => 'text' ),

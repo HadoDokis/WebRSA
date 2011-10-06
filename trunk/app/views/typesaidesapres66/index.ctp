@@ -5,7 +5,7 @@
     )
 ?>
 <?php
-    echo $default->index(
+    echo $default2->index(
         $typesaidesapres66,
         array(
             'Themeapre66.name',
@@ -13,10 +13,10 @@
         ),
         array(
             'actions' => array(
-                'Typeaideapre66.edit',
-                'Typeaideapre66.delete'
+                'Typesaidesapres66::edit',
+                'Typesaidesapres66::delete' => array( 'disabled' => '"#Typeaideapre66.occurences#" != "0"' )
             ),
-            'add' => 'Typeaideapre66.add'
+            'add' => 'Typesaidesapres66::add'
         )
     );
 
