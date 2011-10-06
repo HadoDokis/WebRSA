@@ -131,6 +131,24 @@
 					'rule' => array( 'notEmptyIf', 'activitebeneficiaire', true, array( 'E' ) ),
 					'message' => 'Champ obligatoire'
 				)
+			),
+			'hascer' => array(
+				array(
+					'rule' => array('equalTo', '1'), 
+					'message' => 'Champ obligatoire'
+				)
+			),
+			'isbeneficiaire' => array(
+				array(
+					'rule' => array('equalTo', '1'),
+					'message' => 'Champ obligatoire'
+				)
+			),
+			'respectdelais' => array(
+				array(
+					'rule' => array('equalTo', '1'), 
+					'message' => 'Champ obligatoire'
+				)
 			)
 		);
 
