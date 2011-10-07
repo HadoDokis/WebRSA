@@ -42,7 +42,7 @@
 				$this->set( 'forme_ci', $forme_ci );
 			}
 
-			if( in_array( $this->action, array( 'add', 'edit', 'view' ) ) ) {
+			if( in_array( $this->action, array( 'add', 'edit', 'view', 'valider' ) ) ) {
 				$this->set( 'formeci', $this->Option->formeci() );
 			}
 
@@ -1353,6 +1353,8 @@
 						'Contratinsertion.observ_ci',
 						'Contratinsertion.datevalidation_ci',
 						'Contratinsertion.decision_ci',
+						'Contratinsertion.dd_ci',
+						'Contratinsertion.df_ci',
 					),
 					'conditions' => array(
 						'Contratinsertion.id' => $contratinsertion_id
