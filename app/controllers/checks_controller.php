@@ -570,6 +570,11 @@
 				$errors['Cg.departement'] = 'integer';
 			}
 
+			$return = ClassRegistry::init( 'Informationpe' )->checkConfigUpdateIntervalleDetectionNonInscritsPe();
+			if( $return !== true ) {
+				$errors['Selectionnoninscritspe.intervalleDetection'] = $return;
+			}
+
 			return $errors;
 		}
 

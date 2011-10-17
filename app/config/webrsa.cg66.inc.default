@@ -261,4 +261,12 @@
 	*/
 	Configure::write( 'Orientstruct.typeorientprincipale', array( 'SOCIAL' => array( 4, 6 ), 'Emploi' => array( 1 ) ) );
 
+	/**
+	* Durée du délai (intervalle) entre la date de validation de l'orientation et la date
+	* d'inscription au Pôle Emploi
+	*
+	* Voir le document app/docs/Documentation administrateurs.odt, partie
+	* "Intervalles PostgreSQL"
+	*/
+    Configure::write( 'Selectionnoninscritspe.intervalleDetection', '2 months' );
 ?>

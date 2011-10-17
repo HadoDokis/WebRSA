@@ -265,4 +265,12 @@
 	*/
 	Configure::write( 'Typeorient.emploi_id', 1 );
 
+	/**
+	* Durée du délai (intervalle) entre la date de validation de l'orientation et la date
+	* d'inscription au Pôle Emploi
+	*
+	* Voir le document app/docs/Documentation administrateurs.odt, partie
+	* "Intervalles PostgreSQL"
+	*/
+    Configure::write( 'Selectionnoninscritspe.intervalleDetection', '6 weeks' );
 ?>
