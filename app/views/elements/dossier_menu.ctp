@@ -95,7 +95,7 @@
 							<!-- Début "Partie du sous-menu concernant uniquement le demandeur et son conjoint" -->
 							<?php if( $personne['Prestation']['rolepers'] == 'DEM' || $personne['Prestation']['rolepers'] == 'CJT' ):?>
 								<ul>
-								<?php if( $permissions->check( 'memos', 'index' ) || Configure::read( 'Cg.departement' ) == '66' ):?>
+								<?php if( $permissions->check( 'memos', 'index' ) && Configure::read( 'Cg.departement' ) == '66' ):?>
 									<li>
 										<?php
 											echo $xhtml->link(
@@ -413,7 +413,7 @@
 													</li>
 												</ul>
 											</li>-->
-											<?php if( $permissions->check( 'memos', 'index' ) || Configure::read( 'Cg.departement' ) != '66'):?>
+											<?php if( $permissions->check( 'memos', 'index' ) && Configure::read( 'Cg.departement' ) != 66 ):?>
 											<li>
 												<?php
 													echo $xhtml->link(
