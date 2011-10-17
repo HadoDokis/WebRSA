@@ -274,11 +274,12 @@
 					array(
 						'table'      => 'prestations',
 						'alias'      => 'Prestation',
-						'type'       => 'INNER',
+						'type'       => 'LEFT OUTER',
 						'foreignKey' => false,
 						'conditions' => array(
 							'Prestation.personne_id = Personne.id',
-							'Prestation.natprest = \'RSA\''
+							'Prestation.natprest = \'RSA\'',
+							'Prestation.rolepers IN ( \'DEM\', \'CJT\' )'
 						)
 					),
 					ClassRegistry::init( 'Informationpe' )->joinPersonneInformationpe(),
@@ -352,7 +353,7 @@
 					array(
 						'table'      => 'situationsdossiersrsa',
 						'alias'      => 'Situationdossierrsa',
-						'type'       => 'INNER',
+						'type'       => 'LEFT OUTER',
 						'foreignKey' => false,
 						'conditions' => array( 'Situationdossierrsa.dossier_id = Dossier.id /*AND ( Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatOuvert() ).'\' ) )*/' )
 					),

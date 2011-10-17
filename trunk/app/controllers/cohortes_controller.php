@@ -230,7 +230,7 @@
 
 			switch( $statutOrientation ) {
 				case 'En attente':
-					$this->set( 'pageTitle', 'Nouvelles demandes à orienter' );
+					$this->set( 'pageTitle', 'Demandes en attente de validation d\'orientation' );
 					$this->render( $this->action, null, 'formulaire' );
 					break;
 				case 'Non orienté':
