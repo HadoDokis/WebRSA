@@ -165,6 +165,11 @@
 				}
 			}
 
+			if( empty( $assocData ) ) {
+				throw new Exception( "Cannot generate a join from model \"{$model->alias}\" to model \"{$assoc}\"." );
+				return array();
+			}
+
 			return array(
 				'table' => $dbo->fullTableName( $model->{$assoc} ),
 				'alias' => $assoc,
