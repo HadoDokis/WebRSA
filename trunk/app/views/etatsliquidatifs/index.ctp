@@ -25,25 +25,25 @@
 // 		$paginator->options( array( 'url' => $this->passedArgs ) );
 // 		$params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
 // 		$pagination = $xhtml->tag( 'p', $paginator->counter( $params ) );
-// 
+//
 // 		$pages = $paginator->first( '<<' );
 // 		$pages .= $paginator->prev( '<' );
 // 		$pages .= $paginator->numbers();
 // 		$pages .= $paginator->next( '>' );
 // 		$pages .= $paginator->last( '>>' );
-// 
+//
 // 		$pagination .= $xhtml->tag( 'p', $pages );
 
 		//----------------------------------------------------------------------
 
 		$headers = array(
-			'Entité financière',
-			'Opération',
-			'Exercice budgétaire',
-			'Nature analytique',
-			'Cdr.',
-			'Commentaire',
-			'Date clôture',
+			$xpaginator->sort( 'Entité financière', 'Etatliquidatif.entitefi' ),
+			$xpaginator->sort( 'Opération', 'Etatliquidatif.operation' ),
+			$xpaginator->sort( 'Exercice budgétaire', 'Budgetapre.exercicebudgetai' ),
+			$xpaginator->sort( 'Nature analytique', 'Etatliquidatif.natureanalytique' ),
+			$xpaginator->sort( 'Cdr.', 'Etatliquidatif.libellecdr' ),
+			$xpaginator->sort( 'Commentaire', 'Etatliquidatif.commentaire' ),
+			$xpaginator->sort( 'Date clôture', 'Etatliquidatif.datecloture' ),
 		);
 
 		///

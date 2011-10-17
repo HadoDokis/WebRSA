@@ -40,9 +40,12 @@
 
 			$this->paginate[$this->modelClass] = array(
 				'limit' => 10,
-				'order' => array( "Etatliquidatif.id ASC" ),
 				'conditions' => $conditions,
 				'recursive' => 0,
+				'order' => array(
+					'Etatliquidatif.datecloture DESC',
+					'Etatliquidatif.id DESC'
+				)
 			);
 
 			$etatsliquidatifs = $this->paginate( $this->modelClass );
@@ -178,8 +181,110 @@
 				$queryData['limit'] = $etatliquidatifLimit;
 			}
 
-			$this->Etatliquidatif->Apre->unbindModelAll();
+			$deepAfterFind = $this->Etatliquidatif->Apre->deepAfterFind;
+			$this->Etatliquidatif->Apre->deepAfterFind = false;
+// 			$this->Etatliquidatif->Apre->unbindModelAll();
+// http://localhost/adullact/webrsa/trunk/etatsliquidatifs/selectionapres/17
+$querydata = array(
+	'fields' => $queryData['fields'],
+	'joins' => array(
+		$this->Etatliquidatif->Apre->join( 'Personne' ),
+		$this->Etatliquidatif->Apre->Personne->join( 'Foyer' ),
+		$this->Etatliquidatif->Apre->Personne->Foyer->join( 'Dossier' ),
+		$this->Etatliquidatif->Apre->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
+		$this->Etatliquidatif->Apre->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
+		$this->Etatliquidatif->Apre->join( 'ApreComiteapre', array( 'type' => 'LEFT OUTER' ) )
+	),
+	'conditions' => array(
+		'Adressefoyer.id IS NULL OR Adressefoyer.id IN ('
+			.$this->Etatliquidatif->Apre->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' )
+		.')',
+		'Apre.eligibiliteapre' => 'O',
+		'AND' => array(
+			'(Apre.statutapre = \'F\') OR Apre.montantaverser IS NOT NULL',// FIXME: Apre.statutapre F -> pas de montantaverser ?
+			'OR' => array(
+				'Apre.montantdejaverse IS NULL',
+				'Apre.montantaverser > Apre.montantdejaverse'
+			),
+			// Nb. paiements ?
+		),
+		'Apre.statutapre' => $typeapre,
+		'OR' => array(
+			'Apre.statutapre' => 'F',
+			'AND' => array(
+				'Apre.statutapre' => 'C',
+				'ApreComiteapre.id IN ('
+					.$this->Etatliquidatif->Apre->ApreComiteapre->sqDernierComiteApre()
+				.')',
+				'ApreComiteapre.decisioncomite' => 'ACC'
+			)
+		),
+		array(
+			'OR' => array(
+				// L'APRE n'est pas dans un etatliquidatif non clôturé
+				'Apre.id NOT IN ('
+					.$this->Etatliquidatif->ApreEtatliquidatif->sq(
+						array(
+							'alias' => 'apres_etatsliquidatifs',
+							'fields' => 'apres_etatsliquidatifs.apre_id',
+							'joins' => array(
+								array(
+									'table' => '"etatsliquidatifs"', // FIXME
+									'alias' => 'etatsliquidatifs',
+									'type' => 'INNER',
+									'conditions' => array(
+										'apres_etatsliquidatifs.etatliquidatif_id = etatsliquidatifs.id'
+									)
+								)
+							),
+							'conditions' => array(
+								'etatsliquidatifs.datecloture IS NOT NULL'
+							),
+							'contain' => false
+						)
+					)
+				.')',
+				// L'APRE doit encore recevoir des paiement
+				// FIXME: à présent, on prend tant que la totalité n'a pas été payée OU
+				//        tant que le montant déjà versé est inférieur au montant à verser
+				// FIXME: on a une partie de ces conditions en haut, ligne 207: Apre.montantaverser > Apre.montantdejaverse
+				'Apre.id IN ('
+					.$this->Etatliquidatif->ApreEtatliquidatif->sq(
+						array(
+							'alias' => 'apres_etatsliquidatifs',
+							'fields' => 'apres_etatsliquidatifs.apre_id',
+							'joins' => array(
+								array(
+									'table' => '"etatsliquidatifs"', // FIXME
+									'alias' => 'etatsliquidatifs',
+									'type' => 'INNER',
+									'conditions' => array(
+										'apres_etatsliquidatifs.etatliquidatif_id = etatsliquidatifs.id'
+									)
+								)
+							),
+							'conditions' => array(
+								'OR' => array(
+									$this->Etatliquidatif->sousRequeteApreNbpaiementeff.' <> Apre.nbpaiementsouhait',
+									'Apre.montantdejaverse < Apre.montantaverser'
+								)
+							),
+							'contain' => false
+						)
+					)
+				.')'
+			)
+		)
+	),
+	'contain' => false,
+// 	'limit' => 1000
+);
+
+$queryData = $querydata;
+
 			$apres = $this->Etatliquidatif->Apre->find( 'all', $queryData );
+//
+			$this->Etatliquidatif->Apre->deepAfterFind = $deepAfterFind;
 
 			$apres_etatsliquidatifs = $this->Etatliquidatif->ApreEtatliquidatif->find(
 				'all',
@@ -485,40 +590,20 @@
 
 			$apre = $this->Etatliquidatif->Apre->find( 'first', $queryData );
 
-			$apre_etatliquidatif = $this->Etatliquidatif->ApreEtatliquidatif->find(
-				'first',
-				array(
-					'conditions' => array(
-						'ApreEtatliquidatif.etatliquidatif_id' => $etatliquidatif_id,
-						'ApreEtatliquidatif.apre_id' => $apre_id
-					)
-				)
-			);
-			$this->set( 'apre_etatliquidatif', $apre_etatliquidatif );
-
 			// Calcul -> FIXME: dans le modèle
 			$montanttotal = Set::classicExtract( $apre, 'Apre.montantaverser' );
 			if( $nbpaiementsouhait == 1 ) {
-				/*$apre['Apre']['montantaverser'] = */$apre_etatliquidatif['ApreEtatliquidatif']['montantattribue'] /*= $apre['Apre']['montantdejaverse']*/ = $montanttotal;
+				$montantattribue = $montanttotal;
 			}
 			else if( $nbpaiementsouhait == 2 ) {
-//                 /*$apre['Apre']['montantaverser'] = */$apre_etatliquidatif['ApreEtatliquidatif']['montantattribue'] = 40 * ( Set::classicExtract( $apre, 'Apre.montantaverser' ) ) / 100;
-
-			/**
-			*   INFO: remplacement du pourcentage de 40 -> 60 % pour les versements en 2 fois (du coup ajout d'un paramétrage)
-			*/
-				$apre_etatliquidatif['ApreEtatliquidatif']['montantattribue'] = Configure::read( 'Apre.pourcentage.montantversement' ) * ( Set::classicExtract( $apre, 'Apre.montantaverser' ) ) / 100;
+				// INFO: remplacement du pourcentage de 40 -> 60 % pour les versements en 2 fois (du coup ajout d'un paramétrage)
+				$montantattribue = Configure::read( 'Apre.pourcentage.montantversement' ) * ( Set::classicExtract( $apre, 'Apre.montantaverser' ) ) / 100;
 			}
 
-			$nbpaiementsouhait = array( '1' => 1, '2' => 2 );// FIXME: dans le modèle et au pluriel
+			$this->set( 'json', array( 'montantattribue' => $montantattribue ) );
 
-			$apre = Set::merge( $apre, $apre_etatliquidatif );
-			$this->set( 'apre', $apre );
-
-			$this->set( 'i', $index );
-			$this->set( 'nbpaiementsouhait', $nbpaiementsouhait );
-
-			$this->render( null, 'ajax' );
+			$this->layout = 'ajax';
+			$this->render( '/elements/json' );
 		}
 
 		/**
@@ -552,21 +637,15 @@
 
 				$apre_ids = Set::extract( $this->data, '/ApreEtatliquidatif/apre_id' );
 				$apres = Set::extract( $this->data, '/Apre' );
-				$this->data = Set::extract( $this->data, '/ApreEtatliquidatif' );
-				$return = $this->Etatliquidatif->ApreEtatliquidatif->saveAll( $this->data, array( 'atomic' => false ) );
-				if( $return ) {
-					// FIXME: dans le afterSave de ApreEtatliquidatif ?
-					$return = $this->Etatliquidatif->Apre->saveAll( $apres, array( 'atomic' => false ) );
-					if( $return ) {
-						$this->Etatliquidatif->Apre->calculMontantsDejaVerses( $apre_ids );
-						$this->Etatliquidatif->ApreEtatliquidatif->commit();
-						$this->redirect( array( 'action' => 'index', max( 1, Set::classicExtract( $this->params, 'named.page' ) ) ) );
+				$apres_etatsliquidatifs = Set::extract( $this->data, '/ApreEtatliquidatif' );
 
-					}
-					else {
-						$this->Etatliquidatif->ApreEtatliquidatif->rollback();
-						$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
-					}
+				// INFO: il faut d'abord sauver les APREs pour connaître le nombre de montants désirés
+				$return = $this->Etatliquidatif->Apre->saveAll( $apres, array( 'atomic' => false ) );
+				$return = $this->Etatliquidatif->ApreEtatliquidatif->saveAll( $apres_etatsliquidatifs, array( 'atomic' => false ) ) && $return;
+				if( $return ) {
+					$this->Etatliquidatif->Apre->calculMontantsDejaVerses( $apre_ids );
+					$this->Etatliquidatif->ApreEtatliquidatif->commit();
+					$this->redirect( array( 'action' => 'index', max( 1, Set::classicExtract( $this->params, 'named.page' ) ) ) );
 				}
 				else {
 					$this->Etatliquidatif->ApreEtatliquidatif->rollback();

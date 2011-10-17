@@ -88,5 +88,46 @@
 
 			return $return;
 		}
+
+		/**
+		* Sous-requête permettant d'obtenir l'id du dernier passage en comité
+		* (par-rapport à la date et à l'heure du comité) pour une APRE donnée.
+		*
+		* @param string $field Le nom du champ contanant l'id de l'APRE
+		* @param mixed $conditions Conditions supplémentaire à insérer dans la sous-requête
+		* @return string Une sous-requête SQL, suivant le driver utilisé
+		*/
+
+		public function sqDernierComiteApre( $field = 'Apre.id', $conditions = array() ) {
+			$dbo = $this->getDataSource( $this->useDbConfig );
+
+			$conditions = Set::merge(
+				array( "apres_comitesapres.apre_id = {$field}" ),
+				(array) $conditions
+			);
+
+			return $this->sq(
+				array(
+					'alias' => 'apres_comitesapres',
+					'fields' => array( 'apres_comitesapres.id' ),
+					'joins' => array(
+						array(
+							'table' => $dbo->fullTableName( $this->Comiteapre, true ),
+							'alias' => 'comitesapres',
+							'type' => 'INNER',
+							'conditions' => array(
+								'apres_comitesapres.comiteapre_id = comitesapres.id'
+							)
+						)
+					),
+					'conditions' => $conditions,
+					'order' => array(
+						'comitesapres.datecomite DESC',
+						'comitesapres.heurecomite DESC'
+					),
+					'limit' => 1
+				)
+			);
+		}
 	}
 ?>

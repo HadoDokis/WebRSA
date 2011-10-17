@@ -95,6 +95,12 @@
                             $buttonEnabledInc = true;
                         }
 
+						// Si on a une décision, on ne peut plus modifier, imprimer ou joindre des pièces
+						$passagescomites = Set::extract( $apre, '/Comiteapre/ApreComiteapre' );
+						if( !empty( $passagescomites ) ) {
+							$buttonEnabled = false;
+						}
+
 						// Calcul des montants attribués
 						$montantsAttribues = Set::extract( $apre, '/Comiteapre/ApreComiteapre[decisioncomite=ACC]/montantattribue' );
 						$mtattribue = ( ( is_array( $montantsAttribues ) && !empty( $montantsAttribues ) ) ? array_sum( $montantsAttribues ) : null );
@@ -209,7 +215,7 @@
                                 $textePiecesManquantes .= $xhtml->tag( 'h3', __d( 'apre', $model, true ) ).'<ul><li>'.implode( '</li><li>', $pieces ).'</li></ul>';
                             }
                         }
-								
+
 						$piecesRestantes = '';
 						$piecesRelances = Set::classicExtract( $relanceapre, 'Relanceapre.listepiecemanquante' );
 						$piecesRestantes .= $xhtml->tag( 'h3', '' ).$piecesRelances;
