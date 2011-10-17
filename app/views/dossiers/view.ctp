@@ -234,6 +234,32 @@
 									<td><?php echo value( $act,  Set::extract( 'DEM.Activite.act', $details ) );?></td>
 									<td><?php echo value( $act,  Set::extract( 'CJT.Activite.act', $details ) );?></td>
 								</tr>
+								<?php if( Configure::read( 'Cg.departement' ) == 58 ):?>
+									<tr class="even">
+										<th colspan="3" class="center">Grossesse</th>
+
+									</tr>
+									<tr class="odd">
+										<th>Date de début</th>
+										<td><?php echo date_short( Set::extract( 'DEM.Grossesse.ddgro', $details ) );?></td>
+										<td><?php echo date_short( Set::extract( 'CJT.Grossesse.ddgro', $details ) );?></td>
+									</tr>
+									<tr class="even">
+										<th>Date de fin</th>
+										<td><?php echo date_short( Set::extract( 'DEM.Grossesse.dfgro', $details ) );?></td>
+										<td><?php echo date_short( Set::extract( 'CJT.Grossesse.dfgro', $details ) );?></td>
+									</tr>
+									<tr class="odd">
+										<th>Date de déclaration</th>
+										<td><?php echo date_short( Set::extract( 'DEM.Grossesse.dtdeclgro', $details ) );?></td>
+										<td><?php echo date_short( Set::extract( 'CJT.Grossesse.dtdeclgro', $details ) );?></td>
+									</tr>
+									<tr class="even">
+										<th>Motif de fin</th>
+										<td><?php echo value( $natfingro, Set::extract( 'DEM.Grossesse.natfingro', $details ) );?></td>
+										<td><?php echo value( $natfingro, Set::extract( 'CJT.Grossesse.natfingro', $details ) );?></td>
+									</tr>
+								<?php endif;?>
 							<?php endif;?>
 						</tbody>
 					</table>

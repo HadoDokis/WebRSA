@@ -33,6 +33,7 @@
 			$this->set( 'qual', $this->Option->qual() );
 			$this->set( 'decision_ci', $this->Option->decision_ci() );
 			$this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
+			$this->set( 'natfingro', $this->Option->natfingro() );
 			$this->set( 'rolepers', $this->Option->rolepers() );
 			$this->set( 'statudemrsa', $this->Option->statudemrsa() );
 			$this->set( 'moticlorsa', $this->Option->moticlorsa() );
@@ -375,6 +376,7 @@
 						'Personne.qual',
 						'Personne.nom',
 						'Personne.prenom',
+						'Personne.sexe',
 						'Personne.dtnai',
 						'Personne.nir',
 						'Dsp.id',
@@ -382,7 +384,11 @@
 						'Dossiercaf.ddratdos',
 						'Dossiercaf.dfratdos',
 						'Calculdroitrsa.toppersdrodevorsa',
-						'Prestation.rolepers'
+						'Prestation.rolepers',
+						'Grossesse.ddgro',
+						'Grossesse.dfgro',
+						'Grossesse.dtdeclgro',
+						'Grossesse.natfingro'
 					),
 					'conditions' => array(
 						'Personne.foyer_id' => $details['Foyer']['id'],
@@ -408,12 +414,16 @@
 						$this->Dossier->Foyer->Personne->join( 'Dossiercaf' ),
 						$this->Dossier->Foyer->Personne->join( 'Dsp' ),
 						$this->Dossier->Foyer->Personne->join( 'Calculdroitrsa' ),
-						$this->Dossier->Foyer->Personne->join( 'Activite', array( 'type' => 'LEFT OUTER' ) )
+						$this->Dossier->Foyer->Personne->join( 'Activite', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Dossier->Foyer->Personne->join( 'Grossesse', array( 'type' => 'LEFT OUTER' ) )
 					),
 					'contain' => false,
 					'recursive' => 0
 				)
 			);
+// debug($personnesFoyer);
+
+
 
 			$optionsep = array(
 				'Passagecommissionep' => $this->Dossier->Foyer->Personne->Dossierep->Passagecommissionep->allEnumLists()
