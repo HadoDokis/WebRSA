@@ -235,5 +235,17 @@ DROP INDEX locsvehicinsert_apre_id_idx;
 CREATE UNIQUE INDEX locsvehicinsert_apre_id_idx ON locsvehicinsert(apre_id);
 
 -- *****************************************************************************
+-- 20111010 : Création d'indexes uniques pour situationsdossiersrsa et detailsdroitsrsa
+-- *****************************************************************************
+
+-- Flux CAF - VRSB0502-Cristal V3400: Pour chaque foyer: PrestationRSA (1,O) -> SituationDossierRSA (1,O) -> EtatDossierRSA (1,O)
+DROP INDEX IF EXISTS situationsdossiersrsa_dossier_id;
+CREATE UNIQUE INDEX situationsdossiersrsa_dossier_id ON situationsdossiersrsa(dossier_id);
+
+-- Flux CAF - VRSB0502-Cristal V3400: Pour chaque foyer: PrestationRSA (1,O) -> DetailDroitRSA (1,O) -> TroncCommunDroitRSA (1,O)
+DROP INDEX IF EXISTS detailsdroitsrsa_dossier_id;
+CREATE UNIQUE INDEX detailsdroitsrsa_dossier_id ON detailsdroitsrsa(dossier_id);
+
+-- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

@@ -777,5 +777,25 @@
 		public function checkConfigUpdateEncoursbilanCg66() {
 			return $this->_checkSqlIntervalSyntax( Configure::read( 'Contratinsertion.Cg66.updateEncoursbilan' ) );
 		}
+
+		/**
+		* Permet de récupérer le dernièr CER d'une personne
+		*/
+
+		public function sqDernierContrat( $personneIdFied = 'Personne.id' ) {
+			return $this->sq(
+				array(
+					'fields' => array(
+						'contratsinsertion.id'
+					),
+					'alias' => 'contratsinsertion',
+					'conditions' => array(
+						"contratsinsertion.personne_id = {$personneIdFied}"
+					),
+					'order' => array( 'contratsinsertion.dd_ci DESC' ),
+					'limit' => 1
+				)
+			);
+		}
 	}
 ?>
