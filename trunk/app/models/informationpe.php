@@ -108,7 +108,9 @@
 			$queryData['fields'][] = 'Typeorient.lib_type_orient';
 			$queryData['fields'][] = 'Structurereferente.lib_struc';
 			
-			$queryData['conditions'][] = 'Orientstruct.date_valid < \''.date( 'Y-m-d', strtotime( '-2 month' ) ).'\'';
+			//$queryData['conditions'][] = 'Orientstruct.date_valid < \''.date( 'Y-m-d', strtotime( '-2 month' ) ).'\'';
+			$queryData['conditions'][] = 'Orientstruct.date_valid + INTERVAL \''.Configure::read( 'Selectionnoninscritspe.intervalleDetection' ).'\' < DATE_TRUNC( \'day\', NOW() )';
+
 			$queryData['conditions'][] = 'Personne.id NOT IN (
 				SELECT
 						personnes.id
@@ -311,6 +313,15 @@
 					)
 				)
 			);
+		}
+
+		/**
+		* Vérifie le délai (intervalle) accordé pour la détection des allocataires
+		* non inscrits au Pôle Emploi par rapport à leur date de validation d'orientation
+		*/
+
+		public function checkConfigUpdateIntervalleDetectionNonInscritsPe() {
+			return $this->_checkSqlIntervalSyntax( Configure::read( 'Selectionnoninscritspe.intervalleDetection' ) );
 		}
 	}
 ?>
