@@ -279,7 +279,7 @@
 						'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
 					),
 				),
-				'recursive' => 1,
+				'recursive' => -1,
 				'conditions' => $conditions
 			);
 
@@ -379,7 +379,27 @@
 			$conditions = Set::merge(
 				$conditions,
 				array(
-					'Apre.id IN ( SELECT apres_etatsliquidatifs.apre_id FROM apres_etatsliquidatifs INNER JOIN etatsliquidatifs ON apres_etatsliquidatifs.etatliquidatif_id = etatsliquidatifs.id WHERE etatsliquidatifs.datecloture IS NULL AND apres_etatsliquidatifs.etatliquidatif_id = '.Sanitize::clean( $etatliquidatif_id ).' AND apres_etatsliquidatifs.montantattribue IS NULL AND ( ( '.$this->sousRequeteApreNbpaiementeff.' <> "Apre"."nbpaiementsouhait" OR "Apre"."nbpaiementsouhait" IS NULL ) OR ( Apre.montantdejaverse <> Apre.montantaverser /*'.$this->Apre->sousRequeteMontanttotal().'*/ ) ) )'
+					'Apre.id IN (
+						SELECT apres_etatsliquidatifs.apre_id
+						FROM apres_etatsliquidatifs
+							INNER JOIN etatsliquidatifs ON (
+								apres_etatsliquidatifs.etatliquidatif_id = etatsliquidatifs.id
+							)
+						WHERE
+							etatsliquidatifs.datecloture IS NULL
+							AND apres_etatsliquidatifs.etatliquidatif_id = '.Sanitize::clean( $etatliquidatif_id ).'
+							AND apres_etatsliquidatifs.montantattribue IS NULL
+							AND (
+								(
+									'.$this->sousRequeteApreNbpaiementeff.' <> "Apre"."nbpaiementsouhait"
+									OR "Apre"."nbpaiementsouhait" IS NULL
+								)
+								OR (
+									Apre.montantdejaverse <> Apre.montantaverser
+									/*'.$this->Apre->sousRequeteMontanttotal().'*/
+								)
+							)
+					)'
 				)
 			);
 
@@ -459,7 +479,7 @@
 		*   @return array $queryData -> Requête au format cakePhp
 		**/
 
-		public function  listeApresPourEtatLiquidatif( $etatliquidatif_id, $conditions ) {
+		public function listeApresPourEtatLiquidatif( $etatliquidatif_id, $conditions ) {
 			$conditions = Set::merge(
 				$conditions,
 				array(
@@ -495,11 +515,10 @@
 			);
 
 			/**
-			*   On ne souhaite afficher QUE les APREs complémentaires passées en comité
-			*   avec une décision d'ACCORD
+			* On ne souhaite afficher QUE les APREs complémentaires passées en comité
+			* avec une décision d'ACCORD pour leur dernier passage en comité,
 			*/
 			if( $jointure == true ) {
-
 				$queryData['joins'][] = array(
 					'table'      => 'apres_comitesapres',
 					'alias'      => 'ApreComiteapre',
@@ -507,7 +526,10 @@
 					'foreignKey' => false,
 					'conditions' => array(
 						'Apre.id = ApreComiteapre.apre_id',
-						'ApreComiteapre.decisioncomite' => 'ACC'
+						'ApreComiteapre.decisioncomite' => 'ACC',
+						'ApreComiteapre.id IN ('
+							.$this->Apre->ApreComiteapre->sqDernierComiteApre()
+						.')'
 					)
 				);
 			}
@@ -787,9 +809,7 @@
 		*
 		*/
 
-		protected function _qdDonneesApre() {
-			$dbo = $this->getDataSource( $this->useDbConfig );
-
+		protected function _qdDonneesApreCommun() {
 			$querydata = array(
 				'fields' => Set::merge(
 					$this->Apre->fields(),
@@ -800,24 +820,12 @@
 					array(
 						$this->Apre->Personne->Foyer->Adressefoyer->Adresse->sqVirtualField( 'localite' )
 					),
-					$this->Apre->Personne->Foyer->Dossier->fields(),
-					// begin FIXME: ne concerne que les apres complémentaires
-					$this->Apre->ApreComiteapre->fields(),
-					$this->Apre->ApreComiteapre->Comiteapre->fields(),
-					$this->Apre->Structurereferente->fields(),
-					$this->Apre->Structurereferente->Referent->fields()
-					// end FIXME: ne concerne que les apres complémentaires
+					$this->Apre->Personne->Foyer->Dossier->fields()
 				),
 				'contain' => false,
 				'joins' => array(
 					$this->join( 'ApreEtatliquidatif', array( 'type' => 'INNER' ) ),
 					$this->ApreEtatliquidatif->join( 'Apre', array( 'type' => 'INNER' ) ),
-					// begin FIXME: ne concerne que les apres complémentaires
-					$this->Apre->join( 'ApreComiteapre' ),
-					$this->Apre->ApreComiteapre->join( 'Comiteapre' ),
-					$this->Apre->join( 'Structurereferente' ),
-					$this->Apre->join( 'Referent' ),
-					// end FIXME: ne concerne que les apres complémentaires
 					$this->Apre->join( 'Personne', array( 'type' => 'INNER' ) ),
 					$this->Apre->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
 					$this->Apre->Personne->Foyer->join( 'Adressefoyer' ),
@@ -828,41 +836,87 @@
 					'Adressefoyer.id IN ('
 						.$this->Apre->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).
 					')',
-					'OR' => array(
-						'Apre.statutapre' => 'F',
-						'AND' => array(
-							'Apre.statutapre' => 'C',
-							'ApreComiteapre.id IN ('
-								.$this->Apre->ApreComiteapre->sq(
-									array(
-										'fields' => array( 'apres_comitesapres.id' ),
-										'alias' => 'apres_comitesapres',
-										'joins' => array(
-											array(
-												'table' => $dbo->fullTableName( $this->Apre->ApreComiteapre->Comiteapre, true ),
-												'alias' => 'comitesapres',
-												'type' => 'INNER',
-												'conditions' => array(
-													'"apres_comitesapres"."comiteapre_id" = "comitesapres"."id"'
-												)
-											)
-										),
-										'conditions' => array(
-											'apres_comitesapres.apre_id = Apre.id',
-											'apres_comitesapres.decisioncomite' => 'ACC'
-										),
-										'order' => array(
-											'comitesapres.datecomite DESC',
-											'comitesapres.heurecomite DESC',
-										),
-										'limit' => 1
-									)
-								)
-							.')',
-						)
-					),
 					'Apre.eligibiliteapre' => 'O',
 					'Etatliquidatif.datecloture IS NOT NULL'
+				)
+			);
+
+			return $querydata;
+		}
+
+		/**
+		*
+		*/
+
+		protected function _qdDonneesApreForfaitaire() {
+			$querydata = $this->_qdDonneesApreCommun();
+
+			$querydata['conditions']['Apre.statutapre'] = 'F';
+
+			return $querydata;
+		}
+
+		/**
+		*
+		*/
+
+		protected function _qdDonneesApreComplementaire() {
+			$dbo = $this->getDataSource( $this->useDbConfig );
+
+			$querydata = $this->_qdDonneesApreCommun();
+
+			$querydata['fields'] = array_merge(
+				$querydata['fields'],
+				array_merge(
+					$this->Apre->ApreComiteapre->fields(),
+					$this->Apre->ApreComiteapre->Comiteapre->fields(),
+					$this->Apre->Structurereferente->fields(),
+					$this->Apre->Structurereferente->Referent->fields()
+				)
+			);
+
+			$querydata['joins'] = array_merge(
+				$querydata['joins'],
+				array(
+					$this->Apre->join( 'ApreComiteapre' ),
+					$this->Apre->ApreComiteapre->join( 'Comiteapre' ),
+					$this->Apre->join( 'Structurereferente' ),
+					$this->Apre->join( 'Referent' ),
+				)
+			);
+
+			$querydata['conditions'] = array_merge(
+				$querydata['conditions'],
+				array(
+					'Apre.statutapre' => 'C',
+					'ApreComiteapre.id IN ('
+						// FIXME: faire une fonction dans ApreComiteapre: sqDernierPassage( $field = 'Apre.id' )
+						.$this->Apre->ApreComiteapre->sq(
+							array(
+								'fields' => array( 'apres_comitesapres.id' ),
+								'alias' => 'apres_comitesapres',
+								'joins' => array(
+									array(
+										'table' => $dbo->fullTableName( $this->Apre->ApreComiteapre->Comiteapre, true ),
+										'alias' => 'comitesapres',
+										'type' => 'INNER',
+										'conditions' => array(
+											'"apres_comitesapres"."comiteapre_id" = "comitesapres"."id"'
+										)
+									)
+								),
+								'conditions' => array(
+									'apres_comitesapres.apre_id = Apre.id',
+// 									'apres_comitesapres.decisioncomite' => 'ACC'
+								),
+								'order' => array(
+									'comitesapres.datecomite DESC',
+									'comitesapres.heurecomite DESC',
+								),
+								'limit' => 1
+							)
+						)
+					.')',
 				)
 			);
 
@@ -878,25 +932,8 @@
 			$querydata = Cache::read( $cacheKey );
 
 			if( $querydata === false ) {
-				$querydata = $this->qdDonneesApreForfaitaireGedooo();
+				$querydata = $this->_qdDonneesApreForfaitaire();
 
-				/*$querydata['fields'] = array(
-					'Dossier.numdemrsa',
-					'Apre.id',
-					'Apre.numeroapre',
-					'Apre.datedemandeapre',
-					'Apre.mtforfait',
-					'Apre.nbenf12',
-					'NULL AS "Apre__nomaide"',
-					'NULL AS "Apre__natureaide"',
-					'"Apre"."mtforfait" AS "Apre__allocation"',
-					'Personne.nom',
-					'Personne.prenom',
-					'Adresse.locaadr',
-					'ApreEtatliquidatif.montantattribue',
-					'Etatliquidatif.id',
-					'Etatliquidatif.typeapre',
-				);*/
 				// INFO: ce sont les seules infos envoyées à Gedooo dans EtatsliquidatifsController::impressioncohorte
 				$querydata['fields'] = array(
 					'Apre.id',
@@ -940,16 +977,8 @@
 			$querydata = Cache::read( $cacheKey );
 
 			if( $querydata === false ) {
-				$querydata = $this->_qdDonneesApre();
+				$querydata = $this->_qdDonneesApreForfaitaire();
 
-				/*$querydata['fields'] = Set::merge(
-					$querydata['fields'],
-					array(
-						'NULL AS "Apre__nomaide"',
-						'NULL AS "Apre__natureaide"',
-						'"Apre"."mtforfait" AS "Apre__allocation"'
-					)
-				);*/
 				// INFO: ce sont les seules infos envoyées à Gedooo dans EtatsliquidatifsController::impressioncohorte
 				$querydata['fields'] = array(
 					'Apre.id',
@@ -993,7 +1022,7 @@
 			$querydata = Cache::read( $cacheKey );
 
 			if( $querydata === false ) {
-				$querydata = $this->qdDonneesApreForfaitaireGedooo();
+				$querydata = $this->_qdDonneesApreComplementaire();
 
 				$querydata['fields'] = array(
 					'Dossier.numdemrsa',
@@ -1031,7 +1060,7 @@
 
 			if( $querydata === false ) {
 				$dbo = $this->getDataSource( $this->useDbConfig );
-				$querydata = $this->_qdDonneesApre();
+				$querydata = $this->_qdDonneesApreComplementaire();
 
 				$querydata['fields'] = Set::merge(
 					$querydata['fields'],
@@ -1041,34 +1070,6 @@
 						'"ApreEtatliquidatif"."montantattribue" AS "Apre__allocation"'
 					)
 				);
-
-				$querydata['conditions']['ApreComiteapre.decisioncomite'] = 'ACC';
-				// FIXME ?
-				$querydata['conditions'][] = 'ApreComiteapre.id IN ('
-					.$this->Apre->ApreComiteapre->sq(
-						array(
-							'alias' => 'apres_comitesapres',
-							'fields' => array( 'apres_comitesapres.id' ),
-							'joins' => array(
-								array (
-									'table' => $dbo->fullTableName( $this->Apre->ApreComiteapre->Comiteapre, true ),
-									'alias' => 'comitesapres',
-									'type' => 'INNER',
-									'conditions' => 'apres_comitesapres.comiteapre_id = comitesapres.id',
-								)
-							),
-							'conditions' => array(
-								'apres_comitesapres.apre_id = Apre.id'
-							),
-							'order' => array(
-								'comitesapres.datecomite DESC',
-								'comitesapres.heurecomite DESC'
-							),
-							'contain' => false,
-							'limit' => 1
-						)
-					)
-				.')';
 
 				// Population Modellie
 				foreach( array( 'ddform', 'dfform', 'dureeform' ) as $field ) {

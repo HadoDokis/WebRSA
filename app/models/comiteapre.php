@@ -111,7 +111,7 @@
 					'"Comiteapre"."observationcomite"',
 				),
 				'recursive' => -1,
-				'order' => array( '"Comiteapre"."datecomite" ASC' ),
+				'order' => array( '"Comiteapre"."datecomite" DESC' ),
 				'conditions' => $conditions
 			);
 

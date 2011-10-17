@@ -843,5 +843,239 @@
 
 			return $apre;
 		}
+
+		/**
+		* Retourne un querydata permettant de sélectionner des APREs pour les faire passer dans un comité
+		* qui n'a pas encore eu lieu.
+		*
+		* Ces APREs:
+		* 	- doivent:
+		*		* être complémentaires
+		*		* être complètes
+		*		* être éligibles
+		*		* avoir une date de demande inférieure ou égale à la date du comité
+		*	- il doit être possible de les associer à ce comité-ci:
+		*		* si ce n'est pas pour un recours
+		*			- soit elles sont associées à ce comité-ci
+		*			- soit elles ne sont associées à aucun comité
+		*			- soit le dernier comité auquel elles ont été associées est plus ancien que celui-ci
+		*			  et la décision est un ajournement
+		*		* si c'est pour un recours
+		*			- soit elles sont associées à ce comité-ci, avec un comite_pcd_id
+		*			- soit le dernier comité auquel elles ont été associées est plus ancien que celui-ci,
+		*			  la décision est un refus pour laquelle il existe un recours
+		*
+		* @param integer $comiteapre_id L'id du comité pour lequel on veut sélectionner des APREs
+		* @param boolean $isRecours Le fait que les APREs que l'on recherche fassent l'objet d'un recours ou non.
+		* @return mixed false si le comité pour lequel on demande la liqste n'existe pas, un querydata CakePHP sinon
+		*/
+
+		public function qdPourComiteapre( $comiteapre_id, $isRecours ) {
+			$dbo = $this->getDataSource( $this->ApreComiteapre->useDbConfig );
+			$comiteapre = $this->ApreComiteapre->Comiteapre->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Comiteapre.id' => $comiteapre_id
+					),
+					'contain' => false
+				)
+			);
+
+			if( empty( $comiteapre ) ) {
+				return false;
+			}
+
+			$querydata = array(
+				'fields' => array(
+					'Apre.id',
+					'Apre.numeroapre',
+					'Apre.datedemandeapre',
+					'Personne.qual',
+					'Personne.nom',
+					'Personne.prenom',
+				),
+				'conditions' => array(
+					// L'APRE doit être complémentaire
+					'Apre.statutapre' => 'C',
+					// Le dossier d'APRE doit être complèt
+					'Apre.etatdossierapre' => 'COM',
+					// L'APRE doit être éligible
+					'Apre.eligibiliteapre' => 'O',
+					// La date de demande d'APRE doit être inférieure ou égale à la date du comité
+					'Apre.datedemandeapre <=' => $comiteapre['Comiteapre']['datecomite'],
+				),
+				'contain' => array(
+					'Personne'
+				)
+			);
+
+			// FIXME: une demande de recours ajournée n'apparait pas dans les demandes de recours
+			// INFO: 'apres_comitesapres.recoursapre' => 'O', pour les ajournements également, à priori ce n'est pas copié lors de la création d'un ajournement.
+			/*
+				20111009: APREs 93 - on veut savoir si un entrée d'apres_comitesapres qui est
+				ajournée provient d'une demande de recours ou pas.
+				L'idée est de ne pas casser le fonctionnement précédent en mettant
+				une valeur de recoursapre à O si l'entrée ne référençait pas
+				l'entrée du recours.
+			*/
+			/*
+				FIXME: On ne peut jamais savoir si une APRE ajournée est un recours ou pas
+				(ou juste concernant le passage précédent); elle apparaîtra toujours dans la
+				liste des APREs pas en recours lors de la sélection avec un comité d'APRE.
+			*/
+			/*
+				FIXME/TODO approuvé: pour les aj, on vérifiera que c'est un recours ou non en regardant si une autre entrée existe pour cette apre, indiquant un recours (pas d'autre condition)
+			*/
+
+			// Il doit être possible de les associer à ce comité-ci
+			if( $isRecours ) {
+				$querydata['conditions']['OR'] = array(
+					// soit elles sont associées à ce comité-ci, avec un comite_pcd_id
+					'Apre.id IN ('
+						.$this->ApreComiteapre->sq(
+							array(
+								'fields' => array( 'apres_comitesapres.apre_id' ),
+								'alias' => 'apres_comitesapres',
+								'conditions' => array(
+									'apres_comitesapres.comiteapre_id' => $comiteapre_id,
+									'apres_comitesapres.comite_pcd_id IS NOT NULL'
+								)
+							)
+						)
+					.')',
+					'Apre.id IN ('
+						.$this->ApreComiteapre->sq(
+							array(
+								'alias' => 'apres_comitesapres',
+								'fields' => array( 'apres_comitesapres.apre_id' ),
+								'joins' => array(
+									array(
+										'table' => $dbo->fullTableName( $this->Comiteapre, true ),
+										'alias' => 'comitesapres',
+										'type' => 'INNER',
+										'conditions' => array(
+											'apres_comitesapres.comiteapre_id = comitesapres.id'
+										)
+									)
+								),
+								'conditions' => array(
+									// la décision lors de l'association avec ce dernier comité a été émise et est un refus, tant que ce n'atait pas un ajournement
+									'apres_comitesapres.decisioncomite' => 'REF',
+									'apres_comitesapres.recoursapre' => 'O',
+									'apres_comitesapres.id IN ('
+										.$this->ApreComiteapre->sqDernierComiteApre(
+											'Apre.id',
+											array(
+												'apres_comitesapres.comiteapre_id <>' => $comiteapre_id,
+												'apres_comitesapres.decisioncomite <>' => 'AJ'
+											)
+										)
+									.')',
+									// la date et l'heure du dernier comité avec lequel elles sont associées est inférieure à la date et l'heure de ce comité-ci
+									'CAST( comitesapres.datecomite || \' \' || comitesapres.heurecomite AS TIMESTAMP ) <=' => "{$comiteapre['Comiteapre']['datecomite']} {$comiteapre['Comiteapre']['heurecomite']}",
+									// la date du recours doit être inférieure à la date de ce comité-ci
+									'apres_comitesapres.daterecours <=' => $comiteapre['Comiteapre']['datecomite'],
+								)
+							)
+						)
+					.')'
+				);
+			}
+			else {
+				$querydata['conditions']['OR'] = array(
+					// soit elles sont associées à ce comité-ci sans comite_pcd_id
+					'Apre.id IN ('
+						.$this->ApreComiteapre->sq(
+							array(
+								'fields' => array( 'apres_comitesapres.apre_id' ),
+								'alias' => 'apres_comitesapres',
+								'conditions' => array(
+									'apres_comitesapres.comiteapre_id' => $comiteapre_id,
+									'apres_comitesapres.comite_pcd_id IS NULL'
+								)
+							)
+						)
+					.')',
+					// soit elles ne sont associées à aucun comité
+					'Apre.id NOT IN ('
+						.$this->ApreComiteapre->sq(
+							array(
+								'fields' => array( 'apres_comitesapres.apre_id' ),
+								'alias' => 'apres_comitesapres',
+								'conditions' => array(
+									'apres_comitesapres.apre_id = Apre.id'
+								)
+							)
+						)
+					.')',
+					// soit le dernier comité auquel elles ont été associées est plus ancien que celui-ci et la décision est un ajournement
+					'Apre.id IN ('
+						.$this->ApreComiteapre->sq(
+							array(
+								'alias' => 'apres_comitesapres',
+								'fields' => array( 'apres_comitesapres.apre_id' ),
+								'joins' => array(
+									array(
+										'table' => $dbo->fullTableName( $this->Comiteapre, true ),
+										'alias' => 'comitesapres',
+										'type' => 'INNER',
+										'conditions' => array(
+											'apres_comitesapres.comiteapre_id = comitesapres.id'
+										)
+									)
+								),
+								'conditions' => array(
+									// la décision lors de l'association avec ce dernier comité a été émise et est un ajournement
+									'apres_comitesapres.decisioncomite' => 'AJ',
+									'apres_comitesapres.id IN ('
+										.$this->ApreComiteapre->sqDernierComiteApre( 'Apre.id' )
+									.')',
+									// la date et l'heure du dernier comité avec lequel elles sont associées est plus récente que la date et l'heure de ce comité-ci
+									'CAST( comitesapres.datecomite || \' \' || comitesapres.heurecomite AS TIMESTAMP ) <=' => "{$comiteapre['Comiteapre']['datecomite']} {$comiteapre['Comiteapre']['heurecomite']}",
+								)
+							)
+						)
+					.')'
+				);
+
+				// Il n'existe pas de comité dans lequel cette APRE est passée, pour laquelle elle a été refusée, et dont le refus a engendré un recours
+				$querydata['conditions'][] = 'Apre.id NOT IN ('
+						.$this->ApreComiteapre->sq(
+							array(
+								'alias' => 'apres_comitesapres',
+								'fields' => array( 'apres_comitesapres.apre_id' ),
+								'joins' => array(
+									array(
+										'table' => $dbo->fullTableName( $this->Comiteapre, true ),
+										'alias' => 'comitesapres',
+										'type' => 'INNER',
+										'conditions' => array(
+											'apres_comitesapres.comiteapre_id = comitesapres.id'
+										)
+									)
+								),
+								'conditions' => array(
+									'apres_comitesapres.decisioncomite' => 'REF',
+									'apres_comitesapres.recoursapre' => 'O',
+									'apres_comitesapres.id IN ('
+										.$this->ApreComiteapre->sqDernierComiteApre(
+											'Apre.id',
+											array(
+													'apres_comitesapres.comiteapre_id <>' => $comiteapre_id,
+													'apres_comitesapres.decisioncomite <>' => 'AJ'
+											)
+										)
+									.')',
+									// la date et l'heure de ce comité avec lequel elles sont associées est plus récente que la date et l'heure de ce comité-ci
+									'CAST( comitesapres.datecomite || \' \' || comitesapres.heurecomite AS TIMESTAMP ) <=' => "{$comiteapre['Comiteapre']['datecomite']} {$comiteapre['Comiteapre']['heurecomite']}",
+								)
+							)
+						)
+					.')';
+			}
+
+			return $querydata;
+		}
 	}
 ?>

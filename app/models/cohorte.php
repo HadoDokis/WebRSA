@@ -375,9 +375,6 @@
 					)';
 				}
 
-				// INFO: on veut récupérer tout ce qui est orienté (LEFT OUTER) et ne garder que ce qui a du sens pour l'orientation (INNER)
-				$joinType = ( ( $statutOrientation == 'Orienté' ) ? 'LEFT OUTER' : 'INNER' );
-
 				$queryData = array(
 					'fields' => array(
 						'Dossier.id',
@@ -415,7 +412,7 @@
 						array(
 							'table' => 'prestations',
 							'alias' => 'Prestation',
-							'type' => $joinType,
+							'type' => 'INNER',
 							'foreignKey' => false,
 							'conditions' => array(
 								'Personne.id = Prestation.personne_id',
@@ -426,19 +423,30 @@
 						array(
 							'table' => 'calculsdroitsrsa',
 							'alias' => 'Calculdroitrsa',
-							'type' => $joinType,
+							'type' => 'INNER',
 							'foreignKey' => false,
 							'conditions' => array( 'Personne.id = Calculdroitrsa.personne_id' )
 						),
 						array(
 							'table' => 'dsps',
 							'alias' => 'Dsp',
-							'type' => $joinType,
+							'type' => ( ( $statutOrientation == 'Non orienté' ) ? 'INNER' : 'LEFT OUTER' ), // FIXME: compléter une variable joins
 							'foreignKey' => false,
 							'conditions' => array(
 								'Personne.id = Dsp.personne_id',
 								'Dsp.id IN ('
-									.ClassRegistry::init( 'Dsp' )->sqDerniereDsp()
+									.ClassRegistry::init( 'Dsp' )->sq(
+										array(
+											'alias' => 'dsps',
+											'fields' => array( 'dsps.id' ),
+											'conditions' => array(
+												'dsps.personne_id = Personne.id'
+											),
+											'contain' => false,
+											'order' => array( 'dsps.id DESC' ),
+											'limit' => 1
+										)
+									)
 								.')'
 							)
 						),
@@ -475,20 +483,36 @@
 						array(
 							'table' => 'adressesfoyers',
 							'alias' => 'Adressefoyer',
-							'type' => $joinType,
+							'type' => 'LEFT OUTER',
 							'foreignKey' => false,
 							'conditions' => array(
 								'Adressefoyer.foyer_id = Foyer.id',
 								'Adressefoyer.rgadr' => '01',
-								'Adressefoyer.id IN (
-									'.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01( 'Adressefoyer.foyer_id' ).'
-								)'
+								'OR' => array(
+									'Adressefoyer.id IS NULL',
+									'Adressefoyer.id IN (
+										'.ClassRegistry::init( 'Adressefoyer' )->sq(
+											array(
+												'fields' => array(
+													'adressefoyer.id'
+												),
+												'alias' => 'adressefoyer',
+												'conditions' => array(
+													'adressefoyer.foyer_id = Adressefoyer.foyer_id',
+													'adressefoyer.rgadr' => '01'
+												),
+												'order' => array( 'adressefoyer.dtemm DESC' ),
+												'limit' => 1
+											)
+										).'
+									)'
+								)
 							),
 						),
 						array(
 							'table' => 'adresses',
 							'alias' => 'Adresse',
-							'type' => $joinType,
+							'type' => 'LEFT OUTER',
 							'foreignKey' => false,
 							'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
 						),
@@ -521,21 +545,33 @@
 							'conditions' => array(
 								'Contratinsertion.personne_id = Personne.id',
 								'Contratinsertion.id IN (
-									'.ClassRegistry::init( 'Contratinsertion' )->sqDernierContrat().'
+									'.ClassRegistry::init( 'Contratinsertion' )->sq(
+										array(
+											'fields' => array(
+												'contratsinsertion.id'
+											),
+											'alias' => 'contratsinsertion',
+											'conditions' => array(
+												'contratsinsertion.personne_id = Personne.id'
+											),
+											'order' => array( 'contratsinsertion.dd_ci DESC' ),
+											'limit' => 1
+										)
+									).'
 								)'
 							)
 						),
 						array(
 							'table' => 'detailsdroitsrsa',
 							'alias' => 'Detaildroitrsa',
-							'type' => $joinType,
+							'type' => 'LEFT OUTER',
 							'foreignKey' => false,
 							'conditions' => array( 'Detaildroitrsa.dossier_id = Dossier.id', )
 						),
 						array(
 							'table' => 'situationsdossiersrsa',
 							'alias' => 'Situationdossierrsa',
-							'type' => $joinType,
+							'type' => 'INNER',
 							'foreignKey' => false,
 							'conditions' => array( 'Situationdossierrsa.dossier_id = Dossier.id', )
 						),

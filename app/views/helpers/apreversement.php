@@ -41,6 +41,10 @@
                 $montanttotal = Set::classicExtract( $apre, 'Apre.montantaverser' );
             }
 
+			if( isset( $this->data['ApreEtatliquidatif'][$i]['montantattribue'] ) ) {
+				$montantattribue = $this->data['ApreEtatliquidatif'][$i]['montantattribue'];
+			}
+
             $cells = array(
                 $this->Html->tag( 'td', Set::classicExtract( $apre, 'Dossier.numdemrsa' ) ),
                 $this->Html->tag( 'td', Set::classicExtract( $apre, 'Apre.numeroapre' ) ),
