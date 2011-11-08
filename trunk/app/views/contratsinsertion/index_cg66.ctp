@@ -20,6 +20,17 @@
         $options['forme_ci'] = $forme_ci;
         $options['decision_ci'] = $decision_ci;
 
+
+		foreach( $contratsinsertion as $i => $contratinsertion ){
+			$dateValidation = Set::classicExtract( $contratinsertion, 'Contratinsertion.datevalidation_ci' );
+		}
+
+		$periodeblock = false;
+		if(  ( mktime() >= ( strtotime( $dateValidation ) + 3600 * Configure::read( 'Periode.modifiablecer.nbheure' ) ) ) ){
+			$periodeblock = true;
+		}
+// debug( $periodeblock );
+
         echo $default2->index(
             $contratsinsertion,
             array(
@@ -38,7 +49,9 @@
                         'disabled' => '( "'.$permissions->check( 'contratsinsertion', 'valider' ).'" != "1" ) || ( "#Contratinsertion.decision_ci#" != "E" ) || ( "#Contratinsertion.positioncer#" == "annule" ) || ( "#Contratinsertion.positioncer#" == "fincontrat" )'
                     ),
                     'Contratsinsertion::view',
-                    'Contratsinsertion::edit' => array( 'disabled' => '( "'.$permissions->check( 'contratsinsertion', 'edit' ).'" != "1" ) || ( "#Contratinsertion.decision_ci#" != "E" ) ||  ( "#Contratinsertion.positioncer#" == "annule" ) || ( "#Contratinsertion.positioncer#" == "fincontrat" )' ),
+                    'Contratsinsertion::edit' => array(
+						'disabled' => '( "'.$permissions->check( 'contratsinsertion', 'edit' ).'" != "1" )  ||  ( "#Contratinsertion.positioncer#" == "annule" ) || ( "#Contratinsertion.positioncer#" == "fincontrat" ) || ( "'.$periodeblock.'" )' 
+					),
                     'Contratsinsertion::notifop' => array(
                         'label' => 'Notification OP',
                         'url' => array( 'controller' => 'contratsinsertion', 'action'=>'notificationsop' ),
