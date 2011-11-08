@@ -26,6 +26,7 @@
 	<fieldset id="infocandidature">
 		<legend>Informations de candidature</legend>
 		<?php
+
 			echo $default->subform(
 				array(
 					'ActioncandidatPersonne.personne_id' => array( 'value' => $personneId, 'type' => 'hidden' ),
@@ -258,6 +259,27 @@
 
 <script type="text/javascript">
 	document.observe( "dom:loaded", function() {
+
+
+		// Mise en disabled des champs lors du passage du formulaire en édition
+		<?php if ($this->action == 'edit' && isset( $this->data['ActioncandidatPersonne']['positionfiche'] ) && ( $this->data['ActioncandidatPersonne']['positionfiche'] != 'enattente' ) ):?>
+
+			function disableFormPart( formpartid ) {
+				$( formpartid ).addClassName( 'disabled' );
+				
+				$( formpartid ).getElementsBySelector( 'div.input', 'radio' ).each( function( elmt ) {
+					elmt.addClassName( 'disabled' );
+				} );
+					
+				$( formpartid ).getElementsBySelector( 'input', 'select', 'button', 'textarea' ).each( function( elmt ) {
+					elmt.disable();
+				} );
+			}
+
+			['infocandidature', 'infocandidat', 'motifdemande', 'mobilite', 'rdv', 'engagement' ].each( function( formpartid ) {
+				disableFormPart( formpartid );
+			});
+		<?php endif;?>
 		<?php
 			echo $ajax->remoteFunction(
 				array(
@@ -312,12 +334,39 @@
 
 		<?php  if( $this->action == 'edit' ):?>
 
-			observeDisableFieldsOnRadioValue(
+			/*observeDisableFieldsetOnRadioValue(
 				'candidatureform',
 				'data[ActioncandidatPersonne][bilanvenu]',
-				[ 'ActioncandidatPersonneIssortie' ],
+				$( 'blocsortie' ),
 				undefined,
+				false,
+				true
+			);*/
+
+			observeDisableFieldsetOnRadioValue(
+				'candidatureform',
+				'data[ActioncandidatPersonne][bilanvenu]',
+				$( 'blocsortie' ),
+				'VEN',
+				false,
+				true
+			);
+
+			/*observeDisableFieldsOnRadioValue(
+				'candidatureform',
+				'data[ActioncandidatPersonne][bilanretenu]',
+				[ 'ActioncandidatPersonneIssortie' ],
+				'NRE',
 				false
+			);*/
+
+			observeDisableFieldsetOnRadioValue(
+				'candidatureform',
+				'data[ActioncandidatPersonne][bilanretenu]',
+				$( 'blocsortie' ),
+				'RET',
+				false,
+				true
 			);
 
 			observeDisableFieldsetOnCheckbox(
@@ -327,27 +376,20 @@
 				true
 			);
 
+			observeDisableFieldsOnRadioValue(
+				'candidatureform',
+				'data[ActioncandidatPersonne][bilanvenu]',
+				[ 
+					'ActioncandidatPersonneBilanretenu_',
+					'ActioncandidatPersonneBilanretenuRET',
+					'ActioncandidatPersonneBilanretenuNRE'
+				],
+				'VEN',
+				true
+			);
+
 		<?php endif;?>
 
-		// Mise en disabled des champs lors du passage du formulaire en édition
-		<?php if ($this->action=='edit') { ?>
-
-			function disableFormPart( formpartid ) {
-				$( formpartid ).addClassName( 'disabled' );
-				
-				$( formpartid ).getElementsBySelector( 'div.input', 'radio' ).each( function( elmt ) {
-					elmt.addClassName( 'disabled' );
-				} );
-					
-				$( formpartid ).getElementsBySelector( 'input', 'select', 'button', 'textarea' ).each( function( elmt ) {
-					elmt.disable();
-				} );
-			}
-
-			['infocandidature', 'infocandidat', 'motifdemande', 'mobilite', 'rdv', 'engagement' ].each( function( formpartid ) {
-				disableFormPart( formpartid );
-			});
-		<?php } ?>
 
 	} );
 </script>

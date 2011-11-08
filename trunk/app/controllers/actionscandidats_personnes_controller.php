@@ -260,7 +260,7 @@
 			);
 			$this->paginate = array(
 				$this->modelClass => array(
-					'limit' => 5/*,
+					'limit' => 10/*,
 					'recursive' => 2*/
 				)
 			);

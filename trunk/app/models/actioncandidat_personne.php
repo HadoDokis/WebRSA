@@ -156,8 +156,10 @@
 				'message' => 'Champ obligatoire'
 			),
 			'motifsortie_id' => array(
-				'rule' => 'notEmpty',
-				'message' => 'Champ obligatoire'
+				'notEmptyIf' => array(
+					'rule' => array( 'notEmptyIf', 'bilanretenu', true, array( 'RET' ) ),
+					'message' => 'Champ obligatoire',
+				)
 			)
 		);
 
@@ -169,13 +171,73 @@
 		public function beforeSave( $options = array() ) {
 			$return = parent::beforeSave( $options );
 			//  Calcul de la position de la fiche de calcul
-			$this->data[$this->alias]['positionfiche'] = $this->_calculPosition( $this->data );
+			//$this->data[$this->alias]['positionfiche'] = $this->_calculPosition( $this->data );
+			$this->data = $this->_bilanAccueil( $this->data );
 
 			return $return;
 		}
 
+		/**
+		* Venu
+		* 	Retenu
+		* 		Pas de sortie ?
+		* 			-> Position: en cours
+		* 			-> nullify: date, motifsortie
+		* 		Sinon ?
+		* 			-> sauve tout
+		* 			-> position: sortie
+		* 	Non retenu
+		* 		-> Position: Non retenu
+		* 		-> nullify: sortie, date, motifdemande
+		* Non venu
+		* 	bilanretenu: non retenu
+		* 	position: nonretenue
+		* 	nullify: sortie, date, motifdemande	
+		*/
+		protected function _bilanAccueil( $data ) {
+			$bilanvenu = Set::classicExtract( $data, "{$this->alias}.bilanvenu" );
+			$bilanretenu = Set::classicExtract( $data, "{$this->alias}.bilanretenu" );
+			$issortie = Set::classicExtract( $data, "{$this->alias}.issortie" );
 
-		protected function _calculPosition( $data ){
+			if( empty( $bilanvenu ) ) {
+				$data[$this->alias]['positionfiche'] = 'enattente';
+				$data[$this->alias]['bilanretenu'] = null;
+				$data[$this->alias]['issortie'] = null;
+				$data[$this->alias]['sortiele'] = null;
+				$data[$this->alias]['motifsortie_id'] = null;
+			}
+			else {
+				if( $bilanvenu == 'VEN' ) {
+					if( $bilanretenu == 'RET' ) {
+						if( !$issortie ) {
+							$data[$this->alias]['positionfiche'] = 'encours';
+							$data[$this->alias]['sortiele'] = null;
+							$data[$this->alias]['motifsortie_id'] = null;
+						}
+						else {
+							$data[$this->alias]['positionfiche'] = 'sortie';
+						}
+					}
+					else if( $bilanretenu == 'NRE' ) {
+						$data[$this->alias]['positionfiche'] = 'nonretenue';
+						$data[$this->alias]['issortie'] = null;
+						$data[$this->alias]['sortiele'] = null;
+						$data[$this->alias]['motifsortie_id'] = null;
+					}
+				}
+				else if( $bilanvenu == 'NVE' ) {
+					$data[$this->alias]['bilanretenu'] = 'NRE';
+					$data[$this->alias]['positionfiche'] = 'nonretenue';
+					$data[$this->alias]['issortie'] = null;
+					$data[$this->alias]['sortiele'] = null;
+					$data[$this->alias]['motifsortie_id'] = null;
+				}
+			}
+
+			return $data;
+		}
+
+		/*protected function _calculPosition( $data ){
 
 			$bilanrecu = Set::classicExtract( $data, 'ActioncandidatPersonne.bilanvenu' );
 			$bilanretenu = Set::classicExtract( $data, 'ActioncandidatPersonne.bilanretenu' );
@@ -188,18 +250,18 @@
 			if ( empty( $bilanrecu ) && empty( $bilanretenu ) && empty( $motifsortie ) ){
 				$positionfiche = 'enattente';
 			}
-			elseif ( !empty( $bilanrecu ) && ( $bilanretenu == 'NRE' ) && empty( $issortie ) ){
+			elseif ( !empty( $bilanrecu ) && ( $bilanrecu == 'NVE' ) ){
 				$positionfiche = 'nonretenue';
 			}
-			elseif ( !empty( $bilanrecu ) && ( $bilanretenu != 'NRE' ) && empty( $issortie ) ){
+			elseif ( !empty( $bilanrecu ) && ( $bilanrecu == 'VEN' )  && ( $bilanretenu == 'RET' ) && empty( $issortie ) ){
 				$positionfiche = 'encours';
 			}
-			elseif ( !empty( $bilanrecu ) && ( $bilanretenu != 'NRE' ) && !empty( $issortie ) ){
+			elseif ( !empty( $bilanrecu ) && ( $bilanrecu == 'VEN' ) && ( $bilanretenu == 'RET' ) && !empty( $issortie ) ){
 				$positionfiche = 'sortie';
 			}
 
 			return $positionfiche;
-		}
+		}*/
 
 
 		/**
@@ -243,6 +305,7 @@
 					'ActioncandidatPersonne.naturemobile',
 					'ActioncandidatPersonne.typemobile',
 					'ActioncandidatPersonne.motifsortie_id',
+					'ActioncandidatPersonne.motifdemande',
 					'Partenaire.libstruc',
 					'Partenaire.typevoie',
 					'Partenaire.numvoie',
