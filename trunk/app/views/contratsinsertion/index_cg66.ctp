@@ -24,10 +24,12 @@
 		foreach( $contratsinsertion as $i => $contratinsertion ){
 			$dateValidation = Set::classicExtract( $contratinsertion, 'Contratinsertion.datevalidation_ci' );
 		}
-
+		
 		$periodeblock = false;
-		if(  ( mktime() >= ( strtotime( $dateValidation ) + 3600 * Configure::read( 'Periode.modifiablecer.nbheure' ) ) ) ){
-			$periodeblock = true;
+		if( !empty( $dateValidation ) ){
+			if(  ( mktime() >= ( strtotime( $dateValidation ) + 3600 * Configure::read( 'Periode.modifiablecer.nbheure' ) ) ) ){
+				$periodeblock = true;
+			}
 		}
 // debug( $periodeblock );
 
