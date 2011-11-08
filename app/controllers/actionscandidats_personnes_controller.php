@@ -597,20 +597,37 @@
 		*   Fonction pour annuler la fiche de candidature pour le CG66
 		*/
 
-		public function cancel( $id ) {
+		public function cancel( $id = null ) {
 			$actioncandidat = $this->{$this->modelClass}->findById( $id, null, null, -1 );
 			$personne_id = Set::classicExtract( $actioncandidat, 'ActioncandidatPersonne.personne_id' );
 
-			$this->{$this->modelClass}->updateAll(
-				array( 'ActioncandidatPersonne.positionfiche' => '\'annule\'' ),
-				array(
-					'"ActioncandidatPersonne"."id"' => $id
-				)
-			);
-			$this->redirect( array( 'action' => 'index', $personne_id ) );
+			$this->set( 'personne_id', $personne_id );
+
+			// Retour à la liste en cas d'annulation
+			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
+				$this->redirect( array( 'action' => 'index', $personne_id ) );
+			}
+
+			if( !empty( $this->data ) ) {
+				if( $this->ActioncandidatPersonne->save( $this->data ) ) {
+
+					$this->{$this->modelClass}->updateAll(
+						array( 'ActioncandidatPersonne.positionfiche' => '\'annule\'' ),
+						array(
+							'"ActioncandidatPersonne"."id"' => $id
+						)
+					);
+
+					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+					$this->redirect( array( 'action' => 'index', $personne_id ) );
+				}
+			}
+			else {
+				$this->data = $actioncandidat;
+			}
+			$this->set( 'urlmenu', '/actionscandidats_personnes/index/'.$personne_id );
+
 		}
-
-
 
 		public function view( $id )
 		{
