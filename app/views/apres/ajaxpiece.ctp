@@ -8,7 +8,6 @@
         echo $default->view(
             Xset::bump( $tmp ),
             array(
-//                 'Typeaideapre66.objetaide',
                 'Typeaideapre66.plafond' => array( 'type' => 'money' )
             ),
             array(

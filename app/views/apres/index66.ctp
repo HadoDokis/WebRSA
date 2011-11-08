@@ -40,7 +40,7 @@
                 <th>Etat du dossier</th>
                 <th>Thème de l'aide</th>
                 <th>Type d'aides</th>
-                <th>Montant demandé</th>
+                <th>Montant proposé</th>
                 <th>Montant accordé</th>
                 <th>Décision</th>
                 <th colspan="5" class="action">Actions</th>
@@ -54,7 +54,7 @@
 
 
                     $etat = Set::enum( Set::classicExtract( $apre, "{$this->modelClass}.etatdossierapre" ),$options['etatdossierapre'] );
-                    $mtforfait = Set::classicExtract( $apre, 'Aideapre66.montantaide' );
+                    $mtforfait = Set::classicExtract( $apre, 'Aideapre66.montantpropose' );
                     $mtattribue = Set::classicExtract( $apre, 'Aideapre66.montantaccorde' );
 
                     $buttonEnabled = true;

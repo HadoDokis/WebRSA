@@ -293,7 +293,6 @@
 
 			if( !empty( $typeaideapre66_id ) ) {
 				$typeaideapre66_id = suffix( $typeaideapre66_id );
-
 			}
 			else {
 				$typeaideapre66_id = suffix( Set::extract( $this->data, 'Aideapre66.typeaideapre66_id' ) );
@@ -342,59 +341,11 @@
 					)
 				);
 			}
-
-			// Cases déjà cochées
-			/*$checked = array();
-			$aideapre_id = Set::classicExtract( $this->params, 'named.aideapre_id' );
-			if( !empty( $aideapre_id ) ) {
-				$checked = $this->{$this->modelClass}->Aideapre66->Pieceaide66->find(
-					'all',
-					array(
-						'fields' => array( 'Pieceaide66.id' ),
-						'joins' => array(
-							array(
-								'table'      => 'aidesapres66_piecesaides66',
-								'alias'      => 'Aideapre66Pieceaide66',
-								'type'       => 'INNER',
-								'foreignKey' => false,
-								'conditions' => array(
-									'Aideapre66Pieceaide66.pieceaide66_id = Pieceaide66.id',
-									'Aideapre66Pieceaide66.aideapre66_id' => $aideapre_id
-								)
-							)
-						),
-						'recursive' => -1
-					)
-				);
-
-				$this->data['Pieceaide66']['Pieceaide66'] = Set::extract( $checked, '/Pieceaide66/id' );
-
-				$checkedcomptable = $this->{$this->modelClass}->Aideapre66->Piececomptable66->find(
-					'all',
-					array(
-						'fields' => array( 'Piececomptable66.id' ),
-						'joins' => array(
-							array(
-								'table'      => 'aidesapres66_piecescomptables66',
-								'alias'      => 'Aideapre66Piececomptable66',
-								'type'       => 'INNER',
-								'foreignKey' => false,
-								'conditions' => array(
-									'Aideapre66Piececomptable66.piececomptable66_id = Piececomptable66.id',
-									'Aideapre66Piececomptable66.aideapre66_id' => $aideapre_id
-								)
-							)
-						),
-						'recursive' => -1
-					)
-				);
-
-				$this->data['Piececomptable66']['Piececomptable66'] = Set::extract( $checkedcomptable, '/Piececomptable66/id' );
-			}*/
-
+// debug( is_int( $typeaideapre66_id ) );
 			$typeaideapre = array();
-			if( is_int( $typeaideapre66_id ) ) {
+			if( !empty( $typeaideapre66_id ) ) {
 				$typeaideapre = $this->{$this->modelClass}->Aideapre66->Typeaideapre66->findbyId( $typeaideapre66_id, null, null, -1 );
+
 			}
 			Configure::write( 'debug', 0 );
 			$this->set( compact( 'piecesadmin', 'piecescomptable', 'typeaideapre' ) );
@@ -524,7 +475,8 @@
 					'all',
 					array(
 						'conditions' => array(
-							'Aideapre66.apre_id' => Set::extract( $listApres, "/{$this->modelClass}/id" )
+							'Aideapre66.apre_id' => Set::extract( $listApres, "/{$this->modelClass}/id" ),
+							'Aideapre66.decisionapre' => 'ACC'
 						),
 						'recursive' => -1
 					)
@@ -571,6 +523,7 @@
 				/// Pour le nombre de pièces afin de savoir si le dossier est complet ou non
 				$valide = false;
 				$nbNormalPieces = array();
+// debug( $this->data );
 
 				$typeaideapre66_id = suffix( Set::classicExtract( $this->data, 'Aideapre66.typeaideapre66_id' ) );
 				$typeaide = array();
@@ -746,6 +699,7 @@ die();
 						'Structurereferente',
 						'Referent',
 						'Aideapre66' => array(
+							'Typeaideapre66',
 							'Fraisdeplacement66',
 							'Piececomptable66',
 							'Pieceaide66',
@@ -791,7 +745,27 @@ die();
 			);
 			$apre['Adresse'] = $adresse['Adresse'];
 
+
+			//Données du Foyer + Dossier
+			$foyer = $this->{$this->modelClass}->Personne->Foyer->find(
+			    'first',
+			    array(
+					'conditions' => array(
+						'Foyer.id' => $apre['Personne']['foyer_id']
+					),
+					'contain' => array(
+						'Dossier'
+					)
+				)
+			);
+
+			$apre = Set::merge( $apre, $foyer );
+
 			$apre_id = Set::classicExtract( $apre, "{$this->modelClass}.id" );
+
+			if( !empty( $apre['Aideapre66']['Fraisdeplacement66'] ) ){
+				$apre['Aideapre66']['Fraisdeplacement66']['lieuresidence'] = Set::extract( $apre, 'Adresse.numvoie' ).' '.Set::extract( $typevoie, Set::extract( $apre, 'Adresse.typevoie' ) ).' '.Set::extract( $apre, 'Adresse.nomvoie' ).' '.Set::extract( $apre, 'Adresse.codepos' ).' '.Set::extract( $apre, 'Adresse.locaadr' );
+			}
 
 			///Traduction pour les données de la Personne/Contact/Partenaire/Référent
 			$apre['Personne']['qual'] = Set::enum( Set::classicExtract( $apre, 'Personne.qual' ), $qual );
@@ -799,9 +773,33 @@ die();
 
 			$apre['Structurereferente']['adresse'] = Set::classicExtract( $apre, 'Structurereferente.num_voie').' '.Set::enum( Set::classicExtract( $apre, 'Structurereferente.type_voie'), $typevoie ).' '.Set::classicExtract( $apre, 'Structurereferente.nom_voie').' '.Set::classicExtract( $apre, 'Structurereferente.code_postal').' '.Set::classicExtract( $apre, 'Structurereferente.ville');
 
+
+			// Ajout pour obtenir le passif en demande d'APRE
+			$listeApres = $this->{$this->modelClass}->find(
+				'all',
+				array(
+					'fields' => array(
+						'Apre66.id',
+						'Aideapre66.datedemande',
+						'Aideapre66.montantaccorde',
+						'Typeaideapre66.name'
+					),
+					'conditions' => array(
+						"{$this->modelClass}.personne_id" => $apre['Personne']['id'],
+						"{$this->modelClass}.id <>" => $id,
+						'Aideapre66.id IS NOT NULL' //FIXME: hack 
+					),
+					'joins' => array(
+						$this->{$this->modelClass}->join( 'Aideapre66' ),
+						$this->{$this->modelClass}->Aideapre66->join( 'Typeaideapre66' )
+					),
+					'order' => array( 'Aideapre66.datedemande DESC' )
+				)
+			);
+
 // debug($apre);
 // die();
-			$pdf = $this->Apre66->ged( $apre, 'APRE/apre.odt' );
+			$pdf = $this->Apre66->ged( array( $apre, 'oldapres' => $listeApres ), 'APRE/apre66.odt', true );
 			$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'apre-%s.pdf', date( 'Y-m-d' ) ) );
 		}
 		/**

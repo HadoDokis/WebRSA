@@ -71,14 +71,14 @@
                 true
             );
 
-            observeDisableFieldsetOnRadioValue(
-                'Apre',
-                'data[<?php echo $this->modelClass;?>][isdecision]',
-                $( 'DecisionApre' ),
-                'O',
-                false,
-                true
-            );
+//             observeDisableFieldsetOnRadioValue(
+//                 'Apre',
+//                 'data[<?php echo $this->modelClass;?>][isdecision]',
+//                 $( 'DecisionApre' ),
+//                 'O',
+//                 false,
+//                 true
+//             );
 
         });
 
@@ -139,41 +139,41 @@
 //             false
 //         );
 
-        observeDisableFieldsOnValue(
-            'Aideapre66DecisionapreREF',
-            [
-                'Aideapre66Montantaccorde'
-            ],
-            'REF',
-            true
-        );
+//         observeDisableFieldsOnValue(
+//             'Aideapre66DecisionapreREF',
+//             [
+//                 'Aideapre66Montantaccorde'
+//             ],
+//             'REF',
+//             true
+//         );
         //Données pour le type d'activité du bénéficiare
-        observeDisableFieldsOnValue(
-            'Aideapre66DecisionapreACC',
-            [
-                'Aideapre66Montantaccorde'
-            ],
-            'ACC',
-            false
-        );
+//         observeDisableFieldsOnValue(
+//             'Aideapre66DecisionapreACC',
+//             [
+//                 'Aideapre66Montantaccorde'
+//             ],
+//             'ACC',
+//             false
+//         );
 
-        observeDisableFieldsOnValue(
-            'Aideapre66DecisionapreREF',
-            [
-                'Aideapre66Motifrejetequipe'
-            ],
-            'REF',
-            false
-        );
+//         observeDisableFieldsOnValue(
+//             'Aideapre66DecisionapreREF',
+//             [
+//                 'Aideapre66Motifrejetequipe'
+//             ],
+//             'REF',
+//             false
+//         );
         //Données pour le type d'activité du bénéficiare
-        observeDisableFieldsOnValue(
-            'Aideapre66DecisionapreACC',
-            [
-                'Aideapre66Motifrejetequipe'
-            ],
-            'ACC',
-            true
-        );
+//         observeDisableFieldsOnValue(
+//             'Aideapre66DecisionapreACC',
+//             [
+//                 'Aideapre66Motifrejetequipe'
+//             ],
+//             'ACC',
+//             true
+//         );
 
         <?php
             echo $ajax->remoteFunction(
@@ -405,7 +405,7 @@
 			),
 			true
 		);
-// debug( $url );
+
         echo $ajax->observeField(
 			'Aideapre66Typeaideapre66Id',
 			array(
@@ -420,8 +420,6 @@
 
         echo $default->subform(
             array(
-                'Aideapre66.motivdem',
-                'Aideapre66.montantaide' => array( 'type' => 'text' ),
                 'Aideapre66.virement' => array( 'domain' => 'aideapre66', 'type' => 'radio', 'options' => $options['virement'], 'separator' => '<br />' ),
                 'Aideapre66.versement' => array( 'domain' => 'aideapre66', 'type' => 'radio', 'options' => $options['versement'], 'separator' => '<br />' )
             ),
@@ -469,7 +467,7 @@
                                 h( date_short( Set::classicExtract( $liste, 'Aideapre66.datedemande' ) ) ),
                                 h( Set::enum( Set::classicExtract( $liste, 'Aideapre66.themeapre66_id' ), $themes ) ),
                                 h( Set::enum( Set::classicExtract( $liste, 'Aideapre66.typeaideapre66_id' ), $nomsTypeaide ) ),
-                                h( $locale->money( Set::classicExtract( $liste, 'Aideapre66.montantaide' ) ) ),
+                                h( $locale->money( Set::classicExtract( $liste, 'Aideapre66.montantpropose' ) ) ),
                             )
                         );
                     }
@@ -516,7 +514,7 @@
 				</tr>
                 <tr>
                     <th>Nb total km</th>
-                    <td colspan="2"  class="fraisdepct" id="Fraisdeplacement66Nbtotalkm"></td>
+                    <td colspan="2"  class="fraisdepct"><span></span><?php echo $xform->input( 'Fraisdeplacement66.nbtotalkm', array( 'label' => false, 'div' => false, 'type' => 'hidden' ) );?> </td>
                 </tr>
 				<tr>
 					<th>Forfait "Km"</th>
@@ -524,8 +522,8 @@
 				</tr>
 				<tr>
 					<th>Total</th>
-					<td class="fraisdepct noborder" id="Fraisdeplacement66Totalvehicule"></td>
-                    <td  class="fraisdepct noborder">&euro;</td>
+					<td colspan="2"  class="fraisdepct noborder"><span></span><?php echo $xform->input( 'Fraisdeplacement66.totalvehicule', array( 'label' => false, 'div' => false, 'type' => 'hidden' ) );?> &euro;</td>
+<!--                     <td  class="fraisdepct noborder">&euro;</td> -->
 				</tr>
 			</tbody>
 		</table>
@@ -545,8 +543,7 @@
 				</tr>
 				<tr>
 					<th>Total</th>
-					<td class="fraisdepct noborder" id="Fraisdeplacement66Totaltranspub"></td>
-                    <td  class="fraisdepct noborder">&euro;</td>
+					<td colspan="2" class="fraisdepct noborder"><span></span><?php echo $xform->input( 'Fraisdeplacement66.totaltranspub', array( 'label' => false, 'div' => false, 'type' => 'hidden' ) );?> &euro;</td>
 				</tr>
 			</tbody>
 		</table>
@@ -566,8 +563,7 @@
 				</tr>
 				<tr>
 					<th>Total</th>
-					<td class="fraisdepct noborder" id="Fraisdeplacement66Totalhebergt"></td>
-                    <td  class="fraisdepct noborder">&euro;</td>
+					<td class="fraisdepct noborder"><span></span><?php echo $xform->input( 'Fraisdeplacement66.totalhebergt', array( 'label' => false, 'div' => false, 'type' => 'hidden' ) );?> &euro;</td>
 				</tr>
 			</tbody>
 		</table>
@@ -587,8 +583,7 @@
 				</tr>
 				<tr>
 					<th>Total</th>
-					<td class="fraisdepct noborder" id="Fraisdeplacement66Totalrepas"></td>
-                    <td class="fraisdepct2 noborder">&euro;</td>
+					<td class="fraisdepct noborder"><span></span><?php echo $xform->input( 'Fraisdeplacement66.totalrepas', array( 'label' => false, 'div' => false, 'type' => 'hidden' ) );?> &euro;</td>
 				</tr>
 			</tbody>
 		</table>
@@ -616,34 +611,69 @@
         ?>
 </fieldset>
 
-<?php
-    $error = Set::classicExtract( $this->validationErrors, "{$this->modelClass}.isdecision" );
-    $class = 'radio'.( !empty( $error ) ? ' error' : '' );
-    $thisDataIsDecision = Set::classicExtract( $this->data, "{$this->modelClass}.isdecision" );
-    if( !empty( $thisDataIsDecision ) ) {
-        $valueIsDecision = $thisDataIsDecision;
-    }
-    $input = $form->input( "{$this->modelClass}.isdecision", array( 'type' => 'radio' , 'options' => $options['isdecision'], 'legend' => required( __d( 'apre', "{$this->modelClass}.isdecision", true )  ), 'value' => $valueIsDecision ) );
-    echo $xhtml->tag( 'div', $input, array( 'class' => $class ) );
-?>
+<?php if( $this->action == 'edit' ):?>
+	<?php
+// 		$error = Set::classicExtract( $this->validationErrors, "{$this->modelClass}.isdecision" );
+// 		$class = 'radio'.( !empty( $error ) ? ' error' : '' );
+// 		$thisDataIsDecision = Set::classicExtract( $this->data, "{$this->modelClass}.isdecision" );
+// 		if( !empty( $thisDataIsDecision ) ) {
+// 			$valueIsDecision = $thisDataIsDecision;
+// 		}
+// 		$input = $form->input( "{$this->modelClass}.isdecision", array( 'type' => 'radio' , 'options' => $options['isdecision'], 'legend' => required( __d( 'apre', "{$this->modelClass}.isdecision", true )  ), 'value' => $valueIsDecision ) );
+// 		echo $xhtml->tag( 'div', $input, array( 'class' => $class ) );
+	?>
 
-<fieldset id="DecisionApre">
-    <legend><strong>Décision et engagement financier de l'équipe de direction</strong></legend>
-        <?php
-            echo $default->subform(
-                array(
-                    'Aideapre66.decisionapre' => array( 'legend' => false, 'type' => 'radio', 'options' => $options['decisionapre'], 'separator' => '<br />' ),
-                    'Aideapre66.montantaccorde' => array( 'type' => 'text' ),
-                    'Aideapre66.motifrejetequipe' => array( 'type' => 'textarea' ),
-                    'Aideapre66.datemontantaccorde' => array( 'empty' => false )
-                ),
-                array(
-                    'class' => 'fraisdepct'
-                )
-            );
-        ?>
+	<fieldset id="DecisionApre">
+		<legend><strong>Décision et engagement financier de l'équipe de direction</strong></legend>
+			<?php
+				$avis = Set::classicExtract( $this->data, 'Aideapre66.decisionapre' );
+				if( !empty( $avis ) ){
+					$tmp = array(
+						'Aideapre66.decisionapre' => Set::enum( Set::classicExtract( $this->data, 'Aideapre66.decisionapre' ), $options['decisionapre'] ),
+						'Aideapre66.montantaccorde' => Set::classicExtract( $this->data, 'Aideapre66.montantaccorde' ),
+						'Aideapre66.motifrejetequipe' => Set::classicExtract( $this->data, 'Aideapre66.motifrejetequipe' ),
+						'Aideapre66.datemontantaccorde' => Set::classicExtract( $this->data, 'Aideapre66.datemontantaccorde' )
+					);
+					echo $default->view(
+						Xset::bump( $tmp ),
+						array(
+							'Aideapre66.decisionapre',
+							'Aideapre66.montantaccorde' => array( 'type' => 'money' ),
+							'Aideapre66.motifrejetequipe' => array( 'type' => 'text' ),
+							'Aideapre66.datemontantaccorde' => array( 'type' => 'date' )
+						),
+						array(
+							'class' => 'inform'
+						)
+					);
+				}
+				else{
+					echo $xhtml->tag(
+						'p',
+						'Aucune décision n\'a encore été prise pour cette demande d\'APRE',
+						array( 'class' => 'notice' )
+					);
+				}
 
-</fieldset>
+
+
+// 				echo $default->subform(
+// 					array(
+// 						'Aideapre66.decisionapre' => array( 'legend' => false, 'type' => 'radio', 'options' => $options['decisionapre'], 'separator' => '<br />' ),
+// 						'Aideapre66.montantaccorde' => array( 'type' => 'text' ),
+// 						'Aideapre66.motifrejetequipe' => array( 'type' => 'textarea' ),
+// 						'Aideapre66.datemontantaccorde' => array( 'empty' => false )
+// 					),
+// 					array(
+// 						'class' => 'fraisdepct'
+// 					)
+// 				);
+			?>
+
+	</fieldset>
+
+<?php endif;?>
+
 <fieldset class="loici">
     <p>
         Un formulaire de demande par type d'aide demandée. Il doit être établi par un référent, pour Pôle Emploi en son absence par un prescripteur habilité.
@@ -687,9 +717,14 @@
         // Frais de déplacement pour un véhicule individuel
         var Nbkmvoiture = frenchToJsFloatValue( 'Fraisdeplacement66Nbkmvoiture' );
         var Nbtrajetvoiture = frenchToJsFloatValue( 'Fraisdeplacement66Nbtrajetvoiture' );
-        //$( 'Fraisdeplacement66Nbtotalkm' ).value = jsToFrenchFloatValue( Nbkmvoiture * Nbtrajetvoiture );
-        $( 'Fraisdeplacement66Nbtotalkm' ).update( jsToFrenchFloatValue( Nbkmvoiture * Nbtrajetvoiture ) );
-        $( 'Fraisdeplacement66Totalvehicule' ).update( jsToFrenchFloatValue( ( Nbkmvoiture * Nbtrajetvoiture * <?php echo str_replace( ',', '.', Configure::read( 'Fraisdeplacement66.forfaitvehicule' ) );?> ).toFixed( 2 ) ) );
+
+		var Nbtotalkm = jsToFrenchFloatValue( Nbkmvoiture * Nbtrajetvoiture );
+        $( 'Fraisdeplacement66Nbtotalkm' ).setValue( Nbtotalkm );
+		$( 'Fraisdeplacement66Nbtotalkm' ).up().down( 'span' ).update( Nbtotalkm );
+
+		var TotalVehicule = jsToFrenchFloatValue( ( Nbkmvoiture * Nbtrajetvoiture * <?php echo str_replace( ',', '.', Configure::read( 'Fraisdeplacement66.forfaitvehicule' ) );?> ).toFixed( 2 ) );
+        $( 'Fraisdeplacement66Totalvehicule' ).setValue( TotalVehicule );
+		$( 'Fraisdeplacement66Totalvehicule' ).up().down( 'span' ).update( TotalVehicule );
     }
     // Frais de déplacement pour un véhicule individuel
     $( 'Fraisdeplacement66Nbtotalkm' ).observe( 'blur', function( event ) { calculTotalVoiture(); } );
@@ -700,7 +735,9 @@
         // Frais de déplacement pour un transport public
         var Nbtrajettranspub = frenchToJsFloatValue( 'Fraisdeplacement66Nbtrajettranspub' );
         var Prixbillettranspub = frenchToJsFloatValue( 'Fraisdeplacement66Prixbillettranspub' );
-        $( 'Fraisdeplacement66Totaltranspub' ).update( jsToFrenchFloatValue( Nbtrajettranspub * Prixbillettranspub ) );
+		var TotalTransportpub = jsToFrenchFloatValue( Nbtrajettranspub * Prixbillettranspub );
+        $( 'Fraisdeplacement66Totaltranspub' ).setValue( TotalTransportpub );
+		$( 'Fraisdeplacement66Totaltranspub' ).up().down( 'span' ).update( TotalTransportpub );
 
     }
     // Frais de déplacement pour un transport public
@@ -710,16 +747,21 @@
     function calcultotalHebergt() {
         // Frais de déplacement pour un hébergement
         var Nbnuithebergt = frenchToJsFloatValue( 'Fraisdeplacement66Nbnuithebergt' );
-        $( 'Fraisdeplacement66Totalhebergt' ).update( jsToFrenchFloatValue( Nbnuithebergt * <?php echo str_replace( ',', '.', Configure::read( 'Fraisdeplacement66.forfaithebergt' ) ); ?> ) );
+		var Totalhebergt = jsToFrenchFloatValue( Nbnuithebergt * <?php echo str_replace( ',', '.', Configure::read( 'Fraisdeplacement66.forfaithebergt' ) ); ?> );
+        $( 'Fraisdeplacement66Totalhebergt' ).setValue( Totalhebergt );
+		$( 'Fraisdeplacement66Totalhebergt' ).up().down( 'span' ).update( Totalhebergt );
     }
     // Frais de déplacement pour un hébergement
     $( 'Fraisdeplacement66Nbnuithebergt' ).observe( 'blur', function( event ) { calcultotalHebergt(); } );
+		
 
 
     function calculTotalRepas() {
         // Frais de déplacement pour un repas
         var Nbrepas = frenchToJsFloatValue( 'Fraisdeplacement66Nbrepas' );
-        $( 'Fraisdeplacement66Totalrepas' ).update( jsToFrenchFloatValue( Nbrepas * <?php echo str_replace( ',', '.', Configure::read( 'Fraisdeplacement66.forfaitrepas' ) );?> ) );
+		var Totalrepas = jsToFrenchFloatValue( Nbrepas * <?php echo str_replace( ',', '.', Configure::read( 'Fraisdeplacement66.forfaitrepas' ) );?> );
+        $( 'Fraisdeplacement66Totalrepas' ).setValue( Totalrepas );
+		$( 'Fraisdeplacement66Totalrepas' ).up().down( 'span' ).update( Totalrepas );
     }
     // Frais de déplacement pour un repas
     $( 'Fraisdeplacement66Nbrepas' ).observe( 'blur', function( event ) { calculTotalRepas(); } );
@@ -727,6 +769,11 @@
 </script>
 
 <script type="text/javascript">
+	calculTotalVoiture();
+	calculTotalTranspub();
+	calcultotalHebergt();
+	calculTotalRepas();
+
     Event.observe( $( 'ApreStructurereferenteId' ), 'change', function( event ) {
         $( 'ReferentRef' ).update( '' );
     } );
