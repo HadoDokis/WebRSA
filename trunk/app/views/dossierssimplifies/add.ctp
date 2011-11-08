@@ -60,8 +60,8 @@
 			<div><?php echo $form->input( 'Orientstruct.0.origine', array( 'label' => false, 'type' => 'hidden', 'value' => 'manuelle' ) );?></div>
             <?php 
                 if( Configure::read( 'Cg.departement' ) == 66 ){
-                    echo $form->input( 'Orientstruct.0.structureorientante_id', array( 'label' =>  'Structure orientante', 'type' => 'select', 'options' => $structsReferentes, 'empty' => true ) );
-                    echo $form->input( 'Orientstruct.0.referentorientant_id', array( 'label' =>  'Référent orientant', 'type' => 'select', 'options' => $refsorientants, 'empty' => true ) );
+                    echo $form->input( 'Orientstruct.0.structureorientante_id', array( 'label' =>  'Structure', 'type' => 'select', 'options' => $structsReferentes, 'empty' => true ) );
+                    echo $form->input( 'Orientstruct.0.referentorientant_id', array( 'label' =>  'Nom du professionnel', 'type' => 'select', 'options' => $refsorientants, 'empty' => true ) );
                 }
             ?>
             <?php echo $form->input( 'Orientstruct.0.statut_orient', array( 'label' => "Statut de l'orientation", 'type' => 'select' , 'options' => $statut_orient, 'empty' => true ) );?>
@@ -90,8 +90,8 @@
 			<div><?php echo $form->input( 'Orientstruct.1.origine', array( 'label' => false, 'type' => 'hidden', 'value' => 'manuelle' ) );?></div>
             <?php 
                 if( Configure::read( 'Cg.departement' ) == 66 ){
-                    echo $form->input( 'Orientstruct.1.structureorientante_id', array( 'label' =>  'Structure orientante', 'type' => 'select', 'options' => $structsReferentes, 'empty' => true ) );
-                    echo $form->input( 'Orientstruct.1.referentorientant_id', array( 'label' =>  'Référent orientant', 'type' => 'select', 'options' => $refsorientants, 'empty' => true ) );
+                    echo $form->input( 'Orientstruct.1.structureorientante_id', array( 'label' =>  'Structure', 'type' => 'select', 'options' => $structsReferentes, 'empty' => true ) );
+                    echo $form->input( 'Orientstruct.1.referentorientant_id', array( 'label' =>  'Nom du professionnel', 'type' => 'select', 'options' => $refsorientants, 'empty' => true ) );
                 }
             ?>
             <?php echo $form->input( 'Orientstruct.1.statut_orient', array( 'label' => "Statut de l'orientation", 'type' => 'select' , 'options' => $statut_orient, 'empty' => true ) );?>

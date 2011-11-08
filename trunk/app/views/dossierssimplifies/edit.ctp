@@ -74,8 +74,8 @@
                 if( Configure::read( 'Cg.departement' ) == 66 ){
                     $this->data['Orientstruct'][0]['referentorientant_id'] = Set::classicExtract( $this->data, 'Orientstruct.0.structureorientante_id' ).'_'.Set::classicExtract( $this->data, 'Orientstruct.0.referentorientant_id' );
 
-                    echo $form->input( 'Orientstruct.0.structureorientante_id', array( 'label' =>  'Structure orientante', 'type' => 'select', 'selected' => $structureorientante_id, 'options' => $structuresorientantes, 'empty' => true ) );
-                    echo $form->input( 'Orientstruct.0.referentorientant_id', array( 'label' =>  'Référent orientant', 'type' => 'select', 'selected' => $this->data['Orientstruct'][0]['referentorientant_id'], 'options' => $refsorientants, 'empty' => true ) );
+                    echo $form->input( 'Orientstruct.0.structureorientante_id', array( 'label' =>  'Structure', 'type' => 'select', 'selected' => $structureorientante_id, 'options' => $structuresorientantes, 'empty' => true ) );
+                    echo $form->input( 'Orientstruct.0.referentorientant_id', array( 'label' =>  'Nom du professionnel', 'type' => 'select', 'selected' => $this->data['Orientstruct'][0]['referentorientant_id'], 'options' => $refsorientants, 'empty' => true ) );
                 }
             ?>
             <?php echo $form->input( 'Orientstruct.0.statut_orient', array( 'label' => "Statut de l'orientation", 'type' => 'select' , 'options' => $statut_orient, 'empty' => true ) );?>
