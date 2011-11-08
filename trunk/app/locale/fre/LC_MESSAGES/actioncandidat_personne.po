@@ -180,3 +180,6 @@ msgstr "La personne a-t-elle été retenue ?"
 
 msgid "ActioncandidatPersonne.infocomplementaire"
 msgstr "Informations complémentaires"
+
+msgid "ActioncandidatPersonne.motifannulation"
+msgstr "Commentaire"

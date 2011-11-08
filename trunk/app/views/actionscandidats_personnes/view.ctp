@@ -14,6 +14,23 @@
 <?php 
 	echo $xform->create( 'ActioncandidatPersonne', array( 'id' => 'viewForm' ) );
 
+
+		if( ( $actionscandidatspersonne['ActioncandidatPersonne']['positionfiche'] == 'annule' ) ){
+			
+			echo $html->tag('div', $html->tag('strong', 'Raison de l\'annulation'));
+			echo $default->view(
+				$actionscandidatspersonne,
+				array(
+					'ActioncandidatPersonne.motifannulation' => array( 'type' => 'text' )
+				),
+				array(
+					'widget' => 'table',
+					'class' => 'aere'
+				)
+			);
+
+		}
+
 		echo $html->tag('div', $html->tag('strong', 'Action engagée'));
         echo $default->view(
         	$actionscandidatspersonne,

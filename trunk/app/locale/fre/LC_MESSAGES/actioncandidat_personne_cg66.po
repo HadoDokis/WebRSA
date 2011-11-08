@@ -96,3 +96,9 @@ msgstr "Supprimer la fiche de candidature"
 
 msgid "ActioncandidatPersonne::view"
 msgstr "Voir la fiche de candidature"
+
+msgid "ActionscandidatsPersonnes::cancel"
+msgstr "Annulation"
+
+msgid "ActioncandidatPersonne.motifannulation"
+msgstr "Raison de l'annulation"
