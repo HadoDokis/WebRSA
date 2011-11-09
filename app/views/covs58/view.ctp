@@ -2,7 +2,7 @@
 <div  id="ficheCI">
 	<ul class="actionMenu">
 	<?php
-		if( $cov58['Cov58']['etatcov'] == 'cree' ) {
+		if( in_array( $cov58['Cov58']['etatcov'], array( 'associe', 'cree' ) ) ) {
 			echo '<li>'.$xhtml->editLink(
 				__d( 'cov58', 'Cov58.edit', true ),
 				array( 'controller' => 'covs58', 'action' => 'edit', $cov58['Cov58']['id'] )
@@ -41,7 +41,6 @@
 		else {
 			echo '<li><span class="disabled"> '.__d( 'cov58','Covs58::impressionpv',true ).'</span></li>';
 		}
-		
 	?>
 	</ul>
 	<table>
@@ -75,7 +74,7 @@
 		<h2 class="title">Liste des dossiers</h2>
 		<ul class="actionMenu">
 			<?php
-				if( $cov58['Cov58']['etatcov'] == 'cree' ) {
+				if( in_array( $cov58['Cov58']['etatcov'], array( 'associe', 'cree' ) ) ) {
 					echo '<li>'.$xhtml->affecteLink(
 						'Affecter les dossiers',
 						array( 'controller' => 'dossierscovs58', 'action' => 'choose', Set::classicExtract( $cov58, 'Cov58.id' ) )
@@ -88,30 +87,39 @@
 		</ul>
 		<div id="dossierscovs">
 			<?php
+
+// 					foreach( $themes as $theme ) {
+// 						require_once( "view.{$theme}.liste.ctp" );
+// 					}
+
 				foreach( $themes as $theme ) {
-					if( $theme == 'proposorientationscovs58' ){
+					if( $theme == 'propoorientationcov58' ){
 						$controller = 'orientsstructs';
 					}
-					else if( $theme == 'proposcontratsinsertioncovs58' ){
+					else if( $theme == 'propocontratinsertioncov58' ){
 						$controller = 'contratsinsertion';
 					}
+					else if( $theme == 'propononorientationprocov58' ){
+						$controller = 'orientsstructs';
+					}
 					$class = Inflector::classify( $theme );
+
 					echo "<div id=\"$theme\"><h3 class=\"title\">".__d( 'dossiercov58', 'ENUM::THEMECOV::'.$theme, true )."</h3>";
+
 					echo $default2->index(
-						$dossiers[$class],
+						$dossiers[$theme],
 						array(
 							'Personne.qual',
 							'Personne.nom',
 							'Personne.prenom',
 							'Personne.dtnai',
-							'Personne.Foyer.Adressefoyer.0.Adresse.locaadr',
-// 							$class.'.0.datedemande',
-							'Dossiercov58.etapecov'
+							'Adresse.locaadr',
+							'Passagecov58.etatdossiercov'/* => array( 'value' => $options['Passagecov58']['etatdossiercov'] )*/
 						),
 						array(
 							'actions' => array(
 								'Dossierscovs58::view' => array( 'label' => 'Voir', 'url' => array( 'controller' => $controller, 'action' => 'index', '#Personne.id#' ) ),
-								'Dossierscovs58::impressiondecision' => array( 'label' => 'Imprimer la décision', 'url' => array( 'controller' => 'covs58', 'action' => 'impressiondecision', '#Dossiercov58.id#' ), 'disabled' => '"#Dossiercov58.etapecov#" != "finalise" || "#Themecov58.name#" == "proposcontratsinsertioncovs58"' )
+								'Dossierscovs58::impressiondecision' => array( 'label' => 'Imprimer la décision', 'url' => array( 'controller' => 'covs58', 'action' => 'impressiondecision', '#Dossiercov58.id#' ), 'disabled' => '"#Passagecov58.etatdossiercov#" != "finalise" || "#Themecov58.name#" == "proposcontratsinsertioncovs58"' )
 							),
 							'options' => $options
 						)

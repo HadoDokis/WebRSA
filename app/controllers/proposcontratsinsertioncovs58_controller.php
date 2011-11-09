@@ -260,6 +260,7 @@
 					);
 					$dossiercov58['Dossiercov58']['themecov58_id'] = $themecov58['Themecov58']['id'];
 					$dossiercov58['Dossiercov58']['personne_id'] = $personne_id;
+					$dossiercov58['Dossiercov58']['themecov58'] = 'proposcontratsinsertioncovs58';
 
 					$success = $this->Propocontratinsertioncov58->Dossiercov58->save($dossiercov58) && $success;
 					$this->data['Propocontratinsertioncov58']['dossiercov58_id'] = $this->Propocontratinsertioncov58->Dossiercov58->id;
@@ -312,8 +313,7 @@
 									'type' => 'INNER',
 									'conditions' => array(
 										'Dossiercov58.id = Propocontratinsertioncov58.dossiercov58_id',
-										'Dossiercov58.personne_id' => $personne_id,
-										'Dossiercov58.etapecov <>' => 'finalise'
+										'Dossiercov58.personne_id' => $personne_id
 									)
 								)
 							),
@@ -428,8 +428,7 @@
 							'type' => 'INNER',
 							'conditions' => array(
 								'Dossiercov58.id = Propocontratinsertioncov58.dossiercov58_id',
-								'Dossiercov58.personne_id' => $personne_id,
-								'Dossiercov58.etapecov <>' => 'finalise'
+								'Dossiercov58.personne_id' => $personne_id
 							)
 						)
 					),
@@ -437,7 +436,8 @@
 					'order' => array( 'Propocontratinsertioncov58.df_ci DESC' )
 				)
 			);
-
+// debug($propocontratinsertioncov58);
+// die();
 			$success = true;
 			$success = $this->Propocontratinsertioncov58->delete( $propocontratinsertioncov58['Propocontratinsertioncov58']['id'] ) && $success;
 			$success = $this->Propocontratinsertioncov58->Dossiercov58->delete( $propocontratinsertioncov58['Propocontratinsertioncov58']['dossiercov58_id'] ) && $success;

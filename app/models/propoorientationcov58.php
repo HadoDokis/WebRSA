@@ -1,5 +1,5 @@
 <?php
-    
+
 	class Propoorientationcov58 extends AppModel
 	{
 		public $name = 'Propoorientationcov58';
@@ -93,11 +93,11 @@
 				'order' => ''
 			)
 		);
-		
+
 		/**
 		*
 		*/
-		
+
 		public function getFields() {
 			return array(
 				$this->alias.'.id',
@@ -109,11 +109,11 @@
 				'Referent.prenom'
 			);
 		}
-		
+
 		/**
 		*
 		*/
-		
+
 		public function getJoins() {
 			return array(
 				array(
@@ -151,6 +151,188 @@
 			);
 		}
 
+
+
+		/**
+		* Fonction retournant un querydata qui va permettre de retrouver des dossiers de COV
+		*/
+		public function qdListeDossier( $cov58_id = null ) {
+			$return = array(
+				'fields' => array(
+					'Dossiercov58.id',
+					'Personne.id',
+					'Personne.qual',
+					'Personne.nom',
+					'Personne.dtnai',
+					'Personne.prenom',
+					'Dossier.numdemrsa',
+					'Adresse.locaadr',
+// 					'Structurereferente.lib_struc',
+					'Passagecov58.id',
+					'Passagecov58.cov58_id',
+					'Passagecov58.etatdossiercov'
+				)
+			);
+
+			if( !empty( $cov58_id ) ) {
+				$join = array(
+					'alias' => 'Dossiercov58',
+					'table' => 'dossierscovs58',
+					'type' => 'INNER',
+					'conditions' => array(
+						'Dossiercov58.id = '.$this->alias.'.dossiercov58_id'
+					)
+				);
+			}
+			else {
+				$join = array(
+					'alias' => $this->alias,
+					'table' => Inflector::tableize( $this->alias ),
+					'type' => 'INNER',
+					'conditions' => array(
+						'Dossiercov58.id = '.$this->alias.'.dossiercov58_id'
+					)
+				);
+			}
+
+			$return['joins'] = array(
+				$join,/*
+				array(
+					'alias' => 'Structurereferente',
+					'table' => 'structuresreferentes',
+					'type' => 'INNER',
+					'conditions' => array(
+						'Structurereferente.id = Contratinsertion.structurereferente_id'
+					)
+				),*/
+				array(
+					'alias' => 'Themecov58',
+					'table' => 'themescovs58',
+					'type' => 'INNER',
+					'conditions' => array(
+						'Dossiercov58.themecov58_id = Themecov58.id'
+					)
+				),
+				array(
+					'alias' => 'Personne',
+					'table' => 'personnes',
+					'type' => 'INNER',
+					'conditions' => array(
+						'Dossiercov58.personne_id = Personne.id'
+					)
+				),
+				array(
+					'alias' => 'Foyer',
+					'table' => 'foyers',
+					'type' => 'INNER',
+					'conditions' => array(
+						'Personne.foyer_id = Foyer.id'
+					)
+				),
+				array(
+					'alias' => 'Dossier',
+					'table' => 'dossiers',
+					'type' => 'INNER',
+					'conditions' => array(
+						'Foyer.dossier_id = Dossier.id'
+					)
+				),
+				array(
+					'alias' => 'Adressefoyer',
+					'table' => 'adressesfoyers',
+					'type' => 'INNER',
+					'conditions' => array(
+						'Adressefoyer.foyer_id = Foyer.id',
+						'Adressefoyer.rgadr' => '01'
+					)
+				),
+				array(
+					'alias' => 'Adresse',
+					'table' => 'adresses',
+					'type' => 'INNER',
+					'conditions' => array(
+						'Adressefoyer.adresse_id = Adresse.id'
+					)
+				),
+				array(
+					'alias' => 'Passagecov58',
+					'table' => 'passagescovs58',
+					'type' => 'LEFT OUTER',
+					'conditions' => Set::merge(
+						array( 'Passagecov58.dossiercov58_id = Dossiercov58.id' ),
+						empty( $cov58_id ) ? array() : array(
+							'OR' => array(
+								'Passagecov58.cov58_id IS NULL',
+								'Passagecov58.cov58_id' => $cov58_id
+							)
+						)
+					)
+				)
+			);
+
+			return $return;
+		}
+
+
+
+
+		public function qdDossiersParListe( $cov58_id ) {
+			// Doit-on prendre une décision à ce niveau ?
+			$themes = $this->Dossiercov58->Passagecov58->Cov58->themesTraites( $cov58_id );
+			$niveauFinal = $themes[Inflector::underscore($this->alias)];
+
+			return array(
+				'conditions' => array(
+					'Dossiercov58.themecov58' => Inflector::tableize( $this->alias ),
+					'Dossiercov58.id IN ( '.
+						$this->Dossiercov58->Passagecov58->sq(
+							array(
+								'fields' => array(
+									'passagescovs58.dossiercov58_id'
+								),
+								'alias' => 'passagescovs58',
+								'conditions' => array(
+									'passagescovs58.cov58_id' => $cov58_id
+								)
+							)
+						)
+					.' )'
+				),
+				'contain' => array(
+					'Personne' => array(
+						'Foyer' => array(
+							'Adressefoyer' => array(
+								'conditions' => array(
+									'Adressefoyer.rgadr' => '01'
+								),
+								'Adresse'
+							)
+						)
+					),
+					$this->alias => array(
+						'Typeorient',
+						'Structurereferente',
+						'Referent'
+
+					),
+					'Passagecov58' => array(
+						'conditions' => array(
+							'Passagecov58.cov58_id' => $cov58_id
+						),
+						'Decision'.Inflector::underscore( $this->alias ) => array(
+							'Typeorient',
+							'Structurereferente',
+							'order' => array( 'etapecov DESC' )
+						)
+					)
+				)
+			);
+		}
+
+
+
+
+
 		/**
 		* FIXME -> aucun dossier en cours, pour certains thèmes:
 		*		- CG 93
@@ -173,8 +355,8 @@
 				'count',
 				array(
 					'conditions' => array(
-						'Dossiercov58.personne_id' => $personne_id,
-						'Dossiercov58.etapecov <>' => 'finalise'
+						'Dossiercov58.personne_id' => $personne_id/*,
+						'Dossiercov58.etapecovcov <>' => 'finalise'*/
 					),
 					'contain' => array(
 						'Propoorientationcov58'
@@ -238,74 +420,214 @@
 					'recursive' => -1
 				)
 			);
-			
+
 			return ( ( $nbDossierscov == 0 ) && ( $nbPersonnes == 1 ) );
 		}
-		
+
+
+
 		/**
 		*
 		*/
-		
-		public function saveDecision($data, $cov58) {
+
+		public function saveDecisions( $data ) {
+			$modelDecisionName = 'Decision'.Inflector::underscore( $this->alias );
+
 			$success = true;
-			$dossier = $this->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Propoorientationcov58.id' => $data['id']
-					),
-					'contain' => array(
-						'Dossiercov58'
-					)
-				)
-			);
-			if ( $data['decisioncov'] == 'accepte' ) {
-				$dossier['Propoorientationcov58']['covtypeorient_id'] = $dossier['Propoorientationcov58']['typeorient_id'];
-				$dossier['Propoorientationcov58']['covstructurereferente_id'] = $dossier['Propoorientationcov58']['structurereferente_id'];
-				$dossier['Propoorientationcov58']['covreferent_id'] = $dossier['Propoorientationcov58']['referent_id'];
-			}
-			else {
-				list($structurereferente_id, $referent_id) = explode('_', $data['referent_id']);
-				list($typeorient_id, $structurereferente_id) = explode('_', $data['structurereferente_id']);
-				$dossier['Propoorientationcov58']['covtypeorient_id'] = $typeorient_id;
-				$dossier['Propoorientationcov58']['covstructurereferente_id'] = $structurereferente_id;
-				$dossier['Propoorientationcov58']['referent_id'] = $referent_id;
-			}
-			
-			$dossier['Dossiercov58']['etapecov'] = 'finalise';
-			$success = $this->Dossiercov58->save($dossier['Dossiercov58']) && $success;
+			if ( isset( $data[$modelDecisionName] ) && !empty( $data[$modelDecisionName] ) ) {
 
-			list($jour, $heure) = explode(' ', $cov58['Cov58']['datecommission']);
-			$dossier['Propoorientationcov58']['datevalidation'] = $jour;
-			$dossier['Propoorientationcov58']['decisioncov'] = $data['decisioncov'];
-			$success = $this->save($dossier['Propoorientationcov58']) && $success;
-			
-			$orientstruct = array(
-				'Orientstruct' => array(
-					'personne_id' => $dossier['Dossiercov58']['personne_id'],
-					'typeorient_id' => $dossier['Propoorientationcov58']['covtypeorient_id'],
-					'structurereferente_id' => $dossier['Propoorientationcov58']['covstructurereferente_id'],
-					'referent_id' => $dossier['Propoorientationcov58']['referent_id'],
-					'date_propo' => $dossier['Propoorientationcov58']['datedemande'],
-					'date_valid' => $dossier['Propoorientationcov58']['datevalidation'],
-					'rgorient' => $dossier['Propoorientationcov58']['rgorient'],
-					'statut_orient' => 'Orienté',
-					'etatorient' => 'decision',
-					'origine' => 'manuelle',
-					'user_id' => $dossier['Propoorientationcov58']['user_id']
-				)
-			);
 
-			$this->Dossiercov58->Personne->Orientstruct->create( $orientstruct );
-			$success = $this->Dossiercov58->Personne->Orientstruct->save() && $success;
-			
+				foreach( $data[$modelDecisionName] as $key => $values ) {
+
+					$passagecov58 = $this->Dossiercov58->Passagecov58->find(
+						'first',
+						array(
+							'fields' => array_merge(
+								$this->Dossiercov58->Passagecov58->fields(),
+								$this->Dossiercov58->Passagecov58->Cov58->fields(),
+								$this->Dossiercov58->fields(),
+								$this->fields()
+							),
+							'conditions' => array(
+								'Passagecov58.id' => $values['passagecov58_id']
+							),
+							'joins' => array(
+								$this->Dossiercov58->Passagecov58->join( 'Dossiercov58' ),
+								$this->Dossiercov58->Passagecov58->join( 'Cov58' ),
+								$this->Dossiercov58->join( $this->alias )
+							)
+						)
+					);
+
+					if( in_array( $values['decisioncov'], array( 'valide', 'refuse' ) ) ){
+
+						if( $values['decisioncov'] == 'valide' ){
+							$data[$modelDecisionName][$key]['typeorient_id'] = $passagecov58[$this->alias]['typeorient_id'];
+							$data[$modelDecisionName][$key]['structurereferente_id'] = $passagecov58[$this->alias]['structurereferente_id'];
+							$data[$modelDecisionName][$key]['referent_id'] = $passagecov58[$this->alias]['referent_id'];
+
+							list($datevalidation, $heure) = explode(' ', $passagecov58['Cov58']['datecommission']);
+
+							$orientstruct = array(
+								'Orientstruct' => array(
+									'personne_id' => $passagecov58['Dossiercov58']['personne_id'],
+									'typeorient_id' => $passagecov58[$this->alias]['typeorient_id'],
+									'structurereferente_id' => $passagecov58[$this->alias]['structurereferente_id'],
+									'referent_id' => $passagecov58[$this->alias]['referent_id'],
+									'date_propo' => $passagecov58['Propoorientationcov58']['datedemande'],
+									'date_valid' => $datevalidation,
+									'rgorient' => $passagecov58['Propoorientationcov58']['rgorient'],
+									'statut_orient' => 'Orienté',
+									'etatorient' => 'decision',
+									'origine' => 'manuelle',
+									'user_id' => $passagecov58['Propoorientationcov58']['user_id']
+								)
+							);
+
+						}
+						else if( $values['decisioncov'] == 'refuse' ){
+							list($structurereferente_id, $referent_id) = explode('_', $values['referent_id']);
+							list($typeorient_id, $structurereferente_id) = explode('_', $values['structurereferente_id']);
+							$data[$modelDecisionName][$key]['typeorient_id'] = $typeorient_id;
+							$data[$modelDecisionName][$key]['structurereferente_id'] = $structurereferente_id;
+							$data[$modelDecisionName][$key]['referent_id'] = $referent_id;
+
+							$data[$modelDecisionName][$key]['datevalidation'] = $passagecov58['Cov58']['datecommission'];
+							list($datevalidation, $heure) = explode(' ', $passagecov58['Cov58']['datecommission']);
+
+							$orientstruct = array(
+								'Orientstruct' => array(
+									'personne_id' => $passagecov58['Dossiercov58']['personne_id'],
+									'typeorient_id' => $data[$modelDecisionName][$key]['typeorient_id'],
+									'structurereferente_id' => $data[$modelDecisionName][$key]['structurereferente_id'],
+									'referent_id' => $data[$modelDecisionName][$key]['referent_id'],
+									'date_propo' => $passagecov58['Propoorientationcov58']['datedemande'],
+									'date_valid' => $datevalidation,
+									'rgorient' => $passagecov58['Propoorientationcov58']['rgorient'],
+									'statut_orient' => 'Orienté',
+									'etatorient' => 'decision',
+									'origine' => 'manuelle',
+									'user_id' => $passagecov58['Propoorientationcov58']['user_id']
+								)
+							);
+						}
+ 
+						$this->Dossiercov58->Personne->Orientstruct->create( $orientstruct );
+						$success = $this->Dossiercov58->Personne->Orientstruct->save() && $success;
+
+
+					}
+
+
+					// Modification etat du dossier passé dans la COV
+					if( in_array( $values['decisioncov'], array( 'valide', 'refuse' ) ) ){
+						$this->Dossiercov58->Passagecov58->updateAll(
+							array( 'Passagecov58.etatdossiercov' => '\'traite\'' ),
+							array('"Passagecov58"."id"' => $passagecov58['Passagecov58']['id'] )
+						);
+					}
+					else if( $values['decisioncov'] == 'annule' ){
+						$this->Dossiercov58->Passagecov58->updateAll(
+							array( 'Passagecov58.etatdossiercov' => '\'annule\'' ),
+							array('"Passagecov58"."id"' => $passagecov58['Passagecov58']['id'] )
+						);
+					}
+					else if( $values['decisioncov'] == 'reporte' ){
+						$this->Dossiercov58->Passagecov58->updateAll(
+							array( 'Passagecov58.etatdossiercov' => '\'reporte\'' ),
+							array('"Passagecov58"."id"' => $passagecov58['Passagecov58']['id'] )
+						);
+					}
+				}
+
+				$success = $this->Dossiercov58->Passagecov58->{$modelDecisionName}->saveAll( Set::extract( $data, '/'.$modelDecisionName ), array( 'atomic' => false ) );
+
+			}
+
 			return $success;
 		}
 
+
+
+
 		/**
 		*
 		*/
 
+		public function qdProcesVerbal() {
+			$modele = 'Propoorientationcov58';
+			$modeleDecisions = 'Decisionpropoorientationcov58';
+
+			return array(
+				'fields' => array(
+					"{$modele}.id",
+					"{$modele}.dossiercov58_id",
+					"{$modele}.typeorient_id",
+					"{$modele}.structurereferente_id",
+					"{$modele}.datedemande",
+					"{$modele}.rgorient",
+					"{$modele}.commentaire",
+					"{$modele}.covtypeorient_id",
+					"{$modele}.covstructurereferente_id",
+					"{$modele}.datevalidation",
+					"{$modele}.commentaire",
+					"{$modele}.user_id",
+					"{$modele}.decisioncov",
+					'Typeorient.lib_type_orient',
+					'Structurereferente.lib_struc',
+					"{$modeleDecisions}.id",
+					"{$modeleDecisions}.etapecov",
+					"{$modeleDecisions}.decisioncov",
+					"{$modeleDecisions}.typeorient_id",
+					"{$modeleDecisions}.structurereferente_id",
+					"{$modeleDecisions}.referent_id",
+					"{$modeleDecisions}.commentaire",
+					"{$modeleDecisions}.created",
+					"{$modeleDecisions}.modified",
+					"{$modeleDecisions}.passagecov58_id",
+					"{$modeleDecisions}.datevalidation",
+				),
+				'joins' => array(
+					array(
+						'table'      => Inflector::tableize( $modele ),
+						'alias'      => $modele,
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array( "{$modele}.dossiercov58_id = Dossiercov58.id" ),
+					),
+					array(
+						'table'      => Inflector::tableize( $modeleDecisions ),
+						'alias'      => $modeleDecisions,
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array(
+							"{$modeleDecisions}.passagecov58_id = Passagecov58.id",
+							"{$modeleDecisions}.etapecov" => 'finalise'
+						),
+					),
+					array(
+						'table'      => 'typesorients',
+						'alias'      => 'Typeorient',
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array( 'Propoorientationcov58.typeorient_id = Typeorient.id' ),
+					),
+					array(
+						'table'      => 'structuresreferentes',
+						'alias'      => 'Structurereferente',
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array( 'Propoorientationcov58.structurereferente_id = Structurereferente.id' ),
+					)
+				)
+			);
+		}
+
+
+		/**
+		*
+		*/
+/*
 		public function qdProcesVerbal() {
 			return array(
 				'fields' => array(
@@ -338,18 +660,19 @@
 						'alias'      => 'Typeorient',
 						'type'       => 'LEFT OUTER',
 						'foreignKey' => false,
-						'conditions' => array( 'Propoorientationcov58.covtypeorient_id = Typeorient.id' ),
+						'conditions' => array( 'Propoorientationcov58.typeorient_id = Typeorient.id' ),
 					),
 					array(
 						'table'      => 'structuresreferentes',
 						'alias'      => 'Structurereferente',
 						'type'       => 'LEFT OUTER',
 						'foreignKey' => false,
-						'conditions' => array( 'Propoorientationcov58.covstructurereferente_id = Structurereferente.id' ),
+						'conditions' => array( 'Propoorientationcov58.structurereferente_id = Structurereferente.id' ),
 					)
 				)
 			);
-		}
+		}*/
+
 
 		/**
 		*
@@ -368,8 +691,8 @@
 					'Propoorientationcov58.datevalidation',
 					'Propoorientationcov58.commentaire',
 					'Propoorientationcov58.user_id',
-					'Typeorient.lib_type_orient',
-					'Structurereferente.lib_struc'
+					'Propoorientationcov58typeorient.lib_type_orient',
+					'Propoorientationcov58structurereferente.lib_struc'
 				),
 				'joins' => array(
 					array(
@@ -381,17 +704,17 @@
 					),
 					array(
 						'table'      => 'typesorients',
-						'alias'      => 'Typeorient',
+						'alias'      => 'Propoorientationcov58typeorient',
 						'type'       => 'LEFT OUTER',
 						'foreignKey' => false,
-						'conditions' => array( 'Propoorientationcov58.typeorient_id = Typeorient.id' ),
+						'conditions' => array( 'Propoorientationcov58.typeorient_id = Propoorientationcov58typeorient.id' ),
 					),
 					array(
 						'table'      => 'structuresreferentes',
-						'alias'      => 'Structurereferente',
+						'alias'      => 'Propoorientationcov58structurereferente',
 						'type'       => 'LEFT OUTER',
 						'foreignKey' => false,
-						'conditions' => array( 'Propoorientationcov58.structurereferente_id = Structurereferente.id' ),
+						'conditions' => array( 'Propoorientationcov58.structurereferente_id = Propoorientationcov58structurereferente.id' ),
 					)
 				)
 			);
@@ -616,18 +939,12 @@
 				}
 			}
 
-// debug( $fileName );
-// debug( $dossiercov58_data );
-// die();
-
 			return $this->ged(
 				$dossiercov58_data,
 				"Cov58/{$fileName}",
 				false,
 				$options
 			);
-
 		}
-
 	}
 ?>

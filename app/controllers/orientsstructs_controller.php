@@ -29,9 +29,7 @@
 			//Ajout des structures et référents orientants
 			$this->set( 'refsorientants', $this->Referent->listOptions() );
 			$this->set( 'structsorientantes', $this->Structurereferente->listOptions( array( 'orientation' => 'O' ) ) );
-
 		}
-
 
 		/**
 		*
@@ -45,7 +43,6 @@
 			}
 
 			$this->set( compact( 'options' ) );
-
 			return $return;
 		}
 
@@ -127,7 +124,6 @@
 			}
 
 			if( !empty( $this->data ) ) {
-
 				$saved = $this->Orientstruct->updateAll(
 					array( 'Orientstruct.haspiecejointe' => '\''.$this->data['Orientstruct']['haspiecejointe'].'\'' ),
 					array(
@@ -155,12 +151,9 @@
 				}
 			}
 
-//             $this->Orientstruct->commit();
 			$this->set( compact( 'dossier_id', 'personne_id', 'fichiers', 'orientstruct' ) );
-
 			$this->_setOptions();
 		}
-
 
 		/**
 		*
@@ -177,7 +170,6 @@
 					'conditions' => array(
 						'Orientstruct.personne_id' => $personne_id
 					),
-// 					'recursive' => 0,
 					'contain' => array(
 						'Personne' => array(
 							'Calculdroitrsa'
@@ -281,15 +273,24 @@
 							'Propoorientationcov58.structurereferente_id',
 							'Structurereferente.lib_struc',
 							'Dossiercov58.personne_id',
-							'Dossiercov58.etapecov',
+							'Dossiercov58.themecov58',
+							'Passagecov58.etatdossiercov',
 							'Personne.id',
 							'Personne.nom',
 							'Personne.prenom'
 						),
+// 						'conditions' => array(
+// 							'Dossiercov58.personne_id' => $personne_id,
+// 							'Dossiercov58.themecov58' => 'proposorientationscovs58'/*,
+// 							'Dossiercov58.etapecov <>' => 'finalise'*/
+// 						),
 						'conditions' => array(
 							'Dossiercov58.personne_id' => $personne_id,
 							'Themecov58.name' => 'proposorientationscovs58',
-							'Dossiercov58.etapecov <>' => 'finalise'
+							'OR' => array(
+								'Passagecov58.etatdossiercov NOT' => array( 'traite', 'annule' ),
+								'Passagecov58.etatdossiercov IS NULL'
+							)
 						),
 						'joins' => array(
 							array(
@@ -306,6 +307,14 @@
 								'type' => 'INNER',
 								'conditions' => array(
 									'Dossiercov58.themecov58_id = Themecov58.id'
+								)
+							),
+							array(
+								'table' => 'passagescovs58',
+								'alias' => 'Passagecov58',
+								'type' => 'LEFT OUTER',
+								'conditions' => array(
+									'Passagecov58.dossiercov58_id = Dossiercov58.id'
 								)
 							),
 							array(
@@ -338,8 +347,8 @@
 					)
 				);
 				$this->set( 'propoorientationcov58', $propoorientationcov58 );
-				$this->set( 'optionsdossierscovs58', $this->Orientstruct->Personne->Dossiercov58->enums() );
-
+				$this->set( 'optionsdossierscovs58', $this->Orientstruct->Personne->Dossiercov58->Passagecov58->enums() );
+// debug($propoorientationcov58);
 				$regressionorientaionep58 = $this->Orientstruct->Personne->Dossierep->Regressionorientationep58->find(
 					'first',
 					$this->Orientstruct->Personne->Dossierep->Regressionorientationep58->qdReorientationEnCours( $personne_id )
@@ -359,25 +368,66 @@
 
 			if ( Configure::read( 'Cg.departement' ) == 58 && $rgorient_max <=1 ) {
 				$ajout_possible = $this->Orientstruct->Personne->Dossiercov58->ajoutPossible( $personne_id ) && $this->Orientstruct->ajoutPossible( $personne_id );
+// debug( $this->Orientstruct->Personne->Dossiercov58->ajoutPossible( $personne_id ));
 				$nbdossiersnonfinalisescovs = $this->Orientstruct->Personne->Dossiercov58->find(
 					'count',
 					array(
 						'conditions' => array(
+							'Dossiercov58.id NOT IN ( '.$this->Orientstruct->Personne->Dossiercov58->Passagecov58->sq(
+								array(
+									'fields' => array(
+										'passagescovs58.dossiercov58_id'
+									),
+									'alias' => 'passagescovs58',
+									'conditions' => array(
+										'dossierscovs58.themecov58' => 'proposorientationscovs58',
+										'dossierscovs58.personne_id' => $personne_id,
+										'passagescovs58.etatdossiercov' => array( 'traite', 'annule' )
+									),
+									'joins' => array(
+										array(
+											'table' => 'dossierscovs58',
+											'alias' => 'dossierscovs58',
+											'type' => 'INNER',
+											'conditions' => array(
+												'passagescovs58.dossiercov58_id = dossierscovs58.id'
+											)
+										),
+										array(
+											'table' => 'covs58',
+											'alias' => 'covs58',
+											'type' => 'INNER',
+											'conditions' => array(
+												'passagescovs58.cov58_id = covs58.id'
+											)
+										)
+									)
+								)
+							).' )',
 							'Dossiercov58.personne_id' => $personne_id,
-							'Dossiercov58.etapecov <>' => 'finalise'
+							'Dossiercov58.themecov58' => 'proposorientationscovs58'
 						),
 						'joins' => array(
 							array(
-								'table' => 'proposorientationscovs58',
-								'alias' => 'Propoorientationcov58',
-								'type' => 'INNER',
+								'table' => 'passagescovs58',
+								'alias' => 'Passagecov58',
+								'type' => 'LEFT OUTER',
 								'conditions' => array(
-									'Propoorientationcov58.dossiercov58_id = Dossiercov58.id'
+									'Dossiercov58.id = Passagecov58.dossiercov58_id'
+								)
+							),
+							array(
+								'table' => 'decisionsproposorientationscovs58',
+								'alias' => 'Decisionpropoorientationcov58',
+								'type' => 'LEFT OUTER',
+								'conditions' => array(
+									'Decisionpropoorientationcov58.passagecov58_id = Passagecov58.id'
 								)
 							)
 						)
 					)
 				);
+debug($nbdossiersnonfinalisescovs);
 				$this->set( 'ajout_possible', $ajout_possible );
 				$this->set( 'nbdossiersnonfinalisescovs', $nbdossiersnonfinalisescovs );
 			}
@@ -414,13 +464,6 @@
 				$this->redirect( array( 'action' => 'index', $personne_id ) );
 			}
 
-			// Pour le CG 93, les orientations de rang > 1 doivent passer en EP, donc il faut utiliser Reorientationseps93Controller::add
-			// FIXME
-			/*if( Configure::read( 'Cg.departement' ) == 93 && $this->Orientstruct->rgorientMax( $personne_id ) > 1 ) {
-				$this->Session->setFlash( 'L\'orientation de cette personne doit se faire via un passage en EP', 'flash/error' );
-				$this->redirect( array( 'action' => 'index', $personne_id ) );
-			}*/
-
 			$dossier_id = $this->Personne->dossierId( $personne_id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
 
@@ -430,27 +473,17 @@
 			}
 			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
 
-//             $this->set( 'options', $this->Typeorient->listOptions() );
-//             $this->set( 'options2', $this->Structurereferente->list1Options( array( 'orientation' => 'O' ) ) );
-//             $this->set( 'referents', $this->Referent->listOptions() );
-
-
 			if( !empty( $this->data ) ) {
 				$this->data['Orientstruct']['user_id'] = $this->Session->read( 'Auth.User.id' );
 
 				$this->Orientstruct->set( $this->data );
-//                 $this->Typeorient->set( $this->data );
-//                 $this->Structurereferente->set( $this->data );
 
 				$validates = $this->Orientstruct->validates();
-//				$validates = $this->Typeorient->validates() && $validates;
-//				$validates = $this->Structurereferente->validates() && $validates;
 
 				if( $validates ) {
 					$saved = true;
 
-					/// FIXME: ne fonctionne que pour le cg58, à faire évoluer une fois la thématique mise en place
-					if ( $this->Orientstruct->isRegression( $personne_id, $this->data['Orientstruct']['typeorient_id'] ) && /*( */Configure::read( 'Cg.departement' ) == 58 /*|| Configure::read( 'Cg.departement' ) == 93 )*/ ) {
+					if ( $this->Orientstruct->isRegression( $personne_id, $this->data['Orientstruct']['typeorient_id'] ) && Configure::read( 'Cg.departement' ) == 58 ) {
 						$theme = 'Regressionorientationep'.Configure::read( 'Cg.departement' );
 
 						$dossierep = array(
@@ -459,7 +492,7 @@
 								'themeep' => Inflector::tableize( $theme )
 							)
 						);
-						
+
 						$saved = $this->Orientstruct->Personne->Dossierep->save( $dossierep ) && $saved;
 
 						$regressionorientationep[$theme] = $this->data['Orientstruct'];
@@ -471,11 +504,9 @@
 							$regressionorientationep[$theme]['structurereferente_id'] = $structurereferente_id;
 							$regressionorientationep[$theme]['referent_id'] = $referent_id;
 						}
-
 						$regressionorientationep[$theme]['datedemande'] = $regressionorientationep[$theme]['date_propo'];
 
 						$saved = $this->Orientstruct->Personne->Dossierep->{$theme}->save( $regressionorientationep ) && $saved;
-
 					}
 					else {
 						// Correction: si la personne n'a pas encore d'entrée dans calculdroitsrsa
@@ -512,8 +543,6 @@
 				$personne = $this->Personne->findByid( $personne_id, null, null, 0 );
 				$this->data['Calculdroitrsa'] = $personne['Calculdroitrsa'];
 			}
-
-			//$this->Orientstruct->commit();
 
 			$this->_setOptions();
 			$this->set( 'personne_id', $personne_id );
@@ -563,10 +592,6 @@
 			}
 			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
 
-//             $this->set( 'options', $this->Typeorient->listOptions() );
-//             $this->set( 'options2', $this->Structurereferente->list1Options( array( 'orientation' => 'O' ) ) );
-//             $this->set( 'referents', $this->Referent->listOptions() );
-
 			// Essai de sauvegarde
 			if( !empty( $this->data ) ) {
 				$this->data['Orientstruct']['user_id'] = $this->Session->read( 'Auth.User.id' );
@@ -584,7 +609,7 @@
 					$saved = true;
 					$saved = $this->Orientstruct->Personne->Calculdroitrsa->save( $this->data ) && $saved;
 					$saved = $this->Orientstruct->save( $this->data ) && $saved;
-	
+
 					if ( Configure::read( 'Cg.departement' ) == 66 && $saved && !empty( $this->data['Orientstruct']['referent_id'] ) ) {
 						$saved = $this->Orientstruct->Referent->PersonneReferent->referentParOrientstruct( $this->data ) && $saved;
 					}
@@ -612,6 +637,7 @@
 			$this->Orientstruct->commit();
 			$this->_setOptions();
 			$this->set( 'personne_id', $orientstruct['Orientstruct']['personne_id'] );
+			$this->set( 'urlmenu', '/orientsstructs/index/'.$orientstruct['Orientstruct']['personne_id'] );
 			$this->render( $this->action, null, 'add_edit' );
 		}
 

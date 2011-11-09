@@ -91,9 +91,9 @@
 					<?php } else { ?>
 						<td><?php echo h( Set::enum( $propocontratinsertioncov58['Propocontratinsertioncov58']['num_contrat'], $optionsdossierscovs58['Propocontratinsertioncov58']['num_contrat'] ) );?></td>
 					<?php } ?>
-					<td><?php echo h( Set::enum( $propocontratinsertioncov58['Dossiercov58']['etapecov'], $optionsdossierscovs58['Dossiercov58']['etapecov'] ) );?></td>
-					<td><?php echo $default->button( 'edit', array( 'controller' => 'proposcontratsinsertioncovs58', 'action' => 'edit', $propocontratinsertioncov58['Personne']['id'] ), array( 'enabled' => ( $propocontratinsertioncov58['Dossiercov58']['etapecov'] == 'cree' ) ) );?></td>
-					<td><?php echo $default->button( 'delete', array( 'controller' => 'proposcontratsinsertioncovs58', 'action' => 'delete', $propocontratinsertioncov58['Personne']['id'] ), array( 'enabled' => ( $propocontratinsertioncov58['Dossiercov58']['etapecov'] == 'cree' ) ), 'Confirmer ?' );?></td>
+					<td><?php echo h( Set::enum( $propocontratinsertioncov58['Passagecov58']['etatdossiercov'], $optionsdossierscovs58['Passagecov58']['etatdossiercov'] ) );?></td>
+					<td><?php echo $default->button( 'edit', array( 'controller' => 'proposcontratsinsertioncovs58', 'action' => 'edit', $propocontratinsertioncov58['Personne']['id'] ), array( 'enabled' => ( $propocontratinsertioncov58['Passagecov58']['etatdossiercov'] != 'associe' ) ) );?></td>
+					<td><?php echo $default->button( 'delete', array( 'controller' => 'proposcontratsinsertioncovs58', 'action' => 'delete', $propocontratinsertioncov58['Personne']['id'] ), array( 'enabled' => ( $propocontratinsertioncov58['Passagecov58']['etatdossiercov'] != 'associe' ) ), 'Confirmer ?' );?></td>
 				</tr>
 			</tbody>
 		</table>

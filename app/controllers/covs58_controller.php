@@ -2,18 +2,51 @@
 	class Covs58Controller extends AppController
 	{
 		public $name = 'Covs58';
-
+		public $uses = array( 'Cov58', 'Option' );
 		public $helpers = array( 'Default', 'Default2' );
-
-        public $uses = array( 'Cov58', 'Option' );
-
 		public $components = array( 'Prg' => array( 'actions' => array( 'index' ) ), 'Gedooo' );
 
 		public $commeDroit = array(
 			'add' => 'Covs58:edit',
 			'view' => 'Covs58:index'
 		);
-
+		public $etatsActions = array(
+			'cree' => array(
+				'dossierseps::choose',
+				'covs58::edit',
+				'covs58::delete'
+			),
+			'associe' => array(
+				'dossierscovs58::choose',
+				'covs58::printConvocationBeneficiaire',
+				'covs58::printConvocationsBeneficiaires',
+				'covs58::printOrdreDuJour',
+				'covs58::edit',
+				'covs58::delete',
+			),
+			'traite' => array(
+				'covs58::printOrdreDuJour',
+				'covs58::impressionpv',
+				'covs58::printDecision',
+				'covs58::printConvocationBeneficiaire',
+				'covs58::printConvocationsBeneficiaires',
+			),
+			'finalise' => array(
+				'covs58::printOrdreDuJour',
+				'covs58::impressionpv',
+				'covs58::printDecision',
+				'covs58::printConvocationBeneficiaire',
+				'covs58::printConvocationsBeneficiaires',
+			),
+			'valide' => array(
+				'covs58::ordredujour',
+				'covs58::printConvocationBeneficiaire',
+				'covs58::printConvocationsBeneficiaires',
+				'covs58::printOrdreDuJour',
+				'covs58::delete',
+			),
+			'annule' => array()
+		);
 		/**
 		*
 		*/
@@ -27,22 +60,37 @@
 		*/
 
 		protected function _setOptions() {
-			$themescovs58 = $this->Cov58->Dossiercov58->Themecov58->find('list');
+			$themescovs58 = $this->Cov58->Passagecov58->Dossiercov58->Themecov58->find('list');
 
 			$options = $this->Cov58->enums();
+			$options = array_merge( $options, $this->Cov58->Passagecov58->enums() );
 			$typevoie = $this->Option->typevoie();
-			$options = array_merge($options, $this->Cov58->Dossiercov58->enums());
-			$typesorients = $this->Cov58->Dossiercov58->Propoorientationcov58->Structurereferente->Typeorient->listOptions();
-			$structuresreferentes = $this->Cov58->Dossiercov58->Propoorientationcov58->Structurereferente->list1Options();
-			$referents = $this->Cov58->Dossiercov58->Propoorientationcov58->Structurereferente->Referent->listOptions();
+// 			$options = array_merge($options, $this->Cov58->Passagecov58->Dossiercov58->enums());
+			$typesorients = $this->Cov58->Passagecov58->Dossiercov58->Propoorientationcov58->Structurereferente->Typeorient->listOptions();
+			$structuresreferentes = $this->Cov58->Passagecov58->Dossiercov58->Propoorientationcov58->Structurereferente->list1Options();
+			$referents = $this->Cov58->Passagecov58->Dossiercov58->Propoorientationcov58->Structurereferente->Referent->listOptions();
 			$sitescovs58 = $this->Cov58->Sitecov58->find( 'list', array( 'fields' => array( 'name' ) ) );
 
-			$this->set(compact('options', 'typesorients', 'structuresreferentes', 'referents', 'typevoie', 'sitescovs58' ));
 
 			$decisionscovs = array( 'accepte' => 'Accepté', 'refus' => 'Refusé', 'ajourne' => 'Ajourné' );
 			$this->set(compact('decisionscovs'));
-		}
+// debug( $this->Cov58->Passagecov58->Dossiercov58->Themecov58->themes() );
+			foreach( $this->Cov58->Passagecov58->Dossiercov58->Themecov58->themes() as $theme ) {
+// debug($theme);
+				$model = Inflector::classify( $theme );
+				if( in_array( 'Enumerable', $this->Cov58->Passagecov58->Dossiercov58->{$model}->Behaviors->attached() ) ) {
+					$options = Set::merge( $options, $this->Cov58->Passagecov58->Dossiercov58->{$model}->enums() );
+				}
 
+				$modeleDecision = Inflector::classify( "decision{$theme}" );
+				if( in_array( 'Enumerable', $this->Cov58->Passagecov58->{$modeleDecision}->Behaviors->attached() ) ) {
+					$options = Set::merge( $options, $this->Cov58->Passagecov58->{$modeleDecision}->enums() );
+				}
+			}
+
+			$this->set(compact('options', 'typesorients', 'structuresreferentes', 'referents', 'typevoie', 'sitescovs58' ));
+
+		}
 
 		/**
 		*
@@ -54,9 +102,7 @@
 				$queryData['limit'] = 10;
 				$this->paginate = $queryData;
 				$covs58 = $this->paginate( $this->Cov58 );
-// 				debug($covs58);
 				$this->set( 'covs58', $covs58 );
-// 				$this->set( 'etape', $etape );
 			}
 			$this->_setOptions();
 		}
@@ -123,33 +169,56 @@
 				'first', array(
 					'conditions' => array( 'Cov58.id' => $cov58_id ),
 					'contain' => array(
-                        'Sitecov58'
+						'Sitecov58'
 					)
 				)
 			);
-// 			debug( $commissionep );
 			$this->set('cov58', $cov58);
 			$this->_setOptions();
 
 			// Dossiers à passer en séance, par thème traité
-			$themes = $this->Cov58->Dossiercov58->Themecov58->find('list');
+// 			$themes = $this->Cov58->Passagecov58->Dossiercov58->Themecov58->find('list');
+
+			$themes = array_keys( $this->Cov58->themesTraites( $cov58_id ) );
+
 			$this->set(compact('themes'));
 			$dossiers = array();
 			$countDossiers = 0;
-			foreach( $themes as $key => $theme ) {
+
+			foreach( $themes as $theme ) {
 				$class = Inflector::classify( $theme );
-				$dossiers[$class] = $this->Cov58->Dossiercov58->find(
+				$qdListeDossier = $this->Cov58->Passagecov58->Dossiercov58->{$class}->qdListeDossier();
+
+				if ( isset( $qdListeDossier['fields'] ) ) {
+					$qd['fields'] = $qdListeDossier['fields'];
+				}
+				$qd['conditions'] = array( 'Passagecov58.cov58_id' => $cov58_id, 'Dossiercov58.themecov58' => Inflector::tableize( $class ) );
+				$qd['joins'] = $qdListeDossier['joins'];
+				$qd['contain'] = false;
+
+				$qd['fields'][] = $this->Cov58->Passagecov58->Dossiercov58->Personne->Foyer->vfFoyerEnerreur();
+
+				$dossiers[$theme] = $this->Cov58->Passagecov58->Dossiercov58->find(
 					'all',
-					array(
-						'conditions' => array(
-							'Dossiercov58.cov58_id' => $cov58_id,
-							'Dossiercov58.themecov58_id' => $key
-						),
-						'contain' => array(
-							'Themecov58',
-							$class,
+					$qd
+				);
+// debug($dossiers);
+				$countDossiers += count($dossiers[$theme]);
+			}
+
+			$dossierscovs58 = $this->Cov58->Passagecov58->find(
+				'all',
+				array(
+					'conditions' => array(
+						'Passagecov58.cov58_id' => $cov58_id
+					),
+					'contain' => array(
+						'Dossiercov58' => array(
 							'Personne' => array(
 								'Foyer' => array(
+									'fields' => array(
+										$this->Cov58->Passagecov58->Dossiercov58->Personne->Foyer->vfFoyerEnerreur()
+									),
 									'Adressefoyer' => array(
 										'conditions' => array(
 											'Adressefoyer.rgadr' => '01'
@@ -158,12 +227,14 @@
 									)
 								)
 							)
-						),
+						)
 					)
-				);
-				$countDossiers += count($dossiers[$class]);
-			}
+				)
+			);
+
+			$this->set( compact( 'dossierscovs58' ) );
 			$this->set(compact('dossiers'));
+
 			$this->set(compact('countDossiers'));
 		}
 
@@ -183,30 +254,14 @@
 
 			$this->assert( !empty( $cov58 ), 'error404' );
 
+			$dossiers = $this->Cov58->dossiersParListe( $cov58_id );
+
 			if( !empty( $this->data ) ) {
-// debug( $this->data );
 				$this->Cov58->begin();
 				$success = $this->Cov58->saveDecisions( $cov58_id, $this->data );
 
 				$this->_setFlashResult( 'Save', $success );
 				if( $success ) {
-					$nbDossierTraitement = $this->Cov58->Dossiercov58->find(
-						'count',
-						array(
-							'conditions' => array(
-								'Dossiercov58.cov58_id' => $cov58_id,
-								'Dossiercov58.etapecov' => 'traitement'
-							)
-						)
-					);
-					if ($nbDossierTraitement == 0) {
-						$cov58['Cov58']['etatcov'] = 'finalise';
-						$this->Cov58->save($cov58);
-					}
-					else {
-						$cov58['Cov58']['etatcov'] = 'traitement';
-						$this->Cov58->save($cov58);
-					}
 					$this->Cov58->commit();
 					$this->redirect( array( 'action' => 'view', $cov58_id ) );
 				}
@@ -214,8 +269,6 @@
 					$this->Cov58->rollback();
 				}
 			}
-
-			$dossiers = $this->Cov58->dossiersParListe( $cov58_id );
 
 			if( empty( $this->data ) ) {
 				$this->data = $dossiers;
@@ -241,7 +294,7 @@
 		*/
 
 		public function ordredujour( $cov58_id ) {
- 			$pdf = $this->Cov58->getPdfOrdreDuJour( $cov58_id );
+			$pdf = $this->Cov58->getPdfOrdreDuJour( $cov58_id );
 
 			if( $pdf ) {
 				$this->Gedooo->sendPdfContentToClient( $pdf, 'OJ' );
@@ -257,8 +310,7 @@
 		*/
 
 		public function impressionpv( $cov58_id ) {
- 			$pdf = $this->Cov58->getPdfPv( $cov58_id );
-
+			$pdf = $this->Cov58->getPdfPv( $cov58_id );
 			if( $pdf ) {
 				$this->Gedooo->sendPdfContentToClient( $pdf, 'pv' );
 			}
@@ -273,14 +325,14 @@
 		*/
 
 		public function impressiondecision( $dossiercov58_id ) {
-			$themecov58 = $this->Cov58->Dossiercov58->Themecov58->find(
+			$themecov58 = $this->Cov58->Passagecov58->Dossiercov58->Themecov58->find(
 				'first',
 				array(
 					'fields' => array(
 						'Themecov58.name'
 					),
 					'conditions' => array(
-						'Themecov58.id IN ( '.$this->Cov58->Dossiercov58->sq(
+						'Themecov58.id IN ( '.$this->Cov58->Passagecov58->Dossiercov58->sq(
 							array(
 								'fields' => array(
 									'dossierscovs58.themecov58_id'
@@ -297,7 +349,7 @@
 			);
 			$modeleTheme = Inflector::classify( $themecov58['Themecov58']['name'] );
 
- 			$pdf = $this->Cov58->Dossiercov58->{$modeleTheme}->getPdfDecision( $dossiercov58_id );
+			$pdf = $this->Cov58->Passagecov58->Dossiercov58->{$modeleTheme}->getPdfDecision( $dossiercov58_id );
 
 			if( $pdf ) {
 				$this->Gedooo->sendPdfContentToClient( $pdf, 'pv' );
@@ -307,6 +359,5 @@
 				$this->redirect( $this->referer() );
 			}
 		}
-
 	}
 ?>

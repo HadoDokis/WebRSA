@@ -19,23 +19,23 @@ msgstr ""
 
 ###############################################################################
 
-msgid "ENUM::DECISION::accepte"
-msgstr "Accepté"
+msgid "Propononorientationprocov58.datedemande"
+msgstr "Date de la demande"
 
-msgid "ENUM::DECISION::refuse"
-msgstr "Maintien référent actuel"
+msgid "Propononorientationprocov58.etapecov"
+msgstr "Etape du dossier"
 
-msgid "ENUM::DECISION::annule"
-msgstr "Annulé"
+msgid "Propononorientationprocov58.commentaire"
+msgstr "Observations"
 
-msgid "ENUM::DECISION::reporte"
-msgstr "Reporté"
+msgid "ENUM::ETAPECOV::traitement"
+msgstr "En cours de traitement"
 
-msgid "Decisionregressionorientationep58.decision"
-msgstr "Décision"
+msgid "ENUM::ETAPECOV::cree"
+msgstr "Créé"
 
-msgid "Decisionregressionorientationep58.commentaire"
-msgstr "Commentaire"
+msgid "ENUM::ETAPECOV::ajourne"
+msgstr "Ajournée"
 
-msgid "Decisionregressionorientationep58.raisonnonpassage"
-msgstr "Raison de non passage"
+msgid "ENUM::ETAPECOV::finalise"
+msgstr "Finalisé"

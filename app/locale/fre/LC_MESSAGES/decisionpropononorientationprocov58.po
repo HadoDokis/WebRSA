@@ -19,23 +19,14 @@ msgstr ""
 
 ###############################################################################
 
-msgid "ENUM::DECISION::accepte"
-msgstr "Accepté"
+msgid "ENUM::DECISIONCOV::valide"
+msgstr "Validé"
 
-msgid "ENUM::DECISION::refuse"
-msgstr "Maintien référent actuel"
+msgid "ENUM::DECISIONCOV::refuse"
+msgstr "Refusé"
 
-msgid "ENUM::DECISION::annule"
+msgid "ENUM::DECISIONCOV::annule"
 msgstr "Annulé"
 
-msgid "ENUM::DECISION::reporte"
+msgid "ENUM::DECISIONCOV::reporte"
 msgstr "Reporté"
-
-msgid "Decisionregressionorientationep58.decision"
-msgstr "Décision"
-
-msgid "Decisionregressionorientationep58.commentaire"
-msgstr "Commentaire"
-
-msgid "Decisionregressionorientationep58.raisonnonpassage"
-msgstr "Raison de non passage"

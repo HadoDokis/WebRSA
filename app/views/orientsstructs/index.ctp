@@ -5,7 +5,6 @@
 	<h1>Orientation</h1>
 
 	<?php
-
 		if ( empty( $orientstructs ) ) {
 			echo '<p class="notice">Cette personne ne possède pas encore d\'orientation.</p>';
 		}
@@ -120,9 +119,9 @@
 					<td><?php echo h( $propoorientationcov58['Typeorient']['lib_type_orient'] );?></td>
 					<td><?php echo h( $propoorientationcov58['Structurereferente']['lib_struc'] );?></td>
 					<td class="number"><?php echo h( $propoorientationcov58['Propoorientationcov58']['rgorient'] );?></td>
-					<td><?php echo h( Set::enum( $propoorientationcov58['Dossiercov58']['etapecov'], $optionsdossierscovs58['Dossiercov58']['etapecov'] ) );?></td>
-					<td><?php echo $default->button( 'edit', array( 'controller' => 'proposorientationscovs58', 'action' => 'edit', $propoorientationcov58['Personne']['id'] ), array( 'enabled' => ( $propoorientationcov58['Dossiercov58']['etapecov'] == 'cree' ) ) );?></td>
-					<td><?php echo $default->button( 'delete', array( 'controller' => 'proposorientationscovs58', 'action' => 'delete', $propoorientationcov58['Personne']['id'] ), array( 'enabled' => ( $propoorientationcov58['Dossiercov58']['etapecov'] == 'cree' ) ), 'Confirmer ?' );?></td>
+					<td><?php echo h( Set::enum( $propoorientationcov58['Passagecov58']['etatdossiercov'], $optionsdossierscovs58['Passagecov58']['etatdossiercov'] ) );?></td>
+					<td><?php echo $default->button( 'edit', array( 'controller' => 'proposorientationscovs58', 'action' => 'edit', $propoorientationcov58['Personne']['id'] ), array( 'enabled' => ( $propoorientationcov58['Passagecov58']['etatdossiercov'] != 'associe' ) ) );?></td>
+					<td><?php echo $default->button( 'delete', array( 'controller' => 'proposorientationscovs58', 'action' => 'delete', $propoorientationcov58['Personne']['id'] ), array( 'enabled' => ( $propoorientationcov58['Passagecov58']['etatdossiercov'] != 'associe' ) ), 'Confirmer ?' );?></td>
 				</tr>
 			</tbody>
 		</table>
@@ -176,14 +175,12 @@
 					<?php endif;?>
 					<th>Structure référente</th>
 					<th>Rang d'orientation</th>
- 					<!--<?php if( Configure::read( 'nom_form_ci_cg' ) == 'cg58' ):?><th>Etat de l'orientation</th><?php endif;?>-->
+					<!--<?php if( Configure::read( 'nom_form_ci_cg' ) == 'cg58' ):?><th>Etat de l'orientation</th><?php endif;?>-->
 					<th colspan="3" class="action">Actions</th>
 				</tr>
 			</thead>
 			<tbody>
 				<?php
-//                     $block = null;
-
 					foreach( $orientstructs as $i => $orientstruct ) {
 						$isOrient = false;
 						if( isset( $orientstruct['Orientstruct']['date_propo'] ) ){
@@ -223,23 +220,20 @@
 								array( 'controller' => 'orientsstructs', 'action' => 'edit', $orientstruct['Orientstruct']['id'] ),
 								$permissions->check( 'orientsstructs', 'edit' ) && ( $orientstruct['Orientstruct']['rgorient'] == $rgorient_max )
 								&& !( Configure::read( 'Cg.departement' ) == 93 && isset( $reorientationep93 ) && !empty( $reorientationep93 ) )
-								&& !( Configure::read( 'Cg.departement' ) == 58 /*&& isset( $nbdossiersnonfinalisescovs ) && !empty( $nbdossiersnonfinalisescovs )*/ )
+								&& !( Configure::read( 'Cg.departement' ) == 58 )
 								&& $ajout_possible
 							),
 							$xhtml->printLink(
 								'Imprimer la notification',
 								array( 'controller' => 'orientsstructs', 'action' => 'impression', $orientstruct['Orientstruct']['id'] ),
 								$permissions->check( 'orientsstructs', 'impression' ) && $orientstruct['Orientstruct']['imprime']
-								/*array( 'controller' => 'gedooos', 'action' => 'orientstruct', $orientstruct['Orientstruct']['id'] ),
-								$permissions->check( 'gedooos', 'orientstruct' ) && $orientstruct['Orientstruct']['imprime']*/
 							),
 							$xhtml->fileLink(
-                                'Fichiers liés',
-                                array( 'controller' => 'orientsstructs', 'action' => 'filelink', $orientstruct['Orientstruct']['id'] ),
-                                $permissions->check( 'orientsstructs', 'filelink' )
-                            )
+								'Fichiers liés',
+								array( 'controller' => 'orientsstructs', 'action' => 'filelink', $orientstruct['Orientstruct']['id'] ),
+								$permissions->check( 'orientsstructs', 'filelink' )
+							)
 						);
-
 						echo $xhtml->tableCells( $cells, array( 'class' => 'odd' ), array( 'class' => 'even' ) );
 					}
 				?>

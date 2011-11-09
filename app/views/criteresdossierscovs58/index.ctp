@@ -37,7 +37,7 @@
 
                 echo $default2->subform(
                     array(
-                        'Dossiercov58.etapecov' => array( 'type' => 'select', 'options' => $options['etapecov'] ),
+                        'Passagecov58.etatdossiercov' => array( 'type' => 'select', 'options' => $options['etatdossiercov'] ),
                         'Dossiercov58.themecov58_id' => array( 'type' => 'select', 'options' => $listThemes ),
                         'Personne.nom' => array( 'label' => __d( 'personne', 'Personne.nom', true ), 'type' => 'text' ),
                         'Personne.prenom' => array( 'label' => __d( 'personne', 'Personne.prenom', true ), 'type' => 'text' ),
@@ -87,18 +87,18 @@
                     <th>'.$xpaginator->sort( __d( 'dossier', 'Dossier.numdemrsa', true ), 'Dossier.numdemrsa' ).'</th>
                     <th>'.$xpaginator->sort( __d( 'personne', 'Personne.nom_complet', true ), 'Personne.nom_complet' ).'</th>
                     <th>'.$xpaginator->sort( __d( 'dossiercov58', 'Dossiercov58.themecov58_id', true ), 'Dossiercov58.themecov58_id' ).'</th>
-                    <th>'.$xpaginator->sort( __d( 'cov58', 'Cov58.datecommission', true ), 'Cov58.datecommission' ).'</th>
-                    <th>'.$xpaginator->sort( __d( 'dossiercov58', 'Dossiercov58.etapecov', true ), 'Dossiercov58.etapecov').'</th>
+					<th>'.$xpaginator->sort( __d( 'cov58', 'Cov58.datecommission', true ), 'Cov58.datecommission' ).'</th>
+                    <th>'.$xpaginator->sort( __d( 'passagecov58', 'Passagecov58.etatdossiercov', true ), 'Passagecov58.etatdossiercov').'</th>
                     <th>Action</th>
                 </tr></thead><tbody>';
-// debug($dossierscovs58);
+
                 foreach( $dossierscovs58 as $dossiercov58 ) {
                     echo '<tr>
                         <td>'.h( $dossiercov58['Dossier']['numdemrsa'] ).'</td>
                         <td>'.h( $dossiercov58['Personne']['nom_complet'] ).'</td>
                         <td>'.__d( 'dossiercov58',  'ENUM::THEMECOV::'.$themes[$dossiercov58['Dossiercov58']['themecov58_id']], true ).'</td>
                         <td>'.h( date('d-m-Y à h:i', strtotime($dossiercov58['Cov58']['datecommission'])) ).'</td>
-                        <td>'.h( Set::enum( Set::classicExtract( $dossiercov58, 'Dossiercov58.etapecov' ),  $options['etapecov'] ) ).
+                        <td>'.h( Set::enum( Set::classicExtract( $dossiercov58, 'Passagecov58.etatdossiercov' ),  $options['etatdossiercov'] ) ).
                         '<td>'.$xhtml->link( 'Voir', array( 'controller' => 'personnes', 'action' => 'view', $dossiercov58['Personne']['id'] ) ).'</td>
                     </tr>';
                 }

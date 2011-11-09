@@ -429,6 +429,9 @@ msgstr "Clore"
 msgid "Button::filelink"
 msgstr "Fichiers liés"
 
+msgid "Button::decision"
+msgstr "Décision"
+
 msgid "ENUM::DECISION::accepte"
 msgstr "Accepté"
 
