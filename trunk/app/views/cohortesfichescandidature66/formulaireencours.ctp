@@ -27,6 +27,7 @@
 				<th>Venu(e) ?</th>
 				<th>Retenu(e) ?</th>
 				<th>Informations complémentaires</th>
+				<th>Sortie</th>
 				<th>Motif de sortie</th>
 				<th>Date de sortie</th>
 				<th class="action">Action</th>
@@ -53,6 +54,8 @@ debug($options);*/
 					);
 
 					$array2 = array(
+// 						$form->input( 'ActioncandidatPersonne.'.$index.'.atraiter', array( 'label' => false, 'legend' => false, 'type' => 'checkbox', 'checked' => 'checked' ) ),
+
 						$form->input( 'ActioncandidatPersonne.'.$index.'.id', array( 'label' => false, 'type' => 'hidden', 'value' => $ficheenattente['ActioncandidatPersonne']['id'] ) ).
 						$form->input( 'ActioncandidatPersonne.'.$index.'.personne_id', array( 'label' => false, 'type' => 'hidden', 'value' => $ficheenattente['ActioncandidatPersonne']['personne_id'] ) ).
 						$form->input( 'ActioncandidatPersonne.'.$index.'.actioncandidat_id', array( 'label' => false, 'type' => 'hidden', 'value' => $ficheenattente['ActioncandidatPersonne']['actioncandidat_id'] ) ).
@@ -60,7 +63,8 @@ debug($options);*/
 						$form->input( 'ActioncandidatPersonne.'.$index.'.bilanvenu', array( 'label' => false, 'type' => 'hidden', 'value' => $ficheenattente['ActioncandidatPersonne']['bilanvenu'] ) ).
 						$form->input( 'ActioncandidatPersonne.'.$index.'.bilanretenu', array( 'label' => false, 'type' => 'hidden', 'value' => $ficheenattente['ActioncandidatPersonne']['bilanretenu'] ) ).
 						$form->input( 'ActioncandidatPersonne.'.$index.'.infocomplementaire', array( 'label' => false, 'type' => 'hidden', 'value' => $ficheenattente['ActioncandidatPersonne']['infocomplementaire'] ) ).
-						$form->input( 'ActioncandidatPersonne.'.$index.'.issortie', array( 'label' => false, 'type' => 'hidden', 'value' => 1 ) ).
+						$form->input( 'ActioncandidatPersonne.'.$index.'.issortie', array( 'label' => false, 'type' => 'checkbox'/*, 'value' => 1*/ ) ),
+
 						$form->input( 'ActioncandidatPersonne.'.$index.'.motifsortie_id', array( 'label' => false, 'empty' => true,  'type' => 'select', 'options' => $motifssortie, 'selected' => $ficheenattente['ActioncandidatPersonne']['motifsortie_id'] ) ),
 
 						$form->input( 'ActioncandidatPersonne.'.$index.'.sortiele', array( 'label' => false, /*'empty' => true,*/  'type' => 'date', 'dateFormat' => 'DMY', 'selected' => $ficheenattente['ActioncandidatPersonne']['proposition_sortiele'] ) ),
@@ -88,3 +92,21 @@ debug($options);*/
 		<p class="notice">Vos critères n'ont retourné aucun dossier.</p>
 	<?php endif?>
 <?php endif?>
+
+<script type="text/javascript">
+    <?php foreach( $cohortefichecandidature66 as $key => $fichecandidature66 ):?>
+	    observeDisableFieldsOnCheckbox(
+		'ActioncandidatPersonne<?php echo $key;?>Issortie',
+		[
+		    'ActioncandidatPersonne<?php echo $key;?>MotifsortieId',
+		    'ActioncandidatPersonne<?php echo $key;?>SortieleDay',
+		    'ActioncandidatPersonne<?php echo $key;?>SortieleMonth',
+		    'ActioncandidatPersonne<?php echo $key;?>SortieleYear',
+		],
+		false
+	    );
+// 	    observeDisableFieldsOnCheckbox( 'ActioncandidatPersonne<?php echo $key;?>Atraiter', [ 'ActioncandidatPersonne<?php echo $key;?>SortieleDay' ], true );
+// 	    observeDisableFieldsOnCheckbox( 'ActioncandidatPersonne<?php echo $key;?>Atraiter', [ 'ActioncandidatPersonne<?php echo $key;?>SortieleMonth' ], true );
+// 	    observeDisableFieldsOnCheckbox( 'ActioncandidatPersonne<?php echo $key;?>Atraiter', [ 'ActioncandidatPersonne<?php echo $key;?>SortieleYear' ], true );
+    <?php endforeach;?>
+</script>

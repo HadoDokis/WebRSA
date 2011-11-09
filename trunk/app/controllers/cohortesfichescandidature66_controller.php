@@ -74,7 +74,8 @@
 				*/
 				// On a renvoyé  le formulaire de la cohorte
 				if( !empty( $this->data['ActioncandidatPersonne'] ) ) {
-
+// debug($this->data);
+// die();
 					$valid = $this->ActioncandidatPersonne->saveAll( $this->data['ActioncandidatPersonne'], array( 'validate' => 'only', 'atomic' => false ) );
 
 
@@ -88,6 +89,10 @@
 								$this->Jetons->release( array( 'Dossier.id' => $dossier_id ) );
 							}
 							$this->ActioncandidatPersonne->commit();
+							unset( $this->data['ActioncandidatPersonne'] );
+							$this->Session->del( "Prg.{$this->name}__{$this->action}.{$this->data['sessionKey']}" );
+// debug($this->Session->read());
+// die();
 						}
 						else {
 							$this->ActioncandidatPersonne->rollback();

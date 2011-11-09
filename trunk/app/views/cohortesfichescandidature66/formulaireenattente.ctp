@@ -24,6 +24,7 @@
 				<th>Partenaire lié</th>
 				<th>Nom du prescripteur</th>
 				<th>Date de signature de la fiche</th>
+				<th>Sélection</th>
 				<th>Venu(e) ?</th>
 				<th>Retenu(e) ?</th>
 				<th>Informations complémentaires</th>
@@ -47,6 +48,8 @@
 					);
 
 					$array2 = array(
+						$form->input( 'ActioncandidatPersonne.'.$index.'.atraiter', array( 'label' => false, 'legend' => false, 'type' => 'checkbox' ) ),
+						
 						$form->input( 'ActioncandidatPersonne.'.$index.'.id', array( 'label' => false, 'type' => 'hidden', 'value' => $ficheenattente['ActioncandidatPersonne']['id'] ) ).
 						$form->input( 'ActioncandidatPersonne.'.$index.'.personne_id', array( 'label' => false, 'type' => 'hidden', 'value' => $ficheenattente['ActioncandidatPersonne']['personne_id'] ) ).
 						$form->input( 'ActioncandidatPersonne.'.$index.'.actioncandidat_id', array( 'label' => false, 'type' => 'hidden', 'value' => $ficheenattente['ActioncandidatPersonne']['actioncandidat_id'] ) ).
@@ -86,3 +89,19 @@
 		<p class="notice">Vos critères n'ont retourné aucun dossier.</p>
 	<?php endif?>
 <?php endif?>
+
+
+<script type="text/javascript">
+    <?php foreach( $cohortefichecandidature66 as $key => $fichecandidature66 ):?>
+	    observeDisableFieldsOnCheckbox(
+		'ActioncandidatPersonne<?php echo $key;?>Atraiter',
+		[
+		    'ActioncandidatPersonne<?php echo $key;?>Bilanvenu_',
+		    'ActioncandidatPersonne<?php echo $key;?>Bilanretenu_',
+		    'ActioncandidatPersonne<?php echo $key;?>Infocomplementaire'
+		],
+		false
+	    );
+
+    <?php endforeach;?>
+</script>
