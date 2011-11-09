@@ -50,5 +50,26 @@
 				'counterQuery' => ''
 			)
 		);
+
+
+
+		public $hasAndBelongsToMany = array(
+			'Statutrdv' => array(
+				'className' => 'Statutrdv',
+				'joinTable' => 'statutsrdvs_typesrdv',
+				'foreignKey' => 'typerdv_id',
+				'associationForeignKey' => 'statutrdv_id',
+				'unique' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'finderQuery' => '',
+				'deleteQuery' => '',
+				'insertQuery' => '',
+				'with' => 'StatutrdvTyperdv'
+			)
+		);
 	}
 ?>
