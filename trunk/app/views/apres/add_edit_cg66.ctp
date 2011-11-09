@@ -110,70 +110,6 @@
 
 <script type="text/javascript">
     document.observe("dom:loaded", function() {
-        //Données pour le type d'activité du bénéficiare
-//         ['CDD', 'CDI', 'CON' ].each( function( letter ) {
-//             observeDisableFieldsOnValue(
-//                 '<?php echo $this->modelClass;?>Typecontrat' + letter,
-//                 [
-//                     '<?php echo $this->modelClass;?>Precisionsautrecontrat'
-//                 ],
-//                 letter,
-//                 true
-//             );
-//         } );
-//         observeDisableFieldsOnValue(
-//             '<?php echo $this->modelClass;?>TypecontratAUT',
-//             [
-//                 '<?php echo $this->modelClass;?>Precisionsautrecontrat'
-//             ],
-//             'AUT',
-//             false
-//         );
-// 
-//         observeDisableFieldsOnValue(
-//             '<?php echo $this->modelClass;?>TypecontratAUT',
-//             [
-//                 '<?php echo $this->modelClass;?>Precisionsautrecontrat'
-//             ],
-//             'AUT',
-//             false
-//         );
-
-//         observeDisableFieldsOnValue(
-//             'Aideapre66DecisionapreREF',
-//             [
-//                 'Aideapre66Montantaccorde'
-//             ],
-//             'REF',
-//             true
-//         );
-        //Données pour le type d'activité du bénéficiare
-//         observeDisableFieldsOnValue(
-//             'Aideapre66DecisionapreACC',
-//             [
-//                 'Aideapre66Montantaccorde'
-//             ],
-//             'ACC',
-//             false
-//         );
-
-//         observeDisableFieldsOnValue(
-//             'Aideapre66DecisionapreREF',
-//             [
-//                 'Aideapre66Motifrejetequipe'
-//             ],
-//             'REF',
-//             false
-//         );
-        //Données pour le type d'activité du bénéficiare
-//         observeDisableFieldsOnValue(
-//             'Aideapre66DecisionapreACC',
-//             [
-//                 'Aideapre66Motifrejetequipe'
-//             ],
-//             'ACC',
-//             true
-//         );
 
         <?php
             echo $ajax->remoteFunction(
@@ -227,7 +163,7 @@
     ?>
 
     <div class="aere">
-        <fieldset>
+<!--        <fieldset>
             <table class="wide noborder">
                 <tr>
                     <td class="mediumSize noborder">
@@ -236,7 +172,7 @@
                     </td>
                 </tr>
             </table>
-        </fieldset>
+        </fieldset>-->
 
         <fieldset>
             <legend>Demandeur</legend>
@@ -250,8 +186,6 @@
                         <strong>Prénom : </strong><?php echo Set::classicExtract( $personne, 'Personne.prenom' );?>
                         <br />
                         <strong>Date de naissance : </strong><?php echo date_short( Set::classicExtract( $personne, 'Personne.dtnai' ) );?>
-                        <!-- <br />
-                         <strong>Situation familiale : </strong><?php /*echo Set::enum( Set::classicExtract( $personne, 'Foyer.sitfam' ), $sitfam );*/?> -->
                     </td>
                     <td class="mediumSize noborder">
                         <strong>N° Service instructeur : </strong><?php echo Set::classicExtract( $personne, 'Serviceinstructeur.lib_service' );?>

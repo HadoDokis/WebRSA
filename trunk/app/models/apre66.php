@@ -249,5 +249,34 @@
 				return null;
 			}
 		}
+
+		/**
+		*
+		*/
+
+		public function numeroapre() {
+				$numSeq = $this->query( "SELECT nextval('apres_numeroapre_seq');" );
+				if( $numSeq === false ) {
+					return null;
+				}
+
+				$numapre = date('Ym').sprintf( "%010s",  $numSeq[0][0]['nextval'] );
+				return $numapre;
+		}
+
+		/**
+		* Ajout de l'identifiant de la séance lors de la sauvegarde.
+		*/
+
+		public function beforeValidate( $options = array() ) {
+			$primaryKey = Set::classicExtract( $this->data, "{$this->alias}.{$this->primaryKey}" );
+			$numeroapre = Set::classicExtract( $this->data, "{$this->alias}.numeroapre" );
+
+			if( empty( $primaryKey ) && empty( $numeroapre ) && empty( $this->{$this->primaryKey} ) ) {
+				$this->data[$this->alias]['numeroapre'] = $this->numeroapre();
+			}
+
+			return true;
+		}
 	}
 ?>

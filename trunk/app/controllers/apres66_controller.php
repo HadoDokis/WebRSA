@@ -445,9 +445,6 @@
 
 				$foyer = $this->Foyer->findByDossierId( $dossier_id, null, null, -1 );
 				$foyer_id = Set::classicExtract( $foyer, 'Foyer.id' );
-				///Création automatique du N° APRE de la forme : Année / Mois / N°
-				$numapre = date('Ym').sprintf( "%010s",  $this->{$this->modelClass}->find( 'count' ) + 1 );
-				$this->set( 'numapre', $numapre);
 			}
 			else if( $this->action == 'edit' ) {
 				$apre_id = $id;
@@ -460,7 +457,7 @@
 
 				$foyer_id = Set::classicExtract( $apre, 'Personne.foyer_id' );
 
-				$this->set( 'numapre', Set::extract( $apre, "{$this->modelClass}.numeroapre" ) );
+// 				$this->set( 'numapre', Set::extract( $apre, "{$this->modelClass}.numeroapre" ) );
 			}
 
 			$this->set( 'foyer_id', $foyer_id );
@@ -549,7 +546,6 @@
 				/// Pour le nombre de pièces afin de savoir si le dossier est complet ou non
 				$valide = false;
 				$nbNormalPieces = array();
-// debug( $this->data );
 
 				$typeaideapre66_id = suffix( Set::classicExtract( $this->data, 'Aideapre66.typeaideapre66_id' ) );
 				$typeaide = array();
@@ -580,7 +576,8 @@
 				$this->{$this->modelClass}->create( $this->data );
 				$this->{$this->modelClass}->set( 'statutapre', 'C' );
 				$success = $this->{$this->modelClass}->save();
-
+// debug( $this->{$this->modelClass}->data );
+// die();
 				// Tentative d'enregistrement de l'aide liée à l'APRE complémentaire
 				$this->{$this->modelClass}->Aideapre66->create( $this->data );
 
@@ -629,7 +626,7 @@ die();
 
 				if( $success ) {
 					$this->Jetons->release( $dossier_id );
-					$this->{$this->modelClass}->commit(); // FIXME
+					$this->{$this->modelClass}->commit();
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 
 					$this->redirect( array(  'controller' => 'apres'.Configure::read( 'Apre.suffixe' ),'action' => 'index', $personne_id ) );

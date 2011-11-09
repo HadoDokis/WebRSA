@@ -13,7 +13,11 @@
 					'nbtrajettranspub',
 					'prixbillettranspub',
 					'nbnuithebergt',
-					'nbrepas'
+					'nbrepas',
+					'totalvehicule',
+					'totalhebergt',
+					'totaltranspub',
+					'totalrepas'
 				)
 			),
 		);
