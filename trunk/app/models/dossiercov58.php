@@ -5,12 +5,7 @@
 
 		public $actsAs = array(
 			'Autovalidate',
-			'Containable',
-			'Enumerable' => array(
-				'fields' => array(
-					'etapecov'
-				)
-			)
+			'Containable'
 		);
 
 		public $belongsTo = array(
@@ -27,17 +22,10 @@
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
-			),
-			'Cov58' => array(
-				'className' => 'Cov58',
-				'foreignKey' => 'cov58_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
 			)
 		);
 
-		public $hasMany = array(
+		public $hasOne = array(
 			'Propoorientationcov58' => array(
 				'className' => 'Propoorientationcov58',
 				'foreignKey' => 'dossiercov58_id',
@@ -64,8 +52,37 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Propononorientationprocov58' => array(
+				'className' => 'Propononorientationprocov58',
+				'foreignKey' => 'dossiercov58_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 		);
 
+
+		public $hasMany = array(
+			'Passagecov58' => array(
+				'className' => 'Passagecov58',
+				'foreignKey' => 'dossiercov58_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			)
+		);
 		/**
 		* FIXME -> aucun dossier en cours, pour certains thèmes:
 		*		- CG 93
@@ -87,13 +104,23 @@
 			$nbDossierscov = $this->find(
 				'count',
 				array(
+// 					'conditions' => array(
+// 						'Dossiercov58.personne_id' => $personne_id,
+// 						'Cov58.etatcov' => array( 'cree', 'associe' )
+// 					),
 					'conditions' => array(
 						'Dossiercov58.personne_id' => $personne_id,
-						'Dossiercov58.etapecov <>' => 'finalise'
+						'OR' => array(
+							'Passagecov58.etatdossiercov NOT' => array( 'traite', 'annule' ),
+							'Passagecov58.etatdossiercov IS NULL'
+						)
+					),
+					'joins' => array(
+						$this->join( 'Passagecov58' )
 					)
 				)
 			);
-
+// debug($nbDossierscov);
 			$nbPersonnes = $this->Personne->find(
 				'count',
 				array(
@@ -150,9 +177,9 @@
 					'contain' => false
 				)
 			);
-			
+
 			return ( ( $nbDossierscov == 0 ) && ( $nbPersonnes == 1 ) );
 		}
-		
+
 	}
 ?>

@@ -11,7 +11,7 @@
 		foreach( array_keys( $dossiers ) as $theme ) {
 			echo '<div id="'.$theme.'"><h2 class="title">'.__d( 'dossiercov58', 'ENUM::THEMECOV::'.Inflector::tableize( $theme ), true ).'</h2>';
 			if( !empty( $dossiers[$theme]['liste'] ) ) {
-				require_once( Inflector::tableize( $theme ).'.ctp' );
+				require_once( 'decisioncov.'.Inflector::tableize( $theme ).'.ctp' );
 			}
 			else {
 				echo '<p class="notice">Aucun dossier à traiter pour cette thématique.</p>';
@@ -33,15 +33,12 @@
 		        'id' => 'Back'
 		    )
 		);
-		
 	?>
 </div>
 
 <?php
-	//if( Configure::read( 'debug' ) > 0 ) {
-		echo $javascript->link( 'prototype.livepipe.js' );
-		echo $javascript->link( 'prototype.tabs.js' );
-	//}
+	echo $javascript->link( 'prototype.livepipe.js' );
+	echo $javascript->link( 'prototype.tabs.js' );
 ?>
 
 <script type="text/javascript">

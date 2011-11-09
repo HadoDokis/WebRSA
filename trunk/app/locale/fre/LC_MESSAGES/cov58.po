@@ -58,8 +58,23 @@ msgstr "Aucun dossier sélectionné pour cette commission"
 msgid "ENUM::ETATCOV::cree"
 msgstr "Créé"
 
-msgid "ENUM::ETATCOV::traitement"
-msgstr "En cours de traitement"
+msgid "ENUM::ETATCOV::associe"
+msgstr "Associée"
+
+msgid "ENUM::ETATCOV::valide"
+msgstr "Validée"
+
+msgid "ENUM::ETATCOV::decision"
+msgstr "En cours de décision"
 
 msgid "ENUM::ETATCOV::finalise"
 msgstr "Finalisée"
+
+msgid "ENUM::ETATCOV::traite"
+msgstr "Traitée"
+
+msgid "ENUM::ETATCOV::annule"
+msgstr "Annulée"
+
+msgid "ENUM::ETATCOV::reporte"
+msgstr "Reportée"

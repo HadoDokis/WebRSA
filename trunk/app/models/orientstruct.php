@@ -4,7 +4,6 @@
 		public $name = 'Orientstruct';
 
 		public $actsAs = array(
-//             'Autovalidate',
 			'Enumerable' => array(
 				'fields' => array(
 					'accordbenef' => array(
@@ -15,16 +14,7 @@
 					),
 					'etatorient' => array( 'domain' => 'orientstruct' ),
 					'haspiecejointe' => array( 'domain' => 'orientstruct' ),
-					'origine',
-					/*'accordrefaccueil' => array(
-						'values' => array( 0, 1 )
-					),
-					'decisionep' => array(
-						'values' => array( 0, 1 )
-					),
-					'decisioncg' => array(
-						'values' => array( 0, 1 )
-					),*/
+					'origine'
 				)
 			),
 			'Formattable' => array(
@@ -98,22 +88,6 @@
 				'order' => ''
 			),
 		);
-/*
-		public $hasMany = array(
-			'Parcoursdetecte' => array(
-				'className' => 'Parcoursdetecte',
-				'foreignKey' => 'orientstruct_id',
-				'dependent' => true,
-				'conditions' => '',
-				'fields' => '',
-				'order' => '',
-				'limit' => '',
-				'offset' => '',
-				'exclusive' => '',
-				'finderQuery' => '',
-				'counterQuery' => ''
-			)
-		);*/
 
 		public $hasMany = array(
 			'Nonrespectsanctionep93' => array(
@@ -157,6 +131,19 @@
 			),
 			'Nonorientationproep93' => array(
 				'className' => 'Nonorientationproep93',
+				'foreignKey' => 'orientstruct_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Propononorientationprocov58' => array(
+				'className' => 'Propononorientationprocov58',
 				'foreignKey' => 'orientstruct_id',
 				'dependent' => true,
 				'conditions' => '',
@@ -451,7 +438,6 @@
 					)
 				);
 			}
-
 			return $conditions;
 		}
 
@@ -581,7 +567,7 @@
 					'recursive' => -1
 				)
 			);
-
+// debug( $nbDossiersep );
 			return ( ( $nbDossiersep == 0 ) && ( $nbPersonnes == 1 ) );
 		}
 

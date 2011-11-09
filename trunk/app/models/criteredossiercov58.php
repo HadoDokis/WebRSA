@@ -22,10 +22,9 @@
 			/// Filtre zone géographique
 			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
 
-			if ( isset($criteresdossierscovs58['Dossiercov58']['etapecov']) && !empty($criteresdossierscovs58['Dossiercov58']['etapecov']) ) {
-				$conditions[] = array('Dossiercov58.etapecov'=>$criteresdossierscovs58['Dossiercov58']['etapecov']);
+			if ( isset($criteresdossierscovs58['Passagecov58']['etatdossiercov']) && !empty($criteresdossierscovs58['Passagecov58']['etatdossiercov']) ) {
+				$conditions[] = array('Passagecov58.etatdossiercov'=>$criteresdossierscovs58['Passagecov58']['etatdossiercov']);
 			}
-
 
 			if ( isset($criteresdossierscovs58['Dossiercov58']['themecov58_id']) && !empty($criteresdossierscovs58['Dossiercov58']['themecov58_id']) ) {
 				$conditions[] = array('Dossiercov58.themecov58_id'=>$criteresdossierscovs58['Dossiercov58']['themecov58_id']);
@@ -81,74 +80,36 @@
 					'conditions' => array( 'Foyer.dossier_id = Dossier.id' ),
 				),
 				array(
+					'table'      => 'passagescovs58',
+					'alias'      => 'Passagecov58',
+					'type'       => 'INNER',
+					'foreignKey' => false,
+					'conditions' => array( 'Passagecov58.dossiercov58_id = Dossiercov58.id' ),
+				),
+				array(
 					'table'      => 'covs58',
 					'alias'      => 'Cov58',
 					'type'       => 'INNER',
 					'foreignKey' => false,
-					'conditions' => array( 'Cov58.id = Dossiercov58.cov58_id' ),
+					'conditions' => array( 'Cov58.id = Passagecov58.cov58_id' ),
 				),
-				/*,
-				array(
-					'table'      => 'referents',
-					'alias'      => 'Referent',
-					'type'       => 'INNER',
-					'foreignKey' => false,
-					'conditions' => array( 'Referent.id = Dossiercov58.referent_id' ),
-				),
-				array(
-					'table'      => 'structuresreferentes',
-					'alias'      => 'Structurereferente',
-					'type'       => 'INNER',
-					'foreignKey' => false,
-					'conditions' => array( 'Structurereferente.id = Referent.structurereferente_id' ),
-				),
-				array(
-					'table'      => 'defautsinsertionseps66',
-					'alias'      => 'Defautinsertionep66',
-					'type'       => 'LEFT OUTER',
-					'foreignKey' => false,
-					'conditions' => array( 'Dossiercov58.id = Defautinsertionep66.Dossiercov58_id' ),
-				),
-				array(
-					'table'      => 'saisinesepsbilansparcours66',
-					'alias'      => 'SaisineepDossiercov58',
-					'type'       => 'LEFT OUTER',
-					'foreignKey' => false,
-					'conditions' => array( 'Dossiercov58.id = SaisineepDossiercov58.Dossiercov58_id' ),
-				),
-				array(
-					'table'      => 'dossierseps',
-					'alias'      => 'Dossierep',
-					'type'       => 'LEFT OUTER',
-					'foreignKey' => false,
-					'conditions' => array(
-						'OR' => array(
-							'Defautinsertionep66.dossierep_id = Dossierep.id',
-							'SaisineepDossiercov58.dossierep_id = Dossierep.id',
-						)
-					),
-				)*/
 			);
-
 
 			$query = array(
 				'fields' => array(
 					'Dossiercov58.id',
 					'Dossiercov58.personne_id',
 					'Dossiercov58.themecov58_id',
-					'Dossiercov58.cov58_id',
-					'Dossiercov58.etapecov',
 					'Cov58.datecommission',
+					'Passagecov58.etatdossiercov',
 					'Personne.id',
 					'Personne.qual',
 					'Personne.nom',
 					'Personne.prenom',
-					'Dossier.numdemrsa'/*,
-					'Personne.nom_complet'*/
+					'Dossier.numdemrsa'
 				),
 				'joins' => $joins,
 				'contain' => false,
-//                 'order' => array( '"Dossiercov58"."datecommission" ASC' ),
 				'conditions' => $conditions
 			);
 

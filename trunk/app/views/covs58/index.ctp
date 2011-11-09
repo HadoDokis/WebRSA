@@ -66,7 +66,7 @@
 	if( isset( $covs58 ) ) {
 		echo $default2->index(
 			$covs58,
-			array( 
+			array(
                 'Sitecov58.name',
 				'Cov58.datecommission',
 				'Cov58.etatcov',

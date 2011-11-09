@@ -6,7 +6,14 @@
 		public $recursive = -1;
 
 		public $actsAs = array(
-			'Autovalidate'
+			'Autovalidate',
+			'Enumerable' => array(
+				'fields' => array(
+					'propoorientationcov58',
+					'propocontratinsertioncov58',
+					'propononorientationprocov58'
+				)
+			)
 		);
 
 		public $hasMany = array(
@@ -37,5 +44,22 @@
 				)
 			)
 		);
+
+
+		/**
+		* Retourne la liste des thèmes traités par le regroupement
+		*/
+
+		public function themes() {
+			$enums = $this->enums();
+			foreach( array_keys( $enums[$this->alias] ) as $key ) {
+// debug($key);
+				if( substr( $key, -2 ) != Configure::read( 'Cg.departement' ) ) {
+					unset( $enums[$this->alias][$key] );
+				}
+			}
+			return array_keys( $enums[$this->alias] );
+		}
+
 	}
 ?>

@@ -12,20 +12,17 @@
 	{
 		public $helpers = array( 'Default', 'Default2', 'Ajax', 'Locale', 'Csv' );
 		public $uses = array(  'Criteredossiercov58', 'Dossiercov58' );
-
 		public $components = array( 'Prg' => array( 'actions' => array( 'index' ) ) );
-
 
 		/**
 		*
 		*/
 		public function _setOptions() {
-			$this->set( 'options', $this->Dossiercov58->allEnumLists() );
+			$this->set( 'options', $this->Dossiercov58->Passagecov58->allEnumLists() );
 			$this->set( 'themes', $this->Dossiercov58->Themecov58->find( 'list' ) );
-			$sitescovs58 = $this->Dossiercov58->Cov58->Sitecov58->find( 'list', array( 'fields' => array( 'name' ) ) );
+			$sitescovs58 = $this->Dossiercov58->Passagecov58->Cov58->Sitecov58->find( 'list', array( 'fields' => array( 'name' ) ) );
 			$this->set( compact( 'sitescovs58' ) );
 		}
-
 
 		/**
 		*
@@ -58,12 +55,10 @@
 					);
 				}
 
-
 				$this->set( 'dossierscovs58', $dossierscovs58 );
 			}
 			$this->_setOptions();
 			$this->render( null, null, 'index' );
 		}
-
 	}
 ?>

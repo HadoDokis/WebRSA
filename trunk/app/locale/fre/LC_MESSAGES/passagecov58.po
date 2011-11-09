@@ -19,23 +19,23 @@ msgstr ""
 
 ###############################################################################
 
-msgid "ENUM::DECISION::accepte"
-msgstr "Accepté"
+msgid "Passagecov58.chosen"
+msgstr "Sélectionner"
 
-msgid "ENUM::DECISION::refuse"
-msgstr "Maintien référent actuel"
+msgid "Passagecov58.etatdossiercov"
+msgstr "Etat du dossier"
 
-msgid "ENUM::DECISION::annule"
+msgid "ENUM::ETATDOSSIERCOV::associe"
+msgstr "En cours de traitement"
+
+msgid "ENUM::ETATDOSSIERCOV::traite"
+msgstr "Traité"
+
+msgid "ENUM::ETATDOSSIERCOV::annule"
 msgstr "Annulé"
 
-msgid "ENUM::DECISION::reporte"
+msgid "ENUM::ETATDOSSIERCOV::reporte"
 msgstr "Reporté"
 
-msgid "Decisionregressionorientationep58.decision"
-msgstr "Décision"
-
-msgid "Decisionregressionorientationep58.commentaire"
-msgstr "Commentaire"
-
-msgid "Decisionregressionorientationep58.raisonnonpassage"
-msgstr "Raison de non passage"
+msgid "Passagecov58.etatdossiercov"
+msgstr "Etat du dossier"

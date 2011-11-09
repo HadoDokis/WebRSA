@@ -19,23 +19,32 @@ msgstr ""
 
 ###############################################################################
 
-msgid "ENUM::DECISION::accepte"
-msgstr "Accepté"
+msgid "StatutrdvTyperdv::index::empty"
+msgstr "Aucune gestion n'a encore été créée."
 
-msgid "ENUM::DECISION::refuse"
-msgstr "Maintien référent actuel"
+msgid "StatutsrdvsTypesrdv::edit"
+msgstr "Modifier"
 
-msgid "ENUM::DECISION::annule"
-msgstr "Annulé"
+msgid "StatutsrdvsTypesrdv::delete"
+msgstr "Supprimer"
 
-msgid "ENUM::DECISION::reporte"
-msgstr "Reporté"
+msgid "StatutsrdvsTypesrdv::add"
+msgstr "Ajouter"
 
-msgid "Decisionregressionorientationep58.decision"
-msgstr "Décision"
+msgid "StatutsrdvsTypesrdv::delete::confirm"
+msgstr "Confirmer la suppression ?"
 
-msgid "Decisionregressionorientationep58.commentaire"
-msgstr "Commentaire"
+msgid "StatutrdvTyperdv.name"
+msgstr "Intitulé EP"
 
-msgid "Decisionregressionorientationep58.raisonnonpassage"
-msgstr "Raison de non passage"
+msgid "StatutrdvTyperdv.nbabsenceavantpassageep"
+msgstr "Nombre d'absences avant passage en EP"
+
+msgid "StatutrdvTyperdv.statutrdv_id"
+msgstr "Statut du RDV"
+
+msgid "StatutrdvTyperdv.typerdv_id"
+msgstr "Objet du RDV"
+
+msgid "StatutrdvTyperdv.motifpassageep"
+msgstr "Motif de passage en EP"

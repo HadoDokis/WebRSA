@@ -206,7 +206,7 @@
 								'contain' => false
 							)
 						);
-						
+
 						if ( empty( $listesanctionep58 ) ) {
 							$listesanctionep58 = $this->Dossierep->Passagecommissionep->Decisionsanctionrendezvousep58->Listesanctionep58->find(
 								'first',
@@ -221,9 +221,8 @@
 								)
 							);
 						}
-						
+
 						$formData['Decisionsanctionrendezvousep58'][$key]['listesanctionep58_id'] = $listesanctionep58['Listesanctionep58']['id'];
-// 						$formData['Decisionsanctionrendezvousep58'][$key]['raisonnonpassage'] = null;
 					}
 				}
 			}
@@ -258,7 +257,8 @@
 			// Aucune action utile ?
 			return true;
 		}
-				/**
+
+		/**
 		*
 		*/
 
@@ -480,6 +480,7 @@
 					'Passagecommissionep.commissionep_id',
 					'Passagecommissionep.etatdossierep',
 					'Typerdv.motifpassageep',
+					'StatutrdvTyperdv.motifpassageep',
 				)
 			);
 
@@ -560,7 +561,7 @@
 							)
 						)
 					)
-				),/*,
+				),
 				array(
 					'alias' => 'Rendezvous',
 					'table' => 'rendezvous',
@@ -570,17 +571,31 @@
 					)
 				),
 				array(
+					'alias' => 'Statutrdv',
+					'table' => 'statutsrdvs',
+					'type' => 'INNER',
+					'conditions' => array(
+						'Rendezvous.statutrdv_id = Statutrdv.id'
+					)
+				),
+				array(
 					'alias' => 'Typerdv',
 					'table' => 'typesrdv',
 					'type' => 'INNER',
 					'conditions' => array(
 						'Rendezvous.typerdv_id = Typerdv.id'
 					)
-				),*/
-				$this->join( 'Rendezvous', array( 'type' => 'INNER' ) ),
-				$this->Rendezvous->join( 'Typerdv', array( 'type' => 'INNER' ) )
+				),
+				array(
+					'alias' => 'StatutrdvTyperdv',
+					'table' => 'statutsrdvs_typesrdv',
+					'type' => 'INNER',
+					'conditions' => array(
+						'StatutrdvTyperdv.typerdv_id = Typerdv.id',
+						'StatutrdvTyperdv.statutrdv_id = Statutrdv.id'
+					)
+				),
 			);
-
 			return $return;
 		}
 	}
