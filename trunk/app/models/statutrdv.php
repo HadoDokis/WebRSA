@@ -35,7 +35,26 @@
 				'counterQuery' => ''
 			)
 		);
-		
+
+		public $hasAndBelongsToMany = array(
+			'Typerdv' => array(
+				'className' => 'Typerdv',
+				'joinTable' => 'statutsrdvs_typesrdv',
+				'foreignKey' => 'statutrdv_id',
+				'associationForeignKey' => 'typerdv_id',
+				'unique' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'finderQuery' => '',
+				'deleteQuery' => '',
+				'insertQuery' => '',
+				'with' => 'StatutrdvTyperdv'
+			)
+		);
+
 		/**
 		 * Retourne un booléen suivant si le statut du rdv passé en paramètre
 		 * peut ou non provoquer un passage en EP

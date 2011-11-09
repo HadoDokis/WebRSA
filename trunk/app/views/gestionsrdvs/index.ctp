@@ -33,6 +33,19 @@
 					array( 'class' => 'odd' ),
 					array( 'class' => 'even' )
 				);
+				if( Configure::read( 'Cg.departement' ) == 58 ){
+					echo $xhtml->tableCells(
+						array(
+							h( 'Passage en EP des RDVs' ),
+							$xhtml->viewLink(
+								'Voir la table',
+								array( 'controller' => 'statutsrdvs_typesrdv', 'action' => 'index' )
+							)
+						),
+						array( 'class' => 'odd' ),
+						array( 'class' => 'even' )
+					);
+				}
 			?>
 		</tbody>
 	</table>

@@ -210,6 +210,7 @@
 		'statutdecisionpdo' => 'statutsdecisionspdos',
 		'statutpdo' => 'statutspdos',
 		'statutrdv' => 'statutsrdvs',
+		'statutrdv_typerdv' => 'statutsrdvs_typesrdv',
 		'structurereferente_zonegeographique' => 'structuresreferentes_zonesgeographiques',
 		'structurereferente' => 'structuresreferentes',
 		'suiviaideapre' => 'suivisaidesapres',
@@ -282,12 +283,20 @@
 		// Données flux Pôle Emploi
 		'informationpe' => 'informationspe',
 		'historiqueetatpe' => 'historiqueetatspe',
+
 		// Tables pour gérer la COV
 		'themecov58' => 'themescovs58',
 		'dossiercov58' => 'dossierscovs58',
 		'propoorientationcov58' => 'proposorientationscovs58',
+		'decisionpropoorientationcov58' => 'decisionsproposorientationscovs58',
 		'propocontratinsertioncov58' => 'proposcontratsinsertioncovs58',
+		'decisionpropocontratinsertioncov58' => 'decisionsproposcontratsinsertioncovs58',
+		'propononorientationprocov58' => 'proposnonorientationsproscovs58',
+		'decisionpropononorientationprocov58' => 'decisionsproposnonorientationsproscovs58',
+		'passagecov58' => 'passagescovs58',
 		'cov58' => 'covs58',
+        'sitecov58' => 'sitescovs58',
+
 		'autreavissuspension' => 'autresavissuspension',
 		'autreavisradiation' => 'autresavisradiation',
 		'criterebilanparcours66' => 'criteresbilansparcours66',
@@ -305,7 +314,6 @@
 		'passagecommissionep' => 'passagescommissionseps',
 		'compositionregroupementep' => 'compositionsregroupementseps',
 
-        'sitecov58' => 'sitescovs58',
 		'signalementep93' => 'signalementseps93',
 		'decisionsignalementep93' => 'decisionssignalementseps93',
 		'contratcomplexeep93' => 'contratscomplexeseps93',

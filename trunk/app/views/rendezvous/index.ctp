@@ -5,10 +5,10 @@
 
 <div class="with_treemenu">
 	<h1>Rendez-vous</h1>
-	
+
 	<?php
 		if( isset( $dossierep ) && !empty( $dossierep ) ) {
-			echo '<p class="error">Ce dossier est en cours de passage en EP : '.$dossierep['Sanctionrendezvousep58']['Rendezvous']['Typerdv']['motifpassageep'].'.</p>';
+			echo '<p class="error">Ce dossier est en cours de passage en EP : '.$dossierep['StatutrdvTyperdv']['motifpassageep'].'.</p>';
 		}
 		if ( !isset( $dossierepLie ) ) {
 			$dossierepLie = 0;
