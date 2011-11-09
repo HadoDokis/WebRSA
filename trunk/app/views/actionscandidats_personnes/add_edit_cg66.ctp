@@ -111,8 +111,41 @@
 					'class' => 'allocataire infos'
 				)
 			);
+
+			if( !empty( $personne['Modecontact'][0]['adrelec'] ) ) {
+				echo $default->view(
+					$personne,
+					array(
+						'Modecontact.0.numtel',
+						'Modecontact.0.adrelec',
+						'Modecontact.1.numtel'
+					),
+					array(
+						'widget' => 'dl',
+						'class' => 'allocataire infos',
+						'options' => $options
+					)
+				);
+			}
+			else{
+				echo $default->view(
+					$personne,
+					array(
+						'Modecontact.0.numtel',
+						'Modecontact.1.adrelec',
+						'Modecontact.1.numtel'
+					),
+					array(
+						'widget' => 'dl',
+						'class' => 'allocataire infos',
+						'options' => $options
+					)
+				);	
+			}
 		?>
 	</fieldset>
+
+
 	<fieldset id="motifdemande">
 		<legend><?php echo required( "Motif de la demande (donner des précisions sur le parcous d'insertion et les motifs de la prescription)" ); ?></legend>
 			<?php

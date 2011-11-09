@@ -1073,7 +1073,14 @@
 							'type'       => 'LEFT OUTER',
 							'foreignKey' => false,
 							'conditions' => array( 'Suiviinstruction.numdepins = Serviceinstructeur.numdepins AND Suiviinstruction.typeserins = Serviceinstructeur.typeserins AND Suiviinstruction.numcomins = Serviceinstructeur.numcomins AND Suiviinstruction.numagrins = Serviceinstructeur.numagrins' )
-						),
+						),/*
+						array(
+							'table'      => 'modescontact', // FIXME
+							'alias'      => 'Modecontact',
+							'type'       => 'LEFT OUTER',
+							'foreignKey' => false,
+							'conditions' => array( 'Modecontact.foyer_id = Foyer.id' )
+						),*/
 					),
 					'recursive' => 1
 				)
@@ -1090,11 +1097,11 @@
 					'order' => 'Modecontact.nattel ASC'
 				)
 			);
-
+// debug( $modecontact);
 			foreach( $modecontact as $index => $value ) {
-				if( ( ( Set::extract( $value, 'Modecontact.autorutitel' ) != 'R' ) ) && ( Set::extract( $value, 'Modecontact.nattel' ) == 'D' ) ) {
+// 				if( ( ( Set::extract( $value, 'Modecontact.autorutitel' ) != 'R' ) ) && ( Set::extract( $value, 'Modecontact.nattel' ) == 'D' ) ) {
 					$personne = Set::merge( $personne, array( 'Modecontact' => Set::extract( $modecontact, '{n}.Modecontact' ) ) );
-				}
+// 				}
 			}
 
 			$activite = $this->Activite->find(
@@ -1114,7 +1121,7 @@
 				$personne = Set::merge( $personne, $activite );
 
 			}
-
+// debug( $personne );
 			return $personne;
 		}
 	}
