@@ -199,7 +199,14 @@
 			$this->assert( !empty( $personne ), 'invalidParameter' );
 			$this->set( 'personne', $personne );
 
-			$apres = $this->{$this->modelClass}->find( 'all', array( 'conditions' => array( "{$this->modelClass}.personne_id" => $personne_id ) ) );
+			$apres = $this->{$this->modelClass}->find(
+				'all',
+				array(
+					'conditions' => array(
+						"{$this->modelClass}.personne_id" => $personne_id
+					)
+				)
+			);
 			$this->set( 'apres', $apres );
 
 			$referents = $this->Referent->find( 'list' );
@@ -213,28 +220,47 @@
 			$montantMaxComplementaires = Configure::read( 'Apre.montantMaxComplementaires' );
 			$periodeMontantMaxComplementaires = Configure::read( 'Apre.periodeMontantMaxComplementaires' );
 
-			$this->{$this->modelClass}->unbindModel(
-				array(
-					'belongsTo' => array_keys( $this->{$this->modelClass}->belongsTo ),
-					'hasMany' => array_keys( $this->{$this->modelClass}->hasMany ),
-					'hasAndBelongsToMany' => array( 'Pieceapre' ),
-				)
-			);
-			$apres = $this->{$this->modelClass}->find(
+// 			$this->{$this->modelClass}->unbindModel(
+// 				array(
+// 					'belongsTo' => array_keys( $this->{$this->modelClass}->belongsTo ),
+// 					'hasMany' => array_keys( $this->{$this->modelClass}->hasMany ),
+// 					'hasAndBelongsToMany' => array( 'Pieceapre' ),
+// 				)
+// 			);
+			$apresPourCalculMontant = $this->{$this->modelClass}->find(
 				'all',
 				array(
 					'conditions' => array(
 						"{$this->modelClass}.personne_id" => $personne_id,
 						"{$this->modelClass}.statutapre" => 'C',
-						"{$this->modelClass}.datedemandeapre >=" => date( 'Y-m-d', strtotime( '-'.Configure::read( "{$this->modelClass}.periodeMontantMaxComplementaires" ).' months' ) )
+						"Aideapre66.datedemande >=" => date( 'Y-m-d', strtotime( '-'.Configure::read( "Apre.periodeMontantMaxComplementaires" ).' months' ) )
+					),
+					'contain' => array(
+						'Personne',
+						'Aideapre66'
 					)
 				)
 			);
-
+// debug( $apres );
 			$montantComplementaires = 0;
-			if( $montantComplementaires > Configure::read( "{$this->modelClass}.montantMaxComplementaires" ) ) {
+
+			foreach( $apresPourCalculMontant as $apre ) {
+				$decision = Set::classicExtract( $apre, 'Aideapre66.decisionapre' );
+				$montantaccorde = Set::classicExtract( $apre, 'Aideapre66.montantaccorde' );
+
+				if( !empty( $decision ) ) {
+					if( $decision == 'ACC' ) {
+						$montantComplementaires += $montantaccorde;
+					}
+				}
+			}
+
+// debug($montantComplementaires );
+
+			if( $montantComplementaires > Configure::read( "Apre.montantMaxComplementaires" ) ) {
 				$alerteMontantAides = true;
 			}
+			$this->set( 'apres', $apres );
 			$this->set( 'alerteMontantAides', $alerteMontantAides );
 			$this->_setOptions();
 			$this->render( $this->action, null, '/apres/index66' );
