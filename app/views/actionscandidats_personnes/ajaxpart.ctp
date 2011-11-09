@@ -21,6 +21,10 @@
 			<td class="wide noborder"><?php echo Set::classicExtract( $actioncandidat, 'Contactpartenaire.numfax' ); ?></td>
 		</tr>
 		<tr>
+			<td class="wide noborder"><strong>Email : </strong></td>
+			<td class="wide noborder"><?php echo Set::classicExtract( $actioncandidat, 'Contactpartenaire.Partenaire.email' ); ?></td>
+		</tr>
+		<tr>
 			<td class="wide noborder"><strong>Code action : </strong></td>
 			<td class="wide noborder"><?php echo Set::classicExtract( $actioncandidat, 'Actioncandidat.codeaction' ); ?></td>
 		</tr>  

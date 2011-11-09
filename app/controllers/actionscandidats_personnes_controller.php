@@ -487,6 +487,7 @@
 			if( !empty( $contrat ) ) {
 				$personne = Set::merge( $personne, $contrat );
 			}
+
 			$this->set( 'personne', $personne );
 
 			///Nombre d'enfants par foyer
@@ -515,6 +516,16 @@
 			$actionsfiche = $this->{$this->modelClass}->Actioncandidat->listePourFicheCandidature( $codeinseeUser );
 			$this->set( 'actionsfiche', $actionsfiche );
 
+
+// 			if(  !empty( $this->data['Modecontact'] ) ){
+// 				$Modecontact = Xset::bump( Set::filter( Set::flatten( $this->data['Modecontact'] ) ) );
+// // debug($Modecontact);
+// // die();
+// 				if( !empty( $Modecontact ) ){
+// 					$success = $this->{$this->modelClass}->Personne->Foyer->Modecontact->saveAll( $Modecontact, array( 'validate' => 'first', 'atomic' => false ) );
+// 				}
+// 			}
+
 			$this->ActioncandidatPersonne->begin();
 
 			if( !empty( $this->data ) ){
@@ -530,7 +541,7 @@
 					if( $this->ActioncandidatPersonne->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
 
 						$this->Jetons->release( $dossierId );
-						$this->ActioncandidatPersonne->commit(); /// FIXME
+						$this->ActioncandidatPersonne->commit();
 						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 						$this->redirect( array(  'controller' => 'actionscandidats_personnes','action' => 'index', $personne_id ) );
 					}
