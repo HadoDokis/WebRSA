@@ -34,5 +34,17 @@
 		</tr>
 
 	</table>
-</fieldset>    
+</fieldset>
+<script type="text/javascript">
+	<!--//--><![CDATA[//><!--
+	function setInputValue( input, value ) {
+		input = $( input );
+		if( ( input != undefined ) && ( $F( input ) == '' ) ) {
+			$( input ).setValue( value );
+		}
+	}
+	setInputValue( 'ActioncandidatPersonneLieurdvpartenaire', '<?php echo str_replace( "'", "\\'", Set::classicExtract( $actioncandidat, 'Contactpartenaire.Partenaire.libstruc' ) );?>' );
+	setInputValue( 'ActioncandidatPersonnePersonnerdvpartenaire', '<?php echo str_replace( "'", "\\'", Set::classicExtract( $actioncandidat, 'Contactpartenaire.nom_candidat' ) );?>' );
+	//--><!]]>
+</script> 
 <?php endif;?>

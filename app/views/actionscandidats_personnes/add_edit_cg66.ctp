@@ -157,6 +157,10 @@
 						'interval' => 5,
 						'empty' => true
 					),
+					'ActioncandidatPersonne.lieurdvpartenaire' => array( 'type' => 'text' , 'label' => 'Lieu du rendez-vous ' ),
+					'ActioncandidatPersonne.personnerdvpartenaire' => array( 'type' => 'text' , 'label' => 'Avec ' )
+// 					'ActioncandidatPersonne.lieurdvpartenaire' => array( 'type' => 'text' , 'label' => 'Lieu du rendez-vous ', 'value' => isset( $this->data['ActioncandidatPersonne']['lieurdvpartenaire'] ) ? $this->data['ActioncandidatPersonne']['lieurdvpartenaire'] : 'Maurice' ),
+// 					'ActioncandidatPersonne.personnerdvpartenaire' => array( 'type' => 'text' , 'label' => 'Avec ', 'value' => isset( $this->data['ActioncandidatPersonne']['personnerdvpartenaire'] ) ? $this->data['ActioncandidatPersonne']['personnerdvpartenaire'] : 'Maurice' )
 				),
 				array(
 					'options' => $options,
@@ -316,6 +320,8 @@
 					'ActioncandidatPersonneHorairerdvpartenaireYear',
 					'ActioncandidatPersonneHorairerdvpartenaireHour',
 					'ActioncandidatPersonneHorairerdvpartenaireMin',
+					'ActioncandidatPersonneLieurdvpartenaire',
+					'ActioncandidatPersonnePersonnerdvpartenaire'
 			],
 			'1',
 			true
