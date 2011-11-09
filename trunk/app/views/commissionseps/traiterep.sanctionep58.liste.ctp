@@ -47,6 +47,12 @@ echo '<table><thead>
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
 		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
+
+			$( 'Decisionsanctionep58<?php echo $i;?>Decision' ).observe( 'change', function() {
+				changeColspanFormAnnuleReporteEps( 'Decisionsanctionep58<?php echo $i;?>DecisionColumn', 2, 'Decisionsanctionep58<?php echo $i;?>Decision', [ 'Decisionsanctionep58<?php echo $i;?>Listesanctionep58Id' ] );
+			});
+			changeColspanFormAnnuleReporteEps( 'Decisionsanctionep58<?php echo $i;?>DecisionColumn', 2, 'Decisionsanctionep58<?php echo $i;?>Decision', [ 'Decisionsanctionep58<?php echo $i;?>Listesanctionep58Id' ] );
+
 			observeDisableFieldsOnValue(
 				'Decisionsanctionep58<?php echo $i;?>Decision',
 				[
@@ -55,11 +61,7 @@ echo '<table><thead>
 				'sanction',
 				false
 			);
-			
-			$( 'Decisionsanctionep58<?php echo $i;?>Decision' ).observe( 'change', function() {
-				changeColspanFormAnnuleReporteEps( 'Decisionsanctionep58<?php echo $i;?>DecisionColumn', 2, 'Decisionsanctionep58<?php echo $i;?>Decision', [ 'Decisionsanctionep58<?php echo $i;?>Listesanctionep58Id' ] );
-			});
-			changeColspanFormAnnuleReporteEps( 'Decisionsanctionep58<?php echo $i;?>DecisionColumn', 2, 'Decisionsanctionep58<?php echo $i;?>Decision', [ 'Decisionsanctionep58<?php echo $i;?>Listesanctionep58Id' ] );
+
 		<?php endfor;?>
 	});
 </script>

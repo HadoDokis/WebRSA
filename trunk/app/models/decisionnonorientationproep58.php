@@ -23,7 +23,12 @@
 			),
 			'Autovalidate',
 			'ValidateTranslate',
-			'Formattable'
+			'Formattable' => array(
+				'suffix' => array(
+					'structurereferente_id',
+					'referent_id'
+				)
+			)
 		);
 
 		public $belongsTo = array(

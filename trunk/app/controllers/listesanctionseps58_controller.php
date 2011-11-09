@@ -1,17 +1,17 @@
 <?php
 
 	class Listesanctionseps58Controller extends AppController {
-	
+
 		public $helpers = array( 'Default', 'Default2', 'Xhtml' );
 
 		public $commeDroit = array(
 			'add' => 'Listesanctionseps58:edit'
 		);
-		
+
 		public function beforeFilter() {
 			parent::beforeFilter();
 		}
-		
+
 		public function index() {
 			$sanctions = $this->Listesanctionep58->find(
 				'all',
@@ -65,10 +65,18 @@
 					)
 				);
 			}
-			
+
 			$this->render( null, null, '_add_edit' );
 		}
-	
-	}
 
+		/**
+		*
+		*/
+
+		public function delete( $id ) {
+			$success = $this->Listesanctionep58->delete( $id );
+			$this->_setFlashResult( 'Delete', $success );
+			$this->redirect( array( 'action' => 'index' ) );
+		}
+	}
 ?>

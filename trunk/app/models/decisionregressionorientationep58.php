@@ -23,17 +23,15 @@
 			),
 			'Autovalidate',
 			'ValidateTranslate',
-			'Formattable'
+			'Formattable' => array(
+				'suffix' => array(
+					'structurereferente_id',
+					'referent_id'
+				)
+			)
 		);
 
 		public $belongsTo = array(
-// 			'Regressionorientationep58' => array(
-// 				'className' => 'Regressionorientationep58',
-// 				'foreignKey' => 'regressionorientationep58_id',
-// 				'conditions' => '',
-// 				'fields' => '',
-// 				'order' => ''
-// 			),
 			'Typeorient' => array(
 				'className' => 'Typeorient',
 				'foreignKey' => 'typeorient_id',

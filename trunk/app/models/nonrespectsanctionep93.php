@@ -80,20 +80,7 @@
 				'exclusive' => '',
 				'finderQuery' => '',
 				'counterQuery' => ''
-			),
-// 			'Decisionnonrespectsanctionep93' => array(
-// 				'className' => 'Decisionnonrespectsanctionep93',
-// 				'foreignKey' => 'nonrespectsanctionep93_id',
-// 				'dependent' => true,
-// 				'conditions' => '',
-// 				'fields' => '',
-// 				'order' => '',
-// 				'limit' => '',
-// 				'offset' => '',
-// 				'exclusive' => '',
-// 				'finderQuery' => '',
-// 				'counterQuery' => ''
-// 			),
+			)
 		);
 
 		/**
@@ -129,7 +116,6 @@
 			return array(
 				'conditions' => array(
 					'Dossierep.themeep' => Inflector::tableize( $this->alias ),
-					//'Dossierep.commissionep_id' => $commissionep_id
 					'Dossierep.id IN ( '.
 						$this->Dossierep->Passagecommissionep->sq(
 							array(
@@ -182,13 +168,6 @@
 							'modified'
 
 						),
-// 						'Decisionnonrespectsanctionep93' => array(
-// 							'order' => array( 'etape DESC' )
-// 						),
-						/*'Decisionreorientationep93',
-						'Motifreorientep93',
-						'Typeorient',
-						'Structurereferente',*/
 						'Orientstruct' => array(
 							'Typeorient',
 							'Structurereferente',
@@ -330,17 +309,10 @@
 						'Passagecommissionep.dossierep_id',
 						'Passagecommissionep.etatdossierep',
 						'Dossierep.personne_id',
-						'Decisionnonrespectsanctionep93.decision',
-						/*'Decisionreorientationep93.typeorient_id',
-						'Decisionreorientationep93.structurereferente_id',
-						'Reorientationep93.structurereferente_id',
-						'Reorientationep93.referent_id',
-						'Reorientationep93.datedemande'*/
+						'Decisionnonrespectsanctionep93.decision'
 					),
 					'conditions' => array(
 						'Passagecommissionep.commissionep_id' => $commissionep_id
-						/*'Dossierep.commissionep_id' => $commissionep_id,
-						'Dossierep.themeep' => Inflector::tableize( $this->alias ),//FIXME: ailleurs aussi*/
 					),
 					'joins' => array(
 						array(
@@ -368,15 +340,7 @@
 								'Decisionnonrespectsanctionep93.etape' => $etape
 							)
 						)
-					),
-					/*'contain' => array(
-						'Decisionnonrespectsanctionep93' => array(
-							'conditions' => array(
-								'Decisionnonrespectsanctionep93.etape' => $etape
-							)
-						),
-						'Dossierep'
-					)*/
+					)
 				)
 			);
 
@@ -393,7 +357,6 @@
 					$success = $this->save() && $success;
 				}
 			}
-
 			return $success;
 		}
 
@@ -405,14 +368,11 @@
 			return array(
 				'Nonrespectsanctionep93' => array(
 					'Decisionnonrespectsanctionep93' => array(
-						/*'fields' => array(
-							'( CAST( decision AS TEXT ) || montantreduction ) AS avis'
-						),*/
 						'conditions' => array(
 							'etape' => 'ep'
-						),
+						)
 					)
-				),
+				)
 			);
 		}
 
@@ -442,7 +402,7 @@
 					'Decisionnonrespectsanctionep93.commentaire',
 					'Decisionnonrespectsanctionep93.created',
 					'Decisionnonrespectsanctionep93.modified',
-					'Decisionnonrespectsanctionep93.raisonnonpassage',
+					'Decisionnonrespectsanctionep93.raisonnonpassage'
 				),
 				'joins' => array(
 					array(
@@ -460,8 +420,8 @@
 						'conditions' => array(
 							'Decisionnonrespectsanctionep93.passagecommissionep_id = Passagecommissionep.id',
 							'Decisionnonrespectsanctionep93.etape' => 'ep'
-						),
-					),
+						)
+					)
 				)
 			);
 		}
@@ -505,25 +465,25 @@
 						'conditions' => array( 'Personne.foyer_id = Foyer.id' )
 					),
 					array(
-                        'table'      => 'adressesfoyers',
-                        'alias'      => 'Adressefoyer',
-                        'type'       => 'LEFT OUTER',
-                        'foreignKey' => false,
-                        'conditions' => array(
-                            'Foyer.id = Adressefoyer.foyer_id',
-                            // FIXME: c'est un hack pour n'avoir qu'une seule adresse de range 01 par foyer!
-                            'Adressefoyer.id IN (
-                                '.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01('Adressefoyer.foyer_id').'
-                            )'
-                        )
-                    ),
-                    array(
-                        'table'      => 'adresses',
-                        'alias'      => 'Adresse',
-                        'type'       => 'INNER',
-                        'foreignKey' => false,
-                        'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
-                    ),
+						'table'      => 'adressesfoyers',
+						'alias'      => 'Adressefoyer',
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array(
+							'Foyer.id = Adressefoyer.foyer_id',
+							// FIXME: c'est un hack pour n'avoir qu'une seule adresse de range 01 par foyer!
+							'Adressefoyer.id IN (
+								'.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01('Adressefoyer.foyer_id').'
+							)'
+						)
+					),
+					array(
+						'table'      => 'adresses',
+						'alias'      => 'Adresse',
+						'type'       => 'INNER',
+						'foreignKey' => false,
+						'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
+					),
 					array(
 						'table'      => 'dossiers',
 						'alias'      => 'Dossier',
@@ -577,32 +537,32 @@
 						)
 					),
 					array(
-                        'table'      => 'contratsinsertion', // FIXME:
-                        'alias'      => 'Contratinsertion',
-                        'type'       => 'LEFT OUTER',
-                        'foreignKey' => false,
-                        'conditions' => array(
-                            'Personne.id = Contratinsertion.personne_id',
-                            'Contratinsertion.id IN (
-                                SELECT cer.id
-                                    FROM contratsinsertion AS cer
-                                    WHERE
-                                        cer.personne_id = Personne.id
-                                        AND cer.df_ci IS NOT NULL
-                                    ORDER BY cer.df_ci DESC
-                                    LIMIT 1
-                            )',
-                        )
-                    ),
-                    array(
-                        'table'      => 'typesorients', // FIXME:
-                        'alias'      => 'Typeorient',
-                        'type'       => 'INNER',
-                        'foreignKey' => false,
-                        'conditions' => array(
-                            'Typeorient.id = Orientstruct.typeorient_id',
-                        )
-                    )
+						'table'      => 'contratsinsertion', // FIXME:
+						'alias'      => 'Contratinsertion',
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array(
+							'Personne.id = Contratinsertion.personne_id',
+							'Contratinsertion.id IN (
+								SELECT cer.id
+									FROM contratsinsertion AS cer
+									WHERE
+										cer.personne_id = Personne.id
+										AND cer.df_ci IS NOT NULL
+									ORDER BY cer.df_ci DESC
+									LIMIT 1
+							)',
+						)
+					),
+					array(
+						'table'      => 'typesorients', // FIXME:
+						'alias'      => 'Typeorient',
+						'type'       => 'INNER',
+						'foreignKey' => false,
+						'conditions' => array(
+							'Typeorient.id = Orientstruct.typeorient_id',
+						)
+					)
 				),
 				'conditions' => array(
 					'Personne.id NOT IN ( '.
@@ -649,63 +609,61 @@
 
 			$modeleHistoriqueetatpe = ClassRegistry::init( 'Historiqueetatpe' );
 
-            $nom = Set::classicExtract( $datas, 'Personne.nom' );
-            $prenom = Set::classicExtract( $datas, 'Personne.prenom' );
-            $dtnai = null;
-            if ( !empty( $datas['Personne']['dtnai']['day'] ) && !empty( $datas['Personne']['dtnai']['month'] ) && !empty( $datas['Personne']['dtnai']['year'] ) ) {
-                $dtnai = implode( '-', array( Set::classicExtract( $datas, 'Personne.dtnai.year' ), Set::classicExtract( $datas, 'Personne.dtnai.month' ), Set::classicExtract( $datas, 'Personne.dtnai.day' ) ) );
-            }
-            $nir = Set::classicExtract( $datas, 'Personne.nir' );
-            $matricule = Set::classicExtract( $datas, 'Dossier.matricule' );
-            $locaadr = Set::classicExtract( $datas, 'Adresse.locaadr' );
-            $numcomptt = Set::classicExtract( $datas, 'Adresse.numcomptt' );
+			$nom = Set::classicExtract( $datas, 'Personne.nom' );
+			$prenom = Set::classicExtract( $datas, 'Personne.prenom' );
+			$dtnai = null;
+			if ( !empty( $datas['Personne']['dtnai']['day'] ) && !empty( $datas['Personne']['dtnai']['month'] ) && !empty( $datas['Personne']['dtnai']['year'] ) ) {
+				$dtnai = implode( '-', array( Set::classicExtract( $datas, 'Personne.dtnai.year' ), Set::classicExtract( $datas, 'Personne.dtnai.month' ), Set::classicExtract( $datas, 'Personne.dtnai.day' ) ) );
+			}
+			$nir = Set::classicExtract( $datas, 'Personne.nir' );
+			$matricule = Set::classicExtract( $datas, 'Dossier.matricule' );
+			$locaadr = Set::classicExtract( $datas, 'Adresse.locaadr' );
+			$numcomptt = Set::classicExtract( $datas, 'Adresse.numcomptt' );
 
-            $identifiantpe = Set::classicExtract( $datas, 'Historiqueetatpe.identifiantpe' );
+			$identifiantpe = Set::classicExtract( $datas, 'Historiqueetatpe.identifiantpe' );
 
-            if ( !empty( $nom ) ) {
-                $queryData['conditions'][] = array( 'Personne.nom ILIKE' => $this->wildcard( $nom ) );
-            }
-            if ( !empty( $prenom ) ) {
-                $queryData['conditions'][] = array( 'Personne.prenom ILIKE' => $this->wildcard( $prenom ) );
-            }
-            if ( !empty( $dtnai ) ) {
-                $queryData['conditions'][] = array( 'Personne.dtnai' => $dtnai );
-            }
-            if ( !empty( $nir ) ) {
-                $queryData['conditions'][] = array( 'Personne.nir' => $this->wildcard( $nir ) );
-            }
-            if ( !empty( $matricule ) ) {
-                $queryData['conditions'][] = array( 'Dossier.matricule' => $this->wildcard( $matricule ) );
-            }
-            if ( !empty( $locaadr ) ) {
-                $queryData['conditions'][] = array( 'Adresse.locaadr ILIKE' => $this->wildcard( $locaadr ) );
-            }
-            if ( !empty( $numcomptt ) ) {
-                $queryData['conditions'][] = array( 'Adresse.numcomptt' => $numcomptt );
-            }
+			if ( !empty( $nom ) ) {
+				$queryData['conditions'][] = array( 'Personne.nom ILIKE' => $this->wildcard( $nom ) );
+			}
+			if ( !empty( $prenom ) ) {
+				$queryData['conditions'][] = array( 'Personne.prenom ILIKE' => $this->wildcard( $prenom ) );
+			}
+			if ( !empty( $dtnai ) ) {
+				$queryData['conditions'][] = array( 'Personne.dtnai' => $dtnai );
+			}
+			if ( !empty( $nir ) ) {
+				$queryData['conditions'][] = array( 'Personne.nir' => $this->wildcard( $nir ) );
+			}
+			if ( !empty( $matricule ) ) {
+				$queryData['conditions'][] = array( 'Dossier.matricule' => $this->wildcard( $matricule ) );
+			}
+			if ( !empty( $locaadr ) ) {
+				$queryData['conditions'][] = array( 'Adresse.locaadr ILIKE' => $this->wildcard( $locaadr ) );
+			}
+			if ( !empty( $numcomptt ) ) {
+				$queryData['conditions'][] = array( 'Adresse.numcomptt' => $numcomptt );
+			}
 
-            /// Critères sur l'adresse - canton
-            if( Configure::read( 'CG.cantons' ) ) {
-                if( isset($canton ) && !empty( $canton ) ) {
-                    $this->Canton = ClassRegistry::init( 'Canton' );
-                    $queryData['conditions'][] = $this->Canton->queryConditions( $canton );
-                }
-            }
+			/// Critères sur l'adresse - canton
+			if( Configure::read( 'CG.cantons' ) ) {
+				if( isset($canton ) && !empty( $canton ) ) {
+					$this->Canton = ClassRegistry::init( 'Canton' );
+					$queryData['conditions'][] = $this->Canton->queryConditions( $canton );
+				}
+			}
 
-            if ( !empty( $identifiantpe ) ) {
+			if ( !empty( $identifiantpe ) ) {
 				$queryData['conditions'][] = $modeleHistoriqueetatpe->conditionIdentifiantpe( $identifiantpe );
-            }
+			}
 
-            /// Filtre zone géographique
-            $queryData['conditions'][] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
+			/// Filtre zone géographique
+			$queryData['conditions'][] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
 
-
-
-            $qdRadies = $modeleHistoriqueetatpe->Informationpe->qdRadies();
-            $queryData['fields'] = array_merge( $queryData['fields'] ,$qdRadies['fields'] );
-            $queryData['joins'] = array_merge( $queryData['joins'] ,$qdRadies['joins'] );
-            $queryData['conditions'] = array_merge( $queryData['conditions'] ,$qdRadies['conditions'] );
-            $queryData['order'] = $qdRadies['order'];
+			$qdRadies = $modeleHistoriqueetatpe->Informationpe->qdRadies();
+			$queryData['fields'] = array_merge( $queryData['fields'] ,$qdRadies['fields'] );
+			$queryData['joins'] = array_merge( $queryData['joins'] ,$qdRadies['joins'] );
+			$queryData['conditions'] = array_merge( $queryData['conditions'] ,$qdRadies['conditions'] );
+			$queryData['order'] = $qdRadies['order'];
 
 			return $queryData;
 		}
@@ -890,9 +848,6 @@
 						),
 						'Decisionnonrespectsanctionep93' => array(
 							'User',
-							/*'conditions' => array(
-								'Decisionnonrespectsanctionep93.etape' => $etape
-							)*/
 							'order' => array(
 								'Decisionnonrespectsanctionep93.etape DESC'
 							),
@@ -1039,8 +994,8 @@
 			$pdf =  $this->ged(
 				$gedooo_data,
 				$modeleOdt,
-                false,
-                $options
+				false,
+				$options
 			);
 
 			$oldRecord['Pdf']['modele'] = 'Passagecommissionep';
@@ -1054,13 +1009,12 @@
 			if( !$success ) {
 				return false;
 			}
-
 			return $pdf;
 		}
 
 		/**
-		 * Fonction retournant un querydata qui va permettre de retrouver des dossiers d'EP
-		 */
+		* Fonction retournant un querydata qui va permettre de retrouver des dossiers d'EP
+		*/
 		public function qdListeDossier( $commissionep_id = null  ) {
 			$return = array(
 				'fields' => array(
@@ -1074,6 +1028,7 @@
 					'Personne.dtnai',
 					'Adresse.locaadr',
 					$this->alias.'.origine',
+					$this->alias.'.rgpassage',
 					'Passagecommissionep.id',
 					'Passagecommissionep.commissionep_id'
 				)
@@ -1158,7 +1113,6 @@
 					)
 				)
 			);
-
 			return $return;
 		}
 

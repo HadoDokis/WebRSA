@@ -7,7 +7,7 @@ echo '<table><thead>
 <th>Création du dossier EP</th>
 <th colspan="2">Orientation actuelle</th>
 <th colspan="2">Proposition référent</th>
-<th colspan="3">Avis EPL</th>
+<th colspan="4">Avis EPL</th>
 <th>Observations</th>
 </tr>
 </thead><tbody>';
@@ -17,7 +17,7 @@ echo '<table><thead>
 		$hiddenFields = $form->input( "Decisionregressionorientationep58.{$i}.id", array( 'type' => 'hidden' ) ).
 						$form->input( "Decisionregressionorientationep58.{$i}.passagecommissionep_id", array( 'type' => 'hidden' ) ).
 						$form->input( "Decisionregressionorientationep58.{$i}.etape", array( 'type' => 'hidden', 'value' => 'ep' ) );
-
+// debug( $dossierep );
 		echo $xhtml->tableCells(
 			array(
 				implode( ' ', array( $dossierep['Personne']['qual'], $dossierep['Personne']['nom'], $dossierep['Personne']['prenom'] ) ),
@@ -41,6 +41,10 @@ echo '<table><thead>
 					$form->input( "Decisionregressionorientationep58.{$i}.structurereferente_id", array( 'label' => false, 'options' => $structuresreferentes, 'empty' => true, 'type' => 'select' ) ),
 					( !empty( $this->validationErrors['Decisionregressionorientationep58'][$i]['structurereferente_id'] ) ? array( 'class' => 'error' ) : array() )
 				),
+				array(
+					$form->input( "Decisionregressionorientationep58.{$i}.referent_id", array( 'label' => false, 'options' => $referents, 'empty' => true, 'type' => 'select' ) ),
+					( !empty( $this->validationErrors['Decisionregressionorientationep58'][$i]['referent_id'] ) ? array( 'class' => 'error' ) : array() )
+				),
 				$form->input( "Decisionregressionorientationep58.{$i}.commentaire", array( 'label' =>false, 'type' => 'textarea' ) ).
 				$hiddenFields
 			),
@@ -53,21 +57,46 @@ echo '<table><thead>
 
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
-		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
+		<?php foreach( $dossiers[$theme]['liste'] as $i => $dossierep ):?>
 			dependantSelect( 'Decisionregressionorientationep58<?php echo $i?>StructurereferenteId', 'Decisionregressionorientationep58<?php echo $i?>TypeorientId' );
 			try { $( 'Decisionregressionorientationep58<?php echo $i?>StructurereferenteId' ).onchange(); } catch(id) { }
 
-			observeDisableFieldsOnValue(
-				'Decisionregressionorientationep58<?php echo $i;?>Decision',
-				[ 'Decisionregressionorientationep58<?php echo $i;?>TypeorientId', 'Decisionregressionorientationep58<?php echo $i;?>StructurereferenteId' ],
-				'accepte',
-				false
-			);
+			dependantSelect( 'Decisionregressionorientationep58<?php echo $i?>ReferentId', 'Decisionregressionorientationep58<?php echo $i?>StructurereferenteId' );
+			try { $( 'Decisionregressionorientationep58<?php echo $i?>ReferentId' ).onchange(); } catch(id) { }
 
 			$( 'Decisionregressionorientationep58<?php echo $i;?>Decision' ).observe( 'change', function() {
-				changeColspanFormAnnuleReporteEps( 'Decisionregressionorientationep58<?php echo $i;?>DecisionColumn', 3, 'Decisionregressionorientationep58<?php echo $i;?>Decision', [ 'Decisionregressionorientationep58<?php echo $i;?>TypeorientId', 'Decisionregressionorientationep58<?php echo $i;?>StructurereferenteId' ] );
+				changeColspanFormAnnuleReporteEps(
+					'Decisionregressionorientationep58<?php echo $i;?>DecisionColumn',
+					4,
+					'Decisionregressionorientationep58<?php echo $i;?>Decision',
+					[
+						'Decisionregressionorientationep58<?php echo $i;?>TypeorientId', 'Decisionregressionorientationep58<?php echo $i;?>StructurereferenteId', 'Decisionregressionorientationep58<?php echo $i;?>ReferentId'
+					]
+				);
 			});
-			changeColspanFormAnnuleReporteEps( 'Decisionregressionorientationep58<?php echo $i;?>DecisionColumn', 3, 'Decisionregressionorientationep58<?php echo $i;?>Decision', [ 'Decisionregressionorientationep58<?php echo $i;?>TypeorientId', 'Decisionregressionorientationep58<?php echo $i;?>StructurereferenteId' ] );
-		<?php endfor;?>
+			changeColspanFormAnnuleReporteEps(
+				'Decisionregressionorientationep58<?php echo $i;?>DecisionColumn',
+				4,
+				'Decisionregressionorientationep58<?php echo $i;?>Decision',
+				[
+					'Decisionregressionorientationep58<?php echo $i;?>TypeorientId',
+					'Decisionregressionorientationep58<?php echo $i;?>StructurereferenteId',
+					'Decisionregressionorientationep58<?php echo $i;?>ReferentId'
+				]
+			);
+
+
+			observeDisableFieldsOnValue(
+				'Decisionregressionorientationep58<?php echo $i;?>Decision',
+				[
+					'Decisionregressionorientationep58<?php echo $i;?>TypeorientId',
+					'Decisionregressionorientationep58<?php echo $i;?>StructurereferenteId',
+					'Decisionregressionorientationep58<?php echo $i;?>ReferentId',
+				],
+				'',
+				true
+			);
+
+		<?php endforeach;?>
 	});
 </script>

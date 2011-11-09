@@ -1,8 +1,4 @@
 <?php
-
-// debug( Set::flatten( $dossiers[$theme] ) );
-// debug($dossiers);
-
 	if( ( $theme == 'nonorientationproep58' ) || ( $theme == 'reorientationep93' ) || ( $theme == 'nonorientationproep93' ) || ( $theme == 'regressionorientationep58' ) || ( $theme == 'sanctionep58' ) ){
 		$controller = 'orientsstructs';
 	}
@@ -40,6 +36,7 @@
 				'Dossierep.created',
 				'Dossierep.themeep',
 				'Passagecommissionep.etatdossierep',
+				'Cov58.datecommission' => array( 'label' => 'Proposition validée en COV le' ),
 				'Foyer.enerreur' => array( 'type' => 'string', 'class' => 'foyer_enerreur' ),
 			),
 			array(
@@ -48,12 +45,10 @@
 					'Commissionseps::printConvocationBeneficiaire' => array( 'url' => array( 'controller' => 'commissionseps', 'action' => 'printConvocationBeneficiaire', '#Passagecommissionep.id#' ), 'disabled' => empty( $disableConvocationBeneficiaire ))
 				),
 				'options' => $options,
+				'id' => $theme,
 				'trClass' => $trClass,
-				'id' => $theme
 			)
 		);
-
 	}
 	echo "</div>";
-
 ?>

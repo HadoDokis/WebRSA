@@ -8,17 +8,17 @@
 			).' </li>';
 		?>
 	</ul>
-	
+
 	<?php if ( $sanctionsValides == false ) { ?>
 		<p class="error">Attention il y a une erreur dans vos sanctions. Merci de la corriger pour que les EPs fonctionnent correctement.</p>
 	<?php } ?>
-	
+
 	<?php if ( empty( $sanctions ) ) { ?>
 		<p class="notice">Aucune sanction n'a encore été enregistrée.</p>
 	<?php }
 	else { ?>
 		<table><thead>
-		
+
 		<?php
 			echo $xhtml->tag(
 				'tr',
@@ -36,15 +36,14 @@
 				).
 				$xhtml->tag(
 					'th',
-					'Actions'
+					'Actions',
+					array( 'colspan' => 2 )
 				)
 			);
 		?>
-		
 		</thead><tbody>
 
 		<?php
-			
 			foreach( $sanctions as $sanction ) {
 				echo $xhtml->tag(
 					'tr',
@@ -63,22 +62,24 @@
 					$xhtml->tag(
 						'td',
 						$xhtml->editLink( 'Modifier', array( 'controller' => 'listesanctionseps58', 'action' => 'edit', $sanction['Listesanctionep58']['id'] ), true )
+					).
+					$xhtml->tag(
+						'td',
+						$xhtml->deleteLink( 'Supprimer', array( 'controller' => 'listesanctionseps58', 'action' => 'delete', $sanction['Listesanctionep58']['id'] ), true )
 					)
 				);
 			}
-			
 		?>
-
 		</tbody></table>
 	<?php }
-		echo $default->button(
-			'back',
-			array(
-				'controller' => 'parametrages',
-				'action'     => 'index'
-			),
-			array(
-				'id' => 'Back'
-			)
-		);
+	echo $default->button(
+		'back',
+		array(
+			'controller' => 'parametrages',
+			'action'     => 'index'
+		),
+		array(
+			'id' => 'Back'
+		)
+	);
 	?>

@@ -1,8 +1,4 @@
 <?php
-
-// debug( Set::flatten( $dossiers[$theme] ) );
-// debug($dossiers);
-
 	if( ( $theme == 'nonorientationproep58' ) || ( $theme == 'reorientationep93' ) || ( $theme == 'nonorientationproep93' ) || ( $theme == 'regressionorientationep58' ) || ( $theme == 'sanctionep58' ) ){
 		$controller = 'orientsstructs';
 	}
@@ -17,13 +13,13 @@
 
 	if( in_array( 'dossierseps::choose', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) ) {
 		echo '<ul class="actionMenu"><li>'.$xhtml->affecteLink(
-            'Affecter les dossiers',
-            array( 'controller' => 'dossierseps', 'action' => 'choose', Set::classicExtract( $commissionep, 'Commissionep.id' ), "#{$theme}" )
-        ).' </li></ul>';
-    }
-    else {
-        echo '<li><span class="disabled"> Affecter les dossiers </span></li>';
-    }
+			'Affecter les dossiers',
+			array( 'controller' => 'dossierseps', 'action' => 'choose', Set::classicExtract( $commissionep, 'Commissionep.id' ), "#{$theme}" )
+		).' </li></ul>';
+	}
+	else {
+		echo '<li><span class="disabled"> Affecter les dossiers </span></li>';
+	}
 
 	if( empty( $dossiers[$theme] ) ) {
 		echo '<p class="notice">Il n\'existe aucun dossier de cette thématique associé à cette commission d\'EP.</p>';
@@ -48,12 +44,10 @@
 					'Commissionseps::printConvocationBeneficiaire' => array( 'url' => array( 'controller' => 'commissionseps', 'action' => 'printConvocationBeneficiaire', '#Passagecommissionep.id#' ), 'disabled' => empty( $disableConvocationBeneficiaire ))
 				),
 				'options' => $options,
+				'id' => $theme,
 				'trClass' => $trClass,
-				'id' => $theme
 			)
 		);
-
 	}
 	echo "</div>";
-
 ?>

@@ -54,7 +54,7 @@
 		* Retourne pour un personne_id donnée les queryDatas permettant de retrouver
 		* ses réorientationseps93 si elle en a en cours
 		*/
-		
+
 		public function qdReorientationEnCours( $personne_id ) {
 			return array(
 				'fields' => array(
@@ -182,6 +182,7 @@
 							'limit' => 1,
 							'Typeorient',
 							'Structurereferente',
+							'Referent',
 						),
 						'Foyer' => array(
 							'Adressefoyer' => array(
@@ -195,6 +196,7 @@
 					$this->alias => array(
 						'Typeorient',
 						'Structurereferente',
+						'Referent',
 					),
 					'Passagecommissionep' => array(
 						'conditions' => array(
@@ -211,6 +213,7 @@
 		}
 
 		public function prepareFormData( $commissionep_id, $datas, $niveauDecision ) {
+
 			// Doit-on prendre une décision à ce niveau ?
 			$themes = $this->Dossierep->Passagecommissionep->Commissionep->themesTraites( $commissionep_id );
 			$niveauFinal = $themes[Inflector::underscore($this->alias)];
@@ -220,11 +223,21 @@
 
 			$formData = array();
 			foreach( $datas as $key => $dossierep ) {
+// debug( $dossierep );
 				$formData['Decision'.Inflector::underscore( $this->alias )][$key]['passagecommissionep_id'] = @$datas[$key]['Passagecommissionep'][0]['id'];
 
 				// On modifie les enregistrements de cette étape
 				if( @$dossierep['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0]['etape'] == $niveauDecision ) {
 					$formData['Decision'.Inflector::underscore( $this->alias )][$key] = @$dossierep['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0];
+
+					$formData['Decision'.Inflector::underscore( $this->alias )][$key]['referent_id'] = implode(
+						'_',
+						array(
+							$formData['Decision'.Inflector::underscore( $this->alias )][$key]['structurereferente_id'],
+							$formData['Decision'.Inflector::underscore( $this->alias )][$key]['referent_id']
+						)
+					);
+
 					$formData['Decision'.Inflector::underscore( $this->alias )][$key]['structurereferente_id'] = implode(
 						'_',
 						array(
@@ -232,11 +245,22 @@
 							$formData['Decision'.Inflector::underscore( $this->alias )][$key]['structurereferente_id']
 						)
 					);
+
+
 				}
 				// On ajoute les enregistrements de cette étape
 				else {
 					if( $niveauDecision == 'ep' ) {
 						$formData['Decision'.Inflector::underscore( $this->alias )][$key]['typeorient_id'] = $dossierep[$this->alias]['typeorient_id'];
+
+						$formData['Decision'.Inflector::underscore( $this->alias )][$key]['referent_id'] = implode(
+							'_',
+							array(
+								$dossierep[$this->alias]['structurereferente_id'],
+								$dossierep[$this->alias]['referent_id']
+							)
+						);
+
 						$formData['Decision'.Inflector::underscore( $this->alias )][$key]['structurereferente_id'] = implode(
 							'_',
 							array(
@@ -244,12 +268,23 @@
 								$dossierep[$this->alias]['structurereferente_id']
 							)
 						);
+
+
 					}
 					elseif( $niveauDecision == 'cg' ) {
 						$formData['Decision'.Inflector::underscore( $this->alias )][$key]['decision'] = $dossierep['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0]['decision'];
 						$formData['Decision'.Inflector::underscore( $this->alias )][$key]['raisonnonpassage'] = $dossierep['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0]['raisonnonpassage'];
 						$formData['Decision'.Inflector::underscore( $this->alias )][$key]['commentaire'] = $dossierep['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0]['commentaire'];
 						$formData['Decision'.Inflector::underscore( $this->alias )][$key]['typeorient_id'] = $dossierep['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0]['typeorient_id'];
+
+						$formData['Decision'.Inflector::underscore( $this->alias )][$key]['referent_id'] = implode(
+							'_',
+							array(
+								$dossierep['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0]['structurereferente_id'],
+								$dossierep['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0]['referent_id']
+							)
+						);
+
 						$formData['Decision'.Inflector::underscore( $this->alias )][$key]['structurereferente_id'] = implode(
 							'_',
 							array(
@@ -257,9 +292,11 @@
 								$dossierep['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0]['structurereferente_id']
 							)
 						);
+
 					}
 				}
 			}
+// debug($formData);
 			return $formData;
 		}
 
@@ -274,57 +311,16 @@
 				return true;
 			}
 			else {
-				foreach( $themeData as $key => $datas ) {
-					if ( !empty( $datas['Decision'.Inflector::underscore( $this->alias )]['structurereferente_id'] ) ) {
-						list( $typeorient_id, $structurereferente_id ) = explode( '_', $datas['Decision'.Inflector::underscore( $this->alias )]['structurereferente_id'] );
-						$themeData[$key]['Decision'.Inflector::underscore( $this->alias )]['typeorient_id'] = $typeorient_id;
-						$themeData[$key]['Decision'.Inflector::underscore( $this->alias )]['structurereferente_id'] = $structurereferente_id;
-
-						$regressionorientation = $this->find(
-							'first',
-							array(
-								'fields' => array(
-									$this->alias.'.structurereferente_id',
-									$this->alias.'.referent_id'
-								),
-								'joins' => array(
-									array(
-										'table' => 'dossierseps',
-										'alias' => 'Dossierep',
-										'type' => 'INNER',
-										'conditions' => array(
-											$this->alias.'.dossierep_id = Dossierep.id'
-										)
-									),
-									array(
-										'table' => 'passagescommissionseps',
-										'alias' => 'Passagecommissionep',
-										'type' => 'INNER',
-										'conditions' => array(
-											'Passagecommissionep.dossierep_id = Dossierep.id'
-										)
-									),
-									array(
-										'table' => 'decisions'.Inflector::tableize( $this->alias ),
-										'alias' => 'Decision'.Inflector::underscore( $this->alias ),
-										'type' => 'INNER',
-										'conditions' => array(
-											'Decision'.Inflector::underscore( $this->alias ).'.passagecommissionep_id = Passagecommissionep.id'
-										)
-									)
-								),
-								'contain' => false
-							)
-						);
-
-						if ( $regressionorientation[$this->alias]['structurereferente_id'] == $structurereferente_id ) {
-							$themeData[$key]['Decision'.Inflector::underscore( $this->alias )]['referent_id'] = $regressionorientation[$this->alias]['referent_id'];
-						}
-						else {
-							$themeData[$key]['Decision'.Inflector::underscore( $this->alias )]['referent_id'] = null;
-						}
-					}
-				}
+// 				foreach( $themeData as $key => $datas ) {
+// 					if ( !empty( $datas['Decision'.Inflector::underscore( $this->alias )]['structurereferente_id'] ) ) {
+// 						list( $typeorient_id, $structurereferente_id ) = explode( '_', $datas['Decision'.Inflector::underscore( $this->alias )]['structurereferente_id'] );
+// 
+// 						$themeData[$key]['Decision'.Inflector::underscore( $this->alias )]['typeorient_id'] = $typeorient_id;
+// 						$themeData[$key]['Decision'.Inflector::underscore( $this->alias )]['structurereferente_id'] = $structurereferente_id;
+// 
+// 
+// 					}
+// 				}
 
 				$success = $this->Dossierep->Passagecommissionep->{'Decision'.Inflector::underscore( $this->alias )}->saveAll( $themeData, array( 'atomic' => false ) ) && $success;
 				$this->Dossierep->Passagecommissionep->updateAll(
@@ -396,7 +392,7 @@
 				)
 			);
 		}
-		
+
 		/**
 		* Récupération du courrier de convocation à l'allocataire pour un passage
 		* en commission donné.
@@ -416,7 +412,6 @@
 					)
 				)
 			);
-
 			return $this->ged( $gedooo_data, "Commissionep/convocationep_beneficiaire.odt" );
 		}
 
@@ -533,7 +528,6 @@
 			if( !$success ) {
 				return false;
 			}
-
 			return $pdf;
 		}
 
@@ -638,7 +632,6 @@
 					)
 				)
 			);
-
 			return $return;
 		}
 	}
