@@ -1041,7 +1041,7 @@
 				'list',
 				array(
 					'conditions' => array(
-						'Typeorient.lib_type_orient' => array( 'Emploi', 'Socioprofessionnelle' )
+						'Typeorient.lib_type_orient' => array( 'Emploi', 'Social', 'Socioprofessionnelle' )
 					),
 					'recursive' => -1
 				)
