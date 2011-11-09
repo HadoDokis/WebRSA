@@ -59,15 +59,7 @@
 					);
 
 					if( Configure::read( 'Cg.departement' )  == 93 ) {
-						$actions['Dossierseps::fichesynthese'] = array( 'url' => array( 'controller' => 'commissionseps', 'action' => 'fichesynthese',  Set::classicExtract( $commissionep, 'Commissionep.id' ), '#Dossierep.id#', false ) );
-					}
-					elseif ( Configure::read( 'Cg.departement' )  == 58 ) {
-						$actions['Commissionseps::impressionDecision'] = array( 'url' => array( 'controller' => 'commissionseps', 'action' => 'impressionDecision',  '#Passagecommissionep.id#' ), 'disabled' => ( $commissionep['Commissionep']['etatcommissionep'] == 'annule' ) );
-					}
-
-					echo $default2->index(
-						$syntheses,
-						array(
+						$fields = array(
 							'Dossierep.Personne.qual',
 							'Dossierep.Personne.nom',
 							'Dossierep.Personne.prenom',
@@ -76,7 +68,28 @@
 							'Dossierep.created',
 							'Dossierep.themeep',
 							'Passagecommissionep.etatdossierep',
-						),
+						);
+
+						$actions['Dossierseps::fichesynthese'] = array( 'url' => array( 'controller' => 'commissionseps', 'action' => 'fichesynthese',  Set::classicExtract( $commissionep, 'Commissionep.id' ), '#Dossierep.id#', false ) );
+					}
+					elseif ( Configure::read( 'Cg.departement' )  == 58 ) {
+						$fields = array(
+							'Dossierep.Personne.qual',
+							'Dossierep.Personne.nom',
+							'Dossierep.Personne.prenom',
+							'Dossierep.Personne.dtnai',
+							'Dossierep.Personne.Foyer.Adressefoyer.0.Adresse.locaadr',
+							'Dossierep.created',
+							'Dossierep.Nonorientationproep58.Decisionpropononorientationprocov58.Passagecov58.Cov58.datecommission' => array( 'label' => 'Proposition validée par la COV le' ),
+							'Dossierep.themeep',
+							'Passagecommissionep.etatdossierep',
+						);
+						$actions['Commissionseps::impressionDecision'] = array( 'url' => array( 'controller' => 'commissionseps', 'action' => 'impressionDecision',  '#Passagecommissionep.id#' ), 'disabled' => ( $commissionep['Commissionep']['etatcommissionep'] == 'annule' ) );
+					}
+
+					echo $default2->index(
+						$syntheses,
+						$fields,
 						array(
 							'actions' => $actions,
 							'options' => $options,

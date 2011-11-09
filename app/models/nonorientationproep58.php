@@ -5,6 +5,29 @@
 
 		public $useTable = 'nonorientationsproseps58';
 
+		public $belongsTo = array(
+			'Decisionpropononorientationprocov58' => array(
+				'className' => 'Decisionpropononorientationprocov58',
+				'foreignKey' => 'decisionpropononorientationprocov58_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			'Dossierep' => array(
+				'className' => 'Dossierep',
+				'foreignKey' => 'dossierep_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			'Orientstruct' => array(
+				'className' => 'Orientstruct',
+				'foreignKey' => 'orientstruct_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			)
+		);
 		/**
 		*
 		*/
@@ -93,5 +116,28 @@
 			return $success;
 		}
 
+		/**
+		* Fonction retournant un querydata qui va permettre de retrouver des dossiers d'EP
+		*/
+		public function qdListeDossier( $commissionep_id = null ) {
+			$querydata = parent::qdListeDossier( $commissionep_id );
+
+				$joins = array(
+					$this->Dossierep->Nonorientationproep58->join( 'Decisionpropononorientationprocov58' ),
+					$this->Dossierep->Nonorientationproep58->Decisionpropononorientationprocov58->join( 'Passagecov58' ),
+					$this->Dossierep->Nonorientationproep58->Decisionpropononorientationprocov58->Passagecov58->join( 'Cov58' )
+				);
+
+				$querydata['joins'] = array_merge( $querydata['joins'], $joins );
+// 				$querydata['fields'] = array_merge( $querydata['fields'], array_merge(
+// 					$this->Dossierep->Nonorientationproep58->Decisionpropononorientationprocov58->fields(  ),
+// 					$this->Dossierep->Nonorientationproep58->Decisionpropononorientationprocov58->Passagecov58->fields(),
+// 					$this->Dossierep->Nonorientationproep58->Decisionpropononorientationprocov58->Passagecov58->Cov58->fields()
+// 				) );
+				$querydata['fields'][] = 'Cov58.datecommission';
+
+
+			return $querydata;
+		}
 	}
 ?>

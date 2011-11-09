@@ -7,7 +7,7 @@ echo '<table><thead>
 <th>Création du dossier EP</th>
 <th colspan="2">Orientation actuelle</th>
 <th colspan="2">Proposition référent</th>
-<th colspan="3">Avis EPL</th>
+<th colspan="4">Avis EPL</th>
 <th>Observations</th>
 <th>Action</th>
 </tr>
@@ -31,6 +31,7 @@ echo '<table><thead>
 				array( @$options['Decisionregressionorientationep58']['decision'][Set::classicExtract( $decisionep, "decision" )], array( 'id' => "Decisionregressionorientationep58{$i}DecisionColumn" ) ),
 				array( @$liste_typesorients[Set::classicExtract( $decisionep, "typeorient_id" )], array( 'id' => "Decisionregressionorientationep58{$i}TypeorientId" ) ),
 				array( @$liste_structuresreferentes[Set::classicExtract( $decisionep, "structurereferente_id" )], array( 'id' => "Decisionregressionorientationep58{$i}StructurereferenteId" ) ),
+				array( @$liste_referents[Set::classicExtract( $decisionep, "referent_id" )], array( 'id' => "Decisionregressionorientationep58{$i}ReferentId" ) ),
 				Set::classicExtract( $decisionep, "commentaire" ),
 				$xhtml->printLink( 'Imprimer', array( 'controller' => 'commissionseps', 'action' => 'impressionDecision', $dossierep['Passagecommissionep'][0]['id'] ), ( $commissionep['Commissionep']['etatcommissionep'] != 'annule' ) ),
 			),
@@ -44,7 +45,7 @@ echo '<table><thead>
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
 		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
-			changeColspanViewInfosEps( 'Decisionregressionorientationep58<?php echo $i;?>DecisionColumn', '<?php echo Set::classicExtract( $dossiers, "{$theme}.liste.{$i}.Passagecommissionep.0.Decisionregressionorientationep58.0.decision" );?>', 3, [ 'Decisionregressionorientationep58<?php echo $i;?>TypeorientId', 'Decisionregressionorientationep58<?php echo $i;?>StructurereferenteId' ] );
+			changeColspanViewInfosEps( 'Decisionregressionorientationep58<?php echo $i;?>DecisionColumn', '<?php echo Set::classicExtract( $dossiers, "{$theme}.liste.{$i}.Passagecommissionep.0.Decisionregressionorientationep58.0.decision" );?>', 4, [ 'Decisionregressionorientationep58<?php echo $i;?>TypeorientId', 'Decisionregressionorientationep58<?php echo $i;?>StructurereferenteId', 'Decisionregressionorientationep58<?php echo $i;?>ReferentId' ] );
 		<?php endfor;?>
 	});
 </script>

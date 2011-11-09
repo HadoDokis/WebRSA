@@ -6,8 +6,9 @@ echo '<table><thead>
 <th>Date de naissance</th>
 <th>Création du dossier EP</th>
 <th>Date d\'orientation</th>
+<th>Proposition validée par la COV le</th>
 <th>Orientation actuelle</th>
-<th colspan="3">Avis EPL</th>
+<th colspan="4">Avis EPL</th>
 <th>Observations</th>
 <th>Action</th>
 </tr>
@@ -24,6 +25,8 @@ echo '<table><thead>
 				$locale->date( __( 'Locale->date', true ), $dossierep['Personne']['dtnai'] ),
 				$locale->date( __( 'Locale->date', true ), $dossierep['Dossierep']['created'] ),
 				$locale->date( __( 'Locale->date', true ), $dossierep['Nonorientationproep58']['Orientstruct']['date_valid'] ),
+				$locale->date( __( 'Locale->datetime', true ), Set::classicExtract( $dossierep, 'Nonorientationproep58.Decisionpropononorientationprocov58.Passagecov58.Cov58.datecommission' ) ),
+
 				implode(
 					' - ',
 					array(
@@ -43,6 +46,7 @@ echo '<table><thead>
 				array( @$options['Decisionnonorientationproep58']['decision'][Set::classicExtract( $decisionep, "decision" )], array( 'id' => "Decisionnonorientationproep58{$i}DecisionColumn" ) ),
 				array( @$liste_typesorients[Set::classicExtract( $decisionep, "typeorient_id" )], array( 'id' => "Decisionnonorientationproep58{$i}TypeorientId" ) ),
 				array( @$liste_structuresreferentes[Set::classicExtract( $decisionep, "structurereferente_id" )], array( 'id' => "Decisionnonorientationproep58{$i}StructurereferenteId" ) ),
+				array( @$liste_referents[Set::classicExtract( $decisionep, "referent_id" )], array( 'id' => "Decisionnonorientationproep58{$i}ReferentId" ) ),
 				Set::classicExtract( $decisionep, "commentaire" ),
 				$xhtml->printLink( 'Imprimer', array( 'controller' => 'commissionseps', 'action' => 'impressionDecision', $dossierep['Passagecommissionep'][0]['id'] ), ( $commissionep['Commissionep']['etatcommissionep'] != 'annule' ) )
 			),
@@ -52,11 +56,3 @@ echo '<table><thead>
 	}
 	echo '</tbody></table>';
 ?>
-
-<script type="text/javascript">
-	document.observe("dom:loaded", function() {
-		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
-			changeColspanViewInfosEps( 'Decisionnonorientationproep58<?php echo $i;?>DecisionColumn', '<?php echo Set::classicExtract( $dossiers, "{$theme}.liste.{$i}.Passagecommissionep.0.Decisionnonorientationproep58.0.decision" );?>', 3, [ 'Decisionnonorientationproep58<?php echo $i;?>TypeorientId', 'Decisionnonorientationproep58<?php echo $i;?>StructurereferenteId' ] );
-		<?php endfor;?>
-	});
-</script>

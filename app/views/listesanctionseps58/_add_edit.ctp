@@ -18,14 +18,14 @@
 		)
 	);
 
-    echo $default->button(
-        'back',
-        array(
-            'controller' => 'listesanctionseps58',
-            'action'     => 'index'
-        ),
-        array(
-            'id' => 'Back'
-        )
-    );
+	echo $default->button(
+		'back',
+		array(
+			'controller' => 'listesanctionseps58',
+			'action'     => 'index'
+		),
+		array(
+			'id' => 'Back'
+		)
+	);
 ?>

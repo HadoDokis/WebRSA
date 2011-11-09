@@ -45,7 +45,6 @@
 				}
 			}
 
-
 			$this->Orientstruct = ClassRegistry::init( 'Orientstruct' );
 
 			$modelName = $this->alias;
@@ -110,6 +109,53 @@
 			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
 
 			if( Configure::read( 'Cg.departement' ) == 58 ) {
+
+				// On souhaite n'afficher que les orientations en social ne possédant encore pas de dossier COV
+				/*
+					1°) On a un dossier COV en cours de passage (<> finalisé (accepté/refusé), <> reporté) // {cree,traitement,ajourne,finalise}
+					2°) Si COV accepte -> on a un dossier en EP -> OK (voir plus haut)
+					3°) Si COV refuse -> il doit réapparaître
+					4°) ATTENTION: accepté/refusé -> nouvelle orientation
+				*/
+				$conditions[] = array(
+					'Orientstruct.id NOT IN (
+						SELECT "proposnonorientationsproscovs58"."orientstruct_id"
+							FROM proposnonorientationsproscovs58
+								INNER JOIN "dossierscovs58"
+									ON ( "dossierscovs58"."id" = "proposnonorientationsproscovs58"."dossiercov58_id" )
+							WHERE
+								"dossierscovs58"."id" NOT IN (
+									SELECT "passagescovs58"."dossiercov58_id"
+									FROM passagescovs58
+									WHERE "passagescovs58"."etatdossiercov" = \'traite\'
+								)
+								AND "dossierscovs58"."themecov58" = \'proposnonorientationsproscovs58\'
+								AND "proposnonorientationsproscovs58"."orientstruct_id" = Orientstruct.id
+					)'/*,
+					'Orientstruct.id NOT IN (
+						SELECT "proposnonorientationsproscovs58"."orientstruct_id"
+							FROM proposnonorientationsproscovs58
+								INNER JOIN dossierscovs58 ON (
+									proposnonorientationsproscovs58.dossiercov58_id = dossierscovs58.id
+								)
+							WHERE
+								"proposnonorientationsproscovs58"."orientstruct_id" = Orientstruct.id
+								AND dossierscovs58.id IN (
+									SELECT "passagescovs58"."dossiercov58_id"
+									FROM passagescovs58
+									WHERE "passagescovs58"."etatdossiercov" = \'traite\'
+								)
+								AND ( DATE( NOW() ) - (
+									SELECT CAST( decisionsproposnonorientationsproscovs58.modified AS DATE )
+										FROM decisionsproposnonorientationsproscovs58
+											INNER JOIN passagescovs58 ON ( decisionsproposnonorientationsproscovs58.passagecov58_id = passagescovs58.id )
+											INNER JOIN dossierscovs58 ON ( passagescovs58.dossiercov58_id = dossierscovs58.id )
+										ORDER BY modified DESC
+										LIMIT 1
+								) ) <= '.Configure::read( $this->alias.'.delaiCreationContrat' ).'
+					)'*/
+				);
+
 				$conditionJoinTypeorient = 'Typeorient.id <>';
 				$valueJoinTypeorient = Configure::read( 'Typeorient.emploi_id' );
 			}
@@ -123,7 +169,9 @@
 					'Orientstruct.id',
 					'Orientstruct.date_valid',
 					'Orientstruct.user_id',
+					'Typeorient.id',
 					'Typeorient.lib_type_orient',
+					'Structurereferente.id',
 					'Structurereferente.lib_struc',
 					'Foyer.enerreur',
 					'Referent.qual',
@@ -271,9 +319,50 @@
 					$this->create( $nonorientationproep );
 					$success = $this->save() && $success;
 				}
-			}
+				else if ( ( Configure::read( 'Cg.departement' ) == 58 ) && $dossier['passagecov'] == 1 ) {
 
-			return $success;
+					$themecov58 = $this->Orientstruct->Propononorientationprocov58->Dossiercov58->Themecov58->find(
+						'first',
+						array(
+							'conditions' => array(
+								'Themecov58.name' => Inflector::tableize($this->Orientstruct->Propononorientationprocov58->alias)
+							),
+							'contain' => false
+						)
+					);
+
+					$dossiercov58 = array(
+						'Dossiercov58' => array(
+							'themecov58_id' => $themecov58['Themecov58']['id'],
+							'themecov58' => 'proposnonorientationsproscovs58',
+							'personne_id' => $dossier['personne_id']/*,
+							'typeorient_id' => $dossier['typeorient_id'],
+							'structurereferente_id' => $dossier['structurereferente_id'],
+							'orientstruct_id' => $dossier['orientstruct_id']*/
+						)
+					);
+					$this->Orientstruct->Propononorientationprocov58->Dossiercov58->create( $dossiercov58 );
+					$success = $this->Orientstruct->Propononorientationprocov58->Dossiercov58->save() && $success;
+
+					$propononorientationprocov58 = array(
+						'Propononorientationprocov58' => array(
+							'dossiercov58_id' => $this->Orientstruct->Propononorientationprocov58->Dossiercov58->id,
+							'personne_id' => $dossier['personne_id'],
+							'typeorient_id' => $dossier['typeorient_id'],
+							'structurereferente_id' => $dossier['structurereferente_id'],
+							'orientstruct_id' => $dossier['orientstruct_id'],
+							'rgorient' => $this->Orientstruct->rgorientMax( $dossiercov58['Dossiercov58']['personne_id'] ) + 1,
+							'datedemande' => date( 'd-m-Y' ),
+							'user_id' => ( isset( $dossier['user_id'] ) ) ? $dossier['user_id'] : null
+						)
+					);
+					$this->Orientstruct->Propononorientationprocov58->create( $propononorientationprocov58 );
+					$success = $this->Orientstruct->Propononorientationprocov58->save() && $success;
+				}
+// debug( $propononorientationprocov58);
+
+			}
+			return $success; //FIXME
 		}
 
 		public function qdDossiersParListe( $commissionep_id, $niveauDecision ) {
@@ -284,7 +373,7 @@
 				return array();
 			}
 
-			return array(
+			$querydata = array(
 				'conditions' => array(
 					'Dossierep.themeep' => Inflector::tableize( $this->alias ),
 					'Dossierep.id IN ( '.
@@ -328,9 +417,24 @@
 							'Structurereferente',
 							'order' => array( 'etape DESC' )
 						)
-					)
+					),
 				)
 			);
+
+			if( Configure::read( 'Cg.departement' ) == 58 ){
+				$querydata['contain'][$this->alias] = array_merge(
+					$querydata['contain'][$this->alias],
+					array(
+						'Decisionpropononorientationprocov58' => array(
+							'Passagecov58' => array(
+								'Cov58'
+							)
+						)
+					)
+				);
+			}
+
+			return $querydata;
 		}
 
 		public function prepareFormData( $commissionep_id, $datas, $niveauDecision ) {
@@ -345,9 +449,30 @@
 			foreach( $datas as $key => $dossierep ) {
 				$formData['Decision'.Inflector::underscore( $this->alias )][$key]['passagecommissionep_id'] = @$datas[$key]['Passagecommissionep'][0]['id'];
 
+
+				// On récupère l'orientation en question afin de trouver le typeorient_id, le structurereferente_id et le referent_id s'il existe
+				$orientstruct = $this->Orientstruct->find(
+					'first',
+					array(
+						'conditions' => array(
+							'Orientstruct.id' => $dossierep['Nonorientationproep58']['orientstruct_id']
+						),
+						'contain' => false
+					)
+				);
+
 				// On modifie les enregistrements de cette étape
 				if( @$dossierep['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0]['etape'] == $niveauDecision ) {
 					$formData['Decision'.Inflector::underscore( $this->alias )][$key] = @$dossierep['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0];
+
+					$formData['Decision'.Inflector::underscore( $this->alias )][$key]['referent_id'] = implode(
+						'_',
+						array(
+							$formData['Decision'.Inflector::underscore( $this->alias )][$key]['structurereferente_id'],
+							$formData['Decision'.Inflector::underscore( $this->alias )][$key]['referent_id']
+						)
+					);
+
 					$formData['Decision'.Inflector::underscore( $this->alias )][$key]['structurereferente_id'] = implode(
 						'_',
 						array(
@@ -358,16 +483,38 @@
 				}
 				// On ajoute les enregistrements de cette étape
 				else {
-					if( $niveauDecision == 'cg' ) {
+					if( $niveauDecision == 'ep' ) {
+						$formData['Decision'.Inflector::underscore( $this->alias )][$key]['typeorient_id'] = $orientstruct['Orientstruct']['typeorient_id'];
+
+						$formData['Decision'.Inflector::underscore( $this->alias )][$key]['referent_id'] = implode(
+							'_',
+							array(
+								$orientstruct['Orientstruct']['structurereferente_id'],
+								$orientstruct['Orientstruct']['referent_id']
+							)
+						);
+
+						$formData['Decision'.Inflector::underscore( $this->alias )][$key]['structurereferente_id'] = implode(
+							'_',
+							array(
+								$orientstruct['Orientstruct']['typeorient_id'],
+								$orientstruct['Orientstruct']['structurereferente_id']
+							)
+						);
+
+
+					}
+					elseif( $niveauDecision == 'cg' ) {
 						$formData['Decision'.Inflector::underscore( $this->alias )][$key]['decision'] = @$datas[$key]['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0]['decision'];
 						$formData['Decision'.Inflector::underscore( $this->alias )][$key]['raisonnonpassage'] = @$datas[$key]['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0]['raisonnonpassage'];
 						$formData['Decision'.Inflector::underscore( $this->alias )][$key]['commentaire'] = @$datas[$key]['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0]['commentaire'];
 						$formData['Decision'.Inflector::underscore( $this->alias )][$key]['structurereferente_id'] = @$datas[$key]['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0]['typeorient_id'].'_'.@$datas[$key]['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0]['structurereferente_id'];
 						$formData['Decision'.Inflector::underscore( $this->alias )][$key]['typeorient_id'] = @$datas[$key]['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0]['typeorient_id'];
+						$formData['Decision'.Inflector::underscore( $this->alias )][$key]['referent_id'] = @$datas[$key]['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0]['structurereferente_id'].'_'.@$datas[$key]['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0]['referent_id'];
 					}
 				}
 			}
-
+// debug($formData);
 			return $formData;
 		}
 
@@ -378,16 +525,16 @@
 		public function saveDecisions( $data, $niveauDecision ) {
 			$success = true;
 			if ( isset( $data['Decision'.Inflector::underscore( $this->alias )] ) && !empty( $data['Decision'.Inflector::underscore( $this->alias )] ) ) {
-				foreach( $data['Decision'.Inflector::underscore( $this->alias )] as $key => $values ) {
-					if ( isset( $values['structurereferente_id'] ) ) $structurereferente = explode( '_', $values['structurereferente_id'] );
-					if ( isset( $structurereferente[1] ) && $values['decision'] == 'reorientation' ) {
-						$data['Decision'.Inflector::underscore( $this->alias )][$key]['structurereferente_id'] = $structurereferente[1];
-					}
-					else {
-						$data['Decision'.Inflector::underscore( $this->alias )][$key]['structurereferente_id'] = null;
-						$data['Decision'.Inflector::underscore( $this->alias )][$key]['typeorient_id'] = null;
-					}
-				}
+// 				foreach( $data['Decision'.Inflector::underscore( $this->alias )] as $key => $values ) {
+// 					if ( isset( $values['structurereferente_id'] ) ) $structurereferente = explode( '_', $values['structurereferente_id'] );
+// 					if ( isset( $structurereferente[1] ) && $values['decision'] == 'reorientation' ) {
+// 						$data['Decision'.Inflector::underscore( $this->alias )][$key]['structurereferente_id'] = $structurereferente[1];
+// 					}
+// 					else {
+// 						$data['Decision'.Inflector::underscore( $this->alias )][$key]['structurereferente_id'] = null;
+// 						$data['Decision'.Inflector::underscore( $this->alias )][$key]['typeorient_id'] = null;
+// 					}
+// 				}
 
 				$success = $this->Dossierep->Passagecommissionep->{'Decision'.Inflector::underscore($this->alias)}->saveAll( Set::extract( $data, '/'.'Decision'.Inflector::underscore( $this->alias ) ), array( 'atomic' => false ) );
 				$this->Dossierep->Passagecommissionep->updateAll(
@@ -406,74 +553,6 @@
 		public function verrouiller( $commissionep_id, $etape ) {
 			return true;
 		}
-
-		/**
-		*
-		*/
-
-		/*public function finaliser( $commissionep_id, $etape, $user_id = null ) {
-			$decisionModelName = 'Decisionnonorientationproep'.Configure::read( 'Cg.departement' );
-
-			$commissionep = $this->Dossierep->Commissionep->find(
-				'first',
-				array(
-					'conditions' => array( 'Commissionep.id' => $commissionep_id ),
-					'contain' => array( 'Ep' )
-				)
-			);
-
-			$niveauDecisionFinale = $commissionep['Ep'][Inflector::underscore( $this->alias )];
-
-			$dossierseps = $this->find(
-				'all',
-				array(
-					'conditions' => array(
-						'Dossierep.commissionep_id' => $commissionep_id,
-						'Dossierep.themeep' => Inflector::tableize( $this->alias )
-					),
-					'contain' => array(
-						$decisionModelName => array(
-							'conditions' => array(
-								$decisionModelName.'.etape' => $etape
-							)
-						),
-						'Dossierep'
-					)
-				)
-			);
-
-			$success = true;
-
-			if( $niveauDecisionFinale == $etape ) {
-				foreach( $dossierseps as $dossierep ) {
-					if( !isset( $dossierep[$decisionModelName][0]['decision'] ) ) {
-						$success = false;
-					}
-					elseif ( $dossierep[$decisionModelName][0]['decision'] == 'reorientation' ) {
-						list($date_propo, $heure_propo) = explode( ' ', $dossierep[$this->alias]['created'] );
-						list($date_valid, $heure_valid) = explode( ' ', $commissionep['Commissionep']['dateseance'] );
-						$orientstruct = array(
-							'Orientstruct' => array(
-								'personne_id' => $dossierep['Dossierep']['personne_id'],
-								'typeorient_id' => @$dossierep[$decisionModelName][0]['typeorient_id'],
-								'structurereferente_id' => @$dossierep[$decisionModelName][0]['structurereferente_id'],
-								'date_propo' => $date_propo,
-								'date_valid' => $date_valid,
-								'statut_orient' => 'Orienté',
-								'rgorient' => $this->Orientstruct->rgorientMax( $dossierep['Dossierep']['personne_id'] ) + 1,
-								'etatorient' => 'decision',
-								'user_id' => $user_id
-							)
-						);
-
-						$this->Orientstruct->create( $orientstruct );
-						$success = $this->Orientstruct->save() && $success;
-			}
-				}
-			}
-
-			return $success;
-		}*/
 
 		/**
 		*
@@ -523,7 +602,7 @@
 				)
 			);
 		}
-		
+
 		/**
 		* Récupération du courrier de convocation à l'allocataire pour un passage
 		* en commission donné.
@@ -642,8 +721,8 @@
 			$pdf =  $this->ged(
 				$gedooo_data,
 				$modeleOdt,
-                false,
-                $options
+				false,
+				$options
 			);
 
 			$oldRecord['Pdf']['modele'] = 'Passagecommissionep';
@@ -657,13 +736,12 @@
 			if( !$success ) {
 				return false;
 			}
-
 			return $pdf;
 		}
 
 		/**
-		 * Fonction retournant un querydata qui va permettre de retrouver des dossiers d'EP
-		 */
+		* Fonction retournant un querydata qui va permettre de retrouver des dossiers d'EP
+		*/
 		public function qdListeDossier( $commissionep_id = null ) {
 			$return = array(
 				'fields' => array(
@@ -790,7 +868,6 @@
 					)
 				)
 			);
-
 			return $return;
 		}
 	}

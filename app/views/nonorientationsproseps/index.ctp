@@ -16,6 +16,40 @@
 ?>
 
 <?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+<script type="text/javascript">
+	function togglePassageCovEp( checkbox, cbClass, otherCbClass ) {
+		var otherCbName = $( checkbox ).readAttribute( 'name' ).replace( cbClass, otherCbClass );
+		var otherInputSelector = 'input[name="' + otherCbName + '"]';
+		if( $( checkbox ).checked ) {
+			$$( otherInputSelector ).each( function ( elmt ) { $( elmt ).removeClassName( 'enabled' ); $( elmt ).disable(); } );
+		}
+		else {
+			$$( otherInputSelector ).each( function ( elmt ) { $( elmt ).addClassName( 'enabled' ); $( elmt ).enable(); } );
+		}
+	}
+
+	function toutCocherCov( selecteur, cbClass, otherCbClass ) {
+		if( selecteur == undefined ) {
+			selecteur = 'input[type="checkbox"]';
+		}
+
+		$$( selecteur ).each( function( checkbox ) {
+			$( checkbox ).checked = true;
+			togglePassageCovEp( checkbox, cbClass, otherCbClass );
+		} );
+	}
+
+	function toutDecocherCov( selecteur, cbClass, otherCbClass ) {
+		if( selecteur == undefined ) {
+			selecteur = 'input[type="checkbox"]';
+		}
+
+		$$( selecteur ).each( function( checkbox ) {
+			$( checkbox ).checked = false;
+			togglePassageCovEp( checkbox, cbClass, otherCbClass );
+		} );
+	}
+</script>
 
 <?php echo $form->create( 'Filtre', array( 'url'=> Router::url( null, true ), 'id' => 'Filtre', 'class' => ( !empty( $this->data ) ? 'folded' : 'unfolded' ) ) );?>
 	<fieldset>
@@ -57,12 +91,16 @@
 					<th>Type d'orientation</th>
 					<th>Structure</th>
 					<th>Référent</th>
+					<?php if( Configure::read( 'Cg.departement' ) == 58 ):?>
+						<th>Passage en COV ?</th>
+					<?php endif;?>
 					<th>Passage en EP ?</th>
 				</tr>
 			</thead>
 			<tbody>
 				<?php foreach( $cohorte as $key => $orientstruct ):?>
 					<?php
+// debug($orientstruct);
 						// FIXME: date ouverture de droits -> voir flux instruction
 						echo "<tr>";
 							echo $xhtml->tag( 'td', $orientstruct['Dossier']['numdemrsa'] );
@@ -75,12 +113,23 @@
 							echo $xhtml->tag( 'td', $orientstruct['Structurereferente']['lib_struc'] );
 							echo $xhtml->tag( 'td', $orientstruct['Typeorient']['lib_type_orient'] );
 							echo $xhtml->tag( 'td', implode( ' ', array( $orientstruct['Referent']['qual'], $orientstruct['Referent']['nom'], $orientstruct['Referent']['prenom'] ) ) );
+							if( Configure::read( 'Cg.departement' ) == 58 ){
+								echo $xhtml->tag(
+									'td',
+									$form->input( 'Nonorientationproep.'.$key.'.orientstruct_id', array( 'type' => 'hidden', 'value' => $orientstruct['Orientstruct']['id'] ) ).
+									$form->input( 'Nonorientationproep.'.$key.'.typeorient_id', array( 'type' => 'hidden', 'value' => $orientstruct['Typeorient']['id'] ) ).
+									$form->input( 'Nonorientationproep.'.$key.'.structurereferente_id', array( 'type' => 'hidden', 'value' => $orientstruct['Structurereferente']['id'] ) ).
+									$form->input( 'Nonorientationproep.'.$key.'.personne_id', array( 'type' => 'hidden', 'value' => $orientstruct['Personne']['id'] ) ).
+									$form->input( 'Nonorientationproep.'.$key.'.user_id', array( 'type' => 'hidden', 'value' => $orientstruct['Orientstruct']['user_id'] ) ).
+									$form->input( 'Nonorientationproep.'.$key.'.passagecov', array( 'class' => 'enabled passagecov', 'type' => 'checkbox', 'label' => false ) )
+								);
+							}
 							echo $xhtml->tag(
 								'td',
 								$form->input( 'Nonorientationproep.'.$key.'.orientstruct_id', array( 'type' => 'hidden', 'value' => $orientstruct['Orientstruct']['id'] ) ).
 								$form->input( 'Nonorientationproep.'.$key.'.personne_id', array( 'type' => 'hidden', 'value' => $orientstruct['Personne']['id'] ) ).
 								$form->input( 'Nonorientationproep.'.$key.'.user_id', array( 'type' => 'hidden', 'value' => $orientstruct['Orientstruct']['user_id'] ) ).
-								$form->input( 'Nonorientationproep.'.$key.'.passageep', array( 'type' => 'checkbox', 'label' => false ) )
+								$form->input( 'Nonorientationproep.'.$key.'.passageep', array( 'class' => 'enabled passageep', 'type' => 'checkbox', 'label' => false ) )
 							);
 						echo "</tr>";
 					?>
@@ -97,8 +146,28 @@
 			}
 		?>
 		<?php echo $form->end( 'Enregistrer' );?>
-		<?php echo $form->button( 'Tout cocher', array( 'onclick' => 'toutCocher()' ) );?>
-		<?php echo $form->button( 'Tout décocher', array( 'onclick' => 'toutDecocher()' ) );?>
+		<?php
+			echo $form->button( 'Tout cocher COV', array( 'onclick' => 'toutCocherCov(\'input[type="checkbox"].passagecov.enabled\', \'passagecov\', \'passageep\')' ) );
+			echo $form->button( 'Tout décocher COV', array( 'onclick' => 'toutDecocherCov(\'input[type="checkbox"].passagecov.enabled\', \'passagecov\', \'passageep\')' ) );
+		?>
+		<?php
+			echo $form->button( 'Tout cocher EP', array( 'onclick' => 'toutCocherCov(\'input[type="checkbox"].passageep.enabled\', \'passageep\', \'passagecov\')' ) );
+			echo $form->button( 'Tout décocher EP', array( 'onclick' => 'toutDecocherCov(\'input[type="checkbox"].passageep.enabled\', \'passageep\', \'passagecov\')' ) );
+		?>
 	<?php endif;?>
 
 <?php endif;?>
+
+<script type="text/javascript">
+	$$( 'input[type="checkbox"].passagecov' ).each( function( checkbox ) {
+		$( checkbox ).observe( 'change', function() {
+			togglePassageCovEp( $(this), 'passagecov', 'passageep' );
+		} );
+	} );
+
+	$$( 'input[type="checkbox"].passageep' ).each( function( checkbox ) {
+		$( checkbox ).observe( 'change', function() {
+			togglePassageCovEp( $(this), 'passageep', 'passagecov' );
+		} );
+	} );
+</script>

@@ -6,8 +6,9 @@ echo '<table><thead>
 <th>Date de naissance</th>
 <th>Création du dossier EP</th>
 <th>Date d\'orientation</th>
+<th>Proposition validée en COV le</th>
 <th>Orientation actuelle</th>
-<th colspan="3">Avis EPL</th>
+<th colspan="4">Avis EPL</th>
 <th>Observations</th>
 </tr>
 </thead><tbody>';
@@ -25,6 +26,8 @@ echo '<table><thead>
 				$locale->date( __( 'Locale->date', true ), $dossierep['Personne']['dtnai'] ),
 				$locale->date( __( 'Locale->date', true ), $dossierep['Dossierep']['created'] ),
 				$locale->date( __( 'Locale->date', true ), $dossierep['Nonorientationproep58']['Orientstruct']['date_valid'] ),
+
+				$locale->date( __( 'Locale->datetime', true ), Set::classicExtract( $dossierep, 'Nonorientationproep58.Decisionpropononorientationprocov58.Passagecov58.Cov58.datecommission' ) ),
 				implode(
 					' - ',
 					Set::filter( array(
@@ -53,6 +56,10 @@ echo '<table><thead>
 					$form->input( "Decisionnonorientationproep58.{$i}.structurereferente_id", array( 'label' => false, 'options' => $structuresreferentes, 'empty' => true, 'type' => 'select' ) ),
 					( !empty( $this->validationErrors['Decisionnonorientationproep58'][$i]['structurereferente_id'] ) ? array( 'class' => 'error' ) : array() )
 				),
+				array(
+					$form->input( "Decisionnonorientationproep58.{$i}.referent_id", array( 'label' => false, 'options' => $referents, 'empty' => true, 'type' => 'select' ) ),
+					( !empty( $this->validationErrors['Decisionnonorientationproep58'][$i]['referent_id'] ) ? array( 'class' => 'error' ) : array() )
+				),
 				$form->input( "Decisionnonorientationproep58.{$i}.commentaire", array( 'label' =>false, 'type' => 'textarea' ) ).
 				$hiddenFields
 			),
@@ -69,20 +76,26 @@ echo '<table><thead>
 			dependantSelect( 'Decisionnonorientationproep58<?php echo $i?>StructurereferenteId', 'Decisionnonorientationproep58<?php echo $i?>TypeorientId' );
 			try { $( 'Decisionnonorientationproep58<?php echo $i?>StructurereferenteId' ).onchange(); } catch(id) { }
 
+			dependantSelect( 'Decisionnonorientationproep58<?php echo $i?>ReferentId', 'Decisionnonorientationproep58<?php echo $i?>StructurereferenteId' );
+			try { $( 'Decisionnonorientationproep58<?php echo $i?>ReferentId' ).onchange(); } catch(id) { }
+
+			$( 'Decisionnonorientationproep58<?php echo $i;?>Decision' ).observe( 'change', function() {
+				changeColspanFormAnnuleReporteEps( 'Decisionnonorientationproep58<?php echo $i;?>DecisionColumn', 4, 'Decisionnonorientationproep58<?php echo $i;?>Decision', [ 'Decisionnonorientationproep58<?php echo $i;?>TypeorientId', 'Decisionnonorientationproep58<?php echo $i;?>StructurereferenteId', 'Decisionnonorientationproep58<?php echo $i;?>ReferentId' ] );
+			});
+			changeColspanFormAnnuleReporteEps( 'Decisionnonorientationproep58<?php echo $i;?>DecisionColumn', 4, 'Decisionnonorientationproep58<?php echo $i;?>Decision', [ 'Decisionnonorientationproep58<?php echo $i;?>TypeorientId', 'Decisionnonorientationproep58<?php echo $i;?>StructurereferenteId', 'Decisionnonorientationproep58<?php echo $i;?>ReferentId' ] );
+
+
 			observeDisableFieldsOnValue(
 				'Decisionnonorientationproep58<?php echo $i;?>Decision',
 				[
 					'Decisionnonorientationproep58<?php echo $i;?>TypeorientId',
-					'Decisionnonorientationproep58<?php echo $i;?>StructurereferenteId'
+					'Decisionnonorientationproep58<?php echo $i;?>StructurereferenteId',
+					'Decisionnonorientationproep58<?php echo $i;?>ReferentId'
 				],
-				'reorientation',
-				false
+				'',
+				true
 			);
 
-			$( 'Decisionnonorientationproep58<?php echo $i;?>Decision' ).observe( 'change', function() {
-				changeColspanFormAnnuleReporteEps( 'Decisionnonorientationproep58<?php echo $i;?>DecisionColumn', 3, 'Decisionnonorientationproep58<?php echo $i;?>Decision', [ 'Decisionnonorientationproep58<?php echo $i;?>TypeorientId', 'Decisionnonorientationproep58<?php echo $i;?>StructurereferenteId' ] );
-			});
-			changeColspanFormAnnuleReporteEps( 'Decisionnonorientationproep58<?php echo $i;?>DecisionColumn', 3, 'Decisionnonorientationproep58<?php echo $i;?>Decision', [ 'Decisionnonorientationproep58<?php echo $i;?>TypeorientId', 'Decisionnonorientationproep58<?php echo $i;?>StructurereferenteId' ] );
 		<?php endfor;?>
 	});
 </script>
