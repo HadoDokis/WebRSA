@@ -291,8 +291,8 @@
 				'count',
 				array(
 					'conditions' => array(
-						'Dossiercov58.personne_id' => $personne_id,
-						'Dossiercov58.etapecov <>' => 'finalise'
+						'Dossiercov58.personne_id' => $personne_id/*,
+						'Dossiercov58.etapecov <>' => 'finalise'*/
 					),
 					'contain' => array(
 						'Propocontratinsertioncov58'
