@@ -368,7 +368,7 @@
 
 			if ( Configure::read( 'Cg.departement' ) == 58 && $rgorient_max <=1 ) {
 				$ajout_possible = $this->Orientstruct->Personne->Dossiercov58->ajoutPossible( $personne_id ) && $this->Orientstruct->ajoutPossible( $personne_id );
-// debug( $this->Orientstruct->Personne->Dossiercov58->ajoutPossible( $personne_id ));
+// /*/*debug( */*/$this->Orientstruct->Personne->Dossiercov58->ajoutPossible( $personne_id ));
 				$nbdossiersnonfinalisescovs = $this->Orientstruct->Personne->Dossiercov58->find(
 					'count',
 					array(
@@ -427,7 +427,7 @@
 						)
 					)
 				);
-debug($nbdossiersnonfinalisescovs);
+// debug($nbdossiersnonfinalisescovs);
 				$this->set( 'ajout_possible', $ajout_possible );
 				$this->set( 'nbdossiersnonfinalisescovs', $nbdossiersnonfinalisescovs );
 			}
