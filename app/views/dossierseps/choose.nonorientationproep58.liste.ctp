@@ -1,4 +1,5 @@
 <?php
+// debug( $dossiers[$theme] );
 	echo $default2->index(
 		$dossiers[$theme],
 		array(
@@ -9,6 +10,7 @@
 			'Personne.dtnai',
 			'Adresse.locaadr',
 			'Dossierep.created',
+			'Cov58.datecommission' => array( 'label' => 'Proposition validée en COV le' ),
 			'Foyer.enerreur' => array( 'type' => 'string', 'class' => 'foyer_enerreur' ),
 			'Passagecommissionep.chosen' => array( 'input' => 'checkbox' ),
 		),

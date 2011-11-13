@@ -1,3 +1,5 @@
+<?php
+?>
 <div id="tabbedWrapper" class="tabs">
 	<div id="dossiers">
 	<h1 class="title" class="aere">
