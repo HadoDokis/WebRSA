@@ -1,5 +1,4 @@
 <?php
-
 	echo $default2->index(
 		$dossiers[$theme],
 		array(
@@ -9,7 +8,7 @@
 			'Personne.prenom',
 			'Personne.dtnai',
 			'Adresse.locaadr',
-			'Typerdv.motifpassageep',
+			'StatutrdvTyperdv.motifpassageep',
 			'Dossierep.created',
 			'Foyer.enerreur' => array( 'type' => 'string', 'class' => 'foyer_enerreur' ),
 			'Passagecommissionep.chosen' => array( 'input' => 'checkbox' ),

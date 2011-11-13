@@ -52,8 +52,6 @@
 				'membreseps::editpresence',
 				'commissionseps::printConvocationBeneficiaire',
 				'commissionseps::printConvocationsBeneficiaires',
-// 				'membreseps::printConvocationParticipant',
-// 				'membreseps::printConvocationsParticipants',
 				'commissionseps::printOrdreDuJour',
 				'commissionseps::delete',
 			),
@@ -66,11 +64,9 @@
 				'commissionseps::printConvocationsBeneficiaires',
 			),
 			'presence' => array(
-// 				'commissionseps::ordredujour',
 				'membreseps::editpresence',
 				'commissionseps::traiterep',
 				'commissionseps::delete',
-// 				'commissionseps::printConvocationBeneficiaire',
 				'commissionseps::printOrdreDuJour',
 				'membreseps::printConvocationParticipant',
 				'membreseps::printConvocationsParticipants',
@@ -78,8 +74,6 @@
 				'commissionseps::printConvocationsBeneficiaires',
 			),
 			'decisionep' => array(
-// 				'commissionseps::ordredujour',
-				/*'commissionseps::printConvocationBeneficiaire',*/
 				'commissionseps::printOrdreDuJour',
 				'commissionseps::edit',
 				'commissionseps::traiterep',
@@ -94,7 +88,6 @@
 				'membreseps::printConvocationParticipant',
 				'membreseps::printConvocationsParticipants',
 				'commissionseps::printOrdreDuJour',
-// 				'commissionseps::ordredujour',
 				'commissionseps::impressionpv',
 				'commissionseps::traitercg',
 				'commissionseps::printConvocationBeneficiaire',
@@ -104,7 +97,6 @@
 				'membreseps::printConvocationParticipant',
 				'membreseps::printConvocationsParticipants',
 				'commissionseps::printOrdreDuJour',
-// 				'commissionseps::ordredujour',
 				'commissionseps::impressionpv',
 				'commissionseps::traitercg',
 				'commissionseps::finalisercg',
@@ -115,7 +107,6 @@
 				'membreseps::printConvocationParticipant',
 				'membreseps::printConvocationsParticipants',
 				'commissionseps::printOrdreDuJour',
-// 				'commissionseps::ordredujour',
 				'commissionseps::impressionpv',
 				'commissionseps::printDecision',
 				'commissionseps::printConvocationBeneficiaire',
@@ -163,9 +154,10 @@
 				$typesorients = $this->Commissionep->Passagecommissionep->Dossierep->Personne->Orientstruct->Typeorient->listOptions();
 				$structuresreferentes = $this->Commissionep->Passagecommissionep->Dossierep->Personne->Orientstruct->Structurereferente->list1Options();
 				$referents = $this->Commissionep->Passagecommissionep->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->Referent->listOptions();
-				if( Configure::read( 'Cg.departement' ) == 66 ) {
-					$options['Decisionsaisinepdoep66']['decisionpdo_id'] = $this->Commissionep->Passagecommissionep->Dossierep->Passagecommissionep->Decisionsaisinepdoep66->Decisionpdo->find('list');
-				}
+				///FIXME : à remettre quand les EPs départementales refonctionneront
+// 				if( Configure::read( 'Cg.departement' ) == 66 ) {
+// 					$options['Decisionsaisinepdoep66']['decisionpdo_id'] = $this->Commissionep->Passagecommissionep->Dossierep->Saisinepdoep66->Decisionsaisinepdoep66->Decisionpdo->find('list');
+// 				}
 			}
 
 			$liste_typesorients = $this->Commissionep->Passagecommissionep->Dossierep->Personne->Orientstruct->Typeorient->find( 'list' );
@@ -288,7 +280,6 @@
 				$this->set( 'commissionseps', $commissionseps );
 			}
 
-// debug($commissionseps);
 			$this->_setOptions();
 			$compteurs = array(
 				'Ep' => $this->Commissionep->Ep->find( 'count' )
@@ -405,7 +396,7 @@
 		*
 		*/
 
-		function ajaxadresse( $structurereferente_id = null ) { // FIXME
+		public function ajaxadresse( $structurereferente_id = null ) { // FIXME
 			Configure::write( 'debug', 0 );
 			$dataStructurereferente_id = Set::extract( $this->data, 'Commissionep.structurereferente_id' );
 			$structurereferente_id = ( empty( $structurereferente_id ) && !empty( $dataStructurereferente_id ) ? $dataStructurereferente_id : $structurereferente_id );
@@ -463,7 +454,6 @@
 		protected function _traiter( $commissionep_id, $niveauDecision ) {
 			if( isset( $this->params['form']['Valider'] ) ) {
 				$this->_finaliser( $commissionep_id, $niveauDecision );
-/*				$this->redirect( array( 'controller' => 'commissionseps', 'action' => 'traiter'.$niveauDecision, $commissionep_id ) );*/
 			}
 
 			$commissionep = $this->Commissionep->find(
@@ -563,7 +553,6 @@
 
 				$this->_setFlashResult( 'Save', $success );
 				if( $success ) {
-					//$this->Commissionep->rollback();
 					$this->Commissionep->commit();
 					$this->redirect( array( 'action' => "decision{$niveauDecision}", $commissionep_id ) );
 				}
@@ -572,14 +561,6 @@
 				}
 			}
 		}
-
-		/**
-		* Finalisation de la séance au niveau EP
-		*/
-
-		/*public function finaliserep( $commissionep_id ) {
-			$this->_finaliser( $commissionep_id, 'ep' );
-		}*/
 
 		/**
 		* Traitement d'une séance au niveau de décision CG
@@ -592,15 +573,6 @@
 		}
 
 		/**
-		* Finalisation de la séance au niveau CG
-		*/
-
-		/*public function finalisercg( $commissionep_id ) {
-			$this->_finaliser( $commissionep_id, 'cg' );
-		}*/
-
-
-		/**
 		* Affiche la séance EP avec la liste de ses membres.
 		* @param integer $commissionep_id
 		*/
@@ -609,16 +581,11 @@
 				'first', array(
 					'conditions' => array( 'Commissionep.id' => $commissionep_id ),
 					'contain' => array(
-	// 					'Structurereferente',
-	// 					'Dossierep' => array(
-	// 						'Personne'
-	// 					),
-						'Ep' => array( 'Regroupementep'/*, 'Membreep'*/),
+						'Ep' => array( 'Regroupementep'),
 						'CommissionepMembreep'
 					)
 				)
 			);
-// 			debug( $commissionep );
 			if ( Configure::read( 'Cg.departement' ) == 66 ) {
 				$listeMembrePresentRemplace = array();
 				foreach( $commissionep['CommissionepMembreep'] as $membre ) {
@@ -677,31 +644,47 @@
 				$countDossiers += count($dossiers[$theme]);
 			}
 
-			$dossierseps = $this->Commissionep->Passagecommissionep->find(
-				'all',
-				array(
-					'conditions' => array(
-						'Passagecommissionep.commissionep_id' => $commissionep_id
-					),
-					'contain' => array(
-						'Dossierep' => array(
-							'Personne' => array(
-								'Foyer' => array(
-									'fields' => array(
-										$this->Commissionep->Passagecommissionep->Dossierep->Personne->Foyer->vfFoyerEnerreur()
+
+			$querydata = array(
+				'conditions' => array(
+					'Passagecommissionep.commissionep_id' => $commissionep_id
+				),
+				'contain' => array(
+					'Dossierep' => array(
+						'Personne' => array(
+							'Foyer' => array(
+								'fields' => array(
+									$this->Commissionep->Passagecommissionep->Dossierep->Personne->Foyer->vfFoyerEnerreur()
+								),
+								'Adressefoyer' => array(
+									'conditions' => array(
+										'Adressefoyer.rgadr' => '01'
 									),
-									'Adressefoyer' => array(
-										'conditions' => array(
-											'Adressefoyer.rgadr' => '01'
-										),
-										'Adresse'
-									)
+									'Adresse'
 								)
 							)
 						)
 					)
 				)
 			);
+
+			if( Configure::read( 'Cg.departement' ) == 58 ){
+				$querydata['contain']['Dossierep'] = array_merge(
+					$querydata['contain']['Dossierep'],
+					array(
+						'Nonorientationproep58' => array(
+							'Decisionpropononorientationprocov58' => array(
+								'Passagecov58' => array(
+									'Cov58'
+								)
+							)
+						)
+					)
+				);
+			}
+
+			$dossierseps = $this->Commissionep->Passagecommissionep->find( 'all', $querydata );
+
 
 			$this->set( compact( 'dossierseps' ) );
 			$this->set(compact('dossiers'));
@@ -1126,7 +1109,7 @@
 		* Impression des décisions émises par la commission de l'EP
 		* Représente le point 11 du processus de l'EP
 		*/
-
+/*
 		public function printDecision( $commissionep_id ) {
 			$commissionep = $this->Commissionep->find(
 				'first',
@@ -1170,7 +1153,7 @@
 				$this->Session->setFlash( 'Impossible de générer les décisions émises par la commission d\'EP', 'default', array( 'class' => 'error' ) );
 				$this->redirect( $this->referer() );
 			}
-		}
+		}*/
 
 		/**
 		* Affichage des décisions de la commission d'EP niveau EP
@@ -1210,28 +1193,44 @@
 			$dossiers = $this->Commissionep->dossiersParListe( $commissionep_id, $niveauDecision );
 
 			if( in_array( Configure::read( 'Cg.departement' ), array( 58, 93 ) ) ) {
-				$syntheses = $this->Commissionep->Passagecommissionep->find(
-					'all',
-					array(
-						'conditions' => array(
-							'Passagecommissionep.commissionep_id' => $commissionep_id
-						),
-						'contain' => array(
-							'Dossierep' => array(
-								'Personne' => array(
-									'Foyer' => array(
-										'Adressefoyer' => array(
-											'conditions' => array(
-												'Adressefoyer.rgadr' => '01'
-											),
-											'Adresse'
-										)
+
+				$querydata = array(
+					'conditions' => array(
+						'Passagecommissionep.commissionep_id' => $commissionep_id
+					),
+					'contain' => array(
+						'Dossierep' => array(
+							'Personne' => array(
+								'Foyer' => array(
+									'Adressefoyer' => array(
+										'conditions' => array(
+											'Adressefoyer.rgadr' => '01'
+										),
+										'Adresse'
 									)
 								)
 							)
 						)
 					)
 				);
+
+				if( Configure::read( 'Cg.departement' ) == 58 ){
+					$querydata['contain']['Dossierep'] = array_merge(
+						$querydata['contain']['Dossierep'],
+						array(
+							'Nonorientationproep58' => array(
+								'Decisionpropononorientationprocov58' => array(
+									'Passagecov58' => array(
+										'Cov58'
+									)
+								)
+							)
+						)
+					);
+				}
+
+				$syntheses = $this->Commissionep->Passagecommissionep->find( 'all', $querydata );
+
 
 				$this->set( compact( 'syntheses' ) );
 				$this->set('etatsActions', $this->etatsActions);
