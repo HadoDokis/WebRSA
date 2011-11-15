@@ -625,6 +625,14 @@ die();
 					$success = $this->{$this->modelClass}->Aideapre66->save( $linkedData ) && $success;
 				}
 
+
+				// SAuvegarde des numéros ed téléphone si ceux-ci ne sont pas présents en amont
+				$isDataPersonne = Set::filter( $this->data['Personne'] );
+				if( !empty( $isDataPersonne ) ){
+					$success = $this->{$this->modelClass}->Personne->save( array( 'Personne' => $this->data['Personne'] ) ) && $success;
+				}
+
+
 				if( $success ) {
 					$this->Jetons->release( $dossier_id );
 					$this->{$this->modelClass}->commit();
