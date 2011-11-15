@@ -56,7 +56,7 @@
 			?>
 			<?php echo $form->input( 'Filtre.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
 			<?php if(Configure::read( 'Cg.departement' ) != 58 ){
-					echo $form->input( 'Filtre.forme_ci', array(  /*'label' => false,*/ 'type' => 'radio', 'options' => $forme_ci /*array( 'S' => 'Simple', 'C' => 'Complexe' )*/, 'legend' => 'Forme du contrat', 'default' => 'S', 'div' => false, ) );
+					echo $form->input( 'Filtre.forme_ci', array(  /*'label' => false,*/ 'type' => 'radio', 'options' => $forme_ci /*array( 'S' => 'Simple', 'C' => 'Complexe' )*/, 'legend' => 'Forme du contrat', /*'default' => 'S',*/ 'div' => false, ) );
 				}
 			?>
 			<?php echo $form->input( 'Filtre.date_saisi_ci', array( 'label' => 'Filtrer par date de saisie du contrat', 'type' => 'checkbox' ) );?>
@@ -120,6 +120,7 @@
 					<th><?php echo $xpaginator->sort( 'Date de saisie du contrat', 'Contratinsertion.date_saisi_ci' );?></th>
 					<th><?php echo $xpaginator->sort( 'Rang du contrat', 'Contratinsertion.rg_ci' );?></th>
 					<th><?php echo $xpaginator->sort( 'Décision', 'Contratinsertion.decision_ci' ).$xpaginator->sort( ' ', 'Contratinsertion.datevalidation_ci' );?></th>
+					<th><?php echo $xpaginator->sort( 'Forme du CER', 'Contratinsertion.forme_ci' );?></th>
 					<th><?php echo $xpaginator->sort( 'Position du CER', 'Contratinsertion.positioncer' );?></th>
 					<th class="action noprint">Actions</th>
 					<th class="innerTableHeader noprint">Informations complémentaires</th>
@@ -160,6 +161,7 @@
 								h( $locale->date( 'Date::short', Set::extract( $contrat, 'Contratinsertion.date_saisi_ci' ) ) ),//date_short( $contrat['Contratinsertion']['date_saisi_ci'] ) ),
 								h( $contrat['Contratinsertion']['rg_ci'] ),
 								h( Set::extract( $decision_ci, Set::extract( $contrat, 'Contratinsertion.decision_ci' ) ).' '.$locale->date( 'Date::short', Set::extract( $contrat, 'Contratinsertion.datevalidation_ci' ) ) ),//date_short($contrat['Contratinsertion']['datevalidation_ci']) ),
+								h( Set::enum( $contrat['Contratinsertion']['forme_ci'], $forme_ci ) ),
 								h( Set::enum( $contrat['Contratinsertion']['positioncer'], $numcontrat['positioncer'] ) ),
 								array(
 									$xhtml->viewLink(

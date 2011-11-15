@@ -255,6 +255,7 @@
 					'"Contratinsertion"."structurereferente_id"',
 					'"Contratinsertion"."rg_ci"',
 					'"Contratinsertion"."decision_ci"',
+					'"Contratinsertion"."forme_ci"',
 					'"Contratinsertion"."dd_ci"',
 					'"Contratinsertion"."df_ci"',
 					'"Contratinsertion"."datevalidation_ci"',
