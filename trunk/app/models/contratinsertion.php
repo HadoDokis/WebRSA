@@ -328,7 +328,7 @@
 				'exclusive' => '',
 				'finderQuery' => '',
 				'counterQuery' => ''
-			),
+			)/*,
 			'Objetcontratprecedent' => array(
 				'className' => 'Objetcontratprecedent',
 				'foreignKey' => 'contratinsertion_id',
@@ -341,7 +341,7 @@
 				'exclusive' => '',
 				'finderQuery' => '',
 				'counterQuery' => ''
-			),
+			),*/
 		);
 
 		public $hasAndBelongsToMany = array(

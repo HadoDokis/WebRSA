@@ -848,8 +848,8 @@
 						),
 						'contain' => array(
 							'Autreavissuspension',
-							'Autreavisradiation',
-							'Objetcontratprecedent'
+							'Autreavisradiation'/*,
+							'Objetcontratprecedent'*/
 						)
 					)
 				);
@@ -1041,34 +1041,34 @@
 
 				$success = $this->Contratinsertion->save( $this->data );
 
-				if( $success ) {
-					$contratinsertion_id = $this->Contratinsertion->id;
-
-					// Si on avat des entrées Objetcontratprecedent pour le CER, on commence par les supprimer
-					$recordFound = $this->Contratinsertion->Objetcontratprecedent->find(
-						'first',
-						array(
-							'conditions' => array( 'Objetcontratprecedent.contratinsertion_id' => $contratinsertion_id ),
-							'contain' => false
-						)
-					);
-					if( !empty( $recordFound ) ) {
-						$success = $this->Contratinsertion->Objetcontratprecedent->deleteAll(
-							array( 'Objetcontratprecedent.contratinsertion_id' => $contratinsertion_id )
-						) && $success;
-					}
-
-					if ( isset( $this->data['Objetcontratprecedent']['Objetcontratprecedent'] ) && !empty( $this->data['Objetcontratprecedent']['Objetcontratprecedent'] ) ) {
-						foreach( $this->data['Objetcontratprecedent']['Objetcontratprecedent'] as $objet ) {
-							$objetcontratprecedant['Objetcontratprecedent'] = array(
-								'contratinsertion_id' => $contratinsertion_id,
-								'objetcerprec' => $objet
-							);
-							$this->Contratinsertion->Objetcontratprecedent->create( $objetcontratprecedant );
-							$success = $this->Contratinsertion->Objetcontratprecedent->save() && $success;
-						}
-					}
-				}
+// 				if( $success ) {
+// 					$contratinsertion_id = $this->Contratinsertion->id;
+// 
+// 					// Si on avat des entrées Objetcontratprecedent pour le CER, on commence par les supprimer
+// 					$recordFound = $this->Contratinsertion->Objetcontratprecedent->find(
+// 						'first',
+// 						array(
+// 							'conditions' => array( 'Objetcontratprecedent.contratinsertion_id' => $contratinsertion_id ),
+// 							'contain' => false
+// 						)
+// 					);
+// 					if( !empty( $recordFound ) ) {
+// 						$success = $this->Contratinsertion->Objetcontratprecedent->deleteAll(
+// 							array( 'Objetcontratprecedent.contratinsertion_id' => $contratinsertion_id )
+// 						) && $success;
+// 					}
+// 
+// 					if ( isset( $this->data['Objetcontratprecedent']['Objetcontratprecedent'] ) && !empty( $this->data['Objetcontratprecedent']['Objetcontratprecedent'] ) ) {
+// 						foreach( $this->data['Objetcontratprecedent']['Objetcontratprecedent'] as $objet ) {
+// 							$objetcontratprecedant['Objetcontratprecedent'] = array(
+// 								'contratinsertion_id' => $contratinsertion_id,
+// 								'objetcerprec' => $objet
+// 							);
+// 							$this->Contratinsertion->Objetcontratprecedent->create( $objetcontratprecedant );
+// 							$success = $this->Contratinsertion->Objetcontratprecedent->save() && $success;
+// 						}
+// 					}
+// 				}
 
 				if( Configure::read( 'nom_form_ci_cg' ) != 'cg66' ) {
 					$dspStockees = $this->_getDsp( $personne_id );
