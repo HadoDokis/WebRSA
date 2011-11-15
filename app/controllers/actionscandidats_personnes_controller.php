@@ -70,6 +70,7 @@
 			$this->set( 'sitfam', $this->Option->sitfam() );
 			$this->set( 'sect_acti_emp', $this->Option->sect_acti_emp() );
 			$this->set( 'rolepers', $this->Option->rolepers() );
+			$this->set( 'typeserins', $this->Option->typeserins() );
 			$this->set( 'typeservice', $this->ActioncandidatPersonne->Personne->Orientstruct->Serviceinstructeur->find( 'first' ) );
 			$this->set( compact( 'options', 'typevoie' ) );
 		}
@@ -472,25 +473,29 @@
 			$this->set( 'personne_id', $personne_id );
 
 			///Données récupérées propre à la personne
-			$personne = $this->{$this->modelClass}->Personne->newDetailsCi( $personne_id );
+// 			$personne = $this->{$this->modelClass}->Personne->newDetailsCi( $personne_id, $this->Session->read( 'Auth.User.id' ) );
 
-			///Données Contrat engagement
-			$contrat = $this->{$this->modelClass}->Personne->Contratinsertion->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Contratinsertion.personne_id' => $personne_id
-					),
-					'recursive' => -1,
-					'order' => 'Contratinsertion.date_saisi_ci DESC'
-				)
-			);
-			if( !empty( $contrat ) ) {
-				$personne = Set::merge( $personne, $contrat );
-			}
 
+			$personne = $this->{$this->modelClass}->Personne->newDetailsCi( $personne_id, $this->Session->read( 'Auth.User.id' ) );
 			$this->set( 'personne', $personne );
 
+			///Données Contrat engagement
+// 			$contrat = $this->{$this->modelClass}->Personne->Contratinsertion->find(
+// 				'first',
+// 				array(
+// 					'conditions' => array(
+// 						'Contratinsertion.personne_id' => $personne_id
+// 					),
+// 					'recursive' => -1,
+// 					'order' => 'Contratinsertion.date_saisi_ci DESC'
+// 				)
+// 			);
+// 			if( !empty( $contrat ) ) {
+// 				$personne = Set::merge( $personne, $contrat );
+// 			}
+
+// 			$this->set( 'personne', $personne );
+// debug($personne);
 			///Nombre d'enfants par foyer
 			$nbEnfants = $this->ActioncandidatPersonne->Personne->Foyer->nbEnfants( Set::classicExtract( $personne, 'Personne.foyer_id' ) );
 			$this->set( 'nbEnfants', $nbEnfants );
@@ -538,6 +543,13 @@
 					///Récupération des Dsps et sauvegarde
 					$this->ActioncandidatPersonne->Personne->Dsp->create();
 					$this->ActioncandidatPersonne->Personne->Dsp->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) );
+
+					// SAuvegarde des numéros ed téléphone si ceux-ci ne sont pas présents en amont
+					$isDataPersonne = Set::filter( $this->data['Personne'] );
+					if( !empty( $isDataPersonne ) ){
+						$success = $this->{$this->modelClass}->Personne->save( array( 'Personne' => $this->data['Personne'] ) );
+					}
+
 
 					if( $this->ActioncandidatPersonne->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
 

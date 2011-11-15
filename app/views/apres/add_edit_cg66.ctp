@@ -157,7 +157,7 @@
         echo '<div>';
         echo $form->input( 'Modecontact.0.foyer_id', array( 'type' => 'hidden', 'value' => $foyer_id ) );
         echo $form->input( 'Modecontact.1.foyer_id', array( 'type' => 'hidden', 'value' => $foyer_id ) );
-
+        echo $form->input( 'Personne.id', array( 'type' => 'hidden', 'value' => $personne_id ) );
         echo $form->input( "{$this->modelClass}.personne_id", array( 'type' => 'hidden', 'value' => $personne_id ) );
         echo '</div>';
     ?>
@@ -213,46 +213,47 @@
                         <strong>Adresse : </strong><br /><?php echo Set::classicExtract( $personne, 'Adresse.numvoie' ).' '.Set::enum( Set::classicExtract( $personne, 'Adresse.typevoie' ), $typevoie ).' '.Set::classicExtract( $personne, 'Adresse.nomvoie' ).'<br /> '.Set::classicExtract( $personne, 'Adresse.codepos' ).' '.Set::classicExtract( $personne, 'Adresse.locaadr' );?>
                     </td>
                 </tr>
-                <tr>
-                    <td class="mediumSize noborder">
-                        <strong>Tél. fixe : </strong>
-                        <?php
-                            $numtelfixe = Set::classicExtract( $personne, 'Foyer.Modecontact.0.numtel' );
-                            if( !empty( $numtelfixe ) ) {
-                                echo Set::extract( $personne, 'Foyer.Modecontact.0.numtel' );
-                            }
-                            else{
-                                echo $xform->input( 'Modecontact.0.numtel', array( 'label' => false, 'type' => 'text' ) );
-                            }
-                        ?>
-                    </td>
-                    <td class="mediumSize noborder">
-                        <strong>Tél. portable : </strong>
-                        <?php
-                            $numtelport = Set::extract( $personne, 'Foyer.Modecontact.1.numtel' );
-                            if( !empty( $numtelport ) ) {
-                                echo Set::extract( $personne, 'Foyer.Modecontact.1.numtel' );
-                            }
-                            else{
-                                echo $xform->input( 'Modecontact.1.numtel', array( 'label' => false, 'type' => 'text' ) );
-                            }
-                        ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2" class="mediumSize noborder">
-                        <strong>Adresse mail : </strong>
-                        <?php
-                            $email = Set::extract( $personne, 'Foyer.Modecontact.0.adrelec' );
-                            if( !empty( $email ) ) {
-                                echo Set::extract( $personne, 'Foyer.Modecontact.0.adrelec' );
-                            }
-                            else{
-                                echo $xform->input( 'Modecontact.0.adrelec', array( 'label' => false, 'type' => 'text' ) );
-                            }
-                        ?>
-                    </td>
-                </tr>
+				<tr>
+					<td class="mediumSize noborder">
+						<strong>Tél. fixe : </strong>
+						<?php
+							$numtelfixe = Set::classicExtract( $personne, 'Personne.numfixe' );
+							if( !empty( $numtelfixe ) ) {
+								echo Set::extract( $personne, 'Personne.numfixe' );
+							}
+							else{
+								echo $xform->input( 'Personne.numfixe', array( 'label' => false, 'type' => 'text' ) );
+
+							}
+						?>
+					</td>
+					<td class="mediumSize noborder">
+						<strong>Tél. portable : </strong>
+						<?php
+							$numtelport = Set::extract( $personne, 'Personne.numport' );
+							if( !empty( $numtelport ) ) {
+								echo Set::extract( $personne, 'Personne.numport' );
+							}
+							else{
+								echo $xform->input( 'Personne.numport', array( 'label' => false, 'type' => 'text' ) );
+							}
+						?>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" class="mediumSize noborder">
+						<strong>Adresse mail : </strong>
+						<?php
+							$email = Set::extract( $personne, 'Personne.email' );
+							if( !empty( $email ) ) {
+								echo Set::extract( $personne, 'Personne.email' );
+							}
+							else{
+								echo $xform->input( 'Personne.email', array( 'label' => false, 'type' => 'text' ) );
+							}
+						?>
+					</td>
+				</tr>
             </table>
         </fieldset>
 

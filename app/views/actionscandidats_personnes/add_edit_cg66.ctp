@@ -32,6 +32,7 @@
 					'ActioncandidatPersonne.personne_id' => array( 'value' => $personneId, 'type' => 'hidden' ),
 					'ActioncandidatPersonne.actioncandidat_id' => array( 'type' => 'select', 'options' => $actionsfiche ),
 					'ActioncandidatPersonne.referent_id' => array( 'value' => $referentId ),
+					'Personne.id' => array( 'value' => $personneId, 'type' => 'hidden' ),
 				),
 				array(
 					'domain' => $domain,
@@ -63,88 +64,92 @@
 	</fieldset>
 	<fieldset id="infocandidat">
 		<legend>Informations du candidat</legend>
-		<?php
-			echo $default->view(
-				$personne,
-				array(
-					'Personne.qual',
-					'Personne.nom',
-					'Personne.prenom'
-				),
-				array(
-					'widget' => 'dl',
-					'class' => 'allocataire infos',
-					'options' => $options
-				)
-			);
+		<table class="wide noborder">
+			<tr>
+				<td class="mediumSize noborder">
+					<strong>Statut de la personne : </strong><?php echo Set::extract( $rolepers, Set::extract( $personne, 'Prestation.rolepers' ) ); ?>
+					<br />
+					<strong>Nom : </strong><?php echo Set::enum( Set::classicExtract( $personne, 'Personne.qual') , $qual ).' '.Set::classicExtract( $personne, 'Personne.nom' );?>
+					<br />
+					<strong>Prénom : </strong><?php echo Set::classicExtract( $personne, 'Personne.prenom' );?>
+					<br />
+					<strong>Date de naissance : </strong><?php echo date_short( Set::classicExtract( $personne, 'Personne.dtnai' ) );?>
+				</td>
+				<td class="mediumSize noborder">
+					<strong>N° Service instructeur : </strong>
+					<?php
+						$libservice = Set::enum( Set::classicExtract( $personne, 'Suiviinstruction.typeserins' ),  $typeserins );
+						if( isset( $libservice ) ) {
+							echo $libservice;
+						}
+						else{
+							echo 'Non renseigné';
+						}
+					?>
+					<br />
+					<strong>N° demandeur : </strong><?php echo Set::classicExtract( $personne, 'Dossier.numdemrsa' );?>
+					<br />
+					<strong>N° CAF/MSA : </strong><?php echo Set::classicExtract( $personne, 'Dossier.matricule' );?>
+					<br />
+					<strong>Inscrit au Pôle emploi</strong>
+					<?php
+						$isPoleemploi = Set::classicExtract( $personne, 'Activite.act' );
+						if( $isPoleemploi == 'ANP' )
+							echo 'Oui';
+						else
+							echo 'Non';
+					?>
+					<br />
+					<strong>N° identifiant : </strong><?php echo Set::classicExtract( $personne, 'Personne.idassedic' );?>
+				</td>
+			</tr>
+			<tr>
+				<td class="mediumSize noborder">
+					<strong>Adresse : </strong><br /><?php echo Set::classicExtract( $personne, 'Adresse.numvoie' ).' '.Set::enum( Set::classicExtract( $personne, 'Adresse.typevoie' ), $typevoie ).' '.Set::classicExtract( $personne, 'Adresse.nomvoie' ).'<br /> '.Set::classicExtract( $personne, 'Adresse.codepos' ).' '.Set::classicExtract( $personne, 'Adresse.locaadr' );?>
+				</td>
+			<tr>
+				<td class="mediumSize noborder">
+					<strong>Tél. fixe : </strong>
+					<?php
+						$numtelfixe = Set::classicExtract( $personne, 'Personne.numfixe' );
+						if( !empty( $numtelfixe ) ) {
+							echo Set::extract( $personne, 'Personne.numfixe' );
+						}
+						else{
+							echo $xform->input( 'Personne.numfixe', array( 'label' => false, 'type' => 'text' ) );
 
-			$labelMatricule = Set::classicExtract( $personne, 'Dossier.fonorg' );
-			$numTel = Set::classicExtract( $personne, 'Personne.numtel' );
-			echo $default->view(
-				$personne,
-				array(
-					'Personne.dtnai',
-					'Personne.numfixe' => array( 'type' => 'text' ),//  'label' => "N° de téléphone {$numTel}" ),
-					'Dossier.matricule' => array( 'type' => 'text', 'label' => "N° {$labelMatricule}" )
-				),
-				array(
-					'widget' => 'dl',
-					'class' => 'allocataire infos'
-				)
-			);
-			if( !empty( $identifiantpe ) ){
-				echo $xhtml->tag(
-					'dl', 
-					$xhtml->tag( 'dt', 'N° Pôle Emploi') . $xhtml->tag( 'dd', $identifiantpe['Informationpe']['identifiantpe']),
-					array( 'class' => 'allocataire infos' )
-				);
-			}
-
-			echo $xhtml->tag(
-				'dl',
-				$xhtml->tag( 'dt', 'Adresse' ).
-				$xhtml->tag(
-					'dd',
-					$default->format( $personne, 'Adresse.numvoie' ).' '.$default->format( $personne, 'Adresse.typevoie', array( 'options' => $options ) ).' '.$default->format( $personne, 'Adresse.nomvoie' ).'<br />'.$default->format( $personne, 'Adresse.codepos' ).' '.$default->format( $personne, 'Adresse.locaadr' )
-				),
-				array(
-					'class' => 'allocataire infos'
-				)
-			);
-
-			if( !empty( $personne['Modecontact'][0]['adrelec'] ) ) {
-				echo $default->view(
-					$personne,
-					array(
-						'Modecontact.0.numtel',
-						'Modecontact.0.adrelec',
-						'Modecontact.1.numtel'
-					),
-					array(
-						'widget' => 'dl',
-						'class' => 'allocataire infos',
-						'options' => $options
-					)
-				);
-			}
-			else{
-				echo $default->view(
-					$personne,
-					array(
-						'Modecontact.0.numtel',
-						'Modecontact.1.adrelec',
-						'Modecontact.1.numtel'
-					),
-					array(
-						'widget' => 'dl',
-						'class' => 'allocataire infos',
-						'options' => $options
-					)
-				);	
-			}
-		?>
+						}
+					?>
+				</td>
+				<td class="mediumSize noborder">
+					<strong>Tél. portable : </strong>
+					<?php
+						$numtelport = Set::extract( $personne, 'Personne.numport' );
+						if( !empty( $numtelport ) ) {
+							echo Set::extract( $personne, 'Personne.numport' );
+						}
+						else{
+							echo $xform->input( 'Personne.numport', array( 'label' => false, 'type' => 'text' ) );
+						}
+					?>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" class="mediumSize noborder">
+					<strong>Adresse mail : </strong>
+					<?php
+						$email = Set::extract( $personne, 'Personne.email' );
+						if( !empty( $email ) ) {
+							echo Set::extract( $personne, 'Personne.email' );
+						}
+						else{
+							echo $xform->input( 'Personne.email', array( 'label' => false, 'type' => 'text' ) );
+						}
+					?>
+				</td>
+			</tr>
+		</table>
 	</fieldset>
-
 
 	<fieldset id="motifdemande">
 		<legend><?php echo required( "Motif de la demande (donner des précisions sur le parcours d'insertion et les motifs de la prescription)" ); ?></legend>
