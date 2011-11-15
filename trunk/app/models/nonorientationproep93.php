@@ -1,9 +1,26 @@
 <?php
-    App::import( 'Model', array( 'Nonorientationproep' ) );
+	require_once( ABSTRACTMODELS.'nonorientationproep.php' );
 
-	class Nonorientationproep93 extends Nonorientationproep {
+	class Nonorientationproep93 extends Nonorientationproep
+	{
+		/**
+		* Chemin relatif pour les modèles de documents .odt utilisés lors des
+		* impressions. Utiliser %s pour remplacer par l'alias.
+		*/
+		public $modelesOdt = array(
+			// Convocation EP
+			'%s/convocationep_beneficiaire.odt',
+			// Décision EP (décision CG)
+			'%s/decision_reorientation.odt',
+			'%s/decision_maintienref.odt',
+			'%s/decision_annule.odt',
+			'%s/decision_reporte.odt'
+		);
 
-		public $useTable = 'nonorientationsproseps93';
+		/**
+		* Modèle de document pour la convocation du bénéficiaire.
+		*/
+		protected $_modeleOdtConvocationepBeneficiaire = 'Nonorientationproep93/convocationep_beneficiaire.odt';
 
 		/**
 		 *
@@ -135,6 +152,5 @@
 
 			return $success;
 		}
-
 	}
 ?>

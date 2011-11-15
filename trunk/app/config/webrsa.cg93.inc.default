@@ -319,6 +319,12 @@
 	Configure::write( 'Signalementep93.dureeTolerance', 365 );
 
 	/**
+	* Durée du délai (en jours) accordé après un passage en EP dont la décision a été
+	* d'accorder un délai supplémentaire pour le thème "Non respect du CER"
+	*/
+	Configure::write( 'Signalementep93.decisionep.delai', 40 );
+
+	/**
 	* Nombre de jours entre deux passages successifs en EP pour une même personne
 	* et une même thématique.
 	* FIXME: à rendre plus générique (pour toutes les thématiques)

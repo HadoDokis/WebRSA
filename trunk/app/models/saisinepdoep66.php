@@ -1,4 +1,6 @@
 <?php
+	require_once( ABSTRACTMODELS.'thematiqueep.php' );
+
 	/**
 	* Saisines d'EP pour les PDOs pour le conseil général du
 	* département 66.
@@ -11,11 +13,9 @@
 	* @subpackage    app.app.models
 	*/
 
-	class Saisinepdoep66 extends AppModel
+	class Saisinepdoep66 extends Thematiqueep
 	{
 		public $name = 'Saisinepdoep66';
-
-		public $recursive = -1;
 
 		public $actsAs = array(
 			'Autovalidate',
@@ -58,10 +58,20 @@
 // 		);
 
 		/**
+		* Chemin relatif pour les modèles de documents .odt utilisés lors des
+		* impressions. Utiliser %s pour remplacer par l'alias.
+		*/
+		public $modelesOdt = array(
+			// Convocation EP
+			'Commissionep/convocationep_beneficiaire.odt',
+			// Décision EP (décision CG)
+		);
+
+		/**
 		* TODO: comment finaliser l'orientation précédente ?
 		*/
 
-		public function finaliser( $commissionep_id, $etape ) {
+		public function finaliser( $commissionep_id, $etape, $user_id ) {
 			$success = true;
 
 			if ($etape=='cg') {
@@ -449,24 +459,31 @@
 		/**
 		* Récupération du courrier de convocation à l'allocataire pour un passage
 		* en commission donné.
-		* FIXME: spécifique par thématique
 		*/
-
 		public function getConvocationBeneficiaireEpPdf( $passagecommissionep_id ) {
-			$gedooo_data = $this->Dossierep->Passagecommissionep->find(
-				'first',
-				array(
-					'conditions' => array( 'Passagecommissionep.id' => $passagecommissionep_id ),
-					'contain' => array(
-						'Dossierep' => array(
-							'Personne',
-						),
-						'Commissionep'
-					)
-				)
-			);
+			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ );
+			$datas = Cache::read( $cacheKey );
 
-			return $this->ged( $gedooo_data, "Commissionep/convocationep_beneficiaire.odt" );
+			if( $datas === false ) {
+				$datas = $this->_qdConvocationBeneficiaireEpPdf();
+
+				Cache::write( $cacheKey, $datas );
+			}
+
+			$datas['querydata']['conditions']['Passagecommissionep.id'] = $passagecommissionep_id;
+			$gedooo_data = $this->Dossierep->Passagecommissionep->find( 'first', $datas['querydata'] );
+			$modeleOdt = 'Commissionep/convocationep_beneficiaire.odt';
+
+			if( empty( $gedooo_data ) ) {
+				return false;
+			}
+
+			return $this->ged(
+				$gedooo_data,
+				$modeleOdt,
+				false,
+				$datas['options']
+			);
 		}
 
 		/**

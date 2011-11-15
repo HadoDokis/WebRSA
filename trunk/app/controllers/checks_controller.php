@@ -20,7 +20,7 @@
 			$this->set( 'checkWebrsaIncEps', $this->_checkWebrsaIncEps() );
 			$this->set( 'checkSqrecherche', $this->_checkSqrecherche() );
 			$this->set( 'checkCmis', $this->_checkCmis() );
-			$this->set( 'checkModelesOdtStatiques', Set::merge( $this->_checkModelesOdtStatiques(), $this->_checkModelesOdtVariables() ) );
+			$this->set( 'checkModelesOdtStatiques', $this->_checkModelesOdt() );
 			$this->set( 'checkModelesOdtParametrables', $this->_checkModelesOdtParametrables() );
 			$this->set( 'checkExtensions', $this->_checkExtensions() );
 			$this->set( 'checkInis', $this->_checkInis() );
@@ -56,6 +56,72 @@
 		}
 
 		/**
+		*
+		*/
+		protected function _checkModelesOdtExistance( $modeles ) {
+			$errors = array();
+			$modelesVerifies = array();
+			// Vérification des fichiers sur le filesystem
+			foreach( $modeles as $modele ) {
+				$modele_notif_file = APP.DS.'vendors'.DS.'modelesodt'.DS.$modele;//FIXME: constante
+
+				$exists = file_exists( $modele_notif_file );
+				$modelName = preg_replace( '/^([\w]+)\/.*$/', '\1', $modele );
+				$fileName = preg_replace( '/^([\w]+)\/(.*)$/', '\2', $modele );
+				$modelesVerifies[$modelName][$fileName] = $exists;
+
+				if( !$exists ) {
+					$errors[] = $modele_notif_file;
+				}
+			}
+
+			return array( 'files' => $modelesVerifies, 'errors' => $errors );
+		}
+
+		/**
+		*
+		*/
+		protected function _checkModelesOdt() {
+			$modelesOdtStatiques = $this->_checkModelesOdtStatiques();
+			$modelesOdtVariables = $this->_checkModelesOdtVariables();
+
+			/*
+			* Lecture des modèles de documents nécessaires pour chacune des
+			* classes de modèle grâce à la variable modelesOdt.
+			*/
+			$modeles = array();
+			foreach( Configure::listObjects( 'model' ) as $modelName ) {
+				if( !preg_match( '/([0-9]{2})$/', $modelName, $matches ) || ( $matches[1] == Configure::read( 'Cg.departement' ) ) ) {
+					App::import( 'Model', $modelName );
+					$attributes = get_class_vars( $modelName );
+
+					if( isset( $attributes['modelesOdt'] ) ) {
+						$alias = ( isset( $attributes['alias'] ) ? $attributes['alias'] : $modelName );
+						$modeles = array_merge(
+							$modeles,
+							array_words_replace(
+								$attributes['modelesOdt'],
+								array( '%s' => $alias )
+							)
+						);
+					}
+				}
+			}
+
+			$count = count( $modeles );
+			$modeles = $this->_checkModelesOdtExistance( $modeles );
+
+			$modeles['count'] = $count;
+			$modeles['errors'] = Set::merge(
+				$modelesOdtStatiques,
+				$modelesOdtVariables,
+				$modeles['errors']
+			);
+
+			return $modeles;
+		}
+
+		/**
 		* Noms de modèles avec des variables
 		*/
 
@@ -64,7 +130,7 @@
 			$modeles = array();
 
 			if( Configure::read( 'Cg.departement' ) == 93 ) {
-				// app/models/reorientationep93.php:774
+				/*// app/models/reorientationep93.php:774
 				$modeles[] = "Reorientationep93/decision_accepte_poleemploi.odt";
 				$enums = ClassRegistry::init( 'Decisionreorientationep93' )->enums();
 				foreach( array_keys( $enums['Decisionreorientationep93']['decision'] ) as $decision ) {
@@ -79,7 +145,7 @@
 					for( $i = 1 ; $i <= $numrelance ; $i++ ) {
 						$modeles[] = "Relancenonrespectsanctionep93/notification_{$origine}_relance{$i}.odt";
 					}
-				}
+				}*/
 
 				// app/controllers/etatsliquidatifs_controller.php:370
 				$modeles[] = 'APRE/Paiement/paiement_tiersprestataire.odt';
@@ -148,8 +214,6 @@
 		*/
 
 		protected function _checkModelesOdtStatiques() {
-			$errors = array();
-
 			/// Modèles en dur, suivant le CG pour certains d'entre eux
 			$modeles = array(
 				'Contratinsertion/notificationop.odt',			// app/controllers/contratsinsertion_controller.php:1089
@@ -174,7 +238,7 @@
 			}
 
 			// Vérification des modèles nécessaires aux EPs
-			$modeles = Set::merge(
+			/*$modeles = Set::merge(
 				$modeles,
 				array(
 					'Commissionep/pv.odt',																	// app/models/commissionep.php:941
@@ -184,14 +248,16 @@
 					'Commissionep/fichesynthese.odt',														// app/models/commissionep.php:1959
 					'Commissionep/convocationep_beneficiaire.odt',											// Dans chacun des modèles des thématiques
 				)
-			);
+			);*/
+
+			//------------------------------------------------------------------
 
 			if( Configure::read( 'Cg.departement' ) == 58 ) {
-				$modeles = Set::merge(
+				/*$modeles = Set::merge(
 					$modeles,
 					array(
 					)
-				);
+				);*/
 			}
 			else if( Configure::read( 'Cg.departement' ) == 66 ) {
 				$modeles = Set::merge(
@@ -202,7 +268,7 @@
 				);
 			}
 			else if( Configure::read( 'Cg.departement' ) == 93 ) {
-				$modeles = Set::merge(
+				/*$modeles = Set::merge(
 					$modeles,
 					array(
 						'Nonrespectsanctionep93/convocationep_beneficiaire_1er_passage.odt', 				// app/models/nonrespectsanctionep93.php:699
@@ -218,9 +284,10 @@
 						'Nonrespectsanctionep93/decision_reporte.odt',										// app/models/nonrespectsanctionep93.php:913
 						'Nonrespectsanctionep93/decision_annule.odt'										// app/models/nonrespectsanctionep93.php:916
 					)
-				);
+				);*/
 			}
 
+			$errors = array();
 			// Vérification des fichiers sur le filesystem
 			foreach( $modeles as $modele ) {
 				$modele_notif_file = APP.DS.'vendors'.DS.'modelesodt'.DS.$modele;
@@ -599,7 +666,7 @@
 				'Signalementep93.dureeSursis' => 'integer',
 				'Signalementep93.dureeTolerance' => 'integer',
 			);
-			
+
             $errors = $this->__configureReadError( $keys );
 
 			$return = ClassRegistry::init( 'Nonrespectsanctionep93' )->checkConfigUpdateIntervalleCerDo19Cg93();

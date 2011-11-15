@@ -22,7 +22,8 @@ $typeorientemploiId = $typeorientprincipale['Emploi'][0];
 						$form->input( "Decisionsaisinebilanparcoursep66.{$i}.changementrefparcours", array( 'type' => 'hidden', 'value' => $dossierep['Saisinebilanparcoursep66']['changementrefparcours'] ) ).
 						$form->input( "Decisionsaisinebilanparcoursep66.{$i}.id", array( 'type' => 'hidden' ) ).
 						$form->input( "Decisionsaisinebilanparcoursep66.{$i}.passagecommissionep_id", array( 'type' => 'hidden' ) ).
-						$form->input( "Decisionsaisinebilanparcoursep66.{$i}.etape", array( 'type' => 'hidden', 'value' => 'ep' ) );
+						$form->input( "Decisionsaisinebilanparcoursep66.{$i}.etape", array( 'type' => 'hidden', 'value' => 'ep' ) ).
+						$form->input( "Decisionsaisinebilanparcoursep66.{$i}.user_id", array( 'type' => 'hidden', 'value' => $session->read( 'Auth.User.id' ) ) );
 
 		$typesorientsprincipales =
 						$xhtml->tag(

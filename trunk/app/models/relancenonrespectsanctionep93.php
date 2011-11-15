@@ -54,6 +54,19 @@
 		);
 
 		/**
+		* Chemin relatif pour les modèles de documents .odt utilisés lors des
+		* impressions. Utiliser %s pour remplacer par l'alias.
+		*/
+		public $modelesOdt = array(
+			// FIXME: pdo,radiepe ? + dans checks_controller ligne 74
+			'%s/notification_orientstruct_relance1.odt',
+			'%s/notification_orientstruct_relance2.odt',
+			'%s/notification_contratinsertion_relance1.odt',
+			'%s/notification_contratinsertion_relance2.odt',
+
+		);
+
+		/**
 		* Fonction de validation qui vérifie si la date de relance demandée est suffisamment
 		* éloignée de la date d'orientation ou de validation du contrat, ainsi que par-rapport
 		* aux relances précédentes vis-à-vis du paramétrage.
@@ -484,7 +497,7 @@
 					'Adressefoyer.rgadr' => '01'
 				)
 			);
-			
+
 			$joins[] = array(
 				'table'      => 'adresses',
 				'alias'      => 'Adresse',
@@ -768,7 +781,7 @@
 // 								)
 // 							);
 // 						}
-// 
+//
 // 						$results[$i]['Orientstruct']['nbjours'] = round(
 // 							//( mktime() - strtotime( $result['Orientstruct']['date_valid'] ) ) / ( 60 * 60 * 24 )
 // 							( mktime() - strtotime( $result['Orientstruct']['date_impression'] ) ) / ( 60 * 60 * 24 )

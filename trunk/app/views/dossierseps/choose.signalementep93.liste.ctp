@@ -19,6 +19,7 @@
 			'Structurereferente.lib_struc',
 			'Contratinsertion.nature_projet',
 			'Contratinsertion.type_demande',
+			'Signalementep93.rang',
 			'Foyer.enerreur' => array( 'type' => 'string', 'class' => 'foyer_enerreur' ),
 			'Passagecommissionep.chosen' => array( 'input' => 'checkbox' ),
 		),

@@ -34,7 +34,8 @@ echo '<table id="Decisionsaisinepdoep66" class="tooltips"><thead>
 
 		$hiddenFields = $form->input( "Decisionsaisinepdoep66.{$i}.id", array( 'type' => 'hidden' ) ).
 						$form->input( "Decisionsaisinepdoep66.{$i}.etape", array( 'type' => 'hidden', 'value' => 'cg' ) ).
-						$form->input( "Decisionsaisinepdoep66.{$i}.passagecommissionep_id", array( 'type' => 'hidden' ) );
+						$form->input( "Decisionsaisinepdoep66.{$i}.passagecommissionep_id", array( 'type' => 'hidden' ) ).
+						$form->input( "Decisionsaisinepdoep66.{$i}.user_id", array( 'type' => 'hidden', 'value' => $session->read( 'Auth.User.id' ) ) );
 
 		echo $xhtml->tableCells(
 			array(

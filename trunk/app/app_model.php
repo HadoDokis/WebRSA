@@ -23,11 +23,12 @@
 		* Exécute les différentes méthods du modèle permettant la mise en cache.
 		* Utilisé au préchargement de l'application (/prechargements/index).
 		*
-		* @return boolean true en cas de succès, false sinon.
+		* @return boolean true en cas de succès, false en cas d'erreur,
+		* 	null pour les fonctions vides.
 			*/
 
 		public function prechargement() {
-			return true;
+			return null;
 		}
 
 		/**
@@ -712,7 +713,7 @@
 		}
 
 		/**
-		 * 
+		 *
 		 */
 
 		public function compareDates( array $data, $reference, $comparator ) {
@@ -872,5 +873,22 @@
 
 			return preg_replace( $virtualField['regex'], $virtualField['alias'], "{$this->alias}.{$field}" );
 		}
+
+		/**
+		* TODO
+		*/
+		/*public function mergeQuerydata( $querydata1, $querydata2 ) {
+			$defaults = array(
+				'conditions' => null,//array
+				'fields' => null,//array
+				'joins' => array(),//array
+				'limit' => null,
+				'offset' => null,
+				'order' => null,//array
+				'page' => null,
+				'group' => null,//array
+				'callbacks' => true
+			);
+		}*/
 	}
 ?>

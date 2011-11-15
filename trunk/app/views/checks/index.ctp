@@ -252,20 +252,37 @@
 			<br/>
 
 			<h3>Modèles de documents nécessaires pour les impressions</h3>
-			<p><?php echo booleanIcon( $xhtml, empty( $checkModelesOdtStatiques ) ).( empty( $checkModelesOdtStatiques ) ? 'Oui' : 'Non' );?></p>
+			<p><?php echo booleanIcon( $xhtml, empty( $checkModelesOdtStatiques['errors'] ) ).( empty( $checkModelesOdtStatiques['errors'] ) ? 'Oui' : 'Non' );?></p>
 
-			<?php if( !empty( $checkModelesOdtStatiques ) ):?>
+			<?php if( !empty( $checkModelesOdtStatiques['errors'] ) ):?>
 				<p class="notice">Les modèles de documents suivants n'existent pas ou ne peuvent pas être lus.</p>
 			<?php endif;?>
 
 			<table>
 			<?php
-				foreach( $checkModelesOdtStatiques as $file ) {
+				foreach( $checkModelesOdtStatiques['errors'] as $file ) {
 					echo $xhtml->tableCells( array( h( $file ) ) );
 				}
 			?>
 			</table>
 
+			<?php ksort( $checkModelesOdtStatiques['files'] );?>
+			<br/>
+			<h4>Modèles de documents vérifiés pour les <abbr title="équipes pluridisciplinaires">EPs</abbr> (<?php echo $checkModelesOdtStatiques['count'];?>)</h4>
+			<ul>
+			<?php foreach( $checkModelesOdtStatiques['files'] as $dir => $odt ):?>
+				<li><?php echo h( $dir );?> (<?php echo count( $odt );?>)
+					<table><tbody>
+						<?php ksort( $odt );?>
+						<?php foreach( $odt as $filename => $present ):?>
+							<tr>
+								<td><?php echo h( $filename );?></td>
+								<td><?php echo booleanIcon( $xhtml, $present );?></td>
+							</tr>
+						<?php endforeach;?>
+					</tbody></table>
+				</li>
+			<?php endforeach;?>
 			<br/>
 			<h3>Paramétrages des modèles de document pour les impressions</h3>
 			<p><?php echo booleanIcon( $xhtml, empty( $checkModelesOdtParametrables ) ).( empty( $checkModelesOdtParametrables ) ? 'Oui' : 'Non' );?></p>

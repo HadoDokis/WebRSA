@@ -438,14 +438,22 @@
 				return false;
 			}
 
+			$this->Passagecommissionep->updateAll(
+				array( 'Passagecommissionep.impressionconvocation' => "'".date( 'Y-m-d' )."'" ),
+				array(
+					'"Passagecommissionep"."id"' => $passagecommissionep_id,
+					'"Passagecommissionep"."impressionconvocation" IS NULL'
+				)
+			);
+
 			$pdf = $this->{$theme}->getConvocationBeneficiaireEpPdf( $passagecommissionep_id );
 
-			if( !empty( $pdf ) ) {
+			if( empty( $pdf ) ) {
 				$this->Passagecommissionep->updateAll(
-					array( 'Passagecommissionep.impressionconvocation' => "'".date( 'Y-m-d' )."'" ),
+					array( 'Passagecommissionep.impressionconvocation' => null ),
 					array(
 						'"Passagecommissionep"."id"' => $passagecommissionep_id,
-						'"Passagecommissionep"."impressionconvocation" IS NULL'
+						'"Passagecommissionep"."impressionconvocation" IS NOT NULL'
 					)
 				);
 			}

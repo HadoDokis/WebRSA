@@ -284,7 +284,7 @@ function __svnbackup() {
 		local SAVEIFS=$IFS
 		IFS=$(echo -en "\n\b")
 
-		status="`svn status . | grep -v "^!" | sed 's/^\(.\) \+\(.*\)$/\2/'`";
+		status="`svn status . | grep -v "^\(\!\|D\)" | sed 's/^\(.\{8\}\)\(.*\)$/\2/'`";
 		for file in `echo "$status"`; do
 			dir="`dirname "$file" | sed "s@^\./@$PWD@"`"
 			if [ "$dir" != '.' ] ; then

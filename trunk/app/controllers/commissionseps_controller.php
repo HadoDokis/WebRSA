@@ -154,10 +154,9 @@
 				$typesorients = $this->Commissionep->Passagecommissionep->Dossierep->Personne->Orientstruct->Typeorient->listOptions();
 				$structuresreferentes = $this->Commissionep->Passagecommissionep->Dossierep->Personne->Orientstruct->Structurereferente->list1Options();
 				$referents = $this->Commissionep->Passagecommissionep->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->Referent->listOptions();
-				///FIXME : à remettre quand les EPs départementales refonctionneront
-// 				if( Configure::read( 'Cg.departement' ) == 66 ) {
-// 					$options['Decisionsaisinepdoep66']['decisionpdo_id'] = $this->Commissionep->Passagecommissionep->Dossierep->Saisinepdoep66->Decisionsaisinepdoep66->Decisionpdo->find('list');
-// 				}
+				if( Configure::read( 'Cg.departement' ) == 66 ) {
+					$options['Decisionsaisinepdoep66']['decisionpdo_id'] = $this->Commissionep->Passagecommissionep->Decisionsaisinepdoep66->Decisionpdo->find('list');
+				}
 			}
 
 			$liste_typesorients = $this->Commissionep->Passagecommissionep->Dossierep->Personne->Orientstruct->Typeorient->find( 'list' );

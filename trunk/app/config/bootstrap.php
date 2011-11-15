@@ -165,4 +165,7 @@
 	}
 
 	// -------------------------------------------------------------------------
+	// Ajout de répertoires pour les classes abstraites
+	// -------------------------------------------------------------------------
+	define( 'ABSTRACTMODELS', MODELS.'abstractclasses/' );
 ?>

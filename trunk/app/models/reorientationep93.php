@@ -1,4 +1,6 @@
 <?php
+	require_once( ABSTRACTMODELS.'thematiqueep.php' );
+
 	/**
 	* Saisines d'EP pour les réorientations proposées par les structures
 	* référentes pour le conseil général du département 93.
@@ -11,11 +13,9 @@
 	* @subpackage    app.app.models
 	*/
 
-	class Reorientationep93 extends AppModel
+	class Reorientationep93 extends Thematiqueep
 	{
 		public $name = 'Reorientationep93';
-
-		public $recursive = -1;
 
 		public $actsAs = array(
 			'Autovalidate',
@@ -89,10 +89,25 @@
 		);
 
 		/**
+		* Chemin relatif pour les modèles de documents .odt utilisés lors des
+		* impressions. Utiliser %s pour remplacer par l'alias.
+		*/
+		public $modelesOdt = array(
+			// Convocation EP
+			'%s/convocationep_beneficiaire.odt',
+			// Décision EP (décision CG)
+			'%s/decision_accepte_poleemploi.odt',
+			'%s/decision_accepte.odt',
+			'%s/decision_refuse.odt',
+			'%s/decision_annule.odt',
+			'%s/decision_reporte.odt',
+		);
+
+		/**
 		* Retourne pour un personne_id donnée les queryDatas permettant de retrouver
 		* ses réorientationseps93 si elle en a en cours
 		*/
-		
+
 		public function qdReorientationEnCours( $personne_id ) {
 			return array(
 				'fields' => array(
@@ -320,18 +335,8 @@
 					);
 				}
 			}
-// debug( $dossierep );
-// debug( $orientstruct );
-// die();
+
 			return $success;
-		}
-
-		/**
-		* INFO: Fonction inutile dans cette saisine donc elle retourne simplement true
-		*/
-
-		public function verrouiller( $commissionep_id, $etape ) {
-			return true;
 		}
 
 		/**
@@ -515,7 +520,7 @@
 		* FIXME: à continuer
 		*/
 
-		public function generatePdfDecisionEp( $dossierep_id ) {
+		/*public function generatePdfDecisionEp( $dossierep_id ) {
 			$joins = array(
 				array(
 					'table'      => 'dossierseps',
@@ -628,7 +633,7 @@
 
 // 			return $success;
 			return false;
-		}
+		}*/
 
 		/**
 		*
@@ -707,78 +712,152 @@
 		/**
 		* Récupération du courrier de convocation à l'allocataire pour un passage
 		* en commission donné.
-		* FIXME: spécifique par thématique
+		* FIXME: Impossible de faire une jointure de Reorientationep93 vers Typeorient avec un alias (Propositiontypeorient)
 		*/
 
 		public function getConvocationBeneficiaireEpPdf( $passagecommissionep_id ) {
-			$gedooo_data = $this->Dossierep->Passagecommissionep->find(
-				'first',
-				array(
-					'conditions' => array( 'Passagecommissionep.id' => $passagecommissionep_id ),
-					'contain' => array(
-						'Dossierep' => array(
-							'Personne',
-						),
-						'Commissionep'
-					)
-				)
-			);
+			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ );
+			$datas = Cache::read( $cacheKey );
 
-			return $this->ged( $gedooo_data, "Commissionep/convocationep_beneficiaire.odt" );
+			if( $datas === false ) {
+				$datas = $this->_qdConvocationBeneficiaireEpPdf();
+
+				$datas['querydata']['fields'] = array_merge(
+					$datas['querydata']['fields'],
+					$this->Typeorient->fields(),
+					$this->Structurereferente->fields()
+				);
+
+				$datas['querydata']['joins'][] = $this->join( 'Typeorient' );
+				$datas['querydata']['joins'][] = $this->join( 'Structurereferente' );
+
+				/*// Querydata
+				$datas['querydata'] = array(
+					'fields' => array_merge(
+						$this->Dossierep->Passagecommissionep->fields(),
+						$this->Dossierep->Passagecommissionep->Commissionep->fields(),
+						$this->Dossierep->Passagecommissionep->User->fields(),
+						$this->Dossierep->Passagecommissionep->Dossierep->fields(),
+						$this->Dossierep->Passagecommissionep->Dossierep->Personne->fields(),
+						$this->Dossierep->Passagecommissionep->Dossierep->Personne->Foyer->fields(),
+						$this->Dossierep->Passagecommissionep->Dossierep->Personne->Foyer->Dossier->fields(),
+						$this->Dossierep->Passagecommissionep->Dossierep->Personne->Foyer->Adressefoyer->Adresse->fields(),
+						$this->fields()
+					),
+					'joins' => array(
+						$this->Dossierep->Passagecommissionep->join( 'Dossierep' ),
+						$this->Dossierep->Passagecommissionep->join( 'Commissionep' ),
+						$this->Dossierep->Passagecommissionep->join( 'User' ),
+						$this->Dossierep->Passagecommissionep->Dossierep->join( 'Personne' ),
+						$this->Dossierep->Passagecommissionep->Dossierep->join( $this->alias ),
+						$this->Dossierep->Passagecommissionep->Dossierep->Personne->join( 'Foyer' ),
+						$this->Dossierep->Passagecommissionep->Dossierep->Personne->Foyer->join( 'Dossier' ),
+						$this->Dossierep->Passagecommissionep->Dossierep->Personne->Foyer->join( 'Adressefoyer' ),
+						$this->Dossierep->Passagecommissionep->Dossierep->Personne->Foyer->Adressefoyer->join( 'Adresse' ),
+					),
+					'conditions' => array(
+						'Adressefoyer.id IN ('
+							.$this->Dossierep->Passagecommissionep->Dossierep->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' )
+						.')'
+					),
+					'contain' => false
+				);
+
+				// Options
+				$datas['options'] = array(
+					'Adresse' => array(
+						'typevoie' => ClassRegistry::init( 'Option' )->typevoie()
+					),
+					'Personne' => array(
+						'qual' => ClassRegistry::init( 'Option' )->qual()
+					)
+				);*/
+
+				Cache::write( $cacheKey, $datas );
+			}
+
+			$datas['querydata']['conditions']['Passagecommissionep.id'] = $passagecommissionep_id;
+			$gedooo_data = $this->Dossierep->Passagecommissionep->find( 'first', $datas['querydata'] );
+
+			if( empty( $gedooo_data ) ) {
+				return false;
+			}
+
+			$modeleOdt = "{$this->alias}/convocationep_beneficiaire.odt";
+
+			return $this->ged(
+				$gedooo_data,
+				$modeleOdt,
+				false,
+				$datas['options']
+			);
 		}
 
 		/**
 		* Récupération de la décision suite au passage en commission d'un dossier
 		* d'EP pour un certain niveau de décision.
-		* FIXME: spécifique par thématique
+		* TODO: à faire précharger
 		*/
-
 		public function getDecisionPdf( $passagecommissionep_id  ) {
-			$gedooo_data = $this->Dossierep->Passagecommissionep->find(
-				'first',
-				array(
-					'conditions' => array( 'Passagecommissionep.id' => $passagecommissionep_id ),
-					'contain' => array(
-						'Commissionep',
-						'Dossierep' => array(
-							'Personne' => array(
-								'Foyer' => array(
-									'Dossier',
-									'Adressefoyer' => array(
-										'conditions' => array(
-											'Adressefoyer.id IN ( '.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01( 'Adressefoyer.foyer_id' ).' )'
-										),
-										'Adresse'
-									)
-								)
-							),
-							'Reorientationep93' => array(
-								'Typeorient',
-								'Structurereferente'
-							),
-						),
-						'Decisionreorientationep93' => array(
-							'Typeorient',
-							'Structurereferente',
-							'User',
-							'order' => array(
-								'Decisionreorientationep93.etape DESC'
-							),
-							'limit' => 1
-						)
-					)
-				)
-			);
+			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ );
+			$datas = Cache::read( $cacheKey );
 
-			if( empty( $gedooo_data ) || !isset( $gedooo_data['Decisionreorientationep93'][0] ) || empty( $gedooo_data['Decisionreorientationep93'][0] ) ) {
+			if( $datas === false ) {
+				$datas['querydata'] = $this->_qdDecisionPdf();
+
+				// Jointures et champs propositions
+				$modelesProposes = array(
+					'Typeorient' => 'Typeorientpropose',
+					'Structurereferente' => 'Structurereferentepropose',
+					'Referent' => 'Referentpropose'
+				);
+
+				foreach( $modelesProposes as $modelePropose => $modeleProposeAliase ) {
+					$replacement = array( $modelePropose => $modeleProposeAliase );
+
+					$datas['querydata']['joins'][] = array_words_replace( $this->join( $modelePropose ), $replacement );
+					$datas['querydata']['fields'] = array_merge( $datas['querydata']['fields'], array_words_replace( $this->{$modelePropose}->fields(), $replacement ) );
+				}
+
+				// Jointures et champs décisions
+				$modelesProposes = array(
+					'Typeorient' => 'Decisionreorientationep93typeorient',
+					'Structurereferente' => 'Decisionreorientationep93structurereferente',
+				);
+
+				foreach( $modelesProposes as $modelePropose => $modeleProposeAliase ) {
+					$replacement = array( $modelePropose => $modeleProposeAliase );
+
+					$datas['querydata']['joins'][] = array_words_replace( $this->Dossierep->Passagecommissionep->Decisionreorientationep93->join( $modelePropose ), $replacement );
+					$datas['querydata']['fields'] = array_merge( $datas['querydata']['fields'], array_words_replace( $this->Dossierep->Passagecommissionep->Decisionreorientationep93->{$modelePropose}->fields(), $replacement ) );
+				}
+
+				// Traductions
+				$datas['options'] = $this->Dossierep->Passagecommissionep->Decisionreorientationep93->enums();
+				$datas['options']['Personne']['qual'] = ClassRegistry::init( 'Option' )->qual();
+				$datas['options']['Adresse']['typevoie'] = ClassRegistry::init( 'Option' )->typevoie();
+				$datas['options']['type']['voie'] = $datas['options']['Adresse']['typevoie'];
+
+				Cache::write( $cacheKey, $datas );
+			}
+
+			$datas['querydata']['conditions']['Passagecommissionep.id'] = $passagecommissionep_id;
+
+			// INFO: permet de ne pas avoir d'erreur avec les virtualFields aliasés
+			$virtualFields = $this->Dossierep->Passagecommissionep->virtualFields;
+			$this->Dossierep->Passagecommissionep->virtualFields = array();
+			$gedooo_data = $this->Dossierep->Passagecommissionep->find( 'first', $datas['querydata'] );
+			$this->Dossierep->Passagecommissionep->virtualFields = $virtualFields;
+
+			if( empty( $gedooo_data ) || empty( $gedooo_data['Decisionreorientationep93']['id'] ) ) {
 				return false;
 			}
 
 			// Choix du modèle de document
-			$decision = $gedooo_data['Decisionreorientationep93'][0]['decision'];
+			$decision = $gedooo_data['Decisionreorientationep93']['decision'];
 
 			if( $decision == 'accepte' ) {
-				if( preg_match( '/emploi/i', $gedooo_data['Decisionreorientationep93'][0]['Typeorient']['lib_type_orient'] ) ) {
+				if( preg_match( '/emploi/i', $gedooo_data['Decisionreorientationep93typeorient']['lib_type_orient'] ) ) {
 					$modeleOdt  = "{$this->alias}/decision_accepte_poleemploi.odt";
 				}
 				else {
@@ -795,7 +874,9 @@
 				$gedooo_data['Passagecommissionep']['impressiondecision'] = date( 'Y-m-d' );
 			}
 
-			// Possède-t'on un PDF déjà stocké ?
+			return $this->_getOrCreateDecisionPdf( $passagecommissionep_id, $gedooo_data, $modeleOdt, $datas['options'] );
+
+			/*// Possède-t'on un PDF déjà stocké ?
 			$pdfModel = ClassRegistry::init( 'Pdf' );
 			$pdf = $pdfModel->find(
 				'first',
@@ -817,17 +898,12 @@
 				return $pdf['Pdf']['document'];
 			}
 
-			// Traductions
-			$options = $this->Dossierep->Passagecommissionep->Decisionreorientationep93->enums();
-			$options['Personne']['qual'] = ClassRegistry::init( 'Option' )->qual();
-			$options['Adresse']['typevoie'] = ClassRegistry::init( 'Option' )->typevoie();
-
 			// Sinon, on génère le PDF
 			$pdf =  $this->ged(
 				$gedooo_data,
 				$modeleOdt,
                 false,
-                $options
+                $datas['options']
 			);
 
 			$oldRecord['Pdf']['modele'] = 'Passagecommissionep';
@@ -842,7 +918,7 @@
 				return false;
 			}
 
-			return $pdf;
+			return $pdf;*/
 		}
 
 		/**
