@@ -87,7 +87,14 @@
 	<?php
 		$numcaf = $dossier['Dossier']['matricule'];
 		$fonorg = $dossier['Dossier']['fonorg'];
-		echo 'N°'.( isset( $fonorg ) ? $fonorg : '' ).' : '.( isset( $numcaf ) ? $numcaf : '' );?> 
+
+		if( !empty( $numcaf ) && !empty( $fonorg ) ) {
+			echo 'N°'.( isset( $fonorg ) ? $fonorg : '' ).' : '.( isset( $numcaf ) ? $numcaf : '' );
+		}
+		else {
+			echo '';
+		}
+	?>
 	</p>
 
 <?php endif;?>

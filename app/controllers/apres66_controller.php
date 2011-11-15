@@ -262,6 +262,7 @@
 			}
 			$this->set( 'apres', $apres );
 			$this->set( 'alerteMontantAides', $alerteMontantAides );
+			$this->set( 'montantComplementaires', $montantComplementaires );
 			$this->_setOptions();
 			$this->render( $this->action, null, '/apres/index66' );
 		}
