@@ -171,6 +171,9 @@
 					'"Personne"."nir"',
 					'"Personne"."nomcomnai"',
 					'"Personne"."dtnai"',
+					'"Referent"."qual"',
+					'"Referent"."nom"',
+					'"Referent"."prenom"',
 					'"Structurereferente"."lib_struc"'
 				),
 				'recursive' => -1,
@@ -248,6 +251,13 @@
 						'type'       => 'INNER',
 						'foreignKey' => false,
 						'conditions' => array( 'Foyer.dossier_id = Dossier.id' )
+					),
+					array(
+						'table'      => 'referents',
+						'alias'      => 'Referent',
+						'type'       => 'INNER',
+						'foreignKey' => false,
+						'conditions' => array( 'Referent.id = Rendezvous.referent_id' )
 					)
 				),
 				'order' => array( '"Rendezvous"."daterdv" ASC' ),
