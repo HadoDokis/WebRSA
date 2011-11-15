@@ -24,6 +24,7 @@
 
     <?php if( !empty( $apres ) ):?>
     <?php
+		echo 'Montant accordé à ce jour : '.$montantComplementaires.' €';
         if( $alerteMontantAides ) {
             echo $xhtml->tag(
                 'p',
