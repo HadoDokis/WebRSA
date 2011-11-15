@@ -122,17 +122,15 @@
 				'rule' => 'notEmpty',
 				'message' => 'Champ obligatoire'
 			),
-			'bilanvenu'  => array(
-				'rule' => 'notEmpty',
-				'message' => 'Champ obligatoire'
-			),
+// 			'bilanvenu'  => array(
+// 				'rule' => 'notEmpty',
+// 				'message' => 'Champ obligatoire'
+// 			),
 			'bilanretenu'  => array(
-				'rule' => 'notEmpty',
-				'message' => 'Champ obligatoire'
-			),
-			'bilanrecu'  => array(
-				'rule' => 'notEmpty',
-				'message' => 'Champ obligatoire'
+				'notEmptyIf' => array(
+					'rule' => array( 'notEmptyIf', 'bilanvenu', true, array( 'VEN' ) ),
+					'message' => 'Champ obligatoire',
+				)
 			),
 			'integrationaction'  => array(
 				'rule' => 'notEmpty',
@@ -155,9 +153,15 @@
 				'rule' => 'notEmpty',
 				'message' => 'Champ obligatoire'
 			),
+			'sortiele' => array(
+				'notEmptyIf' => array(
+					'rule' => array( 'notEmptyIf', 'issortie', true, array( 1 ) ),
+					'message' => 'Champ obligatoire',
+				)
+			),
 			'motifsortie_id' => array(
 				'notEmptyIf' => array(
-					'rule' => array( 'notEmptyIf', 'bilanretenu', true, array( 'RET' ) ),
+					'rule' => array( 'notEmptyIf', 'issortie', true, array( 1 ) ),
 					'message' => 'Champ obligatoire',
 				)
 			)
