@@ -17,7 +17,9 @@ App::import( 'Sanitize' );
 
 			if( !empty( $statutValidation ) ) {
 				if( $statutValidation == 'Validationapre::apresavalider' ) {
-					$conditions[] = '( ( Apre.etatdossierapre = \'COM\' ) AND ( Apre.isdecision = \'N\' ) )';
+					$conditions[] = '( ( Apre.etatdossierapre = \'COM\' ) AND ( ( Apre.isdecision != \'O\' ) OR ( Apre.isdecision IS NULL ) ) )';
+// 					$conditions[] = '( ( Apre.etatdossierapre = \'COM\' ) AND ( Apre.isdecision IS NULL ) )'; // FIXME
+
 				}
 //                 else if( $statutValidation == 'Validationapre::enattente' ) {
 //                     $conditions[] = 'Apre.etatdossierapre = \'E\'';
