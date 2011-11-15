@@ -270,7 +270,7 @@
 				<?php 
 					echo $default->subform(
 						array(
-							'ActioncandidatPersonne.sortiele',
+							'ActioncandidatPersonne.sortiele' => array(  'minYear' => date( 'Y' ) - 2, 'maxYear' => date( 'Y' ) + 2  ),
 							'ActioncandidatPersonne.motifsortie_id'
 						),
 						array(
@@ -299,24 +299,7 @@
 
 
 		// Mise en disabled des champs lors du passage du formulaire en édition
-		<?php if ($this->action == 'edit' && isset( $this->data['ActioncandidatPersonne']['positionfiche'] ) && ( $this->data['ActioncandidatPersonne']['positionfiche'] != 'enattente' ) ):?>
 
-			function disableFormPart( formpartid ) {
-				$( formpartid ).addClassName( 'disabled' );
-				
-				$( formpartid ).getElementsBySelector( 'div.input', 'radio' ).each( function( elmt ) {
-					elmt.addClassName( 'disabled' );
-				} );
-					
-				$( formpartid ).getElementsBySelector( 'input', 'select', 'button', 'textarea' ).each( function( elmt ) {
-					elmt.disable();
-				} );
-			}
-
-			['infocandidature', 'infocandidat', 'motifdemande', 'mobilite', 'rdv', 'engagement' ].each( function( formpartid ) {
-				disableFormPart( formpartid );
-			});
-		<?php endif;?>
 		<?php
 			echo $ajax->remoteFunction(
 				array(
