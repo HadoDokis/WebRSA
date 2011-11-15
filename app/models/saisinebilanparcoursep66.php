@@ -1,4 +1,6 @@
 <?php
+	require_once( ABSTRACTMODELS.'thematiqueep.php' );
+
 	/**
 	* Saisines d'EP pour les bilans de parcours pour le conseil général du
 	* département 66.
@@ -11,11 +13,9 @@
 	* @subpackage    app.app.models
 	*/
 
-	class Saisinebilanparcoursep66 extends AppModel
+	class Saisinebilanparcoursep66 extends Thematiqueep
 	{
 		public $name = 'Saisinebilanparcoursep66';
-
-		public $recursive = -1;
 
 		public $actsAs = array(
 			'Autovalidate',
@@ -66,6 +66,21 @@
 				'fields' => '',
 				'order' => ''
 			),
+		);
+
+		/**
+		* Chemin relatif pour les modèles de documents .odt utilisés lors des
+		* impressions. Utiliser %s pour remplacer par l'alias.
+		*/
+		public $modelesOdt = array(
+			// Convocation EP
+			'Commissionep/convocationep_beneficiaire.odt',
+			// Décision EP (décision CG)
+			'%s/decision_maintien_avec_changement.odt',
+			'%s/decision_maintien_sans_changement.odt',
+			'%s/decision_reorientation.odt',
+			'%s/decision_reporte.odt',
+			'%s/decision_annule.odt',
 		);
 
 		/**
@@ -147,7 +162,7 @@
 					$contratinsertion['Contratinsertion']['dd_ci'] = $dossierep['Saisinebilanparcoursep66']['Bilanparcours66']['ddreconductoncontrat'];
 					$contratinsertion['Contratinsertion']['df_ci'] = $dossierep['Saisinebilanparcoursep66']['Bilanparcours66']['dfreconductoncontrat'];
 					$contratinsertion['Contratinsertion']['duree_engag'] = $dossierep['Saisinebilanparcoursep66']['Bilanparcours66']['duree_engag'];
-					
+
 					$idRenouvellement = $this->Bilanparcours66->Contratinsertion->Typocontrat->field( 'Typocontrat.id', array( 'Typocontrat.lib_typo' => 'Renouvellement' ) );
 					$contratinsertion['Contratinsertion']['typocontrat_id'] = $idRenouvellement;
 					$contratinsertion['Contratinsertion']['rg_ci'] = ( $contratinsertion['Contratinsertion']['rg_ci'] + 1 );
@@ -204,14 +219,6 @@
 			}
 
 			return $success;
-		}
-
-		/**
-		* INFO: Fonction inutile dans cette saisine donc elle retourne simplement true
-		*/
-
-		public function verrouiller( $commissionep_id, $etape ) {
-			return true;
 		}
 
 		/**
@@ -289,7 +296,7 @@
 				)
 			);
 		}
-		
+
 		/**
 		*
 		*/
@@ -329,14 +336,6 @@
 				$success = $this->Bilanparcours66->updatePositionBilanDecisionsEp( $this->name, $themeData, $niveauDecision, $passagescommissionseps_ids ) && $success;
 				return $success;
 			}
-		}
-
-		/**
-		*
-		*/
-
-		public function saveDecisionUnique( $data, $niveauDecision ) {
-			return true;
 		}
 
 		/**
@@ -514,24 +513,31 @@
 		/**
 		* Récupération du courrier de convocation à l'allocataire pour un passage
 		* en commission donné.
-		* FIXME: spécifique par thématique
 		*/
-
 		public function getConvocationBeneficiaireEpPdf( $passagecommissionep_id ) {
-			$gedooo_data = $this->Dossierep->Passagecommissionep->find(
-				'first',
-				array(
-					'conditions' => array( 'Passagecommissionep.id' => $passagecommissionep_id ),
-					'contain' => array(
-						'Dossierep' => array(
-							'Personne',
-						),
-						'Commissionep'
-					)
-				)
-			);
+			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ );
+			$datas = Cache::read( $cacheKey );
 
-			return $this->ged( $gedooo_data, "Commissionep/convocationep_beneficiaire.odt" );
+			if( $datas === false ) {
+				$datas = $this->_qdConvocationBeneficiaireEpPdf();
+
+				Cache::write( $cacheKey, $datas );
+			}
+
+			$datas['querydata']['conditions']['Passagecommissionep.id'] = $passagecommissionep_id;
+			$gedooo_data = $this->Dossierep->Passagecommissionep->find( 'first', $datas['querydata'] );
+			$modeleOdt = 'Commissionep/convocationep_beneficiaire.odt';
+
+			if( empty( $gedooo_data ) ) {
+				return false;
+			}
+
+			return $this->ged(
+				$gedooo_data,
+				$modeleOdt,
+				false,
+				$datas['options']
+			);
 		}
 
 		/**
@@ -642,124 +648,85 @@
 		* Récupération de la décision suite au passage en commission d'un dossier
 		* d'EP pour un certain niveau de décision.
 		*/
-
 		public function getDecisionPdf( $passagecommissionep_id  ) {
-			$gedooo_data = $this->Dossierep->Passagecommissionep->find(
-				'first',
-				array(
-					'conditions' => array( 'Passagecommissionep.id' => $passagecommissionep_id ),
-					'contain' => array(
-						'Commissionep',
-						'Dossierep' => array(
-							'Personne' => array(
-								'Foyer' => array(
-									'Adressefoyer' => array(
-										'conditions' => array(
-											'Adressefoyer.id IN ( '.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01( 'Adressefoyer.foyer_id' ).' )'
-										),
-										'Adresse'
-									)
-								)
-							),
-							$this->alias => array(
+			$modele = $this->alias;
+			$modeleDecisions = 'Decision'.Inflector::underscore( $this->alias );
+
+			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ );
+			$datas = Cache::read( $cacheKey );
+
+			if( $datas === false ) {
+				$datas['querydata'] = $this->_qdDecisionPdf();
+
+				// Bilan de parcours
+				$datas['querydata']['fields'] = array_merge( $datas['querydata']['fields'], $this->Bilanparcours66->fields() );
+				$datas['querydata']['joins'][] = $this->join( 'Bilanparcours66' );
+
+				// Orientation liée au bilan de parcours
+				$datas['querydata']['fields'] = array_merge( $datas['querydata']['fields'], $this->Bilanparcours66->Orientstruct->fields() );
+				$datas['querydata']['joins'][] = $this->Bilanparcours66->join( 'Orientstruct' );
+
+				/* TODO:
+					$this->alias => array(
+						'Typeorient',
+						'Structurereferente',
+						'Bilanparcours66' => array(
+							'Orientstruct' => array(
 								'Typeorient',
 								'Structurereferente',
-								'Bilanparcours66' => array(
-									'Orientstruct' => array(
-										'Typeorient',
-										'Structurereferente',
-									),
-								)
 							),
-						),
-						'Decisionsaisinebilanparcoursep66' => array(
-							'Typeorient',
-							'Structurereferente',
-							'Referent',
-							'order' => array(
-								'Decisionsaisinebilanparcoursep66.etape DESC'
-							),
-							'limit' => 1
 						)
-					)
-				)
-			);
+					),*/
 
-			if( empty( $gedooo_data ) || !isset( $gedooo_data['Decisionsaisinebilanparcoursep66'][0] ) || empty( $gedooo_data['Decisionsaisinebilanparcoursep66'][0] ) ) {
+				// Jointures et champs décisions
+				$modelesProposes = array(
+					'Typeorient' => "{$modeleDecisions}typeorient",
+					'Structurereferente' => "{$modeleDecisions}structurereferente",
+					'Referent' => "{$modeleDecisions}referent",
+				);
+
+				foreach( $modelesProposes as $modelePropose => $modeleProposeAliase ) {
+					$replacement = array( $modelePropose => $modeleProposeAliase );
+
+					$datas['querydata']['joins'][] = array_words_replace( $this->Dossierep->Passagecommissionep->{$modeleDecisions}->join( $modelePropose ), $replacement );
+					$datas['querydata']['fields'] = array_merge( $datas['querydata']['fields'], array_words_replace( $this->Dossierep->Passagecommissionep->{$modeleDecisions}->{$modelePropose}->fields(), $replacement ) );
+				}
+
+				// Traductions
+				$datas['options'] = $this->Dossierep->Passagecommissionep->{$modeleDecisions}->enums();
+				$datas['options']['Personne']['qual'] = ClassRegistry::init( 'Option' )->qual();
+				$datas['options']['Adresse']['typevoie'] = ClassRegistry::init( 'Option' )->typevoie();
+				$datas['options']['type']['voie'] = $datas['options']['Adresse']['typevoie'];
+
+				Cache::write( $cacheKey, $datas );
+			}
+
+			$datas['querydata']['conditions']['Passagecommissionep.id'] = $passagecommissionep_id;
+			// INFO: permet de ne pas avoir d'erreur avec les virtualFields aliasés
+			$virtualFields = $this->Dossierep->Passagecommissionep->virtualFields;
+			$this->Dossierep->Passagecommissionep->virtualFields = array();
+			$gedooo_data = $this->Dossierep->Passagecommissionep->find( 'first', $datas['querydata'] );
+			$this->Dossierep->Passagecommissionep->virtualFields = $virtualFields;
+
+			if( empty( $gedooo_data ) || !isset( $gedooo_data[$modeleDecisions] ) || empty( $gedooo_data[$modeleDecisions] ) ) {
 				return false;
 			}
 
 			// Choix du modèle de document
-			$decision = $gedooo_data['Decisionsaisinebilanparcoursep66'][0]['decision']; // maintien,reorientation,annule,reporte
-
+			$decision = $gedooo_data[$modeleDecisions]['decision'];
 			if( $decision == 'maintien' ) {
-				if( $gedooo_data['Decisionsaisinebilanparcoursep66'][0]['changementrefparcours'] == 'O' ) {
+				if( $gedooo_data[$modeleDecisions]['changementrefparcours'] == 'O' ) {
 					$modeleOdt  = "{$this->alias}/decision_maintien_avec_changement.odt";
 				}
-				else if( $gedooo_data['Decisionsaisinebilanparcoursep66'][0]['changementrefparcours'] == 'N' ) {
+				else if( $gedooo_data[$modeleDecisions]['changementrefparcours'] == 'N' ) {
 					$modeleOdt  = "{$this->alias}/decision_maintien_sans_changement.odt";
 				}
 			}
-			else if( $decision == 'reorientation' ) {
-				$modeleOdt  = "{$this->alias}/decision_reorientation.odt";
-			}
-			else if( $decision == 'reporte' ) {
-				$modeleOdt  = "{$this->alias}/decision_reporte.odt";
-			}
-			else if( $decision == 'annule' ) {
-				$modeleOdt  = "{$this->alias}/decision_annule.odt";
+			else { // reorientation, reporte, annule
+				$modeleOdt = "{$this->alias}/decision_{$decision}.odt";
 			}
 
-			// Possède-t'on un PDF déjà stocké ?
-			$pdfModel = ClassRegistry::init( 'Pdf' );
-			$pdf = $pdfModel->find(
-				'first',
-				array(
-					'conditions' => array(
-						'modele' => 'Passagecommissionep',
-						'modeledoc' => $modeleOdt,
-						'fk_value' => $passagecommissionep_id
-					)
-				)
-			);
-
-			if( !empty( $pdf ) && empty( $pdf['Pdf']['document'] ) ) {
-				$cmisPdf = Cmis::read( "/Passagecommissionep/{$passagecommissionep_id}.pdf", true );
-				$pdf['Pdf']['document'] = $cmisPdf['content'];
-			}
-
-			if( !empty( $pdf['Pdf']['document'] ) ) {
-				return $pdf['Pdf']['document'];
-			}
-
-			// Traductions
-			$options = $this->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->enums();
-			$options['Personne']['qual'] = ClassRegistry::init( 'Option' )->qual();
-			$options['Adresse']['typevoie'] = ClassRegistry::init( 'Option' )->typevoie();
-			// INFO: c'est tricher, mais ça permet de traduire tous les Structurereferente.type_voie
-			$options['type']['voie'] = $options['Adresse']['typevoie'];
-
-			// Sinon, on génère le PDF
-			$pdf =  $this->ged(
-				$gedooo_data,
-				$modeleOdt,
-				false,
-				$options
-			);
-
-			$oldRecord['Pdf']['modele'] = 'Passagecommissionep';
-			$oldRecord['Pdf']['modeledoc'] = $modeleOdt;
-			$oldRecord['Pdf']['fk_value'] = $passagecommissionep_id;
-			$oldRecord['Pdf']['document'] = $pdf;
-
-			$pdfModel->create( $oldRecord );
-			$success = $pdfModel->save();
-
-			if( !$success ) {
-				return false;
-			}
-
-			return $pdf;
+			return $this->_getOrCreateDecisionPdf( $passagecommissionep_id, $gedooo_data, $modeleOdt, $datas['options'] );
 		}
 	}
 ?>

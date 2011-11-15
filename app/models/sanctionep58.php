@@ -1,4 +1,6 @@
 <?php
+	require_once( ABSTRACTMODELS.'thematiqueep.php' );
+
 	/**
 	* Saisines d'EP pour les bilans de parcours pour le conseil général du
 	* département 66.
@@ -11,11 +13,9 @@
 	* @subpackage    app.app.models
 	*/
 
-	class Sanctionep58 extends AppModel
+	class Sanctionep58 extends Thematiqueep
 	{
 		public $name = 'Sanctionep58';
-
-		public $recursive = -1;
 
 		public $actsAs = array(
 			'Autovalidate',
@@ -38,6 +38,20 @@
 				'fields' => '',
 				'order' => ''
 			),
+		);
+
+		/**
+		* Chemin relatif pour les modèles de documents .odt utilisés lors des
+		* impressions. Utiliser %s pour remplacer par l'alias.
+		*/
+		public $modelesOdt = array(
+			// Convocation EP
+			'Commissionep/convocationep_beneficiaire.odt',
+			// Décision EP (décision CG)
+			'%s/decision_annule.odt',
+			'%s/decision_reporte.odt',
+			'%s/decision_maintien.odt',
+			'%s/decision_sanction.odt',
 		);
 
 		/**
@@ -424,7 +438,7 @@
 								'contain' => false
 							)
 						);
-						
+
 						$listesanctionep58 = $this->Dossierep->Passagecommissionep->Decisionsanctionep58->Listesanctionep58->find(
 							'first',
 							array(
@@ -437,7 +451,7 @@
 								'contain' => false
 							)
 						);
-						
+
 						$formData['Decisionsanctionep58'][$key]['listesanctionep58_id'] = $listesanctionep58['Listesanctionep58']['id'];
 					}
 				}
@@ -466,18 +480,10 @@
 		}
 
 		/**
-		* INFO: Fonction inutile dans cette saisine donc elle retourne simplement true
-		*/
-
-		public function verrouiller( $commissionep_id, $etape ) {
-			return true;
-		}
-
-		/**
 		* TODO: docs
 		*/
 
-		public function finaliser( $commissionep_id, $etape ) {
+		public function finaliser( $commissionep_id, $etape, $user_id ) {
 			// Aucune action utile ?
 			return true;
 		}
@@ -530,137 +536,74 @@
 		/**
 		* Récupération du courrier de convocation à l'allocataire pour un passage
 		* en commission donné.
-		* FIXME: spécifique par thématique
 		*/
 
 		public function getConvocationBeneficiaireEpPdf( $passagecommissionep_id ) {
-			$gedooo_data = $this->Dossierep->Passagecommissionep->find(
-				'first',
-				array(
-					'conditions' => array( 'Passagecommissionep.id' => $passagecommissionep_id ),
-					'contain' => array(
-						'Dossierep' => array(
-							'Personne',
-						),
-						'Commissionep'
-					)
-				)
-			);
+			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ );
+			$datas = Cache::read( $cacheKey );
 
-			return $this->ged( $gedooo_data, "Commissionep/convocationep_beneficiaire.odt" );
+			if( $datas === false ) {
+				$datas = $this->_qdConvocationBeneficiaireEpPdf();
+
+				Cache::write( $cacheKey, $datas );
+			}
+
+			$datas['querydata']['conditions']['Passagecommissionep.id'] = $passagecommissionep_id;
+			$gedooo_data = $this->Dossierep->Passagecommissionep->find( 'first', $datas['querydata'] );
+			$modeleOdt = 'Commissionep/convocationep_beneficiaire.odt';
+
+			if( empty( $gedooo_data ) ) {
+				return false;
+			}
+
+			return $this->ged(
+				$gedooo_data,
+				$modeleOdt,
+				false,
+				$datas['options']
+			);
 		}
 
 		/**
 		* Récupération de la décision suite au passage en commission d'un dossier
 		* d'EP pour un certain niveau de décision.
-		* FIXME: spécifique par thématique
 		*/
-
 		public function getDecisionPdf( $passagecommissionep_id  ) {
-			$modele = 'Sanctionep'.Configure::read( 'Cg.departement' );
-			$modeleDecisions = 'Decisionsanctionep'.Configure::read( 'Cg.departement' );
+			$modele = $this->alias;
+			$modeleDecisions = 'Decision'.Inflector::underscore( $this->alias );
 
-			$gedooo_data = $this->Dossierep->Passagecommissionep->find(
-				'first',
-				array(
-					'conditions' => array( 'Passagecommissionep.id' => $passagecommissionep_id ),
-					'contain' => array(
-						'Commissionep',
-						'Dossierep' => array(
-							'Personne' => array(
-								'Foyer' => array(
-									'Adressefoyer' => array(
-										'conditions' => array(
-											'Adressefoyer.id IN ( '.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01( 'Adressefoyer.foyer_id' ).' )'
-										),
-										'Adresse'
-									)
-								)
-							),
-							$modele
-						),
-						$modeleDecisions => array(
-							'Listesanctionep58',
-							'order' => array(
-								$modeleDecisions.'.etape DESC'
-							),
-							'limit' => 1
-						)
-					)
-				)
-			);
+			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ );
+			$datas = Cache::read( $cacheKey );
 
-			if( empty( $gedooo_data ) || !isset( $gedooo_data[$modeleDecisions][0] ) || empty( $gedooo_data[$modeleDecisions][0] ) ) {
+			if( $datas === false ) {
+				$datas['querydata'] = $this->_qdDecisionPdf();
+
+				$datas['querydata']['fields'] = array_merge(
+					$datas['querydata']['fields'],
+					$this->Dossierep->Passagecommissionep->{$modeleDecisions}->Listesanctionep58->fields()
+				);
+				$datas['querydata']['joins'][] = $this->Dossierep->Passagecommissionep->{$modeleDecisions}->join( 'Listesanctionep58' );
+
+				// Traductions
+				$datas['options'] = $this->Dossierep->Passagecommissionep->{$modeleDecisions}->enums();
+				$datas['options']['Personne']['qual'] = ClassRegistry::init( 'Option' )->qual();
+				$datas['options']['Adresse']['typevoie'] = ClassRegistry::init( 'Option' )->typevoie();
+
+				Cache::write( $cacheKey, $datas );
+			}
+
+			$datas['querydata']['conditions']['Passagecommissionep.id'] = $passagecommissionep_id;
+			$gedooo_data = $this->Dossierep->Passagecommissionep->find( 'first', $datas['querydata'] );
+
+			if( empty( $gedooo_data ) || !isset( $gedooo_data[$modeleDecisions] ) || empty( $gedooo_data[$modeleDecisions] ) ) {
 				return false;
 			}
 
 			// Choix du modèle de document
-			$decision = $gedooo_data[$modeleDecisions][0]['decision'];
+			$decision = $gedooo_data[$modeleDecisions]['decision'];
+			$modeleOdt = "{$this->alias}/decision_{$decision}.odt";
 
-			if( $decision == 'annule' ) {
-				$modeleOdt  = "{$this->alias}/decision_annule.odt";
-			}
-			else if( $decision == 'reporte' ) {
-				$modeleOdt  = "{$this->alias}/decision_reporte.odt";
-			}
-			else {
-				$modeleOdt  = "{$this->alias}/decision_autre.odt";
-			}
-
-			// Calcul de la date de fin de sursis si besoin
-			$dateDepart = strtotime( $gedooo_data['Passagecommissionep']['impressiondecision'] );
-			if( empty( $dateDepart ) ) {
-				$dateDepart = mktime();
-			}
-
-			// Possède-t'on un PDF déjà stocké ?
-			$pdfModel = ClassRegistry::init( 'Pdf' );
-			$pdf = $pdfModel->find(
-				'first',
-				array(
-					'conditions' => array(
-						'modele' => 'Passagecommissionep',
-						'modeledoc' => $modeleOdt,
-						'fk_value' => $passagecommissionep_id
-					)
-				)
-			);
-
-			if( !empty( $pdf ) && empty( $pdf['Pdf']['document'] ) ) {
-				$cmisPdf = Cmis::read( "/Passagecommissionep/{$passagecommissionep_id}.pdf", true );
-				$pdf['Pdf']['document'] = $cmisPdf['content'];
-			}
-
-			if( !empty( $pdf['Pdf']['document'] ) ) {
-				return $pdf['Pdf']['document'];
-			}
-
-			// Traductions
-			$options = $this->Dossierep->Passagecommissionep->{$modeleDecisions}->enums();
-			$options['Personne']['qual'] = ClassRegistry::init( 'Option' )->qual();
-			$options['Adresse']['typevoie'] = ClassRegistry::init( 'Option' )->typevoie();
-
-			// Sinon, on génère le PDF
-			$pdf =  $this->ged(
-				$gedooo_data,
-				$modeleOdt,
-                false,
-                $options
-			);
-
-			$oldRecord['Pdf']['modele'] = 'Passagecommissionep';
-			$oldRecord['Pdf']['modeledoc'] = $modeleOdt;
-			$oldRecord['Pdf']['fk_value'] = $passagecommissionep_id;
-			$oldRecord['Pdf']['document'] = $pdf;
-
-			$pdfModel->create( $oldRecord );
-			$success = $pdfModel->save();
-
-			if( !$success ) {
-				return false;
-			}
-
-			return $pdf;
+			return $this->_getOrCreateDecisionPdf( $passagecommissionep_id, $gedooo_data, $modeleOdt, $datas['options'] );
 		}
 
 		/**

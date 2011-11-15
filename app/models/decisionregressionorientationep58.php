@@ -46,9 +46,23 @@
 				'fields' => '',
 				'order' => ''
 			),
+			'Referent' => array(
+				'className' => 'Referent',
+				'foreignKey' => 'referent_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
 			'Passagecommissionep' => array(
 				'className' => 'Passagecommissionep',
 				'foreignKey' => 'passagecommissionep_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			'User' => array(
+				'className' => 'User',
+				'foreignKey' => 'user_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''

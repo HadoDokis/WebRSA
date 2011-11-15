@@ -637,8 +637,12 @@
 						$data[$this->alias]['structurereferente_id'] = $vxOrientstruct['Orientstruct']['structurereferente_id'];
 					}
 
-					$data['Bilanparcours66']['typeorientprincipale_id'] = $data['Bilanparcours66']['avecep_typeorientprincipale_id'];
-					$data['Bilanparcours66']['changementref'] = $data['Bilanparcours66']['changementrefavecep'];
+					if( isset( $data['Bilanparcours66']['avecep_typeorientprincipale_id'] ) ) {
+						$data['Bilanparcours66']['typeorientprincipale_id'] = $data['Bilanparcours66']['avecep_typeorientprincipale_id'];
+					}
+					if( isset( $data['Bilanparcours66']['changementrefavecep'] ) ) {
+						$data['Bilanparcours66']['changementref'] = $data['Bilanparcours66']['changementrefavecep'];
+					}
 
 					$this->create( $data );
 					$success = $this->save() && $success;
@@ -662,9 +666,19 @@
 					$data['Saisinebilanparcoursep66']['bilanparcours66_id'] = $this->id;
 					$data['Saisinebilanparcoursep66']['dossierep_id'] = $this->Saisinebilanparcoursep66->Dossierep->id;
 
-					$data['Saisinebilanparcoursep66']['typeorientprincipale_id'] = $data['Bilanparcours66']['typeorientprincipale_id'];
-					$data['Saisinebilanparcoursep66']['typeorient_id'] = $data['Bilanparcours66']['nvtypeorient_id'];
-					$data['Saisinebilanparcoursep66']['structurereferente_id'] = $data['Bilanparcours66']['nvstructurereferente_id'];
+					if( isset( $data['Bilanparcours66']['typeorientprincipale_id'] ) ) {
+						$data['Saisinebilanparcoursep66']['typeorientprincipale_id'] = $data['Bilanparcours66']['typeorientprincipale_id'];
+					}
+					else {
+						$data['Saisinebilanparcoursep66']['typeorientprincipale_id'] = $this->Orientstruct->Typeorient->getIdLevel0( $data['Saisinebilanparcoursep66']['typeorient_id'] );
+					}
+
+					if( isset( $data['Bilanparcours66']['nvtypeorient_id'] ) ) {
+						$data['Saisinebilanparcoursep66']['typeorient_id'] = $data['Bilanparcours66']['nvtypeorient_id'];
+					}
+					if( isset( $data['Bilanparcours66']['nvstructurereferente_id'] ) ) {
+						$data['Saisinebilanparcoursep66']['structurereferente_id'] = $data['Bilanparcours66']['nvstructurereferente_id'];
+					}
 
 					if ( isset( $data['Bilanparcours66']['choixparcours'] ) ) {
 						$data['Saisinebilanparcoursep66']['choixparcours'] = $data['Bilanparcours66']['choixparcours'];
@@ -674,6 +688,9 @@
 					}
 					if ( isset( $data['Bilanparcours66']['reorientation'] ) ) {
 						$data['Saisinebilanparcoursep66']['reorientation'] = $data['Bilanparcours66']['reorientation'];
+					}
+					else {
+						$data['Saisinebilanparcoursep66']['reorientation'] = 'reorientation';
 					}
 
 					$this->Saisinebilanparcoursep66->create( $data );

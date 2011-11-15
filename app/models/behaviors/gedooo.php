@@ -84,6 +84,11 @@
 				}
 			}
 
+			// Ajout d'une variable contenant le chemin vers le fichier lorsqu'on est en debug
+			if( Configure::read( 'debug' ) > 0 ) {
+				$oMainPart->addElement( new GDO_FieldType( 'modeleodt_path', str_replace( MODELESODT_DIR, '', $path_model ), 'text' ) );
+			}
+
 			if( !empty( $cohorteData ) ) {
 				foreach( $cohorteData as $cohorteName => $sectionDatas ) {
 					// Traitement d'une section

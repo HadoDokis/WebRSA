@@ -1,4 +1,6 @@
 <?php
+	require_once( ABSTRACTMODELS.'thematiqueep.php' );
+
 	/**
 	* Saisines d'EP pour les bilans de parcours pour le conseil général du
 	* département 66.
@@ -10,12 +12,9 @@
 	* @package       app
 	* @subpackage    app.app.models
 	*/
-
-	class Defautinsertionep66 extends AppModel
+	class Defautinsertionep66 extends Thematiqueep
 	{
 		public $name = 'Defautinsertionep66';
-
-		public $recursive = -1;
 
 		public $actsAs = array(
 			'Autovalidate',
@@ -86,6 +85,20 @@
 // 		);
 
 		/**
+		* Chemin relatif pour les modèles de documents .odt utilisés lors des
+		* impressions. Utiliser %s pour remplacer par l'alias.
+		*/
+		public $modelesOdt = array(
+			// Courrier d'information
+			'%s/bilanparcours_courrierinformationavantep.odt',
+			'%s/noninscriptionpe_courrierinformationavantep.odt',
+			'%s/radiationpe_courrierinformationavantep.odt',
+			// Convocation EP
+			'Commissionep/convocationep_beneficiaire.odt',
+			// Décision EP (décision CG)
+		);
+
+		/**
 		*
 		*/
 		public function containQueryData() {
@@ -97,14 +110,6 @@
 					),
 				)
 			);
-		}
-
-		/**
-		* INFO: Fonction inutile dans cette saisine donc elle retourne simplement true
-		*/
-
-		public function verrouiller( $commissionep_id, $etape ) {
-			return true;
 		}
 
 		/**
@@ -203,14 +208,6 @@
 		}
 
 		/**
-		*
-		*/
-
-		public function saveDecisionUnique( $data, $niveauDecision ) {
-			return true;
-		}
-
-		/**
 		* Prépare les données du formulaire d'un niveau de décision
 		* en prenant en compte les données du bilan ou du niveau de décision
 		* précédent.
@@ -266,7 +263,7 @@
 		* TODO: docs
 		*/
 
-		public function finaliser( $commissionep_id, $etape ) {
+		public function finaliser( $commissionep_id, $etape, $user_id ) {
 			$commissionep = $this->Dossierep->Passagecommissionep->Commissionep->find(
 				'first',
 				array(
@@ -780,24 +777,31 @@
 		/**
 		* Récupération du courrier de convocation à l'allocataire pour un passage
 		* en commission donné.
-		* FIXME: spécifique par thématique
 		*/
-
 		public function getConvocationBeneficiaireEpPdf( $passagecommissionep_id ) {
-			$gedooo_data = $this->Dossierep->Passagecommissionep->find(
-				'first',
-				array(
-					'conditions' => array( 'Passagecommissionep.id' => $passagecommissionep_id ),
-					'contain' => array(
-						'Dossierep' => array(
-							'Personne',
-						),
-						'Commissionep'
-					)
-				)
-			);
+			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ );
+			$datas = Cache::read( $cacheKey );
 
-			return $this->ged( $gedooo_data, "Commissionep/convocationep_beneficiaire.odt" );
+			if( $datas === false ) {
+				$datas = $this->_qdConvocationBeneficiaireEpPdf();
+
+				Cache::write( $cacheKey, $datas );
+			}
+
+			$datas['querydata']['conditions']['Passagecommissionep.id'] = $passagecommissionep_id;
+			$gedooo_data = $this->Dossierep->Passagecommissionep->find( 'first', $datas['querydata'] );
+			$modeleOdt = 'Commissionep/convocationep_beneficiaire.odt';
+
+			if( empty( $gedooo_data ) ) {
+				return false;
+			}
+
+			return $this->ged(
+				$gedooo_data,
+				$modeleOdt,
+				false,
+				$datas['options']
+			);
 		}
 
 		/**
@@ -993,6 +997,6 @@
 
 			return $query;
 		}
-		
+
 	}
 ?>

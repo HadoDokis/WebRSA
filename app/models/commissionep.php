@@ -1,4 +1,6 @@
 <?php
+	define( 'ORDREDUJOUR_PARTICIPANT_CG', '%s/ordredujour_participant_'.Configure::read( 'Cg.departement' ).'.odt' );
+
 	/**
 	* Séance d'équipe pluridisciplinaire.
 	*
@@ -111,6 +113,19 @@
 					'required' => false
 				)
 			)
+		);
+
+		/**
+		* Chemin relatif pour les modèles de documents .odt utilisés lors des
+		* impressions. Utiliser %s pour remplacer par l'alias.
+		*/
+		public $modelesOdt = array(
+			'%s/pv.odt',
+			'%s/convocationep_participant.odt',
+			ORDREDUJOUR_PARTICIPANT_CG,
+			'%s/decisionep.odt',
+			'%s/fichesynthese.odt',
+			'%s/convocationep_beneficiaire.odt',
 		);
 
 		public function search( $criteresseanceep, $filtre_zone_geo, $zonesgeographiques ) {
@@ -250,7 +265,7 @@
 			$success = true;
 
 			// Champs à conserver en cas d'annulation ou de report
-			$champsAGarder = array( 'id', 'etape', 'passagecommissionep_id', 'created', 'modified' );
+			$champsAGarder = array( 'id', 'etape', 'passagecommissionep_id', 'user_id', 'created', 'modified' );
 			$champsAGarderPourNonDecision = Set::merge( $champsAGarder, array( 'decision', 'commentaire', 'raisonnonpassage' ) );
 
 			foreach( $this->themesTraites( $commissionep_id ) as $theme => $decision ) {
@@ -706,7 +721,7 @@
 
 			return $success;
 		}
-		
+
 		/**
 		 *
 		 */
@@ -1750,7 +1765,7 @@
 				'first',
 				$this->_qdFichesSynthetiques( array( 'Passagecommissionep.commissionep_id' => $commissionep_id ) )
 			);
-			
+
 			$dossierep = $this->Passagecommissionep->Dossierep->find( 'first', $queryData );
 			$dataFiche = Set::merge( $dossierep, $fichessynthetiques );
 

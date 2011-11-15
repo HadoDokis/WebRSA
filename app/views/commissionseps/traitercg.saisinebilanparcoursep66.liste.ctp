@@ -35,7 +35,8 @@ $typeorientemploiId = $typeorientprincipale['Emploi'][0];
 						$form->input( "Bilanparcours66.{$i}.oldstructurereferente_id", array( 'type' => 'hidden', 'value' => $dossierep['Saisinebilanparcoursep66']['Bilanparcours66']['Orientstruct']['structurereferente_id'] ) ).
 						$form->input( "Decisionsaisinebilanparcoursep66.{$i}.id", array( 'type' => 'hidden' ) ).
 						$form->input( "Decisionsaisinebilanparcoursep66.{$i}.etape", array( 'type' => 'hidden', 'value' => 'cg' ) ).
-						$form->input( "Decisionsaisinebilanparcoursep66.{$i}.passagecommissionep_id", array( 'type' => 'hidden' ) );
+						$form->input( "Decisionsaisinebilanparcoursep66.{$i}.passagecommissionep_id", array( 'type' => 'hidden' ) ).
+						$form->input( "Decisionsaisinebilanparcoursep66.{$i}.user_id", array( 'type' => 'hidden', 'value' => $session->read( 'Auth.User.id' ) ) );
 
 		$typesorientsprincipales =
 			$xhtml->tag(

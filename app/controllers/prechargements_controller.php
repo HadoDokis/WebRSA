@@ -42,6 +42,7 @@
 			$initialized = array();
 			$uninitialized = array();
 			$nonprechargements = array();
+			$prechargements = array();
 			$tables = $missing = $this->_listTables();
 
 			$models = $this->_getModels();
@@ -60,8 +61,12 @@
 				if( $init ) {
 					$initialized[] = $model;
 					$modelClass = ClassRegistry::init( $model );
-					if( $modelClass->prechargement() == false ) {
+					$prechargement = $modelClass->prechargement();
+					if( $prechargement === false ) {
 						$nonprechargements[] = $modelClass->alias;
+					}
+					else if( $prechargement !== null ) {
+						$prechargements[] = $modelClass->alias;
 					}
 				}
 				else {
@@ -74,7 +79,7 @@
 				}
 			}
 
-			$this->set( compact( 'initialized', 'uninitialized', 'missing', 'nonprechargements' ) );
+			$this->set( compact( 'initialized', 'uninitialized', 'missing', 'prechargements', 'nonprechargements' ) );
 
 			// Traductions
 			App::import( 'Core', 'Folder' );

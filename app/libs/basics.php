@@ -210,25 +210,25 @@
 		// there are 3600 seconds in an hour, so if we
 		// divide total seconds by 3600 and throw away
 		// the remainder, we've got the number of hours
-		$hours = intval(intval($sec) / 3600); 
+		$hours = intval(intval($sec) / 3600);
 
 		// add to $hms, with a leading 0 if asked for
-		$hms .= ($padHours) 
+		$hms .= ($padHours)
 				? str_pad($hours, 2, "0", STR_PAD_LEFT). ':'
 				: $hours. ':';
-			
+
 		// dividing the total seconds by 60 will give us
-		// the number of minutes, but we're interested in 
-		// minutes past the hour: to get that, we need to 
+		// the number of minutes, but we're interested in
+		// minutes past the hour: to get that, we need to
 		// divide by 60 again and keep the remainder
-		$minutes = intval(($sec / 60) % 60); 
+		$minutes = intval(($sec / 60) % 60);
 
 		// then add to $hms (with a leading 0 if needed)
 		$hms .= str_pad($minutes, 2, "0", STR_PAD_LEFT). ':';
 
 		// seconds are simple - just divide the total
 		// seconds by 60 and keep the remainder
-		$seconds = intval($sec % 60); 
+		$seconds = intval($sec % 60);
 
 		// add to $hms, again with a leading 0 if needed
 		$hms .= str_pad($seconds, 2, "0", STR_PAD_LEFT);
@@ -643,5 +643,24 @@
 
 		$modulo = bcmod( $nir, 97 );
 		return str_pad( ( 97 - $modulo ), 2, '0', STR_PAD_LEFT);*/
+	}
+
+	/**
+	* Exemple:
+	*	$subject = array( 'Foo.id' => array( 'Bar' => 1 ), 'Foobar' => array( 'Foo.bar = Bar.foo' ) );
+	*	$replacement = array( 'Foo' => 'Baz' );
+	*	Résultat: array( 'Baz.id' => array( 'Bar' => 1 ), 'Foobar' => array( 'Baz.bar = Bar.foo' ) );
+	*
+	* @param array $subject
+	* @param array $replacement
+	* @return array
+	*/
+	function array_words_replace( array $subject, array $replacement ) {
+		$regexes = array();
+		foreach( $replacement as $key => $value ) {
+			$key = "/(?<!\.)(?<!\w)({$key})(?!\w)/";
+			$regexes[$key] = $value;
+		}
+		return recursive_key_value_preg_replace( $subject, $regexes );
 	}
 ?>

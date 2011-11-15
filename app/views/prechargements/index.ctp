@@ -14,7 +14,19 @@
 ?>
 </ol>
 
-<h3>Modèles non préchargés (<?php echo count($nonprechargements);?>)</h3>
+<h3>Modèles préchargés (<?php echo count($prechargements);?>)</h3>
+<ol>
+<?php
+	sort( $prechargements );
+
+	foreach( $prechargements as $model ) {
+		echo '<li>'.$model.'</li>';
+	}
+?>
+</ol>
+
+
+<h3>Erreur durant le préchargement du modèle (<?php echo count($nonprechargements);?>)</h3>
 <?php if( !empty($nonprechargements ) ):?>
 <ol>
 <?php

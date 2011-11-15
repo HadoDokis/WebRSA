@@ -129,6 +129,10 @@
 			foreach( $orientsstructs as $i => $orientstruct ) {
 				$this->out( sprintf( "Impression de l'orientation %s (id %s)", $i + 1, $orientstruct['Orientstruct']['id'] ) );
 				$success = $this->Orientstruct->generatePdf( $orientstruct['Orientstruct']['id'], $user['User']['id'] ) && $success;
+				if( !$success ) { // FIXME: pour les autres aussi
+					$this->err( sprintf( "Erreur lors de l'impression de l'orientation %s (id %s)", $i + 1, $orientstruct['Orientstruct']['id'] ) );
+					$this->_stop( ( $success ? 0 : 1 ) );
+				}
 			}
 
 			$this->_stop( ( $success ? 0 : 1 ) );

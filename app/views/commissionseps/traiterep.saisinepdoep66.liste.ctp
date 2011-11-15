@@ -21,7 +21,9 @@ echo '<table><thead>
 
 		$hiddenFields = $form->input( "Decisionsaisinepdoep66.{$i}.id", array( 'type' => 'hidden' ) ).
 						$form->input( "Decisionsaisinepdoep66.{$i}.passagecommissionep_id", array( 'type' => 'hidden' ) ).
-						$form->input( "Decisionsaisinepdoep66.{$i}.etape", array( 'type' => 'hidden', 'value' => 'ep' ) );
+						$form->input( "Decisionsaisinepdoep66.{$i}.datedecisionpdo", array( 'type' => 'hidden', 'value' => date( 'Y-m-d', strtotime( $commissionep['Commissionep']['dateseance'] ) ) ) ).
+						$form->input( "Decisionsaisinepdoep66.{$i}.etape", array( 'type' => 'hidden', 'value' => 'ep' ) ).
+						$form->input( "Decisionsaisinepdoep66.{$i}.user_id", array( 'type' => 'hidden', 'value' => $session->read( 'Auth.User.id' ) ) );
 
 		echo $xhtml->tableCells(
 			array(

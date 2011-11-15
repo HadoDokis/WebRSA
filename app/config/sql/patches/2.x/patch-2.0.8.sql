@@ -217,7 +217,7 @@ $$
 		v_row       		record;
 		v_query     		text;
 	BEGIN
-		SELECT ( CAST( regexp_replace( MAX(numeroapre), '^[0-9]{6}0+', '') AS INTEGER ) + 1 ) AS numeroapre FROM apres INTO v_row;
+		SELECT ( CAST( regexp_replace( COALESCE( MAX(numeroapre), '0' ), '^[0-9]{6}0+', '') AS INTEGER ) + 1 ) AS numeroapre FROM apres INTO v_row;
 
 		IF FOUND THEN
 			v_query := 'CREATE SEQUENCE apres_numeroapre_seq START ' || v_row.numeroapre || ';';
@@ -236,6 +236,164 @@ DROP FUNCTION public.init_apres_numeroapre_seq();
 -- 20111115 -- Ajout d'un champ pour l'email de la personne
 -- ***********************************************************************************************************
 SELECT add_missing_table_field ( 'public', 'personnes', 'email', 'VARCHAR(100)' );
+-- *****************************************************************************
+-- Nouvelle version de la fonction public.add_missing_constraint qui prend en compte
+--		la longueur maximale de 63 caractères pour le nom de la contrainte.
+-- ***************************************************************************************
+
+CREATE OR REPLACE FUNCTION public.add_missing_constraint (text, text, text, text, text) RETURNS bool AS
+$$
+	DECLARE
+		p_namespace 		alias for $1;
+		p_table     		alias for $2;
+		p_constraintname	alias for $3;
+		p_foreigntable		alias for $4;
+		p_foreignkeyname	alias for $5;
+		v_row       		record;
+		v_query     		text;
+	BEGIN
+		SELECT 1 INTO v_row
+		FROM information_schema.table_constraints tc
+			LEFT JOIN information_schema.key_column_usage kcu ON (
+				tc.constraint_catalog = kcu.constraint_catalog
+				AND tc.constraint_schema = kcu.constraint_schema
+				AND tc.constraint_name = kcu.constraint_name
+			)
+			LEFT JOIN information_schema.referential_constraints rc ON (
+				tc.constraint_catalog = rc.constraint_catalog
+				AND tc.constraint_schema = rc.constraint_schema
+				AND tc.constraint_name = rc.constraint_name
+			)
+			LEFT JOIN information_schema.constraint_column_usage ccu ON (
+				rc.unique_constraint_catalog = ccu.constraint_catalog
+				AND rc.unique_constraint_schema = ccu.constraint_schema
+				AND rc.unique_constraint_name = ccu.constraint_name
+			)
+		WHERE
+			tc.table_schema = p_namespace
+			AND tc.table_name = p_table
+			AND tc.constraint_type = 'FOREIGN KEY'
+			AND tc.constraint_name = substring( p_constraintname from 1 for 63 ) -- INFO: les noms sont juste tronqués, pas de chiffre à la fin -> ça ne devrait pas poser de problème
+			AND kcu.column_name = p_foreignkeyname
+			AND ccu.table_name = p_foreigntable
+			AND ccu.column_name = 'id';
+
+		IF NOT FOUND THEN
+			RAISE NOTICE 'Upgrade table %.% - add constraint %', p_namespace, p_table, p_constraintname;
+			v_query := 'alter table ' || p_namespace || '.' || p_table || ' add constraint ';
+			v_query := v_query || p_constraintname || ' FOREIGN KEY (' || p_foreignkeyname || ') REFERENCES ' || p_foreigntable || '(id) ON DELETE CASCADE ON UPDATE CASCADE;';
+			EXECUTE v_query;
+			RETURN 't';
+		ELSE
+			RETURN 'f';
+		END IF;
+	END;
+$$
+LANGUAGE plpgsql;
+
+COMMENT ON FUNCTION public.add_missing_constraint (text, text, text, text, text) IS 'Add a constraint to a table if it is missing';
+
+-- *****************************************************************************
+-- 20111104 : ajout des relations entre les tables de décisions EP et la table users
+-- *****************************************************************************
+
+SELECT add_missing_table_field ('public', 'decisionsnonorientationsproseps93', 'user_id', 'INTEGER');
+SELECT add_missing_constraint ('public', 'decisionsnonorientationsproseps93', 'decisionsnonorientationsproseps93_user_id_fkey', 'users', 'user_id');
+ALTER TABLE decisionsnonorientationsproseps93 ALTER COLUMN user_id SET NOT NULL;
+
+DROP INDEX IF EXISTS decisionsnonorientationsproseps93_user_id_isx;
+CREATE INDEX decisionsnonorientationsproseps93_user_id_isx ON decisionsnonorientationsproseps93(user_id);
+
+-- -----------------------------------------------------------------------------
+
+SELECT add_missing_table_field ('public', 'decisionscontratscomplexeseps93', 'user_id', 'INTEGER');
+SELECT add_missing_constraint( 'public', 'decisionscontratscomplexeseps93', 'decisionscontratscomplexeseps93_user_id_fk', 'users', 'user_id' );
+ALTER TABLE decisionscontratscomplexeseps93 ALTER COLUMN user_id SET NOT NULL;
+ 
+DROP INDEX IF EXISTS decisionscontratscomplexeseps93_user_id_isx;
+CREATE INDEX decisionscontratscomplexeseps93_user_id_isx ON decisionscontratscomplexeseps93(user_id);
+
+-- -----------------------------------------------------------------------------
+
+SELECT add_missing_table_field ('public', 'decisionsdefautsinsertionseps66', 'user_id', 'INTEGER');
+SELECT add_missing_constraint( 'public', 'decisionsdefautsinsertionseps66', 'decisionsdefautsinsertionseps66_user_id_fk', 'users', 'user_id' );
+ALTER TABLE decisionsdefautsinsertionseps66 ALTER COLUMN user_id SET NOT NULL;
+ 
+DROP INDEX IF EXISTS decisionsdefautsinsertionseps66_user_id_isx;
+CREATE INDEX decisionsdefautsinsertionseps66_user_id_isx ON decisionsdefautsinsertionseps66(user_id);
+
+-- -----------------------------------------------------------------------------
+
+SELECT add_missing_table_field ('public', 'decisionsnonorientationsproseps58', 'user_id', 'INTEGER');
+SELECT add_missing_constraint( 'public', 'decisionsnonorientationsproseps58', 'decisionsnonorientationsproseps58_user_id_fk', 'users', 'user_id' );
+ALTER TABLE decisionsnonorientationsproseps58 ALTER COLUMN user_id SET NOT NULL;
+ 
+DROP INDEX IF EXISTS decisionsnonorientationsproseps58_user_id_isx;
+CREATE INDEX decisionsnonorientationsproseps58_user_id_isx ON decisionsnonorientationsproseps58(user_id);
+
+-- -----------------------------------------------------------------------------
+
+SELECT add_missing_table_field ('public', 'decisionsnonorientationsproseps93', 'user_id', 'INTEGER');
+SELECT add_missing_constraint( 'public', 'decisionsnonorientationsproseps93', 'decisionsnonorientationsproseps93_user_id_fk', 'users', 'user_id' );
+ALTER TABLE decisionsnonorientationsproseps93 ALTER COLUMN user_id SET NOT NULL;
+ 
+DROP INDEX IF EXISTS decisionsnonorientationsproseps93_user_id_isx;
+CREATE INDEX decisionsnonorientationsproseps93_user_id_isx ON decisionsnonorientationsproseps93(user_id);
+
+-- -----------------------------------------------------------------------------
+
+SELECT add_missing_table_field ('public', 'decisionsregressionsorientationseps58', 'user_id', 'INTEGER');
+SELECT add_missing_constraint( 'public', 'decisionsregressionsorientationseps58', 'decisionsregressionsorientationseps58_user_id_fk', 'users', 'user_id' );
+ALTER TABLE decisionsregressionsorientationseps58 ALTER COLUMN user_id SET NOT NULL;
+ 
+DROP INDEX IF EXISTS decisionsregressionsorientationseps58_user_id_isx;
+CREATE INDEX decisionsregressionsorientationseps58_user_id_isx ON decisionsregressionsorientationseps58(user_id);
+
+-- -----------------------------------------------------------------------------
+
+SELECT add_missing_table_field ('public', 'decisionssaisinesbilansparcourseps66', 'user_id', 'INTEGER');
+SELECT add_missing_constraint( 'public', 'decisionssaisinesbilansparcourseps66', 'decisionssaisinesbilansparcourseps66_user_id_fk', 'users', 'user_id' );
+ALTER TABLE decisionssaisinesbilansparcourseps66 ALTER COLUMN user_id SET NOT NULL;
+ 
+DROP INDEX IF EXISTS decisionssaisinesbilansparcourseps66_user_id_isx;
+CREATE INDEX decisionssaisinesbilansparcourseps66_user_id_isx ON decisionssaisinesbilansparcourseps66(user_id);
+
+-- -----------------------------------------------------------------------------
+
+SELECT add_missing_table_field ('public', 'decisionssaisinespdoseps66', 'user_id', 'INTEGER');
+SELECT add_missing_constraint( 'public', 'decisionssaisinespdoseps66', 'decisionssaisinespdoseps66_user_id_fk', 'users', 'user_id' );
+ALTER TABLE decisionssaisinespdoseps66 ALTER COLUMN user_id SET NOT NULL;
+ 
+DROP INDEX IF EXISTS decisionssaisinespdoseps66_user_id_isx;
+CREATE INDEX decisionssaisinespdoseps66_user_id_isx ON decisionssaisinespdoseps66(user_id);
+
+-- -----------------------------------------------------------------------------
+
+SELECT add_missing_table_field ('public', 'decisionssanctionseps58', 'user_id', 'INTEGER');
+SELECT add_missing_constraint( 'public', 'decisionssanctionseps58', 'decisionssanctionseps58_user_id_fk', 'users', 'user_id' );
+ALTER TABLE decisionssanctionseps58 ALTER COLUMN user_id SET NOT NULL;
+ 
+DROP INDEX IF EXISTS decisionssanctionseps58_user_id_isx;
+CREATE INDEX decisionssanctionseps58_user_id_isx ON decisionssanctionseps58(user_id);
+
+-- -----------------------------------------------------------------------------
+
+SELECT add_missing_table_field ('public', 'decisionssanctionsrendezvouseps58', 'user_id', 'INTEGER');
+SELECT add_missing_constraint( 'public', 'decisionssanctionsrendezvouseps58', 'decisionssanctionsrendezvouseps58_user_id_fk', 'users', 'user_id' );
+ALTER TABLE decisionssanctionsrendezvouseps58 ALTER COLUMN user_id SET NOT NULL;
+ 
+DROP INDEX IF EXISTS decisionssanctionsrendezvouseps58_user_id_isx;
+CREATE INDEX decisionssanctionsrendezvouseps58_user_id_isx ON decisionssanctionsrendezvouseps58(user_id);
+
+-- -----------------------------------------------------------------------------
+
+SELECT add_missing_table_field ('public', 'decisionssignalementseps93', 'user_id', 'INTEGER');
+SELECT add_missing_constraint( 'public', 'decisionssignalementseps93', 'decisionssignalementseps93_user_id_fk', 'users', 'user_id' );
+ALTER TABLE decisionssignalementseps93 ALTER COLUMN user_id SET NOT NULL;
+ 
+DROP INDEX IF EXISTS decisionssignalementseps93_user_id_isx;
+CREATE INDEX decisionssignalementseps93_user_id_isx ON decisionssignalementseps93(user_id);
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
