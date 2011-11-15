@@ -80,7 +80,18 @@
 <?php
     $etatdosrsa = ClassRegistry::init( 'Option' )->etatdosrsa();
 //     debug($this->viewVars);
-    echo ( isset( $etatdosrsa[$etatdosrsaValue] ) ? $etatdosrsa[$etatdosrsaValue] : 'Non défini' );?> </p>
+    echo ( isset( $etatdosrsa[$etatdosrsaValue] ) ? $etatdosrsa[$etatdosrsaValue] : 'Non défini' );?> 
+</p>
+<?php if(  Configure::read( 'Cg.departement' ) == '66' ):?>
+	<p class="etatDossier"> 
+	<?php
+		$numcaf = $dossier['Dossier']['matricule'];
+		$fonorg = $dossier['Dossier']['fonorg'];
+		echo 'N°'.( isset( $fonorg ) ? $fonorg : '' ).' : '.( isset( $numcaf ) ? $numcaf : '' );?> 
+	</p>
+
+<?php endif;?>
+
 
 	<ul>
 		<li><?php echo $xhtml->link( 'Composition du foyer', array( 'controller' => 'personnes', 'action' => 'index', $dossier['Foyer']['id'] ) );?>
