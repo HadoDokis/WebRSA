@@ -166,7 +166,7 @@
                                 h( $rdv['Personne']['nom'].' '.$rdv['Personne']['prenom'] ),
                                 h( Set::extract( $rdv, 'Adresse.locaadr' ) ),
                                 h( Set::extract( $rdv, 'Structurereferente.lib_struc' ) ),
-                                h( Set::classicExtract( $rdv, 'Referent.qual' ) ),
+                                h( Set::classicExtract( $rdv, 'Referent.qual' ).' '.Set::classicExtract( $rdv, 'Referent.nom' ).' '.Set::classicExtract( $rdv, 'Referent.prenom' ) ),
                                 h( Set::enum( Set::extract( $rdv, 'Rendezvous.typerdv_id' ), $typerdv ) ),
                                 h( $locale->date( 'Date::short', $rdv['Rendezvous']['daterdv'] ) ),
                                 h( $locale->date( 'Time::short', $rdv['Rendezvous']['heurerdv'] ) ),
