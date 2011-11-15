@@ -22,6 +22,8 @@
             echo '<p class="error">Cette personne ne possède pas de référent lié. Impossible de créer une fiche de candidature</p>';
         }
         else{
+
+
             echo $default2->index(
                 $actionscandidats_personnes,
                 array(
@@ -29,7 +31,9 @@
                     'Referent.nom_complet' => array( 'type' => 'text' ),
                     'Actioncandidat.Contactpartenaire.Partenaire.libstruc',
                     'ActioncandidatPersonne.datesignature' => array( 'domain' => $domain ),
-                    'ActioncandidatPersonne.positionfiche'
+                    'ActioncandidatPersonne.positionfiche',
+                    'ActioncandidatPersonne.sortiele',
+                    'Motifsortie.name'
                 ),
                 array(
                     'options' => $options,

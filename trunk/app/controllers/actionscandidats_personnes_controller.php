@@ -254,7 +254,8 @@
 								'Partenaire'
 							)
 						),
-						'Referent'
+						'Referent',
+						'Motifsortie'
 					)
 				)
 			);
