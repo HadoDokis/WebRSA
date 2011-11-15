@@ -153,6 +153,7 @@
 					'fields' => array(
 						'Dossier.id',
 						'Dossier.matricule',
+						'Dossier.fonorg',
 						'Dossier.numdemrsa',
 						'Foyer.id',
 						'Foyer.enerreur',
