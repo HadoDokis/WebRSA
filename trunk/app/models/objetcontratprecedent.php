@@ -13,14 +13,14 @@
 			'ValidateTranslate'
 		);
 
-		public $belongsTo = array(
-			'Contratinsertion' => array(
-				'className' => 'Contratinsertion',
-				'foreignKey' => 'contratinsertion_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
-			)
-		);
+// 		public $belongsTo = array(
+// 			'Contratinsertion' => array(
+// 				'className' => 'Contratinsertion',
+// 				'foreignKey' => 'contratinsertion_id',
+// 				'conditions' => '',
+// 				'fields' => '',
+// 				'order' => ''
+// 			)
+// 		);
 	}
 ?>
