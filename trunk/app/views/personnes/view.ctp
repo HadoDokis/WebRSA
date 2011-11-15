@@ -112,6 +112,11 @@
                 <th><?php __d( 'personne', 'Personne.numport' );?></th>
                 <td><?php echo $personne['Personne']['numport'];?></td>
             </tr>
+            <tr class="odd">
+                <th><?php __d( 'personne', 'Personne.email' );?></th>
+                <td><?php echo $personne['Personne']['email'];?></td>
+            </tr>
+        </tbody>
         </tbody>
     </table>
 <!--            <h2></h2>-->

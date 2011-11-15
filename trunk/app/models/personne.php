@@ -516,8 +516,10 @@
 
 			// Mise en majuscule de nom, prénom, nomnai
 			foreach( array( 'nom', 'prenom', 'prenom2', 'prenom3', 'nomnai' ) as $field ) {
-				if( !empty( $this->data['Personne'][$field] ) ) {
-					$this->data['Personne'][$field] = strtoupper( replace_accents( $this->data['Personne'][$field] ) );
+				if( isset( $this->data['Personne'][$field] ) ){
+					if( !empty( $this->data['Personne'][$field] ) ) {
+						$this->data['Personne'][$field] = strtoupper( replace_accents( $this->data['Personne'][$field] ) );
+					}
 				}
 			}
 
@@ -526,12 +528,14 @@
 			}*/
 
 			// Champs déduits
-			if( !empty( $this->data['Personne']['qual'] ) ) {
-				$this->data['Personne']['sexe'] = ( $this->data['Personne']['qual'] == 'MR' ) ? 1 : 2;
-			}
+			if( isset( $this->data['Personne']['qual'] ) ) {
+				if( !empty( $this->data['Personne']['qual'] ) ) {
+					$this->data['Personne']['sexe'] = ( $this->data['Personne']['qual'] == 'MR' ) ? 1 : 2;
+				}
 
-			if( $this->data['Personne']['qual'] != 'MME' ) {
-				$this->data['Personne']['nomnai'] = $this->data['Personne']['nom'];
+				if( $this->data['Personne']['qual'] != 'MME' ) {
+					$this->data['Personne']['nomnai'] = $this->data['Personne']['nom'];
+				}
 			}
 
 			return $return;
@@ -1001,6 +1005,7 @@
 						'Personne.nir',
 						'Personne.numfixe',
 						'Personne.numport',
+						'Personne.email',
 						'Personne.idassedic',
 						'Prestation.rolepers',
 						'Adresse.numvoie',

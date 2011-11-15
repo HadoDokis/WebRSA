@@ -213,6 +213,7 @@
 					'Personne.dtinscpoleemploi',
 					'Personne.numfixe',
 					'Personne.numport',
+					'Personne.email',
 					'Prestation.rolepers',
 				),
 				'conditions' => array( 'Personne.id' => $id ),

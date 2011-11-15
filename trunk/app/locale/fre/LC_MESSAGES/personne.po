@@ -89,6 +89,8 @@ msgstr "N° de téléphone fixe"
 msgid "Personne.numport"
 msgstr "N° de téléphone portable"
 
+msgid "Personne.email"
+msgstr "Adresse mail"
 ###############################################################################
 
 msgid "Foyer.Modecontact.numtel"
