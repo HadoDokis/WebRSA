@@ -1000,7 +1000,7 @@
 				if( $this->action == 'add' ) {
 					$this->data['Contratinsertion']['rg_ci'] = $nbrCi + 1;
 				}
-
+// debug($this->data);
 				if( Configure::read( 'nom_form_ci_cg' ) == 'cg58' ) {
 					$this->data['Contratinsertion']['forme_ci'] = 'S';
 					$this->data['Contratinsertion']['date_validation_ci'] = Set::classicExtract( $this->data, 'Contratinsertion.dd_ci' );
@@ -1082,6 +1082,14 @@
 						$success = $this->Contratinsertion->Personne->Dsp->save( array( 'Dsp' => $this->data['Dsp'] ) ) && $success;
 					}
 				}
+
+				// SAuvegarde des numéros ed téléphone si ceux-ci ne sont pas présents en amont
+				$isDataPersonne = Set::filter( $this->data['Personne'] );
+				if( !empty( $isDataPersonne ) ){
+					$success = $this->Contratinsertion->Personne->save( array( 'Personne' => $this->data['Personne'] ) ) && $success;
+				}
+
+
 
 				$models = array( 'Autreavissuspension', 'Autreavisradiation' );
 				foreach( $models as $model ) {

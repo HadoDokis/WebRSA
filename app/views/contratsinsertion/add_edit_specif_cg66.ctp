@@ -43,6 +43,9 @@
 
 			echo '</div>';
 		}
+		echo '<div>';
+		echo $xform->input( 'Personne.id', array( 'type' => 'hidden', 'value' => Set::classicExtract( $personne, 'Personne.id' ) ) );
+		echo '</div>';
 	?>
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
@@ -234,21 +237,45 @@
 			<td class="mediumSize noborder">
 				<strong>Adresse : </strong><br /><?php echo Set::classicExtract( $personne, 'Adresse.numvoie' ).' '.Set::enum( Set::classicExtract( $personne, 'Adresse.typevoie' ), $typevoie ).' '.Set::classicExtract( $personne, 'Adresse.nomvoie' ).'<br /> '.Set::classicExtract( $personne, 'Adresse.codepos' ).' '.Set::classicExtract( $personne, 'Adresse.locaadr' );?>
 			</td>
+		<tr>
 			<td class="mediumSize noborder">
-				<?php if( Set::extract( $personne, 'Modecontact.0.autorutitel' ) == 'A' ):?>
-						<strong>Numéro de téléphone 1 : </strong><?php echo Set::extract( $personne, 'Modecontact.0.numtel' );?>
-				<?php endif;?>
-				<?php if( Set::extract( $personne, 'Modecontact.1.autorutitel' ) == 'A' ):?>
-						<br />
-						<strong>Numéro de téléphone 2 : </strong><?php echo Set::extract( $personne, 'Modecontact.1.numtel' );?>
-				<?php endif;?>
+				<strong>Tél. fixe : </strong>
+				<?php
+					$numtelfixe = Set::classicExtract( $personne, 'Personne.numfixe' );
+					if( !empty( $numtelfixe ) ) {
+						echo Set::extract( $personne, 'Personne.numfixe' );
+					}
+					else{
+						echo $xform->input( 'Personne.numfixe', array( 'label' => false, 'type' => 'text' ) );
+
+					}
+				?>
+			</td>
+			<td class="mediumSize noborder">
+				<strong>Tél. portable : </strong>
+				<?php
+					$numtelport = Set::extract( $personne, 'Personne.numport' );
+					if( !empty( $numtelport ) ) {
+						echo Set::extract( $personne, 'Personne.numport' );
+					}
+					else{
+						echo $xform->input( 'Personne.numport', array( 'label' => false, 'type' => 'text' ) );
+					}
+				?>
 			</td>
 		</tr>
 		<tr>
 			<td colspan="2" class="mediumSize noborder">
-			<?php if( Set::extract( $personne, 'Modecontact.0.autorutiadrelec' ) == 'A' ):?>
-				<strong>Adresse mail : </strong><?php echo Set::extract( $personne, 'Modecontact.0.adrelec' );?> <!-- FIXME -->
-			<?php endif;?>
+				<strong>Adresse mail : </strong>
+				<?php
+					$email = Set::extract( $personne, 'Personne.email' );
+					if( !empty( $email ) ) {
+						echo Set::extract( $personne, 'Personne.email' );
+					}
+					else{
+						echo $xform->input( 'Personne.email', array( 'label' => false, 'type' => 'text' ) );
+					}
+				?>
 			</td>
 		</tr>
 	</table>
