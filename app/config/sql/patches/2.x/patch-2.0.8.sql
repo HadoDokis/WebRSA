@@ -136,6 +136,9 @@ CREATE INDEX decisionsproposnonorientationsproscovs58_etapecov_idx ON decisionsp
 CREATE INDEX decisionsproposnonorientationsproscovs58_decisioncov_idx ON decisionsproposnonorientationsproscovs58( decisioncov );
 CREATE UNIQUE INDEX decisionsproposnonorientationsproscovs58_passagecov58_id_etapecov_idx ON decisionsproposnonorientationsproscovs58(passagecov58_id, etapecov);
 
+-- 
+INSERT INTO passagescovs58 ( cov58_id, dossiercov58_id, user_id, etatdossiercov )
+	SELECT cov58_id, id, 6, CAST( CASE WHEN etapecov = 'cree' THEN 'cree' WHEN etapecov = 'traitement' THEN 'associe' WHEN etapecov = 'finalise' THEN 'traite' WHEN etapecov = 'ajourne' THEN 'reporte' END AS type_etatdossiercov ) FROM dossierscovs58 WHERE cov58_id IS NOT NULL;
 
 ------------------> Suppression des anciens attributs des tables des COVs
 SELECT alter_table_drop_column_if_exists( 'public', 'dossierscovs58', 'cov58_id' );
@@ -157,6 +160,9 @@ SELECT add_missing_table_field ('public', 'themescovs58', 'propononorientationpr
 DROP TYPE IF EXISTS TYPE_THEMECOV58 CASCADE;
 CREATE TYPE TYPE_THEMECOV58 AS ENUM ( 'proposorientationscovs58', 'proposcontratsinsertioncovs58', 'proposnonorientationsproscovs58' );
 SELECT add_missing_table_field ('public', 'dossierscovs58', 'themecov58', 'TYPE_THEMECOV58');
+
+UPDATE dossierscovs58
+	SET themecov58 = ( SELECT CAST( themescovs58.name AS type_themecov58 ) FROM themescovs58 WHERE themescovs58.id = dossierscovs58.themecov58_id );
 
 ALTER TABLE passagescovs58 ALTER COLUMN etatdossiercov SET DEFAULT 'associe'::TYPE_ETATDOSSIERCOV;
 
