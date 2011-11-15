@@ -80,7 +80,7 @@ msgid "ENUM::VIREMENT::RIB"
 msgstr "Virement bancaire RIB"
 
 msgid "ENUM::VIREMENT::CHE"
-msgstr "Virement par chèque"
+msgstr "Par chèque"
 
 msgid "ENUM::VERSEMENT::DEM"
 msgstr "Au demandeur"
