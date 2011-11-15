@@ -55,7 +55,9 @@
 			$sr = $this->Typeorient->Structurereferente->find( 'list', array( 'fields' => array( 'lib_struc' ), 'conditions' => $conditions ) );
 			$this->set( 'sr', $sr );
 
-			$this->set( 'typeorient', $this->Typeorient->listOptions() );
+// 			$this->set( 'typeorient', $this->Typeorient->listOptions() );
+
+			$this->set( 'typeorient', $this->Typeorient->find( 'list' ) );
 			$this->set( 'statuts', $this->Option->statut_orient() );
 			$this->set( 'statuts_contrat', $this->Option->statut_contrat_insertion() );
 			$this->set( 'natpf', $this->Option->natpf() );
