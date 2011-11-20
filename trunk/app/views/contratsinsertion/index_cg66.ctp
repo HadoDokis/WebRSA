@@ -62,7 +62,8 @@
                     'Contratsinsertion::print' => array(
                         'label' => 'Imprimer',
                         'url' => array( 'controller' => 'gedooos', 'action'=>'contratinsertion' ),
-                        'disabled' => '( "'.$permissions->check( 'contratsinsertion', 'print' ).'" != "1" ) || ( "#Contratinsertion.decision_ci#" != "V" )  || ( "#Contratinsertion.positioncer#" == "annule" )'
+                        'disabled' => '( "'.$permissions->check( 'contratsinsertion', 'print' ).'" != "1" ) || ( "#Contratinsertion.positioncer#" == "annule" )'
+					//	'disabled' => '( "'.$permissions->check( 'contratsinsertion', 'print' ).'" != "1" ) || ( "#Contratinsertion.decision_ci#" != "V" )  || ( "#Contratinsertion.positioncer#" == "annule" )'
                     ),
                     'Contratsinsertion::cancel' => array( 'onclick' => "return confirm( 'Etes-vous sûr de vouloir annuler le CER ?' )", 'disabled' => '( "'.$permissions->check( 'contratsinsertion', 'cancel' ).'" != "1" ) || ( "#Contratinsertion.decision_ci#" != "E" ) ||  ( "#Contratinsertion.positioncer#" == "annule" ) || ( "#Contratinsertion.positioncer#" == "fincontrat" )' ),
                     'Contratsinsertion::filelink' => array( 'disabled' => '( "'.$permissions->check( 'contratsinsertion', 'cancel' ).'" != "1" )/* || ( "#Contratinsertion.positioncer#" == "fincontrat" )*/' )
