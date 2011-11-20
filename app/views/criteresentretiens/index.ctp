@@ -37,7 +37,7 @@
                 $valueDossierDernier = isset( $this->data['Dossier']['dernier'] ) ? $this->data['Dossier']['dernier'] : true;
                 echo $default2->subform(
                     array(
-                        'Entretien.arevoirle' => array( 'label' => __d( 'entretien', 'Entretien.arevoirle', true ), 'type' => 'date', 'dateFormat' => 'MY', 'empty' => true, 'minYear' => date( 'Y' ) - 1, 'maxYear' => date( 'Y' ) + 1 ),
+                        'Entretien.arevoirle' => array( 'label' => __d( 'entretien', 'Entretien.arevoirle', true ), 'type' => 'date', 'dateFormat' => 'MY', 'empty' => true, 'minYear' => date( 'Y' ) - 2, 'maxYear' => date( 'Y' ) + 2 ),
                         'Entretien.structurereferente_id' => array( 'label' => __d( 'entretien', 'Entretien.structurereferente_id', true ), 'empty' => true, 'options' => $structs ),
                         'Entretien.referent_id' => array( 'label' => __d( 'entretien', 'Entretien.referent_id', true ), 'empty' => true, 'options' => $referents  ),
                         'Personne.nom' => array( 'label' => __d( 'personne', 'Personne.nom', true ), 'type' => 'text' ),
