@@ -106,7 +106,7 @@
 				<?php foreach( $dossier['Foyer']['Personne'] as $personne ):?>
 					<li><?php
 							echo $xhtml->link(
-								implode( ' ', array( $personne['qual'], $personne['nom'], $personne['prenom'] ) ),
+								implode( ' ', array( '(', $personne['Prestation']['rolepers'], ')', $personne['qual'], $personne['nom'], $personne['prenom'] ) ),
 								array( 'controller' => 'personnes', 'action' => 'view', $personne['id'] )
 							);
 						?>

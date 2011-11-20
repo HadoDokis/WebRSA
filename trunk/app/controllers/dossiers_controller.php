@@ -190,7 +190,8 @@
 					),
 					'contain' => array(
 						'Prestation'
-					)
+					),
+					'order' => array( 'Prestation.rolepers ASC' )
 				)
 			);
 
