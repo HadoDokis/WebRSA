@@ -145,7 +145,7 @@
 				array(
 					'table'      => 'adressesfoyers',
 					'alias'      => 'Adressefoyer',
-					'type'       => 'INNER',
+					'type'       => 'LEFT OUTER',
 					'foreignKey' => false,
 					'conditions' => array(
 						'Foyer.id = Adressefoyer.foyer_id',
@@ -157,7 +157,7 @@
 				array(
 					'table'      => 'adresses',
 					'alias'      => 'Adresse',
-					'type'       => 'INNER',
+					'type'       => 'LEFT OUTER',
 					'foreignKey' => false,
 					'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
 				)
