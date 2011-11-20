@@ -681,8 +681,14 @@
 			$positioncer = null;
 			// 'encours', 'attvalid', 'annule', 'fincontrat', 'encoursbilan', 'attrenouv', 'perime'
 
-			if ( $formeCi == 'S' )
-				$positioncer = 'attvalid';
+			if ( $formeCi == 'S' ){
+				if( Configure::read( 'Cg.departement' ) == 66 ){
+					$positioncer = 'encours';
+				}
+				else{
+					$positioncer = 'attvalid';
+				}
+			}
 			elseif ( $formeCi == 'C' )
 				$positioncer = 'attvalid';
 			elseif ( !empty( $sitproCi ) )
