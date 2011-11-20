@@ -22,12 +22,12 @@
 
 
 		foreach( $contratsinsertion as $i => $contratinsertion ){
-			$dateValidation = Set::classicExtract( $contratinsertion, 'Contratinsertion.datevalidation_ci' );
+			$dateCreation = Set::classicExtract( $contratinsertion, 'Contratinsertion.created' );
 		}
 		
 		$periodeblock = false;
-		if( !empty( $dateValidation ) ){
-			if(  ( mktime() >= ( strtotime( $dateValidation ) + 3600 * Configure::read( 'Periode.modifiablecer.nbheure' ) ) ) ){
+		if( !empty( $dateCreation ) ){
+			if(  ( mktime() >= ( strtotime( $dateCreation ) + 3600 * Configure::read( 'Periode.modifiablecer.nbheure' ) ) ) ){
 				$periodeblock = true;
 			}
 		}
