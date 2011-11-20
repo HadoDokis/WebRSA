@@ -26,15 +26,15 @@
 
 		public $validate = array(
 			'structurereferente_id' => array(
-				array(
-					'rule' => array( 'choixStructure', 'statut_orient' ),
-					'message' => 'Champ obligatoire'
+				'notEmptyIf' => array(
+					'rule' => array( 'notEmptyIf', 'statut_orient', true, array( 'Orienté' ) ),
+					'message' => 'Veuillez entrer une date valide',
 				)
 			),
 			'typeorient_id' => array(
-				'notEmpty' => array(
-					'rule' => 'notEmpty',
-					'message' => 'Champ obligatoire'
+				'notEmptyIf' => array(
+					'rule' => array( 'notEmptyIf', 'statut_orient', true, array( 'Orienté' ) ),
+					'message' => 'Veuillez entrer une date valide',
 				)
 			),
 			'date_propo' => array(
@@ -208,16 +208,16 @@
 
 			if( Configure::read( 'Cg.departement' ) == 66 ) {
 				$this->validate['structureorientante_id'] = array(
-					'notEmpty' => array(
-						'rule' => 'notEmpty',
-						'message' => 'Champ obligatoire'
+					'notEmptyIf' => array(
+						'rule' => array( 'notEmptyIf', 'statut_orient', true, array( 'Orienté' ) ),
+						'message' => 'Veuillez entrer une date valide',
 					)
 				);
 
 				$this->validate['referentorientant_id'] = array(
-					'notEmpty' => array(
-						'rule' => 'notEmpty',
-						'message' => 'Champ obligatoire'
+					'notEmptyIf' => array(
+						'rule' => array( 'notEmptyIf', 'statut_orient', true, array( 'Orienté' ) ),
+						'message' => 'Veuillez entrer une date valide',
 					)
 				);
 			}
@@ -628,7 +628,7 @@
 			}
 
 			if( isset( $this->data[$this->alias]['statut_orient'] ) ) {
-				if( empty( $this->data[$this->alias]['statut_orient'] ) || in_array( $this->data[$this->alias]['statut_orient'], array( 'Non orienté', 'En attente' ) ) ) {
+				if( empty( $this->data[$this->alias]['statut_orient'] ) /*|| in_array( $this->data[$this->alias]['statut_orient'], array( 'Non orienté', 'En attente' ) )*/ ) {
 					$this->data[$this->alias]['origine'] = null;
 				}
 				else if( $this->data[$this->alias]['statut_orient'] == 'Orienté' ) {
