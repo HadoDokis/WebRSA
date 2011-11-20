@@ -12,7 +12,7 @@
 			<td class="wide noborder">
 				<?php 
 					echo $prescripteur['Structurereferente']['num_voie'] . ' ';
-					echo Set::enum( $prescripteur['Structurereferente']['type_voie'], $typevoie ) .  ' ';
+					echo Set::classicExtract( $typevoie, Set::classicExtract( $prescripteur, 'Structurereferente.type_voie' ) ) .  ' ';
 					echo $prescripteur['Structurereferente']['nom_voie'] . ' ';
 				?>
 			</td>
