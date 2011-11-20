@@ -21,20 +21,25 @@
 
 
         <fieldset>
+			<?php echo $xform->input( 'Search.active', array( 'type' => 'hidden', 'value' => true ) );?>
+
+            <?php
+
+/* echo $xform->input( 'Cohortevalidationapre66.apresavalider', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );*/?>
 
             <legend>Filtrer par APRE</legend>
             <?php
 
                 echo $default2->subform(
                     array(
-                        'Apre.numeroapre' => array( 'label' => __d( 'apre', 'Apre.numeroapre', true ), 'type' => 'text' ),
-                        'Apre.referent_id' => array( 'label' => __d( 'apre', 'Apre.referent_id', true ), 'options' => $referents ),
-                        'Personne.nom' => array( 'label' => __d( 'personne', 'Personne.nom', true ), 'type' => 'text' ),
-                        'Personne.prenom' => array( 'label' => __d( 'personne', 'Personne.prenom', true ), 'type' => 'text' ),
-                        'Personne.nomnai' => array( 'label' => __d( 'personne', 'Personne.nomnai', true ), 'type' => 'text' ),
-                        'Personne.nir' => array( 'label' => __d( 'personne', 'Personne.nir', true ), 'type' => 'text', 'maxlength' => 15 ),
-                        'Dossier.matricule' => array( 'label' => __d( 'dossier', 'Dossier.matricule', true ), 'type' => 'text', 'maxlength' => 15 ),
-                        'Dossier.numdemrsa' => array( 'label' => __d( 'dossier', 'Dossier.numdemrsa', true ), 'type' => 'text', 'maxlength' => 15 ),
+                        'Search.Apre.numeroapre' => array( 'label' => __d( 'apre', 'Apre.numeroapre', true ), 'type' => 'text' ),
+                        'Search.Apre.referent_id' => array( 'label' => __d( 'apre', 'Apre.referent_id', true ), 'options' => $referents ),
+                        'Search.Personne.nom' => array( 'label' => __d( 'personne', 'Personne.nom', true ), 'type' => 'text' ),
+                        'Search.Personne.prenom' => array( 'label' => __d( 'personne', 'Personne.prenom', true ), 'type' => 'text' ),
+                        'Search.Personne.nomnai' => array( 'label' => __d( 'personne', 'Personne.nomnai', true ), 'type' => 'text' ),
+                        'Search.Personne.nir' => array( 'label' => __d( 'personne', 'Personne.nir', true ), 'type' => 'text', 'maxlength' => 15 ),
+                        'Search.Dossier.matricule' => array( 'label' => __d( 'dossier', 'Dossier.matricule', true ), 'type' => 'text', 'maxlength' => 15 ),
+                        'Search.Dossier.numdemrsa' => array( 'label' => __d( 'dossier', 'Dossier.numdemrsa', true ), 'type' => 'text', 'maxlength' => 15 ),
 
                     ),
                     array(
@@ -55,7 +60,11 @@
 <?php if( isset( $cohortevalidationapre66 ) ):?>
     <?php if( is_array( $cohortevalidationapre66 ) && count( $cohortevalidationapre66 ) > 0  ):?>
         <?php echo $form->create( 'ValidationApre', array( 'url'=> Router::url( null, true ) ) );?>
-
+		<?php
+			foreach( Set::flatten( $this->data['Search'] ) as $filtre => $value  ) {
+				echo $form->input( "Search.{$filtre}", array( 'type' => 'hidden', 'value' => $value ) );
+			}
+		?>
     <table id="searchResults" class="tooltips">
         <thead>
             <tr>

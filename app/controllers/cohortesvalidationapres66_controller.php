@@ -16,7 +16,8 @@
 
 		public $helpers = array( 'Csv', 'Ajax', 'Default2', 'Locale' );
 
-		public $components = array( 'Prg' => array( 'actions' => array( 'validees' ) ) );
+// 		public $components = array( 'Prg' => array( 'actions' => array( 'apresavalider', 'validees' ) ) );
+		public $components = array( 'Prg' => array( 'actions' => array( 'apresavalider' => array( 'filter' => 'Search' ), 'validees' => array( 'filter' => 'Search' ) ) ) );
 
 //         public $paginate = array( 'limit' => 20 );
 
@@ -94,6 +95,8 @@
 								$this->Jetons->release( array( 'Dossier.id' => $dossier_id ) );
 							}
 							$this->Aideapre66->commit();
+							unset( $this->data['Aideapre66'] );
+							$this->Session->del( "Prg.{$this->name}__{$this->action}.{$this->data['sessionKey']}" );
 						}
 						else {
 							$this->Aideapre66->rollback();
