@@ -324,6 +324,7 @@
 			$dataReferent_id = Set::extract( $this->data, 'ActioncandidatPersonne.referent_id' );
 			$referent_id = ( empty( $referent_id ) && !empty( $dataReferent_id ) ? $dataReferent_id : $referent_id );
 			$this->ActioncandidatPersonne->Personne->Referent->recursive = 0;
+			$this->set( 'typevoie', $this->Option->typevoie() );
 			$prescripteur = $this->ActioncandidatPersonne->Personne->Referent->read(null, $referent_id);
 			$this->set( compact( 'prescripteur' ) );
 			$this->render( 'ajaxreferent', 'ajax' );
