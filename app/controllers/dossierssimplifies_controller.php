@@ -169,6 +169,8 @@
 
 					foreach( $this->data['Personne'] as $key => $pData ) {
 						if( !empty( $pData ) ) {
+// debug( $this->Orientstruct->validationErrors);
+// debug($this->data);
 							$this->Orientstruct->validate = $orientstruct_validate;
 							// Personne
 							$this->Personne->create();
