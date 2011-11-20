@@ -324,6 +324,7 @@
 					'Referent.qual',
 					'Referent.nom',
 					'Referent.prenom',
+					'Dossier.matricule',
 					'Personne.qual',
 					'Personne.nom',
 					'Personne.prenom',
@@ -333,6 +334,7 @@
 					'Personne.idassedic',
 					'Personne.numfixe',
 					'Personne.numport',
+					'Personne.email',
 					'Adresse.numvoie',
 					'Adresse.typevoie',
 					'Adresse.nomvoie',
@@ -443,7 +445,7 @@
 
 			$actioncandidat['ActioncandidatPersonne']['motifsortie_id'] = Set::enum( Set::classicExtract( $actioncandidat, 'ActioncandidatPersonne.motifsortie_id' ), $motifssortie ); 
 //             debug($options);
-// debug($actioncandidat);
+             //debug($actioncandidat);exit;
 // die();
 			return $this->ged( array( $actioncandidat ), "Candidature/fichecandidature.odt", true, $options );
 		}
