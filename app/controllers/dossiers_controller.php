@@ -444,7 +444,7 @@
 						'contain' => array(
 							'Referent'
 						),
-						'conditions' => array( 'PersonneReferent.personne_id' => $personnesFoyer[$index]['Personne']['id'] ),
+						'conditions' => array( 'PersonneReferent.personne_id' => $personnesFoyer[$index]['Personne']['id'], 'PersonneReferent.dfdesignation IS NULL' ),
 						'order' => array( 'PersonneReferent.dddesignation DESC' )
 					)
 				);
@@ -492,10 +492,10 @@
 							'Orientstruct.origine',
 							'Orientstruct.date_valid',
 							'Orientstruct.statut_orient',
+							'Orientstruct.referent_id',
 							'Orientstruct.rgorient',
 							'Typeorient.lib_type_orient',
 							'Structurereferente.lib_struc'
-
 						),
 						'contain' => array(
 							'Typeorient',

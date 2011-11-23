@@ -167,12 +167,17 @@
 							</tr>
 							<tr class="<?php echo ( ( $rowCnt++ ) % 2 ? 'even' : 'odd' )?>">
 								<th>Référent en cours</th>
+									
 								<?php foreach( array( 'DEM', 'CJT' ) as $rolepers ):?>
-								<td><?php
-									$referent = Set::extract( "{$rolepers}.Referent", $details );
-									echo implode( ' ', array( Set::classicExtract( $referent, 'qual' ), Set::classicExtract( $referent, 'nom' ), Set::classicExtract( $referent, 'prenom' ) ) );
-								?></td>
-								<?php endforeach;?>
+									<td><?php
+										$referent = Set::extract( "{$rolepers}.Referent", $details );
+										echo implode( ' ', array( Set::classicExtract( $referent, 'qual' ), Set::classicExtract( $referent, 'nom' ), Set::classicExtract( $referent, 'prenom' ) ) );
+									?></td>
+									<?php endforeach;?>
+
+
+
+
 							</tr>
 						</tbody>
 					</table>
@@ -308,12 +313,12 @@
 			</tr>
 			<tr>
 				<td>
-					<h2>Informations CAF</h2>
+					<h2>Informations CAF / MSA</h2>
 					<table >
 						<tbody>
 							<?php if( Configure::read( 'Cg.departement' ) != 58 ):?>
 								<tr class="even">
-									<th>Numéro CAF</th>
+									<th>Numéro CAF / MSA</th>
 									<td><?php echo Set::extract( 'Dossier.matricule', $details );;?></td>
 								</tr>
 							<?php endif;?>
@@ -354,11 +359,11 @@
 								<td><?php echo h( Set::extract( 'Creance.motiindu', $details ) );/*FIXME: traduction, manque dans Option*/?></td>
 							</tr>
 							<tr class="odd">
-								<th>Début du traitement CAF</th>
+								<th>Début du traitement CAF / MSA</th>
 								<td><?php echo $locale->date( 'Date::short', Set::extract( 'DEM.Dossiercaf.ddratdos', $details ) );?></td>
 							</tr>
 							<tr class="even">
-								<th>Fin du traitement CAF</th>
+								<th>Fin du traitement CAF / MSA</th>
 								<td><?php echo h(  date_short( Set::extract( 'DEM.Dossiercaf.dfratdos', $details ) ) );?></td>
 							</tr>
 						</tbody>
