@@ -11,7 +11,8 @@
                 'fields' => array(
                     'haspiecejointe'
                 )
-            )
+            ),
+			'Formattable'
         );
 
 		public $validate = array(
