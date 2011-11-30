@@ -33,7 +33,7 @@
 				array(
 					'rule' => 'date',
 					'message' => 'Veuillez vérifier le format de la date.',
-					'empty' => true,
+					'allowEmpty' => true,
 				),
 				array(
 					'rule' => array( 'compareDates', 'dddesignation', '>=' ),
