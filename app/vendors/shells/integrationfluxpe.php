@@ -11,7 +11,6 @@
 			- bouger l'identifiant PE dans les tables d'historique ?
 			- ajouter motif lié au code (Catégorie de l'inscription) pour les inscriptions ?
 	*/
-
     class IntegrationfluxpeShell extends AppShell
     {
 		public $defaultParams = array(
@@ -20,6 +19,8 @@
 			'verbose' => false,
 			'headers' => true,
 			'separator' => ';',
+			'apdnovembre2011' => true,
+			'logerror' => true,
 		);
 
 		public $verbose = false;
@@ -40,7 +41,7 @@
 				'date',
 				'code',
 				'motif',
-				'nir2'
+				'nir2',
 			),
 			'radiation' => array(
 				'nir',
@@ -51,7 +52,7 @@
 				'date',
 				'code',
 				'motif',
-				'nir2'
+				'nir2',
 			),
 			'inscription' => array(
 				'nir',
@@ -61,7 +62,7 @@
 				'dtnai',
 				'date',
 				'code',
-				'nir2'
+				'nir2',
 			),
 			'stock' => array(
 				'nir',
@@ -71,8 +72,16 @@
 				'dtnai',
 				'date',
 				'code',
-				'nir2'
+				'nir2',
 			),
+		);
+
+		// Nouvelles données novembre 2011
+		public $colonnesApdnovembre2011 = array(
+			'codeinsee',
+			'localite',
+			'adresse',
+			'ale'
 		);
 
 		public $typesCsv = array( 'cessations', 'inscriptions', 'radiations', 'stock' );
@@ -97,6 +106,8 @@
 			$this->verbose = $this->_getNamedValue( 'verbose', 'boolean' );
 			$this->header = $this->_getNamedValue( 'headers', 'boolean' );
 			$this->separator = $this->_getNamedValue( 'separator', 'string' );
+			$this->apdnovembre2011 = $this->_getNamedValue( 'apdnovembre2011', 'boolean' );
+			$this->logerror = $this->_getNamedValue( 'logerror', 'boolean' );
 
 			if( count( $this->args ) == 2 ) {
 				if( !in_array( $this->args[0], $this->typesCsv ) ) {
@@ -142,13 +153,34 @@
 		/**
 		*
 		*/
+		protected function _rejectLine( $file, $numLine, $line, $error ) {
+			$this->err( "Non traitement de la ligne {$numLine} du fichier {$this->csv->path} ({$error})." );
+			if( $this->logerror ) {
+				$line = "{$line};\"$error\"";
+			}
+			$this->_rejects[] = $line;
+		}
 
+		/**
+		*
+		*/
 		protected function _import( $etat ) {
+			// Si on veut travailler sur les flux à partir de novembre 2011, on aura
+			// 4 colonne en plus; voir $this->colonnesApdnovembre2011
+			if( $this->apdnovembre2011 ) {
+				$this->map[$etat] = array_merge( $this->map[$etat], $this->colonnesApdnovembre2011 );
+			}
+
 			$lines = explode( "\n", $this->csv->read() );
 			$lignespresentes = 0;
 
-			$offsetDtnai = array_search( 'dtnai', $this->map[$etat] );
-			$offsetAutreDate = $offsetDtnai + 1;
+			$offsets = array();
+			$offsets['dtnai'] = array_search( 'dtnai', $this->map[$etat] );
+			$offsets['date'] = $offsets['dtnai'] + 1;
+			$offsets['nir'] = array_search( 'nir', $this->map[$etat] );
+			$offsets['nir2'] = array_search( 'nir2', $this->map[$etat] );
+			$offsets['identifiantpe'] = array_search( 'identifiantpe', $this->map[$etat] );
+			$offsets['code'] = array_search( 'code', $this->map[$etat] );
 
 			$success = true;
 			$this->Informationpe->Historiqueetatpe->begin();
@@ -162,56 +194,58 @@
 
 					$parts = explode( $this->separator, $line );
 
+					foreach( array_keys( $parts ) as $i ) {
+						$parts[$i] = trim( $parts[$i], '"' );
+						$parts[$i] = trim( $parts[$i], ' ' );
+					}
+
 					// Reformattage du NIR
-					$parts[0] = str_replace( ' ', '', $parts[0] );
-					$parts[count($parts)-1] = str_replace( ' ', '', $parts[count($parts)-1] );
+					$parts[$offsets['nir']] = str_replace( ' ', '', $parts[$offsets['nir']] );
+					$parts[$offsets['nir2']] = str_replace( ' ', '', $parts[$offsets['nir2']] );
 
 					// Reformattage de l'identifiant Pôle Emploi
-					$parts[1] = str_replace( ' ', '', $parts[1] );
+					$parts[$offsets['identifiantpe']] = str_replace( ' ', '', $parts[$offsets['identifiantpe']] );
 
 					// Le nombre de colonnes de cette ligne ne correspond pas au nombre de colonnes attendu
 					if( count( $parts ) != count( $this->map[$etat] ) ) {
 						$nParts = count($parts);
 						$nPartsType = count( $this->map[$etat] );
-						$this->err( "Non traitement de la ligne {$numLine} du fichier {$this->csv->path} (Le nombre de colonnes de cette ligne ({$nParts}) ne correspond pas au nombre de colonnes attendu ({$nPartsType}))." );
-						$this->_rejects[] = $line;
+						$this->_rejectLine( $this->csv->path, $numLine, $line, "Le nombre de colonnes de cette ligne ({$nParts}) ne correspond pas au nombre de colonnes attendu ({$nPartsType})" );
 					}
 					// Colonnes NIR et NIR2 différentes ?
-					else if( $parts[0] != $parts[count($parts)-1] ) {
-						$this->err( "Non traitement de la ligne {$numLine} du fichier {$this->csv->path} (les deux NIR sont différents: \"{$parts[0]}\" et \"{$parts[count($parts)-1]}\")." );
-						$this->_rejects[] = $line;
+					else if( $parts[$offsets['nir']] != $parts[$offsets['nir2']] ) {
+						$this->_rejectLine( $this->csv->path, $numLine, $line, "Les deux NIR sont différents: \"{$parts[$offsets['nir']]}\" et \"{$parts[$offsets['nir2']]}\"" );
 					}
 					// Le NIR n'est pas sur 13 caractères
-					else if( strlen( $parts[0] ) != 13 ) {
-						$this->err( "Non traitement de la ligne {$numLine} du fichier {$this->csv->path} (le NIR \"{$parts[0]}\" ne comporte pas 13 caractères)." );
-						$this->_rejects[] = $line;
+					else if( strlen( $parts[$offsets['nir']] ) != 13 ) {
+						$this->_rejectLine( $this->csv->path, $numLine, $line, "Le NIR \"{$parts[$offsets['nir']]}\" ne comporte pas 13 caractères" );
 					}
 					// L'identifiant PE n'est pas formatté correctement
-					else if( !preg_match( '/^([0-9]{7})([A-Z0-9])([0-9]{3})$/', $parts[1] ) ) {
-						$this->err( "Non traitement de la ligne {$numLine} du fichier {$this->csv->path} (l\'identifiant Pôle Emploi \"{$parts[1]}\" n'est pas formatté correctement)." );
-						$this->_rejects[] = $line;
+					else if( !preg_match( '/^([0-9]{7})([A-Z0-9])([0-9]{3})$/', $parts[$offsets['identifiantpe']] ) ) {
+						$this->_rejectLine( $this->csv->path, $numLine, $line, "L'identifiant Pôle Emploi \"{$parts[$offsets['identifiantpe']]}\" n'est pas formatté correctement" );
 					}
 					// La date de naissance n'est pas formattée corretement
-					else if( !preg_match( '/^([0-9]){2}\/([0-9]){2}\/([0-9]){4}$/', $parts[$offsetDtnai] ) ) {
-						$this->err( "Non traitement de la ligne {$numLine} du fichier {$this->csv->path} (la date \"{$parts[$offsetDtnai]}\" n'est pas correcte)." );
-						$this->_rejects[] = $line;
+					else if( !preg_match( '/^([0-9]){2}\/([0-9]){2}\/([0-9]){4}$/', $parts[$offsets['dtnai']] ) ) {
+						$this->_rejectLine( $this->csv->path, $numLine, $line, "La date \"{$parts[$offsets['dtnai']]}\" n'est pas correcte" );
 					}
 					// L'autre date n'est pas formattée correctement
-					else if( !preg_match( '/^([0-9]){2}\/([0-9]){2}\/([0-9]){4}$/', $parts[$offsetAutreDate] ) ) {
-						$this->err( "Non traitement de la ligne {$numLine} du fichier {$this->csv->path} (la date \"{$parts[$offsetAutreDate]}\" n'est pas correcte)." );
-						$this->_rejects[] = $line;
+					else if( !preg_match( '/^([0-9]){2}\/([0-9]){2}\/([0-9]){4}$/', $parts[$offsets['date']] ) ) {
+						$this->_rejectLine( $this->csv->path, $numLine, $line, "La date \"{$parts[$offsets['date']]}\" n'est pas correcte" );
+					}
+					// L'autre date n'est pas formattée correctement
+					else if( !preg_match( '/^[^ ]+$/', $parts[$offsets['code']] ) ) {
+						$this->_rejectLine( $this->csv->path, $numLine, $line, "Le code \"{$parts[$offsets['code']]}\" n'est pas présent" );
 					}
 					// La ligne a l'air correcte, essai de traitement
 					else {
 						// Ajout de la clé pour le NIR (on a le NIR sur 15 caractères d'habitude)
-						$parts[0] = $parts[0].cle_nir( $parts[0] );
-						$parts[count($parts)-1] = $parts[count($parts)-1].cle_nir( $parts[count($parts)-1] );
+						$parts[$offsets['nir']] = $parts[$offsets['nir']].cle_nir( $parts[$offsets['nir']] );
+						$parts[$offsets['nir2']] = $parts[$offsets['nir2']].cle_nir( $parts[$offsets['nir2']] );
 
 						// Si le NIR n'est pas valide, on rejette la ligne
-						if( !valid_nir( $parts[count($parts)-1] ) || !valid_nir( $parts[0] ) ) {
-							$parts[0] = substr( $parts[0], 0, 13 );
-							$this->err( "Non traitement de la ligne {$numLine} du fichier {$this->csv->path} (le NIR \"{$parts[0]}\" n'est pas valide." );
-							$this->_rejects[] = $line;
+						if( !valid_nir( $parts[$offsets['nir2']] ) || !valid_nir( $parts[$offsets['nir']] ) ) {
+							$parts[$offsets['nir']] = substr( $parts[$offsets['nir']], 0, 13 );
+							$this->_rejectLine( $this->csv->path, $numLine, $line, "Le NIR \"{$parts[$offsets['nir']]}\" n'est pas valide" );
 						}
 						else {
 							// Recherche / remplissage des tables -> FIXME: en faire une fonction
@@ -301,7 +335,7 @@
 									$this->out( "Enregistrement des données de la ligne {$numLine} du fichier {$this->csv->path} effectué." );
 								}
 								else {
-									$this->out( "Erreur lors de l\'enregistrement des données de la ligne {$numLine} du fichier {$this->csv->path}." );
+									$this->_rejectLine( $this->csv->path, $numLine, $line, "Erreur lors de l'enregistrement des données" );
 								}
 							}
 							else {
@@ -317,20 +351,24 @@
 			if( !empty( $this->_rejects ) ) {
 				$titleLine = "";
 				if( $this->headers ) {
-					$titleLine = "{$lines[0]}\n";
+					$headers = rtrim( $lines[0], "\r\n" );
+					if( $this->logerror ) {
+						$headers = "{$headers};\"Erreur\"";
+					}
+					$titleLine = "{$headers}\n";
 				}
 				$output = $titleLine.implode( "\n", $this->_rejects )."\n";
 
-				$outfile = rtrim( $this->logpath, '/' ).'/'.$this->outfile;
+				// Nom du fichier de rejets
+				$outfile = rtrim( $this->logpath, '/' ).'/'.Inflector::underscore( preg_replace( '/Shell$/', '', $this->name ) ).'_rejets_'.$this->command.'_'.date( 'Ymd-His' ).'_'.$this->csv->name().'.csv';
 				$escapedApp = str_replace( '/', '\/', APP );
 				if( preg_replace( '/^'.$escapedApp.'/', '', $outfile ) ) {
 					$outfile = 'app/'.preg_replace( '/^'.$escapedApp.'/', '', $outfile );
 				}
-				$outfile = preg_replace( '/\.log$/', '.csv', $outfile );
-				$outfile = preg_replace( '/_shell-/', "_rejets_{$this->command}-", $outfile );
 
 				$this->hr();
 				file_put_contents( $outfile, $output );
+				chmod( $outfile, 0777 );
 				$this->out( "Le fichier de rejets se trouve dans {$outfile}" );
 			}
 
@@ -346,7 +384,7 @@
 			}
 			else {
 				$this->Informationpe->Historiqueetatpe->rollback();
-				$this->out( "Erreur lors de l\'enregistrement." );
+				$this->out( "Erreur lors de l'enregistrement." );
 			}
 		}
 
@@ -408,10 +446,12 @@
 			$this->out("\n\t{$this->shell} stock <fichier>\n\t\tImporte les informations Pôle Emploi de type stock à partir du fichier CSV passé en second paramètre.");
 			$this->out();
 			$this->out('Paramètres:');
+			$this->out("\t-apdnovembre2011 <booléen>\n\t\tLe fichier CSV à intégrer contient-il les colonnes \"code INSEE\", \"localité\", \"adresse\" et \"n° ALE\" (dans les flux à partir de novembre 2011) ?\n\t\tPar défaut: ".$this->_defaultToString( 'apdnovembre2011' )."\n");
 			$this->out("\t-separator <caractère>\n\t\tQuel est le séparateur utilisé dans le fichier CSV ?\n\t\tPar défaut: ".$this->_defaultToString( 'separator' )."\n");
 			$this->out("\t-headers <booléen>\n\t\tSi la première ligne du fichier CSV est une ligne de titre ?\n\t\tPar défaut: ".$this->_defaultToString( 'headers' )."\n");
 			$this->out("\t-log <booléen>\n\t\tDoit-on journaliser la sortie du programme ?\n\t\tPar défaut: ".$this->_defaultToString( 'log' )."\n");
 			$this->out("\t-logpath <répertoire>\n\t\tLe répertoire dans lequel enregistrer les fichiers de journalisation et les fichiers CSV contenant les rejets.\n\t\tPar défaut: ".$this->_defaultToString( 'logpath' )."\n");
+			$this->out("\t-logerror <booléen>\n\t\tDoit-on ajouter au fichier CSV des rejets une colonne contenant la raison du rejet ?\n\t\tPar défaut: ".$this->_defaultToString( 'logerror' )."\n");
 			$this->out();
 
 			$this->_stop( 0 );
