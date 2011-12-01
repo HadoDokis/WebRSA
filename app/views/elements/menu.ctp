@@ -74,6 +74,9 @@
 							<li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
 								<?php  echo $xhtml->link( 'Orientation', '#' );?>
 									<ul>
+										<?php if( $permissions->check( 'cohortes', 'statistiques' ) ): ?>
+											<li><?php echo $xhtml->link( 'Statistiques', array( 'controller' => 'cohortes', 'action' => 'statistiques' ), array( 'title'=>'Statistiques' ) );?></li>
+										<?php endif; ?>
 										<?php if( $permissions->check( 'cohortes', 'nouvelles' ) ): ?>
 											<li><?php echo $xhtml->link( 'Demandes non orientées', array( 'controller' => 'cohortes', 'action' => 'nouvelles' ), array( 'title'=>'Demandes non orientées' ) );?></li>
 										<?php endif; ?>
