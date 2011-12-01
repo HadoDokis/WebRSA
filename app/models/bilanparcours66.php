@@ -689,9 +689,9 @@
 					if ( isset( $data['Bilanparcours66']['reorientation'] ) ) {
 						$data['Saisinebilanparcoursep66']['reorientation'] = $data['Bilanparcours66']['reorientation'];
 					}
-					else {
-						$data['Saisinebilanparcoursep66']['reorientation'] = 'reorientation';
-					}
+// 					else {
+// 						$data['Saisinebilanparcoursep66']['reorientation'] = 'reorientation';
+// 					}
 
 					$this->Saisinebilanparcoursep66->create( $data );
 					$success = $this->Saisinebilanparcoursep66->save() && $success;

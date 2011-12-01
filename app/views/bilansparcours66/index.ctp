@@ -205,6 +205,8 @@
 								}
 								else { // Sans passage en EP
 									echo '<td colspan="2"></td>'; // Proposition du référent
+									echo '<td colspan="2"></td>'; // Avis de l'EP
+									echo '<td colspan="2"></td>'; // Décision du CG
 								}
 
 								/*if ( isset( $bilanparcour66['Saisinebilanparcoursep66']['typeorient_id'] ) && !empty( $bilanparcour66['Saisinebilanparcoursep66']['typeorient_id'] ) ) {
