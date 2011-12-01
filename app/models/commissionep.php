@@ -1761,12 +1761,13 @@
 			);
 
 			// Fiches synthétiques des dossiers d'EP
+			$dossierep = $this->Passagecommissionep->Dossierep->find( 'first', $queryData );
+
 			$fichessynthetiques = $this->Passagecommissionep->Dossierep->find(
 				'first',
-				$this->_qdFichesSynthetiques( array( 'Passagecommissionep.commissionep_id' => $commissionep_id ) )
+				$this->_qdFichesSynthetiques( array( 'Passagecommissionep.commissionep_id' => $commissionep_id , 'Passagecommissionep.dossierep_id' => $dossierep_id ) )
 			);
 
-			$dossierep = $this->Passagecommissionep->Dossierep->find( 'first', $queryData );
 			$dataFiche = Set::merge( $dossierep, $fichessynthetiques );
 
 			$modeleOption = ClassRegistry::init( 'Option' );
