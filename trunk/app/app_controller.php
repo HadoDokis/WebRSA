@@ -1,6 +1,8 @@
 <?php
 	App::import( 'Core', 'HttpSocket' );
 
+	ini_set( 'session.gc_maxlifetime', readTimeout() );
+
 	class AppController extends Controller
 	{
 		public $components = array( 'Session', 'Auth', 'Acl', 'Droits', 'Cookie', 'Jetons', 'Default', 'Gedooo' );
