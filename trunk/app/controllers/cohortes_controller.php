@@ -27,7 +27,7 @@
 			'Referent'
 		);
 
-		public $helpers = array( 'Csv', 'Paginator', 'Ajax', 'Default', 'Xpaginator' );
+		public $helpers = array( 'Csv', 'Paginator', 'Ajax', 'Default', 'Xpaginator', 'Locale' );
 
 		public $components = array( 'Gedooo', 'Prg' => array( 'actions' => 'orientees' ) );
 
@@ -51,6 +51,57 @@
 				$this->set( 'options', $this->Orientstruct->enums() );
 			}
 		}
+
+
+		public function _setOptions(){
+
+			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
+			$typesOrient = $this->Typeorient->find(
+				'list',
+				array(
+					'fields' => array(
+						'Typeorient.id',
+						'Typeorient.lib_type_orient'
+					),
+					'order' => 'Typeorient.lib_type_orient ASC'
+				)
+			);
+			$this->set( 'typesOrient', $typesOrient );
+			$this->set( 'structuresReferentes', $this->Structurereferente->list1Options() );
+
+			// -----------------------------------------------------------------
+
+			if( Configure::read( 'Zonesegeographiques.CodesInsee' ) ) {
+				$this->set( 'mesCodesInsee', $this->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) ) );
+			}
+			else {
+				$this->set( 'mesCodesInsee', $this->Dossier->Foyer->Adressefoyer->Adresse->listeCodesInsee() );
+			}
+
+			$this->set( 'oridemrsa', $this->Option->oridemrsa() );
+			$this->set( 'typeserins', $this->Option->typeserins() );
+			$this->set( 'printed', $this->Option->printed() );
+			$this->set( 'structuresAutomatiques', $this->Cohorte->structuresAutomatiques() );
+			if( Configure::read( 'CG.cantons' ) ) {
+				$this->set( 'cantons', $this->Canton->selectList() );
+			}
+
+			$this->set(
+				'modeles',
+				$this->Typeorient->find(
+					'list',
+					array(
+						'fields' => array( 'lib_type_orient' ),
+						'conditions' => array( 'Typeorient.parentid IS NULL' )
+					)
+				)
+			);
+			if( in_array( $this->action, array( 'orientees', 'exportcsv', 'statistiques' ) ) ) {
+				$this->set( 'options', $this->Orientstruct->enums() );
+			}
+		}
+
 
 		/**
 		*
@@ -78,6 +129,7 @@
 		public function orientees() {
 			$this->_index( 'Orienté' );
 		}
+
 
 		/**
 		*
@@ -348,6 +400,26 @@
 				$this->Session->setFlash( 'Erreur lors de l\'impression en cohorte.', 'flash/error' );
 				$this->redirect( $this->referer() );
 			}
+		}
+
+
+
+		/**
+		*
+		*/
+
+		public function statistiques() {
+			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
+
+			if( !empty( $this->data ) ) {
+				$statistiques = $this->Cohorte->statistiques( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data );
+			}
+
+			$this->_setOptions();
+			$this->set( compact( 'statistiques' ) );
+			$this->set( 'pageTitle', 'Statistiques' );
+			$this->render( $this->action, null, 'statistiques' );
 		}
 	}
 ?>

@@ -181,6 +181,38 @@
 		}
 
 		/**
+		*
+		*/
+		public function statistiques( $mesCodesInsee, $filtre_zone_geo, $criteres ) {
+			$Personne = ClassRegistry::init( 'Personne' );
+			$Option = ClassRegistry::init( 'Option' );
+
+			$statuts = array( 'Orienté', 'Non orienté', 'En attente' );
+
+			$return = array();
+
+			$typeorient = $criteres['Filtre']['typeorient'];
+
+			foreach( $statuts as $statut ) {
+				if( $statut != 'Orienté' ) {
+					$criteres['Filtre']['propo_algo'] = $typeorient;
+					$criteres['Filtre']['typeorient'] = null;
+				}
+				else {
+					$criteres['Filtre']['propo_algo'] = null;
+					$criteres['Filtre']['typeorient'] = $typeorient;
+				}
+
+				$querydata = $this->recherche( $statut, $mesCodesInsee, $filtre_zone_geo, $criteres, array() );
+				unset( $querydata['fields'] );
+				$return[$statut] = $Personne->find( 'count', $querydata );
+			}
+
+			return  $return;
+		}
+
+
+		/**
 		* FIXME: remplacer la méthode search à terme
 		*/
 
