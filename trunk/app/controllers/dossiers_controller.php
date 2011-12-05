@@ -191,7 +191,11 @@
 					'contain' => array(
 						'Prestation'
 					),
-					'order' => array( 'Prestation.rolepers ASC' )
+					'order' => array(
+						'( CASE WHEN Prestation.rolepers = \'DEM\' THEN 0 WHEN Prestation.rolepers = \'CJT\' THEN 1 WHEN Prestation.rolepers = \'ENF\' THEN 2 ELSE 3 END ) ASC',
+						'Personne.nom ASC',
+						'Personne.prenom ASC'
+					)
 				)
 			);
 

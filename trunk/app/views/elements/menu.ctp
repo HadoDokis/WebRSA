@@ -69,7 +69,7 @@
                                     </ul>
                             </li>
                         <?php endif;?>
-						<?php if( $permissions->check( 'cohortes', 'nouvelles' ) || $permissions->check( 'cohortes', 'orientees' ) || $permissions->check( 'cohortes', 'enattente' ) ): ?>
+						<?php if( $permissions->check( 'cohortes', 'nouvelles' ) || $permissions->check( 'cohortes', 'orientees' ) || $permissions->check( 'cohortes', 'enattente' ) || $permissions->check( 'cohortes', 'statistiques' ) ): ?>
 							<!-- MODIF POUR LA GESTION DES ORIENTATIONS (Cohorte) -->
 							<li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
 								<?php  echo $xhtml->link( 'Orientation', '#' );?>
