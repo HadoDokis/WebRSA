@@ -1083,10 +1083,13 @@
 					}
 				}
 
+ 
 				// SAuvegarde des numéros ed téléphone si ceux-ci ne sont pas présents en amont
-				$isDataPersonne = Set::filter( $this->data['Personne'] );
-				if( !empty( $isDataPersonne ) ){
-					$success = $this->Contratinsertion->Personne->save( array( 'Personne' => $this->data['Personne'] ) ) && $success;
+				if( isset( $this->data['Personne'] ) ) {
+					$isDataPersonne = Set::filter( $this->data['Personne'] );
+					if( !empty( $isDataPersonne ) ){
+						$success = $this->Contratinsertion->Personne->save( array( 'Personne' => $this->data['Personne'] ) ) && $success;
+					}
 				}
 
 
