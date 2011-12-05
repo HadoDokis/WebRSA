@@ -123,9 +123,9 @@
 
 						$isValid = Set::extract( $contratinsertion, 'Contratinsertion.decision_ci' );
 						$block = true;
-						if( $isValid == 'V'  ){
-							$block = false;
-						}
+// 						if( $isValid == 'V'  ){
+// 							$block = false;
+// 						}
 
 						$contratenep = in_array( $contratinsertion['Contratinsertion']['id'], $contratsenep );
 

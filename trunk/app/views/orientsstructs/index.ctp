@@ -220,7 +220,7 @@
 								array( 'controller' => 'orientsstructs', 'action' => 'edit', $orientstruct['Orientstruct']['id'] ),
 								$permissions->check( 'orientsstructs', 'edit' ) && ( $orientstruct['Orientstruct']['rgorient'] == $rgorient_max )
 								&& !( Configure::read( 'Cg.departement' ) == 93 && isset( $reorientationep93 ) && !empty( $reorientationep93 ) )
-								&& !( Configure::read( 'Cg.departement' ) == 58 )
+// 								&& !( Configure::read( 'Cg.departement' ) == 58 )
 								&& $ajout_possible
 							),
 							$xhtml->printLink(
