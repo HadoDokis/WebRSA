@@ -1,4 +1,14 @@
 <?php
+	/**
+	* Informations concernant les contraintes de NIR:
+	* 	- personnes.nir			CHAR(15)
+	* 	- informationspe.nir	VARCHAR(15), CHECK (nir IS NULL OR nir_correct(nir::text))
+	*	=> conditions pour comparer les deux nirs:
+	*	(
+	*		informationspe.nir IS NOT NULL
+	*		AND SUBSTRING( informationspe.nir FROM 1 FOR 13 ) ) = SUBSTRING( TRIM( BOTH ' ' FROM personnes.nir ) FROM 1 FOR 13 ) )
+	*	)
+	*/
 	class Informationpe extends AppModel
 	{
 		public $name = 'Informationpe';
@@ -47,6 +57,103 @@
 		);
 
 		/**
+		* Retourne un morceau de querydata permettant de comparer les nirs et les
+		* dates de naissance d'une entrée de la table informationspe et d'une
+		* entrée de la table personnes.
+		*
+		* @param string Le nom de l'alias de la table informationspe
+		* @param string Le nom de l'alias de la table personnes
+		* @return array
+		*/
+		public function qdNirsCmp( $informationpe, $personne ) {
+			return array(
+				"{$informationpe}.nir IS NOT NULL",
+				"SUBSTRING( {$informationpe}.nir FROM 1 FOR 13 ) = SUBSTRING( TRIM( BOTH ' ' FROM {$personne}.nir ) FROM 1 FOR 13 )",
+				"{$informationpe}.dtnai = {$personne}.dtnai"
+			);
+		}
+
+		/**
+		* Retourne un morceau de requête SQL permettant de comparer les nirs et
+		* les dates de naissance d'une entrée de la table informationspe et d'une
+		* entrée de la table personnes.
+		*
+		* @param string Le nom de l'alias de la table informationspe
+		* @param string Le nom de l'alias de la table personnes
+		* @return string
+		*/
+		public function sqNirsCmp( $informationpe, $personne ) {
+			return implode( ' AND ', $this->qdNirsCmp( $informationpe, $personne ) );
+		}
+
+		/**
+		* Retourne un morceau de querydata contenant les conditions pour faire
+		* la jointure entre la table informationspe et la table personnes.
+		*
+		* @param string Le nom de l'alias de la table informationspe
+		* @param string Le nom de l'alias de la table personnes
+		* @return array
+		*/
+		public function qdConditionsJoinPersonne( $informationpe, $personne ) {
+			return array(
+				'OR' => array(
+					$this->qdNirsCmp( $informationpe, $personne ),
+					array(
+						"{$personne}.nom IS NOT NULL",
+						"{$personne}.prenom IS NOT NULL",
+						"{$personne}.dtnai IS NOT NULL",
+						"TRIM( BOTH ' ' FROM {$personne}.nom ) <>" => '',
+						"TRIM( BOTH ' ' FROM {$personne}.prenom ) <>" => '',
+						"TRIM( BOTH ' ' FROM {$informationpe}.nom ) = TRIM( BOTH ' ' FROM {$personne}.nom )",
+						"TRIM( BOTH ' ' FROM {$informationpe}.prenom ) = TRIM( BOTH ' ' FROM {$personne}.prenom )",
+						"{$informationpe}.dtnai = {$personne}.dtnai"
+					)
+				)
+			);
+		}
+
+		/**
+		* Retourne un morceau de requête SQL contenant les conditions pour faire
+		* la jointure entre la table informationspe et la table personnes.
+		*
+		* @param string Le nom de l'alias de la table informationspe
+		* @param string Le nom de l'alias de la table personnes
+		* @return array
+		*/
+		public function sqConditionsJoinPersonne( $informationpe, $personne ) {
+			$querydata = $this->qdConditionsJoinPersonne( $informationpe, $personne );
+			$ds = $this->getDataSource( $this->useDbConfig );
+			return $ds->conditions( $querydata, false, false, null );
+		}
+
+		/**
+		* Retourne un morceau de querydata contenant les conditions pour filtrer
+		* les entrées de la table informationspe avec des valeurs.
+		*
+		* @param string $informationpe Le nom de l'alias de la table informationspe
+		* @param array $values Les données sur lesquelles filtrer (clés nécessaires: nir, nom, prenom, dtnai)
+		* @return array
+		*/
+		public function qdConditionsJoinPersonneOnValues( $informationpe, $values ) {
+			return array(
+				'OR' => array(
+					array(
+						"{$informationpe}.nir IS NOT NULL",
+						"SUBSTRING({$informationpe}.nir FROM 1 FOR 13) =" => substr( trim( Set::classicExtract( $values, 'nir' ) ), 0, 13 ),
+						"{$informationpe}.dtnai" => Set::classicExtract( $values, 'dtnai' )
+					),
+					array(
+						( ( trim( Set::classicExtract( $values, 'nom' ) ) == '' ) ? 'FALSE' : 'TRUE' ),
+						( ( trim( Set::classicExtract( $values, 'prenom' ) ) == '' ) ? 'FALSE' : 'TRUE' ),
+						"TRIM( BOTH ' ' FROM {$informationpe}.nom )" => trim( Set::classicExtract( $values, 'nom' ) ),
+						"TRIM( BOTH ' ' FROM {$informationpe}.prenom )" =>  trim( Set::classicExtract( $values, 'prenom' ) ),
+						"{$informationpe}.dtnai" => trim( Set::classicExtract( $values, 'dtnai' ) ),
+					)
+				)
+			);
+		}
+
+		/**
 		*
 		*/
 
@@ -62,20 +169,7 @@
 				'alias'      => 'Informationpe',
 				'type'       => 'INNER',
 				'foreignKey' => false,
-				'conditions' => array(
-					'OR' => array(
-						array(
-							'Informationpe.nir IS NOT NULL',
-							'Personne.nir IS NOT NULL',
-							'Informationpe.nir = Personne.nir',
-						),
-						array(
-							'Informationpe.nom = Personne.nom',
-							'Informationpe.prenom = Personne.prenom',
-							'Informationpe.dtnai = Personne.dtnai',
-						)
-					)
-				)
+				'conditions' => $this->qdConditionsJoinPersonne( 'Informationpe', 'Personne' )
 			);
 			$queryData['joins'][] = array(
 				'table'      => 'historiqueetatspe', // FIXME:
@@ -126,16 +220,7 @@
 							)
 						)
 						INNER JOIN personnes ON (
-							(
-								personnes.nir IS NOT NULL
-								AND informationspe.nir IS NOT NULL
-								AND personnes.nir = informationspe.nir
-							)
-							OR (
-								personnes.nom = informationspe.nom
-								AND personnes.prenom = informationspe.prenom
-								AND personnes.dtnai = informationspe.dtnai
-							)
+							'.$this->sqConditionsJoinPersonne( 'informationspe', 'personnes' ).'
 						)
 					WHERE
 						personnes.id = Personne.id
@@ -206,12 +291,11 @@
 		
 		
 		/**
-		 * Récupère le dernier identifiant Pôle Emploi d'une personne donnée.
-		 * Note : l'utilisation de l'identifiant Personne.idassedic est déconseillé.
-		 * @param $personneId 
-		 */
-		public function dernierIdentifiantpe( $personneId)
-		{
+		* Récupère le dernier identifiant Pôle Emploi d'une personne donnée.
+		* Note : l'utilisation de l'identifiant Personne.idassedic est déconseillé.
+		* @param $personneId 
+		*/
+		public function dernierIdentifiantpe( $personneId) {
 			$query = "
 				SELECT
 					historiqueetatspe.identifiantpe
@@ -227,22 +311,7 @@
 							)
 						)
 						INNER JOIN personnes ON (
-							(
-								personnes.nir IS NOT NULL
-								AND personnes.dtnai IS NOT NULL
-								AND nir_correct( personnes.nir )
-								AND informationspe.nir IS NOT NULL
-								AND personnes.nir = informationspe.nir
-								AND personnes.dtnai = informationspe.dtnai
-							)
-							OR (
-								personnes.nom IS NOT NULL
-								AND personnes.prenom IS NOT NULL
-								AND personnes.dtnai IS NOT NULL
-								AND TRIM( BOTH ' ' FROM personnes.nom ) = TRIM( BOTH ' ' FROM informationspe.nom )
-								AND TRIM( BOTH ' ' FROM personnes.prenom ) = TRIM( BOTH ' ' FROM informationspe.prenom )
-								AND personnes.dtnai = informationspe.dtnai
-							)
+							".$this->sqConditionsJoinPersonne( 'Informationpe', 'Personne' )."
 						)
 					WHERE personnes.id = {$personneId}
 				;";
@@ -250,6 +319,9 @@
 			return array('Informationpe'=> Set::classicExtract( $result, '0.0' ) );
 		}
 
+		/**
+		*
+		*/
 		public function derniereInformation( $personne ) {
 			$infope = $this->find(
 				'first',
@@ -260,22 +332,7 @@
 							'limit' => 1
 						)
 					),
-					'conditions' => array(
-						'OR' => array(
-							array(
-								'Informationpe.nir' => Set::classicExtract( $personne, 'Personne.nir' ),
-								'Informationpe.nir IS NOT NULL',
-								'LENGTH(Informationpe.nir) = 15',
-								'Informationpe.dtnai' => Set::classicExtract( $personne, 'Personne.dtnai' ),
-							),
-							array(
-								'Informationpe.nom' => Set::classicExtract( $personne, 'Personne.nom' ),
-								'Informationpe.prenom' => Set::classicExtract( $personne, 'Personne.prenom' ),
-								'Informationpe.dtnai' => Set::classicExtract( $personne, 'Personne.dtnai' ),
-							)
-						)
-
-					)
+					'conditions' => $this->qdConditionsJoinPersonneOnValues( 'Informationpe', $personne['Personne'] )
 				)
 			);
 			return $infope;
@@ -297,21 +354,7 @@
 				'alias'      => $aliasInformationpe,
 				'type'       => $type,
 				'foreignKey' => false,
-				'conditions' => array(
-					'OR' => array(
-						array(
-							"{$aliasInformationpe}.nir IS NOT NULL",
-							"LENGTH({$aliasInformationpe}.nir) = 15",
-							"{$aliasInformationpe}.nir = {$aliasPersonne}.nir",
-							"{$aliasInformationpe}.dtnai = {$aliasPersonne}.dtnai",
-						),
-						array(
-							"UPPER({$aliasInformationpe}.nom) = UPPER({$aliasPersonne}.nom)",
-							"UPPER({$aliasInformationpe}.prenom) = UPPER({$aliasPersonne}.prenom)",
-							"{$aliasInformationpe}.dtnai = {$aliasPersonne}.dtnai"
-						)
-					)
-				)
+				'conditions' => $this->qdConditionsJoinPersonne( $aliasInformationpe, $aliasPersonne )
 			);
 		}
 

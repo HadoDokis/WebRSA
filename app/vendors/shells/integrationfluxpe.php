@@ -267,16 +267,7 @@
 							$oldInformationpe = $this->Informationpe->find(
 								'first',
 								array(
-									'conditions' => array(
-										'OR' => array(
-											'Informationpe.nir' => $informationpe['Informationpe']['nir'], // FIXME: not null ?
-											array(
-												'Informationpe.nom' => $informationpe['Informationpe']['nom'],
-												'Informationpe.prenom' => $informationpe['Informationpe']['prenom'],
-												'Informationpe.dtnai' => $informationpe['Informationpe']['dtnai']
-											)
-										)
-									),
+									'conditions' => $this->Informationpe->qdConditionsJoinPersonneOnValues( 'Informationpe', $informationpe['Informationpe'] ),
 									'contain' => false
 								)
 							);
