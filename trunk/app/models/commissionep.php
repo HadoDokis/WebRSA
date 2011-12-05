@@ -1123,26 +1123,7 @@
 							)',
 						)
 					),
-					array(
-						'table'      => 'informationspe',
-						'alias'      => 'Informationpe',
-						'type'       => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array(
-							'OR' => array(
-								array(
-									'Informationpe.nir IS NOT NULL',
-									'Personne.nir IS NOT NULL',
-									'Informationpe.nir = Personne.nir',
-								),
-								array(
-									'Informationpe.nom = Personne.nom',
-									'Informationpe.prenom = Personne.prenom',
-									'Informationpe.dtnai = Personne.dtnai',
-								)
-							)
-						)
-					),
+					ClassRegistry::init( 'Informationpe' )->joinPersonneInformationpe(),
 					array(
 						'table'      => 'historiqueetatspe',
 						'alias'      => 'Historiqueetatpe',

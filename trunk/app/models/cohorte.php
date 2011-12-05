@@ -33,20 +33,7 @@
 									ORDER BY "Historiqueetatpe"."date" DESC LIMIT 1
 						) AS "Historiqueetatpe__dernieretat"'
 					),
-					'conditions' => array(
-						'OR' => array(
-							array(
-								'Informationpe.nir IS NOT NULL',
-								'Informationpe.nir' => $element['Personne']['nir'],
-								'Informationpe.dtnai' => $element['Personne']['dtnai']
-							),
-							array(
-								'Informationpe.nom' => $element['Personne']['nom'],
-								'Informationpe.prenom' => $element['Personne']['prenom'],
-								'Informationpe.dtnai' => $element['Personne']['dtnai']
-							)
-						)
-					),
+					'conditions' => $this->Informationpe->qdConditionsJoinPersonneOnValues( 'Informationpe', $element['Personne'] )
 					'contain' => false
 				)
 			);
