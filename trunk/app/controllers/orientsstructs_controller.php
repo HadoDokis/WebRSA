@@ -467,6 +467,13 @@
 			$dossier_id = $this->Personne->dossierId( $personne_id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
 
+
+			// Récupération du dossier afin de précharger la date de demande RSA
+			$dossier = $this->Orientstruct->Personne->Foyer->Dossier->findById( $dossier_id, null, null, -1);
+			$this->set( compact( 'dossier' ) );
+
+
+
 			$this->Orientstruct->begin();
 			if( !$this->Jetons->check( $dossier_id ) ) {
 				$this->Orientstruct->rollback();
@@ -585,6 +592,10 @@
 
 			$dossier_id = $this->Orientstruct->dossierId( $orientstruct_id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
+
+			// Récupération du dossier afin de précharger la date de demande RSA
+			$dossier = $this->Orientstruct->Personne->Foyer->Dossier->findById( $dossier_id, null, null, -1);
+			$this->set( compact( 'dossier' ) );
 
 			$this->Orientstruct->begin();
 			if( !$this->Jetons->check( $dossier_id ) ) {
