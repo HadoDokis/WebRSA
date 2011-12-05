@@ -33,7 +33,7 @@
 									ORDER BY "Historiqueetatpe"."date" DESC LIMIT 1
 						) AS "Historiqueetatpe__dernieretat"'
 					),
-					'conditions' => $this->Informationpe->qdConditionsJoinPersonneOnValues( 'Informationpe', $element['Personne'] )
+					'conditions' => $this->Informationpe->qdConditionsJoinPersonneOnValues( 'Informationpe', $element['Personne'] ),
 					'contain' => false
 				)
 			);
