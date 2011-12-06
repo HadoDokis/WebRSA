@@ -34,6 +34,11 @@
 				array(
 					'rule' => 'date',
 					'message' => 'Veuillez vérifier le format de la date.'
+				),
+				array(
+					'rule' => 'futureDate',
+					'on' => 'create',
+					'message' => 'Veuillez saisir une date postérieure à celle du jour.'
 				)
 			),
 			'heurerdv' => array(
