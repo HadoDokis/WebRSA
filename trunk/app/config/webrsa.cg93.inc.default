@@ -1,0 +1,420 @@
+<?php
+	define( 'GEDOOO_WSDL', 'http://gedooo.test.adullact.org:8080/axis2/services/OfficeService?wsdl' );
+
+	/**
+	* Le chemin complet vers la base de l'application (utilisé par certains shells)
+	*
+	* @default: null
+	*/
+	Configure::write( 'FULL_BASE_URL', 'http://localhost/webrsa/trunk' );
+
+    Configure::write( 'Cg.departement', 93 );
+    Configure::write( 'Utilisateurs.multilogin', false );
+    Configure::write( 'with_parentid', false ); // true = cg66
+    Configure::write( 'nom_form_ci_cg', 'cg93' );
+    Configure::write( 'CG.cantons', false ); // false = cg93, true = cg66
+    Configure::write( 'Zonesegeographiques.CodesInsee', true );
+    //Configure::write( 'Etatliquidatif.limit', 1000 ); // INFO: commenter pour ne pas avoir de limite
+
+    /**
+    * Champs spécifique selon le CG pour le formulaire de l'APRE
+    * @default: 'cg93' (pour le CG93), 'cg66' (pour le CG66)
+    */
+    Configure::write( 'nom_form_apre_cg', 'cg93' );
+
+    // Limit pour le nombre de documents à éditer dans la cohorte par orientation
+    Configure::write( 'nb_limit_print', 2000 );
+
+
+	/**
+	* Permet à l'administrateur d'accéder à toutes les parties de l'application
+	* normalement bloquées aux seules parties de paramétrage renseignées.
+	* Voir AppController::_isAdminAction().
+	* @default false
+	*/
+    Configure::write( 'Admin.unlockall', false );
+
+	/**
+	* Montant maximal des apres complémentaires pour une personne au cours
+	* de la période de temps définie par Apre.periodeMontantMaxComplementaires.
+	* @default 2600
+    * cg66 -> 3000
+	*/
+	Configure::write( 'Apre.montantMaxComplementaires', 2600 );
+
+	/**
+	* Période (en nombre d'année) utilisée pour la calcul du montant maximal
+	* des apres complémentaires pour une personne.
+	* @default 1 (une année du 01/01 au 31/12)
+	*/
+	Configure::write( 'Apre.periodeMontantMaxComplementaires', 2 );
+
+    /**
+    * Paramètre à renseigner pour l'utilisation du bon MVC
+    * @default: vide (pour le CG93), sinon '66' pour le CG66
+    */
+    Configure::write( 'Apre.suffixe', null );
+
+    /**
+    * Paramètres à renseigner pour les APRE's forfaitaires
+	* FIXME: doc
+    */
+    Configure::write( 'Apre.forfaitaire.montantbase', 400 );
+    Configure::write( 'Apre.forfaitaire.montantenfant12', 100 );
+    Configure::write( 'Apre.forfaitaire.nbenfant12max', 4 );
+
+	/**
+	* FIXME: vérifier l'existance et les droits
+	* FIXME: accès concurrents ?
+	*/
+    Configure::write( 'Cohorte.dossierTmpPdfs', APP.'tmp/files/pdf' );
+
+    /**
+    *   Paramètres à renseigner pour les montants des
+    *   forfaits de déplacements des APREs pour le CG66
+    *   @default:   0.20€ pour les forfaits au Km
+    *               23€ pour les frais d'hebergement
+    *               3.81€ pour les frais de repas
+    */
+    Configure::write( 'Fraisdeplacement66.forfaitvehicule', 0.20 );
+    Configure::write( 'Fraisdeplacement66.forfaithebergt', 23 );
+    Configure::write( 'Fraisdeplacement66.forfaitrepas', 3.81 );
+
+    /**
+    * Permet à l'administrateur d'ajouter une adresse pour l'utilisateur
+    * connecté à l'application.
+    * Besoin pour le CG66 lors de l'impression des courriers de rendez-vous
+    * @default false
+    */
+    Configure::write( 'User.adresse', false ); // true = cg66, false = cg93
+
+
+    /**
+    * Paramètre à renseigner pour l'affichage de la bonne fiche de candidature
+    * @default: 'cg93' (pour le CG93), sinon 'cg66' pour le CG66
+    */
+    Configure::write( 'ActioncandidatPersonne.suffixe', 'cg93' );
+
+    /**
+    *   Paramètre à renseigner dans le cas d'un affichage plus large du menu du dossier
+    *   @default: false
+    */
+    Configure::write( 'UI.menu.large', true );
+
+
+    /**
+    *   Paramètre à renseigner pour le CG58 pour le lien pointant sur leur application
+    */
+    Configure::write( 'UI.menu.lienDemandeur', false );
+
+
+    /**
+    *   Paramètre à renseigner pour déterminer la plage horaire que l'on dispose pour pouvoir accéder
+    *   aux différents boutons possédant ce paramètre.
+    *   On met 48, pour 48H car la plage de date va de minuit à minuit et donc un formulaire saisi
+    *   un jour à 18h ne serait plus modifiable/validable/supprimable le lendemain.
+    *   @default: 48 --> nombre d'heures pendant lesquelles on pourra accéder au bouton
+    */
+    Configure::write( 'Periode.modifiable.nbheure', 48 );
+
+
+
+    /**
+    * Champs spécifique selon le CG pour le formulaire des PDOs
+    * @default: 'cg93' (pour le CG93), 'cg66' (pour le CG66)
+    */
+    Configure::write( 'nom_form_pdo_cg', 'cg93' );
+
+    /**
+    * Champs spécifique selon le CG pour le formulaire du bilan de parcours / Fiche de saisine
+    * @default: 'cg93' (pour le CG93), 'cg66' (pour le CG66)
+    */
+    Configure::write( 'nom_form_bilan_cg', 'cg93' );
+
+    /**
+    * Champs spécifique selon le CG pour le formulaire du Contrat Unqiue d'Insertion
+    * @default: 'cg93' (pour le CG93), 'cg66' (pour le CG66)
+    */
+    Configure::write( 'nom_form_cui_cg', 'cg93' );
+
+    /**
+    *   Paramètre pour connaître le pourcentage du 1er versement, lors d'un versement en 2 fois,
+    *   pour les apres présentes dans un état liquidatif
+    *   @default: 60 ---> avant 40 %
+    */
+    Configure::write( 'Apre.pourcentage.montantversement', 60 );
+
+	/**
+	* Permet de désactiver l'utilisation des jetons sur les dossiers
+	* Si à false, on utilise les jetons sur les dossiers.
+	* Si à true, on n'utilise pas les jetons sur les dossiers.
+	* @default false
+	*/
+	Configure::write( 'Jetons.disabled', false );
+
+    /**
+    *   Paramètre pour définir les taux dans le formulaire du CUI :
+    *   Cui.taux.fixe                   => Taux fixé par l'arrêté du Préfet de région (en % )
+    *   Cui.taux.prisencharge           => Taux de prise en charge effectif si le Conseil Général fixe
+    *                                       un taux supérieur au taux fixé par le Préfet de région (en %)
+    *   Cui.taux.financementexclusif    => Financement exclusif du Conseil Général, Si oui, taux (en %)
+    *   @default: à définir par chaque CG
+    */
+    Configure::write( 'Cui.taux.fixe', 60 );
+    Configure::write( 'Cui.taux.prisencharge', 70 );
+    Configure::write( 'Cui.taux.financementexclusif', 60 );
+
+	/**
+	* Permet la pagination progressive, cad. qu'on ne compte pas le nombre
+	* d'enregistrements totaux, mais que l'on regarde seulement si la
+	* page suivante existe.
+	*
+	* Ce paramètre concerne toutes les paginations.
+	*
+	* @default: false (pagination normale)
+	*/
+	Configure::write( 'Optimisations.progressivePaginate', true );
+
+	/**
+	* Surcharge de la pagination progressive pour l'action nouveaux
+	* du contrôleur Cohortesci.
+	*/
+
+	Configure::write( 'Optimisations.Cohortesci_nouveaux.progressivePaginate', false );
+
+	/**
+	* Surcharge de la pagination progressive pour l'action avisdemande
+	* du contrôleur Cohortespdos.
+	*/
+
+	Configure::write( 'Optimisations.Cohortespdos_avisdemande.progressivePaginate', false );
+
+	/**
+	* Surcharge de la pagination progressive pour l'action cohorte
+	* du contrôleur Relancesnonrespectssanctionseps93.
+	*/
+
+	Configure::write( 'Optimisations.Relancesnonrespectssanctionseps93_cohorte.progressivePaginate', false );
+
+	/**
+	* Surcharge de la pagination progressive pour les cohorte d'orientations, demandes orientées
+	*/
+	Configure::write( 'Optimisations.Cohortes_orientees.progressivePaginate', true );
+
+	/**
+	 * Variables permettant le déclenchement de passage en EPD d'un dossier via les PDOs
+	 */
+	Configure::write( 'traitementResultatId', 2 );
+
+	Configure::write( 'traitementEnCoursId', 1 );
+	Configure::write( 'traitementClosId', 2 );
+
+	/**
+	 * Variables apparaissant dans la fiche de calcul du journal de traitement d'une PDO
+	 */
+	Configure::write('Traitementpdo.fichecalcul_coefannee1', 34);
+	Configure::write('Traitementpdo.fichecalcul_coefannee2', 25);
+
+	Configure::write('Traitementpdo.fichecalcul_cavntmax', 80300);
+	Configure::write('Traitementpdo.fichecalcul_casrvmax', 32100);
+
+	Configure::write('Traitementpdo.fichecalcul_abattbicvnt', 71);
+	Configure::write('Traitementpdo.fichecalcul_abattbicsrv', 50);
+	Configure::write('Traitementpdo.fichecalcul_abattbncsrv', 34);
+
+	/**
+	 * Affiche ou non l'alerte de fin de session et exécute la redirection
+	 */
+	Configure::write( 'alerteFinSession', false );
+
+	/**
+	* Nombre de jours entre la date de prise de décision concernant un dossier d'EP
+	* pour le thème "non respect et sanctions du CG 93" et un nouveau passage en
+	* procédure de relance pour ce même thème.
+	*/
+	Configure::write( 'Nonrespectsanctionep93.relanceDecisionNonRespectSanctions', 60 );
+
+	/**
+	* Nombre de jours entre la date d'édition de la notification d'orientation et
+	* l'envoi de la première relance pour le thème "non respect et sanctions du CG 93"
+	*/
+	Configure::write( 'Nonrespectsanctionep93.relanceOrientstructCer1', 60 );
+
+	/**
+	* Nombre de jours entre la date de première relance et
+	* l'envoi de la seconde relance pour le thème "non respect et sanctions du CG 93"
+	*/
+	Configure::write( 'Nonrespectsanctionep93.relanceOrientstructCer2', 40 );
+
+	/**
+	* Nombre de jours entre la date de seconde relance et
+	* l'envoi de la troisième relance pour le thème "non respect et sanctions du CG 93"
+	*/
+// 	Configure::write( 'Nonrespectsanctionep93.relanceOrientstructCer3', 30 );
+
+	/**
+	* Nombre de jours entre la date de fin du contrat précédent et l'envoi de
+	* la première relance pour le thème "non respect et sanctions du CG 93"
+	*/
+	Configure::write( 'Nonrespectsanctionep93.relanceCerCer1', 60 );
+
+	/**
+	* Nombre de jours entre la date de première relance et de
+	* la seconde relance pour le thème "non respect et sanctions du CG 93"
+	*/
+	Configure::write( 'Nonrespectsanctionep93.relanceCerCer2', 70 );
+
+	/**
+	* Montant de la réduction d'allocation lors d'un premier passage en EP pour
+	* le thème "non respect et sanctions du CG 93"
+	*/
+	Configure::write( 'Nonrespectsanctionep93.montantReduction', 100 );
+
+	/**
+	* Durée du délai supplémentaire (en jours) lors d'un premier passage en EP
+	* pour le thème "non respect et sanctions du CG 93"
+	*/
+	Configure::write( 'Nonrespectsanctionep93.dureeSursis', 31 );
+
+	/**
+	* Durée du délai (intervalle) accordé pour pour la détection des DO 19
+	* pour le thème "non respect et sanctions du CG 93" grâce au shell
+	* automatisationseps
+	*
+	* Voir le document app/docs/Documentation administrateurs.odt, partie
+	* "Intervalles PostgreSQL"
+	*/
+    Configure::write( 'Nonrespectsanctionep93.intervalleCerDo19', '1 month' );
+
+	/**
+	* Durée du délai (en jours) accordé pour la création d'un nouveau contrat pour
+	* le thème "détection brsa en parcours social sans réorientation"
+	*/
+	Configure::write( 'Nonorientationproep93.delaiCreationContrat', 60 );
+
+	/**
+	* Durée du délai (en jours) accordé pour la régularisation de l'état à Pôle Emploi
+	* pour le thème "non respect et sanctions du CG 93"
+	*/
+	Configure::write( 'Nonrespectsanctionep93.delaiRegularisation', 60 );
+
+	/**
+	* Durée du délai (en jours) accordé après un passage en EP dont la décision a été
+	* d'accorder un délai supplémentaire pour le thème "non respect et sanctions du CG 93"
+	*/
+	Configure::write( 'Nonrespectsanctionep93.decisionep.delai', 40 );
+
+	/**
+	* Montant de la réduction d'allocation lors d'un premier passage en EP pour
+	* le thème "non respect des termes du CER du CG 93"
+	*/
+	Configure::write( 'Signalementep93.montantReduction', 100 );
+
+	/**
+	* Durée du sursis (en jours) lors d'un premier passage en EP pour
+	* le thème "non respect des termes du CER du CG 93"
+	*/
+	Configure::write( 'Signalementep93.dureeSursis', 31 );
+
+	/**
+	* Durée de la tolérance (en nombre de jours) par-rapport à la date de fin
+	* d'un CER que l'on voudrait passer en EP pour le thème "non respect des
+	* termes du CER du CG 93"
+	*/
+	Configure::write( 'Signalementep93.dureeTolerance', 365 );
+
+	/**
+	* Durée du délai (en jours) accordé après un passage en EP dont la décision a été
+	* d'accorder un délai supplémentaire pour le thème "Non respect du CER"
+	*/
+	Configure::write( 'Signalementep93.decisionep.delai', 40 );
+
+	/**
+	* Nombre de jours entre deux passages successifs en EP pour une même personne
+	* et une même thématique.
+	* FIXME: à rendre plus générique (pour toutes les thématiques)
+	*/
+	Configure::write( 'Dossierep.nbJoursEntreDeuxPassages', 31 );
+
+	/**
+	* Configuration pour le dialogue avec un CMS (système de gestion de contenu)
+	* comme Alfresco, servant à stocker les PDF
+	*/
+
+	Configure::write(
+		'Cmis',
+		array(
+			'url' => 'http://xxxxxx/alfresco/service/api/cmis',
+			'username' => 'user',
+			'password' => 'pass',
+			'prefix' => '/Sites/Webrsa',
+		)
+	);
+
+	/**
+	* Permet de rajouter des conditions aux conditions de recherches suivant
+	* le paramétrage des service référent dont dépend l'utilisateur connecté.
+	*
+	* @default false
+	*/
+
+	Configure::write( 'Recherche.qdFilters.Serviceinstructeur', ( Configure::read( 'Cg.departement' ) == 58 ) );
+
+
+    /**
+    *   Permet de définir si on peut ou non ajouter une nouvelle orientation à un dossier
+    *   - toppersdrodevorsa     --> par défaut 1 (personne soumise à droit et devoir)
+    *   - situationetatdosrsa   --> par défaut array( 'Z', 2, 3, 4) (dossier dans un droit ouvert et versable)
+    */
+    Configure::write( 'AjoutOrientationPossible.toppersdrodevorsa', 1 ); // aucune distincton sur le soumis à droit et devoir array( 0,1 )
+    Configure::write( 'AjoutOrientationPossible.situationetatdosrsa', array( 'Z', 2, 3, 4 ) );// on prend toutes les valeurs possibles de l'état du dossier RSA
+
+	/**
+	* Permet de spécifier si les recherches sur l'identifiant Pôle Emploi d'un
+	* allocataire doivent se faire sur les 8 derniers chiffres de l'identifiant
+	* (true) ou sur la totalité de celui-ci (false).
+	*
+	* @default false
+	*/
+
+	Configure::write( 'Recherche.identifiantpecourt', false );
+
+
+	/**
+	* Durée du délai (intervalle) entre la date de validation de l'orientation et la date
+	* d'inscription au Pôle Emploi
+	*
+	* Voir le document app/docs/Documentation administrateurs.odt, partie
+	* "Intervalles PostgreSQL"
+	*/
+    Configure::write( 'Selectionnoninscritspe.intervalleDetection', '2 months' );
+
+	/**
+	* Gestion des anomalies
+	*/
+	Configure::write( 'Optimisations.Gestionsanomaliesbdds.progressivePaginate', false );
+	Configure::write( 'Situationdossierrsa.etatdosrsa.ouvert', array( 'Z', '2', '3', '4' ) );
+
+		
+	/**
+	*	Délai pour la détection des CERs arrivant à échéance
+	*/
+	Configure::write( 'Criterecer.delaiavanteecheance', '1 month' );
+	
+	
+	/**
+	*	Pour le CG66: Délai durant lequel les dossiers d'EP ne seront ni détectables, ni sélectionnables dans la corbeille
+	*	des dossiers devant passer en EP
+	*	@default: null
+	*	@CG66: 1 month 15 days
+	* 	Voir le document app/docs/Documentation administrateurs.odt, partie
+	* 	"Intervalles PostgreSQL"
+	*/
+	Configure::write( 'Dossierep.delaiavantselection', null );
+	
+		
+	/**
+	*	Valeurs prises par le champ natpf pour déterminer si le dossier est en RSA Socle
+	*/
+	Configure::write( 'Detailcalculdroitrsa.natpf.socle', array( 'RSD', 'RSI', 'RSU', 'RSJ' ) );
+?>

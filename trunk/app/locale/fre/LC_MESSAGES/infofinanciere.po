@@ -1,0 +1,58 @@
+# translation of messages.po to
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid "Infofinanciere."
+msgstr ""
+"Project-Id-Version: messages\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-01-25 23:57+0100\n"
+"PO-Revision-Date: 2009-01-26 09:34+0100\n"
+"Last-Translator: \n"
+"Language-Team:  <fr@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms: nplurals=2; plural=(n>1);\n"
+
+###############################################################################
+# Informations financières
+##############################################################################
+
+msgid "Infofinanciere.dtdemrsa"
+msgstr "Date d'ouverture des droits"
+
+msgid "Infofinanciere.moismoucompta"
+msgstr "Mois du mouvement comptable"
+
+msgid "Infofinanciere.type_allocation"
+msgstr "Type d\'allocation"
+
+msgid "Infofinanciere.natpfcre"
+msgstr "Nature de la prestation pour la créance"
+
+msgid "Infofinanciere.rgcre"
+msgstr "Rang de la créance"
+
+msgid "Infofinanciere.numintmoucompta"
+msgstr "Numéro interne du mouvement comptable"
+
+msgid "Infofinanciere.typeopecompta"
+msgstr "Type d\'opération comptable"
+
+msgid "Infofinanciere.sensopecompta"
+msgstr "Signification/sens de l\'opération comptable"
+
+msgid "Infofinanciere.mtmoucompta"
+msgstr "Montant du mouvement comptable"
+
+msgid "Infofinanciere.ddregu"
+msgstr "Date pour la régulation"
+
+msgid "Infofinanciere.dttraimoucompta"
+msgstr "Date de traitement du mouvement comptable"
+
+msgid "Infofinanciere.heutraimoucompta"
+msgstr "Heure de traitement du mouvement comptable"
