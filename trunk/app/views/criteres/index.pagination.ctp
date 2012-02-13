@@ -1,1 +1,0 @@
-<?php echo $xpaginator->paginationBlock( 'Orientstruct', $this->passedArgs );?>

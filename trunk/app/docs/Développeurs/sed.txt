@@ -1,5 +1,0 @@
-1°) Remplacer le contenu de tous les pdfs d'un dump PostgreSql par NULL (inserts):
-sed -e "s/, '%PDF.*012', /, NULL, /g" cg93_20111005_trunk.sql > cg93_20111005_trunk2.sql
-
-2°) Imprimer la ligne n° 28784:
-sed '28784q;d' 1.sql
