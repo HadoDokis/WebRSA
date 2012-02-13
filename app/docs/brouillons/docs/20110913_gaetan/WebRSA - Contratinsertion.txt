@@ -1,0 +1,168 @@
+==============
+= 08/09/2011 =
+==============
+
+Champs importants:
+	- dd_ci: Date de début de contrat
+	- df_ci: Date de fin de contrat
+	- decision_ci: Décision
+		* 'E' => 'En attente de décision', (CG 66, CG 93)
+		* 'V' => 'Validation le', (CG 58, CG 66, CG 93)
+		* 'A' => 'Ajournement', (CG 93)
+		* 'R' => 'Rejet', (CG 93)
+		* 'N' => 'Non validé', (CG 66) -> correspond au rejet (intitulé différent)
+	- forme_ci: Forme du contrat
+		* 'S' => 'Simple',
+		* 'C' => 'Complexe',
+	- rg_ci: Rang du contrat d'insertion (entier)
+	- positioncer: Position du contrat d'insertion (CG 66 seulement)
+		* encours
+		* attvalid
+		* annule
+		* fincontrat
+		* encoursbilan
+		* attrenouv
+		* perime
+	- num_contrat: Type de contrat
+		* 'PRE' => 'Premier contrat',
+		* 'REN' => 'Renouvellement',
+
+-- -----------------------------------------------------------------------------
+
+Contratinsertion:
+	* CG 58:
+		- proposcontratsinsertion:
+			* tant qu'on n'a pas de passage en COV: ajouter
+			* lorsqu'on a un passage en COV (mais pas encore associé): modifier, supprimer
+		- passage en COV: accepter, refuser, ajourner
+		- contratsinsertion: supprimer (n'importe quand)
+	* CG 66:
+		- contrats simples: ajouter, annuler (SSI c'est le dernier)
+		- contrats complexes: ajouter, annuler (SSI c'est le dernier), modifier (SSI c'est le dernier), valider (SSI c'est le dernier)
+		- Etats contrats (derniers insérés)
+			simples: V, encours (passage des autres en fin de contrat - FIXME)
+			complexes: E, position en attente (passage des autres en fin de contrat - FIXME)
+		- Validation complexe:
+			En attente: E, en attente (peut modifier et valider)
+			Validation à partir du: V, pas de position (?) (plus modifier ni valider)
+			Non validé: N, pas de position (peut toujours modifier et valider, pas de date de décision - FIXME)
+	* CG 93:
+		- Contrats sans passages en EP: ajouter, valider, modifier, supprimer
+		- Contrats en cours de passage en EP: ajouter
+		- Etats contrats
+			simples: E (pas de changement des autres contrats)
+			complexes: E (pas de changement des autres contrats)
+		- Validation:
+			En attente de décision: E (peut valider, modifier, supprimer)
+			Validation à compter du: V (peut valider, supprimer)
+			Ajournement: A (peut valider, modifier, supprimer - quel est le sens à cet endroit ?)
+			Rejet: R (peut valider, modifier, supprimer - pas de date de décision - FIXME)
+
+-- -----------------------------------------------------------------------------
+-- Vie d'un CER et d'un bilan de parcours au CG 66
+-- -----------------------------------------------------------------------------
+
+a°) Sauvegarde d'un CER
+	cf. ci-dessus
+b°) Passage du shell (normelement, le passage d'un état à un autre est cohérent):
+	- si le dossier est clos, position "fin de contrat"
+	- si date du jour + intervalle >= df_ci et date du jour <= df_ci, position "en cours: bilan à réaliser"
+	- si date du jour > df_ci et pas de bilan de parcours pour ce CER, position "périmé"
+c°) Bilan de parcours
+	CER lié (maintien et saisine): la même structure référente que la dernière orientation pour cette personne (FIXME)
+d°) Passage en EP
+	TODO: GD
+	FIXME: ne pas modifier la df_ci (+ ajouter df_ci_anticipee == à la date de décision du CG suite EP ?)
+
+-- -----------------------------------------------------------------------------
+INFO
+-- -----------------------------------------------------------------------------
+
+checkConfigUpdateEncoursbilanCg66 / _checkSqlIntervalSyntax( Configure::read( 'Contratinsertion.Cg66.updateEncoursbilan' ) );
+app/docs/Documentation administrateurs.odt
+
+Que 66:
+
+Bilanparcours66:
+	Formulaire CG:
+		1°) Non passage EP
+			"Maintien de l'orientation SOCIALE"
+			"Orientation SOCIALE actuelle: XXXXX" (ex. Social - ADRH)
+			Pour un accompagnement (radio): social, prépro
+			(Selon le nouvel accompagnement): select filtré, par défaut, l'actuelle (si on reste dans le type)
+			(Si on reste dans le même type d'orientation)
+				(Si on reste dans la structure): "Sans changement de référent"
+				(Sinon): "Avec changement de référent"
+			(Sinon)
+				"Avec changement de référent"
+		2°) Commission parcours
+			Choix du parcours: (radio) Maintien ou Réorientation
+				Si maintien de l'orientation (SOCIAL), cf. Non passage en EP
+				Sinon
+					- "Réorientaion du SOCIAL vers le professionnel"
+					- Nouvelle orientation préconisée (select filtré les 2 emploi)
+					- Nouvelle structure préconisée (select filtré suivant la sélection d'orientation)
+
+		- Résultat:
+			Sans changement de référent
+				* on conserve l'orientation
+				* on ne modifie pas le référent (sauf si l'EP le demande ?)
+				* on reconduit le contrat (avec les nouvelles dates de reconduction dans le formulaire ci-dessus)
+			Avec changement de référent
+				* on crée une nouvelle orientation
+				* on clôture le référent (*)
+				* on passe le contrat en cours en "Fin de contrat"
+	Formulaire PE:
+		- Maintien:
+			- "Orientation professionnelle actuelle: XXXX"
+			- Liste des types d'orient (filtré emploi, niveau 2 avec présélection actuelle par défaut)
+			- Liste des structures (filtré select précédent, avec présélection actuelle par défaut)
+		- Réorientation:
+			- "Réorientation du pro vers le SOCIAL"
+			- Pour un accompgnement (radio): social, prépro
+			- Liste des types d'orient (filtré option précédente)
+			- Liste des structures (filtré select précédent)
+		- Résultat:
+			Maintien
+				Nouvelle orientation (ex.: Emploi MSA) == orientation précédente
+					* on ne change rien
+				Nouvelle orientation (ex.: Emploi MSA) <> orientation précédente
+					* on crée une nouvelle orientation
+					* on clôture le référent (*)
+			Réorientation
+				* on crée une nouvelle orientation
+				* on clôture le référent (*)
+
+(*) référent de parcours <> référent lié au contrat/à l'orientation ?
+
++ Prendre en compte au niveau des EPs (même logique)
+
+Contratinsertion:
+	* "Nom de l'organisme de suivi" -> enlever tout ce qui est emploi de la liste
+	* rg_ci <=> que les validés
+	* num_contrat <=> tous
+
+Commissionep
+	Traiterep:
+		- Maintien
+			Pour un accompagnement (select): social, prépro, professionnel
+			Avec/Sans changement de référent
+		- Réorientation
+			Choix du type de réorientation (pro => social, ....) (filtre orientation actuelle)
+			Liste des types d'orient (filtré option précédente)
+			Liste des structures (filtré select précédent)
+			Liste des réferents (filtré select précédent)
+
+-- -----------------------------------------------------------------------------
+
+FIXME:
+	- // $success = $this->_updateEncours() && $success; dans positionscer66.php
+	- porter svnbackup sur webrsa
+	- donner les svnbackup à Gaétan
+
+TODO:
+	- rang_ci (requête + dans le modèle Contratinsertion)
+	a°) ajouter à la doc développeurs:
+		1°) ~/Bureau/20110830 - mauvaises liaisons de modèles.txt
+		2°) sed -i "s/'%PDF\-1.4.\+012', /NULL, /" /home/cbuffin/tmp/dump/20110706_prod_cg66_dump.sql
+	b°) Que pour le 66:  Configure::write( 'Orientstruct.choixparcours' => array( 'SOCIAL' => array( 4, 6 ), 'Emploi' => array( 1 ) ) );

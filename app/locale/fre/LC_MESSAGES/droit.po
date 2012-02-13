@@ -1,0 +1,2326 @@
+#translation of messages.po to
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: messages\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-01-25 23:57+0100\n"
+"PO-Revision-Date: 2009-01-26 09:34+0100\n"
+"Last-Translator: \n"
+"Language-Team:  <fr@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms: nplurals=2; plural=(n>1);\n"
+
+###############################################################################
+
+msgid "Menu:Accueil"
+msgstr "Page d'accueil"
+
+###############################################################################
+
+msgid "Module:Actions"
+msgstr "Actions"
+
+msgid "Actions:index"
+msgstr "Visualisation des actions"
+
+msgid "Actions:edit"
+msgstr "Ajout/Édition d'une action"
+
+msgid "Actions:delete"
+msgstr "Suppression d'une action"
+
+###############################################################################
+
+msgid "Module:Actionscandidats"
+msgstr "Actions pour fiche de candidature/liaison"
+
+msgid "Actionscandidats:index"
+msgstr "Visualisation des actions pour fiche de candidature/liaison"
+
+msgid "Actionscandidats:edit"
+msgstr "Ajout/Édition d'une action pour fiche de candidature/liaison"
+
+msgid "Actionscandidats:delete"
+msgstr "Suppression d'une action pour fiche de candidature/liaison"
+
+###############################################################################
+
+msgid "Module:ActionscandidatsPartenaires"
+msgstr "Actions liées aux partenaires pour les fiches de candidature"
+
+msgid "ActionscandidatsPartenaires:index"
+msgstr "Visualisation des actions liées aux partenaires"
+
+msgid "ActionscandidatsPartenaires:edit"
+msgstr "Ajout/Édition d'une action liée à un partenaire"
+
+msgid "ActionscandidatsPartenaires:delete"
+msgstr "Suppression d'une action liée à un partenaire"
+
+###############################################################################
+
+msgid "Module:ActionscandidatsPersonnes"
+msgstr "Fiches de candidature"
+
+msgid "ActionscandidatsPersonnes:indexparams"
+msgstr "Paramètrage des fiches de candidature"
+
+msgid "ActionscandidatsPersonnes:filelink"
+msgstr "Lier un fichier à une fiche de candidature"
+
+msgid "ActionscandidatsPersonnes:index"
+msgstr "Visualisation des fiches de caandidature"
+
+msgid "ActionscandidatsPersonnes:edit"
+msgstr "Ajout/Édition d'une fiche de candidature"
+
+msgid "ActionscandidatsPersonnes:delete"
+msgstr "Suppression d'une fiche de candidature"
+
+msgid "ActionscandidatsPersonnes:printFiche"
+msgstr "Impression d'une fiche de candidature"
+
+msgid "ActionscandidatsPersonnes:cancel"
+msgstr "Annulation d'une fiche de candidature"
+
+###############################################################################
+
+msgid "Module:Actionsinsertion"
+msgstr "Actions d'insertion"
+
+msgid "Actionsinsertion:index"
+msgstr "Visualisation des actions d'insertion"
+
+msgid "Actionsinsertion:edit"
+msgstr "Ajout/Édition d'une action d'insertion"
+
+###############################################################################
+
+msgid "Module:Adressesfoyers"
+msgstr "Adresses foyers"
+
+msgid "Adressesfoyers:index"
+msgstr "Visualisation des adresses foyers"
+
+msgid "Adressesfoyers:edit"
+msgstr "Ajout/Édition d'une adresse foyers"
+
+###############################################################################
+
+msgid "Module:Aidesapres66"
+msgstr "Aides d'APRE (CG66)"
+
+msgid "Aidesapres66:index"
+msgstr "Visualisation des Aides d'APRE"
+
+msgid "Aidesapres66:edit"
+msgstr "Ajout/Édition d'une aide d'APRE"
+
+msgid "Aidesapres66:delete"
+msgstr "Suppression d'une aide d'APRE"
+
+###############################################################################
+
+msgid "Module:Aidesdirectes"
+msgstr "Aides directes"
+
+msgid "Aidesdirectes:edit"
+msgstr "Ajout/Édition d'une aide directe"
+
+###############################################################################
+
+msgid "Module:Ajoutdossiers"
+msgstr "Ajout de dossiers"
+
+msgid "Ajoutdossiers:confirm"
+msgstr "Confirmation de l'ajout d'un dossier"
+
+msgid "Ajoutdossiers:wizard"
+msgstr "Ajout d'un dossier"
+
+###############################################################################
+
+msgid "Module:Apres66"
+msgstr "APRE (CG66)"
+
+msgid "Apres66:filelink"
+msgstr "Lier un fichier à une APRE"
+
+msgid "Apres66:indexparams"
+msgstr "Paramétrage des APREs"
+
+msgid "Apres66:index"
+msgstr "Visualisation des APREs"
+
+msgid "Apres66:edit"
+msgstr "Ajout/Édition d'une APRE"
+
+msgid "Apres66:notifications"
+msgstr "Notification d'APRE"
+
+###############################################################################
+
+msgid "Module:ApresComitesapres"
+msgstr "Comités d'APRE"
+
+msgid "ApresComitesapres:edit"
+msgstr "Ajout/Édition d'un comité d'APRE"
+
+###############################################################################
+
+msgid "Module:Apres"
+msgstr "APRE"
+
+msgid "Apres:filelink"
+msgstr "Lier un fichier à une APRE"
+
+msgid "Apres:indexparams"
+msgstr "Paramétrage des APREs"
+
+msgid "Apres:index"
+msgstr "Visualisation des APREs"
+
+msgid "Apres:edit"
+msgstr "Ajout/Édition d'une APRE"
+
+###############################################################################
+
+msgid "Module:Avispcgdroitsrsa"
+msgstr "Avis du PCG"
+
+msgid "Avispcgdroitsrsa:index"
+msgstr "Visualisation des avis PCG"
+
+###############################################################################
+
+msgid "Module:Bilanparcours"
+msgstr "Bilans de parcours"
+
+msgid "Bilanparcours:index"
+msgstr "Visualisation des bilans de parcours"
+
+msgid "Bilanparcours:edit"
+msgstr "Ajout/Édition d'un bilan de parcours"
+
+msgid "Bilanparcours:delete"
+msgstr "Suppression d'un bilan de parcours"
+
+###############################################################################
+
+msgid "Module:Bilansparcours66"
+msgstr "Bilans de parcours (CG66)"
+
+msgid "Bilansparcours66:filelink"
+msgstr "Lier un fichier à un bilan de parcours"
+
+msgid "Bilansparcours66:index"
+msgstr "Visualisation des bilans de parcours"
+
+msgid "Bilansparcours66:edit"
+msgstr "Ajout/Édition d'un bilan de parcours"
+
+msgid "Bilansparcours66:cancel"
+msgstr "Annulation d'un bilan de parcours"
+
+msgid "Bilansparcours66:bilanparcoursGedooo"
+msgstr "Impression d'un bilan de parcours"
+
+msgid "Bilansparcours66:courrier_information"
+msgstr "Impression du courrier d'information d'un bilan de parcours"
+
+###############################################################################
+
+msgid "Module:Budgetsapres"
+msgstr "Budgets d'APRE"
+
+msgid "Budgetsapres:index"
+msgstr "Visualisation des budgets d'APRE"
+
+msgid "Budgetsapres:edit"
+msgstr "Ajout/Édition d'un budget d'APRE"
+
+###############################################################################
+
+msgid "Module:Cantons"
+msgstr "Cantons"
+
+msgid "Cantons:index"
+msgstr "Visualisation des cantons"
+
+msgid "Cantons:edit"
+msgstr "Ajout/Édition d'un canton"
+
+msgid "Cantons:delete"
+msgstr "Suppression d'un canton"
+
+###############################################################################
+
+msgid "Module:Checks"
+msgstr "Vérification de l'application"
+
+msgid "Checks:index"
+msgstr "Visualisation de la vérification de l'application"
+
+###############################################################################
+
+msgid "Module:Codesromemetiersdsps66"
+msgstr "Paramétrage des Codes ROME (métier)"
+
+msgid "Codesromemetiersdsps66:index"
+msgstr "Visualisation des codes ROME"
+
+msgid "Codesromemetiersdsps66:edit"
+msgstr "Ajout/Edition de codes ROME"
+
+msgid "Codesromemetiersdsps66:delete"
+msgstr "Suppression d'un code ROME"
+
+###############################################################################
+
+msgid "Module:Codesromesecteursdsps66"
+msgstr "Paramétrage des Codes ROME (secteur)"
+
+msgid "Codesromesecteursdsps66:index"
+msgstr "Visualisation des codes ROME"
+
+msgid "Codesromesecteursdsps66:edit"
+msgstr "Ajout/Edition de codes ROME"
+
+msgid "Codesromesecteursdsps66:delete"
+msgstr "Suppression d'un code ROME"
+###############################################################################
+
+msgid "Module:Cohortes"
+msgstr "Cohorte d'orientation"
+
+msgid "Cohortes:nouvelles"
+msgstr "Demandes non orientées"
+
+msgid "Cohortes:orientees"
+msgstr "Demandes orientées"
+
+msgid "Cohortes:enattente"
+msgstr "Demande en attente de validation d'orientation"
+
+msgid "Cohortes:exportcsv"
+msgstr "Export CSV"
+
+msgid "Cohortes:cohortegedooo"
+msgstr "Impression en cohorte"
+
+msgid "Cohortes:statistiques "
+msgstr "Statistiques des cohortes"
+
+
+###############################################################################
+
+msgid "Module:Cohortesci"
+msgstr "Cohorte de CER"
+
+msgid "Cohortesci:nouveaux"
+msgstr "Contrats à valider"
+
+msgid "Cohortesci:valides"
+msgstr "Contrats validés"
+
+msgid "Cohortesci:exportcsv"
+msgstr "Export CSV"
+
+###############################################################################
+
+msgid "Module:Cohortescomitesapres"
+msgstr "Cohorte de comité d'APRE"
+
+msgid "Cohortescomitesapres:aviscomite"
+msgstr "Avis du comité"
+
+msgid "Cohortescomitesapres:notificationscomite"
+msgstr "Notifications du comité"
+
+msgid "Cohortescomitesapres:exportcsv"
+msgstr "Export CSV"
+
+msgid "Cohortescomitesapres:editdecision"
+msgstr "Ajout/Édition des décisions du comité"
+
+msgid "Cohortescomitesapres:notificationscomitegedooo"
+msgstr "Notifications du comité en cohorte"
+
+###############################################################################
+
+msgid "Module:Cohortescui"
+msgstr "Cohorte de CUI"
+
+msgid "Cohortescui:nouveaux"
+msgstr "CUIs à valider"
+
+msgid "Cohortescui:valides"
+msgstr "CUIs validés"
+
+msgid "Cohortescui:enattente"
+msgstr "CUIs en attente"
+
+msgid "Cohortescui:exportcsv"
+msgstr "Export CSV"
+
+###############################################################################
+
+msgid "Module:Cohortesdossierspcgs66"
+msgstr "Cohorte de dossiers PCGs"
+
+msgid "Cohortesdossierspcgs66:enattenteaffectation"
+msgstr "Dossiers PCGs en attente d'affectation"
+
+msgid "Cohortesdossierspcgs66:affectes"
+msgstr "Dossiers PCGs affectés"
+
+msgid "Cohortesdossierspcgs66:exportcsv"
+msgstr "Export CSV"
+
+###############################################################################
+
+msgid "Module:Cohortesfichescandidature66"
+msgstr "Cohorte de fiche de candidature"
+
+msgid "Cohortesfichescandidature66:fichesenattente"
+msgstr "Fiches de candidature en attente"
+
+msgid "Cohortesfichescandidature66:fichesencours"
+msgstr "Fiches de candidature en cours"
+
+###############################################################################
+
+msgid "Module:Cohortesindus"
+msgstr "Recherche par Indus"
+
+msgid "Cohortesindus:index"
+msgstr "Recherche par indus"
+
+msgid "Cohortesindus:exportcsv"
+msgstr "Export CSV"
+
+###############################################################################
+
+msgid "Module:Cohortespdos"
+msgstr "Cohorte de PDO"
+
+msgid "Cohortespdos:avisdemande"
+msgstr "Nouvelles demandes"
+
+msgid "Cohortespdos:valide"
+msgstr "Liste des PDOs"
+
+msgid "Cohortespdos:exportcsv"
+msgstr "Export CSV"
+
+###############################################################################
+
+msgid "Module:Cohortesvalidationapres66"
+msgstr "Cohorte de validation des APREs"
+
+msgid "Cohortesvalidationapres66:notifiees"
+msgstr "APREs notifiées"
+
+msgid "Cohortesvalidationapres66:traitement"
+msgstr "APREs à traiter"
+
+msgid "Cohortesvalidationapres66:notificationsCohorte"
+msgstr "Impression en cohorte des notifications d'APRE"
+   
+msgid "Cohortesvalidationapres66:apresavalider"
+msgstr "APREs à valider"
+
+msgid "Cohortesvalidationapres66:validees"
+msgstr "APREs validées (à notifier CG66)"
+
+msgid "Cohortesvalidationapres66:exportcsv"
+msgstr "Export CSV"
+
+###############################################################################
+
+msgid "Module:Comitesapres"
+msgstr "Comités d'APRE"
+
+msgid "Comitesapres:index"
+msgstr "Recherche de comités d'APRE"
+
+msgid "Comitesapres:liste"
+msgstr "Liste des comités d'APRE"
+
+msgid "Comitesapres:rapport"
+msgstr "Rapport du comité d'APRE"
+
+msgid "Comitesapres:edit"
+msgstr "Ajout/Édition d'un comité d'APRE"
+
+msgid "Comitesapres:exportcsv"
+msgstr "Export CSV"
+
+###############################################################################
+
+msgid "Module:ComitesapresParticipantscomites"
+msgstr "Gestion des participants aux comités d'APRE"
+
+msgid "ComitesapresParticipantscomites:edit"
+msgstr "Ajout/Édition de participant"
+
+msgid "ComitesapresParticipantscomites:rapport"
+msgstr "Gestion des présences des participants au comité"
+
+###############################################################################
+
+msgid "Module:Commissionseps"
+msgstr "Commissions d'EP"
+
+msgid "Commissionseps:creationmodification"
+msgstr "Recherche de commissions en cours"
+
+msgid "Commissionseps:attributiondossiers"
+msgstr "Attribution des dossiers à une commission"
+
+msgid "Commissionseps:arbitrageep"
+msgstr "Arbitrage/avis EP"
+
+msgid "Commissionseps:arbitragecg"
+msgstr "Décision CG"
+
+msgid "Commissionseps:decisions"
+msgstr "Consultation/impressions des décisions"
+
+msgid "Commissionseps:recherche"
+msgstr "Constitution de la commission"
+
+msgid "Commissionseps:add"
+msgstr "Ajout/Édition d'une commission"
+
+msgid "Commissionseps:delete"
+msgstr "Annulation d'une commission"
+
+msgid "Commissionseps:traiterep"
+msgstr "Traitement de la commission au niveau EP"
+
+msgid "Commissionseps:traitercg"
+msgstr "Traitement de la commission au niveau CG"
+
+msgid "Commissionseps:validecommission"
+msgstr "Validation de la commission"
+
+msgid "Commissionseps:impressionpv"
+msgstr "Impression du PV"
+
+msgid "Commissionseps:ordredujour"
+msgstr "Impression de l'ordre du jour"
+
+msgid "Commissionseps:printConvocationParticipant"
+msgstr "Impression de la convocation d'un participant"
+
+msgid "Commissionseps:printConvocationsParticipants"
+msgstr "Impression en cohorte des convocations des participants"
+
+msgid "Commissionseps:printConvocationBeneficiaire"
+msgstr "Impression de la convocation d'un allocataire"
+
+msgid "Commissionseps:printConvocationsBeneficiaires"
+msgstr "Impression en cohorte des convocations des allocataires"
+
+msgid "Commissionseps:printOrdreDuJour"
+msgstr "Impression de l'ordre du jour d'un participant"
+
+msgid "Commissionseps:printOrdresDuJour"
+msgstr "Impression en cohorte de l'ordre du jour des participants"
+
+msgid "Commissionseps:decisionep"
+msgstr "Décisions/Avis niveau EP d'une commission"
+
+msgid "Commissionseps:decisioncg"
+msgstr "Décisions niveau CG d'une commission"
+
+msgid "Commissionseps:impressionDecision"
+msgstr "Impression d'une décision"
+
+msgid "Commissionseps:impressionsDecisions"
+msgstr "Impression des décisison"
+
+msgid "Commissionseps:fichesynthese"
+msgstr "Impression de la fiche de synthèse"
+
+msgid "Commissionseps:fichessynthese"
+msgstr "Impression des fiches de synthèse"
+
+###############################################################################
+
+msgid "Module:Composfoyerspcgs66"
+msgstr "Composition des foyers pour les dossiers PCGs (CG66)"
+
+msgid "Composfoyerspcgs66:index"
+msgstr "Visualisation des compositions de foyers"
+
+msgid "Composfoyerspcgs66:edit"
+msgstr "Ajout/Édition d'une composition de foyer"
+
+msgid "Composfoyerspcgs66:delete"
+msgstr "Suppression d'une composition de foyer"
+
+###############################################################################
+
+msgid "Module:Compositionsregroupementseps"
+msgstr "Composition des regroupements d'EP"
+
+msgid "Compositionsregroupementseps:index"
+msgstr "Visualisation des compositions"
+
+msgid "Compositionsregroupementseps:edit"
+msgstr "Ajout/Édition d'une composition"
+
+msgid "Compositionsregroupementseps:delete"
+msgstr "Suppression d'une composition"
+
+###############################################################################
+
+msgid "Module:Contactspartenaires"
+msgstr "Contacts pour les partenaires des fiches de candidature"
+
+msgid "Contactspartenaires:index"
+msgstr "Visualisation des contacts"
+
+msgid "Contactspartenaires:edit"
+msgstr "Ajout/Édition des contacts"
+
+msgid "Contactspartenaires:delete"
+msgstr "Suppression des contacts"
+
+###############################################################################
+
+msgid "Module:Contratsinsertion"
+msgstr "CER"
+
+msgid "Contratsinsertion:filelink"
+msgstr "Lier un fichier à un CER"
+
+msgid "Contratsinsertion:index"
+msgstr "Visualisation d'un CERs"
+
+msgid "Contratsinsertion:edit"
+msgstr "Ajout/Édition d'un CER"
+
+msgid "Contratsinsertion:valider"
+msgstr "Validation d'un CER"
+
+msgid "Contratsinsertion:delete"
+msgstr "Suppression d'un CER"
+
+msgid "Contratsinsertion:cancel"
+msgstr "Annulation d'un CER"
+
+###############################################################################
+
+msgid "Module:Courrierspdos"
+msgstr "Liste des courriers pour les tratiements PDO"
+
+msgid "Courrierspdos:index"
+msgstr "Visualisation des courriers"
+
+msgid "Courrierspdos:edit"
+msgstr "Ajout/Édition d'un courrier"
+
+msgid "Courrierspdos:delete"
+msgstr "Suppression d'un courrier"
+
+###############################################################################
+
+msgid "Module:Covs58"
+msgstr "COV (CG58)"
+
+msgid "Covs58:index"
+msgstr "Recherche de COV"
+
+msgid "Covs58:edit"
+msgstr "Ajout/Édition de COV"
+
+msgid "Covs58:decisioncov"
+msgstr "Prise de décisions d'une COV"
+
+msgid "Covs58:delete"
+msgstr "Suppression d'une COV"
+
+msgid "Covs58:ordredujour"
+msgstr "Impression de l'ordre du jour"
+
+msgid "Covs58:impressionpv"
+msgstr "Impression du PV"
+
+msgid "Covs58:impressiondecision"
+msgstr "Impression d'une décision"
+
+###############################################################################
+
+msgid "Module:Criteres"
+msgstr "Recherche par orientation"
+
+msgid "Criteres:index"
+msgstr "Moteur de recherche"
+
+msgid "Criteres:exportcsv"
+msgstr "Export CSV"
+
+###############################################################################
+
+msgid "Module:Criteresapres"
+msgstr "Recherche par APRE"
+
+msgid "Criteresapres:all"
+msgstr "Moteur de recherche de toutes les APREs"
+
+msgid "Criteresapres:eligible"
+msgstr "Éligibilité des APREs"
+
+msgid "Criteresapres:exportcsv"
+msgstr "Export CSV"
+
+###############################################################################
+
+msgid "Module:Criteresbilansparcours66"
+msgstr "Recherche par bilans de parcours (CG66)"
+
+msgid "Criteresbilansparcours66:index"
+msgstr "Moteur de recherche"
+
+###############################################################################
+
+msgid "Module:Criteresci"
+msgstr "Recherche par CER"
+
+msgid "Criteresci:index"
+msgstr "Moteur de recherche"
+
+msgid "Criteresci:exportcsv"
+msgstr "Export CSV"
+
+###############################################################################
+
+msgid "Module:Criterescuis"
+msgstr "Recherche par CUI"
+
+msgid "Criterescuis:index"
+msgstr "Moteur de recherche"
+
+###############################################################################
+
+msgid "Module:Criteresdossierscovs58"
+msgstr "Recherche par Dossiers COV (CG58)"
+
+msgid "Criteresdossierscovs58:index"
+msgstr "Moteur de recherche"
+
+###############################################################################
+
+msgid "Module:Criteresdossierspcgs66"
+msgstr "Recherche par Dossier PCG (CG66)"
+
+msgid "Criteresdossierspcgs66:index"
+msgstr "Liste des PDOs"
+
+msgid "Criteresdossierspcgs66:nouvelles"
+msgstr "Recherche de nouvelles PDOs"
+
+###############################################################################
+
+msgid "Module:Criteresentretiens"
+msgstr "Recherche par entretiens"
+
+msgid "Criteresentretiens:index"
+msgstr "Moteur de recherche"
+
+msgid "Criteresentretiens:exportcsv"
+msgstr "Export CSV"
+
+###############################################################################
+
+msgid "Module:Criteresfichescandidature"
+msgstr "Recherche par fiches de candidature"
+
+msgid "Criteresfichescandidature:index"
+msgstr "Moteur de recherche"
+
+###############################################################################
+
+msgid "Module:Criterespdos"
+msgstr "Recherche par PDO (CG93)"
+
+msgid "Criterespdos:index"
+msgstr "Liste des PDOs"
+
+msgid "Criterespdos:nouvelles"
+msgstr "Recherche des nouvelles PDO"
+
+###############################################################################
+
+msgid "Module:Criteresrdv"
+msgstr "Recherche par rendez-vous"
+
+msgid "Criteresrdv:index"
+msgstr "Moteur de recherche"
+
+msgid "Criteresrdv:exportcsv"
+msgstr "Export CSV"
+
+###############################################################################
+
+msgid "Module:Cuis"
+msgstr "CUI"
+
+msgid "Cuis:index"
+msgstr "Visualisation des CUIs"
+
+msgid "Cuis:edit"
+msgstr "Ajout/Édition d'un CUI"
+
+msgid "Cuis:valider"
+msgstr "Validation d'un CUI"
+
+msgid "Cuis:delete"
+msgstr "Suppression d'un CUI"
+
+###############################################################################
+
+msgid "Module:Decisionsdossierspcgs66"
+msgstr "Propositions de décision au niveau foyer (Dossier PCG CG66)"
+
+msgid "Decisionsdossierspcgs66:edit"
+msgstr "Ajout/Édition d'une proposition de décision"
+
+msgid "Decisionsdossierspcgs66:decisionproposition"
+msgstr "Impression de la proposition de décision"
+
+msgid "Decisionsdossierspcgs66:delete"
+msgstr "Suppression d'une décision"
+
+###############################################################################
+
+msgid "Module:Decisionspcgs66"
+msgstr "Paramétrage des décisions PCGs (CG66)"
+
+msgid "Decisionspcgs66:index"
+msgstr "Visualisation des décisions PCG"
+
+msgid "Decisionspcgs66:edit"
+msgstr "Ajout/Édition d'une décision PCG"
+
+msgid "Decisionspcgs66:delete"
+msgstr "Suppression d'une décision PCG"
+
+###############################################################################
+
+msgid "Module:Decisionstraitementspcgs66"
+msgstr "Paramétrage des décisions liées à un traitement PCG (CG66)"
+
+msgid "Decisionstraitementspcgs66:index"
+msgstr "Visualisation des décisions liées à un traitement PCG"
+
+msgid "Decisionstraitementspcgs66:edit"
+msgstr "Ajout/Édition d'une décision liée à un traitement PCG"
+
+###############################################################################
+
+msgid "Module:Decisionspdos"
+msgstr "Paramétrage des décisions de PDOs"
+
+msgid "Decisionspdos:index"
+msgstr "Visualisation des décisions"
+
+msgid "Decisionspdos:edit"
+msgstr "Ajout/Édition d'une décision"
+
+msgid "Decisionspdos:delete"
+msgstr "Suppression d'une décision"
+
+###############################################################################
+
+msgid "Module:Decisionspersonnespcgs66"
+msgstr "Propositions de décision au niveau personne (Dossier PCG CG66)"
+
+msgid "Decisionspersonnespcgs66:index"
+msgstr "Visualisation des propositions de décision"
+
+msgid "Decisionspersonnespcgs66:edit"
+msgstr "Ajout/Édition d'une proposition de décision"
+
+msgid "Decisionspersonnespcgs66:decisionproposition"
+msgstr "Impression de la proposition de décision"
+
+msgid "Decisionspersonnespcgs66:delete"
+msgstr "Suppression d'une proposition de décision"
+
+###############################################################################
+
+msgid "Module:Decisionspropospdos"
+msgstr "Propositions de décisions des PDO"
+
+msgid "Decisionspropospdos:edit"
+msgstr "Ajout/Édition d'une proposition de décision de PDO"
+
+msgid "Decisionspropospdos:decisionproposition"
+msgstr "Impression d'une proposition de décision"
+
+msgid "Decisionspropospdos:delete"
+msgstr "Suppression d'une proposition de décision"
+
+###############################################################################
+
+msgid "Module:Defautsinsertionseps66"
+msgstr "Défaut d'insertion (EP CG66)"
+
+msgid "Defautsinsertionseps66:selectionnoninscrits"
+msgstr "Recherche des personnes non inscrites à Pôle Emploi"
+
+msgid "Defautsinsertionseps66:selectionradies"
+msgstr "Recherche des personnes radiées de Pôle Emploi"
+
+msgid "Defautsinsertionseps66:courriersinformations"
+msgstr "Impression du courrier d'information"
+
+msgid "Defautsinsertionseps66:printCourriersInformations"
+msgstr "Impression des courriers d'information"
+
+###############################################################################
+
+msgid "Module:Descriptionspdos"
+msgstr "Table de paramétrage des descriptions de PDO"
+
+msgid "Descriptionspdos:index"
+msgstr "Visualisation des descriptions de PDO"
+
+msgid "Descriptionspdos:edit"
+msgstr "Ajout/Édition d'une description de PDO"
+
+msgid "Descriptionspdos:delete"
+msgstr "Suppression d'une description de PDO"
+
+###############################################################################
+
+msgid "Module:Detailsdroitsrsa"
+msgstr "Détails du droit RSA"
+
+msgid "Detailsdroitsrsa:index"
+msgstr "Visulaisation des détails du droit RSA"
+
+###############################################################################
+
+msgid "Module:Dossiers"
+msgstr "Recherche par dossier"
+
+msgid "Dossiers:exportcsv"
+msgstr "Export CSV"
+
+###############################################################################
+
+msgid "Module:Dossierscovs58"
+msgstr "Dossiers à passer en COV (CG58)"
+
+msgid "Dossierscovs58:choose"
+msgstr "Sélection des dossiers"
+
+###############################################################################
+
+msgid "Module:Dossierseps"
+msgstr "Dossiers à passer en EP"
+
+msgid "Dossierseps:index"
+msgstr "Liste des dossiers"
+
+msgid "Dossierseps:choose"
+msgstr "Sélection des dossiers à passer en EP"
+
+msgid "Dossierseps:decisioncg"
+msgstr "Prise de décision au niveau CG (CG66)"
+
+msgid "Dossierseps:decisions"
+msgstr "Liste des décisions des dossiers d'EP"
+
+msgid "Dossierseps:courrierInformation"
+msgstr "Impression du courrier d'information"
+
+msgid "Dossierseps:courriersInformations"
+msgstr "Impression des courriers d'information"
+
+###############################################################################
+
+msgid "Module:Dossierspcgs66"
+msgstr "Dossier PCG (PDO niveau foyer CG66)"
+
+msgid "Dossierspcgs66:index"
+msgstr "Visualisation des dossiers PCG"
+
+msgid "Dossierspcgs66:edit"
+msgstr "Ajout/Édition d'un dossier PCG"
+
+msgid "Dossierspcgs66:delete"
+msgstr "Suppression d'un dossier PCG"
+
+###############################################################################
+
+msgid "Module:Dossierssimplifies"
+msgstr "Préconisation d'orientation"
+
+msgid "Dossierssimplifies:view"
+msgstr "Visualisation d'une préconisation d'orientation"
+
+msgid "Dossierssimplifies:edit"
+msgstr "Ajout/Édition d'une préconisation d'orientation"
+
+###############################################################################
+
+msgid "Module:Dsps"
+msgstr "DSP"
+
+msgid "Dsps:filelink"
+msgstr "Lier un fichier à une DSP"
+
+msgid "Dsps:edit"
+msgstr "Ajout/Édition d'une DSP"
+
+msgid "Dsps:view"
+msgstr "Visualisation d'une DSP"
+
+msgid "Dsps:histo"
+msgstr "Historique des DSPs"
+
+msgid "Dsps:revertTo"
+msgstr "Revenir à une version antérieure"
+
+msgid "Dsps:view_revs"
+msgstr "Visualisation d'une version antérieure"
+
+msgid "Dsps:view_diff"
+msgstr "Visualisation des différences entre les DSPs"
+
+###############################################################################
+
+msgid "Module:Entretiens"
+msgstr "Entretiens"
+
+msgid "Entretiens:filelink"
+msgstr "Lier un fichier à un entretien"
+
+msgid "Entretiens:index"
+msgstr "Visualisation des entretiens"
+
+msgid "Entretiens:edit"
+msgstr "Ajout/Édition d'un entretien"
+
+msgid "Entretiens:delete"
+msgstr "Suppression d'un entretien"
+
+###############################################################################
+
+msgid "Module:Eps"
+msgstr "EP"
+
+msgid "Eps:index"
+msgstr "Visualisation des EPs"
+
+msgid "Eps:edit"
+msgstr "Ajout/Édition d'une EP"
+
+msgid "Eps:delete"
+msgstr "Suppression d'une EP"
+
+msgid "Eps:addparticipant"
+msgstr "Ajout/Édition de participants"
+
+msgid "Eps:deleteparticipant"
+msgstr "Suppression de participants"
+
+###############################################################################
+
+msgid "Module:Etatsliquidatifs"
+msgstr "Etats liquidatifs"
+
+msgid "Etatsliquidatifs:index"
+msgstr "Visualisation des états liquidatifs"
+
+msgid "Etatsliquidatifs:edit"
+msgstr "Ajout/Édition d'un état liquidatif"
+
+msgid "Etatsliquidatifs:selectionapres"
+msgstr "Sélection des APREs à passer en état liquidatif"
+
+msgid "Etatsliquidatifs:visualisationapres"
+msgstr "Visulaisation des APREs passées en état liquidatif"
+
+msgid "Etatsliquidatifs:impressiongedoooapres"
+msgstr "Impression des notifications"
+
+msgid "Etatsliquidatifs:impressioncohorte"
+msgstr "Impression en cohorte des notifications"
+
+msgid "Etatsliquidatifs:validation"
+msgstr "Validation des versements"
+
+msgid "Etatsliquidatifs:hopeyra"
+msgstr "Impression du fichier HOPEYRA"
+
+msgid "Etatsliquidatifs:pdf"
+msgstr "Impression du fichier PDF"
+
+msgid "Etatsliquidatifs:versementapres"
+msgstr "Versements pour les APREs"
+
+###############################################################################
+
+msgid "Module:Evenements"
+msgstr "Evènements"
+
+msgid "Evenements:index"
+msgstr "Visualisation des événements"
+
+###############################################################################
+
+msgid "Module:Fichiersmodules"
+msgstr "Fichiers liés aux différents modules"
+
+msgid "Fichiersmodules:delete"
+msgstr "Suppression d'un fichier lié"
+
+###############################################################################
+
+msgid "Module:Fonctionsmembreseps"
+msgstr "Fonctions des membres d'EP"
+
+msgid "Fonctionsmembreseps:index"
+msgstr "Visualisation des fonctions de membre"
+
+msgid "Fonctionsmembreseps:edit"
+msgstr "Ajout/Édition d'une fonction"
+
+msgid "Fonctionsmembreseps:delete"
+msgstr "Suppression d'une fonction"
+
+###############################################################################
+
+msgid "Module:Gedooos"
+msgstr "Impression (Gedooo)"
+
+msgid "Gedooos:notification_structure"
+msgstr "Impression des orientations"
+
+msgid "Gedooos:contratinsertion"
+msgstr "Impression des CERs"
+
+msgid "Gedooos:apre"
+msgstr "Impression des APREs"
+
+msgid "Gedooos:relanceapre"
+msgstr "Impression des relances d'APRE"
+
+###############################################################################
+
+msgid "Module:Gestionsanomaliesbdds"
+msgstr "Gestion des anomalies"
+
+msgid "Gestionsrdvs:index"
+msgstr "Recherche des anomalies de perosnnes par foyer"
+
+msgid "Gestionsrdvs:foyer"
+msgstr "Accès aux anomalies par foyer"
+
+msgid "Gestionsrdvs:personne"
+msgstr "Correction des anomalies par personne"
+
+###############################################################################
+
+msgid "Module:Gestionsdsps"
+msgstr "Paramétrage des DSPs"
+
+msgid "Gestionsdsps:index"
+msgstr "Page de paramétrage pour les DSPs"
+
+###############################################################################
+
+msgid "Module:Gestionseps"
+msgstr "Paramétrage des EPs"
+
+msgid "Gestionseps:index"
+msgstr "Page de paramétrage des EPs"
+
+###############################################################################
+
+msgid "Module:Gestionsrdvs"
+msgstr "Paramétrage des RDVs"
+
+msgid "Gestionsrdvs:index"
+msgstr "Page de paramétrage des RDVs"
+
+###############################################################################
+
+msgid "Module:Grossesses"
+msgstr "Grossesses"
+
+msgid "Grossesses:index"
+msgstr "Visualisation des grossesses"
+
+###############################################################################
+
+msgid "Module:Groups"
+msgstr "Groupes d'utilisateurs"
+
+msgid "Groups:index"
+msgstr "Visualisation des groupes"
+
+msgid "Groups:edit"
+msgstr "Ajout/Édition d'un groupe"
+
+msgid "Groups:delete"
+msgstr "Suppression d'un groupe"
+
+###############################################################################
+
+msgid "Module:Historiqueseps"
+msgstr "Historique des passages en EP"
+
+msgid "Historiqueseps:index"
+msgstr "Visualisation de l'historique"
+
+msgid "Historiqueseps:view_passage"
+msgstr "Visualisation d'un passage en commission"
+
+###############################################################################
+
+msgid "Module:Identificationsflux"
+msgstr "Identification des flux"
+
+msgid "Identificationsflux:index"
+msgstr "Visulaisation des différents flux"
+
+###############################################################################
+
+msgid "Module:Indicateursmensuels"
+msgstr "Indicateurs mensuels"
+
+msgid "Indicateursmensuels:index"
+msgstr "Indicateurs de suivis mensuels"
+
+###############################################################################
+
+msgid "Module:Indus"
+msgstr "Indus"
+
+msgid "Indus:index"
+msgstr "Visualisation des indus"
+
+###############################################################################
+
+msgid "Module:Informationseti"
+msgstr "Informations ETI"
+
+msgid "Informationseti:index"
+msgstr "Visualisation des informations ETI"
+
+###############################################################################
+
+msgid "Module:Infosagricoles"
+msgstr "Informations agricoles"
+
+msgid "Infosagricoles:index"
+msgstr "Visualisation des informations agricoles"
+
+###############################################################################
+
+msgid "Module:Infoscomplementaires"
+msgstr "Informations complémentaires"
+
+msgid "Infoscomplementaires:view"
+msgstr "Visualisation des informations complémentaires"
+
+###############################################################################
+
+msgid "Module:Infosfinancieres"
+msgstr "Informations financières"
+
+msgid "Infosfinancieres:indexdossier"
+msgstr "Listes nominatives"
+
+msgid "Infosfinancieres:index"
+msgstr "Visualisation des informations financières"
+
+msgid "Infosfinancieres:exportcsv"
+msgstr "Export CSV"
+
+###############################################################################
+
+msgid "Module:Integrationfichiersapre"
+msgstr "Journal d'intégration des fichiers CSV pour l'APRE"
+
+msgid "Integrationfichiersapre:index"
+msgstr "Visualisation du journal"
+
+msgid "Integrationfichiersapre:download"
+msgstr "Télécharger le fichier"
+
+###############################################################################
+
+msgid "Module:Listesanctionseps58"
+msgstr "Liste des sanctions (EP CG58)"
+
+msgid "Listesanctionseps58:index"
+msgstr "Visualisation des sanctions"
+
+msgid "Listesanctionseps58:edit"
+msgstr "Ajout/Édition d'une sanction"
+
+###############################################################################
+
+# msgid "Module:Maintiensreorientseps"
+# msgstr "(???)"
+
+# msgid "Maintiensreorientseps:index"
+# msgstr "(???)"
+
+###############################################################################
+
+msgid "Module:Membreseps"
+msgstr "Membres d'EP"
+
+msgid "Membreseps:index"
+msgstr "Visualisation des membres"
+
+msgid "Membreseps:edit"
+msgstr "Ajout/Édition d'un membre"
+
+msgid "Membreseps:delete"
+msgstr "Suppression d'un membre"
+
+msgid "Membreseps:editliste"
+msgstr "Édition de la liste des membres invités à une EP"
+
+msgid "Membreseps:editpresence"
+msgstr "Édition de la liste des membres participant à une EP"
+
+###############################################################################
+
+msgid "Module:Memos"
+msgstr "Mémos"
+
+msgid "Memos:index"
+msgstr "Visualisation des mémos"
+
+msgid "Memos:edit"
+msgstr "Ajout/Édition d'un mémo"
+
+msgid "Memos:delete"
+msgstr "Suppression d'un mémo"
+
+###############################################################################
+
+msgid "Module:Modescontact"
+msgstr "Modes de contact"
+
+msgid "Modescontact:index"
+msgstr "Visualisation des modes de contact"
+
+msgid "Modescontact:edit"
+msgstr "Ajout/Édition d'un mode de contact"
+
+###############################################################################
+
+msgid "Module:Motifsreorientseps93"
+msgstr "Motifs de réorientation (EP CG93)"
+
+msgid "Motifsreorientseps93:index"
+msgstr "Visualisation des motifs de réorientation"
+
+msgid "Motifsreorientseps93:edit"
+msgstr "Ajout/Édition d'un motif de réorientation"
+
+msgid "Motifsreorientseps93:delete"
+msgstr "Suppression d'un motif de réorientation"
+
+###############################################################################
+
+msgid "Module:Motifssortie"
+msgstr "Motifs de sortie des actions pour fiche de candidature"
+
+msgid "Motifssortie:index"
+msgstr "Visualisation des motifs de sortie"
+
+msgid "Motifssortie:edit"
+msgstr "Ajout/Édition d'un motif de sortie"
+
+msgid "Motifssortie:delete"
+msgstr "Suppression d'un motif de sortie"
+
+###############################################################################
+
+msgid "Module:Nonorientationsproseps"
+msgstr "Recherche des allocataires non réorientés en professionnel"
+
+msgid "Nonorientationsproseps:index"
+msgstr "Moteur de recherche"
+
+###############################################################################
+
+msgid "Module:Nonrespectssanctionseps93"
+msgstr "Non respect et sanction (EP CG93)"
+
+msgid "Nonrespectssanctionseps93:index"
+msgstr "Liste des dossiers pour la thèmatique non respect et sanction"
+
+msgid "Nonrespectssanctionseps93:selectionradies"
+msgstr "Sélection des radiés de Pôle Emploi"
+
+msgid "Nonrespectssanctionseps93:exportcsv"
+msgstr "Export CSV"
+
+###############################################################################
+
+msgid "Module:Objetsentretien"
+msgstr "Objets d'entretien"
+
+msgid "Objetsentretien:index"
+msgstr "Visualisation des objets d'entretien"
+
+msgid "Objetsentretien:edit"
+msgstr "Ajout/Édition d'un objet d'entretien"
+
+msgid "Objetsentretien:delete"
+msgstr "Suppression d'un objet d'entretien"
+
+###############################################################################
+
+msgid "Module:Orientsstructs"
+msgstr "Orientations"
+
+msgid "Orientsstructs:filelink"
+msgstr "Lier un fichier à une orientation"
+
+msgid "Orientsstructs:index"
+msgstr "Visualisation des orientations"
+
+msgid "Orientsstructs:edit"
+msgstr "Ajout/Édition d'une orientation"
+
+msgid "Orientsstructs:impression"
+msgstr "Impression d'une orientation"
+
+msgid "Orientsstructs:delete"
+msgstr "Suppression d'une orientation"
+###############################################################################
+
+msgid "Module:Originespdos"
+msgstr "Origine des PDOs"
+
+msgid "Originespdos:index"
+msgstr "Visualisation des origines"
+
+msgid "Originespdos:edit"
+msgstr "Ajout/Édition d'une origine"
+
+msgid "Originespdos:delete"
+msgstr "Suppression d'une origine"
+
+###############################################################################
+
+msgid "Module:Parametrages"
+msgstr "Paramétrage"
+
+msgid "Parametrages:index"
+msgstr "Accès aux paramétrages"
+
+###############################################################################
+
+msgid "Module:Parametresfinanciers"
+msgstr "Paramètres financiers"
+
+msgid "Parametresfinanciers:index"
+msgstr "Visualisation des paramètres financiers"
+
+msgid "Parametresfinanciers:edit"
+msgstr "Ajout/Édition d'un paramètre financier"
+
+###############################################################################
+
+msgid "Module:Partenaires"
+msgstr "Partenaires pour fiche de candidature"
+
+msgid "Partenaires:index"
+msgstr "Visualisation des partenaires"
+
+msgid "Partenaires:edit"
+msgstr "Ajout/Édition d'un partenaire"
+
+msgid "Partenaires:delete"
+msgstr "Suppression d'un partenaire"
+
+###############################################################################
+
+msgid "Module:Participantscomites"
+msgstr "Participants aux comités d'APRE"
+
+msgid "Participantscomites:index"
+msgstr "Visualisation des participants"
+
+msgid "Participantscomites:edit"
+msgstr "Ajout/Édition d'un participant"
+
+msgid "Participantscomites:delete"
+msgstr "Suppression d'un participant"
+
+###############################################################################
+
+msgid "Module:Pdos"
+msgstr "Paramétrage des PDOs"
+
+msgid "Pdos:index"
+msgstr "Visualisation des paramétrages PDO"
+
+msgid "Pdos:edit"
+msgstr "Ajout/Édition d'une PDO"
+
+###############################################################################
+
+msgid "Module:Periodesimmersion"
+msgstr "Périodes d'immersion"
+
+msgid "Periodesimmersion:index"
+msgstr "Visualisation des périodes d'immersion"
+
+msgid "Periodesimmersion:edit"
+msgstr "Ajout/Édition d'une période d'immersion"
+
+msgid "Periodesimmersion:delete"
+msgstr "Suppression d'une période d'immersion"
+
+###############################################################################
+
+msgid "Module:Permanences"
+msgstr "Permanences"
+
+msgid "Permanences:index"
+msgstr "Visualisation des permanences"
+
+msgid "Permanences:edit"
+msgstr "Ajout/Édition d'une permanence"
+
+msgid "Permanences:delete"
+msgstr "Suppression d'une permanence"
+
+###############################################################################
+
+msgid "Module:Personnes"
+msgstr "Personnes"
+
+msgid "Personnes:filelink"
+msgstr "Lier un fichier à une personne"
+
+msgid "Personnes:index"
+msgstr "Visualisation des personnes"
+
+msgid "Personnes:edit"
+msgstr "Ajout/Édition d'une personne"
+
+###############################################################################
+
+msgid "Module:PersonnesReferents"
+msgstr "Référents du parcours"
+
+msgid "PersonnesReferents:filelink"
+msgstr "Lier un fichier au référent du parcours"
+
+msgid "PersonnesReferents:index"
+msgstr "Visualisation des référents du parcours"
+
+msgid "PersonnesReferents:edit"
+msgstr "Ajout/Édition d'un référent du parcours"
+
+###############################################################################
+
+msgid "Module:Personnespcgs66"
+msgstr "Personne concernée par le dossier PCG (CG66)"
+
+msgid "Personnespcgs66:edit"
+msgstr "Ajout/Édition d'une personne au dossier PCG"
+
+msgid "Personnespcgs66:delete"
+msgstr "Visualisation de la personne"
+
+###############################################################################
+
+msgid "Module:Piecesaides66"
+msgstr "Pièces administratives liées aux aides de l'APRE"
+
+msgid "Piecesaides66:index"
+msgstr "Visualisation des pièces administratives"
+
+msgid "Piecesaides66:edit"
+msgstr "Ajout/Édition d'une pièce administrative"
+
+msgid "Piecesaides66:delete"
+msgstr "Suppression d'une pièce administrative"
+
+###############################################################################
+
+msgid "Module:Piecescomptables66"
+msgstr "Pièces comptables liées aux aides de l'APRE"
+
+msgid "Piecescomptables66:index"
+msgstr "Visualisation des pièces comptables"
+
+msgid "Piecescomptables66:edit"
+msgstr "Ajout/Édition d'une pièce comptable"
+
+msgid "Piecescomptables66:delete"
+msgstr "Suppression d'une pièce comptable"
+
+###############################################################################
+
+msgid "Module:Piecespdos"
+msgstr "Pièces liées aux PDOs"
+
+msgid "Piecespdos:index"
+msgstr "Visualisation des pièces"
+
+msgid "Piecespdos:edit"
+msgstr "Ajout/Édition d'une pièce"
+
+msgid "Piecespdos:delete"
+msgstr "Suppression d'une pièce"
+
+###############################################################################
+
+msgid "Module:Prechargements"
+msgstr "Préchargement de l'application"
+
+msgid "Prechargements:index"
+msgstr "Visualisation du préchargement"
+
+###############################################################################
+
+msgid "Module:Prestsform"
+msgstr "Prestation pour les actions d'insertion du CER"
+
+msgid "Prestsform:index"
+msgstr "Visualisation des prestations"
+
+###############################################################################
+
+msgid "Module:Proposcontratsinsertioncovs58"
+msgstr "CER (COV CG58)"
+
+msgid "Proposcontratsinsertioncovs58:edit"
+msgstr "Ajout/Édition d'un CER"
+
+msgid "Proposcontratsinsertioncovs58:delete"
+msgstr "Suppression d'un CER"
+
+###############################################################################
+
+msgid "Module:Proposorientationscovs58"
+msgstr "Orientations (COV CG58)"
+
+msgid "Proposorientationscovs58:edit"
+msgstr "Ajout/Édition d'une orientation"
+
+msgid "Proposorientationscovs58:delete"
+msgstr "Suppression d'une orientation"
+
+###############################################################################
+
+msgid "Module:Propospdos"
+msgstr "PDOs (CG93)"
+
+msgid "Propospdos:indexparams"
+msgstr "Paramétrage des PDOs"
+
+msgid "Propospdos:index"
+msgstr "Visualisation des PDOs"
+
+msgid "Propospdos:edit"
+msgstr "Ajout/Édition d'une PDO"
+
+msgid "Propospdos:printCourrier"
+msgstr "Impression d'une PDO"
+
+###############################################################################
+
+msgid "Module:PropospdosTypesnotifspdos"
+msgstr "Type de notifications pour PDO"
+
+msgid "PropospdosTypesnotifspdos:index"
+msgstr "Visualisation des types de notifications"
+
+msgid "PropospdosTypesnotifspdos:edit"
+msgstr "Ajout/Édition d'une type de notification"
+
+###############################################################################
+
+msgid "Module:Questionspcgs66"
+msgstr "Paramétrage des questions liées au dossier PCG (EP CG66)"
+
+msgid "Questionspcgs66:index"
+msgstr "Visualisation des questions"
+
+msgid "Questionspcgs66:edit"
+msgstr "Ajout/Édition d'une question"
+
+msgid "Questionspcgs66:delete"
+msgstr "Suppression d'une question"
+
+###############################################################################
+
+msgid "Module:Recours"
+msgstr "Recours"
+
+msgid "Recours:gracieux"
+msgstr "Visualisation des recours gracieux"
+
+msgid "Recours:contentieux"
+msgstr "Visualisation des recours contentieux"
+
+###############################################################################
+
+msgid "Module:Recoursapres"
+msgstr "Recours APRE"
+
+msgid "Recoursapres:demande"
+msgstr "Demande de recours APRE"
+
+msgid "Recoursapres:visualisation"
+msgstr "Visualisation des recours APRE"
+
+msgid "Recoursapres:exportcsv"
+msgstr "Export CSV"
+
+msgid "Recoursapres:notificationsrecoursgedooo"
+msgstr "Impression en cohorte des notifications de recours"
+
+###############################################################################
+
+msgid "Module:Referents"
+msgstr "Paramétrage des référents"
+
+msgid "Referents:index"
+msgstr "Visualisation des référents"
+
+msgid "Referents:edit"
+msgstr "Ajout/Édition d'un référent"
+
+msgid "Referents:delete"
+msgstr "Suppression d'un référent"
+
+###############################################################################
+
+msgid "Module:Regressionsorientationseps"
+msgstr "Orientation du professionnel vers le social"
+
+msgid "Regressionsorientationseps:delete"
+msgstr "Suppression des régressions"
+
+###############################################################################
+
+msgid "Module:Regroupementseps"
+msgstr "Regroupements d'EP"
+
+msgid "Regroupementseps:index"
+msgstr "Visualisation des regroupements d'EP"
+
+msgid "Regroupementseps:edit"
+msgstr "Ajout/Édition d'un regroupement d'EP"
+
+msgid "Regroupementseps:delete"
+msgstr "Suppression d'un regroupement d'EP"
+
+###############################################################################
+
+msgid "Module:Regroupementszonesgeo"
+msgstr "Regroupements de zones géographiques"
+
+msgid "Regroupementszonesgeo:index"
+msgstr "Visualisation des regroupements de zones géographiques"
+
+msgid "Regroupementszonesgeo:edit"
+msgstr "Ajout/Édition d'un regroupement de zones géographiques"
+
+msgid "Regroupementszonesgeo:delete"
+msgstr "Suppression d'un regroupement de zone géographique"
+
+###############################################################################
+
+msgid "Module:Relancesapres"
+msgstr "Relances d'APREs"
+
+msgid "Relancesapres:view"
+msgstr "Visualisation des relances d'APRE"
+
+msgid "Relancesapres:edit"
+msgstr "Ajout/Édition d'une relance d'APRE"
+
+###############################################################################
+
+msgid "Module:Relancesnonrespectssanctionseps93"
+msgstr "Relances (EP)"
+
+msgid "Relancesnonrespectssanctionseps93:index"
+msgstr "Visualisation des relances"
+
+msgid "Relancesnonrespectssanctionseps93:cohorte"
+msgstr "Dossiers à relancer"
+
+msgid "Relancesnonrespectssanctionseps93:add"
+msgstr "Ajout/Édition d'une relance"
+
+msgid "Relancesnonrespectssanctionseps93:impressions"
+msgstr "Dossiers relancés"
+
+msgid "Relancesnonrespectssanctionseps93:exportcsv"
+msgstr "Export CSV"
+
+msgid "Relancesnonrespectssanctionseps93:impression"
+msgstr "Impression d'une relance"
+
+msgid "Relancesnonrespectssanctionseps93:impression_cohorte"
+msgstr "Impression en cohorte des relances"
+
+###############################################################################
+
+msgid "Module:Rendezvous"
+msgstr "Rendez-vous"
+
+msgid "Rendezvous:index"
+msgstr "Visualisation des rendez-vous"
+
+msgid "Rendezvous:filelink"
+msgstr "Lier un fichier à un rendez-vous"
+
+msgid "Rendezvous:edit"
+msgstr "Ajout/Édition d'un rendez-vous"
+
+msgid "Rendezvous:gedooo"
+msgstr "Impression d'un rendez-vous"
+
+msgid "Rendezvous:delete"
+msgstr "Suppression d'un rendez-vous"
+
+###############################################################################
+
+msgid "Module:Reorientationseps93"
+msgstr "Réorientations (CG93)"
+
+msgid "Reorientationseps93:index"
+msgstr "Visualisation des réorientations"
+
+msgid "Reorientationseps93:edit"
+msgstr "Ajout/Édition d'une réorientation"
+
+msgid "Reorientationseps93:delete"
+msgstr "Suppression d'une réorientation"
+
+###############################################################################
+
+msgid "Module:Repsddtefp"
+msgstr "Reporting bi-mensuel"
+
+msgid "Repsddtefp:index"
+msgstr "Reporting bi-mensuel DDTEFP"
+
+msgid "Repsddtefp:suivicontrole"
+msgstr "Suivi et contrôle de l'enveloppe d'APRE"
+
+###############################################################################
+
+msgid "Module:Ressources"
+msgstr "Ressources"
+
+msgid "Ressources:index"
+msgstr "Visualisation des ressources"
+
+msgid "Ressources:edit"
+msgstr "Ajout/Édition des ressources"
+
+###############################################################################
+
+msgid "Module:Sanctionseps58"
+msgstr "Passage en EP pour sanction (CG58)"
+
+msgid "Sanctionseps58:selectionnoninscrits"
+msgstr "Sélection des non inscrits au Pôle Emploi"
+
+msgid "Sanctionseps58:selectionradies"
+msgstr "Sélection des radiés de Pôle Emploi"
+
+msgid "Sanctionseps58:nonrespectcer"
+msgstr "Non respect du CER"
+
+msgid "Sanctionseps58:deleteNonrespectcer"
+msgstr "Suppression des non respect du CER"
+
+###############################################################################
+
+msgid "Module:Servicesinstructeurs"
+msgstr "Paramétrage des services instructeurs"
+
+msgid "Servicesinstructeurs:index"
+msgstr "Visualisation des services instructeurs"
+
+msgid "Servicesinstructeurs:edit"
+msgstr "Ajout/Édition d'un service instructeur"
+
+msgid "Servicesinstructeurs:delete"
+msgstr "Suppression d'un service instructeur"
+
+###############################################################################
+
+msgid "Module:Signalementseps"
+msgstr "Signalement des non respect du CER"
+
+msgid "Signalementseps:edit"
+msgstr "Ajout/Édition d'un signalement"
+
+msgid "Signalementseps:delete"
+msgstr "Suppression d'un signalement"
+
+###############################################################################
+
+msgid "Module:Sitescovs58"
+msgstr "Liste des sites d'actions médico-sociale COVs (CG58)"
+
+msgid "Sitescovs58:index"
+msgstr "Visualisation des sites"
+
+msgid "Sitescovs58:edit"
+msgstr "Ajout/Édition d'un site"
+
+msgid "Sitescovs58:delete"
+msgstr "Suppression d'un site"
+
+###############################################################################
+
+msgid "Module:Situationsdossiersrsa"
+msgstr "Situation des dossiers RSA"
+
+msgid "Situationsdossiersrsa:index"
+msgstr "Visualisation des siutations du dossier RSA"
+
+###############################################################################
+
+msgid "Module:Situationspdos"
+msgstr "Paramétrage des motifs de situation PDO de la personne"
+
+msgid "Situationspdos:index"
+msgstr "Visualisation des motifs de situation"
+
+msgid "Situationspdos:edit"
+msgstr "Ajout/Édition d'un motif"
+
+msgid "Situationspdos:delete"
+msgstr "Suppression d'un motif"
+
+###############################################################################
+
+msgid "Module:Statistiquesministerielles"
+msgstr "Statistiques ministérielles"
+
+msgid "Statistiquesministerielles:indicateursOrientations"
+msgstr "Indicateurs d'orientations"
+
+msgid "Statistiquesministerielles:indicateursOrganismes"
+msgstr "Indicateurs d'organismes"
+
+msgid "Statistiquesministerielles:indicateursReorientations"
+msgstr "Indicateurs de réorientations"
+
+msgid "Statistiquesministerielles:indicateursMotifsReorientation"
+msgstr "Indicateurs de motifs de réorientations"
+
+msgid "Statistiquesministerielles:indicateursCaracteristiquesContrats"
+msgstr "Indicateurs de caractéristiques de contrats"
+
+msgid "Statistiquesministerielles:indicateursNatureContrats"
+msgstr "Indicateurs de nature de contrats"
+
+msgid "Statistiquesministerielles:indicateursDelais"
+msgstr "Indicateurs de délais"
+
+###############################################################################
+
+msgid "Module:Statutsdecisionspdos"
+msgstr "Paramétrage des statuts pour les décisions des PDOs"
+
+msgid "Statutsdecisionspdos:index"
+msgstr "Visualisation des statuts"
+
+msgid "Statutsdecisionspdos:edit"
+msgstr "Ajout/Édition d'un statut"
+
+msgid "Statutsdecisionspdos:delete"
+msgstr "Suppression d'un statut"
+
+###############################################################################
+
+msgid "Module:Statutspdos"
+msgstr "Paramétrage des statuts de la personne pour les PDOs"
+
+msgid "Statutspdos:index"
+msgstr "Visualisation des statuts"
+
+msgid "Statutspdos:edit"
+msgstr "Ajout/Édition d'un statut"
+
+msgid "Statutspdos:delete"
+msgstr "Suppression d'un statut"
+
+###############################################################################
+
+msgid "Module:Statutsrdvs"
+msgstr "Paramétrage des statuts de rendez-vous"
+
+msgid "Statutsrdvs:index"
+msgstr "Visualisation des statuts de rendez-vous"
+
+msgid "Statutsrdvs:edit"
+msgstr "Ajout/Édition d'un statut de rendez-vous"
+
+msgid "Statutsrdvs:delete"
+msgstr "Suppression d'un statut de rendez-vous"
+
+###############################################################################
+
+msgid "Module:StatutsrdvsTypesrdv"
+msgstr "Paramétrage des liens entre statuts de RDV et objets de RDV (EP CG58)"
+
+msgid "StatutsrdvsTypesrdv:index"
+msgstr "Visualisation des liens"
+
+msgid "StatutsrdvsTypesrdv:edit"
+msgstr "Ajout/Édition d'un lien"
+
+msgid "StatutsrdvsTypesrdv:delete"
+msgstr "Suppression d'un lien"
+
+###############################################################################
+
+msgid "Module:Structuresreferentes"
+msgstr "Paramétrage des structures référentes"
+
+msgid "Structuresreferentes:index"
+msgstr "Visualisation des structures référentes"
+
+msgid "Structuresreferentes:edit"
+msgstr "Ajout/Édition d'une structure référente"
+
+msgid "Structuresreferentes:delete"
+msgstr "Suppression d'une structure référente"
+
+###############################################################################
+
+msgid "Module:Suivisaidesapres"
+msgstr "Paramétrage des personnes chargées des suivis d'aides APRE"
+
+msgid "Suivisaidesapres:index"
+msgstr "Visualisation des personnes"
+
+msgid "Suivisaidesapres:edit"
+msgstr "Ajout/Édition d'une personne"
+
+msgid "Suivisaidesapres:delete"
+msgstr "Suppression d'une personne"
+
+###############################################################################
+
+msgid "Module:Suivisaidesaprestypesaides"
+msgstr "Paramétrage des types d'aides liées au personne chargée du suivi de l'APRE"
+
+msgid "Suivisaidesaprestypesaides:index"
+msgstr "Visualisation des types d'aides"
+
+msgid "Suivisaidesaprestypesaides:edit"
+msgstr "Ajout/Édition d'un type d'aide"
+
+msgid "Suivisaidesaprestypesaides:delete"
+msgstr "Suppression d'un type d'aide"
+
+###############################################################################
+
+msgid "Module:Suivisinsertion"
+msgstr "Synthèse du parcours d'insertion"
+
+msgid "Suivisinsertion:index"
+msgstr "Visualisation de la synthèse du parcours d'insertion"
+
+###############################################################################
+
+msgid "Module:Suivisinstruction"
+msgstr "Suivi d'instruction du dossier"
+
+msgid "Suivisinstruction:index"
+msgstr "Visualisation du suivi d'instruction du dossier"
+
+###############################################################################
+
+msgid "Module:Textareascourrierspdos"
+msgstr "Paramétrage des zones supplémentaires pour les courriers de traitements PDOs"
+
+msgid "Textareascourrierspdos:index"
+msgstr "Visualisation des zones"
+
+msgid "Textareascourrierspdos:edit"
+msgstr "Ajout/Édition d'une zone"
+
+msgid "Textareascourrierspdos:delete"
+msgstr "Suppression d'une zone"
+
+###############################################################################
+
+msgid "Module:Themesapres66"
+msgstr "Paramétrage des thèmes de la demande d'APRE"
+
+msgid "Themesapres66:index"
+msgstr "Visualisation des thèmes"
+
+msgid "Themesapres66:edit"
+msgstr "Ajout/Édition d'un thème"
+
+msgid "Themesapres66:delete"
+msgstr "Suppression d'un thème"
+
+###############################################################################
+
+msgid "Module:Tiersprestatairesapres"
+msgstr "Paramétrage des tiers prestataires pour les aides d'APRE"
+
+msgid "Tiersprestatairesapres:index"
+msgstr "Visualisation des tiers prestataires"
+
+msgid "Tiersprestatairesapres:edit"
+msgstr "Ajout/Édition d'un tiers prestataire"
+
+msgid "Tiersprestatairesapres:delete"
+msgstr "Suppression d'un tiers prestataire"
+
+###############################################################################
+
+msgid "Module:Totalisationsacomptes"
+msgstr "Mandats mensuels"
+
+msgid "Totalisationsacomptes:index"
+msgstr "Visualisation des mandats mensuels"
+
+msgid "Totalisationsacomptes:exportcsv"
+msgstr "Export CSV"
+
+###############################################################################
+
+msgid "Module:Traitementspcgs66"
+msgstr "Traitements pour les dossiers PCG (CG66)"
+
+msgid "Traitementspcgs66:index"
+msgstr "Visualisation des traitements PCG"
+
+msgid "Traitementspcgs66:edit"
+msgstr "Ajout/Édition d'un traitement PCG"
+
+msgid "Traitementspcgs66:delete"
+msgstr "Suppression d'un traitement PCG"
+
+msgid "Traitementspcgs66:cancel"
+msgstr "Annulation d'un traitement"
+
+msgid "Traitementspcgs66:clore"
+msgstr "Cloture d'un traitement"
+
+msgid "Traitementspcgs66:decision"
+msgstr "Proposition de la décision au niveau du traitement de la personne"
+      
+msgid "Traitementspcgs66:printFicheCalcul"
+msgstr "Impression de la fiche de calcul"
+
+
+###############################################################################
+
+msgid "Module:Traitementspdos"
+msgstr "Traitements PDOs (CG93)"
+
+msgid "Traitementspdos:index"
+msgstr "Visualisation des traitements PDO"
+
+msgid "Traitementspdos:clore"
+msgstr "Cloture un traitement PDO"
+
+msgid "Traitementspdos:delete"
+msgstr "Suppression d'un traitement PCG"
+
+msgid "Traitementspdos:printCourrier"
+msgstr "Impression du courrier de traitement PDO"
+
+###############################################################################
+
+msgid "Module:Traitementstypespdos"
+msgstr "Paramétrage des types de traitements PDOs (CG93)"
+
+msgid "Traitementstypespdos:index"
+msgstr "Visualisation des types de traitements PDO"
+
+msgid "Traitementstypespdos:edit"
+msgstr "Ajout/Édition d'un type de traitement PDO"
+
+msgid "Traitementspdos:delete"
+msgstr "Suppression d'un type de traitement PDO"
+
+###############################################################################
+
+msgid "Module:Typesactions"
+msgstr "Paramétrage des types d'actions d'insertion (CG93)"
+
+msgid "Typesactions:index"
+msgstr "Visualisation des types d'actions d'insertion"
+
+msgid "Typesactions:edit"
+msgstr "Ajout/Édition d'un type d'actions d'insertion"
+
+msgid "Typesactions:delete"
+msgstr "Suppression d'un type d'actions d'insertion"
+
+###############################################################################
+
+msgid "Module:Typesaidesapres66"
+msgstr "Paramétrage des types d'aides APRE (CG66)"
+
+msgid "Typesaidesapres66:index"
+msgstr "Visualisation des types d'aides APRE"
+
+msgid "Typesaidesapres66:edit"
+msgstr "Ajout/Édition d'un type d'aides APRE"
+
+msgid "Typesaidesapres66:delete"
+msgstr "Suppression d'un type d'aides APRE"
+
+###############################################################################
+
+msgid "Module:Typesnotifspdos"
+msgstr "Paramétrage des types de notifications pour les PDOs"
+
+msgid "Typesnotifspdos:index"
+msgstr "Visualisation des types de notifications"
+
+msgid "Typesnotifspdos:edit"
+msgstr "Ajout/Édition d'un type de notifications"
+
+msgid "Typesnotifspdos:deleteparametrage"
+msgstr "Suppression d'un type de notifications"
+
+###############################################################################
+
+msgid "Module:Typesorients"
+msgstr "Paramétrage des types d'orientation"
+
+msgid "Typesorients:index"
+msgstr "Visualisation des types d'orientation"
+
+msgid "Typesorients:edit"
+msgstr "Ajout/Édition d'un type d'orientation"
+
+msgid "Typesorients:delete"
+msgstr "Suppression d'un type d'orientation"
+
+###############################################################################
+
+msgid "Module:Typespdos"
+msgstr "Paramétrage des types de PDO"
+
+msgid "Typespdos:index"
+msgstr "Visualisation des types de PDO"
+
+msgid "Typespdos:edit"
+msgstr "Ajout/Édition d'un type de PDO"
+
+msgid "Typespdos:delete"
+msgstr "Suppression d'un type de PDO"
+
+###############################################################################
+
+msgid "Module:Typesrdv"
+msgstr "Paramétrage des types de rendez-vous"
+
+msgid "Typesrdv:index"
+msgstr "Visualisation des types de rendez-vous"
+
+msgid "Typesrdv:edit"
+msgstr "Ajout/Édition d'un type de rendez-vous"
+
+msgid "Typesrdv:delete"
+msgstr "Suppression d'un type de rendez-vous"
+
+###############################################################################
+
+msgid "Module:Typesrsapcgs66"
+msgstr "Paramétrage des différents types de RSA (lié au dossierPCG CG66)"
+
+msgid "Typesrsapcgs66:index"
+msgstr "Visualisation des types de RSA"
+
+msgid "Typesrsapcgs66:edit"
+msgstr "Ajout/Édition d'un type de RSA"
+
+msgid "Typesrsapcgs66:delete"
+msgstr "Suppression d'un type de RSA"
+
+###############################################################################
+
+msgid "Module:Typoscontrats"
+msgstr "Paramétrage des typologies de CER"
+
+msgid "Typoscontrats:index"
+msgstr "Visualisation des typologies de CER"
+
+msgid "Typoscontrats:edit"
+msgstr "Ajout/Édition d'une typologie de CER"
+
+msgid "Typoscontrats:delete"
+msgstr "Suppression d'une typologie de CER"
+
+###############################################################################
+
+msgid "Module:Users"
+msgstr "Paramétrage des utilisateurs"
+
+msgid "Users:index"
+msgstr "Visualisation des utilisateurs"
+
+msgid "Users:edit"
+msgstr "Ajout/Édition d'un utilisateur"
+
+msgid "Users:delete"
+msgstr "Suppression d'un utilisateur"
+
+msgid "Users:changepass"
+msgstr "Modification du mot de passe"
+
+###############################################################################
+
+msgid "Module:Visionneuses"
+msgstr "Visionneuse"
+
+msgid "Visionneuses:index"
+msgstr "Visualisation de la Visionneuse"
+
+###############################################################################
+
+msgid "Module:Zonesgeographiques"
+msgstr "Paramétrage des zones géographiques"
+
+msgid "Zonesgeographiques:index"
+msgstr "Visualisation des zones géographiques"
+
+msgid "Zonesgeographiques:edit"
+msgstr "Ajout/Édition d'une zone géographique"
+
+msgid "Zonesgeographiques:delete"
+msgstr "Suppression d'une zone géographique"
+
+###############################################################################

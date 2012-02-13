@@ -1,0 +1,308 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xml:lang="fr" xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head>
+
+    
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">        <title>
+            Situation de l'allocataire        </title>
+        
+	<link rel="stylesheet" type="text/css" href="liste_des_indus_cohortes_fichiers/all_003.css" media="all">
+
+	<link rel="stylesheet" type="text/css" href="liste_des_indus_cohortes_fichiers/all.css" media="all">
+
+	<link rel="stylesheet" type="text/css" href="liste_des_indus_cohortes_fichiers/screen.css" media="screen,presentation">
+
+	<link rel="stylesheet" type="text/css" href="liste_des_indus_cohortes_fichiers/print.css" media="print">
+
+	<link rel="stylesheet" type="text/css" href="liste_des_indus_cohortes_fichiers/menu.css" media="all">
+<link rel="stylesheet" type="text/css" href="liste_des_indus_cohortes_fichiers/all_002.css" media="all">        <script type="text/javascript" src="liste_des_indus_cohortes_fichiers/prototype.js"></script><script type="text/javascript" src="liste_des_indus_cohortes_fichiers/tooltip.js"></script><script type="text/javascript" src="liste_des_indus_cohortes_fichiers/webrsa.js"></script>        <!-- TODO: à la manière de cake, dans les vues qui en ont besoin -->
+        <script type="text/javascript">
+            // prototype
+            document.observe("dom:loaded", function() {
+                window.history.forward();
+
+                var baseUrl = 'http://localhost/mhamzaoui/webrsa/';
+                make_treemenus( baseUrl );
+//                 make_table_tooltips();
+                make_folded_forms();
+                mkTooltipTables();
+
+                // External links
+                $$('a.external').each( function ( link ) {
+                    $( link ).onclick = function() {
+                        window.open( $( link ).href, 'external' ); return false;
+                    };
+                } );
+            });
+        </script>
+        <script type="text/javascript">
+        //<![CDATA[
+            function printit(){
+                if (window.print) {
+                window.print() ;
+                } else {
+                    var WebBrowser = '<object id="WebBrowser1" WIDTH=0 HEIGHT=0 CLASSID="CLSID:8856F961-340A-11D0-A96B-00C04FD705A2"></object>';
+                    document.body.insertAdjacentHTML('beforeEnd', WebBrowser);
+                        WebBrowser1.ExecWB(6, 2);//Use a 1 vs. a 2 for a prompting dialog box    WebBrowser1.outerHTML = "";
+                }
+            }
+        //]]>
+        </script>
+
+        <!--[if IE]>
+            <style type="text/css" media="screen, presentation">
+                .treemenu { position: relative; }
+                .treemenu, .treemenu *, #pageMenu, #pageWrapper { zoom: 1; }
+            </style>
+        <![endif]-->
+    </head><body>
+            <div id="pageWrapper">
+            <div id="pageHeader">
+    <!--        <div id="whois">&nbsp;</div>
+    -->
+    &nbsp;
+</div>            <div id="menu1Wrapper">
+    <div class="menu1">
+        <ul>
+                                    <li class="" id="menu1one" onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
+                    <a href="#">Gestion des cohortes</a>                    <ul>
+                    <!-- AJOUT POUR LA GESTION DES CONTRATS D'INSERTION (Cohorte) -->
+                        <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
+                            <a href="http://localhost/mhamzaoui/webrsa/cohortesci" title="Gestion des contrats">Contrat insertion</a>                        </li> 
+                    <!-- MODIF POUR LA GESTION DES ORIENTATIONS (Cohorte) -->
+                        <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
+                            <a href="#">Orientation</a>                                <ul>
+                                    <li><a href="http://localhost/mhamzaoui/webrsa/cohortes/nouvelles" title="Nouvelles demandes">Nouvelles demandes</a></li>
+                                    <li><a href="http://localhost/mhamzaoui/webrsa/cohortes/orientees" title="Demandes orientées">Demandes orientées</a></li>
+                                    <li><a href="http://localhost/mhamzaoui/webrsa/cohortes/enattente" title="Demandes en attente">En attente</a></li>
+                                    <!-- <li><a href="/mhamzaoui/webrsa/cohortes/exports_index" title="Fichiers exportés">Fichiers Exportés</a></li> -->
+                                    <!--<li><a href="#">Liste suivant critères</a></li>
+                                    <li><a href="#">Gestion des éditions</a></li> -->
+                                </ul>
+                        </li>
+                        <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
+                            <a href="http://localhost/mhamzaoui/webrsa/pages/display/recherche_indus">Indus</a>                        </li> 
+                    </ul>
+                </li> 
+                                        <li id="menu2one">
+                    <a href="#">Recherche multicritères</a>                    <ul>
+                        <li><a href="http://localhost/mhamzaoui/webrsa/">Par dossier / allocataire</a></li>
+                        <li><a href="http://localhost/mhamzaoui/webrsa/criteres">Par Orientation</a></li>
+                        <li><a href="http://localhost/mhamzaoui/webrsa/criteresci">Par Contrat insertion</a></li>
+                    </ul>
+                </li>
+                                        <li id="menu2one">
+                    <a href="#">Insertion</a>                    <ul>
+                        <li><a href="http://localhost/mhamzaoui/webrsa/pages/display/liste_appels_a_projet">Appels à projet</a></li>
+			<li><a href="http://localhost/mhamzaoui/webrsa/pages/display/recherche_suivi_stagiaire">Suivi des stagiaires</a></li>
+			<li><a href="http://localhost/mhamzaoui/webrsa/pages/display/demande_remboursement">Demande de remboursement</a></li>
+                    </ul>
+                </li>
+                                        <li id="menu2one">
+                    <a href="#">Tableaux de bord</a>                    <ul>
+			<li><a href="http://localhost/mhamzaoui/webrsa/pages/display/indicateurs_mensuels">Indicateurs mensuels</a></li>
+                    </ul>
+                </li>
+                                            <li id="menu3one">
+                        <a href="#">Administration</a>                        <ul>
+                            <li><a href="http://localhost/mhamzaoui/webrsa/droits/edit">Droits</a></li>
+                            <li><a href="http://localhost/mhamzaoui/webrsa/parametrages">Paramétrage</a></li>
+			    <li><a href="#">Moteur de règle</a>				<ul>
+				    <li><a href="http://localhost/mhamzaoui/webrsa/pages/display/moteur_regle_1">Orientation</a></li>
+				    <li><a href="http://localhost/mhamzaoui/webrsa/pages/display/moteur_regle_2">Recherche dossier/allocataire</a></li>
+				    <li><a href="http://localhost/mhamzaoui/webrsa/pages/display/moteur_regle_3">Recherche orientation</a></li>
+				    <li><a href="http://localhost/mhamzaoui/webrsa/pages/display/moteur_regle_4">Recherche contrat d'insertion</a></li>
+				 <!--   <li><a href="/mhamzaoui/webrsa/pages/display/moteur_regle_2">Contrat d&#039;insertion</a></li> -->
+				</ul>
+			    </li>
+			    <li><a href="#">Paiement allocation</a>				<ul>
+				    <li><a href="http://localhost/mhamzaoui/webrsa/pages/display/criteres_paiements_allocations">Listes nominatives</a></li>
+				    <li><a href="http://localhost/mhamzaoui/webrsa/pages/display/criteres_mandats_paiements">Mandats mensuels</a></li>
+				</ul>
+			    </li>
+                        <!--  <li><a href="#">Intégration flux</a></li>
+                            <li><a href="#">Gestion des logs</a></li>
+                            <li><a href="#">Gestion des éditions</a></li>-->
+                        </ul>
+                    </li>
+                        <li id="menu4one"><a href="http://localhost/mhamzaoui/webrsa/users/logout">Déconnexion webrsa</a></li>
+                    </ul>
+    </div>
+</div>
+
+
+              <!--  -->
+
+    <div id="pageCartouche">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Groupe</th>
+                    <th>Service instructeur</th>
+                    <!-- <th>Zones géographiques</th> -->
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td> Hamzaoui </td>
+                    <td> Michel </td>
+                    <td> Administrateurs </td>
+                    <td> Service Social Départemental </td>
+                    <!--<td>
+                        <ul>
+                                                    </ul>
+                    </td>-->
+                </tr>
+            </tbody>
+        </table>
+    </div>
+            <div id="pageContent">
+                                
+
+<div class="">
+    <h1>Liste des indus</h1>
+         <table class="tooltips_oupas">
+            <thead>
+                <tr>
+                    <th>Numéro de dossier</th>
+		    <th>Nom de l'allocataire</th>
+		    <th>Suivi</th>
+		    <th>Situation droits</th>
+		    <th>Date indus</th>
+		    <th>Montant initial de l’indu</th>
+		    <th>Montant transféré CG</th>
+		    <th>Remise CG</th>
+		    <th>Montant remboursé</th>
+		    <th>Solde du</th>
+		    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="odd dynamic" id="innerTableTrigger0">
+		    <td>00000126731</td>
+		    <td>GRIMALDI Bernard</td>
+		    <td>CAF</td>
+		    <td>Ouvert</td>
+		    <td>03/01/2009</td>
+		    <td>4000</td>
+		    <td>2000</td>
+		    <td>500</td>
+		    <td>1100</td>
+		    <td>400</td>
+		    <td><a href="http://localhost/mhamzaoui/webrsa/pages/display/visualisation_indu" title=""><img src="liste_des_indus_cohortes_fichiers/zoom.png">Voir</a></td>
+		</tr>
+		<tr class="even dynamic" id="innerTableTrigger0">
+		    <td>00000126855</td>
+		    <td>GUILLET Josette</td>
+		    <td>CG</td>
+		    <td>Suspendu</td>
+		    <td>08/04/2009</td>
+		    <td>1800</td>
+		    <td>1000</td>
+		    <td>200</td>
+		    <td>200</td>
+		    <td>600</td>
+		    <td><a href="http://localhost/mhamzaoui/webrsa/pages/display/visualisation_indu" title=""><img src="liste_des_indus_cohortes_fichiers/zoom.png">Voir</a></td>
+		</tr>
+		<tr class="odd dynamic" id="innerTableTrigger0">
+		    <td>00000345121</td>
+		    <td>STANKOVIC Slobodan</td>
+		    <td>CAF</td>
+		    <td>Clos</td>
+		    <td>28/11/2008</td>
+		    <td>1600</td>
+		    <td>1000</td>
+		    <td>200</td>
+		    <td>200</td>
+		    <td>600</td>
+		    <td><a href="http://localhost/mhamzaoui/webrsa/pages/display/visualisation_indu" title=""><img src="liste_des_indus_cohortes_fichiers/zoom.png">Voir</a></td>
+		</tr>
+		<tr class="even dynamic" id="innerTableTrigger0">
+		    <td>00000654835</td>
+		    <td>DUNY Madeleine</td>
+		    <td>CAF</td>
+		    <td>Ouvert</td>
+		    <td>22/04/2007</td>
+		    <td>9000</td>
+		    <td>6000</td>
+		    <td>1000</td>
+		    <td>2200</td>
+		    <td>2800</td>
+		    <td><a href="http://localhost/mhamzaoui/webrsa/pages/display/visualisation_indu" title=""><img src="liste_des_indus_cohortes_fichiers/zoom.png">Voir</a></td>
+		</tr>
+		<tr class="odd dynamic" id="innerTableTrigger0">
+		    <td>00001288643</td>
+		    <td>REMAL Jean-Marc</td>
+		    <td>CG</td>
+		    <td>Suspendu</td>
+		    <td>11/12/2008</td>
+		    <td>7400</td>
+		    <td>4300</td>
+		    <td>1000</td>
+		    <td>200</td>
+		    <td>3100</td>
+		    <td><a href="http://localhost/mhamzaoui/webrsa/pages/display/visualisation_indu" title=""><img src="liste_des_indus_cohortes_fichiers/zoom.png">Voir</a></td>
+		</tr>
+		<tr class="even dynamic" id="innerTableTrigger0">
+		    <td>00000224877</td>
+		    <td>BOUDAOUD Mohamed</td>
+		    <td>CAF</td>
+		    <td>Ouvert</td>
+		    <td>29/10/2008</td>
+		    <td>2200</td>
+		    <td>1300</td>
+		    <td>300</td>
+		    <td>500</td>
+		    <td>500</td>
+		    <td><a href="http://localhost/mhamzaoui/webrsa/pages/display/visualisation_indu" title=""><img src="liste_des_indus_cohortes_fichiers/zoom.png">Voir</a></td>
+		</tr>
+		<tr class="odd dynamic" id="innerTableTrigger0">
+		    <td>00001288643</td>
+		    <td>TISSOT Jean-Pierre</td>
+		    <td>CAF</td>
+		    <td>Suspendu</td>
+		    <td>03/12/2008</td>
+		    <td>3300</td>
+		    <td>2000</td>
+		    <td>200</td>
+		    <td>1000</td>
+		    <td>800</td>
+		    <td><a href="http://localhost/mhamzaoui/webrsa/pages/display/visualisation_indu" title=""><img src="liste_des_indus_cohortes_fichiers/zoom.png">Voir</a></td>
+		</tr>
+		<tr class="even dynamic" id="innerTableTrigger0">
+		    <td>00000676499</td>
+		    <td>NAVAL Maurice</td>
+		    <td>CAF</td>
+		    <td>Supendu</td>
+		    <td>12/05/2008</td>
+		    <td>5000</td>
+		    <td>3000</td>
+		    <td>1000</td>
+		    <td>500</td>
+		    <td>1500</td>
+		    <td><a href="http://localhost/mhamzaoui/webrsa/pages/display/visualisation_indu" title=""><img src="liste_des_indus_cohortes_fichiers/zoom.png">Voir</a></td>
+		</tr>
+		<tr class="odd dynamic" id="innerTableTrigger0">
+		    <td>00001288643</td>
+		    <td>BELENGUER Henri</td>
+		    <td>CAF</td>
+		    <td>Suspendu</td>
+		    <td>08/02/2009</td>
+		    <td>2700</td>
+		    <td>1300</td>
+		    <td>200</td>
+		    <td>200</td>
+		    <td>900</td>
+		    <td><a href="http://localhost/mhamzaoui/webrsa/pages/display/visualisation_indu" title=""><img src="liste_des_indus_cohortes_fichiers/zoom.png">Voir</a></td>
+		</tr>
+            </tbody>
+        </table>
+    </div><br>   
+  <div class="clearer"><hr></div>            </div>
+            <div id="pageFooter">
+    webrsa v. 1.0.4.398 (CakePHP v. 1.2.2.8120) - 2009@Adullact.
+    Page construite en 0,33 secondes.    $LastChangedDate: 2009-07-27 17:51:26 +0200 (lun., 27 juil. 2009)$
+</div>
+        </div>
+    <div style="position: absolute; top: 285px; left: 218px; display: none;" class="tooltip">innerTable0</div><div style="display: none;" class="tooltip">innerTable0</div><div style="display: none;" class="tooltip">innerTable0</div><div style="display: none;" class="tooltip">innerTable0</div><div style="display: none;" class="tooltip">innerTable0</div><div style="display: none;" class="tooltip">innerTable0</div><div style="display: none;" class="tooltip">innerTable0</div><div style="display: none;" class="tooltip">innerTable0</div><div style="display: none;" class="tooltip">innerTable0</div><div style="display: none;" class="tooltip">innerTable0</div><div style="display: none;" class="tooltip">innerTable0</div><div style="position: absolute; top: 295px; left: 234px; display: none;" class="tooltip">innerTable1</div><div style="position: absolute; top: 315px; left: 339px; display: none;" class="tooltip">innerTable1</div><div style="display: none;" class="tooltip">innerTable1</div><div style="display: none;" class="tooltip">innerTable1</div><div style="display: none;" class="tooltip">innerTable1</div><div style="display: none;" class="tooltip">innerTable1</div><div style="display: none;" class="tooltip">innerTable1</div><div style="display: none;" class="tooltip">innerTable1</div><div style="display: none;" class="tooltip">innerTable1</div><div style="display: none;" class="tooltip">innerTable1</div><div style="display: none;" class="tooltip">innerTable1</div><div style="display: none;" class="tooltip">innerTable2</div><div style="position: absolute; top: 319px; left: 406px; display: none;" class="tooltip">innerTable2</div><div style="position: absolute; top: 333px; left: 503px; display: none;" class="tooltip">innerTable2</div><div style="position: absolute; top: 341px; left: 539px; display: none;" class="tooltip">innerTable2</div><div style="position: absolute; top: 351px; left: 617px; display: none;" class="tooltip">innerTable2</div><div style="display: none;" class="tooltip">innerTable2</div><div style="display: none;" class="tooltip">innerTable2</div><div style="display: none;" class="tooltip">innerTable2</div><div style="display: none;" class="tooltip">innerTable2</div><div style="display: none;" class="tooltip">innerTable2</div><div style="display: none;" class="tooltip">innerTable2</div><div style="display: none;" class="tooltip">innerTable3</div><div style="position: absolute; top: 365px; left: 462px; display: none;" class="tooltip">innerTable3</div><div style="display: none;" class="tooltip">innerTable3</div><div style="display: none;" class="tooltip">innerTable3</div><div style="position: absolute; top: 359px; left: 654px; display: none;" class="tooltip">innerTable3</div><div style="position: absolute; top: 368px; left: 722px; display: none;" class="tooltip">innerTable3</div><div style="display: none;" class="tooltip">innerTable3</div><div style="display: none;" class="tooltip">innerTable3</div><div style="display: none;" class="tooltip">innerTable3</div><div style="display: none;" class="tooltip">innerTable3</div><div style="display: none;" class="tooltip">innerTable3</div><div style="display: none;" class="tooltip">innerTable4</div><div style="display: none;" class="tooltip">innerTable4</div><div style="position: absolute; top: 389px; left: 496px; display: none;" class="tooltip">innerTable4</div><div style="display: none;" class="tooltip">innerTable4</div><div style="position: absolute; top: 402px; left: 640px; display: none;" class="tooltip">innerTable4</div><div style="position: absolute; top: 382px; left: 801px; display: none;" class="tooltip">innerTable4</div><div style="position: absolute; top: 384px; left: 815px; display: none;" class="tooltip">innerTable4</div><div style="display: none;" class="tooltip">innerTable4</div><div style="display: none;" class="tooltip">innerTable4</div><div style="display: none;" class="tooltip">innerTable4</div><div style="display: none;" class="tooltip">innerTable4</div><div style="display: none;" class="tooltip">innerTable5</div><div style="display: none;" class="tooltip">innerTable5</div><div style="display: none;" class="tooltip">innerTable5</div><div style="position: absolute; top: 410px; left: 531px; display: none;" class="tooltip">innerTable5</div><div style="position: absolute; top: 406px; left: 638px; display: none;" class="tooltip">innerTable5</div><div style="display: none;" class="tooltip">innerTable5</div><div style="display: none;" class="tooltip">innerTable5</div><div style="display: none;" class="tooltip">innerTable5</div><div style="display: none;" class="tooltip">innerTable5</div><div style="display: none;" class="tooltip">innerTable5</div><div style="display: none;" class="tooltip">innerTable5</div><div style="display: none;" class="tooltip">innerTable6</div><div style="display: none;" class="tooltip">innerTable6</div><div style="display: none;" class="tooltip">innerTable6</div><div style="display: none;" class="tooltip">innerTable6</div><div style="position: absolute; top: 452px; left: 622px; display: none;" class="tooltip">innerTable6</div><div style="display: none;" class="tooltip">innerTable6</div><div style="position: absolute; top: 472px; left: 885px;" class="tooltip">innerTable6</div><div style="display: none;" class="tooltip">innerTable6</div><div style="display: none;" class="tooltip">innerTable6</div><div style="display: none;" class="tooltip">innerTable6</div><div style="display: none;" class="tooltip">innerTable6</div><div style="display: none;" class="tooltip">innerTable7</div><div style="display: none;" class="tooltip">innerTable7</div><div style="display: none;" class="tooltip">innerTable7</div><div style="display: none;" class="tooltip">innerTable7</div><div style="display: none;" class="tooltip">innerTable7</div><div style="display: none;" class="tooltip">innerTable7</div><div style="display: none;" class="tooltip">innerTable7</div><div style="display: none;" class="tooltip">innerTable7</div><div style="display: none;" class="tooltip">innerTable7</div><div style="display: none;" class="tooltip">innerTable7</div><div style="display: none;" class="tooltip">innerTable7</div><div style="display: none;" class="tooltip">innerTable8</div><div style="display: none;" class="tooltip">innerTable8</div><div style="display: none;" class="tooltip">innerTable8</div><div style="display: none;" class="tooltip">innerTable8</div><div style="display: none;" class="tooltip">innerTable8</div><div style="display: none;" class="tooltip">innerTable8</div><div style="display: none;" class="tooltip">innerTable8</div><div style="display: none;" class="tooltip">innerTable8</div><div style="display: none;" class="tooltip">innerTable8</div><div style="display: none;" class="tooltip">innerTable8</div><div style="display: none;" class="tooltip">innerTable8</div></body></html>

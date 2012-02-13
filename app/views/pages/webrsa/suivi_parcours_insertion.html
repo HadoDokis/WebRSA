@@ -1,0 +1,455 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xml:lang="fr" xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head>
+
+    
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">        <title>
+            Suivi parcours d'insertion        </title>
+        
+	<link rel="stylesheet" type="text/css" href="suivi_parcours_insertion_fichiers/all_002.css" media="all">
+
+	<link rel="stylesheet" type="text/css" href="suivi_parcours_insertion_fichiers/all.css" media="all">
+
+	<link rel="stylesheet" type="text/css" href="suivi_parcours_insertion_fichiers/screen.css" media="screen,presentation">
+
+	<link rel="stylesheet" type="text/css" href="suivi_parcours_insertion_fichiers/print.css" media="print">
+
+	<link rel="stylesheet" type="text/css" href="suivi_parcours_insertion_fichiers/menu.css" media="all">
+        <script type="text/javascript" src="suivi_parcours_insertion_fichiers/prototype.js"></script><script type="text/javascript" src="suivi_parcours_insertion_fichiers/tooltip.js"></script><script type="text/javascript" src="suivi_parcours_insertion_fichiers/webrsa.js"></script>        <!-- TODO: à la manière de cake, dans les vues qui en ont besoin -->
+        <script type="text/javascript">
+            // prototype
+            document.observe("dom:loaded", function() {
+                window.history.forward();
+
+                var baseUrl = 'http://localhost/mhamzaoui/webrsa/';
+                make_treemenus( baseUrl );
+//                 make_table_tooltips();
+                make_folded_forms();
+                mkTooltipTables();
+
+                // External links
+                $$('a.external').each( function ( link ) {
+                    $( link ).onclick = function() {
+                        window.open( $( link ).href, 'external' ); return false;
+                    };
+                } );
+            });
+        </script>
+        <script type="text/javascript">
+        //<![CDATA[
+            function printit(){
+                if (window.print) {
+                window.print() ;
+                } else {
+                    var WebBrowser = '<object id="WebBrowser1" WIDTH=0 HEIGHT=0 CLASSID="CLSID:8856F961-340A-11D0-A96B-00C04FD705A2"></object>';
+                    document.body.insertAdjacentHTML('beforeEnd', WebBrowser);
+                        WebBrowser1.ExecWB(6, 2);//Use a 1 vs. a 2 for a prompting dialog box    WebBrowser1.outerHTML = "";
+                }
+            }
+        //]]>
+        </script>
+
+        <!--[if IE]>
+            <style type="text/css" media="screen, presentation">
+                .treemenu { position: relative; }
+                .treemenu, .treemenu *, #pageMenu, #pageWrapper { zoom: 1; }
+            </style>
+        <![endif]-->
+    </head><body>
+            <div id="pageWrapper">
+            <div id="pageHeader">
+    <!--        <div id="whois">&nbsp;</div>
+    -->
+    &nbsp;
+</div>            <div id="menu1Wrapper">
+    <div class="menu1">
+        <ul>
+                                    <li id="menu1one" onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
+                    <a href="#">Gestion des cohortes</a>                    <ul>
+                    <!-- AJOUT POUR LA GESTION DES CONTRATS D'INSERTION (Cohorte) -->
+                        <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
+                            <a href="http://localhost/mhamzaoui/webrsa/cohortesci" title="Gestion des contrats">Contrat insertion</a>                        </li> 
+                    <!-- MODIF POUR LA GESTION DES ORIENTATIONS (Cohorte) -->
+                        <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
+                            <a href="#">Orientation</a>                                <ul>
+                                    <li><a href="http://localhost/mhamzaoui/webrsa/cohortes/nouvelles" title="Nouvelles demandes">Nouvelles demandes</a></li>
+                                    <li><a href="http://localhost/mhamzaoui/webrsa/cohortes/orientees" title="Demandes orientées">Demandes orientées</a></li>
+                                    <li><a href="http://localhost/mhamzaoui/webrsa/cohortes/enattente" title="Demandes en attente">En attente</a></li>
+                                    <!-- <li><a href="/mhamzaoui/webrsa/cohortes/exports_index" title="Fichiers exportés">Fichiers Exportés</a></li> -->
+                                    <!--<li><a href="#">Liste suivant critères</a></li>
+                                    <li><a href="#">Gestion des éditions</a></li> -->
+                                </ul>
+                        </li>
+                        <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
+                            <a href="http://localhost/mhamzaoui/webrsa/pages/display/recherche_indus">Indus</a>                        </li> 
+                    </ul>
+                </li> 
+                                        <li id="menu2one">
+                    <a href="#">Recherche multicritères</a>                    <ul>
+                        <li><a href="http://localhost/mhamzaoui/webrsa/">Par dossier / allocataire</a></li>
+                        <li><a href="http://localhost/mhamzaoui/webrsa/criteres">Par Orientation</a></li>
+                        <li><a href="http://localhost/mhamzaoui/webrsa/criteresci">Par Contrat insertion</a></li>
+                    </ul>
+                </li>
+                                        <li id="menu2one">
+                    <a href="#">Insertion</a>                    <ul>
+                        <li><a href="http://localhost/mhamzaoui/webrsa/pages/display/liste_appels_a_projet">Appels à projet</a></li>
+			<li><a href="http://localhost/mhamzaoui/webrsa/pages/display/recherche_suivi_stagiaire">Suivi des stagiaires</a></li>
+			<li><a href="http://localhost/mhamzaoui/webrsa/pages/display/demande_remboursement">Demande de remboursement</a></li>
+                    </ul>
+                </li>
+                                        <li id="menu2one">
+                    <a href="#">Tableaux de bord</a>                    <ul>
+			<li><a href="http://localhost/mhamzaoui/webrsa/pages/display/indicateurs_mensuels">Indicateurs mensuels</a></li>
+                    </ul>
+                </li>
+                                            <li id="menu3one">
+                        <a href="#">Administration</a>                        <ul>
+                            <li><a href="http://localhost/mhamzaoui/webrsa/droits/edit">Droits</a></li>
+                            <li><a href="http://localhost/mhamzaoui/webrsa/parametrages">Paramétrage</a></li>
+			    <li><a href="#">Moteur de règle</a>				<ul>
+				    <li><a href="http://localhost/mhamzaoui/webrsa/pages/display/moteur_regle_1">Orientation</a></li>
+				    <li><a href="http://localhost/mhamzaoui/webrsa/pages/display/moteur_regle_2">Recherche dossier/allocataire</a></li>
+				    <li><a href="http://localhost/mhamzaoui/webrsa/pages/display/moteur_regle_3">Recherche orientation</a></li>
+				    <li><a href="http://localhost/mhamzaoui/webrsa/pages/display/moteur_regle_4">Recherche contrat d'insertion</a></li>
+				 <!--   <li><a href="/mhamzaoui/webrsa/pages/display/moteur_regle_2">Contrat d&#039;insertion</a></li> -->
+				</ul>
+			    </li>
+			    <li><a href="#">Paiement allocation</a>				<ul>
+				    <li><a href="http://localhost/mhamzaoui/webrsa/pages/display/criteres_paiements_allocations">Listes nominatives</a></li>
+				    <li><a href="http://localhost/mhamzaoui/webrsa/pages/display/criteres_mandats_paiements">Mandats mensuels</a></li>
+				</ul>
+			    </li>
+                        <!--  <li><a href="#">Intégration flux</a></li>
+                            <li><a href="#">Gestion des logs</a></li>
+                            <li><a href="#">Gestion des éditions</a></li>-->
+                        </ul>
+                    </li>
+                        <li id="menu4one"><a href="http://localhost/mhamzaoui/webrsa/users/logout">Déconnexion webrsa</a></li>
+                    </ul>
+    </div>
+</div>
+
+
+              <!--  -->
+
+    <div id="pageCartouche">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Groupe</th>
+                    <th>Service instructeur</th>
+                    <!-- <th>Zones géographiques</th> -->
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td> Hamzaoui </td>
+                    <td> Michel </td>
+                    <td> Administrateurs </td>
+                    <td> Service Social Départemental </td>
+                    <!--<td>
+                        <ul>
+                                                    </ul>
+                    </td>-->
+                </tr>
+            </tbody>
+        </table>
+    </div>
+            <div id="pageContent">
+                                
+
+<div class="treemenu">
+    <h2><a href="http://localhost/mhamzaoui/webrsa/dossiers/view">Dossier RSA </a></h2>
+    <ul>
+        <li><a href="http://localhost/mhamzaoui/webrsa/personnes">Composition du foyer</a>            <a class="toggler" href="#"><img alt="Étendre" src="suivi_parcours_insertion_fichiers/bullet_toggle_plus.png"></a><ul style="display: none;">
+                            </ul>
+        </li>
+        <!-- TODO: permissions à partir d'ici et dans les fichiers concernés -->
+        <li><span>Informations foyer</span>
+            <a class="toggler" href="#"><img alt="Étendre" src="suivi_parcours_insertion_fichiers/bullet_toggle_plus.png"></a><ul style="display: none;">
+                                    <li><a href="http://localhost/mhamzaoui/webrsa/adressesfoyers">Adresses</a>                                            </li>
+                
+                                    <li>
+                        <a href="http://localhost/mhamzaoui/webrsa/modescontact">Modes de contact</a>                    </li>
+                
+                                    <li>
+                        <a href="http://localhost/mhamzaoui/webrsa/avispcgdroitrsa">Avis PCG droit rsa</a>                    </li>
+                
+                                    <li>
+                        <a href="http://localhost/mhamzaoui/webrsa/infosfinancieres">Informations financières</a>                    </li>
+                
+                                    <li><span>Situation dossier rsa</span>
+                        	  <a class="toggler" href="#"><img alt="Étendre" src="suivi_parcours_insertion_fichiers/bullet_toggle_plus.png"></a><ul style="display: none;">
+					<li>
+					    <a href="http://localhost/mhamzaoui/webrsa/detailsdroitsrsa">Détails du droit RSA</a>					</li>
+					<li>
+					  <a href="http://localhost/mhamzaoui/webrsa/pages/display/historique_du_droit">Historique du droit</a>					</li>
+					<li>
+					  <a href="http://localhost/mhamzaoui/webrsa/pages/display/liste_de_pdo">Consultation dossier PDO</a>					</li>
+				      
+				      <li>
+					  <a href="http://localhost/mhamzaoui/webrsa/pages/display/liste_des_indus">Liste des indus</a>				      </li>
+
+				  </ul>
+                    </li>
+                
+                                   <li>
+                        <a href="http://localhost/mhamzaoui/webrsa/suivisinstruction">Suivi instruction du dossier</a>                    </li>
+                                                   <li>
+                        <a href="http://localhost/mhamzaoui/webrsa/detailsdroitsrsa">Détails du droit RSA</a>                    </li>
+                            </ul>
+        </li>
+
+                    <li><a href="http://localhost/mhamzaoui/webrsa/dspfs/view">Données socio-professionnelles</a></li>        	<li>
+	    <a href="http://localhost/mhamzaoui/webrsa/pages/display/suivi_parcours_insertion">Suivi du parcours d'insertion</a>	</li>
+            </ul>
+</div>
+
+    <div class="with_treemenu">
+	<h1>Suivi parcours d'insertion</h1><br>
+	<div id="">
+	<h2>Étape 1 : Instruction dossier</h2>
+	    <table>
+		<tbody>
+		    <tr class="odd">
+			<th style="border-color: white; width: 250px; text-align: center;" colspan="4">Parcours demandeur</th>
+			<th style="border-color: white; width: 250px; text-align: center;" colspan="4">Parcours conjoint</th>
+		    </tr>
+		    <tr class="even">
+			<td style="text-align: center; vertical-align: middle;">Service instructeur</td>
+			<td style="text-align: center; vertical-align: middle;">Date demande</td>
+			<td style="text-align: center; vertical-align: middle;">Réalisé</td>
+			<td style="text-align: center; vertical-align: middle;">Action</td>
+			<td style="text-align: center; vertical-align: middle;">Service instructeur</td>
+			<td style="text-align: center; vertical-align: middle;">Date demande</td>
+			<td style="text-align: center; vertical-align: middle;">Réalisé</td>
+			<td style="text-align: center; vertical-align: middle;">Action</td>
+		    </tr>
+		    <tr class="odd">
+			<td style="text-align: left; vertical-align: middle;">Service Social Départemental</td>
+			<td style="text-align: left; vertical-align: middle;">14/04/2009</td>
+			<td style="text-align: center; vertical-align: middle;"><img src="suivi_parcours_insertion_fichiers/accept.png" alt=""></td>
+			<td style="text-align: center; vertical-align: middle;"><a href="" title=""><img src="suivi_parcours_insertion_fichiers/zoom.png">Voir</a>	</td>
+			<td style="text-align: left; vertical-align: middle;">CAF Ville de Pantin</td>
+			<td style="text-align: left; vertical-align: middle;">22/05/2009</td>
+			<td style="text-align: center; vertical-align: middle;"><img src="suivi_parcours_insertion_fichiers/accept.png" alt=""></td>
+			<td style="text-align: center; vertical-align: middle;"><a href="" title=""><img src="suivi_parcours_insertion_fichiers/zoom.png">Voir</a>	</td>
+		    </tr>
+		</tbody>
+	    </table>
+	</div><br>
+	<div id="">
+	<h2>Étape 2 : Orientation</h2>
+	    <table>
+		<tbody>
+		    <tr class="odd">
+			<th style="border-color: white; width: 250px; text-align: center;" colspan="4">Parcours demandeur</th>
+			<th style="border-color: white; width: 250px; text-align: center;" colspan="4">Parcours conjoint</th>
+		    </tr>
+		    <tr class="even">
+			<td style="text-align: center;">Structure référente</td>
+			<td style="text-align: center;">Date orientation</td>
+			<td style="text-align: center; vertical-align: middle;">Réalisé</td>
+			<td style="text-align: center; vertical-align: middle;">Action</td>
+			<td style="text-align: center; vertical-align: middle;">Structure référente</td>
+			<td style="text-align: center; vertical-align: middle;">Date orientation</td>
+			<td style="text-align: center; vertical-align: middle;">Réalisé</td>
+			<td style="text-align: center; vertical-align: middle;">Action</td>
+		    </tr>
+		    <tr class="odd">
+			<td style="text-align: left; vertical-align: middle;">Pôle Emploi</td>
+			<td style="text-align: left; vertical-align: middle;">14/04/2009</td>
+			<td style="text-align: center; vertical-align: middle;"><img src="suivi_parcours_insertion_fichiers/accept.png" alt=""></td>
+			<td style="text-align: center; vertical-align: middle;"><a href="" title=""><img src="suivi_parcours_insertion_fichiers/zoom.png">Voir</a>	</td>
+			<td style="text-align: left; vertical-align: middle;">CCAS Ville de Pantin</td>
+			<td style="text-align: left; vertical-align: middle;">22/05/2009</td>
+			<td style="text-align: center; vertical-align: middle;"><img src="suivi_parcours_insertion_fichiers/accept.png" alt=""></td>
+			<td style="text-align: center; vertical-align: middle;"><a href="" title=""><img src="suivi_parcours_insertion_fichiers/zoom.png">Voir</a>	</td>
+		    </tr>
+		</tbody>
+	    </table>
+	</div><br>
+	<div id="">
+	<h2>Étape 3 : Entretien structure référente</h2>
+	    <table>
+		<tbody>
+		    <tr class="odd">
+			<th style="border-color: white; width: 250px; text-align: center;" colspan="3">Parcours demandeur</th>
+			<th style="border-color: white; width: 250px; text-align: center;" colspan="3">Parcours conjoint</th>
+		    </tr>
+		    <tr class="even">
+			<td style="text-align: center; vertical-align: middle;">Date entretien</td>
+			<td style="text-align: center; vertical-align: middle;">Réalisé</td>
+			<td style="text-align: center; vertical-align: middle;">Action</td>
+			<td style="text-align: center; vertical-align: middle;">Date entretien</td>
+			<td style="text-align: center; vertical-align: middle;">Réalisé</td>
+			<td style="text-align: center; vertical-align: middle;">Action</td>
+		    </tr>
+		    <tr class="odd">
+			<td style="text-align: left; vertical-align: middle;">25/04/2009</td>
+			<td style="text-align: center; vertical-align: middle;"><img src="suivi_parcours_insertion_fichiers/accept.png" alt=""></td>
+			<td style="text-align: center; vertical-align: middle;"><a href="" title=""><img src="suivi_parcours_insertion_fichiers/zoom.png">Voir</a>	</td>
+			<td style="text-align: left; vertical-align: middle;"></td>
+			<td style="text-align: center; vertical-align: middle;"><img src="suivi_parcours_insertion_fichiers/cancel.png" alt=""></td>
+			<td style="text-align: center; vertical-align: middle;"><a href="" title=""><img src="suivi_parcours_insertion_fichiers/zoom.png">Voir</a>	</td>
+		    </tr>
+		</tbody>
+	    </table>
+	</div><br>
+	<div id="">
+	<h2>Étape 4 : Signature contrat d'insertion</h2>
+	    <table>
+		<tbody>
+		    <tr class="odd">
+			<th style="border-color: white; width: 250px; text-align: center; vertical-align: middle;" colspan="3">Parcours demandeur</th>
+			<th style="border-color: white; width: 250px; text-align: center; vertical-align: middle;" colspan="3">Parcours conjoint</th>
+		    </tr>
+		    <tr class="even">
+			<td style="text-align: center; vertical-align: middle;">Date signature</td>
+			<td style="text-align: center; vertical-align: middle;">Réalisé</td>
+			<td style="text-align: center; vertical-align: middle;">Action</td>
+			<td style="text-align: center; vertical-align: middle;">Date signature</td>
+			<td style="text-align: center; vertical-align: middle;">Réalisé</td>
+			<td style="text-align: center; vertical-align: middle;">Action</td>
+		    </tr>
+		    <tr class="odd">
+			<td style="text-align: left; vertical-align: middle;">17/05/2009</td>
+			<td style="text-align: center; vertical-align: middle;"><img src="suivi_parcours_insertion_fichiers/accept.png" alt=""></td>
+			<td style="text-align: center; vertical-align: middle;"><a href="" title=""><img src="suivi_parcours_insertion_fichiers/zoom.png">Voir</a>	</td>
+			<td style="text-align: left; vertical-align: middle;"></td>
+			<td style="text-align: center; vertical-align: middle;"><img src="suivi_parcours_insertion_fichiers/cancel.png" alt=""></td>
+			<td style="text-align: center; vertical-align: middle;"><a href="" title=""><img src="suivi_parcours_insertion_fichiers/zoom.png">Voir</a>	</td>
+		    </tr>
+		</tbody>
+	    </table>
+	</div><br>
+	<div id="">
+	<h2>Étape 5 : Validation contrat d'insertion</h2>
+	    <table>
+		<tbody>
+		    <tr class="odd">
+			<th style="border-color: white; width: 250px; text-align: center; vertical-align: middle;" colspan="3">Parcours demandeur</th>
+			<th style="border-color: white; width: 250px; text-align: center; vertical-align: middle;" colspan="3">Parcours conjoint</th>
+		    </tr>
+		    <tr class="even">
+			<td style="text-align: center; vertical-align: middle;">Date validation</td>
+			<td style="text-align: center; vertical-align: middle;">Réalisé</td>
+			<td style="text-align: center; vertical-align: middle;">Action</td>
+			<td style="text-align: center; vertical-align: middle;">Date validation</td>
+			<td style="text-align: center; vertical-align: middle;">Réalisé</td>
+			<td style="text-align: center; vertical-align: middle;">Action</td>
+		    </tr>
+		    <tr class="odd">
+			<td style="text-align: left; vertical-align: middle;">23/05/2009</td>
+			<td style="text-align: center; vertical-align: middle;"><img src="suivi_parcours_insertion_fichiers/accept.png" alt=""></td>
+			<td style="text-align: center; vertical-align: middle;"><a href="" title=""><img src="suivi_parcours_insertion_fichiers/zoom.png">Voir</a>	</td>
+			<td style="text-align: left; vertical-align: middle;"></td>
+			<td style="text-align: center; vertical-align: middle;"><img src="suivi_parcours_insertion_fichiers/cancel.png" alt=""></td>
+			<td style="text-align: center; vertical-align: middle;"><a href="" title=""><img src="suivi_parcours_insertion_fichiers/zoom.png">Voir</a>	</td>
+		    </tr>
+		</tbody>
+	    </table>
+	</div><br>
+	<div id="">
+	<h2>Étape 6 : Actions d'insertion engagées</h2>
+	    <table>
+		<tbody>
+		    <tr class="odd">
+			<th style="border-color: white; width: 250px; text-align: center; vertical-align: middle;" colspan="4">Parcours demandeur</th>
+			<th style="border-color: white; width: 250px; text-align: center; vertical-align: middle;" colspan="4">Parcours conjoint</th>
+		    </tr>
+		    <tr class="even">
+			<td style="text-align: center; vertical-align: middle;">Actions engagées</td>
+			<td style="text-align: center; vertical-align: middle;">Date dernière action</td>
+			<td style="text-align: center; vertical-align: middle;">Réalisé</td>
+			<td style="text-align: center; vertical-align: middle;">Action</td>
+			<td style="text-align: center; vertical-align: middle;">Actions engagées</td>
+			<td style="text-align: center; vertical-align: middle;">Date dernière action</td>
+			<td style="text-align: center; vertical-align: middle;">Réalisé</td>
+			<td style="text-align: center; vertical-align: middle;">Action</td>
+		    </tr>
+		    <tr class="odd">
+			<td style="text-align: center; vertical-align: middle;">2</td>
+			<td style="text-align: left; vertical-align: middle;">05/07/2009</td>
+			<td style="text-align: center; vertical-align: middle;"><img src="suivi_parcours_insertion_fichiers/accept.png" alt=""></td>
+			<td style="text-align: center; vertical-align: middle;"><a href="" title=""><img src="suivi_parcours_insertion_fichiers/zoom.png">Voir</a>	</td>
+			<td style="text-align: left; vertical-align: middle;"></td>
+			<td style="text-align: left; vertical-align: middle;"></td>
+			<td style="text-align: center; vertical-align: middle;"><img src="suivi_parcours_insertion_fichiers/cancel.png" alt=""></td>
+			<td style="text-align: center; vertical-align: middle;"><a href="" title=""><img src="suivi_parcours_insertion_fichiers/zoom.png">Voir</a>	</td>
+		    </tr>
+		</tbody>
+	    </table>
+	</div><br>
+	<div id="">
+	<h2>Étape 7 : Bilan de fin de contrat</h2>
+	    <table>
+		<tbody>
+		    <tr class="odd">
+			<th style="border-color: white; width: 250px; text-align: center;" colspan="4">Parcours demandeur</th>
+			<th style="border-color: white; width: 250px; text-align: center;" colspan="4">Parcours conjoint</th>
+		    </tr>
+		    <tr class="even">
+			<td style="text-align: center; vertical-align: middle;">Date bilan</td>
+			<td style="text-align: center; vertical-align: middle;">Bilan</td>
+			<td style="text-align: center; vertical-align: middle;">Réalisé</td>
+			<td style="text-align: center; vertical-align: middle;">Action</td>
+			<td style="text-align: center; vertical-align: middle;">Date bilan</td>
+			<td style="text-align: center; vertical-align: middle;">Bilan</td>
+			<td style="text-align: center; vertical-align: middle;">Réalisé</td>
+			<td style="text-align: center; vertical-align: middle;">Action</td>
+		    </tr>
+		    <tr class="odd">
+			<td style="text-align: left; vertical-align: middle;"></td>
+			<td style="text-align: left; vertical-align: middle;">Non défini</td>
+			<td style="text-align: center; vertical-align: middle;"><img src="suivi_parcours_insertion_fichiers/cancel.png" alt=""></td>
+			<td style="text-align: center; vertical-align: middle;"><a href="" title=""><img src="suivi_parcours_insertion_fichiers/zoom.png">Voir</a>	</td>
+			<td style="text-align: left; vertical-align: middle;"></td>
+			<td style="text-align: left; vertical-align: middle;">Non défini</td>
+			<td style="text-align: center; vertical-align: middle;"><img src="suivi_parcours_insertion_fichiers/cancel.png" alt=""></td>
+			<td style="text-align: center; vertical-align: middle;"><a href="" title=""><img src="suivi_parcours_insertion_fichiers/zoom.png">Voir</a>	</td>
+		    </tr>
+		</tbody>
+	    </table>
+	</div><br>
+	<div id="">
+	<h2>Étape 8 : Poursuite du droit</h2>
+	    <table>
+		<tbody>
+		    <tr class="odd">
+			<th style="border-color: white; width: 250px; text-align: center;" colspan="4">Parcours demandeur</th>
+			<th style="border-color: white; width: 250px; text-align: center;" colspan="4">Parcours conjoint</th>
+		    </tr>
+		    <tr class="even">
+			<td style="text-align: center; vertical-align: middle;">Date commission pluridisciplinaire</td>
+			<td style="text-align: center; vertical-align: middle;">Décision</td>
+			<td style="text-align: center; vertical-align: middle;">Réalisé</td>
+			<td style="text-align: center; vertical-align: middle;">Action</td>
+			<td style="text-align: center; vertical-align: middle;">Date commission pluridisciplinaire</td>
+			<td style="text-align: center; vertical-align: middle;">Décision</td>
+			<td style="text-align: center; vertical-align: middle;">Réalisé</td>
+			<td style="text-align: center; vertical-align: middle;">Action</td>
+		    </tr>
+		    <tr class="odd">
+			<td style="text-align: left; vertical-align: middle;"></td>
+			<td style="text-align: left; vertical-align: middle;">Non défini</td>
+			<td style="text-align: center; vertical-align: middle;"><img src="suivi_parcours_insertion_fichiers/cancel.png" alt=""></td>
+			<td style="text-align: center; vertical-align: middle;"><a href="" title=""><img src="suivi_parcours_insertion_fichiers/zoom.png">Voir</a></td>
+			<td style="text-align: left; vertical-align: middle;"></td>
+			<td style="text-align: left; vertical-align: middle;">Non défini</td>
+			<td style="text-align: center; vertical-align: middle;"><img src="suivi_parcours_insertion_fichiers/cancel.png" alt=""></td>
+			<td style="text-align: center; vertical-align: middle;"><a href="" title=""><img src="suivi_parcours_insertion_fichiers/zoom.png">Voir</a></td>
+		    </tr>
+		</tbody>
+	    </table>
+	</div><br>
+
+  <div class="clearer"><hr></div>            </div>
+            <div id="pageFooter">
+    webrsa v. 1.0.4.398 (CakePHP v. 1.2.2.8120) - 2009@Adullact.
+    Page construite en 0,38 secondes.    $LastChangedDate: 2009-07-27 17:51:26 +0200 (lun., 27 juil. 2009)$
+</div>
+        </div>
+    </div></body></html>

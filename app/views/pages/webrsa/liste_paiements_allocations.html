@@ -1,0 +1,243 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xml:lang="fr" xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head>
+
+    
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">        <title>
+            Liste des allocations        </title>
+        
+	<link rel="stylesheet" type="text/css" href="liste_paiements_allocations_fichiers/all_003.css" media="all">
+
+	<link rel="stylesheet" type="text/css" href="liste_paiements_allocations_fichiers/all.css" media="all">
+
+	<link rel="stylesheet" type="text/css" href="liste_paiements_allocations_fichiers/screen.css" media="screen,presentation">
+
+	<link rel="stylesheet" type="text/css" href="liste_paiements_allocations_fichiers/print.css" media="print">
+
+	<link rel="stylesheet" type="text/css" href="liste_paiements_allocations_fichiers/menu.css" media="all">
+<link rel="stylesheet" type="text/css" href="liste_paiements_allocations_fichiers/all_002.css" media="all">        <script type="text/javascript" src="liste_paiements_allocations_fichiers/prototype.js"></script><script type="text/javascript" src="liste_paiements_allocations_fichiers/tooltip.js"></script><script type="text/javascript" src="liste_paiements_allocations_fichiers/webrsa.js"></script>        <!-- TODO: à la manière de cake, dans les vues qui en ont besoin -->
+        <script type="text/javascript">
+            // prototype
+            document.observe("dom:loaded", function() {
+                window.history.forward();
+
+                var baseUrl = 'http://localhost/mhamzaoui/webrsa/';
+                make_treemenus( baseUrl );
+//                 make_table_tooltips();
+                make_folded_forms();
+                mkTooltipTables();
+
+                // External links
+                $$('a.external').each( function ( link ) {
+                    $( link ).onclick = function() {
+                        window.open( $( link ).href, 'external' ); return false;
+                    };
+                } );
+            });
+        </script>
+        <script type="text/javascript">
+        //<![CDATA[
+            function printit(){
+                if (window.print) {
+                window.print() ;
+                } else {
+                    var WebBrowser = '<object id="WebBrowser1" WIDTH=0 HEIGHT=0 CLASSID="CLSID:8856F961-340A-11D0-A96B-00C04FD705A2"></object>';
+                    document.body.insertAdjacentHTML('beforeEnd', WebBrowser);
+                        WebBrowser1.ExecWB(6, 2);//Use a 1 vs. a 2 for a prompting dialog box    WebBrowser1.outerHTML = "";
+                }
+            }
+        //]]>
+        </script>
+
+        <!--[if IE]>
+            <style type="text/css" media="screen, presentation">
+                .treemenu { position: relative; }
+                .treemenu, .treemenu *, #pageMenu, #pageWrapper { zoom: 1; }
+            </style>
+        <![endif]-->
+    </head><body>
+            <div id="pageWrapper">
+            <div id="pageHeader">
+    <!--        <div id="whois">&nbsp;</div>
+    -->
+    &nbsp;
+</div>            <div id="menu1Wrapper">
+    <div class="menu1">
+        <ul>
+                                    <li class="" id="menu1one" onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
+                    <a href="#">Gestion des cohortes</a>                    <ul>
+                    <!-- AJOUT POUR LA GESTION DES CONTRATS D'INSERTION (Cohorte) -->
+                        <li class="" onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
+                            <a href="http://localhost/mhamzaoui/webrsa/cohortesci" title="Gestion des contrats">Contrat insertion</a>                        </li> 
+                    <!-- MODIF POUR LA GESTION DES ORIENTATIONS (Cohorte) -->
+                        <li class="" onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
+                            <a href="#">Orientation</a>                                <ul>
+                                    <li><a href="http://localhost/mhamzaoui/webrsa/cohortes/nouvelles" title="Nouvelles demandes">Nouvelles demandes</a></li>
+                                    <li><a href="http://localhost/mhamzaoui/webrsa/cohortes/orientees" title="Demandes orientées">Demandes orientées</a></li>
+                                    <li><a href="http://localhost/mhamzaoui/webrsa/cohortes/enattente" title="Demandes en attente">En attente</a></li>
+                                    <!-- <li><a href="/mhamzaoui/webrsa/cohortes/exports_index" title="Fichiers exportés">Fichiers Exportés</a></li> -->
+                                    <!--<li><a href="#">Liste suivant critères</a></li>
+                                    <li><a href="#">Gestion des éditions</a></li> -->
+                                </ul>
+                        </li>
+                        <li class="" onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
+                            <a href="http://localhost/mhamzaoui/webrsa/pages/display/recherche_indus">Indus</a>                        </li> 
+                    </ul>
+                </li> 
+                                        <li id="menu2one">
+                    <a href="#">Recherche multicritères</a>                    <ul>
+                        <li><a href="http://localhost/mhamzaoui/webrsa/">Par dossier / allocataire</a></li>
+                        <li><a href="http://localhost/mhamzaoui/webrsa/criteres">Par Orientation</a></li>
+                        <li><a href="http://localhost/mhamzaoui/webrsa/criteresci">Par Contrat insertion</a></li>
+                    </ul>
+                </li>
+                                        <li id="menu2one">
+                    <a href="#">Insertion</a>                    <ul>
+                        <li><a href="http://localhost/mhamzaoui/webrsa/pages/display/liste_appels_a_projet">Appels à projet</a></li>
+			<li><a href="http://localhost/mhamzaoui/webrsa/pages/display/recherche_suivi_stagiaire">Suivi des stagiaires</a></li>
+			<li><a href="http://localhost/mhamzaoui/webrsa/pages/display/demande_remboursement">Demande de remboursement</a></li>
+                    </ul>
+                </li>
+                                        <li id="menu2one">
+                    <a href="#">Tableaux de bord</a>                    <ul>
+			<li><a href="http://localhost/mhamzaoui/webrsa/pages/display/indicateurs_mensuels">Indicateurs mensuels</a></li>
+                    </ul>
+                </li>
+                                            <li id="menu3one">
+                        <a href="#">Administration</a>                        <ul>
+                            <li><a href="http://localhost/mhamzaoui/webrsa/droits/edit">Droits</a></li>
+                            <li><a href="http://localhost/mhamzaoui/webrsa/parametrages">Paramétrage</a></li>
+			    <li><a href="#">Moteur de règle</a>				<ul>
+				    <li><a href="http://localhost/mhamzaoui/webrsa/pages/display/moteur_regle_1">Orientation</a></li>
+				    <li><a href="http://localhost/mhamzaoui/webrsa/pages/display/moteur_regle_2">Recherche dossier/allocataire</a></li>
+				    <li><a href="http://localhost/mhamzaoui/webrsa/pages/display/moteur_regle_3">Recherche orientation</a></li>
+				    <li><a href="http://localhost/mhamzaoui/webrsa/pages/display/moteur_regle_4">Recherche contrat d'insertion</a></li>
+				 <!--   <li><a href="/mhamzaoui/webrsa/pages/display/moteur_regle_2">Contrat d&#039;insertion</a></li> -->
+				</ul>
+			    </li>
+			    <li><a href="#">Paiement allocation</a>				<ul>
+				    <li><a href="http://localhost/mhamzaoui/webrsa/pages/display/criteres_paiements_allocations">Listes nominatives</a></li>
+				    <li><a href="http://localhost/mhamzaoui/webrsa/pages/display/criteres_mandats_paiements">Mandats mensuels</a></li>
+				</ul>
+			    </li>
+                        <!--  <li><a href="#">Intégration flux</a></li>
+                            <li><a href="#">Gestion des logs</a></li>
+                            <li><a href="#">Gestion des éditions</a></li>-->
+                        </ul>
+                    </li>
+                        <li id="menu4one"><a href="http://localhost/mhamzaoui/webrsa/users/logout">Déconnexion webrsa</a></li>
+                    </ul>
+    </div>
+</div>
+
+
+              <!--  -->
+
+    <div id="pageCartouche">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Groupe</th>
+                    <th>Service instructeur</th>
+                    <!-- <th>Zones géographiques</th> -->
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td> Hamzaoui </td>
+                    <td> Michel </td>
+                    <td> Administrateurs </td>
+                    <td> Service Social Départemental </td>
+                    <!--<td>
+                        <ul>
+                                                    </ul>
+                    </td>-->
+                </tr>
+            </tbody>
+        </table>
+    </div>
+            <div id="pageContent">
+                                
+
+<div class="">
+    <h1>Liste des allocations pour le mois de : Juillet 2009</h1>
+    
+         <table class="tooltips_oupas">
+            <thead>
+                <tr>
+                    <th>Numéro de dossier</th>
+                    <th>Numéro CAF</th>
+                    <th>Nom Prénom de l'allocataire</th>
+                    <th>Nom Prénom du bénéficiaire</th>
+		    <th>Date de naissance de l'allocataire</th>
+		    <th>Type de l'allocation</th>
+                    <th>Montant de l'allocation</th>
+		    <th colspan="1">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="odd dynamic" id="innerTableTrigger0">
+		    <td>00003975093</td>
+		    <td>000876500000000</td>
+                    <td>Mme MARTIN VERONIQUE</td>
+                    <td>Mme MARTIN VERONIQUE</td>
+		    <td>31/07/1977</td>
+                    <td>rSa socle majoration parent isolé</td>
+		    <td>583,75</td>
+		    <td><a href="" title=""><img src="liste_paiements_allocations_fichiers/zoom.png"> Voir</a></td>
+		</tr>
+                <tr class="even dynamic" id="innerTableTrigger0">
+		    <td>00002987093</td>
+		    <td>000376500000000</td>
+                    <td>Mme COLOMBET Ingrid</td>
+                    <td>M. COLOMBET Julien</td>
+		    <td>30/10/1964</td>
+                    <td>rSa socle</td>
+		    <td>681,94</td>
+		    <td><a href="" title=""><img src="liste_paiements_allocations_fichiers/zoom.png"> Voir</a></td>
+		</tr>
+                <tr class="odd dynamic" id="innerTableTrigger0">
+		    <td>00006989093</td>
+		    <td>000214300000000</td>
+                    <td>M. RIPPERT Lucien</td>
+                    <td>Mme RIPPERT Viviane</td>
+		    <td>13/05/1973</td>
+                    <td>rSa socle</td>
+		    <td>454,54</td>
+		    <td><a href="" title=""><img src="liste_paiements_allocations_fichiers/zoom.png"> Voir</a></td>
+		</tr>
+                <tr class="even dynamic" id="innerTableTrigger0">
+		    <td>00008972093</td>
+		    <td>000634800000000</td>
+                    <td>M. DUBOIS Jean-Pierre</td>
+                    <td>Mme DUBOIS Christine</td>
+		    <td>13/11/1954</td>
+                    <td>rSa socle local</td>
+		    <td>818,33</td>
+		    <td><a href="" title=""><img src="liste_paiements_allocations_fichiers/zoom.png"> Voir</a></td>
+		</tr>
+                <tr class="odd dynamic" id="innerTableTrigger0">
+		    <td>00008553093</td>
+		    <td>000332400000000</td>
+                    <td>Mlle CHEVALIER Cindy</td>
+                    <td>Mlle CHEVALIER Cindy</td>
+		    <td>25/12/1986</td>
+                    <td>rSa socle majoration parent isolé</td>
+		    <td>583,75</td>
+		    <td><a href="" title=""><img src="liste_paiements_allocations_fichiers/zoom.png"> Voir</a></td>
+		</tr>
+            </tbody>
+        </table>
+    </div><br>
+	<ul class="actionMenu">
+            <li><a href=""><img src="liste_paiements_allocations_fichiers/printer.png" alt=""> Imprimer la liste</a></li><li><a href=""><img src="liste_paiements_allocations_fichiers/page_white_get.png" alt=""> Exporter la liste</a></li>
+        </ul>
+ 
+            </div>
+            <div id="pageFooter">
+    webrsa v. 1.0.4.398 (CakePHP v. 1.2.2.8120) - 2009@Adullact.
+    Page construite en 0,30 secondes.    $LastChangedDate: 2009-07-27 17:51:26 +0200 (lun., 27 juil. 2009)$
+</div>
+        </div>
+    <div style="position: absolute; top: 261px; left: 239px; display: none;" class="tooltip">innerTable0</div><div style="display: none;" class="tooltip">innerTable0</div><div style="position: absolute; top: 293px; left: 487px; display: none;" class="tooltip">innerTable0</div><div style="position: absolute; top: 293px; left: 659px; display: none;" class="tooltip">innerTable0</div><div style="display: none;" class="tooltip">innerTable0</div><div style="display: none;" class="tooltip">innerTable0</div><div style="display: none;" class="tooltip">innerTable0</div><div style="display: none;" class="tooltip">innerTable0</div><div style="position: absolute; top: 299px; left: 294px; display: none;" class="tooltip">innerTable1</div><div style="position: absolute; top: 302px; left: 361px; display: none;" class="tooltip">innerTable1</div><div style="position: absolute; top: 327px; left: 487px; display: none;" class="tooltip">innerTable1</div><div style="position: absolute; top: 312px; left: 618px; display: none;" class="tooltip">innerTable1</div><div style="display: none;" class="tooltip">innerTable1</div><div style="display: none;" class="tooltip">innerTable1</div><div style="display: none;" class="tooltip">innerTable1</div><div style="display: none;" class="tooltip">innerTable1</div><div style="position: absolute; top: 333px; left: 334px; display: none;" class="tooltip">innerTable2</div><div style="position: absolute; top: 334px; left: 339px; display: none;" class="tooltip">innerTable2</div><div style="position: absolute; top: 369px; left: 487px; display: none;" class="tooltip">innerTable2</div><div style="display: none;" class="tooltip">innerTable2</div><div style="display: none;" class="tooltip">innerTable2</div><div style="display: none;" class="tooltip">innerTable2</div><div style="display: none;" class="tooltip">innerTable2</div><div style="display: none;" class="tooltip">innerTable2</div><div style="position: absolute; top: 378px; left: 326px; display: none;" class="tooltip">innerTable3</div><div style="position: absolute; top: 378px; left: 388px; display: none;" class="tooltip">innerTable3</div><div style="position: absolute; top: 388px; left: 480px; display: none;" class="tooltip">innerTable3</div><div style="display: none;" class="tooltip">innerTable3</div><div style="display: none;" class="tooltip">innerTable3</div><div style="display: none;" class="tooltip">innerTable3</div><div style="display: none;" class="tooltip">innerTable3</div><div style="display: none;" class="tooltip">innerTable3</div><div style="display: none;" class="tooltip">innerTable4</div><div style="position: absolute; top: 446px; left: 399px; display: none;" class="tooltip">innerTable4</div><div style="position: absolute; top: 412px; left: 488px; display: none;" class="tooltip">innerTable4</div><div style="display: none;" class="tooltip">innerTable4</div><div style="display: none;" class="tooltip">innerTable4</div><div style="display: none;" class="tooltip">innerTable4</div><div style="display: none;" class="tooltip">innerTable4</div><div style="display: none;" class="tooltip">innerTable4</div></body></html>

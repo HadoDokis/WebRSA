@@ -1,0 +1,1 @@
+<?php echo $xpaginator->paginationBlock( 'Contratinsertion', $this->passedArgs );?>

@@ -1,0 +1,246 @@
+/******************************************************************************
+    Général
+******************************************************************************/
+
+* {
+    line-height: 1.2;
+}
+
+body {
+    font-family: sans-serif;
+    font-size: 14px;
+}
+
+p, ul, ol, dl {
+    margin: 0.75em 0;
+}
+
+p {
+    line-height: 1.4em;
+    text-align: justify;
+}
+
+sup { vertical-align: super; }
+sub { vertical-align: sub; }
+sup, sub { font-size: 65%; }
+
+a { text-decoration: underline;}
+
+/******************************************************************************
+    Titres
+******************************************************************************/
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: normal;
+    line-height: 1.2em;
+}
+
+h1 {
+    font-size: 1.95em;
+}
+
+h2 {
+    font-size: 1.56em;
+}
+
+h3 {
+    font-size: 1.25em;
+}
+
+body.home h2 {
+    font-size: 1.95em;
+}
+
+body.home h3 {
+    font-size: 1.56em;
+}
+
+body.home h4 {
+    font-size: 1.25em;
+}
+
+/******************************************************************************
+    Abbréviations
+******************************************************************************/
+
+abbr, acronym, .abbr {
+    border-bottom: 1px dotted black;
+    cursor: help;
+}
+
+/* FIXME ? */
+
+*[lang|=en] abbr[lang|=fr], *[lang|=en] acronym[lang|=fr], *[lang|=en] .abbr[lang|=fr],
+*[lang|=fr] abbr[lang|=en], *[lang|=fr] acronym[lang|=en], *[lang|=fr] .abbr[lang|=en] {
+    font-style: normal;
+}
+
+/**[title] {
+    border-bottom: 1px dotted black;
+    cursor: help;
+}*/
+
+a[title] {
+    cursor: pointer;
+}
+
+
+/******************************************************************************
+    Mise en évidence
+******************************************************************************/
+
+b, strong {
+    font-weight: bold;
+}
+
+i, em/*, *[lang|=en]*/, cite {
+    font-style: italic;
+}
+
+*[lang|=en] *[lang|=fr], *[lang|=fr] *[lang|=en] {
+    font-style: italic;
+}
+
+/******************************************************************************
+    Code
+******************************************************************************/
+
+code {
+    font-family: monospace;
+    border: 1px solid silver;
+    background: #ffffdd;
+}
+
+/******************************************************************************
+    Listes
+******************************************************************************/
+
+ul {
+    list-style-type: disc;
+}
+
+ol {
+    list-style-type: decimal;
+}
+
+li {
+    margin-left: 1.8em;
+}
+
+/******************************************************************************
+    Citations
+******************************************************************************/
+
+q {
+    font-style: italic;
+    /*border-bottom: 1px dotted black;*/
+}
+
+blockquote {
+    border-bottom: 0;
+    border-left: 1px dotted black;
+    margin-left: 1em;
+    padding: 0 0.5em;
+}
+
+blockquote[title] {
+    border-bottom: 0;
+    border-left: 1px dotted black;
+    margin-left: 1em;
+    padding: 0 0.5em;
+}
+
+/******************************************************************************
+    Tableaux
+******************************************************************************/
+
+table {
+    border-collapse: collapse;
+    margin-top: 0.5em;
+}
+
+th, td {
+    padding: 0.25em 0.5em;
+    border: 1px solid black;
+    vertical-align: top;
+    background: white;
+}
+
+th {
+    font-weight: normal;
+    text-align: center;
+}
+
+thead th {
+    text-align: center;
+}
+
+table ol, table ul {
+    margin: 0;
+}
+
+table li {
+    margin-left: 1em;
+}
+
+caption {
+    line-height: 1em;
+    padding: 0 0 0.5em 0;
+    caption-side: bottom;
+}
+
+tbody th {
+    text-align: left;
+}
+
+td.number {
+    text-align: right;
+}
+/* FIXME */
+div.submit {
+    text-align: center;
+    padding: 0.5em;
+}
+
+/******************************************************************************
+    Droits
+******************************************************************************/
+table#tableDroits {
+        border-collapse: separate;
+        color: black;
+}
+#tableDroits th {
+        border: 1px solid Black;
+        padding-left: 10px;
+        padding-right: 10px;
+        text-align: left;
+        background-color: #f4f4f4;
+}
+#tableDroits td {
+        border: 1px solid Black;
+        border-top: 0;
+        padding-left: 10px;
+        padding-right: 10px;
+}
+#tableDroits tr {
+        background: transparent;
+        color: black;
+}
+#tableDroits tr.ligneProfil {
+        background-color: #DFEE8F;
+}
+#tableDroits tr.altLigneProfil {
+        background-color: #CFF358;
+}
+#tableDroits tr.ligneUtilisateur {
+        background-color: #E8E8E8;
+}
+#tableDroits tr.altLigneUtilisateur {
+        background-color: #D9D9D9;
+}
+#tableDroits img {
+        border: 0;
+}
+.droits {
+    color: black;
+}
