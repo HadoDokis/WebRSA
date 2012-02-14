@@ -517,7 +517,13 @@
 				$this->_ged( $contratinsertion, 'Contratinsertion/contratinsertioncg58.odt' );
 			}
 			else{
-				$this->_ged( $contratinsertion, 'Contratinsertion/contratinsertion.odt' );
+				if( strtotime($contratinsertion['Contratinsertion']['date_saisi_ci']) >= strtotime('2012-02-10' ) ) {
+					$this->_ged( $contratinsertion, 'Contratinsertion/contratinsertion.odt' );
+				}
+				else {
+					$this->_ged( $contratinsertion, 'Contratinsertion/contratinsertionold.odt' );
+                }
+// 				$this->_ged( $contratinsertion, 'Contratinsertion/contratinsertion.odt' );
 			}
 		}
 
