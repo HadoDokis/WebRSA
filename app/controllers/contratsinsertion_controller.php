@@ -1144,10 +1144,10 @@
 				*   Situation dossier rsa : dtclorsa -> date de radiation
 				*   Suspension droit : ddsusdrorsa -> date de suspension
 				*/
-				if( isset( $situationdossierrsa ) ){
+				if( isset( $situationdossierrsa ) && !empty($situationdossierrsa['Situationdossierrsa']['dtclorsa']) ){
 					$this->data['Contratinsertion']['dateradiationparticulier'] = $situationdossierrsa['Situationdossierrsa']['dtclorsa'];
 				}
-				if( isset( $suspension ) && !empty( $suspension ) ){
+				if( isset( $suspension ) && !empty( $suspension[0]['Suspensiondroit']['ddsusdrorsa'] ) ){
 					$this->data['Contratinsertion']['datesuspensionparticulier'] = $suspension[0]['Suspensiondroit']['ddsusdrorsa'];
 				}
 

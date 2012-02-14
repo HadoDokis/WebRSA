@@ -15,9 +15,9 @@
                 <p class="error">Aucun référent n'est lié au parcours de cette personne.</p>
             <?php endif;?>
 
-			<?php /* if( !empty( $orientstructEmploi ) ) :?>
+			<?php  if( !empty( $orientstructEmploi ) ) :?>
 				<p class="error">Cette personne possède actuellement une orientation professionnelle. Impossible de créer un CER.</p>	
-			<?php endif; */?>
+			<?php endif; ?>
 
 
 			<?php if( empty( $contratsinsertion ) ):?>
@@ -25,7 +25,7 @@
 			<?php endif;?>
 			<ul class="actionMenu">
 				<?php
-					$block = empty( $orientstruct )/* || !empty( $orientstructEmploi )*/;
+					$block = empty( $orientstruct ) || !empty( $orientstructEmploi );
 
 					echo '<li>'.$xhtml->addLink(
 						'Ajouter un CER',
