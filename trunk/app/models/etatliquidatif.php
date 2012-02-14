@@ -592,6 +592,9 @@
 				$this->cakeError( 'error500' );
 			}
 
+			$PaiementfoyerModel = ClassRegistry::init( 'Paiementfoyer' );
+			$sqPaiementfoyerIdPourAllocataire = $PaiementfoyerModel->sqPaiementfoyerIdPourAllocataire( 'Personne.id' );
+
 			$querydata = array(
 				'fields' => array(
 					'Personne.id',
@@ -657,20 +660,7 @@
 							// INFO: C'EST JUSTE LE DERNIER POUR LE FOYER
 							// FIXME: à faire dans importcsvapres
 							// FIXME: DEM ou CJT
-							'Paiementfoyer.id IN ( SELECT MAX(paiementsfoyers.id)
-								FROM paiementsfoyers
-								WHERE paiementsfoyers.topribconj = (
-									CASE WHEN (
-										SELECT prestations.rolepers
-											FROM prestations
-											WHERE prestations.personne_id = "Personne"."id"
-												AND prestations.natprest = \'RSA\'
-												AND prestations.rolepers IN ( \'DEM\', \'CJT\' )
-									)
-									= \'DEM\' THEN false ELSE true END
-								)
-								GROUP BY paiementsfoyers.foyer_id
-							)'
+							"Paiementfoyer.id IN ( {$sqPaiementfoyerIdPourAllocataire} )"
 						)
 					),
 					array(
@@ -1014,6 +1004,24 @@
 					$TiersprestataireapreModel->fields()
 				);
 
+				// Paiement foyer pour la personne
+				$PaiementfoyerModel = ClassRegistry::init( 'Paiementfoyer' );
+				$sqPaiementfoyerIdPourAllocataire = $PaiementfoyerModel->sqPaiementfoyerIdPourAllocataire( 'Personne.id' );
+				$querydata['joins'][] = array(
+					'table'      => $dbo->fullTableName( $PaiementfoyerModel, true ),
+					'alias'      => 'Paiementfoyer',
+					'type'       => 'LEFT OUTER',
+					'foreignKey' => false,
+					'conditions' => array(
+						'Paiementfoyer.foyer_id = Personne.foyer_id',
+						"Paiementfoyer.id IN ( {$sqPaiementfoyerIdPourAllocataire} )"
+					)
+				);
+				$querydata['fields'] = Set::merge(
+					$querydata['fields'],
+					$PaiementfoyerModel->fields()
+				);
+
 				// Données concernant les coordonées bancaires du tiers
 				$DomiciliationbancaireModel = ClassRegistry::init( 'Domiciliationbancaire' );
 				$querydata['joins'][] = array(
@@ -1022,11 +1030,20 @@
 					'type'       => 'LEFT OUTER',
 					'foreignKey' => false,
 					'conditions' => array(
-						'Domiciliationbancaire.codebanque = Tiersprestataireapre.etaban',
-						'Domiciliationbancaire.codeagence = Tiersprestataireapre.guiban'
+						'OR' => array(
+							array(
+								'Tiersprestataireapre.id IS NOT NULL',
+								'Domiciliationbancaire.codebanque = Tiersprestataireapre.etaban',
+								'Domiciliationbancaire.codeagence = Tiersprestataireapre.guiban',
+							),
+							array(
+								'Tiersprestataireapre.id IS NULL',
+								'Domiciliationbancaire.codebanque = Paiementfoyer.etaban',
+								'Domiciliationbancaire.codeagence = Paiementfoyer.guiban',
+							)
+						)
 					)
 				);
-
 				$querydata['fields'] = Set::merge(
 					$querydata['fields'],
 					$DomiciliationbancaireModel->fields()

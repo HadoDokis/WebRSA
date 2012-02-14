@@ -20,5 +20,28 @@
 				'order' => ''
 			)
 		);
+
+		/**
+		 * Retourne la sous-requête permettant d'obtenir l'id de paiementsfoyers
+		 * correspondant à un allocataire donné (suivant que cette personne est
+		 * demandeur ou conjoint).
+		 *
+		 * @param string $modelFieldPersonneId
+		 * @return string
+		 */
+		public function sqPaiementfoyerIdPourAllocataire( $modelFieldPersonneId = 'Personne.id' ) {
+			return "SELECT MAX(paiementsfoyers.id)
+					FROM paiementsfoyers
+					WHERE paiementsfoyers.topribconj = (
+						CASE WHEN (
+							SELECT prestations.rolepers
+								FROM prestations
+								WHERE prestations.personne_id = {$modelFieldPersonneId}
+									AND prestations.natprest = 'RSA'
+									AND prestations.rolepers IN ( 'DEM', 'CJT' )
+						) = 'CJT' THEN true ELSE false END
+					)
+					GROUP BY paiementsfoyers.foyer_id";
+		}
 	}
 ?>
