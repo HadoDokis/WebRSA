@@ -182,9 +182,9 @@
 								$xhtml->link(
 									'Voir',
 									array(
-										'controller' => 'personnes',
+										'controller' => 'dossiers',
 										'action' => 'view',
-										$personne['Personne']['id']
+										$personne['Dossier']['id']
 									),
 									array(
 										'class' => 'external',
