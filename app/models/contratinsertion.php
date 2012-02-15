@@ -1,6 +1,6 @@
 <?php
 	define( 'DATE_DECISION_FACULTATIVE', Configure::read( 'Cg.departement' ) != 66 );
-	
+
 	class Contratinsertion extends AppModel
 	{
 		public $name = 'Contratinsertion';
@@ -26,7 +26,7 @@
 			'ValidateTranslate',
 			'Gedooo',
 			'ModelesodtConditionnables' => array(
-				58 => '%s/contratinsertion.odt',
+				58 => '%s/contratinsertioncg58.odt',
 				66 => array(
 					'%s/notificationop.odt',
 					'%s/notifbenefSimplevalide.odt',
@@ -34,6 +34,7 @@
 					'%s/notifbenefSimplenonvalide.odt',
 					'%s/notifbenefParticuliernonvalide.odt',
 					'%s/contratinsertion.odt',
+					'%s/contratinsertionold.odt',
 					'%s/ficheliaisoncerParticulier.odt',
 					'%s/ficheliaisoncerSimpleoa.odt',
 					'%s/ficheliaisoncerSimplemsp.odt'
@@ -613,7 +614,7 @@
 					$this->data[$this->name]['datedecision'] = NULL;
 				}
 			}
-			
+
 			// Si la nature du contrat de travail n'est pas un CDD, alors il faut éventuellement vider la valeur de la durée du CDD
 			if( isset( $this->data[$this->name]['nat_cont_trav'] ) && $this->data[$this->name]['nat_cont_trav'] != 'TCT3' ){
 				$this->data[$this->name]['duree_cdd'] = NULL;
@@ -716,7 +717,7 @@
 			$decision_ci = Set::classicExtract( $data, 'Contratinsertion.decision_ci' );
 			$positioncer = Set::classicExtract( $data, 'Contratinsertion.positioncer' );
 			$id = Set::classicExtract( $data, 'Contratinsertion.id' );
-			
+
 			$personne_id = Set::classicExtract( $data, 'Contratinsertion.personne_id' );
 
 			$conditions = array( 'Contratinsertion.personne_id' => $personne_id, );
@@ -757,7 +758,7 @@
 					$positioncer = 'nonvalide';
 				}
 			}
-			
+
 			// Lors de l'ajout d'un nouveau CER, on passe la position du précédent à fin de contrat, sauf pour les non validés
 			if( !empty( $dernierContrat ) && ( $decisionprecedente != 'N' ) ) {
 				$this->updateAll(
@@ -880,10 +881,10 @@
 				)
 			);
 		}
-		
-		
-		
-		
+
+
+
+
 
 		/**
 		*	Récupération des Datas pour le stockage du PDF de la fiche de liaison du référent
@@ -996,10 +997,10 @@
 			$contratinsertion = $this->find( 'first', $queryData );
 			$referents = $this->Referent->find( 'list' );
 
-			
+
 			$forme_ci = array( 'S' => 'Simple', 'C' => 'Particulier' );
 			$formeci = Set::classicExtract( $contratinsertion, 'Contratinsertion.forme_ci' );
-			
+
 			$typestructure = Set::classicExtract( $contratinsertion, 'Structurereferente.typestructure' );
 
 
@@ -1009,7 +1010,7 @@
 			else{
 				$modeleodt = "Contratinsertion/ficheliaisoncerSimple{$typestructure}.odt";
 			}
-			
+
 			return $this->ged(
 				array( $contratinsertion ),
 				$modeleodt,
@@ -1017,7 +1018,7 @@
 				$options
 			);
 		}
-		
+
 
 		/**
 		*	Récupération des Datas pour le stockage du PDF de la notification au bénéficiaire
@@ -1125,20 +1126,20 @@
 				'type' => array( 'voie' => ClassRegistry::init( 'Option' )->typevoie() )
 			);
 
-		
+
 			$options = Set::merge( $options, $this->enums() );
 
 
 			$contratinsertion = $this->find( 'first', $queryData );
 			$referents = $this->Referent->find( 'list' );
-			
+
 			$datesaisici = Set::classicExtract( $contratinsertion, 'Contratinsertion.date_saisi_ci' );
 			$contratinsertion['Contratinsertion']['delairegularisation'] = date( 'Y-m-d', strtotime( '+1 month', strtotime( $datesaisici ) ) );
 
-			
+
 			$modelenotifdecision = '';
 			$decision = Set::classicExtract( $contratinsertion, 'Contratinsertion.decision_ci' );
-			
+
 			if( !empty( $decision ) ) {
 				if( $decision == 'V' ) {
 					$modelenotifdecision = "valide";
@@ -1148,11 +1149,11 @@
 				}
 			}
 
-			
+
 			$forme_ci = array( 'S' => 'Simple', 'C' => 'Particulier' );
 			$formeci = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.forme_ci' ), $forme_ci );
 
-			
+
 			return $this->ged(
 				array( $contratinsertion ),
 				"Contratinsertion/notifbenef{$formeci}{$modelenotifdecision}.odt",
@@ -1160,6 +1161,6 @@
 				$options
 			);
 		}
-		
+
 	}
 ?>
