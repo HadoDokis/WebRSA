@@ -389,7 +389,7 @@
 
 			/// Ajout suite à la demande d'amélioration du CG66 sur la Forge du 02/02/2012 (#5578)
 			$contratinsertion['Contratinsertion']['type_deci']=$contratinsertion['Contratinsertion']['decision_ci'];
-			
+
 			/// Données Personne récupérées
 			$contratinsertion['Personne']['dtnai'] = strftime( '%d/%m/%Y', strtotime( $contratinsertion['Personne']['dtnai'] ) );
 			$contratinsertion['Personne']['qual'] = ( isset( $qual[$contratinsertion['Personne']['qual']] ) ? $qual[$contratinsertion['Personne']['qual']] : null );
@@ -513,17 +513,20 @@
 				}
 			}
 
-			if( Configure::read( 'nom_form_ci_cg' ) == 'cg58' ) {
+			$cgDepartement = Configure::read( 'Cg.departement' );
+			if( $cgDepartement == 58 ) {
 				$this->_ged( $contratinsertion, 'Contratinsertion/contratinsertioncg58.odt' );
 			}
-			else{
+			else if ( $cgDepartement == 66 ) {
 				if( strtotime($contratinsertion['Contratinsertion']['date_saisi_ci']) >= strtotime('2012-02-10' ) ) {
 					$this->_ged( $contratinsertion, 'Contratinsertion/contratinsertion.odt' );
 				}
 				else {
 					$this->_ged( $contratinsertion, 'Contratinsertion/contratinsertionold.odt' );
-                }
-// 				$this->_ged( $contratinsertion, 'Contratinsertion/contratinsertion.odt' );
+				}
+			}
+			else {
+				$this->_ged( $contratinsertion, 'Contratinsertion/contratinsertion.odt' );
 			}
 		}
 
