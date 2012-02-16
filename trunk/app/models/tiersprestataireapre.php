@@ -80,43 +80,45 @@
 				),
 			),
 			'siret' => array(
-				array(
-					'rule' => 'notEmpty',
-					'message' => 'Champ obligatoire'
-				),
+// 				array(
+// 					'rule' => 'notEmpty',
+// 					'message' => 'Champ obligatoire'
+// 				),
 				array(
 					'rule' => 'isUnique',
 					'message' => 'Ce numéro SIRET existe déjà'
 				),
 				array(
 					'rule' => 'numeric',
-					'message' => 'Le numéro SIRET est composé de 14 chiffres'
+					'message' => 'Le numéro SIRET est composé de 14 chiffres',
+					'allowEmpty' => true
 				)
 			),
-			'typevoie' => array(
-					'rule' => 'notEmpty',
-					'message' => 'Champ obligatoire'
-			),
-			'nomvoie' => array(
-					'rule' => 'notEmpty',
-					'message' => 'Champ obligatoire'
-			),
-			'codepos' => array(
-					'rule' => 'notEmpty',
-					'message' => 'Champ obligatoire'
-			),
-			'ville' => array(
-					'rule' => 'notEmpty',
-					'message' => 'Champ obligatoire'
-			),
+// 			'typevoie' => array(
+// 					'rule' => 'notEmpty',
+// 					'message' => 'Champ obligatoire'
+// 			),
+// 			'nomvoie' => array(
+// 					'rule' => 'notEmpty',
+// 					'message' => 'Champ obligatoire'
+// 			),
+// 			'codepos' => array(
+// 					'rule' => 'notEmpty',
+// 					'message' => 'Champ obligatoire'
+// 			),
+// 			'ville' => array(
+// 					'rule' => 'notEmpty',
+// 					'message' => 'Champ obligatoire'
+// 			),
 			'numtel' => array(
-				array(
-					'rule' => 'notEmpty',
-					'message' => 'Champ obligatoire'
-				),
+// 				array(
+// 					'rule' => 'notEmpty',
+// 					'message' => 'Champ obligatoire'
+// 				),
 				array(
 					'rule' => array( 'between', 10, 14 ),
-					'message' => 'Le numéro de téléphone est composé de 10 chiffres'
+					'message' => 'Le numéro de téléphone est composé de 10 chiffres',
+					'allowEmpty' => true
 				)
 			),
 			'adrelec' => array(
@@ -124,52 +126,52 @@
 				'message' => 'Email non valide',
 				'allowEmpty' => true
 			),
-			'nomtiturib' => array(
-					'rule' => 'notEmpty',
-					'message' => 'Champ obligatoire'
-			),
-			'etaban' => array(
-				array(
-					'rule' => 'notEmpty',
-					'message' => 'Champ obligatoire'
-				)
-			),
-			'guiban' => array(
-				array(
-					'rule' => 'notEmpty',
-					'message' => 'Champ obligatoire'
-				)
-			),
-			'nometaban' => array(
-				array(
-					'rule' => 'notEmpty',
-					'message' => 'Champ obligatoire'
-				)
-			),
-			'numcomptban' =>  array(
-				array(
-					'rule' => 'notEmpty',
-					'message' => 'Champ obligatoire'
-				),
-				array(
-					'rule' => array( 'between', 11, 11 ),
-					'message' => 'Le numéro de compte doit contenir 11 caractères'
-				)
-			),
-			'clerib' => array(
-				array(
-					'rule' => 'notEmpty',
-					'message' => 'Champ obligatoire'
-				),
-				array(
-					'rule' => 'numeric',
-					'message' => 'La clé RIB est composée de 2 chiffres'
-				),
-				array(
-					'rule' => 'check_rib',
-					'message' => 'RIB non valide'
-				)
-			),
+// 			'nomtiturib' => array(
+// 					'rule' => 'notEmpty',
+// 					'message' => 'Champ obligatoire'
+// 			),
+// 			'etaban' => array(
+// 				array(
+// 					'rule' => 'notEmpty',
+// 					'message' => 'Champ obligatoire'
+// 				)
+// 			),
+// 			'guiban' => array(
+// 				array(
+// 					'rule' => 'notEmpty',
+// 					'message' => 'Champ obligatoire'
+// 				)
+// 			),
+// 			'nometaban' => array(
+// 				array(
+// 					'rule' => 'notEmpty',
+// 					'message' => 'Champ obligatoire'
+// 				)
+// 			),
+// 			'numcomptban' =>  array(
+// 				array(
+// 					'rule' => 'notEmpty',
+// 					'message' => 'Champ obligatoire'
+// 				),
+// 				array(
+// 					'rule' => array( 'between', 11, 11 ),
+// 					'message' => 'Le numéro de compte doit contenir 11 caractères'
+// 				)
+// 			),
+// 			'clerib' => array(
+// 				array(
+// 					'rule' => 'notEmpty',
+// 					'message' => 'Champ obligatoire'
+// 				),
+// 				array(
+// 					'rule' => 'numeric',
+// 					'message' => 'La clé RIB est composée de 2 chiffres'
+// 				),
+// 				array(
+// 					'rule' => 'check_rib',
+// 					'message' => 'RIB non valide'
+// 				)
+// 			),
 			'aidesliees' => array(
 					'rule' => 'notEmpty',
 					'message' => 'Champ obligatoire'

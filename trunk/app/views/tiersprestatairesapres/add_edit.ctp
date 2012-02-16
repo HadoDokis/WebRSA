@@ -18,22 +18,22 @@
 	<fieldset>
 		<?php
 			echo $xform->input( 'Tiersprestataireapre.nomtiers', array( 'required' => true, 'domain' => 'apre' ) );
-			echo $xform->input( 'Tiersprestataireapre.siret', array( 'required' => true, 'domain' => 'apre' ) );
+			echo $xform->input( 'Tiersprestataireapre.siret', array(  'domain' => 'apre' ) );
 			echo $xform->input( 'Tiersprestataireapre.numvoie', array( 'domain' => 'apre' ) );
-			echo $xform->enum( 'Tiersprestataireapre.typevoie', array( 'required' => true, 'domain' => 'apre', 'options' => $typevoie, 'empty' => true ) );
-			echo $xform->input( 'Tiersprestataireapre.nomvoie', array( 'required' => true, 'domain' => 'apre' ) );
+			echo $xform->enum( 'Tiersprestataireapre.typevoie', array(  'domain' => 'apre', 'options' => $typevoie, 'empty' => true ) );
+			echo $xform->input( 'Tiersprestataireapre.nomvoie', array(  'domain' => 'apre' ) );
 			echo $xform->input( 'Tiersprestataireapre.compladr', array( 'domain' => 'apre' ) );
-			echo $xform->input( 'Tiersprestataireapre.codepos', array( 'required' => true, 'domain' => 'apre' ) );
-			echo $xform->input( 'Tiersprestataireapre.ville', array( 'required' => true, 'domain' => 'apre' ) );
+			echo $xform->input( 'Tiersprestataireapre.codepos', array(  'domain' => 'apre' ) );
+			echo $xform->input( 'Tiersprestataireapre.ville', array(  'domain' => 'apre' ) );
 			echo $xform->input( 'Tiersprestataireapre.canton', array( 'domain' => 'apre' ) );
-			echo $xform->input( 'Tiersprestataireapre.numtel', array( 'required' => true, 'domain' => 'apre' ) );
+			echo $xform->input( 'Tiersprestataireapre.numtel', array(  'domain' => 'apre' ) );
 			echo $xform->input( 'Tiersprestataireapre.adrelec', array( 'domain' => 'apre' ) );
-			echo $xform->input( 'Tiersprestataireapre.nomtiturib', array( 'required' => true, 'domain' => 'apre' ) );
-			echo $xform->input( 'Tiersprestataireapre.etaban', array( 'required' => true, 'domain' => 'apre' ) );
-			echo $xform->input( 'Tiersprestataireapre.guiban', array( 'required' => true, 'domain' => 'apre' ) );
-			echo $xform->input( 'Tiersprestataireapre.numcomptban', array( 'required' => true, 'domain' => 'apre' ) );
-			echo $xform->input( 'Tiersprestataireapre.nometaban', array( 'required' => true, 'domain' => 'apre' ) );
-			echo $xform->input( 'Tiersprestataireapre.clerib', array( 'required' => true, 'domain' => 'apre', 'maxlength' => 2 ) );
+			echo $xform->input( 'Tiersprestataireapre.nomtiturib', array(  'domain' => 'apre' ) );
+			echo $xform->input( 'Tiersprestataireapre.etaban', array(  'domain' => 'apre' ) );
+			echo $xform->input( 'Tiersprestataireapre.guiban', array(  'domain' => 'apre' ) );
+			echo $xform->input( 'Tiersprestataireapre.numcomptban', array(  'domain' => 'apre' ) );
+			echo $xform->input( 'Tiersprestataireapre.nometaban', array(  'domain' => 'apre' ) );
+			echo $xform->input( 'Tiersprestataireapre.clerib', array(  'domain' => 'apre', 'maxlength' => 2 ) );
 		?>
 	</fieldset>
 
