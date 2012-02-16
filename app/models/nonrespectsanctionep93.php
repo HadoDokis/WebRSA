@@ -621,25 +621,8 @@
 			$modeleHistoriqueetatpe = ClassRegistry::init( 'Historiqueetatpe' );
 
 
-			$locaadr = Set::classicExtract( $datas, 'Adresse.locaadr' );
-			$numcomptt = Set::classicExtract( $datas, 'Adresse.numcomptt' );
-
 			$identifiantpe = Set::classicExtract( $datas, 'Historiqueetatpe.identifiantpe' );
 
-			if ( !empty( $locaadr ) ) {
-				$queryData['conditions'][] = array( 'Adresse.locaadr ILIKE' => $this->wildcard( $locaadr ) );
-			}
-			if ( !empty( $numcomptt ) ) {
-				$queryData['conditions'][] = array( 'Adresse.numcomptt' => $numcomptt );
-			}
-
-			/// Critères sur l'adresse - canton
-			if( Configure::read( 'CG.cantons' ) ) {
-				if( isset($canton ) && !empty( $canton ) ) {
-					$this->Canton = ClassRegistry::init( 'Canton' );
-					$queryData['conditions'][] = $this->Canton->queryConditions( $canton );
-				}
-			}
 
 			if ( !empty( $identifiantpe ) ) {
 				$queryData['conditions'][] = $modeleHistoriqueetatpe->conditionIdentifiantpe( $identifiantpe );
@@ -649,6 +632,7 @@
 			$queryData['conditions'][] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
 
 			$queryData['conditions'] = $this->conditionsPersonneFoyerDossier( $queryData['conditions'], $datas );
+			$queryData['conditions'] = $this->conditionsAdresse( $queryData['conditions'], $datas, $filtre_zone_geo, $mesCodesInsee );
 			
 			$qdRadies = $modeleHistoriqueetatpe->Informationpe->qdRadies();
 			$queryData['fields'] = array_merge( $queryData['fields'] ,$qdRadies['fields'] );
