@@ -61,8 +61,16 @@
 			}
 
 			foreach( array( 'dtdemrsa' ) as $critereDossier ) {
-				if( isset( $search['Dossier'][$critereDossier] ) && !empty( $search['Dossier'][$critereDossier]['day'] ) && !empty( $search['Dossier'][$critereDossier]['month'] ) && !empty( $search['Dossier'][$critereDossier]['year'] ) ) {
-					$conditions["Dossier.{$critereDossier}"] = "{$search['Dossier'][$critereDossier]['year']}-{$search['Dossier'][$critereDossier]['month']}-{$search['Dossier'][$critereDossier]['day']}";
+				if( isset( $search['Dossier'][$critereDossier] )  ) {
+					if( is_array( $search['Dossier'][$critereDossier] ) && !empty( $search['Dossier'][$critereDossier]['day'] ) && !empty( $search['Dossier'][$critereDossier]['month'] ) && !empty( $search['Dossier'][$critereDossier]['year'] ) ) {
+						$conditions["Dossier.{$critereDossier}"] = "{$search['Dossier'][$critereDossier]['year']}-{$search['Dossier'][$critereDossier]['month']}-{$search['Dossier'][$critereDossier]['day']}";
+					}
+					else if( is_int( $search['Dossier'][$critereDossier] ) && isset( $search['Dossier']['dtdemrsa_from'] ) && isset( $search['Dossier']['dtdemrsa_to'] ) ) {
+						$search['Dossier']['dtdemrsa_from'] = $search['Dossier']['dtdemrsa_from']['year'].'-'.$search['Dossier']['dtdemrsa_from']['month'].'-'.$search['Dossier']['dtdemrsa_from']['day'];
+						$search['Dossier']['dtdemrsa_to'] = $search['Dossier']['dtdemrsa_to']['year'].'-'.$search['Dossier']['dtdemrsa_to']['month'].'-'.$search['Dossier']['dtdemrsa_to']['day'];
+
+						$conditions[] = 'Dossier.dtdemrsa BETWEEN \''.$search['Dossier']['dtdemrsa_from'].'\' AND \''.$search['Dossier']['dtdemrsa_to'].'\'';
+					}
 				}
 			}
 
