@@ -24,7 +24,8 @@
 			'Autovalidate',
 			'ValidateTranslate',
 			'Formattable',
-			'Gedooo'
+			'Gedooo',
+			'Conditionnable'
 		);
 
 		public $belongsTo = array(
@@ -619,34 +620,12 @@
 
 			$modeleHistoriqueetatpe = ClassRegistry::init( 'Historiqueetatpe' );
 
-			$nom = Set::classicExtract( $datas, 'Personne.nom' );
-			$prenom = Set::classicExtract( $datas, 'Personne.prenom' );
-			$dtnai = null;
-			if ( !empty( $datas['Personne']['dtnai']['day'] ) && !empty( $datas['Personne']['dtnai']['month'] ) && !empty( $datas['Personne']['dtnai']['year'] ) ) {
-				$dtnai = implode( '-', array( Set::classicExtract( $datas, 'Personne.dtnai.year' ), Set::classicExtract( $datas, 'Personne.dtnai.month' ), Set::classicExtract( $datas, 'Personne.dtnai.day' ) ) );
-			}
-			$nir = Set::classicExtract( $datas, 'Personne.nir' );
-			$matricule = Set::classicExtract( $datas, 'Dossier.matricule' );
+
 			$locaadr = Set::classicExtract( $datas, 'Adresse.locaadr' );
 			$numcomptt = Set::classicExtract( $datas, 'Adresse.numcomptt' );
 
 			$identifiantpe = Set::classicExtract( $datas, 'Historiqueetatpe.identifiantpe' );
 
-			if ( !empty( $nom ) ) {
-				$queryData['conditions'][] = array( 'Personne.nom ILIKE' => $this->wildcard( $nom ) );
-			}
-			if ( !empty( $prenom ) ) {
-				$queryData['conditions'][] = array( 'Personne.prenom ILIKE' => $this->wildcard( $prenom ) );
-			}
-			if ( !empty( $dtnai ) ) {
-				$queryData['conditions'][] = array( 'Personne.dtnai' => $dtnai );
-			}
-			if ( !empty( $nir ) ) {
-				$queryData['conditions'][] = array( 'Personne.nir' => $this->wildcard( $nir ) );
-			}
-			if ( !empty( $matricule ) ) {
-				$queryData['conditions'][] = array( 'Dossier.matricule' => $this->wildcard( $matricule ) );
-			}
 			if ( !empty( $locaadr ) ) {
 				$queryData['conditions'][] = array( 'Adresse.locaadr ILIKE' => $this->wildcard( $locaadr ) );
 			}
@@ -669,6 +648,8 @@
 			/// Filtre zone géographique
 			$queryData['conditions'][] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
 
+			$queryData['conditions'] = $this->conditionsPersonneFoyerDossier( $queryData['conditions'], $datas );
+			
 			$qdRadies = $modeleHistoriqueetatpe->Informationpe->qdRadies();
 			$queryData['fields'] = array_merge( $queryData['fields'] ,$qdRadies['fields'] );
 			$queryData['joins'] = array_merge( $queryData['joins'] ,$qdRadies['joins'] );
