@@ -367,6 +367,7 @@
 			$typepaiement = 'Versement';
 // debug( $typedecision );
 // die();
+			$this->_setOptions();
 			if( ( $dest == 'beneficiaire' || $dest == 'referent' || $dest == 'tiers' ) && ( $typedecision == 'Refus' || $typedecision == 'Ajournement' ) ) {
 				$pdf = $this->Apre->ged( $apre, 'APRE/DecisionComite/'.$typedecision.'/'.$typedecision.$dest.'.odt' );
 				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( $typedecision.$dest.'-%s.pdf', date( 'Y-m-d' ) ) );
