@@ -365,11 +365,11 @@
 
 			///Paramètre nécessaire pour connaitre le type de paiement au tiers (total/ plusieurs versements )
 			$typepaiement = 'Versement';
-
-			$this->_setOptions();
+// debug( $typedecision );
+// die();
 			if( ( $dest == 'beneficiaire' || $dest == 'referent' || $dest == 'tiers' ) && ( $typedecision == 'Refus' || $typedecision == 'Ajournement' ) ) {
-				$pdf = $this->Apre->ged( $apre, 'APRE/DecisionComite/Refus/Refus'.$dest.'.odt' );
-				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'Refus'.$dest.'-%s.pdf', date( 'Y-m-d' ) ) );
+				$pdf = $this->Apre->ged( $apre, 'APRE/DecisionComite/'.$typedecision.'/'.$typedecision.$dest.'.odt' );
+				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( $typedecision.$dest.'-%s.pdf', date( 'Y-m-d' ) ) );
 			}
 			else if( $dest == 'beneficiaire' && $typedecision == 'Accord' ) {
 				$pdf = $this->Apre->ged( $apre, 'APRE/DecisionComite/'.$typedecision.'/'.$typedecision.$typeformation.$dest.'.odt' );
