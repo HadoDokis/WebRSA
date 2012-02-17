@@ -495,8 +495,10 @@
 							'type'       => 'LEFT OUTER',
 							'foreignKey' => false,
 							'conditions' => array(
-								'Suiviinstruction.dossier_id = Foyer.dossier_id',
-								'Foyer.id = Personne.foyer_id'
+								'Suiviinstruction.dossier_id = Dossier.id',
+								'Suiviinstruction.id IN (
+									'.ClassRegistry::init( 'Suiviinstruction' )->sqDerniere('Suiviinstruction.dossier_id').'
+								)'
 							)
 						);
 					$joins[] = array(
@@ -944,8 +946,10 @@
 					'type'       => 'LEFT OUTER',
 					'foreignKey' => false,
 					'conditions' => array(
-						'Suiviinstruction.dossier_id = Foyer.dossier_id',
-						'Foyer.id = Personne.foyer_id'
+						'Suiviinstruction.dossier_id = Dossier.id',
+						'Suiviinstruction.id IN (
+							'.ClassRegistry::init( 'Suiviinstruction' )->sqDerniere('Suiviinstruction.dossier_id').'
+						)'
 					)
 				),
 				array(
