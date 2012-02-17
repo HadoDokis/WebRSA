@@ -140,15 +140,7 @@
 		// TODO - à bouger - Situationdossierrsa.etatdosrsa, Detailcalculdroitrsa.natpf
 		// TODO - à bouger - Personne.XXXXX
 
-		/**
-		*
-		*/
-		public function conditionsPersonneFoyerDossier( &$model, $conditions, $search ) {
-			$conditions = $this->conditionsDossier( $model, $conditions, $search );
-			$conditions = $this->conditionsPersonne( $model, $conditions, $search );
-			$conditions = $this->conditionsSituationdossierrsa( $model, $conditions, $search );
-
-			/// Nature de la prestation
+		public function conditionsDetailcalculdroitrsa( &$model, $conditions, $search ) {
 			if( isset( $search['Detailcalculdroitrsa']['natpf'] ) && !empty( $search['Detailcalculdroitrsa']['natpf'] ) ) {
 				$conditions[] = 'Detaildroitrsa.id IN (
 									SELECT detailscalculsdroitsrsa.detaildroitrsa_id
@@ -161,6 +153,31 @@
 											AND detailscalculsdroitsrsa.natpf ILIKE \'%'.Sanitize::clean( $search['Detailcalculdroitrsa']['natpf'] ).'%\'
 								)';
 			}
+
+			return $conditions;
+		}
+
+		/**
+		*
+		*/
+		public function conditionsPersonneFoyerDossier( &$model, $conditions, $search ) {
+			$conditions = $this->conditionsDossier( $model, $conditions, $search );
+			$conditions = $this->conditionsPersonne( $model, $conditions, $search );
+			$conditions = $this->conditionsSituationdossierrsa( $model, $conditions, $search );
+			$conditions = $this->conditionsDetailcalculdroitrsa( $model, $conditions, $search );
+			/*/// Nature de la prestation
+			if( isset( $search['Detailcalculdroitrsa']['natpf'] ) && !empty( $search['Detailcalculdroitrsa']['natpf'] ) ) {
+				$conditions[] = 'Detaildroitrsa.id IN (
+									SELECT detailscalculsdroitsrsa.detaildroitrsa_id
+										FROM detailscalculsdroitsrsa
+											INNER JOIN detailsdroitsrsa ON (
+												detailscalculsdroitsrsa.detaildroitrsa_id = detailsdroitsrsa.id
+											)
+										WHERE
+											detailsdroitsrsa.dossier_id = Dossier.id
+											AND detailscalculsdroitsrsa.natpf ILIKE \'%'.Sanitize::clean( $search['Detailcalculdroitrsa']['natpf'] ).'%\'
+								)';
+			}*/
 
 			return $conditions;
 		}
