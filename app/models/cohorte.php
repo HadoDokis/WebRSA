@@ -7,7 +7,7 @@
 
 		public $useTable = false;
 
-		public $actsAs = array( 'Gedooo' );
+		public $actsAs = array( 'Gedooo', 'Conditionnable' );
 
 		/**
 		* Dernière version des règles de préorientation:
@@ -375,14 +375,15 @@
 
 
 					// INFO: ne faire apparaître les personnes à orienter que si le dossier se trouve en RSA Socle
-					$natpf = Set::extract( $criteres, 'Detailcalculdroitrsa.natpf' );
+					$conditions = $this->conditionsDetailcalculdroitrsa( $conditions, $criteres );
+					/*$natpf = Set::extract( $criteres, 'Detailcalculdroitrsa.natpf' );
 					$natpfSocle = Configure::read( 'Detailcalculdroitrsa.natpf.socle' );
 					if( isset( $criteres['Detailcalculdroitrsa']['natpf'] ) && !empty( $criteres['Detailcalculdroitrsa']['natpf'] ) ) {
 						$conditions[] = '( Detailcalculdroitrsa.natpf IN ( \''.implode( '\', \'', $natpf ).'\' ) )';
 					}
 					else {
 						$conditions[] = '( Detailcalculdroitrsa.natpf IN ( \''.implode( '\', \'', $natpfSocle ).'\' ) )';
-					}
+					}*/
 
 				}
 
@@ -780,13 +781,13 @@
 							'foreignKey' => false,
 							'conditions' => array( 'Detaildroitrsa.dossier_id = Dossier.id', )
 						),
-						array(
+						/*array(
 							'table' => 'detailscalculsdroitsrsa',
 							'alias' => 'Detailcalculdroitrsa',
 							'type' => $joinType,
 							'foreignKey' => false,
 							'conditions' => array( 'Detailcalculdroitrsa.detaildroitrsa_id = Detaildroitrsa.id', )
-						),
+						),*/
 						array(
 							'table' => 'situationsdossiersrsa',
 							'alias' => 'Situationdossierrsa',
