@@ -583,6 +583,18 @@
 									'dossierseps.personne_id = Personne.id',
 									array(
 										'OR' => array(
+											// ... dans un dossier d'EP pas encore associé à une commission
+											'dossierseps.id NOT IN ( '.
+												$this->Dossierep->Passagecommissionep->sq(
+													array(
+														'alias' => 'passagescommissionseps',
+														'fields' => array( 'passagescommissionseps.dossierep_id' ),
+														'conditions' => array(
+															'passagescommissionseps.dossierep_id = dossierseps.id'
+														)
+													)
+												)
+											.' )',
 											// ... dans un dossier d'EP non finalisé
 											'dossierseps.id IN ( '.
 												$this->Dossierep->Passagecommissionep->sq(
@@ -590,6 +602,7 @@
 														'alias' => 'passagescommissionseps',
 														'fields' => array( 'passagescommissionseps.dossierep_id' ),
 														'conditions' => array(
+															'passagescommissionseps.dossierep_id = dossierseps.id',
 															'NOT' => array(
 																'passagescommissionseps.etatdossierep' => array( 'traite', 'annule' )
 															)
@@ -604,6 +617,7 @@
 														'alias' => 'passagescommissionseps',
 														'fields' => array( 'passagescommissionseps.dossierep_id' ),
 														'conditions' => array(
+															'passagescommissionseps.dossierep_id = dossierseps.id',
 															'passagescommissionseps.etatdossierep' => array( 'traite', 'annule' ),
 															'( DATE( NOW() ) - CAST( dossierseps.modified AS DATE ) ) <=' => Configure::read( $this->alias.'.delaiRegularisation' )
 														)

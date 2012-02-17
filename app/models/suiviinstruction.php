@@ -76,7 +76,7 @@
 					FROM {$table}
 					WHERE
 						{$table}.dossier_id = ".$field."
-					ORDER BY {$table}.dossier_id DESC
+					ORDER BY {$table}.id DESC
 					LIMIT 1
 			";
 		}
