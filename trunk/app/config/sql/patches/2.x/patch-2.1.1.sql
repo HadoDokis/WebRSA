@@ -40,6 +40,43 @@ ALTER TABLE dossiers ADD CONSTRAINT dossiers_fonorgprenmut_in_list_chk CHECK ( c
 DROP TYPE TYPE_STATUTDEMRSA;
 DROP TYPE TYPE_FONORGCEDMUT;
 
+-- 20120217: Changement de la volatilité de certaines fonctions car celles-ci sont sans effet de bord
+ALTER FUNCTION public.cakephp_validate_ssn (text, text, text) IMMUTABLE;
+ALTER FUNCTION public.calcul_cle_nir (text) IMMUTABLE RETURNS NULL ON NULL INPUT;
+
+CREATE OR REPLACE FUNCTION public.nir_correct13( TEXT ) RETURNS BOOLEAN AS
+$body$
+	DECLARE
+		p_nir text;
+	BEGIN
+		p_nir:=$1;
+
+		IF p_nir IS NULL THEN
+			RETURN false;
+		END IF;
+
+		RETURN (
+			CHAR_LENGTH( TRIM( BOTH ' ' FROM p_nir ) ) >= 13
+			AND (
+				cakephp_validate_ssn( SUBSTRING( p_nir FROM 1 FOR 13 ) || calcul_cle_nir( SUBSTRING( p_nir FROM 1 FOR 13 ) ), null, 'fr' )
+			)
+		);
+	END;
+$body$
+LANGUAGE 'plpgsql' IMMUTABLE;
+
+COMMENT ON FUNCTION public.nir_correct13( TEXT ) IS
+	'Vérification du format du NIR sur 13 caractères (la clé est recalculée dans tous les cas) grâce à la fonction public.cakephp_validate_ssn. Retourne false en cas de nir NULL';
+
+DROP INDEX IF EXISTS personnes_nir_correct13_idx;
+CREATE INDEX personnes_nir_correct13_idx ON personnes ( nir_correct13(nir) );
+
+DROP INDEX IF EXISTS personnes_nir_correct13_nir13_trim_dtnai_idx;
+CREATE INDEX personnes_nir_correct13_nir13_trim_dtnai_idx ON personnes ( nir_correct13(nir), SUBSTRING( TRIM( BOTH ' ' FROM nir ) FROM 1 FOR 13 ), dtnai );
+
+DROP INDEX IF EXISTS personnes_upper_nom_upper_prenom_dtnai_idx;
+CREATE INDEX personnes_upper_nom_upper_prenom_dtnai_idx ON personnes ( UPPER(nom), UPPER(prenom), dtnai );
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

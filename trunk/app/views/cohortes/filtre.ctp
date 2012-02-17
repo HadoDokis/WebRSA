@@ -14,9 +14,10 @@
 		$oridemrsaCochees = array_keys( $oridemrsa );
 	}
 
-	$formSent = ( count( array_keys( $this->data ) ) > 1 ); // FIXME: ça peut changer à l'avenir
+	$formSent = ( isset( $this->data['Filtre']['actif'] ) && $this->data['Filtre']['actif'] );
 ?>
 <?php echo $form->create( 'Filtre', array( 'url'=> Router::url( null, true ), 'id' => 'Filtre', 'class' => ( $formSent ? 'folded' : 'unfolded' ) ) );?>
+	<div><?php echo $form->input( 'Filtre.actif', array( 'type' => 'hidden', 'value' => true ) );?></div>
 	<fieldset>
 		<legend>Recherche par personne</legend>
 		<?php echo $form->input( 'Filtre.nom', array( 'label' => 'Nom ', 'type' => 'text' ) );?>

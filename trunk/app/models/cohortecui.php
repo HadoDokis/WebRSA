@@ -164,8 +164,8 @@
 								)
 								OR
 								(
-									personnes.nom = Personne.nom
-									AND personnes.prenom = Personne.prenom
+									UPPER(personnes.nom) = UPPER(Personne.nom)
+									AND UPPER(personnes.prenom) = UPPER(Personne.prenom)
 									AND personnes.dtnai = Personne.dtnai
 								)
 							)
@@ -184,8 +184,8 @@
 			}
 			else {
 				$conditions[] = '( Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatOuvert() ).'\' ) )';
-			}			
-			
+			}
+
 			$this->Dossier = ClassRegistry::init( 'Dossier' );
 
 			$query = array(

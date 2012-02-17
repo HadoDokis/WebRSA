@@ -259,11 +259,14 @@
 // 					Configure::read( 'Situationdossierrsa.etatdosrsa.ouvert' )
 					$progressivePaginate = !Set::classicExtract( $this->data, 'Filtre.paginationNombreTotal' );
 
+					$filtre = $this->data;
+					unset( $filtre['Filtre']['actif'] );
+
 					$queryData = $this->Cohorte->recherche(
 						$statutOrientation,
 						$mesCodesInsee,
 						$this->Session->read( 'Auth.User.filtre_zone_geo' ),
-						$this->data,
+						$filtre,
 						$this->Jetons->sqIds()
 					);
 
@@ -296,6 +299,9 @@
 				$progressivePaginate = $this->_hasProgressivePagination();
 				if( !is_null( $progressivePaginate ) ) {
 					$this->data['Filtre']['paginationNombreTotal'] = !$progressivePaginate;
+				}
+				if( $statutOrientation == 'Orienté' ) {
+					$this->data['Dossier']['dernier'] = false;
 				}
 			}
 

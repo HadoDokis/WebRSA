@@ -50,9 +50,8 @@
 				$conditionsCmpAllocataire = array(
 					'OR' => array(
 						array(
-							'p1.nir IS NOT NULL',
-							'p2.nir IS NOT NULL',
 							'nir_correct13(p1.nir)',
+							'nir_correct13(p2.nir)',
 							'SUBSTRING( TRIM( BOTH \' \' FROM p1.nir ) FROM 1 FOR 13 ) = SUBSTRING( TRIM( BOTH \' \' FROM p2.nir ) FROM 1 FOR 13 )',
 							'p1.dtnai = p2.dtnai'
 						),
@@ -62,8 +61,8 @@
 // 							'p1.dtnai = p2.dtnai'
 // 						)
 						array(
-							'p1.nom = p2.nom',
-							'p1.prenom = p2.prenom',
+							'UPPER(p1.nom) = UPPER(p2.nom)',
+							'UPPER(p1.prenom) = UPPER(p2.prenom)',
 							'p1.dtnai = p2.dtnai'
 						)
 					)
@@ -77,9 +76,8 @@
 				$conditionsCmpAllocataire = array(
 					'OR' => array(
 						array(
-							'p1.nir IS NOT NULL',
-							'p2.nir IS NOT NULL',
 							'nir_correct13(p1.nir)',
+							'nir_correct13(p2.nir)',
 							'SUBSTRING( TRIM( BOTH \' \' FROM p1.nir ) FROM 1 FOR 13 ) = SUBSTRING( TRIM( BOTH \' \' FROM p2.nir ) FROM 1 FOR 13 )',
 							'p1.dtnai = p2.dtnai'
 						),
@@ -161,14 +159,14 @@
 				$conditionsCmpAllocataire = array(
 					'OR' => array(
 						array(
-							'p1.nir IS NOT NULL',
 							'nir_correct(p1.nir)',
+							'nir_correct(p2.nir)',
 							'p1.nir = p2.nir',
 							'p1.dtnai = p2.dtnai'
 						),
 						array(
-							'p1.nom = p2.nom',
-							'p1.prenom = p2.prenom',
+							'UPPER(p1.nom) = UPPER(p2.nom)',
+							'UPPER(p1.prenom) = UPPER(p2.prenom)',
 							'p1.dtnai = p2.dtnai'
 						)
 					)
@@ -188,9 +186,8 @@
 				$conditionsCmpAllocataire = array(
 					'OR' => array(
 						array(
-							'p1.nir IS NOT NULL',
-							'p2.nir IS NOT NULL',
 							'nir_correct13(p1.nir)',
+							'nir_correct13(p2.nir)',
 							'SUBSTRING( TRIM( BOTH \' \' FROM p1.nir ) FROM 1 FOR 13 ) = SUBSTRING( TRIM( BOTH \' \' FROM p2.nir ) FROM 1 FOR 13 )',
 							'p1.dtnai = p2.dtnai'
 						),
@@ -200,8 +197,8 @@
 // 							'p1.dtnai = p2.dtnai'
 // 						)
 						array(
-							'p1.nom = p2.nom',
-							'p1.prenom = p2.prenom',
+							'UPPER(p1.nom) = UPPER(p2.nom)',
+							'UPPER(p1.prenom) = UPPER(p2.prenom)',
 							'p1.dtnai = p2.dtnai'
 						)
 					)
@@ -215,9 +212,8 @@
 				$conditionsCmpAllocataire = array(
 					'OR' => array(
 						array(
-							'p1.nir IS NOT NULL',
-							'p2.nir IS NOT NULL',
 							'nir_correct13(p1.nir)',
+							'nir_correct13(p2.nir)',
 							'SUBSTRING( TRIM( BOTH \' \' FROM p1.nir ) FROM 1 FOR 13 ) = SUBSTRING( TRIM( BOTH \' \' FROM p2.nir ) FROM 1 FOR 13 )',
 							'p1.dtnai = p2.dtnai'
 						),

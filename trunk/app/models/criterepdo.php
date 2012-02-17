@@ -13,7 +13,7 @@
 		public function listeDossierPDO( $mesCodesInsee, $filtre_zone_geo, $criterespdos, $lockedDossiers ) {
 			/// Conditions de base
 			$conditions = array();
-			
+
 			$Situationdossierrsa = ClassRegistry::init( 'Situationdossierrsa' );
 			$etatdossier = Set::extract( $criterespdos, 'Situationdossierrsa.etatdosrsa' );
 			if( isset( $criterespdos['Situationdossierrsa']['etatdosrsa'] ) && !empty( $criterespdos['Situationdossierrsa']['etatdosrsa'] ) ) {
@@ -21,7 +21,7 @@
 			}
 			else {
 				$conditions[] = '( Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatAttente() ).'\' ) )';
-			}			
+			}
 
 			/// Filtre zone géographique
 			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
@@ -164,8 +164,8 @@
 								)
 								OR
 								(
-									personnes.nom = Personne.nom
-									AND personnes.prenom = Personne.prenom
+									UPPER(personnes.nom) = UPPER(Personne.nom)
+									AND UPPER(personnes.prenom) = UPPER(Personne.prenom)
 									AND personnes.dtnai = Personne.dtnai
 								)
 							)

@@ -108,7 +108,7 @@
 								</tr>
 								<tr>
 									<th>Rôle</th>
-									<td>'.h( $rolepers[$personne['Prestation']['rolepers']] ).'</td>
+									<td>'.h( @$rolepers[$personne['Prestation']['rolepers']] ).'</td>
 								</tr>
 							</tbody>
 						</table>';
