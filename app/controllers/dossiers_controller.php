@@ -719,15 +719,14 @@
 						'conditions' => array(
 							'OR' => array(
 								array(
-									'Personne.nir' => $nir13,
-									//FIXME
-									'nir_correct13( Personne.nir ) = true',
-									'Personne.nir IS NOT NULL',
+									'nir_correct13( Personne.nir )',
+									'nir_correct13( \''.$nir13.'\'  )',
+									'SUBSTRING( TRIM( BOTH \' \' FROM Personne.nir ) FROM 1 FOR 13 )' => $nir13,
 									'Personne.dtnai' => $personnesFoyer[$index]['Personne']['dtnai']
 								),
 								array(
-									'Personne.nom' => $personnesFoyer[$index]['Personne']['nom'],
-									'Personne.prenom' => $personnesFoyer[$index]['Personne']['prenom'],
+									'UPPER(Personne.nom)' => strtoupper( replace_accents( $personnesFoyer[$index]['Personne']['nom'] ) ),
+									'UPPER(Personne.prenom)' => strtoupper( replace_accents( $personnesFoyer[$index]['Personne']['prenom'] ) ),
 									'Personne.dtnai' => $personnesFoyer[$index]['Personne']['dtnai']
 								)
 							),

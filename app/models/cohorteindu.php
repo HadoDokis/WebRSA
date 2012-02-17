@@ -113,7 +113,7 @@
 			if( !empty( $structurereferente_id ) ) {
 				$conditions[] = 'Structurereferente.id = \''.$structurereferente_id.'\'';
 			}
-			
+
 			// Trouver la dernière demande RSA pour chacune des personnes du jeu de résultats
 			if( $criteresindu['Dossier']['dernier'] ) {
 				$conditions[] = 'Dossier.id IN (
@@ -141,8 +141,8 @@
 								)
 								OR
 								(
-									personnes.nom = Personne.nom
-									AND personnes.prenom = Personne.prenom
+									UPPER(personnes.nom) = UPPER(Personne.nom)
+									AND UPPER(personnes.prenom) = UPPER(Personne.prenom)
 									AND personnes.dtnai = Personne.dtnai
 								)
 							)
@@ -159,9 +159,9 @@
 			}
 			else {
 				$conditions[] = '( Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatOuvert() ).'\' ) )';
-			}			
-			
-			
+			}
+
+
 			$this->Dossier = ClassRegistry::init( 'Dossier' );
 
 			// FIXME -> qu'a-t'on dans la base à un instant t ?

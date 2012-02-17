@@ -822,15 +822,14 @@
 					'conditions' => array(
 						'OR' => array(
 							array(
-								'Personne.nir' => substr( $personne['Personne']['nir'], 0, 13 ),
-								//FIXME
-								'nir_correct13( Personne.nir  ) = true',
-								'Personne.nir IS NOT NULL',
+								'nir_correct13( Personne.nir  )',
+								'nir_correct13( \''.substr( $personne['Personne']['nir'], 0, 13 ).'\'  )',
+								'SUBSTRING( TRIM( BOTH \' \' FROM Personne.nir ) FROM 1 FOR 13 )' => substr( $personne['Personne']['nir'], 0, 13 ),
 								'Personne.dtnai' => $personne['Personne']['dtnai']
 							),
 							array(
-								'Personne.nom' => $personne['Personne']['nom'],
-								'Personne.prenom' => $personne['Personne']['prenom'],
+								'UPPER(Personne.nom)' => strtoupper( replace_accents( $personne['Personne']['nom'] ) ),
+								'UPPER(Personne.prenom)' => strtoupper( replace_accents( $personne['Personne']['prenom'] ) ),
 								'Personne.dtnai' => $personne['Personne']['dtnai']
 							)
 						)

@@ -54,7 +54,7 @@
 			$themeapre66_id = Set::extract( $criteresapres, 'Filtre.themeapre66_id' );
 			$themeapre66_id = Set::extract( $criteresapres, 'Filtre.themeapre66_id' );
 			$typeaideapre66_id = Set::extract( $criteresapres, 'Filtre.typeaideapre66_id' );
-			
+
 // debug($criteresapres);
 			/// Critères sur la demande APRE - date de demande
 			if( isset( $criteresapres['Filtre']['datedemandeapre'] ) && !empty( $criteresapres['Filtre']['datedemandeapre'] ) ) {
@@ -194,13 +194,13 @@
 				$conditions[] = 'Apre.dateimpressionapre BETWEEN \''.$dateimpressionapre_from.'\' AND \''.$dateimpressionapre_to.'\'';
 			}
 
-			
+
 			//Structure référente où l'apre est faite
 			if( !empty( $structurereferente_id ) ) {
 				$conditions[] = 'Apre.structurereferente_id = \''.Sanitize::clean( $structurereferente_id ).'\'';
 			}
-			
-			
+
+
 			//Référent de l'APRE
 			if( !empty( $referent_id ) ) {
 				$conditions[] = 'Apre.referent_id = \''.Sanitize::clean( suffix( $referent_id ) ).'\'';
@@ -233,8 +233,8 @@
                                 )
                                 OR
                                 (
-                                    personnes.nom = Personne.nom
-                                    AND personnes.prenom = Personne.prenom
+                                    UPPER(personnes.nom) = UPPER(Personne.nom)
+                                    AND UPPER(personnes.prenom) = UPPER(Personne.prenom)
                                     AND personnes.dtnai = Personne.dtnai
                                 )
                             )

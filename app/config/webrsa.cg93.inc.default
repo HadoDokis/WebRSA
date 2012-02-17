@@ -199,7 +199,7 @@
 	/**
 	* Surcharge de la pagination progressive pour les cohorte d'orientations, demandes orientées
 	*/
-	Configure::write( 'Optimisations.Cohortes_orientees.progressivePaginate', true );
+	Configure::write( 'Optimisations.Cohortes_orientees.progressivePaginate', false );
 
 	/**
 	 * Variables permettant le déclenchement de passage en EPD d'un dossier via les PDOs
@@ -395,13 +395,13 @@
 	Configure::write( 'Optimisations.Gestionsanomaliesbdds.progressivePaginate', false );
 	Configure::write( 'Situationdossierrsa.etatdosrsa.ouvert', array( 'Z', '2', '3', '4' ) );
 
-		
+
 	/**
 	*	Délai pour la détection des CERs arrivant à échéance
 	*/
 	Configure::write( 'Criterecer.delaiavanteecheance', '1 month' );
-	
-	
+
+
 	/**
 	*	Pour le CG66: Délai durant lequel les dossiers d'EP ne seront ni détectables, ni sélectionnables dans la corbeille
 	*	des dossiers devant passer en EP
@@ -411,8 +411,8 @@
 	* 	"Intervalles PostgreSQL"
 	*/
 	Configure::write( 'Dossierep.delaiavantselection', null );
-	
-		
+
+
 	/**
 	*	Valeurs prises par le champ natpf pour déterminer si le dossier est en RSA Socle
 	*/

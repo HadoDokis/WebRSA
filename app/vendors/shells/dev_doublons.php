@@ -182,7 +182,7 @@
 
 			// Doublons personnes
 			$conditions = array(
-				'nirdtnai' => '( nir_correct13( p1.nir ) AND p1.nir = p2.nir AND p1.dtnai = p2.dtnai )',
+				'nirdtnai' => '( nir_correct13( p1.nir ) AND nir_correct13( p2.nir ) AND p1.nir = p2.nir AND p1.dtnai = p2.dtnai )',
 				'npdtnai' => '(
 								TRIM( BOTH \' \' FROM p1.nom ) = TRIM( BOTH \' \' FROM p2.nom )
 								AND TRIM( BOTH \' \' FROM p1.prenom ) = TRIM( BOTH \' \' FROM p2.prenom )

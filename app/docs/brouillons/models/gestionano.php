@@ -39,7 +39,7 @@
 				),
 				'Personne' => array(
 					// TODO(?): Création d'une colonne nir_brut où on met les nir actuels, nettoyage des nirs actuels avec contrainte dessus
-					/*// TODO: ALTER TABLE personnes ADD CONSTRAINT personnes_nir_correct_chk CHECK ( nir_correct13( nir ) );
+					/*// TODO: ALTER TABLE personnes ADD CONSTRAINT personnes_nir_correct_chk CHECK ( nir IS NULL OR nir_correct13( nir ) );
 					'personnes_nir_correct_chk' => $models['Personne']->hasCheck( 'personnes_nir_correct13_chk' ),*/
 					// TODO: ALTER TABLE personnes ADD CONSTRAINT personnes_nom_correct_chk CHECK ( nom ~ E'^[A-Z]+([A-Z \'\-]*)[A-Z]+$' );
 					'personnes_nom_correct_chk' => $models['Personne']->hasCheck( 'personnes_nom_correct_chk' ),
