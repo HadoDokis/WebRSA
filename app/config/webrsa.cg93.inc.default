@@ -417,4 +417,53 @@
 	*	Valeurs prises par le champ natpf pour déterminer si le dossier est en RSA Socle
 	*/
 	Configure::write( 'Detailcalculdroitrsa.natpf.socle', array( 'RSD', 'RSI', 'RSU', 'RSJ' ) );
+
+	/**
+	 * Permet d'indiquer les valeurs par défaut des formulaires de recherche.
+	 * Pour l'instant, ne fonctionne qu'avec le contrôleur Cohortes: "Cohortes" -> "Orientation"
+	 *	- Demandes non orientées
+	 *	- Demandes en attente de validation d'orientation
+	 *	- Demandes orientées
+	 * ATTENTION:
+	 *	1°) le filtre Filtre.paginationNombreTotal:
+	 *		a°) Est la valeur inverse de progressivePaginate (cf. supra; car avec la pagination progressive, pas de nombre total)
+	 *		b°) SURCHARGE la valeur de (dans l'ordre):
+	 *			- Optimisations.progressivePaginate
+	 *			- Optimisations.Cohortes.progressivePaginate
+	 *			- Optimisations.Cohortes_orientees.progressivePaginate
+	 *	2°) Le nombre de clés (chaînes de caractères se trouvant entre points) ne doit pas excéder 3. Exemple:
+	 *		- Configure::write( 'Filtresdefaut.Cohortes_orientees.Dossier', array( 'dernier' => false ) ); est pris en compte
+	 *		- Configure::write( 'Filtresdefaut.Cohortes_orientees.Dossier.dernier', false ); n'est pas pris en compte
+	 */
+	Configure::write(
+		'Filtresdefaut.Cohortes_nouvelles',
+		array(
+			'Detailcalculdroitrsa' => array(
+				'natpf_choice' => true, // Case à cocher "Filtrer par nature de prestation (RSA Socle)"
+				'natpf' => array( 'RSD', 'RSI' ) // Cases à cocher "Nature de la prestation"
+			),
+			'Filtre' => array(
+				'oridemrsa' => array( 'DEM' ), // Cases à cocher "Code origine demande Rsa"
+				'paginationNombreTotal' => false // Case à cocher "Obtenir le nombre total de résultats (plus lent)"
+			),
+			'Dossier' => array( 'dernier' => true ), // Case à cocher "Uniquement la dernière demande RSA pour un même allocataire"
+			'Situationdossierrsa' => array(
+				'etatdosrsa_choice' => true, // Case à cocher "Filtrer par état du dossier"
+				'etatdosrsa' => array( 2, 3, 4 ) // Cases à cocher "État du dossier RSA"
+			),
+		)
+	);
+
+	/**
+	 * Copie des valeurs par défaut des filtres des demandes à orienter pour les demandes en attente.
+	 */
+	Configure::write( 'Filtresdefaut.Cohortes_enattente', Configure::read( 'Filtresdefaut.Cohortes_nouvelles' ) );
+
+	/**
+	 * Copie des valeurs par défaut des filtres des demandes à orienter pour les demandes orientées,
+	 * surcharge de la case à cocher "Uniquement la dernière demande RSA pour un même allocataire"
+	 * pour des raisons de performances
+	 */
+	Configure::write( 'Filtresdefaut.Cohortes_orientees', Configure::read( 'Filtresdefaut.Cohortes_nouvelles' ) );
+	Configure::write( 'Filtresdefaut.Cohortes_orientees.Dossier', array( 'dernier' => false ) );
 ?>

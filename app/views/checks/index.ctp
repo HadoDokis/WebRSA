@@ -332,7 +332,7 @@
 				?>
 				</table>
 			<?php endif;?>
-			
+
 			<br />
 			<h3>Vérification du format de délai pour les détections de CER arrivant à échéance</h3>
 			<?php
@@ -346,6 +346,22 @@
 				}
 				else {
 					echo '<p>'.booleanIcon( $xhtml, empty( $checkCritereCerDelaiAvantEcheance ) ).'Paramétrage correct.</p>';
+				}
+			?>
+
+			<br />
+			<h3>Vérification des valeurs par défaut des filtres dans le fichier <code>webrsa.inc</code></h3>
+			<?php
+				if( !empty( $checkFiltresdefaut ) ) {
+					echo '<p>'.booleanIcon( $xhtml, empty( $checkFiltresdefaut ) ).'Paramétrage incorrect, valeurs non renseignées:</p>';
+					echo '<ul>';
+					foreach( $checkFiltresdefaut as $filtre ) {
+						echo "<li>{$filtre}</li>";
+					}
+					echo '</ul>';
+				}
+				else {
+					echo '<p>'.booleanIcon( $xhtml, empty( $checkFiltresdefaut ) ).'Paramétrage correct.</p>';
 				}
 			?>
 		</table>

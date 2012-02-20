@@ -142,6 +142,12 @@
 
 		public function conditionsDetailcalculdroitrsa( &$model, $conditions, $search ) {
 			if( isset( $search['Detailcalculdroitrsa']['natpf'] ) && !empty( $search['Detailcalculdroitrsa']['natpf'] ) ) {
+				if( is_array( $search['Detailcalculdroitrsa']['natpf'] ) ) {
+					$conditionsNatpf = 'detailscalculsdroitsrsa.natpf IN ( \''.implode( '\', \'', $search['Detailcalculdroitrsa']['natpf'] ).'\' )';
+				}
+				else {
+					$conditionsNatpf = 'detailscalculsdroitsrsa.natpf ILIKE \'%'.Sanitize::clean( $search['Detailcalculdroitrsa']['natpf'] ).'%\'';
+				}
 				$conditions[] = 'Detaildroitrsa.id IN (
 									SELECT detailscalculsdroitsrsa.detaildroitrsa_id
 										FROM detailscalculsdroitsrsa
@@ -150,7 +156,7 @@
 											)
 										WHERE
 											detailsdroitsrsa.dossier_id = Dossier.id
-											AND detailscalculsdroitsrsa.natpf ILIKE \'%'.Sanitize::clean( $search['Detailcalculdroitrsa']['natpf'] ).'%\'
+											AND '.$conditionsNatpf.'
 								)';
 			}
 
