@@ -251,14 +251,27 @@
 			///Pour la date du comité
 			$apre['ApreComiteapre']['daterecours'] =  date_short( Set::classicExtract( $apre, 'ApreComiteapre.daterecours' ) );
 
+			/// Récupération de l'utilisateur
+			$user = $this->User->find(
+				'first',
+				array(
+					'conditions' => array(
+						'User.id' => $this->Session->read( 'Auth.User.id' )
+					),
+					'contain' => false
+				)
+			);
+			$apre['User'] = $user['User'];
+
 			if( $dest == 'beneficiaire' ) {
-				$pdf = $this->Apre->ged( $apre, 'APRE/DecisionComite/Recours/recours'.$recoursapre.$dest.'.odt' );
-				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'recours-%s.pdf', date( 'Y-m-d' ) ) );
+				$modeleodt = 'APRE/DecisionComite/Recours/recours'.$recoursapre.$dest.'.odt';
 			}
 			else if( $dest == 'referent' ) {
-				$pdf = $this->Apre->ged( $apre, 'APRE/DecisionComite/Recours/recours'.$dest.'.odt' );
-				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'recours-%s.pdf', date( 'Y-m-d' ) ) );
+				$modeleodt = 'APRE/DecisionComite/Recours/recours'.$dest.'.odt';
 			}
+
+			$pdf = $this->Apre->ged( $apre, $modeleodt );
+			$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'recours-%s.pdf', date( 'Y-m-d' ) ) );
 		}
 	}
 ?>

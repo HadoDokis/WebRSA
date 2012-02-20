@@ -80,13 +80,14 @@
 			);
 			$personne['Adresse'] = $adresse['Adresse'];
 
-			// Récupération de l'utilisateur
+			/// Récupération de l'utilisateur
 			$user = $this->User->find(
 				'first',
 				array(
 					'conditions' => array(
 						'User.id' => $this->Session->read( 'Auth.User.id' )
-					)
+					),
+					'contain' => false
 				)
 			);
 			$personne['User'] = $user['User'];
@@ -282,13 +283,14 @@
 			$contratinsertion['Infofinanciere'] = $infofinanciere['Infofinanciere'];
 
 			//////////////////////////////////////////////////////////////////////////
-			// Récupération de l'utilisateur
+			/// Récupération de l'utilisateur
 			$user = $this->User->find(
 				'first',
 				array(
 					'conditions' => array(
 						'User.id' => $this->Session->read( 'Auth.User.id' )
-					)
+					),
+					'contain' => false
 				)
 			);
 			$contratinsertion['User'] = $user['User'];
@@ -605,7 +607,8 @@
 				array(
 					'conditions' => array(
 						'User.id' => $this->Session->read( 'Auth.User.id' )
-					)
+					),
+					'contain' => false
 				)
 			);
 			$apre['User'] = $user['User'];
@@ -771,7 +774,8 @@
 				array(
 					'conditions' => array(
 						'User.id' => $this->Session->read( 'Auth.User.id' )
-					)
+					),
+					'contain' => false
 				)
 			);
 			$relanceapre['User'] = $user['User'];
@@ -783,8 +787,7 @@
 
 			///Pour l'adresse de la personne
 			$relanceapre['Adresse']['typevoie'] = Set::extract( $typevoie, Set::extract( $relanceapre, 'Adresse.typevoie' ) );
-// debug($relanceapre);
-// die();
+
 			$this->_ged( $relanceapre, 'APRE/Relanceapre/relanceapre.odt' );
 		}
 	}

@@ -365,8 +365,19 @@
 
 			///Paramètre nécessaire pour connaitre le type de paiement au tiers (total/ plusieurs versements )
 			$typepaiement = 'Versement';
-// debug( $typedecision );
-// die();
+
+			/// Récupération de l'utilisateur
+			$user = $this->User->find(
+				'first',
+				array(
+					'conditions' => array(
+						'User.id' => $this->Session->read( 'Auth.User.id' )
+					),
+					'contain' => false
+				)
+			);
+			$apre['User'] = $user['User'];
+
 			$this->_setOptions();
 			if( ( $dest == 'beneficiaire' || $dest == 'referent' || $dest == 'tiers' ) && ( $typedecision == 'Refus' || $typedecision == 'Ajournement' ) ) {
 				$pdf = $this->Apre->ged( $apre, 'APRE/DecisionComite/'.$typedecision.'/'.$typedecision.$dest.'.odt' );
