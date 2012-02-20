@@ -27,14 +27,6 @@
 		observeDisableFieldsetOnCheckbox( 'SearchDossierpcg66Datereceptionpdo', $( 'SearchDossierpcg66DatereceptionpdoFromDay' ).up( 'fieldset' ), false );
 	});
 </script>
-<script type="text/javascript">
-//         document.observe("dom:loaded", function() {
-//             dependantSelect(
-//                 'SearchAideapre66Typeaideapre66Id',
-//                 'SearchAideapre66Themeapre66Id'
-//             );
-// 	});
-</script>
 
 <?php echo $xform->create( 'Cohortedossierpcg66', array( 'type' => 'post', 'action' => 'enattenteaffectation', 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );?>
 
@@ -129,9 +121,11 @@
                         h( $affectationdossierpcg66['Dossierpcg66']['orgpayeur'] ),
                         h( $affectationdossierpcg66['Serviceinstructeur']['lib_service'] ),
                     );
+                    
+                    $checked = @$this->data['Dossierpcg66'][$index]['atraiter'];
 
                     $array2 = array(
-						$form->input( 'Dossierpcg66.'.$index.'.atraiter', array( 'label' => false, 'legend' => false, 'type' => 'checkbox' ) ),
+						$form->input( 'Dossierpcg66.'.$index.'.atraiter', array( 'label' => false, 'legend' => false, 'type' => 'checkbox', 'checked' => !empty( $checked ) ) ),
 
                         $form->input( 'Dossierpcg66.'.$index.'.id', array( 'label' => false, 'type' => 'hidden', 'value' => $affectationdossierpcg66['Dossierpcg66']['id'] ) ).
                         $form->input( 'Dossierpcg66.'.$index.'.foyer_id', array( 'label' => false, 'type' => 'hidden', 'value' => $affectationdossierpcg66['Dossierpcg66']['foyer_id'] ) ).
@@ -139,7 +133,7 @@
                         $form->input( 'Dossierpcg66.'.$index.'.typepdo_id', array( 'label' => false, 'type' => 'hidden', 'value' => $affectationdossierpcg66['Dossierpcg66']['typepdo_id'] ) ).
                         $form->input( 'Dossierpcg66.'.$index.'.dossier_id', array( 'label' => false, 'type' => 'hidden', 'value' => $affectationdossierpcg66['Dossier']['id'] ) ).
                         $form->input( 'Dossierpcg66.'.$index.'.etatdossierpcg', array( 'label' => false, 'type' => 'hidden', 'value' => $affectationdossierpcg66['Dossierpcg66']['etatdossierpcg'] ) ).
-                        $form->input( 'Dossierpcg66.'.$index.'.user_id', array( 'label' => false, 'type' => 'select', 'options' => $gestionnaire, 'value' => $affectationdossierpcg66['Dossierpcg66']['user_id'], 'empty' => true ) ),
+                        $form->input( 'Dossierpcg66.'.$index.'.user_id', array( 'label' => false, 'type' => 'select', 'options' => $gestionnaire, 'value' => $this->data['Dossierpcg66'][$index]['user_id'], 'empty' => true ) ),
 
                         $xhtml->viewLink(
                             'Voir le dossier « '.$title.' »',
@@ -159,7 +153,7 @@
     <?php echo $pagination;?>
     <?php echo $form->submit( 'Validation de la liste' );?>
 <?php echo $form->end();?>
-
+<?php /*debug($this->data);*/?>
 <script type="text/javascript">
     <?php foreach( $cohortedossierpcg66 as $key => $affectationdossierpcg66 ):?>
 	    observeDisableFieldsOnCheckbox(
