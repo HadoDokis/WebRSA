@@ -44,18 +44,28 @@
 		}
 
 		//Ajout d'une distinction entre avis et décisions pour le CG66 vs les autres
+		
+// 		if( Configure::read( 'Cg.departement' ) == 66 ){
+// 			$avisdecisions = 'avis';
+// 		}
+// 		else{
+// 			$avisdecisions = 'décisions';
+// 		}
 		$avisdecisions = '';
-		if( Configure::read( 'Cg.departement' ) == 66 ){
-			$avisdecisions = 'avis';
-		}
-		else{
-			$avisdecisions = 'décisions';
-		}
+		$buttonName = '';
 
 		echo '<div class="submit">';
 			echo $form->submit( 'Enregistrer', array( 'div' => false ) );
 			if ( $commissionep['Commissionep']['etatcommissionep'] == 'decisionep' ) {
-				echo '<br/><br/>'.$form->submit( 'Valider', array( 'name' => 'Valider', 'div' => false, 'onclick' => 'return confirm( \'Êtes-vous sûr de vouloir valider les '.$avisdecisions.' ?\' );' ) );
+				if( Configure::read( 'Cg.departement' ) == 66 ) {
+					$avisdecisions = 'clôturer les avis';
+					$buttonName = 'Clôturer la séance';
+				}
+				else {
+					$avisdecisions = 'valider les décisions';
+					$buttonName = 'Valider';
+				}
+				echo '<br/><br/>'.$form->submit( $buttonName, array( 'name' => 'Valider', 'div' => false, 'onclick' => 'return confirm( \'Êtes-vous sûr de vouloir '.$avisdecisions.' ?\' );' ) );
 			}
 		echo '</div>';
 		echo $form->end();
