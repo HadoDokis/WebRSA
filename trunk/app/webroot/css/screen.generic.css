@@ -1196,6 +1196,20 @@ td.button.notifbenef a, td.action a.notifbenef, td span.button.notifbenef, table
 td.button.notifbenef.disabled a, td.action a.notifbenef.disabled, td span.button.notifbenef.disabled, table.default2 td a.button.notifbenef.disabled {
     background-image: url( ../img/icons/printer_disabled.png );
 }
+/* Bouton pour reverser ou non les fiches de calcul dans les décisions DO du CG66*/
+td.button.reverseDO a, td.action a.reverseDO, td span.button.reverseDO, table.default2 td a.button.reverseDO {
+    background-image: url( ../img/icons/plugin_add.png );
+}
+td.button.reverseDO.disabled a, td.action a.reverseDO.disabled, td span.button.reverseDO.disabled, table.default2 td a.button.reverseDO.disabled {
+    background-image: url( ../img/icons/plugin_disabled.png );
+}
+
+td.button.deverseDO a, td.action a.deverseDO, td span.button.deverseDO, table.default2 td a.button.deverseDO {
+    background-image: url( ../img/icons/plugin_delete.png );
+}
+td.button.deverseDO.disabled a, td.action a.deverseDO.disabled, td span.button.deverseDO.disabled, table.default2 td a.button.deverseDO.disabled {
+    background-image: url( ../img/icons/plugin_disabled.png );
+}
 /**/
 
 td.boolean span, table tr:nth-child(2n) td.boolean span {

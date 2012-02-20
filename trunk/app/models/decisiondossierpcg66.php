@@ -356,6 +356,7 @@
 					'User.nom',
 					'User.prenom',
 					'User.numtel',
+					'Decisiondossierpcg66.id',
 					'Decisiondossierpcg66.commentaire',
 					'Decisiondossierpcg66.avistechnique',
 					'Decisiondossierpcg66.dateavistechnique',
@@ -376,8 +377,7 @@
 
 			$data = $this->find( 'first', $queryData );
 
-// 			debug( $data );
-// 			die();
+
 			$data['Personne']['qual'] = Set::enum( $data['Personne']['qual'], $qual );
 			$data['Adresse']['typevoie'] = Set::enum( $data['Adresse']['typevoie'], $typevoie );
 			$data['Dossierpcg66']['serviceinstructeur_id'] = Set::classicExtract( $services, $data['Dossierpcg66']['serviceinstructeur_id'] );
@@ -445,12 +445,38 @@
 				$data[$personnefoyerpcg['Prestation']['rolepers']]['Statutpdo']['libelles'] = implode( "\n", Set::extract( '/Statutpdo/libelle', $personnespcgs66_statutspdos ) );
 			}
 
+
+			
+			// Recherche des pièces nécessaires pour cette aide, et qui ne sont pas présentes
+			$querydata = array(
+				'joins' => array(
+					$this->Typersapcg66->join( 'Decisiondossierpcg66Typersapcg66' )
+				),
+				'conditions' => array(
+					'Decisiondossierpcg66Typersapcg66.decisiondossierpcg66_id' => $id
+				),
+				'contain' => false
+			);
+
+
+			$data['Decisiondossierpcg66']['Typersapcg66'] = null;
+
+			$typesrsa = $this->Typersapcg66->find( 'list', $querydata );
+
+			if( !empty( $typesrsa ) ) {
+				$data['Decisiondossierpcg66']['Typersapcg66'] .= "\n" .'- '.implode( "\n- ", $typesrsa ).',';
+			}
+
+// 			$data['Decisiondossierpcg66']['Typersapcg66'] = $typesrsaChecked;
+			
+			
 			/*$data = array(
 				$data,
 				'DEM' => array( (array)@$data['DEM'] ),
 				'CJT' => array( (array)@$data['CJT'] ),
 			);*/
 // 			unset( $data[0]['DEM'], $data[0]['CJT'] );
+// debug( $typesrsa );
 // debug( $data );
 // die();
 			return $this->ged(

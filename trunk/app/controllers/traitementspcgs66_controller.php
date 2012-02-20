@@ -153,7 +153,8 @@
 					'Traitementpcg66.datereception',
 					'Traitementpcg66.daterevision',
 					'Traitementpcg66.dateecheance',
-					'Traitementpcg66.typetraitement'
+					'Traitementpcg66.typetraitement',
+					'Traitementpcg66.reversedo'
 				),
 				'joins' => array(
 					$this->Traitementpcg66->join( 'Personnepcg66', array( 'type' => 'INNER' ) ),
@@ -626,6 +627,70 @@ SELECT
 			$this->_setOptions();
 		}
 
+		/**
+		*
+		*/
+
+		public function reverseDO( $id ) {
+			$this->Traitementpcg66->begin();
+
+			$traitementpcg66 = $this->Traitementpcg66->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Traitementpcg66.id' => $id
+					),
+					'contain' => array(
+						'Personnepcg66'
+					)
+				)
+			);
+			$this->Traitementpcg66->id = $id;
+			$success = $this->Traitementpcg66->saveField( 'reversedo', '1' );
+
+			if ( $success ) {
+				$this->Traitementpcg66->commit();
+				$this->Session->setFlash( 'La fiche de calcul sera repercutée dans la décision', 'flash/success' );
+			}
+			else {
+				$this->Traitementpcg66->rollback();
+				$this->Session->setFlash( 'Erreur lors de la répercussion de la fiche de calcul', 'flash/error' );
+			}
+			$this->redirect( array( 'controller' => 'traitementspcgs66', 'action' => 'index', $traitementpcg66['Personnepcg66']['personne_id'], $traitementpcg66['Personnepcg66']['dossierpcg66_id'] ) );
+		}
+
+		
+		/**
+		*
+		*/
+
+		public function deverseDO( $id ) {
+			$this->Traitementpcg66->begin();
+
+			$traitementpcg66 = $this->Traitementpcg66->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Traitementpcg66.id' => $id
+					),
+					'contain' => array(
+						'Personnepcg66'
+					)
+				)
+			);
+			$this->Traitementpcg66->id = $id;
+			$success = $this->Traitementpcg66->saveField( 'reversedo', '0' );
+
+			if ( $success ) {
+				$this->Traitementpcg66->commit();
+				$this->Session->setFlash( 'La fiche de calcul ne sera plus repercutée dans la décision', 'flash/success' );
+			}
+			else {
+				$this->Traitementpcg66->rollback();
+				$this->Session->setFlash( 'Erreur lors de la non répercussion de la fiche de calcul', 'flash/error' );
+			}
+			$this->redirect( array( 'controller' => 'traitementspcgs66', 'action' => 'index', $traitementpcg66['Personnepcg66']['personne_id'], $traitementpcg66['Personnepcg66']['dossierpcg66_id'] ) );
+		}
 
 		/**
 		*   Enregistrement du document pour la fiche de calcul lors de l'enregistrement du traitement
