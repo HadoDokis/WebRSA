@@ -482,7 +482,7 @@
 				<ul>
 					<li>
 						<?php if( Configure::read( 'Cg.departement' ) == 66 ):?>
-							<a href="#">1. Création des EPs</a>
+							<a href="#">1. Gestion des EPs</a>
 						<?php else:?>
 							<a href="#">1. Mise en place du dispositif</a>
 						<?php endif;?>
