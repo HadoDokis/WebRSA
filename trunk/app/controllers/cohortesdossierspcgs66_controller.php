@@ -147,6 +147,33 @@
 					$this->paginate['limit'] = 10;
 					$cohortedossierpcg66 = $this->paginate( 'Dossierpcg66' );
 
+					if( empty( $this->data['Dossierpcg66'] ) ) {
+						// Si un précédent dossier existe, on récupère le gesitonnaire précédent par défaut
+						foreach( $cohortedossierpcg66 as $i => $dossierpcg66 ){
+							$foyer = $this->Dossierpcg66->Foyer->find(
+								'first',
+								array(
+									'conditions' => array(
+										'Foyer.id' => $dossierpcg66['Dossierpcg66']['foyer_id']
+									),
+									'contain' => array(
+										'Dossierpcg66' => array(
+											'limit' => 1,
+											'fields' => array( 'Dossierpcg66.user_id' ),
+											'order' => 'Dossierpcg66.created DESC',
+											'conditions' => array(
+												'Dossierpcg66.user_id IS NOT NULL'
+											)
+										)
+									)
+								)
+							);
+							$this->data['Dossierpcg66'][$i]['user_id'] = @$foyer['Dossierpcg66'][0]['user_id'];
+// 							debug( $foyer );
+						}
+						
+					}
+
 					$this->Dossier->commit();
 
 					$this->set( 'cohortedossierpcg66', $cohortedossierpcg66 );
