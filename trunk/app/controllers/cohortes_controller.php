@@ -148,7 +148,7 @@
 		*/
 
 		public function orientees() {
-			$this->set( 'etatdosrsa', null );
+//			$this->set( 'etatdosrsa', null );
 			$this->_index( 'Orienté' );
 		}
 
@@ -296,13 +296,13 @@
 				}
 			}
 			else {
+				// Valeurs par défaut des filtres
 				$progressivePaginate = $this->_hasProgressivePagination();
 				if( !is_null( $progressivePaginate ) ) {
 					$this->data['Filtre']['paginationNombreTotal'] = !$progressivePaginate;
 				}
-				if( $statutOrientation == 'Orienté' ) {
-					$this->data['Dossier']['dernier'] = false;
-				}
+				$filtresdefaut = Configure::read( "Filtresdefaut.{$this->name}_{$this->action}" );
+				$this->data = Set::merge( $this->data, $filtresdefaut );
 			}
 
 			$typesOrient = $this->Typeorient->find(
