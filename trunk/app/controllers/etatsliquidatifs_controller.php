@@ -357,6 +357,18 @@ $queryData = $querydata;
 
 			$this->assert( !empty( $apre ), 'invalidParameter' );
 
+			/// Récupération de l'utilisateur
+			$user = $this->User->find(
+				'first',
+				array(
+					'conditions' => array(
+						'User.id' => $this->Session->read( 'Auth.User.id' )
+					),
+					'contain' => false
+				)
+			);
+			$apre['User'] = $user['User'];
+
 			$typeapre = Set::classicExtract( $apre, 'Apre.statutapre' );
 			$dest = Set::classicExtract( $this->params, 'named.dest' );
 
