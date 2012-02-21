@@ -489,10 +489,9 @@
 				)
 			);
 
-			$theme = Inflector::classify( $passagecommission['Dossierep']['themeep'] );
-			$pdf = $this->{$theme}->getDecisionPdf( $passagecommissionep_id );
-
-			if( !empty( $pdf ) ) {
+			$pdf = false;
+			if( !empty( $passagecommission ) ) {
+				$theme = Inflector::classify( $passagecommission['Dossierep']['themeep'] );
 				$this->Passagecommissionep->updateAll(
 					array( 'Passagecommissionep.impressiondecision' => "'".date( 'Y-m-d' )."'" ),
 					array(
@@ -500,6 +499,7 @@
 						'"Passagecommissionep"."impressiondecision" IS NULL'
 					)
 				);
+				$pdf = $this->{$theme}->getDecisionPdf( $passagecommissionep_id );
 			}
 
 			return $pdf;
