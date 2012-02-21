@@ -194,35 +194,38 @@
 		*/
 
 		public function index( $personne_id = null ) {
-			$conditions = array( 'Orientstruct.date_valid IS NOT NULL', 'Orientstruct.structurereferente_id IS NOT NULL' );
-			if( !empty( $personne_id ) ) {
-				$conditions['Orientstruct.personne_id'] =  $personne_id;
-			}
-
+// 			$conditions = array( 'Orientstruct.date_valid IS NOT NULL', 'Orientstruct.structurereferente_id IS NOT NULL' );
+// 			if( !empty( $personne_id ) ) {
+// 				$conditions['Orientstruct.personne_id'] =  $personne_id;
+// 			}
+/*
 			$nborientstruct = $this->Bilanparcours66->Orientstruct->find(
 				'count',
 				array(
 					'conditions' => $conditions
 				)
-			);
+			);*/
 
 			$this->paginate = array(
 				'contain' => array(
+					'Personne' => array(
+						'fields' => array( 'qual', 'nom', 'prenom' ),
+						'Foyer' => array(
+							'Adressefoyer' => array(
+								'conditions' => array(
+									'Adressefoyer.rgadr' => '01',
+									'Adressefoyer.typeadr' => 'D'
+								),
+								'Adresse'
+							)
+						)
+					),
+					'Referent' => array(
+						'Structurereferente'
+					),
 					'Orientstruct' => array(
 						'Typeorient',
-						'Structurereferente',
-						'Personne' => array(
-							'fields' => array( 'qual', 'nom', 'prenom' ),
-							'Foyer' => array(
-								'Adressefoyer' => array(
-									'conditions' => array(
-										'Adressefoyer.rgadr' => '01',
-										'Adressefoyer.typeadr' => 'D'
-									),
-									'Adresse'
-								)
-							)
-						),
+						'Structurereferente'
 					),
 					'Contratinsertion' => array(
 						'Structurereferente' => array(
@@ -239,9 +242,6 @@
 							)
 						)
 					),
-					'Referent' => array(
-						'Structurereferente'
-					),
 					'Defautinsertionep66' => array(
 						'Dossierep' => array(
 							'Passagecommissionep' => array(
@@ -254,9 +254,11 @@
 					),
 					'Fichiermodule'
 				),
-				'conditions' => $conditions,
+				'conditions' => array(
+					'Bilanparcours66.personne_id' => $personne_id
+				),
 				'limit' => 10,
-				'order' => array( 'Bilanparcours66.created DESC'/*, 'Bilanparcours66.id DESC'*/ )
+				'order' => array( 'Bilanparcours66.created DESC', 'Bilanparcours66.id DESC' )
 			);
 
 			$this->set( 'options', $this->Bilanparcours66->Saisinebilanparcoursep66->Dossierep->enums() );

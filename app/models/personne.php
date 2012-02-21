@@ -122,6 +122,19 @@
 		);
 
 		public $hasMany = array(
+			'Bilanparcours66' => array(
+				'className' => 'Bilanparcours66',
+				'foreignKey' => 'personne_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 			'Cui' => array(
 				'className' => 'Cui',
 				'foreignKey' => 'personne_id',
@@ -530,6 +543,10 @@
 			'nom_complet' => array(
 				'type'		=> 'string',
 				'postgres'	=> '( "%s"."qual" || \' \' || "%s"."nom" || \' \' || "%s"."prenom" )'
+			),
+			'nom_complet_court' => array(
+				'type'		=> 'string',
+				'postgres'	=> '( "%s"."nom" || \' \' || "%s"."prenom" )'
 			)
 		);
 

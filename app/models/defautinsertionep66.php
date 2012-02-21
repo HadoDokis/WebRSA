@@ -403,14 +403,14 @@
 								array(
 									'table' => 'orientsstructs',
 									'alias' => 'Orientstruct',
-									'type' => 'INNER',
+									'type' => 'LEFT OUTER',
 									'conditions' => array( 'Orientstruct.personne_id = Personne.id' )
 								),
 								array(
 									'table' => 'bilansparcours66',
 									'alias' => 'Bilanparcours66',
 									'type' => 'INNER',
-									'conditions' => array( 'Bilanparcours66.orientstruct_id = Orientstruct.id' )
+									'conditions' => array( 'Bilanparcours66.personne_id = Personne.id' )
 								)
 							),
 							'contain' => false
@@ -468,14 +468,14 @@
 								array(
 									'table' => 'orientsstructs',
 									'alias' => 'Orientstruct',
-									'type' => 'INNER',
+									'type' => 'LEFT OUTER',
 									'conditions' => array( 'Orientstruct.personne_id = Personne.id' )
 								),
 								array(
 									'table' => 'bilansparcours66',
 									'alias' => 'Bilanparcours66',
 									'type' => 'INNER',
-									'conditions' => array( 'Bilanparcours66.orientstruct_id = Orientstruct.id' )
+									'conditions' => array( 'Bilanparcours66.personne_id = Personne.id' )
 								)
 							),
 							'contain' => false
@@ -493,6 +493,7 @@
 							'bilanparcours66_id' => $defautinsertionep66['Defautinsertionep66']['bilanparcours66_id']
 						)
 					);
+
 
 					$this->Bilanparcours66->Dossierpcg66->create( $dossierpcg66 );
 					$success = $this->Bilanparcours66->Dossierpcg66->save() && $success;

@@ -185,6 +185,20 @@
 				'fields' => '',
 				'order' => ''
 			),
+			'Personne' => array(
+				'className' => 'Personne',
+				'foreignKey' => 'personne_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			'Referent' => array(
+				'className' => 'Referent',
+				'foreignKey' => 'referent_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
 			'Structurereferente' => array(
 				'className' => 'Structurereferente',
 				'foreignKey' => 'structurereferente_id',
@@ -195,13 +209,6 @@
 			'Typeorient' => array(
 				'className' => 'Typeorient',
 				'foreignKey' => 'typeorient_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
-			),
-			'Referent' => array(
-				'className' => 'Referent',
-				'foreignKey' => 'referent_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
@@ -703,129 +710,167 @@
 
 				$this->create( $data );
 				if( $success = $this->validates() ) {
-					$vxOrientstruct = $this->Orientstruct->find(
-						'first',
+				
+					$nbOrientstruct = $this->Orientstruct->find(
+						'count',
 						array(
 							'conditions' => array(
-								'Orientstruct.id' => $data[$this->alias]['orientstruct_id'] // TODO: autre conditions ?
-							),
-							'contain' => false
+								'Orientstruct.personne_id' => $data[$this->alias]['personne_id']
+							 ),
+							 'contain' => false
 						)
 					);
-
-					// FIXME: erreur pas dans choixparcours
-					if( empty( $vxOrientstruct ) ) {
-						$this->invalidate( 'examenaudition', 'Cette personne ne possède aucune orientation validée.' );
-						return false;
-					}
-
-					$vxContratinsertion = $this->Contratinsertion->find(
-						'first',
-						array(
-							'conditions' => array(
-								'Contratinsertion.personne_id' => $vxOrientstruct['Orientstruct']['personne_id'],
-								'Contratinsertion.structurereferente_id' => $vxOrientstruct['Orientstruct']['structurereferente_id']
-							),
-							'contain' => false
-						)
-					);
-
-					// FIXME: erreur pas dans choixparcours
-					if( $data[$this->alias]['examenaudition'] != 'DOD' && empty( $vxContratinsertion ) ) {
-						$this->invalidate( 'examenaudition', 'Cette personne ne possède aucun CER validé dans une structure référente liée à celle de sa dernière orientation validée.' );
-						return false;
-					}
-
-					if ( $data[$this->alias]['examenaudition'] == 'DOD' ) {
-						$nbpassageeplaudition = $this->Defautinsertionep66->Dossierep->Passagecommissionep->find(
-							'count',
-							array(
-								'conditions' => array(
-									'Passagecommissionep.dossierep_id IN ('.$this->Defautinsertionep66->Dossierep->sq(
-										array(
-											'fields' => array( 'dossierseps.id' ),
-											'alias' => 'dossierseps',
-											'conditions' => array(
-												'dossierseps.themeep' => 'defautsinsertionseps66',
-												'dossierseps.personne_id' => $data['Bilanparcours66']['personne_id']
-											)
-										)
-									).' )',
-									'Passagecommissionep.etatdossierep' => 'traite'
-								)
+				
+					// Si pas d'orientaiton pour la personne, on peut créer un dossier EP
+					if( $nbOrientstruct == 0 ) {
+						$this->create( $data );
+						$success = $this->save() && $success;
+					
+					
+						// Sauvegarde du dossier d'EP
+						$dataDossierEp = array(
+							'Dossierep' => array(
+								'personne_id' => $data[$this->alias]['personne_id'],
+								'themeep' => 'defautsinsertionseps66'
 							)
 						);
+						$this->Defautinsertionep66->Dossierep->create( $dataDossierEp );
+						$success = $this->Defautinsertionep66->Dossierep->save() && $success;
 
-						$typesrdvs = $this->Contratinsertion->Personne->Rendezvous->Typerdv->find(
-							'all',
+						// Sauvegarde de la saisine pour défaut d'insertion
+						$data['Defautinsertionep66']['bilanparcours66_id'] = $this->id;
+						$data['Defautinsertionep66']['dossierep_id'] = $this->Defautinsertionep66->Dossierep->id;
+						$data['Defautinsertionep66']['origine'] = 'bilanparcours';
+
+						$this->Defautinsertionep66->create( $data );
+						$success = $this->Defautinsertionep66->save() && $success;
+					}
+					else {
+					
+						$vxOrientstruct = $this->Orientstruct->find(
+							'first',
 							array(
 								'conditions' => array(
-									'Typerdv.nbabsaveplaudition >' => 0
+									'Orientstruct.id' => $data[$this->alias]['orientstruct_id'] // TODO: autre conditions ?
 								),
 								'contain' => false
 							)
 						);
 
-						$nbPosPasEplAud = 0;
-						foreach( $typesrdvs as $typerdv ) {
-							$nbrdvsnonvenu = $this->Contratinsertion->Personne->Rendezvous->find(
+						// FIXME: erreur pas dans choixparcours
+						if( empty( $vxOrientstruct ) ) {
+							$this->invalidate( 'examenaudition', 'Cette personne ne possède aucune orientation validée.' );
+							return false;
+						}
+
+						$vxContratinsertion = $this->Contratinsertion->find(
+							'first',
+							array(
+								'conditions' => array(
+									'Contratinsertion.personne_id' => $vxOrientstruct['Orientstruct']['personne_id'],
+									'Contratinsertion.structurereferente_id' => $vxOrientstruct['Orientstruct']['structurereferente_id']
+								),
+								'contain' => false
+							)
+						);
+
+						// FIXME: erreur pas dans choixparcours
+						if( $data[$this->alias]['examenaudition'] != 'DOD' && empty( $vxContratinsertion ) ) {
+							$this->invalidate( 'examenaudition', 'Cette personne ne possède aucun CER validé dans une structure référente liée à celle de sa dernière orientation validée.' );
+							return false;
+						}
+
+						if ( $data[$this->alias]['examenaudition'] == 'DOD' ) {
+							$nbpassageeplaudition = $this->Defautinsertionep66->Dossierep->Passagecommissionep->find(
 								'count',
 								array(
 									'conditions' => array(
-										'Rendezvous.personne_id' => $data[$this->alias]['personne_id'],
-										'Statutrdv.permetpassageepl' => 1,
-										'Rendezvous.typerdv_id' => $typerdv['Typerdv']['id']
-									),
-									'joins' => array(
-										array(
-											'alias' => 'Statutrdv',
-											'table' => 'statutsrdvs',
-											'type' => 'INNER',
-											'conditions' => array(
-												'Rendezvous.statutrdv_id = Statutrdv.id'
+										'Passagecommissionep.dossierep_id IN ('.$this->Defautinsertionep66->Dossierep->sq(
+											array(
+												'fields' => array( 'dossierseps.id' ),
+												'alias' => 'dossierseps',
+												'conditions' => array(
+													'dossierseps.themeep' => 'defautsinsertionseps66',
+													'dossierseps.personne_id' => $data['Bilanparcours66']['personne_id']
+												)
 											)
-										)
+										).' )',
+										'Passagecommissionep.etatdossierep' => 'traite'
+									)
+								)
+							);
+
+							$typesrdvs = $this->Contratinsertion->Personne->Rendezvous->Typerdv->find(
+								'all',
+								array(
+									'conditions' => array(
+										'Typerdv.nbabsaveplaudition >' => 0
 									),
 									'contain' => false
 								)
 							);
-							$nbPosPasEplAud += floor( $nbrdvsnonvenu / $typerdv['Typerdv']['nbabsaveplaudition'] );
+
+							$nbPosPasEplAud = 0;
+							foreach( $typesrdvs as $typerdv ) {
+								$nbrdvsnonvenu = $this->Contratinsertion->Personne->Rendezvous->find(
+									'count',
+									array(
+										'conditions' => array(
+											'Rendezvous.personne_id' => $data[$this->alias]['personne_id'],
+											'Statutrdv.permetpassageepl' => 1,
+											'Rendezvous.typerdv_id' => $typerdv['Typerdv']['id']
+										),
+										'joins' => array(
+											array(
+												'alias' => 'Statutrdv',
+												'table' => 'statutsrdvs',
+												'type' => 'INNER',
+												'conditions' => array(
+													'Rendezvous.statutrdv_id = Statutrdv.id'
+												)
+											)
+										),
+										'contain' => false
+									)
+								);
+								$nbPosPasEplAud += floor( $nbrdvsnonvenu / $typerdv['Typerdv']['nbabsaveplaudition'] );
+							}
+
+							if ( $nbpassageeplaudition >= $nbPosPasEplAud ) {
+								$this->invalidate( 'examenaudition', 'Cette personne ne possède pas assez de rendez-vous où elle ne s\'est pas présentée.' );
+								return false;
+							}
 						}
 
-						if ( $nbpassageeplaudition >= $nbPosPasEplAud ) {
-							$this->invalidate( 'examenaudition', 'Cette personne ne possède pas assez de rendez-vous où elle ne s\'est pas présentée.' );
-							return false;
+						// Sauvegarde du bilan
+						$data[$this->alias]['contratinsertion_id'] = $vxContratinsertion['Contratinsertion']['id'];
+						$this->create( $data );
+						$success = $this->save() && $success;
+
+						if( !empty( $this->validationErrors ) ) {
+							debug( $this->validationErrors );
 						}
+
+						// Sauvegarde du dossier d'EP
+						$dataDossierEp = array(
+							'Dossierep' => array(
+								'personne_id' => $vxOrientstruct['Orientstruct']['personne_id'],
+								'themeep' => 'defautsinsertionseps66'
+							)
+						);
+						$this->Defautinsertionep66->Dossierep->create( $dataDossierEp );
+						$success = $this->Defautinsertionep66->Dossierep->save() && $success;
+
+						// Sauvegarde de la saisine pour défaut d'insertion
+						$data['Defautinsertionep66']['bilanparcours66_id'] = $this->id;
+						$data['Defautinsertionep66']['dossierep_id'] = $this->Defautinsertionep66->Dossierep->id;
+						$data['Defautinsertionep66']['orientstruct_id'] = $vxOrientstruct['Orientstruct']['id'];
+						$data['Defautinsertionep66']['contratinsertion_id'] = $vxContratinsertion['Contratinsertion']['id'];
+						$data['Defautinsertionep66']['origine'] = 'bilanparcours';
+
+						$this->Defautinsertionep66->create( $data );
+						$success = $this->Defautinsertionep66->save() && $success;
 					}
-
-					// Sauvegarde du bilan
-					$data[$this->alias]['contratinsertion_id'] = $vxContratinsertion['Contratinsertion']['id'];
-					$this->create( $data );
-					$success = $this->save() && $success;
-
-					if( !empty( $this->validationErrors ) ) {
-						debug( $this->validationErrors );
-					}
-
-					// Sauvegarde du dossier d'EP
-					$dataDossierEp = array(
-						'Dossierep' => array(
-							'personne_id' => $vxOrientstruct['Orientstruct']['personne_id'],
-							'themeep' => 'defautsinsertionseps66'
-						)
-					);
-					$this->Defautinsertionep66->Dossierep->create( $dataDossierEp );
-					$success = $this->Defautinsertionep66->Dossierep->save() && $success;
-
-					// Sauvegarde de la saisine pour défaut d'insertion
-					$data['Defautinsertionep66']['bilanparcours66_id'] = $this->id;
-					$data['Defautinsertionep66']['dossierep_id'] = $this->Defautinsertionep66->Dossierep->id;
-					$data['Defautinsertionep66']['orientstruct_id'] = $vxOrientstruct['Orientstruct']['id'];
-					$data['Defautinsertionep66']['contratinsertion_id'] = $vxContratinsertion['Contratinsertion']['id'];
-					$data['Defautinsertionep66']['origine'] = 'bilanparcours';
-
-					$this->Defautinsertionep66->create( $data );
-					$success = $this->Defautinsertionep66->save() && $success;
 				}
 			}
 			// Saisine audition pôle emploi
