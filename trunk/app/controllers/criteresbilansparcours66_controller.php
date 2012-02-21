@@ -43,27 +43,28 @@
 				$queryData = $this->Criterebilanparcours66->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $data );
 				$queryData['limit'] = 10;
 				$this->paginate = $queryData;
+				$this->Bilanparcours66->forceVirtualFields = true;
 				$bilansparcours66 = $this->paginate( $this->Bilanparcours66 );
 
-				foreach( $bilansparcours66 as $key => $bilanparcours66 ) {
-					$bilansparcours66[$key]['Personne']['nom_complet'] = implode(
-						' ',
-						array(
-							@$bilansparcours66[$key]['Personne']['qual'],
-							@$bilansparcours66[$key]['Personne']['nom'],
-							@$bilansparcours66[$key]['Personne']['prenom']
-						)
-					);
-					$bilansparcours66[$key]['Referent']['nom_complet'] = implode(
-						' ',
-						array(
-							@$bilansparcours66[$key]['Referent']['qual'],
-							@$bilansparcours66[$key]['Referent']['nom'],
-							@$bilansparcours66[$key]['Referent']['prenom']
-						)
-					);
-
-				}
+// 				foreach( $bilansparcours66 as $key => $bilanparcours66 ) {
+// 					$bilansparcours66[$key]['Personne']['nom_complet'] = implode(
+// 						' ',
+// 						array(
+// 							@$bilansparcours66[$key]['Personne']['qual'],
+// 							@$bilansparcours66[$key]['Personne']['nom'],
+// 							@$bilansparcours66[$key]['Personne']['prenom']
+// 						)
+// 					);
+// 					$bilansparcours66[$key]['Referent']['nom_complet'] = implode(
+// 						' ',
+// 						array(
+// 							@$bilansparcours66[$key]['Referent']['qual'],
+// 							@$bilansparcours66[$key]['Referent']['nom'],
+// 							@$bilansparcours66[$key]['Referent']['prenom']
+// 						)
+// 					);
+// 
+// 				}
 
 				$this->set( 'bilansparcours66', $bilansparcours66 );
 			}

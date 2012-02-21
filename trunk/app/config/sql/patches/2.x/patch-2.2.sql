@@ -15,6 +15,17 @@ ALTER TABLE traitementspcgs66 ALTER COLUMN reversedo SET DEFAULT '0'::TYPE_BOOLE
 UPDATE traitementspcgs66 SET reversedo = '0'::TYPE_BOOLEANNUMBER WHERE reversedo IS NULL;
 ALTER TABLE traitementspcgs66 ALTER COLUMN reversedo SET NOT NULL;
 
+
+SELECT add_missing_table_field ('public', 'bilansparcours66', 'personne_id', 'INTEGER');
+SELECT add_missing_constraint ('public', 'bilansparcours66', 'bilansparcours66_personne_id_fkey', 'personnes', 'personne_id');
+UPDATE bilansparcours66
+	SET personne_id = (
+		SELECT orientsstructs.personne_id
+			FROM orientsstructs
+			WHERE orientsstructs.id = orientstruct_id
+	);
+ALTER TABLE bilansparcours66 ALTER COLUMN personne_id SET NOT NULL;
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

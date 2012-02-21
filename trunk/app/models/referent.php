@@ -22,6 +22,10 @@
 				'type'      => 'string',
 				'postgres'  => '( "%s"."qual" || \' \' || "%s"."nom" || \' \' || "%s"."prenom" )'
 			),
+			'nom_complet_court' => array(
+				'type'		=> 'string',
+				'postgres'	=> '( "%s"."nom" || \' \' || "%s"."prenom" )'
+			)
 		);
 
 		public $validate = array(

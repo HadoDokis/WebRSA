@@ -65,18 +65,11 @@
 
 			$joins = array(
 				array(
-					'table'      => 'orientsstructs',
-					'alias'      => 'Orientstruct',
-					'type'       => 'INNER',
-					'foreignKey' => false,
-					'conditions' => array( 'Orientstruct.id = Bilanparcours66.orientstruct_id' ),
-				),
-				array(
 					'table'      => 'personnes',
 					'alias'      => 'Personne',
 					'type'       => 'INNER',
 					'foreignKey' => false,
-					'conditions' => array( 'Personne.id = Orientstruct.personne_id' ),
+					'conditions' => array( 'Personne.id = Bilanparcours66.personne_id' ),
 				),
 				array(
 					'table'      => 'foyers',
@@ -110,6 +103,13 @@
 					'type'       => 'INNER',
 					'foreignKey' => false,
 					'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
+				),
+				array(
+					'table'      => 'orientsstructs',
+					'alias'      => 'Orientstruct',
+					'type'       => 'LEFT OUTER',
+					'foreignKey' => false,
+					'conditions' => array( 'Orientstruct.id = Bilanparcours66.orientstruct_id' ),
 				),
 				array(
 					'table'      => 'referents',
@@ -167,12 +167,14 @@
 					'Bilanparcours66.saisineepparcours',
 					'Bilanparcours66.positionbilan',
 					'Personne.id',
+					'Personne.nom_complet_court',
 					'Personne.qual',
-					'Personne.nom',
-					'Personne.prenom',
+// 					'Personne.nom',
+// 					'Personne.prenom',
 					'Referent.qual',
-					'Referent.nom',
-					'Referent.prenom',
+// 					'Referent.nom',
+// 					'Referent.prenom',
+					'Referent.nom_complet_court',
 					'Structurereferente.lib_struc',
 					'Dossier.matricule',
 					'Dossier.numdemrsa',

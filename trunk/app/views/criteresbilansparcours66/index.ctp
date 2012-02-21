@@ -102,9 +102,9 @@
 				echo '<tr>
 					<th>'.$xpaginator->sort( __d( 'dossier', 'Dossier.numdemrsa', true ), 'Dossier.numdemrsa' ).'</th>
 					<th>'.$xpaginator->sort( __d( 'bilanparcours66', 'Bilanparcours66.datebilan', true ), 'Bilanparcours66.datebilan' ).'</th>
-					<th>'.$xpaginator->sort( __d( 'personne', 'Personne.nom_complet', true ), 'Personne.nom_complet' ).'</th>
+					<th>'.$xpaginator->sort( __d( 'personne', 'Personne.nom_complet', true ), 'Personne.nom_complet_court' ).'</th>
 					<th>'.$xpaginator->sort( __d( 'structurereferente', 'Structurereferente.lib_struc', true ), 'Structurereferente.lib_struc' ).'</th>
-					<th>'.$xpaginator->sort( __d( 'referent', 'Referent.nom_complet', true ), 'Referent.nom_complet' ).'</th>
+					<th>'.$xpaginator->sort( __d( 'referent', 'Referent.nom_complet', true ), 'Referent.nom_complet_court' ).'</th>
 					<th>'.$xpaginator->sort( __d( 'bilanparcours66', 'Bilanparcours66.proposition', true ), 'Bilanparcours66.proposition' ).'</th>
 					<th>'.$xpaginator->sort( __d( 'bilanparcours66', 'Bilanparcours66.positionbilan', true ), 'Bilanparcours66.positionbilan' ).'</th>
 					<th>'.$xpaginator->sort( __d( 'bilanparcours66', 'Bilanparcours66.choixparcours', true ), 'Bilanparcours66.choixparcours' ).'</th>
@@ -149,9 +149,9 @@
 				echo '<tr>
 					<td>'.h( $bilanparcour66['Dossier']['numdemrsa'] ).'</td>
 					<td>'.h( $locale->date( 'Date::short', $bilanparcour66['Bilanparcours66']['datebilan'] ) ).'</td>
-					<td>'.h( $bilanparcour66['Personne']['nom_complet'] ).'</td>
+					<td>'.h( $bilanparcour66['Personne']['qual'].' '.$bilanparcour66['Personne']['nom_complet_court'] ).'</td>
 					<td>'.h( $bilanparcour66['Structurereferente']['lib_struc'] ).'</td>
-					<td>'.h( $bilanparcour66['Referent']['nom_complet'] ).'</td>
+					<td>'.h( $bilanparcour66['Referent']['qual'].' '.$bilanparcour66['Referent']['nom_complet_court'] ).'</td>
 					<td>'.h( Set::classicExtract( $options['proposition'], $bilanparcour66['Bilanparcours66']['proposition'] ) ).'</td>
 					<td>'.h( Set::enum( Set::classicExtract( $bilanparcour66, 'Bilanparcours66.positionbilan' ),  $options['positionbilan'] ) ).'</td>
 					<td>'.h( $motif ).'</td>'.
