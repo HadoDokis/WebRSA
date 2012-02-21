@@ -130,6 +130,7 @@
 						'Fichiermodule' => array(
 							'fields' => array( 'name', 'id', 'created', 'modified' )
 						),
+						'Personne',
 						'Orientstruct' => array(
 							'fields' => array(
 								'personne_id'
@@ -139,9 +140,9 @@
 				)
 			);
 
-			$personne_id = Set::classicExtract( $bilanparcours66, 'Orientstruct.personne_id' );
+			$personne_id = Set::classicExtract( $bilanparcours66, 'Bilanparcours66.personne_id' );
 
-			$dossier_id = $this->Bilanparcours66->Orientstruct->Personne->dossierId( $personne_id );
+			$dossier_id = $this->Bilanparcours66->Personne->dossierId( $personne_id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
 
 			$this->Bilanparcours66->begin();
@@ -335,8 +336,8 @@
 								'conditions' => array( 'Bilanparcours66.id' => $id )
 							)
 						);
-						$this->Bilanparcours66->Orientstruct->id = $bilanparcours66['Bilanparcours66']['orientstruct_id'];
-						$id = $this->Bilanparcours66->Orientstruct->field( 'personne_id' );
+ 						$personne_id = Set::classicExtract( $bilanparcours66, 'Bilanparcours66.personne_id' );
+ 						$id = $personne_id;
 					}
 					$this->redirect( array( 'action' => 'index', $id ) );
 			}
@@ -350,6 +351,7 @@
 					'first',
 					array(
 						'contain' => array(
+							'Personne',
 							'Saisinebilanparcoursep66' => array(
 								'Dossierep' => array(
 									'Passagecommissionep' => array(
@@ -387,8 +389,7 @@
 				);
 				$this->assert( !empty( $bilanparcours66 ), 'error404' );
 
-				$this->Bilanparcours66->Orientstruct->id = $bilanparcours66['Bilanparcours66']['orientstruct_id'];
-				$personne_id = $this->Bilanparcours66->Orientstruct->field( 'personne_id' );
+				$personne_id = $bilanparcours66['Bilanparcours66']['personne_id'];
 
 				if ( $bilanparcours66['Bilanparcours66']['proposition'] == 'parcours' ) {
 					$bilanparcours66['Saisinebilanparcoursep66']['structurereferente_id'] = implode( '_', array( $bilanparcours66['Saisinebilanparcoursep66']['typeorient_id'], $bilanparcours66['Saisinebilanparcoursep66']['structurereferente_id']) );
@@ -470,10 +471,10 @@
 			}
 
 			// INFO: pour passer de 74 à 29 modèles utilisés lors du find count
-			$this->Bilanparcours66->Orientstruct->Personne->unbindModelAll();
+			$this->Bilanparcours66->Personne->unbindModelAll();
 
 			// On s'assure que la personne existe bien
-			$nPersonnes = $this->Bilanparcours66->Orientstruct->Personne->find(
+			$nPersonnes = $this->Bilanparcours66->Personne->find(
 				'count',
 				array(
 					'contain' => false,
@@ -614,7 +615,7 @@
 			}
 
 			if (!isset($this->data['Bilanparcours66']['sitfam']) || empty($this->data['Bilanparcours66']['sitfam'])) {
-				$sitfam = $this->Bilanparcours66->Orientstruct->Personne->Foyer->find(
+				$sitfam = $this->Bilanparcours66->Personne->Foyer->find(
 					'first',
 					array(
 						'fields' => array(
@@ -636,7 +637,7 @@
 						'contain'=>false
 					)
 				);
-				$nbenfant = $this->Bilanparcours66->Orientstruct->Personne->Foyer->nbEnfants($sitfam['Foyer']['id']);
+				$nbenfant = $this->Bilanparcours66->Personne->Foyer->nbEnfants($sitfam['Foyer']['id']);
 				///FIXME: voir si isolement correspond à l'isolement prévu dans la table foyer
 				//if ($sitfam['Foyer']['sitfam'] == 'ISO') {
 				if (in_array($sitfam['Foyer']['sitfam'], array('CEL', 'DIV', 'ISO', 'SEF', 'SEL', 'VEU'))) {
@@ -661,7 +662,7 @@
 			// INFO: http://stackoverflow.com/questions/3865349/containable-fails-to-join-in-belongsto-relationships-when-fields-are-used-in-ca
 			// http://cakephp.lighthouseapp.com/projects/42648/tickets/1174-containable-fails-to-join-in-belongsto-relationships-when-fields-are-used
 			// Recherche des informations de la personne
-			$personne = $this->Bilanparcours66->Orientstruct->Personne->find(
+			$personne = $this->Bilanparcours66->Personne->find(
 				'first',
 				array(
 					'conditions' => array( 'Personne.id' => $personne_id ),
@@ -779,23 +780,23 @@
 					'contain' => false
 				)
 			);
-			$orientstruct_id = Set::classicExtract( $bilan, 'Bilanparcours66.orientstruct_id' );
-			$orientstruct = $this->{$this->modelClass}->Orientstruct->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Orientstruct.id' => $orientstruct_id
-					),
-					'contain' => false
-				)
-			);
+// 			$orientstruct_id = Set::classicExtract( $bilan, 'Bilanparcours66.orientstruct_id' );
+// 			$orientstruct = $this->{$this->modelClass}->Orientstruct->find(
+// 				'first',
+// 				array(
+// 					'conditions' => array(
+// 						'Orientstruct.id' => $orientstruct_id
+// 					),
+// 					'contain' => false
+// 				)
+// 			);
 
-			$personne = $this->Bilanparcours66->Orientstruct->Personne->find(
+			$personne = $this->Bilanparcours66->Personne->find(
 				'first',
 				array(
 					'fields' => array( 'id' ),
 					'conditions' => array(
-						'Personne.id' => $orientstruct['Orientstruct']['personne_id']
+						'Personne.id' => $bilan['Bilanparcours66']['personne_id']
 					),
 					'recursive' => -1
 				)

@@ -723,6 +723,77 @@
 				
 					// Si pas d'orientaiton pour la personne, on peut créer un dossier EP
 					if( $nbOrientstruct == 0 ) {
+
+						// On vérifie que le choix du parcours est un EPL Audition avec passage pour Défaut de conclusion
+						if( $data[$this->alias]['examenaudition'] != 'DOD'  ) {
+							$this->invalidate( 'examenaudition', 'Cette personne ne possède aucune orientation, elle ne peut être signalée que pour un défaut de conclusion.' );
+							return false;
+						}
+
+						if ( $data[$this->alias]['examenaudition'] == 'DOD' ) {
+							$nbpassageeplaudition = $this->Defautinsertionep66->Dossierep->Passagecommissionep->find(
+								'count',
+								array(
+									'conditions' => array(
+										'Passagecommissionep.dossierep_id IN ('.$this->Defautinsertionep66->Dossierep->sq(
+											array(
+												'fields' => array( 'dossierseps.id' ),
+												'alias' => 'dossierseps',
+												'conditions' => array(
+													'dossierseps.themeep' => 'defautsinsertionseps66',
+													'dossierseps.personne_id' => $data['Bilanparcours66']['personne_id']
+												)
+											)
+										).' )',
+										'Passagecommissionep.etatdossierep' => 'traite'
+									)
+								)
+							);
+
+							$typesrdvs = $this->Contratinsertion->Personne->Rendezvous->Typerdv->find(
+								'all',
+								array(
+									'conditions' => array(
+										'Typerdv.nbabsaveplaudition >' => 0
+									),
+									'contain' => false
+								)
+							);
+
+							$nbPosPasEplAud = 0;
+							foreach( $typesrdvs as $typerdv ) {
+								$nbrdvsnonvenu = $this->Contratinsertion->Personne->Rendezvous->find(
+									'count',
+									array(
+										'conditions' => array(
+											'Rendezvous.personne_id' => $data[$this->alias]['personne_id'],
+											'Statutrdv.permetpassageepl' => 1,
+											'Rendezvous.typerdv_id' => $typerdv['Typerdv']['id']
+										),
+										'joins' => array(
+											array(
+												'alias' => 'Statutrdv',
+												'table' => 'statutsrdvs',
+												'type' => 'INNER',
+												'conditions' => array(
+													'Rendezvous.statutrdv_id = Statutrdv.id'
+												)
+											)
+										),
+										'contain' => false
+									)
+								);
+								$nbPosPasEplAud += floor( $nbrdvsnonvenu / $typerdv['Typerdv']['nbabsaveplaudition'] );
+							}
+
+							if ( $nbpassageeplaudition >= $nbPosPasEplAud ) {
+								$this->invalidate( 'examenaudition', 'Cette personne ne possède pas assez de rendez-vous où elle ne s\'est pas présentée.' );
+								return false;
+							}
+						}
+					
+					
+					
 						$this->create( $data );
 						$success = $this->save() && $success;
 					
@@ -961,12 +1032,7 @@
 					'alias'      => 'Personne',
 					'type'       => 'INNER',
 					'foreignKey' => false,
-					'conditions' => array(
-						'OR' => array(
-							'Personne.id = Orientstruct.personne_id',
-							'Personne.id = Contratinsertion.personne_id'
-						)
-					)
+					'conditions' => array( 'Personne.id = Bilanparcours66.personne_id' )
 				),
 				array(
 					'table'      => 'foyers',
