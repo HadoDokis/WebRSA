@@ -77,6 +77,9 @@ CREATE INDEX personnes_nir_correct13_nir13_trim_dtnai_idx ON personnes ( nir_cor
 DROP INDEX IF EXISTS personnes_upper_nom_upper_prenom_dtnai_idx;
 CREATE INDEX personnes_upper_nom_upper_prenom_dtnai_idx ON personnes ( UPPER(nom), UPPER(prenom), dtnai );
 
+-- 20120221
+DELETE FROM pdfs WHERE modele = 'Passagecommissionep';
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
