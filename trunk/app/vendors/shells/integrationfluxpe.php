@@ -96,6 +96,10 @@
 
 		protected $_rejects = array();
 
+		protected $_foreignKeysToHistoriqueetatpe = null;
+
+		protected $_foreignKeysToInformationpe = null;
+
 		/**
 		* Initialisation: lecture des paramètres
 		*/
@@ -162,9 +166,110 @@
 		}
 
 		/**
+		 * Fusion des enregistrements des tables informationspe et historiqueetatspe dépendants.
+		 *
+		 * @param array $oldInformationpe
+		 * @return boolean
+		 */
+		protected function _mergeInformationspe( $oldInformationpe ) {
+			$success = true;
+			$informationpeIdAGarder = $oldInformationpe[0]['Informationpe']['id'];
+
+			$informationpeIds = Set::extract( $oldInformationpe, '/Informationpe/id' );
+			$informationpeIdsASupprimer = $informationpeIds;
+			$informationpeIdsASupprimer = array_diff( $informationpeIdsASupprimer, array( $informationpeIdAGarder ) );
+
+			$donneesaconserver = $this->Informationpe->Historiqueetatpe->find(
+				'all',
+				array(
+					'conditions' => array( 'Historiqueetatpe.informationpe_id' => $informationpeIds ),
+					'order' => array( 'Historiqueetatpe.date ASC', 'Historiqueetatpe.etat ASC', 'Historiqueetatpe.informationpe_id ASC' ),
+					'contain' => false,
+				)
+			);
+
+			$donneesUniques = array();
+			$donneesAConserverIds = array();
+			$donneesASupprimerIds = array();
+			$columns = array( 'identifiantpe', 'date', 'etat', 'code', 'motif' );
+			if( !empty( $donneesaconserver ) ) {
+				foreach( $donneesaconserver as $donneeaconserver ) {
+					$tmpDonnees = array();
+					foreach( $columns as $column ) {
+						$tmpDonnees[$column] = trim( $donneeaconserver['Historiqueetatpe'][$column] );
+						if( empty( $tmpDonnees[$column] ) && !is_int( $tmpDonnees[$column] ) ) {
+							$tmpDonnees[$column] = null;
+						}
+					}
+					$tmpDonnees = serialize( $tmpDonnees );
+					$index = array_search( $tmpDonnees, $donneesUniques );
+					if( $index === false ) {
+						$donneesUniques[$donneeaconserver['Historiqueetatpe']['id']] = $tmpDonnees;
+						$donneesAConserverIds[] = $donneeaconserver['Historiqueetatpe']['id'];
+					}
+					else {
+						$donneesASupprimerIds[$donneeaconserver['Historiqueetatpe']['id']] = $index;
+					}
+				}
+
+				if( !empty( $donneesAConserverIds ) ) {
+					$success = $this->Informationpe->Historiqueetatpe->updateAll(
+						array( 'Historiqueetatpe.informationpe_id' => $informationpeIdAGarder ),
+						array( 'Historiqueetatpe.id' => $donneesAConserverIds )
+					) && $success;
+				}
+
+				if( !empty( $donneesASupprimerIds ) ) {
+					foreach( $this->_foreignKeysToHistoriqueetatpe as $foreignKeyToHistoriqueetatpe ) {
+						$linkedModelName = Inflector::classify( $foreignKeyToHistoriqueetatpe['From']['table'] ); // FIXME
+						$foreignKeyColumn = $foreignKeyToHistoriqueetatpe['From']['column'];
+						foreach( $donneesASupprimerIds as $oldFkValue => $newFkValue ) {
+							$success = $this->Informationpe->Historiqueetatpe->{$linkedModelName}->updateAll(
+								array( "{$linkedModelName}.{$foreignKeyColumn}" => $newFkValue ),
+								array( "{$linkedModelName}.{$foreignKeyColumn}" => $oldFkValue )
+							) && $success;
+						}
+					}
+				}
+
+				if( !empty( $this->_foreignKeysToInformationpe ) ) {
+					$this->Informationpe->rollback();
+					trigger_error( "La mécanique permettant de mettre à jour les tables liées à informationspe n'est pas encore en place.", E_USER_ERROR);
+					return false;
+				}
+
+				$success = $this->Informationpe->delete( $informationpeIdsASupprimer ) && $success;
+			}
+
+			return $success;
+		}
+
+		/**
+		 * Initialisation des attributs_foreignKeysToInformationpe et _foreignKeysToHistoriqueetatpe
+		 *
+		 * @returrn void
+		 */
+		protected function _initForeignKeysTo() {
+			$this->Informationpe->Behaviors->attach( 'Pgsqlcake.Schema' );
+			$this->_foreignKeysToInformationpe = $this->Informationpe->foreignKeysTo();
+			$tableName = $this->Informationpe->Historiqueetatpe->getDatasource( $this->Informationpe->Historiqueetatpe->useDbConfig )->fullTableName( $this->Informationpe->Historiqueetatpe, false );
+
+			foreach( $this->_foreignKeysToInformationpe as $i => $foreignKey ) {
+				if( $foreignKey['From']['table'] == $tableName ) {
+					unset( $this->_foreignKeysToInformationpe[$i] );
+				}
+			}
+
+			$this->Informationpe->Historiqueetatpe->Behaviors->attach( 'Pgsqlcake.Schema' );
+			$this->_foreignKeysToHistoriqueetatpe = $this->Informationpe->Historiqueetatpe->foreignKeysTo();
+		}
+
+		/**
 		*
 		*/
 		protected function _import( $etat ) {
+			$this->_initForeignKeysTo();
+
 			// Si on veut travailler sur les flux à partir de novembre 2011, on aura
 			// 4 colonne en plus; voir $this->colonnesApdnovembre2011
 			if( $this->apdnovembre2011 ) {
@@ -266,7 +371,7 @@
 							}
 
 							$oldInformationpe = $this->Informationpe->find(
-								'first',
+								'all',
 								array(
 									'conditions' => $this->Informationpe->qdConditionsJoinPersonneOnValues(
 										'Informationpe',
@@ -275,6 +380,27 @@
 									'contain' => false
 								)
 							);
+
+							$mergeInformationspe = false;
+							if( count( $oldInformationpe ) > 1 ) {
+								$success = $this->_mergeInformationspe( $oldInformationpe ) && $success;
+								$mergeInformationspe = true;
+
+								$oldInformationpe = $this->Informationpe->find(
+									'all',
+									array(
+										'conditions' => $this->Informationpe->qdConditionsJoinPersonneOnValues(
+											'Informationpe',
+											$informationpe['Informationpe']
+										),
+										'contain' => false
+									)
+								);
+							}
+
+							if( !empty( $oldInformationpe ) ) {
+								$oldInformationpe['Informationpe']= $oldInformationpe[0]['Informationpe'];
+							}
 
 							$saveInformationpe = true;
 							// Doit-on mettre à jour l'entrée dans informationspe ?
@@ -345,14 +471,24 @@
 								$success = $tmpSuccessModelClass && $success;
 
 								if( $tmpSuccessInformationpe && $tmpSuccessModelClass ) {
-									$this->out( "Enregistrement des données de la ligne {$numLine} du fichier {$this->csv->path} effectué." );
+									if( $mergeInformationspe ) {
+										$this->out( "Enregistrement des données et fusion des enregistrements de la ligne {$numLine} du fichier {$this->csv->path} effectué." );
+									}
+									else {
+										$this->out( "Enregistrement des données de la ligne {$numLine} du fichier {$this->csv->path} effectué." );
+									}
 								}
 								else {
 									$this->_rejectLine( $this->csv->path, $numLine, $line, "Erreur lors de l'enregistrement des données" );
 								}
 							}
 							else {
-								$this->out( "Non traitement de la ligne {$numLine} du fichier {$this->csv->path} (ligne déjà présente en base)." );
+								if( !$mergeInformationspe ) {
+									$this->out( "Non traitement de la ligne {$numLine} du fichier {$this->csv->path} (ligne déjà présente en base)." );
+								}
+								else {
+									$this->out( "Fusion des enregistrements pour la ligne {$numLine} du fichier {$this->csv->path} (ligne déjà présente en base)." );
+								}
 								$lignespresentes++;
 							}
 						}
