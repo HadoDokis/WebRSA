@@ -10,8 +10,10 @@
 		),
 		array(
 			'actions' => array(
-				'Decisionspcgs66::edit',
-				'Decisionspcgs66::delete'
+				'Decisionspcgs66::actif' => array( 'label' => 'Désactiver', 'condition' => '(\'#Decisionpcg66.actif#\' == "O")' ),
+				'Decisionspcgs66::inactif' => array( 'label' => 'Activer', 'condition' => '(\'#Decisionpcg66.actif#\' != "O")'  ),
+				'Decisionspcgs66::edit' => array( 'disabled' => '(\'#Decisionpcg66.actif#\' != "O" || \'#Decisionpcg66.occurences#\' != "0")'  ),
+				'Decisionspcgs66::delete'  => array( 'disabled' => '(\'#Decisionpcg66.actif#\' != "O" || \'#Decisionpcg66.occurences#\' != "0")'  )
 			),
 			'add' => array( 'Decisionpcg66.add' )
 		)
@@ -20,7 +22,7 @@
 	echo $default->button(
 		'back',
 		array(
-			'controller' => 'pdos',
+			'controller' => 'decisionsdossierspcgs66',
 			'action'     => 'index'
 		),
 		array(

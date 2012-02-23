@@ -21,6 +21,13 @@
 		);
 
 		public $belongsTo = array(
+			'Decisiondefautinsertionep66' => array(
+				'className' => 'Decisiondefautinsertionep66',
+				'foreignKey' => 'decisiondefautinsertionep66_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
 			'Foyer' => array(
 				'className' => 'Foyer',
 				'foreignKey' => 'foyer_id',

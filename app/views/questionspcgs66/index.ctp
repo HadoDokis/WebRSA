@@ -30,7 +30,7 @@
 	echo $default->button(
 		'back',
 		array(
-			'controller' => 'pdos',
+			'controller' => 'decisionsdossierspcgs66',
 			'action'     => 'index'
 		),
 		array(

@@ -490,11 +490,13 @@
 							'orgpayeur' => $dossier['Dossier']['fonorg'],
 							'datereceptionpdo' => $commissionep['Commissionep']['dateseance'],
 							'haspiecejointe' => 0,
-							'bilanparcours66_id' => $defautinsertionep66['Defautinsertionep66']['bilanparcours66_id']
+							'bilanparcours66_id' => $defautinsertionep66['Defautinsertionep66']['bilanparcours66_id'],
+							'decisiondefautinsertionep66_id' => $dossierep['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['id']
 						)
 					);
 
-
+// debug( $dossierpcg66 );
+// die();
 					$this->Bilanparcours66->Dossierpcg66->create( $dossierpcg66 );
 					$success = $this->Bilanparcours66->Dossierpcg66->save() && $success;
 

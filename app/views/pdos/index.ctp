@@ -11,67 +11,19 @@
 		</thead>
 		<tbody>
 			<?php
+
 				echo $xhtml->tableCells(
 					array(
-						h( 'Zones supplémentaires pour les courriers de traitements PDOs' ),
+						h( 'Décision PDOs' ),
 						$xhtml->viewLink(
 							'Voir la table',
-							array( 'controller' => 'textareascourrierspdos', 'action' => 'index' ),
-							( ( $compteurs['Courrierpdo'] > 0 ) )
+							array( 'controller' => 'decisionspdos', 'action' => 'index' )
 						)
 					),
 					array( 'class' => 'odd' ),
 					array( 'class' => 'even' )
 				);
-				if ( Configure::read( 'Cg.departement' ) == 66 ) {
-					echo $xhtml->tableCells(
-						array(
-							h( 'Compositions de foyer' ),
-							$xhtml->viewLink(
-								'Voir la table',
-								array( 'controller' => 'composfoyerspcgs66', 'action' => 'index' )
-							)
-						),
-						array( 'class' => 'odd' ),
-						array( 'class' => 'even' )
-					);
-				}
-					/*echo $xhtml->tableCells(
-						array(
-							h( 'Décision PDOs' ),
-							$xhtml->viewLink(
-								'Voir la table',
-								array( 'controller' => 'decisionspcgs66', 'action' => 'index' )
-							)
-						),
-						array( 'class' => 'odd' ),
-						array( 'class' => 'even' )
-					);*/
-					/*echo $xhtml->tableCells(
-						array(
-							h( 'Tableau des questions' ),
-							$xhtml->viewLink(
-								'Voir la table',
-								array( 'controller' => 'questionspcgs66', 'action' => 'index' )
-							)
-						),
-						array( 'class' => 'odd' ),
-						array( 'class' => 'even' )
-					);*/
-// 				}
-// 				else {
-					echo $xhtml->tableCells(
-						array(
-							h( 'Décision PDOs' ),
-							$xhtml->viewLink(
-								'Voir la table',
-								array( 'controller' => 'decisionspdos', 'action' => 'index' )
-							)
-						),
-						array( 'class' => 'odd' ),
-						array( 'class' => 'even' )
-					);
-// 				}
+
 				echo $xhtml->tableCells(
 					array(
 						h( 'Description pour traitements PDOs' ),
@@ -105,6 +57,21 @@
 					array( 'class' => 'odd' ),
 					array( 'class' => 'even' )
 				);
+
+				if ( Configure::read( 'Cg.departement' ) == 66 ) {
+					echo $xhtml->tableCells(
+						array(
+							h( 'Paramétrage pour les décisions de dossiers PCG' ),
+							$xhtml->viewLink(
+								'Voir la table',
+								array( 'controller' => 'decisionsdossierspcgs66', 'action' => 'index' )
+							)
+						),
+						array( 'class' => 'odd' ),
+						array( 'class' => 'even' )
+					);
+				}
+				
 				echo $xhtml->tableCells(
 					array(
 						h( 'Situation PDOs' ),
@@ -176,6 +143,20 @@
 						array( 'class' => 'even' )
 					);
 				}
+				
+				echo $xhtml->tableCells(
+					array(
+						h( 'Zones supplémentaires pour les courriers de traitements PDOs' ),
+						$xhtml->viewLink(
+							'Voir la table',
+							array( 'controller' => 'textareascourrierspdos', 'action' => 'index' ),
+							( ( $compteurs['Courrierpdo'] > 0 ) )
+						)
+					),
+					array( 'class' => 'odd' ),
+					array( 'class' => 'even' )
+				);
+
 			?>
 		</tbody>
 	</table>

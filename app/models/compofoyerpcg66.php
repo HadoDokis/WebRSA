@@ -35,6 +35,19 @@
 				'exclusive' => '',
 				'finderQuery' => '',
 				'counterQuery' => ''
+			),
+			'Decisiondossierpcg66' => array(
+				'className' => 'Decisiondossierpcg66',
+				'foreignKey' => 'compofoyerpcg66_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
 			)
 		);
 
@@ -46,5 +59,20 @@
 				)
 			)
 		);
+		
+		public function qdOccurences() {
+			return array(
+				'fields' => array_merge(
+					$this->fields(),
+					array( 'COUNT("Questionpcg66"."id") AS "Compofoyerpcg66__occurences"' )
+				),
+				'joins' => array( 
+					$this->join( 'Questionpcg66' )
+				),
+				'recursive' => -1,
+				'group' => $this->fields(),
+				'order' => array( 'Compofoyerpcg66.id ASC' )
+			);
+		}
 	}
 ?>

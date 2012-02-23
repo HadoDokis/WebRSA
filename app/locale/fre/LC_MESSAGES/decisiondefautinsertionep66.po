@@ -19,10 +19,10 @@ msgstr ""
 
 ###############################################################################
 
-msgid "ENUM::DECISION::suspensionnonrespect"
+msgid "ENUM::DECISION::suspensiondefaut"
 msgstr "Suspension suite à défaut de conclusion"
 
-msgid "ENUM::DECISION::suspensiondefaut"
+msgid "ENUM::DECISION::suspensionnonrespect"
 msgstr "Suspension suite à non respect du contrat"
 
 msgid "ENUM::DECISION::maintien"
@@ -40,10 +40,10 @@ msgstr "Annulé"
 msgid "ENUM::DECISION::reporte"
 msgstr "Reporté"
 
-msgid "ENUM::DECISIONSUP::suspensionnonrespect"
+msgid "ENUM::DECISIONSUP::suspensiondefaut"
 msgstr "Suspension suite à défaut de conclusion"
 
-msgid "ENUM::DECISIONSUP::suspensiondefaut"
+msgid "ENUM::DECISIONSUP::suspensionnonrespect"
 msgstr "Suspension suite à non respect du contrat"
 
 msgid "ENUM::DECISIONSUP::maintien"

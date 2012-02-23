@@ -19,14 +19,10 @@
 			if( isset( $this->params['form']['Cancel'] ) ) {
 				$this->redirect( array( 'controller' => 'pdos', 'action' => 'index' ) );
 			}
+			
+			$qdOccurences = $this->Decisionpcg66->qdOccurences();
 
-			$decisionspcgs66 = $this->Decisionpcg66->find(
-				'all',
-				array(
-					'contain' => false,
-					'order' => array( 'Decisionpcg66.id ASC' )
-				)
-			);
+			$decisionspcgs66 = $this->Decisionpcg66->find( 'all', $qdOccurences );
 
 			$this->set('decisionspcgs66', $decisionspcgs66);
 		}

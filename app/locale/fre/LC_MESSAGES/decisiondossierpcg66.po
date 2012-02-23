@@ -157,3 +157,51 @@ msgstr "Retour à l'avis technique"
 
 msgid "Decisiondossierpcg66.vuavistechnique"
 msgstr "Vu avis technique"
+
+msgid "Decisiondossierpcg66.compofoyerpcg66_id"
+msgstr "Composition du foyer ?"
+
+msgid "Decisiondossierpcg66.decision"
+msgstr "Avis émis par l'EP"
+
+msgid "Decisiondossierpcg66.recidive"
+msgstr "Récidive"
+
+msgid "ENUM::RECIDIVE::N"
+msgstr "Non"
+
+msgid "ENUM::RECIDIVE::O"
+msgstr "Oui"
+
+msgid "Decisiondossierpcg66.phase"
+msgstr "Phase"
+
+msgid "ENUM::PHASE::1"
+msgstr "1"
+
+msgid "ENUM::PHASE::2"
+msgstr "2"
+
+msgid "ENUM::PHASE::3"
+msgstr "3"
+
+msgid "Decisiondossierpcg66.decisionpcg66_id"
+msgstr "Proposition de décision"
+
+msgid "Decisiondossierpcg66.defautinsertion"
+msgstr "Défaut d'insertion"
+
+msgid "ENUM::DEFAUTINSERTION::suspensiondefaut_audition_orientation"
+msgstr "NC (CG)"
+
+msgid "ENUM::DEFAUTINSERTION::suspensiondefaut_auditionpe"
+msgstr "NC (PE)"
+
+msgid "ENUM::DEFAUTINSERTION::suspensionnonrespect_audition"
+msgstr "NR (CG)"
+
+msgid "ENUM::DEFAUTINSERTION::suspensionnonrespect_auditionpe"
+msgstr "NR (PE)"
+
+msgid "ENUM::DEFAUTINSERTION::suspensiondefaut_audition_nonorientation"
+msgstr "NC (Non Orienté)"
