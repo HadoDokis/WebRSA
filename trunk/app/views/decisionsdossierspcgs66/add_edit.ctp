@@ -110,6 +110,35 @@
 		<?php else:?>
 			<p class="notice">Aucune proposition passée n'a encore été émise par le technicien.</p>
 		<?php  endif;?>
+		
+		<?php if( !empty( $dossierpcg66['Dossierpcg66']['decisiondefautinsertionep66_id'] ) ):?>
+		<fieldset>
+			<?php
+
+				$decision = Set::enum( $dossierpcg66['Decisiondefautinsertionep66']['decision'], $options['Decisiondefautinsertionep66']['decision'] );
+				echo $xform->fieldValue( 'Decisiondossierpcg66.decision', $decision );
+// debug($dossierpcg66);
+// debug( $options );
+				$decisiondossierpcg66_decision_traduit = Set::enum( $decisiondossierpcg66_decision, $options['Decisiondossierpcg66']['defautinsertion'] );
+				echo $xform->fieldValue( 'Decisiondossierpcg66.defautinsertion', $decisiondossierpcg66_decision_traduit );
+
+				echo $default2->subform(
+					array(
+						'Decisiondossierpcg66.defautinsertion' => array( 'type' => 'hidden', 'value' => $decisiondossierpcg66_decision	 ),
+						'Decisiondossierpcg66.compofoyerpcg66_id' => array( 'type' => 'select', 'empty' => true, 'options' => $compofoyerpcg66 ),
+						'Decisiondossierpcg66.recidive' => array(  'type' => 'radio', 'empty' => true ),
+						'Decisiondossierpcg66.phase' => array( 'type' => 'select', 'empty' => true )
+					),
+					array(
+						'options' => $options
+					)
+				); // TODO
+			?>
+		</fieldset>
+		<?php  endif;?>
+		
+		<fieldset id="Propositionpcg" class="invisible"></fieldset>
+
 			<?php
 
 				echo $default2->subform(
@@ -248,4 +277,49 @@
 			} );
 		} );
 	} );
+</script>
+
+<script type="text/javascript">
+	document.observe("dom:loaded", function() {
+		[ $('Decisiondossierpcg66Compofoyerpcg66Id'), $('Decisiondossierpcg66RecidiveN'), $('Decisiondossierpcg66RecidiveO'), $('Decisiondossierpcg66Phase') ].each(function(field) {
+			field.observe('change', function(element, value) {
+				fieldUpdater();
+			});
+		});
+
+		fieldUpdater();
+	});
+	
+	function radioValue( form, radioName ) {
+		var v = $( form ).getInputs( 'radio', radioName );
+
+		var currentValue = null;
+		$( v ).each( function( radio ) {
+			if( radio.checked ) {
+				currentValue = radio.value;
+			}
+		} );
+		
+		return currentValue;
+	}
+
+	function fieldUpdater() {
+		new Ajax.Updater(
+			'Propositionpcg',
+			'<?php echo Router::url( array( "action" => "ajaxproposition" ), true ) ?>',
+			{
+				asynchronous:true,
+				evalScripts:true,
+				parameters:
+				{
+					'defautinsertion' : $F('Decisiondossierpcg66Defautinsertion'),
+					'compofoyerpcg66_id' :  $F( 'Decisiondossierpcg66Compofoyerpcg66Id' ),
+					'recidive' : radioValue( 'decisiondossierpcg66form', 'data[Decisiondossierpcg66][recidive]' ),
+					'phase' : $F('Decisiondossierpcg66Phase'),
+					'decisionpcg66_id' : '<?php echo @$this->data['Decisiondossierpcg66']['decisionpcg66_id'];?>'
+				},
+				requestHeaders:['X-Update', 'Propositionpcg']
+			}
+		);
+	}
 </script>

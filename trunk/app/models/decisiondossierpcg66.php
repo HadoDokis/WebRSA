@@ -23,7 +23,10 @@
 					'avistechnique',
 					'validationproposition',
 					'etatop',
-					'typersa'
+					'typersa',
+					'recidive',
+					'phase',
+					'defautinsertion'
 				)
 			),
 			'Gedooo'/*,
@@ -41,6 +44,20 @@
 			'Decisionpdo' => array(
 				'className' => 'Decisionpdo',
 				'foreignKey' => 'decisionpdo_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			'Compofoyerpcg66' => array(
+				'className' => 'Compofoyerpcg66',
+				'foreignKey' => 'compofoyerpcg66_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			'Decisionpcg66' => array(
+				'className' => 'Decisionpcg66',
+				'foreignKey' => 'decisionpcg66_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''

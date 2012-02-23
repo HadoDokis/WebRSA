@@ -11,7 +11,7 @@
 		public $helpers = array( 'Default2', 'Ajax', 'Fileuploader' );
 		public $uses = array( 'Decisiondossierpcg66', 'Option', 'Pdf'  );
 
-
+		public $aucunDroit = array( 'ajaxproposition' );
 		public $commeDroit = array(
 			'view' => 'Decisionsdossierspcgs66:index',
 			'add' => 'Decisionsdossierspcgs66:edit'
@@ -25,13 +25,87 @@
 			$options = $this->Decisiondossierpcg66->enums();
 			$options = array_merge(
 				$options,
-				$this->Decisiondossierpcg66->Dossierpcg66->Personnepcg66->Traitementpcg66->Decisiontraitementpcg66->enums()
+				$this->Decisiondossierpcg66->Dossierpcg66->Personnepcg66->Traitementpcg66->Decisiontraitementpcg66->enums(),
+				$this->Decisiondossierpcg66->Dossierpcg66->Decisiondefautinsertionep66->enums()
 			);
 			$listdecisionpdo = $this->Decisiondossierpcg66->Decisionpdo->find( 'list'/*, array( 'fields' => array( 'Decisionpdo.name' )*/ );
 			$typersapcg66 = $this->Decisiondossierpcg66->Typersapcg66->find( 'list' );
-			$this->set( compact( 'options', 'listdecisionpdo', 'typersapcg66' ) );
+
+			$compofoyerpcg66 = $this->Decisiondossierpcg66->Compofoyerpcg66->find( 'list' );
+			
+			$this->set( compact( 'options', 'listdecisionpdo', 'typersapcg66', 'compofoyerpcg66' ) );
 		}
 
+
+		
+		
+		/**
+		*	Affichage de la proposition du 
+		*/
+
+		public function ajaxproposition() {
+			Configure::write( 'debug', 0 );
+
+			$decisionpcg66_id = Set::extract( $this->params, 'form.decisionpcg66_id' );
+			
+			$data = array(
+				'defautinsertion' => Set::extract( $this->params, 'form.defautinsertion' ),
+				'compofoyerpcg66_id' => Set::extract( $this->params, 'form.compofoyerpcg66_id' ),
+				'recidive' => Set::extract( $this->params, 'form.recidive' ),
+				'phase' => Set::extract( $this->params, 'form.phase' )
+			);
+
+			$questionspcg = array();
+
+			$calculpossible = true;
+			// Nous manque-t'il au moins une valeur permettant de faire le calcul ?
+			foreach( $data as $key => $value ) {
+				if( is_null( $value ) || $value == '' ) {
+					$calculpossible = false;
+				}
+			}
+
+			// On a toutes les valeurs nécessaires pour faire la calcul
+			if( $calculpossible ) {
+				$questionspcg = $this->Decisiondossierpcg66->Decisionpcg66->Questionpcg66->find(
+					'list',
+					array(
+						'fields' => array( 'Decisionpcg66.id', 'Decisionpcg66.name' ),
+						'conditions' => array(
+							'Questionpcg66.defautinsertion' => $data['defautinsertion'],
+							'Questionpcg66.compofoyerpcg66_id' => $data['compofoyerpcg66_id'],
+							'Questionpcg66.recidive' => $data['recidive'],
+							'Questionpcg66.phase' => $data['phase']
+						),
+						'contain' => false,
+						'joins' => array(
+							$this->Decisiondossierpcg66->Decisionpcg66->Questionpcg66->join( 'Decisionpcg66' )
+						)
+					)
+				);
+			}
+			
+			if( !empty( $decisionpcg66_id ) ) {
+				$this->data['Decisiondossierpcg66']['decisionpcg66_id'] = $decisionpcg66_id;
+			}
+
+			$this->set( compact( 'questionspcg', 'calculpossible' ) );
+			$this->render( 'ajaxproposition', 'ajax' );
+		}
+
+		
+		
+		
+		
+		
+		
+		public function index() {
+			// Retour à la liste en cas d'annulation
+			if( isset( $this->params['form']['Cancel'] ) ) {
+				$this->redirect( array( 'controller' => 'pdos', 'action' => 'index' ) );
+			}
+		}
+		
 		/** ********************************************************************
 		*
 		*** *******************************************************************/
@@ -71,12 +145,13 @@
 								'Decisionpdo',
 								'order' => array( 'Decisiondossierpcg66.created DESC' ),
 							),
+							'Decisiondefautinsertionep66',
 							'Fichiermodule'
 						)
 					)
 				);
 				$this->set( 'dossierpcg66', $dossierpcg66 );
-// debug($dossierpcg66);
+
 				$foyer_id = Set::classicExtract( $dossierpcg66, 'Dossierpcg66.foyer_id' );
 				$dossier_id = $this->Decisiondossierpcg66->Dossierpcg66->Foyer->dossierId( $foyer_id );
 			}
@@ -94,6 +169,7 @@
 				);
 				$this->assert( !empty( $decisiondossierpcg66 ), 'invalidParameter' );
 				$dossierpcg66_id = Set::classicExtract( $decisiondossierpcg66, 'Decisiondossierpcg66.dossierpcg66_id' );
+				// FIXME: une fonction avec la partie du add ci-dessus
 				$dossierpcg66 = $this->Decisiondossierpcg66->Dossierpcg66->find(
 					'first',
 					array(
@@ -106,15 +182,38 @@
 								'order' => array( 'Decisiondossierpcg66.created DESC' ),
 								'Decisionpdo'
 							),
+							'Decisiondefautinsertionep66' => array(
+								'Passagecommissionep' => array(
+									'Dossierep' => array(
+										'Defautinsertionep66' => array(
+											'Bilanparcours66'
+										)
+									)
+								)
+							),
 							'Fichiermodule'
 						)
 					)
 				);
+
 				$foyer_id = Set::classicExtract( $dossierpcg66, 'Dossierpcg66.foyer_id' );
 				$dossier_id = $this->Decisiondossierpcg66->Dossierpcg66->Foyer->dossierId( $foyer_id );;
 			}
 
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
+
+			$decisiondossierpcg66_decision = $dossierpcg66['Decisiondefautinsertionep66']['decision'].'_'.$dossierpcg66['Decisiondefautinsertionep66']['Passagecommissionep']['Dossierep']['Defautinsertionep66']['Bilanparcours66']['proposition'];
+			if( $decisiondossierpcg66_decision == 'suspensiondefaut_audition' ) {
+				if( empty( $dossierpcg66['Decisiondefautinsertionep66']['Passagecommissionep']['Dossierep']['Defautinsertionep66']['Bilanparcours66']['orientstruct_id'] ) ) {
+					$decisiondossierpcg66_decision = "{$decisiondossierpcg66_decision}_nonorientation";
+				}
+				else {
+					$decisiondossierpcg66_decision = "{$decisiondossierpcg66_decision}_orientation";
+				}
+			}
+
+			$this->set( 'decisiondossierpcg66_decision', $decisiondossierpcg66_decision ); // FIXME: pour le add
+
 			$this->set( 'dossier_id', $dossier_id );
 			$this->set( 'dossierpcg66_id', $dossierpcg66_id );
 			$this->set( 'foyer_id', $foyer_id );
@@ -127,6 +226,7 @@
 				$this->Decisiondossierpcg66->rollback();
 			}
 			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
+
 
 			if ( !empty( $this->data ) ) {
 // debug( $this->data );

@@ -19,14 +19,11 @@
 			if( isset( $this->params['form']['Cancel'] ) ) {
 				$this->redirect( array( 'controller' => 'pdos', 'action' => 'index' ) );
 			}
+			
+			$qdOccurences = $this->Compofoyerpcg66->qdOccurences();
 
-			$composfoyerspcgs66 = $this->Compofoyerpcg66->find(
-				'all',
-				array(
-					'contain' => false,
-					'order' => array( 'Compofoyerpcg66.id ASC' )
-				)
-			);
+			$composfoyerspcgs66 = $this->Compofoyerpcg66->find( 'all', $qdOccurences );
+
 
 			$this->set('composfoyerspcgs66', $composfoyerspcgs66);
 		}

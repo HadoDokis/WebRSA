@@ -788,5 +788,28 @@
 			$select[] = $this->Html->tags[$template];
 			return $this->output(implode("\n", $select));
 		}
+
+		/**
+		 * Retourne un label et une valeur comme un champ de formulaire de type texte.
+		 * @param string $label
+		 * @param string $value
+		 * @param mixed $trannslate (false -> pas de traduction, true -> traduction dans le domaine du nom de modèle, string -> traduction dans ce domaine).
+		 * @return string
+		 */
+		public function fieldValue( $label, $value, $translate = true ) {
+			if( $translate != false ) {
+				if( $translate === true ) {
+					list( $modelName, $fieldName ) = model_field( $label );
+					$domain = Inflector::underscore( $modelName );
+				}
+				else {
+					$domain = $translate;
+				}
+				$label = __d( $domain, $label, true );
+			} 
+			return '<div class="input text"><span class="label">'.h( $label ).'</span><span class="input">'.h( $value ).'</span></div>';
+		}
+
+		
 	}
 ?>

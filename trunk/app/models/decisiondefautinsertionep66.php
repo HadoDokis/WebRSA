@@ -23,6 +23,22 @@
 			)
 		);
 
+		public $hasOne = array(
+			'Dossierpcg66' => array(
+				'className' => 'Dossierpcg66',
+				'foreignKey' => 'dossierpcg66_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			)
+		);
+		
 		public $belongsTo = array(
 			'Structurereferente' => array(
 				'className' => 'Structurereferente',

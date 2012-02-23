@@ -24,19 +24,19 @@ msgstr ""
 msgid "Questionpcg66.defautinsertion"
 msgstr "Défaut insertion"
 
-msgid "ENUM::DEFAUTINSERTION::nc_cg"
+msgid "ENUM::DEFAUTINSERTION::suspensiondefaut_audition_orientation"
 msgstr "NC (CG)"
 
-msgid "ENUM::DEFAUTINSERTION::nc_pe"
+msgid "ENUM::DEFAUTINSERTION::suspensiondefaut_auditionpe"
 msgstr "NC (PE)"
 
-msgid "ENUM::DEFAUTINSERTION::nr_cg"
+msgid "ENUM::DEFAUTINSERTION::suspensionnonrespect_audition"
 msgstr "NR (CG)"
 
-msgid "ENUM::DEFAUTINSERTION::nr_pe"
+msgid "ENUM::DEFAUTINSERTION::suspensionnonrespect_auditionpe"
 msgstr "NR (PE)"
 
-msgid "ENUM::DEFAUTINSERTION::nc_no"
+msgid "ENUM::DEFAUTINSERTION::suspensiondefaut_audition_nonorientation"
 msgstr "NC (Non Orienté)"
 
 msgid "Questionpcg66.compofoyerpcg66_id"
