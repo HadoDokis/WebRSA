@@ -8,7 +8,7 @@
 		/**
 		*
 		*/
-		public $helpers = array( 'Xhtml', 'Locale' );
+		public $helpers = array( 'Xhtml', 'Locale', 'Form', 'Default2' );
 
 		/**
 		* $urls = array(
@@ -39,6 +39,7 @@
 					</div>
 
 					<script type="text/javascript">
+						// <![CDATA[
 						function addAjaxUploadedFileLinks( elmt ) {
 							var link = new Element( \'a\', { href: \''.Router::url( array( 'action' => 'ajaxfiledelete', $this->action, @$this->params['pass'][0] ), true ).'\' + \'/\' + $( elmt ).innerHTML } ).update( "Supprimer" );
 							Event.observe( link, \'click\', function(e){
@@ -101,6 +102,7 @@
 							var ul = $( \'file-uploader-piecejointe\' ).down( \'ul.qq-upload-list\' );
 							'.$tmp.'
 						} );
+					// ]]>
 					</script>';
 		}
 
@@ -123,6 +125,55 @@
 			else{
 				$return .= '<p class="notice aere">Aucun élément.</p>';
 			}
+			return $return;
+		}
+
+		/**
+		 * INFO: si le radio "Ajouter ..." est à false, alors lorsqu'on enregistre et qu'on avait des pièces, on les perd toutes
+		 *
+		 * @param string $modelName
+		 * @param array $fichiers
+		 * @param array $datas
+		 * @param array $radioOptions
+		 * @return string
+		 */
+		public function element( $modelName, $fichiers, $datas, $radioOptions ) {
+			$formId = strtolower( $modelName ).'form';
+			$fieldName = "{$modelName}.haspiecejointe";
+			$datasFichiermodule = Set::classicExtract( $datas, 'Fichiermodule' );
+			$haspiecejointeDefault = ( ( count( $fichiers ) + count( $datasFichiermodule ) ) > 0 );
+
+			$return = $this->Form->create( $modelName, array( 'type' => 'post', 'id' => $formId, 'url' => Router::url( null, true ) ) );
+			$return .= '<fieldset><legend>'.required( $this->Default2->label( $fieldName ) ).'</legend>';
+			$return .= $this->Form->input( $fieldName, array( 'type' => 'radio', 'options' => $radioOptions, 'legend' => false, 'default' => $haspiecejointeDefault ) );
+			$return .= '<fieldset id="filecontainer-piecejointe" class="noborder invisible">'
+				.$this->create(
+					$fichiers,
+					Router::url( array( 'action' => 'ajaxfileupload' ), true )
+				)
+			.'</fieldset></fieldset>
+			<script type="text/javascript">
+			// <![CDATA[
+				document.observe( "dom:loaded", function() {
+					observeDisableFieldsetOnRadioValue(
+						\''.$formId.'\',
+						\'data['.$modelName.'][haspiecejointe]\',
+						$( \'filecontainer-piecejointe\' ),
+						\'1\',
+						false,
+						true
+					);
+				} );
+			// ]]>
+			</script>
+			<h2>Pièces déjà présentes</h2>'
+			.$this->results( $datasFichiermodule )
+			.'<div class="submit">'
+			.$this->Form->submit( 'Enregistrer', array( 'div'=>false ) )
+			.$this->Form->submit( 'Retour', array( 'name' => 'Cancel', 'div' => false ) )
+			.'</div>'
+			.$this->Form->end();
+
 			return $return;
 		}
 	}

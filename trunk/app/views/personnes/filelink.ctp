@@ -10,45 +10,7 @@
 <div class="with_treemenu">
 	<?php
 		echo $xhtml->tag( 'h1', $this->pageTitle );
-		echo $form->create( 'Personne', array( 'type' => 'post', 'id' => 'personneform', 'url' => Router::url( null, true ) ) );
+		echo $fileuploader->element( 'Personne', $fichiers, $personne, $options['haspiecejointe'] );
 	?>
-		<fieldset>
-	<legend><?php echo required( $default2->label( 'Personne.haspiecejointe' ) );?></legend>
-
-	<?php echo $form->input( 'Personne.haspiecejointe', array( 'type' => 'radio', 'options' => $options['haspiecejointe'], 'legend' => false, 'fieldset' => false ) );?>
-	<fieldset id="filecontainer-piecejointe" class="noborder invisible">
-		<?php
-			echo $fileuploader->create(
-				$fichiers,
-				Router::url( array( 'action' => 'ajaxfileupload' ), true )
-			);
-		?>
-	</fieldset>
-</fieldset>
-
-<script type="text/javascript">
-	document.observe( "dom:loaded", function() {
-		observeDisableFieldsetOnRadioValue(
-			'personneform',
-			'data[Personne][haspiecejointe]',
-			$( 'filecontainer-piecejointe' ),
-			'1',
-			false,
-			true
-		);
-	} );
-</script>
-
-<?php
-	echo "<h2>Pièces déjà présentes</h2>";
-	echo $fileuploader->results( Set::classicExtract( $personne, 'Fichiermodule' ) );
-?>
 </div>
-	<div class="submit">
-		<?php
-			echo $form->submit( 'Enregistrer', array( 'div'=>false ) );
-			echo $form->submit( 'Retour', array( 'name' => 'Cancel', 'div' => false ) );
-		?>
-	</div>
-	<?php echo $form->end();?>
 <div class="clearer"><hr /></div>
