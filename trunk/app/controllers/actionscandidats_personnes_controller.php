@@ -333,7 +333,7 @@
 			$this->set( compact( 'prescripteur' ) );
 			$this->render( 'ajaxreferent', 'ajax' );
 		}
-		
+
 
 /**
 		*   Ajax pour les partenaires fournissant les actions
@@ -425,6 +425,8 @@
 
 		protected function _add_edit( $id = null ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
+
+			$useDsps = ( Configure::read( 'ActioncandidatPersonne.suffixe' ) == 'cg93' );
 
 			// Retour à l'index en cas d'annulation
 			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
@@ -541,14 +543,16 @@
 			$this->ActioncandidatPersonne->begin();
 
 			if( !empty( $this->data ) ){
-				///Récupération des Dsps et sauvegarde
-				$this->ActioncandidatPersonne->Personne->Dsp->saveAll( $this->data, array( 'validate' => 'only' ) );
+				if( $useDsps ) { // Récupération des Dsps et sauvegarde, si besoin
+					$this->ActioncandidatPersonne->Personne->Dsp->saveAll( $this->data, array( 'validate' => 'only' ) );
+				}
 
 				if( $this->ActioncandidatPersonne->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
 
-					///Récupération des Dsps et sauvegarde
-					$this->ActioncandidatPersonne->Personne->Dsp->create();
-					$this->ActioncandidatPersonne->Personne->Dsp->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) );
+					if( $useDsps ) { ///Récupération des Dsps et sauvegarde
+						$this->ActioncandidatPersonne->Personne->Dsp->create();
+						$this->ActioncandidatPersonne->Personne->Dsp->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) );
+					}
 
 					// SAuvegarde des numéros ed téléphone si ceux-ci ne sont pas présents en amont
 					if( isset( $this->data['Personne'] ) ) {
@@ -618,7 +622,7 @@
 			}
 		}
 
-		
+
 		public function delete( $id )
 		{
 			$this->Default->delete( $id );
@@ -704,8 +708,8 @@
 			if(  isset( $this->params['form']['Cancel'] ) ) {
 				$this->redirect( array( 'action' => 'index', $personne_id ) );
 			}
-		}	
-		
-		
+		}
+
+
 	}
 ?>
