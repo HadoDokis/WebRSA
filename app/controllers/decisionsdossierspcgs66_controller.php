@@ -145,7 +145,15 @@
 								'Decisionpdo',
 								'order' => array( 'Decisiondossierpcg66.created DESC' ),
 							),
-							'Decisiondefautinsertionep66',
+							'Decisiondefautinsertionep66' => array(
+								'Passagecommissionep' => array(
+									'Dossierep' => array(
+										'Defautinsertionep66' => array(
+											'Bilanparcours66'
+										)
+									)
+								)
+							),
 							'Fichiermodule'
 						)
 					)
@@ -202,17 +210,34 @@
 
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
 
-			$decisiondossierpcg66_decision = $dossierpcg66['Decisiondefautinsertionep66']['decision'].'_'.$dossierpcg66['Decisiondefautinsertionep66']['Passagecommissionep']['Dossierep']['Defautinsertionep66']['Bilanparcours66']['proposition'];
-			if( $decisiondossierpcg66_decision == 'suspensiondefaut_audition' ) {
-				if( empty( $dossierpcg66['Decisiondefautinsertionep66']['Passagecommissionep']['Dossierep']['Defautinsertionep66']['Bilanparcours66']['orientstruct_id'] ) ) {
-					$decisiondossierpcg66_decision = "{$decisiondossierpcg66_decision}_nonorientation";
+
+			if( !empty( $dossierpcg66['Decisiondefautinsertionep66']['decision'] ) ) {
+				if( $dossierpcg66['Decisiondefautinsertionep66']['decision'] != 'maintien' ) {
+					$decisiondossierpcg66_decision = $dossierpcg66['Decisiondefautinsertionep66']['decision'].'_'.$dossierpcg66['Decisiondefautinsertionep66']['Passagecommissionep']['Dossierep']['Defautinsertionep66']['Bilanparcours66']['proposition'];
 				}
 				else {
-					$decisiondossierpcg66_decision = "{$decisiondossierpcg66_decision}_orientation";
+					$decisiondossierpcg66_decision = $dossierpcg66['Decisiondefautinsertionep66']['Passagecommissionep']['Dossierep']['Defautinsertionep66']['Bilanparcours66']['examenaudition'];
+					$proposition = $dossierpcg66['Decisiondefautinsertionep66']['Passagecommissionep']['Dossierep']['Defautinsertionep66']['Bilanparcours66']['proposition'];
+					if( $decisiondossierpcg66_decision == 'DOD' ) {
+						$decisiondossierpcg66_decision = 'suspensiondefaut';
+					}
+					else {
+						$decisiondossierpcg66_decision = 'suspensionnonrespect';
+					}
+					$decisiondossierpcg66_decision = $decisiondossierpcg66_decision.'_'.$proposition;
+					
 				}
-			}
+				if( $decisiondossierpcg66_decision == 'suspensiondefaut_audition' ) {
+					if( empty( $dossierpcg66['Decisiondefautinsertionep66']['Passagecommissionep']['Dossierep']['Defautinsertionep66']['Bilanparcours66']['orientstruct_id'] ) ) {
+						$decisiondossierpcg66_decision = "{$decisiondossierpcg66_decision}_nonorientation";
+					}
+					else {
+						$decisiondossierpcg66_decision = "{$decisiondossierpcg66_decision}_orientation";
+					}
+				}
 
-			$this->set( 'decisiondossierpcg66_decision', $decisiondossierpcg66_decision ); // FIXME: pour le add
+				$this->set( 'decisiondossierpcg66_decision', $decisiondossierpcg66_decision ); // FIXME: pour le add
+			}
 
 			$this->set( 'dossier_id', $dossier_id );
 			$this->set( 'dossierpcg66_id', $dossierpcg66_id );

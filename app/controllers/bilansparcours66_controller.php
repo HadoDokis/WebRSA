@@ -60,6 +60,8 @@
 
 			$options = Set::merge( $options, $this->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->enums() );
 			$options = Set::merge( $options, $this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->enums() );
+			
+			$options = Set::merge( $options, $this->Bilanparcours66->Dossierpcg66->Decisiondossierpcg66->enums() );
 
 			$typeorientprincipale = Configure::read( 'Orientstruct.typeorientprincipale' );
 			$options['Bilanparcours66']['typeorientprincipale_id'] = $this->Bilanparcours66->Typeorient->listRadiosOptionsPrincipales( $typeorientprincipale['SOCIAL'] );
@@ -466,7 +468,23 @@
 							)
 						)
 					);
-					$this->set( compact( 'passagecommissionep' ) );
+					
+					$dossierpcg66 = $this->Bilanparcours66->Dossierpcg66->find(
+						'first',
+						array(
+							'conditions' => array(
+								'Dossierpcg66.bilanparcours66_id' => $id
+							),
+							'contain' => array(
+								'Decisiondossierpcg66' => array(
+									'Decisionpcg66',
+									'order' => array( 'Decisiondossierpcg66.datevalidation DESC' )
+								)
+							)
+						)
+					);
+
+					$this->set( compact( 'passagecommissionep', 'dossierpcg66' ) );
 				}
 			}
 
