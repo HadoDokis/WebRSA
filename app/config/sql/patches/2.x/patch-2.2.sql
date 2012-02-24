@@ -86,6 +86,9 @@ UPDATE questionspcgs66 SET defautinsertion = 'suspensiondefaut_audition_nonorien
 
 SELECT public.alter_enumtype ( 'TYPE_DEFAUTINSERTIONPCG66', ARRAY['suspensiondefaut_audition_orientation', 'suspensiondefaut_auditionpe', 'suspensionnonrespect_audition', 'suspensionnonrespect_auditionpe', 'suspensiondefaut_audition_nonorientation'] );
 
+
+ALTER TABLE bilansparcours66 ALTER COLUMN orientstruct_id DROP NOT NULL;
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
