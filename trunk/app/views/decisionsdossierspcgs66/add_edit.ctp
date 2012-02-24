@@ -117,7 +117,7 @@
 
 				$decision = Set::enum( $dossierpcg66['Decisiondefautinsertionep66']['decision'], $options['Decisiondefautinsertionep66']['decision'] );
 				echo $xform->fieldValue( 'Decisiondossierpcg66.decision', $decision );
-// debug($dossierpcg66);
+// debug($decisiondossierpcg66_decision);
 // debug( $options );
 				$decisiondossierpcg66_decision_traduit = Set::enum( $decisiondossierpcg66_decision, $options['Decisiondossierpcg66']['defautinsertion'] );
 				echo $xform->fieldValue( 'Decisiondossierpcg66.defautinsertion', $decisiondossierpcg66_decision_traduit );
