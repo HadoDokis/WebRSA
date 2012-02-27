@@ -290,11 +290,15 @@
 					'conditions' => array(
 						'User.id' => $this->Session->read( 'Auth.User.id' )
 					),
-					'contain' => false
+					'contain' => array(
+						'Serviceinstructeur'
+					)
 				)
 			);
 			$contratinsertion['User'] = $user['User'];
+
 			$contratinsertion['Serviceinstructeur'] = $user['Serviceinstructeur'];
+
 			//////////////////////////////////////////////////////////////////////////
 			$dsp = $this->Dsp->find(
 				'first',
@@ -515,6 +519,35 @@
 				}
 			}
 
+			
+			/**
+			*   Utilisé pour les détections de fiche de candidature pour savoir si des actions sont en cours ou non
+			*
+			*  TODO: Pour le bon fonctionnement de l'ensemble, créer une SECTION pour 
+			* les fiches de candidature imprimable dans le CER
+			*
+			*/
+// 			$fichescandidature = $this->Contratinsertion->Personne->ActioncandidatPersonne->find(
+// 				'all',
+// 				array(
+// 					'conditions' => array(
+// 						'ActioncandidatPersonne.personne_id' => $contratinsertion['Contratinsertion']['personne_id'],
+// 						'ActioncandidatPersonne.positionfiche = \'encours\'',
+// 					),
+// 					'contain' => array(
+// 						'Actioncandidat' => array(
+// 							'Contactpartenaire' => array(
+// 								'Partenaire'
+// 							)
+// 						),
+// 						'Referent'
+// 					)
+// 				)
+// 			);
+// 			debug($fichescandidature);
+// 			die();
+			
+			
 			$cgDepartement = Configure::read( 'Cg.departement' );
 			if( $cgDepartement == 58 ) {
 				$this->_ged( $contratinsertion, 'Contratinsertion/contratinsertioncg58.odt' );
