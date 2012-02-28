@@ -35,10 +35,39 @@
 				$this->set( compact( 'zonesselected' ) );
 				$this->set( 'cantons', ClassRegistry::init( 'Canton' )->selectList() );
 
-				//FIXME : Nb magique !!
-				$options['Actioncandidat']['chargeinsertion_id'] = $this->Actioncandidat->Chargeinsertion->find('list', array( 'fields' => array( 'id', 'nom_complet' ), 'conditions' => array(  'Chargeinsertion.nom IS NOT NULL', 'Chargeinsertion.group_id = 7' ) ) );
-				$options['Actioncandidat']['secretaire_id'] = $this->Actioncandidat->Secretaire->find('list', array( 'fields' => array( 'id', 'nom_complet' ), 'conditions' => array(  'Secretaire.nom IS NOT NULL', 'Secretaire.group_id = 7' ) ) );
-
+				if( Configure::read( 'Cg.departement' ) == 66 ) {
+					$conditionsChargeinsertionSecretaire = Configure::read( 'Chargeinsertion.Secretaire.group_id' );
+					if( $conditionsChargeinsertionSecretaire != NULL ) {
+						$conditionsChargeinsertion = array(
+							'Chargeinsertion.nom IS NOT NULL',
+							"Chargeinsertion.group_id" => $conditionsChargeinsertionSecretaire
+						);
+						
+						$conditionsSecretaire = array(
+							'Secretaire.nom IS NOT NULL',
+							"Secretaire.group_id" => $conditionsChargeinsertionSecretaire
+						); 
+					}
+					else {
+						$conditionsChargeinsertion = $conditionsSecretaire = array(); 
+					}
+					$options['Actioncandidat']['chargeinsertion_id'] = $this->Actioncandidat->Chargeinsertion->find(
+						'list',
+						array(
+							'fields' => array( 'id', 'nom_complet' ),
+							'conditions' => $conditionsChargeinsertion,
+							'order' => 'Chargeinsertion.nom ASC'
+						)
+					);
+					$options['Actioncandidat']['secretaire_id'] = $this->Actioncandidat->Secretaire->find(
+						'list',
+						array(
+							'fields' => array( 'id', 'nom_complet' ),
+							'conditions' => $conditionsSecretaire,
+							'order' => 'Secretaire.nom ASC'
+						)
+					);
+				}
 			}
 
 			foreach( array( 'Contactpartenaire') as $linkedModel ) {
