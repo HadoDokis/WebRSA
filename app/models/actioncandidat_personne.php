@@ -196,7 +196,7 @@
 		* Non venu
 		* 	bilanretenu: non retenu
 		* 	position: nonretenue
-		* 	nullify: sortie, date, motifdemande	
+		* 	nullify: sortie, date, motifdemande
 		*/
 		protected function _bilanAccueil( $data ) {
 			$bilanvenu = Set::classicExtract( $data, "{$this->alias}.bilanvenu" );
@@ -267,7 +267,7 @@
 			return $positionfiche;
 		}*/
 
-		
+
 
 
 		/**
@@ -437,9 +437,9 @@
 
 
 
-			$actioncandidat['ActioncandidatPersonne']['motifsortie_id'] = Set::enum( Set::classicExtract( $actioncandidat, 'ActioncandidatPersonne.motifsortie_id' ), $motifssortie ); 
-			
-			
+			$actioncandidat['ActioncandidatPersonne']['motifsortie_id'] = Set::enum( Set::classicExtract( $actioncandidat, 'ActioncandidatPersonne.motifsortie_id' ), $motifssortie );
+
+
 			// Nom du modèle devant être généré
 			$modeleodt = Set::classicExtract( $actioncandidat, 'Actioncandidat.modele_document' );
 
@@ -449,5 +449,25 @@
 			return $this->ged( array( $actioncandidat ), "Candidature/{$modeleodt}.odt", true, $options );
 		}
 
+		/**
+		 * Retourne la liste des modèles odt paramétrés pour le impressions de
+		 * cette classe.
+		 *
+		 * @return array
+		 */
+		public function modelesOdt() {
+			$prefix = 'Candidature'.DS;
+
+			$items = $this->Actioncandidat->find(
+				'all',
+				array(
+					'fields' => array(
+						'( \''.$prefix.'\' || "'.$this->Actioncandidat->alias.'"."modele_document" || \'.odt\' ) AS "'.$this->Actioncandidat->alias.'__modele"',
+					),
+					'recursive' => -1
+				)
+			);
+			return Set::extract( $items, '/'.$this->Actioncandidat->alias.'/modele' );
+		}
 	}
 ?>

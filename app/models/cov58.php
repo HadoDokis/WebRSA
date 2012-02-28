@@ -14,6 +14,15 @@
 
 		public $recursive = -1;
 
+		/**
+		* Chemin relatif pour les modèles de documents .odt utilisés lors des
+		* impressions. Utiliser %s pour remplacer par l'alias.
+		*/
+		public $modelesOdt = array(
+			'%s/ordredujour.odt',
+			'%s/pv.odt',
+		);
+
 		public $actsAs = array(
 			'Autovalidate',
 			'ValidateTranslate',
@@ -146,7 +155,7 @@
 
 			foreach( $this->themesTraites( $cov58_id ) as $theme => $decision ) {
 				$model = Inflector::classify( $theme );
-				$modeleDecision = Inflector::classify( "decision{$theme}" );				
+				$modeleDecision = Inflector::classify( "decision{$theme}" );
 
 				if( isset( $data[$model] ) || isset( $data[$modeleDecision] ) && !empty( $data[$modeleDecision] ) ) {
 
@@ -575,7 +584,7 @@
 				'contain' => false
 			);
 			$options = array( 'Personne' => array( 'qual' => ClassRegistry::init( 'Option' )->qual() ) );
-			
+
 			foreach( $this->Passagecov58->Dossiercov58->Themecov58->themes() as $theme ) {
 
 				$model = Inflector::classify( $theme );

@@ -5,6 +5,14 @@
 
 		public $recursive = -1;
 
+		/**
+		* Chemin relatif pour les modèles de documents .odt utilisés lors des
+		* impressions. Utiliser %s pour remplacer par l'alias.
+		*/
+		public $modelesOdt = array(
+			'PCG66/fichecalcul.odt',
+		);
+
 		public $actsAs = array(
 			'Autovalidate',
 			'ValidateTranslate',

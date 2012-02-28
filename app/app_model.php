@@ -799,6 +799,19 @@
 
 			return $result;
 		}
+		// FIXME: remplace la fonction ci-dessus
+		protected function _checkPostgresqlIntervals( $keys ) {
+			if( !$this->Behaviors->attached( 'Pgsqlcake.schema' ) ) {
+				$this->Behaviors->attach( 'Pgsqlcake.schema' );
+			}
+
+			$results = array();
+			foreach( $keys as $key ) {
+				$results[$key] = $this->pgCheckIntervalSyntax( Configure::read( $key ) );
+			}
+
+			return $results;
+		}
 
 		/**
 		* Retourne la sous-requête d'un des champs virtuels se trouvant dans $this->virtualFields

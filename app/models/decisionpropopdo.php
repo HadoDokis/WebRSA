@@ -3,6 +3,14 @@
 	{
 		public $name = 'Decisionpropopdo';
 
+		/**
+		* Chemin relatif pour les modèles de documents .odt utilisés lors des
+		* impressions. Utiliser %s pour remplacer par l'alias.
+		*/
+		public $modelesOdt = array(
+			'PDO/propositiondecision.odt',
+		);
+
 		public $actsAs = array(
 			'Enumerable' => array(
 				'fields' => array(

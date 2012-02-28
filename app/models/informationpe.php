@@ -298,5 +298,11 @@
 		public function checkConfigUpdateIntervalleDetectionNonInscritsPe() {
 			return $this->_checkSqlIntervalSyntax( Configure::read( 'Selectionnoninscritspe.intervalleDetection' ) );
 		}
+
+		public function checkPostgresqlIntervals() {
+			return $this->_checkPostgresqlIntervals(
+				array( 'Selectionnoninscritspe.intervalleDetection' )
+			);
+		}
 	}
 ?>

@@ -388,5 +388,35 @@
 
 			return $this->find( 'list', array( 'conditions' => $conditions, 'recursive' => -1 ) );
 		}
+
+		/**
+		 * Retourne les enregistrements pour lesquels une erreur de paramétrage
+		 * a été détectée.
+		 * Il s'agit des structures pour lesquelles on ne sait pas si elles gèrent
+		 * l'APRE ni le CER.
+		 *
+		 * @return array
+		 */
+		public function storedDataErrors() {
+			return $this->find(
+				'all',
+				array(
+					'fields' => array(
+						'Structurereferente.id',
+						'Structurereferente.lib_struc',
+						'Structurereferente.apre',
+						'Structurereferente.contratengagement'
+					),
+					'recursive' => -1,
+					'conditions' => array(
+						'OR' => array(
+							'Structurereferente.apre' => NULL,
+							'Structurereferente.contratengagement' => NULL
+						)
+					),
+					'contain' => false
+				)
+			);
+		}
 	}
 ?>

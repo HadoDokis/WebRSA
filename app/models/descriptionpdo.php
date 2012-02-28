@@ -62,5 +62,27 @@
 				'counterQuery' => ''
 			)
 		);
+
+		/**
+		 * Retourne la liste des modèles odt paramétrés pour le impressions de
+		 * cette classe.
+		 *
+		 * @return array
+		 */
+		public function modelesOdt() {
+			$prefix = 'Descriptionpdo'.DS;
+
+			$items = $this->find(
+				'all',
+				array(
+					'fields' => array(
+						'( \''.$prefix.'\' || "'.$this->alias.'"."modelenotification" || \'.odt\' ) AS "'.$this->alias.'__modele"',
+					),
+					'conditions' => array( ''.$this->alias.'.modelenotification IS NOT NULL' ),
+					'recursive' => -1
+				)
+			);
+			return Set::extract( $items, '/'.$this->alias.'/modele' );
+		}
 	}
 ?>

@@ -56,6 +56,15 @@
 			'StorablePdf',
 		);
 
+		/**
+		* Chemin relatif pour les modèles de documents .odt utilisés lors des
+		* impressions. Utiliser %s pour remplacer par l'alias.
+		*/
+		public $modelesOdt = array(
+			'Bilanparcours/bilanparcours.odt',
+			'Bilanparcours/courrierinformationavantep.odt',
+		);
+
 		public $validate = array(
 			'proposition' => array(
 				array(
@@ -531,7 +540,7 @@
 					$contratinsertion['Contratinsertion']['dd_ci'] = $data['Bilanparcours66']['ddreconductoncontrat'];
 					$contratinsertion['Contratinsertion']['df_ci'] = $data['Bilanparcours66']['dfreconductoncontrat'];
 					$contratinsertion['Contratinsertion']['duree_engag'] = $data['Bilanparcours66']['duree_engag'];
-					
+
 					$idRenouvellement = $this->Contratinsertion->Typocontrat->field( 'Typocontrat.id', array( 'Typocontrat.lib_typo' => 'Renouvellement' ) );
 					$contratinsertion['Contratinsertion']['typocontrat_id'] = $idRenouvellement;
 					$contratinsertion['Contratinsertion']['rg_ci'] = ( $contratinsertion['Contratinsertion']['rg_ci'] + 1 );
@@ -710,7 +719,7 @@
 
 				$this->create( $data );
 				if( $success = $this->validates() ) {
-				
+
 					$nbOrientstruct = $this->Orientstruct->find(
 						'count',
 						array(
@@ -720,7 +729,7 @@
 							 'contain' => false
 						)
 					);
-				
+
 					// Si pas d'orientaiton pour la personne, on peut créer un dossier EP
 					if( $nbOrientstruct == 0 ) {
 
@@ -791,13 +800,13 @@
 								return false;
 							}
 						}
-					
-					
-					
+
+
+
 						$this->create( $data );
 						$success = $this->save() && $success;
-					
-					
+
+
 						// Sauvegarde du dossier d'EP
 						$dataDossierEp = array(
 							'Dossierep' => array(
@@ -817,7 +826,7 @@
 						$success = $this->Defautinsertionep66->save() && $success;
 					}
 					else {
-					
+
 						$vxOrientstruct = $this->Orientstruct->find(
 							'first',
 							array(
@@ -1128,8 +1137,8 @@
 
 			return $this->ged( $gedooo_data, 'Bilanparcours/courrierinformationavantep.odt'/*, true, $options*/ );
 		}
-		
-		
+
+
 
 		/**
 		*	On cherche le nombre de dossiers d'EP pour une personne concernant une thématique donnée
@@ -1175,14 +1184,14 @@
 									)
 								)
 							.')',
-							
+
 						)
 					),
 					'contain' => false
 				)
 			);
 
-			return ( $count == 0 );			
+			return ( $count == 0 );
 		}
 	}
 ?>

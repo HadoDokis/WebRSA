@@ -553,5 +553,17 @@
 			return true;
 		}
 
+		public function checkPostgresqlIntervals() {
+			$value = Configure::read( 'Dossierep.delaiavantselection' );
+
+			if( is_null( $value ) ) {
+				return array();
+			}
+			else {
+				return $this->_checkPostgresqlIntervals(
+					array( 'Dossierep.delaiavantselection' )
+				);
+			}
+		}
 	}
 ?>

@@ -322,5 +322,44 @@
 			}
 			return $result;
 		}
+
+		/**
+		 * Retourne les enregistrements pour lesquels une erreur de paramétrage
+		 * a été détectée.
+		 * Il s'agit des services instructeurs pour lesquels on ne connaît pas
+		 * le nom du service, ou une des colonnes permettant de faire la jointure
+		 * avec les dossiers.
+		 *
+		 * @return array
+		 */
+		public function storedDataErrors() {
+			return $this->find(
+				'all',
+				array(
+					'fields' => array(
+						'Serviceinstructeur.id',
+						'Serviceinstructeur.lib_service',
+						'Serviceinstructeur.numdepins',
+						'Serviceinstructeur.typeserins',
+						'Serviceinstructeur.numcomins',
+						'Serviceinstructeur.numagrins',
+					),
+					'conditions' => array(
+						'OR' => array(
+							'Serviceinstructeur.lib_service IS NULL',
+							'TRIM(Serviceinstructeur.lib_service)' => null,
+							'Serviceinstructeur.numdepins IS NULL',
+							'TRIM(Serviceinstructeur.numdepins)' => null,
+							'Serviceinstructeur.typeserins IS NULL',
+							'TRIM(Serviceinstructeur.typeserins)' => null,
+							'Serviceinstructeur.numcomins IS NULL',
+							'TRIM(Serviceinstructeur.numcomins)' => null,
+							'Serviceinstructeur.numagrins IS NULL'
+						)
+					),
+					'contain' => false,
+				)
+			);
+		}
 	}
 ?>
