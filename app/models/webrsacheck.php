@@ -29,6 +29,8 @@
 		 * lorsque le modèle est instancié).
 		 *
 		 * @see grep -lri "\.odt" "app/models/" | sed "s/app\/models\/\(.*\)\.php/\1/p" | sort | uniq
+		 * TODO
+		 * @see grep -lri "\.odt" "app/controllers/" | sed "s/app\/controllers\/\(.*\)\.php/\1/p" | sort | uniq
 		 *
 		 * Dernière vérification le 28/02/2012 (à revérifier!)
 		 *

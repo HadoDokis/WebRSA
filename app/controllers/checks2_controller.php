@@ -198,10 +198,7 @@
 			return array(
 				'Webrsa' => array(
 					'informations' => array(
-						'Version' => array(
-							'value' => app_version(),
-							'success' => true
-						)
+						'Version' => $this->Check->version( 'WebRSA', app_version(), '0' ),
 					),
 					'configure' =>  $this->Check->configure(
 						$this->Webrsacheck->allConfigureKeys( Configure::read( 'Cg.departement' ) )
