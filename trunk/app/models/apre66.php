@@ -36,6 +36,11 @@
 			'Conditionnable'
 		);
 
+		public $modelesOdt = array(
+			'APRE/accordaide.odt',
+			'APRE/refusaide.odt',
+		);
+
 		public $validate = array(
 			'activitebeneficiaire' => array(
 				array(
@@ -119,7 +124,7 @@
 			),
 			'hascer' => array(
 				array(
-					'rule' => array('equalTo', '1'), 
+					'rule' => array('equalTo', '1'),
 					'message' => 'Champ obligatoire'
 				)
 			),
@@ -131,7 +136,7 @@
 			),
 			'respectdelais' => array(
 				array(
-					'rule' => array('equalTo', '1'), 
+					'rule' => array('equalTo', '1'),
 					'message' => 'Champ obligatoire'
 				)
 			)
@@ -254,9 +259,9 @@
 
 			return true;
 		}
-		
 
-		
+
+
 		/**
 		* Récupération des informations propres au dossier devant passer en EP
 		* avant liaison avec la commission d'EP
@@ -276,8 +281,8 @@
 					)
 				)
 			);
-			
-			
+
+
 			$typeaideapre66_id = Set::classicExtract( $gedooo_data, 'Aideapre66.typeaideapre66_id' );
 			$piecesPresentes = Set::classicExtract($gedooo_data, 'Aideapre66.Piececomptable66.{n}.id');
 
@@ -300,13 +305,13 @@
 			if( !empty( $pieces ) ) {
 				$gedooo_data['Aideapre66']['Piececomptable66'] .= "\n" .'- '.implode( "\n- ", $pieces ).',';
 			}
-			
-			
+
+
 // debug($gedooo_data);
 // die();
 			$this->id = $gedooo_data[$this->alias]['id'];
 			$success = $this->saveField( 'datenotifapre', date( 'Y-m-d' ) );
-			
+
 			if( !$success ) {
 				return false;
 			}
@@ -324,8 +329,8 @@
 		}
 
 // 		public function autorisationPlafondAideapre66( $aideapre66_id, $personne_id ){
-// 			
+//
 // 		}
-// 		
+//
 	}
 ?>

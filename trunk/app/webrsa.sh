@@ -6,7 +6,7 @@ WORK_DIR="$PWD"
 RELEASES_DIR="$WORK_DIR/releases"
 ChangeLog="ChangeLog.txt"
 ASNV="svn://svn.adullact.net/svnroot/webrsa"
-YUICOMPRESSOR="/home/cbuffin/Install/yuicompressor-2.4.2.jar"
+YUICOMPRESSOR="$HOME/bin/yuicompressor.jar"
 
 # ------------------------------------------------------------------------------
 # INFO: rgadr sur un char -> sed -i "s/<RGADR>\([1-3]\)<\/RGADR>/<RGADR>0\1<\/RGADR>/" XXX

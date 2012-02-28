@@ -6,6 +6,18 @@
 
 		public $recursive = -1;
 
+		/**
+		* Chemin relatif pour les modèles de documents .odt utilisés lors des
+		* impressions. Utiliser %s pour remplacer par l'alias.
+		*/
+		public $modelesOdt = array(
+			'Cov58/decisionorientationpro.odt',
+			'Cov58/decisionreorientationpro.odt',
+			'Cov58/decisionorientationsoc.odt',
+			'Cov58/decisionreorientationsoc.odt',
+			'Cov58/decisionrefusreorientation.odt',
+		);
+
 		public $actsAs = array(
 			'Autovalidate',
 			'Containable',
@@ -540,7 +552,7 @@
 								$success = $this->Dossiercov58->Personne->Orientstruct->Personne->PersonneReferent->save() && $success;
 							}
 						}
- 
+
 						$this->Dossiercov58->Personne->Orientstruct->create( $orientstruct );
 						$success = $this->Dossiercov58->Personne->Orientstruct->save() && $success;
 

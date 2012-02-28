@@ -47,7 +47,7 @@
 		* Crée une table de correspondance entre les noms des champs utilisables
 		* dans les modèles et leur traduction à partir des données envoyées.
 		*
-		* @param array $keys 
+		* @param array $keys
 		* @return array
 		*/
 		protected function _flatKeys( $keys ) {
@@ -178,8 +178,21 @@
 				}
 			}
 
-			// Ajout d'une variable contenant le chemin vers le fichier lorsqu'on est en debug
+			// Ajout d'une variable contenant le chemin vers le fichier et vérification
+			// que le modèle connaisse bien le fichier odt lorsqu'on est en debug
 			if( Configure::read( 'debug' ) > 0 ) {
+				// Attention, c'est le modèle qui doit avoir le comportement Gedooo
+				$modelesOdt = str_replace( '%s', $model->alias, $model->modelesOdt );
+
+				// Récupération des valeurs de la méthode modelesOdt lorsqu'elle est présente
+				if( in_array( 'modelesOdt', get_class_methods( $model->name ) ) ) {
+					$modelesOdt = Set::merge( $modelesOdt, $model->modelesOdt() );
+				}
+
+				if( !in_array( $document, $modelesOdt ) ) {
+					$this->log( sprintf( "Le modèle de document %s n'est pas connu du modèle %s.", $document, $model->alias ), LOG_DEBUG );
+				}
+
 				$oMainPart->addElement( new GDO_FieldType( 'modeleodt_path', str_replace( MODELESODT_DIR, '', $path_model ), 'text' ) );
 			}
 

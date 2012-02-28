@@ -1320,3 +1320,54 @@ div.errorslist {
 	border: 1px solid #cc0000;
 	margin: 0.5em 0;
 }
+
+/**
+ * Nouvelle standardisation de la vérification de l'application
+ */
+table.checks, table.checks tbody, table.checks tbody th, table.checks tbody td {
+	background: none;
+	color: black;
+	border: 0;
+}
+
+table.checks tr th {
+	background-repeat: no-repeat;
+	background-position: left top;
+	padding-left: 20px;
+	margin-left: 0;
+}
+
+table.checks tr.success th {
+	background-image: url( ../img/icons/tick.png );
+}
+
+table.checks tr.error th {
+	background-image: url( ../img/icons/cross.png );
+}
+
+table.checks tr.error th, table.checks tr.error td {
+	background-color: #fdd;
+}
+
+table.checks tr.error td.message {
+	background-color: white;
+}
+
+table.checks { width: 100%; }
+table.checks tr th, table.checks tr td { width: 15%; }
+table.checks tr td.message { width: 50%; }
+
+h3.storeddata.success, h3.storeddata.error {
+	background-repeat: no-repeat;
+	background-position: left top;
+	padding-left: 20px;
+	margin-left: 0;
+}
+
+h3.storeddata.success {
+	background-image: url( ../img/icons/tick.png );
+}
+
+h3.storeddata.error {
+	background-image: url( ../img/icons/cross.png );
+}

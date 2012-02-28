@@ -906,7 +906,7 @@ function printit(){
 *   Changes:        Added overage override.  Read blog for updates: http://blog.ninedays.org/2008/01/17/limit-characters-in-a-textarea-with-prototype/
 *   Created :       1/17/2008 - January 17, 2008
 *   Modified :      5/20/2008 - May 20, 2008
-* 
+*
 *   Functions:      init()                      Function called when the window loads to initiate and apply character counting capabilities to select textareas
 *   charCounter(id, maxlimit, limited)  Function that counts the number of characters, alters the display number and the calss applied to the display number
 *   makeItCount(id, maxsize, limited)   Function called in the init() function, sets the listeners on teh textarea nd instantiates the feedback display number if it does not exist
@@ -1008,7 +1008,7 @@ function toutCocher( selecteur ) {
 
 /**
 * Permet de décocher un ensemble de cases à cocher.
-* @param selecteur Le sélecteur CSS pour obtenir les cases à cocher (default: input[type="checkbox"]) 
+* @param selecteur Le sélecteur CSS pour obtenir les cases à cocher (default: input[type="checkbox"])
 */
 
 function toutDecocher( selecteur ) {
@@ -1022,35 +1022,51 @@ function toutDecocher( selecteur ) {
 }
 
 /**
- * Active et affiche une partie d'un formulaire contenu dans une balise 
+ * Active et affiche une partie d'un formulaire contenu dans une balise
  */
 
 function enableAndShowFormPart( formpartid ) {
 	$( formpartid ).removeClassName( 'disabled' );
 	$( formpartid ).show();
-	
+
 	$( formpartid ).getElementsBySelector( 'div.input' ).each( function( elmt ) {
 		$( elmt ).removeClassName( 'disabled' );
 	} );
-	
+
 	$( formpartid ).getElementsBySelector( 'input', 'select', 'button', 'textarea', 'radio' ).each( function( elmt ) {
 		$( elmt ).enable();
 	} );
 }
 
 /**
- * Désactive et cache une partie d'un formulaire contenu dans une balise 
+ * Désactive et cache une partie d'un formulaire contenu dans une balise
  */
 
 function disableAndHideFormPart( formpartid ) {
 	$( formpartid ).addClassName( 'disabled' );
 	$( formpartid ).hide();
-	
+
 	$( formpartid ).getElementsBySelector( 'div.input' ).each( function( elmt ) {
 		$( elmt ).addClassName( 'disabled' );
 	} );
-	
+
 	$( formpartid ).getElementsBySelector( 'input', 'select', 'button', 'textarea', 'radio' ).each( function( elmt ) {
 		$( elmt ).disable();
+	} );
+}
+
+/**
+ * Marque les li correspondant aux onglets en erreur (classe error) lorsqu'ils
+ * comportent une balise en erreur.
+ */
+function makeErrorTabs() {
+	$$( '.error' ).each( function( elmt ) {
+		$(elmt).ancestors().each( function( ancestor ) {
+			if( $(ancestor).hasClassName( 'tab' ) ) {
+				$$( 'a[href=#' + $(ancestor).readAttribute( 'id' ) + ']' ).each( function( tabLink ) {
+					$(tabLink).up( 'li' ).addClassName( 'error' );
+				} );
+			}
+		} );
 	} );
 }

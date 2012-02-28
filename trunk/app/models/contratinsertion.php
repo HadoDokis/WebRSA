@@ -861,6 +861,16 @@
 			return $this->_checkSqlIntervalSyntax( Configure::read( 'Criterecer.delaiavanteecheance' ) );
 		}
 
+		public function checkPostgresqlIntervals() {
+			$keys = array( 'Criterecer.delaiavanteecheance' );
+
+			if( Configure::read( 'Cg.departement' ) == 66 ) {
+				$keys[] = 'Contratinsertion.Cg66.updateEncoursbilan';
+			}
+
+			return $this->_checkPostgresqlIntervals( $keys );
+		}
+
 		/**
 		* Permet de récupérer le dernièr CER d'une personne
 		*/

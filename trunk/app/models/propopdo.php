@@ -18,6 +18,15 @@
 			'Gedooo'
 		);
 
+		/**
+		* Chemin relatif pour les modèles de documents .odt utilisés lors des
+		* impressions. Utiliser %s pour remplacer par l'alias.
+		*/
+		public $modelesOdt = array(
+			'PDO/pdo_etudiant.odt',
+			'PDO/pdo_insertion.odt'
+		);
+
 		public $validate = array(
 			'typepdo_id' => array(
 				'rule' => 'notEmpty',

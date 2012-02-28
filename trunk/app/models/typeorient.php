@@ -238,11 +238,11 @@
 			}
 			return null;
 		}
-		
+
 		/**
 		* Vérifie si pour un id de type d'orientation donné il s'agit ou non d'une orientation vers le professionnel
 		*/
-		
+
 		public function isProOrientation( $typeorient_id ) {
 
 			if( Configure::read( 'Cg.departement' ) == 58 ){
@@ -314,6 +314,27 @@
 				$options[$typeorient['Typeorient']['parentid']][$typeorient['Typeorient']['id']] = $typeorient['Typeorient']['lib_type_orient'];
 			}
 			return $options;
+		}
+
+		/**
+		 * Retourne la liste des modèles odt paramétrés pour le impressions de
+		 * cette classe.
+		 *
+		 * @return array
+		 */
+		public function modelesOdt() {
+			$prefix = 'Orientation'.DS;
+
+			$items = $this->find(
+				'all',
+				array(
+					'fields' => array(
+						'( \''.$prefix.'\' || "'.$this->alias.'"."modele_notif" || \'.odt\' ) AS "'.$this->alias.'__modele"',
+					),
+					'recursive' => -1
+				)
+			);
+			return Set::extract( $items, '/'.$this->alias.'/modele' );
 		}
 	}
 ?>

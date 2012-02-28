@@ -370,5 +370,42 @@
 			return (Security::hash($data['User']['passwd'], null, true)==$oldPass['User']['password']);
 		}
 
+		/**
+		 * Retourne les enregistrements pour lesquels une erreur de paramétrage
+		 * a été détectée.
+		 * Il s'agit des utilisateurs pour lesquels on ne connaît pas une des
+		 * valeurs suivantes: nom, prenom, service instructeur, date de début
+		 * d'habilitation, date de fin d'habilitation.
+		 *
+		 * @return array
+		 */
+		public function storedDataErrors() {
+			return $this->find(
+				'all',
+				array(
+					'fields' => array(
+						'User.id',
+						'User.username',
+						'User.nom',
+						'User.prenom',
+						'User.serviceinstructeur_id',
+						'User.date_deb_hab',
+						'User.date_fin_hab',
+					),
+					'conditions' => array(
+						'OR' => array(
+							'User.nom IS NULL',
+							'TRIM(User.nom)' => null,
+							'User.prenom IS NULL',
+							'TRIM(User.prenom)' => null,
+							'User.serviceinstructeur_id IS NULL',
+							'User.date_deb_hab IS NULL',
+							'User.date_fin_hab IS NULL',
+						)
+					),
+					'contain' => false,
+				)
+			);
+		}
 	}
 ?>

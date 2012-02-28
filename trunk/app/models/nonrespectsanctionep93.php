@@ -647,7 +647,7 @@
 
 			$queryData['conditions'] = $this->conditionsPersonneFoyerDossier( $queryData['conditions'], $datas );
 			$queryData['conditions'] = $this->conditionsAdresse( $queryData['conditions'], $datas, $filtre_zone_geo, $mesCodesInsee );
-			
+
 			$qdRadies = $modeleHistoriqueetatpe->Informationpe->qdRadies();
 			$queryData['fields'] = array_merge( $queryData['fields'] ,$qdRadies['fields'] );
 			$queryData['joins'] = array_merge( $queryData['joins'] ,$qdRadies['joins'] );
@@ -1078,6 +1078,12 @@
 
 		public function checkConfigUpdateIntervalleCerDo19Cg93() {
 			return $this->_checkSqlIntervalSyntax( Configure::read( 'Nonrespectsanctionep93.intervalleCerDo19' ) );
+		}
+
+		public function checkPostgresqlIntervals() {
+			return $this->_checkPostgresqlIntervals(
+				array( 'Nonrespectsanctionep93.intervalleCerDo19' )
+			);
 		}
 	}
 ?>

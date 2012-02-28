@@ -59,5 +59,26 @@
 				'with' => 'CourrierpdoTraitementpcg66'
 			)
 		);
+
+		/**
+		 * Retourne la liste des modèles odt paramétrés pour le impressions de
+		 * cette classe.
+		 *
+		 * @return array
+		 */
+		public function modelesOdt() {
+			$prefix = 'PDO'.DS.'Courrierpdo'.DS;
+
+			$items = $this->find(
+				'all',
+				array(
+					'fields' => array(
+						'( \''.$prefix.'\' || "'.$this->alias.'"."modeleodt" || \'.odt\' ) AS "'.$this->alias.'__modele"',
+					),
+					'recursive' => -1
+				)
+			);
+			return Set::extract( $items, '/'.$this->alias.'/modele' );
+		}
 	}
 ?>
