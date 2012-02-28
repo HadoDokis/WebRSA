@@ -298,4 +298,12 @@
 	* 	"Intervalles PostgreSQL"
 	*/
 	Configure::write( 'Dossierep.delaiavantselection', null );
+	
+	
+	/**
+	*	Mise en paramétrage de la liste des chargés d'insertion et secrétaire liés à une fiche de candidature
+	*	@default: id des group auxquels les personnes sont liées
+	*	Mise en place suite à la demande d'améliorations du 28/02/2012 ( #5630 )
+	*/
+	Configure::write( 'Chargeinsertion.Secretaire.group_id', array( 16, 7, 12 ) );
 ?>
