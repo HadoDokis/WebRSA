@@ -772,6 +772,11 @@
 					'Filtresdefaut.Cohortes_orientees'
 				);
 			}
+			else if( Configure::read( 'Cg.departement' ) == 66 ) {
+				$paths = array(
+					'Chargeinsertion.Secretaire.group_id'
+				);
+			}
 
 			if( !empty( $paths ) ) {
 				foreach( $paths as $path ) {
