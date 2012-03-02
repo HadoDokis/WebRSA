@@ -89,6 +89,64 @@ SELECT public.alter_enumtype ( 'TYPE_DEFAUTINSERTIONPCG66', ARRAY['suspensiondef
 
 ALTER TABLE bilansparcours66 ALTER COLUMN orientstruct_id DROP NOT NULL;
 
+-------------------------------------------------------------------------------------------------------------
+-- 20120229 : Ajout de tables supplémentaires afin de mettre en place le module Courriers
+--              dans les traitementspcgs66
+-------------------------------------------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS piecestypescourrierspcgs66;
+DROP TABLE IF EXISTS typescourrierspcgs66;
+
+
+CREATE TABLE typescourrierspcgs66 (
+  	id 				SERIAL NOT NULL PRIMARY KEY,
+	name                            VARCHAR(250) NOT NULL,
+        created				TIMESTAMP WITHOUT TIME ZONE,
+	modified			TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE typescourrierspcgs66 IS 'Types de courriers liés à un traitement PCG (cg66)';
+DROP INDEX IF EXISTS typescourrierspcgs66_name_idx;
+CREATE INDEX typescourrierspcgs66_name_idx ON typescourrierspcgs66(name);
+
+CREATE TABLE piecestypescourrierspcgs66 (
+  	id 				SERIAL NOT NULL PRIMARY KEY,
+	name                            VARCHAR(250) NOT NULL,
+        typecourrierpcg66_id            INTEGER NOT NULL REFERENCES typescourrierspcgs66(id) ON DELETE CASCADE ON UPDATE CASCADE,
+        created				TIMESTAMP WITHOUT TIME ZONE,
+	modified			TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE piecestypescourrierspcgs66 IS 'Pièces pour les courriers liés à un traitement PCG (cg66)';
+DROP INDEX IF EXISTS piecestypescourrierspcgs66_typecourrierpcg66_id_idx;
+DROP INDEX IF EXISTS piecestypescourrierspcgs66_name_idx;
+CREATE INDEX piecestypescourrierspcgs66_typecourrierpcg66_id_idx ON piecestypescourrierspcgs66(typecourrierpcg66_id);
+CREATE INDEX piecestypescourrierspcgs66_name_idx ON piecestypescourrierspcgs66(name);
+
+-------------------------------------------------------------------------------------------------------------
+-- 20120301 : Ajout d'une clé manquante dans la table traitementspcgs66 
+-------------------------------------------------------------------------------------------------------------
+
+SELECT add_missing_table_field ('public', 'traitementspcgs66', 'typecourrierpcg66_id', 'INTEGER');
+SELECT add_missing_constraint ('public', 'traitementspcgs66', 'traitementspcgs66_typecourrierpcg66_id_fkey', 'typescourrierspcgs66', 'typecourrierpcg66_id');
+DROP INDEX IF EXISTS traitementspcgs66_typecourrierpcg66_id_idx;
+CREATE UNIQUE INDEX traitementspcgs66_typecourrierpcg66_id_idx ON traitementspcgs66 (typecourrierpcg66_id);
+-------------------------------------------------------------------------------------------------------------
+-- 20120301 : Ajout d'une table de liaison entre la table traitementspcgs66 et la table piecestypescourrierspcgs66
+-------------------------------------------------------------------------------------------------------------
+DROP TABLE IF EXISTS piecestraitementspcgs66;
+CREATE TABLE piecestraitementspcgs66 (
+  	id 				SERIAL NOT NULL PRIMARY KEY,
+        traitementpcg66_id              INTEGER NOT NULL REFERENCES traitementspcgs66(id) ON DELETE CASCADE ON UPDATE CASCADE,
+        piecetypecourrierpcg66_id       INTEGER NOT NULL REFERENCES piecestypescourrierspcgs66(id) ON DELETE CASCADE ON UPDATE CASCADE,
+        commentaire                     TEXT DEFAULT NULL,
+        created				TIMESTAMP WITHOUT TIME ZONE,
+	modified			TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE piecestraitementspcgs66 IS 'Table de liaison entre les traitements PCG et les pièces liées à un type de courrier PCG (cg66)';
+DROP INDEX IF EXISTS piecestraitementspcgs66_piecetypecourrierpcg66_id_idx;
+DROP INDEX IF EXISTS piecestraitementspcgs66_traitementpcg66_id_idx;
+CREATE INDEX piecestraitementspcgs66_piecetypecourrierpcg66_id_idx ON piecestraitementspcgs66(piecetypecourrierpcg66_id);
+CREATE INDEX piecestraitementspcgs66_traitementpcg66_id_idx ON piecestraitementspcgs66(traitementpcg66_id);
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

@@ -39,25 +39,50 @@
 		echo $xform->input( 'Traitementpcg66.typetraitement', array( 'type' => 'radio', 'options' => $options['Traitementpcg66']['typetraitement'], 'legend' => 'Type de traitement', 'empty' => true ) );
 
 	?>
+    <script type="text/javascript">
+    document.observe("dom:loaded", function() {
+
+        <?php
+            echo $ajax->remoteFunction(
+                array(
+                    'update' => 'Typecourrierpcg66Piecetypecourrierpcg66',
+                    'url' => Router::url( array( 'action' => 'ajaxpiece' ), true ),
+                    'with' => 'Form.serialize( $(\'traitementpcg66form\') )'
+                )
+            );
+        ?>
+    } );
+    </script>
 	<?php
 		// Courriers
 		if ( isset( $listcourrier ) && !empty( $listcourrier ) ) { ?>
 		<fieldset id="filecontainer-courrier" class="noborder invisible">
 			<?php
-				$key = 0;
-				foreach( $listcourrier as $i => $list ){
-					$key++;
-					echo $xform->input( "Courrierpdo.{$i}.id", array( 'type' => 'hidden', 'value' => $list['Courrierpdo']['id'] ) );
-					echo $xform->input( "Courrierpdo.{$i}.checked", array( 'type' => 'checkbox', 'label' => $list['Courrierpdo']['name'] ) );
-
-					echo '<fieldset class="invisible" id="ZoneCommentaire'.$i.'">';
-					foreach( $list['Textareacourrierpdo'] as $j => $textarea ){
-						$key++;
-						echo $xform->input( "Contenutextareacourrierpdo.{$key}.contenu", array( 'label' => $textarea['name'], 'type' => 'textarea' ) );
-						echo $xform->input( "Contenutextareacourrierpdo.{$key}.textareacourrierpdo_id", array( 'type' => 'hidden', 'value' => $textarea['id'] ) );
-					}
-					echo '</fieldset>';
-				}
+                            echo $default->subform(
+                                    array(
+                                        'Traitementpcg66.typecourrierpcg66_id' => array( 'type' => 'select' )
+                                    ),
+                                    array(
+                                            'options' => $options
+                                    )
+                            );
+                            
+                            echo $ajax->observeField(
+                                'Traitementpcg66Typecourrierpcg66Id',
+                                array(
+                                    'update' => 'Typecourrierpcg66Piecetypecourrierpcg66',
+                                    'url' => Router::url( array( 'action' => 'ajaxpiece' ), true ),
+                                    'with' => 'Form.serialize( $(\'traitementpcg66form\') )'
+                                )
+                            );
+                            
+                            echo $xhtml->tag(
+                                    'div',
+                                    ' ',
+                                    array(
+                                            'id' => 'Typecourrierpcg66Piecetypecourrierpcg66'
+                                    )
+                            );
 			?>
 		</fieldset>
 	<?php } ?>
@@ -65,25 +90,6 @@
 
 	<script type="text/javascript">
 		document.observe( "dom:loaded", function() {
-			<?php foreach( $listcourrier as $i => $list ):?>
-				observeDisableFieldsetOnCheckbox(
-					'Courrierpdo<?php echo $i;?>Checked',
-					'ZoneCommentaire<?php echo $i;?>',
-					false,
-					true
-				);
-
-				observeDisableFieldsOnRadioValue(
-					'traitementpcg66form',
-					'data[Traitementpcg66][typetraitement]',
-					[ 'Courrierpdo<?php echo $i;?>Checked' ],
-					'courrier',
-					true,
-					true
-				);
-			<?php endforeach; ?>
-
-
 			observeDisableFieldsetOnRadioValue(
 				'traitementpcg66form',
 				'data[Traitementpcg66][typetraitement]',

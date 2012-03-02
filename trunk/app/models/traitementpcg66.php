@@ -271,6 +271,13 @@
 				'fields' => '',
 				'order' => ''
 			),
+			'Typecourrierpcg66' => array(
+				'className' => 'Typecourrierpcg66',
+				'foreignKey' => 'typecourrierpcg66_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
 		);
 
 		public $hasMany = array(
@@ -302,7 +309,21 @@
 				'exclusive' => '',
 				'finderQuery' => '',
 				'counterQuery' => ''
-			)
+			),
+                        'Piecetraitementpcg66' => array(
+                                'className' => 'Piecetraitementpcg66',
+                                'foreignKey' => 'traitementpcg66_id',
+                                'dependent' => true,
+                                'conditions' => '',
+                                'fields' => '',
+                                'order' => '',
+                                'limit' => '',
+                                'offset' => '',
+                                'exclusive' => '',
+                                'finderQuery' => '',
+                                'counterQuery' => ''
+                        ),
+                    
 		);
 
 		public $hasOne = array(
@@ -384,7 +405,10 @@
 				if (empty($data['Traitementpcg66'][$field]))
 					unset($data['Traitementpcg66'][$field]);
 			}
-			$success = $this->saveAll( $data, array( 'validate' => 'first', 'atomic' => false ) ) && $success;
+//			$success = $this->saveAll( $data, array( 'validate' => 'first', 'atomic' => false ) ) && $success;
+
+			$this->create( array( 'Traitementpcg66' => $data['Traitementpcg66'] ) );
+                        $success = $this->save() && $success;
 
 			$traitementpcg66_id = $this->id;
 			if( $success && !empty( $dataCourrierIds ) ){
@@ -446,6 +470,40 @@
 				$this->Saisinepdoep66->create( $dataSaisineepdpdo66 );
 				$success = $this->Saisinepdoep66->save() && $success;
 			}*/
+                        
+                        /*
+                         * Sauvegarde des pièces liées au type de courrier pour un triatement donné
+                         * 
+                         */
+
+                        if( $success && isset( $data['Piecetraitementpcg66'] ) ) {
+                            $piecestraitementspcgs66 = array(); // FIXME: les nouveaux, les anciens, les mises à jour
+                            $idsPiecestraitementspcgs66ASupprimer = array();
+                            foreach(  $data['Piecetraitementpcg66'] as  $piecetypecourrierpcg66_id => $dataPiecetraitementpcg66 ) {
+                                if( $dataPiecetraitementpcg66['checked'] == true ) {
+                                    $piecestraitementspcgs66[] = array(
+                                        'id' => $dataPiecetraitementpcg66['id'],
+                                        'piecetypecourrierpcg66_id' => $piecetypecourrierpcg66_id,
+                                        'traitementpcg66_id' => $traitementpcg66_id,
+                                        'commentaire' => $dataPiecetraitementpcg66['commentaire'],
+                                    );
+                                }
+                                else if( !empty( $dataPiecetraitementpcg66['id'] ) ) {
+                                    $idsPiecestraitementspcgs66ASupprimer = $dataPiecetraitementpcg66['id'];
+                                }
+                            }
+
+                            $success = $this->Piecetraitementpcg66->saveAll( $piecestraitementspcgs66, array( 'validate' => 'first', 'atomic' => false ) ) && $success;
+                            
+                            if( !empty( $idsPiecestraitementspcgs66ASupprimer ) ) {
+                                $success = $this->Piecetraitementpcg66->deleteAll(
+                                        array( 'Piecetraitementpcg66.id' => $idsPiecestraitementspcgs66ASupprimer )
+                                ) && $success;
+                                
+                            }
+                            
+			}
+                        
 			return $success;
 		}
 

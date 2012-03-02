@@ -293,8 +293,8 @@ function mkTooltipTables() {
 
 //*****************************************************************************
 
-function disableFieldsOnCheckbox( cbId, fieldsIds, condition ) {
-
+function disableFieldsOnCheckbox( cbId, fieldsIds, condition, toggleVisibility ) {
+        toggleVisibility = typeof(toggleVisibility) != 'undefined' ? toggleVisibility : false;
 	var cb = $( cbId );
 	var checked = ( ( $F( cb ) == null ) ? false : true );
 	fieldsIds.each( function ( fieldId ) {
@@ -302,6 +302,11 @@ function disableFieldsOnCheckbox( cbId, fieldsIds, condition ) {
 		if( field != null ) {
 			if( checked != condition ) {
 				field.enable();
+                                //ajout
+                                if( toggleVisibility ) {
+                                        field.show();
+                                }
+                                //fin ajout
 				if( input = field.up( 'div.input' ) )
 					input.removeClassName( 'disabled' );
 				else if( input = field.up( 'div.checkbox' ) )
@@ -309,6 +314,11 @@ function disableFieldsOnCheckbox( cbId, fieldsIds, condition ) {
 			}
 			else {
 				field.disable();
+                                //ajout
+                                if( toggleVisibility ) {
+                                    field.hide();
+                                }
+                                //fin ajout
 				if( input = field.up( 'div.input' ) )
 					input.addClassName( 'disabled' );
 				else if( input = field.up( 'div.checkbox' ) )
@@ -320,12 +330,13 @@ function disableFieldsOnCheckbox( cbId, fieldsIds, condition ) {
 
 //-----------------------------------------------------------------------------
 
-function observeDisableFieldsOnCheckbox( cbId, fieldsIds, condition ) {
-	disableFieldsOnCheckbox( cbId, fieldsIds, condition );
+function observeDisableFieldsOnCheckbox( cbId, fieldsIds, condition, toggleVisibility ) {
+        toggleVisibility = typeof(toggleVisibility) != 'undefined' ? toggleVisibility : false;
+	disableFieldsOnCheckbox( cbId, fieldsIds, condition, toggleVisibility );
 
 	var cb = $( cbId );
 	$( cb ).observe( 'click', function( event ) { // FIXME change ?
-		disableFieldsOnCheckbox( cbId, fieldsIds, condition );
+		disableFieldsOnCheckbox( cbId, fieldsIds, condition, toggleVisibility );
 	} );
 }
 
@@ -349,14 +360,17 @@ function disableFieldsOnValue( selectId, fieldsIds, value, condition ) {
 		var field = $( fieldId );
 		if( field != null ) {
 			if( result == condition ) {
+                                
 				field.disable();
+   
 				if( input = field.up( 'div.input' ) )
 					input.addClassName( 'disabled' );
 				else if( input = field.up( 'div.checkbox' ) )
 					input.addClassName( 'disabled' );
 			}
 			else {
-				field.enable();
+   				field.enable();
+
 				if( input = field.up( 'div.input' ) )
 					input.removeClassName( 'disabled' );
 				else if( input = field.up( 'div.checkbox' ) )

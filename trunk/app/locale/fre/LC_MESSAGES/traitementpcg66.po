@@ -480,3 +480,6 @@ msgstr "Aucun"
 
 msgid "Traitementpcg66.personnepcg66_situationpdo_id"
 msgstr "Motifs concernant la personne"
+
+msgid "Traitementpcg66.typecourrierpcg66_id"
+msgstr "Type de courrier"
