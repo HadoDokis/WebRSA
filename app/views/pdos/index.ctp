@@ -35,7 +35,7 @@
 					array( 'class' => 'odd' ),
 					array( 'class' => 'even' )
 				);
-				echo $xhtml->tableCells(
+				/*echo $xhtml->tableCells(
 					array(
 						h( 'Liste des courriers pour un traitement de PDOs' ),
 						$xhtml->viewLink(
@@ -45,7 +45,8 @@
 					),
 					array( 'class' => 'odd' ),
 					array( 'class' => 'even' )
-				);
+				);*/
+                                
 				echo $xhtml->tableCells(
 					array(
 						h( 'Origine PDOs' ),
@@ -59,6 +60,17 @@
 				);
 
 				if ( Configure::read( 'Cg.departement' ) == 66 ) {
+                                        echo $xhtml->tableCells(
+                                            array(
+                                                h( 'Module courriers lié aux traitements PCGs' ),
+                                                $xhtml->viewLink(
+                                                    'Voir la table',
+                                                    array( 'controller' => 'courrierspcgs66', 'action' => 'index' )
+                                                )
+                                            ),
+                                            array( 'class' => 'odd' ),
+                                            array( 'class' => 'even' )
+                                        );
 					echo $xhtml->tableCells(
 						array(
 							h( 'Paramétrage pour les décisions de dossiers PCG' ),

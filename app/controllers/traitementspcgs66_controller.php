@@ -70,8 +70,72 @@
 					)
 				)
 			);
+                        $this->set( 'typescourrierspcgs66', $this->Traitementpcg66->Typecourrierpcg66->find(
+					'list',
+					array(
+						'fields' => array(
+							'Typecourrierpcg66.name'
+						)
+					)
+				)
+			);
 		}
 
+                
+/**
+		*   Ajax pour les pièces liées à un type de courrier
+*/
+
+		public function ajaxpiece() { // FIXME
+			Configure::write( 'debug', 0 );
+
+                        $traitementpcg66_id = Set::extract( $this->data, 'Traitementpcg66.id' );
+			$typecourrierpcg66_id = Set::extract( $this->data, 'Traitementpcg66.typecourrierpcg66_id' );
+//debug($this->data);
+                        if( !empty( $typecourrierpcg66_id ) ) {                            
+                            $piecetypecourrierpcg66 = $this->Traitementpcg66->Typecourrierpcg66->Piecetypecourrierpcg66->find(
+                                'list',
+                                array(
+                                    'conditions' => array(
+                                        'Piecetypecourrierpcg66.typecourrierpcg66_id' => $typecourrierpcg66_id
+                                    ),
+                                    'fields' => array( 'Piecetypecourrierpcg66.id', 'Piecetypecourrierpcg66.name' ),
+                                    'contain' => false
+                                )
+                            );
+			}
+                        
+                        if( !empty( $traitementpcg66_id ) ) {
+                            $data = $this->Traitementpcg66->Piecetraitementpcg66->find(
+                                'all',
+                                array(
+                                    'conditions' => array(
+                                        'Traitementpcg66.id' => $traitementpcg66_id
+                                    ),
+                                    'joins' => array(
+                                        $this->Traitementpcg66->Piecetraitementpcg66->join( 'Traitementpcg66' )
+                                    ),
+                                    'contain' => false
+                                )
+                            );
+
+                            $this->data = array();
+                            foreach( $data as $entry ) {
+                                $piecetraitementpcg66 = $entry['Piecetraitementpcg66'];
+                                $this->data['Piecetraitementpcg66'][$piecetraitementpcg66['piecetypecourrierpcg66_id']] = array(
+                                    'id' => $piecetraitementpcg66['id'],
+                                    'checked' => 1,
+                                    'piecetypecourrierpcg66_id' => $piecetraitementpcg66['piecetypecourrierpcg66_id'],
+                                    'commentaire' => $piecetraitementpcg66['commentaire']
+                                );
+                            }
+                        }
+
+                        $this->set( compact( 'piecetypecourrierpcg66') );
+			$this->render( 'ajaxpiece', 'ajax' );
+		}
+
+                
 		/**
 		* http://valums.com/ajax-upload/
 		* http://doc.ubuntu-fr.org/modules_php
@@ -295,19 +359,19 @@ SELECT
 			else if( $this->action == 'edit' ) {
 				$traitementpcg66_id = $id;
 				$traitementpcg66 = $this->Traitementpcg66->find(
-					'first',
-					array(
-						'conditions' => array(
-							'Traitementpcg66.id' => $traitementpcg66_id
-						),
-						'joins' => array(
-							$this->Traitementpcg66->join( 'Personnepcg66Situationpdo' ),
-							$this->Traitementpcg66->Personnepcg66Situationpdo->join( 'Personnepcg66' )
-						)
-					)
+                                    'first',
+                                    array(
+                                        'conditions' => array(
+                                            'Traitementpcg66.id' => $traitementpcg66_id
+                                        ),
+                                        'contain' => false
+                                    )
+//						'joins' => array(
+//							$this->Traitementpcg66->join( 'Personnepcg66Situationpdo' ),
+//							$this->Traitementpcg66->Personnepcg66Situationpdo->join( 'Personnepcg66' )
+//						)
 				);
 				$this->assert( !empty( $traitementpcg66 ), 'invalidParameter' );
-
 				$personnepcg66_id = Set::classicExtract( $traitementpcg66, 'Traitementpcg66.personnepcg66_id' );
 			}
 
@@ -408,6 +472,8 @@ SELECT
 			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
 
 			if( !empty( $this->data ) ){
+
+                            
 				if( $this->Traitementpcg66->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
 					$saved = $this->Traitementpcg66->sauvegardeTraitement( $this->data );
 						if( $saved ) {

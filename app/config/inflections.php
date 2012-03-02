@@ -338,6 +338,10 @@
 		'cohortedossierpcg66' => 'cohortesdossierspcgs66',
 		'typersapcg66' => 'typesrsapcgs66',
 		'decisiondossierpcg66_typersapcg66' => 'decisionsdossierspcgs66_typesrsapcgs66',
+                'piecetypecourrierpcg66' => 'piecestypescourrierspcgs66',
+                'typecourrierpcg66' => 'typescourrierspcgs66',
+                'courrierpcg66' => 'courrierspcgs66',
+                'piecetraitementpcg66' => 'piecestraitementspcgs66',
 
 		// DSPS cg66
 		'coderomemetierdsp66' => 'codesromemetiersdsps66',
