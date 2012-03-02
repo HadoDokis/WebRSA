@@ -94,8 +94,8 @@ ALTER TABLE bilansparcours66 ALTER COLUMN orientstruct_id DROP NOT NULL;
 --              dans les traitementspcgs66
 -------------------------------------------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS piecestypescourrierspcgs66;
-DROP TABLE IF EXISTS typescourrierspcgs66;
+DROP TABLE IF EXISTS piecestypescourrierspcgs66 CASCADE;
+DROP TABLE IF EXISTS typescourrierspcgs66 CASCADE;
 
 
 CREATE TABLE typescourrierspcgs66 (
@@ -122,7 +122,7 @@ CREATE INDEX piecestypescourrierspcgs66_typecourrierpcg66_id_idx ON piecestypesc
 CREATE INDEX piecestypescourrierspcgs66_name_idx ON piecestypescourrierspcgs66(name);
 
 -------------------------------------------------------------------------------------------------------------
--- 20120301 : Ajout d'une clé manquante dans la table traitementspcgs66 
+-- 20120301 : Ajout d'une clé manquante dans la table traitementspcgs66
 -------------------------------------------------------------------------------------------------------------
 
 SELECT add_missing_table_field ('public', 'traitementspcgs66', 'typecourrierpcg66_id', 'INTEGER');
