@@ -23,7 +23,7 @@ UPDATE bilansparcours66
 		SELECT orientsstructs.personne_id
 			FROM orientsstructs
 			WHERE orientsstructs.id = orientstruct_id
-	);
+	) WHERE personne_id IS NULL;
 ALTER TABLE bilansparcours66 ALTER COLUMN personne_id SET NOT NULL;
 
 -------------------------------------------------------------------------------------------------------------
