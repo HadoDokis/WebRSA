@@ -1033,7 +1033,7 @@
 		*	Récupération des Datas pour le stockage du PDF de la notification au bénéficiaire
 		*/
 
-		public function getPdfNotifbenef( $contratinsertion_id ) {
+		public function getPdfNotifbenef( $contratinsertion_id, $user_id ) {
 
 			$queryData = array(
 				'fields' => array_merge(
@@ -1145,6 +1145,20 @@
 			$datesaisici = Set::classicExtract( $contratinsertion, 'Contratinsertion.date_saisi_ci' );
 			$contratinsertion['Contratinsertion']['delairegularisation'] = date( 'Y-m-d', strtotime( '+1 month', strtotime( $datesaisici ) ) );
 
+                        $user = $this->User->find(
+                            'first',
+                            array(
+                                'fields' => array( 'numtel', 'nom', 'prenom' ),
+                                'conditions' => array(
+                                    'User.id' => $user_id
+                                ),
+                                'contain' => false
+                            )
+                        );
+                        $contratinsertion['User']['numtel'] = $user['User']['numtel'];
+			$contratinsertion['User']['nom'] = $user['User']['nom'];
+			$contratinsertion['User']['prenom'] = $user['User']['prenom'];
+                        
 
 			$modelenotifdecision = '';
 			$decision = Set::classicExtract( $contratinsertion, 'Contratinsertion.decision_ci' );

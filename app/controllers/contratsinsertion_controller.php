@@ -1757,7 +1757,8 @@
 		public function notifbenef( $id ) {
 			$this->assert( !empty( $id ), 'error404' );
 
-			$pdf = $this->Contratinsertion->getPdfNotifbenef( $id );
+
+			$pdf = $this->Contratinsertion->getPdfNotifbenef( $id , $this->Session->read( 'Auth.User.id' ) );
 // debug($pdf);
 // die();
 			if( $pdf ) {
