@@ -805,39 +805,39 @@
 	</script>
 
 	<?php
-		if ( !empty( $dossierpcg66['Dossierpcg66']['bilanparcours66_id'] ) ) {
-			echo $default->subform(
-				array(
-					'Traitementpcg66.eplaudition' => array( 'type' => 'radio' )
-				),
-				array(
-					'options' => $options
-				)
-			);
-
-			echo $xhtml->tag(
-				'fieldset',
-				$default->subform(
-					array(
-						'Traitementpcg66.compofoyerpcg66_id' => array( 'required' => true, 'type' => 'select', 'options' => $options['Traitementpcg66']['compofoyerpcg66_id'] ),
-						'Traitementpcg66.recidive' => array( 'required' => true, 'type' => 'radio' )
-					),
-					array(
-						'options' => $options
-					)
-				),
-				array(
-					'id' => 'fieldseteplaudition'
-				)
-			);
-		}
-		else {
-			echo $default->subform(
-				array(
-					'Traitementpcg66.eplaudition' => array( 'type' => 'hidden', 'value' => '0' )
-				)
-			);
-		}
+//		if ( !empty( $dossierpcg66['Dossierpcg66']['bilanparcours66_id'] ) ) {
+//			echo $default->subform(
+//				array(
+//					'Traitementpcg66.eplaudition' => array( 'type' => 'radio' )
+//				),
+//				array(
+//					'options' => $options
+//				)
+//			);
+//
+//			echo $xhtml->tag(
+//				'fieldset',
+//				$default->subform(
+//					array(
+//						'Traitementpcg66.compofoyerpcg66_id' => array( 'required' => true, 'type' => 'select', 'options' => $options['Traitementpcg66']['compofoyerpcg66_id'] ),
+//						'Traitementpcg66.recidive' => array( 'required' => true, 'type' => 'radio' )
+//					),
+//					array(
+//						'options' => $options
+//					)
+//				),
+//				array(
+//					'id' => 'fieldseteplaudition'
+//				)
+//			);
+//		}
+//		else {
+//			echo $default->subform(
+//				array(
+//					'Traitementpcg66.eplaudition' => array( 'type' => 'hidden', 'value' => '0' )
+//				)
+//			);
+//		}
 
 		// Liste des motifs concernant la personne
 		
