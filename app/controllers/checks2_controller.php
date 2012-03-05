@@ -74,6 +74,11 @@
 						array(
 							'date.timezone'
 						)
+					),
+					'pear_extensions' => $this->Check->pearExtensions(
+						array(
+							'xml_rpc'
+						)
 					)
 				)
 			);
@@ -146,7 +151,7 @@
 		protected function _postgresql() {
 			$this->User->Behaviors->attach( 'Pgsqlcake.Schema' );
 			$version = $this->User->pgVersion();
-			$shortversion = preg_replace( '/^([0-9]+\.[0-9]+).*/', '\1', $version );
+			$shortversion = preg_replace( '/^([0-9]+\.[0-9]+).*/', '\1', $version ); // FIXME: avec un paramètre dans Schema::pgVersion
 
 			return array(
 				'Postgresql' => array(
@@ -223,6 +228,27 @@
 		}
 
 		/**
+		 * Vérifie la configuration des services (Gedooo, Alfresco, ...).
+		 *
+		 * @return array
+		 */
+		protected function _services() {
+			$services = $this->Webrsacheck->services();
+
+			if( !empty( $services ) ) {
+				foreach( $services as $serviceName => $results ) {
+					if( isset( $results['configure'] ) ) {
+						$services[$serviceName]['configure'] = $this->Check->configure(
+							$results['configure']
+						);
+					}
+				}
+			}
+
+			return array( 'Services' => $services );
+		}
+
+		/**
 		 * Vérification complète de l'application et envoi des résultats à la vue.
 		 *
 		 * @return void
@@ -237,7 +263,8 @@
 				$this->_postgresql(),
 				$this->_cakephp(),
 				$this->_webrsa(),
-				$this->_storedDataErrors()
+				$this->_storedDataErrors(),
+				$this->_services()
 			);
 			$this->set( 'results', $results );
 		}
