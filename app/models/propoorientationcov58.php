@@ -24,7 +24,7 @@
 			'Formattable' => array(
 				'suffix' => array( 'structurereferente_id', 'referent_id', 'structureorientante_id', 'referentorientant_id' ),
 			),
-			'Gedooo'
+			'Gedooo.Gedooo'
 		);
 
 		public $validate = array(

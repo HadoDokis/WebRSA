@@ -801,8 +801,8 @@
 		}
 		// FIXME: remplace la fonction ci-dessus
 		protected function _checkPostgresqlIntervals( $keys ) {
-			if( !$this->Behaviors->attached( 'Pgsqlcake.schema' ) ) {
-				$this->Behaviors->attach( 'Pgsqlcake.schema' );
+			if( !$this->Behaviors->attached( 'Pgsqlcake.Schema' ) ) {
+				$this->Behaviors->attach( 'Pgsqlcake.Schema' );
 			}
 
 			$results = array();

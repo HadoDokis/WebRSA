@@ -15,15 +15,12 @@ Vérification de l'application:
      - pas obligatoire d’être connecté
 
 Dans l'ancien, pas encore dans le nouveau:
-	- Durée du timeout
-	- Toutes les structures référentes sont renseignées ?
-	- Données présentes dans la table users ?
+	- Durée du timeout (FIXME: fonction lib)
 	- Données des apres correctement renseignées dans le fichier webrsa.inc ?
 	- Dossier temporaire des pdfs inscriptible ? -> essayer de le créer ?
 	- Paramétrage des équipes pluridisciplinaires
 	- Configuration de l'accès au système de gestion de contenu (Alfresco)
 	- Serveur Gedooo nécessaires pour les impressions
-	- Vérification du format de délai pour les détections de CER arrivant à échéance
 	- Vérification des valeurs par défaut des filtres dans le fichier webrsa.inc
 	- interfaces ou une classe parente abstraite pour la fonction modelesOdt (changer le nom des champs) ?
 

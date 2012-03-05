@@ -5,7 +5,7 @@
 		public $name = 'Propospdos';
 		public $uses = array( 'Propopdo', 'Situationdossierrsa', 'Option', 'Typepdo', 'Typenotifpdo', 'Decisionpdo', 'Suiviinstruction', 'Piecepdo',  'Traitementpdo', 'Originepdo',  'Statutpdo', 'Statutdecisionpdo', 'Situationpdo', 'Referent', 'Personne', 'Dossier', 'Pdf' );
 
-		public $components = array( 'Fileuploader', 'Gedooo' );
+		public $components = array( 'Fileuploader', 'Gedooo.Gedooo' );
 		public $helpers = array( 'Default', 'Default2', 'Ajax', 'Fileuploader' );
 
 		public $commeDroit = array(

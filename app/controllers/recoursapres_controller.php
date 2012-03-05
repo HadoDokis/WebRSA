@@ -7,7 +7,7 @@
 
 		public $uses = array( 'Canton', 'Dossier', 'Recoursapre', 'Foyer', 'Adresse', 'Comiteapre', 'Personne', 'ApreComiteapre', 'Apre', 'Option', 'Adressefoyer' );
 
-		public $components = array( 'Gedooo', 'Prg' => array( 'actions' => array( 'demande', 'visualisation' ) ) );
+		public $components = array( 'Gedooo.Gedooo', 'Prg' => array( 'actions' => array( 'demande', 'visualisation' ) ) );
 
 		public $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml' );
 

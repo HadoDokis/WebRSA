@@ -3,7 +3,7 @@
 	{
 		public $uses = array( 'Relancenonrespectsanctionep93', 'Nonrespectsanctionep93', 'Orientstruct', 'Contratinsertion', 'Dossierep', 'Dossier', 'Pdf' );
 
-		public $components = array( 'Prg' => array( 'actions' => array( 'cohorte' => array( 'filter' => 'Search' ), 'impressions' ) ), 'Gedooo' );
+		public $components = array( 'Prg' => array( 'actions' => array( 'cohorte' => array( 'filter' => 'Search' ), 'impressions' ) ), 'Gedooo.Gedooo' );
 		public $helpers = array( 'Default2', 'Csv' );
 
 		/**

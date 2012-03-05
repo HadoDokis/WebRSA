@@ -5,7 +5,7 @@
 		public $uses = array( 'Traitementpcg66', 'Option', 'Dossierpcg66' );
 		public $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Default2', 'Fileuploader' );
 
-		public $components = array( 'Default', 'Gedooo', 'Fileuploader' );
+		public $components = array( 'Default', 'Gedooo.Gedooo', 'Fileuploader' );
 
 		public $commeDroit = array(
 			'view' => 'Traitementspcgs66:index',

@@ -3,7 +3,7 @@
 	{
 		public $name = 'Dossierssimplifies';
 		public $uses = array( 'Dossier', 'Foyer', 'Personne', 'Option', 'Structurereferente', 'Zonegeographique', 'Typeorient', 'Orientstruct', 'Typocontrat' );
-		public $components = array( 'Gedooo' );
+		public $components = array( 'Gedooo.Gedooo' );
 
 		public $commeDroit = array(
 			'add' => 'Dossierssimplifies:edit'

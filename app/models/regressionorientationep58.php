@@ -14,7 +14,7 @@
 					'structurereferente_id'
 				)
 			),
-			'Gedooo'
+			'Gedooo.Gedooo'
 		);
 
 		public $belongsTo = array(

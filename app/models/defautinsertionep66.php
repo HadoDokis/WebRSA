@@ -26,7 +26,7 @@
 				)
 			),
 			'Formattable',
-			'Gedooo',
+			'Gedooo.Gedooo',
 			'Conditionnable'
 		);
 

@@ -32,7 +32,7 @@
 			'Autovalidate',
 			'ValidateTranslate',
 			'Formattable',
-			'Gedooo',
+			'Gedooo.Gedooo',
 			'StorablePdf'
 		);
 

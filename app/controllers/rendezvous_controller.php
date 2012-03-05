@@ -8,7 +8,7 @@
 		public $uses = array( 'Rendezvous', 'Option' );
 
 		public $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Default2', 'Fileuploader' );
-		public $components = array( 'Gedooo', 'Fileuploader' );
+		public $components = array( 'Gedooo.Gedooo', 'Fileuploader' );
 
 		public $commeDroit = array(
 			'view' => 'Rendezvous:index',

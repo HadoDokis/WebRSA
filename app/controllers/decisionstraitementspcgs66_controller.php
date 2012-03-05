@@ -6,7 +6,7 @@
 		* @access public
 		*/
 
-		public $components = array( 'Default', 'Gedooo' );
+		public $components = array( 'Default', 'Gedooo.Gedooo' );
 		public $helpers = array( 'Default2', 'Ajax' );
 		public $uses = array( 'Decisiontraitementpcg66', 'Option', 'Pdf'  );
 

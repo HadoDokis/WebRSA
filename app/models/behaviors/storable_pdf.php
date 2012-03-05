@@ -10,7 +10,7 @@
 	* @subpackage	app.app.models.behaviors
 	*/
 
-	App::import( 'Behavior', array( 'Gedooo' ) );
+	App::import( 'Behavior', array( 'Gedooo.Gedooo' ) );
 
 	/**
 	* ...

@@ -32,7 +32,7 @@
 			'Formattable' => array(
 				'suffix' => array( 'structurereferente_id', 'referent_id' ),
 			),
-			'Gedooo',
+			'Gedooo.Gedooo',
 			'Conditionnable'
 		);
 

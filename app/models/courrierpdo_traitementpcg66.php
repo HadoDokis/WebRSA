@@ -7,7 +7,7 @@
 			'Nullable',
 			'ValidateTranslate',
 			'Autovalidate',
-			'Gedooo',
+			'Gedooo.Gedooo',
 			'StorablePdf'
 		);
 

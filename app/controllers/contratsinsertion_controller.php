@@ -14,7 +14,7 @@
 		public $name = 'Contratsinsertion';
 		public $uses = array( 'Contratinsertion', 'Option', 'Action', 'Referent', 'Personne', 'Dossier', 'Structurereferente', 'Dsp', 'Typeorient', 'Orientstruct', 'Serviceinstructeur', 'Action', 'Adressefoyer', 'Actioninsertion', 'Prestform', 'Refpresta', 'PersonneReferent', 'Pdf' );
 		public $helpers = array( 'Default2', 'Ajax', 'Fileuploader' );
-		public $components = array( 'RequestHandler', 'Gedooo', 'Fileuploader' );
+		public $components = array( 'RequestHandler', 'Gedooo.Gedooo', 'Fileuploader' );
 
 		public $commeDroit = array(
 			'view' => 'Contratsinsertion:index',

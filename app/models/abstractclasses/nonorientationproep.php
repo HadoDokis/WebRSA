@@ -10,7 +10,7 @@
 			'ValidateTranslate',
 			'Enumerable',
 			'Formattable',
-			'Gedooo'
+			'Gedooo.Gedooo'
 		);
 
 		public $belongsTo = array(

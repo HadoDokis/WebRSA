@@ -3,7 +3,7 @@
 	{
 		public $helpers = array( 'Default', 'Default2', 'Ajax', 'Fileuploader' );
 		public $uses = array( 'Dossierpcg66', 'Option', 'Typenotifpdo', 'Decisionpdo' );
-		public $components = array( 'Fileuploader', 'Gedooo' );
+		public $components = array( 'Fileuploader', 'Gedooo.Gedooo' );
 
 		public $commeDroit = array(
 			'add' => 'Dossierspcgs66:edit',

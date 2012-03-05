@@ -7,7 +7,7 @@
 		public $uses = array( 'Cui', 'Option', 'Dossier', 'Serviceinstructeur', 'Adressefoyer', 'Detaildroitrsa', 'Infofinanciere', 'Detailcalculdroitrsa', 'Departement' );
 
 		public $helpers = array( 'Default', 'Locale', 'Csv', 'Ajax', 'Xform' );
-		public $components = array( 'RequestHandler', 'Gedooo' );
+		public $components = array( 'RequestHandler', 'Gedooo.Gedooo' );
 
 		public $commeDroit = array(
 			'add' => 'Cuis:edit',

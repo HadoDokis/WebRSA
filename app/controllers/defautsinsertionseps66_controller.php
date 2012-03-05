@@ -1,7 +1,7 @@
 <?php
 	class Defautsinsertionseps66Controller extends AppController
 	{
-		public $components = array( 'Prg' => array( 'actions' => array( 'selectionnoninscrits', 'selectionradies', 'courriersinformations' ) ), 'Gestionzonesgeos', 'Gedooo' );
+		public $components = array( 'Prg' => array( 'actions' => array( 'selectionnoninscrits', 'selectionradies', 'courriersinformations' ) ), 'Gestionzonesgeos', 'Gedooo.Gedooo' );
 		public $helpers = array( 'Default2', 'Search' );
 
 		/**

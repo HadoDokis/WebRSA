@@ -5,7 +5,7 @@
 		public $name = 'Orientsstructs';
 		public $uses = array( 'Orientstruct',  'Option' , 'Dossier', 'Foyer', 'Adresse', 'Adressefoyer', 'Personne', 'Typeorient', 'Structurereferente', 'Pdf', 'Referent' );
 		public $helpers = array( 'Default', 'Default2', 'Fileuploader' );
-		public $components = array( 'Gedooo', 'Fileuploader' );
+		public $components = array( 'Gedooo.Gedooo', 'Fileuploader' );
 
 		public $commeDroit = array(
 			'add' => 'Orientsstructs:edit'
