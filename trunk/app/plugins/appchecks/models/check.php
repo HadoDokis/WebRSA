@@ -228,7 +228,7 @@
 		}
 
 		/**
-		 *
+		 * FIXME: utiliser files avec un préfixe
 		 * @param array $modeles
 		 * @param string $prefixPath Le répertoire de base des modèles.
 		 * @return array
@@ -299,6 +299,7 @@
 		}
 
 		/**
+		 * FIXME: la fonction version_difference n'est pas dans le plugin
 		 *
 		 * @param string $software
 		 * @param string $actual
@@ -330,6 +331,8 @@
 		 * Retourne la vérification du timeout, avec en message la configuration
 		 * utilisée.
 		 *
+		 * FIXME: la fonction readTimeout n'est pas dans le plugin
+		 *
 		 * @return array
 		 */
 		public function timeout() {
@@ -349,6 +352,93 @@
 				'value' => sec2hms( $value, true ),
 				'message' => $message,
 			);
+		}
+
+		/**
+		 * Vérifie l'accès à un WebService.
+		 *
+		 * @param string $wsdl
+		 * @param string $message Le gabarit du message à utiliser en cas d'erreur.
+		 * @return array
+		 */
+		public function webservice( $wsdl, $message = "Le WebService n' est pas accessible (%s)" ) {
+			$result = array();
+
+			try {
+				$client = @new SoapClient( $wsdl, array( 'exceptions' => 1 ) );
+				$result['success'] = true;
+			} catch( Exception $e ) {
+				$result['success'] = false;
+				$result['message'] = sprintf( $message, $e->getMessage() );
+			}
+
+			return $result;
+		}
+
+		/**
+		 * Vérifie l'accès à une machine distante.
+		 *
+		 * @see http://www.php.net/manual/fr/function.fsockopen.php#65631
+		 *
+		 * @param string $hostname
+		 * @param string $port
+		 * @param string $message
+		 * @return array
+		 */
+		public function socket( $hostname, $port, $message = "La machine distante n' est pas accessible (%s)" ) {
+			$timeout=10;
+			Set_Time_Limit(0);  //Time for script to run .. not sure how it works with 0 but you need it
+//			Ignore_User_Abort(True); //this will force the script running at the end
+			$handle = fsockopen( $hostname, $port, $errno, $errstr, $timeout );
+			$result = array(
+				'success' => !empty( $handle )
+			);
+			if( !$result['success'] ){
+				$result['message'] = sprintf( $message, "{$errno}: {$errstr}" );
+			}
+			else {
+				fclose( $handle );
+			}
+
+			return $result;
+		}
+
+		/**
+		 * Vérifie la présence d'extensions PEAR
+		 *
+		 * @param array $extensions
+		 * @param boolean $base A true, vérifie la présence des classes PEAR et PEAR_Registry.
+		 * @return array
+		 */
+		public function pearExtensions( $extensions, $base = true ) {
+			$results = array();
+
+			$success = require_once( 'PEAR.php' );
+			if( $base ) {
+				$results['PEAR'] = array(
+					'success' => $success,
+					'message' => ( $success ? null : "PEAR n'est pas installé" )
+				);
+			}
+
+			$success = require_once( 'PEAR/Registry.php' );
+			if( $base ) {
+				$results['Registry'] = array(
+					'success' => $success,
+					'message' => ( $success ? null : "PEAR_Registry n'est pas installé" )
+				);
+			}
+			$Registry = @new PEAR_Registry();
+
+			foreach( $extensions as $extension ) {
+				$success = @$Registry->packageExists( $extension );
+				$results[$extension] = array(
+					'success' => $success,
+					'message' => ( $success ? null : sprintf( "L'extension PEAR %s n'est pas installée.", $extension ) )
+				);
+			}
+
+			return $results;
 		}
 	}
 ?>

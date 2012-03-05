@@ -32,6 +32,8 @@
 				<?php echo $checks->table( $results['Php']['inis'] );?>
 				<h4>Extensions</h4>
 				<?php echo $checks->table( $results['Php']['extensions'] );?>
+				<h4>Extensions PEAR</h4>
+				<?php echo $checks->table( $results['Php']['pear_extensions'] );?>
 			</div>
 			<div id="postgresql">
 				<h3 class="title">PostgreSQL</h3>
@@ -76,6 +78,20 @@
 				)
 			);
 		?>
+		<?php endforeach;?>
+	</div>
+	<div id="services">
+		<h2 class="title">Services</h2>
+		<?php foreach( $results['Services'] as $serviceName => $serviceResults ):?>
+			<h3><?php echo h( $serviceName );?></h3>
+			<?php if( !empty( $serviceResults['configure'] ) ):?>
+				<h4>Configuration</h4>
+				<?php echo $checks->table( $serviceResults['configure'] );?>
+			<?php endif;?>
+			<?php if( !empty( $serviceResults['tests'] ) ):?>
+				<h4>Tests</h4>
+				<?php echo $checks->table( $serviceResults['tests'] );?>
+			<?php endif;?>
 		<?php endforeach;?>
 	</div>
 </div>
