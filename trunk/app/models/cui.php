@@ -50,7 +50,7 @@
 			),
 			'Formattable',
 			'Autovalidate',
-			'Gedooo'
+			'Gedooo.Gedooo'
 		);
 
 		public $validate = array(

@@ -4,7 +4,7 @@
 		public $name = 'Apres66';
 		public $uses = array( 'Apre66', 'Aideapre66', 'Pieceaide66', 'Typeaideapre66', 'Themeapre66', 'Option', 'Personne', 'Prestation', 'Pieceaide66Typeaideapre66', 'Adressefoyer', 'Fraisdeplacement66',  'Structurereferente', 'Referent', 'Piececomptable66Typeaideapre66', 'Piececomptable66', 'Foyer' );
 		public $helpers = array( 'Default', 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml', 'Fileuploader', 'Default2' );
-		public $components = array( 'Default', 'Gedooo', 'Fileuploader' );
+		public $components = array( 'Default', 'Gedooo.Gedooo', 'Fileuploader' );
 
 		public $commeDroit = array(
 			'view66' => 'Apres66:index',

@@ -29,7 +29,7 @@
 					'defautinsertion'
 				)
 			),
-			'Gedooo'/*,
+			'Gedooo.Gedooo'/*,
 			'StorablePdf'*/
 		);
 

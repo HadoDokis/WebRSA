@@ -8,7 +8,7 @@
 		* @access public
 		*/
 
-		public $components = array( 'Default', 'Gedooo', 'Fileuploader' );
+		public $components = array( 'Default', 'Gedooo.Gedooo', 'Fileuploader' );
 		public $helpers = array( 'Default2', 'Ajax', 'Locale', 'Fileuploader' );
 
 		public $commeDroit = array(

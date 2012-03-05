@@ -26,7 +26,7 @@
 					'structurereferente_id'
 				)
 			),
-			'Gedooo',
+			'Gedooo.Gedooo',
 			'Enumerable' => array(
 				'fields' => array(
 					'choixparcours',

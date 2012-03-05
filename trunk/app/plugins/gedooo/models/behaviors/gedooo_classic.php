@@ -10,21 +10,21 @@
 	require_once( PHPGEDOOO_DIR.'GDO_MatrixRowType.class' );
 	require_once( PHPGEDOOO_DIR.'GDO_AxisTitleType.class' );
 
-	class GedoooBehavior extends ModelBehavior
+	class GedoooClassicBehavior extends ModelBehavior
 	{
-		/**
-		* INFO: GDO_FieldType: text, string, number, date
-		*/
 
+		/**
+		 * INFO: GDO_FieldType: text, string, number, date
+		 */
 		protected function _addPartValue( $oPart, $key, $value, $options ) {
 			$type = 'text';
 			if( preg_match( '/[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{4}/', $value ) ) {
 				$type = 'date';
 			}
-            else if( preg_match( '/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/', $value, $matches ) ) {
-                $type = 'date';
-                $value = "{$matches[3]}/{$matches[2]}/{$matches[1]}";
-            }
+			else if( preg_match( '/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/', $value, $matches ) ) {
+				$type = 'date';
+				$value = "{$matches[3]}/{$matches[2]}/{$matches[1]}";
+			}
 			else if( preg_match( '/^([0-9]{4})-([0-9]{2})-([0-9]{2}) ([0-9]{2}:[0-9]{2}:[0-9]{2})$/', $value, $matches ) ) {
 				$type = 'date';
 				$value = "{$matches[3]}/{$matches[2]}/{$matches[1]}";
@@ -44,14 +44,14 @@
 		}
 
 		/**
-		* Crée une table de correspondance entre les noms des champs utilisables
-		* dans les modèles et leur traduction à partir des données envoyées.
-		*
-		* @param array $keys
-		* @return array
-		*/
+		 * Crée une table de correspondance entre les noms des champs utilisables
+		 * dans les modèles et leur traduction à partir des données envoyées.
+		 *
+		 * @param array $keys
+		 * @return array
+		 */
 		protected function _flatKeys( $keys ) {
-			$flatKeys = array();
+			$flatKeys = array( );
 
 			if( !empty( $keys ) ) {
 				foreach( $keys as $key ) {
@@ -59,10 +59,10 @@
 						$modelField = model_field( $key );
 						$domain = Inflector::underscore( $modelField[0] );
 						$msgstr = __d( $domain, implode( '.', $modelField ), true );
-						$flatKeys[strtolower(str_replace( '.', '_', $key ))] = $msgstr;
+						$flatKeys[strtolower( str_replace( '.', '_', $key ) )] = $msgstr;
 					}
 					else {
-						$flatKeys[strtolower($key)] = $key;
+						$flatKeys[strtolower( $key )] = $key;
 					}
 				}
 			}
@@ -71,14 +71,14 @@
 		}
 
 		/**
-		* Exporte la liste des champs disponibles dans un fichier CSV situé dans
-		* app/tmp/logs, nommé suivant le nom du modèle de document utilisé.
-		*
-		* @param GDO_PartType &$oMainPart
-		* @param array $mainData
-		* @param string $document
-		* @return void
-		*/
+		 * Exporte la liste des champs disponibles dans un fichier CSV situé dans
+		 * app/tmp/logs, nommé suivant le nom du modèle de document utilisé.
+		 *
+		 * @param GDO_PartType &$oMainPart
+		 * @param array $mainData
+		 * @param string $document
+		 * @return void
+		 */
 		protected function _exportChampsDisponibles( &$oMainPart, $mainData, $cohorteData, $document ) {
 			//
 			$flatKeys = $this->_flatKeys( array_keys( Set::flatten( $mainData ) ) );
@@ -94,8 +94,8 @@
 				}
 			}
 
-			$mainFields = array();
-			$sectionFields = array();
+			$mainFields = array( );
+			$sectionFields = array( );
 
 			if( !empty( $oMainPart->field ) ) {
 				foreach( $oMainPart->field as $field ) {
@@ -129,33 +129,31 @@
 			$oldMask = umask( 0 );
 
 			file_put_contents(
-				$outputFile,
-				"\"Partie\";\"Nom de la section\";\"Champ\";\"Type\";\"Traduction\"\n"
-				.implode( "\n", $mainFields )."\n".implode( "\n", $sectionFields )
+					$outputFile, "\"Partie\";\"Nom de la section\";\"Champ\";\"Type\";\"Traduction\"\n"
+					.implode( "\n", $mainFields )."\n".implode( "\n", $sectionFields )
 			);
 
 			umask( $oldMask );
 		}
 
 		/**
-		* Fonction de génération de documents générique
-		* @param $datas peut prendre la forme suivante:
-		*     - array( ... ) si $section == false
-		*     - array( 0 => array( ... ), 'section1' => array( ... ), 'section2' => array( ... ) ) si $section == true
-		*/
-
-		public function ged( &$model, $datas, $document, $section = false, $options = array() ) {
-			// Définition des variables & maccros
-			$sMimeType  = "application/pdf";
-			$path_model = MODELESODT_DIR.$document;
+		 * Fonction de génération de documents générique
+		 * @param $datas peut prendre la forme suivante:
+		 *     - array( ... ) si $section == false
+		 *     - array( 0 => array( ... ), 'section1' => array( ... ), 'section2' => array( ... ) ) si $section == true
+		 */
+		public function ged( &$model, $datas, $document, $section = false, $options = array( ) ) {
+			// Définition des variables & macros
+			$sMimeType = "application/pdf"; // FIXME
+			$path_model = ( ( isset( $document[0] ) && $document[0] == '/' ) ? '' : MODELESODT_DIR ).$document;
 
 			// Quel type de données a-t-on reçu ?
 			if( !$section ) {
 				$mainData = $datas;
-				$cohorteData = array();
+				$cohorteData = array( );
 			}
 			else {
-				$mainData = ( isset( $datas[0] ) ? $datas[0] : array() );
+				$mainData = ( isset( $datas[0] ) ? $datas[0] : array( ) );
 				$cohorteData = $datas;
 				unset( $cohorteData[0] );
 			}
@@ -166,7 +164,7 @@
 			$u = new GDO_Utility();
 			$oMainPart = new GDO_PartType();
 
-			$bTemplate = $u->ReadFile($path_model);
+			$bTemplate = $u->ReadFile( $path_model );
 			if( empty( $bTemplate ) ) {
 				$this->log( sprintf( "Le modèle de document %s n'existe pas ou n'est pas lisible.", $path_model ), LOG_ERROR );
 				return false;
@@ -181,17 +179,17 @@
 			// Ajout d'une variable contenant le chemin vers le fichier et vérification
 			// que le modèle connaisse bien le fichier odt lorsqu'on est en debug
 			if( Configure::read( 'debug' ) > 0 ) {
-				// Attention, c'est le modèle qui doit avoir le comportement Gedooo
-				$modelesOdt = str_replace( '%s', $model->alias, $model->modelesOdt );
+				// Attention, c'est le modèle qui doit avoir le comportement Gedooo -> FIXME
+				/* $modelesOdt = str_replace( '%s', $model->alias, $model->modelesOdt );
 
-				// Récupération des valeurs de la méthode modelesOdt lorsqu'elle est présente
-				if( in_array( 'modelesOdt', get_class_methods( $model->name ) ) ) {
-					$modelesOdt = Set::merge( $modelesOdt, $model->modelesOdt() );
-				}
+				  // Récupération des valeurs de la méthode modelesOdt lorsqu'elle est présente
+				  if( in_array( 'modelesOdt', get_class_methods( $model->name ) ) ) {
+				  $modelesOdt = Set::merge( $modelesOdt, $model->modelesOdt() );
+				  }
 
-				if( !in_array( $document, $modelesOdt ) ) {
-					$this->log( sprintf( "Le modèle de document %s n'est pas connu du modèle %s.", $document, $model->alias ), LOG_DEBUG );
-				}
+				  if( !in_array( $document, $modelesOdt ) ) {
+				  $this->log( sprintf( "Le modèle de document %s n'est pas connu du modèle %s.", $document, $model->alias ), LOG_DEBUG );
+				  } */
 
 				$oMainPart->addElement( new GDO_FieldType( 'modeleodt_path', str_replace( MODELESODT_DIR, '', $path_model ), 'text' ) );
 			}
@@ -199,7 +197,7 @@
 			if( !empty( $cohorteData ) ) {
 				foreach( $cohorteData as $cohorteName => $sectionDatas ) {
 					// Traitement d'une section
-					$sectionFields = array();
+					$sectionFields = array( );
 
 					$oIteration = new GDO_IterationType( $cohorteName );
 					foreach( $sectionDatas as $sectionData ) {
@@ -210,9 +208,8 @@
 							$oDevPart = $this->_addPartValue( $oDevPart, $key, $value, $options );
 						}
 						$oIteration->addPart( $oDevPart );
-
 					}
-					$oMainPart->addElement($oIteration);
+					$oMainPart->addElement( $oIteration );
 				}
 			}
 
@@ -221,11 +218,11 @@
 			}
 
 			$oTemplate = new GDO_ContentType(
-				"",
-				"modele.ott",
-				$u->getMimeType($path_model),
-				"binary",
-				$bTemplate
+							"",
+							"modele.ott",
+							$u->getMimeType( $path_model ),
+							"binary",
+							$bTemplate
 			);
 
 			$oFusion = new GDO_FusionType( $oTemplate, $sMimeType, $oMainPart );
@@ -242,5 +239,47 @@
 
 			return $success;
 		}
+
+		/**
+		 * Retourne la liste des clés de configuration.
+		 *
+		 * @return array
+		 */
+		public function gedConfigureKeys( &$Model ) {
+			return array(
+				'Gedooo.wsdl' => 'string'
+			);
+		}
+
+		public function gedTestPrint() {
+			if( get_class( $this ) == 'GedoooClassicBehavior' ) {
+				$test_print = $this->ged( $Model, array( ), GEDOOO_TEST_FILE );
+			}
+			else {
+				$test_print = $this->gedFusion( $Model, array( 'foo' => 'bar' ), GEDOOO_TEST_FILE );
+			}
+
+			$test_print = !empty( $test_print ) && preg_match( '/^(%PDF\-[0-9]|PK)/m', $test_print );
+
+			return array(
+				'success' => $test_print,
+				'message' => ( $test_print ? null : 'Impossible d\'imprimer avec le serveur Gedooo.' )
+			);
+		}
+
+		/**
+		 * @return array
+		 */
+		public function gedTests( &$Model ) {
+			App::import( 'Model', array( 'Appchecks.Check' ) );
+			$Check = ClassRegistry::init( 'Check' );
+
+			return array(
+				'Accès au WebService' => $Check->webservice( GEDOOO_WSDL ),
+				'Présence du modèle de test' => $Check->filePermission( GEDOOO_TEST_FILE ),
+				'Test d\'impression' => $this->gedTestPrint()
+			);
+		}
+
 	}
 ?>

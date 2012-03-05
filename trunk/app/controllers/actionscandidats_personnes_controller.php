@@ -29,7 +29,7 @@
 
 		public $helpers = array( 'Default', 'Locale', 'Csv', 'Ajax', 'Xform', 'Default2', 'Fileuploader' );
 
-		public $components = array( 'Default', 'Gedooo', 'Fileuploader' );
+		public $components = array( 'Default', 'Gedooo.Gedooo', 'Fileuploader' );
 
 		public $aucunDroit = array( 'ajaxpart', 'ajaxstruct', 'ajaxreferent', 'ajaxreffonct', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
 

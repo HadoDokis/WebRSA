@@ -5,7 +5,7 @@
 
 	class AppController extends Controller
 	{
-		public $components = array( 'Session', 'Auth', 'Acl', 'Droits', 'Cookie', 'Jetons', 'Default', 'Gedooo' );
+		public $components = array( 'Session', 'Auth', 'Acl', 'Droits', 'Cookie', 'Jetons', 'Default', 'Gedooo.Gedooo' );
 		public $helpers = array( 'Xhtml', 'Form', 'Javascript', 'Permissions', 'Widget', 'Locale', 'Theme', 'Default', 'Number', 'Xpaginator', 'Gestionanomaliebdd' );
 		public $uses = array( 'User', 'Connection' );
 

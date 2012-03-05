@@ -21,7 +21,7 @@
 			'Autovalidate',
 			'ValidateTranslate',
 			'Formattable',
-			'Gedooo'
+			'Gedooo.Gedooo'
 		);
 
 		public $belongsTo = array(

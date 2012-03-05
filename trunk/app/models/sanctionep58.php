@@ -27,7 +27,7 @@
 				)
 			),
 			'Formattable',
-			'Gedooo'
+			'Gedooo.Gedooo'
 		);
 
 		public $belongsTo = array(

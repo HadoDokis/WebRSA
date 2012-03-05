@@ -7,7 +7,7 @@
 
 		public $useTable = false;
 
-		public $actsAs = array( 'Gedooo', 'Conditionnable' );
+		public $actsAs = array( 'Gedooo.Gedooo', 'Conditionnable' );
 
 		/**
 		* Dernière version des règles de préorientation:

@@ -6,7 +6,7 @@
 		public $helpers = array( 'Default', 'Default2' );
 
 		public $uses = array( 'Option', 'Dossierep', 'Decisionpdo', 'Propopdo' );
-		public $components = array( 'Gedooo' );
+		public $components = array( 'Gedooo.Gedooo' );
 
 		/**
 		* FIXME: evite les droits

@@ -17,7 +17,7 @@
 				)
 			),
 			'Autovalidate',
-			'Gedooo'
+			'Gedooo.Gedooo'
 		);
 
 		public $validate = array(

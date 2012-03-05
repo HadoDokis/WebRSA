@@ -23,7 +23,7 @@
 			),
 			'Formattable',
 			'Autovalidate',
-			'Gedooo',
+			'Gedooo.Gedooo',
 			'StorablePdf'
 		);
 

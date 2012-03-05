@@ -5,7 +5,7 @@
 	{
 		public $name = 'Gedooos';
 		public $uses = array( 'Cohorte', 'Contratinsertion', 'Typocontrat', 'Adressefoyer', 'Orientstruct', 'Structurereferente', 'Dossier', 'Option', 'Dsp', 'Detaildroitrsa', 'Identificationflux', 'Totalisationacompte', 'Rendezvous', 'Referent', 'Activite', 'Action', 'Permanence', 'Prestation', 'Infofinanciere', 'Modecontact', 'Apre', 'Relanceapre', 'PersonneReferent', 'Formqualif', 'Permisb', 'Comiteapre', 'Referent', 'Suspensiondroit', 'Personne', 'Foyer', 'Situationdossierrsa', 'Zonegeographique', 'Autreavissuspension', 'Autreavisradiation' );
-		public $components = array( 'Jetons', 'Gedooo' );
+		public $components = array( 'Jetons', 'Gedooo.Gedooo' );
 		public $helpers = array( 'Locale' );
 
 		public function beforeFilter() {

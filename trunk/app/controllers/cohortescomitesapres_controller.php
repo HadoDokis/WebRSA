@@ -5,7 +5,7 @@
 		public $name = 'Cohortescomitesapres';
 		public $uses = array( 'Apre', 'Option', 'Personne', 'ApreComiteapre', 'Cohortecomiteapre', 'Comiteapre', 'Participantcomite', 'Apre', 'ComiteapreParticipantcomite', 'Adressefoyer', 'Tiersprestataireapre', 'Suiviaideapretypeaide', 'Referent', 'Dossier' );
 		public $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml' );
-		public $components = array( 'Gedooo' );
+		public $components = array( 'Gedooo.Gedooo' );
 
 		public function __construct() {
 			//FIXME: voir si le fait d'appeler aviscomite ne va pas retourner tous les comités précédents comme au départ

@@ -14,7 +14,7 @@
 					'haspiecejointe'
 				)
 			),
-			'Gedooo'
+			'Gedooo.Gedooo'
 		);
 
 		public $validate = array(

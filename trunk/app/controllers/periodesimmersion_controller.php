@@ -7,7 +7,7 @@
 		public $uses = array( 'Periodeimmersion', 'Cui', 'Option', 'Referent', 'Personne', 'Dossier', 'Adressefoyer', 'Structurereferente' );
 
 		public $helpers = array( 'Default', 'Default2', 'Locale', 'Csv', 'Ajax', 'Xform' );
-		public $components = array( 'RequestHandler', 'Gedooo' );
+		public $components = array( 'RequestHandler', 'Gedooo.Gedooo' );
 		public $aucunDroit = array( 'gedooo' );
 
 		public $commeDroit = array(

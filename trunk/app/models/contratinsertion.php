@@ -24,7 +24,7 @@
 			),
 			'Autovalidate',
 			'ValidateTranslate',
-			'Gedooo',
+			'Gedooo.Gedooo',
 			'ModelesodtConditionnables' => array(
 				58 => '%s/contratinsertioncg58.odt',
 				66 => array(

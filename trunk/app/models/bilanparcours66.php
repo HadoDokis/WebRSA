@@ -52,7 +52,7 @@
 					'haspiecejointe'
 				)
 			),
-			'Gedooo',
+			'Gedooo.Gedooo',
 			'StorablePdf',
 		);
 

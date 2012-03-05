@@ -49,9 +49,7 @@
 
 	define( 'REQUIRED_MARK', '<abbr class="required" title="Champ obligatoire">*</abbr>' );
 
-	define( 'PHPGEDOOO_DIR', APP.'vendors'.DS.'phpgedooo'.DS );
-	define( 'MODELESODT_DIR', PHPGEDOOO_DIR.'..'.DS.'modelesodt'.DS );
-	define( 'GEDOOO_TEST_FILE', MODELESODT_DIR.'test_gedooo.odt' );
+	define( 'MODELESODT_DIR', APP.'vendors'.DS.'modelesodt'.DS );
 
     // Messages en français
     App::import( 'l10n' );

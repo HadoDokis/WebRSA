@@ -45,7 +45,7 @@
 		 * OK -> courrierpdo_traitementpdo (INFO: dans courrierpdo + une autre fonction à mettre en commun ?)
 		 * OK -> cov58
 		 * OK -> decisiondossierpcg66
-		 * OK -> decisionpropopdo (tous les CG ?)
+		 * OK -> decisionpropopdo (tous les CG ?) -> encore utilisé ? Tous sauf le 66
 		 * OK -> defautinsertionep66
 		 * OK -> descriptionpdo
 		 * OK -> nonorientationproep58 (?)
@@ -55,7 +55,7 @@
 		 * OK -> objetentretien
 		 * OK -> orientstruct
 		 * OK -> propoorientationcov58
-		 * OK -> propopdo (FIXME: tous les cg ?)
+		 * OK -> propopdo (FIXME: tous les cg ?) -> tous sauf le 66
 		 * OK -> regressionorientationep58
 		 * OK -> relancenonrespectsanctionep93
 		 * OK -> reorientationep93
@@ -224,6 +224,24 @@
 				'servicesinstructeurs' => ClassRegistry::init( 'Serviceinstructeur' )->storedDataErrors(),
 				'structuresreferentes' => ClassRegistry::init( 'Structurereferente' )->storedDataErrors(),
 				'users' => ClassRegistry::init( 'User' )->storedDataErrors()
+			);
+		}
+
+		/**
+		 * Retourne la liste des serveurs configurés, les configurations prises
+		 * en compte et les erreurs.
+		 */
+		public function services() {
+			App::import( 'Behavior', array( 'Gedooo.Gedooo' ) );
+
+			$GedModel = ClassRegistry::init( 'User' );
+			$GedModel->Behaviors->attach( 'Gedooo' );
+
+			return array(
+				'Gedooo' => array(
+					'configure' => $GedModel->Behaviors->Gedooo->gedConfigureKeys( $GedModel ),
+					'tests' => $GedModel->gedTests() // FIXME: le faire sur les autres aussi
+				)
 			);
 		}
 	}

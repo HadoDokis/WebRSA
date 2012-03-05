@@ -13,7 +13,7 @@
 		public $helpers = array( 'Default', 'Default2', 'Ajax', 'Fileuploader' );
 
 		public $uses = array( 'Bilanparcours66', 'Option', 'Pdf', 'Dossierep'  );
-		public $components = array( 'Gedooo', 'Fileuploader' );
+		public $components = array( 'Gedooo.Gedooo', 'Fileuploader' );
 
 		public $commeDroit = array(
 			'add' => 'Bilansparcours66:edit'

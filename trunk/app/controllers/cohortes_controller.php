@@ -30,7 +30,7 @@
 
 		public $helpers = array( 'Csv', 'Paginator', 'Ajax', 'Default', 'Xpaginator', 'Locale', 'Search' );
 
-		public $components = array( 'Gedooo', 'Prg' => array( 'actions' => 'orientees' ) );
+		public $components = array( 'Gedooo.Gedooo', 'Prg' => array( 'actions' => 'orientees' ) );
 
 		public $aucunDroit = array( 'progression' );
 

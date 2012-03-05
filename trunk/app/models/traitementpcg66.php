@@ -36,7 +36,7 @@
 					'typetraitement'
 				)
 			),
-			'Gedooo'
+			'Gedooo.Gedooo'
 		);
 
 		public $validate = array(

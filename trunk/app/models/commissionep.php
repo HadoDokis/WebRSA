@@ -25,7 +25,7 @@
 					'etatcommissionep'
 				)
 			),
-			'Gedooo',
+			'Gedooo.Gedooo',
 			'ModelesodtConditionnables' => array(
 				58 => '%s/ordredujour_participant_58.odt',
 				66 => '%s/ordredujour_participant_66.odt',
