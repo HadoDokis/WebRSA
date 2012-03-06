@@ -417,7 +417,7 @@
 			if( $base ) {
 				$results['PEAR'] = array(
 					'success' => $success,
-					'message' => ( $success ? null : "PEAR n'est pas installé" )
+					'message' => ( $success ? null : "PEAR n'est pas installé. Installez le paquet php-pear (sous Ubuntu, en ligne de commande, faire: <code>sudo apt-get install php-pear</code>)" )
 				);
 			}
 
@@ -438,7 +438,7 @@
 				$success = ( is_null( $Registry ) ? false : @$Registry->packageExists( $extension ) );
 				$results[$extension] = array(
 					'success' => $success,
-					'message' => ( $success ? null : sprintf( "L'extension PEAR %s n'est pas installée.", $extension ) )
+					'message' => ( $success ? null : sprintf( "L'extension PEAR %s n'est pas installée. Pour l'installer, en ligne de commande, faire: <code>sudo pear install %s</code>", $extension, $extension ) )
 				);
 			}
 
