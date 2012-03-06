@@ -797,6 +797,9 @@
 			);
 			$this->set( compact( 'personne' ) );
 
+                        $nir13 = trim( $personne['Personne']['nir'] );
+                        $nir13 = ( empty( $nir13 ) ? null : substr( $nir13, 0, 13 ) );
+
 			$autreNumdemrsa = $this->Personne->Foyer->Dossier->find(
 				'all',
 				array(
@@ -804,7 +807,10 @@
 						'COUNT(DISTINCT "Dossier"."id") AS "count"'
 					),
 					'joins' => array(
-						array(
+                                            $this->Personne->Foyer->Dossier->join( 'Foyer', array( 'type' => 'INNER' ) ),
+                                            $this->Personne->Foyer->join( 'Personne', array( 'type' => 'INNER' ) ),
+                                            $this->Personne->join( 'Prestation', array( 'type' => 'INNER' ) ),
+						/*array(
 							'table'      => 'foyers',
 							'alias'      => 'Foyer',
 							'type'       => 'INNER',
@@ -817,14 +823,15 @@
 							'type'       => 'INNER',
 							'foreignKey' => false,
 							'conditions' => array( 'Personne.foyer_id = Foyer.id' )
-						)
+						)*/
 					),
 					'conditions' => array(
+                                                'Prestation.rolepers' => array( 'DEM', 'CJT' ),
 						'OR' => array(
 							array(
 								'nir_correct13( Personne.nir  )',
-								'nir_correct13( \''.substr( $personne['Personne']['nir'], 0, 13 ).'\'  )',
-								'SUBSTRING( TRIM( BOTH \' \' FROM Personne.nir ) FROM 1 FOR 13 )' => substr( $personne['Personne']['nir'], 0, 13 ),
+								'nir_correct13( \''.$nir13.'\'  )',
+								'SUBSTRING( TRIM( BOTH \' \' FROM Personne.nir ) FROM 1 FOR 13 )' => $nir13,
 								'Personne.dtnai' => $personne['Personne']['dtnai']
 							),
 							array(
