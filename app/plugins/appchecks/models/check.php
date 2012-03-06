@@ -428,10 +428,14 @@
 					'message' => ( $success ? null : "PEAR_Registry n'est pas installé" )
 				);
 			}
-			$Registry = @new PEAR_Registry();
+
+			$Registry = null;
+			if( class_exists( 'PEAR_Registry' ) ) {
+				$Registry = @new PEAR_Registry();
+			}
 
 			foreach( $extensions as $extension ) {
-				$success = @$Registry->packageExists( $extension );
+				$success = ( is_null( $Registry ) ? false : @$Registry->packageExists( $extension ) );
 				$results[$extension] = array(
 					'success' => $success,
 					'message' => ( $success ? null : sprintf( "L'extension PEAR %s n'est pas installée.", $extension ) )
