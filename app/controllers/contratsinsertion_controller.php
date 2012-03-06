@@ -1057,7 +1057,8 @@
 					'recursive' => -1
 				)
 			);
-			$situationdossierrsa_id = Set::classicExtract( $situationdossierrsa, 'Situationdossierrsa.id' );
+
+			$situationdossierrsa_id = ( empty( $situationdossierrsa ) ? null : Set::classicExtract( $situationdossierrsa, 'Situationdossierrsa.id' ) );
 			$suspension = $this->Contratinsertion->Personne->Foyer->Dossier->Situationdossierrsa->Suspensiondroit->find(
 				'all',
 				array(
