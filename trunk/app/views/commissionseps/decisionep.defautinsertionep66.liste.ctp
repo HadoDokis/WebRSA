@@ -26,6 +26,7 @@ echo '<table>
 				<th rowspan="2">Motif de radiation</th>
 				<th colspan="4">Avis EPL</th>
 				<th rowspan="2">Observations</th>
+                                <th rowspan="2">Actions</th>
 			</tr>
 			<tr>
 				<th>Décision</th>
@@ -61,7 +62,8 @@ echo '<table>
 				array( @$liste_typesorients[Set::classicExtract( $decisionep, "typeorient_id" )], array( 'id' => "Decisiondefautinsertionep66{$i}TypeorientId" ) ),
 				array( @$liste_structuresreferentes[Set::classicExtract( $decisionep, "structurereferente_id" )], array( 'id' => "Decisiondefautinsertionep66{$i}StructurereferenteId" ) ),
 				array( @$liste_referents[Set::classicExtract( $decisionep, "referent_id" )], array( 'id' => "Decisiondefautinsertionep66{$i}ReferentId" ) ),
-				Set::classicExtract( $decisionep, "commentaire" )
+				Set::classicExtract( $decisionep, "commentaire" ),
+                                array( $xhtml->link( 'Voir', array( 'controller' => 'historiqueseps', 'action' => 'view_passage', $dossierep['Passagecommissionep'][0]['id'] ), array( 'class' => 'external' ) ), array( 'class' => 'button view' ) ),
 			),
 			array( 'class' => "odd {$multiple}" ),
 			array( 'class' => "even {$multiple}" )

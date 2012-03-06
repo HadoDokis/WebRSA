@@ -149,22 +149,22 @@
 			}
 
 			$query = array(
-				'fields' => array(
-					'Commissionep.id',
-					'Commissionep.name',
-					'Commissionep.identifiant',
-					'Commissionep.dateseance',
-					'Commissionep.etatcommissionep',
-					'Commissionep.lieuseance',
-					'Commissionep.observations'
-				),
+//				'fields' => array(
+//					'Commissionep.id',
+//					'Commissionep.name',
+//					'Commissionep.identifiant',
+//					'Commissionep.dateseance',
+//					'Commissionep.etatcommissionep',
+//					'Commissionep.lieuseance',
+//					'Commissionep.observations'
+//				),
 				'contain'=>array(
 					'Ep' => array(
-						'fields'=>array(
-							'id',
-							'name',
-							'identifiant'
-						),
+//						'fields'=>array(
+//							'id',
+//							'name',
+//							'identifiant'
+//						),
 						'Regroupementep'
 					),
 					'Membreep'
