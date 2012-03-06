@@ -413,7 +413,7 @@
 		public function pearExtensions( $extensions, $base = true ) {
 			$results = array();
 
-			$success = require_once( 'PEAR.php' );
+			$success = @include_once( 'PEAR.php' );
 			if( $base ) {
 				$results['PEAR'] = array(
 					'success' => $success,
@@ -421,7 +421,7 @@
 				);
 			}
 
-			$success = require_once( 'PEAR/Registry.php' );
+			$success = @include_once( 'PEAR/Registry.php' );
 			if( $base ) {
 				$results['Registry'] = array(
 					'success' => $success,

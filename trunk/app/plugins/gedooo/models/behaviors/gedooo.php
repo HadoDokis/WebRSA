@@ -50,7 +50,7 @@
 					$this->_gedoooBehavior = 'GedoooUnoconv';
 					break;
 				default:
-					trigger_error( "Paramétrage incorrect: la méthode de Gedooo '{$method}' n'existe pas.", E_USER_WARNING );
+					$Model->log( "Paramétrage incorrect: la méthode de Gedooo '{$method}' n'existe pas.", LOG_ERROR );
 			}
 
 			if( !empty( $this->_gedoooBehavior ) ) {

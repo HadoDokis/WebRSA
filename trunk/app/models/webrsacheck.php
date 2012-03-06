@@ -239,8 +239,8 @@
 
 			return array(
 				'Gedooo' => array(
-					'configure' => $GedModel->Behaviors->Gedooo->gedConfigureKeys( $GedModel ),
-					'tests' => $GedModel->gedTests() // FIXME: le faire sur les autres aussi
+					'configure' => @$GedModel->Behaviors->Gedooo->gedConfigureKeys( $GedModel ),
+					'tests' => @$GedModel->gedTests() // FIXME: le faire sur les autres aussi
 				)
 			);
 		}
