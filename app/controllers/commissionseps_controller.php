@@ -246,8 +246,9 @@
 						$this->paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'traite', 'annule' );
 						break;
 				}
-
+                                
 				$commissionseps = $this->paginate( $this->Commissionep );
+                                $themeseps = $this->Commissionep->Ep->themes();
 
 				foreach( $commissionseps as $key => $commissionep ){
 					//Calcul du nombre de participants
@@ -276,14 +277,39 @@
 						)
 					);
 					$commissionseps[$key]['Commissionep']['nbabsents'] = $nbabsents;
+                                        
+                                        // Niveau de décision maximum, par commission
+                                        $regroupementep = $commissionep['Ep']['Regroupementep'];
+                                        $niveaudecisionmax = 'nontraite';
+                                        foreach( $themeseps as $themeep ) {
+                                            if( $regroupementep[$themeep] == 'decisioncg' ) {
+                                                $niveaudecisionmax = 'decisioncg';
+                                            }
+                                            else if( $niveaudecisionmax != 'decisioncg' && $regroupementep[$themeep] == 'decisionep' ) {
+                                                $niveaudecisionmax = 'decisionep';
+                                            }
+                                        }
+                                        // Libellé décision max
+                                        $libelledecisionmax = 'Non traité';
+                                        if( $niveaudecisionmax == 'decisioncg' ) {
+                                            $libelledecisionmax = 'Voir les décisions';
+                                        }
+                                        else if( $niveaudecisionmax == 'decisionep' ) {
+                                            if( Configure::read( 'Cg.departement' ) == 58 ) {
+                                                $libelledecisionmax = 'Voir les décisions';
+                                            }
+                                            else {
+                                                $libelledecisionmax = 'Voir les avis';
+                                            }
+                                        }
+                                        $commissionseps[$key]['Commissionep']['niveaudecisionmax'] = $niveaudecisionmax;
+                                        $commissionseps[$key]['Commissionep']['libelledecisionmax'] = $libelledecisionmax;
 				}
 				$this->set( 'commissionseps', $commissionseps );
 			}
 
 			$this->_setOptions();
-			$compteurs = array(
-				'Ep' => $this->Commissionep->Ep->find( 'count' )
-			);
+			$compteurs = array( 'Ep' => $this->Commissionep->Ep->find( 'count' ) );
 			$this->set( compact( 'compteurs' ) );
 			$this->render( null, null, 'index' );
 		}

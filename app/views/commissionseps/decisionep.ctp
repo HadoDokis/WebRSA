@@ -1,4 +1,10 @@
-<h1><?php echo $this->pageTitle = 'Décisions de la commission du '.date('d/m/Y à H:i', strtotime($commissionep['Commissionep']['dateseance'])).' par l\'EP : "'.$commissionep['Ep']['name'].'"'; ?></h1>
+<h1><?php 
+    $typeAvisDecisions = 'Décisions';
+    if( Configure::read( 'Cg.departement' ) == 66 ){
+        $typeAvisDecisions = 'Avis';
+    }
+    echo $this->pageTitle = $typeAvisDecisions.' de la commission du '.date('d/m/Y à H:i', strtotime($commissionep['Commissionep']['dateseance'])).' par l\'EP : "'.$commissionep['Ep']['name'].'"';
+?></h1>
 <?php
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
