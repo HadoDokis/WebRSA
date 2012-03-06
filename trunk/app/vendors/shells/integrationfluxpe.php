@@ -349,7 +349,8 @@
 
 						// Si le NIR n'est pas valide, on rejette la ligne
 						if( !valid_nir( $parts[$offsets['nir2']] ) || !valid_nir( $parts[$offsets['nir']] ) ) {
-							$parts[$offsets['nir']] = substr( $parts[$offsets['nir']], 0, 13 );
+                                                        $parts[$offsets['nir']] = trim( $parts[$offsets['nir']] );
+                                                        $parts[$offsets['nir']] = ( empty( $parts[$offsets['nir']] ) ? null : substr( $parts[$offsets['nir']], 0, 13 ) );
 							$this->_rejectLine( $this->csv->path, $numLine, $line, "Le NIR \"{$parts[$offsets['nir']]}\" n'est pas valide" );
 						}
 						else {
