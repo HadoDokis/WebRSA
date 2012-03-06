@@ -100,13 +100,14 @@
 		* @return array
 		*/
 		public function qdConditionsJoinPersonneOnValues( $informationpe, $values ) {
+                        $extractedNir = trim( Set::classicExtract( $values, 'nir' ) );
+                        $extractedNir = ( empty( $extractedNir ) ? null : substr( $extractedNir, 0, 13 ) );
 
-			$extractedNir = substr( trim( Set::classicExtract( $values, 'nir' ) ), 0, 13 );
 			return array(
 				'OR' => array(
 					array(
 						"{$informationpe}.nir IS NOT NULL",
-						"SUBSTRING({$informationpe}.nir FROM 1 FOR 13) =" => !empty( $extractedNir ) ? $extractedNir : null,
+						"SUBSTRING({$informationpe}.nir FROM 1 FOR 13)" => $extractedNir,
 						"{$informationpe}.dtnai" => Set::classicExtract( $values, 'dtnai' )
 					),
 					array(

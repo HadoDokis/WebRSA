@@ -668,10 +668,8 @@
 				*   Liste des anciens dossiers par demandeurs et conjoints
 				*   TODO
 				*/
-				$nir13 = substr( $personnesFoyer[$index]['Personne']['nir'], 0, 13 );
-				if( empty( $nir13 ) ) {
-					$nir13 = '';
-				}
+                                $nir13 = trim( $personnesFoyer[$index]['Personne']['nir'] );
+                                $nir13 = ( empty( $nir13 ) ? null : substr( $nir13, 0, 13 ) );
 
 				$autreNumdemrsaParAllocataire = $this->Dossier->find(
 					'all',
