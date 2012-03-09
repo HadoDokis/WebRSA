@@ -301,4 +301,9 @@
 	 * 	"Intervalles PostgreSQL"
 	 */
 	Configure::write( 'Dossierep.delaiavantselection', null );
+
+	/**
+	 * 	Valeurs prises par le champ natpf pour déterminer si le dossier est en RSA Socle
+	 */
+	Configure::write( 'Detailcalculdroitrsa.natpf.socle', array( 'RSD', 'RSI', 'RSU', 'RSJ' ) );
 ?>

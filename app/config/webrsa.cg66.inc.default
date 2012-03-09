@@ -306,6 +306,10 @@
 	 */
 	Configure::write( 'Dossierep.delaiavantselection', null );
 
+	/**
+	 * 	Valeurs prises par le champ natpf pour déterminer si le dossier est en RSA Socle
+	 */
+	Configure::write( 'Detailcalculdroitrsa.natpf.socle', array( 'RSD', 'RSI', 'RSU', 'RSJ' ) );
 
 	/**
 	 * 	Mise en paramétrage de la liste des chargés d'insertion et secrétaire liés à une fiche de candidature
