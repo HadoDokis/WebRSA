@@ -30,7 +30,7 @@
 		protected function _setOptions() {
 			$options = $this->Contratinsertion->allEnumLists();
 
-			if( in_array( $this->action, array( 'index', 'add', 'edit', 'view', 'valider' ) ) ) {
+			if( in_array( $this->action, array( 'index', 'add', 'edit', 'view', 'valider', 'validersimple', 'validerparticulier' ) ) ) {
 				$this->set( 'decision_ci', $this->Option->decision_ci() );
 				$forme_ci = array();
 				if( Configure::read( 'nom_form_ci_cg' ) == 'cg93' ) {
@@ -1571,8 +1571,35 @@
 
 			$this->_setOptions();
 			$this->set( 'urlmenu', '/contratsinsertion/index/'.$contratinsertion['Contratinsertion']['personne_id'] );
+                        $this->render( $this->action, null, 'valider' );
 		}
 
+                /**
+			**Fonction de validation pour les CERs Simples du CG66
+			* @param type $contratinsertion_id 
+			* 
+			*/
+		public function validersimple( $contratinsertion_id = null ){
+			$this->Contratinsertion->id = $contratinsertion_id;
+			$forme_ci = $this->Contratinsertion->field( 'forme_ci' );
+			$this->assert( ( $forme_ci == 'S' ), 'error500' );
+
+			$this->valider( $contratinsertion_id );                   
+		}
+		
+		
+		/**
+			**Fonction de validation pour les CERs Particuliers du CG66
+			* @param type $contratinsertion_id 
+			* 
+			*/
+		public function validerparticulier( $contratinsertion_id = null ){
+			$this->Contratinsertion->id = $contratinsertion_id;
+			$forme_ci = $this->Contratinsertion->field( 'forme_ci' );
+			$this->assert( ( $forme_ci == 'C' ), 'error500' );
+
+			$this->valider( $contratinsertion_id );                   
+		}
 		/**
 		*
 		*/
