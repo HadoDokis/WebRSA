@@ -433,7 +433,7 @@ msgstr "APREs à traiter"
 
 msgid "Cohortesvalidationapres66:notificationsCohorte"
 msgstr "Impression en cohorte des notifications d'APRE"
-   
+
 msgid "Cohortesvalidationapres66:apresavalider"
 msgstr "APREs à valider"
 
@@ -1111,10 +1111,10 @@ msgstr "Impression (Gedooo)"
 msgid "Gedooos:notification_structure"
 msgstr "Impression des orientations"
 
-msgid "Gedooos:contratinsertion"
+msgid "Contratsinsertion:impression"
 msgstr "Impression des CERs"
 
-msgid "Gedooos:apre"
+msgid "Apres:impression"
 msgstr "Impression des APREs"
 
 msgid "Gedooos:relanceapre"
@@ -2136,7 +2136,7 @@ msgstr "Cloture d'un traitement"
 
 msgid "Traitementspcgs66:decision"
 msgstr "Proposition de la décision au niveau du traitement de la personne"
-      
+
 msgid "Traitementspcgs66:printFicheCalcul"
 msgstr "Impression de la fiche de calcul"
 

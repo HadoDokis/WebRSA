@@ -565,7 +565,7 @@
 		/**
 		* Notification d'APRE
 		**/
-		public function apre( $apre_id = null ) {
+		/*public function apre( $apre_id = null ) {
 			$qual = $this->Option->qual();
 			$this->set( 'qual', $qual );
 			$typevoie = $this->Option->typevoie();
@@ -721,7 +721,7 @@
 			unset( $apre['Apre']['Natureaide'] );
 
 			$this->_ged( $apre, 'APRE/apre.odt' );
-		}
+		}*/
 
 		/**
 		* Notification de Relance d'APRE

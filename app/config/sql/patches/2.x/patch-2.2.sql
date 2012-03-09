@@ -147,7 +147,12 @@ DROP INDEX IF EXISTS piecestraitementspcgs66_traitementpcg66_id_idx;
 CREATE INDEX piecestraitementspcgs66_piecetypecourrierpcg66_id_idx ON piecestraitementspcgs66(piecetypecourrierpcg66_id);
 CREATE INDEX piecestraitementspcgs66_traitementpcg66_id_idx ON piecestraitementspcgs66(traitementpcg66_id);
 
--- FIXME: il faudrait remplacer Gedooos:contratinsertion par Contratsinsertion:impression, mais une mise à jour sur acos casserait l'arbre.
+/*
+	20120309, FIXME
+	il faudrait remplacer, mais une mise à jour sur acos casserait l'arbre:
+		- Gedooos:contratinsertion par Contratsinsertion:impression
+		- Gedooos:apre par Apres:impression
+*/
 
 
 -- *****************************************************************************

@@ -36,7 +36,13 @@
 				)
 			),
 			'Formattable',
-			'Gedooo.Gedooo'
+			'Gedooo.Gedooo',
+			'StorablePdf' => array(
+				'afterSave' => 'deleteAll'
+			),
+			'ModelesodtConditionnables' => array(
+				93 => 'APRE/apre.odt'
+			)
 		);
 
 		public $validate = array(
@@ -1076,6 +1082,111 @@
 			}
 
 			return $querydata;
+		}
+
+		/**
+		 * Retourne le chemin vers le modèle odt utilisé pour l'APRE
+		 *
+		 * @param array $data
+		 * @return string
+		 */
+		public function modeleOdt( $data ) {
+			return 'APRE/apre.odt';
+		}
+
+		/**
+		 * Retourne les données nécessaires à l'impression d'une APRE complémentaire pour le CG 93
+		 *
+		 * @param integer $id
+		 * @param integer $user_id
+		 * @return array
+		 */
+		public function getDataForPdf( $id, $user_id ) {
+			$querydata = array(
+				'fields' => array_merge(
+					$this->fields(),
+					$this->Personne->fields(),
+					$this->Referent->fields(),
+					$this->Structurereferente->fields(),
+					$this->Personne->Foyer->fields(),
+					$this->Personne->Prestation->fields(),
+					$this->Personne->Foyer->Dossier->fields(),
+					$this->Personne->Foyer->Adressefoyer->Adresse->fields(),
+					array(
+						'( '.$this->Personne->Foyer->vfNbEnfants().' ) AS "Foyer__nbenfants"'
+					)
+				),
+				'joins' => array(
+					$this->join( 'Personne', array( 'type' => 'INNER' ) ),
+					$this->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ),
+					$this->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
+					$this->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
+					$this->Personne->join( 'Prestation', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
+					$this->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
+				),
+				'contain' => false,
+				'conditions' => array(
+					'Apre.id' => $id,
+					array(
+						'OR' => array(
+							'Adressefoyer.id IS NULL',
+							'Adressefoyer.id IN ('
+								.$this->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' )
+							.')',
+						)
+					),
+				),
+			);
+
+			foreach( $this->aidesApre as $aideApre ) {
+				$querydata['fields'] = Set::merge(
+					$querydata['fields'],
+					$this->{$aideApre}->fields()
+				);
+
+				$querydata['joins'][] = $this->join( $aideApre, array( 'type' => 'LEFT OUTER' ) );
+			}
+
+			$deepAfterFind = $this->deepAfterFind;
+			$this->deepAfterFind = false;
+
+			$apre = $this->find( 'first', $querydata );
+			$this->deepAfterFind = $deepAfterFind;
+
+			// Récupération du dernier CER signé à la création de l'Apre
+			$contratinsertion = $this->Personne->Contratinsertion->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Contratinsertion.personne_id' => $apre['Apre']['personne_id'],
+						'Contratinsertion.decision_ci' => 'V',
+						'Contratinsertion.dd_ci <=' =>$apre['Apre']['datedemandeapre'],
+						'Contratinsertion.df_ci >=' =>$apre['Apre']['datedemandeapre'],
+					),
+					'contain' => false
+				)
+			);
+			if( empty( $contratinsertion ) ) {
+				$fields = $this->Personne->Contratinsertion->fields();
+				$contratinsertion = Xset::bump( Set::normalize( $fields ) );
+			}
+			$apre = Set::merge( $apre, $contratinsertion );
+
+			// Récupération de l'utilisateur connecté
+			$user = $this->Personne->Contratinsertion->User->find(
+				'first',
+				array(
+					'conditions' => array(
+						'User.id' => $user_id
+					),
+					'contain' => false
+				)
+			);
+			$apre = Set::merge( $apre, $user );
+
+			return $apre;
 		}
 	}
 ?>

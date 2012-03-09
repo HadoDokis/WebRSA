@@ -1223,8 +1223,9 @@
 		 * User.id <=> Connecté ou non ?
 		 * FIXME: detailsdroitsrsa.dossier_id a l'air d'e pouvoir'être unique, rajouter un index unique.
 		 *
-		 * @param type $id
-		 * @return type
+		 * @param integer $id
+		 * @param integer $user_id
+		 * @return array
 		 */
 		public function getDataForPdf( $id, $user_id ) {
 			$contratinsertion = $this->find(

@@ -453,7 +453,7 @@
 						'conditions' => array(
 							'Tiersprestataireapre.aidesliees' => $modelFormation
 						),
-						'order' => 'Tiersprestataireapre.nomtiers ASC' 
+						'order' => 'Tiersprestataireapre.nomtiers ASC'
 					)
 				);
 				$this->set( 'tiers'.$modelFormation, $list );
@@ -655,6 +655,58 @@
 			$this->set( 'personne_id', $personne_id );
 			$this->_setOptions();
 			$this->render( $this->action, null, '/apres/add_edit_'.Configure::read( 'nom_form_apre_cg' ) );
+		}
+
+		/**
+		 * Impression d'une Apre complémentaire pour le CG 93
+		 *
+		 * @param integer $apre_id
+		 */
+		public function impression( $apre_id = null ) {
+			$this->assert( !empty( $apre_id ), 'error404' );
+
+			$pdf = $this->Apre->getStoredPdf( $apre_id );
+
+			if( !empty( $pdf ) ) {
+				$pdf = $pdf['Pdf']['document'];
+			}
+			else {
+				$Option = ClassRegistry::init( 'Option' );
+
+				$options = Set::merge(
+					array(
+						'Personne' => array(
+							'qual' => $Option->qual(),
+						),
+						'Adresse' => array(
+							'typevoie' => $Option->typevoie(),
+						),
+						'Prestation' => array(
+							'rolepers' => $Option->rolepers(),
+						),
+						'Foyer' => array(
+							'sitfam' => $Option->sitfam(),
+							'typeocclog' => $Option->typeocclog(),
+						),
+						'Type' => array(
+							'voie' =>  $Option->typevoie(),
+						),
+					)
+				);
+
+				$apre = $this->Apre->getDataForPdf( $apre_id, $this->Session->read( 'Auth.User.id' ) );
+				$modeledoc = $this->Apre->modeleOdt( $apre );
+
+				$pdf = $this->Apre->ged( $apre, $modeledoc, false, $options );
+
+				if( !empty( $pdf ) ) {
+					$this->Apre->storePdf( $apre_id, $modeledoc, $pdf ); // FIXME ?
+				}
+			}
+
+			$this->assert( !empty( $pdf ), 'error404' );
+
+			$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( $this->action.'-%s.pdf', date( 'Y-m-d' ) )  );
 		}
 	}
 ?>

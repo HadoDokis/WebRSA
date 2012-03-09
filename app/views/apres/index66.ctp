@@ -63,13 +63,13 @@
 
                     $buttonEnabled = true;
                     $editButton = true;
-                    
+
                     $buttonEnabledInc = ( ( $etat != 'INC' ) ? true : false );
                     $editButton = ( ( $etat == 'VAL' || $etat == 'TRA' ) ? false : true );
 					$buttonEnabledNotif = ( ( $apre['Apre66']['isdecision']=='N' ) ? false :  true );
 
                     $etat = Set::enum( $etat, $options['etatdossierapre'] );
-                    
+
 
 
                     $innerTable = '<table id="innerTable'.$index.'" class="innerTable">
@@ -123,7 +123,7 @@
                                 'Imprimer la demande APRE',
                                 array( 'controller' => 'apres66', 'action' => 'apre', $apre[$this->modelClass]['id'] ),
                                 $buttonEnabledInc,
-                                $permissions->check( 'gedooos', 'apre' )
+                                $permissions->check( 'apres66', 'apre' )
                             ),
                             $xhtml->fileLink(
                                 'Fichiers liés',
