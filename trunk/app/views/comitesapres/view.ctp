@@ -185,8 +185,8 @@
 												),
 												$xhtml->printLink(
 													'Imprimer l\'apre',
-													array( 'controller' => 'gedooos', 'action' => 'apre', Set::classicExtract( $apre, 'id' ) ),
-													$permissions->check( 'gedooos', 'apre' )
+													array( 'controller' => 'apres', 'action' => 'impression', Set::classicExtract( $apre, 'id' ) ),
+													$permissions->check( 'apres', 'impression' )
 												)
 											),
 											array( 'class' => 'odd' ),

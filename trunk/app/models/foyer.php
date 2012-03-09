@@ -252,6 +252,37 @@
 		}
 
 		/**
+		 * Retourne un champ virtuel permettant de connaître le nombre d'enfants au sein d'un foyer
+		 *
+		 * @param type $foyerId
+		 * @return type
+		 */
+		public function vfNbEnfants( $foyerId = 'Foyer.id' ){
+			return $this->Personne->Prestation->sq(
+				array(
+					'fields' => array(
+						'COUNT(prestations.id)'
+					),
+					'alias' => 'prestations',
+					'joins' => array(
+						array_words_replace(
+							$this->Personne->Prestation->join( 'Personne', array( 'type' => 'INNER' ) ),
+							array(
+								'Prestation' => 'prestations',
+								'Personne' => 'personnes',
+							)
+						)
+					),
+					'conditions' => array(
+						"personnes.foyer_id = {$foyerId}",
+						'prestations.natprest' => 'RSA',
+						'prestations.rolepers' => 'ENF',
+					),
+				)
+			);
+		}
+
+		/**
 		*
 		*/
 
