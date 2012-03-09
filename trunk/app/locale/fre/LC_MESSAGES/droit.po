@@ -613,6 +613,12 @@ msgstr "Ajout/Édition d'un CER"
 msgid "Contratsinsertion:valider"
 msgstr "Validation d'un CER"
 
+msgid "Contratsinsertion:validersimple"
+msgstr "Validation d'un CER Simple"
+
+msgid "Contratsinsertion:validerparticulier"
+msgstr "Validation d'un CER Particulier"
+
 msgid "Contratsinsertion:delete"
 msgstr "Suppression d'un CER"
 

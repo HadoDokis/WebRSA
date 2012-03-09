@@ -56,6 +56,7 @@
 
 				foreach( $contratsinsertion as $contratinsertion ) {
 
+                                        $action = ( ( $contratinsertion['Contratinsertion']['forme_ci'] == 'S' ) ? 'validersimple' : 'validerparticulier' );
 					$dateCreation = Set::classicExtract( $contratinsertion, 'Contratinsertion.created' );
 					$periodeblock = false;
 					if( !empty( $dateCreation ) ){
@@ -76,18 +77,18 @@
 							h( Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ), $options['positioncer'] ) ),
 
 							$default2->button(
-								'valider',
-								array( 'controller' => 'contratsinsertion', 'action' => 'valider',
-								$contratinsertion['Contratinsertion']['id'] ),
-								array(
-									'enabled' => (
-										( $permissions->check( 'contratsinsertion', 'valider' ) == 1 )
-										&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'fincontrat' )
-										&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'annule' )
-										&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.decision_ci' ) == 'E' )
-									)
-								)
-							),
+                                                            'valider',
+                                                            array( 'controller' => 'contratsinsertion', 'action' => $action,
+                                                            $contratinsertion['Contratinsertion']['id'] ),
+                                                            array(
+                                                                'enabled' => (
+                                                                        ( $permissions->check( 'contratsinsertion', $action ) == 1 )
+                                                                        && ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'fincontrat' )
+                                                                        && ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'annule' )
+                                                                        && ( Set::classicExtract( $contratinsertion, 'Contratinsertion.decision_ci' ) == 'E' )
+                                                                )
+                                                            )
+                                                        ),
 							$default2->button(
 								'view',
 								array( 'controller' => 'contratsinsertion', 'action' => 'view',

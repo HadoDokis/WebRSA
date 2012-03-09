@@ -493,6 +493,12 @@ msgstr "Notification OP"
 
 msgid "Button::notifbenef"
 msgstr "Notification bénéficiaire"
+
+msgid "Button::validersimple"
+msgstr "Valider"
+
+msgid "Button::validerparticulier"
+msgstr "Valider"
 ###############################################################################
 # Pagination
 # INFO: http://forum.cakephp-fr.org/viewtopic.php?id=878
