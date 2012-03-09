@@ -922,7 +922,7 @@
 				$this->redirect( $this->referer() );
 			}
 
-			$pdf = $this->Commissionep->getPdfOrdreDuJour( $commissionep_id );
+			$pdf = $this->Commissionep->getPdfOrdreDuJour( $commissionep_id, $this->Session->read( 'Auth.User.id' ));
 
 			if( $pdf ) {
 				$this->Gedooo->sendPdfContentToClient( $pdf, 'OJ' );
@@ -1087,7 +1087,7 @@
 
 			$this->_checkPrintOrdreDuJour( $commissionep_id );
 
-			$pdf = $this->Commissionep->getPdfOrdredujour( $commissionep_membreep_id );
+			$pdf = $this->Commissionep->getPdfOrdredujour( $commissionep_membreep_id, $this->Session->read( 'Auth.User.id' ) );
 
 			if( $pdf ) {
 				$this->Gedooo->sendPdfContentToClient( $pdf, 'ConvocationepParticipant' );
@@ -1117,7 +1117,7 @@
 
 			$pdfs = array();
 			foreach( array_keys( $liste ) as $commissionep_membreep_id ) {
-				$pdfs[] = $this->Commissionep->getPdfOrdredujour( $commissionep_membreep_id );
+				$pdfs[] = $this->Commissionep->getPdfOrdredujour( $commissionep_membreep_id, $this->Session->read( 'Auth.User.id' ) );
 			}
 
 			$pdfs = $this->Gedooo->concatPdfs( $pdfs, 'ConvocationepParticipant' );
