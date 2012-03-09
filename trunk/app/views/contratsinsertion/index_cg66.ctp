@@ -16,7 +16,7 @@
             <?php endif;?>
 
 			<?php  if( !empty( $orientstructEmploi ) ) :?>
-				<p class="error">Cette personne possède actuellement une orientation professionnelle. Impossible de créer un CER.</p>	
+				<p class="error">Cette personne possède actuellement une orientation professionnelle. Impossible de créer un CER.</p>
 			<?php endif; ?>
 
 
@@ -150,11 +150,11 @@
 							),
 							$default2->button(
 								'print',
-								array( 'controller' => 'gedooos', 'action' => 'contratinsertion',
+								array( 'controller' => 'contratsinsertion', 'action' => 'impression',
 								$contratinsertion['Contratinsertion']['id'] ),
 								array(
 									'enabled' => (
-										( $permissions->check( 'gedooos', 'contratinsertion' ) == 1 )
+										( $permissions->check( 'contratsinsertion', 'impression' ) == 1 )
 										&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'annule' )
 									)
 								)
@@ -176,7 +176,7 @@
 								$contratinsertion['Contratinsertion']['id'] ),
 								array(
 									'enabled' => (
-										$permissions->check( 'contratsinsertion', 'filelink' ) == 1 
+										$permissions->check( 'contratsinsertion', 'filelink' ) == 1
 									)
 								)
 							),

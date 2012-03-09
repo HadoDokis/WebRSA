@@ -22,5 +22,28 @@
 				'order' => ''
 			)
 		);
+
+		/**
+		 * Retourne une sous-requète permettant d'obtenir l'identifiant de la dernière action pour une
+		 * personne donnée.
+		 *
+		 * @param string $personneId
+		 * @return string
+		 */
+		public function sqDerniere( $personneId = 'Personne.id' ) {
+			return $this->sq(
+				array(
+					'alias' => 'activites',
+					'fields' => array(
+						'activites.id'
+					),
+					'conditions' => array(
+						"activites.personne_id = {$personneId}"
+					),
+					'order' => array( 'activites.ddact DESC' ),
+					'limit' => 1
+				)
+			);
+		}
 	}
 ?>

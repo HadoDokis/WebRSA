@@ -541,6 +541,14 @@
 			);
 		}
 
+		public function forme_ci() {
+			if( Configure::read( 'nom_form_ci_cg' ) == 'cg66' ) {
+				return array( 'S' => 'Simple', 'C' => 'Particulier' );
+			}
+
+			return array( 'S' => 'Simple', 'C' => 'Complexe' );
+		}
+
 		public function hispro() {
 			return array(
 				'1901' => 'Vous avez toujours travaillé',
