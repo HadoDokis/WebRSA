@@ -1169,7 +1169,7 @@
 		*   Impression de l'ordre du jour pour un participant à une commission d'EP
 		*/
 
-		public function getPdfOrdredujour( $commissionep_membreep_id ) {
+		public function getPdfOrdredujour( $commissionep_membreep_id, $user_id ) {
 			// Participant auquel la convocation doit être envoyée
 			$convocation = $this->CommissionepMembreep->find(
 				'first',
@@ -1441,6 +1441,21 @@
 			);
 
 			$options['Foyer']['sitfam'] = ClassRegistry::init( 'Option' )->sitfam();
+                        
+                        $user = $this->Passagecommissionep->User->find(
+                            'first',
+                            array(
+                                'fields' => array( 'nom', 'prenom', 'numtel' ),
+                                'conditions' => array(
+                                    'User.id' => $user_id
+                                ),
+                                'contain' => false,
+                                'recursive' => -1
+                            )
+                        );
+                        $convocation['User']['numtel'] = $user['User']['numtel'];
+			$convocation['User']['nom'] = $user['User']['nom'];
+			$convocation['User']['prenom'] = $user['User']['prenom'];
 
 			return $this->ged(
 				array_merge(
