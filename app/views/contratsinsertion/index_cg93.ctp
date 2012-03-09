@@ -168,8 +168,8 @@
 								),
 								$xhtml->printLink(
 									'Imprimer le CER',
-									array( 'controller' => 'gedooos', 'action' => 'contratinsertion', $contratinsertion['Contratinsertion']['id'] ),
-									$permissions->check( 'gedooos', 'contratinsertion' )
+									array( 'controller' => 'contratsinsertion', 'action' => 'impression', $contratinsertion['Contratinsertion']['id'] ),
+									$permissions->check( 'contratsinsertion', 'impression' )
 								),
 								$xhtml->deleteLink(
 									'Supprimer le CER ',

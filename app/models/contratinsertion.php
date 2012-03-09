@@ -40,6 +40,9 @@
 					'%s/ficheliaisoncerSimplemsp.odt'
 				),
 				93 => '%s/contratinsertion.odt'
+			),
+			'StorablePdf' => array(
+				'afterSave' => 'deleteAll'
 			)
 		);
 
@@ -1165,7 +1168,7 @@
                         $contratinsertion['User']['numtel'] = $user['User']['numtel'];
 			$contratinsertion['User']['nom'] = $user['User']['nom'];
 			$contratinsertion['User']['prenom'] = $user['User']['prenom'];
-                        
+
 
 			$modelenotifdecision = '';
 			$decision = Set::classicExtract( $contratinsertion, 'Contratinsertion.decision_ci' );
@@ -1192,5 +1195,306 @@
 			);
 		}
 
+		/**
+		 *
+		 * @param array $data
+		 * @return string
+		 */
+		public function modeleOdt( $data ) {
+			$cgDepartement = Configure::read( 'Cg.departement' );
+
+			if( $cgDepartement == 58 ) {
+				return 'Contratinsertion/contratinsertioncg58.odt';
+			}
+			else if ( $cgDepartement == 66 ) {
+				if( strtotime($data['Contratinsertion']['date_saisi_ci']) >= strtotime('2012-02-10' ) ) {
+					return 'Contratinsertion/contratinsertion.odt';
+				}
+				else {
+					return 'Contratinsertion/contratinsertionold.odt';
+				}
+			}
+
+			return 'Contratinsertion/contratinsertion.odt';
+		}
+
+		/**
+		 * TODO: Structurereferente.parent_id, detaildroitrsa_oridemrsa, personnereferent
+		 * User.id <=> Connecté ou non ?
+		 * FIXME: detailsdroitsrsa.dossier_id a l'air d'e pouvoir'être unique, rajouter un index unique.
+		 *
+		 * @param type $id
+		 * @return type
+		 */
+		public function getDataForPdf( $id, $user_id ) {
+			$contratinsertion = $this->find(
+				'first',
+				array(
+					'fields' => array_merge(
+						$this->fields(),
+						$this->Personne->fields(),
+						$this->Referent->fields(),
+						$this->Structurereferente->fields(),
+						$this->Typocontrat->fields(),
+						$this->Zonegeographique->fields(),
+						$this->Personne->Activite->fields(),
+						$this->Personne->Dsp->fields(),
+						$this->Personne->Foyer->fields(),
+						$this->Personne->Prestation->fields(),
+						$this->Personne->Foyer->Dossier->fields(),
+						$this->Personne->Foyer->Modecontact->fields(),
+						$this->Personne->Foyer->Adressefoyer->Adresse->fields(),
+						$this->Personne->Foyer->Dossier->Detaildroitrsa->fields(),
+//						$this->Personne->Foyer->Dossier->Infofinanciere->fields(),
+						$this->Personne->Foyer->Dossier->Situationdossierrsa->fields(),
+						$this->Personne->Foyer->Dossier->Situationdossierrsa->Suspensiondroit->fields(),
+						array(
+							'( '.$this->Personne->Foyer->Dossier->Detaildroitrsa->vfRsaMajore( '"Dossier"."id"' ).' ) AS "Infofinanciere__rsamaj"'
+						)
+					),
+					'joins' => array(
+						$this->join( 'Personne', array( 'type' => 'INNER' ) ),
+						$this->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ),
+						$this->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
+						$this->join( 'Typocontrat', array( 'type' => 'LEFT OUTER' ) ),
+						$this->join( 'Zonegeographique', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Personne->join( 'Activite', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Personne->join( 'Dsp', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
+						$this->Personne->join( 'Prestation', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
+						$this->Personne->Foyer->join( 'Modecontact', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Personne->Foyer->Dossier->join( 'Detaildroitrsa', array( 'type' => 'LEFT OUTER' ) ),
+//						$this->Personne->Foyer->Dossier->join( 'Infofinanciere', array( 'type' => 'LEFT OUTER' ) ), // FIXME: laquelle ? -> à Virer et à remplacer par Detailcalculdroitrsa->vfRsaMajore
+						$this->Personne->Foyer->Dossier->join( 'Situationdossierrsa', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Personne->Foyer->Dossier->Situationdossierrsa->join( 'Suspensiondroit', array( 'type' => 'LEFT OUTER' ) ),
+					),
+					'contain' => false,
+					'conditions' => array(
+						'Contratinsertion.id' => $id,
+						array(
+							'OR' => array(
+								'Activite.id IS NULL',
+								'Activite.id IN ('
+									.$this->Personne->Activite->sqDerniere( 'Personne.id' )
+								.')',
+							)
+						),
+						array(
+							'OR' => array(
+								'Adressefoyer.id IS NULL',
+								'Adressefoyer.id IN ('
+									.$this->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' )
+								.')',
+							)
+						),
+						array(
+							'OR' => array(
+								'Dsp.id IS NULL',
+								'Dsp.id IN ('
+									.$this->Personne->Dsp->sqDerniereDsp( 'Personne.id' )
+								.')',
+							)
+						),
+						array(
+							'OR' => array(
+								'Suspensiondroit.id IS NULL',
+								'Suspensiondroit.id IN ('
+									.$this->Personne->Foyer->Dossier->Situationdossierrsa->Suspensiondroit->sqDerniere( 'Situationdossierrsa.id' )
+								.')',
+							)
+						)
+					),
+				)
+			);
+
+			// Recherche, traduction et ajout de champs virtuels concernant Autreavissuspension et Autreavisradiation
+			$Option = ClassRegistry::init( 'Option' );
+			$options = Set::merge(
+				array(
+					'Contratinsertion' => array(
+						'decision_ci' => $Option->decision_ci(),
+					)
+				),
+				$this->Autreavisradiation->enums(),
+				$this->Autreavissuspension->enums()
+			);
+
+			$autresModeles = array( 'Autreavissuspension', 'Autreavisradiation' );
+			foreach( $autresModeles as $autreModele ) {
+				$fieldName = Inflector::underscore( $autreModele );
+				$contratinsertion['Contratinsertion'][$fieldName] = '';
+				if( isset( $contratinsertion['Contratinsertion']['id'] ) && !empty( $contratinsertion['Contratinsertion']['id'] ) ) {
+					$items = $this->{$autreModele}->find(
+						'all',
+						array(
+							"{$autreModele}.contratinsertion_id" => $contratinsertion['Contratinsertion']['id'],
+							'contain' => false
+						)
+					);
+					if( !empty( $items ) ) {
+						$values = Set::extract( $items, "/{$autreModele}/{$fieldName}" );
+						foreach( $values as $i => $value ) {
+							$values[$i] = Set::enum( $value, $options[$autreModele][$fieldName] );
+						}
+						$contratinsertion['Contratinsertion'][$fieldName] = "\n" .'  - '.implode( "\n  - ", $values )."\n";
+					}
+				}
+			}
+
+			// Données Référent lié à la personne récupérées
+			if( empty( $contratinsertion['Contratinsertion']['referent_id'] ) ) {
+				// 1°) Une personne désignée comme référent, juste avant la date de début du contrat ,dans la même structure
+				$personne_referent = $this->Personne->PersonneReferent->find(
+					'first',
+					array(
+						'fields' => Set::merge(
+							$this->Personne->PersonneReferent->fields(),
+							$this->Personne->PersonneReferent->Referent->fields()
+						),
+						'conditions' => array(
+							'PersonneReferent.personne_id' => $contratinsertion['Personne']['id'],
+							'PersonneReferent.structurereferente_id' => $contratinsertion['Contratinsertion']['structurereferente_id'],
+							'PersonneReferent.dddesignation <=' => $contratinsertion['Contratinsertion']['dd_ci'],
+							'PersonneReferent.id IN ('
+								.$this->Personne->PersonneReferent->sq(
+									array(
+										'alias' => 'personnes_referents',
+										'fields' =>array( 'personnes_referents.id' ),
+										'conditions' => array(
+											'personnes_referents.personne_id = PersonneReferent.personne_id',
+											'personnes_referents.dddesignation <=' => $contratinsertion['Contratinsertion']['dd_ci'],
+										),
+										'order' => array( 'personnes_referents.dddesignation DESC' ),
+										'limit' => 1
+									)
+								)
+							.')'
+						),
+						'contain' => false,
+						'joins' => array(
+							$this->Personne->PersonneReferent->join( 'Referent', array( 'type' => 'LEFT OUTER' ) )
+						)
+					)
+				);
+
+				// 2°) Une personne référente (n'importe laquelle) liée à la personne (comme avant)
+				if( empty( $personne_referent ) ) {
+					$personne_referent = $this->Personne->PersonneReferent->find(
+						'first',
+						array(
+							'fields' => Set::merge(
+								$this->Personne->PersonneReferent->fields(),
+								$this->Personne->PersonneReferent->Referent->fields()
+							),
+							'conditions' => array(
+								'PersonneReferent.personne_id' => $contratinsertion['Personne']['id'],
+							),
+							'contain' => false,
+							'joins' => array(
+								$this->Personne->PersonneReferent->join( 'Referent', array( 'type' => 'LEFT OUTER' ) )
+							)
+						)
+					);
+				}
+
+				// 3°) Un référent (actif, sinon n'importe lequel) lié à la structure de mon contrat
+				if( empty( $personne_referent ) ) {
+					$personne_referent = $this->Personne->PersonneReferent->Referent->find(
+						'first',
+						array(
+							'conditions' => array(
+								'Referent.actif' => 'O',
+								'Referent.structurereferente_id' => $contratinsertion['Contratinsertion']['structurereferente_id'],
+							),
+							'contain' => false,
+						)
+					);
+				}
+
+				if( !empty( $personne_referent ) ) {
+					$contratinsertion = Set::merge( $contratinsertion, $personne_referent );
+				}
+			}
+
+			// Traductions restantes (avec création de champs virtuels)
+			$contratinsertion['Contratinsertion']['tc'] = $contratinsertion['Typocontrat']['lib_typo'];
+			$contratinsertion['Contratinsertion']['datevalidation_ci'] = strftime( __( 'Locale->date', true ), strtotime( $contratinsertion['Contratinsertion']['datevalidation_ci'] ) );
+			$contratinsertion['Contratinsertion']['actions_prev'] = ( $contratinsertion['Contratinsertion']['actions_prev']  ? 'Oui' : 'Non' );
+			$contratinsertion['Contratinsertion']['emp_trouv'] = ( $contratinsertion['Contratinsertion']['emp_trouv']  ? 'Oui' : 'Non' );
+
+			// Données Dsp récupérées
+			$contratinsertion['Dsp']['topcouvsoc'] = ( ( isset( $contratinsertion['Dsp']['topcouvsoc'] ) && ( $contratinsertion['Dsp']['topcouvsoc'] == '1' ) ) ? 'Oui' : 'Non' );
+
+			// Ajout suite à la demande d'amélioration du CG66 sur la Forge du 02/02/2012 (#5578)
+			$contratinsertion['Contratinsertion']['type_deci']=$contratinsertion['Contratinsertion']['decision_ci'];
+
+			// Affichage de la date seulement en cas de " Validation à compter de "
+			if( $contratinsertion['Contratinsertion']['decision_ci'] == 'V' ){
+				$contratinsertion['Contratinsertion']['decision_ci'] = "{$options['Contratinsertion']['decision_ci'][$contratinsertion['Contratinsertion']['decision_ci']]} {$contratinsertion['Contratinsertion']['datevalidation_ci']}";
+			}
+			else{
+				$contratinsertion['Contratinsertion']['decision_ci'] = $options['Contratinsertion']['decision_ci'][$contratinsertion['Contratinsertion']['decision_ci']];
+			}
+
+			// L'objet de l'engagement est un code à traduire pour le CG 93
+			if( Configure::read( 'Cg.departement' ) == 93 ) {
+				$options['Contratinsertion']['engag_object'] = ClassRegistry::init( 'Action' )->find( 'list', array( 'fields' => array( 'code', 'libelle' ), 'contain' => false ) );
+				$contratinsertion['Contratinsertion']['engag_object'] = @$options['Contratinsertion']['engag_object'][$contratinsertion['Contratinsertion']['engag_object']];
+			}
+
+			///Utilisé pour savoir si le contrat est pour une insertion vers le social / emploi
+			if( $contratinsertion['Contratinsertion']['typeinsertion'] == 'SOC' ){
+				$contratinsertion['Contratinsertion']['issociale'] = 'X';
+			}
+			else if( $contratinsertion['Contratinsertion']['typeinsertion'] == 'EMP' ){
+				$contratinsertion['Contratinsertion']['isemploi'] = 'X';
+			}
+
+			///Utilisé pour savoir si la personne est demandeur ou ayant droit
+			if( $contratinsertion['Prestation']['rolepers'] == 'Demandeur du RSA' ){
+				$contratinsertion['Contratinsertion']['isallocataire'] = 'X';
+			}
+			else if( $contratinsertion['Prestation']['rolepers'] != 'Demandeur du RSA' ){
+				$contratinsertion['Contratinsertion']['isayantdroit'] = 'X';
+			}
+
+			///Utilisé pour savoir si la personne est demandeur ou ayant droit
+			if( $contratinsertion['Contratinsertion']['num_contrat'] == 'PRE' ){
+				$contratinsertion['Contratinsertion']['ispremier'] = 'X';
+			}
+			else if( $contratinsertion['Contratinsertion']['num_contrat'] == 'REN' ){
+				$contratinsertion['Contratinsertion']['isrenouvel'] = 'X';
+			}
+			else if( !in_array( $contratinsertion['Contratinsertion']['num_contrat'], array( 'REN', 'PRE' ) ) ){
+				$contratinsertion['Contratinsertion']['isavenant'] = 'X';
+			}
+
+			// Permet d'afficher le nom de la zone géographique liée au contrat du cg58
+			$contratinsertion['Contratinsertion']['zonegeographique_id'] = $contratinsertion['Zonegeographique']['libelle'];
+
+			///Permet d'afficher le nb d'ouverture de droit de la personne
+			$contratinsertion['Contratinsertion']['nbouv'] = $this->checkNumDemRsa( $contratinsertion['Personne']['id'] );
+
+			$contratinsertion['Contratinsertion']['rg_ci'] = $contratinsertion['Contratinsertion']['rg_ci'] - 1;
+
+			// Récupération de l'utilisateur connecté
+			$user = $this->User->find(
+				'first',
+				array(
+					'conditions' => array(
+						'User.id' => $user_id
+					),
+					'contain' => array(
+						'Serviceinstructeur'
+					)
+				)
+			);
+			$contratinsertion = Set::merge( $contratinsertion, $user );
+
+			return $contratinsertion;
+		}
 	}
 ?>

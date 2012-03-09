@@ -31,7 +31,8 @@
 			$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( $this->action.'-%s.pdf', date( 'Y-m-d' ) ) );
 		}
 
-		public function notification_structure( $personne_id = null ) {
+		// INFO: normalement plus utilisée
+		/*public function notification_structure( $personne_id = null ) {
 			$qual = $this->Option->qual();
 			$this->set( 'qual', $qual );
 			$typevoie = $this->Option->typevoie();
@@ -117,13 +118,13 @@
 			unset( $personne['Contratinsertion'] ); // FIXME: faire un unbindModel
 
 			$this->_ged( $personne, 'Orientation/'.$modele.'.odt' );
-		}
+		}*/
 
 		/**
 		*
 		*/
-
-		public function contratinsertion( $contratinsertion_id = null ) {
+		// INFO: Remplacée par ContratsinsertionController::impression
+		/*public function contratinsertion( $contratinsertion_id = null ) {
 			// TODO: error404/error500 si on ne trouve pas les données
 			$tc = $this->Typocontrat->find(
 				'list',
@@ -502,9 +503,7 @@
 			$contratinsertion['Infofinanciere']['rsamaj'] = ( array_intersects( $soclmajValues, array_keys( $soclmaj ) ) ) ? 'Oui' : 'Non';
 			$contratinsertion['Contratinsertion']['rg_ci'] = $contratinsertion['Contratinsertion']['rg_ci']-1;
 
-			/**
-			* Table pour les autres avis de suspension / radiation
-			*/
+			// Table pour les autres avis de suspension / radiation
 			$modelAutre = array( 'Autreavissuspension', 'Autreavisradiation' );
 
 			foreach( $modelAutre as $mod ) {
@@ -519,14 +518,12 @@
 				}
 			}
 
-			
-			/**
-			*   Utilisé pour les détections de fiche de candidature pour savoir si des actions sont en cours ou non
-			*
-			*  TODO: Pour le bon fonctionnement de l'ensemble, créer une SECTION pour 
-			* les fiches de candidature imprimable dans le CER
-			*
-			*/
+
+
+			// Utilisé pour les détections de fiche de candidature pour savoir si des actions sont en cours ou non
+			// TODO: Pour le bon fonctionnement de l'ensemble, créer une SECTION pour
+			// les fiches de candidature imprimable dans le CER
+
 // 			$fichescandidature = $this->Contratinsertion->Personne->ActioncandidatPersonne->find(
 // 				'all',
 // 				array(
@@ -546,8 +543,8 @@
 // 			);
 // 			debug($fichescandidature);
 // 			die();
-			
-			
+
+
 			$cgDepartement = Configure::read( 'Cg.departement' );
 			if( $cgDepartement == 58 ) {
 				$this->_ged( $contratinsertion, 'Contratinsertion/contratinsertioncg58.odt' );
@@ -563,7 +560,7 @@
 			else {
 				$this->_ged( $contratinsertion, 'Contratinsertion/contratinsertion.odt' );
 			}
-		}
+		}*/
 
 		/**
 		* Notification d'APRE

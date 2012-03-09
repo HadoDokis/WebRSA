@@ -392,7 +392,7 @@
 						'conditions' => array(
 							'Orientstruct.personne_id' => $personne_id,
 							'Orientstruct.statut_orient' => 'Orienté',
-							'Typeorient.parentid' => $typeOrientPrincipaleEmploiId 
+							'Typeorient.parentid' => $typeOrientPrincipaleEmploiId
 						),
 						'order' => 'Orientstruct.date_valid DESC',
 						'contain' => array(
@@ -995,7 +995,7 @@
 				)
 			);
 
-			
+
 			if( Configure::read( 'Cg.departement' ) == 66 ) {
 				$typeOrientPrincipaleEmploiId = Configure::read( 'Orientstruct.typeorientprincipale.Emploi' );
 				if( is_array( $typeOrientPrincipaleEmploiId ) && isset( $typeOrientPrincipaleEmploiId[0] ) ){
@@ -1159,7 +1159,7 @@
 
 // 				if( $success ) {
 // 					$contratinsertion_id = $this->Contratinsertion->id;
-// 
+//
 // 					// Si on avat des entrées Objetcontratprecedent pour le CER, on commence par les supprimer
 // 					$recordFound = $this->Contratinsertion->Objetcontratprecedent->find(
 // 						'first',
@@ -1173,7 +1173,7 @@
 // 							array( 'Objetcontratprecedent.contratinsertion_id' => $contratinsertion_id )
 // 						) && $success;
 // 					}
-// 
+//
 // 					if ( isset( $this->data['Objetcontratprecedent']['Objetcontratprecedent'] ) && !empty( $this->data['Objetcontratprecedent']['Objetcontratprecedent'] ) ) {
 // 						foreach( $this->data['Objetcontratprecedent']['Objetcontratprecedent'] as $objet ) {
 // 							$objetcontratprecedant['Objetcontratprecedent'] = array(
@@ -1771,6 +1771,78 @@
 
 			$this->Session->setFlash( 'Impossible de générer la notification du bénéficiaire', 'default', array( 'class' => 'error' ) );
 			$this->redirect( $this->referer() );
+		}
+
+		/**
+		 * INFO: http://localhost/webrsa/trunk/contratsinsertion/impression/44327
+		 * FIXME: ajouter une colonne de date de première impression ?
+		 *
+		 * @param integer $contratinsertion_id
+		 * @return void
+		 */
+		public function impression( $contratinsertion_id = null ) {
+			$this->assert( !empty( $contratinsertion_id ), 'error404' );
+
+			$pdf = $this->Contratinsertion->getStoredPdf( $contratinsertion_id );
+
+			if( !empty( $pdf ) ) {
+				$pdf = $pdf['Pdf']['document'];
+			}
+			else {
+				$Option = ClassRegistry::init( 'Option' );
+				$options = Set::merge(
+					array(
+						'Contratinsertion' => array(
+							'sect_acti_emp' => $Option->sect_acti_emp(),
+							'emp_occupe' => $Option->emp_occupe(),
+							'duree_hebdo_emp' => $Option->duree_hebdo_emp(),
+							'nat_cont_trav' => $Option->nat_cont_trav(),
+							'duree_cdd' => $Option->duree_cdd(),
+							'decision_ci' => $Option->decision_ci(),
+							'raison_ci' => $Option->raison_ci(),
+							'duree_engag' => $this->Option->duree_engag_cg93(),
+							'typeocclog' => $Option->typeocclog(),
+							'avisraison_ci' => $Option->avisraison_ci(),
+							'raison_ci' => $Option->raison_ci(),
+							'forme_ci' => $Option->forme_ci(),
+						),
+						'Personne' => array(
+							'qual' => $Option->qual(),
+						),
+						'Adresse' => array(
+							'typevoie' => $Option->typevoie(),
+						),
+						'Prestation' => array(
+							'rolepers' => $Option->rolepers(),
+						),
+						'Foyer' => array(
+							'sitfam' => $Option->sitfam(),
+							'typeocclog' => $Option->typeocclog(),
+						),
+						'Type' => array( // INFO: Structurereferente.type_voie et Structurereferente.type_voie -> FIXME: ne traduit pas
+							'voie' =>  $Option->typevoie(),
+						),
+						'Detaildroitrsa' => array(
+							'oridemrsa' => $Option->oridemrsa(),
+						),
+					),
+					$this->Contratinsertion->enums(),
+					$this->Contratinsertion->Personne->Dsp->enums()
+				);
+
+				$contratinsertion = $this->Contratinsertion->getDataForPdf( $contratinsertion_id, $this->Session->read( 'Auth.User.id' ) );
+				$modeledoc = $this->Contratinsertion->modeleOdt( $contratinsertion );
+
+				$pdf = $this->Contratinsertion->ged( $contratinsertion, $modeledoc, false, $options );
+
+				if( !empty( $pdf ) ) {
+					$this->Contratinsertion->storePdf( $contratinsertion_id, $modeledoc, $pdf ); // FIXME ?
+				}
+			}
+
+			$this->assert( !empty( $pdf ), 'error404' );
+
+			$this->Gedooo->sendPdfContentToClient( $pdf, "{$contratinsertion_id}_nouveau.pdf" );
 		}
 	}
 ?>
