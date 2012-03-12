@@ -152,6 +152,7 @@ CREATE INDEX piecestraitementspcgs66_traitementpcg66_id_idx ON piecestraitements
 	il faudrait remplacer, mais une mise à jour sur acos casserait l'arbre:
 		- Gedooos:contratinsertion par Contratsinsertion:impression
 		- Gedooos:apre par Apres:impression
+		- Gedooos:relanceapre par Relancesapres:impression
 */
 
 

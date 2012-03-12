@@ -237,8 +237,8 @@
 								),
 								$xhtml->printLink(
 									'Imprimer la notification de relance',
-									array( 'controller' => 'gedooos', 'action' => 'relanceapre', Set::classicExtract( $relanceapre, 'Relanceapre.id' ) ),
-									$permissions->check( 'gedooos', 'relanceapre' )
+									array( 'controller' => 'relancesapres', 'action' => 'impression', Set::classicExtract( $relanceapre, 'Relanceapre.id' ) ),
+									$permissions->check( 'relancesapres', 'impression' )
 								)
 							),
 							array( 'class' => 'odd' ),
