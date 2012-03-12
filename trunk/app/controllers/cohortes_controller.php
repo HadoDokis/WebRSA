@@ -250,6 +250,17 @@
 					}
 				}
 
+				// Nettoyage, formattage et envoi du filtre à la vue pour en faire des champs cachés du formulaire du bas.
+				$tmpFiltre = $this->data;
+				unset( $tmpFiltre['Orientstruct'] );
+				$filtre = array();
+				foreach( $tmpFiltre as $modelName => $modelValues ) {
+					foreach( $modelValues as $fieldName => $values ) {
+						$filtre["{$modelName}.{$fieldName}"] = $values;
+					}
+				}
+				$this->set( compact( 'filtre' ) );
+
 				// -----------------------------------------------------------------
 				// Filtre
 				// -----------------------------------------------------------------
