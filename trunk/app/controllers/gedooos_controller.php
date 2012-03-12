@@ -726,7 +726,7 @@
 		/**
 		* Notification de Relance d'APRE
 		**/
-		public function relanceapre( $relanceapre_id = null ) {
+		/*public function relanceapre( $relanceapre_id = null ) {
 			// TODO: error404/error500 si on ne trouve pas les données
 			$qual = $this->Option->qual();
 			$typevoie = $this->Option->typevoie();
@@ -745,9 +745,7 @@
 			unset( $relanceapre['Apre']['Piecemanquante'] );
 			unset( $relanceapre['Apre']['Natureaide'] );
 
-			/**
-			*   Données propre de l'APRE
-			**/
+			//   Données propre de l'APRE
 			$apre = $this->Apre->find(
 				'first',
 				array(
@@ -819,6 +817,6 @@
 			$relanceapre['Adresse']['typevoie'] = Set::extract( $typevoie, Set::extract( $relanceapre, 'Adresse.typevoie' ) );
 
 			$this->_ged( $relanceapre, 'APRE/Relanceapre/relanceapre.odt' );
-		}
+		}*/
 	}
 ?>
