@@ -1123,7 +1123,7 @@ msgstr "Impression des CERs"
 msgid "Apres:impression"
 msgstr "Impression des APREs"
 
-msgid "Gedooos:relanceapre"
+msgid "Relancesapres:impression"
 msgstr "Impression des relances d'APRE"
 
 ###############################################################################

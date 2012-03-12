@@ -8,6 +8,13 @@
 				'fields' => array(
 					'etatdossierapre' => array( 'type' => 'etatdossierapre', 'domain' => 'apre' )
 				)
+			),
+			'Gedooo.Gedooo',
+			'StorablePdf' => array(
+				'afterSave' => 'deleteAll'
+			),
+			'ModelesodtConditionnables' => array(
+				93 => 'APRE/Relanceapre/relanceapre.odt'
 			)
 		);
 
@@ -82,6 +89,92 @@
 			}
 
 			return $resultset;
+		}
+
+		/**
+		 * Retourne le chemin vers le modèle odt utilisé pour la relance de l'APRE
+		 *
+		 * @param array $data
+		 * @return string
+		 */
+		public function modeleOdt( $data ) {
+			return 'APRE/Relanceapre/relanceapre.odt';
+		}
+
+		/**
+		 * Retourne les données nécessaires à l'impression d'une relance d'APRE pour le CG 93
+		 *
+		 * @param integer $id
+		 * @param integer $user_id
+		 * @return array
+		 */
+		public function getDataForPdf( $id, $user_id ) {
+			$querydata = array(
+				'fields' => array_merge(
+					$this->fields(),
+					$this->Apre->fields(),
+					$this->Apre->Personne->fields(),
+					$this->Apre->Personne->Foyer->fields(),
+					$this->Apre->Personne->Prestation->fields(),
+					$this->Apre->Personne->Foyer->Dossier->fields(),
+					$this->Apre->Personne->Foyer->Adressefoyer->Adresse->fields(),
+					array(
+						'( '.$this->Apre->Personne->Foyer->vfNbEnfants().' ) AS "Foyer__nbenfants"'
+					)
+				),
+				'joins' => array(
+					$this->Apre->join( 'Relanceapre', array( 'type' => 'INNER' ) ),
+					$this->Apre->join( 'Personne', array( 'type' => 'INNER' ) ),
+					$this->Apre->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
+					$this->Apre->Personne->join( 'Prestation', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Apre->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Apre->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
+					$this->Apre->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
+				),
+				'contain' => false,
+				'conditions' => array(
+					'Relanceapre.id' => $id,
+					array(
+						'OR' => array(
+							'Adressefoyer.id IS NULL',
+							'Adressefoyer.id IN ('
+								.$this->Apre->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' )
+							.')',
+						)
+					),
+				),
+			);
+
+			$relanceapre = $this->Apre->find( 'first', $querydata );
+
+			// Formattage des pièces manquantes
+			$piecesManquantesAides = Set::classicExtract( $relanceapre, "Apre.Piece.Manquante" );
+			$textePiecesManquantes = '';
+			$relanceapre['Relanceapre']['Piecemanquante'] = '';;
+			foreach( $piecesManquantesAides as $model => $pieces ) {
+				if( !empty( $pieces ) ) {
+					$relanceapre['Relanceapre']['Piecemanquante'] .= __d( 'apre', $model, true )."\n" .'  - '.implode( "\n  - ", $pieces )."\n";
+				}
+			}
+
+			unset( $relanceapre['Apre']['Piecepresente'] );
+			unset( $relanceapre['Apre']['Piece'] );
+			unset( $relanceapre['Apre']['Piecemanquante'] );
+			unset( $relanceapre['Apre']['Natureaide'] );
+
+			// Récupération de l'utilisateur connecté
+			$user = $this->Apre->Personne->Contratinsertion->User->find(
+				'first',
+				array(
+					'conditions' => array(
+						'User.id' => $user_id
+					),
+					'contain' => false
+				)
+			);
+			$relanceapre = Set::merge( $relanceapre, $user );
+
+			return $relanceapre;
 		}
 	}
 ?>

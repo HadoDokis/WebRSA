@@ -6,14 +6,14 @@
 		public $uses = array( 'Apre', 'Option', 'Personne', 'Prestation'/*, 'Dsp'*/, 'Actprof', 'Permisb', 'Amenaglogt', 'Acccreaentr', 'Acqmatprof', 'Locvehicinsert', 'Apre', 'Relanceapre' );
 		public $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml' );
 		public $aucunDroit = array( 'ajaxpiece' );
-		
+
 		public $commeDroit = array(
 			'add' => 'Relancesapres:edit'
 		);
 
-		/** ********************************************************************
+		/**
 		*
-		*** *******************************************************************/
+		*/
 
 		public function beforeFilter() {
 			parent::beforeFilter();
@@ -24,9 +24,9 @@
 			$this->set( 'natureAidesApres', $this->Option->natureAidesApres() );
 		}
 
-		/** ********************************************************************
+		/**
 		*   Ajax pour les pièces liées à la bonne APRE
-		*** *******************************************************************/
+		*/
 
 		public function ajaxpiece( $apre_id = null ) { // FIXME
 			Configure::write( 'debug', 0 );
@@ -39,9 +39,9 @@
 			$this->render( 'ajaxpiece', 'ajax' );
 		}
 
-		/** ********************************************************************
+		/**
 		*
-		*** *******************************************************************/
+		*/
 
 		public function add() {
 			$args = func_get_args();
@@ -53,9 +53,9 @@
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
-		/** ********************************************************************
+		/**
 		*
-		*** *******************************************************************/
+		*/
 
 		protected function _add_edit( $id = null ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
@@ -121,9 +121,9 @@
 			$this->render( $this->action, null, 'add_edit' );
 		}
 
-		/** ********************************************************************
+		/**
 		*
-		*** *******************************************************************/
+		*/
 
 		public function view( $relanceapre_id = null ){
 			$relanceapre = $this->Relanceapre->findById( $relanceapre_id );
@@ -135,6 +135,58 @@
 			$this->set( 'relanceapre', $relanceapre );
 			$this->set( 'personne_id', Set::classicExtract( $relanceapre, 'Relanceapre.apre_id' ) );
 		}
-	}
 
+
+		/**
+		 * Impression d'une relance d'Apre pour le CG 93
+		 *
+		 * @param integer $apre_id
+		 */
+		public function impression( $relanceapre_id = null ) {
+			$this->assert( !empty( $relanceapre_id ), 'error404' );
+
+			$pdf = $this->Relanceapre->getStoredPdf( $relanceapre_id );
+
+			if( !empty( $pdf ) ) {
+				$pdf = $pdf['Pdf']['document'];
+			}
+			else {
+				$Option = ClassRegistry::init( 'Option' );
+
+				$options = Set::merge(
+					array(
+						'Personne' => array(
+							'qual' => $Option->qual(),
+						),
+						'Adresse' => array(
+							'typevoie' => $Option->typevoie(),
+						),
+						'Prestation' => array(
+							'rolepers' => $Option->rolepers(),
+						),
+						'Foyer' => array(
+							'sitfam' => $Option->sitfam(),
+							'typeocclog' => $Option->typeocclog(),
+						),
+						'Type' => array(
+							'voie' =>  $Option->typevoie(),
+						),
+					)
+				);
+
+				$relanceapre = $this->Relanceapre->getDataForPdf( $relanceapre_id, $this->Session->read( 'Auth.User.id' ) );
+				$modeledoc = $this->Relanceapre->modeleOdt( $relanceapre );
+
+				$pdf = $this->Relanceapre->ged( $relanceapre, $modeledoc, false, $options );
+
+				if( !empty( $pdf ) ) {
+					$this->Relanceapre->storePdf( $relanceapre_id, $modeledoc, $pdf ); // FIXME ?
+				}
+			}
+
+			$this->assert( !empty( $pdf ), 'error404' );
+
+			$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( $this->action.'-%s.pdf', date( 'Y-m-d' ) )  );
+		}
+	}
 ?>
