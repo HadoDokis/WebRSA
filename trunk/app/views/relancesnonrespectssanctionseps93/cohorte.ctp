@@ -153,6 +153,7 @@
 					$row,
 					array(
 						( ( @$this->data['Search']['Relance']['numrelance'] > 1 ) ? $xform->input( "Relancenonrespectsanctionep93.{$index}.nonrespectsanctionep93_id", array( 'type' => 'hidden', 'value' => @$result['Nonrespectsanctionep93']['id'] ) ) : '' ).
+						$xform->input( "Relancenonrespectsanctionep93.{$index}.dossier_id", array( 'type' => 'hidden', 'value' => @$result['Dossier']['id'] ) ).
 						$xform->input( "Relancenonrespectsanctionep93.{$index}.numrelance", array( 'type' => 'hidden', 'value' => @$this->data['Search']['Relance']['numrelance'] ) ).
 						$xform->input( "Relancenonrespectsanctionep93.{$index}.orientstruct_id", array( 'type' => 'hidden', 'value' => @$result['Orientstruct']['id'] ) ).
 						$xform->input( "Relancenonrespectsanctionep93.{$index}.contratinsertion_id", array( 'type' => 'hidden', 'value' => @$result['Contratinsertion']['id'] ) ).

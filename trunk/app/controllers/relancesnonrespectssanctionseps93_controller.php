@@ -176,11 +176,18 @@
 				if( isset( $this->data['Relancenonrespectsanctionep93'] ) ) {
 					$data = $this->data['Relancenonrespectsanctionep93'];
 
-					// On filtre les relances en attente
+					// On filtre les relances en attente, on récupère les ids des dossiers pour les jetons
+					$dossiersIds = array();
 					$newData = array();
 					foreach( $data as $i => $relance ) {
-						if( $relance['arelancer'] == 'R' ) {
-							$newData[$i] = $relance;
+						if( is_array( $relance ) ) { // INFO: sinon on prend en compte la clé sessionKey
+							if( isset( $relance['dossier_id'] ) ) {
+								$dossiersIds[] = $relance['dossier_id'];
+							}
+
+							if( isset( $relance['arelancer'] ) && $relance['arelancer'] == 'R' ) {
+								$newData[$i] = $relance;
+							}
 						}
 					}
 
@@ -189,6 +196,9 @@
 
 						// Relances non respect orientation
 						$success = $this->Relancenonrespectsanctionep93->saveCohorte( $newData, $search );
+
+						// On libère les jetons
+						$success = $this->Jetons->releaseList( $dossiersIds ) && $success;
 
 						$this->_setFlashResult( 'Save', $success );
 						if( $success ) {
@@ -201,9 +211,20 @@
 							$this->Nonrespectsanctionep93->rollback();
 						}
 					}
+					else { // On libère les jetons de toutes façons
+						$this->Nonrespectsanctionep93->begin();
+						if( $this->Jetons->releaseList( $dossiersIds ) ) {
+							$this->Nonrespectsanctionep93->commit();
+						}
+						else {
+							$this->Nonrespectsanctionep93->rollback();
+						}
+					}
 				}
 
 				/// Moteur de recherche
+				$this->Nonrespectsanctionep93->begin();
+
 				$search = Set::flatten( $search );
 				$search = Set::filter( $search );
 
@@ -211,12 +232,16 @@
 					$this->paginate['Orientstruct'] = $this->Relancenonrespectsanctionep93->search(
 						$mesCodesInsee,
 						$this->Session->read( 'Auth.User.filtre_zone_geo' ),
-						$search
+						$search,
+						$this->Jetons->sqIds()
 					);
 
 					$results = $this->paginate( $this->Nonrespectsanctionep93->Orientstruct );
 
 					if( !empty( $results ) ) {
+						$dossiersIds = Set::extract( $results, '/Dossier/id' );
+						$this->Jetons->getList( $dossiersIds );
+
 						foreach( $results as $i => $result ) {
 							// Calcul de la date de relance minimale
 							if( $search['Relance.numrelance'] == 1 ) {
@@ -248,12 +273,16 @@
 					$this->paginate['Contratinsertion'] = $this->Relancenonrespectsanctionep93->search(
 						$mesCodesInsee,
 						$this->Session->read( 'Auth.User.filtre_zone_geo' ),
-						$search
+						$search,
+						$this->Jetons->sqIds()
 					);
 
 					$results = $this->paginate( $this->Nonrespectsanctionep93->Contratinsertion );
 
 					if( !empty( $results ) ) {
+						$dossiersIds = Set::extract( $results, '/Dossier/id' );
+						$this->Jetons->getList( $dossiersIds );
+
 						foreach( $results as $i => $result ) {
 							// Calcul de la date de relance minimale
 							if( $search['Relance.numrelance'] == 1 ) {
@@ -281,6 +310,8 @@
 						}
 					}
 				};
+
+				$this->Nonrespectsanctionep93->commit();
 
 				$this->set( compact( 'results' ) );
 

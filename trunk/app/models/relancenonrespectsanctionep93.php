@@ -320,7 +320,7 @@
 		* Fonction de recherche des dossiers à relancer
 		*/
 
-		public function search( $mesCodesInsee, $filtre_zone_geo, $search ) {
+		public function search( $mesCodesInsee, $filtre_zone_geo, $search, $lockedDossiers ) {
 			unset( $search['page'], $search['sort'], $search['direction'] );
 
 			$conditions = array();
@@ -340,6 +340,7 @@
 				'Personne.prenom',
 				'Personne.nir',
 				'Personne.dtnai',
+				'Dossier.id',
 				'Dossier.matricule',
 				'Adresse.locaadr',
 				'Orientstruct.typeorient_id',
@@ -525,6 +526,14 @@
 				else if( !in_array( $field, array( 'Relance.numrelance', 'Relance.contrat', 'Relance.compare0', 'Relance.compare1', 'Relance.nbjours0', 'Relance.nbjours1' ) ) ) {
 					$conditions[$field] = $condition;
 				}
+			}
+
+			/// Dossiers lockés
+			if( !empty( $lockedDossiers ) ) {
+				if( is_array( $lockedDossiers ) ) {
+					$lockedDossiers = implode( ', ', $lockedDossiers );
+				}
+				$conditions[] = "Dossier.id NOT IN ( {$lockedDossiers} )";
 			}
 
 			if ( $search['Relance.numrelance'] > 1 ) {
