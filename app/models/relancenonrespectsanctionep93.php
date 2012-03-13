@@ -1443,5 +1443,29 @@
 		public function modeleOdt( $data ) {
 			return "{$this->alias}/notification_{$data['Nonrespectsanctionep93']['origine']}_relance{$data['Relancenonrespectsanctionep93']['numrelance']}.odt";
 		}
+
+		/**
+		 * Sous-requête permettant de récupérer la dernière relance liée à un enregistrement de la table
+		 * nonrespectssanctionseps93.
+		 *
+		 * @param string $nonrespectsanctionep93IdFied Le champ de la requête principale correspondant
+		 *	à la clé primaire de la table nonrespectssanctionseps93
+		 * @return string
+		 */
+		public function sqDerniere( $nonrespectsanctionep93IdFied = 'Nonrespectsanctionep93.id' ) {
+			return $this->sq(
+				array(
+					'fields' => array(
+						'relancesnonrespectssanctionseps93.id'
+					),
+					'alias' => 'relancesnonrespectssanctionseps93',
+					'conditions' => array(
+						"relancesnonrespectssanctionseps93.nonrespectsanctionep93_id = {$nonrespectsanctionep93IdFied}"
+					),
+					'order' => array( 'relancesnonrespectssanctionseps93.daterelance DESC' ),
+					'limit' => 1
+				)
+			);
+		}
 	}
 ?>

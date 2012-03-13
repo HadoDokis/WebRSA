@@ -639,51 +639,10 @@
 		public function valider( $data ) {
 			$this->begin();
 			$success = $this->saveAll( $data, array( 'atomic' => false ) );
-			// Sortie de la procédure de relances / sanctions 93 en cas de validation d'un nouveau contrat
-			if( $success && Configure::read( 'Cg.departement' ) == '93' && isset( $data[$this->alias]['decision_ci'] ) && $data[$this->alias]['decision_ci'] == 'V' ) {
-				$nonrespectssanctionseps93 = $this->Nonrespectsanctionep93->find(
-					'all',
-					array(
-						'fields' => array(
-							'Nonrespectsanctionep93.id'
-						),
-						'conditions' => array(
-							'Nonrespectsanctionep93.dossierep_id IS NULL',
-							'Nonrespectsanctionep93.sortienvcontrat <>' => '1',
-							'Nonrespectsanctionep93.active' => '1',
-							'Nonrespectsanctionep93.created <' => "{$data['Contratinsertion']['datevalidation_ci']['year']}-{$data['Contratinsertion']['datevalidation_ci']['month']}-{$data['Contratinsertion']['datevalidation_ci']['day']}",
-							'OR' => array(
-								'Nonrespectsanctionep93.propopdo_id IN (
-									SELECT propospdos.id
-										FROM propospdos
-										WHERE propospdos.personne_id = \''.$data['Contratinsertion']['personne_id'].'\'
-								)',
-								'Nonrespectsanctionep93.orientstruct_id IN (
-									SELECT orientsstructs.id
-										FROM orientsstructs
-										WHERE orientsstructs.personne_id = \''.$data['Contratinsertion']['personne_id'].'\'
-								)',
-								'Nonrespectsanctionep93.contratinsertion_id IN (
-									SELECT contratsinsertion.id
-										FROM contratsinsertion
-										WHERE contratsinsertion.personne_id = \''.$data['Contratinsertion']['personne_id'].'\'
-								)',
-							)
-						),
-					)
-				);
 
-				if( !empty( $nonrespectssanctionseps93 ) ) {
-					$ids = Set::extract( $nonrespectssanctionseps93, '/Nonrespectsanctionep93/id' );
-
-					$success = $this->Nonrespectsanctionep93->updateAll(
-						array(
-							'"Nonrespectsanctionep93"."sortienvcontrat"' => '\'1\'',
-							'"Nonrespectsanctionep93"."active"' => '\'0\''
-						),
-						array( '"Nonrespectsanctionep93"."id"' => $ids )
-					) && $success;
-				}
+			// Sortie de la procédure de relances / sanctions 93 en cas de validation d'un nouveau contrat ?
+			if( $success && Configure::read( 'Cg.departement' ) == '93' ) {
+				$success = $this->Nonrespectsanctionep93->calculSortieProcedureRelanceParValidationCer( $data ) && $success;
 			}
 
 			if( $success ) {

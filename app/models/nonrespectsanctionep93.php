@@ -1085,5 +1085,70 @@
 				array( 'Nonrespectsanctionep93.intervalleCerDo19' )
 			);
 		}
+
+		/**
+		 * Lors de la validation d'un CER, si l'allocataire est en procédure de relance pour non respect et
+		 * sanctions, il est possible d'arrêter la procédure de relance si la date de validation du CER
+		 * est postérieure à la date de dernière relance et qu'aucun dossier d'EP n'a  encore été créé.
+		 *
+		 * @param array $contratinsertion Les données du contrat qui vient d'être validé.
+		 * @return boolean
+		 */
+		public function calculSortieProcedureRelanceParValidationCer( array $contratinsertion ) {
+			$success = true;
+
+			if( isset( $contratinsertion['Contratinsertion']['decision_ci'] ) && $contratinsertion['Contratinsertion']['decision_ci'] == 'V' ) {
+				$nonrespectssanctionseps93 = $this->find(
+					'all',
+					array(
+						'fields' => array(
+							'Nonrespectsanctionep93.id'
+						),
+						'joins' => array(
+							$this->join( 'Relancenonrespectsanctionep93' )
+						),
+						'contain' => false,
+						'conditions' => array(
+							'Nonrespectsanctionep93.dossierep_id IS NULL',
+							'Nonrespectsanctionep93.sortienvcontrat <>' => '1',
+							'Nonrespectsanctionep93.active' => '1',
+							'Relancenonrespectsanctionep93.id IN ( '.$this->Relancenonrespectsanctionep93->sqDerniere( 'Nonrespectsanctionep93.id' ).' )',
+							'Relancenonrespectsanctionep93.daterelance <=' => "{$contratinsertion['Contratinsertion']['datevalidation_ci']['year']}-{$contratinsertion['Contratinsertion']['datevalidation_ci']['month']}-{$contratinsertion['Contratinsertion']['datevalidation_ci']['day']}",
+							'OR' => array(
+								'Nonrespectsanctionep93.propopdo_id IN (
+									SELECT propospdos.id
+										FROM propospdos
+										WHERE propospdos.personne_id = \''.$contratinsertion['Contratinsertion']['personne_id'].'\'
+								)',
+								'Nonrespectsanctionep93.orientstruct_id IN (
+									SELECT orientsstructs.id
+										FROM orientsstructs
+										WHERE orientsstructs.personne_id = \''.$contratinsertion['Contratinsertion']['personne_id'].'\'
+								)',
+								'Nonrespectsanctionep93.contratinsertion_id IN (
+									SELECT contratsinsertion.id
+										FROM contratsinsertion
+										WHERE contratsinsertion.personne_id = \''.$contratinsertion['Contratinsertion']['personne_id'].'\'
+								)',
+							)
+						)
+					)
+				);
+
+				if( !empty( $nonrespectssanctionseps93 ) ) {
+					$ids = Set::extract( $nonrespectssanctionseps93, '/Nonrespectsanctionep93/id' );
+
+					$success = $this->updateAll(
+						array(
+							'"Nonrespectsanctionep93"."sortienvcontrat"' => '\'1\'',
+							'"Nonrespectsanctionep93"."active"' => '\'0\''
+						),
+						array( '"Nonrespectsanctionep93"."id"' => $ids )
+					) && $success;
+				}
+			}
+
+			return $success;
+		}
 	}
 ?>
