@@ -1098,6 +1098,7 @@
 			$success = true;
 
 			if( isset( $contratinsertion['Contratinsertion']['decision_ci'] ) && $contratinsertion['Contratinsertion']['decision_ci'] == 'V' ) {
+				// 1°) Pas encore de dossier d'EP crée -> on sort simplement de la procédure avec un contrat
 				$nonrespectssanctionseps93 = $this->find(
 					'all',
 					array(
@@ -1145,6 +1146,79 @@
 						),
 						array( '"Nonrespectsanctionep93"."id"' => $ids )
 					) && $success;
+				}
+
+				// 2°) On a un dossier d'EP crée, mais celui-ci n'est pas encore attaché à une commission,
+				// ou alors, la commission n'a pas encore été validée (attention: on ne vérifie pas les dates).
+				$dossierep = $this->Dossierep->find(
+					'first',
+					array(
+						'fields' => array(
+							'Dossierep.id',
+							'Passagecommissionep.id',
+							'Nonrespectsanctionep93.id'
+						),
+						'conditions' => array(
+							'Dossierep.id NOT IN ( '.$this->Dossierep->Passagecommissionep->sq(
+								array(
+									'fields' => array(
+										'passagescommissionseps.dossierep_id'
+									),
+									'alias' => 'passagescommissionseps',
+									'conditions' => array(
+										'dossierseps.themeep' => 'nonrespectssanctionseps93',
+										'dossierseps.personne_id' => $contratinsertion['Contratinsertion']['personne_id'],
+										'commissionseps.etatcommissionep' => array( 'valide', 'presence', 'decisionep', 'traiteep', 'decisioncg', 'traite', 'annule', 'reporte' )
+									),
+									'joins' => array(
+										$this->Dossierep->Passagecommissionep->join( 'Dossierep', array( 'type' => 'INNER' ) ),
+										$this->Dossierep->Passagecommissionep->join( 'Commissionep', array( 'type' => 'INNER' ) ),
+									),
+									'joins' => array(
+										array(
+											'table' => 'dossierseps',
+											'alias' => 'dossierseps',
+											'type' => 'INNER',
+											'conditions' => array(
+												'passagescommissionseps.dossierep_id = dossierseps.id'
+											)
+										),
+										array(
+											'table' => 'commissionseps',
+											'alias' => 'commissionseps',
+											'type' => 'INNER',
+											'conditions' => array(
+												'passagescommissionseps.commissionep_id = commissionseps.id'
+											)
+										)
+									)
+								)
+							).' )',
+							'Dossierep.personne_id' => $contratinsertion['Contratinsertion']['personne_id'],
+							'Nonrespectsanctionep93.origine' => array( 'orientstruct', 'contratinsertion' )
+						),
+						'joins' => array(
+							$this->Dossierep->join( 'Nonrespectsanctionep93', array( 'type' => 'INNER' ) ),
+							$this->Dossierep->join( 'Passagecommissionep', array( 'type' => 'INNER' ) ),
+						)
+					)
+				);
+
+				if ( !empty( $dossierep ) ) {
+					$ids = Set::extract( $dossierep, '/Nonrespectsanctionep93/id' );
+					$success = $this->updateAll(
+						array(
+							'"Nonrespectsanctionep93"."sortienvcontrat"' => '\'1\'',
+							'"Nonrespectsanctionep93"."active"' => '\'0\'',
+							'"Nonrespectsanctionep93"."dossierep_id"' => null,
+						),
+						array( '"Nonrespectsanctionep93"."id"' => $ids )
+					) && $success;
+
+					if ( !empty( $dossierep['Passagecommissionep']['id'] ) ) {
+						$success = $this->Dossierep->Passagecommissionep->delete( $dossierep['Passagecommissionep']['id'] ) && $success;
+					}
+					$success = $this->Dossierep->delete( $dossierep['Dossierep']['id'] ) && $success;
 				}
 			}
 
