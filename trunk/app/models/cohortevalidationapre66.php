@@ -216,11 +216,8 @@ App::import( 'Sanitize' );
 					'Dossier.dtdemrsa',
 					'Dossier.matricule',
 					'Personne.id',
-					'Personne.nom',
-					'Personne.prenom',
 					'Personne.dtnai',
 					'Personne.nir',
-					'Personne.qual',
 					'Personne.nomcomnai',
 					'Adresse.locaadr',
 					'Adresse.codepos',
@@ -228,7 +225,8 @@ App::import( 'Sanitize' );
 					'Adresse.numcomptt',
 					'Typeaideapre66.name',
 					'Themeapre66.name',
-                                        'Referent.nom_complet'
+                                        'Referent.nom_complet',
+                                        'Personne.nom_complet'
 				),
 				'joins' => $joins,
 				'contain' => false,

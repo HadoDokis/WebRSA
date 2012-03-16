@@ -109,7 +109,7 @@
 
                     $array1 = array(
                             h( $validationapre['Apre66']['numeroapre'] ),
-                            h( $validationapre['Personne']['qual'].' '.$validationapre['Personne']['nom'].' '.$validationapre['Personne']['prenom'] ),
+                            h( $validationapre['Personne']['nom_complet'] ),
 //                            h( $validationapre['Adresse']['locaadr'] ),
                             h( $validationapre['Referent']['nom_complet'] ),
                             h( date_short(  $validationapre['Aideapre66']['datedemande'] ) ),
