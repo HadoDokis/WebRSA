@@ -7,7 +7,7 @@
 	{
 		public $name = 'Dsps';
 
-		public $helpers = array( 'Xform', 'Xhtml', 'Dsphm', 'Default2', 'Fileuploader', 'Search' );
+		public $helpers = array( 'Xform', 'Xhtml', 'Dsphm', 'Default2', 'Fileuploader', 'Search', 'Csv' );
 		public $uses = array('Dsp', 'DspRev');
 		public $components = array( 'Jetons', 'Default', 'Fileuploader' );
 
@@ -907,6 +907,39 @@
 			
 		}
 		
+		/**
+		* Export du tableau en CSV
+		*/
+
+		public function exportcsv() {
+			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
+
+                        $wildcardKeys = array(
+                            'Personne.nom',
+                            'Personne.prenom',
+                            'Personne.nir',
+                            'Dossier.matricule',
+                            'Dsp.libsecactdomi',
+                            'Dsp.libactdomi',
+                            'Dsp.libsecactrech',
+                            'Dsp.libemploirech',
+                            'Dsp.libsecactderact',
+                            'Dsp.libderact'
+                        );
+ 
+			$querydata = $this->Dsp->search(
+                            $mesCodesInsee,
+                            $this->Session->read( 'Auth.User.filtre_zone_geo' ),
+                            $this->_wildcardKeys( Xset::bump( $this->params['named'], '__' ), $wildcardKeys )
+                        );
+			unset( $querydata['limit'] );
+
+                        $dsps = $this->Dsp->Personne->find( 'all', $querydata );
+
+			$this->layout = '';
+			$this->set( compact( 'dsps' ) );
+		}
 		
 		
 	}
