@@ -871,22 +871,38 @@
 			
 			$params = $this->data;
 			if( !empty( $params ) ) {
-				
-				$this->paginate = $this->Dsp->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data );
+                            $wildcardKeys = array(
+                                'Personne.nom',
+                                'Personne.prenom',
+                                'Personne.nir',
+                                'Dossier.matricule',
+                                'Dsp.libsecactdomi',
+                                'Dsp.libactdomi',
+                                'Dsp.libsecactrech',
+                                'Dsp.libemploirech',
+                                'Dsp.libsecactderact',
+                                'Dsp.libderact'
+                            );
 
-				$this->paginate = $this->_qdAddFilters( $this->paginate );
-				$this->paginate['limit'] = 10;
+                            $this->paginate = $this->Dsp->search(
+                                $mesCodesInsee,
+                                $this->Session->read( 'Auth.User.filtre_zone_geo' ),
+                                $this->_wildcardKeys( $this->data, $wildcardKeys )
+                            );
 
-				$dsps = $this->paginate( 'Personne' );
+                            $this->paginate = $this->_qdAddFilters( $this->paginate );
+                            $this->paginate['limit'] = 10;
 
-				// Les dsps que l'on a obtenus sont-ils lockés ?
-				$lockedList = $this->Jetons->lockedList( Set::extract( $dsps, '/Dossier/id' ) );
+                            $dsps = $this->paginate( 'Personne' );
 
-				foreach( $dsps as $key => $dsp ) {
-					$dsps[$key]['Dossier']['locked'] = in_array( $dsp['Dossier']['id'], $lockedList );
-				}
-			
-				$this->set( 'dsps', $dsps );
+                            // Les dsps que l'on a obtenus sont-ils lockés ?
+                            $lockedList = $this->Jetons->lockedList( Set::extract( $dsps, '/Dossier/id' ) );
+
+                            foreach( $dsps as $key => $dsp ) {
+                                    $dsps[$key]['Dossier']['locked'] = in_array( $dsp['Dossier']['id'], $lockedList );
+                            }
+
+                            $this->set( 'dsps', $dsps );
 			}
 			
 		}
