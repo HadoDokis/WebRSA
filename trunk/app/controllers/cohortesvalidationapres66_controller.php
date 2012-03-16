@@ -158,6 +158,7 @@
 
 					$this->paginate = $this->Cohortevalidationapre66->search( $statutValidation, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
 					$this->paginate['limit'] = 10;
+                                        $this->Apre66->forceVirtualFields = true;
 					$cohortevalidationapre66 = $this->paginate( 'Apre66' );
 
 					$this->Dossier->commit();
