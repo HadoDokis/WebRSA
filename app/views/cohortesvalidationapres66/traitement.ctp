@@ -44,8 +44,8 @@
 
                 echo $default2->subform(
                     array(
-						'Search.Aideapre66.themeapre66_id' => array(  'label' => 'Thème de l\'aide', 'options' => $themes, 'empty' => true ),
-						'Search.Aideapre66.typeaideapre66_id' => array(  'label' => 'Type d\'aide', 'options' => $typesaides, 'empty' => true ),
+                        'Search.Aideapre66.themeapre66_id' => array(  'label' => 'Thème de l\'aide', 'options' => $themes, 'empty' => true ),
+                        'Search.Aideapre66.typeaideapre66_id' => array(  'label' => 'Type d\'aide', 'options' => $typesaides, 'empty' => true ),
                         'Search.Apre66.numeroapre' => array( 'label' => __d( 'apre', 'Apre.numeroapre', true ), 'type' => 'text' ),
                         'Search.Apre66.referent_id' => array( 'label' => __d( 'apre', 'Apre.referent_id', true ), 'options' => $referents ),
                         'Search.Personne.nom' => array( 'label' => __d( 'personne', 'Personne.nom', true ), 'type' => 'text' ),
@@ -54,8 +54,8 @@
                         'Search.Personne.nir' => array( 'label' => __d( 'personne', 'Personne.nir', true ), 'type' => 'text', 'maxlength' => 15 ),
                         'Search.Dossier.matricule' => array( 'label' => __d( 'dossier', 'Dossier.matricule', true ), 'type' => 'text', 'maxlength' => 15 ),
                         'Search.Dossier.numdemrsa' => array( 'label' => __d( 'dossier', 'Dossier.numdemrsa', true ), 'type' => 'text', 'maxlength' => 15 ),
-						'Search.Adresse.locaadr' => array( 'label' => __d( 'adresse', 'Adresse.locaadr', true ), 'type' => 'text' ),
-						'Search.Adresse.numcomptt' => array( 'label' => __d( 'adresse', 'Adresse.numcomptt', true ), 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true )
+                        'Search.Adresse.locaadr' => array( 'label' => __d( 'adresse', 'Adresse.locaadr', true ), 'type' => 'text' ),
+                        'Search.Adresse.numcomptt' => array( 'label' => __d( 'adresse', 'Adresse.numcomptt', true ), 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true )
                     ),
                     array(
                         'options' => $options
@@ -89,7 +89,8 @@
             <tr>
                 <th>N° Demande APRE</th>
                 <th>Nom de l'allocataire</th>
-                <th>Commune de l'allocataire</th>
+<!--                <th>Commune de l'allocataire</th>-->
+                <th>Référent de l'APRE</th>
                 <th>Date demande APRE</th>
                 <th>Etat du dossier</th>
                 <th>Décision</th>
@@ -106,16 +107,17 @@
 // debug($validationapre);
                     $title = $validationapre['Dossier']['numdemrsa'];
 
-					$array1 = array(
-						h( $validationapre['Apre66']['numeroapre'] ),
-						h( $validationapre['Personne']['qual'].' '.$validationapre['Personne']['nom'].' '.$validationapre['Personne']['prenom'] ),
-						h( $validationapre['Adresse']['locaadr'] ),
-						h( date_short(  $validationapre['Aideapre66']['datedemande'] ) ),
-						h( Set::enum( Set::classicExtract( $validationapre, 'Apre.etatdossierapre' ), $options['etatdossierapre'] ) ),
-						h( Set::enum( Set::classicExtract( $validationapre, 'Aideapre66.decisionapre' ), $optionsaideapre66['decisionapre'] ) ),
-						h( (  $validationapre['Aideapre66']['montantaccorde'] ) ),
-						h( $validationapre['Aideapre66']['motifrejetequipe'] ),
-						h( date_short(  $validationapre['Aideapre66']['datemontantaccorde'] ) ),
+                    $array1 = array(
+                            h( $validationapre['Apre66']['numeroapre'] ),
+                            h( $validationapre['Personne']['qual'].' '.$validationapre['Personne']['nom'].' '.$validationapre['Personne']['prenom'] ),
+//                            h( $validationapre['Adresse']['locaadr'] ),
+                            h( $validationapre['Referent']['nom_complet'] ),
+                            h( date_short(  $validationapre['Aideapre66']['datedemande'] ) ),
+                            h( Set::enum( Set::classicExtract( $validationapre, 'Apre.etatdossierapre' ), $options['etatdossierapre'] ) ),
+                            h( Set::enum( Set::classicExtract( $validationapre, 'Aideapre66.decisionapre' ), $optionsaideapre66['decisionapre'] ) ),
+                            h( (  $validationapre['Aideapre66']['montantaccorde'] ) ),
+                            h( $validationapre['Aideapre66']['motifrejetequipe'] ),
+                            h( date_short(  $validationapre['Aideapre66']['datemontantaccorde'] ) ),
                     );
                     $array2 = array(
                         $form->input( 'Apre66.'.$index.'.istraite', array( 'label' => false, 'type' => 'checkbox', 'value' => $validationapre['Apre66']['istraite']  ) ).

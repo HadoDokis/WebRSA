@@ -129,49 +129,56 @@ App::import( 'Sanitize' );
 					'conditions' => array( 'Themeapre66.id = Typeaideapre66.themeapre66_id' ),
 				),
 				array(
-						'table'      => 'prestations',
-						'alias'      => 'Prestation',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array(
-							'Personne.id = Prestation.personne_id',
-							'Prestation.natprest = \'RSA\'',
-							'( Prestation.rolepers = \'DEM\' OR Prestation.rolepers = \'CJT\' )',
-						)
-					),
-					array(
-						'table'      => 'foyers',
-						'alias'      => 'Foyer',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Personne.foyer_id = Foyer.id' )
-					),
-					array(
-						'table'      => 'dossiers',
-						'alias'      => 'Dossier',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Foyer.dossier_id = Dossier.id' )
-					),
-					array(
-						'table'      => 'adressesfoyers',
-						'alias'      => 'Adressefoyer',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array(
-							'Foyer.id = Adressefoyer.foyer_id',
-							'Adressefoyer.id IN (
-								'.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01('Adressefoyer.foyer_id').'
-							)'
-						)
-					),
-					array(
-						'table'      => 'adresses',
-						'alias'      => 'Adresse',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
-					)
+                                        'table'      => 'prestations',
+                                        'alias'      => 'Prestation',
+                                        'type'       => 'INNER',
+                                        'foreignKey' => false,
+                                        'conditions' => array(
+                                                'Personne.id = Prestation.personne_id',
+                                                'Prestation.natprest = \'RSA\'',
+                                                '( Prestation.rolepers = \'DEM\' OR Prestation.rolepers = \'CJT\' )',
+                                        )
+                                ),
+                                array(
+                                        'table'      => 'foyers',
+                                        'alias'      => 'Foyer',
+                                        'type'       => 'INNER',
+                                        'foreignKey' => false,
+                                        'conditions' => array( 'Personne.foyer_id = Foyer.id' )
+                                ),
+                                array(
+                                        'table'      => 'dossiers',
+                                        'alias'      => 'Dossier',
+                                        'type'       => 'INNER',
+                                        'foreignKey' => false,
+                                        'conditions' => array( 'Foyer.dossier_id = Dossier.id' )
+                                ),
+                                array(
+                                        'table'      => 'adressesfoyers',
+                                        'alias'      => 'Adressefoyer',
+                                        'type'       => 'INNER',
+                                        'foreignKey' => false,
+                                        'conditions' => array(
+                                                'Foyer.id = Adressefoyer.foyer_id',
+                                                'Adressefoyer.id IN (
+                                                        '.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01('Adressefoyer.foyer_id').'
+                                                )'
+                                        )
+                                ),
+                                array(
+                                        'table'      => 'adresses',
+                                        'alias'      => 'Adresse',
+                                        'type'       => 'INNER',
+                                        'foreignKey' => false,
+                                        'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
+                                ),
+                                array(
+                                        'table'      => 'referents',
+                                        'alias'      => 'Referent',
+                                        'type'       => 'INNER',
+                                        'foreignKey' => false,
+                                        'conditions' => array( 'Referent.id = Apre66.referent_id' ),
+                                )
 			);
 
 			$query = array(
@@ -193,6 +200,7 @@ App::import( 'Sanitize' );
 					'Apre66.isdecision',
 					'Apre66.istraite',
 					'Apre66.nbenf12',
+                                        'Apre66.referent_id',
 					'Aideapre66.id',
 					'Aideapre66.apre_id',
 					'Aideapre66.decisionapre',
@@ -219,7 +227,8 @@ App::import( 'Sanitize' );
 					'Adressefoyer.rgadr',
 					'Adresse.numcomptt',
 					'Typeaideapre66.name',
-					'Themeapre66.name'
+					'Themeapre66.name',
+                                        'Referent.nom_complet'
 				),
 				'joins' => $joins,
 				'contain' => false,
