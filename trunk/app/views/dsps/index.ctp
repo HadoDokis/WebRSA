@@ -249,10 +249,10 @@ if( Configure::read( 'debug' ) > 0 ) {
 				);
 			?></li>
 			<li><?php
-// 				echo $xhtml->exportLink(
-// 					'Télécharger le tableau',
-// 					array( 'controller' => 'criteresci', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
-// 				);
+ 				echo $xhtml->exportLink(
+ 					'Télécharger le tableau',
+ 					array( 'controller' => 'dsps', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
+ 				);
 			?></li>
 		</ul>
 	<?php echo $pagination;?>
