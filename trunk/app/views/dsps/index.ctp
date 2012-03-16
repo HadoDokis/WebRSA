@@ -26,7 +26,7 @@ if( Configure::read( 'debug' ) > 0 ) {
 		<?php echo $form->input( 'Personne.nom', array( 'label' => 'Nom ', 'type' => 'text' ) );?>
 		<?php echo $form->input( 'Personne.prenom', array( 'label' => 'Prénom ', 'type' => 'text' ) );?>
 		<?php echo $form->input( 'Personne.nir', array( 'label' => 'NIR ', 'maxlength' => 15 ) );?>
-		<?php echo $form->input( 'Personne.matricule', array( 'label' => 'N° CAF ', 'maxlength' => 15 ) );?>
+		<?php echo $form->input( 'Dossier.matricule', array( 'label' => 'N° CAF ', 'maxlength' => 15 ) );?>
 	</fieldset>
 	<?php echo $search->etatdosrsa($etatdosrsa); ?>
 	<fieldset>
