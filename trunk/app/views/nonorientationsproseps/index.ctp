@@ -12,7 +12,9 @@
 			array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 'Filtre' ).toggle(); return false;" )
 		).'</li></ul>';
 	}
-
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
+	}
 ?>
 
 <?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
@@ -49,10 +51,18 @@
 			togglePassageCovEp( checkbox, cbClass, otherCbClass );
 		} );
 	}
+
+</script>
+<script type="text/javascript">
+	document.observe("dom:loaded", function() {
+            dependantSelect( 'FiltreReferentId', 'FiltreStructurereferenteId' );
+            try { $( 'FiltreReferentId' ).onchange(); } catch(id) { }
+	} );
 </script>
 
 <?php echo $form->create( 'Filtre', array( 'url'=> Router::url( null, true ), 'id' => 'Filtre', 'class' => ( !empty( $this->data ) ? 'folded' : 'unfolded' ) ) );?>
 	<fieldset>
+            <?php  echo $xform->input( 'Filtre.index', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
 		<legend><?php  echo __d( 'nonorientationproep', 'Nonorientationsproseps'.Configure::read( 'Cg.departement' ).'::legend', true );?></legend>
 		<?php if( Configure::read( 'Cg.departement' ) == 58 ):?>
 		<?php
@@ -63,16 +73,28 @@
 		<?php echo $form->input( 'Filtre.df_ci_to', array( 'label' => 'Et le (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120,  'maxYear' => date( 'Y' ) + 5, 'selected' => $df_ci_to ) );?>
 		<?php else:?>
 			<?php
-				$nbmoispardefaut = array();
+//				$nbmoispardefaut = array();
+//				if( Configure::read( 'Cg.departement' ) == 66 ) {
+//					$nbmoispardefaut = 24;
+//				}
+//				else{
+//					$nbmoispardefaut = 0;
+//				}
+//
+
+//                                
+                                $nbmoispardefaut = array();
 				if( Configure::read( 'Cg.departement' ) == 66 ) {
-					$nbmoispardefaut = 24;
+                                    echo $form->input( 'Canton.canton', array( 'label' => 'Canton', 'type' => 'select', 'options' => $cantons, 'empty' => true ) );
+                                    echo $form->input( 'Adresse.locaadr', array( 'label' => 'Commune', 'type' => 'text' ) );
+                                    echo $form->input( 'Filtre.structurereferente_id', array( 'label' => 'Structure référente', 'type' => 'select', 'options' => $structs, 'empty' => true ) );
+                                    echo $form->input( 'Filtre.referent_id', array( 'label' => 'Référent', 'type' => 'select', 'options' => $referents, 'empty' => true ) );
+
 				}
 				else{
-					$nbmoispardefaut = 0;
+                                    echo $form->input( 'Filtre.dureenonreorientation', array( 'label' => 'Parcours social sans réorientation emploi depuis ', 'type' => 'select', 'options' => $nbmoisnonreorientation ) );
 				}
-
-				echo $form->input( 'Filtre.dureenonreorientation', array( 'label' => 'Parcours social sans réorientation emploi depuis ', 'type' => 'select', 'options' => $nbmoisnonreorientation, 'default' => $nbmoispardefaut ) );
-
+                                
 ?>
 		<?php endif;?>
 	</fieldset>
@@ -99,8 +121,8 @@
 					<th><?php echo __d( 'foyer', 'Foyer.enerreur', true );?></th>
 					<th>Date de validation de l'orientation</th>
 					<th>Nombre de jours depuis la fin du contrat lié</th>
-					<th>Structure</th>
 					<th>Type d'orientation</th>
+					<th>Structure</th>
 					<th>Référent</th>
 					<?php if( Configure::read( 'Cg.departement' ) == 58 ):?>
 						<th>Passage en COV ?</th>
@@ -125,8 +147,8 @@
 							echo $xhtml->tag( 'td', $orientstruct['Foyer']['enerreur'], array( 'class' => 'foyer_enerreur '.( empty( $orientstruct['Foyer']['enerreur'] ) ? 'empty' : null ) ) );
 							echo $xhtml->tag( 'td', $locale->date( __( 'Locale->date', true ), $orientstruct['Orientstruct']['date_valid'] ) );
 							echo $xhtml->tag( 'td', $orientstruct['Contratinsertion']['nbjours'] );
-							echo $xhtml->tag( 'td', $orientstruct['Structurereferente']['lib_struc'] );
 							echo $xhtml->tag( 'td', $orientstruct['Typeorient']['lib_type_orient'] );
+							echo $xhtml->tag( 'td', $orientstruct['Structurereferente']['lib_struc'] );
 							echo $xhtml->tag( 'td', implode( ' ', array( $orientstruct['Referent']['qual'], $orientstruct['Referent']['nom'], $orientstruct['Referent']['prenom'] ) ) );
 							if( Configure::read( 'Cg.departement' ) == 58 ){
 								echo $xhtml->tag(
@@ -153,7 +175,7 @@
 									'td',
 									$xhtml->viewLink(
 										'Voir le dossier',
-										array( 'controller' => 'bilansparcours66', 'action' => 'add', $orientstruct['Personne']['id'], 'Bilanparcours66__maintienensocial' )
+										array( 'controller' => 'rendezvous', 'action' => 'index', $orientstruct['Personne']['id'] )
 									)
 								);
 							}

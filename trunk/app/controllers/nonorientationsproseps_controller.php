@@ -13,6 +13,14 @@
 			parent::beforeFilter();
 		}
 
+                protected function _setOptions(){
+                    $this->set( 'structs', $this->Nonorientationproep66->Orientstruct->Structurereferente->listOptions() );
+                    $this->set( 'referents', $this->Nonorientationproep66->Orientstruct->Referent->listOptions() );
+                    if( Configure::read( 'CG.cantons' ) ) {
+                        $this->loadModel( 'Canton' );
+                        $this->set( 'cantons', $this->Canton->selectList() );
+                    }
+                }
 		/**
 		*
 		*/
@@ -29,6 +37,13 @@
 		public function index() {
 			$cohorte = array();
 			if ( !empty( $this->data ) ) {
+//                            debug($this->data);
+//                            die();
+                                if( !empty( $this->data['Filtre']['referent_id'] )) {
+					$referentId = suffix( $this->data['Filtre']['referent_id'] );
+					$this->data['Filtre']['referent_id'] = $referentId;
+				}
+                            
 				if ( isset( $this->data['Nonorientationproep'] ) ) {
 					$this->{$this->modelClass}->begin();
 					$success = $this->{$this->modelClass}->saveCohorte( $this->data );
@@ -50,11 +65,12 @@
 					$this->Session->read( 'Auth.User.filtre_zone_geo' ),
 					$this->data
 				);
-
+//debug( $this->paginate );
 				$this->paginate['limit'] = 10;
 				$cohorte = $this->paginate( $this->{$this->modelClass}->Orientstruct );
 			}
 			$this->set( 'nbmoisnonreorientation', array( 0 => 'Aujourd\'hui', 6 => '6 mois', 12 => '12 mois', 24 => '24 mois' ) );
+                        $this->_setOptions();
 			$this->set( compact( 'cohorte' ) );
 		}
 

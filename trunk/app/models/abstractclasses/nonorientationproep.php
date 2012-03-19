@@ -7,10 +7,11 @@
 	{
 		public $actsAs = array(
 			'Autovalidate',
-			'ValidateTranslate',
-			'Enumerable',
+                        'Conditionnable',	
+                        'Enumerable',
 			'Formattable',
-			'Gedooo.Gedooo'
+			'Gedooo.Gedooo',
+                        'ValidateTranslate'
 		);
 
 		public $belongsTo = array(
@@ -34,6 +35,7 @@
 			$conditions = array();
 			$nbmois = Set::classicExtract($datas, 'Filtre.dureenonreorientation');
 
+                        
 			/// Critères sur le CI - date de saisi contrat
 			if( isset( $datas['Filtre']['df_ci_from'] ) && !empty( $datas['Filtre']['df_ci_from'] ) ) {
 				$valid_from = ( valid_int( $datas['Filtre']['df_ci_from']['year'] ) && valid_int( $datas['Filtre']['df_ci_from']['month'] ) && valid_int( $datas['Filtre']['df_ci_from']['day'] ) );
@@ -63,17 +65,22 @@
 			*/
 			
 			if( Configure::read( 'Cg.departement' ) == 66 ){
-				$conditionsBilanparcours66 = array(
-					'Contratinsertion.id NOT IN (
-						SELECT contratsinsertion.id
-							FROM contratsinsertion
-								INNER JOIN bilansparcours66 ON (
-									bilansparcours66.contratinsertion_id = contratsinsertion.id
-								)
-							WHERE
-								bilansparcours66.contratinsertion_id = Contratinsertion.id
-					)'
-				);
+                            $conditionsBilanparcours66 = array(
+                                    'Contratinsertion.id NOT IN (
+                                            SELECT contratsinsertion.id
+                                                    FROM contratsinsertion
+                                                            INNER JOIN bilansparcours66 ON (
+                                                                    bilansparcours66.contratinsertion_id = contratsinsertion.id
+                                                            )
+                                                    WHERE
+                                                            bilansparcours66.contratinsertion_id = Contratinsertion.id
+                                    )'
+                            );
+                            
+                            $conditionsContrat = array(
+                                'Orientstruct.date_valid <=' => date( 'Y-m-d', strtotime( '- 24 month', time() ) )
+                            );
+//                            $conditionsContrat = array( 'Contratinsertion.df_ci <=' => date( 'Y-m-d', strtotime( '- 24 month', time() ) ) );
 			}
 			else {
 				$conditionsBilanparcours66 = $conditions;
@@ -118,17 +125,33 @@
 				)',
 				// La dernière
 				'Orientstruct.id IN (
-							SELECT o.id
-								FROM orientsstructs AS o
-								WHERE
-									o.personne_id = Personne.id
-									AND o.date_valid IS NOT NULL
-									AND o.rgorient IS NOT NULL
-								ORDER BY o.rgorient DESC
-								LIMIT 1
+                                    SELECT o.id
+                                            FROM orientsstructs AS o
+                                            WHERE
+                                                    o.personne_id = Personne.id
+                                                    AND o.date_valid IS NOT NULL
+                                                    AND o.rgorient IS NOT NULL
+                                            ORDER BY o.rgorient DESC
+                                            LIMIT 1
 				)'
 			);
 
+                        
+                        if( Configure::read( 'Cg.departement' ) == 66 ){
+                            $structs = Set::classicExtract($datas, 'Filtre.structurereferente_id');
+                            $referents = Set::classicExtract($datas, 'Filtre.referent_id');
+
+                            $conditions = $this->conditionsAdresse( $conditions, $datas, $filtre_zone_geo, $mesCodesInsee );
+
+                            if ( isset($datas['Filtre']['referent_id']) && !empty($datas['Filtre']['referent_id']) ) {
+                                $conditions[] = 'Orientstruct.referent_id = \''.Sanitize::clean( $referents ).'\'';
+                            }
+
+                            if ( isset($datas['Filtre']['structurereferente_id']) && !empty($datas['Filtre']['structurereferente_id']) ) {
+                                $conditions[] = 'Orientstruct.structurereferente_id = \''.Sanitize::clean( $structs ).'\'';
+                            }
+                        }
+                        
 			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
 
 			if( Configure::read( 'Cg.departement' ) == 58 ) {
@@ -293,6 +316,8 @@
 				'contain' => false,
 				'order' => array( 'Contratinsertion.nbjours DESC' )
 			);
+//debug($conditions);
+//die();
 			return $cohorte;
 		}
 
