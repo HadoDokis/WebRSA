@@ -29,7 +29,7 @@ msgid "Nonorientationsproseps93::legend"
 msgstr "Durée de non orientation depuis le parcours social ou socioprofessionel vers le parcours professionnel"
 
 msgid "Nonorientationsproseps66::legend"
-msgstr "Durée de non orientation depuis le parcours social ou socioprofessionel vers le parcours professionnel"
+msgstr " "
 
 msgid "Nonorientationsproseps58::legend"
 msgstr "Contrat arrivant à échéance entre "
