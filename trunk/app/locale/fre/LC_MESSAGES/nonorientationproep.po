@@ -35,4 +35,4 @@ msgid "Nonorientationsproseps58::legend"
 msgstr "Contrat arrivant à échéance entre "
 
 msgid "Nonorientationsproseps66::index"
-msgstr "Liste des parcours sociaux de plus de 24 mois"
+msgstr "Demande de maintien dans le social"
