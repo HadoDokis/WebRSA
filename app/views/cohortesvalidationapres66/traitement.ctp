@@ -61,7 +61,7 @@
                         'options' => $options
                     )
                 );
-                
+
 				if( Configure::read( 'CG.cantons' ) ) {
 					echo $xform->input( 'Search.Canton.canton', array( 'label' => 'Canton', 'type' => 'select', 'options' => $cantons, 'empty' => true ) );
 				}
@@ -113,7 +113,7 @@
 //                            h( $validationapre['Adresse']['locaadr'] ),
                             h( $validationapre['Referent']['nom_complet'] ),
                             h( date_short(  $validationapre['Aideapre66']['datedemande'] ) ),
-                            h( Set::enum( Set::classicExtract( $validationapre, 'Apre.etatdossierapre' ), $options['etatdossierapre'] ) ),
+                            h( Set::enum( Set::classicExtract( $validationapre, 'Apre66.etatdossierapre' ), $options['etatdossierapre'] ) ),
                             h( Set::enum( Set::classicExtract( $validationapre, 'Aideapre66.decisionapre' ), $optionsaideapre66['decisionapre'] ) ),
                             h( (  $validationapre['Aideapre66']['montantaccorde'] ) ),
                             h( $validationapre['Aideapre66']['motifrejetequipe'] ),

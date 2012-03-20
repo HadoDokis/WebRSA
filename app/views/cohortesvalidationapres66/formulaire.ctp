@@ -64,7 +64,7 @@
                         'options' => $options
                     )
                 );
-                
+
 				if( Configure::read( 'CG.cantons' ) ) {
 					echo $xform->input( 'Search.Canton.canton', array( 'label' => 'Canton', 'type' => 'select', 'options' => $cantons, 'empty' => true ) );
 				}
@@ -113,7 +113,7 @@
                     $array1 = array(
 						h( $validationapre['Apre66']['numeroapre'] ),
                         h( $validationapre['Dossier']['numdemrsa'] ),
-                        h( $validationapre['Personne']['nom'].' '.$validationapre['Personne']['prenom'] ),
+                        h( $validationapre['Personne']['nom_complet'] ),
                         h( $validationapre['Adresse']['locaadr'] ),
                         h( date_short( $validationapre['Aideapre66']['datedemande'] ) ),
                         h( $validationapre['Aideapre66']['montantpropose'] ),

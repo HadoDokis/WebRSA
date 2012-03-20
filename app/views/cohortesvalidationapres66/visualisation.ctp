@@ -58,7 +58,7 @@
                         'options' => $options
                     )
                 );
-                
+
 				if( Configure::read( 'CG.cantons' ) ) {
 					echo $xform->input( 'Search.Canton.canton', array( 'label' => 'Canton', 'type' => 'select', 'options' => $cantons, 'empty' => true ) );
 				}
@@ -149,10 +149,10 @@
                     echo $xhtml->tableCells(
 						array(
 							h( $validationapre['Apre66']['numeroapre'] ),
-							h( $validationapre['Personne']['qual'].' '.$validationapre['Personne']['nom'].' '.$validationapre['Personne']['prenom'] ),
+							h( $validationapre['Personne']['nom_complet'] ),
 							h( $validationapre['Adresse']['locaadr'] ),
 							h( date_short(  $validationapre['Aideapre66']['datedemande'] ) ),
-							h( Set::enum( Set::classicExtract( $validationapre, 'Apre.etatdossierapre' ), $options['etatdossierapre'] ) ),
+							h( Set::enum( Set::classicExtract( $validationapre, 'Apre66.etatdossierapre' ), $options['etatdossierapre'] ) ),
 							h( Set::enum( Set::classicExtract( $validationapre, 'Aideapre66.decisionapre' ), $optionsaideapre66['decisionapre'] ) ),
 							h( (  $validationapre['Aideapre66']['montantaccorde'] ) ),
 							h( $validationapre['Aideapre66']['motifrejetequipe'] ),
@@ -165,7 +165,7 @@
 							$xhtml->notificationsApreLink(
 								'Notifier la décision',
 								array( 'controller' => 'apres66', 'action' => 'notifications', $validationapre['Apre66']['id'] ),
-								$permissions->check( 'gedooos', 'notificationsop' )
+								$permissions->check( 'apres66', 'notifications' )
 							),
 							array( $innerTable, array( 'class' => 'innerTableCell' ) ),
 						),
