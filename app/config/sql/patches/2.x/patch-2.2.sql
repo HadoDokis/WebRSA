@@ -155,6 +155,10 @@ CREATE INDEX piecestraitementspcgs66_traitementpcg66_id_idx ON piecestraitements
 		- Gedooos:relanceapre par Relancesapres:impression
 */
 
+-- 20120319: une entrée de aidesapres66 possède une et une seule entrée de fraisdeplacements66
+
+DROP INDEX IF EXISTS fraisdeplacements66_aideapre66_id_idx;
+CREATE UNIQUE INDEX fraisdeplacements66_aideapre66_id_idx ON fraisdeplacements66(aideapre66_id);
 
 -- *****************************************************************************
 COMMIT;

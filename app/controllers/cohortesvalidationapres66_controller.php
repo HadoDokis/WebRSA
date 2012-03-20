@@ -158,7 +158,7 @@
 
 					$this->paginate = $this->Cohortevalidationapre66->search( $statutValidation, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
 					$this->paginate['limit'] = 10;
-                                        
+
                                         $forceVirtualFields = $this->Apre66->forceVirtualFields;
                                         $this->Apre66->forceVirtualFields = true;
 					$cohortevalidationapre66 = $this->paginate( 'Apre66' );
@@ -173,7 +173,7 @@
 						else{
 							$cohortevalidationapre66[$key]['Aideapre66']['proposition_datemontantaccorde'] = $value['Aideapre66']['datemontantaccorde'];
 						}
-						
+
 						$cohortevalidationapre66[$key]['Aideapre66']['datemontantpropose'] = $value['Aideapre66']['datemontantpropose'];
 
 					}
@@ -208,56 +208,60 @@
 			}
 		}
 
-
-        /**
-        * Export du tableau en CSV
-        */
-
-        public function exportcsv() {
-            $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-            $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
-
-            $querydata = $this->Cohortevalidationapre66->search( 'Validationapre::validees', $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), array_multisize( $this->params['named'] ), $this->Jetons->ids() );
-            unset( $querydata['limit'] );
-            $apres = $this->Dossier->Foyer->Personne->Apre->find( 'all', $querydata );
-
-// debug($apres);
-// die();
-            $this->_setOptions();
-            $this->layout = '';
-            $this->set( compact( 'apres' ) );
-        }
-        
-        
-        
 		/**
-		* Génération de la cohorte des convocations de passage en commission d'EP aux allocataires.
-		*/
+		 * Export des résultats sous forme de tableau CSV.
+		 *
+		 * @return void
+		 */
+		public function exportcsv() {
+			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 
+			$querydata = $this->Cohortevalidationapre66->search(
+				'Validationapre::validees',
+				$mesCodesInsee,
+				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
+				array_multisize( $this->params['named'] ),
+				$this->Jetons->ids()
+			);
+			unset( $querydata['limit'] );
+			$apres = $this->Apre66->find( 'all', $querydata );
+
+			$this->_setOptions();
+			$this->layout = '';
+			$this->set( compact( 'apres' ) );
+		}
+
+		/**
+		 * Génération de la cohorte des notification d'APRE pour le CG 66.
+		 *
+		 * @return void
+		 */
 		public function notificationsCohorte( ) {
 			$this->Apre66->begin();
 
-            $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-            $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
+			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 
-            $querydata = $this->Cohortevalidationapre66->search( 'Validationapre::validees', $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), array_multisize( $this->params['named'] ), $this->Jetons->ids() );
-            unset( $querydata['limit'] );
-            $apres = $this->Dossier->Foyer->Personne->Apre->find( 'all', $querydata );
-// debug($apres);
-// die();
+			$querydata = $this->Cohortevalidationapre66->search(
+				'Validationapre::validees',
+				$mesCodesInsee,
+				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
+				array_multisize( $this->params['named'] ),
+				$this->Jetons->ids()
+			);
+			unset( $querydata['limit'] );
+			$apres = $this->Apre66->find( 'all', $querydata );
+
 			$pdfs = array();
-			$Apre66Model = ClassRegistry::init( 'Apre66' );
-			foreach( Set::extract( '/Apre/id', $apres ) as $apre_id ) {
-				$pdfs[] = $Apre66Model->getNotificationAprePdf( $apre_id );
+			foreach( Set::extract( '/Apre66/id', $apres ) as $apre_id ) {
+				$pdfs[] = $this->Apre66->getNotificationAprePdf( $apre_id );
 			}
-
 			$pdfs = $this->Gedooo->concatPdfs( $pdfs, 'NotificationsApre' );
-// $pdfs = 0;
-
 
 			if( $pdfs ) {
 				$this->Apre66->commit();
-				$this->Gedooo->sendPdfContentToClient( $pdfs, 'NotificationsApre' );
+				$this->Gedooo->sendPdfContentToClient( $pdfs, sprintf( 'NotificationsApre-%s.pdf', date( 'Y-m-d' ) ) );
 			}
 			else {
 				$this->Apre66->rollback();

@@ -605,7 +605,7 @@
 
 			///Nombre d'enfants par foyer
 			$nbEnfants = $this->Foyer->nbEnfants( Set::classicExtract( $personne, 'Foyer.id' ) );
-			$this->set( 'nbEnfants', $nbEnfants ); 
+			$this->set( 'nbEnfants', $nbEnfants );
 
 			if( !empty( $this->data ) ) {
 				/// Pour le nombre de pièces afin de savoir si le dossier est complet ou non
@@ -636,7 +636,7 @@
 				}
 
 				$this->data['Apre66']['etatdossierapre'] = ( $valide ? 'COM' : 'INC' );
-				
+
 
 				// Tentative d'enregistrement de l'APRE complémentaire
 				$this->{$this->modelClass}->create( $this->data );
@@ -732,7 +732,7 @@ die();
 				if( !empty( $this->data['Modecontact'] ) ) {
 					$this->data['Modecontact'] = $personne['Foyer']['Modecontact'];
 				}
-				
+
 				$this->data['Pieceaide66']['Pieceaide66'] = Set::extract( $apre, '/Aideapre66/Pieceaide66/id' );
 				$this->data['Piececomptable66']['Piececomptable66'] = Set::extract( $apre, '/Aideapre66/Piececomptable66/id' );
 			}
@@ -785,121 +785,33 @@ die();
 		}
 
 		/**
-		*
-		*/
+		 * Génère l'impression d'une APRE pour le CG 66.
+		 *
+		 * @param integer $id L'id de l'APRE que l'on veut imprimer.
+		 * @return void
+		 */
+		public function apre( $id = null ) { // FIXME: impression à la place de apre
+			$Option = ClassRegistry::init( 'Option' );
 
-		public function apre( $id = null ) {
-			$qual = $this->Option->qual();
-			$typevoie = $this->Option->typevoie();
-
-			$apre = $this->{$this->modelClass}->find(
-				'first',
-				array(
-					'conditions' => array(
-						"{$this->modelClass}.id" => $id
-					),
-					'contain' => array(
-						'Personne',
-						'Structurereferente',
-						'Referent',
-						'Aideapre66' => array(
-							'Typeaideapre66',
-							'Fraisdeplacement66',
-							'Piececomptable66',
-							'Pieceaide66',
-							'Themeapre66'
-						)
-					)
-				)
+			$options = array(
+				'Adresse' => array(
+					'typevoie' => $Option->typevoie()
+				),
+				'Personne' => array(
+					'qual' => $Option->qual()
+				),
+				'Referent' => array(
+					'qual' => $Option->qual()
+				),
+				'Structurereferente' => array(
+					'type_voie' => $Option->typevoie()
+				),
 			);
 
-// 			$piecesPresentes = Set::classicExtract($apre, 'Aideapre66.Piececomptable66.{n}.id');
-// 			$conditions = array();
-// 			if( !empty( $piecesPresentes ) ) {
-// 				$conditions = array( 'NOT' => array( 'Piececomptable66.id' => $piecesPresentes ) );
-// 			}
-// 			$piecesAbsentes = $this->Piececomptable66->find( 'list', array( 'conditions' => $conditions, 'contain' => false ) );
-// 			$apre['Aideapre66']['Piececomptable66']='';
-// 			foreach( $piecesAbsentes as $model => $pieces ) {
-// 				if( !empty( $pieces ) ) {
-// 					$apre['Aideapre66']['Piececomptable66'] .= "\n" .'- '.implode( "\n- ", array($pieces) ).',';
-// 				}
-// 			}
-			/// On récupère la liste des pièces comptables et adminsitratives liées à la demande d'aide (présentes ou non)
-			$typeaideapre66_id = Set::classicExtract( $apre, 'Aideapre66.typeaideapre66_id' );
-			foreach( array( 'Pieceaide66', 'Piececomptable66' ) as $modelPiece ){
-				$querydata = array(
-					'joins' => array(
-						$this->{$modelPiece}->join( "{$modelPiece}Typeaideapre66" )
-					),
-					'conditions' => array(
-						"{$modelPiece}Typeaideapre66.typeaideapre66_id" => $typeaideapre66_id
-					),
-					'contain' => false
-				);
+			$apre = $this->Apre66->getDataForPdf( $id, $this->Session->read( 'Auth.User.id' ) );
 
-				$apre['Aideapre66'][$modelPiece] = null;
-				$pieces = $this->{$modelPiece}->find( 'list', $querydata );
-				if( !empty( $pieces ) ) {
-					$apre['Aideapre66'][$modelPiece] .= "\n" .'- '.implode( "\n- ", $pieces ).',';
-				}
-			}
-
-// debug($apre);
-// die();
-			$this->Adressefoyer->bindModel(
-				array(
-					'belongsTo' => array(
-						'Adresse' => array(
-							'className'     => 'Adresse',
-							'foreignKey'    => 'adresse_id'
-						)
-					)
-				)
-			);
-
-			$adresse = $this->Adressefoyer->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Adressefoyer.foyer_id' => Set::classicExtract( $apre, 'Personne.foyer_id' ),
-						'Adressefoyer.rgadr' => '01',
-					)
-				)
-			);
-			$apre['Adresse'] = $adresse['Adresse'];
-
-
-			//Données du Foyer + Dossier
-			$foyer = $this->{$this->modelClass}->Personne->Foyer->find(
-			    'first',
-			    array(
-					'conditions' => array(
-						'Foyer.id' => $apre['Personne']['foyer_id']
-					),
-					'contain' => array(
-						'Dossier'
-					)
-				)
-			);
-
-			$apre = Set::merge( $apre, $foyer );
-
-			$apre_id = Set::classicExtract( $apre, "{$this->modelClass}.id" );
-
-			if( !empty( $apre['Aideapre66']['Fraisdeplacement66'] ) ){
-				$apre['Aideapre66']['Fraisdeplacement66']['lieuresidence'] = Set::extract( $apre, 'Adresse.numvoie' ).' '.Set::extract( $typevoie, Set::extract( $apre, 'Adresse.typevoie' ) ).' '.Set::extract( $apre, 'Adresse.nomvoie' ).' '.Set::extract( $apre, 'Adresse.codepos' ).' '.Set::extract( $apre, 'Adresse.locaadr' );
-			}
-
-			///Traduction pour les données de la Personne/Contact/Partenaire/Référent
-			$apre['Personne']['qual'] = Set::enum( Set::classicExtract( $apre, 'Personne.qual' ), $qual );
-			$apre['Referent']['qual'] = Set::enum( Set::classicExtract( $apre, 'Referent.qual' ), $qual );
-
-			$apre['Structurereferente']['adresse'] = Set::classicExtract( $apre, 'Structurereferente.num_voie').' '.Set::enum( Set::classicExtract( $apre, 'Structurereferente.type_voie'), $typevoie ).' '.Set::classicExtract( $apre, 'Structurereferente.nom_voie').' '.Set::classicExtract( $apre, 'Structurereferente.code_postal').' '.Set::classicExtract( $apre, 'Structurereferente.ville');
-
-
-			// Ajout pour obtenir le passif en demande d'APRE
-			$listeApres = $this->{$this->modelClass}->find(
+			// Le passif des demandes d'APRE attribuées
+			$listeApres = $this->Apre66->find(
 				'all',
 				array(
 					'fields' => array(
@@ -910,14 +822,17 @@ die();
 						'Themeapre66.name'
 					),
 					'conditions' => array(
-						"{$this->modelClass}.personne_id" => $apre['Personne']['id'],
-						"{$this->modelClass}.id <>" => $id,
-						'Aideapre66.id IS NOT NULL' //FIXME: hack 
+						"Apre66.personne_id" => $apre['Personne']['id'],
+						"Apre66.id <>" => $id,
+						'Aideapre66.id IS NOT NULL',
+						'Apre66.etatdossierapre' => 'VAL',
+						'Apre66.datenotifapre IS NOT NULL',
+						'Aideapre66.datedemande <=' => $apre['Aideapre66']['datedemande'],
 					),
 					'joins' => array(
-						$this->{$this->modelClass}->join( 'Aideapre66' ),
-						$this->{$this->modelClass}->Aideapre66->join( 'Typeaideapre66' ),
-						$this->{$this->modelClass}->Aideapre66->join( 'Themeapre66' )
+						$this->Apre66->join( 'Aideapre66' ),
+						$this->Apre66->Aideapre66->join( 'Typeaideapre66' ),
+						$this->Apre66->Aideapre66->join( 'Themeapre66' )
 					),
 					'order' => array( 'Aideapre66.datedemande DESC' )
 				)
@@ -927,128 +842,33 @@ die();
 			foreach( $listeApres as $i => $oldapre ) {
 				$listeApres[$i] = array( 'oldapre' => $oldapre );
 			}
-// debug(array( $apre, 'oldapres' => $listeApres ));
-// die();
-			$pdf = $this->Apre66->ged( array( $apre, 'oldapres' => $listeApres ), 'APRE/apre66.odt', true );
+
+			$pdf = $this->Apre66->ged(
+				array( $apre, 'oldapres' => $listeApres ),
+				$this->Apre66->modeleOdt( $apre ),
+				true,
+				$options
+			);
 
 			$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'apre-%s.pdf', date( 'Y-m-d' ) ) );
 		}
+
 		/**
-		*
-		*/
-
+		 * Imprime une notification d'APRE.
+		 *
+		 * @param integer $id L'id de l'APRE pour laquelle imprimer la notification.
+		 * @return void
+		 */
 		public function notifications( $id = null ) {
-			$qual = $this->Option->qual();
-			$typevoie = $this->Option->typevoie();
+			$pdf = $this->Apre66->getNotificationAprePdf( $id );
 
-			$apre = $this->{$this->modelClass}->find(
-				'first',
-				array(
-					'conditions' => array(
-						"{$this->modelClass}.id" => $id
-					),
-					'contain' => array(
-						'Personne',
-						'Structurereferente',
-						'Aideapre66' => array(
-							'Piececomptable66'
-						)
-					)
-				)
-			);
-
-			$typeaideapre66_id = Set::classicExtract( $apre, 'Aideapre66.typeaideapre66_id' );
-
-			$piecesPresentes = Set::classicExtract($apre, 'Aideapre66.Piececomptable66.{n}.id');
-
-			// Recherche des pièces nécessaires pour cette aide, et qui ne sont pas présentes
-			$querydata = array(
-				'joins' => array(
-					$this->Piececomptable66->join( 'Piececomptable66Typeaideapre66' )
-				),
-				'conditions' => array(
-					'Piececomptable66Typeaideapre66.typeaideapre66_id' => $typeaideapre66_id
-				),
-				'contain' => false
-			);
-
-			$apre['Aideapre66']['Piececomptable66'] = null;
-			$pieces = $this->Piececomptable66->find( 'list', $querydata );
-			if( !empty( $pieces ) ) {
-				$apre['Aideapre66']['Piececomptable66'] .= "\n" .'- '.implode( "\n- ", $pieces ).',';
-			}
-
-
-			$this->Adressefoyer->bindModel(
-				array(
-					'belongsTo' => array(
-						'Adresse' => array(
-							'className'     => 'Adresse',
-							'foreignKey'    => 'adresse_id'
-						)
-					)
-				)
-			);
-
-			$adresse = $this->Adressefoyer->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Adressefoyer.foyer_id' => Set::classicExtract( $apre, 'Personne.foyer_id' ),
-						'Adressefoyer.rgadr' => '01',
-					)
-				)
-			);
-			$apre['Adresse'] = $adresse['Adresse'];
-// debug($apre);
-// die();
-			$apre_id = Set::classicExtract( $apre, "{$this->modelClass}.id" );
-
-			///Traduction pour les données de la Personne/Contact/Partenaire/Référent
-			$apre['Personne']['qual'] = Set::enum( Set::classicExtract( $apre, 'Personne.qual' ), $qual );
-			$apre['Referent']['qual'] = Set::enum( Set::classicExtract( $apre, 'Referent.qual' ), $qual );
-
-			$apre['Structurereferente']['adresse'] = Set::classicExtract( $apre, 'Structurereferente.num_voie').' '.Set::enum( Set::classicExtract( $apre, 'Structurereferente.type_voie'), $typevoie ).' '.Set::classicExtract( $apre, 'Structurereferente.nom_voie').' '.Set::classicExtract( $apre, 'Structurereferente.code_postal').' '.Set::classicExtract( $apre, 'Structurereferente.ville');
-
-
-			if ($apre['Aideapre66']['decisionapre']=='ACC') {
-				$pdf = $this->Apre66->ged( $apre, 'APRE/accordaide.odt' );
-				if( $pdf ){
-					$this->Apre66->updateAll(
-						array( 'Apre66.datenotifapre' => date( "'Y-m-d'" ) ),
-						array(
-							'"Apre66"."id"' => $apre_id,
-							'"Apre66"."datenotifapre" IS NULL'
-						)
-					);
-
-					$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'accordaide-%s.pdf', date( 'Y-m-d' ) ) );
-				}
-				else {
-					$this->Session->setFlash( 'Impossible de générer la notification d\'accord', 'default', array( 'class' => 'error' ) );
-					$this->redirect( $this->referer() );
-				}
+			if( !empty( $pdf ) ){
+				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'Notification_APRE_%d-%s.pdf', $id, date( 'Y-m-d' ) ) );
 			}
 			else {
-				$pdf = $this->Apre66->ged( $apre, 'APRE/refusaide.odt' );
-				if( $pdf ){
-
-					$this->Apre66->updateAll(
-						array( 'Apre66.datenotifapre' => date( "'Y-m-d'" ) ),
-						array(
-							'"Apre66"."id"' => $apre_id,
-							'"Apre66"."datenotifapre" IS NULL'
-						)
-					);
-					$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'refusaide-%s.pdf', date( 'Y-m-d' ) ) );
-				}
-				else {
-					$this->Session->setFlash( 'Impossible de générer la notification de refus', 'default', array( 'class' => 'error' ) );
-					$this->redirect( $this->referer() );
-				}
+				$this->Session->setFlash( 'Impossible de générer la notification d\'APRE.', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
 			}
-
 		}
-
 	}
 ?>
