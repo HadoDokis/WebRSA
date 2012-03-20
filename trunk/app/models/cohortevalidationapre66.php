@@ -1,5 +1,6 @@
 <?php
-App::import( 'Sanitize' );
+	App::import( 'Sanitize' );
+
 	class Cohortevalidationapre66 extends AppModel
 	{
 		public $name = 'Cohortevalidationapre66';
@@ -11,9 +12,10 @@ App::import( 'Sanitize' );
 		*/
 
 		public function search( $statutValidation, $mesCodesInsee, $filtre_zone_geo, $criteresapres, $lockedDossiers ) {
+			$Apre66 = ClassRegistry::init( 'Apre66' );
+
 			/// Conditions de base
-			$conditions = array(
-			);
+			$conditions = array();
 
 			if( !empty( $statutValidation ) ) {
 				if( $statutValidation == 'Validationapre::apresavalider' ) {
@@ -54,7 +56,7 @@ App::import( 'Sanitize' );
 				}
 			}
 
-			
+
 			/// Critères sur l'adresse - canton
 			if( Configure::read( 'CG.cantons' ) ) {
 				if( isset( $criteresapres['Search']['Canton']['canton'] ) && !empty( $criteresapres['Search']['Canton']['canton'] ) ) {
@@ -62,7 +64,7 @@ App::import( 'Sanitize' );
 					$conditions[] = $this->Canton->queryConditions( $criteresapres['Search']['Canton']['canton'] );
 				}
 			}
-			
+
 			// Localité adresse
 			if( !empty( $locaadr ) ) {
 				$conditions[] = 'Adresse.locaadr ILIKE \'%'.Sanitize::clean( $locaadr ).'%\'';
@@ -85,7 +87,7 @@ App::import( 'Sanitize' );
 				}
 			}
 
-			
+
 			//Thème de l'aide
 			if( !empty( $themeapre66_id ) ) {
 				$conditions[] = 'Aideapre66.themeapre66_id = \''.Sanitize::clean( $themeapre66_id ).'\'';
@@ -95,91 +97,12 @@ App::import( 'Sanitize' );
 			if( !empty( $typeaideapre66_id ) ) {
 				$conditions[] = 'Aideapre66.typeaideapre66_id = \''.Sanitize::clean( suffix( $typeaideapre66_id ) ).'\'';
 			}
-			
-			/// Requête
-			$this->Dossier = ClassRegistry::init( 'Dossier' );
 
-			$joins = array(
-				array(
-					'table'      => 'personnes',
-					'alias'      => 'Personne',
-					'type'       => 'INNER',
-					'foreignKey' => false,
-					'conditions' => array( 'Personne.id = Apre66.personne_id' ),
-				),
-				array(
-					'table'      => 'aidesapres66',
-					'alias'      => 'Aideapre66',
-					'type'       => 'INNER',
-					'foreignKey' => false,
-					'conditions' => array( 'Aideapre66.apre_id = Apre66.id' ),
-				),
-				array(
-					'table'      => 'typesaidesapres66',
-					'alias'      => 'Typeaideapre66',
-					'type'       => 'INNER',
-					'foreignKey' => false,
-					'conditions' => array( 'Typeaideapre66.id = Aideapre66.typeaideapre66_id' ),
-				),
-				array(
-					'table'      => 'themesapres66',
-					'alias'      => 'Themeapre66',
-					'type'       => 'INNER',
-					'foreignKey' => false,
-					'conditions' => array( 'Themeapre66.id = Typeaideapre66.themeapre66_id' ),
-				),
-				array(
-                                        'table'      => 'prestations',
-                                        'alias'      => 'Prestation',
-                                        'type'       => 'INNER',
-                                        'foreignKey' => false,
-                                        'conditions' => array(
-                                                'Personne.id = Prestation.personne_id',
-                                                'Prestation.natprest = \'RSA\'',
-                                                '( Prestation.rolepers = \'DEM\' OR Prestation.rolepers = \'CJT\' )',
-                                        )
-                                ),
-                                array(
-                                        'table'      => 'foyers',
-                                        'alias'      => 'Foyer',
-                                        'type'       => 'INNER',
-                                        'foreignKey' => false,
-                                        'conditions' => array( 'Personne.foyer_id = Foyer.id' )
-                                ),
-                                array(
-                                        'table'      => 'dossiers',
-                                        'alias'      => 'Dossier',
-                                        'type'       => 'INNER',
-                                        'foreignKey' => false,
-                                        'conditions' => array( 'Foyer.dossier_id = Dossier.id' )
-                                ),
-                                array(
-                                        'table'      => 'adressesfoyers',
-                                        'alias'      => 'Adressefoyer',
-                                        'type'       => 'INNER',
-                                        'foreignKey' => false,
-                                        'conditions' => array(
-                                                'Foyer.id = Adressefoyer.foyer_id',
-                                                'Adressefoyer.id IN (
-                                                        '.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01('Adressefoyer.foyer_id').'
-                                                )'
-                                        )
-                                ),
-                                array(
-                                        'table'      => 'adresses',
-                                        'alias'      => 'Adresse',
-                                        'type'       => 'INNER',
-                                        'foreignKey' => false,
-                                        'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
-                                ),
-                                array(
-                                        'table'      => 'referents',
-                                        'alias'      => 'Referent',
-                                        'type'       => 'INNER',
-                                        'foreignKey' => false,
-                                        'conditions' => array( 'Referent.id = Apre66.referent_id' ),
-                                )
-			);
+			// Conditions pour les jointures
+			$conditions['Prestation.rolepers'] = array( 'DEM', 'CJT' );
+			$conditions[] = 'Adressefoyer.id IN ( '
+				.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01('Adressefoyer.foyer_id')
+			.' )';
 
 			$query = array(
 				'fields' => array(
@@ -200,7 +123,7 @@ App::import( 'Sanitize' );
 					'Apre66.isdecision',
 					'Apre66.istraite',
 					'Apre66.nbenf12',
-                                        'Apre66.referent_id',
+					'Apre66.referent_id',
 					'Aideapre66.id',
 					'Aideapre66.apre_id',
 					'Aideapre66.decisionapre',
@@ -225,10 +148,21 @@ App::import( 'Sanitize' );
 					'Adresse.numcomptt',
 					'Typeaideapre66.name',
 					'Themeapre66.name',
-                                        'Referent.nom_complet',
-                                        'Personne.nom_complet'
+					$Apre66->Personne->Referent->sqVirtualField( 'nom_complet' ),
+					$Apre66->Personne->sqVirtualField( 'nom_complet' )
 				),
-				'joins' => $joins,
+				'joins' => array(
+					$Apre66->join( 'Aideapre66', array( 'type' => 'INNER' ) ),
+					$Apre66->join( 'Personne', array( 'type' => 'INNER' ) ),
+					$Apre66->join( 'Referent', array( 'type' => 'INNER' ) ),
+					$Apre66->Aideapre66->join( 'Themeapre66', array( 'type' => 'INNER' ) ),
+					$Apre66->Aideapre66->join( 'Typeaideapre66', array( 'type' => 'INNER' ) ),
+					$Apre66->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
+					$Apre66->Personne->join( 'Prestation', array( 'type' => 'INNER' ) ),
+					$Apre66->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'INNER' ) ),
+					$Apre66->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
+					$Apre66->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'INNER' ) ),
+				),
 				'contain' => false,
 				'conditions' => $conditions
 			);

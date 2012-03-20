@@ -52,5 +52,45 @@
 				'with' => 'Pieceaide66Typeaideapre66'
 			)
 		);
+
+		/**
+		 * Retourne une sous-requête permettant d'obtenir la liste des pièces liées
+		 * à une aide APRE du 66. Les éléments de la liste sont triés et préfixés par une
+		 * chaîne de caractères.
+		 *
+		 * @param string $aideapre66Id
+		 * @param string $prefix
+		 * @return string
+		 */
+		public function vfListePieces( $aideapre66Id = 'Aideapre66.id', $prefix = '\\n\r-' ) {
+			$alias = Inflector::tableize( $this->alias );
+
+			$sq = $this->sq(
+				array(
+					'alias' => $alias,
+					'fields' => array(
+						"'{$prefix}' || \"{$alias}\".\"name\" AS \"{$alias}__name\""
+					),
+					'contain' => false,
+					'joins' => array(
+						array_words_replace(
+							$this->join( 'Aideapre66Pieceaide66', array( 'type' => 'INNER' ) ),
+							array(
+								'Aideapre66Pieceaide66' => 'aidesapres66_piecesaides66',
+								'Pieceaide66' => 'piecesaides66'
+							)
+						),
+					),
+					'conditions' => array(
+						"aidesapres66_piecesaides66.aideapre66_id = {$aideapre66Id}"
+					),
+					'order' => array(
+						"{$alias}.name ASC"
+					)
+				)
+			);
+
+			return "ARRAY_TO_STRING( ARRAY( {$sq} ), '' )";
+		}
 	}
 ?>
