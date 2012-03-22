@@ -170,7 +170,7 @@ CREATE TABLE proposdecisionscers66 (
   	id 								SERIAL NOT NULL PRIMARY KEY,
     contratinsertion_id             INTEGER NOT NULL REFERENCES contratsinsertion(id) ON DELETE CASCADE ON UPDATE CASCADE,
     isvalidcer						TYPE_NO NOT NULL DEFAULT 'N',
-    datevalidcer					DATE,
+    datevalidcer					DATE NOT NULL,
     motifficheliaison               TEXT DEFAULT NULL,
     motifnotifnonvalid              TEXT DEFAULT NULL,
     created							TIMESTAMP WITHOUT TIME ZONE,
