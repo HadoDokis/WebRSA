@@ -25,6 +25,9 @@ msgstr "Proposition de décision pour le CER"
 msgid "Propodecisioncer66.isvalidcer"
 msgstr "Proposition de validation"
 
+msgid "Propodecisioncer66.datevalidcer"
+msgstr "Date de proposition"
+
 msgid "Propodecisioncer66.motifficheliaison"
 msgstr "Commentaire à reporter sur la fiche de liaison"
 

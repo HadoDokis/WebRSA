@@ -26,12 +26,16 @@
 						$dfci = date_short( $contratinsertion['Contratinsertion']['df_ci'] );
 						$duree = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.duree_engag' ), $duree_engag_cg66 );
 						$referent = $contratinsertion['Referent']['nom_complet'];
+						$propodecision = Set::enum( $contratinsertion['Propodecisioncer66']['isvalidcer'], $options['Propodecisioncer66']['isvalidcer'] );
+						$datevalidcer = date_short( $contratinsertion['Propodecisioncer66']['datevalidcer'] );
 
 						echo $xform->fieldValue( 'Contratinsertion.forme_ci', $formeci );
 						echo $xform->fieldValue( 'Contratinsertion.dd_ci', $ddci );
 						echo $xform->fieldValue( 'Contratinsertion.df_ci', $dfci );
 						echo $xform->fieldValue( 'Contratinsertion.duree_engag', $duree );
 						echo $xform->fieldValue( 'Referent.nom_complet', $referent );
+						echo $xform->fieldValue( 'Propodecisioncer66.isvalidcer', $propodecision );
+						echo $xform->fieldValue( 'Propodecisioncer66.datevalidcer', $datevalidcer );
 						
 						echo $form->input( 'Contratinsertion.decision_ci', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.decision_ci', true ), 'type' => 'select', 'options' => $decision_ci ) );
 						echo $form->input( 'Contratinsertion.datedecision', array( 'label' => '', 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+2, 'minYear'=>date('Y')-3 , 'empty' => true)  );

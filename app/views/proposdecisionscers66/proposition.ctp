@@ -34,6 +34,7 @@
 			echo $xform->fieldValue( 'Referent.nom_complet', $referent );
 			
 			echo $form->input( 'Propodecisioncer66.isvalidcer', array( 'legend' => __d( 'propodecisioncer66', 'Propodecisioncer66.isvalidcer', true ), 'type' => 'radio', 'options' => $options['isvalidcer'] ) );
+			echo $form->input( 'Propodecisioncer66.datevalidcer', array( 'label' => __d( 'propodecisioncer66', 'Propodecisioncer66.datevalidcer', true ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+2, 'minYear'=>date('Y')-2 , 'empty' => true) );
 
 		?>
 		<fieldset id="motifcer" class="invisible">
