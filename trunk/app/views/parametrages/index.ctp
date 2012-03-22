@@ -132,6 +132,19 @@
 						array( 'class' => 'even' )
 					);
 				}
+				if ( Configure::read( 'Cg.departement' ) == 66 ) {
+					echo $xhtml->tableCells(
+						array(
+							h( 'Motifs de non validation de CER' ),
+							$xhtml->viewLink(
+								'Voir la table',
+								array( 'controller' => 'motifscersnonvalids66', 'action' => 'index' )
+							)
+						),
+						array( 'class' => 'odd' ),
+						array( 'class' => 'even' )
+					);
+				}
 				echo $xhtml->tableCells(
 					array(
 						h( 'Objets de l\'entretien' ),

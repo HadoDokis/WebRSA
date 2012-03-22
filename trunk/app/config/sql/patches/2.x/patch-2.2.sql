@@ -135,10 +135,10 @@ CREATE UNIQUE INDEX traitementspcgs66_typecourrierpcg66_id_idx ON traitementspcg
 DROP TABLE IF EXISTS piecestraitementspcgs66;
 CREATE TABLE piecestraitementspcgs66 (
   	id 				SERIAL NOT NULL PRIMARY KEY,
-        traitementpcg66_id              INTEGER NOT NULL REFERENCES traitementspcgs66(id) ON DELETE CASCADE ON UPDATE CASCADE,
-        piecetypecourrierpcg66_id       INTEGER NOT NULL REFERENCES piecestypescourrierspcgs66(id) ON DELETE CASCADE ON UPDATE CASCADE,
-        commentaire                     TEXT DEFAULT NULL,
-        created				TIMESTAMP WITHOUT TIME ZONE,
+	traitementpcg66_id              INTEGER NOT NULL REFERENCES traitementspcgs66(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	piecetypecourrierpcg66_id       INTEGER NOT NULL REFERENCES piecestypescourrierspcgs66(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	commentaire                     TEXT DEFAULT NULL,
+	created				TIMESTAMP WITHOUT TIME ZONE,
 	modified			TIMESTAMP WITHOUT TIME ZONE
 );
 COMMENT ON TABLE piecestraitementspcgs66 IS 'Table de liaison entre les traitements PCG et les pièces liées à un type de courrier PCG (cg66)';
@@ -160,6 +160,58 @@ CREATE INDEX piecestraitementspcgs66_traitementpcg66_id_idx ON piecestraitements
 DROP INDEX IF EXISTS fraisdeplacements66_aideapre66_id_idx;
 CREATE UNIQUE INDEX fraisdeplacements66_aideapre66_id_idx ON fraisdeplacements66(aideapre66_id);
 
+
+-------------------------------------------------------------------------------------------------------------
+-- 20120321 : Ajout d'une table pour les propositions de décision du CER du CG66
+-------------------------------------------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS proposdecisionscers66;
+CREATE TABLE proposdecisionscers66 (
+  	id 								SERIAL NOT NULL PRIMARY KEY,
+    contratinsertion_id             INTEGER NOT NULL REFERENCES contratsinsertion(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    isvalidcer						TYPE_NO NOT NULL DEFAULT 'N',
+    motifficheliaison               TEXT DEFAULT NULL,
+    motifnotifnonvalid              TEXT DEFAULT NULL,
+    created							TIMESTAMP WITHOUT TIME ZONE,
+	modified						TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE proposdecisionscers66 IS 'Table de proposition de décisiondu CER (cg66)';
+DROP INDEX IF EXISTS proposdecisionscers66_contratinsertion_id_idx;
+DROP INDEX IF EXISTS proposdecisionscers66_isvalidcer_idx;
+CREATE UNIQUE INDEX proposdecisionscers66_contratinsertion_id_idx ON proposdecisionscers66(contratinsertion_id);
+CREATE INDEX proposdecisionscers66_isvalidcer_idx ON proposdecisionscers66(isvalidcer);
+
+DROP TABLE IF EXISTS motifscersnonvalids66;
+CREATE TABLE motifscersnonvalids66 (
+  	id 								SERIAL NOT NULL PRIMARY KEY,
+    name							VARCHAR(250) NOT NULL,
+    created							TIMESTAMP WITHOUT TIME ZONE,
+	modified						TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE motifscersnonvalids66 IS 'Table de paramétrage des motifs de non validation d''un CET(cg66)';
+DROP INDEX IF EXISTS motifscersnonvalids66_name_idx;
+CREATE UNIQUE INDEX motifscersnonvalids66_name_idx ON motifscersnonvalids66(name);
+
+
+DROP TABLE IF EXISTS motifscersnonvalids66_proposdecisionscers66;
+CREATE TABLE motifscersnonvalids66_proposdecisionscers66 (
+  	id 								SERIAL NOT NULL PRIMARY KEY,
+	propodecisioncer66_id           INTEGER NOT NULL REFERENCES proposdecisionscers66(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	motifcernonvalid66_id       	INTEGER NOT NULL REFERENCES motifscersnonvalids66(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	created							TIMESTAMP WITHOUT TIME ZONE,
+	modified						TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE motifscersnonvalids66_proposdecisionscers66 IS 'Table de liaison entre les propositions de décisions du CER et les motifs en cas de non validation (cg66)';
+DROP INDEX IF EXISTS motifscersnonvalids66_proposdecisionscers66_propodecisioncer66_id_idx;
+DROP INDEX IF EXISTS motifscersnonvalids66_proposdecisionscers66_motifcernonvalid66_id_idx;
+CREATE INDEX motifscersnonvalids66_proposdecisionscers66_propodecisioncer66_id_idx ON motifscersnonvalids66_proposdecisionscers66(propodecisioncer66_id);
+CREATE INDEX motifscersnonvalids66_proposdecisionscers66_motifcernonvalid66_id_idx ON motifscersnonvalids66_proposdecisionscers66(motifcernonvalid66_id);
+
+
+-------------------------------------------------------------------------------------------------------------
+-- 20120322 : Ajout d'une valeur dans l'enum de position du CER
+-------------------------------------------------------------------------------------------------------------
+SELECT public.alter_enumtype ( 'TYPE_POSITIONCER', ARRAY['encours','attvalid','annule','fincontrat','encoursbilan','attrenouv','perime', 'nonvalide', 'attsignature'] );
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

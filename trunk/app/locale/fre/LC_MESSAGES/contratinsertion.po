@@ -240,6 +240,9 @@ msgstr "En attente de renouvellement"
 msgid "ENUM::POSITIONCER::perime"
 msgstr "Périmé"
 
+msgid "ENUM::POSITIONCER::attsignature"
+msgstr "En attente de signature"
+
 msgid "Contratsinsertion::filelink"
 msgstr "Liste des fichiers liés au CER"
 

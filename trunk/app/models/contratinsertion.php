@@ -404,6 +404,22 @@
 			)
 		);
 
+		public $hasOne = array(
+			'Propodecisioncer66' => array(
+				'className' => 'Propodecisioncer66',
+				'foreignKey' => 'contratinsertion_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+		);
+		
 		public $virtualFields = array(
 			'nbjours' => array(
 				'type'      => 'integer',
@@ -697,20 +713,6 @@
 			);
 			$decisionprecedente = Set::classicExtract( $dernierContrat, 'Contratinsertion.decision_ci' );
 
-// 			$positioncer = null;
-			// 'encours', 'attvalid', 'annule', 'fincontrat', 'encoursbilan', 'attrenouv', 'perime'
-
-
-// 			if ( $formeCi == 'S' ){
-// 			$positioncer = 'attvalid';
-// 			}
-// 			elseif ( $formeCi == 'C' )
-// 				$positioncer = 'attvalid';
-// 			elseif ( !empty( $sitproCi ) )
-// 				$positioncer = 'annule';
-
-// debug( $positioncer );
-// die();
 			//FIXME: la position a périmé ne devrait aps figurer ici
 			if ( ( is_null( $positioncer ) || in_array( $positioncer , array( 'attvalid', 'perime' ) ) ) && !empty( $decision_ci ) ) {
 				if ( $decision_ci == 'V' ){
@@ -731,9 +733,7 @@
 					)
 				);
 			}
-// debug($data);
-// debug($positioncer);
-// die();
+
 			return $positioncer;
 		}
 
