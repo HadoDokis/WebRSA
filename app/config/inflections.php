@@ -101,8 +101,13 @@
 		'comiteapre_participantcomite' => 'comitesapres_participantscomites',
 		'condadmin' => 'condsadmins',
 		'contactpartenaire' => 'contactspartenaires',
+		//CER
 		'contratinsertion' => 'contratsinsertion',
 		'contratinsertion_user' => 'contratsinsertion_users',
+		'motifcernonvalid66' => 'motifscersnonvalids66',
+		'propodecisioncer66' => 'proposdecisionscers66',
+		'motifcernonvalid66_propodecisioncer66' => 'motifscersnonvalids66_proposdecisionscers66',
+		//
 		'controleadministratif' => 'controlesadministratifs',
 		'creancealimentaire' => 'creancesalimentaires',
 		'critereapre' => 'criteresapres',
@@ -338,10 +343,10 @@
 		'cohortedossierpcg66' => 'cohortesdossierspcgs66',
 		'typersapcg66' => 'typesrsapcgs66',
 		'decisiondossierpcg66_typersapcg66' => 'decisionsdossierspcgs66_typesrsapcgs66',
-                'piecetypecourrierpcg66' => 'piecestypescourrierspcgs66',
-                'typecourrierpcg66' => 'typescourrierspcgs66',
-                'courrierpcg66' => 'courrierspcgs66',
-                'piecetraitementpcg66' => 'piecestraitementspcgs66',
+		'piecetypecourrierpcg66' => 'piecestypescourrierspcgs66',
+		'typecourrierpcg66' => 'typescourrierspcgs66',
+		'courrierpcg66' => 'courrierspcgs66',
+		'piecetraitementpcg66' => 'piecestraitementspcgs66',
 
 		// DSPS cg66
 		'coderomemetierdsp66' => 'codesromemetiersdsps66',

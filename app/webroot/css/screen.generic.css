@@ -1190,6 +1190,10 @@ td.button.contratinsertion.disabled a, td.action a.contratinsertion.disabled, td
     background-image: url( ../img/icons/printer_disabled.png );
 }
 
+td.button.proposition a, td.action a.proposition, td span.button.proposition, table.default2 td a.button.proposition {
+    background-image: url( ../img/icons/application_form_edit.png );
+}
+
 td.button.notifbenef a, td.action a.notifbenef, td span.button.notifbenef, table.default2 td a.button.notifbenef {
     background-image: url( ../img/icons/printer.png );
 }

@@ -46,7 +46,7 @@
 				$this->set( 'formeci', $this->Option->formeci() );
 			}
 
-			if( in_array( $this->action, array( 'add', 'edit', 'view' ) ) ) {
+			if( in_array( $this->action, array( 'add', 'edit', 'view', 'valider', 'validersimple', 'validerparticulier' ) ) ) {
 				$this->set( 'qual', $this->Option->qual() );
 				$this->set( 'raison_ci', $this->Option->raison_ci() );
 				if( Configure::read( 'Cg.departement' ) == 66 ){
@@ -1456,27 +1456,57 @@
 		*/
 
 		public function valider( $contratinsertion_id = null ) {
+		
+			if( Configure::read( 'Cg.departement' ) == 66 ) {
+				$fields = array(
+					'Contratinsertion.id',
+					'Contratinsertion.personne_id',
+					'Contratinsertion.structurereferente_id',
+					'Contratinsertion.forme_ci',
+					'Contratinsertion.observ_ci',
+					'Contratinsertion.datevalidation_ci',
+					'Contratinsertion.datedecision',
+					'Contratinsertion.decision_ci',
+					'Contratinsertion.positioncer',
+					'Contratinsertion.dd_ci',
+					'Contratinsertion.df_ci',
+					'Contratinsertion.duree_engag',
+					'Propodecisioncer66.isvalidcer',
+					'Referent.nom_complet'
+				);
+				$contain = array(
+					'Propodecisioncer66',
+					'Referent'
+				);
+			}
+			else {
+				$fields = array(
+					'Contratinsertion.id',
+					'Contratinsertion.personne_id',
+					'Contratinsertion.structurereferente_id',
+					'Contratinsertion.forme_ci',
+					'Contratinsertion.observ_ci',
+					'Contratinsertion.datevalidation_ci',
+					'Contratinsertion.decision_ci',
+					'Contratinsertion.positioncer',
+					'Contratinsertion.dd_ci',
+					'Contratinsertion.df_ci'
+				);
+				$recursive = -1;
+				$contain = false;
+			}
+			
 			$contratinsertion = $this->Contratinsertion->find(
 				'first',
 				array(
-					'fields' => array(
-						'Contratinsertion.id',
-						'Contratinsertion.personne_id',
-						'Contratinsertion.structurereferente_id',
-						'Contratinsertion.forme_ci',
-						'Contratinsertion.observ_ci',
-						'Contratinsertion.datevalidation_ci',
-						'Contratinsertion.decision_ci',
-						'Contratinsertion.positioncer',
-						'Contratinsertion.dd_ci',
-						'Contratinsertion.df_ci',
-					),
+					'fields' => $fields,
 					'conditions' => array(
 						'Contratinsertion.id' => $contratinsertion_id
 					),
-					'recursive' => -1
+					'contain' => $contain
 				)
 			);
+// debug($contratinsertion);
 			$this->assert( !empty( $contratinsertion ), 'invalidParameter' );
 			$this->set( 'contratinsertion', $contratinsertion );
 
@@ -1499,7 +1529,7 @@
 
 			$this->_setOptions();
 			$this->set( 'urlmenu', '/contratsinsertion/index/'.$contratinsertion['Contratinsertion']['personne_id'] );
-                        $this->render( $this->action, null, 'valider' );
+			$this->render( $this->action, null, 'valider' );
 		}
 
                 /**
@@ -1693,8 +1723,7 @@
 			$this->assert( !empty( $id ), 'error404' );
 
 			$pdf = $this->Contratinsertion->getPdfFicheliaisoncer( $id );
-// debug($pdf);
-// die();
+
 			if( $pdf ) {
 				$success = true;
 				if( $success ) {
@@ -1715,8 +1744,7 @@
 
 
 			$pdf = $this->Contratinsertion->getPdfNotifbenef( $id , $this->Session->read( 'Auth.User.id' ) );
-// debug($pdf);
-// die();
+
 			if( $pdf ) {
 				$success = true;
 				if( $success ) {
