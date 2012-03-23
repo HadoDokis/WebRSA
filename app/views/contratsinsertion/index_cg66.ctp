@@ -132,6 +132,7 @@
 								array(
 									'enabled' => (
 										( $permissions->check( 'proposdecisionscers66', 'proposition' ) == 1 )
+										&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'annule' )
 									)
 								)
 							),
@@ -142,6 +143,7 @@
 								array(
 									'enabled' => (
 										$permissions->check( 'contratsinsertion', 'notification' )
+										&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'annule' )
 									)
 								)
 							),
@@ -152,6 +154,7 @@
 								array(
 									'enabled' => (
 										$permissions->check( 'contratsinsertion', 'ficheliaisoncer' )
+										&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'annule' )
 									)
 								)
 							),
@@ -162,6 +165,7 @@
 								array(
 									'enabled' => (
 										$permissions->check( 'contratsinsertion', 'notifbenef' )
+										&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'annule' )
 									)
 								)
 							),
@@ -172,6 +176,7 @@
 								array(
 									'enabled' => (
 										( $permissions->check( 'contratsinsertion', 'notificationsop' ) == 1 )
+										&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'annule' )
 									)
 								)
 							),
@@ -182,6 +187,7 @@
 								array(
 									'enabled' => (
 										( $permissions->check( 'contratsinsertion', 'impression' ) == 1 )
+										&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'annule' )
 									)
 								)
 							),
@@ -192,6 +198,7 @@
 								array(
 									'enabled' => (
 										( $permissions->check( 'contratsinsertion', 'cancel' ) == 1 )
+										&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'annule' )
 									)
 								)
 							),
