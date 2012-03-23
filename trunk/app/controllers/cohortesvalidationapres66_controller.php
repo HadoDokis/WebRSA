@@ -159,10 +159,10 @@
 					$this->paginate = $this->Cohortevalidationapre66->search( $statutValidation, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
 					$this->paginate['limit'] = 10;
 
-                                        $forceVirtualFields = $this->Apre66->forceVirtualFields;
-                                        $this->Apre66->forceVirtualFields = true;
+					$forceVirtualFields = $this->Apre66->forceVirtualFields;
+					$this->Apre66->forceVirtualFields = true;
 					$cohortevalidationapre66 = $this->paginate( 'Apre66' );
-                                        $this->Apre66->forceVirtualFields = $forceVirtualFields;
+					$this->Apre66->forceVirtualFields = $forceVirtualFields;
 
 					$this->Dossier->commit();
 					foreach( $cohortevalidationapre66 as $key => $value ) {
@@ -237,14 +237,14 @@
 		 *
 		 * @return void
 		 */
-		public function notificationsCohorte( ) {
+		public function notificationsCohorte( $statutValidation ) {
 			$this->Apre66->begin();
 
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
 			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 
 			$querydata = $this->Cohortevalidationapre66->search(
-				'Validationapre::validees',
+				"Validationapre::{$statutValidation}",
 				$mesCodesInsee,
 				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
 				array_multisize( $this->params['named'] ),

@@ -906,6 +906,7 @@
 						'Adresse.typevoie',
 						'Adresse.nomvoie',
 						'Adresse.compladr',
+						'Adresse.complideadr',
 						'Adresse.locaadr',
 						'Adresse.numcomptt',
 						'Adresse.codepos'
@@ -1039,6 +1040,7 @@
 						'Adresse.typevoie',
 						'Adresse.nomvoie',
 						'Adresse.compladr',
+						'Adresse.complideadr',
 						'Adresse.locaadr',
 						'Adresse.numcomptt',
 						'Adresse.codepos'
@@ -1127,16 +1129,13 @@
 			$user = $this->User->find(
 				'first',
 				array(
-					'fields' => array( 'numtel', 'nom', 'prenom' ),
 					'conditions' => array(
 						'User.id' => $user_id
 					),
 					'contain' => false
 				)
 			);
-			$contratinsertion['User']['numtel'] = $user['User']['numtel'];
-			$contratinsertion['User']['nom'] = $user['User']['nom'];
-			$contratinsertion['User']['prenom'] = $user['User']['prenom'];
+			$contratinsertion = Set::merge( $contratinsertion, $user );
 
 
 			$modelenotifdecision = '';

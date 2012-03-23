@@ -89,8 +89,7 @@
             <tr>
                 <th>N° Demande APRE</th>
                 <th>Nom de l'allocataire</th>
-<!--                <th>Commune de l'allocataire</th>-->
-                <th>Référent de l'APRE</th>
+                <th>Référent APRE</th>
                 <th>Date demande APRE</th>
                 <th>Etat du dossier</th>
                 <th>Décision</th>
@@ -110,7 +109,6 @@
                     $array1 = array(
                             h( $validationapre['Apre66']['numeroapre'] ),
                             h( $validationapre['Personne']['nom_complet'] ),
-//                            h( $validationapre['Adresse']['locaadr'] ),
                             h( $validationapre['Referent']['nom_complet'] ),
                             h( date_short(  $validationapre['Aideapre66']['datedemande'] ) ),
                             h( Set::enum( Set::classicExtract( $validationapre, 'Apre66.etatdossierapre' ), $options['etatdossierapre'] ) ),

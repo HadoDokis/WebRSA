@@ -93,7 +93,7 @@
 				<th>N° demande APRE</th>
                 <th>N° Dossier</th>
                 <th>Nom de l'allocataire</th>
-                <th>Commune de l'allocataire</th>
+                <th>Référent APRE</th>
                 <th>Date demande APRE</th>
                 <th>Montant proposé</th>
                 <th>Sélectionner</th>
@@ -114,7 +114,7 @@
 						h( $validationapre['Apre66']['numeroapre'] ),
                         h( $validationapre['Dossier']['numdemrsa'] ),
                         h( $validationapre['Personne']['nom_complet'] ),
-                        h( $validationapre['Adresse']['locaadr'] ),
+                        h( $validationapre['Referent']['nom_complet'] ),
                         h( date_short( $validationapre['Aideapre66']['datedemande'] ) ),
                         h( $validationapre['Aideapre66']['montantpropose'] ),
                     );
