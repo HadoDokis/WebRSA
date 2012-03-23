@@ -641,10 +641,8 @@
 
 			//  Calcul de la position du cER
 			if( Configure::read( 'Cg.departement' ) == '66' ) {
-				$this->data[$this->alias]['positioncer'] = $this->_calculPosition( $this->data );
+				$this->data[$this->alias]['positioncer'] = $this->calculPosition( $this->data );
 			}
-// debug($this->data);
-// die();
 			return $return;
 		}
 
@@ -689,13 +687,14 @@
 		*
 		*/
 
-		protected function _calculPosition( $data ) {
+		public function calculPosition( $data ) {
 			$formeCi = Set::classicExtract( $data, 'Contratinsertion.forme_ci' );
 			$sitproCi = Set::classicExtract( $data, 'Contratinsertion.sitpro_ci' );
 			$decision_ci = Set::classicExtract( $data, 'Contratinsertion.decision_ci' );
 			$positioncer = Set::classicExtract( $data, 'Contratinsertion.positioncer' );
+			$datenotif = Set::classicExtract( $data, 'Contratinsertion.datenotification' );
 			$id = Set::classicExtract( $data, 'Contratinsertion.id' );
-
+// debug($datenotif);
 			$personne_id = Set::classicExtract( $data, 'Contratinsertion.personne_id' );
 
 			$conditions = array( 'Contratinsertion.personne_id' => $personne_id, );
@@ -715,11 +714,22 @@
 
 			//FIXME: la position a périmé ne devrait aps figurer ici
 			if ( ( is_null( $positioncer ) || in_array( $positioncer , array( 'attvalid', 'perime' ) ) ) && !empty( $decision_ci ) ) {
+
 				if ( $decision_ci == 'V' ){
-					$positioncer = 'encours';
+					if( empty( $datenotif ) ) {
+						$positioncer = 'valid';
+					}
+					else {
+						$positioncer = 'validnotifie';
+					}
 				}
 				else if ( $decision_ci == 'N' ){
-					$positioncer = 'nonvalide';
+					if( empty( $datenotif ) ) {
+						$positioncer = 'nonvalid';
+					}
+					else {
+						$positioncer = 'nonvalidnotifie';
+					}
 				}
 			}
 
@@ -1114,17 +1124,17 @@
 			$datesaisici = Set::classicExtract( $contratinsertion, 'Contratinsertion.date_saisi_ci' );
 			$contratinsertion['Contratinsertion']['delairegularisation'] = date( 'Y-m-d', strtotime( '+1 month', strtotime( $datesaisici ) ) );
 
-                        $user = $this->User->find(
-                            'first',
-                            array(
-                                'fields' => array( 'numtel', 'nom', 'prenom' ),
-                                'conditions' => array(
-                                    'User.id' => $user_id
-                                ),
-                                'contain' => false
-                            )
-                        );
-                        $contratinsertion['User']['numtel'] = $user['User']['numtel'];
+			$user = $this->User->find(
+				'first',
+				array(
+					'fields' => array( 'numtel', 'nom', 'prenom' ),
+					'conditions' => array(
+						'User.id' => $user_id
+					),
+					'contain' => false
+				)
+			);
+			$contratinsertion['User']['numtel'] = $user['User']['numtel'];
 			$contratinsertion['User']['nom'] = $user['User']['nom'];
 			$contratinsertion['User']['prenom'] = $user['User']['prenom'];
 

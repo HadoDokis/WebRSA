@@ -212,7 +212,11 @@ CREATE INDEX motifscersnonvalids66_proposdecisionscers66_motifcernonvalid66_id_i
 -------------------------------------------------------------------------------------------------------------
 -- 20120322 : Ajout d'une valeur dans l'enum de position du CER
 -------------------------------------------------------------------------------------------------------------
-SELECT public.alter_enumtype ( 'TYPE_POSITIONCER', ARRAY['encours','attvalid','annule','fincontrat','encoursbilan','attrenouv','perime', 'nonvalide', 'attsignature'] );
+
+SELECT add_missing_table_field ('public', 'contratsinsertion', 'datenotification', 'DATE');
+
+ SELECT public.alter_enumtype ( 'TYPE_POSITIONCER', ARRAY['encours', 'attvalid', 'annule', 'fincontrat', 'encoursbilan', 'attrenouv', 'perime', 'nonvalide', 'attsignature', 'valid', 'nonvalid', 'validnotifie', 'nonvalidnotifie'] );
+ 
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

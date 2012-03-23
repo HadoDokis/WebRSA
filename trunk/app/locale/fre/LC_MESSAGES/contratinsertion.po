@@ -323,3 +323,21 @@ msgstr "Raison de l'annulation"
 
 msgid "Contratinsertion.datedecision"
 msgstr "Date de décision"
+
+msgid "Contratinsertion.datenotification"
+msgstr "Date de notification"
+
+msgid "Contratsinsertion::notification"
+msgstr "Envoi de la notification"
+
+msgid "ENUM::POSITIONCER::valid"
+msgstr "CER validé"
+
+msgid "ENUM::POSITIONCER::nonvalid"
+msgstr "CER non validé"
+
+msgid "ENUM::POSITIONCER::validnotifie"
+msgstr "CER validé et notifié"
+
+msgid "ENUM::POSITIONCER::nonvalidnotifie"
+msgstr "CER non validé et notifié"

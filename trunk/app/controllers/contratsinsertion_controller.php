@@ -438,6 +438,7 @@
 						'Contratinsertion.observ_ci',
 						'Contratinsertion.created',
 						'Contratinsertion.datevalidation_ci',
+						'Contratinsertion.datenotification',
 						'Contratinsertion.avenant_id',
 						'( SELECT COUNT(fichiersmodules.id) FROM fichiersmodules WHERE fichiersmodules.modele = \'Contratinsertion\' AND fichiersmodules.fk_value = "Contratinsertion"."id" ) AS "Fichiermodule__nbFichiersLies"'
 					),
@@ -1159,36 +1160,8 @@
 				// Si Contratinsertion.objetcerprecautre est disabled, on enregistre null
 				$this->data = Set::merge( array( 'Contratinsertion' => array( 'objetcerprecautre' => null ) ), $this->data );
 
-				$success = $this->Contratinsertion->save( $this->data );
-
-// 				if( $success ) {
-// 					$contratinsertion_id = $this->Contratinsertion->id;
-//
-// 					// Si on avat des entrées Objetcontratprecedent pour le CER, on commence par les supprimer
-// 					$recordFound = $this->Contratinsertion->Objetcontratprecedent->find(
-// 						'first',
-// 						array(
-// 							'conditions' => array( 'Objetcontratprecedent.contratinsertion_id' => $contratinsertion_id ),
-// 							'contain' => false
-// 						)
-// 					);
-// 					if( !empty( $recordFound ) ) {
-// 						$success = $this->Contratinsertion->Objetcontratprecedent->deleteAll(
-// 							array( 'Objetcontratprecedent.contratinsertion_id' => $contratinsertion_id )
-// 						) && $success;
-// 					}
-//
-// 					if ( isset( $this->data['Objetcontratprecedent']['Objetcontratprecedent'] ) && !empty( $this->data['Objetcontratprecedent']['Objetcontratprecedent'] ) ) {
-// 						foreach( $this->data['Objetcontratprecedent']['Objetcontratprecedent'] as $objet ) {
-// 							$objetcontratprecedant['Objetcontratprecedent'] = array(
-// 								'contratinsertion_id' => $contratinsertion_id,
-// 								'objetcerprec' => $objet
-// 							);
-// 							$this->Contratinsertion->Objetcontratprecedent->create( $objetcontratprecedant );
-// 							$success = $this->Contratinsertion->Objetcontratprecedent->save() && $success;
-// 						}
-// 					}
-// 				}
+				$this->Contratinsertion->create( $this->data );
+				$success = $this->Contratinsertion->save();
 
 				if( Configure::read( 'nom_form_ci_cg' ) != 'cg66' ) {
 					$dspStockees = $this->_getDsp( $personne_id );
@@ -1832,5 +1805,78 @@
 
 			$this->Gedooo->sendPdfContentToClient( $pdf, "{$contratinsertion_id}_nouveau.pdf" );
 		}
+
+		/**
+		*   Fonction permettant d'enregistrer la date de la notification  au bénéficiaire
+		*/
+		public function notification( $id ) {
+			$this->assert( !empty( $id ), 'error404' );
+
+			$this->Contratinsertion->begin();
+			$contratinsertion = $this->Contratinsertion->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Contratinsertion.id' => $id
+					),
+					'contain' => false
+				)
+			);
+
+			$this->assert( !empty( $contratinsertion ), 'invalidParameter' );
+			$this->set( 'contratinsertion', $contratinsertion );
+
+			$personne_id = $contratinsertion['Contratinsertion']['personne_id'];
+			$this->set( 'personne_id', $personne_id );
+
+			$dossier_id = $this->Contratinsertion->Personne->dossierId( $personne_id );
+			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
+
+			if ( !$this->Jetons->check( $dossier_id ) ) {
+				$this->Contratinsertion->rollback();
+			}
+			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
+
+			if( !empty( $this->data ) ) {
+				$datenotification = $this->data['Contratinsertion']['datenotification'];
+				$saved = $this->Contratinsertion->updateAll(
+					array( 'Contratinsertion.datenotification' => "'{$datenotification['year']}-{$datenotification['month']}-{$datenotification['day']}'" ),
+					array(
+						'"Contratinsertion"."personne_id"' => $personne_id,
+						'"Contratinsertion"."id"' => $id
+					)
+				);
+				if( $saved ){
+					$this->data['Contratinsertion']['decision_ci'] = $contratinsertion['Contratinsertion']['decision_ci'];
+					$this->data['Contratinsertion']['positioncer'] = $this->Contratinsertion->calculPosition( $this->data );
+					
+					$saved = $this->Contratinsertion->updateAll(
+						array( 'Contratinsertion.positioncer' => "'".$this->data['Contratinsertion']['positioncer']."'" ),
+						array(
+							'"Contratinsertion"."personne_id"' => $personne_id,
+							'"Contratinsertion"."id"' => $id
+						)
+					);
+				}
+// debug($this->data);
+				if( $saved ) {
+					$this->Jetons->release( $dossier_id );
+					$this->Contratinsertion->commit();
+					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+					$this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index', $personne_id ) );
+				}
+				else {
+					$this->Contratinsertion->rollback();
+					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+				}
+			}
+			else{ 
+				$this->data = $contratinsertion;
+			}
+
+			$this->set( 'urlmenu', '/contratsinsertion/index/'.$contratinsertion['Contratinsertion']['personne_id'] );
+			$this->render( $this->action, null, 'notification' );
+		}
+
 	}
 ?>

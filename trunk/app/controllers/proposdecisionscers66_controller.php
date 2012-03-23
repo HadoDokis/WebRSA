@@ -113,7 +113,7 @@
 					}
 					if( $saved ) {
 						$this->Jetons->release( $dossier_id );
-						$this->Propodecisioncer66->commit(); //FIXME
+						$this->Propodecisioncer66->commit();
 						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 						$this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index', $personne_id ) );
 					}
