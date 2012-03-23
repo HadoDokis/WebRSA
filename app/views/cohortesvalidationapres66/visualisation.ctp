@@ -98,7 +98,7 @@
             <tr>
                 <th>N° Demande APRE</th>
                 <th>Nom de l'allocataire</th>
-                <th>Commune de l'allocataire</th>
+                <th>Référent APRE</th>
                 <th>Date demande APRE</th>
                 <th>Etat du dossier</th>
                 <th>Décision</th>
@@ -139,8 +139,8 @@
                                 <td>'.h( $validationapre['Adresse']['codepos'] ).'</td>
                             </tr>
                             <tr>
-                                <th>Code INSEE</th>
-                                <td>'.h( $validationapre['Adresse']['numcomptt'] ).'</td>
+                                <th>Commune</th>
+                                <td>'.h( $validationapre['Adresse']['locaadr'] ).'</td>
                             </tr>
                         </tbody>
                     </table>';
@@ -150,7 +150,7 @@
 						array(
 							h( $validationapre['Apre66']['numeroapre'] ),
 							h( $validationapre['Personne']['nom_complet'] ),
-							h( $validationapre['Adresse']['locaadr'] ),
+							h( $validationapre['Referent']['nom_complet'] ),
 							h( date_short(  $validationapre['Aideapre66']['datedemande'] ) ),
 							h( Set::enum( Set::classicExtract( $validationapre, 'Apre66.etatdossierapre' ), $options['etatdossierapre'] ) ),
 							h( Set::enum( Set::classicExtract( $validationapre, 'Aideapre66.decisionapre' ), $optionsaideapre66['decisionapre'] ) ),
@@ -193,7 +193,7 @@
 		<li><?php
             echo $xhtml->printCohorteLink(
 				'Imprimer la cohorte',
-				array( 'controller' => 'cohortesvalidationapres66', 'action' => 'notificationsCohorte', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
+				array( 'controller' => 'cohortesvalidationapres66', 'action' => 'notificationsCohorte', $this->action, implode_assoc( '/', ':', array_unisize( $this->data ) ) )
 			);
         ?></li>
     </ul>
