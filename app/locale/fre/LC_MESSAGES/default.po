@@ -505,6 +505,9 @@ msgstr "Décision"
 
 msgid "Button::proposition"
 msgstr "Proposition de décision"
+
+msgid "Button::notification"
+msgstr "Notifier"
 ###############################################################################
 # Pagination
 # INFO: http://forum.cakephp-fr.org/viewtopic.php?id=878

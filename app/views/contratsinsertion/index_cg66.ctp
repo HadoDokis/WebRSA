@@ -48,7 +48,7 @@
 				<th>Décision</th>
 				<th>Date décision</th>
 				<th>Position du CER</th>
-				<th colspan="11" class="action">Actions</th>
+				<th colspan="12" class="action">Actions</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -64,7 +64,22 @@
 							$periodeblock = true;
 						}
 					}
-// debug( $contratinsertion );
+
+					$decision = Set::classicExtract( $decision_ci, Set::classicExtract( $contratinsertion, 'Contratinsertion.decision_ci' ) );
+					$position = Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' );
+
+					
+					$datenotif = Set::classicExtract( $contratinsertion, 'Contratinsertion.datenotification' );
+					if( empty( $datenotif ) ) {
+						$positioncer = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ), $options['positioncer'] );
+					}
+					else if( !empty( $datenotif ) && in_array( $position, array( 'nonvalidnotifie', 'validnotifie' ) ) ){
+						$positioncer = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ), $options['positioncer'] ).' le '.date_short( $datenotif );
+					}
+					else {
+						$positioncer = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ), $options['positioncer'] );
+					}
+
 					echo $xhtml->tableCells(
 						array(
 							h( Set::classicExtract( $forme_ci, Set::classicExtract( $contratinsertion, 'Contratinsertion.forme_ci' ) ) ),
@@ -72,9 +87,9 @@
 							h( date_short( Set::classicExtract( $contratinsertion, 'Contratinsertion.dd_ci' ) ) ),
 							h( date_short( Set::classicExtract( $contratinsertion, 'Contratinsertion.df_ci' ) ) ),
 							h( date_short( Set::classicExtract( $contratinsertion, 'Contratinsertion.date_saisi_ci' ) ) ),
-							h( Set::classicExtract( $decision_ci, Set::classicExtract( $contratinsertion, 'Contratinsertion.decision_ci' ) ) ),
+							h( $decision ),
 							h( date_short( Set::classicExtract( $contratinsertion, 'Contratinsertion.datedecision' ) ) ),
-							h( Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ), $options['positioncer'] ) ),
+							h( $positioncer ),
 
 							$default2->button(
 								'valider',
@@ -117,6 +132,16 @@
 								array(
 									'enabled' => (
 										( $permissions->check( 'proposdecisionscers66', 'proposition' ) == 1 )
+									)
+								)
+							),
+							$default2->button(
+								'notification',
+								array( 'controller' => 'contratsinsertion', 'action' => 'notification',
+								$contratinsertion['Contratinsertion']['id'] ),
+								array(
+									'enabled' => (
+										$permissions->check( 'contratsinsertion', 'notification' )
 									)
 								)
 							),
