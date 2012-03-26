@@ -27,7 +27,7 @@
 			echo $form->input( 'Personne.topvalec', array( 'label' => __d( 'personne', 'Personne.topvalec', true ) ) );
 			echo $form->input( 'Personne.numfixe', array( 'label' => __d( 'personne', 'Personne.numfixe', true ) ) );
 			echo $form->input( 'Personne.numport', array( 'label' => __d( 'personne', 'Personne.numport', true ) ) );
-                        echo $form->input( 'Personne.email', array( 'label' => __d( 'personne', 'Personne.email', true ) ) );
+			echo $form->input( 'Personne.email', array( 'label' => __d( 'personne', 'Personne.email', true ) ) );
 		?>
 </fieldset>
 
