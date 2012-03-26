@@ -278,23 +278,27 @@
 
 		public function qdProcesVerbal() {
 			return array(
-				'fields' => array(
-					'Sanctionrendezvousep58.id',
-					'Sanctionrendezvousep58.dossierep_id',
-					'Sanctionrendezvousep58.rendezvous_id',
-					'Sanctionrendezvousep58.commentaire',
-					'Sanctionrendezvousep58.created',
-					'Sanctionrendezvousep58.modified',
-					//
-					'Decisionsanctionrendezvousep58.id',
-					'Decisionsanctionrendezvousep58.etape',
-					'Decisionsanctionrendezvousep58.decision',
-					'Decisionsanctionrendezvousep58.commentaire',
-					'Decisionsanctionrendezvousep58.created',
-					'Decisionsanctionrendezvousep58.modified',
-					'Decisionsanctionrendezvousep58.raisonnonpassage',
-					'Decisionsanctionrendezvousep58.decision2',
-					'Decisionsanctionrendezvousep58.regularisation',
+				'fields' => array_merge(
+					$this->Rendezvous->fields(),
+					$this->Rendezvous->Statutrdv->StatutrdvTyperdv->fields(),
+					array(
+						'Sanctionrendezvousep58.id',
+						'Sanctionrendezvousep58.dossierep_id',
+						'Sanctionrendezvousep58.rendezvous_id',
+						'Sanctionrendezvousep58.commentaire',
+						'Sanctionrendezvousep58.created',
+						'Sanctionrendezvousep58.modified',
+						//
+						'Decisionsanctionrendezvousep58.id',
+						'Decisionsanctionrendezvousep58.etape',
+						'Decisionsanctionrendezvousep58.decision',
+						'Decisionsanctionrendezvousep58.commentaire',
+						'Decisionsanctionrendezvousep58.created',
+						'Decisionsanctionrendezvousep58.modified',
+						'Decisionsanctionrendezvousep58.raisonnonpassage',
+						'Decisionsanctionrendezvousep58.decision2',
+						'Decisionsanctionrendezvousep58.regularisation',
+					)
 				),
 				'joins' => array(
 					array(
@@ -314,6 +318,23 @@
 							'Decisionsanctionrendezvousep58.etape' => 'ep'
 						),
 					),
+					array(
+						'table'      => 'rendezvous',
+						'alias'      => 'Rendezvous',
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array( 'Sanctionrendezvousep58.rendezvous_id = Rendezvous.id' ),
+					),
+					array(
+						'table'      => 'statutsrdvs_typesrdv',
+						'alias'      => 'StatutrdvTyperdv',
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array(
+							'StatutrdvTyperdv.statutrdv_id = Rendezvous.statutrdv_id',
+							'StatutrdvTyperdv.typerdv_id = Rendezvous.typerdv_id'
+						),
+					)
 				)
 			);
 		}
