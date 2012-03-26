@@ -76,6 +76,9 @@ msgstr "Maintien dans le social"
 msgid "ENUM::THEMEEP::nonorientationsproseps93"
 msgstr "Parcours social sans réorientation"
 
+msgid "ENUM::THEMEEP::nonorientationsproseps66"
+msgstr "Maintien dans le social"
+
 msgid "ENUM::THEMEEP::regressionsorientationseps58"
 msgstr "Orientation du professionnel vers le social"
 
