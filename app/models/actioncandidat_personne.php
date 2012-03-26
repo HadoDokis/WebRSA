@@ -304,6 +304,7 @@
 					'ActioncandidatPersonne.typemobile',
 					'ActioncandidatPersonne.motifsortie_id',
 					'ActioncandidatPersonne.motifdemande',
+					'ActioncandidatPersonne.datesignature',
 					'Partenaire.libstruc',
 					'Partenaire.typevoie',
 					'Partenaire.numvoie',
