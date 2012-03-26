@@ -48,3 +48,15 @@ msgstr "Annulation sanction n°1"
 
 msgid "ENUM::REGULARISATION::annulation2"
 msgstr "Annulation sanction n°2"
+
+msgid "ENUM::DECISION2::maintien"
+msgstr "Maintien du droit"
+
+msgid "ENUM::DECISION2::sanction"
+msgstr "Sanction"
+
+msgid "ENUM::DECISION2::annule"
+msgstr "Annulé"
+
+msgid "ENUM::DECISION2::reporte"
+msgstr "Reporté"
