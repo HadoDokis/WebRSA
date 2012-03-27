@@ -1043,71 +1043,26 @@
 						'Adresse.complideadr',
 						'Adresse.locaadr',
 						'Adresse.numcomptt',
-						'Adresse.codepos'
+						'Adresse.codepos',
+						'Propodecisioncer66.isvalidcer',
 					)
 				),
 				'joins' => array(
-					array(
-						'table'      => 'personnes',
-						'alias'      => 'Personne',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( "Contratinsertion.personne_id = Personne.id" ),
-					),
-					array(
-						'table'      => 'referents',
-						'alias'      => 'Referent',
-						'type'       => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array( 'Referent.id = Contratinsertion.referent_id' ),
-					),
-					array(
-						'table'      => 'structuresreferentes',
-						'alias'      => 'Structurereferente',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Structurereferente.id = Contratinsertion.structurereferente_id' ),
-					),
-					array(
-						'table'      => 'foyers',
-						'alias'      => 'Foyer',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Personne.foyer_id = Foyer.id' )
-					),
-					array(
-						'table'      => 'dossiers',
-						'alias'      => 'Dossier',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Dossier.id = Foyer.dossier_id' )
-					),
-					array(
-						'table'      => 'adressesfoyers',
-						'alias'      => 'Adressefoyer',
-						'type'       => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array(
-							'Foyer.id = Adressefoyer.foyer_id',
-							'Adressefoyer.id IN (
-								'.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01('Adressefoyer.foyer_id').'
-							)'
-						)
-					),
-					array(
-						'table'      => 'adresses',
-						'alias'      => 'Adresse',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
-					)
+					$this->join( 'Personne' ),
+					$this->join( 'Propodecisioncer66' ),
+					$this->join( 'Referent', array( 'type'  => 'LEFT OUTER' ) ),
+					$this->join( 'Structurereferente' ),
+					$this->Personne->join( 'Foyer' ),
+					$this->Personne->Foyer->join( 'Dossier' ),
+					$this->Personne->Foyer->join( 'Adressefoyer', array( 'type'  => 'LEFT OUTER' ) ),
+					$this->Personne->Foyer->Adressefoyer->join( 'Adresse' )
 				),
 				'conditions' => array(
-					'Contratinsertion.id' => $contratinsertion_id
+					'Contratinsertion.id' => $contratinsertion_id,
+					'Adressefoyer.id IN ( '.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01('Adressefoyer.foyer_id').' )'
 				),
 				'recursive' => -1
 			);
-
 			$options = array(
 				'Referent' => array( 'qual' => ClassRegistry::init( 'Option' )->qual() ),
 				'Personne' => array( 'qual' => ClassRegistry::init( 'Option' )->qual() ),
@@ -1136,13 +1091,15 @@
 				)
 			);
 			$contratinsertion = Set::merge( $contratinsertion, $user );
-
+// debug($contratinsertion);
+// die();
 
 			$modelenotifdecision = '';
-			$decision = Set::classicExtract( $contratinsertion, 'Contratinsertion.decision_ci' );
+
+			$decision = Set::classicExtract( $contratinsertion, 'Propodecisioncer66.isvalidcer' );
 
 			if( !empty( $decision ) ) {
-				if( $decision == 'V' ) {
+				if( $decision == 'O' ) {
 					$modelenotifdecision = "valide";
 				}
 				else if( $decision == 'N' ) {
