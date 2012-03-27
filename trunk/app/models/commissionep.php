@@ -946,6 +946,15 @@
 		*/
 
 		protected function _qdFichesSynthetiques( $conditions ) {
+			// Permet d'obtenir une et une seule entrée de la table informationspe
+			$sqDerniereInformationpe = ClassRegistry::init( 'Informationpe' )->sqDerniere( 'Personne' );
+			$conditions[] = array(
+				'OR' => array(
+					"Informationpe.id IS NULL",
+					"Informationpe.id IN ( {$sqDerniereInformationpe} )"
+				)
+			);
+
 			return array(
 				'fields' => array(
 					'Dossierep.themeep',
