@@ -92,6 +92,7 @@
 			'%s/convocationep_beneficiaire_1er_passage.odt',
 			'%s/convocationep_beneficiaire_2eme_passage_suite_delai.odt',
 			'%s/convocationep_beneficiaire_2eme_passage_suite_report.odt',
+			'%s/convocationep_beneficiaire_2eme_passage_ppae_suite_reduction.odt',
 			'%s/convocationep_beneficiaire_2eme_passage.odt',
 			// Décision EP (décision CG)
 			'%s/decision_delai.odt',
@@ -721,9 +722,104 @@
 				return false;
 			}
 
-			// Choix du courrier, recherche du passage précédent si besoin.
+			// Si on est déja passés pour cette raison, on recherche la décision
+			$ancienPassage = array();
+			if( $gedooo_data['Nonrespectsanctionep93']['rgpassage'] > 1 ) {
+				$ancienPassage = $this->find(
+					'first',
+					array(
+						'fields' => array(
+							'Decisionnonrespectsanctionep93.id',
+							'Decisionnonrespectsanctionep93.etape',
+							'Decisionnonrespectsanctionep93.decision',
+							'Decisionnonrespectsanctionep93.montantreduction',
+							'Decisionnonrespectsanctionep93.dureesursis',
+							'Decisionnonrespectsanctionep93.commentaire',
+							'Decisionnonrespectsanctionep93.created',
+							'Decisionnonrespectsanctionep93.modified',
+							'Decisionnonrespectsanctionep93.passagecommissionep_id',
+							'Decisionnonrespectsanctionep93.raisonnonpassage',
+							'Decisionnonrespectsanctionep93.decisionpcg',
+							'Passagecommissionep.impressiondecision',
+						),
+						'conditions' => array(
+							'Nonrespectsanctionep93.sortienvcontrat' => 0,
+							'Nonrespectsanctionep93.active' => 0,
+							'Nonrespectsanctionep93.dossierep_id <>' => $gedooo_data['Nonrespectsanctionep93']['dossierep_id'],
+							'Nonrespectsanctionep93.propopdo_id' => $gedooo_data['Nonrespectsanctionep93']['propopdo_id'],
+							'Nonrespectsanctionep93.orientstruct_id' => $gedooo_data['Nonrespectsanctionep93']['orientstruct_id'],
+							'Nonrespectsanctionep93.contratinsertion_id' => $gedooo_data['Nonrespectsanctionep93']['contratinsertion_id'],
+							'Nonrespectsanctionep93.origine' => $gedooo_data['Nonrespectsanctionep93']['origine'],
+							'Nonrespectsanctionep93.historiqueetatpe_id' => $gedooo_data['Nonrespectsanctionep93']['historiqueetatpe_id'],
+						),
+						'joins' => array(
+							$this->join( 'Dossierep' ),
+							$this->Dossierep->join( 'Passagecommissionep' ),
+							$this->Dossierep->Passagecommissionep->join( 'Commissionep' ),
+							$this->Dossierep->Passagecommissionep->join( 'Decisionnonrespectsanctionep93' ),
+						),
+						'order' => array(
+							'Commissionep.dateseance DESC',
+							'Decisionnonrespectsanctionep93.etape DESC'
+						),
+						'contain' => false
+					)
+				);
+			}
+			$ancienneDecision = ( isset( $ancienPassage['Decisionnonrespectsanctionep93']['decision'] ) ? $ancienPassage['Decisionnonrespectsanctionep93']['decision'] : null );
+
+			// Quelle était le type de structure vers laquelle on était orienté ou dans laquelle on avait contractualisé ?
+			$emploi = false;
+			$origine = $gedooo_data['Nonrespectsanctionep93']['origine'];
+			if( in_array( $origine, array( 'orientstruct', 'contratinsertion' ) ) ) {
+				if( $origine == 'orientstruct' ) {
+					$lib_type_orient = $this->Orientstruct->find(
+						'first',
+						array(
+							'fields' => array(
+								'Typeorient.lib_type_orient'
+							),
+							'joins' =>array(
+								$this->Orientstruct->join( 'Typeorient' )
+							),
+							'contain' => false,
+							'conditions' => array(
+								'Orientstruct.id' => $gedooo_data['Nonrespectsanctionep93']['orientstruct_id']
+							)
+						)
+					);
+					$lib_type_orient = $lib_type_orient['Typeorient']['lib_type_orient'];
+				}
+				else {
+					$lib_type_orient = $this->Contratinsertion->find(
+						'first',
+						array(
+							'fields' => array(
+								'Typeorient.lib_type_orient'
+							),
+							'joins' =>array(
+								$this->Contratinsertion->join( 'Structurereferente' ),
+								$this->Contratinsertion->Structurereferente->join( 'Typeorient' ),
+							),
+							'contain' => false,
+							'conditions' => array(
+								'Contratinsertion.id' => $gedooo_data['Nonrespectsanctionep93']['contratinsertion_id']
+							)
+						)
+					);
+					$lib_type_orient = $lib_type_orient['Typeorient']['lib_type_orient'];
+				}
+				$emploi = preg_match( '/Emploi/i', $lib_type_orient );
+			}
+
+			// Choix du courrier
 			if( $gedooo_data['Nonrespectsanctionep93']['origine'] == 'radiepe' ) {
-				$modeleOdt = "{$this->alias}/convocationep_beneficiaire_radiepe.odt";
+				if( $ancienneDecision == '1reduction' ) {
+					$modeleOdt = "{$this->alias}/convocationep_beneficiaire_2eme_passage_ppae_suite_reduction.odt";
+				}
+				else {
+					$modeleOdt = "{$this->alias}/convocationep_beneficiaire_radiepe.odt";
+				}
 			}
 			else {
 				// Modèle de document à utiliser:
@@ -731,53 +827,14 @@
 					$modeleOdt = "{$this->alias}/convocationep_beneficiaire_1er_passage.odt";
 				}
 				else {
-					// On est déja passés pour cette raison et on recherche la décision -> FIXME: à vérifier
-					$ancienPassage = $this->find(
-						'first',
-						array(
-							'fields' => array(
-								'Decisionnonrespectsanctionep93.id',
-								'Decisionnonrespectsanctionep93.etape',
-								'Decisionnonrespectsanctionep93.decision',
-								'Decisionnonrespectsanctionep93.montantreduction',
-								'Decisionnonrespectsanctionep93.dureesursis',
-								'Decisionnonrespectsanctionep93.commentaire',
-								'Decisionnonrespectsanctionep93.created',
-								'Decisionnonrespectsanctionep93.modified',
-								'Decisionnonrespectsanctionep93.passagecommissionep_id',
-								'Decisionnonrespectsanctionep93.raisonnonpassage',
-								'Decisionnonrespectsanctionep93.decisionpcg',
-								'Passagecommissionep.impressiondecision',
-							),
-							'conditions' => array(
-								'Nonrespectsanctionep93.sortienvcontrat' => 0,
-								'Nonrespectsanctionep93.active' => 0,
-								'Nonrespectsanctionep93.dossierep_id <>' => $gedooo_data['Nonrespectsanctionep93']['dossierep_id'],
-								'Nonrespectsanctionep93.propopdo_id' => $gedooo_data['Nonrespectsanctionep93']['propopdo_id'],
-								'Nonrespectsanctionep93.orientstruct_id' => $gedooo_data['Nonrespectsanctionep93']['orientstruct_id'],
-								'Nonrespectsanctionep93.contratinsertion_id' => $gedooo_data['Nonrespectsanctionep93']['contratinsertion_id'],
-								'Nonrespectsanctionep93.origine' => $gedooo_data['Nonrespectsanctionep93']['origine'],
-								'Nonrespectsanctionep93.historiqueetatpe_id' => $gedooo_data['Nonrespectsanctionep93']['historiqueetatpe_id'],
-							),
-							'joins' => array(
-								$this->join( 'Dossierep' ),
-								$this->Dossierep->join( 'Passagecommissionep' ),
-								$this->Dossierep->Passagecommissionep->join( 'Commissionep' ),
-								$this->Dossierep->Passagecommissionep->join( 'Decisionnonrespectsanctionep93' ),
-							),
-							'order' => array(
-								'Commissionep.dateseance DESC',
-								'Decisionnonrespectsanctionep93.etape DESC'
-							),
-							'contain' => false
-						)
-					);
-
-					if( $ancienPassage['Decisionnonrespectsanctionep93']['decision'] == '1delai' ) {
+					if( $ancienneDecision == '1delai' ) {
 						$modeleOdt = "{$this->alias}/convocationep_beneficiaire_2eme_passage_suite_delai.odt";
 					}
-					else if( in_array( $ancienPassage['Decisionnonrespectsanctionep93']['decision'], array( '1pasavis', '2pasavis', 'reporte' ) ) ) {
+					else if( in_array( $ancienneDecision, array( '1pasavis', '2pasavis', 'reporte' ) ) ) {
 						$modeleOdt = "{$this->alias}/convocationep_beneficiaire_2eme_passage_suite_report.odt";
+					}
+					else if( $ancienneDecision == '1reduction' && $emploi ) {
+						$modeleOdt = "{$this->alias}/convocationep_beneficiaire_2eme_passage_ppae_suite_reduction.odt";
 					}
 					else { // 1reduction,1maintien,2suspensiontotale,2suspensionpartielle,2maintien,annule
 						$modeleOdt = "{$this->alias}/convocationep_beneficiaire_2eme_passage.odt";
@@ -790,9 +847,7 @@
 					$datas['options']['Decisionprecedente'] = $datas['options']['Decisionnonrespectsanctionep93'];
 				}
 			}
-// debug( $modeleOdt );
-// debug( $gedooo_data );
-// die();
+
 			return $this->ged(
 				$gedooo_data,
 				$modeleOdt,
