@@ -1837,6 +1837,11 @@
 			}
 			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
 
+			// Retour à l'index en cas d'annulation
+			if( isset( $this->params['form']['Cancel'] ) ) {
+				$this->redirect( array( 'action' => 'index', $personne_id ) );
+			}
+			
 			if( !empty( $this->data ) ) {
 				$datenotification = $this->data['Contratinsertion']['datenotification'];
 				$saved = $this->Contratinsertion->updateAll(
