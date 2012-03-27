@@ -111,10 +111,21 @@
 						$this->{$paramName} = ( in_array( $this->params[$paramName], array( 'true', 'false' ) ) ? ( $this->params[$paramName] == 'true' ) : $this->params[$paramName] );
 					}
 					else {
-						// FIXME: si on a d'autres paramètres ... à rendre générique
+						// TODO: si on a d'autres paramètres ... à rendre générique
 						$this->err( sprintf( "Veuillez entrer true ou false comme valeur du paramètre {$paramName} (valeur entrée: %s)", $this->params[$paramName] ) );
 						exit( 2 );
 					}
+				}
+			}
+
+			// Limit ?
+			if( isset( $this->params['limit'] ) ) {
+				if( preg_match( '/^[0-9]+$/', $this->params['limit'] ) ) {
+					$this->limit = $this->params['limit'];
+				}
+				else {
+					$this->error( "Veuillez entrer un nombre entier pour le paramètre -limit" );
+					exit( 2 );
 				}
 			}
 
@@ -181,10 +192,10 @@
 						INNER JOIN personnes ON ( orientsstructs.personne_id = personnes.id )
 						INNER JOIN calculsdroitsrsa ON ( orientsstructs.personne_id = calculsdroitsrsa.personne_id )
 					WHERE orientsstructs.propo_algo IS NULL
+						AND orientsstructs.date_propo IS NULL
 						AND calculsdroitsrsa.toppersdrodevorsa = '1'
 						AND orientsstructs.statut_orient <> 'Orienté'
 						".( !empty( $this->limit ) ? "LIMIT {$this->limit}" : "" );
-			// FIXME: force
 
 			//------------------------------------------------------------------
 
@@ -250,7 +261,7 @@
 				$compteur++;
 
 				if( ( $compteur % $periode ) == 0 ) {
-					$this->out( sprintf( "%s %% des personnes traitées (%s).", ( round( $compteur / $nPersonnes * 100 ) ), $compteur ) );
+					$this->out( sprintf( "%s %% des personnes traitées (%s).", ( number_format( $compteur / max( $nPersonnes, 1 ) * 100, 0 ) ), $compteur ) );
 				}
 			}
 
@@ -258,7 +269,7 @@
 
 			$taskEndTime = microtime( true );
 			$delta = $taskEndTime - $taskStartTime;
-			$this->out(  sprintf( "Temps de traitement: %s secondes (%s par itération)", number_format( $delta, 2 ), number_format( $delta / $nPersonnes, 4 ) ) );
+			$this->out(  sprintf( "Temps de traitement: %s secondes (%s par itération)", number_format( $delta, 2 ), number_format( $delta / max( $nPersonnes, 1 ), 4 ) ) );
 
 			//------------------------------------------------------------------
 

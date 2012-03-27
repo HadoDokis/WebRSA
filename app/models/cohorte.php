@@ -20,6 +20,12 @@
 
 			/// Inscription Pôle Emploi ?
 			$this->Informationpe = Classregistry::init( 'Informationpe' );
+
+			$conditions = $this->Informationpe->qdConditionsJoinPersonneOnValues( 'Informationpe', $element['Personne'] );
+
+			$sqDernierePourPersonne = $this->Informationpe->sqDernierePourPersonne( $element );
+			$conditions[] = "Informationpe.id IN ( {$sqDernierePourPersonne} )";
+
 			$informationpe = $this->Informationpe->find(
 				'first',
 				array(
@@ -33,7 +39,7 @@
 									ORDER BY "Historiqueetatpe"."date" DESC LIMIT 1
 						) AS "Historiqueetatpe__dernieretat"'
 					),
-					'conditions' => $this->Informationpe->qdConditionsJoinPersonneOnValues( 'Informationpe', $element['Personne'] ),
+					'conditions' => $conditions,
 					'contain' => false
 				)
 			);
@@ -201,7 +207,7 @@
 		/**
 		*
 		*/
-		public function sqPreorientationName( $allocataireIdAlias, $allocataireDtnaiAlias ) {
+		/*public function sqPreorientationName( $allocataireIdAlias, $allocataireDtnaiAlias ) {
 			return "(
 				SELECT
 						(
@@ -253,7 +259,7 @@
 								LIMIT 1
 					) AS infospreconisation
 			)";
-		}
+		}*/
 
 		/**
 		* Retourne une sous-requête permettant de savoir si une préorientation peut être
@@ -262,7 +268,7 @@
 		* @param string $allocataireIdAlias L'alias de l'allocataire (ex.: "Personne"."id")
 		* @return string
 		*/
-		public function sqPreorientationAllocataireCalculable( $allocataireIdAlias ) {
+		/*public function sqPreorientationAllocataireCalculable( $allocataireIdAlias ) {
 			return "(
 				SELECT
 						(
@@ -306,7 +312,7 @@
 								LIMIT 1
 					) AS infosalgorithme
 			)";
-		}
+		}*/
 
 		/**
 		* FIXME: remplacer la méthode search à terme
@@ -328,7 +334,7 @@
 					$conditions['Orientstruct.statut_orient'] = $enattente;
 				}
 
-				if( $statutOrientation == 'Calculables' ) {
+				/*if( $statutOrientation == 'Calculables' ) {
 					$conditions[] = $this->sqPreorientationAllocataireCalculable( '"Personne"."id"' );
 				}
 				else if( $statutOrientation == 'Non calculables' ) {
@@ -336,7 +342,8 @@
 				}
 				else {
 					$conditions[] = 'Orientstruct.statut_orient = \''.Sanitize::clean( $statutOrientation ).'\'';
-				}
+				}*/
+				$conditions[] = 'Orientstruct.statut_orient = \''.Sanitize::clean( $statutOrientation ).'\'';
 
 				if( $statutOrientation == 'Orienté' ) {
 					// INFO: nouvelle manière de générer les PDFs

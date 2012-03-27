@@ -166,7 +166,7 @@
 			if( !empty( $referentorientant_id ) ) {
 				$conditions[] = 'Orientstruct.referentorientant_id = \''.Sanitize::clean( suffix( $referentorientant_id ) ).'\'';
 			}
-			
+
 			// ... FIXME
 			if( !empty( $serviceinstructeur_id ) ) {
 
@@ -177,7 +177,7 @@
 				$conditions[] = 'PersonneReferent.referent_id = \''.Sanitize::clean( $referent_id ).'\'';
 			}
 
-			
+
 			$etatdossier = Set::extract( $criteres, 'Situationdossierrsa.etatdosrsa' );
 			if( isset( $criteres['Situationdossierrsa']['etatdosrsa'] ) && !empty( $criteres['Situationdossierrsa']['etatdosrsa'] ) ) {
 				$conditions[] = '( Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $etatdossier ).'\' ) )';
@@ -226,7 +226,16 @@
 					)';
 				}
 			}
-			
+
+			// Permet d'obtenir une et une seule entrée de la table informationspe
+			$sqDerniereInformationpe = ClassRegistry::init( 'Informationpe' )->sqDerniere( 'Personne' );
+			$conditions[] = array(
+				'OR' => array(
+					"Informationpe.id IS NULL",
+					"Informationpe.id IN ( {$sqDerniereInformationpe} )"
+				)
+			);
+
 			/// Requête
 			$Situationdossierrsa = ClassRegistry::init( 'Situationdossierrsa' );
 			$dbo = $this->getDataSource( $this->useDbConfig );

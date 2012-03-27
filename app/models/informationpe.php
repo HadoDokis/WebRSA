@@ -3,7 +3,7 @@
 	{
 		public $name = 'Informationpe';
 
-        public $recursive = -1;
+		public $recursive = -1;
 
 		public $hasMany = array(
 			'Historiqueetatpe' => array(
@@ -100,9 +100,9 @@
 		* @return array
 		*/
 		public function qdConditionsJoinPersonneOnValues( $informationpe, $values ) {
-                        $extractedNir = trim( Set::classicExtract( $values, 'nir' ) );
-                        $extractedNir = ( empty( $extractedNir ) ? null : substr( $extractedNir, 0, 13 ) );
 
+			$extractedNir = trim( Set::classicExtract( $values, 'nir' ) );
+			$extractedNir = ( empty( $extractedNir ) ? null : substr( $extractedNir, 0, 13 ) );
 			return array(
 				'OR' => array(
 					array(
@@ -158,6 +158,11 @@
 
 			// FIXME: seulement pour certains motifs
 			$queryData['conditions']['Historiqueetatpe.etat'] = 'radiation';
+
+			// Permet d'obtenir une et une seule entrée de la table informationspe
+			$sqDerniereInformationpe = $this->sqDerniere( 'Personne' );
+			$queryData['conditions'][] = "Informationpe.id IN ( {$sqDerniereInformationpe} )";
+
 			$queryData['order'] = array( 'Historiqueetatpe.date ASC' );
 
 			return $queryData;
@@ -254,6 +259,14 @@
 		*
 		*/
 		public function derniereInformation( $personne ) {
+			$conditions = $this->qdConditionsJoinPersonneOnValues( 'Informationpe', $personne['Personne'] );
+
+			// Permet d'obtenir une et une seule entrée de la table informationspe
+			$sqDerniereInformationpe = $this->sqDerniere( 'Personne' );
+			foreach( array( 'nom', 'prenom', 'dtnai', 'nir' ) as $field ) {
+				$sqDerniereInformationpe = str_replace( "\"Personne\".\"{$field}\"", "'{$personne['Personne'][$field]}'", $sqDerniereInformationpe );
+			}
+			$conditions[] = "Informationpe.id IN ( {$sqDerniereInformationpe} )";
 
 			$infope = $this->find(
 				'first',
@@ -264,10 +277,10 @@
 							'limit' => 1
 						)
 					),
-					'conditions' => $this->qdConditionsJoinPersonneOnValues( 'Informationpe', $personne['Personne'] )
+					'conditions' => $conditions
 				)
 			);
-// debug($infope);
+
 			return $infope;
 		}
 
@@ -298,6 +311,94 @@
 
 		public function checkConfigUpdateIntervalleDetectionNonInscritsPe() {
 			return $this->_checkSqlIntervalSyntax( Configure::read( 'Selectionnoninscritspe.intervalleDetection' ) );
+		}
+
+		/**
+		 * Retourne une sous-requête SQL permettant d'obtenir une et une seule entrée de
+		 * informationspe pour une personne donnée, compte tenu de l'entrée la plus récente
+		 * de historiqueetatspe.
+		 *
+		 * @param string $personneAlias L'alias de la table personnes sur lequel réaliser l'appariement
+		 * @return string
+		 */
+		public function sqDerniere( $personneAlias = 'Personne' ) {
+			$sqDernierhistoriqueetatspe = $this->Historiqueetatpe->sq(
+				array(
+					'alias' => 'dernierhistoriqueetatspe',
+					'fields' => array( 'dernierhistoriqueetatspe.id' ),
+					'conditions' => array(
+						'dernierhistoriqueetatspe.informationpe_id = i.id'
+					),
+					'order' => array( 'dernierhistoriqueetatspe.date DESC' ),
+					'limit' => 1
+				)
+			);
+
+			$sq = $this->sq(
+				array(
+					'alias' => 'i',
+					'fields' => array( 'i.id', 'h.date' ),
+					'joins' => array(
+						array_words_replace(
+							$this->join( 'Historiqueetatpe', array( 'type' => 'INNER' ) ),
+							array(
+								'Informationpe' => 'i',
+								'Historiqueetatpe' => 'h',
+							)
+						)
+					),
+					'conditions' => array(
+						'OR' => array(
+							array(
+								"i.nir IS NOT NULL",
+								"{$personneAlias}.nir IS NOT NULL",
+								"TRIM( BOTH ' ' FROM i.nir ) <> ''",
+								"TRIM( BOTH ' ' FROM {$personneAlias}.nir ) <> ''",
+								"SUBSTRING( i.nir FROM 1 FOR 13 ) = SUBSTRING( {$personneAlias}.nir FROM 1 FOR 13 )",
+								"i.dtnai = {$personneAlias}.dtnai",
+							),
+							array(
+								"i.nom IS NOT NULL",
+								"{$personneAlias}.nom IS NOT NULL",
+								"i.prenom IS NOT NULL",
+								"{$personneAlias}.prenom IS NOT NULL",
+								"TRIM( BOTH ' ' FROM i.nom ) <> ''",
+								"TRIM( BOTH ' ' FROM i.prenom ) <> ''",
+								"TRIM( BOTH ' ' FROM {$personneAlias}.nom ) <> ''",
+								"TRIM( BOTH ' ' FROM {$personneAlias}.prenom ) <> ''",
+								"TRIM( BOTH ' ' FROM i.nom ) = {$personneAlias}.nom",
+								"TRIM( BOTH ' ' FROM i.prenom ) = {$personneAlias}.prenom",
+								"i.dtnai = {$personneAlias}.dtnai",
+							),
+						),
+						"h.id IN ( {$sqDernierhistoriqueetatspe} )"
+					),
+				)
+			);
+
+			$sq = "SELECT \"derniereinformationspe\".\"i__id\" FROM ( {$sq} ) AS \"derniereinformationspe\" ORDER BY \"derniereinformationspe\".\"h__date\" DESC LIMIT 1";//FIXME
+
+			return $sq;
+		}
+
+		/**
+		 * Permet d'obtenir une et une seule entrée de la table informationspe pour une personne donnée.
+		 *
+		 * @param array $personne
+		 * @return string
+		 */
+		public function sqDernierePourPersonne( $personne ) {
+			$sqDerniereInformationpe = $this->sqDerniere( 'Personne' );
+
+			foreach( array( 'nom', 'prenom', 'dtnai', 'nir' ) as $field ) {
+				$sqDerniereInformationpe = str_replace(
+					"\"Personne\".\"{$field}\"",
+					"'".str_replace( "'", "\\'", $personne['Personne'][$field] )."'",
+					$sqDerniereInformationpe
+				);
+			}
+
+			return $sqDerniereInformationpe;
 		}
 
 		public function checkPostgresqlIntervals() {
