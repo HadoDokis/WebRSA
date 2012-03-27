@@ -137,17 +137,6 @@
 								)
 							),
 							$default2->button(
-								'notification',
-								array( 'controller' => 'contratsinsertion', 'action' => 'notification',
-								$contratinsertion['Contratinsertion']['id'] ),
-								array(
-									'enabled' => (
-										$permissions->check( 'contratsinsertion', 'notification' )
-										&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'annule' )
-									)
-								)
-							),
-							$default2->button(
 								'ficheliaisoncer',
 								array( 'controller' => 'contratsinsertion', 'action' => 'ficheliaisoncer',
 								$contratinsertion['Contratinsertion']['id'] ),
@@ -187,6 +176,17 @@
 								array(
 									'enabled' => (
 										( $permissions->check( 'contratsinsertion', 'impression' ) == 1 )
+										&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'annule' )
+									)
+								)
+							),
+							$default2->button(
+								'notification',
+								array( 'controller' => 'contratsinsertion', 'action' => 'notification',
+								$contratinsertion['Contratinsertion']['id'] ),
+								array(
+									'enabled' => (
+										$permissions->check( 'contratsinsertion', 'notification' )
 										&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'annule' )
 									)
 								)
