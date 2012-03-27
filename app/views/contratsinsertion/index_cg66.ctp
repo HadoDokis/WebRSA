@@ -64,7 +64,8 @@
 							$periodeblock = true;
 						}
 					}
-
+// debug($contratinsertion);
+// die();
 					$decision = Set::classicExtract( $decision_ci, Set::classicExtract( $contratinsertion, 'Contratinsertion.decision_ci' ) );
 					$position = Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' );
 
@@ -79,7 +80,9 @@
 					else {
 						$positioncer = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ), $options['positioncer'] );
 					}
-
+					
+					$isvalidcer = Set::classicExtract( $contratinsertion, 'Propodecisioncer66.isvalidcer' );
+// debug($isvalidcer);
 					echo $xhtml->tableCells(
 						array(
 							h( Set::classicExtract( $forme_ci, Set::classicExtract( $contratinsertion, 'Contratinsertion.forme_ci' ) ) ),
@@ -91,18 +94,7 @@
 							h( date_short( Set::classicExtract( $contratinsertion, 'Contratinsertion.datedecision' ) ) ),
 							h( $positioncer ),
 
-							$default2->button(
-								'valider',
-								array( 'controller' => 'contratsinsertion', 'action' => $action,
-								$contratinsertion['Contratinsertion']['id'] ),
-								array(
-									'enabled' => (
-											( $permissions->check( 'contratsinsertion', $action ) == 1 )
-											&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'fincontrat' )
-											&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'annule' )
-									)
-								)
-							),
+
 							$default2->button(
 								'view',
 								array( 'controller' => 'contratsinsertion', 'action' => 'view',
@@ -121,6 +113,7 @@
 									'enabled' => (
 										( $permissions->check( 'contratsinsertion', 'edit' ) == 1 )
 										&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'annule' )
+// 										&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.datenotification' ) != null )
 										&& ( !$periodeblock )
 									)
 								)
@@ -142,8 +135,9 @@
 								$contratinsertion['Contratinsertion']['id'] ),
 								array(
 									'enabled' => (
-										$permissions->check( 'contratsinsertion', 'ficheliaisoncer' )
+										( $permissions->check( 'contratsinsertion', 'ficheliaisoncer' ) == 1 )
 										&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'annule' )
+										&& ( !empty( $isvalidcer )  )
 									)
 								)
 							),
@@ -153,8 +147,9 @@
 								$contratinsertion['Contratinsertion']['id'] ),
 								array(
 									'enabled' => (
-										$permissions->check( 'contratsinsertion', 'notifbenef' )
+										( $permissions->check( 'contratsinsertion', 'notifbenef' ) == 1 )
 										&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'annule' )
+										&& ( !empty( $isvalidcer )  )
 									)
 								)
 							),
@@ -166,6 +161,7 @@
 									'enabled' => (
 										( $permissions->check( 'contratsinsertion', 'notificationsop' ) == 1 )
 										&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'annule' )
+										&& ( !empty( $isvalidcer ) && ( $isvalidcer != 'N' ) )
 									)
 								)
 							),
@@ -181,12 +177,24 @@
 								)
 							),
 							$default2->button(
+								'valider',
+								array( 'controller' => 'contratsinsertion', 'action' => $action,
+								$contratinsertion['Contratinsertion']['id'] ),
+								array(
+									'enabled' => (
+											( $permissions->check( 'contratsinsertion', $action ) == 1 )
+											&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'fincontrat' )
+											&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'annule' )
+									)
+								)
+							),
+							$default2->button(
 								'notification',
 								array( 'controller' => 'contratsinsertion', 'action' => 'notification',
 								$contratinsertion['Contratinsertion']['id'] ),
 								array(
 									'enabled' => (
-										$permissions->check( 'contratsinsertion', 'notification' )
+										( $permissions->check( 'contratsinsertion', 'notification' ) == 1 )
 										&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'annule' )
 									)
 								)

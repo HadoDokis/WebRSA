@@ -1,10 +1,10 @@
 <?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 <?php
 	if( Configure::read( 'nom_form_ci_cg' ) == 'cg66' ){
-		$this->pageTitle = 'Validation du CER '.Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.forme_ci'), $forme_ci);
+		$this->pageTitle = 'Décision du CER '.Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.forme_ci'), $forme_ci);
 	}
 	else{
-		$this->pageTitle = 'Validation du CER';
+		$this->pageTitle = 'Décision du CER';
 	}
 ?>
 <?php  echo $form->create( 'Contratinsertion',array( 'url' => Router::url( null, true ) ) ); ?>

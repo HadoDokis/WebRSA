@@ -422,25 +422,28 @@
 			$contratsinsertion = $this->Contratinsertion->find(
 				'all',
 				array(
-					'fields' => array(
-						'Contratinsertion.id',
-						'Contratinsertion.forme_ci',
-						'Contratinsertion.decision_ci',
-						'Contratinsertion.datedecision',
-						'Contratinsertion.structurereferente_id',
-						'Contratinsertion.referent_id',
-						'Contratinsertion.num_contrat',
-						'Contratinsertion.dd_ci',
-						'Contratinsertion.duree_engag',
-						'Contratinsertion.positioncer',
-						'Contratinsertion.df_ci',
-						'Contratinsertion.date_saisi_ci',
-						'Contratinsertion.observ_ci',
-						'Contratinsertion.created',
-						'Contratinsertion.datevalidation_ci',
-						'Contratinsertion.datenotification',
-						'Contratinsertion.avenant_id',
-						'( SELECT COUNT(fichiersmodules.id) FROM fichiersmodules WHERE fichiersmodules.modele = \'Contratinsertion\' AND fichiersmodules.fk_value = "Contratinsertion"."id" ) AS "Fichiermodule__nbFichiersLies"'
+					'fields' => array_merge(
+						$this->Contratinsertion->Propodecisioncer66->fields(),
+						array(
+							'Contratinsertion.id',
+							'Contratinsertion.forme_ci',
+							'Contratinsertion.decision_ci',
+							'Contratinsertion.datedecision',
+							'Contratinsertion.structurereferente_id',
+							'Contratinsertion.referent_id',
+							'Contratinsertion.num_contrat',
+							'Contratinsertion.dd_ci',
+							'Contratinsertion.duree_engag',
+							'Contratinsertion.positioncer',
+							'Contratinsertion.df_ci',
+							'Contratinsertion.date_saisi_ci',
+							'Contratinsertion.observ_ci',
+							'Contratinsertion.created',
+							'Contratinsertion.datevalidation_ci',
+							'Contratinsertion.datenotification',
+							'Contratinsertion.avenant_id',
+							'( SELECT COUNT(fichiersmodules.id) FROM fichiersmodules WHERE fichiersmodules.modele = \'Contratinsertion\' AND fichiersmodules.fk_value = "Contratinsertion"."id" ) AS "Fichiermodule__nbFichiersLies"'
+						)
 					),
 					'conditions' => array(
 						'Contratinsertion.personne_id' => $personne_id
@@ -449,7 +452,9 @@
 						'Contratinsertion.df_ci DESC',
 						'Contratinsertion.id DESC'
 					),
-					'recursive' => -1
+					'contain' => array(
+						'Propodecisioncer66'
+					)
 				)
 			);
 
