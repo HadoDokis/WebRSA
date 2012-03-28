@@ -34,7 +34,7 @@
 				implode( ' ', array( $dossiercov['Personne']['qual'], $dossiercov['Personne']['nom'], $dossiercov['Personne']['prenom'] ) ),
 				implode( ' ', array( $dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['numvoie'], isset( $typevoie[$dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie']] ) ? $typevoie[$dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie']] : null, $dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['nomvoie'] ) ),
 				$locale->date( __( 'Locale->date', true ), $dossiercov[$theme]['datedemande'] ),
-				Set::classicExtract( $referentsorientants, Set::classicExtract( $dossiercov, 'Propoorientationcov58.referentorientant_id' ) ),
+				Set::enum( Set::classicExtract( $dossiercov, 'Propoorientationcov58.referentorientant_id' ), $referentsorientants ),
 				implode( ' - ', Set::filter( array( $dossiercov['Propoorientationcov58']['Typeorient']['lib_type_orient'], $dossiercov['Propoorientationcov58']['Structurereferente']['lib_struc'], implode( ' ', Set::filter( array( $dossiercov['Propoorientationcov58']['Referent']['qual'], $dossiercov['Propoorientationcov58']['Referent']['nom'], $dossiercov['Propoorientationcov58']['Referent']['prenom'] ) ) ) ) ) ),
 
 				array(
