@@ -879,12 +879,16 @@
 		*	uniquement en cas de non validation du CER
 		*/
 
-		public function getPdfFicheliaisoncer( $contratinsertion_id ) {
+		public function getPdfFicheliaisoncer( $contratinsertion_id, $user_id ) {
 
 			$queryData = array(
 				'fields' => array_merge(
 					$this->fields(),
 					$this->Structurereferente->fields(),
+					$this->Propodecisioncer66->fields(),
+					array(
+						'( '.$this->Propodecisioncer66->Motifcernonvalid66->vfListeMotifs().' ) AS "Propodecisioncer66__motifscersnonvalids66"',
+					),
 					array(
 						'Referent.qual',
 						'Referent.nom',
@@ -913,63 +917,18 @@
 					)
 				),
 				'joins' => array(
-					array(
-						'table'      => 'personnes',
-						'alias'      => 'Personne',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( "Contratinsertion.personne_id = Personne.id" ),
-					),
-					array(
-						'table'      => 'referents',
-						'alias'      => 'Referent',
-						'type'       => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array( 'Referent.id = Contratinsertion.referent_id' ),
-					),
-					array(
-						'table'      => 'structuresreferentes',
-						'alias'      => 'Structurereferente',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Structurereferente.id = Contratinsertion.structurereferente_id' ),
-					),
-					array(
-						'table'      => 'foyers',
-						'alias'      => 'Foyer',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Personne.foyer_id = Foyer.id' )
-					),
-					array(
-						'table'      => 'dossiers',
-						'alias'      => 'Dossier',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Dossier.id = Foyer.dossier_id' )
-					),
-					array(
-						'table'      => 'adressesfoyers',
-						'alias'      => 'Adressefoyer',
-						'type'       => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array(
-							'Foyer.id = Adressefoyer.foyer_id',
-							'Adressefoyer.id IN (
-								'.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01('Adressefoyer.foyer_id').'
-							)'
-						)
-					),
-					array(
-						'table'      => 'adresses',
-						'alias'      => 'Adresse',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
-					)
+					$this->join( 'Personne' ),
+					$this->join( 'Propodecisioncer66' ),
+					$this->join( 'Referent', array( 'type'  => 'LEFT OUTER' ) ),
+					$this->join( 'Structurereferente' ),
+					$this->Personne->join( 'Foyer' ),
+					$this->Personne->Foyer->join( 'Dossier' ),
+					$this->Personne->Foyer->join( 'Adressefoyer', array( 'type'  => 'LEFT OUTER' ) ),
+					$this->Personne->Foyer->Adressefoyer->join( 'Adresse' )
 				),
 				'conditions' => array(
-					'Contratinsertion.id' => $contratinsertion_id
+					'Contratinsertion.id' => $contratinsertion_id,
+					'Adressefoyer.id IN ( '.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01('Adressefoyer.foyer_id').' )'
 				),
 				'recursive' => -1
 			);
@@ -984,14 +943,22 @@
 
 
 			$contratinsertion = $this->find( 'first', $queryData );
-			$referents = $this->Referent->find( 'list' );
-
 
 			$forme_ci = array( 'S' => 'Simple', 'C' => 'Particulier' );
 			$formeci = Set::classicExtract( $contratinsertion, 'Contratinsertion.forme_ci' );
 
 			$typestructure = Set::classicExtract( $contratinsertion, 'Structurereferente.typestructure' );
 
+			$user = $this->User->find(
+				'first',
+				array(
+					'conditions' => array(
+						'User.id' => $user_id
+					),
+					'contain' => false
+				)
+			);
+			$contratinsertion = Set::merge( $contratinsertion, $user );
 
 			if( $formeci == 'C' ) {
 				$modeleodt = "Contratinsertion/ficheliaisoncerParticulier.odt";

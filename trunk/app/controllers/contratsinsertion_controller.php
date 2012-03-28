@@ -1705,7 +1705,7 @@
 		public function ficheliaisoncer( $id ) {
 			$this->assert( !empty( $id ), 'error404' );
 
-			$pdf = $this->Contratinsertion->getPdfFicheliaisoncer( $id );
+			$pdf = $this->Contratinsertion->getPdfFicheliaisoncer( $id, $this->Session->read( 'Auth.User.id' ) );
 
 			if( $pdf ) {
 				$success = true;
