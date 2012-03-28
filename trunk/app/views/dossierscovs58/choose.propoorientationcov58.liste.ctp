@@ -20,7 +20,7 @@
 			'actions' => array( 'Personnes::view' ),
 			'id' => $theme,
 			'labelcohorte' => 'Enregistrer',
-			'cohortehidden' => array( 'Choose.theme' => array( 'value' => $theme ) ),
+			'cohortehidden' => array_merge( array( 'Choose.theme' => array( 'value' => $theme ), ), $dossiersIds ),
 			'trClass' => $trClass,
 		)
 	);
