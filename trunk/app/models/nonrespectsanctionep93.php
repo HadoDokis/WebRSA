@@ -1254,7 +1254,7 @@
 						),
 						'joins' => array(
 							$this->Dossierep->join( 'Nonrespectsanctionep93', array( 'type' => 'INNER' ) ),
-							$this->Dossierep->join( 'Passagecommissionep', array( 'type' => 'INNER' ) ),
+							$this->Dossierep->join( 'Passagecommissionep', array( 'type' => 'LEFT OUTER' ) ),
 						)
 					)
 				);
