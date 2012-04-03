@@ -89,49 +89,74 @@
 		public function ajaxpiece() { // FIXME
 			Configure::write( 'debug', 0 );
 
-                        $traitementpcg66_id = Set::extract( $this->data, 'Traitementpcg66.id' );
+			$traitementpcg66_id = Set::extract( $this->data, 'Traitementpcg66.id' );
 			$typecourrierpcg66_id = Set::extract( $this->data, 'Traitementpcg66.typecourrierpcg66_id' );
-//debug($this->data);
-                        if( !empty( $typecourrierpcg66_id ) ) {                            
-                            $piecetypecourrierpcg66 = $this->Traitementpcg66->Typecourrierpcg66->Piecetypecourrierpcg66->find(
-                                'list',
-                                array(
-                                    'conditions' => array(
-                                        'Piecetypecourrierpcg66.typecourrierpcg66_id' => $typecourrierpcg66_id
-                                    ),
-                                    'fields' => array( 'Piecetypecourrierpcg66.id', 'Piecetypecourrierpcg66.name' ),
-                                    'contain' => false
-                                )
-                            );
+
+			// Liste des modèles de courrier lié au type de courrier
+			if( !empty( $typecourrierpcg66_id ) ) {                            
+				$modeletypecourrierpcg66 = $this->Traitementpcg66->Typecourrierpcg66->Modeletypecourrierpcg66->find(
+					'list',
+					array(
+						'conditions' => array(
+							'Modeletypecourrierpcg66.typecourrierpcg66_id' => $typecourrierpcg66_id
+						),
+						'fields' => array( 'Modeletypecourrierpcg66.id', 'Modeletypecourrierpcg66.name' ),
+						'contain' => false
+					)
+				);
 			}
-                        
-                        if( !empty( $traitementpcg66_id ) ) {
-                            $data = $this->Traitementpcg66->Piecetraitementpcg66->find(
-                                'all',
-                                array(
-                                    'conditions' => array(
-                                        'Traitementpcg66.id' => $traitementpcg66_id
-                                    ),
-                                    'joins' => array(
-                                        $this->Traitementpcg66->Piecetraitementpcg66->join( 'Traitementpcg66' )
-                                    ),
-                                    'contain' => false
-                                )
-                            );
 
-                            $this->data = array();
-                            foreach( $data as $entry ) {
-                                $piecetraitementpcg66 = $entry['Piecetraitementpcg66'];
-                                $this->data['Piecetraitementpcg66'][$piecetraitementpcg66['piecetypecourrierpcg66_id']] = array(
-                                    'id' => $piecetraitementpcg66['id'],
-                                    'checked' => 1,
-                                    'piecetypecourrierpcg66_id' => $piecetraitementpcg66['piecetypecourrierpcg66_id'],
-                                    'commentaire' => $piecetraitementpcg66['commentaire']
-                                );
-                            }
-                        }
+			// Liste des pièces liées aux modèles de courrier
+			$listepieces = array();
+			if( !empty( $modeletypecourrierpcg66 ) ) {
+				foreach( $modeletypecourrierpcg66 as $i => $value ) {
+					$listepieces[$i] = $this->Traitementpcg66->Typecourrierpcg66->Modeletypecourrierpcg66->Piecemodeletypecourrierpcg66->find(
+						'list',
+						array(
+							'conditions' => array(
+								'Piecemodeletypecourrierpcg66.modeletypecourrierpcg66_id' => $i
+							)
+						)
+					);
+				}
+			}
+			$this->set( compact( 'listepieces') );
 
-                        $this->set( compact( 'piecetypecourrierpcg66') );
+			
+			if( !empty( $traitementpcg66_id ) ) {
+				$data = $this->Traitementpcg66->find(
+					'first',
+					array(
+						'conditions' => array(
+							'Traitementpcg66.id' => $traitementpcg66_id
+						),
+						'contain' => array(
+							'Modeletraitementpcg66' => array(
+								'Piecemodeletypecourrierpcg66'
+							)
+						)
+					)
+				);
+
+				
+				$this->data = array();
+				foreach( $data['Modeletraitementpcg66'] as $modeletraitementpcg66 ) {
+
+					$this->data['Modeletraitementpcg66'][$modeletraitementpcg66['modeletypecourrierpcg66_id']] = array(
+						'id' => $modeletraitementpcg66['id'],
+						'checked' => 1,
+						'modeletypecourrierpcg66_id' => $modeletraitementpcg66['modeletypecourrierpcg66_id'],
+						'commentaire' => $modeletraitementpcg66['commentaire']
+					);
+					
+					foreach( $modeletraitementpcg66['Piecemodeletypecourrierpcg66'] as $piecemodele ) {
+						$piecemodele['Mtpcg66Pmtcpcg66']['checked'] = true;
+						$this->data['Mtpcg66Pmtcpcg66'][$modeletraitementpcg66['modeletypecourrierpcg66_id']][$piecemodele['Mtpcg66Pmtcpcg66']['piecemodeletypecourrierpcg66_id']][] = $piecemodele['Mtpcg66Pmtcpcg66'];
+					}
+				}
+			}
+
+			$this->set( compact( 'modeletypecourrierpcg66') );
 			$this->render( 'ajaxpiece', 'ajax' );
 		}
 
@@ -472,24 +497,23 @@ SELECT
 			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
 
 			if( !empty( $this->data ) ){
-
-                            
+         
 				if( $this->Traitementpcg66->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
 					$saved = $this->Traitementpcg66->sauvegardeTraitement( $this->data );
+					if( $saved ) {
+						// Début sauvegarde des fichiers attachés, en utilisant le Component Fileuploader
+						$dir = $this->Fileuploader->dirFichiersModule( $this->action, $this->params['pass'][0] );
+						$saved = $this->Fileuploader->saveFichiers(
+							$dir,
+							!Set::classicExtract( $this->data, "Traitementpcg66.haspiecejointe" ),
+							( ( $this->action == 'add' ) ? $this->Traitementpcg66->id : $id )
+						) && $saved;
+						
 						if( $saved ) {
-							// Début sauvegarde des fichiers attachés, en utilisant le Component Fileuploader
-							$dir = $this->Fileuploader->dirFichiersModule( $this->action, $this->params['pass'][0] );
-							$saved = $this->Fileuploader->saveFichiers(
-								$dir,
-								!Set::classicExtract( $this->data, "Traitementpcg66.haspiecejointe" ),
-								( ( $this->action == 'add' ) ? $this->Traitementpcg66->id : $id )
-							) && $saved;
-
-							if( $saved ) {
 							$this->Jetons->release( $dossier_id );
 							$this->Traitementpcg66->commit();//FIXME -> arnaud
 							$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-							$this->redirect( array( 'controller' => 'traitementspcgs66', 'action' => 'index', $personne_id, $dossierpcg66_id ) );
+								$this->redirect( array( 'controller' => 'traitementspcgs66', 'action' => 'index', $personne_id, $dossierpcg66_id ) );
 						}
 						else {
 							$this->Traitementpcg66->rollback();

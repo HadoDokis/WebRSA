@@ -47,7 +47,23 @@
 				'deleteQuery' => '',
 				'insertQuery' => '',
 				'with' => 'Personnepcg66Situationpdo'
-			)
+			),// Test liaison avec modèletypecourrierpcg66
+// 			'Modeletypecourrierpcg66' => array(
+// 				'className' => 'Modeletypecourrierpcg66',
+// 				'joinTable' => 'modelestypescourrierspcgs66_situationspdos',
+// 				'foreignKey' => 'situationpdo_id',
+// 				'associationForeignKey' => 'modeletypecourrierpcg66_id',
+// 				'unique' => true,
+// 				'conditions' => '',
+// 				'fields' => '',
+// 				'order' => '',
+// 				'limit' => '',
+// 				'offset' => '',
+// 				'finderQuery' => '',
+// 				'deleteQuery' => '',
+// 				'insertQuery' => '',
+// 				'with' => 'Modeletypecourrierpcg66Situationpdo'
+// 			)
 		);
 
 		/**

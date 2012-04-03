@@ -1,18 +1,18 @@
 <?php
-    class Piecestypescourrierspcgs66Controller extends AppController
+    class Modelestypescourrierspcgs66Controller extends AppController
     {
-        public $name = 'Piecestypescourrierspcgs66';
+        public $name = 'Modelestypescourrierspcgs66';
         
         public $helpers = array( 'Default2' );
         
 		public $commeDroit = array(
-			'view' => 'Piecestypescourrierspcgs66:index',
-			'add' => 'Piecestypescourrierspcgs66:edit'
+			'view' => 'Modelestypescourrierspcgs66:index',
+			'add' => 'Modelestypescourrierspcgs66:edit'
 		);
 
-                protected function _setOptions() {
+		protected function _setOptions() {
 			$options = array();
-			$options[$this->modelClass]['typecourrierpcg66_id'] = $this->Piecetypecourrierpcg66->Typecourrierpcg66->find( 'list', array( 'fields' => array( 'id', 'name' ) ) );
+			$options[$this->modelClass]['typecourrierpcg66_id'] = $this->Modeletypecourrierpcg66->Typecourrierpcg66->find( 'list', array( 'fields' => array( 'id', 'name' ) ) );
 
 			$this->set( compact( 'options' ) );
 
@@ -20,17 +20,19 @@
 
         public function index() {
 			$queryData = array(
-				'Piecetypecourrierpcg66' => array(
+				'Modeletypecourrierpcg66' => array(
 					'fields' => array(
-						'Piecetypecourrierpcg66.id',
-						'Piecetypecourrierpcg66.name',
-                                                'Typecourrierpcg66.name'
+						'Modeletypecourrierpcg66.id',
+						'Modeletypecourrierpcg66.name',
+						'Modeletypecourrierpcg66.modeleodt',
+						'Typecourrierpcg66.name'
 					),
 					'contain' => array(
-                                            'Typecourrierpcg66'
-                                        ),
-					'group' => array(  'Piecetypecourrierpcg66.id', 'Piecetypecourrierpcg66.name', 'Piecetypecourrierpcg66.typecourrierpcg66_id', 'Typecourrierpcg66.id', 'Typecourrierpcg66.name' ),
-					'order' => array( 'Piecetypecourrierpcg66.name ASC' )
+						'Typecourrierpcg66'
+					),
+					'group' => array(  'Modeletypecourrierpcg66.id', 'Modeletypecourrierpcg66.name', 'Modeletypecourrierpcg66.modeleodt', 'Modeletypecourrierpcg66.typecourrierpcg66_id', 'Typecourrierpcg66.id', 'Typecourrierpcg66.name' ),
+					'order' => array( 'Modeletypecourrierpcg66.name ASC' ),
+					'limit' => 10
 				)
 			);
 

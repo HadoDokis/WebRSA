@@ -343,10 +343,13 @@
 		'cohortedossierpcg66' => 'cohortesdossierspcgs66',
 		'typersapcg66' => 'typesrsapcgs66',
 		'decisiondossierpcg66_typersapcg66' => 'decisionsdossierspcgs66_typesrsapcgs66',
-		'piecetypecourrierpcg66' => 'piecestypescourrierspcgs66',
+		'piecemodeletypecourrierpcg66' => 'piecesmodelestypescourrierspcgs66',
+		'modeletypecourrierpcg66' => 'modelestypescourrierspcgs66',
+		'modeletypecourrierpcg66_situationpdo' => 'modelestypescourrierspcgs66_situationspdos',
+		'modeletraitementpcg66' => 'modelestraitementspcgs66',
+		'mtpcg66_pmtcpcg66' => 'mtpcgs66_pmtcpcgs66',
 		'typecourrierpcg66' => 'typescourrierspcgs66',
 		'courrierpcg66' => 'courrierspcgs66',
-		'piecetraitementpcg66' => 'piecestraitementspcgs66',
 
 		// DSPS cg66
 		'coderomemetierdsp66' => 'codesromemetiersdsps66',

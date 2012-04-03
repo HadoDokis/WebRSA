@@ -26,10 +26,22 @@
 
 				echo $xhtml->tableCells(
 					array(
-						h( 'Pièces liées aux types de courriers' ),
+						h( 'Modèles liés aux types de courriers' ),
 						$xhtml->viewLink(
 							'Voir la table',
-							array( 'controller' => 'piecestypescourrierspcgs66', 'action' => 'index' )
+							array( 'controller' => 'modelestypescourrierspcgs66', 'action' => 'index' )
+						)
+					),
+					array( 'class' => 'odd' ),
+					array( 'class' => 'even' )
+				);
+
+				echo $xhtml->tableCells(
+					array(
+						h( 'Pièces liées aux modèles de courriers' ),
+						$xhtml->viewLink(
+							'Voir la table',
+							array( 'controller' => 'piecesmodelestypescourrierspcgs66', 'action' => 'index' )
 						)
 					),
 					array( 'class' => 'odd' ),

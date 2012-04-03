@@ -217,6 +217,102 @@ SELECT add_missing_table_field ('public', 'contratsinsertion', 'datenotification
 
  SELECT public.alter_enumtype ( 'TYPE_POSITIONCER', ARRAY['encours', 'attvalid', 'annule', 'fincontrat', 'encoursbilan', 'attrenouv', 'perime', 'nonvalide', 'attsignature', 'valid', 'nonvalid', 'validnotifie', 'nonvalidnotifie'] );
  
+ 
+ 
+-------------------------------------------------------------------------------------------------------------
+-- 20120402 : Ajout d'une table supplémentaire pour la liste des modèles liés aux types de courrier PCG66
+-------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------------------------------
+-- 20120402 : Ajout d'une table supplémentaire pour la liste des modèles liés aux types de courrier PCG66
+-------------------------------------------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS modelestypescourrierspcgs66 CASCADE;
+CREATE TABLE modelestypescourrierspcgs66 (
+  	id 				SERIAL NOT NULL PRIMARY KEY,
+	name                            VARCHAR(250) NOT NULL,
+	typecourrierpcg66_id            INTEGER NOT NULL REFERENCES typescourrierspcgs66(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	modeleodt			VARCHAR(250) NOT NULL,
+	created				TIMESTAMP WITHOUT TIME ZONE,
+	modified			TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE modelestypescourrierspcgs66 IS 'Modèles de courriers PCG (cg66)';
+DROP INDEX IF EXISTS modelestypescourrierspcgs66_typecourrierpcg66_id_idx;
+DROP INDEX IF EXISTS modelestypescourrierspcgs66_name_idx;
+DROP INDEX IF EXISTS modelestypescourrierspcgs66_modeleodt_idx;
+CREATE INDEX modelestypescourrierspcgs66_typecourrierpcg66_id_idx ON modelestypescourrierspcgs66(typecourrierpcg66_id);
+CREATE INDEX modelestypescourrierspcgs66_name_idx ON modelestypescourrierspcgs66(name);
+CREATE INDEX modelestypescourrierspcgs66_modeleodt_idx ON modelestypescourrierspcgs66(modeleodt);
+ 
+ 
+DROP TABLE IF EXISTS piecestypescourrierspcgs66 CASCADE;
+DROP TABLE IF EXISTS piecesmodelestypescourrierspcgs66 CASCADE;
+CREATE TABLE piecesmodelestypescourrierspcgs66 (
+  	id 				SERIAL NOT NULL PRIMARY KEY,
+	name                            VARCHAR(250) NOT NULL,
+	modeletypecourrierpcg66_id            INTEGER NOT NULL REFERENCES modelestypescourrierspcgs66(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	created				TIMESTAMP WITHOUT TIME ZONE,
+	modified			TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE piecesmodelestypescourrierspcgs66 IS 'Pièces pour les modèles de courriers PCG (cg66)';
+DROP INDEX IF EXISTS piecesmodelestypescourrierspcgs66_modeletypecourrierpcg66_id_idx;
+DROP INDEX IF EXISTS piecesmodelestypescourrierspcgs66_name_idx;
+CREATE INDEX piecesmodelestypescourrierspcgs66_modeletypecourrierpcg66_id_idx ON piecesmodelestypescourrierspcgs66(modeletypecourrierpcg66_id);
+CREATE INDEX piecesmodelestypescourrierspcgs66_name_idx ON piecesmodelestypescourrierspcgs66(name);
+
+
+DROP TABLE IF EXISTS piecestraitementspcgs66 CASCADE;
+DROP TABLE IF EXISTS modelestraitementspcgs66 CASCADE;
+CREATE TABLE modelestraitementspcgs66 (
+  	id 				SERIAL NOT NULL PRIMARY KEY,
+	traitementpcg66_id              INTEGER NOT NULL REFERENCES traitementspcgs66(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	modeletypecourrierpcg66_id       INTEGER NOT NULL REFERENCES modelestypescourrierspcgs66(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	commentaire                     TEXT DEFAULT NULL,
+	created				TIMESTAMP WITHOUT TIME ZONE,
+	modified			TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE modelestraitementspcgs66 IS 'Table de liaison entre les traitements PCG et les modèles de courrier PCG (cg66)';
+DROP INDEX IF EXISTS modelestraitementspcgs66_modeletypecourrierpcg66_id_idx;
+DROP INDEX IF EXISTS modelestraitementspcgs66_traitementpcg66_id_idx;
+CREATE INDEX modelestraitementspcgs66_modeletypecourrierpcg66_id_idx ON modelestraitementspcgs66(modeletypecourrierpcg66_id);
+CREATE INDEX modelestraitementspcgs66_traitementpcg66_id_idx ON modelestraitementspcgs66(traitementpcg66_id);
+
+
+
+DROP TABLE IF EXISTS modelestraitementspcgs66_piecesmodelestypescourrierspcgs66 CASCADE;
+DROP TABLE IF EXISTS mtpcgs66_pmtcpcgs66 CASCADE;
+CREATE TABLE mtpcgs66_pmtcpcgs66 (
+  	id 				SERIAL NOT NULL PRIMARY KEY,
+	modeletraitementpcg66_id              INTEGER NOT NULL REFERENCES modelestraitementspcgs66(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	piecemodeletypecourrierpcg66_id       INTEGER NOT NULL REFERENCES piecesmodelestypescourrierspcgs66(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	created				TIMESTAMP WITHOUT TIME ZONE,
+	modified			TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE mtpcgs66_pmtcpcgs66 IS 'Table de liaison pour stocker les pièces liées à un modèle d''un traitement  PCG (cg66) (NB normalement devrait porter le nom de modelestraitementspcgs66_piecesmodelestypescourrierspcgs66)';
+DROP INDEX IF EXISTS mtpcgs66_pmtcpcgs66_modeletraitementpcg66_id_idx;
+DROP INDEX IF EXISTS mtpcgs66_pmtcpcgs66_piecemodeletypecourrierpcg66_id_idx;
+CREATE INDEX mtpcgs66_pmtcpcgs66_modeletraitementpcg66_id_idx ON mtpcgs66_pmtcpcgs66(modeletraitementpcg66_id);
+CREATE INDEX mtpcgs66_pmtcpcgs66_piecemodeletypecourrierpcg66_id_idx ON mtpcgs66_pmtcpcgs66(piecemodeletypecourrierpcg66_id);
+
+DROP INDEX IF EXISTS modelestraitementspcgs66_piecesmodelestypescourrierspcgs66_piecemodeletypecourrierpcg66_id_idx;
+DROP INDEX IF EXISTS modelestraitementspcgs66_piecesmodelestypescourrierspcgs66_modeletraitementpcg66_id_idx;
+
+-------------------------------------------------------------------------------------------------------------
+-- 20120402 : Ajout d'une table supplémentaire pour la liste des modèles liés aux types de courrier PCG66
+-------------------------------------------------------------------------------------------------------------
+DROP TABLE IF EXISTS modelestypescourrierspcgs66_situationspdos;
+CREATE TABLE modelestypescourrierspcgs66_situationspdos (
+  	id 								SERIAL NOT NULL PRIMARY KEY,
+	modeletypecourrierpcg66_id           INTEGER NOT NULL REFERENCES modelestypescourrierspcgs66(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	situationpdo_id       	INTEGER NOT NULL REFERENCES situationspdos(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	created							TIMESTAMP WITHOUT TIME ZONE,
+	modified						TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE modelestypescourrierspcgs66_situationspdos IS 'Table de liaison entre les modèles de courriers PCGs et les motifs concernant la personne (PCG cg66)';
+DROP INDEX IF EXISTS modelestypescourrierspcgs66_situationspdos_modeletypecourrierpcg66_id_idx;
+DROP INDEX IF EXISTS modelestypescourrierspcgs66_situationspdos_situationpdo_id_idx;
+CREATE INDEX modelestypescourrierspcgs66_situationspdos_modeletypecourrierpcg66_id_idx ON modelestypescourrierspcgs66_situationspdos(modeletypecourrierpcg66_id);
+CREATE INDEX modelestypescourrierspcgs66_situationspdos_situationpdo_id_idx ON modelestypescourrierspcgs66_situationspdos(situationpdo_id);
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

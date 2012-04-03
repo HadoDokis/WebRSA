@@ -12,6 +12,18 @@
 			'add' => 'Situationspdos:edit'
 		);
 
+// 		protected function _setOptions() {
+// 			$modelelist = $this->Situationpdo->Modeletypecourrierpcg66->find(
+// 				'list',
+// 				array(
+// 					'fields' => array(
+// 						'Modeletypecourrierpcg66.id',
+// 						'Modeletypecourrierpcg66.name'
+// 					)
+// 				)
+// 			);
+// 			$this->set( 'modelelist', $modelelist );
+// 		}
 		/**
 		*   Ajout à la suite de l'utilisation des nouveaux helpers
 		*   - default.php
@@ -23,6 +35,7 @@
 				Inflector::tableize( $this->modelClass ),
 				$this->paginate( $this->modelClass )
 			);
+// 			$this->_setOptions();
 		}
 
 		/**
@@ -49,6 +62,7 @@
 
 		function _add_edit(){
 			$args = func_get_args();
+// 			$this->_setOptions();
 			$this->Default->{$this->action}( $args );
 		}
 

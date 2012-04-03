@@ -19,29 +19,29 @@ msgstr ""
 
 ###############################################################################
 
-msgid "Piecetypecourrierpcg66::index::empty"
+msgid "Piecemodeletypecourrierpcg66::index::empty"
 msgstr "Aucune pièce définie"
 
-msgid "Piecestypescourrierspcgs66::index"
+msgid "Piecesmodelestypescourrierspcgs66::index"
 msgstr "Intitulé des pièces liées au type de courrier"
 
-msgid "Piecestypescourrierspcgs66::add"
+msgid "Piecesmodelestypescourrierspcgs66::add"
 msgstr "Ajouter une pièce à un type de courrier"
 
-msgid "Piecestypescourrierspcgs66::edit"
+msgid "Piecesmodelestypescourrierspcgs66::edit"
 msgstr "Modifier la pièce"
 
-msgid "Piecestypescourrierspcgs66::delete"
+msgid "Piecesmodelestypescourrierspcgs66::delete"
 msgstr "Supprimer la pièce"
 
-msgid "Piecestypescourrierspcgs66::edit"
+msgid "Piecesmodelestypescourrierspcgs66::edit"
 msgstr "Modification de la pièce"
 
-msgid "Piecetypecourrierpcg66.name"
+msgid "Piecemodeletypecourrierpcg66.name"
 msgstr "Intitulé de la pièce"
 
-msgid "Piecetypecourrierpcg66.typecourrierpcg66_id"
+msgid "Piecemodeletypecourrierpcg66.typecourrierpcg66_id"
 msgstr "Type de courrier auquel la pièce est liée"
 
-msgid "Piecestypescourrierspcgs66::delete::confirm"
+msgid "Piecesmodelestypescourrierspcgs66::delete::confirm"
 msgstr "Confirmer la suppression ?"
