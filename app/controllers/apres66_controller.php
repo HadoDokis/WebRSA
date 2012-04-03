@@ -4,7 +4,7 @@
 		public $name = 'Apres66';
 		public $uses = array( 'Apre66', 'Aideapre66', 'Pieceaide66', 'Typeaideapre66', 'Themeapre66', 'Option', 'Personne', 'Prestation', 'Pieceaide66Typeaideapre66', 'Adressefoyer', 'Fraisdeplacement66',  'Structurereferente', 'Referent', 'Piececomptable66Typeaideapre66', 'Piececomptable66', 'Foyer' );
 		public $helpers = array( 'Default', 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml', 'Fileuploader', 'Default2' );
-		public $components = array( 'Default', 'Gedooo.Gedooo', 'Fileuploader' );
+		public $components = array( 'Default', 'Gedooo.Gedooo', 'Fileuploader', 'Email' );
 
 		public $commeDroit = array(
 			'view66' => 'Apres66:index',
@@ -869,6 +869,53 @@ die();
 				$this->Session->setFlash( 'Impossible de générer la notification d\'APRE.', 'default', array( 'class' => 'error' ) );
 				$this->redirect( $this->referer() );
 			}
+		}
+
+		/**
+		 * Permet d'envoyer un mail au référent de la demande d'APRE pour lui indiquer
+		 * qu'il manque des pièces à cette demande.
+		 *
+		 * @param integer $id
+		 */
+		public function maillink( $id = null ) {
+			$apre = $this->Apre66->find(
+				'first',
+				array(
+					'conditions' => array(
+						"Apre66.id" => $id
+					),
+					'contain' => array(
+						'Personne',
+						'Referent'
+					)
+				)
+			);
+
+			$this->assert( !empty( $apre ), 'error404' );
+
+			if( !isset( $apre['Referent']['email'] ) || empty( $apre['Referent']['email'] ) ) {
+				$this->Session->setFlash( "Mail non envoyé: adresse mail du référent ({$apre['Referent']['nom']} {$apre['Referent']['prenom']}) non renseignée.", 'flash/error' );
+				$this->redirect( $this->referer() );
+			}
+
+			$this->Email->reset();
+
+			$this->Email->smtpOptions = Configure::read( 'Email.smtpOptions' );
+			$this->Email->delivery = 'smtp';
+			$this->Email->from = Configure::read( 'Apre66.EmailPiecesmanquantes.from' );
+			$this->Email->replyto = Configure::read( 'Apre66.EmailPiecesmanquantes.replyto' );
+			$this->Email->to = $apre['Referent']['email'];
+			$this->Email->subject = "Demande d'Apre";
+			$mailBody = "Bonjour,\n\nle dossier de demande APRE de {$apre['Personne']['qual']} {$apre['Personne']['nom']} {$apre['Personne']['prenom']} ne peut être validé car les fichiers ne sont pas joints dans WEBRSA.\n\nLaurence COSTE.";
+
+			if( $this->Email->send( $mailBody ) ) {
+				$this->Session->setFlash( 'Mail envoyé', 'flash/success' );
+			}
+			else {
+				$this->Session->setFlash( 'Mail non envoyé', 'flash/error' );
+			}
+
+			$this->redirect( $this->referer() );
 		}
 	}
 ?>

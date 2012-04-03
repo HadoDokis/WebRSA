@@ -165,6 +165,9 @@ msgstr "Ajout/Édition d'une APRE"
 msgid "Apres66:notifications"
 msgstr "Notification d'APRE"
 
+msgid "Apres66:maillink"
+msgstr "Envoyer un mail au référent"
+
 ###############################################################################
 
 msgid "Module:ApresComitesapres"

@@ -1218,6 +1218,14 @@ td.button.deverseDO a, td.action a.deverseDO, td span.button.deverseDO, table.de
 td.button.deverseDO.disabled a, td.action a.deverseDO.disabled, td span.button.deverseDO.disabled, table.default2 td a.button.deverseDO.disabled {
     background-image: url( ../img/icons/plugin_disabled.png );
 }
+
+td.button.email a, td.action a.email, td span.button.email, table.default2 td a.button.email {
+    background-image: url( ../img/icons/email.png );
+}
+
+td.button.email.disabled a, td.action a.email.disabled, td span.button.email.disabled, table.default2 td a.button.email.disabled {
+    background-image: url( ../img/icons/email_disabled.png );
+}
 /**/
 
 td.boolean span, table tr:nth-child(2n) td.boolean span {
