@@ -317,4 +317,31 @@
 	 * 	Mise en place suite à la demande d'améliorations du 28/02/2012 ( #5630 )
 	 */
 	Configure::write( 'Chargeinsertion.Secretaire.group_id', array( 16, 7, 12 ) );
+
+	/**
+	 * Configuration du composant Email de CakePHP pour l'envoi de mails.
+	 * Ne pas oublier de configurer le fichier php.ini
+	 *
+	 * @see http://book.cakephp.org/1.2/en/view/481/Sending-A-Message-Using-SMTP
+	 */
+	Configure::write(
+		'Email',
+		array(
+			'smtpOptions' => array(
+				'port'=>'25',
+				'timeout'=>'30',
+				'host' => 'xxxxx.cgxxxx.fr',
+				'username'=>'',
+				'password'=>'',
+				'client' => 'smtp_helo_hostname'
+			)
+		)
+	);
+
+	/**
+	 * Configuration des adresses mails d'expéditeur pour l'envoi de mails concernant
+	 * les pièces manquantes de l'APRE (CG 66).
+	 */
+	Configure::write( 'Apre66.EmailPiecesmanquantes.from', 'emailaprefrom@cgxxxx.fr' );
+	Configure::write( 'Apre66.EmailPiecesmanquantes.replyto', Configure::read( 'Apre66.EmailPiecesmanquantes.from' ) );
 ?>
