@@ -35,15 +35,7 @@
 	?>
 
 	<?php
-		// Liste des motifs concernant la personne
-		echo $default->subform(
-			array(
-				'Traitementpcg66.personnepcg66_situationpdo_id' => array( 'type' => 'select', 'options' => $listeMotifs, 'empty' => true )
-			),
-			array(
-				'options' => $options
-			)
-		);
+
 		
 		// Liste des types de traitement
 		echo $xform->input( 'Traitementpcg66.typetraitement', array( 'type' => 'radio', 'options' => $options['Traitementpcg66']['typetraitement'], 'legend' => 'Type de traitement', 'empty' => true ) );
@@ -816,6 +808,15 @@
 	</script>
 
 	<?php
+		// Liste des motifs concernant la personne
+		echo $default->subform(
+			array(
+				'Traitementpcg66.personnepcg66_situationpdo_id' => array( 'type' => 'select', 'options' => $listeMotifs, 'empty' => true )
+			),
+			array(
+				'options' => $options
+			)
+		);
 		echo $default->subform(
 			array(
 				'Traitementpcg66.descriptionpdo_id' => array( 'type' => 'select' )
