@@ -200,8 +200,8 @@
 							$this->rejects[] = "{$line};{$errMsg}";
 						}
 						else if( $this->config['date'] && !preg_match( '/^[0-9]{2}\/[0-9]{2}\/[0-9]{4}$/i', $parts[$this->fields['date']], $matches ) ) {
-							$errMsg = "Erreur de format";
-							$this->err( "{$errMsg} (ligne {$nLigne}): \"{$parts[$this->fields['nudemrsa']]}\"" );
+							$errMsg = "Erreur de format de la date (on s'attend à JJ/MM/AAAA)";
+							$this->err( "{$errMsg} (ligne {$nLigne}): \"{$parts[$this->fields['date']]}\"" );
 							$this->rejects[] = "{$line};{$errMsg}";
 						}
 						else if( count( $parts ) == count( $this->fields ) ) {
