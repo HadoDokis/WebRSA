@@ -35,7 +35,17 @@
 	?>
 
 	<?php
-
+		// Liste des motifs concernant la personne
+		echo $default->subform(
+			array(
+				'Traitementpcg66.personnepcg66_situationpdo_id' => array( 'type' => 'select', 'options' => $listeMotifs, 'empty' => true )
+			),
+			array(
+				'options' => $options
+			)
+		);
+		
+		// Liste des types de traitement
 		echo $xform->input( 'Traitementpcg66.typetraitement', array( 'type' => 'radio', 'options' => $options['Traitementpcg66']['typetraitement'], 'legend' => 'Type de traitement', 'empty' => true ) );
 
 	?>
@@ -45,7 +55,7 @@
         <?php
             echo $ajax->remoteFunction(
                 array(
-                    'update' => 'Typecourrierpcg66Piecetypecourrierpcg66',
+                    'update' => 'Typecourrierpcg66Modeletypecourrierpcg66',
                     'url' => Router::url( array( 'action' => 'ajaxpiece' ), true ),
                     'with' => 'Form.serialize( $(\'traitementpcg66form\') )'
                 )
@@ -58,31 +68,31 @@
 		if ( isset( $listcourrier ) && !empty( $listcourrier ) ) { ?>
 		<fieldset id="filecontainer-courrier" class="noborder invisible">
 			<?php
-                            echo $default->subform(
-                                    array(
-                                        'Traitementpcg66.typecourrierpcg66_id' => array( 'type' => 'select' )
-                                    ),
-                                    array(
-                                            'options' => $options
-                                    )
-                            );
-                            
-                            echo $ajax->observeField(
-                                'Traitementpcg66Typecourrierpcg66Id',
-                                array(
-                                    'update' => 'Typecourrierpcg66Piecetypecourrierpcg66',
-                                    'url' => Router::url( array( 'action' => 'ajaxpiece' ), true ),
-                                    'with' => 'Form.serialize( $(\'traitementpcg66form\') )'
-                                )
-                            );
-                            
-                            echo $xhtml->tag(
-                                    'div',
-                                    ' ',
-                                    array(
-                                            'id' => 'Typecourrierpcg66Piecetypecourrierpcg66'
-                                    )
-                            );
+				echo $default->subform(
+						array(
+							'Traitementpcg66.typecourrierpcg66_id' => array( 'type' => 'select' )
+						),
+						array(
+								'options' => $options
+						)
+				);
+				
+				echo $ajax->observeField(
+					'Traitementpcg66Typecourrierpcg66Id',
+					array(
+						'update' => 'Typecourrierpcg66Modeletypecourrierpcg66',
+						'url' => Router::url( array( 'action' => 'ajaxpiece' ), true ),
+						'with' => 'Form.serialize( $(\'traitementpcg66form\') )'
+					)
+				);
+				
+				echo $xhtml->tag(
+						'div',
+						' ',
+						array(
+								'id' => 'Typecourrierpcg66Modeletypecourrierpcg66'
+						)
+				);
 			?>
 		</fieldset>
 	<?php } ?>
@@ -143,7 +153,7 @@
 		} );
 	</script>
 <?php
-		// Revenu
+		// Début fiche de calcul
 		echo "<fieldset id='fichecalcul' class='noborder invisible'><table>";
 
 			echo $default->subform(
@@ -775,6 +785,7 @@
 				'class'=>'noborder invisible'
 			)
 		);
+		// Fin fiche de calcul
 	?>
 
 	<fieldset>
@@ -805,53 +816,6 @@
 	</script>
 
 	<?php
-//		if ( !empty( $dossierpcg66['Dossierpcg66']['bilanparcours66_id'] ) ) {
-//			echo $default->subform(
-//				array(
-//					'Traitementpcg66.eplaudition' => array( 'type' => 'radio' )
-//				),
-//				array(
-//					'options' => $options
-//				)
-//			);
-//
-//			echo $xhtml->tag(
-//				'fieldset',
-//				$default->subform(
-//					array(
-//						'Traitementpcg66.compofoyerpcg66_id' => array( 'required' => true, 'type' => 'select', 'options' => $options['Traitementpcg66']['compofoyerpcg66_id'] ),
-//						'Traitementpcg66.recidive' => array( 'required' => true, 'type' => 'radio' )
-//					),
-//					array(
-//						'options' => $options
-//					)
-//				),
-//				array(
-//					'id' => 'fieldseteplaudition'
-//				)
-//			);
-//		}
-//		else {
-//			echo $default->subform(
-//				array(
-//					'Traitementpcg66.eplaudition' => array( 'type' => 'hidden', 'value' => '0' )
-//				)
-//			);
-//		}
-
-		// Liste des motifs concernant la personne
-		
-		echo $default->subform(
-			array(
-				'Traitementpcg66.personnepcg66_situationpdo_id' => array( 'type' => 'select', 'options' => $listeMotifs, 'empty' => true )
-			),
-			array(
-				'options' => $options
-			)
-		);
-
-
-
 		echo $default->subform(
 			array(
 				'Traitementpcg66.descriptionpdo_id' => array( 'type' => 'select' )

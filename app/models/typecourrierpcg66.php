@@ -18,7 +18,7 @@
 			)
 		);
                 
-                public $hasOne = array(
+		public $hasOne = array(
 			'Traitementpcg66' => array(
 				'className' => 'Traitementpcg66',
 				'foreignKey' => 'typecourrierpcg66_id',
@@ -34,9 +34,9 @@
 			)
 		);
                 
-                public $hasMany = array(
-			'Piecetypecourrierpcg66' => array(
-				'className' => 'Piecetypecourrierpcg66',
+		public $hasMany = array(
+			'Modeletypecourrierpcg66' => array(
+				'className' => 'Modeletypecourrierpcg66',
 				'foreignKey' => 'typecourrierpcg66_id',
 				'dependent' => true,
 				'conditions' => '',
