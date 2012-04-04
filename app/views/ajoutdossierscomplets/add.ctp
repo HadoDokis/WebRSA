@@ -22,7 +22,7 @@
 					'Personne.qual' => array( 'required' => true, 'type' => 'select', 'options' => $options['qual'] ),
 					'Personne.nom' => array( 'required' => true ),
 					'Personne.prenom' => array( 'required' => true ),
-					'Personne.dtnai' => array( 'required' => false, 'type' => 'date', 'maxYear' => date('Y') ),
+					'Personne.dtnai' => array( 'required' => false, 'type' => 'date', 'minYear' => date('Y')-100, 'maxYear' => date('Y') ),
 					'Personne.nir'
 				)
 			);
