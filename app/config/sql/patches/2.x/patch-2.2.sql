@@ -128,7 +128,7 @@ CREATE INDEX piecestypescourrierspcgs66_name_idx ON piecestypescourrierspcgs66(n
 SELECT add_missing_table_field ('public', 'traitementspcgs66', 'typecourrierpcg66_id', 'INTEGER');
 SELECT add_missing_constraint ('public', 'traitementspcgs66', 'traitementspcgs66_typecourrierpcg66_id_fkey', 'typescourrierspcgs66', 'typecourrierpcg66_id');
 DROP INDEX IF EXISTS traitementspcgs66_typecourrierpcg66_id_idx;
-CREATE UNIQUE INDEX traitementspcgs66_typecourrierpcg66_id_idx ON traitementspcgs66 (typecourrierpcg66_id);
+
 -------------------------------------------------------------------------------------------------------------
 -- 20120301 : Ajout d'une table de liaison entre la table traitementspcgs66 et la table piecestypescourrierspcgs66
 -------------------------------------------------------------------------------------------------------------
