@@ -250,13 +250,13 @@
 				'fields' => '',
 				'order' => ''
 			),
-// 			'Traitementtypepdo' => array(
-// 				'className' => 'Traitementtypepdo',
-// 				'foreignKey' => 'traitementtypepdo_id',
-// 				'conditions' => '',
-// 				'fields' => '',
-// 				'order' => ''
-// 			),
+			'User' => array(
+				'className' => 'User',
+				'foreignKey' => 'user_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
 			'Compofoyerpcg66' => array(
 				'className' => 'Compofoyerpcg66',
 				'foreignKey' => 'compofoyerpcg66_id',
@@ -472,7 +472,6 @@
 					}
 				}
 
-debug($success); 
 				// Suppression des ids décochés
 				if( !empty( $idsModelestraitementspcgs66ASupprimer ) ) {
 					$success = $this->Modeletraitementpcg66->deleteAll(
@@ -491,7 +490,7 @@ debug($success);
 		* Récupère les données pour le PDf
 		*/
 
-		public function getPdfDecision( $id ) {
+		public function getPdfFichecalcul( $id ) {
 			// TODO: error404/error500 si on ne trouve pas les données
 			$optionModel = ClassRegistry::init( 'Option' );
 			$qual = $optionModel->qual();
@@ -626,5 +625,102 @@ debug($success);
 			);
 		}
 
+
+		/**
+		* Récupère les données pour le PDf
+		*/
+
+		public function getPdfModeleCourrier( $id, $user_id) {
+		
+			$joins = array(
+				$this->join( 'Personnepcg66' ),
+				$this->Personnepcg66->join( 'Personnepcg66Situationpdo' ),
+				$this->Personnepcg66->join( 'Dossierpcg66' ),
+				$this->Personnepcg66->join( 'Personne' ),
+				$this->Personnepcg66->Dossierpcg66->join( 'Foyer' ),
+				$this->Personnepcg66->Dossierpcg66->Foyer->join( 'Dossier' ),
+				$this->Personnepcg66->Dossierpcg66->Foyer->join( 'Adressefoyer' ),
+				$this->Personnepcg66->Dossierpcg66->Foyer->Adressefoyer->join( 'Adresse' ),
+				$this->join( 'Modeletraitementpcg66' ),
+				$this->Modeletraitementpcg66->join( 'Modeletypecourrierpcg66' )
+			);
+
+			$conditions = array(
+				'Traitementpcg66.id' => $id,
+				'Adressefoyer.rgadr' => '01'
+			);
+			
+			$queryData = array(
+				'fields' => array_merge(
+					$this->fields(),
+					$this->Modeletraitementpcg66->fields(),
+					$this->Modeletraitementpcg66->Modeletypecourrierpcg66->fields(),
+					array(
+						'( '.$this->Modeletraitementpcg66->Piecemodeletypecourrierpcg66->vfListeMotifs().' ) AS "Modeletraitementpcg66__piecesmodeletypecourrierpcg66"',
+					),
+					array(
+						'Adresse.numvoie',
+						'Adresse.typevoie',
+						'Adresse.nomvoie',
+						'Adresse.complideadr',
+						'Adresse.compladr',
+						'Adresse.lieudist',
+						'Adresse.numcomrat',
+						'Adresse.numcomptt',
+						'Adresse.codepos',
+						'Adresse.locaadr',
+						'Adresse.pays',
+						'Dossier.numdemrsa',
+						'Dossier.dtdemrsa',
+						'Dossier.matricule',
+						'Personne.qual',
+						'Personne.nom',
+						'Personne.prenom',
+						'Personne.dtnai',
+						'Personne.nir',
+					)
+				),
+				'joins' => $joins,
+				'conditions' => $conditions,
+				'contain' => false
+			);
+
+			
+			$data = $this->find( 'first', $queryData );
+
+// 			$data['Personne']['qual'] = Set::enum( $data['Personne']['qual'], $qual );
+// 			$data['Adresse']['typevoie'] = Set::enum( $data['Adresse']['typevoie'], $typevoie );
+// 
+
+			$user = $this->User->find(
+				'first',
+				array(
+					'conditions' => array(
+						'User.id' => $user_id
+					),
+					'contain' => false
+				)
+			);
+			$data = Set::merge( $data, $user );
+
+			$modeleodtname = Set::classicExtract( $data, 'Modeletypecourrierpcg66.modeleodt' );
+
+			$options = array(
+				'Personne' => array( 'qual' => ClassRegistry::init( 'Option' )->qual() ),
+				'Adresse' => array( 'typevoie' => ClassRegistry::init( 'Option' )->typevoie() ),
+				'type' => array( 'voie' => ClassRegistry::init( 'Option' )->typevoie() )
+			);
+			$options = Set::merge( $options, $this->enums() );
+// debug($data);
+// debug($modeleodtname);
+// die();
+
+			return $this->ged(
+				array( $data ),
+				"PCG66/Traitementpcg66/{$modeleodtname}.odt",
+				true,
+				$options
+			);
+		}
 	}
 ?>

@@ -789,13 +789,32 @@ SELECT
 
 			$this->assert( !empty( $id ), 'error404' );
 
-			$pdf = $this->Traitementpcg66->getPdfDecision( $id );
+			$pdf = $this->Traitementpcg66->getPdfFichecalcul( $id );
 
 			if( $pdf ) {
 				$this->Gedooo->sendPdfContentToClient( $pdf, 'Décision' );
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer la fiche de calcul', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
+			}
+		}
+
+		
+		/**
+		*   Enregistrement du modèle de document lié au type de courrier lors de l'enregistrement du traitement
+		*/
+		public function printModeleCourrier( $id ){
+
+			$this->assert( !empty( $id ), 'error404' );
+
+			$pdf = $this->Traitementpcg66->getPdfModeleCourrier( $id , $this->Session->read( 'Auth.User.id' ) );
+
+			if( $pdf ) {
+				$this->Gedooo->sendPdfContentToClient( $pdf, 'ModeleCourrier' );
+			}
+			else {
+				$this->Session->setFlash( 'Impossible de générer le modèle de courrier', 'default', array( 'class' => 'error' ) );
 				$this->redirect( $this->referer() );
 			}
 		}

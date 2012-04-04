@@ -1218,6 +1218,13 @@ td.button.deverseDO a, td.action a.deverseDO, td span.button.deverseDO, table.de
 td.button.deverseDO.disabled a, td.action a.deverseDO.disabled, td span.button.deverseDO.disabled, table.default2 td a.button.deverseDO.disabled {
     background-image: url( ../img/icons/plugin_disabled.png );
 }
+/* Bouton pour imprimer les modèles de courrier d'un traitement PCG CG66*/
+td.button.printModeleCourrier a, td.action a.printModeleCourrier, td span.button.printModeleCourrier, table.default2 td a.button.printModeleCourrier {
+    background-image: url( ../img/icons/printer.png );
+}
+td.button.printModeleCourrier.disabled a, td.action a.printModeleCourrier.disabled, td span.button.printModeleCourrier.disabled, table.default2 td a.button.printModeleCourrier.disabled {
+    background-image: url( ../img/icons/printer_disabled.png );
+}
 
 td.button.email a, td.action a.email, td span.button.email, table.default2 td a.button.email {
     background-image: url( ../img/icons/email.png );

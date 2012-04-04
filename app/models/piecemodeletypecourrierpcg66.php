@@ -46,5 +46,46 @@
 				'with' => 'Mtpcg66Pmtcpcg66'
 			)
 		);    
+		
+		/**
+		 * Retourne une sous-requête permettant d'obtenir la liste des pièces liées
+		 * au modèle de courrier des traitements PCGs 66.
+		 * Les éléments de la liste sont triés et préfixés par une
+		 * chaîne de caractères.
+		 *
+		 * @param string $aideapre66Id
+		 * @param string $prefix
+		 * @return string
+		 */
+		public function vfListeMotifs( $modeletraitementpcg66_id = 'Modeletraitementpcg66.id', $prefix = '\\n\r-' ) {
+			$alias = Inflector::tableize( $this->alias );
+
+			$sq = $this->sq(
+				array(
+					'alias' => $alias,
+					'fields' => array(
+						"'{$prefix}' || \"{$alias}\".\"name\" AS \"{$alias}__name\""
+					),
+					'contain' => false,
+					'joins' => array(
+						array_words_replace(
+							$this->join( 'Mtpcg66Pmtcpcg66', array( 'type' => 'INNER' ) ),
+							array(
+								'Mtpcg66Pmtcpcg66' => 'mtpcgs66_pmtcpcgs66',
+								'Piecemodeletypecourrierpcg66' => 'piecesmodelestypescourrierspcgs66'
+							)
+						),
+					),
+					'conditions' => array(
+						"mtpcgs66_pmtcpcgs66.modeletraitementpcg66_id = {$modeletraitementpcg66_id}"
+					),
+					'order' => array(
+						"{$alias}.name ASC"
+					)
+				)
+			);
+
+			return "ARRAY_TO_STRING( ARRAY( {$sq} ), '' )";
+		}
 	}
 ?>
