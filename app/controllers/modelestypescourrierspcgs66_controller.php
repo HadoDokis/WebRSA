@@ -31,7 +31,7 @@
 						'Typecourrierpcg66'
 					),
 					'group' => array(  'Modeletypecourrierpcg66.id', 'Modeletypecourrierpcg66.name', 'Modeletypecourrierpcg66.modeleodt', 'Modeletypecourrierpcg66.typecourrierpcg66_id', 'Typecourrierpcg66.id', 'Typecourrierpcg66.name' ),
-					'order' => array( 'Modeletypecourrierpcg66.name ASC' ),
+					'order' => array( 'Typecourrierpcg66.name ASC' ),
 					'limit' => 10
 				)
 			);
