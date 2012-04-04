@@ -639,15 +639,15 @@
 				$this->Personnepcg66->join( 'Personne' ),
 				$this->Personnepcg66->Dossierpcg66->join( 'Foyer' ),
 				$this->Personnepcg66->Dossierpcg66->Foyer->join( 'Dossier' ),
-				$this->Personnepcg66->Dossierpcg66->Foyer->join( 'Adressefoyer' ),
-				$this->Personnepcg66->Dossierpcg66->Foyer->Adressefoyer->join( 'Adresse' ),
+				$this->Personnepcg66->Dossierpcg66->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
+				$this->Personnepcg66->Dossierpcg66->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
 				$this->join( 'Modeletraitementpcg66' ),
 				$this->Modeletraitementpcg66->join( 'Modeletypecourrierpcg66' )
 			);
 
 			$conditions = array(
 				'Traitementpcg66.id' => $id,
-				'Adressefoyer.rgadr' => '01'
+// 				'Adressefoyer.rgadr' => '01'
 			);
 			
 			$queryData = array(
