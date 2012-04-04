@@ -40,8 +40,8 @@ msgstr "Modification de la pièce"
 msgid "Piecemodeletypecourrierpcg66.name"
 msgstr "Intitulé de la pièce"
 
-msgid "Piecemodeletypecourrierpcg66.typecourrierpcg66_id"
-msgstr "Type de courrier auquel la pièce est liée"
+msgid "Piecemodeletypecourrierpcg66.modeletypecourrierpcg66_id"
+msgstr "Modèle de courrier auquel la pièce est liée"
 
 msgid "Piecesmodelestypescourrierspcgs66::delete::confirm"
 msgstr "Confirmer la suppression ?"
