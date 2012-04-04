@@ -6,10 +6,18 @@
 <ul class="actionMenu">
 	<?php
 		if( $permissions->check( 'ajoutdossiers', 'wizard' ) ) {
-			echo '<li>'.$xhtml->addLink(
-				'Ajouter un dossier',
-				array( 'controller' => 'ajoutdossiers', 'action' => 'wizard' )
-			).' </li>';
+			if( Configure::read( 'Cg.departement' ) == 66 ) {
+				echo '<li>'.$xhtml->addLink(
+					'Ajouter un dossier',
+					array( 'controller' => 'ajoutdossierscomplets', 'action' => 'add' )
+				).' </li>';
+			}
+			else {
+				echo '<li>'.$xhtml->addLink(
+					'Ajouter un dossier',
+					array( 'controller' => 'ajoutdossiers', 'action' => 'wizard' )
+				).' </li>';
+			}
 		}
 
 		if( $permissions->check( 'dossierssimplifies', 'add' ) ) {
