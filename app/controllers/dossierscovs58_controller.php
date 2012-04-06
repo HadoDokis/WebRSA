@@ -24,10 +24,8 @@
 		*/
 
 		public function choose( $cov58_id ) {
-			
 			$this->Dossiercov58->begin();
 			if( $this->Jetonsfonctions->get( $this->name, __FUNCTION__ ) ) {
-
 				$cov58 = $this->Dossiercov58->Passagecov58->Cov58->find(
 					'first',
 					array(
@@ -41,7 +39,7 @@
 						)
 					)
 				);
-				
+
 
 				$conditionsAdresses = array( 'OR' => array() );
 				// Début conditions zones géographiques CG 58 et CG 93
@@ -57,7 +55,7 @@
 					}
 				}
 				// Fin conditions zones géographiques
-				
+
 				if( in_array( $cov58['Cov58']['etatcov'], array( 'traite', 'finalise' ) ) ) {
 					$this->Session->setFlash( 'Impossible d\'attribuer des dossiers à une COV lorsque celle-ci comporte déjà des avis ou des décisions.', 'default', array( 'class' => 'error' ) );
 					$this->Dossiercov58->rollback();
@@ -65,7 +63,6 @@
 				}
 
 				if( !empty( $this->data ) ) {
-
 					$ajouts = array();
 					$suppressions = array();
 					$dossiersIds = array();
@@ -99,7 +96,7 @@
 
 					if( $success ) {
 						$this->Jetonsfonctions->release( $this->name, __FUNCTION__ );
-						
+
 						$dossiersIds = Set::extract( $this->data, '/Foyer/dossier_id' );//FIXME: retour
 						if( !empty( $dossiersIds ) ) {
 							$this->Jetons->releaseList( $dossiersIds );
@@ -114,6 +111,11 @@
 				}
 
 				$themes = $this->Dossiercov58->Passagecov58->Cov58->themesTraites( $cov58_id );
+
+				$sqLockedDossiers = $this->Jetons->sqIds();
+				if( empty( $sqLockedDossiers ) ) {
+					$sqLockedDossiers = 'NULL';
+				}
 
 				$listeThemes = null;
 				if( !empty( $themes ) ) {
@@ -198,7 +200,7 @@
 									)
 								)
 							.' )',
-							'Foyer.dossier_id NOT IN ( '.$this->Jetons->sqIds().' )'
+							"Foyer.dossier_id NOT IN ( {$sqLockedDossiers} )"
 						),
 						'limit' => 50,
 						'order' => array( 'Dossiercov58.created ASC' )
@@ -250,7 +252,7 @@
 	// debug($dossiers);
 					$countDossiers += count($dossiers[$theme]);
 				}
-				
+
 				// Obtenir un lock sur les dossiers traités - FIXME: ajouter un champ caché dans le formulaire
 				$dossiersIds = array();
 				$tmpDossiersIdsParThematique = Set::extract( '{s}.{n}.Foyer.dossier_id', $dossiers );
@@ -258,7 +260,7 @@
 					$dossiersIds = Set::merge( $dossiersIds, $tmpDossiersIds );
 				}
 				$this->Jetons->getList( array_unique( $dossiersIds ) );
-				
+
 				// Champs cachés à passer dans chaque onglet
 				$tmp = array();
 				foreach( $dossiersIds as $i => $dossierId ) {
@@ -274,6 +276,7 @@
 				$this->set( compact( 'options', 'cov58' ) );
 				$this->_setOptions();
 				$this->set( 'cov58_id', $cov58_id);
+
 				$this->Dossiercov58->commit();
 			}
 			else{
