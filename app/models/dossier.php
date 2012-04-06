@@ -30,12 +30,13 @@
 			'dtdemrsa' => array(
 				array(
 					'rule' => 'date',
-					'message' => 'Veuillez vérifier le format de la date.'
-				),
+					'message' => 'Veuillez vérifier le format de la date.',
+					'allowEmpty' => true
+				)/*,
 				array(
 					'rule' => 'notEmpty',
 					'message' => 'Champ obligatoire'
-				)
+				)*/
 			)
 		);
 
@@ -197,6 +198,11 @@
 
 
 		/**
+		*	INFO (pour le CG66): ATTENTION, depuis que la possibilité de créer des dossiers avec un numéro temporaire existe,
+		*	il est possible (via le bouton Ajouter) de créer des dossiers avec des allocataires ne possédant ni date de naissance, ni NIR.
+		*	Du coup, lors de la recherche, si la case "Uniquement la dernière demande..." est cochée,
+		*	les dossiers temporaires, avec allocataire sans NIR ou sans date de naissance ne ressortiront pas lors
+		*	de cette recherche -> il faut donc décocher la case pour les voir apparaître
 		*
 		*/
 
