@@ -559,7 +559,7 @@
 						array(
 							'table'      => 'calculsdroitsrsa',
 							'alias'      => 'Calculdroitrsa',
-							'type'       => 'INNER',
+							'type'       => 'LEFT OUTER',
 							'foreignKey' => false,
 							'conditions' => Set::merge(
 								array( 'Personne.id = Calculdroitrsa.personne_id' ),
