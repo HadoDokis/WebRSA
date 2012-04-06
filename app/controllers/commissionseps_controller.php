@@ -934,11 +934,28 @@
 		}
 
 		/**
-		* Génération du document d'invitation à une  EP au participant.
-		* Courrier contenant le lieu, date et heure de la commission EP
-		*/
-
+		 * Génération du document d'invitation à une  EP au participant.
+		 * Courrier contenant le lieu, date et heure de la commission EP
+		 *
+		 * @param type $commissionep_id
+		 * @param type $membreep_id
+		 * @return void
+		 */
 		public function printConvocationParticipant( $commissionep_id, $membreep_id ) {
+			$membreep = $this->Commissionep->CommissionepMembreep->find(
+				'first',
+				array(
+					'conditions' => array(
+						'CommissionepMembreep.commissionep_id' => $commissionep_id,
+						'CommissionepMembreep.membreep_id' => $membreep_id
+					),
+					'contain' => false
+				)
+			);
+			if( $membreep['CommissionepMembreep']['reponse'] == 'remplacepar' ) {
+				$membreep_id = $membreep['CommissionepMembreep']['reponsesuppleant_id'];
+			}
+
 			$pdf = $this->Commissionep->getPdfConvocationParticipant( $commissionep_id, $membreep_id );
 
 			if( $pdf ) {
@@ -951,28 +968,20 @@
 		}
 
 		/**
-		* Génération des documents d'invitation à une commission d'EP pour les participants.
-		* Courrier contenant le lieu, date et heure de la commission EP
-		*/
-
+		 * Génération des documents d'invitation à une commission d'EP pour les participants.
+		 * Courrier contenant le lieu, date et heure de la commission EP
+		 *
+		 * @param integer $ep_id
+		 * @param integer $commissionep_id
+		 * @return void
+		 */
 		public function printConvocationsParticipants( $ep_id, $commissionep_id ) {
-			$liste = $this->Commissionep->Membreep->EpMembreep->find(
-				'list',
-				array(
-					'fields' => array(
-						'EpMembreep.id',
-						'EpMembreep.membreep_id'
-					),
-					'conditions' => array(
-						'EpMembreep.ep_id' => $ep_id,
-					),
-					'recursive' => -1
-				)
-			);
+			$idsMembresEffectifs = $this->Commissionep->CommissionepMembreep->idsMembresPrevus( $commissionep_id );
 
-			$pdfs = array();
-			foreach( array_values( $liste ) as $membreep_id ) {
-				$pdfs[] = $this->Commissionep->getPdfConvocationParticipant( $commissionep_id, $membreep_id );
+			foreach( $idsMembresEffectifs as $membreep_id ) {
+				if( !empty( $membreep_id ) ) {
+					$pdfs[] = $this->Commissionep->getPdfConvocationParticipant( $commissionep_id, $membreep_id );
+				}
 			}
 
 			$pdfs = $this->Gedooo->concatPdfs( $pdfs, 'ConvocationEPParticipant' );
@@ -1050,7 +1059,8 @@
 					'conditions' => array(
 						'CommissionepMembreep.commissionep_id' => $commissionep_id,
 						'CommissionepMembreep.reponse' => 'nonrenseigne'
-					)
+					),
+					'contain' => false
 				)
 			);
 
@@ -1058,12 +1068,10 @@
 			$nombreDossierseps = $this->Commissionep->Passagecommissionep->find(
 				'count',
 				array(
-					'contain' => array(
-						'Dossierep'
-					),
 					'conditions' => array(
 						'Passagecommissionep.commissionep_id' => $commissionep_id
-					)
+					),
+					'contain' => false
 				)
 			);
 
@@ -1108,21 +1116,26 @@
 			$liste = $this->Commissionep->CommissionepMembreep->find(
 				'list',
 				array(
+					'fields' => array(
+						'CommissionepMembreep.id',
+						'CommissionepMembreep.id'
+					),
 					'conditions' => array(
 						'CommissionepMembreep.commissionep_id' => $commissionep_id,
+						'CommissionepMembreep.reponse <>' => 'decline'
 					),
 					'recursive' => -1
 				)
 			);
-
 			$pdfs = array();
-			foreach( array_keys( $liste ) as $commissionep_membreep_id ) {
-				$pdfs[] = $this->Commissionep->getPdfOrdredujour( $commissionep_membreep_id, $this->Session->read( 'Auth.User.id' ) );
+			foreach( $liste as $commissionep_membreep_id ) {
+				$pdf = $this->Commissionep->getPdfOrdredujour( $commissionep_membreep_id, $this->Session->read( 'Auth.User.id' ) );
+				$pdfs[] = $pdf;
 			}
 
 			$pdfs = $this->Gedooo->concatPdfs( $pdfs, 'ConvocationepParticipant' );
 
-			if( $pdfs ) {
+			if( !empty( $pdfs ) ) {
 				$this->Gedooo->sendPdfContentToClient( $pdfs, 'ConvocationepParticipant' );
 			}
 			else {

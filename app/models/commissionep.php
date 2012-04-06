@@ -901,8 +901,11 @@
 					$presence['CommissionepMembreep']['presence'] = 'present';
 					$presence['Membreep'] = Set::merge( $presence['Membreep'], $presence['Remplacanteffectifmembreep'] );
 				}
+				// C'est bizzarre, mais si c'était nécessaire avant, c'est juste plus propre
 				else if( $presence['CommissionepMembreep']['presence'] == 'excuse' ) {
-					$presence['Membreep'] = Set::merge( $presence['Membreep'], $presence['Remplacantmembreep'] );
+					if( isset( $presence['Remplacantmembreep']['id'] ) && !empty( $presence['Remplacantmembreep']['id'] ) ) {
+						$presence['Membreep'] = Set::merge( $presence['Membreep'], $presence['Remplacantmembreep'] );
+					}
 				}
 
 				$presences["Presences_{$presence['CommissionepMembreep']['presence']}"][] = array( 'Membreep' => $presence['Membreep'] );
