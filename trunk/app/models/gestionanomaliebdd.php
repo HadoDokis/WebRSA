@@ -302,6 +302,10 @@
 		*	- Dossier.locked
 		*/
 		public function vfsInformationsFoyer( &$Foyer, $sqPersonnesEnDoublons, $sqLockedDossiers ) {
+			if( empty( $sqLockedDossiers ) ) {
+				$sqLockedDossiers = 'NULL';
+			}
+
 			return array(
 				$Foyer->sqVirtualField( 'enerreur', false ).' AS "Foyer__enerreur"',
 				$Foyer->sqVirtualField( 'sansprestation', false ).' AS "Foyer__sansprestation"',
