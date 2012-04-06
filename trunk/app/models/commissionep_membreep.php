@@ -82,5 +82,55 @@
 			return $doublon;
 		}
 
+		/**
+		 * Retourne un array contenant les ids des membres d'une commission
+		 * n'ayant pas décliné. Lorsqu'un membre est remplacé par un autre, c'est l'id du
+		 * remplaçant qui est retourné.
+		 *
+		 * @param integer $commissionep_id
+		 * @return array
+		 */
+		public function idsMembresPrevus( $commissionep_id ) {
+			$membreseps = $this->Commissionep->Ep->EpMembreep->find(
+				'all',
+				array(
+					'fields' => array_merge(
+						$this->Commissionep->Ep->EpMembreep->fields(),
+						$this->Commissionep->CommissionepMembreep->fields()
+					),
+					'conditions' => array(
+						'Commissionep.id' => $commissionep_id,
+						'OR' => array(
+							'CommissionepMembreep.membreep_id IS NULL',
+							'EpMembreep.membreep_id = CommissionepMembreep.membreep_id'
+						)
+					),
+					'joins' => array(
+						$this->Commissionep->Ep->EpMembreep->join( 'Ep' ),
+						$this->Commissionep->Ep->join( 'Commissionep' ),
+						$this->Commissionep->join( 'CommissionepMembreep', array( 'type' => 'LEFT OUTER' ) ),
+					),
+					'recursive' => -1
+				)
+			);
+
+			$membresEpsIds = array();
+			foreach( $membreseps as $membreep ) {
+				if( $membreep['CommissionepMembreep']['reponse'] != 'decline' ) {
+					if( $membreep['CommissionepMembreep']['reponse'] == 'remplacepar' ) {
+						$membreep_id = $membreep['CommissionepMembreep']['reponsesuppleant_id'];
+					}
+					else {
+						$membreep_id = $membreep['EpMembreep']['membreep_id'];
+					}
+
+					if( !empty( $membreep_id ) ) {
+						$membresEpsIds[] = $membreep_id;
+					}
+				}
+			}
+
+			return $membresEpsIds;
+		}
 	}
 ?>

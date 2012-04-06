@@ -248,7 +248,7 @@
 								'Invitation',
 								array( 'controller' => 'commissionseps', 'action' => 'printConvocationParticipant', $commissionep['Commissionep']['id'], $membreepseanceep['Membreep']['id'] ),
 								array(
-									'enabled' => ( in_array( 'membreseps::printConvocationParticipant', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) ),
+									'enabled' => ( in_array( 'membreseps::printConvocationParticipant', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) && ( $membreepseanceep['CommissionepMembreep']['reponse']  != 'decline' ) ),
 									'class' => 'button print'
 								)
 							),
