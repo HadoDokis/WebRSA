@@ -32,7 +32,25 @@ msgid "ENUM::DECISION::reporte"
 msgstr "Reporté"
 
 msgid "Decisionsanctionrendezvousep58.decision"
-msgstr "Décision"
+msgstr "Décision n° 1"
+
+msgid "Listesanctionep58.sanction"
+msgstr "Sanction n° 1"
+
+msgid "Listesanctionep58.duree"
+msgstr "Durée de la sanction n° 1 (en mois)"
+
+msgid "Decisionsanctionrendezvousep58.decision2"
+msgstr "Décision n° 2"
+
+msgid "Autrelistesanctionep58.sanction"
+msgstr "Sanction n° 2"
+
+msgid "Autrelistesanctionep58.duree"
+msgstr "Durée de la sanction n° 2 (en mois)"
+
+msgid "Decisionsanctionrendezvousep58.regularisation"
+msgstr "Régularisation"
 
 msgid "Decisionsanctionrendezvousep58.commentaire"
 msgstr "Commentaire"

@@ -20,9 +20,9 @@
 		);
 
 		public $belongsTo = array(
-			'Passagecommissionep' => array(
-				'className' => 'Passagecommissionep',
-				'foreignKey' => 'passagecommissionep_id',
+			'Autrelistesanctionep58' => array(
+				'className' => 'Listesanctionep58',
+				'foreignKey' => 'autrelistesanctionep58_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
@@ -30,6 +30,13 @@
 			'Listesanctionep58' => array(
 				'className' => 'Listesanctionep58',
 				'foreignKey' => 'listesanctionep58_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			'Passagecommissionep' => array(
+				'className' => 'Passagecommissionep',
+				'foreignKey' => 'passagecommissionep_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
@@ -63,12 +70,14 @@
 		);
 
 		/**
-		* Modèles contenus pour l'historique des passages en EP
-		*/
-
+		 * Retourne les modèles liés à la décision pour l'historique des passages en EP.
+		 *
+		 * @return array
+		 */
 		public function containDecision() {
 			return array(
 				'Listesanctionep58',
+				'Autrelistesanctionep58'
 			);
 		}
 	}
