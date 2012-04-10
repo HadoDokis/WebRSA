@@ -200,7 +200,11 @@
 			}
 			else if( Configure::read( 'Cg.departement' ) == 58 ) {
 				$this->set( 'listesanctionseps58', $this->Commissionep->Passagecommissionep->Decisionsanctionep58->Listesanctionep58->find( 'list' ) );
-				$this->set( 'regularisationlistesanctionseps58', $this->Commissionep->Passagecommissionep->Decisionsanctionep58->enums() );
+				$regularisationlistesanctionseps58 = Set::merge(
+					$this->Commissionep->Passagecommissionep->Decisionsanctionep58->enums(),
+					$this->Commissionep->Passagecommissionep->Decisionsanctionrendezvousep58->enums()
+				);
+				$this->set( compact( 'regularisationlistesanctionseps58' ) );
 				$this->set( 'typesrdv', $this->Commissionep->Passagecommissionep->Dossierep->Sanctionrendezvousep58->Rendezvous->Typerdv->find( 'list' ) );
 			}
 
@@ -922,7 +926,7 @@
 				$this->redirect( $this->referer() );
 			}
 
-			$pdf = $this->Commissionep->getPdfOrdreDuJour( $commissionep_id, $this->Session->read( 'Auth.User.id' ));
+			$pdf = $this->Commissionep->getPdfOrdreDuJour( $commissionep_id, $this->Session->read( 'Auth.User.id' ) );
 
 			if( $pdf ) {
 				$this->Gedooo->sendPdfContentToClient( $pdf, 'OJ' );
