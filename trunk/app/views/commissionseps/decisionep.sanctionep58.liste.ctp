@@ -33,7 +33,7 @@ echo '<table><thead>
 				array( @$listesanctionseps58[Set::classicExtract( $decisionep, "listesanctionep58_id" )], array( 'id' => "Decisionsanctionep58{$i}Listesanctionep58Id" ) ),
 				array( @$options['Decisionsanctionep58']['decision'][Set::classicExtract( $decisionep, "decision2" )], array( 'id' => "Decisionsanctionep58{$i}DecisionColumn" ) ),
 				array( @$listesanctionseps58[Set::classicExtract( $decisionep, "autrelistesanctionep58_id" )], array( 'id' => "Decisionsanctionep58{$i}Autrelistesanctionep58Id" ) ),
-				array( @$listesanctionseps58[Set::classicExtract( $decisionep, "regularisation" )], array( 'id' => "Decisionsanctionep58{$i}regularisation" ) ),
+				array( @$regularisationlistesanctionseps58['Decisionsanctionep58']['regularisation'][Set::classicExtract( $decisionep, "regularisation" )], array( 'id' => "Decisionsanctionep58{$i}regularisation" ) ),
 				Set::classicExtract( $decisionep, "commentaire" ),
 				$xhtml->editLink( 'Modifier', array( 'controller' => 'commissionseps', 'action' => 'traiterep', $dossierep['Passagecommissionep'][0]['commissionep_id'] ), ( $commissionep['Commissionep']['etatcommissionep'] != 'annule' ) ),
 				$xhtml->printLink( 'Imprimer', array( 'controller' => 'commissionseps', 'action' => 'impressionDecision', $dossierep['Passagecommissionep'][0]['id'] ), ( $commissionep['Commissionep']['etatcommissionep'] != 'annule' ) ),
