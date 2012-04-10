@@ -81,48 +81,61 @@
 				break;
 			case 'defautsinsertionseps66';
 				$detailsDecision[] = "{$modeleDecision}.decisionsup";
-				$detailsDecision[] = "{$modeleDecision}.Typeorient.lib_type_orient";
-				$detailsDecision[] = "{$modeleDecision}.Structurereferente.lib_struc";
+				$detailsDecision[] = "Typeorient.lib_type_orient";
+				$detailsDecision[] = "Structurereferente.lib_struc";
+				$detailsDecision["Referent.nom_complet"] = array( 'type' => 'text' );
 				break;
 			case 'nonorientationsproseps58';
-				$detailsDecision[] = "{$modeleDecision}.Typeorient.lib_type_orient";
-				$detailsDecision[] = "{$modeleDecision}.Structurereferente.lib_struc";
+				$detailsDecision[] = "Typeorient.lib_type_orient";
+				$detailsDecision[] = "Structurereferente.lib_struc";
+				$detailsDecision["Referent.nom_complet"] = array( 'type' => 'text' );
 				break;
 			case 'nonorientationsproseps93';
-				$detailsDecision[] = "{$modeleDecision}.Typeorient.lib_type_orient";
-				$detailsDecision[] = "{$modeleDecision}.Structurereferente.lib_struc";
+				$detailsDecision[] = "Typeorient.lib_type_orient";
+				$detailsDecision[] = "Structurereferente.lib_struc";
 				break;
 			case 'nonrespectssanctionseps93':
 				$detailsDecision[] = "{$modeleDecision}.montantreduction";
 				$detailsDecision[] = "{$modeleDecision}.dureesursis";
 				break;
 			case 'regressionsorientationseps58';
-				$detailsDecision[] = "{$modeleDecision}.Typeorient.lib_type_orient";
-				$detailsDecision[] = "{$modeleDecision}.Structurereferente.lib_struc";
-				$detailsDecision["{$modeleDecision}.Referent.nom_complet"] = array( 'type' => 'text' );
+				$detailsDecision[] = "Typeorient.lib_type_orient";
+				$detailsDecision[] = "Structurereferente.lib_struc";
+				$detailsDecision["Referent.nom_complet"] = array( 'type' => 'text' );
 				break;
 			case 'reorientationseps93';
-				$detailsDecision[] = "{$modeleDecision}.Typeorient.lib_type_orient";
-				$detailsDecision[] = "{$modeleDecision}.Structurereferente.lib_struc";
+				$detailsDecision[] = "Typeorient.lib_type_orient";
+				$detailsDecision[] = "Structurereferente.lib_struc";
 				break;
 			case 'saisinesbilansparcourseps66';
-				$detailsDecision[] = "{$modeleDecision}.Typeorient.lib_type_orient";
-				$detailsDecision[] = "{$modeleDecision}.Structurereferente.lib_struc";
-				$detailsDecision["{$modeleDecision}.Referent.nom_complet"] = array( 'type' => 'text' );
+				$detailsDecision[] = "Typeorient.lib_type_orient";
+				$detailsDecision[] = "Structurereferente.lib_struc";
+				$detailsDecision["Referent.nom_complet"] = array( 'type' => 'text' );
 				$detailsDecision[] = "{$modeleDecision}.maintienorientparcours";
 				$detailsDecision[] = "{$modeleDecision}.changementrefparcours";
 				$detailsDecision[] = "{$modeleDecision}.reorientation";
 				break;
 			case 'saisinespdoseps66';
-				$detailsDecision[] = "{$modeleDecision}.Decisionpdo.libelle";
+				$detailsDecision[] = "Decisionpdo.libelle";
 				$detailsDecision[] = "{$modeleDecision}.nonadmis";
 				$detailsDecision[] = "{$modeleDecision}.motifpdo";
 				$detailsDecision[] = "{$modeleDecision}.datedecisionpdo";
 				break;
 			case 'sanctionseps58';
-				$detailsDecision[] = "{$modeleDecision}.Listesanctionep58.sanction";
+				$detailsDecision["Listesanctionep58.sanction"] =  array( 'domain' => 'decisionsanctionep58' );
+				$detailsDecision["Listesanctionep58.duree"] =  array( 'domain' => 'decisionsanctionep58' );
+				$detailsDecision[] = "{$modeleDecision}.decision2";
+				$detailsDecision["Autrelistesanctionep58.sanction"] = array( 'domain' => 'decisionsanctionep58' );
+				$detailsDecision["Autrelistesanctionep58.duree"] =  array( 'domain' => 'decisionsanctionep58' );
+				$detailsDecision[] = "{$modeleDecision}.regularisation";
 				break;
 			case 'sanctionsrendezvouseps58';
+				$detailsDecision["Listesanctionep58.sanction"] =  array( 'domain' => 'decisionsanctionrendezvousep58' );
+				$detailsDecision["Listesanctionep58.duree"] =  array( 'domain' => 'decisionsanctionep58' );
+				$detailsDecision[] = "{$modeleDecision}.decision2";
+				$detailsDecision["Autrelistesanctionep58.sanction"] = array( 'domain' => 'decisionsanctionrendezvousep58' );
+				$detailsDecision["Autrelistesanctionep58.duree"] =  array( 'domain' => 'decisionsanctionep58' );
+				$detailsDecision[] = "{$modeleDecision}.regularisation";
 				break;
 			case 'signalementseps93';
 				$detailsDecision[] = "{$modeleDecision}.montantreduction";
@@ -145,7 +158,7 @@
 		}
 		else {
 			for( $i = 0 ; $i <= $maxPassages ; $i++ ) {
-				if( !empty( $passage[$modeleDecision][$i] ) ) {
+				if( !empty( $passage['Decision'][$i] ) ) {
 					if( Configure::read( 'Cg.departement' ) == 58 ) {
 						$label = 'Décision EP';
 					}
@@ -155,7 +168,7 @@
 
 					echo '<h2>'.$label.'</h2>';
 					echo $default2->view(
-						array( $modeleDecision => $passage[$modeleDecision][$i] ),
+						$passage['Decision'][$i],
 						$detailsDecision,
 						array(
 							'options' => $options,

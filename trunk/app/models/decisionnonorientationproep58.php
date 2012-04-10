@@ -60,6 +60,13 @@
 				'fields' => '',
 				'order' => ''
 			),
+			'Referent' => array(
+				'className' => 'Referent',
+				'foreignKey' => 'referent_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
 		);
 
 		/**
@@ -88,13 +95,15 @@
 		);
 
 		/**
-		* Modèles contenus pour l'historique des passages en EP
-		*/
-
+		 * Retourne les modèles liés à la décision pour l'historique des passages en EP.
+		 *
+		 * @return array
+		 */
 		public function containDecision() {
 			return array(
 				'Typeorient',
 				'Structurereferente',
+				'Referent',
 			);
 		}
 	}

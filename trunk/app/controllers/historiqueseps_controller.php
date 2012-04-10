@@ -137,19 +137,10 @@
 				)
 			);
 
-			foreach( $donneesDecision as $i => $data ) {
-				$donneesDecision[$i][$modeleDecision] = $data[$modeleDecision];
-				unset( $data[$i][$modeleDecision] );
-				$donneesDecision[$i][$modeleDecision] = Set::merge(
-					$donneesDecision[$i][$modeleDecision],
-					$data
-				);
-			}
-
 			$passage = Set::merge(
 				$passage,
 				$donneesTheme,
-				array( $modeleDecision => Set::classicExtract( $donneesDecision, "{n}.{$modeleDecision}" ) )
+				array( 'Decision' => Set::classicExtract( $donneesDecision, "{n}" ) )
 			);
 
 			$this->_setOptions( $modeleTheme, $modeleDecision );
