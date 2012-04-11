@@ -494,7 +494,7 @@
 			return $return;
 		}
 
-		public function getCourrierPdo( $propopdo_id ) {
+		public function getCourrierPdo( $propopdo_id, $user_id ) {
 		$queryData = array(
 				'fields' => array(
 					'Propopdo.id',
@@ -519,6 +519,13 @@
 					'Personne.prenom',
 					'Personne.qual',
 					'Foyer.sitfam',
+					'Adresse.numvoie',
+					'Adresse.typevoie',
+					'Adresse.nomvoie',
+					'Adresse.compladr',
+					'Adresse.codepos',
+					'Adresse.locaadr',
+					'Dossier.matricule',
 				),
 				'recursive' => -1,
 				'joins' => array(
@@ -584,6 +591,17 @@
 
 			$propopdo = $this->find( 'first', $queryData );
 
+			$user = $this->User->find(
+				'first',
+				array(
+					'conditions' => array(
+						'User.id' => $user_id
+					),
+					'contain' => false
+				)
+			);
+			$propopdo = Set::merge( $propopdo, $user );
+			
 			$libelleDecision = Set::classicExtract( $propopdo, 'Decisionpdo.libelle' );
 
 			if( ereg("AJ 7a", $libelleDecision ) ) {
