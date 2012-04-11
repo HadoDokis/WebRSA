@@ -114,16 +114,16 @@
 		<table class="tooltips">
 			<thead>
 				<tr>
-					<th>N° de dossier</th>
-					<th>Allocataire</th>
-					<th>Date de naissance</th>
-					<th>Code postal</th>
+					<th><?php echo $xpaginator->sort( 'N° de dossier', 'Dossier.numdemrsa' );?></th>
+					<th><?php echo $xpaginator->sort( 'Allocataire', 'Personne.nom' );?></th>
+					<th><?php echo $xpaginator->sort( 'Date de naissance', 'Personne.dtnai' );?></th>
+					<th><?php echo $xpaginator->sort( 'Code postal', 'Adresse.codepos' );?></th>
 					<th><?php echo __d( 'foyer', 'Foyer.enerreur', true );?></th>
-					<th>Date de validation de l'orientation</th>
-					<th>Nombre de jours depuis la fin du contrat lié</th>
-					<th>Type d'orientation</th>
-					<th>Structure</th>
-					<th>Référent</th>
+					<th><?php echo $xpaginator->sort( 'Date de validation de l\'orientation', 'Orientstruct.date_valid' );?></th>
+					<th><?php echo $xpaginator->sort( 'Nombre de jours depuis la fin du contrat lié', 'Contratinsertion.nbjours' );?></th>
+					<th><?php echo $xpaginator->sort( 'Type d\'orientation', 'Typeorient.lib_type_orient' );?></th>
+					<th><?php echo $xpaginator->sort( 'Structure référente', 'Structurereferente.lib_struc' );?></th>
+					<th><?php echo $xpaginator->sort( 'Référent', 'Referent.nom' );?></th>
 					<?php if( Configure::read( 'Cg.departement' ) == 58 ):?>
 						<th>Passage en COV ?</th>
 					<?php endif;?>
