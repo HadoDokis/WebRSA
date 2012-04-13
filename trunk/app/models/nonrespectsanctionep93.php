@@ -383,32 +383,15 @@
 		}
 
 		/**
-		*
-		*/
-
+		 * Retourne une partie de querydata concernant la thématique pour le PV d'EP.
+		 *
+		 * @return array
+		 */
 		public function qdProcesVerbal() {
-			return array(
-				'fields' => array(
-					'Nonrespectsanctionep93.id',
-					'Nonrespectsanctionep93.dossierep_id',
-					'Nonrespectsanctionep93.propopdo_id',
-					'Nonrespectsanctionep93.orientstruct_id',
-					'Nonrespectsanctionep93.contratinsertion_id',
-					'Nonrespectsanctionep93.origine',
-					'Nonrespectsanctionep93.rgpassage',
-					'Nonrespectsanctionep93.sortienvcontrat',
-					'Nonrespectsanctionep93.active',
-					'Nonrespectsanctionep93.created',
-					'Nonrespectsanctionep93.modified',
-					'Decisionnonrespectsanctionep93.id',
-					'Decisionnonrespectsanctionep93.etape',
-					'Decisionnonrespectsanctionep93.decision',
-					'Decisionnonrespectsanctionep93.montantreduction',
-					'Decisionnonrespectsanctionep93.dureesursis',
-					'Decisionnonrespectsanctionep93.commentaire',
-					'Decisionnonrespectsanctionep93.created',
-					'Decisionnonrespectsanctionep93.modified',
-					'Decisionnonrespectsanctionep93.raisonnonpassage'
+			$querydata = array(
+				'fields' => array_merge(
+					$this->fields(),
+					$this->Dossierep->Passagecommissionep->Decisionnonrespectsanctionep93->fields()
 				),
 				'joins' => array(
 					array(
@@ -430,6 +413,8 @@
 					)
 				)
 			);
+
+			return $querydata;
 		}
 
 		/**

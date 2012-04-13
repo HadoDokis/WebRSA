@@ -801,32 +801,18 @@
 		}
 
 		/**
-		*
-		*/
-
+		 * Retourne une partie de querydata concernant la thématique pour le PV d'EP.
+		 *
+		 * @return array
+		 */
 		public function qdProcesVerbal() {
-			return array(
-				'fields' => array(
-					'Defautinsertionep66.id',
-					'Defautinsertionep66.dossierep_id',
-					'Defautinsertionep66.bilanparcours66_id',
-					'Defautinsertionep66.contratinsertion_id',
-					'Defautinsertionep66.orientstruct_id',
-					'Defautinsertionep66.origine',
-					'Defautinsertionep66.type',
-					'Defautinsertionep66.historiqueetatpe_id',
-					'Defautinsertionep66.created',
-					'Defautinsertionep66.modified',
-					//
-					'Decisiondefautinsertionep66.id',
-					'Decisiondefautinsertionep66.typeorient_id',
-					'Decisiondefautinsertionep66.structurereferente_id',
-					'Decisiondefautinsertionep66.etape',
-					'Decisiondefautinsertionep66.decision',
-					'Decisiondefautinsertionep66.commentaire',
-					'Decisiondefautinsertionep66.created',
-					'Decisiondefautinsertionep66.modified',
-					'Decisiondefautinsertionep66.raisonnonpassage',
+			$querydata = array(
+				'fields' => array_merge(
+					$this->fields(),
+					$this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->fields(),
+					$this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->Typeorient->fields(),
+					$this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->Structurereferente->fields(),
+					$this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->Referent->fields()
 				),
 				'joins' => array(
 					array(
@@ -846,6 +832,20 @@
 							'Decisiondefautinsertionep66.etape' => 'ep'
 						),
 					),
+					$this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->join( 'Typeorient', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->join( 'Referent', array( 'type' => 'LEFT OUTER' ) )
+
+				)
+			);
+
+			$modeleDecisionPart = 'decdefins'.Configure::read( 'Cg.departement' );
+			return array_words_replace(
+				$querydata,
+				array(
+					'Typeorient' => "Typeorient{$modeleDecisionPart}",
+					'Structurereferente' => "Structurereferente{$modeleDecisionPart}",
+					'Referent' => "Referent{$modeleDecisionPart}",
 				)
 			);
 		}

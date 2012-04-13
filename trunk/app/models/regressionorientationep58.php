@@ -345,14 +345,15 @@
 		}
 
 		/**
-		*
-		*/
-
+		 * Retourne une partie de querydata concernant la thématique pour le PV d'EP.
+		 *
+		 * @return array
+		 */
 		public function qdProcesVerbal() {
 			$modele = $this->alias;
 			$modeleDecisions = 'Decision'.Inflector::underscore( $this->alias );
 
-			return array(
+			$querydata = array(
 				'fields' => array(
 					"{$modele}.id",
 					"{$modele}.dossierep_id",
@@ -396,6 +397,32 @@
 					),
 				)
 			);
+
+			$modeleDecisionPart = 'decregressori58';
+			$aliases = array(
+				'Typeorient' => "Typeorient{$modeleDecisionPart}",
+				'Structurereferente' => "Structurereferente{$modeleDecisionPart}",
+				'Referent' => "Referent{$modeleDecisionPart}"
+			);
+
+			$fields = array_merge(
+				$this->Dossierep->Passagecommissionep->{$modeleDecisions}->Typeorient->fields(),
+				$this->Dossierep->Passagecommissionep->{$modeleDecisions}->Structurereferente->fields(),
+				$this->Dossierep->Passagecommissionep->{$modeleDecisions}->Referent->fields()
+			);
+			$fields = array_words_replace( $fields, $aliases );
+			$querydata['fields'] = array_merge( $querydata['fields'], $fields );
+
+
+			$joins = array(
+				$this->Dossierep->Passagecommissionep->{$modeleDecisions}->join( 'Typeorient', array( 'type' => 'LEFT OUTER' ) ),
+				$this->Dossierep->Passagecommissionep->{$modeleDecisions}->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
+				$this->Dossierep->Passagecommissionep->{$modeleDecisions}->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ),
+			);
+			$joins = array_words_replace( $joins, $aliases );
+			$querydata['joins'] = array_merge( $querydata['joins'], $joins );
+
+			return $querydata;
 		}
 
 		/**

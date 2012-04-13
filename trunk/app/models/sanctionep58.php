@@ -138,7 +138,7 @@
 			$personnesEnSanction = implode( ', ', $listePersonnes );
 
 			$Situationdossierrsa = ClassRegistry::init( 'Situationdossierrsa' );
-			
+
 			$queryData = array(
 				'fields' => array(
 					'Personne.id',
@@ -289,7 +289,7 @@
 								'Adressefoyer.id IN ('
 									.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01( 'Foyer.id' )
 								.')'
-							) 
+							)
 						)
 					),
 					$this->Dossierep->Personne->Foyer->Adressefoyer->join( 'Adresse'),
@@ -326,7 +326,7 @@
 								'Adressefoyer.id IN ('
 									.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01( 'Foyer.id' )
 								.')'
-							) 
+							)
 						)
 					),
 					$this->Dossierep->Personne->Foyer->Adressefoyer->join( 'Adresse'),
@@ -342,7 +342,7 @@
 							'Adressefoyer.id IN ('
 								.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01( 'Foyer.id' )
 							.')'
-						) 
+						)
 					)
 				),
 				$this->Dossierep->Personne->Foyer->Adressefoyer->join( 'Adresse'),
@@ -562,29 +562,20 @@
 			// Aucune action utile ?
 			return true;
 		}
+
+
 		/**
-		*
-		*/
-
+		 * Retourne une partie de querydata concernant la thématique pour le PV d'EP.
+		 *
+		 * @return array
+		 */
 		public function qdProcesVerbal() {
-			return array(
-				'fields' => array(
-					'Sanctionep58.id',
-					'Sanctionep58.dossierep_id',
-					'Sanctionep58.origine',
-					'Sanctionep58.commentaire',
-					'Sanctionep58.created',
-					'Sanctionep58.modified',
-					//
-					'Decisionsanctionep58.id',
-					'Decisionsanctionep58.listesanctionep58_id',
-					'Decisionsanctionep58.etape',
-					'Decisionsanctionep58.decision',
-					'Decisionsanctionep58.commentaire',
-					'Decisionsanctionep58.created',
-					'Decisionsanctionep58.modified',
-					'Decisionsanctionep58.raisonnonpassage',
-
+			$querydata = array(
+				'fields' => array_merge(
+					$this->fields(),
+					$this->Dossierep->Passagecommissionep->Decisionsanctionep58->fields(),
+					$this->Dossierep->Passagecommissionep->Decisionsanctionep58->Listesanctionep58->fields(),
+					$this->Dossierep->Passagecommissionep->Decisionsanctionep58->Autrelistesanctionep58->fields()
 				),
 				'joins' => array(
 					array(
@@ -603,9 +594,13 @@
 							'Decisionsanctionep58.passagecommissionep_id = Passagecommissionep.id',
 							'Decisionsanctionep58.etape' => 'ep'
 						),
-					)
+					),
+					$this->Dossierep->Passagecommissionep->Decisionsanctionep58->join( 'Listesanctionep58', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Dossierep->Passagecommissionep->Decisionsanctionep58->join( 'Autrelistesanctionep58', array( 'type' => 'LEFT OUTER' ) )
 				)
 			);
+
+			return $querydata;
 		}
 
 		/**

@@ -535,38 +535,17 @@
 		}
 
 		/**
-		*
-		*/
-
+		 * Retourne une partie de querydata concernant la thématique pour le PV d'EP.
+		 *
+		 * @return array
+		 */
 		public function qdProcesVerbal() {
-			return array(
-				'fields' => array(
-					'Reorientationep93.id',
-					'Reorientationep93.dossierep_id',
-					'Reorientationep93.orientstruct_id',
-					'Reorientationep93.typeorient_id',
-					'Reorientationep93.structurereferente_id',
-					'Reorientationep93.datedemande',
-					'Reorientationep93.referent_id',
-					'Reorientationep93.motifreorientep93_id',
-					'Reorientationep93.commentaire',
-					'Reorientationep93.accordaccueil',
-					'Reorientationep93.desaccordaccueil',
-					'Reorientationep93.accordallocataire',
-					'Reorientationep93.urgent',
-					'Reorientationep93.created',
-					'Reorientationep93.modified',
-					'Decisionreorientationep93.id',
-					'Decisionreorientationep93.etape',
-					'Decisionreorientationep93.decision',
-					'Decisionreorientationep93.typeorient_id',
-					'Decisionreorientationep93.structurereferente_id',
-					'Decisionreorientationep93.referent_id',
-					'Decisionreorientationep93.commentaire',
-					'Decisionreorientationep93.created',
-					'Decisionreorientationep93.modified',
-					'Decisionreorientationep93.raisonnonpassage',
-				),
+			$querydata = array(
+				'fields' => array_merge(
+					$this->fields(),
+					$this->Dossierep->Passagecommissionep->Decisionreorientationep93->fields(),
+					$this->Dossierep->Passagecommissionep->Decisionreorientationep93->Typeorient->fields(),
+					$this->Dossierep->Passagecommissionep->Decisionreorientationep93->Structurereferente->fields()				),
 				'joins' => array(
 					array(
 						'table'      => 'reorientationseps93',
@@ -584,7 +563,18 @@
 							'Decisionreorientationep93.passagecommissionep_id = Passagecommissionep.id',
 							'Decisionreorientationep93.etape' => 'ep'
 						),
-					)
+					),
+					$this->Dossierep->Passagecommissionep->Decisionreorientationep93->join( 'Typeorient', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Dossierep->Passagecommissionep->Decisionreorientationep93->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) )
+				)
+			);
+
+			$modeleDecisionPart = 'decreori'.Configure::read( 'Cg.departement' );
+			return array_words_replace(
+				$querydata,
+				array(
+					'Typeorient' => "Typeorient{$modeleDecisionPart}",
+					'Structurereferente' => "Structurereferente{$modeleDecisionPart}"
 				)
 			);
 		}

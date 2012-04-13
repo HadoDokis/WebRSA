@@ -174,28 +174,17 @@
 		}
 
 		/**
-		*
-		*/
-
+		 * Retourne une partie de querydata concernant la thématique pour le PV d'EP.
+		 *
+		 * @return array
+		 */
 		public function qdProcesVerbal() {
 			$modeleDecisions = Inflector::classify( 'decisions'.Inflector::tableize( $this->alias ) );
 
 			return array(
-				'fields' => array(
-					"{$this->alias}.id",
-					"{$this->alias}.dossierep_id",
-					"{$this->alias}.contratinsertion_id",
-					"{$this->alias}.created",
-					"{$this->alias}.modified",
-					"{$modeleDecisions}.id",
-					"{$modeleDecisions}.etape",
-					"{$modeleDecisions}.decision",
-					"{$modeleDecisions}.observ_ci",
-					"{$modeleDecisions}.datevalidation_ci",
-					"{$modeleDecisions}.commentaire",
-					"{$modeleDecisions}.raisonnonpassage",
-					"{$modeleDecisions}.created",
-					"{$modeleDecisions}.modified",
+				'fields' => array_merge(
+					$this->fields(),
+					$this->Dossierep->Passagecommissionep->{$modeleDecisions}->fields()
 				),
 				'joins' => array(
 					array(
