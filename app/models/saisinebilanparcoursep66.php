@@ -488,29 +488,20 @@
 			return $formData;
 		}
 
-		/**
-		*
-		*/
 
+		/**
+		 * Retourne une partie de querydata concernant la thématique pour le PV d'EP.
+		 *
+		 * @return array
+		 */
 		public function qdProcesVerbal() {
-			return array(
-				'fields' => array(
-					'Saisinebilanparcoursep66.id',
-					'Saisinebilanparcoursep66.bilanparcours66_id',
-					'Saisinebilanparcoursep66.dossierep_id',
-					'Saisinebilanparcoursep66.typeorient_id',
-					'Saisinebilanparcoursep66.structurereferente_id',
-					'Saisinebilanparcoursep66.created',
-					'Saisinebilanparcoursep66.modified',
-					'Decisionsaisinebilanparcoursep66.id',
-					'Decisionsaisinebilanparcoursep66.etape',
-					'Decisionsaisinebilanparcoursep66.decision',
-					'Decisionsaisinebilanparcoursep66.typeorient_id',
-					'Decisionsaisinebilanparcoursep66.structurereferente_id',
-					'Decisionsaisinebilanparcoursep66.commentaire',
-					'Decisionsaisinebilanparcoursep66.created',
-					'Decisionsaisinebilanparcoursep66.modified',
-					'Decisionsaisinebilanparcoursep66.raisonnonpassage',
+			$querydata = array(
+				'fields' => array_merge(
+					$this->fields(),
+					$this->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->fields(),
+					$this->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->Typeorient->fields(),
+					$this->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->Structurereferente->fields(),
+					$this->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->Referent->fields()
 				),
 				'joins' => array(
 					array(
@@ -530,6 +521,19 @@
 							'Decisionsaisinebilanparcoursep66.etape' => 'ep'
 						),
 					),
+					$this->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->join( 'Typeorient', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->join( 'Referent', array( 'type' => 'LEFT OUTER' ) )
+				)
+			);
+
+			$modeleDecisionPart = 'decbilan'.Configure::read( 'Cg.departement' );
+			return array_words_replace(
+				$querydata,
+				array(
+					'Typeorient' => "Typeorient{$modeleDecisionPart}",
+					'Structurereferente' => "Structurereferente{$modeleDecisionPart}",
+					'Referent' => "Referent{$modeleDecisionPart}",
 				)
 			);
 		}

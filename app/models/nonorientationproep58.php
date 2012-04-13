@@ -157,5 +157,32 @@
 
 			return $querydata;
 		}
+
+		/**
+		 * Retourne une partie de querydata concernant la thématique pour le PV d'EP.
+		 *
+		 * @return array
+		 */
+		public function qdProcesVerbal() {
+			$querydata = parent::qdProcesVerbal();
+
+			$modeleDecisionPart = strtolower( 'Decisionnonorientationproep'.Configure::read( 'Cg.departement' ) );
+			$aliases = array( 'Referent' => "Referentdecnonopro58" );
+
+			$fields = array_merge(
+				$this->Dossierep->Passagecommissionep->Decisionnonorientationproep58->Referent->fields()
+			);
+			$fields = array_words_replace( $fields, $aliases );
+			$querydata['fields'] = array_merge( $querydata['fields'], $fields );
+
+
+			$joins = array(
+				$this->Dossierep->Passagecommissionep->Decisionnonorientationproep58->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ),
+			);
+			$joins = array_words_replace( $joins, $aliases );
+			$querydata['joins'] = array_merge( $querydata['joins'], $joins );
+
+			return $querydata;
+		}
 	}
 ?>
