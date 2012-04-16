@@ -446,7 +446,7 @@
 		*/
 		public function printCourrier( $propopdo_id ) {
 
-			$pdf = $this->Propopdo->getCourrierPdo( $propopdo_id, $this->Session->read( 'Auth.User.id' ) ); );
+			$pdf = $this->Propopdo->getCourrierPdo( $propopdo_id, $this->Session->read( 'Auth.User.id' ) );
 
 			if( $pdf ) {
 				$this->Gedooo->sendPdfContentToClient( $pdf, 'CourrierPdo' );
