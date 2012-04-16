@@ -76,7 +76,7 @@
 		<p><?php echo sprintf( 'Nombre de pages: %s - Nombre de résultats: %s.', $locale->number( $this->params['paging']['Personne']['pageCount'] ), $locale->number( $this->params['paging']['Personne']['count'] ) );?></p>
 		<?php echo $form->create( 'NouvellesDemandes', array( 'url'=> Router::url( null, true ) ) );?>
 		<?php
-			foreach( $filtre as $key => $value ) {
+			foreach( Set::flatten( $filtre ) as $key => $value ) {
 				echo '<div>'.$form->input( $key, array( 'type' => 'hidden', 'value' => $value, 'id' => 'FiltreBas'.Inflector::camelize( str_replace( '.', '_', $key ) ) ) ).'</div>';
 			}
 			$typesorientsNamesToIds = array_flip( $typesOrient );
