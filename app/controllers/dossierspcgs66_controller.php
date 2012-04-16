@@ -418,6 +418,27 @@
 				$fichiers = $this->Fileuploader->fichiers( $dossierpcg66['Dossierpcg66']['id'] );
 			}
 			$this->Dossierpcg66->commit();
+			
+			// avistechniquemodifiable, validationmodifiable
+			$etatdossierpcg = 'instrencours';
+			if( isset( $dossierpcg66 ) ) {
+				$etatdossierpcg = $dossierpcg66['Dossierpcg66']['etatdossierpcg'];
+			}
+			$gestionnairemodifiable = $personnedecisionmodifiable = false;
+			switch( $etatdossierpcg ) {
+				case 'instrencours':
+					break;
+				case 'attaffect':
+					$gestionnairemodifiable = true;
+					break;
+				default:
+					$gestionnairemodifiable = true;
+					$personnedecisionmodifiable = true;
+				break;
+			}
+
+			$this->set( compact( 'gestionnairemodifiable', 'personnedecisionmodifiable' ) );
+
 
 			// Assignation à la vue
 			$this->set( 'fichiers', $fichiers );

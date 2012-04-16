@@ -97,22 +97,22 @@
 	} );
 </script>
 
-	<fieldset>
-		<?php
-			echo $default->subform(
-				array(
-					'Dossierpcg66.user_id' => array( 'label' =>  ( __d( 'dossierpcg66', 'Dossierpcg66.user_id', true ) ), 'type' => 'select', 'options' => $gestionnaire ),
-// 					'Dossierpcg66.iscomplet' => array( 'legend' => false, 'type' => 'radio', 'options' => $options['Dossierpcg66']['iscomplet'] )
-				),
-				array(
-					'domain' => $domain,
-					'options' => $options
-				)
-			);
-		?>
-	</fieldset>
-
-	<?php if ($this->action=='edit'):?>
+	<?php if( $gestionnairemodifiable ):?>
+		<fieldset>
+			<?php
+				echo $default->subform(
+					array(
+						'Dossierpcg66.user_id' => array( 'label' =>  ( __d( 'dossierpcg66', 'Dossierpcg66.user_id', true ) ), 'type' => 'select', 'options' => $gestionnaire )
+					),
+					array(
+						'domain' => $domain,
+						'options' => $options
+					)
+				);
+			?>
+		</fieldset>
+	<?php endif;?>
+	<?php if( $personnedecisionmodifiable ):?>
 		<fieldset>
 			<legend>Personnes concernées</legend>
 
@@ -131,84 +131,80 @@
 			<?php if( empty( $personnespcgs66 ) ):?>
 				<p class="notice">Ce dossier ne possède pas de personne liée.</p>
 			<?php endif;?>
+			
 			<?php if( !empty( $personnespcgs66 ) ):?>
-			<table class="tooltips">
-				<thead>
-					<tr>
-						<th>Personne concernée</th>
-						<th>Motif(s)</th>
-						<th>Statut(s)</th>
-						<th colspan="5" class="action">Actions</th>
-					</tr>
-				</thead>
-				<tbody>
-					<?php
-						foreach( $personnespcgs66 as $personnepcg66 ) {
-							//Liste des différentes situations de la personne
-							$listeSituations = Set::extract( $personnepcg66, '/Situationpdo/libelle' );
-							$differentesSituations = '';
-							foreach( $listeSituations as $key => $situation ) {
-								if( !empty( $situation ) ) {
-									$differentesSituations .= $xhtml->tag( 'h3', '' ).'<ul><li>'.$situation.'</li></ul>';
+				<table class="tooltips">
+					<thead>
+						<tr>
+							<th>Personne concernée</th>
+							<th>Motif(s)</th>
+							<th>Statut(s)</th>
+							<th colspan="5" class="action">Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php
+							foreach( $personnespcgs66 as $personnepcg66 ) {
+								//Liste des différentes situations de la personne
+								$listeSituations = Set::extract( $personnepcg66, '/Situationpdo/libelle' );
+								$differentesSituations = '';
+								foreach( $listeSituations as $key => $situation ) {
+									if( !empty( $situation ) ) {
+										$differentesSituations .= $xhtml->tag( 'h3', '' ).'<ul><li>'.$situation.'</li></ul>';
+									}
 								}
-							}
-// debug($personnepcg66);
-							$blockWithoutTraitement = true;
-							$nbTraitement = count( Set::extract( $personnepcg66, '/Traitementpcg66/id' ) );
-							if( !empty( $nbTraitement ) ){
+
 								$blockWithoutTraitement = true;
-							}
-							else{
-								$blockWithoutTraitement = false;
-							}
-// 	debug($nbTraitement);
-							//Liste des différents statuts de la personne
-							$listeStatuts = Set::extract( $personnepcg66, '/Statutpdo/libelle' );
-							$differentsStatuts = '';
-							foreach( $listeStatuts as $key => $statut ) {
-								if( !empty( $statut ) ) {
-									$differentsStatuts .= $xhtml->tag( 'h3', '' ).'<ul><li>'.$statut.'</li></ul>';
+								$nbTraitement = count( Set::extract( $personnepcg66, '/Traitementpcg66/id' ) );
+								if( !empty( $nbTraitement ) ){
+									$blockWithoutTraitement = true;
 								}
+								else{
+									$blockWithoutTraitement = false;
+								}
+
+								//Liste des différents statuts de la personne
+								$listeStatuts = Set::extract( $personnepcg66, '/Statutpdo/libelle' );
+								$differentsStatuts = '';
+								foreach( $listeStatuts as $key => $statut ) {
+									if( !empty( $statut ) ) {
+										$differentsStatuts .= $xhtml->tag( 'h3', '' ).'<ul><li>'.$statut.'</li></ul>';
+									}
+								}
+								echo $xhtml->tableCells(
+									array(
+										h( Set::classicExtract( $personnepcg66, 'Personne.qual' ).' '.Set::classicExtract( $personnepcg66, 'Personne.nom' ).' '.Set::classicExtract( $personnepcg66, 'Personne.prenom' ) ),
+										$differentesSituations,
+										$differentsStatuts,
+										$xhtml->viewLink(
+											'Voir la personne concernée',
+											array( 'controller' => 'personnespcgs66', 'action' => 'view', $personnepcg66['Personnepcg66']['id'] ),
+											$permissions->check( 'personnespcgs66', 'view' )
+										),
+										$xhtml->editLink(
+											'Editer la personne concernée',
+											array( 'controller' => 'personnespcgs66', 'action' => 'edit', $personnepcg66['Personnepcg66']['id'] ),
+											$permissions->check( 'personnespcgs66', 'edit' )
+										),
+										$xhtml->treatmentLink(
+											'Traitements pour la personne',
+											array( 'controller' => 'traitementspcgs66', 'action' => 'index', $personnepcg66['Personnepcg66']['personne_id'], $personnepcg66['Personnepcg66']['dossierpcg66_id'] ),
+											$permissions->check( 'traitementspcgs66', 'index' )
+										),
+										$xhtml->deleteLink(
+											'Supprimer la personne',
+											array( 'controller' => 'personnespcgs66', 'action' => 'delete', $personnepcg66['Personnepcg66']['id'] ),
+											$permissions->check( 'personnespcgs66', 'delete' )
+										),
+									),
+									array( 'class' => 'odd' ),
+									array( 'class' => 'even' )
+								);
 							}
-							echo $xhtml->tableCells(
-								array(
-									h( Set::classicExtract( $personnepcg66, 'Personne.qual' ).' '.Set::classicExtract( $personnepcg66, 'Personne.nom' ).' '.Set::classicExtract( $personnepcg66, 'Personne.prenom' ) ),
-									$differentesSituations,
-									$differentsStatuts,
-									$xhtml->viewLink(
-										'Voir la personne concernée',
-										array( 'controller' => 'personnespcgs66', 'action' => 'view', $personnepcg66['Personnepcg66']['id'] ),
-										$permissions->check( 'personnespcgs66', 'view' )
-									),
-									$xhtml->editLink(
-										'Editer la personne concernée',
-										array( 'controller' => 'personnespcgs66', 'action' => 'edit', $personnepcg66['Personnepcg66']['id'] ),
-										$permissions->check( 'personnespcgs66', 'edit' )
-									),
-									$xhtml->treatmentLink(
-										'Traitements pour la personne',
-										array( 'controller' => 'traitementspcgs66', 'action' => 'index', $personnepcg66['Personnepcg66']['personne_id'], $personnepcg66['Personnepcg66']['dossierpcg66_id'] ),
-										$permissions->check( 'traitementspcgs66', 'index' )
-									),
-// 									$xhtml->propositionDecisionLink(
-// 										'Emettre une proposition de décision',
-// 										array( 'controller' => 'decisionspersonnespcgs66', 'action' => 'index', $personnepcg66['Personnepcg66']['id'] ),
-// 										( $blockWithoutTraitement && $permissions->check( 'decisionspersonnespcgs66', 'index' ) )
-// 									),
-									$xhtml->deleteLink(
-										'Supprimer la personne',
-										array( 'controller' => 'personnespcgs66', 'action' => 'delete', $personnepcg66['Personnepcg66']['id'] ),
-										$permissions->check( 'personnespcgs66', 'delete' )
-									),
-								),
-								array( 'class' => 'odd' ),
-								array( 'class' => 'even' )
-							);
-						}
-					?>
-				</tbody>
-			</table>
-		<?php endif;?>
+						?>
+					</tbody>
+				</table>
+			<?php endif;?>
 		</fieldset>
 
 		<?php
@@ -222,7 +218,7 @@
 				}
 			}
 
-// debug($decisionsdossierspcgs66);
+
 			echo $html->tag(
 				'fieldset',
 				$html->tag(
@@ -234,10 +230,8 @@
 					array(
 						'Decisionpdo.libelle'=> array( 'label' =>  'Proposition du technicien : ' ),
 						'Decisiondossierpcg66.avistechnique',
-// 						'Decisiondossierpcg66.commentaireavistechnique',
 						'Decisiondossierpcg66.dateavistechnique',
 						'Decisiondossierpcg66.validationproposition',
-// 						'Decisiondossierpcg66.commentairevalidation',
 						'Decisiondossierpcg66.datevalidation'
 					),
 					array(
@@ -259,14 +253,7 @@
 								'label' => 'Imprimer',
 								'url' => array( 'controller' => 'decisionsdossierspcgs66', 'action'=>'decisionproposition' ),
 								'disabled' => (
-									/*(
-										'\'#Decisiondossierpcg66.id#\' == '.$lastDecisionId
-										&& (
-											$etatdossierpcg != 'dossiertraite'
-											|| $etatdossierpcg != 'attpj'
-										)
-									)
-									||*/ ( $permissions->check( 'decisionsdossierspcgs66', 'print' ) != "1" )
+									( $permissions->check( 'decisionsdossierspcgs66', 'print' ) != "1" )
 								)
 							),
 							'Decisionsdossierspcgs66::transmettreop' => array(
@@ -306,10 +293,12 @@
 
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
-		[ $('Dossierpcg66TypepdoId'), $('Dossierpcg66UserId')/*, $('Dossierpcg66IscompletCOM'), $('Dossierpcg66IscompletINC')*/ ].each(function(field) {
-			field.observe('change', function(element, value) {
-				fieldUpdater();
-			});
+		[ $('Dossierpcg66TypepdoId'), $('Dossierpcg66UserId') ].each(function(field) {
+			if( field ) { 
+				field.observe('change', function(element, value) {
+					fieldUpdater();
+				});
+			}
 		});
 
 		fieldUpdater();
@@ -325,9 +314,8 @@
 				parameters:
 				{
 					'typepdo_id' : $F('Dossierpcg66TypepdoId'),
-					'user_id' : $F('Dossierpcg66UserId'),
+					'user_id' : ( $('Dossierpcg66UserId') ? $F('Dossierpcg66UserId') : null ),
 					'decisionpdo_id' : <?php if ( isset( $this->data['Decisiondossierpcg66']['decisionpdo_id'] ) ) { ?> $F('Decisiondossierpcg66DecisionpdoId') <?php } else { echo 0; } ?>,
-// 					'incomplet' : $F('Dossierpcg66IscompletINC'),
 					'dossierpcg66_id' : <?php if ( isset( $this->data['Dossierpcg66']['id'] ) ) { ?> $F('Dossierpcg66Id') <?php } else { echo 0; } ?>
 				},
 				requestHeaders:['X-Update', 'Etatpdo']
