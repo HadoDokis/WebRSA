@@ -156,71 +156,76 @@
 		</fieldset>
 		<?php /*endif;*/?>
 
-	<fieldset><legend><?php echo 'Avis technique'; ?></legend>
-			<?php
-				echo $default2->subform(
-					array(
-						'Decisiondossierpcg66.avistechnique' => array( 'label' => false, 'type' => 'radio', 'options' => $options['Decisiondossierpcg66']['avistechnique'] ),
-					),
-					array(
-						'options' => $options
-					)
-				);
-			?>
-			<fieldset id="avistech" class="noborder">
-				<?php
-					echo $default2->subform(
-						array(
-							'Decisiondossierpcg66.commentaireavistechnique',
-							'Decisiondossierpcg66.dateavistechnique' => array( 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear' => date('Y')+5, 'minYear' => date('Y')-1, 'empty' => false )
-						),
-						array(
-							'options' => $options
-						)
-					);
-				?>
+		<?php if( $avistechniquemodifiable ):?>
+			<fieldset id="avtech"><legend><?php echo 'Avis technique'; ?></legend>
+					<?php
+						echo $default2->subform(
+							array(
+								'Decisiondossierpcg66.avistechnique' => array( 'label' => false, 'type' => 'radio', 'options' => $options['Decisiondossierpcg66']['avistechnique'] ),
+							),
+							array(
+								'options' => $options
+							)
+						);
+					?>
+					<fieldset id="avistech" class="noborder">
+						<?php
+							echo $default2->subform(
+								array(
+									'Decisiondossierpcg66.commentaireavistechnique',
+									'Decisiondossierpcg66.dateavistechnique' => array( 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear' => date('Y')+5, 'minYear' => date('Y')-1, 'empty' => false )
+								),
+								array(
+									'options' => $options
+								)
+							);
+						?>
+					</fieldset>
 			</fieldset>
-	</fieldset>
+		<?php endif;?>
 
-	<fieldset><legend>Validation de la proposition</legend>
-			<?php
-				echo $default2->subform(
-					array(
-						'Decisiondossierpcg66.validationproposition' => array( 'label' => false, 'type' => 'radio', 'options' => $options['Decisiondossierpcg66']['validationproposition'] ),
-					),
-					array(
-						'options' => $options
-					)
-				);
-			?>
-			<fieldset id="validpropo" class="noborder">
-				<?php
-					echo $default2->subform(
-					array(
-						'Decisiondossierpcg66.retouravistechnique' => array( 'type' => 'checkbox' ),
-						'Decisiondossierpcg66.vuavistechnique' => array( 'type' => 'checkbox' ),
-						'Decisiondossierpcg66.commentairevalidation',
-						'Decisiondossierpcg66.datevalidation' => array( 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear' => date('Y')+5, 'minYear' => date('Y')-1, 'empty' => false )
-					),
-					array(
-						'options' => $options
-					)
-				);
-				?>
+		<?php if( $validationmodifiable ):?>
+			<fieldset id="propovalid"><legend>Validation de la proposition</legend>
+					<?php
+						echo $default2->subform(
+							array(
+								'Decisiondossierpcg66.validationproposition' => array( 'label' => false, 'type' => 'radio', 'options' => $options['Decisiondossierpcg66']['validationproposition'] ),
+							),
+							array(
+								'options' => $options
+							)
+						);
+					?>
+					<fieldset id="validpropo" class="noborder">
+						<?php
+							echo $default2->subform(
+							array(
+								'Decisiondossierpcg66.retouravistechnique' => array( 'type' => 'checkbox' ),
+								'Decisiondossierpcg66.vuavistechnique' => array( 'type' => 'checkbox' ),
+								'Decisiondossierpcg66.commentairevalidation',
+								'Decisiondossierpcg66.datevalidation' => array( 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear' => date('Y')+5, 'minYear' => date('Y')-1, 'empty' => false )
+							),
+							array(
+								'options' => $options
+							)
+						);
+						?>
+					</fieldset>
+
 			</fieldset>
+		<?php endif;?>
 
-	</fieldset>
-			<?php
+		<?php
 
-				echo $default2->subform(
-					array(
-						'Decisiondossierpcg66.commentaire' => array( 'label' =>  'Commentaire global : ', 'type' => 'textarea', 'rows' => 3 ),
-					),
-					array(
-						'options' => $options
-					)
-				);
-			?>
+			echo $default2->subform(
+				array(
+					'Decisiondossierpcg66.commentaire' => array( 'label' =>  'Commentaire global : ', 'type' => 'textarea', 'rows' => 3 ),
+				),
+				array(
+					'options' => $options
+				)
+			);
+		?>
 	<?php
 		echo "<div class='submit'>";
 			echo $form->submit('Enregistrer', array('div'=>false));
@@ -236,16 +241,7 @@
 
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
-
-		observeDisableFieldsOnValue(
-			'Decisiondossierpcg66Retouravistechnique',
-			[
-				'Decisiondossierpcg66Vuavistechnique'
-			],
-			'1',
-			false
-		);
-
+	<?php if( $avistechniquemodifiable ):?>
 		observeDisableFieldsetOnRadioValue(
 			'decisiondossierpcg66form',
 			'data[Decisiondossierpcg66][avistechnique]',
@@ -254,7 +250,9 @@
 			false,
 			true
 		);
+	<?php endif;?>
 
+	<?php if( $validationmodifiable ):?>
 		observeDisableFieldsetOnRadioValue(
 			'decisiondossierpcg66form',
 			'data[Decisiondossierpcg66][validationproposition]',
@@ -262,6 +260,15 @@
 			['O','N'],
 			false,
 			true
+		);
+
+		observeDisableFieldsOnValue(
+			'Decisiondossierpcg66Retouravistechnique',
+			[
+				'Decisiondossierpcg66Vuavistechnique'
+			],
+			'1',
+			false
 		);
 
 		$( 'decisiondossierpcg66form' ).getInputs( 'radio', 'data[Decisiondossierpcg66][validationproposition]' ).each( function( radio ) {
@@ -276,7 +283,9 @@
 				);
 			} );
 		} );
+	<?php endif;?>
 	} );
+
 </script>
 
 <script type="text/javascript">

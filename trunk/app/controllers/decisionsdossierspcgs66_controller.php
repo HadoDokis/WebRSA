@@ -405,7 +405,28 @@
 					)
 				)
 			);
-			$this->set( compact( 'personnespcgs66', 'dossierpcg66', 'decisiondossierpcg66' ) );
+
+			// avistechniquemodifiable, validationmodifiable
+			$avistechniquemodifiable = $validationmodifiable = false;
+			switch( $dossierpcg66['Dossierpcg66']['etatdossierpcg'] ) {
+				case 'attavistech':
+					$avistechniquemodifiable = ( $this->action == 'edit' );
+					break;
+				case 'attval':
+				case 'decisionvalid':
+				case 'decisionnonvalid':
+				case 'decisionnonvalidretouravis':
+				case 'decisionvalidretouravis':
+				case 'attpj':
+				case 'atttransmisop':
+					$avistechniquemodifiable = ( $this->action == 'edit' );
+					$validationmodifiable  = ( $this->action == 'edit' );
+				break;
+			}
+
+			$this->set( compact( 'personnespcgs66', 'dossierpcg66', 'decisiondossierpcg66', 'avistechniquemodifiable', 'validationmodifiable' ) );
+
+
 
 			$this->Decisiondossierpcg66->commit();
 			$this->_setOptions();
@@ -586,20 +607,88 @@
 		* Suppression de la proposition de décision
 		*/
 
-		public function delete( $id ) {
-			$decisiondossierpcg66 = $this->Decisiondossierpcg66->findById( $id, null, null, -1 );
-			$dossierpcg66_id = Set::classicExtract( $decisiondossierpcg66, 'Decisiondossierpcg66.dossierpcg66_id' );
+	public function delete( $id ) {
+			$decisiondossierpcg66 = $this->Decisiondossierpcg66->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Decisiondossierpcg66.id' => $id
+					),
+					'contain' => array(
+						'Dossierpcg66'
+					)
+				)
+			);
+			$dossierpcg66_id = Set::classicExtract( $decisiondossierpcg66, 'Dossierpcg66.id' );
+			$etatdossierpcg = Set::classicExtract( $decisiondossierpcg66, 'Dossierpcg66.etatdossierpcg' );
 
+// debug($decisiondossierpcg66);
+// die();
+// 					$etatdossierpcg = $this->Decisiondossierpcg66->Dossierpcg66->etatDossierPcg66(
+// 						$typepdo_id,
+// 						$user_id,
+// 						$decisionpdoId,
+// 						$avistechnique,
+// 						$validationavis,
+// 						$retouravistechnique,
+// 						$vuavistechnique/*,
+// 						$etatdossierpcg*/
+// 					);
+
+			// TODO: à mettre dans le modèle -> afterDelete ?
 			$success = $this->Decisiondossierpcg66->delete( $id );
-			if( $success ){
+			if( $success ) {
+				$dernieredecision = $this->Decisiondossierpcg66->find(
+					'first',
+					array(
+						'conditions' => array(
+							'Decisiondossierpcg66.dossierpcg66_id' => $dossierpcg66_id
+						),
+						'contain' => array(
+							'Dossierpcg66'
+						),
+						'order' => array( 'Decisiondossierpcg66.modified DESC' )
+					)
+				);
+
+							
+				$typepdo_id = Set::classicExtract( $dernieredecision, 'Dossierpcg66.typepdo_id' );
+				$user_id = Set::classicExtract( $dernieredecision, 'Dossierpcg66.user_id' );
+				$decisionpdoId = Set::classicExtract( $dernieredecision, 'Decisiondossierpcg66.decisionpdo_id' );
+				$avistechnique = Set::classicExtract( $dernieredecision, 'Decisiondossierpcg66.avistechnique' );
+				$validationavis = Set::classicExtract( $dernieredecision, 'Decisiondossierpcg66.validationproposition' );
+				$retouravistechnique = Set::classicExtract( $dernieredecision, 'Decisiondossierpcg66.retouravistechnique' );
+				$vuavistechnique = Set::classicExtract( $dernieredecision, 'Decisiondossierpcg66.vuavistechnique' );
+				
+				
+				$etatdossierpcg = 'instrencours';
+				// Quel est l'état actuel du dossier ?
+				if( empty( $dernieredecision ) ) {
+					$etatdossierpcg = 'attinstr';
+				}
+				else {
+					$etatdossierpcg = $this->Decisiondossierpcg66->Dossierpcg66->etatDossierPcg66(
+						$typepdo_id,
+						$user_id,
+						$decisionpdoId,
+						$avistechnique,
+						$validationavis,
+						$retouravistechnique,
+						$vuavistechnique,
+						$etatdossierpcg
+					);
+				}
+
 				$success = $this->Decisiondossierpcg66->Dossierpcg66->updateAll(
-					array( 'Dossierpcg66.etatdossierpcg' => '\'instrencours\'' ),
+					array( 'Dossierpcg66.etatdossierpcg' => "'{$etatdossierpcg}'" ),
 					array('"Dossierpcg66"."id"' => $dossierpcg66_id )
 				) && $success;
 			}
+
 			$this->_setFlashResult( 'Delete', $success );
 			$this->redirect( $this->referer() );
 		}
+
 
 
 		/**
