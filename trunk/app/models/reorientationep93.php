@@ -473,8 +473,20 @@
 					);
 				}
 				// On ajoute les enregistrements de cette étape
-				else {
-					if( $niveauDecision == 'ep' ) {
+				else if( $niveauDecision == 'cg' ) {
+					$formData['Decisionreorientationep93'][$key]['decision'] = $dossierep['Passagecommissionep'][0]['Decisionreorientationep93'][0]['decision'];
+					$formData['Decisionreorientationep93'][$key]['decisionpcg'] = 'valide';
+					if ( $formData['Decisionreorientationep93'][$key]['decision'] == 'accepte' ) {
+						$formData['Decisionreorientationep93'][$key]['typeorient_id'] = $dossierep['Passagecommissionep'][0]['Decisionreorientationep93'][0]['typeorient_id'];
+						$formData['Decisionreorientationep93'][$key]['structurereferente_id'] = implode(
+							'_',
+							array(
+								$dossierep['Passagecommissionep'][0]['Decisionreorientationep93'][0]['typeorient_id'],
+								$dossierep['Passagecommissionep'][0]['Decisionreorientationep93'][0]['structurereferente_id']
+							)
+						);
+					}
+					else {
 						$formData['Decisionreorientationep93'][$key]['typeorient_id'] = $dossierep[$this->alias]['typeorient_id'];
 						$formData['Decisionreorientationep93'][$key]['structurereferente_id'] = implode(
 							'_',
@@ -483,33 +495,6 @@
 								$dossierep[$this->alias]['structurereferente_id']
 							)
 						);
-						// Si accords -> accepté par défaut, sinon, refusé par défaut
-						$accord = ( $dossierep[$this->alias]['accordaccueil'] && $dossierep[$this->alias]['accordallocataire'] );
-						$formData['Decisionreorientationep93'][$key]['decision'] = ( $accord ? 'accepte' : 'refuse' );
-					}
-					elseif( $niveauDecision == 'cg' ) {
-						$formData['Decisionreorientationep93'][$key]['decision'] = $dossierep['Passagecommissionep'][0]['Decisionreorientationep93'][0]['decision'];
-						$formData['Decisionreorientationep93'][$key]['decisionpcg'] = 'valide';
-						if ( $formData['Decisionreorientationep93'][$key]['decision'] == 'accepte' ) {
-							$formData['Decisionreorientationep93'][$key]['typeorient_id'] = $dossierep['Passagecommissionep'][0]['Decisionreorientationep93'][0]['typeorient_id'];
-							$formData['Decisionreorientationep93'][$key]['structurereferente_id'] = implode(
-								'_',
-								array(
-									$dossierep['Passagecommissionep'][0]['Decisionreorientationep93'][0]['typeorient_id'],
-									$dossierep['Passagecommissionep'][0]['Decisionreorientationep93'][0]['structurereferente_id']
-								)
-							);
-						}
-						else {
-							$formData['Decisionreorientationep93'][$key]['typeorient_id'] = $dossierep[$this->alias]['typeorient_id'];
-							$formData['Decisionreorientationep93'][$key]['structurereferente_id'] = implode(
-								'_',
-								array(
-									$dossierep[$this->alias]['typeorient_id'],
-									$dossierep[$this->alias]['structurereferente_id']
-								)
-							);
-						}
 					}
 				}
 			}

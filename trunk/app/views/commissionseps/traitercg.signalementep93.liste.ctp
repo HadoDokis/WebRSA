@@ -70,7 +70,7 @@ echo '<table id="Decisionsignalementep93" class="tooltips"><thead>
 
 				$form->input( "Decisionsignalementep93.{$i}.decisionpcg", array( 'legend' => false, 'options' => @$options['Decisionreorientationep93']['decisionpcg'], 'empty' => true, 'type' => 'radio' ) ),
 				array(
-					$form->input( "Decisionsignalementep93.{$i}.decision", array( 'type' => 'select', 'options' => $lineOptions, 'div' => false, 'label' => false ) ),
+					$form->input( "Decisionsignalementep93.{$i}.decision", array( 'type' => 'select', 'options' => $lineOptions, 'div' => false, 'label' => false, 'empty' => true ) ),
 					array( 'id' => "Decisionsignalementep93{$i}ColumnDecision", 'class' => ( !empty( $this->validationErrors['Decisionsignalementep93'][$i]['decision'] ) ? 'error' : '' ) )
 				),
 				$form->input( "Decisionsignalementep93.{$i}.commentaire", array( 'label' =>false, 'type' => 'textarea' ) ).

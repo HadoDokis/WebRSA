@@ -180,19 +180,12 @@
 					$formData[$modeleDecisions][$key] = @$dossierep['Passagecommissionep'][0][$modeleDecisions][0];
 				}
 				// On ajoute les enregistrements de cette étape
-				else {
-					if( $niveauDecision == 'ep' ) {
-						if( ( $dossierep['Personne']['Foyer']['nbenfants'] > 0 ) || ( $dossierep['Personne']['Foyer']['sitfam'] == 'MAR' ) ) {
-							$formData[$modeleDecisions][$key]['decision'] = '1maintien';
-						}
-					}
-					elseif( $niveauDecision == 'cg' ) {
-						$formData[$modeleDecisions][$key]['decision'] = $dossierep['Passagecommissionep'][0][$modeleDecisions][0]['decision'];
-						$formData[$modeleDecisions][$key]['decisionpcg'] = 'valide';
-						$formData[$modeleDecisions][$key]['raisonnonpassage'] = $dossierep['Passagecommissionep'][0][$modeleDecisions][0]['raisonnonpassage'];
-						if ( Configure::read( 'Cg.departement' ) != 93 ) {
-							$formData[$modeleDecisions][$key]['commentaire'] = $dossierep['Passagecommissionep'][0][$modeleDecisions][0]['commentaire'];
-						}
+				else if( $niveauDecision == 'cg' ) {
+					$formData[$modeleDecisions][$key]['decision'] = $dossierep['Passagecommissionep'][0][$modeleDecisions][0]['decision'];
+					$formData[$modeleDecisions][$key]['decisionpcg'] = 'valide';
+					$formData[$modeleDecisions][$key]['raisonnonpassage'] = $dossierep['Passagecommissionep'][0][$modeleDecisions][0]['raisonnonpassage'];
+					if ( Configure::read( 'Cg.departement' ) != 93 ) {
+						$formData[$modeleDecisions][$key]['commentaire'] = $dossierep['Passagecommissionep'][0][$modeleDecisions][0]['commentaire'];
 					}
 				}
 			}

@@ -81,13 +81,7 @@ echo '<table id="Decisionreorientationep93" class="tooltips"><thead>
 	document.observe("dom:loaded", function() {
 		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
 			dependantSelect( 'Decisionreorientationep93<?php echo $i?>StructurereferenteId', 'Decisionreorientationep93<?php echo $i?>TypeorientId' );
-
-			observeDisableFieldsOnValue(
-				'Decisionreorientationep93<?php echo $i;?>Decision',
-				[ 'Decisionreorientationep93<?php echo $i;?>TypeorientId', 'Decisionreorientationep93<?php echo $i;?>StructurereferenteId' ],
-				'accepte',
-				false
-			);
+			try { $( 'Decisionreorientationep93<?php echo $i?>StructurereferenteId' ).onchange(); } catch(id) { }
 
 			$( 'Decisionreorientationep93<?php echo $i;?>DecisionpcgEnattente' ).observe( 'click', function() {
 				$( 'Decisionreorientationep93<?php echo $i;?>Decision' ).setValue( 'reporte' );
@@ -98,6 +92,13 @@ echo '<table id="Decisionreorientationep93" class="tooltips"><thead>
 				changeColspanFormAnnuleReporteEps( 'Decisionreorientationep93<?php echo $i;?>DecisionColumn', 3, 'Decisionreorientationep93<?php echo $i;?>Decision', [ 'Decisionreorientationep93<?php echo $i;?>TypeorientId', 'Decisionreorientationep93<?php echo $i;?>StructurereferenteId' ] );
 			});
 			changeColspanFormAnnuleReporteEps( 'Decisionreorientationep93<?php echo $i;?>DecisionColumn', 3, 'Decisionreorientationep93<?php echo $i;?>Decision', [ 'Decisionreorientationep93<?php echo $i;?>TypeorientId', 'Decisionreorientationep93<?php echo $i;?>StructurereferenteId' ] );
+
+			observeDisableFieldsOnValue(
+				'Decisionreorientationep93<?php echo $i;?>Decision',
+				[ 'Decisionreorientationep93<?php echo $i;?>TypeorientId', 'Decisionreorientationep93<?php echo $i;?>StructurereferenteId' ],
+				'accepte',
+				false
+			);
 		<?php endfor;?>
 	});
 </script>
