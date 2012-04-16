@@ -31,18 +31,6 @@
 		*
 		*/
 
-		public $validate = array(
-			'decision' => array(
-				array(
-					'rule' => array( 'notEmpty' )
-				)
-			),
-		);
-
-		/**
-		*
-		*/
-
 		public $belongsTo = array(
 			'Passagecommissionep' => array(
 				'className' => 'Passagecommissionep',

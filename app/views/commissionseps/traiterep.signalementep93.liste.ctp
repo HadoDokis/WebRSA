@@ -47,8 +47,8 @@ echo '<table><thead>
 				Set::enum( @$dossierep['Personne']['Foyer']['sitfam'], $options['Foyer']['sitfam'] ),
 				@$dossierep['Personne']['Foyer']['nbenfants'],
 				array(
-					$form->input( "Decisionsignalementep93.{$i}.decision", array( 'type' => 'select', 'options' => $lineOptions, 'div' => false, 'label' => false ) ),
-					array( 'id' => "Decisionsignalementep93{$i}ColumnDecision" ), 'class' => ( !empty( $this->validationErrors['Decisionsignalementep93'][$i]['decision'] ) ? 'error' : '' )
+					$form->input( "Decisionsignalementep93.{$i}.decision", array( 'type' => 'select', 'options' => $lineOptions, 'div' => false, 'label' => false, 'empty' => true ) ),
+					array( 'id' => "Decisionsignalementep93{$i}ColumnDecision", 'class' => ( !empty( $this->validationErrors['Decisionsignalementep93'][$i]['decision'] ) ? 'error' : '' ) )
 				),
 				$form->input( "Decisionsignalementep93.{$i}.commentaire", array( 'label' => false, 'type' => 'textarea' ) ).
 				$hiddenFields

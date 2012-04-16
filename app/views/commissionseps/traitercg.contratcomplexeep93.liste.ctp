@@ -62,11 +62,11 @@ echo '<table id="Decisioncontratcomplexeep93" class="tooltips"><thead>
 
 				$form->input( "Decisioncontratcomplexeep93.{$i}.decisionpcg", array( 'legend' => false, 'options' => @$options['Decisionreorientationep93']['decisionpcg'], 'type' => 'radio' ) ),
 				array(
-					$form->input( "Decisioncontratcomplexeep93.{$i}.decision", array( 'type' => 'select', 'options' => $options['Decisioncontratcomplexeep93']['decision'], 'label' => false ) ),
+					$form->input( "Decisioncontratcomplexeep93.{$i}.decision", array( 'type' => 'select', 'options' => $options['Decisioncontratcomplexeep93']['decision'], 'label' => false, 'empty' => true ) ),
 					array( 'id' => "Decisioncontratcomplexeep93{$i}DecisionColumn", 'class' => ( !empty( $this->validationErrors['Decisioncontratcomplexeep93'][$i]['decision'] ) ? 'error' : '' ) )
 				),
 				array(
-					$form->input( "Decisioncontratcomplexeep93.{$i}.datevalidation_ci", array( 'type' => 'date', 'label' => false, 'dateFormat' => __( 'Locale->dateFormat', true ) ) ),
+					$form->input( "Decisioncontratcomplexeep93.{$i}.datevalidation_ci", array( 'type' => 'date', 'label' => false, 'dateFormat' => __( 'Locale->dateFormat', true ), 'empty' => true ) ),
 					( !empty( $this->validationErrors['Decisioncontratcomplexeep93'][$i]['datevalidation_ci'] ) ? array( 'class' => 'error' ) : array() )
 				),
 				array(
