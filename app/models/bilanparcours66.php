@@ -53,7 +53,9 @@
 				)
 			),
 			'Gedooo.Gedooo',
-			'StorablePdf',
+			'StorablePdf' => array(
+				'active' => array( 66 )
+			),
 		);
 
 		/**
