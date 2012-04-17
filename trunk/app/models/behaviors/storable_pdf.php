@@ -40,6 +40,7 @@
 		 * @var type
 		 */
 		public $defaultSettings = array(
+			'active' => true,
 			'afterSave' => 'generatePdf',
 			'afterDelete' => 'deleteAll',
 		);
@@ -47,11 +48,24 @@
 		/**
 		 * Configuration du behavior en fonction du modèle auquel il est attaché.
 		 *
+		 * public $actsAs = array( 'StorablePdf' );
+		 *     -> Tous les CG
+		 * public $actsAs = array( 'StorablePdf' => array( 'active' => 66 ) );
+		 *     -> Seulement le CG 66
+		 * public $actsAs = array( 'StorablePdf' => array( 'active' => array( 58, 66 ) ) );
+		 *     -> Les CG 58 et 66
+		 *
 		 * @param Model $Model
 		 * @param array $settings
 		 */
 		public function setup( Model &$Model, array $settings ) {
-			$this->settings[$Model->name] = Set::merge( $this->defaultSettings, $settings );
+			$this->settings[$Model->alias] = Set::merge( $this->defaultSettings, $settings );
+
+			if( is_array( $this->settings[$Model->alias]['active'] ) || !is_bool( $this->settings[$Model->alias]['active'] ) ) {
+				$this->settings[$Model->alias]['active'] = (array)$this->settings[$Model->alias]['active'];
+				$cg = Configure::read( 'Cg.departement' );
+				$this->settings[$Model->alias]['active'] = in_array( $cg, $this->settings[$Model->alias]['active'] );
+			}
 		}
 
 		/**
@@ -96,6 +110,10 @@
 		 * @return boolean
 		 */
 		public function generatePdf( Model &$Model, $id ) {
+			if( !$this->settings[$Model->alias]['active'] ) {
+				return true;
+			}
+
 			$success = true;
 			$data = $Model->getDataForPdf( $id );
 
@@ -127,7 +145,11 @@
 		 * @return boolean
 		 */
 		public function afterSave( Model &$Model, $created ) {
-			$function = $this->settings[$Model->name][__FUNCTION__];
+			if( !$this->settings[$Model->alias]['active'] ) {
+				return true;
+			}
+
+			$function = $this->settings[$Model->alias][__FUNCTION__];
 
 			if( $function == 'generatePdf' ) {
 				return $this->generatePdf( $Model, $Model->id );
@@ -156,7 +178,11 @@
 		 * @return boolean
 		 */
 		public function afterDelete( Model &$Model ) {
-			$function = $this->settings[$Model->name][__FUNCTION__];
+			if( !$this->settings[$Model->alias]['active'] ) {
+				return true;
+			}
+
+			$function = $this->settings[$Model->alias][__FUNCTION__];
 
 			if( $function == 'deleteAll' ) {
 				return ClassRegistry::init( 'Pdf' )->deleteAll( array( 'modele' => $Model->alias, 'fk_value' => $Model->id ) );
@@ -184,6 +210,10 @@
 		 * @return array
 		 */
 		public function getStoredPdf( Model &$Model, $id, $printDateColumn = null ) {
+			if( !$this->settings[$Model->alias]['active'] ) {
+				return array();
+			}
+
 			if( !empty( $printDateColumn ) ) {
 				$Model->updateAll(
 						array( "{$Model->alias}.{$printDateColumn}" => date( "'Y-m-d'" ) ), array(
@@ -194,12 +224,13 @@
 			}
 
 			$pdf = ClassRegistry::init( 'Pdf' )->find(
-					'first', array(
-				'conditions' => array(
-					'Pdf.modele' => $Model->alias,
-					'Pdf.fk_value' => $id,
-				)
+				'first',
+				array(
+					'conditions' => array(
+						'Pdf.modele' => $Model->alias,
+						'Pdf.fk_value' => $id,
 					)
+				)
 			);
 
 			if( !empty( $pdf ) && empty( $pdf['Pdf']['document'] ) ) {

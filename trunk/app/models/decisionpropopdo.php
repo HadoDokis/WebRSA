@@ -24,7 +24,9 @@
 			'Formattable',
 			'Autovalidate',
 			'Gedooo.Gedooo',
-			'StorablePdf'
+			'StorablePdf' => array(
+				'active' => 66
+			)
 		);
 
 		public $validate = array(
