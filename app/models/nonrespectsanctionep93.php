@@ -1194,35 +1194,51 @@
 										'commissionseps.etatcommissionep' => array( 'valide', 'presence', 'decisionep', 'traiteep', 'decisioncg', 'traite', 'annule', 'reporte' )
 									),
 									'joins' => array(
-										$this->Dossierep->Passagecommissionep->join( 'Dossierep', array( 'type' => 'INNER' ) ),
-										$this->Dossierep->Passagecommissionep->join( 'Commissionep', array( 'type' => 'INNER' ) ),
-									),
-									'joins' => array(
-										array(
-											'table' => 'dossierseps',
-											'alias' => 'dossierseps',
-											'type' => 'INNER',
-											'conditions' => array(
-												'passagescommissionseps.dossierep_id = dossierseps.id'
+										array_words_replace(
+											$this->Dossierep->Passagecommissionep->join( 'Dossierep', array( 'type' => 'INNER' ) ),
+											array(
+												'Passagecommissionep' => 'passagescommissionseps',
+												'Dossierep' => 'dossierseps',
 											)
 										),
-										array(
-											'table' => 'commissionseps',
-											'alias' => 'commissionseps',
-											'type' => 'INNER',
-											'conditions' => array(
-												'passagescommissionseps.commissionep_id = commissionseps.id'
+										array_words_replace(
+											$this->Dossierep->Passagecommissionep->join( 'Commissionep', array( 'type' => 'INNER' ) ),
+											array(
+												'Passagecommissionep' => 'passagescommissionseps',
+												'Commissionep' => 'commissionseps',
 											)
-										)
-									)
+										),
+									),
 								)
 							).' )',
 							'Dossierep.personne_id' => $contratinsertion['Contratinsertion']['personne_id'],
-							'Nonrespectsanctionep93.origine' => array( 'orientstruct', 'contratinsertion' )
+							'Nonrespectsanctionep93.origine' => array( 'orientstruct', 'contratinsertion' ),
+							'Nonrespectsanctionep93.sortienvcontrat <>' => '1',
+							'Nonrespectsanctionep93.active' => '0',
+							'Relancenonrespectsanctionep93.id IN ( '.$this->Relancenonrespectsanctionep93->sqDerniere( 'Nonrespectsanctionep93.id' ).' )',
+							'Relancenonrespectsanctionep93.daterelance <=' => "{$contratinsertion['Contratinsertion']['datevalidation_ci']['year']}-{$contratinsertion['Contratinsertion']['datevalidation_ci']['month']}-{$contratinsertion['Contratinsertion']['datevalidation_ci']['day']}",
+							'OR' => array(
+								'Nonrespectsanctionep93.propopdo_id IN (
+									SELECT propospdos.id
+										FROM propospdos
+										WHERE propospdos.personne_id = \''.$contratinsertion['Contratinsertion']['personne_id'].'\'
+								)',
+								'Nonrespectsanctionep93.orientstruct_id IN (
+									SELECT orientsstructs.id
+										FROM orientsstructs
+										WHERE orientsstructs.personne_id = \''.$contratinsertion['Contratinsertion']['personne_id'].'\'
+								)',
+								'Nonrespectsanctionep93.contratinsertion_id IN (
+									SELECT contratsinsertion.id
+										FROM contratsinsertion
+										WHERE contratsinsertion.personne_id = \''.$contratinsertion['Contratinsertion']['personne_id'].'\'
+								)',
+							)
 						),
 						'joins' => array(
 							$this->Dossierep->join( 'Nonrespectsanctionep93', array( 'type' => 'INNER' ) ),
 							$this->Dossierep->join( 'Passagecommissionep', array( 'type' => 'LEFT OUTER' ) ),
+							$this->join( 'Relancenonrespectsanctionep93' ),
 						)
 					)
 				);
