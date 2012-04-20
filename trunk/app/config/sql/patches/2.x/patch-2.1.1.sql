@@ -81,6 +81,46 @@ CREATE INDEX personnes_upper_nom_upper_prenom_dtnai_idx ON personnes ( UPPER(nom
 DELETE FROM pdfs WHERE modele = 'Passagecommissionep';
 ALTER TABLE historiqueetatspe ALTER COLUMN localite TYPE VARCHAR(250);
 
+-- 20120420: Mise à jour des orientations du CG 58 passées en COV avant la version 2.0.8
+CREATE OR REPLACE FUNCTION public.nettoyage_orientsstructs58() RETURNS VOID AS
+$$
+	DECLARE
+		v_row   record;
+		v_query text;
+	BEGIN
+		FOR v_row IN
+			SELECT
+					proposorientationscovs58.user_id,
+					proposorientationscovs58.datedemande,
+					orientsstructs.id AS orientstruct_id
+				FROM orientsstructs
+					INNER JOIN dossierscovs58 ON ( dossierscovs58.personne_id = orientsstructs.personne_id )
+					INNER JOIN proposorientationscovs58 ON ( dossierscovs58.id = proposorientationscovs58.dossiercov58_id )
+					INNER JOIN passagescovs58 ON ( passagescovs58.dossiercov58_id = dossierscovs58.id )
+					INNER JOIN decisionsproposorientationscovs58 ON ( passagescovs58.id = decisionsproposorientationscovs58.passagecov58_id )
+					INNER JOIN covs58 ON ( passagescovs58.cov58_id = covs58.id )
+				WHERE
+					orientsstructs.statut_orient = 'Orienté'
+					AND orientsstructs.user_id IS NULL
+					AND orientsstructs.date_propo IS NULL
+					AND decisionsproposorientationscovs58.etapecov = 'finalise'
+					AND decisionsproposorientationscovs58.decisioncov IN ( 'valide', 'refuse' )
+					AND DATE_TRUNC('day', covs58.datecommission) = orientsstructs.date_valid
+					AND decisionsproposorientationscovs58.typeorient_id = orientsstructs.typeorient_id
+					AND decisionsproposorientationscovs58.structurereferente_id = orientsstructs.structurereferente_id
+		LOOP
+			-- Mise à jour dans la table historiqueetatspe
+			v_query := 'UPDATE orientsstructs SET user_id = ' || v_row.user_id || ', date_propo = \'' || v_row.datedemande || '\' WHERE id = ' || v_row.orientstruct_id || ';';
+			RAISE NOTICE  '%', v_query;
+			EXECUTE v_query;
+		END LOOP;
+	END;
+$$
+LANGUAGE plpgsql;
+
+SELECT public.nettoyage_orientsstructs58();
+DROP FUNCTION public.nettoyage_orientsstructs58();
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

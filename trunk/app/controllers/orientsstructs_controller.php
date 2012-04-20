@@ -263,7 +263,7 @@
 				$this->set( 'optionsdossierseps', $this->Orientstruct->Reorientationep93->Dossierep->Passagecommissionep->enums() );
 			}
 			elseif ( Configure::read( 'Cg.departement' ) == 58 ) {
-			
+
 				/*$covpassee58 = $this->Orientstruct->Personne->Dossiercov58->find(
 					'first',
 					array(
@@ -291,36 +291,50 @@
 				);*/
 
 				foreach( $orientstructs as $i => $orientstruct ) {
+					$qdPassageCov = array(
+						'fields' => array_merge(
+							$this->Orientstruct->Personne->Dossiercov58->Passagecov58->fields(),
+							$this->Orientstruct->Personne->Dossiercov58->Passagecov58->Cov58->fields(),
+							$this->Orientstruct->Personne->Dossiercov58->Passagecov58->Cov58->Sitecov58->fields()
+						),
+						'joins' => array(
+							$this->Orientstruct->Personne->Dossiercov58->Passagecov58->join( 'Dossiercov58' ),
+							$this->Orientstruct->Personne->Dossiercov58->Passagecov58->join( 'Cov58' ),
+							$this->Orientstruct->Personne->Dossiercov58->Passagecov58->Cov58->join( 'Sitecov58' ),
+							$this->Orientstruct->Personne->Dossiercov58->Passagecov58->join( 'Decisionpropoorientationcov58' ),
+							$this->Orientstruct->Personne->Dossiercov58->Passagecov58->Dossiercov58->join( 'Themecov58' ),
+							$this->Orientstruct->Personne->Dossiercov58->join( 'Propoorientationcov58' )
+						),
+						'conditions' => array(
+							'Dossiercov58.personne_id' => $personne_id,
+							'Themecov58.name' => 'proposorientationscovs58',
+							'Passagecov58.etatdossiercov' => 'traite',
+						),
+						'contain' => false
+					);
+
+					// Conditions pour retrouver l'orientation
+					$conditionsJointure = array(
+						'Propoorientationcov58.user_id' => $orientstruct['Orientstruct']['user_id'],
+						'Propoorientationcov58.datedemande' => $orientstruct['Orientstruct']['date_propo'],
+						'Decisionpropoorientationcov58.typeorient_id' => $orientstruct['Orientstruct']['typeorient_id'],
+						'Decisionpropoorientationcov58.structurereferente_id' => $orientstruct['Orientstruct']['structurereferente_id'],
+//						'Decisionpropoorientationcov58.referent_id' => $orientstruct['Orientstruct']['referent_id'],
+						'DATE_TRUNC(\'day\', "Cov58"."datecommission")' => $orientstruct['Orientstruct']['date_valid'],
+					);
+
+					foreach( $conditionsJointure as $key => $value ) {
+						if( !empty( $value ) ) {
+							$qdPassageCov['conditions'][$key] = $value;
+						}
+						else {
+							$qdPassageCov['conditions'][] = "{$key} IS NULL";
+						}
+					}
+
 					$covpassee58 = $this->Orientstruct->Personne->Dossiercov58->Passagecov58->find(
 						'first',
-						array(
-							'fields' => array_merge(
-								$this->Orientstruct->Personne->Dossiercov58->Passagecov58->fields(),
-								$this->Orientstruct->Personne->Dossiercov58->Passagecov58->Cov58->fields(),
-								$this->Orientstruct->Personne->Dossiercov58->Passagecov58->Cov58->Sitecov58->fields()
-							),
-							'joins' => array(
-								$this->Orientstruct->Personne->Dossiercov58->Passagecov58->join( 'Dossiercov58' ),
-								$this->Orientstruct->Personne->Dossiercov58->Passagecov58->join( 'Cov58' ),
-								$this->Orientstruct->Personne->Dossiercov58->Passagecov58->Cov58->join( 'Sitecov58' ),
-								$this->Orientstruct->Personne->Dossiercov58->Passagecov58->join( 'Decisionpropoorientationcov58' ),
-								$this->Orientstruct->Personne->Dossiercov58->Passagecov58->Dossiercov58->join( 'Themecov58' ),
-								$this->Orientstruct->Personne->Dossiercov58->join( 'Propoorientationcov58' )
-							),
-							'conditions' => array(
-								'Dossiercov58.personne_id' => $personne_id,
-								'Themecov58.name' => 'proposorientationscovs58',
-								'Passagecov58.etatdossiercov' => 'traite',
-								// Conditions pour retrouver l'orientation
-								'Propoorientationcov58.user_id' => $orientstruct['Orientstruct']['user_id'],
-								'Propoorientationcov58.datedemande' => $orientstruct['Orientstruct']['date_propo'],
-								'Decisionpropoorientationcov58.typeorient_id' => $orientstruct['Orientstruct']['typeorient_id'],
-								'Decisionpropoorientationcov58.structurereferente_id' => $orientstruct['Orientstruct']['structurereferente_id'],
-								'Decisionpropoorientationcov58.referent_id' => $orientstruct['Orientstruct']['referent_id'],
-								'DATE_TRUNC(\'day\', "Cov58"."datecommission")' => $orientstruct['Orientstruct']['date_valid'],
-							),
-							'contain' => false
-						)
+						$qdPassageCov
 					);
 					$orientstructs[$i] = Set::merge( $orientstruct, $covpassee58 );
 				}
