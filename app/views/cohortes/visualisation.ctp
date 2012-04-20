@@ -40,8 +40,18 @@
 		<p class="notice"><?php echo $message;?></p>
 	<?php else:?>
 		<?php
+			$formatPagination = 'Results %start% - %end% out of %count%.';
+			if( isset( $this->data['Filtre']['paginationNombreTotal'] ) && !$this->data['Filtre']['paginationNombreTotal'] ) {
+				$page = Set::classicExtract( $this->params, "paging.Personne.page" );
+				$count = Set::classicExtract( $this->params, "paging.Personne.count" );
+				$limit = Set::classicExtract( $this->params, "paging.Personne.options.limit" );
+				if( ( $count > ( $limit * $page ) ) ) {
+					$formatPagination = 'Résultats %start% - %end% sur au moins %count% résultats.';
+				}
+			}
+
 			$xpaginator->options( array('url' => $this->passedArgs ) );
-			$pagination = $xpaginator->paginationBlock( 'Personne', $this->passedArgs );
+			$pagination = $xpaginator->paginationBlock( 'Personne', $this->passedArgs, $formatPagination );
 		?>
 		<?php echo $pagination;?>
 		<table class="tooltips">

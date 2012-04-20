@@ -255,8 +255,10 @@
 				unset( $tmpFiltre['Orientstruct'] );
 				$filtre = array();
 				foreach( $tmpFiltre as $modelName => $modelValues ) {
-					foreach( $modelValues as $fieldName => $values ) {
-						$filtre["{$modelName}.{$fieldName}"] = $values;
+					if( is_array( $modelValues ) ) {
+						foreach( $modelValues as $fieldName => $values ) {
+							$filtre["{$modelName}.{$fieldName}"] = $values;
+						}
 					}
 				}
 				$this->set( compact( 'filtre' ) );
