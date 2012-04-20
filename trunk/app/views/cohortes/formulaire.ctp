@@ -73,7 +73,18 @@
 	<?php if( empty( $cohorte ) ):?>
 		<p class="notice">Aucune demande dans la cohorte.</p>
 	<?php else:?>
-		<p><?php echo sprintf( 'Nombre de pages: %s - Nombre de résultats: %s.', $locale->number( $this->params['paging']['Personne']['pageCount'] ), $locale->number( $this->params['paging']['Personne']['count'] ) );?></p>
+		<?php
+			$formatPagination = 'Nombre de pages: %s - Nombre de résultats: %s.';
+			if( isset( $this->data['Filtre']['paginationNombreTotal'] ) && !$this->data['Filtre']['paginationNombreTotal'] ) {
+				$page = Set::classicExtract( $this->params, "paging.Personne.page" );
+				$count = Set::classicExtract( $this->params, "paging.Personne.count" );
+				$limit = Set::classicExtract( $this->params, "paging.Personne.options.limit" );
+				if( ( $count > ( $limit * $page ) ) ) {
+					$formatPagination = 'Nombre de pages: au moins %s - Nombre de résultats: au moins %s.';
+				}
+			}
+		?>
+		<p><?php echo sprintf( $formatPagination, $locale->number( $this->params['paging']['Personne']['pageCount'] ), $locale->number( $this->params['paging']['Personne']['count'] ) );?></p>
 		<?php echo $form->create( 'NouvellesDemandes', array( 'url'=> Router::url( null, true ) ) );?>
 		<?php
 			foreach( Set::flatten( $filtre ) as $key => $value ) {
