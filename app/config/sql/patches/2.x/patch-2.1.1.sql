@@ -121,6 +121,14 @@ LANGUAGE plpgsql;
 SELECT public.nettoyage_orientsstructs58();
 DROP FUNCTION public.nettoyage_orientsstructs58();
 
+-- 20120423: On veut des entrées uniques dans la table nonrespectssanctionseps93; il est possible d'avoir des
+-- problèmes de doublons (détectés lorsque Gedooo est tombé). Il vaut mieux que le patch ne passe pas
+-- maintenant, et nettoyer les données au plus vite, plutôt que d'attendre.
+CREATE UNIQUE INDEX nonrespectssanctionseps93_origine_orientstruct_id_rgpassage_idx ON nonrespectssanctionseps93 ( origine, orientstruct_id, rgpassage ) WHERE orientstruct_id IS NOT NULL;
+CREATE UNIQUE INDEX nonrespectssanctionseps93_origine_propopdo_id_rgpassage_idx ON nonrespectssanctionseps93 ( origine, propopdo_id, rgpassage ) WHERE propopdo_id IS NOT NULL;
+CREATE UNIQUE INDEX nonrespectssanctionseps93_origine_contratinsertion_id_rgpassage_idx ON nonrespectssanctionseps93 ( origine, contratinsertion_id, rgpassage ) WHERE contratinsertion_id IS NOT NULL;
+CREATE UNIQUE INDEX nonrespectssanctionseps93_origine_historiqueetatpe_id_rgpassage_idx ON nonrespectssanctionseps93 ( origine, historiqueetatpe_id, rgpassage ) WHERE historiqueetatpe_id IS NOT NULL;
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
