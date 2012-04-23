@@ -245,8 +245,9 @@
 
 		public function isProOrientation( $typeorient_id ) {
 
-			if( Configure::read( 'Cg.departement' ) == 58 ){
-				$return =  ( $typeorient_id === Configure::read( 'Typeorient.emploi_id' ) );
+			if( Configure::read( 'Cg.departement' ) == 58 ) {
+				$typeOrientEmploiId = Configure::read( 'Typeorient.emploi_id' );
+				$return =  ( !empty( $typeOrientEmploiId ) && is_int( $typeOrientEmploiId ) && $typeorient_id == $typeOrientEmploiId );
 			}
 			else{
 				$typeorient = $this->find(

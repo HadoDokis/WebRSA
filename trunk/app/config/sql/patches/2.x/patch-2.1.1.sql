@@ -37,8 +37,8 @@ ALTER TABLE dossiers ADD CONSTRAINT dossiers_statudemrsa_in_list_chk CHECK ( cak
 ALTER TABLE dossiers ADD CONSTRAINT dossiers_fonorgcedmut_in_list_chk CHECK ( cakephp_validate_in_list( fonorgcedmut, ARRAY['CAF', 'MSA', 'OPF'] ) );
 ALTER TABLE dossiers ADD CONSTRAINT dossiers_fonorgprenmut_in_list_chk CHECK ( cakephp_validate_in_list( fonorgprenmut, ARRAY['CAF', 'MSA', 'OPF'] ) );
 
-DROP TYPE TYPE_STATUTDEMRSA;
-DROP TYPE TYPE_FONORGCEDMUT;
+DROP TYPE IF EXISTS TYPE_STATUTDEMRSA;
+DROP TYPE IF EXISTS TYPE_FONORGCEDMUT;
 
 -- 20120217: Changement de la volatilité de certaines fonctions car celles-ci sont sans effet de bord
 ALTER FUNCTION public.cakephp_validate_ssn (text, text, text) IMMUTABLE;
