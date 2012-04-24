@@ -50,7 +50,7 @@
 					'"Adresse"."locaadr"',
 					'"Orientstruct"."referent_id"',
 					'"Orientstruct"."rgorient"',
-					//'"Cov58"."datecommission"',
+					'"Cov58"."datecommission"',
 					'"PersonneReferent"."referent_id"',
 					'"Contratinsertion"."dd_ci"',
 					'"Contratinsertion"."df_ci"',
@@ -171,7 +171,7 @@
 						'foreignKey' => false,
 						'conditions' => array( 'Detaildroitrsa.dossier_id = Dossier.id' )
 					),
-					/*array(
+					array(
 						'table'      => 'dossierscovs58',
 						'alias'      => 'Dossiercov58',
 						'type'       => 'INNER',
@@ -191,7 +191,7 @@
 						'type'       => 'INNER',
 						'foreignKey' => false,
 						'conditions' => array( 'Passagecov58.cov58_id = Cov58.id' )
-					)*/
+					)
 				),
 				'limit' => 10,
 				'order' => array( 'Personne.nom ASC' ),
