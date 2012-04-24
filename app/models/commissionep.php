@@ -149,22 +149,22 @@
 			}
 
 			$query = array(
-//				'fields' => array(
-//					'Commissionep.id',
-//					'Commissionep.name',
-//					'Commissionep.identifiant',
-//					'Commissionep.dateseance',
-//					'Commissionep.etatcommissionep',
-//					'Commissionep.lieuseance',
-//					'Commissionep.observations'
-//				),
+// 				'fields' => array(
+// 					'Commissionep.id',
+// 					'Commissionep.name',
+// 					'Commissionep.identifiant',
+// 					'Commissionep.dateseance',
+// 					'Commissionep.etatcommissionep',
+// 					'Commissionep.lieuseance',
+// 					'Commissionep.observations'
+// 				),
 				'contain'=>array(
 					'Ep' => array(
-//						'fields'=>array(
-//							'id',
-//							'name',
-//							'identifiant'
-//						),
+// 						'fields'=>array(
+// 							'id',
+// 							'name',
+// 							'identifiant'
+// 						),
 						'Regroupementep'
 					),
 					'Membreep'
@@ -958,7 +958,7 @@
 				)
 			);
 
-			return array(
+			$querydata = array(
 				'fields' => array(
 					'Dossierep.themeep',
 					'Foyer.sitfam',
@@ -1070,6 +1070,7 @@
 						'foreignKey' => false,
 						'conditions' => array(
 							'Orientstruct.personne_id = Personne.id',
+							// TODO: sous-requête dans le modèle Orientstruct pour en connaître la dernière
 							'Orientstruct.id IN (
 								'.ClassRegistry::init( 'Orientstruct' )->sq(
 									array(
@@ -1130,6 +1131,107 @@
 					'Adresse.locaadr ASC'
 				)
 			);
+
+			/*
+			FIXME: utilisé dans getPdfOrdredujour mais également dans le fonction getFicheSynthese -> vérifier si ça ne casse pas
+			OK - N° dossier: dossier_numdemrsa (pas encore présent)
+			OK - Situation familiale: foyer_sitfam et foyer_nbenfants (pas encore présent)
+			OK - Structure référente: structurereferente_lib_struc (pas encore présent) -> celle de l'orientation
+			OK - Référent unique: referent_nom_complet (pas encore présent) -> personnes_referents
+			OK - Si demande de maintien dans le social (Nonorientationproep58), proposition: si on parle de la structure, du référent et du contrat actuel, alors on peut l'ajouter (pas encore présent)oui c'est bien ça
+			OK - Si réorientation, proposition: si on parle de la structure et du référent de la proposition d'orientation, alors on peut l'ajouter (pas encore présent)oui c'est ça
+			*/
+			if( Configure::read( 'Cg.departement' ) == 58 ) {
+				// Nombre d'enfants
+				$vfNbEnfants = $this->Passagecommissionep->Dossierep->Personne->Foyer->vfNbEnfants();
+				$vfNbEnfants = "( {$vfNbEnfants} ) AS \"Foyer__nbenfants\"";
+				$querydata['fields'][] = $vfNbEnfants;
+
+				$querydata['fields'][] = 'Dossier.numdemrsa';
+
+				// Structure référente
+				$querydata['fields'] = array_merge(
+					$querydata['fields'],
+					$this->Passagecommissionep->Dossierep->Personne->Orientstruct->Structurereferente->fields()
+				);
+				$querydata['joins'][] = $this->Passagecommissionep->Dossierep->Personne->Orientstruct->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) );
+
+				// Référent unique
+				$querydata['fields'] = array_merge(
+					$querydata['fields'],
+					$this->Passagecommissionep->Dossierep->Personne->PersonneReferent->Referent->fields()
+				);
+				$querydata['fields'][] = $this->Passagecommissionep->Dossierep->Personne->PersonneReferent->Referent->sqVirtualField( 'nom_complet' );
+				$querydata['joins'][] = $this->Passagecommissionep->Dossierep->Personne->join( 'PersonneReferent', array( 'type' => 'LEFT OUTER' ) );
+				$querydata['joins'][] = $this->Passagecommissionep->Dossierep->Personne->PersonneReferent->join( 'Referent', array( 'type' => 'LEFT OUTER' ) );
+
+				// Si demande de maintien dans le social (Nonorientationproep58), proposition: si on parle de la structure, du référent et du contrat actuel, alors on peut l'ajouter (pas encore présent)oui c'est bien ça
+				$querydataNonorientationproep58 = array(
+					'fields' => array_merge(
+						$this->Passagecommissionep->Dossierep->Personne->Contratinsertion->fields(),
+						$this->Passagecommissionep->Dossierep->Personne->Contratinsertion->Structurereferente->fields(),
+						$this->Passagecommissionep->Dossierep->Personne->Contratinsertion->Referent->fields()
+					),
+					'joins' => array(
+						array(
+							'table'      => 'contratsinsertion',
+							'alias'      => 'Contratinsertion',
+							'type'       => 'LEFT OUTER',
+							'foreignKey' => false,
+							'conditions' => array(
+								'Contratinsertion.personne_id = Orientstruct.personne_id',
+//								'Contratinsertion.structurereferente_id = Orientstruct.structurereferente_id'
+							)
+						),
+						$this->Passagecommissionep->Dossierep->Personne->Contratinsertion->join( 'Structurereferente', array( 'type' =>'LEFT OUTER' ) ),
+						$this->Passagecommissionep->Dossierep->Personne->Contratinsertion->join( 'Referent', array( 'type' =>'LEFT OUTER' ) ),
+					),
+					'conditions' => array(
+						'OR' => array(
+							'Contratinsertion.id IS NULL',
+							'Contratinsertion.id IN ( '.$this->Passagecommissionep->Dossierep->Personne->Contratinsertion->sqDernierContrat().' )'
+						)
+					)
+				);
+				$querydataNonorientationproep58 = array_words_replace(
+					$querydataNonorientationproep58,
+					array(
+						'Structurereferente' => 'Structurereferentecer',
+						'Referent' => 'Referentcer',
+					)
+				);
+				$querydata['fields'] = array_merge( $querydata['fields'], $querydataNonorientationproep58['fields'] );
+				$querydata['joins'] = array_merge( $querydata['joins'], $querydataNonorientationproep58['joins'] );
+				$querydata['conditions'] = array_merge( $querydata['conditions'], $querydataNonorientationproep58['conditions'] );
+
+				// Regressionorientationep58
+				$querydataRegressionorientationep58 = array(
+					'fields' => array_merge(
+						$this->Passagecommissionep->Dossierep->Regressionorientationep58->fields(),
+						$this->Passagecommissionep->Dossierep->Regressionorientationep58->Typeorient->fields(),
+						$this->Passagecommissionep->Dossierep->Regressionorientationep58->Structurereferente->fields(),
+						$this->Passagecommissionep->Dossierep->Regressionorientationep58->Referent->fields()
+					),
+					'joins' => array(
+						$this->Passagecommissionep->Dossierep->join( 'Regressionorientationep58', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Passagecommissionep->Dossierep->Regressionorientationep58->join( 'Typeorient', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Passagecommissionep->Dossierep->Regressionorientationep58->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Passagecommissionep->Dossierep->Regressionorientationep58->join( 'Referent', array( 'type' => 'LEFT OUTER' ) )
+					)
+				);
+				$querydataRegressionorientationep58 = array_words_replace(
+					$querydataRegressionorientationep58,
+					array(
+						'Typeorient' => 'Typeorientpropo',
+						'Structurereferente' => 'Structurereferentepropo',
+						'Referent' => 'Referentpropo',
+					)
+				);
+				$querydata['fields'] = array_merge( $querydata['fields'], $querydataRegressionorientationep58['fields'] );
+				$querydata['joins'] = array_merge( $querydata['joins'], $querydataRegressionorientationep58['joins'] );
+			}
+
+			return $querydata;
 		}
 
 		/**
@@ -1453,7 +1555,7 @@
 			);
 
 			$options['Foyer']['sitfam'] = ClassRegistry::init( 'Option' )->sitfam();
-                        
+
                         $user = $this->Passagecommissionep->User->find(
                             'first',
                             array(
@@ -1465,9 +1567,17 @@
                                 'recursive' => -1
                             )
                         );
-                        $convocation['User']['numtel'] = $user['User']['numtel'];
+
+			$convocation['User']['numtel'] = $user['User']['numtel'];
 			$convocation['User']['nom'] = $user['User']['nom'];
 			$convocation['User']['prenom'] = $user['User']['prenom'];
+
+			if( Configure::read( 'Cg.departement' ) == 58 ) {
+				$options['Referentpropo']['qual'] = $options['Referentcer']['qual'] = $options['Referent']['qual'] = $options['Personne']['qual'];
+				$options['Structurereferentepropo']['type_voie'] = $options['Structurereferentecer']['type_voie'] = $options['Structurereferente']['type_voie'] = $options['Participant']['typevoie'];
+				$options['Type']['voie'] = $options['Structurereferente']['type_voie'];
+				$options['Contratinsertion']['duree_engag'] = $options['Duree']['engag'] = ClassRegistry::init( 'Option' )->duree_engag_cg58();
+			}
 
 			return $this->ged(
 				array_merge(
