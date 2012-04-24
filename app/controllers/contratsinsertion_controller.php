@@ -396,7 +396,8 @@
 						'conditions' => array(
 							'Orientstruct.personne_id' => $personne_id,
 							'Orientstruct.statut_orient' => 'Orienté',
-							'Typeorient.parentid' => $typeOrientPrincipaleEmploiId
+							'Typeorient.parentid' => $typeOrientPrincipaleEmploiId,
+							'Orientstruct.id IN ( '.$this->Orientstruct->sqDerniere( 'Orientstruct.personne_id' ).' )'
 						),
 						'order' => 'Orientstruct.date_valid DESC',
 						'contain' => array(
