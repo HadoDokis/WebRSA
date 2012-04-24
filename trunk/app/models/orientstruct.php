@@ -667,5 +667,29 @@
 
 			return true;
 		}
+
+		/**
+		 * Retourne la dernière orientation orientée pour une personne.
+		 *
+		 * @param string $personneIdFied
+		 * @return string
+		 */
+		public function sqDerniere( $personneIdFied = 'Personne.id' ) {
+			return $this->sq(
+				array(
+					'fields' => array(
+						'orientsstructs.id'
+					),
+					'alias' => 'orientsstructs',
+					'conditions' => array(
+						"orientsstructs.personne_id = {$personneIdFied}",
+						'orientsstructs.statut_orient = \'Orienté\'',
+						'orientsstructs.date_valid IS NOT NULL'
+					),
+					'order' => array( 'orientsstructs.date_valid DESC' ),
+					'limit' => 1
+				)
+			);
+		}
 	}
 ?>
