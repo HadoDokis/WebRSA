@@ -158,6 +158,7 @@
 		'grossesse' => 'grossesses',
 		'identificationflux' => 'identificationsflux',
 		'indicateurmensuel' => 'indicateursmensuels',
+		'indicateursuivi' => 'indicateurssuivis',
 		'informationeti' => 'informationseti',
 		'infoagricole' => 'infosagricoles',
 		'infofinanciere' => 'infosfinancieres',
