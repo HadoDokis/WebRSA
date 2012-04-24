@@ -570,6 +570,11 @@
 									</li>
 								</ul>
 							</li>
+							
+							<?php if( $permissions->check( 'indicateurssuivis', 'index' ) ):?>
+								<li><?php echo $xhtml->link( 'Indicateurs de suivi', array( 'controller' => 'indicateurssuivis', 'action' => 'index' ) );?></li>
+							<?php endif;?>							
+
 						<?php endif;?>
 					</ul>
 				</li>
