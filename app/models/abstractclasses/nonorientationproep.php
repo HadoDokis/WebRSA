@@ -31,138 +31,228 @@
 			)
 		);
 
+		/**
+		 * Retourne un querydata permettant de retrouver les allocataires  orientés en social depuis un
+		 * certain temps (suivant le filtre ou la configuration au CG 66), qui ne possèdent pas de CER en
+		 * cours, qui ne sont pas en cours de passage en EP ou en COV pour cette thématique (pour la
+		 * dernière orientation en cours).
+		 *
+		 * @param array $mesCodesInsee
+		 * @param boolean $filtre_zone_geo
+		 * @param array $datas
+		 * @return array
+		 */
 		public function searchNonReoriente( $mesCodesInsee, $filtre_zone_geo, $datas) {
 			$conditions = array();
-			$nbmois = Set::classicExtract($datas, 'Filtre.dureenonreorientation');
+			$cg = Configure::read( 'Cg.departement' );
 
-                        
-			/// Critères sur le CI - date de saisi contrat
-			if( isset( $datas['Filtre']['df_ci_from'] ) && !empty( $datas['Filtre']['df_ci_from'] ) ) {
-				$valid_from = ( valid_int( $datas['Filtre']['df_ci_from']['year'] ) && valid_int( $datas['Filtre']['df_ci_from']['month'] ) && valid_int( $datas['Filtre']['df_ci_from']['day'] ) );
-				$valid_to = ( valid_int( $datas['Filtre']['df_ci_to']['year'] ) && valid_int( $datas['Filtre']['df_ci_to']['month'] ) && valid_int( $datas['Filtre']['df_ci_to']['day'] ) );
-				if( $valid_from && $valid_to ) {
-					$conditions[] = 'Contratinsertion.df_ci BETWEEN \''.implode( '-', array( $datas['Filtre']['df_ci_from']['year'], $datas['Filtre']['df_ci_from']['month'], $datas['Filtre']['df_ci_from']['day'] ) ).'\' AND \''.implode( '-', array( $datas['Filtre']['df_ci_to']['year'], $datas['Filtre']['df_ci_to']['month'], $datas['Filtre']['df_ci_to']['day'] ) ).'\'';
+			// Formulaires de filtre
+			if( $cg == 58 ){
+				// Critères sur le CI - date de saisi contrat
+				if( isset( $datas['Filtre']['df_ci_from'] ) && !empty( $datas['Filtre']['df_ci_from'] ) ) {
+					$valid_from = ( valid_int( $datas['Filtre']['df_ci_from']['year'] ) && valid_int( $datas['Filtre']['df_ci_from']['month'] ) && valid_int( $datas['Filtre']['df_ci_from']['day'] ) );
+					$valid_to = ( valid_int( $datas['Filtre']['df_ci_to']['year'] ) && valid_int( $datas['Filtre']['df_ci_to']['month'] ) && valid_int( $datas['Filtre']['df_ci_to']['day'] ) );
+					if( $valid_from && $valid_to ) {
+						$conditions[] = 'Contratinsertion.df_ci BETWEEN \''.implode( '-', array( $datas['Filtre']['df_ci_from']['year'], $datas['Filtre']['df_ci_from']['month'], $datas['Filtre']['df_ci_from']['day'] ) ).'\' AND \''.implode( '-', array( $datas['Filtre']['df_ci_to']['year'], $datas['Filtre']['df_ci_to']['month'], $datas['Filtre']['df_ci_to']['day'] ) ).'\'';
+					}
 				}
-			}
 
-			$this->Orientstruct = ClassRegistry::init( 'Orientstruct' );
-
-			$modelName = $this->alias;
-			$modelTable = Inflector::tableize( $modelName );
-
-			// Conditions sur le CER
-			if( Configure::read( 'Cg.departement' ) == 58 ){
-				$conditionsContrat = $conditions;
-			}
-			else {
-				$conditionsContrat = array( 'Contratinsertion.df_ci <=' => date( 'Y-m-d', strtotime( '- '.$nbmois.' month', time() ) ) );
-			}
-
-			/**
-			* Conditions sur le bilan de parcours dans le cas du CG66 :
-			* Si la personne détectée possède un bilan de parcours pour le contrat
-			* en lien avec la non orientation professionnelle, on ne l'affiche pas
-			*/
-			
-			if( Configure::read( 'Cg.departement' ) == 66 ){
-                            $conditionsBilanparcours66 = array(
-                                    'Contratinsertion.id NOT IN (
-                                            SELECT contratsinsertion.id
-                                                    FROM contratsinsertion
-                                                            INNER JOIN bilansparcours66 ON (
-                                                                    bilansparcours66.contratinsertion_id = contratsinsertion.id
-                                                            )
-                                                    WHERE
-                                                            bilansparcours66.contratinsertion_id = Contratinsertion.id
-                                    )'
-                            );
-                            
-                            $conditionsContrat = array(
-                                'Orientstruct.date_valid <=' => date( 'Y-m-d', strtotime( '- 24 month', time() ) )
-                            );
-//                            $conditionsContrat = array( 'Contratinsertion.df_ci <=' => date( 'Y-m-d', strtotime( '- 24 month', time() ) ) );
-			}
-			else {
-				$conditionsBilanparcours66 = $conditions;
-			}
-
-			$conditions = array(
-				$conditionsContrat,
-				$conditionsBilanparcours66,
-				'Orientstruct.statut_orient' => 'Orienté',
-				'Orientstruct.id NOT IN (
-					SELECT "'.$modelTable.'"."orientstruct_id"
-					FROM "'.$modelTable.'"
-						INNER JOIN "dossierseps" ON ( "dossierseps"."id" = "'.$modelTable.'"."dossierep_id" )
-					WHERE "dossierseps"."id" NOT IN (
-						SELECT "passagescommissionseps"."dossierep_id"
-						FROM passagescommissionseps
-						WHERE "passagescommissionseps"."etatdossierep" = \'traite\'
-					)
-					AND "dossierseps"."themeep" = \''.$modelTable.'\'
-				)',
-				'Orientstruct.id NOT IN (
-					SELECT '.Inflector::tableize( $this->alias ).'.orientstruct_id
-						FROM '.Inflector::tableize( $this->alias ).'
-							INNER JOIN dossierseps ON (
-								'.Inflector::tableize( $this->alias ).'.dossierep_id = dossierseps.id
+				// Critère sur le temps passé en orientation sociale
+				$nbmois = Set::classicExtract($datas, 'Filtre.dureenonreorientation');
+				$conditions[] = 'EXISTS(
+					SELECT
+						*
+					FROM orientsstructs
+						INNER JOIN typesorients ON ( typesorients.id = orientsstructs.typeorient_id )
+					WHERE
+						orientsstructs.personne_id = Personne.id
+						AND orientsstructs.statut_orient = \'Orienté\'
+						AND (
+							NOT EXISTS(
+								SELECT *
+									FROM orientsstructs AS osvt
+										INNER JOIN typesorients AS tosvt ON ( tosvt.id = osvt.typeorient_id )
+									WHERE
+										osvt.personne_id = orientsstructs.personne_id
+										AND osvt.statut_orient = \'Orienté\'
+										AND osvt.date_valid > orientsstructs.date_valid
+										AND tosvt.id = '.Configure::read( 'Typeorient.emploi_id' ).'
 							)
-						WHERE
-							'.Inflector::tableize( $this->alias ).'.orientstruct_id = Orientstruct.id
-							AND dossierseps.id IN (
-								SELECT "passagescommissionseps"."dossierep_id"
-								FROM passagescommissionseps
-								WHERE "passagescommissionseps"."etatdossierep" = \'traite\'
+						)
+						AND typesorients.id <> '.Configure::read( 'Typeorient.emploi_id' ).'
+						AND orientsstructs.date_valid <= \''.date( 'Y-m-d', strtotime( '- '.$nbmois.' month', time() ) ).'\'
+				)';
+			}
+			else if( $cg == 66 ){
+				// Filtre sur la caton et la comune
+				$conditions = $this->conditionsAdresse( $conditions, $datas, $filtre_zone_geo, $mesCodesInsee );
+
+				// Filtre sur la structure référente
+				if ( isset($datas['Filtre']['structurereferente_id']) && !empty($datas['Filtre']['structurereferente_id']) ) {
+					$structs = Set::classicExtract($datas, 'Filtre.structurereferente_id');
+					$conditions[] = 'Orientstruct.structurereferente_id = \''.Sanitize::clean( $structs ).'\'';
+				}
+
+				// Filtre sur le référent
+				if ( isset($datas['Filtre']['referent_id']) && !empty($datas['Filtre']['referent_id']) ) {
+					$referents = Set::classicExtract($datas, 'Filtre.referent_id');
+					$conditions[] = 'Orientstruct.referent_id = \''.Sanitize::clean( $referents ).'\'';
+				}
+
+				// Paramétrage, date d'orientation
+				$typesorientsParentidsSocial = Configure::read( 'Orientstruct.typeorientprincipale.SOCIAL' );
+				$typesorientsParentidsEmploi = Configure::read( 'Orientstruct.typeorientprincipale.Emploi' );
+
+				$conditions[] = 'EXISTS(
+					SELECT
+						*
+					FROM orientsstructs
+						INNER JOIN typesorients ON ( typesorients.id = orientsstructs.typeorient_id )
+					WHERE
+						orientsstructs.personne_id = Personne.id
+						AND orientsstructs.statut_orient = \'Orienté\'
+						AND (
+							NOT EXISTS(
+								SELECT *
+									FROM orientsstructs AS osvt
+										INNER JOIN typesorients AS tosvt ON ( tosvt.id = osvt.typeorient_id )
+									WHERE
+										osvt.personne_id = orientsstructs.personne_id
+										AND osvt.statut_orient = \'Orienté\'
+										AND osvt.date_valid > orientsstructs.date_valid
+										AND tosvt.parentid IN ( '.implode( ',', $typesorientsParentidsEmploi ).' )
 							)
-							AND ( DATE( NOW() ) - (
-								SELECT CAST( decisions'.Inflector::tableize( $this->alias ).'.modified AS DATE )
-									FROM decisions'.Inflector::tableize( $this->alias ).'
-										INNER JOIN passagescommissionseps ON ( decisions'.Inflector::tableize( $this->alias ).'.passagecommissionep_id = passagescommissionseps.id )
-										INNER JOIN dossierseps ON ( passagescommissionseps.dossierep_id = dossierseps.id )
-									ORDER BY modified DESC
-									LIMIT 1
-							) ) <= '.Configure::read( $this->alias.'.delaiCreationContrat' ).'
-				)',
-				// La dernière
-				'Orientstruct.id IN (
-                                    SELECT o.id
-                                            FROM orientsstructs AS o
-                                            WHERE
-                                                    o.personne_id = Personne.id
-                                                    AND o.date_valid IS NOT NULL
-                                                    AND o.rgorient IS NOT NULL
-                                            ORDER BY o.rgorient DESC
-                                            LIMIT 1
-				)'
-			);
+						)
+						AND typesorients.parentid IN ( '.implode( ',', $typesorientsParentidsSocial ).' )
+						AND orientsstructs.date_valid <= \''.date( 'Y-m-d', strtotime( '- 24 month', time() ) ).'\'
+				)';
+			}
+			else if( $cg == 93 ) {
+				// Filtre, date d'orientation
+				$nbmois = Set::classicExtract($datas, 'Filtre.dureenonreorientation');
+				$conditions[] = 'EXISTS(
+					SELECT
+						*
+					FROM orientsstructs
+						INNER JOIN typesorients ON ( typesorients.id = orientsstructs.typeorient_id )
+					WHERE
+						orientsstructs.personne_id = Personne.id
+						AND orientsstructs.statut_orient = \'Orienté\'
+						AND (
+							NOT EXISTS(
+								SELECT *
+									FROM orientsstructs AS osvt
+										INNER JOIN typesorients AS tosvt ON ( tosvt.id = osvt.typeorient_id )
+									WHERE
+										osvt.personne_id = orientsstructs.personne_id
+										AND osvt.statut_orient = \'Orienté\'
+										AND osvt.date_valid > orientsstructs.date_valid
+										AND tosvt.lib_type_orient LIKE \'Emploi%\'
+							)
+						)
+						AND typesorients.lib_type_orient NOT LIKE \'Emploi%\'
+						AND orientsstructs.date_valid <= \''.date( 'Y-m-d', strtotime( '- '.$nbmois.' month', time() ) ).'\'
+				)';
+			}
 
-                        
-                        if( Configure::read( 'Cg.departement' ) == 66 ){
-                            $structs = Set::classicExtract($datas, 'Filtre.structurereferente_id');
-                            $referents = Set::classicExtract($datas, 'Filtre.referent_id');
+			// 66: conditions sur le bilan de parcours
+			if( $cg == 66 ) {
+				$conditions[] = array(
+					'Contratinsertion.id NOT IN (
+						SELECT contratsinsertion.id
+							FROM contratsinsertion
+								INNER JOIN bilansparcours66 ON (
+									bilansparcours66.contratinsertion_id = contratsinsertion.id
+								)
+							WHERE
+								bilansparcours66.contratinsertion_id = Contratinsertion.id
+					)'
+				);
+			}
 
-                            $conditions = $this->conditionsAdresse( $conditions, $datas, $filtre_zone_geo, $mesCodesInsee );
+			// La dernière orientation
+			$conditions[] = 'Orientstruct.id IN ( '.$this->Orientstruct->sqDerniere().' )';
 
-                            if ( isset($datas['Filtre']['referent_id']) && !empty($datas['Filtre']['referent_id']) ) {
-                                $conditions[] = 'Orientstruct.referent_id = \''.Sanitize::clean( $referents ).'\'';
-                            }
+			// Conditions de base pour qu'un allocataire puisse passer en EP
+			$conditions['Prestation.rolepers'] = array( 'DEM', 'CJT' );
+			$conditions['Calculdroitrsa.toppersdrodevorsa'] = 1;
+			$conditions['Situationdossierrsa.etatdosrsa'] = $this->Orientstruct->Personne->Foyer->Dossier->Situationdossierrsa->etatOuvert();
+			$conditions[] = 'Adressefoyer.id IN ( '.$this->Orientstruct->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )';
 
-                            if ( isset($datas['Filtre']['structurereferente_id']) && !empty($datas['Filtre']['structurereferente_id']) ) {
-                                $conditions[] = 'Orientstruct.structurereferente_id = \''.Sanitize::clean( $structs ).'\'';
-                            }
-                        }
-                        
+			// Une zone géographique à laquelle l'utilisateur peut avoir accès
 			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
 
-			if( Configure::read( 'Cg.departement' ) == 58 ) {
+			// Le dernier CER
+			$conditions[] = 'Contratinsertion.id IN ( '.$this->Orientstruct->Personne->Contratinsertion->sqDernierContrat().' )';
 
-				// On souhaite n'afficher que les orientations en social ne possédant encore pas de dossier COV
-				/*
-					1°) On a un dossier COV en cours de passage (<> finalisé (accepté/refusé), <> reporté) // {cree,traitement,ajourne,finalise}
-					2°) Si COV accepte -> on a un dossier en EP -> OK (voir plus haut)
-					3°) Si COV refuse -> il doit réapparaître
-					4°) ATTENTION: accepté/refusé -> nouvelle orientation
-				*/
+			// La personne ne possède pas de contrat validé en cours
+			// TODO: avec des sq
+			$conditions[] = 'Personne.id NOT IN (
+				SELECT contratsinsertion.personne_id
+					FROM contratsinsertion
+					WHERE
+						contratsinsertion.personne_id = "Personne"."id"
+						AND contratsinsertion.df_ci > NOW()
+						AND contratsinsertion.dd_ci < NOW()
+						AND contratsinsertion.decision_ci =\'V\'
+						AND contratsinsertion.id IN (
+							SELECT c.id
+								FROM contratsinsertion AS c
+								WHERE
+									c.personne_id = "Personne"."id"
+									AND c.decision_ci =\'V\'
+								ORDER BY dd_ci DESC
+								LIMIT 1
+
+						)
+				)';
+
+			// La personne ne doit pas être en cours de passage en EP pour cette thématique
+			$modelName = $this->alias;
+			$modelTable = Inflector::tableize( $modelName );
+			$conditions[] = 'Orientstruct.id NOT IN (
+				SELECT "'.$modelTable.'"."orientstruct_id"
+				FROM "'.$modelTable.'"
+					INNER JOIN "dossierseps" ON ( "dossierseps"."id" = "'.$modelTable.'"."dossierep_id" )
+				WHERE "dossierseps"."id" NOT IN (
+					SELECT "passagescommissionseps"."dossierep_id"
+					FROM passagescommissionseps
+					WHERE "passagescommissionseps"."etatdossierep" = \'traite\'
+				)
+				AND "dossierseps"."themeep" = \''.$modelTable.'\'
+			)';
+
+			// On peut repasser pour cette thématique si le passage lié à cette orientation est plus vieux que
+			// le délai que l'on laisse pour créer le CER
+			$conditions[] = 'Orientstruct.id NOT IN (
+				SELECT '.Inflector::tableize( $this->alias ).'.orientstruct_id
+					FROM '.Inflector::tableize( $this->alias ).'
+						INNER JOIN dossierseps ON (
+							'.Inflector::tableize( $this->alias ).'.dossierep_id = dossierseps.id
+						)
+					WHERE
+						'.Inflector::tableize( $this->alias ).'.orientstruct_id = Orientstruct.id
+						AND dossierseps.id IN (
+							SELECT "passagescommissionseps"."dossierep_id"
+							FROM passagescommissionseps
+							WHERE "passagescommissionseps"."etatdossierep" = \'traite\'
+						)
+						AND ( DATE( NOW() ) - (
+							SELECT CAST( decisions'.Inflector::tableize( $this->alias ).'.modified AS DATE )
+								FROM decisions'.Inflector::tableize( $this->alias ).'
+									INNER JOIN passagescommissionseps ON ( decisions'.Inflector::tableize( $this->alias ).'.passagecommissionep_id = passagescommissionseps.id )
+									INNER JOIN dossierseps ON ( passagescommissionseps.dossierep_id = dossierseps.id )
+								ORDER BY modified DESC
+								LIMIT 1
+						) ) <= '.Configure::read( $this->alias.'.delaiCreationContrat' ).'
+			)';
+
+			// On souhaite n'afficher que les orientations en social ne possédant encore pas de dossier COV
+			// 1°) On a un dossier COV en cours de passage (<> finalisé (accepté/refusé), <> reporté) // {cree,traitement,ajourne,finalise}
+			// 2°) Si COV accepte -> on a un dossier en EP -> OK (voir plus haut)
+			// 3°) Si COV refuse -> il doit réapparaître
+			// 4°) ATTENTION: accepté/refusé -> nouvelle orientation
+			if( Configure::read( 'Cg.departement' ) == 58 ) {
 				$conditions[] = array(
 					'Orientstruct.id NOT IN (
 						SELECT "proposnonorientationsproscovs58"."orientstruct_id"
@@ -179,16 +269,9 @@
 								AND "proposnonorientationsproscovs58"."orientstruct_id" = Orientstruct.id
 					)'
 				);
-
-				$conditionJoinTypeorient = 'Typeorient.id <>';
-				$valueJoinTypeorient = Configure::read( 'Typeorient.emploi_id' );
-			}
-			else {
-				$conditionJoinTypeorient = 'Typeorient.lib_type_orient NOT LIKE';
-				$valueJoinTypeorient = 'Emploi%';
 			}
 
-			$cohorte = array(
+			$querydata = array(
 				'fields' => array(
 					'Orientstruct.id',
 					'Orientstruct.date_valid',
@@ -213,112 +296,26 @@
 					'Contratinsertion.df_ci',
 					'( DATE( NOW() ) - "Contratinsertion"."df_ci" ) AS "Contratinsertion__nbjours"'
 				),
-				'conditions' => $conditions,
+				'conditions' => $conditions, // TODO
 				'joins' => array(
-					array(
-						'table' => 'structuresreferentes',
-						'alias' => 'Structurereferente',
-						'type' => 'INNER',
-						'conditions' => array(
-							'Orientstruct.structurereferente_id = Structurereferente.id'
-						)
-					),
-					array(
-						'table' => 'typesorients',
-						'alias' => 'Typeorient',
-						'type' => 'INNER',
-						'conditions' => array(
-							'Structurereferente.typeorient_id = Typeorient.id',
-							$conditionJoinTypeorient => $valueJoinTypeorient
-						)
-					),
-					array(
-						'table' => 'referents',
-						'alias' => 'Referent',
-						'type' => 'LEFT OUTER',
-						'conditions' => array(
-							'Orientstruct.referent_id = Referent.id'
-						)
-					),
-					array(
-						'table' => 'personnes',
-						'alias' => 'Personne',
-						'type' => 'INNER',
-						'conditions' => array(
-							'Orientstruct.personne_id = Personne.id'
-						)
-					),
-					array(
-						'table'      => 'prestations',
-						'alias'      => 'Prestation',
-						'type'       => 'INNER',
-						'conditions' => array(
-							'Personne.id = Prestation.personne_id',
-							'Prestation.natprest' => 'RSA',
-							'Prestation.rolepers' => array( 'DEM', 'CJT' ),
-						)
-					),
-					array(
-						'table'      => 'calculsdroitsrsa',
-						'alias'      => 'Calculdroitrsa',
-						'type'       => 'INNER',
-						'conditions' => array(
-							'Personne.id = Calculdroitrsa.personne_id',
-							'Calculdroitrsa.toppersdrodevorsa' => 1
-						)
-					),
-					array(
-						'table'      => 'foyers',
-						'alias'      => 'Foyer',
-						'type'       => 'INNER',
-						'conditions' => array( 'Personne.foyer_id = Foyer.id' )
-					),
-					array(
-						'table'      => 'dossiers',
-						'alias'      => 'Dossier',
-						'type'       => 'INNER',
-						'conditions' => array( 'Dossier.id = Foyer.dossier_id' )
-					),
-					array(
-						'table'      => 'situationsdossiersrsa',
-						'alias'      => 'Situationdossierrsa',
-						'type'       => 'INNER',
-						'conditions' => array(
-							'Dossier.id = Situationdossierrsa.dossier_id',
-							'Situationdossierrsa.etatdosrsa' => $this->Orientstruct->Personne->Foyer->Dossier->Situationdossierrsa->etatOuvert()
-						)
-					),
-					array(
-						'table'      => 'adressesfoyers',
-						'alias'      => 'Adressefoyer',
-						'type'       => 'INNER',
-						'conditions' => array(
-							'Adressefoyer.foyer_id = Foyer.id',
-							'Adressefoyer.rgadr' => '01'
-						)
-					),
-					array(
-						'table'      => 'adresses',
-						'alias'      => 'Adresse',
-						'type'       => 'INNER',
-						'conditions' => array( 'Adressefoyer.adresse_id = Adresse.id' )
-					),
-					array(
-						'table'      => 'contratsinsertion',
-						'alias'      => 'Contratinsertion',
-						'type'       => 'INNER',
-						'conditions' => array(
-							'Contratinsertion.personne_id = Orientstruct.personne_id',
-							'Contratinsertion.structurereferente_id = Orientstruct.structurereferente_id'
-						)
-					)
+					$this->Orientstruct->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
+					$this->Orientstruct->join( 'Typeorient', array( 'type' => 'INNER' ) ),
+					$this->Orientstruct->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Orientstruct->join( 'Personne', array( 'type' => 'INNER' ) ),
+					$this->Orientstruct->Personne->join( 'Prestation', array( 'type' => 'INNER' ) ),
+					$this->Orientstruct->Personne->join( 'Calculdroitrsa', array( 'type' => 'INNER' ) ),
+					$this->Orientstruct->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
+					$this->Orientstruct->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
+					$this->Orientstruct->Personne->Foyer->Dossier->join( 'Situationdossierrsa', array( 'type' => 'INNER' ) ),
+					$this->Orientstruct->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'INNER' ) ),
+					$this->Orientstruct->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'INNER' ) ),
+					$this->Orientstruct->Personne->join( 'Contratinsertion', array( 'type' => 'INNER' ) ),
 				),
 				'contain' => false,
 				'order' => array( 'Contratinsertion.nbjours DESC' )
 			);
-//debug($conditions);
-//die();
-			return $cohorte;
+
+			return $querydata;
 		}
 
 		public function saveCohorte( $datas ) {
