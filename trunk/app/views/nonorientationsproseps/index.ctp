@@ -12,57 +12,19 @@
 			array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 'Filtre' ).toggle(); return false;" )
 		).'</li></ul>';
 	}
+
 	if( Configure::read( 'debug' ) > 0 ) {
-		echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
+		if( Configure::read( 'Cg.departement' ) == 66 ) {
+			echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
+		}
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
 	}
 ?>
 
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-<script type="text/javascript">
-	function togglePassageCovEp( checkbox, cbClass, otherCbClass ) {
-		var otherCbName = $( checkbox ).readAttribute( 'name' ).replace( cbClass, otherCbClass );
-		var otherInputSelector = 'input[name="' + otherCbName + '"]';
-		if( $( checkbox ).checked ) {
-			$$( otherInputSelector ).each( function ( elmt ) { $( elmt ).removeClassName( 'enabled' ); $( elmt ).disable(); } );
-		}
-		else {
-			$$( otherInputSelector ).each( function ( elmt ) { $( elmt ).addClassName( 'enabled' ); $( elmt ).enable(); } );
-		}
-	}
-
-	function toutCocherCov( selecteur, cbClass, otherCbClass ) {
-		if( selecteur == undefined ) {
-			selecteur = 'input[type="checkbox"]';
-		}
-
-		$$( selecteur ).each( function( checkbox ) {
-			$( checkbox ).checked = true;
-			togglePassageCovEp( checkbox, cbClass, otherCbClass );
-		} );
-	}
-
-	function toutDecocherCov( selecteur, cbClass, otherCbClass ) {
-		if( selecteur == undefined ) {
-			selecteur = 'input[type="checkbox"]';
-		}
-
-		$$( selecteur ).each( function( checkbox ) {
-			$( checkbox ).checked = false;
-			togglePassageCovEp( checkbox, cbClass, otherCbClass );
-		} );
-	}
-
-</script>
-<script type="text/javascript">
-	document.observe("dom:loaded", function() {
-            dependantSelect( 'FiltreReferentId', 'FiltreStructurereferenteId' );
-            try { $( 'FiltreReferentId' ).onchange(); } catch(id) { }
-	} );
-</script>
-
 <?php echo $form->create( 'Filtre', array( 'url'=> Router::url( null, true ), 'id' => 'Filtre', 'class' => ( !empty( $this->data ) ? 'folded' : 'unfolded' ) ) );?>
 	<fieldset>
-            <?php  echo $xform->input( 'Filtre.index', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
+		<?php  echo $xform->input( 'Filtre.index', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
+
 		<legend><?php  echo __d( 'nonorientationproep', 'Nonorientationsproseps'.Configure::read( 'Cg.departement' ).'::legend', true );?></legend>
 		<?php if( Configure::read( 'Cg.departement' ) == 58 ):?>
 		<?php
@@ -71,32 +33,21 @@
 		?>
 		<?php echo $form->input( 'Filtre.df_ci_from', array( 'label' => 'Le (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $df_ci_from ) );?>
 		<?php echo $form->input( 'Filtre.df_ci_to', array( 'label' => 'Et le (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120,  'maxYear' => date( 'Y' ) + 5, 'selected' => $df_ci_to ) );?>
-		<?php else:?>
-			<?php
-//				$nbmoispardefaut = array();
-//				if( Configure::read( 'Cg.departement' ) == 66 ) {
-//					$nbmoispardefaut = 24;
-//				}
-//				else{
-//					$nbmoispardefaut = 0;
-//				}
-//
-
-//                                
-                                $nbmoispardefaut = array();
-				if( Configure::read( 'Cg.departement' ) == 66 ) {
-                                    echo $form->input( 'Canton.canton', array( 'label' => 'Canton', 'type' => 'select', 'options' => $cantons, 'empty' => true ) );
-                                    echo $form->input( 'Adresse.locaadr', array( 'label' => 'Commune', 'type' => 'text' ) );
-                                    echo $form->input( 'Filtre.structurereferente_id', array( 'label' => 'Structure référente', 'type' => 'select', 'options' => $structs, 'empty' => true ) );
-                                    echo $form->input( 'Filtre.referent_id', array( 'label' => 'Référent', 'type' => 'select', 'options' => $referents, 'empty' => true ) );
-
-				}
-				else{
-                                    echo $form->input( 'Filtre.dureenonreorientation', array( 'label' => 'Parcours social sans réorientation emploi depuis ', 'type' => 'select', 'options' => $nbmoisnonreorientation ) );
-				}
-                                
-?>
 		<?php endif;?>
+
+		<?php
+			$nbmoispardefaut = array();
+			if( Configure::read( 'Cg.departement' ) == 66 ) {
+				echo $form->input( 'Canton.canton', array( 'label' => 'Canton', 'type' => 'select', 'options' => $cantons, 'empty' => true ) );
+				echo $form->input( 'Adresse.locaadr', array( 'label' => 'Commune', 'type' => 'text' ) );
+				echo $form->input( 'Filtre.structurereferente_id', array( 'label' => 'Structure référente', 'type' => 'select', 'options' => $structs, 'empty' => true ) );
+				echo $form->input( 'Filtre.referent_id', array( 'label' => 'Référent', 'type' => 'select', 'options' => $referents, 'empty' => true ) );
+
+			}
+			else{
+				echo $form->input( 'Filtre.dureenonreorientation', array( 'label' => 'Parcours social sans réorientation emploi depuis ', 'type' => 'select', 'options' => $nbmoisnonreorientation ) );
+			}
+		?>
 	</fieldset>
 	<div class="submit">
 		<?php echo $form->button( 'Filtrer', array( 'type' => 'submit' ) );?>
@@ -219,7 +170,41 @@
 
 <?php endif;?>
 
+<?php if( Configure::read( 'Cg.departement' ) == 58 ):?>
 <script type="text/javascript">
+	function togglePassageCovEp( checkbox, cbClass, otherCbClass ) {
+		var otherCbName = $( checkbox ).readAttribute( 'name' ).replace( cbClass, otherCbClass );
+		var otherInputSelector = 'input[name="' + otherCbName + '"]';
+		if( $( checkbox ).checked ) {
+			$$( otherInputSelector ).each( function ( elmt ) { $( elmt ).removeClassName( 'enabled' ); $( elmt ).disable(); } );
+		}
+		else {
+			$$( otherInputSelector ).each( function ( elmt ) { $( elmt ).addClassName( 'enabled' ); $( elmt ).enable(); } );
+		}
+	}
+
+	function toutCocherCov( selecteur, cbClass, otherCbClass ) {
+		if( selecteur == undefined ) {
+			selecteur = 'input[type="checkbox"]';
+		}
+
+		$$( selecteur ).each( function( checkbox ) {
+			$( checkbox ).checked = true;
+			togglePassageCovEp( checkbox, cbClass, otherCbClass );
+		} );
+	}
+
+	function toutDecocherCov( selecteur, cbClass, otherCbClass ) {
+		if( selecteur == undefined ) {
+			selecteur = 'input[type="checkbox"]';
+		}
+
+		$$( selecteur ).each( function( checkbox ) {
+			$( checkbox ).checked = false;
+			togglePassageCovEp( checkbox, cbClass, otherCbClass );
+		} );
+	}
+
 	$$( 'input[type="checkbox"].passagecov' ).each( function( checkbox ) {
 		$( checkbox ).observe( 'change', function() {
 			togglePassageCovEp( $(this), 'passagecov', 'passageep' );
@@ -232,3 +217,12 @@
 		} );
 	} );
 </script>
+<?php endif;?>
+<?php if( Configure::read( 'Cg.departement' ) == 66 ):?>
+<script type="text/javascript">
+	document.observe("dom:loaded", function() {
+            dependantSelect( 'FiltreReferentId', 'FiltreStructurereferenteId' );
+            try { $( 'FiltreStructurereferenteId' ).onchange(); } catch(id) { }
+	} );
+</script>
+<?php endif;?>
