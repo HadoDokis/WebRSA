@@ -46,7 +46,7 @@
 			$indicateur['Personne']['prenomcjt'],
 			date_short( $indicateur['Dossier']['dtdemrsa'] ),
 			is_null($indicateur['Orientstruct']['referent_id'] ) ? '' : Set::extract( $referents, Set::extract( $indicateur, 'Orientstruct.referent_id' ) ),
-			'-',//date_short( $indicateur['Cov58']['datecommission']),
+			date_short( $indicateur['Cov58']['datecommission']),
 			$indicateur['Orientstruct']['rgorient'],
 			is_null($indicateur['PersonneReferent']['referent_id'] ) ? '' : Set::extract( $referents, Set::extract( $indicateur, 'PersonneReferent.referent_id' ) ),
 			date_short( $indicateur['Contratinsertion']['dd_ci'] ),
