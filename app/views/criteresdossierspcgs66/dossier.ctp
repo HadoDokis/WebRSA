@@ -171,6 +171,6 @@
 			?></li>
 		</ul>
 	<?php else:?>
-		<p>Vos critères n'ont retourné aucune PDO.</p>
+		<p class="notice">Vos critères n'ont retourné aucun dossier PCG.</p>
 	<?php endif?>
 <?php endif?>

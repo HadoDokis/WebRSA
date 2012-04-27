@@ -41,12 +41,16 @@
         <?php echo $xform->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>
     </div>
 
+
+
 <?php echo $xform->end();?>
+<?php $pagination = $xpaginator->paginationBlock( 'Dossierpcg66', $this->passedArgs ); ?>
 
+	<?php if( isset( $criteresdossierspcgs66 ) ):?>
+	<br />
+	<h2 class="noprint aere">Résultats de la recherche</h2>
 
-<?php if( isset( $criteresdossierspcgs66 ) ):?>
-	<?php $pagination = $xpaginator->paginationBlock( 'Dossierpcg66', $this->passedArgs ); ?>
-	<?php echo $pagination;?>
+	<?php if( is_array( $criteresdossierspcgs66 ) && count( $criteresdossierspcgs66 ) > 0  ):?>
 		<?php
 			foreach( Set::flatten( $this->data['Search'] ) as $filtre => $value  ) {
 				echo $form->input( "Search.{$filtre}", array( 'type' => 'hidden', 'value' => $value ) );
@@ -152,8 +156,11 @@
 			<li><?php
 				echo $xhtml->exportLink(
 					'Télécharger le tableau',
-					array( 'controller' => 'cohortesvalidationapres66', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
+					array( 'controller' => 'criteresdossierspcgs66', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
 				);
 			?></li>
 		</ul>
+	<?php else:?>
+		<p class="notice">Vos critères n'ont retourné aucune information.</p>
 	<?php endif?>
+<?php endif?>
