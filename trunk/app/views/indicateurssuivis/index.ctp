@@ -12,7 +12,9 @@
 			array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 'Search' ).toggle(); return false;" )
 		).'</li></ul>';
 	}
-	$pagination = $xpaginator->paginationBlock( 'Personne', $this->passedArgs );
+
+	$xpaginator->options( $this->passedArgs );
+	$pagination = $xpaginator->paginationBlock( 'Dossier', $this->passedArgs );
 ?>
 
 <?php echo $form->create( 'Indicateursuivi', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( ( !empty( $this->data ) && empty( $this->validationErrors ) ) ? 'folded' : 'unfolded' ) ) );?>
@@ -55,63 +57,74 @@
 
 <?php if( isset( $indicateurs ) ):?>
 	<h2 class="noprint">Résultats de la recherche</h2>
-
+	<?php echo $pagination;?>
 	<?php if( is_array( $indicateurs ) && count( $indicateurs ) > 0 ):?>
 		<table id="searchResults" class="tooltips">
 			<thead>
 				<tr>
 					<th rowspan="2"><?php echo $xpaginator->sort( 'Numéro CAF/MSA', 'Dossier.matricule' );?></th>
-					<th colspan="3">Demandeur</th>
+					<th colspan="2">Demandeur</th>
 					<th rowspan="2">Adresse</th>
-					<th colspan="2">Conjoint</th>
+					<th>Nom / Prénom du Conjoint</th>
 					<th rowspan="2"><?php echo $xpaginator->sort( 'Date ouverture de droits', 'Dossier.dtdemrsa' );?></th>
-					<th rowspan="2"><?php echo $xpaginator->sort( 'Réf. chargé de l\'évaluation', 'Orientstruct.referent_id' );?></th>
-					<th colspan="2">COV</th>
-					<th rowspan="2"><?php echo $xpaginator->sort( 'Référent unique', 'PersonneReferent.referent_id' );?></th>
+					<th rowspan="2">Référent orientant</th>
+					<th><?php echo $xpaginator->sort( 'Date d\'orientation par la COV', 'Orientstruct.date_valid' );?></th>
+					<th><?php echo $xpaginator->sort( 'Rang orientation', 'Orientstruct.rgorient' );?></th>
+					<th rowspan="2">Référent unique</th>
 					<th colspan="3">CER</th>
 					<th rowspan="2">Date inscription Pôle Emploi<?php //echo $xpaginator->sort( 'Date inscription Pôle Emploi', '' );?></th>
 					<th colspan="2">Passage en EP</th>
+					<th>Action</th>
 				</tr>
 				<tr>
-					<th><?php echo $xpaginator->sort( 'Nom', 'Personne.nom' );?></th>
-					<th><?php echo $xpaginator->sort( 'Prénom', 'Personne.prenom' );?></th>
+					<th><?php echo $xpaginator->sort( 'Nom/Prénom', 'Personne.nom' );?></th>
 					<th><?php echo $xpaginator->sort( 'Date de naissance', 'Personne.dtnai' );?></th>
-					<th>Nom</th>
-					<th>Prénom</th>
-					<th>Date orientation</th>
-					<th><?php echo $xpaginator->sort( 'Rang orientation', 'Orientstruct.rgorient' );?></th>
+					<th></th>
+					<th></th>
+					<th></th>
 					<th><?php echo $xpaginator->sort( 'Date début', 'Contratinsertion.dd_ci' );?></th>
 					<th><?php echo $xpaginator->sort( 'Date fin', 'Contratinsertion.df_ci' );?></th>
 					<th><?php echo $xpaginator->sort( 'Rang', 'Contratinsertion.rg_ci' );?></th>
 					<th><?php echo $xpaginator->sort( 'Date', 'Commissionep.dateseance' );?></th>
 					<th><?php echo $xpaginator->sort( 'Motif', 'Dossierep.themeep' );?></th>
+					<th></th>
 				</tr>
 			</thead>
 			<tbody>
 				<?php foreach( $indicateurs as $index => $indicateur ):?>
 					<?php 
-						$adresse = Set::extract( $indicateur, 'Adresse.numvoie' ).' '.Set::extract( $typevoie, Set::extract( $indicateur, 'Adresse.typevoie' ) ).' '.Set::extract( $indicateur, 'Adresse.nomvoie' ).'<br /> '.Set::extract( $indicateur, 'Adresse.compladr' ).'<br /> '.Set::extract( $indicateur, 'Adresse.codepos' ).' '.Set::extract( $indicateur, 'Adresse.locaadr' );
+						$adresse = Set::classicExtract( $indicateur, 'Adresse.numvoie' ).' '.Set::classicExtract( $typevoie, Set::classicExtract( $indicateur, 'Adresse.typevoie' ) ).' '.Set::classicExtract( $indicateur, 'Adresse.nomvoie' ).'<br /> '.Set::classicExtract( $indicateur, 'Adresse.compladr' ).'<br /> '.Set::classicExtract( $indicateur, 'Adresse.codepos' ).' '.Set::classicExtract( $indicateur, 'Adresse.locaadr' );
 					
 						echo $xhtml->tableCells(
 							array(
 								h( $indicateur['Dossier']['matricule'] ),
-								h( $indicateur['Personne']['nom']),
-								h( $indicateur['Personne']['prenom']),
-								h( $indicateur['Personne']['dtnai']),
+								h( $indicateur['Personne']['nom_complet'] ),
+// 								h( $indicateur['Personne']['qual'].' '.$indicateur['Personne']['nom'].' '.$indicateur['Personne']['prenom']),
+								h( date_short( $indicateur['Personne']['dtnai'] ) ),
 								$adresse,
-								h( $indicateur['Personne']['nomcjt']),
-								h( $indicateur['Personne']['prenomcjt']),
+								h( $indicateur['Personne']['qualcjt'].' '.$indicateur['Personne']['nomcjt'].' '.$indicateur['Personne']['prenomcjt']),
 								h( date_short( $indicateur['Dossier']['dtdemrsa'] ) ),
-								h( Set::extract( $referents, Set::extract( $indicateur, 'Orientstruct.referent_id' ) ) ),
-								h( date_short( $indicateur['Cov58']['datecommission'])),
+								h( $indicateur['Referentorient']['nom_complet'] ),
+								h( date_short( $indicateur['Orientstruct']['date_valid'])),
 								h( $indicateur['Orientstruct']['rgorient']),
-								h( Set::extract( $referents, Set::extract( $indicateur, 'PersonneReferent.referent_id' ) ) ),
+								h( $indicateur['Referentunique']['nom_complet'] ),
 								h( date_short( $indicateur['Contratinsertion']['dd_ci'] ) ),
 								h( date_short( $indicateur['Contratinsertion']['df_ci'] ) ),
 								h( $indicateur['Contratinsertion']['rg_ci']),
-								'-',	//h( date_short( $indicateur[''][''] ) ),
+								h( date_short( $indicateur['Historiqueetatpe']['date'] ) ),
 								h( date_short( $indicateur['Commissionep']['dateseance'] ) ),
-								h( Set::extract( $options['themeep'], $indicateur['Dossierep']['themeep'])),								
+								h( !empty( $indicateur['Dossierep']['themeep'] ) ? Set::classicExtract( $options['themeep'], $indicateur['Dossierep']['themeep'] ) : null ),
+								$xhtml->link(
+									'Voir',
+									array(
+										'controller' => 'dossiers',
+										'action' => 'view',
+										$indicateur['Dossier']['id']
+									),
+									array(
+										'class' => 'external'
+									)
+								)
 							),
 							array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
 							array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
@@ -120,6 +133,8 @@
 				<?php endforeach;?>
 			</tbody>
 		</table>
+		<?php debug($indicateurs);?>
+		<?php echo $pagination;?>
 		<?php if( Set::extract( $paginator, 'params.paging.Dossier.count' ) > 65000 ):?>
 			<p class="noprint" style="border: 1px solid #556; background: #ffe;padding: 0.5em;"><?php echo $xhtml->image( 'icons/error.png' );?> <strong>Attention</strong>, il est possible que votre tableur ne puisse pas vous afficher les résultats au-delà de la 65&nbsp;000ème ligne.</p>
 		<?php endif;?>

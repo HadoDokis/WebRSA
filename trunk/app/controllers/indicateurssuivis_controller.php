@@ -3,8 +3,8 @@
 	{
 		public $name = 'Indicateurssuivis';
 		public $helpers = array( 'Xform', 'Xhtml', 'Default2', 'Search', 'Csv' );
-		public $uses = array('Option','Structurereferente','Referent', 'Dossier','Indicateursuivi', 'Dossierep', 'Foyer', 'Personne');
-		public $components = array( 'Gestionzonesgeos');
+		public $uses = array('Dossier','Option','Structurereferente','Referent', 'Indicateursuivi', 'Dossierep', 'Foyer', 'Personne');
+		public $components = array( 'Gestionzonesgeos', 'Prg' => array( 'actions' => array( 'index' ) ) );
 
 		protected function _setOptions() {
 			$natpfsSocle = Configure::read( 'Detailcalculdroitrsa.natpf.socle' );
@@ -38,12 +38,13 @@
 					$this->Personne->unbindModelAll();
 					$this->Personne->bindModel( array( 'hasOne' => array('Prestation' => $bindPrestation ) ) );
 					$conjoint = $this->Personne->find('first', array(
-						'fields' => array('Personne.nom', 'Personne.prenom'),
+						'fields' => array('Personne.qual','Personne.nom', 'Personne.prenom'),
 						'conditions' => array( 
 							'Personne.foyer_id' => $value['Foyer']['id'],
 							'Prestation.rolepers' => 'CJT'
 						) 
 					));
+					$indicateurs[$key]['Personne']['qualcjt'] = !empty($conjoint['Personne']['qual']) ? $conjoint['Personne']['qual'] : '';
 					$indicateurs[$key]['Personne']['prenomcjt'] = !empty($conjoint['Personne']['prenom']) ? $conjoint['Personne']['prenom'] : '';
 					$indicateurs[$key]['Personne']['nomcjt'] = !empty($conjoint['Personne']['nom']) ? $conjoint['Personne']['nom'] : '';
 				}

@@ -7,7 +7,7 @@
 		public $useTable = false;
 		public $actsAs = array('Conditionnable');
 
-		public function search( $mesCodesInsee, $filtre_zone_geo, $params ) {
+		/*public function search( $mesCodesInsee, $filtre_zone_geo, $params ) {
 			$conditions = array();
 
 			$conditions[] = $this->conditionsAdresse( $conditions, $params, $filtre_zone_geo, $mesCodesInsee );
@@ -198,8 +198,137 @@
 				'conditions' => $conditions
 			);
 			return $query;
-		}
+		}*/
+		public function search( $mesCodesInsee, $filtre_zone_geo, $params ) {
+			$conditions = array();
 
+			$Dossier = ClassRegistry::init( 'Dossier' );
+			$Informationpe = ClassRegistry::init( 'Informationpe' );
+			
+			$conditions[] = $this->conditionsAdresse( $conditions, $params, $filtre_zone_geo, $mesCodesInsee );
+			$conditions[] = $this->conditionsDernierDossierAllocataire( $conditions, $params );
+			$conditions[] = $this->conditionsPersonneFoyerDossier( $conditions, $params );
+
+			if( isset( $params['Detailcalculdroitrsa']['natpf'] ) && !empty( $params['Detailcalculdroitrsa']['natpf'] ) ) {
+				$conditions[] = "Dossier.id IN ( SELECT detailsdroitsrsa.dossier_id FROM detailsdroitsrsa INNER JOIN detailscalculsdroitsrsa ON detailscalculsdroitsrsa.detaildroitrsa_id = detailsdroitsrsa.id WHERE detailscalculsdroitsrsa.natpf ILIKE '%".Sanitize::paranoid( $params['Detailcalculdroitrsa']['natpf'] )."%' )";
+			}
+			
+			if( isset($params['Orientstruct']['structurereferente_id']) && !empty($params['Orientstruct']['structurereferente_id']) ) {
+				$structurereferente_id = $params['Orientstruct']['structurereferente_id'];
+				$structurereferente_id = explode('_', $structurereferente_id);
+				$conditions[] = 'Orientstruct.structurereferente_id = '.$structurereferente_id[1];
+			}
+
+			if( isset($params['Orientstruct']['referent_id']) && !empty($params['Orientstruct']['referent_id']) ) {
+				$conditions[] = 'Orientstruct.referent_id = '.$params['Orientstruct']['referent_id'];
+			}
+			
+
+			// Conditions de base pour qu'un allocataire puisse passer en EP
+			$conditions['Prestation.rolepers'] = array( 'DEM', 'CJT' );
+			$conditions['Calculdroitrsa.toppersdrodevorsa'] = 1;
+			$conditions['Situationdossierrsa.etatdosrsa'] = $Dossier->Situationdossierrsa->etatOuvert();
+			$conditions[] = 'Adressefoyer.id IN ( '.$Dossier->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )';
+
+			// La dernière orientation du demandeur
+			$conditions[] = array(
+				'OR' => array(
+					'Orientstruct.id IS NULL',
+					'Orientstruct.id IN ( '.$Dossier->Foyer->Personne->Orientstruct->sqDerniere().' )'
+				)
+			);
+			
+			// Le dernier PersonneReferent
+			$conditions[] = 'PersonneReferent.id IN ( '.$Dossier->Foyer->Personne->PersonneReferent->sqDerniere( 'Personne.id' ).' )';
+			
+			// Le dernier contrat du demandeur
+			$conditions[] = array(
+				'OR' => array(
+					'Contratinsertion.id IS NULL',
+					'Contratinsertion.id IN ( '.$Dossier->Foyer->Personne->Contratinsertion->sqDernierContrat().' )'
+				)
+			);
+			
+			// Le dossier d'EP le plus récent
+			$conditions[] = array(
+				'OR' => array(
+					'Dossierep.id IS NULL',
+					'Dossierep.id IN ( '.$Dossier->Foyer->Personne->Dossierep->sqDernierPassagePersonne().' )'
+				)
+			);
+			
+			// La dernière information venant de Pôle Emploi, si celle-ci est une inscription
+			$conditions[] = array(
+				'OR' => array(
+					'Informationpe.id IS NULL',
+					'Informationpe.id IN ( '.$Informationpe->sqDerniere().' )'
+				)
+			);
+			
+			$query = array(
+				'fields' => array(
+					'Dossier.dtdemrsa',
+					'Dossier.matricule',
+					'Dossier.id',
+					$Dossier->Foyer->Personne->sqVirtualField( 'nom_complet' ),
+// 					'Personne.qual',
+// 					'Personne.nom',
+// 					'Personne.prenom',
+					'Personne.dtnai',
+					'Personne.id',
+					'Foyer.id',
+					'Prestation.rolepers',
+					'Dossier.numdemrsa',
+					'Adresse.numvoie',
+					'Adresse.typevoie',
+					'Adresse.nomvoie',
+					'Adresse.compladr',
+					'Adresse.codepos',
+					'Adresse.locaadr',
+					'Orientstruct.id',
+					'Orientstruct.date_valid',
+					'Orientstruct.rgorient',
+					str_replace( 'Referent', 'Referentorient', $Dossier->Foyer->Personne->Referent->sqVirtualField( 'nom_complet' ) ),
+					str_replace( 'Referent', 'Referentunique', $Dossier->Foyer->Personne->Referent->sqVirtualField( 'nom_complet' ) ),
+					'Contratinsertion.dd_ci',
+					'Contratinsertion.df_ci',
+					'Contratinsertion.rg_ci',
+					'Historiqueetatpe.etat',
+					'( CASE WHEN "Historiqueetatpe"."etat" = \'inscription\' THEN "Historiqueetatpe"."date" ELSE NULL END ) AS "Historiqueetatpe__date"',
+					'Commissionep.dateseance',
+					'Dossierep.themeep'
+				),
+				'recursive' => -1,
+				'joins' => array(
+					$Dossier->join( 'Foyer', array( 'type' => 'INNER' ) ),
+					$Dossier->join( 'Situationdossierrsa', array( 'type' => 'INNER' ) ),
+					$Dossier->join( 'Detaildroitrsa', array( 'type' => 'INNER' ) ),
+					$Dossier->Foyer->join( 'Personne', array( 'type' => 'INNER' ) ),
+					$Dossier->Foyer->join( 'Adressefoyer', array( 'type' => 'INNER' ) ),
+					$Dossier->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'INNER' ) ),
+					$Dossier->Foyer->Personne->join( 'Prestation', array( 'type' => 'INNER' ) ),
+					$Dossier->Foyer->Personne->join( 'Contratinsertion', array( 'type' => 'LEFT OUTER' ) ),
+					$Dossier->Foyer->Personne->join( 'Orientstruct', array( 'type' => 'LEFT OUTER' ) ),
+					array_words_replace( $Dossier->Foyer->Personne->Orientstruct->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ), array( 'Referent' => 'Referentorient' ) ),
+					
+					$Dossier->Foyer->Personne->join( 'PersonneReferent', array( 'type' => 'LEFT OUTER' ) ),
+					array_words_replace( $Dossier->Foyer->Personne->PersonneReferent->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ), array( 'Referent' => 'Referentunique' ) ),
+					
+					$Dossier->Foyer->Personne->join( 'Calculdroitrsa', array( 'type' => 'INNER' ) ),
+					// Partie EP
+					$Dossier->Foyer->Personne->join( 'Dossierep', array( 'type' => 'LEFT OUTER' ) ),
+					$Dossier->Foyer->Personne->Dossierep->join( 'Passagecommissionep', array( 'type' => 'LEFT OUTER' ) ),
+					$Dossier->Foyer->Personne->Dossierep->Passagecommissionep->join( 'Commissionep', array( 'type' => 'LEFT OUTER' ) ),
+					
+					$Informationpe->joinPersonneInformationpe(),
+					$Informationpe->Historiqueetatpe->joinInformationpeHistoriqueetatpe(),
+				),
+				'order' => array( 'Personne.nom ASC' ),
+				'limit' => 10,
+				'conditions' => $conditions
+			);
+			return $query;
+		}
 
 	}
 ?>
