@@ -4,6 +4,18 @@
 		public $name = 'Dossierpcg66';
 
 		public $recursive = -1;
+		
+		public $virtualFields = array( 
+			'nbpropositions' => array(
+				'type'      => 'integer',
+				'postgres'  => '(
+					SELECT COUNT(*)
+						FROM decisionsdossierspcgs66
+						WHERE
+							decisionsdossierspcgs66.dossierpcg66_id = "%s"."id"
+				)',
+			)	
+		);
 
 		public $actsAs = array(
 			'Autovalidate',

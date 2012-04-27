@@ -4,7 +4,7 @@
 	class Criteresdossierspcgs66Controller extends AppController
 	{
 		public $uses = array( 'Criteredossierpcg66', 'Dossierpcg66', 'Option' );
-		public $helpers = array( 'Default', 'Default2', 'Ajax', 'Locale', 'Csv' );
+		public $helpers = array( 'Default', 'Default2', 'Ajax', 'Locale', 'Csv', 'Search' );
 
 		public $components = array( 'Prg' => array( 'actions' => array( 'dossier', 'traitement' ) ) );
 
@@ -34,11 +34,13 @@
 			);
 
 			$options = $this->Dossierpcg66->enums();
+			$etatdossierpcg = $options['Dossierpcg66']['etatdossierpcg'];
+			
 			$options = array_merge(
 				$options,
 				$this->Dossierpcg66->Personnepcg66->Traitementpcg66->enums()
 			);
-			$this->set( compact( 'options' ) );
+			$this->set( compact( 'options', 'etatdossierpcg' ) );
 		}
 
 		/**
@@ -50,6 +52,7 @@
 			if( !empty( $params ) ) {
 				$this->paginate = $this->Criteredossierpcg66->{$searchFunction}( $this->data );
 				$this->paginate = $this->_qdAddFilters( $this->paginate );
+				$this->Dossierpcg66->forceVirtualFields = true;
 				$criteresdossierspcgs66 = $this->paginate( 'Dossierpcg66' );
 				$this->set( compact( 'criteresdossierspcgs66' ) );
 			}

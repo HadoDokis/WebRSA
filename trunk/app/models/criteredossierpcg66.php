@@ -36,10 +36,13 @@
 			if( !empty( $decisionpdo ) ) {
 				$conditions[] = 'Decisiondossierpcg66.decisionpdo_id = \''.Sanitize::clean( $decisionpdo ).'\'';
 			}
-			// Etat du dossier PDO
-			if( !empty( $etatdossierpcg ) ) {
-				$conditions[] = 'Dossierpcg66.etatdossierpcg = \''.Sanitize::clean( $etatdossierpcg ).'\'';
+
+			//Etat du dossier PCG - multi-choix
+			if( isset( $params['Dossierpcg66']['etatdossierpcg'] ) && !empty( $params['Dossierpcg66']['etatdossierpcg'] ) ) {
+				$conditions[] = '( Dossierpcg66.etatdossierpcg IN ( \''.implode( '\', \'', $etatdossierpcg ).'\' ) )';
 			}
+			
+			
 			// Origine de la PDO
 			if( !empty( $originepdo ) ) {
 				$conditions[] = 'Dossierpcg66.originepdo_id = \''.Sanitize::clean( $originepdo ).'\'';
@@ -51,29 +54,30 @@
 
 			$query = array(
 				'fields' => array(
-					'DISTINCT "Dossierpcg66"."id"',
-					'"Dossierpcg66"."foyer_id"',
-					'"Dossierpcg66"."datereceptionpdo"',
-					'"Dossierpcg66"."typepdo_id"',
-					'"Dossierpcg66"."etatdossierpcg"',
-					'"Decisiondossierpcg66"."datetransmissionop"',
-					'"Dossierpcg66"."originepdo_id"',
-					'"Dossierpcg66"."user_id"',
-					'"Dossier"."id"',
-					'"Dossier"."numdemrsa"',
-					'"Dossier"."dtdemrsa"',
-					'"Dossier"."matricule"',
-					'"Personne"."id"',
-					'"Personne"."nom"',
-					'"Personne"."prenom"',
-					'"Personne"."dtnai"',
-					'"Personne"."nir"',
-					'"Personne"."qual"',
-					'"Personne"."nomcomnai"',
-					'"Adresse"."locaadr"',
-					'"Adresse"."codepos"',
-					'"Adresse"."numcomptt"',
-					'"Situationdossierrsa"."etatdosrsa"'
+					'DISTINCT Dossierpcg66.id',
+					'Dossierpcg66.foyer_id',
+					'Dossierpcg66.datereceptionpdo',
+					'Dossierpcg66.typepdo_id',
+					'Dossierpcg66.etatdossierpcg',
+					'Decisiondossierpcg66.datetransmissionop',
+					'Dossierpcg66.originepdo_id',
+					'Dossierpcg66.user_id',
+					'Dossier.id',
+					'Dossier.numdemrsa',
+					'Dossier.dtdemrsa',
+					'Dossier.matricule',
+					'Personne.id',
+					'Personne.nom',
+					'Personne.prenom',
+					'Personne.dtnai',
+					'Personne.nir',
+					'Personne.qual',
+					'Personne.nomcomnai',
+					'Adresse.locaadr',
+					'Adresse.codepos',
+					'Adresse.numcomptt',
+					'Situationdossierrsa.etatdosrsa',
+					'Dossierpcg66.nbpropositions'
 				),
 				'recursive' => -1,
 				'joins' => array(
@@ -174,6 +178,9 @@
 			$dateecheance = Set::extract( $params, 'Traitementpcg66.dateecheance' );
 			$dateecheance_to = Set::extract( $params, 'Traitementpcg66.dateecheance_to' );
 			$dateecheance_from = Set::extract( $params, 'Traitementpcg66.dateecheance_from' );
+			
+			// Gestionnaire du dossier gérant le traitement
+			$gestionnaire = Set::extract( $params, 'Dossierpcg66.user_id' );
 
 			/// Critères sur les PDOs - date de reception de la PDO
 			if( !empty( $dateecheance ) ) {
@@ -203,7 +210,12 @@
 			if( !empty( $annule ) ) {
 				$conditions[] = 'Traitementpcg66.annule = \''.Sanitize::clean( $annule ).'\'';
 			}
-
+			
+			// Gestionnaire de la PDO
+			if( !empty( $gestionnaire ) ) {
+				$conditions[] = 'Dossierpcg66.user_id = \''.Sanitize::clean( $gestionnaire ).'\'';
+			}
+			
 			// Motif concernant la perosnne du dossier
 			if( !empty( $motifpersonnepcg66_id ) ) {
 				$conditions[] = 'Traitementpcg66.personnepcg66_situationpdo_id IN ( '.
@@ -235,6 +247,7 @@
 					'"Dossierpcg66"."foyer_id"',
 					'"Dossierpcg66"."datereceptionpdo"',
 					'"Dossierpcg66"."originepdo_id"',
+					'"Dossierpcg66"."user_id"',
 					'"Traitementpcg66"."personnepcg66_id"',
 					'"Traitementpcg66"."daterevision"',
 					'"Traitementpcg66"."dateecheance"',

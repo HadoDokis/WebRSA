@@ -54,7 +54,6 @@
 		echo $default2->subform(
 			array(
 				'Dossierpcg66.originepdo_id' => array( 'label' => __d( 'dossierpcg66', 'Dossierpcg66.originepdo_id', true ), 'type' => 'select', 'options' => $originepdo, 'empty' => true ),
-				'Dossierpcg66.etatdossierpcg' => array( 'label' => __d( 'dossierpcg66', 'Dossierpcg66.etatdossierpcg', true ), 'type' => 'select', 'options' => $options['Dossierpcg66']['etatdossierpcg'], 'empty' => true ),
 				'Dossierpcg66.user_id' => array( 'label' => __d( 'dossierpcg66', 'Dossierpcg66.user_id', true ), 'type' => 'select', 'options' => $gestionnaire, 'empty' => true )
 			),
 			array(
@@ -62,6 +61,10 @@
 			)
 		);
 	?>
+	<?php 
+		echo $search->etatDossierPCG66( $etatdossierpcg ); 
+	?>
+
 </fieldset>
 	<div class="submit noprint">
 		<?php echo $xform->button( 'Rechercher', array( 'type' => 'submit' ) );?>
@@ -85,6 +88,7 @@
 					<th><?php echo $xpaginator->sort( 'Type de dossier', 'Dossierpcg66.typepdo_id' );?></th>
 					<th><?php echo $xpaginator->sort( 'Date de réception', 'Dossierpcg66.datereceptionpdo' );?></th>
 					<th><?php echo $xpaginator->sort( 'Gestionnaire', 'Dossierpcg66.user_id' );?></th>
+					<th><?php echo $xpaginator->sort( 'Nb de propositions de décisions', 'Dossierpcg66.nbpropositions' );?></th>
 					<th><?php echo $xpaginator->sort( 'Etat du dossier', 'Dossierpcg66.etatdossierpcg' );?></th>
 					<th class="action">Actions</th>
 				</tr>
@@ -136,6 +140,7 @@
 								h( Set::enum( Set::classicExtract( $criteredossierpcg66, 'Dossierpcg66.typepdo_id' ), $typepdo ) ),
 								h( $locale->date( 'Locale->date',  Set::classicExtract( $criteredossierpcg66, 'Dossierpcg66.datereceptionpdo' ) ) ),
 								h( Set::enum( Set::classicExtract( $criteredossierpcg66, 'Dossierpcg66.user_id' ), $gestionnaire ) ),
+								h( $criteredossierpcg66['Dossierpcg66']['nbpropositions'] ),
 								h( Set::enum( Set::classicExtract( $criteredossierpcg66, 'Dossierpcg66.etatdossierpcg' ), $options['Dossierpcg66']['etatdossierpcg'] ).$datetransmission ),
 								$xhtml->viewLink(
 									'Voir',

@@ -14,6 +14,7 @@ class SearchHelper extends AppHelper {
 			observeDisableFieldsetOnCheckbox( '{$observeId}', $( '{$updateId}' ){$stringUp}, false );
 		});";
 		return "<script type='text/javascript'>{$out}</script>";
+
 	} 
 	
 	protected function _domId($modelField) {
@@ -47,7 +48,7 @@ class SearchHelper extends AppHelper {
 			$first = key($natpf);
 			
 			$script = $this->_constuctObserve($this->_domId('Detailcalculdroitrsa.natpf_choice'), $this->_domId('Detailcalculdroitrsa.natpf'.$first), true);
-			
+
 			$input = $this->Xform->input( 'Detailcalculdroitrsa.natpf_choice', array( 'label' => 'Filtrer par nature de prestation (RSA Socle)', 'type' => 'checkbox' ) );
 				
 			$natpfsCoches = Set::extract( $this->data, 'Detailcalculdroitrsa.natpf' );
@@ -61,5 +62,33 @@ class SearchHelper extends AppHelper {
 			
 		}
 	
+	
+		/**
+		*	Filtre sur les états du dossierpcg66
+		*
+		*/
+		public function etatDossierPCG66( $etatdossierpcg )
+		{	
+			reset($etatdossierpcg);
+			$firstValue = key($etatdossierpcg);
+			
+			// Passage de la première lettre de l'enum en majuscule, sinon ne marche pas
+			$first = ucfirst($firstValue);
+
+
+			$script = $this->_constuctObserve( $this->_domId('Dossierpcg66.etatdossierpcg_choice'), $this->_domId('Dossierpcg66.etatdossierpcg'.$first), true );
+
+			$input = $this->Xform->input( 'Dossierpcg66.etatdossierpcg_choice', array( 'label' => 'Filtrer par état du dossier', 'type' => 'checkbox' ) );
+				
+			$etatsDossiersPCGCoches = Set::extract( $this->data, 'Dossierpcg66.etatdossierpcg' );
+			if( empty( $etatsDossiersPCGCoches ) ) {
+				$etatsDossiersPCGCoches = array_keys( $etatdossierpcg );
+			}		
+			
+			$input.= $this->Xform->input( 'Dossierpcg66.etatdossierpcg', array( 'label' => 'État du dossier PCG', 'type' => 'select', 'multiple' => 'checkbox', 'options' => $etatdossierpcg, 'value' => $etatsDossiersPCGCoches ) );
+		
+			return $script . $input; 
+			
+		}
 	
 }

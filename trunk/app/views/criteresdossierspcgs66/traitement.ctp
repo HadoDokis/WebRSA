@@ -40,6 +40,7 @@
 </fieldset>
 <fieldset>
 	<legend>Recherche par traitement</legend>
+		<?php echo $xform->input( 'Dossierpcg66.user_id', array( 'label' => __d( 'dossierpcg66', 'Dossierpcg66.user_id', true ), 'type' => 'select', 'options' => $gestionnaire, 'empty' => true ) );?>
 		<?php echo $xform->input( 'Traitementpcg66.dateecheance', array( 'label' => 'Filtrer par date d\'échéance du traitement', 'type' => 'checkbox' ) );?>
 		<fieldset>
 			<legend>Date d'échéance du traitement</legend>
@@ -107,11 +108,15 @@
 			<tbody>
 				<?php
 					foreach( $criteresdossierspcgs66 as $index => $criteredossierpcg66 ) {
+					
+						$etatdosrsaValue = Set::classicExtract( $criteredossierpcg66, 'Situationdossierrsa.etatdosrsa' );
+						$etatDossierRSA = isset( $etatdosrsa[$etatdosrsaValue] ) ? $etatdosrsa[$etatdosrsaValue] : 'Non défini';
+					
 						$innerTable = '<table id="innerTable'.$index.'" class="innerTable">
 							<tbody>
 								<tr>
 									<th>Etat du droit</th>
-									<td>'.h( Set::enum( Set::classicExtract( $criteredossierpcg66, 'Situationdossierrsa.etatdosrsa' ),$criteredossierpcg66 ) ).'</td>
+									<td>'.h( $etatDossierRSA ).'</td>
 								</tr>
 								<tr>
 									<th>Commune de naissance</th>
@@ -136,7 +141,7 @@
 
 							</tbody>
 						</table>';
-
+						
 						echo $xhtml->tableCells(
 							array(
 								h( Set::classicExtract( $criteredossierpcg66, 'Dossier.numdemrsa' ) ),
@@ -161,6 +166,7 @@
 				?>
 			</tbody>
 		</table>
+
 		<?php echo $pagination;?>
 		<ul class="actionMenu">
 			<li><?php
