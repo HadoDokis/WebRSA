@@ -565,5 +565,32 @@
 				);
 			}
 		}
+
+		/**
+		 * Retourne une sous-requête permettant d'obtenir l'id du dossier d'EP de la personne
+		 * associé à la commission d'EP la plus récente.
+		 *
+		 * @param string $personneIdAlias Le champ désignant l'id de la personne
+		 * @return string
+		 */
+		public function sqDernierPassagePersonne( $personneIdAlias = 'Personne.id' ) {
+			// Dossierep INNER Passagecommissionep INNER Commissionep ORDER BY Commissionep.dateseance DESC
+			return $this->sq(
+				array(
+					'fields' => array( 'dossierseps.id' ),
+					'alias' => 'dossierseps',
+					'joins' => array(
+						array_words_replace( $this->join( 'Passagecommissionep', array( 'type' => 'INNER' ) ), array( 'Dossierep' => 'dossierseps', 'Passagecommissionep' => 'passagescommissionseps' ) ),
+						array_words_replace( $this->Passagecommissionep->join( 'Commissionep', array( 'type' => 'INNER' ) ), array( 'Passagecommissionep' => 'passagescommissionseps', 'Commissionep' => 'commissionseps' ) ),
+					),
+					'contain' => false,
+					'conditions' => array(
+						"dossierseps.personne_id = {$personneIdAlias}"
+					),
+					'order' => array( 'commissionseps.dateseance DESC' ),
+					'limit' => 1
+				)
+			);
+		}
 	}
 ?>
