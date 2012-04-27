@@ -6,7 +6,7 @@
 		public $uses = array( 'Criteredossierpcg66', 'Dossierpcg66', 'Option' );
 		public $helpers = array( 'Default', 'Default2', 'Ajax', 'Locale', 'Csv', 'Search' );
 
-		public $components = array( 'Prg' => array( 'actions' => array( 'dossier', 'traitement' ) ) );
+		public $components = array( 'Prg' => array( 'actions' => array( 'dossier', 'traitement', 'gestionnaire' ) ) );
 
 		/**
 		*
@@ -54,6 +54,32 @@
 				$this->paginate = $this->_qdAddFilters( $this->paginate );
 				$this->Dossierpcg66->forceVirtualFields = true;
 				$criteresdossierspcgs66 = $this->paginate( 'Dossierpcg66' );
+				
+				foreach( $criteresdossierspcgs66 as $i => $criteredossierpcg66 ) {
+					$dossierpcg66_id = Set::classicExtract( $criteredossierpcg66, 'Dossierpcg66.id' );
+
+					$traitementspcgs66 = $this->Dossierpcg66->Personnepcg66->Traitementpcg66->find(
+						'all',
+						array(
+							'fields' => array(
+								'Traitementpcg66.typetraitement'
+							),
+							'joins' => array(
+								$this->Dossierpcg66->Personnepcg66->Traitementpcg66->join( 'Personnepcg66', array( 'type' => 'INNER' ) )
+							),
+							'conditions' => array(
+								'Personnepcg66.dossierpcg66_id' => $dossierpcg66_id
+							),
+							'contain' => false
+						)
+					);
+					
+					//Liste des différents statuts de la personne
+					$listeTraitementspcgs66 = Set::extract( $traitementspcgs66, '/Traitementpcg66/typetraitement' );
+
+					$criteresdossierspcgs66[$i]['Dossierpcg66']['choucroute'] = $listeTraitementspcgs66;
+				}
+
 				$this->set( compact( 'criteresdossierspcgs66' ) );
 			}
 // debug($params);
@@ -75,6 +101,14 @@
 
 		public function traitement() {
 			$this->_index( 'searchTraitement' );
+		}
+		
+		/**
+		*
+		*/
+
+		public function gestionnaire() {
+			$this->_index( 'searchGestionnaire' );
 		}
 	}
 ?>

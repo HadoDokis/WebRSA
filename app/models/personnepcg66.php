@@ -11,6 +11,18 @@
 			'Formattable' => array( 'suffix' => array( 'categoriedetail' ) )
 		);
 
+		public $virtualFields = array( 
+			'nbtraitements' => array(
+				'type'      => 'integer',
+				'postgres'  => '(
+					SELECT COUNT(*)
+						FROM traitementspcgs66
+						WHERE
+							traitementspcgs66.personnepcg66_id = "%s"."id"
+				)',
+			),
+		);
+		
 		public $validate = array(
 			'categoriegeneral' => array(
 				'notEmpty' => array(

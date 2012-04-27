@@ -14,7 +14,7 @@
 						WHERE
 							decisionsdossierspcgs66.dossierpcg66_id = "%s"."id"
 				)',
-			)	
+			),
 		);
 
 		public $actsAs = array(

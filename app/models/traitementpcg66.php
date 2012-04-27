@@ -722,5 +722,24 @@
 				$options
 			);
 		}
+		
+		/**
+		*	Sous-requête afin d'obtenir la liste des traitements PCG de la personne PCG
+		*	liée au dossier PCG
+		*/
+		public function sqListeTraitementpcg66( $personnepcg66IdFied = 'Personnepcg66.id' ) {
+// 			return $this->sq(
+// 				array(
+// 					'fields' => array(
+// 						'traitementspcgs66.id'
+// 					),
+// 					'alias' => 'traitementspcgs66',
+// 					'conditions' => array(
+// 						"traitementspcgs66.personnepcg66_id = {$personnepcg66IdFied}"
+// 					),
+// 					'order' => array( 'traitementspcgs66.daterecpetion DESC' )					
+// 				)
+// 			);
+		}
 	}
 ?>

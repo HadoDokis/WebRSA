@@ -270,12 +270,19 @@
 							<li><?php echo $xhtml->link( 'Par Rendez-vous',  array( 'controller' => 'criteresrdv', 'action' => 'index'  ) );?></li>
 						<?php endif;?>
 						<?php if( Configure::read( 'Cg.departement' ) == 66 ): ?>
-							<?php if( $permissions->check( 'criteresdossierspcgs66', 'dossier' ) ):?>
+							<?php if( $permissions->check( 'criteresdossierspcgs66', 'dossier' ) || $permissions->check( 'criteresdossierspcgs66', 'traitement' ) || $permissions->check( 'criteresdossierspcgs66', 'gestionnaire' ) ):?>
 								<li>
 									<?php echo $xhtml->link( 'Par Dossiers PCGs', '#' );?>
 									<ul>
-										<li><?php echo $xhtml->link( 'Dossiers PCGs',  array( 'controller' => 'criteresdossierspcgs66', 'action' => 'dossier'  ) );?></li>
-										<li><?php echo $xhtml->link( 'Traitements PCGs',  array( 'controller' => 'criteresdossierspcgs66', 'action' => 'traitement'  ) );?></li>
+										<?php if( $permissions->check( 'criteresdossierspcgs66', 'dossier' ) ):?>
+											<li><?php echo $xhtml->link( 'Dossiers PCGs',  array( 'controller' => 'criteresdossierspcgs66', 'action' => 'dossier'  ) );?></li>
+										<?php endif;?>
+										<?php if( $permissions->check( 'criteresdossierspcgs66', 'traitement' ) ):?>
+											<li><?php echo $xhtml->link( 'Traitements PCGs',  array( 'controller' => 'criteresdossierspcgs66', 'action' => 'traitement'  ) );?></li>
+										<?php endif;?>
+										<?php if( $permissions->check( 'criteresdossierspcgs66', 'gestionnaire' ) ):?>
+											<li><?php echo $xhtml->link( 'Gestionnaires PCGs',  array( 'controller' => 'criteresdossierspcgs66', 'action' => 'gestionnaire'  ) );?></li>
+										<?php endif;?>
 									</ul>
 								</li>
 							<?php endif;?>
