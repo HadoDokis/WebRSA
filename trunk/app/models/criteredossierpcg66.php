@@ -243,33 +243,29 @@
 			
 			$query = array(
 				'fields' => array(
-					'"Dossierpcg66"."id"',
-					'"Dossierpcg66"."foyer_id"',
-					'"Dossierpcg66"."datereceptionpdo"',
-					'"Dossierpcg66"."originepdo_id"',
-					'"Dossierpcg66"."user_id"',
-					'"Traitementpcg66"."personnepcg66_id"',
-					'"Traitementpcg66"."daterevision"',
-					'"Traitementpcg66"."dateecheance"',
-					'"Traitementpcg66"."descriptionpdo_id"',
-					'"Traitementpcg66"."clos"',
-					'"Traitementpcg66"."annule"',
-					'"Descriptionpdo"."name"',
-					'"Dossier"."id"',
-					'"Dossier"."numdemrsa"',
-					'"Dossier"."dtdemrsa"',
-					'"Dossier"."matricule"',
-					'"Personne"."id"',
-					'"Personne"."nom"',
-					'"Personne"."prenom"',
-					'"Personne"."dtnai"',
-					'"Personne"."nir"',
-					'"Personne"."qual"',
-					'"Personne"."nomcomnai"',
-					'"Adresse"."locaadr"',
-					'"Adresse"."codepos"',
-					'"Adresse"."numcomptt"',
-					'"Situationdossierrsa"."etatdosrsa"'
+					'DISTINCT Dossierpcg66.id',
+					'Dossierpcg66.foyer_id',
+					'Dossierpcg66.datereceptionpdo',
+					'Dossierpcg66.typepdo_id',
+					'Dossierpcg66.etatdossierpcg',
+					'Dossierpcg66.originepdo_id',
+					'Dossierpcg66.user_id',
+					'Dossier.id',
+					'Dossier.numdemrsa',
+					'Dossier.dtdemrsa',
+					'Dossier.matricule',
+					'Personne.id',
+					'Personne.nom',
+					'Personne.prenom',
+					'Personne.dtnai',
+					'Personne.nir',
+					'Personne.qual',
+					'Personne.nomcomnai',
+					'Adresse.locaadr',
+					'Adresse.codepos',
+					'Adresse.numcomptt',
+					'Situationdossierrsa.etatdosrsa',
+					'Dossierpcg66.nbpropositions'
 				),
 				'recursive' => -1,
 				'joins' => array(
@@ -358,5 +354,76 @@
 			);
 			return $query;
 		}
+
+		
+		/**
+		*
+		*/
+
+		public function searchGestionnaire( $params ) {
+			$conditions = array();
+			$Dossierpcg66 = ClassRegistry::init( 'Dossierpcg66' );
+			$gestionnaire = Set::extract( $params, 'Search.Dossierpcg66.user_id' );
+			
+			// Gestionnaire de la PDO
+			if( !empty( $gestionnaire ) ) {
+				$conditions[] = 'Dossierpcg66.user_id = \''.Sanitize::clean( $gestionnaire ).'\'';
+			}
+			
+			// Conditions de base pour qu'un allocataire puisse passer en EP
+			$conditions['Dossierpcg66.etatdossierpcg'] = array( 'attaffect', 'attinstr', 'instrencours', 'dossiertraite', 'decisionvalid', 'decisionnonvalid', 'decisionnonvalidretouravis', 'decisionvalidretouravis', 'attpj', 'transmisop', 'atttransmisop' );
+// 			$conditions['Prestation.rolepers'] = array( 'DEM', 'CJT' );
+			$conditions[] = 'Adressefoyer.id IN ( '.$Dossierpcg66->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )';
+			$conditions[] = 'Personne.id IN ( '.$Dossierpcg66->Foyer->Personne->sqResponsableDossierUnique('Foyer.id').' )';
+			
+			$query = array(
+				'fields' => array(
+					'DISTINCT Dossierpcg66.id',
+					'Dossierpcg66.foyer_id',
+					'Dossierpcg66.datereceptionpdo',
+					'Dossierpcg66.typepdo_id',
+					'Dossierpcg66.etatdossierpcg',
+					'Dossierpcg66.originepdo_id',
+					'Dossierpcg66.user_id',
+					'Dossier.id',
+					'Dossier.numdemrsa',
+					'Dossier.dtdemrsa',
+					'Dossier.matricule',
+					'Personne.id',
+					'Personne.nom',
+					'Personne.prenom',
+					'Personne.dtnai',
+					'Personne.nir',
+					'Personne.qual',
+					'Personne.nomcomnai',
+					'Adresse.locaadr',
+					'Adresse.codepos',
+					'Adresse.numcomptt',
+					'Situationdossierrsa.etatdosrsa',
+					'Dossierpcg66.nbpropositions',
+// 					'Personnepcg66.id',
+					'Personnepcg66.nbtraitements'
+				),
+				'recursive' => -1,
+				'joins' => array(
+					$Dossierpcg66->join( 'Foyer', array( 'type' => 'INNER' ) ),
+					$Dossierpcg66->join( 'Personnepcg66', array( 'type' => 'LEFT OUTER' ) ),
+					$Dossierpcg66->Personnepcg66->join( 'Traitementpcg66', array( 'type' => 'LEFT OUTER' ) ),
+// 					$Dossierpcg66->Personnepcg66->Traitementpcg66->join( 'Descriptionpdo', array( 'type' => 'INNER' ) ),
+					$Dossierpcg66->Foyer->join( 'Personne', array( 'type' => 'INNER' ) ),
+// 					$Dossierpcg66->Foyer->Personne->join( 'Prestation', array( 'type' => 'INNER' ) ),
+					$Dossierpcg66->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
+					$Dossierpcg66->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
+					$Dossierpcg66->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
+					$Dossierpcg66->Foyer->Dossier->join( 'Situationdossierrsa', array( 'type' => 'INNER' ) )
+				),
+				'limit' => 10,
+				'contain' => false,
+				'conditions' => $conditions
+			);
+
+			return $query;
+		}
+
 	}
 ?>
