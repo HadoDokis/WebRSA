@@ -15,7 +15,7 @@
 		echo $default2->subform(
 			array(
 				'Dossier.numdemrsa' => array( 'domain' => 'dossier', 'required' => true ),
-				'Dossier.dtdemrsa' => array( 'domain' => 'dossier', 'required' => true ),
+				'Dossier.dtdemrsa' => array( 'domain' => 'dossier' ),
 				'Dossier.fonorg' => array( 'domain' => 'dossier', 'required' => true, 'type' => 'select', 'options' => $fonorg ),
 				'Dossier.matricule' => array( 'domain' => 'dossier', 'required' => true ),
 				'Dossier.dtdemrmi' => array( 'domain' => 'dossier' ),
