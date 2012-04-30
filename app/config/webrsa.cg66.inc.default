@@ -344,4 +344,10 @@
 	 */
 	Configure::write( 'Apre66.EmailPiecesmanquantes.from', 'emailaprefrom@cgxxxx.fr' );
 	Configure::write( 'Apre66.EmailPiecesmanquantes.replyto', Configure::read( 'Apre66.EmailPiecesmanquantes.from' ) );
+	
+		
+	/**
+	 * 	Délai pour la détection des CERs non validés et notifiés il y a 1 mois et demi
+	 */
+	Configure::write( 'Criterecer.delaidetectionnonvalidnotifie', '45' );
 ?>
