@@ -51,6 +51,7 @@
 	<h2 class="noprint aere">Résultats de la recherche</h2>
 
 	<?php if( is_array( $criteresdossierspcgs66 ) && count( $criteresdossierspcgs66 ) > 0  ):?>
+	<?php echo $pagination;?>
 		<?php
 			foreach( Set::flatten( $this->data['Search'] ) as $filtre => $value  ) {
 				echo $form->input( "Search.{$filtre}", array( 'type' => 'hidden', 'value' => $value ) );
