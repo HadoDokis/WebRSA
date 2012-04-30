@@ -121,7 +121,7 @@ App::import( 'Sanitize' );
 				array(
 					'table'      => 'adressesfoyers',
 					'alias'      => 'Adressefoyer',
-					'type'       => 'INNER',
+					'type'       => 'LEFT OUTER',
 					'foreignKey' => false,
 					'conditions' => array(
 						'Foyer.id = Adressefoyer.foyer_id',
@@ -133,7 +133,7 @@ App::import( 'Sanitize' );
 				array(
 					'table'      => 'adresses',
 					'alias'      => 'Adresse',
-					'type'       => 'INNER',
+					'type'       => 'LEFT OUTER',
 					'foreignKey' => false,
 					'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
 				),
