@@ -94,7 +94,7 @@
 			<?php echo $form->input( 'Filtre.arriveaecheance', array( 'label' => 'CER arrivant à échéance (par défaut, se terminant sous 1 mois)', 'type' => 'checkbox' )  ); ?>
 
 			<?php if( Configure::read( 'Cg.departement' ) == 66 ) {
-					echo $form->input( 'Filtre.notifienonvalide', array( 'label' => 'CER non validé et notifié il y a '.Configure::read( 'Criterecer.delaidetectionnonvalidnotifie' ).' jours', 'type' => 'checkbox' )  );
+					echo $form->input( 'Filtre.notifienonvalide', array( 'label' => 'CER non validé et notifié il y a '.Configure::read( 'Criterecer.delaidetectionnonvalidnotifie' ), 'type' => 'checkbox' )  );
 				}
 			?>
 	</fieldset>
