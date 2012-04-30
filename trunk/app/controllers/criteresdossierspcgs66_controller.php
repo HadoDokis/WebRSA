@@ -73,11 +73,11 @@
 							'contain' => false
 						)
 					);
-					
+// 					debug( $traitementspcgs66 );
 					//Liste des différents statuts de la personne
 					$listeTraitementspcgs66 = Set::extract( $traitementspcgs66, '/Traitementpcg66/typetraitement' );
 
-					$criteresdossierspcgs66[$i]['Dossierpcg66']['choucroute'] = $listeTraitementspcgs66;
+					$criteresdossierspcgs66[$i]['Dossierpcg66']['listetraitements'] = $listeTraitementspcgs66;
 				}
 
 				$this->set( compact( 'criteresdossierspcgs66' ) );

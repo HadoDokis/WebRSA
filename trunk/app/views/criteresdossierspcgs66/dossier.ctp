@@ -102,11 +102,14 @@
 							$datetransmission = ' le '.date_short( Set::classicExtract( $criteredossierpcg66, 'Decisiondossierpcg66.datetransmissionop' ) );
 						}
 		
+						$etatdosrsaValue = Set::classicExtract( $criteredossierpcg66, 'Situationdossierrsa.etatdosrsa' );
+						$etatDossierRSA = isset( $etatdosrsa[$etatdosrsaValue] ) ? $etatdosrsa[$etatdosrsaValue] : 'Non défini';
+					
 						$innerTable = '<table id="innerTable'.$index.'" class="innerTable">
 							<tbody>
 								<tr>
 									<th>Etat du droit</th>
-									<td>'.h( Set::classicExtract( $etatdosrsa, Set::classicExtract( $criteredossierpcg66, 'Situationdossierrsa.etatdosrsa' ) ) ).'</td>
+									<td>'.h( $etatDossierRSA ).'</td>
 								</tr>
 								<tr>
 									<th>Commune de naissance</th>
