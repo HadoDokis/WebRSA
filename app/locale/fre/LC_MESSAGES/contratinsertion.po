@@ -325,10 +325,10 @@ msgid "Contratinsertion.datedecision"
 msgstr "Date de décision"
 
 msgid "Contratinsertion.datenotification"
-msgstr "Date de notification"
+msgstr "Date d'envoi"
 
 msgid "Contratsinsertion::notification"
-msgstr "Envoi de la notification"
+msgstr "Envoi des documents"
 
 msgid "ENUM::POSITIONCER::valid"
 msgstr "CER validé"
