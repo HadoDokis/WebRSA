@@ -93,6 +93,10 @@
 
 			<?php echo $form->input( 'Filtre.arriveaecheance', array( 'label' => 'CER arrivant à échéance (par défaut, se terminant sous 1 mois)', 'type' => 'checkbox' )  ); ?>
 
+			<?php if( Configure::read( 'Cg.departement' ) == 66 ) {
+					echo $form->input( 'Filtre.notifienonvalide', array( 'label' => 'CER non validé et notifié il y a '.Configure::read( 'Criterecer.delaidetectionnonvalidnotifie' ).' jours', 'type' => 'checkbox' )  );
+				}
+			?>
 	</fieldset>
 
 	<div class="submit noprint">
@@ -132,6 +136,24 @@
 					<?php
 						$title = $contrat['Dossier']['numdemrsa'];
 
+						/***/
+						$position = Set::classicExtract( $contrat, 'Contratinsertion.positioncer' );
+						$datenotif = Set::classicExtract( $contrat, 'Contratinsertion.datenotification' );
+						if( empty( $datenotif ) ) {
+							$positioncer = Set::enum( Set::classicExtract( $contrat, 'Contratinsertion.positioncer' ), $numcontrat['positioncer'] );
+						}
+						else if( !empty( $datenotif ) && in_array( $position, array( 'nonvalidnotifie', 'validnotifie' ) ) ){
+							$positioncer = Set::enum( Set::classicExtract( $contrat, 'Contratinsertion.positioncer' ), $numcontrat['positioncer'] ).' le '.date_short( $datenotif );
+						}
+						else {
+							$positioncer = Set::enum( Set::classicExtract( $contrat, 'Contratinsertion.positioncer' ), $numcontrat['positioncer'] );
+						}
+						/***/
+						
+						
+						
+						
+						
 						$innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
 							<tbody>
 							<!-- <tr>
@@ -171,7 +193,8 @@
 								h( $contrat['Contratinsertion']['rg_ci'] ),
 								h( Set::extract( $decision_ci, Set::extract( $contrat, 'Contratinsertion.decision_ci' ) ).' '.$locale->date( 'Date::short', Set::extract( $contrat, 'Contratinsertion.datevalidation_ci' ) ) ),//date_short($contrat['Contratinsertion']['datevalidation_ci']) ),
 								h( Set::enum( $contrat['Contratinsertion']['forme_ci'], $forme_ci ) ),
-								h( Set::enum( $contrat['Contratinsertion']['positioncer'], $numcontrat['positioncer'] ) ),
+// 								h( Set::enum( $contrat['Contratinsertion']['positioncer'], $numcontrat['positioncer'] ) ),
+								h( $positioncer ),
 								h( $locale->date( 'Date::short', Set::extract( $contrat, 'Contratinsertion.df_ci' ) ) ),
 								array(
 									$xhtml->viewLink(
@@ -206,7 +229,7 @@
 	<?php echo $pagination;?>
 
 	<?php else:?>
-		<p>Vos critères n'ont retourné aucun dossier.</p>
+		<p class="notice">Vos critères n'ont retourné aucun dossier.</p>
 	<?php endif?>
 
 <?php endif?>

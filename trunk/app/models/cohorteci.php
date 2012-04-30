@@ -100,7 +100,7 @@
 			$referent_id = Set::extract( $criteresci, 'Filtre.referent_id' );
 			$matricule = Set::extract( $criteresci, 'Filtre.matricule' );
 			$positioncer = Set::extract( $criteresci, 'Filtre.positioncer' );
-			$arriveaecheance = Set::extract( $criteresci, 'Filtre.arriveaecheance' );
+			
 
 			/// Critères sur le CI - date de saisi contrat
 			if( isset( $criteresci['Filtre']['date_saisi_ci'] ) && !empty( $criteresci['Filtre']['date_saisi_ci'] ) ) {
@@ -239,6 +239,27 @@
 			}
 
 			
+			// Pour le CG66 : filtre permettant de retourner les CERs non validés et notifiés il y a 1 mois et demi
+			if( isset( $criteresci['Filtre']['notifienonvalide'] ) && !empty( $criteresci['Filtre']['notifienonvalide'] ) ) {
+				$conditions[] = 'Contratinsertion.id IN (
+					SELECT
+						contratsinsertion.id
+					FROM
+						contratsinsertion
+						WHERE
+							positioncer = \'nonvalidnotifie\'
+							AND ( date_trunc( \'day\', contratsinsertion.datenotification ) + INTERVAL \''.Configure::read( 'Criterecer.delaidetectionnonvalidnotifie' ).'\' ) <= DATE( NOW() )
+							AND contratsinsertion.id IN (
+								SELECT c.id
+									FROM contratsinsertion AS c
+									WHERE
+										c.personne_id = "Personne"."id"
+									ORDER BY dd_ci DESC
+									LIMIT 1
+							)
+ 				)';
+			}
+
 			/**
 			SELECT DISTINCT contratsinsertion.id
 				FROM contratsinsertion
@@ -271,41 +292,42 @@
 
 			$query = array(
 				'fields' => array(
-					'"Contratinsertion"."id"',
-					'"Contratinsertion"."personne_id"',
-					'"Contratinsertion"."num_contrat"',
-					'"Contratinsertion"."referent_id"',
-					'"Contratinsertion"."structurereferente_id"',
-					'"Contratinsertion"."rg_ci"',
-					'"Contratinsertion"."decision_ci"',
-					'"Contratinsertion"."forme_ci"',
-					'"Contratinsertion"."dd_ci"',
-					'"Contratinsertion"."df_ci"',
-					'"Contratinsertion"."forme_ci"',
-					'"Contratinsertion"."datevalidation_ci"',
-					'"Contratinsertion"."duree_engag"',
-					'"Contratinsertion"."positioncer"',
-					'"Contratinsertion"."date_saisi_ci"',
-					'"Contratinsertion"."datedecision"',
-					'"Contratinsertion"."pers_charg_suivi"',
-					'"Contratinsertion"."observ_ci"',
-					'"Dossier"."id"',
-					'"Dossier"."numdemrsa"',
-					'"Dossier"."dtdemrsa"',
-					'"Dossier"."matricule"',
-					'"Personne"."id"',
-					'"Personne"."nom"',
-					'"Personne"."prenom"',
-					'"Personne"."dtnai"',
-					'"Personne"."nir"',
-					'"Personne"."qual"',
-					'"Personne"."nomcomnai"',
-					'"Adresse"."locaadr"',
-					'"Adresse"."codepos"',
-					'"Adresse"."numcomptt"',
-					'"PersonneReferent"."referent_id"',
-					'"Prestation"."rolepers"',
-					'"Situationdossierrsa"."etatdosrsa"',
+					'Contratinsertion.id',
+					'Contratinsertion.personne_id',
+					'Contratinsertion.num_contrat',
+					'Contratinsertion.referent_id',
+					'Contratinsertion.structurereferente_id',
+					'Contratinsertion.rg_ci',
+					'Contratinsertion.decision_ci',
+					'Contratinsertion.forme_ci',
+					'Contratinsertion.dd_ci',
+					'Contratinsertion.df_ci',
+					'Contratinsertion.forme_ci',
+					'Contratinsertion.datevalidation_ci',
+					'Contratinsertion.duree_engag',
+					'Contratinsertion.positioncer',
+					'Contratinsertion.date_saisi_ci',
+					'Contratinsertion.datedecision',
+					'Contratinsertion.pers_charg_suivi',
+					'Contratinsertion.observ_ci',
+					'Contratinsertion.datenotification',
+					'Dossier.id',
+					'Dossier.numdemrsa',
+					'Dossier.dtdemrsa',
+					'Dossier.matricule',
+					'Personne.id',
+					'Personne.nom',
+					'Personne.prenom',
+					'Personne.dtnai',
+					'Personne.nir',
+					'Personne.qual',
+					'Personne.nomcomnai',
+					'Adresse.locaadr',
+					'Adresse.codepos',
+					'Adresse.numcomptt',
+					'PersonneReferent.referent_id',
+					'Prestation.rolepers',
+					'Situationdossierrsa.etatdosrsa',
 				),
 				'recursive' => -1,
 				'joins' => array(
