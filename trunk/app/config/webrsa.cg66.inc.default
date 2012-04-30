@@ -349,5 +349,5 @@
 	/**
 	 * 	Délai pour la détection des CERs non validés et notifiés il y a 1 mois et demi
 	 */
-	Configure::write( 'Criterecer.delaidetectionnonvalidnotifie', '45' );
+	Configure::write( 'Criterecer.delaidetectionnonvalidnotifie', '45 days' );
 ?>
