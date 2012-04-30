@@ -371,7 +371,7 @@
 			}
 			
 			// Conditions de base pour qu'un allocataire puisse passer en EP
-			$conditions['Dossierpcg66.etatdossierpcg'] = array( 'attaffect', 'attinstr', 'instrencours', 'dossiertraite', 'decisionvalid', 'decisionnonvalid', 'decisionnonvalidretouravis', 'decisionvalidretouravis', 'attpj', 'transmisop', 'atttransmisop' );
+			$conditions['Dossierpcg66.etatdossierpcg'] = array( 'attinstr', 'instrencours', 'dossiertraite', 'decisionvalid', 'decisionnonvalid', 'decisionnonvalidretouravis', 'decisionvalidretouravis', 'attpj', 'transmisop', 'atttransmisop' );
 // 			$conditions['Prestation.rolepers'] = array( 'DEM', 'CJT' );
 			$conditions[] = 'Adressefoyer.id IN ( '.$Dossierpcg66->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )';
 			$conditions[] = 'Personne.id IN ( '.$Dossierpcg66->Foyer->Personne->sqResponsableDossierUnique('Foyer.id').' )';
