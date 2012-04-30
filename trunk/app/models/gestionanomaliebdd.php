@@ -303,7 +303,7 @@
 		*/
 		public function vfsInformationsFoyer( &$Foyer, $sqPersonnesEnDoublons, $sqLockedDossiers ) {
 			if( empty( $sqLockedDossiers ) ) {
-				$sqLockedDossiers = 'NULL';
+				$sqLockedDossiers = 0; // INFO: 0 car lorsque c'est à NULL, ça ne réagit pas comme prévu
 			}
 
 			return array(

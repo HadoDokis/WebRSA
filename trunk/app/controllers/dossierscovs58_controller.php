@@ -114,7 +114,7 @@
 
 				$sqLockedDossiers = $this->Jetons->sqIds();
 				if( empty( $sqLockedDossiers ) ) {
-					$sqLockedDossiers = 'NULL';
+					$sqLockedDossiers = 0; // INFO: 0 car lorsque c'est à NULL, ça ne réagit pas comme prévu
 				}
 
 				$listeThemes = null;
