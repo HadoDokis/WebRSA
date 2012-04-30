@@ -82,19 +82,22 @@
 						}
 		
 						
-						//Liste des différents statuts de la personne
+						//Liste des différents traitements PCGs de la personne PCG
 						$traitementspcgs66 = '';
-						foreach( $criteredossierpcg66['Dossierpcg66']['choucroute'] as $key => $traitement ) {
+						foreach( $criteredossierpcg66['Dossierpcg66']['listetraitements'] as $key => $traitement ) {
 							if( !empty( $traitement ) ) {
 								$traitementspcgs66 .= $xhtml->tag( 'h3', '' ).'<ul><li>'.Set::enum( $traitement, $options['Traitementpcg66']['typetraitement'] ).'</li></ul>';
 							}
 						}
 
+						$etatdosrsaValue = Set::classicExtract( $criteredossierpcg66, 'Situationdossierrsa.etatdosrsa' );
+						$etatDossierRSA = isset( $etatdosrsa[$etatdosrsaValue] ) ? $etatdosrsa[$etatdosrsaValue] : 'Non défini';
+					
 						$innerTable = '<table id="innerTable'.$index.'" class="innerTable">
 							<tbody>
 								<tr>
 									<th>Etat du droit</th>
-									<td>'.h( Set::classicExtract( $etatdosrsa, Set::classicExtract( $criteredossierpcg66, 'Situationdossierrsa.etatdosrsa' ) ) ).'</td>
+									<td>'.h( $etatDossierRSA ).'</td>
 								</tr>
 								<tr>
 									<th>Commune de naissance</th>
