@@ -113,7 +113,7 @@
 									'enabled' => (
 										( $permissions->check( 'contratsinsertion', 'edit' ) == 1 )
 										&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'annule' )
-// 										&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.datenotification' ) != null )
+										&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != ( 'validnotifie' && 'nonvalidnotifie' ) )
 										&& ( !$periodeblock )
 									)
 								)
@@ -126,6 +126,9 @@
 									'enabled' => (
 										( $permissions->check( 'proposdecisionscers66', 'proposition' ) == 1 )
 										&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'annule' )
+										&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'valid' )
+										&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'validnotifie' )
+										&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'nonvalidnotifie' )
 									)
 								)
 							),
@@ -185,6 +188,8 @@
 											( $permissions->check( 'contratsinsertion', $action ) == 1 )
 											&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'fincontrat' )
 											&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'annule' )
+											&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'validnotifie' )
+											&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'nonvalidnotifie' )
 									)
 								)
 							),

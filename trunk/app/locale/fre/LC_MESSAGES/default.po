@@ -507,7 +507,7 @@ msgid "Button::proposition"
 msgstr "Proposition de décision"
 
 msgid "Button::notification"
-msgstr "Notifier"
+msgstr "Date d'envoi"
 ###############################################################################
 # Pagination
 # INFO: http://forum.cakephp-fr.org/viewtopic.php?id=878

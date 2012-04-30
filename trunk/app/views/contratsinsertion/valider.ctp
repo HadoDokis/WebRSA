@@ -37,7 +37,7 @@
 						echo $xform->fieldValue( 'Propodecisioncer66.isvalidcer', $propodecision );
 						echo $xform->fieldValue( 'Propodecisioncer66.datevalidcer', $datevalidcer );
 						
-						echo $form->input( 'Contratinsertion.decision_ci', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.decision_ci', true ), 'type' => 'select', 'options' => $decision_ci ) );
+						echo $form->input( 'Contratinsertion.decision_ci', array( 'label' => 'Décision finale', 'type' => 'select', 'options' => $decision_ci ) );
 						echo $form->input( 'Contratinsertion.datedecision', array( 'label' => '', 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+2, 'minYear'=>date('Y')-3 , 'empty' => true)  );
 						echo $form->input( 'Contratinsertion.observ_ci', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.observ_ci', true ), 'type' => 'textarea', 'rows' => 6, 'class' => 'aere')  );
 					}
