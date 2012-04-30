@@ -791,59 +791,89 @@
 		 * @author Thierry Nemes - Adullact projet
 		 */
 		protected function _indicReorientAge($args) {
-			$resultats = array();
-
-			$filtres = array(
-				array("select" => false, "now"=>"", "before"=>""), // Seulement le champ Droit et Devoirs.
-				array("select" => true, "now"=>$this->isSocial, "before"=>$this->isEmploi),
-				array("select" => true, "now"=>$this->isEmploi, "before"=>$this->isSocial)
-			);
-			$blocs = array(
-				" AND ( EXTRACT ( YEAR FROM AGE(timestamp '{$args['annee']}-12-31', p.dtnai ) ) ) BETWEEN '0' AND '24' ",
-				" AND ( EXTRACT ( YEAR FROM AGE(timestamp '{$args['annee']}-12-31', p.dtnai ) ) ) BETWEEN '25' AND '29' ",
-				" AND ( EXTRACT ( YEAR FROM AGE(timestamp '{$args['annee']}-12-31', p.dtnai ) ) ) BETWEEN '30' AND '39' ",
-				" AND ( EXTRACT ( YEAR FROM AGE(timestamp '{$args['annee']}-12-31', p.dtnai ) ) ) BETWEEN '40' AND '49' ",
-				" AND ( EXTRACT ( YEAR FROM AGE(timestamp '{$args['annee']}-12-31', p.dtnai ) ) ) BETWEEN '50' AND '59' ",
-				" AND ( EXTRACT ( YEAR FROM AGE(timestamp '{$args['annee']}-12-31', p.dtnai ) ) ) BETWEEN '60' AND '999' ",
-				" AND ( p.dtnai IS NULL) "
-			);
-			foreach( $blocs as $keyRow => $bloc) {
-				foreach( $filtres as $keyCol => $filtre) {
-					$select = "";
-					$where = " AND o.rgorient > 1 ";
-
-					if( $filtre['select'] ) {
-						$select = $this->now_and_before;
-						$where = " 
-							AND o.rgorient = noworient.rgorient
-							AND noworient.typeorient_id IN ( {$filtre['now']})
-							AND beforeorient.typeorient_id IN ( {$filtre['before']} )
-						";
-					}
-					$blocSQL = "
-						SELECT count(DISTINCT p.id)     
-						FROM
-							personnes p {$select},
-							foyers f,
-							dossiers d,
-							calculsdroitsrsa c,
-							orientsstructs o
-						WHERE 
-							p.id = c.personne_id
-							AND p.foyer_id = f.id
-							AND d.id = f.dossier_id
-							AND p.id = o.personne_id
-							AND ( EXTRACT ( YEAR FROM d.dtdemrsa ) ) <= {$args['annee']}
-							AND c.toppersdrodevorsa = '1'
-							{$where}
-							{$bloc}
-					;";
-					$sqlFound = $this->query( $blocSQL );
-					$resultats[$keyRow][$keyCol] = $sqlFound[0][0]['count'];
-				}
+			$globalQuery = "
+			SELECT
+				(
+					CASE
+						WHEN EXTRACT( YEAR FROM AGE(timestamp '{$args['annee']}-12-31', personnes.dtnai ) ) BETWEEN 0 AND 24 THEN '0 - 24'
+						WHEN EXTRACT( YEAR FROM AGE(timestamp '{$args['annee']}-12-31', personnes.dtnai ) ) BETWEEN 25 AND 29 THEN '25 - 29'
+						WHEN EXTRACT( YEAR FROM AGE(timestamp '{$args['annee']}-12-31', personnes.dtnai ) ) BETWEEN 30 AND 39 THEN '30 - 39'
+						WHEN EXTRACT( YEAR FROM AGE(timestamp '{$args['annee']}-12-31', personnes.dtnai ) ) BETWEEN 40 AND 49 THEN '40 - 49'
+						WHEN EXTRACT( YEAR FROM AGE(timestamp '{$args['annee']}-12-31', personnes.dtnai ) ) BETWEEN 50 AND 59 THEN '50 - 59'
+						WHEN EXTRACT( YEAR FROM AGE(timestamp '{$args['annee']}-12-31', personnes.dtnai ) ) >= 60 THEN '>= 60'
+						ELSE 'NC'
+					END
+				) AS age_range,
+				COUNT(DISTINCT(personnes.id)) AS count
+				FROM personnes
+					INNER JOIN orientsstructs AS derniereorientstruct ON ( derniereorientstruct.personne_id = personnes.id )
+					INNER JOIN orientsstructs AS avantderniereorientstruct ON ( avantderniereorientstruct.personne_id = personnes.id )
+				WHERE
+					derniereorientstruct.statut_orient = 'Orienté'
+					AND avantderniereorientstruct.statut_orient = 'Orienté'
+					AND derniereorientstruct.id IN (
+						SELECT orientsstructs.id
+							FROM orientsstructs
+							WHERE
+								orientsstructs.personne_id = personnes.id
+								AND orientsstructs.statut_orient = 'Orienté'
+								AND EXTRACT( YEAR FROM ( orientsstructs.date_valid ) ) = {$args['annee']}
+							ORDER BY date_valid DESC
+							LIMIT 1
+					)
+					AND derniereorientstruct.rgorient > 1
+					AND avantderniereorientstruct.id IN (
+						SELECT orientsstructs.id
+							FROM orientsstructs
+							WHERE
+								orientsstructs.personne_id = personnes.id
+								AND orientsstructs.rgorient < derniereorientstruct.rgorient
+								AND orientsstructs.statut_orient = 'Orienté'
+							ORDER BY date_valid DESC
+							LIMIT 1
+					)
+					<EXTENDQUERY>
+				GROUP BY age_range
+				ORDER BY age_range ASC";
+			
+			$extendQuery = "
+			AND derniereorientstruct.typeorient_id IN (
+				SELECT typesorients.id
+					FROM typesorients
+					WHERE typesorients.lib_type_orient <NOT1> LIKE 'Emploi%'
+			)
+			AND avantderniereorientstruct.typeorient_id IN (
+				SELECT typesorients.id
+					FROM typesorients
+					WHERE typesorients.lib_type_orient <NOT2> LIKE 'Emploi%'
+			)";
+			
+			$sqlFound_tous = $this->query( preg_replace('#<EXTENDQUERY>#', '', $globalQuery) );
+			$results_tous = array();
+			foreach( $sqlFound_tous as $result) {
+				$results_tous[$result[0]['age_range']] = $result[0]['count'];
 			}
-			return $resultats;
+
+			$query = preg_replace('#<NOT1>#', 'NOT', $extendQuery);
+			$query = preg_replace('#<NOT2>#', '', $query);
+			$sqlFound_social = $this->query( preg_replace('#<EXTENDQUERY>#', $query, $globalQuery) );
+			$results_social = array();
+			foreach( $sqlFound_social as $result) {
+				$results_social[$result[0]['age_range']] = $result[0]['count'];
+			}			
+			
+			$query = preg_replace('#<NOT1>#', '', $extendQuery);
+			$query = preg_replace('#<NOT2>#', 'NOT', $query);
+			$sqlFound_pro = $this->query( preg_replace('#<EXTENDQUERY>#', $query, $globalQuery) );			
+			$results_pro = array();
+			foreach( $sqlFound_pro as $result) {
+				$results_pro[$result[0]['age_range']] = $result[0]['count'];
+			}			
+			return array('tous'=>$results_tous, 'versSocial'=>$results_social, 'versPro'=>$results_pro);
 		}
+		
+		
+		
 
 		/**
 		 * Calcul des indicateurs de réorientation pour le bloc 'situation'.
@@ -852,125 +882,163 @@
 		 * @author Thierry Nemes - Adullact projet
 		 */
 		protected function _indicReorientSituation($args) {
-			$resultats = array();
-
-			$filtres = array(
-				array("select" => false, "now"=>"", "before"=>""), // Seulement le champ Droit et Devoirs.
-				array("select" => true, "now"=>$this->isSocial, "before"=>$this->isEmploi),
-				array("select" => true, "now"=>$this->isEmploi, "before"=>$this->isSocial)
-			);
-
-			$homme = " AND (p.sexe = '1') ";
-			$femme = " AND (p.sexe = '2') ";
-			$seul = " AND (f.sitfam IN ('CEL', 'DIV', 'ISO', 'SEF', 'SEL', 'VEU')) ";
-			$couple = " AND (f.sitfam IN ('MAR', 'PAC', 'RPA', 'RVC', 'RVM', 'VIM')) ";
-			$rsaMajore = " ";
-//			$rsamajore'; true (bénéficiant du rsa majoré) ou false ( ne bénficiant pas)
-//			#Model=detailscalculdroitrsa.natpf#
-//			true :
-//				"RSI" : RSA Socle majoré (Financement sur fonds Conseil général)
-//				"RCI" : RSA Activité majoré (Financement sur fonds Etat)
-//			false :
-//				"RSD" : RSA Socle (Financement sur fonds Conseil général)
-//				"RSU" : RSA Socle Etat Contrat aidé  (Financement sur fonds Etat)
-//				"RSB" : RSA Socle Local (Financement sur fonds Conseil général)
-//				"RCD" : RSA Activité (Financement sur fonds Etat)
-//				"RCU" : RSA Activité Etat Contrat aidé (Financement sur fonds Etat)
-//				"RCB" : RSA Activité Local (Financement sur fonds Conseil général)
-
-			$blocs = array(
-				array("{$homme}{$seul}", "enfant"=>false),
-				array("{$femme}{$seul}", "enfant"=>false),
-				array("{$homme}{$seul}", "enfant"=>true),
-				array("{$homme}{$seul}{$rsaMajore}", "enfant"=>true),
-				array("{$femme}{$seul}", "enfant"=>true),
-				array("{$femme}{$seul}{$rsaMajore}", "enfant"=>true),
-				array("{$homme}{$couple}", "enfant"=>false),
-				array("{$femme}{$couple}", "enfant"=>false),
-				array("{$homme}{$couple}", "enfant"=>true),
-				array("{$femme}{$couple}", "enfant"=>true),
-				// non connue :
-				array(" AND ( (f.sitfam = 'ABA') OR ( f.sitfam IS NULL ) OR ( f.sitfam = '' ) )", "enfant"=>false)
-			);
-			foreach( $blocs as $keyRow => $bloc) {
-				foreach( $filtres as $keyCol => $filtre) {
-					$select = "";
-					$where = " AND o.rgorient > 1 ";
-
-					if( $filtre['select'] ) {
-						$select = $this->now_and_before;
-						$where = " 
-							AND o.rgorient = noworient.rgorient
-							AND noworient.typeorient_id IN ( {$filtre['now']})
-							AND beforeorient.typeorient_id IN ( {$filtre['before']} )
-						";
-					}
-
-					$blocSQLTotal = "
-						SELECT count(DISTINCT p.id)    
-						FROM
-							personnes p {$select},
-							foyers f,
-							dossiers d,
-							calculsdroitsrsa c,
-							orientsstructs o
-						WHERE 
-							p.id = c.personne_id
-							AND p.foyer_id = f.id
-							AND d.id = f.dossier_id
-							AND p.id = o.personne_id
-							AND ( EXTRACT ( YEAR FROM d.dtdemrsa ) ) <= {$args['annee']}
-							AND c.toppersdrodevorsa = '1'
-							AND o.rgorient > 1  
-							{$where}
-							{$bloc[0]}
-					;";
-
-					$blocSQLEnfant = "
-						SELECT count(DISTINCT p.id)    
-						FROM
-							personnes p {$select},
-							foyers f,
-							dossiers d,
-							calculsdroitsrsa c,
-							orientsstructs o
-							,
-							( 
-								SELECT 
-									count(*), fo.id
-								FROM 
-									foyers fo
-									INNER JOIN personnes pe ON pe.foyer_id = fo.id
-									INNER JOIN prestations pr ON pr.personne_id = pe.id
-									AND pr.natprest = 'RSA'
-									AND pr.rolepers = 'ENF'
-								GROUP BY fo.id 
-							) enfants
-						WHERE 
-							p.id = c.personne_id
-							AND p.foyer_id = f.id
-							AND d.id = f.dossier_id
-							AND p.id = o.personne_id
-							AND ( EXTRACT ( YEAR FROM d.dtdemrsa ) ) <= {$args['annee']}
-							AND c.toppersdrodevorsa = '1'
-							AND o.rgorient > 1
-							{$where}
-							{$bloc[0]} 
-							AND enfants.id = f.id
-					;";
-					if( $bloc['enfant'] ) { // avec enfant(s)
-						$sqlFound = $this->query( $blocSQLEnfant );
-						$resultats[$keyRow][$keyCol] = $sqlFound[0][0]['count'];
-					}
-					else { // sans enfant
-						$sqlFound = $this->query( $blocSQLTotal );
-						$total = $sqlFound[0][0]['count'];
-						$sqlFound = $this->query( $blocSQLEnfant );
-						$resultats[$keyRow][$keyCol] = $total - $sqlFound[0][0]['count'];
-					}
-				}
+			$globalQuery = "
+			SELECT
+			(
+				CASE
+					WHEN (
+						personnes.sexe = '1'
+						AND foyers.sitfam IN ('CEL', 'DIV', 'ISO', 'SEF', 'SEL', 'VEU')
+						AND ( SELECT COUNT(*) FROM personnes AS enfants INNER JOIN prestations ON ( enfants.id = prestations.personne_id AND prestations.natprest = 'RSA' ) WHERE enfants.foyer_id = foyers.id AND prestations.rolepers = 'ENF' ) = 0
+					) THEN '01 - Homme seul sans enfant'
+					WHEN (
+						personnes.sexe = '2'
+						AND foyers.sitfam IN ('CEL', 'DIV', 'ISO', 'SEF', 'SEL', 'VEU')
+						AND ( SELECT COUNT(*) FROM personnes AS enfants INNER JOIN prestations ON ( enfants.id = prestations.personne_id AND prestations.natprest = 'RSA' ) WHERE enfants.foyer_id = foyers.id AND prestations.rolepers = 'ENF' ) = 0
+					) THEN '02 - Femme seule sans enfant'
+					WHEN (
+						personnes.sexe = '1'
+						AND foyers.sitfam IN ('CEL', 'DIV', 'ISO', 'SEF', 'SEL', 'VEU')
+						AND ( SELECT COUNT(*) FROM personnes AS enfants INNER JOIN prestations ON ( enfants.id = prestations.personne_id AND prestations.natprest = 'RSA' ) WHERE enfants.foyer_id = foyers.id AND prestations.rolepers = 'ENF' ) > 0
+						AND EXISTS(
+							SELECT * FROM detailsdroitsrsa
+								INNER JOIN detailscalculsdroitsrsa ON ( detailscalculsdroitsrsa.detaildroitrsa_id = detailsdroitsrsa.id )
+								WHERE
+									detailsdroitsrsa.dossier_id = foyers.dossier_id
+									AND detailscalculsdroitsrsa.natpf IN ( 'RCI', 'RSI' )
+						)
+					) THEN '03 - Homme seul avec enfant, RSA majoré'
+					WHEN (
+						personnes.sexe = '1'
+						AND foyers.sitfam IN ('CEL', 'DIV', 'ISO', 'SEF', 'SEL', 'VEU')
+						AND ( SELECT COUNT(*) FROM personnes AS enfants INNER JOIN prestations ON ( enfants.id = prestations.personne_id AND prestations.natprest = 'RSA' ) WHERE enfants.foyer_id = foyers.id AND prestations.rolepers = 'ENF' ) > 0
+						AND NOT EXISTS(
+							SELECT * FROM detailsdroitsrsa
+								INNER JOIN detailscalculsdroitsrsa ON ( detailscalculsdroitsrsa.detaildroitrsa_id = detailsdroitsrsa.id )
+								WHERE
+									detailsdroitsrsa.dossier_id = foyers.dossier_id
+									AND detailscalculsdroitsrsa.natpf IN ( 'RCI', 'RSI' )
+						)
+					) THEN '04 - Homme seul avec enfant, RSA non majoré'
+					WHEN (
+						personnes.sexe = '2'
+						AND foyers.sitfam IN ('CEL', 'DIV', 'ISO', 'SEF', 'SEL', 'VEU')
+						AND ( SELECT COUNT(*) FROM personnes AS enfants INNER JOIN prestations ON ( enfants.id = prestations.personne_id AND prestations.natprest = 'RSA' ) WHERE enfants.foyer_id = foyers.id AND prestations.rolepers = 'ENF' ) > 0
+						AND EXISTS(
+							SELECT * FROM detailsdroitsrsa
+								INNER JOIN detailscalculsdroitsrsa ON ( detailscalculsdroitsrsa.detaildroitrsa_id = detailsdroitsrsa.id )
+								WHERE
+									detailsdroitsrsa.dossier_id = foyers.dossier_id
+									AND detailscalculsdroitsrsa.natpf IN ( 'RCI', 'RSI' )
+						)
+					) THEN '05 - Femme seule avec enfant, RSA majoré'
+					WHEN (
+						personnes.sexe = '2'
+						AND foyers.sitfam IN ('CEL', 'DIV', 'ISO', 'SEF', 'SEL', 'VEU')
+						AND ( SELECT COUNT(*) FROM personnes AS enfants INNER JOIN prestations ON ( enfants.id = prestations.personne_id AND prestations.natprest = 'RSA' ) WHERE enfants.foyer_id = foyers.id AND prestations.rolepers = 'ENF' ) > 0
+						AND NOT EXISTS(
+							SELECT * FROM detailsdroitsrsa
+								INNER JOIN detailscalculsdroitsrsa ON ( detailscalculsdroitsrsa.detaildroitrsa_id = detailsdroitsrsa.id )
+								WHERE
+									detailsdroitsrsa.dossier_id = foyers.dossier_id
+									AND detailscalculsdroitsrsa.natpf IN ( 'RCI', 'RSI' )
+						)
+					) THEN '06 - Femme seule avec enfant, RSA non majoré'
+					WHEN (
+						personnes.sexe = '1'
+						AND foyers.sitfam IN ('MAR', 'PAC', 'RPA', 'RVC', 'RVM', 'VIM')
+						AND ( SELECT COUNT(*) FROM personnes AS enfants INNER JOIN prestations ON ( enfants.id = prestations.personne_id AND prestations.natprest = 'RSA' ) WHERE enfants.foyer_id = foyers.id AND prestations.rolepers = 'ENF' ) = 0
+					) THEN '07 - Homme en couple sans enfant'
+					WHEN (
+						personnes.sexe = '2'
+						AND foyers.sitfam IN ('MAR', 'PAC', 'RPA', 'RVC', 'RVM', 'VIM')
+						AND ( SELECT COUNT(*) FROM personnes AS enfants INNER JOIN prestations ON ( enfants.id = prestations.personne_id AND prestations.natprest = 'RSA' ) WHERE enfants.foyer_id = foyers.id AND prestations.rolepers = 'ENF' ) = 0
+					) THEN '08 - Femme en couple sans enfant'
+					WHEN (
+						personnes.sexe = '1'
+						AND foyers.sitfam IN ('MAR', 'PAC', 'RPA', 'RVC', 'RVM', 'VIM')
+						AND ( SELECT COUNT(*) FROM personnes AS enfants INNER JOIN prestations ON ( enfants.id = prestations.personne_id AND prestations.natprest = 'RSA' ) WHERE enfants.foyer_id = foyers.id AND prestations.rolepers = 'ENF' ) > 0
+					) THEN '09 - Homme en couple avec enfant'
+					WHEN (
+						personnes.sexe = '2'
+						AND foyers.sitfam IN ('MAR', 'PAC', 'RPA', 'RVC', 'RVM', 'VIM')
+						AND ( SELECT COUNT(*) FROM personnes AS enfants INNER JOIN prestations ON ( enfants.id = prestations.personne_id AND prestations.natprest = 'RSA' ) WHERE enfants.foyer_id = foyers.id AND prestations.rolepers = 'ENF' ) > 0
+					) THEN '10 - Femme en couple avec enfant'
+	
+					ELSE '11 - Non connue'
+				END
+			) AS sitfam_range,
+			COUNT(DISTINCT(personnes.id)) AS count
+		FROM personnes
+			INNER JOIN orientsstructs AS derniereorientstruct ON ( derniereorientstruct.personne_id = personnes.id )
+			INNER JOIN orientsstructs AS avantderniereorientstruct ON ( avantderniereorientstruct.personne_id = personnes.id )
+			INNER JOIN foyers ON ( personnes.foyer_id = foyers.id )
+			LEFT OUTER JOIN calculsdroitsrsa ON ( calculsdroitsrsa.personne_id = personnes.id )
+		WHERE
+			derniereorientstruct.statut_orient = 'Orienté'
+			AND avantderniereorientstruct.statut_orient = 'Orienté'
+			AND derniereorientstruct.id IN (
+				SELECT orientsstructs.id
+					FROM orientsstructs
+					WHERE
+						orientsstructs.personne_id = personnes.id
+						AND orientsstructs.statut_orient = 'Orienté'
+						AND EXTRACT( YEAR FROM ( orientsstructs.date_valid ) ) = {$args['annee']}
+					ORDER BY date_valid DESC
+					LIMIT 1
+			)
+			AND derniereorientstruct.rgorient > 1
+			AND avantderniereorientstruct.id IN (
+				SELECT orientsstructs.id
+					FROM orientsstructs
+					WHERE
+						orientsstructs.personne_id = personnes.id
+						AND orientsstructs.rgorient < derniereorientstruct.rgorient
+						AND orientsstructs.statut_orient = 'Orienté'
+					ORDER BY date_valid DESC
+					LIMIT 1
+			)
+			<EXTENDQUERY>
+		GROUP BY sitfam_range
+		ORDER BY sitfam_range ASC
+		";
+			
+			
+			$extendQuery = "
+			AND derniereorientstruct.typeorient_id IN (
+				SELECT typesorients.id
+					FROM typesorients
+					WHERE typesorients.lib_type_orient <NOT1> LIKE 'Emploi%'
+			)
+			AND avantderniereorientstruct.typeorient_id IN (
+				SELECT typesorients.id
+					FROM typesorients
+					WHERE typesorients.lib_type_orient <NOT2> LIKE 'Emploi%'
+			)		
+			";
+			
+			$sqlFound_tous = $this->query( preg_replace('#<EXTENDQUERY>#', '', $globalQuery) );
+			$results_tous = array();
+			foreach( $sqlFound_tous as $result) {
+				$results_tous[$result[0]['sitfam_range']] = $result[0]['count'];
 			}
-			return $resultats;
+			
+			$query = preg_replace('#<NOT1>#', 'NOT', $extendQuery);
+			$query = preg_replace('#<NOT2>#', '', $query);
+			$sqlFound_social = $this->query( preg_replace('#<EXTENDQUERY>#', $query, $globalQuery) );
+			$results_social = array();
+			foreach( $sqlFound_social as $result) {
+				$results_social[$result[0]['sitfam_range']] = $result[0]['count'];
+			}
+				
+			$query = preg_replace('#<NOT1>#', '', $extendQuery);
+			$query = preg_replace('#<NOT2>#', 'NOT', $query);
+			$sqlFound_pro = $this->query( preg_replace('#<EXTENDQUERY>#', $query, $globalQuery) );
+			$results_pro = array();
+			foreach( $sqlFound_pro as $result) {
+				$results_pro[$result[0]['sitfam_range']] = $result[0]['count'];
+			}
+			return array('tous'=>$results_tous, 'versSocial'=>$results_social, 'versPro'=>$results_pro);			
 		}
 
 		/**
@@ -980,58 +1048,85 @@
 		 * @author Thierry Nemes - Adullact projet
 		 */
 		protected function _indicReorientFormation($args) {
-			$resultats = array();
-			$filtres = array(
-				array("select" => false, "now"=>"", "before"=>""), // Seulement le champ Droit et Devoirs.
-				array("select" => true, "now"=>$this->isSocial, "before"=>$this->isEmploi),
-				array("select" => true, "now"=>$this->isEmploi, "before"=>$this->isSocial)
-			);
-			$blocs = array(
-				" AND ( dsps.nivetu IN ( '1205', '1206', '1207' ) ) ",
-				" AND ( dsps.nivetu IN ( '1204' ) ) ",
-				" AND ( dsps.nivetu IN ( '1203' ) ) ",
-				" AND ( dsps.nivetu IN ( '1201', '1202') ) ",
-				" AND ( dsps.nivetu IS NULL ) ",
-			);
-			foreach( $blocs as $keyRow => $bloc) {
-				foreach( $filtres as $keyCol => $filtre) {
-					$select = "";
-					$where = " AND o.rgorient > 1 ";
-
-					if( $filtre['select'] ) {
-						$select = $this->now_and_before;
-						$where = "
-							AND o.rgorient = noworient.rgorient
-							AND noworient.typeorient_id IN ( {$filtre['now']})
-							AND beforeorient.typeorient_id IN ( {$filtre['before']} )
-						";
-					}
-					$blocSQL = "
-						SELECT count(DISTINCT p.id)     
-						FROM
-							personnes p {$select},
-							foyers f,
-							dossiers d,
-							calculsdroitsrsa c,
-							orientsstructs o,
-							dsps
-						WHERE 
-							p.id = c.personne_id
-							AND p.foyer_id = f.id
-							AND d.id = f.dossier_id
-							AND p.id = o.personne_id
-							AND p.id = dsps.personne_id
-							AND ( EXTRACT ( YEAR FROM d.dtdemrsa ) ) <= {$args['annee']}
-							AND c.toppersdrodevorsa = '1'
-							{$where}
-							{$bloc}
-					;";
-
-					$sqlFound = $this->query( $blocSQL );
-					$resultats[$keyRow][$keyCol] = $sqlFound[0][0]['count'];
-				}
+			$globalQuery = "
+			SELECT
+				(
+					CASE
+						WHEN dsps.nivetu IN ( '1205', '1206', '1207' ) THEN 'Vbis et VI'
+						WHEN dsps.nivetu IN ( '1204' ) THEN 'V'
+						WHEN dsps.nivetu IN ( '1203' ) THEN 'IV'
+						WHEN dsps.nivetu IN ( '1201', '1202') THEN 'III, II, I'
+						ELSE 'NC'
+					END
+				) AS formation_range,
+				COUNT(DISTINCT(personnes.id)) AS count
+			FROM personnes
+				INNER JOIN orientsstructs AS derniereorientstruct ON ( derniereorientstruct.personne_id = personnes.id )
+				INNER JOIN orientsstructs AS avantderniereorientstruct ON ( avantderniereorientstruct.personne_id = personnes.id )
+				INNER JOIN dsps ON (dsps.personne_id = personnes.id )
+			WHERE
+				derniereorientstruct.statut_orient = 'Orienté'
+				AND avantderniereorientstruct.statut_orient = 'Orienté'
+				AND derniereorientstruct.id IN (
+					SELECT orientsstructs.id
+						FROM orientsstructs
+						WHERE
+							orientsstructs.personne_id = personnes.id
+							AND orientsstructs.statut_orient = 'Orienté'
+							AND EXTRACT( YEAR FROM ( orientsstructs.date_valid ) ) = {$args['annee']}
+						ORDER BY date_valid DESC
+						LIMIT 1
+				)
+				AND derniereorientstruct.rgorient > 1
+				AND avantderniereorientstruct.id IN (
+					SELECT orientsstructs.id
+						FROM orientsstructs
+						WHERE
+							orientsstructs.personne_id = personnes.id
+							AND orientsstructs.rgorient < derniereorientstruct.rgorient
+							AND orientsstructs.statut_orient = 'Orienté'
+						ORDER BY date_valid DESC
+						LIMIT 1
+				)
+				<EXTENDQUERY>
+			GROUP BY formation_range
+			ORDER BY formation_range ASC			
+			";
+			
+			$extendQuery = "
+			AND derniereorientstruct.typeorient_id IN (
+				SELECT typesorients.id
+					FROM typesorients
+					WHERE typesorients.lib_type_orient <NOT1> LIKE 'Emploi%'
+			)
+			AND avantderniereorientstruct.typeorient_id IN (
+				SELECT typesorients.id
+					FROM typesorients
+					WHERE typesorients.lib_type_orient <NOT2> LIKE 'Emploi%'
+			)";
+				
+			$sqlFound_tous = $this->query( preg_replace('#<EXTENDQUERY>#', '', $globalQuery) );
+			$results_tous = array();
+			foreach( $sqlFound_tous as $result) {
+				$results_tous[$result[0]['formation_range']] = $result[0]['count'];
 			}
-			return $resultats;
+			
+			$query = preg_replace('#<NOT1>#', 'NOT', $extendQuery);
+			$query = preg_replace('#<NOT2>#', '', $query);
+			$sqlFound_social = $this->query( preg_replace('#<EXTENDQUERY>#', $query, $globalQuery) );
+			$results_social = array();
+			foreach( $sqlFound_social as $result) {
+				$results_social[$result[0]['formation_range']] = $result[0]['count'];
+			}
+				
+			$query = preg_replace('#<NOT1>#', '', $extendQuery);
+			$query = preg_replace('#<NOT2>#', 'NOT', $query);
+			$sqlFound_pro = $this->query( preg_replace('#<EXTENDQUERY>#', $query, $globalQuery) );
+			$results_pro = array();
+			foreach( $sqlFound_pro as $result) {
+				$results_pro[$result[0]['formation_range']] = $result[0]['count'];
+			}
+			return array('tous'=>$results_tous, 'versSocial'=>$results_social, 'versPro'=>$results_pro);			
 		}
 
 		/**
@@ -1041,57 +1136,87 @@
 		 * @author Thierry Nemes - Adullact projet
 		 */
 		protected function _indicReorientAnciennete($args) {
-			$resultats = array();
-			$filtres = array(
-				array("select" => false, "now"=>"", "before"=>""), // Seulement le champ Droit et Devoirs.
-				array("select" => true, "now"=>$this->isSocial, "before"=>$this->isEmploi),
-				array("select" => true, "now"=>$this->isEmploi, "before"=>$this->isSocial)
-			);
-			$blocs = array(
-				" AND d.dtdemrsa BETWEEN ( timestamp '{$args['annee']}-12-31' - INTERVAL '6' MONTH - INTERVAL '1' DAY ) AND ( timestamp '{$args['annee']}-12-31' ) ",
-				" AND d.dtdemrsa BETWEEN ( timestamp '{$args['annee']}-12-31' - INTERVAL '1' YEAR - INTERVAL '1' DAY ) AND ( timestamp '{$args['annee']}-12-31' - INTERVAL '6' MONTH ) ",
-				" AND d.dtdemrsa BETWEEN ( timestamp '{$args['annee']}-12-31' - INTERVAL '2' YEAR - INTERVAL '1' DAY ) AND ( timestamp '{$args['annee']}-12-31' - INTERVAL '1' YEAR ) ",
-				" AND d.dtdemrsa BETWEEN ( timestamp '{$args['annee']}-12-31' - INTERVAL '5' YEAR - INTERVAL '1' DAY ) AND ( timestamp '{$args['annee']}-12-31' - INTERVAL '2' YEAR ) ",
-				" AND d.dtdemrsa < ( timestamp '{$args['annee']}-12-31' - INTERVAL '5' YEAR ) ",
-				" AND ( d.dtdemrsa IS NULL) "
-			);
-			foreach( $blocs as $keyRow => $bloc) {
-				foreach( $filtres as $keyCol => $filtre) {
-					$select = "";
-					$where = " AND o.rgorient > 1 ";
-
-					if( $filtre['select'] ) {
-						$select = $this->now_and_before;
-						$where = " 
-							AND o.rgorient = noworient.rgorient
-							AND noworient.typeorient_id IN ( {$filtre['now']})
-							AND beforeorient.typeorient_id IN ( {$filtre['before']} )
-						";
-					}
-					$blocSQL = "
-						SELECT count(DISTINCT p.id)     
-						FROM
-							personnes p {$select},
-							foyers f,
-							dossiers d,
-							calculsdroitsrsa c,
-							orientsstructs o
-						WHERE 
-							p.id = c.personne_id
-							AND p.foyer_id = f.id
-							AND d.id = f.dossier_id
-							AND p.id = o.personne_id
-							AND ( EXTRACT ( YEAR FROM d.dtdemrsa ) ) <= {$args['annee']}
-							AND c.toppersdrodevorsa = '1'
-							{$where}
-							{$bloc}
-					;";
-
-					$sqlFound = $this->query( $blocSQL );
-					$resultats[$keyRow][$keyCol] = $sqlFound[0][0]['count'];
-				}
+			$globalQuery = "
+			SELECT
+				(
+					CASE
+						WHEN dossiers.dtdemrsa BETWEEN ( timestamp '{$args['annee']}-12-31' - INTERVAL '6' MONTH - INTERVAL '1' DAY ) AND ( timestamp '{$args['annee']}-12-31' ) THEN 'moins de 6 mois'
+						WHEN dossiers.dtdemrsa BETWEEN ( timestamp '{$args['annee']}-12-31' - INTERVAL '1' YEAR - INTERVAL '1' DAY ) AND ( timestamp '{$args['annee']}-12-31' - INTERVAL '6' MONTH ) THEN '6 mois et moins 1 an'
+						WHEN dossiers.dtdemrsa BETWEEN ( timestamp '{$args['annee']}-12-31' - INTERVAL '2' YEAR - INTERVAL '1' DAY ) AND ( timestamp '{$args['annee']}-12-31' - INTERVAL '1' YEAR ) THEN '1 an et moins de 2 ans'
+						WHEN dossiers.dtdemrsa BETWEEN ( timestamp '{$args['annee']}-12-31' - INTERVAL '5' YEAR - INTERVAL '1' DAY ) AND ( timestamp '{$args['annee']}-12-31' - INTERVAL '2' YEAR ) THEN '2 ans et moins de 5 ans'
+						WHEN dossiers.dtdemrsa < ( timestamp '{$args['annee']}-12-31' - INTERVAL '5' YEAR ) THEN '5 ans et plus'
+						ELSE 'NC'
+					END
+				) AS anciennete_range,
+				COUNT(DISTINCT(personnes.id)) AS count
+			FROM personnes
+				INNER JOIN orientsstructs AS derniereorientstruct ON ( derniereorientstruct.personne_id = personnes.id )
+				INNER JOIN orientsstructs AS avantderniereorientstruct ON ( avantderniereorientstruct.personne_id = personnes.id )
+				INNER JOIN foyers ON ( personnes.foyer_id = foyers.id )
+				INNER JOIN dossiers ON (foyers.dossier_id = dossiers.id )
+			WHERE
+				derniereorientstruct.statut_orient = 'Orienté'
+				AND avantderniereorientstruct.statut_orient = 'Orienté'
+				AND derniereorientstruct.id IN (
+					SELECT orientsstructs.id
+						FROM orientsstructs
+						WHERE
+							orientsstructs.personne_id = personnes.id
+							AND orientsstructs.statut_orient = 'Orienté'
+							AND EXTRACT( YEAR FROM ( orientsstructs.date_valid ) ) = {$args['annee']} -- FIXME: param
+						ORDER BY date_valid DESC
+						LIMIT 1
+				)
+				AND derniereorientstruct.rgorient > 1
+				AND avantderniereorientstruct.id IN (
+					SELECT orientsstructs.id
+						FROM orientsstructs
+						WHERE
+							orientsstructs.personne_id = personnes.id
+							AND orientsstructs.rgorient < derniereorientstruct.rgorient
+							AND orientsstructs.statut_orient = 'Orienté'
+						ORDER BY date_valid DESC
+						LIMIT 1
+				)
+				<EXTENDQUERY>
+			GROUP BY anciennete_range
+			ORDER BY anciennete_range ASC
+			";			
+			
+			$extendQuery = "
+			AND derniereorientstruct.typeorient_id IN (
+				SELECT typesorients.id
+					FROM typesorients
+					WHERE typesorients.lib_type_orient <NOT1> LIKE 'Emploi%'
+			)
+			AND avantderniereorientstruct.typeorient_id IN (
+				SELECT typesorients.id
+					FROM typesorients
+					WHERE typesorients.lib_type_orient <NOT2> LIKE 'Emploi%'
+			)";
+			
+			$sqlFound_tous = $this->query( preg_replace('#<EXTENDQUERY>#', '', $globalQuery) );
+			$results_tous = array();
+			foreach( $sqlFound_tous as $result) {
+				$results_tous[$result[0]['anciennete_range']] = $result[0]['count'];
 			}
-			return $resultats;
+				
+			$query = preg_replace('#<NOT1>#', 'NOT', $extendQuery);
+			$query = preg_replace('#<NOT2>#', '', $query);
+			$sqlFound_social = $this->query( preg_replace('#<EXTENDQUERY>#', $query, $globalQuery) );
+			$results_social = array();
+			foreach( $sqlFound_social as $result) {
+				$results_social[$result[0]['anciennete_range']] = $result[0]['count'];
+			}
+			
+			$query = preg_replace('#<NOT1>#', '', $extendQuery);
+			$query = preg_replace('#<NOT2>#', 'NOT', $query);
+			$sqlFound_pro = $this->query( preg_replace('#<EXTENDQUERY>#', $query, $globalQuery) );
+			$results_pro = array();
+			foreach( $sqlFound_pro as $result) {
+				$results_pro[$result[0]['anciennete_range']] = $result[0]['count'];
+			}
+			return array('tous'=>$results_tous, 'versSocial'=>$results_social, 'versPro'=>$results_pro);			
 		}
 
 		//##############################################################################
