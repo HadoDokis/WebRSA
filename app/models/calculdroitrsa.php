@@ -62,5 +62,24 @@
 				return null;
 			}
 		}
+		
+		/**
+		*	Fonction retournant un booléen précisant si la personne est soumise à drit et devoir ou non
+		*/
+		
+		public function isSoumisAdroitEtDevoir( $personne_id ) {
+			return (
+				$this->find(
+					'count',
+					array(
+						'conditions' => array(
+							'Calculdroitrsa.personne_id' => $personne_id,
+							'Calculdroitrsa.toppersdrodevorsa' => 1
+						),
+						'contain' => false
+					)
+				) > 0
+			);
+		}
 	}
 ?>

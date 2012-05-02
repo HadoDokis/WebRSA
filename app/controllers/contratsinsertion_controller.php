@@ -380,6 +380,9 @@
 				)
 			);
 			$this->set( compact( 'orientstruct' ) );
+			
+			$soumisADroitEtDevoir = $this->Personne->Calculdroitrsa->isSoumisAdroitEtDevoir($personne_id);
+			$this->set( compact( 'soumisADroitEtDevoir' ) );
 
 			if( Configure::read( 'Cg.departement' ) == 66 ) {
 				$typeOrientPrincipaleEmploiId = Configure::read( 'Orientstruct.typeorientprincipale.Emploi' );
