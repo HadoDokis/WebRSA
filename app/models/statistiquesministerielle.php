@@ -49,48 +49,52 @@
 		 * @author Thierry Nemes - Adullact projet
 		 */
 		public function _indicOrientAge($args) {
+			$globalQuery = "
+				SELECT
+					(
+						CASE
+							WHEN EXTRACT( YEAR FROM AGE(timestamp '{$args['annee']}-12-31', personnes.dtnai ) ) BETWEEN 0 AND 24 THEN '0 - 24'
+							WHEN EXTRACT( YEAR FROM AGE(timestamp '{$args['annee']}-12-31', personnes.dtnai ) ) BETWEEN 25 AND 29 THEN '25 - 29'
+							WHEN EXTRACT( YEAR FROM AGE(timestamp '{$args['annee']}-12-31', personnes.dtnai ) ) BETWEEN 30 AND 39 THEN '30 - 39'
+							WHEN EXTRACT( YEAR FROM AGE(timestamp '{$args['annee']}-12-31', personnes.dtnai ) ) BETWEEN 40 AND 49 THEN '40 - 49'
+							WHEN EXTRACT( YEAR FROM AGE(timestamp '{$args['annee']}-12-31', personnes.dtnai ) ) BETWEEN 50 AND 59 THEN '50 - 59'
+							WHEN EXTRACT( YEAR FROM AGE(timestamp '{$args['annee']}-12-31', personnes.dtnai ) ) >= 60 THEN '>= 60'
+							ELSE 'NC'
+						END
+					) AS age_range,
+					COUNT(DISTINCT(personnes.id)) AS count
+				FROM personnes
+					INNER JOIN orientsstructs ON ( orientsstructs.personne_id = personnes.id )
+					INNER JOIN foyers ON ( personnes.foyer_id = foyers.id )
+					INNER JOIN dossiers ON ( foyers.dossier_id = dossiers.id )
+					LEFT OUTER JOIN calculsdroitsrsa ON ( calculsdroitsrsa.personne_id = personnes.id )
+				WHERE
+					calculsdroitsrsa.toppersdrodevorsa = '1'
+					AND ( EXTRACT ( YEAR FROM dossiers.dtdemrsa ) ) <= {$args['annee']}
+					AND ( orientsstructs.rgorient IS NULL OR orientsstructs.rgorient = 1 )
+				
+				<COLONNE>
+
+				GROUP BY age_range
+				ORDER BY age_range ASC			
+			";			
+
+			$colonnes = array(
+				1 => "", // Seulement le champ Droit et Devoirs.
+				2 => "AND orientsstructs.typeorient_id IN ( SELECT typesorients.id FROM typesorients WHERE typesorients.lib_type_orient LIKE 'Emploi%' )",
+				3 => "AND orientsstructs.typeorient_id IN ( SELECT typesorients.id FROM typesorients WHERE typesorients.lib_type_orient NOT LIKE 'Emploi%' )",
+			 	4 => "AND orientsstructs.statut_orient = 'En attente'"
+			);
 			$resultats = array();
-			$filtres = array(
-				"", // Seulement le champ Droit et Devoirs.
-				" AND o.typeorient_id IN ( {$this->isEmploi} )",
-				" AND o.typeorient_id IN ( {$this->isSocial} )",
-			 	" AND (o.statut_orient = 'En attente')"
-			);
-			$blocs = array(
-				" AND ( EXTRACT ( YEAR FROM AGE(timestamp '{$args['annee']}-12-31', p.dtnai ) ) ) BETWEEN '0' AND '24' ",
-				" AND ( EXTRACT ( YEAR FROM AGE(timestamp '{$args['annee']}-12-31', p.dtnai ) ) ) BETWEEN '25' AND '29' ",
-				" AND ( EXTRACT ( YEAR FROM AGE(timestamp '{$args['annee']}-12-31', p.dtnai ) ) ) BETWEEN '30' AND '39' ",
-				" AND ( EXTRACT ( YEAR FROM AGE(timestamp '{$args['annee']}-12-31', p.dtnai ) ) ) BETWEEN '40' AND '49' ",
-				" AND ( EXTRACT ( YEAR FROM AGE(timestamp '{$args['annee']}-12-31', p.dtnai ) ) ) BETWEEN '50' AND '59' ",
-				" AND ( EXTRACT ( YEAR FROM AGE(timestamp '{$args['annee']}-12-31', p.dtnai ) ) ) BETWEEN '60' AND '999' ",
-				" AND ( p.dtnai IS NULL) "
-			);
-			foreach( $blocs as $keyRow => $bloc)
+			foreach( $colonnes as $keyCol => $colonne)
 			{
-				foreach( $filtres as $keyCol => $filtre)
-				{
-					$blocSQL = "
-						SELECT count(DISTINCT p.id)     
-						FROM
-							personnes p,
-							foyers f,
-							dossiers d,
-							calculsdroitsrsa c,
-							orientsstructs o
-						WHERE 
-							p.id = c.personne_id
-							AND p.foyer_id = f.id
-							AND d.id = f.dossier_id
-							AND p.id = o.personne_id
-							AND ( EXTRACT ( YEAR FROM d.dtdemrsa ) ) <= {$args['annee']}
-							AND c.toppersdrodevorsa = '1'
-							AND ( o.rgorient IS NULL OR o.rgorient = 1 ) 
-							{$filtre}
-							{$bloc}
-					;";
-					$sqlFound = $this->query( $blocSQL );
-					$resultats[$keyRow][$keyCol] = $sqlFound[0][0]['count'];
+				$sqlFound = $this->query( preg_replace('#<COLONNE>#', $colonne, $globalQuery) );	
+				$results_tous = array();
+				foreach( $sqlFound as $result) {
+					
+					$results_tous[$result[0]['age_range']] = $result[0]['count'];
 				}
+				$resultats[$keyCol] = $results_tous;
 			}
 			return $resultats;
 		}
@@ -102,49 +106,53 @@
 		 * @author Thierry Nemes - Adullact projet
 		 */
 		public function _indicOrientAnciennete($args) {
+			$globalQuery = "
+				SELECT
+					(
+						CASE
+							WHEN dossiers.dtdemrsa BETWEEN ( timestamp '{$args['annee']}-12-31' - INTERVAL '6' MONTH - INTERVAL '1' DAY ) AND ( timestamp '{$args['annee']}-12-31' ) THEN 'moins de 6 mois'
+							WHEN dossiers.dtdemrsa BETWEEN ( timestamp '{$args['annee']}-12-31' - INTERVAL '1' YEAR - INTERVAL '1' DAY ) AND ( timestamp '{$args['annee']}-12-31' - INTERVAL '6' MONTH ) THEN '6 mois et moins 1 an'
+							WHEN dossiers.dtdemrsa BETWEEN ( timestamp '{$args['annee']}-12-31' - INTERVAL '2' YEAR - INTERVAL '1' DAY ) AND ( timestamp '{$args['annee']}-12-31' - INTERVAL '1' YEAR ) THEN '1 an et moins de 2 ans'
+							WHEN dossiers.dtdemrsa BETWEEN ( timestamp '{$args['annee']}-12-31' - INTERVAL '5' YEAR - INTERVAL '1' DAY ) AND ( timestamp '{$args['annee']}-12-31' - INTERVAL '2' YEAR ) THEN '2 ans et moins de 5 ans'
+							WHEN dossiers.dtdemrsa < ( timestamp '{$args['annee']}-12-31' - INTERVAL '5' YEAR ) THEN '5 ans et plus'
+							ELSE 'NC'
+						END
+					) AS anciennete_range,
+					COUNT(DISTINCT(personnes.id)) AS count
+				FROM personnes
+					INNER JOIN orientsstructs ON ( orientsstructs.personne_id = personnes.id )
+					INNER JOIN foyers ON ( personnes.foyer_id = foyers.id )
+					INNER JOIN dossiers ON ( foyers.dossier_id = dossiers.id )
+					LEFT OUTER JOIN calculsdroitsrsa ON ( calculsdroitsrsa.personne_id = personnes.id )
+				WHERE
+					calculsdroitsrsa.toppersdrodevorsa = '1'
+					AND ( EXTRACT ( YEAR FROM dossiers.dtdemrsa ) ) <= {$args['annee']}
+					AND ( orientsstructs.rgorient IS NULL OR orientsstructs.rgorient = 1 )
+				
+				<COLONNE>
+
+				GROUP BY anciennete_range
+				ORDER BY anciennete_range ASC			
+			";			
+			
+			$colonnes = array(
+			1 => "", // Seulement le champ Droit et Devoirs.
+			2 => "AND orientsstructs.typeorient_id IN ( SELECT typesorients.id FROM typesorients WHERE typesorients.lib_type_orient LIKE 'Emploi%' )",
+			3 => "AND orientsstructs.typeorient_id IN ( SELECT typesorients.id FROM typesorients WHERE typesorients.lib_type_orient NOT LIKE 'Emploi%' )",
+			4 => "AND orientsstructs.statut_orient = 'En attente'"
+			);
 			$resultats = array();
-			$filtres = array(
-				"", // Seulement le champ Droitet Devoirs.
-				" AND o.typeorient_id IN ( {$this->isEmploi} )", 
-				" AND o.typeorient_id IN ( {$this->isSocial} )",
-			 	" AND (o.statut_orient = 'En attente')"
-			);
-			$blocs = array(
-				" AND d.dtdemrsa BETWEEN ( timestamp '{$args['annee']}-12-31' - INTERVAL '6' MONTH - INTERVAL '1' DAY ) AND ( timestamp '{$args['annee']}-12-31' ) ",
-				" AND d.dtdemrsa BETWEEN ( timestamp '{$args['annee']}-12-31' - INTERVAL '1' YEAR - INTERVAL '1' DAY ) AND ( timestamp '{$args['annee']}-12-31' - INTERVAL '6' MONTH ) ",
-				" AND d.dtdemrsa BETWEEN ( timestamp '{$args['annee']}-12-31' - INTERVAL '2' YEAR - INTERVAL '1' DAY ) AND ( timestamp '{$args['annee']}-12-31' - INTERVAL '1' YEAR ) ",
-				" AND d.dtdemrsa BETWEEN ( timestamp '{$args['annee']}-12-31' - INTERVAL '5' YEAR - INTERVAL '1' DAY ) AND ( timestamp '{$args['annee']}-12-31' - INTERVAL '2' YEAR ) ",
-				" AND d.dtdemrsa < ( timestamp '{$args['annee']}-12-31' - INTERVAL '5' YEAR ) ",
-				" AND ( d.dtdemrsa IS NULL) "
-			);
-			foreach( $blocs as $keyRow => $bloc)
+			foreach( $colonnes as $keyCol => $colonne)
 			{
-				foreach( $filtres as $keyCol => $filtre)
-				{
-					$blocSQL = "
-						SELECT count(DISTINCT p.id)    
-						FROM
-							personnes p,
-							foyers f,
-							dossiers d,
-							calculsdroitsrsa c,
-							orientsstructs o
-						WHERE 
-							p.id = c.personne_id
-							AND p.foyer_id = f.id
-							AND d.id = f.dossier_id
-							AND p.id = o.personne_id
-							AND ( EXTRACT ( YEAR FROM d.dtdemrsa ) ) <= {$args['annee']}
-							AND c.toppersdrodevorsa = '1'
-							AND ( o.rgorient IS NULL OR o.rgorient = 1 )
-							{$filtre}
-							{$bloc}
-					;";
-					$sqlFound = $this->query( $blocSQL );
-					$resultats[$keyRow][$keyCol] = $sqlFound[0][0]['count'];
+				$sqlFound = $this->query( preg_replace('#<COLONNE>#', $colonne, $globalQuery) );
+				$results_tous = array();
+				foreach( $sqlFound as $result) {
+						
+					$results_tous[$result[0]['anciennete_range']] = $result[0]['count'];
 				}
+				$resultats[$keyCol] = $results_tous;
 			}
-			return $resultats;
+			return $resultats;	
 		}
 
 		/**
@@ -154,111 +162,127 @@
 		 * @author Thierry Nemes - Adullact projet
 		 */
 		public function _indicOrientSituation($args) {
-			$resultats = array();
-			$filtres = array(
-				"", // Seulement le champ Droit et Devoirs.
-				" AND o.typeorient_id IN ( {$this->isEmploi} )",
-				" AND o.typeorient_id IN ( {$this->isSocial} )",
-			 	" AND (o.statut_orient = 'En attente')"
-			);
-			$homme = " AND (p.sexe = '1') ";
-			$femme = " AND (p.sexe = '2') ";
-			$seul = " AND (f.sitfam IN ('CEL', 'DIV', 'ISO', 'SEF', 'SEL', 'VEU')) ";
-			$couple = " AND (f.sitfam IN ('MAR', 'PAC', 'RPA', 'RVC', 'RVM', 'VIM')) ";
-			$rsaMajore = " ";
-//			$rsamajore'; true (bénéficiant du rsa majoré) ou false ( ne bénficiant pas)
-//			#Model=detailscalculdroitrsa.natpf#
-//			true :
-//				"RSI" : RSA Socle majoré (Financement sur fonds Conseil général)
-//				"RCI" : RSA Activité majoré (Financement sur fonds Etat)
-//			false :
-//				"RSD" : RSA Socle (Financement sur fonds Conseil général)
-//				"RSU" : RSA Socle Etat Contrat aidé  (Financement sur fonds Etat)
-//				"RSB" : RSA Socle Local (Financement sur fonds Conseil général)
-//				"RCD" : RSA Activité (Financement sur fonds Etat)
-//				"RCU" : RSA Activité Etat Contrat aidé (Financement sur fonds Etat)
-//				"RCB" : RSA Activité Local (Financement sur fonds Conseil général)
+			$globalQuery = "
+				SELECT
+				(
+					CASE
+						WHEN (
+							personnes.sexe = '1'
+							AND foyers.sitfam IN ('CEL', 'DIV', 'ISO', 'SEF', 'SEL', 'VEU')
+							AND ( SELECT COUNT(*) FROM personnes AS enfants INNER JOIN prestations ON ( enfants.id = prestations.personne_id AND prestations.natprest = 'RSA' ) WHERE enfants.foyer_id = foyers.id AND prestations.rolepers = 'ENF' ) = 0
+						) THEN '01 - Homme seul sans enfant'
+						WHEN (
+							personnes.sexe = '2'
+							AND foyers.sitfam IN ('CEL', 'DIV', 'ISO', 'SEF', 'SEL', 'VEU')
+							AND ( SELECT COUNT(*) FROM personnes AS enfants INNER JOIN prestations ON ( enfants.id = prestations.personne_id AND prestations.natprest = 'RSA' ) WHERE enfants.foyer_id = foyers.id AND prestations.rolepers = 'ENF' ) = 0
+						) THEN '02 - Femme seule sans enfant'
+						WHEN (
+							personnes.sexe = '1'
+							AND foyers.sitfam IN ('CEL', 'DIV', 'ISO', 'SEF', 'SEL', 'VEU')
+							AND ( SELECT COUNT(*) FROM personnes AS enfants INNER JOIN prestations ON ( enfants.id = prestations.personne_id AND prestations.natprest = 'RSA' ) WHERE enfants.foyer_id = foyers.id AND prestations.rolepers = 'ENF' ) > 0
+							AND EXISTS(
+								SELECT * FROM detailsdroitsrsa
+									INNER JOIN detailscalculsdroitsrsa ON ( detailscalculsdroitsrsa.detaildroitrsa_id = detailsdroitsrsa.id )
+									WHERE
+										detailsdroitsrsa.dossier_id = foyers.dossier_id
+										AND detailscalculsdroitsrsa.natpf IN ( 'RCI', 'RSI' )
+							)
+						) THEN '03 - Homme seul avec enfant, RSA majoré'
+						WHEN (
+							personnes.sexe = '1'
+							AND foyers.sitfam IN ('CEL', 'DIV', 'ISO', 'SEF', 'SEL', 'VEU')
+							AND ( SELECT COUNT(*) FROM personnes AS enfants INNER JOIN prestations ON ( enfants.id = prestations.personne_id AND prestations.natprest = 'RSA' ) WHERE enfants.foyer_id = foyers.id AND prestations.rolepers = 'ENF' ) > 0
+							AND NOT EXISTS(
+								SELECT * FROM detailsdroitsrsa
+									INNER JOIN detailscalculsdroitsrsa ON ( detailscalculsdroitsrsa.detaildroitrsa_id = detailsdroitsrsa.id )
+									WHERE
+										detailsdroitsrsa.dossier_id = foyers.dossier_id
+										AND detailscalculsdroitsrsa.natpf IN ( 'RCI', 'RSI' )
+							)
+						) THEN '04 - Homme seul avec enfant, RSA non majoré'
+						WHEN (
+							personnes.sexe = '2'
+							AND foyers.sitfam IN ('CEL', 'DIV', 'ISO', 'SEF', 'SEL', 'VEU')
+							AND ( SELECT COUNT(*) FROM personnes AS enfants INNER JOIN prestations ON ( enfants.id = prestations.personne_id AND prestations.natprest = 'RSA' ) WHERE enfants.foyer_id = foyers.id AND prestations.rolepers = 'ENF' ) > 0
+							AND EXISTS(
+								SELECT * FROM detailsdroitsrsa
+									INNER JOIN detailscalculsdroitsrsa ON ( detailscalculsdroitsrsa.detaildroitrsa_id = detailsdroitsrsa.id )
+									WHERE
+										detailsdroitsrsa.dossier_id = foyers.dossier_id
+										AND detailscalculsdroitsrsa.natpf IN ( 'RCI', 'RSI' )
+							)
+						) THEN '05 - Femme seule avec enfant, RSA majoré'
+						WHEN (
+							personnes.sexe = '2'
+							AND foyers.sitfam IN ('CEL', 'DIV', 'ISO', 'SEF', 'SEL', 'VEU')
+							AND ( SELECT COUNT(*) FROM personnes AS enfants INNER JOIN prestations ON ( enfants.id = prestations.personne_id AND prestations.natprest = 'RSA' ) WHERE enfants.foyer_id = foyers.id AND prestations.rolepers = 'ENF' ) > 0
+							AND NOT EXISTS(
+								SELECT * FROM detailsdroitsrsa
+									INNER JOIN detailscalculsdroitsrsa ON ( detailscalculsdroitsrsa.detaildroitrsa_id = detailsdroitsrsa.id )
+									WHERE
+										detailsdroitsrsa.dossier_id = foyers.dossier_id
+										AND detailscalculsdroitsrsa.natpf IN ( 'RCI', 'RSI' )
+							)
+						) THEN '06 - Femme seule avec enfant, RSA non majoré'
+						WHEN (
+							personnes.sexe = '1'
+							AND foyers.sitfam IN ('MAR', 'PAC', 'RPA', 'RVC', 'RVM', 'VIM')
+							AND ( SELECT COUNT(*) FROM personnes AS enfants INNER JOIN prestations ON ( enfants.id = prestations.personne_id AND prestations.natprest = 'RSA' ) WHERE enfants.foyer_id = foyers.id AND prestations.rolepers = 'ENF' ) = 0
+						) THEN '07 - Homme en couple sans enfant'
+						WHEN (
+							personnes.sexe = '2'
+							AND foyers.sitfam IN ('MAR', 'PAC', 'RPA', 'RVC', 'RVM', 'VIM')
+							AND ( SELECT COUNT(*) FROM personnes AS enfants INNER JOIN prestations ON ( enfants.id = prestations.personne_id AND prestations.natprest = 'RSA' ) WHERE enfants.foyer_id = foyers.id AND prestations.rolepers = 'ENF' ) = 0
+						) THEN '08 - Femme en couple sans enfant'
+						WHEN (
+							personnes.sexe = '1'
+							AND foyers.sitfam IN ('MAR', 'PAC', 'RPA', 'RVC', 'RVM', 'VIM')
+							AND ( SELECT COUNT(*) FROM personnes AS enfants INNER JOIN prestations ON ( enfants.id = prestations.personne_id AND prestations.natprest = 'RSA' ) WHERE enfants.foyer_id = foyers.id AND prestations.rolepers = 'ENF' ) > 0
+						) THEN '09 - Homme en couple avec enfant'
+						WHEN (
+							personnes.sexe = '2'
+							AND foyers.sitfam IN ('MAR', 'PAC', 'RPA', 'RVC', 'RVM', 'VIM')
+							AND ( SELECT COUNT(*) FROM personnes AS enfants INNER JOIN prestations ON ( enfants.id = prestations.personne_id AND prestations.natprest = 'RSA' ) WHERE enfants.foyer_id = foyers.id AND prestations.rolepers = 'ENF' ) > 0
+						) THEN '10 - Femme en couple avec enfant'
+		
+						ELSE '11 - Non connue'
+					END
+				) AS sitfam_range,
+				COUNT(DISTINCT(personnes.id)) AS count
+				FROM personnes
+					INNER JOIN orientsstructs ON ( orientsstructs.personne_id = personnes.id )
+					INNER JOIN foyers ON ( personnes.foyer_id = foyers.id )
+					INNER JOIN dossiers ON ( foyers.dossier_id = dossiers.id )
+					LEFT OUTER JOIN calculsdroitsrsa ON ( calculsdroitsrsa.personne_id = personnes.id )
+				WHERE
+					calculsdroitsrsa.toppersdrodevorsa = '1'
+					AND ( EXTRACT ( YEAR FROM dossiers.dtdemrsa ) ) <= {$args['annee']}
+					AND ( orientsstructs.rgorient IS NULL OR orientsstructs.rgorient = 1 )
+				
+				<COLONNE>
 
-			$blocs = array(
-				array("{$homme}{$seul}", "enfant"=>false),
-				array("{$femme}{$seul}", "enfant"=>false),
-				array("{$homme}{$seul}", "enfant"=>true),
-				array("{$homme}{$seul}{$rsaMajore}", "enfant"=>true),
-				array("{$femme}{$seul}", "enfant"=>true),
-				array("{$femme}{$seul}{$rsaMajore}", "enfant"=>true),
-				array("{$homme}{$couple}", "enfant"=>false),
-				array("{$femme}{$couple}", "enfant"=>false),
-				array("{$homme}{$couple}", "enfant"=>true),
-				array("{$femme}{$couple}", "enfant"=>true),
-				// non connue :
-				array(" AND ( (f.sitfam = 'ABA') OR ( f.sitfam IS NULL ) OR ( f.sitfam = '' ) )", "enfant"=>false)
+				GROUP BY sitfam_range
+				ORDER BY sitfam_range ASC			
+			";			
+			
+			$colonnes = array(
+			1 => "", // Seulement le champ Droit et Devoirs.
+			2 => "AND orientsstructs.typeorient_id IN ( SELECT typesorients.id FROM typesorients WHERE typesorients.lib_type_orient LIKE 'Emploi%' )",
+			3 => "AND orientsstructs.typeorient_id IN ( SELECT typesorients.id FROM typesorients WHERE typesorients.lib_type_orient NOT LIKE 'Emploi%' )",
+			4 => "AND orientsstructs.statut_orient = 'En attente'"
 			);
-			foreach( $blocs as $keyRow => $bloc) {
-				foreach( $filtres as $keyCol => $filtre) {
-					$blocSQLTotal = "
-						SELECT count(DISTINCT p.id)    
-						FROM
-							personnes p,
-							foyers f,
-							dossiers d,
-							calculsdroitsrsa c,
-							orientsstructs o
-						WHERE 
-							p.id = c.personne_id
-							AND p.foyer_id = f.id
-							AND d.id = f.dossier_id
-							AND p.id = o.personne_id
-							AND ( EXTRACT ( YEAR FROM d.dtdemrsa ) ) <= {$args['annee']}
-							AND c.toppersdrodevorsa = '1'
-							AND ( o.rgorient IS NULL OR o.rgorient = 1 ) 
-							{$filtre}
-							{$bloc[0]}
-					;";
-					$blocSQLEnfant = "
-						SELECT count(DISTINCT p.id)    
-						FROM
-							personnes p,
-							foyers f,
-							dossiers d,
-							calculsdroitsrsa c,
-							orientsstructs o
-							,
-							( 
-								SELECT 
-									count(*), fo.id
-								FROM 
-									foyers fo
-									INNER JOIN personnes pe ON pe.foyer_id = fo.id
-									INNER JOIN prestations pr ON pr.personne_id = pe.id
-									AND pr.natprest = 'RSA'
-									AND pr.rolepers = 'ENF'
-								GROUP BY fo.id 
-							) enfants
-						WHERE 
-							p.id = c.personne_id
-							AND p.foyer_id = f.id
-							AND d.id = f.dossier_id
-							AND p.id = o.personne_id
-							AND ( EXTRACT ( YEAR FROM d.dtdemrsa ) ) <= {$args['annee']}
-							AND c.toppersdrodevorsa = '1'
-							AND ( o.rgorient IS NULL OR o.rgorient = 1 )
-							{$filtre}
-							{$bloc[0]} 
-							AND enfants.id = f.id
-					;";
-					if( $bloc['enfant'] ) { // avec enfant(s)
-						$sqlFound = $this->query( $blocSQLEnfant );
-						$resultats[$keyRow][$keyCol] = $sqlFound[0][0]['count'];
-					}
-					else { // sans enfant
-						$sqlFound = $this->query( $blocSQLTotal );
-						$total = $sqlFound[0][0]['count'];
-						$sqlFound = $this->query( $blocSQLEnfant );
-						$resultats[$keyRow][$keyCol] = $total - $sqlFound[0][0]['count'];
-					}
+			$resultats = array();
+			foreach( $colonnes as $keyCol => $colonne)
+			{
+				$sqlFound = $this->query( preg_replace('#<COLONNE>#', $colonne, $globalQuery) );
+				$results_tous = array();
+				foreach( $sqlFound as $result) {
+						
+					$results_tous[$result[0]['sitfam_range']] = $result[0]['count'];
 				}
+				$resultats[$keyCol] = $results_tous;
 			}
-			return $resultats;
+			return $resultats;			
 		}
 
 			/**
@@ -268,61 +292,53 @@
 		 * @author Thierry Nemes - Adullact projet
 		 */
 		protected function _indicOrientFormation($args) {
+			$globalQuery = "
+				SELECT
+					(
+						CASE
+							WHEN dsps.nivetu IN ( '1205', '1206', '1207' ) THEN 'Vbis et VI'
+							WHEN dsps.nivetu IN ( '1204' ) THEN 'V'
+							WHEN dsps.nivetu IN ( '1203' ) THEN 'IV'
+							WHEN dsps.nivetu IN ( '1201', '1202') THEN 'III, II, I'
+							ELSE 'NC'
+						END
+					) AS formation_range,
+					COUNT(DISTINCT(personnes.id)) AS count
+				FROM personnes
+					INNER JOIN dsps ON (dsps.personne_id = personnes.id )
+					INNER JOIN orientsstructs ON ( orientsstructs.personne_id = personnes.id )
+					INNER JOIN foyers ON ( personnes.foyer_id = foyers.id )
+					INNER JOIN dossiers ON ( foyers.dossier_id = dossiers.id )
+					LEFT OUTER JOIN calculsdroitsrsa ON ( calculsdroitsrsa.personne_id = personnes.id )
+				WHERE
+					calculsdroitsrsa.toppersdrodevorsa = '1'
+					AND ( EXTRACT ( YEAR FROM dossiers.dtdemrsa ) ) <= {$args['annee']}
+					AND ( orientsstructs.rgorient IS NULL OR orientsstructs.rgorient = 1 )
+				
+				<COLONNE>
+
+				GROUP BY formation_range
+				ORDER BY formation_range ASC			
+			";			
+			
+			$colonnes = array(
+			1 => "", // Seulement le champ Droit et Devoirs.
+			2 => "AND orientsstructs.typeorient_id IN ( SELECT typesorients.id FROM typesorients WHERE typesorients.lib_type_orient LIKE 'Emploi%' )",
+			3 => "AND orientsstructs.typeorient_id IN ( SELECT typesorients.id FROM typesorients WHERE typesorients.lib_type_orient NOT LIKE 'Emploi%' )",
+			4 => "AND orientsstructs.statut_orient = 'En attente'"
+			);
 			$resultats = array();
-			$filtres = array(
-				"", // Seulement le champ Droitet Devoirs.
-				" AND o.typeorient_id IN ( {$this->isEmploi} )", //" AND (o.typeorient_id = 1 OR o.typeorient_id = 3) ",
-				" AND o.typeorient_id IN ( {$this->isSocial} )", //" AND (o.typeorient_id = 2) ",
-			 	" AND (o.statut_orient = 'En attente')"
-			);
-//			Cas 1 :
-//				1205	Niveau Vbis: fin de scolarité obligatoire
-//				1206	Niveau VI: pas de niveau
-//				1207	Niveau VII: jamais scolarisé
-//			Cas 2 :
-//				1204	Niveau V: CAP/BEP
-//			Cas 3 :
-//				1203	Niveau IV: BAC ou équivalent
-//			Cas 4 :
-//				1201	Niveau I/II: enseignement supérieur
-//				1202	Niveau III: BAC + 2
-//			Cas 5 :
-//				unknown
-			$blocs = array(
-				" AND ( dsps.nivetu IN ( '1205', '1206', '1207' ) ) ",
-				" AND ( dsps.nivetu IN ( '1204' ) ) ",
-				" AND ( dsps.nivetu IN ( '1203' ) ) ",
-				" AND ( dsps.nivetu IN ( '1201', '1202') ) ",
-				" AND ( dsps.nivetu IS NULL ) ",
-			);
-			foreach( $blocs as $keyRow => $bloc) {
-				foreach( $filtres as $keyCol => $filtre) {
-					$blocSQL = "
-						SELECT count(DISTINCT p.id)    
-						FROM
-							personnes p,
-							foyers f,
-							dossiers d,
-							calculsdroitsrsa c,
-							orientsstructs o,
-							dsps
-						WHERE 
-							p.id = c.personne_id
-							AND p.foyer_id = f.id
-							AND d.id = f.dossier_id
-							AND p.id = o.personne_id
-							AND p.id = dsps.personne_id
-							AND ( EXTRACT ( YEAR FROM d.dtdemrsa ) ) <= {$args['annee']}
-							AND c.toppersdrodevorsa = '1'
-							AND ( o.rgorient IS NULL OR o.rgorient = 1 )
-							{$filtre}
-							{$bloc}
-					;";
-					$sqlFound = $this->query( $blocSQL );
-					$resultats[$keyRow][$keyCol] = $sqlFound[0][0]['count'];
+			foreach( $colonnes as $keyCol => $colonne)
+			{
+				$sqlFound = $this->query( preg_replace('#<COLONNE>#', $colonne, $globalQuery) );
+				$results_tous = array();
+				foreach( $sqlFound as $result) {
+						
+					$results_tous[$result[0]['formation_range']] = $result[0]['count'];
 				}
+				$resultats[$keyCol] = $results_tous;
 			}
-			return $resultats;
+			return $resultats;			
 		}
 
 		//##############################################################################
