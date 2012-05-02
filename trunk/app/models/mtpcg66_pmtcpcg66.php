@@ -4,16 +4,16 @@
 		public $name = 'Mtpcg66Pmtcpcg66';
 
 		public $belongsTo = array(
-			'Mtpcg66' => array(
-				'className' => 'Mtpcg66',
-				'foreignKey' => 'mtpcg66_id',
+			'Modeletraitementpcg66' => array(
+				'className' => 'Modeletraitementpcg66',
+				'foreignKey' => 'modeletraitementpcg66_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
 			),
-			'Pmtcpcg66' => array(
-				'className' => 'Pmtcpcg66',
-				'foreignKey' => 'pmtcpcg66_id',
+			'Piecemodeletypecourrierpcg66' => array(
+				'className' => 'Piecemodeletypecourrierpcg66',
+				'foreignKey' => 'piecemodeletypecourrierpcg66_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
