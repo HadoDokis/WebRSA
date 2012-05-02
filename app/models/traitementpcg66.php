@@ -646,8 +646,7 @@
 			);
 
 			$conditions = array(
-				'Traitementpcg66.id' => $id,
-// 				'Adressefoyer.rgadr' => '01'
+				'Traitementpcg66.id' => $id
 			);
 			
 			$queryData = array(
@@ -655,9 +654,9 @@
 					$this->fields(),
 					$this->Modeletraitementpcg66->fields(),
 					$this->Modeletraitementpcg66->Modeletypecourrierpcg66->fields(),
-					array(
-						'( '.$this->Modeletraitementpcg66->Piecemodeletypecourrierpcg66->vfListeMotifs().' ) AS "Modeletraitementpcg66__piecesmodeletypecourrierpcg66"',
-					),
+// 					array(
+// 						'( '.$this->Modeletraitementpcg66->Piecemodeletypecourrierpcg66->vfListeMotifs().' ) AS "Modeletraitementpcg66__piecesmodeletypecourrierpcg66"',
+// 					),
 					array(
 						'Adresse.numvoie',
 						'Adresse.typevoie',
@@ -711,12 +710,34 @@
 				'type' => array( 'voie' => ClassRegistry::init( 'Option' )->typevoie() )
 			);
 			$options = Set::merge( $options, $this->enums() );
+
+			$modeletraitementpcg66_id = Set::classicExtract( $data, 'Modeletraitementpcg66.id' );
+			$piecesmanquantes = $this->Modeletraitementpcg66->find(
+				'all',
+				array(
+					'fields' => array_merge(
+						$this->Modeletraitementpcg66->Piecemodeletypecourrierpcg66->fields()
+					),
+					'contain' => false,
+					'joins' => array(
+						$this->Modeletraitementpcg66->join( 'Mtpcg66Pmtcpcg66', array( 'type' => 'INNER' ) ),
+						$this->Modeletraitementpcg66->Mtpcg66Pmtcpcg66->join( 'Piecemodeletypecourrierpcg66', array( 'type' => 'INNER' ) )
+					),
+					'conditions' => array(
+						'Mtpcg66Pmtcpcg66.modeletraitementpcg66_id' => $modeletraitementpcg66_id
+					)
+				)
+			);
+// debug($piecesmanquantes);
 // debug($data);
 // debug($modeleodtname);
 // die();
 
 			return $this->ged(
-				array( $data ),
+				array(
+					$data,
+					'Piecesmanquantes' => $piecesmanquantes
+				),
 				"PCG66/Traitementpcg66/{$modeleodtname}.odt",
 				true,
 				$options
