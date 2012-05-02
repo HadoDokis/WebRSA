@@ -45,7 +45,7 @@
 
 			}
 			else{
-				echo $form->input( 'Filtre.dureenonreorientation', array( 'label' => 'Parcours social sans réorientation emploi depuis ', 'type' => 'select', 'options' => $nbmoisnonreorientation ) );
+// 				echo $form->input( 'Filtre.dureenonreorientation', array( 'label' => 'Parcours social sans réorientation emploi depuis ', 'type' => 'select', 'options' => $nbmoisnonreorientation ) );
 			}
 		?>
 	</fieldset>
@@ -126,7 +126,9 @@
 									'td',
 									$xhtml->viewLink(
 										'Voir le dossier',
-										array( 'controller' => 'rendezvous', 'action' => 'index', $orientstruct['Personne']['id'] )
+										array( 'controller' => 'rendezvous', 'action' => 'index', $orientstruct['Personne']['id'] ),
+										true,
+										true
 									)
 								);
 							}
