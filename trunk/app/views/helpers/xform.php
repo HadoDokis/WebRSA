@@ -810,6 +810,14 @@
 			return '<div class="input text"><span class="label">'.h( $label ).'</span><span class="input">'.h( $value ).'</span></div>';
 		}
 
-		
+		/**
+		 *
+		 */
+		public function singleRadioElement( $path, $value, $label ) {
+			$name = 'data['.implode( '][', explode( '.', $path ) ).']';
+			$currentValue = Set::classicExtract( $this->data, $path );
+			$checked = ( ( ( $value == $currentValue ) ) ? 'checked="checked"' : '' );
+			return "<label><input type=\"radio\" name=\"{$name}\" value=\"{$value}\" {$checked} />{$label}</label>";
+		}
 	}
 ?>

@@ -44,7 +44,7 @@
 			),
 			'Modeletraitementpcg66' => array(
 				'className' => 'Modeletraitementpcg66',
-				'foreignKey' => 'traitementpcg66_id',
+				'foreignKey' => 'modeletypecourrierpcg66_id',
 				'dependent' => true,
 				'conditions' => '',
 				'fields' => '',

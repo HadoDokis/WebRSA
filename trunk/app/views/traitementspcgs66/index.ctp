@@ -68,7 +68,7 @@
 					'class' => 'default2'
 				)
 			);
-// debug($listeTraitements);
+debug($listeTraitements);
 		}
 		if( !empty( $listeTraitements ) ){
 			echo '<div class="aere">';

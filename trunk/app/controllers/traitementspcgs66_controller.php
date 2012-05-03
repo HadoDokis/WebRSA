@@ -124,23 +124,21 @@
 
 			
 			if( !empty( $traitementpcg66_id ) ) {
-				$data = $this->Traitementpcg66->find(
+				$this->data = $this->Traitementpcg66->Modeletraitementpcg66->find(
 					'first',
 					array(
 						'conditions' => array(
-							'Traitementpcg66.id' => $traitementpcg66_id
+							'Modeletraitementpcg66.traitementpcg66_id' => $traitementpcg66_id
 						),
 						'contain' => array(
-							'Modeletraitementpcg66' => array(
-								'Piecemodeletypecourrierpcg66'
-							)
+							'Piecemodeletypecourrierpcg66'
 						)
 					)
 				);
 
 				
-				$this->data = array();
-				foreach( $data['Modeletraitementpcg66'] as $modeletraitementpcg66 ) {
+// 				$this->data = array();
+				/*foreach( $data['Modeletraitementpcg66'] as $modeletraitementpcg66 ) {
 
 					$this->data['Modeletraitementpcg66'][$modeletraitementpcg66['modeletypecourrierpcg66_id']] = array(
 						'id' => $modeletraitementpcg66['id'],
@@ -153,7 +151,7 @@
 						$piecemodele['Mtpcg66Pmtcpcg66']['checked'] = true;
 						$this->data['Mtpcg66Pmtcpcg66'][$modeletraitementpcg66['modeletypecourrierpcg66_id']][$piecemodele['Mtpcg66Pmtcpcg66']['piecemodeletypecourrierpcg66_id']][] = $piecemodele['Mtpcg66Pmtcpcg66'];
 					}
-				}
+				}*/
 			}
 
 			$this->set( compact( 'modeletypecourrierpcg66') );
@@ -384,17 +382,15 @@ SELECT
 			else if( $this->action == 'edit' ) {
 				$traitementpcg66_id = $id;
 				$traitementpcg66 = $this->Traitementpcg66->find(
-                                    'first',
-                                    array(
-                                        'conditions' => array(
-                                            'Traitementpcg66.id' => $traitementpcg66_id
-                                        ),
-                                        'contain' => false
-                                    )
-//						'joins' => array(
-//							$this->Traitementpcg66->join( 'Personnepcg66Situationpdo' ),
-//							$this->Traitementpcg66->Personnepcg66Situationpdo->join( 'Personnepcg66' )
-//						)
+					'first',
+					array(
+						'conditions' => array(
+							'Traitementpcg66.id' => $traitementpcg66_id
+						),
+						'contain' => array(
+							'Modeletraitementpcg66'
+						)
+					)
 				);
 				$this->assert( !empty( $traitementpcg66 ), 'invalidParameter' );
 				$personnepcg66_id = Set::classicExtract( $traitementpcg66, 'Traitementpcg66.personnepcg66_id' );
@@ -424,18 +420,7 @@ SELECT
 						$this->Traitementpcg66->Personnepcg66Situationpdo->Situationpdo->join( 'Personnepcg66Situationpdo' )
 					),
 					'conditions' => array(
-						'Personnepcg66Situationpdo.personnepcg66_id' => $personnepcg66_id/*,
-						'Personnepcg66Situationpdo.id NOT IN ('
-							.$this->Traitementpcg66->sq(
-								array(
-									'alias' => 'traitementspcgs66',
-									'fields' => array( 'traitementspcgs66.personnepcg66_situationpdo_id' ),
-									'conditions' => array(
-										'traitementspcgs66.personnepcg66_situationpdo_id = Personnepcg66Situationpdo.id'
-									)
-								)
-							)
-						.')'*/
+						'Personnepcg66Situationpdo.personnepcg66_id' => $personnepcg66_id
 					),
 				)
 			);
@@ -496,16 +481,22 @@ SELECT
 			}
 			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
 
-			if( !empty( $this->data ) ){
+			if( !empty( $this->data ) ) {
+				$dataToSave = $this->data;
+				// INFO: attention, on peut se le permettre car il n'y a pas de règle de validation sur le commentaire
+				if( !empty( $dataToSave['Modeletraitementpcg66']['modeletypecourrierpcg66_id'] ) ) {
+					$dataToSave['Modeletraitementpcg66']['commentaire'] = $dataToSave['Modeletraitementpcg66'][$dataToSave['Modeletraitementpcg66']['modeletypecourrierpcg66_id']]['commentaire'];
+					unset( $dataToSave['Modeletraitementpcg66'][$dataToSave['Modeletraitementpcg66']['modeletypecourrierpcg66_id']] );
+				}
          
-				if( $this->Traitementpcg66->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
-					$saved = $this->Traitementpcg66->sauvegardeTraitement( $this->data );
+				if( $this->Traitementpcg66->saveAll( $dataToSave, array( 'validate' => 'only', 'atomic' => false ) ) ) {
+					$saved = $this->Traitementpcg66->sauvegardeTraitement( $dataToSave );
 					if( $saved ) {
 						// Début sauvegarde des fichiers attachés, en utilisant le Component Fileuploader
 						$dir = $this->Fileuploader->dirFichiersModule( $this->action, $this->params['pass'][0] );
 						$saved = $this->Fileuploader->saveFichiers(
 							$dir,
-							!Set::classicExtract( $this->data, "Traitementpcg66.haspiecejointe" ),
+							!Set::classicExtract( $dataToSave, "Traitementpcg66.haspiecejointe" ),
 							( ( $this->action == 'add' ) ? $this->Traitementpcg66->id : $id )
 						) && $saved;
 						

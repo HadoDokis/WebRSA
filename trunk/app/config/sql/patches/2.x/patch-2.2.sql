@@ -313,6 +313,13 @@ DROP INDEX IF EXISTS modelestypescourrierspcgs66_situationspdos_modeletypecourri
 DROP INDEX IF EXISTS modelestypescourrierspcgs66_situationspdos_situationpdo_id_idx;
 CREATE INDEX modelestypescourrierspcgs66_situationspdos_modeletypecourrierpcg66_id_idx ON modelestypescourrierspcgs66_situationspdos(modeletypecourrierpcg66_id);
 CREATE INDEX modelestypescourrierspcgs66_situationspdos_situationpdo_id_idx ON modelestypescourrierspcgs66_situationspdos(situationpdo_id);
+
+-------------------------------------------------------------------------------------------------------------
+-- 20120503 : Ajout d'une contrainte d'unicité dans la table modelestraitementspcgs66
+--	Il n'y a qu'un seul modèle de traitement pour un traitement donné
+-------------------------------------------------------------------------------------------------------------
+DROP INDEX IF EXISTS modelestraitementspcgs66_traitementpcg66_id_idx;
+CREATE UNIQUE INDEX modelestraitementspcgs66_traitementpcg66_id_idx ON modelestraitementspcgs66(traitementpcg66_id);
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
