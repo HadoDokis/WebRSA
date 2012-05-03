@@ -460,6 +460,24 @@
 					)
 				);
 				$data[$personnefoyerpcg['Prestation']['rolepers']]['Statutpdo']['libelles'] = implode( "\n", Set::extract( '/Statutpdo/libelle', $personnespcgs66_statutspdos ) );
+				
+				
+				// Calcul des revenus à afficher dans la décision si on décide de répercuter la fiche de calcul dans la décision
+				$traitementsAvecFicheCalcul = $this->Dossierpcg66->Personnepcg66->Traitementpcg66->find(
+					'all',
+					array(
+						'conditions' => array(
+							'Traitementpcg66.personnepcg66_id' => $personnefoyerpcg['Personnepcg66']['id'],
+							'Traitementpcg66.typetraitement' => 'revenu',
+							'Traitementpcg66.reversedo' => '1'
+						),
+						'contain' => false
+					)
+				);
+				$data[$personnefoyerpcg['Prestation']['rolepers']]['Personnepcg66']['fichecalculreversee'] = '';
+				foreach( $traitementsAvecFicheCalcul as $i => $traitementFicheCalcul ){
+					$data[$personnefoyerpcg['Prestation']['rolepers']]['Personnepcg66']['fichecalculreversee'] += $traitementFicheCalcul['Traitementpcg66']['benefpriscompte'];
+				}
 			}
 
 
@@ -484,16 +502,7 @@
 				$data['Decisiondossierpcg66']['Typersapcg66'] .= "\n" .'- '.implode( "\n- ", $typesrsa ).',';
 			}
 
-// 			$data['Decisiondossierpcg66']['Typersapcg66'] = $typesrsaChecked;
-			
-			
-			/*$data = array(
-				$data,
-				'DEM' => array( (array)@$data['DEM'] ),
-				'CJT' => array( (array)@$data['CJT'] ),
-			);*/
-// 			unset( $data[0]['DEM'], $data[0]['CJT'] );
-// debug( $typesrsa );
+// debug( $traitementsAvecFicheCalcul );
 // debug( $data );
 // die();
 			return $this->ged(
