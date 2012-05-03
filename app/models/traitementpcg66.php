@@ -309,20 +309,7 @@
 				'exclusive' => '',
 				'finderQuery' => '',
 				'counterQuery' => ''
-			),
-			'Modeletraitementpcg66' => array(
-				'className' => 'Modeletraitementpcg66',
-				'foreignKey' => 'traitementpcg66_id',
-				'dependent' => true,
-				'conditions' => '',
-				'fields' => '',
-				'order' => '',
-				'limit' => '',
-				'offset' => '',
-				'exclusive' => '',
-				'finderQuery' => '',
-				'counterQuery' => ''
-			),
+			)
                     
 		);
 
@@ -339,7 +326,20 @@
 				'exclusive' => '',
 				'finderQuery' => '',
 				'counterQuery' => ''
-			)
+			),
+			'Modeletraitementpcg66' => array(
+				'className' => 'Modeletraitementpcg66',
+				'foreignKey' => 'traitementpcg66_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 		);
 
 		public $hasAndBelongsToMany = array(
@@ -404,6 +404,69 @@
 
 			// Sauvegarde des modèles liés au courrier pour un traitement donné
 			if( $success && isset( $data['Modeletraitementpcg66'] ) ) {
+				debug($data['Modeletraitementpcg66']);
+				$this->Modeletraitementpcg66->create( $data['Modeletraitementpcg66'] );
+				$success = $this->Modeletraitementpcg66->save() && $success;
+
+				if( $success ) {
+					foreach( array( 'piecesmodelestypescourrierspcgs66' ) as $tableliee ) {
+						$modelelie = Inflector::classify( $tableliee );
+						$modeleliaison = Inflector::classify( "mtpcgs66_pmtcpcgs66" );
+						$foreignkey = Inflector::singularize( $tableliee ).'_id';
+						$records = $this->Modeletraitementpcg66->{$modeleliaison}->find(
+							'list',
+							array(
+								'fields' => array( "{$modeleliaison}.id", "{$modeleliaison}.{$foreignkey}" ),
+								'conditions' => array(
+									"{$modeleliaison}.modeletraitementpcg66_id" => $data['Modeletraitementpcg66']['id']
+								)
+							)
+						);
+
+						$oldrecordsids = array_values( $records );
+						$nouveauxids = Set::filter( Set::extract( "/{$modelelie}/{$modelelie}", $data ) );
+	// debug($nouveauxids);
+	// debug($records);
+	// debug($oldrecordsids);
+	// debug($data);
+						if ( empty( $nouveauxids ) ) {
+							$this->Modeletraitementpcg66->{$modelelie}->invalidate( $modelelie, 'Merci de cocher au moins une case' );
+							$success = false;
+						}
+						else {
+							// En moins -> Supprimer
+							$idsenmoins = array_diff( $oldrecordsids, $nouveauxids );
+							if( !empty( $idsenmoins ) ) {
+								$success = $this->Modeletraitementpcg66->{$modeleliaison}->deleteAll(
+									array(
+										"{$modeleliaison}.modeletraitementpcg66_id" => $data['Modeletraitementpcg66']['id'],
+										"{$modeleliaison}.{$foreignkey}" => $idsenmoins
+									)
+								) && $success;
+							}
+
+							// En plus -> Ajouter
+							$idsenplus = array_diff( $nouveauxids, $oldrecordsids );
+							if( !empty( $idsenplus ) ) {
+								foreach( $idsenplus as $idenplus ) {
+									$record = array(
+										$modeleliaison => array(
+											"modeletraitementpcg66_id" => $data['Modeletraitementpcg66']['id'],
+											"{$foreignkey}" => $idenplus
+										)
+									);
+
+									$this->Modeletraitementpcg66->{$modeleliaison}->create( $record );
+									$success = $this->Modeletraitementpcg66->{$modeleliaison}->save() && $success;
+								}
+							}
+						}
+					}
+				}
+			}
+			debug($data);
+			/*
+			debug( $data );
 				$idsModelestraitementspcgs66ASupprimer = array();
 				foreach( $data['Modeletraitementpcg66'] as  $dataModeletraitementpcg66 ) {
 					$modeletypecourrierpcg66_id = $dataModeletraitementpcg66['modeletypecourrierpcg66_id'];
@@ -433,7 +496,7 @@
 										$modeletraitementpcg66_piecemodeletypecourrierpcg66[] = array(
 											'id' => $piecemodeletypecourrierpcg66['id'],
 											'piecemodeletypecourrierpcg66_id' => $piecemodeletypecourrierpcg66['piecemodeletypecourrierpcg66_id'],
-											'modeletraitementpcg66_id' => $this->Modeletraitementpcg66->id
+											'modeletraitementpcg66_id' => $data['Modeletraitementpcg66']['id']
 										);
 									}
 									else {
@@ -478,7 +541,7 @@
 						array( 'Modeletraitementpcg66.id' => $idsModelestraitementspcgs66ASupprimer )
 					) && $success;
 				}
-			}
+			}*/
                        
 			return $success;
 		}
@@ -654,9 +717,6 @@
 					$this->fields(),
 					$this->Modeletraitementpcg66->fields(),
 					$this->Modeletraitementpcg66->Modeletypecourrierpcg66->fields(),
-// 					array(
-// 						'( '.$this->Modeletraitementpcg66->Piecemodeletypecourrierpcg66->vfListeMotifs().' ) AS "Modeletraitementpcg66__piecesmodeletypecourrierpcg66"',
-// 					),
 					array(
 						'Adresse.numvoie',
 						'Adresse.typevoie',
@@ -675,6 +735,7 @@
 						'Personne.qual',
 						'Personne.nom',
 						'Personne.prenom',
+						'Dossierpcg66.user_id',
 						'Personne.dtnai',
 						'Personne.nir',
 					)
@@ -684,12 +745,7 @@
 				'contain' => false
 			);
 
-			
 			$data = $this->find( 'first', $queryData );
-
-// 			$data['Personne']['qual'] = Set::enum( $data['Personne']['qual'], $qual );
-// 			$data['Adresse']['typevoie'] = Set::enum( $data['Adresse']['typevoie'], $typevoie );
-// 
 
 			$user = $this->User->find(
 				'first',
@@ -730,7 +786,6 @@
 			);
 // debug($piecesmanquantes);
 // debug($data);
-// debug($modeleodtname);
 // die();
 
 			return $this->ged(
