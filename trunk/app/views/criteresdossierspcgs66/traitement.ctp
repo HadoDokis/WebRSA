@@ -109,6 +109,14 @@
 				<?php
 					foreach( $criteresdossierspcgs66 as $index => $criteredossierpcg66 ) {
 					
+						//Liste des différents traitements PCGs de la personne PCG
+						$traitementspcgs66 = '';
+						foreach( $criteredossierpcg66['Dossierpcg66']['listetraitements'] as $key => $traitement ) {
+							if( !empty( $traitement ) ) {
+								$traitementspcgs66 .= $xhtml->tag( 'h3', '' ).'<ul><li>'.Set::enum( $traitement, $options['Traitementpcg66']['typetraitement'] ).'</li></ul>';
+							}
+						}
+					
 						$etatdosrsaValue = Set::classicExtract( $criteredossierpcg66, 'Situationdossierrsa.etatdosrsa' );
 						$etatDossierRSA = isset( $etatdosrsa[$etatdosrsaValue] ) ? $etatdosrsa[$etatdosrsaValue] : 'Non défini';
 					
@@ -148,7 +156,7 @@
 								h( Set::enum( Set::classicExtract( $criteredossierpcg66, 'Personne.qual' ), $qual ).' '.Set::classicExtract( $criteredossierpcg66, 'Personne.nom' ).' '.Set::classicExtract( $criteredossierpcg66, 'Personne.prenom' ) ),
 								h( Set::enum( Set::classicExtract( $criteredossierpcg66, 'Dossierpcg66.originepdo_id' ), $originepdo ) ),
 								h( $locale->date( 'Locale->date',  Set::classicExtract( $criteredossierpcg66, 'Dossierpcg66.datereceptionpdo' ) ) ),
-								h( Set::classicExtract( $criteredossierpcg66, 'Descriptionpdo.name' ) ),
+								$traitementspcgs66,
 								h( date_short( Set::classicExtract( $criteredossierpcg66, 'Traitementpcg66.daterevision' ) ) ),
 								h( date_short( Set::classicExtract( $criteredossierpcg66, 'Traitementpcg66.dateecheance' ) ) ),
 								h( Set::enum( Set::classicExtract( $criteredossierpcg66, 'Traitementpcg66.clos' ), $options['Traitementpcg66']['clos'] ) ),
