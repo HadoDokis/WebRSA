@@ -3,6 +3,13 @@
 	{
 		public $name = 'Modeletraitementpcg66';
 
+		public $actsAs = array(
+			'Autovalidate',
+			'ValidateTranslate',
+			'Formattable'
+		);
+
+		
 		public $belongsTo = array(
 			'Traitementpcg66' => array(
 				'className' => 'Traitementpcg66',

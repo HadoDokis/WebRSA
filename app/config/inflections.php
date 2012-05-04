@@ -332,6 +332,7 @@
 		'personnepcg66' => 'personnespcgs66',
 		'decisiontraitementpcg66' => 'decisionstraitementspcgs66',
 		'traitementpcg66' => 'traitementspcgs66',
+		'criteretraitementpcg66' => 'criterestraitementspcgs66',
 		'decisionpersonnepcg66' => 'decisionspersonnespcgs66',
 		'personnepcg66_situationpdo' => 'personnespcgs66_situationspdos',
 		'personnepcg66_statutpdo' => 'personnespcgs66_statutspdos',
