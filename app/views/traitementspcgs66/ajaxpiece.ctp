@@ -38,7 +38,7 @@
 									)
 								); // FIXME: nettoyer en js ?
 								
-								echo $xform->input( 'Piecemodeletypecourrierpcg66.Piecemodeletypecourrierpcg66', array( 'type' => 'select', 'multiple' => 'checkbox', 'options' => $listepieces[$id], 'id' => "listepieces{$id}", 'legend' => 'Liste des pièces liées au modèle de courrier &laquo; '.$name.' &raquo;' ) );
+								echo $xform->input( 'Piecemodeletypecourrierpcg66.Piecemodeletypecourrierpcg66', array( 'type' => 'select', 'multiple' => 'checkbox', 'options' => $listepieces[$id], 'id' => "listepieces{$id}", 'label' => 'Liste des pièces liées au modèle de courrier &laquo; '.$name.' &raquo;' ) );
 							echo '</fieldset>';
 							echo '</div>';
 						}

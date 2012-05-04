@@ -464,8 +464,6 @@ msgstr "Non"
 msgid "ENUM::ANNULE::O"
 msgstr "Oui"
 
-
-
 msgid "ENUM::TYPETRAITEMENT::courrier"
 msgstr "Courriers"
 
@@ -490,3 +488,6 @@ msgstr "Type de courrier"
 
 msgid "Criterestraitementspcgs66::index"
 msgstr "Recherche de traitements PCGs"
+
+msgid "Dossierpcg66.user_id"
+msgstr "Gestionnaire du dossier (instructeur en charge du dossier)"
