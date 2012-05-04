@@ -96,7 +96,10 @@
 					<th><?php echo $xpaginator->sort( 'N° dossier', 'Dossier.numdemrsa' );?></th>
 					<th><?php echo $xpaginator->sort( 'Nom du demandeur', 'Personne.nom' );?></th>
 					<th><?php echo $xpaginator->sort( 'Gestionnaire', 'Dossierpcg66.user_id' );?></th>
-					<th><?php echo $xpaginator->sort( 'Date de réception', 'Dossierpcg66.datereceptionpdo' );?></th>
+					<th><?php echo $xpaginator->sort( 'Type de traitement', 'Traitementpcg66.typetraitement' );?></th>
+					<th><?php echo $xpaginator->sort( 'Motif de la situation', 'Situationpdo.libelle' );?></th>
+					<th><?php echo $xpaginator->sort( 'Description du traitement', 'Traitementpcg66.descriptionpdo_id' );?></th>
+					<th><?php echo $xpaginator->sort( 'Date de réception de la DO', 'Dossierpcg66.datereceptionpdo' );?></th>
 					<th><?php echo $xpaginator->sort( 'Date de révision', 'Traitementpcg66.daterevision' );?></th>
 					<th><?php echo $xpaginator->sort( 'Date d\'échéance', 'Traitementpcg66.dateecheance' );?></th>
 					<th><?php echo $xpaginator->sort( 'Clos ?', 'Traitementpcg66.clos' );?></th>
@@ -108,7 +111,7 @@
 				<?php
 					foreach( $criterestraitementspcgs66 as $index => $criteretraitementpcg66 ) {
 // debug($criteretraitementpcg66);
-					
+										
 						$etatdosrsaValue = Set::classicExtract( $criteretraitementpcg66, 'Situationdossierrsa.etatdosrsa' );
 						$etatDossierRSA = isset( $etatdosrsa[$etatdosrsaValue] ) ? $etatdosrsa[$etatdosrsaValue] : 'Non défini';
 					
@@ -147,6 +150,9 @@
 								h( Set::classicExtract( $criteretraitementpcg66, 'Dossier.numdemrsa' ) ),
 								h( Set::enum( Set::classicExtract( $criteretraitementpcg66, 'Personne.qual' ), $qual ).' '.Set::classicExtract( $criteretraitementpcg66, 'Personne.nom' ).' '.Set::classicExtract( $criteretraitementpcg66, 'Personne.prenom' ) ),
 								h( Set::enum( Set::classicExtract( $criteretraitementpcg66, 'Dossierpcg66.user_id' ), $gestionnaire ) ),
+								h( Set::enum( Set::classicExtract( $criteretraitementpcg66, 'Traitementpcg66.typetraitement' ), $options['Traitementpcg66']['typetraitement'] ) ),
+								h( Set::classicExtract( $criteretraitementpcg66, 'Situationpdo.libelle' ) ),
+								h( Set::enum( Set::classicExtract( $criteretraitementpcg66, 'Traitementpcg66.descriptionpdo_id' ), $descriptionpdo ) ),
 								h( $locale->date( 'Locale->date',  Set::classicExtract( $criteretraitementpcg66, 'Dossierpcg66.datereceptionpdo' ) ) ),
 								h( date_short( Set::classicExtract( $criteretraitementpcg66, 'Traitementpcg66.daterevision' ) ) ),
 								h( date_short( Set::classicExtract( $criteretraitementpcg66, 'Traitementpcg66.dateecheance' ) ) ),

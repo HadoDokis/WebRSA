@@ -108,6 +108,9 @@
 					'Traitementpcg66.datedepart',
 					'Traitementpcg66.datereception',
 					'Traitementpcg66.dateecheance',
+					'Traitementpcg66.typetraitement',
+					'Traitementpcg66.descriptionpdo_id',
+					'Situationpdo.libelle',
 					'Dossierpcg66.id',
 					'Dossierpcg66.user_id',
 					'Dossierpcg66.datereceptionpdo',
@@ -130,6 +133,8 @@
 				'recursive' => -1,
 				'joins' => array(
 					$Traitementpcg66->join( 'Personnepcg66', array( 'type' => 'INNER' ) ),
+					$Traitementpcg66->join( 'Personnepcg66Situationpdo', array( 'type' => 'LEFT OUTER' ) ),
+					$Traitementpcg66->Personnepcg66Situationpdo->join( 'Situationpdo', array( 'type' => 'LEFT OUTER' ) ),
 					$Traitementpcg66->Personnepcg66->join( 'Dossierpcg66', array( 'type' => 'INNER' ) ),
 					$Traitementpcg66->Personnepcg66->Dossierpcg66->join( 'Foyer', array( 'type' => 'INNER' ) ),
 					$Traitementpcg66->join( 'Descriptionpdo', array( 'type' => 'LEFT OUTER' ) ),

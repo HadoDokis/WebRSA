@@ -392,9 +392,13 @@
 				if (empty($data['Traitementpcg66'][$field]))
 					unset($data['Traitementpcg66'][$field]);
 			}
-//			$success = $this->saveAll( $data, array( 'validate' => 'first', 'atomic' => false ) ) && $success;
 
-			$this->create( array( 'Traitementpcg66' => $data['Traitementpcg66'] ) );
+			$dataTraitementpcg66 = array( 'Traitementpcg66' => $data['Traitementpcg66'] );
+			if( $data['Traitementpcg66']['typetraitement'] == 'revenu' ) {
+				$dataTraitementpcg66['Traitementpcg66']['dateecheance'] = $data['Traitementpcg66']['daterevision'];
+			}
+
+			$this->create( $dataTraitementpcg66 );
 			$success = $this->save() && $success;
 
 			$traitementpcg66_id = $this->id;
