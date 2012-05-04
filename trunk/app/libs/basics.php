@@ -676,7 +676,13 @@
 		$return = array();
 
 		foreach( $array as $key => $value ) {
-			$return[] = "\"{$key}\" : \"{$value}\"";
+			if( is_array( $value ) ) {
+				$value = php_associative_array_to_js( $value );
+				$return[] = "\"{$key}\" : {$value}";
+			}
+			else {
+				$return[] = "\"{$key}\" : \"{$value}\"";
+			}
 		}
 
 		return  "{ ".implode( ', ', $return )." }";

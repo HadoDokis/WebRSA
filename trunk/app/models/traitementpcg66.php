@@ -15,7 +15,7 @@
 
 		public $actsAs = array(
 			'Autovalidate',
-			'ValidateTranslate',
+			'/*/*/*ValidateTranslate*/*/*/',
 			'Formattable',
 			'Enumerable' => array(
 				'fields' => array(
@@ -51,6 +51,12 @@
 					'rule' => array('numeric'),
 					'message' => 'Merci de saisir une valeur numérique'
 				),
+			),
+			'typecourrierpcg66_id' => array(
+				array(
+					'rule' => array( 'notEmptyIf', 'typetraitement', true, array( 'courrier' ) ),
+					'message' => 'Champ obligatoire'
+				)
 			),
 			'personnepcg66_situationpdo_id' => array(
 				array(
@@ -401,13 +407,17 @@
 				}
 			}
                         
-
 			// Sauvegarde des modèles liés au courrier pour un traitement donné
-			if( $success && isset( $data['Modeletraitementpcg66'] ) ) {
-				debug($data['Modeletraitementpcg66']);
-				$this->Modeletraitementpcg66->create( $data['Modeletraitementpcg66'] );
+			if( $success && $data['Traitementpcg66']['typetraitement'] == 'courrier' ) {
+
+				$dataModelTraitementpcg66 = array( 'Modeletraitementpcg66' => $data['Modeletraitementpcg66'] );
+				$dataModelTraitementpcg66['Modeletraitementpcg66']['traitementpcg66_id'] = $traitementpcg66_id;
+
+				$this->Modeletraitementpcg66->create( $dataModelTraitementpcg66 );
 				$success = $this->Modeletraitementpcg66->save() && $success;
 
+				$modeletraitementpcg66_id = $this->Modeletraitementpcg66->id;
+				
 				if( $success ) {
 					foreach( array( 'piecesmodelestypescourrierspcgs66' ) as $tableliee ) {
 						$modelelie = Inflector::classify( $tableliee );
@@ -418,17 +428,14 @@
 							array(
 								'fields' => array( "{$modeleliaison}.id", "{$modeleliaison}.{$foreignkey}" ),
 								'conditions' => array(
-									"{$modeleliaison}.modeletraitementpcg66_id" => $data['Modeletraitementpcg66']['id']
+									"{$modeleliaison}.modeletraitementpcg66_id" => $modeletraitementpcg66_id
 								)
 							)
 						);
 
 						$oldrecordsids = array_values( $records );
 						$nouveauxids = Set::filter( Set::extract( "/{$modelelie}/{$modelelie}", $data ) );
-	// debug($nouveauxids);
-	// debug($records);
-	// debug($oldrecordsids);
-	// debug($data);
+
 						if ( empty( $nouveauxids ) ) {
 							$this->Modeletraitementpcg66->{$modelelie}->invalidate( $modelelie, 'Merci de cocher au moins une case' );
 							$success = false;
@@ -439,7 +446,7 @@
 							if( !empty( $idsenmoins ) ) {
 								$success = $this->Modeletraitementpcg66->{$modeleliaison}->deleteAll(
 									array(
-										"{$modeleliaison}.modeletraitementpcg66_id" => $data['Modeletraitementpcg66']['id'],
+										"{$modeleliaison}.modeletraitementpcg66_id" => $modeletraitementpcg66_id,
 										"{$modeleliaison}.{$foreignkey}" => $idsenmoins
 									)
 								) && $success;
@@ -451,7 +458,7 @@
 								foreach( $idsenplus as $idenplus ) {
 									$record = array(
 										$modeleliaison => array(
-											"modeletraitementpcg66_id" => $data['Modeletraitementpcg66']['id'],
+											"modeletraitementpcg66_id" => $modeletraitementpcg66_id,
 											"{$foreignkey}" => $idenplus
 										)
 									);
@@ -464,89 +471,9 @@
 					}
 				}
 			}
-			debug($data);
-			/*
-			debug( $data );
-				$idsModelestraitementspcgs66ASupprimer = array();
-				foreach( $data['Modeletraitementpcg66'] as  $dataModeletraitementpcg66 ) {
-					$modeletypecourrierpcg66_id = $dataModeletraitementpcg66['modeletypecourrierpcg66_id'];
-
-					if( $dataModeletraitementpcg66['checked'] == true ) {
-						$modeletraitementpcg66 = array(
-							'Modeletraitementpcg66' => array(
-								'id' => $dataModeletraitementpcg66['id'],
-								'modeletypecourrierpcg66_id' => $modeletypecourrierpcg66_id,
-								'traitementpcg66_id' => $traitementpcg66_id,
-								'commentaire' => $dataModeletraitementpcg66['commentaire'],
-							)
-						);
-						
-						$this->Modeletraitementpcg66->create( $modeletraitementpcg66 );
-						$tmpSuccess = $this->Modeletraitementpcg66->save( $modeletraitementpcg66 );
-						$success = $tmpSuccess && $success;
-
-						if( $tmpSuccess ) {
-							// Piecemodeletypecourrierpcg66 -> Mtpcg66Pmtcpcg66
-							if( !empty( $data['Mtpcg66Pmtcpcg66'][$modeletypecourrierpcg66_id] ) ) {
-								$modeletraitementpcg66_piecemodeletypecourrierpcg66 = array();
-								$modeletraitementpcg66_piecemodeletypecourrierpcg66_ids_a_supprimer = array();
-
-								foreach( $data['Mtpcg66Pmtcpcg66'][$modeletypecourrierpcg66_id] as $piecemodeletypecourrierpcg66 ) {
-									if( $piecemodeletypecourrierpcg66['checked'] == true ) {
-										$modeletraitementpcg66_piecemodeletypecourrierpcg66[] = array(
-											'id' => $piecemodeletypecourrierpcg66['id'],
-											'piecemodeletypecourrierpcg66_id' => $piecemodeletypecourrierpcg66['piecemodeletypecourrierpcg66_id'],
-											'modeletraitementpcg66_id' => $data['Modeletraitementpcg66']['id']
-										);
-									}
-									else {
-										if( !empty( $piecemodeletypecourrierpcg66['id'] ) ) {
-											$modeletraitementpcg66_piecemodeletypecourrierpcg66_ids_a_supprimer[] = $piecemodeletypecourrierpcg66['id'];
-										}
-									}
-								}
-								
-								// Enregistrement des cases cochées
-								if( !empty( $modeletraitementpcg66_piecemodeletypecourrierpcg66 ) ) {
-									$success = $this->Modeletraitementpcg66->Mtpcg66Pmtcpcg66->saveAll(
-										$modeletraitementpcg66_piecemodeletypecourrierpcg66,
-										array(
-											'validate' => 'first',
-											'atomic' => false
-										)
-									) && $success;
-								}
-								
-								// SUppression des cases non cochées
-								if( !empty( $modeletraitementpcg66_piecemodeletypecourrierpcg66_ids_a_supprimer ) ) {
-									$success = $this->Modeletraitementpcg66->Mtpcg66Pmtcpcg66->deleteAll(
-										array(
-											'Mtpcg66Pmtcpcg66.id' => $modeletraitementpcg66_piecemodeletypecourrierpcg66bor
-										)
-									) && $success;
-								}
-							}
-						}
-
-					}
-					// FIXME: attention à ce que l'on doit supprimer
-					else if( !empty( $dataModeletraitementpcg66['id'] ) ) {
-						$idsModelestraitementspcgs66ASupprimer = $dataModeletraitementpcg66['id'];
-					}
-				}
-
-				// Suppression des ids décochés
-				if( !empty( $idsModelestraitementspcgs66ASupprimer ) ) {
-					$success = $this->Modeletraitementpcg66->deleteAll(
-						array( 'Modeletraitementpcg66.id' => $idsModelestraitementspcgs66ASupprimer )
-					) && $success;
-				}
-			}*/
                        
 			return $success;
 		}
-
-
 
 
 		/**

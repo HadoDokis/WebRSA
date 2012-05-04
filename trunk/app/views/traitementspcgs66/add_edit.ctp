@@ -42,18 +42,49 @@
 
 	?>
     <script type="text/javascript">
-    document.observe("dom:loaded", function() {
+		function showAjaxValidationErrors() {
+			<?php if( isset( $this->validationErrors['Modeletraitementpcg66'] ) ) :?>
+				<?php foreach( $this->validationErrors['Modeletraitementpcg66'] as $field => $error ):?>
+					var div = $( '<?php echo Inflector::camelize( "Modeletraitementpcg66_{$field}" );?>' );
+					$( div ).addClassName( 'error' );
+					var errorMessage = new Element( 'div', { 'class': 'error-message' } ).update( '<?php echo $error;?>' );
+					$( div ).insert( { 'bottom' : errorMessage } );
+				<?php endforeach;?>
+			<?php endif;?>
+		}
 
-        <?php
-            echo $ajax->remoteFunction(
-                array(
-                    'update' => 'Typecourrierpcg66Modeletypecourrierpcg66',
-                    'url' => Router::url( array( 'action' => 'ajaxpiece' ), true ),
-                    'with' => 'Form.serialize( $(\'traitementpcg66form\') )'
-                )
-            );
-        ?>
-    } );
+		document.observe("dom:loaded", function() {
+			<?php
+				// FIXME: une fonction générique
+				$dataModeletraitementpcg66 = array();
+				foreach( array( 'Modeletraitementpcg66', 'Piecemodeletypecourrierpcg66' ) as $M ) {
+					if( isset( $this->data[$M] ) && !empty( $this->data[$M] ) ) {
+						foreach( $this->data[$M] as $field => $value ) {
+							if( !is_array( $value ) ) {
+								$dataModeletraitementpcg66["data[{$M}][{$field}]"] = $value;
+							}
+							else {
+								foreach( $value as $k => $v ) {
+									$dataModeletraitementpcg66["data[{$M}][{$field}][{$k}]"] = $v;
+								}
+							}
+						}
+					}
+				}
+
+				echo $ajax->remoteFunction(
+					array(
+						'update' => 'Typecourrierpcg66Modeletypecourrierpcg66Id',
+						'url' => Router::url( array( 'action' => 'ajaxpiece' ), true ),
+// 						'with' => 'Form.serialize( $(\'traitementpcg66form\') ), '.php_associative_array_to_js( array( 'Modeletraitementpcg66' => @$this->data['Modeletraitementpcg66'] ) ),
+ 						'with' => 'Object.extend( Form.serialize( $( \'traitementpcg66form\' ), true ), '.php_associative_array_to_js( $dataModeletraitementpcg66 ).' )',
+
+// Object.extend(Form.serialize(true), {order: 'descend_by_created_by'})
+						'complete' => 'showAjaxValidationErrors()',
+					)
+				);
+			?>
+		} );
     </script>
 	<?php
 		// Courriers
@@ -62,7 +93,7 @@
 			<?php
 				echo $default->subform(
 						array(
-							'Traitementpcg66.typecourrierpcg66_id' => array( 'type' => 'select' )
+							'Traitementpcg66.typecourrierpcg66_id' => array( 'required' => true, 'type' => 'select' )
 						),
 						array(
 								'options' => $options
@@ -72,9 +103,10 @@
 				echo $ajax->observeField(
 					'Traitementpcg66Typecourrierpcg66Id',
 					array(
-						'update' => 'Typecourrierpcg66Modeletypecourrierpcg66',
+						'update' => 'Typecourrierpcg66Modeletypecourrierpcg66Id',
 						'url' => Router::url( array( 'action' => 'ajaxpiece' ), true ),
-						'with' => 'Form.serialize( $(\'traitementpcg66form\') )'
+						'with' => 'Form.serialize( $(\'traitementpcg66form\') )',
+						'complete' => 'showAjaxValidationErrors()'
 					)
 				);
 				
@@ -82,13 +114,12 @@
 						'div',
 						' ',
 						array(
-								'id' => 'Typecourrierpcg66Modeletypecourrierpcg66'
+								'id' => 'Typecourrierpcg66Modeletypecourrierpcg66Id'
 						)
 				);
 			?>
 		</fieldset>
 	<?php } ?>
-
 
 	<script type="text/javascript">
 		document.observe( "dom:loaded", function() {

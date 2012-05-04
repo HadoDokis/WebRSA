@@ -483,3 +483,10 @@ msgstr "Motifs concernant la personne"
 
 msgid "Traitementpcg66.typecourrierpcg66_id"
 msgstr "Type de courrier"
+
+########################################################################
+## 	Traduction pour la recherche par PDO
+########################################################################
+
+msgid "Criterestraitementspcgs66::index"
+msgstr "Recherche de traitements PCGs"

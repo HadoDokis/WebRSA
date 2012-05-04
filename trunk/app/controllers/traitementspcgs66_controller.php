@@ -87,6 +87,12 @@
 */
 
 		public function ajaxpiece() { // FIXME
+			$datas = array();
+			foreach( array( 'Modeletraitementpcg66', 'Piecemodeletypecourrierpcg66' ) as $M ) {
+				if( isset( $this->data[$M] ) ) {
+					$datas[$M] = $this->data[$M];
+				}
+			}
 			Configure::write( 'debug', 0 );
 
 			$traitementpcg66_id = Set::extract( $this->data, 'Traitementpcg66.id' );
@@ -124,7 +130,7 @@
 
 			
 			if( !empty( $traitementpcg66_id ) ) {
-				$this->data = $this->Traitementpcg66->Modeletraitementpcg66->find(
+				$datas = $this->Traitementpcg66->Modeletraitementpcg66->find(
 					'first',
 					array(
 						'conditions' => array(
@@ -135,24 +141,9 @@
 						)
 					)
 				);
-
-				
-// 				$this->data = array();
-				/*foreach( $data['Modeletraitementpcg66'] as $modeletraitementpcg66 ) {
-
-					$this->data['Modeletraitementpcg66'][$modeletraitementpcg66['modeletypecourrierpcg66_id']] = array(
-						'id' => $modeletraitementpcg66['id'],
-						'checked' => 1,
-						'modeletypecourrierpcg66_id' => $modeletraitementpcg66['modeletypecourrierpcg66_id'],
-						'commentaire' => $modeletraitementpcg66['commentaire']
-					);
-					
-					foreach( $modeletraitementpcg66['Piecemodeletypecourrierpcg66'] as $piecemodele ) {
-						$piecemodele['Mtpcg66Pmtcpcg66']['checked'] = true;
-						$this->data['Mtpcg66Pmtcpcg66'][$modeletraitementpcg66['modeletypecourrierpcg66_id']][$piecemodele['Mtpcg66Pmtcpcg66']['piecemodeletypecourrierpcg66_id']][] = $piecemodele['Mtpcg66Pmtcpcg66'];
-					}
-				}*/
 			}
+// 			debug($this->data);
+			$this->data = Set::merge( $this->data, $datas );
 
 			$this->set( compact( 'modeletypecourrierpcg66') );
 			$this->render( 'ajaxpiece', 'ajax' );
@@ -488,28 +479,27 @@ SELECT
 					$dataToSave['Modeletraitementpcg66']['commentaire'] = $dataToSave['Modeletraitementpcg66'][$dataToSave['Modeletraitementpcg66']['modeletypecourrierpcg66_id']]['commentaire'];
 					unset( $dataToSave['Modeletraitementpcg66'][$dataToSave['Modeletraitementpcg66']['modeletypecourrierpcg66_id']] );
 				}
-         
-				if( $this->Traitementpcg66->saveAll( $dataToSave, array( 'validate' => 'only', 'atomic' => false ) ) ) {
-					$saved = $this->Traitementpcg66->sauvegardeTraitement( $dataToSave );
+
+				$saved = $this->Traitementpcg66->sauvegardeTraitement( $dataToSave );
+
+				if( $saved ) {
+					// Début sauvegarde des fichiers attachés, en utilisant le Component Fileuploader
+					$dir = $this->Fileuploader->dirFichiersModule( $this->action, $this->params['pass'][0] );
+					$saved = $this->Fileuploader->saveFichiers(
+						$dir,
+						!Set::classicExtract( $dataToSave, "Traitementpcg66.haspiecejointe" ),
+						( ( $this->action == 'add' ) ? $this->Traitementpcg66->id : $id )
+					) && $saved;
+					
 					if( $saved ) {
-						// Début sauvegarde des fichiers attachés, en utilisant le Component Fileuploader
-						$dir = $this->Fileuploader->dirFichiersModule( $this->action, $this->params['pass'][0] );
-						$saved = $this->Fileuploader->saveFichiers(
-							$dir,
-							!Set::classicExtract( $dataToSave, "Traitementpcg66.haspiecejointe" ),
-							( ( $this->action == 'add' ) ? $this->Traitementpcg66->id : $id )
-						) && $saved;
-						
-						if( $saved ) {
-							$this->Jetons->release( $dossier_id );
-							$this->Traitementpcg66->commit();//FIXME -> arnaud
-							$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-								$this->redirect( array( 'controller' => 'traitementspcgs66', 'action' => 'index', $personne_id, $dossierpcg66_id ) );
-						}
-						else {
-							$this->Traitementpcg66->rollback();
-							$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
-						}
+						$this->Jetons->release( $dossier_id );
+						$this->Traitementpcg66->commit();
+						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+						$this->redirect( array( 'controller' => 'traitementspcgs66', 'action' => 'index', $personne_id, $dossierpcg66_id ) );
+					}
+					else {
+						$this->Traitementpcg66->rollback();
+						$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 					}
 				}
 				else {

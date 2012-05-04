@@ -1,9 +1,9 @@
 <?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 <?php
-	$domain = 'dossierpcg66';
+	$domain = 'traitementpcg66';
 	echo $xhtml->tag(
 		'h1',
-		$this->pageTitle = __d( 'dossierpcg66', "Criteresdossierspcgs66::{$this->action}", true )
+		$this->pageTitle = __d( 'traitementpcg66', "Criterestraitementspcgs66::{$this->action}", true )
 	)
 ?>
 <script type="text/javascript">
@@ -24,7 +24,7 @@
 		).'</li></ul>';
 	}
 
-	echo $xform->create( 'Criteredossierpcg66', array( 'type' => 'post', 'action' => 'traitement', 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );
+	echo $xform->create( 'Criteretraitementpcg66', array( 'type' => 'post', 'action' => 'index', 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );
 ?>
 <fieldset>
 	<legend>Recherche par allocataire<!--FIXME: personne du foyer--></legend>
@@ -40,7 +40,7 @@
 </fieldset>
 <fieldset>
 	<legend>Recherche par traitement</legend>
-		<?php echo $xform->input( 'Dossierpcg66.user_id', array( 'label' => __d( 'dossierpcg66', 'Dossierpcg66.user_id', true ), 'type' => 'select', 'options' => $gestionnaire, 'empty' => true ) );?>
+		<?php echo $xform->input( 'Dossierpcg66.user_id', array( 'label' => __d( 'traitementpcg66', 'Dossierpcg66.user_id', true ), 'type' => 'select', 'options' => $gestionnaire, 'empty' => true ) );?>
 		<?php echo $xform->input( 'Traitementpcg66.dateecheance', array( 'label' => 'Filtrer par date d\'échéance du traitement', 'type' => 'checkbox' ) );?>
 		<fieldset>
 			<legend>Date d'échéance du traitement</legend>
@@ -82,22 +82,21 @@
 		<?php echo $xform->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>
 	</div>
 <?php echo $xform->end();?>
-<?php $pagination = $xpaginator->paginationBlock( 'Dossierpcg66', $this->passedArgs ); ?>
+<?php $pagination = $xpaginator->paginationBlock( 'Traitementpcg66', $this->passedArgs ); ?>
 
-	<?php if( isset( $criteresdossierspcgs66 ) ):?>
+	<?php if( isset( $criterestraitementspcgs66 ) ):?>
 	<br />
 	<h2 class="noprint aere">Résultats de la recherche</h2>
 
-	<?php if( is_array( $criteresdossierspcgs66 ) && count( $criteresdossierspcgs66 ) > 0  ):?>
+	<?php if( is_array( $criterestraitementspcgs66 ) && count( $criterestraitementspcgs66 ) > 0  ):?>
 		<?php echo $pagination;?>
 		<table class="tooltips">
 			<thead>
 				<tr>
 					<th><?php echo $xpaginator->sort( 'N° dossier', 'Dossier.numdemrsa' );?></th>
 					<th><?php echo $xpaginator->sort( 'Nom du demandeur', 'Personne.nom' );?></th>
-					<th><?php echo $xpaginator->sort( 'Origine de la PDO', 'Dossierpcg66.originepdo_id' );?></th>
+					<th><?php echo $xpaginator->sort( 'Gestionnaire', 'Dossierpcg66.user_id' );?></th>
 					<th><?php echo $xpaginator->sort( 'Date de réception', 'Dossierpcg66.datereceptionpdo' );?></th>
-					<th><?php echo $xpaginator->sort( 'Description du traitement', 'Traitementpcg66.descriptionpdo_id' );?></th>
 					<th><?php echo $xpaginator->sort( 'Date de révision', 'Traitementpcg66.daterevision' );?></th>
 					<th><?php echo $xpaginator->sort( 'Date d\'échéance', 'Traitementpcg66.dateecheance' );?></th>
 					<th><?php echo $xpaginator->sort( 'Clos ?', 'Traitementpcg66.clos' );?></th>
@@ -107,17 +106,10 @@
 			</thead>
 			<tbody>
 				<?php
-					foreach( $criteresdossierspcgs66 as $index => $criteredossierpcg66 ) {
+					foreach( $criterestraitementspcgs66 as $index => $criteretraitementpcg66 ) {
+// debug($criteretraitementpcg66);
 					
-						//Liste des différents traitements PCGs de la personne PCG
-						$traitementspcgs66 = '';
-						foreach( $criteredossierpcg66['Dossierpcg66']['listetraitements'] as $key => $traitement ) {
-							if( !empty( $traitement ) ) {
-								$traitementspcgs66 .= $xhtml->tag( 'h3', '' ).'<ul><li>'.Set::enum( $traitement, $options['Traitementpcg66']['typetraitement'] ).'</li></ul>';
-							}
-						}
-					
-						$etatdosrsaValue = Set::classicExtract( $criteredossierpcg66, 'Situationdossierrsa.etatdosrsa' );
+						$etatdosrsaValue = Set::classicExtract( $criteretraitementpcg66, 'Situationdossierrsa.etatdosrsa' );
 						$etatDossierRSA = isset( $etatdosrsa[$etatdosrsaValue] ) ? $etatdosrsa[$etatdosrsaValue] : 'Non défini';
 					
 						$innerTable = '<table id="innerTable'.$index.'" class="innerTable">
@@ -128,23 +120,23 @@
 								</tr>
 								<tr>
 									<th>Commune de naissance</th>
-									<td>'.h( $criteredossierpcg66['Personne']['nomcomnai'] ).'</td>
+									<td>'.h( $criteretraitementpcg66['Personne']['nomcomnai'] ).'</td>
 								</tr>
 								<tr>
 									<th>Date de naissance</th>
-									<td>'.h( date_short( $criteredossierpcg66['Personne']['dtnai'] ) ).'</td>
+									<td>'.h( date_short( $criteretraitementpcg66['Personne']['dtnai'] ) ).'</td>
 								</tr>
 								<tr>
 									<th>Code INSEE</th>
-									<td>'.h( $criteredossierpcg66['Adresse']['numcomptt'] ).'</td>
+									<td>'.h( $criteretraitementpcg66['Adresse']['numcomptt'] ).'</td>
 								</tr>
 								<tr>
 									<th>NIR</th>
-									<td>'.h( $criteredossierpcg66['Personne']['nir'] ).'</td>
+									<td>'.h( $criteretraitementpcg66['Personne']['nir'] ).'</td>
 								</tr>
 								<tr>
 									<th>N° CAF</th>
-									<td>'.h( $criteredossierpcg66['Dossier']['matricule'] ).'</td>
+									<td>'.h( $criteretraitementpcg66['Dossier']['matricule'] ).'</td>
 								</tr>
 
 							</tbody>
@@ -152,18 +144,17 @@
 						
 						echo $xhtml->tableCells(
 							array(
-								h( Set::classicExtract( $criteredossierpcg66, 'Dossier.numdemrsa' ) ),
-								h( Set::enum( Set::classicExtract( $criteredossierpcg66, 'Personne.qual' ), $qual ).' '.Set::classicExtract( $criteredossierpcg66, 'Personne.nom' ).' '.Set::classicExtract( $criteredossierpcg66, 'Personne.prenom' ) ),
-								h( Set::enum( Set::classicExtract( $criteredossierpcg66, 'Dossierpcg66.originepdo_id' ), $originepdo ) ),
-								h( $locale->date( 'Locale->date',  Set::classicExtract( $criteredossierpcg66, 'Dossierpcg66.datereceptionpdo' ) ) ),
-								$traitementspcgs66,
-								h( date_short( Set::classicExtract( $criteredossierpcg66, 'Traitementpcg66.daterevision' ) ) ),
-								h( date_short( Set::classicExtract( $criteredossierpcg66, 'Traitementpcg66.dateecheance' ) ) ),
-								h( Set::enum( Set::classicExtract( $criteredossierpcg66, 'Traitementpcg66.clos' ), $options['Traitementpcg66']['clos'] ) ),
-								h( Set::enum( Set::classicExtract( $criteredossierpcg66, 'Traitementpcg66.annule' ), $options['Traitementpcg66']['annule'] ) ),
+								h( Set::classicExtract( $criteretraitementpcg66, 'Dossier.numdemrsa' ) ),
+								h( Set::enum( Set::classicExtract( $criteretraitementpcg66, 'Personne.qual' ), $qual ).' '.Set::classicExtract( $criteretraitementpcg66, 'Personne.nom' ).' '.Set::classicExtract( $criteretraitementpcg66, 'Personne.prenom' ) ),
+								h( Set::enum( Set::classicExtract( $criteretraitementpcg66, 'Dossierpcg66.user_id' ), $gestionnaire ) ),
+								h( $locale->date( 'Locale->date',  Set::classicExtract( $criteretraitementpcg66, 'Dossierpcg66.datereceptionpdo' ) ) ),
+								h( date_short( Set::classicExtract( $criteretraitementpcg66, 'Traitementpcg66.daterevision' ) ) ),
+								h( date_short( Set::classicExtract( $criteretraitementpcg66, 'Traitementpcg66.dateecheance' ) ) ),
+								h( Set::enum( Set::classicExtract( $criteretraitementpcg66, 'Traitementpcg66.clos' ), $options['Traitementpcg66']['clos'] ) ),
+								h( Set::enum( Set::classicExtract( $criteretraitementpcg66, 'Traitementpcg66.annule' ), $options['Traitementpcg66']['annule'] ) ),
 								$xhtml->viewLink(
 									'Voir',
-									array( 'controller' => 'traitementspcgs66', 'action' => 'index', Set::classicExtract( $criteredossierpcg66, 'Personne.id' ), Set::classicExtract( $criteredossierpcg66, 'Dossierpcg66.id' ) )
+									array( 'controller' => 'traitementspcgs66', 'action' => 'view', Set::classicExtract( $criteretraitementpcg66, 'Traitementpcg66.id' ) )
 								),
 								array( $innerTable, array( 'class' => 'innerTableCell noprint' ) ),
 							),

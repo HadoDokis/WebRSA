@@ -814,6 +814,8 @@
 		 *
 		 */
 		public function singleRadioElement( $path, $value, $label ) {
+// 			$view =& ClassRegistry::getObject( 'view' );
+// Configure::write('debug',2);debug( $view->data );Configure::write('debug',0);
 			$name = 'data['.implode( '][', explode( '.', $path ) ).']';
 			$currentValue = Set::classicExtract( $this->data, $path );
 			$checked = ( ( ( $value == $currentValue ) ) ? 'checked="checked"' : '' );

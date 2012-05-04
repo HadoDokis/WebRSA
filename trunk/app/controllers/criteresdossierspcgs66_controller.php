@@ -6,7 +6,7 @@
 		public $uses = array( 'Criteredossierpcg66', 'Dossierpcg66', 'Option' );
 		public $helpers = array( 'Default', 'Default2', 'Ajax', 'Locale', 'Csv', 'Search' );
 
-		public $components = array( 'Prg' => array( 'actions' => array( 'dossier', 'traitement', 'gestionnaire' ) ) );
+		public $components = array( 'Prg' => array( 'actions' => array( 'dossier', 'gestionnaire' ) ) );
 
 		/**
 		*
@@ -93,14 +93,6 @@
 
 		public function dossier() {
 			$this->_index( 'searchDossier' );
-		}
-
-		/**
-		*
-		*/
-
-		public function traitement() {
-			$this->_index( 'searchTraitement' );
 		}
 		
 		/**
