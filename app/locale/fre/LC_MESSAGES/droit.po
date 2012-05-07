@@ -1813,7 +1813,7 @@ msgstr "Lier un fichier à un rendez-vous"
 msgid "Rendezvous:edit"
 msgstr "Ajout/Édition d'un rendez-vous"
 
-msgid "Rendezvous:gedooo"
+msgid "Rendezvous:impression"
 msgstr "Impression d'un rendez-vous"
 
 msgid "Rendezvous:delete"
