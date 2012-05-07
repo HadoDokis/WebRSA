@@ -328,6 +328,11 @@
 			);
 		}
 
+		public function duree_engag() {
+			$function = 'duree_engag_cg'.Configure::read( 'Cg.departement' );
+			return $this->{$function}();
+		}
+
 		public function duree_engag_cg58() {
 			return array(
 				'1' => '3 mois',

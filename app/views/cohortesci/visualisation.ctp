@@ -82,11 +82,11 @@
 								<tr>
 									<th>Rôle</th>
 									<td>'.h( $rolepers[$contrat['Prestation']['rolepers']] ).'</td>
-								</tr>	
+								</tr>
 								<tr>
 									<th>État du dossier</th>
 									<td>'.h( $etatdosrsa[$contrat['Situationdossierrsa']['etatdosrsa']] ).'</td>
-								</tr>															
+								</tr>
 							</tbody>
 						</table>';
 						$title = $contrat['Dossier']['numdemrsa'];
@@ -101,7 +101,7 @@
 							h( $contrat['Contratinsertion']['observ_ci'] ),
 							h( Set::classicExtract( $forme_ci, $contrat['Contratinsertion']['forme_ci'] ) ),
 						);
-						
+
 						$array2 = array();
 						if( Configure::read( 'Cg.departement' ) == 66 ){
 							$array2 = array(
@@ -157,11 +157,11 @@
 								),
 								$default2->button(
 									'print',
-									array( 'controller' => 'gedooos', 'action' => 'contratinsertion',
+									array( 'controller' => 'contratsinsertion', 'action' => 'impression',
 									$contrat['Contratinsertion']['id'] ),
 									array(
 										'enabled' => (
-											( $permissions->check( 'gedooos', 'contratinsertion' ) == 1 )
+											( $permissions->check( 'contratsinsertion', 'impression' ) == 1 )
 											&& ( Set::classicExtract( $contrat, 'Contratinsertion.positioncer' ) != 'annule' )
 											&& ( Set::classicExtract( $contrat, 'Contratinsertion.positioncer' ) != 'fincontrat' )
 										)
@@ -180,8 +180,8 @@
 								array( $innerTable, array( 'class' => 'innerTableCell' ) ),
 							);
 						}
-						
-						
+
+
 						echo $xhtml->tableCells(
 							Set::merge( $array1, $array2 ),
 							array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),

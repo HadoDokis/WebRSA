@@ -419,7 +419,7 @@
 				'counterQuery' => ''
 			),
 		);
-		
+
 		public $virtualFields = array(
 			'nbjours' => array(
 				'type'      => 'integer',
@@ -1058,8 +1058,6 @@
 				)
 			);
 			$contratinsertion = Set::merge( $contratinsertion, $user );
-// debug($contratinsertion);
-// die();
 
 			$modelenotifdecision = '';
 
@@ -1388,6 +1386,162 @@
 			$contratinsertion = Set::merge( $contratinsertion, $user );
 
 			return $contratinsertion;
+		}
+
+		/**
+		 * Retourne le PDF par défaut, stocké, ou généré par les appels aux méthodes getDataForPdf, modeleOdt et
+		 * à la méthode ged du behavior Gedooo et le stocke,
+		 *
+		 * @param integer $id Id du CER
+		 * @param integer $user_id Id de l'utilisateur connecté
+		 * @return string
+		 */
+		public function getDefaultPdf( $id, $user_id ) {
+			$pdf = $this->getStoredPdf( $id );
+
+			if( !empty( $pdf ) ) {
+				$pdf = $pdf['Pdf']['document'];
+			}
+			else {
+				$Option = ClassRegistry::init( 'Option' );
+				$options = Set::merge(
+					array(
+						'Contratinsertion' => array(
+							'sect_acti_emp' => $Option->sect_acti_emp(),
+							'emp_occupe' => $Option->emp_occupe(),
+							'duree_hebdo_emp' => $Option->duree_hebdo_emp(),
+							'nat_cont_trav' => $Option->nat_cont_trav(),
+							'duree_cdd' => $Option->duree_cdd(),
+							'decision_ci' => $Option->decision_ci(),
+							'raison_ci' => $Option->raison_ci(),
+							'duree_engag' => $Option->duree_engag(),
+							'typeocclog' => $Option->typeocclog(),
+							'avisraison_ci' => $Option->avisraison_ci(),
+							'raison_ci' => $Option->raison_ci(),
+							'forme_ci' => $Option->forme_ci(),
+						),
+						'Personne' => array(
+							'qual' => $Option->qual(),
+						),
+						'Adresse' => array(
+							'typevoie' => $Option->typevoie(),
+						),
+						'Prestation' => array(
+							'rolepers' => $Option->rolepers(),
+						),
+						'Foyer' => array(
+							'sitfam' => $Option->sitfam(),
+							'typeocclog' => $Option->typeocclog(),
+						),
+						'Type' => array( // INFO: Structurereferente.type_voie et Structurereferente.type_voie -> FIXME: ne traduit pas
+							'voie' =>  $Option->typevoie(),
+						),
+						'Detaildroitrsa' => array(
+							'oridemrsa' => $Option->oridemrsa(),
+						),
+					),
+					$this->enums(),
+					$this->Personne->Dsp->enums()
+				);
+
+				$contratinsertion = $this->getDataForPdf( $id, $user_id );
+				$modeledoc = $this->modeleOdt( $contratinsertion );
+
+				$pdf = $this->ged( $contratinsertion, $modeledoc, false, $options );
+
+				if( !empty( $pdf ) ) {
+					$this->storePdf( $id, $modeledoc, $pdf ); // FIXME ?
+				}
+			}
+
+			return $pdf;
+		}
+
+		/**
+		 * Retourne le PDF de notification du CER pour l'OP.
+		 *
+		 * @param integer $id L'id du CER pour lequel générer la notification.
+		 * @return string
+		 */
+		public function getNotificationopPdf( $id = null ) {
+			$contratinsertion = $this->find(
+				'first',
+				array(
+					'fields' => array_merge(
+						$this->fields(),
+						$this->Personne->fields(),
+						$this->Propodecisioncer66->fields(),
+						$this->Referent->fields(),
+						$this->Structurereferente->fields(),
+						$this->Typocontrat->fields(),
+						$this->Zonegeographique->fields(),
+						$this->Personne->Foyer->fields(),
+						$this->Personne->Foyer->Dossier->fields(),
+						$this->Personne->Foyer->Adressefoyer->Adresse->fields()
+					),
+					'joins' => array(
+						$this->join( 'Personne', array( 'type' => 'INNER' ) ),
+						$this->join( 'Propodecisioncer66', array( 'type' => 'LEFT OUTER' ) ),
+						$this->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ),
+						$this->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
+						$this->join( 'Typocontrat', array( 'type' => 'LEFT OUTER' ) ),
+						$this->join( 'Zonegeographique', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
+						$this->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
+						$this->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
+					),
+					'conditions' => array(
+						'Contratinsertion.id' => $id,
+						'OR' => array(
+							'Adressefoyer.id IS NULL',
+							'Adressefoyer.id IN ( '.$this->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
+						)
+					),
+					'contain' => false
+				)
+			);
+
+			$Option = ClassRegistry::init( 'Option' );
+			$options = array(
+				'Adresse' => array(
+					'typevoie' => $Option->typevoie()
+				),
+				'Personne' => array(
+					'qual' => $Option->qual()
+				),
+				'Referent' => array(
+					'qual' => $Option->qual()
+				),
+				'Structurereferente' => array(
+					'type_voie' => $Option->typevoie()
+				),
+				'Type' => array(
+					'voie' => $Option->typevoie()
+				),
+			);
+
+			$contratinsertion['Contratinsertion']['duree_engag'] = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.duree_engag' ), $Option->duree_engag() );
+
+			///Utilisé pour savoir si le contrat est en accord de validation dans le modèle odt
+			if( $contratinsertion['Contratinsertion']['decision_ci'] == 'V' ){
+				$contratinsertion['Contratinsertion']['accord'] = 'X';
+			}
+
+			///Utilisé pour savoir si le contrat est en premier contrat ou renouvellement
+			if( $contratinsertion['Contratinsertion']['num_contrat'] == 'PRE' ){
+				$contratinsertion['Contratinsertion']['premier'] = 'X';
+			}
+			else if( $contratinsertion['Contratinsertion']['num_contrat'] == 'REN' ){
+				$contratinsertion['Contratinsertion']['renouvel'] = 'X';
+			}
+
+			return $this->ged(
+				$contratinsertion,
+				'Contratinsertion/notificationop.odt',
+				false,
+				$options
+			);
 		}
 	}
 ?>

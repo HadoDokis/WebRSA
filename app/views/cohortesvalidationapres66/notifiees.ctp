@@ -165,7 +165,7 @@
 							$xhtml->notificationsApreLink(
 								'Notifier la décision',
 								array( 'controller' => 'apres66', 'action' => 'notifications', $validationapre['Apre66']['id'] ),
-								$permissions->check( 'gedooos', 'notificationsop' )
+								$permissions->check( 'apres66', 'notifications' )
 							),
 							array( $innerTable, array( 'class' => 'innerTableCell' ) ),
 						),

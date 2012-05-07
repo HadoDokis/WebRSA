@@ -380,7 +380,7 @@
 				)
 			);
 			$this->set( compact( 'orientstruct' ) );
-			
+
 			$soumisADroitEtDevoir = $this->Personne->Calculdroitrsa->isSoumisAdroitEtDevoir($personne_id);
 			$this->set( compact( 'soumisADroitEtDevoir' ) );
 
@@ -1442,7 +1442,7 @@
 		*/
 
 		public function valider( $contratinsertion_id = null ) {
-		
+
 			if( Configure::read( 'Cg.departement' ) == 66 ) {
 				$fields = array(
 					'Contratinsertion.id',
@@ -1482,7 +1482,7 @@
 				$recursive = -1;
 				$contain = false;
 			}
-			
+
 			$contratinsertion = $this->Contratinsertion->find(
 				'first',
 				array(
@@ -1521,29 +1521,29 @@
 
                 /**
 			**Fonction de validation pour les CERs Simples du CG66
-			* @param type $contratinsertion_id 
-			* 
+			* @param type $contratinsertion_id
+			*
 			*/
 		public function validersimple( $contratinsertion_id = null ){
 			$this->Contratinsertion->id = $contratinsertion_id;
 			$forme_ci = $this->Contratinsertion->field( 'forme_ci' );
 			$this->assert( ( $forme_ci == 'S' ), 'error500' );
 
-			$this->valider( $contratinsertion_id );                   
+			$this->valider( $contratinsertion_id );
 		}
-		
-		
+
+
 		/**
 			**Fonction de validation pour les CERs Particuliers du CG66
-			* @param type $contratinsertion_id 
-			* 
+			* @param type $contratinsertion_id
+			*
 			*/
 		public function validerparticulier( $contratinsertion_id = null ){
 			$this->Contratinsertion->id = $contratinsertion_id;
 			$forme_ci = $this->Contratinsertion->field( 'forme_ci' );
 			$this->assert( ( $forme_ci == 'C' ), 'error500' );
 
-			$this->valider( $contratinsertion_id );                   
+			$this->valider( $contratinsertion_id );
 		}
 		/**
 		*
@@ -1599,151 +1599,62 @@
 			$this->set( 'urlmenu', '/contratsinsertion/index/'.$personne_id );
 		}
 
-
-
 		/**
-		*
-		*/
+		 * Retourn le PDF de notification d'un CER pour l'OP.
+		 *
+		 * @param integer $id L'id du CER pour lequel générer la notification.
+		 * @return void
+		 */
+		public function notificationsop( $contratinsertion_id = null ) {
+			$pdf = $this->Contratinsertion->getNotificationopPdf( $contratinsertion_id );
 
-		public function notificationsop( $id = null ) {
-			$qual = $this->Option->qual();
-			$typevoie = $this->Option->typevoie();
-			$duree_engag_cg66 = $this->Option->duree_engag_cg66();
-			$duree_engag_cg93 = $this->Option->duree_engag_cg93();
-
-			$contratinsertion = $this->{$this->modelClass}->find(
-				'first',
-				array(
-					'conditions' => array(
-						"{$this->modelClass}.id" => $id
-					),
-					'recursive' => 0
-				)
-			);
-
-			$this->Adressefoyer->bindModel(
-				array(
-					'belongsTo' => array(
-						'Adresse' => array(
-							'className'     => 'Adresse',
-							'foreignKey'    => 'adresse_id'
-						)
-					)
-				)
-			);
-
-			$adresse = $this->Adressefoyer->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Adressefoyer.foyer_id' => Set::classicExtract( $contratinsertion, 'Personne.foyer_id' ),
-						'Adressefoyer.rgadr' => '01',
-					)
-				)
-			);
-			$contratinsertion['Adresse'] = $adresse['Adresse'];
-
-			/// Récupération du dossier lié à la personne
-			$foyer = $this->Adressefoyer->Foyer->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Foyer.id' => $contratinsertion['Personne']['foyer_id']
-					)
-				)
-			);
-			$contratinsertion['Foyer'] = $foyer['Foyer'];
-			$dossier = $this->Dossier->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Dossier.id' => $contratinsertion['Foyer']['dossier_id']
-					)
-				)
-			);
-			$contratinsertion['Dossier'] = $dossier['Dossier'];
-
-			$contratinsertion_id = Set::classicExtract( $contratinsertion, 'Actioncandidat.id' );
-
-			$LocaleHelper = new LocaleHelper();
-			///Traduction pour les données de la Personne/Contact/Partenaire/Référent
-			$contratinsertion['Personne']['qual'] = Set::enum( Set::classicExtract( $contratinsertion, 'Personne.qual' ), $qual );
-			$contratinsertion['Personne']['dtnai'] = $LocaleHelper->date( 'Date::short', Set::classicExtract( $contratinsertion, 'Personne.dtnai' ) );
-			$contratinsertion['Referent']['qual'] = Set::enum( Set::classicExtract( $contratinsertion, 'Referent.qual' ), $qual );
-			$contratinsertion['Adresse']['typevoie'] = Set::enum( Set::classicExtract( $contratinsertion, 'Adresse.typevoie' ), $typevoie );
-			$contratinsertion['Contratinsertion']['datevalidation_ci'] = $LocaleHelper->date( 'Date::short', Set::classicExtract( $contratinsertion, 'Contratinsertion.datevalidation_ci' ) );
-			$contratinsertion['Contratinsertion']['dd_ci'] = $LocaleHelper->date( 'Date::short', Set::classicExtract( $contratinsertion, 'Contratinsertion.dd_ci' ) );
-			$contratinsertion['Contratinsertion']['df_ci'] = $LocaleHelper->date( 'Date::short', Set::classicExtract( $contratinsertion, 'Contratinsertion.df_ci' ) );
-			$contratinsertion['Dossier']['dtdemrsa'] = $LocaleHelper->date( 'Date::short', Set::classicExtract( $contratinsertion, 'Dossier.dtdemrsa' ) );
-
-			if( Configure::read( 'nom_form_ci_cg' ) == 'cg66' ) {
-				$contratinsertion['Contratinsertion']['duree_engag'] = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.duree_engag' ), $duree_engag_cg66 );
+			if( !empty( $pdf ) ){
+				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( "contratinsertion_%d_notificationop_%s.pdf", $contratinsertion_id, date( 'Y-m-d' ) ) );
 			}
-			else if( Configure::read( 'nom_form_ci_cg' ) == 'cg93' ) {
-				$contratinsertion['Contratinsertion']['duree_engag'] = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.duree_engag' ), $duree_engag_cg93 );
+			else {
+				$this->Session->setFlash( 'Impossible de générer la notification du CER pour l\'OP.', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
 			}
-
-			///Utilisé pour savoir si le contrat est en accord de validation dans le modèle odt
-			if( $contratinsertion['Contratinsertion']['decision_ci'] == 'V' ){
-				$contratinsertion['Contratinsertion']['accord'] = 'X';
-			}
-
-			///Utilisé pour savoir si le contrat est en premier contrat ou renouvellement
-			if( $contratinsertion['Contratinsertion']['num_contrat'] == 'PRE' ){
-				$contratinsertion['Contratinsertion']['premier'] = 'X';
-			}
-			else if( $contratinsertion['Contratinsertion']['num_contrat'] == 'REN' ){
-				$contratinsertion['Contratinsertion']['renouvel'] = 'X';
-			}
-
-			$this->_setOptions();
-
-			$pdf = $this->Contratinsertion->ged( $contratinsertion, 'Contratinsertion/notificationop.odt' );
-			$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'notificationop-%s.pdf', date( 'Y-m-d' ) ) );
-		}
-
-
-		/**
-		*   Enregistrement de la fiche de liaison pour le référent en cas de non validation du CER
-		*/
-		public function ficheliaisoncer( $id ) {
-			$this->assert( !empty( $id ), 'error404' );
-
-			$pdf = $this->Contratinsertion->getPdfFicheliaisoncer( $id, $this->Session->read( 'Auth.User.id' ) );
-
-			if( $pdf ) {
-				$success = true;
-				if( $success ) {
-					$this->Gedooo->sendPdfContentToClient( $pdf, 'FicheLiaisonCER' );
-				}
-			}
-
-			$this->Session->setFlash( 'Impossible de générer la fiche de liaison', 'default', array( 'class' => 'error' ) );
-			$this->redirect( $this->referer() );
-		}
-
-
-		/**
-		*   Enregistrement de la fiche de liaison pour le référent en cas de non validation du CER
-		*/
-		public function notifbenef( $id ) {
-			$this->assert( !empty( $id ), 'error404' );
-
-
-			$pdf = $this->Contratinsertion->getPdfNotifbenef( $id , $this->Session->read( 'Auth.User.id' ) );
-
-			if( $pdf ) {
-				$success = true;
-				if( $success ) {
-					$this->Gedooo->sendPdfContentToClient( $pdf, 'NotificationBeneficiaire' );
-				}
-			}
-
-			$this->Session->setFlash( 'Impossible de générer la notification du bénéficiaire', 'default', array( 'class' => 'error' ) );
-			$this->redirect( $this->referer() );
 		}
 
 		/**
+		 * Impression de la fiche de liaison d'un CER.
+		 *
+		 * @param integer $contratinsertion_id
+		 * @return void
+		 */
+		public function ficheliaisoncer( $contratinsertion_id ) {
+			$pdf = $this->Contratinsertion->getPdfFicheliaisoncer( $contratinsertion_id, $this->Session->read( 'Auth.User.id' ) );
+
+			if( !empty( $pdf ) ){
+				$this->Gedooo->sendPdfContentToClient( $pdf, "contratinsertion_{$contratinsertion_id}_FicheLiaison.pdf" );
+			}
+			else {
+				$this->Session->setFlash( 'Impossible de générer la fiche de liaison', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
+			}
+		}
+
+		/**
+		 * Impression d'une notification pour le bénéficiaire concernant une proposition de décision d'un CER.
+		 *
+		 * @param integer $id
+		 * @return void
+		 */
+		public function notifbenef( $contratinsertion_id ) {
+			$pdf = $this->Contratinsertion->getPdfNotifbenef( $contratinsertion_id , $this->Session->read( 'Auth.User.id' ) );
+
+			if( !empty( $pdf ) ){
+				$this->Gedooo->sendPdfContentToClient( $pdf, "contratinsertion_{$contratinsertion_id}_NotificationBeneficiaire_.pdf" );
+			}
+			else {
+				$this->Session->setFlash( 'Impossible de générer la notification du bénéficiaire', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
+			}
+		}
+
+		/**
+		 * Imprime un CER.
 		 * INFO: http://localhost/webrsa/trunk/contratsinsertion/impression/44327
 		 * FIXME: ajouter une colonne de date de première impression ?
 		 *
@@ -1751,68 +1662,15 @@
 		 * @return void
 		 */
 		public function impression( $contratinsertion_id = null ) {
-			$this->assert( !empty( $contratinsertion_id ), 'error404' );
+			$pdf = $this->Contratinsertion->getDefaultPdf( $contratinsertion_id, $this->Session->read( 'Auth.User.id' ) );
 
-			$pdf = $this->Contratinsertion->getStoredPdf( $contratinsertion_id );
-
-			if( !empty( $pdf ) ) {
-				$pdf = $pdf['Pdf']['document'];
+			if( !empty( $pdf ) ){
+				$this->Gedooo->sendPdfContentToClient( $pdf, "contratinsertion_{$contratinsertion_id}_nouveau.pdf" );
 			}
 			else {
-				$Option = ClassRegistry::init( 'Option' );
-				$options = Set::merge(
-					array(
-						'Contratinsertion' => array(
-							'sect_acti_emp' => $Option->sect_acti_emp(),
-							'emp_occupe' => $Option->emp_occupe(),
-							'duree_hebdo_emp' => $Option->duree_hebdo_emp(),
-							'nat_cont_trav' => $Option->nat_cont_trav(),
-							'duree_cdd' => $Option->duree_cdd(),
-							'decision_ci' => $Option->decision_ci(),
-							'raison_ci' => $Option->raison_ci(),
-							'duree_engag' => $this->Option->duree_engag_cg93(),
-							'typeocclog' => $Option->typeocclog(),
-							'avisraison_ci' => $Option->avisraison_ci(),
-							'raison_ci' => $Option->raison_ci(),
-							'forme_ci' => $Option->forme_ci(),
-						),
-						'Personne' => array(
-							'qual' => $Option->qual(),
-						),
-						'Adresse' => array(
-							'typevoie' => $Option->typevoie(),
-						),
-						'Prestation' => array(
-							'rolepers' => $Option->rolepers(),
-						),
-						'Foyer' => array(
-							'sitfam' => $Option->sitfam(),
-							'typeocclog' => $Option->typeocclog(),
-						),
-						'Type' => array( // INFO: Structurereferente.type_voie et Structurereferente.type_voie -> FIXME: ne traduit pas
-							'voie' =>  $Option->typevoie(),
-						),
-						'Detaildroitrsa' => array(
-							'oridemrsa' => $Option->oridemrsa(),
-						),
-					),
-					$this->Contratinsertion->enums(),
-					$this->Contratinsertion->Personne->Dsp->enums()
-				);
-
-				$contratinsertion = $this->Contratinsertion->getDataForPdf( $contratinsertion_id, $this->Session->read( 'Auth.User.id' ) );
-				$modeledoc = $this->Contratinsertion->modeleOdt( $contratinsertion );
-
-				$pdf = $this->Contratinsertion->ged( $contratinsertion, $modeledoc, false, $options );
-
-				if( !empty( $pdf ) ) {
-					$this->Contratinsertion->storePdf( $contratinsertion_id, $modeledoc, $pdf ); // FIXME ?
-				}
+				$this->Session->setFlash( 'Impossible de générer le courrier de contrat d\'insertion.', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
 			}
-
-			$this->assert( !empty( $pdf ), 'error404' );
-
-			$this->Gedooo->sendPdfContentToClient( $pdf, "{$contratinsertion_id}_nouveau.pdf" );
 		}
 
 		/**
@@ -1850,7 +1708,7 @@
 			if( isset( $this->params['form']['Cancel'] ) ) {
 				$this->redirect( array( 'action' => 'index', $personne_id ) );
 			}
-			
+
 			if( !empty( $this->data ) ) {
 				$datenotification = $this->data['Contratinsertion']['datenotification'];
 				$saved = $this->Contratinsertion->updateAll(
@@ -1863,7 +1721,7 @@
 				if( $saved ){
 					$this->data['Contratinsertion']['decision_ci'] = $contratinsertion['Contratinsertion']['decision_ci'];
 					$this->data['Contratinsertion']['positioncer'] = $this->Contratinsertion->calculPosition( $this->data );
-					
+
 					$saved = $this->Contratinsertion->updateAll(
 						array( 'Contratinsertion.positioncer' => "'".$this->data['Contratinsertion']['positioncer']."'" ),
 						array(
@@ -1884,7 +1742,7 @@
 					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 				}
 			}
-			else{ 
+			else{
 				$this->data = $contratinsertion;
 			}
 
