@@ -662,51 +662,16 @@
 		 *
 		 * @param integer $apre_id
 		 */
-		public function impression( $apre_id = null ) {
-			$this->assert( !empty( $apre_id ), 'error404' );
+		public function impression( $id = null ) {
+			$pdf = $this->Apre->getDefaultPdf( $id, $this->Session->read( 'Auth.User.id' ) ) ;
 
-			$pdf = $this->Apre->getStoredPdf( $apre_id );
-
-			if( !empty( $pdf ) ) {
-				$pdf = $pdf['Pdf']['document'];
+			if( !empty( $pdf ) ){
+				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( $this->action.'-%s.pdf', date( 'Y-m-d' ) )  );
 			}
 			else {
-				$Option = ClassRegistry::init( 'Option' );
-
-				$options = Set::merge(
-					array(
-						'Personne' => array(
-							'qual' => $Option->qual(),
-						),
-						'Adresse' => array(
-							'typevoie' => $Option->typevoie(),
-						),
-						'Prestation' => array(
-							'rolepers' => $Option->rolepers(),
-						),
-						'Foyer' => array(
-							'sitfam' => $Option->sitfam(),
-							'typeocclog' => $Option->typeocclog(),
-						),
-						'Type' => array(
-							'voie' =>  $Option->typevoie(),
-						),
-					)
-				);
-
-				$apre = $this->Apre->getDataForPdf( $apre_id, $this->Session->read( 'Auth.User.id' ) );
-				$modeledoc = $this->Apre->modeleOdt( $apre );
-
-				$pdf = $this->Apre->ged( $apre, $modeledoc, false, $options );
-
-				if( !empty( $pdf ) ) {
-					$this->Apre->storePdf( $apre_id, $modeledoc, $pdf ); // FIXME ?
-				}
+				$this->Session->setFlash( 'Impossible de générer l\'impression de l\'APRE.', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
 			}
-
-			$this->assert( !empty( $pdf ), 'error404' );
-
-			$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( $this->action.'-%s.pdf', date( 'Y-m-d' ) )  );
 		}
 	}
 ?>

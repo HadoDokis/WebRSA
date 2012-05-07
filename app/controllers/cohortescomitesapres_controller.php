@@ -211,189 +211,27 @@
 		}
 
 		/**
-		* Notifications des Comités d'examen
-		**/
-
-		public function notificationscomitegedooo( $apre_comiteapre_id = null ) {
-			// TODO: error404/error500 si on ne trouve pas les données
-			$qual = $this->Option->qual();
-			$typevoie = $this->Option->typevoie();
-			$natureAidesApres = $this->Option->natureAidesApres();
-			$options = $this->ApreComiteapre->allEnumLists();
-			$this->set( 'options', $options );
-
-			// Recherche de la décision du comté et des données de l'APRE associées
-			$apre = $this->Apre->ApreComiteapre->findById( $apre_comiteapre_id, null, null, -1 );
-			$this->assert( !empty( $apre ), 'invalidParameter' );
-
-			$unbindings = array(
-				'hasAndBelongsToMany' => array( 'Comiteapre', 'Pieceapre' ),
-				'hasMany' => array( 'Relanceapre' )
-			);
-			$this->Apre->unbindModel( $unbindings );
-
-			$apre = Set::merge(
-				$apre,
-				$this->Apre->findById( Set::classicExtract( $apre, 'ApreComiteapre.apre_id' ), null, null, 1 )
-			);
-
-			unset(
-				$apre['Apre']['Piecemanquante'],
-				$apre['Apre']['Piecepresente'],
-				$apre['Apre']['Piece']
-			);
-			///Données nécessaire pour savoir quelles sont les aides liées à l'APRE Complémentaire + la pers chargée du suivi
-			$apre['Dataperssuivi'] = array();
-			foreach( $this->Apre->aidesApre as $model ) {
-				if( ( $apre['Apre']['Natureaide'][$model] == 0 ) ){
-				unset( $apre['Apre']['Natureaide'][$model] );
-				}
-				else {
-					$personne = $this->Suiviaideapretypeaide->findByTypeaide( $model );
-					if( !empty( $personne['Suiviaideapre'] ) ) {
-						foreach( array_keys( $personne['Suiviaideapre'] ) as $key ) {
-							if( $key != 'id' ) {
-								$apre['Dataperssuivi']["{$key}suivi"] = $personne['Suiviaideapre'][$key];
-							}
-						}
-					}
-				}
-			}
-
-			$modelFormation = array( 'Formqualif', 'Formpermfimo', 'Permisb', 'Actprof' );
-			$modelHorsFormation = array( 'Acqmatprof', 'Amenaglogt', 'Locvehicinsert', 'Acccreaentr' );
-
-			///Paramètre nécessaire pour connaitre le type de formation du bénéficiaire (Formation / Hors Formation )
-			if( array_any_key_exists( $modelFormation, $apre['Apre']['Natureaide'] ) ) {
-				$typeformation = 'Formation';
-			}
-			else {
-				$typeformation = 'HorsFormation';
-			}
-
-			$apre['Apre']['Natureaide'] = array_keys( $apre['Apre']['Natureaide'] );
-
-			foreach( $modelFormation as $model ){
-				$tmpId = Set::classicExtract( $apre, "{$model}.tiersprestataireapre_id" );
-				if( !empty( $tmpId ) ) {
-					$dataTiersprestataireapre_id = $tmpId;
-				}
-			}
-
-			///Données faisant le lien entre l'APRE, ses Aides et le tiers prestataire lié à l'aide
-			if( !empty( $dataTiersprestataireapre_id ) ) {
-				$tiersprestataire = $this->Tiersprestataireapre->find(
-					'first',
-					array(
-						'conditions' => array(
-							'Tiersprestataireapre.id' => $dataTiersprestataireapre_id
-						)
-					)
-				);
-				$apre['Tiersprestataireapre'] = $tiersprestataire['Tiersprestataireapre'];
-
-				///Pour l'adresse du tiers prestataire
-				$apre['Tiersprestataireapre']['typevoie'] = Set::classicExtract( $typevoie, Set::classicExtract( $apre, 'Tiersprestataireapre.typevoie' ) );
-			}
-
-			///Données concernant le comité de l'APRE
-			$comiteapre = $this->Comiteapre->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Comiteapre.id' => Set::classicExtract( $apre, 'ApreComiteapre.comiteapre_id' )
-					)
-				)
-			);
-			$apre['Comiteapre'] = $comiteapre['Comiteapre'];
-			///Pour la date du comité
-			$apre['Comiteapre']['datecomite'] =  date_short( Set::classicExtract( $apre, 'Comiteapre.datecomite' ) );
-
-			///Données nécessaire pour obtenir l'adresse du bénéficiaire
-			$this->Adressefoyer->bindModel(
-				array(
-					'belongsTo' => array(
-						'Adresse' => array(
-							'className'     => 'Adresse',
-							'foreignKey'    => 'adresse_id'
-						)
-					)
-				)
-			);
-
-			$adresse = $this->Adressefoyer->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Adressefoyer.foyer_id' => Set::classicExtract( $apre, 'Personne.foyer_id' ),
-						'Adressefoyer.rgadr' => '01',
-					)
-				)
-			);
-			$apre['Adresse'] = $adresse['Adresse'];
-
-			///Paramètre nécessaire pour savoir quelle décision le comité a prise
-			$typedecision = Set::enum( Set::classicExtract( $apre, 'ApreComiteapre.decisioncomite' ), $options['decisioncomite'] );
-			$this->set( 'typedecision', $typedecision );
-
-			///Pour la qualité des Personnes  Personne + Référent APRE
-			if( !empty( $apre['Referent']['qual'] ) ) {
-				$apre['Referent']['qual'] = Set::classicExtract( $qual, Set::classicExtract( $apre, 'Referent.qual' ) );
-			}
-			if( !empty( $apre['Personne']['qual'] ) ) {
-				$apre['Personne']['qual'] = Set::classicExtract( $qual, Set::classicExtract( $apre, 'Personne.qual' ) );
-			}
-
-			///Pour l'adresse de la personne
-			if( !empty( $apre['Adresse']['typevoie'] ) ) {
-				$apre['Adresse']['typevoie'] = Set::classicExtract( $typevoie, Set::classicExtract( $apre, 'Adresse.typevoie' ) );
-			}
-
-			///Pour l'adresse de la structure référente
-			if( !empty( $apre['Structurereferente']['type_voie'] ) ) {
-				$apre['Structurereferente']['type_voie'] = Set::classicExtract( $typevoie, Set::classicExtract( $apre, 'Structurereferente.type_voie' ) );
-			}
-
-			///Paramètre nécessaire pour le bon choix du document à éditer
+		 * Génère l'impression de la décision d'un passage en comité d'examen APRE.
+		 * On prend la décision de ne pas le stocker.
+		 *
+		 * @param integer $apre_comiteapre_id L'id de l'entrée de décision d'une APRE en comité APRE
+		 * @return void
+		 */
+		public function impression( $apre_comiteapre_id = null ) {
 			$dest = Set::classicExtract( $this->params, 'named.dest' );
 
-				///Traduction des noms de table en libellés de l'aide
-			foreach( $apre['Apre']['Natureaide'] as $i => $aides ){
-				$apre['Apre']['Natureaide'][$i] = Set::enum( $aides, $natureAidesApres );
-			}
-			$apre['Apre']['Natureaide'] = '  - '.implode( "\n  - ", $apre['Apre']['Natureaide'] )."\n";
+			$pdf = $this->ApreComiteapre->getNotificationPdf(
+				$apre_comiteapre_id,
+				$dest,
+				$this->Session->read( 'Auth.User.id' )
+			) ;
 
-			///Paramètre nécessaire pour connaitre le type de paiement au tiers (total/ plusieurs versements )
-			$typepaiement = 'Versement';
-
-			/// Récupération de l'utilisateur
-			$user = $this->User->find(
-				'first',
-				array(
-					'conditions' => array(
-						'User.id' => $this->Session->read( 'Auth.User.id' )
-					),
-					'contain' => false
-				)
-			);
-			$apre['User'] = $user['User'];
-
-			$this->_setOptions();
-			if( ( $dest == 'beneficiaire' || $dest == 'referent' || $dest == 'tiers' ) && ( $typedecision == 'Refus' || $typedecision == 'Ajournement' ) ) {
-				$pdf = $this->Apre->ged( $apre, 'APRE/DecisionComite/'.$typedecision.'/'.$typedecision.$dest.'.odt' );
-				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( $typedecision.$dest.'-%s.pdf', date( 'Y-m-d' ) ) );
+			if( !empty( $pdf ) ){
+				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'decision_comite_apre_%d-%s-%s.pdf', $apre_comiteapre_id, $dest, date( 'Y-m-d' ) ) );
 			}
-			else if( $dest == 'beneficiaire' && $typedecision == 'Accord' ) {
-				$pdf = $this->Apre->ged( $apre, 'APRE/DecisionComite/'.$typedecision.'/'.$typedecision.$typeformation.$dest.'.odt' );
-				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( $typedecision.$typeformation.$dest.'-%s.pdf', date( 'Y-m-d' ) ) );
-			}
-			else if( $dest == 'referent' && $typedecision == 'Accord' ) {
-				$pdf = $this->Apre->ged( $apre, 'APRE/DecisionComite/'.$typedecision.'/'.$typedecision.$dest.'.odt' );
-				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( $typedecision.$dest.'-%s.pdf', date( 'Y-m-d' ) ) );
-			}
-			else if( $dest == 'tiers' && !empty( $typedecision ) ) {
-				$pdf = $this->Apre->ged( $apre, 'APRE/DecisionComite/'.$typedecision.'/'.$typedecision.$typepaiement.$dest.'.odt' );
-				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( $typedecision.$typepaiement.$dest.'-%s.pdf', date( 'Y-m-d' ) ) );
+			else {
+				$this->Session->setFlash( 'Impossible de générer l\'impression de la décision du comité APRE.', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
 			}
 		}
 	}

@@ -100,19 +100,19 @@
 							h( Set::classicExtract( $comite, 'ApreComiteapre.observationcomite' ) ),
 							$xhtml->printLink(
 								'Imprimer pour le bénéficiaire',
-								array( 'controller' => 'cohortescomitesapres', 'action' => 'notificationscomitegedooo', $apreComiteapreId, 'dest' => 'beneficiaire' ),
-								$permissions->check( 'cohortescomitesapres', 'notificationscomitegedooo' )
+								array( 'controller' => 'cohortescomitesapres', 'action' => 'impression', $apreComiteapreId, 'dest' => 'beneficiaire' ),
+								$permissions->check( 'cohortescomitesapres', 'impression' )
 							),
 							$xhtml->printLink(
 								'Imprimer pour le référent',
-								array( 'controller' => 'cohortescomitesapres', 'action' => 'notificationscomitegedooo', $apreComiteapreId, 'dest' => 'referent' ),
-								$permissions->check( 'cohortescomitesapres', 'notificationscomitegedooo' )
+								array( 'controller' => 'cohortescomitesapres', 'action' => 'impression', $apreComiteapreId, 'dest' => 'referent' ),
+								$permissions->check( 'cohortescomitesapres', 'impression' )
 							),
 							$xhtml->printLink(
 								'Imprimer pour le tiers prestataire',
-								array( 'controller' => 'cohortescomitesapres', 'action' => 'notificationscomitegedooo', $apreComiteapreId, 'dest' => 'tiers' ),
+								array( 'controller' => 'cohortescomitesapres', 'action' => 'impression', $apreComiteapreId, 'dest' => 'tiers' ),
 								$isTiers,
-								$permissions->check( 'cohortescomitesapres', 'notificationscomitegedooo' )
+								$permissions->check( 'cohortescomitesapres', 'impression' )
 							),
 							array( $innerTable, array( 'class' => 'innerTableCell' ) )
 						),
