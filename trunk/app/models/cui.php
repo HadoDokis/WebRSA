@@ -53,6 +53,14 @@
 			'Gedooo.Gedooo'
 		);
 
+		/**
+		* Chemin relatif pour les modèles de documents .odt utilisés lors des
+		* impressions. Utiliser %s pour remplacer par l'alias.
+		*/
+		public $modelesOdt = array(
+			'CUI/cui.odt',
+		);
+
 		public $validate = array(
 			'convention' => array(
 				'rule' => 'notEmpty',
@@ -517,6 +525,73 @@
 			}
 
 			return $return;
+		}
+
+		/**
+		 * Retourne le PDF de notification du CUI.
+		 *
+		 * @param integer $id L'id du CUI pour lequel on veut générer l'impression
+		 * @return string
+		 */
+		public function getDefaultPdf( $id ) {
+			$cui = $this->find(
+				'first',
+				array(
+					'fields' => array_merge(
+						$this->fields(),
+						$this->Personne->fields(),
+						$this->Referent->fields(),
+						$this->Structurereferente->fields(),
+						$this->Personne->Foyer->fields(),
+						$this->Personne->Foyer->Dossier->fields(),
+						$this->Personne->Foyer->Adressefoyer->Adresse->fields()
+					),
+					'joins' => array(
+						$this->join( 'Personne', array( 'type' => 'INNER' ) ),
+						$this->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ),
+						$this->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
+						$this->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
+						$this->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
+						$this->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
+					),
+					'conditions' => array(
+						'Cui.id' => $id,
+						'OR' => array(
+							'Adressefoyer.id IS NULL',
+							'Adressefoyer.id IN ( '.$this->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
+						)
+					),
+					'contain' => false
+				)
+			);
+
+			///Traduction pour les données de la Personne/Contact/Partenaire/Référent
+			$Option = ClassRegistry::init( 'Option' );
+			$options = array(
+				'Adresse' => array(
+					'typevoie' => $Option->typevoie()
+				),
+				'Personne' => array(
+					'qual' => $Option->qual()
+				),
+				'Referent' => array(
+					'qual' => $Option->qual()
+				),
+				'Structurereferente' => array(
+					'type_voie' => $Option->typevoie()
+				),
+				'Type' => array(
+					'voie' => $Option->typevoie()
+				),
+			);
+
+			return $this->ged(
+				$cui,
+				'CUI/cui.odt',
+				false,
+				$options
+			);
 		}
 	}
 ?>

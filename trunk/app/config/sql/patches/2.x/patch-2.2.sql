@@ -319,14 +319,33 @@ CREATE UNIQUE INDEX modelestraitementspcgs66_traitementpcg66_id_idx ON modelestr
 		- Gedooos:contratinsertion par Contratsinsertion:impression
 		- Gedooos:apre par Apres:impression
 		- Gedooos:relanceapre par Relancesapres:impression
+
 	2°) FIXME: faire les traductions (pour la page de droits)
 
-	3°) Nettoyage du code: la tables montantsconsommes (et son modèle) n'ont pas l'air d'être utilisés
-	grep -nr "\(Montantconsomme\|montantsconsommes\)" app | grep -v "\(\.svn\|\.sql\|/tests/\)"
+	3°) Nettoyage du code:
+		a°) la tables montantsconsommes (et son modèle) n'ont pas l'air d'être utilisés -> grep -nr "\(Montantconsomme\|montantsconsommes\)" app | grep -v "\(\.svn\|\.sql\|/tests/\)"
+
+	4°) Dans les modèles odt suivants, on a à présent de vraies dates (revoir les documents):
+		- Contratinsertion/notificationop.odt
+			* Personne.dtnai
+			* Contratinsertion.datevalidation_ci
+			* Contratinsertion.dd_ci
+			* Contratinsertion.df_ci
+			* Dossier.dtdemrsa
+		- CUI/cui.odt
+			* Personne.dtnai
+
+	5°) FIXME: au 66, problème lors de l'impression
+		- /contratsinsertion/notifbenef/9588 (Propodecisioncer66.isvalidcer est vide)
+		- /cohortesci/valides/page:1/Filtre__date_saisi_ci:0/Filtre__decision_ci:V/Dossier__dernier:1/Situationdossierrsa__etatdosrsa_choice:0/sort:Contratinsertion.decision_ci/direction:asc
+
+	6°) FIXME: Undefined offset au 66: /contratsinsertion/index/55245
+
 ----------------------------------------------------------------------------- */
 
 UPDATE acos SET alias = 'Apres66:impression' WHERE alias = 'Apres66:apre';
 UPDATE acos SET alias = 'Cohortescomitesapres:impression' WHERE alias = 'Cohortescomitesapres:notificationscomitegedooo';
+UPDATE acos SET alias = 'Cuis:impression' WHERE alias = 'Cuis:gedooo';
 
 -- *****************************************************************************
 COMMIT;

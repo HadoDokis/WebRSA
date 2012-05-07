@@ -14,7 +14,7 @@
 			'view' => 'Cuis:index'
 		);
 
-		public $aucunDroit = array( 'gedooo' );
+		public $aucunDroit = array( 'impression' );
 
 		/**
 		*
@@ -239,57 +239,21 @@
 		}
 
 		/**
-		*
-		*/
+		 * Imprime un CUI.
+		 *
+		 * @param integer $id L'id du CUI que l'on veut imprimer
+		 * @return void
+		 */
+		public function impression( $id ) {
+			$pdf = $this->Cui->getDefaultPdf( $id, $this->Session->read( 'Auth.User.id' ) );
 
-		public function gedooo( $id ) {
-			$qual = $this->Option->qual();
-			$typevoie = $this->Option->typevoie();
-
-			$cui = $this->{$this->modelClass}->find(
-				'first',
-				array(
-					'conditions' => array(
-						"{$this->modelClass}.id" => $id
-					),
-					'recursive' => 0
-				)
-			);
-
-			$this->Adressefoyer->bindModel(
-				array(
-					'belongsTo' => array(
-						'Adresse' => array(
-							'className'     => 'Adresse',
-							'foreignKey'    => 'adresse_id'
-						)
-					)
-				)
-			);
-
-			$adresse = $this->Adressefoyer->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Adressefoyer.foyer_id' => Set::classicExtract( $cui, 'Personne.foyer_id' ),
-						'Adressefoyer.rgadr' => '01',
-					)
-				)
-			);
-			$cui['Adresse'] = $adresse['Adresse'];
-
-			$cui_id = Set::classicExtract( $cui, 'Actioncandidat.id' );
-
-			///Traduction pour les données de la Personne/Contact/Partenaire/Référent
-			$LocaleHelper = new LocaleHelper();
-			$cui['Personne']['qual'] = Set::enum( Set::classicExtract( $cui, 'Personne.qual' ), $qual );
-			$cui['Personne']['dtnai'] = $LocaleHelper->date( 'Date::short', Set::classicExtract( $cui, 'Personne.dtnai' ) );
-			$cui['Referent']['qual'] = Set::enum( Set::classicExtract( $cui, 'Referent.qual' ), $qual );
-
-			$this->_setOptions();
-
-			$pdf = $this->Cui->ged( $cui, 'CUI/cui.odt' );
-			$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'cui-%s.pdf', date( 'Y-m-d' ) ) );
+			if( !empty( $pdf ) ){
+				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'cui_%d_%d.pdf', $id, date( 'Y-m-d' ) ) );
+			}
+			else {
+				$this->Session->setFlash( 'Impossible de générer le courrier de contrat unique d\'engagement.', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
+			}
 		}
 
 		/**

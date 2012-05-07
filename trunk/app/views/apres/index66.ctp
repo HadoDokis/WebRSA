@@ -113,12 +113,6 @@
 								$editButton,
 								$permissions->check( 'apres'.Configure::read( 'Apre.suffixe' ), 'edit' )
 							),
-//                             $xhtml->notificationsApreLink(
-//                                 'Notifier la décision',
-//                                 array( 'controller' => 'apres66', 'action' => 'notifications', $apre[$this->modelClass]['id'] ),
-//                                 $buttonEnabledNotif,
-//                                 $permissions->check( 'gedooos', 'notificationsop' )
-//                             ),
 							$xhtml->printLink(
 								'Imprimer la demande APRE',
 								array( 'controller' => 'apres66', 'action' => 'impression', $apre[$this->modelClass]['id'] ),

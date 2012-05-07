@@ -70,8 +70,8 @@
 							),
 							$xhtml->printLink(
 								'Imprimer le CUI',
-								array( 'controller' => 'cuis', 'action' => 'gedooo', Set::classicExtract( $cui, 'Cui.id' ) ),
-								$permissions->check( 'cuis', 'gedooo' )
+								array( 'controller' => 'cuis', 'action' => 'impression', Set::classicExtract( $cui, 'Cui.id' ) ),
+								$permissions->check( 'cuis', 'impression' )
 							),
 							$xhtml->deleteLink(
 								'Supprimer le CUI',
