@@ -786,71 +786,21 @@ die();
 
 		/**
 		 * Génère l'impression d'une APRE pour le CG 66.
+		 * On prend la décision de ne pas le stocker.
 		 *
 		 * @param integer $id L'id de l'APRE que l'on veut imprimer.
 		 * @return void
 		 */
-		public function apre( $id = null ) { // FIXME: impression à la place de apre
-			$Option = ClassRegistry::init( 'Option' );
+		public function impression( $id = null ) {
+			$pdf = $this->Apre66->getDefaultPdf( $id, $this->Session->read( 'Auth.User.id' ) ) ;
 
-			$options = array(
-				'Adresse' => array(
-					'typevoie' => $Option->typevoie()
-				),
-				'Personne' => array(
-					'qual' => $Option->qual()
-				),
-				'Referent' => array(
-					'qual' => $Option->qual()
-				),
-				'Structurereferente' => array(
-					'type_voie' => $Option->typevoie()
-				),
-			);
-
-			$apre = $this->Apre66->getDataForPdf( $id, $this->Session->read( 'Auth.User.id' ) );
-
-			// Le passif des demandes d'APRE attribuées
-			$listeApres = $this->Apre66->find(
-				'all',
-				array(
-					'fields' => array(
-						'Apre66.id',
-						'Aideapre66.datedemande',
-						'Aideapre66.montantaccorde',
-						'Typeaideapre66.name',
-						'Themeapre66.name'
-					),
-					'conditions' => array(
-						"Apre66.personne_id" => $apre['Personne']['id'],
-						"Apre66.id <>" => $id,
-						'Aideapre66.id IS NOT NULL',
-						'Apre66.etatdossierapre' => 'VAL',
-						'Apre66.datenotifapre IS NOT NULL',
-						'Aideapre66.datedemande <=' => $apre['Aideapre66']['datedemande'],
-					),
-					'joins' => array(
-						$this->Apre66->join( 'Aideapre66' ),
-						$this->Apre66->Aideapre66->join( 'Typeaideapre66' ),
-						$this->Apre66->Aideapre66->join( 'Themeapre66' )
-					),
-					'order' => array( 'Aideapre66.datedemande DESC' )
-				)
-			);
-
-			/// INFO: pour éviter d'écraser les valeurs de la partie principale avec la valeur de la dernière itération lorsque la section précède l'affichage de la valeur principale.
-			foreach( $listeApres as $i => $oldapre ) {
-				$listeApres[$i] = array( 'oldapre' => $oldapre );
+			if( !empty( $pdf ) ){
+				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'apre_%d-%s.pdf', $id, date( 'Y-m-d' ) ) );
 			}
-
-			$pdf = $this->Apre66->ged(
-				array( $apre, 'oldapres' => $listeApres ),
-				$this->Apre66->modeleOdt( $apre ),
-				true,
-				$options
-			);
-
-			$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'apre-%s.pdf', date( 'Y-m-d' ) ) );
+			else {
+				$this->Session->setFlash( 'Impossible de générer l\'impression de l\'APRE.', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
+			}
 		}
 
 		/**

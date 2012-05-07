@@ -121,9 +121,9 @@
 //                             ),
 							$xhtml->printLink(
 								'Imprimer la demande APRE',
-								array( 'controller' => 'apres66', 'action' => 'apre', $apre[$this->modelClass]['id'] ),
+								array( 'controller' => 'apres66', 'action' => 'impression', $apre[$this->modelClass]['id'] ),
 								$buttonEnabledInc,
-								$permissions->check( 'apres66', 'apre' )
+								$permissions->check( 'apres66', 'impression' )
 							),
 							$xhtml->fileLink(
 								'Fichiers liés',

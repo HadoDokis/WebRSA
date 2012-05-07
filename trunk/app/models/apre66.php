@@ -376,7 +376,8 @@
 		}
 
 		/**
-		 * Retourne les données nécessaires à l'impression d'une APRE pour le CG 66
+		 * Retourne les données nécessaires à l'impression d'une APRE pour le CG 66.
+		 * Les données contiennent l'APRE à l'index 0 et une section "oldapres".
 		 *
 		 * @param integer $id
 		 * @param integer $user_id
@@ -432,6 +433,10 @@
 				)
 			);
 
+			if( empty( $apre ) ) {
+				return $apre;
+			}
+
 			// Récupération de l'utilisateur connecté
 			$user = $this->Personne->Contratinsertion->User->find(
 				'first',
@@ -470,7 +475,80 @@
 				);
 			}
 
-			return $apre;
+			// Le passif des demandes d'APRE attribuées
+			$listeApres = $this->find(
+				'all',
+				array(
+					'fields' => array(
+						'Apre66.id',
+						'Aideapre66.datedemande',
+						'Aideapre66.montantaccorde',
+						'Typeaideapre66.name',
+						'Themeapre66.name'
+					),
+					'conditions' => array(
+						"Apre66.personne_id" => $apre['Personne']['id'],
+						"Apre66.id <>" => $id,
+						'Aideapre66.id IS NOT NULL',
+						'Apre66.etatdossierapre' => 'VAL',
+						'Apre66.datenotifapre IS NOT NULL',
+						'Aideapre66.datedemande <=' => $apre['Aideapre66']['datedemande'],
+					),
+					'joins' => array(
+						$this->join( 'Aideapre66' ),
+						$this->Aideapre66->join( 'Typeaideapre66' ),
+						$this->Aideapre66->join( 'Themeapre66' )
+					),
+					'order' => array( 'Aideapre66.datedemande DESC' )
+				)
+			);
+
+			/// INFO: pour éviter d'écraser les valeurs de la partie principale avec la valeur de la dernière itération lorsque la section précède l'affichage de la valeur principale.
+			foreach( $listeApres as $i => $oldapre ) {
+				$listeApres[$i] = array( 'oldapre' => $oldapre );
+			}
+
+			return array( $apre, 'oldapres' => $listeApres );
+		}
+
+		/**
+		 * Retourne le PDF par défaut généré par les appels aux méthodes getDataForPdf, modeleOdt et
+		 * à la méthode ged du behavior Gedooo
+		 *
+		 * @param type $id Id de l'APRE
+		 * @param type $user_id Id de l'utilisateur connecté
+		 * @return string
+		 */
+		public function getDefaultPdf( $id, $user_id ) {
+			$Option = ClassRegistry::init( 'Option' );
+
+			$options = array(
+				'Adresse' => array(
+					'typevoie' => $Option->typevoie()
+				),
+				'Personne' => array(
+					'qual' => $Option->qual()
+				),
+				'Referent' => array(
+					'qual' => $Option->qual()
+				),
+				'Structurereferente' => array(
+					'type_voie' => $Option->typevoie()
+				),
+			);
+
+			$apre = $this->getDataForPdf( $id, $user_id );
+
+			if( empty( $apre ) ) {
+				$this->cakeError( 'error404' );
+			}
+
+			return $this->ged(
+				$apre,
+				$this->modeleOdt( $apre ),
+				true,
+				$options
+			);
 		}
 	}
 ?>

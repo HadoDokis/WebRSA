@@ -168,6 +168,9 @@ msgstr "Notification d'APRE"
 msgid "Apres66:maillink"
 msgstr "Envoyer un mail au référent"
 
+msgid "Apres66:impression"
+msgstr "Impression d'une APRE"
+
 ###############################################################################
 
 msgid "Module:ApresComitesapres"
@@ -353,7 +356,7 @@ msgstr "Export CSV"
 msgid "Cohortescomitesapres:editdecision"
 msgstr "Ajout/Édition des décisions du comité"
 
-msgid "Cohortescomitesapres:notificationscomitegedooo"
+msgid "Cohortescomitesapres:impression"
 msgstr "Notifications du comité en cohorte"
 
 ###############################################################################

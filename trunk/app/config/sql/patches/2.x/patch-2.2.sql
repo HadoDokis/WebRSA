@@ -147,14 +147,6 @@ DROP INDEX IF EXISTS piecestraitementspcgs66_traitementpcg66_id_idx;
 CREATE INDEX piecestraitementspcgs66_piecetypecourrierpcg66_id_idx ON piecestraitementspcgs66(piecetypecourrierpcg66_id);
 CREATE INDEX piecestraitementspcgs66_traitementpcg66_id_idx ON piecestraitementspcgs66(traitementpcg66_id);
 
-/*
-	20120309, FIXME
-	il faudrait remplacer, mais une mise à jour sur acos casserait l'arbre:
-		- Gedooos:contratinsertion par Contratsinsertion:impression
-		- Gedooos:apre par Apres:impression
-		- Gedooos:relanceapre par Relancesapres:impression
-*/
-
 -- 20120319: une entrée de aidesapres66 possède une et une seule entrée de fraisdeplacements66
 
 DROP INDEX IF EXISTS fraisdeplacements66_aideapre66_id_idx;
@@ -216,9 +208,9 @@ CREATE INDEX motifscersnonvalids66_proposdecisionscers66_motifcernonvalid66_id_i
 SELECT add_missing_table_field ('public', 'contratsinsertion', 'datenotification', 'DATE');
 
  SELECT public.alter_enumtype ( 'TYPE_POSITIONCER', ARRAY['encours', 'attvalid', 'annule', 'fincontrat', 'encoursbilan', 'attrenouv', 'perime', 'nonvalide', 'attsignature', 'valid', 'nonvalid', 'validnotifie', 'nonvalidnotifie'] );
- 
- 
- 
+
+
+
 -------------------------------------------------------------------------------------------------------------
 -- 20120402 : Ajout d'une table supplémentaire pour la liste des modèles liés aux types de courrier PCG66
 -------------------------------------------------------------------------------------------------------------
@@ -243,8 +235,8 @@ DROP INDEX IF EXISTS modelestypescourrierspcgs66_modeleodt_idx;
 CREATE INDEX modelestypescourrierspcgs66_typecourrierpcg66_id_idx ON modelestypescourrierspcgs66(typecourrierpcg66_id);
 CREATE INDEX modelestypescourrierspcgs66_name_idx ON modelestypescourrierspcgs66(name);
 CREATE INDEX modelestypescourrierspcgs66_modeleodt_idx ON modelestypescourrierspcgs66(modeleodt);
- 
- 
+
+
 DROP TABLE IF EXISTS piecestypescourrierspcgs66 CASCADE;
 DROP TABLE IF EXISTS piecesmodelestypescourrierspcgs66 CASCADE;
 CREATE TABLE piecesmodelestypescourrierspcgs66 (
@@ -320,6 +312,22 @@ CREATE INDEX modelestypescourrierspcgs66_situationspdos_situationpdo_id_idx ON m
 -------------------------------------------------------------------------------------------------------------
 DROP INDEX IF EXISTS modelestraitementspcgs66_traitementpcg66_id_idx;
 CREATE UNIQUE INDEX modelestraitementspcgs66_traitementpcg66_id_idx ON modelestraitementspcgs66(traitementpcg66_id);
+
+/* -----------------------------------------------------------------------------
+	Nouveau Gedooo
+	1°) FIXME: il faudrait remplacer, mais une mise à jour sur acos casserait l'arbre:
+		- Gedooos:contratinsertion par Contratsinsertion:impression
+		- Gedooos:apre par Apres:impression
+		- Gedooos:relanceapre par Relancesapres:impression
+	2°) FIXME: faire les traductions (pour la page de droits)
+
+	3°) Nettoyage du code: la tables montantsconsommes (et son modèle) n'ont pas l'air d'être utilisés
+	grep -nr "\(Montantconsomme\|montantsconsommes\)" app | grep -v "\(\.svn\|\.sql\|/tests/\)"
+----------------------------------------------------------------------------- */
+
+UPDATE acos SET alias = 'Apres66:impression' WHERE alias = 'Apres66:apre';
+UPDATE acos SET alias = 'Cohortescomitesapres:impression' WHERE alias = 'Cohortescomitesapres:notificationscomitegedooo';
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
