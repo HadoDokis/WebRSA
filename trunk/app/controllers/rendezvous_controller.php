@@ -544,106 +544,22 @@
 			$this->redirect( array(  'controller' => 'rendezvous','action' => 'index', $rendezvous['Rendezvous']['personne_id'] ) );
 		}
 
-		function gedooo( $rdv_id = null ) {
-			// TODO: error404/error500 si on ne trouve pas les données
-			$qual = $this->Option->qual();
-			$typevoie = $this->Option->typevoie();
+		/**
+		 * Impression d'un rendez-vous.
+		 *
+		 * @param integer $rdv_id
+		 * @return void
+		 */
+		public function impression( $rdv_id = null ) { // FIXME: impression
+			$pdf = $this->Rendezvous->getDefaultPdf( $rdv_id, $this->Session->read( 'Auth.User.id' ) );
 
-			$rdv = $this->Rendezvous->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Rendezvous.id' => $rdv_id
-					)
-				)
-			);
-
-			///Pour le choix entre les différentes notifications possibles
-			$modele = $rdv['Typerdv']['modelenotifrdv'];
-
-			$this->Rendezvous->Personne->Foyer->Adressefoyer->bindModel(
-				array(
-					'belongsTo' => array(
-						'Adresse' => array(
-							'className'     => 'Adresse',
-							'foreignKey'    => 'adresse_id'
-						)
-					)
-				)
-			);
-
-			$adresse = $this->Rendezvous->Personne->Foyer->Adressefoyer->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Adressefoyer.foyer_id' => $rdv['Personne']['foyer_id'],
-						'Adressefoyer.rgadr' => '01',
-					)
-				)
-			);
-			$rdv['Adresse'] = $adresse['Adresse'];
-
-			// Récupération de l'utilisateur
-			$user = $this->User->find(
-				'first',
-				array(
-					'conditions' => array(
-						'User.id' => $this->Session->read( 'Auth.User.id' )
-					)
-				)
-			);
-			$rdv['User'] = $user['User'];
-			$rdv['Serviceinstructeur'] = $user['Serviceinstructeur'];
-
-			$dossier = $this->Rendezvous->Personne->Foyer->Dossier->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Foyer.id' => $rdv['Personne']['foyer_id']
-					),
-					'contain' => array(
-						'Foyer'
-					)
-				)
-			);
-
-			$rdv['Dossier_RSA'] = $dossier['Dossier'];
-
-			///Pour la qualité de la personne
-			$rdv['Personne']['qual'] = Set::extract( $qual, Set::extract( $rdv, 'Personne.qual' ) );
-			///Pour l'adresse de la structure référente
-			$rdv['Structurereferente']['type_voie'] = Set::extract( $typevoie, Set::classicExtract( $rdv, 'Structurereferente.type_voie' ) );
-			///Pour la date du rendez-vous
-			$LocaleHelper = new LocaleHelper();
-			$rdv['Rendezvous']['daterdv'] =  $LocaleHelper->date( '%d/%m/%Y', Set::classicExtract( $rdv, 'Rendezvous.daterdv' ) );
-			$rdv['Rendezvous']['heurerdv'] = $LocaleHelper->date( 'Time::short', Set::classicExtract( $rdv, 'Rendezvous.heurerdv' ) );
-			///Pour l'adresse de la personne
-			$rdv['Adresse']['typevoie'] = Set::extract( $typevoie, Set::extract( $rdv, 'Adresse.typevoie' ) );
-
-			///Pour le référent lié au RDV
-			$structurereferente_id = Set::classicExtract( $rdv, 'Structurereferente.id' );
-			$referents = $this->Rendezvous->Personne->Referent->referentsListe( $structurereferente_id );
-			$this->set( 'referents', $referents );
-			if( !empty( $referents ) ) {
-				$rdv['Rendezvous']['referent_id'] = Set::extract( $referents, Set::classicExtract( $rdv, 'Rendezvous.referent_id' ) );
+			if( !empty( $pdf ) ){
+				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'rendezvous-%d-%s.pdf', $rdv_id, date( 'Y-m-d' ) ) );
 			}
-
-			///Pour les permanences liées aux structures référentes
-			$perm = $this->Rendezvous->Personne->Referent->Structurereferente->Permanence->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Permanence.id' => Set::classicExtract( $rdv, 'Rendezvous.permanence_id' )
-					)
-				)
-			);
-			$rdv['Permanence'] = $perm['Permanence'];
-			if( !empty( $perm ) ){
-				$rdv['Permanence']['typevoie'] = Set::extract( $typevoie, Set::classicExtract( $rdv, 'Permanence.typevoie' ) );
+			else {
+				$this->Session->setFlash( 'Impossible de générer le courrier de rendez-vous.', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
 			}
-
-			$pdf = $this->Rendezvous->ged( $rdv, 'RDV/'.$modele.'.odt' );
-			$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'rendezvous-%s.pdf', date( 'Y-m-d' ) ) );
 		}
 	}
 ?>

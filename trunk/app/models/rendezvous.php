@@ -419,5 +419,99 @@
 			return $return;
 		}
 
+		/**
+		 * Retourne le PDF d'un rendez-vous.
+		 *
+		 * @param integer $id L'id du rendez-vous pour lequel générer l'impression
+		 * @param $user_id L'id de l'utilisateur qui génère l'impression.
+		 * @return string
+		 */
+		public function getDefaultPdf( $id, $user_id ) {
+			$rdv = $this->find(
+				'first',
+				array(
+					'fields' => array_merge(
+						$this->fields(),
+						$this->Permanence->fields(),
+						$this->Personne->fields(),
+						$this->Referent->fields(),
+						$this->Statutrdv->fields(),
+						$this->Structurereferente->fields(),
+						$this->Typerdv->fields(),
+						$this->Personne->Foyer->fields(),
+						$this->Personne->Foyer->Dossier->fields(),
+						$this->Personne->Foyer->Adressefoyer->Adresse->fields()
+					),
+					'joins' => array(
+						$this->join( 'Permanence', array( 'type' => 'LEFT OUTER' ) ),
+						$this->join( 'Personne', array( 'type' => 'INNER' ) ),
+						$this->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ),
+						$this->join( 'Statutrdv', array( 'type' => 'LEFT OUTER' ) ),
+						$this->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
+						$this->join( 'Typerdv', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
+						$this->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
+						$this->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
+					),
+					'conditions' => array(
+						'Rendezvous.id' => $id,
+						'OR' => array(
+							'Adressefoyer.id IS NULL',
+							'Adressefoyer.id IN ( '.$this->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
+						)
+					),
+					'contain' => false
+				)
+			);
+
+			$User = ClassRegistry::init( 'User' );
+			$user = $User->find(
+				'first',
+				array(
+					'fields' => array_merge(
+						$User->fields(),
+						$User->Serviceinstructeur->fields()
+					),
+					'joins' => array(
+						$User->join( 'Serviceinstructeur', array( 'type' => 'INNER' ) )
+					),
+					'conditions' => array(
+						'User.id' => $user_id
+					),
+					'contain' => false
+				)
+			);
+			$rdv = Set::merge( $rdv, $user );
+
+			$Option = ClassRegistry::init( 'Option' );
+			$options = array(
+				'Adresse' => array(
+					'typevoie' => $Option->typevoie()
+				),
+				'Permanence' => array(
+					'typevoie' => $Option->typevoie()
+				),
+				'Personne' => array(
+					'qual' => $Option->qual()
+				),
+				'Referent' => array(
+					'qual' => $Option->qual()
+				),
+				'Structurereferente' => array(
+					'type_voie' => $Option->typevoie()
+				),
+				'Type' => array(
+					'voie' => $Option->typevoie()
+				),
+			);
+
+			return $this->ged(
+				$rdv,
+				"RDV/{$rdv['Typerdv']['modelenotifrdv']}.odt",
+				false,
+				$options
+			);
+		}
 	}
 ?>

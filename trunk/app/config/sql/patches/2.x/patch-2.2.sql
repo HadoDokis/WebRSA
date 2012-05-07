@@ -325,7 +325,7 @@ CREATE UNIQUE INDEX modelestraitementspcgs66_traitementpcg66_id_idx ON modelestr
 	3°) Nettoyage du code:
 		a°) la tables montantsconsommes (et son modèle) n'ont pas l'air d'être utilisés -> grep -nr "\(Montantconsomme\|montantsconsommes\)" app | grep -v "\(\.svn\|\.sql\|/tests/\)"
 
-	4°) Dans les modèles odt suivants, on a à présent de vraies dates (revoir les documents):
+	4°) Dans les modèles odt suivants, on a à présent de vraies dates / heures (revoir les documents):
 		- Contratinsertion/notificationop.odt
 			* Personne.dtnai
 			* Contratinsertion.datevalidation_ci
@@ -334,18 +334,29 @@ CREATE UNIQUE INDEX modelestraitementspcgs66_traitementpcg66_id_idx ON modelestr
 			* Dossier.dtdemrsa
 		- CUI/cui.odt
 			* Personne.dtnai
+		- Rendezvous
+			* Rendezvous.daterdv
+			* Rendezvous.heurerdv
 
-	5°) FIXME: au 66, problème lors de l'impression
+	5°) Dans les modèles odt suivants, des chemins ont changé:
+		- Rendezvous
+			* dossier_rsa_xxxx -> dossier_xxxx
+			* rendezvous.referent_id -> referent_qual, referent_nom, referent_prenom
+			* Les enregistrements de modèles suivants ne seront plus présents: Entretien, Fichiermodule, Sanctionrendezvousep58
+
+
+	6°) FIXME: au 66, problème lors de l'impression
 		- /contratsinsertion/notifbenef/9588 (Propodecisioncer66.isvalidcer est vide)
 		- /cohortesci/valides/page:1/Filtre__date_saisi_ci:0/Filtre__decision_ci:V/Dossier__dernier:1/Situationdossierrsa__etatdosrsa_choice:0/sort:Contratinsertion.decision_ci/direction:asc
 
-	6°) FIXME: Undefined offset au 66: /contratsinsertion/index/55245
+	7°) FIXME: Undefined offset au 66: /contratsinsertion/index/55245
 
 ----------------------------------------------------------------------------- */
 
 UPDATE acos SET alias = 'Apres66:impression' WHERE alias = 'Apres66:apre';
 UPDATE acos SET alias = 'Cohortescomitesapres:impression' WHERE alias = 'Cohortescomitesapres:notificationscomitegedooo';
 UPDATE acos SET alias = 'Cuis:impression' WHERE alias = 'Cuis:gedooo';
+UPDATE acos SET alias = 'Rendezvous:impression' WHERE alias = 'Rendezvous:gedooo';
 
 -- *****************************************************************************
 COMMIT;
