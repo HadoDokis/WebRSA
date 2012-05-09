@@ -76,10 +76,7 @@
 					array(
 						'update' => 'Typecourrierpcg66Modeletypecourrierpcg66Id',
 						'url' => Router::url( array( 'action' => 'ajaxpiece' ), true ),
-// 						'with' => 'Form.serialize( $(\'traitementpcg66form\') ), '.php_associative_array_to_js( array( 'Modeletraitementpcg66' => @$this->data['Modeletraitementpcg66'] ) ),
  						'with' => 'Object.extend( Form.serialize( $( \'traitementpcg66form\' ), true ), '.php_associative_array_to_js( $dataModeletraitementpcg66 ).' )',
-
-// Object.extend(Form.serialize(true), {order: 'descend_by_created_by'})
 						'complete' => 'showAjaxValidationErrors()',
 					)
 				);

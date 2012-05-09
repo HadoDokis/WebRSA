@@ -138,7 +138,7 @@
 						$form->input( 'Dossierpcg66.'.$index.'.id', array( 'label' => false, 'type' => 'hidden', 'value' => $dossierpcg66atransmettre['Dossierpcg66']['id'] ) ).
 						$form->input( 'Dossierpcg66.'.$index.'.foyer_id', array( 'label' => false, 'type' => 'hidden', 'value' => $dossierpcg66atransmettre['Dossierpcg66']['foyer_id'] ) ).
 						$form->input( 'Dossierpcg66.'.$index.'.typepdo_id', array( 'label' => false, 'type' => 'hidden', 'value' => $dossierpcg66atransmettre['Dossierpcg66']['typepdo_id'] ) ).
-						$form->input( 'Dossierpcg66.'.$index.'.etatdossierpcg', array( 'label' => false, 'type' => 'hidden', 'value' => 'decisionvalid' ) ).
+						$form->input( 'Dossierpcg66.'.$index.'.etatdossierpcg', array( 'label' => false, 'type' => 'hidden', 'value' => 'transmisop' ) ).
 						$form->input( 'Dossierpcg66.'.$index.'.dossier_id', array( 'label' => false, 'type' => 'hidden', 'value' => $dossierpcg66atransmettre['Dossier']['id'] ) ),
 						$form->input( 'Dossierpcg66.'.$index.'.datetransmission', array( 'label' => false, 'type' => 'date', 'selected' => $dossierpcg66atransmettre['Dossierpcg66']['datetransmission'], 'dateFormat' => 'DMY' ) ),
 						$xhtml->viewLink(
