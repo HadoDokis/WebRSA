@@ -79,8 +79,8 @@
 				Set::classicExtract( $apre, 'Personne.prenom' ),
 				Set::classicExtract( $apre, 'Adresse.locaadr' ),
 				$libelleNatureaide,
-				$theme->button( 'print', array( 'action' => 'impressiongedoooapres', $apre_id, $this->params['pass'][0], 'dest' => 'beneficiaire' ) /*array( 'enabled' =>  !$isTiers )*/ ),
-				$theme->button( 'print', array( 'action' => 'impressiongedoooapres', $apre_id, $this->params['pass'][0], 'dest' => 'tiersprestataire' ), array( 'enabled' =>  $isTiers ) ),
+				$theme->button( 'print', array( 'action' => 'impression', $apre_id, $this->params['pass'][0], 'dest' => 'beneficiaire' ) /*array( 'enabled' =>  !$isTiers )*/ ),
+				$theme->button( 'print', array( 'action' => 'impression', $apre_id, $this->params['pass'][0], 'dest' => 'tiersprestataire' ), array( 'enabled' =>  $isTiers ) ),
 			);
 		}
 		$tbody = $xhtml->tag( 'tbody', $xhtml->tableCells( $rows, array( 'class' => 'odd' ), array( 'class' => 'even' ) ) );
@@ -99,7 +99,7 @@
 				'Imprimer la cohorte',
 				Set::merge(
 					array(
-						'action' => 'impressioncohorte',
+						'action' => 'impressions',
 						$this->params['pass'][0],
 					),
 					$this->params['named'],

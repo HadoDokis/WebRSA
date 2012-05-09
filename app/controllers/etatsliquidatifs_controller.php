@@ -330,154 +330,80 @@ $queryData = $querydata;
 		}
 
 		/**
-		*
-		*/
+		 * Impression d'un état de liquidation pour une APRE, avec en destinataire le bénéficiaire, pour les
+		 * APREs forfaitaires; le bénéficiaire ou le tiers prestataire pour les APREs complémentaires.
+		 *
+		 * @param integer $apre_id
+		 * @param integer $etatliquidatif_id
+		 * @return void
+		 */
+		public function impression( $apre_id, $etatliquidatif_id ) {
+			$dest = Set::classicExtract( $this->params, 'named.dest' );
 
-		public function impressiongedoooapres( $apre_id, $etatliquidatif_id ) {
 			$typeapre = $this->Etatliquidatif->getTypeapre( $etatliquidatif_id );
 			$this->assert( !empty( $typeapre ), 'invalidParameter' );
 
-			$method = 'qdDonneesApre'.Inflector::camelize( $typeapre ).'Gedooo';
-
-			$querydata = $this->Etatliquidatif->{$method}();
-			$querydata = Set::merge(
-				$querydata,
-				array(
-					'conditions' => array(
-						'Etatliquidatif.id' => $etatliquidatif_id,
-						'Apre.id' => $apre_id
-					)
-				)
+			$pdf = $this->Etatliquidatif->ApreEtatliquidatif->getDefaultPdf(
+				$typeapre,
+				$apre_id,
+				$etatliquidatif_id,
+				$dest,
+				$this->Session->read( 'Auth.User.id' )
 			);
 
-			$deepAfterFind = $this->Etatliquidatif->Apre->deepAfterFind;
-			$this->Etatliquidatif->Apre->deepAfterFind = false;
-			$apre = $this->Etatliquidatif->find( 'first', $querydata );
-			$this->Etatliquidatif->Apre->deepAfterFind = $deepAfterFind;
+			if( !empty( $pdf ) ) {
+				if( $typeapre == 'forfaitaire' ) {
+					$nomfichier = sprintf( 'apreforfaitaire-%s.pdf', date( 'Y-m-d' ) );
+				}
+				else if( $typeapre == 'complementaire' && $dest == 'tiersprestataire' ) {
+					$nomfichier = sprintf( 'paiement_tiersprestataire-%s.pdf', date( 'Y-m-d' ) );
+				}
+				else if( $typeapre == 'complementaire' && $dest == 'beneficiaire' ) {
+					$nomfichier = sprintf( 'paiement_beneficiaire-%s.pdf', date( 'Y-m-d' ) );
+				}
 
-			$this->assert( !empty( $apre ), 'invalidParameter' );
-
-			/// Récupération de l'utilisateur
-			$user = $this->User->find(
-				'first',
-				array(
-					'conditions' => array(
-						'User.id' => $this->Session->read( 'Auth.User.id' )
-					),
-					'contain' => false
-				)
-			);
-			$apre['User'] = $user['User'];
-
-			$typeapre = Set::classicExtract( $apre, 'Apre.statutapre' );
-			$dest = Set::classicExtract( $this->params, 'named.dest' );
-
-			if( !empty( $apre['Apre']['nomaide'] ) && in_array( $apre['Apre']['nomaide'], $this->Etatliquidatif->Apre->modelsFormation ) ) {
-				$typeformation = 'formation';
+				$this->Gedooo->sendPdfContentToClient( $pdf, $nomfichier );
 			}
 			else {
-				$typeformation = 'horsformation';
+				$this->Session->setFlash( 'Impossible de générer l\'impression de l\'état liquidatif de l\'APRE.', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
 			}
-
-			$options = array(
-				'Adresse' => array(
-					'typevoie' => $this->Option->typevoie()
-				),
-				'Apre' => array(
-					'natureaide' => $this->Option->natureAidesApres()
-				),
-				'Personne' => array(
-					'qual' => $this->Option->qual()
-				),
-				'Tiersprestataireapre' => array(
-					'typevoie' => $this->Option->typevoie()
-				)
-			);
-
-			if( $typeapre == 'F' ) {
-				$modeleodt = 'APRE/apreforfaitaire.odt';
-				$nomfichierpdf = sprintf( 'apreforfaitaire-%s.pdf', date( 'Y-m-d' ) );
-			}
-			else if( $typeapre == 'C' && $dest == 'tiersprestataire' ) {
-				$modeleodt = 'APRE/Paiement/paiement_'.$dest.'.odt';
-				$nomfichierpdf = sprintf( 'paiement_'.$dest.'-%s.pdf', date( 'Y-m-d' ) );
-			}
-			else if( $typeapre == 'C' && $dest == 'beneficiaire' ) {
-				$modeleodt = 'APRE/Paiement/paiement_'.$typeformation.'_'.$dest.'.odt';
-				$nomfichierpdf = sprintf( 'paiement_'.$typeformation.'_'.$dest.'-%s.pdf', date( 'Y-m-d' ) );
-			}
-
-			$pdf = $this->Etatliquidatif->Apre->ged( $apre, $modeleodt, false, $options );
-			$this->assert( !empty( $pdf ), 'error500' );
-
-			$this->Gedooo->sendPdfContentToClient( $pdf, $nomfichierpdf );
 		}
 
 		/**
-		*
-		*/
-
-		public function impressioncohorte( $id ) {
+		 * Impression d'une page d'APREs en état de liquidation, ayant comme destinataire le bénéficiaire et
+		 * ne concernant que les APREs forfaitaires.
+		 *
+		 * @param integer $id L'id de l'état liquidatif.
+		 */
+		public function impressions( $id ) {
 			$typeapre = $this->Etatliquidatif->getTypeapre( $id );
 			$this->assert( !empty( $typeapre ), 'invalidParameter' );
 
-			$dest = 'beneficiaire';//FIXME
+			// La page sur laquelle nous sommes
+			$page = Set::classicExtract( $this->params, 'named.page' );
+			if( ( intval( $page ) != $page ) || $page < 0 ) {
+				$page = 1;
+			}
 
-			$options = array(
-				'Adresse' => array(
-					'typevoie' => $this->Option->typevoie()
-				),
-				'Apre' => array(
-					'natureaide' => $this->Option->natureAidesApres()
-				),
-				'Personne' => array(
-					'qual' => $this->Option->qual()
-				),
-				'Tiersprestataireapre' => array(
-					'typevoie' => $this->Option->typevoie()
-				)
+			$pdf = $this->Etatliquidatif->ApreEtatliquidatif->getDefaultCohortePdf(
+				$typeapre,
+				$id,
+				'beneficiaire',
+				$this->Session->read( 'Auth.User.id' ),
+				$page,
+				100,
+				Set::classicExtract( $this->params, 'named.sort' ),
+				Set::classicExtract( $this->params, 'named.direction' )
 			);
 
-			$method = 'qdDonneesApre'.Inflector::camelize( $typeapre ).'Gedooo';
-			$querydata = $this->Etatliquidatif->{$method}();
-			$querydata = Set::merge(
-				$querydata,
-				array(
-					'conditions' => array(
-						'Etatliquidatif.id' => $id,
-					),
-					'limit' => 100
-				)
-			);
-
-			Configure::write( "Optimisations.{$this->name}_{$this->action}.progressivePaginate", true );
-			$this->paginate = $querydata;
-			$deepAfterFind = $this->Etatliquidatif->Apre->deepAfterFind;
-			$this->Etatliquidatif->Apre->deepAfterFind = false;
-			$apres = $this->paginate( $this->Etatliquidatif );
-			$this->Etatliquidatif->Apre->deepAfterFind = $deepAfterFind;
-
-			$typeapre = ( $typeapre == 'forfaitaire' ? 'F' : 'C' );
-			if( $typeapre == 'F' ) {
-				$key = 'forfaitaire';
-				$modeleodt = 'APRE/apreforfaitaire.odt';
-				$nomfichierpdf = sprintf( 'apreforfaitaire-%s.pdf', date( 'Y-m-d' ) );
+			if( !empty( $pdf ) ) {
+				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'apresforfaitaires-%d-%s.pdf', $id, date( 'Y-m-d' ) ) );
 			}
-			else if( $typeapre == 'C' && $dest == 'tiersprestataire' ) {
-				$key = 'etatliquidatif_tiers';
-				$modeleodt = 'APRE/Paiement/paiement_'.$dest.'.odt';
-				$nomfichierpdf = sprintf( 'paiement_'.$dest.'-%s.pdf', date( 'Y-m-d' ) );
+			else {
+				$this->Session->setFlash( 'Impossible de générer l\'impression de la page de l\'état liquidatif des APREs.', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
 			}
-			else if( $typeapre == 'C' && $dest == 'beneficiaire' ) {
-				$key = 'apreforfaitaire';
-				$modeleodt = 'APRE/Paiement/paiement_'.$typeformation.'_'.$dest.'.odt';
-				$nomfichierpdf = sprintf( 'paiement_'.$typeformation.'_'.$dest.'-%s.pdf', date( 'Y-m-d' ) );
-			}
-
-			$pdf = $this->Etatliquidatif->Apre->ged( array( $key => $apres ), $modeleodt, true, $options );
-			$this->assert( !empty( $pdf ), 'error500' );
-
-			$this->Gedooo->sendPdfContentToClient( $pdf, $nomfichierpdf );
 		}
 
 		/**
