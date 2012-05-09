@@ -176,5 +176,56 @@
 
 			return $relanceapre;
 		}
+
+		/**
+		 * Retourne le PDF par défaut généré par les appels aux méthodes getDataForPdf, modeleOdt et
+		 * à la méthode ged du behavior Gedooo. Le PDF est stocké après la première génération.
+		 *
+		 * @param type $id Id de la relance d'APRE
+		 * @param type $user_id Id de l'utilisateur connecté
+		 * @return string
+		 */
+		public function getDefaultPdf( $id, $user_id ) {
+			$pdf = $this->getStoredPdf( $id );
+
+			if( !empty( $pdf ) ) {
+				$pdf = $pdf['Pdf']['document'];
+			}
+			else {
+				$Option = ClassRegistry::init( 'Option' );
+
+				$options = Set::merge(
+					array(
+						'Personne' => array(
+							'qual' => $Option->qual(),
+						),
+						'Adresse' => array(
+							'typevoie' => $Option->typevoie(),
+						),
+						'Prestation' => array(
+							'rolepers' => $Option->rolepers(),
+						),
+						'Foyer' => array(
+							'sitfam' => $Option->sitfam(),
+							'typeocclog' => $Option->typeocclog(),
+						),
+						'Type' => array(
+							'voie' =>  $Option->typevoie(),
+						),
+					)
+				);
+
+				$relanceapre = $this->getDataForPdf( $id, $user_id );
+				$modeledoc = $this->modeleOdt( $relanceapre );
+
+				$pdf = $this->ged( $relanceapre, $modeledoc, false, $options );
+
+				if( !empty( $pdf ) ) {
+					$this->storePdf( $id, $modeledoc, $pdf );
+				}
+			}
+
+			return $pdf;
+		}
 	}
 ?>

@@ -136,57 +136,23 @@
 			$this->set( 'personne_id', Set::classicExtract( $relanceapre, 'Relanceapre.apre_id' ) );
 		}
 
-
 		/**
-		 * Impression d'une relance d'Apre pour le CG 93
+		 * Génère l'impression d'une relance d'APRE pour le CG 93.
+		 * On prend la décision de ne pas le stocker.
 		 *
-		 * @param integer $apre_id
+		 * @param integer $id L'id de la relance d'APRE que l'on veut imprimer.
+		 * @return void
 		 */
-		public function impression( $relanceapre_id = null ) {
-			$this->assert( !empty( $relanceapre_id ), 'error404' );
+		public function impression( $id = null ) {
+			$pdf = $this->Relanceapre->getDefaultPdf( $id, $this->Session->read( 'Auth.User.id' ) ) ;
 
-			$pdf = $this->Relanceapre->getStoredPdf( $relanceapre_id );
-
-			if( !empty( $pdf ) ) {
-				$pdf = $pdf['Pdf']['document'];
+			if( !empty( $pdf ) ){
+				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'relanceapre_%d-%s.pdf', $id, date( 'Y-m-d' ) ) );
 			}
 			else {
-				$Option = ClassRegistry::init( 'Option' );
-
-				$options = Set::merge(
-					array(
-						'Personne' => array(
-							'qual' => $Option->qual(),
-						),
-						'Adresse' => array(
-							'typevoie' => $Option->typevoie(),
-						),
-						'Prestation' => array(
-							'rolepers' => $Option->rolepers(),
-						),
-						'Foyer' => array(
-							'sitfam' => $Option->sitfam(),
-							'typeocclog' => $Option->typeocclog(),
-						),
-						'Type' => array(
-							'voie' =>  $Option->typevoie(),
-						),
-					)
-				);
-
-				$relanceapre = $this->Relanceapre->getDataForPdf( $relanceapre_id, $this->Session->read( 'Auth.User.id' ) );
-				$modeledoc = $this->Relanceapre->modeleOdt( $relanceapre );
-
-				$pdf = $this->Relanceapre->ged( $relanceapre, $modeledoc, false, $options );
-
-				if( !empty( $pdf ) ) {
-					$this->Relanceapre->storePdf( $relanceapre_id, $modeledoc, $pdf ); // FIXME ?
-				}
+				$this->Session->setFlash( 'Impossible de générer l\'impression de la relance de l\'APRE.', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
 			}
-
-			$this->assert( !empty( $pdf ), 'error404' );
-
-			$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( $this->action.'-%s.pdf', date( 'Y-m-d' ) )  );
 		}
 	}
 ?>
