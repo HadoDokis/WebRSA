@@ -1,7 +1,13 @@
 <?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-<h1><?php echo $this->pageTile = 'Indicateurs de suivi';?></h1>
 
-<?php
+<?php 
+	echo $xhtml->tag(
+		'h1',
+        $this->pageTitle = __d( 'indicateursuivi', "Indicateurssuivis::{$this->action}", true )
+    );
+?>
+    
+    <?php
 	if( is_array( $this->data ) ) {
 		echo '<ul class="actionMenu"><li>'.$xhtml->link(
 			$xhtml->image(
@@ -72,7 +78,7 @@
 					<th><?php echo $xpaginator->sort( 'Rang orientation', 'Orientstruct.rgorient' );?></th>
 					<th rowspan="2">Référent unique</th>
 					<th colspan="3">CER</th>
-					<th rowspan="2">Date inscription Pôle Emploi<?php //echo $xpaginator->sort( 'Date inscription Pôle Emploi', '' );?></th>
+					<th rowspan="2">Dernière information Pôle Emploi</th>
 					<th colspan="2">Passage en EP</th>
 					<th>Action</th>
 				</tr>
@@ -111,7 +117,7 @@
 								h( date_short( $indicateur['Contratinsertion']['dd_ci'] ) ),
 								h( date_short( $indicateur['Contratinsertion']['df_ci'] ) ),
 								h( $indicateur['Contratinsertion']['rg_ci']),
-								h( date_short( $indicateur['Historiqueetatpe']['date'] ) ),
+								h( Set::enum( $indicateur['Historiqueetatpe']['etat'], $etatpe['etat'] ).' '.date_short( $indicateur['Historiqueetatpe']['date'] ) ),
 								h( date_short( $indicateur['Commissionep']['dateseance'] ) ),
 								h( !empty( $indicateur['Dossierep']['themeep'] ) ? Set::classicExtract( $options['themeep'], $indicateur['Dossierep']['themeep'] ) : null ),
 								$xhtml->link(
@@ -133,7 +139,7 @@
 				<?php endforeach;?>
 			</tbody>
 		</table>
-		<?php debug($indicateurs);?>
+		<?php /*debug($indicateurs);*/?>
 		<?php echo $pagination;?>
 		<?php if( Set::extract( $paginator, 'params.paging.Dossier.count' ) > 65000 ):?>
 			<p class="noprint" style="border: 1px solid #556; background: #ffe;padding: 0.5em;"><?php echo $xhtml->image( 'icons/error.png' );?> <strong>Attention</strong>, il est possible que votre tableur ne puisse pas vous afficher les résultats au-delà de la 65&nbsp;000ème ligne.</p>
