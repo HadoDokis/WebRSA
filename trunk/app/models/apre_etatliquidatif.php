@@ -4,10 +4,19 @@
 		public $name = 'ApreEtatliquidatif';
 
 		public $actsAs = array(
-			'Enumerable', // FIXME ?
+			'Enumerable',
 			'Frenchfloat' => array(
 				'fields' => array(
 					'montantattribue',
+				)
+			),
+			'Gedooo.Gedooo',
+			'ModelesodtConditionnables' => array(
+				93 => array(
+					'APRE/apreforfaitaire.odt',
+					'APRE/Paiement/paiement_tiersprestataire.odt',
+					'APRE/Paiement/paiement_formation_beneficiaire.odt',
+					'APRE/Paiement/paiement_horsformation_beneficiaire.odt',
 				)
 			)
 		);
@@ -86,6 +95,178 @@
 			}
 
 			return $return;
+		}
+
+		/**
+		 * Retourne le PDF concernant le passage d'une APRE dans un état liquidatif.
+		 *
+		 * @param string $typeapre Le type d'APRE (forfaitaire ou complementaire)
+		 * @param integer $apre_id L'id de l'APRE
+		 * @param integer $etatliquidatif_id L'id de l'état liquidatif
+		 * @param string $dest Le destinataire du courrier (beneficiaire ou tiersprestataire)
+		 * @param integer $user_id L'id de l'utilisateur ayant demandé l'impression
+		 * @return string
+		 */
+		public function getDefaultPdf( $typeapre, $apre_id, $etatliquidatif_id, $dest, $user_id ) {
+			$method = 'qdDonneesApre'.Inflector::camelize( $typeapre ).'Gedooo';
+
+			$querydata = $this->Etatliquidatif->{$method}();
+			$querydata = Set::merge(
+				$querydata,
+				array(
+					'conditions' => array(
+						'Etatliquidatif.id' => $etatliquidatif_id,
+						'Apre.id' => $apre_id
+					)
+				)
+			);
+
+			$deepAfterFind = $this->Etatliquidatif->Apre->deepAfterFind;
+			$this->Etatliquidatif->Apre->deepAfterFind = false;
+			$apre = $this->Etatliquidatif->find( 'first', $querydata );
+			$this->Etatliquidatif->Apre->deepAfterFind = $deepAfterFind;
+
+			/// Récupération de l'utilisateur
+			$user = ClassRegistry::init( 'User' )->find(
+				'first',
+				array(
+					'conditions' => array(
+						'User.id' => $user_id
+					),
+					'contain' => false
+				)
+			);
+			$apre['User'] = $user['User'];
+
+			// Traductions
+			$Option = ClassRegistry::init( 'Option' );
+			$options = array(
+				'Adresse' => array(
+					'typevoie' => $Option->typevoie()
+				),
+				'Apre' => array(
+					'natureaide' => $Option->natureAidesApres()
+				),
+				'Personne' => array(
+					'qual' => $Option->qual()
+				),
+				'Tiersprestataireapre' => array(
+					'typevoie' => $Option->typevoie()
+				)
+			);
+
+			// Choix du modèle de document à utiliser
+			if( $typeapre == 'forfaitaire' ) {
+				$modeleodt = 'APRE/apreforfaitaire.odt';
+			}
+			else if( $typeapre == 'complementaire' && $dest == 'tiersprestataire' ) {
+				$modeleodt = 'APRE/Paiement/paiement_tiersprestataire.odt';
+			}
+			else if( $typeapre == 'complementaire' && $dest == 'beneficiaire' ) {
+				if( !empty( $apre['Apre']['nomaide'] ) && in_array( $apre['Apre']['nomaide'], $this->Etatliquidatif->Apre->modelsFormation ) ) {
+					$typeformation = 'formation';
+				}
+				else {
+					$typeformation = 'horsformation';
+				}
+
+				$modeleodt = 'APRE/Paiement/paiement_'.$typeformation.'_beneficiaire.odt';
+			}
+
+			return $this->ged(
+				$apre,
+				$modeleodt,
+				false,
+				$options
+			);
+		}
+
+		/**
+		 * Retourne le PDF concernant le passage d'une APRE dans un état liquidatif.
+		 *
+		 * @param string $typeapre
+		 * @param integer $etatliquidatif_id
+		 * @param string $dest
+		 * @param integer $user_id
+		 * @param integer $page
+		 * @return string
+		 */
+		public function getDefaultCohortePdf( $typeapre, $etatliquidatif_id, $dest, $user_id, $page, $limit, $sort, $direction ) {
+			$method = 'qdDonneesApre'.Inflector::camelize( $typeapre ).'Gedooo';
+			$querydata = $this->Etatliquidatif->{$method}();
+			$querydata = Set::merge(
+				$querydata,
+				array(
+					'conditions' => array(
+						'Etatliquidatif.id' => $etatliquidatif_id,
+					),
+					'limit' => $limit
+				)
+			);
+
+			if( !empty( $sort ) && !empty( $direction ) ) {
+				$querydata['order'] = "{$sort} {$direction}";
+			}
+
+			$User = ClassRegistry::init( 'User' );
+			$dbo = $User->getDataSource( $User->useDbConfig );
+
+			$querydata['fields'] = Set::merge( $querydata['fields'], $User->fields() );
+			$querydata['joins'][] = array(
+				'table' => $dbo->fullTableName( $User ),
+				'alias' => $User->alias,
+				'type' => 'LEFT OUTER',
+				'conditions' => array(
+					'User.id' => $user_id
+				)
+			);
+
+			$deepAfterFind = $this->Etatliquidatif->Apre->deepAfterFind;
+			$this->Etatliquidatif->Apre->deepAfterFind = false;
+
+			$querydata['offset'] = ( ( $page ) <= 1 ? 0 : ( $querydata['limit'] * ( $page - 1 ) ) );
+			$apres = $this->Etatliquidatif->find( 'all', $querydata );
+
+			$this->Etatliquidatif->Apre->deepAfterFind = $deepAfterFind;
+
+//			if( $typeapre == 'forfaitaire' ) {
+				$key = 'forfaitaire';
+				$modeleodt = 'APRE/apreforfaitaire.odt';
+			/*}
+			else if( $typeapre == 'complementaire' && $dest == 'tiersprestataire' ) {
+				$key = 'etatliquidatif_tiers';
+				$modeleodt = 'APRE/Paiement/paiement_tiersprestataire.odt';
+				$nomfichierpdf = sprintf( 'paiement_tiersprestataire-%s.pdf', date( 'Y-m-d' ) );
+			}
+			else if( $typeapre == 'complementaire' && $dest == 'beneficiaire' ) {
+				$key = 'apreforfaitaire';
+				$modeleodt = 'APRE/Paiement/paiement_'.$typeformation.'_beneficiaire.odt';
+				$nomfichierpdf = sprintf( 'paiement_'.$typeformation.'_beneficiaire-%s.pdf', date( 'Y-m-d' ) );
+			}*/
+
+			// Traductions
+			$Option = ClassRegistry::init( 'Option' );
+			$options = array(
+				'Adresse' => array(
+					'typevoie' => $Option->typevoie()
+				),
+				'Apre' => array(
+					'natureaide' => $Option->natureAidesApres()
+				),
+				'Personne' => array(
+					'qual' => $Option->qual()
+				),
+				'Tiersprestataireapre' => array(
+					'typevoie' => $Option->typevoie()
+				)
+			);
+
+			return $this->ged(
+				array( $key => $apres ),
+				$modeleodt,
+				true,
+				$options
+			);
 		}
 	}
 ?>

@@ -1067,10 +1067,10 @@ msgstr "Sélection des APREs à passer en état liquidatif"
 msgid "Etatsliquidatifs:visualisationapres"
 msgstr "Visulaisation des APREs passées en état liquidatif"
 
-msgid "Etatsliquidatifs:impressiongedoooapres"
+msgid "Etatsliquidatifs:impression"
 msgstr "Impression des notifications"
 
-msgid "Etatsliquidatifs:impressioncohorte"
+msgid "Etatsliquidatifs:impressions"
 msgstr "Impression en cohorte des notifications"
 
 msgid "Etatsliquidatifs:validation"
