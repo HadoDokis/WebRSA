@@ -99,13 +99,12 @@
 			<tbody>
 				<?php foreach( $indicateurs as $index => $indicateur ):?>
 					<?php 
-						$adresse = Set::classicExtract( $indicateur, 'Adresse.numvoie' ).' '.Set::classicExtract( $typevoie, Set::classicExtract( $indicateur, 'Adresse.typevoie' ) ).' '.Set::classicExtract( $indicateur, 'Adresse.nomvoie' ).'<br /> '.Set::classicExtract( $indicateur, 'Adresse.compladr' ).'<br /> '.Set::classicExtract( $indicateur, 'Adresse.codepos' ).' '.Set::classicExtract( $indicateur, 'Adresse.locaadr' );
+						$adresse = Set::classicExtract( $indicateur, 'Adresse.numvoie' ).' '.Set::enum( Set::classicExtract( $indicateur, 'Adresse.typevoie' ), $typevoie ).' '.Set::classicExtract( $indicateur, 'Adresse.nomvoie' ).'<br /> '.Set::classicExtract( $indicateur, 'Adresse.compladr' ).'<br /> '.Set::classicExtract( $indicateur, 'Adresse.codepos' ).' '.Set::classicExtract( $indicateur, 'Adresse.locaadr' );
 					
 						echo $xhtml->tableCells(
 							array(
 								h( $indicateur['Dossier']['matricule'] ),
 								h( $indicateur['Personne']['nom_complet'] ),
-// 								h( $indicateur['Personne']['qual'].' '.$indicateur['Personne']['nom'].' '.$indicateur['Personne']['prenom']),
 								h( date_short( $indicateur['Personne']['dtnai'] ) ),
 								$adresse,
 								h( $indicateur['Personne']['qualcjt'].' '.$indicateur['Personne']['nomcjt'].' '.$indicateur['Personne']['prenomcjt']),
