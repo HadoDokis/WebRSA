@@ -26,10 +26,10 @@ App::import( 'Sanitize' );
 					$conditions[] = 'Dossierpcg66.etatdossierpcg = \'attinstr\' ';
 				}
 				else if( $statutAffectation == 'Affectationdossierpcg66::aimprimer' ) {
-					$conditions[] = '( Dossierpcg66.etatdossierpcg = \'decisionvalid\' ) AND ( Dossierpcg66.dateimpression IS NULL  )';
+					$conditions[] = '( Dossierpcg66.etatdossierpcg IN ( \'decisionvalid\', \'atttransmisop\' ) ) AND ( Dossierpcg66.dateimpression IS NULL  )';
 				}
 				else if( $statutAffectation == 'Affectationdossierpcg66::atransmettre' ) {
-					$conditions[] = '( Dossierpcg66.etatdossierpcg = \'decisionvalid\' ) AND ( Dossierpcg66.dateimpression IS NOT NULL  ) AND ( Dossierpcg66.istransmis = \'0\' )';
+					$conditions[] = '( Dossierpcg66.etatdossierpcg = \'atttransmisop\' ) AND ( Dossierpcg66.dateimpression IS NOT NULL  ) AND ( Dossierpcg66.istransmis = \'0\' )';
 				}
 			}
 

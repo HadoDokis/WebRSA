@@ -567,7 +567,10 @@
 		*/
 		public function updateDossierpcg66Dateimpression( $ids ) {
 			return $this->Dossierpcg66->updateAll(
-				array( 'Dossierpcg66.dateimpression' => "'".date( 'Y-m-d' )."'" ),
+				array(
+					'Dossierpcg66.dateimpression' => "'".date( 'Y-m-d' )."'",
+					'Dossierpcg66.etatdossierpcg' => '\'atttransmisop\''
+				),
 				array(
 					'Dossierpcg66.id IN ('
 						.$this->sq(
