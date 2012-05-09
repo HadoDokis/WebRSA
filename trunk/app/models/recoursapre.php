@@ -5,6 +5,17 @@
 
 		public $useTable = false;
 
+		public $actsAs = array(
+			'Gedooo.Gedooo',
+			'ModelesodtConditionnables' => array(
+				93 => array(
+					'APRE/DecisionComite/Recours/recoursOuibeneficiaire.odt',
+					'APRE/DecisionComite/Recours/recoursNonbeneficiaire.odt',
+					'APRE/DecisionComite/Recours/recoursreferent.odt',
+				)
+			)
+		);
+
 		/**
 		*
 		*/
@@ -204,6 +215,132 @@
 			);
 
 			return $query;
+		}
+
+		/**
+		 * Retourne le PDF de recours d'une APRE, pour un destinataire donné,
+		 * et contenant les données de l'utilisateur connecté.
+		 *
+		 * @param integer $id L'id de APRE
+		 * @param string $dest Le destinataire de l'impression (beneficiaire, referent)
+		 * @param integer $user_id L'id de l'utilisateur qui demande l'impression
+		 * @return string
+		 */
+		public function getDefaultPdf( $id, $dest, $user_id ) {
+			$Apre = ClassRegistry::init( 'Apre' );
+
+			$querydata = array(
+				'fields' => array_merge(
+					$Apre->fields(),
+					$Apre->ApreComiteapre->fields(),
+					$Apre->Personne->fields(),
+					$Apre->Structurereferente->fields(),
+					$Apre->Referent->fields(),
+					array(
+						'( '.$Apre->sqApreNomaide().' ) AS "Apre__Natureaide"'
+					),
+					$Apre->ApreComiteapre->Comiteapre->fields()
+				),
+				'conditions' => array(
+					'Apre.id' => $id,
+					'ApreComiteapre.id IN ( '.$Apre->ApreComiteapre->sqDernierComiteApre().' )',
+					'OR' => array(
+						'Adressefoyer.id IS NULL',
+						'Adressefoyer.id IN ( '.$Apre->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )',
+					)
+				),
+				'contain' => false,
+				'joins' => array(
+					$Apre->join( 'ApreComiteapre', array( 'type' => 'INNER' ) ),
+					$Apre->join( 'Personne', array( 'type' => 'INNER' ) ),
+					$Apre->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
+					$Apre->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ),
+					$Apre->ApreComiteapre->join( 'Comiteapre', array( 'type' => 'INNER' ) ),
+				)
+			);
+
+			$aidesApre = $Apre->aidesApre;
+			sort( $aidesApre );
+			foreach( $aidesApre as $aide ) {
+				$querydata['fields'] = array_merge( $querydata['fields'], $Apre->{$aide}->fields() );
+				$querydata['joins'][] = $Apre->join( $aide, array( 'type' => 'LEFT OUTER' ) );
+			}
+
+			$querydata['fields'] = array_merge(
+				$querydata['fields'],
+				$Apre->Personne->Foyer->Adressefoyer->Adresse->fields()
+			);
+
+			$querydata['joins'][] = $Apre->Personne->join( 'Foyer', array( 'type' => 'INNER' ) );
+			$querydata['joins'][] = $Apre->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) );
+			$querydata['joins'][] = $Apre->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) );
+
+			$deepAfterFind = $Apre->deepAfterFind;
+			$Apre->deepAfterFind = false;
+			$apre = $Apre->find( 'first', $querydata );
+			$Apre->deepAfterFind = $deepAfterFind;
+
+			if( empty( $apre ) ) {
+				$this->cakeError( 'error404' );
+			}
+
+			/// Récupération de l'utilisateur
+			$user = ClassRegistry::init( 'User' )->find(
+				'first',
+				array(
+					'conditions' => array(
+						'User.id' => $user_id
+					),
+					'contain' => false
+				)
+			);
+			$apre['User'] = $user['User'];
+
+			// Traductions
+			$Option = ClassRegistry::init( 'Option' );
+
+			// Traduction des noms de table en libellés de l'aide
+			$apre['Apre']['Natureaide'] = Set::enum( $apre['Apre']['Natureaide'], $Option->natureAidesApres() );
+			$apre['Apre']['Natureaide'] = "  - {$apre['Apre']['Natureaide']}\n";
+
+			$options = Set::merge(
+				array(
+					'Personne' => array(
+						'qual' => $Option->qual(),
+					),
+					'Adresse' => array(
+						'typevoie' => $Option->typevoie(),
+					),
+					'Prestation' => array(
+						'rolepers' => $Option->rolepers(),
+					),
+					'Foyer' => array(
+						'sitfam' => $Option->sitfam(),
+						'typeocclog' => $Option->typeocclog(),
+					),
+					'Structurereferente' => array(
+						'type_voie' =>  $Option->typevoie(),
+					),
+					'type' => array(
+						'voie' =>  $Option->typevoie(),
+					),
+				),
+				$Apre->ApreComiteapre->enums()
+			);
+
+			// Choix du modèle de document
+
+			// Paramètre pour savoir si demande de recours ou non
+			$recoursapre = Set::enum( Set::classicExtract( $apre, 'ApreComiteapre.recoursapre' ), $options['ApreComiteapre']['recoursapre'] );
+
+			if( $dest == 'beneficiaire' ) {
+				$modeleodt = 'APRE/DecisionComite/Recours/recours'.$recoursapre.$dest.'.odt';
+			}
+			else if( $dest == 'referent' ) {
+				$modeleodt = 'APRE/DecisionComite/Recours/recours'.$dest.'.odt';
+			}
+
+			return $this->ged( $apre, $modeleodt, false, $options );
 		}
 	}
 ?>

@@ -357,6 +357,8 @@ UPDATE acos SET alias = 'Apres66:impression' WHERE alias = 'Apres66:apre';
 UPDATE acos SET alias = 'Cohortescomitesapres:impression' WHERE alias = 'Cohortescomitesapres:notificationscomitegedooo';
 UPDATE acos SET alias = 'Cuis:impression' WHERE alias = 'Cuis:gedooo';
 UPDATE acos SET alias = 'Rendezvous:impression' WHERE alias = 'Rendezvous:gedooo';
+UPDATE acos SET alias = 'Recoursapres:impression' WHERE alias = 'Recoursapres:notificationsrecoursgedooo';
+
 
 -- *****************************************************************************
 COMMIT;

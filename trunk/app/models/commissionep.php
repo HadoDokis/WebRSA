@@ -1575,7 +1575,7 @@
 			if( Configure::read( 'Cg.departement' ) == 58 ) {
 				$options['Referentpropo']['qual'] = $options['Referentcer']['qual'] = $options['Referent']['qual'] = $options['Personne']['qual'];
 				$options['Structurereferentepropo']['type_voie'] = $options['Structurereferentecer']['type_voie'] = $options['Structurereferente']['type_voie'] = $options['Participant']['typevoie'];
-				$options['Type']['voie'] = $options['Structurereferente']['type_voie'];
+				$options['Type']['voie'] = $options['type']['voie'] = $options['Structurereferente']['type_voie'];
 				$options['Contratinsertion']['duree_engag'] = $options['Duree']['engag'] = ClassRegistry::init( 'Option' )->duree_engag_cg58();
 			}
 

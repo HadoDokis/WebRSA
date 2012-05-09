@@ -1709,7 +1709,7 @@ msgstr "Visualisation des recours APRE"
 msgid "Recoursapres:exportcsv"
 msgstr "Export CSV"
 
-msgid "Recoursapres:notificationsrecoursgedooo"
+msgid "Recoursapres:impression"
 msgstr "Impression en cohorte des notifications de recours"
 
 ###############################################################################

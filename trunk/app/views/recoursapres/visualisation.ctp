@@ -74,13 +74,13 @@
 							h( Set::classicExtract( $recours, 'ApreComiteapre.observationrecours' ) ),
 							$xhtml->printLink(
 								'Imprimer pour le bénéficiaire',
-								array( 'controller' => 'recoursapres', 'action' => 'notificationsrecoursgedooo', Set::classicExtract( $recours, 'ApreComiteapre.apre_id' ), 'dest' => 'beneficiaire' ),
-								$permissions->check( 'recoursapres', 'notificationsrecoursgedooo' )
+								array( 'controller' => 'recoursapres', 'action' => 'impression', Set::classicExtract( $recours, 'ApreComiteapre.apre_id' ), 'dest' => 'beneficiaire' ),
+								$permissions->check( 'recoursapres', 'impression' )
 							),
 							$xhtml->printLink(
 								'Imprimer pour le référent',
-								array( 'controller' => 'recoursapres', 'action' => 'notificationsrecoursgedooo', Set::classicExtract( $recours, 'ApreComiteapre.apre_id' ), 'dest' => 'referent' ),
-								$permissions->check( 'recoursapres', 'notificationsrecoursgedooo' )
+								array( 'controller' => 'recoursapres', 'action' => 'impression', Set::classicExtract( $recours, 'ApreComiteapre.apre_id' ), 'dest' => 'referent' ),
+								$permissions->check( 'recoursapres', 'impression' )
 							),
 							array( $innerTable, array( 'class' => 'innerTableCell' ) )
 						),

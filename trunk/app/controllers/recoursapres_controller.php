@@ -128,150 +128,28 @@
 			$this->set( compact( 'recoursapres' ) );
 		}
 
-
 		/**
-		* Notifications des Comités d'examen
-		**/
-
-		public function notificationsrecoursgedooo( $apre_id = null ) {
-			// TODO: error404/error500 si on ne trouve pas les données
-			$qual = $this->Option->qual();
-			$typevoie = $this->Option->typevoie();
-			$natureAidesApres = $this->Option->natureAidesApres();
-			$options = $this->ApreComiteapre->allEnumLists();
-			$this->set( 'options', $options );
-
-			$isRecours = null;
-
-			$apre = $this->Apre->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Apre.id' => $apre_id
-					)
-				)
-			);
-
-			unset( $apre['Apre']['Piecemanquante'] );
-			unset( $apre['Apre']['Piecepresente'] );
-			unset( $apre['Apre']['Piece'] );
-			unset( $apre['Pieceapre'] );
-			unset( $apre['Comiteapre'] );
-			unset( $apre['Relanceapre'] );
-
-			///Données nécessaire pour savoir quelles sont les aides liées à l'APRE Complémentaire
-			foreach( $this->Apre->aidesApre as $model ) {
-				if( ( $apre['Apre']['Natureaide'][$model] == 0 ) ){
-				unset( $apre['Apre']['Natureaide'][$model] );
-
-				}
-			}
-			$apre['Apre']['Natureaide'] = array_keys( $apre['Apre']['Natureaide'] );
-
-			foreach( $apre['Apre']['Natureaide'] as $i => $aides ){
-				$apre['Apre']['Natureaide'][$i] = Set::enum( $aides, $natureAidesApres );
-			}
-
-			$apre['Apre']['Natureaide'] = '  - '.implode( "\n  - ", $apre['Apre']['Natureaide'] )."\n";
-
-			///Données faisant le lien entre l'APRE et son comité
-			$aprecomiteapre = $this->ApreComiteapre->find(
-				'first',
-				array(
-					'conditions' => array(
-						'ApreComiteapre.apre_id' => $apre_id
-					)
-				)
-			);
-			$apre['ApreComiteapre'] = $aprecomiteapre['ApreComiteapre'];
-
-			///Données concernant le comité de l'APRE
-			$comiteapre = $this->Comiteapre->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Comiteapre.id' => Set::classicExtract( $apre, 'ApreComiteapre.comiteapre_id' )
-					)
-				)
-			);
-			$apre['Comiteapre'] = $comiteapre['Comiteapre'];
-			///Pour la date du comité
-			$apre['Comiteapre']['datecomite'] =  date_short( Set::classicExtract( $apre, 'Comiteapre.datecomite' ) );
-
-			///Données nécessaire pour obtenir l'adresse du bénéficiaire
-			$this->Adressefoyer->bindModel(
-				array(
-					'belongsTo' => array(
-						'Adresse' => array(
-							'className'     => 'Adresse',
-							'foreignKey'    => 'adresse_id'
-						)
-					)
-				)
-			);
-
-			$adresse = $this->Adressefoyer->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Adressefoyer.foyer_id' => Set::classicExtract( $apre, 'Personne.foyer_id' ),
-						'Adressefoyer.rgadr' => '01',
-					)
-				)
-			);
-			$apre['Adresse'] = $adresse['Adresse'];
-
-			///Pour la qualité des Personnes  Personne + Référent APRE
-			foreach( array( 'Referent.qual', 'Personne.qual' ) as $enumpath ) {
-				if( Set::check( $apre, $enumpath ) ) {
-					$value = Set::classicExtract( $apre, $enumpath );
-					if( !empty( $value ) ) {
-						$apre = Set::insert( $apre, $enumpath, Set::enum( $value, $qual ) );
-					}
-				}
-			}
-
-			///Pour l'adresse de la personne
-			if( !empty( $apre['Adresse']['typevoie'] ) ) {
-				$apre['Adresse']['typevoie'] = Set::classicExtract( $typevoie, Set::classicExtract( $apre, 'Adresse.typevoie' ) );
-			}
-
-			///Pour l'adresse de la structure référente
-			if( !empty( $apre['Structurereferente']['type_voie'] ) ) {
-				$apre['Structurereferente']['type_voie'] = Set::classicExtract( $typevoie, Set::classicExtract( $apre, 'Structurereferente.type_voie' ) );
-			}
-
-			///Paramètre nécessaire pour le bon choix du document à éditer
+		 * Impression d'un recours pour une demande d'APRE, pour un destinataire donné.
+		 *
+		 * @param integer $apre_id L'id de l'APRE
+		 * @return void
+		 */
+		public function impression( $apre_id = null ) {
 			$dest = Set::classicExtract( $this->params, 'named.dest' );
 
-			///Paramètre pour savoir si demande de recours ou non
-			$recoursapre = Set::enum( Set::classicExtract( $apre, 'ApreComiteapre.recoursapre' ), $options['recoursapre'] );
-			$this->set( 'recoursapre', $recoursapre );
+			$pdf = $this->Recoursapre->getDefaultPdf(
+				$apre_id,
+				$dest,
+				$this->Session->read( 'Auth.User.id' )
+			) ;
 
-			///Pour la date du comité
-			$apre['ApreComiteapre']['daterecours'] =  date_short( Set::classicExtract( $apre, 'ApreComiteapre.daterecours' ) );
-
-			/// Récupération de l'utilisateur
-			$user = $this->User->find(
-				'first',
-				array(
-					'conditions' => array(
-						'User.id' => $this->Session->read( 'Auth.User.id' )
-					),
-					'contain' => false
-				)
-			);
-			$apre['User'] = $user['User'];
-
-			if( $dest == 'beneficiaire' ) {
-				$modeleodt = 'APRE/DecisionComite/Recours/recours'.$recoursapre.$dest.'.odt';
+			if( !empty( $pdf ) ){
+				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'recoursapre_%d-%s-%s.pdf', $apre_id, $dest, date( 'Y-m-d' ) ) );
 			}
-			else if( $dest == 'referent' ) {
-				$modeleodt = 'APRE/DecisionComite/Recours/recours'.$dest.'.odt';
+			else {
+				$this->Session->setFlash( 'Impossible de générer l\'impression du recours d\'APRE.', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
 			}
-
-			$pdf = $this->Apre->ged( $apre, $modeleodt );
-			$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'recours-%s.pdf', date( 'Y-m-d' ) ) );
 		}
 	}
 ?>
