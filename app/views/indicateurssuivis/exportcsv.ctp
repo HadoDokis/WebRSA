@@ -1,5 +1,5 @@
 <?php
-//	$csv->preserveLeadingZerosInExcel = true;
+	$csv->preserveLeadingZerosInExcel = true;
 
 // 	function value( $array, $index ) {
 // 		$keys = array_keys( $array );
@@ -14,12 +14,10 @@
 
 	$csv->addRow( array(
 		'Numero CAF/MSA',
-		'Nom DEM',
-		'Prenom DEM',
-		'Date de naissance DEM',
+		'Nom / Prénom du demandeur',
+		'Date de naissance du demandeur',
 		'Adresse',
-		'Nom CJT',
-		'Prenom CJT',
+		'Nom / Prénom du conjoint',
 		'Date ouverture de droits',
 		'Ref. charge de l\'evaluation',
 		'Date orientation (COV)',
@@ -34,27 +32,27 @@
 	) );
 
 	foreach( $indicateurs as $indicateur ) {
-		$adresse = Set::extract( $indicateur, 'Adresse.numvoie' ).' '.Set::extract( $typevoie, Set::extract( $indicateur, 'Adresse.typevoie' ) ).' '.Set::extract( $indicateur, 'Adresse.nomvoie' ).' '.Set::extract( $indicateur, 'Adresse.compladr' ).' '.Set::extract( $indicateur, 'Adresse.codepos' ).' '.Set::extract( $indicateur, 'Adresse.locaadr' );
+		$adresse = Set::classicExtract( $indicateur, 'Adresse.numvoie' ).' '.Set::classicExtract( $typevoie, Set::classicExtract( $indicateur, 'Adresse.typevoie' ) ).' '.Set::classicExtract( $indicateur, 'Adresse.nomvoie' ).'<br /> '.Set::classicExtract( $indicateur, 'Adresse.compladr' ).'<br /> '.Set::classicExtract( $indicateur, 'Adresse.codepos' ).' '.Set::classicExtract( $indicateur, 'Adresse.locaadr' );
+		
+		$conjoint = $indicateur['Personne']['qualcjt'].' '.$indicateur['Personne']['nomcjt'].' '.$indicateur['Personne']['prenomcjt'];
 
-		$row = 	array(
+		$row = array(
 			$indicateur['Dossier']['matricule'],
-			$indicateur['Personne']['nom'],
-			$indicateur['Personne']['prenom'],
-			$indicateur['Personne']['dtnai'],
+			$indicateur['Personne']['nom_complet'],
+			date_short( $indicateur['Personne']['dtnai'] ),
 			$adresse,
-			$indicateur['Personne']['nomcjt'],
-			$indicateur['Personne']['prenomcjt'],
+			$conjoint,
 			date_short( $indicateur['Dossier']['dtdemrsa'] ),
-			is_null($indicateur['Orientstruct']['referent_id'] ) ? '' : Set::extract( $referents, Set::extract( $indicateur, 'Orientstruct.referent_id' ) ),
-			date_short( $indicateur['Cov58']['datecommission']),
+			$indicateur['Referentorient']['nom_complet'],
+			date_short( $indicateur['Orientstruct']['date_valid']),
 			$indicateur['Orientstruct']['rgorient'],
-			is_null($indicateur['PersonneReferent']['referent_id'] ) ? '' : Set::extract( $referents, Set::extract( $indicateur, 'PersonneReferent.referent_id' ) ),
+			$indicateur['Referentunique']['nom_complet'],
 			date_short( $indicateur['Contratinsertion']['dd_ci'] ),
 			date_short( $indicateur['Contratinsertion']['df_ci'] ),
 			$indicateur['Contratinsertion']['rg_ci'],
-			'-',	//h( date_short( $indicateur[''][''] ),
+			Set::enum( $indicateur['Historiqueetatpe']['etat'], $etatpe['etat'] ).' '.date_short( $indicateur['Historiqueetatpe']['date'] ),
 			date_short( $indicateur['Commissionep']['dateseance'] ),
-			is_null($indicateur['Dossierep']['themeep'] ) ? '' : Set::extract( $options['themeep'], $indicateur['Dossierep']['themeep']),								
+			!empty( $indicateur['Dossierep']['themeep'] ) ? Set::classicExtract( $options['themeep'], $indicateur['Dossierep']['themeep'] ) : null
 		);
 		$csv->addRow($row);
 	}

@@ -294,7 +294,8 @@
 					'Contratinsertion.df_ci',
 					'Contratinsertion.rg_ci',
 					'Historiqueetatpe.etat',
-					'( CASE WHEN "Historiqueetatpe"."etat" = \'inscription\' THEN "Historiqueetatpe"."date" ELSE NULL END ) AS "Historiqueetatpe__date"',
+					'Historiqueetatpe.date',
+// 					'( CASE WHEN "Historiqueetatpe"."etat" = \'inscription\' THEN "Historiqueetatpe"."date" ELSE NULL END ) AS "Historiqueetatpe__date"',
 					'Commissionep.dateseance',
 					'Dossierep.themeep'
 				),
