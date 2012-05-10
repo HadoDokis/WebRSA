@@ -1,13 +1,48 @@
 <?php
+	/**
+	 * Nouvelle façon de paramétrer la génération de documents PDF via Gedooo.
+	 *
+	 * Ci-dessous, l'ensemble des clés de configuration possibles.
+	 *
+	 * array(
+	 *	'method' => 'classic', // classic, unoconv, cloudooo
+	 *	// Ancien serveur Gedooo
+	 *	// 'wsdl' => 'http://gedooo.test.adullact.org:8080/axis2/services/OfficeService?wsdl',
+	 *	// Nouveau serveur Gedooo
+	 *	'wsdl' => 'http://gedooo.test.adullact.org:8880/ODFgedooo/OfficeService?wsdl',
+	 *	// Pour Unoconv
+	 *	'unoconv_bin' => '/home/cbuffin/Bureau/1/usr/bin/unoconv',
+	 *	// Pour Cloudooo
+	 *	'cloudooo_host' => '192.168.2.35',
+	 *	'cloudooo_port' => '8011'
+	 * )
+	 */
+
+	// Exemple de configuration avec l'ancien Gedooo
+	/*Configure::write(
+		'Gedooo',
+		array(
+			'method' => 'classic',
+			'wsdl' => 'http://gedooo.test.adullact.org:8080/axis2/services/OfficeService?wsdl',
+		)
+	);*/
+
+	// Exemple de configuration avec le nouveau Gedooo et unoconv
+	/*Configure::write(
+		'Gedooo',
+		array(
+			'method' => 'unoconv',
+			'wsdl' => 'http://gedooo.test.adullact.org:8880/ODFgedooo/OfficeService?wsdl',
+			'unoconv_bin' => '/home/cbuffin/Bureau/1/usr/bin/unoconv',
+		)
+	);*/
+
+	// Exemple de configuration avec le nouveau Gedooo et cloudooo
 	Configure::write(
 		'Gedooo',
 		array(
-			'method' => 'cloudooo', // classic (OK), unoconv (OK), cloudooo (OK)
-//			'wsdl' => 'http://gedooo.test.adullact.org:8080/axis2/services/OfficeService?wsdl',
+			'method' => 'cloudooo',
 			'wsdl' => 'http://gedooo.test.adullact.org:8880/ODFgedooo/OfficeService?wsdl',
-			// Pour Unoconv
-			'unoconv_bin' => '/home/cbuffin/Bureau/1/usr/bin/unoconv',
-			// Pour Cloudooo
 			'cloudooo_host' => '192.168.2.35',
 			'cloudooo_port' => '8011'
 		)
@@ -344,8 +379,8 @@
 	 */
 	Configure::write( 'Apre66.EmailPiecesmanquantes.from', 'emailaprefrom@cgxxxx.fr' );
 	Configure::write( 'Apre66.EmailPiecesmanquantes.replyto', Configure::read( 'Apre66.EmailPiecesmanquantes.from' ) );
-	
-		
+
+
 	/**
 	 * 	Délai pour la détection des CERs non validés et notifiés il y a 1 mois et demi
 	 */
