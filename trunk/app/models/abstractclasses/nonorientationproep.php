@@ -80,7 +80,6 @@
 							)
 						)
 						AND typesorients.id <> '.Configure::read( 'Typeorient.emploi_id' ).'
-						AND orientsstructs.date_valid <= \''.date( 'Y-m-d', strtotime( '- '.$nbmois.' month', time() ) ).'\'
 				)';
 			}
 			else if( $cg == 66 ){
@@ -187,25 +186,25 @@
 
 			// La personne ne possède pas de contrat validé en cours
 			// TODO: avec des sq
-			$conditions[] = 'Personne.id NOT IN (
-				SELECT contratsinsertion.personne_id
-					FROM contratsinsertion
-					WHERE
-						contratsinsertion.personne_id = "Personne"."id"
-						AND contratsinsertion.df_ci > NOW()
-						AND contratsinsertion.dd_ci < NOW()
-						AND contratsinsertion.decision_ci =\'V\'
-						AND contratsinsertion.id IN (
-							SELECT c.id
-								FROM contratsinsertion AS c
-								WHERE
-									c.personne_id = "Personne"."id"
-									AND c.decision_ci =\'V\'
-								ORDER BY dd_ci DESC
-								LIMIT 1
-
-						)
-				)';
+// 			$conditions[] = 'Personne.id NOT IN (
+// 				SELECT contratsinsertion.personne_id
+// 					FROM contratsinsertion
+// 					WHERE
+// 						contratsinsertion.personne_id = "Personne"."id"
+// 						AND contratsinsertion.df_ci > NOW()
+// 						AND contratsinsertion.dd_ci < NOW()
+// 						AND contratsinsertion.decision_ci =\'V\'
+// 						AND contratsinsertion.id IN (
+// 							SELECT c.id
+// 								FROM contratsinsertion AS c
+// 								WHERE
+// 									c.personne_id = "Personne"."id"
+// 									AND c.decision_ci =\'V\'
+// 								ORDER BY dd_ci DESC
+// 								LIMIT 1
+// 
+// 						)
+// 				)';
 
 			// La personne ne doit pas être en cours de passage en EP pour cette thématique
 			$modelName = $this->alias;
