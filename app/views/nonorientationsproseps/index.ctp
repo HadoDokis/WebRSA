@@ -44,8 +44,8 @@
 				echo $form->input( 'Filtre.referent_id', array( 'label' => 'Référent', 'type' => 'select', 'options' => $referents, 'empty' => true ) );
 
 			}
-			else{
-// 				echo $form->input( 'Filtre.dureenonreorientation', array( 'label' => 'Parcours social sans réorientation emploi depuis ', 'type' => 'select', 'options' => $nbmoisnonreorientation ) );
+			else if( Configure::read( 'Cg.departement' ) == 93 ) {
+				echo $form->input( 'Filtre.dureenonreorientation', array( 'label' => 'Parcours social sans réorientation emploi depuis ', 'type' => 'select', 'options' => $nbmoisnonreorientation ) );
 			}
 		?>
 	</fieldset>
