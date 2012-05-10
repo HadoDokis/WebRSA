@@ -23,7 +23,7 @@
 			$this->set( 'checkModelesOdtParametrables', $this->_checkModelesOdtParametrables() );
 			$this->set( 'checkExtensions', $this->_checkExtensions() );
 			$this->set( 'checkInis', $this->_checkInis() );
-			$this->set( 'checkGedooo', $this->Gedooo->check( false, false, true ) );
+			$this->set( 'checkGedooo', $this->Gedooo->check( false, false ) );
 			$this->set( 'checkPostgresql', $this->_checkPostgresql() );
 			$this->set( 'checkCritereCerDelaiAvantEcheance', $this->_checkCritereCerDelaiAvantEcheance() );
 			$this->set( 'checkFiltresdefaut', $this->_checkFiltresdefaut() );

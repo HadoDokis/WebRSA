@@ -1,6 +1,4 @@
 <?php
-	App::import( 'Core', 'HttpSocket' );
-
 	@set_time_limit( 0 );
 	// Mémoire maximum allouée à l'exécution de ce script
 	@ini_set( 'memory_limit', '512M' );
@@ -52,55 +50,60 @@
 		}
 
 		/**
-		* Vérification de l'état du serveur Gedooo.
-		*
-		* @param $asBoolean boolean Doit-on renvoyer un array avec les différentes vérifications, ou un résumé
-		* @param $setFlash boolean Doit-on afficher un message d'erreur s'il Gedooo est mal configuré
-		* @param $testServer boolean Doit-on tester une impression pour voir si Gedoo fonctionne correctement ?
-		*/
-
-		public function check( $asBoolean = false, $setFlash = false, $testServer = false ) {
-			$HttpSocket = new HttpSocket();
-			$result = @$HttpSocket->get( GEDOOO_WSDL );
-
-			$response = array(
-				'file_exists' => file_exists( GEDOOO_TEST_FILE ),
-				'status' => ( $HttpSocket->response['status']['code'] == 200 ),
-				'content-type' => ( $HttpSocket->response['header']['Content-Type'] == 'text/xml' ),
-			);
-
-			// Testons une impression, n'importe laquelle
-			if( $testServer ) {
-				$response['print'] = false;
-
-				if( $response['status'] && $response['content-type'] ) {
-					$User = ClassRegistry::init( 'User' );
-					if( !in_array( 'Gedooo', array_keys( Set::normalize( $User->actsAs ) ) ) ) {
-						$User->Behaviors->attach( 'Gedooo' );
-					}
-					$response['print'] = $User->ged( array(), basename( GEDOOO_TEST_FILE ) );
-					$response['print'] = preg_match( '/^%PDF\-[0-9]/m', $response['print'] );
+		 * Parcourt l'array de réponses renvoyée lors d'un appel à la méthode GedoooXXXBehavior::gedTests()
+		 * et renvoit true lorsque tous les éléments ont une clé 'success' à true, false sinon.
+		 *
+		 * @param array $response
+		 * @return boolean
+		 */
+		protected function _checkResponseAsBoolean( $response ) {
+			foreach( $response as $key => $return ) {
+				if( !$return['success'] ) {
+					return false;
 				}
 			}
+			return true;
+		}
+
+		/**
+		 * Vérification de l'état du serveur Gedooo.
+		 *
+		 * @param boolean $asBoolean Doit-on renvoyer un array avec les différentes vérifications, ou un résumé
+		 * @param boolean $setFlash Doit-on afficher un message d'erreur s'il Gedooo est mal configuré
+		 * @return mixed
+		 */
+		public function check( $asBoolean = false, $setFlash = false ) {
+			App::import( 'Behavior', array( 'Gedooo.Gedooo' ) );
+
+			$GedModel = ClassRegistry::init( 'User' );
+			$GedModel->Behaviors->attach( 'Gedooo' );
+			$response = @$GedModel->gedTests();
+
+			// FIXME: traductions
+			$traductions = array(
+				'status' => 'Accès au WebService',
+				'file_exists' => 'Présence du modèle de test',
+				'print' => 'Test d\'impression',
+			);
 
 			if( $setFlash ) {
-				if( !$response['file_exists'] ) {
-					$this->controller->Session->setFlash( 'Il n\'est pas certain que le serveur Gedooo fonctionne. Veuillez contacter votre administrateur système.', 'default', array( 'class' => 'notice' ) );
+				if( !$response[$traductions['file_exists']] ) {
+					$this->controller->Session->setFlash( 'Il n\'est pas certain que le serveur Gedooo fonctionne car le modèle de document de test n\'existe pas. Veuillez contacter votre administrateur système.', 'default', array( 'class' => 'notice' ) );
 				}
-				else if( !( $response['status'] && $response['content-type'] ) ) {
+				else if( !$response[$traductions['status']] ) {
 					$this->controller->Session->setFlash( 'Impossible de se connecter au serveur Gedooo. Veuillez contacter votre administrateur système.', 'default', array( 'class' => 'error' ) );
 				}
-				else if( $testServer && !$response['print'] ) { // FIXME: même message si le modèle odt n'a pas été trouvé
+				else if( !$response[$traductions['print']] ) {
 					$this->controller->Session->setFlash( 'Impossible d\'imprimer avec le serveur Gedooo. Veuillez contacter votre administrateur système.', 'default', array( 'class' => 'error' ) );
+				}
+				else {
+					if( !$this->_checkResponseAsBoolean( $response ) ) {
+						$this->controller->Session->setFlash( 'Impossible d\'imprimer avec le serveur Gedooo. Veuillez contacter votre administrateur système.', 'default', array( 'class' => 'error' ) );
+					}
 				}
 			}
 			else if( $asBoolean ) {
-				foreach( $response as $return ) {
-					if( !$return ) {
-						return false;
-					}
-				}
-				return true;
+				return $this->_checkResponseAsBoolean( $response );
 			}
 			else {
 				return $response;

@@ -139,7 +139,7 @@
 		*/
 
 		public function nouvelles() {
-			$this->Gedooo->check( false, true, true );
+			$this->Gedooo->check( false, true );
 			$this->_index( 'Non orienté' );
 		}
 
@@ -157,7 +157,7 @@
 		*/
 
 		public function enattente() {
-			$this->Gedooo->check( false, true, true );
+			$this->Gedooo->check( false, true );
 			$this->_index( 'En attente' );
 		}
 
@@ -165,7 +165,7 @@
 		*
 		*/
 		public function preconisationscalculables() {
-			$this->Gedooo->check( false, true, true );
+			$this->Gedooo->check( false, true );
 			$this->_index( 'Calculables' );
 		}
 
@@ -173,7 +173,7 @@
 		*
 		*/
 		public function preconisationsnoncalculables() {
-			$this->Gedooo->check( false, true, true );
+			$this->Gedooo->check( false, true );
 			$this->_index( 'Non calculables' );
 		}
 
