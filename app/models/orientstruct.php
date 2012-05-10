@@ -21,7 +21,13 @@
 				'suffix' => array( 'structurereferente_id', 'referent_id', 'structureorientante_id', 'referentorientant_id' ),
 			),
 			'Gedooo.Gedooo',
-			'StorablePdf'
+			'StorablePdf',
+			'ModelesodtConditionnables' => array(
+				66 => array(
+					'Orientation/changement_referent_msp.odt',
+					'Orientation/changement_referent_oa.odt'
+				)
+			)
 		);
 
 		public $validate = array(
@@ -690,6 +696,78 @@
 					'limit' => 1
 				)
 			);
+		}
+
+		
+		/**
+		 *
+		 * @param integer $apre_id
+		 * @return string
+		 */
+		public function getChangementReferentOrientation( $orientstruct_id ) {
+			$orientation = $this->find(
+				'first',
+				array(
+					'fields' => array_merge(
+						$this->fields(),
+						$this->Personne->fields(),
+						$this->Typeorient->fields(),
+						$this->Structurereferente->fields(),
+						$this->Referent->fields(),
+						$this->Personne->Foyer->Adressefoyer->Adresse->fields(),
+						$this->Personne->Foyer->fields(),
+						$this->Personne->Foyer->Dossier->fields()
+					),
+					'joins' => array(
+						$this->join( 'Personne', array( 'type' => 'INNER' ) ),
+						$this->join( 'Typeorient', array( 'type' => 'INNER' ) ),
+						$this->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
+						$this->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
+						$this->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
+						$this->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
+					),
+					'conditions' => array(
+						'Orientstruct.id' => $orientstruct_id,
+					),
+					'contain' => false
+				)
+			);
+
+			if( empty( $orientation ) ) {
+				return false;
+			}
+
+			// Options pour les traductions
+			$Option = ClassRegistry::init( 'Option' );
+			$options = array(
+				'Adresse' => array(
+					'typevoie' => $Option->typevoie()
+				),
+				'Personne' => array(
+					'qual' => $Option->qual()
+				),
+				'Referent' => array(
+					'qual' => $Option->qual()
+				),
+				'Structurereferente' => array(
+					'type_voie' => $Option->typevoie()
+				),
+				'type' => array(
+					'voie' => $Option->typevoie()
+				)
+			);
+
+			// Choix du modèle de document
+			$typestructure = Set::classicExtract( $orientation, 'Structurereferente.typestructure' );
+			$modeleodt = "Orientation/changement_referent_{$typestructure}.odt";
+
+debug($orientation);
+debug( $modeleodt );
+die();
+			// Génération du PDF
+			return $this->ged( $orientation, $modeleodt, false, $options );
 		}
 	}
 ?>

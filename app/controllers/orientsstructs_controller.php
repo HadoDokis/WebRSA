@@ -199,6 +199,13 @@
 					)
 				);
 
+				if( Configure::read( 'Cg.departement' ) == 66 ) {
+					$orientstruct[$this->Orientstruct->alias]['notifbenefcliquable'] = in_array (
+						$orientstruct['Typeorient']['parentid'],
+						Configure::read( 'Orientstruct.typeorientprincipale.SOCIAL' )
+					);
+				}
+				
 				$orientstructs[$key] = $orientstruct;
 			}
 			$dossier_id = Set::extract( $orientstructs, '0.Personne.Foyer.dossier_id' );
@@ -779,6 +786,28 @@
 			$success = $this->Orientstruct->delete( $id );
 			$this->_setFlashResult( 'Delete', $success );
 			$this->redirect( $this->referer() );
+		}
+		
+		/**
+		 * Impression d'une orientation simple.
+		 *
+		 * Méthode appelée depuis les vues:
+		 *	- cohortes/orientees
+		 *	- orientsstructs/index
+		 *
+		 * @param integer $id L'id de l'orientstruct que l'on souhaite imprimer.
+		 * @return void
+		 */
+		public function printChangementReferent( $id = null ) {
+			$pdf = $this->Orientstruct->getChangementReferentOrientation( $id );
+			
+			if( !empty( $pdf ) ){
+				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'Notification_Changement_Referent_%d-%s.pdf', $id, date( 'Y-m-d' ) ) );
+			}
+			else {
+				$this->Session->setFlash( 'Impossible de générer la notification.', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
+			}
 		}
 	}
 ?>
