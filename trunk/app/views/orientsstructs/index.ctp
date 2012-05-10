@@ -157,7 +157,7 @@
 
 	<?php if( !empty( $orientstructs ) ):?>
 		<h2>Orientations effectives</h2>
-		<table class="tooltips">
+		<table class="tooltips default2">
 			<thead>
 				<tr>
 					<th>Nom</th>
@@ -179,7 +179,11 @@
 						<th>COV ayant traitée le dossier</th>
 						<th>Observations de la COV</th>
 					<?php endif;?>
-					<th colspan="5" class="action">Actions</th>
+					<?php if( Configure::read( 'nom_form_ci_cg' ) == 'cg66' ):?>
+						<th colspan="6" class="action">Actions</th>
+					<?php else:?>
+						<th colspan="5" class="action">Actions</th>
+					<?php endif;?>
 				</tr>
 			</thead>
 			<tbody>
@@ -228,37 +232,97 @@
 							$cells[] = h( Set::classicExtract( $orientstruct, 'Cov58.observation' ) );
 						}
 						
-						array_push(
-							$cells,
-							$xhtml->editLink(
-								'Editer l\'orientation',
-								array( 'controller' => 'orientsstructs', 'action' => 'edit', $orientstruct['Orientstruct']['id'] ),
-								$permissions->check( 'orientsstructs', 'edit' ) && ( $orientstruct['Orientstruct']['rgorient'] == $rgorient_max )
-								&& !( Configure::read( 'Cg.departement' ) == 93 && isset( $reorientationep93 ) && !empty( $reorientationep93 ) )
-// 								&& !( Configure::read( 'Cg.departement' ) == 58 )
-								&& $ajout_possible
-							),
-							$xhtml->printLink(
-								'Imprimer la notification',
-								array( 'controller' => 'orientsstructs', 'action' => 'impression', $orientstruct['Orientstruct']['id'] ),
-								$permissions->check( 'orientsstructs', 'impression' ) && $orientstruct['Orientstruct']['imprime']
-							),
-							$xhtml->deleteLink(
-								'Supprimer l\'orientation',
-								array( 'controller' => 'orientsstructs', 'action' => 'delete', $orientstruct['Orientstruct']['id'] ),
-								( 
-									$permissions->check( 'orientsstructs', 'delete' )
-									&& ( $orientstruct['Orientstruct']['rgorient'] == $rgorient_max )
-									&& $last_orientstruct_suppressible
-								)
-							),
-							$xhtml->fileLink(
-								'Fichiers liés',
-								array( 'controller' => 'orientsstructs', 'action' => 'filelink', $orientstruct['Orientstruct']['id'] ),
-								$permissions->check( 'orientsstructs', 'filelink' )
-							),
-							h( '('.$nbFichiersLies.')' )
-						);
+
+						if( Configure::read( 'Cg.departement' ) == 66 ) {
+							array_push(
+								$cells,
+								$default2->button(
+									'edit',
+									array( 'controller' => 'orientsstructs', 'action' => 'edit', $orientstruct['Orientstruct']['id'] ),
+									array(
+										'enabled' => (
+											$permissions->check( 'orientsstructs', 'edit' ) && ( $orientstruct['Orientstruct']['rgorient'] == $rgorient_max )
+											&& !( Configure::read( 'Cg.departement' ) == 93 && isset( $reorientationep93 ) && !empty( $reorientationep93 ) )
+											&& $ajout_possible
+										)
+									)
+								),
+								$default2->button(
+									'print',
+									array( 'controller' => 'orientsstructs', 'action' => 'impression', $orientstruct['Orientstruct']['id'] ),
+									array(
+										'enabled' => (
+											( $permissions->check( 'orientsstructs', 'impression' ) == 1 )
+											&& $orientstruct['Orientstruct']['imprime']
+										)
+									)
+								),
+								$default2->button(
+									'notifbenef',
+									array( 'controller' => 'orientsstructs', 'action' => 'printChangementReferent',
+									$orientstruct['Orientstruct']['id'] ),
+									array(
+										'enabled' => (
+											( $permissions->check( 'orientsstructs', 'printChangementReferent' ) == 1 )
+											&& $orientstruct['Orientstruct']['notifbenefcliquable']
+										)
+									)
+								),
+								$default2->button(
+									'delete',
+									array( 'controller' => 'orientsstructs', 'action' => 'delete', $orientstruct['Orientstruct']['id'] ),
+									array(
+										'enabled' => (
+											$permissions->check( 'orientsstructs', 'delete' )
+											&& ( $orientstruct['Orientstruct']['rgorient'] == $rgorient_max )
+											&& $last_orientstruct_suppressible
+										)
+									)
+								),
+								$default2->button(
+									'filelink',
+									array( 'controller' => 'orientsstructs', 'action' => 'filelink', $orientstruct['Orientstruct']['id'] ),
+									array(
+										'enabled' => (
+											$permissions->check( 'orientsstructs', 'filelink' )
+										)
+									)
+								),
+								h( '('.$nbFichiersLies.')' )
+							);
+						}
+						else{
+							array_push(
+								$cells,
+								$xhtml->editLink(
+									'Editer l\'orientation',
+									array( 'controller' => 'orientsstructs', 'action' => 'edit', $orientstruct['Orientstruct']['id'] ),
+									$permissions->check( 'orientsstructs', 'edit' ) && ( $orientstruct['Orientstruct']['rgorient'] == $rgorient_max )
+									&& !( Configure::read( 'Cg.departement' ) == 93 && isset( $reorientationep93 ) && !empty( $reorientationep93 ) )
+									&& $ajout_possible
+								),
+								$xhtml->printLink(
+									'Imprimer la notification',
+									array( 'controller' => 'orientsstructs', 'action' => 'impression', $orientstruct['Orientstruct']['id'] ),
+									$permissions->check( 'orientsstructs', 'impression' ) && $orientstruct['Orientstruct']['imprime']
+								),
+								$xhtml->deleteLink(
+									'Supprimer l\'orientation',
+									array( 'controller' => 'orientsstructs', 'action' => 'delete', $orientstruct['Orientstruct']['id'] ),
+									( 
+										$permissions->check( 'orientsstructs', 'delete' )
+										&& ( $orientstruct['Orientstruct']['rgorient'] == $rgorient_max )
+										&& $last_orientstruct_suppressible
+									)
+								),
+								$xhtml->fileLink(
+									'Fichiers liés',
+									array( 'controller' => 'orientsstructs', 'action' => 'filelink', $orientstruct['Orientstruct']['id'] ),
+									$permissions->check( 'orientsstructs', 'filelink' )
+								),
+								h( '('.$nbFichiersLies.')' )
+							);
+						}
 						echo $xhtml->tableCells( $cells, array( 'class' => 'odd' ), array( 'class' => 'even' ) );
 					}
 				?>
