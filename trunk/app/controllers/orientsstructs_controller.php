@@ -750,21 +750,26 @@
 		}
 
 		/**
-		* Impression d'une orientation simple
-		*
-		* - dans cohortes/orientees -> cohortes/impression_individuelle
-		* - dans orientsstructs/index -> gedooos/orientstruct
-		*/
+		 * Impression d'une orientation simple.
+		 *
+		 * Méthode appelée depuis les vues:
+		 *	- cohortes/orientees
+		 *	- orientsstructs/index
+		 *
+		 * @param integer $id L'id de l'orientstruct que l'on souhaite imprimer.
+		 * @return void
+		 */
+		public function impression( $id = null ) {
+			$pdf = $this->Orientstruct->getStoredPdf( $id, 'date_impression' );
+			$pdf = ( isset( $pdf['Pdf']['document'] ) ? $pdf['Pdf']['document'] : null );
 
-		public function impression( $orientstruct_id = null ) {
-			$this->assert( !empty( $orientstruct_id ), 'error404' );
-
-			$pdf = $this->Orientstruct->getStoredPdf( $orientstruct_id, 'date_impression' );
-
-			$this->assert( !empty( $pdf ), 'error404' );
-			$this->assert( !empty( $pdf['Pdf']['document'] ), 'error500' ); // FIXME: ou en faire l'impression ?
-
-			$this->Gedooo->sendPdfContentToClient( $pdf['Pdf']['document'], "{$orientstruct_id}.pdf" );
+			if( !empty( $pdf ) ){
+				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'orientstruct_%d-%s.pdf', $id, date( 'Y-m-d' ) ) );
+			}
+			else {
+				$this->Session->setFlash( 'Impossible de générer l\'impression de l\'orientation.', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
+			}
 		}
 
 		/**
