@@ -250,7 +250,7 @@
 						$this->paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'traite', 'annule' );
 						break;
 				}
-                                
+
 				$commissionseps = $this->paginate( $this->Commissionep );
                                 $themeseps = $this->Commissionep->Ep->themes();
 
@@ -281,7 +281,7 @@
 						)
 					);
 					$commissionseps[$key]['Commissionep']['nbabsents'] = $nbabsents;
-                                        
+
                                         // Niveau de décision maximum, par commission
                                         $regroupementep = $commissionep['Ep']['Regroupementep'];
                                         $niveaudecisionmax = 'nontraite';
@@ -574,7 +574,7 @@
 				$this->redirect( $this->referer() );
 			}
 
-			if( !$this->Gedooo->check( true, false, true ) ) {
+			if( !$this->Gedooo->check( true, false ) ) {
 				$this->Session->setFlash( 'Le serveur d\'impression n\'est pas disponible ou ne fonctionne pas correctement.', 'default', array( 'class' => 'error' ) );
 			}
 			else {
