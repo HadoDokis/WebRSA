@@ -121,7 +121,7 @@
 					<td class="number"><?php echo h( $propoorientationcov58['Propoorientationcov58']['rgorient'] );?></td>
 					<td><?php echo h( Set::enum( $propoorientationcov58['Passagecov58']['etatdossiercov'], $optionsdossierscovs58['Passagecov58']['etatdossiercov'] ) );?></td>
 					<td><?php echo $default->button( 'edit', array( 'controller' => 'proposorientationscovs58', 'action' => 'edit', $propoorientationcov58['Personne']['id'] ), array( 'enabled' => ( $propoorientationcov58['Passagecov58']['etatdossiercov'] != 'associe' ) ) );?></td>
-					<td><?php echo $default->button( 'delete', array( 'controller' => 'proposorientationscovs58', 'action' => 'delete', $propoorientationcov58['Personne']['id'] ), array( 'enabled' => ( $propoorientationcov58['Passagecov58']['etatdossiercov'] != 'associe' ) ), 'Confirmer ?' );?></td>
+					<td><?php echo $default->button( 'delete', array( 'controller' => 'proposorientationscovs58', 'action' => 'delete', $propoorientationcov58['Propoorientationcov58']['id'] ), array( 'enabled' => empty( $propoorientationcov58['Passagecov58']['etatdossiercov'] ) ), 'Confirmer ?' );?></td>
 				</tr>
 			</tbody>
 		</table>

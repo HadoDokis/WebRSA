@@ -499,10 +499,11 @@
 		}
 
 		/**
-		* Suppression du rendez-vous et du dossier d'EP lié si celui-ci n'est pas
-		* associé à un passage en commission d'EP
-		*/
-
+		 * Suppression du rendez-vous et du dossier d'EP lié si celui-ci n'est pas
+		 * associé à un passage en commission d'EP
+		 *
+		 * @param integer $id L'id du rendez-vous que l'on souhaite supprimer
+		 */
 		public function delete( $id ) {
 			$rendezvous = $this->Rendezvous->find(
 				'first',
@@ -517,6 +518,8 @@
 				)
 			);
 			$success = true;
+
+			$this->Rendezvous->begin();
 
 			if ( Configure::read( 'Cg.departement' ) == 58 ) {
 				$dossierep = $this->Rendezvous->Sanctionrendezvousep58->find(
@@ -538,9 +541,16 @@
 					$success = $this->Rendezvous->Sanctionrendezvousep58->Dossierep->delete( $dossierep['Sanctionrendezvousep58']['dossierep_id'] ) && $success;
 				}
 			}
+
 			$success = $this->Rendezvous->delete( $id ) && $success;
 
-			$this->_setFlashResult( 'Save', $success );
+			$this->_setFlashResult( 'Delete', $success );
+			if( $success ) {
+				$this->Rendezvous->commit();
+			}
+			else {
+				$this->Rendezvous->rollback();
+			}
 			$this->redirect( array(  'controller' => 'rendezvous','action' => 'index', $rendezvous['Rendezvous']['personne_id'] ) );
 		}
 

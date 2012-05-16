@@ -182,7 +182,7 @@
 			$dossierep = $this->Sanctionep58->find(
 				'first',
 				array(
-					'condtions' => array(
+					'conditions' => array(
 						'Sanctionep58.id' => $sanctionep58_id
 					),
 					'contain' => array(
