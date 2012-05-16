@@ -413,7 +413,13 @@
 			}
 		}
 
-		public function delete( $personne_id ) {
+		/**
+		 * Suppression de la proposition de contrat d'insertion en COV lorsque le dossier COV n'est pas
+		 * encore attaché à une COV.
+		 *
+		 * @param integer $propocontratinsertioncov58_id L'id de la proposition de contrat d'insertion
+		 */
+		public function delete( $propocontratinsertioncov58_id ) {
 			$propocontratinsertioncov58 = $this->Propocontratinsertioncov58->find(
 				'first',
 				array(
@@ -421,30 +427,27 @@
 						'Propocontratinsertioncov58.id',
 						'Propocontratinsertioncov58.dossiercov58_id'
 					),
-					'joins' => array(
-						array(
-							'table' => 'dossierscovs58',
-							'alias' => 'Dossiercov58',
-							'type' => 'INNER',
-							'conditions' => array(
-								'Dossiercov58.id = Propocontratinsertioncov58.dossiercov58_id',
-								'Dossiercov58.personne_id' => $personne_id
-							)
-						)
-					),
 					'contain' => false,
-					'order' => array( 'Propocontratinsertioncov58.df_ci DESC' )
+					'conditions' => array(
+						'Propocontratinsertioncov58.id' => $propocontratinsertioncov58_id
+					)
 				)
 			);
-// debug($propocontratinsertioncov58);
-// die();
-			$success = true;
-			$success = $this->Propocontratinsertioncov58->delete( $propocontratinsertioncov58['Propocontratinsertioncov58']['id'] ) && $success;
+
+			$this->Propocontratinsertioncov58->begin();
+
+			$success = $this->Propocontratinsertioncov58->delete( $propocontratinsertioncov58['Propocontratinsertioncov58']['id'] );
 			$success = $this->Propocontratinsertioncov58->Dossiercov58->delete( $propocontratinsertioncov58['Propocontratinsertioncov58']['dossiercov58_id'] ) && $success;
 
-			$this->_setFlashResult( 'Save', $success );
+			$this->_setFlashResult( 'Delete', $success );
 
-			$this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index', $personne_id ) );
+			if( $success ) {
+				$this->Propocontratinsertioncov58->commit();
+			}
+			else {
+				$this->Propocontratinsertioncov58->rollback();
+			}
+			$this->redirect( $this->referer() );
 		}
 	}
 ?>

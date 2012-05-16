@@ -279,17 +279,37 @@
 		}
 
 		/**
-		*
-		*/
-
+		 * Suppression d'un dossier d'EP pour cette thématique dès lors que ce dossier ne possède pas
+		 * de passage en commission EP.
+		 *
+		 * @param integer $id L'id de l'entrée dans la table de la thématique.
+		 * @return void
+		 */
 		public function delete( $id ) {
 			$this->Reorientationep93->begin();
-			$success = true;
-			$reorientationep93 = $this->Reorientationep93->find( 'first', array( 'condition' => array( 'Reorientationep93.id' => $id ), 'contain' => false ) );
-			$success = $this->Reorientationep93->delete( $id ) && $success;
-			if( !empty( $reorientationep93['Reorientationep93']['dossierep_id'] ) ) {
-				$success = $this->Reorientationep93->Dossierep->delete( $reorientationep93['Reorientationep93']['dossierep_id'] ) && $success;
-			}
+
+			$reorientationep93 = $this->Reorientationep93->find(
+				'first',
+				array(
+					'conditions' => array(
+						"Reorientationep93.id" => $id
+					),
+					'contain' => array(
+						'Dossierep' => array(
+							'Passagecommissionep'
+						)
+					)
+				)
+			);
+
+			// L'enregistrement existe bien
+			$this->assert( !empty( $reorientationep93 ), 'error404' );
+
+			// Le dossier ne possède pas encore de passage en commission
+			$this->assert( empty( $reorientationep93['Dossierep']['Passagecommissionep'] ), 'error500' );
+
+			$success = $this->Reorientationep93->Dossierep->delete( $reorientationep93['Reorientationep93']['dossierep_id'] );
+
 			$this->_setFlashResult( 'Delete', $success );
 			if ( $success ) {
 				$this->Reorientationep93->commit();

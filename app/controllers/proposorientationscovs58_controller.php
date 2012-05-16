@@ -162,7 +162,13 @@
 			$this->render( $this->action, null, '_add_edit' );
 		}
 
-		public function delete( $personne_id ) {
+		/**
+		 * Suppression de la proposition d'orientation en COV lorsque le dossier COV n'est pas encore attaché
+		 * à une COV.
+		 *
+		 * @param integer $propoorientationcov58_id L'id de la proposition d'orientation
+		 */
+		public function delete( $propoorientationcov58_id ) {
 			$propoorientationcov58 = $this->Propoorientationcov58->find(
 				'first',
 				array(
@@ -170,29 +176,27 @@
 						'Propoorientationcov58.id',
 						'Propoorientationcov58.dossiercov58_id'
 					),
-					'joins' => array(
-						array(
-							'table' => 'dossierscovs58',
-							'alias' => 'Dossiercov58',
-							'type' => 'INNER',
-							'conditions' => array(
-								'Dossiercov58.id = Propoorientationcov58.dossiercov58_id',
-								'Dossiercov58.personne_id' => $personne_id
-							)
-						)
-					),
 					'contain' => false,
-					'order' => array( 'Propoorientationcov58.rgorient DESC' )
+					'conditions' => array(
+						'Propoorientationcov58.id' => $propoorientationcov58_id
+					)
 				)
 			);
 
-			$success = true;
-			$success = $this->Propoorientationcov58->delete( $propoorientationcov58['Propoorientationcov58']['id'] ) && $success;
+			$this->Propoorientationcov58->begin();
+
+			$success = $this->Propoorientationcov58->delete( $propoorientationcov58['Propoorientationcov58']['id'] );
 			$success = $this->Propoorientationcov58->Dossiercov58->delete( $propoorientationcov58['Propoorientationcov58']['dossiercov58_id'] ) && $success;
 
-			$this->_setFlashResult( 'Save', $success );
+			$this->_setFlashResult( 'Delete', $success );
 
-			$this->redirect( array( 'controller' => 'orientsstructs', 'action' => 'index', $personne_id ) );
+			if( $success ) {
+				$this->Propoorientationcov58->commit();
+			}
+			else {
+				$this->Propoorientationcov58->rollback();
+			}
+			$this->redirect( $this->referer() );
 		}
 	}
 ?>

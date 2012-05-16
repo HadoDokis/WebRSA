@@ -23,16 +23,37 @@
 		}
 
 		/**
+		 * Suppression d'un dossier d'EP pour cette thématique dès lors que ce dossier ne possède pas
+		 * de passage en commission EP.
 		 *
+		 * @param integer $regressionorientationep_id L'id de l'entrée dans la table de la thématique.
+		 * @return void
 		 */
 		public function delete( $regressionorientationep_id ) {
 			$this->{$this->modelClass}->begin();
-			$success = true;
-			$regressionorientationep = $this->{$this->modelClass}->find( 'first', array( 'condition' => array( $this->modelClass.'.id' => $regressionorientationep_id ), 'contain' => false ) );
-			$success = $this->{$this->modelClass}->delete( $regressionorientationep_id ) && $success;
-			if( !empty( $regressionorientationep[$this->modelClass]['dossierep_id'] ) ) {
-				$success = $this->{$this->modelClass}->Dossierep->delete( $regressionorientationep[$this->modelClass]['dossierep_id'] ) && $success;
-			}
+
+			$regressionorientationep = $this->{$this->modelClass}->find(
+				'first',
+				array(
+					'conditions' => array(
+						"{$this->modelClass}.id" => $regressionorientationep_id
+					),
+					'contain' => array(
+						'Dossierep' => array(
+							'Passagecommissionep'
+						)
+					)
+				)
+			);
+
+			// L'enregistrement existe bien
+			$this->assert( !empty( $regressionorientationep ), 'error404' );
+
+			// Le dossier ne possède pas encore de passage en commission
+			$this->assert( empty( $regressionorientationep['Dossierep']['Passagecommissionep'] ), 'error500' );
+
+			$success = $this->{$this->modelClass}->Dossierep->delete( $regressionorientationep[$this->modelClass]['dossierep_id'] );
+
 			$this->_setFlashResult( 'Delete', $success );
 			if ( $success ) {
 				$this->{$this->modelClass}->commit();
