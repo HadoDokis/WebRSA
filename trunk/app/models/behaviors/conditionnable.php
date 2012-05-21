@@ -65,7 +65,7 @@
 					if( is_array( $search['Dossier'][$critereDossier] ) && !empty( $search['Dossier'][$critereDossier]['day'] ) && !empty( $search['Dossier'][$critereDossier]['month'] ) && !empty( $search['Dossier'][$critereDossier]['year'] ) ) {
 						$conditions["Dossier.{$critereDossier}"] = "{$search['Dossier'][$critereDossier]['year']}-{$search['Dossier'][$critereDossier]['month']}-{$search['Dossier'][$critereDossier]['day']}";
 					}
-					else if( is_int( $search['Dossier'][$critereDossier] ) && isset( $search['Dossier']['dtdemrsa_from'] ) && isset( $search['Dossier']['dtdemrsa_to'] ) ) {
+					else if( ( is_int( $search['Dossier'][$critereDossier] ) || is_bool( $search['Dossier'][$critereDossier] ) || ( $search['Dossier'][$critereDossier] == '1' ) ) && isset( $search['Dossier']['dtdemrsa_from'] ) && isset( $search['Dossier']['dtdemrsa_to'] ) ) {
 						$search['Dossier']['dtdemrsa_from'] = $search['Dossier']['dtdemrsa_from']['year'].'-'.$search['Dossier']['dtdemrsa_from']['month'].'-'.$search['Dossier']['dtdemrsa_from']['day'];
 						$search['Dossier']['dtdemrsa_to'] = $search['Dossier']['dtdemrsa_to']['year'].'-'.$search['Dossier']['dtdemrsa_to']['month'].'-'.$search['Dossier']['dtdemrsa_to']['day'];
 

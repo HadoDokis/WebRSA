@@ -1008,30 +1008,42 @@ function changeColspanFormAnnuleReporteEps( idColumnToChangeColspan, colspanMax,
 /**
 * Permet de cocher un ensemble de cases à cocher.
 * @param selecteur Le sélecteur CSS pour obtenir les cases à cocher (default: input[type="checkbox"])
+* @param simulate Lorsqu'il est à true, permet de simuler l'action de click (default: false)
 */
 
-function toutCocher( selecteur ) {
+function toutCocher( selecteur, simulate ) {
 	if( selecteur == undefined ) {
 		selecteur = 'input[type="checkbox"]';
 	}
 
 	$$( selecteur ).each( function( checkbox ) {
-		$( checkbox ).checked = true;
+		if( simulate != true ) {
+			$( checkbox ).checked = true;
+		}
+		else if( $( checkbox ).checked != true ) {
+			$( checkbox ).simulate( 'click' );
+		}
 	} );
 }
 
 /**
 * Permet de décocher un ensemble de cases à cocher.
 * @param selecteur Le sélecteur CSS pour obtenir les cases à cocher (default: input[type="checkbox"])
+* @param simulate Lorsqu'il est à true, permet de simuler l'action de click (default: false)
 */
 
-function toutDecocher( selecteur ) {
+function toutDecocher( selecteur, simulate ) {
 	if( selecteur == undefined ) {
 		selecteur = 'input[type="checkbox"]';
 	}
 
 	$$( selecteur ).each( function( checkbox ) {
-		$( checkbox ).checked = false;
+		if( simulate != true ) {
+			$( checkbox ).checked = false;
+		}
+		else if( $( checkbox ).checked != false ) {
+			$( checkbox ).simulate( 'click' );
+		}
 	} );
 }
 
