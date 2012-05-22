@@ -5,7 +5,12 @@
 
 		public $actsAs = array(
 			'Autovalidate',
-			'Containable'
+			'Containable',
+			'Enumerable' => array(
+				'fields' => array(
+					'themecov58'
+				)
+			)
 		);
 
 		public $belongsTo = array(

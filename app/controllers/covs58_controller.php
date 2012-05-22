@@ -325,32 +325,25 @@
 		*
 		*/
 
-		public function impressiondecision( $dossiercov58_id ) {
-			$themecov58 = $this->Cov58->Passagecov58->Dossiercov58->Themecov58->find(
+		public function impressiondecision( $passagecov58_id ) {
+
+			$passagecov58 = $this->Cov58->Passagecov58->find(
 				'first',
 				array(
-					'fields' => array(
-						'Themecov58.name'
-					),
 					'conditions' => array(
-						'Themecov58.id IN ( '.$this->Cov58->Passagecov58->Dossiercov58->sq(
-							array(
-								'fields' => array(
-									'dossierscovs58.themecov58_id'
-								),
-								'alias' => 'dossierscovs58',
-								'conditions' => array(
-									'dossierscovs58.id' => $dossiercov58_id
-								)
-							)
-						).' )'
+						'Passagecov58.id' => $passagecov58_id
 					),
-					'contain' => false
+					'contain' => array(
+						'Dossiercov58' => array(
+							'Themecov58'
+						)
+					)
 				)
 			);
-			$modeleTheme = Inflector::classify( $themecov58['Themecov58']['name'] );
+			$modeleTheme = $passagecov58['Dossiercov58']['themecov58'];
+			$modeleTheme = Inflector::classify( $modeleTheme );
 
-			$pdf = $this->Cov58->Passagecov58->Dossiercov58->{$modeleTheme}->getPdfDecision( $dossiercov58_id );
+			$pdf = $this->Cov58->Passagecov58->Dossiercov58->{$modeleTheme}->getPdfDecision( $passagecov58_id );
 
 			if( $pdf ) {
 				$this->Gedooo->sendPdfContentToClient( $pdf, 'pv' );

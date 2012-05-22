@@ -97,7 +97,7 @@
 		*
 		*/
 
-		public function listOptions( $conditions ) {
+		public function listOptions( $conditions = array() ) {
 			$options = $this->find(
 				'list',
 				array (

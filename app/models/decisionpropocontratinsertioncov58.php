@@ -10,7 +10,8 @@
 			'ValidateTranslate',
 			'Formattable' => array(
 				'suffix' => array(
-					'structurereferente_id'
+					'structurereferente_id',
+					'referent_id'
 				)
 			),
 			'Enumerable' => array(
