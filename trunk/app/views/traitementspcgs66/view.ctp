@@ -45,7 +45,7 @@
 		echo $fileuploader->results( Set::classicExtract( $traitementpcg66, 'Fichiermodule' ) );
 
 		echo '<h2>'.__d( 'traitementpcg66', 'Traitementpcg66.ficheanalyse', true ).'</h2>';
-		if( empty( $traitementpcg66['Traitementpcg66']['ficheanalyse'] ) ) {
+		if( !empty( $traitementpcg66['Traitementpcg66']['typetraitement'] ) && ( $traitementpcg66['Traitementpcg66']['typetraitement'] != 'analyse' ) ){
 			echo '<p class="notice">Pas de fiche d\'analyse.</p>';
 		}
 		else {
@@ -53,11 +53,10 @@
 		}
 
 		echo '<h2>'.__d( 'traitementpcg66', 'Traitementpcg66.hasrevenu', true ).'</h2>';
-		if( empty( $traitementpcg66['Traitementpcg66']['hasrevenu'] ) ) {
+		if( !empty( $traitementpcg66['Traitementpcg66']['typetraitement'] ) && ( $traitementpcg66['Traitementpcg66']['typetraitement'] != 'revenu' ) ) {
 			echo '<p class="notice aere">Pas de revenu.</p>';
 		}
 		else {
-			// FIXME: calculs intermédiaires, taux, ... + vérifier
 			$regime = Set::enum( $traitementpcg66['Traitementpcg66']['regime'], $options['Traitementpcg66']['regime'] );
 
 			switch( $traitementpcg66['Traitementpcg66']['regime'] ) {

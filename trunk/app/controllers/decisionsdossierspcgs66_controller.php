@@ -8,7 +8,7 @@
 
 		public $components = array( 'Default', 'Gedooo.Gedooo' );
 
-		public $helpers = array( 'Default2', 'Ajax', 'Fileuploader' );
+		public $helpers = array( 'Default2', 'Ajax', 'Fileuploader', 'Locale' );
 		public $uses = array( 'Decisiondossierpcg66', 'Option', 'Pdf'  );
 
 		public $aucunDroit = array( 'ajaxproposition' );
@@ -26,7 +26,8 @@
 			$options = array_merge(
 				$options,
 				$this->Decisiondossierpcg66->Dossierpcg66->Personnepcg66->Traitementpcg66->Decisiontraitementpcg66->enums(),
-				$this->Decisiondossierpcg66->Dossierpcg66->Decisiondefautinsertionep66->enums()
+				$this->Decisiondossierpcg66->Dossierpcg66->Decisiondefautinsertionep66->enums(),
+				$this->Decisiondossierpcg66->Dossierpcg66->Personnepcg66->Traitementpcg66->enums()
 			);
 			$listdecisionpdo = $this->Decisiondossierpcg66->Decisionpdo->find( 'list'/*, array( 'fields' => array( 'Decisionpdo.name' )*/ );
 			$typersapcg66 = $this->Decisiondossierpcg66->Typersapcg66->find( 'list' );
@@ -262,7 +263,6 @@
 						foreach( $this->data['Decisiondossierpcg66Decisionpersonnepcg66'] as $joinTable ) {
 							if ( isset( $this->data['Decisiondossierpcg66']['validationproposition'] ) && $this->data['Decisiondossierpcg66']['validationproposition'] == 'O' ) {
 								$this->Decisiondossierpcg66->Dossierpcg66->Personnepcg66->Personnepcg66Situationpdo->Decisionpersonnepcg66->id = $joinTable['decisionpersonnepcg66_id'] && $saved;
-	// 							$saved = $this->Decisiondossierpcg66->Dossierpcg66->Personnepcg66->Traitementpcg66->Decisiontraitementpcg66->saveField( 'actif', '0' ) && $saved;
 							}
 							if ( $this->action == 'add' ) {
 								$joinTable['decisiondossierpcg66_id'] = $this->Decisiondossierpcg66->id;
@@ -296,101 +296,6 @@
 				$this->data = $decisiondossierpcg66;
 			}
 
-// 			if ( $this->action == 'add' ) {
-// 				$joinsEdit = array();
-// 				$traitementsConditions = array(
-// 					'Traitementpcg66.annule' => 'N',
-// 					'Traitementpcg66.id IN ('.$this->Decisiondossierpcg66->Dossierpcg66->Personnepcg66->Traitementpcg66->Decisiontraitementpcg66->sq(
-// 						array(
-// 							'alias' => 'decisionstraitementspcgs66',
-// 							'fields' => array(
-// 								'decisionstraitementspcgs66.traitementpcg66_id'
-// 							),
-// 							'conditions' => array(
-// 								'decisionstraitementspcgs66.id IN (
-// 									(
-// 										SELECT
-// 												dernieredecisionstraitementspcgs66.id
-// 											FROM
-// 												decisionstraitementspcgs66 AS dernieredecisionstraitementspcgs66
-// 											WHERE
-// 												dernieredecisionstraitementspcgs66.traitementpcg66_id = Traitementpcg66.id
-// 											ORDER BY dernieredecisionstraitementspcgs66.created DESC
-// 											LIMIT 1
-// 									)
-// 									INTERSECT (
-// 										SELECT
-// 												decisionstraitementspcgs66conforme.id
-// 											FROM
-// 												decisionstraitementspcgs66 AS decisionstraitementspcgs66conforme
-// 											WHERE
-// 												decisionstraitementspcgs66conforme.traitementpcg66_id = Traitementpcg66.id
-// 												AND decisionstraitementspcgs66conforme.actif = \'1\'
-// 									)
-// 								)'
-// 							)
-// 						)
-// 					).' )'
-// 				);
-// 				$decisionsTraitementsConditions = array(
-// 					'Decisiontraitementpcg66.traitementpcg66_id = Traitementpcg66.id',
-// 					'Decisiontraitementpcg66.actif' => 1
-// 				);
-// 			}
-// 			else {
-// 				$joinsEdit = array(
-// 					'table' => 'decisionsdossierspcgs66_decisionstraitementspcgs66',
-// 					'alias' => 'Decisiondossierpcg66Decisionpersonnepcg66',
-// 					'type' => 'INNER',
-// 					'conditions' => array(
-// 						'Decisiondossierpcg66Decisionpersonnepcg66.decisiontraitementpcg66_id = Decisiontraitementpcg66.id',
-// 						'Decisiondossierpcg66Decisionpersonnepcg66.decisiondossierpcg66_id' => $decisiondossierpcg66_id
-// 					)
-// 				);
-// 				$traitementsConditions = array();
-// 				$decisionsTraitementsConditions = array(
-// 					'Decisiontraitementpcg66.traitementpcg66_id = Traitementpcg66.id'
-// 				);
-// 			}
-// 
-// 			$joins = array_merge( Set::filter(
-// 				array(
-// 					array(
-// 						'table' => 'personnes',
-// 						'alias' => 'Personne',
-// 						'type' => 'INNER',
-// 						'conditions' => array(
-// 							'Personne.id = Personnepcg66.personne_id'
-// 						)
-// 					),
-// 					array(
-// 						'table' => 'traitementspcgs66',
-// 						'alias' => 'Traitementpcg66',
-// 						'type' => 'INNER',
-// 						'conditions' => array_merge( Set::filter(
-// 							array(
-// 								'Personnepcg66.id = Traitementpcg66.personnepcg66_id'
-// 							),
-// 							$traitementsConditions
-// 						) )
-// 					),
-// 					array(
-// 						'table' => 'descriptionspdos',
-// 						'alias' => 'Descriptionpdo',
-// 						'type' => 'INNER',
-// 						'conditions' => array(
-// 							'Descriptionpdo.id = Traitementpcg66.descriptionpdo_id'
-// 						)
-// 					),
-// 					array(
-// 						'table' => 'decisionstraitementspcgs66',
-// 						'alias' => 'Decisiontraitementpcg66',
-// 						'type' => 'INNER',
-// 						'conditions' => $decisionsTraitementsConditions
-// 					)
-// 				),
-// 				array( $joinsEdit )
-// 			) );
 			$personnespcgs66 = $this->Decisiondossierpcg66->Dossierpcg66->Personnepcg66->find(
 				'all',
 				array(
@@ -405,6 +310,19 @@
 					)
 				)
 			);
+			
+			//Liste des traitements
+			$listeFicheAReporter = array();
+			foreach( $personnespcgs66 as $i => $personnepcg66 ) {
+				if( !empty( $personnepcg66['Traitementpcg66'] ) ) {
+					foreach( $personnepcg66['Traitementpcg66'] as $traitementpcg66 ){
+						if( $traitementpcg66['reversedo'] == 1 ){
+							$listeFicheAReporter[] = $traitementpcg66;
+						}
+					}
+				}
+			}
+			$this->set( compact( 'listeFicheAReporter' ) );
 
 			// avistechniquemodifiable, validationmodifiable
 			$avistechniquemodifiable = $validationmodifiable = false;
@@ -474,97 +392,6 @@
 		public function view( $id ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
-			/*$decisiondossierpcg66 = $this->Decisiondossierpcg66->find(
-				'first',
-				array(
-					'fields' => array(
-						'Personne.id',
-						'Personne.qual',
-						'Personne.nom',
-						'Personne.prenom',
-						'Descriptionpdo.name',
-						'Decisionpdo.libelle',
-						'Decisiondossierpcg66.dossierpcg66_id',
-						'Decisiondossierpcg66.commentaire',
-						'Decisiondossierpcg66.avistechnique',
-						'Decisiondossierpcg66.dateavistechnique',
-						'Decisiondossierpcg66.commentaireavistechnique',
-						'Decisiondossierpcg66.validationproposition',
-						'Decisiondossierpcg66.datevalidation',
-						'Decisiondossierpcg66.commentairevalidation',
-						'Decisiondossierpcg66.decisionpdo_id'
-					),
-					'conditions' => array(
-						'Decisiondossierpcg66.id' => $id
-					),
-					'joins' => array(
-						array(
-							'table' => 'dossierspcgs66',
-							'alias' => 'Dossierpcg66',
-							'type' => 'INNER',
-							'conditions' => array(
-								'Dossierpcg66.id = Decisiondossierpcg66.dossierpcg66_id'
-							)
-						),
-						array(
-							'table' => 'personnespcgs66',
-							'alias' => 'Personnepcg66',
-							'type' => 'LEFT OUTER',
-							'conditions' => array(
-								'Dossierpcg66.id = Personnepcg66.dossierpcg66_id'
-							)
-						),
-						array(
-							'table'      => 'foyers',
-							'alias'      => 'Foyer',
-							'type'       => 'INNER',
-							'foreignKey' => false,
-							'conditions' => array( 'Foyer.id = Dossierpcg66.foyer_id' )
-						),
-						array(
-							'table' => 'personnes',
-							'alias' => 'Personne',
-							'type' => 'INNER',
-							'conditions' => array(
-								'Personne.foyer_id = Foyer.id'
-							)
-						),
-						array(
-							'table' => 'decisionspdos',
-							'alias' => 'Decisionpdo',
-							'type' => 'INNER',
-							'conditions' => array(
-								'Decisionpdo.id = Decisiondossierpcg66.decisionpdo_id'
-							)
-						),
-						array(
-							'table' => 'traitementspcgs66',
-							'alias' => 'Traitementpcg66',
-							'type' => 'LEFT OUTER',
-							'conditions' => array(
-								'Personnepcg66.id = Traitementpcg66.personnepcg66_id'
-							)
-						),
-						array(
-							'table' => 'descriptionspdos',
-							'alias' => 'Descriptionpdo',
-							'type' => 'LEFT OUTER',
-							'conditions' => array(
-								'Descriptionpdo.id = Traitementpcg66.descriptionpdo_id'
-							)
-						),
-						array(
-							'table' => 'personnespcgs66_situationspdos',
-							'alias' => 'Personnepcg66Situationpdo',
-							'type' => 'LEFT OUTER',
-							'conditions' => array(
-								'Personnepcg66Situationpdo.personnepcg66_id = Personnepcg66.id'
-							)
-						)
-					),
-					'contain' => false
-				)
-			);*/
 
 			$decisiondossierpcg66 = $this->Decisiondossierpcg66->find(
 				'first',

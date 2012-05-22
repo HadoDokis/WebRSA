@@ -517,21 +517,35 @@ SELECT
 				}
 			}
 
+			if( $this->action == 'edit' ){
+				$conditions = array(
+					'Traitementpcg66.personnepcg66_id' => $personnepcg66_id,
+					'Traitementpcg66.clos' => 'N',
+					'Traitementpcg66.annule' => 'N',
+					'Traitementpcg66.id NOT' => $id
+				);
+			}
+			else{
+				$conditions = array(
+					'Traitementpcg66.personnepcg66_id' => $personnepcg66_id,
+					'Traitementpcg66.clos' => 'N',
+					'Traitementpcg66.annule' => 'N'
+				);
+			}
+			
 			$traitementspcgsouverts = $this->Traitementpcg66->find(
 				'all',
 				array(
-					'conditions' => array(
-						'Traitementpcg66.personnepcg66_id' => $personnepcg66_id,
-						'Traitementpcg66.clos' => 'N',
-						'Traitementpcg66.annule' => 'N'
-					),
+					'conditions' => $conditions,
 					'contain' => array(
 						'Descriptionpdo'
-					)
+					),
+					'order' => array( 'Traitementpcg66.dateecheance DESC' )
 				)
 			);
 
 			$this->set( compact( 'traitementspcgsouverts', 'fichiers' ) );
+			
 			$this->Traitementpcg66->commit();
 
 			$this->_setOptions();

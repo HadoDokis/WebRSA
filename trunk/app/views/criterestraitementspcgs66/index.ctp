@@ -67,6 +67,7 @@
 		echo $default2->subform(
 			array(
 				'Traitementpcg66.situationpdo_id' => array( 'label' => 'Motif concernant la personne', 'type' => 'select', 'options' => $motifpersonnepcg66, 'empty' => true ),
+				'Traitementpcg66.statutpdo_id' => array( 'label' => 'Statut de la personne', 'type' => 'select', 'options' => $statutpersonnepcg66, 'empty' => true ),
 				'Traitementpcg66.descriptionpdo_id' => array( 'label' => __d( 'traitementpcg66', 'Traitementpcg66.descriptionpdo_id', true ), 'type' => 'select', 'options' => $descriptionpdo, 'empty' => true ),
 				'Traitementpcg66.clos' => array( 'label' => __d( 'traitementpcg66', 'Traitementpcg66.clos', true ), 'type' => 'select', 'options' => $options['Traitementpcg66']['clos'], 'empty' => true ),
 				'Traitementpcg66.annule' => array( 'label' => __d( 'traitementpcg66', 'Traitementpcg66.annule', true ), 'type' => 'select', 'options' => $options['Traitementpcg66']['annule'], 'empty' => true )
@@ -171,7 +172,7 @@
 				?>
 			</tbody>
 		</table>
-
+<?php debug($criterestraitementspcgs66);?>
 		<?php echo $pagination;?>
 		<ul class="actionMenu">
 			<li><?php

@@ -71,6 +71,47 @@
 		echo $fileuploader->results( Set::classicExtract( $dossierpcg66, 'Fichiermodule' ) );
 	?>
 		
+	<?php if( !empty( $listeFicheAReporter ) ):?>
+		<?php echo "<h2>Fiche(s) de calcul à prendre en compte</h2>";?>
+		<table class="tooltips aere"><caption style="caption-side: top;">Informations concernant la (les) fiche(s) de calcul</caption>
+			<thead>
+				<tr>
+					<th>Régime</th>
+					<th>Bénéfice pris en compte</th>
+					<th>Montant des revenus arrêtés à</th>
+					<th>Date de début de prise en compte</th>
+					<th>Date de fin de prise en compte</th>
+				</tr>
+			</thead>
+			<tbody>
+			<?php
+				foreach( $listeFicheAReporter as $i => $fichecalcul ){
+
+					if( $fichecalcul['regime'] == 'microbic' ) {
+						$montanttotal = $fichecalcul['benefpriscompte'];
+					}
+					else{
+						$montanttotal = $fichecalcul['mnttotalpriscompte'];
+					}
+
+					echo $xhtml->tableCells(
+						array(
+							h( Set::enum( $fichecalcul['regime'], $options['Traitementpcg66']['regime'] ) ),
+							h( $locale->money( $montanttotal ) ),
+							h( $locale->money( $fichecalcul['revenus'] ).' par mois' ),
+							h( date_short( $fichecalcul['dtdebutprisecompte'] ) ),
+							h( date_short( $fichecalcul['datefinprisecompte'] ) )
+						),
+						array( 'class' => 'odd' ),
+						array( 'class' => 'even' )
+					);
+				}
+			?>
+			</tbody>
+		</table>
+	<?php else:?>
+		<p class="notice">Aucune fiche de calcul à prendre en compte.</p>
+	<?php  endif;?>
 	
 		<?php /*else:*/?>
 		<fieldset><legend>Proposition du technicien</legend>
@@ -143,7 +184,7 @@
 
 				echo $default2->subform(
 					array(
-						'Typersapcg66.Typersapcg66' => array( 'type' => 'select', 'label' => 'Type de RSA', 'multiple' => 'checkbox', 'empty' => false, 'options' => $typersapcg66 ),
+						'Typersapcg66.Typersapcg66' => array( 'type' => 'select', 'label' => 'Type de prestation', 'multiple' => 'checkbox', 'empty' => false, 'options' => $typersapcg66 ),
 						'Decisiondossierpcg66.decisionpdo_id' => array( 'type' => 'select', 'empty' => true, 'options' => $listdecisionpdo ),
 						'Decisiondossierpcg66.datepropositiontechnicien' => array( 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear' => date('Y')+5, 'minYear' => date('Y')-1, 'empty' => false ),
 						'Decisiondossierpcg66.commentairetechnicien' => array( 'value' => isset( $dossierpcg66['Decisiondossierpcg66'][0]['commentairetechnicien'] ) ? ( $this->data['Decisiondossierpcg66']['commentairetechnicien'] ) : null )
