@@ -77,6 +77,57 @@
 		}
 
 		/**
+		 * Liste les contraintes de check d'une table (pas les clés étrangères ni les indexes uniques, ni les
+		 * not null).
+		 *
+		 * @param Model $Model Le modèle pour lequel on veut la liste des contraintes de la table liée
+		 * @return array
+		 */
+		public function pgCheckConstraints( &$Model ) {
+			$ds = $Model->getDataSource( $Model->useDbConfig );
+
+			// FIXME: '{$ds->config['database']}'
+
+			$sql = "SELECT
+						pc.conname AS \"Check__name\",
+						pg_catalog.pg_get_constraintdef(pc.oid, true) AS \"Check__clause\"
+					FROM
+						pg_catalog.pg_constraint pc
+					WHERE
+						pc.conrelid = (
+							SELECT oid FROM pg_catalog.pg_class
+								WHERE
+									relname='".$ds->fullTableName( $Model, false )."'
+									AND relnamespace = (
+										SELECT oid
+											FROM pg_catalog.pg_namespace
+											WHERE nspname='{$ds->config['schema']}'
+									)
+						)
+						AND pc.contype = 'c'
+					ORDER BY 1";
+
+			/*$sql = "SELECT
+						istc.constraint_name AS \"Check__name\",
+						iscc.check_clause AS \"Check__clause\"
+					FROM information_schema.check_constraints AS iscc
+						INNER JOIN information_schema.table_constraints AS istc ON (
+							istc.constraint_name = iscc.constraint_name
+						)
+					WHERE
+						istc.table_catalog = '{$ds->config['database']}'
+						AND istc.table_schema = '{$ds->config['schema']}'
+						AND istc.table_name = '".$ds->fullTableName( $Model, false )."'
+						AND istc.constraint_type = 'CHECK'
+						AND (
+							istc.constraint_name NOT LIKE '%_not_null'
+							AND iscc.check_clause NOT LIKE '% IS NOT NULL'
+						);";*/
+
+			return $Model->query( $sql );
+		}
+
+		/**
 		*
 		*/
 
@@ -201,34 +252,36 @@
 		}
 
 		/**
-		* Retourne la liste des fonctions PostgreSQL disponibles.
-		*
-		* @param array $names Liste des noms de fonctions que l'on veut trouver.
-		*	Ne pas passer de paramètre pour récupérer toutes les fonctions.
-		* @return array
-		*/
-		public function pgFunctions( &$model, $names = array() ) {
+		 * Retourne la liste des fonctions PostgreSQL disponibles.
+		 *
+		 * @param type $model
+		 * @param array $names Liste des noms de fonctions que l'on veut trouver.
+		 *	Ne pas passer de paramètre pour récupérer toutes les fonctions.
+		 * @param array $conditions Les conditions de base (ex. array( 'namespace.nspname = \'public\'' ) )
+		 * @return array
+		 */
+		public function pgFunctions( &$model, $names = array(), $conditions = array() ) {
 			$ds = $model->getDataSource( $model->useDbConfig );
-			$conditions = array();
 
 			if( !is_array( $names ) ) {
 				$names = (array)$names;
 			}
 
 			if( !empty( $names ) ) {
-				$conditions[] = 'p.proname IN ( \''.implode( '\', \'', $names ).'\' )';
+				$conditions[] = 'function.proname IN ( \''.implode( '\', \'', $names ).'\' )';
 			}
 
 			$sql = "SELECT
-						p.proname as \"Function__name\",
-						format_type(p.prorettype, NULL) as \"Function__result\",
-						oidvectortypes(p.proargtypes) as \"Function__arguments\"
-					FROM pg_proc p
+						function.proname as \"Function__name\",
+						format_type(function.prorettype, NULL) as \"Function__result\",
+						oidvectortypes(function.proargtypes) as \"Function__arguments\"
+					FROM pg_proc AS function
+						INNER JOIN pg_namespace AS namespace ON ( function.pronamespace = namespace.oid )
 					WHERE
-						p.prorettype <> 0
+						function.prorettype <> 0
 						AND (
 							pronargs = 0
-							OR oidvectortypes(p.proargtypes) <> ''
+							OR oidvectortypes(function.proargtypes) <> ''
 						)
 						".( !empty( $conditions ) ? ' AND '.implode( ' AND ', $conditions ) : '' )."
 					ORDER BY
