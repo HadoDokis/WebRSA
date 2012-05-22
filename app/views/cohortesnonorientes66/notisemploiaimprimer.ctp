@@ -1,7 +1,7 @@
 <?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 
 <?php
-    $this->pageTitle = 'Allocataires non orientés en emploi';
+    $this->pageTitle = 'Impression du questionnaire des allocataires non orientés';
 ?>
 
 <h1><?php echo $this->pageTitle;?></h1>
@@ -28,7 +28,7 @@
 		observeDisableFieldsetOnCheckbox( 'SearchDossierDtdemrsa', $( 'SearchDossierDtdemrsaFromDay' ).up( 'fieldset' ), false );
 	});
 </script>
-<?php echo $xform->create( 'Cohortenonoriente66', array( 'type' => 'post', 'action' => 'isemploi', 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );?>
+<?php echo $xform->create( 'Cohortenonoriente66', array( 'type' => 'post', 'action' => 'notisemploiaimprimer', 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );?>
 
 
         <fieldset>
@@ -96,7 +96,7 @@
 
 <?php if( isset( $cohortesnonorientes66 ) ):?>
     <?php if( empty( $cohortesnonorientes66 ) ):?>
-        <p class="notice"><?php echo 'Aucun allocataire non orienté.';?></p>
+        <p class="notice"><?php echo 'Aucun allocataire à orienter.';?></p>
     <?php else:?>
 <?php $pagination = $xpaginator->paginationBlock( 'Personne', $this->passedArgs ); ?>
 	<?php echo $pagination;?>
@@ -114,10 +114,6 @@
                 <th>Allocataire principal</th>
                 <th>Etat du droit</th>
 				<th>Commune de l'allocataire</th>
-				<th>Sélectionner</th>
-				<th class="action">Type d'orientation</th>
-				<th class="action">Structure référente</th>
-				<th class="action">Date d'orientation</th>
 				<th class="action">Action</th>
             </tr>
         </thead>
@@ -132,28 +128,12 @@
 						h( $cohortenonoriente66['Personne']['nom'].' '.$cohortenonoriente66['Personne']['prenom'] ),
 						h( $etatdosrsa[$cohortenonoriente66['Situationdossierrsa']['etatdosrsa']] ),
 						h( $cohortenonoriente66['Adresse']['locaadr'] ),
-						
-						$xform->input( 'Orientstruct.'.$index.'.atraiter', array( 'label' => false, 'legend' => false, 'type' => 'checkbox', 'class' => 'atraiter' ) ),
-						$xform->input( 'Orientstruct.'.$index.'.typeorient_id', array( 'label' => false, 'type' => 'select', 'options' => $typesOrient/*, 'empty' => true*/ ) ).
-						$xform->input( 'Orientstruct.'.$index.'.origine', array( 'label' => false, 'type' => 'hidden', 'value' => 'cohorte' ) ).
-						$xform->input( 'Orientstruct.'.$index.'.id', array( 'label' => false, 'type' => 'hidden', 'value' => $cohortenonoriente66['Orientstruct']['id'] ) ).
-						$xform->input( 'Orientstruct.'.$index.'.dossier_id', array( 'label' => false, 'type' => 'hidden', 'value' => $cohortenonoriente66['Foyer']['dossier_id'] ) ).
-						$xform->input( 'Orientstruct.'.$index.'.codeinsee', array( 'label' => false, 'type' => 'hidden', 'value' => $cohortenonoriente66['Adresse']['numcomptt'] ) ).
-						$xform->input( 'Orientstruct.'.$index.'.personne_id', array( 'label' => false, 'type' => 'hidden', 'value' => $cohortenonoriente66['Personne']['id'] ) ).
-						$xform->input( 'Orientstruct.'.$index.'.statut_orient', array( 'label' => false, 'type' => 'hidden', 'value' => 'Orienté' ) ),
-						
-						$xform->input( 'Orientstruct.'.$index.'.structurereferente_id', array( 'label' => false, 'type' => 'select', 'options' => $structuresReferentes/*,  'empty' => true*/ ) ),
-						
-						$xform->input( 'Orientstruct.'.$index.'.date_valid', array( 'label' => false, 'type' => 'date', 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 2, 'maxYear' => date( 'Y' ) + 2  ) ),
-						
-						$xhtml->viewLink(
-							'Voir le dossier',
-							array( 'controller' => 'dossiers', 'action' => 'view', $cohortenonoriente66['Dossier']['id'] ),
-							$permissions->check( 'dossiers', 'view' )
+						$xhtml->printLink(
+							'Imprimer le questionnaire',
+							array( 'controller' => 'cohortesnonorientes66', 'action' => 'impression', $cohortenonoriente66['Personne']['id'] ),
+							$permissions->check( 'cohortesnonorientes66', 'impression' )
 						)
-
 					);
-
 
 					echo $xhtml->tableCells(
 						$tableCells,
@@ -165,40 +145,21 @@
 				<?php endforeach;?>
 			</tbody>
 		</table>
-<?php
-	echo $xform->button( 'Tout cocher', array( 'onclick' => "toutCocher( 'input.atraiter', true )" ) );
-	echo $xform->button( 'Tout décocher', array( 'onclick' => "toutDecocher( 'input.atraiter', true )" ) );
-
-?>
-		<?php echo $xform->submit( 'Validation de la liste' );?>
-		<?php echo $xform->end();?>
-	<?php endif;?>
-<?php endif;?>
-
-<?php if( !empty( $cohortesnonorientes66 ) ):?>
-	<?php foreach( $cohortesnonorientes66 as $key => $cohortenonoriente66 ):?>
-		<script type="text/javascript">
-			document.observe("dom:loaded", function() {
-			
-				dependantSelect( 'Orientstruct<?php echo $key;?>StructurereferenteId', 'Orientstruct<?php echo $key;?>TypeorientId' );
-				try { $( 'OrientstructStructurereferenteId' ).onchange(); } catch(id) { }
-
-				observeDisableFieldsOnCheckbox(
-					'Orientstruct<?php echo $key;?>Atraiter',
-					[
-						'Orientstruct<?php echo $key;?>TypeorientId',
-						'Orientstruct<?php echo $key;?>Origine',
-						'Orientstruct<?php echo $key;?>PersonneId',
-						'Orientstruct<?php echo $key;?>StatutOrient',
-						'Orientstruct<?php echo $key;?>StructurereferenteId',
-						'Orientstruct<?php echo $key;?>DateValidYear',
-						'Orientstruct<?php echo $key;?>DateValidMonth',
-						'Orientstruct<?php echo $key;?>DateValidDay',
-					],
-					false
+		<?php echo $pagination?>
+		<ul class="actionMenu">
+			<li><?php
+				echo $xhtml->printCohorteLink(
+					'Imprimer la cohorte',
+					Set::merge(
+						array(
+							'controller' => 'cohortesnonorientes66',
+							'action'     => 'impressions'/*,
+							'id' => 'Cohorteoriente'*/
+						),
+						Set::flatten( $this->data )
+					)
 				);
-				
-			});
-		</script>
-	<?php endforeach;?>
+			?></li>
+		</ul>
+	<?php endif;?>
 <?php endif;?>

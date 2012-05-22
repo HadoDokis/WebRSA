@@ -160,7 +160,7 @@
 								h( Set::enum( Set::classicExtract( $criteretraitementpcg66, 'Traitementpcg66.annule' ), $options['Traitementpcg66']['annule'] ) ),
 								$xhtml->viewLink(
 									'Voir',
-									array( 'controller' => 'traitementspcgs66', 'action' => 'view', Set::classicExtract( $criteretraitementpcg66, 'Traitementpcg66.id' ) )
+									array( 'controller' => 'traitementspcgs66', 'action' => 'index', Set::classicExtract( $criteretraitementpcg66, 'Personne.id' ), Set::classicExtract( $criteretraitementpcg66, 'Dossierpcg66.id' ) )
 								),
 								array( $innerTable, array( 'class' => 'innerTableCell noprint' ) ),
 							),

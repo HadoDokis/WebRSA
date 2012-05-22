@@ -97,7 +97,7 @@
 		*
 		*/
 
-		public function listOptions() {
+		public function listOptions( $conditions ) {
 			$options = $this->find(
 				'list',
 				array (
@@ -116,6 +116,16 @@
 			if( $this->find( 'count', array( 'conditions' => array( 'Typeorient.parentid NOT' => NULL ) ) ) > 0 ) {
 				$list = array();
 				foreach( $options as $key => $option ) {
+					$innerConditions = Set::merge(
+						array(
+							'AND' => array(
+								'Typeorient.parentid' => $key,
+								'Typeorient.actif' => 'O'
+							)
+						),
+						$conditions
+					);
+
 					$innerOptions = $this->find(
 						'list',
 						array (
@@ -124,14 +134,14 @@
 								'Typeorient.lib_type_orient'/*,
 								'Typeorient.parentid'*/
 							),
-							'conditions' => array(
-								'Typeorient.parentid' => $key,
-								'Typeorient.actif' => 'O'
-							),
+							'conditions' => $innerConditions,
 							'order'  => array( 'Typeorient.lib_type_orient ASC' )
 						)
 					);
-					$list[$option] = $innerOptions ;
+
+					if( !empty( $innerOptions ) ) {
+						$list[$option] = $innerOptions ;
+					}
 				}
 				return $list;
 			}
