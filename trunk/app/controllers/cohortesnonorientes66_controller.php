@@ -19,6 +19,7 @@
 				'actions' => array(
 					'isemploi' => array( 'filter' => 'Search' ),
 					'notisemploi' => array( 'filter' => 'Search' ),
+					'notisemploiaimprimer' => array( 'filter' => 'Search' ),
 					'oriente' => array( 'filter' => 'Search' )
 				)
 			)
@@ -50,7 +51,25 @@
 					)
 				)
 			);
-			$this->set( 'typesOrient', $this->Personne->Orientstruct->Typeorient->listOptions() );
+
+			// Population du select de type d'orientation
+			$conditionsTypeorient = array();
+			if( $this->action == 'isemploi' ) {
+				$typeorient_id = Configure::read( 'Orientstruct.typeorientprincipale.Emploi' );
+				if( is_array( $typeorient_id ) && isset( $typeorient_id[0] ) ){
+					$conditionsTypeorient['Typeorient.parentid'] = $typeorient_id;
+				}
+			}
+			else if( $this->action == 'notisemploi' ) {
+				$typeorient_id = Configure::read( 'Orientstruct.typeorientprincipale.SOCIAL' );
+				if( is_array( $typeorient_id ) ){
+					$conditionsTypeorient['Typeorient.parentid'] = $typeorient_id;
+				}
+			}
+			$typesOrients = $this->Personne->Orientstruct->Typeorient->listOptions( $conditionsTypeorient );
+			$this->set( 'typesOrient', $typesOrients );
+
+			// Population du select des structures référentes
 			$this->set( 'structuresReferentes', $this->Personne->Orientstruct->Structurereferente->list1Options( array( 'orientation' => 'O' ) ) );
 		}
 
@@ -72,6 +91,13 @@
 			$this->_index( 'Nonoriente::notisemploi' );
 		}
 
+		/**
+		*
+		*/
+
+		public function notisemploiaimprimer() {
+			$this->_index( 'Nonoriente::notisemploiaimprimer' );
+		}
 		/**
 		*
 		*/
@@ -138,25 +164,17 @@
 				*
 				*/
 
-				if( ( $statutNonoriente == 'Nonoriente::isemploi' ) || ( $statutNonoriente == 'Nonoriente::notisemploi' ) || ( $statutNonoriente == 'Nonoriente::oriente' )  && !empty( $this->data ) ) {
+				if( ( $statutNonoriente == 'Nonoriente::isemploi' ) || ( $statutNonoriente == 'Nonoriente::notisemploi' ) || ( $statutNonoriente == 'Nonoriente::notisemploiaimprimer' ) || ( $statutNonoriente == 'Nonoriente::oriente' )  && !empty( $this->data ) ) {
 					$this->Dossier->begin(); // Pour les jetons
 
+					$limit = 10;
+					if( $statutNonoriente == 'Nonoriente::notisemploiaimprimer' ){
+						$limit = 100;
+					}
 					$this->paginate = $this->Cohortenonoriente66->search( $statutNonoriente, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
-					$this->paginate['limit'] = 10;
+					$this->paginate['limit'] = $limit;
 					$cohortesnonorientes66 = $this->paginate( 'Personne' );
-					
-					if( $statutNonoriente == 'Nonoriente::isemploi') {
-						$typeorient_id = Configure::read( 'Orientstruct.typeorientprincipale.Emploi' );
-						$this->set( 'typeorient_id', $typeorient_id);
-						
-						
-						$structurereferente_id = Configure::read( 'Orientstruct.typeorientprincipale.Emploi' );
-						$this->set( 'structurereferente_id', $structurereferente_id );
-					}
-					else{
-					//FIXME
-						$typeorient_id = 8;
-					}
+
 
 					$this->Dossier->commit();
 
@@ -182,10 +200,66 @@
 				case 'Nonoriente::notisemploi':
 					$this->render( $this->action, null, 'notisemploi' );
 					break;
+				case 'Nonoriente::notisemploiaimprimer':
+					$this->render( $this->action, null, 'notisemploiaimprimer' );
+					break;
 				case 'Nonoriente::oriente':
 					$this->render( $this->action, null, 'oriente' );
 					break;
 			}
 		}
+
+		
+		/**
+		* Impression d'un rendez-vous.
+		*
+		* @param integer $rdv_id
+		* @return void
+		*/
+		public function impression( $id = null ) {
+			$pdf = $this->Cohortenonoriente66->getDefaultPdf( $id, $this->Session->read( 'Auth.User.id' ) );
+
+			if( !empty( $pdf ) ){
+				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'nonorientation-%d-%s.pdf', $id, date( 'Y-m-d' ) ) );
+			}
+			else {
+				$this->Session->setFlash( 'Impossible de générer le courrier.', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
+			}
+		}
+
+		/**
+		 * 
+		 *
+		 * @param integer $id L'id de 
+		 */
+		public function impressions() {
+			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
+			
+			// La page sur laquelle nous sommes
+			$page = Set::classicExtract( $this->params, 'named.page' );
+			if( ( intval( $page ) != $page ) || $page < 0 ) {
+				$page = 1;
+			}
+		
+			$pdf = $this->Cohortenonoriente66->getDefaultCohortePdf(
+				'Nonoriente::notisemploiaimprimer',
+				$mesCodesInsee,
+				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
+				$this->Session->read( 'Auth.User.id' ),
+				XSet::bump( $this->params['named'] ),
+				$page
+			);
+
+			if( !empty( $pdf ) ) {
+				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'nonorientes-%d-%s.pdf', $id, date( 'Y-m-d' ) ) );
+			}
+			else {
+				$this->Session->setFlash( 'Impossible de générer l\'impression de la page de l\'état liquidatif des APREs.', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
+			}
+		}
+		
 	}
 ?>

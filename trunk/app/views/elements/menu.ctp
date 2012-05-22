@@ -26,6 +26,7 @@
 					|| $permissions->check( 'cohortesdossierspcgs66', 'atransmettre' )
 					|| $permissions->check( 'cohortesnonorientes66', 'isemploi' )
 					|| $permissions->check( 'cohortesnonorientes66', 'notisemploi' )
+					|| $permissions->check( 'cohortesnonorientes66', 'notisemploiaimprimer' )
 					|| $permissions->check( 'cohortesnonorientes66', 'oriente' )
 					|| $permissions->check( 'cohortespdos', 'avisdemande' )
 					|| $permissions->check( 'cohortespdos', 'valide' )
@@ -151,19 +152,24 @@
                                     </ul>
                             </li>
                         <?php endif;?>
-                        <?php if( ( Configure::read( 'Cg.departement' ) == 66 ) && ( $permissions->check( 'cohortesnonorientes66', 'isemploi' ) || $permissions->check( 'cohortesnonorientes66', 'notisemploi' ) || $permissions->check( 'cohortesnonorientes66', 'oriente' ) ) ):?>
+                        <?php if( ( Configure::read( 'Cg.departement' ) == 66 ) && ( $permissions->check( 'cohortesnonorientes66', 'isemploi' ) || $permissions->check( 'cohortesnonorientes66', 'notisemploi' ) || $permissions->check( 'cohortesnonorientes66', 'notisemploiaimprimer' ) || $permissions->check( 'cohortesnonorientes66', 'oriente' ) ) ):?>
                             <!-- AJOUT POUR LA GESTION DES Non orientés 66 (Cohorte) -->
                             <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
                                 <?php  echo $xhtml->link( 'Non orientation ', '#' );?>
                                     <ul>
                                         <?php if( $permissions->check( 'cohortesnonorientes66', 'isemploi' ) ): ?>
                                             <li>
-												<?php echo $xhtml->link( 'Personnes non orientées en emploi', array( 'controller' => 'cohortesnonorientes66', 'action' => 'isemploi' ), array( 'title' => 'Personnes non orientées en emploi' ) );?>
+												<?php echo $xhtml->link( 'Vers l\'emploi', array( 'controller' => 'cohortesnonorientes66', 'action' => 'isemploi' ), array( 'title' => 'Vers l\'emploi' ) );?>
+											</li>
+                                        <?php endif; ?>
+                                        <?php if( $permissions->check( 'cohortesnonorientes66', 'notisemploiaimprimer' ) ): ?>
+                                            <li>
+												<?php echo $xhtml->link( 'Impression du questionnaire', array( 'controller' => 'cohortesnonorientes66', 'action' => 'notisemploiaimprimer' ), array( 'title' => 'Impression du questionnaire' ) );?>
 											</li>
                                         <?php endif; ?>
                                         <?php if( $permissions->check( 'cohortesnonorientes66', 'notisemploi' ) ): ?>
                                             <li>
-												<?php echo $xhtml->link( 'Personnes non orientés', array( 'controller' => 'cohortesnonorientes66', 'action' => 'notisemploi' ), array( 'title' => 'Personnes non orientées' ) );?>
+												<?php echo $xhtml->link( 'Orientation suite aux réponses', array( 'controller' => 'cohortesnonorientes66', 'action' => 'notisemploi' ), array( 'title' => 'Orientation suite aux réponses' ) );?>
 											</li>
                                         <?php endif; ?>
                                         <?php if( $permissions->check( 'cohortesnonorientes66', 'oriente' ) ): ?>

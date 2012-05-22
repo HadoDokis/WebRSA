@@ -361,6 +361,13 @@ UPDATE acos SET alias = 'Recoursapres:impression' WHERE alias = 'Recoursapres:no
 UPDATE acos SET alias = 'Etatsliquidatifs:impression' WHERE alias = 'Etatsliquidatifs:impressiongedoooapres';
 UPDATE acos SET alias = 'Etatsliquidatifs:impressions' WHERE alias = 'Etatsliquidatifs:impressioncohorte';
 
+
+-------------------------------------------------------------------------------------------------------------
+-- 20120503 : Modification du type de la colonne name dans la table piecesmodelestypescourrierspcgs66
+--			car les valeurs pouvant être prises par ces pièces peuvent être très longues
+--			ex: si oui, alors telle pièce, sinon telle pièce ...
+-------------------------------------------------------------------------------------------------------------
+ALTER TABLE piecesmodelestypescourrierspcgs66 ALTER COLUMN name TYPE TEXT;
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
