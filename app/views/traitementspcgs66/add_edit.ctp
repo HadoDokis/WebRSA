@@ -832,6 +832,19 @@
 				false,
 				true
 			);
+			
+
+			observeDisableFieldsOnRadioValue(
+				'traitementpcg66form',
+				'data[Traitementpcg66][typetraitement]',
+				[
+					'Traitementpcg66DateecheanceDay',
+					'Traitementpcg66DateecheanceMonth',
+					'Traitementpcg66DateecheanceYear'
+				],
+				'revenu',
+				false
+			);
 		} );
 	</script>
 
@@ -858,7 +871,7 @@
 			'fieldset',
 			$default->subform(
 				array(
-					'Traitementpcg66.datedepart' => array(  'maxYear' => date('Y') + 2, 'minYear' => date('Y' ) -2 )
+					'Traitementpcg66.datedepart' => array(  'maxYear' => date('Y') + 2, 'minYear' => date('Y' ) - 5, 'empty' => false )
 				),
 				array(
 					'options' => $options
@@ -874,7 +887,7 @@
 			'fieldset',
 			$default->subform(
 				array(
-					'Traitementpcg66.datereception' => array(  'empty' => false, 'maxYear' => date('Y') + 2, 'minYear' => date('Y' ) -2 )
+					'Traitementpcg66.datereception' => array(  'empty' => false, 'maxYear' => date('Y') + 2, 'minYear' => date('Y' ) - 5 )
 				),
 				array(
 					'options' => $options
@@ -891,7 +904,7 @@
 			$default->subform(
 				array(
 					'Traitementpcg66.dureeecheance' => array( 'required' => true ),
-					'Traitementpcg66.dateecheance' => array( 'required' => true, 'empty' => true, 'maxYear' => date('Y') + 2, 'minYear' => date('Y' ) -2 )
+					'Traitementpcg66.dateecheance' => array( 'required' => true, 'empty' => true, 'maxYear' => date('Y') + 2, 'minYear' => date('Y' ) - 5 )
 				),
 				array(
 					'options' => $options
@@ -901,53 +914,64 @@
 				'class'=>'noborder invisible'
 			)
 		);
+	
+		if( !empty( $traitementspcgsouverts ) ) {
+			echo "<table>";
 
-		echo "<table>";
-		echo $default2->thead(
-			array(
-				'Traitementpcg66.descriptionpdo_id' => array( 'type'=>'string' ),
-				'Traitementpcg66.datereception',
-				'Traitementpcg66.datedepart',
-				'Traitementpcg66.dateecheance',
-				'Traitementpcg66.questionclore' => array( 'type'=>'string' )
-			)
-		);
-		echo "<tbody>";
-
-		foreach( $traitementspcgsouverts as $traitementpcgouvert ) {
-			echo $xhtml->tag(
-				'tr',
-				$xhtml->tag(
-					'td',
-					Set::classicExtract($traitementpcgouvert, 'Descriptionpdo.name')
-				).
-				$xhtml->tag(
-					'td',
-					$locale->date( 'Date::short', Set::classicExtract($traitementpcgouvert, 'Traitementpcg66.datereception') )
-				).
-				$xhtml->tag(
-					'td',
-					$locale->date( 'Date::short', Set::classicExtract($traitementpcgouvert, 'Traitementpcg66.datedepart') )
-				).
-				$xhtml->tag(
-					'td',
-					$locale->date( 'Date::short', Set::classicExtract($traitementpcgouvert, 'Traitementpcg66.dateecheance') )
-				).
-				$xhtml->tag(
-					'td',
-					$form->input(
-						'Traitementpcg66.traitmentpdoIdClore.'.Set::classicExtract($traitementpcgouvert, 'Traitementpcg66.id'),
-						array(
-							'type' => 'radio',
-							'legend' => false,
-							'options' => $options['Traitementpcg66']['clos']
-						)
-					)
+			echo $default2->thead(
+				array(
+					'Traitementpcg66.personnepcg66_situationpdo_id',
+					'Traitementpcg66.descriptionpdo_id' => array( 'type'=>'string' ),
+					'Traitementpcg66.datereception',
+					'Traitementpcg66.datedepart',
+					'Traitementpcg66.dateecheance',
+					'Traitementpcg66.questionclore' => array( 'type'=>'string' )
 				)
 			);
-		}
+			echo "<tbody>";
 
-		echo "</tbody></table>";
+			foreach( $traitementspcgsouverts as $traitementpcgouvert ) {
+				echo $xhtml->tag(
+					'tr',
+					$xhtml->tag(
+						'td',
+						Set::enum( Set::classicExtract($traitementpcgouvert, 'Traitementpcg66.personnepcg66_situationpdo_id' ), $listeMotifs )
+					).
+					$xhtml->tag(
+						'td',
+						Set::classicExtract($traitementpcgouvert, 'Descriptionpdo.name')
+					).
+					$xhtml->tag(
+						'td',
+						$locale->date( 'Date::short', Set::classicExtract($traitementpcgouvert, 'Traitementpcg66.datereception') )
+					).
+					$xhtml->tag(
+						'td',
+						$locale->date( 'Date::short', Set::classicExtract($traitementpcgouvert, 'Traitementpcg66.datedepart') )
+					).
+					$xhtml->tag(
+						'td',
+						$locale->date( 'Date::short', Set::classicExtract($traitementpcgouvert, 'Traitementpcg66.dateecheance') )
+					).
+					$xhtml->tag(
+						'td',
+						$form->input(
+							'Traitementpcg66.traitmentpdoIdClore.'.Set::classicExtract($traitementpcgouvert, 'Traitementpcg66.id'),
+							array(
+								'type' => 'radio',
+								'legend' => false,
+								'options' => $options['Traitementpcg66']['clos']
+							)
+						)
+					)
+				);
+			}
+
+			echo "</tbody></table>";
+		}
+		else{
+			echo '<p class="notice">Aucun traitement en cours.</p>';
+		}
 
 		echo "<div class='submit'>";
 			echo $form->submit( 'Enregistrer', array( 'div'=>false ) );

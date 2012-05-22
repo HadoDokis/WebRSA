@@ -476,7 +476,7 @@
 				);
 				$data[$personnefoyerpcg['Prestation']['rolepers']]['Personnepcg66']['fichecalculreversee'] = '';
 				foreach( $traitementsAvecFicheCalcul as $i => $traitementFicheCalcul ){
-					$data[$personnefoyerpcg['Prestation']['rolepers']]['Personnepcg66']['fichecalculreversee'] += $traitementFicheCalcul['Traitementpcg66']['benefpriscompte'];
+					$data[$personnefoyerpcg['Prestation']['rolepers']]['Personnepcg66']['fichecalculreversee'] += $traitementFicheCalcul['Traitementpcg66']['revenus'];
 				}
 			}
 

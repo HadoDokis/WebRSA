@@ -19,6 +19,7 @@
 			$this->set( 'originepdo', $this->Traitementpcg66->Personnepcg66->Dossierpcg66->Originepdo->find( 'list' ) );
 			$this->set( 'descriptionpdo', $this->Traitementpcg66->Descriptionpdo->find( 'list' ) );
 			$this->set( 'motifpersonnepcg66', $this->Traitementpcg66->Personnepcg66->Situationpdo->find( 'list' ) );
+			$this->set( 'statutpersonnepcg66', $this->Traitementpcg66->Personnepcg66->Statutpdo->find( 'list' ) );
 
 			$this->set( 'gestionnaire', $this->User->find(
 					'list',

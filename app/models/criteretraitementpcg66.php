@@ -23,6 +23,7 @@
 			$clos = Set::extract( $params, 'Traitementpcg66.clos' );
 			$annule = Set::extract( $params, 'Traitementpcg66.annule' );
 			$motifpersonnepcg66_id = Set::extract( $params, 'Traitementpcg66.situationpdo_id' );
+			$statutpersonnepcg66_id = Set::extract( $params, 'Traitementpcg66.statutpdo_id' );
 
 			$dateecheance = Set::extract( $params, 'Traitementpcg66.dateecheance' );
 			$dateecheance_to = Set::extract( $params, 'Traitementpcg66.dateecheance_to' );
@@ -84,6 +85,23 @@
 									'foreignKey' => false,
 									'conditions' => array( 'personnespcgs66_situationspdos.situationpdo_id = situationspdos.id' ),
 								)
+							)
+						)
+					)
+				.' )';
+			}
+			
+			// Statut de la personne
+			if( !empty( $statutpersonnepcg66_id ) ) {
+				$conditions[] = 'Personnepcg66.id IN ( '.
+					ClassRegistry::init( 'Personnepcg66Statutpdo' )->sq(
+						array(
+							'fields' => array( 'personnespcgs66_statutspdos.personnepcg66_id' ),
+							'alias' => 'personnespcgs66_statutspdos',
+							'contain' => false,
+							'conditions' => array(
+								'personnespcgs66_statutspdos.personnepcg66_id = Personnepcg66.id',
+								'personnespcgs66_statutspdos.statutpdo_id' => $statutpersonnepcg66_id
 							)
 						)
 					)
