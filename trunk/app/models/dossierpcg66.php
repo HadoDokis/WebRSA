@@ -532,7 +532,9 @@
 					'conditions' => array(
 						'Decisiondossierpcg66.dossierpcg66_id' => $this->id
 					),
-					'contain' => false,
+					'contain' => array(
+						'Decisionpdo'
+					),
 					'order' => array( 'Decisiondossierpcg66.datevalidation DESC')
 				)
 			);
@@ -546,44 +548,42 @@
 					'contain' => false
 				)
 			);
-
-
+			
+			
+// debug($decisiondossierpcg66);
+// die();
+			$dateDecision = $decisiondossierpcg66['Decisiondossierpcg66']['datevalidation'];
+			$propositiondecision = $decisiondossierpcg66['Decisionpdo']['decisioncerparticulier'];
 			if( !empty( $decisiondossierpcg66 ) && isset( $decisiondossierpcg66['Decisiondossierpcg66']['validationproposition'] ) ) {
 				if( ( $decisiondossierpcg66['Decisiondossierpcg66']['validationproposition'] == 'O' ) && ( ( ( $decisiondossierpcg66['Decisiondossierpcg66']['retouravistechnique'] == '0' ) && ( $decisiondossierpcg66['Decisiondossierpcg66']['vuavistechnique'] == '0' ) ) || ( ( $decisiondossierpcg66['Decisiondossierpcg66']['retouravistechnique'] == '1' ) && ( $decisiondossierpcg66['Decisiondossierpcg66']['vuavistechnique'] == '1' ) ) ) ) {
-					$dateDecision = $decisiondossierpcg66['Decisiondossierpcg66']['datevalidation'];
-
-					$saved = $this->Contratinsertion->updateAll(
-						array(
-							'Contratinsertion.decision_ci' => '\'V\'',
-							'Contratinsertion.datevalidation_ci' => "'".$dateDecision."'",
-							'Contratinsertion.datedecision' => "'".$dateDecision."'",
-							'Contratinsertion.positioncer' => '\'valid\'',
-						),
-						array(
-							'Contratinsertion.id' => $dossierpcg66['Dossierpcg66']['contratinsertion_id']
-						)
-					) && $saved;
+					
+					if( $propositiondecision == 'N' ) {
+						$success = $this->Contratinsertion->updateAll(
+							array(
+								'Contratinsertion.decision_ci' => "'".$propositiondecision."'",
+								'Contratinsertion.datevalidation_ci' => null,
+								'Contratinsertion.datedecision' => "'".$dateDecision."'",
+								'Contratinsertion.positioncer' => '\'nonvalid\'',
+							),
+							array(
+								'Contratinsertion.id' => $dossierpcg66['Dossierpcg66']['contratinsertion_id']
+							)
+						) && $success;
+					}
+					else {
+						$success = $this->Contratinsertion->updateAll(
+							array(
+								'Contratinsertion.decision_ci' => "'".$propositiondecision."'",
+								'Contratinsertion.datevalidation_ci' => "'".$dateDecision."'",
+								'Contratinsertion.datedecision' => "'".$dateDecision."'",
+								'Contratinsertion.positioncer' => '\'valid\'',
+							),
+							array(
+								'Contratinsertion.id' => $dossierpcg66['Dossierpcg66']['contratinsertion_id']
+							)
+						) && $success;
+					}
 				}
-
-				
-// 									}
-// 					else if( $this->data['Propodecisioncer66']['isvalidcer'] == 'N' ) {
-// 						$saved = $this->Propodecisioncer66->Contratinsertion->updateAll(
-// 							array(
-// 								'Contratinsertion.decision_ci' => '\'N\'',
-// 								'Contratinsertion.datevalidation_ci' => null,
-// 								'Contratinsertion.datedecision' => "'".$dateDecision."'",
-// 								'Contratinsertion.positioncer' => '\'nonvalid\'',
-// 							),
-// 							array(
-// 								'Contratinsertion.personne_id' => $personne_id,
-// 								'Contratinsertion.id' => $contratinsertion_id
-// 							)
-// 						) && $saved;
-// 					
-// 					}
-
-				
 			}
 			
 // 			debug($decisiondossierpcg66);

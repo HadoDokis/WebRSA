@@ -3,7 +3,7 @@
 	{
 
 		public $name = 'Decisionspdos';
-		public $uses = array( 'Decisionpdo', 'Propopdo' );
+		public $uses = array( 'Decisionpdo', 'Propopdo', 'Option'  );
 		public $helpers = array( 'Xform' );
 		
 		public $commeDroit = array(
@@ -12,6 +12,7 @@
 		
 		protected function _setOptions() {
 			$options = $this->Decisionpdo->enums();
+			$this->set( 'decision_ci', $this->Option->decision_ci() );
 			$this->set( compact( 'options' ) );
 		}
 

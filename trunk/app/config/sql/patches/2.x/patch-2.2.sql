@@ -393,6 +393,8 @@ SELECT add_missing_table_field ('public', 'decisionspdos', 'cerparticulier', 'TY
 ALTER TABLE decisionspdos ALTER COLUMN cerparticulier SET DEFAULT 'N'::TYPE_NO;
 UPDATE decisionspdos SET cerparticulier = 'N' WHERE cerparticulier IS NULL;
 ALTER TABLE decisionspdos ALTER COLUMN cerparticulier SET NOT NULL;
+
+SELECT add_missing_table_field ('public', 'decisionspdos', 'decisioncerparticulier', 'CHAR(1)');
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

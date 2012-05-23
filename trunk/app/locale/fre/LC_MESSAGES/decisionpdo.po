@@ -42,3 +42,6 @@ msgstr "Oui"
 
 msgid "Decisionpdo.cerparticulier"
 msgstr "Cette décision est-elle en lien avec un CER Particulier ?"
+
+msgid "Decisionpdo.decisioncerparticulier"
+msgstr "Décision en lien avec la validation d'un CER"
