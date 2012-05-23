@@ -109,11 +109,9 @@
 			?>
 			</tbody>
 		</table>
-	<?php else:?>
-		<p class="notice">Aucune fiche de calcul à prendre en compte.</p>
 	<?php  endif;?>
 	
-		<?php /*else:*/?>
+
 		<fieldset><legend>Proposition du technicien</legend>
 			<?php if( !empty( $dossierpcg66['Decisiondossierpcg66'] ) ):?>
 				<table class="aere"><caption style="caption-side: top;">Propositions passées</caption>
@@ -152,6 +150,125 @@
 			<p class="notice">Aucune proposition passée n'a encore été émise par le technicien.</p>
 		<?php  endif;?>
 		
+		<?php if( !empty( $dossierpcg66['Dossierpcg66']['contratinsertion_id'] ) ):?>
+			<?php echo "<h2>Informations du CER Particulier lié</h2>";?>
+			<table class="tooltips default2">
+		<thead>
+			<tr>
+				<th>Forme du contrat</th>
+				<th>Type de contrat</th>
+				<th>Date de début de contrat</th>
+				<th>Date de fin de contrat</th>
+				<th>Contrat signé le</th>
+				<th>Position du CER</th>
+				<th colspan="11" class="action">Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php
+					$positioncer = Set::enum( Set::classicExtract( $dossierpcg66, 'Contratinsertion.positioncer' ), $options['Contratinsertion']['positioncer'] );
+
+					echo $xhtml->tableCells(
+						array(
+							h( Set::classicExtract( $formeCi, Set::classicExtract( $dossierpcg66, 'Contratinsertion.forme_ci' ) ) ),
+							h( Set::classicExtract( $options['Contratinsertion']['num_contrat'], Set::classicExtract( $dossierpcg66, 'Contratinsertion.num_contrat' ) ) ),
+							h( date_short( Set::classicExtract( $dossierpcg66, 'Contratinsertion.dd_ci' ) ) ),
+							h( date_short( Set::classicExtract( $dossierpcg66, 'Contratinsertion.df_ci' ) ) ),
+							h( date_short( Set::classicExtract( $dossierpcg66, 'Contratinsertion.date_saisi_ci' ) ) ),
+							h( $positioncer ),
+
+
+							$default2->button(
+								'view',
+								array( 'controller' => 'contratsinsertion', 'action' => 'view',
+								$dossierpcg66['Contratinsertion']['id'] ),
+								array(
+									'enabled' => (
+										$permissions->check( 'contratsinsertion', 'view' ) == 1
+									),
+									'class' => 'external'
+								)
+							),
+							$default2->button(
+								'ficheliaisoncer',
+								array( 'controller' => 'contratsinsertion', 'action' => 'ficheliaisoncer',
+								$dossierpcg66['Contratinsertion']['id'] ),
+								array(
+									'enabled' => (
+										( $permissions->check( 'contratsinsertion', 'ficheliaisoncer' ) == 1 )
+										&& ( Set::classicExtract( $dossierpcg66, 'Contratinsertion.positioncer' ) != 'annule' )
+										&& ( !empty( $isvalidcer )  )
+									)
+								)
+							),
+							$default2->button(
+								'notifbenef',
+								array( 'controller' => 'contratsinsertion', 'action' => 'notifbenef',
+								$dossierpcg66['Contratinsertion']['id'] ),
+								array(
+									'enabled' => (
+										( $permissions->check( 'contratsinsertion', 'notifbenef' ) == 1 )
+										&& ( Set::classicExtract( $dossierpcg66, 'Contratinsertion.positioncer' ) != 'annule' )
+										&& ( !empty( $isvalidcer )  )
+									)
+								)
+							),
+							$default2->button(
+								'notifop',
+								array( 'controller' => 'contratsinsertion', 'action' => 'notificationsop',
+								$dossierpcg66['Contratinsertion']['id'] ),
+								array(
+									'enabled' => (
+										( $permissions->check( 'contratsinsertion', 'notificationsop' ) == 1 )
+										&& ( Set::classicExtract( $dossierpcg66, 'Contratinsertion.positioncer' ) != 'annule' )
+										&& ( !empty( $isvalidcer ) && ( $isvalidcer != 'N' ) )
+									)
+								)
+							),
+							$default2->button(
+								'print',
+								array( 'controller' => 'contratsinsertion', 'action' => 'impression',
+								$dossierpcg66['Contratinsertion']['id'] ),
+								array(
+									'enabled' => (
+										( $permissions->check( 'contratsinsertion', 'impression' ) == 1 )
+										&& ( Set::classicExtract( $dossierpcg66, 'Contratinsertion.positioncer' ) != 'annule' )
+									)
+								)
+							),
+
+							$default2->button(
+								'notification',
+								array( 'controller' => 'contratsinsertion', 'action' => 'notification',
+								$dossierpcg66['Contratinsertion']['id'] ),
+								array(
+									'enabled' => (
+										( $permissions->check( 'contratsinsertion', 'notification' ) == 1 )
+										&& ( Set::classicExtract( $dossierpcg66, 'Contratinsertion.positioncer' ) != 'annule' )
+									)
+								)
+							),
+							$default2->button(
+								'filelink',
+								array( 'controller' => 'contratsinsertion', 'action' => 'filelink',
+								$dossierpcg66['Contratinsertion']['id'] ),
+								array(
+									'enabled' => (
+										$permissions->check( 'contratsinsertion', 'filelink' ) == 1
+									)
+								)
+							),
+							h( '('.Set::classicExtract( $dossierpcg66, 'Fichiermodule.nbFichiersLies' ).')' )
+						),
+						array( 'class' => 'odd' ),
+						array( 'class' => 'even' )
+					);
+			?>
+		</tbody>
+	</table>
+		<?php endif;?>
+		
+		
 		<?php if( !empty( $dossierpcg66['Dossierpcg66']['decisiondefautinsertionep66_id'] ) ):?>
 		<fieldset>
 			<?php
@@ -181,6 +298,9 @@
 		<fieldset id="Propositionpcg" class="invisible"></fieldset>
 
 			<?php
+				if( !empty( $dossierpcg66['Dossierpcg66']['contratinsertion_id'] ) ) {
+					$listdecisionpdo = $listdecisionpcgCer;
+				}
 
 				echo $default2->subform(
 					array(

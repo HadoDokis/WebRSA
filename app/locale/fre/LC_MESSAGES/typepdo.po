@@ -47,3 +47,12 @@ msgstr "Aucun type de PDO présent"
 
 msgid "Typepdo::delete::confirm"
 msgstr "Êtes-vous sûr de vouloir supprimer ce type ?"
+
+msgid "ENUM::CERPARTICULIER::N"
+msgstr "Non"
+
+msgid "ENUM::CERPARTICULIER::O"
+msgstr "Oui"
+
+msgid "Typepdo.cerparticulier"
+msgstr "Valeur par défaut lors de la génération depuis un CER Particulier ?"

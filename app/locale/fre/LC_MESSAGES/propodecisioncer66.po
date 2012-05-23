@@ -26,7 +26,7 @@ msgid "Propodecisioncer66.isvalidcer"
 msgstr "Proposition de validation"
 
 msgid "Propodecisioncer66.datevalidcer"
-msgstr "Date de proposition"
+msgstr "Date de décision"
 
 msgid "Propodecisioncer66.motifficheliaison"
 msgstr "Commentaire à reporter sur la fiche de liaison"
@@ -38,4 +38,4 @@ msgid "ENUM::NO::N"
 msgstr "Non validé"
 
 msgid "ENUM::NO::O"
-msgstr "Validé"
+msgstr "Validation le"

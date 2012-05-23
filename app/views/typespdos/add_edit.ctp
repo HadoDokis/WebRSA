@@ -14,7 +14,8 @@
 	if ( Configure::read( 'Cg.departement' ) == 66 ) {
 		$fields = array_merge(
 			$fields,
-			array( 'Typepdo.originepcg' => array( 'type' => 'radio' ) )
+			array( 'Typepdo.originepcg' => array( 'type' => 'radio' ) ),
+			array( 'Typepdo.cerparticulier' => array( 'type' => 'radio' ) )
 		);
 	}
 	else {

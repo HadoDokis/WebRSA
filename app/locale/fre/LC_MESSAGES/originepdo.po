@@ -61,3 +61,12 @@ msgstr "Oui"
 
 msgid "Originepdo::delete::confirm"
 msgstr "Êtes-vous sûr de vouloir supprimer cette origine ?"
+
+msgid "ENUM::CERPARTICULIER::N"
+msgstr "Non"
+
+msgid "ENUM::CERPARTICULIER::O"
+msgstr "Oui"
+
+msgid "Originepdo.cerparticulier"
+msgstr "Valeur par défaut lors de la génération depuis un CER Particulier ?"

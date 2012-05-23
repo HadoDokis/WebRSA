@@ -405,6 +405,19 @@
 		);
 
 		public $hasOne = array(
+			'Dossierpcg66' => array(
+				'className' => 'Dossierpcg66',
+				'foreignKey' => 'contratinsertion_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 			'Propodecisioncer66' => array(
 				'className' => 'Propodecisioncer66',
 				'foreignKey' => 'contratinsertion_id',
@@ -417,7 +430,7 @@
 				'exclusive' => '',
 				'finderQuery' => '',
 				'counterQuery' => ''
-			),
+			)
 		);
 
 		public $virtualFields = array(
@@ -680,9 +693,117 @@
 			$return = $this->query( "UPDATE apres SET eligibiliteapre = 'O' WHERE apres.personne_id = ".$this->data[$this->name]['personne_id']." AND apres.etatdossierapre = 'COM';" ) && $return;
 			$return = $this->query( "UPDATE apres SET eligibiliteapre = 'N' WHERE apres.personne_id = ".$this->data[$this->name]['personne_id']." AND apres.etatdossierapre = 'INC';" ) && $return;
 
+			if( Configure::read( 'Cg.departement' ) == 66 ) {
+				$return = $this->_liaisonDossierpcg66( $created ) && $return;
+			}
+			
 			return $return;
 		}
 
+		protected function _liaisonDossierpcg66( $created ) {
+			$success = true;
+
+			if( isset( $this->data[$this->alias]['forme_ci'] ) ) {
+				$dossierpcg66Precedent = $this->Dossierpcg66->find(
+					'first',
+					array(
+						'conditions' => array(
+							'Dossierpcg66.contratinsertion_id' => $this->id
+						),
+						'contain' => false
+					)
+				);
+				
+				$forme_ci = $this->data[$this->alias]['forme_ci'];
+				if( ( empty( $dossierpcg66Precedent ) || $created ) && ( $forme_ci == 'C' ) ) {
+					$contrat = $this->find(
+						'first',
+						array(
+							'fields' => array_merge(
+								$this->fields(),
+								$this->Personne->fields()
+							),
+							'conditions' => array(
+								'Contratinsertion.id' => $this->id
+							),
+							'contain' => false,
+							'joins' => array(
+								$this->join( 'Personne', array( 'type' => 'INNER' ) )
+							)
+						)
+					);
+					if( empty( $contrat ) ){ 
+						return false;
+					}
+					
+					// L'origine PDO est-elle bien définie comme liée à la création d'un CER ?
+					$originepdo = $this->Dossierpcg66->Originepdo->find(
+						'first',
+						array(
+							'fields' => array(
+								'Originepdo.id'
+							),
+							'conditions' => array(
+								'Originepdo.cerparticulier' => 'O'
+							),
+							'contain' => false
+						)
+					);
+					if( empty( $originepdo ) ) {
+						return false;
+					}
+					// Le type de PDO est-il bien défini comme liée à la création d'un CER ?
+					$typepdo = $this->Dossierpcg66->Typepdo->find(
+						'first',
+						array(
+							'fields' => array(
+								'Typepdo.id'
+							),
+							'conditions' => array(
+								'Typepdo.cerparticulier' => 'O'
+							),
+							'contain' => false
+						)
+					);
+					if( empty( $typepdo ) ) {
+						return false;
+					}
+
+					$dossierpcg66 = array(
+						'Dossierpcg66' => array(
+							'contratinsertion_id' => $this->id,
+							'foyer_id' => $contrat['Personne']['foyer_id'],
+							'originepdo_id' => $originepdo['Originepdo']['id'],
+							'typepdo_id' => $typepdo['Typepdo']['id'],
+							'orgpayeur' => 'CAF',
+							'datereceptionpdo' => $contrat[$this->alias]['date_saisi_ci'],
+							'haspiecejointe' => 0
+						)
+					);
+// debug( $dossierpcg66 );
+// die();
+					if( !empty( $dossierpcg66 ) ) {
+						$this->Dossierpcg66->create( $dossierpcg66 );
+						$success = $this->Dossierpcg66->save() && $success;
+					}
+				}
+				//else if( $forme_ci == 'S' ) {
+				else if( !empty( $dossierpcg66Precedent ) && ( $forme_ci == 'S' ) ) {
+					// FIXME: à voir avec le CG ...
+					$this->log( 'Passage d\'un CER C à S; que fait-on ?', LOG_DEBUG );
+				}
+				else if( empty( $dossierpcg66Precedent ) && ( $forme_ci == 'S' ) ) {
+					
+				}
+				else {
+					return false;
+				}
+			}
+			
+			return $success; // FIXME: à traiter
+		}
+		
+		
 		/**
 		*
 		*/

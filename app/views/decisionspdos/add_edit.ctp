@@ -16,11 +16,20 @@
 
 	<fieldset>
 		<?php
+		
+			$fields = array(
+				'Decisionpdo.libelle',
+				'Decisionpdo.clos' => array( 'type' => 'radio' )
+			);
+
+			if ( Configure::read( 'Cg.departement' ) == 66 ) {
+				$fields = array_merge(
+					$fields,
+					array( 'Decisionpdo.cerparticulier' => array( 'type' => 'radio' ) )
+				);
+			}
 			echo $default->subform(
-				array(
-					'Decisionpdo.libelle',
-					'Decisionpdo.clos' => array( 'type' => 'radio' )
-				),
+				$fields,
 				array(
 					'options' => $options
 				)

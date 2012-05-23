@@ -48,7 +48,7 @@
 				<th>Décision</th>
 				<th>Date décision</th>
 				<th>Position du CER</th>
-				<th colspan="12" class="action">Actions</th>
+				<th colspan="11" class="action">Actions</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -56,7 +56,7 @@
 
 				foreach( $contratsinsertion as $contratinsertion ) {
 
-					$action = ( ( $contratinsertion['Contratinsertion']['forme_ci'] == 'S' ) ? 'validersimple' : 'validerparticulier' );
+					$action = ( ( $contratinsertion['Contratinsertion']['forme_ci'] == 'S' ) ? 'propositionsimple' : 'propositionparticulier' );
 					$dateCreation = Set::classicExtract( $contratinsertion, 'Contratinsertion.created' );
 					$periodeblock = false;
 					if( !empty( $dateCreation ) ){
@@ -64,8 +64,7 @@
 							$periodeblock = true;
 						}
 					}
-// debug($contratinsertion);
-// die();
+
 					$decision = Set::classicExtract( $decision_ci, Set::classicExtract( $contratinsertion, 'Contratinsertion.decision_ci' ) );
 					$position = Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' );
 
@@ -113,22 +112,24 @@
 									'enabled' => (
 										( $permissions->check( 'contratsinsertion', 'edit' ) == 1 )
 										&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'annule' )
-										&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != ( 'validnotifie' && 'nonvalidnotifie' ) )
+										&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != ( 'validnotifie' ) )
+										&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != ( 'nonvalidnotifie' ) )
 										&& ( !$periodeblock )
 									)
 								)
 							),
+
 							$default2->button(
-								'proposition',
-								array( 'controller' => 'proposdecisionscers66', 'action' => 'proposition',
+								'valider',
+								array( 'controller' => 'proposdecisionscers66', 'action' => $action,
 								$contratinsertion['Contratinsertion']['id'] ),
 								array(
 									'enabled' => (
-										( $permissions->check( 'proposdecisionscers66', 'proposition' ) == 1 )
-										&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'annule' )
-										&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'valid' )
-										&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'validnotifie' )
-										&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'nonvalidnotifie' )
+											( $permissions->check( 'proposdecisionscers66', $action ) == 1 )
+											&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'fincontrat' )
+											&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'annule' )
+											&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'validnotifie' )
+											&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'nonvalidnotifie' )
 									)
 								)
 							),
@@ -179,20 +180,7 @@
 									)
 								)
 							),
-							$default2->button(
-								'valider',
-								array( 'controller' => 'contratsinsertion', 'action' => $action,
-								$contratinsertion['Contratinsertion']['id'] ),
-								array(
-									'enabled' => (
-											( $permissions->check( 'contratsinsertion', $action ) == 1 )
-											&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'fincontrat' )
-											&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'annule' )
-											&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'validnotifie' )
-											&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'nonvalidnotifie' )
-									)
-								)
-							),
+
 							$default2->button(
 								'notification',
 								array( 'controller' => 'contratsinsertion', 'action' => 'notification',

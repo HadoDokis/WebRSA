@@ -18,13 +18,32 @@
 			<tr>
 				<th>Libellé</th>
 				<th>Ce type clotûre-t-il le dossier ?</th>
+				<?php if( Configure::read( 'Cg.departement' ) == 66  ) :?>
+					<th>Cette décision est-elle liée à un CER Particulier ?</th>
+				<?php endif;?>
 				<th colspan="2" class="action">Actions</th>
 			</tr>
 		</thead>
 		<tbody>
 			<?php foreach( $decisionspdos as $decisionpdo ):
-				echo $xhtml->tableCells(
-					array(
+			
+				if( Configure::read( 'Cg.departement' ) == 66  ) {
+					$arrayCells = array(
+						h( $decisionpdo['Decisionpdo']['libelle'] ),
+						( $decisionpdo['Decisionpdo']['clos'] == 'N' ) ? 'Non' : 'Oui',
+						( $decisionpdo['Decisionpdo']['cerparticulier'] == 'N' ) ? 'Non' : 'Oui',
+						$xhtml->editLink(
+							'Éditer la décision de PDO ',
+							array( 'controller' => 'decisionspdos', 'action' => 'edit', $decisionpdo['Decisionpdo']['id'] )
+						),
+						$xhtml->deleteLink(
+							'Supprimer la décision de PDO ',
+							array( 'controller' => 'decisionspdos', 'action' => 'delete', $decisionpdo['Decisionpdo']['id'] )
+						)
+					);
+				}
+				else{
+					$arrayCells = array(
 						h( $decisionpdo['Decisionpdo']['libelle'] ),
 						( $decisionpdo['Decisionpdo']['clos'] == 'N' ) ? 'Non' : 'Oui',
 						$xhtml->editLink(
@@ -35,9 +54,15 @@
 							'Supprimer la décision de PDO ',
 							array( 'controller' => 'decisionspdos', 'action' => 'delete', $decisionpdo['Decisionpdo']['id'] )
 						)
-					),
-					array( 'class' => 'odd' ),
-					array( 'class' => 'even' )
+					);
+				}
+			
+
+				
+				echo $xhtml->tableCells(
+					$arrayCells,
+					array( 'class' => 'odd', 'id' => 'innerTableTrigger' ),
+					array( 'class' => 'even', 'id' => 'innerTableTrigger' )
 				);
 			endforeach;?>
 		</tbody>

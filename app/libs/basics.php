@@ -730,4 +730,16 @@
 	function apache_version()  {
 		return preg_replace( '/^Apache\/([^ ]+) .*/', '\1', apache_get_version() );
 	}
+	
+	/**
+	 * TODO: docblock
+	 */
+	function date_cakephp_to_sql( array $date ) {
+		if( ( count( $date ) == 3 ) && isset( $date['year'] ) && isset( $date['month'] ) && isset( $date['day'] ) ) {
+			return "{$date['year']}-{$date['month']}-{$date['day']}";
+		}
+		else {
+			return false;
+		}
+	}
 ?>
