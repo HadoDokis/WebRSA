@@ -610,6 +610,9 @@
 			else if( ereg("DO 19", $libelleDecision ) ) {
 				$nomModele = 'pdo_insertion';
 			}
+			else if( ereg("R 9", $libelleDecision ) ) {
+				$nomModele = 'pdo_R9_etudiant';
+			}
 			$options['Foyer']['sitfam'] = ClassRegistry::init( 'Option' )->sitfam();
 
 			return $this->ged(
