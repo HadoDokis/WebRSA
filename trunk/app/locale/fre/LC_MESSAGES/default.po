@@ -504,7 +504,13 @@ msgid "Button::validerparticulier"
 msgstr "Décision"
 
 msgid "Button::proposition"
-msgstr "Proposition de décision"
+msgstr "Décision"
+
+msgid "Button::propositionsimple"
+msgstr "Décision"
+
+msgid "Button::propositionparticulier"
+msgstr "Décision"
 
 msgid "Button::notification"
 msgstr "Date d'envoi"

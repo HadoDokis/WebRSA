@@ -27,14 +27,25 @@
 				$options,
 				$this->Decisiondossierpcg66->Dossierpcg66->Personnepcg66->Traitementpcg66->Decisiontraitementpcg66->enums(),
 				$this->Decisiondossierpcg66->Dossierpcg66->Decisiondefautinsertionep66->enums(),
-				$this->Decisiondossierpcg66->Dossierpcg66->Personnepcg66->Traitementpcg66->enums()
+				$this->Decisiondossierpcg66->Dossierpcg66->Personnepcg66->Traitementpcg66->enums(),
+				$this->Decisiondossierpcg66->Dossierpcg66->Contratinsertion->enums()
 			);
 			$listdecisionpdo = $this->Decisiondossierpcg66->Decisionpdo->find( 'list'/*, array( 'fields' => array( 'Decisionpdo.name' )*/ );
 			$typersapcg66 = $this->Decisiondossierpcg66->Typersapcg66->find( 'list' );
 
+			$forme_ci = array( 'S' => 'Simple', 'C' => 'Particulier' );
 			$compofoyerpcg66 = $this->Decisiondossierpcg66->Compofoyerpcg66->find( 'list' );
 			
-			$this->set( compact( 'options', 'listdecisionpdo', 'typersapcg66', 'compofoyerpcg66' ) );
+			$listdecisionpcgCer = $this->Decisiondossierpcg66->Decisionpdo->find(
+				'list',
+				array(
+					'conditions' => array(
+						'Decisionpdo.cerparticulier' => 'O'
+					)
+				)
+			);
+
+			$this->set( compact( 'options', 'listdecisionpdo', 'typersapcg66', 'compofoyerpcg66', 'forme_ci', 'listdecisionpcgCer' ) );
 		}
 
 
@@ -155,7 +166,8 @@
 									)
 								)
 							),
-							'Fichiermodule'
+							'Fichiermodule',
+							'Contratinsertion'
 						)
 					)
 				);
@@ -200,7 +212,8 @@
 									)
 								)
 							),
-							'Fichiermodule'
+							'Fichiermodule',
+							'Contratinsertion'
 						)
 					)
 				);
@@ -311,7 +324,7 @@
 				)
 			);
 			
-			//Liste des traitements
+			//Liste des traitements avec une fiche de calcul devant être reporter dans la décision
 			$listeFicheAReporter = array();
 			foreach( $personnespcgs66 as $i => $personnepcg66 ) {
 				if( !empty( $personnepcg66['Traitementpcg66'] ) ) {

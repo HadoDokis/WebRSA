@@ -144,6 +144,7 @@
 			return $return;
 		}
 
+
 		/**
 		* Retourne l'id technique du dossier RSA auquel ce traitement est lié.
 		*/

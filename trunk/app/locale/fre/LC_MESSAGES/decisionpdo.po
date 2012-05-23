@@ -33,3 +33,12 @@ msgstr "Non"
 
 msgid "ENUM::CLOS::O"
 msgstr "Oui"
+
+msgid "ENUM::CERPARTICULIER::N"
+msgstr "Non"
+
+msgid "ENUM::CERPARTICULIER::O"
+msgstr "Oui"
+
+msgid "Decisionpdo.cerparticulier"
+msgstr "Cette décision est-elle en lien avec un CER Particulier ?"

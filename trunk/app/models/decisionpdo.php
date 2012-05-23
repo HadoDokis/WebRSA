@@ -12,7 +12,8 @@
 			'Enumerable' => array(
 				'fields' => array(
 					'clos',
-					'nbmoisecheance'
+					'nbmoisecheance',
+					'cerparticulier'
 				)
 			)
 		);

@@ -10,7 +10,8 @@
 			'Autovalidate',
 			'Enumerable' => array(
 				'fields' => array(
-					'originepcg'
+					'originepcg',
+					'cerparticulier'
 				)
 			)
 		);

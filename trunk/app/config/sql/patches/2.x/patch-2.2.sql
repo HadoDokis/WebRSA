@@ -368,6 +368,31 @@ UPDATE acos SET alias = 'Etatsliquidatifs:impressions' WHERE alias = 'Etatsliqui
 --			ex: si oui, alors telle pièce, sinon telle pièce ...
 -------------------------------------------------------------------------------------------------------------
 ALTER TABLE piecesmodelestypescourrierspcgs66 ALTER COLUMN name TYPE TEXT;
+
+-------------------------------------------------------------------------------------------------------------
+-- 20120523 : Ajout d'une  clé étrangère du CER dans le dossier PCG suite à la création d'un dossie PCG66
+--				si le CER est une CER Particulier
+-------------------------------------------------------------------------------------------------------------
+SELECT add_missing_table_field ('public', 'dossierspcgs66', 'contratinsertion_id', 'INTEGER');
+SELECT add_missing_constraint ('public', 'dossierspcgs66', 'dossierspcgs66_contratinsertion_id_fkey', 'contratsinsertion', 'contratinsertion_id');
+DROP INDEX IF EXISTS dossierspcgs66_contratinsertion_id_idx;
+CREATE UNIQUE INDEX dossierspcgs66_contratinsertion_id_idx ON dossierspcgs66 (contratinsertion_id);
+
+
+SELECT add_missing_table_field ('public', 'originespdos', 'cerparticulier', 'TYPE_NO');
+ALTER TABLE originespdos ALTER COLUMN cerparticulier SET DEFAULT 'N'::TYPE_NO;
+UPDATE originespdos SET cerparticulier = 'N' WHERE cerparticulier IS NULL;
+ALTER TABLE originespdos ALTER COLUMN cerparticulier SET NOT NULL;
+
+SELECT add_missing_table_field ('public', 'typespdos', 'cerparticulier', 'TYPE_NO');
+ALTER TABLE typespdos ALTER COLUMN cerparticulier SET DEFAULT 'N'::TYPE_NO;
+UPDATE typespdos SET cerparticulier = 'N' WHERE cerparticulier IS NULL;
+ALTER TABLE typespdos ALTER COLUMN cerparticulier SET NOT NULL;
+
+SELECT add_missing_table_field ('public', 'decisionspdos', 'cerparticulier', 'TYPE_NO');
+ALTER TABLE decisionspdos ALTER COLUMN cerparticulier SET DEFAULT 'N'::TYPE_NO;
+UPDATE decisionspdos SET cerparticulier = 'N' WHERE cerparticulier IS NULL;
+ALTER TABLE decisionspdos ALTER COLUMN cerparticulier SET NOT NULL;
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

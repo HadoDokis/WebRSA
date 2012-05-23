@@ -101,15 +101,37 @@
 					}
 
 					if( $saved ){
-						$saved = $this->Propodecisioncer66->Contratinsertion->updateAll(
-							array(
-								'Contratinsertion.positioncer' => '\'attsignature\'',
-							),
-							array(
-								'Contratinsertion.personne_id' => $personne_id,
-								'Contratinsertion.id' => $contratinsertion_id
-							)
-						) && $saved;
+						$dateDecision = date_cakephp_to_sql( $this->data['Propodecisioncer66']['datevalidcer'] );
+						if( $this->data['Propodecisioncer66']['isvalidcer'] == 'O' ) {
+							$saved = $this->Propodecisioncer66->Contratinsertion->updateAll(
+								array(
+									'Contratinsertion.decision_ci' => '\'V\'',
+									'Contratinsertion.datevalidation_ci' => "'".$dateDecision."'",
+									'Contratinsertion.datedecision' => "'".$dateDecision."'",
+									'Contratinsertion.positioncer' => '\'valid\'',
+								),
+								array(
+									'Contratinsertion.personne_id' => $personne_id,
+									'Contratinsertion.id' => $contratinsertion_id
+								)
+							) && $saved;
+						}
+						else if( $this->data['Propodecisioncer66']['isvalidcer'] == 'N' ) {
+							$saved = $this->Propodecisioncer66->Contratinsertion->updateAll(
+								array(
+									'Contratinsertion.decision_ci' => '\'N\'',
+									'Contratinsertion.datevalidation_ci' => null,
+									'Contratinsertion.datedecision' => "'".$dateDecision."'",
+									'Contratinsertion.positioncer' => '\'nonvalid\'',
+								),
+								array(
+									'Contratinsertion.personne_id' => $personne_id,
+									'Contratinsertion.id' => $contratinsertion_id
+								)
+							) && $saved;
+						
+						}
+
 					}
 					if( $saved ) {
 						$this->Jetons->release( $dossier_id );
@@ -130,8 +152,34 @@
 			
 			$this->_setOptions();
 			$this->set( 'urlmenu', '/contratsinsertion/index/'.$personne_id );
-
+			$this->render( $this->action, null, 'proposition' );
         }
 
+		/**
+		**Fonction de validation pour les CERs Simples du CG66
+		* @param type $contratinsertion_id
+		*
+		*/
+		public function propositionsimple( $contratinsertion_id = null ){
+			$this->Propodecisioncer66->Contratinsertion->id = $contratinsertion_id;
+			$forme_ci = $this->Propodecisioncer66->Contratinsertion->field( 'forme_ci' );
+			$this->assert( ( $forme_ci == 'S' ), 'error500' );
+
+			$this->proposition( $contratinsertion_id );
+		}
+
+
+		/**
+			**Fonction de validation pour les CERs Particuliers du CG66
+			* @param type $contratinsertion_id
+			*
+			*/
+		public function propositionparticulier( $contratinsertion_id = null ){
+			$this->Propodecisioncer66->Contratinsertion->id = $contratinsertion_id;
+			$forme_ci = $this->Propodecisioncer66->Contratinsertion->field( 'forme_ci' );
+			$this->assert( ( $forme_ci == 'C' ), 'error500' );
+
+			$this->proposition( $contratinsertion_id );
+		}
     }
 ?>

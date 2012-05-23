@@ -34,8 +34,8 @@
 						echo $xform->fieldValue( 'Contratinsertion.df_ci', $dfci );
 						echo $xform->fieldValue( 'Contratinsertion.duree_engag', $duree );
 						echo $xform->fieldValue( 'Referent.nom_complet', $referent );
-						echo $xform->fieldValue( 'Propodecisioncer66.isvalidcer', $propodecision );
-						echo $xform->fieldValue( 'Propodecisioncer66.datevalidcer', $datevalidcer );
+// 						echo $xform->fieldValue( 'Propodecisioncer66.isvalidcer', $propodecision );
+// 						echo $xform->fieldValue( 'Propodecisioncer66.datevalidcer', $datevalidcer );
 						
 						echo $form->input( 'Contratinsertion.decision_ci', array( 'label' => 'Décision finale', 'type' => 'select', 'options' => $decision_ci ) );
 						echo $form->input( 'Contratinsertion.datedecision', array( 'label' => '', 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+2, 'minYear'=>date('Y')-3 , 'empty' => true)  );
