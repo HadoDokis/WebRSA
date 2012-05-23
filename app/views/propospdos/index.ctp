@@ -96,7 +96,7 @@
 						else {
 							$authPrintcourrier = false;
 							$libelleDecision = Set::classicExtract( $pdo, 'Decisionpdo.libelle' );
-							if( ereg("AJ 7a", $libelleDecision ) || ereg("DO 19", $libelleDecision ) ) {
+							if( ereg("AJ 7a", $libelleDecision ) || ereg("DO 19", $libelleDecision ) || ereg("R 9", $libelleDecision ) ) {
 								$authPrintcourrier = true;
 							}
 							else{
