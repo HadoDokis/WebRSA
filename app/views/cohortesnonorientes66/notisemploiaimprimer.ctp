@@ -60,27 +60,27 @@
 			</fieldset>
 			<?php
 				if( !is_null($etatdosrsa)) {
-					echo $search->etatdosrsa($etatdosrsa);
+					echo $search->etatdosrsa( $etatdosrsa, 'Search.Situationdossierrsa.etatdosrsa' );
 				}
 			?>
             <?php
 
                 echo $default2->subform(
                     array(
-                        'Search.Personne.nom' => array( 'label' => __d( 'personne', 'Personne.nom', true ), 'type' => 'text' ),
-                        'Search.Personne.prenom' => array( 'label' => __d( 'personne', 'Personne.prenom', true ), 'type' => 'text' ),
-                        'Search.Personne.nomnai' => array( 'label' => __d( 'personne', 'Personne.nomnai', true ), 'type' => 'text' ),
-                        'Search.Personne.nir' => array( 'label' => __d( 'personne', 'Personne.nir', true ), 'type' => 'text', 'maxlength' => 15 ),
-                        'Search.Dossier.matricule' => array( 'label' => __d( 'dossier', 'Dossier.matricule', true ), 'type' => 'text', 'maxlength' => 15 ),
-                        'Search.Dossier.numdemrsa' => array( 'label' => __d( 'dossier', 'Dossier.numdemrsa', true ), 'type' => 'text', 'maxlength' => 15 ),
-						'Search.Adresse.locaadr' => array( 'label' => __d( 'adresse', 'Adresse.locaadr', true ), 'type' => 'text' ),
-						'Search.Adresse.numcomptt' => array( 'label' => __d( 'adresse', 'Adresse.numcomptt', true ), 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true )
-                    ),
+			'Search.Personne.nom' => array( 'label' => __d( 'personne', 'Personne.nom', true ), 'type' => 'text' ),
+			'Search.Personne.prenom' => array( 'label' => __d( 'personne', 'Personne.prenom', true ), 'type' => 'text' ),
+			'Search.Personne.nomnai' => array( 'label' => __d( 'personne', 'Personne.nomnai', true ), 'type' => 'text' ),
+			'Search.Personne.nir' => array( 'label' => __d( 'personne', 'Personne.nir', true ), 'type' => 'text', 'maxlength' => 15 ),
+			'Search.Dossier.matricule' => array( 'label' => __d( 'dossier', 'Dossier.matricule', true ), 'type' => 'text', 'maxlength' => 15 ),
+			'Search.Dossier.numdemrsa' => array( 'label' => __d( 'dossier', 'Dossier.numdemrsa', true ), 'type' => 'text', 'maxlength' => 15 ),
+			'Search.Adresse.locaadr' => array( 'label' => __d( 'adresse', 'Adresse.locaadr', true ), 'type' => 'text' ),
+			'Search.Adresse.numcomptt' => array( 'label' => __d( 'adresse', 'Adresse.numcomptt', true ), 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true )
+		),
                     array(
                         'options' => $options
                     )
                 );
-                
+
 				if( Configure::read( 'CG.cantons' ) ) {
 					echo $xform->input( 'Search.Canton.canton', array( 'label' => 'Canton', 'type' => 'select', 'options' => $cantons, 'empty' => true ) );
 				}
@@ -106,15 +106,16 @@
 			echo $xform->input( "Search.{$filtre}", array( 'type' => 'hidden', 'value' => $value ) );
 		}
 	?>
-    <table id="searchResults" class="tooltips">
+    <table id="searchResults">
         <thead>
             <tr>
                 <th>N° Dossier</th>
                 <th>Date de demande</th>
                 <th>Allocataire principal</th>
                 <th>Etat du droit</th>
-				<th>Commune de l'allocataire</th>
-				<th class="action">Action</th>
+		<th>Commune de l'allocataire</th>
+		<th>Alerte composition du foyer ?</th>
+		<th class="action" colspan="2">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -128,6 +129,12 @@
 						h( $cohortenonoriente66['Personne']['nom'].' '.$cohortenonoriente66['Personne']['prenom'] ),
 						h( $etatdosrsa[$cohortenonoriente66['Situationdossierrsa']['etatdosrsa']] ),
 						h( $cohortenonoriente66['Adresse']['locaadr'] ),
+						$gestionanomaliebdd->foyerErreursPrestationsAllocataires( $cohortenonoriente66, false ),
+						$xhtml->viewLink(
+							'Voir le dossier',
+							array( 'controller' => 'dossiers', 'action' => 'view', $cohortenonoriente66['Dossier']['id'] ),
+							$permissions->check( 'dossiers', 'view' )
+						),
 						$xhtml->printLink(
 							'Imprimer le questionnaire',
 							array( 'controller' => 'cohortesnonorientes66', 'action' => 'impression', $cohortenonoriente66['Personne']['id'] ),
@@ -137,8 +144,8 @@
 
 					echo $xhtml->tableCells(
 						$tableCells,
-						array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
-						array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
+						array( 'class' => 'odd' ),
+						array( 'class' => 'even' )
 					);
 
                 ?>
