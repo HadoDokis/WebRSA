@@ -1080,7 +1080,8 @@
 				)
 			);
 			$contratinsertion = Set::merge( $contratinsertion, $user );
-
+// debug($contratinsertion);
+// die();
 			if( $formeci == 'C' ) {
 				$modeleodt = "Contratinsertion/ficheliaisoncerParticulier.odt";
 			}
