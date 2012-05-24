@@ -21,20 +21,6 @@
 		);
 
 		/**
-		* Chemin relatif pour les modèles de documents .odt utilisés lors des
-		* impressions. Utiliser %s pour remplacer par l'alias.
-		*/
-		public $modelesOdt = array(
-			// Convocation EP
-			'Commissionep/convocationep_beneficiaire.odt',
-			// Décision EP (décision CG)
-			'%s/decision_reorientation.odt',
-			'%s/decision_maintienref.odt',
-			'%s/decision_annule.odt',
-			'%s/decision_reporte.odt',
-		);
-
-		/**
 		* Modèle de document pour la convocation du bénéficiaire.
 		*/
 		protected $_modeleOdtConvocationepBeneficiaire = 'Commissionep/convocationep_beneficiaire.odt';

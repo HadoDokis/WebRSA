@@ -60,7 +60,7 @@
 			</fieldset>
 			<?php
 				if( !is_null($etatdosrsa)) {
-					echo $search->etatdosrsa($etatdosrsa);
+					echo $search->etatdosrsa( $etatdosrsa, 'Search.Situationdossierrsa.etatdosrsa' );
 				}
 			?>
             <?php
@@ -80,7 +80,7 @@
                         'options' => $options
                     )
                 );
-                
+
 				if( Configure::read( 'CG.cantons' ) ) {
 					echo $xform->input( 'Search.Canton.canton', array( 'label' => 'Canton', 'type' => 'select', 'options' => $cantons, 'empty' => true ) );
 				}
@@ -106,7 +106,7 @@
 			echo $xform->input( "Search.{$filtre}", array( 'type' => 'hidden', 'value' => $value ) );
 		}
 	?>
-    <table id="searchResults" class="tooltips">
+    <table id="searchResults">
         <thead>
             <tr>
                 <th>N° Dossier</th>
@@ -114,6 +114,7 @@
                 <th>Allocataire principal</th>
                 <th>Etat du droit</th>
 				<th>Commune de l'allocataire</th>
+				<th>Alerte composition du foyer ?</th>
 				<th>Sélectionner</th>
 				<th class="action">Type d'orientation</th>
 				<th class="action">Structure référente</th>
@@ -132,7 +133,7 @@
 						h( $cohortenonoriente66['Personne']['nom'].' '.$cohortenonoriente66['Personne']['prenom'] ),
 						h( $etatdosrsa[$cohortenonoriente66['Situationdossierrsa']['etatdosrsa']] ),
 						h( $cohortenonoriente66['Adresse']['locaadr'] ),
-						
+						$gestionanomaliebdd->foyerErreursPrestationsAllocataires( $cohortenonoriente66, false ),
 						$xform->input( 'Orientstruct.'.$index.'.atraiter', array( 'label' => false, 'legend' => false, 'type' => 'checkbox', 'class' => 'atraiter' ) ),
 						$xform->input( 'Orientstruct.'.$index.'.typeorient_id', array( 'label' => false, 'type' => 'select', 'options' => $typesOrient/*, 'empty' => true*/ ) ).
 						$xform->input( 'Orientstruct.'.$index.'.origine', array( 'label' => false, 'type' => 'hidden', 'value' => 'cohorte' ) ).
@@ -141,11 +142,11 @@
 						$xform->input( 'Orientstruct.'.$index.'.codeinsee', array( 'label' => false, 'type' => 'hidden', 'value' => $cohortenonoriente66['Adresse']['numcomptt'] ) ).
 						$xform->input( 'Orientstruct.'.$index.'.personne_id', array( 'label' => false, 'type' => 'hidden', 'value' => $cohortenonoriente66['Personne']['id'] ) ).
 						$xform->input( 'Orientstruct.'.$index.'.statut_orient', array( 'label' => false, 'type' => 'hidden', 'value' => 'Orienté' ) ),
-						
+
 						$xform->input( 'Orientstruct.'.$index.'.structurereferente_id', array( 'label' => false, 'type' => 'select', 'options' => $structuresReferentes/*,  'empty' => true*/ ) ),
-						
+
 						$xform->input( 'Orientstruct.'.$index.'.date_valid', array( 'label' => false, 'type' => 'date', 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 2, 'maxYear' => date( 'Y' ) + 2  ) ),
-						
+
 						$xhtml->viewLink(
 							'Voir le dossier',
 							array( 'controller' => 'dossiers', 'action' => 'view', $cohortenonoriente66['Dossier']['id'] ),
@@ -157,8 +158,8 @@
 
 					echo $xhtml->tableCells(
 						$tableCells,
-						array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
-						array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
+						array( 'class' => 'odd' ),
+						array( 'class' => 'even' )
 					);
 
                 ?>
@@ -179,7 +180,7 @@
 	<?php foreach( $cohortesnonorientes66 as $key => $cohortenonoriente66 ):?>
 		<script type="text/javascript">
 			document.observe("dom:loaded", function() {
-			
+
 				dependantSelect( 'Orientstruct<?php echo $key;?>StructurereferenteId', 'Orientstruct<?php echo $key;?>TypeorientId' );
 				try { $( 'OrientstructStructurereferenteId' ).onchange(); } catch(id) { }
 
@@ -197,7 +198,7 @@
 					],
 					false
 				);
-				
+
 			});
 		</script>
 	<?php endforeach;?>
