@@ -115,6 +115,13 @@
 				if ( $success ) {
 					$this->Ep->create( $this->data );
 					$success = $this->Ep->save() && $success;
+
+					if( $success ) {
+						$success = $this->Ep->Commissionep->CommissionepMembreep->updateCommissionsNonValidees(
+							$this->Ep->id,
+							$this->data['Membreep']['Membreep']
+						) && $success;
+					}
 				}
 
 				$this->_setFlashResult( 'Save', $success );
