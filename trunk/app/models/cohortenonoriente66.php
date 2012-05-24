@@ -6,12 +6,12 @@
 		public $name = 'Cohortenonoriente66';
 
 		public $useTable = false;
-		
+
 		public $actsAs = array(
 			'Conditionnable',
 			'Gedooo.Gedooo'
 		);
-		
+
 		/**
 		*
 		*/
@@ -85,7 +85,7 @@
 			$conditions = $this->conditionsDossier( $conditions, $criteresnonorientes['Search'] );
 			$conditions = $this->conditionsPersonne( $conditions, $criteresnonorientes['Search'] );
 			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $criteresnonorientes['Search'] );
-			
+
 
 			/// Dossiers lockés FIXME
 			if( !empty( $lockedDossiers ) && ( $statutNonoriente != 'Nonoriente::notisemploiaimprimer' ) ) {
@@ -108,7 +108,10 @@
 					$Personne->Foyer->Dossier->fields(),
 					$Personne->Foyer->Adressefoyer->Adresse->fields(),
 					$Personne->Foyer->Dossier->Situationdossierrsa->fields(),
-					$Personne->Orientstruct->fields()
+					$Personne->Orientstruct->fields(),
+					array(
+						$Personne->Foyer->sqVirtualField( 'enerreur' )
+					)
 				),
 				'joins' => array(
 					$Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
@@ -159,7 +162,7 @@
 			);
 			return $querydata;
 		}
-		
+
 		/**
 		 * Retourne le chemin vers le modèle odt (questionnaire)utilisé pour les non orientés du CG66
 		 *
@@ -169,7 +172,7 @@
 		public function modeleOdt( $data ) {
 			return 'Orientation/questionnaireorientation66.odt';
 		}
-		
+
 		/**
 		 * Retourne le PDF par défaut généré par les appels aux méthodes getDataForPdf, modeleOdt et
 		 * à la méthode ged du behavior Gedooo
@@ -192,7 +195,7 @@
 			);
 
 			$querydata = $this->getDataForPdf();
-			
+
 			$querydata = Set::merge(
 				$querydata,
 				array(
@@ -202,7 +205,7 @@
 				)
 			);
 			$personne = $Personne->find( 'first', $querydata );
-			
+
 			/// Récupération de l'utilisateur
 			$user = ClassRegistry::init( 'User' )->find(
 				'first',
@@ -227,7 +230,7 @@
 				$options
 			);
 		}
-		
+
 		/**
 		 * Retourne le PDF concernant le questionnaire de la personne non orientée
 		 *
@@ -239,7 +242,7 @@
 // 			$querydata = $this->getDataForPdf();
 
 			$querydata = $this->search( $statutNonoriente, $mesCodesInsee, $filtre_zone_geo, $search, null );
-			
+
 			$querydata['limit'] = 100;
 			$querydata['offset'] = ( ( $page ) <= 1 ? 0 : ( $querydata['limit'] * ( $page - 1 ) ) );
 
@@ -281,6 +284,6 @@
 				$options
 			);
 		}
-		
+
 	}
 ?>
