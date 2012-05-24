@@ -857,27 +857,6 @@
 				)
 			);
 
-			$presencesNonIndiquees = $this->Commissionep->CommissionepMembreep->find(
-				'count',
-				array(
-					'conditions' => array(
-						'CommissionepMembreep.commissionep_id' => $commissionep_id,
-						'CommissionepMembreep.presence IS NULL'
-					)
-				)
-			);
-
-			if( empty( $commissionep['Commissionep']['etatcommissionep'] ) || ( $presencesNonIndiquees > 0 ) ) {
-				if( empty( $commissionep['Commissionep']['etatcommissionep'] ) ) {
-					$this->Session->setFlash( 'Impossible d\'imprimer le PV avant de finaliser la commission au niveau EP.', 'default', array( 'class' => 'error' ) );
-				}
-				else {
-					$this->Session->setFlash( 'Impossible d\'imprimer le PV avant d\'avoir pris les présences de la commission d\'EP.', 'default', array( 'class' => 'error' ) );
-				}
-
-				$this->redirect( $this->referer() );
-			}
-
 			$pdf = $this->Commissionep->getPdfPv( $commissionep_id );
 
 			if( $pdf ) {
@@ -1147,56 +1126,6 @@
 				$this->redirect( $this->referer() );
 			}
 		}
-
-		/**
-		* Impression des décisions émises par la commission de l'EP
-		* Représente le point 11 du processus de l'EP
-		*/
-/*
-		public function printDecision( $commissionep_id ) {
-			$commissionep = $this->Commissionep->find(
-				'first',
-				array(
-					'fields' => array(
-						'Commissionep.etatcommissionep'
-					),
-					'conditions' => array(
-						'Commissionep.id' => $commissionep_id
-					)
-				)
-			);
-
-			$presencesNonIndiquees = $this->Commissionep->CommissionepMembreep->find(
-				'count',
-				array(
-					'conditions' => array(
-						'CommissionepMembreep.commissionep_id' => $commissionep_id,
-						'CommissionepMembreep.presence IS NULL'
-					)
-				)
-			);
-
-			if( empty( $commissionep['Commissionep']['etatcommissionep'] ) || ( $presencesNonIndiquees > 0 ) ) {
-				if( empty( $commissionep['Commissionep']['etatcommissionep'] ) ) {
-					$this->Session->setFlash( 'Impossible d\'imprimer le PV avant de finaliser la commission au niveau EP.', 'default', array( 'class' => 'error' ) );
-				}
-				else {
-					$this->Session->setFlash( 'Impossible d\'imprimer le PV avant d\'avoir pris les présences de la commission d\'EP.', 'default', array( 'class' => 'error' ) );
-				}
-
-				$this->redirect( $this->referer() );
-			}
-
-			$pdf = $this->Commissionep->getPdfDecision( $commissionep_id );
-
-			if( $pdf ) {
-				$this->Gedooo->sendPdfContentToClient( $pdf, 'DecisionEP' );
-			}
-			else {
-				$this->Session->setFlash( 'Impossible de générer les décisions émises par la commission d\'EP', 'default', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer() );
-			}
-		}*/
 
 		/**
 		* Affichage des décisions de la commission d'EP niveau EP

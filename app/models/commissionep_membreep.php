@@ -132,5 +132,83 @@
 
 			return $membresEpsIds;
 		}
+
+		/**
+		 * Supprime ou ajoute des entrées dans la table commissionseps_membreseps lorsque la
+		 * commission n'est pas encore validée et qu'il se pourrait que des membres aient été rajoutés ou
+		 * supprimés de l'EP.
+		 *
+		 * @param integer $ep_id L'id de l'EP pour laquelle des membres ont été ajoutés ou supprimés
+		 * @param array $membreseps_ids Les ids des membres actuels de l'EP
+		 * @return boolean
+		 */
+		public function updateCommissionsNonValidees( $ep_id, $membreseps_ids ) {
+			$success = true;
+
+			// Commissions non validées pour EP
+			$commissionsIdsNonValidees = $this->Commissionep->find(
+				'list',
+				array(
+					'fields' => array(
+						'Commissionep.id',
+						'Commissionep.id'
+					),
+					'conditions' => array(
+						'Commissionep.ep_id' => $ep_id,
+						'Commissionep.etatcommissionep' => array( 'cree', 'associe' )
+					),
+					'contain' => false
+				)
+			);
+
+			if( !empty( $commissionsIdsNonValidees ) ) {
+				$commissionsIdsNonValidees = array_keys( $commissionsIdsNonValidees );
+
+				foreach( $commissionsIdsNonValidees as $commissionep_id ) {
+					$commissionseps_membreseps = $this->find(
+						'list',
+						array(
+							'fields' => array(
+								'CommissionepMembreep.membreep_id',
+								'CommissionepMembreep.membreep_id'
+							),
+							'conditions' => array(
+								'CommissionepMembreep.commissionep_id' => $commissionep_id
+							),
+							'contain' => false
+						)
+					);
+
+					if( !empty( $commissionseps_membreseps ) ) {
+						$commissionseps_membreseps = array_keys( $commissionseps_membreseps );
+
+						// Suppression des entrées de membres qui ne sont plus associés
+						$success = $this->deleteAll(
+							array(
+								'CommissionepMembreep.commissionep_id' => $commissionep_id,
+								'CommissionepMembreep.membreep_id NOT' => $membreseps_ids
+							)
+						) && $success;
+
+						// Ajout d'entrées pour les membres ajoutés
+						$membreseps_ajoutes = array_diff( $membreseps_ids, $commissionseps_membreseps );
+						if( !empty( $membreseps_ajoutes ) ) {
+							$nouveaux_commissionseps_membreseps = array();
+							foreach( $membreseps_ajoutes as $membreep_id ) {
+								$nouveaux_commissionseps_membreseps[] = array(
+									'CommissionepMembreep' => array(
+										'commissionep_id' => $commissionep_id,
+										'membreep_id' => $membreep_id
+									)
+								);
+							}
+							$success = $this->saveAll( $nouveaux_commissionseps_membreseps, array( 'atomic' => false ) ) && $success;
+						}
+					}
+				}
+			}
+
+			return $success;
+		}
 	}
 ?>
