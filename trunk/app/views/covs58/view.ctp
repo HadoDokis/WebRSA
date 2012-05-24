@@ -119,7 +119,7 @@
 						array(
 							'actions' => array(
 								'Dossierscovs58::view' => array( 'label' => 'Voir', 'url' => array( 'controller' => $controller, 'action' => 'index', '#Personne.id#' ) ),
-								'Dossierscovs58::impressiondecision' => array( 'label' => 'Imprimer la décision', 'url' => array( 'controller' => 'covs58', 'action' => 'impressiondecision', '#Passagecov58.id#' ), 'disabled' => '"#Passagecov58.etatdossiercov#" != "traite" || "#Themecov58.name#" == "proposcontratsinsertioncovs58"' )
+								'Dossierscovs58::impressiondecision' => array( 'label' => 'Imprimer la décision', 'url' => array( 'controller' => 'covs58', 'action' => 'impressiondecision', '#Passagecov58.id#' ), 'disabled' => '"#Passagecov58.etatdossiercov#" != "traite"' && $theme == "propocontratinsertioncov58" )
 							),
 							'options' => $options
 						)
