@@ -54,7 +54,7 @@
 			echo $default2->subform(
 				array(
 					 'Dossier.numdemrsatemp' => array( 'label' => 'Génération automatique d\'un N° de demande RSA temporaire', 'type' => 'checkbox' ),
-					 'Dossier.numdemrsa',
+					 'Dossier.numdemrsa' => array( 'required' => true ),
 					 'Dossier.matricule'
 				)
 			);
