@@ -305,7 +305,36 @@
 				echo $default2->subform(
 					array(
 						'Typersapcg66.Typersapcg66' => array( 'type' => 'select', 'label' => 'Type de prestation', 'multiple' => 'checkbox', 'empty' => false, 'options' => $typersapcg66 ),
-						'Decisiondossierpcg66.decisionpdo_id' => array( 'type' => 'select', 'empty' => true, 'options' => $listdecisionpdo ),
+						'Decisiondossierpcg66.decisionpdo_id' => array( 'type' => 'select', 'empty' => true, 'options' => $listdecisionpdo )
+					),
+					array(
+						'options' => $options
+					)
+				);
+			?>
+			<fieldset id="propononvalidcerparticulier" class="invisible">
+				<?php
+
+					if( Set::check( $this->data, 'Propodecisioncer66.id' ) ){
+						echo $xform->input( 'Propodecisioncer66.id', array( 'type' => 'hidden' ) );
+					}
+					echo $xform->input( 'Propodecisioncer66.contratinsertion_id', array( 'type' => 'hidden', 'value' => $contratinsertion_id ) );
+					echo $default2->subform(
+						array(
+							
+							'Motifcernonvalid66.Motifcernonvalid66' => array( 'type' => 'select', 'label' => 'Motif de non validation', 'multiple' => 'checkbox', 'empty' => false, 'options' => $listMotifs ),
+							'Propodecisioncer66.motifficheliaison' => array( 'type' => 'textarea' ),
+							'Propodecisioncer66.motifnotifnonvalid' => array( 'type' => 'textarea' )
+						),
+						array(
+							'options' => $options
+						)
+					);
+				?>
+			</fieldset>
+			<?php
+				echo $default2->subform(
+					array(
 						'Decisiondossierpcg66.datepropositiontechnicien' => array( 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear' => date('Y')+5, 'minYear' => date('Y')-1, 'empty' => false ),
 						'Decisiondossierpcg66.commentairetechnicien' => array( 'value' => isset( $dossierpcg66['Decisiondossierpcg66'][0]['commentairetechnicien'] ) ? ( $this->data['Decisiondossierpcg66']['commentairetechnicien'] ) : null )
 					),
@@ -315,7 +344,19 @@
 				);
 			?>
 		</fieldset>
-		<?php /*endif;*/?>
+		
+<script type="text/javascript">
+	document.observe("dom:loaded", function() {
+		observeDisableFieldsetOnValue(
+			'Decisiondossierpcg66DecisionpdoId',
+			$( 'propononvalidcerparticulier' ),
+			['<?php echo implode( ',', $idsDecisionNonValidCer );?>'],
+			false,
+			true
+		);
+
+	});
+</script>
 
 		<?php if( $avistechniquemodifiable ):?>
 			<fieldset id="avtech"><legend><?php echo 'Avis technique'; ?></legend>

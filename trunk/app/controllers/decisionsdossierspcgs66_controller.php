@@ -36,16 +36,34 @@
 			$forme_ci = array( 'S' => 'Simple', 'C' => 'Particulier' );
 			$compofoyerpcg66 = $this->Decisiondossierpcg66->Compofoyerpcg66->find( 'list' );
 			
-			$listdecisionpcgCer = $this->Decisiondossierpcg66->Decisionpdo->find(
-				'list',
+			$decisionspcgsCer = $this->Decisiondossierpcg66->Decisionpdo->find(
+				'all',
 				array(
+					'fields' => array(
+						'Decisionpdo.id',
+						'Decisionpdo.libelle',
+						'Decisionpdo.decisioncerparticulier'
+					),
 					'conditions' => array(
 						'Decisionpdo.cerparticulier' => 'O'
-					)
+					),
+					'contain' => false
 				)
 			);
+			$listdecisionpcgCer = Set::combine($decisionspcgsCer, '{n}.Decisionpdo.id', '{n}.Decisionpdo.libelle');
 
-			$this->set( compact( 'options', 'listdecisionpdo', 'typersapcg66', 'compofoyerpcg66', 'forme_ci', 'listdecisionpcgCer' ) );
+			// Récupération des IDs de décisions PDO qui correspondent à une non validation du CER Particulier
+			$idsDecisionNonValidCer = array();
+			foreach( $decisionspcgsCer as $decisionpcgCer ) {
+				if( $decisionpcgCer['Decisionpdo']['decisioncerparticulier'] == 'N' ){
+					$idsDecisionNonValidCer[] = $decisionpcgCer['Decisionpdo']['id'];
+				}
+			}
+			
+			$listMotifs = $this->Decisiondossierpcg66->Dossierpcg66->Contratinsertion->Propodecisioncer66->Motifcernonvalid66->find( 'list' );
+			$this->set( compact( 'listMotifs' ) );
+			
+			$this->set( compact( 'options', 'listdecisionpdo', 'typersapcg66', 'compofoyerpcg66', 'forme_ci', 'listdecisionpcgCer', 'idsDecisionNonValidCer' ) );
 		}
 
 
@@ -185,10 +203,62 @@
 							'Decisiondossierpcg66.id' => $decisiondossierpcg66_id
 						),
 						'order' => array( 'Decisiondossierpcg66.created DESC' ),
-						'contain' => array( 'Typersapcg66' )
+						'fields' => array_merge(
+							$this->Decisiondossierpcg66->fields(),
+							$this->Decisiondossierpcg66->Dossierpcg66->fields(),
+							$this->Decisiondossierpcg66->Decisiondossierpcg66Typersapcg66->Typersapcg66->fields(),
+							$this->Decisiondossierpcg66->Dossierpcg66->Contratinsertion->fields(),
+							$this->Decisiondossierpcg66->Dossierpcg66->Contratinsertion->Propodecisioncer66->fields()
+						),
+						'joins' => array(
+							$this->Decisiondossierpcg66->join( 'Dossierpcg66' ),
+							$this->Decisiondossierpcg66->join( 'Decisiondossierpcg66Typersapcg66', array( 'type' => 'LEFT OUTER' ) ),
+							$this->Decisiondossierpcg66->Decisiondossierpcg66Typersapcg66->join( 'Typersapcg66', array( 'type' => 'LEFT OUTER' ) ),
+							$this->Decisiondossierpcg66->Dossierpcg66->join( 'Contratinsertion', array( 'type' => 'LEFT OUTER' ) ),
+							$this->Decisiondossierpcg66->Dossierpcg66->Contratinsertion->join( 'Propodecisioncer66', array( 'type' => 'LEFT OUTER' ) )
+						),
+						'contain' => false, /*array(
+							'Typersapcg66',
+// 							'Dossierpcg66' => array(
+// 								'Contratinsertion' => array(
+// 									'Propodecisioncer66' => array(
+// 										'Motifcernonvalid66'
+// 									)
+// 								)
+// 							)
+						)*/
 					)
 				);
 				$this->assert( !empty( $decisiondossierpcg66 ), 'invalidParameter' );
+				
+
+				$isvalidcer = Set::classicExtract( $decisiondossierpcg66, 'Propodecisioncer66.isvalidcer' );
+				$this->set( compact( 'isvalidcer' ) );
+				
+				if( !empty( $isvalidcer ) && $isvalidcer == 'N' ) {
+					$motifs = $this->Decisiondossierpcg66->Dossierpcg66->Contratinsertion->Propodecisioncer66->Motifcernonvalid66Propodecisioncer66->find(
+						'all',
+						array(
+							'fields' => array(
+								'Motifcernonvalid66Propodecisioncer66.motifcernonvalid66_id'
+							),
+							'conditions' => array(
+								'Motifcernonvalid66Propodecisioncer66.propodecisioncer66_id' => $decisiondossierpcg66['Propodecisioncer66']['id']
+							),
+							'contain' => false
+						)
+					);
+
+					$motifceronvalid66 = array();
+					foreach( $motifs as $key => $value ) {
+						$motifceronvalid66[] = $value['Motifcernonvalid66Propodecisioncer66']['motifcernonvalid66_id'];
+					}
+					$decisiondossierpcg66['Motifcernonvalid66']['Motifcernonvalid66'] = $motifceronvalid66;
+				}
+				
+				
+				
+				
 				$dossierpcg66_id = Set::classicExtract( $decisiondossierpcg66, 'Decisiondossierpcg66.dossierpcg66_id' );
 				// FIXME: une fonction avec la partie du add ci-dessus
 				$dossierpcg66 = $this->Decisiondossierpcg66->Dossierpcg66->find(
@@ -218,12 +288,18 @@
 					)
 				);
 
+
 				$foyer_id = Set::classicExtract( $dossierpcg66, 'Dossierpcg66.foyer_id' );
 				$dossier_id = $this->Decisiondossierpcg66->Dossierpcg66->Foyer->dossierId( $foyer_id );;
 			}
 
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
 
+			$contratinsertion_id = null;
+			if( !empty($dossierpcg66['Dossierpcg66']['contratinsertion_id']) ) {
+				$contratinsertion_id = $dossierpcg66['Dossierpcg66']['contratinsertion_id'];
+			}
+			$this->set( 'contratinsertion_id', $contratinsertion_id  );
 
 			if( !empty( $dossierpcg66['Decisiondefautinsertionep66']['decision'] ) ) {
 				if( $dossierpcg66['Decisiondefautinsertionep66']['decision'] != 'maintien' ) {
@@ -284,6 +360,32 @@
 							}
 						}
 					}
+					
+					// Proposition de non validation
+					if( $this->Decisiondossierpcg66->Dossierpcg66->Contratinsertion->Propodecisioncer66->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
+						$saved = $this->Decisiondossierpcg66->Dossierpcg66->Contratinsertion->Propodecisioncer66->save( $this->data );
+
+						if( !isset( $this->data['Motifcernonvalid66'] ) && !empty( $propodecisioncer66 ) ){
+							$saved = $this->Decisiondossierpcg66->Dossierpcg66->Contratinsertion->Propodecisioncer66->Motifcernonvalid66Propodecisioncer66->deleteAll(
+								array(
+									'Motifcernonvalid66Propodecisioncer66.propodecisioncer66_id' => $this->Decisiondossierpcg66->Dossierpcg66->Contratinsertion->Propodecisioncer66->id
+								)
+							) && $saved;
+
+							$saved = $this->Decisiondossierpcg66->Dossierpcg66->Contratinsertion->Propodecisioncer66->updateAll(
+								array(
+									'Propodecisioncer66.motifficheliaison' => null,
+									'Propodecisioncer66.motifnotifnonvalid' => null
+								),
+								array(
+									'Propodecisioncer66.id' => $this->Decisiondossierpcg66->Dossierpcg66->Contratinsertion->Propodecisioncer66->id
+								)
+							) && $saved;
+
+						}
+					}
+					//
+					
 
 					if( $saved ) {
 						$saved = $this->Decisiondossierpcg66->Dossierpcg66->updateEtatViaDecisionFoyer( $this->Decisiondossierpcg66->id ) && $saved;
@@ -291,7 +393,7 @@
 
 					if( $saved ) {
 						$this->Jetons->release( $dossier_id );
-						$this->Decisiondossierpcg66->commit(); // FIXME
+						$this->Decisiondossierpcg66->commit();
 						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 						$this->redirect( array( 'controller' => 'dossierspcgs66', 'action' => 'edit', $dossierpcg66_id ) );
 					}
