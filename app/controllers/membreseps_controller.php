@@ -344,6 +344,10 @@
 			$this->_setOptions();
 		}
 
+		/**
+		 *
+		 * @param integer $commissionep_id
+		 */
 		public function editpresence( $commissionep_id ) {
 			if( !empty( $this->data ) ) {
 				$success = true;
@@ -434,66 +438,25 @@
 			$this->set( compact( 'commissionep' ) );
 			$ep_id = $commissionep['Commissionep']['ep_id'];
 
-			$membres = $this->Membreep->find(
+			$membres = $this->Membreep->Commissionep->CommissionepMembreep->find(
 				'all',
 				array(
-					'fields' => array(
-						'Membreep.id',
-						'Membreep.qual',
-						'Membreep.nom',
-						'Membreep.prenom',
-						'Membreep.tel',
-						'Membreep.mail',
-						'Membreep.fonctionmembreep_id',
-						'CommissionepMembreep.reponse',
-						'CommissionepMembreep.presence',
-						'CommissionepMembreep.reponsesuppleant_id',
-						'CommissionepMembreep.presencesuppleant_id'
+					'fields' => array_merge(
+						$this->Membreep->Commissionep->CommissionepMembreep->fields(),
+						$this->Membreep->Commissionep->CommissionepMembreep->Membreep->fields()
 					),
 					'joins' => array(
-						array(
-							'table' => 'commissionseps_membreseps',
-							'alias' => 'CommissionepMembreep',
-							'type' => 'LEFT OUTER',
-							'foreignKey' => false,
-							'conditions' => array(
-								'Membreep.id = CommissionepMembreep.membreep_id',
-								'CommissionepMembreep.commissionep_id' => $commissionep_id
-							)
-						),
-						array(
-							'table' => 'commissionseps',
-							'alias' => 'Commissionep',
-							'type' => 'LEFT OUTER',
-							'foreignKey' => false,
-							'conditions' => array(
-								'Commissionep.id = CommissionepMembreep.commissionep_id'
-							)
-						),
-						array(
-							'table' => 'eps_membreseps',
-							'alias' => 'EpMembreep',
-							'type' => 'INNER',
-							'foreignKey' => false,
-							'conditions' => array(
-								'Membreep.id = EpMembreep.membreep_id',
-								'EpMembreep.ep_id' => $ep_id
-							)
-						),
-						array(
-							'table' => 'eps',
-							'alias' => 'Ep',
-							'type' => 'INNER',
-							'foreignKey' => false,
-							'conditions' => array(
-								'Ep.id = EpMembreep.ep_id'
-							)
-						)
+						$this->Membreep->Commissionep->CommissionepMembreep->join( 'Membreep' )
+
+					),
+					'conditions' => array(
+						'CommissionepMembreep.commissionep_id' => $commissionep_id
 					),
 					'contain'=>false
 				)
 			);
-			$this->set('membres', $membres);
+
+			$this->set( 'membres', $membres );
 
 			$fonctionsmembres = $this->Membreep->Fonctionmembreep->find(
 				'all',
@@ -512,7 +475,10 @@
 								'Fonctionmembreep.id = Membreep.fonctionmembreep_id'
 							)
 						),
-						array(
+						$this->Membreep->join( 'CommissionepMembreep', array( 'type' => 'INNER' ) ),
+						$this->Membreep->CommissionepMembreep->join( 'Commissionep', array( 'type' => 'INNER' ) ),
+						$this->Membreep->CommissionepMembreep->Commissionep->join( 'Ep', array( 'type' => 'INNER' ) ),
+						/*array(
 							'table' => 'eps_membreseps',
 							'alias' => 'EpMembreep',
 							'type' => 'INNER',
@@ -530,7 +496,7 @@
 							'conditions' => array(
 								'Ep.id = EpMembreep.ep_id'
 							)
-						)
+						)*/
 					),
 					'contain'=>false,
 					'group' => array(
