@@ -392,6 +392,66 @@ function observeDisableFieldsOnValue( selectId, fieldsIds, value, condition ) {
 
 //*****************************************************************************
 
+function disableFieldsetOnValue( selectId, fieldsetId, value, condition, toggleVisibility ) {
+	toggleVisibility = typeof(toggleVisibility) != 'undefined' ? toggleVisibility : false;
+
+	if( ( typeof value ) != 'object' ) {
+		value = [ value ];
+	}
+
+	var select = $( selectId );
+
+	var result = false;
+	value.each( function( elmt ) {
+		if( $F( select ) == elmt ) {
+			result = true;
+		}
+	} );
+	
+	var fieldset = $( fieldsetId );
+
+	if( result ) {
+		fieldset.removeClassName( 'disabled' );
+		if( toggleVisibility ) {
+			fieldset.show();
+		}
+		$( fieldset ).getElementsBySelector( 'div.input', 'div.checkbox' ).each( function( elmt ) {
+			elmt.removeClassName( 'disabled' );
+		} );
+		$( fieldset ).getElementsBySelector( 'input', 'select', 'button', 'textarea' ).each( function( elmt ) {
+			elmt.enable();
+		} );
+	}
+	else {
+		fieldset.addClassName( 'disabled' );
+		if( toggleVisibility ) {
+			fieldset.hide();
+		}
+		$( fieldset ).getElementsBySelector( 'div.input', 'div.checkbox' ).each( function( elmt ) {
+			elmt.addClassName( 'disabled' );
+		} );
+		$( fieldset ).getElementsBySelector( 'input', 'select', 'button', 'textarea' ).each( function( elmt ) {
+			elmt.disable();
+		} );
+	}
+
+}
+
+//----------------------------------------------------------------------------
+
+function observeDisableFieldsetOnValue( selectId, fieldsetId, value, condition, toggleVisibility ) {
+	toggleVisibility = typeof(toggleVisibility) != 'undefined' ? toggleVisibility : false;
+
+	disableFieldsetOnValue( selectId, fieldsetId, value, condition, toggleVisibility );
+
+	var select = $( selectId );
+	$( select ).observe( 'change', function( event ) {
+		disableFieldsetOnValue( selectId, fieldsetId, value, condition, toggleVisibility );
+	} );
+}
+
+//*****************************************************************************
+
 function disableFieldsetOnCheckbox( cbId, fieldsetId, condition, toggleVisibility ) {
 	toggleVisibility = typeof(toggleVisibility) != 'undefined' ? toggleVisibility : false;
 
