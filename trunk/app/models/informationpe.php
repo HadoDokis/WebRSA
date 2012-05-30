@@ -262,26 +262,28 @@
 			$conditions = $this->qdConditionsJoinPersonneOnValues( 'Informationpe', $personne['Personne'] );
 
 			// Permet d'obtenir une et une seule entrée de la table informationspe
-			$sqDerniereInformationpe = $this->sqDerniere( 'Personne' );
-			foreach( array( 'nom', 'prenom', 'dtnai', 'nir' ) as $field ) {
-				$sqDerniereInformationpe = str_replace( "\"Personne\".\"{$field}\"", "'{$personne['Personne'][$field]}'", $sqDerniereInformationpe );
+			if( !empty( $personne['Personne']['dtnai'] ) ) {
+				$sqDerniereInformationpe = $this->sqDerniere( 'Personne' );
+				foreach( array( 'nom', 'prenom', 'dtnai', 'nir' ) as $field ) {
+					$sqDerniereInformationpe = str_replace( "\"Personne\".\"{$field}\"", "'{$personne['Personne'][$field]}'", $sqDerniereInformationpe );
+				}
+				$conditions[] = "Informationpe.id IN ( {$sqDerniereInformationpe} )";
+
+				$infope = $this->find(
+					'first',
+					array(
+						'contain' => array(
+							'Historiqueetatpe' => array(
+								'order' => "Historiqueetatpe.date DESC",
+								'limit' => 1
+							)
+						),
+						'conditions' => $conditions
+					)
+				);
+
+				return $infope;
 			}
-			$conditions[] = "Informationpe.id IN ( {$sqDerniereInformationpe} )";
-
-			$infope = $this->find(
-				'first',
-				array(
-					'contain' => array(
-						'Historiqueetatpe' => array(
-							'order' => "Historiqueetatpe.date DESC",
-							'limit' => 1
-						)
-					),
-					'conditions' => $conditions
-				)
-			);
-
-			return $infope;
 		}
 
 		/**
