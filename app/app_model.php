@@ -860,5 +860,52 @@
 			}
 			return false;
 		}
+		
+		/**
+		 * Règle de validation équivalent à un index unique sur plusieurs colonnes.
+		 *
+		 * public $validate = array(
+		 * 'name' => array(
+		 * 		array(
+		 * 			'rule' => array( 'checkUnique', array( 'name', 'modeletypecourrierpcg66_id' ) ),
+		 * 			'message' => 'Cet intitulé de pièce est déjà utilisé avec ce modèle de courrier.'
+		 * 		)
+		 * 	),
+		 * 	'modeletypecourrierpcg66_id' => array(
+		 * 		array(
+		 * 			'rule' => array( 'checkUnique', array( 'name', 'modeletypecourrierpcg66_id' ) ),
+		 * 			'message' => 'Ce modèle de courrier est déjà utilisé avec cet intitulé de pièce.'
+		 * 		),
+		 * 	)
+		 * );
+		 */
+		public function checkUnique( $data, $fields ) {
+			if( !is_array( $fields ) ) {
+				$fields = array( $fields );
+			}
+
+			$fieldsDiff = full_array_diff( array_keys( $this->data[$this->alias] ), $fields );
+			$allFieldsInThisData = ( $fieldsDiff == array( $this->primaryKey ) );
+
+			// A°) Tous les fields sont dans this->data
+			if( $allFieldsInThisData ) {
+				$querydata = array( 'conditions' => array(), 'recursive' => -1, 'contain' => false );
+				foreach( $fields as $field ) {
+					$querydata['conditions']["{$this->alias}.{$field}"] = $this->data[$this->alias][$field];
+				}
+
+				// 1°) Pas l'id -> SELECT COUNT(*) FROM table WHERE name = XXX and modeletypecourrierpcg66_id = XXXX == 0
+				// 2°) On a l'id
+				if( isset( $this->data[$this->alias][$this->primaryKey] ) && !empty( $this->data[$this->alias][$this->primaryKey] ) ) {
+					// SELECT COUNT(*) FROM table WHERE name = XXX and modeletypecourrierpcg66_id = XXXX AND id <> XXXX == 0
+					$querydata['conditions']["{$this->alias}.{$this->primaryKey} <>"] = $this->data[$this->alias][$this->primaryKey];
+				}
+				
+				return ( $this->find( 'count', $querydata ) == 0 );
+			}
+
+			// B°) On n'a pas tous les fields dans this->data ... FIXME -> throw_error ou réfléchir ?
+			return false;
+		}
 	}
 ?>

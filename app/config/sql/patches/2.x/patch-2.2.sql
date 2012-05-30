@@ -395,6 +395,10 @@ UPDATE decisionspdos SET cerparticulier = 'N' WHERE cerparticulier IS NULL;
 ALTER TABLE decisionspdos ALTER COLUMN cerparticulier SET NOT NULL;
 
 SELECT add_missing_table_field ('public', 'decisionspdos', 'decisioncerparticulier', 'CHAR(1)');
+
+
+DROP INDEX IF EXISTS piecesmodelestypescourrierspcgs66_name_modeletypecourrierpcg66_id_idx;
+CREATE UNIQUE INDEX piecesmodelestypescourrierspcgs66_name_modeletypecourrierpcg66_id_idx ON piecesmodelestypescourrierspcgs66(name, modeletypecourrierpcg66_id );
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

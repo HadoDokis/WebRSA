@@ -742,4 +742,19 @@
 			return false;
 		}
 	}
+
+	/**
+	 * $a1 = array( 'foo', 'bar' );
+	 * $a2 = array( 'foo', 'bar', 'baz' );
+	 * $a3 = array( 'bar', 'baz' );
+	 * 
+	 * debug( full_array_diff( $a1, $a1 ) ); // -> array()
+	 * debug( full_array_diff( $a1, $a2 ) ); // -> array( 'baz' )
+	 * debug( full_array_diff( $a1, $a3 ) ); // -> array( 'foo', 'baz' )
+	 * 
+	 * @see http://fr.php.net/manual/en/function.array-diff.php#101613
+	 */
+	function full_array_diff( $left, $right ) {
+		return array_diff(array_merge($left, $right), array_intersect($left, $right));
+	}
 ?>
