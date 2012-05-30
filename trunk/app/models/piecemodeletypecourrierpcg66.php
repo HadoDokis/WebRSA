@@ -8,8 +8,24 @@
 		public $validate = array(
 			'name' => array(
 				array(
-					'rule' => 'isUnique',
-					'message' => 'Cette valeur est déjà utilisée'
+					'rule' => array(
+						'checkUnique',
+						array( 'name', 'modeletypecourrierpcg66_id' )
+					),
+					'message' => 'Cet intitulé de pièce est déjà utilisé avec ce modèle de courrier.'
+				),
+				array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+				)
+			),
+			'modeletypecourrierpcg66_id' => array(
+				array(
+					'rule' => array(
+						'checkUnique',
+						array( 'name', 'modeletypecourrierpcg66_id' )
+					),
+					'message' => 'Ce modèle de courrier est déjà utilisé avec cet intitulé de pièce.'
 				),
 				array(
 					'rule' => 'notEmpty',
