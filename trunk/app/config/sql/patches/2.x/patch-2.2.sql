@@ -367,7 +367,7 @@ UPDATE acos SET alias = 'Etatsliquidatifs:impressions' WHERE alias = 'Etatsliqui
 --			car les valeurs pouvant être prises par ces pièces peuvent être très longues
 --			ex: si oui, alors telle pièce, sinon telle pièce ...
 -------------------------------------------------------------------------------------------------------------
-ALTER TABLE piecesmodelestypescourrierspcgs66 ALTER COLUMN name TYPE TEXT;
+-- ALTER TABLE piecesmodelestypescourrierspcgs66 ALTER COLUMN name TYPE TEXT;
 
 -------------------------------------------------------------------------------------------------------------
 -- 20120523 : Ajout d'une  clé étrangère du CER dans le dossier PCG suite à la création d'un dossie PCG66
