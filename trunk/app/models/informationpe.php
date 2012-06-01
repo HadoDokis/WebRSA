@@ -131,6 +131,7 @@
 			$queryData['fields'][] = 'Historiqueetatpe.identifiantpe';
 			$queryData['fields'][] = 'Historiqueetatpe.date';
 			$queryData['fields'][] = 'Historiqueetatpe.motif';
+			$queryData['fields'][] = 'Historiqueetatpe.code';
 
 			$queryData['joins'][] = array(
 				'table'      => 'informationspe', // FIXME:
@@ -156,8 +157,18 @@
 				)
 			);
 
-			// FIXME: seulement pour certains motifs
-			$queryData['conditions']['Historiqueetatpe.etat'] = 'radiation';
+			// Si on ne trouve pas la clé Selectionradies.conditions dans la configuration, on ne se basera
+			// que sur l'état "radiation", sinon on utliisera les conditions définies dans la configuration (CG 58).
+			$conditionsConfigure = Configure::read( 'Selectionradies.conditions' );
+			if( empty( $conditionsConfigure ) ) {
+				$queryData['conditions']['Historiqueetatpe.etat'] = 'radiation';
+			}
+			else {
+				if( !isset( $queryData['conditions'] ) ) {
+					$queryData['conditions'] = array();
+				}
+				$queryData['conditions'] = Set::merge( $conditionsConfigure, $queryData['conditions'] );
+			}
 
 			// Permet d'obtenir une et une seule entrée de la table informationspe
 			$sqDerniereInformationpe = $this->sqDerniere( 'Personne' );
@@ -173,6 +184,7 @@
 		*/
 		public function qdNonInscrits() {
 			// FIXME: et qui ne sont pas passés dans une EP pour ce motif depuis au moins 1 mois (?)
+			$queryData['fields'][] = 'Orientstruct.id';
 			$queryData['fields'][] = 'Orientstruct.date_valid';
 			$queryData['fields'][] = 'Typeorient.lib_type_orient';
 			$queryData['fields'][] = 'Structurereferente.lib_struc';

@@ -4,7 +4,7 @@
 	echo $default2->index(
 		$personnes,
 		array(
-			'Historiqueetatpe.chosen' => array( 'input' => 'checkbox', 'type' => 'boolean', 'domain' => 'sanctionep58' ),
+			'Orientstruct.chosen' => array( 'input' => 'checkbox', 'type' => 'boolean', 'domain' => 'sanctionep58' ),
 			'Personne.nom',
 			'Personne.prenom',
 			'Personne.dtnai',
@@ -18,7 +18,7 @@
 			'cohorte' => true,
 			'hidden' => array(
 				'Personne.id',
-				'Historiqueetatpe.id'
+				'Orientstruct.id'
 			),
 			'paginate' => 'Personne',
 			'domain' => 'sanctionep58'
@@ -37,5 +37,5 @@
 <?php
 		echo $form->button( 'Tout cocher', array( 'onclick' => 'toutCocher()' ) );
 		echo $form->button( 'Tout décocher', array( 'onclick' => 'toutDecocher()' ) );
-	
+
 endif;?>

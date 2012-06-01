@@ -31,9 +31,30 @@
 		);
 
 		public $belongsTo = array(
+			'Contratinsertion' => array(
+				'className' => 'Contratinsertion',
+				'foreignKey' => 'contratinsertion_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
 			'Dossierep' => array(
 				'className' => 'Dossierep',
 				'foreignKey' => 'dossierep_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			'Historiqueetatpe' => array(
+				'className' => 'Historiqueetatpe',
+				'foreignKey' => 'historiqueetatpe_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			'Orientstruct' => array(
+				'className' => 'Orientstruct',
+				'foreignKey' => 'orientstruct_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
@@ -575,7 +596,10 @@
 					$this->fields(),
 					$this->Dossierep->Passagecommissionep->Decisionsanctionep58->fields(),
 					$this->Dossierep->Passagecommissionep->Decisionsanctionep58->Listesanctionep58->fields(),
-					$this->Dossierep->Passagecommissionep->Decisionsanctionep58->Autrelistesanctionep58->fields()
+					$this->Dossierep->Passagecommissionep->Decisionsanctionep58->Autrelistesanctionep58->fields(),
+					$this->Historiqueetatpe->fields(),
+					$this->Contratinsertion->fields(),
+					$this->Orientstruct->fields()
 				),
 				'joins' => array(
 					array(
@@ -596,7 +620,10 @@
 						),
 					),
 					$this->Dossierep->Passagecommissionep->Decisionsanctionep58->join( 'Listesanctionep58', array( 'type' => 'LEFT OUTER' ) ),
-					$this->Dossierep->Passagecommissionep->Decisionsanctionep58->join( 'Autrelistesanctionep58', array( 'type' => 'LEFT OUTER' ) )
+					$this->Dossierep->Passagecommissionep->Decisionsanctionep58->join( 'Autrelistesanctionep58', array( 'type' => 'LEFT OUTER' ) ),
+					$this->join( 'Historiqueetatpe', array( 'LEFT OUTER' ) ),
+					$this->join( 'Contratinsertion', array( 'LEFT OUTER' ) ),
+					$this->join( 'Orientstruct', array( 'LEFT OUTER' ) )
 				)
 			);
 
@@ -648,11 +675,20 @@
 			if( $datas === false ) {
 				$datas['querydata'] = $this->_qdDecisionPdf();
 
+				// Liste des sanctions
 				$datas['querydata']['fields'] = array_merge(
 					$datas['querydata']['fields'],
 					$this->Dossierep->Passagecommissionep->{$modeleDecisions}->Listesanctionep58->fields()
 				);
 				$datas['querydata']['joins'][] = $this->Dossierep->Passagecommissionep->{$modeleDecisions}->join( 'Listesanctionep58' );
+
+				foreach( array( 'Orientstruct', 'Historiqueetatpe', 'Contratinsertion' ) as $modelName ) {
+					$datas['querydata']['fields'] = array_merge(
+						$datas['querydata']['fields'],
+						$this->{$modelName}->fields()
+					);
+					$datas['querydata']['joins'][] = $this->join( $modelName, array( 'type' => 'LEFT OUTER' ) );
+				}
 
 				// Traductions
 				$datas['options'] = $this->Dossierep->Passagecommissionep->{$modeleDecisions}->enums();
@@ -779,6 +815,25 @@
 			);
 
 			return $return;
+		}
+
+		/**
+		 * Modèles contenus pour l'historique des passages en EP
+		 *
+		 * @return array
+		 */
+		public function containThematique() {
+			return array(
+				'Contratinsertion' => array(
+					'Structurereferente',
+					'Typocontrat'
+				),
+				'Historiqueetatpe',
+				'Orientstruct' => array(
+					'Structurereferente',
+					'Typeorient'
+				),
+			);
 		}
 	}
 ?>
