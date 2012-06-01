@@ -1,18 +1,37 @@
 <h1><?php echo $this->pageTitle = __d( 'sanctionep58', "{$this->name}::{$this->action}", true );?></h1>
 
 <?php
-	echo $default2->index(
-		$personnes,
-		array(
+	$configureConditions = Configure::read( 'Selectionradies.conditions' );
+	if( !empty( $configureConditions ) ) {
+		$fields = array(
 			'Historiqueetatpe.chosen' => array( 'input' => 'checkbox', 'type' => 'boolean', 'domain' => 'sanctionep58' ),
 			'Personne.nom',
 			'Personne.prenom',
 			'Personne.dtnai',
 			'Adresse.locaadr',
-			'Historiqueetatpe.motif',
+			'Historiqueetatpe.etat' => array( 'domain' => 'sanctionep58' ),
+			'Historiqueetatpe.code' => array( 'domain' => 'sanctionep58' ),
+			'Historiqueetatpe.motif' => array( 'domain' => 'sanctionep58' ),
 			'Historiqueetatpe.date',
 			'Serviceinstructeur.lib_service'
-		),
+		);
+	}
+	else {
+		$fields = array(
+			'Historiqueetatpe.chosen' => array( 'input' => 'checkbox', 'type' => 'boolean', 'domain' => 'sanctionep58' ),
+			'Personne.nom',
+			'Personne.prenom',
+			'Personne.dtnai',
+			'Adresse.locaadr',
+			'Historiqueetatpe.motif' => array( 'domain' => 'sanctionep58' ),
+			'Historiqueetatpe.date',
+			'Serviceinstructeur.lib_service'
+		);
+	}
+
+	echo $default2->index(
+		$personnes,
+		$fields,
 		array(
 			'cohorte' => true,
 			'hidden' => array(
@@ -36,5 +55,5 @@
 <?php
 		echo $form->button( 'Tout cocher', array( 'onclick' => 'toutCocher()' ) );
 		echo $form->button( 'Tout décocher', array( 'onclick' => 'toutDecocher()' ) );
-	
+
 endif;?>
