@@ -50,6 +50,33 @@
 				break;
 			case 'sanctionseps58';
 				$detailsDossier[] = "{$modeleTheme}.origine";
+
+				switch( $passage['Sanctionep58']['origine'] ) {
+					case 'noninscritpe':
+						$detailsDossier["Orientstruct.Typeorient.lib_type_orient"] = array( 'domain' => 'typeorient' );
+						$detailsDossier["Orientstruct.Structurereferente.lib_struc"] = array( 'domain' => 'structurereferente' );
+						$detailsDossier["Orientstruct.statut_orient"] = array( 'domain' => 'orientstruct' );
+						$detailsDossier["Orientstruct.date_valid"] = array( 'domain' => 'orientstruct' );
+						$detailsDossier["Orientstruct.rgorient"] = array( 'domain' => 'orientstruct' );
+						break;
+					case 'nonrespectcer':
+						$detailsDossier["Contratinsertion.Structurereferente.lib_struc"] = array( 'domain' => 'sanctionep58' );
+						$detailsDossier["Contratinsertion.dd_ci"] = array( 'domain' => 'contratinsertion' );
+						$detailsDossier["Contratinsertion.df_ci"] = array( 'domain' => 'contratinsertion' );
+						$detailsDossier["Contratinsertion.rg_ci"] = array( 'domain' => 'contratinsertion' );
+						$detailsDossier["Contratinsertion.decision_ci"] = array( 'domain' => 'contratinsertion' );
+						$detailsDossier["Contratinsertion.datevalidation_ci"] = array( 'domain' => 'contratinsertion' );
+						$detailsDossier["Contratinsertion.date_saisi_ci"] = array( 'domain' => 'contratinsertion' );
+						$detailsDossier["Contratinsertion.Typocontrat.lib_typo"] = array( 'domain' => 'sanctionep58' );
+						break;
+					case 'radiepe':
+						$detailsDossier[] = "Historiqueetatpe.identifiantpe";
+						$detailsDossier[] = "Historiqueetatpe.date";
+						$detailsDossier["Historiqueetatpe.etat"] = array( 'domain' => 'sanctionep58' );
+						$detailsDossier["Historiqueetatpe.code"] = array( 'domain' => 'sanctionep58' );
+						$detailsDossier["Historiqueetatpe.motif"] = array( 'domain' => 'sanctionep58' );
+						break;
+				}
 				$detailsDossier[] = "{$modeleTheme}.commentaire";
 				break;
 			case 'sanctionsrendezvouseps58';

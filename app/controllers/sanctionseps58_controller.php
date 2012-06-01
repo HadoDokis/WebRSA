@@ -28,7 +28,16 @@
 				$success = true;
 				$this->Sanctionep58->begin();
 
-				foreach( $this->data['Historiqueetatpe'] as $key => $item ) {
+				if( $qdName == 'qdNonInscrits' ) {
+					$modelName = 'Orientstruct';
+					$foreignKey = 'orientstruct_id';
+				}
+				else {
+					$modelName = 'Historiqueetatpe';
+					$foreignKey = 'historiqueetatpe_id';
+				}
+
+				foreach( $this->data[$modelName] as $key => $item ) {
 					// La personne était-elle sélectionnée précédemment ?
 					$alreadyChecked = $this->Sanctionep58->Dossierep->find(
 						'first',
@@ -69,6 +78,7 @@
 						$sanctionep58 = array(
 							'Sanctionep58' => array(
 								'dossierep_id' => $this->Sanctionep58->Dossierep->id,
+								$foreignKey => $item['id'],
 								'origine' => $origine
 							)
 						);
@@ -102,7 +112,7 @@
 
 			$this->set( 'etatdosrsa', ClassRegistry::init('Option')->etatdosrsa( ClassRegistry::init('Situationdossierrsa')->etatOuvert()) );
 			$this->set( compact( 'personnes' ) );
-            $this->render( $origine ); // FIXME: nom de la vue
+			$this->render( $origine ); // FIXME: nom de la vue
 		}
 
 		/**

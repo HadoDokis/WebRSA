@@ -73,3 +73,9 @@ msgstr "Type d'orientation"
 
 msgid "Orientstruct.structurereferente_id"
 msgstr "Structure référente"
+
+msgid "Orientstruct.statut_orient"
+msgstr "Statut de l'orientation"
+
+msgid "Orientstruct.rgorient"
+msgstr "Rang de l'orientation"

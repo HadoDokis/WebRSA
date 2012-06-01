@@ -229,6 +229,19 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Sanctionep58' => array(
+				'className' => 'Sanctionep58',
+				'foreignKey' => 'orientstruct_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 		);
 
 		public $hasAndBelongsToMany = array(
@@ -698,7 +711,7 @@
 			);
 		}
 
-		
+
 		/**
 		 *
 		 * @param integer $apre_id

@@ -351,6 +351,8 @@ CREATE UNIQUE INDEX modelestraitementspcgs66_traitementpcg66_id_idx ON modelestr
 
 	7°) FIXME: Undefined offset au 66: /contratsinsertion/index/55245
 
+	8°) FIXME: normalement les tables nonorientationsproseps66 et decisionsnonorientationsproseps66 (+ modèles liés) ne devraient plus exister (attention au qd....), éventuellement, changer l'enum de themeep
+
 ----------------------------------------------------------------------------- */
 
 UPDATE acos SET alias = 'Apres66:impression' WHERE alias = 'Apres66:apre';
@@ -399,6 +401,139 @@ SELECT add_missing_table_field ('public', 'decisionspdos', 'decisioncerparticuli
 
 DROP INDEX IF EXISTS piecesmodelestypescourrierspcgs66_name_modeletypecourrierpcg66_id_idx;
 CREATE UNIQUE INDEX piecesmodelestypescourrierspcgs66_name_modeletypecourrierpcg66_id_idx ON piecesmodelestypescourrierspcgs66(name, modeletypecourrierpcg66_id );
+
+-- -----------------------------------------------------------------------------------------------------------
+-- Ajout de la clé étrangère vers les historiques de Pôle Emploi
+-- -----------------------------------------------------------------------------------------------------------
+
+SELECT add_missing_table_field( 'public', 'sanctionseps58', 'historiqueetatpe_id', 'INTEGER' );
+SELECT public.add_missing_constraint( 'public', 'sanctionseps58', 'sanctionseps58_historiqueetatpe_id_fkey', 'historiqueetatspe', 'historiqueetatpe_id'  );
+DROP INDEX IF EXISTS sanctionseps58_historiqueetatpe_id_idx;
+CREATE INDEX sanctionseps58_historiqueetatpe_id_idx ON sanctionseps58 (historiqueetatpe_id);
+
+-- On rapatrie les données implicites
+CREATE OR REPLACE FUNCTION public.update_sanctionseps58_historiqueetatpe() RETURNS VOID AS
+$$
+	DECLARE
+		v_row   record;
+		v_query text;
+	BEGIN
+		FOR v_row IN
+			SELECT
+					historiqueetatspe.id AS historiqueetatpe_id, sanctionseps58.id AS sanctionep58_id
+				FROM sanctionseps58
+					INNER JOIN dossierseps ON ( dossierseps.id = sanctionseps58.dossierep_id )
+					INNER JOIN personnes ON ( personnes.id = dossierseps.personne_id )
+					INNER JOIN informationspe ON (((((informationspe.nir IS NOT NULL) AND (SUBSTRING( informationspe.nir FROM 1 FOR 13 ) = SUBSTRING( TRIM( BOTH ' ' FROM personnes.nir ) FROM 1 FOR 13 )) AND (informationspe.dtnai = personnes.dtnai))) OR (((personnes.nom IS NOT NULL) AND (personnes.prenom IS NOT NULL) AND (personnes.dtnai IS NOT NULL) AND (TRIM( BOTH ' ' FROM personnes.nom ) <> '') AND (TRIM( BOTH ' ' FROM personnes.prenom ) <> '') AND (TRIM( BOTH ' ' FROM informationspe.nom ) = TRIM( BOTH ' ' FROM personnes.nom )) AND (TRIM( BOTH ' ' FROM informationspe.prenom ) = TRIM( BOTH ' ' FROM personnes.prenom )) AND (informationspe.dtnai = personnes.dtnai)))))
+					INNER JOIN historiqueetatspe ON ( historiqueetatspe.informationpe_id = informationspe.id )
+				WHERE
+					historiqueetatspe.etat IN ( 'cessation', 'radiation' )
+					AND sanctionseps58.origine = 'radiepe'
+					AND sanctionseps58.created >= historiqueetatspe.date
+					AND informationspe.id IN (
+						SELECT
+							derniereinformationspe.i__id
+						FROM (
+							SELECT
+									i.id AS i__id, h.date AS h__date
+								FROM informationspe AS i
+									INNER JOIN historiqueetatspe AS h ON (h.informationpe_id = i.id)
+								WHERE
+									(
+										(((i.nir IS NOT NULL) AND (personnes.nir IS NOT NULL) AND (TRIM( BOTH ' ' FROM i.nir ) <> '') AND (TRIM( BOTH ' ' FROM personnes.nir ) <> '') AND (SUBSTRING( i.nir FROM 1 FOR 13 ) = SUBSTRING( personnes.nir FROM 1 FOR 13 )) AND (i.dtnai = personnes.dtnai))) OR (((i.nom IS NOT NULL) AND (personnes.nom IS NOT NULL) AND (i.prenom IS NOT NULL) AND (personnes.prenom IS NOT NULL) AND (TRIM( BOTH ' ' FROM i.nom ) <> '') AND (TRIM( BOTH ' ' FROM i.prenom ) <> '') AND (TRIM( BOTH ' ' FROM personnes.nom ) <> '') AND (TRIM( BOTH ' ' FROM personnes.prenom ) <> '') AND (TRIM( BOTH ' ' FROM i.nom ) = personnes.nom) AND (TRIM( BOTH ' ' FROM i.prenom ) = personnes.prenom) AND (i.dtnai = personnes.dtnai)))
+									)
+									AND h.id IN (
+										SELECT dernierhistoriqueetatspe.id AS dernierhistoriqueetatspe__id
+											FROM historiqueetatspe AS dernierhistoriqueetatspe
+											WHERE
+												dernierhistoriqueetatspe.informationpe_id = i.id
+												AND dernierhistoriqueetatspe.etat IN ( 'cessation', 'radiation' )
+												AND sanctionseps58.created >= dernierhistoriqueetatspe.date
+											ORDER BY dernierhistoriqueetatspe.date DESC
+											LIMIT 1
+									)
+						) AS derniereinformationspe ORDER BY derniereinformationspe.h__date DESC LIMIT 1
+					)
+		LOOP
+			-- Mise à jour dans la table sanctionseps58
+			v_query := 'UPDATE sanctionseps58 SET historiqueetatpe_id = ' || v_row.historiqueetatpe_id || ' WHERE id = ' || v_row.sanctionep58_id || ';';
+			RAISE NOTICE  '%', v_query;
+			EXECUTE v_query;
+		END LOOP;
+	END;
+$$
+LANGUAGE plpgsql;
+
+SELECT public.update_sanctionseps58_historiqueetatpe();
+DROP FUNCTION public.update_sanctionseps58_historiqueetatpe();
+
+-- Lorsqu'on est radié de Pôle Emploi, il faut que la colonne historiqueetatpe_id soit remplie.+
+ALTER TABLE sanctionseps58 ADD CONSTRAINT sanctionseps58_historiqueetatpe_id_origine_chk CHECK ( ( origine = 'radiepe' AND historiqueetatpe_id IS NOT NULL ) OR ( origine <> 'radiepe' AND historiqueetatpe_id IS NULL ) );
+
+-- -----------------------------------------------------------------------------------------------------------
+-- Ajout de la clé étrangère vers les orientations en emploi
+-- -----------------------------------------------------------------------------------------------------------
+
+SELECT add_missing_table_field( 'public', 'sanctionseps58', 'orientstruct_id', 'INTEGER' );
+SELECT public.add_missing_constraint( 'public', 'sanctionseps58', 'sanctionseps58_orientstruct_id_fkey', 'orientsstructs', 'orientstruct_id'  );
+DROP INDEX IF EXISTS sanctionseps58_orientstruct_id_idx;
+CREATE INDEX sanctionseps58_orientstruct_id_idx ON sanctionseps58 (orientstruct_id);
+
+-- On rapatrie les données implicites
+CREATE OR REPLACE FUNCTION public.update_sanctionseps58_orientstruct() RETURNS VOID AS
+$$
+	DECLARE
+		v_row   record;
+		v_query text;
+	BEGIN
+		FOR v_row IN
+			SELECT
+					orientsstructs.id AS orientstruct_id, sanctionseps58.id AS sanctionep58_id
+				FROM sanctionseps58
+					INNER JOIN dossierseps ON ( dossierseps.id = sanctionseps58.dossierep_id )
+					INNER JOIN personnes ON ( personnes.id = dossierseps.personne_id )
+					INNER JOIN orientsstructs ON ( orientsstructs.personne_id = personnes.id )
+				WHERE
+					orientsstructs.statut_orient = 'Orienté'
+					AND sanctionseps58.origine = 'noninscritpe'
+					AND sanctionseps58.created >= orientsstructs.date_valid
+					AND orientsstructs.id IN (
+						SELECT
+							derniereorientsstructs.i__id
+						FROM (
+							SELECT
+									i.id AS i__id, i.date_valid AS h__date
+								FROM orientsstructs AS i
+								WHERE
+									i.personne_id = personnes.id
+									AND i.id IN (
+										SELECT dernierorientsstructs.id AS dernierorientsstructs__id
+											FROM orientsstructs AS dernierorientsstructs
+											WHERE
+												dernierorientsstructs.personne_id = i.personne_id
+												AND dernierorientsstructs.statut_orient = 'Orienté'
+												AND sanctionseps58.created >= dernierorientsstructs.date_valid
+											ORDER BY dernierorientsstructs.date_valid DESC
+											LIMIT 1
+									)
+						) AS derniereorientsstructs ORDER BY derniereorientsstructs.h__date DESC LIMIT 1
+					)
+		LOOP
+			-- Mise à jour dans la table sanctionseps58
+			v_query := 'UPDATE sanctionseps58 SET orientstruct_id = ' || v_row.orientstruct_id || ' WHERE id = ' || v_row.sanctionep58_id || ';';
+			RAISE NOTICE  '%', v_query;
+			EXECUTE v_query;
+		END LOOP;
+	END;
+$$
+LANGUAGE plpgsql;
+
+SELECT public.update_sanctionseps58_orientstruct();
+DROP FUNCTION public.update_sanctionseps58_orientstruct();
+
+-- Lorsqu'on est radié de Pôle Emploi, il faut que la colonne orientstruct_id soit remplie.+
+ALTER TABLE sanctionseps58 ADD CONSTRAINT sanctionseps58_orientstruct_id_origine_chk CHECK ( ( origine = 'noninscritpe' AND orientstruct_id IS NOT NULL ) OR ( origine <> 'noninscritpe' AND orientstruct_id IS NULL ) );
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

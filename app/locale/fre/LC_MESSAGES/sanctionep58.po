@@ -48,3 +48,18 @@ msgstr "Origine"
 
 msgid "Sanctionep58.commentaire"
 msgstr "Commentaire"
+
+msgid "Historiqueetatpe.etat"
+msgstr "État"
+
+msgid "Historiqueetatpe.code"
+msgstr "Code"
+
+msgid "Historiqueetatpe.motif"
+msgstr "Motif"
+
+msgid "Structurereferente.lib_struc"
+msgstr "Structure référente du contrat"
+
+msgid "Typocontrat.lib_typo"
+msgstr "Type de contrat"

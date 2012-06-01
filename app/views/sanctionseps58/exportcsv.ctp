@@ -21,20 +21,43 @@
 		}
 	}
 	else if( $nameTableauCsv == 'radies' ) {
-		$csv->addRow( array( 'Nom allocataire', 'Prénom allocataire', 'Date de naissance', 'Commune de l\'allocataire', 'Motif de radiation', 'Date de radiation', 'Service instructeur' ) );
+		$configureConditions = Configure::read( 'Selectionradies.conditions' );
 
-		foreach( $personnes as $personne ) {
+		if( !empty( $configureConditions ) ) {
+			$csv->addRow( array( 'Nom allocataire', 'Prénom allocataire', 'Date de naissance', 'Commune de l\'allocataire', __d( 'sanctionep58', 'Historiqueetatpe.etat', true ), __d( 'sanctionep58', 'Historiqueetatpe.code', true ), 'Motif de radiation', 'Date de radiation', 'Service instructeur' ) );
 
-			$row = array(
-				Set::classicExtract( $personne, 'Personne.nom' ),
-				Set::classicExtract( $personne, 'Personne.prenom'),
-				date_short( Set::classicExtract( $personne, 'Personne.dtnai' ) ),
-				Set::classicExtract( $personne, 'Adresse.locaadr' ),
-				Set::classicExtract( $personne, 'Historiqueetatpe.motif' ),
-				$locale->date( 'Date::short', Set::classicExtract( $personne, 'Historiqueetatpe.date' ) ),
-				Set::classicExtract( $personne, 'Serviceinstructeur.lib_service' )
-			);
-			$csv->addRow($row);
+			foreach( $personnes as $personne ) {
+				$row = array(
+					Set::classicExtract( $personne, 'Personne.nom' ),
+					Set::classicExtract( $personne, 'Personne.prenom'),
+					date_short( Set::classicExtract( $personne, 'Personne.dtnai' ) ),
+					Set::classicExtract( $personne, 'Adresse.locaadr' ),
+					Set::classicExtract( $personne, 'Historiqueetatpe.etat' ),
+					Set::classicExtract( $personne, 'Historiqueetatpe.code' ),
+					Set::classicExtract( $personne, 'Historiqueetatpe.motif' ),
+					$locale->date( 'Date::short', Set::classicExtract( $personne, 'Historiqueetatpe.date' ) ),
+					Set::classicExtract( $personne, 'Serviceinstructeur.lib_service' )
+				);
+				$csv->addRow($row);
+			}
+
+		}
+		else {
+			$csv->addRow( array( 'Nom allocataire', 'Prénom allocataire', 'Date de naissance', 'Commune de l\'allocataire', 'Motif de radiation', 'Date de radiation', 'Service instructeur' ) );
+
+			foreach( $personnes as $personne ) {
+				$row = array(
+					Set::classicExtract( $personne, 'Personne.nom' ),
+					Set::classicExtract( $personne, 'Personne.prenom'),
+					date_short( Set::classicExtract( $personne, 'Personne.dtnai' ) ),
+					Set::classicExtract( $personne, 'Adresse.locaadr' ),
+					Set::classicExtract( $personne, 'Historiqueetatpe.motif' ),
+					$locale->date( 'Date::short', Set::classicExtract( $personne, 'Historiqueetatpe.date' ) ),
+					Set::classicExtract( $personne, 'Serviceinstructeur.lib_service' )
+				);
+				$csv->addRow($row);
+			}
+
 		}
 	}
 
