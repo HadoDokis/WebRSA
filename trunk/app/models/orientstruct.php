@@ -263,6 +263,23 @@
 			)
 		);
 
+		
+		public $hasOne = array(
+			'Nonoriente66' => array(
+				'className' => 'Nonoriente66',
+				'foreignKey' => 'orientstruct_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			)
+		);
+		
 		public $virtualFields = array(
 			'nbjours' => array(
 				'type'      => 'integer',
@@ -776,11 +793,63 @@
 			$typestructure = Set::classicExtract( $orientation, 'Structurereferente.typestructure' );
 			$modeleodt = "Orientation/changement_referent_{$typestructure}.odt";
 
-debug($orientation);
-debug( $modeleodt );
-die();
+// debug($orientation);
+// debug( $modeleodt );
+// die();
 			// Génération du PDF
 			return $this->ged( $orientation, $modeleodt, false, $options );
+		}
+
+		/**
+		 * Fonction permettant la mise à jour de la table nonorientes66
+		 * @param integer id de l'orientation
+		 * @return boolean
+		 *
+		 */
+		protected function _updateNonoriente66( $orientstruct_id ) {
+			$success = true;
+
+			if( Configure::read( 'Cg.departement' ) == 66 ) {
+				$orientationAvecEntreeNonoriente66 = $this->find(
+					'first',
+					array(
+						'fields' => array(
+							'Nonoriente66.id'
+						),
+						'conditions' => array(
+							'Orientstruct.id' => $orientstruct_id
+						),
+						'joins' => array(
+							$this->join( 'Personne', array(  'type' => 'INNER' ) ),
+							$this->Personne->join( 'Nonoriente66', array(  'type' => 'INNER' ) )
+						),
+						'contain' => false
+					)
+				);
+
+				if( !empty( $orientationAvecEntreeNonoriente66 )  ) {
+					$success = $this->Nonoriente66->updateAll(
+						array( 'Nonoriente66.orientstruct_id' => $orientstruct_id ),
+						array(
+							'"Nonoriente66"."id"' => $orientationAvecEntreeNonoriente66['Nonoriente66']['id']
+						)
+					);
+				}
+			}
+			
+			return $success;
+		}
+		
+		/**
+		*   AfterSave
+		*/
+
+		public function afterSave( $created ) {
+			$return = parent::afterSave( $created );
+
+			$return = $this->_updateNonoriente66( $this->id ) && $return;
+
+			return $return;
 		}
 	}
 ?>
