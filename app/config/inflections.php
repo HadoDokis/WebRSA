@@ -364,6 +364,7 @@
 		'conditionactiviteprealable' => 'conditionsactivitesprealables',
 		'decisionnonorientationproep66' => 'decisionsnonorientationsproseps66',
 		'cohortenonoriente66' => 'cohortesnonorientes66',
+		'nonoriente66' => 'nonorientes66',
 	);
 /**
 * This is a key => value array of regex used to match words.

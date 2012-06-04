@@ -22,7 +22,9 @@
 
 			/// Conditions de base
 			$conditions = array();
-			$conditions[] = '( SELECT COUNT(orientsstructs.id) FROM orientsstructs WHERE orientsstructs.personne_id = "Personne"."id" ) = 0';
+			if( $statutNonoriente != 'Nonoriente::oriente' ) {
+				$conditions[] = '( SELECT COUNT(orientsstructs.id) FROM orientsstructs WHERE orientsstructs.personne_id = "Personne"."id" AND orientsstructs.statut_orient = \'Orienté\' ) = 0';
+			}
 
 
 			if( !empty( $statutNonoriente ) ) {
@@ -50,33 +52,50 @@
 					)';
 				}
 				else if( $statutNonoriente == 'Nonoriente::notisemploi' ) {
-					$conditions[] = 'Personne.id NOT IN (
-						SELECT
-								personnes.id
-							FROM informationspe
-								INNER JOIN historiqueetatspe ON (
-									informationspe.id = historiqueetatspe.informationpe_id
-									AND historiqueetatspe.id IN (
-												SELECT h.id
-													FROM historiqueetatspe AS h
-													WHERE h.informationpe_id = informationspe.id
-													ORDER BY h.date DESC
-													LIMIT 1
-									)
-								)
-								INNER JOIN personnes ON (
-									'.$Informationpe->sqConditionsJoinPersonne( 'informationspe', 'personnes' ).'
-								)
-							WHERE
-								personnes.id = Personne.id
-								AND historiqueetatspe.etat = \'inscription\'
-					)';
+					$conditions[] = 'Personne.id IN (
+						SELECT nonorientes66.personne_id
+							FROM nonorientes66
+								WHERE
+									nonorientes66.personne_id = Personne.id
+						)';
+// 					$conditions[] = 'Personne.id NOT IN (
+// 						SELECT
+// 								personnes.id
+// 							FROM informationspe
+// 								INNER JOIN historiqueetatspe ON (
+// 									informationspe.id = historiqueetatspe.informationpe_id
+// 									AND historiqueetatspe.id IN (
+// 												SELECT h.id
+// 													FROM historiqueetatspe AS h
+// 													WHERE h.informationpe_id = informationspe.id
+// 													ORDER BY h.date DESC
+// 													LIMIT 1
+// 									)
+// 								)
+// 								INNER JOIN personnes ON (
+// 									'.$Informationpe->sqConditionsJoinPersonne( 'informationspe', 'personnes' ).'
+// 								)
+// 							WHERE
+// 								personnes.id = Personne.id
+// 								AND historiqueetatspe.etat = \'inscription\'
+// 					)';
 				}
 				else if( $statutNonoriente == 'Nonoriente::notisemploiaimprimer' ) {
-// 					$conditions[] = '( Personne.etatdossierapre = \'VAL\' ) AND  ( Personne.datenotifapre IS NOT NULL )';
+					$conditions[] = 'Personne.id NOT IN (
+						SELECT nonorientes66.personne_id
+							FROM nonorientes66
+								WHERE
+									nonorientes66.personne_id = Personne.id
+						)';
 				}
 				else if( $statutNonoriente == 'Nonoriente::oriente' ) {
-// 					$conditions[] = '( Personne.etatdossierapre = \'VAL\' ) AND  ( Personne.datenotifapre IS NOT NULL )';
+					$conditions[] = 'Personne.id IN (
+						SELECT nonorientes66.personne_id
+							FROM nonorientes66
+								WHERE
+									nonorientes66.personne_id = Personne.id
+									AND nonorientes66.orientstruct_id IS NOT NULL
+						)';
 				}
 			}
 
@@ -124,7 +143,8 @@
 					$Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'INNER' ) ),
 				),
 				'contain' => false,
-				'conditions' => $conditions
+				'conditions' => $conditions,
+				'order' => array( 'Personne.id ASC' )
 			);
 
 			return $query;
@@ -173,6 +193,38 @@
 			return 'Orientation/questionnaireorientation66.odt';
 		}
 
+		/**
+		 * Fonction permettant d'enregistrer la date du jour de l'impression du courrier envoyé
+		 * aux allocataires ne possédant pas encore d'orientation
+		 * @param array $data
+		 * @return array
+		 *
+		 */
+		protected function _saveImpression( $data ) {
+			$success = true;
+			$Nonoriente66 = ClassRegistry::init( 'Nonoriente66' );
+			if( !empty( $data ) ) {
+			
+				$nonoriente66 = array(
+					'Nonoriente66' => array(
+						'personne_id' => $data['Personne']['id'],
+						'dateimpression' => date( 'Y-m-d' ),
+						'orientstruct_id' => null,
+						'user_id' => $data['User']['id']
+					)
+				);
+
+				$Nonoriente66->create( $nonoriente66 );
+				$success = $Nonoriente66->save() && $success;
+			}
+			else {
+				return false;
+			}
+			
+			return $success;
+		}
+		
+		
 		/**
 		 * Retourne le PDF par défaut généré par les appels aux méthodes getDataForPdf, modeleOdt et
 		 * à la méthode ged du behavior Gedooo
@@ -223,6 +275,13 @@
 			}
 // debug($personne);
 // die();
+
+			if( !empty( $personne ) ){
+				$this->_saveImpression( $personne );
+			}
+
+
+
 			return $this->ged(
 				$personne,
 				$this->modeleOdt( $personne ),

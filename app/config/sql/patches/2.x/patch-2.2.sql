@@ -534,6 +534,29 @@ DROP FUNCTION public.update_sanctionseps58_orientstruct();
 -- Lorsqu'on est radié de Pôle Emploi, il faut que la colonne orientstruct_id soit remplie.+
 ALTER TABLE sanctionseps58 ADD CONSTRAINT sanctionseps58_orientstruct_id_origine_chk CHECK ( ( origine = 'noninscritpe' AND orientstruct_id IS NOT NULL ) OR ( origine <> 'noninscritpe' AND orientstruct_id IS NULL ) );
 
+
+-------------------------------------------------------------------------------------------------------------
+-- 20120604 : Ajout d'une  table nonorientees66 qui stockera la date d'impression des courriers envoyés
+--				aux allocataires ne possédant pas d'orientation 
+-------------------------------------------------------------------------------------------------------------
+DROP TABLE IF EXISTS nonorientes66;
+CREATE TABLE nonorientes66 (
+  	id 						SERIAL NOT NULL PRIMARY KEY,
+	personne_id           	INTEGER NOT NULL REFERENCES personnes(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	orientstruct_id       	INTEGER REFERENCES orientsstructs(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	dateimpression			DATE NOT NULL,
+	user_id           		INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	created					TIMESTAMP WITHOUT TIME ZONE,
+	modified				TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE nonorientes66 IS 'Table servant à l''enregistrement de la data d''impression du courrier envoyé aux allocaaires ne possédant pas d''orientation(CG66)';
+DROP INDEX IF EXISTS nonorientes66_personne_id_idx;
+DROP INDEX IF EXISTS nonorientes66_orientstruct_id_idx;
+DROP INDEX IF EXISTS nonorientes66_user_id_idx;
+CREATE UNIQUE INDEX nonorientes66_personne_id_idx ON nonorientes66(personne_id);
+CREATE INDEX nonorientes66_orientstruct_id_idx ON nonorientes66(orientstruct_id);
+CREATE INDEX nonorientes66_user_id_idx ON nonorientes66(user_id);
+
 -- *****************************************************************************
 COMMIT;
--- *****************************************************************************
+-- ************************************************************************

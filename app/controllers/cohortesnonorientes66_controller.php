@@ -15,7 +15,7 @@
 		public $helpers = array( 'Csv', 'Ajax', 'Default2', 'Locale', 'Search' );
 
 		public $components = array(
-			'Prg' => array(
+			'Prg2' => array(
 				'actions' => array(
 					'isemploi' => array( 'filter' => 'Search' ),
 					'notisemploi' => array( 'filter' => 'Search' ),
@@ -60,12 +60,12 @@
 					$conditionsTypeorient['Typeorient.parentid'] = $typeorient_id;
 				}
 			}
-			else if( $this->action == 'notisemploi' ) {
-				$typeorient_id = Configure::read( 'Orientstruct.typeorientprincipale.SOCIAL' );
-				if( is_array( $typeorient_id ) ){
-					$conditionsTypeorient['Typeorient.parentid'] = $typeorient_id;
-				}
-			}
+// 			else if( $this->action == 'notisemploi' ) {
+// 				$typeorient_id = Configure::read( 'Orientstruct.typeorientprincipale.SOCIAL' );
+// 				if( is_array( $typeorient_id ) ){
+// 					$conditionsTypeorient['Typeorient.parentid'] = $typeorient_id;
+// 				}
+// 			}
 			$typesOrients = $this->Personne->Orientstruct->Typeorient->listOptions( $conditionsTypeorient );
 			$this->set( 'typesOrient', $typesOrients );
 
