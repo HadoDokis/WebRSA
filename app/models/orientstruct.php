@@ -24,8 +24,9 @@
 			'StorablePdf',
 			'ModelesodtConditionnables' => array(
 				66 => array(
-					'Orientation/changement_referent_msp.odt',
-					'Orientation/changement_referent_oa.odt'
+					'Orientation/changement_referent_cgcg.odt',
+					'Orientation/changement_referent_cgoa.odt',
+					'Orientation/changement_referent_oacg.odt'
 				)
 			)
 		);
@@ -769,6 +770,26 @@
 				return false;
 			}
 
+			$structurereferentePrecedente = $this->find(
+				'first',
+				array(
+					'fields' => array(
+						'Structurereferente.typestructure'
+					),
+					'conditions' => array(
+						'Orientstruct.personne_id' => $orientation['Orientstruct']['personne_id'],
+						'Orientstruct.date_valid <=' => $orientation['Orientstruct']['date_valid'],
+						'Orientstruct.statut_orient' => 'Orienté',
+						'Orientstruct.id <>' => $orientation['Orientstruct']['id']
+					),
+					'joins' => array(
+						$this->join( 'Structurereferente', array( 'type' => 'INNER') )
+					),
+					'order' => array( 'Orientstruct.date_valid DESC' ),
+					'contain' => false
+				)
+			);
+			
 			// Options pour les traductions
 			$Option = ClassRegistry::init( 'Option' );
 			$options = array(
@@ -791,7 +812,24 @@
 
 			// Choix du modèle de document
 			$typestructure = Set::classicExtract( $orientation, 'Structurereferente.typestructure' );
-			$modeleodt = "Orientation/changement_referent_{$typestructure}.odt";
+			$typestructurepassee = Set::classicExtract( $structurereferentePrecedente, 'Structurereferente.typestructure' );
+			
+			if( $typestructure == $typestructurepassee ) {
+				if( $typestructure == 'oa' ) {
+					$modeleodt = "Orientation/changement_referent_cgcg.odt"; // FIXME: devrait être paoa
+				}
+				else {
+					$modeleodt = "Orientation/changement_referent_cgcg.odt";
+				}
+			}
+			else {
+				if( $typestructure == 'oa' ) {
+					$modeleodt = "Orientation/changement_referent_cgoa.odt";
+				}
+				else {
+					$modeleodt = "Orientation/changement_referent_oacg.odt";
+				}
+			}
 
 // debug($orientation);
 // debug( $modeleodt );
@@ -802,9 +840,9 @@
 
 		/**
 		 * Fonction permettant la mise à jour de la table nonorientes66
+		 *
 		 * @param integer id de l'orientation
 		 * @return boolean
-		 *
 		 */
 		protected function _updateNonoriente66( $orientstruct_id ) {
 			$success = true;
