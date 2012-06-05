@@ -18,14 +18,6 @@
 			'Gedooo.Gedooo'
 		);
 
-		/**
-		* Chemin relatif pour les modèles de documents .odt utilisés lors des
-		* impressions. Utiliser %s pour remplacer par l'alias.
-		*/
-		public $modelesOdt = array(
-			'PDO/pdo_etudiant.odt',
-			'PDO/pdo_insertion.odt'
-		);
 
 		public $validate = array(
 			'typepdo_id' => array(
@@ -495,7 +487,7 @@
 		}
 
 		public function getCourrierPdo( $propopdo_id, $user_id ) {
-		$queryData = array(
+			$queryData = array(
 				'fields' => array(
 					'Propopdo.id',
 					'Propopdo.personne_id',
@@ -515,6 +507,7 @@
 					'Decisionpropopdo.datedecisionpdo',
 					'Decisionpropopdo.commentairepdo',
 					'Decisionpdo.libelle',
+					'Decisionpdo.modeleodt',
 					'Personne.nom',
 					'Personne.prenom',
 					'Personne.qual',
@@ -602,22 +595,15 @@
 			);
 			$propopdo = Set::merge( $propopdo, $user );
 			
-			$libelleDecision = Set::classicExtract( $propopdo, 'Decisionpdo.libelle' );
+			$modeleodt = Set::classicExtract( $propopdo, 'Decisionpdo.modeleodt' );
 
-			if( ereg("AJ 7a", $libelleDecision ) ) {
-				$nomModele = 'pdo_etudiant';
-			}
-			else if( ereg("DO 19", $libelleDecision ) ) {
-				$nomModele = 'pdo_insertion';
-			}
-			else if( ereg("R 9", $libelleDecision ) ) {
-				$nomModele = 'pdo_R9_etudiant';
-			}
+debug($modeleodt);
+die();
 			$options['Foyer']['sitfam'] = ClassRegistry::init( 'Option' )->sitfam();
 
 			return $this->ged(
 				$propopdo,
-				"PDO/{$nomModele}.odt",
+				"PDO/{$modeleodt}.odt",
 				false,
 				$options
 			);

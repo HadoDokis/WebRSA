@@ -132,7 +132,7 @@ DROP INDEX IF EXISTS traitementspcgs66_typecourrierpcg66_id_idx;
 -------------------------------------------------------------------------------------------------------------
 -- 20120301 : Ajout d'une table de liaison entre la table traitementspcgs66 et la table piecestypescourrierspcgs66
 -------------------------------------------------------------------------------------------------------------
-DROP TABLE IF EXISTS piecestraitementspcgs66;
+DROP TABLE IF EXISTS piecestraitementspcgs66 CASCADE;
 CREATE TABLE piecestraitementspcgs66 (
   	id 				SERIAL NOT NULL PRIMARY KEY,
 	traitementpcg66_id              INTEGER NOT NULL REFERENCES traitementspcgs66(id) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -157,7 +157,7 @@ CREATE UNIQUE INDEX fraisdeplacements66_aideapre66_id_idx ON fraisdeplacements66
 -- 20120321 : Ajout d'une table pour les propositions de décision du CER du CG66
 -------------------------------------------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS proposdecisionscers66;
+DROP TABLE IF EXISTS proposdecisionscers66 CASCADE;
 CREATE TABLE proposdecisionscers66 (
   	id 								SERIAL NOT NULL PRIMARY KEY,
     contratinsertion_id             INTEGER NOT NULL REFERENCES contratsinsertion(id) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -174,7 +174,7 @@ DROP INDEX IF EXISTS proposdecisionscers66_isvalidcer_idx;
 CREATE UNIQUE INDEX proposdecisionscers66_contratinsertion_id_idx ON proposdecisionscers66(contratinsertion_id);
 CREATE INDEX proposdecisionscers66_isvalidcer_idx ON proposdecisionscers66(isvalidcer);
 
-DROP TABLE IF EXISTS motifscersnonvalids66;
+DROP TABLE IF EXISTS motifscersnonvalids66 CASCADE;
 CREATE TABLE motifscersnonvalids66 (
   	id 								SERIAL NOT NULL PRIMARY KEY,
     name							VARCHAR(250) NOT NULL,
@@ -186,7 +186,7 @@ DROP INDEX IF EXISTS motifscersnonvalids66_name_idx;
 CREATE UNIQUE INDEX motifscersnonvalids66_name_idx ON motifscersnonvalids66(name);
 
 
-DROP TABLE IF EXISTS motifscersnonvalids66_proposdecisionscers66;
+DROP TABLE IF EXISTS motifscersnonvalids66_proposdecisionscers66 CASCADE;
 CREATE TABLE motifscersnonvalids66_proposdecisionscers66 (
   	id 								SERIAL NOT NULL PRIMARY KEY,
 	propodecisioncer66_id           INTEGER NOT NULL REFERENCES proposdecisionscers66(id) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -292,7 +292,7 @@ DROP INDEX IF EXISTS modelestraitementspcgs66_piecesmodelestypescourrierspcgs66_
 -------------------------------------------------------------------------------------------------------------
 -- 20120402 : Ajout d'une table supplémentaire pour la liste des modèles liés aux types de courrier PCG66
 -------------------------------------------------------------------------------------------------------------
-DROP TABLE IF EXISTS modelestypescourrierspcgs66_situationspdos;
+DROP TABLE IF EXISTS modelestypescourrierspcgs66_situationspdos CASCADE;
 CREATE TABLE modelestypescourrierspcgs66_situationspdos (
   	id 								SERIAL NOT NULL PRIMARY KEY,
 	modeletypecourrierpcg66_id           INTEGER NOT NULL REFERENCES modelestypescourrierspcgs66(id) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -539,7 +539,7 @@ ALTER TABLE sanctionseps58 ADD CONSTRAINT sanctionseps58_orientstruct_id_origine
 -- 20120604 : Ajout d'une  table nonorientees66 qui stockera la date d'impression des courriers envoyés
 --				aux allocataires ne possédant pas d'orientation 
 -------------------------------------------------------------------------------------------------------------
-DROP TABLE IF EXISTS nonorientes66;
+DROP TABLE IF EXISTS nonorientes66 CASCADE;
 CREATE TABLE nonorientes66 (
   	id 						SERIAL NOT NULL PRIMARY KEY,
 	personne_id           	INTEGER NOT NULL REFERENCES personnes(id) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -549,7 +549,7 @@ CREATE TABLE nonorientes66 (
 	created					TIMESTAMP WITHOUT TIME ZONE,
 	modified				TIMESTAMP WITHOUT TIME ZONE
 );
-COMMENT ON TABLE nonorientes66 IS 'Table servant à l''enregistrement de la data d''impression du courrier envoyé aux allocaaires ne possédant pas d''orientation(CG66)';
+COMMENT ON TABLE nonorientes66 IS 'Table servant à l''enregistrement de la data d''impression du courrier envoyé aux allocataires ne possédant pas d''orientation(CG66)';
 DROP INDEX IF EXISTS nonorientes66_personne_id_idx;
 DROP INDEX IF EXISTS nonorientes66_orientstruct_id_idx;
 DROP INDEX IF EXISTS nonorientes66_user_id_idx;
@@ -557,6 +557,13 @@ CREATE UNIQUE INDEX nonorientes66_personne_id_idx ON nonorientes66(personne_id);
 CREATE INDEX nonorientes66_orientstruct_id_idx ON nonorientes66(orientstruct_id);
 CREATE INDEX nonorientes66_user_id_idx ON nonorientes66(user_id);
 
+-------------------------------------------------------------------------------------------------------------
+-- 20120605 : Ajout d'une colonne supplémentaire modeleodt pour les décisions PDOs du CG93
+------------------------------------------------------------------------------------------------------------
+SELECT add_missing_table_field ('public', 'decisionspdos', 'modeleodt', 'VARCHAR(250)');
+UPDATE decisionspdos SET modeleodt = 'pdo_etudiant' WHERE modeleodt IS NULL AND libelle LIKE '%AJ 7a%';
+UPDATE decisionspdos SET modeleodt = 'pdo_insertion' WHERE modeleodt IS NULL AND libelle LIKE '%DO 19%';
+UPDATE decisionspdos SET modeleodt = NULL WHERE modeleodt IS NOT NULL AND TRIM( BOTH ' ' FROM modeleodt ) = '';
 -- *****************************************************************************
 COMMIT;
 -- ************************************************************************

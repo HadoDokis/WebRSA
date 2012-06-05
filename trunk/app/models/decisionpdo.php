@@ -15,7 +15,8 @@
 					'nbmoisecheance',
 					'cerparticulier'
 				)
-			)
+			),
+			'Formattable'
 		);
 
 		public $hasMany = array(
@@ -59,5 +60,30 @@
 				),
 			),
 		);
+		
+
+		/**
+		 * Retourne la liste des modèles odt paramétrés pour le impressions de
+		 * cette classe.
+		 *
+		 * @return array
+		 */
+		public function modelesOdt() {
+			$prefix = 'PDO'.DS;
+
+			$items = $this->find(
+				'all',
+				array(
+					'fields' => array(
+						'( \''.$prefix.'\' || "'.$this->alias.'"."modeleodt" || \'.odt\' ) AS "'.$this->alias.'__modele"',
+					),
+					'recursive' => -1,
+					'conditions' => array(
+						"{$this->alias}.modeleodt IS NOT NULL"
+					)
+				)
+			);
+			return Set::extract( $items, '/'.$this->alias.'/modele' );
+		}
 	}
 ?>

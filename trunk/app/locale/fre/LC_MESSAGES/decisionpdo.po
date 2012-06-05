@@ -45,3 +45,6 @@ msgstr "Cette décision est-elle en lien avec un CER Particulier ?"
 
 msgid "Decisionpdo.decisioncerparticulier"
 msgstr "Décision en lien avec la validation d'un CER"
+
+msgid "Decisionpdo.modeleodt"
+msgstr "Modèle de document lié"
