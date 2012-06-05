@@ -27,7 +27,7 @@
 				'order' => ''
 			)
 		);
-                
+
 		public $hasMany = array(
 			'Piecemodeletypecourrierpcg66' => array(
 				'className' => 'Piecemodeletypecourrierpcg66',
@@ -56,7 +56,7 @@
 				'counterQuery' => ''
 			),
 		);
-		
+
 // 		public $hasAndBelongsToMany = array(
 // 			// Test liaison avec situationspdos
 // 			'Situationpdo' => array(
@@ -76,5 +76,27 @@
 // 				'with' => 'Modeletypecourrierpcg66Situationpdo'
 // 			)
 // 		);
+
+		/**
+		 * Retourne la liste des modèles odt paramétrés pour le impressions de
+		 * cette classe.
+		 *
+		 * @return array
+		 */
+		public function modelesOdt() {
+			$prefix = 'PCG66'.DS.'Traitementpcg66'.DS;
+
+			$items = $this->find(
+				'all',
+				array(
+					'fields' => array(
+						'( \''.$prefix.'\' || "'.$this->alias.'"."modeleodt" || \'.odt\' ) AS "'.$this->alias.'__modele"',
+					),
+					'conditions' => array( ''.$this->alias.'.modeleodt IS NOT NULL' ),
+					'recursive' => -1
+				)
+			);
+			return Set::extract( $items, '/'.$this->alias.'/modele' );
+		}
 	}
 ?>

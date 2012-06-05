@@ -5,15 +5,6 @@
 
 		public $recursive = -1;
 
-		/**
-		* Chemin relatif pour les modèles de documents .odt utilisés lors des
-		* impressions. Utiliser %s pour remplacer par l'alias.
-		*/
-		public $modelesOdt = array(
-			'PCG66/propositiondecision.odt',
-		);
-
-		
 		public $actsAs = array(
 			'Autovalidate',
 			'ValidateTranslate',
@@ -29,8 +20,12 @@
 					'defautinsertion'
 				)
 			),
-			'Gedooo.Gedooo'/*,
-			'StorablePdf'*/
+			'Gedooo.Gedooo',
+			'ModelesodtConditionnables' => array(
+				66 => array(
+					'PCG66/propositiondecision.odt',
+				)
+			)
 		);
 
 		public $belongsTo = array(
@@ -443,7 +438,7 @@
 					)
 				);
 				$data[$personnefoyerpcg['Prestation']['rolepers']]['Situationpdo']['libelles'] = implode( "\n", Set::extract( '/Situationpdo/libelle', $personnespcgs66_situationspdos ) );
-				
+
 				$personnespcgs66_statutspdos = $this->Dossierpcg66->Personnepcg66->Personnepcg66Statutpdo->find(
 					'all',
 					array(
@@ -461,8 +456,8 @@
 					)
 				);
 				$data[$personnefoyerpcg['Prestation']['rolepers']]['Statutpdo']['libelles'] = implode( "\n", Set::extract( '/Statutpdo/libelle', $personnespcgs66_statutspdos ) );
-				
-				
+
+
 				// Calcul des revenus à afficher dans la décision si on décide de répercuter la fiche de calcul dans la décision
 				$traitementsAvecFicheCalcul = $this->Dossierpcg66->Personnepcg66->Traitementpcg66->find(
 					'all',
@@ -482,7 +477,7 @@
 			}
 
 
-			
+
 			// Recherche des pièces nécessaires pour cette aide, et qui ne sont pas présentes
 			$querydata = array(
 				'joins' => array(
@@ -503,12 +498,9 @@
 				$data['Decisiondossierpcg66']['Typersapcg66'] .= "\n" .'- '.implode( "\n- ", $typesrsa ).',';
 			}
 
-// debug( $traitementsAvecFicheCalcul );
-// debug( $data );
-// die();
 			return $this->ged(
 				$data,
-				"PCG66/propositiondecision.odt",
+				$this->modeleOdt( $data ),
 				false,
 				array()
 			);
@@ -519,7 +511,6 @@
 		*/
 
 		public function modeleOdt( $data ) {
-// 			return "PCG66/decisionfoyer.odt";
 			return "PCG66/propositiondecision.odt";
 		}
 
@@ -562,7 +553,7 @@
 							AND decisionsdossierspcgs66.etatop = 'transmis'
 						LIMIT 1";*/
 		}
-		
+
 		/**
 		*
 		*/

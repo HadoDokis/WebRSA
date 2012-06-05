@@ -7,11 +7,11 @@
 	{
 		public $actsAs = array(
 			'Autovalidate',
-                        'Conditionnable',	
-                        'Enumerable',
+			'Conditionnable',
+			'Enumerable',
 			'Formattable',
 			'Gedooo.Gedooo',
-                        'ValidateTranslate'
+			'ValidateTranslate'
 		);
 
 		public $belongsTo = array(

@@ -56,15 +56,12 @@
 			'StorablePdf' => array(
 				'active' => array( 66 )
 			),
-		);
-
-		/**
-		* Chemin relatif pour les modèles de documents .odt utilisés lors des
-		* impressions. Utiliser %s pour remplacer par l'alias.
-		*/
-		public $modelesOdt = array(
-			'Bilanparcours/bilanparcours.odt',
-			'Bilanparcours/courrierinformationavantep.odt',
+			'ModelesodtConditionnables' => array(
+				66 => array(
+					'Bilanparcours/bilanparcours.odt',
+					'Bilanparcours/courrierinformationavantep.odt',
+				)
+			)
 		);
 
 		public $validate = array(

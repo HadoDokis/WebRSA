@@ -29,7 +29,10 @@
 			'ModelesodtConditionnables' => array(
 				58 => '%s/ordredujour_participant_58.odt',
 				66 => '%s/ordredujour_participant_66.odt',
-				93 => array( '%s/ordredujour_participant_93.odt' )
+				93 => array(
+					'%s/ordredujour_participant_93.odt',
+					'%s/fichesynthese.odt',
+				)
 			)
 		);
 
@@ -110,7 +113,6 @@
 			'%s/pv.odt',
 			'%s/convocationep_participant.odt',
 			'%s/decisionep.odt',
-			'%s/fichesynthese.odt',
 			'%s/convocationep_beneficiaire.odt',
 		);
 

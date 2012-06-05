@@ -27,7 +27,17 @@
 			),
 			'Formattable',
 			'Gedooo.Gedooo',
-			'Conditionnable'
+			'Conditionnable',
+			'ModelesodtConditionnables' => array(
+				66 => array(
+					// Courrier d'information
+					'%s/bilanparcours_courrierinformationavantep.odt',
+					'%s/noninscriptionpe_courrierinformationavantep.odt',
+					'%s/radiationpe_courrierinformationavantep.odt',
+					// Convocation EP
+					'Commissionep/convocationep_beneficiaire.odt',
+				)
+			)
 		);
 
 		public $belongsTo = array(
@@ -66,20 +76,6 @@
 				'fields' => '',
 				'order' => ''
 			),
-		);
-
-		/**
-		* Chemin relatif pour les modèles de documents .odt utilisés lors des
-		* impressions. Utiliser %s pour remplacer par l'alias.
-		*/
-		public $modelesOdt = array(
-			// Courrier d'information
-			'%s/bilanparcours_courrierinformationavantep.odt',
-			'%s/noninscriptionpe_courrierinformationavantep.odt',
-			'%s/radiationpe_courrierinformationavantep.odt',
-			// Convocation EP
-			'Commissionep/convocationep_beneficiaire.odt',
-			// Décision EP (décision CG)
 		);
 
 		/**
@@ -512,7 +508,7 @@
 		*/
 
 		protected function _qdSelection( $datas, $mesCodesInsee, $filtre_zone_geo ) {
-			
+
 			$Situationdossierrsa = ClassRegistry::init( 'Situationdossierrsa' );
 			$queryData = array(
 				'fields' => array(
@@ -762,9 +758,9 @@
 			}
 			else {
 				$queryData['conditions'][] = '( Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatOuvert() ).'\' ) )';
-			}			
-			
-			
+			}
+
+
 			return $queryData;
 		}
 
