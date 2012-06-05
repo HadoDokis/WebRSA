@@ -255,6 +255,8 @@
 		 * @access public
 		 */
 		public function index() {
+			$this->Gedooo->makeTmpDir( Configure::read( 'Cohorte.dossierTmpPdfs' ) );
+
 			$results = Set::merge(
 				$this->_apache(),
 				$this->_php(),
