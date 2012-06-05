@@ -29,6 +29,13 @@
 					array( 'Decisionpdo.decisioncerparticulier' => array( 'type' => 'select', 'options' => $decision_ci, 'empty' => true ) )
 				);
 			}
+			else {
+				$fields = array_merge(
+					$fields,
+					array( 'Decisionpdo.modeleodt' )
+				);
+			}
+			
 			echo $default->subform(
 				$fields,
 				array(
