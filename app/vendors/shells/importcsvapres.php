@@ -194,14 +194,16 @@
 							$this->out( "Traitement de la ligne $nLigne" );
 						}
 
+						$date = ( isset( $parts[$this->fields['date']] ) ? $parts[$this->fields['date']] : null );
+
 						if( preg_match( '/'.$this->config['separator'].'[0-9,\.]+E\+[0-9]+'.$this->config['separator'].'/i', $line, $matches ) ) {
 							$errMsg = "Erreur de format";
 							$this->err( "{$errMsg} (ligne {$nLigne}): \"{$matches[0]}\"" );
 							$this->rejects[] = "{$line};{$errMsg}";
 						}
-						else if( $this->config['date'] && !preg_match( '/^[0-9]{2}\/[0-9]{2}\/[0-9]{4}$/i', $parts[$this->fields['date']], $matches ) ) {
+						else if( $this->config['date'] && !preg_match( '/^[0-9]{2}\/[0-9]{2}\/[0-9]{4}$/i', $date, $matches ) ) {
 							$errMsg = "Erreur de format de la date (on s'attend à JJ/MM/AAAA)";
-							$this->err( "{$errMsg} (ligne {$nLigne}): \"{$parts[$this->fields['date']]}\"" );
+							$this->err( "{$errMsg} (ligne {$nLigne}): \"{$date}\"" );
 							$this->rejects[] = "{$line};{$errMsg}";
 						}
 						else if( count( $parts ) == count( $this->fields ) ) {
@@ -251,7 +253,8 @@
 									);
 
 									// Conditions pour le message d'erreur
-									$conditionsBeneficiaire = "Personne.foyer_id = '{$foyer['Foyer']['id']}' AND ( Personne.nir = '{$nir}' OR ( Personne.nom ILIKE '".strtoupper( replace_accents( $nom ) )."' AND Personne.prenom ILIKE '".strtoupper( replace_accents( $prenom ) )."' ) )";
+//									$conditionsBeneficiaire = "Personne.foyer_id = '{$foyer['Foyer']['id']}' AND ( Personne.nir = '{$nir}' OR ( Personne.nom ILIKE '".strtoupper( replace_accents( $nom ) )."' AND Personne.prenom ILIKE '".strtoupper( replace_accents( $prenom ) )."' ) )";
+									$conditionsBeneficiaire = "Personne.foyer_id = '{$foyer['Foyer']['id']}' AND ( SUBSTRING( TRIM( BOTH ' ' FROM Personne.nir ) FROM 1 FOR 13 ) = SUBSTRING( TRIM( BOTH ' ' FROM '{$nir}' ) FROM 1 FOR 13 ) OR ( Personne.nom ILIKE '".strtoupper( replace_accents( $nom ) )."' AND Personne.prenom ILIKE '".strtoupper( replace_accents( $prenom ) )."' ) )";
 									$beneficiaire = $this->Apre->Personne->find(
 										'first',
 										array(
@@ -259,7 +262,8 @@
 											'conditions' => array(
 												'Personne.foyer_id' => $foyer['Foyer']['id'],
 												'or' => array(
-													'Personne.nir' => $nir,
+													"SUBSTRING( TRIM( BOTH ' ' FROM Personne.nir ) FROM 1 FOR 13 ) = SUBSTRING( TRIM( BOTH ' ' FROM '{$nir}' ) FROM 1 FOR 13 )",
+//													'Personne.nir' => $nir,
 													'and' => array(
 														'Personne.nom ILIKE' => strtoupper( replace_accents( $nom ) ),
 														'Personne.prenom ILIKE' => strtoupper( replace_accents( $prenom ) ),
