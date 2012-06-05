@@ -3,14 +3,6 @@
 	{
 		public $name = 'Decisionpropopdo';
 
-		/**
-		* Chemin relatif pour les modèles de documents .odt utilisés lors des
-		* impressions. Utiliser %s pour remplacer par l'alias.
-		*/
-		public $modelesOdt = array(
-			'PDO/propositiondecision.odt',
-		);
-
 		public $actsAs = array(
 			'Enumerable' => array(
 				'fields' => array(
@@ -26,6 +18,11 @@
 			'Gedooo.Gedooo',
 			'StorablePdf' => array(
 				'active' => 66
+			),
+			'ModelesodtConditionnables' => array(
+				66 => array(
+					'PDO/propositiondecision.odt',
+				)
 			)
 		);
 

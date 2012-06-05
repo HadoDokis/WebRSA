@@ -15,7 +15,7 @@
 
 		public $actsAs = array(
 			'Autovalidate',
-			'/*/*/*ValidateTranslate*/*/*/',
+//			'ValidateTranslate',
 			'Formattable',
 			'Enumerable' => array(
 				'fields' => array(
@@ -316,7 +316,7 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			)
-                    
+
 		);
 
 		public $hasOne = array(
@@ -410,7 +410,7 @@
 					}
 				}
 			}
-                        
+
 			// Sauvegarde des modèles liés au courrier pour un traitement donné
 			if( $success && $data['Traitementpcg66']['typetraitement'] == 'courrier' ) {
 
@@ -421,7 +421,7 @@
 				$success = $this->Modeletraitementpcg66->save() && $success;
 
 				$modeletraitementpcg66_id = $this->Modeletraitementpcg66->id;
-				
+
 				if( $success ) {
 					foreach( array( 'piecesmodelestypescourrierspcgs66' ) as $tableliee ) {
 						$modelelie = Inflector::classify( $tableliee );
@@ -475,7 +475,7 @@
 					}
 				}
 			}
-                       
+
 			return $success;
 		}
 
@@ -625,7 +625,7 @@
 		*/
 
 		public function getPdfModeleCourrier( $id, $user_id) {
-		
+
 			$joins = array(
 				$this->join( 'Personnepcg66' ),
 				$this->Personnepcg66->join( 'Personnepcg66Situationpdo' ),
@@ -642,7 +642,7 @@
 			$conditions = array(
 				'Traitementpcg66.id' => $id
 			);
-			
+
 			$queryData = array(
 				'fields' => array_merge(
 					$this->fields(),
@@ -729,7 +729,7 @@
 				$options
 			);
 		}
-		
+
 		/**
 		*	Sous-requête afin d'obtenir la liste des traitements PCG de la personne PCG
 		*	liée au dossier PCG
@@ -744,7 +744,7 @@
 // 					'conditions' => array(
 // 						"traitementspcgs66.personnepcg66_id = {$personnepcg66IdFied}"
 // 					),
-// 					'order' => array( 'traitementspcgs66.daterecpetion DESC' )					
+// 					'order' => array( 'traitementspcgs66.daterecpetion DESC' )
 // 				)
 // 			);
 		}

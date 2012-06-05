@@ -11,7 +11,18 @@
 			'Autovalidate',
 			'ValidateTranslate',
 			'Formattable',
-			'Gedooo.Gedooo'
+			'Gedooo.Gedooo',
+			'ModelesodtConditionnables' => array(
+				93 => array(
+					// Convocation EP
+					'%s/convocationep_beneficiaire.odt',
+					// Décision EP (décision CG)
+					'%s/decision_annule.odt',
+					'%s/decision_reporte.odt',
+					'%s/decision_valide.odt',
+					'%s/decision_rejete.odt'
+				)
+			)
 		);
 
 		/**
@@ -33,20 +44,6 @@
 				'fields' => '',
 				'order' => ''
 			),
-		);
-
-		/**
-		* Chemin relatif pour les modèles de documents .odt utilisés lors des
-		* impressions. Utiliser %s pour remplacer par l'alias.
-		*/
-		public $modelesOdt = array(
-			// Convocation EP
-			'%s/convocationep_beneficiaire.odt',
-			// Décision EP (décision CG)
-			'%s/decision_annule.odt',
-			'%s/decision_reporte.odt',
-			'%s/decision_valide.odt',
-			'%s/decision_rejete.odt'
 		);
 
 		/**
