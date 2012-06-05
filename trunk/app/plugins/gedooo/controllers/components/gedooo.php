@@ -10,22 +10,58 @@
 	class GedoooComponent extends Component
 	{
 		/**
-		* The initialize method is called before the controller's beforeFilter method.
-		*/
-
-		public function initialize( &$controller, $settings = array() ) {
+		 * The initialize method is called before the controller's beforeFilter method.
+		 *
+		 * @param Controller $controller
+		 * @param array $settings
+		 */
+		public function initialize( &$controller, $settings = array( ) ) {
 			$this->controller = &$controller;
 		}
 
 		/**
-		*
-		*/
+		 * Création d'un répertoire temporaire (inscriptible par tout le monde) de manière récursive
+		 * si nécessaire. Si le répertoire existe déjà, et que les permissions ne sont pas suffisantes, on
+		 * essaie de le rendre inscriptible pour tout le monde.
+		 *
+		 * @param string $path Le chemin du répertoire temporaire à créer
+		 * @return boolean true si le répertoire existe et est inscriptible, false sinon
+		 */
+		public function makeTmpDir( $path ) {
+			$umask = 0777;
+			$success = false;
 
+			if( is_dir( $path ) ) { // Le chemin existe déjà
+				$acutalmask = fileperms( $path );
+				if( $acutalmask >= $umask ) { // Permissions suffisantes
+					$success = true;
+				}
+				else {
+					$return = chmod( $path, $umask );
+				}
+			}
+			else {
+				$oldUmask = umask( 0 );
+				$success = @mkdir( $path, $umask, true );
+				umask( $oldUmask );
+			}
+
+			return $success;
+		}
+
+		/**
+		 * Concactène les pdfs grâce à pdftk (écrits dans un répertoire temporaire) et renvoit le résultat.
+		 *
+		 * @param array $pdfs
+		 * @param string $modelName
+		 * @return mixed
+		 */
 		public function concatPdfs( $pdfs, $modelName ) {
 			$pdfTmpDir = rtrim( Configure::read( 'Cohorte.dossierTmpPdfs' ), '/' ).'/'.session_id().'/'.$modelName;
-			$old = umask(0);
-			@mkdir( $pdfTmpDir, 0777, true ); /// FIXME: vérification
-			umask($old);
+			/* $old = umask(0);
+			  @mkdir( $pdfTmpDir, 0777, true ); /// FIXME: vérification
+			  umask($old); */
+			$this->makeTmpDir( $pdfTmpDir );
 
 			foreach( $pdfs as $i => $pdf ) {
 				file_put_contents( "{$pdfTmpDir}/{$i}.pdf", $pdf );
@@ -111,9 +147,12 @@
 		}
 
 		/**
-		*
-		*/
-
+		 * Envoit les en-têtes (content-type pdf, taille du fichier, nom du fichier) et le contenu d'un fichier à
+		 * télécharger par le client.
+		 *
+		 * @param string $content Le contenu du fichier à envoyer à l'utilisateur
+		 * @param string $filename Le nom du fichier envoyé à l'utilisateur
+		 */
 		public function sendPdfContentToClient( $content, $filename ) {
 			header( 'Content-type: application/pdf' );
 			header( 'Content-Length: '.strlen( $content ) );
@@ -123,14 +162,20 @@
 			die();
 		}
 
-		/** *******************************************************************
-			The beforeRedirect method is invoked when the controller's redirect method
-			is called but before any further action. If this method returns false the
-			controller will not continue on to redirect the request.
-			The $url, $status and $exit variables have same meaning as for the controller's method.
-		******************************************************************** */
+		/**
+		 * The beforeRedirect method is invoked when the controller's redirect method is called but before
+		 * any further action. If this method returns false the controller will not continue on to redirect
+		 * the request.
+		 * The $url, $status and $exit variables have same meaning as for the controller's method.
+		 *
+		 * @param Controller $controller
+		 * @param mixed $url
+		 * @param integer $status
+		 * @param boolean $exit
+		 */
 		public function beforeRedirect( &$controller, $url, $status = null, $exit = true ) {
-			parent::beforeRedirect( $controller, $url, $status , $exit );
+			parent::beforeRedirect( $controller, $url, $status, $exit );
 		}
+
 	}
 ?>
