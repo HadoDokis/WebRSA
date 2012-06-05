@@ -16,7 +16,7 @@
 
 		public function search( $mesCodesInsee, $filtre_zone_geo, $criteresdossierscovs58 ) {
 			/// Conditions de base
-
+			$Personne = ClassRegistry::init( 'Personne' );
 			$conditions = array();
 
 			/// Filtre zone géographique
@@ -125,7 +125,8 @@
 					'Personne.qual',
 					'Personne.nom',
 					'Personne.prenom',
-					'Dossier.numdemrsa'
+					'Dossier.numdemrsa',
+					$Personne->sqVirtualField( 'nom_complet' )
 				),
 				'joins' => $joins,
 				'contain' => false,

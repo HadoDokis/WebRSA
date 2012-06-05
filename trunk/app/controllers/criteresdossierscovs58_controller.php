@@ -42,7 +42,12 @@
 				);
 				$queryData['limit'] = 10;
 				$this->paginate = $this->_qdAddFilters( $queryData );
+				
+				
+				$forceVirtualFields = $this->Dossiercov58->forceVirtualFields;
+				$this->Dossiercov58->forceVirtualFields = true;
 				$dossierscovs58 = $this->paginate( $this->Dossiercov58 );
+				$this->Dossiercov58->forceVirtualFields = $forceVirtualFields;
 
 				foreach( $dossierscovs58 as $key => $dossiercov58 ) {
 					$dossierscovs58[$key]['Personne']['nom_complet'] = implode(
