@@ -298,6 +298,7 @@
 				);*/
 
 				foreach( $orientstructs as $i => $orientstruct ) {
+					// Propositions d'orientation
 					$qdPassageCov = array(
 						'fields' => array_merge(
 							$this->Orientstruct->Personne->Dossiercov58->Passagecov58->fields(),
@@ -339,8 +340,38 @@
 						$qdPassageCov
 					);
 					$orientstructs[$i] = Set::merge( $orientstruct, $covpassee58 );
+
+					// Propositions de non orientation professionnelle
+					$qdPassageCov = array(
+						'fields' => array_merge(
+							$this->Orientstruct->Personne->Dossiercov58->Passagecov58->fields(),
+							$this->Orientstruct->Personne->Dossiercov58->Passagecov58->Cov58->fields(),
+							$this->Orientstruct->Personne->Dossiercov58->Passagecov58->Cov58->Sitecov58->fields()
+						),
+						'joins' => array(
+							$this->Orientstruct->Personne->Dossiercov58->Passagecov58->join( 'Dossiercov58' ),
+							$this->Orientstruct->Personne->Dossiercov58->Passagecov58->join( 'Cov58' ),
+							$this->Orientstruct->Personne->Dossiercov58->Passagecov58->Cov58->join( 'Sitecov58' ),
+							$this->Orientstruct->Personne->Dossiercov58->Passagecov58->join( 'Decisionpropononorientationprocov58' ),
+							$this->Orientstruct->Personne->Dossiercov58->Passagecov58->Dossiercov58->join( 'Themecov58' ),
+							$this->Orientstruct->Personne->Dossiercov58->join( 'Propononorientationprocov58' )
+						),
+						'conditions' => array(
+							'Dossiercov58.personne_id' => $personne_id,
+							'Themecov58.name' => 'proposnonorientationsproscovs58',
+							'Passagecov58.etatdossiercov' => 'traite',
+							'Propononorientationprocov58.nvorientstruct_id' => $orientstruct['Orientstruct']['id'],
+						),
+						'contain' => false
+					);
+					$covpassee58 = $this->Orientstruct->Personne->Dossiercov58->Passagecov58->find(
+						'first',
+						$qdPassageCov
+					);
+					$orientstructs[$i] = Set::merge( $orientstruct, $covpassee58 );
 				}
 
+				// Passages COV en cours ?
 				$sqDernierPassagecov58 = $this->Orientstruct->Personne->Dossiercov58->Passagecov58->sqDernier();
 				$propoorientationcov58 = $this->Orientstruct->Personne->Dossiercov58->Propoorientationcov58->find(
 					'first',
