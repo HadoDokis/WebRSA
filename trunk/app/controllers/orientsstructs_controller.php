@@ -205,7 +205,7 @@
 						Configure::read( 'Orientstruct.typeorientprincipale.SOCIAL' )
 					);
 				}
-				
+
 				$orientstructs[$key] = $orientstruct;
 			}
 			$dossier_id = Set::extract( $orientstructs, '0.Personne.Foyer.dossier_id' );
@@ -322,12 +322,7 @@
 
 					// Conditions pour retrouver l'orientation
 					$conditionsJointure = array(
-						'Propoorientationcov58.user_id' => $orientstruct['Orientstruct']['user_id'],
-						'Propoorientationcov58.datedemande' => $orientstruct['Orientstruct']['date_propo'],
-						'Decisionpropoorientationcov58.typeorient_id' => $orientstruct['Orientstruct']['typeorient_id'],
-						'Decisionpropoorientationcov58.structurereferente_id' => $orientstruct['Orientstruct']['structurereferente_id'],
-//						'Decisionpropoorientationcov58.referent_id' => $orientstruct['Orientstruct']['referent_id'],
-						'DATE_TRUNC(\'day\', "Cov58"."datecommission")' => $orientstruct['Orientstruct']['date_valid'],
+						'Propoorientationcov58.nvorientstruct_id' => $orientstruct['Orientstruct']['id'],
 					);
 
 					foreach( $conditionsJointure as $key => $value ) {
@@ -346,6 +341,7 @@
 					$orientstructs[$i] = Set::merge( $orientstruct, $covpassee58 );
 				}
 
+				$sqDernierPassagecov58 = $this->Orientstruct->Personne->Dossiercov58->Passagecov58->sqDernier();
 				$propoorientationcov58 = $this->Orientstruct->Personne->Dossiercov58->Propoorientationcov58->find(
 					'first',
 					array(
@@ -373,10 +369,18 @@
 						'conditions' => array(
 							'Dossiercov58.personne_id' => $personne_id,
 							'Themecov58.name' => 'proposorientationscovs58',
-							'OR' => array(
-								'Passagecov58.etatdossiercov NOT' => array( 'traite', 'annule' ),
-								'Passagecov58.etatdossiercov IS NULL'
-							)
+							array(
+								'OR' => array(
+									'Passagecov58.etatdossiercov NOT' => array( 'traite', 'annule' ),
+									'Passagecov58.etatdossiercov IS NULL'
+								),
+							),
+							array(
+								'OR' => array(
+									"Passagecov58.id IN ( {$sqDernierPassagecov58} )",
+									'Passagecov58.etatdossiercov IS NULL'
+								),
+							),
 						),
 						'joins' => array(
 							array(
@@ -474,7 +478,7 @@
 
 			if ( Configure::read( 'Cg.departement' ) == 58 && $rgorient_max <=1 ) {
 				$ajout_possible = $this->Orientstruct->Personne->Dossiercov58->ajoutPossible( $personne_id ) && $this->Orientstruct->ajoutPossible( $personne_id );
-// debug( $this->Orientstruct->Personne->Dossiercov58->ajoutPossible( $personne_id ));
+
 				$nbdossiersnonfinalisescovs = $this->Orientstruct->Personne->Dossiercov58->find(
 					'count',
 					array(
@@ -787,7 +791,7 @@
 			$this->_setFlashResult( 'Delete', $success );
 			$this->redirect( $this->referer() );
 		}
-		
+
 		/**
 		 * Impression d'une orientation simple.
 		 *
@@ -800,7 +804,7 @@
 		 */
 		public function printChangementReferent( $id = null ) {
 			$pdf = $this->Orientstruct->getChangementReferentOrientation( $id );
-			
+
 			if( !empty( $pdf ) ){
 				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'Notification_Changement_Referent_%d-%s.pdf', $id, date( 'Y-m-d' ) ) );
 			}

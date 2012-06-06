@@ -143,7 +143,7 @@
 
 
 						$infoscov = '';
-						if( !empty( $contratinsertion['Cov58'] ) ){
+						if( isset( $contratinsertion['Cov58']['datecommission'] ) && !empty( $contratinsertion['Cov58']['datecommission'] ) ){
 							$infoscov = 'Site "'.Set::classicExtract( $contratinsertion, 'Sitecov58.name' ).'", le '.$locale->date( "Datetime::full", Set::classicExtract( $contratinsertion, 'Cov58.datecommission' ) );
 
 						}

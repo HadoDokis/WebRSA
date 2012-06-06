@@ -55,6 +55,13 @@
 		);
 
 		public $belongsTo = array(
+			'Nvorientstruct' => array(
+				'className' => 'Orientstruct',
+				'foreignKey' => 'nvorientstruct_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
 			'Typeorient' => array(
 				'className' => 'Typeorient',
 				'foreignKey' => 'typeorient_id',
@@ -512,7 +519,10 @@
 
 						}
 						else if( $values['decisioncov'] == 'refuse' ){
-							list($structurereferente_id, $referent_id) = explode('_', $values['referent_id']);
+							$referent_id = null;
+							if( strstr( $values['referent_id'],  '_' ) !== false ) {
+								list($structurereferente_id, $referent_id) = explode('_', $values['referent_id']);
+							}
 							list($typeorient_id, $structurereferente_id) = explode('_', $values['structurereferente_id']);
 							$data[$modelDecisionName][$key]['typeorient_id'] = $typeorient_id;
 							$data[$modelDecisionName][$key]['structurereferente_id'] = $structurereferente_id;
@@ -537,7 +547,6 @@
 								)
 							);
 
-
 							if( !empty( $passagecov58[$this->alias]['referent_id'] ) ){
 								$personne_referent = array(
 									'PersonneReferent' => array(
@@ -556,7 +565,11 @@
 						$this->Dossiercov58->Personne->Orientstruct->create( $orientstruct );
 						$success = $this->Dossiercov58->Personne->Orientstruct->save() && $success;
 
-
+						// Mise à jour de l'enregistrement de la thématique avec l'id du nouveau CER
+						$success = $this->updateAll(
+							array( "\"{$this->alias}\".\"nvorientstruct_id\"" => $this->Dossiercov58->Personne->Orientstruct->id ),
+							array( "\"{$this->alias}\".\"id\"" => $data[$this->alias][$key] )
+						) && $success;
 					}
 
 
@@ -942,16 +955,16 @@
 // 					'contain' => false
 // 				)
 // 			);
-// 
+//
 // 			$options = array(
 // 				'Personne' => array( 'qual' => ClassRegistry::init( 'Option' )->qual() ),
 // 				'Adresse' => array( 'typevoie' => ClassRegistry::init( 'Option' )->typevoie() ),
 // 				'type' => array( 'voie' => ClassRegistry::init( 'Option' )->typevoie() )
 // 			);
 // 			$options = Set::merge( $options, $this->Dossiercov58->enums() );
-// 
+//
 // 			///FIXME: ajouter règles pour choisir le bon fichier
-// 
+//
 // 			$fileName = '';
 // 			if ( $dossiercov58_data['Propoorientationcov58']['decisioncov'] == 'accepte' ) {
 // 				if( strcmp( 'Emploi', $dossiercov58_data['Covtypeorient']['lib_type_orient'] ) != -1 ) {
@@ -979,7 +992,7 @@
 // 					$fileName = 'decisionrefusreorientation.odt';
 // 				}
 // 			}
-// 
+//
 // 			return $this->ged(
 // 				$dossiercov58_data,
 // 				"Cov58/{$fileName}",

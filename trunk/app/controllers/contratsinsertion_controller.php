@@ -423,88 +423,127 @@
 			);
 			$this->set( compact( 'persreferent' ) );
 
-			$contratsinsertion = $this->Contratinsertion->find(
-				'all',
-				array(
-					'fields' => array_merge(
-						$this->Contratinsertion->Propodecisioncer66->fields(),
-						array(
-							'Contratinsertion.id',
-							'Contratinsertion.forme_ci',
-							'Contratinsertion.decision_ci',
-							'Contratinsertion.datedecision',
-							'Contratinsertion.structurereferente_id',
-							'Contratinsertion.referent_id',
-							'Contratinsertion.num_contrat',
-							'Contratinsertion.dd_ci',
-							'Contratinsertion.duree_engag',
-							'Contratinsertion.positioncer',
-							'Contratinsertion.df_ci',
-							'Contratinsertion.date_saisi_ci',
-							'Contratinsertion.observ_ci',
-							'Contratinsertion.created',
-							'Contratinsertion.datevalidation_ci',
-							'Contratinsertion.datenotification',
-							'Contratinsertion.avenant_id',
-							'( SELECT COUNT(fichiersmodules.id) FROM fichiersmodules WHERE fichiersmodules.modele = \'Contratinsertion\' AND fichiersmodules.fk_value = "Contratinsertion"."id" ) AS "Fichiermodule__nbFichiersLies"'
-						)
-					),
-					'conditions' => array(
-						'Contratinsertion.personne_id' => $personne_id
-					),
-					'order' => array(
-						'Contratinsertion.df_ci DESC',
-						'Contratinsertion.id DESC'
-					),
-					'contain' => array(
-						'Propodecisioncer66'
-					)
-				)
+			// DEBUT à mettre dans le modèle ?
+			$querydata = array(
+				'fields' => array(
+					'Contratinsertion.id',
+					'Contratinsertion.forme_ci',
+					'Contratinsertion.decision_ci',
+					'Contratinsertion.datedecision',
+					'Contratinsertion.structurereferente_id',
+					'Contratinsertion.referent_id',
+					'Contratinsertion.num_contrat',
+					'Contratinsertion.dd_ci',
+					'Contratinsertion.duree_engag',
+					'Contratinsertion.positioncer',
+					'Contratinsertion.df_ci',
+					'Contratinsertion.date_saisi_ci',
+					'Contratinsertion.observ_ci',
+					'Contratinsertion.created',
+					'Contratinsertion.datevalidation_ci',
+					'Contratinsertion.datenotification',
+					'Contratinsertion.avenant_id',
+					'( SELECT COUNT(fichiersmodules.id) FROM fichiersmodules WHERE fichiersmodules.modele = \'Contratinsertion\' AND fichiersmodules.fk_value = "Contratinsertion"."id" ) AS "Fichiermodule__nbFichiersLies"'
+				),
+				'conditions' => array(
+					'Contratinsertion.personne_id' => $personne_id
+				),
+				'order' => array(
+					'Contratinsertion.df_ci DESC',
+					'Contratinsertion.id DESC'
+				),
+				'contain' => false
 			);
+
+			// On veut connaître ...
+			if ( Configure::read('Cg.departement') == 58 ) {
+				$sqDernierPassageCov58 = $this->Contratinsertion->Propocontratinsertioncov58nv->Dossiercov58->Passagecov58->sqDernier();
+
+				$querydata = Set::merge(
+					$querydata,
+					array(
+						'fields' => array(
+							'Sitecov58.name',
+							'Cov58.observation',
+							'Cov58.datecommission',
+						),
+						'joins' => array(
+							$this->Contratinsertion->join( 'Propocontratinsertioncov58nv', array( 'type' => 'LEFT OUTER' ) ),
+							$this->Contratinsertion->Propocontratinsertioncov58nv->join( 'Dossiercov58', array( 'type' => 'LEFT OUTER' ) ),
+							$this->Contratinsertion->Propocontratinsertioncov58nv->Dossiercov58->join( 'Passagecov58', array( 'type' => 'LEFT OUTER' ) ),
+							$this->Contratinsertion->Propocontratinsertioncov58nv->Dossiercov58->Passagecov58->join( 'Cov58', array( 'type' => 'LEFT OUTER' ) ),
+							$this->Contratinsertion->Propocontratinsertioncov58nv->Dossiercov58->Passagecov58->Cov58->join( 'Sitecov58', array( 'type' => 'LEFT OUTER' ) ),
+						),
+						'conditions' => array(
+							'OR' => array(
+								"Passagecov58.id IS NULL",
+								"Passagecov58.id IN ( {$sqDernierPassageCov58} )"
+							)
+						)
+					)
+				);
+			}
+			else if ( Configure::read('Cg.departement') == 66 ) {
+				$querydata = Set::merge(
+					$querydata,
+					array(
+						'fields' => $this->Contratinsertion->Propodecisioncer66->fields(),
+						'contain' => array( 'Propodecisioncer66' )
+					)
+				);
+			}
+			// FIN à mettre dans le modèle ?
+
+			$contratsinsertion = $this->Contratinsertion->find( 'all', $querydata );
+
 
 			$this->_setOptions();
 			$this->set( 'personne_id', $personne_id );
 
 			if ( Configure::read('Cg.departement') == 58 ) {
 
-				foreach( $contratsinsertion as $i => $contrat ) {
-// debug($contrat);
-					$covpassee58 = $this->Contratinsertion->Personne->Dossiercov58->Passagecov58->find(
-						'first',
-						array(
-							'fields' => array_merge(
-								$this->Contratinsertion->Personne->Dossiercov58->Passagecov58->fields(),
-								$this->Contratinsertion->Personne->Dossiercov58->Passagecov58->Cov58->fields(),
-								$this->Contratinsertion->Personne->Dossiercov58->Passagecov58->Cov58->Sitecov58->fields()
-							),
-							'joins' => array(
-								$this->Contratinsertion->Personne->Dossiercov58->Passagecov58->join( 'Dossiercov58' ),
-								$this->Contratinsertion->Personne->Dossiercov58->Passagecov58->join( 'Cov58' ),
-								$this->Contratinsertion->Personne->Dossiercov58->Passagecov58->Cov58->join( 'Sitecov58' ),
-								$this->Contratinsertion->Personne->Dossiercov58->Passagecov58->join( 'Decisionpropocontratinsertioncov58' ),
-								$this->Contratinsertion->Personne->Dossiercov58->Passagecov58->Dossiercov58->join( 'Themecov58' ),
-								$this->Contratinsertion->Personne->Dossiercov58->join( 'Propocontratinsertioncov58' )
-							),
-							'conditions' => array(
-								'Dossiercov58.personne_id' => $personne_id,
-								'Themecov58.name' => 'proposcontratsinsertioncovs58',
-								'Passagecov58.etatdossiercov' => 'traite',
-								// Conditions pour retrouver l'orientation
-								'Propocontratinsertioncov58.structurereferente_id' => $contrat['Contratinsertion']['structurereferente_id'],
+				/*foreach( $contratsinsertion as $i => $contrat ) {
+					$qdCovPassee = array(
+						'fields' => array_merge(
+							$this->Contratinsertion->Personne->Dossiercov58->Passagecov58->fields(),
+							$this->Contratinsertion->Personne->Dossiercov58->Passagecov58->Cov58->fields(),
+							$this->Contratinsertion->Personne->Dossiercov58->Passagecov58->Cov58->Sitecov58->fields()
+						),
+						'joins' => array(
+							$this->Contratinsertion->Personne->Dossiercov58->Passagecov58->join( 'Dossiercov58' ),
+							$this->Contratinsertion->Personne->Dossiercov58->Passagecov58->join( 'Cov58' ),
+							$this->Contratinsertion->Personne->Dossiercov58->Passagecov58->Cov58->join( 'Sitecov58' ),
+							$this->Contratinsertion->Personne->Dossiercov58->Passagecov58->join( 'Decisionpropocontratinsertioncov58' ),
+							$this->Contratinsertion->Personne->Dossiercov58->Passagecov58->Dossiercov58->join( 'Themecov58' ),
+							$this->Contratinsertion->Personne->Dossiercov58->join( 'Propocontratinsertioncov58' )
+						),
+						'conditions' => array(
+							'Dossiercov58.personne_id' => $personne_id,
+							'Themecov58.name' => 'proposcontratsinsertioncovs58',
+							'Passagecov58.etatdossiercov' => 'traite',
+							// Conditions pour retrouver l'orientation -> FIXME: ne sert plus à rien, on a l'id maintenant
+							'Propocontratinsertioncov58.structurereferente_id' => $contrat['Contratinsertion']['structurereferente_id'],
 // 								'Propocontratinsertioncov58.referent_id' => $contrat['Contratinsertion']['referent_id'],
-								'Propocontratinsertioncov58.forme_ci' => $contrat['Contratinsertion']['forme_ci'],
+							'Propocontratinsertioncov58.forme_ci' => $contrat['Contratinsertion']['forme_ci'],
 // 								'Propocontratinsertioncov58.datedemande' => $contrat['Contratinsertion']['dd_ci'],
-								'Decisionpropocontratinsertioncov58.dd_ci' => $contrat['Contratinsertion']['dd_ci'],
+							'Decisionpropocontratinsertioncov58.dd_ci' => $contrat['Contratinsertion']['dd_ci'],
 // 								'Decisionpropocontratinsertioncov58.duree_engag' => $contrat['Contratinsertion']['duree_engag'],
-								'Decisionpropocontratinsertioncov58.df_ci' => $contrat['Contratinsertion']['df_ci'],
-								'Decisionpropocontratinsertioncov58.datevalidation' => $contrat['Contratinsertion']['datevalidation_ci'],
-							),
-							'contain' => false
-						)
+							'Decisionpropocontratinsertioncov58.df_ci' => $contrat['Contratinsertion']['df_ci'],
+//							'Decisionpropocontratinsertioncov58.datevalidation' => ( !empty( $contrat['Contratinsertion']['datevalidation_ci'] ) ? $contrat['Contratinsertion']['datevalidation_ci'] : null ),
+						),
+						'contain' => false
 					);
+
+					if( !empty( $contrat['Contratinsertion']['datevalidation_ci'] ) ) {
+						$qdCovPassee['conditions']['Decisionpropocontratinsertioncov58.datevalidation'] = $contrat['Contratinsertion']['datevalidation_ci'];
+					}
+					else {
+						$qdCovPassee['conditions'][] = "Decisionpropocontratinsertioncov58.datevalidation IS NULL";
+					}
+
+ 					$covpassee58 = $this->Contratinsertion->Personne->Dossiercov58->Passagecov58->find( 'first', $qdCovPassee );
 					$contratsinsertion[$i] = Set::merge( $contrat, $covpassee58 );
-// debug($covpassee58);
-				}
+				}*/
 
 				$propocontratinsertioncov58 = $this->Contratinsertion->Personne->Dossiercov58->Propocontratinsertioncov58->find(
 					'first',
