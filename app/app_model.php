@@ -170,10 +170,7 @@
 			if( $this->forceVirtualFields || ( is_array( $this->virtualFields ) && !empty( $this->virtualFields ) ) ) {
 				$this->dbo = ConnectionManager::getInstance()->getDataSource( $this->useDbConfig );
 
-				/*
-				* Get the list of fields and virtual fields
-				*/
-
+				// Get the list of fields and virtual fields
 				if( $this->findQueryType != 'count' ) {
 					if( empty( $queryData['fields'] ) ) {
 						$fields = $this->queryFields( $queryData );
@@ -182,21 +179,11 @@
 						$queryData['fields'] = $fields;
 					}
 				}
-				/* INFO:
-					var $belongsTo = array(
-						'Reforigine' => array(
-							'className' => 'Referent'
-						),
-						'Refaccueil' => array(
-							'className' => 'Referent'
-						),
-					);
-					avec un champ virtuel dans Referent -> n'aliase pas
-				*/
+
+				// Modèles liés aliasés
 				$linkedModels = array( $this );
-				$associated = array_keys( $this->getAssociated() );
-				foreach( $associated as $associatedModel ) {
-					$linkedModels[] = ClassRegistry::init( $associatedModel );
+				foreach( $this->getAssociated() as $associatedAlias => $assocType ) {
+					$linkedModels[] = ClassRegistry::init( array( 'class' => $this->{$assocType}[$associatedAlias]['className'], 'alias' => $associatedAlias, 'type' => 'Model' ) );
 				}
 
 				// Champs virtuels sur les tables de jointure
@@ -205,10 +192,7 @@
 					$linkedModels[] = ClassRegistry::init( $joinTable );
 				}
 
-				/*
-				* Translate virtual fields fieldnames
-				*/
-
+				// Translate virtual fields fieldnames
 				if( $this->findQueryType != 'count' ) {
 					foreach( $linkedModels as $linkedModel ) {
 						$regexes = Set::filter( Set::extract( $linkedModel->virtualFields, '{s}.regex' ) );
@@ -233,10 +217,7 @@
 					}
 				}
 
-				/*
-				* Translate virtual fields conditions, order and group
-				*/
-
+				// Translate virtual fields conditions, order and group
 				foreach( $linkedModels as $linkedModel ) {
 					$regexes = Set::filter( Set::extract( $linkedModel->virtualFields, '{s}.regex' ) );
 					$queries = Set::filter( Set::extract( $linkedModel->virtualFields, '{s}.query' ) );
@@ -433,7 +414,7 @@
 						switch ($key) {
 							case 'fields':
 								// BEGIN cbuffin
-								$associationModelInstance = ClassRegistry::init( $assocKey );
+								$associationModelInstance = ClassRegistry::init( array( 'class' => $this->{$type}[$assocKey]['className'], 'alias' => $assocKey, 'type' => 'Model' ) );
 								$fields = array_keys( $associationModelInstance->schema() );
 
 								if( !empty( $associationModelInstance->virtualFields ) && is_array( $associationModelInstance->virtualFields ) ) {
@@ -860,7 +841,7 @@
 			}
 			return false;
 		}
-		
+
 		/**
 		 * Règle de validation équivalent à un index unique sur plusieurs colonnes.
 		 *
@@ -900,7 +881,7 @@
 					// SELECT COUNT(*) FROM table WHERE name = XXX and modeletypecourrierpcg66_id = XXXX AND id <> XXXX == 0
 					$querydata['conditions']["{$this->alias}.{$this->primaryKey} <>"] = $this->data[$this->alias][$this->primaryKey];
 				}
-				
+
 				return ( $this->find( 'count', $querydata ) == 0 );
 			}
 
