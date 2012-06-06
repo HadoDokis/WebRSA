@@ -40,9 +40,16 @@
 		);
 
 		public $belongsTo = array(
-			'Structurereferente' => array(
-				'className' => 'Structurereferente',
-				'foreignKey' => 'structurereferente_id',
+			'Nvcontratinsertion' => array(
+				'className' => 'Contratinsertion',
+				'foreignKey' => 'nvcontratinsertion_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			'Dossiercov58' => array(
+				'className' => 'Dossiercov58',
+				'foreignKey' => 'dossiercov58_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
@@ -54,13 +61,13 @@
 				'fields' => '',
 				'order' => ''
 			),
-			'Dossiercov58' => array(
-				'className' => 'Dossiercov58',
-				'foreignKey' => 'dossiercov58_id',
+			'Structurereferente' => array(
+				'className' => 'Structurereferente',
+				'foreignKey' => 'structurereferente_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
-			)
+			),
 		);
 
 
@@ -114,7 +121,7 @@
 					'table' => 'structuresreferentes',
 					'type' => 'INNER',
 					'conditions' => array(
-						'Structurereferente.id = Propocontratinsertioncov58.structurereferente_id'
+						"Structurereferente.id = {$this->alias}.structurereferente_id"
 					)
 				),
 				array(
@@ -260,7 +267,7 @@
 					'alias' => $this->alias,
 					'type' => 'INNER',
 					'conditions' => array(
-						'Dossiercov58.id = Propocontratinsertioncov58.dossiercov58_id'
+						"Dossiercov58.id = {$this->alias}.dossiercov58_id"
 					)
 				),
 				array(
@@ -268,7 +275,7 @@
 					'alias' => 'Structurereferente',
 					'type' => 'INNER',
 					'conditions' => array(
-						'Propocontratinsertioncov58.structurereferente_id = Structurereferente.id'
+						"{$this->alias}.structurereferente_id = Structurereferente.id"
 					)
 				),
 				array(
@@ -276,7 +283,7 @@
 					'alias' => 'Referent',
 					'type' => 'LEFT OUTER',
 					'conditions' => array(
-						'Propocontratinsertioncov58.referent_id = Referent.id'
+						"{$this->alias}.referent_id = Referent.id"
 					)
 				)
 			);
@@ -295,7 +302,7 @@
 						'Dossiercov58.etapecov <>' => 'finalise'*/
 					),
 					'contain' => array(
-						'Propocontratinsertioncov58'
+						$this->alias
 					)
 				)
 			);
@@ -365,11 +372,10 @@
 		public function saveDecisions( $data ) {
 			$modelDecisionName = 'Decision'.Inflector::underscore( $this->alias );
 
-
 			$success = true;
 			if ( isset( $data[$modelDecisionName] ) && !empty( $data[$modelDecisionName] ) ) {
 				foreach( $data[$modelDecisionName] as $key => $values ) {
-					
+
 					$passagecov58 = $this->Dossiercov58->Passagecov58->find(
 						'first',
 						array(
@@ -395,53 +401,61 @@
 						$contratinsertion = array(
 							'Contratinsertion' => array(
 								'personne_id' => $passagecov58['Dossiercov58']['personne_id'],
-								'structurereferente_id' => $passagecov58['Propocontratinsertioncov58']['structurereferente_id'],
-								'referent_id' => $passagecov58['Propocontratinsertioncov58']['referent_id'],
-								'num_contrat' => $passagecov58['Propocontratinsertioncov58']['num_contrat'],
+								'structurereferente_id' => $passagecov58[$this->alias]['structurereferente_id'],
+								'referent_id' => $passagecov58[$this->alias]['referent_id'],
+								'num_contrat' => $passagecov58[$this->alias]['num_contrat'],
 								'dd_ci' => $values['dd_ci'],
 								'duree_engag' => $values['duree_engag'],
 								'df_ci' => $values['df_ci'],
-								'forme_ci' => $passagecov58['Propocontratinsertioncov58']['forme_ci'],
-								'avisraison_ci' => $passagecov58['Propocontratinsertioncov58']['avisraison_ci'],
-								'rg_ci' => $passagecov58['Propocontratinsertioncov58']['rg_ci'],
+								'forme_ci' => $passagecov58[$this->alias]['forme_ci'],
+								'avisraison_ci' => $passagecov58[$this->alias]['avisraison_ci'],
+								'rg_ci' => $passagecov58[$this->alias]['rg_ci'],
 								'observ_ci' => $values['commentaire'],
-								'date_saisi_ci' => $passagecov58['Propocontratinsertioncov58']['datedemande'],
+								'date_saisi_ci' => $passagecov58[$this->alias]['datedemande'],
 								'datevalidation_ci' => $values['datevalidation'],
 								'decision_ci' => 'V',
-								'avenant_id' => $passagecov58['Propocontratinsertioncov58']['avenant_id']
+								'avenant_id' => $passagecov58[$this->alias]['avenant_id']
 							)
 						);
-// debug($contratinsertion);
+
 						$this->Dossiercov58->Personne->Contratinsertion->create( $contratinsertion ) && $success;
 						$success = $this->Dossiercov58->Personne->Contratinsertion->save() && $success;
 
-
+						// Mise à jour de l'enregistrement de la thématique avec l'id du nouveau CER
+						$success = $this->updateAll(
+							array( "\"{$this->alias}\".\"nvcontratinsertion_id\"" => $this->Dossiercov58->Personne->Contratinsertion->id ),
+							array( "\"{$this->alias}\".\"id\"" => $data[$this->alias][$key] )
+						) && $success;
 					}
 					else if( $values['decisioncov'] == 'refuse' ){
 						$contratinsertion = array(
 							'Contratinsertion' => array(
 								'personne_id' => $passagecov58['Dossiercov58']['personne_id'],
-								'structurereferente_id' => $passagecov58['Propocontratinsertioncov58']['structurereferente_id'],
-								'referent_id' => $passagecov58['Propocontratinsertioncov58']['referent_id'],
-								'num_contrat' => $passagecov58['Propocontratinsertioncov58']['num_contrat'],
-								'dd_ci' => $passagecov58['Propocontratinsertioncov58']['dd_ci'],
-								'duree_engag' => $passagecov58['Propocontratinsertioncov58']['duree_engag'],
-								'df_ci' => $passagecov58['Propocontratinsertioncov58']['df_ci'],
-								'forme_ci' => $passagecov58['Propocontratinsertioncov58']['forme_ci'],
-								'avisraison_ci' => $passagecov58['Propocontratinsertioncov58']['avisraison_ci'],
-								'rg_ci' => $passagecov58['Propocontratinsertioncov58']['rg_ci'],
+								'structurereferente_id' => $passagecov58[$this->alias]['structurereferente_id'],
+								'referent_id' => $passagecov58[$this->alias]['referent_id'],
+								'num_contrat' => $passagecov58[$this->alias]['num_contrat'],
+								'dd_ci' => $passagecov58[$this->alias]['dd_ci'],
+								'duree_engag' => $passagecov58[$this->alias]['duree_engag'],
+								'df_ci' => $passagecov58[$this->alias]['df_ci'],
+								'forme_ci' => $passagecov58[$this->alias]['forme_ci'],
+								'avisraison_ci' => $passagecov58[$this->alias]['avisraison_ci'],
+								'rg_ci' => $passagecov58[$this->alias]['rg_ci'],
 								'observ_ci' => $values['commentaire'],
-								'date_saisi_ci' => $passagecov58['Propocontratinsertioncov58']['datedemande'],
+								'date_saisi_ci' => $passagecov58[$this->alias]['datedemande'],
 								'datevalidation_ci' => $values['datevalidation'],
 								'decision_ci' => 'N',
-								'avenant_id' => $passagecov58['Propocontratinsertioncov58']['avenant_id']
+								'avenant_id' => $passagecov58[$this->alias]['avenant_id']
 							)
 						);
 
 						$this->Dossiercov58->Personne->Contratinsertion->create( $contratinsertion ) && $success;
 						$success = $this->Dossiercov58->Personne->Contratinsertion->save() && $success;
 
-
+						// Mise à jour de l'enregistrement de la thématique avec l'id du nouveau CER
+						$success = $this->updateAll(
+							array( "\"{$this->alias}\".\"nvcontratinsertion_id\"" => $this->Dossiercov58->Personne->Contratinsertion->id ),
+							array( "\"{$this->alias}\".\"id\"" => $data[$this->alias][$key] )
+						) && $success;
 					}
 
 					// Modification etat du dossier passé dans la COV
@@ -508,20 +522,20 @@
 						$contratinsertion = array(
 							'Contratinsertion' => array(
 								'personne_id' => $passagecov58['Dossiercov58']['personne_id'],
-								'structurereferente_id' => $passagecov58['Propocontratinsertioncov58']['structurereferente_id'],
-								'referent_id' => $passagecov58['Propocontratinsertioncov58']['referent_id'],
-								'num_contrat' => $passagecov58['Propocontratinsertioncov58']['num_contrat'],
-								'dd_ci' => $passagecov58['Propocontratinsertioncov58']['dd_ci'],
-								'duree_engag' => $passagecov58['Propocontratinsertioncov58']['duree_engag'],
-								'df_ci' => $passagecov58['Propocontratinsertioncov58']['df_ci'],
-								'forme_ci' => $passagecov58['Propocontratinsertioncov58']['forme_ci'],
-								'avisraison_ci' => $passagecov58['Propocontratinsertioncov58']['avisraison_ci'],
-								'rg_ci' => $passagecov58['Propocontratinsertioncov58']['rg_ci'],
+								'structurereferente_id' => $passagecov58[$this->alias]['structurereferente_id'],
+								'referent_id' => $passagecov58[$this->alias]['referent_id'],
+								'num_contrat' => $passagecov58[$this->alias]['num_contrat'],
+								'dd_ci' => $passagecov58[$this->alias]['dd_ci'],
+								'duree_engag' => $passagecov58[$this->alias]['duree_engag'],
+								'df_ci' => $passagecov58[$this->alias]['df_ci'],
+								'forme_ci' => $passagecov58[$this->alias]['forme_ci'],
+								'avisraison_ci' => $passagecov58[$this->alias]['avisraison_ci'],
+								'rg_ci' => $passagecov58[$this->alias]['rg_ci'],
 								'observ_ci' => $values['commentaire'],
-								'date_saisi_ci' => $passagecov58['Propocontratinsertioncov58']['datedemande'],
+								'date_saisi_ci' => $passagecov58[$this->alias]['datedemande'],
 								'datevalidation_ci' => $values['datevalidation'],
 								'decision_ci' => 'V',
-								'avenant_id' => $passagecov58['Propocontratinsertioncov58']['avenant_id']
+								'avenant_id' => $passagecov58[$this->alias]['avenant_id']
 							)
 						);
 
@@ -580,7 +594,7 @@
 		*/
 
 		public function qdProcesVerbal() {
-			$modele = 'Propocontratinsertioncov58';
+			$modele = $this->alias;
 			$modeleDecisions = 'Decisionpropocontratinsertioncov58';
 
 			return array(
@@ -639,29 +653,29 @@
 		public function qdOrdreDuJour() {
 			return array(
 				'fields' => array(
-					'Propocontratinsertioncov58.id',
-					'Propocontratinsertioncov58.dossiercov58_id',
-					'Propocontratinsertioncov58.structurereferente_id',
-					'Propocontratinsertioncov58.referent_id',
-					'Propocontratinsertioncov58.datedemande',
-					'Propocontratinsertioncov58.num_contrat',
-					'Propocontratinsertioncov58.dd_ci',
-					'Propocontratinsertioncov58.duree_engag',
-					'Propocontratinsertioncov58.df_ci',
-					'Propocontratinsertioncov58.forme_ci',
-					'Propocontratinsertioncov58.avisraison_ci',
-					'Propocontratinsertioncov58.rg_ci',
-					'Propocontratinsertioncov58.datevalidation',
-					'Propocontratinsertioncov58.commentaire',
-					'Propocontratinsertioncov58.decisioncov'
+					"{$this->alias}.id",
+					"{$this->alias}.dossiercov58_id",
+					"{$this->alias}.structurereferente_id",
+					"{$this->alias}.referent_id",
+					"{$this->alias}.datedemande",
+					"{$this->alias}.num_contrat",
+					"{$this->alias}.dd_ci",
+					"{$this->alias}.duree_engag",
+					"{$this->alias}.df_ci",
+					"{$this->alias}.forme_ci",
+					"{$this->alias}.avisraison_ci",
+					"{$this->alias}.rg_ci",
+					"{$this->alias}.datevalidation",
+					"{$this->alias}.commentaire",
+					"{$this->alias}.decisioncov"
 				),
-				'joins' => array(
+				"joins" => array(
 					array(
-						'table'      => 'proposcontratsinsertioncovs58',
-						'alias'      => 'Propocontratinsertioncov58',
-						'type'       => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array( 'Propocontratinsertioncov58.dossiercov58_id = Dossiercov58.id' ),
+						"table"      => "proposcontratsinsertioncovs58",
+						"alias"      => $this->alias,
+						"type"       => "LEFT OUTER",
+						"foreignKey" => false,
+						"conditions" => array( "{$this->alias}.dossiercov58_id = Dossiercov58.id" ),
 					)
 				)
 			);

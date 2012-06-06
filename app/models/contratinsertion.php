@@ -344,6 +344,19 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Propocontratinsertioncov58nv' => array(
+				'className' => 'Propocontratinsertioncov58',
+				'foreignKey' => 'nvcontratinsertion_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 			'Sanctionep58' => array(
 				'className' => 'Sanctionep58',
 				'foreignKey' => 'contratinsertion_id',
@@ -696,7 +709,7 @@
 			if( Configure::read( 'Cg.departement' ) == 66 ) {
 				$return = $this->_liaisonDossierpcg66( $created ) && $return;
 			}
-			
+
 			return $return;
 		}
 
@@ -713,7 +726,7 @@
 						'contain' => false
 					)
 				);
-				
+
 				$forme_ci = $this->data[$this->alias]['forme_ci'];
 				if( ( empty( $dossierpcg66Precedent ) || $created ) && ( $forme_ci == 'C' ) ) {
 					$contrat = $this->find(
@@ -732,10 +745,10 @@
 							)
 						)
 					);
-					if( empty( $contrat ) ){ 
+					if( empty( $contrat ) ){
 						return false;
 					}
-					
+
 					// L'origine PDO est-elle bien définie comme liée à la création d'un CER ?
 					$originepdo = $this->Dossierpcg66->Originepdo->find(
 						'first',
@@ -793,17 +806,17 @@
 					$this->log( 'Passage d\'un CER C à S; que fait-on ?', LOG_DEBUG );
 				}
 				else if( empty( $dossierpcg66Precedent ) && ( $forme_ci == 'S' ) ) {
-					
+
 				}
 				else {
 					return false;
 				}
 			}
-			
+
 			return $success; // FIXME: à traiter
 		}
-		
-		
+
+
 		/**
 		*
 		*/

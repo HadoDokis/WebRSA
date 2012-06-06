@@ -1,5 +1,5 @@
 <?php
-    
+
 	class Propononorientationprocov58 extends AppModel
 	{
 		public $name = 'Propononorientationprocov58';
@@ -53,6 +53,13 @@
 			'Orientstruct' => array(
 				'className' => 'Orientstruct',
 				'foreignKey' => 'orientstruct_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			'Nvorientstruct' => array(
+				'className' => 'Orientstruct',
+				'foreignKey' => 'nvorientstruct_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
@@ -296,7 +303,7 @@
 		/**
 		*
 		*/
-		
+
 		public function getFields() {
 			return array(
 				$this->alias.'.id',
@@ -308,11 +315,11 @@
 				'Referent.prenom'
 			);
 		}
-		
+
 		/**
 		*
 		*/
-		
+
 		public function getJoins() {
 			return array(
 				array(
@@ -436,7 +443,10 @@
 
 						}
 						else if( $values['decisioncov'] == 'refuse' ){
-							list($structurereferente_id, $referent_id) = explode('_', $values['referent_id']);
+							$referent_id = null;
+							if( strstr( $values['referent_id'],  '_' ) !== false ) {
+								list($structurereferente_id, $referent_id) = explode('_', $values['referent_id']);
+							}
 							list($typeorient_id, $structurereferente_id) = explode('_', $values['structurereferente_id']);
 							$data[$modelDecisionName][$key]['typeorient_id'] = $typeorient_id;
 							$data[$modelDecisionName][$key]['structurereferente_id'] = $structurereferente_id;
@@ -465,11 +475,15 @@
 								)
 							);
 						}
- 
+
 						$this->Dossiercov58->Personne->Orientstruct->create( $orientstruct );
 						$success = $this->Dossiercov58->Personne->Orientstruct->save() && $success;
 
-
+						// Mise à jour de l'enregistrement de la thématique avec l'id du nouveau CER
+						$success = $this->updateAll(
+							array( "\"{$this->alias}\".\"nvorientstruct_id\"" => $this->Dossiercov58->Personne->Orientstruct->id ),
+							array( "\"{$this->alias}\".\"id\"" => $data[$this->alias][$key] )
+						) && $success;
 					}
 					else{
 						//Sauvegarde des décisions

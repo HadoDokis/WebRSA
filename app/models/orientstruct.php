@@ -162,9 +162,35 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Propoorientationcov58nv' => array(
+				'className' => 'Propoorientationcov58',
+				'foreignKey' => 'nvorientstruct_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 			'Propononorientationprocov58' => array(
 				'className' => 'Propononorientationprocov58',
 				'foreignKey' => 'orientstruct_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Propononorientationprocov58nv' => array(
+				'className' => 'Propononorientationprocov58',
+				'foreignKey' => 'nvorientstruct_id',
 				'dependent' => true,
 				'conditions' => '',
 				'fields' => '',
@@ -264,7 +290,7 @@
 			)
 		);
 
-		
+
 		public $hasOne = array(
 			'Nonoriente66' => array(
 				'className' => 'Nonoriente66',
@@ -280,7 +306,7 @@
 				'counterQuery' => ''
 			)
 		);
-		
+
 		public $virtualFields = array(
 			'nbjours' => array(
 				'type'      => 'integer',
@@ -789,7 +815,7 @@
 					'contain' => false
 				)
 			);
-			
+
 			// Options pour les traductions
 			$Option = ClassRegistry::init( 'Option' );
 			$options = array(
@@ -813,7 +839,7 @@
 			// Choix du modèle de document
 			$typestructure = Set::classicExtract( $orientation, 'Structurereferente.typestructure' );
 			$typestructurepassee = Set::classicExtract( $structurereferentePrecedente, 'Structurereferente.typestructure' );
-			
+
 			if( $typestructure == $typestructurepassee ) {
 				if( $typestructure == 'oa' ) {
 					$modeleodt = "Orientation/changement_referent_cgcg.odt"; // FIXME: devrait être paoa
@@ -874,10 +900,10 @@
 					);
 				}
 			}
-			
+
 			return $success;
 		}
-		
+
 		/**
 		*   AfterSave
 		*/

@@ -537,7 +537,7 @@ ALTER TABLE sanctionseps58 ADD CONSTRAINT sanctionseps58_orientstruct_id_origine
 
 -------------------------------------------------------------------------------------------------------------
 -- 20120604 : Ajout d'une  table nonorientees66 qui stockera la date d'impression des courriers envoyés
---				aux allocataires ne possédant pas d'orientation 
+--				aux allocataires ne possédant pas d'orientation
 -------------------------------------------------------------------------------------------------------------
 DROP TABLE IF EXISTS nonorientes66 CASCADE;
 CREATE TABLE nonorientes66 (
@@ -564,6 +564,170 @@ SELECT add_missing_table_field ('public', 'decisionspdos', 'modeleodt', 'VARCHAR
 UPDATE decisionspdos SET modeleodt = 'pdo_etudiant' WHERE modeleodt IS NULL AND libelle LIKE '%AJ 7a%';
 UPDATE decisionspdos SET modeleodt = 'pdo_insertion' WHERE modeleodt IS NULL AND libelle LIKE '%DO 19%';
 UPDATE decisionspdos SET modeleodt = NULL WHERE modeleodt IS NOT NULL AND TRIM( BOTH ' ' FROM modeleodt ) = '';
+
+-------------------------------------------------------------------------------------------------------------
+-- 20120605: ajout des clés étrangères pour nouvelles orientations et nouveaux contrats
+-- d'insertion suite aux propositions pour les thématiques de COV du CG 58.
+-------------------------------------------------------------------------------------------------------------
+
+--
+-- 1°) proposcontratsinsertioncovs58
+--
+SELECT add_missing_table_field ( 'public', 'proposcontratsinsertioncovs58', 'nvcontratinsertion_id', 'INTEGER' );
+SELECT add_missing_constraint ( 'public', 'proposcontratsinsertioncovs58', 'proposcontratsinsertioncovs58_nvcontratinsertion_id_fkey', 'contratsinsertion', 'nvcontratinsertion_id' );
+
+-- On rapatrie les données implicites
+CREATE OR REPLACE FUNCTION public.update_contratsinsertion_decisionsproposcontratsinsertioncovs58() RETURNS VOID AS
+$$
+	DECLARE
+		v_row   record;
+		v_query text;
+	BEGIN
+		FOR v_row IN
+			SELECT
+					proposcontratsinsertioncovs58.id AS propo_id,
+					contratsinsertion.id AS contratinsertion_id
+				FROM dossierscovs58
+					INNER JOIN proposcontratsinsertioncovs58 ON ( dossierscovs58.id = proposcontratsinsertioncovs58.dossiercov58_id )
+					INNER JOIN passagescovs58 ON ( dossierscovs58.id = passagescovs58.dossiercov58_id )
+					INNER JOIN decisionsproposcontratsinsertioncovs58 ON ( passagescovs58.id = decisionsproposcontratsinsertioncovs58.passagecov58_id )
+					INNER JOIN contratsinsertion ON ( contratsinsertion.personne_id = dossierscovs58.personne_id )
+				WHERE
+					dossierscovs58.themecov58 = 'proposcontratsinsertioncovs58'
+					AND passagescovs58.etatdossiercov = 'traite'
+					AND decisionsproposcontratsinsertioncovs58.decisioncov = 'valide'
+					AND passagescovs58.id IN (
+						SELECT
+								p.id
+							FROM passagescovs58 AS p
+								INNER JOIN covs58 ON ( p.cov58_id = covs58.id )
+							WHERE dossierscovs58.id = p.dossiercov58_id
+							ORDER BY covs58.datecommission DESC
+							LIMIT 1
+					)
+					AND contratsinsertion.dd_ci = decisionsproposcontratsinsertioncovs58.dd_ci
+					AND contratsinsertion.df_ci = decisionsproposcontratsinsertioncovs58.df_ci
+					AND contratsinsertion.duree_engag = decisionsproposcontratsinsertioncovs58.duree_engag
+		LOOP
+			-- Mise à jour dans la table proposcontratsinsertioncovs58
+			v_query := 'UPDATE proposcontratsinsertioncovs58 SET nvcontratinsertion_id = ' || v_row.contratinsertion_id || ' WHERE id = ' || v_row.propo_id || ';';
+			RAISE NOTICE  '%', v_query;
+			EXECUTE v_query;
+		END LOOP;
+	END;
+$$
+LANGUAGE plpgsql;
+
+SELECT public.update_contratsinsertion_decisionsproposcontratsinsertioncovs58();
+DROP FUNCTION public.update_contratsinsertion_decisionsproposcontratsinsertioncovs58();
+
+--
+-- 2°) proposorientationscovs58
+--
+SELECT add_missing_table_field ( 'public', 'proposorientationscovs58', 'nvorientstruct_id', 'INTEGER' );
+SELECT add_missing_constraint ( 'public', 'proposorientationscovs58', 'proposorientationscovs58_nvorientstruct_id_fkey', 'orientsstructs', 'nvorientstruct_id' );
+
+-- On rapatrie les données implicites
+CREATE OR REPLACE FUNCTION public.update_contratsinsertion_decisionsproposorientationscovs58() RETURNS VOID AS
+$$
+	DECLARE
+		v_row   record;
+		v_query text;
+	BEGIN
+		FOR v_row IN
+			SELECT
+					proposorientationscovs58.id AS propo_id,
+					orientsstructs.id AS orientstruct_id
+				FROM dossierscovs58
+					INNER JOIN proposorientationscovs58 ON ( dossierscovs58.id = proposorientationscovs58.dossiercov58_id )
+					INNER JOIN passagescovs58 ON ( dossierscovs58.id = passagescovs58.dossiercov58_id )
+					INNER JOIN decisionsproposorientationscovs58 ON ( passagescovs58.id = decisionsproposorientationscovs58.passagecov58_id )
+					INNER JOIN orientsstructs ON ( orientsstructs.personne_id = dossierscovs58.personne_id )
+					INNER JOIN covs58 ON ( covs58.id = passagescovs58.cov58_id )
+				WHERE
+					dossierscovs58.themecov58 = 'proposorientationscovs58'
+					AND passagescovs58.etatdossiercov = 'traite'
+					AND decisionsproposorientationscovs58.decisioncov = 'valide'
+					AND passagescovs58.id IN (
+						SELECT
+								p.id
+							FROM passagescovs58 AS p
+								INNER JOIN covs58 ON ( p.cov58_id = covs58.id )
+							WHERE dossierscovs58.id = p.dossiercov58_id
+							ORDER BY covs58.datecommission DESC
+							LIMIT 1
+					)
+					AND orientsstructs.user_id = proposorientationscovs58.user_id
+					AND orientsstructs.date_propo = proposorientationscovs58.datedemande
+					AND orientsstructs.typeorient_id = decisionsproposorientationscovs58.typeorient_id
+					AND orientsstructs.structurereferente_id = decisionsproposorientationscovs58.structurereferente_id
+					AND orientsstructs.date_valid = DATE_TRUNC('day', covs58.datecommission)
+		LOOP
+			-- Mise à jour dans la table proposorientationscovs58
+			v_query := 'UPDATE proposorientationscovs58 SET nvorientstruct_id = ' || v_row.orientstruct_id || ' WHERE id = ' || v_row.propo_id || ';';
+			RAISE NOTICE  '%', v_query;
+			EXECUTE v_query;
+		END LOOP;
+	END;
+$$
+LANGUAGE plpgsql;
+
+SELECT public.update_contratsinsertion_decisionsproposorientationscovs58();
+DROP FUNCTION public.update_contratsinsertion_decisionsproposorientationscovs58();
+
+--
+-- 3°) proposnonorientationsproscovs58
+--
+SELECT add_missing_table_field ( 'public', 'proposnonorientationsproscovs58', 'nvorientstruct_id', 'INTEGER' );
+SELECT add_missing_constraint ( 'public', 'proposnonorientationsproscovs58', 'proposnonorientationsproscovs58_nvorientstruct_id_fkey', 'orientsstructs', 'nvorientstruct_id' );
+
+-- On rapatrie les données implicites
+CREATE OR REPLACE FUNCTION public.update_contratsinsertion_decisionsproposnonorientationsproscovs58() RETURNS VOID AS
+$$
+	DECLARE
+		v_row   record;
+		v_query text;
+	BEGIN
+		FOR v_row IN
+			SELECT
+					proposnonorientationsproscovs58.id AS propo_id,
+					orientsstructs.id AS orientstruct_id
+				FROM dossierscovs58
+					INNER JOIN proposnonorientationsproscovs58 ON ( dossierscovs58.id = proposnonorientationsproscovs58.dossiercov58_id )
+					INNER JOIN passagescovs58 ON ( dossierscovs58.id = passagescovs58.dossiercov58_id )
+					INNER JOIN decisionsproposnonorientationsproscovs58 ON ( passagescovs58.id = decisionsproposnonorientationsproscovs58.passagecov58_id )
+					INNER JOIN orientsstructs ON ( orientsstructs.personne_id = dossierscovs58.personne_id )
+					INNER JOIN covs58 ON ( covs58.id = passagescovs58.cov58_id )
+				WHERE
+					dossierscovs58.themecov58 = 'proposnonorientationsproscovs58'
+					AND passagescovs58.etatdossiercov = 'traite'
+					AND decisionsproposnonorientationsproscovs58.decisioncov = 'valide'
+					AND passagescovs58.id IN (
+						SELECT
+								p.id
+							FROM passagescovs58 AS p
+								INNER JOIN covs58 ON ( p.cov58_id = covs58.id )
+							WHERE dossierscovs58.id = p.dossiercov58_id
+							ORDER BY covs58.datecommission DESC
+							LIMIT 1
+					)
+					AND orientsstructs.date_propo = proposnonorientationsproscovs58.datedemande
+					AND orientsstructs.typeorient_id = decisionsproposnonorientationsproscovs58.typeorient_id
+					AND orientsstructs.structurereferente_id = decisionsproposnonorientationsproscovs58.structurereferente_id
+					AND orientsstructs.date_valid = DATE_TRUNC('day', covs58.datecommission)
+		LOOP
+			-- Mise à jour dans la table proposnonorientationsproscovs58
+			v_query := 'UPDATE proposnonorientationsproscovs58 SET nvorientstruct_id = ' || v_row.orientstruct_id || ' WHERE id = ' || v_row.propo_id || ';';
+			RAISE NOTICE  '%', v_query;
+			EXECUTE v_query;
+		END LOOP;
+	END;
+$$
+LANGUAGE plpgsql;
+
+SELECT public.update_contratsinsertion_decisionsproposnonorientationsproscovs58();
+DROP FUNCTION public.update_contratsinsertion_decisionsproposnonorientationsproscovs58();
+
 -- *****************************************************************************
 COMMIT;
 -- ************************************************************************
