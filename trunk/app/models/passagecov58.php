@@ -98,5 +98,41 @@
 				'counterQuery' => ''
 			)
 		);
+
+		/**
+		 * Sous-requête permettant d'obtenir l'id du dernier passage en COV (par-rapport à la date de la
+		 * COV) d'un dossier COV.
+		 *
+		 * @param string $dossiercov58Id Le champ de la requête principale correspondant
+		 *	à la clé primaire de la table dossierscovs58
+		 * @return string
+		 */
+		public function sqDernier( $dossiercov58Id = 'Dossiercov58.id' ) {
+			$passageAlias = Inflector::tableize( $this->alias );
+			$covAlias = Inflector::tableize( $this->Cov58->alias );
+
+			return $this->sq(
+				array(
+					'fields' => array(
+						"{$passageAlias}.id"
+					),
+					'alias' => $passageAlias,
+					'conditions' => array(
+						"{$passageAlias}.dossiercov58_id = {$dossiercov58Id}"
+					),
+					'joins' => array(
+						array_words_replace(
+							$this->join( 'Cov58', array( 'type' => 'INNER' ) ),
+							array(
+								$this->alias => $passageAlias,
+								$this->Cov58->alias => $covAlias
+							)
+						)
+					),
+					'order' => array( "{$covAlias}.datecommission DESC" ),
+					'limit' => 1
+				)
+			);
+		}
 	}
 ?>
