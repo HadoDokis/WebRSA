@@ -7,10 +7,12 @@
 			'Personne.nom',
 			'Personne.prenom',
 			'Personne.dtnai',
+			'Dossier.matricule' => array( 'label' => 'N° allocataire' ),
 			'Adresse.locaadr',
 			'Sanctionep58.origine',
 			'Dossierep.created',
-			'Foyer.enerreur' => array( 'type' => 'string', 'class' => 'foyer_enerreur' ),
+			'Structurereferente.lib_struc' => array( 'label' => 'Structure référente' ),
+// 			'Foyer.enerreur' => array( 'type' => 'string', 'class' => 'foyer_enerreur' ),
 			'Passagecommissionep.chosen' => array( 'input' => 'checkbox' ),
 		),
 		array(

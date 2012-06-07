@@ -78,9 +78,10 @@
 					<?php if( Configure::read( 'Cg.departement' ) == 58 ):?>
 						<th>Passage en COV ?</th>
 					<?php endif;?>
-					<?php if( Configure::read( 'Cg.departement' ) != 66 ):?>
+					<?php if( Configure::read( 'Cg.departement' ) == 93 ):?>
 						<th>Passage en EP ?</th>
-					<?php else:?>
+					<?php endif;?>
+					<?php if( Configure::read( 'Cg.departement' ) == 66 ):?>
 						<th>Action</th>
 					<?php endif;?>
 				</tr>
@@ -112,7 +113,7 @@
 									$form->input( 'Nonorientationproep.'.$key.'.passagecov', array( 'class' => 'enabled passagecov', 'type' => 'checkbox', 'label' => false ) )
 								);
 							}
-							if( Configure::read( 'Cg.departement' ) == 58 || Configure::read( 'Cg.departement' ) == 93 ){
+							if( /*Configure::read( 'Cg.departement' ) == 58 || */Configure::read( 'Cg.departement' ) == 93 ){
 								echo $xhtml->tag(
 									'td',
 									$form->input( 'Nonorientationproep.'.$key.'.orientstruct_id', array( 'type' => 'hidden', 'value' => $orientstruct['Orientstruct']['id'] ) ).
@@ -164,8 +165,10 @@
 			}
 		?>
 		<?php
-			echo $form->button( 'Tout cocher EP', array( 'onclick' => 'toutCocherCov(\'input[type="checkbox"].passageep.enabled\', \'passageep\', \'passagecov\')' ) );
-			echo $form->button( 'Tout décocher EP', array( 'onclick' => 'toutDecocherCov(\'input[type="checkbox"].passageep.enabled\', \'passageep\', \'passagecov\')' ) );
+			if( Configure::read( 'Cg.departement' ) != 58 ){
+				echo $form->button( 'Tout cocher EP', array( 'onclick' => 'toutCocherCov(\'input[type="checkbox"].passageep.enabled\', \'passageep\', \'passagecov\')' ) );
+				echo $form->button( 'Tout décocher EP', array( 'onclick' => 'toutDecocherCov(\'input[type="checkbox"].passageep.enabled\', \'passageep\', \'passagecov\')' ) );
+			}
 		?>
 	<?php endif;?>
 <?php endif;?>
