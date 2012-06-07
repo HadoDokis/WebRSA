@@ -82,13 +82,13 @@
 			),
 			'typeorient_id' => array(
 				'notEmptyIf' => array(
-					'rule' => array( 'notEmptyIf', 'decision', true, array( 'reorientation' ) ),
+					'rule' => array( 'notEmptyIf', 'decision', true, array( 'reorientation', 'maintienref' ) ),
 					'message' => 'Champ obligatoire',
 				),
 			),
 			'structurereferente_id' => array(
 				'notEmptyIf' => array(
-					'rule' => array( 'notEmptyIf', 'decision', true, array( 'reorientation' ) ),
+					'rule' => array( 'notEmptyIf', 'decision', true, array( 'reorientation', 'maintienref' ) ),
 					'message' => 'Champ obligatoire',
 				),
 			),

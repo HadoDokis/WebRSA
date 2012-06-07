@@ -108,7 +108,7 @@
 					if( !isset( $dossierep['Dossierep']['Passagecommissionep'][0]['Decisionnonorientationproep58'][0]['decision'] ) || empty( $dossierep['Dossierep']['Passagecommissionep'][0]['Decisionnonorientationproep58'][0]['decision'] ) ) {
 						$success = false;
 					}
-					elseif ( $dossierep['Dossierep']['Passagecommissionep'][0]['Decisionnonorientationproep58'][0]['decision'] == 'reorientation' ) {
+					elseif ( in_array( $dossierep['Dossierep']['Passagecommissionep'][0]['Decisionnonorientationproep58'][0]['decision'], array( 'reorientation', 'maintienref' ) ) ) {
 						list($date_propo, $heure_propo) = explode( ' ', $dossierep['Nonorientationproep58']['created'] );
 						list($date_valid, $heure_valid) = explode( ' ', $commissionep['Commissionep']['dateseance'] );
 						$orientstruct = array(
@@ -116,6 +116,7 @@
 								'personne_id' => $dossierep['Dossierep']['personne_id'],
 								'typeorient_id' => @$dossierep['Dossierep']['Passagecommissionep'][0]['Decisionnonorientationproep58'][0]['typeorient_id'],
 								'structurereferente_id' => @$dossierep['Dossierep']['Passagecommissionep'][0]['Decisionnonorientationproep58'][0]['structurereferente_id'],
+								'referent_id' => @$dossierep['Dossierep']['Passagecommissionep'][0]['Decisionnonorientationproep58'][0]['referent_id'],
 								'date_propo' => $date_propo,
 								'date_valid' => $date_valid,
 								'statut_orient' => 'Orienté',
