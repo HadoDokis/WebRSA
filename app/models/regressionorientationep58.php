@@ -557,6 +557,8 @@
 					'Personne.nom',
 					'Personne.prenom',
 					'Personne.dtnai',
+					'Dossier.matricule',
+					'Structurereferente.lib_struc',
 					'Adresse.locaadr',
 					'Dossierep.created',
 					'Dossierep.themeep',
@@ -589,6 +591,14 @@
 
 			$return['joins'] = array(
 				$join,
+				array(
+					'alias' => 'Structurereferente',
+					'table' => 'structuresreferentes',
+					'type' => 'INNER',
+					'conditions' => array(
+						'Structurereferente.id = '.$this->alias.'.structurereferente_id'
+					)
+				),
 				array(
 					'alias' => 'Personne',
 					'table' => 'personnes',

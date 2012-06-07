@@ -450,6 +450,8 @@
 					'Personne.nom',
 					'Personne.prenom',
 					'Personne.dtnai',
+					'Dossier.matricule',
+					'Structurereferente.lib_struc',
 					'Adresse.locaadr',
 					'Dossierep.created',
 					'Dossierep.themeep',
@@ -544,7 +546,15 @@
 					'table' => 'rendezvous',
 					'type' => 'INNER',
 					'conditions' => array(
-						'Rendezvous.id = Sanctionrendezvousep58.rendezvous_id'
+						'Rendezvous.id = '.$this->alias.'.rendezvous_id'
+					)
+				),
+				array(
+					'alias' => 'Structurereferente',
+					'table' => 'structuresreferentes',
+					'type' => 'INNER',
+					'conditions' => array(
+						'Structurereferente.id = Rendezvous.structurereferente_id'
 					)
 				),
 				array(
@@ -566,7 +576,7 @@
 				array(
 					'alias' => 'StatutrdvTyperdv',
 					'table' => 'statutsrdvs_typesrdv',
-					'type' => 'INNER',
+					'type' => 'LEFT OUTER',
 					'conditions' => array(
 						'StatutrdvTyperdv.typerdv_id = Typerdv.id',
 						'StatutrdvTyperdv.statutrdv_id = Statutrdv.id'

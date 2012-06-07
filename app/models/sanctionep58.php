@@ -724,6 +724,8 @@
 					'Personne.nom',
 					'Personne.prenom',
 					'Personne.dtnai',
+					'Dossier.matricule',
+					'Structurereferente.lib_struc',
 					'Adresse.locaadr',
 					'Dossierep.created',
 					'Dossierep.themeep',
@@ -757,6 +759,22 @@
 
 			$return['joins'] = array(
 				$join,
+				array(
+					'alias' => 'Orientstruct',
+					'table' => 'orientsstructs',
+					'type' => 'LEFT OUTER',
+					'conditions' => array(
+						'Orientstruct.id = '.$this->alias.'.orientstruct_id'
+					)
+				),
+				array(
+					'alias' => 'Structurereferente',
+					'table' => 'structuresreferentes',
+					'type' => 'LEFT OUTER',
+					'conditions' => array(
+						'Structurereferente.id = Orientstruct.structurereferente_id'
+					)
+				),
 				array(
 					'alias' => 'Personne',
 					'table' => 'personnes',
