@@ -3,7 +3,7 @@
 
 	class DossiersepsController extends AppController
 	{
-		public $helpers = array( 'Default', 'Default2' );
+		public $helpers = array( 'Default', 'Default2', 'Csv', 'Type2' );
 
 		public $uses = array( 'Option', 'Dossierep', 'Decisionpdo', 'Propopdo' );
 		public $components = array( 'Gedooo.Gedooo' );
@@ -52,30 +52,19 @@
 			$this->set( 'options', $this->Dossierep->enums() );
 			$this->set( 'dossierseps', $this->paginate( $this->Dossierep ) );
 		}
-
+		
 		/**
-		*
-		*/
-
-		public function choose( $commissionep_id ) {
-			$commissionep = $this->Dossierep->Passagecommissionep->Commissionep->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Commissionep.id' => $commissionep_id
-					),
-					'contain' => array(
-						'Ep' => array(
-							'Zonegeographique'
-						)
-					)
-				)
-			);
-
-			if( in_array( $commissionep['Commissionep']['etatcommissionep'], array( 'decisionep', 'decisioncg', 'annulee' ) ) ) {
-				$this->Session->setFlash( 'Impossible d\'attribuer des dossiers à une commission d\'EP lorsque celle-ci comporte déjà des avis ou des décisions.', 'default', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer() );
-			}
+		 * Envoi à la vue pour chacune des thématiques la liste des dossiers sélectionnables pour
+		 * passage en commission d'une commission d'ep donnée.
+		 *
+		 * Set les variables $themeEmpty, $dossiers, $themesChoose, $countDossiers,
+		 * $duree_engag_cg93, $options, $dossierseps, $commissionep, $commissionep_id dans la vue.
+		 *
+		 * @param array $commissionep L'enregistrement de la commission d'EP
+		 * @param boolean $paginate Soit on pagine (pour le choose), soit on find tout, pour l'export CSV
+		 */
+		protected function _setListeDossiersSelectionnables( $commissionep, $paginate ) {
+			$commissionep_id = $commissionep['Commissionep']['id'];
 
 			$conditionsAdresses = array( 'OR' => array() );
 			// Début conditions zones géographiques CG 58 et CG 93
@@ -106,50 +95,6 @@
 				}
 			}
 			// Fin conditions zones géographiques CG 66
-
-			if( !empty( $this->data ) ) {
-
-				$ajouts = array();
-				$suppressions = array();
-				foreach( $this->data['Dossierep'] as $key => $dossierep ) {
-					if( empty( $this->data['Passagecommissionep'][$key]['chosen'] ) && !empty( $this->data['Passagecommissionep'][$key]['id'] ) ) {
-						$suppressions[] = $this->data['Passagecommissionep'][$key]['id'];
-					}
-					else if( !empty( $this->data['Passagecommissionep'][$key]['chosen'] ) && empty( $this->data['Passagecommissionep'][$key]['id'] ) ) {
-						$ajouts[] = array(
-							'commissionep_id' => $commissionep_id,
-							'dossierep_id' => $this->data['Dossierep'][$key]['id'],
-							'user_id' => $this->Session->read( 'Auth.User.id' )
-						);
-					}
-				}
-
-				$this->Dossierep->begin();
-// debug($this->data);
-// die();
-				$success = true;
-
-				if( !empty( $ajouts ) ) {
-					$success = $this->Dossierep->Passagecommissionep->saveAll( $ajouts, array( 'atomic' => false ) ) && $success;
-				}
-
-				if( !empty( $suppressions ) ) {
-					$success = $this->Dossierep->Passagecommissionep->delete( $suppressions ) && $success;
-				}
-
-				// Changer l'état de la séance
-				$success = $this->Dossierep->Passagecommissionep->Commissionep->changeEtatCreeAssocie( $commissionep_id ) && $success;
-
-				$this->_setFlashResult( 'Save', $success );
-
-				if( $success ) {
-					$this->Dossierep->commit();
-					$this->redirect( array( 'controller'=>'commissionseps', 'action'=>'view', $commissionep_id, '#dossiers,'.$this->data['Choose']['theme'] ) );
-				}
-				else {
-					$this->Dossierep->rollback();
-				}
-			}
 
 			$themes = $this->Dossierep->Passagecommissionep->Commissionep->themesTraites( $commissionep_id );
 			$listeThemes = null;
@@ -302,23 +247,7 @@
 			$countDossiers = 0;
 			$originalPaginate = $this->paginate;
 			foreach( $themesChoose as $theme ) {
-
-				//$queryData = $this->paginate['Dossierep'];
 				$class = Inflector::classify( $theme );
-// 				if( Configure::read( 'Cg.departement' ) == 58 && $class == 'Nonorientationproep58' ) {
-// debug($class);
-// 					$joins = array(
-// // 						$this->Dossierep->join( 'Nonorientationproep58' ),
-// 						$this->Dossierep->Nonorientationproep58->join( 'Decisionpropononorientationprocov58' ),
-// 						$this->Dossierep->Nonorientationproep58->Decisionpropononorientationprocov58->join( 'Passagecov58' ),
-// 						$this->Dossierep->Nonorientationproep58->Decisionpropononorientationprocov58->Passagecov58->join( 'Cov58' )
-// 					);
-// 
-// 					$queryData['joins'] = array_merge( $queryData['joins'], $joins );
-// 					$queryData['fields'][] = 'Cov58.datecommission';
-// debug( $queryData );
-// 				}
-
 				$qdListeDossier = $this->Dossierep->{$class}->qdListeDossier( $commissionep_id );
 
 				if ( isset( $qdListeDossier['fields'] ) ) {
@@ -332,8 +261,14 @@
 				$qd['order'] = $queryData['order'];
 
 				$this->Dossierep->{$class}->forceVirtualFields = true;
-				$this->paginate = $qd;
-				$dossiers[$theme] = $this->paginate( $this->Dossierep->{$class} );
+
+				if( $paginate ) {
+					$this->paginate = $qd;
+					$dossiers[$theme] = $this->paginate( $this->Dossierep->{$class} );
+				}
+				else {
+					$dossiers[$theme] = $this->Dossierep->{$class}->find( 'all', $qd );
+				}
 
 				// INFO: pour avoir le formulaire pré-rempli ... à mettre dans le modèle également ?
 				if( empty( $this->data ) ) {
@@ -365,6 +300,102 @@
 
 			$this->set( compact( 'options', 'dossierseps', 'commissionep' ) );
 			$this->set( 'commissionep_id', $commissionep_id);
+		}
+
+		/**
+		*
+		*/
+
+		public function choose( $commissionep_id ) {
+			$commissionep = $this->Dossierep->Passagecommissionep->Commissionep->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Commissionep.id' => $commissionep_id
+					),
+					'contain' => array(
+						'Ep' => array(
+							'Zonegeographique'
+						)
+					)
+				)
+			);
+
+			// Peut-on travailler à cette étape avec cette commission ?
+			if( in_array( $commissionep['Commissionep']['etatcommissionep'], array( 'decisionep', 'decisioncg', 'annulee' ) ) ) {
+				$this->Session->setFlash( 'Impossible d\'attribuer des dossiers à une commission d\'EP lorsque celle-ci comporte déjà des avis ou des décisions.', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
+			}
+
+			// Enregistrement des cases cochées / décochées
+			if( !empty( $this->data ) ) {
+				$ajouts = array();
+				$suppressions = array();
+				foreach( $this->data['Dossierep'] as $key => $dossierep ) {
+					if( empty( $this->data['Passagecommissionep'][$key]['chosen'] ) && !empty( $this->data['Passagecommissionep'][$key]['id'] ) ) {
+						$suppressions[] = $this->data['Passagecommissionep'][$key]['id'];
+					}
+					else if( !empty( $this->data['Passagecommissionep'][$key]['chosen'] ) && empty( $this->data['Passagecommissionep'][$key]['id'] ) ) {
+						$ajouts[] = array(
+							'commissionep_id' => $commissionep_id,
+							'dossierep_id' => $this->data['Dossierep'][$key]['id'],
+							'user_id' => $this->Session->read( 'Auth.User.id' )
+						);
+					}
+				}
+
+				$this->Dossierep->begin();
+
+				$success = true;
+
+				if( !empty( $ajouts ) ) {
+					$success = $this->Dossierep->Passagecommissionep->saveAll( $ajouts, array( 'atomic' => false ) ) && $success;
+				}
+
+				if( !empty( $suppressions ) ) {
+					$success = $this->Dossierep->Passagecommissionep->delete( $suppressions ) && $success;
+				}
+
+				// Changer l'état de la séance
+				$success = $this->Dossierep->Passagecommissionep->Commissionep->changeEtatCreeAssocie( $commissionep_id ) && $success;
+
+				$this->_setFlashResult( 'Save', $success );
+
+				if( $success ) {
+					$this->Dossierep->commit();
+					$this->redirect( array( 'controller'=>'commissionseps', 'action'=>'view', $commissionep_id, '#dossiers,'.$this->data['Choose']['theme'] ) );
+				}
+				else {
+					$this->Dossierep->rollback();
+				}
+			}
+			
+			$this->_setListeDossiersSelectionnables( $commissionep, true );
+		}
+
+		/**
+		 * Exporte la liste de dossier sélectionnables pour une commission d'EP donnée.
+		 * 
+		 * @param @integer $commissionep_id L'id de la commission
+		 */
+		public function exportcsv( $commissionep_id ) {
+			$commissionep = $this->Dossierep->Passagecommissionep->Commissionep->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Commissionep.id' => $commissionep_id
+					),
+					'contain' => array(
+						'Ep' => array(
+							'Zonegeographique'
+						)
+					)
+				)
+			);
+			
+			$this->_setListeDossiersSelectionnables( $commissionep, false );
+
+			$this->layout = '';
 		}
 
 		/**

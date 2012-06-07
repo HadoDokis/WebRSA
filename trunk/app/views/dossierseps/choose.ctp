@@ -45,19 +45,31 @@
 		</div>
 	</div>
 </div>
-<?php
-	echo $default->button(
-		'back',
-		array(
-			'controller' => 'commissionseps',
-			'action'     => 'view',
-			$commissionep_id
-		),
-		array(
-			'id' => 'Back'
-		)
-	);
-?>
+<ul class="actionMenu">
+	<li>
+		<?php
+			echo $default->button(
+				'back',
+				array(
+					'controller' => 'commissionseps',
+					'action'     => 'view',
+					$commissionep_id
+				),
+				array(
+					'id' => 'Back'
+				)
+			);
+		?>
+	</li>
+	<li>
+		<?php
+			echo $xhtml->exportLink(
+				'Télécharger le tableau',
+				array( 'action' => 'exportcsv', $commissionep_id )
+			);
+		?>
+	</li>
+</ul>
 <?php
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $javascript->link( 'prototype.livepipe.js' );
