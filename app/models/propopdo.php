@@ -248,6 +248,7 @@
 					'"Decisionpropopdo"."datedecisionpdo"',
 					'"Decisionpropopdo"."commentairepdo"',
 					'"Decisionpdo"."libelle"',
+					'"Decisionpdo"."modeleodt"',
 					'"Personne"."id"',
 					'"Personne"."pieecpres"',
 				),
@@ -597,8 +598,6 @@
 			
 			$modeleodt = Set::classicExtract( $propopdo, 'Decisionpdo.modeleodt' );
 
-debug($modeleodt);
-die();
 			$options['Foyer']['sitfam'] = ClassRegistry::init( 'Option' )->sitfam();
 
 			return $this->ged(

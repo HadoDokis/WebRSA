@@ -21,6 +21,9 @@
 				<?php if( Configure::read( 'Cg.departement' ) == 66  ) :?>
 					<th>Cette décision est-elle liée à un CER Particulier ?</th>
 				<?php endif;?>
+				<?php if( Configure::read( 'Cg.departement' ) == 93  ) :?>
+					<th>Modèle de document lié</th>
+				<?php endif;?>
 				<th colspan="2" class="action">Actions</th>
 			</tr>
 		</thead>
@@ -46,6 +49,7 @@
 					$arrayCells = array(
 						h( $decisionpdo['Decisionpdo']['libelle'] ),
 						( $decisionpdo['Decisionpdo']['clos'] == 'N' ) ? 'Non' : 'Oui',
+						h( $decisionpdo['Decisionpdo']['modeleodt'] ),
 						$xhtml->editLink(
 							'Éditer la décision de PDO ',
 							array( 'controller' => 'decisionspdos', 'action' => 'edit', $decisionpdo['Decisionpdo']['id'] )
