@@ -203,6 +203,14 @@
 						else {
 							$rgorient = null;
 						}
+						
+						$NotifBenefPrintable = true;
+						if( $orientstruct['Orientstruct']['rgorient'] > 1 ) {
+							$NotifBenefPrintable = true;
+						}
+						else {
+							$NotifBenefPrintable = false;
+						}
 
 						$cells = array(
 							h( $orientstruct['Personne']['nom']),
@@ -265,6 +273,7 @@
 										'enabled' => (
 											( $permissions->check( 'orientsstructs', 'printChangementReferent' ) == 1 )
 											&& $orientstruct['Orientstruct']['notifbenefcliquable']
+											&& $NotifBenefPrintable
 										)
 									)
 								),
