@@ -804,7 +804,7 @@
 					),
 					'conditions' => array(
 						'Orientstruct.personne_id' => $orientation['Orientstruct']['personne_id'],
-						'Orientstruct.date_valid <=' => $orientation['Orientstruct']['date_valid'],
+						'Orientstruct.date_valid <' => $orientation['Orientstruct']['date_valid'],
 						'Orientstruct.statut_orient' => 'Orienté',
 						'Orientstruct.id <>' => $orientation['Orientstruct']['id']
 					),
@@ -842,6 +842,8 @@
 
 			if( $typestructure == $typestructurepassee ) {
 				if( $typestructure == 'oa' ) {
+					// INFO: Réponse du CG66 : d'expérience cela se fait à la marge donc pour le moment
+					// aucun traitement particulier
 					$modeleodt = "Orientation/changement_referent_cgcg.odt"; // FIXME: devrait être paoa
 				}
 				else {
@@ -857,7 +859,8 @@
 				}
 			}
 
-// debug($orientation);
+// debug($typestructurepassee);
+// debug($typestructure);
 // debug( $modeleodt );
 // die();
 			// Génération du PDF
