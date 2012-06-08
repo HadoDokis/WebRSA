@@ -94,9 +94,10 @@
 							);
 						}
 						else {
+// 						debug( $pdo );
 							$authPrintcourrier = false;
-							$libelleDecision = Set::classicExtract( $pdo, 'Decisionpdo.libelle' );
-							if( ereg("AJ 7a", $libelleDecision ) || ereg("DO 19", $libelleDecision ) || ereg("R 9", $libelleDecision ) ) {
+							$modeleodt = Set::classicExtract( $pdo, 'Decisionpdo.modeleodt' );
+							if( !empty( $modeleodt ) ) {
 								$authPrintcourrier = true;
 							}
 							else{
