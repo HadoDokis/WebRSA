@@ -122,5 +122,13 @@
 				}
 			}
 		}
+		
+		public function sqDernier( $informationpeAlias = 'Informationpe' ) {
+			return "SELECT h.id
+						FROM historiqueetatspe AS h
+						WHERE h.informationpe_id = {$informationpeAlias}.id
+						ORDER BY h.date DESC
+						LIMIT 1";
+		}
 	}
 ?>

@@ -122,6 +122,7 @@
 			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 
 			if( !empty( $this->data ) ) {
+				$this->Personne->Orientstruct->begin();
 
 				/**
 				*
@@ -132,29 +133,30 @@
 				// On a renvoyé  le formulaire de la cohorte
 				if( !empty( $this->data['Orientstruct'] ) ) {
 
-					$valid = $this->Personne->Orientstruct->saveAll( $this->data['Orientstruct'], array( 'validate' => 'only', 'atomic' => false ) );
+					$success = true;
+					if( $this->action == 'isemploi' ) {
+						$success = $this->Personne->Nonoriente66->saveAll( $this->data['Nonoriente66'], array( 'validate' => 'first', 'atomic' => false ) ) && $success;
+					}
 
-					if( $valid ) {
-						$this->Personne->Orientstruct->begin();
 
-						$saved = $this->Personne->Orientstruct->saveAll( $this->data['Orientstruct'], array( 'validate' => 'first', 'atomic' => false ) );
+					$success = $this->Personne->Orientstruct->saveAll( $this->data['Orientstruct'], array( 'validate' => 'first', 'atomic' => false ) ) && $success;
 
-						if( $saved ) {
-							
-							foreach( array_unique( Set::extract( $this->data, 'Orientstruct.{n}.dossier_id' ) ) as $dossier_id ) {
-								$this->Jetons->release( array( 'Dossier.id' => $dossier_id ) );
-							}
+					if( $success ) {
+						
+						foreach( array_unique( Set::extract( $this->data, 'Orientstruct.{n}.dossier_id' ) ) as $dossier_id ) {
+							$this->Jetons->release( array( 'Dossier.id' => $dossier_id ) );
+						}
 // 							$this->log( var_export( $this->data['Orientstruct'], true ), LOG_DEBUG );
 // 							$this->log( var_export( $this->data['Orientstruct'], true ), LOG_DEBUG );
-							$this->Personne->Orientstruct->commit();
-							unset( $this->data['Orientstruct'] );
-							if( isset( $this->data['sessionKey'] ) ) {
-								$this->Session->del( "Prg.{$this->name}__{$this->action}.{$this->data['sessionKey']}" );
-							}
+// 						$this->Personne->Orientstruct->commit();
+						$this->Personne->Orientstruct->commit();
+						unset( $this->data['Orientstruct'] );
+						if( isset( $this->data['sessionKey'] ) ) {
+							$this->Session->del( "Prg.{$this->name}__{$this->action}.{$this->data['sessionKey']}" );
 						}
-						else {
-							$this->Personne->Orientstruct->rollback();
-						}
+					}
+					else {
+						$this->Personne->Orientstruct->rollback();
 					}
 				}
 
@@ -175,7 +177,7 @@
 					$this->paginate['limit'] = $limit;
 					$cohortesnonorientes66 = $this->paginate( 'Personne' );
 
-
+// debug( $cohortesnonorientes66 );
 					$this->Dossier->commit();
 
 					$this->set( 'cohortesnonorientes66', $cohortesnonorientes66 );
@@ -260,6 +262,26 @@
 				$this->redirect( $this->referer() );
 			}
 		}
-		
+	
+			/**
+			 * Impression d'un rendez-vous.
+			 *
+			 * @param integer $id
+			 * @return void
+			 */
+			public function impressionOrientation( $id = null ) {
+				$pdf = $this->Personne->Orientstruct->getPdfNonoriente66( $id );
+
+				if( !empty( $pdf ) ){
+					$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'orientation-%d-%s.pdf', $id, date( 'Y-m-d' ) ) );
+				}
+				else {
+					$this->Session->setFlash( 'Impossible de générer le courrier.', 'default', array( 'class' => 'error' ) );
+					$this->redirect( $this->referer() );
+				}
+			}
+
+	
+	
 	}
 ?>

@@ -918,5 +918,56 @@
 
 			return $return;
 		}
+		
+		
+		public function getPdfNonoriente66 ( $orientstruct_id ) {
+			$data = $this->getDataForPdf( $orientstruct_id );
+			
+			$Option = ClassRegistry::init( 'Option' );
+			
+			$options = array(
+				'Adresse' => array(
+					'typevoie' => $Option->typevoie()
+				),
+				'Personne' => array(
+					'qual' => $Option->qual()
+				)
+			);
+			
+			$nonoriente66 = $this->Personne->Nonoriente66->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Nonoriente66.orientstruct_id' => $orientstruct_id
+					),
+					'contain' => false
+				)
+			);
+			$originePdfOrientation = Set::classicExtract( $nonoriente66, 'Nonoriente66.origine' );
+			$typeOrientParentIdPdf = Set::classicExtract( $data, 'Typeorient.parentid' );
+
+			
+			$typesorientsParentidsSocial = Configure::read( 'Orientstruct.typeorientprincipale.SOCIAL' );
+			$typesorientsParentidsEmploi = Configure::read( 'Orientstruct.typeorientprincipale.Emploi' );
+
+			if( $originePdfOrientation == 'isemploi' ) {
+				$modeleodt = 'Orientation/orientationpedefait.odt'; // INFO courrier 1
+			}
+			else {
+				if( in_array( $typeOrientParentIdPdf, $typesorientsParentidsEmploi) ) {
+					$modeleodt = 'Orientation/orientationpe.odt'; //INFO = courrier 3
+				}
+				else if( in_array( $typeOrientParentIdPdf, $typesorientsParentidsSocial) ) {
+					$modeleodt = 'Orientation/orientationsociale.odt';// INFO = courrier 4
+				}
+			}
+			
+			return $this->ged(
+				$data,
+				$modeleodt,
+				false,
+				$options
+			);
+		}
 	}
 ?>

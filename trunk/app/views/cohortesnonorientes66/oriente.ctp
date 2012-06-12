@@ -134,6 +134,11 @@
 							'Voir le dossier',
 							array( 'controller' => 'orientsstructs', 'action' => 'index', $cohortenonoriente66['Personne']['id'] ),
 							$permissions->check( 'dossiers', 'view' )
+						),
+						$xhtml->printLink(
+							'Imprimer le courrier d\'orientation',
+							array( 'controller' => 'cohortesnonorientes66', 'action' => 'impressionOrientation', $cohortenonoriente66['Orientstruct']['id'] ),
+							$permissions->check( 'cohortesnonorientes66', 'impressionOrientation' )
 						)
 					);
 
