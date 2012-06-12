@@ -141,7 +141,12 @@
 						$xform->input( 'Orientstruct.'.$index.'.dossier_id', array( 'label' => false, 'type' => 'hidden', 'value' => $cohortenonoriente66['Foyer']['dossier_id'] ) ).
 						$xform->input( 'Orientstruct.'.$index.'.codeinsee', array( 'label' => false, 'type' => 'hidden', 'value' => $cohortenonoriente66['Adresse']['numcomptt'] ) ).
 						$xform->input( 'Orientstruct.'.$index.'.personne_id', array( 'label' => false, 'type' => 'hidden', 'value' => $cohortenonoriente66['Personne']['id'] ) ).
-						$xform->input( 'Orientstruct.'.$index.'.statut_orient', array( 'label' => false, 'type' => 'hidden', 'value' => 'Orienté' ) ),
+						$xform->input( 'Orientstruct.'.$index.'.statut_orient', array( 'label' => false, 'type' => 'hidden', 'value' => 'Orienté' ) ).
+						$xform->input( 'Nonoriente66.'.$index.'.id', array( 'label' => false, 'type' => 'hidden', 'value' => $cohortenonoriente66['Nonoriente66']['id'] ) ).
+						$xform->input( 'Nonoriente66.'.$index.'.origine', array( 'label' => false, 'type' => 'hidden', 'value' => 'isemploi' ) ).
+						$xform->input( 'Nonoriente66.'.$index.'.personne_id', array( 'label' => false, 'type' => 'hidden', 'value' => $cohortenonoriente66['Personne']['id'] ) ).
+						$xform->input( 'Nonoriente66.'.$index.'.historiqueetatpe_id', array( 'label' => false, 'type' => 'hidden', 'value' => $cohortenonoriente66['Historiqueetatpe']['id'] ) ).
+						$xform->input( 'Nonoriente66.'.$index.'.user_id', array( 'label' => false, 'type' => 'hidden', 'value' => $session->read( 'Auth.User.id' ) ) ),
 
 						$xform->input( 'Orientstruct.'.$index.'.structurereferente_id', array( 'label' => false, 'type' => 'select', 'options' => $structuresReferentes/*,  'empty' => true*/ ) ),
 
@@ -188,13 +193,18 @@
 					'Orientstruct<?php echo $key;?>Atraiter',
 					[
 						'Orientstruct<?php echo $key;?>TypeorientId',
-						'Orientstruct<?php echo $key;?>Origine',
 						'Orientstruct<?php echo $key;?>PersonneId',
+						'Orientstruct<?php echo $key;?>Origine',
 						'Orientstruct<?php echo $key;?>StatutOrient',
 						'Orientstruct<?php echo $key;?>StructurereferenteId',
 						'Orientstruct<?php echo $key;?>DateValidYear',
 						'Orientstruct<?php echo $key;?>DateValidMonth',
 						'Orientstruct<?php echo $key;?>DateValidDay',
+						'Nonoriente66<?php echo $key;?>PersonneId',
+						'Nonoriente66<?php echo $key;?>Origine',
+						'Nonoriente66<?php echo $key;?>HistoriqueetatpeId',
+						'Nonoriente66<?php echo $key;?>Id',
+						'Nonoriente66<?php echo $key;?>UserId',
 					],
 					false
 				);

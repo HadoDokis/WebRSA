@@ -728,6 +728,27 @@ LANGUAGE plpgsql;
 SELECT public.update_contratsinsertion_decisionsproposnonorientationsproscovs58();
 DROP FUNCTION public.update_contratsinsertion_decisionsproposnonorientationsproscovs58();
 
+
+-------------------------------------------------------------------------------------------------------------
+-- 20120611: ajout de la clé étrangère pour la table historiqueetatspe
+--  + modificaiton de la contrainte not null sur la dateimpression
+-------------------------------------------------------------------------------------------------------------
+
+SELECT add_missing_table_field ('public', 'nonorientes66', 'historiqueetatpe_id', 'INTEGER');
+SELECT add_missing_constraint ('public', 'nonorientes66', 'nonorientees66_historiqueetatpe_id_fkey', 'historiqueetatspe', 'historiqueetatpe_id');
+
+DROP INDEX IF EXISTS nonorientes66_historiqueetatpe_id_idx;
+CREATE UNIQUE INDEX nonorientes66_historiqueetatpe_id_idx ON nonorientes66(historiqueetatpe_id);
+
+DROP TYPE IF EXISTS TYPE_ORIGINENONORIENTE66 CASCADE;
+CREATE TYPE TYPE_ORIGINENONORIENTE66 AS ENUM ( 'isemploi','notisemploi');
+SELECT add_missing_table_field ( 'public', 'nonorientes66', 'origine', 'TYPE_ORIGINENONORIENTE66' );
+ALTER TABLE nonorientes66 ALTER COLUMN origine SET NOT NULL;
+
+ALTER TABLE nonorientes66 ALTER COLUMN dateimpression DROP NOT NULL;
+
+ALTER TABLE nonorientes66 ADD CONSTRAINT nonorientees66_dateimpression_origine_chk CHECK ( ( origine = 'isemploi' AND historiqueetatpe_id IS NOT NULL  AND dateimpression IS NULL) OR ( origine = 'notisemploi' AND historiqueetatpe_id IS NULL AND dateimpression IS NOT NULL ) );
+
 -- *****************************************************************************
 COMMIT;
 -- ************************************************************************

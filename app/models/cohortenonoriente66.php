@@ -25,31 +25,17 @@
 			if( $statutNonoriente != 'Nonoriente::oriente' ) {
 				$conditions[] = '( SELECT COUNT(orientsstructs.id) FROM orientsstructs WHERE orientsstructs.personne_id = "Personne"."id" AND orientsstructs.statut_orient = \'Orienté\' ) = 0';
 			}
-
+			$conditions[] =  array(
+				'OR' => array(
+					'Historiqueetatpe.id IS NULL',
+					'Historiqueetatpe.id IN ( '.$Informationpe->Historiqueetatpe->sqDernier( 'Informationpe' ).' )'
+				)
+			);
 
 			if( !empty( $statutNonoriente ) ) {
 				if( $statutNonoriente == 'Nonoriente::isemploi' ) {
-					$conditions[] = 'Personne.id IN (
-						SELECT
-								personnes.id
-							FROM informationspe
-								INNER JOIN historiqueetatspe ON (
-									informationspe.id = historiqueetatspe.informationpe_id
-									AND historiqueetatspe.id IN (
-												SELECT h.id
-													FROM historiqueetatspe AS h
-													WHERE h.informationpe_id = informationspe.id
-													ORDER BY h.date DESC
-													LIMIT 1
-									)
-								)
-								INNER JOIN personnes ON (
-									'.$Informationpe->sqConditionsJoinPersonne( 'informationspe', 'personnes' ).'
-								)
-							WHERE
-								personnes.id = Personne.id
-								AND historiqueetatspe.etat = \'inscription\'
-					)';
+					// FIXME: Historiqueetatpe::sqDerniere + historiqueetatspe.etat = \'inscription\'
+					$conditions['Historiqueetatpe.etat'] = 'inscription';
 				}
 				else if( $statutNonoriente == 'Nonoriente::notisemploi' ) {
 					$conditions[] = 'Personne.id IN (
@@ -58,27 +44,8 @@
 								WHERE
 									nonorientes66.personne_id = Personne.id
 						)';
-// 					$conditions[] = 'Personne.id NOT IN (
-// 						SELECT
-// 								personnes.id
-// 							FROM informationspe
-// 								INNER JOIN historiqueetatspe ON (
-// 									informationspe.id = historiqueetatspe.informationpe_id
-// 									AND historiqueetatspe.id IN (
-// 												SELECT h.id
-// 													FROM historiqueetatspe AS h
-// 													WHERE h.informationpe_id = informationspe.id
-// 													ORDER BY h.date DESC
-// 													LIMIT 1
-// 									)
-// 								)
-// 								INNER JOIN personnes ON (
-// 									'.$Informationpe->sqConditionsJoinPersonne( 'informationspe', 'personnes' ).'
-// 								)
-// 							WHERE
-// 								personnes.id = Personne.id
-// 								AND historiqueetatspe.etat = \'inscription\'
-// 					)';
+						
+					$conditions['NOT'] = array( 'Historiqueetatpe.etat' => 'inscription' );
 				}
 				else if( $statutNonoriente == 'Nonoriente::notisemploiaimprimer' ) {
 					$conditions[] = 'Personne.id NOT IN (
@@ -116,9 +83,22 @@
 			$conditions['Prestation.rolepers'] = array( 'DEM', 'CJT' );
 			$conditions['Calculdroitrsa.toppersdrodevorsa'] = 1;
 			$conditions['Situationdossierrsa.etatdosrsa'] = $Personne->Orientstruct->Personne->Foyer->Dossier->Situationdossierrsa->etatOuvert();
-			$conditions[] = 'Adressefoyer.id IN ( '
-				.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01('Adressefoyer.foyer_id')
-			.' )';
+			$conditions[] = array(
+				'OR' => array(
+					'Adressefoyer.id IS NULL',
+					'Adressefoyer.id IN ( '
+						.$Personne->Foyer->Adressefoyer->sqDerniereRgadr01('Adressefoyer.foyer_id')
+					.' )'
+				)
+			);
+			$conditions[] = array(
+				'OR' => array(
+					'Informationpe.id IS NULL',
+					'Informationpe.id IN ( '
+						.$Informationpe->sqDerniere('Personne')
+					.' )'
+				)
+			);
 
 			$query = array(
 				'fields' => array_merge(
@@ -128,19 +108,24 @@
 					$Personne->Foyer->Adressefoyer->Adresse->fields(),
 					$Personne->Foyer->Dossier->Situationdossierrsa->fields(),
 					$Personne->Orientstruct->fields(),
+					$Personne->Nonoriente66->fields(),
 					array(
-						$Personne->Foyer->sqVirtualField( 'enerreur' )
+						$Personne->Foyer->sqVirtualField( 'enerreur' ),
+						'Historiqueetatpe.id'
 					)
 				),
 				'joins' => array(
 					$Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
 					$Personne->join( 'Prestation', array( 'type' => 'INNER' ) ),
 					$Personne->join( 'Orientstruct', array( 'type' => 'LEFT OUTER' ) ),
+					$Personne->join( 'Nonoriente66', array( 'type' => 'LEFT OUTER' ) ),
 					$Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'INNER' ) ),
 					$Personne->join( 'Calculdroitrsa', array( 'type' => 'INNER' ) ),
 					$Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
 					$Personne->Foyer->Dossier->join( 'Situationdossierrsa', array( 'type' => 'INNER' ) ),
 					$Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'INNER' ) ),
+					$Informationpe->joinPersonneInformationpe( 'Personne', 'Informationpe', 'LEFT OUTER' ),
+					$Informationpe->join( 'Historiqueetatpe', array( 'type' => 'LEFT OUTER' ) ),
 				),
 				'contain' => false,
 				'conditions' => $conditions,
@@ -190,7 +175,7 @@
 		 * @return string
 		 */
 		public function modeleOdt( $data ) {
-			return 'Orientation/questionnaireorientation66.odt';
+			return 'Orientation/questionnaireorientation66.odt'; // INFO courrier 1
 		}
 
 		/**
@@ -210,6 +195,8 @@
 						'personne_id' => $data['Personne']['id'],
 						'dateimpression' => date( 'Y-m-d' ),
 						'orientstruct_id' => null,
+						'historiqueetatpe_id' => null,
+						'origine' => 'notisemploi',
 						'user_id' => $data['User']['id']
 					)
 				);
