@@ -217,13 +217,14 @@
 		/**
 		 * Récupère les enregistrements incomplèts de tous les modèles possédant
 		 * la méthode storedDataErrors.
-		 * TODO: vérifier la présence de la fonction comme ci-dessus.
+		 * TODO: vérifier la présence de la fonction comme ci-dessus, mais attention aux sous-classes (	covstructurereferentes)
 		 */
 		public function allStoredDataErrors() {
 			return array(
 				'servicesinstructeurs' => ClassRegistry::init( 'Serviceinstructeur' )->storedDataErrors(),
 				'structuresreferentes' => ClassRegistry::init( 'Structurereferente' )->storedDataErrors(),
-				'users' => ClassRegistry::init( 'User' )->storedDataErrors()
+				'users' => ClassRegistry::init( 'User' )->storedDataErrors(),
+				'regroupementseps' => ClassRegistry::init( 'Regroupementep' )->storedDataErrors()
 			);
 		}
 
