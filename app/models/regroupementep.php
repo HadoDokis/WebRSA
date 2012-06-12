@@ -74,9 +74,52 @@
 		);
 
 		/**
-		* Retourne la liste des thèmes traités par le regroupement
-		*/
+		 * Vérifie la cohérence des niveaux de décision d'un enregistrement.
+		 *
+		 * @param array $data Les données de l'enregistrement à vérifier.
+		 * @return boolean
+		 */
+		public function verificationNiveauxDecisions( $data ) {
+			$return = true;
 
+			$niveaux = array();
+			foreach( $this->themes() as $theme ) {
+				if( isset( $data[$this->alias][$theme] ) && !empty( $data[$this->alias][$theme] ) && ( $data[$this->alias][$theme] != 'nontraite' ) ) {
+					$niveaux[$theme] = $data[$this->alias][$theme];
+				}
+			}
+
+			$niveauxUniques = array_unique( array_values( $niveaux ) );
+			if( count( $niveauxUniques ) > 1 ) {
+				foreach( $niveaux as $theme => $niveau ) {
+					$this->invalidate( $theme, 'Les niveaux de décisions (EP ou CG) gérés par un regroupement d\'EP doivent être identiques' );
+				}
+				$return = false;
+			}
+
+			return $return;
+		}
+
+		/**
+		 * Retourne les champs qui ne sont pas validés pour les modèle courant.
+		 * On vérifie en plus la cohérence des niveaux de décision.
+		 *
+		 * @param string $options An optional array of custom options to be made available in the beforeValidate callback
+		 * @return array Array of invalid fields
+		 */
+		public function invalidFields( $options = array() ) {
+			parent::invalidFields( $options );
+
+			$this->verificationNiveauxDecisions( $this->data );
+
+			return $this->validationErrors;
+		}
+
+		/**
+		 * Retourne la liste des thèmes traités par le regroupement.
+		 *
+		 * @return array
+		 */
 		public function themes() {
 			$enums = $this->enums();
 			foreach( array_keys( $enums[$this->alias] ) as $key ) {
@@ -85,6 +128,47 @@
 				}
 			}
 			return array_keys( $enums[$this->alias] );
+		}
+
+		/**
+		 * Retourne les enregistrements pour lesquels une erreur de paramétrage a été détectée.
+		 * Il s'agit des regroupements qui ont des niveaux de décisions traités tantôt au niveau EP, tantôt
+		 * au niveau CG.
+		 *
+		 * @return array
+		 */
+		public function storedDataErrors() {
+			$themes = $this->themes();
+
+			$conditions = array( 'OR' => array() );
+			$fields = array(
+				"{$this->alias}.{$this->primaryKey}",
+				"{$this->alias}.{$this->displayField}"
+			);
+
+			foreach( $themes as $theme ) {
+				$fields[] = "{$this->alias}.{$theme}";
+
+				// INFO: on a les combinaisons en double
+				foreach( $themes as $autreTheme ) {
+					if( $theme != $autreTheme ) {
+						$conditions['OR'][] = array(
+							"{$this->alias}.{$theme} <>" => 'nontraite',
+							"{$this->alias}.{$autreTheme} <>" => 'nontraite',
+							"{$this->alias}.{$theme} <> {$this->alias}.{$autreTheme}"
+						);
+					}
+				}
+			}
+
+			return $this->find(
+				'all',
+				array(
+					'fields' => $fields,
+					'conditions' => $conditions,
+					'contain' => false,
+				)
+			);
 		}
 	}
 ?>
