@@ -43,6 +43,10 @@ echo '<table id="Decisionsaisinebilanparcoursep66" class="tooltips">
 			</tr>
 		</thead>
 	<tbody>';
+
+	$typeorientprincipaleSocial = (array)Configure::read( 'Orientstruct.typeorientprincipale.SOCIAL' );
+	$typeorientprincipaleEmploi = (array)Configure::read( 'Orientstruct.typeorientprincipale.Emploi' );
+
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
 		$multiple = ( count( $dossiersAllocataires[$dossierep['Personne']['id']] ) > 1 ? 'multipleDossiers' : null );
 
@@ -94,11 +98,20 @@ echo '<table id="Decisionsaisinebilanparcoursep66" class="tooltips">
 			$enabled = $enabled;
 		}
 
+		$typeorientPrincipale = null;
+		if( in_array( @$decisioncg['Typeorient']['parentid'], $typeorientprincipaleSocial ) ) {
+			$typeorientPrincipale = 'SOCIAL';
+		}
+		else if( in_array( @$decisioncg['Typeorient']['parentid'], $typeorientprincipaleEmploi ) ) {
+			$typeorientPrincipale = 'Emploi';
+		}
+
 		echo $xhtml->tableCells(
 			array_merge(
 				$listeFields,
 				array(
 					array( @$options['Decisionsaisinebilanparcoursep66']['decision'][Set::classicExtract( $decisioncg, "decision" )], array( 'id' => "Decisionsaisinebilanparcoursep66{$i}DecisionColumn" ) ),
+					$typeorientPrincipale,
 					array( @$liste_typesorients[Set::classicExtract( $decisioncg, "typeorient_id" )], array( 'id' => "Decisionsaisinebilanparcoursep66{$i}TypeorientId" ) ),
 					array( @$liste_structuresreferentes[Set::classicExtract( $decisioncg, "structurereferente_id" )], array( 'id' => "Decisionsaisinebilanparcoursep66{$i}StructurereferenteId" ) ),
 					array( @$liste_referents[Set::classicExtract( $decisioncg, "referent_id" )], array( 'id' => "Decisionsaisinebilanparcoursep66{$i}ReferentId" ) ),
