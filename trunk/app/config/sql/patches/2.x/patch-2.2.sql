@@ -568,6 +568,7 @@ UPDATE decisionspdos SET modeleodt = NULL WHERE modeleodt IS NOT NULL AND TRIM( 
 -------------------------------------------------------------------------------------------------------------
 -- 20120605: ajout des clés étrangères pour nouvelles orientations et nouveaux contrats
 -- d'insertion suite aux propositions pour les thématiques de COV du CG 58.
+-- FIXME: fk ON DELETE SET NULL pour les nvorientstruct_id, nvcontratinsertion_id, ...
 -------------------------------------------------------------------------------------------------------------
 
 --
@@ -628,7 +629,7 @@ SELECT add_missing_table_field ( 'public', 'proposorientationscovs58', 'nvorient
 SELECT add_missing_constraint ( 'public', 'proposorientationscovs58', 'proposorientationscovs58_nvorientstruct_id_fkey', 'orientsstructs', 'nvorientstruct_id' );
 
 -- On rapatrie les données implicites
-CREATE OR REPLACE FUNCTION public.update_contratsinsertion_decisionsproposorientationscovs58() RETURNS VOID AS
+CREATE OR REPLACE FUNCTION public.update_orientsstructs_decisionsproposorientationscovs58() RETURNS VOID AS
 $$
 	DECLARE
 		v_row   record;
@@ -672,8 +673,8 @@ $$
 $$
 LANGUAGE plpgsql;
 
-SELECT public.update_contratsinsertion_decisionsproposorientationscovs58();
-DROP FUNCTION public.update_contratsinsertion_decisionsproposorientationscovs58();
+SELECT public.update_orientsstructs_decisionsproposorientationscovs58();
+DROP FUNCTION public.update_orientsstructs_decisionsproposorientationscovs58();
 
 --
 -- 3°) proposnonorientationsproscovs58
@@ -682,7 +683,7 @@ SELECT add_missing_table_field ( 'public', 'proposnonorientationsproscovs58', 'n
 SELECT add_missing_constraint ( 'public', 'proposnonorientationsproscovs58', 'proposnonorientationsproscovs58_nvorientstruct_id_fkey', 'orientsstructs', 'nvorientstruct_id' );
 
 -- On rapatrie les données implicites
-CREATE OR REPLACE FUNCTION public.update_contratsinsertion_decisionsproposnonorientationsproscovs58() RETURNS VOID AS
+CREATE OR REPLACE FUNCTION public.update_orientsstructs_decisionsproposnonorientationsproscovs58() RETURNS VOID AS
 $$
 	DECLARE
 		v_row   record;
@@ -725,8 +726,8 @@ $$
 $$
 LANGUAGE plpgsql;
 
-SELECT public.update_contratsinsertion_decisionsproposnonorientationsproscovs58();
-DROP FUNCTION public.update_contratsinsertion_decisionsproposnonorientationsproscovs58();
+SELECT public.update_orientsstructs_decisionsproposnonorientationsproscovs58();
+DROP FUNCTION public.update_orientsstructs_decisionsproposnonorientationsproscovs58();
 
 
 -------------------------------------------------------------------------------------------------------------
@@ -748,6 +749,536 @@ ALTER TABLE nonorientes66 ALTER COLUMN origine SET NOT NULL;
 ALTER TABLE nonorientes66 ALTER COLUMN dateimpression DROP NOT NULL;
 
 ALTER TABLE nonorientes66 ADD CONSTRAINT nonorientees66_dateimpression_origine_chk CHECK ( ( origine = 'isemploi' AND historiqueetatpe_id IS NOT NULL  AND dateimpression IS NULL) OR ( origine = 'notisemploi' AND historiqueetatpe_id IS NULL AND dateimpression IS NOT NULL ) );
+
+-------------------------------------------------------------------------------------------------------------
+-- 20120611: ajout d'indexes pour les nouvelles clés étrangères des tables de
+-- thématiques de COV (CG 58).
+-------------------------------------------------------------------------------------------------------------
+
+CREATE UNIQUE INDEX proposcontratsinsertioncovs58_nvcontratinsertion_id_idx ON proposcontratsinsertioncovs58 (nvcontratinsertion_id);
+CREATE UNIQUE INDEX proposorientationscovs58_nvorientstruct_id_idx ON proposorientationscovs58 (nvorientstruct_id);
+CREATE UNIQUE INDEX proposnonorientationsproscovs58_nvorientstruct_id_idx ON proposnonorientationsproscovs58 (nvorientstruct_id);
+
+-- -----------------------------------------------------------------------------------------------------------
+-- 20120611: correction: une décision de refuse pour la thématique regressionsorientationseps58
+-- entraîne tout de même la création d'une nouvelle orientation
+-- -----------------------------------------------------------------------------------------------------------
+
+DROP INDEX orientsstructs_personne_id_rgorient_idx;
+ALTER TABLE orientsstructs DROP CONSTRAINT orientsstructs_statut_orient_oriente_rgorient_not_null_chk;
+ALTER TABLE orientsstructs DROP CONSTRAINT orientsstructs_origine_check;
+
+UPDATE orientsstructs
+	SET statut_orient = 'Orienté'
+	WHERE
+		typeorient_id IS NOT NULL
+		AND structurereferente_id IS NOT NULL
+		AND date_valid IS NOT NULL;
+
+INSERT INTO orientsstructs ( personne_id, typeorient_id, structurereferente_id, referent_id, date_propo, date_valid, statut_orient, rgorient, etatorient, user_id, origine )
+	SELECT
+			dossierseps.personne_id AS personne_id,
+			decisionsregressionsorientationseps58.typeorient_id AS typeorient_id,
+			decisionsregressionsorientationseps58.structurereferente_id AS structurereferente_id,
+			decisionsregressionsorientationseps58.referent_id AS referent_id,
+			DATE_TRUNC( 'day', regressionsorientationseps58.datedemande ) AS date_propo,
+			DATE_TRUNC( 'day', commissionseps.dateseance ) AS date_valid,
+			'Orienté' AS statut_orient,
+			NULL AS rgorient,
+			'decision' AS etatorient,
+			regressionsorientationseps58.user_id AS user_id,
+			'reorientation' AS origine
+		FROM decisionsregressionsorientationseps58
+			INNER JOIN passagescommissionseps ON ( decisionsregressionsorientationseps58.passagecommissionep_id  =passagescommissionseps.id )
+			INNER JOIN dossierseps ON ( passagescommissionseps.dossierep_id = dossierseps.id )
+			INNER JOIN regressionsorientationseps58 ON ( regressionsorientationseps58.dossierep_id = dossierseps.id )
+			INNER JOIN commissionseps ON ( passagescommissionseps.commissionep_id = commissionseps.id )
+		WHERE
+			commissionseps.etatcommissionep = 'traite'
+			AND passagescommissionseps.etatdossierep = 'traite'
+			AND decisionsregressionsorientationseps58.decision = 'refuse';
+
+UPDATE orientsstructs SET rgorient = NULL;
+UPDATE orientsstructs
+	SET rgorient = (
+		SELECT ( COUNT(orientsstructspcd.id) + 1 )
+			FROM orientsstructs AS orientsstructspcd
+			WHERE orientsstructspcd.personne_id = orientsstructs.personne_id
+				AND orientsstructspcd.id <> orientsstructs.id
+				AND orientsstructs.date_valid IS NOT NULL
+				AND orientsstructspcd.date_valid IS NOT NULL
+				AND (
+					orientsstructspcd.date_valid < orientsstructs.date_valid
+					OR ( orientsstructspcd.date_valid = orientsstructs.date_valid AND orientsstructspcd.id < orientsstructs.id )
+				)
+				AND orientsstructs.statut_orient = 'Orienté'
+				AND orientsstructspcd.statut_orient = 'Orienté'
+	)
+	WHERE
+		orientsstructs.date_valid IS NOT NULL
+		AND orientsstructs.statut_orient = 'Orienté';
+
+UPDATE orientsstructs
+	SET origine = 'manuelle'
+	WHERE rgorient = 1 AND origine = 'reorientation';
+
+UPDATE orientsstructs
+	SET origine = 'reorientation'
+	WHERE rgorient > 1 AND origine <> 'reorientation';
+
+CREATE UNIQUE INDEX orientsstructs_personne_id_rgorient_idx ON orientsstructs( personne_id, rgorient ) WHERE rgorient IS NOT NULL;
+
+ALTER TABLE orientsstructs ADD CONSTRAINT orientsstructs_statut_orient_oriente_rgorient_not_null_chk CHECK (
+	( statut_orient <> 'Orienté' AND rgorient IS NULL )
+	OR ( statut_orient = 'Orienté' AND rgorient IS NOT NULL )
+);
+
+ALTER TABLE orientsstructs ADD CONSTRAINT orientsstructs_origine_check CHECK(
+	( origine IS NULL AND date_valid IS NULL )
+	OR (
+		( origine IS NOT NULL AND date_valid IS NOT NULL )
+		AND (
+			( rgorient = 1 AND origine IN ( 'manuelle', 'cohorte' ) )
+			OR ( rgorient > 1 AND origine = 'reorientation' )
+		)
+	)
+);
+
+-------------------------------------------------------------------------------------------------------------
+-- 20120611: ajout des clés étrangères pour nouvelles orientations et nouveaux contrats
+-- d'insertion suite aux passages en EP.
+-------------------------------------------------------------------------------------------------------------
+
+--
+--  1°) nonorientationsproseps58
+--
+
+SELECT add_missing_table_field ( 'public', 'nonorientationsproseps58', 'nvorientstruct_id', 'INTEGER' );
+SELECT add_missing_constraint ( 'public', 'nonorientationsproseps58', 'nonorientationsproseps58_nvorientstruct_id_fkey', 'orientsstructs', 'nvorientstruct_id' );
+
+-- On rapatrie les données implicites
+CREATE OR REPLACE FUNCTION public.update_orientsstructs_decisionsnonorientationsproseps58() RETURNS VOID AS
+$$
+	DECLARE
+		v_row   record;
+		v_query text;
+	BEGIN
+		FOR v_row IN
+			SELECT
+					nonorientationsproseps58.id AS thematique_id,
+					orientsstructs.id AS orientstruct_id
+				FROM dossierseps
+					INNER JOIN nonorientationsproseps58 ON ( nonorientationsproseps58.dossierep_id = dossierseps.id )
+					INNER JOIN passagescommissionseps ON ( passagescommissionseps.dossierep_id = dossierseps.id )
+					INNER JOIN commissionseps ON ( passagescommissionseps.commissionep_id = commissionseps.id )
+					INNER JOIN decisionsnonorientationsproseps58 ON ( decisionsnonorientationsproseps58.passagecommissionep_id = passagescommissionseps.id )
+					INNER JOIN orientsstructs ON ( orientsstructs.personne_id = dossierseps.personne_id )
+				WHERE
+					dossierseps.themeep = 'nonorientationsproseps58'
+					AND passagescommissionseps.etatdossierep = 'traite'
+					AND commissionseps.etatcommissionep = 'traite'
+					AND decisionsnonorientationsproseps58.decision IN ( 'reorientation', 'maintienref' )
+					AND passagescommissionseps.id IN (
+						SELECT
+								p.id
+							FROM passagescommissionseps AS p
+								INNER JOIN commissionseps AS c ON ( p.commissionep_id = c.id )
+							WHERE dossierseps.id = p.dossierep_id
+							ORDER BY c.dateseance DESC
+							LIMIT 1
+					)
+					AND decisionsnonorientationsproseps58.id IN (
+						SELECT
+								d.id
+							FROM decisionsnonorientationsproseps58 AS d
+							WHERE passagescommissionseps.id = d.passagecommissionep_id
+							ORDER BY ( CASE WHEN d.etape = 'ep' THEN 1 WHEN etape = 'cg' THEN 2 ELSE 0 END ) DESC -- cg, ep
+							LIMIT 1
+					)
+					-- Jointure sur les orientations
+					AND orientsstructs.typeorient_id = decisionsnonorientationsproseps58.typeorient_id
+					AND orientsstructs.structurereferente_id = decisionsnonorientationsproseps58.structurereferente_id
+					AND orientsstructs.date_propo = DATE_TRUNC('day', nonorientationsproseps58.created)
+					AND orientsstructs.date_valid = DATE_TRUNC('day', commissionseps.dateseance)
+					AND orientsstructs.statut_orient = 'Orienté'
+					AND orientsstructs.etatorient = 'decision'
+		LOOP
+			-- Mise à jour dans la table nonorientationsproseps58
+			v_query := 'UPDATE nonorientationsproseps58 SET nvorientstruct_id = ' || v_row.orientstruct_id || ' WHERE id = ' || v_row.thematique_id || ';';
+			RAISE NOTICE  '%', v_query;
+			EXECUTE v_query;
+		END LOOP;
+	END;
+$$
+LANGUAGE plpgsql;
+
+SELECT public.update_orientsstructs_decisionsnonorientationsproseps58();
+DROP FUNCTION public.update_orientsstructs_decisionsnonorientationsproseps58();
+
+CREATE UNIQUE INDEX nonorientationsproseps58_nvorientstruct_id_idx ON nonorientationsproseps58 (nvorientstruct_id);
+
+--
+--  2°) regressionsorientationseps58
+--
+
+SELECT add_missing_table_field ( 'public', 'regressionsorientationseps58', 'nvorientstruct_id', 'INTEGER' );
+SELECT add_missing_constraint ( 'public', 'regressionsorientationseps58', 'regressionsorientationseps58_nvorientstruct_id_fkey', 'orientsstructs', 'nvorientstruct_id' );
+
+-- On rapatrie les données implicites
+CREATE OR REPLACE FUNCTION public.update_orientsstructs_decisionsregressionsorientationseps58() RETURNS VOID AS
+$$
+	DECLARE
+		v_row   record;
+		v_query text;
+	BEGIN
+		FOR v_row IN
+			SELECT
+					regressionsorientationseps58.id AS thematique_id,
+					orientsstructs.id AS orientstruct_id
+				FROM dossierseps
+					INNER JOIN regressionsorientationseps58 ON ( regressionsorientationseps58.dossierep_id = dossierseps.id )
+					INNER JOIN passagescommissionseps ON ( passagescommissionseps.dossierep_id = dossierseps.id )
+					INNER JOIN commissionseps ON ( passagescommissionseps.commissionep_id = commissionseps.id )
+					INNER JOIN decisionsregressionsorientationseps58 ON ( decisionsregressionsorientationseps58.passagecommissionep_id = passagescommissionseps.id )
+					INNER JOIN orientsstructs ON ( orientsstructs.personne_id = dossierseps.personne_id )
+				WHERE
+					dossierseps.themeep = 'regressionsorientationseps58'
+					AND passagescommissionseps.etatdossierep = 'traite'
+					AND commissionseps.etatcommissionep = 'traite'
+					AND decisionsregressionsorientationseps58.decision IN ( 'accepte', 'refuse' )
+					AND passagescommissionseps.id IN (
+						SELECT
+								p.id
+							FROM passagescommissionseps AS p
+								INNER JOIN commissionseps AS c ON ( p.commissionep_id = c.id )
+							WHERE dossierseps.id = p.dossierep_id
+							ORDER BY c.dateseance DESC
+							LIMIT 1
+					)
+					AND decisionsregressionsorientationseps58.id IN (
+						SELECT
+								d.id
+							FROM decisionsregressionsorientationseps58 AS d
+							WHERE passagescommissionseps.id = d.passagecommissionep_id
+							ORDER BY ( CASE WHEN d.etape = 'ep' THEN 1 WHEN etape = 'cg' THEN 2 ELSE 0 END ) DESC -- cg, ep
+							LIMIT 1
+					)
+					-- Jointure sur les orientations
+					AND orientsstructs.typeorient_id = decisionsregressionsorientationseps58.typeorient_id
+					AND orientsstructs.structurereferente_id = decisionsregressionsorientationseps58.structurereferente_id
+					AND orientsstructs.date_propo = DATE_TRUNC('day', regressionsorientationseps58.datedemande)
+					AND orientsstructs.date_valid = DATE_TRUNC('day', commissionseps.dateseance)
+					AND orientsstructs.statut_orient = 'Orienté'
+					AND orientsstructs.etatorient = 'decision'
+		LOOP
+			-- Mise à jour dans la table regressionsorientationseps58
+			v_query := 'UPDATE regressionsorientationseps58 SET nvorientstruct_id = ' || v_row.orientstruct_id || ' WHERE id = ' || v_row.thematique_id || ';';
+			RAISE NOTICE  '%', v_query;
+			EXECUTE v_query;
+		END LOOP;
+	END;
+$$
+LANGUAGE plpgsql;
+
+SELECT public.update_orientsstructs_decisionsregressionsorientationseps58();
+DROP FUNCTION public.update_orientsstructs_decisionsregressionsorientationseps58();
+
+CREATE UNIQUE INDEX regressionsorientationseps58_nvorientstruct_id_idx ON regressionsorientationseps58 (nvorientstruct_id);
+
+--
+-- 3.a°) saisinesbilansparcourseps66, nvorientstruct_id
+--
+
+SELECT add_missing_table_field ( 'public', 'saisinesbilansparcourseps66', 'nvorientstruct_id', 'INTEGER' );
+SELECT add_missing_constraint ( 'public', 'saisinesbilansparcourseps66', 'saisinesbilansparcourseps66_nvorientstruct_id_fkey', 'orientsstructs', 'nvorientstruct_id' );
+
+-- On rapatrie les données implicites
+CREATE OR REPLACE FUNCTION public.update_orientsstructs_decisionssaisinesbilansparcourseps66() RETURNS VOID AS
+$$
+	DECLARE
+		v_row   record;
+		v_query text;
+	BEGIN
+		FOR v_row IN
+			SELECT
+					saisinesbilansparcourseps66.id AS thematique_id,
+					orientsstructs.id AS orientstruct_id
+				FROM dossierseps
+					INNER JOIN saisinesbilansparcourseps66 ON ( saisinesbilansparcourseps66.dossierep_id = dossierseps.id )
+					INNER JOIN passagescommissionseps ON ( passagescommissionseps.dossierep_id = dossierseps.id )
+					INNER JOIN commissionseps ON ( passagescommissionseps.commissionep_id = commissionseps.id )
+					INNER JOIN decisionssaisinesbilansparcourseps66 ON ( decisionssaisinesbilansparcourseps66.passagecommissionep_id = passagescommissionseps.id )
+					INNER JOIN orientsstructs ON ( orientsstructs.personne_id = dossierseps.personne_id )
+				WHERE
+					dossierseps.themeep = 'saisinesbilansparcourseps66'
+					AND passagescommissionseps.etatdossierep = 'traite'
+					AND commissionseps.etatcommissionep = 'traite'
+					AND (
+						decisionssaisinesbilansparcourseps66.decision = 'reorientation'
+						OR (
+							decisionssaisinesbilansparcourseps66.decision = 'maintien'
+							AND NOT (
+								decisionssaisinesbilansparcourseps66.changementrefparcours = 'N'
+								AND decisionssaisinesbilansparcourseps66.typeorientprincipale_id IN (
+									SELECT id FROM typesorients WHERE lib_type_orient LIKE 'Emploi%'
+								)
+							)
+						)
+					)
+					AND passagescommissionseps.id IN (
+						SELECT
+								p.id
+							FROM passagescommissionseps AS p
+								INNER JOIN commissionseps AS c ON ( p.commissionep_id = c.id )
+							WHERE dossierseps.id = p.dossierep_id
+							ORDER BY c.dateseance DESC
+							LIMIT 1
+					)
+					AND decisionssaisinesbilansparcourseps66.id IN (
+						SELECT
+								d.id
+							FROM decisionssaisinesbilansparcourseps66 AS d
+							WHERE passagescommissionseps.id = d.passagecommissionep_id
+							ORDER BY ( CASE WHEN d.etape = 'ep' THEN 1 WHEN etape = 'cg' THEN 2 ELSE 0 END ) DESC -- cg, ep
+							LIMIT 1
+					)
+					-- Jointure sur les orientations
+					AND orientsstructs.typeorient_id = decisionssaisinesbilansparcourseps66.typeorient_id
+					AND orientsstructs.structurereferente_id = decisionssaisinesbilansparcourseps66.structurereferente_id
+					AND orientsstructs.date_propo = DATE_TRUNC('day', decisionssaisinesbilansparcourseps66.modified )
+					AND orientsstructs.date_valid = DATE_TRUNC('day', decisionssaisinesbilansparcourseps66.modified )
+					AND orientsstructs.user_id = decisionssaisinesbilansparcourseps66.user_id
+					AND orientsstructs.statut_orient = 'Orienté'
+		LOOP
+			-- Mise à jour dans la table saisinesbilansparcourseps66
+			v_query := 'UPDATE saisinesbilansparcourseps66 SET nvorientstruct_id = ' || v_row.orientstruct_id || ' WHERE id = ' || v_row.thematique_id || ';';
+			RAISE NOTICE  '%', v_query;
+			EXECUTE v_query;
+		END LOOP;
+	END;
+$$
+LANGUAGE plpgsql;
+
+SELECT public.update_orientsstructs_decisionssaisinesbilansparcourseps66();
+DROP FUNCTION public.update_orientsstructs_decisionssaisinesbilansparcourseps66();
+
+CREATE UNIQUE INDEX saisinesbilansparcourseps66_nvorientstruct_id_idx ON saisinesbilansparcourseps66 (nvorientstruct_id);
+
+--
+-- 3.b°) saisinesbilansparcourseps66.nvcontratinsertion_id
+--
+
+SELECT add_missing_table_field ( 'public', 'saisinesbilansparcourseps66', 'nvcontratinsertion_id', 'INTEGER' );
+SELECT add_missing_constraint ( 'public', 'saisinesbilansparcourseps66', 'saisinesbilansparcourseps66_nvcontratinsertion_id_fkey', 'contratsinsertion', 'nvcontratinsertion_id' );
+
+-- On rapatrie les données implicites
+CREATE OR REPLACE FUNCTION public.update_contratsinsertion_decisionssaisinesbilansparcourseps66() RETURNS VOID AS
+$$
+	DECLARE
+		v_row   record;
+		v_query text;
+	BEGIN
+		FOR v_row IN
+			SELECT
+					saisinesbilansparcourseps66.id AS thematique_id,
+					contratsinsertion.id AS orientstruct_id
+				FROM dossierseps
+					INNER JOIN saisinesbilansparcourseps66 ON ( saisinesbilansparcourseps66.dossierep_id = dossierseps.id )
+					INNER JOIN passagescommissionseps ON ( passagescommissionseps.dossierep_id = dossierseps.id )
+					INNER JOIN commissionseps ON ( passagescommissionseps.commissionep_id = commissionseps.id )
+					INNER JOIN decisionssaisinesbilansparcourseps66 ON ( decisionssaisinesbilansparcourseps66.passagecommissionep_id = passagescommissionseps.id )
+					INNER JOIN contratsinsertion ON ( contratsinsertion.personne_id = dossierseps.personne_id )
+					INNER JOIN bilansparcours66 ON ( bilansparcours66.id = saisinesbilansparcourseps66.bilanparcours66_id )
+				WHERE
+					dossierseps.themeep = 'saisinesbilansparcourseps66'
+					AND passagescommissionseps.etatdossierep = 'traite'
+					AND commissionseps.etatcommissionep = 'traite'
+					AND decisionssaisinesbilansparcourseps66.decision = 'maintien'
+					AND decisionssaisinesbilansparcourseps66.changementrefparcours = 'N'
+					AND decisionssaisinesbilansparcourseps66.typeorientprincipale_id IN (
+						SELECT id FROM typesorients WHERE lib_type_orient LIKE 'Emploi%'
+					)
+					AND passagescommissionseps.id IN (
+						SELECT
+								p.id
+							FROM passagescommissionseps AS p
+								INNER JOIN commissionseps AS c ON ( p.commissionep_id = c.id )
+							WHERE dossierseps.id = p.dossierep_id
+							ORDER BY c.dateseance DESC
+							LIMIT 1
+					)
+					AND decisionssaisinesbilansparcourseps66.id IN (
+						SELECT
+								d.id
+							FROM decisionssaisinesbilansparcourseps66 AS d
+							WHERE passagescommissionseps.id = d.passagecommissionep_id
+							ORDER BY ( CASE WHEN d.etape = 'ep' THEN 1 WHEN etape = 'cg' THEN 2 ELSE 0 END ) DESC -- cg, ep
+							LIMIT 1
+					)
+					-- Jointure sur les CER
+					AND contratsinsertion.dd_ci = bilansparcours66.ddreconductoncontrat
+					AND contratsinsertion.df_ci = bilansparcours66.dfreconductoncontrat
+					AND contratsinsertion.duree_engag = bilansparcours66.duree_engag
+					AND contratsinsertion.typocontrat_id IN ( SELECT id FROM typoscontrats WHERE lib_typo = 'Renouvellement' )
+					AND contratsinsertion.date_saisi_ci = DATE_TRUNC('day', decisionssaisinesbilansparcourseps66.modified )
+		LOOP
+			-- Mise à jour dans la table saisinesbilansparcourseps66
+			v_query := 'UPDATE saisinesbilansparcourseps66 SET nvcontratinsertion_id = ' || v_row.orientstruct_id || ' WHERE id = ' || v_row.thematique_id || ';';
+			RAISE NOTICE  '%', v_query;
+			EXECUTE v_query;
+		END LOOP;
+	END;
+$$
+LANGUAGE plpgsql;
+
+SELECT public.update_contratsinsertion_decisionssaisinesbilansparcourseps66();
+DROP FUNCTION public.update_contratsinsertion_decisionssaisinesbilansparcourseps66();
+
+CREATE UNIQUE INDEX saisinesbilansparcourseps66_nvcontratinsertion_id_idx ON saisinesbilansparcourseps66 (nvcontratinsertion_id);
+
+--
+-- 4°) FIXME: defautsinsertionseps66 nvbilanparcours66_id, nvdossierpcg66_id
+--
+
+--
+-- 5°) nonorientationsproseps93.nvorientstruct_id
+--
+
+SELECT add_missing_table_field ( 'public', 'nonorientationsproseps93', 'nvorientstruct_id', 'INTEGER' );
+SELECT add_missing_constraint ( 'public', 'nonorientationsproseps93', 'nonorientationsproseps93_nvorientstruct_id_fkey', 'orientsstructs', 'nvorientstruct_id' );
+
+-- On rapatrie les données implicites
+CREATE OR REPLACE FUNCTION public.update_orientsstructs_decisionsnonorientationsproseps93() RETURNS VOID AS
+$$
+	DECLARE
+		v_row   record;
+		v_query text;
+	BEGIN
+		FOR v_row IN
+			SELECT
+					nonorientationsproseps93.id AS thematique_id,
+					orientsstructs.id AS orientstruct_id
+				FROM dossierseps
+					INNER JOIN nonorientationsproseps93 ON ( nonorientationsproseps93.dossierep_id = dossierseps.id )
+					INNER JOIN passagescommissionseps ON ( passagescommissionseps.dossierep_id = dossierseps.id )
+					INNER JOIN commissionseps ON ( passagescommissionseps.commissionep_id = commissionseps.id )
+					INNER JOIN decisionsnonorientationsproseps93 ON ( decisionsnonorientationsproseps93.passagecommissionep_id = passagescommissionseps.id )
+					INNER JOIN orientsstructs ON ( orientsstructs.personne_id = dossierseps.personne_id )
+				WHERE
+					dossierseps.themeep = 'nonorientationsproseps93'
+					AND passagescommissionseps.etatdossierep = 'traite'
+					AND commissionseps.etatcommissionep = 'traite'
+					AND decisionsnonorientationsproseps93.decision = 'reorientation'
+					AND passagescommissionseps.id IN (
+						SELECT
+								p.id
+							FROM passagescommissionseps AS p
+								INNER JOIN commissionseps AS c ON ( p.commissionep_id = c.id )
+							WHERE dossierseps.id = p.dossierep_id
+							ORDER BY c.dateseance DESC
+							LIMIT 1
+					)
+					AND decisionsnonorientationsproseps93.id IN (
+						SELECT
+								d.id
+							FROM decisionsnonorientationsproseps93 AS d
+							WHERE passagescommissionseps.id = d.passagecommissionep_id
+							ORDER BY ( CASE WHEN d.etape = 'ep' THEN 1 WHEN etape = 'cg' THEN 2 ELSE 0 END ) DESC -- cg, ep
+							LIMIT 1
+					)
+					-- Jointure sur les orientations
+					AND orientsstructs.typeorient_id = decisionsnonorientationsproseps93.typeorient_id
+					AND orientsstructs.structurereferente_id = decisionsnonorientationsproseps93.structurereferente_id
+					AND orientsstructs.date_propo = DATE_TRUNC('day', nonorientationsproseps93.created )
+					AND orientsstructs.date_valid = DATE_TRUNC('day', commissionseps.dateseance )
+					AND orientsstructs.statut_orient = 'Orienté'
+					AND orientsstructs.etatorient = 'decision'
+					AND (
+						orientsstructs.user_id IS NULL
+						OR orientsstructs.user_id = nonorientationsproseps93.user_id
+					)
+		LOOP
+			-- Mise à jour dans la table nonorientationsproseps93
+			v_query := 'UPDATE nonorientationsproseps93 SET nvorientstruct_id = ' || v_row.orientstruct_id || ' WHERE id = ' || v_row.thematique_id || ';';
+			RAISE NOTICE  '%', v_query;
+			EXECUTE v_query;
+		END LOOP;
+	END;
+$$
+LANGUAGE plpgsql;
+
+SELECT public.update_orientsstructs_decisionsnonorientationsproseps93();
+DROP FUNCTION public.update_orientsstructs_decisionsnonorientationsproseps93();
+
+CREATE UNIQUE INDEX nonorientationsproseps93_nvorientstruct_id_idx ON nonorientationsproseps93 (nvorientstruct_id);
+
+--
+-- 6°) reorientationseps93.nvorientstruct_id
+--
+
+SELECT add_missing_table_field ( 'public', 'reorientationseps93', 'nvorientstruct_id', 'INTEGER' );
+SELECT add_missing_constraint ( 'public', 'reorientationseps93', 'reorientationseps93_nvorientstruct_id_fkey', 'orientsstructs', 'nvorientstruct_id' );
+
+-- On rapatrie les données implicites
+CREATE OR REPLACE FUNCTION public.update_orientsstructs_decisionsreorientationseps93() RETURNS VOID AS
+$$
+	DECLARE
+		v_row   record;
+		v_query text;
+	BEGIN
+		FOR v_row IN
+			SELECT
+					reorientationseps93.id AS thematique_id,
+					decisionsreorientationseps93.orientstruct_id AS orientstruct_id
+				FROM dossierseps
+					INNER JOIN reorientationseps93 ON ( reorientationseps93.dossierep_id = dossierseps.id )
+					INNER JOIN passagescommissionseps ON ( passagescommissionseps.dossierep_id = dossierseps.id )
+					INNER JOIN commissionseps ON ( passagescommissionseps.commissionep_id = commissionseps.id )
+					INNER JOIN decisionsreorientationseps93 ON ( decisionsreorientationseps93.passagecommissionep_id = passagescommissionseps.id )
+				WHERE
+					dossierseps.themeep = 'reorientationseps93'
+					AND passagescommissionseps.etatdossierep = 'traite'
+					AND commissionseps.etatcommissionep = 'traite'
+					AND decisionsreorientationseps93.decision = 'accepte'
+					AND passagescommissionseps.id IN (
+						SELECT
+								p.id
+							FROM passagescommissionseps AS p
+								INNER JOIN commissionseps AS c ON ( p.commissionep_id = c.id )
+							WHERE dossierseps.id = p.dossierep_id
+							ORDER BY c.dateseance DESC
+							LIMIT 1
+					)
+					AND decisionsreorientationseps93.id IN (
+						SELECT
+								d.id
+							FROM decisionsreorientationseps93 AS d
+							WHERE passagescommissionseps.id = d.passagecommissionep_id
+							ORDER BY ( CASE WHEN d.etape = 'ep' THEN 1 WHEN etape = 'cg' THEN 2 ELSE 0 END ) DESC -- cg, ep
+							LIMIT 1
+					)
+					AND decisionsreorientationseps93.orientstruct_id IS NOT NULL
+		LOOP
+			-- Mise à jour dans la table reorientationseps93
+			v_query := 'UPDATE reorientationseps93 SET nvorientstruct_id = ' || v_row.orientstruct_id || ' WHERE id = ' || v_row.thematique_id || ';';
+			RAISE NOTICE  '%', v_query;
+			EXECUTE v_query;
+		END LOOP;
+	END;
+$$
+LANGUAGE plpgsql;
+
+SELECT public.update_orientsstructs_decisionsreorientationseps93();
+DROP FUNCTION public.update_orientsstructs_decisionsreorientationseps93();
+
+CREATE UNIQUE INDEX reorientationseps93_nvorientstruct_id_idx ON reorientationseps93 (nvorientstruct_id);
+
+-- FIXME: changement des chemins pour l'impression
+-- Suppression de la colonne decisionsreorientationseps93.orientstruct_id (à présent dans reorientationseps93.nvorientstruct_id)
+-- grep -nri "\(Decisionreorientationep93\|decisionsreorientationseps93\).*orientstruct" app | grep -v "\.svn"
+SELECT alter_table_drop_column_if_exists('public', 'decisionsreorientationseps93', 'orientstruct_id');
+
+-- TODO: dans les méthodes getDecisionPdf de modèles de thématiques, on passe encore par les décisions alors qu'on pourrait passer par nvorientstruct_id (/commissionseps/impressionDecision)
 
 -- *****************************************************************************
 COMMIT;

@@ -383,6 +383,19 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Saisinebilanparcoursep66nv' => array(
+				'className' => 'Saisinebilanparcoursep66',
+				'foreignKey' => 'nvcontratinsertion_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 			/*'Objetcontratinsertion' => array(
 				'className' => 'Objetcontratinsertion',
 				'foreignKey' => 'contratinsertion_id',

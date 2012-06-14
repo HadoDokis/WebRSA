@@ -86,6 +86,13 @@
 				'fields' => '',
 				'order' => ''
 			),
+			'Nvorientstruct' => array(
+				'className' => 'Orientstruct',
+				'foreignKey' => 'nvorientstruct_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
 		);
 
 		/**
@@ -295,11 +302,11 @@
 					$this->Orientstruct->create( $orientstruct );
 					$success = $this->Orientstruct->save() && $success;
 
-					// On enregistre l'orientstruct liée dans la décision
-					$this->Dossierep->Passagecommissionep->Decisionreorientationep93->updateAll(
-						array( 'Decisionreorientationep93.orientstruct_id' => $this->Orientstruct->id ),
-						array( 'Decisionreorientationep93.id' => $dossierep['Decisionreorientationep93']['id'] )
-					);
+					// Mise à jour de l'enregistrement de la thématique avec l'id de la nouvelle orientation
+					$success = $this->updateAll(
+						array( "\"{$this->alias}\".\"nvorientstruct_id\"" => $this->Orientstruct->id ),
+						array( "\"{$this->alias}\".\"id\"" => $dossierep[$this->alias]['id'] )
+					) && $success;
 
 					// Recherche dernier CER
 					$dernierCerId = $this->Orientstruct->Personne->Contratinsertion->find(

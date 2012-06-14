@@ -360,9 +360,9 @@ function disableFieldsOnValue( selectId, fieldsIds, value, condition ) {
 		var field = $( fieldId );
 		if( field != null ) {
 			if( result == condition ) {
-                                
+
 				field.disable();
-   
+
 				if( input = field.up( 'div.input' ) )
 					input.addClassName( 'disabled' );
 				else if( input = field.up( 'div.checkbox' ) )
@@ -407,7 +407,7 @@ function disableFieldsetOnValue( selectId, fieldsetId, value, condition, toggleV
 			result = true;
 		}
 	} );
-	
+
 	var fieldset = $( fieldsetId );
 
 	if( result ) {
@@ -1035,10 +1035,18 @@ function in_array(p_val, p_array) {
 
 /**
 * Fonction pour la visualisation des décisions des EPs (app/views/commissionseps/decisionXXXX.ctp)
+*
+* @param string idColumnToChangeColspan L'id de la colonne qui s'étendra sur les colonnes à masquer
+* @param string decision La décision courante
+* @param integer colspanMax Le nombre de colonnes à masquer
+* @param array idsNonRaisonpassage Les ids des colonnes à masquer
+* @param array decisionsHide Les valeurs de decision entraînant un masquage
 */
 
-function changeColspanViewInfosEps( idColumnToChangeColspan, decision, colspanMax, idsNonRaisonpassage ) {
-	if ( in_array( decision, [ 'reporte', 'annule', 'maintienref', 'refuse', 'suspensionnonrespect', 'suspensiondefaut'/*, 'maintien'*/ ] ) ) {
+function changeColspanViewInfosEps( idColumnToChangeColspan, decision, colspanMax, idsNonRaisonpassage, decisionsHide ) {
+	decisionsHide = typeof(decisionsHide) != 'undefined' ? decisionsHide : [ 'reporte', 'annule', 'maintienref', 'refuse', 'suspensionnonrespect', 'suspensiondefaut'/*, 'maintien'*/ ];
+
+	if ( in_array( decision, decisionsHide ) ) {
 		$( idColumnToChangeColspan ).writeAttribute( "colspan", colspanMax );
 		idsNonRaisonpassage.each( function ( id ) {
 			$( id ).hide();

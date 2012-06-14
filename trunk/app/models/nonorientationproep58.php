@@ -18,13 +18,20 @@
 				'fields' => '',
 				'order' => ''
 			),
+			'Nvorientstruct' => array(
+				'className' => 'Orientstruct',
+				'foreignKey' => 'nvorientstruct_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
 			'Orientstruct' => array(
 				'className' => 'Orientstruct',
 				'foreignKey' => 'orientstruct_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
-			)
+			),
 		);
 
 		/**
@@ -127,6 +134,13 @@
 						);
 						$this->Orientstruct->create( $orientstruct );
 						$success = $this->Orientstruct->save() && $success;
+
+						// Mise à jour de l'enregistrement de la thématique avec l'id de la nouvelle orientation
+						$success = $this->updateAll(
+							array( "\"{$this->alias}\".\"nvorientstruct_id\"" => $this->Orientstruct->id ),
+							array( "\"{$this->alias}\".\"id\"" => $dossierep[$this->alias]['id'] )
+						) && $success;
+
 						$success = $this->Orientstruct->generatePdf( $this->Orientstruct->id, $dossierep['Nonorientationproep58']['user_id'] ) && $success;
 					}
 				}

@@ -17,6 +17,30 @@
 			'%s/decision_reporte.odt'
 		);
 
+		public $belongsTo = array(
+			'Dossierep' => array(
+				'className' => 'Dossierep',
+				'foreignKey' => 'dossierep_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			'Nvorientstruct' => array(
+				'className' => 'Orientstruct',
+				'foreignKey' => 'nvorientstruct_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			'Orientstruct' => array(
+				'className' => 'Orientstruct',
+				'foreignKey' => 'orientstruct_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+		);
+
 		/**
 		* Modèle de document pour la convocation du bénéficiaire.
 		*/
@@ -145,7 +169,12 @@
 
 						$this->Orientstruct->create( $orientstruct );
 						$success = $this->Orientstruct->save() && $success;
-						$success = $this->Orientstruct->generatePdf( $this->Orientstruct->id, $dossierep['Nonorientationproep93']['user_id'] ) && $success;
+
+						// Mise à jour de l'enregistrement de la thématique avec l'id de la nouvelle orientation
+						$success = $this->updateAll(
+							array( "\"{$this->alias}\".\"nvorientstruct_id\"" => $this->Orientstruct->id ),
+							array( "\"{$this->alias}\".\"id\"" => $dossierep[$this->alias]['id'] )
+						) && $success;
 					}
 				}
 			}
