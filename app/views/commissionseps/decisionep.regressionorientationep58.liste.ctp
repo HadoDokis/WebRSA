@@ -45,7 +45,17 @@ echo '<table><thead>
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
 		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
-			changeColspanViewInfosEps( 'Decisionregressionorientationep58<?php echo $i;?>DecisionColumn', '<?php echo Set::classicExtract( $dossiers, "{$theme}.liste.{$i}.Passagecommissionep.0.Decisionregressionorientationep58.0.decision" );?>', 4, [ 'Decisionregressionorientationep58<?php echo $i;?>TypeorientId', 'Decisionregressionorientationep58<?php echo $i;?>StructurereferenteId', 'Decisionregressionorientationep58<?php echo $i;?>ReferentId' ] );
+			changeColspanViewInfosEps(
+				'Decisionregressionorientationep58<?php echo $i;?>DecisionColumn',
+				'<?php echo Set::classicExtract( $dossiers, "{$theme}.liste.{$i}.Passagecommissionep.0.Decisionregressionorientationep58.0.decision" );?>',
+				4,
+				[
+					'Decisionregressionorientationep58<?php echo $i;?>TypeorientId',
+					'Decisionregressionorientationep58<?php echo $i;?>StructurereferenteId',
+					'Decisionregressionorientationep58<?php echo $i;?>ReferentId'
+				],
+				[ 'reporte', 'annule', 'suspensionnonrespect', 'suspensiondefaut' ]
+			);
 		<?php endfor;?>
 	});
 </script>

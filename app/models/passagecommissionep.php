@@ -228,5 +228,41 @@
 				'counterQuery' => ''
 			),
 		);
+
+		/**
+		 * Sous-requête permettant d'obtenir l'id du dernier passage en commission d'EP (par-rapport à la
+		 * date de la commission) d'un dossier d'EP.
+		 *
+		 * @param string $dossierepId Le champ de la requête principale correspondant
+		 *	à la clé primaire de la table dossierseps
+		 * @return string
+		 */
+		public function sqDernier( $dossierepId = 'Dossierep.id' ) {
+			$passageAlias = Inflector::tableize( $this->alias );
+			$commissionepAlias = Inflector::tableize( $this->Commissionep->alias );
+
+			return $this->sq(
+				array(
+					'fields' => array(
+						"{$passageAlias}.id"
+					),
+					'alias' => $passageAlias,
+					'conditions' => array(
+						"{$passageAlias}.dossierep_id = {$dossierepId}"
+					),
+					'joins' => array(
+						array_words_replace(
+							$this->join( 'Commissionep', array( 'type' => 'INNER' ) ),
+							array(
+								$this->alias => $passageAlias,
+								$this->Commissionep->alias => $commissionepAlias
+							)
+						)
+					),
+					'order' => array( "{$commissionepAlias}.dateseance DESC" ),
+					'limit' => 1
+				)
+			);
+		}
 	}
 ?>

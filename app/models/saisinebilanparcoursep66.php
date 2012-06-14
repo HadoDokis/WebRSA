@@ -52,6 +52,20 @@
 				'fields' => '',
 				'order' => ''
 			),
+			'Nvorientstruct' => array(
+				'className' => 'Orientstruct',
+				'foreignKey' => 'nvorientstruct_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			'Nvcontratinsertion' => array(
+				'className' => 'Contratinsertion',
+				'foreignKey' => 'nvcontratinsertion_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
 			'Structurereferente' => array(
 				'className' => 'Structurereferente',
 				'foreignKey' => 'structurereferente_id',
@@ -169,7 +183,6 @@
 						$vxContratinsertion = array();
 					}
 					$contratinsertion = $vxContratinsertion;
-					unset( $contratinsertion['Contratinsertion']['id'] );
 					$contratinsertion['Contratinsertion']['dd_ci'] = $dossierep['Saisinebilanparcoursep66']['Bilanparcours66']['ddreconductoncontrat'];
 					$contratinsertion['Contratinsertion']['df_ci'] = $dossierep['Saisinebilanparcoursep66']['Bilanparcours66']['dfreconductoncontrat'];
 					$contratinsertion['Contratinsertion']['duree_engag'] = $dossierep['Saisinebilanparcoursep66']['Bilanparcours66']['duree_engag'];
@@ -178,21 +191,22 @@
 					$contratinsertion['Contratinsertion']['typocontrat_id'] = $idRenouvellement;
 					$contratinsertion['Contratinsertion']['rg_ci'] = ( Set::classicExtract( $contratinsertion, 'Contratinsertion.rg_ci' ) + 1 );
 
-					// La date de validation est à null afin de pouvoir modifier le contrat
-					$contratinsertion['Contratinsertion']['datevalidation_ci'] = null;
 					// La date de saisie du nouveau contrat est égale à la date du jour
 					$contratinsertion['Contratinsertion']['date_saisi_ci'] = date( 'Y-m-d' );
 
-					unset($contratinsertion['Contratinsertion']['decision_ci']);
-					unset($contratinsertion['Contratinsertion']['datevalidation_ci']);
-
-					$fields = array( 'actions_prev', 'aut_expr_prof', 'emp_trouv', 'sect_acti_emp', 'emp_occupe', 'duree_hebdo_emp', 'nat_cont_trav', 'duree_cdd', 'niveausalaire' ); // FIXME: une variable du modèle
+					$fields = array( 'id', 'decision_ci', 'datevalidation_ci', 'actions_prev', 'aut_expr_prof', 'emp_trouv', 'sect_acti_emp', 'emp_occupe', 'duree_hebdo_emp', 'nat_cont_trav', 'duree_cdd', 'niveausalaire' ); // FIXME: une variable du modèle
 					foreach( $fields as $field ) {
 						unset( $contratinsertion['Contratinsertion'][$field] );
 					}
 
 					$this->Bilanparcours66->Contratinsertion->create( $contratinsertion );
 					$success = $this->Bilanparcours66->Contratinsertion->save() && $success;
+
+					// Mise à jour de l'enregistrement de la thématique avec l'id du nouveau CER
+					$success = $this->updateAll(
+						array( "\"{$this->alias}\".\"nvcontratinsertion_id\"" => $this->Bilanparcours66->Contratinsertion->id ),
+						array( "\"{$this->alias}\".\"id\"" => $dossierep[$this->alias]['id'] )
+					) && $success;
 				}
 				elseif ( $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['decision'] == 'maintien' || $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['decision'] == 'reorientation' ) {
 					$orientstruct = array(
@@ -208,6 +222,12 @@
 					);
 					$this->Bilanparcours66->Orientstruct->create( $orientstruct );
 					$success = $this->Bilanparcours66->Orientstruct->save() && $success;
+
+					// Mise à jour de l'enregistrement de la thématique avec l'id de la nouvelle orientation
+					$success = $this->updateAll(
+						array( "\"{$this->alias}\".\"nvorientstruct_id\"" => $this->Bilanparcours66->Orientstruct->id ),
+						array( "\"{$this->alias}\".\"id\"" => $dossierep[$this->alias]['id'] )
+					) && $success;
 				}
 
 				if( !empty( $dossierep['Bilanparcours66']['contratinsertion_id'] ) ) {

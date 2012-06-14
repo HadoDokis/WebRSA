@@ -540,9 +540,7 @@
 						);
 
 					}
-// debug($passagecov58);
-// debug( $contratinsertion );
-// die();
+
 					$this->Dossiercov58->Personne->Contratinsertion->create( $contratinsertion ) && $success;
 					$success = $this->Dossiercov58->Personne->Contratinsertion->save() && $success;
 				}

@@ -32,9 +32,16 @@
 		);
 
 		public $belongsTo = array(
-			'Typeorient' => array(
-				'className' => 'Typeorient',
-				'foreignKey' => 'typeorient_id',
+			'Passagecommissionep' => array(
+				'className' => 'Passagecommissionep',
+				'foreignKey' => 'passagecommissionep_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			'Referent' => array(
+				'className' => 'Referent',
+				'foreignKey' => 'referent_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
@@ -46,9 +53,9 @@
 				'fields' => '',
 				'order' => ''
 			),
-			'Passagecommissionep' => array(
-				'className' => 'Passagecommissionep',
-				'foreignKey' => 'passagecommissionep_id',
+			'Typeorient' => array(
+				'className' => 'Typeorient',
+				'foreignKey' => 'typeorient_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
@@ -56,13 +63,6 @@
 			'User' => array(
 				'className' => 'User',
 				'foreignKey' => 'user_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
-			),
-			'Referent' => array(
-				'className' => 'Referent',
-				'foreignKey' => 'referent_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''

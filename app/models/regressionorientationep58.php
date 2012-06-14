@@ -25,6 +25,13 @@
 				'fields' => '',
 				'order' => ''
 			),
+			'Nvorientstruct' => array(
+				'className' => 'Orientstruct',
+				'foreignKey' => 'nvorientstruct_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
 			'Structurereferente' => array(
 				'className' => 'Structurereferente',
 				'foreignKey' => 'structurereferente_id',
@@ -708,7 +715,7 @@
 			);
 
 			foreach( $dossierseps as $dossierep ) {
-				if ( $dossierep['Passagecommissionep'][0]['Decisionregressionorientationep58'][0]['decision'] == 'accepte' ) {
+				if ( in_array( $dossierep['Passagecommissionep'][0]['Decisionregressionorientationep58'][0]['decision'], array( 'accepte', 'refuse' ) ) ) {
 					$orientstruct = array(
 						'Orientstruct' => array(
 							'personne_id' => $dossierep['Dossierep']['personne_id'],
@@ -725,6 +732,13 @@
 					);
 					$this->Structurereferente->Orientstruct->create( $orientstruct );
 					$success = $this->Structurereferente->Orientstruct->save() && $success;
+
+					// Mise à jour de l'enregistrement de la thématique avec l'id de la nouvelle orientation
+					$success = $this->updateAll(
+						array( "\"{$this->alias}\".\"nvorientstruct_id\"" => $this->Orientstruct->id ),
+						array( "\"{$this->alias}\".\"id\"" => $dossierep[$this->alias]['id'] )
+					) && $success;
+
 					$success = $this->Structurereferente->Orientstruct->generatePdf( $this->Structurereferente->Orientstruct->id, $dossierep['Regressionorientationep58']['user_id'] ) && $success;
 				}
 			}

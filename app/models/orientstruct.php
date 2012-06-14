@@ -136,6 +136,19 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Nonorientationproep58nv' => array(
+				'className' => 'Nonorientationproep58',
+				'foreignKey' => 'nvorientstruct_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 			'Nonorientationproep66' => array(
 				'className' => 'Nonorientationproep66',
 				'foreignKey' => 'orientstruct_id',
@@ -201,6 +214,19 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Regressionorientationep58nv' => array(
+				'className' => 'Regressionorientationep58',
+				'foreignKey' => 'nvorientstruct_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 			'Fichiermodule' => array(
 				'className' => 'Fichiermodule',
 				'foreignKey' => false,
@@ -230,9 +256,9 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
-			'Decisionreorientationep93' => array(
-				'className' => 'Decisionreorientationep93',
-				'foreignKey' => 'orientstruct_id',
+			'Saisinebilanparcoursep66nv' => array(
+				'className' => 'Saisinebilanparcoursep66',
+				'foreignKey' => 'nvorientstruct_id',
 				'dependent' => true,
 				'conditions' => '',
 				'fields' => '',
@@ -259,6 +285,32 @@
 			'Sanctionep58' => array(
 				'className' => 'Sanctionep58',
 				'foreignKey' => 'orientstruct_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Nonorientationproep66nv' => array(
+				'className' => 'Nonorientationproep66',
+				'foreignKey' => 'nvorientstruct_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Reorientationep93nv' => array(
+				'className' => 'Reorientationep93',
+				'foreignKey' => 'nvorientstruct_id',
 				'dependent' => true,
 				'conditions' => '',
 				'fields' => '',
@@ -918,13 +970,13 @@
 
 			return $return;
 		}
-		
-		
+
+
 		public function getPdfNonoriente66 ( $orientstruct_id ) {
 			$data = $this->getDataForPdf( $orientstruct_id );
-			
+
 			$Option = ClassRegistry::init( 'Option' );
-			
+
 			$options = array(
 				'Adresse' => array(
 					'typevoie' => $Option->typevoie()
@@ -933,7 +985,7 @@
 					'qual' => $Option->qual()
 				)
 			);
-			
+
 			$nonoriente66 = $this->Personne->Nonoriente66->find(
 				'first',
 				array(
@@ -946,7 +998,7 @@
 			$originePdfOrientation = Set::classicExtract( $nonoriente66, 'Nonoriente66.origine' );
 			$typeOrientParentIdPdf = Set::classicExtract( $data, 'Typeorient.parentid' );
 
-			
+
 			$typesorientsParentidsSocial = Configure::read( 'Orientstruct.typeorientprincipale.SOCIAL' );
 			$typesorientsParentidsEmploi = Configure::read( 'Orientstruct.typeorientprincipale.Emploi' );
 
@@ -961,7 +1013,7 @@
 					$modeleodt = 'Orientation/orientationsociale.odt';// INFO = courrier 4
 				}
 			}
-			
+
 			return $this->ged(
 				$data,
 				$modeleodt,
