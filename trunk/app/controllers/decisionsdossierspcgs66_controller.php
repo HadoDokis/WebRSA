@@ -344,7 +344,7 @@
 
 
 			if ( !empty( $this->data ) ) {
-// debug( $this->data );
+// debug( $dossierpcg66 );
 // die();
 				if( $this->Decisiondossierpcg66->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
 					$saved = $this->Decisiondossierpcg66->save( $this->data );
@@ -361,29 +361,31 @@
 						}
 					}
 					
-					// Proposition de non validation
-					if( $this->Decisiondossierpcg66->Dossierpcg66->Contratinsertion->Propodecisioncer66->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
-						$saved = $this->Decisiondossierpcg66->Dossierpcg66->Contratinsertion->Propodecisioncer66->save( $this->data );
+					if ( !empty($dossierpcg66['Dossierpcg66']['contratinsertion_id'])){
+						// Proposition de non validation
+						if( $this->Decisiondossierpcg66->Dossierpcg66->Contratinsertion->Propodecisioncer66->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
+							$saved = $this->Decisiondossierpcg66->Dossierpcg66->Contratinsertion->Propodecisioncer66->save( $this->data );
 
-						if( !isset( $this->data['Motifcernonvalid66'] ) && !empty( $propodecisioncer66 ) ){
-							$saved = $this->Decisiondossierpcg66->Dossierpcg66->Contratinsertion->Propodecisioncer66->Motifcernonvalid66Propodecisioncer66->deleteAll(
-								array(
-									'Motifcernonvalid66Propodecisioncer66.propodecisioncer66_id' => $this->Decisiondossierpcg66->Dossierpcg66->Contratinsertion->Propodecisioncer66->id
-								)
-							) && $saved;
+							if( !isset( $this->data['Motifcernonvalid66'] ) && !empty( $propodecisioncer66 ) ){
+								$saved = $this->Decisiondossierpcg66->Dossierpcg66->Contratinsertion->Propodecisioncer66->Motifcernonvalid66Propodecisioncer66->deleteAll(
+									array(
+										'Motifcernonvalid66Propodecisioncer66.propodecisioncer66_id' => $this->Decisiondossierpcg66->Dossierpcg66->Contratinsertion->Propodecisioncer66->id
+									)
+								) && $saved;
 
-							$saved = $this->Decisiondossierpcg66->Dossierpcg66->Contratinsertion->Propodecisioncer66->updateAll(
-								array(
-									'Propodecisioncer66.motifficheliaison' => null,
-									'Propodecisioncer66.motifnotifnonvalid' => null
-								),
-								array(
-									'Propodecisioncer66.id' => $this->Decisiondossierpcg66->Dossierpcg66->Contratinsertion->Propodecisioncer66->id
-								)
-							) && $saved;
+								$saved = $this->Decisiondossierpcg66->Dossierpcg66->Contratinsertion->Propodecisioncer66->updateAll(
+									array(
+										'Propodecisioncer66.motifficheliaison' => null,
+										'Propodecisioncer66.motifnotifnonvalid' => null
+									),
+									array(
+										'Propodecisioncer66.id' => $this->Decisiondossierpcg66->Dossierpcg66->Contratinsertion->Propodecisioncer66->id
+									)
+								) && $saved;
 
+							}
 						}
-					}
+					} 
 					//
 					
 
