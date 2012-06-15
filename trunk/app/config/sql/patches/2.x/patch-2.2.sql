@@ -568,14 +568,13 @@ UPDATE decisionspdos SET modeleodt = NULL WHERE modeleodt IS NOT NULL AND TRIM( 
 -------------------------------------------------------------------------------------------------------------
 -- 20120605: ajout des clés étrangères pour nouvelles orientations et nouveaux contrats
 -- d'insertion suite aux propositions pour les thématiques de COV du CG 58.
--- FIXME: fk ON DELETE SET NULL pour les nvorientstruct_id, nvcontratinsertion_id, ...
 -------------------------------------------------------------------------------------------------------------
 
 --
 -- 1°) proposcontratsinsertioncovs58
 --
 SELECT add_missing_table_field ( 'public', 'proposcontratsinsertioncovs58', 'nvcontratinsertion_id', 'INTEGER' );
-SELECT add_missing_constraint ( 'public', 'proposcontratsinsertioncovs58', 'proposcontratsinsertioncovs58_nvcontratinsertion_id_fkey', 'contratsinsertion', 'nvcontratinsertion_id' );
+SELECT add_missing_constraint ( 'public', 'proposcontratsinsertioncovs58', 'proposcontratsinsertioncovs58_nvcontratinsertion_id_fkey', 'contratsinsertion', 'nvcontratinsertion_id', false );
 
 -- On rapatrie les données implicites
 CREATE OR REPLACE FUNCTION public.update_contratsinsertion_decisionsproposcontratsinsertioncovs58() RETURNS VOID AS
@@ -609,6 +608,8 @@ $$
 					AND contratsinsertion.dd_ci = decisionsproposcontratsinsertioncovs58.dd_ci
 					AND contratsinsertion.df_ci = decisionsproposcontratsinsertioncovs58.df_ci
 					AND contratsinsertion.duree_engag = decisionsproposcontratsinsertioncovs58.duree_engag
+					AND contratsinsertion.id NOT IN ( SELECT proposcontratsinsertioncovs58.nvcontratinsertion_id FROM proposcontratsinsertioncovs58 )
+				ORDER BY decisionsproposcontratsinsertioncovs58.modified ASC
 		LOOP
 			-- Mise à jour dans la table proposcontratsinsertioncovs58
 			v_query := 'UPDATE proposcontratsinsertioncovs58 SET nvcontratinsertion_id = ' || v_row.contratinsertion_id || ' WHERE id = ' || v_row.propo_id || ';';
@@ -626,7 +627,7 @@ DROP FUNCTION public.update_contratsinsertion_decisionsproposcontratsinsertionco
 -- 2°) proposorientationscovs58
 --
 SELECT add_missing_table_field ( 'public', 'proposorientationscovs58', 'nvorientstruct_id', 'INTEGER' );
-SELECT add_missing_constraint ( 'public', 'proposorientationscovs58', 'proposorientationscovs58_nvorientstruct_id_fkey', 'orientsstructs', 'nvorientstruct_id' );
+SELECT add_missing_constraint ( 'public', 'proposorientationscovs58', 'proposorientationscovs58_nvorientstruct_id_fkey', 'orientsstructs', 'nvorientstruct_id', false );
 
 -- On rapatrie les données implicites
 CREATE OR REPLACE FUNCTION public.update_orientsstructs_decisionsproposorientationscovs58() RETURNS VOID AS
@@ -663,6 +664,8 @@ $$
 					AND orientsstructs.typeorient_id = decisionsproposorientationscovs58.typeorient_id
 					AND orientsstructs.structurereferente_id = decisionsproposorientationscovs58.structurereferente_id
 					AND orientsstructs.date_valid = DATE_TRUNC('day', covs58.datecommission)
+					AND orientsstructs.id NOT IN ( SELECT proposorientationscovs58.nvorientstruct_id FROM proposorientationscovs58 )
+				ORDER BY decisionsproposorientationscovs58.modified ASC
 		LOOP
 			-- Mise à jour dans la table proposorientationscovs58
 			v_query := 'UPDATE proposorientationscovs58 SET nvorientstruct_id = ' || v_row.orientstruct_id || ' WHERE id = ' || v_row.propo_id || ';';
@@ -680,7 +683,7 @@ DROP FUNCTION public.update_orientsstructs_decisionsproposorientationscovs58();
 -- 3°) proposnonorientationsproscovs58
 --
 SELECT add_missing_table_field ( 'public', 'proposnonorientationsproscovs58', 'nvorientstruct_id', 'INTEGER' );
-SELECT add_missing_constraint ( 'public', 'proposnonorientationsproscovs58', 'proposnonorientationsproscovs58_nvorientstruct_id_fkey', 'orientsstructs', 'nvorientstruct_id' );
+SELECT add_missing_constraint ( 'public', 'proposnonorientationsproscovs58', 'proposnonorientationsproscovs58_nvorientstruct_id_fkey', 'orientsstructs', 'nvorientstruct_id', false );
 
 -- On rapatrie les données implicites
 CREATE OR REPLACE FUNCTION public.update_orientsstructs_decisionsproposnonorientationsproscovs58() RETURNS VOID AS
@@ -716,6 +719,8 @@ $$
 					AND orientsstructs.typeorient_id = decisionsproposnonorientationsproscovs58.typeorient_id
 					AND orientsstructs.structurereferente_id = decisionsproposnonorientationsproscovs58.structurereferente_id
 					AND orientsstructs.date_valid = DATE_TRUNC('day', covs58.datecommission)
+					AND orientsstructs.id NOT IN ( SELECT proposnonorientationsproscovs58.nvorientstruct_id FROM proposnonorientationsproscovs58 )
+				ORDER BY decisionsproposnonorientationsproscovs58.modified ASC
 		LOOP
 			-- Mise à jour dans la table proposnonorientationsproscovs58
 			v_query := 'UPDATE proposnonorientationsproscovs58 SET nvorientstruct_id = ' || v_row.orientstruct_id || ' WHERE id = ' || v_row.propo_id || ';';
@@ -854,7 +859,7 @@ ALTER TABLE orientsstructs ADD CONSTRAINT orientsstructs_origine_check CHECK(
 --
 
 SELECT add_missing_table_field ( 'public', 'nonorientationsproseps58', 'nvorientstruct_id', 'INTEGER' );
-SELECT add_missing_constraint ( 'public', 'nonorientationsproseps58', 'nonorientationsproseps58_nvorientstruct_id_fkey', 'orientsstructs', 'nvorientstruct_id' );
+SELECT add_missing_constraint ( 'public', 'nonorientationsproseps58', 'nonorientationsproseps58_nvorientstruct_id_fkey', 'orientsstructs', 'nvorientstruct_id', false );
 
 -- On rapatrie les données implicites
 CREATE OR REPLACE FUNCTION public.update_orientsstructs_decisionsnonorientationsproseps58() RETURNS VOID AS
@@ -902,6 +907,8 @@ $$
 					AND orientsstructs.date_valid = DATE_TRUNC('day', commissionseps.dateseance)
 					AND orientsstructs.statut_orient = 'Orienté'
 					AND orientsstructs.etatorient = 'decision'
+					AND orientsstructs.id NOT IN ( SELECT nonorientationsproseps58.nvorientstruct_id FROM nonorientationsproseps58 )
+				ORDER BY decisionsnonorientationsproseps58.modified ASC
 		LOOP
 			-- Mise à jour dans la table nonorientationsproseps58
 			v_query := 'UPDATE nonorientationsproseps58 SET nvorientstruct_id = ' || v_row.orientstruct_id || ' WHERE id = ' || v_row.thematique_id || ';';
@@ -922,7 +929,7 @@ CREATE UNIQUE INDEX nonorientationsproseps58_nvorientstruct_id_idx ON nonorienta
 --
 
 SELECT add_missing_table_field ( 'public', 'regressionsorientationseps58', 'nvorientstruct_id', 'INTEGER' );
-SELECT add_missing_constraint ( 'public', 'regressionsorientationseps58', 'regressionsorientationseps58_nvorientstruct_id_fkey', 'orientsstructs', 'nvorientstruct_id' );
+SELECT add_missing_constraint ( 'public', 'regressionsorientationseps58', 'regressionsorientationseps58_nvorientstruct_id_fkey', 'orientsstructs', 'nvorientstruct_id', false );
 
 -- On rapatrie les données implicites
 CREATE OR REPLACE FUNCTION public.update_orientsstructs_decisionsregressionsorientationseps58() RETURNS VOID AS
@@ -970,6 +977,8 @@ $$
 					AND orientsstructs.date_valid = DATE_TRUNC('day', commissionseps.dateseance)
 					AND orientsstructs.statut_orient = 'Orienté'
 					AND orientsstructs.etatorient = 'decision'
+					AND orientsstructs.id NOT IN ( SELECT regressionsorientationseps58.nvorientstruct_id FROM regressionsorientationseps58 )
+				ORDER BY decisionsregressionsorientationseps58.modified ASC
 		LOOP
 			-- Mise à jour dans la table regressionsorientationseps58
 			v_query := 'UPDATE regressionsorientationseps58 SET nvorientstruct_id = ' || v_row.orientstruct_id || ' WHERE id = ' || v_row.thematique_id || ';';
@@ -990,7 +999,7 @@ CREATE UNIQUE INDEX regressionsorientationseps58_nvorientstruct_id_idx ON regres
 --
 
 SELECT add_missing_table_field ( 'public', 'saisinesbilansparcourseps66', 'nvorientstruct_id', 'INTEGER' );
-SELECT add_missing_constraint ( 'public', 'saisinesbilansparcourseps66', 'saisinesbilansparcourseps66_nvorientstruct_id_fkey', 'orientsstructs', 'nvorientstruct_id' );
+SELECT add_missing_constraint ( 'public', 'saisinesbilansparcourseps66', 'saisinesbilansparcourseps66_nvorientstruct_id_fkey', 'orientsstructs', 'nvorientstruct_id', false );
 
 -- On rapatrie les données implicites
 CREATE OR REPLACE FUNCTION public.update_orientsstructs_decisionssaisinesbilansparcourseps66() RETURNS VOID AS
@@ -1049,6 +1058,8 @@ $$
 					AND orientsstructs.date_valid = DATE_TRUNC('day', decisionssaisinesbilansparcourseps66.modified )
 					AND orientsstructs.user_id = decisionssaisinesbilansparcourseps66.user_id
 					AND orientsstructs.statut_orient = 'Orienté'
+					AND orientsstructs.id NOT IN ( SELECT saisinesbilansparcourseps66.nvorientstruct_id FROM saisinesbilansparcourseps66 )
+				ORDER BY decisionssaisinesbilansparcourseps66.modified ASC
 		LOOP
 			-- Mise à jour dans la table saisinesbilansparcourseps66
 			v_query := 'UPDATE saisinesbilansparcourseps66 SET nvorientstruct_id = ' || v_row.orientstruct_id || ' WHERE id = ' || v_row.thematique_id || ';';
@@ -1069,7 +1080,7 @@ CREATE UNIQUE INDEX saisinesbilansparcourseps66_nvorientstruct_id_idx ON saisine
 --
 
 SELECT add_missing_table_field ( 'public', 'saisinesbilansparcourseps66', 'nvcontratinsertion_id', 'INTEGER' );
-SELECT add_missing_constraint ( 'public', 'saisinesbilansparcourseps66', 'saisinesbilansparcourseps66_nvcontratinsertion_id_fkey', 'contratsinsertion', 'nvcontratinsertion_id' );
+SELECT add_missing_constraint ( 'public', 'saisinesbilansparcourseps66', 'saisinesbilansparcourseps66_nvcontratinsertion_id_fkey', 'contratsinsertion', 'nvcontratinsertion_id', false );
 
 -- On rapatrie les données implicites
 CREATE OR REPLACE FUNCTION public.update_contratsinsertion_decisionssaisinesbilansparcourseps66() RETURNS VOID AS
@@ -1081,7 +1092,7 @@ $$
 		FOR v_row IN
 			SELECT
 					saisinesbilansparcourseps66.id AS thematique_id,
-					contratsinsertion.id AS orientstruct_id
+					contratsinsertion.id AS nvcontratinsertion_id
 				FROM dossierseps
 					INNER JOIN saisinesbilansparcourseps66 ON ( saisinesbilansparcourseps66.dossierep_id = dossierseps.id )
 					INNER JOIN passagescommissionseps ON ( passagescommissionseps.dossierep_id = dossierseps.id )
@@ -1121,9 +1132,11 @@ $$
 					AND contratsinsertion.duree_engag = bilansparcours66.duree_engag
 					AND contratsinsertion.typocontrat_id IN ( SELECT id FROM typoscontrats WHERE lib_typo = 'Renouvellement' )
 					AND contratsinsertion.date_saisi_ci = DATE_TRUNC('day', decisionssaisinesbilansparcourseps66.modified )
+					AND contratsinsertion.id NOT IN ( SELECT saisinesbilansparcourseps66.nvcontratinsertion_id FROM saisinesbilansparcourseps66 )
+				ORDER BY decisionssaisinesbilansparcourseps66.modified ASC
 		LOOP
 			-- Mise à jour dans la table saisinesbilansparcourseps66
-			v_query := 'UPDATE saisinesbilansparcourseps66 SET nvcontratinsertion_id = ' || v_row.orientstruct_id || ' WHERE id = ' || v_row.thematique_id || ';';
+			v_query := 'UPDATE saisinesbilansparcourseps66 SET nvcontratinsertion_id = ' || v_row.nvcontratinsertion_id || ' WHERE id = ' || v_row.thematique_id || ';';
 			RAISE NOTICE  '%', v_query;
 			EXECUTE v_query;
 		END LOOP;
@@ -1145,7 +1158,7 @@ CREATE UNIQUE INDEX saisinesbilansparcourseps66_nvcontratinsertion_id_idx ON sai
 --
 
 SELECT add_missing_table_field ( 'public', 'nonorientationsproseps93', 'nvorientstruct_id', 'INTEGER' );
-SELECT add_missing_constraint ( 'public', 'nonorientationsproseps93', 'nonorientationsproseps93_nvorientstruct_id_fkey', 'orientsstructs', 'nvorientstruct_id' );
+SELECT add_missing_constraint ( 'public', 'nonorientationsproseps93', 'nonorientationsproseps93_nvorientstruct_id_fkey', 'orientsstructs', 'nvorientstruct_id', false );
 
 -- On rapatrie les données implicites
 CREATE OR REPLACE FUNCTION public.update_orientsstructs_decisionsnonorientationsproseps93() RETURNS VOID AS
@@ -1197,6 +1210,8 @@ $$
 						orientsstructs.user_id IS NULL
 						OR orientsstructs.user_id = nonorientationsproseps93.user_id
 					)
+					AND orientsstructs.id NOT IN ( SELECT nonorientationsproseps93.nvorientstruct_id FROM nonorientationsproseps93 )
+				ORDER BY decisionsnonorientationsproseps93.modified ASC
 		LOOP
 			-- Mise à jour dans la table nonorientationsproseps93
 			v_query := 'UPDATE nonorientationsproseps93 SET nvorientstruct_id = ' || v_row.orientstruct_id || ' WHERE id = ' || v_row.thematique_id || ';';
@@ -1217,7 +1232,7 @@ CREATE UNIQUE INDEX nonorientationsproseps93_nvorientstruct_id_idx ON nonorienta
 --
 
 SELECT add_missing_table_field ( 'public', 'reorientationseps93', 'nvorientstruct_id', 'INTEGER' );
-SELECT add_missing_constraint ( 'public', 'reorientationseps93', 'reorientationseps93_nvorientstruct_id_fkey', 'orientsstructs', 'nvorientstruct_id' );
+SELECT add_missing_constraint ( 'public', 'reorientationseps93', 'reorientationseps93_nvorientstruct_id_fkey', 'orientsstructs', 'nvorientstruct_id', false );
 
 -- On rapatrie les données implicites
 CREATE OR REPLACE FUNCTION public.update_orientsstructs_decisionsreorientationseps93() RETURNS VOID AS

@@ -139,7 +139,7 @@
 			'Nonorientationproep58nv' => array(
 				'className' => 'Nonorientationproep58',
 				'foreignKey' => 'nvorientstruct_id',
-				'dependent' => true,
+				'dependent' => false,
 				'conditions' => '',
 				'fields' => '',
 				'order' => '',
@@ -175,10 +175,23 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Nonorientationproep93nv' => array(
+				'className' => 'Nonorientationproep93',
+				'foreignKey' => 'nvorientstruct_id',
+				'dependent' => false,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 			'Propoorientationcov58nv' => array(
 				'className' => 'Propoorientationcov58',
 				'foreignKey' => 'nvorientstruct_id',
-				'dependent' => true,
+				'dependent' => false,
 				'conditions' => '',
 				'fields' => '',
 				'order' => '',
@@ -204,7 +217,7 @@
 			'Propononorientationprocov58nv' => array(
 				'className' => 'Propononorientationprocov58',
 				'foreignKey' => 'nvorientstruct_id',
-				'dependent' => true,
+				'dependent' => false,
 				'conditions' => '',
 				'fields' => '',
 				'order' => '',
@@ -217,7 +230,7 @@
 			'Regressionorientationep58nv' => array(
 				'className' => 'Regressionorientationep58',
 				'foreignKey' => 'nvorientstruct_id',
-				'dependent' => true,
+				'dependent' => false,
 				'conditions' => '',
 				'fields' => '',
 				'order' => '',
@@ -259,7 +272,7 @@
 			'Saisinebilanparcoursep66nv' => array(
 				'className' => 'Saisinebilanparcoursep66',
 				'foreignKey' => 'nvorientstruct_id',
-				'dependent' => true,
+				'dependent' => false,
 				'conditions' => '',
 				'fields' => '',
 				'order' => '',
@@ -298,7 +311,7 @@
 			'Reorientationep93nv' => array(
 				'className' => 'Reorientationep93',
 				'foreignKey' => 'nvorientstruct_id',
-				'dependent' => true,
+				'dependent' => false,
 				'conditions' => '',
 				'fields' => '',
 				'order' => '',
