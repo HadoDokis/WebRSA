@@ -292,7 +292,7 @@
 			);
 
 			$success = true;
-			foreach( $dossierseps as $dossierep ) {
+			foreach( $dossierseps as $i => $dossierep ) {
 				if( $niveauDecisionFinale == "decision{$etape}" ) {
 					$defautinsertionep66 = array( 'Defautinsertionep66' => $dossierep['Defautinsertionep66'] );
 					if( !isset( $dossierep['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['decision'] ) ) {
@@ -377,7 +377,6 @@
 						);
 
 						$success = $oBilanparcours66->sauvegardeBilan( $nvdossierep ) && $success;
-
 					}
 
 					$foyer = $this->Bilanparcours66->Orientstruct->Personne->Foyer->find(
@@ -438,6 +437,30 @@
 							'contain' => false
 						)
 					);
+
+					// Paramétrage incorrect
+					if( empty( $originepdo ) || empty( $typepdo ) ) {
+						$validationErrors = array();
+						$originePdoMessage = 'aucune origine PDO n\'est origine par défaut d\'un dossier PDO venant d\'une EP';
+						$typePdoMessage = 'aucune type de dossier PDO n\'est origine par défaut d\'un dossier PDO venant d\'une EP';
+
+						if( empty( $originepdo ) && empty( $typepdo ) ) {
+							$validationErrors[$i] = array( 'decision' => "Problème de paramétrage: {$originePdoMessage} et {$typePdoMessage}." );
+						}
+						else if( empty( $originepdo ) ) {
+							$validationErrors[$i] = array( 'decision' => "Problème de paramétrage: {$originePdoMessage}." );
+						}
+						else if( empty( $typepdo ) ) {
+							$validationErrors[$i] = array( 'decision' => "Problème de paramétrage: {$typePdoMessage}." );
+						}
+
+						$this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->validationErrors = Set::merge(
+							$this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->validationErrors,
+							$validationErrors
+						);
+
+						$success = false;
+					}
 
 					$dossier = $this->Bilanparcours66->Orientstruct->Personne->Foyer->Dossier->find(
 						'first',
