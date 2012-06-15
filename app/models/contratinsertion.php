@@ -1160,6 +1160,8 @@
 						'Adresse.numcomptt',
 						'Adresse.codepos',
 						'Propodecisioncer66.isvalidcer',
+						'Propodecisioncer66.motifficheliaison',
+						'Propodecisioncer66.motifnotifnonvalid'
 					)
 				),
 				'joins' => array(
@@ -1208,7 +1210,8 @@
 			$contratinsertion = Set::merge( $contratinsertion, $user );
 
 			$modelenotifdecision = '';
-
+// debug($contratinsertion);
+// die();
 			$decision = Set::classicExtract( $contratinsertion, 'Propodecisioncer66.isvalidcer' );
 
 			if( !empty( $decision ) ) {
