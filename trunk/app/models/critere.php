@@ -149,7 +149,29 @@
 
 			// ...
 			if( !empty( $typeorient_id ) ) {
-				$conditions[] = 'Orientstruct.typeorient_id = \''.Sanitize::clean( $typeorient_id ).'\'';
+				// TODO: à mettre dans ConditionnableBehavior (problème, le chemin est Critere.typeorient_id)
+				if( Configure::read( 'with_parentid' ) ) {
+					$Typeorient = ClassRegistry::init( 'Typeorient' );
+					$sqTypeorient = $Typeorient->sq(
+						array(
+							'alias' => 'typesorients',
+							'fields' => array(
+								'typesorients.id'
+							),
+							'conditions' => array(
+								'OR' => array(
+									'typesorients.id' => $typeorient_id,
+									'typesorients.parentid' => $typeorient_id
+								)
+							),
+							'contain' => false
+						)
+					);
+					$conditions[] = "Orientstruct.typeorient_id IN ( {$sqTypeorient} )";
+				}
+				else {
+					$conditions['Orientstruct.typeorient_id'] = $typeorient_id;
+				}
 			}
 
 			// ...
