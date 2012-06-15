@@ -347,7 +347,7 @@
 			'Propocontratinsertioncov58nv' => array(
 				'className' => 'Propocontratinsertioncov58',
 				'foreignKey' => 'nvcontratinsertion_id',
-				'dependent' => true,
+				'dependent' => false,
 				'conditions' => '',
 				'fields' => '',
 				'order' => '',
@@ -386,7 +386,7 @@
 			'Saisinebilanparcoursep66nv' => array(
 				'className' => 'Saisinebilanparcoursep66',
 				'foreignKey' => 'nvcontratinsertion_id',
-				'dependent' => true,
+				'dependent' => false,
 				'conditions' => '',
 				'fields' => '',
 				'order' => '',
