@@ -39,3 +39,6 @@ msgstr "Non validé"
 
 msgid "ENUM::NO::O"
 msgstr "Validation le"
+
+msgid "Proposdecisionscers66::propositionsimple"
+msgstr "Décision du CER Simple"
