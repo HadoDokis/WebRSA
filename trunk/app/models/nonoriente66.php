@@ -3,6 +3,14 @@
 	{
 		public $name = 'Nonoriente66';
 
+		public $actsAs = array(
+			'Enumerable' => array(
+				'fields' => array(
+					'reponseallocataire' => array( 'type' => 'no' )
+				)
+			)
+		);
+		
 		public $belongsTo = array(
 			'Personne' => array(
 				'className' => 'Personne',

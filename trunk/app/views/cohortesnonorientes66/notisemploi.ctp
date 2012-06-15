@@ -1,7 +1,7 @@
 <?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 
 <?php
-    $this->pageTitle = 'Orientation suite aux réponses du questionnaire';
+    $this->pageTitle = 'Gestion des réponses';
 ?>
 
 <h1><?php echo $this->pageTitle;?></h1>
@@ -114,7 +114,9 @@
                 <th>Allocataire principal</th>
                 <th>Etat du droit</th>
 				<th>Commune de l'allocataire</th>
+				<th>Date impression notification</th>
 				<th>Alerte composition du foyer ?</th>
+				<th>Réponse de l'allocataire ?</th>
 				<th>Sélectionner</th>
 				<th class="action">Type d'orientation</th>
 				<th class="action">Structure référente</th>
@@ -126,14 +128,17 @@
         <?php foreach( $cohortesnonorientes66 as $index => $cohortenonoriente66 ):?>
             <?php
 
-//             debug($typeorient_id);
+//             debug($cohortenonoriente66);
 				$tableCells = array(
 						h( $cohortenonoriente66['Dossier']['numdemrsa'] ),
 						h( date_short( $cohortenonoriente66['Dossier']['dtdemrsa'] ) ),
 						h( $cohortenonoriente66['Personne']['nom'].' '.$cohortenonoriente66['Personne']['prenom'] ),
 						h( $etatdosrsa[$cohortenonoriente66['Situationdossierrsa']['etatdosrsa']] ),
 						h( $cohortenonoriente66['Adresse']['locaadr'] ),
+						h( date_short( $cohortenonoriente66['Nonoriente66']['dateimpression'] ) ),
 						$gestionanomaliebdd->foyerErreursPrestationsAllocataires( $cohortenonoriente66, false ),
+						$xform->input( 'Nonoriente66.'.$index.'.id', array( 'label' => false, 'legend' => false, 'type' => 'hidden', 'value' => $cohortenonoriente66['Nonoriente66']['id'] ) ).
+						$xform->input( 'Nonoriente66.'.$index.'.reponseallocataire', array( 'label' => false, 'legend' => false, 'type' => 'radio', 'options' => $options['reponseallocataire'] ) ),
 						$xform->input( 'Orientstruct.'.$index.'.atraiter', array( 'label' => false, 'legend' => false, 'type' => 'checkbox', 'class' => 'atraiter' ) ),
 						$xform->input( 'Orientstruct.'.$index.'.typeorient_id', array( 'label' => false, 'type' => 'select', 'options' => $typesOrient, 'empty' => true, 'value' => ( !empty( $typeorient_id ) ? $typeorient_id : $cohortenonoriente66['Orientstruct']['typeorient_id'] ) ) ).
 						$xform->input( 'Orientstruct.'.$index.'.origine', array( 'label' => false, 'type' => 'hidden', 'value' => 'cohorte' ) ).

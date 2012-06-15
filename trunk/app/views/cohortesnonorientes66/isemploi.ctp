@@ -1,7 +1,7 @@
 <?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 
 <?php
-    $this->pageTitle = 'Allocataires non orientés en emploi';
+    $this->pageTitle = 'Allocataires inscrits au Pôle Emploi';
 ?>
 
 <h1><?php echo $this->pageTitle;?></h1>

@@ -1,7 +1,7 @@
 <?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 
 <?php
-    $this->pageTitle = 'Liste des allocataires orientés';
+    $this->pageTitle = 'Liste des allocataires orientés et notifiés';
 ?>
 
 <h1><?php echo $this->pageTitle;?></h1>

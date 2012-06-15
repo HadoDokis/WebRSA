@@ -22,7 +22,7 @@
 
 			/// Conditions de base
 			$conditions = array();
-			if( $statutNonoriente != 'Nonoriente::oriente' ) {
+			if( !in_array( $statutNonoriente, array( 'Nonoriente::oriente', 'Nonoriente::notifaenvoyer' ) ) ) {
 				$conditions[] = '( SELECT COUNT(orientsstructs.id) FROM orientsstructs WHERE orientsstructs.personne_id = "Personne"."id" AND orientsstructs.statut_orient = \'Orienté\' ) = 0';
 			}
 			$conditions[] =  array(
@@ -57,6 +57,16 @@
 						
 					$conditions['NOT'] = array( 'Historiqueetatpe.etat' => 'inscription' );
 				}
+				else if( $statutNonoriente == 'Nonoriente::notifaenvoyer' ) {
+					$conditions[] = 'Personne.id IN (
+						SELECT nonorientes66.personne_id
+							FROM nonorientes66
+								WHERE
+									nonorientes66.personne_id = Personne.id
+									AND nonorientes66.orientstruct_id IS NOT NULL
+									AND nonorientes66.datenotification IS NULL
+						)';
+				}
 				else if( $statutNonoriente == 'Nonoriente::oriente' ) {
 					$conditions[] = 'Personne.id IN (
 						SELECT nonorientes66.personne_id
@@ -64,6 +74,7 @@
 								WHERE
 									nonorientes66.personne_id = Personne.id
 									AND nonorientes66.orientstruct_id IS NOT NULL
+									AND nonorientes66.datenotification IS NOT NULL
 						)';
 				}
 			}
@@ -80,7 +91,12 @@
 				$conditions[] = 'Dossier.id NOT IN ( '.implode( ', ', $lockedDossiers ).' )';
 			}
 
-
+			// Code historique etat PE (radiation, cessation, inscription)
+			$etatHistoriqueetatpe = Set::extract( $criteresnonorientes['Search'], 'Historiqueetatpe.etat' );
+            if( !empty( $etatHistoriqueetatpe ) ) {
+                $conditions[] = 'Historiqueetatpe.etat = \''.Sanitize::clean( $etatHistoriqueetatpe ).'\'';
+            }
+            
 			// Conditions pour les jointures
 			$conditions['Prestation.rolepers'] = array( 'DEM', 'CJT' );
 			$conditions['Calculdroitrsa.toppersdrodevorsa'] = 1;
@@ -102,6 +118,16 @@
 				)
 			);
 
+			// Conditions sur le nombre d'enfants du foyer
+			if( isset( $criteresnonorientes['Search']['Foyer']['nbenfants'] ) && !empty( $criteresnonorientes['Search']['Foyer']['nbenfants'] ) ) {
+				if( $criteresnonorientes['Search']['Foyer']['nbenfants'] == 'O' ) {
+					$conditions['( '.$Personne->Foyer->vfNbEnfants().' ) >'] = 0;
+				}
+				else if( $criteresnonorientes['Search']['Foyer']['nbenfants'] == 'N' ) {
+					$conditions['( '.$Personne->Foyer->vfNbEnfants().' )'] = 0;
+				}
+			}
+			
 			$query = array(
 				'fields' => array_merge(
 					$Personne->fields(),
@@ -113,7 +139,9 @@
 					$Personne->Nonoriente66->fields(),
 					array(
 						$Personne->Foyer->sqVirtualField( 'enerreur' ),
-						'Historiqueetatpe.id'
+						'( '.$Personne->Foyer->vfNbEnfants().' ) AS "Foyer__nbenfants"',
+						'Historiqueetatpe.id',
+						'Historiqueetatpe.etat'
 					)
 				),
 				'joins' => array(
