@@ -997,6 +997,7 @@
 			);
 			$originePdfOrientation = Set::classicExtract( $nonoriente66, 'Nonoriente66.origine' );
 			$typeOrientParentIdPdf = Set::classicExtract( $data, 'Typeorient.parentid' );
+			$reponseAllocataire = Set::classicExtract( $nonoriente66, 'Nonoriente66.reponseallocataire' );
 
 
 			$typesorientsParentidsSocial = Configure::read( 'Orientstruct.typeorientprincipale.SOCIAL' );
@@ -1009,17 +1010,26 @@
 				if( in_array( $typeOrientParentIdPdf, $typesorientsParentidsEmploi) ) {
 					$modeleodt = 'Orientation/orientationpe.odt'; //INFO = courrier 3
 				}
-				else if( in_array( $typeOrientParentIdPdf, $typesorientsParentidsSocial) ) {
+				else if( in_array( $typeOrientParentIdPdf, $typesorientsParentidsSocial) && ( $reponseAllocataire == 'O' ) ) {
 					$modeleodt = 'Orientation/orientationsociale.odt';// INFO = courrier 4
+				}
+				else if( in_array( $typeOrientParentIdPdf, $typesorientsParentidsSocial) && ( $reponseAllocataire == 'N' ) ) {
+					$modeleodt = 'Orientation/orientationsocialeauto.odt';// INFO = courrier 5
 				}
 			}
 
-			return $this->ged(
-				$data,
-				$modeleodt,
-				false,
-				$options
-			);
+			$success = $this->ged( $data, $modeleodt, false, $options );
+			
+			if( $success ) {
+				$success = $this->Nonoriente66->updateAll(
+					array( 'Nonoriente66.datenotification' => "'".date( 'Y-m-d' )."'" ),
+					array(
+						'"Nonoriente66"."id"' => $nonoriente66['Nonoriente66']['id']
+					)
+				) && $success;
+			}
+			
+			return $success;
 		}
 	}
 ?>

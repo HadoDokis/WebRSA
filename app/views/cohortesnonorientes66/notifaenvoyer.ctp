@@ -1,7 +1,7 @@
 <?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 
 <?php
-    $this->pageTitle = 'Allocataire non inscrits au Pôle Emploi';
+    $this->pageTitle = 'Envoi des notifications';
 ?>
 
 <h1><?php echo $this->pageTitle;?></h1>
@@ -28,7 +28,7 @@
 		observeDisableFieldsetOnCheckbox( 'SearchDossierDtdemrsa', $( 'SearchDossierDtdemrsaFromDay' ).up( 'fieldset' ), false );
 	});
 </script>
-<?php echo $xform->create( 'Cohortenonoriente66', array( 'type' => 'post', 'action' => 'notisemploiaimprimer', 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );?>
+<?php echo $xform->create( 'Cohortenonoriente66', array( 'type' => 'post', 'action' => 'notifaenvoyer', 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );?>
 
 
         <fieldset>
@@ -74,9 +74,7 @@
 						'Search.Dossier.matricule' => array( 'label' => __d( 'dossier', 'Dossier.matricule', true ), 'type' => 'text', 'maxlength' => 15 ),
 						'Search.Dossier.numdemrsa' => array( 'label' => __d( 'dossier', 'Dossier.numdemrsa', true ), 'type' => 'text', 'maxlength' => 15 ),
 						'Search.Adresse.locaadr' => array( 'label' => __d( 'adresse', 'Adresse.locaadr', true ), 'type' => 'text' ),
-						'Search.Adresse.numcomptt' => array( 'label' => __d( 'adresse', 'Adresse.numcomptt', true ), 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ),
-						'Search.Historiqueetatpe.etat' => array( 'label' => 'Information Pôle Emploi', 'type' => 'select', 'options' => $historiqueetatpe['etat'], 'empty' => true ),
-						'Search.Foyer.nbenfants' => array( 'label' => 'Foyer avec enfant', 'type' => 'select', 'options' => array( 'O' => 'Oui', 'N' => 'Non' ), 'empty' => true )
+						'Search.Adresse.numcomptt' => array( 'label' => __d( 'adresse', 'Adresse.numcomptt', true ), 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true )
 					),
                     array(
                         'options' => $options
@@ -116,8 +114,6 @@
                 <th>Allocataire principal</th>
                 <th>Etat du droit</th>
 				<th>Commune de l'allocataire</th>
-				<th>Information PE</th>
-				<th>Nombre d'enfants</th>
 				<th>Alerte composition du foyer ?</th>
 				<th class="action" colspan="2">Actions</th>
             </tr>
@@ -125,26 +121,26 @@
         <tbody>
         <?php foreach( $cohortesnonorientes66 as $index => $cohortenonoriente66 ):?>
             <?php
+// debug($cohortenonoriente66);
+				$nbFichiersLies = 0;
+				$nbFichiersLies = ( isset( $cohortenonoriente66['Fichiermodule'] ) ? count( $cohortenonoriente66['Fichiermodule'] ) : 0 );
 
-//             debug($typeorient_id);
 				$tableCells = array(
 						h( $cohortenonoriente66['Dossier']['numdemrsa'] ),
 						h( date_short( $cohortenonoriente66['Dossier']['dtdemrsa'] ) ),
 						h( $cohortenonoriente66['Personne']['nom'].' '.$cohortenonoriente66['Personne']['prenom'] ),
 						h( $etatdosrsa[$cohortenonoriente66['Situationdossierrsa']['etatdosrsa']] ),
 						h( $cohortenonoriente66['Adresse']['locaadr'] ),
-						h( Set::enum( $cohortenonoriente66['Historiqueetatpe']['etat'], $historiqueetatpe['etat'] ) ),
-						h( $cohortenonoriente66['Foyer']['nbenfants'] ),
 						$gestionanomaliebdd->foyerErreursPrestationsAllocataires( $cohortenonoriente66, false ),
 						$xhtml->viewLink(
 							'Voir le dossier',
-							array( 'controller' => 'dossiers', 'action' => 'view', $cohortenonoriente66['Dossier']['id'] ),
+							array( 'controller' => 'orientsstructs', 'action' => 'index', $cohortenonoriente66['Personne']['id'] ),
 							$permissions->check( 'dossiers', 'view' )
 						),
 						$xhtml->printLink(
-							'Imprimer le questionnaire',
-							array( 'controller' => 'cohortesnonorientes66', 'action' => 'impression', $cohortenonoriente66['Personne']['id'] ),
-							$permissions->check( 'cohortesnonorientes66', 'impression' )
+							'Imprimer le courrier d\'orientation',
+							array( 'controller' => 'cohortesnonorientes66', 'action' => 'impressionOrientation', $cohortenonoriente66['Orientstruct']['id'] ),
+							$permissions->check( 'cohortesnonorientes66', 'impressionOrientation' )
 						)
 					);
 
@@ -159,20 +155,6 @@
 			</tbody>
 		</table>
 		<?php echo $pagination?>
-		<ul class="actionMenu">
-			<li><?php
-				echo $xhtml->printCohorteLink(
-					'Imprimer la cohorte',
-					Set::merge(
-						array(
-							'controller' => 'cohortesnonorientes66',
-							'action'     => 'impressions'/*,
-							'id' => 'Cohorteoriente'*/
-						),
-						Set::flatten( $this->data )
-					)
-				);
-			?></li>
-		</ul>
+
 	<?php endif;?>
 <?php endif;?>

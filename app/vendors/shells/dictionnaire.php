@@ -121,14 +121,23 @@
 			}
 
 			foreach( $schemas as $i => $schema ) {
+// 				$sql = "SELECT
+// 								information_schema.tables.table_name AS \"Table__name\",
+// 								( select obj_description(oid) from pg_class where relname = information_schema.tables.table_name LIMIT 1 ) AS \"Table__comment\"
+// 							FROM information_schema.tables
+// 							WHERE information_schema.tables.table_schema = '{$schema['Schema']['name']}'
+// 							".( empty( $this->module ) ? "" : "AND ( information_schema.tables.table_name ~ '.*{$this->module}[0-9]{0,2}$' ) OR ( information_schema.tables.table_name ~ '.*{$this->module}[0-9]{0,2}_.*$' )\n" )."
+// 							ORDER BY table_name ASC".
+// 							( empty( $this->limit ) ? null : " LIMIT {$this->limit}"  ).";";
 				$sql = "SELECT
 								information_schema.tables.table_name AS \"Table__name\",
 								( select obj_description(oid) from pg_class where relname = information_schema.tables.table_name LIMIT 1 ) AS \"Table__comment\"
 							FROM information_schema.tables
 							WHERE information_schema.tables.table_schema = '{$schema['Schema']['name']}'
-							".( empty( $this->module ) ? "" : "AND ( information_schema.tables.table_name ~ '.*{$this->module}[0-9]{0,2}$' ) OR ( information_schema.tables.table_name ~ '.*{$this->module}[0-9]{0,2}_.*$' )\n" )."
+							".( empty( $this->module ) ? "" : "AND ( information_schema.tables.table_name ~ '.*{$this->module}(93){0,1}$' ) OR ( information_schema.tables.table_name ~ '.*{$this->module}(93){0,1}_.*$' )\n" )."
 							ORDER BY table_name ASC".
 							( empty( $this->limit ) ? null : " LIMIT {$this->limit}"  ).";";
+
 
 				$tables = $this->connection->query( $sql );
 				$schemas[$i]['Table'] = Set::classicExtract( $tables, '{n}.Table' );

@@ -12,7 +12,7 @@
 			'Canton'
 		);
 
-		public $helpers = array( 'Csv', 'Ajax', 'Default2', 'Locale', 'Search' );
+		public $helpers = array( 'Csv', 'Ajax', 'Default2', 'Locale', 'Search', 'Fileuploader' );
 
 		public $components = array(
 			'Prg2' => array(
@@ -20,6 +20,7 @@
 					'isemploi' => array( 'filter' => 'Search' ),
 					'notisemploi' => array( 'filter' => 'Search' ),
 					'notisemploiaimprimer' => array( 'filter' => 'Search' ),
+					'notifaenvoyer' => array( 'filter' => 'Search' ),
 					'oriente' => array( 'filter' => 'Search' )
 				)
 			)
@@ -71,6 +72,11 @@
 
 			// Population du select des structures référentes
 			$this->set( 'structuresReferentes', $this->Personne->Orientstruct->Structurereferente->list1Options( array( 'orientation' => 'O' ) ) );
+			
+			$Historiqueetatpe = ClassRegistry::init( 'Historiqueetatpe' );
+			$this->set( 'historiqueetatpe', $Historiqueetatpe->allEnumLists() );
+			
+			$this->set( 'options', $this->Personne->Orientstruct->Nonoriente66->allEnumLists() );
 		}
 
 
@@ -98,6 +104,15 @@
 		public function notisemploiaimprimer() {
 			$this->_index( 'Nonoriente::notisemploiaimprimer' );
 		}
+
+		/**
+		*
+		*/
+
+		public function notifaenvoyer() {
+			$this->_index( 'Nonoriente::notifaenvoyer' );
+		}
+		
 		/**
 		*
 		*/
@@ -129,12 +144,13 @@
 				* Sauvegarde
 				*
 				*/
-
+// debug($this->data);
+// die();
 				// On a renvoyé  le formulaire de la cohorte
 				if( !empty( $this->data['Orientstruct'] ) ) {
 
 					$success = true;
-					if( $this->action == 'isemploi' ) {
+					if( in_array( $this->action, array( 'isemploi', 'notisemploi' ) ) ) {
 						$success = $this->Personne->Nonoriente66->saveAll( $this->data['Nonoriente66'], array( 'validate' => 'first', 'atomic' => false ) ) && $success;
 					}
 
@@ -166,7 +182,7 @@
 				*
 				*/
 
-				if( ( $statutNonoriente == 'Nonoriente::isemploi' ) || ( $statutNonoriente == 'Nonoriente::notisemploi' ) || ( $statutNonoriente == 'Nonoriente::notisemploiaimprimer' ) || ( $statutNonoriente == 'Nonoriente::oriente' )  && !empty( $this->data ) ) {
+				if( ( $statutNonoriente == 'Nonoriente::isemploi' ) || ( $statutNonoriente == 'Nonoriente::notisemploi' ) || ( $statutNonoriente == 'Nonoriente::notisemploiaimprimer' ) || ( $statutNonoriente == 'Nonoriente::notifaenvoyer' ) || ( $statutNonoriente == 'Nonoriente::oriente' )  && !empty( $this->data ) ) {
 					$this->Dossier->begin(); // Pour les jetons
 
 					$limit = 10;
@@ -204,6 +220,9 @@
 					break;
 				case 'Nonoriente::notisemploiaimprimer':
 					$this->render( $this->action, null, 'notisemploiaimprimer' );
+					break;
+				case 'Nonoriente::notifaenvoyer':
+					$this->render( $this->action, null, 'notifaenvoyer' );
 					break;
 				case 'Nonoriente::oriente':
 					$this->render( $this->action, null, 'oriente' );

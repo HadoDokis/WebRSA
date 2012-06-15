@@ -1295,6 +1295,11 @@ SELECT alter_table_drop_column_if_exists('public', 'decisionsreorientationseps93
 
 -- TODO: dans les méthodes getDecisionPdf de modèles de thématiques, on passe encore par les décisions alors qu'on pourrait passer par nvorientstruct_id (/commissionseps/impressionDecision)
 
+-------------------------------------------------------------------------------------------------------------
+-- 20120615 : Ajout d'une date de notification pour les courriers des allocataires orientés au CG66
+-------------------------------------------------------------------------------------------------------------
+SELECT add_missing_table_field ( 'public', 'nonorientes66', 'datenotification', 'DATE' );
+SELECT add_missing_table_field ( 'public', 'nonorientes66', 'reponseallocataire', 'TYPE_NO' );
 -- *****************************************************************************
 COMMIT;
 -- ************************************************************************
