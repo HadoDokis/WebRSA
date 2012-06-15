@@ -295,19 +295,6 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
-			'Nonorientationproep66nv' => array(
-				'className' => 'Nonorientationproep66',
-				'foreignKey' => 'nvorientstruct_id',
-				'dependent' => true,
-				'conditions' => '',
-				'fields' => '',
-				'order' => '',
-				'limit' => '',
-				'offset' => '',
-				'exclusive' => '',
-				'finderQuery' => '',
-				'counterQuery' => ''
-			),
 			'Reorientationep93nv' => array(
 				'className' => 'Reorientationep93',
 				'foreignKey' => 'nvorientstruct_id',
