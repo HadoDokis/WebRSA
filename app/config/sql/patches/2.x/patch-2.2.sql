@@ -595,7 +595,7 @@ $$
 				WHERE
 					dossierscovs58.themecov58 = 'proposcontratsinsertioncovs58'
 					AND passagescovs58.etatdossiercov = 'traite'
-					AND decisionsproposcontratsinsertioncovs58.decisioncov = 'valide'
+					AND decisionsproposcontratsinsertioncovs58.decisioncov IN ( 'valide', 'refuse' )
 					AND passagescovs58.id IN (
 						SELECT
 								p.id
@@ -608,7 +608,7 @@ $$
 					AND contratsinsertion.dd_ci = decisionsproposcontratsinsertioncovs58.dd_ci
 					AND contratsinsertion.df_ci = decisionsproposcontratsinsertioncovs58.df_ci
 					AND contratsinsertion.duree_engag = decisionsproposcontratsinsertioncovs58.duree_engag
-					AND contratsinsertion.id NOT IN ( SELECT proposcontratsinsertioncovs58.nvcontratinsertion_id FROM proposcontratsinsertioncovs58 )
+					AND contratsinsertion.id NOT IN ( SELECT proposcontratsinsertioncovs58.nvcontratinsertion_id FROM proposcontratsinsertioncovs58  WHERE proposcontratsinsertioncovs58.nvcontratinsertion_id IS NOT NULL )
 				ORDER BY decisionsproposcontratsinsertioncovs58.modified ASC
 		LOOP
 			-- Mise à jour dans la table proposcontratsinsertioncovs58
@@ -664,7 +664,7 @@ $$
 					AND orientsstructs.typeorient_id = decisionsproposorientationscovs58.typeorient_id
 					AND orientsstructs.structurereferente_id = decisionsproposorientationscovs58.structurereferente_id
 					AND orientsstructs.date_valid = DATE_TRUNC('day', covs58.datecommission)
-					AND orientsstructs.id NOT IN ( SELECT proposorientationscovs58.nvorientstruct_id FROM proposorientationscovs58 )
+					AND orientsstructs.id NOT IN ( SELECT proposorientationscovs58.nvorientstruct_id FROM proposorientationscovs58  WHERE proposorientationscovs58.nvorientstruct_id IS NOT NULL )
 				ORDER BY decisionsproposorientationscovs58.modified ASC
 		LOOP
 			-- Mise à jour dans la table proposorientationscovs58
@@ -719,7 +719,7 @@ $$
 					AND orientsstructs.typeorient_id = decisionsproposnonorientationsproscovs58.typeorient_id
 					AND orientsstructs.structurereferente_id = decisionsproposnonorientationsproscovs58.structurereferente_id
 					AND orientsstructs.date_valid = DATE_TRUNC('day', covs58.datecommission)
-					AND orientsstructs.id NOT IN ( SELECT proposnonorientationsproscovs58.nvorientstruct_id FROM proposnonorientationsproscovs58 )
+					AND orientsstructs.id NOT IN ( SELECT proposnonorientationsproscovs58.nvorientstruct_id FROM proposnonorientationsproscovs58  WHERE proposnonorientationsproscovs58.nvorientstruct_id IS NOT NULL )
 				ORDER BY decisionsproposnonorientationsproscovs58.modified ASC
 		LOOP
 			-- Mise à jour dans la table proposnonorientationsproscovs58
@@ -907,7 +907,7 @@ $$
 					AND orientsstructs.date_valid = DATE_TRUNC('day', commissionseps.dateseance)
 					AND orientsstructs.statut_orient = 'Orienté'
 					AND orientsstructs.etatorient = 'decision'
-					AND orientsstructs.id NOT IN ( SELECT nonorientationsproseps58.nvorientstruct_id FROM nonorientationsproseps58 )
+					AND orientsstructs.id NOT IN ( SELECT nonorientationsproseps58.nvorientstruct_id FROM nonorientationsproseps58  WHERE nonorientationsproseps58.nvorientstruct_id IS NOT NULL )
 				ORDER BY decisionsnonorientationsproseps58.modified ASC
 		LOOP
 			-- Mise à jour dans la table nonorientationsproseps58
@@ -977,7 +977,7 @@ $$
 					AND orientsstructs.date_valid = DATE_TRUNC('day', commissionseps.dateseance)
 					AND orientsstructs.statut_orient = 'Orienté'
 					AND orientsstructs.etatorient = 'decision'
-					AND orientsstructs.id NOT IN ( SELECT regressionsorientationseps58.nvorientstruct_id FROM regressionsorientationseps58 )
+					AND orientsstructs.id NOT IN ( SELECT regressionsorientationseps58.nvorientstruct_id FROM regressionsorientationseps58  WHERE regressionsorientationseps58.nvorientstruct_id IS NOT NULL )
 				ORDER BY decisionsregressionsorientationseps58.modified ASC
 		LOOP
 			-- Mise à jour dans la table regressionsorientationseps58
@@ -1058,7 +1058,7 @@ $$
 					AND orientsstructs.date_valid = DATE_TRUNC('day', decisionssaisinesbilansparcourseps66.modified )
 					AND orientsstructs.user_id = decisionssaisinesbilansparcourseps66.user_id
 					AND orientsstructs.statut_orient = 'Orienté'
-					AND orientsstructs.id NOT IN ( SELECT saisinesbilansparcourseps66.nvorientstruct_id FROM saisinesbilansparcourseps66 )
+					AND orientsstructs.id NOT IN ( SELECT saisinesbilansparcourseps66.nvorientstruct_id FROM saisinesbilansparcourseps66 WHERE saisinesbilansparcourseps66.nvorientstruct_id IS NOT NULL )
 				ORDER BY decisionssaisinesbilansparcourseps66.modified ASC
 		LOOP
 			-- Mise à jour dans la table saisinesbilansparcourseps66
@@ -1132,7 +1132,7 @@ $$
 					AND contratsinsertion.duree_engag = bilansparcours66.duree_engag
 					AND contratsinsertion.typocontrat_id IN ( SELECT id FROM typoscontrats WHERE lib_typo = 'Renouvellement' )
 					AND contratsinsertion.date_saisi_ci = DATE_TRUNC('day', decisionssaisinesbilansparcourseps66.modified )
-					AND contratsinsertion.id NOT IN ( SELECT saisinesbilansparcourseps66.nvcontratinsertion_id FROM saisinesbilansparcourseps66 )
+					AND contratsinsertion.id NOT IN ( SELECT saisinesbilansparcourseps66.nvcontratinsertion_id FROM saisinesbilansparcourseps66 WHERE saisinesbilansparcourseps66.nvorientstruct_id IS NOT NULL )
 				ORDER BY decisionssaisinesbilansparcourseps66.modified ASC
 		LOOP
 			-- Mise à jour dans la table saisinesbilansparcourseps66
@@ -1210,7 +1210,7 @@ $$
 						orientsstructs.user_id IS NULL
 						OR orientsstructs.user_id = nonorientationsproseps93.user_id
 					)
-					AND orientsstructs.id NOT IN ( SELECT nonorientationsproseps93.nvorientstruct_id FROM nonorientationsproseps93 )
+					AND orientsstructs.id NOT IN ( SELECT nonorientationsproseps93.nvorientstruct_id FROM nonorientationsproseps93 WHERE nonorientationsproseps93.nvorientstruct_id IS NOT NULL )
 				ORDER BY decisionsnonorientationsproseps93.modified ASC
 		LOOP
 			-- Mise à jour dans la table nonorientationsproseps93
