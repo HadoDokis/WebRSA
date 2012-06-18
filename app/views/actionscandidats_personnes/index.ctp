@@ -29,18 +29,20 @@
             echo '<p class="error">Cette personne ne possède pas de référent lié. Impossible de créer une fiche '.$typeFiche.'</p>';
         }
 	?>
-	<?php if( $orientationLiee != 0 && $referentLie != 0 ):?>
 		<?php if( empty( $actionscandidats_personnes ) ):?>
 			<p class="notice">Cette personne ne possède pas de fiche <?php echo $typeFiche;?></p>
 		<?php endif;?>
-		<ul class="actionMenu">
-			<?php
-				echo '<li>'.$xhtml->addLink(
-					'Ajouter une fiche de candidature',
-					array( 'controller' => 'actionscandidats_personnes', 'action' => 'add', $personne_id )
-				).' </li>';
-			?>
-		</ul>
+		
+		<?php if( $orientationLiee != 0 && $referentLie != 0 ):?>
+			<ul class="actionMenu">
+				<?php
+					echo '<li>'.$xhtml->addLink(
+						'Ajouter une fiche de candidature',
+						array( 'controller' => 'actionscandidats_personnes', 'action' => 'add', $personne_id )
+					).' </li>';
+				?>
+			</ul>
+		<?php endif;?>
 		<?php if( !empty( $actionscandidats_personnes ) ):?>
 			<?php if( Configure::read( 'Cg.departement') == 66 ):?>
 				<table class="tooltips">
@@ -191,6 +193,5 @@
 				</table>
 			<?php endif;?>
 	<?php  endif;?>
-<?php  endif;?>
 </div>
 <div class="clearer"><hr /></div>
