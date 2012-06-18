@@ -23,7 +23,7 @@ msgid "ENUM::DECISION::reorientation"
 msgstr "Réorientation"
 
 msgid "ENUM::DECISION::maintienref"
-msgstr "Maintien du référent"
+msgstr "Maintien dans le social"
 
 msgid "ENUM::DECISION::annule"
 msgstr "Annulé"
