@@ -128,6 +128,20 @@
 				}
 			}
 			
+			
+			// conditions sur la date d'impression du courrier aux allocataires non inscrits PE
+			if( isset( $criteresnonorientes['Search']['Nonoriente66']['dateimpression'] )  ) {
+				if( is_array( $criteresnonorientes['Search']['Nonoriente66']['dateimpression'] ) && !empty( $criteresnonorientes['Search']['Nonoriente66']['dateimpression']['day'] ) && !empty( $criteresnonorientes['Search']['Nonoriente66']['dateimpression']['month'] ) && !empty( $criteresnonorientes['Search']['Nonoriente66']['dateimpression']['year'] ) ) {
+					$conditions["Nonoriente66.{'dateimpression'}"] = "{$criteresnonorientes['Search']['Nonoriente66']['dateimpression']['year']}-{$criteresnonorientes['Search']['Nonoriente66']['dateimpression']['month']}-{$criteresnonorientes['Search']['Nonoriente66']['dateimpression']['day']}";
+				}
+				else if( ( is_int( $criteresnonorientes['Search']['Nonoriente66']['dateimpression'] ) || is_bool( $criteresnonorientes['Search']['Nonoriente66']['dateimpression'] ) || ( $criteresnonorientes['Search']['Nonoriente66']['dateimpression'] == '1' ) ) && isset( $criteresnonorientes['Search']['Nonoriente66']['dateimpression_from'] ) && isset( $criteresnonorientes['Search']['Nonoriente66']['dateimpression_to'] ) ) {
+					$criteresnonorientes['Search']['Nonoriente66']['dateimpression_from'] = $criteresnonorientes['Search']['Nonoriente66']['dateimpression_from']['year'].'-'.$criteresnonorientes['Search']['Nonoriente66']['dateimpression_from']['month'].'-'.$criteresnonorientes['Search']['Nonoriente66']['dateimpression_from']['day'];
+					$criteresnonorientes['Search']['Nonoriente66']['dateimpression_to'] = $criteresnonorientes['Search']['Nonoriente66']['dateimpression_to']['year'].'-'.$criteresnonorientes['Search']['Nonoriente66']['dateimpression_to']['month'].'-'.$criteresnonorientes['Search']['Nonoriente66']['dateimpression_to']['day'];
+
+					$conditions[] = 'Nonoriente66.dateimpression BETWEEN \''.$criteresnonorientes['Search']['Nonoriente66']['dateimpression_from'].'\' AND \''.$criteresnonorientes['Search']['Nonoriente66']['dateimpression_to'].'\'';
+				}
+			}
+			
 			$query = array(
 				'fields' => array_merge(
 					$Personne->fields(),
@@ -136,6 +150,8 @@
 					$Personne->Foyer->Adressefoyer->Adresse->fields(),
 					$Personne->Foyer->Dossier->Situationdossierrsa->fields(),
 					$Personne->Orientstruct->fields(),
+					$Personne->Orientstruct->Typeorient->fields(),
+					$Personne->Orientstruct->Structurereferente->fields(),
 					$Personne->Nonoriente66->fields(),
 					array(
 						$Personne->Foyer->sqVirtualField( 'enerreur' ),
@@ -148,6 +164,8 @@
 					$Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
 					$Personne->join( 'Prestation', array( 'type' => 'INNER' ) ),
 					$Personne->join( 'Orientstruct', array( 'type' => 'LEFT OUTER' ) ),
+					$Personne->Orientstruct->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
+					$Personne->Orientstruct->join( 'Typeorient', array( 'type' => 'LEFT OUTER' ) ),
 					$Personne->join( 'Nonoriente66', array( 'type' => 'LEFT OUTER' ) ),
 					$Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'INNER' ) ),
 					$Personne->join( 'Calculdroitrsa', array( 'type' => 'INNER' ) ),
@@ -361,5 +379,31 @@
 			);
 		}
 
+		/**
+		 * Retourne le PDF concernant lee courrier d'orientation effective
+		 *
+		 * @param string $search
+		 * @return array
+		 */
+		public function getCohortePdfNonoriente66( $statutNonoriente66, $mesCodesInsee, $filtre_zone_geo, $search, $page ) {
+
+			$querydata = $this->search( $statutNonoriente66, $mesCodesInsee, $filtre_zone_geo, $search, null );
+
+			$querydata['limit'] = 100;
+			$querydata['offset'] = ( ( $page ) <= 1 ? 0 : ( $querydata['limit'] * ( $page - 1 ) ) );
+
+			$querydata['fields'] = array( 'Nonoriente66.orientstruct_id' );
+
+			$Personne = ClassRegistry::init( 'Personne' );
+			$nonorientes66 = $Personne->find( 'all', $querydata );
+
+			$pdfs = array();
+			foreach( $nonorientes66 as $nonoriente66 ) {
+				$pdfs[] = $Personne->Orientstruct->getPdfNonoriente66( $nonoriente66['Nonoriente66']['orientstruct_id'] );
+			}
+
+			return $pdfs;
+		}
+		
 	}
 ?>
