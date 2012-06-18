@@ -26,6 +26,7 @@
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
 		observeDisableFieldsetOnCheckbox( 'SearchDossierDtdemrsa', $( 'SearchDossierDtdemrsaFromDay' ).up( 'fieldset' ), false );
+		observeDisableFieldsetOnCheckbox( 'SearchNonoriente66Dateimpression', $( 'SearchNonoriente66DateimpressionFromDay' ).up( 'fieldset' ), false );
 	});
 </script>
 <?php echo $xform->create( 'Cohortenonoriente66', array( 'type' => 'post', 'action' => 'notisemploi', 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );?>
@@ -74,7 +75,8 @@
                         'Search.Dossier.matricule' => array( 'label' => __d( 'dossier', 'Dossier.matricule', true ), 'type' => 'text', 'maxlength' => 15 ),
                         'Search.Dossier.numdemrsa' => array( 'label' => __d( 'dossier', 'Dossier.numdemrsa', true ), 'type' => 'text', 'maxlength' => 15 ),
 						'Search.Adresse.locaadr' => array( 'label' => __d( 'adresse', 'Adresse.locaadr', true ), 'type' => 'text' ),
-						'Search.Adresse.numcomptt' => array( 'label' => __d( 'adresse', 'Adresse.numcomptt', true ), 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true )
+						'Search.Adresse.numcomptt' => array( 'label' => __d( 'adresse', 'Adresse.numcomptt', true ), 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ),
+						'Search.Foyer.nbenfants' => array( 'label' => 'Foyer avec enfant', 'type' => 'select', 'options' => array( 'O' => 'Oui', 'N' => 'Non' ), 'empty' => true )
                     ),
                     array(
                         'options' => $options
@@ -86,6 +88,23 @@
 				}
             ?>
         </fieldset>
+		<?php echo $xform->input( 'Search.Nonoriente66.dateimpression', array( 'label' => 'Filtrer par date d\'impression du questionnaire', 'type' => 'checkbox' ) );?>
+		<fieldset>
+			<legend>Date d'impression du courrier</legend>
+			<?php
+				$dateimpressionFromSelected = $dateimpressionToSelected = array();
+				if( !dateComplete( $this->data, 'Search.Nonoriente66.dateimpression_from' ) ) {
+					$dateimpressionFromSelected = array( 'selected' => strtotime( '-1 week' ) );
+				}
+				if( !dateComplete( $this->data, 'Search.Nonoriente66.dateimpression_to' ) ) {
+					$dateimpressionToSelected = array( 'selected' => strtotime( 'today' ) );
+				}
+
+				echo $xform->input( 'Search.Nonoriente66.dateimpression_from', Set::merge( array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 20 ), $dateimpressionFromSelected ) );
+
+				echo $xform->input( 'Search.Nonoriente66.dateimpression_to', Set::merge( array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 5, 'minYear' => date( 'Y' ) - 20), $dateimpressionToSelected ) );
+			?>
+		</fieldset>
 
     <div class="submit noprint">
         <?php echo $xform->button( 'Rechercher', array( 'type' => 'submit' ) );?>
@@ -115,6 +134,7 @@
                 <th>Etat du droit</th>
 				<th>Commune de l'allocataire</th>
 				<th>Date impression notification</th>
+				<th>Nombre d'enfants</th>
 				<th>Alerte composition du foyer ?</th>
 				<th>Réponse de l'allocataire ?</th>
 				<th>Sélectionner</th>
@@ -128,7 +148,6 @@
         <?php foreach( $cohortesnonorientes66 as $index => $cohortenonoriente66 ):?>
             <?php
 
-//             debug($cohortenonoriente66);
 				$tableCells = array(
 						h( $cohortenonoriente66['Dossier']['numdemrsa'] ),
 						h( date_short( $cohortenonoriente66['Dossier']['dtdemrsa'] ) ),
@@ -136,6 +155,7 @@
 						h( $etatdosrsa[$cohortenonoriente66['Situationdossierrsa']['etatdosrsa']] ),
 						h( $cohortenonoriente66['Adresse']['locaadr'] ),
 						h( date_short( $cohortenonoriente66['Nonoriente66']['dateimpression'] ) ),
+						h( $cohortenonoriente66['Foyer']['nbenfants'] ),
 						$gestionanomaliebdd->foyerErreursPrestationsAllocataires( $cohortenonoriente66, false ),
 						$xform->input( 'Nonoriente66.'.$index.'.id', array( 'label' => false, 'legend' => false, 'type' => 'hidden', 'value' => $cohortenonoriente66['Nonoriente66']['id'] ) ).
 						$xform->input( 'Nonoriente66.'.$index.'.reponseallocataire', array( 'label' => false, 'legend' => false, 'type' => 'radio', 'options' => $options['reponseallocataire'] ) ),

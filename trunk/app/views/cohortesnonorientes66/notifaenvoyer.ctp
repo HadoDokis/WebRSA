@@ -114,6 +114,7 @@
                 <th>Allocataire principal</th>
                 <th>Etat du droit</th>
 				<th>Commune de l'allocataire</th>
+				<th>Orientation effective</th>
 				<th>Alerte composition du foyer ?</th>
 				<th class="action" colspan="2">Actions</th>
             </tr>
@@ -131,6 +132,7 @@
 						h( $cohortenonoriente66['Personne']['nom'].' '.$cohortenonoriente66['Personne']['prenom'] ),
 						h( $etatdosrsa[$cohortenonoriente66['Situationdossierrsa']['etatdosrsa']] ),
 						h( $cohortenonoriente66['Adresse']['locaadr'] ),
+						h( $cohortenonoriente66['Typeorient']['lib_type_orient'].' - '.$cohortenonoriente66['Structurereferente']['lib_struc'] ),
 						$gestionanomaliebdd->foyerErreursPrestationsAllocataires( $cohortenonoriente66, false ),
 						$xhtml->viewLink(
 							'Voir le dossier',
@@ -156,5 +158,19 @@
 		</table>
 		<?php echo $pagination?>
 
+		<ul class="actionMenu">
+			<li><?php
+				echo $xhtml->printCohorteLink(
+					'Imprimer la cohorte',
+					Set::merge(
+						array(
+							'controller' => 'cohortesnonorientes66',
+							'action'     => 'impressionsOrientation'
+						),
+						Set::flatten( $this->data )
+					)
+				);
+			?></li>
+		</ul>
 	<?php endif;?>
 <?php endif;?>

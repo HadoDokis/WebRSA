@@ -277,29 +277,62 @@
 				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'nonorientes-%d-%s.pdf', $id, date( 'Y-m-d' ) ) );
 			}
 			else {
-				$this->Session->setFlash( 'Impossible de générer l\'impression de la page de l\'état liquidatif des APREs.', 'default', array( 'class' => 'error' ) );
+				$this->Session->setFlash( 'Impossible de générer l\'impression.', 'default', array( 'class' => 'error' ) );
 				$this->redirect( $this->referer() );
 			}
 		}
 	
-			/**
-			 * Impression d'un rendez-vous.
-			 *
-			 * @param integer $id
-			 * @return void
-			 */
-			public function impressionOrientation( $id = null ) {
-				$pdf = $this->Personne->Orientstruct->getPdfNonoriente66( $id );
+		/**
+			* Impression d'un rendez-vous.
+			*
+			* @param integer $id
+			* @return void
+			*/
+		public function impressionOrientation( $id = null ) {
+			$pdf = $this->Personne->Orientstruct->getPdfNonoriente66( $id );
 
-				if( !empty( $pdf ) ){
-					$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'orientation-%d-%s.pdf', $id, date( 'Y-m-d' ) ) );
-				}
-				else {
-					$this->Session->setFlash( 'Impossible de générer le courrier.', 'default', array( 'class' => 'error' ) );
-					$this->redirect( $this->referer() );
-				}
+			if( !empty( $pdf ) ){
+				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'orientation-%d-%s.pdf', $id, date( 'Y-m-d' ) ) );
 			}
+			else {
+				$this->Session->setFlash( 'Impossible de générer le courrier.', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
+			}
+		}
+		
+		/**
+		 * 
+		 *
+		 * @param integer $id L'id de 
+		 */
+		public function impressionsOrientation() {
+			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
+			
+			// La page sur laquelle nous sommes
+			$page = Set::classicExtract( $this->params, 'named.page' );
+			if( ( intval( $page ) != $page ) || $page < 0 ) {
+				$page = 1;
+			}
+		
+			$pdfs = $this->Cohortenonoriente66->getCohortePdfNonoriente66(
+				'Nonoriente::notifaenvoyer',
+				$mesCodesInsee,
+				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
+				XSet::bump( $this->params['named'], '__' ),
+				$page
+			);
+			
 
+			if( !empty( $pdfs ) ) {
+				$pdf = $this->Gedooo->concatPdfs( $pdfs, 'Nonoriente66' );
+				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'orientations-%s.pdf', date( 'Y-m-d' ) ) );
+			}
+			else {
+				$this->Session->setFlash( 'Impossible de générer l\'impression.', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
+			}
+		}
 	
 	
 	}

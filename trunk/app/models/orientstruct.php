@@ -1018,18 +1018,19 @@
 				}
 			}
 
-			$success = $this->ged( $data, $modeleodt, false, $options );
+			$pdf = $this->ged( $data, $modeleodt, false, $options );
 			
-			if( $success ) {
-				$success = $this->Nonoriente66->updateAll(
+			if( !empty( $pdf ) ) {
+				$this->Nonoriente66->updateAll(
 					array( 'Nonoriente66.datenotification' => "'".date( 'Y-m-d' )."'" ),
 					array(
 						'"Nonoriente66"."id"' => $nonoriente66['Nonoriente66']['id']
 					)
-				) && $success;
+				);
 			}
 			
-			return $success;
+			return $pdf;
 		}
+
 	}
 ?>
