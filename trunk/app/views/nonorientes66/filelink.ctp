@@ -6,7 +6,7 @@
 	}
 
 	$this->pageTitle =  __d( 'nonoriente66', "Nonorientes66::{$this->action}", true );
-// 	echo $this->element( 'dossier_menu', array( 'personne_id' => $personneId ) );
+	echo $this->element( 'dossier_menu', array( 'personne_id' => $personneId ) );
 ?>
 <div class="with_treemenu">
 	<?php

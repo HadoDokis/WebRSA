@@ -1307,6 +1307,14 @@ SELECT add_missing_table_field ('public', 'nonorientes66', 'haspiecejointe', 'ty
 ALTER TABLE nonorientes66 ALTER COLUMN haspiecejointe SET DEFAULT '0'::TYPE_BOOLEANNUMBER;
 UPDATE nonorientes66 SET haspiecejointe = '0'::TYPE_BOOLEANNUMBER WHERE haspiecejointe IS NULL;
 ALTER TABLE nonorientes66 ALTER COLUMN haspiecejointe SET NOT NULL;
+
+-- ***********************************************************************************************************
+-- 20120619 -- Ajout d'un champ  permettant de savoir si l'APRE est transférée vers la cellule
+-- ***********************************************************************************************************
+SELECT add_missing_table_field ('public', 'apres', 'istransfere', 'TYPE_BOOLEANNUMBER');
+ALTER TABLE apres ALTER COLUMN istransfere SET DEFAULT '0'::TYPE_BOOLEANNUMBER;
+UPDATE apres SET istransfere = '0'::TYPE_BOOLEANNUMBER WHERE istransfere IS NULL;
+ALTER TABLE apres ALTER COLUMN istransfere SET NOT NULL;
 -- *****************************************************************************
 COMMIT;
 -- ************************************************************************

@@ -19,7 +19,8 @@
 					'eligibiliteapre' => array( 'type' => 'eligibiliteapre', 'domain' => 'apre' ),
 					'justificatif' => array( 'type' => 'justificatif', 'domain' => 'apre' ),
 					'isdecision' => array( 'domain' => 'apre' ),
-					'haspiecejointe' => array( 'domain' => 'apre' )
+					'haspiecejointe' => array( 'domain' => 'apre' ),
+					'istransfere' => array( 'domain' => 'apre' )
 				)
 			),
 			'Frenchfloat' => array(
@@ -548,6 +549,30 @@
 				$this->modeleOdt( $apre ),
 				true,
 				$options
+			);
+		}
+
+		
+				
+		/**
+		 * Retourne un champ virtuel permettant de connaître le nombre de fichiers modules liés à l'APRE
+		 *
+		 * @param type $apre66Id
+		 * @return type
+		 */
+		public function vfNbFichiersmodule( $fileModelName = 'Apre66', $apre66Id = 'Apre66.id' ){
+			return $this->Fichiermodule->sq(
+				array(
+					'fields' => array(
+						'COUNT(fichiersmodules.id)'
+					),
+					'alias' => 'fichiersmodules',
+					'contain' => false,
+					'conditions' => array(
+						"fichiersmodules.fk_value = {$apre66Id}",
+						"fichiersmodules.modele" => $fileModelName
+					),
+				)
 			);
 		}
 	}
