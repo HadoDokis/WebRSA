@@ -456,7 +456,7 @@
 							'Referent.id',
 							'Referent.qual',
 							'Referent.nom',
-							'Referent.prenom',
+							'Referent.prenom'
 						),
 						'contain' => array(
 							'Referent'

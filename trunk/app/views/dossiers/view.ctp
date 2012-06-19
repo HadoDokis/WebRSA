@@ -170,7 +170,12 @@
 								<?php foreach( array( 'DEM', 'CJT' ) as $rolepers ):?>
 								<td><?php
 									$referent = Set::extract( "{$rolepers}.Referent", $details );
-									echo implode( ' ', array( Set::classicExtract( $referent, 'qual' ), Set::classicExtract( $referent, 'nom' ), Set::classicExtract( $referent, 'prenom' ) ) );
+									if( empty( $referent ) ) {
+										echo 'Aucun référent actif';
+									}
+									else {
+										echo implode( ' ', array( Set::classicExtract( $referent, 'qual' ), Set::classicExtract( $referent, 'nom' ), Set::classicExtract( $referent, 'prenom' ) ) );
+									}
 								?></td>
 								<?php endforeach;?>
 							</tr>

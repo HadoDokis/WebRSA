@@ -126,7 +126,11 @@
 					<th><?php echo $xpaginator->sort( 'NIR', 'Personne.nir' );?></th>
 					<th><?php echo $xpaginator->sort( 'Etat du droit', 'Situationdossierrsa.etatdosrsa' );?></th>
 					<th><?php echo $xpaginator->sort( 'Allocataire', 'Personne.nom' );?></th><!-- FIXME: qual/nom/prénom -->
-					<th><?php echo $xpaginator->sort( 'Commune de l\'allocataire', 'Adresse.locaadr' );?></th>
+					<?php if( Configure::read( 'Cg.departement' ) == 66 ):?>
+						<th>Adresse de l'allocataire</th>
+					<?php else:?>
+						<th><?php echo $xpaginator->sort( 'Commune de l\'allocataire', 'Adresse.locaadr' );?></th>
+					<?php endif;?>
 
 					<th class="action noprint">Actions</th>
 					<th class="action noprint">Verrouillé</th>
@@ -160,13 +164,12 @@
 							</tbody>
 						</table>';
 
-						echo $xhtml->tableCells(
-							array(
+						if( Configure::read( 'Cg.departement' ) != 66 ) {
+							$array1 = array(
 								h( $dossier['Dossier']['numdemrsa'] ),
 								h( date_short( $dossier['Dossier']['dtdemrsa'] ) ),
 								h( $dossier['Personne']['nir'] ),
 								h( isset( $etatdosrsa[Set::classicExtract( $dossier, 'Situationdossierrsa.etatdosrsa' )] ) ? $etatdosrsa[Set::classicExtract( $dossier, 'Situationdossierrsa.etatdosrsa' )] : '' ),
-
 								implode(
 									' ',
 									array(
@@ -176,24 +179,50 @@
 									)
 								),
 								h( Set::extract(  $dossier, 'Adresse.locaadr' ) ),
-								array(
-									$xhtml->viewLink(
-										'Voir le dossier « '.$title.' »',
-										array( 'controller' => 'dossiers', 'action' => 'view', $dossier['Dossier']['id'] )
-									),
-									array( 'class' => 'noprint' )
+							);
+						}
+						else {
+							$array1 = array(
+								h( $dossier['Dossier']['numdemrsa'] ),
+								h( date_short( $dossier['Dossier']['dtdemrsa'] ) ),
+								h( $dossier['Personne']['nir'] ),
+								h( isset( $etatdosrsa[Set::classicExtract( $dossier, 'Situationdossierrsa.etatdosrsa' )] ) ? $etatdosrsa[Set::classicExtract( $dossier, 'Situationdossierrsa.etatdosrsa' )] : '' ),
+								implode(
+									' ',
+									array(
+										$dossier['Personne']['qual'],
+										$dossier['Personne']['nom'],
+										implode( ' ', array( $dossier['Personne']['prenom'], $dossier['Personne']['prenom2'], $dossier['Personne']['prenom3'] ) )
+									)
 								),
-								array(
-									( $dossier['Dossier']['locked'] ?
-										$xhtml->image(
-											'icons/lock.png',
-											array( 'alt' => '', 'title' => 'Dossier verrouillé' )
-										) : null
-									),
-									array( 'class' => 'noprint' )
+								nl2br( h( Set::classicExtract(  $dossier, 'Adresse.numvoie' ).' '.Set::classicExtract(  $typevoie, Set::classicExtract( $dossier, 'Adresse.typevoie' ) ).' '.Set::classicExtract(  $dossier, 'Adresse.nomvoie' )."\n".Set::classicExtract(  $dossier, 'Adresse.codepos' ).' '.Set::classicExtract(  $dossier, 'Adresse.locaadr' ) ) )
+							);
+						}
+
+						$array2 = array(
+							array(
+								$xhtml->viewLink(
+									'Voir le dossier « '.$title.' »',
+									array( 'controller' => 'dossiers', 'action' => 'view', $dossier['Dossier']['id'] )
 								),
-								array( $innerTable, array( 'class' => 'innerTableCell noprint' ) ),
+								array( 'class' => 'noprint' )
 							),
+							array(
+								( $dossier['Dossier']['locked'] ?
+									$xhtml->image(
+										'icons/lock.png',
+										array( 'alt' => '', 'title' => 'Dossier verrouillé' )
+									) : null
+								),
+								array( 'class' => 'noprint' )
+							),
+							array( $innerTable, array( 'class' => 'innerTableCell noprint' ) ),
+							
+						);
+						
+						
+						echo $xhtml->tableCells(
+							Set::merge( $array1, $array2 ),
 							array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
 							array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
 						);

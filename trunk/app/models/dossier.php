@@ -318,6 +318,11 @@
 					'"Personne"."nomcomnai"',
 					'"Adresse"."locaadr"',
 					'"Adresse"."numcomptt"',
+					'"Adresse"."numvoie"',
+					'"Adresse"."typevoie"',
+					'"Adresse"."nomvoie"',
+					'"Adresse"."codepos"',
+					'"Adresse"."locaadr"',
 					'"Situationdossierrsa"."etatdosrsa"',
 					'"Prestation"."rolepers"'
 				),
