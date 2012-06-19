@@ -209,6 +209,16 @@
 					$this->paginate['limit'] = $limit;
 					$cohortesnonorientes66 = $this->paginate( 'Personne' );
 
+					//Pour le lien filelink, sauvegarde de l'URL de la recherche lorsqu'on cliquera sur le bouton "Retour" dans la liste des fichiers liés
+					$this->Session->write( "Savedfilters.Nonorientes66.filelink",
+						Set::merge(
+							array(
+								'controller' => Inflector::underscore( $this->name ),
+								'action' => $this->action
+							),
+							$this->params['named']
+						)
+					);
 // debug( $cohortesnonorientes66 );
 					$this->Dossier->commit();
 
