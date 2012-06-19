@@ -609,6 +609,7 @@ $$
 					AND contratsinsertion.df_ci = decisionsproposcontratsinsertioncovs58.df_ci
 					AND contratsinsertion.duree_engag = decisionsproposcontratsinsertioncovs58.duree_engag
 					AND contratsinsertion.id NOT IN ( SELECT proposcontratsinsertioncovs58.nvcontratinsertion_id FROM proposcontratsinsertioncovs58  WHERE proposcontratsinsertioncovs58.nvcontratinsertion_id IS NOT NULL )
+					AND contratsinsertion.rg_ci = proposcontratsinsertioncovs58.rg_ci
 				ORDER BY decisionsproposcontratsinsertioncovs58.modified ASC
 		LOOP
 			-- Mise à jour dans la table proposcontratsinsertioncovs58
@@ -649,7 +650,7 @@ $$
 				WHERE
 					dossierscovs58.themecov58 = 'proposorientationscovs58'
 					AND passagescovs58.etatdossiercov = 'traite'
-					AND decisionsproposorientationscovs58.decisioncov = 'valide'
+					AND decisionsproposorientationscovs58.decisioncov IN ( 'valide', 'refuse' )
 					AND passagescovs58.id IN (
 						SELECT
 								p.id
@@ -705,7 +706,7 @@ $$
 				WHERE
 					dossierscovs58.themecov58 = 'proposnonorientationsproscovs58'
 					AND passagescovs58.etatdossiercov = 'traite'
-					AND decisionsproposnonorientationsproscovs58.decisioncov = 'valide'
+					AND decisionsproposnonorientationsproscovs58.decisioncov IN ( 'valide', 'refuse' )
 					AND passagescovs58.id IN (
 						SELECT
 								p.id
