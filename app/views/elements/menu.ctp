@@ -46,7 +46,7 @@
 						}
 					?>
 					<ul>
-						<?php if( ( Configure::read( 'Cg.departement' ) == 66 ) && ( $permissions->check( 'cohortesvalidationapres66', 'apresavalider' ) || $permissions->check( 'cohortesvalidationapres66', 'notifiees' ) || $permissions->check( 'cohortesvalidationapres66', 'validees' ) || $permissions->check( 'cohortesvalidationapres66', 'traitement' ) ) ):?>
+						<?php if( ( Configure::read( 'Cg.departement' ) == 66 ) && ( $permissions->check( 'cohortesvalidationapres66', 'apresavalider' ) || $permissions->check( 'cohortesvalidationapres66', 'notifiees' ) || $permissions->check( 'cohortesvalidationapres66', 'transfert' ) || $permissions->check( 'cohortesvalidationapres66', 'validees' ) || $permissions->check( 'cohortesvalidationapres66', 'traitement' ) ) ):?>
 							<!-- AJOUT POUR LA GESTION DES CONTRATS D'ENGAGEMENT RECIPROQUE (Cohorte) -->
 							<li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
 								<?php  echo $xhtml->link( 'APRE ', '#' );?>
@@ -59,6 +59,9 @@
 										<?php endif; ?>
 										<?php if( $permissions->check( 'cohortesvalidationapres66', 'notifiees' ) ): ?>
 											<li><?php echo $xhtml->link( 'Notifiées', array( 'controller' => 'cohortesvalidationapres66', 'action' => 'notifiees' ), array( 'title' => 'Notifiées' ) );?></li>
+										<?php endif; ?>
+										<?php if( $permissions->check( 'cohortesvalidationapres66', 'transfert' ) ): ?>
+											<li><?php echo $xhtml->link( 'Transfert cellule', array( 'controller' => 'cohortesvalidationapres66', 'action' => 'transfert' ), array( 'title' => 'Transfert cellule' ) );?></li>
 										<?php endif; ?>
 										<?php if( $permissions->check( 'cohortesvalidationapres66', 'traitement' ) ): ?>
 											<li><?php echo $xhtml->link( 'Traitement cellule', array( 'controller' => 'cohortesvalidationapres66', 'action' => 'traitement' ), array( 'title' => 'Traitement cellule' ) );?></li>

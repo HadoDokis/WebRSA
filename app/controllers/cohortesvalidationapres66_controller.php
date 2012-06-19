@@ -29,6 +29,9 @@
 					'notifiees' => array(
 						'filter' => 'Search'
 					),
+					'transfert' => array(
+						'filter' => 'Search'
+					),
 					'traitement' => array(
 						'filter' => 'Search'
 					)
@@ -77,6 +80,15 @@
 		public function notifiees() {
 			$this->_index( 'Validationapre::notifiees' );
 		}
+
+		/**
+		*
+		*/
+
+		public function transfert() {
+			$this->_index( 'Validationapre::transfert' );
+		}
+		
 		/**
 		*
 		*/
@@ -100,7 +112,7 @@
 			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 
 			if( !empty( $this->data ) ) {
-
+// debug( $this->data );
 				///Sauvegarde
 				// On a renvoyé  le formulaire de la cohorte
 				if( !empty( $this->data['Aideapre66'] ) ) {
@@ -128,7 +140,7 @@
 						}
 					}
 				}
-				else if( ( $this->action == 'traitement' ) && !empty( $this->data['Apre66'] ) ){
+				else if( in_array( $this->action, array( 'traitement', 'transfert' ) ) && !empty( $this->data['Apre66'] ) ){
 
 					$valid = $this->Apre66->saveAll( $this->data['Apre66'], array( 'validate' => 'only', 'atomic' => false ) );
 
@@ -153,7 +165,7 @@
 
 				///Filtrage
 
-				if( ( $statutValidation == 'Validationapre::apresavalider' ) || ( $statutValidation == 'Validationapre::traitementcellule' ) || ( $statutValidation == 'Validationapre::notifiees' ) || ( $statutValidation == 'Validationapre::validees' ) && !empty( $this->data ) ) {
+				if( ( $statutValidation == 'Validationapre::apresavalider' ) || ( $statutValidation == 'Validationapre::traitementcellule' ) || ( $statutValidation == 'Validationapre::notifiees' ) || ( $statutValidation == 'Validationapre::transfert' ) || ( $statutValidation == 'Validationapre::validees' ) && !empty( $this->data ) ) {
 					$this->Dossier->begin(); // Pour les jetons
 
 					$this->paginate = $this->Cohortevalidationapre66->search( $statutValidation, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
@@ -163,6 +175,17 @@
 					$this->Apre66->forceVirtualFields = true;
 					$cohortevalidationapre66 = $this->paginate( 'Apre66' );
 					$this->Apre66->forceVirtualFields = $forceVirtualFields;
+					
+					//Pour le lien filelink, sauvegarde de l'URL de la recherche lorsqu'on cliquera sur le bouton "Retour" dans la liste des fichiers liés
+					$this->Session->write( "Savedfilters.Apres66.filelink",
+						Set::merge(
+							array(
+								'controller' => Inflector::underscore( $this->name ),
+								'action' => $this->action
+							),
+							$this->params['named']
+						)
+					);
 
 					$this->Dossier->commit();
 					foreach( $cohortevalidationapre66 as $key => $value ) {
@@ -201,6 +224,9 @@
 					break;
 				case 'Validationapre::notifiees':
 					$this->render( $this->action, null, 'notifiees' );
+					break;
+				case 'Validationapre::transfert':
+					$this->render( $this->action, null, 'transfert' );
 					break;
 				case 'Validationapre::traitementcellule':
 					$this->render( $this->action, null, 'traitement' );

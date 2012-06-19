@@ -27,8 +27,11 @@
 				else if( $statutValidation == 'Validationapre::notifiees' ) {
 					$conditions[] = '( Apre66.etatdossierapre = \'VAL\' ) AND  ( Apre66.datenotifapre IS NOT NULL )';
 				}
+				else if( $statutValidation == 'Validationapre::transfert' ) {
+					$conditions[] = '( Apre66.etatdossierapre = \'VAL\' ) AND  ( Apre66.datenotifapre IS NOT NULL ) AND ( Apre66.istraite = \'0\' ) AND ( Apre66.istraite = \'0\' ) AND ( Apre66.istransfere = \'0\' )';
+				}
 				else if( $statutValidation == 'Validationapre::traitementcellule' ) {
-					$conditions[] = '( Apre66.etatdossierapre = \'VAL\' ) AND  ( Apre66.datenotifapre IS NOT NULL ) AND ( Apre66.istraite = \'0\' )';
+					$conditions[] = '( Apre66.etatdossierapre = \'TRA\' ) AND  ( Apre66.datenotifapre IS NOT NULL )  AND ( Apre66.istraite = \'0\' ) AND ( Apre66.istransfere = \'1\' )';
 				}
 			}
 
@@ -124,6 +127,7 @@
 					'Apre66.istraite',
 					'Apre66.nbenf12',
 					'Apre66.referent_id',
+					'Apre66.istransfere',
 					'Aideapre66.id',
 					'Aideapre66.apre_id',
 					'Aideapre66.decisionapre',
@@ -149,7 +153,8 @@
 					'Typeaideapre66.name',
 					'Themeapre66.name',
 					$Apre66->Personne->Referent->sqVirtualField( 'nom_complet' ),
-					$Apre66->Personne->sqVirtualField( 'nom_complet' )
+					$Apre66->Personne->sqVirtualField( 'nom_complet' ),
+					'( '.$Apre66->vfNbFichiersmodule( ).' ) AS "Apre66__nbfichiers"'
 				),
 				'joins' => array(
 					$Apre66->join( 'Aideapre66', array( 'type' => 'INNER' ) ),

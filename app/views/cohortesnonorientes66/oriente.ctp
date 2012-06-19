@@ -168,7 +168,6 @@
 								'action' => 'filelink',
 								$cohortenonoriente66['Nonoriente66']['id']
 							),
-							array( 'class' => 'external' ),
 							$permissions->check( 'nonorientes66', 'filelink' )
 						),
 						h( '('.$nbFichiersLies.')' )
