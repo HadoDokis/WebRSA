@@ -1300,6 +1300,13 @@ SELECT alter_table_drop_column_if_exists('public', 'decisionsreorientationseps93
 -------------------------------------------------------------------------------------------------------------
 SELECT add_missing_table_field ( 'public', 'nonorientes66', 'datenotification', 'DATE' );
 SELECT add_missing_table_field ( 'public', 'nonorientes66', 'reponseallocataire', 'TYPE_NO' );
+
+
+
+SELECT add_missing_table_field ('public', 'nonorientes66', 'haspiecejointe', 'type_booleannumber');
+ALTER TABLE nonorientes66 ALTER COLUMN haspiecejointe SET DEFAULT '0'::TYPE_BOOLEANNUMBER;
+UPDATE nonorientes66 SET haspiecejointe = '0'::TYPE_BOOLEANNUMBER WHERE haspiecejointe IS NULL;
+ALTER TABLE nonorientes66 ALTER COLUMN haspiecejointe SET NOT NULL;
 -- *****************************************************************************
 COMMIT;
 -- ************************************************************************

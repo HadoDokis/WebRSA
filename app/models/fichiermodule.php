@@ -195,6 +195,16 @@
 				'fields' => '',
 				'order' => ''
 			),
+			'Nonoriente66' => array(
+				'className' => 'Nonoriente66',
+				'foreignKey' => false,
+				'conditions' => array(
+					'Fichiermodule.modele = \'Nonoriente66\'',
+					'Fichiermodule.fk_value = {$__cakeID__$}'
+				),
+				'fields' => '',
+				'order' => ''
+			),
 		);
 
 		/**

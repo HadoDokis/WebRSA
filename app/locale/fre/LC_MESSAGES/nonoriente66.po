@@ -24,3 +24,15 @@ msgstr "Non"
 
 msgid "ENUM::NO::O"
 msgstr "Oui"
+
+msgid "Nonorientes66::filelink"
+msgstr "Liste des fichiers liés à l'orientation"
+
+msgid "Nonoriente66.haspiecejointe"
+msgstr "Ajouter une pièce jointe"
+
+msgid "ENUM::HASPIECEJOINTE::0"
+msgstr "Non"
+
+msgid "ENUM::HASPIECEJOINTE::1"
+msgstr "Oui"

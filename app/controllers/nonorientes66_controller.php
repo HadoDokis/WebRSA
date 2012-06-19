@@ -1,0 +1,132 @@
+<?php
+
+	class Nonorientes66Controller extends AppController
+	{
+		public $name = 'Nonorientes66';
+
+		public $uses = array(
+			'Nonoriente66',
+			'Option'
+		);
+
+		public $helpers = array( 'Fileuploader' );
+
+		public $components = array(
+			'Fileuploader'
+		);
+
+		public function _setOptions() {
+			$this->set( 'options',  $this->Nonoriente66->allEnumLists() );
+		}
+		/**
+		* http://valums.com/ajax-upload/
+		* http://doc.ubuntu-fr.org/modules_php
+		* increase post_max_size and upload_max_filesize to 10M
+		* debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
+		*/
+
+		public function ajaxfileupload() {
+			$this->Fileuploader->ajaxfileupload();
+		}
+
+		/**
+		* http://valums.com/ajax-upload/
+		* http://doc.ubuntu-fr.org/modules_php
+		* increase post_max_size and upload_max_filesize to 10M
+		* debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
+		* FIXME: traiter les valeurs de retour
+		*/
+
+		public function ajaxfiledelete() {
+			$this->Fileuploader->ajaxfiledelete();
+		}
+
+		/**
+		*   Fonction permettant de visualiser les fichiers chargés dans la vue avant leur envoi sur le serveur
+		*/
+
+		public function fileview( $id ) {
+			$this->Fileuploader->fileview( $id );
+		}
+
+		/**
+		*   Téléchargement des fichiers préalablement associés à un traitement donné
+		*/
+
+		public function download( $fichiermodule_id ) {
+			$this->assert( !empty( $fichiermodule_id ), 'error404' );
+			$this->Fileuploader->download( $fichiermodule_id );
+		}
+
+		/**
+		*   Fonction permettant d'accéder à la page pour lier les fichiers à l'Orientation
+		*/
+
+		public function filelink( $id ){
+// debug($this->params);
+			$this->assert( valid_int( $id ), 'invalidParameter' );
+
+			$fichiers = array();
+			$nonoriente66 = $this->Nonoriente66->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Nonoriente66.id' => $id
+					),
+					'contain' => array(
+						'Fichiermodule' => array(
+							'fields' => array( 'name', 'id', 'created', 'modified' )
+						)
+					)
+				)
+			);
+
+			$personne_id = $nonoriente66['Nonoriente66']['personne_id'];
+			$dossier_id = $this->Nonoriente66->Personne->dossierId( $personne_id );
+
+			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
+
+			$this->Nonoriente66->begin();
+			if( !$this->Jetons->check( $dossier_id ) ) {
+				$this->Nonoriente66->rollback();
+			}
+			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
+
+			// Retour à l'index en cas d'annulation
+			if( isset( $this->params['form']['Cancel'] ) ) {
+				$this->redirect( array( 'action' => 'oriente' ) );
+			}
+
+			if( !empty( $this->data ) ) {
+				$saved = $this->Nonoriente66->updateAll(
+					array( 'Nonoriente66.haspiecejointe' => '\''.$this->data['Nonoriente66']['haspiecejointe'].'\'' ),
+					array(
+						'"Nonoriente66"."personne_id"' => $personne_id,
+						'"Nonoriente66"."id"' => $id
+					)
+				);
+
+				if( $saved ){
+					// Sauvegarde des fichiers liés
+					$dir = $this->Fileuploader->dirFichiersModule( $this->action, $this->params['pass'][0] );
+					$saved = $this->Fileuploader->saveFichiers( $dir, !Set::classicExtract( $this->data, "Nonoriente66.haspiecejointe" ), $id ) && $saved;
+				}
+
+				if( $saved ) {
+					$this->Jetons->release( $dossier_id );
+					$this->Nonoriente66->commit();
+					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+					$this->redirect( $this->referer() );
+				}
+				else {
+					$fichiers = $this->Fileuploader->fichiers( $id );
+					$this->Nonoriente66->rollback();
+					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+				}
+			}
+
+			$this->set( compact( 'dossier_id', 'personne_id', 'fichiers', 'nonoriente66' ) );
+			$this->_setOptions();
+		}
+	}
+?>

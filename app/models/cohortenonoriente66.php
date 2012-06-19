@@ -12,6 +12,9 @@
 			'Gedooo.Gedooo'
 		);
 
+		
+		
+		
 		/**
 		*
 		*/
@@ -130,16 +133,23 @@
 			
 			
 			// conditions sur la date d'impression du courrier aux allocataires non inscrits PE
-			if( isset( $criteresnonorientes['Search']['Nonoriente66']['dateimpression'] )  ) {
-				if( is_array( $criteresnonorientes['Search']['Nonoriente66']['dateimpression'] ) && !empty( $criteresnonorientes['Search']['Nonoriente66']['dateimpression']['day'] ) && !empty( $criteresnonorientes['Search']['Nonoriente66']['dateimpression']['month'] ) && !empty( $criteresnonorientes['Search']['Nonoriente66']['dateimpression']['year'] ) ) {
-					$conditions["Nonoriente66.{'dateimpression'}"] = "{$criteresnonorientes['Search']['Nonoriente66']['dateimpression']['year']}-{$criteresnonorientes['Search']['Nonoriente66']['dateimpression']['month']}-{$criteresnonorientes['Search']['Nonoriente66']['dateimpression']['day']}";
-				}
-				else if( ( is_int( $criteresnonorientes['Search']['Nonoriente66']['dateimpression'] ) || is_bool( $criteresnonorientes['Search']['Nonoriente66']['dateimpression'] ) || ( $criteresnonorientes['Search']['Nonoriente66']['dateimpression'] == '1' ) ) && isset( $criteresnonorientes['Search']['Nonoriente66']['dateimpression_from'] ) && isset( $criteresnonorientes['Search']['Nonoriente66']['dateimpression_to'] ) ) {
-					$criteresnonorientes['Search']['Nonoriente66']['dateimpression_from'] = $criteresnonorientes['Search']['Nonoriente66']['dateimpression_from']['year'].'-'.$criteresnonorientes['Search']['Nonoriente66']['dateimpression_from']['month'].'-'.$criteresnonorientes['Search']['Nonoriente66']['dateimpression_from']['day'];
-					$criteresnonorientes['Search']['Nonoriente66']['dateimpression_to'] = $criteresnonorientes['Search']['Nonoriente66']['dateimpression_to']['year'].'-'.$criteresnonorientes['Search']['Nonoriente66']['dateimpression_to']['month'].'-'.$criteresnonorientes['Search']['Nonoriente66']['dateimpression_to']['day'];
+			foreach( array( 'dateimpression', 'datenotification' ) as $critereNonoriente ) {
+				if( isset( $criteresnonorientes['Search']['Nonoriente66'][$critereNonoriente] )  ) {
+					if( is_array( $criteresnonorientes['Search']['Nonoriente66'][$critereNonoriente] ) && !empty( $criteresnonorientes['Search']['Nonoriente66'][$critereNonoriente]['day'] ) && !empty( $criteresnonorientes['Search']['Nonoriente66'][$critereNonoriente]['month'] ) && !empty( $criteresnonorientes['Search']['Nonoriente66'][$critereNonoriente]['year'] ) ) {
+						$conditions["Nonoriente66.{$critereNonoriente}"] = "{$criteresnonorientes['Search']['Nonoriente66'][$critereNonoriente]['year']}-{$criteresnonorientes['Search']['Nonoriente66'][$critereNonoriente]['month']}-{$criteresnonorientes['Search']['Nonoriente66'][$critereNonoriente]['day']}";
+					}
+					else if( ( is_int( $criteresnonorientes['Search']['Nonoriente66'][$critereNonoriente] ) || is_bool( $criteresnonorientes['Search']['Nonoriente66'][$critereNonoriente] ) || ( $criteresnonorientes['Search']['Nonoriente66'][$critereNonoriente] == '1' ) ) && isset( $criteresnonorientes['Search']['Nonoriente66'][$critereNonoriente."_from"] ) && isset( $criteresnonorientes['Search']['Nonoriente66'][$critereNonoriente."_to"] ) ) {
+						$criteresnonorientes['Search']['Nonoriente66'][$critereNonoriente."_from"] = $criteresnonorientes['Search']['Nonoriente66'][$critereNonoriente."_from"]['year'].'-'.$criteresnonorientes['Search']['Nonoriente66'][$critereNonoriente."_from"]['month'].'-'.$criteresnonorientes['Search']['Nonoriente66'][$critereNonoriente."_from"]['day'];
+						$criteresnonorientes['Search']['Nonoriente66'][$critereNonoriente."_to"] = $criteresnonorientes['Search']['Nonoriente66'][$critereNonoriente."_to"]['year'].'-'.$criteresnonorientes['Search']['Nonoriente66'][$critereNonoriente."_to"]['month'].'-'.$criteresnonorientes['Search']['Nonoriente66'][$critereNonoriente."_to"]['day'];
 
-					$conditions[] = 'Nonoriente66.dateimpression BETWEEN \''.$criteresnonorientes['Search']['Nonoriente66']['dateimpression_from'].'\' AND \''.$criteresnonorientes['Search']['Nonoriente66']['dateimpression_to'].'\'';
+						$conditions[] = 'Nonoriente66.'.$critereNonoriente.' BETWEEN \''.$criteresnonorientes['Search']['Nonoriente66'][$critereNonoriente."_from"].'\' AND \''.$criteresnonorientes['Search']['Nonoriente66'][$critereNonoriente."_to"].'\'';
+					}
 				}
+			}
+
+			// Conditions sur l'utilisateur ayant réalisé l'orientation
+			if( isset( $criteresnonorientes['Search']['Nonoriente66']['user_id'] ) && !empty( $criteresnonorientes['Search']['Nonoriente66']['user_id'] ) ) {
+				$conditions[] = 'Nonoriente66.user_id = \''.Sanitize::clean( $criteresnonorientes['Search']['Nonoriente66']['user_id'] ).'\'';
 			}
 			
 			$query = array(
@@ -157,7 +167,8 @@
 						$Personne->Foyer->sqVirtualField( 'enerreur' ),
 						'( '.$Personne->Foyer->vfNbEnfants().' ) AS "Foyer__nbenfants"',
 						'Historiqueetatpe.id',
-						'Historiqueetatpe.etat'
+						'Historiqueetatpe.etat',
+						'( '.$Personne->Nonoriente66->vfNbFichiersmodule( ).' ) AS "Nonoriente66__nbfichiers"',
 					)
 				),
 				'joins' => array(
@@ -404,6 +415,9 @@
 
 			return $pdfs;
 		}
-		
+	
+	
+	
+	
 	}
 ?>
