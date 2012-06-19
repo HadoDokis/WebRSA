@@ -94,7 +94,11 @@
 
 			// Retour à l'index en cas d'annulation
 			if( isset( $this->params['form']['Cancel'] ) ) {
-				$this->redirect( array( 'action' => 'oriente' ) );
+				$redirect_url = $this->Session->read( "Savedfilters.{$this->name}.{$this->action}" );
+				if( !empty( $redirect_url ) ) {
+					$this->Session->delete( "Savedfilters.{$this->name}.{$this->action}" );
+					$this->redirect( Router::url( $redirect_url, true ) );
+				}
 			}
 
 			if( !empty( $this->data ) ) {
