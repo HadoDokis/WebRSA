@@ -23,7 +23,8 @@
 					'notifaenvoyer' => array( 'filter' => 'Search' ),
 					'oriente' => array( 'filter' => 'Search' )
 				)
-			)
+			),
+			'Fileuploader'
 		);
 
 
@@ -40,15 +41,13 @@
 			$etats = Configure::read( 'Situationdossierrsa.etatdosrsa.ouvert' );
 			$this->set( 'etatdosrsa', $this->Option->etatdosrsa( $etats ) );
 			
-			$this->set( 'gestionnaire', $this->User->find(
+			$this->set( 'users', $this->User->find(
 					'list',
 					array(
 						'fields' => array(
 							'User.nom_complet'
 						),
-						'conditions' => array(
-							'User.isgestionnaire' => 'O'
-						)
+						'order' => array( 'User.nom ASC' )
 					)
 				)
 			);
@@ -75,6 +74,23 @@
 			
 			$Historiqueetatpe = ClassRegistry::init( 'Historiqueetatpe' );
 			$this->set( 'historiqueetatpe', $Historiqueetatpe->allEnumLists() );
+			
+			$User = ClassRegistry::init( 'User' );
+			$this->set( 'gestionnaire', $User->find(
+					'list',
+					array(
+						'fields' => array(
+							'User.nom_complet'
+						),
+						'conditions' => array(
+							'User.isgestionnaire' => 'O'
+						)
+					)
+				)
+			);
+			
+			$optionsOrientstruct = $this->Personne->Orientstruct->allEnumLists();
+			$this->set( compact( 'optionsOrientstruct') );
 			
 			$this->set( 'options', $this->Personne->Orientstruct->Nonoriente66->allEnumLists() );
 		}
@@ -332,8 +348,6 @@
 				$this->Session->setFlash( 'Impossible de générer l\'impression.', 'default', array( 'class' => 'error' ) );
 				$this->redirect( $this->referer() );
 			}
-		}
-	
-	
+		}	
 	}
 ?>

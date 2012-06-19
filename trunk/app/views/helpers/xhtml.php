@@ -257,7 +257,7 @@
 		*
 		*/
 
-		public function fileLink( $title, $url, $enabled = true ) {
+		public function fileLink( $title, $url, $enabled = true, $external = false ) {
 			$content = $this->image(
 				'icons/attach.png',
 				array( 'alt' => '' )
@@ -267,7 +267,7 @@
 				return $this->link(
 					$content,
 					$url,
-					array( 'escape' => false, 'title' => $title )
+					array( 'escape' => false, 'title' => $title, 'class' => ( $external ? 'external' : 'internal' ) )
 				);
 			}
 			else {

@@ -74,7 +74,8 @@
 						'Search.Dossier.matricule' => array( 'label' => __d( 'dossier', 'Dossier.matricule', true ), 'type' => 'text', 'maxlength' => 15 ),
 						'Search.Dossier.numdemrsa' => array( 'label' => __d( 'dossier', 'Dossier.numdemrsa', true ), 'type' => 'text', 'maxlength' => 15 ),
 						'Search.Adresse.locaadr' => array( 'label' => __d( 'adresse', 'Adresse.locaadr', true ), 'type' => 'text' ),
-						'Search.Adresse.numcomptt' => array( 'label' => __d( 'adresse', 'Adresse.numcomptt', true ), 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true )
+						'Search.Adresse.numcomptt' => array( 'label' => __d( 'adresse', 'Adresse.numcomptt', true ), 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ),
+						'Search.Nonoriente66.user_id' => array( 'label' => 'Utilisateur ayant réalisé l\'orientation', 'type' => 'select', 'options' => $users, 'empty' => true )
 					),
                     array(
                         'options' => $options
@@ -122,9 +123,6 @@
         <tbody>
         <?php foreach( $cohortesnonorientes66 as $index => $cohortenonoriente66 ):?>
             <?php
-// debug($cohortenonoriente66);
-				$nbFichiersLies = 0;
-				$nbFichiersLies = ( isset( $cohortenonoriente66['Fichiermodule'] ) ? count( $cohortenonoriente66['Fichiermodule'] ) : 0 );
 
 				$tableCells = array(
 						h( $cohortenonoriente66['Dossier']['numdemrsa'] ),
@@ -144,6 +142,7 @@
 							array( 'controller' => 'cohortesnonorientes66', 'action' => 'impressionOrientation', $cohortenonoriente66['Orientstruct']['id'] ),
 							$permissions->check( 'cohortesnonorientes66', 'impressionOrientation' )
 						)
+						
 					);
 
 					echo $xhtml->tableCells(

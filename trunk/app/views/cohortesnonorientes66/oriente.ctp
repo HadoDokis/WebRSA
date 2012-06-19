@@ -26,6 +26,7 @@
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
 		observeDisableFieldsetOnCheckbox( 'SearchDossierDtdemrsa', $( 'SearchDossierDtdemrsaFromDay' ).up( 'fieldset' ), false );
+		observeDisableFieldsetOnCheckbox( 'SearchNonoriente66Datenotification', $( 'SearchNonoriente66DatenotificationFromDay' ).up( 'fieldset' ), false );
 	});
 </script>
 <?php echo $xform->create( 'Cohortenonoriente66', array( 'type' => 'post', 'action' => 'oriente', 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );?>
@@ -86,7 +87,23 @@
 				}
             ?>
         </fieldset>
+        <?php echo $xform->input( 'Search.Nonoriente66.datenotification', array( 'label' => 'Filtrer par date de notification', 'type' => 'checkbox' ) );?>
+		<fieldset>
+			<legend>Date de notification</legend>
+			<?php
+				$datenotificationFromSelected = $datenotificationToSelected = array();
+				if( !dateComplete( $this->data, 'Search.Nonoriente66.datenotification_from' ) ) {
+					$datenotificationFromSelected = array( 'selected' => strtotime( '-1 week' ) );
+				}
+				if( !dateComplete( $this->data, 'Search.Nonoriente66.datenotification_to' ) ) {
+					$datenotificationToSelected = array( 'selected' => strtotime( 'today' ) );
+				}
 
+				echo $xform->input( 'Search.Nonoriente66.datenotification_from', Set::merge( array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 20 ), $datenotificationFromSelected ) );
+
+				echo $xform->input( 'Search.Nonoriente66.datenotification_to', Set::merge( array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 5, 'minYear' => date( 'Y' ) - 20), $datenotificationToSelected ) );
+			?>
+		</fieldset>
     <div class="submit noprint">
         <?php echo $xform->button( 'Rechercher', array( 'type' => 'submit' ) );?>
         <?php echo $xform->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>
@@ -116,14 +133,16 @@
 				<th>Commune de l'allocataire</th>
 				<th>Orientation effective</th>
 				<th>Alerte composition du foyer ?</th>
-				<th class="action" colspan="2">Actions</th>
+				<th class="action" colspan="4">Actions</th>
             </tr>
         </thead>
         <tbody>
         <?php foreach( $cohortesnonorientes66 as $index => $cohortenonoriente66 ):?>
             <?php
+// debug($cohortenonoriente66);
+				$nbFichiersLies = 0;
+				$nbFichiersLies = $cohortenonoriente66['Nonoriente66']['nbfichiers'];
 
-//             debug($typeorient_id);
 				$tableCells = array(
 						h( $cohortenonoriente66['Dossier']['numdemrsa'] ),
 						h( date_short( $cohortenonoriente66['Dossier']['dtdemrsa'] ) ),
@@ -141,7 +160,18 @@
 							'Imprimer le courrier d\'orientation',
 							array( 'controller' => 'cohortesnonorientes66', 'action' => 'impressionOrientation', $cohortenonoriente66['Orientstruct']['id'] ),
 							$permissions->check( 'cohortesnonorientes66', 'impressionOrientation' )
-						)
+						),
+						$xhtml->fileLink(
+							'Fichiers liés',
+							array(
+								'controller' => 'nonorientes66',
+								'action' => 'filelink',
+								$cohortenonoriente66['Nonoriente66']['id']
+							),
+							array( 'class' => 'external' ),
+							$permissions->check( 'nonorientes66', 'filelink' )
+						),
+						h( '('.$nbFichiersLies.')' )
 					);
 
 					echo $xhtml->tableCells(
