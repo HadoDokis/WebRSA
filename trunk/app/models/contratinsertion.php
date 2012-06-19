@@ -794,6 +794,8 @@
 					if( empty( $typepdo ) ) {
 						return false;
 					}
+					
+// 					$datecreationCERParticulier = Set::classicExtract( $contrat, 'Contratinsertion.created' );
 
 					$dossierpcg66 = array(
 						'Dossierpcg66' => array(
@@ -802,7 +804,7 @@
 							'originepdo_id' => $originepdo['Originepdo']['id'],
 							'typepdo_id' => $typepdo['Typepdo']['id'],
 							'orgpayeur' => 'CAF',
-							'datereceptionpdo' => $contrat[$this->alias]['date_saisi_ci'],
+							'datereceptionpdo' => date( 'Y-m-d', strtotime( $contrat[$this->alias]['created'] ) ),
 							'haspiecejointe' => 0
 						)
 					);
