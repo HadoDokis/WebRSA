@@ -516,7 +516,7 @@ msgid "Button::notification"
 msgstr "Date d'envoi"
 
 msgid "Button::printChangementReferent"
-msgstr "Notification changement"
+msgstr "Notif changement de référent"
 ###############################################################################
 # Pagination
 # INFO: http://forum.cakephp-fr.org/viewtopic.php?id=878

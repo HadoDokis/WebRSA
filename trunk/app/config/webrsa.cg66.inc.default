@@ -164,6 +164,7 @@
 	 */
 	Configure::write( 'Periode.modifiable.nbheure', 48 );
 	Configure::write( 'Periode.modifiablecer.nbheure', 240 );
+	Configure::write( 'Periode.modifiableorientation.nbheure', 240 );
 
 
 	/**
