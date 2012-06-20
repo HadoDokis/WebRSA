@@ -56,12 +56,18 @@
 				<p class="notice">Cette personne ne possède pas encore de contrat d'engagement réciproque.</p>
 			<?php endif;?>
 
+			<?php  if( !empty( $orientstructEmploi ) ) :?>
+				<p class="error">Cette personne possède actuellement une orientation professionnelle. Impossible de créer un CER.</p>
+			<?php endif; ?>
+			
 			<?php if( $permissions->check( 'proposcontratsinsertioncovs58', 'add' ) && $nbdossiersnonfinalisescovs == 0 ):?>
 				<ul class="actionMenu">
 					<?php
+						$block = empty( $orientstruct ) || !empty( $orientstructEmploi );
 						echo '<li>'.$xhtml->addLink(
 							'Ajouter un CER',
-							array( 'controller' => 'proposcontratsinsertioncovs58', 'action' => 'add', $personne_id )
+							array( 'controller' => 'proposcontratsinsertioncovs58', 'action' => 'add', $personne_id ),
+							( !$block )
 						).' </li>';
 					?>
 				</ul>

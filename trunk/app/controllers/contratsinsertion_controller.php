@@ -384,22 +384,36 @@
 			$soumisADroitEtDevoir = $this->Personne->Calculdroitrsa->isSoumisAdroitEtDevoir($personne_id);
 			$this->set( compact( 'soumisADroitEtDevoir' ) );
 
-			if( Configure::read( 'Cg.departement' ) == 66 ) {
-				$typeOrientPrincipaleEmploiId = Configure::read( 'Orientstruct.typeorientprincipale.Emploi' );
-				if( is_array( $typeOrientPrincipaleEmploiId ) && isset( $typeOrientPrincipaleEmploiId[0] ) ){
-					$typeOrientPrincipaleEmploiId = $typeOrientPrincipaleEmploiId[0];
+			if( Configure::read( 'Cg.departement' ) != 93 ) {
+				$conditionsTypeorient = array();
+				if( Configure::read( 'Cg.departement' ) == 66 ) {
+					$typeOrientPrincipaleEmploiId = Configure::read( 'Orientstruct.typeorientprincipale.Emploi' );
+					if( is_array( $typeOrientPrincipaleEmploiId ) && isset( $typeOrientPrincipaleEmploiId[0] ) ){
+						$typeOrientPrincipaleEmploiId = $typeOrientPrincipaleEmploiId[0];
+					}
+					else{
+						trigger_error( __( 'Le type orientation principale Emploi n\'est pas bien défini.', true ), E_USER_WARNING );
+					}
+					
+					$conditionsTypeorient = array( 'Typeorient.parentid' => $typeOrientPrincipaleEmploiId );
 				}
-				else{
-					trigger_error( __( 'Le type orientation principale Emploi n\'est pas bien défini.', true ), E_USER_WARNING );
+				else {
+					$typeOrientPrincipaleEmploiId = Configure::read( 'Typeorient.emploi_id' );
+					if( empty( $typeOrientPrincipaleEmploiId ) ){
+						trigger_error( __( 'Le type orientation principale Emploi n\'est pas bien défini.', true ), E_USER_WARNING );
+					}
+					
+					$conditionsTypeorient = array( 'Typeorient.id' => $typeOrientPrincipaleEmploiId );
 				}
 
+				
 				$orientstructEmploi = $this->Orientstruct->find(
 					'first',
 					array(
 						'conditions' => array(
 							'Orientstruct.personne_id' => $personne_id,
 							'Orientstruct.statut_orient' => 'Orienté',
-							'Typeorient.parentid' => $typeOrientPrincipaleEmploiId,
+							$conditionsTypeorient,
 							'Orientstruct.id IN ( '.$this->Orientstruct->sqDerniere( 'Orientstruct.personne_id' ).' )'
 						),
 						'order' => 'Orientstruct.date_valid DESC',
