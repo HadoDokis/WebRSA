@@ -480,6 +480,7 @@
 							'Sitecov58.name',
 							'Cov58.observation',
 							'Cov58.datecommission',
+							'Decisionpropocontratinsertioncov58.commentaire'
 						),
 						'joins' => array(
 							$this->Contratinsertion->join( 'Propocontratinsertioncov58nv', array( 'type' => 'LEFT OUTER' ) ),
@@ -487,6 +488,7 @@
 							$this->Contratinsertion->Propocontratinsertioncov58nv->Dossiercov58->join( 'Passagecov58', array( 'type' => 'LEFT OUTER' ) ),
 							$this->Contratinsertion->Propocontratinsertioncov58nv->Dossiercov58->Passagecov58->join( 'Cov58', array( 'type' => 'LEFT OUTER' ) ),
 							$this->Contratinsertion->Propocontratinsertioncov58nv->Dossiercov58->Passagecov58->Cov58->join( 'Sitecov58', array( 'type' => 'LEFT OUTER' ) ),
+							$this->Contratinsertion->Propocontratinsertioncov58nv->Dossiercov58->Passagecov58->join( 'Decisionpropocontratinsertioncov58', array( 'type' => 'LEFT OUTER' ) ),
 						),
 						'conditions' => array(
 							'OR' => array(
