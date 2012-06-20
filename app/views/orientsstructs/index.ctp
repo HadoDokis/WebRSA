@@ -204,12 +204,23 @@
 							$rgorient = null;
 						}
 						
+						//Peut-n nimprimer la notif de changement de référent ou non, si 1ère orientation non sinon ok
 						$NotifBenefPrintable = true;
 						if( $orientstruct['Orientstruct']['rgorient'] > 1 ) {
 							$NotifBenefPrintable = true;
 						}
 						else {
 							$NotifBenefPrintable = false;
+						}
+						
+						
+						// Délai de modification orientation (10 jours par défaut)
+						$dateCreation = Set::classicExtract( $orientstruct, 'Orientstruct.date_valid' );
+						$periodeblock = false;
+						if( !empty( $dateCreation ) ){
+							if(  ( mktime() >= ( strtotime( $dateCreation ) + 3600 * Configure::read( 'Periode.modifiableorientation.nbheure' ) ) ) ){
+								$periodeblock = true;
+							}
 						}
 
 						$cells = array(
@@ -252,6 +263,7 @@
 											$permissions->check( 'orientsstructs', 'edit' ) && ( $orientstruct['Orientstruct']['rgorient'] == $rgorient_max )
 											&& !( Configure::read( 'Cg.departement' ) == 93 && isset( $reorientationep93 ) && !empty( $reorientationep93 ) )
 											&& $ajout_possible
+											&& !$periodeblock
 										)
 									)
 								),
