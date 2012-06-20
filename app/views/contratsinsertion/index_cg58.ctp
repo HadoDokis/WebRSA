@@ -124,7 +124,7 @@
 			<tbody>
 				<?php foreach( $contratsinsertion as $contratinsertion ):?>
 					<?php
-
+// debug($contratinsertion);
 						$dureeTolerance = Configure::read( 'Sanctionep58.nonrespectcer.dureeTolerance' );
 
 						$enCours = (
@@ -161,7 +161,7 @@
 								h( date_short( isset( $contratinsertion['Contratinsertion']['df_ci'] ) ) ? date_short( $contratinsertion['Contratinsertion']['df_ci'] ) : null ),
 								h( Set::enum( Set::extract( $contratinsertion, 'Contratinsertion.decision_ci' ), $decision_ci ).' '.$locale->date( 'Date::short', Set::extract( $contratinsertion, 'Contratinsertion.datevalidation_ci' ) ) ),
 								h( $infoscov ),
-								h( Set::classicExtract( $contratinsertion, 'Cov58.observation' ) ),
+								h( Set::classicExtract( $contratinsertion, 'Decisionpropocontratinsertioncov58.commentaire' ) ),
 								$xhtml->viewLink(
 									'Voir le CER',
 									array( 'controller' => 'contratsinsertion', 'action' => 'view', $contratinsertion['Contratinsertion']['id']),
