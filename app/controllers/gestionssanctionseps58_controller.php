@@ -192,7 +192,7 @@
 			$pdf = $this->Gestionsanctionep58->getPdfSanction( $niveauSanction, $passagecommissionep_id, $themeep, $this->Session->read( 'Auth.User.id' ) );
 
 			if( !empty( $pdf ) ){
-				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'impressionSanction-%d-%s.pdf', $id, date( 'Y-m-d' ) ) );
+				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'impressionSanction-%s.pdf', date( 'Y-m-d' ) ) );
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer le courrier.', 'default', array( 'class' => 'error' ) );

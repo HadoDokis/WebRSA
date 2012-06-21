@@ -304,7 +304,8 @@
 			else{
 				$modeleodt = "{$modeleName}/finsanction2.odt";
 			}
-
+// debug($personne);
+// die();
 			return $this->ged(
 				$personne,
 				$modeleodt,
