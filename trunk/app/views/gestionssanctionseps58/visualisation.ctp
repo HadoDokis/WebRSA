@@ -29,7 +29,7 @@
 		observeDisableFieldsetOnCheckbox( 'SearchDossierDtdemrsa', $( 'SearchDossierDtdemrsaFromDay' ).up( 'fieldset' ), false );
 	});
 </script>
-<?php echo $xform->create( 'Gestionsanctionep58', array( 'type' => 'post', 'action' => 'visualisation', 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );?>
+<?php echo $xform->create( 'Gestionsanctionep58', array( 'type' => 'post', 'action' => 'visualisation', 'id' => 'Search', 'class' => ( ( isset( $this->data['Search']['active'] ) && !empty( $this->data['Search']['active'] ) ) ? 'folded' : 'unfolded' ) ) );?>
 
 
 			<?php echo $xform->input( 'Search.active', array( 'type' => 'hidden', 'value' => true ) );?>

@@ -91,8 +91,6 @@
 			
 			if( !empty( $this->data ) ) {
 			
-// 				debug( $this->data );
-				
 				foreach( $this->Gestionsanctionep58->themes() as $theme => $intitule ) {
 					$modelTheme = Inflector::singularize( $theme );
 					$decisionModelTheme = 'Decision'.$modelTheme;
@@ -103,12 +101,8 @@
 						$success = $this->Personne->Dossierep->Passagecommissionep->{$decisionModelTheme}->saveAll( $this->data[$decisionModelTheme], array( 'validate' => 'first', 'atomic' => false ) ) && $success;
 
 						if( $success ) {
-							
-// 							foreach( array_unique( Set::extract( $this->data, 'Orientstruct.{n}.dossier_id' ) ) as $dossier_id ) {
-// 								$this->Jetons->release( array( 'Dossier.id' => $dossier_id ) );
-// 							}
-							
 							$this->Personne->Dossierep->Passagecommissionep->{$decisionModelTheme}->commit();
+							$this->Session->setFlash( 'Enregistrement effectué.', 'flash/success' );
 							unset( $this->data[$decisionModelTheme] );
 							if( isset( $this->data['sessionKey'] ) ) {
 								$this->Session->del( "Prg.{$this->name}__{$this->action}.{$this->data['sessionKey']}" );
@@ -116,21 +110,33 @@
 						}
 						else {
 							$this->Personne->Dossierep->Passagecommissionep->{$decisionModelTheme}->rollback();
+							$this->Session->setFlash( 'Erreur lors de l\'enregistrement.', 'flash/error' );
 						}
 					}
 				}
-			
-
 				$this->Dossier->begin(); // Pour les jetons
 				
 				$limit = 10;
 				$this->paginate = $this->Gestionsanctionep58->search( $statutSanctionep, $this->data['Search'], $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->Jetons->ids() );
 				$this->paginate['limit'] = $limit;
 				$gestionsanctionseps58 = $this->paginate( 'Personne' );
+				
+				foreach( $this->Gestionsanctionep58->themes() as $theme => $intitule ) {
+					$modelTheme = Inflector::singularize( $theme );
+					$decisionModelTheme = 'Decision'.$modelTheme;
+// 					debug( Set::extract( $gestionsanctionseps58, "/{$decisionModelTheme}" ) );
+					$this->data[$decisionModelTheme] = Set::classicExtract( $gestionsanctionseps58, "{n}.{$decisionModelTheme}" );
+				}
+// 				$this->data = $gestionsanctionseps58;
 
 				$this->Dossier->commit();
 
 				$this->set( 'gestionsanctionseps58', $gestionsanctionseps58 );
+			}
+			else {
+				if( $this->action == 'traitement' ) {
+					$this->data['Search']['Decision']['sanction'] = 'N';
+				}
 			}
 
 			

@@ -29,7 +29,7 @@
 		observeDisableFieldsetOnCheckbox( 'SearchDossierDtdemrsa', $( 'SearchDossierDtdemrsaFromDay' ).up( 'fieldset' ), false );
 	});
 </script>
-<?php echo $xform->create( 'Gestionsanctionep58', array( 'type' => 'post', 'action' => 'traitement', 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );?>
+<?php echo $xform->create( 'Gestionsanctionep58', array( 'type' => 'post', 'action' => 'traitement', 'id' => 'Search', 'class' => ( ( isset( $this->data['Search']['active'] ) && !empty( $this->data['Search']['active'] ) ) ? 'folded' : 'unfolded' ) ) );?>
 
 
 			<?php echo $xform->input( 'Search.active', array( 'type' => 'hidden', 'value' => true ) );?>
@@ -60,7 +60,14 @@
 					<?php echo $xform->input( 'Search.Commissionep.dateseance_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 10, 'selected' => $dateseance_to ) );?>
 				</fieldset>
 			</fieldset>
-			
+			<?php if( $this->action == 'traitement' ): ?>
+			<fieldset>
+				<legend>Filtrer par décisions de sanction</legend>
+				<?php
+					echo $form->input( 'Search.Decision.sanction', array( 'label' => 'Suivi de la sanction', 'type' => 'select', 'options' => array( 'N' => 'Non', 'O' => 'Oui' ), 'empty' => true ) );
+				?>
+			</fieldset>
+			<?php endif; ?>
 			<fieldset>
             <legend>Filtrer par Dossier</legend>
 				<?php echo $xform->input( 'Search.Dossier.dtdemrsa', array( 'label' => 'Filtrer par date de demande', 'type' => 'checkbox' ) );?>
@@ -80,6 +87,7 @@
 					echo $xform->input( 'Search.Dossier.dtdemrsa_to', Set::merge( array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 5, 'minYear' => date( 'Y' ) - 20), $dtdemrsaToSelected ) );
 				?>
 			</fieldset>
+
 			<fieldset>
 				<?php
 					$valueDossierDernier = isset( $this->data['Dossier']['dernier'] ) ? $this->data['Dossier']['dernier'] : true;
