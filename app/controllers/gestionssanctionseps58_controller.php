@@ -176,11 +176,29 @@
 
 			$gestionssanctionseps58 = $this->Personne->find( 'all', $queryData );
 			$this->_setOptions();
-// debug($gestionssanctionseps58);
-// die();
+
 			$this->layout = ''; // FIXME ?
 			$this->set( compact( 'gestionssanctionseps58' ) );
 
 		}
+		
+		/**
+		* Impression du courrier de fin de sanction 1.
+		*
+		* @param integer $personne_id
+		* @return void
+		*/
+		public function impressionSanction( $niveauSanction, $passagecommissionep_id, $themeep) {
+			$pdf = $this->Gestionsanctionep58->getPdfSanction( $niveauSanction, $passagecommissionep_id, $themeep, $this->Session->read( 'Auth.User.id' ) );
+
+			if( !empty( $pdf ) ){
+				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'impressionSanction-%d-%s.pdf', $id, date( 'Y-m-d' ) ) );
+			}
+			else {
+				$this->Session->setFlash( 'Impossible de générer le courrier.', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
+			}
+		}
+		
 	}
 ?>
