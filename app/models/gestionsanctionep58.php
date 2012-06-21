@@ -38,12 +38,24 @@
 			
 			if( !empty( $statutSanctionep ) ) {
 				if( $statutSanctionep == 'Gestion::traitement' ) {
-					$conditions[] = array(
-						'AND' => array(
-							'Decisionsanctionep58.arretsanction IS NULL',
-							'Decisionsanctionrendezvousep58.arretsanction IS NULL'
-						)
-					);
+					if( !empty( $criteressanctionseps['Decision']['sanction'] ) ) {
+						if( $criteressanctionseps['Decision']['sanction'] == 'N' ) {
+							$conditions[] = array(
+								'AND' => array(
+									'Decisionsanctionep58.arretsanction IS NULL',
+									'Decisionsanctionrendezvousep58.arretsanction IS NULL'
+								)
+							);
+						}
+						else {
+							$conditions[] = array(
+								'OR' => array(
+									'Decisionsanctionep58.arretsanction IS NOT NULL',
+									'Decisionsanctionrendezvousep58.arretsanction IS NOT NULL'
+								)
+							);
+						}
+					}
 				}
 				else if( $statutSanctionep == 'Gestion::visualisation' ) {
 					$conditions[] = array(
