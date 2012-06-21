@@ -1,4 +1,8 @@
 <?php
+	/**
+	 * INFO: cette thématique n'est actuellement pas utilisée lorsqu'on crée un regroupementep, même si
+	 * la thématique figure dans l'enum type_themeep.
+	 */
 	require_once( ABSTRACTMODELS.'nonorientationproep.php' );
 
 	class Nonorientationproep66 extends Nonorientationproep
@@ -19,11 +23,6 @@
 				'order' => ''
 			)
 		);
-
-		/**
-		* Modèle de document pour la convocation du bénéficiaire.
-		*/
-		protected $_modeleOdtConvocationepBeneficiaire = 'Commissionep/convocationep_beneficiaire.odt';
 
 		/**
 		*

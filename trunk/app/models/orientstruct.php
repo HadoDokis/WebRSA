@@ -26,7 +26,11 @@
 				66 => array(
 					'Orientation/changement_referent_cgcg.odt',
 					'Orientation/changement_referent_cgoa.odt',
-					'Orientation/changement_referent_oacg.odt'
+					'Orientation/changement_referent_oacg.odt',
+					'Orientation/orientationpe.odt',
+					'Orientation/orientationpedefait.odt',
+					'Orientation/orientationsociale.odt',
+					'Orientation/orientationsocialeauto.odt',
 				)
 			)
 		);
@@ -1019,7 +1023,7 @@
 			}
 
 			$pdf = $this->ged( $data, $modeleodt, false, $options );
-			
+
 			if( !empty( $pdf ) ) {
 				$this->Nonoriente66->updateAll(
 					array( 'Nonoriente66.datenotification' => "'".date( 'Y-m-d' )."'" ),
@@ -1028,7 +1032,7 @@
 					)
 				);
 			}
-			
+
 			return $pdf;
 		}
 
