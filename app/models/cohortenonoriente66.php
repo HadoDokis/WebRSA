@@ -9,12 +9,14 @@
 
 		public $actsAs = array(
 			'Conditionnable',
-			'Gedooo.Gedooo'
+			'Gedooo.Gedooo',
+			'ModelesodtConditionnables' => array(
+				66 => array(
+					'Orientation/questionnaireorientation66.odt'
+				)
+			)
 		);
 
-		
-		
-		
 		/**
 		*
 		*/
@@ -47,7 +49,7 @@
 								WHERE
 									nonorientes66.personne_id = Personne.id
 						)';
-						
+
 					$conditions['NOT'] = array( 'Historiqueetatpe.etat' => 'inscription' );
 				}
 				else if( $statutNonoriente == 'Nonoriente::notisemploi' ) {
@@ -57,7 +59,7 @@
 								WHERE
 									nonorientes66.personne_id = Personne.id
 						)';
-						
+
 					$conditions['NOT'] = array( 'Historiqueetatpe.etat' => 'inscription' );
 				}
 				else if( $statutNonoriente == 'Nonoriente::notifaenvoyer' ) {
@@ -99,7 +101,7 @@
             if( !empty( $etatHistoriqueetatpe ) ) {
                 $conditions[] = 'Historiqueetatpe.etat = \''.Sanitize::clean( $etatHistoriqueetatpe ).'\'';
             }
-            
+
 			// Conditions pour les jointures
 			$conditions['Prestation.rolepers'] = array( 'DEM', 'CJT' );
 			$conditions['Calculdroitrsa.toppersdrodevorsa'] = 1;
@@ -130,8 +132,8 @@
 					$conditions['( '.$Personne->Foyer->vfNbEnfants().' )'] = 0;
 				}
 			}
-			
-			
+
+
 			// conditions sur la date d'impression du courrier aux allocataires non inscrits PE
 			foreach( array( 'dateimpression', 'datenotification' ) as $critereNonoriente ) {
 				if( isset( $criteresnonorientes['Search']['Nonoriente66'][$critereNonoriente] )  ) {
@@ -151,7 +153,7 @@
 			if( isset( $criteresnonorientes['Search']['Nonoriente66']['user_id'] ) && !empty( $criteresnonorientes['Search']['Nonoriente66']['user_id'] ) ) {
 				$conditions[] = 'Nonoriente66.user_id = \''.Sanitize::clean( $criteresnonorientes['Search']['Nonoriente66']['user_id'] ).'\'';
 			}
-			
+
 			$query = array(
 				'fields' => array_merge(
 					$Personne->fields(),
@@ -248,7 +250,7 @@
 			$success = true;
 			$Nonoriente66 = ClassRegistry::init( 'Nonoriente66' );
 			if( !empty( $data ) ) {
-			
+
 				$nonoriente66 = array(
 					'Nonoriente66' => array(
 						'personne_id' => $data['Personne']['id'],
@@ -266,11 +268,11 @@
 			else {
 				return false;
 			}
-			
+
 			return $success;
 		}
-		
-		
+
+
 		/**
 		 * Retourne le PDF par défaut généré par les appels aux méthodes getDataForPdf, modeleOdt et
 		 * à la méthode ged du behavior Gedooo
@@ -369,7 +371,7 @@
 			$nonorientes66 = $Personne->find( 'all', $querydata );
 
 
-			$modeleodt = 'Orientation/questionnaireorientation66.odt';
+			$modeleodt = $this->modeleOdt( $nonorientes66 );
 
 			// Traductions
 			$Option = ClassRegistry::init( 'Option' );
@@ -415,9 +417,9 @@
 
 			return $pdfs;
 		}
-	
-	
-	
-	
+
+
+
+
 	}
 ?>

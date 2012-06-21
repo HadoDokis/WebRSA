@@ -13,7 +13,6 @@
 			'Frenchfloat' => array( 'fields' => array( 'montantattribue' ) ),
 			'ModelesodtConditionnables' => array(
 				93 => array(
-					// APRE/DecisionComite/Accord/AccordDirecttiers.odt ?
 					'APRE/DecisionComite/Accord/AccordFormationbeneficiaire.odt',
 					'APRE/DecisionComite/Accord/AccordHorsFormationbeneficiaire.odt',
 					'APRE/DecisionComite/Accord/Accordreferent.odt',
