@@ -154,7 +154,6 @@
 				$detailsDecision[] = "{$modeleDecision}.decision2";
 				$detailsDecision["Autrelistesanctionep58.sanction"] = array( 'domain' => 'decisionsanctionep58' );
 				$detailsDecision["Autrelistesanctionep58.duree"] =  array( 'domain' => 'decisionsanctionep58' );
-				$detailsDecision[] = "{$modeleDecision}.regularisation";
 				break;
 			case 'sanctionsrendezvouseps58';
 				$detailsDecision["Listesanctionep58.sanction"] =  array( 'domain' => 'decisionsanctionrendezvousep58' );
@@ -162,7 +161,6 @@
 				$detailsDecision[] = "{$modeleDecision}.decision2";
 				$detailsDecision["Autrelistesanctionep58.sanction"] = array( 'domain' => 'decisionsanctionrendezvousep58' );
 				$detailsDecision["Autrelistesanctionep58.duree"] =  array( 'domain' => 'decisionsanctionep58' );
-				$detailsDecision[] = "{$modeleDecision}.regularisation";
 				break;
 			case 'signalementseps93';
 				$detailsDecision[] = "{$modeleDecision}.montantreduction";
@@ -202,6 +200,33 @@
 							'class' => 'aere'
 						)
 					);
+
+					// Affichage spécifique aux sanctions EPs CG58
+					if( Configure::read( 'Cg.departement' ) == 58 && isset( $suivisanction58 ) && !empty( $suivisanction58 ) ) {
+						echo '<h2>Suivi des sanctions</h2>';
+						echo $default2->index(
+							$suivisanction58,
+							array(
+								"{$modeleDecision}.decision" => array( 'label' => 'Décision', 'type' => 'text' ),
+								"{$modeleDecision}.sanction" => array( 'label' => 'Sanction', 'type' => 'text' ),
+								"{$modeleDecision}.duree" => array( 'label' => 'Durée (en mois)', 'type' => 'integer' ),
+								"{$modeleDecision}.dd" => array( 'label' => 'Date de début', 'type' => 'date' ),
+								"{$modeleDecision}.df" => array( 'label' => 'Date de fin', 'type' => 'date' ),
+								"{$modeleDecision}.etat" => array( 'label' => 'État', 'type' => 'text' ),
+							)
+						);
+						
+						if( !empty( $passage['Decision'][$i][$modeleDecision]['commentairearretsanction'] ) ){
+							echo $default2->view(
+								$passage['Decision'][$i],
+								"{$modeleDecision}.commentairearretsanction",
+								array(
+									'options' => $options,
+									'class' => 'aere'
+								)
+							);
+						}
+					}
 				}
 			}
 		}

@@ -6,14 +6,14 @@ echo '<table><thead>
 	<th>Date de naissance</th>
 	<th>Création du dossier EP</th>
 	<th>Origine du dossier</th>
-	<th colspan=\'5\'>Avis EPL</th>
+	<th colspan=\'4\'>Avis EPL</th>
 	<th>Observations</th>
 </tr>
 <tr>
 	<th colspan="5"></th>
 	<th colspan="2">Sanction n°1</th>
 	<th colspan="2">Sanction n°2</th>
-	<th colspan="2"></th>
+	<th></th>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
@@ -49,10 +49,6 @@ echo '<table><thead>
 				array(
 					$form->input( "Decisionsanctionep58.{$i}.autrelistesanctionep58_id", array( 'type' => 'select', 'label' => false, 'options' => $listesanctionseps58 ) ),
 					( !empty( $this->validationErrors['Decisionsanctionep58'][$i]['autrelistesanctionep58_id'] ) ? array( 'class' => 'error' ) : array() )
-				),
-				array(
-					$form->input( "Decisionsanctionep58.{$i}.regularisation", array( 'type' => 'select', 'label' => false, 'options' => @$options['Decisionsanctionep58']['regularisation'], 'empty' => true ) ),
-					( !empty( $this->validationErrors['Decisionsanctionep58'][$i]['regularisation'] ) ? array( 'class' => 'error' ) : array() )
 				),
 				$form->input( "Decisionsanctionep58.{$i}.commentaire", array( 'label' => false, 'type' => 'textarea' ) ).
 				$hiddenFields

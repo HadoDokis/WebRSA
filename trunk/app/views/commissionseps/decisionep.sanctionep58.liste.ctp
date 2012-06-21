@@ -6,7 +6,7 @@ echo '<table><thead>
 	<th>Date de naissance</th>
 	<th>Création du dossier EP</th>
 	<th>Origine du dossier</th>
-	<th colspan=\'5\'>Avis EPL</th>
+	<th colspan=\'4\'>Avis EPL</th>
 	<th>Observations</th>
 	<th colspan="2">Action</th>
 </tr>
@@ -14,7 +14,7 @@ echo '<table><thead>
 	<th colspan="5"></th>
 	<th colspan="2">Sanction n°1</th>
 	<th colspan="2">Sanction n°2</th>
-	<th colspan="4"></th>
+	<th colspan="3"></th>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
@@ -33,7 +33,6 @@ echo '<table><thead>
 				array( @$listesanctionseps58[Set::classicExtract( $decisionep, "listesanctionep58_id" )], array( 'id' => "Decisionsanctionep58{$i}Listesanctionep58Id" ) ),
 				array( @$options['Decisionsanctionep58']['decision'][Set::classicExtract( $decisionep, "decision2" )], array( 'id' => "Decisionsanctionep58{$i}DecisionColumn" ) ),
 				array( @$listesanctionseps58[Set::classicExtract( $decisionep, "autrelistesanctionep58_id" )], array( 'id' => "Decisionsanctionep58{$i}Autrelistesanctionep58Id" ) ),
-				array( @$regularisationlistesanctionseps58['Decisionsanctionep58']['regularisation'][Set::classicExtract( $decisionep, "regularisation" )], array( 'id' => "Decisionsanctionep58{$i}regularisation" ) ),
 				Set::classicExtract( $decisionep, "commentaire" ),
 				$xhtml->editLink( 'Modifier', array( 'controller' => 'commissionseps', 'action' => 'traiterep', $dossierep['Passagecommissionep'][0]['commissionep_id'] ), ( $commissionep['Commissionep']['etatcommissionep'] != 'annule' ) ),
 				$xhtml->printLink( 'Imprimer', array( 'controller' => 'commissionseps', 'action' => 'impressionDecision', $dossierep['Passagecommissionep'][0]['id'] ), ( $commissionep['Commissionep']['etatcommissionep'] != 'annule' ) ),

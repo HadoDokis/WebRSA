@@ -52,6 +52,15 @@ msgstr "Durée de la sanction n° 2 (en mois)"
 msgid "Decisionsanctionrendezvousep58.regularisation"
 msgstr "Régularisation"
 
+msgid "Decisionsanctionrendezvousep58.arretsanction"
+msgstr "Modification de la sanction ?"
+
+msgid "Decisionsanctionrendezvousep58.datearretsanction"
+msgstr "Date de fin de sanction"
+
+msgid "Decisionsanctionrendezvousep58.commentairearretsanction"
+msgstr "Commentaire sur la modification de la sanction"
+
 msgid "Decisionsanctionrendezvousep58.commentaire"
 msgstr "Commentaire"
 
@@ -78,3 +87,15 @@ msgstr "Annulé"
 
 msgid "ENUM::DECISION2::reporte"
 msgstr "Reporté"
+
+msgid "ENUM::ARRETSANCTION::finsanction1"
+msgstr "Fin de suspension n°1"
+
+msgid "ENUM::ARRETSANCTION::finsanction2"
+msgstr "Fin de suspension n°2"
+
+msgid "ENUM::ARRETSANCTION::annulation1"
+msgstr "Annulation sanction n°1"
+
+msgid "ENUM::ARRETSANCTION::annulation2"
+msgstr "Annulation sanction n°2"

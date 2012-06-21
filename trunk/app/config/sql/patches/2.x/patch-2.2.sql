@@ -1316,6 +1316,23 @@ SELECT add_missing_table_field ('public', 'apres', 'istransfere', 'TYPE_BOOLEANN
 ALTER TABLE apres ALTER COLUMN istransfere SET DEFAULT '0'::TYPE_BOOLEANNUMBER;
 UPDATE apres SET istransfere = '0'::TYPE_BOOLEANNUMBER WHERE istransfere IS NULL;
 ALTER TABLE apres ALTER COLUMN istransfere SET NOT NULL;
+
+-- ***********************************************************************************************************
+-- 20120620 -- Ajout de champs supplémentaires et nouveaux pour les décisions de sanction ep 58
+			-- dans le cas de modification de ces sanctions
+-- ***********************************************************************************************************
+DROP TYPE IF EXISTS TYPE_ARRETSANCTIONEP58;
+CREATE TYPE TYPE_ARRETSANCTIONEP58 AS ENUM ( 'finsanction1', 'finsanction2', 'annulation1', 'annulation2' );
+SELECT add_missing_table_field ('public', 'decisionssanctionseps58', 'arretsanction', 'TYPE_ARRETSANCTIONEP58');
+SELECT add_missing_table_field ('public', 'decisionssanctionseps58', 'datearretsanction', 'DATE');
+SELECT add_missing_table_field ('public', 'decisionssanctionseps58', 'commentairearretsanction', 'TEXT');
+
+SELECT add_missing_table_field ('public', 'decisionssanctionsrendezvouseps58', 'arretsanction', 'TYPE_ARRETSANCTIONEP58');
+SELECT add_missing_table_field ('public', 'decisionssanctionsrendezvouseps58', 'datearretsanction', 'DATE');
+SELECT add_missing_table_field ('public', 'decisionssanctionsrendezvouseps58', 'commentairearretsanction', 'TEXT');
+
+ALTER TABLE decisionssanctionseps58 ADD CONSTRAINT decisionssanctionseps58_arretsanction_datearretsanction_chk CHECK ( ( arretsanction IN ( 'finsanction1', 'finsanction2' ) AND datearretsanction IS NOT NULL ) OR ( arretsanction NOT IN ( 'finsanction1', 'finsanction2' ) AND datearretsanction IS NULL ) );
+ALTER TABLE decisionssanctionsrendezvouseps58 ADD CONSTRAINT decisionssanctionsrendezvouseps58_arretsanction_datearretsanction_chk CHECK ( ( arretsanction IN ( 'finsanction1', 'finsanction2' ) AND datearretsanction IS NOT NULL ) OR ( arretsanction NOT IN ( 'finsanction1', 'finsanction2' ) AND datearretsanction IS NULL ) );
 -- *****************************************************************************
 COMMIT;
 -- ************************************************************************

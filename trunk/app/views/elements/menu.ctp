@@ -579,6 +579,19 @@
 						</li>
 					<?php endif; ?>
 					<li><?php echo $xhtml->link( '4. Consultation et impression des décisions', array( 'controller' => 'commissionseps', 'action' => 'decisions' ) );?></li>
+					<?php if( Configure::read( 'Cg.departement' ) == 58 ):?>
+						<li>
+							<?php echo $xhtml->link( '5. Gestion des sanctions', array( 'controller' => 'gestionssanctionseps58', 'action' => '#' ) );?>
+							<ul>
+								<li>
+									<?php echo $xhtml->link( 'Gestion des sanctions', array( 'controller' => 'gestionssanctionseps58', 'action' => 'traitement' ) );?>
+								</li>
+								<li>
+									<?php echo $xhtml->link( 'Visualisation des sanctions', array( 'controller' => 'gestionssanctionseps58', 'action' => 'visualisation' ) );?>
+								</li>
+							</ul>
+						</li>
+					<?php endif;?>
 				</ul>
 			</li>
 			<?php endif;?>
