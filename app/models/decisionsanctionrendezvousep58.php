@@ -14,9 +14,11 @@
 					'decision',
 					'decision2',
 					'regularisation',
+					'arretsanction'
 				)
 			),
-			'Formattable'
+			'Formattable',
+			'Suivisanctionep58'
 		);
 
 		public $belongsTo = array(

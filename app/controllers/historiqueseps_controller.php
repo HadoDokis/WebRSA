@@ -143,6 +143,11 @@
 				array( 'Decision' => Set::classicExtract( $donneesDecision, "{n}" ) )
 			);
 
+			// Si on
+			if( $this->Dossierep->Passagecommissionep->{$modeleDecision}->Behaviors->attached( 'Suivisanctionep58' ) ) {
+				$this->set( 'suivisanction58', $this->Dossierep->Passagecommissionep->{$modeleDecision}->suivisanctions58( $passage ) );
+			}
+
 			$this->_setOptions( $modeleTheme, $modeleDecision );
 			// Fin factorisation
 

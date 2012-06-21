@@ -13,10 +13,12 @@
 					'etape',
 					'decision',
 					'decision2',
-					'regularisation'
+					'regularisation',
+					'arretsanction'
 				)
 			),
-			'Formattable'
+			'Formattable',
+			'Suivisanctionep58'
 		);
 
 		public $belongsTo = array(
