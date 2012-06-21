@@ -17,7 +17,15 @@
 					'etatcommissionep'
 				)
 			),*/
-			'Gedooo.Gedooo'
+			'Gedooo.Gedooo',
+			'ModelesodtConditinnables' => array(
+				58 => array(
+					'Sanctionep58/finsanction1.odt',
+					'Sanctionep58/finsanction2.odt',
+					'Sanctionrendezvousep58/finsanction1.odt',
+					'Sanctionrendezvousep58/finsanction2.odt',
+				)
+			)
 		);
 
 		/**
@@ -190,6 +198,118 @@
 			return array(
 				'sanctionseps58' => __d( 'dossierep', 'ENUM::THEMEEP::sanctionseps58', true ),
 				'sanctionsrendezvouseps58' =>  __d( 'dossierep', 'ENUM::THEMEEP::sanctionsrendezvouseps58', true ),
+			);
+		}
+
+		/**
+		 * Retourne les données nécessaires à l'impression des courriers des personnes passées en EP pour sanction
+		 * Les données contiennent les informations de la personne
+		 *
+		 * @param integer $id
+		 * @param integer $user_id
+		 * @return array
+		 */
+		public function getDataForPdf( $passagecommissionep_id ) {
+			$typesvoies = ClassRegistry::init( 'Option' )->typevoie();
+			$Personne = ClassRegistry::init( 'Personne' );
+
+			$querydata = array(
+				'fields' => array_merge(
+					$Personne->fields(),
+					$Personne->Foyer->fields(),
+					$Personne->Foyer->Adressefoyer->fields(),
+					$Personne->Foyer->Adressefoyer->Adresse->fields(),
+					$Personne->Foyer->Dossier->fields(),
+					$Personne->Dossierep->fields(),
+					$Personne->Dossierep->Passagecommissionep->fields(),
+					$Personne->Dossierep->Passagecommissionep->Decisionsanctionep58->fields(),
+					$Personne->Dossierep->Passagecommissionep->Decisionsanctionrendezvousep58->fields(),
+					$Personne->Dossierep->Passagecommissionep->Commissionep->fields(),
+					$Personne->Dossierep->Passagecommissionep->Commissionep->Ep->fields(),
+					$Personne->Dossierep->Passagecommissionep->Commissionep->Ep->Regroupementep->fields()
+				),
+				'joins' => array(
+					$Personne->join( 'Calculdroitrsa', array( 'type' => 'INNER' ) ),
+					$Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
+					$Personne->join( 'Prestation', array( 'type' => 'INNER' ) ),
+					$Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
+					$Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'INNER' ) ),
+					$Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
+					$Personne->Foyer->Dossier->join( 'Situationdossierrsa', array( 'type' => 'INNER' ) ),
+					$Personne->join( 'Dossierep', array( 'type' => 'INNER' ) ),
+					$Personne->Dossierep->join( 'Passagecommissionep', array( 'type' => 'INNER' ) ),
+					$Personne->Dossierep->Passagecommissionep->join( 'Commissionep', array( 'type' => 'INNER' ) ),
+					$Personne->Dossierep->Passagecommissionep->join( 'Decisionsanctionep58', array( 'type' => 'LEFT OUTER' ) ),
+					$Personne->Dossierep->Passagecommissionep->join( 'Decisionsanctionrendezvousep58', array( 'type' => 'LEFT OUTER' ) ),
+					$Personne->Dossierep->Passagecommissionep->Commissionep->join( 'Ep', array( 'type' => 'INNER' ) ),
+					$Personne->Dossierep->Passagecommissionep->Commissionep->Ep->join( 'Regroupementep', array( 'type' => 'INNER' ) )
+				),
+				'conditions' => array(
+					'Passagecommissionep.id' => $passagecommissionep_id,
+					'OR' => array(
+						'Adressefoyer.id IS NULL',
+						'Adressefoyer.id IN ( '.$Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
+					)
+				),
+				'contain' => false
+			);
+			return $querydata;
+		}
+		
+		/**
+		 * Retourne le PDF par défaut généré pour l'impression du courrier de fin de sanciton 1
+		 *
+		 * @param type $id Id de la personne
+		 * @param type $user_id Id de l'utilisateur connecté
+		 * @return string
+		 */
+		public function getPdfSanction( $niveauSanction, $passagecommissionep_id, $themeep, $user_id ) {
+			$Option = ClassRegistry::init( 'Option' );
+			$Personne = ClassRegistry::init( 'Personne' );
+
+			$options = array(
+				'Adresse' => array(
+					'typevoie' => $Option->typevoie()
+				),
+				'Personne' => array(
+					'qual' => $Option->qual()
+				)
+			);
+
+			$querydata = $this->getDataForPdf( $passagecommissionep_id );
+
+			$personne = $Personne->find( 'first', $querydata );
+
+			/// Récupération de l'utilisateur
+			$user = ClassRegistry::init( 'User' )->find(
+				'first',
+				array(
+					'conditions' => array(
+						'User.id' => $user_id
+					),
+					'contain' => false
+				)
+			);
+			$personne['User'] = $user['User'];
+
+			if( empty( $personne ) ) {
+				$this->cakeError( 'error404' );
+			}
+
+			$modeleName = Inflector::classify( $themeep );
+
+			if( $niveauSanction == '1' ){
+				$modeleodt = "{$modeleName}/finsanction1.odt";
+			}
+			else{
+				$modeleodt = "{$modeleName}/finsanction2.odt";
+			}
+
+			return $this->ged(
+				$personne,
+				$modeleodt,
+				false,
+				$options
 			);
 		}
 	}

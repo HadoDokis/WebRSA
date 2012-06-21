@@ -147,7 +147,7 @@
 				<th>Modification de la sanction</th>
 				<th>Date fin de sanction</th>
 				<th>Commentaire</th>
-				<th>Action</th>
+				<th colspan="3">Action</th>
             </tr>
         </thead>
         <tbody>
@@ -197,7 +197,17 @@
 							'Voir le dossier',
 							array( 'controller' => 'historiqueseps', 'action' => 'view_passage', $gestionanctionep58['Passagecommissionep']['id'] ),
 							$permissions->check( 'historiqueseps', 'view_passage' )
-						)
+						),
+						$xhtml->printLink(
+							'Imprimer',
+							array( 'controller' => 'gestionssanctionseps58', 'action' => 'impressionSanction', '1', $gestionanctionep58['Passagecommissionep']['id'], $gestionanctionep58['Dossierep']['themeep'] ),
+							$permissions->check( 'gestionssanctionseps58', 'impressionSanction1' )
+						),
+						$xhtml->printLink(
+							'Imprimer',
+							array( 'controller' => 'gestionssanctionseps58', 'action' => 'impressionSanction', '2', $gestionanctionep58['Passagecommissionep']['id'], $gestionanctionep58['Dossierep']['themeep'] ),
+							$permissions->check( 'gestionssanctionseps58', 'impressionSanction2' )
+						),
 
 					);
 
