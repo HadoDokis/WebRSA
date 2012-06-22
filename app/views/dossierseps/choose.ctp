@@ -61,14 +61,16 @@
 			);
 		?>
 	</li>
-	<li>
-		<?php
-			echo $xhtml->exportLink(
-				'Télécharger le tableau',
-				array( 'action' => 'exportcsv', $commissionep_id )
-			);
-		?>
-	</li>
+	<?php if( !empty( $dossiersAllocataires ) ):?>
+		<li>
+			<?php
+				echo $xhtml->exportLink(
+					'Télécharger le tableau',
+					array( 'action' => 'exportcsv', $commissionep_id )
+				);
+			?>
+		</li>
+	<?php endif;?>
 </ul>
 <?php
 	if( Configure::read( 'debug' ) > 0 ) {

@@ -517,6 +517,12 @@ msgstr "Date d'envoi"
 
 msgid "Button::printChangementReferent"
 msgstr "Notif changement de référent"
+
+msgid "Button::impressionsSanctions1"
+msgstr "Impression en cohorte fin sanction 1"
+
+msgid "Button::impressionsSanctions2"
+msgstr "Impression en cohorte fin sanction 2"
 ###############################################################################
 # Pagination
 # INFO: http://forum.cakephp-fr.org/viewtopic.php?id=878
@@ -524,3 +530,9 @@ msgstr "Notif changement de référent"
 
 msgid "Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%"
 msgstr "Page %page% sur %pages%, montrant %current% enregistrements parmi %count% au total, à partir de l'enregistrement n° %start% et jusqu'au n° %end%"
+
+msgid "Button::impressionSanction1"
+msgstr "Notification fin sanction 1"
+
+msgid "Button::impressionSanction2"
+msgstr "Notification fin sanction 2"

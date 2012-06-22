@@ -1233,6 +1233,29 @@ td.button.email a, td.action a.email, td span.button.email, table.default2 td a.
 td.button.email.disabled a, td.action a.email.disabled, td span.button.email.disabled, table.default2 td a.button.email.disabled {
     background-image: url( ../img/icons/email_disabled.png );
 }
+
+
+td.button.suivisanction1 a, td.action a.suivisanction1, td span.button.suivisanction1, table.default2 td a.button.suivisanction1 {
+    background-image: url( ../img/icons/printer.png );
+}
+td.button.suivisanction1.disabled a, td.action a.suivisanction1.disabled, td span.button.suivisanction1.disabled, table.default2 td a.button.suivisanction1.disabled {
+    background-image: url( ../img/icons/printer_disabled.png );
+}
+
+
+td.button.suivisanction2 a, td.action a.suivisanction2, td span.button.suivisanction2, table.default2 td a.button.suivisanction2 {
+    background-image: url( ../img/icons/printer.png );
+}
+td.button.suivisanction2.disabled a, td.action a.suivisanction2.disabled, td span.button.suivisanction2.disabled, table.default2 td a.button.suivisanction2.disabled {
+    background-image: url( ../img/icons/printer_disabled.png );
+}
+
+ul.actionMenu a.button.printcohorte1, ul.actionMenu a.button.printcohorte2 {
+    background-image: url( ../img/icons/printer.png );
+/* 	padding: 5px; */
+	margin: 11px;
+}
+
 /**/
 
 td.boolean span, table tr:nth-child(2n) td.boolean span {
