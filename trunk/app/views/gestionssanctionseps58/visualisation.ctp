@@ -133,7 +133,7 @@
 			echo $xform->input( "Search.{$filtre}", array( 'type' => 'hidden', 'value' => $value ) );
 		}
 	?>
-    <table id="searchResults">
+    <table id="searchResults" class="default2">
         <thead>
             <tr>
                 <th>Allocataire</th>
@@ -198,16 +198,22 @@
 							array( 'controller' => 'historiqueseps', 'action' => 'view_passage', $gestionanctionep58['Passagecommissionep']['id'] ),
 							$permissions->check( 'historiqueseps', 'view_passage' )
 						),
-						$xhtml->printLink(
-							'Imprimer',
-							array( 'controller' => 'gestionssanctionseps58', 'action' => 'impressionSanction', '1', $gestionanctionep58['Passagecommissionep']['id'], $gestionanctionep58['Dossierep']['themeep'] ),
-							$permissions->check( 'gestionssanctionseps58', 'impressionSanction1' )
+						$default2->button(
+							'suivisanction1',
+							array( 'controller' => 'gestionssanctionseps58', 'action' => 'impressionSanction1', '1',
+							$gestionanctionep58['Passagecommissionep']['id'], $gestionanctionep58['Dossierep']['themeep'] ),
+							array( 'enabled' =>( $permissions->check( 'gestionssanctionseps58', 'impressionSanction1' ) == 1 ) )
 						),
-						$xhtml->printLink(
-							'Imprimer',
-							array( 'controller' => 'gestionssanctionseps58', 'action' => 'impressionSanction', '2', $gestionanctionep58['Passagecommissionep']['id'], $gestionanctionep58['Dossierep']['themeep'] ),
-							$permissions->check( 'gestionssanctionseps58', 'impressionSanction2' )
-						),
+						$default2->button(
+							'suivisanction2',
+							array( 'controller' => 'gestionssanctionseps58', 'action' => 'impressionSanction2', '2',
+							$gestionanctionep58['Passagecommissionep']['id'], $gestionanctionep58['Dossierep']['themeep'] ),
+							array(
+								'enabled' =>(
+									$permissions->check( 'gestionssanctionseps58', 'impressionSanction2' ) == 1 )
+									&& !empty( $decisionSanction2 )
+								)
+						)
 
 					);
 
@@ -229,6 +235,32 @@
 					array( 'controller' => 'gestionssanctionseps58', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
 				);
 			?></li>
+
+			<li><?php
+				echo $default2->button(
+					'printcohorte1',
+					Set::merge(
+						array(
+							'controller' => 'gestionssanctionseps58', 'action' => 'impressionsSanctions1'
+						),
+						Set::flatten( $this->params['named'] )
+					)
+				);
+
+			?></li>
+			
+			<li><?php
+				echo $default2->button(
+					'printcohorte2',
+					Set::merge(
+						array(
+							'controller' => 'gestionssanctionseps58', 'action' => 'impressionsSanctions2'
+						),
+						Set::flatten( $this->params['named'] )
+					)
+				);
+			?></li>
+
 		</ul>
 	<?php endif;?>
 <?php endif;?>

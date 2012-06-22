@@ -313,5 +313,34 @@
 				$options
 			);
 		}
+
+		
+		/**
+		 * Retourne le PDF concernant le questionnaire de la personne non orientée
+		 *
+		 * @param string $search
+		 * @param integer $user_id
+		 * @return string
+		 */
+		public function getCohortePdfSanction( $niveauSanction, $statutSanctionep, $mesCodesInsee, $filtre_zone_geo, $search, $page, $user_id ) {
+
+			$querydata = $this->search( $statutSanctionep, $search, $mesCodesInsee, $filtre_zone_geo, null );
+
+			$querydata['limit'] = 100;
+			$querydata['offset'] = ( ( $page ) <= 1 ? 0 : ( $querydata['limit'] * ( $page - 1 ) ) );
+
+			$Personne = ClassRegistry::init( 'Personne' );
+			$gestionssanctionseps58 = $Personne->find( 'all', $querydata );
+
+			$themeseps = Set::extract( $gestionssanctionseps58, '/Dossierep/themeep' );
+
+			$pdfs = array();
+			foreach( $themeseps as $i => $themeep ) {
+				$passagecommissionep_id = $gestionssanctionseps58[$i]['Passagecommissionep']['id'];
+				$pdfs[] = $this->getPdfSanction( $niveauSanction, $passagecommissionep_id, $themeep, $user_id );
+			}
+			
+			return $pdfs;
+		}
 	}
 ?>
