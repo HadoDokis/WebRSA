@@ -2,7 +2,7 @@
 	/**
 	 * Classe de vérification de l'installation et du paramétrage de WebRSA.
 	 */
-	class ChecksController extends AppController
+	class Checks1Controller extends AppController
 	{
 
 		public $name = 'Checks';
