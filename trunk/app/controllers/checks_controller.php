@@ -10,7 +10,7 @@
 		/**
 		* @access public
 		*/
-		public $name = 'Checks2';
+		public $name = 'Checks';
 
 		/**
 		* @access public

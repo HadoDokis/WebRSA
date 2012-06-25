@@ -5,7 +5,7 @@
 	class Checks1Controller extends AppController
 	{
 
-		public $name = 'Checks';
+		public $name = 'Checks1';
 		public $uses = array( 'Structurereferente', 'User', 'Serviceinstructeur' );
 
 		public function index() {
