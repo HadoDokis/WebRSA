@@ -41,11 +41,42 @@
 			</div>
 			<div id="webrsa">
 				<h3 class="title">WebRSA</h3>
-				<?php echo $checks->table( $results['Webrsa']['informations'] );?>
-				<h4>Configuration</h4>
-				<?php echo $checks->table( $results['Webrsa']['configure'] );?>
-				<h4>Intervalles PostgreSQL</h4>
-				<?php echo $checks->table( $results['Webrsa']['intervals'] );?>
+				<?php echo $checks->table( $results['Webrsa']['informations'] );?><br/>
+				<div id="tabbedWrapperWebrsa" class="tabs">
+					<div id="webrsa_configuration">
+						<h4 class="title">Configuration</h4>
+						<?php echo $checks->table( $results['Webrsa']['configure'] );?>
+					</div>
+					<div id="webrsa_pgsqlintervals">
+						<h4 class="title">Intervalles PostgreSQL</h4>
+						<?php echo $checks->table( $results['Webrsa']['intervals'] );?>
+					</div>
+					<?php if( !is_null( Configure::read( "Recherche.qdFilters" ) ) ):?>
+					<div id="webrsa_sqrecherche">
+						<h4 class="title">Fragments SQL pour les moteurs de recherche</h4>
+						<?php
+							foreach( $results['Webrsa']['sqRechercheErrors'] as $modelName => $entries ) {
+								$errorClass = ( empty( $entries ) ? '' : 'error' );
+								echo "<h5 class=\"title {$errorClass}\">{$modelName}</h5>";
+								$controllerName = Inflector::camelize( Inflector::tableize( $modelName ) );
+								echo $default2->index(
+									$entries,
+									array(
+										"{$modelName}.id" => array( 'type' => 'integer' ),
+										"{$modelName}.name" => array( 'type' => 'string' ),
+										"{$modelName}.sqrecherche" => array( 'type' => 'string' ),
+									),
+									array(
+										'actions' => array(
+											"{$controllerName}::edit" => array( 'class' => 'external' ),
+										)
+									)
+								);
+							}
+						?>
+					</div>
+					<?php endif;?>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -104,5 +135,6 @@
 <script type="text/javascript">
 	makeTabbed( 'tabbedWrapper', 2 );
 	makeTabbed( 'tabbedWrapperSoftware', 3 );
+	makeTabbed( 'tabbedWrapperWebrsa', 4 );
 	makeErrorTabs();
 </script>

@@ -266,12 +266,12 @@
 	 * comme Alfresco, servant à stocker les PDF
 	 */
 	Configure::write(
-			'Cmis', array(
-		'url' => 'http://xxxxxx/alfresco/service/api/cmis',
-		'username' => 'user',
-		'password' => 'pass',
-		'prefix' => '/Sites/Webrsa',
-			)
+		'Cmis', array(
+			'url' => 'http://xxxxxx/alfresco/service/api/cmis',
+			'username' => 'user',
+			'password' => 'pass',
+			'prefix' => '/Sites/Webrsa',
+		)
 	);
 
 	/**
