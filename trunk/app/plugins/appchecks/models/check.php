@@ -4,6 +4,10 @@
 	 *
 	 * @package       app.plugins.checks.models
 	 */
+	define( 'APPCHECKS_PLUGIN_DIR', dirname( __FILE__ ).DS.'..'.DS );
+	require_once( APPCHECKS_PLUGIN_DIR.'libs'.DS.'basics.php' );
+	require_once( APPCHECKS_PLUGIN_DIR.'libs'.DS.'xvalidation.php' );
+
 	class Check extends AppModel
 	{
 		/**
@@ -245,53 +249,78 @@
 
 		/**
 		 *
+		 * @param string $key
+		 * @param string $rule
+		 * @param array $ruleParams
+		 * @return array
+		 */
+		public function validateConfigurePath( $path, $rule, $ruleParams = array() ) {
+			$message = null;
+			$value = Configure::read( $path );
+			$allowEmpty = $ruleParams['allowEmpty'];
+			unset( $ruleParams['allowEmpty'] );
+
+			$Xvalidation =& Xvalidation::getInstance();
+			if (method_exists( $Xvalidation, $rule ) ) {
+
+				// FIXME: nettoyage des URL contenant %s (pour le CG 58) et des espaces
+				$testValue = $value;
+				if( $rule == 'url' ) {
+					if( stripos( $testValue, '%s' ) !== false ) {
+						$testValue = str_replace( '%s', 'XXXX', $testValue );
+					}
+					if( stripos( $testValue, ' ' ) !== false ) {
+						$testValue = str_replace( ' ', '%20', $testValue );
+					}
+				}
+				if( !( $allowEmpty && empty( $value ) ) && ( is_null( $value ) || !call_user_method_array ( $rule, $Xvalidation, Set::merge( array( $testValue ), $ruleParams ) ) ) ) {
+					$message = "Validate::{$rule}";
+					$sprintfParams = Set::merge( array( __( $message, true ) ), $ruleParams );
+					for( $i = 1 ; ( $i <= count( $sprintfParams ) - 1 ) ; $i++ ) {
+						if( is_array( $sprintfParams[$i] ) ) {
+							$sprintfParams[$i] = implode( ', ', $sprintfParams[$i] );
+						}
+					}
+					$message = call_user_func_array( 'sprintf', $sprintfParams );
+				}
+			}
+			else {
+				$message = "La méthode de validation {$rule} n'existe pas.";
+			}
+
+			return array(
+				'success' => is_null( $message ),
+				'value' => var_export( $value, true ),
+				'message' => $message
+			);
+		}
+
+		/**
+		 *
 		 * @param array $paths
 		 * @return array
 		 */
 		public function configure( array $paths ) {
 			$return = array();
+			$defaults = array(
+				'allowEmpty' => false,
+//				'required' => true,
+			);
 
-			foreach( Set::normalize( $paths ) as $path => $type ) {
-				$value = Configure::read( $path );
-				$message = null;
-
-				switch( $type ) {
-					case 'array':
-						if( is_null( $value ) || !is_array( $value ) || count( $value ) == 0 ) {
-							$message = $type;
-						}
-						break;
-					case 'boolean':
-						if( is_null( $value ) || !is_bool( $value ) ) {
-							$message = $type;
-						}
-						break;
-					case 'integer':
-						if( is_null( $value ) || !is_integer( $value ) ) {
-							$message = $type;
-						}
-						break;
-					case 'numeric':
-						if( is_null( $value ) || !is_numeric( $value ) ) {
-							$message = $type;
-						}
-						break;
-					case 'string':
-						if( is_null( $value ) || !is_string( $value ) ) {
-							$message = $type;
-						}
-						break;
-					default:
-						if( is_null( $value ) || !is_string( $value ) ) {
-							$message = 'undefined';
-						}
+			foreach( Set::normalize( $paths ) as $path => $rules ) {
+				if( !is_array( $rules ) ) {
+					$rules = array( array( 'rule' => $rules ) );
 				}
 
-				$return[$path] = array(
-					'success' => is_null( $message ),
-					'value' => $value,
-					'message' => $message
-				);
+				foreach( $rules as $rule ) {
+					$rule = Set::merge( $defaults, $rule );
+					if( !isset( $return[$path] ) || empty( $return[$path] ) || $return[$path]['success'] ) {
+						$ruleParams = $rule;
+						unset( $ruleParams['rule'] );
+						$validate = $this->validateConfigurePath( $path, $rule['rule'], $ruleParams );
+						$return[$path] = $validate;
+					}
+				}
 			}
 			ksort( $return );
 
@@ -299,7 +328,6 @@
 		}
 
 		/**
-		 * FIXME: la fonction version_difference n'est pas dans le plugin
 		 *
 		 * @param string $software
 		 * @param string $actual

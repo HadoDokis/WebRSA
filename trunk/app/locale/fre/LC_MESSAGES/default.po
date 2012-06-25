@@ -153,6 +153,21 @@ msgstr "Veuillez entrer une valeur numérique"
 msgid "Validate::greaterThanIfNotZero"
 msgstr "Veuillez entrer une valeur plus grande"
 
+msgid "Validate::dir"
+msgstr "Veuillez entrer un répertoire existant et au moins lisible"
+
+msgid "Validate::writableDir"
+msgstr "Veuillez entrer un répertoire existant et inscriptible"
+
+msgid "Validate::inList"
+msgstr "Veuillez entrer une valeur parmi %s"
+
+msgid "Validate::string"
+msgstr "Veuillez entrer une chaîne de caractères"
+
+msgid "Validate::isarray"
+msgstr "Veuillez entrer un tableau"
+
 ###############################################################################
 # Forms/Index
 ###############################################################################

@@ -5,7 +5,7 @@
      *
      * @package       app.controllers
      */
-	class Checks2Controller extends AppController
+	class ChecksController extends AppController
 	{
 		/**
 		* @access public
@@ -208,7 +208,8 @@
 					'configure' =>  $this->Check->configure(
 						$this->Webrsacheck->allConfigureKeys( Configure::read( 'Cg.departement' ) )
 					),
-					'intervals' => $this->Webrsacheck->checkAllPostgresqlIntervals( Configure::read( 'Cg.departement' ) )
+					'intervals' => $this->Webrsacheck->checkAllPostgresqlIntervals( Configure::read( 'Cg.departement' ) ),
+					'sqRechercheErrors' => $this->Webrsacheck->allSqRechercheErrors()
 				)
 			);
 		}
@@ -268,6 +269,7 @@
 				$this->_storedDataErrors(),
 				$this->_services()
 			);
+
 			$this->set( 'results', $results );
 		}
 	}

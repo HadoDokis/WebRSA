@@ -1401,7 +1401,7 @@ table.checks tr.error td.message {
 
 table.checks { width: 100%; }
 table.checks tr th, table.checks tr td { width: 15%; }
-table.checks tr td.message { width: 50%; }
+table.checks tr td.value, table.checks tr td.message { width: 35%; }
 
 h3.storeddata.success, h3.storeddata.error {
 	background-repeat: no-repeat;

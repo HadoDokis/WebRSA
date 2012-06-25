@@ -9,6 +9,8 @@
 	 *
 	 * @package       app.models
 	 */
+	require_once( APPLIBS.'cmis.php' );
+
 	class Webrsacheck extends AppModel
 	{
 		/**
@@ -21,6 +23,57 @@
 		 */
 		public $useTable = false;
 
+		/*public function getModels( $query ) {
+			$models = array();
+
+			$default = array(
+				'methods' => null,
+				'behaviors' => null,
+				'attributes' => null,
+				'useDbConfig' => $connections = array_keys( ConnectionManager::enumConnectionObjects() ),
+				'cg' => null,
+			);
+			$query = Set::merge( $default, $query );
+
+			foreach( Configure::listObjects( 'model' ) as $modelName ) {
+				$preg_success = preg_match( '/([0-9]{2}$|[0-9]{2}(?=[A-Z]))/', $modelName, $matches );
+				if( is_null( $query['cg'] ) || !$preg_success || ( $matches[0] == $query['cg'] ) ) {
+//					App::import( 'Model', $modelName );
+//					$classVars = get_class_vars( $modelName );
+//
+//					if( $classVars['useTable'] !== false && in_array( $classVars['useDbConfig'], $query['useDbConfig'] ) ) {
+//						$modelClass = ClassRegistry::init( $modelName );
+//						$classVars = get_object_vars( $modelClass );
+//						$attributes = array_keys( $classVars );
+//						$methods = get_class_methods( $modelClass );
+//						$behaviors = $classVars['actsAs'];
+//					}
+//					else {
+//						$attributes = array_keys( $classVars );
+//						$methods = get_class_methods( $modelName );
+//						$behaviors = $classVars['actsAs'];
+//					}
+
+					$found = true;
+//					foreach( array( 'methods', 'behaviors', 'attributes' ) as $key ) {
+//						if( !is_null( $query[$key] ) ) {
+//							$query[$key] = (array)$query[$key];
+//							$results = array_intersect( $query[$key], ${$key} );
+//							debug( $results );
+//						}
+//					}
+
+					if( $found ) {
+						$models[] = $modelName;
+					}
+				}
+				debug( array( $modelName => array( $preg_success, var_export( $matches, true ) ) ) );
+			}
+
+			sort( $models );
+			return $models;
+		}*/
+
 		/**
 		 * Lecture des modèles de documents nécessaires pour chacune des
 		 * classes de modèle grâce à la variable modelesOdt et à la fonction
@@ -29,44 +82,7 @@
 		 * lorsque le modèle est instancié).
 		 *
 		 * @see grep -lri "\.odt" "app/models/" | sed "s/app\/models\/\(.*\)\.php/\1/p" | sort | uniq
-		 * TODO
 		 * @see grep -lri "\.odt" "app/controllers/" | sed "s/app\/controllers\/\(.*\)\.php/\1/p" | sort | uniq
-		 *
-		 * Dernière vérification le 28/02/2012 (à revérifier!)
-		 *
-		 * OK -> abstractclasses/nonorientationproep (dans les classes filles)
-		 * OK -> actioncandidat_personne (FIXME: actioncandidat ?)
-		 * OK -> apre66
-		 * OK -> bilanparcours66
-		 * OK -> commissionep
-		 * OK -> contratcomplexeep93
-		 * OK -> contratinsertion
-		 * OK -> courrierpdo_traitementpcg66 (INFO: dans courrierpdo + une autre fonction à mettre en commun ?)
-		 * OK -> courrierpdo_traitementpdo (INFO: dans courrierpdo + une autre fonction à mettre en commun ?)
-		 * OK -> cov58
-		 * OK -> decisiondossierpcg66
-		 * OK -> decisionpropopdo (tous les CG ?) -> encore utilisé ? Tous sauf le 66
-		 * OK -> defautinsertionep66
-		 * OK -> descriptionpdo
-		 * OK -> nonorientationproep58 (?)
-		 * OK -> nonorientationproep66
-		 * OK -> nonorientationproep93
-		 * OK -> nonrespectsanctionep93
-		 * OK -> objetentretien
-		 * OK -> orientstruct
-		 * OK -> propoorientationcov58
-		 * OK -> propopdo (FIXME: tous les cg ?) -> tous sauf le 66
-		 * OK -> regressionorientationep58
-		 * OK -> relancenonrespectsanctionep93
-		 * OK -> reorientationep93
-		 * OK -> saisinebilanparcoursep66
-		 * OK -> saisinepdoep66
-		 * OK -> sanctionep58
-		 * OK -> sanctionrendezvousep58
-		 * OK -> signalementep93
-		 * OK -> traitementpcg66
-		 * OK -> typeorient
-		 * OK -> typerdv
 		 *
 		 * @return array
 		 */
@@ -113,6 +129,169 @@
 		}
 
 		/**
+		 * Retourne les clés de configuration communes aux différents CGs.
+		 *
+		 * @return array
+		 */
+		protected function _allConfigureKeysCommon() {
+			return array(
+				'ActioncandidatPersonne.suffixe' => 'string',
+				'Admin.unlockall' => 'boolean',
+				'AjoutOrientationPossible.situationetatdosrsa' => 'isarray',
+				'AjoutOrientationPossible.toppersdrodevorsa' => 'integer',
+				'Apre.forfaitaire.montantbase' => 'numeric',
+				'Apre.forfaitaire.montantenfant12' => 'numeric',
+				'Apre.forfaitaire.nbenfant12max' => 'integer',
+				'Apre.montantMaxComplementaires' => 'numeric',
+				'Apre.periodeMontantMaxComplementaires' => 'integer',
+				'Apre.pourcentage.montantversement' => 'numeric',
+				'Apre.suffixe' =>  array(
+					array( 'rule' => 'inList', array( 66 ), 'allowEmpty' =>true ),
+				),
+				'CG.cantons' => 'boolean',
+				'Cg.departement' => array(
+					array( 'rule' => 'inList', array( 58, 66, 93 ) ),
+				),
+				'Cohorte.dossierTmpPdfs' => 'string',
+				'Criterecer.delaiavanteecheance' => 'string',
+				'Cui.taux.financementexclusif' => 'numeric',
+				'Cui.taux.fixe' => 'numeric',
+				'Cui.taux.prisencharge' => 'numeric',
+				'Detailcalculdroitrsa.natpf.socle' => 'isarray',
+				'Dossierep.delaiavantselection' => array(
+					array( 'rule' => 'string', 'allowEmpty' => true ),
+				),
+				'FULL_BASE_URL' => 'url',
+				'Jetons.disabled' => 'boolean',
+				'Optimisations.progressivePaginate' => 'boolean',
+				'Periode.modifiable.nbheure' => 'integer',
+				'Recherche.identifiantpecourt' => 'boolean',
+				'Recherche.qdFilters.Serviceinstructeur' => 'boolean',
+				'Selectionnoninscritspe.intervalleDetection' => 'string',
+				'Situationdossierrsa.etatdosrsa.ouvert' => 'isarray',
+				'UI.menu.large' => 'boolean',
+				'UI.menu.lienDemandeur' => array(
+					array( 'rule' => 'url', 'allowEmpty' =>true ),
+				),
+				'User.adresse' => 'boolean',
+				'Utilisateurs.multilogin' => 'boolean',
+				'Zonesegeographiques.CodesInsee' => 'boolean',
+				'alerteFinSession' => 'boolean',
+				'nb_limit_print' => 'integer',
+				'nom_form_apre_cg' => array(
+					array( 'rule' => 'inList', array( 'cg58', 'cg66', 'cg93' ) ),
+				),
+				'nom_form_bilan_cg' => array(
+					array( 'rule' => 'inList', array( 'cg58', 'cg66', 'cg93' ) ),
+				),
+				'nom_form_ci_cg' => array(
+					array( 'rule' => 'inList', array( 'cg58', 'cg66', 'cg93' ) ),
+				),
+				'nom_form_cui_cg' =>array(
+					array( 'rule' => 'inList', array( 'cg58', 'cg66', 'cg93' ) ),
+				),
+				'nom_form_pdo_cg' => array(
+					array( 'rule' => 'inList', array( 'cg58', 'cg66', 'cg93' ) ),
+				),
+				'traitementClosId' => 'integer',
+				'traitementEnCoursId' => 'integer',
+				'with_parentid' => 'boolean',
+			);
+		}
+
+		/**
+		 * Retourne les clés de configuration propres au CG 58.
+		 *
+		 * @return array
+		 */
+		protected function _allConfigureKeys58() {
+			return array(
+				'Nonorientationproep58.delaiCreationContrat' => 'integer',
+				'Sanctionep58.nonrespectcer.dureeTolerance' => 'integer',
+				'Selectionradies.conditions' => 'isarray',
+				'Typeorient.emploi_id' => 'integer',
+				'traitementResultatId' => 'integer',
+			);
+		}
+
+		/**
+		 * Retourne les clés de configuration propres au CG 66.
+		 *
+		 * @return array
+		 */
+		protected function _allConfigureKeys66() {
+			return array(
+				'AjoutOrientationPossible.toppersdrodevorsa' => 'isarray',
+				'Fraisdeplacement66.forfaithebergt' => 'numeric',
+				'Fraisdeplacement66.forfaitrepas' => 'numeric',
+				'Fraisdeplacement66.forfaitvehicule' => 'numeric',
+				'Apre66.EmailPiecesmanquantes.from' => 'string',
+				'Apre66.EmailPiecesmanquantes.replyto' => 'string',
+				'Chargeinsertion.Secretaire.group_id' => 'isarray',
+				'Contratinsertion.Cg66.updateEncoursbilan' => 'string',
+				'Criterecer.delaidetectionnonvalidnotifie' => 'string',
+				'Email.smtpOptions' => 'isarray',
+				'Nonorientationproep66.delaiCreationContrat' => 'integer',
+				'Orientstruct.typeorientprincipale.Emploi' => 'isarray',
+				'Orientstruct.typeorientprincipale.SOCIAL' => 'isarray',
+				'Periode.modifiablecer.nbheure' => 'integer',
+				'Periode.modifiableorientation.nbheure' => 'integer',
+				'Traitementpcg66.fichecalcul_abattbicsrv' => 'integer',
+				'Traitementpcg66.fichecalcul_abattbicvnt' => 'integer',
+				'Traitementpcg66.fichecalcul_abattbncsrv' => 'integer',
+				'Traitementpcg66.fichecalcul_casrvmax' => 'integer',
+				'Traitementpcg66.fichecalcul_cavntmax' => 'integer',
+				'Traitementpcg66.fichecalcul_coefannee1' => 'integer',
+				'Traitementpcg66.fichecalcul_coefannee2' => 'integer',
+			);
+		}
+
+		/**
+		 * Retourne les clés de configuration propres au CG 93.
+		 *
+		 * @return array
+		 */
+		protected function _allConfigureKeys93() {
+			return array(
+				'traitementResultatId' => 'integer',
+				'Dossierep.nbJoursEntreDeuxPassages' => 'integer',
+				'Filtresdefaut.Cohortes_enattente' => 'isarray',
+				'Filtresdefaut.Cohortes_nouvelles' => 'isarray',
+				'Filtresdefaut.Cohortes_orientees' => 'isarray',
+				'Nonorientationproep93.delaiCreationContrat' => 'integer',
+				'Nonrespectsanctionep93.decisionep.delai' => 'integer',
+				'Nonrespectsanctionep93.delaiRegularisation' => 'integer',
+				'Nonrespectsanctionep93.dureeSursis' => 'integer',
+				'Nonrespectsanctionep93.intervalleCerDo19' => 'string',
+				'Nonrespectsanctionep93.montantReduction' => 'numeric',
+				'Nonrespectsanctionep93.relanceCerCer1' => 'integer',
+				'Nonrespectsanctionep93.relanceCerCer2' => 'integer',
+				'Nonrespectsanctionep93.relanceDecisionNonRespectSanctions' => 'integer',
+				'Nonrespectsanctionep93.relanceOrientstructCer1' => 'integer',
+				'Nonrespectsanctionep93.relanceOrientstructCer2' => 'integer',
+				'Signalementep93.decisionep.delai' => 'integer',
+				'Signalementep93.dureeSursis' => 'integer',
+				'Signalementep93.dureeTolerance' => 'integer',
+				'Signalementep93.montantReduction' => 'numeric',
+			);
+		}
+
+		/**
+		 * Retourne les clés de configuration actuellement utilisées.
+		 *
+		 * @return array
+		 */
+		/*protected function _existingConfigureKeys() {
+			$configureKeys = array();
+			foreach( Set::flatten( (array)Configure::getInstance() ) as $key => $value ) {
+				$configureKeys[] = preg_replace( '/\.[0-9]+$/', '', $key );
+			}
+			$configureKeys = array_unique( $configureKeys );
+			sort( $configureKeys );
+			return $configureKeys;
+		}*/
+
+		/**
 		 * Retourne la liste des chemins devant être configurés, suivant le département.
 		 * Chaque entrée a en clé le chemin et en valeur le type de valeur
 		 * (array, boolean, integer, numeric, string) autorisé.
@@ -122,50 +301,21 @@
 		 * @return array
 		 */
 		public function allConfigureKeys( $departement ) {
-			$configure = array(
-				'Apre.montantMaxComplementaires' => 'numeric',
-				'Apre.periodeMontantMaxComplementaires' => 'integer',
-				'Cg.departement' => 'integer',
-				'Cohorte.dossierTmpPdfs' => 'string',
-			);
+			$configure = $this->_allConfigureKeysCommon();
 
-			if( $departement == 66 ) {
-				$configure = Set::merge(
-					$configure,
-					array(
-						'traitementEnCoursId' => 'integer',
-						'traitementClosId' => 'integer',
-						'Traitementpcg66.fichecalcul_coefannee1' => 'numeric',
-						'Traitementpcg66.fichecalcul_coefannee2' => 'numeric',
-						'Traitementpcg66.fichecalcul_cavntmax' => 'numeric',
-						'Traitementpcg66.fichecalcul_casrvmax' => 'numeric',
-						'Traitementpcg66.fichecalcul_abattbicvnt' => 'numeric',
-						'Traitementpcg66.fichecalcul_abattbicsrv' => 'numeric',
-						'Traitementpcg66.fichecalcul_abattbncsrv' => 'numeric',
-						'Chargeinsertion.Secretaire.group_id' => 'array',
-					)
-				);
+			switch( $departement ) {
+				case 58:
+					$configure = Set::merge( $configure, $this->_allConfigureKeys58() );
+					break;
+				case 66:
+					$configure = Set::merge( $configure, $this->_allConfigureKeys66() );
+					break;
+				case 93:
+					$configure = Set::merge( $configure, $this->_allConfigureKeys93() );
+					break;
 			}
-			else if( $departement == 93 ) {
-				$configure = Set::merge(
-					$configure,
-					array(
-						'Nonrespectsanctionep93.relanceDecisionNonRespectSanctions' => 'integer',
-						'Nonrespectsanctionep93.relanceOrientstructCer1' => 'integer',
-						'Nonrespectsanctionep93.relanceOrientstructCer2' => 'integer',
-						'Nonrespectsanctionep93.relanceCerCer1' => 'integer',
-						'Nonrespectsanctionep93.relanceCerCer2' => 'integer',
-						'Nonrespectsanctionep93.montantReduction' => 'numeric',
-						'Nonrespectsanctionep93.dureeSursis' => 'integer',
-						'Nonorientationproep93.delaiCreationContrat' => 'integer',
-						'Nonrespectsanctionep93.delaiRegularisation' => 'integer',
-						'Nonrespectsanctionep93.intervalleCerDo19' => 'string',
-						'Signalementep93.montantReduction' => 'integer',
-						'Signalementep93.dureeSursis' => 'integer',
-						'Signalementep93.dureeTolerance' => 'integer',
-					)
-				);
-			}
+
+			uksort( $configure, 'strnatcasecmp' );
 
 			return $configure;
 		}
@@ -229,21 +379,101 @@
 		}
 
 		/**
-		 * Retourne la liste des serveurs configurés, les configurations prises
-		 * en compte et les erreurs.
+		 * Vérifie le bon fonctionnement du service Gedooo
+		 *
+		 * @return array
 		 */
-		public function services() {
+		protected function _serviceGedooo() {
 			App::import( 'Behavior', array( 'Gedooo.Gedooo' ) );
 
 			$GedModel = ClassRegistry::init( 'User' );
 			$GedModel->Behaviors->attach( 'Gedooo' );
 
 			return array(
-				'Gedooo' => array(
-					'configure' => @$GedModel->Behaviors->Gedooo->gedConfigureKeys( $GedModel ),
-					'tests' => @$GedModel->gedTests() // FIXME: le faire sur les autres aussi
+				'configure' => @$GedModel->Behaviors->Gedooo->gedConfigureKeys( $GedModel ),
+				'tests' => @$GedModel->gedTests() // FIXME: le faire sur les autres aussi
+			);
+		}
+
+		/**
+		 * Vérifie le bon fonctionnement du service CMIS.
+		 *
+		 * @return array
+		 */
+		protected function _serviceCmis() {
+			$connected =Cmis::configured();
+
+			return array(
+				'configure' => array(
+					'Cmis.url' => 'string',
+					'Cmis.username' => 'string',
+					'Cmis.password' => 'string',
+					'Cmis.prefix' => 'string'
+				),
+				'tests' => array(
+					'Connexion au serveur' => array(
+						'success' => $connected,
+						'message' => ( $connected ? null : 'Impossible de se connecter au serveur' )
+					)
 				)
 			);
+		}
+
+		/**
+		 * Retourne la liste des serveurs configurés, les configurations prises
+		 * en compte et les erreurs.
+		 *
+		 * @return array
+		 */
+		public function services() {
+			return array(
+				'Alfresco' => $this->_serviceCmis(),
+				'Gedooo' => $this->_serviceGedooo(),
+			);
+		}
+
+		/**
+		 *
+		 * @return array
+		 */
+		public function allSqRechercheErrors() {
+			$errors = array( );
+			$modelNames = array( 'Serviceinstructeur' );
+
+			$debugLevel = Configure::read( 'debug' );
+			foreach( $modelNames as $modelName ) {
+				$errors[$modelName] = array();
+
+				if( Configure::read( "Recherche.qdFilters.{$modelName}" ) ) {
+					$Model = ClassRegistry::init( $modelName );
+
+					$results = $Model->find(
+						'all',
+						array(
+							'fields' => array(
+								"{$Model->primaryKey} AS \"{$modelName}__id\"",
+								"{$Model->displayField} AS \"{$modelName}__name\"",
+								"sqrecherche AS \"{$modelName}__sqrecherche\""
+							),
+							'recursive' => -1,
+							'conditions' => array( "{$modelName}.sqrecherche IS NOT NULL" )
+						)
+					);
+
+					Configure::write( 'debug', 0 );
+
+					foreach( $results as $result ) {
+						$error = $Model->sqrechercheErrors( $result[$modelName]['sqrecherche'] );
+						if( !empty( $error ) ) {
+//							$result[$modelName]['errors'] = $error;
+							$errors[$modelName][] = $result;
+						}
+					}
+				}
+			}
+			Configure::write( 'debug', $debugLevel );
+
+			return $errors;
 		}
 	}
 ?>

@@ -689,40 +689,6 @@
 	}
 
 	/**
-	 * Retourne un nombre qui sera plus grand pour une version plus élevée.
-	 *
-	 * @see http://az.php.net/manual/en/function.phpversion.php (Exemple 2: PHP_VERSION_ID)
-	 *
-	 * @param string $version
-	 * @return integer
-	 */
-	function version_id( $version ) {
-		$version = explode( '.', $version );
-		return ( @$version[0] * 10000 + @$version[1] * 100 + @$version[2] );
-	}
-
-	/**
-	 *
-	 * @param string $actual
-	 * @param string $low
-	 * @param string $high
-	 * @return boolean
-	 */
-	function version_difference( $actual, $low, $high = null ) {
-		$actual = version_id( $actual );
-		$low = version_id( $low );
-		$high = ( is_null( $high ) ? null : version_id( $high ) );
-
-		$success = ( $actual >= $low );
-
-		if( !is_null( $high ) ) {
-			$success = ( $actual < $high );
-		}
-
-		return $success;
-	}
-
-	/**
 	 * Retourne le numéro de version Apache utilisé.
 	 *
 	 * @return string
@@ -730,7 +696,7 @@
 	function apache_version()  {
 		return preg_replace( '/^Apache\/([^ ]+) .*/', '\1', apache_get_version() );
 	}
-	
+
 	/**
 	 * TODO: docblock
 	 */
@@ -747,11 +713,11 @@
 	 * $a1 = array( 'foo', 'bar' );
 	 * $a2 = array( 'foo', 'bar', 'baz' );
 	 * $a3 = array( 'bar', 'baz' );
-	 * 
+	 *
 	 * debug( full_array_diff( $a1, $a1 ) ); // -> array()
 	 * debug( full_array_diff( $a1, $a2 ) ); // -> array( 'baz' )
 	 * debug( full_array_diff( $a1, $a3 ) ); // -> array( 'foo', 'baz' )
-	 * 
+	 *
 	 * @see http://fr.php.net/manual/en/function.array-diff.php#101613
 	 */
 	function full_array_diff( $left, $right ) {
