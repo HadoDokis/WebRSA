@@ -359,5 +359,30 @@
 				$this->redirect( $this->referer() );
 			}
 		}	
+		
+		/**
+		 * Export des résultats sous forme de tableau CSV.
+		 *
+		 * @return void
+		 */
+		public function exportcsv() {
+			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
+
+			$querydata = $this->Cohortenonoriente66->search(
+				'Nonoriente::oriente',
+				$mesCodesInsee,
+				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
+				array_multisize( $this->params['named'] ),
+				$this->Jetons->ids()
+			);
+			unset( $querydata['limit'] );
+			$nonorientes66 = $this->Personne->find( 'all', $querydata );
+// debug($nonorientes66);
+// die();
+			$this->_setOptions();
+			$this->layout = '';
+			$this->set( compact( 'nonorientes66' ) );
+		}
 	}
 ?>
