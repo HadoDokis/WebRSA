@@ -1333,6 +1333,23 @@ SELECT add_missing_table_field ('public', 'decisionssanctionsrendezvouseps58', '
 
 ALTER TABLE decisionssanctionseps58 ADD CONSTRAINT decisionssanctionseps58_arretsanction_datearretsanction_chk CHECK ( ( arretsanction IN ( 'finsanction1', 'finsanction2' ) AND datearretsanction IS NOT NULL ) OR ( arretsanction NOT IN ( 'finsanction1', 'finsanction2' ) AND datearretsanction IS NULL ) );
 ALTER TABLE decisionssanctionsrendezvouseps58 ADD CONSTRAINT decisionssanctionsrendezvouseps58_arretsanction_datearretsanction_chk CHECK ( ( arretsanction IN ( 'finsanction1', 'finsanction2' ) AND datearretsanction IS NOT NULL ) OR ( arretsanction NOT IN ( 'finsanction1', 'finsanction2' ) AND datearretsanction IS NULL ) );
+
+
+-- ***********************************************************************************************************
+-- 20120626 -- Ajout d'un champ supplémenataire pour les pièces Autres des modèles de traitements PCGs courriers
+-- ***********************************************************************************************************
+SELECT add_missing_table_field ('public', 'piecesmodelestypescourrierspcgs66', 'isautrepiece', 'TYPE_BOOLEANNUMBER');
+ALTER TABLE piecesmodelestypescourrierspcgs66 ALTER COLUMN isautrepiece SET DEFAULT '0'::TYPE_BOOLEANNUMBER;
+UPDATE piecesmodelestypescourrierspcgs66 SET isautrepiece = '0'::TYPE_BOOLEANNUMBER WHERE isautrepiece IS NULL;
+
+DROP INDEX IF EXISTS piecesmodelestypescourrierspcgs66_isautrepiece_idx;
+CREATE INDEX piecesmodelestypescourrierspcgs66_isautrepiece_idx ON piecesmodelestypescourrierspcgs66 (isautrepiece);
+
+DROP INDEX IF EXISTS piecesmodelestypescourrierspcgs66_isautrepiece_modeletypecourrierpcg66_id_idx;
+CREATE UNIQUE INDEX piecesmodelestypescourrierspcgs66_isautrepiece_modeletypecourrierpcg66_id_idx ON piecesmodelestypescourrierspcgs66 (isautrepiece, modeletypecourrierpcg66_id) WHERE isautrepiece = '1';
+
+
+SELECT add_missing_table_field ('public', 'modelestraitementspcgs66', 'autrepiecemanquante', 'TEXT');
 -- *****************************************************************************
 COMMIT;
 -- ************************************************************************

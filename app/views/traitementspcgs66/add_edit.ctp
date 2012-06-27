@@ -77,7 +77,7 @@
 						'update' => 'Typecourrierpcg66Modeletypecourrierpcg66Id',
 						'url' => Router::url( array( 'action' => 'ajaxpiece' ), true ),
  						'with' => 'Object.extend( Form.serialize( $( \'traitementpcg66form\' ), true ), '.php_associative_array_to_js( $dataModeletraitementpcg66 ).' )',
-						'complete' => 'showAjaxValidationErrors()',
+						'complete' => 'showAjaxValidationErrors()'
 					)
 				);
 			?>
@@ -103,7 +103,8 @@
 						'update' => 'Typecourrierpcg66Modeletypecourrierpcg66Id',
 						'url' => Router::url( array( 'action' => 'ajaxpiece' ), true ),
 						'with' => 'Form.serialize( $(\'traitementpcg66form\') )',
-						'complete' => 'showAjaxValidationErrors()'
+						'complete' => 'showAjaxValidationErrors()',
+						'evalScripts' => true
 					)
 				);
 				
@@ -985,6 +986,7 @@
 <div class="clearer"><hr /></div>
 
 <script type="text/javascript">
+	//<![CDATA[
 	function checkDatesToExpiration( dateDonnee, dateAChanger, operateur ) {
 		var duree = $F( 'Traitementpcg66Duree'+dateDonnee ).split( '.' );
 		var month = duree[0];
@@ -1345,4 +1347,5 @@
 		revenus = revenus.toString().replace('.', ',');
 		$('revenus').innerHTML = revenus + ' € par mois';
 	}
+	//]]>
 </script>

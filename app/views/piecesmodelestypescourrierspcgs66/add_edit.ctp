@@ -14,11 +14,12 @@
 		array(
 			'Piecemodeletypecourrierpcg66.id' => array( 'type' => 'hidden' ),
 			'Piecemodeletypecourrierpcg66.name' => array( 'required' => true ),
-			'Piecemodeletypecourrierpcg66.modeletypecourrierpcg66_id' => array( 'required' => true, 'type' => 'select', 'options' => $options['Piecemodeletypecourrierpcg66']['modeletypecourrierpcg66_id'], 'empty' => true )
+			'Piecemodeletypecourrierpcg66.modeletypecourrierpcg66_id' => array( 'required' => true, 'type' => 'select', 'options' => $options['Piecemodeletypecourrierpcg66']['modeletypecourrierpcg66_id'], 'empty' => true ),
+			'Piecemodeletypecourrierpcg66.isautrepiece' => array( 'required' => true, 'type' => 'select', 'options' => $options['Piecemodeletypecourrierpcg66']['isautrepiece'], 'empty' => true )
 		),
-                array(
-                    'options' => $options
-                )
+		array(
+			'options' => $options
+		)
 	);
 	echo $xform->end( 'Save' );
 	

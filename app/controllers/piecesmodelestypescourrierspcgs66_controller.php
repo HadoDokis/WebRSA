@@ -14,6 +14,7 @@
 			$options = array();
 			$options[$this->modelClass]['modeletypecourrierpcg66_id'] = $this->Piecemodeletypecourrierpcg66->Modeletypecourrierpcg66->find( 'list', array( 'fields' => array( 'id', 'name' ) ) );
 
+			$options = Set::merge( $this->Piecemodeletypecourrierpcg66->enums(), $options);
 			$this->set( compact( 'options' ) );
 
 		}
@@ -24,17 +25,19 @@
 					'fields' => array(
 						'Piecemodeletypecourrierpcg66.id',
 						'Piecemodeletypecourrierpcg66.name',
+						'Piecemodeletypecourrierpcg66.isautrepiece',
 						'Modeletypecourrierpcg66.name'
 					),
 					'contain' => array(
 						'Modeletypecourrierpcg66'
 					),
-					'group' => array(  'Piecemodeletypecourrierpcg66.id', 'Piecemodeletypecourrierpcg66.name', 'Piecemodeletypecourrierpcg66.modeletypecourrierpcg66_id', 'Modeletypecourrierpcg66.id', 'Modeletypecourrierpcg66.name' ),
+					'group' => array(  'Piecemodeletypecourrierpcg66.id', 'Piecemodeletypecourrierpcg66.name', 'Piecemodeletypecourrierpcg66.modeletypecourrierpcg66_id', 'Modeletypecourrierpcg66.id', 'Modeletypecourrierpcg66.name', 'Piecemodeletypecourrierpcg66.isautrepiece' ),
 					'order' => array( 'Piecemodeletypecourrierpcg66.name ASC' ),
 					'limit' => 10
 				)
 			);
 
+			$this->_setOptions();
             $this->Default->index( $queryData );
         }
 

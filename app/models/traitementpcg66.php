@@ -447,6 +447,7 @@
 						else {
 							// En moins -> Supprimer
 							$idsenmoins = array_diff( $oldrecordsids, $nouveauxids );
+							$idsenmoins = array_filter( $idsenmoins );
 							if( !empty( $idsenmoins ) ) {
 								$success = $this->Modeletraitementpcg66->{$modeleliaison}->deleteAll(
 									array(
@@ -458,6 +459,8 @@
 
 							// En plus -> Ajouter
 							$idsenplus = array_diff( $nouveauxids, $oldrecordsids );
+							$idsenplus = array_filter( $idsenplus );
+
 							if( !empty( $idsenplus ) ) {
 								foreach( $idsenplus as $idenplus ) {
 									$record = array(

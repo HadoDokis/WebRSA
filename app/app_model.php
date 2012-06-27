@@ -865,8 +865,14 @@
 				$fields = array( $fields );
 			}
 
-			$fieldsDiff = full_array_diff( array_keys( $this->data[$this->alias] ), $fields );
-			$allFieldsInThisData = ( $fieldsDiff == array( $this->primaryKey ) );
+			$availableFields = array_keys( $this->data[$this->alias] );
+
+			$allFieldsInThisData = true;
+			foreach( $fields as $field ) {
+				if( !in_array( $field, $availableFields ) ) {
+					$allFieldsInThisData = false;
+				}
+			}
 
 			// A°) Tous les fields sont dans this->data
 			if( $allFieldsInThisData ) {

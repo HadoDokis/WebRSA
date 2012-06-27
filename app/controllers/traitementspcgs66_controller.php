@@ -3,7 +3,7 @@
 	{
 		public $name = 'Traitementspcgs66';
 		public $uses = array( 'Traitementpcg66', 'Option', 'Dossierpcg66' );
-		public $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Default2', 'Fileuploader' );
+		public $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Default2', 'Fileuploader', 'Autrepiecetraitementpcg66' );
 
 		public $components = array( 'Default', 'Gedooo.Gedooo', 'Fileuploader' );
 
@@ -87,13 +87,14 @@
 */
 
 		public function ajaxpiece() { // FIXME
+			Configure::write( 'debug', 0 );
+
 			$datas = array();
 			foreach( array( 'Modeletraitementpcg66', 'Piecemodeletypecourrierpcg66' ) as $M ) {
 				if( isset( $this->data[$M] ) ) {
 					$datas[$M] = $this->data[$M];
 				}
 			}
-			Configure::write( 'debug', 0 );
 
 			$traitementpcg66_id = Set::extract( $this->data, 'Traitementpcg66.id' );
 			$typecourrierpcg66_id = Set::extract( $this->data, 'Traitementpcg66.typecourrierpcg66_id' );
@@ -121,15 +122,29 @@
 						array(
 							'conditions' => array(
 								'Piecemodeletypecourrierpcg66.modeletypecourrierpcg66_id' => $i
-							)
+							),
+// 							'fields' => array( 'Piecemodeletypecourrierpcg66.id', 'Piecemodeletypecourrierpcg66.isautrepiece' ),
+							'contain' => false
 						)
 					);
+					
+					$listePiecesWithAutre[$i] = $this->Traitementpcg66->Typecourrierpcg66->Modeletypecourrierpcg66->Piecemodeletypecourrierpcg66->find(
+						'list',
+						array(
+							'conditions' => array(
+								'Piecemodeletypecourrierpcg66.modeletypecourrierpcg66_id' => $i
+							),
+							'fields' => array( 'Piecemodeletypecourrierpcg66.id', 'Piecemodeletypecourrierpcg66.isautrepiece' ),
+							'contain' => false
+						)
+					);
+					
+// 					debug( $listePiecesWithAutre[$i] );
 				}
 			}
-			$this->set( compact( 'listepieces') );
-
+			$this->set( compact( 'listepieces', 'listePiecesWithAutre' ) );
 			
-			if( !empty( $traitementpcg66_id ) ) {
+			if( !empty( $traitementpcg66_id ) && !isset( $this->data['Piecemodeletypecourrierpcg66'] ) ) {
 				$datas = $this->Traitementpcg66->Modeletraitementpcg66->find(
 					'first',
 					array(
@@ -141,9 +156,9 @@
 						)
 					)
 				);
+				
+				$this->data = Set::merge( $this->data, $datas );
 			}
-// 			debug($this->data);
-			$this->data = Set::merge( $this->data, $datas );
 
 			$this->set( compact( 'modeletypecourrierpcg66') );
 			$this->render( 'ajaxpiece', 'ajax' );
@@ -473,6 +488,7 @@ SELECT
 			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
 
 			if( !empty( $this->data ) ) {
+// 				debug( $this->data );
 				$dataToSave = $this->data;
 				// INFO: attention, on peut se le permettre car il n'y a pas de règle de validation sur le commentaire
 				if( !empty( $dataToSave['Modeletraitementpcg66']['modeletypecourrierpcg66_id'] ) ) {
