@@ -171,6 +171,8 @@
 						'Historiqueetatpe.id',
 						'Historiqueetatpe.etat',
 						'( '.$Personne->Nonoriente66->vfNbFichiersmodule( ).' ) AS "Nonoriente66__nbfichiers"',
+						'Canton.id',
+						'Canton.canton'
 					)
 				),
 				'joins' => array(
@@ -187,6 +189,7 @@
 					$Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'INNER' ) ),
 					$Informationpe->joinPersonneInformationpe( 'Personne', 'Informationpe', 'LEFT OUTER' ),
 					$Informationpe->join( 'Historiqueetatpe', array( 'type' => 'LEFT OUTER' ) ),
+					ClassRegistry::init( 'Canton' )->joinAdresse()
 				),
 				'contain' => false,
 				'conditions' => $conditions,
@@ -246,30 +249,21 @@
 		 * @return array
 		 *
 		 */
-		protected function _saveImpression( $data ) {
-			$success = true;
+		protected function _saveImpression( $personne_id, $user_id ) {
 			$Nonoriente66 = ClassRegistry::init( 'Nonoriente66' );
-			if( !empty( $data ) ) {
+			$nonoriente66 = array(
+				'Nonoriente66' => array(
+					'personne_id' => $personne_id,
+					'dateimpression' => date( 'Y-m-d' ),
+					'orientstruct_id' => null,
+					'historiqueetatpe_id' => null,
+					'origine' => 'notisemploi',
+					'user_id' => $user_id
+				)
+			);
 
-				$nonoriente66 = array(
-					'Nonoriente66' => array(
-						'personne_id' => $data['Personne']['id'],
-						'dateimpression' => date( 'Y-m-d' ),
-						'orientstruct_id' => null,
-						'historiqueetatpe_id' => null,
-						'origine' => 'notisemploi',
-						'user_id' => $data['User']['id']
-					)
-				);
-
-				$Nonoriente66->create( $nonoriente66 );
-				$success = $Nonoriente66->save() && $success;
-			}
-			else {
-				return false;
-			}
-
-			return $success;
+			$Nonoriente66->create( $nonoriente66 );
+			return $Nonoriente66->save();
 		}
 
 
@@ -324,9 +318,8 @@
 // debug($personne);
 // die();
 
-			if( !empty( $personne ) ){
-				$this->_saveImpression( $personne );
-			}
+			$this->_saveImpression( $id, $user_id );
+
 
 
 
@@ -353,6 +346,10 @@
 			$querydata['limit'] = 100;
 			$querydata['offset'] = ( ( $page ) <= 1 ? 0 : ( $querydata['limit'] * ( $page - 1 ) ) );
 
+			$Personne = ClassRegistry::init( 'Personne' );
+			$querydata['fields'] = array( 'Personne.id' );
+			$nonorientes66 = $Personne->find( 'all', $querydata );
+
 			// Jointure bizarre sur la table users pour récupérer l'utilisateur connecté
 			$User = ClassRegistry::init( 'User' );
 			$dbo = $User->getDataSource( $User->useDbConfig );
@@ -370,6 +367,18 @@
 			$Personne = ClassRegistry::init( 'Personne' );
 			$nonorientes66 = $Personne->find( 'all', $querydata );
 
+			$this->begin();
+			$success = true;
+			foreach( $nonorientes66 as $nonoriente66 ) {
+				$success = $this->_saveImpression( $nonoriente66['Personne']['id'], $user_id ) && $success;
+			}
+			
+			if( !$success ) {
+				$this->rollback();
+				return array();
+			}
+			
+			$this->commit();
 
 			$modeleodt = $this->modeleOdt( $nonorientes66 );
 
