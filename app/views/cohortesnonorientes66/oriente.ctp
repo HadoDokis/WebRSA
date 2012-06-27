@@ -197,6 +197,12 @@
 					)
 				);
 			?></li>
+			<li><?php
+				 echo $xhtml->exportLink(
+					'Télécharger le tableau',
+					array( 'controller' => 'cohortesnonorientes66', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
+				);
+			?></li>
 		</ul>
 	<?php endif;?>
 <?php endif;?>

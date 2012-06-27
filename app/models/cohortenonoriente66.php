@@ -170,6 +170,7 @@
 						'( '.$Personne->Foyer->vfNbEnfants().' ) AS "Foyer__nbenfants"',
 						'Historiqueetatpe.id',
 						'Historiqueetatpe.etat',
+						'Historiqueetatpe.date',
 						'( '.$Personne->Nonoriente66->vfNbFichiersmodule( ).' ) AS "Nonoriente66__nbfichiers"',
 						'Canton.id',
 						'Canton.canton'
