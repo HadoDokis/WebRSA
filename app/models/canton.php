@@ -182,6 +182,109 @@
 		}
 
 		/**
+		 *
+		 */
+		public function joinAdresse( $adresseAlias = 'Adresse', $type = 'LEFT OUTER' ) {
+			$dbo = $this->getDataSource( $this->useDbConfig );
+			$fullTableName = $dbo->fullTableName( $this, true );
+
+			$conditions = array();
+
+			$conditions = array(
+				'OR' => array(
+					// 156-161
+					array(
+						'OR' => array(
+							'OR' => array(
+								"Canton.numcomptt IS NULL",
+								"TRIM( BOTH ' ' FROM Canton.numcomptt ) = ''",
+								"Canton.codepos IS NULL",
+								"TRIM( BOTH ' ' FROM Canton.codepos ) = ''",
+							),
+							array(
+								"Canton.numcomptt = Adresse.numcomptt",
+								"Canton.codepos = Adresse.codepos",
+							)
+						),
+					),
+					array(
+						array(
+							'OR' => array(
+								array(
+									"Canton.numcomptt IS NULL",
+									"TRIM( BOTH ' ' FROM Canton.numcomptt ) = ''",
+								),
+								"Canton.numcomptt = Adresse.numcomptt",
+							)
+						),
+						array(
+							'OR' => array(
+								array(
+									"Canton.codepos IS NULL",
+									"TRIM( BOTH ' ' FROM Canton.codepos ) = ''",
+								),
+								"Canton.codepos = Adresse.codepos",
+							)
+						),
+					)
+				),
+				// 170/178
+				array(
+					'OR' => array(
+						'OR' => array(
+							'Canton.locaadr IS NULL',
+							"TRIM( BOTH ' ' FROM Canton.locaadr ) = ''",
+						),
+						'Adresse.locaadr ILIKE Canton.locaadr'
+					)
+				),
+				array(
+					'OR' => array(
+						'OR' => array(
+							'Canton.typevoie IS NULL',
+							"TRIM( BOTH ' ' FROM Canton.typevoie ) = ''",
+						),
+						'Adresse.typevoie ILIKE Canton.typevoie'
+					)
+				),
+				array(
+					'OR' => array(
+						'OR' => array(
+							'Canton.nomvoie IS NULL',
+							"TRIM( BOTH ' ' FROM Canton.nomvoie ) = ''",
+						),
+						'Adresse.nomvoie ILIKE Canton.nomvoie'
+					)
+				),
+			);
+
+			$sq = $this->sq(
+				array(
+					'alias' => 'cantons',
+					'fields' => array( 'cantons.id' ),
+					'conditions' => array_words_replace( $conditions, array( 'Canton' => 'cantons' ) ),
+					'contain' => false,
+					'recursive' => -1,
+					'order' => array(
+						'cantons.nomvoie DESC',
+						'cantons.typevoie DESC',
+					),
+					'limit' => 1
+				)
+			);
+			
+			$conditions[] = "Canton.id IN ( {$sq} )";
+
+			return array(
+				'table'      => $fullTableName,
+				'alias'      => $this->alias,
+				'type'       => $type,
+				'foreignKey' => false,
+				'conditions' => $conditions
+			);
+		}
+
+		/**
 		*	FIXME: docs
 		*/
 

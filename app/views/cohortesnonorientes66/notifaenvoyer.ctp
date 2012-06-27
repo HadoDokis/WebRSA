@@ -59,7 +59,7 @@
 				?>
 			</fieldset>
 			<?php
-				if( !is_null($etatdosrsa)) {
+				if( !is_null($etatdosrsa) ) {
 					echo $search->etatdosrsa( $etatdosrsa, 'Search.Situationdossierrsa.etatdosrsa' );
 				}
 			?>

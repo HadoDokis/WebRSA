@@ -88,7 +88,7 @@
 				}
             ?>
         </fieldset>
-		<?php echo $xform->input( 'Search.Nonoriente66.dateimpression', array( 'label' => 'Filtrer par date d\'impression du questionnaire', 'type' => 'checkbox' ) );?>
+		<?php echo $xform->input( 'Search.Nonoriente66.dateimpression', array( 'label' => 'Filtrer par date d\'impression du courrier', 'type' => 'checkbox' ) );?>
 		<fieldset>
 			<legend>Date d'impression du courrier</legend>
 			<?php
@@ -132,8 +132,8 @@
                 <th>Date de demande</th>
                 <th>Allocataire principal</th>
                 <th>Etat du droit</th>
-				<th>Commune de l'allocataire</th>
-				<th>Date impression notification</th>
+				<th>Commune - canton de l'allocataire</th>
+				<th>Date impression courrier</th>
 				<th>Nombre d'enfants</th>
 				<th>Alerte composition du foyer ?</th>
 				<th>Réponse de l'allocataire ?</th>
@@ -147,13 +147,13 @@
         <tbody>
         <?php foreach( $cohortesnonorientes66 as $index => $cohortenonoriente66 ):?>
             <?php
-
+// debug( $cantons );
 				$tableCells = array(
 						h( $cohortenonoriente66['Dossier']['numdemrsa'] ),
 						h( date_short( $cohortenonoriente66['Dossier']['dtdemrsa'] ) ),
 						h( $cohortenonoriente66['Personne']['nom'].' '.$cohortenonoriente66['Personne']['prenom'] ),
 						h( $etatdosrsa[$cohortenonoriente66['Situationdossierrsa']['etatdosrsa']] ),
-						h( $cohortenonoriente66['Adresse']['locaadr'] ),
+						h( $cohortenonoriente66['Adresse']['locaadr'].' - '.$cohortenonoriente66['Canton']['canton'] ),
 						h( date_short( $cohortenonoriente66['Nonoriente66']['dateimpression'] ) ),
 						h( $cohortenonoriente66['Foyer']['nbenfants'] ),
 						$gestionanomaliebdd->foyerErreursPrestationsAllocataires( $cohortenonoriente66, false ),

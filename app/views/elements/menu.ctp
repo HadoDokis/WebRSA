@@ -182,7 +182,7 @@
                                         <?php endif; ?>
                                         <?php if( $permissions->check( 'cohortesnonorientes66', 'oriente' ) ): ?>
                                             <li>
-												<?php echo $xhtml->link( 'Notifications envoyées', array( 'controller' => 'cohortesnonorientes66', 'action' => 'oriente' ), array( 'title' => 'Notifications envoyées' ) );?>
+												<?php echo $xhtml->link( 'Orientés et notifiés', array( 'controller' => 'cohortesnonorientes66', 'action' => 'oriente' ), array( 'title' => 'Orientés et notifiés' ) );?>
 											</li>
                                         <?php endif; ?>
                                     </ul>

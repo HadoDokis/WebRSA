@@ -300,7 +300,7 @@
 			);
 
 			if( !empty( $pdf ) ) {
-				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'nonorientes-%d-%s.pdf', $id, date( 'Y-m-d' ) ) );
+				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'nonorientes-%s.pdf', date( 'Y-m-d' ) ) );
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer l\'impression.', 'default', array( 'class' => 'error' ) );
