@@ -45,3 +45,12 @@ msgstr "Modèle de courrier auquel la pièce est liée"
 
 msgid "Piecesmodelestypescourrierspcgs66::delete::confirm"
 msgstr "Confirmer la suppression ?"
+
+msgid "Piecemodeletypecourrierpcg66.isautrepiece"
+msgstr "Champ de type Autre ?"
+
+msgid "ENUM::ISAUTREPIECE::1"
+msgstr "Oui"
+
+msgid "ENUM::ISAUTREPIECE::0"
+msgstr "Non"

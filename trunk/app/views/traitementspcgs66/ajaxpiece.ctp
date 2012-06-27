@@ -22,12 +22,14 @@
 							echo '<fieldset id="detailsmodelelie'.$id.'"><legend>Détails concernant le modèle lié &laquo; '.$name.' &raquo;</legend>';
 								// INFO: attention, on peut se le permettre car il n'y a pas de règle de validation sur le commentaire
 								$value = '';
-								if( $id == $this->data['Modeletraitementpcg66']['modeletypecourrierpcg66_id'] ) {
-									if( isset( $this->data['Modeletraitementpcg66']['commentaire'] ) ) {
-										$value = $this->data['Modeletraitementpcg66']['commentaire'];
-									}
-									else if( isset( $this->data['Modeletraitementpcg66'][$id]['commentaire'] ) ) {
-										$value = $this->data['Modeletraitementpcg66'][$id]['commentaire'];
+								if( !empty( $this->data['Modeletraitementpcg66'] ) ) {
+									if( $id == $this->data['Modeletraitementpcg66']['modeletypecourrierpcg66_id'] ) {
+										if( isset( $this->data['Modeletraitementpcg66']['commentaire'] ) ) {
+											$value = $this->data['Modeletraitementpcg66']['commentaire'];
+										}
+										else if( isset( $this->data['Modeletraitementpcg66'][$id]['commentaire'] ) ) {
+											$value = $this->data['Modeletraitementpcg66'][$id]['commentaire'];
+										}
 									}
 								}
 
@@ -38,7 +40,11 @@
 									)
 								); // FIXME: nettoyer en js ?
 								
-								echo $xform->input( 'Piecemodeletypecourrierpcg66.Piecemodeletypecourrierpcg66', array( 'type' => 'select', 'multiple' => 'checkbox', 'options' => $listepieces[$id], 'id' => "listepieces{$id}", 'label' => 'Cocher les pièces manquantes liées au modèle de courrier &laquo; '.$name.' &raquo;' ) );
+// 								echo $xform->input( 'Piecemodeletypecourrierpcg66.Piecemodeletypecourrierpcg66', array( 'type' => 'select', 'multiple' => 'checkbox', 'options' => $listepieces[$id], 'id' => "listepieces{$id}", 'label' => 'Cocher les pièces manquantes liées au modèle de courrier &laquo; '.$name.' &raquo;' ) );
+
+								// FIXME: label 'Cocher les pièces manquantes liées au modèle de courrier &laquo; '.$name.' &raquo;'
+								echo $autrepiecetraitementpcg66->fieldsetPieces( 'Piecemodeletypecourrierpcg66', $id, $listepieces, $listePiecesWithAutre, 'Modeletraitementpcg66.autrepiecemanquante' );
+// debug($listePiecesWithAutre[$id]);
 							echo '</fieldset>';
 							echo '</div>';
 						}
@@ -54,6 +60,7 @@
 	?>
 <?php endif;?>
 <script type="text/javascript">
+	//<![CDATA[
 	<?php foreach( array_keys( $modeletypecourrierpcg66 ) as $id ) :?>
 		observeDisableFieldsetOnRadioValue(
 			'traitementpcg66form',
@@ -64,4 +71,5 @@
 			true
 		);
 	<?php endforeach;?>
+	//]]>
 </script>

@@ -9,14 +9,16 @@
         $piecesmodelestypescourrierspcgs66,
         array(
             'Piecemodeletypecourrierpcg66.name',
-            'Modeletypecourrierpcg66.name'
+            'Modeletypecourrierpcg66.name',
+            'Piecemodeletypecourrierpcg66.isautrepiece'
         ),
         array(
             'actions' => array(
                 'Piecesmodelestypescourrierspcgs66::edit',
                 'Piecesmodelestypescourrierspcgs66::delete'
             ),
-            'add' => 'Piecesmodelestypescourrierspcgs66::add'
+            'add' => 'Piecesmodelestypescourrierspcgs66::add',
+			'options' => $options
         )
     );
 

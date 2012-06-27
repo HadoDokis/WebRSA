@@ -4,6 +4,14 @@
 		public $name = 'Piecemodeletypecourrierpcg66';
 
 		public $order = 'Piecemodeletypecourrierpcg66.name ASC';
+		
+		public $actsAs = array(
+			'Enumerable' => array(
+				'fields' => array(
+					'isautrepiece'
+				)
+			)
+		);
 
 		public $validate = array(
 			'name' => array(
@@ -31,6 +39,12 @@
 					'rule' => 'notEmpty',
 					'message' => 'Champ obligatoire'
 				)
+			),
+			'isautrepiece' => array(
+				array(
+					'rule' => array( 'usedValue' ),
+					'message' => 'Valeur déjà utilisée pour ce modèle de courrier.'
+				),
 			)
 		);
 
@@ -61,7 +75,31 @@
 				'insertQuery' => '',
 				'with' => 'Mtpcg66Pmtcpcg66'
 			)
-		);    
+		);
+		
+		/**
+		 *
+		 */
+		public function usedValue( $data ) {
+			if( isset( $this->data[$this->alias]['modeletypecourrierpcg66_id'] ) && !empty( $this->data[$this->alias]['modeletypecourrierpcg66_id'] ) && isset( $this->data[$this->alias]['isautrepiece'] ) && ( $this->data[$this->alias]['isautrepiece'] == '1' ) ) {
+				$querydata = array(
+					'conditions' => array(
+						"{$this->alias}.modeletypecourrierpcg66_id" => $this->data[$this->alias]['modeletypecourrierpcg66_id'],
+						"{$this->alias}.isautrepiece" => $this->data[$this->alias]['isautrepiece']
+					),
+					'recursive' => -1,
+					'contain' => false
+				);
+				
+				if( isset( $this->data[$this->alias][$this->primaryKey] ) && !empty( $this->data[$this->alias][$this->primaryKey] ) ) {
+					$querydata["{$this->alias}.{$this->primaryKey} <>"] = $this->data[$this->alias][$this->primaryKey];
+				}
+
+				return ( $this->find( 'count', $querydata ) == 0 );
+			}
+
+			return true;
+		}
 		
 		/**
 		 * Retourne une sous-requête permettant d'obtenir la liste des pièces liées
