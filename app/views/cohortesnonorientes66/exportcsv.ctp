@@ -22,8 +22,8 @@
 			Set::classicExtract( $nonoriente66, 'Adresse.locaadr' ),
 			Set::classicExtract( $nonoriente66, 'Canton.canton' ),
 			Set::classicExtract( $nonoriente66, 'Structurereferente.lib_struc' ), // MSP
-			date_short( Set::classicExtract( $nonoriente66, 'Nonoriente66.dateimpression' ) ),//date de demande
-			date_short( Set::classicExtract( $nonoriente66, 'Nonoriente66.datenotification' ) ),//date envoi courrier
+			date_short( Set::classicExtract( $nonoriente66, 'Dossier.dtdemrsa' ) ),
+			date_short( Set::classicExtract( $nonoriente66, 'Nonoriente66.dateimpression' ) ),
 			( !empty( $reponseallocataire ) ? 'Oui' : 'Non' ),
 			date_short( Set::classicExtract( $nonoriente66, 'Orientstruct.date_valid' ) ),
 			Set::classicExtract( $nonoriente66, 'Typeorient.lib_type_orient' ),

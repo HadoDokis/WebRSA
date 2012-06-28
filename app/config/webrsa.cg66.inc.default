@@ -386,4 +386,22 @@
 	 * 	Délai pour la détection des CERs non validés et notifiés il y a 1 mois et demi
 	 */
 	Configure::write( 'Criterecer.delaidetectionnonvalidnotifie', '45 days' );
+	
+	
+	/**
+	 * Variable contenant un array avec les id des 3 seuls typesorients nécessaires aux non orientés
+	 */
+	Configure::write( 'Nonoriente66.notisemploi.typeorientId', array( '5', '7', '2' ) );
+	
+	/**
+	 * Variable contenant un id pour les typesorients Social par défaut 
+	 * dans la gestion des réponses des non orientés 66
+	 */
+	Configure::write( 'Nonoriente66.TypeorientIdSocial', 7 );
+	
+	/**
+	 * Variable contenant un id pour les typesorients Prépro par défaut 
+	 * dans la gestion des réponses des non orientés 66
+	 */
+	Configure::write( 'Nonoriente66.TypeorientIdPrepro', 5 );
 ?>

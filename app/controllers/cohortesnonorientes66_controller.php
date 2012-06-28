@@ -60,12 +60,13 @@
 					$conditionsTypeorient['Typeorient.parentid'] = $typeorient_id;
 				}
 			}
-// 			else if( $this->action == 'notisemploi' ) {
-// 				$typeorient_id = Configure::read( 'Orientstruct.typeorientprincipale.SOCIAL' );
-// 				if( is_array( $typeorient_id ) ){
-// 					$conditionsTypeorient['Typeorient.parentid'] = $typeorient_id;
-// 				}
-// 			}
+			else if( $this->action == 'notisemploi' ) {
+				$typeorient_id = Configure::read( 'Nonoriente66.notisemploi.typeorientId' );
+				if( is_array( $typeorient_id ) && isset( $typeorient_id[0] ) ){
+					$conditionsTypeorient['Typeorient.id'] = $typeorient_id;
+				}
+			}
+			
 			$typesOrients = $this->Personne->Orientstruct->Typeorient->listOptions( $conditionsTypeorient );
 			$this->set( 'typesOrient', $typesOrients );
 
@@ -160,11 +161,11 @@
 				* Sauvegarde
 				*
 				*/
-// debug($this->data);
-// die();
+
 				// On a renvoyé  le formulaire de la cohorte
 				if( !empty( $this->data['Orientstruct'] ) ) {
-
+// debug($this->data);
+// die();
 					$success = true;
 					if( in_array( $this->action, array( 'isemploi', 'notisemploi' ) ) ) {
 						$success = $this->Personne->Nonoriente66->saveAll( $this->data['Nonoriente66'], array( 'validate' => 'first', 'atomic' => false ) ) && $success;
@@ -178,16 +179,16 @@
 						foreach( array_unique( Set::extract( $this->data, 'Orientstruct.{n}.dossier_id' ) ) as $dossier_id ) {
 							$this->Jetons->release( array( 'Dossier.id' => $dossier_id ) );
 						}
-// 							$this->log( var_export( $this->data['Orientstruct'], true ), LOG_DEBUG );
-// 							$this->log( var_export( $this->data['Orientstruct'], true ), LOG_DEBUG );
-// 						$this->Personne->Orientstruct->commit();
+
 						$this->Personne->Orientstruct->commit();
-						unset( $this->data['Orientstruct'] );
+						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+						unset( $this->data['Orientstruct'], $this->data['Nonoriente66'] );
 						if( isset( $this->data['sessionKey'] ) ) {
 							$this->Session->del( "Prg.{$this->name}__{$this->action}.{$this->data['sessionKey']}" );
 						}
 					}
 					else {
+						$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 						$this->Personne->Orientstruct->rollback();
 					}
 				}
@@ -205,6 +206,15 @@
 					if( $statutNonoriente == 'Nonoriente::notisemploiaimprimer' ){
 						$limit = 100;
 					}
+					else if ( $statutNonoriente == 'Nonoriente::notisemploi' ) {					
+						$TypeorientIdPrepro = Configure::read( 'Nonoriente66.TypeorientIdPrepro' );
+						$TypeorientIdSocial = Configure::read( 'Nonoriente66.TypeorientIdSocial' );
+						$this->set( 'TypeorientIdPrepro', $TypeorientIdPrepro );
+						$this->set( 'TypeorientIdSocial', $TypeorientIdSocial );
+						
+						$this->set( 'structuresAutomatiques', $this->Cohortenonoriente66->structuresAutomatiques() );
+					}
+					
 					$this->paginate = $this->Cohortenonoriente66->search( $statutNonoriente, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
 					$this->paginate['limit'] = $limit;
 					$cohortesnonorientes66 = $this->paginate( 'Personne' );

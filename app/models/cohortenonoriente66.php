@@ -428,7 +428,35 @@
 			return $pdfs;
 		}
 
+		/**
+		*
+		*/
 
+		public function structuresAutomatiques() {
+			$this->Structurereferente = ClassRegistry::init( 'Structurereferente' );
+
+			$results = $this->Structurereferente->find(
+				'all',
+				array(
+					'fields' => array(
+						'Structurereferente.typeorient_id',
+						'( "Structurereferente"."typeorient_id" || \'_\' || "Structurereferente"."id" ) AS "Structurereferente__id"',
+						'Canton.canton'
+					),
+					'conditions' => array(
+						'Structurereferente.typeorient_id' => Configure::read( 'Nonoriente66.notisemploi.typeorientId' )
+					),
+					'joins' => array(
+						$this->Structurereferente->join( 'StructurereferenteZonegeographique' ),
+						$this->Structurereferente->StructurereferenteZonegeographique->join( 'Zonegeographique' ),
+						$this->Structurereferente->StructurereferenteZonegeographique->Zonegeographique->join( 'Canton' )
+					),
+					'contain' => false
+				)
+			);
+
+			return Set::combine( $results, '{n}.Structurereferente.typeorient_id', '{n}.Structurereferente.id', '{n}.Canton.canton' );
+		}
 
 
 	}
