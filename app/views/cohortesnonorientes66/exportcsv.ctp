@@ -10,6 +10,7 @@
 	foreach( $nonorientes66 as $nonoriente66 ) {
 		$reponseallocataire = Set::classicExtract( $nonoriente66, 'Nonoriente66.reponseallocataire' );
 		$etatHistoriqueetatpe = Set::enum( $nonoriente66['Historiqueetatpe']['etat'], $historiqueetatpe['etat'] );
+		$structureLieeAdresse = Set::enum( $nonoriente66['Canton']['structureliee'], $listestructures );
 
 		$row = array(
 			Set::classicExtract( $nonoriente66, 'Dossier.matricule' ),
@@ -21,7 +22,7 @@
 			$nonoriente66['Foyer']['nbenfants'],
 			Set::classicExtract( $nonoriente66, 'Adresse.locaadr' ),
 			Set::classicExtract( $nonoriente66, 'Canton.canton' ),
-			Set::classicExtract( $nonoriente66, 'Structurereferente.lib_struc' ), // MSP
+			$structureLieeAdresse, // MSP
 			date_short( Set::classicExtract( $nonoriente66, 'Dossier.dtdemrsa' ) ),
 			date_short( Set::classicExtract( $nonoriente66, 'Nonoriente66.dateimpression' ) ),
 			( !empty( $reponseallocataire ) ? 'Oui' : 'Non' ),
