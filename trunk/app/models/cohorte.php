@@ -1323,7 +1323,7 @@
 					'recursive' => 2
 				)
 			);
-
+debug($structures);
 			$return = array();
 			foreach( $structures as $structure ) {
 				if( !empty( $structure['Zonegeographique'] ) ) {

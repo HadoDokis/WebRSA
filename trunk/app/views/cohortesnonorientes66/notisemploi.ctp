@@ -136,8 +136,8 @@
 				<th>Date impression courrier</th>
 				<th>Nombre d'enfants</th>
 				<th>Alerte composition du foyer ?</th>
-				<th>Réponse de l'allocataire ?</th>
 				<th>Sélectionner</th>
+				<th>Réponse de l'allocataire ?</th>
 				<th class="action">Type d'orientation</th>
 				<th class="action">Structure référente</th>
 				<th class="action">Date d'orientation</th>
@@ -157,9 +157,9 @@
 						h( date_short( $cohortenonoriente66['Nonoriente66']['dateimpression'] ) ),
 						h( $cohortenonoriente66['Foyer']['nbenfants'] ),
 						$gestionanomaliebdd->foyerErreursPrestationsAllocataires( $cohortenonoriente66, false ),
+						$xform->input( 'Orientstruct.'.$index.'.atraiter', array( 'label' => false, 'legend' => false, 'type' => 'checkbox', 'class' => 'atraiter' ) ),
 						$xform->input( 'Nonoriente66.'.$index.'.id', array( 'label' => false, 'legend' => false, 'type' => 'hidden', 'value' => $cohortenonoriente66['Nonoriente66']['id'] ) ).
 						$xform->input( 'Nonoriente66.'.$index.'.reponseallocataire', array( 'label' => false, 'legend' => false, 'type' => 'radio', 'options' => $options['reponseallocataire'] ) ),
-						$xform->input( 'Orientstruct.'.$index.'.atraiter', array( 'label' => false, 'legend' => false, 'type' => 'checkbox', 'class' => 'atraiter' ) ),
 						$xform->input( 'Orientstruct.'.$index.'.typeorient_id', array( 'label' => false, 'type' => 'select', 'options' => $typesOrient, 'empty' => true, 'value' => ( !empty( $typeorient_id ) ? $typeorient_id : $cohortenonoriente66['Orientstruct']['typeorient_id'] ) ) ).
 						$xform->input( 'Orientstruct.'.$index.'.origine', array( 'label' => false, 'type' => 'hidden', 'value' => 'cohorte' ) ).
 						$xform->input( 'Orientstruct.'.$index.'.id', array( 'label' => false, 'type' => 'hidden', 'value' => $cohortenonoriente66['Orientstruct']['id'] ) ).
@@ -200,18 +200,50 @@
 		<?php echo $xform->end();?>
 	<?php endif;?>
 <?php endif;?>
-
+<script type="text/javascript">
+	var structuresAutomatiques = <?php echo php_associative_array_to_js( $structuresAutomatiques );?>
+	
+	function changeStructuresAutomatiques( canton, typeorient_id, key ) {
+// 		alert( structuresAutomatiques[canton][typeorient_id] );
+		$( 'Orientstruct' + key + 'StructurereferenteId' ).value = structuresAutomatiques[canton][typeorient_id];
+	}
+</script>
 <?php if( !empty( $cohortesnonorientes66 ) ):?>
 	<?php foreach( $cohortesnonorientes66 as $key => $cohortenonoriente66 ):?>
 		<script type="text/javascript">
 			document.observe("dom:loaded", function() {
+				<?php
+					// Choix de la structure
+					echo "$( 'Orientstruct{$key}TypeorientId' ).observe( 'change', function( event ) { changeStructuresAutomatiques( '{$cohortenonoriente66['Canton']['canton']}', $(this).value, {$key} ); } );\n";
+				?>
+
+				<?php
+					// Choix du type d'orientation en fonction du nombre d'enfants
+					if( $cohortenonoriente66['Foyer']['nbenfants'] == '0' ) {
+						echo "$( 'Orientstruct{$key}TypeorientId' ).value = {$TypeorientIdPrepro};\n$( 'Orientstruct{$key}TypeorientId' ).simulate( 'change' );\n"; // FIXME
+					}
+					else {
+						echo "$( 'Orientstruct{$key}TypeorientId' ).value = {$TypeorientIdSocial};\n$( 'Orientstruct{$key}TypeorientId' ).simulate( 'change' );\n"; // FIXME
+					}
+				?>
 
 				dependantSelect( 'Orientstruct<?php echo $key;?>StructurereferenteId', 'Orientstruct<?php echo $key;?>TypeorientId' );
-				try { $( 'OrientstructStructurereferenteId' ).onchange(); } catch(id) { }
+				try { $( 'Orientstruct<?php echo $key;?>StructurereferenteId' ).onchange(); } catch(id) { }
+
+				<?php
+					// Choix de la structure
+					echo "$( 'Orientstruct{$key}TypeorientId' ).observe( 'change', function( event ) { changeStructuresAutomatiques( '{$cohortenonoriente66['Canton']['canton']}', $(this).value, {$key} ); } );\n";
+				?>
 
 				observeDisableFieldsOnCheckbox(
 					'Orientstruct<?php echo $key;?>Atraiter',
 					[
+						'Nonoriente66<?php echo $key;?>Id',
+						'Nonoriente66<?php echo $key;?>Reponseallocataire_',
+						'Nonoriente66<?php echo $key;?>ReponseallocataireN',
+						'Nonoriente66<?php echo $key;?>ReponseallocataireO',
+						'Orientstruct<?php echo $key;?>Codeinsee',
+						'Orientstruct<?php echo $key;?>DossierId',
 						'Orientstruct<?php echo $key;?>TypeorientId',
 						'Orientstruct<?php echo $key;?>Origine',
 						'Orientstruct<?php echo $key;?>PersonneId',
@@ -223,7 +255,6 @@
 					],
 					false
 				);
-
 			});
 		</script>
 	<?php endforeach;?>
