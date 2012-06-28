@@ -388,7 +388,21 @@
 			);
 			unset( $querydata['limit'] );
 			$nonorientes66 = $this->Personne->find( 'all', $querydata );
-// debug($nonorientes66);
+			
+			$structures = $this->Cohortenonoriente66->structuresAutomatiques();
+			$cantonLie = array();
+			foreach( $nonorientes66 as $i => $nonoriente66 ) {
+				$typeorient_id = Set::classicExtract( $nonoriente66, 'Typeorient.id' );
+				$libelleCanton = Set::classicExtract( $nonoriente66, 'Canton.canton' );
+				$cantonLie['Canton']['structureliee'] = !empty( $structures[$libelleCanton][$typeorient_id] ) ? $structures[$libelleCanton][$typeorient_id] : null;
+				$nonorientes66[$i]['Canton']['structureliee'] = $cantonLie['Canton']['structureliee'];
+			}
+
+			$listestructures = $this->Personne->Orientstruct->Structurereferente->list1Options( array( 'Structurereferente.actif' => 'O' ) );
+			$this->set( compact( 'listestructures' ) );
+
+// debug( $test );
+// debug($structures);
 // die();
 			$this->_setOptions();
 			$this->layout = '';
