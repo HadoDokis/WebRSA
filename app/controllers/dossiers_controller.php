@@ -115,8 +115,8 @@
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
 			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 
-			$params = $this->data;
-			if( !empty( $params ) ) {
+// 			$params = $this->data;
+			if( !empty( $this->data ) ) {
 				$this->paginate = $this->Dossier->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data );
 
 				$this->paginate = $this->_qdAddFilters( $this->paginate );
@@ -131,6 +131,11 @@
 
 				$this->set( 'dossiers', $dossiers );
 			}
+			else {
+				$filtresdefaut = Configure::read( "Filtresdefaut.{$this->name}_{$this->action}" );
+				$this->data = Set::merge( $this->data, $filtresdefaut );
+			}
+
 
 			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
 

@@ -56,9 +56,9 @@
 				<p class="notice">Cette personne ne possède pas encore de contrat d'engagement réciproque.</p>
 			<?php endif;?>
 
-			<?php  if( !empty( $orientstructEmploi ) ) :?>
+			<?php  /*if( !empty( $orientstructEmploi ) ) :?>
 				<p class="error">Cette personne possède actuellement une orientation professionnelle. Impossible de créer un CER.</p>
-			<?php endif; ?>
+			<?php endif;*/ ?>
 			
 			<?php if( $permissions->check( 'proposcontratsinsertioncovs58', 'add' ) && $nbdossiersnonfinalisescovs == 0 ):?>
 				<ul class="actionMenu">
