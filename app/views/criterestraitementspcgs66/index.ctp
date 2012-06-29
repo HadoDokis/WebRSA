@@ -172,7 +172,7 @@
 				?>
 			</tbody>
 		</table>
-<?php debug($criterestraitementspcgs66);?>
+
 		<?php echo $pagination;?>
 		<ul class="actionMenu">
 			<li><?php
