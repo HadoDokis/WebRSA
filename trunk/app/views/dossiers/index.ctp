@@ -40,6 +40,8 @@
 				array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 'Search' ).toggle(); return false;" )
 			).'</li>';
 		}
+		
+		$formSent = ( isset( $this->data['Dossier']['recherche'] ) && $this->data['Dossier']['recherche'] );
 	?>
 </ul>
 <script type="text/javascript">
@@ -48,7 +50,7 @@
 	});
 </script>
 <!-- FIXME le repasser en post ? -->
-<?php echo $form->create( 'Dossier', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( !empty( $this->data ) ? 'folded' : 'unfolded' ) ) );?>
+<?php echo $form->create( 'Dossier', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( $formSent ? 'folded' : 'unfolded' ) ) );?>
 
 	<fieldset>
 		<legend>Recherche par dossier</legend>

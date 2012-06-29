@@ -365,4 +365,16 @@
 			)
 		)
 	);
+	
+	/**
+	 * Les conditions sur la recherch epar dossiers / allocataires ont soumis à droit et devoir = oui par défaut
+	 *	
+	 */
+	Configure::write(
+		'Filtresdefaut.Dossiers_index', array(
+			'Calculdroitrsa' => array(
+				'toppersdrodevorsa' => 1
+			)
+		)
+	);
 ?>
