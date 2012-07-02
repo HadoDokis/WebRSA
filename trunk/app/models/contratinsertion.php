@@ -860,6 +860,7 @@
 				)
 			);
 			$decisionprecedente = Set::classicExtract( $dernierContrat, 'Contratinsertion.decision_ci' );
+			$positioncerPrecedent = Set::classicExtract( $dernierContrat, 'Contratinsertion.positioncer' );
 
 			//FIXME: la position a périmé ne devrait aps figurer ici
 			if ( ( is_null( $positioncer ) || in_array( $positioncer , array( 'attvalid', 'perime' ) ) ) && !empty( $decision_ci ) ) {
@@ -883,7 +884,7 @@
 			}
 
 			// Lors de l'ajout d'un nouveau CER, on passe la position du précédent à fin de contrat, sauf pour les non validés
-			if( !empty( $dernierContrat ) && ( $decisionprecedente != 'N' ) ) {
+			if( !empty( $dernierContrat ) && ( $decisionprecedente != 'N' ) && ( $positioncerPrecedent != 'annule' ) ) {
 				$this->updateAll(
 					array( 'Contratinsertion.positioncer' => '\'fincontrat\'' ),
 					array(
