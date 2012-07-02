@@ -1250,6 +1250,13 @@ td.button.suivisanction2.disabled a, td.action a.suivisanction2.disabled, td spa
     background-image: url( ../img/icons/printer_disabled.png );
 }
 
+td.button.reconduction a, td.action a.reconduction, td span.button.reconduction, table.default2 td a.button.reconduction {
+    background-image: url( ../img/icons/printer.png );
+}
+td.button.reconduction.disabled a, td.action a.reconduction.disabled, td span.button.reconduction.disabled, table.default2 td a.button.reconduction.disabled {
+    background-image: url( ../img/icons/printer_disabled.png );
+}
+
 ul.actionMenu a.button.printcohorte1, ul.actionMenu a.button.printcohorte2 {
     background-image: url( ../img/icons/printer.png );
 /* 	padding: 5px; */

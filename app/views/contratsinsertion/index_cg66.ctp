@@ -48,7 +48,7 @@
 				<th>Décision</th>
 				<th>Date décision</th>
 				<th>Position du CER</th>
-				<th colspan="11" class="action">Actions</th>
+				<th colspan="12" class="action">Actions</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -67,6 +67,13 @@
 
 					$decision = Set::classicExtract( $decision_ci, Set::classicExtract( $contratinsertion, 'Contratinsertion.decision_ci' ) );
 					$position = Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' );
+					
+					//Personne de + de 55ans
+					$isReconductible = false;
+					$personnePlus55Ans = Set::classicExtract( $contratinsertion, 'Personne.plus55ans' );
+					if( !empty( $personnePlus55Ans ) ) {
+						$isReconductible = true;
+					}
 
 					
 					$datenotif = Set::classicExtract( $contratinsertion, 'Contratinsertion.datenotification' );
@@ -189,6 +196,18 @@
 									'enabled' => (
 										( $permissions->check( 'contratsinsertion', 'notification' ) == 1 )
 										&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'annule' )
+									)
+								)
+							),
+							$default2->button(
+								'reconduction',
+								array( 'controller' => 'contratsinsertion', 'action' => 'reconductionCERPlus55Ans',
+								$contratinsertion['Contratinsertion']['id'] ),
+								array(
+									'enabled' => (
+										( $permissions->check( 'contratsinsertion', 'reconductionCERPlus55Ans' ) == 1 )
+										&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'annule' )
+										&& $isReconductible
 									)
 								)
 							),
