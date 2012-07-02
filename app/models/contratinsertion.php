@@ -804,7 +804,7 @@
 							'originepdo_id' => $originepdo['Originepdo']['id'],
 							'typepdo_id' => $typepdo['Typepdo']['id'],
 							'orgpayeur' => 'CAF',
-							'datereceptionpdo' => date( 'Y-m-d', strtotime( $contrat[$this->alias]['created'] ) ),
+							'datereceptionpdo' => date( 'Y-m-d', strtotime( $contrat[$this->alias]['dd_ci'] ) ),
 							'haspiecejointe' => 0
 						)
 					);
