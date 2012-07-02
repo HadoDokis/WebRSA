@@ -538,6 +538,9 @@ msgstr "Impression en cohorte fin sanction 1"
 
 msgid "Button::impressionsSanctions2"
 msgstr "Impression en cohorte fin sanction 2"
+
+msgid "Button::reconductionCERPlus55Ans"
+msgstr "Tacite reconduction"
 ###############################################################################
 # Pagination
 # INFO: http://forum.cakephp-fr.org/viewtopic.php?id=878

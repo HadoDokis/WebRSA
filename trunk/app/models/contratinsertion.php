@@ -37,7 +37,8 @@
 					'%s/contratinsertionold.odt',
 					'%s/ficheliaisoncerParticulier.odt',
 					'%s/ficheliaisoncerSimpleoa.odt',
-					'%s/ficheliaisoncerSimplemsp.odt'
+					'%s/ficheliaisoncerSimplemsp.odt',
+					'%s/tacitereconduction66.odt'
 				),
 				93 => '%s/contratinsertion.odt'
 			),
@@ -1697,5 +1698,45 @@
 				$options
 			);
 		}
+		
+		/**
+		 * Retourne le PDF de notification du CER pour l'OP.
+		 *
+		 * @param integer $id L'id du CER pour lequel générer la notification.
+		 * @return string
+		 */
+		public function getPdfReconductionCERPlus55Ans( $id, $user_id ) {
+			$contratinsertion = $this->getDataForPdf( $id, $user_id );
+			$Option = ClassRegistry::init( 'Option' );
+			$options = array(
+				'Adresse' => array(
+					'typevoie' => $Option->typevoie()
+				),
+				'Personne' => array(
+					'qual' => $Option->qual()
+				),
+				'Referent' => array(
+					'qual' => $Option->qual()
+				),
+				'Structurereferente' => array(
+					'type_voie' => $Option->typevoie()
+				),
+				'Type' => array(
+					'voie' => $Option->typevoie()
+				),
+			);
+
+			$contratinsertion['Contratinsertion']['duree_engag'] = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.duree_engag' ), $Option->duree_engag() );
+
+// debug($contratinsertion);
+// die();
+			return $this->ged(
+				$contratinsertion,
+				'Contratinsertion/tacitereconduction66.odt',
+				false,
+				$options
+			);
+		}
+		
 	}
 ?>

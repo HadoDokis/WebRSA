@@ -500,6 +500,9 @@
 				);
 			}
 			else if ( Configure::read('Cg.departement') == 66 ) {
+				$querydata['joins'][] = $this->Contratinsertion->join( 'Personne', array( 'type' => 'INNER' ) );
+				$querydata['fields'][] = '( ( EXTRACT ( YEAR FROM AGE( "Personne"."dtnai" ) ) ) > 55 ) AS "Personne__plus55ans"';
+
 				$querydata = Set::merge(
 					$querydata,
 					array(
@@ -507,12 +510,13 @@
 						'contain' => array( 'Propodecisioncer66' )
 					)
 				);
+
 			}
 			// FIN à mettre dans le modèle ?
 
 			$contratsinsertion = $this->Contratinsertion->find( 'all', $querydata );
 
-
+// debug( $contratsinsertion );
 			$this->_setOptions();
 			$this->set( 'personne_id', $personne_id );
 
@@ -1805,5 +1809,23 @@
 			$this->render( $this->action, null, 'notification' );
 		}
 
+		
+		/**
+		 * Impression d'une notification pour les bénéficiaires de + 55ans
+		 *
+		 * @param integer $id
+		 * @return void
+		 */
+		public function reconductionCERPlus55Ans( $contratinsertion_id ) {
+			$pdf = $this->Contratinsertion->getPdfReconductionCERPlus55Ans( $contratinsertion_id , $this->Session->read( 'Auth.User.id' ) );
+
+			if( !empty( $pdf ) ){
+				$this->Gedooo->sendPdfContentToClient( $pdf, "taciteReconductionPlus55ans.pdf" );
+			}
+			else {
+				$this->Session->setFlash( 'Impossible de générer la notification du bénéficiaire', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
+			}
+		}
 	}
 ?>
