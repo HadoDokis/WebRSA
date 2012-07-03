@@ -9,9 +9,10 @@
 					'reponseallocataire' => array( 'type' => 'no' ),
 					'haspiecejointe'
 				)
-			)
+			),
+			'Formattable'
 		);
-		
+
 		public $belongsTo = array(
 			'Personne' => array(
 				'className' => 'Personne',
@@ -29,7 +30,7 @@
 			),
 		);
 
-		
+
 		public $hasMany = array(
 			'Fichiermodule' => array(
 				'className' => 'Fichiermodule',
@@ -48,8 +49,8 @@
 				'counterQuery' => ''
 			)
 		);
-		
-		
+
+
 		/**
 		 * Retourne un champ virtuel permettant de connaître le nombre de fichiers modules liés à la non orientation
 		 *
@@ -71,6 +72,6 @@
 				)
 			);
 		}
-		
+
 	}
 ?>
