@@ -243,6 +243,9 @@
 				'Traitementpcg66.fichecalcul_cavntmax' => 'integer',
 				'Traitementpcg66.fichecalcul_coefannee1' => 'integer',
 				'Traitementpcg66.fichecalcul_coefannee2' => 'integer',
+				'Nonoriente66.notisemploi.typeorientId' => 'isarray',
+				'Nonoriente66.TypeorientIdSocial' => 'integer',
+				'Nonoriente66.TypeorientIdPrepro' => 'integer',
 			);
 		}
 
