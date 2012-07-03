@@ -37,10 +37,10 @@
 
 
 			$this->set( 'qual',  $this->Option->qual() );
-			
+
 			$etats = Configure::read( 'Situationdossierrsa.etatdosrsa.ouvert' );
 			$this->set( 'etatdosrsa', $this->Option->etatdosrsa( $etats ) );
-			
+
 			$this->set( 'users', $this->User->find(
 					'list',
 					array(
@@ -66,16 +66,16 @@
 					$conditionsTypeorient['Typeorient.id'] = $typeorient_id;
 				}
 			}
-			
+
 			$typesOrients = $this->Personne->Orientstruct->Typeorient->listOptions( $conditionsTypeorient );
 			$this->set( 'typesOrient', $typesOrients );
 
 			// Population du select des structures référentes
 			$this->set( 'structuresReferentes', $this->Personne->Orientstruct->Structurereferente->list1Options( array( 'orientation' => 'O' ) ) );
-			
+
 			$Historiqueetatpe = ClassRegistry::init( 'Historiqueetatpe' );
 			$this->set( 'historiqueetatpe', $Historiqueetatpe->allEnumLists() );
-			
+
 			$User = ClassRegistry::init( 'User' );
 			$this->set( 'gestionnaire', $User->find(
 					'list',
@@ -89,10 +89,10 @@
 					)
 				)
 			);
-			
+
 			$optionsOrientstruct = $this->Personne->Orientstruct->allEnumLists();
 			$this->set( compact( 'optionsOrientstruct') );
-			
+
 			$this->set( 'options', $this->Personne->Orientstruct->Nonoriente66->allEnumLists() );
 		}
 
@@ -129,7 +129,7 @@
 		public function notifaenvoyer() {
 			$this->_index( 'Nonoriente::notifaenvoyer' );
 		}
-		
+
 		/**
 		*
 		*/
@@ -153,29 +153,39 @@
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
 			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 
+			// Dans ce contexte-ci, Nonoriente66.reponseallocataire est un champ obligatoire.
+			$rule = array(
+				'rule' => array( 'notEmpty' ),
+				'message' => __( 'Validate::notEmpty', true ),
+				'allowEmpty' => false
+			);
+			array_unshift( $this->Personne->Nonoriente66->validate['reponseallocataire'], $rule );
+
 			if( !empty( $this->data ) ) {
-				$this->Personne->Orientstruct->begin();
-
-				/**
-				*
-				* Sauvegarde
-				*
-				*/
-
-				// On a renvoyé  le formulaire de la cohorte
+				// On a renvoyé  le formulaire de la cohorte, tentative de sauvegarde
 				if( !empty( $this->data['Orientstruct'] ) ) {
-// debug($this->data);
-// die();
-					$success = true;
+					$this->Personne->Orientstruct->begin();
+
+					// Tentative de validation
+					$validate = true;
 					if( in_array( $this->action, array( 'isemploi', 'notisemploi' ) ) ) {
-						$success = $this->Personne->Nonoriente66->saveAll( $this->data['Nonoriente66'], array( 'validate' => 'first', 'atomic' => false ) ) && $success;
+						$validate = $this->Personne->Nonoriente66->saveAll( $this->data['Nonoriente66'], array( 'validate' => 'only', 'atomic' => false ) ) && $validate;
+					}
+					$validate = $this->Personne->Orientstruct->saveAll( $this->data['Orientstruct'], array( 'validate' => 'only', 'atomic' => false ) ) && $validate;
+
+					// Tentative de sauvegarde si la validation s'est bien passée
+					if( $validate ) {
+						$success = true;
+						if( in_array( $this->action, array( 'isemploi', 'notisemploi' ) ) ) {
+							$success = $this->Personne->Nonoriente66->saveAll( $this->data['Nonoriente66'], array( 'validate' => 'first', 'atomic' => false ) ) && $success;
+						}
+						$success = $this->Personne->Orientstruct->saveAll( $this->data['Orientstruct'], array( 'validate' => 'first', 'atomic' => false ) ) && $success;
+					}
+					else {
+						$success = false;
 					}
 
-
-					$success = $this->Personne->Orientstruct->saveAll( $this->data['Orientstruct'], array( 'validate' => 'first', 'atomic' => false ) ) && $success;
-
 					if( $success ) {
-						
 						foreach( array_unique( Set::extract( $this->data, 'Orientstruct.{n}.dossier_id' ) ) as $dossier_id ) {
 							$this->Jetons->release( array( 'Dossier.id' => $dossier_id ) );
 						}
@@ -188,17 +198,12 @@
 						}
 					}
 					else {
-						$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 						$this->Personne->Orientstruct->rollback();
+						$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 					}
 				}
 
-				/**
-				*
-				* Filtrage
-				*
-				*/
-
+				// Filtrage
 				if( ( $statutNonoriente == 'Nonoriente::isemploi' ) || ( $statutNonoriente == 'Nonoriente::notisemploi' ) || ( $statutNonoriente == 'Nonoriente::notisemploiaimprimer' ) || ( $statutNonoriente == 'Nonoriente::notifaenvoyer' ) || ( $statutNonoriente == 'Nonoriente::oriente' )  && !empty( $this->data ) ) {
 					$this->Dossier->begin(); // Pour les jetons
 
@@ -206,15 +211,15 @@
 					if( $statutNonoriente == 'Nonoriente::notisemploiaimprimer' ){
 						$limit = 100;
 					}
-					else if ( $statutNonoriente == 'Nonoriente::notisemploi' ) {					
+					else if ( $statutNonoriente == 'Nonoriente::notisemploi' ) {
 						$TypeorientIdPrepro = Configure::read( 'Nonoriente66.TypeorientIdPrepro' );
 						$TypeorientIdSocial = Configure::read( 'Nonoriente66.TypeorientIdSocial' );
 						$this->set( 'TypeorientIdPrepro', $TypeorientIdPrepro );
 						$this->set( 'TypeorientIdSocial', $TypeorientIdSocial );
-						
+
 						$this->set( 'structuresAutomatiques', $this->Cohortenonoriente66->structuresAutomatiques() );
 					}
-					
+
 					$this->paginate = $this->Cohortenonoriente66->search( $statutNonoriente, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
 					$this->paginate['limit'] = $limit;
 					$cohortesnonorientes66 = $this->paginate( 'Personne' );
@@ -229,9 +234,8 @@
 							$this->params['named']
 						)
 					);
-// debug( $cohortesnonorientes66 );
-					$this->Dossier->commit();
 
+					$this->Dossier->commit();
 					$this->set( 'cohortesnonorientes66', $cohortesnonorientes66 );
 
 				}
@@ -266,7 +270,7 @@
 			}
 		}
 
-		
+
 		/**
 		* Impression d'un rendez-vous.
 		*
@@ -286,20 +290,20 @@
 		}
 
 		/**
-		 * 
 		 *
-		 * @param integer $id L'id de 
+		 *
+		 * @param integer $id L'id de
 		 */
 		public function impressions() {
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
 			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
-			
+
 			// La page sur laquelle nous sommes
 			$page = Set::classicExtract( $this->params, 'named.page' );
 			if( ( intval( $page ) != $page ) || $page < 0 ) {
 				$page = 1;
 			}
-		
+
 			$pdf = $this->Cohortenonoriente66->getDefaultCohortePdf(
 				'Nonoriente::notisemploiaimprimer',
 				$mesCodesInsee,
@@ -317,7 +321,7 @@
 				$this->redirect( $this->referer() );
 			}
 		}
-	
+
 		/**
 			* Impression d'un rendez-vous.
 			*
@@ -335,22 +339,22 @@
 				$this->redirect( $this->referer() );
 			}
 		}
-		
+
 		/**
-		 * 
 		 *
-		 * @param integer $id L'id de 
+		 *
+		 * @param integer $id L'id de
 		 */
 		public function impressionsOrientation() {
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
 			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
-			
+
 			// La page sur laquelle nous sommes
 			$page = Set::classicExtract( $this->params, 'named.page' );
 			if( ( intval( $page ) != $page ) || $page < 0 ) {
 				$page = 1;
 			}
-		
+
 			$pdfs = $this->Cohortenonoriente66->getCohortePdfNonoriente66(
 				'Nonoriente::notifaenvoyer',
 				$mesCodesInsee,
@@ -358,7 +362,7 @@
 				XSet::bump( $this->params['named'], '__' ),
 				$page
 			);
-			
+
 
 			if( !empty( $pdfs ) ) {
 				$pdf = $this->Gedooo->concatPdfs( $pdfs, 'Nonoriente66' );
@@ -368,8 +372,8 @@
 				$this->Session->setFlash( 'Impossible de générer l\'impression.', 'default', array( 'class' => 'error' ) );
 				$this->redirect( $this->referer() );
 			}
-		}	
-		
+		}
+
 		/**
 		 * Export des résultats sous forme de tableau CSV.
 		 *
@@ -388,7 +392,7 @@
 			);
 			unset( $querydata['limit'] );
 			$nonorientes66 = $this->Personne->find( 'all', $querydata );
-			
+
 			$structures = $this->Cohortenonoriente66->structuresAutomatiques();
 			$cantonLie = array();
 			foreach( $nonorientes66 as $i => $nonoriente66 ) {
