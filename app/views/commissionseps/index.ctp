@@ -17,10 +17,21 @@
 			}
 			break;
 		case 'arbitrageep':
-			$this->pageTitle = '3. Arbitrage d\'une commission d\'EP (niveau EP)';
+			if( Configure::read( 'Cg.departement' ) == 66 ) {
+				$this->pageTitle = '3. Avis de l\'EP';
+			}
+			else {
+				$this->pageTitle = '3. Arbitrage d\'une commission d\'EP (niveau EP)';
+			}
 			break;
 		case 'arbitragecg':
-			$this->pageTitle = '3. Arbitrage d\'une commission d\'EP (niveau CG)';
+			if( Configure::read( 'Cg.departement' ) == 66 ) {
+				$this->pageTitle = '3. Décisions CG';
+			}
+			else {
+				$this->pageTitle = '3. Arbitrage d\'une commission d\'EP (niveau EP)';
+			}
+			
 			break;
 		case 'decisions':
 			$this->pageTitle = '4. Consultation des décisions';
