@@ -202,16 +202,18 @@
 		protected function _checkPermissions() {
 			// Vérification des droits d'accès à la page
 			if( $this->name != 'Pages' && !( $this->name == 'Users' && ( $this->action == 'login' || $this->action == 'logout' ) ) ) {
-				/// Nouvelle manière, accès au cache se trouvant dans la session
-				$permissions = $this->Session->read( 'Auth.Permissions' );
-				if( isset( $permissions["{$this->name}:{$this->action}"] ) ) {
-					$this->assert( !empty( $permissions["{$this->name}:{$this->action}"] ), 'error403' );
-				}
-				else if( isset( $permissions["Module:{$this->name}"] ) ) {
-					$this->assert( !empty( $permissions["Module:{$this->name}"] ), 'error403' );
-				}
-				else {
-					$this->cakeError( 'error403' );
+				if( !( isset( $this->aucunDroit ) && is_array( $this->aucunDroit ) && in_array( $this->action, $this->aucunDroit ) ) ) {
+					/// Nouvelle manière, accès au cache se trouvant dans la session
+					$permissions = $this->Session->read( 'Auth.Permissions' );
+					if( isset( $permissions["{$this->name}:{$this->action}"] ) ) {
+						$this->assert( !empty( $permissions["{$this->name}:{$this->action}"] ), 'error403' );
+					}
+					else if( isset( $permissions["Module:{$this->name}"] ) ) {
+						$this->assert( !empty( $permissions["Module:{$this->name}"] ), 'error403' );
+					}
+					else {
+						$this->cakeError( 'error403' );
+					}
 				}
 			}
 		}
@@ -756,7 +758,7 @@
                  *  d'un formulaire de recherche.
                  * @param mixed $wildcardKeys Soit une liste de clés, soit la
                  *  valeur true pour appliquer sur toutes les clés.
-                 * @return array 
+                 * @return array
                  */
                 protected function _wildcardKeys( $data, $wildcardKeys ) {
                     $search = array();
