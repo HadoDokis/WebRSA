@@ -775,93 +775,39 @@
 		*/
 
 		public function view( $contratinsertion_id = null ) {
-			// On a seulement besoin des modèles liés Structurereferente, Referent et Typeorient
-			$binds = array(
-				'belongsTo' => array(
-					'Structurereferente' => $this->Contratinsertion->belongsTo['Structurereferente'],
-					'Referent' => $this->Contratinsertion->belongsTo['Referent'],
-					'Personne' => $this->Contratinsertion->belongsTo['Personne'],
-					'Typeorient' => array(
-						'table'      => $this->Typeorient->getDataSource()->fullTableName( $this->Typeorient, false ),
-						'alias'      => 'Typeorient',
-						'type'       => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array( 'Structurereferente.typeorient_id = Typeorient.id' )
-					)
-				)
-			);
-			$this->Contratinsertion->unbindModelAll();
-			$this->Contratinsertion->bindModel( $binds );
 			$this->Contratinsertion->forceVirtualFields = true;
 			$contratinsertion = $this->Contratinsertion->find(
 				'first',
 				array(
-					'fields' => array(
-						'Contratinsertion.id',
-						'Contratinsertion.personne_id',
-						'Contratinsertion.forme_ci',
-						'Contratinsertion.num_contrat',
-						'Contratinsertion.dd_ci',
-						'Contratinsertion.df_ci',
-						'Contratinsertion.diplomes',
-						'Contratinsertion.expr_prof',
-						'Contratinsertion.form_compl',
-						'Contratinsertion.rg_ci',
-						'Contratinsertion.actions_prev',
-						'Contratinsertion.obsta_renc',
-						'Contratinsertion.service_soutien',
-						'Contratinsertion.pers_charg_suivi',
-						'Contratinsertion.objectifs_fixes',
-						'Contratinsertion.sect_acti_emp',
-						'Contratinsertion.emp_occupe',
-						'Contratinsertion.duree_hebdo_emp',
-						'Contratinsertion.sitfam_ci',
-						'Contratinsertion.sitpro_ci',
-						'Contratinsertion.observ_benef',
-						'Contratinsertion.nature_projet',
-						'Contratinsertion.engag_object',
-						'Contratinsertion.current_action',
-						'Contratinsertion.nat_cont_trav',
-						'Contratinsertion.duree_cdd',
-						'Contratinsertion.duree_engag',
-						'Contratinsertion.nature_projet',
-						'Contratinsertion.avenant_id',
-						'Contratinsertion.engag_object',
-						'Contratinsertion.date_saisi_ci',
-						'Contratinsertion.lieu_saisi_ci',
-						'Contratinsertion.positioncer',
-						'Contratinsertion.observ_ci',
-						'Contratinsertion.decision_ci',
-						'Contratinsertion.datedecision',
-						'Contratinsertion.motifannulation',
-						'Action.libelle',
-						'Actioninsertion.dd_action',
-						'Structurereferente.lib_struc',
-						'Structurereferente.typeorient_id',
-						'Referent.nom_complet',
-						'Personne.nom_complet',
-						'Typeorient.lib_type_orient',
+					'fields' => array_merge(
+						$this->Contratinsertion->fields(),
+						$this->Contratinsertion->Action->fields(),
+						$this->Contratinsertion->Actioninsertion->fields(),
+						$this->Contratinsertion->Propodecisioncer66->fields(),
+						array(
+							'Referent.nom_complet',
+							'Structurereferente.lib_struc',
+							'Typeorient.lib_type_orient',
+							'Personne.nom_complet',
+							$this->Contratinsertion->Propodecisioncer66->Motifcernonvalid66Propodecisioncer66->Motifcernonvalid66->vfListeMotifs( 'Propodecisioncer66.id', '', ', ' ).' AS "Propodecisioncer66__listeMotifs66"'
+						)
+					),
+					'joins' => array(
+						$this->Contratinsertion->join( 'Action', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Contratinsertion->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Contratinsertion->join( 'Personne', array( 'type' => 'INNER' ) ),
+						$this->Contratinsertion->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
+						$this->Contratinsertion->Structurereferente->join( 'Typeorient', array( 'type' => 'INNER' ) ),
+						$this->Contratinsertion->join( 'Actioninsertion', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Contratinsertion->join( 'Propodecisioncer66', array( 'type' => 'LEFT OUTER' ) ),/*
+						$this->Contratinsertion->Propodecisioncer66->join( 'Motifcernonvalid66Propodecisioncer66', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Contratinsertion->Propodecisioncer66->Motifcernonvalid66Propodecisioncer66->join( 'Motifcernonvalid66', array( 'type' => 'LEFT OUTER' ) )*/
 					),
 					'conditions' => array(
 						'Contratinsertion.id' => $contratinsertion_id
 					),
-					'joins' => array(
-						array(
-							'table'      => 'actions', // FIXME
-							'alias'      => 'Action',
-							'type'       => 'LEFT OUTER',
-							'foreignKey' => false,
-							'conditions' => array( 'Contratinsertion.engag_object = Action.code' )
-						),
-						array(
-							'table'      => 'actionsinsertion', // FIXME
-							'alias'      => 'Actioninsertion',
-							'type'       => 'LEFT OUTER',
-							'foreignKey' => false,
-							'conditions' => array( 'Actioninsertion.contratinsertion_id = Contratinsertion.id' )
-						)
-					),
-					'recursive' => 0
+					'recursive' => -1,
+					'contain' => false
 				)
 			);
 			$this->Contratinsertion->forceVirtualFields = false;

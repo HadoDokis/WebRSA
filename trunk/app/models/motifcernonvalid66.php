@@ -39,14 +39,14 @@
 		 * @param string $prefix
 		 * @return string
 		 */
-		public function vfListeMotifs( $propodecisioncer66Id = 'Propodecisioncer66.id', $prefix = '\\n\r-' ) {
+		public function vfListeMotifs( $propodecisioncer66Id = 'Propodecisioncer66.id', $prefix = '\\n\r-', $suffix = '' ) {
 			$alias = Inflector::tableize( $this->alias );
 
 			$sq = $this->sq(
 				array(
 					'alias' => $alias,
 					'fields' => array(
-						"'{$prefix}' || \"{$alias}\".\"name\" AS \"{$alias}__name\""
+						"'{$prefix}' || \"{$alias}\".\"name\" || '{$suffix}' AS \"{$alias}__name\""
 					),
 					'contain' => false,
 					'joins' => array(
@@ -67,7 +67,7 @@
 				)
 			);
 
-			return "ARRAY_TO_STRING( ARRAY( {$sq} ), '' )";
+			return "TRIM( TRAILING '{$suffix}' FROM ARRAY_TO_STRING( ARRAY( {$sq} ), '' ) )";
 		}
 	}
 ?>

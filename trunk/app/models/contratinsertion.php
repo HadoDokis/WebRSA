@@ -200,6 +200,13 @@
 		);
 
 		public $belongsTo = array(
+			'Action' => array(
+				'className' => 'Action',
+				'foreignKey' => false,
+				'conditions' => array( 'Contratinsertion.engag_object = Action.code' ),
+				'fields' => '',
+				'order' => ''
+			),
 			'Personne' => array(
 				'className' => 'Personne',
 				'foreignKey' => 'personne_id',

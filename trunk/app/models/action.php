@@ -47,6 +47,21 @@
 			)
 		);
 
+		public $hasMany = array(
+			'Contratinsertion' => array(
+				'className' => 'Contratinsertion',
+				'foreignKey' => false,
+				'dependent' => false,
+				'conditions' => array( 'Contratinsertion.engag_object = Action.code' ),
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			)
+		);
 		/**
 		*
 		*/

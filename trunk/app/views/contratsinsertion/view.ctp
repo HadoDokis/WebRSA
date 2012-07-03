@@ -87,12 +87,25 @@
 					'Contratinsertion.dd_ci',
 					'Contratinsertion.df_ci',
 					'Contratinsertion.lieu_saisi_ci' => array( 'type' => 'text' ),
-					'Contratinsertion.date_saisi_ci',
-					'Contratinsertion.decision_ci' => array( 'type' => 'text', 'value' => $decision_ci ),
-					'Contratinsertion.datedecision' => array( 'type' => 'date' ),
+					'Contratinsertion.date_saisi_ci'
 				),
 				array( 'class' => 'aere', 'id' => 'vueContrat' )
 			);
+// 			debug( $contratinsertion );
+			echo '<h2 >Décision concernant le CER</h2>';
+			echo $default2->view(
+				$contratinsertion,
+				array(
+					'Contratinsertion.decision_ci' => array( 'type' => 'text', 'value' => $decision_ci ),
+					'Contratinsertion.datedecision' => array( 'type' => 'date' ),
+					'Propodecisioncer66.listeMotifs66' => array( 'label' => 'Motif(s) de non validation', 'type' => 'text' )
+				),
+				array(
+					'widget' => 'table',
+					'class' => 'aere'
+				)
+			);
+			
 			echo '<h2 >Actions déjà en cours</h2>';
 			if( !empty( $fichescandidature ) ) {
 				foreach( $fichescandidature as $fichecandidature ){
@@ -139,6 +152,7 @@
 				)/*,
 				array( 'id' => 'vueContrat' )*/
 			);
+// 			debug($contratinsertion);
 		}
 // debug($contratinsertion);
 	?>
