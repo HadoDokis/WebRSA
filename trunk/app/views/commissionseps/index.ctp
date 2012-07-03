@@ -29,7 +29,7 @@
 				$this->pageTitle = '3. Décisions CG';
 			}
 			else {
-				$this->pageTitle = '3. Arbitrage d\'une commission d\'EP (niveau EP)';
+				$this->pageTitle = '3. Arbitrage d\'une commission d\'EP (niveau CG)';
 			}
 			
 			break;
