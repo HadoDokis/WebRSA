@@ -50,7 +50,7 @@
 		?>		
 
  <?php 
- echo $form->input( 'Indicateursuivi.annee', array( 'label' => 'Recherche pour l\'année', 'type' => 'select', 'empty' => true, 'options' => array_range( date( 'Y' )-4, date( 'Y' ) +1 ) ) );
+//  echo $form->input( 'Indicateursuivi.annee', array( 'label' => 'Recherche pour l\'année', 'type' => 'select', 'empty' => true, 'options' => array_range( date( 'Y' )-4, date( 'Y' ) +1 ) ) );
 ?>
 
 	<div class="submit noprint">
