@@ -508,7 +508,7 @@
 					<li>
 						<?php
 							echo $xhtml->link(
-								'Evènements',
+								'Evénements',
 								array( 'controller' => 'evenements', 'action' => 'index', $dossier['Foyer']['id'] )
 							);
 						?>
