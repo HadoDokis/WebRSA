@@ -7,13 +7,12 @@
 
 		public $actsAs = array(
 			'Gedooo.Gedooo',
-			'ModelesodtConditionnables' => array(
-				93 => array(
-					'APRE/DecisionComite/Recours/recoursOuibeneficiaire.odt',
-					'APRE/DecisionComite/Recours/recoursNonbeneficiaire.odt',
-					'APRE/DecisionComite/Recours/recoursreferent.odt',
-				)
-			)
+		);
+
+		public $modelesOdt = array(
+			'APRE/DecisionComite/Recours/recoursOuibeneficiaire.odt',
+			'APRE/DecisionComite/Recours/recoursNonbeneficiaire.odt',
+			'APRE/DecisionComite/Recours/recoursreferent.odt',
 		);
 
 		/**
