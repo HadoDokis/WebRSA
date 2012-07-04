@@ -6,15 +6,12 @@
 		public $name = 'Cohortenonoriente66';
 
 		public $useTable = false;
+		
+		public $modelesOdt = array( 'Orientation/questionnaireorientation66.odt' );
 
 		public $actsAs = array(
 			'Conditionnable',
-			'Gedooo.Gedooo',
-			'ModelesodtConditionnables' => array(
-				66 => array(
-					'Orientation/questionnaireorientation66.odt'
-				)
-			)
+			'Gedooo.Gedooo'
 		);
 
 		/**
