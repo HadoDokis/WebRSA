@@ -36,7 +36,7 @@
 
 	<?php
 
-		
+
 		// Liste des types de traitement
 		echo $xform->input( 'Traitementpcg66.typetraitement', array( 'type' => 'radio', 'options' => $options['Traitementpcg66']['typetraitement'], 'legend' => 'Type de traitement', 'empty' => true ) );
 
@@ -85,18 +85,15 @@
     </script>
 	<?php
 		// Courriers
-		if ( isset( $listcourrier ) && !empty( $listcourrier ) ) { ?>
+		if ( isset( $typescourrierspcgs66 ) && !empty( $typescourrierspcgs66 ) ) { ?>
 		<fieldset id="filecontainer-courrier" class="noborder invisible">
 			<?php
 				echo $default->subform(
-						array(
-							'Traitementpcg66.typecourrierpcg66_id' => array( 'required' => true, 'type' => 'select' )
-						),
-						array(
-								'options' => $options
-						)
+					array(
+						'Traitementpcg66.typecourrierpcg66_id' => array( 'required' => true, 'type' => 'select', 'options' =>$typescourrierspcgs66 )
+					)
 				);
-				
+
 				echo $ajax->observeField(
 					'Traitementpcg66Typecourrierpcg66Id',
 					array(
@@ -107,7 +104,7 @@
 						'evalScripts' => true
 					)
 				);
-				
+
 				echo $xhtml->tag(
 						'div',
 						' ',
@@ -129,7 +126,7 @@
 				false,
 				true
 			);
-			
+
 			observeDisableFieldsetOnRadioValue(
 				'traitementpcg66form',
 				'data[Traitementpcg66][typetraitement]',
@@ -138,7 +135,7 @@
 				false,
 				true
 			);
-			
+
 			observeDisableFieldsetOnRadioValue(
 				'traitementpcg66form',
 				'data[Traitementpcg66][typetraitement]',
@@ -148,8 +145,8 @@
 				true
 			);
 
-			
-			
+
+
 			//**//
 			observeDisableFieldsOnRadioValue(
 				'traitementpcg66form',
@@ -159,7 +156,7 @@
 				false,
 				true
 			);
-			
+
 			observeDisableFieldsOnValue(
 				'Traitementpcg66Dureeecheance',
 				[
@@ -833,7 +830,7 @@
 				false,
 				true
 			);
-			
+
 
 			observeDisableFieldsOnRadioValue(
 				'traitementpcg66form',
@@ -915,7 +912,7 @@
 				'class'=>'noborder invisible'
 			)
 		);
-	
+
 		if( !empty( $traitementspcgsouverts ) ) {
 			echo "<table>";
 

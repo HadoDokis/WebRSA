@@ -23,19 +23,6 @@
 			foreach( $this->{$this->modelClass}->allEnumLists() as $field => $values ) {
 				$options = Set::insert( $options, "{$this->modelClass}.{$field}", $values );
 			}
-			$this->set(
-				'listcourrier',
-				$this->Traitementpcg66->Courrierpdo->find(
-					'all',
-					array(
-						'contain' => array(
-							'Textareacourrierpdo' => array(
-								'order' => 'Textareacourrierpdo.ordre ASC'
-							)
-						)
-					)
-				)
-			);
 			$options[$this->modelClass]['descriptionpdo_id'] = $this->Traitementpcg66->Descriptionpdo->find( 'list' );
 			$options[$this->modelClass]['situationpdo_id'] = $this->Traitementpcg66->Personnepcg66Situationpdo->Situationpdo->find( 'list' );
 // 			$options[$this->modelClass]['traitementtypepdo_id'] = $this->Traitementpcg66->Traitementtypepdo->find( 'list' );
@@ -81,7 +68,7 @@
 			);
 		}
 
-                
+
 /**
 		*   Ajax pour les pièces liées à un type de courrier
 */
@@ -100,7 +87,7 @@
 			$typecourrierpcg66_id = Set::extract( $this->data, 'Traitementpcg66.typecourrierpcg66_id' );
 
 			// Liste des modèles de courrier lié au type de courrier
-			if( !empty( $typecourrierpcg66_id ) ) {                            
+			if( !empty( $typecourrierpcg66_id ) ) {
 				$modeletypecourrierpcg66 = $this->Traitementpcg66->Typecourrierpcg66->Modeletypecourrierpcg66->find(
 					'list',
 					array(
@@ -127,7 +114,7 @@
 							'contain' => false
 						)
 					);
-					
+
 					$listePiecesWithAutre[$i] = $this->Traitementpcg66->Typecourrierpcg66->Modeletypecourrierpcg66->Piecemodeletypecourrierpcg66->find(
 						'list',
 						array(
@@ -138,12 +125,12 @@
 							'contain' => false
 						)
 					);
-					
+
 // 					debug( $listePiecesWithAutre[$i] );
 				}
 			}
 			$this->set( compact( 'listepieces', 'listePiecesWithAutre' ) );
-			
+
 			if( !empty( $traitementpcg66_id ) && !isset( $this->data['Piecemodeletypecourrierpcg66'] ) ) {
 				$datas = $this->Traitementpcg66->Modeletraitementpcg66->find(
 					'first',
@@ -156,7 +143,7 @@
 						)
 					)
 				);
-				
+
 				$this->data = Set::merge( $this->data, $datas );
 			}
 
@@ -164,7 +151,7 @@
 			$this->render( 'ajaxpiece', 'ajax' );
 		}
 
-                
+
 		/**
 		* http://valums.com/ajax-upload/
 		* http://doc.ubuntu-fr.org/modules_php
@@ -506,7 +493,7 @@ SELECT
 						!Set::classicExtract( $dataToSave, "Traitementpcg66.haspiecejointe" ),
 						( ( $this->action == 'add' ) ? $this->Traitementpcg66->id : $id )
 					) && $saved;
-					
+
 					if( $saved ) {
 						$this->Jetons->release( $dossier_id );
 						$this->Traitementpcg66->commit();
@@ -548,7 +535,7 @@ SELECT
 					'Traitementpcg66.annule' => 'N'
 				);
 			}
-			
+
 			$traitementspcgsouverts = $this->Traitementpcg66->find(
 				'all',
 				array(
@@ -561,7 +548,7 @@ SELECT
 			);
 
 			$this->set( compact( 'traitementspcgsouverts', 'fichiers' ) );
-			
+
 			$this->Traitementpcg66->commit();
 
 			$this->_setOptions();
@@ -760,7 +747,7 @@ SELECT
 			$this->redirect( array( 'controller' => 'traitementspcgs66', 'action' => 'index', $traitementpcg66['Personnepcg66']['personne_id'], $traitementpcg66['Personnepcg66']['dossierpcg66_id'] ) );
 		}
 
-		
+
 		/**
 		*
 		*/
@@ -811,7 +798,7 @@ SELECT
 			}
 		}
 
-		
+
 		/**
 		*   Enregistrement du modèle de document lié au type de courrier lors de l'enregistrement du traitement
 		*/
