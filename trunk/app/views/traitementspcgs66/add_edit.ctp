@@ -850,7 +850,7 @@
 		// Liste des motifs concernant la personne
 		echo $default->subform(
 			array(
-				'Traitementpcg66.personnepcg66_situationpdo_id' => array( 'type' => 'select', 'options' => $listeMotifs, 'empty' => true )
+				'Traitementpcg66.personnepcg66_situationpdo_id' => array( 'type' => 'select', 'options' => $listeMotifs, 'empty' => true, 'required' => true )
 			),
 			array(
 				'options' => $options
