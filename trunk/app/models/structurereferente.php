@@ -324,19 +324,17 @@
 		}
 
 		/**
-		* Récupère la liste des structures référentes groupées par type d'orientation
-		* Cette liste est mise en cache, donc -> FIXME: supprimer le cache quand les
-		* structuresreferentes sont modifiées.
-		*/
-
+		 * Récupère la liste des structures référentes groupées par type d'orientation.
+		 * Cette liste est mise en cache, donc on se sert des fonctions de callback
+		 * afterSave et afterDelete pour supprimer et regénérer le cache.
+		 *
+		 * @return array
+		 */
 		public function listOptions() {
 			$cacheKey = Inflector::underscore( "{$this->alias}_".__FUNCTION__ );
 			$results = Cache::read( $cacheKey );
 
 			if( $results === false ) {
-				//FIXME: à faire de façon plus propre
-				$this->unbindModelAll();
-				$this->bindModel( array( 'belongsTo' => array( 'Typeorient' ) ) );
 				$results = $this->find(
 					'list',
 					array(
@@ -345,7 +343,10 @@
 							'Structurereferente.lib_struc',
 							'Typeorient.lib_type_orient'
 						),
-						'recursive' => 0,
+						'recursive' => -1,
+						'joins' => array(
+							$this->join( 'Typeorient', array( 'type' => 'INNER' ) )
+						),
 						'order' => array(
 							'Typeorient.lib_type_orient ASC',
 							'Structurereferente.lib_struc'
@@ -417,6 +418,50 @@
 					'contain' => false
 				)
 			);
+		}
+
+		/**
+		 * Suppression et regénération du cache.
+		 *
+		 * @return void
+		 */
+		protected function _regenerateCache() {
+			Cache::delete( "{$this->alias}_listOptions" );
+			$this->listOptions();
+		}
+
+		/**
+		 * Après une sauvegarde, on regénère les données en cache.
+		 *
+		 * @param boolean $created True if this save created a new record
+		 * @return void
+		 */
+		public function afterSave( $created ) {
+			parent::afterSave( $created );
+			$this->_regenerateCache();
+		}
+
+		/**
+		 * Après une suppression, on regénère les données en cache.
+		 *
+		 * @param boolean $created True if this save created a new record
+		 * @return void
+		 */
+		public function afterDelete() {
+			parent::afterDelete();
+			$this->_regenerateCache();
+		}
+
+		/**
+		 * Exécute les différentes méthods du modèle permettant la mise en cache.
+		 * Utilisé au préchargement de l'application (/prechargements/index).
+		 *
+		 * @return boolean true en cas de succès, false en cas d'erreur,
+		 * 	null pour les fonctions vides.
+		 */
+		public function prechargement() {
+			$list = $this->_regenerateCache();
+			return !empty( $list );
 		}
 	}
 ?>
