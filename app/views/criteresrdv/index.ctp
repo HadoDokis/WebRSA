@@ -163,7 +163,7 @@
 								),
 								$xhtml->printLink(
 									'Imprimer la notification',
-									array( 'controller' => 'rendezvous', 'action' => 'gedooo', $rdv['Rendezvous']['id'] )
+									array( 'controller' => 'rendezvous', 'action' => 'impression', $rdv['Rendezvous']['id'] )
 								),
 								array( $innerTable, array( 'class' => 'innerTableCell noprint' ) ),
 							),
