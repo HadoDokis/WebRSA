@@ -505,4 +505,17 @@
 	 */
 	Configure::write( 'Filtresdefaut.Cohortes_orientees', Configure::read( 'Filtresdefaut.Cohortes_nouvelles' ) );
 	Configure::write( 'Filtresdefaut.Cohortes_orientees.Dossier', array( 'dernier' => false ) );
+	
+	/**
+     * Harry - CG93
+     * Apre complementaire CG93
+     * @default true
+     */
+    Configure::write( 'Apre.complementaire.query', true );
+    
+	/**
+     * Url pointant sur le serveur qui nous intéresse pour lcontacter QUERY
+     * %s récupère le nom de l'utilisateur connecté
+     */
+    Configure::write( 'Apre.complementaire.queryUrl', 'http://rsa-psql-p02.cg93.fr/query/?nomuser=%s' );
 ?>
