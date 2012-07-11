@@ -3,7 +3,7 @@
 	{
 
 		public $name = 'Apres';
-		public $uses = array( 'Apre', 'Option', 'Personne', 'ApreComiteapre', 'Prestation', 'Dsp', 'Formpermfimo', 'Actprof', 'Permisb', 'Amenaglogt', 'Acccreaentr', 'Acqmatprof', 'Locvehicinsert', 'Contratinsertion', 'Relanceapre', 'Tiersprestataireapre', 'Structurereferente', 'Referent', 'Foyer' );
+		public $uses = array( 'Apre','Histoaprecomplementaire','Dossier', 'Option', 'Personne', 'ApreComiteapre', 'Prestation', 'Dsp', 'Formpermfimo', 'Actprof', 'Permisb', 'Amenaglogt', 'Acccreaentr', 'Acqmatprof', 'Locvehicinsert', 'Contratinsertion', 'Relanceapre', 'Tiersprestataireapre', 'Structurereferente', 'Referent', 'Foyer' );
 		public $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml', 'Fileuploader', 'Default2'  );
 		public $components = array( 'Fileuploader' );
 
@@ -14,18 +14,19 @@
 
 		public $aucunDroit = array( 'ajaxstruct', 'ajaxref', 'ajaxtierspresta', 'ajaxtiersprestaformqualif', 'ajaxtiersprestaformpermfimo', 'ajaxtiersprestaactprof', 'ajaxtiersprestapermisb', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
 
-		/**
+		/** ********************************************************************
 		*
-		*/
+		*** *******************************************************************/
 
 		protected function _setOptions() {
+//             parent::beforeFilter();
 			$options = $this->Apre->allEnumLists();
 			$this->set( 'options', $options );
 			$optionsacts = $this->Actprof->allEnumLists();
 			$this->set( 'optionsacts', $optionsacts );
 			$optionsdsps = $this->Dsp->allEnumLists();
 			$this->set( 'optionsdsps', $optionsdsps );
-
+// debug( $optionsdsps );
 			$optionslogts = $this->Amenaglogt->allEnumLists();
 			$this->set( 'optionslogts', $optionslogts );
 			$optionscrea = $this->Acccreaentr->allEnumLists();
@@ -146,8 +147,7 @@
 					$this->Jetons->release( $dossier_id );
 					$this->{$this->modelClass}->commit();
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-// 					$this->redirect( array(  'controller' => 'apres'.Configure::read( 'Apre.suffixe' ),'action' => 'index', $personne_id ) );
-					$this->redirect( $this->referer() );
+					$this->redirect( array(  'controller' => 'apres'.Configure::read( 'Apre.suffixe' ),'action' => 'index', $personne_id ) );
 				}
 				else {
 					$fichiers = $this->Fileuploader->fichiers( $id );
@@ -161,22 +161,23 @@
 			$this->render( $this->action, null, '/apres/filelink' );
 		}
 
-		/**
+		/** ********************************************************************
 		*   Permet de regrouper l'ensemble des paramétrages pour l'APRE
-		*/
-		public function indexparams(){
+		*** *******************************************************************/
+		function indexparams(){
 			// Retour à la liste en cas d'annulation
 			if( isset( $this->params['form']['Cancel'] ) ) {
 				$this->redirect( array( 'controller' => 'parametrages', 'action' => 'index' ) );
 			}
+
 			$this->render( $this->action, null, 'indexparams_'.Configure::read( 'nom_form_apre_cg' ) );
 		}
 
-		/**
+		/** ********************************************************************
 		*
-		*/
+		*** *******************************************************************/
 
-		public function index( $personne_id = null ) {
+		function index( $personne_id = null ) {
 			$personne = $this->Apre->Personne->findById( $personne_id, null, null, -1 );
 			$this->assert( !empty( $personne ), 'invalidParameter' );
 			$this->set( 'personne', $personne );
@@ -184,12 +185,30 @@
 			$apres = $this->Apre->find( 'all', array( 'conditions' => array( 'Apre.personne_id' => $personne_id ), 'order' => 'Apre.datedemandeapre DESC' ) );
 			$this->set( 'apres', $apres );
 
+			//CG93 - Harry			
+			if( Configure::read( 'Apre.complementaire.query' ) === true ){
+				$foypers = $personne ['Personne']['foyer_id'];
+				$foyid = $this->Foyer->findById( $foypers, null, null, -1 );
+				$dosfoy = $foyid ['Foyer']['dossier_id'];
+				$matid = $this->Dossier->findById( $dosfoy, null, null, -1 );
+				$matricule = $matid ['Dossier']['matricule'];
+				
+				$nomaprecomp = $personne['Personne']['nom'];
+				$prenomaprecomp = $personne['Personne']['prenom']; 
+				
+				$conditions = array("OR"=>array('Histoaprecomplementaire.caf' => $matricule,array( 'Histoaprecomplementaire.nom' => $nomaprecomp, 'Histoaprecomplementaire.prenom' => $prenomaprecomp )));
+				$aprescomp = $this->Histoaprecomplementaire->find( 'count', array('conditions' => $conditions));
+				$this->set( 'aprescomp', $aprescomp );
+			}
+			//END CG93 - Harry
+			
+			
 			$referents = $this->Referent->find( 'list' );
 			$this->set( 'referents', $referents );
 
 			$this->set( 'personne_id', $personne_id );
 
-			//Afin de connaître s'il y avait une APRE forfaitaire pour pouvoir créer une APRE complémentaire
+			///Afin de connaître s'il y avait une APRE forfaitaire pour pouvoir créer une APRE complémentaire
 
 			$apre_forfait = $this->Apre->find(
 				'count',
@@ -223,6 +242,7 @@
 					$lastrelance_id = 0;
 				}
 				$this->set( 'lastrelance_id', $lastrelance_id );
+
 			}
 			else {
 				$relancesapres = array();
@@ -233,9 +253,6 @@
 			$alerteMontantAides = false;
 			$montantMaxComplementaires = Configure::read( 'Apre.montantMaxComplementaires' );
 			$periodeMontantMaxComplementaires = Configure::read( 'Apre.periodeMontantMaxComplementaires' );
-
-			$year = date( 'Y' );
-			$yearMax = $year + Configure::read( 'Apre.periodeMontantMaxComplementaires' ) - 1;
 
 			$this->Apre->unbindModel(
 				array(
@@ -250,8 +267,7 @@
 					'conditions' => array(
 						'Apre.personne_id' => $personne_id,
 						'Apre.statutapre' => 'C',
-// 						"Apre.datedemandeapre BETWEEN '{$year}-01-01' AND '{$yearMax}-12-31'"/*,
-// 						'Apre.datedemandeapre >=' => date( 'Y-m-d', strtotime( '-'.Configure::read( 'Apre.periodeMontantMaxComplementaires' ).' months' ) )*/
+						'Apre.datedemandeapre >=' => date( 'Y-m-d', strtotime( '-'.Configure::read( 'Apre.periodeMontantMaxComplementaires' ).' months' ) )
 					)
 				)
 			);
@@ -275,7 +291,7 @@
 					}
 				}
 			}
-// debug($montantComplementaires);
+
 			if( $montantComplementaires > Configure::read( 'Apre.montantMaxComplementaires' ) ) {
 				$alerteMontantAides = true;
 			}
@@ -283,11 +299,11 @@
 			$this->set( 'alerteMontantAides', $alerteMontantAides );
 		}
 
-		/**
+		/** ********************************************************************
 		*   Ajax pour les coordonnées de la structure référente liée
-		*/
+		*** *******************************************************************/
 
-		public function ajaxstruct( $structurereferente_id = null ) { // FIXME
+		function ajaxstruct( $structurereferente_id = null ) { // FIXME
 			Configure::write( 'debug', 0 );
 			$dataStructurereferente_id = Set::extract( $this->data, 'Apre.structurereferente_id' );
 			$structurereferente_id = ( empty( $structurereferente_id ) && !empty( $dataStructurereferente_id ) ? $dataStructurereferente_id : $structurereferente_id );
@@ -297,11 +313,11 @@
 			$this->render( 'ajaxstruct', 'ajax' );
 		}
 
-		/**
+		/** ********************************************************************
 		*   Ajax pour les coordonnées du référent APRE
-		*/
+		*** *******************************************************************/
 
-		public function ajaxref( $referent_id = null ) { // FIXME
+		function ajaxref( $referent_id = null ) { // FIXME
 			Configure::write( 'debug', 0 );
 			if( !empty( $referent_id ) ) {
 				$referent_id = suffix( $referent_id );
@@ -321,10 +337,10 @@
 		}
 
 
-		/**
+		/** ********************************************************************
 		*   Ajax pour les coordonnées du tiers prestataire APRE pour Formqualif
-		*/
-		public function ajaxtiersprestaformqualif( $tiersprestataireapre_id = null ) { // FIXME
+		*** *******************************************************************/
+		function ajaxtiersprestaformqualif( $tiersprestataireapre_id = null ) { // FIXME
 			Configure::write( 'debug', 0 );
 			$dataTiersprestataireapre_id = Set::extract( $this->data, 'Formqualif.tiersprestataireapre_id' );
 			$tiersprestataireapre_id = ( empty( $tiersprestataireapre_id ) && !empty( $dataTiersprestataireapre_id ) ? $dataTiersprestataireapre_id : $tiersprestataireapre_id );
@@ -335,10 +351,10 @@
 			$this->render( 'ajaxtierspresta', 'ajax');
 		}
 
-		/**
+		/** ********************************************************************
 		*   Ajax pour les coordonnées du tiers prestataire APRE pour Formpermfimo
-		*/
-		public function ajaxtiersprestaformpermfimo( $tiersprestataireapre_id = null ) { // FIXME
+		*** *******************************************************************/
+		function ajaxtiersprestaformpermfimo( $tiersprestataireapre_id = null ) { // FIXME
 			Configure::write( 'debug', 0 );
 			$dataTiersprestataireapre_id = Set::extract( $this->data, 'Formpermfimo.tiersprestataireapre_id' );
 			$tiersprestataireapre_id = ( empty( $tiersprestataireapre_id ) && !empty( $dataTiersprestataireapre_id ) ? $dataTiersprestataireapre_id : $tiersprestataireapre_id );
@@ -349,10 +365,10 @@
 			$this->render( 'ajaxtierspresta', 'ajax');
 		}
 
-		/**
+		/** ********************************************************************
 		*   Ajax pour les coordonnées du tiers prestataire APRE pour Actprof
-		*/
-		public function ajaxtiersprestaactprof( $tiersprestataireapre_id = null ) { // FIXME
+		*** *******************************************************************/
+		function ajaxtiersprestaactprof( $tiersprestataireapre_id = null ) { // FIXME
 			Configure::write( 'debug', 0 );
 			$dataTiersprestataireapre_id = Set::extract( $this->data, 'Actprof.tiersprestataireapre_id' );
 			$tiersprestataireapre_id = ( empty( $tiersprestataireapre_id ) && !empty( $dataTiersprestataireapre_id ) ? $dataTiersprestataireapre_id : $tiersprestataireapre_id );
@@ -364,11 +380,10 @@
 		}
 
 
-		/**
+		/** ********************************************************************
 		*   Ajax pour les coordonnées du tiers prestataire APRE pour PermisB
-		*/
-
-		public function ajaxtiersprestapermisb( $tiersprestataireapre_id = null ) { // FIXME
+		*** *******************************************************************/
+		function ajaxtiersprestapermisb( $tiersprestataireapre_id = null ) { // FIXME
 			Configure::write( 'debug', 0 );
 			$dataTiersprestataireapre_id = Set::extract( $this->data, 'Permisb.tiersprestataireapre_id' );
 			$tiersprestataireapre_id = ( empty( $tiersprestataireapre_id ) && !empty( $dataTiersprestataireapre_id ) ? $dataTiersprestataireapre_id : $tiersprestataireapre_id );
@@ -378,12 +393,12 @@
 			$this->set( 'tiersprestataireapre', $tiersprestataireapre );
 			$this->render(  'ajaxtierspresta', 'ajax' );
 		}
-
-		/**
+		/** ********************************************************************
 		*
-		*/
+		*** *******************************************************************/
 
-		public function view( $apre_id = null ){
+		function view( $apre_id = null ){
+		
 			$this->Apre->forceVirtualFields = true;
 
 			$apre = $this->Apre->find(
@@ -409,30 +424,38 @@
 			$this->assert( !empty( $apre ), 'invalidParameter' );
 			$this->Apre->forceVirtualFields = false;
 
+			/*$aprecomiteapre = $this->Apre->ApreComiteapre->findByApreId( $apre_id, null, null, -1 );
+			$this->set( 'aprecomiteapre', $aprecomiteapre );*/
+
+			/*$referents = $this->Referent->find( 'list' );
+			$this->set( 'referents', $referents );
+			$structs = $this->Structurereferente->listeParType( array( 'apre' => true ) );
+			$this->set( 'structs', $structs );*/
+
 			$this->set( 'apre', $apre );
 			$this->_setOptions();
 			$this->set( 'personne_id', $apre['Apre']['personne_id'] );
 		}
-
-		/**
+		/** ********************************************************************
 		*
-		*/
+		*** *******************************************************************/
 
 		public function add() {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
+
 		public function edit() {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
-		/**
+		/** ********************************************************************
 		*
-		*/
+		*** *******************************************************************/
 
-		protected function _add_edit( $id = null ) {
+		function _add_edit( $id = null ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
 			$this->Apre->begin();
@@ -453,7 +476,6 @@
 						'conditions' => array(
 							'Tiersprestataireapre.aidesliees' => $modelFormation
 						),
-						'order' => 'Tiersprestataireapre.nomtiers ASC'
 					)
 				);
 				$this->set( 'tiers'.$modelFormation, $list );
@@ -471,12 +493,14 @@
 			}
 			else if( $this->action == 'edit' ) {
 				$apre_id = $id;
+// 				$apre = $this->Apre->findById( $apre_id, null, null, 2 );
 
 				$contain = array( 'Pieceapre' );
 				foreach( $this->Apre->aidesApre as $modelAideAlias ) {
 					$modelPieceAlias = 'Piece'.Inflector::underscore( $modelAideAlias );
 					$contain[$modelAideAlias] = array( $modelPieceAlias );
 				}
+
 
 				$apre = $this->Apre->find(
 					'first',
@@ -494,7 +518,8 @@
 
 				$this->set( 'numapre', Set::extract( $apre, 'Apre.numeroapre' ) );
 			}
-
+// debug($apre);
+// die();
 			// Retour à la liste en cas d'annulation
 			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
 				$this->redirect( array( 'action' => 'index', $personne_id ) );
@@ -554,19 +579,22 @@
 			$this->set( 'nbEnfants', $nbEnfants );
 
 			if( !empty( $this->data ) ){
+//debug($this->data);
 				// FIXME: pourquoi doit-on faire ceci ?
 				$this->Apre->bindModel( array( 'hasOne' => array( 'Formqualif', 'Formpermfimo', 'Actprof', 'Permisb', 'Amenaglogt', 'Acccreaentr', 'Acqmatprof', 'Locvehicinsert' ) ), false );
 
 				///Mise en place lors de la sauvegarde du statut de l'APRE à Complémentaire
 				$this->data['Apre']['statutapre'] = 'C';
-
+				
 				$saveApre = array();
 				$saveApre['Apre'] = $this->data['Apre'];
+// 				$saveApre['Dsp'] = $this->data['Dsp'];
 				$saveApre['Pieceapre'] = $this->data['Pieceapre'];
 
 				if( $this->Apre->saveAll( $saveApre, array( 'validate' => 'only', 'atomic' => false ) ) ) {
+// debug( $this->data );
 					$saved = $this->Apre->saveAll( $saveApre, array( 'validate' => 'first', 'atomic' => false ) );
-
+					
 					if( $saved ) {
 						$tablesLiees = array(
 							'Formqualif' => 'Pieceformqualif',
@@ -583,8 +611,9 @@
 								$linkedData[$model] = $this->data[$model];
 								$linkedData[$model]['apre_id'] = $this->Apre->id;
 								$linkedData[$piecesLiees] = $this->data[$piecesLiees];
-
+								
 								$saved = $this->Apre->{$model}->save( $linkedData ) && $saved;
+// 								debug($saved);
 							}
 						}
 					}
@@ -594,6 +623,7 @@
 						$this->Jetons->release( $dossier_id );
 						$this->Apre->commit(); // FIXME
 						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+//                        debug( $this->data );
 						$this->redirect( array(  'controller' => 'apres','action' => 'index', $personne_id ) );
 					}
 					else {
@@ -657,21 +687,5 @@
 			$this->render( $this->action, null, '/apres/add_edit_'.Configure::read( 'nom_form_apre_cg' ) );
 		}
 
-		/**
-		 * Impression d'une Apre complémentaire pour le CG 93
-		 *
-		 * @param integer $apre_id
-		 */
-		public function impression( $id = null ) {
-			$pdf = $this->Apre->getDefaultPdf( $id, $this->Session->read( 'Auth.User.id' ) ) ;
-
-			if( !empty( $pdf ) ){
-				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( $this->action.'-%s.pdf', date( 'Y-m-d' ) )  );
-			}
-			else {
-				$this->Session->setFlash( 'Impossible de générer l\'impression de l\'APRE.', 'default', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer() );
-			}
-		}
 	}
 ?>
