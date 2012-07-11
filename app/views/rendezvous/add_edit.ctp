@@ -35,6 +35,15 @@
 				)
 			);
 		?>
+		
+		
+		observeDisableFieldsOnCheckbox(
+			'RendezvousIsadomicile',
+			[
+				'RendezvousPermanenceId'
+			],
+			true
+		);
 	});
 </script>
 
@@ -72,6 +81,9 @@
 					)
 				);
 
+				/// Ajout d'une case à cocher permettant de déterminer si le RDV se déroulera chez l'allocataire
+				echo $form->input( 'Rendezvous.isadomicile', array( 'label' => 'Visite à domicile', 'type' => 'checkbox' ) );
+				
 				///Ajout d'une permanence liée à une structurereferente
 				echo $form->input( 'Rendezvous.permanence_id', array( 'label' => 'Permanence liée à la structure', 'type' => 'select', 'options' => $permanences, 'selected' => $struct_id.'_'.$permanence_id, 'empty' => true ) );
 

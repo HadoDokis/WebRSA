@@ -11,7 +11,8 @@
 			),
 			'Enumerable' => array(
 				'fields' => array(
-					'haspiecejointe'
+					'haspiecejointe',
+					'isadomicile'
 				)
 			),
 			'Gedooo.Gedooo'
@@ -505,6 +506,8 @@
 					'voie' => $Option->typevoie()
 				),
 			);
+// debug($rdv);
+// die();
 
 			return $this->ged(
 				$rdv,
