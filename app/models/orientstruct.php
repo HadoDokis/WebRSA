@@ -982,12 +982,12 @@
 			$Option = ClassRegistry::init( 'Option' );
 
 			$options = array(
-				'Adresse' => array(
-					'typevoie' => $Option->typevoie()
-				),
-				'Personne' => array(
-					'qual' => $Option->qual()
-				)
+// 				'Adresse' => array(
+// 					'typevoie' => $Option->typevoie()
+// 				),
+// 				'Personne' => array(
+// 					'qual' => $Option->qual()
+// 				)
 			);
 
 			$nonoriente66 = $this->Personne->Nonoriente66->find(
