@@ -231,6 +231,7 @@
 						'Decisionreorientationep93.decision',
 						'Decisionreorientationep93.typeorient_id',
 						'Decisionreorientationep93.structurereferente_id',
+						'Reorientationep93.id',
 						'Reorientationep93.structurereferente_id',
 						'Reorientationep93.referent_id',
 						'Reorientationep93.user_id',
