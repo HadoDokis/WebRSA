@@ -268,6 +268,7 @@
 		/**
 		 * Retourne le PDF par défaut généré par les appels aux méthodes getDataForPdf, modeleOdt et
 		 * à la méthode ged du behavior Gedooo
+		 * Le courrier généré est le questionnaire à destination des allocataires non orientés et non inscrits au PE
 		 *
 		 * @param type $id Id de la personne
 		 * @param type $user_id Id de l'utilisateur connecté
