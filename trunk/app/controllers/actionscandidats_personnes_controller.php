@@ -344,17 +344,31 @@
 			$this->set( 'typevoie', $this->Option->typevoie() );
 			$dataReferent_id = Set::extract( $this->data, 'ActioncandidatPersonne.referent_id' );
 			$referent_id = ( empty( $referent_id ) && !empty( $dataReferent_id ) ? $dataReferent_id : $referent_id );
-			if( is_int( $referent_id ) ) {
-				$referent = $this->ActioncandidatPersonne->Personne->Referent->findbyId( $referent_id, null, null, -1 );
-				$structs = $this->ActioncandidatPersonne->Personne->Orientstruct->Structurereferente->find(
+
+			if( !empty( $referent_id ) ) {
+				$referent = $this->ActioncandidatPersonne->Referent->find(
 					'first',
 					array(
 						'conditions' => array(
-							'Structurereferente.id' => Set::classicExtract( $referent, 'Referent.structurereferente_id' )
+							'Referent.id' => $referent_id
 						),
+						'contain' => false,
 						'recursive' => -1
 					)
 				);
+
+				if( !empty( $referent ) ) {
+					$structs = $this->ActioncandidatPersonne->Personne->Orientstruct->Structurereferente->find(
+						'first',
+						array(
+							'conditions' => array(
+								'Structurereferente.id' => Set::classicExtract( $referent, 'Referent.structurereferente_id' )
+							),
+							'recursive' => -1
+						)
+					);
+				}
+
 				$this->set( compact( 'referent', 'structs' ) );
 			}
 			$this->render( 'ajaxstruct', 'ajax' );

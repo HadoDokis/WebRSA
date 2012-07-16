@@ -7,63 +7,6 @@
 		echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
 	}
 ?>
-<script type="text/javascript">
-	document.observe( "dom:loaded", function() {
-			dependantSelect(
-				'RendezvousReferentId',
-				'RendezvousStructurereferenteId'
-			);
-
-		///Bilan si personne reçue
-		observeDisableFieldsOnRadioValue(
-			'candidatureform',
-			'data[ActioncandidatPersonne][bilanrecu]',
-			[
-				'ActioncandidatPersonneDaterecuDay',
-				'ActioncandidatPersonneDaterecuMonth',
-				'ActioncandidatPersonneDaterecuYear',
-				'ActioncandidatPersonnePersonnerecu',
-				'ActioncandidatPersonnePresencecontrat'
-			],
-			'N',
-			false
-		);
-
-		///Bilan si personne reçue
-		observeDisableFieldsOnRadioValue(
-			'candidatureform',
-			'data[ActioncandidatPersonne][pieceallocataire]',
-			[
-				'ActioncandidatPersonneAutrepiece'
-			],
-			'AUT',
-			true
-		);
-
-		<?php
-			echo $ajax->remoteFunction(
-				array(
-					'update' => 'ActioncandidatPartenairePartenaireId',
-					'url' => Router::url( array( 'action' => 'ajaxpart', Set::extract( $this->data, 'ActioncandidatPersonne.actioncandidat_id' ) ), true )
-				)
-			).';';
-
-			echo $ajax->remoteFunction(
-				array(
-					'update' => 'ActioncandidatPersonneStructurereferente',
-					'url' => Router::url( array( 'action' => 'ajaxstruct', Set::extract( $this->data, 'ActioncandidatPersonne.referent_id' ) ), true )
-				)
-			).';';
-
-			echo $ajax->remoteFunction(
-				array(
-					'update' => 'StructureData',
-					'url' => Router::url( array( 'action' => 'ajaxreffonct', Set::extract( $this->data, 'Rendezvous.referent_id' ) ), true )
-				)
-			);
-		?>
-	} );
-</script>
 
 <div class="with_treemenu">
 	<?php
@@ -105,6 +48,7 @@
 			///Ajax pour les données du référent et de l'organisme auquel il est lié
 			echo $ajax->observeField( 'ActioncandidatPersonneReferentId', array( 'update' => 'ActioncandidatPersonneStructurereferente', 'url' => Router::url( array( 'action' => 'ajaxstruct' ), true ) ) );
 
+			
 			echo $xhtml->tag(
 				'div',
 				'<b></b>',
@@ -374,3 +318,87 @@
 	<?php echo $xform->end();?>
 </div>
 <div class="clearer"><hr /></div>
+
+
+<script type="text/javascript">
+	document.observe( "dom:loaded", function() {
+
+	
+	
+		<?php
+			echo $ajax->remoteFunction(
+				array(
+					'update' => 'ActioncandidatPartenairePartenaireId',
+					'url' => Router::url( array( 'action' => 'ajaxpart', Set::extract( $this->data, 'ActioncandidatPersonne.actioncandidat_id' ) ), true )
+				)
+			).';';
+
+// 			echo $ajax->remoteFunction(
+// 				array(
+// 					'update' => 'ActioncandidatPersonneStructurereferente',
+// 					'url' => Router::url( array( 'action' => 'ajaxstruct', Set::extract( $this->data, 'ActioncandidatPersonne.referent_id' ) ), true )
+// 				)
+// 			).';';
+
+// 			echo $ajax->remoteFunction(
+// 				array(
+// 					'update' => 'StructureData',
+// 					'url' => Router::url( array( 'action' => 'ajaxreffonct', Set::extract( $this->data, 'Rendezvous.referent_id' ) ), true )
+// 				)
+// 			).';';
+		?>
+		
+		
+		<?php
+			if( ( $this->action == 'add' ) && !empty( $referentId ) ) {
+				echo $ajax->remoteFunction(
+					array(
+						'update' => 'ActioncandidatPersonneStructurereferente',
+						'url' => Router::url( array( 'action' => 'ajaxstruct', $referentId ), true)
+					)
+				);
+			}
+			else {
+
+				echo $ajax->remoteFunction(
+					array(
+						'update' => 'ActioncandidatPersonneStructurereferente',
+						'url' => Router::url( array( 'action' => 'ajaxstruct', Set::extract( $this->data, 'ActioncandidatPersonne.referent_id' ) ), true)
+					)
+				);
+			}
+		?>
+	
+			dependantSelect(
+				'RendezvousReferentId',
+				'RendezvousStructurereferenteId'
+			);
+
+		///Bilan si personne reçue
+		observeDisableFieldsOnRadioValue(
+			'candidatureform',
+			'data[ActioncandidatPersonne][bilanrecu]',
+			[
+				'ActioncandidatPersonneDaterecuDay',
+				'ActioncandidatPersonneDaterecuMonth',
+				'ActioncandidatPersonneDaterecuYear',
+				'ActioncandidatPersonnePersonnerecu',
+				'ActioncandidatPersonnePresencecontrat'
+			],
+			'N',
+			false
+		);
+
+		///Bilan si personne reçue
+		observeDisableFieldsOnRadioValue(
+			'candidatureform',
+			'data[ActioncandidatPersonne][pieceallocataire]',
+			[
+				'ActioncandidatPersonneAutrepiece'
+			],
+			'AUT',
+			true
+		);
+
+	} );
+</script>
