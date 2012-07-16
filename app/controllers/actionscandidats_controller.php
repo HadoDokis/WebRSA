@@ -35,7 +35,7 @@
 				$this->set( compact( 'zonesselected' ) );
 				$this->set( 'cantons', ClassRegistry::init( 'Canton' )->selectList() );
 
-				if( Configure::read( 'Cg.departement' ) == 66 ) {
+// 				if( Configure::read( 'Cg.departement' ) == 66 ) {
 					$conditionsChargeinsertionSecretaire = Configure::read( 'Chargeinsertion.Secretaire.group_id' );
 					if( $conditionsChargeinsertionSecretaire != NULL ) {
 						$conditionsChargeinsertion = array(
@@ -67,7 +67,7 @@
 							'order' => 'Secretaire.nom ASC'
 						)
 					);
-				}
+// 				}
 			}
 
 			foreach( array( 'Contactpartenaire') as $linkedModel ) {
@@ -150,7 +150,6 @@
 				$this->paginate( $this->modelClass )
 			);
 			$this->_setOptions();
-			$this->render( $this->action, null, 'index_'.Configure::read( 'Cg.departement' ) );
 		}
 
 		/**
@@ -224,7 +223,7 @@
 
 			$this->set( compact( '"actioncandidat', 'fichiers' ) );
 			$this->_setOptions();
-			$this->render( $this->action, null, 'add_edit_'.Configure::read( 'Cg.departement' ) );
+			$this->render( $this->action, null, 'add_edit' );
 		}
 
 		/**
