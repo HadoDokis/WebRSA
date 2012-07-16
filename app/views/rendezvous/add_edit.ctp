@@ -36,14 +36,15 @@
 			);
 		?>
 		
-		
-		observeDisableFieldsOnCheckbox(
-			'RendezvousIsadomicile',
-			[
-				'RendezvousPermanenceId'
-			],
-			true
-		);
+		<?php if( Configure::read( 'Cg.departement') == 58 ):?>
+			observeDisableFieldsOnCheckbox(
+				'RendezvousIsadomicile',
+				[
+					'RendezvousPermanenceId'
+				],
+				true
+			);
+		<?php endif;?>
 	});
 </script>
 
@@ -81,8 +82,10 @@
 					)
 				);
 
-				/// Ajout d'une case à cocher permettant de déterminer si le RDV se déroulera chez l'allocataire
-				echo $form->input( 'Rendezvous.isadomicile', array( 'label' => 'Visite à domicile', 'type' => 'checkbox' ) );
+				/// Ajout d'une case à cocher permettant de déterminer si le RDV se déroulera chez l'allocataire pour le CG58
+				if( Configure::read( 'Cg.departement') == 58 ){
+					echo $form->input( 'Rendezvous.isadomicile', array( 'label' => 'Visite à domicile', 'type' => 'checkbox' ) );
+				}
 				
 				///Ajout d'une permanence liée à une structurereferente
 				echo $form->input( 'Rendezvous.permanence_id', array( 'label' => 'Permanence liée à la structure', 'type' => 'select', 'options' => $permanences, 'selected' => $struct_id.'_'.$permanence_id, 'empty' => true ) );
