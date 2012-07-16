@@ -44,7 +44,6 @@
 			</ul>
 		<?php endif;?>
 		<?php if( !empty( $actionscandidats_personnes ) ):?>
-			<?php if( Configure::read( 'Cg.departement') == 66 ):?>
 				<table class="tooltips">
 					<thead>
 						<tr>
@@ -126,72 +125,6 @@
 						?>
 					</tbody>
 				</table>
-			<?php else:?>
-				<table class="tooltips">
-					<thead>
-						<tr>
-							<th>Intitulé de l'action</th>
-							<th>Nom du prescripteur</th>
-							<th>Date de la signature</th>
-							<th colspan="5" class="action">Actions</th>
-						</tr>
-					</thead>
-					<tbody>
-						<?php
-							foreach( $actionscandidats_personnes as $actioncandidat_personne ){
-								$nbFichiersLies = 0;
-								$nbFichiersLies = ( isset( $actioncandidat_personne['Fichiermodule'] ) ? count( $actioncandidat_personne['Fichiermodule'] ) : 0 );
-
-								echo $xhtml->tableCells(
-									array(
-										h( Set::classicExtract( $actioncandidat_personne, 'Actioncandidat.name' ) ),
-										h( Set::classicExtract( $actioncandidat_personne, 'Referent.nom_complet' ) ),
-										h( date_short( Set::classicExtract( $actioncandidat_personne, 'ActioncandidatPersonne.datesignature'  ) ) ),
-
-										$xhtml->viewLink(
-											'Voir la fiche de candidature',
-											array( 'controller' => 'actionscandidats_personnes', 'action' => 'view',
-											$actioncandidat_personne['ActioncandidatPersonne']['id'] ),
-											( $permissions->check( 'actionscandidats_personnes', 'view' ) == 1 )
-										),
-										$xhtml->editLink(
-											'Editer la fiche de candidature',
-											array( 'controller' => 'actionscandidats_personnes', 'action' => 'edit',
-											$actioncandidat_personne['ActioncandidatPersonne']['id'] ),
-											(
-												( $permissions->check( 'actionscandidats_personnes', 'edit' ) == 1 )
-												&& ( Set::classicExtract( $actioncandidat_personne, 'ActioncandidatPersonne.positionfiche' ) != 'annule' )
-											)
-										),
-										$xhtml->printLink(
-											'Imprimer la fiche de candidature',
-											array( 'controller' => 'actionscandidats_personnes', 'action' => 'printFiche',
-											$actioncandidat_personne['ActioncandidatPersonne']['id'] ),
-											(
-												( $permissions->check( 'actionscandidats_personnes', 'printFiche' ) == 1 )
-												&& ( Set::classicExtract( $actioncandidat_personne, 'ActioncandidatPersonne.positionfiche' ) != 'annule' )
-											)
-										),
-										$xhtml->fileLink(
-											'Lier des fichiers',
-											array( 'controller' => 'actionscandidats_personnes', 'action' => 'filelink',
-											$actioncandidat_personne['ActioncandidatPersonne']['id'] ),
-											(
-												( $permissions->check( 'actionscandidats_personnes', 'filelink' ) == 1 )
-												&& ( Set::classicExtract( $actioncandidat_personne, 'ActioncandidatPersonne.positionfiche' ) != 'annule' )
-											)
-										),
-										h( '('.$nbFichiersLies.')' )
-									),
-									array( 'class' => 'odd' ),
-									array( 'class' => 'even' )
-								);
-							}
-
-						?>
-					</tbody>
-				</table>
-			<?php endif;?>
 	<?php  endif;?>
 </div>
 <div class="clearer"><hr /></div>

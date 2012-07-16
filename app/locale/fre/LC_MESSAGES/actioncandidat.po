@@ -146,3 +146,6 @@ msgstr "Oui"
 
 msgid "ENUM::HASPIECEJOINTE::0"
 msgstr "Non"
+
+msgid "Actioncandidat.contractualisation93"
+msgstr "Contractualisation"

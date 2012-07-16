@@ -99,7 +99,11 @@ CREATE TABLE histoaprecomplementaires (
 );
 
 
+-------------------------------------------------------------------------------------------------------------
+-- 20120716 : Ajout d'un champ supplémentaire dans la table actionscandidats pour le CG93
+-------------------------------------------------------------------------------------------------------------
 
+SELECT add_missing_table_field ('public', 'actionscandidats', 'contractualisation93', 'VARCHAR(250)');
 
 -- *****************************************************************************
 COMMIT;
