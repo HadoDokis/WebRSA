@@ -118,13 +118,39 @@
 				?>
 			</fieldset>
 		<?php
+		
+			if( Configure::read( 'Cg.departement' ) == 66 ) {
+				echo $default->subform(
+					array(
+						'Actioncandidat.chargeinsertion_id' => array( 'domain' => 'actioncandidat', 'required' => true, 'type' => 'select'),
+						'Actioncandidat.secretaire_id' => array( 'domain' => 'actioncandidat', 'required' => true, 'type' => 'select'),
+						'Actioncandidat.contractualisation' => array( 'domain' => 'actioncandidat', 'required' => true, 'type' => 'select'),
+						'Actioncandidat.lieuaction' => array( 'domain' => 'actioncandidat', 'required' => true ),
+						'Actioncandidat.cantonaction' => array( 'domain' => 'actioncandidat', 'required' => true, 'options' => $cantons )
+					),
+					array(
+						'options' => $options
+					)
+				);
+			}
+			else {
+				echo $default->subform(
+					array(
+						'Actioncandidat.chargeinsertion_id' => array( 'domain' => 'actioncandidat', 'required' => true, 'type' => 'select'),
+						'Actioncandidat.secretaire_id' => array( 'domain' => 'actioncandidat', 'required' => true, 'type' => 'select'),
+						'Actioncandidat.contractualisation93' => array( 'domain' => 'actioncandidat', 'required' => true ),
+						'Actioncandidat.lieuaction' => array( 'domain' => 'actioncandidat', 'required' => true ),
+						'Actioncandidat.cantonaction' => array( 'domain' => 'actioncandidat', 'required' => true )
+					),
+					array(
+						'options' => $options
+					)
+				);
+				
+			}
+			
 			echo $default->subform(
 				array(
-					'Actioncandidat.chargeinsertion_id' => array( 'domain' => 'actioncandidat', 'required' => true, 'type' => 'select'),
-					'Actioncandidat.secretaire_id' => array( 'domain' => 'actioncandidat', 'required' => true, 'type' => 'select'),
-					'Actioncandidat.contractualisation' => array( 'domain' => 'actioncandidat', 'required' => true, 'type' => 'select'),
-					'Actioncandidat.lieuaction' => array( 'domain' => 'actioncandidat', 'required' => true ),
-					'Actioncandidat.cantonaction' => array( 'domain' => 'actioncandidat', 'required' => true, 'options' => $cantons ),
 					'Actioncandidat.ddaction' => array( 'domain' => 'actioncandidat', 'required' => true, 'minYear' => date( 'Y' ) - 1, 'maxYear' => date( 'Y' ) + 5 ),
 					'Actioncandidat.dfaction' => array( 'domain' => 'actioncandidat', 'required' => true, 'minYear' => date( 'Y' ) - 1, 'maxYear' => date( 'Y' ) + 5 )
 				),
