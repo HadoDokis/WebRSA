@@ -694,6 +694,21 @@
 
 			$modeleodtname = Set::classicExtract( $data, 'Modeletypecourrierpcg66.modeleodt' );
 
+			// Ajout Florent CG66
+			$gestionnaire['Dossierpcg66'] = $this->User->find(
+				'first',
+				array(
+					'fields' => array( 'User.nom_complet' ),
+					'conditions' => array(
+						'User.id' => $data['Dossierpcg66']['user_id']
+					),
+					'contain' => false
+					)
+				);
+
+			$data = Set::merge( $data, $gestionnaire );
+			// Fin Ajout Florent CG66
+			
 			$options = array(
 				'Personne' => array( 'qual' => ClassRegistry::init( 'Option' )->qual() ),
 				'Adresse' => array( 'typevoie' => ClassRegistry::init( 'Option' )->typevoie() ),
