@@ -817,7 +817,7 @@
 		 * @param integer $apre_id
 		 * @return string
 		 */
-		public function getChangementReferentOrientation( $orientstruct_id ) {
+		public function getChangementReferentOrientation( $orientstruct_id, $user_id ) {
 			$orientation = $this->find(
 				'first',
 				array(
@@ -891,7 +891,17 @@
 					'voie' => $Option->typevoie()
 				)
 			);
-
+				
+			$user = $this->User->find(
+				'first',
+				array(
+					'conditions' => array(
+						'User.id' => $user_id
+					),
+					'contain' => false
+				)
+			);
+			$orientation = Set::merge( $orientation, $user );
 			// Choix du modèle de document
 			$typestructure = Set::classicExtract( $orientation, 'Structurereferente.typestructure' );
 			$typestructurepassee = Set::classicExtract( $structurereferentePrecedente, 'Structurereferente.typestructure' );

@@ -834,7 +834,7 @@
 		 * @return void
 		 */
 		public function printChangementReferent( $id = null ) {
-			$pdf = $this->Orientstruct->getChangementReferentOrientation( $id );
+			$pdf = $this->Orientstruct->getChangementReferentOrientation( $id, $this->Session->read( 'Auth.User.id' ) );
 
 			if( !empty( $pdf ) ){
 				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'Notification_Changement_Referent_%d-%s.pdf', $id, date( 'Y-m-d' ) ) );
