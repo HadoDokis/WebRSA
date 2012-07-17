@@ -1573,14 +1573,23 @@
 							'emp_occupe' => $Option->emp_occupe(),
 							'duree_hebdo_emp' => $Option->duree_hebdo_emp(),
 							'nat_cont_trav' => $Option->nat_cont_trav(),
-							'duree_cdd' => $Option->duree_cdd(),
-							'decision_ci' => $Option->decision_ci(),
-							'raison_ci' => $Option->raison_ci(),
-							'duree_engag' => $Option->duree_engag(),
 							'typeocclog' => $Option->typeocclog(),
-							'avisraison_ci' => $Option->avisraison_ci(),
-							'raison_ci' => $Option->raison_ci(),
-// 							'forme_ci' => $Option->forme_ci(),
+							
+						),
+						'avisraison' => array(
+							'ci' => $Option->avisraison_ci()
+						),
+						'duree' => array(
+							'cdd' => $Option->duree_cdd()
+						),
+						'decision' => array(
+							'ci' => $Option->decision_ci()
+						),
+						'raison' => array(
+							'ci' => $Option->raison_ci()
+						),
+						'duree' => array(
+							'engag' => $Option->duree_engag()
 						),
 						'forme' => array(
 							'ci' => array( 'S' => 'Simple', 'C' => 'Complexe' )
