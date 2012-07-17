@@ -1580,7 +1580,10 @@
 							'typeocclog' => $Option->typeocclog(),
 							'avisraison_ci' => $Option->avisraison_ci(),
 							'raison_ci' => $Option->raison_ci(),
-							'forme_ci' => $Option->forme_ci(),
+// 							'forme_ci' => $Option->forme_ci(),
+						),
+						'forme' => array(
+							'ci' => array( 'S' => 'Simple', 'C' => 'Complexe' )
 						),
 						'Personne' => array(
 							'qual' => $Option->qual(),
