@@ -133,6 +133,36 @@
 					$conditions[] = 'EXTRACT(DAY FROM Personne.dtnai) = '.$search['Personne']['dtnai']['day'];
 				}
 			}
+			
+			// FIXME: voir si une sous-requête ne serait pas plus simple
+			if( isset( $search['Personne']['trancheage'] ) ) {
+				$trancheAge = Set::extract( $search, 'Personne.trancheage' );
+				if( $trancheAge == 0 ) {
+					$ageMin = 0;
+					$ageMax = 25;
+				}
+				else if( $trancheAge == 1 ) {
+					$ageMin = 25;
+					$ageMax = 35;
+				}
+				else if( $trancheAge == 2 ) {
+					$ageMin = 35;
+					$ageMax = 45;
+				}
+				else if( $trancheAge == 3 ) {
+					$ageMin = 45;
+					$ageMax = 55;
+				}
+				else if( $trancheAge == 4 ) {
+					$ageMin = 55;
+					$ageMax = 120;
+				}
+
+				if( is_numeric( $trancheAge )  ) {
+					$conditions[] = '( EXTRACT ( YEAR FROM AGE( Personne.dtnai ) ) ) BETWEEN '.$ageMin.' AND '.$ageMax;
+				}
+			}
+			
 
 			return $conditions;
 		}
