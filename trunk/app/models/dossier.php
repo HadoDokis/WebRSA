@@ -289,6 +289,11 @@
 			}
 
 
+			if( isset( $params['Dossier']['fonorg'] ) && !empty( $params['Dossier']['fonorg'] ) ) {
+				$conditions[] = array( 'Dossier.fonorg' => $params['Dossier']['fonorg'] );
+			}
+			
+			
 			/**
 			*	FIXME: pour les tests de performance
 			*	'Z' => 'Non défini',
@@ -307,6 +312,7 @@
 					'"Dossier"."numdemrsa"',
 					'"Dossier"."dtdemrsa"',
 					'"Dossier"."matricule"',
+					'"Dossier"."fonorg"',
 					'"Personne"."nir"',
 					'"Personne"."qual"',
 					'"Personne"."nom"',
