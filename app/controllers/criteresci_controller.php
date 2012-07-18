@@ -57,6 +57,17 @@
 			$this->set( 'forme_ci', $forme_ci );
 			
 			$this->set( 'etatdosrsa', $this->Option->etatdosrsa( $this->Situationdossierrsa->etatOuvert()) );
+			
+			$this->set(
+				'trancheage',
+				array(
+					'- 25 ans',
+					'25 - 35 ans',
+					'35 - 45 ans',
+					'45 - 55 ans',
+					'+ 55 ans'
+				)
+			); // INFO: pas dans view
 		}
 
 		/**

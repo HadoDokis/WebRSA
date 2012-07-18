@@ -16,8 +16,7 @@
 		public function search( $statutValidation, $mesCodesInsee, $filtre_zone_geo, $criteresci, $lockedDossiers ) {
 			/// Conditions de base
 			$conditions = array(/* '1 = 1' */);
-
-
+			
 			if( !empty( $statutValidation ) ) {
 				if( $statutValidation == 'Decisionci::nonvalidesimple' ) {
 					$conditions[] = '( ( Contratinsertion.forme_ci = \'S\' ) AND ( ( Contratinsertion.decision_ci = \'E\' ) OR ( Contratinsertion.decision_ci IS NULL ) ) )';
@@ -278,6 +277,8 @@
 			// Trouver la dernière demande RSA pour chacune des personnes du jeu de résultats
 			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $criteresci );
 			
+			$conditions = $this->conditionsPersonne( $conditions, $criteresci );
+			
 			/// Requête
 			$Situationdossierrsa = ClassRegistry::init( 'Situationdossierrsa' );
 			$etatdossier = Set::extract( $criteresci, 'Situationdossierrsa.etatdosrsa' );
@@ -287,6 +288,8 @@
 			else {
 				$conditions[] = '( Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatOuvert() ).'\' ) )';
 			}			
+			
+
 			
 			$this->Dossier = ClassRegistry::init( 'Dossier' );
 
