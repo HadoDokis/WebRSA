@@ -20,9 +20,10 @@
 			<?php endif; ?>
 
 
-			<?php if( empty( $contratsinsertion ) ):?>
+			<?php if( empty( $contratsinsertion ) && empty( $orientstructEmploi ) ):?>
 				<p class="notice">Cette personne ne possède pas encore de CER.</p>
 			<?php endif;?>
+			
 			<ul class="actionMenu">
 				<?php
 					$block = empty( $orientstruct ) || !empty( $orientstructEmploi );
