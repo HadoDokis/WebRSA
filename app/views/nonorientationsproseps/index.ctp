@@ -23,7 +23,9 @@
 
 <?php echo $form->create( 'Filtre', array( 'url'=> Router::url( null, true ), 'id' => 'Filtre', 'class' => ( !empty( $this->data ) ? 'folded' : 'unfolded' ) ) );?>
 	<fieldset>
-		<?php  echo $xform->input( 'Filtre.index', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
+		<?php 
+			echo $xform->input( 'Filtre.index', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );
+		?>
 
 		<legend><?php  echo __d( 'nonorientationproep', 'Nonorientationsproseps'.Configure::read( 'Cg.departement' ).'::legend', true );?></legend>
 		<?php if( Configure::read( 'Cg.departement' ) == 58 ):?>
@@ -35,6 +37,7 @@
 		<?php echo $form->input( 'Filtre.df_ci_to', array( 'label' => 'Et le (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120,  'maxYear' => date( 'Y' ) + 5, 'selected' => $df_ci_to ) );?>
 		<?php endif;?>
 
+		<?php echo $form->input( 'Filtre.Dossier.dernier', array( 'label' => false, 'type' => 'hidden', 'value' => 1 ) );?>
 		<?php
 			$nbmoispardefaut = array();
 			if( Configure::read( 'Cg.departement' ) == 66 ) {
