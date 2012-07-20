@@ -579,7 +579,9 @@
 						</li>
 					<?php endif; ?>
 					<li><?php echo $xhtml->link( '4. Consultation et impression des décisions', array( 'controller' => 'commissionseps', 'action' => 'decisions' ) );?></li>
-					<?php if( ( Configure::read( 'Cg.departement' ) == 58 ) || $permissions->check( 'gestionssanctionseps58', 'traitement' ) || $permissions->check( 'gestionssanctionseps58', 'visualisation' ) ):?>
+					
+					<?php if( Configure::read( 'Cg.departement' ) == 58 ):?>
+						<?php if( $permissions->check( 'gestionssanctionseps58', 'traitement' ) || $permissions->check( 'gestionssanctionseps58', 'visualisation' ) ):?>
 						<li>
 							<?php echo $xhtml->link( '5. Gestion des sanctions', array( 'controller' => 'gestionssanctionseps58', 'action' => '#' ) );?>
 							<ul>
@@ -595,6 +597,7 @@
 								<?php endif;?>
 							</ul>
 						</li>
+						<?php endif;?>
 					<?php endif;?>
 				</ul>
 			</li>
