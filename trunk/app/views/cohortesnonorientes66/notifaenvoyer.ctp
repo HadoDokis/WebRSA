@@ -99,14 +99,15 @@
     <?php if( empty( $cohortesnonorientes66 ) ):?>
         <p class="notice"><?php echo 'Aucun allocataire à orienter.';?></p>
     <?php else:?>
-<?php $pagination = $xpaginator->paginationBlock( 'Personne', $this->passedArgs ); ?>
-	<?php echo $pagination;?>
+
 	<?php echo $xform->create( 'Nonoriente', array( 'url'=> Router::url( null, true ) ) );?>
 	<?php
 		foreach( Set::flatten( $this->data['Search'] ) as $filtre => $value  ) {
 			echo $xform->input( "Search.{$filtre}", array( 'type' => 'hidden', 'value' => $value ) );
 		}
 	?>
+	<?php $pagination = $xpaginator->paginationBlock( 'Personne', $this->passedArgs ); ?>
+	<?php echo $pagination;?>
     <table id="searchResults">
         <thead>
             <tr>
