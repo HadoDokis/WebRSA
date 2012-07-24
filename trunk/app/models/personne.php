@@ -28,7 +28,7 @@
 				),
 				array(
 					'rule' => 'alphaNumeric',
-					'message' => 'Veuillez entrer une valeur numérique.',
+					'message' => 'Veuillez entrer une valeur alpha-numérique.',
 					'allowEmpty' => true
 				)
 			),
