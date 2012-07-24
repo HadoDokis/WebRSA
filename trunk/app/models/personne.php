@@ -27,7 +27,7 @@
 					'allowEmpty' => true
 				),
 				array(
-					'rule' => 'numeric',
+					'rule' => 'alphaNumeric',
 					'message' => 'Veuillez entrer une valeur numérique.',
 					'allowEmpty' => true
 				)
