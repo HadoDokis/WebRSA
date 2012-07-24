@@ -105,6 +105,90 @@ CREATE TABLE histoaprecomplementaires (
 
 SELECT add_missing_table_field ('public', 'actionscandidats', 'contractualisation93', 'VARCHAR(250)');
 
+
+-------------------------------------------------------------------------------------------------------------
+-- 20120719: ajout des clés étrangères pour nouvelles orientations suite aux passages en EP.
+-------------------------------------------------------------------------------------------------------------
+
+SELECT add_missing_table_field ( 'public', 'defautsinsertionseps66', 'nvorientstruct_id', 'INTEGER' );
+SELECT add_missing_constraint ( 'public', 'defautsinsertionseps66', 'defautsinsertionseps66_nvorientstruct_id_fkey', 'orientsstructs', 'nvorientstruct_id', false );
+
+-- On rapatrie les données implicites
+/*CREATE OR REPLACE FUNCTION public.update_orientsstructs_decisionsdefautsinsertionseps66() RETURNS VOID AS
+$$
+	DECLARE
+		v_row   record;
+		v_query text;
+	BEGIN
+		FOR v_row IN
+			SELECT
+					defautsinsertionseps66.id AS thematique_id,
+					orientsstructs.id AS orientstruct_id
+				FROM dossierseps
+					INNER JOIN defautsinsertionseps66 ON ( defautsinsertionseps66.dossierep_id = dossierseps.id )
+					INNER JOIN passagescommissionseps ON ( passagescommissionseps.dossierep_id = dossierseps.id )
+					INNER JOIN commissionseps ON ( passagescommissionseps.commissionep_id = commissionseps.id )
+					INNER JOIN decisionsdefautsinsertionseps66 ON ( decisionsdefautsinsertionseps66.passagecommissionep_id = passagescommissionseps.id )
+					INNER JOIN orientsstructs ON ( orientsstructs.personne_id = dossierseps.personne_id )
+				WHERE
+					dossierseps.themeep = 'defautsinsertionseps66'
+					AND passagescommissionseps.etatdossierep = 'traite'
+					AND commissionseps.etatcommissionep = 'traite'
+					AND (
+						decisionsdefautsinsertionseps66.decision = 'reorientation'
+						OR (
+							decisionsdefautsinsertionseps66.decision = 'maintien'
+							AND NOT (
+								decisionsdefautsinsertionseps66.changementrefparcours = 'N'
+								AND decisionsdefautsinsertionseps66.typeorientprincipale_id IN (
+									SELECT id FROM typesorients WHERE lib_type_orient LIKE 'Emploi%'
+								)
+							)
+						)
+					)
+					AND passagescommissionseps.id IN (
+						SELECT
+								p.id
+							FROM passagescommissionseps AS p
+								INNER JOIN commissionseps AS c ON ( p.commissionep_id = c.id )
+							WHERE dossierseps.id = p.dossierep_id
+							ORDER BY c.dateseance DESC
+							LIMIT 1
+					)
+					AND decisionsdefautsinsertionseps66.id IN (
+						SELECT
+								d.id
+							FROM decisionsdefautsinsertionseps66 AS d
+							WHERE passagescommissionseps.id = d.passagecommissionep_id
+							ORDER BY ( CASE WHEN d.etape = 'ep' THEN 1 WHEN etape = 'cg' THEN 2 ELSE 0 END ) DESC -- cg, ep
+							LIMIT 1
+					)
+					-- Jointure sur les orientations
+					AND orientsstructs.typeorient_id = decisionsdefautsinsertionseps66.typeorient_id
+					AND orientsstructs.structurereferente_id = decisionsdefautsinsertionseps66.structurereferente_id
+					AND orientsstructs.date_propo = DATE_TRUNC('day', decisionsdefautsinsertionseps66.modified )
+					AND orientsstructs.date_valid = DATE_TRUNC('day', decisionsdefautsinsertionseps66.modified )
+					AND orientsstructs.user_id = decisionsdefautsinsertionseps66.user_id
+					AND orientsstructs.statut_orient = 'Orienté'
+					AND orientsstructs.id NOT IN ( SELECT defautsinsertionseps66.nvorientstruct_id FROM defautsinsertionseps66 WHERE defautsinsertionseps66.nvorientstruct_id IS NOT NULL )
+				ORDER BY decisionsdefautsinsertionseps66.modified ASC
+		LOOP
+			-- Mise à jour dans la table defautsinsertionseps66
+			v_query := 'UPDATE defautsinsertionseps66 SET nvorientstruct_id = ' || v_row.orientstruct_id || ' WHERE id = ' || v_row.thematique_id || ';';
+			RAISE NOTICE  '%', v_query;
+			EXECUTE v_query;
+		END LOOP;
+	END;
+$$
+LANGUAGE plpgsql;
+
+SELECT public.update_orientsstructs_decisionsdefautsinsertionseps66();
+DROP FUNCTION public.update_orientsstructs_decisionsdefautsinsertionseps66();
+
+CREATE UNIQUE INDEX defautsinsertionseps66_nvorientstruct_id_idx ON defautsinsertionseps66 (nvorientstruct_id);*/
+
+
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
