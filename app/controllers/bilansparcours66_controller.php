@@ -738,30 +738,35 @@
 			);
 
 			//Précochage du bouton radio selon l'origine du bilan de parcours ou le type d'orientation de l'allocataire
-			if( isset( $bilanparcours66 ) && in_array( $bilanparcours66['Bilanparcours66']['examenauditionpe'], array( 'noninscriptionpe', 'radiationpe' ) ) ) {
-				$typeformulaire = 'cg';
-			}
-			else {
-				$typeformulaire = 'cg';
-				$orientation = $this->Bilanparcours66->Orientstruct->find(
-					'first',
-					array(
-						'conditions' => array(
-							'Orientstruct.personne_id' => $personne_id,
-							'Orientstruct.statut_orient' => 'Orienté'
-						),
-						'contain' => array(
-							'Typeorient'
-						),
-						'order' => array( 'Orientstruct.date_valid DESC' )
-					)
-				);
-				$typeorient_id = Set::classicExtract( $orientation, 'Typeorient.id' );
-				if( !empty( $typeorient_id ) ) {
-					if( $this->Bilanparcours66->Orientstruct->Typeorient->isProOrientation($typeorient_id) && ( !isset( $this->params['named'] ) || empty( $this->params['named'] ) ) ){
-						$typeformulaire = 'pe';
+			if( $this->action == 'add' ) {
+				if( isset( $bilanparcours66 ) && in_array( $bilanparcours66['Bilanparcours66']['examenauditionpe'], array( 'noninscriptionpe', 'radiationpe' ) ) ) {
+					$typeformulaire = 'cg';
+				}
+				else {
+					$typeformulaire = 'cg';
+					$orientation = $this->Bilanparcours66->Orientstruct->find(
+						'first',
+						array(
+							'conditions' => array(
+								'Orientstruct.personne_id' => $personne_id,
+								'Orientstruct.statut_orient' => 'Orienté'
+							),
+							'contain' => array(
+								'Typeorient'
+							),
+							'order' => array( 'Orientstruct.date_valid DESC' )
+						)
+					);
+					$typeorient_id = Set::classicExtract( $orientation, 'Typeorient.id' );
+					if( !empty( $typeorient_id ) ) {
+						if( $this->Bilanparcours66->Orientstruct->Typeorient->isProOrientation($typeorient_id) && ( !isset( $this->params['named'] ) || empty( $this->params['named'] ) ) ){
+							$typeformulaire = 'pe';
+						}
 					}
 				}
+			}
+			else {
+				$typeformulaire = $bilanparcours66['Bilanparcours66']['typeformulaire'];
 			}
 
 			/// Si le nombre de dossiers d'EP en cours est > 0, 
@@ -776,6 +781,7 @@
 			$this->set( 'qual', $this->Option->qual() );
 			$this->set( 'nationalite', $this->Option->nationalite() );
 			$this->set( 'typeformulaire', $typeformulaire );
+// 			$this->set( 'typeformulaire', array( 'cg', 'pe'  ) );
 			$this->set( compact( 'dossiersepsencours' ) );
 			$this->set( 'urlmenu', '/bilanspourcours66/index/'.$personne_id );
 

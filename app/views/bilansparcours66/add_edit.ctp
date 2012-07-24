@@ -56,7 +56,7 @@
 		<?php
 			echo $default->subform(
 				array(
-					'Bilanparcours66.typeformulaire' => array( 'type' => 'radio', 'value' => $typeformulaire, 'disabled' => true )
+					'Bilanparcours66.typeformulaire' => array( 'type' => 'radio', 'value' => $typeformulaire/*, 'disabled' => true*/ )
 				),
 				array(
 					'options' => $options
