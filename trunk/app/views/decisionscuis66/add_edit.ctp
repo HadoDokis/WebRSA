@@ -1,11 +1,16 @@
 <?php 
 	echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
-	$this->pageTitle = 'Décisions CUI';
+
 	echo $form->create( 'Decisioncui66',array( 'url' => Router::url( null, true ) ) );
 	echo $this->element( 'dossier_menu', array( 'cui_id' => $cui_id ) );?>
 
 <div class="with_treemenu">
-	<h1><?php echo $this->pageTitle;?></h1>
+		<?php
+			echo $xhtml->tag(
+				'h1',
+				$this->pageTitle = __d( 'decisioncui66', "Decisioncui66::{$this->action}", true )
+			);
+		?>
 
 		<fieldset><legend>Avis techniques</legend>
 			<?php if( !empty( $proposdecisionscuis66 ) ):?>
@@ -64,7 +69,11 @@
 		<fieldset>
 			<legend></legend>
 				<?php
-					echo $form->input( 'Decisioncui66.id', array( 'type' => 'hidden' ) );
+					echo $xform->create( 'Decisioncui66', array( 'id' => 'decisioncui66form' ) );
+					if( Set::check( $this->data, 'Decisioncui66.id' ) ){
+						echo $xform->input( 'Decisioncui66.id', array( 'type' => 'hidden' ) );
+					}
+					
 					echo $form->input( 'Decisioncui66.cui_id', array( 'type' => 'hidden', 'value' => $cui_id ) );
 					echo $xform->input( 'Decisioncui66.user_id', array( 'type' => 'hidden', 'value' => $userConnected ) );
 

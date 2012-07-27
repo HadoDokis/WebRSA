@@ -21,6 +21,12 @@ msgstr ""
 msgid "Decisionscuis66::decisioncui"
 msgstr "Décisions"
 
+msgid "Decisioncui66::add"
+msgstr "Ajout d'une décision"
+
+msgid "Decisioncui66::edit"
+msgstr "Modification d'une décision"
+
 msgid "Decisioncui66::index::empty"
 msgstr "Aucune décision émise"
 

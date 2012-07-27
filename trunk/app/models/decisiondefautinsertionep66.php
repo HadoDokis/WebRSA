@@ -88,12 +88,12 @@
 					'rule' => array( 'notEmpty' )
 				)
 			),
-			'decisionsup' => array(
-				'notEmptyIf' => array(
-					'rule' => array( 'notEmptyIf', 'decision', true, array( 'reorientationprofverssoc', 'reorientationsocversprof' ) ),
-					'message' => 'Champ obligatoire',
-				),
-			),
+// 			'decisionsup' => array(
+// 				'notEmptyIf' => array(
+// 					'rule' => array( 'notEmptyIf', 'decision', true, array( 'reorientationprofverssoc', 'reorientationsocversprof' ) ),
+// 					'message' => 'Champ obligatoire',
+// 				),
+// 			),
 			'typeorient_id' => array(
 				'notEmptyIf' => array(
 					'rule' => array( 'notEmptyIf', 'decision', true, array( 'reorientationprofverssoc', 'reorientationsocversprof' ) ),

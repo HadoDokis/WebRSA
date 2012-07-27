@@ -18,6 +18,13 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
 
 ###############################################################################
+
+msgid "Propodecisioncui66::add"
+msgstr "Ajout d'un avis technique"
+
+msgid "Propodecisioncui66::edit"
+msgstr "Modification d'un avis technique"
+
 msgid "Proposdecisionscuis66::propositioncui"
 msgstr "Avis techniques"
 

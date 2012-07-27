@@ -276,10 +276,43 @@
 
 			$personne = $this->{$this->modelClass}->Personne->detailsApre( $personne_id, $this->Session->read( 'Auth.User.id' ) );
 
+			// On récupère l'utilisateur connecté et qui exécute l'action
+			$userConnected = $this->Session->read( 'Auth.User.id' );
+			$this->set( compact( 'userConnected' ) );
+
+			// On récupère la valeur du montant rsa perçu au moment de l'enregistrement
+			$tDetaildroitrsa = $this->Cui->Personne->Foyer->Dossier->Detaildroitrsa->find(
+				'first',
+				array(
+					'fields' => array(
+						'Detaildroitrsa.id',
+						'Detaildroitrsa.dossier_id',
+					),
+					'contain' => array(
+						'Detailcalculdroitrsa' => array(
+							'fields' => array(
+								'Detailcalculdroitrsa.mtrsavers',
+								'Detailcalculdroitrsa.dtderrsavers',
+								'Detailcalculdroitrsa.natpf',
+							),
+							'order' => array(
+								'Detailcalculdroitrsa.ddnatdro DESC',
+							),
+							'limit' => 1
+						)
+					),
+					'conditions' => array(
+						'Detaildroitrsa.dossier_id' => $dossier_id
+					)
+				)
+			);
+			$montantrsapercu = $tDetaildroitrsa['Detailcalculdroitrsa'][0]['mtrsavers'];
+			$this->set( compact( 'montantrsapercu' ) );
+
 			$this->set( 'personne', $personne );
 
 			if( !empty( $this->data ) ){
-debug($this->data);
+
 				$this->{$this->modelClass}->create( $this->data );
 				$success = $this->{$this->modelClass}->save();
 

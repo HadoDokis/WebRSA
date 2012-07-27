@@ -160,10 +160,14 @@
 		}
 
 		/**
-		* FIXME: type_positionbilan -> {eplaudit,eplparc,attcga,attct,ajourne,annule} => ajouter traite
-		*/
+		 * Sauvegarde des décisions de la commission (avant validation )
+		 * @param array $data données de la commission EP à sauvegarder 
+		 * @param string $niveauDecision ep ou cg, selon le type de commission
+		 * @return boolean
+		 * FIXME: type_positionbilan -> {eplaudit,eplparc,attcga,attct,ajourne,annule} => ajouter traite
+		 */
 
-		public function saveDecisions( $data, $niveauDecision ) {
+		 public function saveDecisions( $data, $niveauDecision ) {
 			// Filtrage des données
 			$themeData = Set::extract( $data, '/Decisiondefautinsertionep66' );
 			if( empty( $themeData ) ) {
@@ -182,11 +186,265 @@
 
 				// Mise à jour de la position du bilan de parcours
 				$success = $this->Bilanparcours66->updatePositionBilanDecisionsEp( $this->name, $themeData, $niveauDecision, $passagescommissionseps_ids ) && $success;
+				
+				
+// debug($data);
+
+				// INFO: On ne crée un dossier PCG qu'après la validation au niveau EP
+				// Aucune action ne se fait à ce niveau par le CG
+				$niveauAvis = $data['Decisiondefautinsertionep66'][0]['etape'];
+				if( $niveauAvis == 'ep' ){
+					$commissionep_id = Set::classicExtract( $this->_commissionepIdParPassagecommissionId( $passagescommissionseps_ids ), 'Commissionep.id' );
+					
+					$dateseanceCommission = Set::classicExtract( $this->_commissionepIdParPassagecommissionId( $passagescommissionseps_ids ), 'Commissionep.dateseance' );
+					
+					if( !empty( $commissionep_id ) && !empty( $dateseanceCommission ) ) {
+						$success = $this->_generateDossierpcg( $commissionep_id, $dateseanceCommission, 'ep' ) && $success;
+					}
+				}
 
 				return $success;
 			}
 		}
 
+		/**
+		 * Récupère l'id de la commission d'EP à partir d'une liste d'ids
+		 * d'entrées de passages en commissions EP. 
+		 * @param array $passagescommissionseps_ids Ids des passages commissions des dossiers eps
+		 *
+		 */
+		protected function _commissionepIdParPassagecommissionId( $passagescommissionseps_ids ) {
+			
+			return $this->Dossierep->Passagecommissionep->Commissionep->find(
+				'first',
+				array(
+					'fields' => array( 'Commissionep.id', 'Commissionep.dateseance' ),
+					'conditions' => array(
+						'Commissionep.id IN ('
+							.$this->Dossierep->Passagecommissionep->sq(
+								array(
+									'alias' => 'passagescommissionseps',
+									'fields' => array( 'passagescommissionseps.commissionep_id' ),
+									'conditions' => array(
+										'passagescommissionseps.id' => $passagescommissionseps_ids
+									),
+									'contain' => false
+								)
+							)
+						.')'
+					),
+					'contain' => false
+				)
+			);
+		}
+		
+		
+		/**
+		 *	Génération d'un dossier PCG une fois l'avis de l'EP validé
+		 * @param integer $commissionep_id L'id technique de la séance d'EP
+		 * @param date $dateseanceCommission La date de la séance pour la date
+		 *  de création de la PDO (dossierpcg.datereceptionpdo
+		 * @param string $etape Etape à laquelle cette opération a lieu = ep
+		 * @return array
+		 * @access protected
+		 */
+		protected function _generateDossierpcg( $commissionep_id, $dateseanceCommission, $etape ) {
+			
+			$dossierseps = $this->find(
+				'all',
+				array(
+					'conditions' => array(
+						'Dossierep.id IN ( '.
+							$this->Dossierep->Passagecommissionep->sq(
+								array(
+									'fields' => array(
+										'passagescommissionseps.dossierep_id'
+									),
+									'alias' => 'passagescommissionseps',
+									'conditions' => array(
+										'passagescommissionseps.commissionep_id' => $commissionep_id
+									)
+								)
+							)
+						.' )',
+						'Dossierep.themeep' => Inflector::tableize( $this->alias ),//FIXME: ailleurs aussi
+					),
+					'contain' => array(
+						'Dossierep' => array(
+							'Passagecommissionep' => array(
+								'Decisiondefautinsertionep66' => array(
+									'conditions' => array(
+										'Decisiondefautinsertionep66.etape' => $etape
+									)
+								)
+							)
+						)
+					)
+				)
+			);
+			
+// 			debug($dossierseps);
+// 			die();
+			$success = true;
+			foreach( $dossierseps as $dossierep ) {
+
+				$defautinsertionep66 = array( 'Defautinsertionep66' => $dossierep['Defautinsertionep66'] );
+				$foyer = $this->Bilanparcours66->Orientstruct->Personne->Foyer->find(
+					'first',
+					array(
+						'fields' => array(
+							'Foyer.id'
+						),
+						'conditions' => array(
+							'Bilanparcours66.id' => $defautinsertionep66['Defautinsertionep66']['bilanparcours66_id']
+						),
+						'joins' => array(
+							array(
+								'table' => 'personnes',
+								'alias' => 'Personne',
+								'type' => 'INNER',
+								'conditions' => array( 'Personne.foyer_id = Foyer.id' )
+							),
+							array(
+								'table' => 'orientsstructs',
+								'alias' => 'Orientstruct',
+								'type' => 'LEFT OUTER',
+								'conditions' => array( 'Orientstruct.personne_id = Personne.id' )
+							),
+							array(
+								'table' => 'bilansparcours66',
+								'alias' => 'Bilanparcours66',
+								'type' => 'INNER',
+								'conditions' => array( 'Bilanparcours66.personne_id = Personne.id' )
+							)
+						),
+						'contain' => false
+					)
+				);
+
+				$originepdo = $this->Bilanparcours66->Dossierpcg66->Originepdo->find(
+					'first',
+					array(
+						'fields' => array(
+							'Originepdo.id'
+						),
+						'conditions' => array(
+							'Originepdo.originepcg' => 'O'
+						),
+						'contain' => false
+					)
+				);
+
+				$typepdo = $this->Bilanparcours66->Dossierpcg66->Typepdo->find(
+					'first',
+					array(
+						'fields' => array(
+							'Typepdo.id'
+						),
+						'conditions' => array(
+							'Typepdo.originepcg' => 'O'
+						),
+						'contain' => false
+					)
+				);
+
+				// Paramétrage incorrect
+				if( empty( $originepdo ) || empty( $typepdo ) ) {
+					$validationErrors = array();
+					$originePdoMessage = 'aucune origine PDO n\'est origine par défaut d\'un dossier PDO venant d\'une EP';
+					$typePdoMessage = 'aucune type de dossier PDO n\'est origine par défaut d\'un dossier PDO venant d\'une EP';
+
+					if( empty( $originepdo ) && empty( $typepdo ) ) {
+						$validationErrors[$i] = array( 'decision' => "Problème de paramétrage: {$originePdoMessage} et {$typePdoMessage}." );
+					}
+					else if( empty( $originepdo ) ) {
+						$validationErrors[$i] = array( 'decision' => "Problème de paramétrage: {$originePdoMessage}." );
+					}
+					else if( empty( $typepdo ) ) {
+						$validationErrors[$i] = array( 'decision' => "Problème de paramétrage: {$typePdoMessage}." );
+					}
+
+					$this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->validationErrors = Set::merge(
+						$this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->validationErrors,
+						$validationErrors
+					);
+
+					$success = false;
+				}
+
+				$dossier = $this->Bilanparcours66->Orientstruct->Personne->Foyer->Dossier->find(
+					'first',
+					array(
+						'fields' => array(
+							'Dossier.fonorg'
+						),
+						'conditions' => array(
+							'Bilanparcours66.id' => $defautinsertionep66['Defautinsertionep66']['bilanparcours66_id']
+						),
+						'joins' => array(
+							array(
+								'table' => 'foyers',
+								'alias' => 'Foyer',
+								'type' => 'INNER',
+								'conditions' => array( 'Foyer.dossier_id = Dossier.id' )
+							),
+							array(
+								'table' => 'personnes',
+								'alias' => 'Personne',
+								'type' => 'INNER',
+								'conditions' => array( 'Personne.foyer_id = Foyer.id' )
+							),
+							array(
+								'table' => 'orientsstructs',
+								'alias' => 'Orientstruct',
+								'type' => 'LEFT OUTER',
+								'conditions' => array( 'Orientstruct.personne_id = Personne.id' )
+							),
+							array(
+								'table' => 'bilansparcours66',
+								'alias' => 'Bilanparcours66',
+								'type' => 'INNER',
+								'conditions' => array( 'Bilanparcours66.personne_id = Personne.id' )
+							)
+						),
+						'contain' => false
+					)
+				);
+
+				$dossierpcg66 = array(
+					'Dossierpcg66' => array(
+						'foyer_id' => $foyer['Foyer']['id'],
+						'originepdo_id' => $originepdo['Originepdo']['id'],
+						'typepdo_id' => $typepdo['Typepdo']['id'],
+						'orgpayeur' => $dossier['Dossier']['fonorg'],
+						'datereceptionpdo' => $dateseanceCommission,
+						'haspiecejointe' => 0,
+						'bilanparcours66_id' => $defautinsertionep66['Defautinsertionep66']['bilanparcours66_id'],
+						'decisiondefautinsertionep66_id' => $dossierep['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['id']
+					)
+				);
+				
+				$nbDossierPCG66PourDecisiondefautinsertion66 = $this->Bilanparcours66->Dossierpcg66->find(
+					'count',
+					array(
+						'conditions' => array(
+							'Dossierpcg66.decisiondefautinsertionep66_id' => $this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->id
+						)
+					)
+				);
+
+				// Le dossier PCG du foyer de l'allocataire n'existe pas encore
+				// pour ce foyer et cette décision de thématique EP donc on peut le créer
+				if( $nbDossierPCG66PourDecisiondefautinsertion66 == 0 ) {
+					$this->Bilanparcours66->Dossierpcg66->create( $dossierpcg66 );
+					$success = $this->Bilanparcours66->Dossierpcg66->save() && $success;
+				}
+			}
+			return $success;
+		}
+		
+		
+		
 		/**
 		* Prépare les données du formulaire d'un niveau de décision
 		* en prenant en compte les données du bilan ou du niveau de décision
@@ -291,6 +549,7 @@
 				)
 			);
 
+
 			$success = true;
 			foreach( $dossierseps as $i => $dossierep ) {
 				if( $niveauDecisionFinale == "decision{$etape}" ) {
@@ -348,176 +607,32 @@
 								$referent_id = $bilanparcours66['Bilanparcours66']['referent_id'];
 							}
 						}
-
-						$nvdossierep = array(
-							'Bilanparcours66' => array(
+						
+						// En cas de demande de réorientation, l'EPL Audition va statuer et générer l'orientation
+						$orientstruct = array(
+							'Orientstruct' => array(
 								'personne_id' => $dossierep['Dossierep']['personne_id'],
-								'typeformulaire' => 'cg',
-								'orientstruct_id' => $orientsstruct['Orientstruct']['id'],
-								'structurereferente_id' => $orientsstruct['Orientstruct']['structurereferente_id'],
-								'referent_id' => $referent_id,// FIXME: ?
-								'presenceallocataire' => 1,// FIXME: vient des détails de la séance
-								'motifsaisine' => 'Proposition de réorientation suite à un passage en EP pour défaut d\'insertion',
-								'proposition' => 'parcours',
-								'choixparcours' => 'reorientation',
-								'reorientation' => ( $defautinsertionep66['Defautinsertionep66']['decision'] == 'reorientationprofverssoc' ? 'PS' : 'SP' ),
-								'observbenef' => '', // TODO, vient des observations lors de la séance
-								'datebilan' =>date( 'Y-m-d' ),
-								'saisineepparcours' => '1',
-								'maintienorientation' => 0,
-								'origine' => 'Defautinsertionep66'// FIXME: Champ "bidon", à rajouter au schéma ?
-								// FIXME: présence allocataire déduite de la présence à l'EP
-								//Rédigé par ???
-							),
-							// FIXME: bilan de parcours arrangé ? nouvelle thématique ?
-							'Saisinebilanparcoursep66' => array(
-								'typeorient_id' => @$dossierep['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['typeorient_id'],
-								'structurereferente_id' => @$dossierep['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['structurereferente_id'],
+								'typeorient_id' => $dossierep['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['typeorient_id'],
+								'structurereferente_id' => $dossierep['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['structurereferente_id'],
+								'referent_id' => $referent_id,
+								'date_propo' => date( 'Y-m-d' ),
+								'date_valid' => date( 'Y-m-d' ),
+								'statut_orient' => 'Orienté',
+								'user_id' => $user_id
 							)
 						);
+						$this->Bilanparcours66->Orientstruct->create( $orientstruct );
+						$success = $this->Bilanparcours66->Orientstruct->save() && $success;
 
-						$success = $oBilanparcours66->sauvegardeBilan( $nvdossierep ) && $success;
+						// Mise à jour de l'enregistrement de la thématique avec l'id de la nouvelle orientation
+						$success = $this->updateAll(
+							array( "\"{$this->alias}\".\"nvorientstruct_id\"" => $this->Bilanparcours66->Orientstruct->id ),
+							array( "\"{$this->alias}\".\"id\"" => $dossierep[$this->alias]['id'] )
+						) && $success;
+
 					}
 
-					$foyer = $this->Bilanparcours66->Orientstruct->Personne->Foyer->find(
-						'first',
-						array(
-							'fields' => array(
-								'Foyer.id'
-							),
-							'conditions' => array(
-								'Bilanparcours66.id' => $defautinsertionep66['Defautinsertionep66']['bilanparcours66_id']
-							),
-							'joins' => array(
-								array(
-									'table' => 'personnes',
-									'alias' => 'Personne',
-									'type' => 'INNER',
-									'conditions' => array( 'Personne.foyer_id = Foyer.id' )
-								),
-								array(
-									'table' => 'orientsstructs',
-									'alias' => 'Orientstruct',
-									'type' => 'LEFT OUTER',
-									'conditions' => array( 'Orientstruct.personne_id = Personne.id' )
-								),
-								array(
-									'table' => 'bilansparcours66',
-									'alias' => 'Bilanparcours66',
-									'type' => 'INNER',
-									'conditions' => array( 'Bilanparcours66.personne_id = Personne.id' )
-								)
-							),
-							'contain' => false
-						)
-					);
-
-					$originepdo = $this->Bilanparcours66->Dossierpcg66->Originepdo->find(
-						'first',
-						array(
-							'fields' => array(
-								'Originepdo.id'
-							),
-							'conditions' => array(
-								'Originepdo.originepcg' => 'O'
-							),
-							'contain' => false
-						)
-					);
-
-					$typepdo = $this->Bilanparcours66->Dossierpcg66->Typepdo->find(
-						'first',
-						array(
-							'fields' => array(
-								'Typepdo.id'
-							),
-							'conditions' => array(
-								'Typepdo.originepcg' => 'O'
-							),
-							'contain' => false
-						)
-					);
-
-					// Paramétrage incorrect
-					if( empty( $originepdo ) || empty( $typepdo ) ) {
-						$validationErrors = array();
-						$originePdoMessage = 'aucune origine PDO n\'est origine par défaut d\'un dossier PDO venant d\'une EP';
-						$typePdoMessage = 'aucune type de dossier PDO n\'est origine par défaut d\'un dossier PDO venant d\'une EP';
-
-						if( empty( $originepdo ) && empty( $typepdo ) ) {
-							$validationErrors[$i] = array( 'decision' => "Problème de paramétrage: {$originePdoMessage} et {$typePdoMessage}." );
-						}
-						else if( empty( $originepdo ) ) {
-							$validationErrors[$i] = array( 'decision' => "Problème de paramétrage: {$originePdoMessage}." );
-						}
-						else if( empty( $typepdo ) ) {
-							$validationErrors[$i] = array( 'decision' => "Problème de paramétrage: {$typePdoMessage}." );
-						}
-
-						$this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->validationErrors = Set::merge(
-							$this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->validationErrors,
-							$validationErrors
-						);
-
-						$success = false;
-					}
-
-					$dossier = $this->Bilanparcours66->Orientstruct->Personne->Foyer->Dossier->find(
-						'first',
-						array(
-							'fields' => array(
-								'Dossier.fonorg'
-							),
-							'conditions' => array(
-								'Bilanparcours66.id' => $defautinsertionep66['Defautinsertionep66']['bilanparcours66_id']
-							),
-							'joins' => array(
-								array(
-									'table' => 'foyers',
-									'alias' => 'Foyer',
-									'type' => 'INNER',
-									'conditions' => array( 'Foyer.dossier_id = Dossier.id' )
-								),
-								array(
-									'table' => 'personnes',
-									'alias' => 'Personne',
-									'type' => 'INNER',
-									'conditions' => array( 'Personne.foyer_id = Foyer.id' )
-								),
-								array(
-									'table' => 'orientsstructs',
-									'alias' => 'Orientstruct',
-									'type' => 'LEFT OUTER',
-									'conditions' => array( 'Orientstruct.personne_id = Personne.id' )
-								),
-								array(
-									'table' => 'bilansparcours66',
-									'alias' => 'Bilanparcours66',
-									'type' => 'INNER',
-									'conditions' => array( 'Bilanparcours66.personne_id = Personne.id' )
-								)
-							),
-							'contain' => false
-						)
-					);
-
-					$dossierpcg66 = array(
-						'Dossierpcg66' => array(
-							'foyer_id' => $foyer['Foyer']['id'],
-							'originepdo_id' => $originepdo['Originepdo']['id'],
-							'typepdo_id' => $typepdo['Typepdo']['id'],
-							'orgpayeur' => $dossier['Dossier']['fonorg'],
-							'datereceptionpdo' => $commissionep['Commissionep']['dateseance'],
-							'haspiecejointe' => 0,
-							'bilanparcours66_id' => $defautinsertionep66['Defautinsertionep66']['bilanparcours66_id'],
-							'decisiondefautinsertionep66_id' => $dossierep['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['id']
-						)
-					);
-
-// debug( $dossierpcg66 );
-// die();
-					$this->Bilanparcours66->Dossierpcg66->create( $dossierpcg66 );
-					$success = $this->Bilanparcours66->Dossierpcg66->save() && $success;
+					//	Ancien emplacement de la génération du dossierpcg66
 
 					$this->create( $defautinsertionep66 );
 					$success = $this->save() && $success;

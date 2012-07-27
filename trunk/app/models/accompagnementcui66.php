@@ -10,7 +10,7 @@
 			'Containable',
 			'Enumerable' => array(
 				'fields' => array(
-					'decisioncui'
+					'typeaccompagnementcui66'
 				)
 			),
 			'Formattable'
