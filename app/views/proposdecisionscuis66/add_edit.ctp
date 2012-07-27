@@ -7,18 +7,25 @@
 	else {
 		$this->pageTitle = 'Proposition';
 	}
-?>
-<?php  echo $form->create( 'Propodecisioncui66',array( 'url' => Router::url( null, true ) ) ); ?>
 
-<?php echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );?>
+	echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
+?>
 
 <div class="with_treemenu">
-	<h1><?php echo $this->pageTitle;?></h1>
-
+		<?php
+			echo $xhtml->tag(
+				'h1',
+				$this->pageTitle = __d( 'propodecisioncui66', "Propodecisioncui66::{$this->action}", true )
+			);
+		?>
 		<fieldset id="avismne">
 			<legend><?php echo 'Avis MNE';?></legend>
 				<?php
-					echo $xform->input( 'Propodecisioncui66.id', array( 'type' => 'hidden' ) );
+					echo $xform->create( 'Propodecisioncui66', array( 'id' => 'propodecisioncui66form' ) );
+					if( Set::check( $this->data, 'Propodecisioncui66.id' ) ){
+						echo $xform->input( 'Propodecisioncui66.id', array( 'type' => 'hidden' ) );
+					}
+					
 					echo $xform->input( 'Propodecisioncui66.cui_id', array( 'type' => 'hidden', 'value' => $cui_id ) );
 					echo $xform->input( 'Propodecisioncui66.user_id', array( 'type' => 'hidden', 'value' => $userConnected ) );
 

@@ -21,6 +21,12 @@ msgstr ""
 msgid "Suspensionscuis66::index"
 msgstr "Suspension/Rupture du CUI"
 
+msgid "Suspensioncui66::add"
+msgstr "Ajout d'une suspension"
+
+msgid "Suspensioncui66::edit"
+msgstr "Modification d'une suspension"
+
 msgid "Suspensioncui66::index::empty"
 msgstr "Aucune suspension définie"
 

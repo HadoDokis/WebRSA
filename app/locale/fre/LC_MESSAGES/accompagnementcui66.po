@@ -21,8 +21,17 @@ msgstr ""
 msgid "Accompagnementscuis66::index"
 msgstr "Accompagnement du CUI"
 
+msgid "Accompagnementcui66::add"
+msgstr "Ajout d'un accompagnement"
+
+msgid "Accompagnementcui66::edit"
+msgstr "Modification d'un accompagnement"
+
 msgid "Accompagnementcui66::index::empty"
 msgstr "Aucun accompagnement défini"
+
+msgid "Accompagnementcui66.typeaccompagnementcui66"
+msgstr "Type d'accompagnement"
 
 msgid "Accompagnementscuis66::delete::confirm"
 msgstr "Etes-vous sûr de vouloir supprimer cet accompagnement ?"
@@ -35,3 +44,10 @@ msgstr "Modifier un accompagnement"
 
 msgid "Accompagnementscuis66::delete"
 msgstr "Supprimer un accompagnement"
+
+msgid "ENUM::TYPEACCOMPAGNEMENTCUI66::immersion"
+msgstr "Périodes d'immersion"
+
+msgid "ENUM::TYPEACCOMPAGNEMENTCUI66::formation"
+msgstr "Formations"
+

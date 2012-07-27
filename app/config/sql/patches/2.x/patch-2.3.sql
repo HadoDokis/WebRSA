@@ -244,6 +244,19 @@ SELECT add_missing_constraint ( 'public', 'cuis', 'cuis_prestataire_id_fkey', 'r
 
 ALTER TABLE cuis ALTER COLUMN referent_id DROP NOT NULL;
 
+
+SELECT add_missing_table_field('public', 'cuis', 'haspiecejointe', 'type_booleannumber' );
+ALTER TABLE cuis ALTER COLUMN haspiecejointe SET DEFAULT '0'::TYPE_BOOLEANNUMBER;
+UPDATE cuis SET haspiecejointe = '0'::TYPE_BOOLEANNUMBER WHERE haspiecejointe IS NULL;
+ALTER TABLE cuis ALTER COLUMN haspiecejointe SET NOT NULL;
+
+SELECT add_missing_table_field ('public', 'cuis', 'user_id', 'INTEGER');
+SELECT add_missing_constraint( 'public', 'cuis', 'cuis_user_id_fk', 'users', 'user_id' );
+
+DROP INDEX IF EXISTS cuis_user_id_idx;
+CREATE INDEX cuis_user_id_idx ON cuis(user_id);
+
+SELECT add_missing_table_field('public', 'cuis', 'montantrsapercu', 'NUMERIC(9,2)' );
 -------------------------------------------------------------------------------------------------------------
 -- 20120725: Création d'une table de propositions de décisions pour le CUI
 -------------------------------------------------------------------------------------------------------------
@@ -282,19 +295,9 @@ DROP INDEX IF EXISTS proposdecisionscuis66_user_id_idx;
 CREATE INDEX proposdecisionscuis66_user_id_isx ON proposdecisionscuis66(user_id);
 
 
-SELECT add_missing_table_field('public', 'cuis', 'haspiecejointe', 'type_booleannumber' );
-ALTER TABLE cuis ALTER COLUMN haspiecejointe SET DEFAULT '0'::TYPE_BOOLEANNUMBER;
-UPDATE cuis SET haspiecejointe = '0'::TYPE_BOOLEANNUMBER WHERE haspiecejointe IS NULL;
-ALTER TABLE cuis ALTER COLUMN haspiecejointe SET NOT NULL;
-
-SELECT add_missing_table_field ('public', 'cuis', 'user_id', 'INTEGER');
-SELECT add_missing_constraint( 'public', 'cuis', 'cuis_user_id_fk', 'users', 'user_id' );
-
-DROP INDEX IF EXISTS cuis_user_id_idx;
-CREATE INDEX cuis_user_id_idx ON cuis(user_id);
-
-
-
+-------------------------------------------------------------------------------------------------------------
+-- 20120727: Création d'une table pour les décisions de CUI (CG66)
+-------------------------------------------------------------------------------------------------------------
 DROP TABLE IF EXISTS decisionscuis66 CASCADE;
 CREATE TABLE decisionscuis66(
   	id 						SERIAL NOT NULL PRIMARY KEY,
