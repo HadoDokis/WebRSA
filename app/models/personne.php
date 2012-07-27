@@ -876,123 +876,90 @@
 		*/
 
 		public function detailsApre( $personne_id, $user_id = null ){
+
+			$Informationpe = ClassRegistry::init( 'Informationpe' );
 			$personne = $this->find(
 				'first',
 				array(
-					'conditions' => array(
-						'Personne.id' => $personne_id
-					),
-					'contain' => array(
-						'Prestation' => array(
-							'conditions' => array(
-								'natprest' => 'RSA'
-							)
-						),
-						'Foyer' => array(
-							'Dossier',
-							'Modecontact' => array(
-								'order' => 'Modecontact.id ASC'
-							),
-							'Adressefoyer' => array(
-								'conditions' => array(
-									'Adressefoyer.rgadr' => '01',
-								),
-								'Adresse' => array(
-									'limit' => 1
-								)
-							)
-						),
-						'Orientstruct' => array(
-							'conditions' => array(
-								'Orientstruct.personne_id' => $personne_id,
-								'Orientstruct.date_propo IS NOT NULL'
-							),
-							'order' => 'Orientstruct.date_propo DESC',
-							'limit' => 1,
-							'Structurereferente'
-						),
-						'Activite' => array(
-							'order' => 'Activite.dfact DESC',
-							'limit' => 1
+					'fields' => array_merge(
+						$this->fields(),
+						$this->Prestation->fields(),
+						$this->Foyer->fields(),
+						$this->Foyer->Dossier->fields(),
+						$this->Foyer->Adressefoyer->Adresse->fields(),
+						$this->Orientstruct->fields(),
+						$this->Orientstruct->Typeorient->fields(),
+						$this->Orientstruct->Structurereferente->fields(),
+						array(
+							'( '.$this->Foyer->vfNbEnfants().' ) AS "Foyer__nbenfants"',
+							'Historiqueetatpe.id',
+							'Historiqueetatpe.etat',
+							'Historiqueetatpe.date',
+							'Historiqueetatpe.identifiantpe',
+							'Canton.id',
+							'Canton.canton',
+							'PersonneReferent.referent_id',
+							'Titresejour.dftitsej'
 						)
-					)
-				)
-			);
-
-			if( isset( $personne['Foyer']['Adressefoyer'][0]['Adresse'] ) ) {
-				$personne['Adresse'] = @$personne['Foyer']['Adressefoyer'][0]['Adresse'];
-				unset( $personne['Foyer']['Adressefoyer'][0]['Adresse'] );
-			}
-
-			// Recherche de la structure référente
-			if( isset( $personne['Orientstruct'][0] ) ) {
-				$personne['Orientstruct'] = $personne['Orientstruct'][0];
-				unset( $personne['Orientstruct'][0] );
-			}
-
-			if( isset( $personne['Orientstruct']['Structurereferente'] ) ) {
-				$personne['Structurereferente'] = $personne['Orientstruct']['Structurereferente'];
-				unset( $personne['Orientstruct']['Structurereferente'] );
-			}
-
-			///Récupération des données propres au contrat d'insertion, notammenrt le premier contrat validé ainsi que le dernier.
-			$contrat = $this->Contratinsertion->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Contratinsertion.personne_id' => $personne['Personne']['id']
 					),
-					'order' => 'Contratinsertion.datevalidation_ci ASC',
+					'joins' => array(
+						$this->join( 'Prestation', array( 'type' => 'INNER' ) ),
+						$this->join( 'Foyer', array( 'type' => 'INNER' ) ),
+						$this->join( 'PersonneReferent', array( 'type' => 'LEFT OUTER' ) ),
+						$this->join( 'Titresejour', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
+						$this->Foyer->join( 'Adressefoyer', array( 'type' => 'INNER' ) ),
+						$this->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'INNER' ) ),
+						$this->join( 'Orientstruct', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Orientstruct->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Orientstruct->join( 'Typeorient', array( 'type' => 'LEFT OUTER' ) ),
+						$Informationpe->joinPersonneInformationpe( 'Personne', 'Informationpe', 'LEFT OUTER' ),
+						$Informationpe->join( 'Historiqueetatpe', array( 'type' => 'LEFT OUTER' ) ),
+						ClassRegistry::init( 'Canton' )->joinAdresse()
+					),
+					'conditions' => array(
+						'Personne.id' => $personne_id,
+						'Prestation.natprest' => 'RSA',
+						'Prestation.rolepers' => array( 'DEM', 'CJT' ),
+						'PersonneReferent.dfdesignation IS NULL'
+					),
+					'contain' => false,
 					'recursive' => -1
 				)
 			);
-			$personne['Contratinsertion']['premier'] = $contrat['Contratinsertion'];
 
+			
+			
+			///Récupération des données propres au contrat d'insertion, notammenrt le premier contrat validé ainsi que le dernier.
+// 			$contrat = $this->Contratinsertion->find(
+// 				'first',
+// 				array(
+// 					'conditions' => array(
+// 						'Contratinsertion.personne_id' => $personne['Personne']['id']
+// 					),
+// 					'order' => 'Contratinsertion.datevalidation_ci ASC',
+// 					'recursive' => -1
+// 				)
+// 			);
+// 			$personne['Contratinsertion']['premier'] = $contrat['Contratinsertion'];
+// 
 			$contrat = $this->Contratinsertion->find(
 				'first',
 				array(
+					'fields' => array( 'Contratinsertion.datevalidation_ci' ),
 					'conditions' => array(
-						'Contratinsertion.personne_id' => $personne['Personne']['id']
+						'Contratinsertion.personne_id' => $personne['Personne']['id'],
+						'Contratinsertion.decision_ci' => 'V'
 					),
+					'contain' => false,
 					'order' => 'Contratinsertion.datevalidation_ci DESC',
 					'recursive' => -1
 				)
 			);
 			$personne['Contratinsertion']['dernier'] = $contrat['Contratinsertion'];
-
-			///Récupération des données Dsp
-			$dsp = $this->Dsp->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Dsp.personne_id' => $personne_id
-					),
-					'recursive' => -1
-				)
-			);
-			$dsp_id = Set::classicExtract( $dsp, 'Dsp.id' );
-
-			if( !empty( $dsp_id ) ){
-				$dspRevModel = ClassRegistry::init( 'DspRev' );
-				$dspRev = $dspRevModel->find(
-					'first',
-					array(
-						'conditions' => array(
-							'DspRev.dsp_id' => $dsp_id,
-							'DspRev.personne_id' => $personne_id
-						),
-						'recursive' => -1,
-						'order' => 'DspRev.modified DESC'
-					)
-				);
-
-				if( !empty( $dspRev ) ) {
-					$dsp['Dsp'] = $dspRev['DspRev'];
-				}
-			}
-			$personne['Dsp'] = $dsp['Dsp'];
-
-			// Récupération du service instructeur
+			
+			
+			/// Récupération du service instructeur
 			$suiviinstruction = $this->Foyer->Dossier->Suiviinstruction->find(
 				'first',
 				array(
@@ -1003,6 +970,7 @@
 						)
 					),
 					'recursive' => -1,
+					'contain' => false,
 					'conditions' => array(
 						'Suiviinstruction.dossier_id' => $personne['Foyer']['dossier_id']
 					),
@@ -1020,12 +988,27 @@
 
 			$personne = Set::merge( $personne, $suiviinstruction );
 
-			//On ajout l'ID de l'utilisateur connecté afin de récupérer son service instructeur
-			if( empty( $suiviinstruction ) && is_int( $user_id ) ) {
-				$user = $this->Contratinsertion->User->findById( $user_id, null, null, 0 );
-				$personne = Set::merge( $personne, $user );
-			}
+			$User = ClassRegistry::init( 'User' );
+			$user = $User->find(
+				'first',
+				array(
+					'fields' => array_merge(
+						$User->fields(),
+						$User->Serviceinstructeur->fields()
+					),
+					'conditions' => array(
+						'User.id' => $user_id
+					),
+					'joins' => array(
+						$User->join( 'Serviceinstructeur' )
+					),
+					'contain' => false,
+					'recursive' => -1
+				)
+			);
+			$personne = Set::merge( $personne, $user );
 
+// debug($personne);
 			return $personne;
 		}
 

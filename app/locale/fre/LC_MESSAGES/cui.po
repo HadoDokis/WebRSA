@@ -49,8 +49,11 @@ msgstr "Code prescripteur"
 msgid "Cui.secteur"
 msgstr "Secteur"
 
-msgid "Cui.convention"
-msgstr "Convention entre "
+msgid "ENUM::ISACI::horsaci"
+msgstr "Hors ACI"
+
+msgid "ENUM::ISACI::enaci"
+msgstr "En ACI"
 
 msgid "Cui.avenant"
 msgstr "Avenant"
@@ -88,6 +91,12 @@ msgstr "Code postal"
 msgid "Cui.villeemployeur"
 msgstr "Commune"
 
+msgid "Cui.cantonemployeur"
+msgstr "Canton"
+
+msgid "Cui.secteuractiviteemployeur"
+msgstr "Secteur d'activité"
+
 msgid "Cui.isadresse2"
 msgstr "Adresse différente"
 
@@ -114,6 +123,12 @@ msgstr "Code postal"
 
 msgid "Cui.villeemployeur2"
 msgstr "Commune"
+
+msgid "Cui.cantonemployeur2"
+msgstr "Canton"
+
+msgid "Cui.secteuractiviteemployeur2"
+msgstr "Secteur d'activité"
 
 msgid "Cui.isadresse2"
 msgstr "Adresse différente"
@@ -226,14 +241,8 @@ msgstr "Code postal"
 msgid "Cui.villelieucontrat"
 msgstr "Commune"
 
-msgid "Cui.qualtuteur"
-msgstr "Civilité du tuteur"
-
-msgid "Cui.nomtuteur"
-msgstr "Nom du tuteur"
-
-msgid "Cui.prenomtuteur"
-msgstr "Prénom du tuteur"
+msgid "Cui.tuteur"
+msgstr "Tuteur"
 
 msgid "Cui.fonctiontuteur"
 msgstr "Fonction du tuteur"
@@ -426,6 +435,15 @@ msgstr "Autre personne morale chargée de la gestion d'un service public (mutuel
 msgid "ENUM::STATUTEMPLOYEUR::70"
 msgstr "Établissement Public d'Enseignement (lycée, collège)"
 
+msgid "ENUM::STATUTEMPLOYEUR::71"
+msgstr "Établissement PA"
+
+msgid "ENUM::STATUTEMPLOYEUR::72"
+msgstr "Établissement PH"
+
+msgid "ENUM::STATUTEMPLOYEUR::73"
+msgstr "CCAS"
+
 msgid "ENUM::STATUTEMPLOYEUR::80"
 msgstr "Établissement Sanitaire Public"
 
@@ -439,34 +457,34 @@ msgid "ENUM::STATUTEMPLOYEUR::99"
 msgstr "Autre entreprise"
 ####################
 msgid "ENUM::NIVEAUFORMATION::00"
-msgstr "Autres qualifications non certifiantes"
+msgstr "00 - Autres qualifications non certifiantes"
 
 msgid "ENUM::NIVEAUFORMATION::10"
-msgstr "Troisième cycle ou Écoles d'Ingénieurs (Équivalent au niveau I de l'Éducation Nationale)"
+msgstr "10 - Troisième cycle ou Écoles d'Ingénieurs (Équivalent au niveau I de l'Éducation Nationale)"
 
 msgid "ENUM::NIVEAUFORMATION::20"
-msgstr "Formation de niveau égal ou supérieur à celui de la Licence ou des Écoles d'Ingénieurs (Équivalent au niveau II de l'Éducation Nationale)"
+msgstr "20 - Formation de niveau égal ou supérieur à celui de la Licence ou des Écoles d'Ingénieurs (Équivalent au niveau II de l'Éducation Nationale)"
 
 msgid "ENUM::NIVEAUFORMATION::30"
-msgstr "Formation de niveau du Brevet de Technicien Supérieur ou du Diplôme des Instituts Universitaires de Technologie et de fin de premier cycle de l'enseignement supérieur (Équivalent au niveau III de l'Éducation Nationale)"
+msgstr "30 - Formation de niveau du Brevet de Technicien Supérieur ou du Diplôme des Instituts Universitaires de Technologie et de fin de premier cycle de l'enseignement supérieur (Équivalent au niveau III de l'Éducation Nationale)"
 
 msgid "ENUM::NIVEAUFORMATION::41"
-msgstr "Brevet de technicien ou Baccalauréat professionnel"
+msgstr "41 - Brevet de technicien ou Baccalauréat professionnel"
 
 msgid "ENUM::NIVEAUFORMATION::40"
-msgstr "Formation de niveau équivalent à celui du Baccalauréat général (Équivalent au niveau IV de l'Éducation Nationale)"
+msgstr "40 - Formation de niveau équivalent à celui du Baccalauréat général (Équivalent au niveau IV de l'Éducation Nationale)"
 
 msgid "ENUM::NIVEAUFORMATION::51"
-msgstr "Diplôme obtenu du Brevet d'Études Professionnelles (BEP) et du Certificat d'Aptitude Professionnelle (CAP) (Équivalent au niveau V de l'Éducation Nationale)"
+msgstr "51 - Diplôme obtenu du Brevet d'Études Professionnelles (BEP) et du Certificat d'Aptitude Professionnelle (CAP) (Équivalent au niveau V de l'Éducation Nationale)"
 
 msgid "ENUM::NIVEAUFORMATION::50"
-msgstr "Formation de niveau équivalent à celui du Brevet d'Études Professionnelles (BEP) et du Certificat d'Aptitude Professionnelle (CAP) (Diplôme non obtenu)"
+msgstr "50 - Formation de niveau équivalent à celui du Brevet d'Études Professionnelles (BEP) et du Certificat d'Aptitude Professionnelle (CAP) (Diplôme non obtenu)"
 
 msgid "ENUM::NIVEAUFORMATION::60"
-msgstr "Formation courte d'une durée maximum d'un an, conduisant au Certificat d'éducation Professionnelle ou à toute autre attestation de même nature (Équivalent au niveau V bis de l'Éducation Nationale)"
+msgstr "60 - Formation courte d'une durée maximum d'un an, conduisant au Certificat d'éducation Professionnelle ou à toute autre attestation de même nature (Équivalent au niveau V bis de l'Éducation Nationale)"
 
 msgid "ENUM::NIVEAUFORMATION::70"
-msgstr "Pas de formation allant au-delà de la fin de la scolarité obligatoire"
+msgstr "70 - Pas de formation allant au-delà de la fin de la scolarité obligatoire"
 
 ####################
 msgid "ENUM::DUREESANSEMPLOI::06"
@@ -644,3 +662,43 @@ msgstr "Rejet"
 
 msgid "ENUM::DECISIONCUI::E"
 msgstr "En attente"
+
+
+msgid "Cui.nomtiturib"
+msgstr "Nom du titulaire du RIB"
+
+msgid "Cui.etaban"
+msgstr "Code banque"
+
+msgid "Cui.guiban"
+msgstr "Code guichet"
+
+msgid "Cui.numcomptban"
+msgstr "Numéro de compte"
+
+msgid "Cui.nometaban"
+msgstr "Nom de l'établissement bancaire"
+
+msgid "Cui.clerib"
+msgstr "Clé RIB"
+
+msgid "Cui.identifiantpe"
+msgstr "N° Demandeur Emploi"
+
+msgid "Cui.orgsuivi_id"
+msgstr "Organisme chargé de suivi"
+
+msgid "Cui.prestataire_id"
+msgstr "Prestataire"
+
+msgid "Cuis::filelink"
+msgstr "Liste des fichiers liés au CUI"
+
+msgid "Cui.haspiecejointe"
+msgstr "Ajouter une pièce jointe"
+
+msgid "ENUM::HASPIECEJOINTE::0"
+msgstr "Non"
+
+msgid "ENUM::HASPIECEJOINTE::1"
+msgstr "Oui"

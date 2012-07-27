@@ -4,6 +4,11 @@
 	echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
 ?>
 
+<?php
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
+	}
+?>
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
 		//Utilisé en cas d'adresse de l'employeur différente pour les doc administratifs
@@ -36,27 +41,16 @@
 			true
 		);
 
-		//Utilisé en cas de personne inscrite à Pole Emploi
+		// Dans le cas du CAE, affichage du champ hors ACI ou en ACI
 		observeDisableFieldsetOnRadioValue(
 			'cuiform',
-			'data[Cui][isinscritpe]',
-			$( 'InscritPE' ),
-			'O',
+			'data[Cui][secteur]',
+			$( 'isaci' ),
+			'CAE',
 			false,
 			true
 		);
-
-		//Utilisé si l'employeur est un atelier ou un chantier d'insertion
-		observeDisableFieldsOnRadioValue(
-			'cuiform',
-			'data[Cui][atelierchantier]',
-			[
-				'CuiNumannexefinanciere'
-			],
-			'O',
-			true
-		);
-
+		
 		//Utilisé si le bénéficiaire bénéficie d'un rsa majoré
 
 		observeDisableFieldsetOnRadioValue(
@@ -112,7 +106,6 @@
 			false,
 			true
 		);
-		financementexclusif
 
 		//Utilisé si le contrat signé est de type CAE et que la periode d'immersion est à Oui
 		observeDisableFieldsetOnRadioValue(
@@ -123,7 +116,8 @@
 			false,
 			true
 		);
-
+		
+		dependantSelect( 'CuiPrestataireId', 'CuiOrgsuiviId' );
 	});
 </script>
 
@@ -136,7 +130,7 @@
 
 		echo $xhtml->tag(
 			'p',
-			'<strong>CONTRAT UNIQUE D\'INSERTION</strong>'.'<br />'.' CONVENTION ENTRE LE CONSEIL GÉNÉRAL, L\'EMPLOYEUR et LE SALARIÉ'.'<br />'.' ou L\'ÉTAT, L\'EMPLOYEUR et LE SALARIÉ',
+			'<strong>CONTRAT UNIQUE D\'INSERTION</strong>'.'<br />'.' CONVENTION SIGNÉE ENTRE LE CONSEIL GÉNÉRAL, L\'EMPLOYEUR et LE SALARIÉ',
 			array(
 				'class' => 'remarque center'
 			)
@@ -151,11 +145,11 @@
 	?>
 	<div>
 		<?php
+
 			echo $default->subform(
 				array(
 					'Cui.personne_id' => array( 'value' => $personne_id, 'type' => 'hidden' ),
-					'Cui.convention' => array( /*'div' => false,*/ 'legend' => required( __d( 'cui', 'Cui.convention', true )  ), 'type' => 'radio', 'options' => $options['convention'] ),
-					'Cui.secteur' => array( /*'div' => false,*/ 'legend' => required( __d( 'cui', 'Cui.secteur', true )  ), 'type' => 'radio', 'options' => $options['secteur'] )
+					'Cui.secteur' => array(  'legend' => required( __d( 'cui', 'Cui.secteur', true )  ), 'type' => 'radio', 'options' => $options['secteur'] )
 				),
 				array(
 					'domain' => $domain,
@@ -163,6 +157,19 @@
 				)
 			);
 		?>
+		<fieldset id="isaci">
+			<?php
+				echo $default->subform(
+					array(
+						'Cui.isaci' => array( 'type' => 'radio', 'legend' =>  '', 'label' => false, 'options' => $options['isaci'] )
+					),
+					array(
+						'domain' => $domain,
+						'options' => $options
+					)
+				);
+			?>
+		</fieldset>
 	</div>
 
 <!--**************************************** Partie EMPLOYEUR *********************************************** -->
@@ -184,7 +191,9 @@
 									'Cui.numtelemployeur',
 									'Cui.emailemployeur',
 									'Cui.codepostalemployeur',
-									'Cui.villeemployeur'
+									'Cui.villeemployeur',
+									'Cui.cantonemployeur' => array( 'empty' => true, 'options' => $cantons ),
+									'Cui.secteuractiviteemployeur' => array( 'empty' => true, 'options' => $secteursactivites )
 								),
 								array(
 									'domain' => $domain,
@@ -206,7 +215,7 @@
 							if( !empty( $thisDataAdressebis ) ) {
 								$valueAdressebis = $thisDataAdressebis;
 							}
-							$input =  $form->input( 'Cui.isadresse2', array( 'type' => 'radio' , 'options' => $options['isadresse2'], 'div' => false, 'legend' => required( __d( 'cui', 'Cui.isadresse2', true )  ), 'value' => $valueAdressebis ) );
+							$input =  $form->input( 'Cui.isadresse2', array( 'type' => 'radio' , 'options' => $options['isadresse2'], 'div' => false, 'legend' => __d( 'cui', 'Cui.isadresse2', true ), 'value' => $valueAdressebis ) );
 							echo $xhtml->tag( 'div', $input, array( 'class' => $class ) );
 
 						?>
@@ -221,14 +230,15 @@
 										'Cui.numtelemployeur2',
 										'Cui.emailemployeur2',
 										'Cui.codepostalemployeur2',
-										'Cui.villeemployeur2'
+										'Cui.villeemployeur2',
+										'Cui.cantonemployeur2' => array( 'empty' => true, 'options' => $cantons ),
+										'Cui.secteuractiviteemployeur2' => array( 'empty' => true, 'options' => $secteursactivites )
 									),
 									array(
 										'domain' => $domain,
 										'options' => $options
 									)
 								);
-
 							?>
 						</fieldset>
 					</fieldset>
@@ -238,11 +248,7 @@
 						<?php
 							echo $default->subform(
 								array(
-									'Cui.siret',
-									'Cui.codenaf2',
-									'Cui.identconvcollec',
-									'Cui.statutemployeur' => array( 'empty' => true, 'options' => $options['statutemployeur'] ),
-									'Cui.effectifemployeur'
+									'Cui.statutemployeur' => array( 'empty' => true, 'options' => $options['statutemployeur'] )
 								),
 								array(
 									'domain' => $domain,
@@ -252,7 +258,12 @@
 							echo $xhtml->tag( 'p', 'Paiement par virement: fournir un RIB de l\'employeur', array( 'class' => 'remarque center' ) );
 							echo $default->subform(
 								array(
-									'Cui.ribemployeur'
+									'Cui.nomtiturib',
+									'Cui.etaban',
+									'Cui.guiban',
+									'Cui.numcomptban',
+									'Cui.nometaban',
+									'Cui.clerib'
 								),
 								array(
 									'domain' => $domain,
@@ -277,26 +288,6 @@
 			</tr>
 		</table>
 
-		<table class="noborder">
-			<tr>
-				<td class="cui3 noborder">
-
-						<?php
-							echo $default->subform(
-								array(
-									'Cui.atelierchantier' => array( 'legend' => required( __d( 'cui', 'Cui.atelierchantier', true )  ), 'type' => 'radio', 'options' => $options['atelierchantier'] ),
-									'Cui.numannexefinanciere',
-									'Cui.assurancechomage' => array( 'separator' => '<br />', 'legend' => required( __d( 'cui', 'Cui.assurancechomage', true )  ), 'type' => 'radio', 'options' => $options['assurancechomage'] )
-								),
-								array(
-									'domain' => $domain,
-									'options' => $options
-								)
-							);
-						?>
-				</td>
-			</tr>
-		</table>
 		<fieldset id="iscie" class="invisible">
 			<?php
 				echo $xhtml->tag( 'p', 'Si CIE, je déclare sur l\'honneur être à jour des versements de mes cotisations et contributions sociales, que cette embauche ne résulte pas du licenciement d\'un salarié en CDI, ne pas avoir procédé à un licenciement pour motif économique au cours des 6 derniers mois ou pour une raison autre que la faute grave' );
@@ -356,7 +347,13 @@
 					<br />
 					<strong>Département : </strong><?php echo Set::extract( $depSplit, $dept );?>
 					<br />
+					<strong>Canton : </strong><?php echo Set::extract( $personne, 'Canton.canton' );?>
+					<br />
 					<strong>Nationalité : </strong><?php echo Set::enum( Set::classicExtract( $personne, 'Personne.nati' ), $nationalite );?>
+					<br />
+					<strong>Date de fin de titre de séjour : </strong><?php echo date_short( Set::classicExtract( $personne, 'Titresejour.dftitsej' ) );?>
+					<br />
+					<strong>Référent en cours : </strong><?php echo Set::enum( Set::classicExtract( $personne, 'PersonneReferent.referent_id' ), $referents );?>
 					<br />
 					<!-- Si on n'autorise aps la diffusion du téléphone, on n'affiche rien -->
 					<?php if( Set::extract( $personne, 'Foyer.Modecontact.0.autorutitel' ) == 'A' ):?>
@@ -370,7 +367,7 @@
 				<td class="noborder" colspan="2">
 					<strong>Si bénéficiaire RSA, n° allocataire : </strong>
 					<?php
-						echo Set::classicExtract( $personne, 'Foyer.Dossier.matricule' ).'  <strong>relève de : </strong> '.Set::classicExtract( $personne, 'Foyer.Dossier.fonorg' );
+						echo Set::classicExtract( $personne, 'Dossier.matricule' ).'  <strong>relève de : </strong> '.Set::classicExtract( $personne, 'Dossier.fonorg' );
 					?>
 				</td>
 			</tr>
@@ -393,29 +390,42 @@
 					)
 				);
 
-				$error = Set::classicExtract( $this->validationErrors, 'Cui.isisncritpe' );
-				$class = 'radio'.( !empty( $error ) ? ' error' : '' );
-				$thisDataInscritPE = Set::classicExtract( $this->data, 'Cui.isisncritpe' );
-				if( !empty( $thisDataInscritPE ) ) {
-					$valueInscritPE = $thisDataInscritPE;
-				}
 
-				$input =  $form->input( 'Cui.isinscritpe', array( 'type' => 'radio' , 'options' => $options['isinscritpe'], 'legend' => required( __d( 'cui', 'Cui.isinscritpe', true )  ), 'value' => $valueInscritPE ) );
-				echo $xhtml->tag( 'div', $input, array( 'class' => $class ) );
+				$valueIdentifiantpe = '';
+				$dernierIdentifiantpe = Set::classicExtract( $personne, 'Historiqueetatpe.identifiantpe' );
+				if( !empty( $dernierIdentifiantpe ) ){
+					$valueIdentifiantpe = $dernierIdentifiantpe;
+					echo $xform->fieldValue( 'Cui.isinscritpe', 'Oui' );
+				}
+				else{
+					$valueIdentifiantpe = $dernierIdentifiantpe;
+					echo $xform->fieldValue( 'Cui.isinscritpe', 'Non' );
+				}
+				echo $default->subform(
+					array(
+						'Cui.identifiantpe' => array( 'value' => isset( $this->data['Cui']['identifiantpe'] ) ? $this->data['Cui']['identifiantpe'] : $valueIdentifiantpe  )
+					),
+					array(
+						'domain' => $domain,
+						'options' => $options
+					)
+				);
 			?>
-			<fieldset id="InscritPE" class="invisible">
-				<?php
-					echo $default->subform(
-						array(
-							'Cui.dureeinscritpe' => array( 'legend' => required( __d( 'cui', 'Cui.dureeinscritpe', true )  ), 'type' => 'radio', 'options' => $options['dureeinscritpe'] ),
-						),
-						array(
-							'domain' => $domain,
-							'options' => $options
-						)
-					);
-				?>
-			</fieldset>
+			<?php if( !empty( $valueIdentifiantpe ) ):?>
+				<fieldset id="InscritPE" class="invisible">
+					<?php
+						echo $default->subform(
+							array(
+								'Cui.dureeinscritpe' => array( 'legend' => __d( 'cui', 'Cui.dureeinscritpe', true ), 'type' => 'radio', 'options' => $options['dureeinscritpe'] ),
+							),
+							array(
+								'domain' => $domain,
+								'options' => $options
+							)
+						);
+					?>
+				</fieldset>
+			<?php endif;?>
 
 				<table class="noborder">
 					<tr>
@@ -579,55 +589,7 @@
 					?>
 				</td>
 			</tr>
-			<tr>
-				<?php
-					$nbErrors2 = count( $this->validationErrors );
-					$errors2 = array(
-						'dureecollhebdoheure' => Set::extract( $this->validationErrors, 'Cui.dureecollhebdoheure' ),
-						'dureecollhebdominute' => Set::extract( $this->validationErrors, 'Cui.dureecollhebdominute' ),
-					);
-					unset(
-						$this->validationErrors['Cui']['dureecollhebdoheure'],
-						$this->validationErrors['Cui']['dureecollhebdominute']
-					);
-					$errors2 = Set::filter( $errors2 );
-				?>
-				<td class="dureehebdo noborder<?php echo ( ( $nbErrors2 == 0 ) ? '' : ' error' );?>"><?php echo required( 'Durée collective hebdomadaire de travail appliquée dans l\'établissement' ); ?></td>
-				<td class="dureehebdo noborder<?php echo ( ( $nbErrors2 == 0 ) ? '' : ' error' );?>">
-					<?php
-						echo $xform->input( 'Cui.dureecollhebdoheure', array( 'div' => false, 'label' => false, 'type' => 'text' ) ).' H '.$xform->input( 'Cui.dureecollhebdominute', array( 'div' => false, 'label' => false, 'type' => 'text' ) );
-
-						if( !empty( $errors2 ) ) {
-							echo '<ul class="error">';
-							if( !empty( $errors2['dureecollhebdoheure'] ) ) {
-								echo '<li><strong>Heure:</strong> '.$errors2['dureecollhebdoheure'].'</li>';
-							}
-							if( !empty( $errors2['dureecollhebdominute'] ) ) {
-								echo '<li><strong>Minutes:</strong> '.$errors2['dureecollhebdominute'].'</li>';
-							}
-							echo '</ul>';
-						}
-					?>
-				</td>
-			</tr>
 		</table>
-
-		<?php
-			echo $xhtml->tag( 'p', 'Lieu d\'exécution du contrat s\'il est différent de l\'adresse de l\'employeur :' );
-			echo $default->subform(
-				array(
-					'Cui.numlieucontrat',
-					'Cui.typevoielieucontrat' => array( 'empty' => true, 'options' => $options['typevoie'] ),
-					'Cui.nomvoielieucontrat',
-					'Cui.codepostallieucontrat',
-					'Cui.villelieucontrat'
-				),
-				array(
-					'domain' => $domain,
-					'options' => $options
-				)
-			);
-		?>
 
 	</fieldset>
 
@@ -637,11 +599,11 @@
 		<?php
 			echo $default->subform(
 			array(
-					'Cui.qualtuteur' => array( 'empty' => true, 'options' => $qual ),
-					'Cui.nomtuteur',
-					'Cui.prenomtuteur',
+					'Cui.tuteur',
 					'Cui.fonctiontuteur',
-					'Cui.structurereferente_id' => array( 'options' => $structs, 'empty' => true ),
+// 					'Cui.structurereferente_id' => array( 'options' => $structs, 'empty' => true ),
+					'Cui.orgsuivi_id' => array( 'options' => $structs, 'empty' => true ),
+					'Cui.prestataire_id' => array( 'options' => $prestataires, 'empty' => true ),
 					'Cui.referent_id' => array( 'options' => $referents, 'empty' => true ),
 					'Cui.isaas' => array( 'label' => __d( 'cui', 'Cui.isaas', true ), 'type' => 'radio', 'options' => $options['isaas'] )
 				),
@@ -792,6 +754,7 @@
 							'options' => $options
 						)
 					);
+					
 				?>
 			</fieldset>
 						<fieldset>
@@ -925,8 +888,21 @@
 
 			<table class="nbrCi wide noborder">
 				<tr class="nbrCi">
-					<td class="noborder"><?php echo __d( 'cui', 'Cui.tauxfixe', true ); ?></td>
-					<td class="noborder"> <?php echo Configure::read( 'Cui.taux.fixe' ).' %' ;?> </td>
+					<td class="noborder">
+						<?php
+							echo $default->subform(
+								array(
+									'Cui.tauxfixe' => array( 'value' => isset( $this->data['Cui']['tauxfixe'] ) ? $this->data['Cui']['tauxfixe'] : Configure::read( 'Cui.taux.fixe' ) )
+								),
+								array(
+									'domain' => $domain,
+									'options' => $options
+								)
+							);
+						?>
+					</td>
+					<!-- <td class="noborder"><?php /*echo __d( 'cui', 'Cui.tauxfixe', true ); ?></td>
+					<td class="noborder"> <?php echo Configure::read( 'Cui.taux.fixe' ).' %' ; */?> </td> -->
 				</tr>
 			</table>
 			<table class="wide noborder">
@@ -942,8 +918,21 @@
 			</table>
 			<table class="nbrCi wide noborder">
 				<tr class="nbrCi">
-					<td class="noborder"><?php echo __d( 'cui', 'Cui.tauxprisencharge', true ); ?></td>
-					<td class="noborder"> <?php echo Configure::read( 'Cui.taux.prisencharge' ).' %' ;?> </td>
+					<td class="noborder">
+						<?php
+							echo $default->subform(
+								array(
+									'Cui.tauxprisencharge' => array( 'value' => isset( $this->data['Cui']['tauxprisencharge'] ) ? $this->data['Cui']['tauxprisencharge'] : Configure::read( 'Cui.taux.prisencharge' ) )
+								),
+								array(
+									'domain' => $domain,
+									'options' => $options
+								)
+							);
+						?>
+					</td>
+					<!-- <td class="noborder"><?php /*echo __d( 'cui', 'Cui.tauxfixe', true ); ?></td>
+					<td class="noborder"> <?php echo Configure::read( 'Cui.taux.fixe' ).' %' ; */?> </td> -->
 				</tr>
 			</table>
 			<table class="wide noborder">
@@ -966,8 +955,23 @@
 				<table class="nbrCi wide noborder">
 					<tr class="nbrCi">
 
-						<td class="noborder"><?php echo __d( 'cui', 'Cui.tauxfinancementexclusif', true ); ?></td>
-						<td class="noborder"> <?php echo Configure::read( 'Cui.taux.financementexclusif' ).' %' ;?> </td>
+						<td class="noborder">
+							<?php
+								echo $default->subform(
+									array(
+										'Cui.tauxfinancementexclusif' => array( 'value' => isset( $this->data['Cui']['tauxfinancementexclusif'] ) ? $this->data['Cui']['tauxfinancementexclusif'] : Configure::read( 'Cui.taux.financementexclusif' ) )
+									),
+									array(
+										'domain' => $domain,
+										'options' => $options
+									)
+								);
+// 								echo __d( 'cui', 'Cui.tauxfinancementexclusif', true ); 
+							?>
+						</td>
+<!--						<td class="noborder">
+							<?php echo Configure::read( 'Cui.taux.financementexclusif' ).' %' ;?>
+						</td>-->
 
 					</tr>
 
@@ -991,19 +995,19 @@
 									)
 								);
 							}
-							else if( Configure::read( 'nom_form_cui_cg' ) == 'cg66' ){
-								echo $default->subform(
-									array(
-										'Cui.orgapayeur' => array(  'type' => 'radio', 'legend' => __d( 'cui', 'Cui.orgapayeur', true ), 'options' => $options['orgapayeur'] ),
-										'Cui.organisme',
-										'Cui.adresseorganisme'
-									),
-									array(
-										'domain' => $domain,
-										'options' => $options
-									)
-								);
-							}
+// 							else if( Configure::read( 'nom_form_cui_cg' ) == 'cg66' ){
+// 								echo $default->subform(
+// 									array(
+// 										'Cui.orgapayeur' => array(  'type' => 'radio', 'legend' => __d( 'cui', 'Cui.orgapayeur', true ), 'options' => $options['orgapayeur'] ),
+// 										'Cui.organisme',
+// 										'Cui.adresseorganisme'
+// 									),
+// 									array(
+// 										'domain' => $domain,
+// 										'options' => $options
+// 									)
+// 								);
+// 							}
 						?>
 					</fieldset>
 					<?php

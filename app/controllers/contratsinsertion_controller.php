@@ -224,7 +224,7 @@
 		}
 
 		/**
-		*   Fonction permettant d'accéder à la page pour lier les fichiers à l'Orientation
+		*   Fonction permettant d'accéder à la page pour lier les fichiers au CER
 		*/
 
 		public function filelink( $id ){

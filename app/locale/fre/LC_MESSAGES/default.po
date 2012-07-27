@@ -541,6 +541,18 @@ msgstr "Impression en cohorte fin sanction 2"
 
 msgid "Button::reconductionCERPlus55Ans"
 msgstr "Tacite reconduction"
+
+################################################################################
+# Boutons pour le CUI
+################################################################################
+msgid "Button::propositioncui"
+msgstr "Avis techniques"
+
+msgid "Button::notifelucui"
+msgstr "Notification élu"
+
+msgid "Button::decisioncui"
+msgstr "Décisions"
 ###############################################################################
 # Pagination
 # INFO: http://forum.cakephp-fr.org/viewtopic.php?id=878

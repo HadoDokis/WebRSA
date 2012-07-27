@@ -366,6 +366,11 @@
 		'cohortenonoriente66' => 'cohortesnonorientes66',
 		'nonoriente66' => 'nonorientes66',
 		'gestionsanctionep58' => 'gestionssanctionseps58',
+		
+		'propodecisioncui66' => 'proposdecisionscuis66',
+		'decisioncui66' => 'decisionscuis66',
+		'suspensioncui66' => 'suspensionscuis66',
+		'accompagnementcui66' => 'accompagnementscuis66',
 	);
 /**
 * This is a key => value array of regex used to match words.

@@ -4,10 +4,10 @@
 	class CuisController extends AppController
 	{
 		public $name = 'Cuis';
-		public $uses = array( 'Cui', 'Option', 'Dossier', 'Serviceinstructeur', 'Adressefoyer', 'Detaildroitrsa', 'Infofinanciere', 'Detailcalculdroitrsa', 'Departement' );
+		public $uses = array( 'Cui', 'Option', 'Departement' );
 
-		public $helpers = array( 'Default', 'Locale', 'Csv', 'Ajax', 'Xform' );
-		public $components = array( 'RequestHandler', 'Gedooo.Gedooo' );
+		public $helpers = array( 'Default', 'Default2', 'Locale', 'Csv', 'Ajax', 'Xform', 'Fileuploader' );
+		public $components = array( 'RequestHandler', 'Gedooo.Gedooo', 'Fileuploader' );
 
 		public $commeDroit = array(
 			'add' => 'Cuis:edit',
@@ -21,24 +21,6 @@
 		*/
 
 		protected function _setOptions() {
-			$typevoie = $this->Option->typevoie();
-			$this->set( 'rolepers', $this->Option->rolepers() );
-			$this->set( 'qual', $this->Option->qual() );
-			$this->set( 'nationalite', $this->Option->nationalite() );
-
-			$dept = $this->Departement->find( 'list', array( 'fields' => array( 'numdep', 'name' ), 'contain' => false ) );
-			$this->set( compact( 'dept' ) );
-
-			$this->set( 'rsaSocle', $this->Option->natpf() );
-		}
-
-		/**
-		*
-		*/
-
-		public function beforeFilter() {
-			$return = parent::beforeFilter();
-
 			$options = array();
 			$options = $this->Cui->allEnumLists();
 			$optionsperiode = $this->Cui->Periodeimmersion->allEnumLists();
@@ -46,9 +28,155 @@
 
 			$typevoie = $this->Option->typevoie();
 			$options = Set::insert( $options, 'typevoie', $typevoie );
-			$this->set( compact( 'options' ) );
 
-			return $return;
+			$this->set( compact( 'options' ) );
+			
+			
+			$typevoie = $this->Option->typevoie();
+			$this->set( 'rolepers', $this->Option->rolepers() );
+			$this->set( 'qual', $this->Option->qual() );
+			$this->set( 'nationalite', $this->Option->nationalite() );
+
+			$dept = $this->Departement->find( 'list', array( 'fields' => array( 'numdep', 'name' ), 'contain' => false ) );
+			$this->set( compact( 'dept' ) );
+			
+			
+			
+			if( Configure::read( 'CG.cantons' ) ) {
+				$Canton = ClassRegistry::init( 'Canton' );
+				$this->set( 'cantons', $Canton->selectList() );			
+				$secteursactivites = $this->Cui->Personne->Dsp->Libsecactderact66Secteur->find(
+						'list',
+						array(
+							'contain' => false,
+							'order' => array( 'Libsecactderact66Secteur.code' )
+						)
+					);
+				$this->set( 'secteursactivites', $secteursactivites );
+			}
+			
+
+			$this->set( 'prestataires', $this->Cui->Referent->listOptions() );
+			$this->set( 'referents', $this->Cui->Referent->find( 'list', array( 'recursive' => false ) ) );
+			$this->set( 'structs', $this->Cui->Structurereferente->listOptions() );
+
+
+			$this->set( 'rsaSocle', $this->Option->natpf() );
+		}
+
+		
+		
+		
+		/**
+		* http://valums.com/ajax-upload/
+		* http://doc.ubuntu-fr.org/modules_php
+		* increase post_max_size and upload_max_filesize to 10M
+		* debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
+		*/
+
+		public function ajaxfileupload() {
+			$this->Fileuploader->ajaxfileupload();
+		}
+
+		/**
+		* http://valums.com/ajax-upload/
+		* http://doc.ubuntu-fr.org/modules_php
+		* increase post_max_size and upload_max_filesize to 10M
+		* debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
+		* FIXME: traiter les valeurs de retour
+		*/
+
+		public function ajaxfiledelete() {
+			$this->Fileuploader->ajaxfiledelete();
+		}
+
+		/**
+		*   Fonction permettant de visualiser les fichiers chargés dans la vue avant leur envoi sur le serveur
+		*/
+
+		public function fileview( $id ) {
+			$this->Fileuploader->fileview( $id );
+		}
+
+		/**
+		*   Téléchargement des fichiers préalablement associés à un traitement donné
+		*/
+
+		public function download( $fichiermodule_id ) {
+			$this->assert( !empty( $fichiermodule_id ), 'error404' );
+			$this->Fileuploader->download( $fichiermodule_id );
+		}
+
+
+		/**
+		*   Fonction permettant d'accéder à la page pour lier les fichiers au CER
+		*/
+
+		public function filelink( $id ){
+			$this->assert( valid_int( $id ), 'invalidParameter' );
+
+			$fichiers = array();
+			$cui = $this->Cui->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Cui.id' => $id
+					),
+					'contain' => array(
+						'Fichiermodule' => array(
+							'fields' => array( 'name', 'id', 'created', 'modified' )
+						)
+					)
+				)
+			);
+
+			$personne_id = $cui['Cui']['personne_id'];
+			$dossier_id = $this->Cui->Personne->dossierId( $personne_id );
+			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
+
+			$this->Cui->begin();
+			if( !$this->Jetons->check( $dossier_id ) ) {
+				$this->Cui->rollback();
+			}
+			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
+
+			// Retour à l'index en cas d'annulation
+			if( isset( $this->params['form']['Cancel'] ) ) {
+				$this->redirect( array( 'action' => 'index', $personne_id ) );
+			}
+
+			if( !empty( $this->data ) ) {
+				$saved = $this->Cui->updateAll(
+					array( 'Cui.haspiecejointe' => '\''.$this->data['Cui']['haspiecejointe'].'\'' ),
+					array(
+						'"Cui"."personne_id"' => $personne_id,
+						'"Cui"."id"' => $id
+					)
+				);
+
+				if( $saved ){
+					// Sauvegarde des fichiers liés à une PDO
+					$dir = $this->Fileuploader->dirFichiersModule( $this->action, $this->params['pass'][0] );
+					$saved = $this->Fileuploader->saveFichiers( $dir, !Set::classicExtract( $this->data, "Cui.haspiecejointe" ), $id ) && $saved;
+				}
+
+				if( $saved ) {
+					$this->Jetons->release( $dossier_id );
+					$this->Cui->commit();
+					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+// 					$this->redirect( array(  'controller' => 'cuis','action' => 'index', $personne_id ) );
+					$this->redirect( $this->referer() );
+				}
+				else {
+					$fichiers = $this->Fileuploader->fichiers( $id );
+					$this->Cui->rollback();
+					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+				}
+			}
+
+			$this->_setOptions();
+			$this->set( compact( 'dossier_id', 'personne_id', 'fichiers', 'cui' ) );
+			$this->set( 'urlmenu', '/cuis/index/'.$personne_id );
 		}
 
 		/**
@@ -68,10 +196,17 @@
 			$cuis = $this->Cui->find(
 				'all',
 				array(
+					'fields' => array_merge(
+						$this->Cui->fields(),
+						array(
+							'( SELECT COUNT(fichiersmodules.id) FROM fichiersmodules WHERE fichiersmodules.modele = \'Cui\' AND fichiersmodules.fk_value = "Cui"."id" ) AS "Fichiermodule__nbFichiersLies"'
+						)
+					),
 					'conditions' => array(
 						'Cui.personne_id' => $personne_id
 					),
-					'recursive' => -1
+					'recursive' => -1,
+					'contain' => false
 				)
 			);
 
@@ -112,16 +247,12 @@
 			}
 
 			$valueAdressebis = null;
-			$valueInscritPE = null;
-			$valueIsBeneficiaire = null;
 			if( $this->action == 'add' ) {
 				$cui_id = null;
 				$personne_id = $id;
 				$nbrPersonnes = $this->Cui->Personne->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ), 'recursive' => -1 ) );
 				$this->assert( ( $nbrPersonnes == 1 ), 'invalidParameter' );
 				$valueAdressebis = 'N';
-				$valueInscritPE = 'N';
-				$valueIsBeneficiaire = null;
 
 			}
 			else if( $this->action == 'edit' ) {
@@ -130,8 +261,6 @@
 				$this->assert( !empty( $cui ), 'invalidParameter' );
 				$personne_id = Set::classicExtract( $cui, 'Cui.personne_id' );
 				$valueAdressebis = Set::classicExtract( $cui, 'Cui.isadresse2' );
-				$valueInscritPE = Set::classicExtract( $cui, 'Cui.isinscritpe' );
-				$valueIsBeneficiaire = Set::classicExtract( $cui, 'Cui.isbeneficiaire' );
 			}
 
 			/// Peut-on prendre le jeton ?
@@ -143,19 +272,14 @@
 			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
 			$this->set( 'dossier_id', $dossier_id );
 			$this->set( 'valueAdressebis', $valueAdressebis );
-			$this->set( 'valueInscritPE', $valueInscritPE );
-			$this->set( 'valueIsBeneficiaire', $valueIsBeneficiaire );
 
-			///On ajout l'ID de l'utilisateur connecté afind e récupérer son service instructeur
+
 			$personne = $this->{$this->modelClass}->Personne->detailsApre( $personne_id, $this->Session->read( 'Auth.User.id' ) );
 
 			$this->set( 'personne', $personne );
-			$this->set( 'referents', $this->Cui->Referent->find( 'list', array( 'recursive' => false ) ) );
-
-			$this->set( 'structs', $this->Cui->Structurereferente->listOptions() );
 
 			if( !empty( $this->data ) ){
-
+debug($this->data);
 				$this->{$this->modelClass}->create( $this->data );
 				$success = $this->{$this->modelClass}->save();
 
@@ -168,7 +292,7 @@
 					$this->data['Periodeimmersion'] = Set::merge( $defaults, $this->data['Periodeimmersion'] );
 				}
 
-				if( !empty( $this->data['Periodeimmersion'] ) ) {
+				if( ( $this->data['Cui']['secteur'] == 'CAE' ) && !empty( $this->data['Periodeimmersion'] ) ) {
 					$Periodeimmersion = Set::filter( $this->data['Periodeimmersion'] );
 					if( !empty( $Periodeimmersion ) ){
 						$this->{$this->modelClass}->Periodeimmersion->create( $this->data );
@@ -256,6 +380,7 @@
 			}
 		}
 
+		
 		/**
 		*
 		*/

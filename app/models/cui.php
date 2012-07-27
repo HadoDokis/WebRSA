@@ -6,8 +6,9 @@
 		public $actsAs = array(
 			'Enumerable' => array(
 				'fields' => array(
-					'convention' => array( 'domain' => 'cui' ),
+					'haspiecejointe' => array( 'domain' => 'cui' ),
 					'secteur' => array( 'domain' => 'cui' ),
+					'isaci' => array( 'domain' => 'cui' ),
 					'statutemployeur' => array( 'domain' => 'cui' ),
 					'niveauformation' => array( 'domain' => 'cui' ),
 					'avenant' => array( 'domain' => 'cui' ),
@@ -16,8 +17,6 @@
 					'formation' => array( 'domain' => 'cui' ),
 					'orgapayeur' => array( 'domain' => 'cui' ),
 					'isadresse2' => array( 'domain' => 'cui' ),
-					'atelierchantier' => array( 'domain' => 'cui' ),
-					'assurancechomage' => array( 'domain' => 'cui' ),
 					'iscie' => array( 'domain' => 'cui' ),
 					'dureesansemploi' => array( 'domain' => 'cui' ),
 					'isinscritpe' => array( 'domain' => 'cui' ),
@@ -48,7 +47,9 @@
 					'decisioncui' => array( 'domain' => 'cui' )
 				)
 			),
-			'Formattable',
+			'Formattable' => array(
+				'suffix' => array( 'structurereferente_id', 'referent_id' ),
+			),
 			'Autovalidate',
 			'Gedooo.Gedooo'
 		);
@@ -61,40 +62,14 @@
 			'CUI/cui.odt',
 		);
 
+
+
 		public $validate = array(
-			'convention' => array(
-				'rule' => 'notEmpty',
-				'message' => 'Champ obligatoire'
-			),
 			'secteur' => array(
 				'rule' => 'notEmpty',
 				'message' => 'Champ obligatoire'
 			),
-			'nomemployeur' => array(
-				'rule' => 'notEmpty',
-				'message' => 'Champ obligatoire'
-			),
-			'codenaf2' => array(
-				'rule' => 'notEmpty',
-				'message' => 'Champ obligatoire'
-			),
-			'identconvcollec' => array(
-				'rule' => 'notEmpty',
-				'message' => 'Champ obligatoire'
-			),
-			'statutemployeur' => array(
-				'rule' => 'notEmpty',
-				'message' => 'Champ obligatoire'
-			),
-			'effectifemployeur' => array(
-				'rule' => 'notEmpty',
-				'message' => 'Champ obligatoire'
-			),
 			'siret' => array(
-				array(
-					'rule' => 'notEmpty',
-					'message' => 'Champ obligatoire'
-				),
 				array(
 					'rule' => 'isUnique',
 					'message' => 'Ce numéro SIRET existe déjà'
@@ -104,15 +79,16 @@
 					'message' => 'Le numéro SIRET est composé de 14 chiffres'
 				)
 			),
+			/*'nomemployeur' => array(
+				'rule' => 'notEmpty',
+				'message' => 'Champ obligatoire'
+			),
+			'statutemployeur' => array(
+				'rule' => 'notEmpty',
+				'message' => 'Champ obligatoire'
+			),
+			
 			'orgrecouvcotis' => array(
-				'rule' => 'notEmpty',
-				'message' => 'Champ obligatoire'
-			),
-			'atelierchantier' => array(
-				'rule' => 'notEmpty',
-				'message' => 'Champ obligatoire'
-			),
-			'assurancechomage' => array(
 				'rule' => 'notEmpty',
 				'message' => 'Champ obligatoire'
 			),
@@ -156,10 +132,6 @@
 					'message' => 'Champ obligatoire'
 			),
 			'dureesansemploi' => array(
-					'rule' => 'notEmpty',
-					'message' => 'Champ obligatoire'
-			),
-			'isisncritpe' => array(
 					'rule' => 'notEmpty',
 					'message' => 'Champ obligatoire'
 			),
@@ -220,18 +192,6 @@
 				'message' => 'Champ obligatoire'
 			),
 			'modulation'  => array(
-				'rule' => 'notEmpty',
-				'message' => 'Champ obligatoire'
-			),
-			'qualtuteur'  => array(
-				'rule' => 'notEmpty',
-				'message' => 'Champ obligatoire'
-			),
-			'nomtuteur'  => array(
-				'rule' => 'notEmpty',
-				'message' => 'Champ obligatoire'
-			),
-			'prenomtuteur'  => array(
 				'rule' => 'notEmpty',
 				'message' => 'Champ obligatoire'
 			),
@@ -334,8 +294,8 @@
 			'orgapayeur' => array(
 				'rule' => 'notEmpty',
 				'message' => 'Champ obligatoire'
-			),
-		);
+			)*/
+		); 
 
 		public $belongsTo = array(
 			'Personne' => array(
@@ -358,7 +318,28 @@
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
-			)
+			),
+			'Orgsuivi' => array(
+				'className' => 'Structurereferente',
+				'foreignKey' => 'orgsuivi_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			'Prestataire' => array(
+				'className' => 'Referent',
+				'foreignKey' => 'prestataire_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			'User' => array(
+				'className' => 'User',
+				'foreignKey' => 'user_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
 		);
 
 		public $hasMany = array(
@@ -374,7 +355,75 @@
 				'exclusive' => '',
 				'finderQuery' => '',
 				'counterQuery' => ''
-			)
+			),
+			'Fichiermodule' => array(
+				'className' => 'Fichiermodule',
+				'foreignKey' => false,
+				'dependent' => false,
+				'conditions' => array(
+					'Fichiermodule.modele = \'Cui\'',
+					'Fichiermodule.fk_value = {$__cakeID__$}'
+				),
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Propodecisioncui66' => array(
+				'className' => 'Propodecisioncui66',
+				'foreignKey' => 'cui_id',
+				'dependent' => false,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Decisioncui66' => array(
+				'className' => 'Decisioncui66',
+				'foreignKey' => 'cui_id',
+				'dependent' => false,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Suspensioncui66' => array(
+				'className' => 'Suspensioncui66',
+				'foreignKey' => 'cui_id',
+				'dependent' => false,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Accompagnementcui66' => array(
+				'className' => 'Accompagnementcui66',
+				'foreignKey' => 'cui_id',
+				'dependent' => false,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 		);
 
 		/**
@@ -527,13 +576,14 @@
 			return $return;
 		}
 
+		
 		/**
-		 * Retourne le PDF de notification du CUI.
 		 *
-		 * @param integer $id L'id du CUI pour lequel on veut générer l'impression
-		 * @return string
+		 * @param integer $id
+		 * @param integer $user_id
+		 * @return array
 		 */
-		public function getDefaultPdf( $id ) {
+		public function getDataForPdf( $id, $user_id ) {
 			$cui = $this->find(
 				'first',
 				array(
@@ -549,7 +599,7 @@
 					'joins' => array(
 						$this->join( 'Personne', array( 'type' => 'INNER' ) ),
 						$this->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ),
-						$this->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
+						$this->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
 						$this->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
 						$this->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
 						$this->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
@@ -565,7 +615,31 @@
 					'contain' => false
 				)
 			);
-
+			
+			$user = $this->User->find(
+				'first',
+				array(
+					'conditions' => array(
+						'User.id' => $user_id
+					),
+					'contain' => false
+				)
+			);
+			$cui = Set::merge( $cui, $user );
+			
+			
+			return $cui;
+		}
+		
+		/**
+		 * Retourne le PDF de notification du CUI.
+		 *
+		 * @param integer $id L'id du CUI pour lequel on veut générer l'impression
+		 * @return string
+		 */
+		public function getDefaultPdf( $id ) {
+			
+			$cui = $this->getDataForPdf( $id, $user_id );
 			///Traduction pour les données de la Personne/Contact/Partenaire/Référent
 			$Option = ClassRegistry::init( 'Option' );
 			$options = array(
@@ -593,5 +667,6 @@
 				$options
 			);
 		}
+
 	}
 ?>

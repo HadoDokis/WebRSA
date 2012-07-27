@@ -189,6 +189,179 @@ CREATE UNIQUE INDEX defautsinsertionseps66_nvorientstruct_id_idx ON defautsinser
 
 
 
+-------------------------------------------------------------------------------------------------------------
+-- 20120724: Modifications de la table cuis
+-------------------------------------------------------------------------------------------------------------
+SELECT alter_table_drop_column_if_exists('public', 'cuis', 'convention');
+
+DROP TYPE IF EXISTS TYPE_ISACI CASCADE;
+CREATE TYPE TYPE_ISACI AS ENUM ( 'horsaci','enaci');
+SELECT add_missing_table_field ('public', 'cuis', 'isaci', 'TYPE_ISACI');
+
+SELECT add_missing_table_field('public', 'cuis', 'cantonemployeur', 'VARCHAR(250)' );
+SELECT add_missing_table_field('public', 'cuis', 'cantonemployeur2', 'VARCHAR(250)' );
+
+SELECT public.alter_enumtype ( 'TYPE_STATUTEMPLOYEUR', ARRAY['10','11','21','22','50','60','70','71','72','73','80','90','98','99'] );
+
+SELECT alter_table_drop_column_if_exists('public', 'cuis', 'siret');
+SELECT alter_table_drop_column_if_exists('public', 'cuis', 'codenaf2');
+SELECT alter_table_drop_column_if_exists('public', 'cuis', 'identconvcollec');
+SELECT alter_table_drop_column_if_exists('public', 'cuis', 'effectifemployeur');
+SELECT alter_table_drop_column_if_exists('public', 'cuis', 'ribemployeur');
+
+SELECT alter_table_drop_column_if_exists('public', 'cuis', 'atelierchantier');
+SELECT alter_table_drop_column_if_exists('public', 'cuis', 'numannexefinanciere');
+SELECT alter_table_drop_column_if_exists('public', 'cuis', 'assurancechomage');
+
+SELECT add_missing_table_field('public', 'cuis', 'etaban', 'VARCHAR(5)' );
+SELECT add_missing_table_field('public', 'cuis', 'guiban', 'VARCHAR(5)' );
+SELECT add_missing_table_field('public', 'cuis', 'numcomptban', 'VARCHAR(11)' );
+SELECT add_missing_table_field('public', 'cuis', 'nometaban', 'VARCHAR(24)' );
+SELECT add_missing_table_field('public', 'cuis', 'clerib', 'VARCHAR(2)' );
+
+DROP TYPE IF EXISTS TYPE_ASSURANCE CASCADE;
+
+
+SELECT public.alter_enumtype ( 'TYPE_NIVEAUFORMATION', ARRAY['00','10','20','30','40','41','50','51','60','70'] );
+SELECT add_missing_table_field('public', 'cuis', 'identifiantpe', 'VARCHAR(11)' );
+SELECT alter_table_drop_column_if_exists('public', 'cuis', 'isinscritpe' );
+
+SELECT alter_table_drop_column_if_exists('public', 'cuis', 'numlieucontrat' );
+SELECT alter_table_drop_column_if_exists('public', 'cuis', 'typevoielieucontrat' );
+SELECT alter_table_drop_column_if_exists('public', 'cuis', 'nomvoielieucontrat' );
+SELECT alter_table_drop_column_if_exists('public', 'cuis', 'codepostallieucontrat' );
+SELECT alter_table_drop_column_if_exists('public', 'cuis', 'villelieucontrat' );
+
+SELECT alter_table_drop_column_if_exists('public', 'cuis', 'qualtuteur' );
+SELECT alter_table_drop_column_if_exists('public', 'cuis', 'nomtuteur' );
+SELECT alter_table_drop_column_if_exists('public', 'cuis', 'prenomtuteur' );
+SELECT add_missing_table_field('public', 'cuis', 'tuteur', 'VARCHAR(250)' );
+
+SELECT add_missing_table_field('public', 'cuis', 'orgsuivi_id', 'INTEGER' );
+SELECT add_missing_constraint ( 'public', 'cuis', 'cuis_orgsuivi_id_fkey', 'structuresreferentes', 'orgsuivi_id', false );
+SELECT add_missing_table_field('public', 'cuis', 'prestataire_id', 'INTEGER' );
+SELECT add_missing_constraint ( 'public', 'cuis', 'cuis_prestataire_id_fkey', 'referents', 'prestataire_id', false );
+
+ALTER TABLE cuis ALTER COLUMN referent_id DROP NOT NULL;
+
+-------------------------------------------------------------------------------------------------------------
+-- 20120725: Création d'une table de propositions de décisions pour le CUI
+-------------------------------------------------------------------------------------------------------------
+DROP TYPE IF EXISTS TYPE_PROPOSITIONCUI66 CASCADE;
+CREATE TYPE TYPE_PROPOSITIONCUI66 AS ENUM ( 'enattente', 'accord','refus', 'sanssuiteemployeur', 'sanssuiteemploye', 'sanssuitesalarie', 'denonciation', 'resilie', 'elementsup' );
+
+DROP TABLE IF EXISTS proposdecisionscuis66 CASCADE;
+CREATE TABLE proposdecisionscuis66(
+  	id 						SERIAL NOT NULL PRIMARY KEY,
+    cui_id             		INTEGER NOT NULL REFERENCES cuis(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    propositioncui			TYPE_PROPOSITIONCUI66 DEFAULT NULL,
+    datepropositioncui		DATE NOT NULL,
+    observcui				TEXT,
+    isaviselu				TYPE_BOOLEANNUMBER DEFAULT '0',
+    propositioncuielu		TYPE_PROPOSITIONCUI66 DEFAULT NULL,
+    datepropositioncuielu		DATE DEFAULT NULL,
+    observcuielu				TEXT DEFAULT NULL,
+	isavisreferent				TYPE_BOOLEANNUMBER DEFAULT '0',
+    propositioncuireferent		TYPE_PROPOSITIONCUI66 DEFAULT NULL,
+    datepropositioncuireferent		DATE DEFAULT NULL,
+    observcuireferent				TEXT DEFAULT NULL,
+    user_id			INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    created					TIMESTAMP WITHOUT TIME ZONE,
+	modified				TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE proposdecisionscuis66 IS 'Table de propositions de décision du CUI (CG66)';
+
+DROP INDEX IF EXISTS proposdecisionscuis66_propositioncui_idx;
+
+CREATE INDEX proposdecisionscuis66_propositioncui_idx ON proposdecisionscuis66(propositioncui);
+
+DROP INDEX IF EXISTS proposdecisionscuis66_propositioncuielu_idx;
+CREATE INDEX proposdecisionscuis66_propositioncuielu_idx ON proposdecisionscuis66(propositioncuielu);
+
+DROP INDEX IF EXISTS proposdecisionscuis66_user_id_idx;
+CREATE INDEX proposdecisionscuis66_user_id_isx ON proposdecisionscuis66(user_id);
+
+
+SELECT add_missing_table_field('public', 'cuis', 'haspiecejointe', 'type_booleannumber' );
+ALTER TABLE cuis ALTER COLUMN haspiecejointe SET DEFAULT '0'::TYPE_BOOLEANNUMBER;
+UPDATE cuis SET haspiecejointe = '0'::TYPE_BOOLEANNUMBER WHERE haspiecejointe IS NULL;
+ALTER TABLE cuis ALTER COLUMN haspiecejointe SET NOT NULL;
+
+SELECT add_missing_table_field ('public', 'cuis', 'user_id', 'INTEGER');
+SELECT add_missing_constraint( 'public', 'cuis', 'cuis_user_id_fk', 'users', 'user_id' );
+
+DROP INDEX IF EXISTS cuis_user_id_idx;
+CREATE INDEX cuis_user_id_idx ON cuis(user_id);
+
+
+
+DROP TABLE IF EXISTS decisionscuis66 CASCADE;
+CREATE TABLE decisionscuis66(
+  	id 						SERIAL NOT NULL PRIMARY KEY,
+    cui_id             		INTEGER NOT NULL REFERENCES cuis(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    decisioncui			TYPE_PROPOSITIONCUI66 DEFAULT NULL,
+    datedecisioncui		DATE NOT NULL,
+    observdecisioncui				TEXT,
+    user_id			INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    created					TIMESTAMP WITHOUT TIME ZONE,
+	modified				TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE decisionscuis66 IS 'Table de décisions du CUI (CG66)';
+
+DROP INDEX IF EXISTS decisionscuis66_decisioncui_idx;
+CREATE INDEX decisionscuis66_decisioncui_idx ON decisionscuis66(decisioncui);
+
+DROP INDEX IF EXISTS decisionscuis66_user_id_idx;
+CREATE INDEX decisionscuis66_user_id_idx ON decisionscuis66(user_id);
+
+-------------------------------------------------------------------------------------------------------------
+-- 20120727: Création d'une table pour les suspensions/ruptures de CUI (CG66)
+-------------------------------------------------------------------------------------------------------------
+DROP TYPE IF EXISTS TYPE_SUSPENSIONCUI66 CASCADE;
+CREATE TYPE TYPE_SUSPENSIONCUI66 AS ENUM ( 'absence', 'arret' );
+
+DROP TABLE IF EXISTS suspensionscuis66 CASCADE;
+CREATE TABLE suspensionscuis66(
+  	id 							SERIAL NOT NULL PRIMARY KEY,
+    cui_id             			INTEGER NOT NULL REFERENCES cuis(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    typesuspensioncui66			TYPE_SUSPENSIONCUI66 DEFAULT NULL,
+    user_id						INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    created						TIMESTAMP WITHOUT TIME ZONE,
+	modified					TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE suspensionscuis66 IS 'Table de suspensions/ruptures pour le CUI (CG66)';
+
+DROP INDEX IF EXISTS suspensionscuis66_typesuspensioncui66_idx;
+CREATE INDEX suspensionscuis66_typesuspensioncui66_idx ON suspensionscuis66(typesuspensioncui66);
+
+DROP INDEX IF EXISTS suspensionscuis66_user_id_idx;
+CREATE INDEX suspensionscuis66_user_id_idx ON suspensionscuis66(user_id);
+
+
+-------------------------------------------------------------------------------------------------------------
+-- 20120727: Création d'une table pour les accompagnements du CUI (CG66)
+-------------------------------------------------------------------------------------------------------------
+DROP TYPE IF EXISTS TYPE_ACCOMPAGNEMENTCUI66 CASCADE;
+CREATE TYPE TYPE_ACCOMPAGNEMENTCUI66 AS ENUM ( 'immersion', 'formation' );
+
+DROP TABLE IF EXISTS accompagnementscuis66 CASCADE;
+CREATE TABLE accompagnementscuis66(
+  	id 							SERIAL NOT NULL PRIMARY KEY,
+    cui_id             			INTEGER NOT NULL REFERENCES cuis(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    typeaccompagnementcui66			TYPE_ACCOMPAGNEMENTCUI66 DEFAULT NULL,
+    user_id						INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    created						TIMESTAMP WITHOUT TIME ZONE,
+	modified					TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE accompagnementscuis66 IS 'Table des accompagnements (périodes immersion, formations) pour le CUI (CG66)';
+
+DROP INDEX IF EXISTS accompagnementscuis66_typeaccompagnementcui66_idx;
+CREATE INDEX accompagnementscuis66_typeaccompagnementcui66_idx ON accompagnementscuis66(typeaccompagnementcui66);
+
+DROP INDEX IF EXISTS accompagnementscuis66_user_id_idx;
+CREATE INDEX accompagnementscuis66_user_id_idx ON accompagnementscuis66(user_id);
+
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
