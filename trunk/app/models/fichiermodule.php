@@ -205,6 +205,16 @@
 				'fields' => '',
 				'order' => ''
 			),
+			'Cui' => array(
+				'className' => 'Cui',
+				'foreignKey' => false,
+				'conditions' => array(
+					'Fichiermodule.modele = \'Cui\'',
+					'Fichiermodule.fk_value = {$__cakeID__$}'
+				),
+				'fields' => '',
+				'order' => ''
+			),
 		);
 
 		/**

@@ -26,7 +26,7 @@
 	<?php endif;?>
 
 	<?php if( !empty( $cuis ) ):?>
-	<table class="tooltips">
+	<table class="tooltips default2">
 		<thead>
 			<tr>
 				<th>Date du contrat</th>
@@ -34,17 +34,17 @@
 				<th>Dénomination</th>
 				<th>Décision pour le CUI</th>
 				<th>Date de validation</th>
-				<th colspan="5" class="action">Actions</th>
+				<th colspan="10" class="action">Actions</th>
 			</tr>
 		</thead>
 		<tbody>
 			<?php foreach( $cuis as $cui ):?>
 				<?php
-					$isPeriodeImmersion = false;
-					$hasPeriode = Set::classicExtract( $cui, 'Cui.iscae' );
-					if( $hasPeriode == 'O' ) {
-						$isPeriodeImmersion = true;
-					}
+// 					$isPeriodeImmersion = false;
+// 					$hasPeriode = Set::classicExtract( $cui, 'Cui.iscae' );
+// 					if( $hasPeriode == 'O' ) {
+// 						$isPeriodeImmersion = true;
+// 					}
 
 					echo $xhtml->tableCells(
 						array(
@@ -53,31 +53,97 @@
 							h( Set::classicExtract( $cui, 'Cui.nomemployeur' ) ),
 							h( Set::enum( Set::classicExtract( $cui, 'Cui.decisioncui' ), $options['decisioncui'] ) ),
 							h( date_short( Set::classicExtract( $cui, 'Cui.datevalidationcui' ) ) ),
-							$xhtml->validateLink(
-								'Valider le CUI',
-								array( 'controller' => 'cuis', 'action' => 'valider',  Set::classicExtract( $cui, 'Cui.id' ) )
+							$default2->button(
+								'view',
+								array( 'controller' => 'cuis', 'action' => 'view', $cui['Cui']['id'] ),
+								array(
+									'enabled' => (
+										$permissions->check( 'cuis', 'view' ) == 1
+									)
+								)
 							),
-							$xhtml->periodeImmersionLink(
-								'Périodes d\'immersion',
-								array( 'controller' => 'periodesimmersion', 'action' => 'index', Set::classicExtract( $cui, 'Cui.id' ) ),
-								$isPeriodeImmersion,
-								$permissions->check( 'periodesimmersion', 'index' )
+							$default2->button(
+								'edit',
+								array( 'controller' => 'cuis', 'action' => 'edit', $cui['Cui']['id'] ),
+								array(
+									'enabled' => (
+										( $permissions->check( 'cuis', 'edit' ) == 1 )
+									)
+								)
 							),
-							$xhtml->editLink(
-								'Éditer le CUI',
-								array( 'controller' => 'cuis', 'action' => 'edit', Set::classicExtract( $cui, 'Cui.id' ) ),
-								$permissions->check( 'cuis', 'edit' )
+							$default2->button(
+								'proposition',
+								array( 'controller' => 'proposdecisionscuis66', 'action' => 'propositioncui',
+								$cui['Cui']['id'] ),
+								array(
+									'enabled' => (
+											( $permissions->check( 'proposdecisionscuis66', 'propositioncui' ) == 1 )
+									)
+								)
 							),
-							$xhtml->printLink(
-								'Imprimer le CUI',
-								array( 'controller' => 'cuis', 'action' => 'impression', Set::classicExtract( $cui, 'Cui.id' ) ),
-								$permissions->check( 'cuis', 'impression' )
+							$default2->button(
+								'valider',
+								array( 'controller' => 'decisionscuis66', 'action' => 'decisioncui',
+								$cui['Cui']['id'] ),
+								array(
+									'enabled' => (
+										( $permissions->check( 'cuis', 'decisioncui' ) == 1 )
+									)
+								)
 							),
-							$xhtml->deleteLink(
-								'Supprimer le CUI',
-								array( 'controller' => 'cuis', 'action' => 'delete', Set::classicExtract( $cui, 'Cui.id' ) ),
-								$permissions->check( 'cuis', 'delete' )
-							)
+							$default2->button(
+								'print',
+								array( 'controller' => 'cuis', 'action' => 'impression',
+								$cui['Cui']['id'] ),
+								array(
+									'enabled' => (
+										( $permissions->check( 'cuis', 'impression' ) == 1 )
+									)
+								)
+							),
+							$default2->button(
+								'suspension',
+								array( 'controller' => 'suspensionscuis66', 'action' => 'index',
+								$cui['Cui']['id'] ),
+								array(
+									'label' => 'Suspension/Rupture',
+									'enabled' => (
+										( $permissions->check( 'suspensionscuis66', 'index' ) == 1 )
+									)
+								)
+							),
+							$default2->button(
+								'accompagnement',
+								array( 'controller' => 'accompagnementscuis66', 'action' => 'index',
+								$cui['Cui']['id'] ),
+								array(
+									'label' => 'Accompagnement',
+									'enabled' => (
+										( $permissions->check( 'accompagnementscuis66', 'index' ) == 1 )
+									)
+								)
+							),
+							$default2->button(
+								'cancel',
+								array( 'controller' => 'cuis', 'action' => 'cancel',
+								$cui['Cui']['id'] ),
+								array(
+									'enabled' => (
+										( $permissions->check( 'cuis', 'cancel' ) == 1 )
+									)
+								)
+							),
+							$default2->button(
+								'filelink',
+								array( 'controller' => 'cuis', 'action' => 'filelink',
+								$cui['Cui']['id'] ),
+								array(
+									'enabled' => (
+										$permissions->check( 'cuis', 'filelink' ) == 1
+									)
+								)
+							),
+							h( '('.Set::classicExtract( $cui, 'Fichiermodule.nbFichiersLies' ).')' )
 						),
 						array( 'class' => 'odd' ),
 						array( 'class' => 'even' )

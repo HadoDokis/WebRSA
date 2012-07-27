@@ -131,14 +131,14 @@
                     <td class="mediumSize noborder">
                         <strong>N° Service instructeur : </strong><?php echo Set::classicExtract( $personne, 'Serviceinstructeur.lib_service' );?>
                         <br />
-                        <strong>N° demandeur : </strong><?php echo Set::classicExtract( $personne, 'Foyer.Dossier.numdemrsa' );?>
+                        <strong>N° demandeur : </strong><?php echo Set::classicExtract( $personne, 'Dossier.numdemrsa' );?>
                         <br />
-                        <strong>N° CAF/MSA : </strong><?php echo Set::classicExtract( $personne, 'Foyer.Dossier.matricule' );?>
+                        <strong>N° CAF/MSA : </strong><?php echo Set::classicExtract( $personne, 'Dossier.matricule' );?>
                         <br />
                         <strong>Inscrit au Pôle emploi</strong>
                         <?php
-                            $isPoleemploi = Set::classicExtract( $personne, 'Activite.0.act' );
-                            if( $isPoleemploi == 'ANP' )
+                            $isPoleemploi = Set::classicExtract( $personne, 'Historiqueetatpe.etat' );
+                            if( $isPoleemploi == 'inscription' )
                                 echo 'Oui';
                             else
                                 echo 'Non';

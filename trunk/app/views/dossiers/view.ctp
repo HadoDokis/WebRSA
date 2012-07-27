@@ -374,11 +374,6 @@
 					<table>
 					<?php echo thead( 10 );?>
 						<tbody>
-							<tr class="even">
-								<th>Convention</th>
-								<td><?php echo Set::enum( Set::classicExtract( $details, 'DEM.Cui.convention' ), $enumcui['convention'] );?></td>
-								<td><?php echo Set::enum( Set::classicExtract( $details, 'CJT.Cui.convention' ), $enumcui['convention'] );?></td>
-							</tr>
 							<tr class="odd">
 								<th>Secteur</th>
 								<td><?php echo Set::enum( Set::classicExtract( $details, 'DEM.Cui.secteur' ), $enumcui['secteur'] );?></td>

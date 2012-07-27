@@ -493,7 +493,6 @@
 					'first',
 					array(
 						'fields' => array(
-							'Cui.convention',
 							'Cui.secteur',
 							'Cui.datecontrat',
 							'Cui.decisioncui',

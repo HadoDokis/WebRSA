@@ -1257,6 +1257,27 @@ td.button.reconduction.disabled a, td.action a.reconduction.disabled, td span.bu
     background-image: url( ../img/icons/printer_disabled.png );
 }
 
+td.button.notifelucui a, td.action a.notifelucui, td span.button.notifelucui, table.default2 td a.button.notifelucui {
+    background-image: url( ../img/icons/printer.png );
+}
+td.button.notifelucui.disabled a, td.action a.notifelucui.disabled, td span.button.notifelucui.disabled, table.default2 td a.button.notifelucui.disabled {
+    background-image: url( ../img/icons/printer_disabled.png );
+}
+
+td.button.suspension a, td.action a.suspension, td span.button.suspension, table.default2 td a.button.suspension {
+    background-image: url( ../img/icons/page_red.png );
+}
+td.button.suspension.disabled a, td.action a.suspension.disabled, td span.button.suspension.disabled, table.default2 td a.button.suspension.disabled {
+    background-image: url( ../img/icons/page_red_disabled.png );
+}
+
+td.button.accompagnement a, td.action a.accompagnement, td span.button.accompagnement, table.default2 td a.button.accompagnement {
+    background-image: url( ../img/icons/report.png );
+}
+td.button.accompagnement.disabled a, td.action a.accompagnement.disabled, td span.button.accompagnement.disabled, table.default2 td a.button.accompagnement.disabled {
+    background-image: url( ../img/icons/report_disabled.png );
+}
+
 ul.actionMenu a.button.printcohorte1, ul.actionMenu a.button.printcohorte2 {
     background-image: url( ../img/icons/printer.png );
 /* 	padding: 5px; */
