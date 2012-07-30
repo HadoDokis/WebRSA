@@ -94,7 +94,7 @@ msgstr "Commune"
 msgid "Cui.cantonemployeur"
 msgstr "Canton"
 
-msgid "Cui.secteuractiviteemployeur"
+msgid "Cui.secteuractiviteemployeur_id"
 msgstr "Secteur d'activité"
 
 msgid "Cui.isadresse2"
@@ -127,7 +127,7 @@ msgstr "Commune"
 msgid "Cui.cantonemployeur2"
 msgstr "Canton"
 
-msgid "Cui.secteuractiviteemployeur2"
+msgid "Cui.secteuractiviteemployeur2_id"
 msgstr "Secteur d'activité"
 
 msgid "Cui.isadresse2"
@@ -702,3 +702,9 @@ msgstr "Non"
 
 msgid "ENUM::HASPIECEJOINTE::1"
 msgstr "Oui"
+
+msgid "Cui.secteuremploipropose_id"
+msgstr "Secteur d'emploi proposé"
+
+msgid "Cui.metieremploipropose_id"
+msgstr "Métier d'emploi proposé"

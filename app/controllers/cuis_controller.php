@@ -23,13 +23,33 @@
 		protected function _setOptions() {
 			$options = array();
 			$options = $this->Cui->allEnumLists();
-			$optionsperiode = $this->Cui->Periodeimmersion->allEnumLists();
-			$options = Set::merge( $options, $optionsperiode );
+			$optionsaccompagnement = $this->Cui->Accompagnementcui66->allEnumLists();
+			$options = Set::merge( $options, $optionsaccompagnement );
 
+			$secteursactivites = $this->Cui->Personne->Dsp->Libsecactderact66Secteur->find(
+					'list',
+					array(
+						'contain' => false,
+						'order' => array( 'Libsecactderact66Secteur.code' )
+					)
+				);
+			$this->set( 'secteursactivites', $secteursactivites );
+
+			$codesromemetiersdsps66 = $this->Cui->Personne->Dsp->Libderact66Metier->find(
+					'all',
+					array(
+						'contain' => false,
+						'order' => array( 'Libderact66Metier.code' )
+					)
+				);
+			foreach( $codesromemetiersdsps66 as $coderomemetierdsp66 ) {
+				$options['Coderomemetierdsp66'][$coderomemetierdsp66['Libderact66Metier']['coderomesecteurdsp66_id'].'_'.$coderomemetierdsp66['Libderact66Metier']['id']] = $coderomemetierdsp66['Libderact66Metier']['code'].'. '.$coderomemetierdsp66['Libderact66Metier']['name'];
+			}
+			
 			$typevoie = $this->Option->typevoie();
 			$options = Set::insert( $options, 'typevoie', $typevoie );
 
-			$this->set( compact( 'options' ) );
+			
 			
 			
 			$typevoie = $this->Option->typevoie();
@@ -47,20 +67,14 @@
 				$this->set( 'cantons', $Canton->selectList() );			
 			}
 			
-			$secteursactivites = $this->Cui->Personne->Dsp->Libsecactderact66Secteur->find(
-					'list',
-					array(
-						'contain' => false,
-						'order' => array( 'Libsecactderact66Secteur.code' )
-					)
-				);
-			$this->set( 'secteursactivites', $secteursactivites );
+			
 			$this->set( 'prestataires', $this->Cui->Referent->listOptions() );
 			$this->set( 'referents', $this->Cui->Referent->find( 'list', array( 'recursive' => false ) ) );
 			$this->set( 'structs', $this->Cui->Structurereferente->listOptions() );
 
 
 			$this->set( 'rsaSocle', $this->Option->natpf() );
+			$this->set( compact( 'options' ) );
 		}
 
 		
@@ -208,6 +222,7 @@
 					'contain' => false
 				)
 			);
+			
 
 			$this->_setOptions();
 			$this->set( 'personne_id', $personne_id );
@@ -316,25 +331,25 @@
 				$success = $this->{$this->modelClass}->save();
 
 				// Nettoyage des Periodes d'immersion
-				$keys = array_keys( $this->Cui->Periodeimmersion->schema() );
+				$keys = array_keys( $this->Cui->Accompagnementcui66->schema() );
 				$defaults = array_combine( $keys, array_fill( 0, count( $keys ), null ) );
 				unset( $defaults['id'] );
 				unset( $defaults['cui_id'] );
-				if( !empty( $this->data['Periodeimmersion'] ) ) {
-					$this->data['Periodeimmersion'] = Set::merge( $defaults, $this->data['Periodeimmersion'] );
+				if( !empty( $this->data['Accompagnementcui66'] ) ) {
+					$this->data['Accompagnementcui66'] = Set::merge( $defaults, $this->data['Accompagnementcui66'] );
 				}
 
-				if( ( $this->data['Cui']['secteur'] == 'CAE' ) && !empty( $this->data['Periodeimmersion'] ) ) {
-					$Periodeimmersion = Set::filter( $this->data['Periodeimmersion'] );
-					if( !empty( $Periodeimmersion ) ){
-						$this->{$this->modelClass}->Periodeimmersion->create( $this->data );
+				if( ( $this->data['Cui']['secteur'] == 'CAE' ) && !empty( $this->data['Accompagnementcui66'] ) ) {
+					$Accompagnementcui66 = Set::filter( $this->data['Accompagnementcui66'] );
+					if( !empty( $Accompagnementcui66 ) ){
+						$this->{$this->modelClass}->Accompagnementcui66->create( $this->data );
 						if( $this->action == 'add'  ) {
-							$this->{$this->modelClass}->Periodeimmersion->set( 'cui_id', $this->{$this->modelClass}->getLastInsertID( ) );
+							$this->{$this->modelClass}->Accompagnementcui66->set( 'cui_id', $this->{$this->modelClass}->getLastInsertID( ) );
 						}
 						else if( $this->action == 'edit' ) {
-							$this->{$this->modelClass}->Periodeimmersion->set( 'cui_id', Set::classicExtract( $this->data, 'Cui.id' ) );
+							$this->{$this->modelClass}->Accompagnementcui66->set( 'cui_id', Set::classicExtract( $this->data, 'Cui.id' ) );
 						}
-						$success = $this->{$this->modelClass}->Periodeimmersion->save() && $success;
+						$success = $this->{$this->modelClass}->Accompagnementcui66->save() && $success;
 					}
 				}
 
@@ -353,8 +368,8 @@
 			else {
 				if( $this-> action == 'edit' ){
 					$this->data = $cui;
-					if( !empty( $this->data['Periodeimmersion'] ) ) {
-						$this->data['Periodeimmersion'] = $this->data['Periodeimmersion'][0];
+					if( !empty( $this->data['Accompagnementcui66'] ) ) {
+						$this->data['Accompagnementcui66'] = $this->data['Accompagnementcui66'][0];
 					}
 
 				}
