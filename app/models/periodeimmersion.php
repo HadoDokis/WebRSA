@@ -4,11 +4,7 @@
 		public $name = 'Periodeimmersion';
 
 		public $actsAs = array(
-			'Enumerable' => array(
-				'fields' => array(
-					'objectifimmersion'
-				)
-			),
+			'Enumerable',
 			'Formattable',
 			'Autovalidate'
 		);

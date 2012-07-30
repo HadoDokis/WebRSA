@@ -637,7 +637,7 @@
 		 * @param integer $id L'id du CUI pour lequel on veut générer l'impression
 		 * @return string
 		 */
-		public function getDefaultPdf( $id ) {
+		public function getDefaultPdf( $id, $user_id ) {
 			
 			$cui = $this->getDataForPdf( $id, $user_id );
 			///Traduction pour les données de la Personne/Contact/Partenaire/Référent

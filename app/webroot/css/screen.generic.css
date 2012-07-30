@@ -1278,6 +1278,16 @@ td.button.accompagnement.disabled a, td.action a.accompagnement.disabled, td spa
     background-image: url( ../img/icons/report_disabled.png );
 }
 
+td.button.impression a, td.action a.impression, td span.button.impression, table.default2 td a.button.impression {
+    background-image: url( ../img/icons/printer.png );
+}
+
+td.button.impression.disabled a, td.action a.impression.disabled, td span.button.impression.disabled, table.default2 td a.button.impression.disabled {
+    background-image: url( ../img/icons/printer_disabled.png );
+}
+
+
+
 ul.actionMenu a.button.printcohorte1, ul.actionMenu a.button.printcohorte2 {
     background-image: url( ../img/icons/printer.png );
 /* 	padding: 5px; */

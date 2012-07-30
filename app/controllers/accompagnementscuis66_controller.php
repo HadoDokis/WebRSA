@@ -15,6 +15,29 @@
 				$this->Accompagnementcui66->Cui->enums(),
 				$options
 			);
+			$typevoie = $this->Option->typevoie();
+			$options = Set::insert( $options, 'typevoie', $typevoie );
+			
+			$secteursactivites = $this->Accompagnementcui66->Cui->Personne->Dsp->Libsecactderact66Secteur->find(
+					'list',
+					array(
+						'contain' => false,
+						'order' => array( 'Libsecactderact66Secteur.code' )
+					)
+				);
+			$this->set( 'secteursactivites', $secteursactivites );
+			
+			$codesromemetiersdsps66 = $this->Accompagnementcui66->Cui->Personne->	Dsp->Libderact66Metier->find(
+					'all',
+					array(
+						'contain' => false,
+						'order' => array( 'Libderact66Metier.code' )
+					)
+				);
+			foreach( $codesromemetiersdsps66 as $coderomemetierdsp66 ) {
+				$options['Coderomemetierdsp66'][$coderomemetierdsp66['Libderact66Metier']['coderomesecteurdsp66_id'].'_'.$coderomemetierdsp66['Libderact66Metier']['id']] = $coderomemetierdsp66['Libderact66Metier']['code'].'. '.$coderomemetierdsp66['Libderact66Metier']['name'];
+			}
+			
 			$this->set( 'options', $options );
 		}
 
@@ -179,12 +202,41 @@
 			$this->render( $this->action, null, 'add_edit' );
         }
         
+
+		/**
+		 * Imprime un document pour les périodes d'immersion liées au CUI.
+		 *
+		 * @param integer $id L'id de la période d'immersion que l'on veut imprimer
+		 * @return void
+		 */
+		public function impression( $id ) {
+			$pdf = $this->Accompagnementcui66->getDefaultPdf( $id, $this->Session->read( 'Auth.User.id' ) );
+
+			if( !empty( $pdf ) ){
+				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'periodeimmersion_%d_%d.pdf', $id, date( 'Y-m-d' ) ) );
+			}
+			else {
+				$this->Session->setFlash( 'Impossible de générer la période d\'immersion.', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
+			}
+		}
+        
+        
 		/**
 		*
 		*/
 
 		public function delete( $id ) {
 			$this->Default->delete( $id );
+		}
+
+		/**
+		*
+		*/
+
+		public function view( $id ) {
+			$this->_setOptions();
+			$this->Default->view( $id );
 		}
     }
 ?>

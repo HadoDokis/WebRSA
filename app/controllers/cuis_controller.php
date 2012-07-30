@@ -45,17 +45,16 @@
 			if( Configure::read( 'CG.cantons' ) ) {
 				$Canton = ClassRegistry::init( 'Canton' );
 				$this->set( 'cantons', $Canton->selectList() );			
-				$secteursactivites = $this->Cui->Personne->Dsp->Libsecactderact66Secteur->find(
-						'list',
-						array(
-							'contain' => false,
-							'order' => array( 'Libsecactderact66Secteur.code' )
-						)
-					);
-				$this->set( 'secteursactivites', $secteursactivites );
 			}
 			
-
+			$secteursactivites = $this->Cui->Personne->Dsp->Libsecactderact66Secteur->find(
+					'list',
+					array(
+						'contain' => false,
+						'order' => array( 'Libsecactderact66Secteur.code' )
+					)
+				);
+			$this->set( 'secteursactivites', $secteursactivites );
 			$this->set( 'prestataires', $this->Cui->Referent->listOptions() );
 			$this->set( 'referents', $this->Cui->Referent->find( 'list', array( 'recursive' => false ) ) );
 			$this->set( 'structs', $this->Cui->Structurereferente->listOptions() );

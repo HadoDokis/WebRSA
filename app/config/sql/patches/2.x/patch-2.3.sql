@@ -347,11 +347,32 @@ CREATE INDEX suspensionscuis66_user_id_idx ON suspensionscuis66(user_id);
 DROP TYPE IF EXISTS TYPE_ACCOMPAGNEMENTCUI66 CASCADE;
 CREATE TYPE TYPE_ACCOMPAGNEMENTCUI66 AS ENUM ( 'immersion', 'formation' );
 
+DROP TYPE IF EXISTS TYPE_OBJECTIFIMMERSION CASCADE;
+CREATE TYPE TYPE_OBJECTIFIMMERSION AS ENUM ( 'acquerir', 'confirmer', 'decouvrir', 'initier' );
+
 DROP TABLE IF EXISTS accompagnementscuis66 CASCADE;
 CREATE TABLE accompagnementscuis66(
   	id 							SERIAL NOT NULL PRIMARY KEY,
     cui_id             			INTEGER NOT NULL REFERENCES cuis(id) ON DELETE CASCADE ON UPDATE CASCADE,
     typeaccompagnementcui66			TYPE_ACCOMPAGNEMENTCUI66 DEFAULT NULL,
+	nomentaccueil                   VARCHAR(50) DEFAULT NULL,
+    numvoieentaccueil               VARCHAR(6) DEFAULT NULL,
+    typevoieentaccueil              VARCHAR(4) DEFAULT NULL,
+    nomvoieentaccueil               VARCHAR(50) DEFAULT NULL,
+    compladrentaccueil              VARCHAR(50) DEFAULT NULL,
+    numtelentaccueil                VARCHAR(14) DEFAULT NULL,
+    emailentaccueil                 VARCHAR(78) DEFAULT NULL,
+    codepostalentaccueil              CHAR(5) DEFAULT NULL,
+    villeentaccueil                 VARCHAR(45) DEFAULT NULL,
+    siretentaccueil                 CHAR(14) DEFAULT NULL,
+    activiteentaccueil              CHAR(14) DEFAULT NULL,
+    datedebperiode                  DATE DEFAULT NULL,
+    datefinperiode                  DATE DEFAULT NULL,
+    nbjourperiode                   INTEGER DEFAULT NULL,
+    secteuraffectation_id            INTEGER REFERENCES codesromesecteursdsps66(id)  ON DELETE CASCADE ON UPDATE CASCADE,
+    metieraffectation_id            INTEGER REFERENCES  codesromemetiersdsps66(id)  ON DELETE CASCADE ON UPDATE CASCADE,
+    objectifimmersion               TYPE_OBJECTIFIMMERSION DEFAULT NULL,
+    datesignatureimmersion          DATE DEFAULT NULL,
     user_id						INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
     created						TIMESTAMP WITHOUT TIME ZONE,
 	modified					TIMESTAMP WITHOUT TIME ZONE
@@ -361,9 +382,17 @@ COMMENT ON TABLE accompagnementscuis66 IS 'Table des accompagnements (périodes 
 DROP INDEX IF EXISTS accompagnementscuis66_typeaccompagnementcui66_idx;
 CREATE INDEX accompagnementscuis66_typeaccompagnementcui66_idx ON accompagnementscuis66(typeaccompagnementcui66);
 
+DROP INDEX IF EXISTS accompagnementscuis66_secteuraffectation_id_idx;
+CREATE INDEX accompagnementscuis66_secteuraffectation_id_idx ON accompagnementscuis66(secteuraffectation_id);
+
+DROP INDEX IF EXISTS accompagnementscuis66_metieraffectation_id_idx;
+CREATE INDEX accompagnementscuis66_metieraffectation_id_idx ON accompagnementscuis66(metieraffectation_id);
+
 DROP INDEX IF EXISTS accompagnementscuis66_user_id_idx;
 CREATE INDEX accompagnementscuis66_user_id_idx ON accompagnementscuis66(user_id);
 
+SELECT add_missing_table_field('public', 'cuis', 'secteuractiviteemployeur_id', 'INTEGER' );
+SELECT add_missing_constraint ( 'public', 'cuis', 'cuis_secteuractiviteemployeur_id_fkey', 'codesromesecteursdsps66', 'secteuractiviteemployeur_id', false );
 
 -- *****************************************************************************
 COMMIT;
