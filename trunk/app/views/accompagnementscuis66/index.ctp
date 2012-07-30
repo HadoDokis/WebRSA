@@ -10,13 +10,10 @@
 			$this->pageTitle = __d( 'accompagnementcui66', "Accompagnementscuis66::{$this->action}", true )
 		);
 
-		$listeoptions = $options;
-		unset( $options );
-		$options['Accompagnementcui66'] = $listeoptions;
-
 		echo $default2->index(
 			$accompagnementscuis66,
 			array(
+				'Accompagnementcui66.typeaccompagnementcui66',
 				'Accompagnementcui66.datedebperiode',
 				'Accompagnementcui66.datefinperiode',
 				'Accompagnementcui66.nomentaccueil',
@@ -26,7 +23,7 @@
 			array(
 				'actions' => array(
 					'Accompagnementscuis66::edit',
-					'Accompagnementscuis66::gedooo',
+					'Accompagnementscuis66::impression',
 					'Accompagnementscuis66::delete'
 				),
 				'add' => array(

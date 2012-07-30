@@ -51,3 +51,71 @@ msgstr "Périodes d'immersion"
 msgid "ENUM::TYPEACCOMPAGNEMENTCUI66::formation"
 msgstr "Formations"
 
+msgid "Accompagnementcui66.nomentaccueil"
+msgstr "Nom de l'entreprise d'accueil"
+
+msgid "Accompagnementcui66.numvoieentaccueil"
+msgstr "N° de voie"
+
+msgid "Accompagnementcui66.typevoieentaccueil"
+msgstr "Type de voie"
+
+msgid "Accompagnementcui66.nomvoieentaccueil"
+msgstr "Nom de voie"
+
+msgid "Accompagnementcui66.compladrentaccueil"
+msgstr "Complément d'adresse"
+
+msgid "Accompagnementcui66.codepostalentaccueil"
+msgstr "Code postal"
+
+msgid "Accompagnementcui66.villeentaccueil"
+msgstr "Commune"
+
+msgid "Accompagnementcui66.numtelentaccueil"
+msgstr "N° Téléphone"
+
+msgid "Accompagnementcui66.emailentaccueil"
+msgstr "Email"
+
+msgid "Accompagnementcui66.activiteentaccueil"
+msgstr "Activité principale"
+
+msgid "Accompagnementcui66.siretentaccueil"
+msgstr "N° SIRET"
+
+msgid "Accompagnementcui66.datedebperiode"
+msgstr "Date de début de la période"
+
+msgid "Accompagnementcui66.datefinperiode"
+msgstr "Date de fin de la période"
+
+msgid "Accompagnementcui66.nbjourperiode"
+msgstr "Soit un nombre de jours équivalent à "
+
+msgid "Accompagnementcui66.codeposteaffectation"
+msgstr "Poste d'affectation (Code ROME)"
+
+msgid "Accompagnementcui66.objectifimmersion"
+msgstr "Objectif principal de l'immersion"
+
+msgid "Accompagnementcui66.datesignatureimmersion"
+msgstr "Date de signature"
+
+msgid "ENUM::OBJECTIFIMMERSION::acquerir"
+msgstr "Acquérir de nouvelles compétences"
+
+msgid "ENUM::OBJECTIFIMMERSION::confirmer"
+msgstr "Confirmer un projet professionnel"
+
+msgid "ENUM::OBJECTIFIMMERSION::decouvrir"
+msgstr "Découvrir un métier ou un secteur d'activité"
+
+msgid "ENUM::OBJECTIFIMMERSION::initier"
+msgstr "Initier une démarche de recrutement"
+
+msgid "Accompagnementcui66.secteuraffectation_id"
+msgstr "Secteur d'affectation"
+
+msgid "Accompagnementcui66.metieraffectation_id"
+msgstr "Poste d'affectation"

@@ -195,7 +195,7 @@
 									'Cui.codepostalemployeur',
 									'Cui.villeemployeur',
 									'Cui.cantonemployeur' => array( 'empty' => true, 'options' => $cantons ),
-									'Cui.secteuractiviteemployeur' => array( 'empty' => true, 'options' => $secteursactivites )
+									'Cui.secteuractiviteemployeur_id' => array( 'empty' => true, 'options' => $secteursactivites )
 								),
 								array(
 									'domain' => $domain,
