@@ -118,6 +118,12 @@
 		);
 		
 		dependantSelect( 'CuiPrestataireId', 'CuiOrgsuiviId' );
+				
+		dependantSelect( 'Accompagnementcui66MetieraffectationId', 'Accompagnementcui66SecteuraffectationId' );
+		try { $( 'Accompagnementcui66MetieraffectationId' ).onchange(); } catch(id) { }
+		
+		dependantSelect( 'CuiMetieremploiproposeId', 'CuiSecteuremploiproposeId' );
+		try { $( 'CuiMetieremploiproposeId' ).onchange(); } catch(id) { }
 	});
 </script>
 
@@ -140,7 +146,7 @@
 		echo $xform->create( 'Cui', array( 'id' => 'cuiform' ) );
 		if( Set::check( $this->data, 'Cui.id' ) ) {
 			echo '<div>'.$xform->input( 'Cui.id', array( 'type' => 'hidden' ) ).'</div>';
-			echo '<div>'.$xform->input( 'Periodeimmersion.id', array( 'type' => 'hidden' ) ).'</div>';
+			echo '<div>'.$xform->input( 'Accompagnementcui66.id', array( 'type' => 'hidden' ) ).'</div>';
 		}
 	?>
 	<div>
@@ -234,7 +240,7 @@
 										'Cui.codepostalemployeur2',
 										'Cui.villeemployeur2',
 										'Cui.cantonemployeur2' => array( 'empty' => true, 'options' => $cantons ),
-										'Cui.secteuractiviteemployeur2' => array( 'empty' => true, 'options' => $secteursactivites )
+										'Cui.secteuractiviteemployeur2_id' => array( 'empty' => true, 'options' => $secteursactivites )
 									),
 									array(
 										'domain' => $domain,
@@ -537,7 +543,8 @@
 		<?php
 			echo $default->subform(
 				array(
-					'Cui.codeemploi',
+					'Cui.secteuremploipropose_id' => array( 'options' => $secteursactivites ),
+					'Cui.metieremploipropose_id' => array( 'options' => $options['Coderomemetierdsp66'], 'selected' => $this->data['Cui']['secteuremploipropose_id'].'_'.$this->data['Cui']['metieremploipropose_id'] ),
 					'Cui.salairebrut'
 				),
 				array(
@@ -600,12 +607,12 @@
 		<legend>LES ACTIONS D'ACCOMPAGNEMENT ET DE FORMATION PRÉVUES</legend>
 		<?php
 			echo $default->subform(
-			array(
+				array(
 					'Cui.tuteur',
 					'Cui.fonctiontuteur',
 // 					'Cui.structurereferente_id' => array( 'options' => $structs, 'empty' => true ),
 					'Cui.orgsuivi_id' => array( 'options' => $structs, 'empty' => true ),
-					'Cui.prestataire_id' => array( 'options' => $prestataires, 'empty' => true ),
+					'Cui.prestataire_id' => array( 'options' => $prestataires, 'empty' => true, 'selected' => $this->data['Cui']['orgsuivi_id'].'_'.$this->data['Cui']['prestataire_id'] ),
 					'Cui.referent_id' => array( 'options' => $referents, 'empty' => true ),
 					'Cui.isaas' => array( 'label' => __d( 'cui', 'Cui.isaas', true ), 'type' => 'radio', 'options' => $options['isaas'] )
 				),
@@ -737,20 +744,24 @@
 			<fieldset>
 				<legend>L'ENTREPRISE D'ACCUEIL</legend>
 				<?php
+					echo $xform->input( 'Accompagnementcui66.user_id', array( 'type' => 'hidden', 'value' => $userConnected ) );
+
+					echo $xform->input( 'Accompagnementcui66.typeaccompagnementcui66', array( 'required' => true, 'label' => __d( 'accompagnementcui66', 'Accompagnementcui66.typeaccompagnementcui66', true ), 'type' => 'select', 'options' => $options['typeaccompagnementcui66'], 'empty' => true ) );
+					
 					echo $default->subform(
 						array(
-							'Periodeimmersion.cui_id' => array( 'type' => 'hidden' ),
-							'Periodeimmersion.nomentaccueil',
-							'Periodeimmersion.numvoieentaccueil',
-							'Periodeimmersion.typevoieentaccueil' => array( 'options' => $options['typevoie'] ),
-							'Periodeimmersion.nomvoieentaccueil',
-							'Periodeimmersion.compladrentaccueil',
-							'Periodeimmersion.codepostalentaccueil',
-							'Periodeimmersion.villeentaccueil',
-							'Periodeimmersion.numtelentaccueil',
-							'Periodeimmersion.emailentaccueil',
-							'Periodeimmersion.activiteentaccueil',
-							'Periodeimmersion.siretentaccueil'
+							'Accompagnementcui66.cui_id' => array( 'type' => 'hidden' ),
+							'Accompagnementcui66.nomentaccueil',
+							'Accompagnementcui66.numvoieentaccueil',
+							'Accompagnementcui66.typevoieentaccueil' => array( 'options' => $options['typevoie'] ),
+							'Accompagnementcui66.nomvoieentaccueil',
+							'Accompagnementcui66.compladrentaccueil',
+							'Accompagnementcui66.codepostalentaccueil',
+							'Accompagnementcui66.villeentaccueil',
+							'Accompagnementcui66.numtelentaccueil',
+							'Accompagnementcui66.emailentaccueil',
+							'Accompagnementcui66.activiteentaccueil',
+							'Accompagnementcui66.siretentaccueil'
 						),
 						array(
 							'options' => $options
@@ -764,8 +775,8 @@
 				<?php
 					echo $default->subform(
 						array(
-							'Periodeimmersion.datedebperiode' => array( 'dateFormat' => 'DMY', 'minYear' => date('Y')-2, 'maxYear' => date('Y')+2, 'empty' => false ),
-							'Periodeimmersion.datefinperiode' => array( 'dateFormat' => 'DMY', 'minYear' => date('Y')-2, 'maxYear' => date('Y')+2, 'empty' => false )
+							'Accompagnementcui66.datedebperiode' => array( 'dateFormat' => 'DMY', 'minYear' => date('Y')-2, 'maxYear' => date('Y')+2, 'empty' => false ),
+							'Accompagnementcui66.datefinperiode' => array( 'dateFormat' => 'DMY', 'minYear' => date('Y')-2, 'maxYear' => date('Y')+2, 'empty' => false )
 						),
 						array(
 							'options' => $options
@@ -776,15 +787,16 @@
 				<table class="periodeimmersion wide aere noborder">
 					<tr>
 						<td class="noborder mediumSize">Soit un nombre de jours èquivalent à </td>
-						<td class="noborder mediumSize" id="PeriodeimmersionNbjourperiode"></td>
+						<td class="noborder mediumSize" id="Accompagnementcui66Nbjourperiode"></td>
 					</tr>
 				</table>
 				<?php
 					echo $default->subform(
 						array(
-							'Periodeimmersion.codeposteaffectation',
-							'Periodeimmersion.objectifimmersion' => array( 'type' => 'radio', 'separator' => '<br />', 'options' => $options['objectifimmersion'] ),
-							'Periodeimmersion.datesignatureimmersion' => array( 'dateFormat' => 'DMY', 'minYear' => date('Y')-2, 'maxYear' => date('Y')+2, 'empty' => false )
+							'Accompagnementcui66.secteuraffectation_id' => array( 'empty' => true, 'options' => $secteursactivites ),
+							'Accompagnementcui66.metieraffectation_id' => array( 'empty' => true, 'options' => $options['Coderomemetierdsp66'], 'selected' => $this->data['Accompagnementcui66']['secteuraffectation_id'].'_'.$this->data['Accompagnementcui66']['metieraffectation_id'] ),
+							'Accompagnementcui66.objectifimmersion' => array( 'type' => 'radio', 'separator' => '<br />', 'options' => $options['objectifimmersion'] ),
+							'Accompagnementcui66.datesignatureimmersion' => array( 'dateFormat' => 'DMY', 'minYear' => date('Y')-2, 'maxYear' => date('Y')+2, 'empty' => false )
 						),
 						array(
 							'options' => $options
@@ -798,13 +810,13 @@
 <script type="text/javascript" >
 
 	function calculNbDays() {
-		var Datedebperiode = $F( 'PeriodeimmersionDatedebperiodeDay' );
-		var Datefinperiode = $F( 'PeriodeimmersionDatefinperiodeDay' );
+		var Datedebperiode = $F( 'Accompagnementcui66DatedebperiodeDay' );
+		var Datefinperiode = $F( 'Accompagnementcui66DatefinperiodeDay' );
 
-		$( 'PeriodeimmersionNbjourperiode' ).update( ( Datefinperiode - Datedebperiode ) );
+		$( 'Accompagnementcui66Nbjourperiode' ).update( ( Datefinperiode - Datedebperiode ) );
 	}
 
-	$( 'PeriodeimmersionDatefinperiodeDay' ).observe( 'blur', function( event ) { calculNbDays(); } );
+	$( 'Accompagnementcui66DatefinperiodeDay' ).observe( 'blur', function( event ) { calculNbDays(); } );
 </script>
 <!--********************* La prise en charge (cadre réservé au prescripteur) ********************** -->
 	<fieldset>

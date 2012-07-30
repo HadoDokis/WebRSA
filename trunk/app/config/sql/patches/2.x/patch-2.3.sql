@@ -213,6 +213,7 @@ SELECT alter_table_drop_column_if_exists('public', 'cuis', 'atelierchantier');
 SELECT alter_table_drop_column_if_exists('public', 'cuis', 'numannexefinanciere');
 SELECT alter_table_drop_column_if_exists('public', 'cuis', 'assurancechomage');
 
+SELECT add_missing_table_field('public', 'cuis', 'nomtiturib', 'VARCHAR(250)' );
 SELECT add_missing_table_field('public', 'cuis', 'etaban', 'VARCHAR(5)' );
 SELECT add_missing_table_field('public', 'cuis', 'guiban', 'VARCHAR(5)' );
 SELECT add_missing_table_field('public', 'cuis', 'numcomptban', 'VARCHAR(11)' );
@@ -394,6 +395,16 @@ CREATE INDEX accompagnementscuis66_user_id_idx ON accompagnementscuis66(user_id)
 SELECT add_missing_table_field('public', 'cuis', 'secteuractiviteemployeur_id', 'INTEGER' );
 SELECT add_missing_constraint ( 'public', 'cuis', 'cuis_secteuractiviteemployeur_id_fkey', 'codesromesecteursdsps66', 'secteuractiviteemployeur_id', false );
 
+SELECT add_missing_table_field('public', 'cuis', 'secteuractiviteemployeur2_id', 'INTEGER' );
+SELECT add_missing_constraint ( 'public', 'cuis', 'cuis_secteuractiviteemployeur2_id_fkey', 'codesromesecteursdsps66', 'secteuractiviteemployeur2_id', false );
+
+
+SELECT alter_table_drop_column_if_exists('public', 'cuis', 'codeemploi' );
+
+SELECT add_missing_table_field('public', 'cuis', 'secteuremploipropose_id', 'INTEGER' );
+SELECT add_missing_constraint ( 'public', 'cuis', 'cuis_secteuremploipropose_id_fkey', 'codesromesecteursdsps66', 'secteuremploipropose_id', false );
+SELECT add_missing_table_field('public', 'cuis', 'metieremploipropose_id', 'INTEGER' );
+SELECT add_missing_constraint ( 'public', 'cuis', 'cuis_metieremploipropose_id_fkey', 'codesromemetiersdsps66', 'metieremploipropose_id', false );
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

@@ -10,9 +10,9 @@
 			$this->pageTitle = __d( 'suspensioncui66', "Suspensionscuis66::{$this->action}", true )
 		);
 		
-		$listeoptions = $options;
-		unset( $options );
-		$options['Suspensioncui66'] = $listeoptions;
+// 		$listeoptions = $options;
+// 		unset( $options );
+// 		$options['Suspensioncui66'] = $listeoptions;
 		
 		echo $default2->index(
 			$suspensionscuis66,
@@ -29,7 +29,7 @@
 					'Suspensionscuis66::delete'
 				),
 				'add' => array(
-					'Suspensioncui66.add' => array( 'controller'=>'suspensionscuis66', 'action'=>'add', $cui_id ),
+					'Suspensioncui66.add' => array( 'controller'=>'suspensionscuis66', 'action'=>'add', $cui_id, 'disabled' => true ),
 				),
 				'options' => $options
 			)
