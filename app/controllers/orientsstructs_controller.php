@@ -486,9 +486,9 @@
 				App::import( 'Behaviors', array( 'Occurences' ) );
 				$this->Orientstruct->Behaviors->attach( 'Occurences' );
 
-				$occurences = $this->Orientstruct->occurencesExists( array( 'Orientstruct.id' => $orientstructs[0]['Orientstruct']['id'] ), array( 'Fichiermodule' ) );
+				$occurences = $this->Orientstruct->occurencesExists( array( 'Orientstruct.id' => $orientstructs[0]['Orientstruct']['id'] ), array( 'Fichiermodule', 'Nonoriente66' ) );
 				$last_orientstruct_suppressible = !$occurences[$orientstructs[0]['Orientstruct']['id']];
-
+// debug($occurences);
 				$last_orientstruct_suppressible = (
 					$this->Orientstruct->Personne->Dossierep->find(
 						'count',
