@@ -18,6 +18,10 @@
 			<?php  if( !empty( $orientstructEmploi ) ) :?>
 				<p class="error">Cette personne possède actuellement une orientation professionnelle. Impossible de créer un CER.</p>
 			<?php endif; ?>
+			
+			<?php  if( !empty( $cuiEncours ) ) :?>
+				<p class="error">Cette personne possède actuellement un CUI en cours. Impossible de créer un CER.</p>
+			<?php endif; ?>
 
 
 			<?php if( empty( $contratsinsertion ) && empty( $orientstructEmploi ) ):?>
@@ -26,7 +30,7 @@
 			
 			<ul class="actionMenu">
 				<?php
-					$block = empty( $orientstruct ) || !empty( $orientstructEmploi );
+					$block = empty( $orientstruct ) || !empty( $orientstructEmploi ) || !empty( $cuiEncours );
 
 					echo '<li>'.$xhtml->addLink(
 						'Ajouter un CER',

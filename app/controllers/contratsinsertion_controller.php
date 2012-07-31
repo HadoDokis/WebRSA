@@ -396,6 +396,21 @@
 					}
 					
 					$conditionsTypeorient = array( 'Typeorient.parentid' => $typeOrientPrincipaleEmploiId );
+					
+					
+					$cuiEncours = $this->Personne->Cui->find(
+						'first',
+						array(
+							'conditions' => array(
+								'Cui.personne_id' => $personne_id,
+								'Cui.datefinprisecharge >=' => date( 'Y-m-d' ),
+								'Cui.positioncui66' => array( 'attavismne', 'attaviselu', 'attavisreferent', 'attdecision', 'encours', 'valid', 'validnotifie' )
+							),
+							'contain' => false,
+							'recursive' => -1
+						)
+					);
+					$this->set( compact( 'cuiEncours' ) );
 				}
 				else {
 					$typeOrientPrincipaleEmploiId = Configure::read( 'Typeorient.emploi_id' );
