@@ -62,6 +62,13 @@
 				'fields' => '',
 				'order' => ''
 			),
+			'Cui' => array(
+				'className' => 'Cui',
+				'foreignKey' => 'cui_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
 			'Orientstruct' => array(
 				'className' => 'Orientstruct',
 				'foreignKey' => 'orientstruct_id',

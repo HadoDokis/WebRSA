@@ -414,6 +414,15 @@ SELECT add_missing_table_field('public', 'cuis', 'positioncui66', 'TYPE_POSITION
 ALTER TABLE cuis ALTER COLUMN positioncui66 SET DEFAULT 'attavismne'::TYPE_POSITIONCUI66;
 UPDATE cuis SET positioncui66 = 'attavismne'::TYPE_POSITIONCUI66 WHERE positioncui66 IS NULL;
 ALTER TABLE cuis ALTER COLUMN positioncui66 SET NOT NULL;
+
+-------------------------------------------------------------------------------------------------------------
+-- 20120731: Ajout d'une clé étrangère entre le CUI et le bilan de parcours (CUI vaut CER)
+-------------------------------------------------------------------------------------------------------------
+SELECT add_missing_table_field ('public', 'bilansparcours66', 'cui_id', 'INTEGER');
+SELECT add_missing_constraint ('public', 'bilansparcours66', 'bilansparcours66_cui_id_fkey', 'cuis', 'cui_id');
+
+SELECT add_missing_table_field ('public', 'defautsinsertionseps66', 'cui_id', 'INTEGER');
+SELECT add_missing_constraint ('public', 'defautsinsertionseps66', 'defautsinsertionseps66_cui_id_fkey', 'cuis', 'cui_id');
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

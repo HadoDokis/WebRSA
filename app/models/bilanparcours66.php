@@ -186,6 +186,13 @@
 				'fields' => '',
 				'order' => ''
 			),
+			'Cui' => array(
+				'className' => 'Cui',
+				'foreignKey' => 'cui_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
 			'Orientstruct' => array(
 				'className' => 'Orientstruct',
 				'foreignKey' => 'orientstruct_id',
@@ -508,9 +515,25 @@
 							'contain' => false
 						)
 					);
+					
+					$vxCui = $this->Cui->find(
+						'first',
+						array(
+							'conditions' => array(
+								'Cui.personne_id' => $vxOrientstruct['Orientstruct']['personne_id'],
+								'Cui.datefinprisecharge >=' => date( 'Y-m-d' )
+							),
+							'contain' => false,
+							'recursive' => -1
+						)
+					);
 
-					if( empty( $vxContratinsertion ) ) {
-						$this->invalidate( 'changementref', 'Cette personne ne possède aucune contrat d\'insertion validé dans une structure référente liée à celle de sa dernière orientation validée.' );
+// 					if( empty( $vxContratinsertion ) ) {
+// 						$this->invalidate( 'changementref', 'Cette personne ne possède aucune contrat d\'insertion validé dans une structure référente liée à celle de sa dernière orientation validée.' );
+// 						return false;
+// 					}
+					if( empty( $vxContratinsertion ) && empty( $vxCui ) ) {
+						$this->invalidate( 'changementref', 'Cette personne ne possède aucune contrat.' );
 						return false;
 					}
 				}
@@ -625,6 +648,7 @@
 							return false;
 						}
 
+						// Possède-t-on un CER 
 						$vxContratinsertion = $this->Contratinsertion->find(
 							'first',
 							array(
@@ -632,17 +656,42 @@
 									'Contratinsertion.personne_id' => $vxOrientstruct['Orientstruct']['personne_id'],
 									'Contratinsertion.structurereferente_id' => $vxOrientstruct['Orientstruct']['structurereferente_id']
 								),
-								'contain' => false
+								'contain' => false,
+								'recursive' => -1
 							)
 						);
-
-						if( empty( $vxContratinsertion ) && ( $data['Bilanparcours66']['changementrefavecep'] == 'N' ) ) {
-							$this->invalidate( 'changementref', 'Cette personne ne possède aucun CER validé dans une structure référente liée à celle de sa dernière orientation validée.' );
-							return false;
+						
+						// Possède-t-on un CUI (pour rappel, un CUI vaut CER)
+						$vxCui = $this->Cui->find(
+							'first',
+							array(
+								'conditions' => array(
+									'Cui.personne_id' => $vxOrientstruct['Orientstruct']['personne_id'],
+									'Cui.datefinprisecharge >=' => date( 'Y-m-d' )
+								),
+								'contain' => false,
+								'recursive' => -1
+							)
+						);
+	
+						
+						
+						if( ( $data['Bilanparcours66']['changementrefavecep'] == 'N' ) ) {
+							if( empty( $vxContratinsertion ) && empty( $vxCui ) ) {
+								$this->invalidate( 'changementref', 'Cette personne ne possède aucun contrat.' );
+								return false;
+							}
 						}
+// 						if( empty( $vxContratinsertion ) && ( $data['Bilanparcours66']['changementrefavecep'] == 'N' ) ) {
+// 							$this->invalidate( 'changementref', 'Cette personne ne possède aucun CER validé dans une structure référente liée à celle de sa dernière orientation validée.' );
+// 							return false;
+// 						}
 
 						// Sauvegarde du bilan
 						$data[$this->alias]['contratinsertion_id'] = @$vxContratinsertion['Contratinsertion']['id'];
+						$data[$this->alias]['cui_id'] = @$vxCui['Cui']['id'];
+						
+
 					}
 
 					if( isset( $data[$this->alias]['origine'] ) && $data[$this->alias]['origine'] == 'Defautinsertionep66' && !isset( $data[$this->alias]['structurereferente_id'] ) ) {
@@ -853,10 +902,29 @@
 							)
 						);
 
+						$vxCui = $this->Cui->find(
+							'first',
+							array(
+								'conditions' => array(
+									'Cui.personne_id' => $vxOrientstruct['Orientstruct']['personne_id'],
+									'Cui.datefinprisecharge >=' => date( 'Y-m-d' )
+								),
+								'contain' => false,
+								'recursive' => -1
+							)
+						);
 						// FIXME: erreur pas dans choixparcours
-						if( $data[$this->alias]['examenaudition'] != 'DOD' && empty( $vxContratinsertion ) ) {
-							$this->invalidate( 'examenaudition', 'Cette personne ne possède aucun CER validé dans une structure référente liée à celle de sa dernière orientation validée.' );
-							return false;
+// 						if( $data[$this->alias]['examenaudition'] != 'DOD' && empty( $vxContratinsertion ) ) {
+// 							$this->invalidate( 'examenaudition', 'Cette personne ne possède aucun CER validé dans une structure référente liée à celle de sa dernière orientation validée.' );
+// 							return false;
+// 						}
+
+						//Passage en EPL Audition pour non respect
+						if( $data[$this->alias]['examenaudition'] != 'DOD' ) {
+							if( empty( $vxContratinsertion ) && empty( $vxCui ) ) {
+								$this->invalidate( 'examenaudition', 'Cette personne ne possède aucun contrat.' );
+								return false;
+							}
 						}
 
 						if ( $data[$this->alias]['examenaudition'] == 'DOD' ) {
@@ -923,6 +991,7 @@
 
 						// Sauvegarde du bilan
 						$data[$this->alias]['contratinsertion_id'] = $vxContratinsertion['Contratinsertion']['id'];
+						$data[$this->alias]['cui_id'] = $vxCui['Cui']['id'];
 						$this->create( $data );
 						$success = $this->save() && $success;
 
@@ -945,6 +1014,7 @@
 						$data['Defautinsertionep66']['dossierep_id'] = $this->Defautinsertionep66->Dossierep->id;
 						$data['Defautinsertionep66']['orientstruct_id'] = $vxOrientstruct['Orientstruct']['id'];
 						$data['Defautinsertionep66']['contratinsertion_id'] = $vxContratinsertion['Contratinsertion']['id'];
+						$data['Defautinsertionep66']['cui_id'] = $vxContratinsertion['Cui']['id'];
 						$data['Defautinsertionep66']['origine'] = 'bilanparcours';
 
 						$this->Defautinsertionep66->create( $data );

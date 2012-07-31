@@ -854,7 +854,7 @@
 					<?php
 						echo $default->subform(
 							array(
-								'Cui.datedebprisecharge' => array( 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 2, 'maxYear' => date( 'Y' ) + 2, 'empty' => false )
+								'Cui.datedebprisecharge' => array( 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 2, 'maxYear' => date( 'Y' ) + 2, 'empty' => true )
 							),
 							array(
 								'domain' => $domain,
@@ -868,7 +868,7 @@
 					<?php
 						echo $default->subform(
 							array(
-								'Cui.datefinprisecharge' => array( 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 2, 'maxYear' => date( 'Y' ) + 2, 'empty' => false )
+								'Cui.datefinprisecharge' => array( 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 2, 'maxYear' => date( 'Y' ) + 2, 'empty' => true )
 							),
 							array(
 								'domain' => $domain,
