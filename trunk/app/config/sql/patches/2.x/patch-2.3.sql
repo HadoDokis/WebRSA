@@ -405,6 +405,15 @@ SELECT add_missing_table_field('public', 'cuis', 'secteuremploipropose_id', 'INT
 SELECT add_missing_constraint ( 'public', 'cuis', 'cuis_secteuremploipropose_id_fkey', 'codesromesecteursdsps66', 'secteuremploipropose_id', false );
 SELECT add_missing_table_field('public', 'cuis', 'metieremploipropose_id', 'INTEGER' );
 SELECT add_missing_constraint ( 'public', 'cuis', 'cuis_metieremploipropose_id_fkey', 'codesromemetiersdsps66', 'metieremploipropose_id', false );
+
+
+DROP TYPE IF EXISTS TYPE_POSITIONCUI66 CASCADE;
+CREATE TYPE TYPE_POSITIONCUI66 AS ENUM ( 'attavismne', 'attaviselu', 'attavisreferent', 'attdecision', 'encours', 'annule', 'fincontrat', 'attrenouv', 'perime', 'nonvalide', 'valid', 'validnotifie', 'nonvalidnotifie' );
+SELECT add_missing_table_field('public', 'cuis', 'positioncui66', 'TYPE_POSITIONCUI66' );
+
+ALTER TABLE cuis ALTER COLUMN positioncui66 SET DEFAULT 'attavismne'::TYPE_POSITIONCUI66;
+UPDATE cuis SET positioncui66 = 'attavismne'::TYPE_POSITIONCUI66 WHERE positioncui66 IS NULL;
+ALTER TABLE cuis ALTER COLUMN positioncui66 SET NOT NULL;
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

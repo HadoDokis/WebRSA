@@ -708,3 +708,19 @@ msgstr "Secteur d'emploi proposé"
 
 msgid "Cui.metieremploipropose_id"
 msgstr "Métier d'emploi proposé"
+
+
+####################
+
+msgid "ENUM::ISBENEFICIAIRE::AAH"
+msgstr "AAH"
+
+msgid "ENUM::ISBENEFICIAIRE::ASS"
+msgstr "ASS"
+
+msgid "ENUM::ISBENEFICIAIRE::ATA"
+msgstr "ATA"
+
+msgid "ENUM::ISBENEFICIAIRE::RSADEPT"
+msgstr "RSA financé par le département"
+# 'attavismne', 'attaviselu', 'attavisreferent', 'attdecision', 'encours', 'annule', 'fincontrat', 'attrenouv', 'perime', 'nonvalide', 'valid', 'validnotifie', 'nonvalidnotifie'

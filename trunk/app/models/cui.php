@@ -8,6 +8,7 @@
 				'fields' => array(
 					'haspiecejointe' => array( 'domain' => 'cui' ),
 					'secteur' => array( 'domain' => 'cui' ),
+					'positioncui66' => array( 'domain' => 'cui' ),
 					'isaci' => array( 'domain' => 'cui' ),
 					'statutemployeur' => array( 'domain' => 'cui' ),
 					'niveauformation' => array( 'domain' => 'cui' ),
