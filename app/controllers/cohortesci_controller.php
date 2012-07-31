@@ -9,7 +9,7 @@
 		public $helpers = array( 'Csv', 'Ajax', 'Search', 'Default2' );
 		public $paginate = array( 'limit' => 20, );
 		public $components = array(
-			'Prg' => array(
+			'Prg2' => array(
 				'actions' => array(
 					'valides',
 					'nouveaux' => array( 'filter' => 'Filtre' ),
