@@ -31,7 +31,9 @@
 			<tr>
 				<th>Date du contrat</th>
 				<th>Secteur</th>
-				<th>Dénomination</th>
+				<th>Employeur</th>
+				<th>Date de début de prise en charge</th>
+				<th>Date de fin de prise en charge</th>
 				<th>Position CUI</th>
 				<th>Décision pour le CUI</th>
 				<th>Date de validation</th>
@@ -52,6 +54,8 @@
 							h( date_short( Set::classicExtract( $cui, 'Cui.datecontrat' ) ) ),
 							h( Set::enum( Set::classicExtract( $cui, 'Cui.secteur' ), $options['secteur'] ) ),
 							h( Set::classicExtract( $cui, 'Cui.nomemployeur' ) ),
+							h( date_short( Set::classicExtract( $cui, 'Cui.datedebprisecharge' ) ) ),
+							h( date_short( Set::classicExtract( $cui, 'Cui.datefinprisecharge' ) ) ),
 							h( Set::enum( Set::classicExtract( $cui, 'Cui.positioncui66' ), $options['positioncui66'] ) ),
 							h( Set::enum( Set::classicExtract( $cui, 'Cui.decisioncui' ), $options['decisioncui'] ) ),
 							h( date_short( Set::classicExtract( $cui, 'Cui.datevalidationcui' ) ) ),
