@@ -158,23 +158,47 @@
 				// On a renvoyé  le formulaire de la cohorte
 				if( !empty( $this->data['Contratinsertion'] ) ) {
 					$contratsatraiter = Set::extract('/Contratinsertion[atraiter=1]', $this->data );
-// 	debug($contratsatraiter);
+// 	debug($this->data);
 // 	die();
 					if( !empty( $contratsatraiter ) ){
-						$valid = $this->Dossier->Foyer->Personne->Contratinsertion->saveAll( $contratsatraiter, array( 'validate' => 'only', 'atomic' => false ) );
-						if( $valid ) {
-							$this->Dossier->begin();
-							$saved = $this->Dossier->Foyer->Personne->Contratinsertion->saveAll( $contratsatraiter, array( 'validate' => 'first', 'atomic' => false ) );
-							if( $saved ) {
-								// FIXME ?
-								foreach( array_unique( Set::extract( $this->data, 'Contratinsertion.{n}.dossier_id' ) ) as $dossier_id ) {
-									$this->Jetons->release( array( 'Dossier.id' => $dossier_id ) );
+					
+						if( Configure::read( 'Cg.departement' ) != 66 ) {
+							$valid = $this->Dossier->Foyer->Personne->Contratinsertion->saveAll( $contratsatraiter, array( 'validate' => 'only', 'atomic' => false ) );
+							if( $valid ) {
+								$this->Dossier->begin();
+								$saved = $this->Dossier->Foyer->Personne->Contratinsertion->saveAll( $contratsatraiter, array( 'validate' => 'first', 'atomic' => false ) );
+								if( $saved ) {
+									// FIXME ?
+									foreach( array_unique( Set::extract( $this->data, 'Contratinsertion.{n}.dossier_id' ) ) as $dossier_id ) {
+										$this->Jetons->release( array( 'Dossier.id' => $dossier_id ) );
+									}
+									$this->Dossier->commit(); //FIXME
+									unset( $this->data['Contratinsertion'] );
 								}
-								$this->Dossier->commit(); //FIXME
-								unset( $this->data['Contratinsertion'] );
+								else {
+									$this->Dossier->rollback();
+								}
 							}
-							else {
-								$this->Dossier->rollback();
+						}
+						else if( Configure::read( 'Cg.departement' ) == 66 ) {
+							$valid = $this->Dossier->Foyer->Personne->Contratinsertion->saveAll( $contratsatraiter, array( 'validate' => 'only', 'atomic' => false ) );
+							if( $valid ) {
+								$this->Dossier->begin();
+								
+								$saved = $this->Dossier->Foyer->Personne->Contratinsertion->Propodecisioncer66->sauvegardeCohorteCer( $this->data['Contratinsertion'] );
+
+								$saved = $this->Dossier->Foyer->Personne->Contratinsertion->saveAll( $contratsatraiter, array( 'validate' => 'first', 'atomic' => false ) ) && $saved;
+								
+								if( $saved ) {
+									foreach( array_unique( Set::extract( $this->data, 'Contratinsertion.{n}.dossier_id' ) ) as $dossier_id ) {
+										$this->Jetons->release( array( 'Dossier.id' => $dossier_id ) );
+									}
+									$this->Dossier->commit();
+									unset( $this->data['Contratinsertion'] );
+								}
+								else {
+									$this->Dossier->rollback();
+								}
 							}
 						}
 					}
