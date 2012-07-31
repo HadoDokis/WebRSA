@@ -53,5 +53,48 @@
 				'with' => 'Motifcernonvalid66Propodecisioncer66'
 			)
 		);
+		
+		
+		
+		/**
+		* Sauvegarde des décisions du CER dans la table proposdecisionscers66
+		*
+		* @param array $data Les données du CER à sauvegarder.
+		* @return boolean True en cas de succès, false sinon.
+		* @access public
+		*/
+
+		public function sauvegardeCohorteCer( $data ) {
+			$propodecisioncer66 = array();
+			if( !empty( $data ) ) {
+				foreach( $data as $value ){
+					if( isset( $value['decision_ci'] ) ){
+						if( $value['decision_ci'] == 'V' ) {
+							$propodecisioncer66 = array(
+								'Propodecisioncer66' => array(
+									'isvalidcer' => 'O',
+									'datevalidcer' => $value['datedecision'],
+									'contratinsertion_id' => $value['id']
+								)
+							);
+							$this->create( $propodecisioncer66 );
+							$saved = $this->save();
+						}
+						else if( $value['decision_ci'] == 'N' ) {
+							$propodecisioncer66 = array(
+								'Propodecisioncer66' => array(
+									'isvalidcer' => 'N',
+									'datevalidcer' => $value['datedecision'],
+									'contratinsertion_id' => $value['id']
+								)
+							);
+							$this->create( $propodecisioncer66 );
+							$saved = $this->save();
+						}
+					}
+				}
+			}
+			return $saved;
+		}
 	}
 ?>
