@@ -80,6 +80,14 @@
 					'message' => 'Le numéro SIRET est composé de 14 chiffres'
 				)
 			),
+			'datedebprisecharge' => array(
+				'rule' => 'notEmpty',
+				'message' => 'Champ obligatoire'
+			),
+			'datefinprisecharge' => array(
+				'rule' => 'notEmpty',
+				'message' => 'Champ obligatoire'
+			),
 			/*'nomemployeur' => array(
 				'rule' => 'notEmpty',
 				'message' => 'Champ obligatoire'
@@ -425,6 +433,32 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Bilanparcours66' => array(
+				'className' => 'Bilanparcours66',
+				'foreignKey' => 'cui_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Defautinsertionep66' => array(
+				'className' => 'Defautinsertionep66',
+				'foreignKey' => 'cui_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			)
 		);
 
 		/**

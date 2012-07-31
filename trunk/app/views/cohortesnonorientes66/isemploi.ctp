@@ -132,7 +132,7 @@
 						h( $cohortenonoriente66['Dossier']['numdemrsa'] ),
 						h( date_short( $cohortenonoriente66['Dossier']['dtdemrsa'] ) ),
 						h( $cohortenonoriente66['Personne']['nom'].' '.$cohortenonoriente66['Personne']['prenom'] ),
-						h( $etatdosrsa[$cohortenonoriente66['Situationdossierrsa']['etatdosrsa']] ),
+						h( Set::classicExtract( $etatdosrsa, Set::classicExtract( $cohortenonoriente66, 'Situationdossierrsa.etatdosrsa' ) ) ),
 						h( $cohortenonoriente66['Adresse']['locaadr'] ),
 						$gestionanomaliebdd->foyerErreursPrestationsAllocataires( $cohortenonoriente66, false ),
 						$xform->input( 'Orientstruct.'.$index.'.atraiter', array( 'label' => false, 'legend' => false, 'type' => 'checkbox', 'class' => 'atraiter' ) ),
