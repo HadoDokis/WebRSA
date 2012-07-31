@@ -227,6 +227,8 @@
 			$this->_setOptions();
 			$this->set( 'personne_id', $personne_id );
 			$this->set( compact( 'cuis' ) );
+			
+			$this->render( $this->action, null, 'index_cg'.Configure::read( 'Cg.departement' ) );
 		}
 
 		/**

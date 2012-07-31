@@ -199,9 +199,7 @@
 									'Cui.numtelemployeur',
 									'Cui.emailemployeur',
 									'Cui.codepostalemployeur',
-									'Cui.villeemployeur',
-									'Cui.cantonemployeur' => array( 'empty' => true, 'options' => $cantons ),
-									'Cui.secteuractiviteemployeur_id' => array( 'empty' => true, 'options' => $secteursactivites )
+									'Cui.villeemployeur'
 								),
 								array(
 									'domain' => $domain,
@@ -209,6 +207,30 @@
 								)
 							);
 
+							if( Configure::read( 'Cg.departement' ) == 66 ) {
+								echo $default->subform(
+									array(
+										'Cui.cantonemployeur' => array( 'empty' => true, 'options' => $cantons ),
+										'Cui.secteuractiviteemployeur_id' => array( 'empty' => true, 'options' => $secteursactivites )
+									),
+									array(
+										'domain' => $domain,
+										'options' => $options
+									)
+								);
+							}
+							else{
+								echo $default->subform(
+									array(
+										'Cui.secteuractiviteemployeur_id' => array( 'empty' => true, 'options' => $secteursactivites )
+									),
+									array(
+										'domain' => $domain,
+										'options' => $options
+									)
+								);
+							}
+							
 							echo $xhtml->tag(
 								'p',
 								'Si l\'adresse à laquelle les documents administratifs et financiers doivent etre envoyés est différente de l\'adresse ci-dessus, remplir la partie ci-dessous',
@@ -541,17 +563,22 @@
 			</tr>
 		</table>
 		<?php
-			echo $default->subform(
-				array(
-					'Cui.secteuremploipropose_id' => array( 'options' => $secteursactivites ),
-					'Cui.metieremploipropose_id' => array( 'options' => $options['Coderomemetierdsp66'], 'selected' => $this->data['Cui']['secteuremploipropose_id'].'_'.$this->data['Cui']['metieremploipropose_id'] ),
-					'Cui.salairebrut'
-				),
-				array(
-					'domain' => $domain,
-					'options' => $options
-				)
-			);
+			if( empty( $options['Coderomemetierdsp66'] ) ) {
+				echo '<p class="notice">Veuillez paramétrer les tables codes ROME</p>';
+			}
+			else {
+				echo $default->subform(
+					array(
+						'Cui.secteuremploipropose_id' => array( 'options' => $secteursactivites ),
+						'Cui.metieremploipropose_id' => array( 'options' => $options['Coderomemetierdsp66'], 'selected' => $this->data['Cui']['secteuremploipropose_id'].'_'.$this->data['Cui']['metieremploipropose_id'] ),
+						'Cui.salairebrut'
+					),
+					array(
+						'domain' => $domain,
+						'options' => $options
+					)
+				);
+			}
 		?>
 		<table class="cuiduree noborder">
 			<tr>

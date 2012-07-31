@@ -46,19 +46,17 @@
 					array( 'class' => 'odd' ),
 					array( 'class' => 'even' )
 				);
-				if ( Configure::read( 'Cg.departement' ) == 66 ) {
-					echo $xhtml->tableCells(
-						array(
-							h( 'DSPs' ),
-							$xhtml->viewLink(
-								'Voir la table',
-								array( 'controller' => 'gestionsdsps', 'action' => 'index' )
-							)
-						),
-						array( 'class' => 'odd' ),
-						array( 'class' => 'even' )
-					);
-				}
+				echo $xhtml->tableCells(
+					array(
+						h( 'DSPs' ),
+						$xhtml->viewLink(
+							'Voir la table',
+							array( 'controller' => 'gestionsdsps', 'action' => 'index' )
+						)
+					),
+					array( 'class' => 'odd' ),
+					array( 'class' => 'even' )
+				);
 				echo $xhtml->tableCells(
 					array(
 						h( 'Équipes pluridisciplinaires' ),

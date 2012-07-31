@@ -10,9 +10,6 @@
 			$this->pageTitle = __d( 'cui', "Cuis::{$this->action}", true )
 		);
 	?>
-	<?php if( empty( $cuis ) ):?>
-		<p class="notice">Cette personne ne possède pas encore de CUI.</p>
-	<?php endif;?>
 
 	<?php if( $permissions->check( 'cuis', 'add' ) ):?>
 		<ul class="actionMenu">
@@ -24,6 +21,9 @@
 			?>
 		</ul>
 	<?php endif;?>
+	<?php if( empty( $cuis ) ):?>
+		<p class="notice">Cette personne ne possède pas encore de CUI.</p>
+	<?php endif;?>
 
 	<?php if( !empty( $cuis ) ):?>
 	<table class="tooltips default2">
@@ -32,6 +32,7 @@
 				<th>Date du contrat</th>
 				<th>Secteur</th>
 				<th>Dénomination</th>
+				<th>Position CUI</th>
 				<th>Décision pour le CUI</th>
 				<th>Date de validation</th>
 				<th colspan="10" class="action">Actions</th>
@@ -51,6 +52,7 @@
 							h( date_short( Set::classicExtract( $cui, 'Cui.datecontrat' ) ) ),
 							h( Set::enum( Set::classicExtract( $cui, 'Cui.secteur' ), $options['secteur'] ) ),
 							h( Set::classicExtract( $cui, 'Cui.nomemployeur' ) ),
+							h( Set::enum( Set::classicExtract( $cui, 'Cui.positioncui66' ), $options['positioncui66'] ) ),
 							h( Set::enum( Set::classicExtract( $cui, 'Cui.decisioncui' ), $options['decisioncui'] ) ),
 							h( date_short( Set::classicExtract( $cui, 'Cui.datevalidationcui' ) ) ),
 							$default2->button(
