@@ -1,10 +1,6 @@
 <?php if( !empty( $modeletypecourrierpcg66 ) ): ?>
 	<fieldset>
 		<legend>Liste des modèles de courrier</legend>
-<?php
-/*	Configure::write( 'debug', 2);
-	debug( $this->data );*/
-	?>
 		<table class="wide noborder">
 			<tr>
 				<td class="wide noborder">
@@ -38,13 +34,10 @@
 									'type' => 'textarea',
 									'value' => $value
 									)
-								); // FIXME: nettoyer en js ?
+								);
 								
-// 								echo $xform->input( 'Piecemodeletypecourrierpcg66.Piecemodeletypecourrierpcg66', array( 'type' => 'select', 'multiple' => 'checkbox', 'options' => $listepieces[$id], 'id' => "listepieces{$id}", 'label' => 'Cocher les pièces manquantes liées au modèle de courrier &laquo; '.$name.' &raquo;' ) );
-
-								// FIXME: label 'Cocher les pièces manquantes liées au modèle de courrier &laquo; '.$name.' &raquo;'
 								echo $autrepiecetraitementpcg66->fieldsetPieces( 'Piecemodeletypecourrierpcg66', $id, $listepieces, $listePiecesWithAutre, 'Modeletraitementpcg66.autrepiecemanquante' );
-// debug($listePiecesWithAutre[$id]);
+
 							echo '</fieldset>';
 							echo '</div>';
 						}
@@ -53,7 +46,7 @@
 				</td>
 			</tr>
 		</table>
-	</fieldset>
+</fieldset>
 <?php else:?>
 	<?php 
 		echo '<p class="notice">Aucune pièce liée à ce type de courrier<p>';
