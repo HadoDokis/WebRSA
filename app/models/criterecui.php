@@ -24,7 +24,6 @@
 			/// Critères
 			$datecontrat = Set::extract( $criterescuis, 'Search.Cui.datecontrat' );
 			$secteur = Set::extract( $criterescuis, 'Search.Cui.secteur' );
-			$convention = Set::extract( $criterescuis, 'Search.Cui.convention' );
 			$nir = Set::extract( $criterescuis, 'Search.Cui.nir' );
 			$nom = Set::extract( $criterescuis, 'Search.Personne.nom' );
 			$prenom = Set::extract( $criterescuis, 'Search.Personne.prenom' );
@@ -85,10 +84,6 @@
 				$conditions[] = 'Cui.secteur = \''.Sanitize::clean( $secteur ).'\'';
 			}
 
-			// convention du contrat
-			if( !empty( $convention ) ) {
-				$conditions[] = 'Cui.convention = \''.Sanitize::clean( $convention ).'\'';
-			}
 
 			/// Référent
 			if( !empty( $referent_id ) ) {
@@ -136,28 +131,29 @@
 
 			$query = array(
 				'fields' => array(
-					'"Cui"."id"',
-					'"Cui"."personne_id"',
-					'"Cui"."secteur"',
-					'"Cui"."datecontrat"',
-					'"Cui"."nomemployeur"',
-					'"Cui"."convention"',
-					'"Dossier"."id"',
-					'"Dossier"."numdemrsa"',
-					'"Dossier"."dtdemrsa"',
-					'"Dossier"."matricule"',
-					'"Personne"."id"',
-					'"Personne"."nom"',
-					'"Personne"."prenom"',
-					'"Personne"."dtnai"',
-					'"Personne"."nir"',
-					'"Personne"."qual"',
-					'"Personne"."nomcomnai"',
-					'"Adresse"."locaadr"',
-					'"Adresse"."codepos"',
-					'"Adresse"."numcomptt"',
-					'"PersonneReferent"."referent_id"',
-					'"Prestation"."rolepers"'
+					'Cui.id',
+					'Cui.personne_id',
+					'Cui.secteur',
+					'Cui.datecontrat',
+					'Cui.nomemployeur',
+					'Cui.datedebprisecharge',
+					'Cui.datefinprisecharge',
+					'Dossier.id',
+					'Dossier.numdemrsa',
+					'Dossier.dtdemrsa',
+					'Dossier.matricule',
+					'Personne.id',
+					'Personne.nom',
+					'Personne.prenom',
+					'Personne.dtnai',
+					'Personne.nir',
+					'Personne.qual',
+					'Personne.nomcomnai',
+					'Adresse.locaadr',
+					'Adresse.codepos',
+					'Adresse.numcomptt',
+					'PersonneReferent.referent_id',
+					'Prestation.rolepers'
 				),
 				'recursive' => -1,
 				'joins' => array(

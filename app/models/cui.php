@@ -611,7 +611,119 @@
 			return $return;
 		}
 
-		
+
+// 		/**
+// 		* BeforeSave
+// 		*/
+// 
+// 		public function beforeSave( $options = array() ) {
+// 			$return = parent::beforeSave( $options );
+// 			
+// 			//  Calcul de la position du CUI
+// 			if( Configure::read( 'Cg.departement' ) == '66' ) {
+// 				$this->data[$this->alias]['positioncui66'] = $this->calculPosition( $this->data );
+// 			}
+// 			return $return;
+// 		}
+
+		/**
+		*
+		*/
+
+		public function calculPosition( $data ) {
+		//'attavismne', 'attaviselu', 'attavisreferent', 'attdecision', 'encours', 'annule', 'fincontrat', 'attrenouv', 'perime', 'nonvalide', 'valid', 'validnotifie', 'nonvalidnotifie'
+debug($data);
+			$decisioncui = Set::classicExtract( $data, 'Cui.decisioncui' );
+			$positioncui66 = Set::classicExtract( $data, 'Cui.positioncui66' );
+			$datenotif = Set::classicExtract( $data, 'Cui.datenotification' );
+			$id = Set::classicExtract( $data, 'Cui.id' );
+			$personne_id = Set::classicExtract( $data, 'Cui.personne_id' );
+
+
+			// Données dernier CUI
+			$conditions = array( 'Cui.personne_id' => $personne_id, );
+			if( !empty( $id ) ) {
+				$conditions['Cui.id <>'] = $id;
+			}
+
+			$dernierCui = $this->find(
+				'first',
+				array(
+					'conditions' => $conditions,
+					'order' => 'Cui.rangcui DESC',
+					'contain' => false
+				)
+			);
+			$decisionprecedente = Set::classicExtract( $dernierCui, 'Cui.decisioncui' );
+			$positioncui66Precedent = Set::classicExtract( $dernierCui, 'Cui.positioncui66' );
+
+			
+			
+			if ( ( is_null( $positioncui66 ) || in_array( $positioncui66 , array( 'attdecision', 'perime' ) ) ) && !empty( $decisioncui ) ) {
+				if ( $decisioncui == 'V' ){
+					if( empty( $datenotif ) ) {
+						$positioncui66 = 'valid';
+					}
+					else {
+						$positioncui66 = 'validnotifie';
+					}
+				}
+				else if ( $decisioncui == 'N' ){
+					if( empty( $datenotif ) ) {
+						$positioncui66 = 'nonvalid';
+					}
+					else {
+						$positioncui66 = 'nonvalidnotifie';
+					}
+				}
+			}
+
+			// Lors de l'ajout d'un nouveau CUI, on passe la position du précédent à fin de contrat, sauf pour les non validés
+			if( !empty( $dernierCui ) && ( $decisionprecedente != 'N' ) && ( $positioncui66Precedent != 'annule' ) ) {
+				$this->updateAll(
+					array( 'Cui.positioncui66' => '\'fincontrat\'' ),
+					array(
+						'"Cui"."personne_id"' => $personne_id,
+						'"Cui"."id"' => $dernierCui['Cui']['id']
+					)
+				);
+			}
+
+			return $positioncui66;
+		}
+
+		public function updatePositionFromPropodecisioncui66( $id ) {
+			$cui = $this->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Cui.id' => $id
+					),
+					'contain' => false,
+					'recursive' => -1
+				)
+			);
+			
+			$positioncui66 = Set::classicExtract( $cui, 'Cui.positioncui66' );
+			
+			// Mise à jour de la position du CUI
+			if( !empty( $positioncui66 ) ) {
+				if( $positioncui66 == 'attavismne' ) {
+					$positioncui66 = 'attaviselu';
+				}
+				else if( $positioncui66 =='attaviselu' ) {
+					$positioncui66 = 'attavisreferent';
+				}
+				else if( $positioncui66 =='attavisreferent' ) {
+					$positioncui66 = 'attdecision';
+				}
+			}
+
+			$this->id = $cui['Cui']['id'];
+			$return = $this->saveField( 'positioncui66', $positioncui66 );
+
+			return $return;
+		}
 		/**
 		 *
 		 * @param integer $id

@@ -423,6 +423,11 @@ SELECT add_missing_constraint ('public', 'bilansparcours66', 'bilansparcours66_c
 
 SELECT add_missing_table_field ('public', 'defautsinsertionseps66', 'cui_id', 'INTEGER');
 SELECT add_missing_constraint ('public', 'defautsinsertionseps66', 'defautsinsertionseps66_cui_id_fkey', 'cuis', 'cui_id');
+
+-------------------------------------------------------------------------------------------------------------
+-- 20120801: Ajout du rang pour le cui
+-------------------------------------------------------------------------------------------------------------
+SELECT add_missing_table_field ('public', 'cuis', 'rangcui', 'INTEGER');
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
