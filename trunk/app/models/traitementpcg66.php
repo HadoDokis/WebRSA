@@ -413,6 +413,17 @@
 
 			// Sauvegarde des modèles liés au courrier pour un traitement donné
 			if( $success && $data['Traitementpcg66']['typetraitement'] == 'courrier' ) {
+				// Liste des pièces par modèle de courrier
+				$listesPieces = $this->Typecourrierpcg66->Modeletypecourrierpcg66->Piecemodeletypecourrierpcg66->find(
+					'list',
+					array(
+						'conditions' => array(
+							'Piecemodeletypecourrierpcg66.modeletypecourrierpcg66_id' => $data['Modeletraitementpcg66']['modeletypecourrierpcg66_id']
+						),
+						'contain' => false
+					)
+				);
+			
 
 				$dataModelTraitementpcg66 = array( 'Modeletraitementpcg66' => $data['Modeletraitementpcg66'] );
 				$dataModelTraitementpcg66['Modeletraitementpcg66']['traitementpcg66_id'] = $traitementpcg66_id;
@@ -421,61 +432,67 @@
 				$success = $this->Modeletraitementpcg66->save() && $success;
 
 				$modeletraitementpcg66_id = $this->Modeletraitementpcg66->id;
-
-				if( $success ) {
-					foreach( array( 'piecesmodelestypescourrierspcgs66' ) as $tableliee ) {
-						$modelelie = Inflector::classify( $tableliee );
-						$modeleliaison = Inflector::classify( "mtpcgs66_pmtcpcgs66" );
-						$foreignkey = Inflector::singularize( $tableliee ).'_id';
-						$records = $this->Modeletraitementpcg66->{$modeleliaison}->find(
-							'list',
-							array(
-								'fields' => array( "{$modeleliaison}.id", "{$modeleliaison}.{$foreignkey}" ),
-								'conditions' => array(
-									"{$modeleliaison}.modeletraitementpcg66_id" => $modeletraitementpcg66_id
-								)
-							)
-						);
-
-						$oldrecordsids = array_values( $records );
-						$nouveauxids = Set::filter( Set::extract( "/{$modelelie}/{$modelelie}", $data ) );
-
-						if ( empty( $nouveauxids ) ) {
-							$this->Modeletraitementpcg66->{$modelelie}->invalidate( $modelelie, 'Merci de cocher au moins une case' );
-							$success = false;
-						}
-						else {
-							// En moins -> Supprimer
-							$idsenmoins = array_diff( $oldrecordsids, $nouveauxids );
-							$idsenmoins = array_filter( $idsenmoins );
-							if( !empty( $idsenmoins ) ) {
-								$success = $this->Modeletraitementpcg66->{$modeleliaison}->deleteAll(
-									array(
-										"{$modeleliaison}.modeletraitementpcg66_id" => $modeletraitementpcg66_id,
-										"{$modeleliaison}.{$foreignkey}" => $idsenmoins
+				
+				if( !empty( $listesPieces ) ) {
+					if( $success ) {
+						foreach( array( 'piecesmodelestypescourrierspcgs66' ) as $tableliee ) {
+							$modelelie = Inflector::classify( $tableliee );
+							$modeleliaison = Inflector::classify( "mtpcgs66_pmtcpcgs66" );
+							$foreignkey = Inflector::singularize( $tableliee ).'_id';
+							$records = $this->Modeletraitementpcg66->{$modeleliaison}->find(
+								'list',
+								array(
+									'fields' => array( "{$modeleliaison}.id", "{$modeleliaison}.{$foreignkey}" ),
+									'conditions' => array(
+										"{$modeleliaison}.modeletraitementpcg66_id" => $modeletraitementpcg66_id
 									)
-								) && $success;
+								)
+							);
+
+							$oldrecordsids = array_values( $records );
+							$nouveauxids = Set::filter( Set::extract( "/{$modelelie}/{$modelelie}", $data ) );
+
+
+							if ( empty( $nouveauxids ) ) {
+								$this->Modeletraitementpcg66->{$modelelie}->invalidate( $modelelie, 'Merci de cocher au moins une case' );
+								$success = false;
 							}
-
-							// En plus -> Ajouter
-							$idsenplus = array_diff( $nouveauxids, $oldrecordsids );
-							$idsenplus = array_filter( $idsenplus );
-
-							if( !empty( $idsenplus ) ) {
-								foreach( $idsenplus as $idenplus ) {
-									$record = array(
-										$modeleliaison => array(
-											"modeletraitementpcg66_id" => $modeletraitementpcg66_id,
-											"{$foreignkey}" => $idenplus
+							else {
+								// En moins -> Supprimer
+								$idsenmoins = array_diff( $oldrecordsids, $nouveauxids );
+								$idsenmoins = array_filter( $idsenmoins );
+								if( !empty( $idsenmoins ) ) {
+									$success = $this->Modeletraitementpcg66->{$modeleliaison}->deleteAll(
+										array(
+											"{$modeleliaison}.modeletraitementpcg66_id" => $modeletraitementpcg66_id,
+											"{$modeleliaison}.{$foreignkey}" => $idsenmoins
 										)
-									);
+									) && $success;
+								}
 
-									$this->Modeletraitementpcg66->{$modeleliaison}->create( $record );
-									$success = $this->Modeletraitementpcg66->{$modeleliaison}->save() && $success;
+								// En plus -> Ajouter
+								$idsenplus = array_diff( $nouveauxids, $oldrecordsids );
+								$idsenplus = array_filter( $idsenplus );
+
+								if( !empty( $idsenplus ) ) {
+									foreach( $idsenplus as $idenplus ) {
+										$record = array(
+											$modeleliaison => array(
+												"modeletraitementpcg66_id" => $modeletraitementpcg66_id,
+												"{$foreignkey}" => $idenplus
+											)
+										);
+
+										$this->Modeletraitementpcg66->{$modeleliaison}->create( $record );
+										$success = $this->Modeletraitementpcg66->{$modeleliaison}->save() && $success;
+									}
 								}
 							}
 						}
 					}
+				}
+				else {
+					$success = true;
 				}
 			}
 
