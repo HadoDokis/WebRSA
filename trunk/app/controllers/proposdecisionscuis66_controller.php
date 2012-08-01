@@ -96,7 +96,9 @@
 						'conditions' => array(
 							'Propodecisioncui66.id' => $propodecisioncui66_id
 						),
-						'contain' => false,
+						'contain' => array(
+							'Cui'
+						),
 						'recursive' => -1
 					)
 				);
@@ -146,6 +148,12 @@
 
 				if( $this->Propodecisioncui66->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
 					$saved = $this->Propodecisioncui66->save( $this->data );
+					
+					
+					if( $saved ) {
+						$saved = $this->Propodecisioncui66->Cui->updatePositionFromPropodecisioncui66( $cui_id ) && $saved;
+					}
+
 
 					if( $saved ) {
 						$this->Jetons->release( $dossier_id );

@@ -46,7 +46,6 @@
 		///Formulaire de recherche pour les CUIs
 		echo $default->search(
 			array(
-				'Cui.convention' => array( 'label' => __d( 'cui', 'Cui.convention', true ), 'type' => 'select', 'options' => $options['convention'] ),
 				'Cui.datecontrat' => array( 'label' => __d( 'cui', 'Cui.datecontrat', true ), 'type' => 'date', 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 1, 'maxYear' => date( 'Y' ) + 1 ),
 				'Cui.secteur' => array( 'label' => __d( 'cui', 'Cui.secteur', true ), 'type' => 'select', 'options' => $options['secteur'] ),
 				'Personne.nom' => array( 'label' => __d( 'personne', 'Personne.nom', true ), 'type' => 'text' ),
@@ -76,10 +75,11 @@
 				<tr>
 					<th><?php echo $xpaginator->sort( 'N° dossier', 'Dossier.numdemrsa' );?></th>
 					<th><?php echo $xpaginator->sort( 'Nom du demandeur', 'Personne.nom' );?></th>
-					<th><?php echo $xpaginator->sort( 'Convention', 'Cui.convention' );?></th>
 					<th><?php echo $xpaginator->sort( 'Secteur', 'Cui.secteur' );?></th>
 					<th><?php echo $xpaginator->sort( 'Date du contrat', 'Cui.datecontrat' );?></th>
 					<th><?php echo $xpaginator->sort( 'Nom de l\'employeur', 'Cui.nomemployeur' );?></th>
+					<th><?php echo $xpaginator->sort( 'Date de début de prise en charge', 'Cui.datedebprisecharge' );?></th>
+					<th><?php echo $xpaginator->sort( 'Date de fin de prise en charge', 'Cui.datefinprisecharge' );?></th>
 					<th colspan="4" class="action">Actions</th>
 				</tr>
 			</thead>
@@ -123,10 +123,11 @@
 							array(
 								h( Set::classicExtract( $criterecui, 'Dossier.numdemrsa' ) ),
 								h( Set::enum( Set::classicExtract( $criterecui, 'Personne.qual' ), $qual ).' '.Set::classicExtract( $criterecui, 'Personne.nom' ).' '.Set::classicExtract( $criterecui, 'Personne.prenom' ) ),
-								h( Set::enum( Set::classicExtract( $criterecui, 'Cui.convention' ), $options['convention'] ) ),
 								h( Set::enum( Set::classicExtract( $criterecui, 'Cui.secteur' ), $options['secteur'] ) ),
 								h( $locale->date( 'Locale->date',  Set::classicExtract( $criterecui, 'Cui.datecontrat' ) ) ),
 								h( Set::classicExtract( $criterecui, 'Cui.nomemployeur' ) ),
+								h( $locale->date( 'Locale->date',  Set::classicExtract( $criterecui, 'Cui.datedebprisecharge' ) ) ),
+								h( $locale->date( 'Locale->date',  Set::classicExtract( $criterecui, 'Cui.datefinprisecharge' ) ) ),
 								$xhtml->viewLink(
 									'Voir',
 									array( 'controller' => 'cuis', 'action' => 'index', Set::classicExtract( $criterecui, 'Cui.personne_id' ) )
