@@ -88,6 +88,10 @@
 				}
             ?>
         </fieldset>
+        <fieldset>
+			<legend>Comptage des résultats</legend>
+			<?php echo $form->input( 'Search.paginationNombreTotal', array( 'label' => 'Obtenir le nombre total de résultats (plus lent)', 'type' => 'checkbox' ) );?>
+		</fieldset>
 
     <div class="submit noprint">
         <?php echo $xform->button( 'Rechercher', array( 'type' => 'submit' ) );?>

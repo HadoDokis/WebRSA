@@ -220,9 +220,12 @@
 						$this->set( 'structuresAutomatiques', $this->Cohortenonoriente66->structuresAutomatiques() );
 					}
 
+					$progressivePaginate = !Set::classicExtract( $this->data, 'Search.paginationNombreTotal' );
+					
 					$this->paginate = $this->Cohortenonoriente66->search( $statutNonoriente, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
 					$this->paginate['limit'] = $limit;
-					$cohortesnonorientes66 = $this->paginate( 'Personne' );
+					$cohortesnonorientes66 = $this->paginate( 'Personne', array(), array(), $progressivePaginate );
+
 
 					//Pour le lien filelink, sauvegarde de l'URL de la recherche lorsqu'on cliquera sur le bouton "Retour" dans la liste des fichiers liés
 					$this->Session->write( "Savedfilters.Nonorientes66.filelink",
