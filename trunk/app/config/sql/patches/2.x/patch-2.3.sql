@@ -444,6 +444,11 @@ COMMENT ON TABLE motifssortiecuis66 IS 'Table des motifs de sortie d''un CUI (CG
 
 DROP INDEX IF EXISTS motifssortiecuis66_name_idx;
 CREATE UNIQUE INDEX motifssortiecuis66_name_idx ON motifssortiecuis66(name);
+
+
+DROP TYPE IF EXISTS TYPE_SECTEUR CASCADE;
+CREATE TYPE TYPE_SECTEUR AS ENUM ( 'cie', 'cae' );
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

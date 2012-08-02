@@ -553,6 +553,13 @@ msgstr "Notification élu"
 
 msgid "Button::decisioncui"
 msgstr "Décisions"
+
+msgid "Button::notifelu"
+msgstr "Décision élu"
+
+msgid "Button::notifemployeur"
+msgstr "Notification employeur"
+
 ###############################################################################
 # Pagination
 # INFO: http://forum.cakephp-fr.org/viewtopic.php?id=878

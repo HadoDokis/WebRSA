@@ -20,6 +20,9 @@
 			array(
 				'actions' => array(
 					'Decisionscuis66::edit',
+					'Decisionscuis66::notifelu' => array( 'label' => 'Décision élu', 'url' => array( 'controller' => 'decisionscuis66', 'action' => 'impression', '#Decisioncui66.id#', 'elu' ) ),
+					'Decisionscuis66::notifbenef' => array( 'label' => 'Notification bénéficiaire', 'url' => array( 'controller' => 'decisionscuis66', 'action' => 'impression', '#Decisioncui66.id#', 'benef' ) ),
+					'Decisionscuis66::notifemployeur' => array( 'label' => 'Notification employeur','url' => array( 'controller' => 'decisionscuis66', 'action' => 'impression', '#Decisioncui66.id#', 'employeur' ) ),
 					'Decisionscuis66::delete'
 				),
 				'add' => array(

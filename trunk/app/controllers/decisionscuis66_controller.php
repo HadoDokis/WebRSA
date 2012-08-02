@@ -199,5 +199,25 @@
 		public function delete( $id ) {
 			$this->Default->delete( $id );
 		}
+
+		
+		/**
+		 * Imprime la notification au bénéficiaire pour le CUI.
+		 *
+		 * @param integer $id L'id de la décision sur le CUI que l'on veut imprimer
+		 * @return void
+		 */
+		public function impression( $id, $destinataire ) {
+			$pdf = $this->Decisioncui66->getDefaultPdf( $id, $destinataire, $this->Session->read( 'Auth.User.id' ) );
+
+			if( !empty( $pdf ) ){
+				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'cui_%d_%d.pdf', $id, date( 'Y-m-d' ) ) );
+			}
+			else {
+				$this->Session->setFlash( 'Impossible de générer le courrier de décision', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
+			}
+		}
+
     }
 ?>
