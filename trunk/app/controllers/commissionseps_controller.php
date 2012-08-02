@@ -127,7 +127,8 @@
 				$this->Commissionep->enums(),
 				$this->Commissionep->CommissionepMembreep->enums(),
 				$this->Commissionep->Passagecommissionep->enums(),
-				array( 'Foyer' => array( 'sitfam' => $this->Option->sitfam() ) )
+				array( 'Foyer' => array( 'sitfam' => $this->Option->sitfam() ) ),
+				array( 'Orientstruct' => array( 'structurereferente_id' => $this->Commissionep->Passagecommissionep->Dossierep->Personne->Orientstruct->Structurereferente->find( 'list', array( 'fields' => array( 'lib_struc' ) ) ) ) )
 			);
 
 			$options[$this->modelClass]['ep_id'] = $this->{$this->modelClass}->Ep->listOptions(
@@ -691,6 +692,11 @@
 										'Adressefoyer.rgadr' => '01'
 									),
 									'Adresse'
+								),
+								'Dossier' => array(
+									'fields' => array(
+										'Dossier.matricule'
+									)
 								)
 							)
 						)
@@ -708,6 +714,15 @@
 									'Cov58'
 								)
 							)
+						)
+					)
+				);
+				
+				$querydata['contain']['Dossierep']['Personne'] = array_merge(
+					$querydata['contain']['Dossierep']['Personne'],
+					array(
+						'Orientstruct' => array(
+							'order' => array( 'Orientstruct.date_valid DESC' )
 						)
 					)
 				);
