@@ -144,9 +144,9 @@
         <tbody>
         <?php foreach( $cohortesnonorientes66 as $index => $cohortenonoriente66 ):?>
             <?php
-// debug($cohortenonoriente66);
+
 				$nbFichiersLies = 0;
-				$nbFichiersLies = $cohortenonoriente66['Nonoriente66']['nbfichiers'];
+				$nbFichiersLies = $cohortenonoriente66['Orientstruct']['nbfichiers'];
 
 				$tableCells = array(
 						h( $cohortenonoriente66['Dossier']['numdemrsa'] ),
@@ -169,11 +169,11 @@
 						$xhtml->fileLink(
 							'Fichiers liés',
 							array(
-								'controller' => 'nonorientes66',
+								'controller' => 'orientsstructs',
 								'action' => 'filelink',
-								$cohortenonoriente66['Nonoriente66']['id']
+								$cohortenonoriente66['Nonoriente66']['orientstruct_id']
 							),
-							$permissions->check( 'nonorientes66', 'filelink' )
+							$permissions->check( 'orientsstructs', 'filelink' )
 						),
 						h( '('.$nbFichiersLies.')' )
 					);

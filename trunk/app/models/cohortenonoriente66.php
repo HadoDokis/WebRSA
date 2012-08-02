@@ -170,6 +170,7 @@
 						'Historiqueetatpe.etat',
 						'Historiqueetatpe.date',
 						'( '.$Personne->Nonoriente66->vfNbFichiersmodule( ).' ) AS "Nonoriente66__nbfichiers"',
+						'( '.$Personne->Orientstruct->vfNbFichiersmodule( ).' ) AS "Orientstruct__nbfichiers"',
 						'Canton.id',
 						'Canton.canton'
 					)
