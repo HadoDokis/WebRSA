@@ -151,7 +151,7 @@
 					
 					
 					if( $saved ) {
-						$saved = $this->Propodecisioncui66->Cui->updatePositionFromPropodecisioncui66( $cui_id ) && $saved;
+						$saved = $this->Propodecisioncui66->Cui->updatePositionFromPropodecisioncui66( $this->Propodecisioncui66->id ) && $saved;
 					}
 
 

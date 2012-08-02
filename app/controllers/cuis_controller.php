@@ -326,9 +326,15 @@
 			$this->set( compact( 'montantrsapercu' ) );
 
 			$this->set( 'personne', $personne );
+			
+			/// Calcul du numéro du contrat d'insertion
+			$nbCui = $this->Cui->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ) ) );
 
 			if( !empty( $this->data ) ){
-
+				if( $this->action == 'add' ) {
+					$this->data['Cui']['rangcui'] = $nbCui + 1;
+				}
+				debug($this->data);
 				$this->{$this->modelClass}->create( $this->data );
 				$success = $this->{$this->modelClass}->save();
 
@@ -373,11 +379,13 @@
 					if( !empty( $this->data['Accompagnementcui66'] ) ) {
 						$this->data['Accompagnementcui66'] = $this->data['Accompagnementcui66'][0];
 					}
+					$nbCui = $cui['Cui']['rangcui'];
 
 				}
 			}
 
 			$this->_setOptions();
+			$this->set( 'nbCui', $nbCui );
 			$this->set( 'personne_id', $personne_id );
 			$this->set( 'urlmenu', '/cuis/index/'.$personne_id );
 			$this->render( $this->action, null, 'add_edit' );
