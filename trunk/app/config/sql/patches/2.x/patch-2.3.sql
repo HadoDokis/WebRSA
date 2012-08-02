@@ -428,6 +428,22 @@ SELECT add_missing_constraint ('public', 'defautsinsertionseps66', 'defautsinser
 -- 20120801: Ajout du rang pour le cui
 -------------------------------------------------------------------------------------------------------------
 SELECT add_missing_table_field ('public', 'cuis', 'rangcui', 'INTEGER');
+
+-------------------------------------------------------------------------------------------------------------
+-- 20120802: Ajout de la table pour stocker les motifs de sortie du cui
+-------------------------------------------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS motifssortiecuis66 CASCADE;
+CREATE TABLE motifssortiecuis66(
+  	id 							SERIAL NOT NULL PRIMARY KEY,
+    name						TEXT NOT NULL,
+    created						TIMESTAMP WITHOUT TIME ZONE,
+	modified					TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE motifssortiecuis66 IS 'Table des motifs de sortie d''un CUI (CG66)';
+
+DROP INDEX IF EXISTS motifssortiecuis66_name_idx;
+CREATE UNIQUE INDEX motifssortiecuis66_name_idx ON motifssortiecuis66(name);
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
