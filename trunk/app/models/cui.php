@@ -612,27 +612,83 @@
 		}
 
 
-// 		/**
-// 		* BeforeSave
-// 		*/
-// 
+		/**
+		* BeforeSave
+		*/
+
 // 		public function beforeSave( $options = array() ) {
 // 			$return = parent::beforeSave( $options );
 // 			
 // 			//  Calcul de la position du CUI
 // 			if( Configure::read( 'Cg.departement' ) == '66' ) {
-// 				$this->data[$this->alias]['positioncui66'] = $this->calculPosition( $this->data );
+// 				$this->data[$this->alias]['positioncui66'] = $this->positionCuiEncours( $this->data );
 // 			}
 // 			return $return;
 // 		}
+
+
+		/**
+		* Recalcul des rangs des contrats pour une personne donnée ou pour
+		* l'ensemble des personnes.
+		*/
+
+		protected function _updateRangsCuis( $personne_id = null ) {
+			$condition = ( is_null( $personne_id ) ? "" : "cuis.personne_id = {$personne_id}" );
+
+			$sql = "UPDATE cuis
+						SET rangcui = NULL".( !empty( $condition ) ? " WHERE {$condition}" : "" ).";";
+			$success = ( $this->query( $sql ) !== false );
+
+			$sql = "UPDATE cuis
+						SET rangcui = (
+							SELECT ( COUNT(cuispcd.id) + 1 )
+								FROM cuis AS cuispcd
+								WHERE cuispcd.personne_id = cuis.personne_id
+									AND cuispcd.id <> cuis.id
+									AND cuispcd.decisioncui = 'V'
+									AND cuispcd.datedebprisecharge IS NOT NULL
+									AND cuispcd.datedebprisecharge < cuis.datedebprisecharge
+									AND (
+										cuis.positioncui66 IS NULL
+										OR cuis.positioncui66 <> 'annule'
+									)
+						)
+						WHERE
+							cuis.datedebprisecharge IS NOT NULL
+							".( !empty( $condition ) ? " AND {$condition}" : "" )."
+							AND cuis.decisioncui = 'V'
+							AND (
+								cuis.positioncui66 IS NULL
+								OR cuis.positioncui66 <> 'annule'
+							);";
+
+			$success = ( $this->query( $sql ) !== false ) && $success;
+
+			return $success;
+		}
+
+		/**
+		* Recalcul des rangs des contrats pour une personne donnée.
+		* afterSave, afterDelete, valider, annuler
+		*/
+
+		public function updateRangsCuisPersonne( $personne_id ) {
+			return $this->_updateRangsCuis( $personne_id  );
+		}
+
+		/**
+		* Recalcul des rangs des contrats pour l'ensemble des personnes.
+		*/
+
+		public function updateRangsCuis() {
+			return $this->_updateRangsCuis();
+		}
 
 		/**
 		*
 		*/
 
 		public function calculPosition( $data ) {
-		//'attavismne', 'attaviselu', 'attavisreferent', 'attdecision', 'encours', 'annule', 'fincontrat', 'attrenouv', 'perime', 'nonvalide', 'valid', 'validnotifie', 'nonvalidnotifie'
-debug($data);
 			$decisioncui = Set::classicExtract( $data, 'Cui.decisioncui' );
 			$positioncui66 = Set::classicExtract( $data, 'Cui.positioncui66' );
 			$datenotif = Set::classicExtract( $data, 'Cui.datenotification' );
@@ -692,34 +748,52 @@ debug($data);
 			return $positioncui66;
 		}
 
-		public function updatePositionFromPropodecisioncui66( $id ) {
-			$cui = $this->find(
+		/**
+		 *	Mise à jour de la position du cui selon la proposition de décision émise
+		 *  @param $propodeicsioncui66_id, identifiant de la proposition de décision du CUI
+		 *  @return string
+		 */
+		public function updatePositionFromPropodecisioncui66( $propodecisioncui66_id ) {
+			$propodecisioncui66 = $this->Propodecisioncui66->find(
 				'first',
 				array(
-					'conditions' => array(
-						'Cui.id' => $id
+					'fields' => array_merge(
+						$this->Propodecisioncui66->fields(),
+						array(
+							'Cui.id',
+							'Cui.positioncui66'
+						)
 					),
-					'contain' => false,
-					'recursive' => -1
+					'conditions' => array(
+						'Propodecisioncui66.id' => $propodecisioncui66_id
+					),
+					'contain' => array(
+						'Cui'
+					)
 				)
 			);
-			
-			$positioncui66 = Set::classicExtract( $cui, 'Cui.positioncui66' );
+
+			$isaviselu = Set::classicExtract( $propodecisioncui66, 'Propodecisioncui66.isaviselu' );
+			$isavisreferent = Set::classicExtract( $propodecisioncui66, 'Propodecisioncui66.isavisreferent' );
+			$positioncui66 = Set::classicExtract( $propodecisioncui66, 'Cui.positioncui66' );
 			
 			// Mise à jour de la position du CUI
 			if( !empty( $positioncui66 ) ) {
-				if( $positioncui66 == 'attavismne' ) {
+				if( ( $isaviselu == '0' ) && ( $isavisreferent == '0' ) && $positioncui66 == 'attavismne' ) {
 					$positioncui66 = 'attaviselu';
 				}
-				else if( $positioncui66 =='attaviselu' ) {
+				else if( ( $isaviselu == '1' ) && ( $isavisreferent == '0' ) && $positioncui66 =='attaviselu' ) {
 					$positioncui66 = 'attavisreferent';
 				}
-				else if( $positioncui66 =='attavisreferent' ) {
+				else if( ( $isaviselu == '1' ) && ( $isavisreferent == '1' ) && $positioncui66 =='attavisreferent' ) {
+					$positioncui66 = 'attdecision';
+				}
+				else if( ( $positioncui66 =='attdecision' ) ) {
 					$positioncui66 = 'attdecision';
 				}
 			}
 
-			$this->id = $cui['Cui']['id'];
+			$this->id = $propodecisioncui66['Cui']['id'];
 			$return = $this->saveField( 'positioncui66', $positioncui66 );
 
 			return $return;
