@@ -371,6 +371,7 @@
 		'decisioncui66' => 'decisionscuis66',
 		'suspensioncui66' => 'suspensionscuis66',
 		'accompagnementcui66' => 'accompagnementscuis66',
+		'motifsortiecui66' => 'motifssortiecuis66',
 	);
 /**
 * This is a key => value array of regex used to match words.

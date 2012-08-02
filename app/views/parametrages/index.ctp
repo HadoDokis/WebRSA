@@ -48,6 +48,17 @@
 				);
 				echo $xhtml->tableCells(
 					array(
+						h( 'CUIs' ),
+						$xhtml->viewLink(
+							'Voir la table',
+							array( 'controller' => 'cuis', 'action' => 'indexparams' )
+						)
+					),
+					array( 'class' => 'odd' ),
+					array( 'class' => 'even' )
+				);
+				echo $xhtml->tableCells(
+					array(
 						h( 'DSPs' ),
 						$xhtml->viewLink(
 							'Voir la table',
