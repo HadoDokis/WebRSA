@@ -1286,7 +1286,19 @@ td.button.impression.disabled a, td.action a.impression.disabled, td span.button
     background-image: url( ../img/icons/printer_disabled.png );
 }
 
+td.button.notifelu a, td.action a.notifelu, td span.button.notifelu, table.default2 td a.button.notifelu {
+    background-image: url( ../img/icons/printer.png );
+}
+td.button.notifelu.disabled a, td.action a.notifelu.disabled, td span.button.notifelu.disabled, table.default2 td a.button.notifelu.disabled {
+    background-image: url( ../img/icons/printer_disabled.png );
+}
 
+td.button.notifemployeur a, td.action a.notifemployeur, td span.button.notifemployeur, table.default2 td a.button.notifemployeur {
+    background-image: url( ../img/icons/printer.png );
+}
+td.button.notifemployeur.disabled a, td.action a.notifemployeur.disabled, td span.button.notifemployeur.disabled, table.default2 td a.button.notifemployeur.disabled {
+    background-image: url( ../img/icons/printer_disabled.png );
+}
 
 ul.actionMenu a.button.printcohorte1, ul.actionMenu a.button.printcohorte2 {
     background-image: url( ../img/icons/printer.png );
