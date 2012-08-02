@@ -1046,5 +1046,29 @@
 			return $pdf;
 		}
 
+		
+		/**
+		 * Retourne un champ virtuel permettant de connaître le nombre de fichiers modules liés à l'orientation
+		 *
+		 * @param type $orientstructId
+		 * @return type
+		 */
+		public function vfNbFichiersmodule( $fileModelName = 'Orientstruct', $orientstructId = 'Orientstruct.id' ){
+			return $this->Fichiermodule->sq(
+				array(
+					'fields' => array(
+						'COUNT(fichiersmodules.id)'
+					),
+					'alias' => 'fichiersmodules',
+					'contain' => false,
+					'conditions' => array(
+						"fichiersmodules.fk_value = {$orientstructId}",
+						"fichiersmodules.modele" => $fileModelName
+					),
+				)
+			);
+		}
+		
+		
 	}
 ?>
