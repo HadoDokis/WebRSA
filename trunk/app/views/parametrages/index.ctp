@@ -17,7 +17,8 @@
 							h( 'Actions d\'insertion' ),
 							$xhtml->viewLink(
 								'Voir la table',
-								array( 'controller' => 'actions', 'action' => 'index' )
+								array( 'controller' => 'actions', 'action' => 'index' ),
+								$permissions->check( 'actions', 'index' )
 							)
 						),
 						array( 'class' => 'odd' ),
@@ -29,7 +30,8 @@
 						h( 'APREs' ),
 						$xhtml->viewLink(
 							'Voir la table',
-							array( 'controller' => 'apres'.Configure::read( 'Apre.suffixe' ), 'action' => 'indexparams' )
+							array( 'controller' => 'apres'.Configure::read( 'Apre.suffixe' ), 'action' => 'indexparams' ),
+							$permissions->check(  'apres'.Configure::read( 'Apre.suffixe' ), 'indexparams' )
 						)
 					),
 					array( 'class' => 'odd' ),
@@ -40,7 +42,8 @@
 						h( 'Cantons' ),
 						$xhtml->viewLink(
 							'Voir la table',
-							array( 'controller' => 'cantons', 'action' => 'index' )
+							array( 'controller' => 'cantons', 'action' => 'index' ),
+							$permissions->check( 'cantons', 'index' )
 						)
 					),
 					array( 'class' => 'odd' ),
@@ -51,7 +54,8 @@
 						h( 'CUIs' ),
 						$xhtml->viewLink(
 							'Voir la table',
-							array( 'controller' => 'cuis', 'action' => 'indexparams' )
+							array( 'controller' => 'cuis', 'action' => 'indexparams' ),
+							$permissions->check( 'cuis', 'indexparams' )
 						)
 					),
 					array( 'class' => 'odd' ),
@@ -62,7 +66,8 @@
 						h( 'DSPs' ),
 						$xhtml->viewLink(
 							'Voir la table',
-							array( 'controller' => 'gestionsdsps', 'action' => 'index' )
+							array( 'controller' => 'gestionsdsps', 'action' => 'index' ),
+							$permissions->check( 'gestionsdsps', 'index' )
 						)
 					),
 					array( 'class' => 'odd' ),
@@ -73,7 +78,8 @@
 						h( 'Équipes pluridisciplinaires' ),
 						$xhtml->viewLink(
 							'Voir la table',
-							array( 'controller' => 'gestionseps', 'action' => 'index' )
+							array( 'controller' => 'gestionseps', 'action' => 'index' ),
+							$permissions->check( 'gestionseps', 'index' )
 						)
 					),
 					array( 'class' => 'odd' ),
@@ -85,7 +91,8 @@
 							h( 'Fiches de Candidature' ),
 							$xhtml->viewLink(
 								'Voir la table',
-								array( 'controller' => 'actionscandidats_personnes', 'action' => 'indexparams' )
+								array( 'controller' => 'actionscandidats_personnes', 'action' => 'indexparams' ),
+								$permissions->check( 'actionscandidats_personnes', 'indexparams' )
 							)
 						),
 						array( 'class' => 'odd' ),
@@ -98,7 +105,8 @@
 							h( 'Fiches de Liaison' ),
 							$xhtml->viewLink(
 								'Voir la table',
-								array( 'controller' => 'actionscandidats_personnes', 'action' => 'indexparams' )
+								array( 'controller' => 'actionscandidats_personnes', 'action' => 'indexparams' ),
+								$permissions->check( 'actionscandidats_personnes', 'indexparams' )
 							)
 						),
 						array( 'class' => 'odd' ),
@@ -111,7 +119,8 @@
 						h( 'Gestion des rendez-vous' ),
 						$xhtml->viewLink(
 							'Voir la table',
-							array( 'controller' => 'gestionsrdvs', 'action' => 'index' )
+							array( 'controller' => 'gestionsrdvs', 'action' => 'index' ),
+							$permissions->check( 'gestionsrdvs', 'index' )
 						)
 					),
 					array( 'class' => 'odd' ),
@@ -122,7 +131,8 @@
 						h( 'Groupes d\'utilisateurs' ),
 						$xhtml->viewLink(
 							'Voir la table',
-							array( 'controller' => 'groups', 'action' => 'index' )
+							array( 'controller' => 'groups', 'action' => 'index' ),
+							$permissions->check( 'groups', 'index' )
 						)
 					),
 					array( 'class' => 'odd' ),
@@ -134,7 +144,8 @@
 							h( 'Liste des sanctions' ),
 							$xhtml->viewLink(
 								'Voir la table',
-								array( 'controller' => 'listesanctionseps58', 'action' => 'index' )
+								array( 'controller' => 'listesanctionseps58', 'action' => 'index' ),
+								$permissions->check( 'listesanctionseps58', 'index' )
 							)
 						),
 						array( 'class' => 'odd' ),
@@ -147,7 +158,8 @@
 							h( 'Motifs de non validation de CER' ),
 							$xhtml->viewLink(
 								'Voir la table',
-								array( 'controller' => 'motifscersnonvalids66', 'action' => 'index' )
+								array( 'controller' => 'motifscersnonvalids66', 'action' => 'index' ),
+								$permissions->check( 'motifscersnonvalids66', 'index' )
 							)
 						),
 						array( 'class' => 'odd' ),
@@ -159,7 +171,8 @@
 						h( 'Objets de l\'entretien' ),
 						$xhtml->viewLink(
 							'Voir la table',
-							array( 'controller' => 'objetsentretien', 'action' => 'index' )
+							array( 'controller' => 'objetsentretien', 'action' => 'index' ),
+							$permissions->check( 'objetsentretien', 'index' )
 						)
 					),
 					array( 'class' => 'odd' ),
@@ -170,7 +183,8 @@
 						h( 'PDOs' ),
 						$xhtml->viewLink(
 							'Voir la table',
-							array( 'controller' => 'pdos', 'action' => 'index' )
+							array( 'controller' => 'pdos', 'action' => 'index' ),
+							$permissions->check( 'pdos', 'index' )
 						)
 					),
 					array( 'class' => 'odd' ),
@@ -181,7 +195,8 @@
 						h( 'Permanences' ),
 						$xhtml->viewLink(
 							'Voir la table',
-							array( 'controller' => 'permanences', 'action' => 'index' )
+							array( 'controller' => 'permanences', 'action' => 'index' ),
+							$permissions->check( 'permanences', 'index' )
 						)
 					),
 					array( 'class' => 'odd' ),
@@ -192,7 +207,8 @@
 						h( 'Référents pour les structures' ),
 						$xhtml->viewLink(
 							'Voir la table',
-							array( 'controller' => 'referents', 'action' => 'index' )
+							array( 'controller' => 'referents', 'action' => 'index' ),
+							$permissions->check( 'referents', 'index' )
 						)
 					),
 					array( 'class' => 'odd' ),
@@ -203,7 +219,8 @@
 						h( 'Services instructeurs' ),
 						$xhtml->viewLink(
 							'Voir la table',
-							array( 'controller' => 'servicesinstructeurs', 'action' => 'index' )
+							array( 'controller' => 'servicesinstructeurs', 'action' => 'index' ),
+							$permissions->check( 'servicesinstructeurs', 'index' )
 						)
 					),
 					array( 'class' => 'odd' ),
@@ -215,7 +232,8 @@
 							h( 'Sites d\'actions médico-sociale COVs' ),
 							$xhtml->viewLink(
 								'Voir la table',
-								array( 'controller' => 'sitescovs58', 'action' => 'index' )
+								array( 'controller' => 'sitescovs58', 'action' => 'index' ),
+								$permissions->check( 'sitescovs58', 'index' )
 							)
 						),
 						array( 'class' => 'odd' ),
@@ -227,7 +245,8 @@
 						h( 'Structures référentes' ),
 						$xhtml->viewLink(
 							'Voir la table',
-							array( 'controller' => 'structuresreferentes', 'action' => 'index' )
+							array( 'controller' => 'structuresreferentes', 'action' => 'index' ),
+							$permissions->check( 'structuresreferentes', 'index' )
 						)
 					),
 					array( 'class' => 'odd' ),
@@ -239,7 +258,8 @@
 							h( 'Types d\'actions' ),
 							$xhtml->viewLink(
 								'Voir la table',
-								array( 'controller' => 'typesactions', 'action' => 'index' )
+								array( 'controller' => 'typesactions', 'action' => 'index' ),
+								$permissions->check( 'typesactions', 'index' )
 							)
 						),
 						array( 'class' => 'odd' ),
@@ -251,7 +271,8 @@
 						h( 'Types d\'orientations' ),
 						$xhtml->viewLink(
 							'Voir la table',
-							array( 'controller' => 'typesorients', 'action' => 'index' )
+							array( 'controller' => 'typesorients', 'action' => 'index' ),
+							$permissions->check( 'typesorients', 'index' )
 						)
 					),
 					array( 'class' => 'odd' ),
@@ -262,7 +283,8 @@
 						h( 'Utilisateurs' ),
 						$xhtml->viewLink(
 							'Voir la table',
-							array( 'controller' => 'users', 'action' => 'index' )
+							array( 'controller' => 'users', 'action' => 'index' ),
+							$permissions->check( 'users', 'index' )
 						)
 					),
 					array( 'class' => 'odd' ),
@@ -273,7 +295,8 @@
 						h( 'Vérification de l\'application' ),
 						$xhtml->viewLink(
 							'Voir la table',
-							array( 'controller' => 'checks', 'action' => 'index' )
+							array( 'controller' => 'checks', 'action' => 'index' ),
+							$permissions->check( 'checks', 'index' )
 						)
 					),
 					array( 'class' => 'odd' ),
@@ -284,7 +307,8 @@
 						h( 'Zones géographiques' ),
 						$xhtml->viewLink(
 							'Voir la table',
-							array( 'controller' => 'zonesgeographiques', 'action' => 'index' )
+							array( 'controller' => 'zonesgeographiques', 'action' => 'index' ),
+							$permissions->check( 'zonesgeographiques', 'index' )
 						)
 					),
 					array( 'class' => 'odd' ),
