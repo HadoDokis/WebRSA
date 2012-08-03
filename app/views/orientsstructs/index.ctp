@@ -25,10 +25,13 @@
 		<ul class="actionMenu">
 			<?php
 				echo '<li>'.
-					$xhtml->addLink(
-						'Préconiser une orientation',
+					$default2->button(
+						'add',
 						array( 'controller' => 'reorientationseps93', 'action' => 'add', $last_orientstruct_id ),
-						$ajout_possible && $permissions->check( 'reorientationseps93', 'add' )
+						array(
+							'label' => 'Demander une réorientation',
+							'enabled' => ( $ajout_possible && $permissions->check( 'reorientationseps93', 'add' ) )
+						)
 					).
 				' </li>';
 			?>
@@ -48,13 +51,27 @@
 	<?php else:?>
 		<ul class="actionMenu">
 			<?php
-				echo '<li>'.
-					$xhtml->addLink(
-						'Préconiser une orientation',
-						array( 'controller' => 'orientsstructs', 'action' => 'add', $personne_id ),
-						!$force_edit && $ajout_possible && $permissions->check( 'orientsstructs', 'add' )
-					).
-				' </li>';
+				if( Configure::read( 'Cg.departement' ) != 93 ){
+					echo '<li>'.
+						$xhtml->addLink(
+							'Préconiser une orientation',
+							array( 'controller' => 'orientsstructs', 'action' => 'add', $personne_id ),
+							!$force_edit && $ajout_possible && $permissions->check( 'orientsstructs', 'add' )
+						).
+					' </li>';
+				}
+				else {
+					echo '<li>'.
+						$default2->button(
+							'add',
+							array( 'controller' => 'orientsstructs', 'action' => 'add', $personne_id ),
+							array(
+								'label' => 'Demander une réorientation',
+								'enabled' => ( !$force_edit && $ajout_possible && $permissions->check( 'orientsstructs', 'add' ) )
+							)
+						).
+					' </li>';
+				}
 			?>
 		</ul>
 	<?php endif;?>

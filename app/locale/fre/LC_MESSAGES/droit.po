@@ -995,8 +995,11 @@ msgstr "DSP"
 msgid "Dsps:filelink"
 msgstr "Lier un fichier à une DSP"
 
+msgid "Dsps:add"
+msgstr "Ajout d'une DSP"
+
 msgid "Dsps:edit"
-msgstr "Ajout/Édition d'une DSP"
+msgstr "Édition d'une DSP"
 
 msgid "Dsps:view"
 msgstr "Visualisation d'une DSP"
@@ -1415,8 +1418,11 @@ msgstr "Lier un fichier à une orientation"
 msgid "Orientsstructs:index"
 msgstr "Visualisation des orientations"
 
+msgid "Orientsstructs:add"
+msgstr "Ajout d'une orientation"
+
 msgid "Orientsstructs:edit"
-msgstr "Ajout/Édition d'une orientation"
+msgstr "Édition d'une orientation"
 
 msgid "Orientsstructs:impression"
 msgstr "Impression d'une orientation"

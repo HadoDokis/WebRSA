@@ -66,7 +66,6 @@
 		);
 
 		public $commeDroit = array(
-			'add' => 'Dsps:edit',
 			'findPersonne' => 'Dsps:view'
 		);
 
