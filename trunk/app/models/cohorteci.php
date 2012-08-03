@@ -84,7 +84,7 @@
 			}
 
 			/// Critères
-			$date_saisi_ci = Set::extract( $criteresci, 'Filtre.date_saisi_ci' );
+// 			$date_saisi_ci = Set::extract( $criteresci, 'Filtre.date_saisi_ci' );
 			$decision_ci = Set::extract( $criteresci, 'Filtre.decision_ci' );
 			$datevalidation_ci = Set::extract( $criteresci, 'Filtre.datevalidation_ci' );
 			$dd_ci = Set::extract( $criteresci, 'Filtre.dd_ci' );
@@ -101,14 +101,23 @@
 			$positioncer = Set::extract( $criteresci, 'Filtre.positioncer' );
 			
 
-			/// Critères sur le CI - date de saisi contrat
-			if( isset( $criteresci['Filtre']['date_saisi_ci'] ) && !empty( $criteresci['Filtre']['date_saisi_ci'] ) ) {
-				$valid_from = ( valid_int( $criteresci['Filtre']['date_saisi_ci_from']['year'] ) && valid_int( $criteresci['Filtre']['date_saisi_ci_from']['month'] ) && valid_int( $criteresci['Filtre']['date_saisi_ci_from']['day'] ) );
-				$valid_to = ( valid_int( $criteresci['Filtre']['date_saisi_ci_to']['year'] ) && valid_int( $criteresci['Filtre']['date_saisi_ci_to']['month'] ) && valid_int( $criteresci['Filtre']['date_saisi_ci_to']['day'] ) );
-				if( $valid_from && $valid_to ) {
-					$conditions[] = 'Contratinsertion.date_saisi_ci BETWEEN \''.implode( '-', array( $criteresci['Filtre']['date_saisi_ci_from']['year'], $criteresci['Filtre']['date_saisi_ci_from']['month'], $criteresci['Filtre']['date_saisi_ci_from']['day'] ) ).'\' AND \''.implode( '-', array( $criteresci['Filtre']['date_saisi_ci_to']['year'], $criteresci['Filtre']['date_saisi_ci_to']['month'], $criteresci['Filtre']['date_saisi_ci_to']['day'] ) ).'\'';
+			/// Critères sur le CI - dates du CER (date de saisie, date de début, date de fin)
+			foreach( array( 'date_saisi_ci', 'dd_ci', 'df_ci' ) as $typeDate ) {
+				if( isset( $criteresci['Filtre'][$typeDate] )  ) {
+					if( is_array( $criteresci['Filtre'][$typeDate] ) && !empty( $criteresci['Filtre'][$typeDate]['day'] ) && !empty( $criteresci['Filtre'][$typeDate]['month'] ) && !empty( $criteresci['Filtre'][$typeDate]['year'] ) ) {
+						$conditions["Filtre.{$typeDate}"] = "{$criteresci['Filtre'][$typeDate]['year']}-{$criteresci['Filtre'][$typeDate]['month']}-{$criteresci['Filtre'][$typeDate]['day']}";
+					}
+					else if( ( is_int( $criteresci['Filtre'][$typeDate] ) || is_bool( $criteresci['Filtre'][$typeDate] ) || ( $criteresci['Filtre'][$typeDate] == '1' ) ) && isset( $criteresci['Filtre']["{$typeDate}_from"] ) && isset( $criteresci['Filtre']["{$typeDate}_to"] ) ) {
+						$criteresci['Filtre']["{$typeDate}_from"] = $criteresci['Filtre']["{$typeDate}_from"]['year'].'-'.$criteresci['Filtre']["{$typeDate}_from"]['month'].'-'.$criteresci['Filtre']["{$typeDate}_from"]['day'];
+						$criteresci['Filtre']["{$typeDate}_to"] = $criteresci['Filtre']["{$typeDate}_to"]['year'].'-'.$criteresci['Filtre']["{$typeDate}_to"]['month'].'-'.$criteresci['Filtre']["{$typeDate}_to"]['day'];
+
+						$conditions[] = 'Contratinsertion.'.$typeDate.' BETWEEN \''.$criteresci['Filtre']["{$typeDate}_from"].'\' AND \''.$criteresci['Filtre']["{$typeDate}_to"].'\'';
+					}
 				}
 			}
+
+
+
 
 			// Trouver le dernier contrat d'insertion pour chacune des personnes du jeu de résultats
 			if( isset( $criteresci['Contratinsertion']['dernier'] ) && $criteresci['Contratinsertion']['dernier'] ) {
@@ -150,17 +159,6 @@
 				$conditions[] = 'Contratinsertion.datevalidation_ci = \''.$datevalidation_ci.'\'';
 			}
 
-			// ...
-			if( !empty( $dd_ci ) && dateComplete( $criteresci, 'Filtre.dd_ci' ) ) {
-				$dd_ci = $dd_ci['year'].'-'.$dd_ci['month'].'-'.$dd_ci['day'];
-				$conditions[] = 'Contratinsertion.dd_ci = \''.$dd_ci.'\'';
-			}
-
-			// ...
-			if( !empty( $df_ci ) && dateComplete( $criteresci, 'Filtre.df_ci' ) ) {
-				$df_ci = $df_ci['year'].'-'.$df_ci['month'].'-'.$df_ci['day'];
-				$conditions[] = 'Contratinsertion.df_ci = \''.$df_ci.'\'';
-			}
 
 			// Localité adresse
 			if( !empty( $locaadr ) ) {
@@ -292,6 +290,7 @@
 
 			
 			$this->Dossier = ClassRegistry::init( 'Dossier' );
+			$this->Contratinsertion = ClassRegistry::init( 'Contratinsertion' );
 
 			$query = array(
 				'fields' => array_merge(
