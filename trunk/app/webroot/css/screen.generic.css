@@ -1110,6 +1110,17 @@ ul li a.button.view {
 	margin-bottom: 10px;
 }
 
+ul li a.button.add {
+	background-image: url( ../img/icons/add.png );
+	background-position: 5px 5px;
+	padding: 0.66em 0.5em 0.5em 2em;
+}
+ul li a.button.add, span.button.add.disabled{
+	background-image: url( ../img/icons/add_disabled.png );
+	background-position: 5px 5px;
+	padding: 0.66em 0.5em 0.5em 2em;
+}
+
 td.button.gedooo a, td.action a.gedooo, td span.button.gedooo, table.default2 td a.button.gedooo {
     background-image: url( ../img/icons/printer.png );
 }

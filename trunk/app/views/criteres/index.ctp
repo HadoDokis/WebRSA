@@ -198,7 +198,7 @@
 								</tr>
 								<tr>
 									<th>Rôle</th>
-									<td>'.$rolepers[$orient['Prestation']['rolepers']].'</td>
+									<td>'.Set::enum( $orient['Prestation']['rolepers'], $rolepers ).'</td>
 								</tr>								
 							</tbody>
 						</table>';

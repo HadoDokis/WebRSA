@@ -7,9 +7,9 @@
 		public $helpers = array( 'Default', 'Default2', 'Fileuploader' );
 		public $components = array( 'Gedooo.Gedooo', 'Fileuploader' );
 
-		public $commeDroit = array(
-			'add' => 'Orientsstructs:edit'
-		);
+// 		public $commeDroit = array(
+// 			'add' => 'Orientsstructs:edit'
+// 		);
 
 		public $aucunDroit = array( 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
 
