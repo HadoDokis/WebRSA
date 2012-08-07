@@ -446,8 +446,11 @@ DROP INDEX IF EXISTS motifssortiecuis66_name_idx;
 CREATE UNIQUE INDEX motifssortiecuis66_name_idx ON motifssortiecuis66(name);
 
 
-DROP TYPE IF EXISTS TYPE_SECTEUR CASCADE;
-CREATE TYPE TYPE_SECTEUR AS ENUM ( 'cie', 'cae' );
+SELECT public.alter_enumtype ( 'TYPE_SECTEUR', ARRAY['cie', 'cae', 'CIE', 'CAE'] );
+UPDATE cuis SET secteur = 'cie' WHERE secteur = 'CIE';
+UPDATE cuis SET secteur = 'cae' WHERE secteur = 'CAE';
+SELECT public.alter_enumtype ( 'TYPE_SECTEUR', ARRAY['cie', 'cae'] );
+
 
 -- *****************************************************************************
 COMMIT;
