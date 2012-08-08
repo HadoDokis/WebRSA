@@ -21,15 +21,6 @@
 		*
 		*/
 
-//		public function __construct() {
-//			$this->components = Set::merge( $this->components, array( 'Gestionzonesgeos', 'Prg' => array( 'actions' => array( 'index' ) ) ) );
-//			parent::__construct();
-//		}
-
-		/**
-		*
-		*/
-
 		protected function _setOptions() {
 			$this->set( 'natpf', $this->Option->natpf() );
 			$this->set( 'qual', $this->Option->qual() );
@@ -643,19 +634,16 @@
 				$dateDuJour = date( 'Y-m-d' );
 
 				//Si la date de la dernière commission est > à 1 an, on masque l'information d'EP (CG93)
+				$displayingInfoEp = true;
 				if( Configure::read( 'Cg.departement' ) == 93 ) {
 					if( !empty( $dateDerniereCommissionep ) ) {
 						$dateCommissionEPPlusUnAn = date( 'Y-m-d', strtotime( '+1 year', strtotime( $dateDerniereCommissionep ) ) );
 
 						$dateduJourMoinsUnAn = date( 'Y-m-d', strtotime( '-1 year', strtotime( $dateDuJour ) ) );
-						$displayingInfoEp = true;
 						if( $dateDuJour > $dateCommissionEPPlusUnAn  ) {
 							$displayingInfoEp = false;
 						}
 					}
-				}
-				else{
-					$displayingInfoEp = true;
 				}
 				$this->set( 'displayingInfoEp', $displayingInfoEp );
 
@@ -695,8 +683,8 @@
 				*   Liste des anciens dossiers par demandeurs et conjoints
 				*   TODO
 				*/
-                                $nir13 = trim( $personnesFoyer[$index]['Personne']['nir'] );
-                                $nir13 = ( empty( $nir13 ) ? null : substr( $nir13, 0, 13 ) );
+				$nir13 = trim( $personnesFoyer[$index]['Personne']['nir'] );
+				$nir13 = ( empty( $nir13 ) ? null : substr( $nir13, 0, 13 ) );
 
 				$autreNumdemrsaParAllocataire = $this->Dossier->find(
 					'all',
