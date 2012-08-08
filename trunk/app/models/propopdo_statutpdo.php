@@ -3,7 +3,7 @@
 		public $name = 'PropopdoStatutpdo';
 
 		public $actsAs = array (
-			'Nullable',
+			'Formattable',
 			'ValidateTranslate'
 		);
 

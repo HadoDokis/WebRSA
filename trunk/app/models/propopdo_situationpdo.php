@@ -4,7 +4,7 @@
 		public $name = 'PropopdoSituationpdo';
 
 		public $actsAs = array (
-			'Nullable',
+			'Formattable',
 			'ValidateTranslate'
 		);
 

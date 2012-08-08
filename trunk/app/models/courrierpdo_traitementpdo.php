@@ -4,7 +4,7 @@
 		public $name = 'CourrierpdoTraitementpdo';
 
 		public $actsAs = array (
-			'Nullable',
+			'Formattable',
 			'ValidateTranslate',
 			'Autovalidate',
 			'Gedooo.Gedooo',

@@ -21,7 +21,6 @@
 					),
 				)
 			),
-			'Revision' => array('auto'=>false)
 		);
 	}
 ?>
