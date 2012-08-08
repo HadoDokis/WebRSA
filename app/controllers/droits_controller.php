@@ -24,7 +24,7 @@
 			/*$this->Session->setFlash( 'Cette fonction n\'est plus utilisée, merci d\'utiliser la gestion des droits par utilisateur et par groupe', 'flash/error' );
 			$this->redirect('/');
 			exit();*/
-		
+
 			// Initialisation de la progressBar
 			include ('vendors/progressbar.php');
 			Initialize( 200, 100, 200, 30, '#000000', '#FFCC00', '#006699' );
@@ -146,7 +146,7 @@
 				}
 
 				// Traitement des sous-profils
-				if ($this->Groups->findCount("parent_id = $profilId", -1)>0) {
+				if ($this->Groups->find("count", array('conditions' => array("parent_id" => $profilId), 'recursive' => -1) ) >0 ) {
 					$profilsTree[$key]['nbElement'] += $this->_chargeProfilsUsers($profilsTree[$key]['sousProfils'], $profilId);
 				}
 				$nbTotElement += $profilsTree[$key]['nbElement'] + 1;

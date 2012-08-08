@@ -45,7 +45,13 @@ class SoftDeletableBehavior extends ModelBehavior
             $this->__settings[$Model->alias] = $default;
         }
 
-        $this->__settings[$Model->alias] = am($this->__settings[$Model->alias], ife(is_array($settings), $settings, array()));
+		$options = array();
+		if ( is_array( $settings ) )
+		{
+			$options = $settings;
+		}
+
+        $this->__settings[$Model->alias] = am($this->__settings[$Model->alias], $options);
     }
 
     /**

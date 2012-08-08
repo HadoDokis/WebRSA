@@ -151,7 +151,7 @@
 					}
 					echo sprintf(
 						"Page construite en %s secondes. %s / %s. %s modèles",
-						number_format( getMicrotime() - $GLOBALS['TIME_START'] , 2, ',', ' ' ),
+						number_format( microtime( true ) - $GLOBALS['TIME_START'] , 2, ',', ' ' ),
 						byteSize( memory_get_peak_usage( false ) ),
 						byteSize( memory_get_peak_usage( true ) ),
 						class_registry_models_count()
