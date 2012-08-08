@@ -7,14 +7,16 @@
 
 		public $commeDroit = array( 'view' => 'Infosfinancieres:index' );
 
+		public $components = array( 'Prg' => array( 'actions' => array( 'indexdossier' ) ) );
+
 		/**
 		*
 		*/
 
-		function __construct() {
-			$this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'indexdossier' ) ) ) );
-			parent::__construct();
-		}
+//		function __construct() {
+//			$this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'indexdossier' ) ) ) );
+//			parent::__construct();
+//		}
 
 		/**
 		*

@@ -10,14 +10,16 @@
 			'limit' => 20,
 		);
 
+		public $components = array( 'Jetons', 'Prg' => array( 'actions' => array( 'avisdemande', 'valide' ) ) );
+
 		/**
 		*/
 
-		function __construct() {
-			$this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'avisdemande', 'valide' ) ) ) );
-			parent::__construct();
-			$this->components[] = 'Jetons';
-		}
+//		function __construct() {
+//			$this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'avisdemande', 'valide' ) ) ) );
+//			parent::__construct();
+//			$this->components[] = 'Jetons';
+//		}
 
 		function beforeFilter(){
 			parent::beforeFilter();

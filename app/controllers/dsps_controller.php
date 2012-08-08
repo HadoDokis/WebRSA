@@ -9,7 +9,7 @@
 
 		public $helpers = array( 'Xform', 'Xhtml', 'Dsphm', 'Default2', 'Fileuploader', 'Search', 'Csv' );
 		public $uses = array('Dsp', 'DspRev');
-		public $components = array( 'Jetons', 'Default', 'Fileuploader' );
+		public $components = array( 'Jetons', 'Default', 'Fileuploader', 'Gestionzonesgeos', 'Prg' => array( 'actions' => array( 'index' ) ) );
 
 
 		public $paginate = array(
@@ -71,15 +71,15 @@
 
 		public $aucunDroit = array( 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
 
-		
-		public function __construct() {
-			$this->components = Set::merge( $this->components, array( 'Gestionzonesgeos', 'Prg' => array( 'actions' => array( 'index' ) ) ) );
-			parent::__construct();
-		}		
-		
-		
-		
-		
+
+//		public function __construct() {
+//			$this->components = Set::merge( $this->components, array( 'Gestionzonesgeos', 'Prg' => array( 'actions' => array( 'index' ) ) ) );
+//			parent::__construct();
+//		}
+
+
+
+
 		/**
 		*
 		*/
@@ -379,7 +379,7 @@
 				'DetailconfortRev',
 				'Fichiermodule'
 			);
-			
+
 			$histos = array();
 			if( isset( $dsp['Dsp']['id'] ) && !empty( $dsp['Dsp']['id'] ) ) {
 				$histos = $this->paginate(
@@ -856,18 +856,18 @@
 			$this->set( 'urlmenu', '/dsps/histo/'.$dsp['Dsp']['personne_id'] );
 			$this->render( $this->action, null, '_add_edit' );
 		}
-		
-		
+
+
 		/**
 		 * Recherche par DSPs
 		 */
 		public function index() {
 			$this->Gestionzonesgeos->setCantonsIfConfigured();
 			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
-			
+
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
 			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
-			
+
 			$params = $this->data;
 			if( !empty( $params ) ) {
                             $wildcardKeys = array(
@@ -903,9 +903,9 @@
 
                             $this->set( 'dsps', $dsps );
 			}
-			
+
 		}
-		
+
 		/**
 		* Export du tableau en CSV
 		*/
@@ -926,7 +926,7 @@
                             'Dsp.libsecactderact',
                             'Dsp.libderact'
                         );
- 
+
 			$querydata = $this->Dsp->search(
                             $mesCodesInsee,
                             $this->Session->read( 'Auth.User.filtre_zone_geo' ),
@@ -939,7 +939,7 @@
 			$this->layout = '';
 			$this->set( compact( 'dsps' ) );
 		}
-		
-		
+
+
 	}
 ?>

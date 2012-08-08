@@ -9,14 +9,16 @@
 
 		public $helpers = array( 'Csv', 'Ajax','Search' );
 
+		public $components = array( 'Prg' => array( 'actions' => array( 'index', 'nouvelles' ) ) );
+
 		/**
 		*
 		*/
 
-		public function __construct() {
-			$this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'index', 'nouvelles' ) ) ) );
-			parent::__construct();
-		}
+//		public function __construct() {
+//			$this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'index', 'nouvelles' ) ) ) );
+//			parent::__construct();
+//		}
 
 		/**
 		*
@@ -39,7 +41,7 @@
 			$this->set( 'statutlist', $this->Statutpdo->find( 'list' ) );
 			$this->set( 'situationlist', $this->Situationpdo->find( 'list' ) );
 			$this->set( 'statutdecisionlist', $this->Statutdecisionpdo->find( 'list' ) );
-			
+
 			$this->set( 'rolepers', $this->Option->rolepers() );
 
 			$this->set( 'gestionnaire', $this->User->find(
@@ -99,7 +101,7 @@
 		*/
 
 		public function nouvelles() {
-			
+
 			if( Configure::read( 'CG.cantons' ) ) {
 				$this->set( 'cantons', $this->Canton->selectList() );
 			}
@@ -131,7 +133,7 @@
 			$this->_setOptions();
 			// Précise les options des états de dossiers :
 			$this->set( 'etatdosrsa', $this->Option->etatdosrsa( $this->Situationdossierrsa->etatAttente()) );
-				
+
 			$this->render( $this->action, null, 'liste' );
 		}
 

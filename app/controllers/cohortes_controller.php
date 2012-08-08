@@ -30,7 +30,7 @@
 
 		public $helpers = array( 'Csv', 'Paginator', 'Ajax', 'Default', 'Xpaginator', 'Locale', 'Search' );
 
-		public $components = array( 'Gedooo.Gedooo', 'Prg' => array( 'actions' => 'orientees' ) );
+		public $components = array( 'Jetons', 'Gedooo.Gedooo', 'Prg' => array( 'actions' => 'orientees' ) );
 
 		public $aucunDroit = array( 'progression' );
 
@@ -129,10 +129,10 @@
 		*
 		*/
 
-		public function __construct() {
-			parent::__construct();
-			$this->components[] = 'Jetons';
-		}
+//		public function __construct() {
+//			parent::__construct();
+//			$this->components[] = 'Jetons';
+//		}
 
 		/**
 		*

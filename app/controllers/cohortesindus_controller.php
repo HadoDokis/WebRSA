@@ -12,14 +12,16 @@
 			'limit' => 20,
 		);
 
+		public $components = array( 'Jetons', 'Prg' => array( 'actions' => array( 'index' ) ) );
+
 		/**
 		*
 		*/
 
-		public function __construct() {
-			$this->components = Set::merge( $this->components, array( 'Jetons', 'Prg' => array( 'actions' => array( 'index' ) ) ) );
-			parent::__construct();
-		}
+//		public function __construct() {
+//			$this->components = Set::merge( $this->components, array( 'Jetons', 'Prg' => array( 'actions' => array( 'index' ) ) ) );
+//			parent::__construct();
+//		}
 
 		public function beforeFilter() {
 			$sr = $this->Structurereferente->find(
