@@ -1,4 +1,4 @@
 <p class="notice">
-    <?php echo $xhtml->image( 'icons/information.png', array( 'alt' => 'Information' ) );?>
-    <?php e( $content_for_layout ); ?>
+	<?php echo $xhtml->image('icons/information.png', array('alt' => 'Information')); ?>
+	<?php echo $content_for_layout; ?>
 </p>

@@ -8,7 +8,7 @@
 	* @access public
 	* @url http://www.debuggable.com/posts/How_to_Fetch_the_ENUM_Options_of_a_Field_The_CakePHP_Enumerable_Behavior:4a977c9b-1bdc-44b4-b027-1a54cbdd56cb
     *
-    *  RequÃªte permettant d'obtenir la liste des types d'ENUM utilisÃ©s en base de donnÃ©es:
+    *  Requête permettant d'obtenir la liste des types d'ENUM utilisés en base de données:
     *   SELECT DISTINCT(udt_name)
     *    FROM information_schema.columns
     *    WHERE table_catalog = 'cg66_newapre'
@@ -23,10 +23,22 @@
 
 	class EnumerableBehavior extends ModelBehavior
 	{
+		/**
+		 *
+		 * @var array
+		 */
 		protected $_options = array();
 
+		/**
+		 *
+		 * @var array
+		 */
 		public $settings = array();
 
+		/**
+		 *
+		 * @var array
+		 */
 		public $defaultSettings = array(
 			// FIXME: en Anglais
 			'validationRule' => 'Veuillez entrer une valeur parmi %s',
@@ -39,10 +51,10 @@
 		/**
 		*
 		* Add validation rule for model->field
-		*
+		* @param object $model
+		* @param string $field
 		*/
-
-		function _addValidationRule( &$model, $field ) {
+		protected function _addValidationRule( &$model, $field ) {
 			$options = $this->enumOptions( $model, $field );
 			if( !empty( $options ) ) {
 				$model->validate[$field][] = array(
@@ -60,9 +72,10 @@
 		*
 		* Read settings, add validation rules if needed.
 		*
+		* @param object $model
+		* @param array $settings
 		*/
-
-		function setup( &$model, $settings ) {
+		public function setup( &$model, $settings ) {
 			// Setup ... FIXME: case insensitive
 			/*$default = array(
 				// FIXME: en Anglais
@@ -126,56 +139,7 @@
 			}
 		}
 
-		/**
-		* Fetches the enum type options for a specific field for mysql and
-		* mysqli drivers.
-		*
-		* @param string $field
-		* @return void
-		* @access public
-		* @deprecated
-		*/
 
-		/*function _mysqlEnumOptions( &$model, $field ) {
-			$options = false;
-			$sql = "SHOW COLUMNS FROM `{$model->useTable}` LIKE '{$field}'";
-			$enumData = $model->query($sql);
-			if(!empty($enumData)) {
-				$patterns = array('enum(', ')', '\'');
-				$enumData = r($patterns, '', $enumData[0]['COLUMNS']['Type']);
-				$options = explode(',', $enumData);
-			}
-			return $options;
-		}*/
-
-		/**
-		* Fetches the enum type options for a specific field for postgres
-		* driver.
-		*
-		* @param string $field
-		* @return void
-		* @access public
-		* @deprecated
-		*/
-
-		/*function _postgresEnumOptions( &$model, $field ) {
-			$options = false;
-			$sql = "SELECT udt_name FROM information_schema.columns WHERE table_name = '{$model->useTable}' AND column_name = '{$field}';";
-			$enumType = $model->query( $sql );
-			if(!empty($enumType)) {
-				$enumType = Set::extract( $enumType, '0.0.udt_name' );
-				if( $enumType != 'text' ) {
-					$sql = "SELECT enum_range(null::$enumType);";
-					$enumData = $model->query($sql);
-					if(!empty($enumData)) {
-						$patterns = array( '{', '}' );
-						$enumData = r( $patterns, '', Set::extract( $enumData, '0.0.enum_range' ) );
-						$options = explode( ',', $enumData );
-					}
-				}
-			}
-			return $options;
-		}*/
 
 		/**
 		* Recherche et mise en cache des valeurs des enums pour tous les champs
@@ -211,7 +175,7 @@
 								$enumData = $model->query( $sql );
 								if(!empty($enumData)) {
 									$patterns = array( '{', '}' );
-									$enumData = r( $patterns, '', Set::extract( $enumData, '0.0.enum_range' ) );
+									$enumData = str_replace( $patterns, '', Set::extract( $enumData, '0.0.enum_range' ) );
 									$types[$enum[0]['udt_name']] = explode( ',', $enumData );
 								}
 							}
@@ -259,7 +223,7 @@
 						foreach( $enums as $enum ) {
 							if( !empty( $enum ) ) {
 								$patterns = array( 'enum(', ')', '\'' );
-								$enumData = r( $patterns, '', Set::extract( $enum, 'COLUMNS.Type' ) );
+								$enumData = str_replace( $patterns, '', Set::extract( $enum, 'COLUMNS.Type' ) );
 								$options[$enum['COLUMNS']['Field']] = explode( ',', $enumData );
 							}
 						}
