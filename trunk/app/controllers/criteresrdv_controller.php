@@ -9,9 +9,13 @@
 
 		public $helpers = array( 'Csv', 'Ajax', 'Paginator' );
 
+		public $components = array( 'Prg' => array( 'actions' => array( 'index' ) ) );
+
+
 		/**
 		*
 		*/
+
 
 		public function beforeFilter() {
 			ini_set('max_execution_time', 0);
@@ -23,10 +27,10 @@
 		*
 		*/
 
-		public function __construct() {
-			$this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'index' ) ) ) );
-			parent::__construct();
-		}
+//		public function __construct() {
+//			$this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'index' ) ) ) );
+//			parent::__construct();
+//		}
 
 		/**
 		*

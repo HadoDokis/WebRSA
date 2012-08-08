@@ -9,14 +9,16 @@
 
 		public $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml', 'Xpaginator' );
 
+		public $components = array(  'Prg' => array( 'actions' => array( 'all', 'eligible' ) )  );
+
 		/**
 		*
 		*/
-
-		public function __construct() {
-			$this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'all', 'eligible' ) ) ) );
-			parent::__construct();
-		}
+	
+//		public function __construct() {
+//			$this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'all', 'eligible' ) ) ) );
+//			parent::__construct();
+//		}
 
 		/**
 		*
@@ -39,12 +41,12 @@
 			$this->set( 'natureAidesApres', $this->Option->natureAidesApres() );
 			$this->set( 'printed', $this->Option->printed() );
 
-			
+
 			$this->set( 'themes', $this->Apre66->Aideapre66->Themeapre66->find( 'list' ) );
 			$this->set( 'typesaides', $this->Apre66->Aideapre66->Typeaideapre66->listOptions() );
 			/// Liste des tiers prestataires
 			$this->set( 'tiers', $this->Tiersprestataireapre->find( 'list' ) );
-			
+
 			$this->set( 'structures', $this->Apre->Structurereferente->listeParType( array( 'apre' => true ) ) );
 
 			$this->set( 'referents', $this->Apre->Referent->listOptions() );
@@ -193,7 +195,7 @@
 
 			$this->layout = '';
 			$this->set( compact( 'apres' ) );
-			
+
 			$this->_setOptions();
 
 			switch( $action ) {

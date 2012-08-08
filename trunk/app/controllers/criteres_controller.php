@@ -9,7 +9,8 @@
 		public $aucunDroit = array( 'constReq', 'ajaxstruc' );
 
 		public $helpers = array( 'Csv', 'Ajax', 'Search' );
-		public $components = array( 'RequestHandler' );
+		
+		public $components = array( 'RequestHandler',  'Prg' => array( 'actions' => array( 'index' ) )  );
 
 		/**
 		*
@@ -25,10 +26,10 @@
 		*
 		*/
 
-		public function __construct() {
-			$this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'index' ) ) ) );
-			parent::__construct();
-		}
+//		public function __construct() {
+//			$this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'index' ) ) ) );
+//			parent::__construct();
+//		}
 
 		/**
 		*
@@ -59,8 +60,8 @@
 
 			$this->set( 'referents', ClassRegistry::init( 'Referent' )->find( 'list', array( 'conditions' => array( 'Referent.actif' => 'O' ) ) ) );
 			$this->set( 'options', $this->Orientstruct->enums() );
-			
-			
+
+
 			//Ajout des structures et référents orientants
 			$this->set( 'refsorientants', ClassRegistry::init( 'Referent' )->listOptions() );
 			$this->set( 'structsorientantes', ClassRegistry::init( 'Structurereferente' )->listOptions( array( 'orientation' => 'O' ) ) );

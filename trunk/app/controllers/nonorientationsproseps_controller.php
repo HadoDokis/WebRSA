@@ -7,6 +7,8 @@
 
 		public $uses = array( 'Nonorientationproep58', 'Nonorientationproep93', 'Nonorientationproep66' );
 
+		public $components = array( 'Prg' => array( 'actions' => array( 'index' ) ) );
+
 		public function beforeFilter() {
 			ini_set('max_execution_time', 0);
 			$this->modelClass = 'Nonorientationproep'.Configure::read( 'Cg.departement' );
@@ -30,10 +32,10 @@
 		*
 		*/
 
-		public function __construct() {
-			$this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'index' ) ) ) );
-			parent::__construct();
-		}
+//		public function __construct() {
+//			$this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'index' ) ) ) );
+//			parent::__construct();
+//		}
 
 		/**
 		*

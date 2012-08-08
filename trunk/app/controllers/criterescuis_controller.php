@@ -10,14 +10,16 @@
 
 		public $helpers = array( 'Csv', 'Ajax' );
 
+		public $components = array(  'Prg' => array( 'actions' => array( 'index' ) ) );
+		
 		/**
 		*
 		*/
 
-		public function __construct() {
-			$this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'index' ) ) ) );
-			parent::__construct();
-		}
+//		public function __construct() {
+//			$this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'index' ) ) ) );
+//			parent::__construct();
+//		}
 
 		protected function _setOptions(){
 			$options = array();

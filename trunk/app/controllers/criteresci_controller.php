@@ -10,14 +10,16 @@
 
 		public $helpers = array( 'Csv', 'Ajax', 'Search' );
 
+		public $components = array(  'Prg' => array( 'actions' => array( 'index' ) ) );
+
 		/**
 		*
 		*/
 
-		public function __construct() {
-			$this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'index' ) ) ) );
-			parent::__construct();
-		}
+//		public function __construct() {
+//			$this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'index' ) ) ) );
+//			parent::__construct();
+//		}
 
 		/**
 		*
@@ -55,11 +57,11 @@
 				$forme_ci = array( 'S' => 'Simple', 'C' => 'Particulier' );
 			}
 			$this->set( 'forme_ci', $forme_ci );
-			
+
 			$this->set( 'etatdosrsa', $this->Option->etatdosrsa( $this->Situationdossierrsa->etatOuvert()) );
 			$this->set( 'typevoie', $this->Option->typevoie() );
 			$this->set( 'qual', $this->Option->qual() );
-			
+
 			$this->set(
 				'trancheage',
 				array(
