@@ -6,7 +6,7 @@
 		public $name = 'Gestionsanctionep58';
 
 		public $useTable = false;
-		
+
 		public $actsAs = array(
 			'Autovalidate',
 			'ValidateTranslate',
@@ -18,7 +18,7 @@
 				)
 			),*/
 			'Gedooo.Gedooo',
-			'ModelesodtConditinnables' => array(
+			'ModelesodtConditionnables' => array(
 				58 => array(
 					'Sanctionep58/finsanction1.odt',
 					'Sanctionep58/finsanction2.odt',
@@ -36,14 +36,14 @@
 			$Personne = ClassRegistry::init( 'Personne' );
 			$Ep = ClassRegistry::init( 'Ep' );
 
-			/// Conditions de base			
+			/// Conditions de base
 			$conditions = $Ep->sqRestrictionsZonesGeographiques(
 				'Commissionep.ep_id',
 				$filtre_zone_geo,
 				$mesCodesInsee
 			);
-			
-			
+
+
 			if( !empty( $statutSanctionep ) ) {
 				if( $statutSanctionep == 'Gestion::traitement' ) {
 					if( !empty( $criteressanctionseps['Decision']['sanction'] ) ) {
@@ -74,7 +74,7 @@
 					);
 				}
 			}
-			
+
 			// Il faut que la décision1 ou la décision 2 soit une sanction
 			$conditions[] = array(
 				'OR' => array(
@@ -84,18 +84,18 @@
 					'Decisionsanctionrendezvousep58.decision2' => 'sanction'
 				)
 			);
-			
+
 			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
 			$conditions = $this->conditionsAdresse( $conditions, $criteressanctionseps, $filtre_zone_geo, $mesCodesInsee );
 			$conditions = $this->conditionsDossier( $conditions, $criteressanctionseps );
 			$conditions = $this->conditionsPersonne( $conditions, $criteressanctionseps );
 			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $criteressanctionseps );
-			
+
 			/// Dossiers lockés
 			if( !empty( $lockedDossiers ) ) {
 				$conditions[] = 'Dossier.id NOT IN ( '.implode( ', ', $lockedDossiers ).' )';
 			}
-			
+
 			// Conditions pour les jointures
 			$conditions['Prestation.rolepers'] = array( 'DEM', 'CJT' );
 			$conditions['Calculdroitrsa.toppersdrodevorsa'] = 1;
@@ -108,7 +108,7 @@
 					.' )'
 				)
 			);
-			
+
 
 			// Le dernier passage d'un dossier d'EP
 			$conditions[] = 'Passagecommissionep.id IN ( '.$Personne->Dossierep->Passagecommissionep->sqDernier().' )';
@@ -116,7 +116,7 @@
 			// Un passage traité pour une commission traitée
 			$conditions['Commissionep.etatcommissionep'] = 'traite';
 			$conditions['Passagecommissionep.etatdossierep'] = 'traite';
-			
+
 			// FIXME -> une des deux thématiques ou les deux
 			if( isset( $criteressanctionseps['Dossierep']['themeep'] ) && !empty( $criteressanctionseps['Dossierep']['themeep'] ) ) {
 				$conditions['Dossierep.themeep'] = $criteressanctionseps['Dossierep']['themeep'];
@@ -255,7 +255,7 @@
 			);
 			return $querydata;
 		}
-		
+
 		/**
 		 * Retourne le PDF par défaut généré pour l'impression du courrier de fin de sanciton 1
 		 *
@@ -314,7 +314,7 @@
 			);
 		}
 
-		
+
 		/**
 		 * Retourne le PDF concernant le questionnaire de la personne non orientée
 		 *
@@ -339,7 +339,7 @@
 				$passagecommissionep_id = $gestionssanctionseps58[$i]['Passagecommissionep']['id'];
 				$pdfs[] = $this->getPdfSanction( $niveauSanction, $passagecommissionep_id, $themeep, $user_id );
 			}
-			
+
 			return $pdfs;
 		}
 	}

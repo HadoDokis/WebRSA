@@ -35,7 +35,6 @@
 		);
 
 		public $actsAs = array (
-			'Nullable',
 			'ValidateTranslate',
 			'Enumerable' => array(
 				'fields' => array(

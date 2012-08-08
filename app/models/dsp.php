@@ -292,7 +292,6 @@
 					'suivimedical'
 				)
 			),
-			'Revision' => array('auto' => false),
 			'Formattable' => array(
 				'suffix' => array( 'libderact66_metier_id', 'libactdomi66_metier_id', 'libemploirech66_metier_id' )
 			)

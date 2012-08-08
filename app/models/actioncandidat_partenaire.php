@@ -6,7 +6,7 @@
 		public $displayField = 'libstruc';
 
 		public $actsAs = array (
-			'Nullable',
+			'Formattable',
 			'ValidateTranslate'
 		);
 

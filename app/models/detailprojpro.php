@@ -11,7 +11,6 @@
 					),
 				)
 			),
-			'Revision' => array('auto'=>false)
 		);
 
 		public $belongsTo = array(
