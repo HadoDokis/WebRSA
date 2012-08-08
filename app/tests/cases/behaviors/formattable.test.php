@@ -96,8 +96,9 @@
 
 			//------------------------------------------------------------------
 
-			$conn = ConnectionManager::getInstance();
-			$driver = $conn->config->{$this->Item->useDbConfig}['driver'];
+			$driver = $this->Item->getDataSource()->config['driver'];
+			$driver = strtolower( str_replace( 'Database/', '', $driver ) );
+
 			/// FIXME: Firstname 1 ..
 			/// Vérification de la lecture de ce qui a été enregistré
 			$result = $this->Item->findById( $this->Item->id, null, null, -1 );

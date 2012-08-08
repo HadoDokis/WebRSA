@@ -223,7 +223,6 @@
 			/// Special operations
 			$operations = Xset::flatten( Set::normalize( $operations ) );
 			if( !empty( $operations ) ) {
-                $conn = ConnectionManager::getInstance();
 				foreach( $operations as $path => $operation ) {
 					switch( strtoupper( $operation ) ) {
 						case 'BETWEEN':
@@ -249,8 +248,9 @@
 								list( $model, $field ) = model_field( $path );
 
 								$model = ClassRegistry::init( $model );
-								$conn = ConnectionManager::getInstance();
-								$driver = $conn->config->{$model->useDbConfig}['driver'];
+
+								$driver = $model->getDataSource()->config['driver'];
+								$driver = strtolower( str_replace( 'Database/', '', $driver ) );
 
 								$conditions["{$path} ".( $driver == 'postgres' ? 'ILIKE' : 'LIKE' )] = "%$value%";
 								$data = Set::remove( $data, $path );

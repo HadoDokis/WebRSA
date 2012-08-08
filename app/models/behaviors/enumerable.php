@@ -242,8 +242,9 @@
 		*/
 
 		protected function _readEnums( &$model ) {
-			$conn = ConnectionManager::getInstance();
-			$driver = $conn->config->{$model->useDbConfig}['driver'];
+			$driver = $model->getDataSource()->config['driver'];
+			$driver = strtolower( str_replace( 'Database/', '', $driver ) );
+
 			switch( $driver ) {
 				case 'postgres':
 					$options = $this->_postgresEnums( $model );
@@ -271,38 +272,6 @@
 		function enumOptions( &$model, $field ) {
 			$options = $this->_readEnums( $model );
 			return @$options[$field];
-
-			/*$cacheKey = $model->alias . '_' . $field . '_enum_options';
-			$options = Cache::read($cacheKey);
-
-			if( !$options ) {
-				$options = Set::extract( $this->settings, "{$model->name}.fields.{$field}.values" );
-			}
-
-			if( !$options ) {
-				$options = false;
-				$conn = ConnectionManager::getInstance();
-				$driver = $conn->config->{$model->useDbConfig}['driver'];
-				switch( $driver ) {
-					case 'postgres':
-						$options = $this->_postgresEnumOptions( $model, $field );
-						break;
-					case 'mysql':
-					case 'mysqli':
-						$options = $this->_mysqlEnumOptions( $model, $field );
-						break;
-					default:
-						trigger_error( sprintf( __( 'SQL driver (%s) not supported in enumerable behavior.', true ), $driver ), E_USER_WARNING );
-				}
-
-				if( empty( $options ) ) {
-					trigger_error( sprintf( __( 'Requête de recherche de type inutile pour le champ (%s).', true ), "{$model->alias}.{$field}" ), E_USER_WARNING );
-				}
-
-				Cache::write($cacheKey, $options);
-			}
-
-			return $options;*/
 		}
 
 		/**
