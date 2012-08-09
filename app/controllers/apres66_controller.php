@@ -1,22 +1,20 @@
 <?php
 	class Apres66Controller extends AppController
 	{
+
 		public $name = 'Apres66';
-		public $uses = array( 'Apre66', 'Aideapre66', 'Pieceaide66', 'Typeaideapre66', 'Themeapre66', 'Option', 'Personne', 'Prestation', 'Pieceaide66Typeaideapre66', 'Adressefoyer', 'Fraisdeplacement66',  'Structurereferente', 'Referent', 'Piececomptable66Typeaideapre66', 'Piececomptable66', 'Foyer' );
+		public $uses = array( 'Apre66', 'Aideapre66', 'Pieceaide66', 'Typeaideapre66', 'Themeapre66', 'Option', 'Personne', 'Prestation', 'Pieceaide66Typeaideapre66', 'Adressefoyer', 'Fraisdeplacement66', 'Structurereferente', 'Referent', 'Piececomptable66Typeaideapre66', 'Piececomptable66', 'Foyer' );
 		public $helpers = array( 'Default', 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml', 'Fileuploader', 'Default2' );
 		public $components = array( 'Default', 'Gedooo.Gedooo', 'Fileuploader', 'Email' );
-
 		public $commeDroit = array(
 			'view66' => 'Apres66:index',
 			'add' => 'Apres66:edit'
 		);
-
 		public $aucunDroit = array( 'ajaxstruct', 'ajaxref', 'ajaxtierspresta', 'ajaxtiersprestaformqualif', 'ajaxtiersprestaformpermfimo', 'ajaxtiersprestaactprof', 'ajaxtiersprestapermisb', 'ajaxpiece', 'notificationsop', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		protected function _setOptions() {
 			$options = $this->{$this->modelClass}->allEnumLists();
 
@@ -34,91 +32,81 @@
 
 			$this->set( 'options', $options );
 			$pieceadmin = $this->Pieceaide66->find(
-				'list',
-				array(
-					'fields' => array(
-						'Pieceaide66.id',
-						'Pieceaide66.name'
-					),
-					'contain' => false
-				)
+					'list', array(
+				'fields' => array(
+					'Pieceaide66.id',
+					'Pieceaide66.name'
+				),
+				'contain' => false
+					)
 			);
 			$this->set( 'pieceadmin', $pieceadmin );
 			$piececomptable = $this->Piececomptable66->find(
-				'list',
-				array(
-					'fields' => array(
-						'Piececomptable66.id',
-						'Piececomptable66.name'
-					),
-					'contain' => false
-				)
+					'list', array(
+				'fields' => array(
+					'Piececomptable66.id',
+					'Piececomptable66.name'
+				),
+				'contain' => false
+					)
 			);
 			$this->set( 'piececomptable', $piececomptable );
 		}
 
-
-
 		/**
-		* http://valums.com/ajax-upload/
-		* http://doc.ubuntu-fr.org/modules_php
-		* increase post_max_size and upload_max_filesize to 10M
-		* debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
-		*/
-
+		 * http://valums.com/ajax-upload/
+		 * http://doc.ubuntu-fr.org/modules_php
+		 * increase post_max_size and upload_max_filesize to 10M
+		 * debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
+		 */
 		public function ajaxfileupload() {
 			$this->Fileuploader->ajaxfileupload();
 		}
 
 		/**
-		* http://valums.com/ajax-upload/
-		* http://doc.ubuntu-fr.org/modules_php
-		* increase post_max_size and upload_max_filesize to 10M
-		* debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
-		* FIXME: traiter les valeurs de retour
-		*/
-
+		 * http://valums.com/ajax-upload/
+		 * http://doc.ubuntu-fr.org/modules_php
+		 * increase post_max_size and upload_max_filesize to 10M
+		 * debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
+		 * FIXME: traiter les valeurs de retour
+		 */
 		public function ajaxfiledelete() {
 			$this->Fileuploader->ajaxfiledelete();
 		}
 
 		/**
-		* Fonction permettant de visualiser les fichiers chargés dans la vue avant leur envoi sur le serveur
-		*/
-
+		 * Fonction permettant de visualiser les fichiers chargés dans la vue avant leur envoi sur le serveur
+		 */
 		public function fileview( $id ) {
 			$this->Fileuploader->fileview( $id );
 		}
 
 		/**
-		* Téléchargement des fichiers préalablement associés à un traitement donné
-		*/
-
+		 * Téléchargement des fichiers préalablement associés à un traitement donné
+		 */
 		public function download( $fichiermodule_id ) {
 			$this->assert( !empty( $fichiermodule_id ), 'error404' );
 			$this->Fileuploader->download( $fichiermodule_id );
 		}
 
 		/**
-		* Fonction permettant d'accéder à la page pour lier les fichiers à l'Orientation
-		*/
-
-		public function filelink( $id ){
+		 * Fonction permettant d'accéder à la page pour lier les fichiers à l'Orientation
+		 */
+		public function filelink( $id ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
-			$fichiers = array();
+			$fichiers = array( );
 			$apre = $this->{$this->modelClass}->find(
-				'first',
-				array(
-					'conditions' => array(
-						"{$this->modelClass}.id" => $id
-					),
-					'contain' => array(
-						'Fichiermodule' => array(
-							'fields' => array( 'name', 'id', 'created', 'modified' )
-						)
+					'first', array(
+				'conditions' => array(
+					"{$this->modelClass}.id" => $id
+				),
+				'contain' => array(
+					'Fichiermodule' => array(
+						'fields' => array( 'name', 'id', 'created', 'modified' )
 					)
 				)
+					)
 			);
 
 			$personne_id = $apre[$this->modelClass]['personne_id'];
@@ -146,14 +134,13 @@
 			if( !empty( $this->data ) ) {
 
 				$saved = $this->{$this->modelClass}->updateAll(
-					array( "{$this->modelClass}.haspiecejointe" => '\''.$this->data[$this->modelClass]['haspiecejointe'].'\'' ),
-					array(
-						"{$this->modelClass}.personne_id" => $personne_id,
-						"{$this->modelClass}.id" => $id
-					)
+						array( "{$this->modelClass}.haspiecejointe" => '\''.$this->data[$this->modelClass]['haspiecejointe'].'\'' ), array(
+					"{$this->modelClass}.personne_id" => $personne_id,
+					"{$this->modelClass}.id" => $id
+						)
 				);
 
-				if( $saved ){
+				if( $saved ) {
 					// Sauvegarde des fichiers liés à une PDO
 					$dir = $this->Fileuploader->dirFichiersModule( $this->action, $this->params['pass'][0] );
 					$saved = $this->Fileuploader->saveFichiers( $dir, !Set::classicExtract( $this->data, "{$this->modelClass}.haspiecejointe" ), $id ) && $saved;
@@ -179,10 +166,9 @@
 		}
 
 		/**
-		* Permet de regrouper l'ensemble des paramétrages pour l'APRE
-		*/
-
-		public function indexparams(){
+		 * Permet de regrouper l'ensemble des paramétrages pour l'APRE
+		 */
+		public function indexparams() {
 
 			// Retour à la liste en cas d'annulation
 			if( isset( $this->params['form']['Cancel'] ) ) {
@@ -199,21 +185,27 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function index( $personne_id = null ) {
-			$personne = $this->{$this->modelClass}->Personne->findById( $personne_id, null, null, -1 );
+			$qd_personne = array(
+				'conditions' => array(
+					'Personne.id' => $personne_id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => -1
+			);
+			$personne = $this->{$this->modelClass}->Personne->find( 'first', $qd_personne );
 			$this->assert( !empty( $personne ), 'invalidParameter' );
 			$this->set( 'personne', $personne );
 
 			$apres = $this->{$this->modelClass}->find(
-				'all',
-				array(
-					'conditions' => array(
-						"{$this->modelClass}.personne_id" => $personne_id
-					)
+					'all', array(
+				'conditions' => array(
+					"{$this->modelClass}.personne_id" => $personne_id
 				)
+					)
 			);
 			$this->set( 'apres', $apres );
 // debug($apres);
@@ -232,19 +224,18 @@
 			$yearMax = $year + Configure::read( 'Apre.periodeMontantMaxComplementaires' ) - 1;
 
 			$apresPourCalculMontant = $this->{$this->modelClass}->find(
-				'all',
-				array(
-					'conditions' => array(
-						"{$this->modelClass}.personne_id" => $personne_id,
-						"{$this->modelClass}.statutapre" => 'C',
-						"Aideapre66.datemontantpropose BETWEEN '{$year}-01-01' AND '{$yearMax}-12-31'",
+					'all', array(
+				'conditions' => array(
+					"{$this->modelClass}.personne_id" => $personne_id,
+					"{$this->modelClass}.statutapre" => 'C',
+					"Aideapre66.datemontantpropose BETWEEN '{$year}-01-01' AND '{$yearMax}-12-31'",
 // 						"Aideapre66.datedemande >=" => date( 'Y-m-d', strtotime( '-'.Configure::read( "Apre.periodeMontantMaxComplementaires" ).' months' ) )
-					),
-					'contain' => array(
-						'Personne',
-						'Aideapre66'
-					)
+				),
+				'contain' => array(
+					'Personne',
+					'Aideapre66'
 				)
+					)
 			);
 
 			$montantComplementaires = 0;
@@ -273,9 +264,8 @@
 		}
 
 		/**
-		* Ajax pour les coordonnées de la structure référente liée
-		*/
-
+		 * Ajax pour les coordonnées de la structure référente liée
+		 */
 		public function ajaxstruct( $structurereferente_id = null ) { // FIXME
 			Configure::write( 'debug', 0 );
 			$dataStructurereferente_id = Set::extract( $this->data, "{$this->modelClass}.structurereferente_id" );
@@ -286,22 +276,19 @@
 			$this->render( $this->action, 'ajax', '/apres/ajaxstruct' );
 		}
 
-
 		/**
-		* Ajax pour les coordonnées du référent APRE
-		*/
-
+		 * Ajax pour les coordonnées du référent APRE
+		 */
 		public function ajaxref( $referent_id = null ) { // FIXME
 			Configure::write( 'debug', 0 );
 			if( !empty( $referent_id ) ) {
 				$referent_id = suffix( $referent_id );
-
 			}
 			else {
 				$referent_id = suffix( Set::extract( $this->data, "{$this->modelClass}.referent_id" ) );
 			}
 			// INFO: éviter les requêtes erronées du style ... WHERE "Referent"."id" = ''
-			$referent = array();
+			$referent = array( );
 			if( is_int( $referent_id ) ) {
 				$referent = $this->{$this->modelClass}->Referent->findbyId( $referent_id, null, null, -1 );
 			}
@@ -311,19 +298,16 @@
 		}
 
 		/**
-		* Ajax pour les coordonnées du référent APRE
-		*/
-
+		 * Ajax pour les coordonnées du référent APRE
+		 */
 		//public function ajaxpiece( $typeaideapre66_id = null, $aideapre66_id = null, $pieceadmin = null, $piececomptable = null ) { // FIXME
 		public function ajaxpiece( $apre_id = null ) { // FIXME
-
 // 			$typeaideapre66_id = Set::classicExtract( $this->params, 'named.typeaideapre66_id' );
 // 			$pieceadmin = explode( ',', Set::classicExtract( $this->params, 'named.pieceadmin' ) );
 // 			$piececomptable = explode( ',', Set::classicExtract( $this->params, 'named.piececomptable' ) );
 			$typeaideapre66_id = Set::classicExtract( $this->data, 'Aideapre66.typeaideapre66_id' );
 // 			$pieceadmin = Set::classicExtract( $this->data, 'named.pieceadmin' );
 // 			$piececomptable = Set::classicExtract( $this->data, 'named.piececomptable' );
-
 // 			$this->data['Pieceaide66']['Pieceaide66'] = $pieceadmin;
 // 			$this->data['Piececomptable66']['Piececomptable66'] = $piececomptable;
 
@@ -336,84 +320,79 @@
 
 			if( !empty( $typeaideapre66_id ) ) {
 				$piecesadmin = $this->{$this->modelClass}->Aideapre66->Typeaideapre66->Pieceaide66->find(
-					'list',
-					array(
-						'fields' => array( 'Pieceaide66.id', 'Pieceaide66.name' ),
-						'joins' => array(
-							array(
-								'table'      => 'piecesaides66_typesaidesapres66',
-								'alias'      => 'Pieceaide66Typeaideapre66',
-								'type'       => 'INNER',
-								'foreignKey' => false,
-								'conditions' => array(
-									'Pieceaide66Typeaideapre66.pieceaide66_id = Pieceaide66.id',
-									'Pieceaide66Typeaideapre66.typeaideapre66_id' => $typeaideapre66_id,
-								)
+						'list', array(
+					'fields' => array( 'Pieceaide66.id', 'Pieceaide66.name' ),
+					'joins' => array(
+						array(
+							'table' => 'piecesaides66_typesaidesapres66',
+							'alias' => 'Pieceaide66Typeaideapre66',
+							'type' => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array(
+								'Pieceaide66Typeaideapre66.pieceaide66_id = Pieceaide66.id',
+								'Pieceaide66Typeaideapre66.typeaideapre66_id' => $typeaideapre66_id,
 							)
-						),
-						'order' => array( 'Pieceaide66.name' ),
-						'recursive' => -1
-					)
+						)
+					),
+					'order' => array( 'Pieceaide66.name' ),
+					'recursive' => -1
+						)
 				);
 
 				$piecescomptable = $this->{$this->modelClass}->Aideapre66->Typeaideapre66->Piececomptable66->find(
-					'list',
-					array(
-						'fields' => array( 'Piececomptable66.id', 'Piececomptable66.name' ),
-						'joins' => array(
-							array(
-								'table'      => 'piecescomptables66_typesaidesapres66',
-								'alias'      => 'Piececomptable66Typeaideapre66',
-								'type'       => 'INNER',
-								'foreignKey' => false,
-								'conditions' => array(
-									'Piececomptable66Typeaideapre66.piececomptable66_id = Piececomptable66.id',
-									'Piececomptable66Typeaideapre66.typeaideapre66_id' => $typeaideapre66_id,
-								)
+						'list', array(
+					'fields' => array( 'Piececomptable66.id', 'Piececomptable66.name' ),
+					'joins' => array(
+						array(
+							'table' => 'piecescomptables66_typesaidesapres66',
+							'alias' => 'Piececomptable66Typeaideapre66',
+							'type' => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array(
+								'Piececomptable66Typeaideapre66.piececomptable66_id = Piececomptable66.id',
+								'Piececomptable66Typeaideapre66.typeaideapre66_id' => $typeaideapre66_id,
 							)
-						),
-						'order' => array( 'Piececomptable66.name' ),
-						'recursive' => -1
-					)
+						)
+					),
+					'order' => array( 'Piececomptable66.name' ),
+					'recursive' => -1
+						)
 				);
 				$typeaideapre = $this->data = $this->{$this->modelClass}->Aideapre66->find(
-					'first',
-					array(
-						'conditions' => array(
-							'Aideapre66.typeaideapre66_id' => $typeaideapre66_id
-						),
-						'contain' => array( 'Typeaideapre66' )
-					)
+						'first', array(
+					'conditions' => array(
+						'Aideapre66.typeaideapre66_id' => $typeaideapre66_id
+					),
+					'contain' => array( 'Typeaideapre66' )
+						)
 				);
 			}
 
 // 			$typeaideapre = array();
 
-			$this->data = array();
+			$this->data = array( );
 
 			if( !empty( $apre_id ) ) {
 				$aideapre66_existante = $this->{$this->modelClass}->Aideapre66->find(
-					'first',
-					array(
-						'conditions' => array(
-							'Aideapre66.apre_id' => $apre_id
-						),
-						'contain' => array(
-							'Pieceaide66',
-							'Piececomptable66'
-						)
+						'first', array(
+					'conditions' => array(
+						'Aideapre66.apre_id' => $apre_id
+					),
+					'contain' => array(
+						'Pieceaide66',
+						'Piececomptable66'
 					)
+						)
 				);
 
 				if( !empty( $typeaideapre66_id ) ) {
 					$typeaideapre = $this->data = $this->{$this->modelClass}->Aideapre66->find(
-						'first',
-						array(
-							'conditions' => array(
-								'Aideapre66.typeaideapre66_id' => $typeaideapre66_id
-							),
-							'contain' => array( 'Typeaideapre66' )
-						)
+							'first', array(
+						'conditions' => array(
+							'Aideapre66.typeaideapre66_id' => $typeaideapre66_id
+						),
+						'contain' => array( 'Typeaideapre66' )
+							)
 					);
 				}
 
@@ -436,25 +415,23 @@
 		}
 
 		/**
-		* Visualisation de l'APRE
-		*/
-
-		public function view66( $apre_id = null ){
+		 * Visualisation de l'APRE
+		 */
+		public function view66( $apre_id = null ) {
 			$this->Apre66->forceVirtualFields = true;
 
 			$apre = $this->Apre66->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Apre66.id' => $apre_id
-					),
-					'contain' => array(
-						'Personne',
-						'Referent',
-						'Structurereferente',
-						'Aideapre66'
-					)
+					'first', array(
+				'conditions' => array(
+					'Apre66.id' => $apre_id
+				),
+				'contain' => array(
+					'Personne',
+					'Referent',
+					'Structurereferente',
+					'Aideapre66'
 				)
+					)
 			);
 
 			$this->assert( !empty( $apre ), 'invalidParameter' );
@@ -469,14 +446,12 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function add() {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
-
 
 		public function edit() {
 			$args = func_get_args();
@@ -484,9 +459,8 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		protected function _add_edit( $id = null ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
@@ -496,31 +470,38 @@
 				$personne_id = $id;
 				$dossier_id = $this->Personne->dossierId( $personne_id );
 
-				$foyer = $this->Foyer->findByDossierId( $dossier_id, null, null, -1 );
+				$qd_foyer = array(
+					'conditions' => array(
+						'Foyer.dossier_id' => $dossier_id
+					),
+					'fields' => null,
+					'order' => null,
+					'recursive' => -1
+				);
+				$foyer = $this->Foyer->find( 'first', $qd_foyer );
 				$foyer_id = Set::classicExtract( $foyer, 'Foyer.id' );
 			}
 			else if( $this->action == 'edit' ) {
 				$apre_id = $id;
 
 				$apre = $this->{$this->modelClass}->find(
-					'first',
-					array(
-						'conditions' => array(
-							'Apre66.id' => $apre_id
-						),
-						'contain' => array(
-							'Personne',
-							'Referent',
-							'Structurereferente',
-							'Aideapre66' => array(
-								'Themeapre66',
-								'Typeaideapre66',
-								'Fraisdeplacement66',
-								'Pieceaide66',
-								'Piececomptable66'
-							)
+						'first', array(
+					'conditions' => array(
+						'Apre66.id' => $apre_id
+					),
+					'contain' => array(
+						'Personne',
+						'Referent',
+						'Structurereferente',
+						'Aideapre66' => array(
+							'Themeapre66',
+							'Typeaideapre66',
+							'Fraisdeplacement66',
+							'Pieceaide66',
+							'Piececomptable66'
 						)
 					)
+						)
 				);
 
 				$this->assert( !empty( $apre ), 'invalidParameter' );
@@ -529,7 +510,6 @@
 				$dossier_id = $this->{$this->modelClass}->dossierId( $apre_id );
 
 				$foyer_id = Set::classicExtract( $apre, 'Personne.foyer_id' );
-
 			}
 
 			$this->set( 'foyer_id', $foyer_id );
@@ -548,33 +528,30 @@
 			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
 
 			/**
-			*   Liste des APREs de la personne pour l'affichage de l'historique
-			*   lors de l'add/edit
-			**/
-
+			 *   Liste des APREs de la personne pour l'affichage de l'historique
+			 *   lors de l'add/edit
+			 * */
 			$conditionsListeApres = array( "{$this->modelClass}.personne_id" => $personne_id );
 			if( $this->action == 'edit' ) {
 				$conditionsListeApres["{$this->modelClass}.id <>"] = $apre_id;
 			}
 
 			$listApres = $this->{$this->modelClass}->find(
-				'all',
-				array(
-					'conditions' => $conditionsListeApres,
-					'recursive' => -1
-				)
+					'all', array(
+				'conditions' => $conditionsListeApres,
+				'recursive' => -1
+					)
 			);
 			$this->set( compact( 'listApres' ) );
-			if( !empty( $listApres ) ){
+			if( !empty( $listApres ) ) {
 				$listesAidesSelonApre = $this->{$this->modelClass}->Aideapre66->find(
-					'all',
-					array(
-						'conditions' => array(
-							'Aideapre66.apre_id' => Set::extract( $listApres, "/{$this->modelClass}/id" ),
-							'Aideapre66.decisionapre' => 'ACC'
-						),
-						'recursive' => -1
-					)
+						'all', array(
+					'conditions' => array(
+						'Aideapre66.apre_id' => Set::extract( $listApres, "/{$this->modelClass}/id" ),
+						'Aideapre66.decisionapre' => 'ACC'
+					),
+					'recursive' => -1
+						)
 				);
 				$this->set( compact( 'listesAidesSelonApre' ) );
 			}
@@ -593,19 +570,26 @@
 
 			///Personne liée au parcours
 			$personne_referent = $this->Personne->PersonneReferent->find(
-				'first',
-				array(
-					'conditions' => array(
-						'PersonneReferent.personne_id' => $personne_id,
-						'PersonneReferent.dfdesignation IS NULL'
-					),
-					'recursive' => -1
-				)
+					'first', array(
+				'conditions' => array(
+					'PersonneReferent.personne_id' => $personne_id,
+					'PersonneReferent.dfdesignation IS NULL'
+				),
+				'recursive' => -1
+					)
 			);
 
 
 			///On ajout l'ID de l'utilisateur connecté afind e récupérer son service instructeur
-			$user = $this->User->findById( $this->Session->read( 'Auth.User.id' ), null, null, 0 );
+			$qd_user = array(
+				'conditions' => array(
+					'User.id' => $this->Session->read( 'Auth.User.id' )
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => 0
+			);
+			$user = $this->User->find( 'first', $qd_user );
 			$user_id = Set::classicExtract( $user, 'User.id' );
 			$personne = $this->{$this->modelClass}->Personne->detailsApre( $personne_id, $user_id );
 			$this->set( 'personne', $personne );
@@ -617,20 +601,31 @@
 			if( !empty( $this->data ) ) {
 				/// Pour le nombre de pièces afin de savoir si le dossier est complet ou non
 				$valide = false;
-				$nbNormalPieces = array();
+				$nbNormalPieces = array( );
 
 				$typeaideapre66_id = suffix( Set::classicExtract( $this->data, 'Aideapre66.typeaideapre66_id' ) );
-				$typeaide = array();
-				if (!empty($typeaideapre66_id)) {
-					$typeaide = $this->{$this->modelClass}->Aideapre66->Typeaideapre66->findById( $typeaideapre66_id, null, null, 2 );
+				$typeaide = array( );
+				if( !empty( $typeaideapre66_id ) ) {
+
+					$qd_typeaide = array(
+						'conditions' => array(
+							'Typeaideapre66.id' => $typeaideapre66_id
+						),
+						'fields' => null,
+						'order' => null,
+						'recursive' => 2
+					);
+					$user = $this->{$this->modelClass}->Aideapre66->Typeaideapre66->find( 'first', $qd_typeaide );
+
+
 					$nbNormalPieces['Typeaideapre66'] = count( Set::extract( $typeaide, '/Pieceaide66/id' ) );
 
 					$key = 'Pieceaide66';
-					if( isset($this->data['Aideapre66']) && isset($this->data[$key]) && isset($this->data[$key][$key]) ) {
+					if( isset( $this->data['Aideapre66'] ) && isset( $this->data[$key] ) && isset( $this->data[$key][$key] ) ) {
 						$nbpieces = 0;
-						if (!empty($this->data[$key][$key])) {
-							foreach($this->data[$key][$key] as $piece_key) {
-								if (!empty($piece_key))
+						if( !empty( $this->data[$key][$key] ) ) {
+							foreach( $this->data[$key][$key] as $piece_key ) {
+								if( !empty( $piece_key ) )
 									$nbpieces++;
 							}
 						}
@@ -656,34 +651,34 @@
 				if( !empty( $this->data['Fraisdeplacement66'] ) ) {
 
 					$Fraisdeplacement66 = Set::filter( $this->data['Fraisdeplacement66'] );
-					if( !empty( $Fraisdeplacement66 ) ){
+					if( !empty( $Fraisdeplacement66 ) ) {
 						$this->{$this->modelClass}->Aideapre66->Fraisdeplacement66->create( $this->data );
 					}
 				}
 
 				if( $this->action == 'add' ) {
-					$this->{$this->modelClass}->Aideapre66->set( 'apre_id', $this->{$this->modelClass}->getLastInsertID( ) );
+					$this->{$this->modelClass}->Aideapre66->set( 'apre_id', $this->{$this->modelClass}->getLastInsertID() );
 				}
 				$success = $this->{$this->modelClass}->Aideapre66->save() && $success;
 
 
 				if( $this->action == 'add' ) {
-					if( !empty( $Fraisdeplacement66 ) ){
+					if( !empty( $Fraisdeplacement66 ) ) {
 						$this->{$this->modelClass}->Aideapre66->Fraisdeplacement66->set( 'aideapre66_id', $this->{$this->modelClass}->Aideapre66->getLastInsertID() );
 					}
 				}
-				if( !empty( $Fraisdeplacement66 ) ){
+				if( !empty( $Fraisdeplacement66 ) ) {
 					$success = $this->{$this->modelClass}->Aideapre66->Fraisdeplacement66->save() && $success;
 				}
 
 
-/*
-				$Modecontact = Xset::bump( Set::filter( Set::flatten( $this->data['Modecontact'] ) ) );
-debug($Modecontact);
-die();
-				if( !empty( $Modecontact ) ){
-					$success = $this->{$this->modelClass}->Personne->Foyer->Modecontact->saveAll( $Modecontact, array( 'validate' => 'first', 'atomic' => false ) ) && $success;
-				}*/
+				/*
+				  $Modecontact = Xset::bump( Set::filter( Set::flatten( $this->data['Modecontact'] ) ) );
+				  debug($Modecontact);
+				  die();
+				  if( !empty( $Modecontact ) ){
+				  $success = $this->{$this->modelClass}->Personne->Foyer->Modecontact->saveAll( $Modecontact, array( 'validate' => 'first', 'atomic' => false ) ) && $success;
+				  } */
 
 				// Tentative d'enregistrement des pièces liées à une APRE selon ne aide donnée
 				if( !empty( $this->data['Pieceaide66'] ) ) {
@@ -699,7 +694,7 @@ die();
 
 				// SAuvegarde des numéros ed téléphone si ceux-ci ne sont pas présents en amont
 				$isDataPersonne = Set::filter( $this->data['Personne'] );
-				if( !empty( $isDataPersonne ) ){
+				if( !empty( $isDataPersonne ) ) {
 					$success = $this->{$this->modelClass}->Personne->save( array( 'Personne' => $this->data['Personne'] ) ) && $success;
 				}
 
@@ -709,7 +704,7 @@ die();
 					$this->{$this->modelClass}->commit(); // FIXME
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 
-					$this->redirect( array(  'controller' => 'apres'.Configure::read( 'Apre.suffixe' ),'action' => 'index', $personne_id ) );
+					$this->redirect( array( 'controller' => 'apres'.Configure::read( 'Apre.suffixe' ), 'action' => 'index', $personne_id ) );
 				}
 				else {
 					$this->{$this->modelClass}->rollback();
@@ -722,8 +717,7 @@ die();
 				/// FIXME
 				$this->data = $apre;
 				$this->data = Set::insert(
-					$this->data, "{$this->modelClass}.referent_id",
-					Set::extract( $this->data, "{$this->modelClass}.structurereferente_id" ).'_'.Set::extract( $this->data, "{$this->modelClass}.referent_id" )
+								$this->data, "{$this->modelClass}.referent_id", Set::extract( $this->data, "{$this->modelClass}.structurereferente_id" ).'_'.Set::extract( $this->data, "{$this->modelClass}.referent_id" )
 				);
 
 				$typeaideapre66_id = Set::classicExtract( $this->data, 'Aideapre66.typeaideapre66_id' );
@@ -755,7 +749,7 @@ die();
 
 				$structPersRef = Set::classicExtract( $personne_referent, 'PersonneReferent.structurereferente_id' );
 				// Valeur par défaut préférée: à partir de personnes_referents
-				if( !empty( $personne_referent ) && array_key_exists( $structPersRef, $structs ) ){
+				if( !empty( $personne_referent ) && array_key_exists( $structPersRef, $structs ) ) {
 					$structurereferente_id = Set::classicExtract( $personne_referent, 'PersonneReferent.structurereferente_id' );
 					$referent_id = Set::classicExtract( $personne_referent, 'PersonneReferent.referent_id' );
 				}
@@ -799,9 +793,9 @@ die();
 		 * @return void
 		 */
 		public function impression( $id = null ) {
-			$pdf = $this->Apre66->getDefaultPdf( $id, $this->Session->read( 'Auth.User.id' ) ) ;
+			$pdf = $this->Apre66->getDefaultPdf( $id, $this->Session->read( 'Auth.User.id' ) );
 
-			if( !empty( $pdf ) ){
+			if( !empty( $pdf ) ) {
 				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'apre_%d-%s.pdf', $id, date( 'Y-m-d' ) ) );
 			}
 			else {
@@ -819,7 +813,7 @@ die();
 		public function notifications( $id = null ) {
 			$pdf = $this->Apre66->getNotificationAprePdf( $id );
 
-			if( !empty( $pdf ) ){
+			if( !empty( $pdf ) ) {
 				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'Notification_APRE_%d-%s.pdf', $id, date( 'Y-m-d' ) ) );
 			}
 			else {
@@ -836,16 +830,15 @@ die();
 		 */
 		public function maillink( $id = null ) {
 			$apre = $this->Apre66->find(
-				'first',
-				array(
-					'conditions' => array(
-						"Apre66.id" => $id
-					),
-					'contain' => array(
-						'Personne',
-						'Referent'
-					)
+					'first', array(
+				'conditions' => array(
+					"Apre66.id" => $id
+				),
+				'contain' => array(
+					'Personne',
+					'Referent'
 				)
+					)
 			);
 
 			$this->assert( !empty( $apre ), 'error404' );
@@ -874,5 +867,6 @@ die();
 
 			$this->redirect( $this->referer() );
 		}
+
 	}
 ?>

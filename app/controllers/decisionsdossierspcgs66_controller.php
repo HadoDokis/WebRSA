@@ -1,16 +1,15 @@
 <?php
 	class Decisionsdossierspcgs66Controller extends AppController
 	{
+
 		public $name = 'Decisionsdossierspcgs66';
+
 		/**
-		* @access public
-		*/
-
+		 * @access public
+		 */
 		public $components = array( 'Default', 'Gedooo.Gedooo' );
-
 		public $helpers = array( 'Default2', 'Ajax', 'Fileuploader', 'Locale' );
-		public $uses = array( 'Decisiondossierpcg66', 'Option', 'Pdf'  );
-
+		public $uses = array( 'Decisiondossierpcg66', 'Option', 'Pdf' );
 		public $aucunDroit = array( 'ajaxproposition' );
 		public $commeDroit = array(
 			'view' => 'Decisionsdossierspcgs66:index',
@@ -18,66 +17,56 @@
 		);
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		protected function _setOptions() {
 			$options = $this->Decisiondossierpcg66->enums();
 			$options = array_merge(
-				$options,
-				$this->Decisiondossierpcg66->Dossierpcg66->Personnepcg66->Traitementpcg66->Decisiontraitementpcg66->enums(),
-				$this->Decisiondossierpcg66->Dossierpcg66->Decisiondefautinsertionep66->enums(),
-				$this->Decisiondossierpcg66->Dossierpcg66->Personnepcg66->Traitementpcg66->enums(),
-				$this->Decisiondossierpcg66->Dossierpcg66->Contratinsertion->enums()
+					$options, $this->Decisiondossierpcg66->Dossierpcg66->Personnepcg66->Traitementpcg66->Decisiontraitementpcg66->enums(), $this->Decisiondossierpcg66->Dossierpcg66->Decisiondefautinsertionep66->enums(), $this->Decisiondossierpcg66->Dossierpcg66->Personnepcg66->Traitementpcg66->enums(), $this->Decisiondossierpcg66->Dossierpcg66->Contratinsertion->enums()
 			);
-			$listdecisionpdo = $this->Decisiondossierpcg66->Decisionpdo->find( 'list'/*, array( 'fields' => array( 'Decisionpdo.name' )*/ );
+			$listdecisionpdo = $this->Decisiondossierpcg66->Decisionpdo->find( 'list'/* , array( 'fields' => array( 'Decisionpdo.name' ) */ );
 			$typersapcg66 = $this->Decisiondossierpcg66->Typersapcg66->find( 'list' );
 
 			$forme_ci = array( 'S' => 'Simple', 'C' => 'Particulier' );
 			$compofoyerpcg66 = $this->Decisiondossierpcg66->Compofoyerpcg66->find( 'list' );
-			
+
 			$decisionspcgsCer = $this->Decisiondossierpcg66->Decisionpdo->find(
-				'all',
-				array(
-					'fields' => array(
-						'Decisionpdo.id',
-						'Decisionpdo.libelle',
-						'Decisionpdo.decisioncerparticulier'
-					),
-					'conditions' => array(
-						'Decisionpdo.cerparticulier' => 'O'
-					),
-					'contain' => false
-				)
+					'all', array(
+				'fields' => array(
+					'Decisionpdo.id',
+					'Decisionpdo.libelle',
+					'Decisionpdo.decisioncerparticulier'
+				),
+				'conditions' => array(
+					'Decisionpdo.cerparticulier' => 'O'
+				),
+				'contain' => false
+					)
 			);
-			$listdecisionpcgCer = Set::combine($decisionspcgsCer, '{n}.Decisionpdo.id', '{n}.Decisionpdo.libelle');
+			$listdecisionpcgCer = Set::combine( $decisionspcgsCer, '{n}.Decisionpdo.id', '{n}.Decisionpdo.libelle' );
 
 			// Récupération des IDs de décisions PDO qui correspondent à une non validation du CER Particulier
-			$idsDecisionNonValidCer = array();
+			$idsDecisionNonValidCer = array( );
 			foreach( $decisionspcgsCer as $decisionpcgCer ) {
-				if( $decisionpcgCer['Decisionpdo']['decisioncerparticulier'] == 'N' ){
+				if( $decisionpcgCer['Decisionpdo']['decisioncerparticulier'] == 'N' ) {
 					$idsDecisionNonValidCer[] = $decisionpcgCer['Decisionpdo']['id'];
 				}
 			}
-			
+
 			$listMotifs = $this->Decisiondossierpcg66->Dossierpcg66->Contratinsertion->Propodecisioncer66->Motifcernonvalid66->find( 'list' );
 			$this->set( compact( 'listMotifs' ) );
-			
+
 			$this->set( compact( 'options', 'listdecisionpdo', 'typersapcg66', 'compofoyerpcg66', 'forme_ci', 'listdecisionpcgCer', 'idsDecisionNonValidCer' ) );
 		}
 
-
-		
-		
 		/**
-		*	Affichage de la proposition du 
-		*/
-
+		 * 	Affichage de la proposition du
+		 */
 		public function ajaxproposition() {
 			Configure::write( 'debug', 0 );
 
 			$decisionpcg66_id = Set::extract( $this->params, 'form.decisionpcg66_id' );
-			
+
 			$data = array(
 				'defautinsertion' => Set::extract( $this->params, 'form.defautinsertion' ),
 				'compofoyerpcg66_id' => Set::extract( $this->params, 'form.compofoyerpcg66_id' ),
@@ -85,7 +74,7 @@
 				'phase' => Set::extract( $this->params, 'form.phase' )
 			);
 
-			$questionspcg = array();
+			$questionspcg = array( );
 
 			$calculpossible = true;
 			// Nous manque-t'il au moins une valeur permettant de faire le calcul ?
@@ -98,23 +87,22 @@
 			// On a toutes les valeurs nécessaires pour faire la calcul
 			if( $calculpossible ) {
 				$questionspcg = $this->Decisiondossierpcg66->Decisionpcg66->Questionpcg66->find(
-					'list',
-					array(
-						'fields' => array( 'Decisionpcg66.id', 'Decisionpcg66.name' ),
-						'conditions' => array(
-							'Questionpcg66.defautinsertion' => $data['defautinsertion'],
-							'Questionpcg66.compofoyerpcg66_id' => $data['compofoyerpcg66_id'],
-							'Questionpcg66.recidive' => $data['recidive'],
-							'Questionpcg66.phase' => $data['phase']
-						),
-						'contain' => false,
-						'joins' => array(
-							$this->Decisiondossierpcg66->Decisionpcg66->Questionpcg66->join( 'Decisionpcg66' )
-						)
+						'list', array(
+					'fields' => array( 'Decisionpcg66.id', 'Decisionpcg66.name' ),
+					'conditions' => array(
+						'Questionpcg66.defautinsertion' => $data['defautinsertion'],
+						'Questionpcg66.compofoyerpcg66_id' => $data['compofoyerpcg66_id'],
+						'Questionpcg66.recidive' => $data['recidive'],
+						'Questionpcg66.phase' => $data['phase']
+					),
+					'contain' => false,
+					'joins' => array(
+						$this->Decisiondossierpcg66->Decisionpcg66->Questionpcg66->join( 'Decisionpcg66' )
 					)
+						)
 				);
 			}
-			
+
 			if( !empty( $decisionpcg66_id ) ) {
 				$this->data['Decisiondossierpcg66']['decisionpcg66_id'] = $decisionpcg66_id;
 			}
@@ -123,38 +111,29 @@
 			$this->render( 'ajaxproposition', 'ajax' );
 		}
 
-		
-		
-		
-		
-		
-		
 		public function index() {
 			// Retour à la liste en cas d'annulation
 			if( isset( $this->params['form']['Cancel'] ) ) {
 				$this->redirect( array( 'controller' => 'pdos', 'action' => 'index' ) );
 			}
 		}
-		
-		/** ********************************************************************
-		*
-		*** *******************************************************************/
 
+		/**		 * *******************************************************************
+		 *
+		 * ** ****************************************************************** */
 		public function add() {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
-
 
 		public function edit() {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
-		/** ********************************************************************
-		*
-		*** *******************************************************************/
-
+		/**		 * *******************************************************************
+		 *
+		 * ** ****************************************************************** */
 		protected function _add_edit( $id = null ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
@@ -165,29 +144,28 @@
 				$dossierpcg66_id = $id;
 
 				$dossierpcg66 = $this->Decisiondossierpcg66->Dossierpcg66->find(
-					'first',
-					array(
-						'conditions' => array(
-							'Dossierpcg66.id' => $id
+						'first', array(
+					'conditions' => array(
+						'Dossierpcg66.id' => $id
+					),
+					'contain' => array(
+						'Decisiondossierpcg66' => array(
+							'Decisionpdo',
+							'order' => array( 'Decisiondossierpcg66.created DESC' ),
 						),
-						'contain' => array(
-							'Decisiondossierpcg66' => array(
-								'Decisionpdo',
-								'order' => array( 'Decisiondossierpcg66.created DESC' ),
-							),
-							'Decisiondefautinsertionep66' => array(
-								'Passagecommissionep' => array(
-									'Dossierep' => array(
-										'Defautinsertionep66' => array(
-											'Bilanparcours66'
-										)
+						'Decisiondefautinsertionep66' => array(
+							'Passagecommissionep' => array(
+								'Dossierep' => array(
+									'Defautinsertionep66' => array(
+										'Bilanparcours66'
 									)
 								)
-							),
-							'Fichiermodule',
-							'Contratinsertion'
-						)
+							)
+						),
+						'Fichiermodule',
+						'Contratinsertion'
 					)
+						)
 				);
 				$this->set( 'dossierpcg66', $dossierpcg66 );
 
@@ -197,109 +175,103 @@
 			else if( $this->action == 'edit' ) {
 				$decisiondossierpcg66_id = $id;
 				$decisiondossierpcg66 = $this->Decisiondossierpcg66->find(
-					'first',
-					array(
-						'conditions' => array(
-							'Decisiondossierpcg66.id' => $decisiondossierpcg66_id
-						),
-						'order' => array( 'Decisiondossierpcg66.created DESC' ),
-						'fields' => array_merge(
-							$this->Decisiondossierpcg66->fields(),
-							$this->Decisiondossierpcg66->Dossierpcg66->fields(),
-							$this->Decisiondossierpcg66->Decisiondossierpcg66Typersapcg66->Typersapcg66->fields(),
-							$this->Decisiondossierpcg66->Dossierpcg66->Contratinsertion->fields(),
-							$this->Decisiondossierpcg66->Dossierpcg66->Contratinsertion->Propodecisioncer66->fields()
-						),
-						'joins' => array(
-							$this->Decisiondossierpcg66->join( 'Dossierpcg66' ),
-							$this->Decisiondossierpcg66->join( 'Decisiondossierpcg66Typersapcg66', array( 'type' => 'LEFT OUTER' ) ),
-							$this->Decisiondossierpcg66->Decisiondossierpcg66Typersapcg66->join( 'Typersapcg66', array( 'type' => 'LEFT OUTER' ) ),
-							$this->Decisiondossierpcg66->Dossierpcg66->join( 'Contratinsertion', array( 'type' => 'LEFT OUTER' ) ),
-							$this->Decisiondossierpcg66->Dossierpcg66->Contratinsertion->join( 'Propodecisioncer66', array( 'type' => 'LEFT OUTER' ) )
-						),
-						'contain' => false, /*array(
-							'Typersapcg66',
-// 							'Dossierpcg66' => array(
-// 								'Contratinsertion' => array(
-// 									'Propodecisioncer66' => array(
-// 										'Motifcernonvalid66'
-// 									)
-// 								)
-// 							)
-						)*/
-					)
+						'first', array(
+					'conditions' => array(
+						'Decisiondossierpcg66.id' => $decisiondossierpcg66_id
+					),
+					'order' => array( 'Decisiondossierpcg66.created DESC' ),
+					'fields' => array_merge(
+							$this->Decisiondossierpcg66->fields(), $this->Decisiondossierpcg66->Dossierpcg66->fields(), $this->Decisiondossierpcg66->Decisiondossierpcg66Typersapcg66->Typersapcg66->fields(), $this->Decisiondossierpcg66->Dossierpcg66->Contratinsertion->fields(), $this->Decisiondossierpcg66->Dossierpcg66->Contratinsertion->Propodecisioncer66->fields()
+					),
+					'joins' => array(
+						$this->Decisiondossierpcg66->join( 'Dossierpcg66' ),
+						$this->Decisiondossierpcg66->join( 'Decisiondossierpcg66Typersapcg66', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Decisiondossierpcg66->Decisiondossierpcg66Typersapcg66->join( 'Typersapcg66', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Decisiondossierpcg66->Dossierpcg66->join( 'Contratinsertion', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Decisiondossierpcg66->Dossierpcg66->Contratinsertion->join( 'Propodecisioncer66', array( 'type' => 'LEFT OUTER' ) )
+					),
+					'contain' => false, /* array(
+						  'Typersapcg66',
+						  // 							'Dossierpcg66' => array(
+						  // 								'Contratinsertion' => array(
+						  // 									'Propodecisioncer66' => array(
+						  // 										'Motifcernonvalid66'
+						  // 									)
+						  // 								)
+						  // 							)
+						  ) */
+						)
 				);
 				$this->assert( !empty( $decisiondossierpcg66 ), 'invalidParameter' );
-				
+
 
 				$isvalidcer = Set::classicExtract( $decisiondossierpcg66, 'Propodecisioncer66.isvalidcer' );
 				$this->set( compact( 'isvalidcer' ) );
-				
+
 				if( !empty( $isvalidcer ) && $isvalidcer == 'N' ) {
 					$motifs = $this->Decisiondossierpcg66->Dossierpcg66->Contratinsertion->Propodecisioncer66->Motifcernonvalid66Propodecisioncer66->find(
-						'all',
-						array(
-							'fields' => array(
-								'Motifcernonvalid66Propodecisioncer66.motifcernonvalid66_id'
-							),
-							'conditions' => array(
-								'Motifcernonvalid66Propodecisioncer66.propodecisioncer66_id' => $decisiondossierpcg66['Propodecisioncer66']['id']
-							),
-							'contain' => false
-						)
+							'all', array(
+						'fields' => array(
+							'Motifcernonvalid66Propodecisioncer66.motifcernonvalid66_id'
+						),
+						'conditions' => array(
+							'Motifcernonvalid66Propodecisioncer66.propodecisioncer66_id' => $decisiondossierpcg66['Propodecisioncer66']['id']
+						),
+						'contain' => false
+							)
 					);
 
-					$motifceronvalid66 = array();
+					$motifceronvalid66 = array( );
 					foreach( $motifs as $key => $value ) {
 						$motifceronvalid66[] = $value['Motifcernonvalid66Propodecisioncer66']['motifcernonvalid66_id'];
 					}
 					$decisiondossierpcg66['Motifcernonvalid66']['Motifcernonvalid66'] = $motifceronvalid66;
 				}
-				
-				
-				
-				
+
+
+
+
 				$dossierpcg66_id = Set::classicExtract( $decisiondossierpcg66, 'Decisiondossierpcg66.dossierpcg66_id' );
 				// FIXME: une fonction avec la partie du add ci-dessus
 				$dossierpcg66 = $this->Decisiondossierpcg66->Dossierpcg66->find(
-					'first',
-					array(
-						'conditions' => array(
-							'Dossierpcg66.id' => $dossierpcg66_id
+						'first', array(
+					'conditions' => array(
+						'Dossierpcg66.id' => $dossierpcg66_id
+					),
+					'contain' => array(
+						'Decisiondossierpcg66' => array(
+							'conditions' => array( 'Decisiondossierpcg66.id <>' => $id ),
+							'order' => array( 'Decisiondossierpcg66.created DESC' ),
+							'Decisionpdo'
 						),
-						'contain' => array(
-							'Decisiondossierpcg66' => array(
-								'conditions' => array( 'Decisiondossierpcg66.id <>' => $id ),
-								'order' => array( 'Decisiondossierpcg66.created DESC' ),
-								'Decisionpdo'
-							),
-							'Decisiondefautinsertionep66' => array(
-								'Passagecommissionep' => array(
-									'Dossierep' => array(
-										'Defautinsertionep66' => array(
-											'Bilanparcours66'
-										)
+						'Decisiondefautinsertionep66' => array(
+							'Passagecommissionep' => array(
+								'Dossierep' => array(
+									'Defautinsertionep66' => array(
+										'Bilanparcours66'
 									)
 								)
-							),
-							'Fichiermodule',
-							'Contratinsertion'
-						)
+							)
+						),
+						'Fichiermodule',
+						'Contratinsertion'
 					)
+						)
 				);
 
 
 				$foyer_id = Set::classicExtract( $dossierpcg66, 'Dossierpcg66.foyer_id' );
-				$dossier_id = $this->Decisiondossierpcg66->Dossierpcg66->Foyer->dossierId( $foyer_id );;
+				$dossier_id = $this->Decisiondossierpcg66->Dossierpcg66->Foyer->dossierId( $foyer_id );
+				;
 			}
 
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
 
 			$contratinsertion_id = null;
-			if( !empty($dossierpcg66['Dossierpcg66']['contratinsertion_id']) ) {
+			if( !empty( $dossierpcg66['Dossierpcg66']['contratinsertion_id'] ) ) {
 				$contratinsertion_id = $dossierpcg66['Dossierpcg66']['contratinsertion_id'];
 			}
-			$this->set( 'contratinsertion_id', $contratinsertion_id  );
+			$this->set( 'contratinsertion_id', $contratinsertion_id );
 
 			if( !empty( $dossierpcg66['Decisiondefautinsertionep66']['decision'] ) ) {
 				if( $dossierpcg66['Decisiondefautinsertionep66']['decision'] != 'maintien' ) {
@@ -315,7 +287,6 @@
 						$decisiondossierpcg66_decision = 'suspensionnonrespect';
 					}
 					$decisiondossierpcg66_decision = $decisiondossierpcg66_decision.'_'.$proposition;
-					
 				}
 				if( $decisiondossierpcg66_decision == 'suspensiondefaut_audition' ) {
 					if( empty( $dossierpcg66['Decisiondefautinsertionep66']['Passagecommissionep']['Dossierep']['Defautinsertionep66']['Bilanparcours66']['orientstruct_id'] ) ) {
@@ -337,57 +308,55 @@
 			$userConnected = $this->Session->read( 'Auth.User.id' );
 			$this->set( compact( 'userConnected' ) );
 
-			if ( !$this->Jetons->check( $dossier_id ) ) {
+			if( !$this->Jetons->check( $dossier_id ) ) {
 				$this->Decisiondossierpcg66->rollback();
 			}
 			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
 
 
-			if ( !empty( $this->data ) ) {
+			if( !empty( $this->data ) ) {
 // debug( $dossierpcg66 );
 // die();
 				if( $this->Decisiondossierpcg66->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
 					$saved = $this->Decisiondossierpcg66->save( $this->data );
-					if( !empty( $this->data['Decisiondossierpcg66Decisionpersonnepcg66'][0]['decisionpersonnepcg66_id'] ) ){
+					if( !empty( $this->data['Decisiondossierpcg66Decisionpersonnepcg66'][0]['decisionpersonnepcg66_id'] ) ) {
 						foreach( $this->data['Decisiondossierpcg66Decisionpersonnepcg66'] as $joinTable ) {
-							if ( isset( $this->data['Decisiondossierpcg66']['validationproposition'] ) && $this->data['Decisiondossierpcg66']['validationproposition'] == 'O' ) {
+							if( isset( $this->data['Decisiondossierpcg66']['validationproposition'] ) && $this->data['Decisiondossierpcg66']['validationproposition'] == 'O' ) {
 								$this->Decisiondossierpcg66->Dossierpcg66->Personnepcg66->Personnepcg66Situationpdo->Decisionpersonnepcg66->id = $joinTable['decisionpersonnepcg66_id'] && $saved;
 							}
-							if ( $this->action == 'add' ) {
+							if( $this->action == 'add' ) {
 								$joinTable['decisiondossierpcg66_id'] = $this->Decisiondossierpcg66->id;
 								$this->Decisiondossierpcg66->Decisiondossierpcg66Decisionpersonnepcg66->create( $joinTable );
 								$saved = $this->Decisiondossierpcg66->Decisiondossierpcg66Decisionpersonnepcg66->save();
 							}
 						}
 					}
-					
-					if ( !empty($dossierpcg66['Dossierpcg66']['contratinsertion_id'])){
+
+					if( !empty( $dossierpcg66['Dossierpcg66']['contratinsertion_id'] ) ) {
 						// Proposition de non validation
 						if( $this->Decisiondossierpcg66->Dossierpcg66->Contratinsertion->Propodecisioncer66->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
 							$saved = $this->Decisiondossierpcg66->Dossierpcg66->Contratinsertion->Propodecisioncer66->save( $this->data );
 
-							if( !isset( $this->data['Motifcernonvalid66'] ) && !empty( $propodecisioncer66 ) ){
+							if( !isset( $this->data['Motifcernonvalid66'] ) && !empty( $propodecisioncer66 ) ) {
 								$saved = $this->Decisiondossierpcg66->Dossierpcg66->Contratinsertion->Propodecisioncer66->Motifcernonvalid66Propodecisioncer66->deleteAll(
-									array(
-										'Motifcernonvalid66Propodecisioncer66.propodecisioncer66_id' => $this->Decisiondossierpcg66->Dossierpcg66->Contratinsertion->Propodecisioncer66->id
-									)
-								) && $saved;
+												array(
+													'Motifcernonvalid66Propodecisioncer66.propodecisioncer66_id' => $this->Decisiondossierpcg66->Dossierpcg66->Contratinsertion->Propodecisioncer66->id
+												)
+										) && $saved;
 
 								$saved = $this->Decisiondossierpcg66->Dossierpcg66->Contratinsertion->Propodecisioncer66->updateAll(
-									array(
-										'Propodecisioncer66.motifficheliaison' => null,
-										'Propodecisioncer66.motifnotifnonvalid' => null
-									),
-									array(
-										'Propodecisioncer66.id' => $this->Decisiondossierpcg66->Dossierpcg66->Contratinsertion->Propodecisioncer66->id
-									)
-								) && $saved;
-
+												array(
+											'Propodecisioncer66.motifficheliaison' => null,
+											'Propodecisioncer66.motifnotifnonvalid' => null
+												), array(
+											'Propodecisioncer66.id' => $this->Decisiondossierpcg66->Dossierpcg66->Contratinsertion->Propodecisioncer66->id
+												)
+										) && $saved;
 							}
 						}
-					} 
+					}
 					//
-					
+
 
 					if( $saved ) {
 						$saved = $this->Decisiondossierpcg66->Dossierpcg66->updateEtatViaDecisionFoyer( $this->Decisiondossierpcg66->id ) && $saved;
@@ -414,26 +383,25 @@
 			}
 
 			$personnespcgs66 = $this->Decisiondossierpcg66->Dossierpcg66->Personnepcg66->find(
-				'all',
-				array(
-					'conditions' => array(
-						'Personnepcg66.dossierpcg66_id' => $dossierpcg66_id
-					),
-					'contain' => array(
-						'Statutpdo',
-						'Situationpdo',
-						'Personne',
-						'Traitementpcg66'
-					)
+					'all', array(
+				'conditions' => array(
+					'Personnepcg66.dossierpcg66_id' => $dossierpcg66_id
+				),
+				'contain' => array(
+					'Statutpdo',
+					'Situationpdo',
+					'Personne',
+					'Traitementpcg66'
 				)
+					)
 			);
-			
+
 			//Liste des traitements avec une fiche de calcul devant être reporter dans la décision
-			$listeFicheAReporter = array();
+			$listeFicheAReporter = array( );
 			foreach( $personnespcgs66 as $i => $personnepcg66 ) {
 				if( !empty( $personnepcg66['Traitementpcg66'] ) ) {
-					foreach( $personnepcg66['Traitementpcg66'] as $traitementpcg66 ){
-						if( $traitementpcg66['reversedo'] == 1 ){
+					foreach( $personnepcg66['Traitementpcg66'] as $traitementpcg66 ) {
+						if( $traitementpcg66['reversedo'] == 1 ) {
 							$listeFicheAReporter[] = $traitementpcg66;
 						}
 					}
@@ -455,8 +423,8 @@
 				case 'attpj':
 				case 'atttransmisop':
 					$avistechniquemodifiable = ( $this->action == 'edit' );
-					$validationmodifiable  = ( $this->action == 'edit' );
-				break;
+					$validationmodifiable = ( $this->action == 'edit' );
+					break;
 			}
 
 			$this->set( compact( 'personnespcgs66', 'dossierpcg66', 'decisiondossierpcg66', 'avistechniquemodifiable', 'validationmodifiable' ) );
@@ -471,8 +439,8 @@
 		}
 
 		/**
-		*   Enregistrement du courrier de proposition lors de l'enregistrement de la proposition
-		*/
+		 *   Enregistrement du courrier de proposition lors de l'enregistrement de la proposition
+		 */
 		public function decisionproposition( $id ) {
 			$this->assert( !empty( $id ), 'error404' );
 
@@ -503,34 +471,32 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function view( $id ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
 
 			$decisiondossierpcg66 = $this->Decisiondossierpcg66->find(
-				'first',
-				array(
-					'fields' => array_merge(
+					'first', array(
+				'fields' => array_merge(
 						$this->Decisiondossierpcg66->fields()
-					),
-					'conditions' => array(
-						'Decisiondossierpcg66.id' => $id
-					),
-					'contain' => array(
-						'Decisionpdo',
-						'Dossierpcg66' => array(
-							'Personnepcg66',
-							'Foyer',
-							'Fichiermodule'
-						)
+				),
+				'conditions' => array(
+					'Decisiondossierpcg66.id' => $id
+				),
+				'contain' => array(
+					'Decisionpdo',
+					'Dossierpcg66' => array(
+						'Personnepcg66',
+						'Foyer',
+						'Fichiermodule'
 					)
 				)
+					)
 			);
-			
-// 		debug($decisiondossierpcg66);	
+
+// 		debug($decisiondossierpcg66);
 			$this->assert( !empty( $decisiondossierpcg66 ), 'invalidParameter' );
 
 			$this->set( 'dossier_id', $this->Decisiondossierpcg66->dossierId( $id ) );
@@ -541,27 +507,25 @@
 			}
 
 			$options = $this->Decisiondossierpcg66->enums();
-			$this->set( compact( 'decisiondossierpcg66') );
+			$this->set( compact( 'decisiondossierpcg66' ) );
 			$this->_setOptions();
 
 			$this->set( 'urlmenu', '/dossierspcgs66/index/'.$decisiondossierpcg66['Dossierpcg66']['foyer_id'] );
 		}
 
 		/**
-		* Suppression de la proposition de décision
-		*/
-
-	public function delete( $id ) {
+		 * Suppression de la proposition de décision
+		 */
+		public function delete( $id ) {
 			$decisiondossierpcg66 = $this->Decisiondossierpcg66->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Decisiondossierpcg66.id' => $id
-					),
-					'contain' => array(
-						'Dossierpcg66'
-					)
+					'first', array(
+				'conditions' => array(
+					'Decisiondossierpcg66.id' => $id
+				),
+				'contain' => array(
+					'Dossierpcg66'
 				)
+					)
 			);
 			$dossierpcg66_id = Set::classicExtract( $decisiondossierpcg66, 'Dossierpcg66.id' );
 			$etatdossierpcg = Set::classicExtract( $decisiondossierpcg66, 'Dossierpcg66.etatdossierpcg' );
@@ -578,24 +542,22 @@
 // 						$vuavistechnique/*,
 // 						$etatdossierpcg*/
 // 					);
-
 			// TODO: à mettre dans le modèle -> afterDelete ?
 			$success = $this->Decisiondossierpcg66->delete( $id );
 			if( $success ) {
 				$dernieredecision = $this->Decisiondossierpcg66->find(
-					'first',
-					array(
-						'conditions' => array(
-							'Decisiondossierpcg66.dossierpcg66_id' => $dossierpcg66_id
-						),
-						'contain' => array(
-							'Dossierpcg66'
-						),
-						'order' => array( 'Decisiondossierpcg66.modified DESC' )
-					)
+						'first', array(
+					'conditions' => array(
+						'Decisiondossierpcg66.dossierpcg66_id' => $dossierpcg66_id
+					),
+					'contain' => array(
+						'Dossierpcg66'
+					),
+					'order' => array( 'Decisiondossierpcg66.modified DESC' )
+						)
 				);
 
-							
+
 				$typepdo_id = Set::classicExtract( $dernieredecision, 'Dossierpcg66.typepdo_id' );
 				$user_id = Set::classicExtract( $dernieredecision, 'Dossierpcg66.user_id' );
 				$decisionpdoId = Set::classicExtract( $dernieredecision, 'Decisiondossierpcg66.decisionpdo_id' );
@@ -603,8 +565,8 @@
 				$validationavis = Set::classicExtract( $dernieredecision, 'Decisiondossierpcg66.validationproposition' );
 				$retouravistechnique = Set::classicExtract( $dernieredecision, 'Decisiondossierpcg66.retouravistechnique' );
 				$vuavistechnique = Set::classicExtract( $dernieredecision, 'Decisiondossierpcg66.vuavistechnique' );
-				
-				
+
+
 				$etatdossierpcg = 'instrencours';
 				// Quel est l'état actuel du dossier ?
 				if( empty( $dernieredecision ) ) {
@@ -612,48 +574,44 @@
 				}
 				else {
 					$etatdossierpcg = $this->Decisiondossierpcg66->Dossierpcg66->etatDossierPcg66(
-						$typepdo_id,
-						$user_id,
-						$decisionpdoId,
-						$avistechnique,
-						$validationavis,
-						$retouravistechnique,
-						$vuavistechnique,
-						$etatdossierpcg
+							$typepdo_id, $user_id, $decisionpdoId, $avistechnique, $validationavis, $retouravistechnique, $vuavistechnique, $etatdossierpcg
 					);
 				}
 
 				$success = $this->Decisiondossierpcg66->Dossierpcg66->updateAll(
-					array( 'Dossierpcg66.etatdossierpcg' => "'{$etatdossierpcg}'" ),
-					array('"Dossierpcg66"."id"' => $dossierpcg66_id )
-				) && $success;
+								array( 'Dossierpcg66.etatdossierpcg' => "'{$etatdossierpcg}'" ), array( '"Dossierpcg66"."id"' => $dossierpcg66_id )
+						) && $success;
 			}
 
 			$this->_setFlashResult( 'Delete', $success );
 			$this->redirect( $this->referer() );
 		}
 
-
-
 		/**
-		*   Gestion de la transmission à l'organisme payeur
-		*/
+		 *   Gestion de la transmission à l'organisme payeur
+		 */
 		public function transmitop( $id ) {
 			$this->assert( !empty( $id ), 'error404' );
-
-			$decisiondossierpcg66 = $this->Decisiondossierpcg66->findById( $id, null, null, -1 );
+			$qd_decisiondossierpcg66 = array(
+				'conditions' => array(
+					'Decisiondossierpcg66.id' => $id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => -1
+			);
+			$decisiondossierpcg66 = $this->Decisiondossierpcg66->find( 'first', $qd_decisiondossierpcg66 );
 			$this->set( 'decisiondossierpcg66', $decisiondossierpcg66 );
 			$dossierpcg66_id = Set::classicExtract( $decisiondossierpcg66, 'Decisiondossierpcg66.dossierpcg66_id' );
 			$this->set( 'dossierpcg66_id', $dossierpcg66_id );
-			
+
 			$dossierpcg66 = $this->Decisiondossierpcg66->Dossierpcg66->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Dossierpcg66.id' => $dossierpcg66_id
-					),
-					'contain' => false
-				)
+					'first', array(
+				'conditions' => array(
+					'Dossierpcg66.id' => $dossierpcg66_id
+				),
+				'contain' => false
+					)
 			);
 			$foyer_id = Set::classicExtract( $dossierpcg66, 'Dossierpcg66.foyer_id' );
 			$this->set( 'foyer_id', $foyer_id );
@@ -670,7 +628,7 @@
 					$saved = $this->Decisiondossierpcg66->Dossierpcg66->updateEtatViaTransmissionop( $id ) && $saved;
 
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-					$this->redirect( array( 'controller' => 'dossierspcgs66', 'action' => 'edit', $decisiondossierpcg66['Decisiondossierpcg66']['dossierpcg66_id']) );
+					$this->redirect( array( 'controller' => 'dossierspcgs66', 'action' => 'edit', $decisiondossierpcg66['Decisiondossierpcg66']['dossierpcg66_id'] ) );
 				}
 			}
 			else {
@@ -679,7 +637,6 @@
 
 			$this->_setOptions();
 			$this->set( 'urlmenu', '/dossierspcgs66/index/'.$foyer_id );
-
 		}
 
 	}

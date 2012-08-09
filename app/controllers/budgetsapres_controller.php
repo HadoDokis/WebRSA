@@ -4,15 +4,13 @@
 
 		public $name = 'Budgetsapres';
 		public $helpers = array( 'Xform' );
-
 		public $commeDroit = array(
 			'add' => 'Actionscandidats:edit'
 		);
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function index() {
 			$this->paginate[$this->modelClass] = array(
 				'limit' => 5,
@@ -24,9 +22,8 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function add() {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
@@ -38,12 +35,19 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		protected function _add_edit( $id = null ) {
 			if( $this->action == 'edit' ) {
-				$budgetapre = $this->{$this->modelClass}->findById( $id, null, null, -1 );
+				$qd_budgetapre = array(
+					'conditions' => array(
+						$this->modelClass.'.id' => $id
+					),
+					'fields' => null,
+					'order' => null,
+					'recursive' => -1
+				);
+				$budgetapre = $this->{$this->modelClass}->find( 'first', $qd_budgetapre );
 				$this->assert( !empty( $budgetapre ), 'invalidParameter' );
 			}
 
@@ -60,5 +64,6 @@
 
 			$this->render( $this->action, null, 'add_edit' );
 		}
+
 	}
 ?>

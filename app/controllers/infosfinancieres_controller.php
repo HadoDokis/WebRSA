@@ -71,7 +71,15 @@
 				)
 			);
 
-			$foyer = $this->Dossier->Foyer->findByDossierId( $dossier_id, null, null, -1 );
+			$qd_foyer = array(
+				'conditions' => array(
+					'Foyer.dossier_id' => $dossier_id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => -1
+			);
+			$foyer = $this->Dossier->Foyer->find( 'first', $qd_foyer );
 
 			$personne = $this->Dossier->Foyer->Personne->find(
 				'first',
@@ -112,7 +120,15 @@
 			$this->assert( !empty( $infofinanciere ), 'error404' );
 			$dossier_id = Set::classicExtract( $infofinanciere, 'Infofinanciere.dossier_id' );
 
-			$foyer = $this->Dossier->Foyer->findByDossierId( $dossier_id, null, null, -1 );
+			$qd_foyer = array(
+				'conditions' => array(
+					'Foyer.dossier_id' => $dossier_id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => -1
+			);
+			$foyer = $this->Dossier->Foyer->find( 'first', $qd_foyer );
 
 			$personne = $this->Dossier->Foyer->Personne->find(
 				'first',

@@ -1,16 +1,17 @@
 <?php
 	class DefaultComponent extends Component
 	{
+
 		//called before Controller::beforeFilter()
-		function initialize( &$controller, $settings = array() ) {
+		function initialize( &$controller, $settings = array( ) ) {
 			// saving the controller reference for later use
-			$this->controller =& $controller;
+			$this->controller = & $controller;
 			// FIXME: settings, ...
 		}
 
 		/// FIXME
 		//called after Controller::beforeRender()
-		function beforeRender(&$controller) {
+		function beforeRender( &$controller ) {
 			if( isset( $this->controller->{$this->controller->modelClass} ) ) {
 				$model = $this->controller->{$this->controller->modelClass};
 				$domain = Inflector::singularize( Inflector::tableize( $model->name ) );
@@ -21,26 +22,24 @@
 					case 'delete':
 						$varName = $domain;
 						$controller->pageTitle = sprintf(
-							__d( $domain, "{$controller->name}::{$controller->action}", true ),
-							Set::classicExtract( Xset::classicExtract( $controller->viewVars, $varName ), "{$model->name}.{$model->displayField}" )
+								__d( $domain, "{$controller->name}::{$controller->action}", true ), Set::classicExtract( Xset::classicExtract( $controller->viewVars, $varName ), "{$model->name}.{$model->displayField}" )
 						);
 						break;
 					case 'add':
 					case 'index':
 					default:
-							$controller->pageTitle = sprintf(
+						$controller->pageTitle = sprintf(
 								__d( $domain, "{$controller->name}::{$controller->action}", true )
-							);
+						);
 						break;
 				}
 			}
 		}
 
 		/**
-		*
-		*/
-
-		public function search( $operations, $queryData = array() ) {
+		 *
+		 */
+		public function search( $operations, $queryData = array( ) ) {
 			$search = Set::extract( $this->controller->data, 'Search' );
 			if( !empty( $search ) ) {
 				$search = Xset::filterDeep( Set::flatten( $search ) );
@@ -56,12 +55,11 @@
 		}
 
 		/**
-		* TODO
-		*
-		* @access public
-		*/
-
-		public function index( $queryData = array() ) {
+		 * TODO
+		 *
+		 * @access public
+		 */
+		public function index( $queryData = array( ) ) {
 			// FIXME
 			$this->controller->paginate = array(
 				$this->controller->modelClass => array(
@@ -79,13 +77,20 @@
 		}
 
 		/**
-		* TODO
-		*
-		* @access public
-		*/
-
+		 * TODO
+		 *
+		 * @access public
+		 */
 		public function view( $id = null ) {
-			$item = $this->controller->{$this->controller->modelClass}->findById( $id, null, null, 1 );
+			$qd_item = array(
+				'conditions' => array(
+					$this->controller->modelClass.'.id' => $id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => 1
+			);
+			$item = $this->controller->{$this->controller->modelClass}->find( 'first', $qd_item );
 			$this->controller->assert( !empty( $item ), 'invalidParameter' );
 
 			//debug( Inflector::underscore( Inflector::singularize( $this->controller->name ) ) ); // FIXME TODO
@@ -94,33 +99,30 @@
 		}
 
 		/**
-		* FIXME docs
-		*
-		* @access public
-		*/
-
-        public function add() {
-            $args = func_get_args();
-            call_user_func_array( array( $this, '_add_edit' ), $args );
-        }
-
-		/**
-		* FIXME docs
-		*
-		* @access public
-		*/
-
-        public function edit() {
-            $args = func_get_args();
-            call_user_func_array( array( $this, '_add_edit' ), $args );
-        }
+		 * FIXME docs
+		 *
+		 * @access public
+		 */
+		public function add() {
+			$args = func_get_args();
+			call_user_func_array( array( $this, '_add_edit' ), $args );
+		}
 
 		/**
-		* FIXME docs
-		*
-		* @access private
-		*/
+		 * FIXME docs
+		 *
+		 * @access public
+		 */
+		public function edit() {
+			$args = func_get_args();
+			call_user_func_array( array( $this, '_add_edit' ), $args );
+		}
 
+		/**
+		 * FIXME docs
+		 *
+		 * @access private
+		 */
 		public function _add_edit( $id = null ) {
 			if( Set::check( $this->controller->params, 'form.cancel' ) ) {
 				$this->controller->Session->setFlash( __( 'Save->cancel', true ), 'flash/information' );
@@ -128,7 +130,15 @@
 			}
 
 			if( $this->controller->action == 'edit' ) {
-				$item = $this->controller->{$this->controller->modelClass}->findById( $id, null, null, 1 );
+				$qd_item = array(
+					'conditions' => array(
+						$this->controller->modelClass.'.id' => $id
+					),
+					'fields' => null,
+					'order' => null,
+					'recursive' => 1
+				);
+				$item = $this->controller->{$this->controller->modelClass}->find( 'first', $qd_item );
 				$this->controller->assert( !empty( $item ), 'invalidParameter' );
 
 				$varname = strtolower( Inflector::singularize( $this->controller->name ) ); // FIXME: voir view
@@ -161,17 +171,24 @@
 				}
 			}
 
-            $this->controller->render( $this->controller->action, null, 'add_edit' );
+			$this->controller->render( $this->controller->action, null, 'add_edit' );
 		}
 
 		/**
-		* FIXME docs
-		*
-		* @access public
-		*/
-
+		 * FIXME docs
+		 *
+		 * @access public
+		 */
 		public function delete( $id = null ) {
-			$item = $this->controller->{$this->controller->modelClass}->findById( $id, null, null, -1 );
+			$qd_item = array(
+				'conditions' => array(
+					$this->controller->modelClass.'.id' => $id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => -1
+			);
+			$item = $this->controller->{$this->controller->modelClass}->find( 'first', $qd_item );
 			$this->controller->assert( !empty( $item ), 'invalidParameter' );
 
 			if( $this->controller->{$this->controller->modelClass}->delete( $id ) ) {
@@ -185,12 +202,11 @@
 		}
 
 		/**
-		* Super postConditions ?
-		* FIXME: dans le DefaultComponent
-		*/
-
+		 * Super postConditions ?
+		 * FIXME: dans le DefaultComponent
+		 */
 		public function conditions( array $data, array $operations ) {
-			$conditions = array();
+			$conditions = array( );
 
 			/// Reformat values
 			$data = Xset::bump( Set::normalize( $data ) );
@@ -209,13 +225,13 @@
 							$value = Set::classicExtract( $model->data, "{$model->name}.{$field}" );
 						}
 
-                        if( $model->getColumnType( $field ) == 'datetime' ) { /// FIXME: si c'est un vrai datetime
-                            $data[] = "{$model->alias}.{$field} BETWEEN '{$value}' AND '".date( 'Y-m-d', strtotime( $value ) + ( 24 * 60 * 60 ) )."'";
-                            $data = Set::remove( $data, "{$model->alias}.{$field}" );
-                        }
-                        else {
-                            $data[$model->alias][$field] = $value;
-                        }
+						if( $model->getColumnType( $field ) == 'datetime' ) { /// FIXME: si c'est un vrai datetime
+							$data[] = "{$model->alias}.{$field} BETWEEN '{$value}' AND '".date( 'Y-m-d', strtotime( $value ) + ( 24 * 60 * 60 ) )."'";
+							$data = Set::remove( $data, "{$model->alias}.{$field}" );
+						}
+						else {
+							$data[$model->alias][$field] = $value;
+						}
 					}
 				}
 			}
@@ -261,7 +277,6 @@
 							}
 							break;
 					}
-
 				}
 			}
 
@@ -277,14 +292,15 @@
 			return $conditions;
 		}
 
-        /**
-        * The beforeRedirect method is invoked when the controller's redirect method
-        * is called but before any further action. If this method returns false the
-        * controller will not continue on to redirect the request.
-        * The $url, $status and $exit variables have same meaning as for the controller's method.
-        */
-        function beforeRedirect( &$controller, $url, $status = null, $exit = true ) {
-            parent::beforeRedirect( $controller, $url, $status , $exit );
-        }
+		/**
+		 * The beforeRedirect method is invoked when the controller's redirect method
+		 * is called but before any further action. If this method returns false the
+		 * controller will not continue on to redirect the request.
+		 * The $url, $status and $exit variables have same meaning as for the controller's method.
+		 */
+		function beforeRedirect( &$controller, $url, $status = null, $exit = true ) {
+			parent::beforeRedirect( $controller, $url, $status, $exit );
+		}
+
 	}
 ?>

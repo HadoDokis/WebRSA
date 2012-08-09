@@ -1,50 +1,47 @@
 <?php
 	class Decisionspersonnespcgs66Controller extends AppController
 	{
-		public $name = 'Decisionspersonnespcgs66';
-		/**
-		* @access public
-		*/
 
+		public $name = 'Decisionspersonnespcgs66';
+
+		/**
+		 * @access public
+		 */
 		public $components = array( 'Default', 'Gedooo.Gedooo' );
 		public $helpers = array( 'Default2', 'Ajax' );
-		public $uses = array( 'Decisionpersonnepcg66', 'Option', 'Pdf'  );
-
+		public $uses = array( 'Decisionpersonnepcg66', 'Option', 'Pdf' );
 		public $commeDroit = array(
 			'view' => 'Decisionspersonnespcgs66:index',
 			'add' => 'Decisionspersonnespcgs66:edit'
 		);
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		protected function _setOptions() {
-			$options = array();
+			$options = array( );
 			$options = $this->Decisionpersonnepcg66->Decisionpdo->find( 'list' );
 			$this->set( compact( 'options' ) );
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function index( $personnepcg66_id = null ) {
 			//Récupération des informations de la personne concernée par le dossier
 			$personnepcg66 = $this->Decisionpersonnepcg66->Personnepcg66Situationpdo->Personnepcg66->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Personnepcg66.id' => $personnepcg66_id
+					'first', array(
+				'conditions' => array(
+					'Personnepcg66.id' => $personnepcg66_id
+				),
+				'contain' => array(
+					'Personnepcg66Situationpdo' => array(
+						'Situationpdo',
+						'Decisionpersonnepcg66'
 					),
-					'contain' => array(
-						'Personnepcg66Situationpdo' => array(
-							'Situationpdo',
-							'Decisionpersonnepcg66'
-						),
-						'Dossierpcg66'
-					)
+					'Dossierpcg66'
 				)
+					)
 			);
 			$dossierpcg66_id = $personnepcg66['Personnepcg66']['dossierpcg66_id'];
 			$personne_id = $personnepcg66['Personnepcg66']['personne_id'];
@@ -52,21 +49,20 @@
 
 			// Récupération du nom de l'allocataire
 			$personne = $this->Decisionpersonnepcg66->Personnepcg66Situationpdo->Personnepcg66->Personne->find(
-				'first',
-				array(
-					'fields' => array( 'nom_complet' ),
-					'conditions' => array(
-						'Personne.id' => $personnepcg66['Personnepcg66']['personne_id']
-					),
-					'contain' => false
-				)
+					'first', array(
+				'fields' => array( 'nom_complet' ),
+				'conditions' => array(
+					'Personne.id' => $personnepcg66['Personnepcg66']['personne_id']
+				),
+				'contain' => false
+					)
 			);
 			$nompersonne = Set::classicExtract( $personne, 'Personne.nom_complet' );
 			$this->set( compact( 'nompersonne' ) );
 
 			//Récuipération des propositions de décisions
 			$listeDecisions = $this->Decisionpersonnepcg66->listeDecisionsParPersonnepcg66( $personnepcg66_id, $dossierpcg66_id );
-			$this->set( compact ('listeDecisions' ) );
+			$this->set( compact( 'listeDecisions' ) );
 
 			$this->set( 'personne_id', $personne_id );
 			$this->set( 'personnepcg66_id', $personnepcg66_id );
@@ -77,10 +73,9 @@
 			$this->set( 'personne_id', $personne_id );
 		}
 
-		/** ********************************************************************
-		*
-		*** *******************************************************************/
-
+		/**		 * *******************************************************************
+		 *
+		 * ** ****************************************************************** */
 		public function add() {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
@@ -91,10 +86,9 @@
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
-		/** ********************************************************************
-		*
-		*** *******************************************************************/
-
+		/**		 * *******************************************************************
+		 *
+		 * ** ****************************************************************** */
 		protected function _add_edit( $id = null ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
@@ -106,13 +100,12 @@
 
 // 				$personnepcg66 = $this->Decisionpersonnepcg66->Personnepcg66Situationpdo->Personnepcg66->findById( $id, null, null, -1 );
 				$personnepcg66 = $this->Decisionpersonnepcg66->Personnepcg66Situationpdo->Personnepcg66->find(
-					'first',
-					array(
-						'conditions' => array(
-							'Personnepcg66.id' => $personnepcg66_id
-						),
-						'contain' => array(  'Personne' )
-					)
+						'first', array(
+					'conditions' => array(
+						'Personnepcg66.id' => $personnepcg66_id
+					),
+					'contain' => array( 'Personne' )
+						)
 				);
 
 				$this->set( 'personnepcg66', $personnepcg66 );
@@ -122,18 +115,25 @@
 			}
 			else if( $this->action == 'edit' ) {
 				$decisionpersonnepcg66_id = $id;
-				$decisionpersonnepcg66 = $this->Decisionpersonnepcg66->findById( $decisionpersonnepcg66_id, null, null, 1 );
+				$qd_decisionpersonnepcg66 = array(
+					'conditions' => array(
+						'Decisionpersonnepcg66.id' => $decisionpersonnepcg66_id
+					),
+					'fields' => null,
+					'order' => null,
+					'recursive' => 1
+				);
+				$decisionpersonnepcg66 = $this->Decisionpersonnepcg66->find( 'first', $qd_decisionpersonnepcg66 );
 				$this->assert( !empty( $decisionpersonnepcg66 ), 'invalidParameter' );
 
 				$personnepcg66_id = Set::classicExtract( $decisionpersonnepcg66, 'Personnepcg66Situationpdo.personnepcg66_id' );
 				$personnepcg66 = $this->Decisionpersonnepcg66->Personnepcg66Situationpdo->Personnepcg66->find(
-					'first',
-					array(
-						'conditions' => array(
-							'Personnepcg66.id' => $personnepcg66_id
-						),
-						'contain' => array( 'Personne' )
-					)
+						'first', array(
+					'conditions' => array(
+						'Personnepcg66.id' => $personnepcg66_id
+					),
+					'contain' => array( 'Personne' )
+						)
 				);
 				$this->set( 'personnepcg66', $personnepcg66 );
 				$personne_id = Set::classicExtract( $personnepcg66, 'Personnepcg66.personne_id' );
@@ -148,7 +148,7 @@
 			$this->set( 'personne_id', $personne_id );
 
 			//Récupération de la liste des motifs de l'allocataire concerné
-			$personnespcgs66Situationspdos = $this->Decisionpersonnepcg66->Personnepcg66Situationpdo->listeMotifsPourDecisions($personnepcg66_id);
+			$personnespcgs66Situationspdos = $this->Decisionpersonnepcg66->Personnepcg66Situationpdo->listeMotifsPourDecisions( $personnepcg66_id );
 			$this->set( compact( 'personnespcgs66Situationspdos' ) );
 
 			if( !$this->Jetons->check( $dossier_id ) ) {
@@ -156,20 +156,20 @@
 			}
 			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
 
-			if( !empty( $this->data ) ){
+			if( !empty( $this->data ) ) {
 				if( $this->Decisionpersonnepcg66->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
 					$saved = true;
-					
+
 					$saved = $this->Decisionpersonnepcg66->save( $this->data );
 
 // 					if ( $saved ) {
 // 						$saved = $this->Decisionpersonnepcg66->Personnepcg66Situationpdo->Personnepcg66->Dossierpcg66->updateEtatViaPersonne( $dossierpcg66_id ) && $saved;
 // 					}
-// 
+//
 // 					if ( $saved ) {
 // 						$saved = $this->Decisionpersonnepcg66->Personnepcg66Situationpdo->Personnepcg66->Dossierpcg66->updateEtatViaDecisionPersonnepcg( $dossierpcg66_id ) && $saved;
 // 					}
-					
+
 					if( $saved ) {
 						$this->Jetons->release( $dossier_id );
 						$this->Decisionpersonnepcg66->commit(); // FIXME
@@ -186,7 +186,7 @@
 					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 				}
 			}
-			elseif( $this->action == 'edit' ){
+			elseif( $this->action == 'edit' ) {
 				$this->data = $decisionpersonnepcg66;
 			}
 
@@ -197,10 +197,9 @@
 			$this->render( $this->action, null, 'add_edit' );
 		}
 
-
 		/**
-		*   Enregistrement du courrier de proposition lors de l'enregistrement de la proposition
-		*/
+		 *   Enregistrement du courrier de proposition lors de l'enregistrement de la proposition
+		 */
 		public function decisionproposition( $id ) {
 			$this->assert( !empty( $id ), 'error404' );
 
@@ -213,27 +212,25 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function view( $id ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
 			$decisionpersonnepcg66 = $this->Decisionpersonnepcg66->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Decisionpersonnepcg66.id' => $id,
+					'first', array(
+				'conditions' => array(
+					'Decisionpersonnepcg66.id' => $id,
+				),
+				'contain' => array(
+					'Personnepcg66Situationpdo' => array(
+						'fields' => array( 'personnepcg66_id' )
 					),
-					'contain' => array(
-						'Personnepcg66Situationpdo' => array(
-							'fields' => array( 'personnepcg66_id' )
-						),
-						'Decisionpdo' => array(
-							'fields' => array( 'libelle' )
-						)
+					'Decisionpdo' => array(
+						'fields' => array( 'libelle' )
 					)
 				)
+					)
 			);
 
 			$this->assert( !empty( $decisionpersonnepcg66 ), 'invalidParameter' );
@@ -241,17 +238,16 @@
 			$this->set( 'dossier_id', $this->Decisionpersonnepcg66->Personnepcg66Situationpdo->Personnepcg66->Personne->dossierId( $id ) );
 			$personnepcg66_id = Set::classicExtract( $decisionpersonnepcg66, 'Personnepcg66Situationpdo.personnepcg66_id' );
 			$personnepcg66 = $this->Decisionpersonnepcg66->Personnepcg66Situationpdo->Personnepcg66->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Personnepcg66.id' => $personnepcg66_id
-					),
-					'contain' => false
-				)
+					'first', array(
+				'conditions' => array(
+					'Personnepcg66.id' => $personnepcg66_id
+				),
+				'contain' => false
+					)
 			);
 
 			//Récupération de la liste des motifs de l'allocataire concerné
-			$personnespcgs66Situationspdos = $this->Decisionpersonnepcg66->Personnepcg66Situationpdo->listeMotifsPourDecisions($personnepcg66_id);
+			$personnespcgs66Situationspdos = $this->Decisionpersonnepcg66->Personnepcg66Situationpdo->listeMotifsPourDecisions( $personnepcg66_id );
 			$this->set( compact( 'personnespcgs66Situationspdos' ) );
 
 			$dossierpcg66_id = Set::classicExtract( $personnepcg66, 'Personnepcg66.dossierpcg66_id' );
@@ -270,16 +266,30 @@
 		}
 
 		/**
-		* Suppression de la proposition de décision
-		*/
-
+		 * Suppression de la proposition de décision
+		 */
 		public function delete( $id ) {
-			$decisionpersonnepcg66 = $this->Decisionpersonnepcg66->findById( $id, null, null, -1 );
+			$qd_decisionpersonnepcg66 = array(
+				'conditions' => array(
+					'Decisionpersonnepcg66.id' => $id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => -1
+			);
+			$decisionpersonnepcg66 = $this->Decisionpersonnepcg66->find( 'first', $qd_decisionpersonnepcg66 );
 
 			$personnepcg66_situationpdo_id = Set::classicExtract( $decisionpersonnepcg66, 'Decisionpersonnepcg66.personnepcg66_situationpdo_id' );
 
-
-			$personnepcg66_situationpdo = $this->Decisionpersonnepcg66->Personnepcg66Situationpdo->findById( $personnepcg66_situationpdo_id, null, null, -1 );
+			$qd_personnepcg66_situationpdo_id = array(
+				'conditions' => array(
+					'Personnepcg66Situationpdo.id' => $personnepcg66_situationpdo_id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => -1
+			);
+			$personnepcg66_situationpdo_id = $this->Decisionpersonnepcg66->Personnepcg66Situationpdo->find( 'first', $qd_personnepcg66_situationpdo_id );
 
 			$personnepcg66_id = Set::classicExtract( $personnepcg66_situationpdo, 'Personnepcg66Situationpdo.personnepcg66_id' );
 
@@ -288,5 +298,6 @@
 			$this->_setFlashResult( 'Delete', $success );
 			$this->redirect( array( 'controller' => 'decisionspersonnespcgs66', 'action' => 'index', $personnepcg66_id ) );
 		}
+
 	}
 ?>

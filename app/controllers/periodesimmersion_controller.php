@@ -1,26 +1,23 @@
 <?php
 	App::import( 'Helper', 'Locale' );
-
 	class PeriodesimmersionController extends AppController
 	{
+
 		public $name = 'Periodesimmersion';
 		public $uses = array( 'Periodeimmersion', 'Cui', 'Option', 'Referent', 'Personne', 'Dossier', 'Adressefoyer', 'Structurereferente' );
-
 		public $helpers = array( 'Default', 'Default2', 'Locale', 'Csv', 'Ajax', 'Xform' );
 		public $components = array( 'RequestHandler', 'Gedooo.Gedooo' );
 		public $aucunDroit = array( 'gedooo' );
-
 		public $commeDroit = array(
 			'view' => 'Periodesimmersion:index',
 			'add' => 'Periodesimmersion:edit'
 		);
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		protected function _setOptions() {
-			$options = array();
+			$options = array( );
 			$options = $this->Periodeimmersion->allEnumLists();
 			$optionscui = $this->Cui->allEnumLists();
 			$options = Set::merge( $optionscui, $options );
@@ -37,24 +34,31 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function index( $cui_id = null ) {
 			$nbrCuis = $this->Periodeimmersion->Cui->find( 'count', array( 'conditions' => array( 'Cui.id' => $cui_id ), 'recursive' => -1 ) );
 			$this->assert( ( $nbrCuis == 1 ), 'invalidParameter' );
 
-			$cui = $this->Cui->findById( $cui_id, null, null, -1  );
+			$qd_cui = array(
+				'conditions' => array(
+					'Cui.id' => $cui_id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => -1
+			);
+			$cui = $this->Cui->find( 'first', $qd_cui );
+
 			$personne_id = Set::classicExtract( $cui, 'Cui.personne_id' );
 
 			$periodesimmersion = $this->Periodeimmersion->find(
-				'all',
-				array(
-					'conditions' => array(
-						'Periodeimmersion.cui_id' => $cui_id
-					),
-					'recursive' => -1
-				)
+					'all', array(
+				'conditions' => array(
+					'Periodeimmersion.cui_id' => $cui_id
+				),
+				'recursive' => -1
+					)
 			);
 
 			$this->_setOptions();
@@ -70,27 +74,24 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function add() {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function edit() {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		protected function _add_edit( $id = null ) {
 			// Retour à la liste en cas d'annulation
 			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
@@ -102,16 +103,43 @@
 
 			if( $this->action == 'add' ) {
 				$cui_id = $id;
-				$cui = $this->Cui->findById( $cui_id, null, null, -1 );
+				$qd_cui = array(
+					'conditions' => array(
+						'Cui.id' => $cui_id
+					),
+					'fields' => null,
+					'order' => null,
+					'recursive' => -1
+				);
+				$cui = $this->Cui->find( 'first', $qd_cui );
+
 				$personne_id = Set::classicExtract( $cui, 'Cui.personne_id' );
 			}
 			else if( $this->action == 'edit' ) {
 				$periodeimmersion_id = $id;
-				$periodeimmersion = $this->Periodeimmersion->findById( $periodeimmersion_id, null, null, -1 );
+				$qd_periodeimmersion = array(
+					'conditions' => array(
+						'Periodeimmersion.id' => $periodeimmersion_id
+					),
+					'fields' => null,
+					'order' => null,
+					'recursive' => -1
+				);
+				$periodeimmersion = $this->Periodeimmersion->find( 'first', $qd_periodeimmersion );
+
 				$this->assert( !empty( $periodeimmersion ), 'invalidParameter' );
 
 				$cui_id = Set::classicExtract( $periodeimmersion, 'Periodeimmersion.cui_id' );
-				$cui = $this->Cui->findById( $cui_id, null, null, -1 );
+				$qd_cui = array(
+					'conditions' => array(
+						'Cui.id' => $cui_id
+					),
+					'fields' => null,
+					'order' => null,
+					'recursive' => -1
+				);
+				$cui = $this->Cui->find( 'first', $qd_cui );
+
 				$personne_id = Set::classicExtract( $cui, 'Cui.personne_id' );
 			}
 
@@ -125,7 +153,16 @@
 			$this->set( 'dossier_id', $dossier_id );
 
 			///On ajout l'ID de l'utilisateur connecté afind e récupérer son service instructeur
-			$user = $this->User->findById( $this->Session->read( 'Auth.User.id' ), null, null, 0 );
+			$qd_user = array(
+				'conditions' => array(
+					'User.id' => $this->Session->read( 'Auth.User.id' )
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => 0
+			);
+			$user = $this->User->find( 'first', $qd_user );
+
 			$user_id = Set::classicExtract( $user, 'User.id' );
 			$personne = $this->{$this->modelClass}->Cui->Personne->detailsApre( $personne_id, $user_id );
 			$this->set( 'personne', $personne );
@@ -135,14 +172,14 @@
 			$this->set( 'referents', $this->Referent->find( 'list' ) );
 			$this->set( 'structs', $this->Structurereferente->listOptions() );
 
-			if( !empty( $this->data ) ){
+			if( !empty( $this->data ) ) {
 
 				$valid = $this->Periodeimmersion->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) );
 
-				if( $valid  ) {
+				if( $valid ) {
 					$saved = $this->Periodeimmersion->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) );
 
-					if( $saved ){
+					if( $saved ) {
 						$this->Jetons->release( $dossier_id );
 						$this->Periodeimmersion->commit();
 						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
@@ -155,7 +192,7 @@
 				}
 			}
 			else {
-				if( $this-> action == 'edit' ){
+				if( $this->action == 'edit' ) {
 					$this->data = $periodeimmersion;
 				}
 			}
@@ -167,47 +204,53 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function gedooo( $id ) {
 			$qual = $this->Option->qual();
 			$typevoie = $this->Option->typevoie();
 			$options = $this->{$this->modelClass}->allEnumLists();
 
 			$periodeimmersion = $this->{$this->modelClass}->find(
-				'first',
-				array(
-					'conditions' => array(
-						"{$this->modelClass}.id" => $id
-					),
-					'recursive' => 0
-				)
+					'first', array(
+				'conditions' => array(
+					"{$this->modelClass}.id" => $id
+				),
+				'recursive' => 0
+					)
 			);
 
 			$personne_id = Set::classicExtract( $periodeimmersion, 'Cui.personne_id' );
-			$personne = $this->Personne->findById( $personne_id, null, null, -1 );
+			$qd_personne = array(
+				'conditions' => array(
+					'Personne.id' => $personne_id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => -1
+			);
+			$personne = $this->Personne->find( 'first', $qd_personne );
+
 			$periodeimmersion['Personne'] = $personne['Personne'];
 
 			$this->Adressefoyer->bindModel(
-				array(
-					'belongsTo' => array(
-						'Adresse' => array(
-							'className'     => 'Adresse',
-							'foreignKey'    => 'adresse_id'
+					array(
+						'belongsTo' => array(
+							'Adresse' => array(
+								'className' => 'Adresse',
+								'foreignKey' => 'adresse_id'
+							)
 						)
 					)
-				)
 			);
 
 			$adresse = $this->Adressefoyer->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Adressefoyer.foyer_id' => Set::classicExtract( $periodeimmersion, 'Personne.foyer_id' ),
-						'Adressefoyer.rgadr' => '01',
-					)
+					'first', array(
+				'conditions' => array(
+					'Adressefoyer.foyer_id' => Set::classicExtract( $periodeimmersion, 'Personne.foyer_id' ),
+					'Adressefoyer.rgadr' => '01',
 				)
+					)
 			);
 			$periodeimmersion['Adresse'] = $adresse['Adresse'];
 
@@ -233,17 +276,15 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function delete( $id ) {
 			$this->Default->delete( $id );
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function view( $id ) {
 			$this->_setOptions();
 			$this->Default->view( $id );

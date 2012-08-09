@@ -3,17 +3,15 @@
 	{
 
 		public $name = 'Ressources';
-		public $uses = array( 'Ressource',  'Option' , 'Personne', 'Ressourcemensuelle',  'Detailressourcemensuelle');
-
+		public $uses = array( 'Ressource', 'Option', 'Personne', 'Ressourcemensuelle', 'Detailressourcemensuelle' );
 		public $commeDroit = array(
 			'view' => 'Ressources:index',
 			'add' => 'Ressources:edit'
 		);
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function beforeFilter() {
 			$return = parent::beforeFilter();
 			$this->set( 'natress', $this->Option->natress() );
@@ -22,9 +20,8 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function index( $personne_id = null ) {
 			// Vérification du format de la variable
 			$this->assert( valid_int( $personne_id ), 'invalidParameter' );
@@ -32,16 +29,15 @@
 			$this->Ressource->Personne->unbindModelAll();
 			$this->Ressource->Ressourcemensuelle->unbindModel( array( 'belongsTo' => array( 'Ressource' ) ) );
 			$ressources = $this->Ressource->find(
-				'all',
-				array(
-					'conditions' => array(
-						'Ressource.personne_id' => $personne_id
-					),
-					'recursive' => 2
-				)
-			) ;
+					'all', array(
+				'conditions' => array(
+					'Ressource.personne_id' => $personne_id
+				),
+				'recursive' => 2
+					)
+					);
 
-			foreach( $ressources as $i => $ressource ){
+			foreach( $ressources as $i => $ressource ) {
 				$ressources[$i]['Ressource']['avg'] = $this->Ressource->moyenne( $ressource );
 			}
 // debug($ressources);
@@ -50,28 +46,26 @@
 		}
 
 		/**
-		*
-		*/
-
-		public function view( $ressource_id = null ){
+		 *
+		 */
+		public function view( $ressource_id = null ) {
 			// Vérification du format de la variable
 			$this->assert( valid_int( $ressource_id ), 'invalidParameter' );
 
 			$ressource = $this->Ressource->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Ressource.id' => $ressource_id
-					),
-					'contain' => array(
-						'Ressourcemensuelle' => array(
-							'Detailressourcemensuelle'
-						)
+					'first', array(
+				'conditions' => array(
+					'Ressource.id' => $ressource_id
+				),
+				'contain' => array(
+					'Ressourcemensuelle' => array(
+						'Detailressourcemensuelle'
 					)
 				)
+					)
 			);
 			$this->assert( !empty( $ressource ), 'invalidParameter' );
-			
+
 			$ressource['Ressource']['avg'] = $this->Ressource->moyenne( $ressource );
 
 			$this->set( 'ressource', $ressource );
@@ -80,14 +74,21 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function add( $personne_id = null ) {
 			// Vérification du format de la variable
 			$this->assert( valid_int( $personne_id ), 'invalidParameter' );
 
-			$personne = $this->Personne->findById( $personne_id, null, null, -1 );
+			$qd_personne = array(
+				'conditions' => array(
+					'Personne.id' => $personne_id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => -1
+			);
+			$personne = $this->Personne->find( 'first', $qd_personne );
 			$this->assert( !empty( $personne ), 'invalidParameter' );
 
 			$dossier_id = $this->Personne->dossierId( $personne_id );
@@ -117,7 +118,7 @@
 							$dataRm['ressource_id'] = $this->Ressource->id;
 							$this->Ressourcemensuelle->create();
 							$saved = $this->Ressourcemensuelle->save( $dataRm ) && $saved;
-							if( isset( $this->data['Detailressourcemensuelle'] ) ){
+							if( isset( $this->data['Detailressourcemensuelle'] ) ) {
 								$dataDrm = $this->data['Detailressourcemensuelle'][$index];
 								$dataDrm['ressourcemensuelle_id'] = $this->Ressourcemensuelle->id;
 								$this->Detailressourcemensuelle->create();
@@ -130,7 +131,6 @@
 						$this->Ressource->commit();
 						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 						$this->redirect( array( 'controller' => 'ressources', 'action' => 'index', $personne_id ) );
-
 					}
 					else {
 						$this->Ressource->rollback();
@@ -139,7 +139,15 @@
 				}
 			}
 
-			$ressource = $this->Ressource->findByPersonneId( $personne_id, null, null, -1 );
+			$qd_ressource = array(
+				'conditions' => array(
+					'Ressource.personne_id' => $personne_id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => -1
+			);
+			$ressource = $this->Ressource->find( 'first', $qd_ressource );
 
 			$this->Ressource->commit();
 			$this->set( 'personne_id', $personne_id );
@@ -147,16 +155,25 @@
 		}
 
 		/**
-		*
-		*
-		*
-		*/
-
+		 *
+		 *
+		 *
+		 */
 		public function edit( $ressource_id = null ) {
 			// Vérification du format de la variable
 			$this->assert( valid_int( $ressource_id ), 'invalidParameter' );
 
-			$ressource = $this->Ressource->findById( $ressource_id, null, null, 2 );
+			$qd_ressource = array(
+				'conditions' => array(
+					'Ressource.id' => $ressource_id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => 2
+			);
+			$ressource = $this->Ressource->find( 'first', $qd_ressource );
+
+
 			$this->assert( !empty( $ressource ), 'invalidParameter' );
 
 			$dossier_id = $this->Ressource->dossierId( $ressource_id );
@@ -200,24 +217,23 @@
 					}
 					else {
 						$rm = $this->Ressourcemensuelle->find(
-							'list',
-							array(
-								'fields' => array( 'Ressourcemensuelle.id' ),
-								'conditions' => array( 'Ressourcemensuelle.ressource_id' => $this->Ressource->id )
-							)
+								'list', array(
+							'fields' => array( 'Ressourcemensuelle.id' ),
+							'conditions' => array( 'Ressourcemensuelle.ressource_id' => $this->Ressource->id )
+								)
 						);
 						if( !empty( $rm ) ) {
 							$saved = $this->Detailressourcemensuelle->deleteAll(
-								array(
-									'Detailressourcemensuelle.ressourcemensuelle_id' => $rm
-								)
-							) && $saved;
+											array(
+												'Detailressourcemensuelle.ressourcemensuelle_id' => $rm
+											)
+									) && $saved;
 
 							$saved = $this->Ressourcemensuelle->deleteAll(
-								array(
-									'Ressourcemensuelle.id' => $rm
-								)
-							) && $saved;
+											array(
+												'Ressourcemensuelle.id' => $rm
+											)
+									) && $saved;
 						}
 					}
 
@@ -228,18 +244,16 @@
 						$this->Ressource->commit();
 						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 						$this->redirect( array( 'controller' => 'ressources', 'action' => 'index', $ressource['Ressource']['personne_id'] ) );
-
 					}
 					else {
 						$this->Ressource->rollback();
 						$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 					}
 				}
-
 			}
 			else {
 				// FIXME !!!! ça marche, mais c'est un hack
-				$ressource['Detailressourcemensuelle'] = array();
+				$ressource['Detailressourcemensuelle'] = array( );
 				foreach( $ressource['Ressourcemensuelle'] as $kRm => $rm ) {
 					if( isset( $rm['Detailressourcemensuelle'][0] ) ) {
 						$ressource['Detailressourcemensuelle'][$kRm] = $rm['Detailressourcemensuelle'][0];
@@ -255,5 +269,6 @@
 			$this->set( 'urlmenu', '/ressources/index/'.$ressource['Ressource']['personne_id'] );
 			$this->render( $this->action, null, 'add_edit' );
 		}
+
 	}
 ?>

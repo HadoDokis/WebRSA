@@ -1,26 +1,21 @@
 <?php
 	App::import( 'Helper', 'Locale' );
-
 	class RendezvousController extends AppController
 	{
 
 		public $name = 'Rendezvous';
 		public $uses = array( 'Rendezvous', 'Option' );
-
 		public $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Default2', 'Fileuploader' );
 		public $components = array( 'Gedooo.Gedooo', 'Fileuploader' );
-
 		public $commeDroit = array(
 			'view' => 'Rendezvous:index',
 			'add' => 'Rendezvous:edit'
 		);
-
 		public $aucunDroit = array( 'ajaxreferent', 'ajaxreffonct', 'ajaxperm', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		protected function _setOptions() {
 			$this->set( 'struct', $this->Rendezvous->Structurereferente->listOptions() );
 			$this->set( 'permanences', $this->Rendezvous->Permanence->listOptions() );
@@ -29,11 +24,9 @@
 			$this->set( 'options', $options );
 		}
 
-
 		/**
-		*   Ajax pour les coordonnées du référent APRE
-		*/
-
+		 *   Ajax pour les coordonnées du référent APRE
+		 */
 		public function ajaxreffonct( $referent_id = null ) { // FIXME
 			Configure::write( 'debug', 0 );
 
@@ -44,7 +37,7 @@
 				$referent_id = suffix( Set::extract( $this->data, 'Rendezvous.referent_id' ) );
 			}
 
-			$referent = array();
+			$referent = array( );
 			if( !empty( $referent_id ) ) {
 				$referent = $this->Rendezvous->Referent->findbyId( $referent_id, null, null, -1 );
 			}
@@ -54,65 +47,59 @@
 		}
 
 		/**
-		* http://valums.com/ajax-upload/
-		* http://doc.ubuntu-fr.org/modules_php
-		* increase post_max_size and upload_max_filesize to 10M
-		* debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
-		*/
-
+		 * http://valums.com/ajax-upload/
+		 * http://doc.ubuntu-fr.org/modules_php
+		 * increase post_max_size and upload_max_filesize to 10M
+		 * debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
+		 */
 		public function ajaxfileupload() {
 			$this->Fileuploader->ajaxfileupload();
 		}
 
 		/**
-		* http://valums.com/ajax-upload/
-		* http://doc.ubuntu-fr.org/modules_php
-		* increase post_max_size and upload_max_filesize to 10M
-		* debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
-		* FIXME: traiter les valeurs de retour
-		*/
-
+		 * http://valums.com/ajax-upload/
+		 * http://doc.ubuntu-fr.org/modules_php
+		 * increase post_max_size and upload_max_filesize to 10M
+		 * debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
+		 * FIXME: traiter les valeurs de retour
+		 */
 		public function ajaxfiledelete() {
 			$this->Fileuploader->ajaxfiledelete();
 		}
 
 		/**
-		*   Fonction permettant de visualiser les fichiers chargés dans la vue avant leur envoi sur le serveur
-		*/
-
+		 *   Fonction permettant de visualiser les fichiers chargés dans la vue avant leur envoi sur le serveur
+		 */
 		public function fileview( $id ) {
 			$this->Fileuploader->fileview( $id );
 		}
 
 		/**
-		*   Téléchargement des fichiers préalablement associés à un traitement donné
-		*/
-
+		 *   Téléchargement des fichiers préalablement associés à un traitement donné
+		 */
 		public function download( $fichiermodule_id ) {
 			$this->assert( !empty( $fichiermodule_id ), 'error404' );
 			$this->Fileuploader->download( $fichiermodule_id );
 		}
 
 		/**
-		*   Fonction permettant d'accéder à la page pour lier les fichiers à l'Orientation
-		*/
-
-		public function filelink( $id ){
+		 *   Fonction permettant d'accéder à la page pour lier les fichiers à l'Orientation
+		 */
+		public function filelink( $id ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
-			$fichiers = array();
+			$fichiers = array( );
 			$rendezvous = $this->Rendezvous->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Rendezvous.id' => $id
-					),
-					'contain' => array(
-						'Fichiermodule' => array(
-							'fields' => array( 'name', 'id', 'created', 'modified' )
-						)
+					'first', array(
+				'conditions' => array(
+					'Rendezvous.id' => $id
+				),
+				'contain' => array(
+					'Fichiermodule' => array(
+						'fields' => array( 'name', 'id', 'created', 'modified' )
 					)
 				)
+					)
 			);
 
 			$personne_id = $rendezvous['Rendezvous']['personne_id'];
@@ -133,14 +120,13 @@
 			if( !empty( $this->data ) ) {
 
 				$saved = $this->Rendezvous->updateAll(
-					array( 'Rendezvous.haspiecejointe' => '\''.$this->data['Rendezvous']['haspiecejointe'].'\'' ),
-					array(
-						'"Rendezvous"."personne_id"' => $personne_id,
-						'"Rendezvous"."id"' => $id
-					)
+						array( 'Rendezvous.haspiecejointe' => '\''.$this->data['Rendezvous']['haspiecejointe'].'\'' ), array(
+					'"Rendezvous"."personne_id"' => $personne_id,
+					'"Rendezvous"."id"' => $id
+						)
 				);
 
-				if( $saved ){
+				if( $saved ) {
 					// Sauvegarde des fichiers liés à une PDO
 					$dir = $this->Fileuploader->dirFichiersModule( $this->action, $this->params['pass'][0] );
 					$saved = $this->Fileuploader->saveFichiers( $dir, !Set::classicExtract( $this->data, "Rendezvous.haspiecejointe" ), $id ) && $saved;
@@ -166,65 +152,62 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function index( $personne_id = null ) {
 			$this->Rendezvous->Personne->unbindModelAll();
 			$nbrPersonnes = $this->Rendezvous->Personne->find(
-				'count',
-				array(
-					'conditions' => array(
-						'Personne.id' => $personne_id
-					),
-					'contain' => false
-				)
+					'count', array(
+				'conditions' => array(
+					'Personne.id' => $personne_id
+				),
+				'contain' => false
+					)
 			);
 			$this->assert( ( $nbrPersonnes == 1 ), 'invalidParameter' );
 
 			$this->Rendezvous->forceVirtualFields = true;
 			$rdvs = $this->Rendezvous->find(
-				'all',
-				array(
-					'fields' => array(
-						'Rendezvous.id',
-						'Rendezvous.personne_id',
-						'Personne.nom_complet',
-						'Structurereferente.lib_struc',
-						'Referent.nom_complet',
-						'Permanence.libpermanence',
-						'Typerdv.libelle',
-						'Statutrdv.libelle',
-						'Rendezvous.daterdv',
-						'Rendezvous.heurerdv',
-						'Rendezvous.objetrdv',
-						'Rendezvous.commentairerdv',
-						'StatutrdvTyperdv.motifpassageep',
-						'( SELECT COUNT(fichiersmodules.id) FROM fichiersmodules WHERE fichiersmodules.modele = \'Rendezvous\' AND fichiersmodules.fk_value = "Rendezvous"."id" ) AS "Fichiermodule__nbFichiersLies"'
-					),
-					'joins' => array(
-						$this->Rendezvous->join( 'Personne' ),
-						$this->Rendezvous->join( 'Structurereferente' ),
-						$this->Rendezvous->join( 'Referent' ),
-						$this->Rendezvous->join( 'Statutrdv' ),
-						$this->Rendezvous->join( 'Permanence' ),
-						$this->Rendezvous->join( 'Typerdv' ),
-						$this->Rendezvous->Typerdv->join( 'StatutrdvTyperdv' )
-					),
-					'contain' => false,
-					'conditions' => array(
-						'Rendezvous.personne_id' => $personne_id
-					),
-					'order' => array(
-						'Rendezvous.daterdv DESC',
-						'Rendezvous.heurerdv DESC'
-					)
+					'all', array(
+				'fields' => array(
+					'Rendezvous.id',
+					'Rendezvous.personne_id',
+					'Personne.nom_complet',
+					'Structurereferente.lib_struc',
+					'Referent.nom_complet',
+					'Permanence.libpermanence',
+					'Typerdv.libelle',
+					'Statutrdv.libelle',
+					'Rendezvous.daterdv',
+					'Rendezvous.heurerdv',
+					'Rendezvous.objetrdv',
+					'Rendezvous.commentairerdv',
+					'StatutrdvTyperdv.motifpassageep',
+					'( SELECT COUNT(fichiersmodules.id) FROM fichiersmodules WHERE fichiersmodules.modele = \'Rendezvous\' AND fichiersmodules.fk_value = "Rendezvous"."id" ) AS "Fichiermodule__nbFichiersLies"'
+				),
+				'joins' => array(
+					$this->Rendezvous->join( 'Personne' ),
+					$this->Rendezvous->join( 'Structurereferente' ),
+					$this->Rendezvous->join( 'Referent' ),
+					$this->Rendezvous->join( 'Statutrdv' ),
+					$this->Rendezvous->join( 'Permanence' ),
+					$this->Rendezvous->join( 'Typerdv' ),
+					$this->Rendezvous->Typerdv->join( 'StatutrdvTyperdv' )
+				),
+				'contain' => false,
+				'conditions' => array(
+					'Rendezvous.personne_id' => $personne_id
+				),
+				'order' => array(
+					'Rendezvous.daterdv DESC',
+					'Rendezvous.heurerdv DESC'
 				)
+					)
 			);
 // debug($rdvs);
 
 
-			if ( isset( $rdvs['0']['Rendezvous']['id'] ) && !empty( $rdvs['0']['Rendezvous']['id'] ) ) {
+			if( isset( $rdvs['0']['Rendezvous']['id'] ) && !empty( $rdvs['0']['Rendezvous']['id'] ) ) {
 				$lastrdv_id = $rdvs['0']['Rendezvous']['id'];
 			}
 			else {
@@ -233,19 +216,18 @@
 			$this->set( 'lastrdv_id', $lastrdv_id );
 			$this->Rendezvous->forceVirtualFields = false;
 
-			if ( Configure::read( 'Cg.departement' ) == 58 ) {
+			if( Configure::read( 'Cg.departement' ) == 58 ) {
 				$dossierep = $this->Rendezvous->Personne->Dossierep->find(
-					'first',
-					array(
-						'fields' => array(
-							'StatutrdvTyperdv.motifpassageep',
-						),
-						'joins' => array(
-							$this->Rendezvous->Personne->Dossierep->join( 'Sanctionrendezvousep58' ),
-							$this->Rendezvous->Personne->Dossierep->Sanctionrendezvousep58->join( 'Rendezvous' ),
-							$this->Rendezvous->Personne->Dossierep->Sanctionrendezvousep58->Rendezvous->join( 'Typerdv' ),
-							$this->Rendezvous->Personne->Dossierep->Sanctionrendezvousep58->Rendezvous->Typerdv->join( 'StatutrdvTyperdv' )
-						),
+						'first', array(
+					'fields' => array(
+						'StatutrdvTyperdv.motifpassageep',
+					),
+					'joins' => array(
+						$this->Rendezvous->Personne->Dossierep->join( 'Sanctionrendezvousep58' ),
+						$this->Rendezvous->Personne->Dossierep->Sanctionrendezvousep58->join( 'Rendezvous' ),
+						$this->Rendezvous->Personne->Dossierep->Sanctionrendezvousep58->Rendezvous->join( 'Typerdv' ),
+						$this->Rendezvous->Personne->Dossierep->Sanctionrendezvousep58->Rendezvous->Typerdv->join( 'StatutrdvTyperdv' )
+					),
 // 						'contain' => array(
 // 							'Sanctionrendezvousep58' => array(
 // 								'Rendezvous' => array(
@@ -255,59 +237,58 @@
 // 								)
 // 							)
 // 						),
-						'conditions' => array(
-							'Dossierep.themeep' => 'sanctionsrendezvouseps58',
-							'Dossierep.personne_id' => $personne_id,
-							'Dossierep.id NOT IN ( '.
-								$this->Rendezvous->Personne->Dossierep->Passagecommissionep->sq(
-									array(
-										'fields' => array(
-											'passagescommissionseps.dossierep_id'
-										),
-										'alias' => 'passagescommissionseps',
-										'conditions' => array(
-											'passagescommissionseps.etatdossierep' => array( 'traite', 'annule' )
-										)
+					'conditions' => array(
+						'Dossierep.themeep' => 'sanctionsrendezvouseps58',
+						'Dossierep.personne_id' => $personne_id,
+						'Dossierep.id NOT IN ( '.
+						$this->Rendezvous->Personne->Dossierep->Passagecommissionep->sq(
+								array(
+									'fields' => array(
+										'passagescommissionseps.dossierep_id'
+									),
+									'alias' => 'passagescommissionseps',
+									'conditions' => array(
+										'passagescommissionseps.etatdossierep' => array( 'traite', 'annule' )
 									)
 								)
-							.' )'
-						),
-						'order' => array( 'Dossierep.created ASC' )
-					)
+						)
+						.' )'
+					),
+					'order' => array( 'Dossierep.created ASC' )
+						)
 				);
 				$this->set( compact( 'dossierep' ) );
 
 				$dossierepLie = $this->Rendezvous->Personne->Dossierep->find(
-					'count',
-					array(
-						'conditions' => array(
-							'Dossierep.id IN ( '.
-								$this->Rendezvous->Personne->Dossierep->Passagecommissionep->sq(
-									array(
-										'fields' => array(
-											'passagescommissionseps.dossierep_id'
-										),
-										'alias' => 'passagescommissionseps',
-										'conditions' => array(
-											'passagescommissionseps.etatdossierep' => array( 'associe', 'decisionep', 'decisioncg', 'traite', 'annule', 'reporte' )
-										)
+						'count', array(
+					'conditions' => array(
+						'Dossierep.id IN ( '.
+						$this->Rendezvous->Personne->Dossierep->Passagecommissionep->sq(
+								array(
+									'fields' => array(
+										'passagescommissionseps.dossierep_id'
+									),
+									'alias' => 'passagescommissionseps',
+									'conditions' => array(
+										'passagescommissionseps.etatdossierep' => array( 'associe', 'decisionep', 'decisioncg', 'traite', 'annule', 'reporte' )
 									)
 								)
-							.' )'
-						),
-						'joins' => array(
-							array(
-								'table' => 'sanctionsrendezvouseps58',
-								'alias' => 'Sanctionrendezvousep58',
-								'type' => 'INNER',
-								'conditions' => array(
-									'Sanctionrendezvousep58.dossierep_id = Dossierep.id',
-									'Sanctionrendezvousep58.rendezvous_id' => $lastrdv_id
-								)
+						)
+						.' )'
+					),
+					'joins' => array(
+						array(
+							'table' => 'sanctionsrendezvouseps58',
+							'alias' => 'Sanctionrendezvousep58',
+							'type' => 'INNER',
+							'conditions' => array(
+								'Sanctionrendezvousep58.dossierep_id = Dossierep.id',
+								'Sanctionrendezvousep58.rendezvous_id' => $lastrdv_id
 							)
-						),
-						'order' => array( 'Dossierep.created ASC' )
-					)
+						)
+					),
+					'order' => array( 'Dossierep.created ASC' )
+						)
 				);
 				$this->set( compact( 'dossierepLie' ) );
 			}
@@ -317,33 +298,31 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function view( $rendezvous_id = null ) {
 			$this->Rendezvous->forceVirtualFields = true;
 			$rendezvous = $this->Rendezvous->find(
-				'first',
-				array(
-					'fields' => array(
-						'Rendezvous.personne_id',
-						'Personne.nom_complet',
-						'Structurereferente.lib_struc',
-						'Referent.nom_complet',
-						'Referent.fonction',
-						'Permanence.libpermanence',
-						'Typerdv.libelle',
-						'Statutrdv.libelle',
-						'Rendezvous.daterdv',
-						'Rendezvous.heurerdv',
-						'Rendezvous.objetrdv',
-						'Rendezvous.commentairerdv'
-					),
-					'conditions' => array(
-						'Rendezvous.id' => $rendezvous_id
-					),
-					'recursive' => 0
-				)
+					'first', array(
+				'fields' => array(
+					'Rendezvous.personne_id',
+					'Personne.nom_complet',
+					'Structurereferente.lib_struc',
+					'Referent.nom_complet',
+					'Referent.fonction',
+					'Permanence.libpermanence',
+					'Typerdv.libelle',
+					'Statutrdv.libelle',
+					'Rendezvous.daterdv',
+					'Rendezvous.heurerdv',
+					'Rendezvous.objetrdv',
+					'Rendezvous.commentairerdv'
+				),
+				'conditions' => array(
+					'Rendezvous.id' => $rendezvous_id
+				),
+				'recursive' => 0
+					)
 			);
 
 			$this->assert( !empty( $rendezvous ), 'invalidParameter' );
@@ -354,27 +333,24 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function add() {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function edit() {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		protected function _add_edit( $id = null ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
@@ -385,7 +361,15 @@
 			}
 			else if( $this->action == 'edit' ) {
 				$rdv_id = $id;
-				$rdv = $this->Rendezvous->findById( $rdv_id, null, null, -1 );
+				$qd_rdv = array(
+					'conditions' => array(
+						'Rendezvous.id' => $rdv_id
+					),
+					'fields' => null,
+					'order' => null,
+					'recursive' => -1
+				);
+				$rdv = $this->Rendezvous->find( 'first', $qd_rdv );
 				$this->assert( !empty( $rdv ), 'invalidParameter' );
 
 				$personne_id = $rdv['Rendezvous']['personne_id'];
@@ -411,11 +395,11 @@
 			$this->set( 'referents', $referents );
 
 
-			if( !empty( $this->data ) ){
+			if( !empty( $this->data ) ) {
 				if( $this->Rendezvous->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
 					if( $this->Rendezvous->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
-						if ( !empty( $this->data['Rendezvous']['statutrdv_id'] ) && $this->Rendezvous->Statutrdv->provoquePassageEp( $this->data['Rendezvous']['statutrdv_id'] ) && Configure::read( 'Cg.departement' ) == 58 ) {
-							if ( $this->Rendezvous->passageEp( $personne_id, $this->data['Rendezvous']['typerdv_id'], $this->data['Rendezvous']['statutrdv_id'] ) ) {
+						if( !empty( $this->data['Rendezvous']['statutrdv_id'] ) && $this->Rendezvous->Statutrdv->provoquePassageEp( $this->data['Rendezvous']['statutrdv_id'] ) && Configure::read( 'Cg.departement' ) == 58 ) {
+							if( $this->Rendezvous->passageEp( $personne_id, $this->data['Rendezvous']['typerdv_id'], $this->data['Rendezvous']['statutrdv_id'] ) ) {
 								$dossierep = array(
 									'Dossierep' => array(
 										'personne_id' => $personne_id,
@@ -436,7 +420,7 @@
 						$this->Jetons->release( $dossier_id );
 						$this->Rendezvous->commit();
 						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-						$this->redirect( array(  'controller' => 'rendezvous','action' => 'index', $personne_id ) );
+						$this->redirect( array( 'controller' => 'rendezvous', 'action' => 'index', $personne_id ) );
 					}
 					else {
 						$this->Rendezvous->rollback();
@@ -444,34 +428,32 @@
 					}
 				}
 			}
-			else{
+			else {
 				if( $this->action == 'edit' ) {
 					$this->data = $rdv;
-
 				}
-				else{
+				else {
 					//Récupération de la structure référente liée à l'orientation
 					$orientstruct = $this->Rendezvous->Structurereferente->Orientstruct->find(
-						'first',
-						array(
-							'fields' => array(
-								'Orientstruct.id',
-								'Orientstruct.personne_id',
-								'Orientstruct.structurereferente_id'
-							),
-							'conditions' => array(
-								'Orientstruct.personne_id' => $personne_id,
-								'Orientstruct.date_valid IS NOT NULL'
-							),
-							'contain' => array(
-								'Structurereferente',
-								'Referent'
-							),
-							'order' => array( 'Orientstruct.date_valid DESC' )
-						)
+							'first', array(
+						'fields' => array(
+							'Orientstruct.id',
+							'Orientstruct.personne_id',
+							'Orientstruct.structurereferente_id'
+						),
+						'conditions' => array(
+							'Orientstruct.personne_id' => $personne_id,
+							'Orientstruct.date_valid IS NOT NULL'
+						),
+						'contain' => array(
+							'Structurereferente',
+							'Referent'
+						),
+						'order' => array( 'Orientstruct.date_valid DESC' )
+							)
 					);
 
-					if( !empty( $orientstruct ) ){
+					if( !empty( $orientstruct ) ) {
 						$this->data['Rendezvous']['structurereferente_id'] = $orientstruct['Orientstruct']['structurereferente_id'];
 					}
 				}
@@ -506,37 +488,35 @@
 		 */
 		public function delete( $id ) {
 			$rendezvous = $this->Rendezvous->find(
-				'first',
-				array(
-					'fields' => array(
-						'Rendezvous.personne_id'
-					),
-					'conditions' => array(
-						'Rendezvous.id' => $id
-					),
-					'contain' => false
-				)
+					'first', array(
+				'fields' => array(
+					'Rendezvous.personne_id'
+				),
+				'conditions' => array(
+					'Rendezvous.id' => $id
+				),
+				'contain' => false
+					)
 			);
 			$success = true;
 
 			$this->Rendezvous->begin();
 
-			if ( Configure::read( 'Cg.departement' ) == 58 ) {
+			if( Configure::read( 'Cg.departement' ) == 58 ) {
 				$dossierep = $this->Rendezvous->Sanctionrendezvousep58->find(
-					'first',
-					array(
-						'fields' => array(
-							'Sanctionrendezvousep58.id',
-							'Sanctionrendezvousep58.dossierep_id'
-						),
-						'conditions' => array(
-							'Sanctionrendezvousep58.rendezvous_id' => $id
-						),
-						'contain' => false
-					)
+						'first', array(
+					'fields' => array(
+						'Sanctionrendezvousep58.id',
+						'Sanctionrendezvousep58.dossierep_id'
+					),
+					'conditions' => array(
+						'Sanctionrendezvousep58.rendezvous_id' => $id
+					),
+					'contain' => false
+						)
 				);
 
-				if ( !empty( $dossierep ) ) {
+				if( !empty( $dossierep ) ) {
 					$success = $this->Rendezvous->Sanctionrendezvousep58->delete( $dossierep['Sanctionrendezvousep58']['id'] ) && $success;
 					$success = $this->Rendezvous->Sanctionrendezvousep58->Dossierep->delete( $dossierep['Sanctionrendezvousep58']['dossierep_id'] ) && $success;
 				}
@@ -551,7 +531,7 @@
 			else {
 				$this->Rendezvous->rollback();
 			}
-			$this->redirect( array(  'controller' => 'rendezvous','action' => 'index', $rendezvous['Rendezvous']['personne_id'] ) );
+			$this->redirect( array( 'controller' => 'rendezvous', 'action' => 'index', $rendezvous['Rendezvous']['personne_id'] ) );
 		}
 
 		/**
@@ -563,7 +543,7 @@
 		public function impression( $rdv_id = null ) { // FIXME: impression
 			$pdf = $this->Rendezvous->getDefaultPdf( $rdv_id, $this->Session->read( 'Auth.User.id' ) );
 
-			if( !empty( $pdf ) ){
+			if( !empty( $pdf ) ) {
 				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'rendezvous-%d-%s.pdf', $rdv_id, date( 'Y-m-d' ) ) );
 			}
 			else {
@@ -571,5 +551,6 @@
 				$this->redirect( $this->referer() );
 			}
 		}
+
 	}
 ?>

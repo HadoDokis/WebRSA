@@ -3,19 +3,17 @@
 	{
 
 		public $name = 'Comitesapres';
-		public $uses = array( 'Apre', 'Option', 'Personne', 'Comiteapre', 'Dossier'/*, 'ComiteapreParticipantcomite'*/, 'Participantcomite', 'Apre', 'Referent' );
+		public $uses = array( 'Apre', 'Option', 'Personne', 'Comiteapre', 'Dossier'/* , 'ComiteapreParticipantcomite' */, 'Participantcomite', 'Apre', 'Referent' );
 		public $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml' );
 		public $components = array( 'Prg' => array( 'actions' => array( 'index', 'liste' ) ) );
-
 		public $commeDroit = array(
 			'view' => 'Comitesapres:index',
 			'add' => 'Comitesapres:edit'
 		);
 
-		/** ********************************************************************
-		*
-		*** *******************************************************************/
-
+		/**		 * *******************************************************************
+		 *
+		 * ** ****************************************************************** */
 		protected function _setOptions() {
 			$this->set( 'referent', $this->Referent->find( 'list' ) );
 			$options = $this->Comiteapre->ApreComiteapre->allEnumLists();
@@ -23,10 +21,9 @@
 			$this->set( 'options', $options );
 		}
 
-		/** ********************************************************************
-		*
-		*** *******************************************************************/
-
+		/**		 * *******************************************************************
+		 *
+		 * ** ****************************************************************** */
 		public function index() {
 			$this->_index( 'Comiteapre::index' );
 		}
@@ -37,11 +34,10 @@
 			$this->_index( 'Comiteapre::liste' );
 		}
 
-		/** ********************************************************************
-		*
-		*** *******************************************************************/
-
-		protected function _index( $display = null ){
+		/**		 * *******************************************************************
+		 *
+		 * ** ****************************************************************** */
+		protected function _index( $display = null ) {
 			$this->Comiteapre->Apre->deepAfterFind = false;
 			if( !empty( $this->data ) ) {
 				$this->Dossier->begin(); // Pour les jetons
@@ -67,14 +63,13 @@
 			}
 		}
 
-		/** **************************************************************************************
-		*   Affichage du Comité après sa création permettant ajout des APREs et des Participants
-		*** *************************************************************************************/
-
-		public function view( $comiteapre_id = null ){
+		/**		 * *************************************************************************************
+		 *   Affichage du Comité après sa création permettant ajout des APREs et des Participants
+		 * ** ************************************************************************************ */
+		public function view( $comiteapre_id = null ) {
 			$this->Comiteapre->Apre->deepAfterFind = false;
 
-			$containApre = array();
+			$containApre = array( );
 			foreach( $this->Apre->aidesApre as $modelAideAlias ) {
 				$modelPieceAlias = 'Piece'.Inflector::underscore( $modelAideAlias );
 				$containApre[$modelAideAlias] = array( $modelPieceAlias );
@@ -82,26 +77,24 @@
 
 			$contain = array(
 				'Apre' => array_merge(
-					$containApre,
-					array(
-						'Personne' => array(
-							'Foyer' => array(
-								'Adressefoyer' => array(
-									'Adresse'
-								)
+						$containApre, array(
+					'Personne' => array(
+						'Foyer' => array(
+							'Adressefoyer' => array(
+								'Adresse'
 							)
 						)
 					)
+						)
 				),
 				'Participantcomite'
 			);
 
 			$comiteapre = $this->Comiteapre->find(
-				'first',
-				array(
-					'conditions' => array( 'Comiteapre.id' => $comiteapre_id ),
-					'contain' => $contain
-				)
+					'first', array(
+				'conditions' => array( 'Comiteapre.id' => $comiteapre_id ),
+				'contain' => $contain
+					)
 			);
 			$this->assert( !empty( $comiteapre ), 'invalidParameter' );
 
@@ -112,31 +105,29 @@
 			$this->set( 'listeAidesApre', $this->Apre->aidesApre );
 		}
 
-		/** **********************************************************************************************
-		*   Affichage du rapport suite au Comité ( présence / absence des participants + décision APREs)
-		*** **********************************************************************************************/
-
-		public function rapport( $comiteapre_id = null ){
+		/**		 * *********************************************************************************************
+		 *   Affichage du rapport suite au Comité ( présence / absence des participants + décision APREs)
+		 * ** ********************************************************************************************* */
+		public function rapport( $comiteapre_id = null ) {
 			$this->assert( valid_int( $comiteapre_id ), 'invalidParameter' );
 
 			$this->Comiteapre->Apre->deepAfterFind = false;
 			$comiteapre = $this->Comiteapre->find(
-				'first',
-				array(
-					'conditions' => array( 'Comiteapre.id' => $comiteapre_id ),
-					'contain' => array(
-						'Apre' => array(
-							'Personne' => array(
-								'Foyer' => array(
-									'Adressefoyer' => array(
-										'Adresse'
-									)
+					'first', array(
+				'conditions' => array( 'Comiteapre.id' => $comiteapre_id ),
+				'contain' => array(
+					'Apre' => array(
+						'Personne' => array(
+							'Foyer' => array(
+								'Adressefoyer' => array(
+									'Adresse'
 								)
 							)
-						),
-						'Participantcomite'
-					)
+						)
+					),
+					'Participantcomite'
 				)
+					)
 			);
 
 			$this->set( 'comiteapre', $comiteapre );
@@ -145,10 +136,9 @@
 			$this->set( 'participants', $participants );
 		}
 
-		/** ********************************************************************
-		*
-		*** *******************************************************************/
-
+		/**		 * *******************************************************************
+		 *
+		 * ** ****************************************************************** */
 		public function add() {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
@@ -159,10 +149,9 @@
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
-		/** ********************************************************************
-		*
-		*** *******************************************************************/
-
+		/**		 * *******************************************************************
+		 *
+		 * ** ****************************************************************** */
 		protected function _add_edit( $id = null ) {
 			$this->Comiteapre->begin();
 
@@ -174,11 +163,19 @@
 			}
 			else if( $this->action == 'edit' ) {
 				$comiteapre_id = $id;
-				$comiteapre = $this->Comiteapre->findById( $comiteapre_id, null, null, 1 );
+				$qd_comiteapre = array(
+					'conditions' => array(
+						'Comiteapre.id' => $comiteapre_id
+					),
+					'fields' => null,
+					'order' => null,
+					'recursive' => 1
+				);
+				$comiteapre = $this->Comiteapre->find( 'first', $qd_comiteapre );
 				$this->assert( !empty( $comiteapre ), 'invalidParameter' );
 			}
 
-			if( !empty( $this->data ) ){
+			if( !empty( $this->data ) ) {
 				if( $this->Comiteapre->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
 					$saved = $this->Comiteapre->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) );
 
@@ -186,11 +183,11 @@
 						$this->Comiteapre->commit(); // FIXME
 						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 
-						if( !$isRapport ){
-							$this->redirect( array(  'controller' => 'comitesapres', 'action' => 'view', $this->Comiteapre->id ) );
+						if( !$isRapport ) {
+							$this->redirect( array( 'controller' => 'comitesapres', 'action' => 'view', $this->Comiteapre->id ) );
 						}
-						else if( $isRapport ){
-							$this->redirect( array(  'controller' => 'comitesapres', 'action' => 'rapport', $this->Comiteapre->id ) );
+						else if( $isRapport ) {
+							$this->redirect( array( 'controller' => 'comitesapres', 'action' => 'rapport', $this->Comiteapre->id ) );
 						}
 					}
 					else {
@@ -199,7 +196,7 @@
 					}
 				}
 			}
-			else{
+			else {
 				if( $this->action == 'edit' ) {
 					$this->data = $comiteapre;
 				}
@@ -218,5 +215,6 @@
 			$this->layout = '';
 			$this->set( compact( 'comitesapres' ) );
 		}
+
 	}
 ?>
