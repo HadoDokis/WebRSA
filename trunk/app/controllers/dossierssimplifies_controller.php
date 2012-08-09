@@ -1,18 +1,17 @@
 <?php
 	class DossierssimplifiesController extends AppController
 	{
+
 		public $name = 'Dossierssimplifies';
 		public $uses = array( 'Dossier', 'Foyer', 'Personne', 'Option', 'Structurereferente', 'Zonegeographique', 'Typeorient', 'Orientstruct', 'Typocontrat' );
 		public $components = array( 'Gedooo.Gedooo' );
-
 		public $commeDroit = array(
 			'add' => 'Dossierssimplifies:edit'
 		);
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		protected function _setOptions() {
 			$this->set( 'pays', $this->Option->pays() );
 			$this->set( 'qual', $this->Option->qual() );
@@ -26,55 +25,70 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function view( $id = null ) {
-			$details = array();
+			$details = array( );
 
 			$typeorient = $this->Typeorient->find( 'list', array( 'fields' => array( 'lib_type_orient' ) ) );
 			$this->set( 'typeorient', $typeorient );
 
-			$tDossier = $this->Dossier->findById( $id, null, null, -1 );
+			$qd_tDossier = array(
+				'conditions' => array(
+					'Dossier.id' => $id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => -1
+			);
+			$tDossier = $this->Dossier->find( 'first', $qd_tDossier );
+
+
 			$details = Set::merge( $details, $tDossier );
 
-			$tFoyer = $this->Dossier->Foyer->findByDossierId( $id, null, null, -1 );
+			$qd_tFoyer = array(
+				'conditions' => array(
+					'Foyer.dossier_id' => $id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => -1
+			);
+			$tFoyer = $this->Dossier->Foyer->find( 'first', $qd_tFoyer );
+
 			$details = Set::merge( $details, $tFoyer );
 
 			$bindPrestation = $this->Personne->hasOne['Prestation'];
 			$this->Personne->unbindModelAll();
 			$this->Personne->bindModel( array( 'hasOne' => array( 'Dossiercaf', 'Prestation' => $bindPrestation ) ) );
 			$personnesFoyer = $this->Personne->find(
-				'all',
-				array(
-					'conditions' => array(
-						'Personne.foyer_id' => $tFoyer['Foyer']['id'],
-						'Prestation.rolepers' => array( 'DEM', 'CJT' )
-					),
-					'recursive' => 0
-				)
+					'all', array(
+				'conditions' => array(
+					'Personne.foyer_id' => $tFoyer['Foyer']['id'],
+					'Prestation.rolepers' => array( 'DEM', 'CJT' )
+				),
+				'recursive' => 0
+					)
 			);
 
 			$roles = Set::extract( '{n}.Prestation.rolepers', $personnesFoyer );
 			foreach( $roles as $index => $role ) {
 				///Orientations
 				$orient = $this->Orientstruct->find(
-					'first',
-					array(
-						'conditions' => array( 'Orientstruct.personne_id' => $personnesFoyer[$index]['Personne']['id'] ),
-						'recursive' => -1,
-						'order' => 'Orientstruct.date_propo DESC',
-					)
+						'first', array(
+					'conditions' => array( 'Orientstruct.personne_id' => $personnesFoyer[$index]['Personne']['id'] ),
+					'recursive' => -1,
+					'order' => 'Orientstruct.date_propo DESC',
+						)
 				);
 				$personnesFoyer[$index]['Orientstruct'] = $orient['Orientstruct'];
 
 				///Structures référentes
 				$struct = $this->Structurereferente->find(
-					'first',
-					array(
-						'conditions' => array( 'Structurereferente.id' => $personnesFoyer[$index]['Orientstruct']['structurereferente_id'] ),
-						'recursive' => -1
-					)
+						'first', array(
+					'conditions' => array( 'Structurereferente.id' => $personnesFoyer[$index]['Orientstruct']['structurereferente_id'] ),
+					'recursive' => -1
+						)
 				);
 				$personnesFoyer[$index]['Structurereferente'] = $struct['Structurereferente'];
 
@@ -88,38 +102,35 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function add() {
-			$this->set( 'typesOrient',   $this->Typeorient->listOptions()  );
-			$this->set( 'structures',   $this->Structurereferente->list1Options()  );
+			$this->set( 'typesOrient', $this->Typeorient->listOptions() );
+			$this->set( 'structures', $this->Structurereferente->list1Options() );
 
 			$typesOrient = $this->Typeorient->find(
-				'list',
-				array(
-					'fields' => array(
-						'Typeorient.id',
-						'Typeorient.lib_type_orient'
-					),
-					'conditions' => array(
-						'Typeorient.parentid' => null
-					)
+					'list', array(
+				'fields' => array(
+					'Typeorient.id',
+					'Typeorient.lib_type_orient'
+				),
+				'conditions' => array(
+					'Typeorient.parentid' => null
 				)
+					)
 			);
 			$this->set( 'typesOrient', $typesOrient );
 
 			$typesStruct = $this->Typeorient->find(
-				'list',
-				array(
-					'fields' => array(
-						'Typeorient.id',
-						'Typeorient.lib_type_orient'
-					),
-					'conditions' => array(
-						'Typeorient.parentid NOT' => null
-					)
+					'list', array(
+				'fields' => array(
+					'Typeorient.id',
+					'Typeorient.lib_type_orient'
+				),
+				'conditions' => array(
+					'Typeorient.parentid NOT' => null
 				)
+					)
 			);
 			$this->set( 'typesStruct', $typesStruct );
 
@@ -157,7 +168,7 @@
 					$saved = $this->Foyer->save( $this->data ) && $saved;
 					// Situation dossier RSA
 					$situationdossierrsa = array( 'Situationdossierrsa' => array( 'dossier_id' => $this->Dossier->id, 'etatdosrsa' => 'Z' ) );
-					$this->Dossier->Situationdossierrsa->validate = array();
+					$this->Dossier->Situationdossierrsa->validate = array( );
 					$saved = $this->Dossier->Situationdossierrsa->save( $situationdossierrsa ) && $saved;
 
 					$orientstruct_validate = $this->Orientstruct->validate;
@@ -197,7 +208,7 @@
 							}
 							else {
 								$this->Orientstruct->create();
-								$this->Orientstruct->validate = array();
+								$this->Orientstruct->validate = array( );
 								$this->data['Orientstruct'][$key]['personne_id'] = $this->Personne->id;
 								$this->data['Orientstruct'][$key]['user_id'] = $this->Session->read( 'Auth.User.id' );
 								$saved = $this->Orientstruct->save( $this->data['Orientstruct'][$key] ) && $saved;
@@ -219,40 +230,47 @@
 		}
 
 		/**
-		*
-		*
-		*
-		*/
-
-		public function edit( $personne_id = null, $orient_id = null ){
+		 *
+		 *
+		 *
+		 */
+		public function edit( $personne_id = null, $orient_id = null ) {
 			$this->assert( valid_int( $personne_id ), 'invalidParameter' );
 
-			$personne = $this->Personne->findById( $personne_id, null, null, 0 );
+			$qd_personne = array(
+				'conditions' => array(
+					'Personne.id' => $personne_id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => 0
+			);
+			$personne = $this->Personne->find( 'first', $qd_personne );
+
 			$orientstruct = $this->Orientstruct->find(
-				'first',
-				array(
-					'conditions' => array( 'Orientstruct.personne_id' => $personne_id ),
-					'contain' => false,
-					'order' => 'Orientstruct.date_propo DESC'
-				)
+					'first', array(
+				'conditions' => array( 'Orientstruct.personne_id' => $personne_id ),
+				'contain' => false,
+				'order' => 'Orientstruct.date_propo DESC'
+					)
 			);
 			$personne = Set::merge( $personne, array( 'Orientstruct' => array( $orientstruct['Orientstruct'] ) ) );
 
-			$dossier_id =  $personne['Foyer']['dossier_id'] ;
-			$dossimple  = $this->Dossier->read(null,$dossier_id );
+			$dossier_id = $personne['Foyer']['dossier_id'];
+			$dossimple = $this->Dossier->read( null, $dossier_id );
 
-			$this->set( 'personne_id', $personne_id);
-			$this->set( 'dossiersimple_id', $dossier_id);
-			$this->set( 'foyer_id', $personne['Foyer']['id']);
-			$this->set( 'typesOrient',   $this->Typeorient->listOptions()  );
-			$this->set( 'structures',   $this->Structurereferente->list1Options()  );
-			$this->set( 'structuresorientantes',   $this->Structurereferente->listOptions()  );
-			$this->set( 'numdossierrsa',  $dossimple['Dossier']['numdemrsa']  );
-			$this->set( 'datdemdossrsa',  $dossimple['Dossier']['dtdemrsa'] );
-			$this->set( 'matricule',  $dossimple['Dossier']['matricule'] );
-			$this->set( 'orient_id', $personne['Orientstruct'][0]['typeorient_id']);
-			$this->set( 'structure_id', $personne['Orientstruct'][0]['structurereferente_id']);
-			$this->set( 'structureorientante_id', $personne['Orientstruct'][0]['structureorientante_id']);
+			$this->set( 'personne_id', $personne_id );
+			$this->set( 'dossiersimple_id', $dossier_id );
+			$this->set( 'foyer_id', $personne['Foyer']['id'] );
+			$this->set( 'typesOrient', $this->Typeorient->listOptions() );
+			$this->set( 'structures', $this->Structurereferente->list1Options() );
+			$this->set( 'structuresorientantes', $this->Structurereferente->listOptions() );
+			$this->set( 'numdossierrsa', $dossimple['Dossier']['numdemrsa'] );
+			$this->set( 'datdemdossrsa', $dossimple['Dossier']['dtdemrsa'] );
+			$this->set( 'matricule', $dossimple['Dossier']['matricule'] );
+			$this->set( 'orient_id', $personne['Orientstruct'][0]['typeorient_id'] );
+			$this->set( 'structure_id', $personne['Orientstruct'][0]['structurereferente_id'] );
+			$this->set( 'structureorientante_id', $personne['Orientstruct'][0]['structureorientante_id'] );
 
 			$this->_setOptions();
 			if( !empty( $this->data ) ) {
@@ -286,5 +304,6 @@
 			$this->_setOptions();
 			$this->set( 'personne', $personne );
 		}
+
 	}
 ?>

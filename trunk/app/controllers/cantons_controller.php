@@ -1,6 +1,7 @@
 <?php
 	class CantonsController extends AppController
 	{
+
 		public $name = 'Cantons';
 		public $uses = array( 'Canton', 'Option' );
 		public $helpers = array( 'Xform' );
@@ -9,15 +10,13 @@
 			'recursive' => -1,
 			'order' => array( 'canton ASC' )
 		);
-
 		public $commeDroit = array(
 			'add' => 'Cantons:edit'
 		);
 
 		/**
-		*	FIXME: docs
-		*/
-
+		 * 	FIXME: docs
+		 */
 		public function beforeFilter() {
 			$return = parent::beforeFilter();
 			$this->set( 'typevoie', $this->Option->typevoie() );
@@ -25,9 +24,8 @@
 		}
 
 		/**
-		*	FIXME: docs
-		*/
-
+		 * 	FIXME: docs
+		 */
 		public function index() {
 			// Retour à la liste en cas d'annulation
 			if( isset( $this->params['form']['Cancel'] ) ) {
@@ -52,27 +50,24 @@
 		}
 
 		/**
-		*	FIXME: docs
-		*/
-
+		 * 	FIXME: docs
+		 */
 		public function add() {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
 		/**
-		*	FIXME: docs
-		*/
-
+		 * 	FIXME: docs
+		 */
 		public function edit() {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
 		/**
-		*	FIXME: docs
-		*/
-
+		 * 	FIXME: docs
+		 */
 		protected function _add_edit( $id = null ) {
 			// Retour à l'index en cas d'annulation
 			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
@@ -80,7 +75,15 @@
 			}
 
 			if( $this->action == 'edit' ) {
-				$canton = $this->Canton->findById( $id, null, null, -1 );
+				$qd_canton = array(
+					'conditions' => array(
+						'Canton.id' => $id
+					),
+					'fields' => null,
+					'order' => null,
+					'recursive' => -1
+				);
+				$canton = $this->Canton->find( 'first', $qd_canton );
 				$this->assert( !empty( $canton ), 'invalidParameter' );
 			}
 
@@ -101,11 +104,18 @@
 		}
 
 		/**
-		*	FIXME: docs
-		*/
-
+		 * 	FIXME: docs
+		 */
 		public function delete( $id = null ) {
-			$canton = $this->Canton->findById( $id, null, null, -1 );
+			$qd_canton = array(
+				'conditions' => array(
+					'Canton.id' => $id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => -1
+			);
+			$canton = $this->Canton->find( 'first', $qd_canton );
 			$this->assert( !empty( $canton ), 'invalidParameter' );
 
 			if( $this->Canton->delete( Set::classicExtract( $canton, 'Canton.id' ) ) ) {
@@ -113,5 +123,6 @@
 				$this->redirect( array( 'action' => 'index' ) );
 			}
 		}
+
 	}
 ?>

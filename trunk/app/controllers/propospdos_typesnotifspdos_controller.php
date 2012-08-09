@@ -3,13 +3,12 @@
 	{
 
 		public $name = 'PropospdosTypesnotifspdos';
-		public $uses = array( 'PropopdoTypenotifpdo', 'Typenotifpdo', 'Propopdo'/*, 'Dossier'*/ );
-		
+		public $uses = array( 'PropopdoTypenotifpdo', 'Typenotifpdo', 'Propopdo'/* , 'Dossier' */ );
 		public $commeDroit = array(
 			'add' => 'PropospdosTypesnotifspdos:edit'
 		);
 
-		public function beforeFilter(){
+		public function beforeFilter() {
 			parent::beforeFilter();
 			$this->set( 'typenotifpdo', $this->Typenotifpdo->find( 'list' ) );
 		}
@@ -24,21 +23,19 @@
 			}
 
 			$notifs = $this->PropopdoTypenotifpdo->find(
-				'all',
-				array(
-					'conditions' => array(
-						'PropopdoTypenotifpdo.propopdo_id' => $pdo_id
-					)
+					'all', array(
+				'conditions' => array(
+					'PropopdoTypenotifpdo.propopdo_id' => $pdo_id
 				)
+					)
 			);
 			$this->set( 'pdo_id', $pdo_id );
 			$this->set( compact( 'notifs', 'dossier_id' ) );
 		}
 
-		/** ********************************************************************
-		*
-		*** *******************************************************************/
-
+		/**		 * *******************************************************************
+		 *
+		 * ** ****************************************************************** */
 		public function add() {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
@@ -49,11 +46,10 @@
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
-		/** ********************************************************************
-		*
-		*** *******************************************************************/
-
-		protected function _add_edit( $id = null ){
+		/**		 * *******************************************************************
+		 *
+		 * ** ****************************************************************** */
+		protected function _add_edit( $id = null ) {
 			// Retour à la liste en cas d'annulation
 			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
 				if( $this->action == 'edit' ) {
@@ -67,7 +63,16 @@
 			}
 			else if( $this->action == 'edit' ) {
 				$propotype_id = $id;
-				$propotype = $this->PropopdoTypenotifpdo->findById( $propotype_id, null, null, -1 );
+				$qd_propotype = array(
+					'conditions' => array(
+						'PropopdoTypenotifpdo.id' => $propotype_id
+					),
+					'fields' => null,
+					'order' => null,
+					'recursive' => -1
+				);
+				$propotype = $this->PropopdoTypenotifpdo->find( 'first', $qd_propotype );
+
 				$this->assert( !empty( $propotype ), 'invalidParameter' );
 				$pdo_id = Set::classicExtract( $propotype, 'PropopdoTypenotifpdo.propopdo_id' );
 			}
@@ -93,6 +98,6 @@
 			}
 			$this->render( $this->action, null, 'add_edit' );
 		}
-	}
 
+	}
 ?>

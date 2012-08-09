@@ -30,7 +30,16 @@
 		*/
 
 		public function download( $id = null ) {
-			$integrationfichierapre = $this->Integrationfichierapre->findById( $id, null, null, -1 );
+			$qd_integrationfichierapre = array(
+				'conditions' => array(
+					'Integrationfichierapre.id' => $id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => -1
+			);
+			$integrationfichierapre= $this->Integrationfichierapre->find( 'first', $qd_integrationfichierapre );
+
 			$this->assert( !empty( $integrationfichierapre ), 'invalidParameter' );
 
 			Configure::write( 'debug', 0 );

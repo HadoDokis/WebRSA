@@ -1,26 +1,23 @@
 <?php
 	class DecisionspropospdosController extends AppController
 	{
+
 		public $name = 'Decisionspropospdos';
+
 		/**
-		* @access public
-		*/
-
+		 * @access public
+		 */
 		public $components = array( 'Default', 'Gedooo.Gedooo' );
-
 		public $helpers = array( 'Default2', 'Ajax' );
-		public $uses = array( 'Decisionpropopdo', 'Option', 'Pdf'  );
-
-
+		public $uses = array( 'Decisionpropopdo', 'Option', 'Pdf' );
 		public $commeDroit = array(
 			'view' => 'Decisionspropospdos:index',
 			'add' => 'Decisionspropospdos:edit'
 		);
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		protected function _options() {
 			$options = $this->Decisionpropopdo->allEnumLists();
 
@@ -29,25 +26,22 @@
 			return $options;
 		}
 
-		/** ********************************************************************
-		*
-		*** *******************************************************************/
-
+		/**		 * *******************************************************************
+		 *
+		 * ** ****************************************************************** */
 		public function add() {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
-
 
 		public function edit() {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
-		/** ********************************************************************
-		*
-		*** *******************************************************************/
-
+		/**		 * *******************************************************************
+		 *
+		 * ** ****************************************************************** */
 		protected function _add_edit( $id = null ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
@@ -58,14 +52,31 @@
 			if( $this->action == 'add' ) {
 				$propopdo_id = $id;
 
-				$propopdo = $this->Decisionpropopdo->Propopdo->findById( $id, null, null, -1 );
+				$qd_propopdo = array(
+					'conditions' => array(
+						'Propopdo.id' => $id
+					),
+					'fields' => null,
+					'order' => null,
+					'recursive' => -1
+				);
+				$propopdo = $this->Decisionpropopdo->Propopdo->find( 'first', $qd_propopdo );
+
 				$this->set( 'propopdo', $propopdo );
 				$personne_id = Set::classicExtract( $propopdo, 'Propopdo.personne_id' );
 				$dossier_id = $this->Decisionpropopdo->Propopdo->Personne->dossierId( $personne_id );
 			}
 			else if( $this->action == 'edit' ) {
 				$decisionpropopdo_id = $id;
-				$decisionpropopdo = $this->Decisionpropopdo->findById( $decisionpropopdo_id, null, null, 1 );
+				$qd_decisionpropopdo = array(
+					'conditions' => array(
+						'Decisionpropopdo.id' => $decisionpropopdo_id
+					),
+					'fields' => null,
+					'order' => null,
+					'recursive' => -1
+				);
+				$decisionpropopdo = $this->Decisionpropopdo->find( 'first', $qd_decisionpropopdo );
 				$this->assert( !empty( $decisionpropopdo ), 'invalidParameter' );
 				$propopdo_id = Set::classicExtract( $decisionpropopdo, 'Decisionpropopdo.propopdo_id' );
 				$personne_id = Set::classicExtract( $decisionpropopdo, 'Propopdo.personne_id' );
@@ -82,7 +93,7 @@
 			}
 			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
 
-			if( !empty( $this->data ) ){
+			if( !empty( $this->data ) ) {
 				if( $this->Decisionpropopdo->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
 					$saved = true;
 
@@ -118,8 +129,8 @@
 		}
 
 		/**
-		*   Enregistrement du courrier de proposition lors de l'enregistrement de la proposition
-		*/
+		 *   Enregistrement du courrier de proposition lors de l'enregistrement de la proposition
+		 */
 		public function decisionproposition( $id ) {
 			$this->assert( !empty( $id ), 'error404' );
 
@@ -132,27 +143,25 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function view( $id ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
 			$decisionpropopdo = $this->Decisionpropopdo->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Decisionpropopdo.id' => $id,
+					'first', array(
+				'conditions' => array(
+					'Decisionpropopdo.id' => $id,
+				),
+				'contain' => array(
+					'Propopdo' => array(
+						'fields' => array( 'personne_id' )
 					),
-					'contain' => array(
-						'Propopdo' => array(
-							'fields' => array( 'personne_id' )
-						),
-						'Decisionpdo' => array(
-							'fields' => array( 'libelle' )
-						)
+					'Decisionpdo' => array(
+						'fields' => array( 'libelle' )
 					)
 				)
+					)
 			);
 
 			$this->assert( !empty( $decisionpropopdo ), 'invalidParameter' );
@@ -170,16 +179,25 @@
 		}
 
 		/**
-		* Suppression de la proposition de décision
-		*/
-
+		 * Suppression de la proposition de décision
+		 */
 		public function delete( $id ) {
-			$decisionpropopdo = $this->Decisionpropopdo->findById( $id, null, null, -1 );
+			$qd_decisionpropopdo = array(
+				'conditions' => array(
+					'Decisionpropopdo.id' => $id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => -1
+			);
+			$decisionpropopdo = $this->Decisionpropopdo->find( 'first', $qd_decisionpropopdo );
+
 			$pdo_id = Set::classicExtract( $decisionpropopdo, 'Decisionpropopdo.propopdo_id' );
 
 			$success = $this->Decisionpropopdo->delete( $id );
 			$this->_setFlashResult( 'Delete', $success );
 			$this->redirect( array( 'controller' => 'propospdos', 'action' => 'edit', $pdo_id ) );
 		}
+
 	}
 ?>

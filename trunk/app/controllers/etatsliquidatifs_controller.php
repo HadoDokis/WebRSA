@@ -1,37 +1,32 @@
 <?php
-	App::import('Sanitize');
-
+	App::import( 'Sanitize' );
 	class EtatsliquidatifsController extends AppController
 	{
-		public $name = 'Etatsliquidatifs';
 
+		public $name = 'Etatsliquidatifs';
 		public $uses = array( 'Etatliquidatif', 'Parametrefinancier', 'Option' );
 		public $components = array( 'Gedooo.Gedooo' );
 		public $helpers = array( 'Xform', 'Locale', 'Paginator', 'Apreversement' );
-
 		public $commeDroit = array(
 			'add' => 'Etatsliquidatifs:edit'
 		);
-
 		public $aucunDroit = array( 'ajaxmontant' );
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function beforeFilter() {
-			ini_set('max_execution_time', 0);
-			ini_set('memory_limit', '1024M');
-			ini_set('default_socket_timeout', 3660);
+			ini_set( 'max_execution_time', 0 );
+			ini_set( 'memory_limit', '1024M' );
+			ini_set( 'default_socket_timeout', 3660 );
 			parent::beforeFilter();
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function index() {
-			$conditions = array();
+			$conditions = array( );
 
 			$budgetapre_id = Set::classicExtract( $this->params, 'named.budgetapre_id' );
 			if( !empty( $budgetapre_id ) ) {
@@ -50,31 +45,28 @@
 
 			$etatsliquidatifs = $this->paginate( $this->modelClass );
 
-			if( !empty( $etatsliquidatifs ) ){
+			if( !empty( $etatsliquidatifs ) ) {
 				$apres_etatsliquidatifs = $this->Etatliquidatif->ApreEtatliquidatif->find(
-					'all',
-					array(
-						'conditions' => array(
-							'ApreEtatliquidatif.etatliquidatif_id' => Set::extract( $etatsliquidatifs, '/Etatliquidatif/id' )
-						),
-						'recursive' => -1
-					)
+						'all', array(
+					'conditions' => array(
+						'ApreEtatliquidatif.etatliquidatif_id' => Set::extract( $etatsliquidatifs, '/Etatliquidatif/id' )
+					),
+					'recursive' => -1
+						)
 				);
-				$this->set( 'apres_etatsliquidatifs', $apres_etatsliquidatifs);
+				$this->set( 'apres_etatsliquidatifs', $apres_etatsliquidatifs );
 			}
 
 			$this->set( compact( 'etatsliquidatifs' ) );
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function add() {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
-
 
 		public function edit() {
 			$args = func_get_args();
@@ -82,9 +74,8 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		protected function _add_edit( $id = null ) {
 			$parametrefinancier = $this->Parametrefinancier->find( 'first' );
 			if( empty( $parametrefinancier ) ) {
@@ -99,7 +90,16 @@
 			}
 
 			if( $this->action == 'edit' ) {
-				$etatliquidatif = $this->Etatliquidatif->findById( $id, null, null, -1 );
+				$qd_etatliquidatif = array(
+					'conditions' => array(
+						'Etatliquidatif.id' => $id
+					),
+					'fields' => null,
+					'order' => null,
+					'recursive' => -1
+				);
+				$etatliquidatif = $this->Etatliquidatif->find( 'first', $qd_etatliquidatif );
+
 				$this->assert( !empty( $etatliquidatif ), 'invalidParameter' );
 			}
 			else {
@@ -139,11 +139,18 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function selectionapres( $id = null ) {
-			$etatliquidatif = $this->Etatliquidatif->findById( $id, null, null, -1 );
+			$qd_etatliquidatif = array(
+				'conditions' => array(
+					'Etatliquidatif.id' => $id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => -1
+			);
+			$etatliquidatif = $this->Etatliquidatif->find( 'first', $qd_etatliquidatif );
 			$this->assert( !empty( $etatliquidatif ), 'invalidParameter' );
 
 			// Retour à la liste en cas d'annulation
@@ -168,7 +175,6 @@
 				if( $this->Etatliquidatif->saveAll( $this->data ) ) {
 					$this->Session->setFlash( __( 'Enregistrement effectué', true ), 'flash/success' );
 					$this->redirect( array( 'action' => 'index', max( 1, Set::classicExtract( $this->params, 'named.page' ) ) ) );
-
 				}
 			}
 
@@ -185,113 +191,112 @@
 			$this->Etatliquidatif->Apre->deepAfterFind = false;
 // 			$this->Etatliquidatif->Apre->unbindModelAll();
 // http://localhost/adullact/webrsa/trunk/etatsliquidatifs/selectionapres/17
-$querydata = array(
-	'fields' => $queryData['fields'],
-	'joins' => array(
-		$this->Etatliquidatif->Apre->join( 'Personne' ),
-		$this->Etatliquidatif->Apre->Personne->join( 'Foyer' ),
-		$this->Etatliquidatif->Apre->Personne->Foyer->join( 'Dossier' ),
-		$this->Etatliquidatif->Apre->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
-		$this->Etatliquidatif->Apre->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
-		$this->Etatliquidatif->Apre->join( 'ApreComiteapre', array( 'type' => 'LEFT OUTER' ) )
-	),
-	'conditions' => array(
-		'Adressefoyer.id IS NULL OR Adressefoyer.id IN ('
-			.$this->Etatliquidatif->Apre->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' )
-		.')',
-		'Apre.eligibiliteapre' => 'O',
-		'AND' => array(
-			'(Apre.statutapre = \'F\') OR Apre.montantaverser IS NOT NULL',// FIXME: Apre.statutapre F -> pas de montantaverser ?
-			'OR' => array(
-				'Apre.montantdejaverse IS NULL',
-				'Apre.montantaverser > Apre.montantdejaverse'
-			),
-			// Nb. paiements ?
-		),
-		'Apre.statutapre' => $typeapre,
-		'OR' => array(
-			'Apre.statutapre' => 'F',
-			'AND' => array(
-				'Apre.statutapre' => 'C',
-				'ApreComiteapre.id IN ('
-					.$this->Etatliquidatif->Apre->ApreComiteapre->sqDernierComiteApre()
-				.')',
-				'ApreComiteapre.decisioncomite' => 'ACC'
-			)
-		),
-		array(
-			'OR' => array(
-				// L'APRE n'est pas dans un etatliquidatif non clôturé
-				'Apre.id NOT IN ('
-					.$this->Etatliquidatif->ApreEtatliquidatif->sq(
-						array(
-							'alias' => 'apres_etatsliquidatifs',
-							'fields' => 'apres_etatsliquidatifs.apre_id',
-							'joins' => array(
-								array(
-									'table' => '"etatsliquidatifs"', // FIXME
-									'alias' => 'etatsliquidatifs',
-									'type' => 'INNER',
-									'conditions' => array(
-										'apres_etatsliquidatifs.etatliquidatif_id = etatsliquidatifs.id'
+			$querydata = array(
+				'fields' => $queryData['fields'],
+				'joins' => array(
+					$this->Etatliquidatif->Apre->join( 'Personne' ),
+					$this->Etatliquidatif->Apre->Personne->join( 'Foyer' ),
+					$this->Etatliquidatif->Apre->Personne->Foyer->join( 'Dossier' ),
+					$this->Etatliquidatif->Apre->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Etatliquidatif->Apre->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Etatliquidatif->Apre->join( 'ApreComiteapre', array( 'type' => 'LEFT OUTER' ) )
+				),
+				'conditions' => array(
+					'Adressefoyer.id IS NULL OR Adressefoyer.id IN ('
+					.$this->Etatliquidatif->Apre->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' )
+					.')',
+					'Apre.eligibiliteapre' => 'O',
+					'AND' => array(
+						'(Apre.statutapre = \'F\') OR Apre.montantaverser IS NOT NULL', // FIXME: Apre.statutapre F -> pas de montantaverser ?
+						'OR' => array(
+							'Apre.montantdejaverse IS NULL',
+							'Apre.montantaverser > Apre.montantdejaverse'
+						),
+					// Nb. paiements ?
+					),
+					'Apre.statutapre' => $typeapre,
+					'OR' => array(
+						'Apre.statutapre' => 'F',
+						'AND' => array(
+							'Apre.statutapre' => 'C',
+							'ApreComiteapre.id IN ('
+							.$this->Etatliquidatif->Apre->ApreComiteapre->sqDernierComiteApre()
+							.')',
+							'ApreComiteapre.decisioncomite' => 'ACC'
+						)
+					),
+					array(
+						'OR' => array(
+							// L'APRE n'est pas dans un etatliquidatif non clôturé
+							'Apre.id NOT IN ('
+							.$this->Etatliquidatif->ApreEtatliquidatif->sq(
+									array(
+										'alias' => 'apres_etatsliquidatifs',
+										'fields' => 'apres_etatsliquidatifs.apre_id',
+										'joins' => array(
+											array(
+												'table' => '"etatsliquidatifs"', // FIXME
+												'alias' => 'etatsliquidatifs',
+												'type' => 'INNER',
+												'conditions' => array(
+													'apres_etatsliquidatifs.etatliquidatif_id = etatsliquidatifs.id'
+												)
+											)
+										),
+										'conditions' => array(
+											'etatsliquidatifs.datecloture IS NOT NULL'
+										),
+										'contain' => false
 									)
-								)
-							),
-							'conditions' => array(
-								'etatsliquidatifs.datecloture IS NOT NULL'
-							),
-							'contain' => false
+							)
+							.')',
+							// L'APRE doit encore recevoir des paiement
+							// FIXME: à présent, on prend tant que la totalité n'a pas été payée OU
+							//        tant que le montant déjà versé est inférieur au montant à verser
+							// FIXME: on a une partie de ces conditions en haut, ligne 207: Apre.montantaverser > Apre.montantdejaverse
+							'Apre.id IN ('
+							.$this->Etatliquidatif->ApreEtatliquidatif->sq(
+									array(
+										'alias' => 'apres_etatsliquidatifs',
+										'fields' => 'apres_etatsliquidatifs.apre_id',
+										'joins' => array(
+											array(
+												'table' => '"etatsliquidatifs"', // FIXME
+												'alias' => 'etatsliquidatifs',
+												'type' => 'INNER',
+												'conditions' => array(
+													'apres_etatsliquidatifs.etatliquidatif_id = etatsliquidatifs.id'
+												)
+											)
+										),
+										'conditions' => array(
+											'OR' => array(
+												$this->Etatliquidatif->sousRequeteApreNbpaiementeff.' <> Apre.nbpaiementsouhait',
+												'Apre.montantdejaverse < Apre.montantaverser'
+											)
+										),
+										'contain' => false
+									)
+							)
+							.')'
 						)
 					)
-				.')',
-				// L'APRE doit encore recevoir des paiement
-				// FIXME: à présent, on prend tant que la totalité n'a pas été payée OU
-				//        tant que le montant déjà versé est inférieur au montant à verser
-				// FIXME: on a une partie de ces conditions en haut, ligne 207: Apre.montantaverser > Apre.montantdejaverse
-				'Apre.id IN ('
-					.$this->Etatliquidatif->ApreEtatliquidatif->sq(
-						array(
-							'alias' => 'apres_etatsliquidatifs',
-							'fields' => 'apres_etatsliquidatifs.apre_id',
-							'joins' => array(
-								array(
-									'table' => '"etatsliquidatifs"', // FIXME
-									'alias' => 'etatsliquidatifs',
-									'type' => 'INNER',
-									'conditions' => array(
-										'apres_etatsliquidatifs.etatliquidatif_id = etatsliquidatifs.id'
-									)
-								)
-							),
-							'conditions' => array(
-								'OR' => array(
-									$this->Etatliquidatif->sousRequeteApreNbpaiementeff.' <> Apre.nbpaiementsouhait',
-									'Apre.montantdejaverse < Apre.montantaverser'
-								)
-							),
-							'contain' => false
-						)
-					)
-				.')'
-			)
-		)
-	),
-	'contain' => false,
+				),
+				'contain' => false,
 // 	'limit' => 1000
-);
+			);
 
-$queryData = $querydata;
+			$queryData = $querydata;
 
 			$apres = $this->Etatliquidatif->Apre->find( 'all', $queryData );
 //
 			$this->Etatliquidatif->Apre->deepAfterFind = $deepAfterFind;
 
 			$apres_etatsliquidatifs = $this->Etatliquidatif->ApreEtatliquidatif->find(
-				'all',
-				array(
-					'conditions' => array( 'ApreEtatliquidatif.etatliquidatif_id' => $id ),
-					'recursive' => -1
-				)
+					'all', array(
+				'conditions' => array( 'ApreEtatliquidatif.etatliquidatif_id' => $id ),
+				'recursive' => -1
+					)
 			);
 			$this->data['Apre']['Apre'] = Set::extract( $apres_etatsliquidatifs, '/ApreEtatliquidatif/apre_id' );
 
@@ -299,9 +304,8 @@ $queryData = $querydata;
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function visualisationapres( $id = null ) {
 			$typeapre = $this->Etatliquidatif->getTypeapre( $id );
 			$this->assert( !empty( $typeapre ), 'invalidParameter' );
@@ -309,13 +313,12 @@ $queryData = $querydata;
 			$method = 'qdDonneesApre'.Inflector::camelize( $typeapre );
 			$querydata = $this->Etatliquidatif->{$method}();
 			$querydata = Set::merge(
-				$querydata,
-				array(
-					'conditions' => array(
-						'Etatliquidatif.id' => $id
-					),
-					'limit' => 100
-				)
+							$querydata, array(
+						'conditions' => array(
+							'Etatliquidatif.id' => $id
+						),
+						'limit' => 100
+							)
 			);
 
 			$this->paginate = $querydata;
@@ -344,11 +347,7 @@ $queryData = $querydata;
 			$this->assert( !empty( $typeapre ), 'invalidParameter' );
 
 			$pdf = $this->Etatliquidatif->ApreEtatliquidatif->getDefaultPdf(
-				$typeapre,
-				$apre_id,
-				$etatliquidatif_id,
-				$dest,
-				$this->Session->read( 'Auth.User.id' )
+					$typeapre, $apre_id, $etatliquidatif_id, $dest, $this->Session->read( 'Auth.User.id' )
 			);
 
 			if( !empty( $pdf ) ) {
@@ -387,14 +386,7 @@ $queryData = $querydata;
 			}
 
 			$pdf = $this->Etatliquidatif->ApreEtatliquidatif->getDefaultCohortePdf(
-				$typeapre,
-				$id,
-				'beneficiaire',
-				$this->Session->read( 'Auth.User.id' ),
-				$page,
-				100,
-				Set::classicExtract( $this->params, 'named.sort' ),
-				Set::classicExtract( $this->params, 'named.direction' )
+					$typeapre, $id, 'beneficiaire', $this->Session->read( 'Auth.User.id' ), $page, 100, Set::classicExtract( $this->params, 'named.sort' ), Set::classicExtract( $this->params, 'named.direction' )
 			);
 
 			if( !empty( $pdf ) ) {
@@ -407,11 +399,18 @@ $queryData = $querydata;
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function validation( $id = null ) {
-			$etatliquidatif = $this->Etatliquidatif->findById( $id, null, null, -1 );
+			$qd_etatliquidatif = array(
+				'conditions' => array(
+					'Etatliquidatif.id' => $id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => -1
+			);
+			$etatliquidatif = $this->Etatliquidatif->find( 'first', $qd_etatliquidatif );
 			$this->assert( !empty( $etatliquidatif ), 'invalidParameter' );
 
 			// État liquidatif pas encore validé
@@ -431,24 +430,23 @@ $queryData = $querydata;
 			// TODO -> dans le modèle
 			$this->Etatliquidatif->Apre->unbindModelAll();
 			$montanttotalapre = $this->Etatliquidatif->Apre->find(
-				'all',
-				array(
-					'fields' => array(
-						'Apre.mtforfait',
-						'ApreEtatliquidatif.montantattribue',
+					'all', array(
+				'fields' => array(
+					'Apre.mtforfait',
+					'ApreEtatliquidatif.montantattribue',
+				),
+				'joins' => array(
+					array(
+						'table' => 'apres_etatsliquidatifs',
+						'alias' => 'ApreEtatliquidatif',
+						'type' => 'INNER',
+						'foreignKey' => false,
+						'conditions' => array( 'Apre.id = ApreEtatliquidatif.apre_id' )
 					),
-					'joins' => array(
-						array(
-							'table'      => 'apres_etatsliquidatifs',
-							'alias'      => 'ApreEtatliquidatif',
-							'type'       => 'INNER',
-							'foreignKey' => false,
-							'conditions' => array( 'Apre.id = ApreEtatliquidatif.apre_id' )
-						),
-					),
-					'recursive' => 1,
-					'conditions' => array( 'ApreEtatliquidatif.etatliquidatif_id' => $id ),
-				)
+				),
+				'recursive' => 1,
+				'conditions' => array( 'ApreEtatliquidatif.etatliquidatif_id' => $id ),
+					)
 			);
 
 			$etatliquidatif['Etatliquidatif']['datecloture'] = date( 'Y-m-d' );
@@ -471,11 +469,18 @@ $queryData = $querydata;
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function hopeyra( $id = null ) {
-			$etatliquidatif = $this->Etatliquidatif->findById( $id, null, null, -1 );
+			$qd_etatliquidatif = array(
+				'conditions' => array(
+					'Etatliquidatif.id' => $id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => -1
+			);
+			$etatliquidatif = $this->Etatliquidatif->find( 'first', $qd_etatliquidatif );
 			$this->assert( !empty( $etatliquidatif ), 'invalidParameter' );
 
 			// État liquidatif pas encore validé
@@ -492,11 +497,18 @@ $queryData = $querydata;
 		}
 
 		/**
-		*   PDF pour les APREs Forfaitaires
-		*/
-
+		 *   PDF pour les APREs Forfaitaires
+		 */
 		public function pdf( $id = null ) {
-			$etatliquidatif = $this->Etatliquidatif->findById( $id, null, null, 0 );
+			$qd_etatliquidatif = array(
+				'conditions' => array(
+					'Etatliquidatif.id' => $id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => 0
+			);
+			$etatliquidatif = $this->Etatliquidatif->find( 'first', $qd_etatliquidatif );
 			$this->assert( !empty( $etatliquidatif ), 'invalidParameter' );
 
 			// État liquidatif pas encore validé
@@ -516,9 +528,8 @@ $queryData = $querydata;
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function ajaxmontant( $etatliquidatif_id, $apre_id, $index ) { // FIXME
 			Configure::write( 'debug', 0 );
 			$nbpaiementsouhait = $this->data['Apre'][$index]['nbpaiementsouhait'];
@@ -545,16 +556,23 @@ $queryData = $querydata;
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function versementapres( $id = null ) {
 			// Retour à la liste en cas d'annulation
 			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
 				$this->redirect( array( 'action' => 'index' ) );
 			}
 
-			$etatliquidatif = $this->Etatliquidatif->findById( $id, null, null, -1 );
+			$qd_etatliquidatif = array(
+				'conditions' => array(
+					'Etatliquidatif.id' => $id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => -1
+			);
+			$etatliquidatif = $this->Etatliquidatif->find( 'first', $qd_etatliquidatif );
 			$this->assert( !empty( $etatliquidatif ), 'invalidParameter' );
 
 			$nbpaiementsouhait = array( '1' => 1, '2' => 2 );
@@ -591,5 +609,6 @@ $queryData = $querydata;
 				}
 			}
 		}
+
 	}
 ?>

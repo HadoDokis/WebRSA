@@ -3,18 +3,16 @@
 	{
 
 		public $name = 'Relancesapres';
-		public $uses = array( 'Apre', 'Option', 'Personne', 'Prestation'/*, 'Dsp'*/, 'Actprof', 'Permisb', 'Amenaglogt', 'Acccreaentr', 'Acqmatprof', 'Locvehicinsert', 'Apre', 'Relanceapre' );
+		public $uses = array( 'Apre', 'Option', 'Personne', 'Prestation'/* , 'Dsp' */, 'Actprof', 'Permisb', 'Amenaglogt', 'Acccreaentr', 'Acqmatprof', 'Locvehicinsert', 'Apre', 'Relanceapre' );
 		public $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml' );
 		public $aucunDroit = array( 'ajaxpiece' );
-
 		public $commeDroit = array(
 			'add' => 'Relancesapres:edit'
 		);
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function beforeFilter() {
 			parent::beforeFilter();
 			$options = $this->Relanceapre->allEnumLists();
@@ -25,9 +23,8 @@
 		}
 
 		/**
-		*   Ajax pour les pièces liées à la bonne APRE
-		*/
-
+		 *   Ajax pour les pièces liées à la bonne APRE
+		 */
 		public function ajaxpiece( $apre_id = null ) { // FIXME
 			Configure::write( 'debug', 0 );
 			$dataApre_id = Set::extract( $this->data, 'Relanceapre.apre_id' );
@@ -40,9 +37,8 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function add() {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
@@ -54,9 +50,8 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		protected function _add_edit( $id = null ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
@@ -74,7 +69,17 @@
 			}
 			else if( $this->action == 'edit' ) {
 				$relanceapre_id = $id;
-				$relanceapre = $this->Relanceapre->findById( $relanceapre_id, null, null, 1 );
+				$qd_relanceapre = array(
+					'conditions' => array(
+						'Relanceapre.id' => $relanceapre_id
+					),
+					'fields' => null,
+					'order' => null,
+					'recursive' => 1
+				);
+				$relanceapre = $this->Relanceapre->find( 'first', $qd_relanceapre );
+
+
 				$this->assert( !empty( $relanceapre ), 'invalidParameter' );
 
 				$personne_id = Set::classicExtract( $relanceapre, 'Apre.personne_id' );
@@ -96,14 +101,14 @@
 			}
 			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
 
-			if( !empty( $this->data ) ){
+			if( !empty( $this->data ) ) {
 				if( $this->Relanceapre->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
 					$saved = $this->Relanceapre->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) );
 					if( $saved ) {
 						$this->Jetons->release( $dossier_id );
 						$this->Relanceapre->commit(); // FIXME
 						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-						$this->redirect( array(  'controller' => 'apres','action' => 'index', Set::classicExtract( $apre, 'Apre.personne_id' ) ) );
+						$this->redirect( array( 'controller' => 'apres', 'action' => 'index', Set::classicExtract( $apre, 'Apre.personne_id' ) ) );
 					}
 					else {
 						$this->Relanceapre->rollback();
@@ -111,7 +116,7 @@
 					}
 				}
 			}
-			else{
+			else {
 				if( $this->action == 'edit' ) {
 					$this->data = $relanceapre;
 				}
@@ -122,14 +127,25 @@
 		}
 
 		/**
-		*
-		*/
+		 *
+		 */
+		public function view( $relanceapre_id = null ) {
+			$qd_relanceapre = array(
+				'conditions' => array(
+					'Relanceapre.id' => $relanceapre_id
+				)
+			);
+			$relanceapre = $this->Relanceapre->find( 'first', $qd_relanceapre );
 
-		public function view( $relanceapre_id = null ){
-			$relanceapre = $this->Relanceapre->findById( $relanceapre_id );
 			$this->assert( !empty( $relanceapre ), 'invalidParameter' );
 
-			$apre = $this->Apre->findByPersonneId( Set::classicExtract( $relanceapre, 'Relanceapre.apre_id' ) );
+			$qd_apre = array(
+				'conditions' => array(
+					'Apre.personne_id' => Set::classicExtract( $relanceapre, 'Relanceapre.apre_id' )
+				)
+			);
+			$apre = $this->Apre->find( 'first', $qd_apre );
+
 			$this->set( 'apre', $apre );
 
 			$this->set( 'relanceapre', $relanceapre );
@@ -144,9 +160,9 @@
 		 * @return void
 		 */
 		public function impression( $id = null ) {
-			$pdf = $this->Relanceapre->getDefaultPdf( $id, $this->Session->read( 'Auth.User.id' ) ) ;
+			$pdf = $this->Relanceapre->getDefaultPdf( $id, $this->Session->read( 'Auth.User.id' ) );
 
-			if( !empty( $pdf ) ){
+			if( !empty( $pdf ) ) {
 				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'relanceapre_%d-%s.pdf', $id, date( 'Y-m-d' ) ) );
 			}
 			else {
@@ -154,5 +170,6 @@
 				$this->redirect( $this->referer() );
 			}
 		}
+
 	}
 ?>

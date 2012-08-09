@@ -1,10 +1,10 @@
 <?php
 	class ActionscandidatsPersonnesController extends AppController
 	{
+
 		public $name = 'ActionscandidatsPersonnes';
 //6,08 secondes. 25.48 MB / 25.75 MB. 132 modèles
 //5,97 secondes. 25.36 MB / 25.75 MB. 130 modèles
-
 //2,99 secondes. 20.16 MB / 20.50 MB. 75 modèles
 		public $uses = array(
 			'ActioncandidatPersonne',
@@ -15,7 +15,7 @@
 // 			'Typerdv',
 // 			'PersonneReferent',
 // 			'Referent',
-			//'Rendezvous',
+				//'Rendezvous',
 // 			'ActioncandidatPartenaire',
 // 			'Contactpartenaire',
 // 			'Adressefoyer',
@@ -26,24 +26,19 @@
 //             'Structurereferente',
 // 			'Motifsortie'
 		);
-
 		public $helpers = array( 'Default', 'Locale', 'Csv', 'Ajax', 'Xform', 'Default2', 'Fileuploader' );
-
 		public $components = array( 'Default', 'Gedooo.Gedooo', 'Fileuploader' );
-
 		public $aucunDroit = array( 'ajaxpart', 'ajaxstruct', 'ajaxreferent', 'ajaxreffonct', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
-
 		public $commeDroit = array(
 			'view' => 'ActionscandidatsPersonnes:index',
 			'add' => 'ActionscandidatsPersonnes:edit'
 		);
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		protected function _setOptions() {
-			$options = array();
+			$options = array( );
 			foreach( $this->{$this->modelClass}->allEnumLists() as $field => $values ) {
 				$options = Set::insert( $options, "{$this->modelClass}.{$field}", $values );
 			}
@@ -75,11 +70,10 @@
 			$this->set( compact( 'options', 'typevoie' ) );
 		}
 
-/**
-		*
-*/
-
-		public function indexparams(){
+		/**
+		 *
+		 */
+		public function indexparams() {
 			// Retour à la liste en cas d'annulation
 			if( isset( $this->params['form']['Cancel'] ) ) {
 				$this->redirect( array( 'controller' => 'parametrages', 'action' => 'index' ) );
@@ -92,67 +86,60 @@
 			$this->render( $this->action, null, 'indexparams_'.Configure::read( 'ActioncandidatPersonne.suffixe' ) );
 		}
 
-
 		/**
-		* http://valums.com/ajax-upload/
-		* http://doc.ubuntu-fr.org/modules_php
-		* increase post_max_size and upload_max_filesize to 10M
-		* debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
-		*/
-
+		 * http://valums.com/ajax-upload/
+		 * http://doc.ubuntu-fr.org/modules_php
+		 * increase post_max_size and upload_max_filesize to 10M
+		 * debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
+		 */
 		public function ajaxfileupload() {
 			$this->Fileuploader->ajaxfileupload();
 		}
 
 		/**
-		* http://valums.com/ajax-upload/
-		* http://doc.ubuntu-fr.org/modules_php
-		* increase post_max_size and upload_max_filesize to 10M
-		* debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
-		* FIXME: traiter les valeurs de retour
-		*/
-
+		 * http://valums.com/ajax-upload/
+		 * http://doc.ubuntu-fr.org/modules_php
+		 * increase post_max_size and upload_max_filesize to 10M
+		 * debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
+		 * FIXME: traiter les valeurs de retour
+		 */
 		public function ajaxfiledelete() {
 			$this->Fileuploader->ajaxfiledelete();
 		}
 
 		/**
-		*   Fonction permettant de visualiser les fichiers chargés dans la vue avant leur envoi sur le serveur
-		*/
-
+		 *   Fonction permettant de visualiser les fichiers chargés dans la vue avant leur envoi sur le serveur
+		 */
 		public function fileview( $id ) {
 			$this->Fileuploader->fileview( $id );
 		}
 
 		/**
-		*   Téléchargement des fichiers préalablement associés à un traitement donné
-		*/
-
+		 *   Téléchargement des fichiers préalablement associés à un traitement donné
+		 */
 		public function download( $fichiermodule_id ) {
 			$this->assert( !empty( $fichiermodule_id ), 'error404' );
 			$this->Fileuploader->download( $fichiermodule_id );
 		}
 
 		/**
-		*   Fonction permettant d'accéder à la page pour lier les fichiers à l'Orientation
-		*/
-
-		public function filelink( $id ){
+		 *   Fonction permettant d'accéder à la page pour lier les fichiers à l'Orientation
+		 */
+		public function filelink( $id ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
-			$fichiers = array();
+			$fichiers = array( );
 			$actioncandidat_personne = $this->ActioncandidatPersonne->find(
-				'first',
-				array(
-					'conditions' => array(
-						'ActioncandidatPersonne.id' => $id
-					),
-					'contain' => array(
-						'Fichiermodule' => array(
-							'fields' => array( 'name', 'id', 'created', 'modified' )
-						)
+					'first', array(
+				'conditions' => array(
+					'ActioncandidatPersonne.id' => $id
+				),
+				'contain' => array(
+					'Fichiermodule' => array(
+						'fields' => array( 'name', 'id', 'created', 'modified' )
 					)
 				)
+					)
 			);
 
 
@@ -174,13 +161,12 @@
 			if( !empty( $this->data ) ) {
 
 				$saved = $this->ActioncandidatPersonne->updateAll(
-					array( 'ActioncandidatPersonne.haspiecejointe' => '\''.$this->data['ActioncandidatPersonne']['haspiecejointe'].'\'' ),
-					array(
-						'"ActioncandidatPersonne"."id"' => $id
-					)
+						array( 'ActioncandidatPersonne.haspiecejointe' => '\''.$this->data['ActioncandidatPersonne']['haspiecejointe'].'\'' ), array(
+					'"ActioncandidatPersonne"."id"' => $id
+						)
 				);
 
-				if( $saved ){
+				if( $saved ) {
 					// Sauvegarde des fichiers liés à une PDO
 					$dir = $this->Fileuploader->dirFichiersModule( $this->action, $this->params['pass'][0] );
 					$saved = $this->Fileuploader->saveFichiers( $dir, !Set::classicExtract( $this->data, "ActioncandidatPersonne.haspiecejointe" ), $id ) && $saved;
@@ -203,15 +189,13 @@
 			$this->_setOptions();
 			$this->set( compact( 'dossier_id', 'id', 'fichiers', 'actioncandidat_personne' ) );
 			$this->set( 'personne_id', $personne_id );
-
 		}
 
 		/**
-		*   Ajout à la suite de l'utilisation des nouveaux helpers
-		*   - default.php
-		*   - theme.php
-		*/
-
+		 *   Ajout à la suite de l'utilisation des nouveaux helpers
+		 *   - default.php
+		 *   - theme.php
+		 */
 		public function index( $personne_id ) {
 			// Préparation du menu du dossier
 			$dossierId = $this->ActioncandidatPersonne->Personne->dossierId( $personne_id );
@@ -220,25 +204,23 @@
 
 			//Vérification de la présence d'une orientation ou d'un référent pour cet allocataire
 			$referentLie = $this->ActioncandidatPersonne->Personne->PersonneReferent->find(
-				'count',
-				array(
-					'conditions' => array(
-						'PersonneReferent.personne_id' => $personne_id,
-						'PersonneReferent.dfdesignation IS NULL'
-					),
-					'contain' => false
-				)
+					'count', array(
+				'conditions' => array(
+					'PersonneReferent.personne_id' => $personne_id,
+					'PersonneReferent.dfdesignation IS NULL'
+				),
+				'contain' => false
+					)
 			);
 			$this->set( compact( 'referentLie' ) );
 
 			$orientationLiee = $this->ActioncandidatPersonne->Personne->Orientstruct->find(
-				'count',
-				array(
-					'conditions' => array(
-						'Orientstruct.personne_id' => $personne_id
-					),
-					'contain' => false
-				)
+					'count', array(
+				'conditions' => array(
+					'Orientstruct.personne_id' => $personne_id
+				),
+				'contain' => false
+					)
 			);
 			$this->set( compact( 'orientationLiee' ) );
 
@@ -265,8 +247,8 @@
 			);
 			$this->paginate = array(
 				$this->modelClass => array(
-					'limit' => 10/*,
-					'recursive' => 2*/
+					'limit' => 10/* ,
+				  'recursive' => 2 */
 				)
 			);
 
@@ -280,14 +262,11 @@
 // debug($items);
 			$this->set( 'personne_id', $personne_id );
 // 			$this->render( $this->action, null, '/actionscandidats_personnes/index_'.Configure::read( 'nom_form_ci_cg' ) );
-
 		}
 
-
-/**
-		*   Ajax pour les partenaires fournissant les actions
-*/
-
+		/**
+		 *   Ajax pour les partenaires fournissant les actions
+		 */
 		public function ajaxpart( $actioncandidat_id = null ) { // FIXME
 			Configure::write( 'debug', 0 );
 
@@ -297,48 +276,42 @@
 			if( !empty( $actioncandidat_id ) ) {
 				$this->ActioncandidatPersonne->Actioncandidat->forceVirtualFields = true;
 				$actioncandidat = $this->ActioncandidatPersonne->Actioncandidat->find(
-					'first',
-					array(
-						'conditions' => array(
-							'Actioncandidat.id' => $actioncandidat_id
+						'first', array(
+					'conditions' => array(
+						'Actioncandidat.id' => $actioncandidat_id
+					),
+					'contain' => array(
+						'Contactpartenaire' => array(
+							'Partenaire'
 						),
-						'contain' => array(
-							'Contactpartenaire' => array(
-								'Partenaire'
-							),
-							'Fichiermodule'
-						)
+						'Fichiermodule'
 					)
+						)
 				);
 
-				if( ($actioncandidat['Actioncandidat']['correspondantaction'] == 1) && !empty($actioncandidat['Actioncandidat']['referent_id']))
-				{
+				if( ($actioncandidat['Actioncandidat']['correspondantaction'] == 1) && !empty( $actioncandidat['Actioncandidat']['referent_id'] ) ) {
 					$this->ActioncandidatPersonne->Personne->Referent->recursive = -1;
-					$referent = $this->ActioncandidatPersonne->Personne->Referent->read(null, $actioncandidat['Actioncandidat']['referent_id']);
+					$referent = $this->ActioncandidatPersonne->Personne->Referent->read( null, $actioncandidat['Actioncandidat']['referent_id'] );
 				}
 				$this->set( compact( 'actioncandidat', 'referent' ) );
 			}
 			$this->render( 'ajaxpart', 'ajax' );
 		}
 
-
-		public function ajaxreferent( $referent_id = null )
-		{  // FIXME
+		public function ajaxreferent( $referent_id = null ) {  // FIXME
 			Configure::write( 'debug', 0 );
 			$dataReferent_id = Set::extract( $this->data, 'ActioncandidatPersonne.referent_id' );
 			$referent_id = ( empty( $referent_id ) && !empty( $dataReferent_id ) ? $dataReferent_id : $referent_id );
 			$this->ActioncandidatPersonne->Personne->Referent->recursive = 0;
 			$this->set( 'typevoie', $this->Option->typevoie() );
-			$prescripteur = $this->ActioncandidatPersonne->Personne->Referent->read(null, $referent_id);
+			$prescripteur = $this->ActioncandidatPersonne->Personne->Referent->read( null, $referent_id );
 			$this->set( compact( 'prescripteur' ) );
 			$this->render( 'ajaxreferent', 'ajax' );
 		}
 
-
-/**
-		*   Ajax pour les partenaires fournissant les actions
-*/
-
+		/**
+		 *   Ajax pour les partenaires fournissant les actions
+		 */
 		public function ajaxstruct( $referent_id = null ) { // FIXME
 			Configure::write( 'debug', 0 );
 			$this->set( 'typevoie', $this->Option->typevoie() );
@@ -347,25 +320,23 @@
 
 			if( !empty( $referent_id ) ) {
 				$referent = $this->ActioncandidatPersonne->Referent->find(
-					'first',
-					array(
-						'conditions' => array(
-							'Referent.id' => $referent_id
-						),
-						'contain' => false,
-						'recursive' => -1
-					)
+						'first', array(
+					'conditions' => array(
+						'Referent.id' => $referent_id
+					),
+					'contain' => false,
+					'recursive' => -1
+						)
 				);
 
 				if( !empty( $referent ) ) {
 					$structs = $this->ActioncandidatPersonne->Personne->Orientstruct->Structurereferente->find(
-						'first',
-						array(
-							'conditions' => array(
-								'Structurereferente.id' => Set::classicExtract( $referent, 'Referent.structurereferente_id' )
-							),
-							'recursive' => -1
-						)
+							'first', array(
+						'conditions' => array(
+							'Structurereferente.id' => Set::classicExtract( $referent, 'Referent.structurereferente_id' )
+						),
+						'recursive' => -1
+							)
 					);
 				}
 
@@ -374,11 +345,9 @@
 			$this->render( 'ajaxstruct', 'ajax' );
 		}
 
-
-/**
-		*   Ajax pour les partenaires fournissant les actions
-*/
-
+		/**
+		 *   Ajax pour les partenaires fournissant les actions
+		 */
 		public function ajaxreffonct( $referent_id = null ) { // FIXME
 			Configure::write( 'debug', 0 );
 // debug($referent_id);
@@ -398,13 +367,12 @@
 				$referent = $this->ActioncandidatPersonne->Personne->Referent->findbyId( $referent_id, null, null, -1 );
 
 				$structs = $this->ActioncandidatPersonne->Personne->Orientstruct->Structurereferente->find(
-					'first',
-					array(
-						'conditions' => array(
-							'Structurereferente.id' => Set::classicExtract( $referent, 'Referent.structurereferente_id' )
-						),
-						'recursive' => -1
-					)
+						'first', array(
+					'conditions' => array(
+						'Structurereferente.id' => Set::classicExtract( $referent, 'Referent.structurereferente_id' )
+					),
+					'recursive' => -1
+						)
 				);
 				$this->set( compact( 'referent', 'structs' ) );
 			}
@@ -412,31 +380,25 @@
 			$this->render( 'ajaxreffonct', 'ajax' );
 		}
 
-
-
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function add() {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function edit() {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
-
 		/**
-		*
-		*/
-
+		 *
+		 */
 		protected function _add_edit( $id = null ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
@@ -463,9 +425,18 @@
 				$personne_referent = $this->ActioncandidatPersonne->Personne->PersonneReferent->find( 'first', array( 'conditions' => array( 'PersonneReferent.personne_id' => $personne_id, 'PersonneReferent.dfdesignation IS NULL' ), 'contain' => false ) );
 
 				$referentId = null;
-				if( !empty( $personne_referent ) ){
+				if( !empty( $personne_referent ) ) {
 					$referentId = Set::classicExtract( $personne_referent, 'PersonneReferent.referent_id' );
-					$referents = $this->ActioncandidatPersonne->Personne->Referent->findById( $referentId, null, null, -1 );
+
+					$qd_referent = array(
+						'conditions' => array(
+							'Referent.id' => $referentId
+						),
+						'fields' => null,
+						'order' => null,
+						'recursive' => -1
+					);
+					$referents = $this->ActioncandidatPersonne->Personne->Referent->find( 'first', $qd_referent );
 					$this->set( compact( 'referents' ) );
 				}
 				$this->set( compact( 'referentId' ) );
@@ -473,15 +444,32 @@
 				///Données propre au partenaire
 				$part = $this->ActioncandidatPersonne->Actioncandidat->Partenaire->find( 'list', array( 'contain' => false ) );
 				$this->set( compact( 'part' ) );
-
 			}
 			else if( $this->action == 'edit' ) {
 				$actioncandidat_personne_id = $id;
-				$actioncandidat_personne = $this->ActioncandidatPersonne->findById( $actioncandidat_personne_id, null, null, -1 );
+
+				$qd_actioncandidat_personne = array(
+					'conditions' => array(
+						'ActioncandidatPersonne.id' => $actioncandidat_personne_id
+					),
+					'fields' => null,
+					'order' => null,
+					'recursive' => -1
+				);
+				$actioncandidat_personne = $this->ActioncandidatPersonne->find( 'first', $qd_actioncandidat_personne );
 				$this->assert( !empty( $actioncandidat_personne ), 'invalidParameter' );
 
 				$personne_id = Set::classicExtract( $actioncandidat_personne, 'ActioncandidatPersonne.personne_id' );
-				$personne = $this->ActioncandidatPersonne->Personne->findById( $personne_id, null, null, -1 );
+
+				$qd_personne = array(
+					'conditions' => array(
+						'Personne.id' => $personne_id
+					),
+					'fields' => null,
+					'order' => null,
+					'recursive' => -1
+				);
+				$personne = $this->ActioncandidatPersonne->Personne->find( 'first', $qd_personne );
 
 				$referentId = null;
 				$this->set( compact( 'referentId', 'personne' ) );
@@ -515,7 +503,6 @@
 // 			if( !empty( $contrat ) ) {
 // 				$personne = Set::merge( $personne, $contrat );
 // 			}
-
 // 			$this->set( 'personne', $personne );
 // debug($personne);
 			///Nombre d'enfants par foyer
@@ -525,9 +512,8 @@
 			//Numéro Pôle Emploi :
 // 			$identifiantpe = ClassRegistry::init('Informationpe')->dernierIdentifiantpe( $personne_id);
 // 			$this->set( 'identifiantpe', $identifiantpe );
-
 			///Récupération de la liste des structures référentes liés uniquement à l'APRE
-			$structs = $this->ActioncandidatPersonne->Personne->Orientstruct->Structurereferente->listOptions( );
+			$structs = $this->ActioncandidatPersonne->Personne->Orientstruct->Structurereferente->listOptions();
 			$this->set( 'structs', $structs );
 
 			///Récupération de la liste des référents liés à l'APRE
@@ -535,11 +521,28 @@
 			$this->set( 'referents', $referents );
 
 			///Données Dsp
-			$dsp = $this->ActioncandidatPersonne->Personne->Dsp->findByPersonneId( $personne_id, null, null, -1  );
+
+			$qd_dsp = array(
+				'conditions' => array(
+					'Dsp.personne_id' => $personne_id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => -1
+			);
+			$dsp = $this->ActioncandidatPersonne->Personne->Dsp->find( 'first', $qd_dsp );
 			$this->set( compact( 'dsp' ) );
 
 			///Récupération de la liste des actions avec une fiche de candidature
-			$user = $this->User->findById( $this->Session->read( 'Auth.User.id' ), null, null, 0 );
+			$qd_user = array(
+				'conditions' => array(
+					'User.id' => $this->Session->read( 'Auth.User.id' )
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => 0
+			);
+			$user = $this->User->find( 'first', $qd_user );
 			$codeinseeUser = Set::classicExtract( $user, 'Serviceinstructeur.code_insee' );
 			$actionsfiche = $this->{$this->modelClass}->Actioncandidat->listePourFicheCandidature( $codeinseeUser );
 			$this->set( 'actionsfiche', $actionsfiche );
@@ -556,7 +559,7 @@
 
 			$this->ActioncandidatPersonne->begin();
 
-			if( !empty( $this->data ) ){
+			if( !empty( $this->data ) ) {
 				if( $useDsps ) { // Récupération des Dsps et sauvegarde, si besoin
 					$this->ActioncandidatPersonne->Personne->Dsp->saveAll( $this->data, array( 'validate' => 'only' ) );
 				}
@@ -571,7 +574,7 @@
 					// SAuvegarde des numéros ed téléphone si ceux-ci ne sont pas présents en amont
 					if( isset( $this->data['Personne'] ) ) {
 						$isDataPersonne = Set::filter( $this->data['Personne'] );
-						if( !empty( $isDataPersonne ) ){
+						if( !empty( $isDataPersonne ) ) {
 							$success = $this->{$this->modelClass}->Personne->save( array( 'Personne' => $this->data['Personne'] ) );
 						}
 					}
@@ -582,7 +585,7 @@
 						$this->Jetons->release( $dossierId );
 						$this->ActioncandidatPersonne->commit();
 						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-						$this->redirect( array(  'controller' => 'actionscandidats_personnes','action' => 'index', $personne_id ) );
+						$this->redirect( array( 'controller' => 'actionscandidats_personnes', 'action' => 'index', $personne_id ) );
 					}
 					else {
 						$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
@@ -590,18 +593,34 @@
 					}
 				}
 			}
-			else{
+			else {
 				if( $this->action == 'edit' ) {
 					$this->data = $actioncandidat_personne;
 
-				/// Récupération des données socio pro (notamment Niveau etude) lié au contrat
+					/// Récupération des données socio pro (notamment Niveau etude) lié au contrat
 					$this->ActioncandidatPersonne->Personne->Dsp->unbindModelAll();
-					$dsp = $this->ActioncandidatPersonne->Personne->Dsp->findByPersonneId( $personne_id, null, null, 1 );
+					$qd_dsp = array(
+						'conditions' => array(
+							'Dsp.personne_id' => $personne_id
+						),
+						'fields' => null,
+						'order' => null,
+						'recursive' => 1
+					);
+					$dsp = $this->ActioncandidatPersonne->Personne->Dsp->find( 'first', $qd_dsp );
 					if( empty( $dsp ) ) {
 						$dsp = array( 'Dsp' => array( 'personne_id' => $personne_id ) );
 						$this->ActioncandidatPersonne->Personne->Dsp->set( $dsp );
 						if( $this->ActioncandidatPersonne->Personne->Dsp->save( $dsp ) ) {
-							$dsp = $this->ActioncandidatPersonne->Personne->Dsp->findByPersonneId( $personne_id, null, null, 1 );
+							$qd_dsp = array(
+								'conditions' => array(
+									'Dsp.personne_id' => $personne_id
+								),
+								'fields' => null,
+								'order' => null,
+								'recursive' => 1
+							);
+							$dsp = $this->ActioncandidatPersonne->Personne->Dsp->find( 'first', $qd_dsp );
 						}
 						else {
 							$this->cakeError( 'error500' );
@@ -610,7 +629,7 @@
 					}
 					$this->data['Dsp'] = array( 'id' => $dsp['Dsp']['id'], 'personne_id' => $dsp['Dsp']['personne_id'] );
 					$this->data['Dsp']['nivetu'] = ( ( isset( $dsp['Dsp']['nivetu'] ) ) ? $dsp['Dsp']['nivetu'] : null );
-				///Fin des Dsps
+					///Fin des Dsps
 				}
 			}
 
@@ -621,9 +640,8 @@
 		}
 
 		/**
-		* Impression de la fiche de candidature
-		*/
-
+		 * Impression de la fiche de candidature
+		 */
 		public function printFiche( $actioncandidat_personne_id ) {
 			$pdf = $this->ActioncandidatPersonne->getPdfFiche( $actioncandidat_personne_id );
 
@@ -636,19 +654,24 @@
 			}
 		}
 
-
-		public function delete( $id )
-		{
+		public function delete( $id ) {
 			$this->Default->delete( $id );
 		}
 
-
 		/**
-		*   Fonction pour annuler la fiche de candidature pour le CG66
-		*/
-
+		 *   Fonction pour annuler la fiche de candidature pour le CG66
+		 */
 		public function cancel( $id = null ) {
-			$actioncandidat = $this->{$this->modelClass}->findById( $id, null, null, -1 );
+			$qd_actioncandidat = array(
+				'conditions' => array(
+					$this->modelClass.'.id' => $id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => -1
+			);
+			$actioncandidat = $this->{$this->modelClass}->find( 'first', $qd_actioncandidat );
+
 			$personne_id = Set::classicExtract( $actioncandidat, 'ActioncandidatPersonne.personne_id' );
 
 			$this->set( 'personne_id', $personne_id );
@@ -662,10 +685,9 @@
 				if( $this->ActioncandidatPersonne->save( $this->data ) ) {
 
 					$this->{$this->modelClass}->updateAll(
-						array( 'ActioncandidatPersonne.positionfiche' => '\'annule\'' ),
-						array(
-							'"ActioncandidatPersonne"."id"' => $id
-						)
+							array( 'ActioncandidatPersonne.positionfiche' => '\'annule\'' ), array(
+						'"ActioncandidatPersonne"."id"' => $id
+							)
 					);
 
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
@@ -676,13 +698,11 @@
 				$this->data = $actioncandidat;
 			}
 			$this->set( 'urlmenu', '/actionscandidats_personnes/index/'.$personne_id );
-
 		}
 
-		public function view( $id )
-		{
+		public function view( $id ) {
 			$this->ActioncandidatPersonne->forceVirtualFields = true;
-			$personne_id = $this->ActioncandidatPersonne->field('personne_id', array('id' => $id));
+			$personne_id = $this->ActioncandidatPersonne->field( 'personne_id', array( 'id' => $id ) );
 			$dossierId = $this->ActioncandidatPersonne->Personne->dossierId( $personne_id );
 			$this->ActioncandidatPersonne->forceVirtualFields = false;
 			$this->assert( !empty( $dossierId ), 'invalidParameter' );
@@ -690,40 +710,37 @@
 
 
 			$actionscandidatspersonne = $this->ActioncandidatPersonne->find(
-				'first',
-				array(
-					'conditions' => array(
-						'ActioncandidatPersonne.id' => $id
-					),
-					'contain' => array(
-						'Personne',
-						'Referent',
-						'Actioncandidat',
-						'Motifsortie',
-						'Fichiermodule'
-					)
+					'first', array(
+				'conditions' => array(
+					'ActioncandidatPersonne.id' => $id
+				),
+				'contain' => array(
+					'Personne',
+					'Referent',
+					'Actioncandidat',
+					'Motifsortie',
+					'Fichiermodule'
 				)
+					)
 			);
 
-			if( ($actionscandidatspersonne['Actioncandidat']['correspondantaction'] == 1) && !empty($actionscandidatspersonne['Actioncandidat']['referent_id']))
-			{
+			if( ($actionscandidatspersonne['Actioncandidat']['correspondantaction'] == 1) && !empty( $actionscandidatspersonne['Actioncandidat']['referent_id'] ) ) {
 				$this->ActioncandidatPersonne->Personne->Referent->recursive = -1;
-				$referent = $this->ActioncandidatPersonne->Personne->Referent->read(null, $actionscandidatspersonne['Actioncandidat']['referent_id'] );
+				$referent = $this->ActioncandidatPersonne->Personne->Referent->read( null, $actionscandidatspersonne['Actioncandidat']['referent_id'] );
 			}
-			if( !empty( $referent ) ){
+			if( !empty( $referent ) ) {
 				$actionscandidatspersonne['Actioncandidat']['referent_id'] = $referent['Referent']['nom_complet'];
 			}
-			else{
+			else {
 				$actionscandidatspersonne['Actioncandidat']['referent_id'] = '';
 			}
 			$this->set( compact( 'actionscandidatspersonne' ) );
 			$this->_setOptions();
 			// Retour à la liste en cas d'annulation
-			if(  isset( $this->params['form']['Cancel'] ) ) {
+			if( isset( $this->params['form']['Cancel'] ) ) {
 				$this->redirect( array( 'action' => 'index', $personne_id ) );
 			}
 		}
-
 
 	}
 ?>
