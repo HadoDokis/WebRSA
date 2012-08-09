@@ -12,12 +12,10 @@
 		* @param array $settings Configuration settings for $model
 		* @access public
 		*/
-
 		public function setup( &$model, $settings ) {
-			$ds = $model->getDataSource( $model->useDbConfig );
-
-			if( $ds->config['driver'] != 'postgres' ) {
-				trigger_error( sprintf( __( '%s: driver (%s) non supporté pour le modèle (%s).', true ), __CLASS__, $ds->config['driver'], $model->alias ), E_USER_WARNING );
+			$driver = $model->driver();
+			if( $driver != 'postgres' ) {
+				trigger_error( sprintf( __( '%s: driver (%s) non supporté pour le modèle (%s).', true ), __CLASS__, $driver, $model->alias ), E_USER_WARNING );
 			}
 		}
 

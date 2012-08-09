@@ -249,10 +249,7 @@
 
 								$model = ClassRegistry::init( $model );
 
-								$driver = $model->getDataSource()->config['driver'];
-								$driver = strtolower( str_replace( 'Database/', '', $driver ) );
-
-								$conditions["{$path} ".( $driver == 'postgres' ? 'ILIKE' : 'LIKE' )] = "%$value%";
+								$conditions["{$path} ".( $model->driver() == 'postgres' ? 'ILIKE' : 'LIKE' )] = "%$value%";
 								$data = Set::remove( $data, $path );
 							}
 							break;

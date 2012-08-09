@@ -297,7 +297,7 @@
 						$ds = $model->getDataSource( $model->useDbConfig );
 						$errors[$model->alias] = array(
 							'sql' => $error,
-							'error' => ( ( $ds->config['driver'] == 'postgres' ) ? pg_last_error() : null )
+							'error' => $ds->lastError()
 						);
 					}
 				}
