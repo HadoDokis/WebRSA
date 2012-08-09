@@ -8,7 +8,7 @@
 	* @access public
 	* @url http://www.debuggable.com/posts/How_to_Fetch_the_ENUM_Options_of_a_Field_The_CakePHP_Enumerable_Behavior:4a977c9b-1bdc-44b4-b027-1a54cbdd56cb
     *
-    *  Requ�te permettant d'obtenir la liste des types d'ENUM utilis�s en base de donn�es:
+    *  Requête permettant d'obtenir la liste des types d'ENUM utilisés en base de données:
     *   SELECT DISTINCT(udt_name)
     *    FROM information_schema.columns
     *    WHERE table_catalog = 'cg66_newapre'
@@ -143,7 +143,7 @@
 
 		/**
 		* Recherche et mise en cache des valeurs des enums pour tous les champs
-		* d'un modèle pour le SGBD PostgreSQL.
+		* d'un modÃšle pour le SGBD PostgreSQL.
 		* Retourne la liste des champs ainsi que leurs valeurs.
 		*
 		* @param AppModel $model
@@ -164,7 +164,7 @@
 					$enums = $model->query( $sql );
 
 					if( empty( $enums ) ) {
-						trigger_error( sprintf( __( 'Requête inutile générée par %s pour le modèle %s.', true ), __CLASS__, $model->alias ), E_USER_WARNING );
+						trigger_error( sprintf( __( 'RequÃªte inutile gÃ©nÃ©rÃ©e par %s pour le modÃšle %s.', true ), __CLASS__, $model->alias ), E_USER_WARNING );
 					}
 					else {
 						$types = array();
@@ -193,7 +193,7 @@
 
 		/**
 		* Recherche et mise en cache des valeurs des enums pour tous les champs
-		* d'un modèle pour le SGBD MySQL.
+		* d'un modÃšle pour le SGBD MySQL.
 		* Retourne la liste des champs ainsi que leurs valeurs.
 		*
 		* @param AppModel $model
@@ -214,7 +214,7 @@
 					$enums = $model->query( $sql );
 
 					if( empty( $enums ) ) {
-						trigger_error( sprintf( __( 'Requête inutile générée par %s pour le modèle %s.', true ), __CLASS__, $model->alias ), E_USER_WARNING );
+						trigger_error( sprintf( __( 'RequÃªte inutile gÃ©nÃ©rÃ©e par %s pour le modÃšle %s.', true ), __CLASS__, $model->alias ), E_USER_WARNING );
 					}
 					else {
 						$types = array();
@@ -238,14 +238,13 @@
 		}
 
 		/**
-		*
-		*/
-
+		 * Retourne tous les enums d'un modèle. Fonctionne avec les drivers mysql, mysqi, postgres.
+		 *
+		 * @param Model $model
+		 * @return array
+		 */
 		protected function _readEnums( &$model ) {
-			$driver = $model->getDataSource()->config['driver'];
-			$driver = strtolower( str_replace( 'Database/', '', $driver ) );
-
-			switch( $driver ) {
+			switch( $model->driver() ) {
 				case 'postgres':
 					$options = $this->_postgresEnums( $model );
 					break;

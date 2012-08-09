@@ -114,8 +114,8 @@
 
 		public function initVirtualFields( $virtualFields ) {
 			if( is_array( $virtualFields ) && !empty( $virtualFields ) ) {
-				$this->dbo = ConnectionManager::getInstance()->getDataSource( $this->useDbConfig );
-				$driver = ConnectionManager::getInstance()->config->{$this->useDbConfig}['driver'];
+				$this->dbo = $this->getDataSource();
+				$driver = $this->driver();
 
 				foreach( $virtualFields as $fieldName => $params ) {
 					foreach( array( 'query', $driver ) as $key ) {
@@ -168,7 +168,7 @@
 
 		protected function _beforeFindVirtualFields( $queryData ) {
 			if( $this->forceVirtualFields || ( is_array( $this->virtualFields ) && !empty( $this->virtualFields ) ) ) {
-				$this->dbo = ConnectionManager::getInstance()->getDataSource( $this->useDbConfig );
+				$this->dbo = $this->getDataSource();
 
 				// Get the list of fields and virtual fields
 				if( $this->findQueryType != 'count' ) {
@@ -331,7 +331,7 @@
 		// BEGIN cbuffin
 		public function schema($field = false, $virtual = false) {
 			if (!is_array($this->_schema) || $field === true) {
-				$db =& ConnectionManager::getDataSource($this->useDbConfig);
+				$db = $this->getDataSource();
 				$db->cacheSources = ($this->cacheSources && $db->cacheSources);
 				if ($db->isInterfaceSupported('describe') && $this->useTable !== false) {
 					$this->_schema = $db->describe($this, $field);
@@ -772,7 +772,7 @@
 
 			if( !$result ) {
 				$ds = $this->getDataSource( $this->useDbConfig );
-				$result = ( ( $ds->config['driver'] == 'postgres' ) ? pg_last_error() : null );
+				$result = $ds->lastError();
 			}
 			else {
 				$result = true;
@@ -893,6 +893,24 @@
 
 			// B°) On n'a pas tous les fields dans this->data ... FIXME -> throw_error ou réfléchir ?
 			return false;
+		}
+
+		/**
+		 * Retourne le nom du driver utilisé par le modèle (postgres, mysql, ...).
+		 *
+		 * @return string
+		 */
+		public function driver() {
+			$ds = $this->getDataSource();
+
+			if( isset( $ds->config['datasource'] ) ) {
+				$driver = $ds->config['datasource'];
+			}
+			else if( isset( $ds->config['driver'] ) ) {
+				$driver = $ds->config['driver'];
+			}
+
+			return strtolower( str_replace( 'Database/', '', $driver ) );
 		}
 	}
 ?>
