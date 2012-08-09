@@ -4,11 +4,23 @@
 	class XhtmlHelper extends HtmlHelper
 	{
 		/**
-		* Ajout d'un paramètre "enabled" dans $htmlAttributes qui permet de marquer
-		* un lien comme "désactivé" (texte grisé) lorsque "enabled" vaut "false".
-		*/
-
+		 * Ajout d'un paramètre "enabled" dans $htmlAttributes qui permet de marquer un lien comme
+		 * "désactivé" (texte grisé) lorsque "enabled" vaut "false".
+		 *
+		 * Gère le paramètre escape/escapeTitle pour CakePHP 1.2, 1.3 et 2.x.
+		 *
+		 * @param string $title
+		 * @param mixed $url
+		 * @param array $htmlAttributes
+		 * @param string $confirmMessage
+		 * @param boolean $escapeTitle
+		 * @return string
+		 */
 		public function link( $title, $url = null, $htmlAttributes = array(), $confirmMessage = false, $escapeTitle = true ) {
+			if( isset( $htmlAttributes['escape'] ) ) {
+				$escapeTitle = $htmlAttributes['escape'];
+			}
+
 			if( isset( $htmlAttributes['enabled'] ) && $htmlAttributes['enabled'] == false ) {
 				if( $escapeTitle ) {
 					$title = h( $title );
@@ -19,15 +31,42 @@
 			}
 			else {
 				unset( $htmlAttributes['enabled'] );
-				return parent::link( $title, $url, $htmlAttributes, $confirmMessage, $escapeTitle );
+
+				if( CAKE_BRANCH == '1.2' ) {
+					return parent::link( $title, $url, $htmlAttributes, $confirmMessage, $escapeTitle );
+				}
+				else {
+					$htmlAttributes['escape'] = $escapeTitle;
+					return parent::link( $title, $url, $htmlAttributes, $confirmMessage );
+				}
 			}
 		}
 
+		/**
+		 * Gère le paramètre $escape et la clé 'escape' de $attributes pour CakePHP 1.2, 1.3 et 2.x.
+		 *
+		 * @param string $name
+		 * @param string $text
+		 * @param array $attributes
+		 * @param boolean $escape
+		 * @return string
+		 */
 		public function tag( $name, $text = null, $attributes = array(), $escape = false ) {
+			if( isset( $attributes['escape'] ) ) {
+				$escape = $attributes['escape'];
+			}
+
 			if( is_null( $text ) || strlen( $text ) == 0 ) {
 				$text = ' ';
 			}
-			return parent::tag( $name, $text, $attributes, $escape );
+
+			if( CAKE_BRANCH == '1.2' ) {
+				return parent::tag( $name, $text, $attributes, $escape );
+			}
+			else {
+				$attributes['escape'] = $escape;
+				parent::tag( $name, $text, $attributes );
+			}
 		}
 
 		/**
