@@ -68,18 +68,32 @@
 					$permissions = Set::combine( $parentAros, '/Aco/alias', '/Aco/Permission/_create' );
 				}
 				if( !empty( $aro ) ) {
-					$qd_permissions = array(
-						'contain' => array(
-							'Aco'
-						),
-						'fields' => array(
-							'Aco.alias',
-							'Permission._create'
-						)
-					);
-					$data = $this->Acl->Aro->Permission->find( 'all', $qd_permissions );
-
-					$permissions = Set::merge( $permissions, Set::combine( $data, '{n}.Aco.alias', '{n}.Permission._create' ) );
+					if( CAKE_BRANCH == '1.2' ) {
+						$qd_permissions = array(
+							'contain' => array(
+								'Aco'
+							),
+							'fields' => array(
+								'Aco.alias',
+								'Permission._create'
+							)
+						);
+						$data = $this->Acl->Aro->Permission->find( 'all', $qd_permissions );
+						$permissions = Set::merge( $permissions, Set::combine( $data, '{n}.Aco.alias', '{n}.Permission._create' ) );
+					}
+					else {
+						$qd_permissions = array(
+							'contain' => array(
+								'Aco'
+							),
+							'fields' => array(
+								'Aco.alias',
+								'AroAco._create'
+							)
+						);
+						$data = $this->Acl->Aro->AroAco->find( 'all', $qd_permissions );
+						$permissions = Set::merge( $permissions, Set::combine( $data, '{n}.Aco.alias', '{n}.AroAco._create' ) );
+					}
 					foreach( $permissions as $key => $permission ) {
 						$permissions[$key] = ( $permission != -1 );
 					}
@@ -163,16 +177,31 @@
 		}
 
 		/**
+		 * Permet la connexion via le composant Auth en fonction de la version de CakePHP
+		 *
+		 * @return type
+		 */
+		private function _cakeLogin() {
+			if( CAKE_BRANCH == '1.2' ) {
+				return $this->Auth->user();
+			}
+			else {
+				return $this->Auth->login();
+			}
+		}
+
+		/**
 		 *
 		 */
 		public function login() {
-			if( $this->Auth->user() ) {
-
-
-
-
+			if( $this->_cakeLogin() ) {
 				/* Lecture de l'utilisateur authentifié */
-				$authUser = $this->Auth->user();
+				if( CAKE_BRANCH == '1.2' ) {
+					$authUser = $this->Auth->user();
+				}
+				else { //Si CakePHP est en version >= 2.0 on interroge la base de données plutôt que le composant Auth
+					$authUser = $this->User->find( 'first', array( 'conditions' => array( 'User.id' => $this->Session->read( 'Auth.User.id' ) ), 'recursive' => -1 ) );
+				}
 				// Utilisateurs concurrents
 				if( Configure::read( 'Utilisateurs.multilogin' ) == false ) {
 					$this->User->Connection->begin();
@@ -212,13 +241,16 @@
 										'Utilisateur déjà connecté jusqu\'au %s (nous sommes actuellement le %s)', strftime( '%d/%m/%Y à %H:%M:%S', ( strtotime( $otherConnection['Connection']['modified'] ) + readTimeout() ) ), strftime( '%d/%m/%Y, il est %H:%M:%S' )
 								), 'flash/error'
 						);
+
 						$this->redirect( $this->Auth->logout() );
 					}
 				}
 				// Fin utilisateurs concurrents
 
 				/* lecture du service de l'utilisateur authentifié */
-				$this->User->Service->recursive = -1;
+				if( CAKE_BRANCH == '1.2' ) {
+					$this->User->Service->recursive = -1;
+				}
 				$group = $this->User->Group->find(
 						'first', array(
 					'conditions' => array(
