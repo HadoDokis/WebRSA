@@ -5,7 +5,7 @@
 	class AppController extends Controller
 	{
 
-		public $components = array( 'Session', 'Auth', 'Acl', 'Droits', 'Cookie', 'Jetons', 'Default', 'Gedooo.Gedooo');
+		public $components = array( 'Session', 'Auth', 'Acl', 'Droits', 'Cookie', 'Jetons', 'Default', 'Gedooo.Gedooo', 'DebugKit.Toolbar');
 		public $helpers = array( 'Xhtml', 'Form', 'Javascript', 'Permissions', 'Widget', 'Locale', 'Theme', 'Default', 'Number', 'Xpaginator', 'Gestionanomaliebdd' );
 		public $uses = array( 'User', 'Connection' );
 
@@ -112,7 +112,21 @@
 			  navigateur, donc il ré-exécute la demande)
 			 */
 			$this->disableCache(); // Disable browser cache ?
-			$this->Auth->autoRedirect = false;
+
+
+			//Paramétrage du composant Auth
+			if( CAKE_BRANCH == '1.2' ) {
+				$this->Auth->autoRedirect = false;
+			}
+			else {
+				$this->Auth->loginAction = array( 'controller' => 'users', 'action' => 'login' );
+				$this->Auth->logoutRedirect = array( 'controller' => 'users', 'action' => 'login' );
+				$this->Auth->loginRedirect = array( 'controller' => 'dossiers', 'action' => 'index' );
+
+				$this->Auth->authorize = array(
+					'Actions' => array( 'actionPath' => 'controllers' )
+				);
+			}
 
 			$this->set( 'etatdosrsa', ClassRegistry::init( 'Option' )->etatdosrsa() );
 			$return = parent::beforeFilter();
