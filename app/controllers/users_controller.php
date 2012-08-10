@@ -23,10 +23,143 @@
 		/**
 		 *
 		 */
-		public function _setOptions() {
+		protected function _setOptions() {
 			$options['Serviceinstructeur'] = $this->User->Serviceinstructeur->listOptions();
 			$options['Groups'] = $this->User->Group->find( 'list' );
 			$this->set( compact( 'options' ) );
+		}
+
+		/**
+		 * Chargement et mise en cache (session) des permissions de l'utilisateur
+		 * INFO:
+		 * 	- n'est réellement exécuté que la première fois
+		 * 	- http://dsi.vozibrale.com/articles/view/all-cakephp-acl-permissions-for-your-views
+		 * 	- http://www.neilcrookes.com/2009/02/26/get-all-acl-permissions/
+		 */
+		protected function _loadPermissions() {
+			// FIXME:à bouger dans un composant ?
+			if( $this->Session->check( 'Auth.User' ) && !$this->Session->check( 'Auth.Permissions' ) ) {
+				$aro = $this->Acl->Aro->find(
+						'first', array(
+					'conditions' => array(
+						'model' => 'Utilisateur',
+						'Aro.foreign_key' => $this->Session->read( 'Auth.User.id' )
+					)
+						)
+				);
+
+				// Recherche des droits pour les sous-groupes
+				$parent_id = Set::extract( $aro, 'Aro.parent_id' );
+				$parentAros = array( );
+				while( !empty( $parent_id ) && ( $parent_id != 0 ) ) {
+					$parentAro = $this->Acl->Aro->find(
+							'first', array(
+						'conditions' => array(
+							'Aro.id' => $parent_id
+						)
+							)
+					);
+					$parentAros[] = $parentAro;
+					$parent_id = Set::extract( $parentAro, 'Aro.parent_id' );
+				}
+
+				$permissions = array( );
+				if( !empty( $parentAros ) && !empty( $parentAros['Aro'] ) && !empty( $parentAros['Aco'] ) ) {
+					$permissions = Set::combine( $parentAros, '/Aco/alias', '/Aco/Permission/_create' );
+				}
+				if( !empty( $aro ) ) {
+					$qd_permissions = array(
+						'contain' => array(
+							'Aco'
+						),
+						'fields' => array(
+							'Aco.alias',
+							'Permission._create'
+						)
+					);
+					$data = $this->Acl->Aro->Permission->find( 'all', $qd_permissions );
+
+					$permissions = Set::merge( $permissions, Set::combine( $data, '{n}.Aco.alias', '{n}.Permission._create' ) );
+					foreach( $permissions as $key => $permission ) {
+						$permissions[$key] = ( $permission != -1 );
+					}
+					$this->Session->write( 'Auth.Permissions', $permissions );
+				}
+			}
+		}
+
+		/**
+		 * Chargement et mise en cache (session) des zones géographiques associées à l'utilisateur
+		 * INFO: n'est réellement exécuté que la première fois
+		 */
+		protected function _loadZonesgeographiques() {
+			if( $this->Session->check( 'Auth.User' ) && $this->Session->read( 'Auth.User.filtre_zone_geo' ) && !$this->Session->check( 'Auth.Zonegeographique' ) ) {
+				$qd_users_zonegeographiques = array(
+					'fields' => array(
+						'Zonegeographique.id',
+						'Zonegeographique.codeinsee'
+					),
+					'contain' => array(
+						'Zonegeographique'
+					),
+					'conditions' => array(
+						'UserZonegeographique.user_id' => $this->Session->read( 'Auth.User.id' )
+					)
+				);
+				$results = $this->User->UserZonegeographique->find( 'all', $qd_users_zonegeographiques );
+
+				if( count( $results ) > 0 ) {
+					$zones = array( );
+					foreach( $results as $result ) {
+						$zones[$result['Zonegeographique']['id']] = $result['Zonegeographique']['codeinsee'];
+					}
+					$this->Session->write( 'Auth.Zonegeographique', $zones ); // FIXME: vide -> rééxécute ?
+				}
+			}
+		}
+
+		/**
+		 * Chargement du service instructeur de l'utilisateur connecté, lancement
+		 * d'une erreur 500 si aucun service instructeur n'est associé à l'utilisateur
+		 *
+		 * @return void
+		 */
+		protected function _loadServiceInstructeur() {
+			if( !$this->Session->check( 'Auth.Serviceinstructeur' ) ) {
+				$qd_service = array(
+					'conditions' => array(
+						'Serviceinstructeur.id' => $this->Session->read( 'Auth.User.serviceinstructeur_id' )
+					),
+					'fields' => null,
+					'order' => null,
+					'recursive' => -1
+				);
+				$service = $this->User->Serviceinstructeur->find( 'first', $qd_service );
+				$this->assert( !empty( $service ), 'error500' );
+				$this->Session->write( 'Auth.Serviceinstructeur', $service['Serviceinstructeur'] );
+			}
+		}
+
+		/**
+		 * Chargement du groupe de l'utilisateur connecté, lancement
+		 * d'une erreur 500 si aucun groupe n'est associé à l'utilisateur
+		 *
+		 * @return void
+		 */
+		protected function _loadGroup() {
+			if( !$this->Session->check( 'Auth.Group' ) ) {
+				$qd_group = array(
+					'conditions' => array(
+						'Group.id' => $this->Session->read( 'Auth.User.group_id' )
+					),
+					'fields' => null,
+					'order' => null,
+					'recursive' => -1
+				);
+				$group = $this->User->Group->find( 'first', $qd_group );
+				$this->assert( !empty( $group ), 'error500' );
+				$this->Session->write( 'Auth.Group', $group['Group'] );
+			}
 		}
 
 		/**
@@ -34,9 +167,12 @@
 		 */
 		public function login() {
 			if( $this->Auth->user() ) {
+
+
+
+
 				/* Lecture de l'utilisateur authentifié */
 				$authUser = $this->Auth->user();
-
 				// Utilisateurs concurrents
 				if( Configure::read( 'Utilisateurs.multilogin' ) == false ) {
 					$this->User->Connection->begin();
@@ -94,6 +230,12 @@
 				$authUser['User']['aroAlias'] = $authUser['User']['username'];
 				/* lecture de la collectivite de l'utilisateur authentifié */
 				$this->Session->write( 'Auth', $authUser );
+
+				// chargements des informations complémentaires
+				$this->_loadPermissions();
+				$this->_loadZonesgeographiques();
+				$this->_loadGroup();
+				$this->_loadServiceInstructeur();
 
 				// Supprimer la vue cachée du menu
 				$this->_deleteCachedMenu();
@@ -290,7 +432,7 @@
 					'User.id' => $user_id
 				)
 			);
-			$userDb = $this->User->fidn( 'first', $qd_userDb );
+			$userDb = $this->User->find( 'first', $qd_userDb );
 
 
 			$this->assert( !empty( $userDb ), 'error404' );
