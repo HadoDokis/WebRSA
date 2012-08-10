@@ -112,9 +112,6 @@
 			  navigateur, donc il ré-exécute la demande)
 			 */
 			$this->disableCache(); // Disable browser cache ?
-
-			debug(CAKE_BRANCH);
-
 			$this->Auth->autoRedirect = false;
 
 			$this->set( 'etatdosrsa', ClassRegistry::init( 'Option' )->etatdosrsa() );
