@@ -88,6 +88,10 @@
 						'Personne.foyer_id' => $foyer['Foyer']['id'],
 						'( Prestation.natprest = \'RSA\' OR Prestation.natprest = \'PFA\' )',
 						'( Prestation.rolepers = \'DEM\' )',
+					),
+					'recursive' => -1,
+					'joins' => array(
+						$this->Dossier->Foyer->Personne->join( 'Prestation', array( 'type' => 'INNER' ) )
 					)
 				)
 			);

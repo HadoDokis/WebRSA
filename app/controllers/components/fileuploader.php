@@ -1,6 +1,11 @@
 <?php
-
-    App::import ('Core', 'File' );
+	if( CAKE_BRANCH == '1.2' ) {
+		App::import( 'Core', 'File' );
+	}
+	else {
+		App::uses('Folder', 'Utility');
+		App::uses('File', 'Utility');
+	}
 
     class FileuploaderComponent extends Component
     {
