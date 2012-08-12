@@ -106,7 +106,7 @@
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
 			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 
-			$querydata = $this->Criterefichecandidature->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), array_multisize( $this->params['named'] ) );
+			$querydata = $this->Criterefichecandidature->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), Xset::bump( $this->params['named'], '__' ) );
 			unset( $querydata['limit'] );
 			$actionscandidats_personnes = $this->ActioncandidatPersonne->find( 'all', $querydata );
 

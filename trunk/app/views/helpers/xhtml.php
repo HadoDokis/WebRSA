@@ -65,7 +65,7 @@
 			}
 			else {
 				$attributes['escape'] = $escape;
-				parent::tag( $name, $text, $attributes );
+				return parent::tag( $name, $text, $attributes );
 			}
 		}
 

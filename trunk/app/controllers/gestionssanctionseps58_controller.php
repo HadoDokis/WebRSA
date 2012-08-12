@@ -171,7 +171,7 @@
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
 			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 
-			$queryData = $this->Gestionsanctionep58->search( 'Gestion::visualisation', array_multisize( $this->params['named'] ), $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), null );
+			$queryData = $this->Gestionsanctionep58->search( 'Gestion::visualisation', Xset::bump( $this->params['named'], '__' ), $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), null );
 			unset( $queryData['limit'] );
 
 			$gestionssanctionseps58 = $this->Personne->find( 'all', $queryData );

@@ -63,7 +63,7 @@
 			$querydata = $this->Indicateursuivi->search(
 				$mesCodesInsee, 
 				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
-				array_multisize( $this->params['named'] ) 
+				Xset::bump( $this->params['named'], '__' ) 
 			);
 			unset( $querydata['limit'] );
 			$querydata = $this->_qdAddFilters( $querydata );

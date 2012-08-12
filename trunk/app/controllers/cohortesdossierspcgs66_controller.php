@@ -216,7 +216,7 @@
             $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
             $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 
-            $querydata = $this->Cohortedossierpcg66->search( 'Affectationdossierpcg66::affectes', $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), array_multisize( $this->params['named'] ), $this->Jetons->ids() );
+            $querydata = $this->Cohortedossierpcg66->search( 'Affectationdossierpcg66::affectes', $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), Xset::bump( $this->params['named'], '__' ), $this->Jetons->ids() );
             unset( $querydata['limit'] );
             $dossierspcgs66 = $this->Dossierpcg66->find( 'all', $querydata );
 
@@ -237,7 +237,7 @@
             $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
             $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 
-            $querydata = $this->Cohortedossierpcg66->search( 'Affectationdossierpcg66::aimprimer', $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), array_multisize( $this->params['named'] ), $this->Jetons->ids() );
+            $querydata = $this->Cohortedossierpcg66->search( 'Affectationdossierpcg66::aimprimer', $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), Xset::bump( $this->params['named'], '__' ), $this->Jetons->ids() );
             unset( $querydata['limit'] );
             
             $dossierspcgs66 = $this->Dossierpcg66->find( 'all', $querydata );

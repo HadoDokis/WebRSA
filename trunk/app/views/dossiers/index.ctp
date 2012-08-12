@@ -40,7 +40,7 @@
 				array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 'Search' ).toggle(); return false;" )
 			).'</li>';
 		}
-		
+
 		$formSent = ( isset( $this->data['Dossier']['recherche'] ) && $this->data['Dossier']['recherche'] );
 	?>
 </ul>
@@ -60,7 +60,7 @@
 		<?php echo $form->input( 'Detailcalculdroitrsa.natpf', array( 'label' => 'Nature de la prestation', 'type' => 'select', 'options' => $natpf, 'empty' => true ) );?>
 		<?php echo $form->input( 'Calculdroitrsa.toppersdrodevorsa', array( 'label' => 'Soumis à Droit et Devoir', 'type' => 'select', 'options' => $toppersdrodevorsa, 'empty' => true ) );?>
 		<?php echo $form->input( 'Serviceinstructeur.id', array( 'label' => __( 'lib_service', true ), 'type' => 'select' , 'options' => $typeservice, 'empty' => true ) );?>
-		
+
 		<?php echo $form->input( 'Dossier.fonorg', array( 'label' => 'Organisme émetteur du dossier', 'type' => 'select' , 'options' => $fonorg, 'empty' => true ) );?>
 
 		<?php echo $form->input( 'Dossier.dtdemrsa', array( 'label' => 'Filtrer par date de demande', 'type' => 'checkbox' ) );?>
@@ -76,10 +76,10 @@
 		<?php
 			$valueDossierDernier = isset( $this->data['Dossier']['dernier'] ) ? $this->data['Dossier']['dernier'] : true;
 			echo $form->input( 'Dossier.dernier', array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueDossierDernier ) );
-			
+
 		?>
 		<?php echo $search->etatdosrsa($etatdosrsa); ?>
-		
+
 	</fieldset>
 	<fieldset>
 		<legend>Recherche par Adresse</legend>
@@ -121,7 +121,10 @@
 	<h2 class="noprint">Résultats de la recherche</h2>
 
 	<?php if( is_array( $dossiers ) && count( $dossiers ) > 0 ):?>
-		<?php require( 'index.pagination.ctp' )?>
+		<?php
+			$pagination = $xpaginator->paginationBlock( 'Dossier', $this->passedArgs );
+			echo $pagination;
+		?>
 		<table id="searchResults" class="tooltips">
 			<thead>
 				<tr>
@@ -143,7 +146,7 @@
 			</thead>
 			<tbody>
 				<?php foreach( $dossiers as $index => $dossier ):?>
-					<?php 
+					<?php
 						$title = $dossier['Dossier']['numdemrsa'];
 						$innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
 							<tbody>
@@ -160,7 +163,7 @@
 									<th>Code INSEE</th>
 									<td>'.$dossier['Adresse']['numcomptt'].'</td>
 								</tr>
-								
+
 								<tr>
 									<th>Rôle</th>
 									<td>'.$rolepers[$dossier['Prestation']['rolepers']].'</td>
@@ -221,10 +224,10 @@
 								array( 'class' => 'noprint' )
 							),
 							array( $innerTable, array( 'class' => 'innerTableCell noprint' ) ),
-							
+
 						);
-						
-						
+
+
 						echo $xhtml->tableCells(
 							Set::merge( $array1, $array2 ),
 							array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
@@ -247,11 +250,11 @@
 			<li><?php
 				echo $xhtml->exportLink(
 					'Télécharger le tableau',
-					array( 'controller' => 'dossiers', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
+					array( 'controller' => 'dossiers', 'action' => 'exportcsv' ) + Set::flatten( $this->data, '__' )
 				);
 			?></li>
 		</ul>
-		<?php require( 'index.pagination.ctp' )?>
+		<?php echo $pagination;?>
 	<?php else:?>
 		<p>Vos critères n'ont retourné aucun dossier.</p>
 	<?php endif?>

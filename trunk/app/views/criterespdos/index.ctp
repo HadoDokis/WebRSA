@@ -173,7 +173,7 @@
 			<li><?php
 				echo $xhtml->exportLink(
 					'Télécharger le tableau',
-					array( 'controller' => 'criterespdos', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
+					array( 'controller' => 'criterespdos', 'action' => 'exportcsv' ) + Set::flatten( $this->data, '__' )
 				);
 			?></li>
 		</ul>

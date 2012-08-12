@@ -118,7 +118,7 @@
 				"Recoursapre::visualisation",
 				$mesCodesInsee,
 				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
-				array_multisize( $this->params['named'] )
+				Xset::bump( $this->params['named'], '__' )
 			);
 
 			unset( $querydata['limit'] );

@@ -202,7 +202,7 @@
 			<li><?php
 				echo $xhtml->exportLink(
 					'Télécharger le tableau',
-					array( 'controller' => 'cohortesci', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
+					array( 'controller' => 'cohortesci', 'action' => 'exportcsv' ) + Set::flatten( $this->data, '__' )
 				);
 			?></li>
 		</ul>

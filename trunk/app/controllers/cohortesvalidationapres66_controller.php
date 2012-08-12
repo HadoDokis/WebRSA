@@ -247,7 +247,7 @@
 				'Validationapre::validees',
 				$mesCodesInsee,
 				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
-				array_multisize( $this->params['named'] ),
+				Xset::bump( $this->params['named'], '__' ),
 				$this->Jetons->ids()
 			);
 			unset( $querydata['limit'] );
@@ -273,7 +273,7 @@
 				"Validationapre::{$statutValidation}",
 				$mesCodesInsee,
 				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
-				array_multisize( $this->params['named'] ),
+				Xset::bump( $this->params['named'], '__' ),
 				$this->Jetons->ids()
 			);
 			unset( $querydata['limit'] );

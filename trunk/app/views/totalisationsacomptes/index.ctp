@@ -86,7 +86,7 @@
 			<li><?php
 				echo $xhtml->exportLink(
 					'Télécharger le tableau',
-					array( 'controller' => 'totalisationsacomptes', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
+					array( 'controller' => 'totalisationsacomptes', 'action' => 'exportcsv' ) + Set::flatten( $this->data, '__' )
 				);
 			?></li>
 		</ul>

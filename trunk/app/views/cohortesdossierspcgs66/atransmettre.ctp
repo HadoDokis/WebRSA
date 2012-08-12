@@ -171,7 +171,7 @@
         <li><?php
             echo $xhtml->exportLink(
                 'Télécharger le tableau',
-                array( 'controller' => 'cohortesdossierspcgs66', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
+                array( 'controller' => 'cohortesdossierspcgs66', 'action' => 'exportcsv' ) + Set::flatten( $this->data, '__' )
             );
         ?></li>
     </ul>

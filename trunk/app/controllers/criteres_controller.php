@@ -40,7 +40,7 @@
 			$this->set( 'typeservice', $typeservice );
 			$this->set( 'rolepers', $this->Option->rolepers() );
 			// Structures référentes
-			$datas = Set::merge( $this->data, array_multisize( $this->params['named'] ) );
+			$datas = Set::merge( $this->data, Xset::bump( $this->params['named'], '__' ) );
 			$typeorient_id = Set::classicExtract( $datas, 'Critere.typeorient_id' );
 			$conditions = array();
 			$conditions = array( 'Structurereferente.actif' => 'O' );
@@ -152,7 +152,7 @@
 			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 			$this->set( 'typevoie', $this->Option->typevoie() );
 
-			$querydata = $this->Critere->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), array_multisize( $this->params['named'] ), $this->Jetons->ids() );
+			$querydata = $this->Critere->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), Xset::bump( $this->params['named'], '__' ), $this->Jetons->ids() );
 			unset( $querydata['limit'] );
 
 			$querydata = $this->_qdAddFilters( $querydata );

@@ -103,7 +103,7 @@
 						$this->params['pass'][0],
 					),
 					$this->params['named'],
-					array_unisize( $this->data )
+					Set::flatten( $this->data, '__' )
 				)
 			);
 		?></li>

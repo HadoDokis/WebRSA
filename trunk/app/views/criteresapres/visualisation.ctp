@@ -184,7 +184,7 @@
 			<li><?php
 				echo $xhtml->exportLink(
 					'Télécharger le tableau',
-					array( 'controller' => 'criteresapres', 'action' => 'exportcsv', $this->action, implode_assoc( '/', ':', array_unisize( $this->data ) ) )
+					array( 'controller' => 'criteresapres', 'action' => 'exportcsv', $this->action ) + Set::flatten( $this->data, '__' )
 				);
 			?></li>
 		</ul>

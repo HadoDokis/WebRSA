@@ -82,9 +82,19 @@
 			$this->set( compact( 'initialized', 'uninitialized', 'missing', 'prechargements', 'nonprechargements' ) );
 
 			// Traductions
-			App::import( 'Core', 'Folder' );
+			if( CAKE_BRANCH == '1.2' ) {
+				App::import( 'Core', 'Folder' );
+				App::import( 'Core', 'File' );
+				$messagesDir = APP.'locale/fre/LC_MESSAGES/';
+			}
+			else {
+				App::uses('Folder', 'Utility');
+				App::uses('File', 'Utility');
+				$messagesDir = APP.'Locale/fre/LC_MESSAGES/';
+			}
+
 			$folder = new Folder( false, false, 0777 );
-			$folder->cd( APP.'locale/fre/LC_MESSAGES/' );
+			$folder->cd( $messagesDir );
 			$files = $folder->find('.+\.po$');
 			$domaines = array();
 

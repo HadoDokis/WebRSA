@@ -424,7 +424,7 @@
 				$AuthZonegeographique = array();
 			}
 
-			$queryData = $this->Cohorte->recherche( 'Orienté', $AuthZonegeographique, $this->Session->read( 'Auth.User.filtre_zone_geo' ), array_multisize( $this->params['named'] ), $this->Jetons->ids() );
+			$queryData = $this->Cohorte->recherche( 'Orienté', $AuthZonegeographique, $this->Session->read( 'Auth.User.filtre_zone_geo' ), Xset::bump( $this->params['named'], '__' ), $this->Jetons->ids() );
 
 			if( $limit = Configure::read( 'nb_limit_print' ) ) {
 				$queryData['limit'] = $limit;
