@@ -250,39 +250,41 @@
 		public function view( $id = null ) {
 			$this->Dsp->forceVirtualFields = true;
 			$dsp = $this->Dsp->find(
-					'first', array(
-				'conditions' => array(
-					'Dsp.personne_id' => $id
-				),
-				'contain' => array(
-					'Personne',
-					'Libderact66Metier',
-					'Libsecactderact66Secteur',
-					'Libactdomi66Metier',
-					'Libsecactdomi66Secteur',
-					'Libemploirech66Metier',
-					'Libsecactrech66Secteur',
-					'Detaildifsoc',
-					'Detailaccosocfam',
-					'Detailaccosocindi',
-					'Detaildifdisp',
-					'Detailnatmob',
-					'Detaildiflog',
-					'Detailmoytrans',
-					'Detaildifsocpro',
-					'Detailprojpro',
-					'Detailfreinform',
-					'Detailconfort'
-				)
+				'first',
+				array(
+					'conditions' => array(
+						'Dsp.personne_id' => $id
+					),
+					'contain' => array(
+						'Personne',
+						'Libderact66Metier',
+						'Libsecactderact66Secteur',
+						'Libactdomi66Metier',
+						'Libsecactdomi66Secteur',
+						'Libemploirech66Metier',
+						'Libsecactrech66Secteur',
+						'Detaildifsoc',
+						'Detailaccosocfam',
+						'Detailaccosocindi',
+						'Detaildifdisp',
+						'Detailnatmob',
+						'Detaildiflog',
+						'Detailmoytrans',
+						'Detaildifsocpro',
+						'Detailprojpro',
+						'Detailfreinform',
+						'Detailconfort'
 					)
+				)
 			);
+
 			$qd_personne = array(
 				'conditions' => array(
 					'Personne.id' => $id
 				),
 				'fields' => null,
 				'order' => null,
-				'recursive' => 1
+				'recursive' => -1
 			);
 			$personne = $this->Dsp->Personne->find( 'first', $qd_personne );
 
@@ -297,16 +299,19 @@
 			$rev = false;
 
 			$dspRev = $this->DspRev->find(
-					'first', array(
-				'conditions' => array(
-					'dsp_id' => $dsp_id
-				),
-				'order' => array(
-					'DspRev.id ASC',
-					'DspRev.created ASC'
+				'first',
+				array(
+					'conditions' => array(
+						'dsp_id' => $dsp_id
+					),
+					'order' => array(
+						'DspRev.id ASC',
+						'DspRev.created ASC'
+					),
+					'recursive' => -1
 				)
-					)
 			);
+
 			if( !empty( $dspRev ) ) {
 				$rev = true;
 			}

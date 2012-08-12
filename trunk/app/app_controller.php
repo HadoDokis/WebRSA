@@ -6,7 +6,7 @@
 	{
 
 		public $components = array( 'Session', 'Auth', 'Acl', 'Jetons', 'Default', 'Gedooo.Gedooo' );
-		public $helpers = array( 'Xhtml', 'Form', 'Javascript', 'Permissions', 'Widget', 'Locale', 'Default', 'Number', 'Xpaginator' );
+		public $helpers = array( 'Xhtml', 'Form', 'Javascript', 'Permissions', 'Locale', 'Default', 'Xpaginator', 'Gestionanomaliebdd' );
 		public $uses = array( 'User', 'Connection' );
 
 		/**
