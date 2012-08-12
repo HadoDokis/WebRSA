@@ -42,7 +42,7 @@
 				$aro = $this->Acl->Aro->find(
 						'first', array(
 					'conditions' => array(
-						'model' => 'Utilisateur',
+						'Aro.model' => 'Utilisateur',
 						'Aro.foreign_key' => $this->Session->read( 'Auth.User.id' )
 					)
 						)
@@ -326,10 +326,18 @@
 		}
 
 		/**
+		 * Suppression des répertoires temporaires de l'utilisateur.
 		 *
+		 * @return void
 		 */
 		protected function _deleteTemporaryFiles() {
-			App::import( 'Core', 'File' );
+			if( CAKE_BRANCH == '1.2' ) {
+				App::import( 'Core', 'File' );
+			}
+			else {
+				App::uses('Folder', 'Utility');
+				App::uses('File', 'Utility');
+			}
 
 			foreach( array( 'files', 'pdf' ) as $subdir ) {
 				$oFolder = new Folder( TMP.$subdir.DS.session_id(), true, 0777 );

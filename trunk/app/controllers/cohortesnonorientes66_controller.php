@@ -12,7 +12,7 @@
 			'Canton'
 		);
 
-		public $helpers = array( 'Csv', 'Ajax', 'Default2', 'Locale', 'Search', 'Fileuploader' );
+		public $helpers = array( 'Csv', 'Ajax', 'Default2', 'Locale', 'Search', 'Fileuploader', 'Gestionanomaliebdd' );
 
 		public $components = array(
 			'Prg2' => array(
@@ -221,7 +221,7 @@
 					}
 
 					$progressivePaginate = !Set::classicExtract( $this->data, 'Search.paginationNombreTotal' );
-					
+
 					$this->paginate = $this->Cohortenonoriente66->search( $statutNonoriente, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
 					$this->paginate['limit'] = $limit;
 					$cohortesnonorientes66 = $this->paginate( 'Personne', array(), array(), $progressivePaginate );

@@ -1,8 +1,8 @@
 <?php
     class AideapreBehavior extends ModelBehavior
     {
-        function beforeSave( &$model, $options = array() ) {
-            $return = parent::beforeSave( $model, $options );
+        function beforeSave( &$model ) {
+            parent::beforeSave( $model );
 
             $suivi = ClassRegistry::init( 'Suiviaideapretypeaide' );
 
@@ -12,8 +12,6 @@
                     $model->data[$model->name]["{$field}suivi"] = Set::classicExtract( $personne, "Suiviaideapre.{$field}" );
                 }
             }
-
-            return $return;
         }
     }
 ?>

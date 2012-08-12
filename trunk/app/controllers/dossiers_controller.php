@@ -6,7 +6,7 @@
 		public $name = 'Dossiers';
 		public $uses = array( 'Dossier', 'Option', 'Informationpe' );
 		public $aucunDroit = array( 'menu' );
-		public $helpers = array( 'Csv' , 'Search', 'Default2' );
+		public $helpers = array( 'Csv' , 'Search', 'Default2', 'Gestionanomaliebdd' );
 
 		public $paginate = array(
 			// FIXME

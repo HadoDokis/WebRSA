@@ -22,7 +22,7 @@
 		* @access public
 		*/
 
-		function setup( &$model, $settings ) {
+		function setup( &$model, $settings = array() ) {
 			if (!isset($this->settings[$model->alias])) {
 				$this->settings[$model->alias] = array();
 			}

@@ -20,7 +20,7 @@
 		 * @param string $format
 		 * @return string
 		 */
-		public function gedConversion( &$Model, $fileName, $format ) {
+		public function gedConversion( &$model, $fileName, $format ) {
 			// FIXME: http://pear.php.net/manual/en/package.webservices.xml-rpc.examples.php -> vérifier la présecence
 			// pear upgrade
 			// pear install xml_rpc / var_dump(class_exists('System', false));
@@ -54,9 +54,9 @@
 		 *
 		 * @return array
 		 */
-		public function gedConfigureKeys( &$Model ) {
+		public function gedConfigureKeys( &$model ) {
 			return array_merge(
-				parent::gedConfigureKeys( $Model ),
+				parent::gedConfigureKeys( $model ),
 				array(
 					'Gedooo.cloudooo_host' => 'string',
 					'Gedooo.cloudooo_port' => 'string'
@@ -67,11 +67,11 @@
 		/**
 		 * @return array
 		 */
-		public function gedTests( &$Model ) {
+		public function gedTests( &$model ) {
 			App::import( 'Model', array( 'Appchecks.Check' ) );
 			$Check = ClassRegistry::init( 'Check' );
 
-			$results = parent::gedTests( $Model );
+			$results = parent::gedTests( $model );
 			$results['ping_cloudooo'] = $Check->socket( Configure::read( 'Gedooo.cloudooo_host' ), Configure::read( 'Gedooo.cloudooo_port' ) );
 
 			return $results;

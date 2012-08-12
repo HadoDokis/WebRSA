@@ -31,7 +31,7 @@
 		*
 		*/
 
-		public function setup( &$model, $settings ) {
+		public function setup( &$model, $settings = array() ) {
 			$settings = Set::merge( $this->defaultSettings, $settings );
 
 			if (!isset($this->settings[$model->alias])) {
@@ -208,7 +208,7 @@
 		*
 		*/
 
-		public function beforeSave( &$model, $options = array() ) {
+		public function beforeSave( &$model ) {
 			$model->data = $this->doFormatting( $model, $model->data );
 		}
 	}

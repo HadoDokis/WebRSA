@@ -245,7 +245,7 @@
 		 *
 		 * @return array
 		 */
-		public function gedConfigureKeys( &$Model ) {
+		public function gedConfigureKeys( &$model ) {
 			return array(
 				'Gedooo.wsdl' => 'string'
 			);
@@ -253,10 +253,10 @@
 
 		public function gedTestPrint() {
 			if( get_class( $this ) == 'GedoooClassicBehavior' ) {
-				$test_print = $this->ged( $Model, array( ), GEDOOO_TEST_FILE );
+				$test_print = $this->ged( $model, array( ), GEDOOO_TEST_FILE );
 			}
 			else {
-				$test_print = $this->gedFusion( $Model, array( 'foo' => 'bar' ), GEDOOO_TEST_FILE );
+				$test_print = $this->gedFusion( $model, array( 'foo' => 'bar' ), GEDOOO_TEST_FILE );
 			}
 
 			$test_print = !empty( $test_print ) && preg_match( '/^(%PDF\-[0-9]|PK)/m', $test_print );
@@ -270,7 +270,7 @@
 		/**
 		 * @return array
 		 */
-		public function gedTests( &$Model ) {
+		public function gedTests( &$model ) {
 			App::import( 'Model', array( 'Appchecks.Check' ) );
 			$Check = ClassRegistry::init( 'Check' );
 

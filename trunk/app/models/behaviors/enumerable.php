@@ -49,8 +49,8 @@
 		);
 
 		/**
-		 *
 		 * Add validation rule for model->field
+		 *
 		 * @param object $model
 		 * @param string $field
 		 */
@@ -60,7 +60,8 @@
 				$model->validate[$field][] = array(
 					'rule' => array( 'inList', $options ),
 					'message' => sprintf(
-							__( $this->settings[$model->alias]['validationRule'], true ), implode( $this->settings[$model->alias]['validationRuleSeparator'], $options )
+						__( $this->settings[$model->alias]['validationRule'], true ),
+						implode( $this->settings[$model->alias]['validationRuleSeparator'], $options )
 					),
 					'allowEmpty' => $this->settings[$model->alias]['validationRuleAllowEmpty']
 				);
@@ -74,7 +75,7 @@
 		 * @param object $model
 		 * @param array $settings
 		 */
-		public function setup( &$model, $settings ) {
+		public function setup( &$model, $settings = array() ) {
 			// Setup ... FIXME: case insensitive
 			/* $default = array(
 			  // FIXME: en Anglais
@@ -92,7 +93,8 @@
 
 			$settings = Set::normalize( $settings );
 			$this->settings[$model->alias] = array_merge(
-					$this->settings[$model->alias], (array) $settings
+				$this->settings[$model->alias],
+				(array) $settings
 			);
 
 			// Setup fields

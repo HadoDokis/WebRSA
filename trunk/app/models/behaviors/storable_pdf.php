@@ -55,29 +55,29 @@
 		 * public $actsAs = array( 'StorablePdf' => array( 'active' => array( 58, 66 ) ) );
 		 *     -> Les CG 58 et 66
 		 *
-		 * @param Model $Model
+		 * @param Model $model
 		 * @param array $settings
 		 */
-		public function setup( Model &$Model, array $settings ) {
-			$this->settings[$Model->alias] = Set::merge( $this->defaultSettings, $settings );
+		public function setup(&$model, $settings = array() ) {
+			$this->settings[$model->alias] = Set::merge( $this->defaultSettings, $settings );
 
-			if( is_array( $this->settings[$Model->alias]['active'] ) || !is_bool( $this->settings[$Model->alias]['active'] ) ) {
-				$this->settings[$Model->alias]['active'] = (array)$this->settings[$Model->alias]['active'];
+			if( is_array( $this->settings[$model->alias]['active'] ) || !is_bool( $this->settings[$model->alias]['active'] ) ) {
+				$this->settings[$model->alias]['active'] = (array)$this->settings[$model->alias]['active'];
 				$cg = Configure::read( 'Cg.departement' );
-				$this->settings[$Model->alias]['active'] = in_array( $cg, $this->settings[$Model->alias]['active'] );
+				$this->settings[$model->alias]['active'] = in_array( $cg, $this->settings[$model->alias]['active'] );
 			}
 		}
 
 		/**
 		 * Stocke un PDF (si besoin en écrasant l'ancien enregistrement) dans la table pdfs.
 		 *
-		 * @param Model $Model
+		 * @param Model $model
 		 * @param integer $id
 		 * @param string $modeledoc
 		 * @param mixed $pdf
 		 * @return boolean
 		 */
-		public function storePdf( Model &$Model, $id, $modeledoc, $pdf ) {
+		public function storePdf(&$model, $id, $modeledoc, $pdf ) {
 			$Pdf = ClassRegistry::init( 'Pdf' );
 
 			$oldRecord = $Pdf->find(
@@ -85,14 +85,14 @@
 				array(
 					'fields' => array( 'id' ),
 					'conditions' => array(
-						'modele' => $Model->alias,
+						'modele' => $model->alias,
 						'modeledoc' => $modeledoc,
 						'fk_value' => $id
 					)
 				)
 			);
 
-			$oldRecord['Pdf']['modele'] = $Model->alias;
+			$oldRecord['Pdf']['modele'] = $model->alias;
 			$oldRecord['Pdf']['modeledoc'] = $modeledoc;
 			$oldRecord['Pdf']['fk_value'] = $id;
 			$oldRecord['Pdf']['document'] = $pdf;
@@ -105,25 +105,25 @@
 		 * Génère et stocke un PDF pour un enregistrement donné.
 		 * Fait appel aux méthodes getDataForPdf et modeleOdt du modèle.
 		 *
-		 * @param Model $Model
+		 * @param Model $model
 		 * @param integer $id
 		 * @return boolean
 		 */
-		public function generatePdf( Model &$Model, $id ) {
-			if( !$this->settings[$Model->alias]['active'] ) {
+		public function generatePdf(&$model, $id ) {
+			if( !$this->settings[$model->alias]['active'] ) {
 				return true;
 			}
 
 			$success = true;
-			$data = $Model->getDataForPdf( $id );
+			$data = $model->getDataForPdf( $id );
 
 			if( !empty( $data ) ) {
-				$modeledoc = $Model->modeleOdt( $data );
+				$modeledoc = $model->modeleOdt( $data );
 
-				$pdf = $Model->ged( $data, $modeledoc );
+				$pdf = $model->ged( $data, $modeledoc );
 
 				if( $pdf ) {
-					$success = $this->storePdf( $Model, $id, $modeledoc, $pdf ) && $success;
+					$success = $this->storePdf( $model, $id, $modeledoc, $pdf ) && $success;
 				}
 				else {
 					$success = false;
@@ -131,7 +131,7 @@
 			}
 			else {
 				$pdfModel = ClassRegistry::init( 'Pdf' );
-				$success = $pdfModel->deleteAll( array( 'modele' => $Model->alias, 'fk_value' => $id ) ) && $success;
+				$success = $pdfModel->deleteAll( array( 'modele' => $model->alias, 'fk_value' => $id ) ) && $success;
 			}
 
 			return $success;
@@ -140,22 +140,22 @@
 		 * Automatisation de l'enregistrement ou de la suppression du PDF (possibilité de ne pas exécuter d'action).
 		 * Le return ne sert à rien: même si on retourne false c'est comme si ça s'était bien passé
 		 *
-		 * @param Model $Model
+		 * @param Model $model
 		 * @param boolean $created
 		 * @return boolean
 		 */
-		public function afterSave( Model &$Model, $created ) {
-			if( !$this->settings[$Model->alias]['active'] ) {
+		public function afterSave(&$model, $created ) {
+			if( !$this->settings[$model->alias]['active'] ) {
 				return true;
 			}
 
-			$function = $this->settings[$Model->alias][__FUNCTION__];
+			$function = $this->settings[$model->alias][__FUNCTION__];
 
 			if( $function == 'generatePdf' ) {
-				return $this->generatePdf( $Model, $Model->id );
+				return $this->generatePdf( $model, $model->id );
 			}
 			else if( $function == 'deleteAll' ) {
-				return ClassRegistry::init( 'Pdf' )->deleteAll( array( 'modele' => $Model->alias, 'fk_value' => $Model->id ) );
+				return ClassRegistry::init( 'Pdf' )->deleteAll( array( 'modele' => $model->alias, 'fk_value' => $model->id ) );
 			}
 			else if( $function == false || is_null( $function ) ) {
 				return true;
@@ -174,18 +174,18 @@
 		 * 	- fonctionne avec Model::delete
 		 * 	- fonctionne avec Model::deleteAll SSI le paramètre callbacks est à true (false par défaut)
 		 *
-		 * @param Model $Model
+		 * @param Model $model
 		 * @return boolean
 		 */
-		public function afterDelete( Model &$Model ) {
-			if( !$this->settings[$Model->alias]['active'] ) {
+		public function afterDelete(&$model ) {
+			if( !$this->settings[$model->alias]['active'] ) {
 				return true;
 			}
 
-			$function = $this->settings[$Model->alias][__FUNCTION__];
+			$function = $this->settings[$model->alias][__FUNCTION__];
 
 			if( $function == 'deleteAll' ) {
-				return ClassRegistry::init( 'Pdf' )->deleteAll( array( 'modele' => $Model->alias, 'fk_value' => $Model->id ) );
+				return ClassRegistry::init( 'Pdf' )->deleteAll( array( 'modele' => $model->alias, 'fk_value' => $model->id ) );
 			}
 			else if( $function == false || is_null( $function ) ) {
 				return true;
@@ -203,22 +203,22 @@
 		 * Il est possible de mettre à jour la date d'impression dans la table liée
 		 * au modèle.
 		 *
-		 * @param &$Model Model Le modèle auquel ce behavior est attaché.
+		 * @param &$model Model Le modèle auquel ce behavior est attaché.
 		 * @param $id integer La valeur de la clé primaire de l'enregistrement recherché.
 		 * @param $printDateColumn string La colonne qui contient la date d'impression
 		 *        devant être mise à jour, null sinon.
 		 * @return array
 		 */
-		public function getStoredPdf( Model &$Model, $id, $printDateColumn = null ) {
-			if( !$this->settings[$Model->alias]['active'] ) {
+		public function getStoredPdf(&$model, $id, $printDateColumn = null ) {
+			if( !$this->settings[$model->alias]['active'] ) {
 				return array();
 			}
 
 			if( !empty( $printDateColumn ) ) {
-				$Model->updateAll(
-						array( "{$Model->alias}.{$printDateColumn}" => date( "'Y-m-d'" ) ), array(
-					"\"{$Model->alias}\".\"{$Model->primaryKey}\"" => $id,
-					"\"{$Model->alias}\".\"{$printDateColumn}\" IS NULL"
+				$model->updateAll(
+						array( "{$model->alias}.{$printDateColumn}" => date( "'Y-m-d'" ) ), array(
+					"\"{$model->alias}\".\"{$model->primaryKey}\"" => $id,
+					"\"{$model->alias}\".\"{$printDateColumn}\" IS NULL"
 						)
 				);
 			}
@@ -227,14 +227,14 @@
 				'first',
 				array(
 					'conditions' => array(
-						'Pdf.modele' => $Model->alias,
+						'Pdf.modele' => $model->alias,
 						'Pdf.fk_value' => $id,
 					)
 				)
 			);
 
 			if( !empty( $pdf ) && empty( $pdf['Pdf']['document'] ) ) {
-				$cmisPdf = Cmis::read( "/{$Model->alias}/{$id}.pdf", true );
+				$cmisPdf = Cmis::read( "/{$model->alias}/{$id}.pdf", true );
 				$pdf['Pdf']['document'] = $cmisPdf['content'];
 			}
 

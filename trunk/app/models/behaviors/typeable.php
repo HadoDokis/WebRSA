@@ -35,7 +35,7 @@
 		* FIXME: dans AppBehavior
 		*/
 
-		public function setup( &$model, $settings ) {
+		public function setup( &$model, $settings = array() ) {
 			if (!isset($this->settings[$model->alias])) {
 				$this->settings[$model->alias] = array();
 			}

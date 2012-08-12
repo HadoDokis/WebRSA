@@ -44,7 +44,7 @@
 		/**
 		*
 		*/
-		public function setup( &$model, $settings ) {
+		public function setup( &$model, $settings = array() ) {
 			if( !empty( $settings ) ) {
 				$cg = Configure::read( 'Cg.departement' );
 				$model->modelesOdt = (array)$model->modelesOdt;
