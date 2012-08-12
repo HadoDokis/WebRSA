@@ -29,7 +29,7 @@
 	<li><?php
 		echo $xhtml->exportLink(
 			'Télécharger le tableau',
-			array( 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
+			array( 'action' => 'exportcsv' ) + Set::flatten( $this->data, '__' )
 		);
 	?></li>
 </ul>

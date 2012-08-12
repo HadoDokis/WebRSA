@@ -160,7 +160,7 @@
 			<li><?php
 				echo $xhtml->exportLink(
 					'Télécharger le tableau',
-					array( 'controller' => 'criteresdossierspcgs66', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
+					array( 'controller' => 'criteresdossierspcgs66', 'action' => 'exportcsv' ) + Set::flatten( $this->data, '__' )
 				);
 			?></li>
 		</ul>

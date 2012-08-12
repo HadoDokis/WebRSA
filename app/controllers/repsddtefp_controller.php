@@ -102,7 +102,7 @@
 		*/
 
 		public function exportcsv() {
-			$queryData = $this->Repddtefp->search( array_multisize( $this->params['named'] ) );
+			$queryData = $this->Repddtefp->search( Xset::bump( $this->params['named'], '__' ) );
 			unset( $queryData['limit'] );
 
 			$this->Etatliquidatif->Apre->deepAfterFind = false;

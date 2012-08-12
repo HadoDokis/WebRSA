@@ -39,8 +39,10 @@
 	<h2 class="noprint">Liste des allocations pour le mois de <?php echo isset( $mois ) ? $mois : null ; ?></h2>
 
 	<?php if( is_array( $infosfinancieres ) && count( $infosfinancieres ) > 0  ):?>
-	<?php /*echo $pagination;*/?>
-	<?php require( 'index.pagination.ctp' )?>
+	<?php
+		$pagination = $xpaginator->paginationBlock( 'Infofinanciere', $this->passedArgs );
+		echo $pagination;
+	?>
 		<table id="searchResults" class="tooltips">
 			<thead>
 				<tr>
@@ -132,11 +134,11 @@
 			<li><?php
 				echo $xhtml->exportLink(
 					'Télécharger le tableau',
-					array( 'controller' => 'infosfinancieres', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
+					array( 'controller' => 'infosfinancieres', 'action' => 'exportcsv' ) + Set::flatten( $this->data, '__' )
 				);
 			?></li>
 		</ul>
-	<?php require( 'index.pagination.ctp' )?>
+	<?php echo $pagination;?>
 	<?php else:?>
 		<p>Vos critères n'ont retourné aucun dossier.</p>
 	<?php endif?>

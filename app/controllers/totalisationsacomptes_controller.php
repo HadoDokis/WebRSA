@@ -34,7 +34,7 @@
 		*** *******************************************************************/
 
 		public function exportcsv() {
-			$params = $this->Totalisationacompte->search( array_multisize( $this->params['named'] ) );
+			$params = $this->Totalisationacompte->search( Xset::bump( $this->params['named'], '__' ) );
 			$totsacoms = $this->Totalisationacompte->find( 'all', $params );
 
 			$identsflux = $this->Identificationflux->find( 'all' );

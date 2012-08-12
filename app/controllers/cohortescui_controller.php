@@ -158,7 +158,7 @@ class CohortescuiController extends AppController {
 		$mesZonesGeographiques = $this->Session->read('Auth.Zonegeographique');
 		$mesCodesInsee = (!empty($mesZonesGeographiques) ? $mesZonesGeographiques : array() );
 
-		$querydata = $this->Cohortecui->search('Decisioncui::valides', $mesCodesInsee, $this->Session->read('Auth.User.filtre_zone_geo'), array_multisize($this->params['named']), $this->Jetons->ids());
+		$querydata = $this->Cohortecui->search('Decisioncui::valides', $mesCodesInsee, $this->Session->read('Auth.User.filtre_zone_geo'), Xset::bump( $this->params['named'], '__' ), $this->Jetons->ids());
 		unset($querydata['limit']);
 		$cuis = $this->Cui->find('all', $querydata);
 

@@ -187,13 +187,13 @@
         <li><?php
             echo $xhtml->exportLink(
                 'Télécharger le tableau',
-                array( 'controller' => 'cohortesvalidationapres66', 'action' => 'exportcsv', implode_assoc( '/', ':', array_unisize( $this->data ) ) )
+                array( 'controller' => 'cohortesvalidationapres66', 'action' => 'exportcsv' ) + Set::flatten( $this->data, '__' )
             );
         ?></li>
 		<li><?php
             echo $xhtml->printCohorteLink(
 				'Imprimer la cohorte',
-				array( 'controller' => 'cohortesvalidationapres66', 'action' => 'notificationsCohorte', $this->action, implode_assoc( '/', ':', array_unisize( $this->data ) ) )
+				array( 'controller' => 'cohortesvalidationapres66', 'action' => 'notificationsCohorte', $this->action ) + Set::flatten( $this->data, '__' )
 			);
         ?></li>
     </ul>

@@ -92,7 +92,7 @@
 
 
 
-			$queryData = $this->{$this->modelClass}->searchNonReoriente( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), array_multisize( $this->params['named'] ) );
+			$queryData = $this->{$this->modelClass}->searchNonReoriente( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), Xset::bump( $this->params['named'], '__' ) );
 			unset( $queryData['limit'] );
 
 			$orientsstructs = $this->{$this->modelClass}->Orientstruct->find( 'all', $queryData );

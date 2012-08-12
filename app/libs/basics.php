@@ -274,63 +274,6 @@
 		}
 	}
 
-
-	/**
-		* ...
-		*
-		* @param array $array
-		* @param array $filterKeys
-		* @return array $newArray
-	*/
-
-	/*function array_filter_keys( array $array, array $filterKeys, $remove = false ) { // FIXME ?
-		$newArray = array();
-		foreach( $array as $key => $value) {
-			if( $remove && !in_array( $key, $filterKeys ) ) {
-				$newArray[$key] = $value;
-			}
-			else if( !$remove && in_array( $key, $filterKeys ) ) {
-				$newArray[$key] = $value;
-			}
-		}
-		return $newArray;
-	}*/
-
-
-	/**
-		@input  multisized array (eg. array( 'Foo' => array( 'Bar' => 'value' ) ) )
-		@output unisized array (eg. array( 'Foo__Bar' => 'value' ) )
-	*/
-	function array_unisize( $array, $prefix = null ) {
-		$newArray = array();
-		if( is_array( $array ) && !empty( $array ) ) {
-			foreach( $array as $key => $value ) {
-				$newKey = ( !empty( $prefix ) ? $prefix.'__'.$key : $key );
-				if( is_array( $value ) ) {
-					$newArray = Set::merge( $newArray, array_unisize( $value, $newKey ) );
-				}
-				else {
-					$newArray[$newKey] = $value;
-				}
-			}
-		}
-		return $newArray;
-	}
-
-	/**
-		@output multisized array (eg. array( 'Foo' => array( 'Bar' => 'value' ) ) )
-		@input  unisized array (eg. array( 'Foo__Bar' => 'value' ) )
-	*/
-	function array_multisize( array $array, $prefix = null ) {
-		$newArray = array();
-		if( is_array( $array ) && !empty( $array ) ) {
-			foreach( $array as $key => $value ) {
-				$newArray = Set::insert( $newArray, implode( '.', explode( '__', $key ) ), $value );
-			}
-		}
-		return $newArray;
-	}
-
 	function implode_assoc( $outer_glue, $inner_glue, $array, $allowempty = true ) {
 		$ret = array();
 		foreach( $array as $key => $value ) {

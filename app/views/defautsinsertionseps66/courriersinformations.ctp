@@ -64,7 +64,7 @@
 			echo '<ul class="actionMenu">';
 				echo '<li>'.$xhtml->link(
 					'Imprimer les courriers d\'information',
-					array( 'controller' => 'defautsinsertionseps66', 'action' => 'printCourriersInformations', implode_assoc( '/', ':', array_unisize( $this->data ) ) ),
+					array( 'controller' => 'defautsinsertionseps66', 'action' => 'printCourriersInformations' ) + Set::flatten( $this->data, '__' ),
 					array( 'class' => 'button print' ),
 					'Etes-vous sûr de vouloir imprimer les courriers d\'information ?'
 				).' </li>';
