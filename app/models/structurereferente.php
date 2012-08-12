@@ -423,11 +423,11 @@
 		/**
 		 * Suppression et regénération du cache.
 		 *
-		 * @return void
+		 * @return mixed
 		 */
 		protected function _regenerateCache() {
 			Cache::delete( "{$this->alias}_listOptions" );
-			$this->listOptions();
+			return $this->listOptions();
 		}
 
 		/**
