@@ -28,10 +28,11 @@
 		);
 
 		/**
-		*
-		*/
-
-		public function beforeValidate() {
+		 *
+		 * @param array $options
+		 * @return boolean
+		 */
+		public function beforeValidate( $options = array() ) {
 			$_compare = Set::extract( $this->data, 'Cohorteindu.compare' );
 			$_mtmoucompta = Set::extract( $this->data, 'Cohorteindu.mtmoucompta' );
 
@@ -39,6 +40,8 @@
 				$this->data['Cohorteindu']['compare'] = $_compare;
 				$this->data['Cohorteindu']['mtmoucompta'] = $_mtmoucompta;
 			}
+
+			return parent::beforeValidate( $options );
 		}
 
 		/**

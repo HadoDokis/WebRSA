@@ -66,7 +66,7 @@
 		* @access public
 		*/
 
-		public function setup( &$model, $settings ) {
+		public function setup( &$model, $settings = array() ) {
 			$cacheKey = Inflector::underscore( __CLASS__ ).'_'.Inflector::underscore( $model->alias );
 			$validate = Cache::read( $cacheKey );
 

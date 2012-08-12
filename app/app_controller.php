@@ -5,8 +5,8 @@
 	class AppController extends Controller
 	{
 
-		public $components = array( 'Session', 'Auth', 'Acl', 'Droits', 'Cookie', 'Jetons', 'Default', 'Gedooo.Gedooo', 'DebugKit.Toolbar');
-		public $helpers = array( 'Xhtml', 'Form', 'Javascript', 'Permissions', 'Widget', 'Locale', 'Theme', 'Default', 'Number', 'Xpaginator', 'Gestionanomaliebdd' );
+		public $components = array( 'Session', 'Auth', 'Acl', 'Jetons', 'Default', 'Gedooo.Gedooo' );
+		public $helpers = array( 'Xhtml', 'Form', 'Javascript', 'Permissions', 'Widget', 'Locale', 'Default', 'Number', 'Xpaginator' );
 		public $uses = array( 'User', 'Connection' );
 
 		/**
@@ -169,7 +169,7 @@
 				// Need to finish transaction ?
 				if( isset( $this->{$this->modelClass} ) ) {
 					$db = $this->{$this->modelClass}->getDataSource();
-					if( $db->_transactionStarted ) {
+					if( CAKE_BRANCH != '1.2' || $db->_transactionStarted ) {
 						$db->rollback( $this->{$this->modelClass} );
 					}
 				}
@@ -656,33 +656,5 @@
 					__( "{$message}->{$class}", true ), 'default', array( 'class' => $class )
 			);
 		}
-
-		/**
-		 * Ajoute les caractères '*' devant et derrière les valeurs non
-		 * vides pour les clés qui ont été définies.
-		 *
-		 * @param array $data Un array de profondeur quelconque venant
-		 *  d'un formulaire de recherche.
-		 * @param mixed $wildcardKeys Soit une liste de clés, soit la
-		 *  valeur true pour appliquer sur toutes les clés.
-		 * @return array
-		 */
-		protected function _wildcardKeys( $data, $wildcardKeys ) {
-			$search = array( );
-			foreach( Set::flatten( $data ) as $key => $value ) {
-				$keyNeedsWildcard = (
-						$wildcardKeys === true
-						|| ( is_array( $wildcardKeys ) && in_array( $key, $wildcardKeys ) )
-						);
-				if( $keyNeedsWildcard && (!is_null( $value ) && trim( $value ) != '' ) ) {
-					$search[$key] = "*{$value}*";
-				}
-				else {
-					$search[$key] = $value;
-				}
-			}
-			return Xset::bump( $search );
-		}
-
 	}
 ?>

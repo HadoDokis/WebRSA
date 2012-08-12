@@ -32,11 +32,11 @@
 		/**
 		 * Setup this behavior with the specified configuration settings.
 		 *
-		 * @param Model $Model Model using this behavior
+		 * @param Model $model Model using this behavior
 		 * @param array $config Configuration settings for $model
 		 * @return void
 		 */
-		public function setup( &$Model, $config = array() ) {
+		public function setup( &$model, $config = array() ) {
 			$method = Configure::read( 'Gedooo.method' );
 
 			switch( $method ) {
@@ -50,7 +50,7 @@
 					$this->_gedoooBehavior = 'GedoooUnoconv';
 					break;
 				default:
-					$Model->log( "Paramétrage incorrect: la méthode de Gedooo '{$method}' n'existe pas.", LOG_ERROR );
+					$model->log( "Paramétrage incorrect: la méthode de Gedooo '{$method}' n'existe pas.", LOG_ERROR );
 			}
 
 			if( !empty( $this->_gedoooBehavior ) ) {
@@ -63,8 +63,8 @@
 					}
 				}
 
-				if( !$Model->Behaviors->attached( "Gedooo.{$this->_gedoooBehavior}" ) ) {
-					$Model->Behaviors->attach( "Gedooo.{$this->_gedoooBehavior}" );
+				if( !$model->Behaviors->attached( "Gedooo.{$this->_gedoooBehavior}" ) ) {
+					$model->Behaviors->attach( "Gedooo.{$this->_gedoooBehavior}" );
 				}
 			}
 		}
@@ -73,16 +73,16 @@
 		 * Clean up any initialization this behavior has done on a model.  Called when a behavior is dynamically
 		 * detached from a model using Model::detach().
 		 *
-		 * @param AppModel $Model Model using this behavior
+		 * @param AppModel $model Model using this behavior
 		 * @return void
 		 * @see BehaviorCollection::detach()
 		 */
-		public function cleanup( &$Model ) {
-			if( !empty( $this->_gedoooBehavior ) && $Model->Behaviors->attached( "Gedooo.{$this->_gedoooBehavior}" ) ) {
-				$Model->Behaviors->detach( "Gedooo.{$this->_gedoooBehavior}" );
+		public function cleanup( &$model ) {
+			if( !empty( $this->_gedoooBehavior ) && $model->Behaviors->attached( "Gedooo.{$this->_gedoooBehavior}" ) ) {
+				$model->Behaviors->detach( "Gedooo.{$this->_gedoooBehavior}" );
 			}
 
-			parent::cleanup( $Model );
+			parent::cleanup( $model );
 		}
 
 		/**
@@ -90,13 +90,13 @@
 		 *
 		 * @return array
 		 */
-		public function gedConfigureKeys( &$Model ) {
+		public function gedConfigureKeys( &$model ) {
 			$keys = array( 'Gedooo.method' => 'string' );
 
 			if( !is_null( $this->_gedoooBehavior ) ) {
 				$keys = array_merge(
 					$keys,
-					$Model->Behaviors->{$this->_gedoooBehavior}->gedConfigureKeys( $Model )
+					$model->Behaviors->{$this->_gedoooBehavior}->gedConfigureKeys( $model )
 				);
 			}
 

@@ -12,47 +12,47 @@
 		/**
 		 * Setup this behavior with the specified configuration settings.
 		 *
-		 * @param Model $Model Model using this behavior
+		 * @param Model $model Model using this behavior
 		 * @param array $config Configuration settings for $model
 		 * @return void
 		 */
-		public function setup( &$Model, $config = array() ) {
+		public function setup( &$model, $config = array() ) {
 			Configure::WRITE( 'GEDOOO_WSDL', GEDOOO_WSDL );
 		}
 
 		/**
 		 *
-		 * @param AppModel $Model
+		 * @param AppModel $model
 		 * @param type $datas
 		 * @param type $document
 		 * @param type $section
 		 * @param type $options
 		 * @return type
 		 */
-		public function gedFusion( &$Model, $datas, $document, $section = false, $options = array() ) {
-			return parent::ged( $Model, $datas, $document, $section, $options );
+		public function gedFusion( &$model, $datas, $document, $section = false, $options = array() ) {
+			return parent::ged( $model, $datas, $document, $section, $options );
 		}
 
 		/**
-		 * @param AppModel $Model
+		 * @param AppModel $model
 		 * @param string $fileName
 		 * @param string $format
 		 */
-		abstract public function gedConversion( &$Model, $fileName, $format );
+		abstract public function gedConversion( &$model, $fileName, $format );
 
 		/**
 		 *
-		 * @param AppModel $Model
+		 * @param AppModel $model
 		 * @param array $datas
 		 * @param string $document
 		 * @param boolean $section
 		 * @param array $options
 		 * @return string
 		 */
-		public function ged( &$Model, $datas, $document, $section = false, $options = array() ) {
+		public function ged( &$model, $datas, $document, $section = false, $options = array() ) {
 			Configure::write( 'GEDOOO_WSDL', GEDOOO_WSDL ); // FIXME ?
 
-			$odt = $this->gedFusion( $Model, $datas, $document, $section, $options );
+			$odt = $this->gedFusion( $model, $datas, $document, $section, $options );
 			if( empty( $odt ) ) {
 				return false;
 			}
@@ -68,7 +68,7 @@
 				return false;
 			}
 
-			$pdf = $this->gedConversion( $Model, $fileName, 'pdf' );
+			$pdf = $this->gedConversion( $model, $fileName, 'pdf' );
 
 			$success = unlink( $fileName );
 			if( $success === false || empty( $pdf ) ) {
@@ -83,7 +83,7 @@
 		 *
 		 * @return array
 		 */
-		public function gedConfigureKeys( &$Model ) {
+		public function gedConfigureKeys( &$model ) {
 			return array(
 				'Gedooo.wsdl' => 'string',
 			);

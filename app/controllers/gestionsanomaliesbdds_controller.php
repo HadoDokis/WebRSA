@@ -11,7 +11,7 @@
 
 		public $components = array( 'Gestionanomaliesbdd', 'Gestionzonesgeos', 'Prg' => array( 'actions' => array( 'index' ) ) );
 
-		public $helpers = array( 'Default2' );
+		public $helpers = array( 'Default2', 'Gestionanomaliebdd' );
 
 		/**
 		* Méthodes de comparaison disponibles

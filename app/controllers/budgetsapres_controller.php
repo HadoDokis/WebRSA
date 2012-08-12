@@ -3,7 +3,7 @@
 	{
 
 		public $name = 'Budgetsapres';
-		public $helpers = array( 'Xform' );
+		public $helpers = array( 'Xform', 'Theme' );
 		public $commeDroit = array(
 			'add' => 'Actionscandidats:edit'
 		);

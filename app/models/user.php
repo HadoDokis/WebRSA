@@ -376,15 +376,16 @@
 		}
 
 		/**
-		*
-		*/
-
-		public function beforeSave() {
+		 * Hash du mot de passe.
+		 *
+		 * @param array $options
+		 * @return boolean
+		 */
+		public function beforeSave( $options = array() ) {
 			if( !empty( $this->data['User']['passwd'] ) ) {
 				$this->data['User']['password'] = Security::hash( $this->data['User']['passwd'], null, true );
 			}
-			parent::beforeSave();
-			return true;
+			return parent::beforeSave( $options );
 		}
 
 		function validatesPassword($data) {

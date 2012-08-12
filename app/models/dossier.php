@@ -138,16 +138,17 @@
 		);
 
 		/**
-		*
-		*/
-
-		public function beforeSave() {
-			// Champs déduits
+		 * Mise en majuscule du champ numdemrsa.
+		 *
+		 * @param array $options
+		 * @return boolean
+		 */
+		public function beforeSave( $options = array() ) {
 			if( !empty( $this->data['Dossier']['numdemrsa'] ) ) {
 				$this->data['Dossier']['numdemrsa'] = strtoupper( $this->data['Dossier']['numdemrsa'] );
 			}
 
-			return parent::beforeSave();
+			return parent::beforeSave( $options );
 		}
 
 		/**
@@ -292,8 +293,8 @@
 			if( isset( $params['Dossier']['fonorg'] ) && !empty( $params['Dossier']['fonorg'] ) ) {
 				$conditions[] = array( 'Dossier.fonorg' => $params['Dossier']['fonorg'] );
 			}
-			
-			
+
+
 			/**
 			*	FIXME: pour les tests de performance
 			*	'Z' => 'Non défini',

@@ -71,7 +71,7 @@
 		* @return array $newArray
 		*/
 
-		function filterkeys( array $array, array $filterKeys, $remove = false ) { // FIXME ?
+		static public function filterkeys( array $array, array $filterKeys, $remove = false ) { // FIXME ?
 			$newArray = array();
 			foreach( $array as $key => $value) {
 				if( $remove && !in_array( $key, $filterKeys ) ) {
@@ -94,7 +94,7 @@
 		* @return array $newArray
 		*/
 
-		function whitelist( array $array, array $filterKeys ) {
+		static public function whitelist( array $array, array $filterKeys ) {
 			return self::filterkeys( $array, $filterKeys, false );
 		}
 
@@ -108,7 +108,7 @@
 		* @return array $newArray
 		*/
 
-		function blacklist( array $array, array $filterKeys ) {
+		static public function blacklist( array $array, array $filterKeys ) {
 			return self::filterkeys( $array, $filterKeys, true );
 		}
 
@@ -118,7 +118,7 @@
 		* TODO: docs + tests
 		*/
 
-		function anykey( $needles, $haystack ) {
+		static public function anykey( $needles, $haystack ) {
 			if( !is_array( $needles ) ) {
 				$needles = array( $needles );
 			}
@@ -170,7 +170,7 @@
 		*	FIXME: trim ?
 		*/
 
-		function nullify( array $array ) {
+		static public function nullify( array $array ) {
 			$newArray = array();
 			foreach( $array as $key => $value ) {
 				if( ( is_string( $value ) && strlen( trim( $value ) ) == 0 ) || ( !is_string( $value ) && !is_bool( $value )  && !is_numeric( $value ) && empty( $value ) ) ) {

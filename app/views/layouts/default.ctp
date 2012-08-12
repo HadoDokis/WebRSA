@@ -160,5 +160,10 @@
 				(CakePHP v. <?php echo core_version();?>)
 			</div>
 		</div>
+		<?php
+			if( CAKE_BRANCH != '1.2' ) {
+				echo $this->element('sql_dump');
+			}
+		?>
 	</body>
 </html>

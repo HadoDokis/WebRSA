@@ -78,11 +78,11 @@
 		 * Liste les contraintes de check d'une table (pas les clés étrangères ni les indexes uniques, ni les
 		 * not null).
 		 *
-		 * @param Model $Model Le modèle pour lequel on veut la liste des contraintes de la table liée
+		 * @param Model $model Le modèle pour lequel on veut la liste des contraintes de la table liée
 		 * @return array
 		 */
-		public function pgCheckConstraints( &$Model ) {
-			$ds = $Model->getDataSource( $Model->useDbConfig );
+		public function pgCheckConstraints( &$model ) {
+			$ds = $model->getDataSource( $model->useDbConfig );
 
 			// FIXME: '{$ds->config['database']}'
 
@@ -95,7 +95,7 @@
 						pc.conrelid = (
 							SELECT oid FROM pg_catalog.pg_class
 								WHERE
-									relname='".$ds->fullTableName( $Model, false )."'
+									relname='".$ds->fullTableName( $model, false )."'
 									AND relnamespace = (
 										SELECT oid
 											FROM pg_catalog.pg_namespace
@@ -115,14 +115,14 @@
 					WHERE
 						istc.table_catalog = '{$ds->config['database']}'
 						AND istc.table_schema = '{$ds->config['schema']}'
-						AND istc.table_name = '".$ds->fullTableName( $Model, false )."'
+						AND istc.table_name = '".$ds->fullTableName( $model, false )."'
 						AND istc.constraint_type = 'CHECK'
 						AND (
 							istc.constraint_name NOT LIKE '%_not_null'
 							AND iscc.check_clause NOT LIKE '% IS NOT NULL'
 						);";*/
 
-			return $Model->query( $sql );
+			return $model->query( $sql );
 		}
 
 		/**
@@ -293,12 +293,12 @@
 		/**
 		 * Retourne la version de PostgreSQL utilisée.
 		 *
-		 * @param AppModel $Model Modèle utilisant ce behavior
+		 * @param AppModel $model Modèle utilisant ce behavior
 		 * @param boolean $full true: renvoie la chaîne complète, false: renvoie le numéro de version.
 		 * @return string
 		 */
-		public function pgVersion( &$Model, $full = false ) {
-			$psqlVersion = $Model->getDataSource( $Model->useDbConfig )->query( 'SELECT version();' );
+		public function pgVersion( &$model, $full = false ) {
+			$psqlVersion = $model->getDataSource( $model->useDbConfig )->query( 'SELECT version();' );
 			$psqlVersion = Set::classicExtract( $psqlVersion, '0.0.version' );
 
 			if( !$full ) {
@@ -311,13 +311,13 @@
 		/**
 		 * Vérifie si une liste de fonctions PostgreSQL est présente en base.
 		 *
-		 * @param AppModel $Model Modèle utilisant ce behavior
+		 * @param AppModel $model Modèle utilisant ce behavior
 		 * @param array $expected La liste des fonctions PostgreSQL dont on veut vérifier la présence.
 		 * @param string $message Le message d'erreur lorsque des fonctions ne sont pas trouvées.
 		 * @return array
 		 */
-		public function pgHasFunctions( &$Model, array $expected, $message = 'Les fonctions PostgreSQL suivantes sont manquantes: %s.' ) {
-			$pg_functions = $this->pgFunctions( $Model, $expected );
+		public function pgHasFunctions( &$model, array $expected, $message = 'Les fonctions PostgreSQL suivantes sont manquantes: %s.' ) {
+			$pg_functions = $this->pgFunctions( $model, $expected );
 			$pg_functions = Set::extract( $pg_functions, '/Function/name' );
 			$pg_functions = array_unique( $pg_functions );
 
@@ -340,36 +340,36 @@
 		 * Vérifie si la date du serveur PostgreSQL correspond à la date du serveur Web.
 		 * La tolérance est de moins d'une minute.
 		 *
-		 * @param AppModel $Model Modèle utilisant ce behavior
+		 * @param AppModel $model Modèle utilisant ce behavior
 		 * @param string $message Le message d'erreur la tolérance est dépassée.
 		 * @return array
 		 */
-		public function pgCheckTimeDifference( &$Model, $message = 'Différence de date entre le serveur Web et le serveur de base de données trop importante.' ) {
+		public function pgCheckTimeDifference( &$model, $message = 'Différence de date entre le serveur Web et le serveur de base de données trop importante.' ) {
 			$sqlAge = 'AGE( DATE_TRUNC( \'second\', localtimestamp ), \''.date( 'Y-m-d H:i:s' ).'\' )';
 			$sqlAgeSuccess = "{$sqlAge} < '1 min'";
 			$sql = "SELECT
 						{$sqlAge} as value,
 						$sqlAgeSuccess AS success,
 						( CASE WHEN {$sqlAgeSuccess} THEN NULL ELSE '{$message}' END ) AS message;";
-			$result = $Model->query( $sql );
+			$result = $model->query( $sql );
 			return $result[0][0];
 		}
 
 		/**
 		 * Permet de vérifier la syntaxe d'un intervalle au sens PostgreSQL.
 		 *
-		 * @param AppModel $Model Modèle utilisant ce behavior
+		 * @param AppModel $model Modèle utilisant ce behavior
 		 * @param string $interval L'intervalle à tester.
 		 * @return mixed true si la syntaxe est correcte, sinon une chaîne de
 		 *         caractères contenant l'erreur.
 		 */
-		public function pgCheckIntervalSyntax( &$Model, $interval ) {
+		public function pgCheckIntervalSyntax( &$model, $interval ) {
 			$sql = "EXPLAIN SELECT NOW() + interval '{$interval}'";
 
 			$success = false;
 			$message = null;
 			try {
-				$success = ( @$Model->query( $sql ) !== false );
+				$success = ( @$model->query( $sql ) !== false );
 			} catch( Exception $e ) {
 			}
 
