@@ -337,13 +337,22 @@
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
 			$foyer_id = Set::classicExtract( $this->data, 'Personne.foyer_id' );
-			// Retour à la liste en cas d'annulation
-			if( isset( $this->params['form']['Cancel'] ) ) {
-				$this->redirect( array( 'controller' => 'personnes', 'action' => 'index', $foyer_id ) );
-			}
 
 			$dossier_id = $this->Personne->dossierId( $id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
+
+			// Retour à la liste en cas d'annulation
+			if( isset( $this->params['form']['Cancel'] ) ) {
+				$this->Personne->begin();
+				if( $this->Jetons->release( $dossier_id ) ) {
+					$this->Personne->commit();
+					$this->redirect( array( 'controller' => 'personnes', 'action' => 'index', $foyer_id ) );
+				}
+				else {
+					$this->Personne->rollback();
+					$this->Session->setFlash( 'Erreur lors de la restitution du jeton', 'flash/error' );
+				}
+			}
 
 			$personne = $this->Personne->find(
 					'first', array(

@@ -1311,18 +1311,21 @@
 			);
 			$typesPermis = array_keys( $typesPermis );
 
-			$this->Structurereferente->unbindModelAll();
-			$this->Structurereferente->bindModel( array( 'hasAndBelongsToMany' => array( 'Zonegeographique' ) ) );
-			$this->Structurereferente->Zonegeographique->unbindModelAll();
+//			$this->Structurereferente->unbindModelAll();
+//			$this->Structurereferente->bindModel( array( 'hasAndBelongsToMany' => array( 'Zonegeographique' ) ) );
+//			$this->Structurereferente->Zonegeographique->unbindModelAll();
 			$structures = $this->Structurereferente->find(
 				'all',
 				array(
 					'conditions' => array(
 						'Structurereferente.typeorient_id' => $typesPermis
 					),
-					'recursive' => 2
+					'contain' => array(
+						'Zonegeographique'
+					)
 				)
 			);
+
 
 			$return = array();
 			foreach( $structures as $structure ) {

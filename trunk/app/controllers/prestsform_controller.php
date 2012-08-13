@@ -4,14 +4,14 @@
 
 		public $name = 'Prestsform';
 		public $uses = array( 'Actioninsertion', 'Contratinsertion', 'Aidedirecte', 'Prestform', 'Option', 'Refpresta', 'Action', 'Personne');
-		
+
 		public $commeDroit = array(
 			'add' => 'Prestsform:edit'
 		);
 
 		public function beforeFilter() {
 			parent::beforeFilter();
-				$this->set( 'actions', $this->Action->grouplist( 'prestation' ) );// // 
+				$this->set( 'actions', $this->Action->grouplist( 'prestation' ) );// //
 		}
 
 		public function add( $contratinsertion_id = null ){
@@ -57,7 +57,7 @@
 						$this->Actioninsertion->commit();
 						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 
-						// FIXME: 
+						// FIXME:
 						$this->redirect( array( 'controller' => 'actionsinsertion', 'action' => 'index', $contratinsertion['Contratinsertion']['id'] ) );
 					}
 					else {
@@ -84,7 +84,12 @@
 					'conditions' => array(
 						'Prestform.id' => $prestform_id
 					),
-					'recursive' => 2
+					'contain' => array(
+						'Actioninsertion' => array(
+							'Contratinsertion'
+						),
+						'Refpresta'
+					)
 				)
 			);
 			// Si action n'existe pas -> 404
@@ -109,7 +114,7 @@
 						$this->Prestform->commit();
 						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success');
 
-						//FIXME: 
+						//FIXME:
 						$this->redirect( array( 'controller' => 'actionsinsertion', 'action' => 'index', $prestform['Actioninsertion']['Contratinsertion']['id']) );
 					}
 					else {

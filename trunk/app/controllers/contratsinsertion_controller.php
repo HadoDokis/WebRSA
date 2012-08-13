@@ -747,7 +747,7 @@
 
 			$this->set( compact( 'contratsinsertion' ) );
 			///FIXME: pas propre, mais pr le moment ça marche afin d'eviter de tout renommer
-			$this->render( $this->action, null, '/contratsinsertion/index_'.Configure::read( 'nom_form_ci_cg' ) );
+			$this->render( $this->action, null, 'index_'.Configure::read( 'nom_form_ci_cg' ) );
 		}
 
 		/**

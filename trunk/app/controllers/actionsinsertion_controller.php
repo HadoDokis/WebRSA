@@ -39,9 +39,15 @@
 					'conditions' => array(
 						'Actioninsertion.contratinsertion_id' => $contratinsertion_id
 					),
-					'recursive' => 2
+					'contain' => array(
+						'Aidedirecte',
+						'Prestform' => array(
+							'Refpresta'
+						)
+					)
 				)
 			);
+
 
 			$actions = $this->Action->find(
 				'list',
@@ -72,7 +78,7 @@
 					'conditions' => array(
 						'Contratinsertion.id' => $contratinsertion_id
 					),
-					'recursive' => 2
+					'recursive' => -1
 				)
 			);
 
@@ -92,7 +98,9 @@
 
 				$this->data = $contratinsertion;
 			}
+			$this->set('personne_id', $contratinsertion['Contratinsertion']['personne_id']);
 			$this->render( $this->action, null, 'add_edit' );
+
 		}
 	}
 
