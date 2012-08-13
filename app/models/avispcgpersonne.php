@@ -91,7 +91,16 @@
 				return null;
 			}
 
-			$avispcgpersonne = $this->findByPersonneId( $personne['Personne']['id'], null, null, -1 );
+			$qd_avispcgpersonne = array(
+				'conditions' => array(
+					'Avispcgpersonne.personne_id' => $personne['Personne']['id']
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => -1
+			);
+			$avispcgpersonne = $this->Avispcgpersonne->find( 'first', $qd_avispcgpersonne );
+
 			if( empty( $avispcgpersonne ) ) {
 				return null;
 			}

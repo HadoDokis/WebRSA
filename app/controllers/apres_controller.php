@@ -315,8 +315,17 @@
 			Configure::write( 'debug', 0 );
 			$dataStructurereferente_id = Set::extract( $this->data, 'Apre.structurereferente_id' );
 			$structurereferente_id = ( empty( $structurereferente_id ) && !empty( $dataStructurereferente_id ) ? $dataStructurereferente_id : $structurereferente_id );
+			$qd_struct = array(
+				'conditions' => array(
+					'Structurereferente.id' => $structurereferente_id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => -1
+			);
+			$struct = $this->Apre->Structurereferente->find( 'first', $qd_struct );
 
-			$struct = $this->Apre->Structurereferente->findbyId( $structurereferente_id, null, null, -1 );
+
 			$this->set( 'struct', $struct );
 			$this->render( 'ajaxstruct', 'ajax' );
 		}
@@ -336,7 +345,15 @@
 			// INFO: éviter les requêtes erronées du style ... WHERE "Referent"."id" = ''
 			$referent = array( );
 			if( is_int( $referent_id ) ) {
-				$referent = $this->Apre->Referent->findbyId( $referent_id, null, null, -1 );
+				$qd_referent = array(
+					'conditions' => array(
+						'Referent.id' => $referent_id
+					),
+					'fields' => null,
+					'order' => null,
+					'recursive' => -1
+				);
+				$referent = $this->Apre->Referent->find( 'first', $qd_referent );
 			}
 
 			$this->set( 'referent', $referent );
@@ -350,8 +367,16 @@
 			Configure::write( 'debug', 0 );
 			$dataTiersprestataireapre_id = Set::extract( $this->data, 'Formqualif.tiersprestataireapre_id' );
 			$tiersprestataireapre_id = ( empty( $tiersprestataireapre_id ) && !empty( $dataTiersprestataireapre_id ) ? $dataTiersprestataireapre_id : $tiersprestataireapre_id );
+			$qd_tiersprestatireapre = array(
+				'conditions' => array(
+					'Tiersprestataireapre.id' => $tiersprestataireapre_id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => -1
+			);
+			$tiersprestataireapre = $this->Tiersprestataireapre->find( 'first', $qd_tiersprestatireapre );
 
-			$tiersprestataireapre = $this->Tiersprestataireapre->findbyId( $tiersprestataireapre_id, null, null, -1 );
 
 			$this->set( 'tiersprestataireapre', $tiersprestataireapre );
 			$this->render( 'ajaxtierspresta', 'ajax' );
@@ -365,7 +390,15 @@
 			$dataTiersprestataireapre_id = Set::extract( $this->data, 'Formpermfimo.tiersprestataireapre_id' );
 			$tiersprestataireapre_id = ( empty( $tiersprestataireapre_id ) && !empty( $dataTiersprestataireapre_id ) ? $dataTiersprestataireapre_id : $tiersprestataireapre_id );
 
-			$tiersprestataireapre = $this->Tiersprestataireapre->findbyId( $tiersprestataireapre_id, null, null, -1 );
+			$qd_tiersprestatireapre = array(
+				'conditions' => array(
+					'Tiersprestataireapre.id' => $tiersprestataireapre_id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => -1
+			);
+			$tiersprestataireapre = $this->Tiersprestataireapre->find( 'first', $qd_tiersprestatireapre );
 
 			$this->set( 'tiersprestataireapre', $tiersprestataireapre );
 			$this->render( 'ajaxtierspresta', 'ajax' );
@@ -379,7 +412,15 @@
 			$dataTiersprestataireapre_id = Set::extract( $this->data, 'Actprof.tiersprestataireapre_id' );
 			$tiersprestataireapre_id = ( empty( $tiersprestataireapre_id ) && !empty( $dataTiersprestataireapre_id ) ? $dataTiersprestataireapre_id : $tiersprestataireapre_id );
 
-			$tiersprestataireapre = $this->Tiersprestataireapre->findbyId( $tiersprestataireapre_id, null, null, -1 );
+			$qd_tiersprestatireapre = array(
+				'conditions' => array(
+					'Tiersprestataireapre.id' => $tiersprestataireapre_id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => -1
+			);
+			$tiersprestataireapre = $this->Tiersprestataireapre->find( 'first', $qd_tiersprestatireapre );
 
 			$this->set( 'tiersprestataireapre', $tiersprestataireapre );
 			$this->render( 'ajaxtierspresta', 'ajax' );
@@ -393,7 +434,15 @@
 			$dataTiersprestataireapre_id = Set::extract( $this->data, 'Permisb.tiersprestataireapre_id' );
 			$tiersprestataireapre_id = ( empty( $tiersprestataireapre_id ) && !empty( $dataTiersprestataireapre_id ) ? $dataTiersprestataireapre_id : $tiersprestataireapre_id );
 
-			$tiersprestataireapre = $this->Tiersprestataireapre->findbyId( $tiersprestataireapre_id, null, null, -1 );
+			$qd_tiersprestatireapre = array(
+				'conditions' => array(
+					'Tiersprestataireapre.id' => $tiersprestataireapre_id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => -1
+			);
+			$tiersprestataireapre = $this->Tiersprestataireapre->find( 'first', $qd_tiersprestatireapre );
 
 			$this->set( 'tiersprestataireapre', $tiersprestataireapre );
 			$this->render( 'ajaxtierspresta', 'ajax' );

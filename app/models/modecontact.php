@@ -1,8 +1,8 @@
 <?php
 	class Modecontact extends AppModel
 	{
-		public $name = 'Modecontact';
 
+		public $name = 'Modecontact';
 		public $validate = array(
 			// Role personne
 			'numtel' => array(
@@ -17,14 +17,12 @@
 					'rule' => 'alphaNumeric',
 					'allowEmpty' => true
 				),
-
 				array(
 					'rule' => array( 'between', 4, 4 ),
 					'message' => 'Le numéro de poste est composé de 4 chiffres'
 				)
 			)
 		);
-
 		public $belongsTo = array(
 			'Foyer' => array(
 				'className' => 'Foyer',
@@ -36,11 +34,19 @@
 		);
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function dossierId( $modecontact_id ) {
-			$modecontact = $this->findById( $modecontact_id, null, null, 0 );
+			$qd_modecontact = array(
+				'conditions' => array(
+					'Modecontact.id' => $modecontact_id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => 0
+			);
+			$modecontact = $this->find( 'first', $qd_modecontact );
+
 			if( !empty( $modecontact ) ) {
 				return $modecontact['Foyer']['dossier_id'];
 			}
@@ -50,10 +56,9 @@
 		}
 
 		/**
-		*
-		*/
-
-		public function sqDerniere($field) {
+		 *
+		 */
+		public function sqDerniere( $field ) {
 			$dbo = $this->getDataSource( $this->useDbConfig );
 			$table = $dbo->fullTableName( $this, false );
 			return "
@@ -65,5 +70,6 @@
 					LIMIT 1
 			";
 		}
+
 	}
 ?>

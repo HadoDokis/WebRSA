@@ -1,12 +1,10 @@
 <?php
 	class Apre66 extends AppModel
 	{
+
 		public $name = 'Apre66';
-
 		public $displayField = 'numeroapre';
-
 		public $useTable = 'apres';
-
 		public $actsAs = array(
 			'Enumerable' => array(
 				'fields' => array(
@@ -43,7 +41,6 @@
 				)
 			)
 		);
-
 		public $validate = array(
 			'activitebeneficiaire' => array(
 				array(
@@ -127,24 +124,23 @@
 			),
 			'hascer' => array(
 				array(
-					'rule' => array('equalTo', '1'),
+					'rule' => array( 'equalTo', '1' ),
 					'message' => 'Champ obligatoire'
 				)
 			),
 			'isbeneficiaire' => array(
 				array(
-					'rule' => array('equalTo', '1'),
+					'rule' => array( 'equalTo', '1' ),
 					'message' => 'Champ obligatoire'
 				)
 			),
 			'respectdelais' => array(
 				array(
-					'rule' => array('equalTo', '1'),
+					'rule' => array( 'equalTo', '1' ),
 					'message' => 'Champ obligatoire'
 				)
 			)
 		);
-
 		public $hasOne = array(
 			'Aideapre66' => array(
 				'className' => 'Aideapre66',
@@ -160,7 +156,6 @@
 				'counterQuery' => ''
 			),
 		);
-
 		public $belongsTo = array(
 			'Personne' => array(
 				'className' => 'Personne',
@@ -184,7 +179,6 @@
 				'order' => ''
 			)
 		);
-
 		public $hasMany = array(
 			'Fichiermodule' => array(
 				'className' => 'Fichiermodule',
@@ -205,26 +199,33 @@
 		);
 
 		/**
-		*
-		*/
-
-		public function dossierId( $apre_id ){
+		 *
+		 */
+		public function dossierId( $apre_id ) {
 			$this->unbindModelAll();
 			$this->bindModel(
-				array(
-					'hasOne' => array(
-						'Personne' => array(
-							'foreignKey' => false,
-							'conditions' => array( "Personne.id = {$this->alias}.personne_id" )
-						),
-						'Foyer' => array(
-							'foreignKey' => false,
-							'conditions' => array( 'Foyer.id = Personne.foyer_id' )
+					array(
+						'hasOne' => array(
+							'Personne' => array(
+								'foreignKey' => false,
+								'conditions' => array( "Personne.id = {$this->alias}.personne_id" )
+							),
+							'Foyer' => array(
+								'foreignKey' => false,
+								'conditions' => array( 'Foyer.id = Personne.foyer_id' )
+							)
 						)
 					)
-				)
 			);
-			$apre = $this->findById( $apre_id, null, null, 0 );
+			$qd_apre = array(
+				'conditions' => array(
+					'Apre.id' => $apre_id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => 0
+			);
+			$apre = $this->find( 'first', $qd_apre );
 
 			if( !empty( $apre ) ) {
 				return $apre['Foyer']['dossier_id'];
@@ -235,24 +236,22 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function numeroapre() {
-				$numSeq = $this->query( "SELECT nextval('apres_numeroapre_seq');" );
-				if( $numSeq === false ) {
-					return null;
-				}
+			$numSeq = $this->query( "SELECT nextval('apres_numeroapre_seq');" );
+			if( $numSeq === false ) {
+				return null;
+			}
 
-				$numapre = date('Ym').sprintf( "%010s",  $numSeq[0][0]['nextval'] );
-				return $numapre;
+			$numapre = date( 'Ym' ).sprintf( "%010s", $numSeq[0][0]['nextval'] );
+			return $numapre;
 		}
 
 		/**
-		* Ajout de l'identifiant de la séance lors de la sauvegarde.
-		*/
-
-		public function beforeValidate( $options = array() ) {
+		 * Ajout de l'identifiant de la séance lors de la sauvegarde.
+		 */
+		public function beforeValidate( $options = array( ) ) {
 			$primaryKey = Set::classicExtract( $this->data, "{$this->alias}.{$this->primaryKey}" );
 			$numeroapre = Set::classicExtract( $this->data, "{$this->alias}.numeroapre" );
 
@@ -270,42 +269,33 @@
 		 */
 		public function getNotificationAprePdf( $apre_id ) {
 			$apre = $this->find(
-				'first',
-				array(
-					'fields' => array_merge(
-						$this->fields(),
-						$this->Personne->fields(),
-						$this->Structurereferente->fields(),
-						$this->Referent->fields(),
-						$this->Aideapre66->fields(),
-						$this->Personne->Foyer->Adressefoyer->Adresse->fields(),
-						$this->Personne->Foyer->fields(),
-						$this->Personne->Foyer->Dossier->fields(),
-						array(
-							'( '.$this->Aideapre66->Pieceaide66->vfListePieces().' ) AS "Aideapre66__piecesaides66"',
-							'( '.$this->Aideapre66->Piececomptable66->vfListePieces().' ) AS "Aideapre66__piecescomptables66"',
-							$this->Personne->Foyer->Adressefoyer->Adresse->sqVirtualField( 'localite' )
+					'first', array(
+				'fields' => array_merge(
+						$this->fields(), $this->Personne->fields(), $this->Structurereferente->fields(), $this->Referent->fields(), $this->Aideapre66->fields(), $this->Personne->Foyer->Adressefoyer->Adresse->fields(), $this->Personne->Foyer->fields(), $this->Personne->Foyer->Dossier->fields(), array(
+					'( '.$this->Aideapre66->Pieceaide66->vfListePieces().' ) AS "Aideapre66__piecesaides66"',
+					'( '.$this->Aideapre66->Piececomptable66->vfListePieces().' ) AS "Aideapre66__piecescomptables66"',
+					$this->Personne->Foyer->Adressefoyer->Adresse->sqVirtualField( 'localite' )
 						)
-					),
-					'joins' => array(
-						$this->join( 'Personne', array( 'type' => 'INNER' ) ),
-						$this->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
-						$this->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ),
-						$this->join( 'Aideapre66', array( 'type' => 'LEFT OUTER' ) ),
-						$this->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
-						$this->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
-						$this->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
-						$this->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
-					),
-					'conditions' => array(
-						"Apre66.id" => $apre_id,
-						'OR' => array(
-							'Adressefoyer.id IS NULL',
-							'Adressefoyer.id IN ( '.$this->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
-						)
-					),
-					'contain' => false
-				)
+				),
+				'joins' => array(
+					$this->join( 'Personne', array( 'type' => 'INNER' ) ),
+					$this->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
+					$this->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ),
+					$this->join( 'Aideapre66', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
+					$this->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
+					$this->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
+				),
+				'conditions' => array(
+					"Apre66.id" => $apre_id,
+					'OR' => array(
+						'Adressefoyer.id IS NULL',
+						'Adressefoyer.id IN ( '.$this->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
+					)
+				),
+				'contain' => false
+					)
 			);
 
 			if( empty( $apre ) ) {
@@ -331,27 +321,25 @@
 
 			// On sauvagarde la date de notification si ce n'est pas déjà fait.
 			$this->updateAll(
-				array( 'Apre66.datenotifapre' => date( "'Y-m-d'" ) ),
-				array(
-					'"Apre66"."id"' => $apre_id,
-					'"Apre66"."datenotifapre" IS NULL'
-				)
+					array( 'Apre66.datenotifapre' => date( "'Y-m-d'" ) ), array(
+				'"Apre66"."id"' => $apre_id,
+				'"Apre66"."datenotifapre" IS NULL'
+					)
 			);
 
 			// Construction du champ virtuel Structurereferente.adresse
 			$apre['Structurereferente']['adresse'] = implode(
-				' ',
-				array(
-					Set::classicExtract( $apre, 'Structurereferente.num_voie'),
-					Set::enum( Set::classicExtract( $apre, 'Structurereferente.type_voie'), $options['Structurereferente']['type_voie'] ),
-					Set::classicExtract( $apre, 'Structurereferente.nom_voie'),
-					Set::classicExtract( $apre, 'Structurereferente.code_postal'),
-					Set::classicExtract( $apre, 'Structurereferente.ville')
-				)
+					' ', array(
+				Set::classicExtract( $apre, 'Structurereferente.num_voie' ),
+				Set::enum( Set::classicExtract( $apre, 'Structurereferente.type_voie' ), $options['Structurereferente']['type_voie'] ),
+				Set::classicExtract( $apre, 'Structurereferente.nom_voie' ),
+				Set::classicExtract( $apre, 'Structurereferente.code_postal' ),
+				Set::classicExtract( $apre, 'Structurereferente.ville' )
+					)
 			);
 
 			// Choix du modèle de document
-			if ( $apre['Aideapre66']['decisionapre'] == 'ACC' ) {
+			if( $apre['Aideapre66']['decisionapre'] == 'ACC' ) {
 				$modeleodt = 'APRE/accordaide.odt';
 			}
 			else {
@@ -388,50 +376,38 @@
 			$typesvoies = ClassRegistry::init( 'Option' )->typevoie();
 
 			$apre = $this->find(
-				'first',
-				array(
-					'fields' => array_merge(
-						$this->fields(),
-						$this->Personne->fields(),
-						$this->Structurereferente->fields(),
-						$this->Referent->fields(),
-						$this->Aideapre66->fields(),
-						$this->Aideapre66->Fraisdeplacement66->fields(),
-						$this->Aideapre66->Themeapre66->fields(),
-						$this->Aideapre66->Themeapre66->Typeaideapre66->fields(),
-						$this->Personne->Foyer->Adressefoyer->Adresse->fields(),
-						$this->Personne->Foyer->fields(),
-						$this->Personne->Foyer->Dossier->fields(),
-						array(
-							'( '.$this->Aideapre66->Pieceaide66->vfListePieces().' ) AS "Aideapre66__piecesaides66"',
-							'( '.$this->Aideapre66->Piececomptable66->vfListePieces().' ) AS "Aideapre66__piecescomptables66"',
-							$this->Personne->Foyer->sqVirtualField( 'enerreur' ),
-							$this->Personne->Foyer->sqVirtualField( 'sansprestation' ),
-							$this->Personne->Foyer->Adressefoyer->Adresse->sqVirtualField( 'localite' )
+					'first', array(
+				'fields' => array_merge(
+						$this->fields(), $this->Personne->fields(), $this->Structurereferente->fields(), $this->Referent->fields(), $this->Aideapre66->fields(), $this->Aideapre66->Fraisdeplacement66->fields(), $this->Aideapre66->Themeapre66->fields(), $this->Aideapre66->Themeapre66->Typeaideapre66->fields(), $this->Personne->Foyer->Adressefoyer->Adresse->fields(), $this->Personne->Foyer->fields(), $this->Personne->Foyer->Dossier->fields(), array(
+					'( '.$this->Aideapre66->Pieceaide66->vfListePieces().' ) AS "Aideapre66__piecesaides66"',
+					'( '.$this->Aideapre66->Piececomptable66->vfListePieces().' ) AS "Aideapre66__piecescomptables66"',
+					$this->Personne->Foyer->sqVirtualField( 'enerreur' ),
+					$this->Personne->Foyer->sqVirtualField( 'sansprestation' ),
+					$this->Personne->Foyer->Adressefoyer->Adresse->sqVirtualField( 'localite' )
 						)
-					),
-					'joins' => array(
-						$this->join( 'Personne', array( 'type' => 'INNER' ) ),
-						$this->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
-						$this->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ),
-						$this->join( 'Aideapre66', array( 'type' => 'LEFT OUTER' ) ),
-						$this->Aideapre66->join( 'Fraisdeplacement66', array( 'type' => 'LEFT OUTER' ) ),
-						$this->Aideapre66->join( 'Themeapre66', array( 'type' => 'LEFT OUTER' ) ),
-						$this->Aideapre66->join( 'Typeaideapre66', array( 'type' => 'LEFT OUTER' ) ),
-						$this->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
-						$this->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
-						$this->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
-						$this->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
-					),
-					'conditions' => array(
-						"Apre66.id" => $id,
-						'OR' => array(
-							'Adressefoyer.id IS NULL',
-							'Adressefoyer.id IN ( '.$this->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
-						)
-					),
-					'contain' => false
-				)
+				),
+				'joins' => array(
+					$this->join( 'Personne', array( 'type' => 'INNER' ) ),
+					$this->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
+					$this->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ),
+					$this->join( 'Aideapre66', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Aideapre66->join( 'Fraisdeplacement66', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Aideapre66->join( 'Themeapre66', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Aideapre66->join( 'Typeaideapre66', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
+					$this->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
+					$this->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
+				),
+				'conditions' => array(
+					"Apre66.id" => $id,
+					'OR' => array(
+						'Adressefoyer.id IS NULL',
+						'Adressefoyer.id IN ( '.$this->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
+					)
+				),
+				'contain' => false
+					)
 			);
 
 			if( empty( $apre ) ) {
@@ -440,68 +416,64 @@
 
 			// Récupération de l'utilisateur connecté
 			$user = $this->Personne->Contratinsertion->User->find(
-				'first',
-				array(
-					'conditions' => array(
-						'User.id' => $user_id
-					),
-					'contain' => false
-				)
+					'first', array(
+				'conditions' => array(
+					'User.id' => $user_id
+				),
+				'contain' => false
+					)
 			);
 			$apre = Set::merge( $apre, $user );
 
 			// Construction du champ virtuel Structurereferente.adresse
 			$apre['Structurereferente']['adresse'] = implode(
-				' ',
-				array(
-					Set::classicExtract( $apre, 'Structurereferente.num_voie'),
-					Set::enum( Set::classicExtract( $apre, 'Structurereferente.type_voie'), $typesvoies ),
-					Set::classicExtract( $apre, 'Structurereferente.nom_voie'),
-					Set::classicExtract( $apre, 'Structurereferente.code_postal'),
-					Set::classicExtract( $apre, 'Structurereferente.ville')
-				)
+					' ', array(
+				Set::classicExtract( $apre, 'Structurereferente.num_voie' ),
+				Set::enum( Set::classicExtract( $apre, 'Structurereferente.type_voie' ), $typesvoies ),
+				Set::classicExtract( $apre, 'Structurereferente.nom_voie' ),
+				Set::classicExtract( $apre, 'Structurereferente.code_postal' ),
+				Set::classicExtract( $apre, 'Structurereferente.ville' )
+					)
 			);
 
 			// Le lieu de résidence correspond à l'adresse normale s'il n'est pas explicitement renseigné
 			if( !empty( $apre['Fraisdeplacement66']['id'] ) && empty( $apre['Fraisdeplacement66']['lieuresidence'] ) ) {
 				$apre['Fraisdeplacement66']['lieuresidence'] = implode(
-					' ',
-					array(
-						Set::extract( $apre, 'Adresse.numvoie' ),
-						Set::enum( Set::classicExtract( $apre, 'Adresse.typevoie'), $typesvoies ),
-						Set::extract( $apre, 'Adresse.nomvoie' ),
-						Set::extract( $apre, 'Adresse.codepos' ),
-						Set::extract( $apre, 'Adresse.locaadr' )
-					)
+						' ', array(
+					Set::extract( $apre, 'Adresse.numvoie' ),
+					Set::enum( Set::classicExtract( $apre, 'Adresse.typevoie' ), $typesvoies ),
+					Set::extract( $apre, 'Adresse.nomvoie' ),
+					Set::extract( $apre, 'Adresse.codepos' ),
+					Set::extract( $apre, 'Adresse.locaadr' )
+						)
 				);
 			}
 
 			// Le passif des demandes d'APRE attribuées
 			$listeApres = $this->find(
-				'all',
-				array(
-					'fields' => array(
-						'Apre66.id',
-						'Aideapre66.datedemande',
-						'Aideapre66.montantaccorde',
-						'Typeaideapre66.name',
-						'Themeapre66.name'
-					),
-					'conditions' => array(
-						"Apre66.personne_id" => $apre['Personne']['id'],
-						"Apre66.id <>" => $id,
-						'Aideapre66.id IS NOT NULL',
-						'Apre66.etatdossierapre' => 'VAL',
-						'Apre66.datenotifapre IS NOT NULL',
-						'Aideapre66.datedemande <=' => $apre['Aideapre66']['datedemande'],
-					),
-					'joins' => array(
-						$this->join( 'Aideapre66' ),
-						$this->Aideapre66->join( 'Typeaideapre66' ),
-						$this->Aideapre66->join( 'Themeapre66' )
-					),
-					'order' => array( 'Aideapre66.datedemande DESC' )
-				)
+					'all', array(
+				'fields' => array(
+					'Apre66.id',
+					'Aideapre66.datedemande',
+					'Aideapre66.montantaccorde',
+					'Typeaideapre66.name',
+					'Themeapre66.name'
+				),
+				'conditions' => array(
+					"Apre66.personne_id" => $apre['Personne']['id'],
+					"Apre66.id <>" => $id,
+					'Aideapre66.id IS NOT NULL',
+					'Apre66.etatdossierapre' => 'VAL',
+					'Apre66.datenotifapre IS NOT NULL',
+					'Aideapre66.datedemande <=' => $apre['Aideapre66']['datedemande'],
+				),
+				'joins' => array(
+					$this->join( 'Aideapre66' ),
+					$this->Aideapre66->join( 'Typeaideapre66' ),
+					$this->Aideapre66->join( 'Themeapre66' )
+				),
+				'order' => array( 'Aideapre66.datedemande DESC' )
+					)
 			);
 
 			/// INFO: pour éviter d'écraser les valeurs de la partie principale avec la valeur de la dernière itération lorsque la section précède l'affichage de la valeur principale.
@@ -545,35 +517,31 @@
 			}
 
 			return $this->ged(
-				$apre,
-				$this->modeleOdt( $apre ),
-				true,
-				$options
+							$apre, $this->modeleOdt( $apre ), true, $options
 			);
 		}
 
-		
-				
 		/**
 		 * Retourne un champ virtuel permettant de connaître le nombre de fichiers modules liés à l'APRE
 		 *
 		 * @param type $apre66Id
 		 * @return type
 		 */
-		public function vfNbFichiersmodule( $fileModelName = 'Apre66', $apre66Id = 'Apre66.id' ){
+		public function vfNbFichiersmodule( $fileModelName = 'Apre66', $apre66Id = 'Apre66.id' ) {
 			return $this->Fichiermodule->sq(
-				array(
-					'fields' => array(
-						'COUNT(fichiersmodules.id)'
-					),
-					'alias' => 'fichiersmodules',
-					'contain' => false,
-					'conditions' => array(
-						"fichiersmodules.fk_value = {$apre66Id}",
-						"fichiersmodules.modele" => $fileModelName
-					),
-				)
+							array(
+								'fields' => array(
+									'COUNT(fichiersmodules.id)'
+								),
+								'alias' => 'fichiersmodules',
+								'contain' => false,
+								'conditions' => array(
+									"fichiersmodules.fk_value = {$apre66Id}",
+									"fichiersmodules.modele" => $fileModelName
+								),
+							)
 			);
 		}
+
 	}
 ?>

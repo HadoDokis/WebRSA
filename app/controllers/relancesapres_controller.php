@@ -30,7 +30,17 @@
 			$dataApre_id = Set::extract( $this->data, 'Relanceapre.apre_id' );
 			$apre_id = ( empty( $apre_id ) && !empty( $dataApre_id ) ? $dataApre_id : $apre_id );
 
-			$apre = $this->Apre->findbyId( $apre_id, null, null, 1 );
+			$qd_apre = array(
+				'conditions' => array(
+					'Apre.id' => $apre_id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => 1
+			);
+			$apre = $this->Apre->find('first', $qd_apre);
+
+
 			$this->set( 'apre', $apre );
 
 			$this->render( 'ajaxpiece', 'ajax' );

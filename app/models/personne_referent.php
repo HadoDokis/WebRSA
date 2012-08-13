@@ -106,7 +106,18 @@
 					)
 				)
 			);
-			$rdv = $this->findById( $pers_ref_id, null, null, 0 );
+
+			$qd_rdv = array(
+				'conditions'=> array(
+					'PersonneReferent.id' => $pers_ref_id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => 0
+			);
+			$rdv = $this->find('first', $qd_rdv);
+
+
 			if( !empty( $rdv ) ) {
 				return $rdv['Foyer']['dossier_id'];
 			}

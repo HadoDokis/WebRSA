@@ -270,8 +270,16 @@
 			Configure::write( 'debug', 0 );
 			$dataStructurereferente_id = Set::extract( $this->data, "{$this->modelClass}.structurereferente_id" );
 			$structurereferente_id = ( empty( $structurereferente_id ) && !empty( $dataStructurereferente_id ) ? $dataStructurereferente_id : $structurereferente_id );
+			$qd_struct = array(
+				'conditions' => array(
+					'Structurereferente.id' => $structurereferente_id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => -1
+			);
+			$struct = $this->{$this->modelClass}->Structurereferente->find( 'first', $qd_struct );
 
-			$struct = $this->{$this->modelClass}->Structurereferente->findbyId( $structurereferente_id, null, null, -1 );
 			$this->set( 'struct', $struct );
 			$this->render( $this->action, 'ajax', '/apres/ajaxstruct' );
 		}
@@ -290,7 +298,15 @@
 			// INFO: éviter les requêtes erronées du style ... WHERE "Referent"."id" = ''
 			$referent = array( );
 			if( is_int( $referent_id ) ) {
-				$referent = $this->{$this->modelClass}->Referent->findbyId( $referent_id, null, null, -1 );
+				$qd_referent = array(
+					'conditions' => array(
+						'Referent.id' => $referent_id
+					),
+					'fields' => null,
+					'order' => null,
+					'recursive' => -1
+				);
+				$referent = $this->{$this->modelClass}->Referent->find( 'first', $qd_referent );
 			}
 //             $referent = $this->{$this->modelClass}->Referent->findbyId( $referent_id, null, null, -1 );
 			$this->set( 'referent', $referent );

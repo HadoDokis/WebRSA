@@ -96,7 +96,7 @@
 				'rule' => 'notEmpty',
 				'message' => 'Champ obligatoire'
 			),
-			
+
 			'orgrecouvcotis' => array(
 				'rule' => 'notEmpty',
 				'message' => 'Champ obligatoire'
@@ -304,7 +304,7 @@
 				'rule' => 'notEmpty',
 				'message' => 'Champ obligatoire'
 			)*/
-		); 
+		);
 
 		public $belongsTo = array(
 			'Personne' => array(
@@ -545,9 +545,17 @@
 		*/
 
 		public function _prepare( $personne_id = null ) {
-
 			$alerteRsaSocle = false;
-			$personne = $this->Personne->findById( $personne_id, null, null, 0 );
+			$qd_personne = array(
+				'conditions' => array(
+					'Personne.id' => $personne_id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => 0
+			);
+			$personne = $this->Personne->find('first', $qd_personne);
+
 			$dossier_id = Set::classicExtract( $personne, 'Foyer.dossier_id' );
 
 			/// FIXME: on regarde le rsa socle sur les infos financieres OU BIEN sur les calculs droits rsa
@@ -562,7 +570,16 @@
 				)
 			);
 
-			$detaildroitrsa = $this->Personne->Foyer->Dossier->Detaildroitrsa->findByDossierId( $dossier_id, null, null, -1 );
+			$qd_detaildroitrsa = array(
+				'conditions' => array(
+					'Detaildroitrsa.dossier_id' => $dossier_id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => -1
+			);
+			$detaildroitrsa = $this->Personne->Foyer->Dossier->Detaildroitrsa->find('first', $qd_detaildroitrsa);
+
 			if( !empty( $detaildroitrsa ) ){
 				$detaildroitrsa_id = Set::classicExtract( $detaildroitrsa, 'Detaildroitrsa.id' );
 				$detailscalculsdroitrsa = $this->Personne->Foyer->Dossier->Detaildroitrsa->Detailcalculdroitrsa->find(
@@ -618,7 +635,7 @@
 
 // 		public function beforeSave( $options = array() ) {
 // 			$return = parent::beforeSave( $options );
-// 			
+//
 // 			//  Calcul de la position du CUI
 // 			if( Configure::read( 'Cg.departement' ) == '66' ) {
 // 				$this->data[$this->alias]['positioncui66'] = $this->positionCuiEncours( $this->data );
@@ -713,8 +730,8 @@
 			$decisionprecedente = Set::classicExtract( $dernierCui, 'Cui.decisioncui' );
 			$positioncui66Precedent = Set::classicExtract( $dernierCui, 'Cui.positioncui66' );
 
-			
-			
+
+
 			if ( ( is_null( $positioncui66 ) || in_array( $positioncui66 , array( 'attdecision', 'perime' ) ) ) && !empty( $decisioncui ) ) {
 				if ( $decisioncui == 'V' ){
 					if( empty( $datenotif ) ) {
@@ -776,7 +793,7 @@
 			$isaviselu = Set::classicExtract( $propodecisioncui66, 'Propodecisioncui66.isaviselu' );
 			$isavisreferent = Set::classicExtract( $propodecisioncui66, 'Propodecisioncui66.isavisreferent' );
 			$positioncui66 = Set::classicExtract( $propodecisioncui66, 'Cui.positioncui66' );
-			
+
 			// Mise à jour de la position du CUI
 			if( !empty( $positioncui66 ) ) {
 				if( ( $isaviselu == '0' ) && ( $isavisreferent == '0' ) && $positioncui66 == 'attavismne' ) {
@@ -836,7 +853,7 @@
 					'contain' => false
 				)
 			);
-			
+
 			$user = $this->User->find(
 				'first',
 				array(
@@ -847,11 +864,11 @@
 				)
 			);
 			$cui = Set::merge( $cui, $user );
-			
-			
+
+
 			return $cui;
 		}
-		
+
 		/**
 		 * Retourne le PDF de notification du CUI.
 		 *
@@ -859,7 +876,7 @@
 		 * @return string
 		 */
 		public function getDefaultPdf( $id, $user_id ) {
-			
+
 			$cui = $this->getDataForPdf( $id, $user_id );
 			///Traduction pour les données de la Personne/Contact/Partenaire/Référent
 			$Option = ClassRegistry::init( 'Option' );

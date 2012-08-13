@@ -1,12 +1,12 @@
 <?php
 	class Foyer extends AppModel
 	{
-		public $name = 'Foyer';
 
+		public $name = 'Foyer';
 		public $virtualFields = array(
 			'enerreur' => array(
-				'type'      => 'string',
-				'postgres'  => "(
+				'type' => 'string',
+				'postgres' => "(
 					CASE WHEN NOT
 					(
 						(
@@ -60,8 +60,8 @@
 				)"
 			),
 			'sansprestation' => array(
-				'type'      => 'string',
-				'postgres'  => "(
+				'type' => 'string',
+				'postgres' => "(
 					CASE WHEN
 					(
 						(
@@ -83,15 +83,13 @@
 				)",
 			)
 		);
-
 		public $validate = array(
 			'dossier_id' => array(
 				'numeric' => array(
-					'rule' => array('numeric'),
+					'rule' => array( 'numeric' ),
 				),
 			),
 		);
-
 		public $belongsTo = array(
 			'Dossier' => array(
 				'className' => 'Dossier',
@@ -101,7 +99,6 @@
 				'order' => ''
 			)
 		);
-
 		public $hasMany = array(
 			'Adressefoyer' => array(
 				'className' => 'Adressefoyer',
@@ -223,11 +220,20 @@
 		);
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function dossierId( $foyer_id ) {
-			$foyer = $this->findById( $foyer_id, null, null, -1 );
+			$qd_foyer = array(
+				'conditions' => array(
+					'Foyer.id' => $foyer_id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => -1
+			);
+			$foyer = $this->find( 'first', $qd_foyer );
+
+
 			if( !empty( $foyer ) ) {
 				return $foyer['Foyer']['dossier_id'];
 			}
@@ -237,10 +243,9 @@
 		}
 
 		/**
-		*
-		*/
-
-		public function nbEnfants( $foyer_id ){
+		 *
+		 */
+		public function nbEnfants( $foyer_id ) {
 			$sql = "SELECT COUNT(Prestation.id)
 						FROM prestations AS Prestation
 							INNER JOIN personnes AS Personne ON Personne.id = Prestation.personne_id
@@ -257,35 +262,33 @@
 		 * @param type $foyerId
 		 * @return type
 		 */
-		public function vfNbEnfants( $foyerId = 'Foyer.id' ){
+		public function vfNbEnfants( $foyerId = 'Foyer.id' ) {
 			return $this->Personne->Prestation->sq(
-				array(
-					'fields' => array(
-						'COUNT(prestations.id)'
-					),
-					'alias' => 'prestations',
-					'joins' => array(
-						array_words_replace(
-							$this->Personne->Prestation->join( 'Personne', array( 'type' => 'INNER' ) ),
 							array(
-								'Prestation' => 'prestations',
-								'Personne' => 'personnes',
+								'fields' => array(
+									'COUNT(prestations.id)'
+								),
+								'alias' => 'prestations',
+								'joins' => array(
+									array_words_replace(
+											$this->Personne->Prestation->join( 'Personne', array( 'type' => 'INNER' ) ), array(
+										'Prestation' => 'prestations',
+										'Personne' => 'personnes',
+											)
+									)
+								),
+								'conditions' => array(
+									"personnes.foyer_id = {$foyerId}",
+									'prestations.natprest' => 'RSA',
+									'prestations.rolepers' => 'ENF',
+								),
 							)
-						)
-					),
-					'conditions' => array(
-						"personnes.foyer_id = {$foyerId}",
-						'prestations.natprest' => 'RSA',
-						'prestations.rolepers' => 'ENF',
-					),
-				)
 			);
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function refreshRessources( $foyer_id ) {
 			$query = array(
 				'fields' => array(
@@ -293,9 +296,9 @@
 				),
 				'joins' => array(
 					array(
-						'table'      => 'prestations',
-						'alias'      => 'Prestation',
-						'type'       => 'INNER',
+						'table' => 'prestations',
+						'alias' => 'Prestation',
+						'type' => 'INNER',
 						'foreignKey' => false,
 						'conditions' => array(
 							'Personne.id = Prestation.personne_id',
@@ -315,21 +318,20 @@
 
 			$saved = true;
 			foreach( $personnes as $personne ) {
-				$saved =  $this->Personne->Ressource->refresh( $personne['Personne']['id'] ) && $saved;
+				$saved = $this->Personne->Ressource->refresh( $personne['Personne']['id'] ) && $saved;
 			}
 			return $saved;
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function refreshSoumisADroitsEtDevoirs( $foyer_id ) {
 			$this->Personne->unbindModel(
-				array(
-					'hasMany' => array( 'Orientstruct' ),
-					'hasOne' => array( 'Prestation', 'Calculdroitrsa' )
-				)
+					array(
+						'hasMany' => array( 'Orientstruct' ),
+						'hasOne' => array( 'Prestation', 'Calculdroitrsa' )
+					)
 			);
 			$query = array(
 				'fields' => array(
@@ -339,9 +341,9 @@
 				),
 				'joins' => array(
 					array(
-						'table'      => 'prestations',
-						'alias'      => 'Prestation',
-						'type'       => 'INNER',
+						'table' => 'prestations',
+						'alias' => 'Prestation',
+						'type' => 'INNER',
 						'foreignKey' => false,
 						'conditions' => array(
 							'Personne.id = Prestation.personne_id',
@@ -350,9 +352,9 @@
 						)
 					),
 					array(
-						'table'      => 'calculsdroitsrsa',
-						'alias'      => 'Calculdroitrsa',
-						'type'       => 'INNER',
+						'table' => 'calculsdroitsrsa',
+						'alias' => 'Calculdroitrsa',
+						'type' => 'INNER',
 						'foreignKey' => false,
 						'conditions' => array( 'Personne.id = Calculdroitrsa.personne_id' )
 					),
@@ -370,7 +372,7 @@
 				$toppersdrodevorsa = $this->Personne->soumisDroitsEtDevoirs( $personne['Personne']['id'] );
 				$personne['Calculdroitrsa']['toppersdrodevorsa'] = ( $toppersdrodevorsa ? '1' : '0' );
 				$this->Personne->Calculdroitrsa->create( $personne['Calculdroitrsa'] );
-				$saved =  $this->Personne->Calculdroitrsa->save( $personne['Calculdroitrsa'] ) && $saved;
+				$saved = $this->Personne->Calculdroitrsa->save( $personne['Calculdroitrsa'] ) && $saved;
 
 				// Ajout dans la table Orientstruct si aucune entrée
 				$nbrOrientstruct = $this->Personne->Orientstruct->find( 'count', array( 'conditions' => array( 'Orientstruct.personne_id' => $personne['Personne']['id'] ) ) );
@@ -389,25 +391,23 @@
 		}
 
 		/**
-		*	FIXME: spécifique CG93 ?
-		*/
-
+		 * 	FIXME: spécifique CG93 ?
+		 */
 		public function montantForfaitaire( $id ) {
 			$F = 454.63;
 			$this->Personne->unbindModelAll();
 			$this->Personne->bindModel(
-				array(
-					'hasOne' => array(
-						'Calculdroitrsa'
+					array(
+						'hasOne' => array(
+							'Calculdroitrsa'
+						)
 					)
-				)
 			);
 
 			$personnes = $this->Personne->find(
-				'all',
-				array(
-					'conditions' => array( 'Personne.foyer_id' => $id )
-				)
+					'all', array(
+				'conditions' => array( 'Personne.foyer_id' => $id )
+					)
 			);
 
 			// a) Si 1 foyer = 1 personne, montant forfaitaire = F (= 454,63 EUR)
@@ -455,12 +455,12 @@
 		}
 
 		/**
-		* Retourne une requête, à utiliser en tant que champ virtuel, permettant de
-		* savoir si un foyer comporte un et un seul demandeur, et au maximum un conjoint.
-		*/
-
+		 * Retourne une requête, à utiliser en tant que champ virtuel, permettant de
+		 * savoir si un foyer comporte un et un seul demandeur, et au maximum un conjoint.
+		 */
 		public function vfFoyerEnerreur( $modelAlias = 'Foyer', $fieldName = 'enerreur' ) {
 			return str_replace( '%s', $modelAlias, $this->virtualFields['enerreur']['postgres'] )." AS \"{$modelAlias}__{$fieldName}\"";
 		}
+
 	}
 ?>

@@ -411,7 +411,7 @@
 		*
 		*/
 
-		public function dossierId( $ressource_id ) {
+		public function dossierId( $orientstruct_id ) {
 			$this->unbindModelAll();
 			$this->bindModel(
 				array(
@@ -427,10 +427,19 @@
 					)
 				)
 			);
-			$ressource = $this->findById( $ressource_id, null, null, 1 );
+			$qd_orientstruct = array(
+				'conditions' => array(
+					'Orientstruct.id' => $orientstruct_id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => 1
+			);
+			$orientstruct = $this->find('first', $qd_orientstruct);
 
-			if( !empty( $ressource ) ) {
-				return $ressource['Foyer']['dossier_id'];
+
+			if( !empty( $orientstruct ) ) {
+				return $orientstruct['Foyer']['dossier_id'];
 			}
 			else {
 				return null;
@@ -891,7 +900,7 @@
 					'voie' => $Option->typevoie()
 				)
 			);
-				
+
 			$user = $this->User->find(
 				'first',
 				array(
@@ -1046,7 +1055,7 @@
 			return $pdf;
 		}
 
-		
+
 		/**
 		 * Retourne un champ virtuel permettant de connaître le nombre de fichiers modules liés à l'orientation
 		 *
@@ -1068,7 +1077,7 @@
 				)
 			);
 		}
-		
-		
+
+
 	}
 ?>

@@ -52,7 +52,15 @@
 			$dataStructurereferente_id = Set::extract( $this->data, 'Propopdo.structurereferente_id' );
 			$structurereferente_id = ( empty( $structurereferente_id ) && !empty( $dataStructurereferente_id ) ? $dataStructurereferente_id : $structurereferente_id );
 
-			$struct = $this->Structurereferente->findbyId( $structurereferente_id, null, null, -1 );
+			$qd_struct = array(
+				'conditions' => array(
+					'Structurereferente.id' => $structurereferente_id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => -1
+			);
+			$struct = $this->Structurereferente->find('first', $qd_struct);
 
 			$this->set( 'struct', $struct );
 

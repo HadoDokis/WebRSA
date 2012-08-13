@@ -39,7 +39,17 @@
 		//*********************************************************************
 
 		public function dossierId( $adressefoyer_id ) {
-			$adressefoyer = $this->findById( $adressefoyer_id, null, null, 0 );
+			$qd_adressefoyer = array(
+				'conditions' => array(
+				'Adressefoyer.id' => $adressefoyer_id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => 0
+			);
+			$adressefoyer = $this->find('first', $qd_adressefoyer);
+
+
 			$adressefoyer = $this->find( 'first', array( 'conditions' => array( 'Adressefoyer.id' => $adressefoyer_id ), 'recursive' => 0 ) );
 			if( !empty( $adressefoyer ) ) {
 				return $adressefoyer['Foyer']['dossier_id'];

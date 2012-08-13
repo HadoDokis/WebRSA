@@ -203,7 +203,16 @@
 			$return = true;
 			$typeaideapre66_id = Set::classicExtract( $this->data, 'Aideapre66.typeaideapre66_id' );
 			if (!empty($typeaideapre66_id)) {
-				$typeaideapre66 = $this->Typeaideapre66->findById( $typeaideapre66_id, null, null, -1 );
+				$qd_typeaideapre66 = array(
+					'conditions' => array(
+						'Typeaideapre66.id' => $typeaideapre66_id
+					),
+					'fields' => null,
+					'order' => null,
+					'recursive' => -1
+				);
+				$typeaideapre66 = $this->Typeaideapre66->find('first', $qd_typeaideapre66);
+
 				$plafond = Set::classicExtract( $typeaideapre66, 'Typeaideapre66.plafond' );
 
 				foreach( $check as $field => $value ) {
@@ -221,7 +230,19 @@
 			$nbNormalPieces = array();
 
 			$typeaideapre66_id = Set::classicExtract( $this->data, 'Aideapre66.typeaideapre66_id' );
-			$typeaide = $this->Typeaideapre66->findById( $typeaideapre66_id, null, null, 2 );
+
+			$qd_typeaide = array(
+				'conditions' => array(
+					'Typeaideapre66.id' => $typeaideapre66_id
+				),
+				'fields' => null,
+				'order' => null,
+				'contain' => array(
+					'Pieceaide66'
+				)
+			);
+			$typeaide = $this->Typeaideapre66->find('first', $qd_typeaide);
+
 
 			$nbNormalPieces['Typeaideapre66'] = count( Set::extract( $typeaide, '/Pieceaide66/id' ) );
 			return $nbNormalPieces;
@@ -269,7 +290,7 @@
 			foreach( $this->validate['decisionapre'] as $i => $rule ){
 				foreach( $rule as $key => $value ){
 					if( is_array( $value ) ){
-						foreach( $value as $inList ){
+					 	foreach( $value as $inList ){
 							if( $inList == 'inList' ){
 								$this->validate['decisionapre'][$i]['allowEmpty'] = $allowEmpty;
 							}
@@ -287,7 +308,16 @@
 			$return = parent::afterSave( $created );
 			$details = $this->_details( $this->id );
 
-			$aideapre = $this->findById( $this->id, null, null, -1 );
+			$qd_aideapre = array(
+				'conditions' => array(
+					'Aideapre66.id' => $this->id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => -1
+			);
+			$aideapre = $this->find('first', $qd_aideapre);
+
 			$decisionapre = Set::classicExtract( $aideapre, 'Aideapre66.decisionapre');
 
 			if( !empty( $decisionapre ) ){
@@ -303,8 +333,8 @@
 			}
 		}
 
-		
-		
+
+
 		/**
 		* Vérification du montant accordé pour les APREs
 		* Ce montant doit être inférieur au plafond défini en paramétrage (3000 € par défaut)
@@ -324,12 +354,12 @@
 
 			list( $year, $month, $day ) = explode( '-',  $this->data['Aideapre66']['datemontantpropose'] );
 			$yearMax = $year + Configure::read( 'Apre.periodeMontantMaxComplementaires' ) - 1;
-			
+
 			$conditions = array(
 				'Aideapre66.decisionapre' => 'ACC',
 				"Aideapre66.datemontantpropose BETWEEN '{$year}-01-01' AND '{$yearMax}-12-31'"
 			);
-			
+
 			if( isset( $this->data['Apre66']['personne_id'] ) ) {
 				$conditions['Apre66.personne_id'] = $this->data['Apre66']['personne_id'];
 			}
@@ -373,11 +403,11 @@
 			}
 
 		}
-	
-	
+
+
 		/**
 		* 	Vérification du montant accordé pour un type d'aide dans les APREs
-		* 	Pour une aide donnée, le montant accordé ne doit pas dépasser le plafond, même cumulé sur 
+		* 	Pour une aide donnée, le montant accordé ne doit pas dépasser le plafond, même cumulé sur
 		*	plusieurs demandes sur l'année calendaire ( 01/01 au 31/12 )
 		*
 		* @param string $montantpropose Value to check
@@ -410,7 +440,7 @@
 				"Aideapre66.datemontantpropose BETWEEN '{$year}-01-01' AND '{$yearMax}-12-31'",
 				'Aideapre66.typeaideapre66_id' => $typeaideapre66_id
 			);
-			
+
 			if( isset( $this->data['Apre66']['personne_id'] ) ) {
 				$conditions['Apre66.personne_id'] = $this->data['Apre66']['personne_id'];
 			}
@@ -431,7 +461,7 @@
 			else {
 				return false;//FIXME: message
 			}
-			
+
 			$querydata = array(
 				'fields' => array(
 					'SUM("Aideapre66"."montantaccorde") AS "Aideapre66__montanttotal"'
@@ -456,7 +486,7 @@
 			}
 		}
 
-		
-		
+
+
 	}
 ?>

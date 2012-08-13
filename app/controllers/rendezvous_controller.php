@@ -39,7 +39,15 @@
 
 			$referent = array( );
 			if( !empty( $referent_id ) ) {
-				$referent = $this->Rendezvous->Referent->findbyId( $referent_id, null, null, -1 );
+				$qd_referent = array(
+					'conditions' => array(
+						'Referent.id' => $referent_id
+					),
+					'fields' => null,
+					'order' => null,
+					'recursive' => -1
+				);
+				$referent = $this->Rendezvous->Referent->find( 'first', $qd_referent );
 			}
 
 			$this->set( 'referent', $referent );
