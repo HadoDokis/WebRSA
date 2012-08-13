@@ -364,7 +364,16 @@
 			$referent_id = ( empty( $referent_id ) && !empty( $dataReferent_id ) ? $dataReferent_id : $referent_id );
 
 			if( is_int( $referent_id ) ) {
-				$referent = $this->ActioncandidatPersonne->Personne->Referent->findbyId( $referent_id, null, null, -1 );
+				$qd_referent = array(
+					'conditions' => array(
+						'Referent.id' => $referent_id
+					),
+					'fields' => null,
+					'order' => null,
+					'recursive' => -1
+				);
+				$referent = $this->ActioncandidatPersonne->Personne->Referent->find('first', $qd_referent);
+
 
 				$structs = $this->ActioncandidatPersonne->Personne->Orientstruct->Structurereferente->find(
 						'first', array(

@@ -53,7 +53,15 @@
 					)
 				)
 			);
-			$ressource = $this->findById( $ressource_id, null, null, 1 );
+			$qd_ressource = array(
+				'conditions' => array(
+					'Ressource.id' => $ressource_id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => 1
+			);
+			$ressource = $this->find('first', $qd_ressource);
 
 			if( !empty( $ressource ) ) {
 				return $ressource['Foyer']['dossier_id'];
@@ -62,11 +70,11 @@
 				return null;
 			}
 		}
-		
+
 		/**
 		*	Fonction retournant un booléen précisant si la personne est soumise à drit et devoir ou non
 		*/
-		
+
 		public function isSoumisAdroitEtDevoir( $personne_id ) {
 			return (
 				$this->find(

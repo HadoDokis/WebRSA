@@ -346,7 +346,14 @@
 				// Traitement des utilisateurs
 				if( array_key_exists( 'users', $profilUsers ) ) {
 					foreach( $profilUsers['users'] as $user ) {
-						if( !$aro->findbyAlias( $user['arosAlias'] ) ) {
+						$qd_aro = array(
+							'conditions' => array(
+								'Aro.alias' => $user['arosAlias']
+							)
+						);
+						$aro = $this->find('first', $qd_aro);
+
+						if( empty($aro['Aro']) ) {
 							$aro->create();
 							$sav1 = array( 'foreign_key' => $user['id'], 'parent_id' => $profil_id, 'alias' => $user['arosAlias'] );
 							$aro->save( $sav1 );

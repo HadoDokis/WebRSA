@@ -441,7 +441,16 @@
 					)
 				)
 			);
-			$apre = $this->findById( $apre_id, null, null, 0 );
+			$qd_apre = array(
+				'conditions' => array(
+					'Apre.id' => $apre_id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => 0
+			);
+			$apre = $this->find('first', $qd_apre);
+
 
 			if( !empty( $apre ) ) {
 				return $apre['Foyer']['dossier_id'];
@@ -686,7 +695,15 @@
 					)
 				)
 			);
-			$apre = $this->findById( $apre_id, null, null, 1 );
+			$qd_apre = array(
+				'conditions' => array(
+					'Apre.id' => $apre_id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => 1
+			);
+			$apre = $this->find('first', $qd_apre);
 
 			if( !empty( $apre ) ) {
 				unset( $apre['Apre']['Piecemanquante'] );

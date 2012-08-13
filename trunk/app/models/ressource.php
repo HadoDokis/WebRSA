@@ -127,7 +127,7 @@
 				$ModelCalculdroitrsa = ClassRegistry::init( 'Calculdroitrsa' );
 				$qd_calculdroitrsa = array(
 					'conditions' => array(
-						'ModelCalculdroitrsa.personne_id' => $personne_id
+						'Calculdroitrsa.personne_id' => $personne_id
 					),
 					'fields' => null,
 					'order' => null,
@@ -169,7 +169,16 @@
 
 			// Mise à jour de Calculdroitrsa
 			$moyenne = $this->moyenne( $this->data );
-			$calculdroitrsa = $modelCalculdroitrsa->findByPersonneId( $personne_id, null, null, -1 );
+			$qd_calculdroitrsa = array(
+				'conditions' => array(
+					'Calculdroitrsa.personne_id' => $personne_id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => -1
+			);
+			$calculdroitrsa = $modelCalculdroitrsa->find( 'first', $qd_calculdroitrsa );
+
 
 			// FIXME: si $calculdroitrsa est vide ? Ne doit pas arriver
 			$calculdroitrsa[$modelCalculdroitrsa->alias]['personne_id'] = $personne_id;
@@ -177,7 +186,17 @@
 			$modelCalculdroitrsa->create( $calculdroitrsa );
 			$modelCalculdroitrsa->save();
 
-			$thisPersonne = $this->Personne->findById( $personne_id, null, null, -1 );
+			$qd_thisPersonne = array(
+				'conditions' => array(
+					'Personne.id' => $personne_id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => -1
+			);
+			$thisPersonne = $this->Personne->find( 'first', $qd_thisPersonne );
+
+
 			$this->Personne->Foyer->refreshSoumisADroitsEtDevoirs( $thisPersonne['Personne']['foyer_id'] );
 
 			return $return;
@@ -202,7 +221,17 @@
 						)
 					)
 			);
-			$ressource = $this->findById( $ressource_id, null, null, 1 );
+
+			$qd_ressource = array(
+				'conditions' => array(
+					'Ressource.id' => $ressource_id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => 1
+			);
+			$ressource = $this->find( 'first', $qd_ressource );
+
 
 			if( !empty( $ressource ) ) {
 				return $ressource['Foyer']['dossier_id'];

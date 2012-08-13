@@ -148,8 +148,15 @@
 
 			$referent = array( );
 			if( is_int( $referent_id ) ) {
-				$referent = $this->Contratinsertion->Structurereferente->Referent->findbyId( $referent_id, null, null, -1
+				$qd_referent = array(
+					'conditions' => array(
+						'Referent.id' => $referent_id
+					),
+					'fields' => null,
+					'order' => null,
+					'recursive' => -1
 				);
+				$referent = $this->Contratinsertion->Structurereferente->Referent->find( 'first', $qd_referent );
 			}
 
 			$this->set( 'referent', $referent );
@@ -166,7 +173,17 @@
 			$dataStructurereferente_id = Set::extract( $this->data, 'Contratinsertion.structurereferente_id' );
 			$structurereferente_id = ( empty( $structurereferente_id ) && !empty( $dataStructurereferente_id ) ? $dataStructurereferente_id : $structurereferente_id );
 
-			$struct = $this->Contratinsertion->Structurereferente->findbyId( $structurereferente_id, null, null, -1 );
+			$qd_struct = array(
+				'conditions' => array(
+					'Structurereferente.id' => $structurereferente_id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => -1
+			);
+			$struct = $this->Contratinsertion->Structurereferente->find( 'first', $qd_struct );
+
+
 			$this->set( 'struct', $struct );
 			$this->render( 'ajaxstruct', 'ajax' );
 		}
@@ -1535,7 +1552,7 @@
 		public function cancel( $id ) {
 			$qd_contrat = array(
 				'conditions' => array(
-					$this->modelClass . '.id' => $id
+					$this->modelClass.'.id' => $id
 				),
 				'fields' => null,
 				'order' => null,

@@ -235,10 +235,28 @@
 							}
 
 							$validRib = validRib( $etaban, $guiban, $numcomptban, $clerib );
-							$dossier = $this->Apre->Personne->Foyer->Dossier->findByNumdemrsa( $numdemrsa, null, null, -1 );
+							$qd_dossier = array(
+								'conditions' => array(
+									'Dossier.numdemrsa' => $numdemrsa
+								),
+								'fields' => null,
+								'order' => null,
+								'recursive' => -1
+							);
+							$dossier = $this->Apre->Personne->Foyer->Dossier->find('first', $qd_dossier);
+
 
 							if( $validRib && !empty( $dossier ) ) {
-								$foyer = $this->Apre->Personne->Foyer->findByDossierId( $dossier['Dossier']['id'], null, null, -1 );
+								$qd_foyer = array(
+									'conditions' => array(
+										'Foyer.dossier_id' => $dossier['Dossier']['id']
+									),
+									'fields' => null,
+									'order' => null,
+									'recursive' => -1
+								);
+								$foyer = $this->Apre->Personne->Foyer->find('first', $qd_foyer);
+
 
 								if( !empty( $foyer ) ) {
 									$nom = strtoupper( replace_accents( trim( $parts[$this->fields['nomact']], '"' ) ) );

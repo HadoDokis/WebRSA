@@ -6,7 +6,14 @@
 
             $suivi = ClassRegistry::init( 'Suiviaideapretypeaide' );
 
-            $personne = $suivi->findByTypeaide( $model->name );
+			$qd_personne = array(
+				'conditions' => array(
+					'Suiviaideapretypeaide.typeaide' => $model->name
+				)
+			);
+			$personne = $suivi->find('first', $qd_personne);
+
+
             if( !empty( $personne ) ) {
                 foreach( array( 'qual', 'nom', 'prenom', 'numtel' ) as $field ) {
                     $model->data[$model->name]["{$field}suivi"] = Set::classicExtract( $personne, "Suiviaideapre.{$field}" );

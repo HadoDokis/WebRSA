@@ -1,8 +1,8 @@
 <?php
 	class ApreEtatliquidatif extends AppModel
 	{
-		public $name = 'ApreEtatliquidatif';
 
+		public $name = 'ApreEtatliquidatif';
 		public $actsAs = array(
 			'Enumerable',
 			'Frenchfloat' => array(
@@ -20,7 +20,6 @@
 				)
 			)
 		);
-
 		public $validate = array(
 			'montantattribue' => array(
 				array(
@@ -33,7 +32,6 @@
 				)
 			)
 		);
-
 		public $belongsTo = array(
 			'Apre' => array(
 				'className' => 'Apre',
@@ -52,13 +50,20 @@
 		);
 
 		/**
-		* Before Validate
-		*/
-
-		public function beforeValidate( $options = array() ) {
+		 * Before Validate
+		 */
+		public function beforeValidate( $options = array( ) ) {
 			if( $return = parent::beforeValidate( $options ) ) {
 				$apre_id = Set::classicExtract( $this->data, "{$this->alias}.apre_id" );
-				$apre = $this->Apre->findById( $apre_id, null, null, -1 );
+				$qd_apre = array(
+					'conditions' => array(
+						'Apre.id' => $apre_id
+					),
+					'fields' => null,
+					'order' => null,
+					'recursive' => -1
+				);
+				$apre = $this->Apre->find( 'first', $qd_apre );
 
 				// Déjà versé dans les autres états liquidatifs
 				$montantdejaverse = Set::classicExtract( $apre, 'Apre.montantdejaverse' );
@@ -70,14 +75,13 @@
 				// Nombre d'étatsliquidatifs dans lequel cette apre est déjà passé
 				$etatliquidatif_id = Set::classicExtract( $this->data, "{$this->alias}.etatliquidatif_id" );
 				$nbrPassagesEffectues = $this->find(
-					'count',
-					array(
-						'conditions' => array(
-							"{$this->alias}.apre_id" => $apre_id,
-							"{$this->alias}.etatliquidatif_id <>" => $etatliquidatif_id,
-						),
-						'contain' => false
-					)
+						'count', array(
+					'conditions' => array(
+						"{$this->alias}.apre_id" => $apre_id,
+						"{$this->alias}.etatliquidatif_id <>" => $etatliquidatif_id,
+					),
+					'contain' => false
+						)
 				);
 
 				$nbrPassagesSubsequents = max( 0, ( $nbrPassagesEffectues - 1 - $nbrPassagesEffectues ) );
@@ -112,13 +116,12 @@
 
 			$querydata = $this->Etatliquidatif->{$method}();
 			$querydata = Set::merge(
-				$querydata,
-				array(
-					'conditions' => array(
-						'Etatliquidatif.id' => $etatliquidatif_id,
-						'Apre.id' => $apre_id
-					)
-				)
+							$querydata, array(
+						'conditions' => array(
+							'Etatliquidatif.id' => $etatliquidatif_id,
+							'Apre.id' => $apre_id
+						)
+							)
 			);
 
 			$deepAfterFind = $this->Etatliquidatif->Apre->deepAfterFind;
@@ -128,13 +131,12 @@
 
 			/// Récupération de l'utilisateur
 			$user = ClassRegistry::init( 'User' )->find(
-				'first',
-				array(
-					'conditions' => array(
-						'User.id' => $user_id
-					),
-					'contain' => false
-				)
+					'first', array(
+				'conditions' => array(
+					'User.id' => $user_id
+				),
+				'contain' => false
+					)
 			);
 			$apre['User'] = $user['User'];
 
@@ -174,10 +176,7 @@
 			}
 
 			return $this->ged(
-				$apre,
-				$modeleodt,
-				false,
-				$options
+							$apre, $modeleodt, false, $options
 			);
 		}
 
@@ -195,13 +194,12 @@
 			$method = 'qdDonneesApre'.Inflector::camelize( $typeapre ).'Gedooo';
 			$querydata = $this->Etatliquidatif->{$method}();
 			$querydata = Set::merge(
-				$querydata,
-				array(
-					'conditions' => array(
-						'Etatliquidatif.id' => $etatliquidatif_id,
-					),
-					'limit' => $limit
-				)
+							$querydata, array(
+						'conditions' => array(
+							'Etatliquidatif.id' => $etatliquidatif_id,
+						),
+						'limit' => $limit
+							)
 			);
 
 			if( !empty( $sort ) && !empty( $direction ) ) {
@@ -230,19 +228,19 @@
 			$this->Etatliquidatif->Apre->deepAfterFind = $deepAfterFind;
 
 //			if( $typeapre == 'forfaitaire' ) {
-				$key = 'forfaitaire';
-				$modeleodt = 'APRE/apreforfaitaire.odt';
-			/*}
-			else if( $typeapre == 'complementaire' && $dest == 'tiersprestataire' ) {
-				$key = 'etatliquidatif_tiers';
-				$modeleodt = 'APRE/Paiement/paiement_tiersprestataire.odt';
-				$nomfichierpdf = sprintf( 'paiement_tiersprestataire-%s.pdf', date( 'Y-m-d' ) );
-			}
-			else if( $typeapre == 'complementaire' && $dest == 'beneficiaire' ) {
-				$key = 'apreforfaitaire';
-				$modeleodt = 'APRE/Paiement/paiement_'.$typeformation.'_beneficiaire.odt';
-				$nomfichierpdf = sprintf( 'paiement_'.$typeformation.'_beneficiaire-%s.pdf', date( 'Y-m-d' ) );
-			}*/
+			$key = 'forfaitaire';
+			$modeleodt = 'APRE/apreforfaitaire.odt';
+			/* }
+			  else if( $typeapre == 'complementaire' && $dest == 'tiersprestataire' ) {
+			  $key = 'etatliquidatif_tiers';
+			  $modeleodt = 'APRE/Paiement/paiement_tiersprestataire.odt';
+			  $nomfichierpdf = sprintf( 'paiement_tiersprestataire-%s.pdf', date( 'Y-m-d' ) );
+			  }
+			  else if( $typeapre == 'complementaire' && $dest == 'beneficiaire' ) {
+			  $key = 'apreforfaitaire';
+			  $modeleodt = 'APRE/Paiement/paiement_'.$typeformation.'_beneficiaire.odt';
+			  $nomfichierpdf = sprintf( 'paiement_'.$typeformation.'_beneficiaire-%s.pdf', date( 'Y-m-d' ) );
+			  } */
 
 			// Traductions
 			$Option = ClassRegistry::init( 'Option' );
@@ -262,11 +260,9 @@
 			);
 
 			return $this->ged(
-				array( $key => $apres ),
-				$modeleodt,
-				true,
-				$options
+							array( $key => $apres ), $modeleodt, true, $options
 			);
 		}
+
 	}
 ?>

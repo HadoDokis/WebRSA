@@ -175,8 +175,26 @@
 		*/
 
         public function row( $result ) {
-			$p1 = $this->Personne->findById( Set::classicExtract( $result, 'p1.id' ), null, null, 2 );
-			$p2 = $this->Personne->findById( Set::classicExtract( $result, 'p2.id' ), null, null, 2 );
+			$qd_p1 = array(
+				'conditions' => array(
+					'Personne.id' => Set::classicExtract( $result, 'p1.id')
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => 2
+			);
+			$p1 = $this->Personne->find('first', $qd_p1);
+
+			$qd_p2 = array(
+				'conditions' => array(
+					'Personne.id' => Set::classicExtract( $result, 'p2.id')
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => 2
+			);
+			$p2 = $this->Personne->find('first', $qd_p2);
+
 
 			$return = '';
 

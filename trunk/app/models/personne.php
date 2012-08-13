@@ -1,10 +1,9 @@
 <?php
 	class Personne extends AppModel
 	{
+
 		public $name = 'Personne';
-
 		public $displayField = 'nom_complet';
-
 		public $actsAs = array(
 			'ValidateTranslate',
 			'Enumerable' => array(
@@ -14,7 +13,6 @@
 			),
 			'Formattable'
 		);
-
 		public $validate = array(
 			// Qualité
 			'qual' => array( array( 'rule' => 'notEmpty' ) ),
@@ -44,7 +42,7 @@
 			),
 			'rgnai' => array(
 				array(
-					'rule' => array('comparison', '>', 0 ),
+					'rule' => array( 'comparison', '>', 0 ),
 					'message' => 'Veuillez entrer un nombre positif.',
 					'allowEmpty' => true
 				),
@@ -55,7 +53,6 @@
 				)
 			)
 		);
-
 		public $belongsTo = array(
 			'Foyer' => array(
 				'className' => 'Foyer',
@@ -65,7 +62,6 @@
 				'order' => ''
 			)
 		);
-
 		public $hasOne = array(
 			'Calculdroitrsa' => array(
 				'className' => 'Calculdroitrsa',
@@ -133,7 +129,6 @@
 				'counterQuery' => ''
 			)
 		);
-
 		public $hasMany = array(
 			'Bilanparcours66' => array(
 				'className' => 'Bilanparcours66',
@@ -516,7 +511,6 @@
 				'counterQuery' => ''
 			),
 		);
-
 		public $hasAndBelongsToMany = array(
 			'Actioncandidat' => array(
 				'className' => 'Actioncandidat',
@@ -551,23 +545,21 @@
 				'with' => 'PersonneReferent'
 			)
 		);
-
 		public $virtualFields = array(
 			'nom_complet' => array(
-				'type'		=> 'string',
-				'postgres'	=> '( "%s"."qual" || \' \' || "%s"."nom" || \' \' || "%s"."prenom" )'
+				'type' => 'string',
+				'postgres' => '( "%s"."qual" || \' \' || "%s"."nom" || \' \' || "%s"."prenom" )'
 			),
 			'nom_complet_court' => array(
-				'type'		=> 'string',
-				'postgres'	=> '( "%s"."nom" || \' \' || "%s"."prenom" )'
+				'type' => 'string',
+				'postgres' => '( "%s"."nom" || \' \' || "%s"."prenom" )'
 			)
 		);
 
 		/**
-		*
-		*/
-
-		public function beforeSave( $options = array() ) {
+		 *
+		 */
+		public function beforeSave( $options = array( ) ) {
 			$return = parent::beforeSave( $options );
 
 			// Mise en majuscule de nom, prénom, nomnai
@@ -602,19 +594,17 @@
 		}
 
 		/**
-		* Recherche de l'id du dossier à partir de l'id de la personne
-		*/
-
+		 * Recherche de l'id du dossier à partir de l'id de la personne
+		 */
 		public function dossierId( $personne_id ) {
 			$this->unbindModelAll();
 			$this->bindModel( array( 'belongsTo' => array( 'Foyer' ) ) );
 			$personne = $this->find(
-				'first',
-				array(
-					'fields' => array( 'Foyer.dossier_id' ),
-					'conditions' => array( 'Personne.id' => $personne_id ),
-					'recursive' => 0
-				)
+					'first', array(
+				'fields' => array( 'Foyer.dossier_id' ),
+				'conditions' => array( 'Personne.id' => $personne_id ),
+				'recursive' => 0
+					)
 			);
 
 			if( !empty( $personne ) ) {
@@ -626,32 +616,40 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function soumisDroitsEtDevoirs( $personne_id ) {
 			$this->unbindModelAll();
 			$this->bindModel(
-				array(
-					'hasMany' => array(
-						'Ressource' => array(
-							'order' => array( 'dfress DESC' )
-						)
-					),
-					'hasOne' => array(
-						'Dsp',
-						'Prestation' => array(
-							'foreignKey' => 'personne_id',
-							'conditions' => array (
-								'Prestation.natprest' => array( 'RSA' )
+					array(
+						'hasMany' => array(
+							'Ressource' => array(
+								'order' => array( 'dfress DESC' )
 							)
 						),
-						'Calculdroitrsa'
+						'hasOne' => array(
+							'Dsp',
+							'Prestation' => array(
+								'foreignKey' => 'personne_id',
+								'conditions' => array(
+									'Prestation.natprest' => array( 'RSA' )
+								)
+							),
+							'Calculdroitrsa'
+						)
 					)
-				)
 			);
 
-			$personne = $this->findById( $personne_id, null, null, 1 );
+			$qd_personne = array(
+				'conditions' => array(
+					'Personne.id' => $personne_id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => 1
+			);
+			$personne = $this->find( 'first', $qd_personne );
+
 			if( isset( $personne['Prestation'] ) && ( $personne['Prestation']['rolepers'] == 'DEM' || $personne['Prestation']['rolepers'] == 'CJT' ) ) {
 				$montant = Set::classicExtract( $personne, 'Calculdroitrsa.mtpersressmenrsa' );
 
@@ -683,114 +681,126 @@
 		}
 
 		/**
-		*
-		*/
-
-		public function findByZones( $zonesGeographiques = array(), $filtre_zone_geo = true ) { // TODO
+		 *
+		 */
+		public function findByZones( $zonesGeographiques = array( ), $filtre_zone_geo = true ) { // TODO
 			$this->unbindModelAll();
 
 			$this->bindModel(
-				array(
-					'hasOne'=>array(
-						'Adressefoyer' => array(
-							'foreignKey'    => false,
-							'type'          => 'LEFT',
-							'conditions'    => array(
-								'"Adressefoyer"."foyer_id" = "Personne"."foyer_id"',
-								'"Adressefoyer"."rgadr" = \'01\''
-							)
-						),
-						'Adresse' => array(
-							'foreignKey'    => false,
-							'type'          => 'LEFT',
-							'conditions'    => array(
-								'"Adressefoyer"."adresse_id" = "Adresse"."id"'
+					array(
+						'hasOne' => array(
+							'Adressefoyer' => array(
+								'foreignKey' => false,
+								'type' => 'LEFT',
+								'conditions' => array(
+									'"Adressefoyer"."foyer_id" = "Personne"."foyer_id"',
+									'"Adressefoyer"."rgadr" = \'01\''
+								)
+							),
+							'Adresse' => array(
+								'foreignKey' => false,
+								'type' => 'LEFT',
+								'conditions' => array(
+									'"Adressefoyer"."adresse_id" = "Adresse"."id"'
+								)
 							)
 						)
 					)
-				)
 			);
 
-			$conditions = array();
+			$conditions = array( );
 			if( $filtre_zone_geo ) {
-				$conditions = array( 'Adresse.numcomptt' => ( !empty( $zonesGeographiques ) ? array_values( $zonesGeographiques ) : array() ) );
+				$conditions = array( 'Adresse.numcomptt' => (!empty( $zonesGeographiques ) ? array_values( $zonesGeographiques ) : array( ) ) );
 			}
 
-			$personnes = $this->find( 'all', array ( 'conditions' => $conditions ) );
+			$personnes = $this->find( 'all', array( 'conditions' => $conditions ) );
 
 			$return = Set::extract( $personnes, '{n}.Personne.id' );
-			return ( !empty( $return ) ? $return : null );
+			return (!empty( $return ) ? $return : null );
 		}
 
 		/**
-		*    Détails propre à la personne pour le contrat d'insertion
-		*/
-
-		public function detailsCi( $personne_id, $user_id = null ){
+		 *    Détails propre à la personne pour le contrat d'insertion
+		 */
+		public function detailsCi( $personne_id, $user_id = null ) {
 			// TODO: début dans le modèle
 			///Recup personne
 			$this->unbindModel(
-				array(
-					'hasOne' => array( 'Avispcgpersonne', 'Dossiercaf' ),
-					'hasMany' => array( 'Rendezvous', 'Activite', 'Contratinsertion', 'Orientstruct' )
-				)
+					array(
+						'hasOne' => array( 'Avispcgpersonne', 'Dossiercaf' ),
+						'hasMany' => array( 'Rendezvous', 'Activite', 'Contratinsertion', 'Orientstruct' )
+					)
 			);
 			$this->bindModel( array( 'belongsTo' => array( 'Foyer' ) ) ); // FIXME
 			$this->Foyer->unbindModel(
-				array(
-					'hasMany' => array( 'Personne', 'Modecontact', 'Adressefoyer' ),
-					'hasAndBelongsToMany' => array( 'Creance' )
-				)
+					array(
+						'hasMany' => array( 'Personne', 'Modecontact', 'Adressefoyer' ),
+						'hasAndBelongsToMany' => array( 'Creance' )
+					)
 			);
 			$this->Foyer->Dossier->unbindModelAll();
 			$this->Prestation->unbindModelAll();
 			$this->Dsp->unbindModelAll();
 
-			$personne = $this->findById( $personne_id, null, null, 2 );
+			$qd_personne = array(
+				'conditions' => array(
+					'Personne.id' => $personne_id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => 2
+			);
+			$personne = $this->find( 'first', $qd_personne );
+
 
 			// Récupération du service instructeur
 			$suiviinstruction = $this->Foyer->Dossier->Suiviinstruction->find(
-				'first',
-				array(
-					'fields' => array_keys( // INFO: champs des tables Suiviinstruction et Serviceinstructeur
+					'first', array(
+				'fields' => array_keys( // INFO: champs des tables Suiviinstruction et Serviceinstructeur
 						Set::merge(
-							Set::flatten( array( 'Suiviinstruction' => Set::normalize( array_keys( $this->Foyer->Dossier->Suiviinstruction->schema() ) ) ) ),
-							Set::flatten( array( 'Serviceinstructeur' => Set::normalize( array_keys( ClassRegistry::init( 'Serviceinstructeur' )->schema() ) ) ) )
+								Set::flatten( array( 'Suiviinstruction' => Set::normalize( array_keys( $this->Foyer->Dossier->Suiviinstruction->schema() ) ) ) ), Set::flatten( array( 'Serviceinstructeur' => Set::normalize( array_keys( ClassRegistry::init( 'Serviceinstructeur' )->schema() ) ) ) )
 						)
-					),
-					'recursive' => -1,
-					'conditions' => array(
-						'Suiviinstruction.dossier_id' => $personne['Foyer']['dossier_id']
-					),
-					'joins' => array(
-						array(
-							'table'      => 'servicesinstructeurs',
-							'alias'      => 'Serviceinstructeur',
-							'type'       => 'LEFT OUTER',
-							'foreignKey' => false,
-							'conditions' => array( 'Suiviinstruction.numdepins = Serviceinstructeur.numdepins AND Suiviinstruction.typeserins = Serviceinstructeur.typeserins AND Suiviinstruction.numcomins = Serviceinstructeur.numcomins AND Suiviinstruction.numagrins = Serviceinstructeur.numagrins' )
-						)
+				),
+				'recursive' => -1,
+				'conditions' => array(
+					'Suiviinstruction.dossier_id' => $personne['Foyer']['dossier_id']
+				),
+				'joins' => array(
+					array(
+						'table' => 'servicesinstructeurs',
+						'alias' => 'Serviceinstructeur',
+						'type' => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array( 'Suiviinstruction.numdepins = Serviceinstructeur.numdepins AND Suiviinstruction.typeserins = Serviceinstructeur.typeserins AND Suiviinstruction.numcomins = Serviceinstructeur.numcomins AND Suiviinstruction.numagrins = Serviceinstructeur.numagrins' )
 					)
 				)
+					)
 			);
 
 			$personne = Set::merge( $personne, $suiviinstruction );
 			//On ajout l'ID de l'utilisateur connecté afind e récupérer son service instructeur
 			if( empty( $suiviinstruction ) && is_int( $user_id ) ) {
-				$user = $this->Contratinsertion->User->findById( $user_id, null, null, 0 );
+				$qd_user = array(
+					'conditions' => array(
+						'User.id' => $user_id
+					),
+					'fields' => null,
+					'order' => null,
+					'recursive' => 0
+				);
+				$user = $this->Contratinsertion->User->find('first', $qd_user);
 				$personne = Set::merge( $personne, $user );
 			}
 
 			// FIXME -> comment distinguer ? + FIXME autorutitel / autorutiadrelec
 			$modecontact = $this->Foyer->Modecontact->find(
-				'all',
-				array(
-					'conditions' => array(
-						'Modecontact.foyer_id' => $personne['Foyer']['id']
-					),
-					'recursive' => -1,
-					'order' => 'Modecontact.nattel ASC'
-				)
+					'all', array(
+				'conditions' => array(
+					'Modecontact.foyer_id' => $personne['Foyer']['id']
+				),
+				'recursive' => -1,
+				'order' => 'Modecontact.nattel ASC'
+					)
 			);
 
 			foreach( $modecontact as $index => $value ) {
@@ -801,51 +811,48 @@
 
 			/// Récupération de l'adresse lié à la personne
 			$this->Foyer->Adressefoyer->bindModel(
-				array(
-					'belongsTo' => array(
-						'Adresse' => array(
-							'className'     => 'Adresse',
-							'foreignKey'    => 'adresse_id'
+					array(
+						'belongsTo' => array(
+							'Adresse' => array(
+								'className' => 'Adresse',
+								'foreignKey' => 'adresse_id'
+							)
 						)
 					)
-				)
 			);
 
 			$detaildroitrsa = $this->Foyer->Dossier->Detaildroitrsa->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Detaildroitrsa.dossier_id' => $personne['Foyer']['Dossier']['id']
-					),
-					'recursive' => -1
-				)
+					'first', array(
+				'conditions' => array(
+					'Detaildroitrsa.dossier_id' => $personne['Foyer']['Dossier']['id']
+				),
+				'recursive' => -1
+					)
 			);//Detaildroitrsa.oridemrsa
 			if( !empty( $detaildroitrsa ) ) {
 				$personne = Set::merge( $personne, $detaildroitrsa );
 			}
 
 			$activite = $this->Activite->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Activite.personne_id' => $personne_id
-					),
-					'recursive' => -1,
-					'order' => 'Activite.dfact DESC'
-				)
+					'first', array(
+				'conditions' => array(
+					'Activite.personne_id' => $personne_id
+				),
+				'recursive' => -1,
+				'order' => 'Activite.dfact DESC'
+					)
 			);//Activite.act
 			if( !empty( $activite ) ) {
 				$personne = Set::merge( $personne, $activite );
 			}
 
 			$adresse = $this->Foyer->Adressefoyer->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Adressefoyer.foyer_id' => $personne['Personne']['foyer_id'],
-						'Adressefoyer.rgadr' => '01',
-					)
+					'first', array(
+				'conditions' => array(
+					'Adressefoyer.foyer_id' => $personne['Personne']['foyer_id'],
+					'Adressefoyer.rgadr' => '01',
 				)
+					)
 			);
 			$personne['Adresse'] = $adresse['Adresse'];
 
@@ -853,15 +860,14 @@
 			$this->Orientstruct->unbindModelAll();
 			$this->Orientstruct->bindModel( array( 'belongsTo' => array( 'Structurereferente' ) ) );
 			$orientstruct = $this->Orientstruct->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Orientstruct.personne_id' => $personne_id,
-						'Orientstruct.date_propo IS NOT NULL'
-					),
-					'order' => 'Orientstruct.date_propo DESC',
-					'recursive' => 0
-				)
+					'first', array(
+				'conditions' => array(
+					'Orientstruct.personne_id' => $personne_id,
+					'Orientstruct.date_propo IS NOT NULL'
+				),
+				'order' => 'Orientstruct.date_propo DESC',
+				'recursive' => 0
+					)
 			);
 
 			if( !empty( $orientstruct ) ) {
@@ -872,64 +878,54 @@
 		}
 
 		/**
-		* Détails propres à la personne pour l'APRE
-		*/
-
-		public function detailsApre( $personne_id, $user_id = null ){
+		 * Détails propres à la personne pour l'APRE
+		 */
+		public function detailsApre( $personne_id, $user_id = null ) {
 
 			$Informationpe = ClassRegistry::init( 'Informationpe' );
 			$personne = $this->find(
-				'first',
-				array(
-					'fields' => array_merge(
-						$this->fields(),
-						$this->Prestation->fields(),
-						$this->Foyer->fields(),
-						$this->Foyer->Dossier->fields(),
-						$this->Foyer->Adressefoyer->Adresse->fields(),
-						$this->Orientstruct->fields(),
-						$this->Orientstruct->Typeorient->fields(),
-						$this->Orientstruct->Structurereferente->fields(),
-						array(
-							'( '.$this->Foyer->vfNbEnfants().' ) AS "Foyer__nbenfants"',
-							'Historiqueetatpe.id',
-							'Historiqueetatpe.etat',
-							'Historiqueetatpe.date',
-							'Historiqueetatpe.identifiantpe',
-							'Canton.id',
-							'Canton.canton',
-							'PersonneReferent.referent_id',
-							'Titresejour.dftitsej'
+					'first', array(
+				'fields' => array_merge(
+						$this->fields(), $this->Prestation->fields(), $this->Foyer->fields(), $this->Foyer->Dossier->fields(), $this->Foyer->Adressefoyer->Adresse->fields(), $this->Orientstruct->fields(), $this->Orientstruct->Typeorient->fields(), $this->Orientstruct->Structurereferente->fields(), array(
+					'( '.$this->Foyer->vfNbEnfants().' ) AS "Foyer__nbenfants"',
+					'Historiqueetatpe.id',
+					'Historiqueetatpe.etat',
+					'Historiqueetatpe.date',
+					'Historiqueetatpe.identifiantpe',
+					'Canton.id',
+					'Canton.canton',
+					'PersonneReferent.referent_id',
+					'Titresejour.dftitsej'
 						)
-					),
-					'joins' => array(
-						$this->join( 'Prestation', array( 'type' => 'INNER' ) ),
-						$this->join( 'Foyer', array( 'type' => 'INNER' ) ),
-						$this->join( 'PersonneReferent', array( 'type' => 'LEFT OUTER' ) ),
-						$this->join( 'Titresejour', array( 'type' => 'LEFT OUTER' ) ),
-						$this->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
-						$this->Foyer->join( 'Adressefoyer', array( 'type' => 'INNER' ) ),
-						$this->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'INNER' ) ),
-						$this->join( 'Orientstruct', array( 'type' => 'LEFT OUTER' ) ),
-						$this->Orientstruct->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
-						$this->Orientstruct->join( 'Typeorient', array( 'type' => 'LEFT OUTER' ) ),
-						$Informationpe->joinPersonneInformationpe( 'Personne', 'Informationpe', 'LEFT OUTER' ),
-						$Informationpe->join( 'Historiqueetatpe', array( 'type' => 'LEFT OUTER' ) ),
-						ClassRegistry::init( 'Canton' )->joinAdresse()
-					),
-					'conditions' => array(
-						'Personne.id' => $personne_id,
-						'Prestation.natprest' => 'RSA',
-						'Prestation.rolepers' => array( 'DEM', 'CJT' ),
-						'PersonneReferent.dfdesignation IS NULL'
-					),
-					'contain' => false,
-					'recursive' => -1
-				)
+				),
+				'joins' => array(
+					$this->join( 'Prestation', array( 'type' => 'INNER' ) ),
+					$this->join( 'Foyer', array( 'type' => 'INNER' ) ),
+					$this->join( 'PersonneReferent', array( 'type' => 'LEFT OUTER' ) ),
+					$this->join( 'Titresejour', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
+					$this->Foyer->join( 'Adressefoyer', array( 'type' => 'INNER' ) ),
+					$this->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'INNER' ) ),
+					$this->join( 'Orientstruct', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Orientstruct->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Orientstruct->join( 'Typeorient', array( 'type' => 'LEFT OUTER' ) ),
+					$Informationpe->joinPersonneInformationpe( 'Personne', 'Informationpe', 'LEFT OUTER' ),
+					$Informationpe->join( 'Historiqueetatpe', array( 'type' => 'LEFT OUTER' ) ),
+					ClassRegistry::init( 'Canton' )->joinAdresse()
+				),
+				'conditions' => array(
+					'Personne.id' => $personne_id,
+					'Prestation.natprest' => 'RSA',
+					'Prestation.rolepers' => array( 'DEM', 'CJT' ),
+					'PersonneReferent.dfdesignation IS NULL'
+				),
+				'contain' => false,
+				'recursive' => -1
+					)
 			);
 
-			
-			
+
+
 			///Récupération des données propres au contrat d'insertion, notammenrt le premier contrat validé ainsi que le dernier.
 // 			$contrat = $this->Contratinsertion->find(
 // 				'first',
@@ -942,69 +938,64 @@
 // 				)
 // 			);
 // 			$personne['Contratinsertion']['premier'] = $contrat['Contratinsertion'];
-// 
+//
 			$contrat = $this->Contratinsertion->find(
-				'first',
-				array(
-					'fields' => array( 'Contratinsertion.datevalidation_ci' ),
-					'conditions' => array(
-						'Contratinsertion.personne_id' => $personne['Personne']['id'],
-						'Contratinsertion.decision_ci' => 'V'
-					),
-					'contain' => false,
-					'order' => 'Contratinsertion.datevalidation_ci DESC',
-					'recursive' => -1
-				)
+					'first', array(
+				'fields' => array( 'Contratinsertion.datevalidation_ci' ),
+				'conditions' => array(
+					'Contratinsertion.personne_id' => $personne['Personne']['id'],
+					'Contratinsertion.decision_ci' => 'V'
+				),
+				'contain' => false,
+				'order' => 'Contratinsertion.datevalidation_ci DESC',
+				'recursive' => -1
+					)
 			);
 			$personne['Contratinsertion']['dernier'] = $contrat['Contratinsertion'];
-			
-			
+
+
 			/// Récupération du service instructeur
 			$suiviinstruction = $this->Foyer->Dossier->Suiviinstruction->find(
-				'first',
-				array(
-					'fields' => array_keys( // INFO: champs des tables Suiviinstruction et Serviceinstructeur
+					'first', array(
+				'fields' => array_keys( // INFO: champs des tables Suiviinstruction et Serviceinstructeur
 						Set::merge(
-							Set::flatten( array( 'Suiviinstruction' => Set::normalize( array_keys( $this->Foyer->Dossier->Suiviinstruction->schema() ) ) ) ),
-							Set::flatten( array( 'Serviceinstructeur' => Set::normalize( array_keys( ClassRegistry::init( 'Serviceinstructeur' )->schema() ) ) ) )
+								Set::flatten( array( 'Suiviinstruction' => Set::normalize( array_keys( $this->Foyer->Dossier->Suiviinstruction->schema() ) ) ) ), Set::flatten( array( 'Serviceinstructeur' => Set::normalize( array_keys( ClassRegistry::init( 'Serviceinstructeur' )->schema() ) ) ) )
 						)
-					),
-					'recursive' => -1,
-					'contain' => false,
-					'conditions' => array(
-						'Suiviinstruction.dossier_id' => $personne['Foyer']['dossier_id']
-					),
-					'joins' => array(
-						array(
-							'table'      => 'servicesinstructeurs',
-							'alias'      => 'Serviceinstructeur',
-							'type'       => 'LEFT OUTER',
-							'foreignKey' => false,
-							'conditions' => array( 'Suiviinstruction.numdepins = Serviceinstructeur.numdepins AND Suiviinstruction.typeserins = Serviceinstructeur.typeserins AND Suiviinstruction.numcomins = Serviceinstructeur.numcomins AND Suiviinstruction.numagrins = Serviceinstructeur.numagrins' )
-						)
+				),
+				'recursive' => -1,
+				'contain' => false,
+				'conditions' => array(
+					'Suiviinstruction.dossier_id' => $personne['Foyer']['dossier_id']
+				),
+				'joins' => array(
+					array(
+						'table' => 'servicesinstructeurs',
+						'alias' => 'Serviceinstructeur',
+						'type' => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array( 'Suiviinstruction.numdepins = Serviceinstructeur.numdepins AND Suiviinstruction.typeserins = Serviceinstructeur.typeserins AND Suiviinstruction.numcomins = Serviceinstructeur.numcomins AND Suiviinstruction.numagrins = Serviceinstructeur.numagrins' )
 					)
 				)
+					)
 			);
 
 			$personne = Set::merge( $personne, $suiviinstruction );
 
 			$User = ClassRegistry::init( 'User' );
 			$user = $User->find(
-				'first',
-				array(
-					'fields' => array_merge(
-						$User->fields(),
-						$User->Serviceinstructeur->fields()
-					),
-					'conditions' => array(
-						'User.id' => $user_id
-					),
-					'joins' => array(
-						$User->join( 'Serviceinstructeur' )
-					),
-					'contain' => false,
-					'recursive' => -1
-				)
+					'first', array(
+				'fields' => array_merge(
+						$User->fields(), $User->Serviceinstructeur->fields()
+				),
+				'conditions' => array(
+					'User.id' => $user_id
+				),
+				'joins' => array(
+					$User->join( 'Serviceinstructeur' )
+				),
+				'contain' => false,
+				'recursive' => -1
+					)
 			);
 			$personne = Set::merge( $personne, $user );
 
@@ -1013,183 +1004,176 @@
 		}
 
 		/**
-		*
-		*/
-
-		public function newDetailsCi( $personne_id, $user_id = null ){
+		 *
+		 */
+		public function newDetailsCi( $personne_id, $user_id = null ) {
 			///Recup personne
 			$this->Prestation->unbindModelAll();
 			$this->Dsp->unbindModelAll();
 
 			$this->unbindModelAll();
 			$personne = $this->find(
-				'first',
-				array(
-					'fields' => array(
-						'Dossier.id',
-						'Dossier.numdemrsa',
-						'Dossier.dtdemrsa',
-						'Dossier.fonorg',
-						'Dossier.matricule',
-						'Personne.id',
-						'Personne.foyer_id',
-						'Personne.qual',
-						'Personne.nom',
-						'Personne.prenom',
-						'Personne.dtnai',
-						'Personne.nir',
-						'Personne.numfixe',
-						'Personne.numport',
-						'Personne.email',
-						'Personne.idassedic',
-						'Prestation.rolepers',
-						'Adresse.numvoie',
-						'Adresse.typevoie',
-						'Adresse.nomvoie',
-						'Adresse.locaadr',
-						'Adresse.codepos',
-						'Adresse.nomvoie',
-						'Adresse.numcomptt',
-						'Serviceinstructeur.lib_service',
-						'Serviceinstructeur.numdepins',
-						'Serviceinstructeur.typeserins',
-						'Serviceinstructeur.numcomins',
-						'Serviceinstructeur.numagrins',
-						'Suiviinstruction.typeserins',
-						ClassRegistry::init( 'Detaildroitrsa' )->vfRsaMajore().' AS "Detailcalculdroitrsa__majore"'
+					'first', array(
+				'fields' => array(
+					'Dossier.id',
+					'Dossier.numdemrsa',
+					'Dossier.dtdemrsa',
+					'Dossier.fonorg',
+					'Dossier.matricule',
+					'Personne.id',
+					'Personne.foyer_id',
+					'Personne.qual',
+					'Personne.nom',
+					'Personne.prenom',
+					'Personne.dtnai',
+					'Personne.nir',
+					'Personne.numfixe',
+					'Personne.numport',
+					'Personne.email',
+					'Personne.idassedic',
+					'Prestation.rolepers',
+					'Adresse.numvoie',
+					'Adresse.typevoie',
+					'Adresse.nomvoie',
+					'Adresse.locaadr',
+					'Adresse.codepos',
+					'Adresse.nomvoie',
+					'Adresse.numcomptt',
+					'Serviceinstructeur.lib_service',
+					'Serviceinstructeur.numdepins',
+					'Serviceinstructeur.typeserins',
+					'Serviceinstructeur.numcomins',
+					'Serviceinstructeur.numagrins',
+					'Suiviinstruction.typeserins',
+					ClassRegistry::init( 'Detaildroitrsa' )->vfRsaMajore().' AS "Detailcalculdroitrsa__majore"'
+				),
+				'conditions' => array(
+					'Personne.id' => $personne_id
+				),
+				'joins' => array(
+					array(
+						'table' => 'foyers', // FIXME
+						'alias' => 'Foyer',
+						'type' => 'INNER',
+						'foreignKey' => false,
+						'conditions' => array( 'Foyer.id = Personne.foyer_id' )
 					),
-					'conditions' => array(
-						'Personne.id' => $personne_id
+					array(
+						'table' => 'dossiers', // FIXME
+						'alias' => 'Dossier',
+						'type' => 'INNER',
+						'foreignKey' => false,
+						'conditions' => array( 'Dossier.id = Foyer.dossier_id' )
 					),
-					'joins' => array(
-						array(
-							'table'      => 'foyers', // FIXME
-							'alias'      => 'Foyer',
-							'type'       => 'INNER',
-							'foreignKey' => false,
-							'conditions' => array( 'Foyer.id = Personne.foyer_id' )
-						),
-						array(
-							'table'      => 'dossiers', // FIXME
-							'alias'      => 'Dossier',
-							'type'       => 'INNER',
-							'foreignKey' => false,
-							'conditions' => array( 'Dossier.id = Foyer.dossier_id' )
-						),
-						array(
-							'table'      => 'prestations',
-							'alias'      => 'Prestation',
-							'type'       => 'INNER',
-							'foreignKey' => false,
-							'conditions' => array(
-								'Personne.id = Prestation.personne_id',
-								'( Prestation.rolepers = \'DEM\' OR Prestation.rolepers = \'CJT\' )',
-								'Prestation.natprest = \'RSA\''
-							)
-						),
-						array(
-							'table'      => 'adressesfoyers',
-							'alias'      => 'Adressefoyer',
-							'type'       => 'LEFT OUTER',
-							'foreignKey' => false,
-							'conditions' => array( 'Foyer.id = Adressefoyer.foyer_id', 'Adressefoyer.rgadr = \'01\'' )
-						),
-						array(
-							'table'      => 'adresses',
-							'alias'      => 'Adresse',
-							'type'       => 'LEFT OUTER',
-							'foreignKey' => false,
-							'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
-						),
-						array(
-							'table'      => 'suivisinstruction',
-							'alias'      => 'Suiviinstruction',
-							'type'       => 'LEFT OUTER',
-							'foreignKey' => false,
-							'conditions' => array( 'Suiviinstruction.dossier_id = Dossier.id' )
-						),
-						array(
-							'table'      => 'servicesinstructeurs',
-							'alias'      => 'Serviceinstructeur',
-							'type'       => 'LEFT OUTER',
-							'foreignKey' => false,
-							'conditions' => array( 'Suiviinstruction.numdepins = Serviceinstructeur.numdepins AND Suiviinstruction.typeserins = Serviceinstructeur.typeserins AND Suiviinstruction.numcomins = Serviceinstructeur.numcomins AND Suiviinstruction.numagrins = Serviceinstructeur.numagrins' )
-						),
+					array(
+						'table' => 'prestations',
+						'alias' => 'Prestation',
+						'type' => 'INNER',
+						'foreignKey' => false,
+						'conditions' => array(
+							'Personne.id = Prestation.personne_id',
+							'( Prestation.rolepers = \'DEM\' OR Prestation.rolepers = \'CJT\' )',
+							'Prestation.natprest = \'RSA\''
+						)
 					),
-					'recursive' => 1
-				)
+					array(
+						'table' => 'adressesfoyers',
+						'alias' => 'Adressefoyer',
+						'type' => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array( 'Foyer.id = Adressefoyer.foyer_id', 'Adressefoyer.rgadr = \'01\'' )
+					),
+					array(
+						'table' => 'adresses',
+						'alias' => 'Adresse',
+						'type' => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
+					),
+					array(
+						'table' => 'suivisinstruction',
+						'alias' => 'Suiviinstruction',
+						'type' => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array( 'Suiviinstruction.dossier_id = Dossier.id' )
+					),
+					array(
+						'table' => 'servicesinstructeurs',
+						'alias' => 'Serviceinstructeur',
+						'type' => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array( 'Suiviinstruction.numdepins = Serviceinstructeur.numdepins AND Suiviinstruction.typeserins = Serviceinstructeur.typeserins AND Suiviinstruction.numcomins = Serviceinstructeur.numcomins AND Suiviinstruction.numagrins = Serviceinstructeur.numagrins' )
+					),
+				),
+				'recursive' => 1
+					)
 			);
 
 			// FIXME -> comment distinguer ? + FIXME autorutitel / autorutiadrelec
 			$modecontact = $this->Foyer->Modecontact->find(
-				'all',
-				array(
-					'conditions' => array(
-						'Modecontact.foyer_id' => $personne['Personne']['foyer_id']
-					),
-					'recursive' => -1,
-					'order' => 'Modecontact.nattel ASC'
-				)
+					'all', array(
+				'conditions' => array(
+					'Modecontact.foyer_id' => $personne['Personne']['foyer_id']
+				),
+				'recursive' => -1,
+				'order' => 'Modecontact.nattel ASC'
+					)
 			);
 
 			foreach( $modecontact as $index => $value ) {
 // 				if( ( ( Set::extract( $value, 'Modecontact.autorutitel' ) != 'R' ) ) && ( Set::extract( $value, 'Modecontact.nattel' ) == 'D' ) ) {
-					$personne = Set::merge( $personne, array( 'Modecontact' => Set::extract( $modecontact, '{n}.Modecontact' ) ) );
+				$personne = Set::merge( $personne, array( 'Modecontact' => Set::extract( $modecontact, '{n}.Modecontact' ) ) );
 // 				}
 			}
 
 			$activite = $this->Activite->find(
-				'first',
-				array(
-					'fields' => array(
-						'Activite.act'
-					),
-					'conditions' => array(
-						'Activite.personne_id' => $personne_id
-					),
-					'recursive' => -1,
-					'order' => 'Activite.dfact DESC'
-				)
+					'first', array(
+				'fields' => array(
+					'Activite.act'
+				),
+				'conditions' => array(
+					'Activite.personne_id' => $personne_id
+				),
+				'recursive' => -1,
+				'order' => 'Activite.dfact DESC'
+					)
 			);
 			if( !empty( $activite ) ) {
 				$personne = Set::merge( $personne, $activite );
-
 			}
 
 			return $personne;
 		}
 
-
 		/**
-		* Fonction permettant de récupérer le responsable du dossier (DEM + RSA)
-		* Dans les cas où un dossier possède plusieurs Demandeurs
-		* on s'assure de n'en prendre qu'un seul des 2
-		*
-		* @param string $field Le champ Foyer.id de la requête principale.
-		*/
-
+		 * Fonction permettant de récupérer le responsable du dossier (DEM + RSA)
+		 * Dans les cas où un dossier possède plusieurs Demandeurs
+		 * on s'assure de n'en prendre qu'un seul des 2
+		 *
+		 * @param string $field Le champ Foyer.id de la requête principale.
+		 */
 		public function sqResponsableDossierUnique( $foyerId = 'Foyer.id' ) {
 			return $this->sq(
-				array(
-					'alias' => 'personnes',
-					'fields' => array( 'personnes.id' ),
-					'conditions' => array(
-						'personnes.foyer_id = '.$foyerId,
-						'prestations.rolepers' => 'DEM'
-					),
-					'joins' => array(
-						array_words_replace(
-							$this->join( 'Prestation' ),
 							array(
-								'Personne' => 'personnes',
-								'Prestation' => 'prestations'
+								'alias' => 'personnes',
+								'fields' => array( 'personnes.id' ),
+								'conditions' => array(
+									'personnes.foyer_id = '.$foyerId,
+									'prestations.rolepers' => 'DEM'
+								),
+								'joins' => array(
+									array_words_replace(
+											$this->join( 'Prestation' ), array(
+										'Personne' => 'personnes',
+										'Prestation' => 'prestations'
+											)
+									)
+								),
+								'contain' => false,
+								'limit' => 1
 							)
-						)
-					),
-					'contain' => false,
-					'limit' => 1
-				)
 			);
 		}
+
 	}
 ?>

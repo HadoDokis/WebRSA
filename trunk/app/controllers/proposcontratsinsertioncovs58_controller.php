@@ -1,30 +1,27 @@
 <?php
-
 	App::import( 'Helper', 'Locale' );
-
-	class Proposcontratsinsertioncovs58Controller extends AppController {
+	class Proposcontratsinsertioncovs58Controller extends AppController
+	{
 
 		public $name = "Proposcontratsinsertioncovs58";
-
 		public $uses = array( 'Propocontratinsertioncov58', 'Option', 'Action' );
 		public $helpers = array( 'Ajax' );
 		public $components = array( 'RequestHandler' );
 		public $aucunDroit = array( 'ajax', 'ajaxref', 'ajaxstruct', 'ajaxraisonci', 'notificationsop' );
-
 		public $commeDroit = array(
 			'add' => 'Contratsinsertion:edit'
 		);
 
 		/**
-		*
-		*/
+		 *
+		 */
 		protected function _setOptions() {
 			$options = $this->Propocontratinsertioncov58->allEnumLists();
 			$this->set( 'options', $options );
 
 			if( in_array( $this->action, array( 'index', 'add', 'edit', 'view', 'valider' ) ) ) {
 				$this->set( 'decision_ci', $this->Option->decision_ci() );
-				$forme_ci = array();
+				$forme_ci = array( );
 				if( Configure::read( 'nom_form_ci_cg' ) == 'cg93' ) {
 					$forme_ci = array( 'S' => 'Simple', 'C' => 'Complexe' );
 				}
@@ -38,7 +35,7 @@
 				$this->set( 'formeci', $this->Option->formeci() );
 			}
 
-			if( in_array( $this->action, array( 'add', 'edit'/*, 'view'*/ ) ) ) {
+			if( in_array( $this->action, array( 'add', 'edit'/* , 'view' */ ) ) ) {
 				$this->set( 'qual', $this->Option->qual() );
 				$this->set( 'raison_ci', $this->Option->raison_ci() );
 				$this->set( 'avisraison_ci', $this->Option->avisraison_ci() );
@@ -65,9 +62,8 @@
 		}
 
 		/**
-		*   Ajax pour les coordonnées du référent APRE
-		*/
-
+		 *   Ajax pour les coordonnées du référent APRE
+		 */
 		public function ajaxref( $referent_id = null ) { // FIXME
 			Configure::write( 'debug', 0 );
 
@@ -78,10 +74,18 @@
 				$referent_id = suffix( Set::extract( $this->data, 'Propocontratinsertioncov58.referent_id' ) );
 			}
 
-			$referent = array();
+			$referent = array( );
 			if( is_int( $referent_id ) ) {
-				$referent = $this->Propocontratinsertioncov58->Referent->findbyId( $referent_id, null, null, -1
+
+				$qd_referent = array(
+					'conditions' => array(
+						'Referent.id' => $referent_id
+					),
+					'fields' => null,
+					'order' => null,
+					'recursive' => -1
 				);
+				$referent = $this->Propocontratinsertioncov58->Referent->find( 'first', $qd_referent );
 			}
 
 			$this->set( 'referent', $referent );
@@ -89,9 +93,8 @@
 		}
 
 		/**
-		*   Ajax pour les coordonnées de la structure référente liée
-		*/
-
+		 *   Ajax pour les coordonnées de la structure référente liée
+		 */
 		public function ajaxstruct( $structurereferente_id = null ) { // FIXME
 			Configure::write( 'debug', 0 );
 			$this->set( 'typesorients', $this->Typeorient->find( 'list', array( 'fields' => array( 'lib_type_orient' ) ) ) );
@@ -99,15 +102,23 @@
 			$dataStructurereferente_id = Set::extract( $this->data, 'Propocontratinsertioncov58.structurereferente_id' );
 			$structurereferente_id = ( empty( $structurereferente_id ) && !empty( $dataStructurereferente_id ) ? $dataStructurereferente_id : $structurereferente_id );
 
-			$struct = $this->Propocontratinsertioncov58->Structurereferente->findbyId( $structurereferente_id, null, null, -1 );
+			$qd_struct = array(
+				'conditions' => array(
+					'Structurereferente.id' => $structurereferente_id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => -1
+			);
+			$struct = $this->Propocontratinsertioncov58->Structurereferente->find( 'first', $qd_struct );
+
 			$this->set( 'struct', $struct );
 			$this->render( 'ajaxstruct', 'ajax' );
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function add() {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
@@ -119,9 +130,8 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		protected function _add_edit( $id = null, $avenant_id = null ) {
 			// Retour à la liste en cas d'annulation
 			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
@@ -144,63 +154,60 @@
 				$tc = 'PRE';
 			}
 
-			if ( isset( $avenant_id ) && !empty( $avenant_id ) ) {
+			if( isset( $avenant_id ) && !empty( $avenant_id ) ) {
 				$this->set( 'avenant_id', $avenant_id );
 			}
 
-			$this->set( 'nbContratsPrecedents',  $nbContratsPrecedents );
+			$this->set( 'nbContratsPrecedents', $nbContratsPrecedents );
 			/**
-			*   Détails des précédents contrats
-			*/
+			 *   Détails des précédents contrats
+			 */
 			$lastContrat = $this->Propocontratinsertioncov58->Dossiercov58->Personne->Contratinsertion->find(
-				'all',
-				array(
-					'fields' => array(
-						'Contratinsertion.rg_ci',
-						'Contratinsertion.dd_ci',
-						'Contratinsertion.df_ci',
-						'Contratinsertion.structurereferente_id',
-						'Structurereferente.lib_struc',
-						'Contratinsertion.engag_object',
-						'Contratinsertion.observ_ci',
-						//thematique du contrat,
-						'Contratinsertion.decision_ci',
-					),
-					'conditions' => array(
-						'Contratinsertion.personne_id' => $personne_id
-					),
-					'order' => 'Contratinsertion.date_saisi_ci DESC',
-					'limit' => 5
-				)
+					'all', array(
+				'fields' => array(
+					'Contratinsertion.rg_ci',
+					'Contratinsertion.dd_ci',
+					'Contratinsertion.df_ci',
+					'Contratinsertion.structurereferente_id',
+					'Structurereferente.lib_struc',
+					'Contratinsertion.engag_object',
+					'Contratinsertion.observ_ci',
+					//thematique du contrat,
+					'Contratinsertion.decision_ci',
+				),
+				'conditions' => array(
+					'Contratinsertion.personne_id' => $personne_id
+				),
+				'order' => 'Contratinsertion.date_saisi_ci DESC',
+				'limit' => 5
+					)
 			);
-			$this->set( 'lastContrat',  $lastContrat );
+			$this->set( 'lastContrat', $lastContrat );
 
 
 			/// Recherche du type d'orientation
 			$orientstruct = $this->Propocontratinsertioncov58->Structurereferente->Orientstruct->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Orientstruct.personne_id' => $personne_id,
-						'Orientstruct.typeorient_id IS NOT NULL',
-						'Orientstruct.statut_orient' => 'Orienté'
-					),
-					'order' => 'Orientstruct.date_valid DESC',
-					'recursive' => -1
-				)
+					'first', array(
+				'conditions' => array(
+					'Orientstruct.personne_id' => $personne_id,
+					'Orientstruct.typeorient_id IS NOT NULL',
+					'Orientstruct.statut_orient' => 'Orienté'
+				),
+				'order' => 'Orientstruct.date_valid DESC',
+				'recursive' => -1
+					)
 			);
 			$this->set( 'orientstruct', $orientstruct );
 
 			///Personne liée au parcours
 			$personne_referent = $this->Propocontratinsertioncov58->Dossiercov58->Personne->PersonneReferent->find(
-				'first',
-				array(
-					'conditions' => array(
-						'PersonneReferent.personne_id' => $personne_id,
-						'PersonneReferent.dfdesignation IS NULL'
-					),
-					'recursive' => -1
-				)
+					'first', array(
+				'conditions' => array(
+					'PersonneReferent.personne_id' => $personne_id,
+					'PersonneReferent.dfdesignation IS NULL'
+				),
+				'recursive' => -1
+					)
 			);
 
 			$structures = $this->Propocontratinsertioncov58->Structurereferente->listOptions();
@@ -218,17 +225,16 @@
 			$this->set( 'dossier_id', $dossier_id );
 
 			$situationdossierrsa = $this->Propocontratinsertioncov58->Dossiercov58->Personne->Foyer->Dossier->Situationdossierrsa->find(
-				'first',
-				array(
-					'fields' => array(
-						'Situationdossierrsa.id',
-						'Situationdossierrsa.dtclorsa'
-					),
-					'conditions' => array(
-						'Situationdossierrsa.dossier_id' => $dossier_id
-					),
-					'recursive' => -1
-				)
+					'first', array(
+				'fields' => array(
+					'Situationdossierrsa.id',
+					'Situationdossierrsa.dtclorsa'
+				),
+				'conditions' => array(
+					'Situationdossierrsa.dossier_id' => $dossier_id
+				),
+				'recursive' => -1
+					)
 			);
 			$this->assert( !empty( $situationdossierrsa ), 'error500' );
 			$this->set( 'situationdossierrsa_id', $situationdossierrsa['Situationdossierrsa']['id'] );
@@ -248,21 +254,20 @@
 
 				$success = true;
 
-				if ( $this->action == 'add' ) {
+				if( $this->action == 'add' ) {
 					$themecov58 = $this->Propocontratinsertioncov58->Dossiercov58->Themecov58->find(
-						'first',
-						array(
-							'conditions' => array(
-								'Themecov58.name' => Inflector::tableize($this->Propocontratinsertioncov58->alias)
-							),
-							'contain' => false
-						)
+							'first', array(
+						'conditions' => array(
+							'Themecov58.name' => Inflector::tableize( $this->Propocontratinsertioncov58->alias )
+						),
+						'contain' => false
+							)
 					);
 					$dossiercov58['Dossiercov58']['themecov58_id'] = $themecov58['Themecov58']['id'];
 					$dossiercov58['Dossiercov58']['personne_id'] = $personne_id;
 					$dossiercov58['Dossiercov58']['themecov58'] = 'proposcontratsinsertioncovs58';
 
-					$success = $this->Propocontratinsertioncov58->Dossiercov58->save($dossiercov58) && $success;
+					$success = $this->Propocontratinsertioncov58->Dossiercov58->save( $dossiercov58 ) && $success;
 					$this->data['Propocontratinsertioncov58']['dossiercov58_id'] = $this->Propocontratinsertioncov58->Dossiercov58->id;
 				}
 
@@ -276,7 +281,7 @@
 				if( $contratinsertionRaisonCi == 'S' ) {
 					$this->data['Propocontratinsertioncov58']['avisraison_ci'] = Set::classicExtract( $this->data, 'Propocontratinsertioncov58.avisraison_suspension_ci' );
 				}
-				else if( $contratinsertionRaisonCi == 'R' ){
+				else if( $contratinsertionRaisonCi == 'R' ) {
 					$this->data['Propocontratinsertioncov58']['avisraison_ci'] = Set::classicExtract( $this->data, 'Propocontratinsertioncov58.avisraison_radiation_ci' );
 				}
 				/// Validation
@@ -304,22 +309,21 @@
 				if( $this->action == 'edit' ) {
 
 					$this->data = $this->Propocontratinsertioncov58->find(
-						'first',
-						array(
-							'joins' => array(
-								array(
-									'table' => 'dossierscovs58',
-									'alias' => 'Dossiercov58',
-									'type' => 'INNER',
-									'conditions' => array(
-										'Dossiercov58.id = Propocontratinsertioncov58.dossiercov58_id',
-										'Dossiercov58.personne_id' => $personne_id
-									)
+							'first', array(
+						'joins' => array(
+							array(
+								'table' => 'dossierscovs58',
+								'alias' => 'Dossiercov58',
+								'type' => 'INNER',
+								'conditions' => array(
+									'Dossiercov58.id = Propocontratinsertioncov58.dossiercov58_id',
+									'Dossiercov58.personne_id' => $personne_id
 								)
-							),
-							'contain' => false,
-							'order' => array( 'Propocontratinsertioncov58.df_ci DESC' )
-						)
+							)
+						),
+						'contain' => false,
+						'order' => array( 'Propocontratinsertioncov58.df_ci DESC' )
+							)
 					);
 				}
 			}
@@ -332,7 +336,7 @@
 			if( empty( $dataStructurereferente_id ) && empty( $dataReferent_id ) ) {
 				$structurereferente_id = $referent_id = null;
 				// Valeur par défaut préférée: à partir de personnes_referents
-				if( !empty( $personne_referent ) ){
+				if( !empty( $personne_referent ) ) {
 					$structurereferente_id = Set::classicExtract( $personne_referent, "{$this->Propocontratinsertioncov58->Dossiercov58->Personne->PersonneReferent->alias}.structurereferente_id" );
 					$referent_id = Set::classicExtract( $personne_referent, "{$this->Propocontratinsertioncov58->Dossiercov58->Personne->PersonneReferent->alias}.referent_id" );
 				}
@@ -356,20 +360,19 @@
 
 			if( !empty( $struct_id ) ) {
 				$struct = $this->Propocontratinsertioncov58->Structurereferente->find(
-					'first',
-					array(
-						'fields' => array(
-							'Structurereferente.num_voie',
-							'Structurereferente.type_voie',
-							'Structurereferente.nom_voie',
-							'Structurereferente.code_postal',
-							'Structurereferente.ville',
-						),
-						'conditions' => array(
-							'Structurereferente.id' => Set::extract( $this->data, 'Propocontratinsertioncov58.structurereferente_id' )
-						),
-						'recursive' => -1
-					)
+						'first', array(
+					'fields' => array(
+						'Structurereferente.num_voie',
+						'Structurereferente.type_voie',
+						'Structurereferente.nom_voie',
+						'Structurereferente.code_postal',
+						'Structurereferente.ville',
+					),
+					'conditions' => array(
+						'Structurereferente.id' => Set::extract( $this->data, 'Propocontratinsertioncov58.structurereferente_id' )
+					),
+					'recursive' => -1
+						)
 				);
 				$this->set( 'StructureAdresse', $struct['Structurereferente']['num_voie'].' '.$struct['Structurereferente']['type_voie'].' '.$struct['Structurereferente']['nom_voie'].'<br/>'.$struct['Structurereferente']['code_postal'].' '.$struct['Structurereferente']['ville'] );
 			}
@@ -381,22 +384,21 @@
 			if( !empty( $referent_id ) && !empty( $this->data['Propocontratinsertioncov58']['referent_id'] ) ) {
 				$contratinsertionReferentId = preg_replace( '/^[0-9]+_([0-9]+)$/', '\1', $this->data['Propocontratinsertioncov58']['referent_id'] );
 				$referent = $this->Propocontratinsertioncov58->Referent->find(
-					'first',
-					array(
-						'fields' => array(
-							'Referent.email',
-							'Referent.fonction',
-							'Referent.nom',
-							'Referent.prenom',
-							'Referent.numero_poste',
-						),
-						'conditions' => array(
-							'Referent.id' => $contratinsertionReferentId
-						),
-						'recursive' => -1
-					)
+						'first', array(
+					'fields' => array(
+						'Referent.email',
+						'Referent.fonction',
+						'Referent.nom',
+						'Referent.prenom',
+						'Referent.numero_poste',
+					),
+					'conditions' => array(
+						'Referent.id' => $contratinsertionReferentId
+					),
+					'recursive' => -1
+						)
 				);
-				$this->set( 'ReferentEmail', $referent['Referent']['email']. '<br/>' .$referent['Referent']['numero_poste'] );
+				$this->set( 'ReferentEmail', $referent['Referent']['email'].'<br/>'.$referent['Referent']['numero_poste'] );
 				$this->set( 'ReferentFonction', $referent['Referent']['fonction'] );
 				$this->set( 'ReferentNom', $referent['Referent']['nom'].' '.$referent['Referent']['prenom'] );
 			}
@@ -421,17 +423,16 @@
 		 */
 		public function delete( $propocontratinsertioncov58_id ) {
 			$propocontratinsertioncov58 = $this->Propocontratinsertioncov58->find(
-				'first',
-				array(
-					'fields' => array(
-						'Propocontratinsertioncov58.id',
-						'Propocontratinsertioncov58.dossiercov58_id'
-					),
-					'contain' => false,
-					'conditions' => array(
-						'Propocontratinsertioncov58.id' => $propocontratinsertioncov58_id
-					)
+					'first', array(
+				'fields' => array(
+					'Propocontratinsertioncov58.id',
+					'Propocontratinsertioncov58.dossiercov58_id'
+				),
+				'contain' => false,
+				'conditions' => array(
+					'Propocontratinsertioncov58.id' => $propocontratinsertioncov58_id
 				)
+					)
 			);
 
 			$this->Propocontratinsertioncov58->begin();
@@ -449,5 +450,6 @@
 			}
 			$this->redirect( $this->referer() );
 		}
+
 	}
 ?>

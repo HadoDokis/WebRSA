@@ -1,10 +1,9 @@
 <?php
 	class Situationdossierrsa extends AppModel
 	{
+
 		public $name = 'Situationdossierrsa';
-
 		public $useTable = 'situationsdossiersrsa';
-
 		public $validate = array(
 			'etatdosrsa' => array(
 				array(
@@ -29,7 +28,6 @@
 				)
 			)
 		);
-
 		public $belongsTo = array(
 			'Dossier' => array(
 				'className' => 'Dossier',
@@ -39,7 +37,6 @@
 				'order' => ''
 			)
 		);
-
 		public $hasMany = array(
 			'Suspensiondroit' => array(
 				'className' => 'Suspensiondroit',
@@ -70,28 +67,35 @@
 		);
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function etatOuvert() {
 			return array( 'Z', 2, 3, 4 ); // Z => dossier ajouté avec le formulaire "Préconisation ..."
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function etatAttente() {
 			return array( 0, 'Z' );
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function droitsOuverts( $dossier_id ) {
 			if( valid_int( $dossier_id ) ) {
-				$situation = $this->findByDossierId( $dossier_id, null, null, -1 );
+
+				$qd_situation = array(
+					'conditions' => array(
+						'Situationdossierrsa.dossier_id' => $dossier_id
+					),
+					'fields' => null,
+					'order' => null,
+					'recursive' => -1
+				);
+				$situation = $this->find( 'first', $qd_situation );
+
 				return in_array( Set::extract( $situation, 'Situationdossierrsa.etatdosrsa' ), $this->etatOuvert() );
 			}
 			else {
@@ -100,17 +104,27 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function droitsEnAttente( $dossier_id ) {
 			if( valid_int( $dossier_id ) ) {
-				$situation = $this->findByDossierId( $dossier_id, null, null, -1 );
+
+				$qd_situation = array(
+					'conditions' => array(
+						'Situationdossierrsa.dossier_id' => $dossier_id
+					),
+					'fields' => null,
+					'order' => null,
+					'recursive' => -1
+				);
+				$situation = $this->find( 'first', $qd_situation );
+
 				return in_array( Set::extract( $situation, 'Situationdossierrsa.etatdosrsa' ), $this->etatAttente() );
 			}
 			else {
 				return false;
 			}
 		}
+
 	}
 ?>
