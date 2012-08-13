@@ -1,10 +1,9 @@
 <?php
 	class Ressource extends AppModel
 	{
+
 		public $name = 'Ressource';
-
 		protected $_modules = array( 'caf' );
-
 		public $validate = array(
 			'ddress' => array(
 				'rule' => 'date',
@@ -15,7 +14,6 @@
 				'message' => 'Veuillez entrer une date valide'
 			)
 		);
-
 		public $belongsTo = array(
 			'Personne' => array(
 				'className' => 'Personne',
@@ -25,7 +23,6 @@
 				'order' => ''
 			)
 		);
-
 		public $hasMany = array(
 			'Ressourcemensuelle' => array(
 				'className' => 'Ressourcemensuelle',
@@ -41,7 +38,6 @@
 				'counterQuery' => ''
 			)
 		);
-
 		public $hasAndBelongsToMany = array(
 			'Ressourcemensuelle' => array(
 				'className' => 'Ressourcemensuelle',
@@ -62,9 +58,8 @@
 		);
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function afterFind( $results, $primary = false ) {
 			$return = parent::afterFind( $results, $primary );
 
@@ -82,9 +77,8 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function moyenne( $ressource ) {
 			$somme = 0;
 			$moyenne = 0;
@@ -105,21 +99,21 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function refresh( $personne_id ) {
-			$this->unbindModel( array( 'belongsTo' => array( 'Personne' ) ) );
-
-			$ressource  = $this->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Ressource.personne_id' => $personne_id
-					),
-					'order' => 'Ressource.dfress DESC',
-					'recursive' => 2
+			$ressource = $this->find(
+					'first', array(
+				'conditions' => array(
+					'Ressource.personne_id' => $personne_id
+				),
+				'order' => 'Ressource.dfress DESC',
+				'contain' => array(
+					'Ressourcemensuelle' => array(
+						'Detailressourcemensuelle'
+					)
 				)
+					)
 			);
 
 			if( !empty( $ressource ) ) {
@@ -131,7 +125,15 @@
 
 				// INFO: en version2 c'est dans Calculdroitrsa
 				$ModelCalculdroitrsa = ClassRegistry::init( 'Calculdroitrsa' );
-				$calculdroitrsa = $ModelCalculdroitrsa->findByPersonneId( $personne_id, null, null, -1 );
+				$qd_calculdroitrsa = array(
+					'conditions' => array(
+						'ModelCalculdroitrsa.personne_id' => $personne_id
+					),
+					'fields' => null,
+					'order' => null,
+					'recursive' => -1
+				);
+				$calculdroitrsa = $ModelCalculdroitrsa->find( 'first', $qd_calculdroitrsa );
 				$calculdroitrsa['Calculdroitrsa']['personne_id'] = $personne_id;
 				$calculdroitrsa['Calculdroitrsa']['mtpersressmenrsa'] = number_format( $moyenne, 2, '.', '' );
 				$ModelCalculdroitrsa->create( $calculdroitrsa );
@@ -144,10 +146,9 @@
 		}
 
 		/**
-		*
-		*/
-
-		public function beforeSave( $options = array() ) {
+		 *
+		 */
+		public function beforeSave( $options = array( ) ) {
 			$return = parent::beforeSave( $options );
 
 			$moyenne = $this->moyenne( $this->data );
@@ -158,9 +159,8 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function afterSave( $created ) {
 			$return = parent::afterSave( $created );
 
@@ -184,24 +184,23 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function dossierId( $ressource_id ) {
 			$this->unbindModelAll();
 			$this->bindModel(
-				array(
-					'hasOne' => array(
-						'Personne' => array(
-							'foreignKey' => false,
-							'conditions' => array( 'Personne.id = Ressource.personne_id' )
-						),
-						'Foyer' => array(
-							'foreignKey' => false,
-							'conditions' => array( 'Foyer.id = Personne.foyer_id' )
+					array(
+						'hasOne' => array(
+							'Personne' => array(
+								'foreignKey' => false,
+								'conditions' => array( 'Personne.id = Ressource.personne_id' )
+							),
+							'Foyer' => array(
+								'foreignKey' => false,
+								'conditions' => array( 'Foyer.id = Personne.foyer_id' )
+							)
 						)
 					)
-				)
 			);
 			$ressource = $this->findById( $ressource_id, null, null, 1 );
 
@@ -212,5 +211,6 @@
 				return null;
 			}
 		}
+
 	}
 ?>

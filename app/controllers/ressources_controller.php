@@ -25,22 +25,22 @@
 		public function index( $personne_id = null ) {
 			// Vérification du format de la variable
 			$this->assert( valid_int( $personne_id ), 'invalidParameter' );
-
-			$this->Ressource->Personne->unbindModelAll();
-			$this->Ressource->Ressourcemensuelle->unbindModel( array( 'belongsTo' => array( 'Ressource' ) ) );
 			$ressources = $this->Ressource->find(
 					'all', array(
 				'conditions' => array(
 					'Ressource.personne_id' => $personne_id
 				),
-				'recursive' => 2
+				'contain' => array(
+					'Ressourcemensuelle' => array(
+						'Detailressourcemensuelle'
 					)
-					);
+				)
+					)
+			);
 
 			foreach( $ressources as $i => $ressource ) {
 				$ressources[$i]['Ressource']['avg'] = $this->Ressource->moyenne( $ressource );
 			}
-// debug($ressources);
 			$this->set( 'ressources', $ressources );
 			$this->set( 'personne_id', $personne_id );
 		}
@@ -169,7 +169,11 @@
 				),
 				'fields' => null,
 				'order' => null,
-				'recursive' => 2
+				'contain' => array(
+					'Ressourcemensuelle' => array(
+						'Detailressourcemensuelle'
+					)
+				)
 			);
 			$ressource = $this->Ressource->find( 'first', $qd_ressource );
 
@@ -252,7 +256,7 @@
 				}
 			}
 			else {
-				// FIXME !!!! ça marche, mais c'est un hack
+				//INFO !!!! ça marche, mais c'est un hack
 				$ressource['Detailressourcemensuelle'] = array( );
 				foreach( $ressource['Ressourcemensuelle'] as $kRm => $rm ) {
 					if( isset( $rm['Detailressourcemensuelle'][0] ) ) {

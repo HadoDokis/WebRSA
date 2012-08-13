@@ -40,10 +40,11 @@
 							'conditions' => array(
 								'Personne.id' => $params['Personne.id']
 							),
-							'recursive' => 2 // FIXME
+							'contain' => array(
+								'Foyer'
+							)
 						)
 					);
-
 					$this->controller->assert( !empty( $personne ), 'invalidParamForToken' );
 					return $personne['Foyer']['dossier_id'];
 				}

@@ -32,7 +32,9 @@
 			$actions = $this->Action->find(
 				'all',
 				array(
-					'recursive' => 1
+					'contain' => array(
+						'Typeaction'
+					)
 				)
 			);
 
@@ -75,7 +77,7 @@
 					'conditions' => array(
 						'Action.id' => $action_id
 					),
-					'recursive' => 2
+					'recursive' => -1
 				)
 			);
 

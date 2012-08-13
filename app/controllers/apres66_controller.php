@@ -615,7 +615,7 @@
 						'order' => null,
 						'recursive' => 2
 					);
-					$user = $this->{$this->modelClass}->Aideapre66->Typeaideapre66->find( 'first', $qd_typeaide );
+					$typeaide = $this->{$this->modelClass}->Aideapre66->Typeaideapre66->find( 'first', $qd_typeaide );
 
 
 					$nbNormalPieces['Typeaideapre66'] = count( Set::extract( $typeaide, '/Pieceaide66/id' ) );

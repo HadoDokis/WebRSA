@@ -368,58 +368,64 @@
 		/**
 		 *
 		 */
-		protected function _setNewPermissions( $group_id, $user_id, $username ) {
 
-			$qd_group = array(
-				'conditions' => array(
-					'Group.id' => $group_id
-				),
-				'fields' => null,
-				'order' => null,
-				'recursive' => -1
-			);
-			$group = $this->User->Group->find( 'first', $qd_group );
-
-			$qd_aroGroup = array(
-				'conditions' => array(
-					'Aro.alias' => $group['Group']['name']
-				),
-				'fields' => null,
-				'order' => null,
-				'recursive' => 2
-			);
-			$aroGroup = $this->Acl->Aro->find( 'first', $qd_aroGroup );
-
-
-			$aroAlias = $username;
-			$aroUser = $this->Acl->Aro->find( 'first', array( 'conditions' => array( 'Aro.foreign_key' => $user_id, 'Aro.alias' => $aroAlias ), 'recursive' => -1 ) );
-
-			if( empty( $aroUser ) ) {
-				$aroUser = array( );
-			}
-
-			$aroUser['Aro']['parent_id'] = $aroGroup['Aro']['id'];
-			$aroUser['Aro']['foreign_key'] = $user_id;
-			$aroUser['Aro']['alias'] = $aroAlias;
-
-			$this->Acl->Aro->create( $aroUser );
-			$saved = $this->Acl->Aro->save();
-
-			// Permissions héritées du groupe
-			if( !empty( $aroGroup['Aco'] ) ) {
-				$permissions = Set::combine( $aroGroup, 'Aco.{n}.alias', 'Aco.{n}.Permission._create' );
-				foreach( $permissions as $acoAlias => $permission ) {
-					if( $permission == 1 ) {
-						$saved = $this->Acl->allow( $aroAlias, $acoAlias ) && $saved;
-					}
-					else {
-						$saved = $this->Acl->deny( $aroAlias, $acoAlias ) && $saved;
-					}
-				}
-			}
-
-			return $saved;
-		}
+		//TODO: plus utilisée (a nettoyer)
+//		protected function _setNewPermissions( $group_id, $user_id, $username ) {
+//
+//			$qd_group = array(
+//				'conditions' => array(
+//					'Group.id' => $group_id
+//				),
+//				'fields' => null,
+//				'order' => null,
+//				'recursive' => -1
+//			);
+//			$group = $this->User->Group->find( 'first', $qd_group );
+//
+//			$qd_aroGroup = array(
+//				'conditions' => array(
+//					'Aro.alias' => $group['Group']['name']
+//				),
+//				'fields' => null,
+//				'order' => null,
+//				'contain' => array(
+//					'Aco' => array(
+//						'Permission'
+//					)
+//				)
+//			);
+//			$aroGroup = $this->Acl->Aro->find( 'first', $qd_aroGroup );
+//
+//
+//			$aroAlias = $username;
+//			$aroUser = $this->Acl->Aro->find( 'first', array( 'conditions' => array( 'Aro.foreign_key' => $user_id, 'Aro.alias' => $aroAlias ), 'recursive' => -1 ) );
+//
+//			if( empty( $aroUser ) ) {
+//				$aroUser = array( );
+//			}
+//
+//			$aroUser['Aro']['parent_id'] = $aroGroup['Aro']['id'];
+//			$aroUser['Aro']['foreign_key'] = $user_id;
+//			$aroUser['Aro']['alias'] = $aroAlias;
+//
+//			$this->Acl->Aro->create( $aroUser );
+//			$saved = $this->Acl->Aro->save();
+//
+//			// Permissions héritées du groupe
+//			if( !empty( $aroGroup['Aco'] ) ) {
+//				$permissions = Set::combine( $aroGroup, 'Aco.{n}.alias', 'Aco.{n}.Permission._create' );
+//				foreach( $permissions as $acoAlias => $permission ) {
+//					if( $permission == 1 ) {
+//						$saved = $this->Acl->allow( $aroAlias, $acoAlias ) && $saved;
+//					}
+//					else {
+//						$saved = $this->Acl->deny( $aroAlias, $acoAlias ) && $saved;
+//					}
+//				}
+//			}
+//
+//			return $saved;
+//		}
 
 		/**
 		 *

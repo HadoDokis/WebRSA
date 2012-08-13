@@ -76,7 +76,11 @@
 					'conditions' => array(
 						'Aidedirecte.id' => $aidedirecte_id
 					),
-					'recursive' => 2
+					'contain' => array(
+						'Actioninsertion' => array(
+							'Contratinsertion'
+						)
+					)
 				)
 			);
 
