@@ -972,33 +972,6 @@
 			}
 		}
 
-		/**
-		 * Permet de vérifier la syntaxe d'un intervalle au sens PostgreSQL.
-		 *
-		 * @param string $interval L'intervalle à tester.
-		 * @return mixed true si la syntaxe est correcte, sinon une chaîne de
-		 *         caractères contenant l'erreur.
-		 */
-		protected function _checkSqlIntervalSyntax( $interval ) {
-			$sql = "EXPLAIN SELECT NOW() + interval '{$interval}'";
-			$result = false;
-			try {
-				$result = ( @$this->query( $sql ) !== false );
-			}
-			catch( Exception $e ) {
-
-			}
-
-			if( !$result ) {
-				$ds = $this->getDataSource( $this->useDbConfig );
-				$result = $ds->lastError();
-			}
-			else {
-				$result = true;
-			}
-
-			return $result;
-		}
 
 		/**
 		 * FIXME: remplace la fonction ci-dessus
@@ -1006,14 +979,20 @@
 		 * @param array $keys
 		 * @return array
 		 */
-		protected function _checkPostgresqlIntervals( $keys ) {
+		protected function _checkPostgresqlIntervals( $keys, $asBoolean = false ) {
 			if( !$this->Behaviors->attached( 'Pgsqlcake.Schema' ) ) {
 				$this->Behaviors->attach( 'Pgsqlcake.Schema' );
 			}
 
+			$keys = (array)$keys;
+
 			$results = array( );
 			foreach( $keys as $key ) {
 				$results[$key] = $this->pgCheckIntervalSyntax( Configure::read( $key ) );
+			}
+
+			if( $asBoolean ) {
+				$results = !in_array( false, $results, true );
 			}
 
 			return $results;
