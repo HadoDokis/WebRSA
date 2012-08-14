@@ -162,7 +162,7 @@
 
 			$this->_setOptions();
 			$this->set( compact( 'dossier_id', 'personne_id', 'fichiers', 'apre' ) );
-			$this->render( $this->action, null, '/apres/filelink' );
+			$this->render( $this->action, null, (CAKE_BRANCH == '1.2' ? '/apres/' : '/Apres/') .'filelink' );
 		}
 
 		/**
@@ -181,7 +181,7 @@
 			);
 			$this->set( compact( 'compteurs' ) );
 
-			$this->render( $this->action, null, '/apres/indexparams_'.Configure::read( 'nom_form_apre_cg' ) );
+			$this->render( $this->action, null, (CAKE_BRANCH == '1.2' ? '/apres/' : '/Apres/') .'indexparams_'.Configure::read( 'nom_form_apre_cg' ) );
 		}
 
 		/**
@@ -260,7 +260,7 @@
 			$this->set( 'alerteMontantAides', $alerteMontantAides );
 			$this->set( 'montantComplementaires', $montantComplementaires );
 			$this->_setOptions();
-			$this->render( $this->action, null, '/apres/index66' );
+			$this->render( $this->action, null, (CAKE_BRANCH == '1.2' ? '/apres/' : '/Apres/') .'index66' );
 		}
 
 		/**
@@ -281,7 +281,7 @@
 			$struct = $this->{$this->modelClass}->Structurereferente->find( 'first', $qd_struct );
 
 			$this->set( 'struct', $struct );
-			$this->render( $this->action, 'ajax', '/apres/ajaxstruct' );
+			$this->render( $this->action, 'ajax', (CAKE_BRANCH == '1.2' ? '/apres/' : '/Apres/') .'ajaxstruct' );
 		}
 
 		/**
@@ -310,7 +310,7 @@
 			}
 //             $referent = $this->{$this->modelClass}->Referent->findbyId( $referent_id, null, null, -1 );
 			$this->set( 'referent', $referent );
-			$this->render( $this->action, 'ajax', '/apres/ajaxref' );
+			$this->render( $this->action, 'ajax', (CAKE_BRANCH == '1.2' ? '/apres/' : '/Apres/') .'ajaxref' );
 		}
 
 		/**
@@ -427,7 +427,7 @@
 			Configure::write( 'debug', 0 );
 			$this->set( compact( 'piecesadmin', 'piecescomptable', 'typeaideapre' ) );
 
-			$this->render( $this->action, 'ajax', '/apres/ajaxpiece' );
+			$this->render( $this->action, 'ajax', (CAKE_BRANCH == '1.2' ? '/apres/' : '/Apres/') .'ajaxpiece' );
 		}
 
 		/**
@@ -458,7 +458,7 @@
 			$this->set( 'personne_id', $apre['Apre66']['personne_id'] );
 			$this->_setOptions();
 			$this->set( 'urlmenu', '/apres66/index/'.$apre['Personne']['id'] );
-			$this->render( $this->action, null, '/apres/view66' );
+			$this->render( $this->action, null, (CAKE_BRANCH == '1.2' ? '/apres/' : '/Apres/') .'view66' );
 		}
 
 		/**
@@ -798,7 +798,7 @@
 
 			$this->set( 'personne_id', $personne_id );
 			$this->_setOptions();
-			$this->render( $this->action, null, '/apres/add_edit_'.Configure::read( 'nom_form_apre_cg' ) );
+			$this->render( $this->action, null, (CAKE_BRANCH == '1.2' ? '/apres/' : '/Apres/') .'add_edit_'.Configure::read( 'nom_form_apre_cg' ) );
 		}
 
 		/**

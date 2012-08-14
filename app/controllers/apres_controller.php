@@ -148,7 +148,6 @@
 
 			$this->_setOptions();
 			$this->set( compact( 'dossier_id', 'personne_id', 'fichiers', 'apre' ) );
-			$this->render( $this->action, null, '/apres/filelink' );
 		}
 
 		/**		 * *******************************************************************
@@ -737,7 +736,7 @@
 
 			$this->set( 'personne_id', $personne_id );
 			$this->_setOptions();
-			$this->render( $this->action, null, '/apres/add_edit_'.Configure::read( 'nom_form_apre_cg' ) );
+			$this->render( $this->action, null, 'add_edit_'.Configure::read( 'nom_form_apre_cg' ) );
 		}
 
 	}
