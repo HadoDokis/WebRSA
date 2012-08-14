@@ -235,7 +235,7 @@
 						$dateCreation = Set::classicExtract( $orientstruct, 'Orientstruct.date_valid' );
 						$periodeblock = false;
 						if( !empty( $dateCreation ) ){
-							if(  ( mktime() >= ( strtotime( $dateCreation ) + 3600 * Configure::read( 'Periode.modifiableorientation.nbheure' ) ) ) ){
+							if(  ( time() >= ( strtotime( $dateCreation ) + 3600 * Configure::read( 'Periode.modifiableorientation.nbheure' ) ) ) ){
 								$periodeblock = true;
 							}
 						}

@@ -227,7 +227,7 @@
 							$clerib = str_pad( $clerib, 2, '0', STR_PAD_LEFT);
 
 							//date -> FIXME MM/AAAA
-							$date = mktime();
+							$date = time();
 							if( isset( $this->fields['date'] ) ) {
 								$date = trim( $parts[$this->fields['date']], '"' );
 								list( $jour, $mois, $annee ) = explode( '/', $date );

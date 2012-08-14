@@ -52,12 +52,12 @@
 					<?php
 						if( isset( $relance['Orientstruct']['id'] ) && !empty( $relance['Orientstruct']['id'] ) ) {
 							$date = date_short( @$relance['Orientstruct']['date_valid'] );
-							$nbjours = round( ( mktime() - strtotime( @$relance['Orientstruct']['date_valid'] ) ) / ( 60 * 60 * 24 ) );
+							$nbjours = round( ( time() - strtotime( @$relance['Orientstruct']['date_valid'] ) ) / ( 60 * 60 * 24 ) );
 							$origine = 'Non contractualisation';
 						}
 						else {
 							$date = date_short( @$relance['Contratinsertion']['df_ci'] );
-							$nbjours = round( ( mktime() - strtotime( @$relance['Contratinsertion']['df_ci'] ) ) / ( 60 * 60 * 24 ) );
+							$nbjours = round( ( time() - strtotime( @$relance['Contratinsertion']['df_ci'] ) ) / ( 60 * 60 * 24 ) );
 							$origine = 'Non renouvellement';
 						}
 					?>

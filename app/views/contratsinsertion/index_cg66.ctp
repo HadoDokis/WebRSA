@@ -65,7 +65,7 @@
 					$dateCreation = Set::classicExtract( $contratinsertion, 'Contratinsertion.created' );
 					$periodeblock = false;
 					if( !empty( $dateCreation ) ){
-						if(  ( mktime() >= ( strtotime( $dateCreation ) + 3600 * Configure::read( 'Periode.modifiablecer.nbheure' ) ) ) ){
+						if(  ( time() >= ( strtotime( $dateCreation ) + 3600 * Configure::read( 'Periode.modifiablecer.nbheure' ) ) ) ){
 							$periodeblock = true;
 						}
 					}
