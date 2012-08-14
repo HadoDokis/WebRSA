@@ -545,7 +545,7 @@
 				return true;
 			}
 
-			return $this->_checkSqlIntervalSyntax( $delaiavantselection );
+			return $this->_checkPostgresqlIntervals( array( 'Dossierep.delaiavantselection'  ), true );
 
 			/*if( $cg66 ) {
 				return 'Oubli de paramétrage: veuillez vérifier que le champ <em>Dossierep.delaiavantselection</em> dans le fichier webrsa.inc est correctement renseigné';
