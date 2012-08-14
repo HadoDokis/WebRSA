@@ -1,39 +1,34 @@
 <?php
 	require_once( APPLIBS.'cmis.php' );
-
 	class Fichiermodule extends AppModel
 	{
+
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public $recursive = -1;
-
 		public $name = 'Fichiermodule';
-
 		public $actAs = array(
 			'Formattable',
 			'Autovalidate'
 		);
-
 		public $validate = array(
 			'modele' => array(
 				'notempty' => array(
-					'rule' => array('notempty'),
+					'rule' => array( 'notempty' ),
 				),
 			),
 			'modeledoc' => array(
 				'notempty' => array(
-					'rule' => array('notempty'),
+					'rule' => array( 'notempty' ),
 				),
 			),
 			'fk_value' => array(
 				'numeric' => array(
-					'rule' => array('numeric'),
+					'rule' => array( 'numeric' ),
 				),
 			),
 		);
-
 		public $belongsTo = array(
 			'Traitementpdo' => array(
 				'className' => 'Traitementpdo',
@@ -218,10 +213,9 @@
 		);
 
 		/**
-		* Surcharge de la fonction de sauvegarde pour essayer d'enregistrer le PDF sur Alfresco.
-		*/
-
-		public function save( $data = null, $validate = true, $fieldList = array() ) {
+		 * Surcharge de la fonction de sauvegarde pour essayer d'enregistrer le PDF sur Alfresco.
+		 */
+		public function save( $data = null, $validate = true, $fieldList = array( ) ) {
 			$cmsPath = "/{$this->data[$this->alias]['modele']}/{$this->data[$this->alias]['fk_value']}/{$this->data[$this->alias]['name']}";
 			$cmsSuccess = Cmis::write( $cmsPath, $this->data[$this->alias]['document'], $this->data[$this->alias]['mime'], true );
 
@@ -239,11 +233,10 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function delete( $id = NULL, $cascade = true ) {
-			$conditions = array();
+			$conditions = array( );
 			if( empty( $id ) && !empty( $this->id ) ) {
 				$conditions["{$this->alias}.{$this->primaryKey}"] = $this->id;
 			}
@@ -252,11 +245,10 @@
 			}
 
 			$records = $this->find(
-				'all',
-				array(
-					'fields' => array( 'id', 'modele', 'fk_value', 'cmspath' ),
-					'conditions' => $conditions
-				)
+					'all', array(
+				'fields' => array( 'id', 'modele', 'fk_value', 'cmspath' ),
+				'conditions' => $conditions
+					)
 			);
 
 			$success = parent::delete( $id, $cascade );
@@ -272,16 +264,14 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function deleteAll( $conditions, $cascade = true, $callbacks = false ) {
 			$records = $this->find(
-				'all',
-				array(
-					'fields' => array( 'id', 'modele', 'fk_value', 'cmspath' ),
-					'conditions' => $conditions
-				)
+					'all', array(
+				'fields' => array( 'id', 'modele', 'fk_value', 'cmspath' ),
+				'conditions' => $conditions
+					)
 			);
 
 			$success = parent::deleteAll( $conditions, $cascade, $callbacks );
@@ -295,5 +285,37 @@
 
 			return $success;
 		}
+
+		/**
+		 *
+		 * @param Model $Model
+		 * @param string $fieldName Si null, renvoit uniquement la sous-reqête,
+		 * 	sinon renvoit la sous-requête aliasée pour un champ (avec l'alias du
+		 * 	modèle).
+		 * @return string
+		 */
+		public function sqNbFichiersLies( Model $Model, $fieldName = null ) {
+			$alias = Inflector::underscore( $this->alias );
+
+			$sq = $this->sq(
+					array(
+						'fields' => array(
+							"COUNT( {$alias}.id )"
+						),
+						'alias' => $alias,
+						'conditions' => array(
+							"{$alias}.modele" => $Model->alias,
+							"{$alias}.fk_value = {$Model->alias}.{$Model->primaryKey}"
+						)
+					)
+			);
+
+			if( !is_null( $fieldName ) ) {
+				$sq = "( {$sq} ) AS \"{$this->alias}__{$fieldName}\"";
+			}
+
+			return $sq;
+		}
+
 	}
 ?>
