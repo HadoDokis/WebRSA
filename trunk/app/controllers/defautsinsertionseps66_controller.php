@@ -10,7 +10,7 @@
 
 		protected function _selectionPassageDefautinsertionep66( $qdName, $actionbp ) {
 			$this->set( 'etatdosrsa', ClassRegistry::init('Option')->etatdosrsa( ClassRegistry::init('Situationdossierrsa')->etatOuvert()) );
-			
+
 			if( Configure::read( 'CG.cantons' ) ) {
 				$this->set( 'cantons', ClassRegistry::init( 'Canton' )->selectList() );
 			}
@@ -38,7 +38,7 @@
 
 			$this->set( compact( 'actionbp' ) );
 
-			$this->render( $this->action, null, 'selectionnoninscrits' ); // FIXME: nom de la vue
+			$this->render( $this->action, null, 'selectionnoninscrits' );
 		}
 
 		/**
@@ -90,7 +90,7 @@
 
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
 			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
-			
+
 			if( Configure::read( 'CG.cantons' ) ) {
 				$this->set( 'cantons', ClassRegistry::init( 'Canton' )->selectList() );
 			}

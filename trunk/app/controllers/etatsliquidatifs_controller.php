@@ -493,7 +493,7 @@
 
 			$this->set( compact( 'apres' ) );
 
-			$this->render( null, 'ajax' ); // FIXME: pas ajax
+			$this->render( null, 'ajax' );
 		}
 
 		/**
@@ -552,7 +552,7 @@
 			$this->set( 'json', array( 'montantattribue' => $montantattribue ) );
 
 			$this->layout = 'ajax';
-			$this->render( '/elements/json' );
+			$this->render( '/'.( CAKE_BRANCH == '1.2' ? 'elements' : 'Elements' ).'/json' );
 		}
 
 		/**
