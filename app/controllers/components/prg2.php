@@ -27,7 +27,7 @@
 		 *
 		 * @var array
 		 */
-		protected $_prgActions = array();
+		protected $_prgActions = array( );
 
 		/**
 		 * Called before the Controller::beforeFilter().
@@ -36,7 +36,7 @@
 		 * @param array $settings
 		 * @return void
 		 */
-		public function initialize( &$controller, $settings = array() ) {
+		public function initialize( &$controller, $settings = array( ) ) {
 			$this->controller = &$controller;
 			$this->_prgActions = Set::extract( $settings, 'actions' );
 
@@ -58,7 +58,7 @@
 				foreach( $forbiddenlist as $forbidden ) {
 					$param = str_replace( $forbidden, ' ', $param );
 				}
-				$params[$key] =  urlencode( $param );
+				$params[$key] = urlencode( $param );
 			}
 
 			return $params;
@@ -82,12 +82,12 @@
 					if( isset( $this->_prgActions[$controller->action]['filter'] ) ) {
 						$key = $this->_prgActions[$controller->action]['filter'];
 						$sessionParams = $params;
-						$params = array( $key => ( isset( $params[$key] ) ? $params[$key] : array() ) );
+						$params = array( $key => ( isset( $params[$key] ) ? $params[$key] : array( ) ) );
 						unset( $sessionParams[$key] );
 
 						if( !empty( $sessionParams ) ) {
 							unset( $sessionParams['sessionKey'] );
-							$sessionKey = sha1( implode( '/', Set::flatten( ( empty( $sessionParams ) ? array() : $sessionParams ), '__' ) ) );
+							$sessionKey = sha1( implode( '/', Set::flatten( ( empty( $sessionParams ) ? array( ) : $sessionParams ), '__' ) ) );
 							$this->Session->write( "Prg.{$controller->name}__{$controller->action}.{$sessionKey}", $sessionParams );
 							$params['sessionKey'] = $sessionKey;
 
@@ -103,9 +103,14 @@
 					$controller->redirect( $redirect );
 				}
 				else if( $this->RequestHandler->isGet() ) {
-					$controller->data = Xset::bump( $controller->params['named'], '__' );
+					if( CAKE_BRANCH == '1.2' ) {
+						$controller->data = Xset::bump( $controller->params['named'], '__' );
+					}
+					else {
+						$controller->data = Xset::bump( array_map( 'urldecode', $controller->params['named'] ), '__' );
+					}
 
-					if( isset( $controller->params['named']['sessionKey']  ) ) {
+					if( isset( $controller->params['named']['sessionKey'] ) ) {
 						$sessionParams = $this->Session->read( "Prg.{$controller->name}__{$controller->action}.{$controller->params['named']['sessionKey']}" );
 
 						$this->Session->delete( "Prg.{$controller->name}__{$controller->action}.{$controller->params['named']['sessionKey']}" );
@@ -123,9 +128,9 @@
 		 * @param Controller $controller Controller with components to shutdown
 		 * @return void
 		 */
-		/*public function shutdown( &$controller ) {
+		/* public function shutdown( &$controller ) {
 
-		}*/
+		  } */
 
 		/**
 		 * Called before Controller::redirect().  Allows you to replace the url that will
@@ -149,5 +154,6 @@
 		public function beforeRedirect( &$controller, $url, $status = null, $exit = true ) {
 			return array( 'url' => $url, 'status' => $status, 'exit' => $exit );
 		}
+
 	}
 ?>
