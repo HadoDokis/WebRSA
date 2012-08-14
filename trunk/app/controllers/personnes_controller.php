@@ -149,7 +149,7 @@
 					'Personne.dtnai',
 					'Prestation.rolepers',
 					'Calculdroitrsa.toppersdrodevorsa',
-					'( SELECT COUNT(fichiersmodules.id) FROM fichiersmodules WHERE fichiersmodules.modele = \'Personne\' AND fichiersmodules.fk_value = "Personne"."id" ) AS "Fichiermodule__nbFichiersLies"'
+					$this->Personne->Fichiermodule->sqNbFichiersLies( $this->Personne, 'nb_fichiers_lies' )
 				),
 				'conditions' => array( 'Personne.foyer_id' => $foyer_id ),
 				'contain' => array(

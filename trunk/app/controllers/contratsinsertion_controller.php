@@ -463,7 +463,7 @@
 					'Contratinsertion.datevalidation_ci',
 					'Contratinsertion.datenotification',
 					'Contratinsertion.avenant_id',
-					'( SELECT COUNT(fichiersmodules.id) FROM fichiersmodules WHERE fichiersmodules.modele = \'Contratinsertion\' AND fichiersmodules.fk_value = "Contratinsertion"."id" ) AS "Fichiermodule__nbFichiersLies"'
+					$this->Contratinsertion->Fichiermodule->sqNbFichiersLies( $this->Contratinsertion, 'nb_fichiers_lies' )
 				),
 				'conditions' => array(
 					'Contratinsertion.personne_id' => $personne_id

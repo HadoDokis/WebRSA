@@ -199,7 +199,7 @@
 					'all', array(
 				'fields' => array_merge(
 						$this->Cui->fields(), array(
-					'( SELECT COUNT(fichiersmodules.id) FROM fichiersmodules WHERE fichiersmodules.modele = \'Cui\' AND fichiersmodules.fk_value = "Cui"."id" ) AS "Fichiermodule__nbFichiersLies"'
+							$this->Cui->Fichiermodule->sqNbFichiersLies( $this->Cui, 'nb_fichiers_lies' )
 						)
 				),
 				'conditions' => array(

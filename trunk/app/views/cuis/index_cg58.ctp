@@ -105,7 +105,7 @@
 									)
 								)
 							),
-							h( '('.Set::classicExtract( $cui, 'Fichiermodule.nbFichiersLies' ).')' )
+							h( '('.Set::classicExtract( $cui, 'Fichiermodule.nb_fichiers_lies' ).')' )
 						),
 						array( 'class' => 'odd' ),
 						array( 'class' => 'even' )

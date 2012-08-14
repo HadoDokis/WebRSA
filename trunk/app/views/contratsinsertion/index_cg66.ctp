@@ -18,7 +18,7 @@
 			<?php  if( !empty( $orientstructEmploi ) ) :?>
 				<p class="error">Cette personne possède actuellement une orientation professionnelle. Impossible de créer un CER.</p>
 			<?php endif; ?>
-			
+
 			<?php  if( !empty( $cuiEncours ) ) :?>
 				<p class="error">Cette personne possède actuellement un CUI en cours. Impossible de créer un CER.</p>
 			<?php endif; ?>
@@ -27,7 +27,7 @@
 			<?php if( empty( $contratsinsertion ) && empty( $orientstructEmploi ) ):?>
 				<p class="notice">Cette personne ne possède pas encore de CER.</p>
 			<?php endif;?>
-			
+
 			<ul class="actionMenu">
 				<?php
 					$block = empty( $orientstruct ) || !empty( $orientstructEmploi ) || !empty( $cuiEncours );
@@ -72,7 +72,7 @@
 
 					$decision = Set::classicExtract( $decision_ci, Set::classicExtract( $contratinsertion, 'Contratinsertion.decision_ci' ) );
 					$position = Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' );
-					
+
 					//Personne de + de 55ans
 					$isReconductible = false;
 					$personnePlus55Ans = Set::classicExtract( $contratinsertion, 'Personne.plus55ans' );
@@ -80,7 +80,7 @@
 						$isReconductible = true;
 					}
 
-					
+
 					$datenotif = Set::classicExtract( $contratinsertion, 'Contratinsertion.datenotification' );
 					if( empty( $datenotif ) ) {
 						$positioncer = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ), $options['positioncer'] );
@@ -91,7 +91,7 @@
 					else {
 						$positioncer = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ), $options['positioncer'] );
 					}
-					
+
 					$isvalidcer = Set::classicExtract( $contratinsertion, 'Propodecisioncer66.isvalidcer' );
 // debug($isvalidcer);
 					echo $xhtml->tableCells(
@@ -238,7 +238,7 @@
 									)
 								)
 							),
-							h( '('.Set::classicExtract( $contratinsertion, 'Fichiermodule.nbFichiersLies' ).')' )
+							h( '('.Set::classicExtract( $contratinsertion, 'Fichiermodule.nb_fichiers_lies' ).')' )
 						),
 						array( 'class' => 'odd' ),
 						array( 'class' => 'even' )

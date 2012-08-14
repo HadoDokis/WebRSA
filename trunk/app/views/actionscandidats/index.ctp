@@ -68,7 +68,7 @@
 								h( Set::classicExtract( $actioncandidat, 'Contactpartenaire.nom' ).' '.Set::classicExtract( $actioncandidat, 'Contactpartenaire.prenom' ) ),
 								h( Set::enum( Set::classicExtract( $actioncandidat, 'Actioncandidat.actif' ), $options['Actioncandidat']['actif'] ) ),
 								h( Set::classicExtract( $actioncandidat, 'Actioncandidat.modele_document' ) ),
-								h( Set::classicExtract( $actioncandidat, 'Fichiermodule.nbFichiersLies' ) ),
+								h( Set::classicExtract( $actioncandidat, 'Fichiermodule.nb_fichiers_lies' ) ),
 
 								$xhtml->editLink(
 									'Editer l\'action',
@@ -94,8 +94,8 @@
 		<?php echo $pagination;?>
 	<?php  endif;?>
 
-	
-	
+
+
 <?php
 	echo $default->button(
 		'back',

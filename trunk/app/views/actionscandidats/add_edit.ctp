@@ -118,7 +118,7 @@
 				?>
 			</fieldset>
 		<?php
-		
+
 			if( Configure::read( 'Cg.departement' ) == 66 ) {
 				echo $default->subform(
 					array(
@@ -146,9 +146,9 @@
 						'options' => $options
 					)
 				);
-				
+
 			}
-			
+
 			echo $default->subform(
 				array(
 					'Actioncandidat.ddaction' => array( 'domain' => 'actioncandidat', 'required' => true, 'minYear' => date( 'Y' ) - 1, 'maxYear' => date( 'Y' ) + 5 ),

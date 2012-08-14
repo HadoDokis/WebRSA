@@ -192,7 +192,7 @@
 									array( 'controller' => 'contratsinsertion', 'action' => 'filelink', $contratinsertion['Contratinsertion']['id'] ),
 									$permissions->check( 'contratsinsertion', 'filelink' )
 								),
-								h( '('.Set::classicExtract( $contratinsertion, 'Fichiermodule.nbFichiersLies' ).')' )
+								h( '('.Set::classicExtract( $contratinsertion, 'Fichiermodule.nb_fichiers_lies' ).')' )
 							),
 							array( 'class' => 'odd' ),
 							array( 'class' => 'even' )
