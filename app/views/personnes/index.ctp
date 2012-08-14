@@ -81,7 +81,7 @@
 									array( 'controller' => 'personnes', 'action' => 'filelink', $personne['Personne']['id'] ),
 									$permissions->check( 'personnes', 'filelink' )
 								),
-								h( '('.Set::classicExtract( $personne, 'Fichiermodule.nbFichiersLies' ).')' ),
+								h( '('.Set::classicExtract( $personne, 'Fichiermodule.nb_fichiers_lies' ).')' ),
 								array( $innerTable, array( 'class' => 'innerTableCell' ) ),
 							),
 							array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),

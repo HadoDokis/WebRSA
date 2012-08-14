@@ -42,14 +42,14 @@
 							'Chargeinsertion.nom IS NOT NULL',
 							"Chargeinsertion.group_id" => $conditionsChargeinsertionSecretaire
 						);
-						
+
 						$conditionsSecretaire = array(
 							'Secretaire.nom IS NOT NULL',
 							"Secretaire.group_id" => $conditionsChargeinsertionSecretaire
-						); 
+						);
 					}
 					else {
-						$conditionsChargeinsertion = $conditionsSecretaire = array(); 
+						$conditionsChargeinsertion = $conditionsSecretaire = array();
 					}
 					$options['Actioncandidat']['chargeinsertion_id'] = $this->Actioncandidat->Chargeinsertion->find(
 						'list',
@@ -77,7 +77,7 @@
 			$this->set( compact( 'options' ) );
 		}
 
-		
+
 		/**
 		* http://valums.com/ajax-upload/
 		* http://doc.ubuntu-fr.org/modules_php
@@ -118,7 +118,7 @@
 			$this->Fileuploader->download( $fichiermodule_id );
 		}
 
-		
+
 		/**
 		*   Ajout à la suite de l'utilisation des nouveaux helpers
 		*   - default.php
@@ -140,7 +140,7 @@
 				'fields' => array_merge(
 					$this->Actioncandidat->fields(),
 					array(
-						'( SELECT COUNT(fichiersmodules.id) FROM fichiersmodules WHERE fichiersmodules.modele = \'Actioncandidat\' AND fichiersmodules.fk_value = "Actioncandidat"."id" ) AS "Fichiermodule__nbFichiersLies"'
+						$this->Actioncandidat->Fichiermodule->sqNbFichiersLies( $this->Actioncandidat, 'nb_fichiers_lies' )
 					)
 				)
 			);

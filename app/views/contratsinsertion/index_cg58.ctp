@@ -59,7 +59,7 @@
 			<?php  /*if( !empty( $orientstructEmploi ) ) :?>
 				<p class="error">Cette personne possède actuellement une orientation professionnelle. Impossible de créer un CER.</p>
 			<?php endif;*/ ?>
-			
+
 			<?php if( $permissions->check( 'proposcontratsinsertioncovs58', 'add' ) && $nbdossiersnonfinalisescovs == 0 ):?>
 				<ul class="actionMenu">
 					<?php
@@ -203,7 +203,7 @@
 									array( 'controller' => 'contratsinsertion', 'action' => 'filelink', $contratinsertion['Contratinsertion']['id'] ),
 									$permissions->check( 'contratsinsertion', 'filelink' )
 								),
-								h( '('.Set::classicExtract( $contratinsertion, 'Fichiermodule.nbFichiersLies' ).')' )
+								h( '('.Set::classicExtract( $contratinsertion, 'Fichiermodule.nb_fichiers_lies' ).')' )
 							),
 							array( 'class' => 'odd' ),
 							array( 'class' => 'even' )

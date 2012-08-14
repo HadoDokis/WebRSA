@@ -191,7 +191,7 @@
 					'Rendezvous.objetrdv',
 					'Rendezvous.commentairerdv',
 					'StatutrdvTyperdv.motifpassageep',
-					'( SELECT COUNT(fichiersmodules.id) FROM fichiersmodules WHERE fichiersmodules.modele = \'Rendezvous\' AND fichiersmodules.fk_value = "Rendezvous"."id" ) AS "Fichiermodule__nbFichiersLies"'
+					$this->Rendezvous->Fichiermodule->sqNbFichiersLies( $this->Rendezvous, 'nb_fichiers_lies' )
 				),
 				'joins' => array(
 					$this->Rendezvous->join( 'Personne' ),

@@ -88,7 +88,7 @@
 								$rdv['Rendezvous']['id'] ),
 								( $permissions->check( 'rendezvous', 'filelink' )  )
 							),
-							h( '('.Set::classicExtract( $rdv, 'Fichiermodule.nbFichiersLies' ).')' )
+							h( '('.Set::classicExtract( $rdv, 'Fichiermodule.nb_fichiers_lies' ).')' )
 						),
 						array( 'class' => 'odd' ),
 						array( 'class' => 'even' )
