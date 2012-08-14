@@ -118,8 +118,8 @@
 
 			$traitable = (
 				( $contratinsertion['Contratinsertion']['decision_ci'] == 'V' )
-				&& ( strtotime( $contratinsertion['Contratinsertion']['dd_ci'] ) <= mktime() )
-				&& ( strtotime( $contratinsertion['Contratinsertion']['df_ci'] ) + ( $dureeTolerance * 24 * 60 * 60 ) >= mktime() )
+				&& ( strtotime( $contratinsertion['Contratinsertion']['dd_ci'] ) <= time() )
+				&& ( strtotime( $contratinsertion['Contratinsertion']['df_ci'] ) + ( $dureeTolerance * 24 * 60 * 60 ) >= time() )
 				&& empty( $erreursCandidatePassage )
 			);
 			$this->assert( $traitable, 'error500' );

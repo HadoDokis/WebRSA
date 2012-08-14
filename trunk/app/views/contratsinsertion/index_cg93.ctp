@@ -126,8 +126,8 @@
 						$dureeTolerance = Configure::read( 'Signalementep93.dureeTolerance' );
 
 						$enCours = (
-							( strtotime( $contratinsertion['Contratinsertion']['dd_ci'] ) <= mktime() )
-							&& ( strtotime( $contratinsertion['Contratinsertion']['df_ci'] ) + ( $dureeTolerance * 24 * 60 * 60 ) >= mktime() )
+							( strtotime( $contratinsertion['Contratinsertion']['dd_ci'] ) <= time() )
+							&& ( strtotime( $contratinsertion['Contratinsertion']['df_ci'] ) + ( $dureeTolerance * 24 * 60 * 60 ) >= time() )
 						);
 
 						$isValid = Set::extract( $contratinsertion, 'Contratinsertion.decision_ci' );

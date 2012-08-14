@@ -42,12 +42,12 @@
 				'date_fin_hab' => $this->Session->read( 'Auth.User.date_fin_hab' ),
 			);
 
-			if( !empty( $habilitations['date_deb_hab'] ) && ( strtotime( $habilitations['date_deb_hab'] ) >= mktime() ) ) {
+			if( !empty( $habilitations['date_deb_hab'] ) && ( strtotime( $habilitations['date_deb_hab'] ) >= time() ) ) {
 				$this->cakeError( 'dateHabilitationUser', array( 'habilitations' => $habilitations ) );
 			}
 
 			/// FIXME: si la date d'habilitation est celle du jour il n'est plus habilité du tout
-			if( !empty( $habilitations['date_fin_hab'] ) && ( strtotime( $habilitations['date_fin_hab'] ) < mktime() ) ) {
+			if( !empty( $habilitations['date_fin_hab'] ) && ( strtotime( $habilitations['date_fin_hab'] ) < time() ) ) {
 				$this->cakeError( 'dateHabilitationUser', array( 'habilitations' => $habilitations ) );
 			}
 		}

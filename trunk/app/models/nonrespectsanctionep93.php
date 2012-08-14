@@ -950,7 +950,7 @@
 			// Calcul de la date de fin de sursis si besoin
 			$dateDepart = strtotime( $gedooo_data['Passagecommissionep']['impressiondecision'] );
 			if( empty( $dateDepart ) ) {
-				$dateDepart = mktime();
+				$dateDepart = time();
 			}
 
 			if( $decision == '1delai' ) {

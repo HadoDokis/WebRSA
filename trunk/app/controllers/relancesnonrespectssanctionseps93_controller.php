@@ -264,7 +264,7 @@
 							}
 
 							$results[$i]['Orientstruct']['nbjours'] = round(
-								( mktime() - strtotime( $result['Orientstruct']['date_impression'] ) ) / ( 60 * 60 * 24 )
+								( time() - strtotime( $result['Orientstruct']['date_impression'] ) ) / ( 60 * 60 * 24 )
 							);
 						}
 					}
@@ -305,7 +305,7 @@
 							}
 
 							$results[$i]['Contratinsertion']['nbjours'] = round(
-								( mktime() - strtotime( $result['Contratinsertion']['df_ci'] ) ) / ( 60 * 60 * 24 )
+								( time() - strtotime( $result['Contratinsertion']['df_ci'] ) ) / ( 60 * 60 * 24 )
 							);
 						}
 					}
