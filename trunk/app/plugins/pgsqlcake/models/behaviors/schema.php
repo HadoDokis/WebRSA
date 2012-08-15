@@ -374,7 +374,8 @@
 			}
 
 			if( $success == false ) {
-				$message = pg_last_error();
+				$ds = $model->getDataSource();
+				$message = $ds->lastError();
 			}
 
 			return array(
