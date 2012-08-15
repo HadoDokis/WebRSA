@@ -992,7 +992,8 @@
 			}
 
 			if( $asBoolean ) {
-				$results = !in_array( false, $results, true );
+				$booleans = Set::classicExtract( $results, '{s}.success' );
+				$results = !in_array( false, $booleans, true );
 			}
 
 			return $results;
