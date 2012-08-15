@@ -12,7 +12,7 @@
 		* @param array $settings Configuration settings for $model
 		* @access public
 		*/
-		public function setup( &$model, $settings ) {
+		public function setup( &$model, $settings = array() ) {
 			$driver = $model->driver();
 			if( $driver != 'postgres' ) {
 				trigger_error( sprintf( __( '%s: driver (%s) non supporté pour le modèle (%s).', true ), __CLASS__, $driver, $model->alias ), E_USER_WARNING );
