@@ -99,28 +99,23 @@
 		}
 
 		/**
-		*
-		*/
-
+		 * Moteur de recherche par dossier/allocataire
+		 *
+		 * @return void
+		 */
 		public function index() {
 			$this->Gestionzonesgeos->setCantonsIfConfigured();
 
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
 			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 
-// 			$params = $this->data;
 			if( !empty( $this->data ) ) {
-				$this->paginate = $this->Dossier->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data );
+				$paginate = $this->Dossier->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data );
+				$paginate = $this->_qdAddFilters( $paginate );
+				$paginate['fields'][] = $this->Jetons->sqLocked( 'Dossier', 'locked' );
 
-				$this->paginate = $this->_qdAddFilters( $this->paginate );
-
+				$this->paginate = $paginate;
 				$dossiers = $this->paginate( 'Dossier' );
-
-				// Les dossiers que l'on a obtenus sont-ils lockés ?
-				$lockedList = $this->Jetons->lockedList( Set::extract( $dossiers, '/Dossier/id' ) );
-				foreach( $dossiers as $key => $dossier ) {
-					$dossiers[$key]['Dossier']['locked'] = in_array( $dossier['Dossier']['id'], $lockedList );
-				}
 
 				$this->set( 'dossiers', $dossiers );
 			}
@@ -168,7 +163,8 @@
 						'Foyer.id',
 						'Foyer.enerreur',
 						'Foyer.sansprestation',
-						'Situationdossierrsa.etatdosrsa'
+						'Situationdossierrsa.etatdosrsa',
+						$this->Jetons->sqLocked( 'Dossier', 'locked' )
 					),
 					'contain' => array(
 						'Foyer',
@@ -179,9 +175,7 @@
 			);
 			$this->Dossier->forceVirtualFields = $dossierForceVirtualFields;
 
-			$dossier['Dossier']['locked'] = $this->Jetons->locked( $dossier['Dossier']['id'] );
-
-			// FIXME: bizzarre qu'il ne soit plus bindé
+			// Bizzarre qu'il ne soit plus bindé
 			$this->Dossier->Foyer->Personne->bindModel( array( 'hasOne' => array( 'Prestation' ) ) );
 
 			// Les personnes du foyer

@@ -890,21 +890,18 @@
 					'Dsp.libderact'
 				);
 
-				$this->paginate = $this->Dsp->search(
-						$mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->_wildcardKeys( $this->data, $wildcardKeys )
+				$paginate = $this->Dsp->search(
+					$mesCodesInsee,
+					$this->Session->read( 'Auth.User.filtre_zone_geo' ),
+					$this->_wildcardKeys( $this->data, $wildcardKeys )
 				);
 
-				$this->paginate = $this->_qdAddFilters( $this->paginate );
-				$this->paginate['limit'] = 10;
+				$paginate['fields'][] = $this->Jetons->sqLocked( 'Dossier', 'locked' );
+				$paginate = $this->_qdAddFilters( $paginate );
+				$paginate['limit'] = 10;
 
+				$this->paginate = $paginate;
 				$dsps = $this->paginate( 'Personne' );
-
-				// Les dsps que l'on a obtenus sont-ils lockés ?
-				$lockedList = $this->Jetons->lockedList( Set::extract( $dsps, '/Dossier/id' ) );
-
-				foreach( $dsps as $key => $dsp ) {
-					$dsps[$key]['Dossier']['locked'] = in_array( $dsp['Dossier']['id'], $lockedList );
-				}
 
 				$this->set( 'dsps', $dsps );
 			}

@@ -16,10 +16,6 @@
 				return;
 			}
 
-			if( $this->_userId = $this->Session->read( 'Auth.User.id' ) ) {
-				$this->controller->assert( valid_int( $this->_userId ), 'invalidParamForToken' ); // FIXME
-			}
-
 			$this->Jeton = ClassRegistry::init( 'Jeton' );
 		}
 
@@ -106,9 +102,8 @@
 					),
 					'conditions' => array(
 						'NOT' => array(
-							// FIXME, si la session n'est pas gérée par PHP ?
-							'Jeton.php_sid'     => session_id(), // FIXME: ou pas -> config
-							'Jeton.user_id'     => $this->_userId
+							'Jeton.php_sid' => $this->Session->id(),
+							'Jeton.user_id' => $this->Session->read( 'Auth.User.id' )
 						)
 					),
 					'recursive' => -1
@@ -138,14 +133,48 @@
 					),
 					'conditions' => array(
 						'NOT' => array(
-							// FIXME, si la session n'est pas gérée par PHP ?
-							'jetons.php_sid'     => session_id(), // FIXME: ou pas -> config
-							'jetons.user_id'     => $this->_userId
+							'jetons.php_sid' => $this->Session->id(),
+							'jetons.user_id' => $this->Session->read( 'Auth.User.id' )
 						)
 					),
 					'recursive' => -1
 				)
 			);
+		}
+
+		/**
+		 * Retourne une sous-reqûete permettant de savoir si le Dossier est locké.
+		 *
+		 * @param string $modelAlias Alias du modèle Dossier
+		 * @param string $fieldName Si non null, alors la sous-reqête est aliasée
+		 *	pour utiliser dans l'attribut 'fields' d'un querydata.
+		 * @return string
+		 */
+		public function sqLocked( $modelAlias = 'Dossier', $fieldName = null ) {
+			$sq = $this->Jeton->sq(
+				array(
+					'alias' => 'jetons',
+					'fields' => array(
+						'jetons.dossier_id',
+					),
+					'conditions' => array(
+						'NOT' => array(
+							'jetons.php_sid' => $this->Session->id(),
+							'jetons.user_id' => $this->Session->read( 'Auth.User.id' )
+						),
+						'jetons.dossier_id = Dossier.id'
+					),
+					'recursive' => -1
+				)
+			);
+
+			$sq = "( \"Dossier\".\"id\" IN ( {$sq} ) )";
+
+			if( !empty( $fieldName ) ) {
+				$sq = "{$sq} AS \"Dossier__locked\"";
+			}
+
+			return $sq;
 		}
 
 		/**
@@ -167,8 +196,8 @@
 					'conditions' => array(
 						'Jeton.dossier_id'  => $dossier_id,
 						'and NOT' => array(
-							'Jeton.php_sid'     => session_id(), // FIXME: ou pas -> config
-							'Jeton.user_id'     => $this->_userId
+							'Jeton.php_sid' => $this->Session->id(),
+							'Jeton.user_id' => $this->Session->read( 'Auth.User.id' )
 						)
 					),
 					'recursive' => -1
@@ -215,8 +244,8 @@
 					'conditions' => array(
 						'Jeton.dossier_id'  => $dossier_id,
 						'and NOT' => array(
-							'Jeton.php_sid'     => session_id(), // FIXME: ou pas -> config
-							'Jeton.user_id'     => $this->_userId
+							'Jeton.php_sid' => $this->Session->id(),
+							'Jeton.user_id' => $this->Session->read( 'Auth.User.id' )
 						),
 						'Jeton.modified >=' => $this->_timeoutThreshold()
 					),
@@ -247,8 +276,8 @@
 					'conditions' => array(
 						'Jeton.dossier_id'  => $dossiers_ids,
 						'and NOT' => array(
-							'Jeton.php_sid'     => session_id(), // FIXME: ou pas -> config
-							'Jeton.user_id'     => $this->_userId
+							'Jeton.php_sid' => $this->Session->id(),
+							'Jeton.user_id' => $this->Session->read( 'Auth.User.id' )
 						),
 						'Jeton.modified >=' => $this->_timeoutThreshold()
 					),
@@ -276,8 +305,8 @@
 				$jeton = array(
 					'Jeton' => array(
 						'dossier_id'    => $dossier_id,
-						'php_sid'       => session_id(), // FIXME: ou pas -> config
-						'user_id'       => $this->_userId
+						'php_sid'   => $this->Session->id(),
+						'user_id'   => $this->Session->read( 'Auth.User.id' )
 					)
 				);
 
@@ -286,8 +315,8 @@
 					array(
 						'conditions' => array(
 							'Jeton.dossier_id'  => $dossier_id,
-							'Jeton.php_sid'     => session_id(), // FIXME: ou pas -> config
-							'Jeton.user_id'     => $this->_userId
+							'Jeton.php_sid' => $this->Session->id(),
+							'Jeton.user_id' => $this->Session->read( 'Auth.User.id' )
 						),
 						'recursive' => -1
 					)
@@ -322,8 +351,8 @@
 			return $this->Jeton->deleteAll(
 				array(
 					'Jeton.dossier_id'    => $dossier_id,
-					'Jeton.php_sid'       => session_id(), // FIXME: ou pas -> config
-					'Jeton.user_id'       => $this->_userId
+					'Jeton.php_sid'   => $this->Session->id(),
+					'Jeton.user_id'   => $this->Session->read( 'Auth.User.id' )
 				)
 			);
 		}
@@ -345,8 +374,8 @@
 					'conditions' => array(
 						'Jeton.dossier_id'  => $params,
 						'and NOT' => array(
-							'Jeton.php_sid'     => session_id(), // FIXME: ou pas -> config
-							'Jeton.user_id'     => $this->_userId
+							'Jeton.php_sid' => $this->Session->id(),
+							'Jeton.user_id' => $this->Session->read( 'Auth.User.id' )
 						)
 					),
 					'recursive' => -1
@@ -394,8 +423,8 @@
 					$jeton = array(
 						'Jeton' => array(
 							'dossier_id'    => $dossier_id,
-							'php_sid'       => session_id(), // FIXME: ou pas -> config
-							'user_id'       => $this->_userId
+							'php_sid'   => $this->Session->id(),
+							'user_id'   => $this->Session->read( 'Auth.User.id' )
 						)
 					);
 
@@ -404,8 +433,8 @@
 						array(
 							'conditions' => array(
 								'Jeton.dossier_id'  => $dossier_id,
-								'Jeton.php_sid'     => session_id(), // FIXME: ou pas -> config
-								'Jeton.user_id'     => $this->_userId
+								'Jeton.php_sid' => $this->Session->id(),
+								'Jeton.user_id' => $this->Session->read( 'Auth.User.id' )
 							),
 							'recursive' => -1
 						)
@@ -440,8 +469,8 @@
 			return $this->Jeton->deleteAll(
 				array(
 					'Jeton.dossier_id'    => $params,
-					'Jeton.php_sid'       => session_id(), // FIXME: ou pas -> config
-					'Jeton.user_id'       => $this->_userId
+					'Jeton.php_sid'   => $this->Session->id(),
+					'Jeton.user_id'   => $this->Session->read( 'Auth.User.id' )
 				)
 			);
 		}
