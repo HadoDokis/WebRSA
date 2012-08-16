@@ -251,7 +251,7 @@
 			);
 		}
 
-		public function gedTestPrint() {
+		public function gedTestPrint( &$model ) {
 			if( get_class( $this ) == 'GedoooClassicBehavior' ) {
 				$test_print = $this->ged( $model, array( ), GEDOOO_TEST_FILE );
 			}
@@ -277,7 +277,7 @@
 			return array(
 				'Accès au WebService' => $Check->webservice( GEDOOO_WSDL ),
 				'Présence du modèle de test' => $Check->filePermission( GEDOOO_TEST_FILE ),
-				'Test d\'impression' => $this->gedTestPrint()
+				'Test d\'impression' => $this->gedTestPrint( $model )
 			);
 		}
 

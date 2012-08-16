@@ -1,9 +1,24 @@
 <?php
-	App::import( 'Core', array( 'Validation' ) );
-
-	class Xvalidation extends Validation
+	class Xvalidation
 	{
-		function &getInstance() {
+		/**
+		 * Some complex patterns needed in multiple places
+		 * Vient du coeur de CakePHP 1.2.11
+		 *
+		 * @var array
+		 * @access private
+		 */
+		protected $__pattern = array(
+			'ip' => '(?:(?:25[0-5]|2[0-4][0-9]|(?:(?:1[0-9])?|[1-9]?)[0-9])\.){3}(?:25[0-5]|2[0-4][0-9]|(?:(?:1[0-9])?|[1-9]?)[0-9])',
+			'hostname' => '(?:[a-z0-9][-a-z0-9]*\.)*(?:[a-z0-9][-a-z0-9]{0,62})\.(?:(?:[a-z]{2}\.)?[a-z]{2,4}|museum|travel)'
+		);
+
+		/**
+		 *
+		 * @staticvar array $instance
+		 * @return \Xvalidation
+		 */
+		public function &getInstance() {
 			static $instance = array( );
 
 			if( !$instance ) {
@@ -12,112 +27,77 @@
 			return $instance[0];
 		}
 
-		function integer( $check ) {
-			$_this = & Xvalidation::getInstance();
-			$_this->__reset();
-			$_this->check = $check;
-
-			if( is_array( $check ) ) {
-				$_this->_extract( $check );
-			}
-
-			if( empty( $_this->check ) && $_this->check != '0' ) {
-				return false;
-			}
-			$_this->regex = '/^[0-9]+$/mu';
-			return $_this->_check();
+		/**
+		 *
+		 * @param type $check
+		 * @return boolean
+		 */
+		public function integer( $check ) {
+			return is_int( $check );
 		}
 
-		function string( $check ) {
-			$_this = & Xvalidation::getInstance();
-			$_this->__reset();
-			$_this->check = $check;
+		/**
+		 *
+		 * @param type $check
+		 * @return boolean
+		 */
+		public function numeric( $check ) {
+			return is_numeric( $check );
+		}
 
-			if( is_array( $check ) ) {
-				$_this->_extract( $check );
-			}
+		/**
+		 *
+		 * @param type $check
+		 * @param type $list
+		 * @return type
+		 */
+		public function inList( $check, $list ) {
+			return in_array( $check, $list );
+		}
 
-			if( empty( $_this->check ) && $_this->check != '0' ) {
-				return false;
-			}
-
+		/**
+		 *
+		 * @param type $check
+		 * @return type
+		 */
+		public function string( $check ) {
 			return is_string( $check );
 		}
 
-		function boolean( $check ) {
-			$_this = & Xvalidation::getInstance();
-			$_this->__reset();
-			$_this->check = $check;
-
-			if( is_array( $check ) ) {
-				$_this->_extract( $check );
-			}
-
-			if( empty( $_this->check ) && $_this->check != '0' ) {
-				return false;
-			}
-
+		/**
+		 *
+		 * @param type $check
+		 * @return type
+		 */
+		public function boolean( $check ) {
 			return is_bool( $check );
 		}
 
-		function isarray( $check ) {
-			$_this = & Xvalidation::getInstance();
-			$_this->__reset();
-			$_this->check = $check;
-
-			if( is_array( $check ) ) {
-				$_this->_extract( $check );
-			}
-
-			if( empty( $_this->check ) && $_this->check != '0' ) {
-				return false;
-			}
-
+		/**
+		 *
+		 * @param type $check
+		 * @return type
+		 */
+		public function isarray( $check ) {
 			return is_array( $check );
 		}
 
-		function dir( $check ) {
-			$_this = & Xvalidation::getInstance();
-			$_this->__reset();
-			$_this->check = $check;
-
-			if( is_array( $check ) ) {
-				$_this->_extract( $check );
-			}
-
-			if( empty( $_this->check ) && $_this->check != '0' ) {
-				return false;
-			}
-
+		/**
+		 *
+		 * @param type $check
+		 * @return type
+		 */
+		public function dir( $check ) {
 			return is_dir( $check ) && is_readable( $check );
 		}
 
-		function writableDir( $check ) {
-			$_this = & Xvalidation::getInstance();
-			$_this->__reset();
-			$_this->check = $check;
-
-			if( is_array( $check ) ) {
-				$_this->_extract( $check );
-			}
-
-			if( empty( $_this->check ) && $_this->check != '0' ) {
-				return false;
-			}
-
+		/**
+		 *
+		 * @param type $check
+		 * @return type
+		 */
+		public function writableDir( $check ) {
 			return is_dir( $check ) && is_writable( $check );
-		}
-
-		function _check() {
-			$_this = & Xvalidation::getInstance();
-			if( preg_match( $_this->regex, $_this->check ) ) {
-				$_this->error[] = false;
-				return true;
-			}
-			else {
-				$_this->error[] = true;
-				return false;
-			}
 		}
 
 		/**
@@ -131,16 +111,15 @@
 		 * @param boolean $strict
 		 * @return boolean
 		 */
-		function url( $check, $strict = false ) {
+		public function url( $check, $strict = false ) {
 			$_this =& Xvalidation::getInstance();
-			$_this->check = $check;
-			$validChars = '([' . preg_quote('!"$&\'()*+,-.@_:;=') . '\/0-9a-z]|(%[0-9a-f]{2}))';
-			$_this->regex = '/^(?:(?:https?|ftps?|file|news|gopher):\/\/)' . (!empty($strict) ? '' : '?') .
-				'(?:' . $_this->__pattern['ip'] . '|' . $_this->__pattern['hostname'] .'|localhost' .')(?::[1-9][0-9]{0,3})?' .
-				'(?:\/?|\/' . $validChars . '*)?' .
-				'(?:\?' . $validChars . '*)?' .
-				'(?:#' . $validChars . '*)?$/i';
-			return $_this->_check();
+			$validChars = '(['.preg_quote( '!"$&\'()*+,-.@_:;=' ).'\/0-9a-z]|(%[0-9a-f]{2}))';
+			$regex = '/^(?:(?:https?|ftps?|file|news|gopher):\/\/)'.(!empty( $strict ) ? '' : '?').
+					'(?:'.$_this->__pattern['ip'].'|'.$_this->__pattern['hostname'].'|localhost'.')(?::[1-9][0-9]{0,3})?'.
+					'(?:\/?|\/'.$validChars.'*)?'.
+					'(?:\?'.$validChars.'*)?'.
+					'(?:#'.$validChars.'*)?$/i';
+			return preg_match( $regex, $check );
 		}
 	}
 ?>
