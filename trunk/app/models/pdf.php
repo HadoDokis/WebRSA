@@ -101,5 +101,38 @@
 
 			return $success;
 		}
+
+		/**
+		 * Sous-requête permettant de savoir si une entrée existe dans la table pdfs pour une entrée d'une
+		 * table d'un autre modèle.
+		 *
+		 * @param Model $Model
+		 * @param string $fieldName Si null, renvoit uniquement la sous-reqête,
+		 * 	sinon renvoit la sous-requête aliasée pour un champ (avec l'alias du
+		 * 	modèle).
+		 * @return string
+		 */
+		public function sqImprime( Model $Model, $fieldName = null ) {
+			$alias = Inflector::underscore( $this->alias );
+
+			$sq = $this->sq(
+					array(
+						'fields' => array(
+							"COUNT( {$alias}.id )"
+						),
+						'alias' => $alias,
+						'conditions' => array(
+							"{$alias}.modele" => $Model->alias,
+							"{$alias}.fk_value = {$Model->alias}.{$Model->primaryKey}"
+						)
+					)
+			);
+
+			if( !is_null( $fieldName ) ) {
+				$sq = "( {$sq} ) AS \"{$Model->alias}__{$fieldName}\"";
+			}
+
+			return $sq;
+		}
 	}
 ?>

@@ -287,6 +287,8 @@
 		}
 
 		/**
+		 * Sous-requête permettant de savoir si une entrée existe dans la table fichiersmodules pour une entrée d'une
+		 * table d'un autre modèle.
 		 *
 		 * @param Model $Model
 		 * @param string $fieldName Si null, renvoit uniquement la sous-reqête,
@@ -316,6 +318,5 @@
 
 			return $sq;
 		}
-
 	}
 ?>
