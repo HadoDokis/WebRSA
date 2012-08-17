@@ -111,8 +111,10 @@
 					}
 // 					$data = $this->data;
 
-					$this->paginate = $this->Cohortefichecandidature66->search( $statutFiche, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data['Search'], $this->Jetons->ids() );
-					$this->paginate['limit'] = 10;
+					$paginate = $this->Cohortefichecandidature66->search( $statutFiche, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data['Search'], $this->Jetons->ids() );
+					$paginate['limit'] = 10;
+
+					$this->paginate = $paginate;
 					$cohortefichecandidature66 = $this->paginate( 'ActioncandidatPersonne' );
 
 					foreach( $cohortefichecandidature66 as $key => $value ) {

@@ -17,7 +17,7 @@
 			if( isset( $params['Detailcalculdroitrsa']['natpf'] ) && !empty( $params['Detailcalculdroitrsa']['natpf'] ) ) {
 				$conditions[] = "Dossier.id IN ( SELECT detailsdroitsrsa.dossier_id FROM detailsdroitsrsa INNER JOIN detailscalculsdroitsrsa ON detailscalculsdroitsrsa.detaildroitrsa_id = detailsdroitsrsa.id WHERE detailscalculsdroitsrsa.natpf ILIKE '%".Sanitize::paranoid( $params['Detailcalculdroitrsa']['natpf'] )."%' )";
 			}
-			
+
 			if( isset($params['Orientstruct']['structurereferente_id']) && !empty($params['Orientstruct']['structurereferente_id']) ) {
 				$structurereferente_id = $params['Orientstruct']['structurereferente_id'];
 				$structurereferente_id = explode('_', $structurereferente_id);
@@ -27,9 +27,9 @@
 			if( isset($params['Orientstruct']['referent_id']) && !empty($params['Orientstruct']['referent_id']) ) {
 				$conditions[] = 'Orientstruct.referent_id = '.$params['Orientstruct']['referent_id'];
 			}
-			
-			
-			
+
+
+
 			$query = array(
 				'fields' => array(
 					'"Dossier"."dtdemrsa"',
@@ -91,21 +91,21 @@
 						'type'       => 'INNER',
 						'foreignKey' => false,
 						'conditions' => array( 'Personne.id = Dossierep.personne_id')
-					),					
+					),
 					array(
 						'table'      => 'contratsinsertion',
 						'alias'      => 'Contratinsertion',
 						'type'       => 'INNER',
 						'foreignKey' => false,
 						'conditions' => array( 'Personne.id = Contratinsertion.personne_id')
-					),					
+					),
 					array(
 						'table'      => 'orientsstructs',
 						'alias'      => 'Orientstruct',
 						'type'       => 'INNER',
 						'foreignKey' => false,
 						'conditions' => array( 'Personne.id = Orientstruct.personne_id'	)
-					),										
+					),
 					array(
 						'table'      => 'passagescommissionseps',
 						'alias'      => 'Passagecommissionep',
@@ -133,7 +133,7 @@
 						'type'       => 'INNER',
 						'foreignKey' => false,
 						'conditions' => array( 'PersonneReferent.referent_id = Referent.id' )
-					),			
+					),
 					array(
 						'table'      => 'calculsdroitsrsa',
 						'alias'      => 'Calculdroitrsa',
@@ -204,7 +204,7 @@
 
 			$Dossier = ClassRegistry::init( 'Dossier' );
 			$Informationpe = ClassRegistry::init( 'Informationpe' );
-			
+
 			$conditions[] = $this->conditionsAdresse( $conditions, $params, $filtre_zone_geo, $mesCodesInsee );
 			$conditions[] = $this->conditionsDernierDossierAllocataire( $conditions, $params );
 			$conditions[] = $this->conditionsPersonneFoyerDossier( $conditions, $params );
@@ -212,7 +212,7 @@
 			if( isset( $params['Detailcalculdroitrsa']['natpf'] ) && !empty( $params['Detailcalculdroitrsa']['natpf'] ) ) {
 				$conditions[] = "Dossier.id IN ( SELECT detailsdroitsrsa.dossier_id FROM detailsdroitsrsa INNER JOIN detailscalculsdroitsrsa ON detailscalculsdroitsrsa.detaildroitrsa_id = detailsdroitsrsa.id WHERE detailscalculsdroitsrsa.natpf ILIKE '%".Sanitize::paranoid( $params['Detailcalculdroitrsa']['natpf'] )."%' )";
 			}
-			
+
 			if( isset($params['Orientstruct']['structurereferente_id']) && !empty($params['Orientstruct']['structurereferente_id']) ) {
 				$structurereferente_id = $params['Orientstruct']['structurereferente_id'];
 				$structurereferente_id = explode('_', $structurereferente_id);
@@ -222,11 +222,11 @@
 			if( isset($params['Orientstruct']['referent_id']) && !empty($params['Orientstruct']['referent_id']) ) {
 				$conditions[] = 'Orientstruct.referent_id = '.$params['Orientstruct']['referent_id'];
 			}
-			
+
 
 			// Conditions de base pour qu'un allocataire puisse passer en EP
 			$conditions['Prestation.rolepers'] = array( 'DEM', 'CJT' );
-			$conditions['Calculdroitrsa.toppersdrodevorsa'] = 1;
+			$conditions['Calculdroitrsa.toppersdrodevorsa'] = '1';
 			$conditions['Situationdossierrsa.etatdosrsa'] = $Dossier->Situationdossierrsa->etatOuvert();
 			$conditions[] = 'Adressefoyer.id IN ( '.$Dossier->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )';
 
@@ -237,10 +237,10 @@
 					'Orientstruct.id IN ( '.$Dossier->Foyer->Personne->Orientstruct->sqDerniere().' )'
 				)
 			);
-			
+
 			// Le dernier PersonneReferent
 			$conditions[] = 'PersonneReferent.id IN ( '.$Dossier->Foyer->Personne->PersonneReferent->sqDerniere( 'Personne.id' ).' )';
-			
+
 			// Le dernier contrat du demandeur
 			$conditions[] = array(
 				'OR' => array(
@@ -248,7 +248,7 @@
 					'Contratinsertion.id IN ( '.$Dossier->Foyer->Personne->Contratinsertion->sqDernierContrat().' )'
 				)
 			);
-			
+
 			// Le dossier d'EP le plus récent
 			$conditions[] = array(
 				'OR' => array(
@@ -256,7 +256,7 @@
 					'Dossierep.id IN ( '.$Dossier->Foyer->Personne->Dossierep->sqDernierPassagePersonne().' )'
 				)
 			);
-			
+
 			// La dernière information venant de Pôle Emploi, si celle-ci est une inscription
 			$conditions[] = array(
 				'OR' => array(
@@ -264,7 +264,7 @@
 					'Informationpe.id IN ( '.$Informationpe->sqDerniere().' )'
 				)
 			);
-			
+
 			$query = array(
 				'fields' => array(
 					'Dossier.dtdemrsa',
@@ -311,16 +311,16 @@
 					$Dossier->Foyer->Personne->join( 'Contratinsertion', array( 'type' => 'LEFT OUTER' ) ),
 					$Dossier->Foyer->Personne->join( 'Orientstruct', array( 'type' => 'LEFT OUTER' ) ),
 					array_words_replace( $Dossier->Foyer->Personne->Orientstruct->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ), array( 'Referent' => 'Referentorient' ) ),
-					
+
 					$Dossier->Foyer->Personne->join( 'PersonneReferent', array( 'type' => 'LEFT OUTER' ) ),
 					array_words_replace( $Dossier->Foyer->Personne->PersonneReferent->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ), array( 'Referent' => 'Referentunique' ) ),
-					
+
 					$Dossier->Foyer->Personne->join( 'Calculdroitrsa', array( 'type' => 'INNER' ) ),
 					// Partie EP
 					$Dossier->Foyer->Personne->join( 'Dossierep', array( 'type' => 'LEFT OUTER' ) ),
 					$Dossier->Foyer->Personne->Dossierep->join( 'Passagecommissionep', array( 'type' => 'LEFT OUTER' ) ),
 					$Dossier->Foyer->Personne->Dossierep->Passagecommissionep->join( 'Commissionep', array( 'type' => 'LEFT OUTER' ) ),
-					
+
 					$Informationpe->joinPersonneInformationpe(),
 					$Informationpe->Historiqueetatpe->joinInformationpeHistoriqueetatpe(),
 				),

@@ -103,8 +103,10 @@ class CohortescuiController extends AppController {
 			if (( $statutValidation == 'Decisioncui::nonvalide' ) || ( ( $statutValidation == 'Decisioncui::valides' ) && !empty($this->data) ) || ( ( $statutValidation == 'Decisioncui::enattente' ) && !empty($this->data) )) {
 				$this->Dossier->begin(); // Pour les jetons
 
-				$this->paginate = $this->Cohortecui->search($statutValidation, $mesCodesInsee, $this->Session->read('Auth.User.filtre_zone_geo'), $this->data, $this->Jetons->ids());
-				$this->paginate['limit'] = 10;
+				$paginate = $this->Cohortecui->search($statutValidation, $mesCodesInsee, $this->Session->read('Auth.User.filtre_zone_geo'), $this->data, $this->Jetons->ids());
+				$paginate['limit'] = 10;
+
+				$this->paginate = $paginate;
 				$cohortecui = $this->paginate('Cui');
 
 				$this->Dossier->commit();

@@ -66,13 +66,15 @@
 				$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
 				$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 
-				$this->paginate = $this->{$this->modelClass}->searchNonReoriente(
+				$paginate = $this->{$this->modelClass}->searchNonReoriente(
 					$mesCodesInsee,
 					$this->Session->read( 'Auth.User.filtre_zone_geo' ),
 					array( 'Filtre' => $filtre )
 				);
 
-				$this->paginate['limit'] = 10;
+				$paginate['limit'] = 10;
+				$this->paginate = $paginate;
+				$this->{$this->modelClass}->Orientstruct->forceVirtualFields = true;
 				$cohorte = $this->paginate( $this->{$this->modelClass}->Orientstruct );
 			}
 			$this->set( 'nbmoisnonreorientation', array( 0 => 'Aujourd\'hui', 6 => '6 mois', 12 => '12 mois', 24 => '24 mois' ) );

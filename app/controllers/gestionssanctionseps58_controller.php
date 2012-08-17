@@ -22,10 +22,10 @@
 		 *
 		 */
 		protected function _setOptions() {
-		
+
 			$etats = Configure::read( 'Situationdossierrsa.etatdosrsa.ouvert' );
 			$this->set( 'etatdosrsa', $this->Option->etatdosrsa( $etats ) );
-			
+
 			$options = Set::merge(
 				$this->Commissionep->Passagecommissionep->Dossierep->enums(),
 				$this->Commissionep->enums(),
@@ -46,7 +46,7 @@
 					$options = Set::merge( $options, $this->Commissionep->Passagecommissionep->{$modeleDecision}->enums() );
 				}
 			}
-			
+
 			$this->set( 'listesanctionseps58', $this->Commissionep->Passagecommissionep->Decisionsanctionep58->Listesanctionep58->find( 'list' ) );
 			$regularisationlistesanctionseps58 = Set::merge(
 				$this->Commissionep->Passagecommissionep->Decisionsanctionep58->enums(),
@@ -61,14 +61,14 @@
 			$this->set( compact( 'referents' ) );
 			$this->set( 'typevoie', $this->Option->typevoie() );
 		}
-		
+
 		/**
 		*
 		*/
 		public function traitement() {
 			$this->_index( 'Gestion::traitement' );
 		}
-		
+
 		/**
 		*
 		*/
@@ -76,21 +76,21 @@
 		public function visualisation() {
 			$this->_index( 'Gestion::visualisation' );
 		}
-		
+
 
 		protected function _index( $statutSanctionep = null ) {
 			$this->assert( !empty( $statutSanctionep ), 'invalidParameter' );
-			
+
 			if( Configure::read( 'CG.cantons' ) ) {
 				$this->set( 'cantons', $this->Canton->selectList() );
 			}
 
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
 			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
-			
-			
+
+
 			if( !empty( $this->data ) ) {
-			
+
 				foreach( $this->Gestionsanctionep58->themes() as $theme => $intitule ) {
 					$modelTheme = Inflector::singularize( $theme );
 					$decisionModelTheme = 'Decision'.$modelTheme;
@@ -115,12 +115,14 @@
 					}
 				}
 				$this->Dossier->begin(); // Pour les jetons
-				
+
 				$limit = 10;
-				$this->paginate = $this->Gestionsanctionep58->search( $statutSanctionep, $this->data['Search'], $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->Jetons->ids() );
-				$this->paginate['limit'] = $limit;
+				$paginate = $this->Gestionsanctionep58->search( $statutSanctionep, $this->data['Search'], $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->Jetons->ids() );
+				$paginate['limit'] = $limit;
+
+				$this->paginate = $paginate;
 				$gestionsanctionseps58 = $this->paginate( 'Personne' );
-				
+
 				foreach( $this->Gestionsanctionep58->themes() as $theme => $intitule ) {
 					$modelTheme = Inflector::singularize( $theme );
 					$decisionModelTheme = 'Decision'.$modelTheme;
@@ -139,9 +141,9 @@
 				}
 			}
 
-			
+
 			$this->_setOptions();
-			
+
 			if( Configure::read( 'Zonesegeographiques.CodesInsee' ) ) {
 				$this->set( 'mesCodesInsee', $this->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) ) );
 			}
@@ -151,7 +153,7 @@
 
 			$compteurs = array( 'Ep' => $this->Commissionep->Ep->find( 'count' ) );
 			$this->set( compact( 'compteurs' ) );
-			
+
 			switch( $statutSanctionep ) {
 				case 'Gestion::traitement':
 					$this->render( $this->action, null, 'traitement' );
@@ -181,8 +183,8 @@
 			$this->set( compact( 'gestionssanctionseps58' ) );
 
 		}
-		
-		
+
+
 		/**
 			**Fonction d'impression pour le cas des sanctions 1 du CG58
 			* @param type $contratinsertion_id
@@ -191,13 +193,13 @@
 		public function impressionSanction1 ( $niveauSanction, $passagecommissionep_id, $themeep ) {
 			$this->_impressionSanction( '1', $passagecommissionep_id, $themeep );
 		}
-		
-		
+
+
 		public function impressionSanction2 ( $niveauSanction, $passagecommissionep_id, $themeep ) {
 			$this->_impressionSanction( '2', $passagecommissionep_id, $themeep );
 		}
-		
-		
+
+
 		/**
 		* Impression du courrier de fin de sanction 1.
 		*
@@ -224,7 +226,7 @@
 		public function impressionsSanctions1() {
 			$this->_impressionsSanctions( '1' );
 		}
-		
+
 		/**
 		 ** Fonction d'impression en cohorte pour le cas des sanctions 2 du CG58
 		 *
@@ -233,20 +235,20 @@
 			$this->_impressionsSanctions( '2' );
 		}
 		/**
-		 * 
 		 *
-		 * @param integer $id L'id de 
+		 *
+		 * @param integer $id L'id de
 		 */
 		public function _impressionsSanctions( $niveauSanction = null ) {
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
 			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
-			
+
 			// La page sur laquelle nous sommes
 			$page = Set::classicExtract( $this->params, 'named.page' );
 			if( ( intval( $page ) != $page ) || $page < 0 ) {
 				$page = 1;
 			}
-		
+
 			$pdfs = $this->Gestionsanctionep58->getCohortePdfSanction(
 				$niveauSanction,
 				'Gestion::visualisation',
@@ -256,7 +258,7 @@
 				$page,
 				$this->Session->read( 'Auth.User.id' )
 			);
-			
+
 
 			if( !empty( $pdfs ) ) {
 				$pdf = $this->Gedooo->concatPdfs( $pdfs, 'Gestionsanctionep58' );
@@ -266,7 +268,7 @@
 				$this->Session->setFlash( 'Impossible de générer l\'impression.', 'default', array( 'class' => 'error' ) );
 				$this->redirect( $this->referer() );
 			}
-		}	
-		
+		}
+
 	}
 ?>

@@ -88,7 +88,7 @@
 		public function transfert() {
 			$this->_index( 'Validationapre::transfert' );
 		}
-		
+
 		/**
 		*
 		*/
@@ -168,14 +168,15 @@
 				if( ( $statutValidation == 'Validationapre::apresavalider' ) || ( $statutValidation == 'Validationapre::traitementcellule' ) || ( $statutValidation == 'Validationapre::notifiees' ) || ( $statutValidation == 'Validationapre::transfert' ) || ( $statutValidation == 'Validationapre::validees' ) && !empty( $this->data ) ) {
 					$this->Dossier->begin(); // Pour les jetons
 
-					$this->paginate = $this->Cohortevalidationapre66->search( $statutValidation, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
-					$this->paginate['limit'] = 10;
+					$paginate = $this->Cohortevalidationapre66->search( $statutValidation, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
+					$paginate['limit'] = 10;
 
 					$forceVirtualFields = $this->Apre66->forceVirtualFields;
 					$this->Apre66->forceVirtualFields = true;
+					$this->paginate = $paginate;
 					$cohortevalidationapre66 = $this->paginate( 'Apre66' );
 					$this->Apre66->forceVirtualFields = $forceVirtualFields;
-					
+
 					//Pour le lien filelink, sauvegarde de l'URL de la recherche lorsqu'on cliquera sur le bouton "Retour" dans la liste des fichiers liés
 					$this->Session->write( "Savedfilters.Apres66.filelink",
 						Set::merge(

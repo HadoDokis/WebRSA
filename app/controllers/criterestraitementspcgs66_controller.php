@@ -36,7 +36,7 @@
 
 			$options = $this->Traitementpcg66->enums();
 // 			$etatdossierpcg = $options['Traitementpcg66']['etatdossierpcg'];
-// 			
+//
 // 			$options = array_merge(
 // 				$options,
 // 				$this->Traitementpcg66->Personnepcg66->Traitementpcg66->enums()
@@ -51,9 +51,10 @@
 		public function index() {
 			$params = $this->data;
 			if( !empty( $params ) ) {
-				$this->paginate = array( 'Traitementpcg66' => $this->Criteretraitementpcg66->search( $this->data ) );
-				$this->paginate['Traitementpcg66']['limit'] = 10;
+				$paginate = array( 'Traitementpcg66' => $this->Criteretraitementpcg66->search( $this->data ) );
+				$paginate['Traitementpcg66']['limit'] = 10;
 
+				$this->paginate = $paginate;
 				$criterestraitementspcgs66 = $this->paginate( 'Traitementpcg66' );
 
 				$this->set( compact( 'criterestraitementspcgs66' ) );

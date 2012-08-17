@@ -11,7 +11,7 @@
 		public $helpers = array( 'Csv', 'Ajax' );
 
 		public $components = array(  'Prg' => array( 'actions' => array( 'index' ) ) );
-		
+
 		/**
 		*
 		*/
@@ -45,10 +45,11 @@
 
 				$this->Dossier->begin(); // Pour les jetons
 
-				$this->paginate = $this->Criterecui->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
-				$this->paginate['limit'] = 10;
-				$this->paginate = $this->_qdAddFilters( $this->paginate );
+				$paginate = $this->Criterecui->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
+				$paginate['limit'] = 10;
+				$paginate = $this->_qdAddFilters( $paginate );
 
+				$this->paginate = $paginate;
 				$criterescuis = $this->paginate( 'Cui' );
 
 				$this->Dossier->commit();

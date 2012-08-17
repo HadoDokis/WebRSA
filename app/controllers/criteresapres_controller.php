@@ -14,7 +14,7 @@
 		/**
 		*
 		*/
-	
+
 //		public function __construct() {
 //			$this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'all', 'eligible' ) ) ) );
 //			parent::__construct();
@@ -88,8 +88,10 @@
 
 				$queryData = $this->Critereapre->search( $etatApre, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
 
-				$this->paginate = $queryData;
-				$this->paginate['limit'] = 10;
+				$paginate = $queryData;
+				$paginate['limit'] = 10;
+
+				$this->paginate = $paginate;
 				$apres = $this->paginate( 'Apre' );
 
 				///

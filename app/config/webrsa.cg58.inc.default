@@ -284,12 +284,14 @@
 
 
 	/**
-	 *   Permet de définir si on peut ou non ajouter une nouvelle orientation à un dossier
+	 * Permet de définir si on peut ou non ajouter une nouvelle orientation à un dossier
 	 *   - toppersdrodevorsa     --> par défaut 1 (personne soumise à droit et devoir)
 	 *   - situationetatdosrsa   --> par défaut array( 'Z', 2, 3, 4) (dossier dans un droit ouvert et versable)
+	 *
+	 * INFO: depuis le passage en CakePHP 2.x, il faut mettre les valeurs numériques entre apostrophes.
 	 */
-	Configure::write( 'AjoutOrientationPossible.toppersdrodevorsa', 1 ); // aucune distincton sur le soumis à droit et devoir array( 0,1 )
-	Configure::write( 'AjoutOrientationPossible.situationetatdosrsa', array( 'Z', 2, 3, 4 ) );
+	Configure::write( 'AjoutOrientationPossible.toppersdrodevorsa', '1' ); // aucune distincton sur le soumis à droit et devoir array( 0,1 )
+	Configure::write( 'AjoutOrientationPossible.situationetatdosrsa', array( 'Z', '2', '3', '4' ) );
 
 	/**
 	 * Permet de spécifier si les recherches sur l'identifiant Pôle Emploi d'un
@@ -365,10 +367,10 @@
 			)
 		)
 	);
-	
+
 	/**
 	 * Les conditions sur la recherch epar dossiers / allocataires ont soumis à droit et devoir = oui par défaut
-	 *	
+	 *
 	 */
 	Configure::write(
 		'Filtresdefaut.Dossiers_index', array(

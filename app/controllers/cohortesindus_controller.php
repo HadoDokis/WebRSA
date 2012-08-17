@@ -60,20 +60,25 @@
 			$this->assert( empty( $cmp ) || in_array( $cmp, array_keys( $comparators ) ), 'invalidParameter' );
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
 			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
-			$this->Cohorteindu->create( $this->data );
-			if( !empty( $this->data ) && $this->Cohorteindu->validates() ) {
-				$this->Dossier->begin(); // Pour les jetons
 
-				$this->paginate = $this->Cohorteindu->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
-				$this->paginate['limit'] = 10;
-				$this->paginate = $this->_qdAddFilters( $this->paginate );
+			if( !empty( $this->data ) ) {
+				$this->Cohorteindu->create( $this->data );
+				if( $this->Cohorteindu->validates() ) {
+					$this->Dossier->begin(); // Pour les jetons
 
-				$cohorteindu = $this->paginate( 'Dossier' );
+					$paginate = $this->Cohorteindu->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
+					$paginate['limit'] = 10;
+					$paginate = $this->_qdAddFilters( $paginate );
 
-				$this->Dossier->commit();
+					$this->paginate = $paginate;
+					$cohorteindu = $this->paginate( 'Dossier' );
 
-				$this->set( 'cohorteindu', $cohorteindu );
+					$this->Dossier->commit();
+
+					$this->set( 'cohorteindu', $cohorteindu );
+				}
 			}
+
 			if( Configure::read( 'Zonesegeographiques.CodesInsee' ) ) {
 				$this->set( 'mesCodesInsee', $this->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) ) );
 			}

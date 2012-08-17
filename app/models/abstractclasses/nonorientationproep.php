@@ -174,7 +174,7 @@
 
 			// Conditions de base pour qu'un allocataire puisse passer en EP
 			$conditions['Prestation.rolepers'] = array( 'DEM', 'CJT' );
-			$conditions['Calculdroitrsa.toppersdrodevorsa'] = 1;
+			$conditions['Calculdroitrsa.toppersdrodevorsa'] = '1';
 			$conditions['Situationdossierrsa.etatdosrsa'] = $this->Orientstruct->Personne->Foyer->Dossier->Situationdossierrsa->etatOuvert();
 			$conditions[] = 'Adressefoyer.id IN ( '.$this->Orientstruct->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )';
 
@@ -183,7 +183,7 @@
 
 			// Le dernier CER
 			$conditions[] = 'Contratinsertion.id IN ( '.$this->Orientstruct->Personne->Contratinsertion->sqDernierContrat().' )';
-			
+
 			// Le dernier dossier de l'allocataire
 			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $datas['Filtre'] );
 

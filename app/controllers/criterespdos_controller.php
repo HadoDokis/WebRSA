@@ -77,10 +77,11 @@
 			if( !empty( $this->data ) ) {
 				$this->Dossier->begin(); // Pour les jetons
 
-				$this->paginate = $this->Criterepdo->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
-				$this->paginate['limit'] = 10;
-				$this->paginate = $this->_qdAddFilters( $this->paginate );
+				$paginate = $this->Criterepdo->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
+				$paginate['limit'] = 10;
+				$paginate = $this->_qdAddFilters( $paginate );
 
+				$this->paginate = $paginate;
 				$criterespdos = $this->paginate( 'Propopdo' );
 				$this->Dossier->commit();
 
@@ -116,7 +117,7 @@
 
 					$querydata['limit'] = 10;
 					$querydata = $this->_qdAddFilters( $querydata );
-					$this->paginate['Personne'] = $querydata;
+					$this->paginate = array( 'Personne' => $querydata );
 
 					$criterespdos = $this->paginate( 'Personne' );
 

@@ -12,9 +12,11 @@
 		 *
 		 */
 		public function index() {
-			$this->paginate[$this->modelClass] = array(
-				'limit' => 5,
-				'order' => array( "{$this->modelClass}.exercicebudgetai DESC" ),
+			$this->paginate = array(
+				$this->modelClass => array(
+					'limit' => 5,
+					'order' => array( "{$this->modelClass}.exercicebudgetai DESC" ),
+				)
 			);
 
 			$budgetsapres = $this->paginate( $this->modelClass );

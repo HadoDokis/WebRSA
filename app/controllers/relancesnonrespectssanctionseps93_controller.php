@@ -229,11 +229,13 @@
 				$search = Set::filter( $search );
 
 				if( $this->data['Search']['Relance']['contrat'] == 0 ) {
-					$this->paginate['Orientstruct'] = $this->Relancenonrespectsanctionep93->search(
-						$mesCodesInsee,
-						$this->Session->read( 'Auth.User.filtre_zone_geo' ),
-						$search,
-						$this->Jetons->sqIds()
+					$this->paginate = array(
+						'Orientstruct' => $this->Relancenonrespectsanctionep93->search(
+							$mesCodesInsee,
+							$this->Session->read( 'Auth.User.filtre_zone_geo' ),
+							$search,
+							$this->Jetons->sqIds()
+						)
 					);
 
 					$results = $this->paginate( $this->Nonrespectsanctionep93->Orientstruct );
@@ -270,11 +272,13 @@
 					}
 				}
 				else if( $this->data['Search']['Relance']['contrat'] == 1 ) {
-					$this->paginate['Contratinsertion'] = $this->Relancenonrespectsanctionep93->search(
-						$mesCodesInsee,
-						$this->Session->read( 'Auth.User.filtre_zone_geo' ),
-						$search,
-						$this->Jetons->sqIds()
+					$this->paginate = array(
+						'Contratinsertion' => $this->Relancenonrespectsanctionep93->search(
+							$mesCodesInsee,
+							$this->Session->read( 'Auth.User.filtre_zone_geo' ),
+							$search,
+							$this->Jetons->sqIds()
+						)
 					);
 
 					$results = $this->paginate( $this->Nonrespectsanctionep93->Contratinsertion );

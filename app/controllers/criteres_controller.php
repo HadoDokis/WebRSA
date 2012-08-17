@@ -9,7 +9,7 @@
 		public $aucunDroit = array( 'constReq', 'ajaxstruc' );
 
 		public $helpers = array( 'Csv', 'Ajax', 'Search' );
-		
+
 		public $components = array( 'RequestHandler',  'Prg' => array( 'actions' => array( 'index' ) )  );
 
 		/**
@@ -123,11 +123,11 @@
 			if( !empty( $this->data ) ) {
 				$this->Critere->begin(); // Pour les jetons
 
-				$this->paginate = $this->Critere->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
+				$paginate = $this->Critere->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
+				$paginate = $this->_qdAddFilters( $paginate );
+				$paginate['limit'] = 10;
 
-				$this->paginate = $this->_qdAddFilters( $this->paginate );
-
-				$this->paginate['limit'] = 10;
+				$this->paginate = $paginate;
 				$orients = $this->paginate( 'Orientstruct' );
 
 				$this->Critere->commit();

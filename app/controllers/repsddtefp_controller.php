@@ -77,7 +77,7 @@
 			if( !empty( $this->data ) ) {
 				$queryData = $this->Repddtefp->search( $this->data );
 				$queryData['limit'] = 10;
-				$this->paginate['Etatliquidatif'] = $queryData;
+				$this->paginate = array( 'Etatliquidatif' => $queryData );
 				$apres = $this->paginate( 'Etatliquidatif' );
 
 				///Détails de l'enveloppe APRE

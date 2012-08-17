@@ -70,14 +70,14 @@
 		 *
 		 */
 		public function etatOuvert() {
-			return array( 'Z', 2, 3, 4 ); // Z => dossier ajouté avec le formulaire "Préconisation ..."
+			return array( 'Z', '2', '3', '4' ); // Z => dossier ajouté avec le formulaire "Préconisation ..."
 		}
 
 		/**
 		 *
 		 */
 		public function etatAttente() {
-			return array( 0, 'Z' );
+			return array( '0', 'Z' );
 		}
 
 		/**

@@ -100,7 +100,7 @@
 					$queryData = $this->Cohortepdo->search( $statutValidationAvis, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
 
 					$queryData['limit'] = 10;
-					$this->paginate['Personne'] = $queryData;
+					$this->paginate = array( 'Personne' => $queryData );
 					$cohortepdo = $this->paginate( 'Personne' );
 
 					$this->Dossier->commit();
