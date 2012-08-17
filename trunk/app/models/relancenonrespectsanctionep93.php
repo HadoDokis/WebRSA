@@ -344,7 +344,7 @@
 				'Dossier.matricule',
 				'Adresse.locaadr',
 				'Orientstruct.typeorient_id',
-				'Foyer.enerreur'
+				$this->Nonrespectsanctionep93->Orientstruct->Personne->Foyer->sqVirtualField( 'enerreur' )
 			);
 
 			/// Jointures de base
@@ -411,7 +411,7 @@
 				'foreignKey' => false,
 				'conditions' => array(
 					'Personne.id = Calculdroitrsa.personne_id',
-					'Calculdroitrsa.toppersdrodevorsa' => 1
+					'Calculdroitrsa.toppersdrodevorsa' => '1'
 				)
 			);
 
@@ -1017,7 +1017,7 @@
 				'fields' => array(
 					'Dossier.matricule',
 					'Adresse.locaadr',
-					'Foyer.enerreur',
+					$this->Nonrespectsanctionep93->Orientstruct->Personne->Foyer->sqVirtualField( 'enerreur' ),
 					'Personne.id',
 					'Personne.nom',
 					'Personne.prenom',

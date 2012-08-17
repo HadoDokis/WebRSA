@@ -206,34 +206,35 @@
 		 */
 		protected function _index( $etape = null ) {
 			if( !empty( $this->data ) ) {
-				$this->paginate['Commissionep'] = $this->Commissionep->search(
+				$paginate['Commissionep'] = $this->Commissionep->search(
 						$this->data, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->Session->read( 'Auth.Zonegeographique' )
 				);
 
-				$this->paginate['Commissionep']['limit'] = 10;
-				$this->paginate['Commissionep']['order'] = array( 'Commissionep.dateseance DESC' );
+				$paginate['Commissionep']['limit'] = 10;
+				$paginate['Commissionep']['order'] = array( 'Commissionep.dateseance DESC' );
 
 				switch( $etape ) {
 					case 'recherche':
-						$this->paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'cree', 'associe' );
+						$paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'cree', 'associe' );
 						break;
 					case 'creationmodification':
-						$this->paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'cree', 'associe' );
+						$paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'cree', 'associe' );
 						break;
 					case 'attributiondossiers':
-						$this->paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'cree', 'associe' );
+						$paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'cree', 'associe' );
 						break;
 					case 'arbitrageep':
-						$this->paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'associe', 'valide', 'quorum', 'presence', 'decisionep', 'traiteep' );
+						$paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'associe', 'valide', 'quorum', 'presence', 'decisionep', 'traiteep' );
 						break;
 					case 'arbitragecg':
-						$this->paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'traiteep', 'decisioncg' );
+						$paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'traiteep', 'decisioncg' );
 						break;
 					case 'decisions':
-						$this->paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'traite', 'annule' );
+						$paginate['Commissionep']['conditions']['etatcommissionep'] = array( 'traite', 'annule' );
 						break;
 				}
 
+				$this->paginate = $paginate;
 				$commissionseps = $this->paginate( $this->Commissionep );
 				$themeseps = $this->Commissionep->Ep->themes();
 

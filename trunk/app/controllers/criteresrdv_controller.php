@@ -65,7 +65,7 @@
 				$querydata = $this->Critererdv->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
 				$querydata['limit'] = 10;
 				$querydata = $this->_qdAddFilters( $querydata );
-				$this->paginate['Rendezvous'] = $querydata;
+				$this->paginate = array( 'Rendezvous' => $querydata );
 
 				$rdvs = $this->paginate( 'Rendezvous' );
 

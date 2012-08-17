@@ -33,13 +33,15 @@
 				$conditions["Etatliquidatif.budgetapre_id"] = $budgetapre_id;
 			}
 
-			$this->paginate[$this->modelClass] = array(
-				'limit' => 10,
-				'conditions' => $conditions,
-				'recursive' => 0,
-				'order' => array(
-					'Etatliquidatif.datecloture DESC',
-					'Etatliquidatif.id DESC'
+			$this->paginate = array(
+				$this->modelClass => array(
+					'limit' => 10,
+					'conditions' => $conditions,
+					'recursive' => 0,
+					'order' => array(
+						'Etatliquidatif.datecloture DESC',
+						'Etatliquidatif.id DESC'
+					)
 				)
 			);
 
@@ -583,7 +585,7 @@
 			$queryData['limit'] = 100;
 
 			$this->Etatliquidatif->Apre->unbindModelAll( false );
-			$this->paginate['Apre'] = $queryData;
+			$this->paginate = array( 'Apre' => $queryData );
 			$apres = $this->paginate( 'Apre' );
 			$this->set( compact( 'apres', 'queryData' ) );
 

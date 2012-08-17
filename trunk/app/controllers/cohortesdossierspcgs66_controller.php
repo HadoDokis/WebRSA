@@ -143,8 +143,10 @@
 				if( ( $statutAffectation == 'Affectationdossierpcg66::enattenteaffectation' ) || ( $statutAffectation == 'Affectationdossierpcg66::affectes' ) || ( $statutAffectation == 'Affectationdossierpcg66::aimprimer' ) || ( $statutAffectation == 'Affectationdossierpcg66::atransmettre' ) && !empty( $this->data ) ) {
 					$this->Dossier->begin(); // Pour les jetons
 
-					$this->paginate = $this->Cohortedossierpcg66->search( $statutAffectation, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
-					$this->paginate['limit'] = 10;
+					$paginate = $this->Cohortedossierpcg66->search( $statutAffectation, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
+					$paginate['limit'] = 10;
+
+					$this->paginate = $paginate;
 					$cohortedossierpcg66 = $this->paginate( 'Dossierpcg66' );
 
 					if( empty( $this->data['Dossierpcg66'] ) ) {
@@ -171,7 +173,7 @@
 							$this->data['Dossierpcg66'][$i]['user_id'] = @$foyer['Dossierpcg66'][0]['user_id'];
 // 							debug( $foyer );
 						}
-						
+
 					}
 
 					$this->Dossier->commit();
@@ -226,7 +228,7 @@
             $this->layout = '';
             $this->set( compact( 'dossierspcgs66' ) );
         }
-       
+
 		/**
 		* Génération de la cohorte des convocations de passage en commission d'EP aux allocataires.
 		*/
@@ -239,7 +241,7 @@
 
             $querydata = $this->Cohortedossierpcg66->search( 'Affectationdossierpcg66::aimprimer', $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), Xset::bump( $this->params['named'], '__' ), $this->Jetons->ids() );
             unset( $querydata['limit'] );
-            
+
             $dossierspcgs66 = $this->Dossierpcg66->find( 'all', $querydata );
 // debug($dossierspcgs66);
 // die();

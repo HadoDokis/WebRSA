@@ -39,11 +39,11 @@
 					$this->data['Entretien']['referent_id'] = $referentId;
 				}
 
-				$this->paginate = $this->Critereentretien->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
+				$paginate = $this->Critereentretien->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
+				$paginate = $this->_qdAddFilters( $paginate );
+				$paginate['limit'] = 10;
 
-				$this->paginate = $this->_qdAddFilters( $this->paginate );
-
-				$this->paginate['limit'] = 10;
+				$this->paginate = $paginate;
 				$entretiens = $this->paginate( 'Entretien' );
 
 				$this->Critereentretien->commit();

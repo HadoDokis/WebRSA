@@ -220,6 +220,7 @@
 						}
 					}
 				}
+
 				return $queryData;
 			}
 
@@ -773,7 +774,7 @@
 
 								foreach( $linkedModel->virtualFields as $fieldName => $query ) {
 									$regex = "/(?<!\.)(?<!\w)({$linkedModel->alias}\.){0,1}{$fieldName}(?!\w)/";
-									$alias = "{$query} {$dbo->alias} {$dbo->startQuote}{$this->alias}__{$fieldName}{$dbo->endQuote}";
+									$alias = "{$query} {$dbo->alias} {$dbo->startQuote}{$linkedModel->alias}__{$fieldName}{$dbo->endQuote}";
 									$replacementsFields[$regex] = $alias;
 
 									$replacements[$regex] = $query;
@@ -937,12 +938,16 @@
 
 		/**
 		 * Surcharge de la méthode saveAll: on retourne un booléen true / false dans tous les cas.
+		 * En CakePHP 2.0, les options ne sont pas les mêmes, donc on reprend les options par défaut de
+		 * CakePHP 1.2.
 		 *
 		 * @param array $data
 		 * @param array $options
 		 * @return boolean
 		 */
 		public function saveAll( $data = NULL, $options = array( ) ) {
+			$options = array_merge( array( 'validate' => true, 'atomic' => true ), $options );
+
 			$return = parent::saveAll( $data, $options );
 
 			if( is_array( $return ) && !empty( $return ) ) {

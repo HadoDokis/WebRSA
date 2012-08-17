@@ -44,8 +44,10 @@
 
 				$this->Dossier->begin(); // Pour les jetons
 
-				$this->paginate = $this->Infofinanciere->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data );
-				$this->paginate['limit'] = 15;
+				$paginate = $this->Infofinanciere->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data );
+				$paginate['limit'] = 15;
+
+				$this->paginate = $paginate;
 				$infosfinancieres = $this->paginate( 'Infofinanciere' );
 
 				$this->set( 'infosfinancieres', $infosfinancieres );

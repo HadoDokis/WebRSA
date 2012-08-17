@@ -71,10 +71,12 @@
 				$search = $this->data['Search'];
 
 				if ( !empty( $search ) ) {
-					$this->paginate['Dossierep'] = $this->Defautinsertionep66->search(
-						$mesCodesInsee,
-						$this->Session->read( 'Auth.User.filtre_zone_geo' ),
-						$search
+					$this->paginate = array(
+						'Dossierep' => $this->Defautinsertionep66->search(
+							$mesCodesInsee,
+							$this->Session->read( 'Auth.User.filtre_zone_geo' ),
+							$search
+						)
 					);
 
 					$results = $this->paginate( $this->Defautinsertionep66->Dossierep );

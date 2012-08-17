@@ -37,7 +37,7 @@
 			$this->set( 'duree_engag_cg93', $this->Option->duree_engag_cg93() );
 
 			$this->set( 'numcontrat', $this->Dossier->Foyer->Personne->Contratinsertion->allEnumLists() );
-			
+
 			$this->set( 'rolepers', $this->Option->rolepers() );
 
 			$forme_ci = array();
@@ -48,9 +48,9 @@
 				$forme_ci = array( 'S' => 'Simple', 'C' => 'Particulier' );
 			}
 			$this->set( 'forme_ci', $forme_ci );
-			
+
 			$this->set( 'etatdosrsa', $this->Option->etatdosrsa( $this->Situationdossierrsa->etatOuvert()) );
-			
+
 			return $return;
 		}
 
@@ -161,7 +161,7 @@
 // 	debug($this->data);
 // 	die();
 					if( !empty( $contratsatraiter ) ){
-					
+
 						if( Configure::read( 'Cg.departement' ) != 66 ) {
 							$valid = $this->Dossier->Foyer->Personne->Contratinsertion->saveAll( $contratsatraiter, array( 'validate' => 'only', 'atomic' => false ) );
 							if( $valid ) {
@@ -184,11 +184,11 @@
 							$valid = $this->Dossier->Foyer->Personne->Contratinsertion->saveAll( $contratsatraiter, array( 'validate' => 'only', 'atomic' => false ) );
 							if( $valid ) {
 								$this->Dossier->begin();
-								
+
 								$saved = $this->Dossier->Foyer->Personne->Contratinsertion->Propodecisioncer66->sauvegardeCohorteCer( $this->data['Contratinsertion'] );
 
 								$saved = $this->Dossier->Foyer->Personne->Contratinsertion->saveAll( $contratsatraiter, array( 'validate' => 'first', 'atomic' => false ) ) && $saved;
-								
+
 								if( $saved ) {
 									foreach( array_unique( Set::extract( $this->data, 'Contratinsertion.{n}.dossier_id' ) ) as $dossier_id ) {
 										$this->Jetons->release( array( 'Dossier.id' => $dossier_id ) );
@@ -211,8 +211,10 @@
 				if( ( $statutValidation == 'Decisionci::nonvalide' ) || ( $statutValidation == 'Decisionci::nonvalidesimple' ) || ( $statutValidation == 'Decisionci::nonvalideparticulier' ) || ( ( $statutValidation == 'Decisionci::valides' ) && !empty( $this->data ) ) ) {
 					$this->Dossier->begin(); // Pour les jetons
 
-					$this->paginate = $this->Cohorteci->search( $statutValidation, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
-					$this->paginate['limit'] = 10;
+					$paginate = $this->Cohorteci->search( $statutValidation, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
+					$paginate['limit'] = 10;
+
+					$this->paginate = $paginate;
 					$cohorteci = $this->paginate( $this->Dossier->Foyer->Personne->Contratinsertion );
 
 					$this->Dossier->commit();
@@ -234,7 +236,7 @@
 						else {
 							$cohorteci[$key]['Contratinsertion']['proposition_datevalidation_ci'] = $value['Contratinsertion']['datevalidation_ci'];
 						}
-						
+
 						if( Configure::read( 'Cg.departement' ) == 66 ) {
 							if( empty( $value['Contratinsertion']['datedecision'] ) ) {
 								$cohorteci[$key]['Contratinsertion']['proposition_datedecision'] = date( 'Y-m-d' );

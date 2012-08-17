@@ -222,8 +222,10 @@
 
 					$progressivePaginate = !Set::classicExtract( $this->data, 'Search.paginationNombreTotal' );
 
-					$this->paginate = $this->Cohortenonoriente66->search( $statutNonoriente, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
-					$this->paginate['limit'] = $limit;
+					$paginate = $this->Cohortenonoriente66->search( $statutNonoriente, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
+					$paginate['limit'] = $limit;
+
+					$this->paginate = $paginate;
 					$cohortesnonorientes66 = $this->paginate( 'Personne', array(), array(), $progressivePaginate );
 
 

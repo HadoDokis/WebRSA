@@ -349,20 +349,22 @@
 			$this->assert( !empty( $dsp ), 'invalidParameter' );
 
 			$this->DspRev->forceVirtualFields = true;
-			$this->paginate['contain'] = array(
-				'Personne',
-				'DetaildifsocRev',
-				'DetailaccosocfamRev',
-				'DetailaccosocindiRev',
-				'DetaildifdispRev',
-				'DetailnatmobRev',
-				'DetaildiflogRev',
-				'DetailmoytransRev',
-				'DetaildifsocproRev',
-				'DetailprojproRev',
-				'DetailfreinformRev',
-				'DetailconfortRev',
-				'Fichiermodule'
+			$this->paginate = array(
+				'contain' => array(
+					'Personne',
+					'DetaildifsocRev',
+					'DetailaccosocfamRev',
+					'DetailaccosocindiRev',
+					'DetaildifdispRev',
+					'DetailnatmobRev',
+					'DetaildiflogRev',
+					'DetailmoytransRev',
+					'DetaildifsocproRev',
+					'DetailprojproRev',
+					'DetailfreinformRev',
+					'DetailconfortRev',
+					'Fichiermodule'
+				)
 			);
 
 			$histos = array( );
