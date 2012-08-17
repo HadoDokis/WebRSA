@@ -166,4 +166,13 @@
 	// Ajout de répertoires pour les classes abstraites
 	// -------------------------------------------------------------------------
 	define( 'ABSTRACTMODELS', MODELS.'abstractclasses/' );
+
+
+	// -----------------
+	// Paramétrage iconv
+	// -----------------
+
+	iconv_set_encoding("input_encoding", "UTF-8");
+	iconv_set_encoding("output_encoding", "UTF-8");
+	iconv_set_encoding("internal_encoding", "UTF-8");
 ?>
