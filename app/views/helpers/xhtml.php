@@ -1,7 +1,113 @@
 <?php
+	/**
+	 * Fichier source de la classe XhtmlHelper.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package       app.View.Helper
+	 */
 	App::import( 'Helper', 'Html' );
+
+	/**
+	 * La classe XhtmlHelper est une classe d'aide à l'écriture rapide de code
+	 * HTML, qui surcharge la classe HtmlHelper du coeur de CakePHP.
+	 *
+	 * Certaines méthodes sont "magiques", celles correspondant aux clés de
+	 * l'attribut $_linksMap.
+	 *
+	 * PHPMD de cette classe au départ (11/08/2012):
+	 *	3 - 729 	The class XhtmlHelper has 46 public methods and attributes. Consider to reduce the number of public items under 45. 	3
+	 *	3 - 729 	The class XhtmlHelper has 47 methods. Consider refactoring XhtmlHelper to keep number of methods under 10. 	3
+	 *	3 - 729 	The class XhtmlHelper has an overall complexity of 87 which is very high. The configured complexity threshold is 50. 	3
+	 *	75 - 145 	The method details() has a Cyclomatic Complexity of 21. The configured cyclomatic complexity threshold is 10. 	3
+	 *	75 - 145 	The method details() has an NPath complexity of 47308. The configured NPath complexity threshold is 200.
+	 *
+	 * PHPMD de cette classe actuellement (11/08/2012):
+	 *	18 - 832 	The class XhtmlHelper has 11 methods. Consider refactoring XhtmlHelper to keep number of methods under 10. 	3
+	 *	18 - 832 	The class XhtmlHelper has an overall complexity of 59 which is very high. The configured complexity threshold is 50. 	3
+	 *	211 - 281 	The method details() has a Cyclomatic Complexity of 21. The configured cyclomatic complexity threshold is 10. 	3
+	 *	211 - 281 	The method details() has an NPath complexity of 47308. The configured NPath complexity threshold is 200. 	3
+	 *
+	 * @package       app.View.Helper
+	 */
 	class XhtmlHelper extends HtmlHelper
 	{
+
+		/**
+		 * Contient les correspondances entre les méthodes xxxxxLink et leurs
+		 * paramètres, à utiliser dans la méthode __call.
+		 *
+		 * Les valeurs correspondent aux paramètres $imagePath et $label de la
+		 * méthode _buttonLink. Les paramètres suivants ($title, $url et
+		 * $enabled = true) sont fournis par les paramètres passés lors de
+		 * l'appel de ces fonctions "magiques".
+		 *
+		 * @see XhtmlHelper::_call(), XhtmlHelper::_call(), XhtmlHelper::_buttonLink, XhtmlHelper::$_linksMapAttributes
+		 * @var array
+		 */
+		protected $_linksMap = array(
+			'addLink' => array( 'icons/add.png', 'Ajouter' ),
+			'addComiteLink' => array( 'icons/add.png', 'Ajouter un nouveau Comité' ),
+			'addEquipeLink' => array( 'icons/add.png', 'Ajouter une nouvelle Equipe' ),
+			'addSimpleLink' => array( 'icons/add.png', 'Ajouter une préconisation d\'orientation' ),
+			'addPieceLink' => array( 'icons/add.png', 'Ajouter une pièce' ),
+			'cancelLink' => array( 'icons/cancel.png', 'Annuler' ),
+			'editLink' => array( 'icons/pencil.png', 'Modifier' ),
+			'validateLink' => array( 'icons/tick.png', 'Valider' ),
+			'deleteLink' => array( 'icons/delete.png', 'Supprimer' ),
+			'actionsLink' => array( 'icons/lightning.png', 'Actions' ),
+			'aidesLink' => array( 'icons/ruby.png', 'Aides' ),
+			'ajoutcomiteLink' => array( 'icons/add.png', 'Ajout comité' ),
+			'attachLink' => array( 'icons/attach.png', 'Visualiser' ),
+			'printLink' => array( 'icons/printer.png', 'Imprimer' ),
+			'notificationsApreLink' => array( 'icons/application_view_list.png', 'Notifications' ),
+			'notificationsCer66Link' => array( 'icons/application_view_list.png', 'Notifications OP' ),
+			'rapportLink' => array( 'icons/page_attach.png', 'Rapport' ),
+			'treatmentLink' => array( 'icons/page_attach.png', 'Traitements' ),
+			'reorientLink' => array( 'icons/door_out.png', 'Réorientation' ),
+			'revertToLink' => array( 'icons/arrow_undo.png', 'Revenir à cette version' ),
+			'presenceLink' => array( 'icons/pencil.png', 'Présences' ),
+			'reponseLink' => array( 'icons/pencil.png', 'Réponses' ),
+			'affecteLink' => array( 'icons/pencil.png', 'Affecter les dossiers' ),
+			'avenantLink' => array( 'icons/add.png', 'Avenant' ),
+			// Avec des valeurs de $attributes (voir $this->_linksMapAttributes)
+			'conseilLink' => array( 'icons/door_out.png', 'Traitement par CG' ),
+			'courrierLink' => array( 'icons/page_white_text.png', 'Courrier d\'information' ),
+			'decisionLink' => array( 'icons/user_comment.png', 'Décisions' ),
+			'equipeLink' => array( 'icons/door_out.png', 'Traitement par équipe' ),
+			'printListLink' => array( 'icons/printer.png', 'Version imprimable' ),
+			'exportLink' => array( 'icons/page_white_get.png', 'Télécharger le tableau' ),
+			'ordreLink' => array( 'icons/book_open.png', 'Ordre du jour' ),
+			'periodeImmersionLink' => array( 'icons/page_attach.png', 'Périodes d\'immersion' ),
+			'remiseLink' => array( 'icons/money.png', 'Enregistrer les remises' ),
+			'recgraLink' => array( 'icons/money_add.png', 'Recours gracieux' ),
+			'recconLink' => array( 'icons/money_delete.png', 'Recours contentieux' ),
+			'relanceLink' => array( 'icons/hourglass.png', 'Relancer' ),
+			'propositionDecisionLink' => array( 'icons/user_comment.png', 'Propositions de décision' ),
+		);
+
+		/**
+		 * Contient les paramètres supplémentaires à passer dans la variable
+		 * $attributes pour certaines méthodes se trouvant dans $_linksMap.
+		 *
+		 * @see XhtmlHelper::_call(), XhtmlHelper::_call(), XhtmlHelper::_buttonLink, XhtmlHelper::$_linksMap
+		 * @var array
+		 */
+		protected $_linksMapAttributes = array(
+			'conseilLink' => array( 'class' => 'internal' ),
+			'courrierLink' => array( 'class' => 'internal' ),
+			'decisionLink' => array( 'class' => 'internal' ),
+			'equipeLink' => array( 'class' => 'internal' ),
+			'printListLink' => array( 'class' => 'external' ),
+			'exportLink' => array( 'class' => 'external' ),
+			'ordreLink' => array( 'class' => 'internal' ),
+			'periodeImmersionLink' => array( 'class' => 'internal' ),
+			'remiseLink' => array( 'class' => 'internal' ),
+			'recgraLink' => array( 'class' => 'internal' ),
+			'recconLink' => array( 'class' => 'internal' ),
+			'relanceLink' => array( 'class' => 'internal' ),
+			'propositionDecisionLink' => array( 'class' => 'internal' ),
+		);
 
 		/**
 		 * Ajout d'un paramètre "enabled" dans $htmlAttributes qui permet de marquer un lien comme
@@ -43,7 +149,11 @@
 		}
 
 		/**
-		 * Gère le paramètre $escape et la clé 'escape' de $attributes pour CakePHP 1.2, 1.3 et 2.x.
+		 * Gère le paramètre $escape et la clé 'escape' de $attributes pour
+		 * CakePHP 1.2, 1.3 et 2.x.
+		 *
+		 * Si le texte est vide, il sera transformé en un espace blanc, ce qui
+		 * permettra d'avoir une balise HTML correcete.
 		 *
 		 * @param string $name
 		 * @param string $text
@@ -52,6 +162,10 @@
 		 * @return string
 		 */
 		public function tag( $name, $text = null, $attributes = array( ), $escape = false ) {
+			if( is_string( $attributes ) ) {
+				$attributes = array( 'class' => $attributes );
+			}
+
 			if( isset( $attributes['escape'] ) ) {
 				$escape = $attributes['escape'];
 			}
@@ -69,8 +183,53 @@
 			}
 		}
 
+
 		/**
+		 * Retourne la traduction d'une valeur booléenne en français, éventuellement
+		 * accompagnée de l'icone correspondante.
 		 *
+		 * @param mixed $boolean Une valeur "booléenne" (true/false, 0/1, '0'/'1', 'O'/'N')
+		 * @param boolean $showIcon Doit-on retourner l'icone correspondante avec la traduction ?
+		 * @return string
+		 */
+		public function boolean( $boolean, $showIcon = true ) {
+			if( is_string( $boolean ) ) {
+				if( in_array( $boolean, array( 'O', 'N' ) ) ) {
+					$boolean = Set::enum( $boolean, array( 'O' => true, 'N' => false ) );
+				}
+				else if( in_array( $boolean, array( '1', '0' ) ) ) {
+					$boolean = Set::enum( $boolean, array( '1' => true, '0' => false ) );
+				}
+			}
+
+			if( is_int( $boolean ) ) {
+				$boolean = ( ( $boolean === 0 ) ? false : true );
+			}
+
+			if( $boolean === true ) {
+				$image = 'icons/accept.png';
+				$alt = 'Oui';
+			}
+			else if( $boolean === false ) {
+				$image = 'icons/stop.png';
+				$alt = 'Non';
+			}
+			else {
+				return;
+			}
+
+			if( $showIcon ) {
+				return $this->image( $image, array( 'alt' => '' ) ).' '.$alt;
+			}
+			else {
+				return $alt;
+			}
+		}
+
+		/**
+		 * 2 utilisations, donc à mettre ailleurs (surtout vu la complexité de la méthode)
+		 *
+		 * @see grep -nri "html\->details" app/views | grep -v "\.svn"
 		 */
 		public function details( $rows = array( ), $options = array( ), $oddOptions = array( 'class' => 'odd' ), $evenOptions = array( 'class' => 'even' ) ) {
 			$default = array(
@@ -84,7 +243,7 @@
 			$allowEmpty = Set::classicExtract( $options, 'empty' );
 
 			if( !in_array( $type, array( 'list', 'table' ) ) ) {
-				trigger_error( sprintf( __( 'Type type "%s" not supported in XhtmlHelper::freu.', true ), $type ), E_USER_WARNING );
+				trigger_error( sprintf( __( 'Type type "%s" not supported in XhtmlHelper::details.', true ), $type ), E_USER_WARNING );
 				return;
 			}
 
@@ -146,12 +305,13 @@
 
 		/**
 		 *
-		 * @param type $imagePath
-		 * @param type $label
-		 * @param type $title
-		 * @param type $url
-		 * @param type $enabled
-		 * @return type
+		 * @param string $imagePath
+		 * @param string $label
+		 * @param string $title
+		 * @param mixed $url
+		 * @param boolean $enabled
+		 * @param array $attributes
+		 * @return string
 		 */
 		protected function _buttonLink( $imagePath, $label, $title, $url, $enabled = true, $attributes = array( ), $confirmMessage = false ) {
 			$settings = array( 'escape' => false, 'title' => $title, 'enabled' => $enabled );
@@ -165,83 +325,33 @@
 		}
 
 		/**
+		 * Provide non fatal errors on missing method calls.
 		 *
-		 * @param type $title
-		 * @param type $url
-		 * @param type $enabled
-		 * @return type
+		 * @fixme vérifier les paramètres ($params) et lancer une erreur si besoin
+		 * @info $params: ( $title, $url, $enabled = true )
+		 *
+		 * @param string $method Method to invoke
+		 * @param array $params Array of params for the method.
+		 * @return void
 		 */
-		public function addLink( $title, $url, $enabled = true ) {
-			return $this->_buttonLink( 'icons/add.png', 'Ajouter', $title, $url, $enabled );
+		public function __call( $method, $params ) {
+			if( preg_match( '/Link$/', $method, $matches ) && isset( $this->_linksMap[$method] ) ) {
+				$matched = $this->_linksMap[$method];
+
+				$attributes = array();
+				if( isset( $this->_linksMapAttributes[$method] ) ) {
+					$attributes = $this->_linksMapAttributes[$method];
+				}
+
+				return $this->_buttonLink( $matched[0], $matched[1], $params[0], $params[1], ( isset( $params[2] ) ? $params[2] :  true ), $attributes );
+			}
+			else {
+				return parent::__call( $method, $params );
+			}
 		}
 
 		/**
-		 * Bouton ajouter pour les nouveaux comités
-		 *
-		 * @param type $title
-		 * @param type $url
-		 * @param type $enabled
-		 * @return type
-		 */
-		public function addComiteLink( $title, $url, $enabled = true ) {
-			return $this->_buttonLink( 'icons/add.png', 'Ajouter un nouveau Comité', $title, $url, $enabled );
-		}
-
-		/**
-		 * Boutons à utiliser pour les Equipes pluridisciplinaires
-		 *
-		 * @param type $title
-		 * @param type $url
-		 * @param type $enabled
-		 * @return type
-		 */
-		public function addEquipeLink( $title, $url, $enabled = true ) {
-			return $this->_buttonLink( 'icons/add.png', 'Ajouter une nouvelle Equipe', $title, $url, $enabled );
-		}
-
-		/**
-		 *
-		 * @param type $title
-		 * @param type $url
-		 * @return type
-		 */
-		public function addSimpleLink( $title, $url ) {
-			return $this->_buttonLink( 'icons/add.png', 'Ajouter une préconisation d\'orientation', $title, $url );
-		}
-
-		/**
-		 *
-		 * @param type $title
-		 * @param type $url
-		 * @return type
-		 */
-		public function addPieceLink( $title, $url ) {
-			return $this->_buttonLink( 'icons/add.png', 'jouter une pièce', $title, $url );
-		}
-
-		/**
-		 *
-		 * @param type $title
-		 * @param type $url
-		 * @param type $enabled
-		 * @return type
-		 */
-		public function cancelLink( $title, $url, $enabled = true ) {
-			return $this->_buttonLink( 'icons/cancel.png', 'Annuler', $title, $url, $enabled );
-		}
-
-		/**
-		 *
-		 * @param type $title
-		 * @param type $url
-		 * @param type $enabled
-		 * @return type
-		 */
-		public function editLink( $title, $url, $enabled = true ) {
-			return $this->_buttonLink( 'icons/pencil.png', 'Modifier', $title, $url, $enabled );
-		}
-
-		/**
+		 * @fixme $attributes
 		 *
 		 * @param type $title
 		 * @param type $url
@@ -254,28 +364,7 @@
 		}
 
 		/**
-		 *
-		 * @param type $title
-		 * @param type $url
-		 * @param type $enabled
-		 * @return type
-		 */
-		public function validateLink( $title, $url, $enabled = true ) {
-			return $this->_buttonLink( 'icons/tick.png', 'Valider', $title, $url, $enabled );
-		}
-
-		/**
-		 *
-		 * @param type $title
-		 * @param type $url
-		 * @param type $enabled
-		 * @return type
-		 */
-		public function deleteLink( $title, $url, $enabled = true ) {
-			return $this->_buttonLink( 'icons/delete.png', 'Supprimer', $title, $url, $enabled );
-		}
-
-		/**
+		 * @fixme $attributes
 		 *
 		 * @param type $title
 		 * @param type $url
@@ -292,134 +381,28 @@
 		 * @param type $title
 		 * @param type $url
 		 * @param type $enabled
-		 * @return type
-		 */
-		public function actionsLink( $title, $url, $enabled = true ) {
-			return $this->_buttonLink( 'icons/lightning.png', 'Actions', $title, $url, $enabled );
-		}
-
-		/**
-		 *
-		 * @param type $title
-		 * @param type $url
-		 * @return type
-		 */
-		public function aidesLink( $title, $url ) {
-			return $this->_buttonLink( 'icons/ruby.png', 'Aides', $title, $url );
-		}
-
-		/**
-		 *
-		 * @param type $title
-		 * @param type $url
-		 * @return type
-		 */
-		public function ajoutcomiteLink( $title, $url ) {
-			return $this->_buttonLink( 'icons/add.png', 'Ajout comité', $title, $url );
-		}
-
-		/**
-		 *
-		 * @param type $title
-		 * @param type $url
-		 * @param type $enabled
-		 * @return type
-		 */
-		public function attachLink( $title, $url, $enabled = true ) {
-			return $this->_buttonLink( 'icons/attach.png', 'Visualiser', $title, $url, $enabled );
-		}
-
-		/**
-		 * Boutons à utiliser pour les Equipes pluridisciplinaires
-		 *
-		 * @param type $title
-		 * @param type $url
-		 * @param type $enabled
-		 * @return type
-		 */
-		public function conseilLink( $title, $url, $enabled = true ) {
-			return $this->_buttonLink( 'icons/door_out.png', 'Traitement par CG', $title, $url, $enabled, array( 'class' => 'internal' ) );
-		}
-
-		/**
-		 * Boutons à utiliser pour les courriers à envoyer aux allocataires
-		 *
-		 * @param type $title
-		 * @param type $url
-		 * @param type $enabled
-		 * @return type
-		 */
-		public function courrierLink( $title, $url, $enabled = true ) {
-			return $this->_buttonLink( 'icons/page_white_text.png', 'Courrier d\'information', $title, $url, $enabled, array( 'class' => 'internal' ) );
-		}
-
-		/**
-		 * Boutons à utiliser pour les Equipes pluridisciplinaires
-		 *
-		 * @param type $title
-		 * @param type $url
-		 * @param type $enabled
-		 * @return type
-		 */
-		public function decisionLink( $title, $url, $enabled = true ) {
-			return $this->_buttonLink( 'icons/user_comment.png', 'Décisions', $title, $url, $enabled, array( 'class' => 'internal' ) );
-		}
-
-		/**
-		 * Boutons à utiliser pour les Equipes pluridisciplinaires
-		 *
-		 * @param type $title
-		 * @param type $url
-		 * @param type $enabled
-		 * @return type
-		 */
-		public function equipeLink( $title, $url, $enabled = true ) {
-			return $this->_buttonLink( 'icons/door_out.png', 'Traitement par équipe', $title, $url, $enabled, array( 'class' => 'internal' ) );
-		}
-
-		/**
-		 *
-		 * @param type $title
-		 * @param type $url
-		 * @param type $enabled
-		 * @return type
-		 */
-		public function printLink( $title, $url, $enabled = true ) {
-			return $this->_buttonLink( 'icons/printer.png', 'Imprimer', $title, $url, $enabled );
-		}
-
-		/**
-		 *
-		 * @param type $title
-		 * @param type $url
-		 * @param type $enabled
-		 * @return type
-		 */
-		public function printListLink( $title, $url, $enabled = true ) {
-			return $this->_buttonLink( 'icons/printer.png', 'Version imprimable', $title, $url, $enabled, array( 'class' => 'external' ) );
-		}
-
-		/**
-		 *
-		 * @param type $title
-		 * @param type $url
-		 * @param type $enabled
 		 * @param type $confirmMessage
 		 * @return type
 		 */
 		public function printCohorteLink( $title, $url, $enabled = true, $confirmMessage = 'Etes-vous sûr de vouloir imprimer la cohorte ?' ) {
-			$content = $this->image(
-							'icons/printer.png', array( 'alt' => '' )
-					).' Imprimer la cohorte';
+			$content = $this->image( 'icons/printer.png', array( 'alt' => '' ) ).' Imprimer la cohorte';
 
 			if( $enabled ) {
-				$View = ClassRegistry::getObject( 'view' );
+				if( CAKE_BRANCH == '1.2' ) {
+					$View = ClassRegistry::getObject( 'view' );
+				}
+				else {
+					$View = new View( null, false );
+				}
+
 				return $View->element( 'popup' ).$this->link(
-								$content, $url, array(
-							'escape' => false,
-							'title' => $title,
-							'onclick' => "var conf = confirm( '".str_replace( "'", "\\'", $confirmMessage )."' ); if( conf ) { impressionCohorte( this ); } return conf;"
-								)
+					$content,
+					$url,
+					array(
+						'escape' => false,
+						'title' => $title,
+						'onclick' => "var conf = confirm( '".str_replace( "'", "\\'", $confirmMessage )."' ); if( conf ) { impressionCohorte( this ); } return conf;"
+					)
 				);
 			}
 			else {
@@ -428,6 +411,7 @@
 		}
 
 		/**
+		 * @fixme $attributes
 		 *
 		 * @param type $title
 		 * @param type $htmlAttributes
@@ -439,195 +423,7 @@
 		}
 
 		/**
-		 *
-		 * @param type $title
-		 * @param type $url
-		 * @param type $enabled
-		 * @return type
-		 */
-		public function exportLink( $title, $url, $enabled = true ) {
-			return $this->_buttonLink( 'icons/page_white_get.png', 'Télécharger le tableau', $title, $url, $enabled, array( 'class' => 'external' ) );
-		}
-
-		/**
-		 *  Liens nécessaires pour les décisions et notification de l'APRE
-		 *
-		 * @param type $title
-		 * @param type $url
-		 * @param type $enabled
-		 * @return type
-		 */
-		public function notificationsApreLink( $title, $url, $enabled = true ) {
-			return $this->_buttonLink( 'icons/application_view_list.png', 'Notifications', $title, $url, $enabled );
-		}
-
-		/**
-		 *  Liens nécessaires pour les décisions et notification de l'APRE
-		 *
-		 * @param type $title
-		 * @param type $url
-		 * @param type $enabled
-		 * @return type
-		 */
-		public function notificationsCer66Link( $title, $url, $enabled = true ) {
-			return $this->_buttonLink( 'icons/application_view_list.png', 'Notifications OP', $title, $url, $enabled );
-		}
-
-		/**
-		 * Boutons à utiliser pour les Equipes pluridisciplinaires
-		 *
-		 * @param type $title
-		 * @param type $url
-		 * @param type $enabled
-		 * @return type
-		 */
-		public function ordreLink( $title, $url, $enabled = true ) {
-			return $this->_buttonLink( 'icons/book_open.png', 'Ordre du jour', $title, $url, $enabled, array( 'class' => 'internal' ) );
-		}
-
-		/**
-		 * Boutons à utiliser pour les périodes d'immersion des CUIs
-		 *
-		 * @param type $title
-		 * @param type $url
-		 * @param type $enabled
-		 * @return type
-		 */
-		public function periodeImmersionLink( $title, $url, $enabled = true ) {
-			return $this->_buttonLink( 'icons/page_attach.png', 'Périodes d\'immersion', $title, $url, $enabled, array( 'class' => 'internal' ) );
-		}
-
-		/**
-		 * Boutons à utiliser pour les périodes d'immersion des CUIs
-		 *
-		 * @param type $title
-		 * @param type $url
-		 * @param type $enabled
-		 * @return type
-		 */
-		public function rapportLink( $title, $url, $enabled = true ) {
-			return $this->_buttonLink( 'icons/page_attach.png', 'Rapport', $title, $url, $enabled );
-		}
-
-		/**
-		 * Boutons à utiliser pour les détails des indus
-		 *
-		 * @param type $title
-		 * @param type $url
-		 * @param type $enabled
-		 * @return type
-		 */
-		public function remiseLink( $title, $url, $enabled = true ) {
-			return $this->_buttonLink( 'icons/money.png', 'Enregistrer les remises', $title, $url, $enabled, array( 'class' => 'internal' ) );
-		}
-
-		/**
-		 *
-		 * @param type $title
-		 * @param type $url
-		 * @param type $enabled
-		 * @return type
-		 */
-		public function recgraLink( $title, $url, $enabled = true ) {
-			return $this->_buttonLink( 'icons/money_add.png', 'Recours gracieux', $title, $url, $enabled, array( 'class' => 'internal' ) );
-		}
-
-		/**
-		 *
-		 * @param type $title
-		 * @param type $url
-		 * @param type $enabled
-		 * @return type
-		 */
-		public function recconLink( $title, $url, $enabled = true ) {
-			return $this->_buttonLink( 'icons/money_delete.png', 'Recours contentieux', $title, $url, $enabled, array( 'class' => 'internal' ) );
-		}
-
-		/**
-		 *
-		 * @param type $title
-		 * @param type $url
-		 * @param type $enabled
-		 * @return type
-		 */
-		public function relanceLink( $title, $url, $enabled = true ) {
-			return $this->_buttonLink( 'icons/hourglass.png', 'Relancer', $title, $url, $enabled, array( 'class' => 'internal' ) );
-		}
-
-		/**
-		 * Bouton traitement utilisé pour les PDOs d'une personne
-		 *
-		 * @param type $title
-		 * @param type $url
-		 * @param type $enabled
-		 * @return type
-		 */
-		public function treatmentLink( $title, $url, $enabled = true ) {
-			return $this->_buttonLink( 'icons/page_attach.png', 'Traitements', $title, $url, $enabled );
-		}
-
-		/**
-		 * Bouton traitement utilisé pour les PDOs d'une personne
-		 *
-		 * @param type $title
-		 * @param type $url
-		 * @param type $enabled
-		 * @return type
-		 */
-		public function reorientLink( $title, $url, $enabled = true ) {
-			return $this->_buttonLink( 'icons/door_out.png', 'Réorientation', $title, $url, $enabled );
-		}
-
-		/**
-		 *
-		 * @param type $boolean
-		 * @param type $showIcon
-		 * @return string
-		 */
-		public function boolean( $boolean, $showIcon = true ) {
-			// TODO: avec 1 et 0
-			if( is_string( $boolean ) ) {
-				if( in_array( $boolean, array( 'O', 'N' ) ) ) {
-					$boolean = Set::enum( $boolean, array( 'O' => true, 'N' => false ) );
-				}
-				else if( in_array( $boolean, array( '1', '0' ) ) ) {
-					$boolean = Set::enum( $boolean, array( '1' => true, '0' => false ) );
-				}
-			}
-
-			if( $boolean === true ) {
-				$image = 'icons/accept.png';
-				$alt = 'Oui';
-			}
-			else if( $boolean === false ) {
-				$image = 'icons/stop.png';
-				$alt = 'Non';
-			}
-			else {
-				return;
-			}
-
-			if( $showIcon ) {
-				return $this->image( $image, array( 'alt' => '' ) ).' '.$alt;
-			}
-			else {
-				return $alt;
-			}
-		}
-
-		/**
-		 * Bouton traitement utilisé pour les DSPs CG
-		 *
-		 * @param type $title
-		 * @param type $url
-		 * @param type $enabled
-		 * @return type
-		 */
-		public function revertToLink( $title, $url, $enabled = true ) {
-			return $this->_buttonLink( 'icons/arrow_undo.png', 'Revenir à cette version', $title, $url, $enabled );
-		}
-
-		/**
+		 * @fixme $title
 		 *
 		 * @param type $title
 		 * @param type $url
@@ -637,62 +433,5 @@
 		public function saisineEpLink( $title, $url, $enabled = true ) {
 			return $this->_buttonLink( 'icons/folder_table.png', $title, $title, $url, $enabled );
 		}
-
-		/**
-		 *
-		 * @param type $title
-		 * @param type $url
-		 * @param type $enabled
-		 * @return type
-		 */
-		public function presenceLink( $title, $url, $enabled = true ) {
-			return $this->_buttonLink( 'icons/pencil.png', 'Présences', $title, $url, $enabled );
-		}
-
-		/**
-		 *
-		 * @param type $title
-		 * @param type $url
-		 * @param type $enabled
-		 * @return type
-		 */
-		public function reponseLink( $title, $url, $enabled = true ) {
-			return $this->_buttonLink( 'icons/pencil.png', 'Réponses', $title, $url, $enabled );
-		}
-
-		/**
-		 *
-		 * @param type $title
-		 * @param type $url
-		 * @param type $enabled
-		 * @return type
-		 */
-		public function affecteLink( $title, $url, $enabled = true ) {
-			return $this->_buttonLink( 'icons/pencil.png', 'Affecter les dossiers', $title, $url, $enabled );
-		}
-
-		/**
-		 *
-		 * @param type $title
-		 * @param type $url
-		 * @param type $enabled
-		 * @return type
-		 */
-		public function avenantLink( $title, $url, $enabled = true ) {
-			return $this->_buttonLink( 'icons/add.png', 'Avenant', $title, $url, $enabled );
-		}
-
-		/**
-		 * Boutons à utiliser pour les propositions de décisions des PDOs 66
-		 *
-		 * @param type $title
-		 * @param type $url
-		 * @param type $enabled
-		 * @return type
-		 */
-		public function propositionDecisionLink( $title, $url, $enabled = true ) {
-			return $this->_buttonLink( 'icons/user_comment.png', 'Propositions de décision', $title, $url, $enabled, array( 'class' => 'internal' ) );
-		}
-
 	}
 ?>
