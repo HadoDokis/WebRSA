@@ -197,7 +197,7 @@
 				$qd['joins'] = $qdListeDossier['joins'];
 				$qd['contain'] = false;
 
-				$qd['fields'][] = $this->Cov58->Passagecov58->Dossiercov58->Personne->Foyer->vfFoyerEnerreur();
+				$qd['fields'][] = $this->Cov58->Passagecov58->Dossiercov58->Personne->Foyer->sqVirtualField( 'enerreur' );
 
 				$dossiers[$theme] = $this->Cov58->Passagecov58->Dossiercov58->find(
 					'all',
@@ -218,7 +218,7 @@
 							'Personne' => array(
 								'Foyer' => array(
 									'fields' => array(
-										$this->Cov58->Passagecov58->Dossiercov58->Personne->Foyer->vfFoyerEnerreur()
+										$this->Cov58->Passagecov58->Dossiercov58->Personne->Foyer->sqVirtualField( 'enerreur' )
 									),
 									'Adressefoyer' => array(
 										'conditions' => array(
