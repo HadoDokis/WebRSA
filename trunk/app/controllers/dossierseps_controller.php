@@ -52,7 +52,7 @@
 			$this->set( 'options', $this->Dossierep->enums() );
 			$this->set( 'dossierseps', $this->paginate( $this->Dossierep ) );
 		}
-		
+
 		/**
 		 * Envoi à la vue pour chacune des thématiques la liste des dossiers sélectionnables pour
 		 * passage en commission d'une commission d'ep donnée.
@@ -121,7 +121,7 @@
 								FROM
 									dossierseps
 									WHERE
-										date_trunc( \'day\', dossierseps.created ) <= ( DATE( NOW() ) - INTERVAL \''.$delaiAvantSelection.'\' ) 
+										date_trunc( \'day\', dossierseps.created ) <= ( DATE( NOW() ) - INTERVAL \''.$delaiAvantSelection.'\' )
 							)'
 						);
 					}
@@ -168,7 +168,7 @@
 							'foreignKey' => false,
 							'conditions' => array(
 								'Personne.id = Calculdroitrsa.personne_id',
-								'Calculdroitrsa.toppersdrodevorsa' => 1
+								'Calculdroitrsa.toppersdrodevorsa' => '1'
 							)
 						),
 						array(
@@ -369,13 +369,13 @@
 					$this->Dossierep->rollback();
 				}
 			}
-			
+
 			$this->_setListeDossiersSelectionnables( $commissionep, true );
 		}
 
 		/**
 		 * Exporte la liste de dossier sélectionnables pour une commission d'EP donnée.
-		 * 
+		 *
 		 * @param @integer $commissionep_id L'id de la commission
 		 */
 		public function exportcsv( $commissionep_id ) {
@@ -392,7 +392,7 @@
 					)
 				)
 			);
-			
+
 			$this->_setListeDossiersSelectionnables( $commissionep, false );
 
 			$this->layout = '';

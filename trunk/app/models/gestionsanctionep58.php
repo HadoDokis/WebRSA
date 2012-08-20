@@ -98,7 +98,7 @@
 
 			// Conditions pour les jointures
 			$conditions['Prestation.rolepers'] = array( 'DEM', 'CJT' );
-			$conditions['Calculdroitrsa.toppersdrodevorsa'] = 1;
+			$conditions['Calculdroitrsa.toppersdrodevorsa'] = '1';
 			$conditions['Situationdossierrsa.etatdosrsa'] = $Personne->Orientstruct->Personne->Foyer->Dossier->Situationdossierrsa->etatOuvert();
 			$conditions[] = array(
 				'OR' => array(

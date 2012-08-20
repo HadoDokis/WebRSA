@@ -649,7 +649,7 @@
 
 			// Quelles sont les valeurs de Calculdroitrsa.toppersdrodevorsa pour lesquelles on peut ajouter une orientation ?
 			// Si la valeur null est dans l'array, il faut un traitement un peu spécial
-			$conditionsToppersdrodevorsa = array( 'Calculdroitrsa.toppersdrodevorsa' => 1 );
+			$conditionsToppersdrodevorsa = array( 'Calculdroitrsa.toppersdrodevorsa' => '1' );
 			if( Configure::read( 'AjoutOrientationPossible.toppersdrodevorsa' ) != NULL ) {
 				$conditionsToppersdrodevorsa = $this->_conditionsAjoutOrientationPossible(
 					'Calculdroitrsa.toppersdrodevorsa',
