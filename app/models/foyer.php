@@ -453,14 +453,5 @@
 				}
 			}
 		}
-
-		/**
-		 * Retourne une requête, à utiliser en tant que champ virtuel, permettant de
-		 * savoir si un foyer comporte un et un seul demandeur, et au maximum un conjoint.
-		 */
-		public function vfFoyerEnerreur( $modelAlias = 'Foyer', $fieldName = 'enerreur' ) {
-			return str_replace( '%s', $modelAlias, $this->virtualFields['enerreur']['postgres'] )." AS \"{$modelAlias}__{$fieldName}\"";
-		}
-
 	}
 ?>

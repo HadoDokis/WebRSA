@@ -634,7 +634,7 @@
 				$qd['joins'] = $qdListeDossier['joins'];
 				$qd['contain'] = false;
 
-				$qd['fields'][] = $this->Commissionep->Passagecommissionep->Dossierep->Personne->Foyer->vfFoyerEnerreur();
+				$qd['fields'][] = $this->Commissionep->Passagecommissionep->Dossierep->Personne->Foyer->sqVirtualField( 'enerreur' );
 
 				$dossiers[$theme] = $this->Commissionep->Passagecommissionep->Dossierep->find(
 						'all', $qd
@@ -653,7 +653,7 @@
 						'Personne' => array(
 							'Foyer' => array(
 								'fields' => array(
-									$this->Commissionep->Passagecommissionep->Dossierep->Personne->Foyer->vfFoyerEnerreur()
+									$this->Commissionep->Passagecommissionep->Dossierep->Personne->Foyer->sqVirtualField( 'enerreur' )
 								),
 								'Adressefoyer' => array(
 									'conditions' => array(
