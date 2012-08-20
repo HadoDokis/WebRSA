@@ -252,8 +252,6 @@
 				)
 			);
 
-// 			$this->{$this->modelClass}->Personne->unbindModelAll( false );
-// 			$this->{$this->modelClass}->Referent->unbindModelAll( false );
 			$this->paginate = Set::merge( $this->paginate, $queryData );
 			$items = $this->paginate( $this->modelClass );
 			$varname = Inflector::tableize( $this->name );

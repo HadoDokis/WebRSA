@@ -265,6 +265,11 @@
 				if( $paginate ) {
 					$this->paginate = $qd;
 					$dossiers[$theme] = $this->paginate( $this->Dossierep->{$class} );
+					// INFO: sinon ne fonctionne pas correctement dans une boucle en CakePHP 2.x
+					if( CAKE_BRANCH != '1.2' ) {
+						$this->Components->unload( 'ProgressivePaginator' );
+						$this->Components->unload( 'Paginator' );
+					}
 				}
 				else {
 					$dossiers[$theme] = $this->Dossierep->{$class}->find( 'all', $qd );

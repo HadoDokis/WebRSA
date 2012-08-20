@@ -251,7 +251,6 @@
 		*/
 
 		public function listActionParPartenaire() {
-// 			$this->unbindModelAll();
 			$tmp = $this->find(
 				'all',
 				array (
