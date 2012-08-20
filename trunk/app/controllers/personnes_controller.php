@@ -404,21 +404,15 @@
 			}
 			// Afficage des données
 			else {
-				// On n'a besoin que de la prestation RSA et du Foyer
-				$prestationRsa = $this->Personne->hasOne['Prestation'];
-				$this->Personne->unbindModelAll();
-				$this->Personne->bindModel(
-						array(
-							'belongsTo' => array( 'Foyer' ),
-							'hasOne' => array( 'Prestation' => $prestationRsa )
-						)
-				);
-
 				$personne = $this->Personne->find(
-						'first', array(
-					'conditions' => array( 'Personne.id' => $id ),
-					'recursive' => 0
+					'first',
+					array(
+						'conditions' => array( 'Personne.id' => $id ),
+						'contain' => array(
+							'Foyer',
+							'Prestation'
 						)
+					)
 				);
 
 				$this->assert( !empty( $personne ), 'invalidParameter' );

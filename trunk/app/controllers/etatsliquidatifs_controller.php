@@ -191,8 +191,7 @@
 
 			$deepAfterFind = $this->Etatliquidatif->Apre->deepAfterFind;
 			$this->Etatliquidatif->Apre->deepAfterFind = false;
-// 			$this->Etatliquidatif->Apre->unbindModelAll();
-// http://localhost/adullact/webrsa/trunk/etatsliquidatifs/selectionapres/17
+
 			$querydata = array(
 				'fields' => $queryData['fields'],
 				'joins' => array(
@@ -430,7 +429,7 @@
 			}
 
 			// TODO -> dans le modèle
-			$this->Etatliquidatif->Apre->unbindModelAll();
+			$this->Etatliquidatif->Apre->deepAfterFind = false;
 			$montanttotalapre = $this->Etatliquidatif->Apre->find(
 					'all', array(
 				'fields' => array(
@@ -584,9 +583,10 @@
 			$queryData = $this->Etatliquidatif->listeApresEtatLiquidatifNonTerminePourVersement( array( 'Apre.statutapre' => 'C' ), $id );
 			$queryData['limit'] = 100;
 
-			$this->Etatliquidatif->Apre->unbindModelAll( false );
+			$this->Etatliquidatif->Apre->deepAfterFind = false;
 			$this->paginate = array( 'Apre' => $queryData );
 			$apres = $this->paginate( 'Apre' );
+
 			$this->set( compact( 'apres', 'queryData' ) );
 
 
