@@ -82,7 +82,7 @@
 					array(
 						'conditions' => array(
 							'Calculdroitrsa.personne_id' => $personne_id,
-							'Calculdroitrsa.toppersdrodevorsa' => 1
+							'Calculdroitrsa.toppersdrodevorsa' => '1'
 						),
 						'contain' => false
 					)

@@ -408,7 +408,7 @@
 							'foreignKey' => false,
 							'conditions' => array(
 								'Personne.id = Calculdroitrsa.personne_id',
-								'Calculdroitrsa.toppersdrodevorsa' => 1
+								'Calculdroitrsa.toppersdrodevorsa' => '1'
 							)
 						),
 						array(

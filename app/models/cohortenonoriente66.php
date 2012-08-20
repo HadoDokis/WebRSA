@@ -6,7 +6,7 @@
 		public $name = 'Cohortenonoriente66';
 
 		public $useTable = false;
-		
+
 		public $modelesOdt = array( 'Orientation/questionnaireorientation66.odt' );
 
 		public $actsAs = array(
@@ -102,7 +102,7 @@
 
 			// Conditions pour les jointures
 			$conditions['Prestation.rolepers'] = array( 'DEM', 'CJT' );
-			$conditions['Calculdroitrsa.toppersdrodevorsa'] = 1;
+			$conditions['Calculdroitrsa.toppersdrodevorsa'] = '1';
 			$conditions['Situationdossierrsa.etatdosrsa'] = $Personne->Orientstruct->Personne->Foyer->Dossier->Situationdossierrsa->etatOuvert();
 			$conditions[] = array(
 				'OR' => array(
@@ -373,12 +373,12 @@
 			foreach( $nonorientes66 as $nonoriente66 ) {
 				$success = $this->_saveImpression( $nonoriente66['Personne']['id'], $user_id ) && $success;
 			}
-			
+
 			if( !$success ) {
 				$this->rollback();
 				return array();
 			}
-			
+
 			$this->commit();
 
 			$modeleodt = $this->modeleOdt( $nonorientes66 );
