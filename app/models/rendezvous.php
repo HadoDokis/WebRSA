@@ -484,6 +484,8 @@
 				)
 			);
 			$rdv = Set::merge( $rdv, $user );
+			
+			$rdv['Rendezvous']['heurerdv'] = date( "H:i", strtotime( $rdv['Rendezvous']['heurerdv'] ) );
 
 			$Option = ClassRegistry::init( 'Option' );
 			$options = array(
