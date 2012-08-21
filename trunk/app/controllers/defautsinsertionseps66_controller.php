@@ -115,7 +115,7 @@
 
 			if( $pdfs ) {
 				$this->Defautinsertionep66->commit();
-				$this->Gedooo->sendPdfContentToClient( $pdfs, 'CourriersInformation' );
+				$this->Gedooo->sendPdfContentToClient( $pdfs, 'CourriersInformation.pdf' );
 			}
 			else {
 				$this->Defautinsertionep66->rollback();

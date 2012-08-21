@@ -892,7 +892,7 @@
 			$pdf = $this->Commissionep->getPdfPv( $commissionep_id );
 
 			if( $pdf ) {
-				$this->Gedooo->sendPdfContentToClient( $pdf, 'pv' );
+				$this->Gedooo->sendPdfContentToClient( $pdf, 'pv.pdf' );
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer le PV de la commission d\'EP', 'default', array( 'class' => 'error' ) );
@@ -937,7 +937,7 @@
 			$pdf = $this->Commissionep->getPdfOrdreDuJour( $commissionep_id, $this->Session->read( 'Auth.User.id' ) );
 
 			if( $pdf ) {
-				$this->Gedooo->sendPdfContentToClient( $pdf, 'OJ' );
+				$this->Gedooo->sendPdfContentToClient( $pdf, 'OJ.pdf' );
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer l\'ordre du jour de la commission d\'EP', 'default', array( 'class' => 'error' ) );
@@ -970,7 +970,7 @@
 			$pdf = $this->Commissionep->getPdfConvocationParticipant( $commissionep_id, $membreep_id );
 
 			if( $pdf ) {
-				$this->Gedooo->sendPdfContentToClient( $pdf, 'ConvocationEPParticipant' );
+				$this->Gedooo->sendPdfContentToClient( $pdf, 'ConvocationEPParticipant.pdf' );
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer le courrier d\'information', 'default', array( 'class' => 'error' ) );
@@ -998,7 +998,7 @@
 			$pdfs = $this->Gedooo->concatPdfs( $pdfs, 'ConvocationEPParticipant' );
 
 			if( $pdfs ) {
-				$this->Gedooo->sendPdfContentToClient( $pdfs, 'ConvocationEPParticipant' );
+				$this->Gedooo->sendPdfContentToClient( $pdfs, 'ConvocationEPParticipant.pdf' );
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer les invitations pour les participants de cette commission.', 'default', array( 'class' => 'error' ) );
@@ -1014,7 +1014,7 @@
 			$pdf = $this->Commissionep->Passagecommissionep->Dossierep->getConvocationBeneficiaireEpPdf( $passagecommissionep_id );
 
 			if( $pdf ) {
-				$this->Gedooo->sendPdfContentToClient( $pdf, 'ConvocationEPBeneficiaire' );
+				$this->Gedooo->sendPdfContentToClient( $pdf, 'ConvocationEPBeneficiaire.pdf' );
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer le courrier d\'information', 'default', array( 'class' => 'error' ) );
@@ -1043,7 +1043,7 @@
 			$pdfs = $this->Gedooo->concatPdfs( $pdfs, 'Passagecommissionep' );
 
 			if( $pdfs ) {
-				$this->Gedooo->sendPdfContentToClient( $pdfs, 'ConvocationsEPsBeneficiaire' );
+				$this->Gedooo->sendPdfContentToClient( $pdfs, 'ConvocationsEPsBeneficiaire.pdf' );
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer les convocations aux bénéficiaires pour cette commission.', 'default', array( 'class' => 'error' ) );
@@ -1101,7 +1101,7 @@
 			$pdf = $this->Commissionep->getPdfOrdredujour( $commissionep_membreep_id, $this->Session->read( 'Auth.User.id' ) );
 
 			if( $pdf ) {
-				$this->Gedooo->sendPdfContentToClient( $pdf, 'ConvocationepParticipant' );
+				$this->Gedooo->sendPdfContentToClient( $pdf, 'ConvocationepParticipant.pdf' );
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer les convocations du participant à la commission d\'EP', 'default', array( 'class' => 'error' ) );
@@ -1137,7 +1137,7 @@
 			$pdfs = $this->Gedooo->concatPdfs( $pdfs, 'ConvocationepParticipant' );
 
 			if( !empty( $pdfs ) ) {
-				$this->Gedooo->sendPdfContentToClient( $pdfs, 'ConvocationepParticipant' );
+				$this->Gedooo->sendPdfContentToClient( $pdfs, 'ConvocationepParticipant.pdf' );
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer les convocations du participant à la commission d\'EP', 'default', array( 'class' => 'error' ) );
@@ -1272,7 +1272,7 @@
 			$pdfs = $this->Gedooo->concatPdfs( $pdfs, 'DecisionsEPsBeneficiaire' );
 
 			if( $pdfs ) {
-				$this->Gedooo->sendPdfContentToClient( $pdfs, 'DecisionsEPsBeneficiaire' );
+				$this->Gedooo->sendPdfContentToClient( $pdfs, 'DecisionsEPsBeneficiaire.pdf' );
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer les courriers de décision pour cette commission.', 'default', array( 'class' => 'error' ) );
@@ -1287,7 +1287,7 @@
 			$pdf = $this->Commissionep->getFicheSynthese( $commissionep_id, $dossierep_id, $anonymiser );
 
 			if( $pdf ) {
-				$this->Gedooo->sendPdfContentToClient( $pdf, 'FicheSynthetique' );
+				$this->Gedooo->sendPdfContentToClient( $pdf, 'FicheSynthetique.pdf' );
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer le courrier d\'information', 'default', array( 'class' => 'error' ) );
@@ -1320,7 +1320,7 @@
 			$pdfs = $this->Gedooo->concatPdfs( $pdfs, 'Fichessynthese' );
 
 			if( $pdfs ) {
-				$this->Gedooo->sendPdfContentToClient( $pdfs, 'Fichessynthese' );
+				$this->Gedooo->sendPdfContentToClient( $pdfs, 'Fichessynthese.pdf' );
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer les fiches de synthèse pour cette commission.', 'default', array( 'class' => 'error' ) );

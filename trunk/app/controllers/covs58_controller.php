@@ -298,7 +298,7 @@
 			$pdf = $this->Cov58->getPdfOrdreDuJour( $cov58_id );
 
 			if( $pdf ) {
-				$this->Gedooo->sendPdfContentToClient( $pdf, 'OJ' );
+				$this->Gedooo->sendPdfContentToClient( $pdf, 'OJ.pdf' );
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer l\'ordre du jour de la COV', 'default', array( 'class' => 'error' ) );
@@ -313,7 +313,7 @@
 		public function impressionpv( $cov58_id ) {
 			$pdf = $this->Cov58->getPdfPv( $cov58_id );
 			if( $pdf ) {
-				$this->Gedooo->sendPdfContentToClient( $pdf, 'pv' );
+				$this->Gedooo->sendPdfContentToClient( $pdf, 'pv.pdf' );
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer le PV de la COV', 'default', array( 'class' => 'error' ) );
@@ -346,7 +346,7 @@
 			$pdf = $this->Cov58->Passagecov58->Dossiercov58->{$modeleTheme}->getPdfDecision( $passagecov58_id );
 
 			if( $pdf ) {
-				$this->Gedooo->sendPdfContentToClient( $pdf, 'pv' );
+				$this->Gedooo->sendPdfContentToClient( $pdf, 'pv.pdf' );
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer le courrier de décision de la COV', 'default', array( 'class' => 'error' ) );

@@ -455,7 +455,7 @@
 			$pdf = $this->Propopdo->getCourrierPdo( $propopdo_id, $this->Session->read( 'Auth.User.id' ) );
 
 			if( $pdf ) {
-				$this->Gedooo->sendPdfContentToClient( $pdf, 'CourrierPdo' );
+				$this->Gedooo->sendPdfContentToClient( $pdf, 'CourrierPdo.pdf' );
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer le courrier d\'information', 'default', array( 'class' => 'error' ) );

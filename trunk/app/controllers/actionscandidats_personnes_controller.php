@@ -653,7 +653,7 @@
 			$pdf = $this->ActioncandidatPersonne->getPdfFiche( $actioncandidat_personne_id );
 
 			if( $pdf ) {
-				$this->Gedooo->sendPdfContentToClient( $pdf, 'FicheCandidature' );
+				$this->Gedooo->sendPdfContentToClient( $pdf, 'FicheCandidature.pdf' );
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer la fiche de candidature', 'default', array( 'class' => 'error' ) );
