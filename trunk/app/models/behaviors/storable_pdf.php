@@ -215,12 +215,17 @@
 			}
 
 			if( !empty( $printDateColumn ) ) {
+				$recursive = $model->recursive;
+				$model->recursive = -1;
+
 				$model->updateAll(
 						array( "{$model->alias}.{$printDateColumn}" => date( "'Y-m-d'" ) ), array(
 					"\"{$model->alias}\".\"{$model->primaryKey}\"" => $id,
 					"\"{$model->alias}\".\"{$printDateColumn}\" IS NULL"
 						)
 				);
+
+				$model->recursive = $recursive;
 			}
 
 			$pdf = ClassRegistry::init( 'Pdf' )->find(
