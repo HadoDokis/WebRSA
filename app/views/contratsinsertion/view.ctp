@@ -38,7 +38,7 @@
 		}
 		else if( Configure::read( 'Cg.departement' ) == 66 ) {
 
-			if( ( $contratinsertion['Contratinsertion']['positioncer'] == 'annule' )  && empty( $contratinsertion['Contratinsertion']['decision_ci'] ) ){
+			if( ( $contratinsertion['Contratinsertion']['positioncer'] == 'annule' ) ){
 			
 				echo $html->tag('div', $html->tag('strong', 'Raison de l\'annulation'));
 				echo $default->view(
