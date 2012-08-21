@@ -157,7 +157,13 @@
 
 				// On a renvoyé  le formulaire de la cohorte
 				if( !empty( $this->data['Contratinsertion'] ) ) {
-					$contratsatraiter = Set::extract('/Contratinsertion[atraiter=1]', $this->data );
+					if( Configure::read( 'Cg.departement' ) == 66 ) {
+						$contratsatraiter = Set::extract('/Contratinsertion[atraiter=1]', $this->data );
+					}
+					else{
+						$contratsatraiter = Set::extract('/Contratinsertion[decision_ci!=E]', $this->data );
+					}
+// 					debug( $contratsatraiter  );
 // 	debug($this->data);
 // 	die();
 					if( !empty( $contratsatraiter ) ){
