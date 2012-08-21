@@ -794,7 +794,7 @@
 		*   Fonction pour annuler le Bilan de parcours pour le CG66
 		*/
 
-		public function cancel( $id ) {
+		public function can*cel( $id ) {
 			$bilan = $this->{$this->modelClass}->find(
 				'first',
 				array(
@@ -888,7 +888,7 @@
 			$pdf = $this->Bilanparcours66->getPdfCourrierInformation( $id );
 
 			if( $pdf ) {
-				$this->Gedooo->sendPdfContentToClient( $pdf, 'Courrier_Information' );
+				$this->Gedooo->sendPdfContentToClient( $pdf, 'Courrier_Information.pdf' );
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer le courrier d\'information', 'default', array( 'class' => 'error' ) );

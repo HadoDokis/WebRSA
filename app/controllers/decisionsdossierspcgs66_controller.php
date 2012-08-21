@@ -462,7 +462,7 @@
 				}
 
 				if( $success ) {
-					$this->Gedooo->sendPdfContentToClient( $pdf, 'Décision' );
+					$this->Gedooo->sendPdfContentToClient( $pdf, 'Décision.pdf' );
 				}
 			}
 

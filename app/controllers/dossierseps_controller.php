@@ -558,7 +558,7 @@
 			$pdf = $this->Dossierep->{$classThemeName}->getCourrierInformationPdf( $dossierep['Dossierep']['id'] );
 
 			if( $pdf ) {
-				$this->Gedooo->sendPdfContentToClient( $pdf, 'Courrier_Information' );
+				$this->Gedooo->sendPdfContentToClient( $pdf, 'Courrier_Information.pdf' );
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer le courrier d\'information', 'default', array( 'class' => 'error' ) );
@@ -597,7 +597,7 @@
 			$pdfs = $this->Gedooo->concatPdfs( $pdfs, 'CourriersInformation' );
 
 			if( $pdfs ) {
-				$this->Gedooo->sendPdfContentToClient( $pdfs, 'CourriersInformation' );
+				$this->Gedooo->sendPdfContentToClient( $pdfs, 'CourriersInformation.pdf' );
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer les courriers d\'information pour cette commission.', 'default', array( 'class' => 'error' ) );

@@ -453,6 +453,7 @@
 					'Contratinsertion.structurereferente_id',
 					'Contratinsertion.referent_id',
 					'Contratinsertion.num_contrat',
+					'Contratinsertion.motifannulation',
 					'Contratinsertion.dd_ci',
 					'Contratinsertion.duree_engag',
 					'Contratinsertion.positioncer',

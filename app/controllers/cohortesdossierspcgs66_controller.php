@@ -262,7 +262,7 @@
 
 			if( $pdfs ) {
 				$this->Dossierpcg66->commit();
-				$this->Gedooo->sendPdfContentToClient( $pdfs, 'NotificationsDecisions' );
+				$this->Gedooo->sendPdfContentToClient( $pdfs, 'NotificationsDecisions.pdf' );
 			}
 			else {
 				$this->Dossierpcg66->rollback();

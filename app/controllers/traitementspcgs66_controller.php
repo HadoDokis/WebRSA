@@ -761,7 +761,7 @@
 			$pdf = $this->Traitementpcg66->getPdfFichecalcul( $id );
 
 			if( $pdf ) {
-				$this->Gedooo->sendPdfContentToClient( $pdf, 'Décision' );
+				$this->Gedooo->sendPdfContentToClient( $pdf, 'Décision.pdf' );
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer la fiche de calcul', 'default', array( 'class' => 'error' ) );
@@ -779,7 +779,7 @@
 			$pdf = $this->Traitementpcg66->getPdfModeleCourrier( $id, $this->Session->read( 'Auth.User.id' ) );
 
 			if( $pdf ) {
-				$this->Gedooo->sendPdfContentToClient( $pdf, 'ModeleCourrier' );
+				$this->Gedooo->sendPdfContentToClient( $pdf, 'ModeleCourrier.pdf' );
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer le modèle de courrier', 'default', array( 'class' => 'error' ) );
