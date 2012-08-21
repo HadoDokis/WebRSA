@@ -794,7 +794,7 @@
 		*   Fonction pour annuler le Bilan de parcours pour le CG66
 		*/
 
-		public function can*cel( $id ) {
+		public function cancel( $id ) {
 			$bilan = $this->{$this->modelClass}->find(
 				'first',
 				array(
