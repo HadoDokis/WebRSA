@@ -42,7 +42,7 @@
 
 	<?php if( !empty( $contratsinsertion ) ):?>
 
-	<table class="tooltips default2">
+	<table class="tooltips default2" id="searchResults">
 		<thead>
 			<tr>
 				<th>Forme du contrat</th>
@@ -59,8 +59,18 @@
 		<tbody>
 			<?php
 
-				foreach( $contratsinsertion as $contratinsertion ) {
+				foreach( $contratsinsertion as $index => $contratinsertion ) {
 
+				
+					$innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
+							<tbody>
+								<tr>
+									<th>Raison annulation</th>
+									<td>'.$contratinsertion['Contratinsertion']['motifannulation'].'</td>
+								</tr>
+							</tbody>
+						</table>';
+						
 					$action = ( ( $contratinsertion['Contratinsertion']['forme_ci'] == 'S' ) ? 'propositionsimple' : 'propositionparticulier' );
 					$dateCreation = Set::classicExtract( $contratinsertion, 'Contratinsertion.created' );
 					$periodeblock = false;
@@ -82,12 +92,15 @@
 
 
 					$datenotif = Set::classicExtract( $contratinsertion, 'Contratinsertion.datenotification' );
-					if( empty( $datenotif ) ) {
+					if( empty( $datenotif ) /*&& ( $position == 'attvalid' )*/ ) {
 						$positioncer = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ), $options['positioncer'] );
 					}
 					else if( !empty( $datenotif ) && in_array( $position, array( 'nonvalidnotifie', 'validnotifie' ) ) ){
 						$positioncer = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ), $options['positioncer'] ).' le '.date_short( $datenotif );
 					}
+// 					else if( empty( $datenotif ) && ( $position == 'annule' ) ){
+// 						$positioncer = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ), $options['positioncer'] ).' car '.Set::classicExtract( $contratinsertion, 'Contratinsertion.motifannulation' );
+// 					}
 					else {
 						$positioncer = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ), $options['positioncer'] );
 					}
@@ -238,10 +251,11 @@
 									)
 								)
 							),
-							h( '('.Set::classicExtract( $contratinsertion, 'Fichiermodule.nb_fichiers_lies' ).')' )
+							h( '('.Set::classicExtract( $contratinsertion, 'Fichiermodule.nb_fichiers_lies' ).')' ),
+							array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
 						),
-						array( 'class' => 'odd' ),
-						array( 'class' => 'even' )
+						array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
+						array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
 					);
 				}
 			?>
