@@ -68,32 +68,18 @@
 					$permissions = Set::combine( $parentAros, '/Aco/alias', '/Aco/Permission/_create' );
 				}
 				if( !empty( $aro ) ) {
-					if( CAKE_BRANCH == '1.2' ) {
-						$qd_permissions = array(
-							'contain' => array(
-								'Aco'
-							),
-							'fields' => array(
-								'Aco.alias',
-								'Permission._create'
-							)
-						);
-						$data = $this->Acl->Aro->Permission->find( 'all', $qd_permissions );
-						$permissions = Set::merge( $permissions, Set::combine( $data, '{n}.Aco.alias', '{n}.Permission._create' ) );
-					}
-					else {
-						$qd_permissions = array(
-							'contain' => array(
-								'Aco'
-							),
-							'fields' => array(
-								'Aco.alias',
-								'AroAco._create'
-							)
-						);
-						$data = $this->Acl->Aro->AroAco->find( 'all', $qd_permissions );
-						$permissions = Set::merge( $permissions, Set::combine( $data, '{n}.Aco.alias', '{n}.AroAco._create' ) );
-					}
+					$qd_permissions = array(
+						'contain' => array(
+							'Aco'
+						),
+						'fields' => array(
+							'Aco.alias',
+							'Permission._create'
+						)
+					);
+					$data = $this->Acl->Aro->Permission->find( 'all', $qd_permissions );
+					$permissions = Set::merge( $permissions, Set::combine( $data, '{n}.Aco.alias', '{n}.Permission._create' ) );
+
 					foreach( $permissions as $key => $permission ) {
 						$permissions[$key] = ( $permission != -1 );
 					}
