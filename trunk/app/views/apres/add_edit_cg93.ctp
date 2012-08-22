@@ -255,7 +255,7 @@
 					<td class="mediumsize noborder"><?php echo $xform->input(  'Apre.projetprofessionnel', array( 'domain' => 'apre', 'label' => false, 'type' => 'textarea' ) );?></td>
 				</tr>
 				<tr>
-					<td class="mediumsize noborder"><strong><?php echo $xform->_label( 'Secteur professionnel en lien avec la demande', array('required'=>true) ); ?></strong></td>
+					<td class="mediumsize noborder"><strong><?php echo $xform->required( 'Secteur professionnel en lien avec la demande' ); ?></strong></td>
 					<td class="mediumsize noborder"><?php echo $xform->input( 'Apre.secteurprofessionnel', array( 'domain' => 'apre', 'label' => false, 'type' => 'textarea' ) );?></td>
 				</tr>
 			</table>

@@ -85,6 +85,7 @@
 		'amenaglogt' => 'amenagslogts',
 		'amenaglogt_pieceamenaglogt' => 'amenagslogts_piecesamenagslogts',
 		'anomalie' => 'anomalies',
+		'apre66' => 'apres66',
 		'apre_comiteapre' => 'apres_comitesapres',
 		'apre_etatliquidatif' => 'apres_etatsliquidatifs',
 		'apre_pieceapre' => 'apres_piecesapre',
@@ -366,7 +367,7 @@
 		'cohortenonoriente66' => 'cohortesnonorientes66',
 		'nonoriente66' => 'nonorientes66',
 		'gestionsanctionep58' => 'gestionssanctionseps58',
-		
+
 		'propodecisioncui66' => 'proposdecisionscuis66',
 		'decisioncui66' => 'decisionscuis66',
 		'suspensioncui66' => 'suspensionscuis66',

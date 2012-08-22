@@ -201,7 +201,7 @@
 				'tr',
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpdo.regime', array('domain'=>'traitementpdo', 'required'=>true))
+					$xform->required( __d( 'traitementpdo', 'Traitementpdo.regime', true ) )
 				).
 				$html->tag(
 					'td',
@@ -209,7 +209,7 @@
 				).
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpdo.saisonnier', array('domain'=>'traitementpdo'))
+					__d( 'traitementpdo', 'Traitementpdo.saisonnier', true )
 				).
 				$html->tag(
 					'td',
@@ -221,7 +221,7 @@
 				'tr',
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpdo.nrmrcs', array('domain'=>'traitementpdo', 'required'=>true))
+					$xform->required( __d( 'traitementpdo', 'Traitementpdo.nrmrcs', true ) )
 				).
 				$html->tag(
 					'td',
@@ -240,7 +240,7 @@
 				'tr',
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpdo.dtdebutactivite', array('domain'=>'traitementpdo', 'required'=>true))
+					$xform->required( __d( 'traitementpdo', 'Traitementpdo.dtdebutactivite', true ) )
 				).
 				$html->tag(
 					'td',
@@ -257,7 +257,7 @@
 				).
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpdo.raisonsocial', array('domain'=>'traitementpdo', 'required'=>true))
+					$xform->required( __d( 'traitementpdo', 'Traitementpdo.raisonsocial', true ) )
 				).
 				$html->tag(
 					'td',
@@ -269,7 +269,7 @@
 				'tr',
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpdo.dtdebutperiode', array('domain'=>'traitementpdo', 'required'=>true))
+					$xform->required( __d( 'traitementpdo', 'Traitementpdo.dtdebutperiode', true ) )
 				).
 				$html->tag(
 					'td',
@@ -286,7 +286,7 @@
 				).
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpdo.datefinperiode', array('domain'=>'traitementpdo', 'required'=>true))
+					$xform->required( __d( 'traitementpdo', 'Traitementpdo.datefinperiode', true ) )
 				).
 				$html->tag(
 					'td',
@@ -307,7 +307,7 @@
 				'tr',
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpdo.nbmoisactivite', array('domain'=>'traitementpdo'))
+					__d( 'traitementpdo', 'Traitementpdo.nbmoisactivite', true )
 				).
 				$html->tag(
 					'td',
@@ -329,7 +329,7 @@
 				'tr',
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpdo.forfait', array('domain'=>'traitementpdo'))
+					__d( 'traitementpdo', 'Traitementpdo.forfait', true )
 				).
 				$html->tag(
 					'td',
@@ -351,7 +351,7 @@
 				'tr',
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpdo.coefannee1', array('domain'=>'traitementpdo'))
+					__d( 'traitementpdo', 'Traitementpdo.coefannee1', true )
 				).
 				$html->tag(
 					'td',
@@ -362,7 +362,7 @@
 				).
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpdo.aidesubvreint', array('domain'=>'traitementpdo'))
+					__d( 'traitementpdo', 'Traitementpdo.aidesubvreint', true )
 				).
 				$html->tag(
 					'td',
@@ -384,7 +384,7 @@
 				'tr',
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpdo.coefannee2', array('domain'=>'traitementpdo'))
+					__d( 'traitementpdo', 'Traitementpdo.coefannee2', true )
 				).
 				$html->tag(
 					'td',
@@ -395,7 +395,7 @@
 				).
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpdo.mtaidesub', array('domain'=>'traitementpdo'))
+					__d( 'traitementpdo', 'Traitementpdo.mtaidesub', true )
 				).
 				$html->tag(
 					'td',
@@ -410,7 +410,7 @@
 				'tr',
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpdo.chaffvnt', array('domain'=>'traitementpdo', 'required'=>true))
+					$xform->required( __d( 'traitementpdo', 'Traitementpdo.chaffvnt', true ) )
 				).
 				$html->tag(
 					'td',
@@ -426,7 +426,7 @@
 				).
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpdo.abattement', array('domain'=>'traitementpdo')),
+					__d( 'traitementpdo', 'Traitementpdo.abattement', true ),
 					array(
 						'class' => 'microbic microbicauto'
 					)
@@ -456,7 +456,7 @@
 				'tr',
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpdo.chaffsrv', array('domain'=>'traitementpdo', 'required'=>true))
+					$xform->required( __d( 'traitementpdo', 'Traitementpdo.chaffsrv', true ) )
 				).
 				$html->tag(
 					'td',
@@ -472,7 +472,7 @@
 				).
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpdo.abattement', array('domain'=>'traitementpdo')),
+					__d( 'traitementpdo', 'Traitementpdo.abattement', true ),
 					array(
 						'class' => 'microbic microbicauto microbnc'
 					)
@@ -510,7 +510,7 @@
 				'tr',
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpdo.benefpriscompte', array('domain'=>'traitementpdo', 'required'=>true))
+					$xform->required( __d( 'traitementpdo', 'Traitementpdo.benefpriscompte', true ) )
 				).
 				$html->tag(
 					'td',
@@ -535,7 +535,7 @@
 				'tr',
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpdo.benefoudef', array('domain'=>'traitementpdo', 'required'=>true))
+					$xform->required( __d( 'traitementpdo', 'Traitementpdo.benefoudef', true ) )
 				).
 				$html->tag(
 					'td',
@@ -557,11 +557,11 @@
 				'tr',
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpdo.correction', array('domain'=>'traitementpdo'))
+					__d( 'traitementpdo', 'Traitementpdo.correction', true )
 				).
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpdo.ammortissements', array('domain'=>'traitementpdo', 'required'=>true))
+					$xform->required( __d( 'traitementpdo', 'Traitementpdo.ammortissements', true ) )
 				).
 				$html->tag(
 					'td',
@@ -583,7 +583,7 @@
 				).
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpdo.salaireexploitant', array('domain'=>'traitementpdo'))
+					__d( 'traitementpdo', 'Traitementpdo.salaireexploitant', true )
 				).
 				$html->tag(
 					'td',
@@ -605,7 +605,7 @@
 				).
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpdo.provisionsnonded', array('domain'=>'traitementpdo'))
+					__d( 'traitementpdo', 'Traitementpdo.provisionsnonded', true )
 				).
 				$html->tag(
 					'td',
@@ -627,7 +627,7 @@
 				).
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpdo.moinsvaluescession', array('domain'=>'traitementpdo'))
+					__d( 'traitementpdo', 'Traitementpdo.moinsvaluescession', true )
 				).
 				$html->tag(
 					'td',
@@ -649,7 +649,7 @@
 				).
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpdo.autrecorrection', array('domain'=>'traitementpdo', 'required'=>true))
+					$xform->required( __d( 'traitementpdo', 'Traitementpdo.autrecorrection', true ) )
 				).
 				$html->tag(
 					'td',
@@ -667,7 +667,7 @@
 				'tr',
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpdo.mnttotal', array('domain'=>'traitementpdo'))
+					__d( 'traitementpdo', 'Traitementpdo.mnttotal', true )
 				).
 				$html->tag(
 					'td',
@@ -692,7 +692,7 @@
 				'tr',
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpdo.revenus', array('domain'=>'traitementpdo'))
+					__d( 'traitementpdo', 'Traitementpdo.revenus', true )
 				).
 				$html->tag(
 					'td',
@@ -714,7 +714,7 @@
 				'tr',
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpdo.dtprisecompte', array('domain'=>'traitementpdo', 'required'=>true))
+					$xform->required( __d( 'traitementpdo', 'Traitementpdo.dtprisecompte', true ) )
 				).
 				$html->tag(
 					'td',
@@ -734,7 +734,7 @@
 				).
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpdo.dureefinperiode', array('domain'=>'traitementpdo', 'required'=>true))
+					$xform->required( __d( 'traitementpdo', 'Traitementpdo.dureefinperiode', true ) )
 				).
 				$html->tag(
 					'td',
@@ -748,7 +748,7 @@
 				'tr',
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpdo.daterevision', array('domain'=>'traitementpdo', 'required'=>true))
+					$xform->required( __d( 'traitementpdo', 'Traitementpdo.daterevision', true ) )
 				).
 				$html->tag(
 					'td',

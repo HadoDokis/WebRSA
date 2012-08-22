@@ -45,11 +45,11 @@
 		<fieldset>
 			<legend>Détails PDO</legend>
 			<?php
-				echo $xform->input( 'Propopdo.structurereferente_id', array( 'label' =>  $xform->_label( __( 'Structure gérant la PDO', true ), array( 'required' => true ) ), 'type' => 'select', 'options' => $structs, 'empty' => true ) );
-				echo $xform->input( 'Propopdo.typepdo_id', array( 'label' =>  $xform->_label( __d( 'propopdo', 'Propopdo.typepdo_id', true ), array( 'required' => true ) ), 'type' => 'select', 'options' => $typepdo, 'empty' => true ) );
+				echo $xform->input( 'Propopdo.structurereferente_id', array( 'label' =>  $xform->required( __( 'Structure gérant la PDO', true ) ), 'type' => 'select', 'options' => $structs, 'empty' => true ) );
+				echo $xform->input( 'Propopdo.typepdo_id', array( 'label' =>  $xform->required( __d( 'propopdo', 'Propopdo.typepdo_id', true ) ), 'type' => 'select', 'options' => $typepdo, 'empty' => true ) );
 				echo $xform->input( 'Propopdo.datereceptionpdo', array( 'label' =>  ( __( 'Date de réception de la PDO', true ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => true ) );
-				echo $xform->input( 'Propopdo.originepdo_id', array( 'label' =>  $xform->_label( __( 'Origine', true ), array( 'required' => true ) ), 'type' => 'select', 'options' => $originepdo, 'empty' => true ) );
-				echo $xform->input( 'Propopdo.decision', array( 'type' => 'hidden', 'value' => '1' ) ).$xform->input( 'Decisionpropopdo.0.decisionpdo_id', array( 'label' =>  $xform->_label( __( 'Décision du Conseil Général', true ), array( 'required' => true ) ), 'type' => 'select', 'options' => $decisionpdo, 'empty' => true ) );
+				echo $xform->input( 'Propopdo.originepdo_id', array( 'label' =>  $xform->required( __( 'Origine', true ) ), 'type' => 'select', 'options' => $originepdo, 'empty' => true ) );
+				echo $xform->input( 'Propopdo.decision', array( 'type' => 'hidden', 'value' => '1' ) ).$xform->input( 'Decisionpropopdo.0.decisionpdo_id', array( 'label' =>  $xform->required( __( 'Décision du Conseil Général', true ) ), 'type' => 'select', 'options' => $decisionpdo, 'empty' => true ) );
 				echo $xform->input( 'Propopdo.motifpdo', array( 'label' =>  ( __( 'Motif de la décision', true ) ), 'type' => 'select', 'options' => $motifpdo, 'empty' => true ) );
 				echo $xform->input( 'Propopdo.iscomplet', array( 'label' =>  __( 'Etat du dossier', true ),  'type' => 'radio', 'options' => $options['iscomplet'], 'empty' => true ) );
 
