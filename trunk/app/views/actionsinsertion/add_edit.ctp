@@ -103,7 +103,7 @@
 
 	<fieldset>
 			<?php echo $form->input( 'Actioninsertion.id', array( 'type' => 'hidden' ) );?>
-			<?php echo $form->input( 'Actioninsertion.lib_action', array( 'label' =>  __d( 'action', 'Action.lib_action', true ) , 'type' => 'radio', 'options' => $lib_action, 'empty' => true) );?>
+			<?php echo $form->input( 'Actioninsertion.lib_action', array( 'label' =>  __d( 'action', 'Action.lib_action', true ) , 'type' => 'radio', 'options' => $lib_action ) );?>
 	</fieldset>
 	<fieldset>
 			<?php echo $form->input( 'Aidedirecte.id', array( 'type' => 'hidden' )  ); ?>
