@@ -15,7 +15,7 @@
 
 	function radioApre( $view, $path, $value, $label ) {
 		$name = 'data['.implode( '][', explode( '.', $path ) ).']';
-		$notEmptyValues = Set::filter( Set::classicExtract( $view->data, $value ) );
+		$notEmptyValues = Set::filter( (array)Set::classicExtract( $view->data, $value ) );
 		$checked = ( ( !empty( $notEmptyValues ) ) ? 'checked="checked"' : '' );
 		return "<label><input type=\"radio\" name=\"{$name}\" value=\"{$value}\" {$checked} />{$label}</label>";
 	}
