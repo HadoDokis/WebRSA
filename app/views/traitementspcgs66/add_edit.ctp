@@ -190,7 +190,7 @@
 				'tr',
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpcg66.regime', array('domain'=>'traitementpcg66', 'required'=>true))
+					$xform->required( __d( 'traitementpcg66', 'Traitementpcg66.regime', true ) )
 				).
 				$html->tag(
 					'td',
@@ -198,7 +198,7 @@
 				).
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpcg66.saisonnier', array('domain'=>'traitementpcg66'))
+					__d( 'traitementpcg66', 'Traitementpcg66.saisonnier', true )
 				).
 				$html->tag(
 					'td',
@@ -210,7 +210,7 @@
 				'tr',
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpcg66.nrmrcs', array('domain'=>'traitementpcg66', 'required'=>true))
+					$xform->required( __d( 'traitementpcg66', 'Traitementpcg66.nrmrcs', true ) )
 				).
 				$html->tag(
 					'td',
@@ -229,7 +229,7 @@
 				'tr',
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpcg66.dtdebutactivite', array('domain'=>'traitementpcg66', 'required'=>true))
+					$xform->required( __d( 'traitementpcg66', 'Traitementpcg66.dtdebutactivite', true ) )
 				).
 				$html->tag(
 					'td',
@@ -246,7 +246,7 @@
 				).
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpcg66.raisonsocial', array('domain'=>'traitementpcg66'))
+					__d( 'traitementpcg66', 'Traitementpcg66.raisonsocial', true )
 				).
 				$html->tag(
 					'td',
@@ -263,7 +263,7 @@
 				'tr',
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpcg66.dtdebutperiode', array('domain'=>'traitementpcg66', 'required'=>true))
+					$xform->required( __d( 'traitementpcg66', 'Traitementpcg66.dtdebutperiode', true ) )
 				).
 				$html->tag(
 					'td',
@@ -281,7 +281,7 @@
 				).
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpcg66.datefinperiode', array('domain'=>'traitementpcg66', 'required'=>true))
+					$xform->required( __d( 'traitementpcg66', 'Traitementpcg66.datefinperiode', true ) )
 				).
 				$html->tag(
 					'td',
@@ -302,7 +302,7 @@
 				'tr',
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpcg66.nbmoisactivite', array('domain'=>'traitementpcg66'))
+					__d( 'traitementpcg66', 'Traitementpcg66.nbmoisactivite', true )
 				).
 				$html->tag(
 					'td',
@@ -324,7 +324,7 @@
 				'tr',
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpcg66.forfait', array('domain'=>'traitementpcg66'))
+					__d( 'traitementpcg66', 'Traitementpcg66.forfait', true )
 				).
 				$html->tag(
 					'td',
@@ -346,7 +346,7 @@
 				'tr',
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpcg66.coefannee1', array('domain'=>'traitementpcg66'))
+					__d( 'traitementpcg66', 'Traitementpcg66.coefannee1', true )
 				).
 				$html->tag(
 					'td',
@@ -357,7 +357,7 @@
 				).
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpcg66.aidesubvreint', array('domain'=>'traitementpcg66'))
+					__d( 'traitementpcg66', 'Traitementpcg66.aidesubvreint', true )
 				).
 				$html->tag(
 					'td',
@@ -379,7 +379,7 @@
 				'tr',
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpcg66.coefannee2', array('domain'=>'traitementpcg66'))
+					__d( 'traitementpcg66', 'Traitementpcg66.coefannee2', true )
 				).
 				$html->tag(
 					'td',
@@ -390,7 +390,7 @@
 				).
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpcg66.mtaidesub', array('domain'=>'traitementpcg66'))
+					__d( 'traitementpcg66', 'Traitementpcg66.mtaidesub', true )
 				).
 				$html->tag(
 					'td',
@@ -405,7 +405,7 @@
 				'tr',
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpcg66.chaffvnt', array('domain'=>'traitementpcg66', 'required'=>true))
+					$xform->required( __d( 'traitementpcg66', 'Traitementpcg66.chaffvnt', true ) )
 				).
 				$html->tag(
 					'td',
@@ -421,7 +421,7 @@
 				).
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpcg66.abattement', array('domain'=>'traitementpcg66')),
+					__d( 'traitementpcg66', 'Traitementpcg66.abattement', true ),
 					array(
 						'class' => 'microbic microbicauto'
 					)
@@ -451,7 +451,7 @@
 				'tr',
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpcg66.chaffsrv', array('domain'=>'traitementpcg66', 'required'=>true))
+					$xform->required( __d( 'traitementpcg66', 'Traitementpcg66.chaffsrv', true ) )
 				).
 				$html->tag(
 					'td',
@@ -467,7 +467,7 @@
 				).
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpcg66.abattement', array('domain'=>'traitementpcg66')),
+					__d( 'traitementpcg66', 'Traitementpcg66.abattement', true ),
 					array(
 						'class' => 'microbic microbicauto microbnc'
 					)
@@ -505,7 +505,7 @@
 				'tr',
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpcg66.benefpriscompte', array('domain'=>'traitementpcg66', 'required'=>true))
+					$xform->required( __d( 'traitementpcg66', 'Traitementpcg66.benefpriscompte', true ) )
 				).
 				$html->tag(
 					'td',
@@ -530,7 +530,7 @@
 				'tr',
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpcg66.benefoudef', array('domain'=>'traitementpcg66', 'required'=>true))
+					$xform->required( __d( 'traitementpcg66', 'Traitementpcg66.benefoudef', true ) )
 				).
 				$html->tag(
 					'td',
@@ -552,11 +552,11 @@
 				'tr',
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpcg66.correction', array('domain'=>'traitementpcg66'))
+					__d( 'traitementpcg66', 'Traitementpcg66.correction', true )
 				).
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpcg66.ammortissements', array('domain'=>'traitementpcg66', 'required'=>true))
+					$xform->required( __d( 'traitementpcg66', 'Traitementpcg66.ammortissements', true ) )
 				).
 				$html->tag(
 					'td',
@@ -578,7 +578,7 @@
 				).
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpcg66.salaireexploitant', array('domain'=>'traitementpcg66'))
+					__d( 'traitementpcg66', 'Traitementpcg66.salaireexploitant', true )
 				).
 				$html->tag(
 					'td',
@@ -600,7 +600,7 @@
 				).
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpcg66.provisionsnonded', array('domain'=>'traitementpcg66'))
+					__d( 'traitementpcg66', 'Traitementpcg66.provisionsnonded', true )
 				).
 				$html->tag(
 					'td',
@@ -622,7 +622,7 @@
 				).
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpcg66.moinsvaluescession', array('domain'=>'traitementpcg66'))
+					__d( 'traitementpcg66', 'Traitementpcg66.moinsvaluescession', true )
 				).
 				$html->tag(
 					'td',
@@ -644,7 +644,7 @@
 				).
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpcg66.autrecorrection', array('domain'=>'traitementpcg66'))
+					__d( 'traitementpcg66', 'Traitementpcg66.autrecorrection', true )
 				).
 				$html->tag(
 					'td',
@@ -662,7 +662,7 @@
 				'tr',
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpcg66.mnttotal', array('domain'=>'traitementpcg66'))
+					__d( 'traitementpcg66', 'Traitementpcg66.mnttotal', true )
 				).
 				$html->tag(
 					'td',
@@ -687,7 +687,7 @@
 				'tr',
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpcg66.revenus', array('domain'=>'traitementpcg66'))
+					__d( 'traitementpcg66', 'Traitementpcg66.revenus', true )
 				).
 				$html->tag(
 					'td',
@@ -711,7 +711,7 @@
 				'tr',
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpcg66.dtdebutprisecompte', array('domain'=>'traitementpcg66', 'required'=>true))
+					$xform->required( __d( 'traitementpcg66', 'Traitementpcg66.dtdebutprisecompte', true ) )
 				).
 				$html->tag(
 					'td',
@@ -731,7 +731,7 @@
 				).
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpcg66.datefinprisecompte', array('domain'=>'traitementpcg66', 'required'=>true))
+					$xform->required( __d( 'traitementpcg66', 'Traitementpcg66.datefinprisecompte', true ) )
 				).
 				$html->tag(
 					'td',
@@ -754,7 +754,7 @@
 				'tr',
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpcg66.dureefinprisecompte', array('domain'=>'traitementpcg66', 'required'=>true))
+					$xform->required( __d( 'traitementpcg66', 'Traitementpcg66.dureefinprisecompte', true ) )
 				).
 				$html->tag(
 					'td',
@@ -765,7 +765,7 @@
 				).
 				$html->tag(
 					'td',
-					$xform->_label('Traitementpcg66.daterevision', array('domain'=>'traitementpcg66', 'required'=>true))
+					$xform->required( __d( 'traitementpcg66', 'Traitementpcg66.daterevision', true ) )
 				).
 				$html->tag(
 					'td',
