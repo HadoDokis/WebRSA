@@ -85,6 +85,13 @@
 				'with' => 'ActioncandidatPartenaire'
 			)
 		);
+		
+		public $virtualFields = array(
+			'adresse' => array(
+				'type'      => 'string',
+				'postgres'  => '( "%s"."numvoie" || \' \' || "%s"."typevoie" || \' \' || "%s"."nomvoie" || \' \' || "%s"."compladr" || \' \' || "%s"."codepostal" || \' \' || "%s"."ville" )'
+			)
+		);
 
 	}
 ?>

@@ -456,9 +456,16 @@
 					</li>
 				<?php endif; ?>
 			<?php endif;?>
-
+			
+			<!-- Début du menu des maquettes offre d'insertion-->
+			<?php if( Configure::read( 'Cg.departement' ) == 66 ):?>
+					<?php if( $permissions->check( 'offresinsertion', 'index' ) ): ?>
+					<li id="menu10one">
+						<?php echo $xhtml->link( 'Offre d\'Insertion', array( 'controller' => 'offresinsertion', 'action' => 'index' ) ); ?>
+					</li>
+				<?php endif; ?>
+			<?php endif;?>
 			<?php if( Configure::read( 'Cg.departement' ) == 34 ):?>
-				<!-- Début du menu des maquettes offre d'insertion-->
 				<li id="menuTest0one" >
 					<?php echo $html->link( 'Offre d\'Insertion', '#' );?>
 					<ul>
@@ -646,6 +653,7 @@
 					</ul>
 				</li>
 			<?php endif;?>
+
 			<?php if( $permissions->check( 'parametrages', 'index' ) || $permissions->check( 'infosfinancieres', 'indexdossier' ) || $permissions->check( 'totalisationsacomptes', 'index' ) ): ?>
 					<li id="menu6one">
 						<?php echo $xhtml->link( 'Administration', '#' );?>
