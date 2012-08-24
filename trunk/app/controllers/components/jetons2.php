@@ -59,7 +59,7 @@
 				return true;
 			}
 
-			$dossiers = (array) $dossiers;
+			$dossiers = array_unique( (array) $dossiers );
 
 			$this->Jeton->begin();
 
@@ -110,7 +110,7 @@
 						)
 					);
 
-					if( !empty( $jetonObtenu['id'] ) ) {
+					if( !empty( $jetonObtenu ) && !empty( $jetonObtenu['id'] ) ) {
 						$jeton['Jeton']['id'] = $jetonObtenu['id'];
 					}
 
@@ -161,7 +161,7 @@
 				return true;
 			}
 
-			$dossiers = (array) $dossiers;
+			$dossiers = array_unique( (array) $dossiers );
 
 			$this->Jeton->begin();
 

@@ -402,7 +402,7 @@
 					if( is_array( $lockedDossiers ) ) {
 						$lockedDossiers = implode( ', ', $lockedDossiers );
 					}
-					$conditions[] = "Dossier.id NOT IN ( {$lockedDossiers} )";
+					$conditions[] = "NOT {$lockedDossiers}";
 				}
 
 				/// Critères

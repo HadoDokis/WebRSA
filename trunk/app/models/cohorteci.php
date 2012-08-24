@@ -10,13 +10,18 @@
 		public $actsAs = array( 'Conditionnable' );
 
 		/**
-		*
-		*/
-
+		 *
+		 * @param type $statutValidation
+		 * @param type $mesCodesInsee
+		 * @param type $filtre_zone_geo
+		 * @param type $criteresci
+		 * @param type $lockedDossiers
+		 * @return type
+		 */
 		public function search( $statutValidation, $mesCodesInsee, $filtre_zone_geo, $criteresci, $lockedDossiers ) {
 			/// Conditions de base
 			$conditions = array(/* '1 = 1' */);
-			
+
 			if( !empty( $statutValidation ) ) {
 				if( $statutValidation == 'Decisionci::nonvalidesimple' ) {
 					$conditions[] = '( ( Contratinsertion.forme_ci = \'S\' ) AND ( ( Contratinsertion.decision_ci = \'E\' ) OR ( Contratinsertion.decision_ci IS NULL ) ) )';
@@ -99,7 +104,7 @@
 			$referent_id = Set::extract( $criteresci, 'Filtre.referent_id' );
 			$matricule = Set::extract( $criteresci, 'Filtre.matricule' );
 			$positioncer = Set::extract( $criteresci, 'Filtre.positioncer' );
-			
+
 
 			/// Critères sur le CI - dates du CER (date de saisie, date de début, date de fin)
 			foreach( array( 'date_saisi_ci', 'dd_ci', 'df_ci' ) as $typeDate ) {
@@ -231,11 +236,11 @@
 						contratsinsertion
 						WHERE
 							date_trunc( \'day\', contratsinsertion.df_ci ) >= DATE( NOW() )
-							AND date_trunc( \'day\', contratsinsertion.df_ci ) <= ( DATE( NOW() ) + INTERVAL \''.Configure::read( 'Criterecer.delaiavanteecheance' ).'\' ) 
+							AND date_trunc( \'day\', contratsinsertion.df_ci ) <= ( DATE( NOW() ) + INTERVAL \''.Configure::read( 'Criterecer.delaiavanteecheance' ).'\' )
  				)';
 			}
 
-			
+
 			// Pour le CG66 : filtre permettant de retourner les CERs non validés et notifiés il y a 1 mois et demi
 			if( isset( $criteresci['Filtre']['notifienonvalide'] ) && !empty( $criteresci['Filtre']['notifienonvalide'] ) ) {
 				$conditions[] = 'Contratinsertion.id IN (
@@ -274,9 +279,9 @@
 
 			// Trouver la dernière demande RSA pour chacune des personnes du jeu de résultats
 			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $criteresci );
-			
+
 			$conditions = $this->conditionsPersonne( $conditions, $criteresci );
-			
+
 			/// Requête
 			$Situationdossierrsa = ClassRegistry::init( 'Situationdossierrsa' );
 			$etatdossier = Set::extract( $criteresci, 'Situationdossierrsa.etatdosrsa' );
@@ -285,10 +290,10 @@
 			}
 			else {
 				$conditions[] = '( Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatOuvert() ).'\' ) )';
-			}			
-			
+			}
 
-			
+
+
 			$this->Dossier = ClassRegistry::init( 'Dossier' );
 			$this->Contratinsertion = ClassRegistry::init( 'Contratinsertion' );
 
