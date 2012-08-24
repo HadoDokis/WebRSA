@@ -795,35 +795,42 @@
 		 */
 		public function view( $contratinsertion_id = null ) {
 			$this->Contratinsertion->forceVirtualFields = true;
+
 			$contratinsertion = $this->Contratinsertion->find(
-					'first', array(
-				'fields' => array_merge(
-						$this->Contratinsertion->fields(), $this->Contratinsertion->Action->fields(), $this->Contratinsertion->Actioninsertion->fields(), $this->Contratinsertion->Propodecisioncer66->fields(), array(
-					'Referent.nom_complet',
-					'Structurereferente.lib_struc',
-					'Typeorient.lib_type_orient',
-					'Personne.nom_complet',
-					$this->Contratinsertion->Propodecisioncer66->Motifcernonvalid66Propodecisioncer66->Motifcernonvalid66->vfListeMotifs( 'Propodecisioncer66.id', '', ', ' ).' AS "Propodecisioncer66__listeMotifs66"'
+				'first',
+				array(
+					'fields' => array_merge(
+						$this->Contratinsertion->fields(),
+						$this->Contratinsertion->Action->fields(),
+						$this->Contratinsertion->Actioninsertion->fields(),
+						$this->Contratinsertion->Propodecisioncer66->fields(),
+						array(
+							'Referent.nom_complet',
+							'Structurereferente.lib_struc',
+							'Typeorient.lib_type_orient',
+							'Personne.nom_complet',
+							$this->Contratinsertion->Propodecisioncer66->Motifcernonvalid66Propodecisioncer66->Motifcernonvalid66->vfListeMotifs( 'Propodecisioncer66.id', '', ', ' ).' AS "Propodecisioncer66__listeMotifs66"'
 						)
-				),
-				'joins' => array(
-					$this->Contratinsertion->join( 'Action', array( 'type' => 'LEFT OUTER' ) ),
-					$this->Contratinsertion->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ),
-					$this->Contratinsertion->join( 'Personne', array( 'type' => 'INNER' ) ),
-					$this->Contratinsertion->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
-					$this->Contratinsertion->Structurereferente->join( 'Typeorient', array( 'type' => 'INNER' ) ),
-					$this->Contratinsertion->join( 'Actioninsertion', array( 'type' => 'LEFT OUTER' ) ),
-					$this->Contratinsertion->join( 'Propodecisioncer66', array( 'type' => 'LEFT OUTER' ) ), /*
-				  $this->Contratinsertion->Propodecisioncer66->join( 'Motifcernonvalid66Propodecisioncer66', array( 'type' => 'LEFT OUTER' ) ),
-				  $this->Contratinsertion->Propodecisioncer66->Motifcernonvalid66Propodecisioncer66->join( 'Motifcernonvalid66', array( 'type' => 'LEFT OUTER' ) ) */
-				),
-				'conditions' => array(
-					'Contratinsertion.id' => $contratinsertion_id
-				),
-				'recursive' => -1,
-				'contain' => false
-					)
+					),
+					'joins' => array(
+						$this->Contratinsertion->join( 'Action', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Contratinsertion->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Contratinsertion->join( 'Personne', array( 'type' => 'INNER' ) ),
+						$this->Contratinsertion->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
+						$this->Contratinsertion->Structurereferente->join( 'Typeorient', array( 'type' => 'INNER' ) ),
+						$this->Contratinsertion->join( 'Actioninsertion', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Contratinsertion->join( 'Propodecisioncer66', array( 'type' => 'LEFT OUTER' ) ),
+						// $this->Contratinsertion->Propodecisioncer66->join( 'Motifcernonvalid66Propodecisioncer66', array( 'type' => 'LEFT OUTER' ) ),
+						// $this->Contratinsertion->Propodecisioncer66->Motifcernonvalid66Propodecisioncer66->join( 'Motifcernonvalid66', array( 'type' => 'LEFT OUTER' ) )
+					),
+					'conditions' => array(
+						'Contratinsertion.id' => $contratinsertion_id
+					),
+					'recursive' => -1,
+					'contain' => false
+				)
 			);
+
 			$this->Contratinsertion->forceVirtualFields = false;
 			$this->assert( !empty( $contratinsertion ), 'invalidParameter' );
 

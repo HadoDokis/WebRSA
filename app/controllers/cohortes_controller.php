@@ -1,5 +1,6 @@
 <?php
 	App::import( 'Sanitize' );
+
 	require_once( APPLIBS.'cmis.php' );
 
 	class CohortesController extends AppController
@@ -8,48 +9,27 @@
 
 		public $uses = array(
 			'Cohorte',
-			'Canton',
-			'Dossier',
-			'Structurereferente',
 			'Option',
-			'Ressource',
-			'Adresse',
-			'Typeorient',
-			'Structurereferente',
-			'Contratinsertion',
-			'Detaildroitrsa',
 			'Zonegeographique',
-			'Adressefoyer',
-			'Dsp',
 			'Personne',
-			'Orientstruct',
-			'PersonneReferent',
-			'Referent',
-			'Situationdossierrsa'
 		);
 
 		public $helpers = array( 'Csv', 'Paginator', 'Ajax', 'Default', 'Xpaginator', 'Locale', 'Search' );
 
-		public $components = array( 'Jetons', 'Gedooo.Gedooo', 'Prg' => array( 'actions' => 'orientees' ) );
+		public $components = array( 'Gedooo.Gedooo', 'Prg' => array( 'actions' => 'orientees' ), 'Jetons2' );
 
-		public $aucunDroit = array( 'progression' );
-
-		public $paginate = array(
-			// FIXME
-			'limit' => 20,
-		);
+		public $paginate = array( 'limit' => 20 );
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function beforeFilter() {
 			ini_set('max_execution_time', 0);
 			ini_set('memory_limit', '1024M');
 			parent::beforeFilter();
 
 			if( in_array( $this->action, array( 'orientees', 'exportcsv' ) ) ) {
-				$this->set( 'options', $this->Orientstruct->enums() );
+				$this->set( 'options', $this->Personne->Orientstruct->enums() );
 			}
 
 			$this->set( 'rolepers', $this->Option->rolepers() );
@@ -59,7 +39,7 @@
 			$this->set( 'toppersdrodevorsa', $this->Option->toppersdrodevorsa( true ) );
 // 			}
 // 			else {
-// 			$etats = $this->Situationdossierrsa->etatOuvert();
+// 			$etats = $this->Personne->Foyer->Dossier->Situationdossierrsa->etatOuvert();
 			$etats = Configure::read( 'Situationdossierrsa.etatdosrsa.ouvert' );
 // 			}
 			$this->set( 'etatdosrsa', $this->Option->etatdosrsa( $etats ) );
@@ -71,11 +51,14 @@
 			$this->set( 'natpf', $this->Option->natpf( $natpfsSocle ) );
 		}
 
-
+		/**
+		 *
+		 */
 		public function _setOptions() {
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
 			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
-			$typesOrient = $this->Typeorient->find(
+
+			$typesOrient = $this->Personne->Orientstruct->Typeorient->find(
 				'list',
 				array(
 					'fields' => array(
@@ -89,7 +72,7 @@
 				)
 			);
 			$this->set( 'typesOrient', $typesOrient );
-			$this->set( 'structuresReferentes', $this->Structurereferente->list1Options() );
+			$this->set( 'structuresReferentes', $this->Personne->Orientstruct->Structurereferente->list1Options() );
 
 			// -----------------------------------------------------------------
 
@@ -97,7 +80,7 @@
 				$this->set( 'mesCodesInsee', $this->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) ) );
 			}
 			else {
-				$this->set( 'mesCodesInsee', $this->Dossier->Foyer->Adressefoyer->Adresse->listeCodesInsee() );
+				$this->set( 'mesCodesInsee', $this->Personne->Foyer->Adressefoyer->Adresse->listeCodesInsee() );
 			}
 
 			$this->set( 'oridemrsa', $this->Option->oridemrsa() );
@@ -105,12 +88,12 @@
 			$this->set( 'printed', $this->Option->printed() );
 			$this->set( 'structuresAutomatiques', $this->Cohorte->structuresAutomatiques() );
 			if( Configure::read( 'CG.cantons' ) ) {
-				$this->set( 'cantons', $this->Canton->selectList() );
+				$this->set( 'cantons', $this->Zonegeographique->Canton->selectList() );
 			}
 
 			$this->set(
 				'modeles',
-				$this->Typeorient->find(
+				$this->Personne->Orientstruct->Typeorient->find(
 					'list',
 					array(
 						'fields' => array( 'lib_type_orient' ),
@@ -119,101 +102,68 @@
 				)
 			);
 			if( in_array( $this->action, array( 'orientees', 'exportcsv', 'statistiques' ) ) ) {
-				$this->set( 'options', $this->Orientstruct->enums() );
+				$this->set( 'options', $this->Personne->Orientstruct->enums() );
 			}
 
 		}
 
-
 		/**
-		*
-		*/
-
-//		public function __construct() {
-//			parent::__construct();
-//			$this->components[] = 'Jetons';
-//		}
-
-		/**
-		*
-		*/
-
+		 *
+		 */
 		public function nouvelles() {
 			$this->Gedooo->check( false, true );
 			$this->_index( 'Non orienté' );
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function orientees() {
-//			$this->set( 'etatdosrsa', null );
 			$this->_index( 'Orienté' );
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function enattente() {
 			$this->Gedooo->check( false, true );
 			$this->_index( 'En attente' );
 		}
 
 		/**
-		*
-		*/
+		 *
+		 */
 		public function preconisationscalculables() {
 			$this->Gedooo->check( false, true );
 			$this->_index( 'Calculables' );
 		}
 
 		/**
-		*
-		*/
+		 *
+		 */
 		public function preconisationsnoncalculables() {
 			$this->Gedooo->check( false, true );
 			$this->_index( 'Non calculables' );
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 * @param string $statutOrientation
+		 */
 		protected function _index( $statutOrientation = null ) {
 			$this->assert( !empty( $statutOrientation ), 'invalidParameter' );
 
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
 			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 
-			// Si aucun formulaire n'a été renvoyé, on fait une recherche comme celle que l'on fera	it par défaut + FIXME: non orienté/en attente/orientés
-// 			if( empty( $this->data ) && ( in_array( $statutOrientation, array( 'Non orienté', 'En attente' ) ) ) ) {
-// 				$this->data['Filtre'] = array (
-// 				'Filtre' =>
-// 					array (
-// 						'oridemrsa' =>
-// 						array ( 'DEM', 'RMI', 'API', ),
-// 						'dtdemrsa' => '0',
-// 					),
-// 					'Dossier' => array ( 'dernier' => '1', ),
-// 					'Situationdossierrsa' => array (
-// 						'etatdosrsa_choice' => '1',
-// 						'etatdosrsa' => Configure::read( 'Situationdossierrsa.etatdosrsa.ouvert' ),
-// 					),
-// 					'Detailcalculdroitrsa' => array (
-// 						'natpf_choice' => '1',
-// 						'natpf' => Configure::read( 'Detailcalculdroitrsa.natpf.socle' ),
-// 					)
-// 				);
-// 			}
-// 			debug( $this->data['Filtre'] );
-			// Un des formulaires a été renvoyé
 			if( !empty( $this->data ) ) {
 				// -----------------------------------------------------------------
 				// Formulaire de cohorte
 				// -----------------------------------------------------------------
 				if( !empty( $this->data['Orientstruct'] ) ) {
+					$dossiers_ids = Set::extract(  '/dossier_id', $this->data['Orientstruct'] );
+					$this->Jetons2->get( $dossiers_ids );
+
 					// Sauvegarde de l'utilisateur orientant
 					foreach( array_keys( $this->data['Orientstruct'] ) as $key ) {
 						if( $this->data['Orientstruct'][$key]['statut_orient'] == 'Orienté' ) {
@@ -230,21 +180,21 @@
 						}
 					}
 
-					$valid = $this->Dossier->Foyer->Personne->Orientstruct->saveAll( $this->data['Orientstruct'], array( 'validate' => 'only', 'atomic' => false ) );
-					$valid = ( count( $this->Dossier->Foyer->Personne->Orientstruct->validationErrors ) == 0 );
+					$valid = $this->Personne->Orientstruct->saveAll( $this->data['Orientstruct'], array( 'validate' => 'only', 'atomic' => false ) );
+					$valid = ( count( $this->Personne->Orientstruct->validationErrors ) == 0 );
+
 					if( $valid ) {
-						$this->Dossier->begin();
-						$saved = $this->Dossier->Foyer->Personne->Orientstruct->saveAll( $this->data['Orientstruct'], array( 'validate' => 'first', 'atomic' => false ) );
+						$this->Personne->Foyer->Dossier->begin();
+						$saved = $this->Personne->Orientstruct->saveAll( $this->data['Orientstruct'], array( 'validate' => 'first', 'atomic' => false ) );
 
 						if( $saved ) {
-							$dossiersIds = Set::extract( $this->data, '/Orientstruct/dossier_id' );
-							$this->Jetons->releaseList( $dossiersIds ); // FIXME -> bien passé / mal passé
+							$this->Personne->Foyer->Dossier->commit();
+							$this->Jetons2->release( $dossiers_ids );
 
-							$this->Dossier->commit();
 							$this->data['Orientstruct'] = array();
 						}
 						else {
-							$this->Dossier->rollback();
+							$this->Personne->Foyer->Dossier->rollback();
 							$this->Session->setFlash( 'Erreur lors de l\'enregistrement.', 'flash/error' );
 						}
 					}
@@ -267,9 +217,6 @@
 				// Filtre
 				// -----------------------------------------------------------------
 				if( isset( $this->data['Filtre'] ) ) {
-					$this->Cohorte->begin();
-
-// 					Configure::read( 'Situationdossierrsa.etatdosrsa.ouvert' )
 					$progressivePaginate = !Set::classicExtract( $this->data, 'Filtre.paginationNombreTotal' );
 
 					$filtre = $this->data;
@@ -280,7 +227,7 @@
 						$mesCodesInsee,
 						$this->Session->read( 'Auth.User.filtre_zone_geo' ),
 						$filtre,
-						$this->Jetons->sqIds()
+						( ( $statutOrientation == 'Orienté' ) ? false : $this->Jetons2->sqLocked() )
 					);
 
 					if( $statutOrientation == 'Orienté' ) {
@@ -290,22 +237,17 @@
 
 						$this->set( compact( 'cohorte' ) );
 					}
-					else { // FIXME: jetons
+					else {
 						$queryData['limit'] = 10;
 
 						$this->paginate = array( 'Personne' => $queryData );
 						$cohorte = $this->paginate( $this->Personne, array(), array(), $progressivePaginate );
 
+						$dossiers_ids = Set::extract(  '/Dossier/id', $cohorte );
+						$this->Jetons2->get( $dossiers_ids );
+
 						$this->set( compact( 'cohorte' ) );
 					}
-
-					// Acquisition des jetons si on a un formulaire de cohorte -> FIXME begin/commit/rollback
-					if( in_array( $statutOrientation, array( 'En attente', 'Non orienté', 'Calculables', 'Non calculables' ) ) && !empty( $cohorte ) ) {
-						$dossiersIds = Set::extract( $cohorte, '/Dossier/id' );
-						$this->Jetons->getList( $dossiersIds );
-					}
-
-					$this->Cohorte->commit();
 				}
 			}
 			else {
@@ -318,7 +260,7 @@
 				$this->data = Set::merge( $this->data, $filtresdefaut );
 			}
 
-			$typesOrient = $this->Typeorient->find(
+			$typesOrient = $this->Personne->Orientstruct->Typeorient->find(
 				'list',
 				array(
 					'fields' => array(
@@ -330,7 +272,7 @@
 				)
 			);
 			$this->set( 'typesOrient', $typesOrient );
-			$this->set( 'structuresReferentes', $this->Structurereferente->list1Options() );
+			$this->set( 'structuresReferentes', $this->Personne->Orientstruct->Structurereferente->list1Options() );
 
 			// -----------------------------------------------------------------
 
@@ -338,7 +280,7 @@
 				$this->set( 'mesCodesInsee', $this->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) ) );
 			}
 			else {
-				$this->set( 'mesCodesInsee', $this->Dossier->Foyer->Adressefoyer->Adresse->listeCodesInsee() );
+				$this->set( 'mesCodesInsee', $this->Personne->Foyer->Adressefoyer->Adresse->listeCodesInsee() );
 			}
 
 			$this->set( 'oridemrsa', $this->Option->oridemrsa() );
@@ -346,10 +288,10 @@
 			$this->set( 'printed', $this->Option->printed() );
 			$this->set( 'structuresAutomatiques', $this->Cohorte->structuresAutomatiques() );
 			if( Configure::read( 'CG.cantons' ) ) {
-				$this->set( 'cantons', $this->Canton->selectList() );
+				$this->set( 'cantons', $this->Zonegeographique->Canton->selectList() );
 			}
 
-			$modeles = $this->Typeorient->find(
+			$modeles = $this->Personne->Orientstruct->Typeorient->find(
 				'list',
 				array(
 					'fields' => array( 'lib_type_orient' ),
@@ -384,7 +326,7 @@
 					$this->set( 'pageTitle', 'Demandes d\'orientation non préorientées' );
 					$this->render( $this->action, null, 'formulaire' );
 					break;
-				case 'Orienté': // FIXME: pas besoin de locker
+				case 'Orienté':
 					$this->set( 'pageTitle', 'Demandes orientées' );
 					$this->render( $this->action, null, 'visualisation' );
 					break;
@@ -392,30 +334,10 @@
 		}
 
 		/**
-		* Export des données en Xls
-		*/
-
-		public function exportcsv(){
-			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
-
-			$_limit = 10;
-			$params = $this->Cohorte->search( 'Orienté', $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
-
-			unset( $params['limit'] );
-			$cohortes = $this->Dossier->find( 'all', $params );
-
-			$this->layout = ''; // FIXME ?
-			$this->set( compact( 'cohortes' ) );
-		}
-
-		/**
-		*
-		*/
-
+		 *
+		 * @param type $personne_id
+		 */
 		public function cohortegedooo( $personne_id = null ) {
-			$this->Dossier->begin();
-
 			$AuthZonegeographique = $this->Session->read( 'Auth.Zonegeographique' );
 			if( !empty( $AuthZonegeographique ) ) {
 				$AuthZonegeographique = array_values( $AuthZonegeographique );
@@ -424,7 +346,13 @@
 				$AuthZonegeographique = array();
 			}
 
-			$queryData = $this->Cohorte->recherche( 'Orienté', $AuthZonegeographique, $this->Session->read( 'Auth.User.filtre_zone_geo' ), Xset::bump( $this->params['named'], '__' ), $this->Jetons->ids() );
+			$queryData = $this->Cohorte->recherche(
+				'Orienté',
+				$AuthZonegeographique,
+				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
+				Xset::bump( $this->params['named'], '__' ),
+				false
+			);
 
 			if( $limit = Configure::read( 'nb_limit_print' ) ) {
 				$queryData['limit'] = $limit;
@@ -477,7 +405,8 @@
 
 			$content = $this->Gedooo->concatPdfs( Set::extract( $results, '/Pdf/document' ), 'orientsstructs' );
 
-			$success = ( $content !== false ) && $this->Orientstruct->updateAll(
+			$this->Personne->Foyer->Dossier->begin();
+			$success = ( $content !== false ) && $this->Personne->Orientstruct->updateAll(
 				array( 'Orientstruct.date_impression' => date( "'Y-m-d'" ) ),
 				array(
 					'"Orientstruct"."id"' => Set::extract( $results, '/Orientstruct/id' ),
@@ -485,29 +414,31 @@
 				)
 			);
 
-			if( $content !== false ) { // date_impression
-				$this->Dossier->commit();
+			if( $content !== false ) {
+				$this->Personne->Foyer->Dossier->commit();
 				$this->Gedooo->sendPdfContentToClient( $content, sprintf( "cohorte-orientations-%s.pdf", date( "Ymd-H\hi" ) ) );
 				die();
 			}
 			else {
-				$this->Dossier->rollback();
+				$this->Personne->Foyer->Dossier->rollback();
 				$this->Session->setFlash( 'Erreur lors de l\'impression en cohorte.', 'flash/error' );
 				$this->redirect( $this->referer() );
 			}
 		}
 
-
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function statistiques() {
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
 			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 
 			if( !empty( $this->data ) ) {
-				$statistiques = $this->Cohorte->statistiques( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data );
+				$statistiques = $this->Cohorte->statistiques(
+					$mesCodesInsee,
+					$this->Session->read( 'Auth.User.filtre_zone_geo' ),
+					$this->data
+				);
 			}
 
 			$this->_setOptions();

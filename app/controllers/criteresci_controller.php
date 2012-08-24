@@ -4,27 +4,16 @@
 	class CriteresciController extends AppController
 	{
 		public $name = 'Criteresci';
+
 		public $uses = array( 'Cohorteci', 'Action', 'Contratinsertion', 'Option', 'Referent', 'Situationdossierrsa' );
+		public $helpers = array( 'Csv', 'Ajax', 'Search' );
+		public $components = array(  'Prg' => array( 'actions' => array( 'index' ) ) );
 
 		public $aucunDroit = array( 'constReq', 'ajaxreferent' );
 
-		public $helpers = array( 'Csv', 'Ajax', 'Search' );
-
-		public $components = array(  'Prg' => array( 'actions' => array( 'index' ) ) );
-
 		/**
-		*
-		*/
-
-//		public function __construct() {
-//			$this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'index' ) ) ) );
-//			parent::__construct();
-//		}
-
-		/**
-		*
-		*/
-
+		 *
+		 */
 		protected function _setOptions() {
 			$struct = ClassRegistry::init( 'Structurereferente' )->find( 'list', array( 'fields' => array( 'id', 'lib_struc' ) ) );
 			$this->set( 'struct', $struct );
@@ -75,9 +64,11 @@
 		}
 
 		/**
-		* Ajax pour lien référent - structure référente
-		*/
-
+		 * Ajax pour lien référent - structure référente
+		 *
+		 * @param type $structurereferente_id
+		 * @return type
+		 */
 		public function _selectReferents( $structurereferente_id ) {
 			$conditions = array();
 
@@ -93,15 +84,14 @@
 					'recursive' => -1
 				)
 			);
-			return $referents;
 
+			return $referents;
 		}
 
 		/**
-		*
-		*/
-
-		public function ajaxreferent() { // FIXME
+		 *
+		 */
+		public function ajaxreferent() {
 			Configure::write( 'debug', 2 );
 			$referents = $this->_selectReferents( Set::classicExtract( $this->data, 'Filtre.structurereferente_id' ) );
 			$options = array( '<option value=""></option>' );
@@ -113,9 +103,8 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function index() {
 			if( Configure::read( 'CG.cantons' ) ) {
 				$this->set( 'cantons', ClassRegistry::init( 'Canton' )->selectList() );
@@ -125,18 +114,20 @@
 			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 
 			$params = $this->data;
+
 			if( !empty( $params ) ) {
-
-				$this->Cohorteci->begin(); // Pour les jetons
-
-				$paginate = $this->Cohorteci->search( null, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
+				$paginate = $this->Cohorteci->search(
+					null,
+					$mesCodesInsee,
+					$this->Session->read( 'Auth.User.filtre_zone_geo' ),
+					$this->data,
+					false
+				);
 				$paginate['limit'] = 10;
 				$paginate = $this->_qdAddFilters( $paginate );
 
 				$this->paginate = $paginate;
 				$contrats = $this->paginate( 'Contratinsertion' );
-
-				$this->Cohorteci->commit();
 
 				$this->set( 'contrats', $contrats );
 			}
@@ -176,14 +167,20 @@
 		}
 
 		/**
-		* Export du tableau en CSV
-		*/
-
+		 * Export du tableau en CSV
+		 */
 		public function exportcsv() {
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
 			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 
-			$querydata = $this->Cohorteci->search( null, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), Xset::bump( $this->params['named'], '__' ), $this->Jetons->ids() );
+			$querydata = $this->Cohorteci->search(
+				null,
+				$mesCodesInsee,
+				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
+				Xset::bump( $this->params['named'], '__' ),
+				false
+			);
+
 			unset( $querydata['limit'] );
 			$querydata = $this->_qdAddFilters( $querydata );
 
@@ -194,7 +191,7 @@
 			$referents = $this->Referent->referentsListe( $structurereferente_id );
 			$this->set( 'referents', $referents );
 
-			$this->layout = ''; // FIXME ?
+			$this->layout = '';
 			$this->set( compact( 'contrats' ) );
 			$this->_setOptions();
 		}

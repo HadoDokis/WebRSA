@@ -22,19 +22,10 @@
 			return parent::beforeFilter();
 		}
 
-		/**
-		*
-		*/
-
-//		public function __construct() {
-//			$this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'index' ) ) ) );
-//			parent::__construct();
-//		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		protected function _setOptions() {
 			$typeservice = ClassRegistry::init( 'Serviceinstructeur' )->find( 'list', array( 'fields' => array( 'lib_service' ) ) );
 			$this->set( 'typeservice', $typeservice );
@@ -121,45 +112,55 @@
 			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 
 			if( !empty( $this->data ) ) {
-				$this->Critere->begin(); // Pour les jetons
+				$paginate = $this->Critere->search(
+					$mesCodesInsee,
+					$this->Session->read( 'Auth.User.filtre_zone_geo' ),
+					$this->data,
+					false
+				);
 
-				$paginate = $this->Critere->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
 				$paginate = $this->_qdAddFilters( $paginate );
 				$paginate['limit'] = 10;
 
 				$this->paginate = $paginate;
 				$orients = $this->paginate( 'Orientstruct' );
 
-				$this->Critere->commit();
-
 				$this->set( 'orients', $orients );
 			}
+
 			if( Configure::read( 'Zonesegeographiques.CodesInsee' ) ) {
 				$this->set( 'mesCodesInsee', ClassRegistry::init( 'Zonegeographique' )->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) ) );
 			}
 			else {
 				$this->set( 'mesCodesInsee', ClassRegistry::init( 'Adresse' )->listeCodesInsee() );
 			}
+
 			$this->_setOptions();
 		}
 
 		/**
-		* Export du tableau en CSV
-		*/
-
+		 * Export du tableau en CSV
+		 */
 		public function exportcsv() {
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
 			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
+
 			$this->set( 'typevoie', $this->Option->typevoie() );
 
-			$querydata = $this->Critere->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), Xset::bump( $this->params['named'], '__' ), $this->Jetons->ids() );
+			$querydata = $this->Critere->search(
+				$mesCodesInsee,
+				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
+				Xset::bump( $this->params['named'], '__' ),
+				false
+			);
+
 			unset( $querydata['limit'] );
 
 			$querydata = $this->_qdAddFilters( $querydata );
 
 			$orients = $this->Orientstruct->find( 'all', $querydata );
 
-			$this->layout = ''; // FIXME ?
+			$this->layout = '';
 			$this->_setOptions();
 			$this->set( compact( 'orients' ) );
 		}

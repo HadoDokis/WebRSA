@@ -7,9 +7,11 @@
 	{
 
 		public $name = 'Dsps';
+
 		public $helpers = array( 'Xform', 'Xhtml', 'Dsphm', 'Default2', 'Fileuploader', 'Search', 'Csv' );
 		public $uses = array( 'Dsp', 'DspRev' );
-		public $components = array( 'Jetons', 'Default', 'Fileuploader', 'Gestionzonesgeos', 'Prg' => array( 'actions' => array( 'index' ) ) );
+		public $components = array( 'Jetons2', 'Default', 'Fileuploader', 'Gestionzonesgeos', 'Prg' => array( 'actions' => array( 'index' ) ) );
+
 		public $paginate = array(
 			'limit' => 10,
 			'order' => array( 'DspRev.created' => 'desc', 'DspRev.id' => 'desc' )
@@ -62,11 +64,6 @@
 			'findPersonne' => 'Dsps:view'
 		);
 		public $aucunDroit = array( 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
-
-//		public function __construct() {
-//			$this->components = Set::merge( $this->components, array( 'Gestionzonesgeos', 'Prg' => array( 'actions' => array( 'index' ) ) ) );
-//			parent::__construct();
-//		}
 
 		/**
 		 *
@@ -184,18 +181,17 @@
 			$dossier_id = $this->Dsp->Personne->dossierId( $personne_id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
 
-			$this->Dsp->begin();
-			if( !$this->Jetons->check( $dossier_id ) ) {
-				$this->Dsp->rollback();
-			}
-			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
+			$this->Jetons2->get( $dossier_id );
 
 			// Retour à l'index en cas d'annulation
 			if( isset( $this->params['form']['Cancel'] ) ) {
+				$this->Jetons2->release( $dossier_id );
 				$this->redirect( array( 'action' => 'histo', $personne_id ) );
 			}
 
 			if( !empty( $this->data ) ) {
+				$this->Dsp->begin();
+
 				$saved = $this->DspRev->updateAll(
 						array( 'DspRev.haspiecejointe' => '\''.$this->data['DspRev']['haspiecejointe'].'\'' ), array(
 					'"DspRev"."personne_id"' => $personne_id,
@@ -211,10 +207,9 @@
 				}
 
 				if( $saved ) {
-					$this->Jetons->release( $dossier_id );
 					$this->Dsp->commit();
+					$this->Jetons2->release( $dossier_id );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-// 					$this->redirect( array(  'controller' => 'dsps','action' => 'histo', $personne_id ) );
 					$this->redirect( $this->referer() );
 				}
 				else {
@@ -414,13 +409,12 @@
 								}
 							}
 						}
-// debug( $histos );
 					}
+
 					foreach( $diff as $Model => $values ) {
 						$cpt+=count( $values );
 					}
 					$histos[$i] = Set::insert( $histos[$i], 'diff', $cpt );
-// debug($diff);
 				}
 			}
 			$histos[count( $histos ) - 1]['diff'] = 0;
@@ -435,6 +429,9 @@
 		 *
 		 */
 		public function revertTo( $id = null ) {
+			$dossier_id = $this->DspRev->dossierId( $id );
+			$this->Jetons2->get( $dossier_id );
+
 			$qd_dsprevs = array(
 				'conditions' => array(
 					'DspRev.id' => $id
@@ -442,9 +439,20 @@
 			);
 			$dsprevs = $this->DspRev->find( 'first', $qd_dsprevs );
 
+			$this->DspRev->begin();
 
 			$this->DspRev->id = $id;
-			$this->DspRev->saveField( 'modified', date( 'Y-m-d' ) );
+			$success = $this->DspRev->saveField( 'modified', date( 'Y-m-d' ) );
+
+			if( $success ) {
+				$this->DspRev->commit();
+			}
+			else {
+				$this->DspRev->rollback();
+			}
+
+			$this->Jetons2->release( $dossier_id );
+
 			$qd = array(
 				'conditions' => array(
 					'Dsp.personne_id' => $dsprevs['DspRev']['personne_id']
@@ -452,12 +460,15 @@
 			);
 			$this->data = $this->Dsp->find( 'first', $qd );
 			$dsp_id = $this->data['Dsp']['id'];
+
 			foreach( $dsprevs as $dsprev => $values ) {
 				$this->data[preg_replace( '/Rev$/', '', $dsprev )] = $dsprevs[$dsprev];
 			}
+
 			$this->data['Dsp']['id'] = $dsp_id;
 			$this->data = Set::remove( $this->data, 'Dsp.created' );
 			$this->data = Set::remove( $this->data, 'Dsp.modified' );
+
 			$this->edit( $dsprevs['DspRev']['personne_id'], $id );
 		}
 
@@ -665,11 +676,13 @@
 		 *
 		 */
 		protected function _add_edit( $personne_id = null, $version_id = null ) {
-			// Début de la transaction
-			$this->Dsp->begin();
+			$dossier_id = $this->Dsp->Personne->dossierId( $personne_id );
+			$this->Jetons2->get( $dossier_id );
 
 			// Retour à la liste en cas d'annulation
 			if( isset( $this->params['form']['Cancel'] ) ) {
+				$this->Jetons2->release( $dossier_id );
+
 				if( empty( $version_id ) ) {
 					$this->redirect( array( 'action' => 'view', $personne_id ) );
 				}
@@ -752,13 +765,10 @@
 			// Vérification indirecte de l'id
 			$this->assert( !empty( $dsp ), 'invalidParameter' );
 
-			// Assertion: on doit pouvoir mettre un jeton sur le dossier
-			$dossier_id = $this->Dsp->Personne->dossierId( Set::classicExtract( $dsp, 'Personne.id' ) );
-			$hasJeton = $this->Jetons->get( $dossier_id );
-			$this->assert( $hasJeton, 'lockedDossier' );
-
 			// Tentative d'enregistrement
 			if( !empty( $this->data ) ) {
+				$this->Dsp->begin();
+
 				$success = true;
 
 				// Nettoyage des Dsp
@@ -838,10 +848,9 @@
 					$this->DspRev->saveAll( $data2, array( 'atomic' => false, 'validate' => 'first' ) );
 
 					$this->Session->setFlash( __( 'Enregistrement effectué', true ), 'flash/success' );
-					// On enlève le jeton du dossier
-					$this->Jetons->release( array( 'Dossier.id' => $dossier_id ) ); // FIXME: if -> error
 					// Fin de la transaction
 					$this->Dsp->commit();
+					$this->Jetons2->release( $dossier_id );
 					$this->redirect( array( 'action' => 'histo', Set::classicExtract( $this->data, 'Dsp.personne_id' ) ) );
 				}
 				else {
@@ -856,9 +865,6 @@
 				$dsp['Dsp']['libemploirech66_metier_id'] = $dsp['Dsp']['libsecactrech66_secteur_id'].'_'.$dsp['Dsp']['libemploirech66_metier_id'];
 				$this->data = $dsp;
 			}
-
-			// Fin de la transaction
-			$this->Dsp->commit();
 
 			// Affectation à la vue
 			$this->set( 'dsp', $dsp );
@@ -898,7 +904,6 @@
 					$this->_wildcardKeys( $this->data, $wildcardKeys )
 				);
 
-				$paginate['fields'][] = $this->Jetons->sqLocked( 'Dossier', 'locked' );
 				$paginate = $this->_qdAddFilters( $paginate );
 				$paginate['limit'] = 10;
 
@@ -930,7 +935,9 @@
 			);
 
 			$querydata = $this->Dsp->search(
-					$mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->_wildcardKeys( Xset::bump( $this->params['named'], '__' ), $wildcardKeys )
+				$mesCodesInsee,
+				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
+				$this->_wildcardKeys( Xset::bump( $this->params['named'], '__' ), $wildcardKeys )
 			);
 			unset( $querydata['limit'] );
 
