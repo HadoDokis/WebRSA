@@ -6,9 +6,7 @@
 		public $uses = array( 'PersonneReferent', 'Option', 'Personne', 'Orientstruct', 'Structurereferente', 'Typerdv', 'Statutrdv', 'Referent' );
 		public $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Fileuploader', 'Default2' );
 		public $components = array( 'Fileuploader' );
-		public $commeDroit = array(
-			'add' => 'PersonnesReferents:edit'
-		);
+
 		public $aucunDroit = array( 'ajaxreferent', 'ajaxreffonct', 'ajaxperm', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
 
 		/**		 * *******************************************************************

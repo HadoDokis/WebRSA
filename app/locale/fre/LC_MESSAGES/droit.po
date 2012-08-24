@@ -1554,9 +1554,11 @@ msgstr "Lier un fichier au référent du parcours"
 msgid "PersonnesReferents:index"
 msgstr "Visualisation des référents du parcours"
 
-msgid "PersonnesReferents:edit"
-msgstr "Ajout/Édition d'un référent du parcours"
+msgid "PersonnesReferents:add"
+msgstr "Ajout d'un référent du parcours"
 
+msgid "PersonnesReferents:edit"
+msgstr "Modification d'un référent du parcours"
 ###############################################################################
 
 msgid "Module:Personnespcgs66"

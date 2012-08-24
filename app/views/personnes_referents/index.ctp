@@ -22,7 +22,8 @@
 				<?php
 					echo '<li>'.$xhtml->addLink(
 						'Ajouter un Référent',
-						array( 'controller' => 'personnes_referents', 'action' => 'add', $personne_id )
+						array( 'controller' => 'personnes_referents', 'action' => 'add', $personne_id ),
+						$permissions->check( 'personnes_referents', 'add' )
 					).' </li>';
 				?>
 			</ul>
@@ -37,7 +38,7 @@
 			<?php
 				echo '<li>'.$xhtml->addLink(
 					'Ajouter un Référent',
-					array( 'controller' => 'personnes_referents', 'action' => 'add', $personne_id ), $cloture
+					array( 'controller' => 'personnes_referents', 'action' => 'add', $personne_id ), ( $cloture && $permissions->check( 'personnes_referents', 'add' ) )
 				).' </li>';
 			?>
 		</ul>
