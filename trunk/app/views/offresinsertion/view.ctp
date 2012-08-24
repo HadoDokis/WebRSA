@@ -10,12 +10,18 @@
 	<?php
 		echo "<h2>Liste des pièces liées à l'action '".Set::classicExtract( $actioncandidat, 'Actioncandidat.name' )."'</h2>";
 		echo $fileuploader->results( Set::classicExtract( $actioncandidat, 'Fichiermodule' ) );
+
 		
+		$urlParams = Set::flatten( $this->params['named'], '__' );
+
 		echo $default->button(
 			'back',
-			array(
-				'controller' => 'offresinsertion',
-				'action'     => 'index'
+			array_merge(
+				array(
+					'controller' => 'offresinsertion',
+					'action'     => 'index'
+				),
+				$urlParams
 			),
 			array(
 				'id' => 'Back'
