@@ -10,6 +10,8 @@
 		);
 
 		public $helpers = array( 'Fileuploader' );
+		
+		public $aucunDroit = array( 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
 
 		public $components = array(
 			'Fileuploader'
