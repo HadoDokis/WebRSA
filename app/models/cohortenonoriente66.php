@@ -16,6 +16,32 @@
 
 		/**
 		*
+			Concernant la recherche des allocataires du Pôle Emploi, voici les critères pris en compte si aucune valeur n'est renseignée dans le formulaire :
+			La case "Uniquement la dernière demande RSA pour un même allocataire" est laissée cochée, donc une partie des conditions sera sur :
+				l'allocataire possède une entrée dans la table prestation de type RSA
+				l'allocataire possède une entrée dans la table foyer
+				l'allocataire possède une entrée dans la table dossier
+				le rôle de l'allocataire est de type demandeur ou conjoint
+				le NIR de l'allocataire est sur 13 caractères et bien formaté
+				la date de naissance de l'allocataire est renseignée
+			De plus, les conditions de base sont les suivantes :
+				L'allocataire ne possède aucune entrée dans la table orientsstructs avec pour valeur de statut d'orientation = Orienté
+				On se base sur la dernière information PE ou bien on ne prend pas en compte cette information
+				L'allocataire doit avoir comme prestation Demandeur ou Conjoint du RSA
+				L'allocataire doit être soumis  droit et devoir
+				L'état du dossier de l'allocataire doit se trouver dans un état ouvert ( Z, 2, 3, 4 )
+				Son adresse de rang 01 doit être renseignée
+				Les zones géographiques de l'utilisateur doivent couvrir celle de l'allocataire (afin que l'utilisateur puisse visualiser l'allocataire)          
+
+			Plus spécifiquement, les conditions suivantes sont ajoutées pour les 2 cas en question :
+
+			Gestion de listes -> Non orientation -> Inscrits PE
+				La dernière information PE doit être en état = "inscription"
+
+			Gestion de listes -> Non orientation -> Non inscrits PE
+				L'allocataire ne doit pas posséder d'entrée dans la table "nonorientes66"
+				NB: cette table permet de stocker et de distinguer les allocataires orientés via la gestion des listes des allocataires orientés via le module Orientation normal. Une fois l'action réalisée via les formulaires des liens Inscrits PE et Non inscrits PE, une entrée est stockée dans cette table.
+				La dernière information PE doit être différente d'inscription ( = cessation ou radiation).
 		*/
 
 		public function search( $statutNonoriente, $mesCodesInsee, $filtre_zone_geo, $criteresnonorientes, $lockedDossiers ) {
