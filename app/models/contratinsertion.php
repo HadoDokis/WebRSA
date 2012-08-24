@@ -1655,12 +1655,44 @@
 
 			$contratinsertion['Contratinsertion']['duree_engag'] = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.duree_engag' ), $Option->duree_engag() );
 
-// debug($contratinsertion);
-// die();
 			return $this->ged(
-							$contratinsertion, 'Contratinsertion/tacitereconduction66.odt', false, $options
+				$contratinsertion,
+				'Contratinsertion/tacitereconduction66.odt',
+				false,
+				$options
 			);
 		}
 
+		/**
+		 * Retourne l'id du dossier à partir de l'id du CER
+		 *
+		 * @param integer $id
+		 * @return integer
+		 */
+		public function dossierId( $id ) {
+			$contratinsertion = $this->find(
+				'first',
+				array(
+					'fields' => array(
+						'Foyer.dossier_id'
+					),
+					'joins' => array(
+						$this->join( 'Personne', array( 'type' => 'INNER' ) ),
+						$this->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
+					),
+					'conditions' => array(
+						'Contratinsertion.id' => $id
+					),
+					'contain' => false
+				)
+			);
+
+			if( !empty( $contratinsertion ) ) {
+				return $contratinsertion['Foyer']['dossier_id'];
+			}
+			else {
+				return null;
+			}
+		}
 	}
 ?>

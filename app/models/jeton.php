@@ -3,6 +3,13 @@
 	{
 		public $name = 'Jeton';
 
+		/**
+		 * On ne doit jamais cacher les reqûetes (par défaut, elles sont cachées sur une page).
+		 *
+		 * @var boolean
+		 */
+		public $cacheQueries = false;
+
 		public $validate = array(
 			'dossier_id' => array(
 				'numeric' => array(

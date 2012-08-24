@@ -4,18 +4,19 @@
 	class DossiersController extends AppController
 	{
 		public $name = 'Dossiers';
+
 		public $uses = array( 'Dossier', 'Option', 'Informationpe' );
-		public $aucunDroit = array( 'menu' );
 		public $helpers = array( 'Csv' , 'Search', 'Default2', 'Gestionanomaliebdd' );
+		public $components = array( 'Gestionzonesgeos', 'Prg' => array( 'actions' => array( 'index' ) ), 'Jetons2' );
+
+		public $aucunDroit = array( 'menu' );
+
+		public $commeDroit = array( 'view' => 'Dossiers:index' );
 
 		public $paginate = array(
 			// FIXME
 			'limit' => 20
 		);
-
-		public $commeDroit = array( 'view' => 'Dossiers:index' );
-
-		public $components = array( 'Gestionzonesgeos', 'Prg' => array( 'actions' => array( 'index' ) ) );
 
 		/**
 		*
@@ -88,14 +89,17 @@
 		}
 
 		/**
-		*
-		*/
-
+		 * Les action index et exportcsv peuvent être consommatrices, donc on augmeta la mémoire
+		 * maximale et le temps d'exécution maximal du script PHP.
+		 *
+		 * @return voir
+		 */
 		public function beforeFilter() {
-			ini_set('max_execution_time', 0);
-			ini_set('memory_limit', '512M');
-			$return = parent::beforeFilter();
-			return $return;
+			if( in_array( $this->action, array( 'index', 'exportcsv' ) ) ) {
+				ini_set( 'max_execution_time', 0 );
+				ini_set( 'memory_limit', '512M' );
+			}
+			parent::beforeFilter();
 		}
 
 		/**
@@ -112,7 +116,7 @@
 			if( !empty( $this->data ) ) {
 				$paginate = $this->Dossier->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data );
 				$paginate = $this->_qdAddFilters( $paginate );
-				$paginate['fields'][] = $this->Jetons->sqLocked( 'Dossier', 'locked' );
+				$paginate['fields'][] = $this->Jetons2->sqLocked( 'Dossier', 'locked' );
 
 				$this->paginate = $paginate;
 				$dossiers = $this->paginate( 'Dossier' );
@@ -131,9 +135,11 @@
 		}
 
 		/**
-		*
-		*/
-
+		 * Retourne les données permettant de peupler le menu d'un dossier.
+		 * Doit être systématiquement utilisé via un requestAction.
+		 *
+		 * @return array
+		 */
 		public function menu() {
 			$this->assert( isset( $this->params['requested'] ), 'error404' );
 			$conditions = array();
@@ -164,7 +170,7 @@
 						'Foyer.enerreur',
 						'Foyer.sansprestation',
 						'Situationdossierrsa.etatdosrsa',
-						$this->Jetons->sqLocked( 'Dossier', 'locked' )
+						$this->Jetons2->sqLocked( 'Dossier', 'locked' )
 					),
 					'contain' => array(
 						'Foyer',
@@ -214,9 +220,10 @@
 		}
 
 		/**
-		*
-		*/
-
+		 * Visualisation du dossier.
+		 *
+		 * @param integer $id
+		 */
 		public function view( $id = null ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
@@ -375,10 +382,7 @@
 			);
 			$details = Set::merge( $details, array( 'Adresse' => $adresseFoyer['Adresse'] ) );
 
-			/**
-				Personnes
-			*/
-
+			// Personnes
 			$personnesFoyer = $this->Dossier->Foyer->Personne->find(
 				'all',
 				array(
@@ -432,9 +436,6 @@
 					'recursive' => 0
 				)
 			);
-// debug($personnesFoyer);
-
-
 
 			$optionsep = array(
 				'Passagecommissionep' => $this->Dossier->Foyer->Personne->Dossierep->Passagecommissionep->allEnumLists()
@@ -585,9 +586,7 @@
 				);
 				$personnesFoyer[$index]['Nonrespectsanctionep93']['derniere'] = $tRelance;
 
-// debug($tRelance);
 				// EP
-
 				// Dernier passage effectif (lié à un passagecommissionep)
 				$tdossierEp = $this->Dossier->Foyer->Personne->Dossierep->find(
 					'first',
@@ -651,7 +650,7 @@
 					if( !isset( $optionsep[$modelDecision] ) ) {
 						$optionsep[$modelDecision] = $this->Dossier->Foyer->Personne->Dossierep->Passagecommissionep->{$modelDecision}->allEnumLists();
 					}
-// debug($optionsep);
+
 					$decisionEP = $this->Dossier->Foyer->Personne->Dossierep->Passagecommissionep->{$modelDecision}->find(
 						'first',
 						array(
@@ -687,7 +686,7 @@
 							'DISTINCT Dossier.id',
 							'Dossier.numdemrsa',
 							'Dossier.dtdemrsa',
-                            'Situationdossierrsa.etatdosrsa'
+							'Situationdossierrsa.etatdosrsa'
 						),
 						'joins' => array(
 							array(
@@ -753,9 +752,6 @@
 
 			}
 
-// debug($details);
-// debug($details['DEM']['Dossiermultiple']);
-// debug($details['CJT']['Dossiermultiple']);
 			$this->set( 'details', $details );
 
 			$this->_setOptions();
@@ -764,23 +760,13 @@
 		}
 
 		/**
-		* Export du tableau en CSV
-		*/
-
+		 * Modification du dossier.
+		 *
+		 * @param integer $id
+		 */
 		public function edit( $id ){
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
-// 			$foyer = $this->Dossier->Foyer->find(
-// 				'first',
-// 				array(
-// 					'conditions' => array(
-// 						'Foyer.id' => $foyer_id
-// 					),
-// 					'contain' => array(
-// 						'Dossier'
-// 					)
-// 				)
-// 			);
 			$dossier = $this->Dossier->find(
 				'first',
 				array(
@@ -796,13 +782,16 @@
 				$this->cakeError( 'error404' );
 			}
 
+			$this->Jetons2->get( $id );
+
 			if( !empty( $this->data ) ) {
-				if( $this->Dossier->saveAll( $this->data ) ) {
+				if( $this->Dossier->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => true ) ) ) {
+					$this->Jetons2->release( $id );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 					$this->redirect( array( 'controller' => 'dossiers', 'action' => 'view', $id ) );
 				}
 				else{
-					$this->Dossier->rollback;
+					$this->Session->setFlash( 'Erreur lors de l\'enregistrement.', 'flash/error' );
 				}
 			}
 			else {
@@ -812,7 +801,11 @@
 			$this->set( 'id', $id );
 		}
 
-
+		/**
+		 * Export du tableau de résultats de recherche au format CSV.
+		 *
+		 * @return void
+		 */
 		public function exportcsv() {
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
 			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
@@ -823,7 +816,7 @@
 
 			$dossiers = $this->Dossier->find( 'all', $querydata );
 
-			$this->layout = ''; // FIXME ?
+			$this->layout = '';
 			$this->set( compact( 'headers', 'dossiers' ) );
 			$this->_setOptions();
 		}
