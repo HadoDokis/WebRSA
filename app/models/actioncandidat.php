@@ -279,7 +279,5 @@
 			return $results;
 		}
 
-
-
 	}
 ?>

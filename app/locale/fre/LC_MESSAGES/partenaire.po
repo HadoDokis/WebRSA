@@ -81,3 +81,5 @@ msgstr "Ville"
 msgid "Partenaire.codepartenaire"
 msgstr "Code partenaire"
 
+msgid "Partenaire.adresse"
+msgstr "Adresse du partenaire"
