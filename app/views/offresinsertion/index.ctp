@@ -49,9 +49,9 @@
 	<?php if( isset( $search ) ):?>
 		<?php if( is_array( $search ) && count( $search ) > 0  ):?>
 
-<h2 class="noprint">Résultats de la recherche</h2>
-<br>
-	<div id="tabbedWrapper" class="tabs">
+	<h2 class="noprint">Résultats de la recherche</h2>
+	<br>
+		<div id="tabbedWrapper" class="tabs">
 			<?php
 				foreach( Set::flatten( $this->data['Search'] ) as $filtre => $value  ) {
 					echo $form->input( "Search.{$filtre}", array( 'type' => 'hidden', 'value' => $value ) );
@@ -61,6 +61,93 @@
 				<h2 class="title">Global</h2>
 				<?php $pagination = $xpaginator->paginationBlock( 'Actioncandidat', $this->passedArgs ); ?>
 				<?php echo $pagination;?>
+				<table>
+					<colgroup span="10" style="border-right: 5px solid #235F7D;border-left: 5px solid #235F7D;" />
+					<colgroup span="4" style="border-right: 5px solid #235F7D;border-left: 5px solid #235F7D;" />
+					<colgroup span="4" style="border-right: 5px solid #235F7D;border-left: 5px solid #235F7D;" />
+					<colgroup />
+					<colgroup />
+					<thead>
+						<tr>
+							<th colspan="10">Action de candidature</th>
+							<th colspan="4">Contact</th>
+							<th colspan="5">Partenaire/Prestataire</th>
+							<th>Actions</th>
+						</tr>
+						<tr>
+							<th><?php echo $xpaginator->sort( 'Intitulé de l\'action', 'Actioncandidat.name' );?></th>
+							<th><?php echo $xpaginator->sort( 'Code de l\'action', 'Actioncandidat.codeaction' );?></th>
+							<th><?php echo $xpaginator->sort( 'Chargé d\'insertion', 'Chargeinsertion.nom_complet' );?></th>
+							<th><?php echo $xpaginator->sort( 'Secrétaire', 'Secretaire.nom_complet' );?></th>
+							<th><?php echo $xpaginator->sort( 'Ville', 'Actioncandidat.lieuaction' );?></th>
+							<th><?php echo $xpaginator->sort( 'Canton', 'Actioncandidat.cantonaction' );?></th>
+							<th><?php echo $xpaginator->sort( 'Début de l\'action', 'Actioncandidat.ddaction' );?></th>
+							<th><?php echo $xpaginator->sort( 'Fin de l\'action', 'Actioncandidat.dfaction' );?></th>
+							<th><?php echo $xpaginator->sort( 'Nombre de postes disponibles', 'Actioncandidat.nbpostedispo' );?></th>
+							<th><?php echo $xpaginator->sort( 'Nombre d\'heures disponibles', 'Actioncandidat.nbheuredispo' );?></th>
+							
+							<th><?php echo $xpaginator->sort( 'Nom du contact', 'Contactpartenaire.nom_candidat' );?></th>
+							<th><?php echo $xpaginator->sort( 'N° de téléphone du contact', 'Contactpartenaire.numtel' );?></th>
+							<th><?php echo $xpaginator->sort( 'N° de fax', 'Contactpartenaire.numfax' );?></th>
+							<th><?php echo $xpaginator->sort( 'Email du contact', 'Contactpartenaire.email' );?></th>
+							
+							<th><?php echo $xpaginator->sort( 'Libellé du partenaire', 'Partenaire.libstruc' );?></th>
+							<th><?php echo $xpaginator->sort( 'Code du partenaire', 'Partenaire.codepartenaire' );?></th>
+							<th><?php echo $xpaginator->sort( 'Adresse du partenaire', 'Partenaire.adresse' );?></th>
+							<th><?php echo $xpaginator->sort( 'N° de téléphone du partenaire', 'Partenaire.numtel' );?></th>
+							
+							<th>Nb de fichiers liés</th>
+							
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+					<?php 
+						$urlParams = Set::flatten( $this->data, '__' );
+						foreach( $search as $result ) {
+							echo $xhtml->tableCells(
+								array(
+									Set::classicExtract( $result, 'Actioncandidat.name' ),
+									Set::classicExtract( $result, 'Actioncandidat.codeaction' ),
+									Set::classicExtract( $result, 'Chargeinsertion.nom_complet' ),
+									Set::classicExtract( $result, 'Secretaire.nom_complet' ),
+									Set::classicExtract( $result, 'Actioncandidat.lieuaction' ),
+									Set::classicExtract( $result, 'Actioncandidat.cantonaction' ),
+									date_short( Set::classicExtract( $result, 'Actioncandidat.ddaction' ) ),
+									date_short( Set::classicExtract( $result, 'Actioncandidat.dfaction' ) ),
+									Set::classicExtract( $result, 'Actioncandidat.nbpostedispo' ),
+									Set::classicExtract( $result, 'Actioncandidat.nbheuredispo' ),
+									Set::classicExtract( $result, 'Contactpartenaire.nom_candidat' ),
+									Set::classicExtract( $result, 'Contactpartenaire.numtel' ),
+									Set::classicExtract( $result, 'Contactpartenaire.numfax' ),
+									Set::classicExtract( $result, 'Contactpartenaire.email' ),
+									Set::classicExtract( $result, 'Partenaire.libstruc' ),
+									Set::classicExtract( $result, 'Partenaire.codepartenaire' ),
+									Set::classicExtract( $result, 'Partenaire.adresse' ),
+									Set::classicExtract( $result, 'Partenaire.numtel' ),
+									Set::classicExtract( $result, 'Fichiermodule.nb_fichiers_lies' ),
+									$xhtml->link(
+										'Voir',
+										array_merge(
+											array(
+												'controller' => 'offresinsertion', 'action' => 'view', Set::classicExtract( $result, 'Actioncandidat.id' )
+											),
+											$urlParams
+										)
+									)
+								),
+								array( 'class' => 'odd' ),
+								array( 'class' => 'even' )
+							);
+							
+						}
+					?>
+					</tbody>
+				</table>
+				<?php echo $pagination;?>
+			</div>
+			<div id="actioncandidat">
+				<h2 class="title">Actions</h2>
 				<?php
 					echo $default2->index(
 						$search,
@@ -75,23 +162,6 @@
 							'Actioncandidat.dfaction',
 							'Actioncandidat.nbpostedispo',
 							'Actioncandidat.nbheuredispo',
-							'Contactpartenaire.nom_candidat',
-							'Contactpartenaire.nom_candidat' => array( 'type' => 'text' ),
-							'Contactpartenaire.numtel',
-							'Contactpartenaire.numfax',
-							'Contactpartenaire.email',
-							'Partenaire.libstruc',
-							'Partenaire.codepartenaire',
-							'Partenaire.adresse' => array( 'type' => 'text' ),
-// 							'Partenaire.numvoie',
-// 							'Partenaire.typevoie',
-// 							'Partenaire.nomvoie',
-// 							'Partenaire.compladr',
-							'Partenaire.numtel',
-		// 					'Partenaire.numfax',
-		// 					'Partenaire.email',
-// 							'Partenaire.codepostal',
-// 							'Partenaire.ville',
 							'Fichiermodule.nb_fichiers_lies' => array( 'label' => 'Nb fichiers liés', 'type' => 'integer' )
 						),
 						array(
@@ -103,93 +173,57 @@
 						)
 					);
 				?>
-				<?php echo $pagination;?>
-				</div>
-				<div id="actioncandidat">
-					<h2 class="title">Actions</h2>
-					<?php
-						echo $default2->index(
-							$search,
-							array(
-								'Actioncandidat.name',
-								'Actioncandidat.codeaction' => array( 'type' => 'text' ),
-								'Chargeinsertion.nom_complet' => array( 'label' => 'Chargé d\'insertion', 'type' => 'text' ),
-								'Secretaire.nom_complet' => array( 'label' => 'Secrétaire', 'type' => 'text' ),
-								'Actioncandidat.lieuaction',
-								'Actioncandidat.cantonaction',
-								'Actioncandidat.ddaction',
-								'Actioncandidat.dfaction',
-								'Actioncandidat.nbpostedispo',
-								'Actioncandidat.nbheuredispo',
-								'Fichiermodule.nb_fichiers_lies' => array( 'label' => 'Nb fichiers liés', 'type' => 'integer' )
-							),
-							array(
-								'cohorte' => false,
-								'actions' => array(
-									'Actionscandidats::view' => array( 'url' => array( 'controller' => 'offresinsertion', 'action' => 'view', '#Actioncandidat.id#' ) )
-								),
-								'options' => $options
-							)
-						);
-					?>
-				</div>
-				<div id="partenaires">
-					<h2 class="title">Partenaires</h2>
-					<?php
-						echo $default2->index(
-							$search,
-							array(
-								'Partenaire.libstruc',
-								'Partenaire.codepartenaire',
-								'Partenaire.adresse' => array( 'type' => 'text' ),
-// 								'Partenaire.numvoie',
-// 								'Partenaire.typevoie',
-// 								'Partenaire.nomvoie',
-// 								'Partenaire.compladr',
-								'Partenaire.numtel',
-								'Partenaire.numfax',
-// 								'Partenaire.email',
-// 								'Partenaire.codepostal',
-// 								'Partenaire.ville'
-							),
-							array(
-								'cohorte' => false,
-								'actions' => array(
-									'Actionscandidats::view' => array( 'url' => array( 'controller' => 'offresinsertion', 'action' => 'view', '#Actioncandidat.id#' ) )
-								),
-								'options' => $options
-							)
-						);
-					?>
-				</div>
-				<div id="contacts">
-					<h2 class="title">Contacts partenaires</h2>
-					<?php
-						echo $default2->index(
-							$search,
-							array(
-								'Contactpartenaire.nom_candidat',
-								'Contactpartenaire.nom_candidat' => array( 'type' => 'text' ),
-								'Contactpartenaire.numtel',
-								'Contactpartenaire.numfax',
-								'Contactpartenaire.email'
-							),
-							array(
-								'cohorte' => false,
-								'actions' => array(
-									'Actionscandidats::view' => array( 'url' => array( 'controller' => 'offresinsertion', 'action' => 'view', '#Actioncandidat.id#' ) )
-								),
-								'options' => $options
-							)
-						);
-					?>
-				</div>
 			</div>
-			<?php else:?>
-				<p class="notice">Vos critères n'ont retourné aucune information.</p>
-			<?php endif?>
-		<?php endif;?>
-	</div>
+			<div id="partenaires">
+				<h2 class="title">Partenaires</h2>
+				<?php
+					echo $default2->index(
+						$search,
+						array(
+							'Partenaire.libstruc',
+							'Partenaire.codepartenaire',
+							'Partenaire.adresse' => array( 'type' => 'text' ),
+							'Partenaire.numtel',
+							'Partenaire.numfax'
+						),
+						array(
+							'cohorte' => false,
+							'actions' => array(
+								'Actionscandidats::view' => array( 'url' => array( 'controller' => 'offresinsertion', 'action' => 'view', '#Actioncandidat.id#' ) )
+							),
+							'options' => $options
+						)
+					);
+				?>
+			</div>
+			<div id="contacts">
+				<h2 class="title">Contacts partenaires</h2>
+				<?php
+					echo $default2->index(
+						$search,
+						array(
+							'Contactpartenaire.nom_candidat',
+							'Contactpartenaire.nom_candidat' => array( 'type' => 'text' ),
+							'Contactpartenaire.numtel',
+							'Contactpartenaire.numfax',
+							'Contactpartenaire.email'
+						),
+						array(
+							'cohorte' => false,
+							'actions' => array(
+								'Actionscandidats::view' => array( 'url' => array( 'controller' => 'offresinsertion', 'action' => 'view', '#Actioncandidat.id#' ) )
+							),
+							'options' => $options
+						)
+					);
+				?>
+			</div>
+		</div>
+		<?php else:?>
+			<p class="notice">Vos critères n'ont retourné aucune information.</p>
+		<?php endif?>
+	<?php endif;?>
+</div>
 
 <!-- *********************************************************************** -->
 
