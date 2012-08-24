@@ -2344,3 +2344,286 @@ msgid "Zonesgeographiques:delete"
 msgstr "Suppression d'une zone géographique"
 
 ###############################################################################
+
+###############################################################################
+
+msgid "Module:Accompagnementscuis66"
+msgstr "Accompagnements du CUI"
+
+msgid "Accompagnementscuis66:index"
+msgstr "Visualisation des accompagnements du CUI"
+
+msgid "Accompagnementscuis66:add"
+msgstr "Ajout d'un accompagnement"
+
+msgid "Accompagnementscuis66:edit"
+msgstr "Modification d'un accompagnement"
+
+msgid "Accompagnementscuis66:delete"
+msgstr "Suppression d'un accompagnement"
+
+msgid "Accompagnementscuis66:impression"
+msgstr "Impression"
+
+msgid "Accompagnementscuis66:view"
+msgstr "Visualisation des accompagnements du CUI"
+
+###############################################################################
+
+msgid "Module:Ajoutdossierscomplets"
+msgstr "Module création d'un dossier complet"
+
+msgid "Ajoutdossierscomplets:add"
+msgstr "Ajout d'un dossier complet"
+
+###############################################################################
+
+msgid "Module:Checks1"
+msgstr "Vérification de l'application"
+
+msgid "Checks1:index"
+msgstr "Visualisation de l'outil de vérification de l'application"
+
+###############################################################################
+
+msgid "Module:Cohortesnonorientes66"
+msgstr "Gestion par liste des non orientés (CG66)"
+
+msgid "Cohortesnonorientes66:isemploi"
+msgstr "Non orientation -> Inscrits PE"
+
+msgid "Cohortesnonorientes66:notisemploi"
+msgstr "Non orientation -> Gestion des réponses"
+
+msgid "Cohortesnonorientes66:notisemploiaimprimer"
+msgstr "Non orientation -> Non inscrits PE"
+
+msgid "Cohortesnonorientes66:notifaenvoyer"
+msgstr "Non orientation -> Notifications à envoyer"
+
+msgid "Cohortesnonorientes66:oriente"
+msgstr "Non orientation -> Orientés et notifiés"
+
+msgid "Cohortesnonorientes66:impression"
+msgstr "Impression du questionnaire avant orientation"
+
+msgid "Cohortesnonorientes66:impressions"
+msgstr "Impression par lot du questionnaire avant orientation"
+
+msgid "Cohortesnonorientes66:impressionOrientation"
+msgstr "Impression de l'orientation effective"
+
+msgid "Cohortesnonorientes66:impressionsOrientation"
+msgstr "Impression par lot de l'orientation effective"
+
+msgid "Cohortesnonorientes66:exportcsv"
+msgstr "Export CSV"
+
+###############################################################################
+
+msgid "Module:Courrierspcgs66"
+msgstr "Paramétrage du module courrier lié aux traitements PCGs (CG66)"
+
+msgid "Courrierspcgs66:index"
+msgstr "Visualisation de la liste des courriers"
+
+###############################################################################
+
+msgid "Module:Criterestraitementspcgs66"
+msgstr "Recherche par traitements PCGs (CG66)"
+
+msgid "Criterestraitementspcgs66:index"
+msgstr "Formulaire de recherche par traitements PCGs (CG66)"
+
+###############################################################################
+
+msgid "Module:Decisionscuis66"
+msgstr "Décisions liées au module CUI (CG66)"
+
+msgid "Decisionscuis66:decisioncui"
+msgstr "Visualisation des décisions du CUI"
+
+msgid "Decisionscuis66:add"
+msgstr "Ajout d'une décision du CUI"
+
+msgid "Decisionscuis66:edit"
+msgstr "Modification d'une décision du CUI"
+
+msgid "Decisionscuis66:delete"
+msgstr "Suppression d'une décision du CUI"
+
+msgid "Decisionscuis66:impression"
+msgstr "Impression d'une décision du CUI"
+
+###############################################################################
+
+msgid "Module:Gestionssanctionseps58"
+msgstr "Gestion des sanctions émises par l'EP (CG58))"
+
+msgid "Gestionssanctionseps58:traitement"
+msgstr "Formulaire de traitement des sanctions"
+
+msgid "Gestionssanctionseps58:visualisation"
+msgstr "Visualisation des sanctions modifiées"
+
+msgid "Gestionssanctionseps58:exportcsv"
+msgstr "Export CSV"
+
+msgid "Gestionssanctionseps58:impressionSanction1"
+msgstr "Impression de la sanction 1"
+
+msgid "Gestionssanctionseps58:impressionSanction2"
+msgstr "Impression de la sanction 2"
+
+msgid "Gestionssanctionseps58:impressionsSanctions1"
+msgstr "Impression par lot de la sanction 1"
+
+msgid "Gestionssanctionseps58:impressionsSanctions2"
+msgstr "Impression par lot de la sanction 2"
+
+###############################################################################
+
+msgid "Module:Indicateurssuivis"
+msgstr "Indicateur de suivi des référents"
+
+msgid "Indicateurssuivis:index"
+msgstr "Tableau de visualisation des indicateurs de suivi"
+
+msgid "Indicateurssuivis:exportcsv"
+msgstr "Export CSV"
+
+###############################################################################
+
+msgid "Module:Modelestypescourrierspcgs66"
+msgstr "Paramétrage des modèles liés aux types de courriers PCGs (CG66)"
+
+msgid "Modelestypescourrierspcgs66:index"
+msgstr "Visualisation des modèles"
+
+msgid "Modelestypescourrierspcgs66:edit"
+msgstr "Modification d'un modèle"
+
+msgid "Modelestypescourrierspcgs66:delete"
+msgstr "Suppression d'un modèle de type de courrier PCG"
+
+###############################################################################
+
+msgid "Module:Motifscersnonvalids66"
+msgstr "Paramétrage des motifs de non validation du CER (CG66)"
+
+msgid "Motifscersnonvalids66:index"
+msgstr "Visualisation des motifs de non validation"
+
+msgid "Motifscersnonvalids66:edit"
+msgstr "Modification des motifs de non validation"
+
+msgid "Motifscersnonvalids66:delete"
+msgstr "Suppression des motifs de non validation"
+
+###############################################################################
+
+msgid "Module:Motifssortiecuis66"
+msgstr "Paramétrage des motifs de sortie d'un CUI (CG66)"
+
+msgid "Motifssortiecuis66:index"
+msgstr "Visualisation des motifs de sortie"
+
+msgid "Motifssortiecuis66:edit"
+msgstr "Modification des motifs de sortie"
+
+msgid "Motifssortiecuis66:delete"
+msgstr "Suppression des motifs de sortie"
+
+###############################################################################
+
+msgid "Module:Nonorientes66"
+msgstr "Module de non orientation (CG66)"
+
+msgid "Nonorientes66:filelink"
+msgstr "Ajout de pièce jointe à une non orientation"
+
+###############################################################################
+
+msgid "Module:Offresinsertion"
+msgstr "Offre d'insertion (CG66)"
+
+msgid "Offresinsertion:index"
+msgstr "Visualisation du tableau de l'offre d'insertion"
+
+###############################################################################
+
+msgid "Module:Piecesmodelestypescourrierspcgs66"
+msgstr "Paramétrage des pièces liées aux modèles de courriers PCGs (CG66)"
+
+msgid "Piecesmodelestypescourrierspcgs66:index"
+msgstr "Visualisation des pièces"
+
+msgid "Piecesmodelestypescourrierspcgs66:edit"
+msgstr "Modification d'une pièce"
+
+msgid "Piecesmodelestypescourrierspcgs66:delete"
+msgstr "Suppression d'une pièce"
+
+###############################################################################
+
+msgid "Module:Typescourrierspcgs66"
+msgstr "Paramétrage des types de courriers PCGs (CG66)"
+
+msgid "Typescourrierspcgs66:index"
+msgstr "Visualisation des types"
+
+msgid "Typescourrierspcgs66:edit"
+msgstr "Modification d'un type"
+
+msgid "Typescourrierspcgs66:delete"
+msgstr "Suppression d'un type"
+###############################################################################
+
+msgid "Module:Proposdecisionscers66"
+msgstr "Décision du CER (CG66)"
+
+msgid "Proposdecisionscers66:proposition"
+msgstr "Validation de décision"
+
+msgid "Proposdecisionscers66:propositionsimple"
+msgstr "Validation de décision pour CER Simple"
+
+msgid "Proposdecisionscers66:propositionparticulier"
+msgstr "Validation de décision pour CER Particulier"
+
+###############################################################################
+
+msgid "Module:Proposdecisionscuis66"
+msgstr "Proposition de décision du CUI(CG66)"
+
+msgid "Proposdecisionscuis66:propositioncui"
+msgstr "Proposition de décision"
+
+msgid "Proposdecisionscuis66:add"
+msgstr "Ajout d'une décision pour le CUI"
+
+msgid "Proposdecisionscuis66:edit"
+msgstr "Modification d'une décision pour le CUI"
+
+msgid "Proposdecisionscuis66:notifelucui"
+msgstr "Impression de la notification pour l'élu"
+
+msgid "Proposdecisionscuis66:delete"
+msgstr "Suppression d'une décision pour le CUI"
+
+###############################################################################
+
+msgid "Module:Suspensionscuis66"
+msgstr "Suspensions/Ruptures du CUI (CG66)"
+
+msgid "Suspensionscuis66:index"
+msgstr "Visualisation des suspensions/ruptures"
+
+msgid "Suspensionscuis66:add"
+msgstr "Ajout d'une suspension"
+
+msgid "Suspensionscuis66:edit"
+msgstr "Modification d'une suspension"
+
+msgid "Suspensionscuis66:delete"
+msgstr "Suppression d'une suspension"
