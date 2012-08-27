@@ -792,7 +792,7 @@
 							'originepdo_id' => $originepdo['Originepdo']['id'],
 							'typepdo_id' => $typepdo['Typepdo']['id'],
 							'orgpayeur' => 'CAF',
-							'datereceptionpdo' => date( 'Y-m-d', strtotime( $contrat[$this->alias]['dd_ci'] ) ),
+							'datereceptionpdo' => date( 'Y-m-d', strtotime( $contrat[$this->alias]['date_saisi_ci'] ) ),
 							'haspiecejointe' => 0
 						)
 					);
@@ -868,7 +868,7 @@
 				}
 			}
 
-			// Lors de l'ajout d'un nouveau CER, on passe la position du précédent à fin de contrat, sauf pour les non validés
+			// Lors de l'ajout d'un nouveau CER, on passe la position du précédent à fin de contrat, sauf pour les non validés et les annulés
 			if( !empty( $dernierContrat ) && ( $decisionprecedente != 'N' ) && ( $positioncerPrecedent != 'annule' ) ) {
 				$this->updateAll(
 						array( 'Contratinsertion.positioncer' => '\'fincontrat\'' ), array(
