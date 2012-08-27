@@ -1,8 +1,15 @@
 <?php
+	/**
+	 * Fichier source de la classe Foyer.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package       app.models
+	 */
 	class Foyer extends AppModel
 	{
-
 		public $name = 'Foyer';
+
 		public $virtualFields = array(
 			'enerreur' => array(
 				'type' => 'string',
@@ -83,6 +90,7 @@
 				)",
 			)
 		);
+
 		public $validate = array(
 			'dossier_id' => array(
 				'numeric' => array(
@@ -90,6 +98,7 @@
 				),
 			),
 		);
+
 		public $belongsTo = array(
 			'Dossier' => array(
 				'className' => 'Dossier',
@@ -99,6 +108,7 @@
 				'order' => ''
 			)
 		);
+
 		public $hasMany = array(
 			'Adressefoyer' => array(
 				'className' => 'Adressefoyer',
@@ -220,19 +230,22 @@
 		);
 
 		/**
+		 * Retourne l'id du dossier à partir de l'id du foyer
 		 *
+		 * @param integer $foyer_id
+		 * @return integer
 		 */
 		public function dossierId( $foyer_id ) {
-			$qd_foyer = array(
+			$querydata = array(
+				'fields' => array( 'Foyer.dossier_id' ),
 				'conditions' => array(
 					'Foyer.id' => $foyer_id
 				),
-				'fields' => null,
 				'order' => null,
 				'recursive' => -1
 			);
-			$foyer = $this->find( 'first', $qd_foyer );
 
+			$foyer = $this->find( 'first', $querydata );
 
 			if( !empty( $foyer ) ) {
 				return $foyer['Foyer']['dossier_id'];
@@ -243,7 +256,10 @@
 		}
 
 		/**
+		 * Retourne le nombre d'enfants au sein d'un foyer.
 		 *
+		 * @param integer $foyer_id
+		 * @return integer
 		 */
 		public function nbEnfants( $foyer_id ) {
 			$sql = "SELECT COUNT(Prestation.id)
@@ -264,25 +280,25 @@
 		 */
 		public function vfNbEnfants( $foyerId = 'Foyer.id' ) {
 			return $this->Personne->Prestation->sq(
-							array(
-								'fields' => array(
-									'COUNT(prestations.id)'
-								),
-								'alias' => 'prestations',
-								'joins' => array(
-									array_words_replace(
-											$this->Personne->Prestation->join( 'Personne', array( 'type' => 'INNER' ) ), array(
-										'Prestation' => 'prestations',
-										'Personne' => 'personnes',
-											)
-									)
-								),
-								'conditions' => array(
-									"personnes.foyer_id = {$foyerId}",
-									'prestations.natprest' => 'RSA',
-									'prestations.rolepers' => 'ENF',
-								),
-							)
+				array(
+					'fields' => array(
+						'COUNT(prestations.id)'
+					),
+					'alias' => 'prestations',
+					'joins' => array(
+						array_words_replace(
+								$this->Personne->Prestation->join( 'Personne', array( 'type' => 'INNER' ) ), array(
+							'Prestation' => 'prestations',
+							'Personne' => 'personnes',
+								)
+						)
+					),
+					'conditions' => array(
+						"personnes.foyer_id = {$foyerId}",
+						'prestations.natprest' => 'RSA',
+						'prestations.rolepers' => 'ENF',
+					),
+				)
 			);
 		}
 
