@@ -498,6 +498,18 @@
 		class AppBaseController extends Controller
 		{
 			/**
+			 * Méthode temporaire permettant de continuer à utiliser AppController::cakeError() durant la
+			 * migration.
+			 *
+			 * @param string $method
+			 * @param array $messages
+			 * @return boolean
+			 */
+			public function cakeError( $method, $messages = array() ) {
+				return $this->assert( false, $method, $messages );
+			}
+
+			/**
 			* INFO:
 			*   cake/libs/error.php
 			*   cake/libs/view/errors/
