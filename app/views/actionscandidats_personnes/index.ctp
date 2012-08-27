@@ -44,7 +44,7 @@
 			</ul>
 		<?php endif;?>
 		<?php if( !empty( $actionscandidats_personnes ) ):?>
-				<table class="tooltips">
+				<table class="tooltips default2">
 					<thead>
 						<tr>
 							<th>Intitulé de l'action</th>
@@ -54,7 +54,7 @@
 							<th>Position de la fiche</th>
 							<th>Sortie le</th>
 							<th>Motif de la sortie</th>
-							<th colspan="6" class="action">Actions</th>
+							<th colspan="7" class="action">Actions</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -73,46 +73,74 @@
 										h( date_short( Set::classicExtract( $actioncandidat_personne, 'ActioncandidatPersonne.sortiele' ) ) ),
 										h( Set::classicExtract( $actioncandidat_personne, 'Motifsortie.name' ) ),
 
-										$xhtml->viewLink(
-											'Voir la fiche de candidature',
+										$default2->button(
+											'view',
 											array( 'controller' => 'actionscandidats_personnes', 'action' => 'view',
 											$actioncandidat_personne['ActioncandidatPersonne']['id'] ),
-											( $permissions->check( 'actionscandidats_personnes', 'view' ) == 1 )
+											array( 
+												'title' => 'Voir la fiche',
+												'enabled' => ( $permissions->check( 'actionscandidats_personnes', 'view' ) )
+											)
 										),
-										$xhtml->editLink(
-											'Editer la fiche de candidature',
+										$default2->button(
+											'edit',
 											array( 'controller' => 'actionscandidats_personnes', 'action' => 'edit',
 											$actioncandidat_personne['ActioncandidatPersonne']['id'] ),
-											(
-												( $permissions->check( 'actionscandidats_personnes', 'edit' ) == 1 )
-												&& ( Set::classicExtract( $actioncandidat_personne, 'ActioncandidatPersonne.positionfiche' ) != 'annule' )
+											array(
+												'title' => 'Modifier la fiche',
+												'enabled' => (
+													$permissions->check( 'actionscandidats_personnes', 'edit' )
+													&& ( Set::classicExtract( $actioncandidat_personne, 'ActioncandidatPersonne.positionfiche' ) != 'annule' )
+												)
 											)
 										),
-										$xhtml->cancelLink(
-											'Annuler la fiche de candidature',
+										$default2->button(
+											'cancel',
 											array( 'controller' => 'actionscandidats_personnes', 'action' => 'cancel',
 											$actioncandidat_personne['ActioncandidatPersonne']['id'] ),
-											(
-												( $permissions->check( 'actionscandidats_personnes', 'cancel' ) == 1 )
-												&& ( Set::classicExtract( $actioncandidat_personne, 'ActioncandidatPersonne.positionfiche' ) != 'annule' )
+											array(
+												'title' => 'Annuler la fiche',
+												'enabled' => (
+													$permissions->check( 'actionscandidats_personnes', 'cancel' )
+													&& ( Set::classicExtract( $actioncandidat_personne, 'ActioncandidatPersonne.positionfiche' ) != 'annule' )
+												)
 											)
 										),
-										$xhtml->printLink(
-											'Imprimer la fiche de candidature',
+										$default2->button(
+											'print',
 											array( 'controller' => 'actionscandidats_personnes', 'action' => 'printFiche',
 											$actioncandidat_personne['ActioncandidatPersonne']['id'] ),
-											(
-												( $permissions->check( 'actionscandidats_personnes', 'printFiche' ) == 1 )
-												&& ( Set::classicExtract( $actioncandidat_personne, 'ActioncandidatPersonne.positionfiche' ) != 'annule' )
+											array(
+												'title' => 'Imprimer la fiche de candidature',
+												'enabled' => (
+													$permissions->check( 'actionscandidats_personnes', 'printFiche' )
+													&& ( Set::classicExtract( $actioncandidat_personne, 'ActioncandidatPersonne.positionfiche' ) != 'annule' )
+												)
 											)
 										),
-										$xhtml->fileLink(
-											'Lier des fichiers',
+										$default2->button(
+											'email',
+											array( 'controller' => 'actionscandidats_personnes', 'action' => 'maillink', $actioncandidat_personne['ActioncandidatPersonne']['id'] ),
+											array(
+												'label' => 'Envoi mail partenaire',
+												'title' => 'Envoi Mail Partenaire',
+												'enabled' => ( 
+													$permissions->check( 'actionscandidats_personnes', 'maillink' )
+													&& ( Configure::read( 'Cg.departement' ) == 66 )
+													&& ( Set::classicExtract( $actioncandidat_personne, 'ActioncandidatPersonne.positionfiche' ) != 'annule' )
+												)
+											)
+										),
+										$default2->button(
+											'filelink',
 											array( 'controller' => 'actionscandidats_personnes', 'action' => 'filelink',
 											$actioncandidat_personne['ActioncandidatPersonne']['id'] ),
-											(
-												( $permissions->check( 'actionscandidats_personnes', 'filelink' ) == 1 )
-												&& ( Set::classicExtract( $actioncandidat_personne, 'ActioncandidatPersonne.positionfiche' ) != 'annule' )
+											array(
+												'title' => 'Lier des fichiers',
+												'enabled' => (
+													$permissions->check( 'actionscandidats_personnes', 'filelink' )
+													&& ( Set::classicExtract( $actioncandidat_personne, 'ActioncandidatPersonne.positionfiche' ) != 'annule' )
+												)
 											)
 										),
 										h( '('.$nbFichiersLies.')' )

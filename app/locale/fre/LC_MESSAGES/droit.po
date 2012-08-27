@@ -90,6 +90,9 @@ msgstr "Impression d'une fiche de candidature"
 msgid "ActionscandidatsPersonnes:cancel"
 msgstr "Annulation d'une fiche de candidature"
 
+msgid "ActionscandidatsPersonnes:maillink"
+msgstr "Envoi de mail"
+
 ###############################################################################
 
 msgid "Module:Actionsinsertion"
@@ -1559,6 +1562,9 @@ msgstr "Ajout d'un référent du parcours"
 
 msgid "PersonnesReferents:edit"
 msgstr "Modification d'un référent du parcours"
+
+msgid "PersonnesReferents:cloturer"
+msgstr "Clôturer le référent"
 ###############################################################################
 
 msgid "Module:Personnespcgs66"
