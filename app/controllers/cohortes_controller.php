@@ -16,7 +16,7 @@
 
 		public $helpers = array( 'Csv', 'Paginator', 'Ajax', 'Default', 'Xpaginator', 'Locale', 'Search' );
 
-		public $components = array( 'Gedooo.Gedooo', 'Prg' => array( 'actions' => 'orientees' ), 'Jetons2' );
+		public $components = array( 'Gedooo.Gedooo', 'Prg' => array( 'actions' => 'orientees' ), 'Jetons2', 'Gestionzonesgeos' );
 
 		public $paginate = array( 'limit' => 20 );
 
@@ -97,14 +97,14 @@
 					'list',
 					array(
 						'fields' => array( 'lib_type_orient' ),
-						'conditions' => array( 'Typeorient.parentid IS NULL', 'Typeorient.actif' => 'O' )
+						'conditions' => array(
+							'Typeorient.parentid IS NULL', 'Typeorient.actif' => 'O' )
 					)
 				)
 			);
 			if( in_array( $this->action, array( 'orientees', 'exportcsv', 'statistiques' ) ) ) {
 				$this->set( 'options', $this->Personne->Orientstruct->enums() );
 			}
-
 		}
 
 		/**
@@ -260,55 +260,30 @@
 				$this->data = Set::merge( $this->data, $filtresdefaut );
 			}
 
-			$typesOrient = $this->Personne->Orientstruct->Typeorient->find(
-				'list',
-				array(
-					'fields' => array(
-						'Typeorient.id',
-						'Typeorient.lib_type_orient'
-					),
-					'conditions' => array( 'Typeorient.actif' => 'O' ),
-					'order' => 'Typeorient.lib_type_orient ASC'
-				)
-			);
-			$this->set( 'typesOrient', $typesOrient );
+			// Options à passer au formulaire
+			$this->set( 'typesOrient', $this->Personne->Orientstruct->Typeorient->listOptionsCohortes93() );
 			$this->set( 'structuresReferentes', $this->Personne->Orientstruct->Structurereferente->list1Options() );
-
-			// -----------------------------------------------------------------
-
-			if( Configure::read( 'Zonesegeographiques.CodesInsee' ) ) {
-				$this->set( 'mesCodesInsee', $this->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) ) );
-			}
-			else {
-				$this->set( 'mesCodesInsee', $this->Personne->Foyer->Adressefoyer->Adresse->listeCodesInsee() );
-			}
 
 			$this->set( 'oridemrsa', $this->Option->oridemrsa() );
 			$this->set( 'typeserins', $this->Option->typeserins() );
 			$this->set( 'printed', $this->Option->printed() );
+
 			$this->set( 'structuresAutomatiques', $this->Cohorte->structuresAutomatiques() );
-			if( Configure::read( 'CG.cantons' ) ) {
-				$this->set( 'cantons', $this->Zonegeographique->Canton->selectList() );
-			}
 
-			$modeles = $this->Personne->Orientstruct->Typeorient->find(
-				'list',
-				array(
-					'fields' => array( 'lib_type_orient' ),
-					'conditions' => array( 'Typeorient.parentid IS NULL', 'Typeorient.actif' => 'O' )
-				)
-			);
+			// Zones géographiques et cantons
+			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
+			$this->Gestionzonesgeos->setCantonsIfConfigured( 'cantons' );
 
+			// Préorientations
+			$modeles = $this->Personne->Orientstruct->Typeorient->listOptionsPreorientationCohortes93();
 			if ( Configure::read( 'Cg.departement' ) == 93 && ( in_array( $this->action, array( 'nouvelles', 'enattente', 'preconisationscalculables' ) ) ) ) {
 				$modeles['NOTNULL'] = 'Renseigné';
 				$modeles['NULL'] = 'Non renseigné';
 			}
-
 			$this->set( 'modeles', $modeles );
 
 
-			// -----------------------------------------------------------------
-
+			// On n'utilise pas le même layout suivant l'action.
 			switch( $statutOrientation ) {
 				case 'En attente':
 					$this->set( 'pageTitle', 'Demandes en attente de validation d\'orientation' );

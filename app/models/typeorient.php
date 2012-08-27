@@ -347,5 +347,136 @@
 			);
 			return Set::extract( $items, '/'.$this->alias.'/modele' );
 		}
+
+		/**
+		 * Retourne la liste des types d'orientations à utiliser dans les cohortes d'orientation du CG 93.
+		 * Cette liste est mise en cache sous la clé 'typeorient_list_options_cohortes93'.
+		 *
+		 * @return array
+		 */
+		public function listOptionsCohortes93() {
+			$cacheKey = 'typeorient_list_options_cohortes93';
+			$results = Cache::read( $cacheKey );
+
+			if( $results === false ) {
+				$results = $this->find(
+					'list',
+					array(
+						'fields' => array(
+							'Typeorient.id',
+							'Typeorient.lib_type_orient'
+						),
+						'conditions' => array( 'Typeorient.actif' => 'O' ),
+						'order' => 'Typeorient.lib_type_orient ASC'
+					)
+				);
+
+				Cache::write( $cacheKey, $results );
+			}
+
+			return $results;
+		}
+
+		/**
+		 * Retourne la liste des types d'orientations à utiliser dans les cohortes d'orientation du CG 93.
+		 * Cette liste est mise en cache sous la clé 'typeorient_list_options_preorientation_cohortes93'.
+		 *
+		 * @return array
+		 */
+		public function listOptionsPreorientationCohortes93() {
+			$cacheKey = 'typeorient_list_options_preorientation_cohortes93';
+			$results = Cache::read( $cacheKey );
+
+			if( $results === false ) {
+				$results = $this->find(
+					'list',
+					array(
+						'fields' => array( 'lib_type_orient' ),
+						'conditions' => array(
+							'Typeorient.parentid IS NULL',
+							'Typeorient.actif' => 'O'
+						)
+					)
+				);
+
+				Cache::write( $cacheKey, $results );
+			}
+
+			return $results;
+		}
+
+		/**
+		 * Suppression et regénération du cache.
+		 *
+		 * @return boolean
+		 */
+		protected function _regenerateCache() {
+			$keys = array(
+				'typeorient_list_options_cohortes93',
+				'typeorient_list_options_preorientation_cohortes93',
+				'structurereferente_list1_options',
+				'structurereferente_list_options',
+				'cohorte_structures_automatiques'
+			);
+
+			foreach( $keys as $key ) {
+				Cache::delete( $key );
+			}
+
+			// Regénération des éléments du cache.
+			$success = true;
+
+			if( $this->alias == 'Typeorient' ) {
+				$tmp  = $this->listOptionsCohortes93();
+				$success = !empty( $tmp ) && $success;
+
+				$tmp  = $this->listOptionsPreorientationCohortes93();
+				$success = !empty( $tmp ) && $success;
+
+				$tmp  = $this->Structurereferente->listOptions();
+				$success = !empty( $tmp ) && $success;
+
+				$tmp  = $this->Structurereferente->list1Options();
+				$success = !empty( $tmp ) && $success;
+
+				$tmp  = ClassRegistry::init( 'Cohorte' )->structuresAutomatiques();
+				$success = !empty( $tmp ) && $success;
+			}
+
+			return $success;
+		}
+
+		/**
+		 * On s'assure de nettoyer le cache en cas de modification.
+		 *
+		 * @param type $created
+		 * @return type
+		 */
+		public function afterSave( $created ) {
+			parent::afterSave( $created );
+			$this->_regenerateCache();
+		}
+
+		/**
+		 * On s'assure de nettoyer le cache en cas de suppression.
+		 *
+		 * @return type
+		 */
+		public function afterDelete() {
+			parent::afterDelete();
+			$this->_regenerateCache();
+		}
+
+		/**
+		 * Exécute les différentes méthods du modèle permettant la mise en cache.
+		 * Utilisé au préchargement de l'application (/prechargements/index).
+		 *
+		 * @return boolean true en cas de succès, false en cas d'erreur,
+		 * 	null pour les fonctions vides.
+		 */
+		public function prechargement() {
+			$success = $this->_regenerateCache();
+			return $success;
+		}
 	}
 ?>
