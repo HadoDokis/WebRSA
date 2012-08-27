@@ -673,8 +673,10 @@
 				$this->data[$this->name]['duree_cdd'] = NULL;
 			}
 
+// debug( $this->data['Contratinsertion']['positioncer'] == 'annule' );
+// die();
 			//  Calcul de la position du cER
-			if( Configure::read( 'Cg.departement' ) == '66' ) {
+			if( Configure::read( 'Cg.departement' ) == '66' && ( $this->data['Contratinsertion']['positioncer'] != 'annule' ) ) {
 				$this->data[$this->alias]['positioncer'] = $this->calculPosition( $this->data );
 			}
 			return $return;
@@ -830,6 +832,7 @@
 			$datenotif = Set::classicExtract( $data, 'Contratinsertion.datenotification' );
 			$id = Set::classicExtract( $data, 'Contratinsertion.id' );
 // debug($datenotif);
+
 			$personne_id = Set::classicExtract( $data, 'Contratinsertion.personne_id' );
 
 			$conditions = array( 'Contratinsertion.personne_id' => $personne_id, );
@@ -871,10 +874,10 @@
 			// Lors de l'ajout d'un nouveau CER, on passe la position du précédent à fin de contrat, sauf pour les non validés et les annulés
 			if( !empty( $dernierContrat ) && ( $decisionprecedente != 'N' ) && ( $positioncerPrecedent != 'annule' ) ) {
 				$this->updateAll(
-						array( 'Contratinsertion.positioncer' => '\'fincontrat\'' ), array(
-					'"Contratinsertion"."personne_id"' => $personne_id,
-					'"Contratinsertion"."id"' => $dernierContrat['Contratinsertion']['id']
-						)
+					array( 'Contratinsertion.positioncer' => '\'fincontrat\'' ), array(
+						'"Contratinsertion"."personne_id"' => $personne_id,
+						'"Contratinsertion"."id"' => $dernierContrat['Contratinsertion']['id']
+					)
 				);
 			}
 
