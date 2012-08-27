@@ -295,31 +295,36 @@
 		);
 
 		/**
-		* Difficile à mettre en cache du fait des conditions
-		*/
+		 *
+		 * @return array
+		 */
+		public function list1Options() {
+			$cacheKey = 'structurereferente_list1_options';
+			$results = Cache::read( $cacheKey );
 
-		public function list1Options( $conditions = array() ) {
-			$conditions = array();
-			$conditions = array( 'Structurereferente.actif' => 'O' );
+			if( $results === false ) {
+				$tmp = $this->find(
+					'all',
+					array(
+						'conditions' => array( 'Structurereferente.actif' => 'O' ),
+						'fields' => array(
+							'Structurereferente.id',
+							'Structurereferente.typeorient_id',
+							'Structurereferente.lib_struc'
+						),
+						'order'  => array( 'Structurereferente.lib_struc ASC' ),
+						'recursive' => -1
+					)
+				);
 
-			$tmp = $this->find(
-				'all',
-				array(
-					'conditions' => $conditions,
-					'fields' => array(
-						'Structurereferente.id',
-						'Structurereferente.typeorient_id',
-						'Structurereferente.lib_struc'
-					),
-					'order'  => array( 'Structurereferente.lib_struc ASC' ),
-					'recursive' => -1
-				)
-			);
+				$results = array();
+				foreach( $tmp as $key => $value ) {
+					$results[$value['Structurereferente']['typeorient_id'].'_'.$value['Structurereferente']['id']] = $value['Structurereferente']['lib_struc'];
+				}
 
-			$results = array();
-			foreach( $tmp as $key => $value ) {
-				$results[$value['Structurereferente']['typeorient_id'].'_'.$value['Structurereferente']['id']] = $value['Structurereferente']['lib_struc'];
+				Cache::write( $cacheKey, $results );
 			}
+
 			return $results;
 		}
 
@@ -331,7 +336,7 @@
 		 * @return array
 		 */
 		public function listOptions() {
-			$cacheKey = Inflector::underscore( "{$this->alias}_".__FUNCTION__ );
+			$cacheKey = 'structurereferente_list_options';
 			$results = Cache::read( $cacheKey );
 
 			if( $results === false ) {
@@ -423,11 +428,35 @@
 		/**
 		 * Suppression et regénération du cache.
 		 *
-		 * @return mixed
+		 * @return boolean
 		 */
 		protected function _regenerateCache() {
-			Cache::delete( "{$this->alias}_listOptions" );
-			return $this->listOptions();
+			// Suppression des éléments du cache.
+			$keys = array(
+				'structurereferente_list1_options',
+				'structurereferente_list_options',
+				'cohorte_structures_automatiques',
+			);
+
+			foreach( $keys as $key ) {
+				Cache::delete( $key );
+			}
+
+			// Regénération des éléments du cache.
+			$success = true;
+
+			if( $this->alias == 'Structurereferente' ) {
+				$tmp  = $this->listOptions();
+				$success = !empty( $tmp ) && $success;
+
+				$tmp  = $this->list1Options();
+				$success = !empty( $tmp ) && $success;
+
+				$tmp  = ClassRegistry::init( 'Cohorte' )->structuresAutomatiques();
+				$success = !empty( $tmp ) && $success;
+			}
+
+			return $success;
 		}
 
 		/**
@@ -460,8 +489,8 @@
 		 * 	null pour les fonctions vides.
 		 */
 		public function prechargement() {
-			$list = $this->_regenerateCache();
-			return !empty( $list );
+			$success = $this->_regenerateCache();
+			return $success;
 		}
 	}
 ?>

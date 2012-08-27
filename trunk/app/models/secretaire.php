@@ -5,6 +5,8 @@
 
 		public $displayField = 'nom_complet';
 
+		public $useTable = 'users';
+
 		public $virtualFields = array(
 			'nom_complet' => array(
 				'type'      => 'string',

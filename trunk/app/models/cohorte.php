@@ -1292,51 +1292,55 @@
 		} */
 
 		/**
-		*
-		*/
-
+		 *
+		 * @return array
+		 */
 		public function structuresAutomatiques() {
-			$this->Structurereferente = ClassRegistry::init( 'Structurereferente' );
-			$this->Typeorient = ClassRegistry::init( 'Typeorient' );
+			$cacheKey = 'cohorte_structures_automatiques';
+			$results = Cache::read( $cacheKey );
 
-			// FIXME: valeurs magiques
-			$typesPermis = $this->Typeorient->find(
-				'list',
-				array(
-					'conditions' => array(
-						'Typeorient.lib_type_orient' => array( 'Emploi', 'Social', 'Socioprofessionnelle' )
-					),
-					'recursive' => -1
-				)
-			);
-			$typesPermis = array_keys( $typesPermis );
+			if( $results === false ) {
+				$this->Structurereferente = ClassRegistry::init( 'Structurereferente' );
+				$this->Typeorient = ClassRegistry::init( 'Typeorient' );
 
-//			$this->Structurereferente->unbindModelAll();
-//			$this->Structurereferente->bindModel( array( 'hasAndBelongsToMany' => array( 'Zonegeographique' ) ) );
-//			$this->Structurereferente->Zonegeographique->unbindModelAll();
-			$structures = $this->Structurereferente->find(
-				'all',
-				array(
-					'conditions' => array(
-						'Structurereferente.typeorient_id' => $typesPermis
-					),
-					'contain' => array(
-						'Zonegeographique'
+				// FIXME: valeurs magiques
+				$typesPermis = $this->Typeorient->find(
+					'list',
+					array(
+						'conditions' => array(
+							'Typeorient.lib_type_orient' => array( 'Emploi', 'Social', 'Socioprofessionnelle' )
+						),
+						'recursive' => -1
 					)
-				)
-			);
+				);
+				$typesPermis = array_keys( $typesPermis );
+
+				$structures = $this->Structurereferente->find(
+					'all',
+					array(
+						'conditions' => array(
+							'Structurereferente.typeorient_id' => $typesPermis
+						),
+						'contain' => array(
+							'Zonegeographique'
+						)
+					)
+				);
 
 
-			$return = array();
-			foreach( $structures as $structure ) {
-				if( !empty( $structure['Zonegeographique'] ) ) {
-					foreach( $structure['Zonegeographique'] as $zonegeographique ) {
-						$return[$structure['Structurereferente']['typeorient_id']][$zonegeographique['codeinsee']] = $structure['Structurereferente']['typeorient_id'].'_'.$structure['Structurereferente']['id'];
+				$results = array();
+				foreach( $structures as $structure ) {
+					if( !empty( $structure['Zonegeographique'] ) ) {
+						foreach( $structure['Zonegeographique'] as $zonegeographique ) {
+							$results[$structure['Structurereferente']['typeorient_id']][$zonegeographique['codeinsee']] = $structure['Structurereferente']['typeorient_id'].'_'.$structure['Structurereferente']['id'];
+						}
 					}
 				}
+
+				Cache::write( $cacheKey, $results );
 			}
 
-			return $return;
+			return $results;
 		}
 	}
 ?>
