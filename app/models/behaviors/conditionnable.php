@@ -1,19 +1,31 @@
 <?php
 	/**
-	* Behavior permettant de transformer les critères d'un filtre de recherche en
-	* conditions pour les queryData d'une requête CakePHP pour le projet WebRSA
-	*
-	* @package app
-	* @subpackage app.models.behaviors
-	*/
-
+	 * Fichier source de la classe ConditionnableBehavior.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package       app.models.behaviors
+	 */
 	App::import( 'Sanitize' );
 
+	/**
+	 * Ce behavior permet de transformer les critères d'un filtre de recherche en conditions pour les queryData
+	 * d'une requête CakePHP pour le projet WebRSA
+	 *
+	 * @package app.models.behaviors
+	 */
 	class ConditionnableBehavior extends ModelBehavior
 	{
 		/**
-		* Filtre par adresse pour les moteurs de recherche
-		*/
+		 * Filtre par Adresse pour les moteurs de recherche.
+		 *
+		 * @param Model $model
+		 * @param array $conditions
+		 * @param array $search
+		 * @param boolean $filtre_zone_geo
+		 * @param array $mesCodesInsee
+		 * @return array
+		 */
 		public function conditionsAdresse( &$model, $conditions, $search, $filtre_zone_geo, $mesCodesInsee ) {
 			$CantonModel = ClassRegistry::init( 'Canton' );
 
@@ -24,7 +36,13 @@
 
 			/// Critères sur l'adresse - code insee
 			if( isset( $search['Adresse']['numcomptt'] ) && !empty( $search['Adresse']['numcomptt'] ) ) {
-				$conditions[] = "Adresse.numcomptt ILIKE '%".Sanitize::clean( trim( $search['Adresse']['numcomptt'] ) )."%'";
+				$numcomptt = Sanitize::clean( trim( $search['Adresse']['numcomptt'] ) );
+				if( strlen( $numcomptt ) == 5 ) {
+					$conditions[] = "Adresse.numcomptt = '{$numcomptt}'";
+				}
+				else {
+					$conditions[] = "Adresse.numcomptt ILIKE '%{$numcomptt}%'";
+				}
 			}
 
 			/// Critères sur l'adresse - canton
@@ -37,7 +55,7 @@
 			/// Filtre zone géographique de l'utilisateur
 			if( $filtre_zone_geo ) {
 				// Si on utilise la table des cantons plutôt que la table zonesgeographiques
-				if( Configure::read( 'CG.cantons' ) ) { // FIXME: est-ce bien la signification de la variable ?
+				if( Configure::read( 'CG.cantons' ) ) {
 					$conditions[] = $CantonModel->queryConditionsByZonesgeographiques( array_keys( $mesCodesInsee ) );
 				}
 				else {
@@ -50,9 +68,13 @@
 		}
 
 		/**
-		* Filtres sur le dossier:
-		*	- Dossier: numdemrsa, matricule, dtdemrsa
-		*/
+		 * Filtres sur le Dossier: numdemrsa, matricule, dtdemrsa, fonorg
+		 *
+		 * @param Model $model
+		 * @param array $conditions
+		 * @param array $search
+		 * @return array
+		 */
 		public function conditionsDossier( &$model, $conditions, $search ) {
 			foreach( array( 'numdemrsa', 'matricule' ) as $critereDossier ) {
 				if( isset( $search['Dossier'][$critereDossier] ) && !empty( $search['Dossier'][$critereDossier] ) ) {
@@ -74,13 +96,21 @@
 				}
 			}
 
+			if( isset( $search['Dossier']['fonorg'] ) && !empty( $search['Dossier']['fonorg'] ) ) {
+				$conditions[] = array( 'Dossier.fonorg' => $search['Dossier']['fonorg'] );
+			}
+
 			return $conditions;
 		}
 
 		/**
-		* Filtres sur le foyer:
-		*	- Foyer: sitfam, ddsitfam
-		*/
+		 * Filtres sur le Foyer: sitfam, ddsitfam
+		 *
+		 * @param Model $model
+		 * @param array $conditions
+		 * @param array $search
+		 * @return array
+		 */
 		public function conditionsFoyer( &$model, $conditions, $search ) {
 			foreach( array( 'sitfam' ) as $critereFoyer ) {
 				if( isset( $search['Foyer'][$critereFoyer] ) && !empty( $search['Foyer'][$critereFoyer] ) ) {
@@ -98,9 +128,13 @@
 		}
 
 		/**
-		* Filtres sur le foyer:
-		*	- Situationdossierrsa: etatdosrsa
-		*/
+		 * Filtres sur la Situationdossierrsa: etatdosrsa
+		 *
+		 * @param Model $model
+		 * @param array $conditions
+		 * @param array $search
+		 * @return array
+		 */
 		public function conditionsSituationdossierrsa( &$model, $conditions, $search ) {
 			$etatdossier = Set::extract( $search, 'Situationdossierrsa.etatdosrsa' );
 			if( isset( $search['Situationdossierrsa']['etatdosrsa'] ) && !empty( $search['Situationdossierrsa']['etatdosrsa'] ) ) {
@@ -111,9 +145,13 @@
 		}
 
 		/**
-		* Filtres sur la personne:
-		*	- Personne: nom, prenom, nomnai, nir, dtnai
-		*/
+		 * Filtres sur la Personne:  nom, prenom, nomnai, nir, dtnai
+		 *
+		 * @param Model $model
+		 * @param array $conditions
+		 * @param array $search
+		 * @return array
+		 */
 		public function conditionsPersonne( &$model, $conditions, $search ) {
 			foreach( array( 'nom', 'prenom', 'nomnai', 'nir' ) as $criterePersonne ) {
 				if( isset( $search['Personne'][$criterePersonne] ) && !empty( $search['Personne'][$criterePersonne] ) ) {
@@ -133,50 +171,54 @@
 					$conditions[] = 'EXTRACT(DAY FROM Personne.dtnai) = '.$search['Personne']['dtnai']['day'];
 				}
 			}
-			
-			// FIXME: voir si une sous-requête ne serait pas plus simple
+
+			// Voir si une sous-requête ne serait pas plus simple
 			if( isset( $search['Personne']['trancheage'] ) ) {
-				$trancheAge = Set::extract( $search, 'Personne.trancheage' );
-				if( $trancheAge == 0 ) {
+				$trancheage = Set::extract( $search, 'Personne.trancheage' );
+				if( $trancheage == 0 ) {
 					$ageMin = 0;
 					$ageMax = 25;
 				}
-				else if( $trancheAge == 1 ) {
+				else if( $trancheage == 1 ) {
 					$ageMin = 25;
 					$ageMax = 35;
 				}
-				else if( $trancheAge == 2 ) {
+				else if( $trancheage == 2 ) {
 					$ageMin = 35;
 					$ageMax = 45;
 				}
-				else if( $trancheAge == 3 ) {
+				else if( $trancheage == 3 ) {
 					$ageMin = 45;
 					$ageMax = 55;
 				}
-				else if( $trancheAge == 4 ) {
+				else if( $trancheage == 4 ) {
 					$ageMin = 55;
 					$ageMax = 120;
 				}
 
-				if( is_numeric( $trancheAge )  ) {
+				if( is_numeric( $trancheage )  ) {
 					$conditions[] = '( EXTRACT ( YEAR FROM AGE( Personne.dtnai ) ) ) BETWEEN '.$ageMin.' AND '.$ageMax;
 				}
 			}
-			
 
 			return $conditions;
 		}
 
-		// TODO - à bouger - Situationdossierrsa.etatdosrsa, Detailcalculdroitrsa.natpf
-		// TODO - à bouger - Personne.XXXXX
-
+		/**
+		 * Filtres sur le Detailcalculdroitrsa:  natpf
+		 *
+		 * @param Model $model
+		 * @param array $conditions
+		 * @param array $search
+		 * @return array
+		 */
 		public function conditionsDetailcalculdroitrsa( &$model, $conditions, $search ) {
 			if( isset( $search['Detailcalculdroitrsa']['natpf'] ) && !empty( $search['Detailcalculdroitrsa']['natpf'] ) ) {
 				if( is_array( $search['Detailcalculdroitrsa']['natpf'] ) ) {
 					$conditionsNatpf = 'detailscalculsdroitsrsa.natpf IN ( \''.implode( '\', \'', $search['Detailcalculdroitrsa']['natpf'] ).'\' )';
 				}
 				else {
-					$conditionsNatpf = 'detailscalculsdroitsrsa.natpf ILIKE \'%'.Sanitize::clean( $search['Detailcalculdroitrsa']['natpf'] ).'%\'';
+					$conditionsNatpf = 'detailscalculsdroitsrsa.natpf = \''.Sanitize::clean( $search['Detailcalculdroitrsa']['natpf'] ).'\'';
 				}
 				$conditions[] = 'Detaildroitrsa.id IN (
 									SELECT detailscalculsdroitsrsa.detaildroitrsa_id
@@ -194,34 +236,53 @@
 		}
 
 		/**
-		*
-		*/
-		public function conditionsPersonneFoyerDossier( &$model, $conditions, $search ) {
-			$conditions = $this->conditionsDossier( $model, $conditions, $search );
-			$conditions = $this->conditionsPersonne( $model, $conditions, $search );
-			$conditions = $this->conditionsSituationdossierrsa( $model, $conditions, $search );
-			$conditions = $this->conditionsDetailcalculdroitrsa( $model, $conditions, $search );
-			/*/// Nature de la prestation
-			if( isset( $search['Detailcalculdroitrsa']['natpf'] ) && !empty( $search['Detailcalculdroitrsa']['natpf'] ) ) {
-				$conditions[] = 'Detaildroitrsa.id IN (
-									SELECT detailscalculsdroitsrsa.detaildroitrsa_id
-										FROM detailscalculsdroitsrsa
-											INNER JOIN detailsdroitsrsa ON (
-												detailscalculsdroitsrsa.detaildroitrsa_id = detailsdroitsrsa.id
-											)
-										WHERE
-											detailsdroitsrsa.dossier_id = Dossier.id
-											AND detailscalculsdroitsrsa.natpf ILIKE \'%'.Sanitize::clean( $search['Detailcalculdroitrsa']['natpf'] ).'%\'
-								)';
-			}*/
+		 * Filtres sur le Calculdroitrsa: toppersdrodevorsa
+		 *
+		 * @param Model $model
+		 * @param array $conditions
+		 * @param array $search
+		 * @return array
+		 */
+		public function conditionsCalculdroitrsa( &$model, $conditions, $search ) {
+			if( isset( $search['Calculdroitrsa']['toppersdrodevorsa'] ) ) {
+				if( is_numeric( $search['Calculdroitrsa']['toppersdrodevorsa'] ) ) {
+					$conditions[] = array( 'Calculdroitrsa.toppersdrodevorsa' => $search['Calculdroitrsa']['toppersdrodevorsa'] );
+				}
+				else if( $search['Calculdroitrsa']['toppersdrodevorsa'] == 'NULL' ) {
+					$conditions[] = array( 'Calculdroitrsa.toppersdrodevorsa IS NULL' );
+				}
+			}
 
 			return $conditions;
 		}
 
 		/**
-		*
-		*/
+		 * Combinaison des filtres conditionsDossier, conditionsPersonne, conditionsSituationdossierrsa,
+		 * conditionsDetailcalculdroitrsa et conditionsCalculdroitrsa.
+		 *
+		 * @param Model $model
+		 * @param array $conditions
+		 * @param array $search
+		 * @return array
+		 */
+		public function conditionsPersonneFoyerDossier( &$model, $conditions, $search ) {
+			$conditions = $this->conditionsDossier( $model, $conditions, $search );
+			$conditions = $this->conditionsPersonne( $model, $conditions, $search );
+			$conditions = $this->conditionsSituationdossierrsa( $model, $conditions, $search );
+			$conditions = $this->conditionsDetailcalculdroitrsa( $model, $conditions, $search );
+			$conditions = $this->conditionsCalculdroitrsa( $model, $conditions, $search );
 
+			return $conditions;
+		}
+
+		/**
+		 * Conditions permettant d'obtenir le dernier dossier pour un allocataire donné.
+		 *
+		 * @param Model $model
+		 * @param array $conditions
+		 * @param array $search
+		 * @return array
+		 */
 		public function conditionsDernierDossierAllocataire( &$model, $conditions, $search ) {
 			if( isset( $search['Dossier']['dernier'] ) && $search['Dossier']['dernier'] ) {
 				$conditions[] = 'Dossier.id IN (

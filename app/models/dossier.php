@@ -1,4 +1,11 @@
 <?php
+	/**
+	 * Fichier source de la classe Dossier.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package       app.models
+	 */
 	class Dossier extends AppModel
 	{
 		public $name = 'Dossier';
@@ -32,11 +39,7 @@
 					'rule' => 'date',
 					'message' => 'Veuillez vérifier le format de la date.',
 					'allowEmpty' => true
-				)/*,
-				array(
-					'rule' => 'notEmpty',
-					'message' => 'Champ obligatoire'
-				)*/
+				)
 			)
 		);
 
@@ -152,10 +155,12 @@
 		}
 
 		/**
-		*
-		*/
-
-		public function findByZones( $zonesGeographiques = array(), $filtre_zone_geo = true ) {
+		 *
+		 * @param type $zonesGeographiques
+		 * @param type $filtre_zone_geo
+		 * @return type
+		 */
+		/*public function findByZones( $zonesGeographiques = array(), $filtre_zone_geo = true ) {
 			$this->Foyer->unbindModelAll();
 
 			$this->Foyer->bindModel(
@@ -195,86 +200,41 @@
 
 			$return = Set::extract( $foyers, '{n}.Foyer.dossier_id' );
 			return ( !empty( $return ) ? $return : null );
-		}
+		}*/
 
 
 		/**
-		*	INFO (pour le CG66): ATTENTION, depuis que la possibilité de créer des dossiers avec un numéro temporaire existe,
-		*	il est possible (via le bouton Ajouter) de créer des dossiers avec des allocataires ne possédant ni date de naissance, ni NIR.
-		*	Du coup, lors de la recherche, si la case "Uniquement la dernière demande..." est cochée,
-		*	les dossiers temporaires, avec allocataire sans NIR ou sans date de naissance ne ressortiront pas lors
-		*	de cette recherche -> il faut donc décocher la case pour les voir apparaître
-		*
-		*/
-
+		 * Retourne un querydata prenant en compte les différents filtres du moteur de recherche.
+		 *
+		 * INFO (pour le CG66): ATTENTION, depuis que la possibilité de créer des dossiers avec un numéro
+		 * temporaire existe, il est possible (via le bouton Ajouter) de créer des dossiers avec des allocataires
+		 * ne possédant ni date de naissance, ni NIR.
+		 * Du coup, lors de la recherche, si la case "Uniquement la dernière demande..." est cochée, les dossiers
+		 * temporaires, avec allocataire sans NIR ou sans date de naissance ne ressortiront pas lors de cette
+		 * recherche -> il faut donc décocher la case pour les voir apparaître
+		 *
+		 * @param array $mesCodesInsee
+		 * @param boolean $filtre_zone_geo
+		 * @param array $params
+		 * @return array
+		 */
 		public function search( $mesCodesInsee, $filtre_zone_geo, $params ) {
-			$conditions = array();
+			$conditions = array(
+				'Prestation.rolepers' => array( 'DEM', 'CJT' ),
+				'Adressefoyer.rgadr' => '01',
+			);
 
 			$conditions = $this->conditionsAdresse( $conditions, $params, $filtre_zone_geo, $mesCodesInsee );
 			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $params );
 			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $params );
 
-
-			/// Critères sur la nature de la prestation - natpf
-			if( isset( $params['Detailcalculdroitrsa']['natpf'] ) && !empty( $params['Detailcalculdroitrsa']['natpf'] ) ) {
-				$conditions[] = "Dossier.id IN ( SELECT detailsdroitsrsa.dossier_id FROM detailsdroitsrsa INNER JOIN detailscalculsdroitsrsa ON detailscalculsdroitsrsa.detaildroitrsa_id = detailsdroitsrsa.id WHERE detailscalculsdroitsrsa.natpf ILIKE '%".Sanitize::paranoid( $params['Detailcalculdroitrsa']['natpf'] )."%' )";
-			}
-
-			/// Critères sur Soumis à Droit et Devoir - toppersdrodevorsa
-			if( isset( $params['Calculdroitrsa']['toppersdrodevorsa'] ) ) {
-				if( is_numeric( $params['Calculdroitrsa']['toppersdrodevorsa'] ) ) {
-					$conditions[] = array( 'Calculdroitrsa.toppersdrodevorsa' => $params['Calculdroitrsa']['toppersdrodevorsa'] );
-				}
-				else if( $params['Calculdroitrsa']['toppersdrodevorsa'] == 'NULL' ) {
-					$conditions[] = array( 'Calculdroitrsa.toppersdrodevorsa IS NULL' );
-				}
-			}
-
-			/// Critères sur le dossier - date de demande
-			if( isset( $params['Dossier']['dtdemrsa'] ) && !empty( $params['Dossier']['dtdemrsa'] ) ) {
-				$valid_from = ( valid_int( $params['Dossier']['dtdemrsa_from']['year'] ) && valid_int( $params['Dossier']['dtdemrsa_from']['month'] ) && valid_int( $params['Dossier']['dtdemrsa_from']['day'] ) );
-				$valid_to = ( valid_int( $params['Dossier']['dtdemrsa_to']['year'] ) && valid_int( $params['Dossier']['dtdemrsa_to']['month'] ) && valid_int( $params['Dossier']['dtdemrsa_to']['day'] ) );
-				if( $valid_from && $valid_to ) {
-					$conditions[] = 'Dossier.dtdemrsa BETWEEN \''.implode( '-', array( $params['Dossier']['dtdemrsa_from']['year'], $params['Dossier']['dtdemrsa_from']['month'], $params['Dossier']['dtdemrsa_from']['day'] ) ).'\' AND \''.implode( '-', array( $params['Dossier']['dtdemrsa_to']['year'], $params['Dossier']['dtdemrsa_to']['month'], $params['Dossier']['dtdemrsa_to']['day'] ) ).'\'';
-				}
-			}
-
-
-			/// FIXME: Critères sur le dossier - service instructeur
+			// Critères sur le dossier - service instructeur
 			if( isset( $params['Serviceinstructeur']['id'] ) && !empty( $params['Serviceinstructeur']['id'] ) ) {
 				$conditions[] = "Dossier.id IN ( SELECT suivisinstruction.dossier_id FROM suivisinstruction INNER JOIN servicesinstructeurs ON suivisinstruction.numdepins = servicesinstructeurs.numdepins AND suivisinstruction.typeserins = servicesinstructeurs.typeserins AND suivisinstruction.numcomins = servicesinstructeurs.numcomins AND suivisinstruction.numagrins = servicesinstructeurs.numagrins WHERE servicesinstructeurs.id = '".Sanitize::paranoid( $params['Serviceinstructeur']['id'] )."' )";
-				//$conditions[] = 'Serviceinstructeur.id = \''.Sanitize::paranoid( $params['Serviceinstructeur']['id'] ).'\'';
 			}
 
-			///FIXME : tranche d'âge pour la recherche mais non finalisé
-			$trancheAge = Set::extract( $params, 'Personne.trancheAge' );
-			if( $trancheAge == 0 ) {
-				$ageMin = 0;
-				$ageMax = 25;
-			}
-			else if( $trancheAge == 1 ) {
-				$ageMin = 25;
-				$ageMax = 30;
-			}
-			else if( $trancheAge == 2 ) {
-				$ageMin = 31;
-				$ageMax = 55;
-			}
-			else if( $trancheAge == 3 ) {
-				$ageMin = 56;
-				$ageMax = 65;
-			}
-			else if( $trancheAge == 4 ) {
-				$ageMin = 66;
-				$ageMax = 120;
-			}
-
-			if( is_numeric( $trancheAge )  ) {
-				$conditions[] = '( EXTRACT ( YEAR FROM AGE( Personne.dtnai ) ) ) BETWEEN '.$ageMin.' AND '.$ageMax;
-			}
-
-			$hasContrat  = Set::extract( $params, 'Personne.hascontrat' );
 			/// Statut de présence contrat engagement reciproque
+			$hasContrat  = Set::extract( $params, 'Personne.hascontrat' );
 			if( !empty( $hasContrat ) && in_array( $hasContrat, array( 'O', 'N' ) ) ) {
 				if( $hasContrat == 'O' ) {
 					$conditions[] = '( SELECT COUNT(contratsinsertion.id) FROM contratsinsertion WHERE contratsinsertion.personne_id = "Personne"."id" ) > 0';
@@ -289,136 +249,65 @@
 				$conditions[] = '( SELECT COUNT(orientsstructs.id) FROM orientsstructs WHERE orientsstructs.personne_id = "Personne"."id" ) = 0';
 			}
 
-
-			if( isset( $params['Dossier']['fonorg'] ) && !empty( $params['Dossier']['fonorg'] ) ) {
-				$conditions[] = array( 'Dossier.fonorg' => $params['Dossier']['fonorg'] );
-			}
-
-
-			/**
-			*	FIXME: pour les tests de performance
-			*	'Z' => 'Non défini',
-			*	'0'  => 'Nouvelle demande en attente de décision CG pour ouverture du droit',
-			*	'1'  => 'Droit refusé',
-			*	'2'  => 'Droit ouvert et versable',
-			*	'3'  => 'Droit ouvert et suspendu (le montant du droit est calculable, mais l\'existence du droit est remis en cause)',
-			*	'4'  => 'Droit ouvert mais versement suspendu (le montant du droit n\'est pas calculable)',
-			*	'5'  => 'Droit clos',
-			*	'6'  => 'Droit clos sur mois antérieur ayant eu des créances transferées ou une régularisation dans le mois de référence pour une période antérieure.'
-			*/
-
 			$query = array(
 				'fields' => array(
-					'"Dossier"."id"',
-					'"Dossier"."numdemrsa"',
-					'"Dossier"."dtdemrsa"',
-					'"Dossier"."matricule"',
-					'"Dossier"."fonorg"',
-					'"Personne"."nir"',
-					'"Personne"."qual"',
-					'"Personne"."nom"',
-					'"Personne"."prenom"',
-					'"Personne"."prenom2"',
-					'"Personne"."prenom3"',
-					'"Personne"."dtnai"',
-					'"Personne"."idassedic"',
-					'"Personne"."nomcomnai"',
-					'"Adresse"."locaadr"',
-					'"Adresse"."numcomptt"',
-					'"Adresse"."numvoie"',
-					'"Adresse"."typevoie"',
-					'"Adresse"."nomvoie"',
-					'"Adresse"."codepos"',
-					'"Adresse"."locaadr"',
-					'"Situationdossierrsa"."etatdosrsa"',
-					'"Prestation"."rolepers"'
+					'Dossier.id',
+					'Dossier.numdemrsa',
+					'Dossier.dtdemrsa',
+					'Dossier.matricule',
+					'Dossier.fonorg',
+					'Personne.nir',
+					'Personne.qual',
+					'Personne.nom',
+					'Personne.prenom',
+					'Personne.prenom2',
+					'Personne.prenom3',
+					'Personne.dtnai',
+					'Personne.idassedic',
+					'Personne.nomcomnai',
+					'Adresse.locaadr',
+					'Adresse.numcomptt',
+					'Adresse.numvoie',
+					'Adresse.typevoie',
+					'Adresse.nomvoie',
+					'Adresse.codepos',
+					'Adresse.locaadr',
+					'Situationdossierrsa.etatdosrsa',
+					'Prestation.rolepers'
 				),
 				'recursive' => -1,
 				'joins' => array(
-					array(
-						'table'      => 'foyers',
-						'alias'      => 'Foyer',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Dossier.id = Foyer.dossier_id' )
-					),
-					array(
-						'table'      => 'personnes',
-						'alias'      => 'Personne',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Personne.foyer_id = Foyer.id' )
-					),
-					array(
-						'table'      => 'prestations',
-						'alias'      => 'Prestation',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array(
-							'Personne.id = Prestation.personne_id',
-							'Prestation.natprest = \'RSA\'',
-							'Prestation.rolepers' => array( 'DEM', 'CJT' )
-						)
-					),
-					array(
-						'table'      => 'calculsdroitsrsa',
-						'alias'      => 'Calculdroitrsa',
-						'type'       => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array(
-							'Personne.id = Calculdroitrsa.personne_id'
-						)
-					),
-					array(
-						'table'      => 'situationsdossiersrsa',
-						'alias'      => 'Situationdossierrsa',
-						'type'       => 'INNER', // FIXME
-						'foreignKey' => false,
-						'conditions' => array( 'Situationdossierrsa.dossier_id = Dossier.id' )
-					),
-					array(
-						'table'      => 'adressesfoyers',
-						'alias'      => 'Adressefoyer',
-						'type'       => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array( 'Foyer.id = Adressefoyer.foyer_id', 'Adressefoyer.rgadr = \'01\'' )
-					),
-					array(
-						'table'      => 'adresses',
-						'alias'      => 'Adresse',
-						'type'       => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
-					),
-					array(
-						'table'      => 'detailsdroitsrsa',
-						'alias'      => 'Detaildroitrsa',
-						'type'       => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array( 'Detaildroitrsa.dossier_id = Dossier.id' )
-					),
+					$this->join( 'Foyer', array( 'type' => 'INNER' ) ),
+					$this->Foyer->join( 'Personne', array( 'type' => 'INNER' ) ),
+					$this->Foyer->Personne->join( 'Prestation', array( 'type' => 'INNER' ) ),
+					$this->Foyer->Personne->join( 'Calculdroitrsa', array( 'type' => 'LEFT OUTER' ) ),
+					$this->join( 'Situationdossierrsa', array( 'type' => 'INNER' ) ),
+					$this->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
+					$this->join( 'Detaildroitrsa', array( 'type' => 'LEFT OUTER' ) ),
 				),
 				'limit' => 10,
 				'order' => array( 'Personne.nom ASC' ),
 				'conditions' => $conditions
 			);
+
 			return $query;
 		}
 
-
-
 		/**
-		*
-		*/
-
+		 * Renvoit un numéro de RSA temporaire (sous la form "TMP00000000", suivant le numéro de la
+		 * séquence dossiers_numdemrsatemp_seq) pour l'ajout de dossiers au CG 66.
+		 *
+		 * @return string
+		 */
 		public function generationNumdemrsaTemporaire() {
-				$numSeq = $this->query( "SELECT nextval('dossiers_numdemrsatemp_seq');" );
-				if( $numSeq === false ) {
-					return null;
-				}
+			$numSeq = $this->query( "SELECT nextval('dossiers_numdemrsatemp_seq');" );
+			if( $numSeq === false ) {
+				return null;
+			}
 
-				$numdemrsaTemp = sprintf( "TMP%08s",  $numSeq[0][0]['nextval'] );
-				return $numdemrsaTemp;
+			$numdemrsaTemp = sprintf( "TMP%08s",  $numSeq[0][0]['nextval'] );
+			return $numdemrsaTemp;
 		}
 	}
 ?>

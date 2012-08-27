@@ -1,4 +1,11 @@
 <?php
+	/**
+	 * Fichier source de la classe Personne.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package       app.models
+	 */
 	class Personne extends AppModel
 	{
 
@@ -545,6 +552,7 @@
 				'with' => 'PersonneReferent'
 			)
 		);
+
 		public $virtualFields = array(
 			'nom_complet' => array(
 				'type' => 'string',
@@ -558,6 +566,8 @@
 
 		/**
 		 *
+		 * @param array $options
+		 * @return mixed
 		 */
 		public function beforeSave( $options = array( ) ) {
 			$return = parent::beforeSave( $options );
@@ -594,18 +604,24 @@
 		}
 
 		/**
-		 * Recherche de l'id du dossier à partir de l'id de la personne
+		 * Retourne l'id du dossier à partir de l'id de la personne
+		 *
+		 * @param integer $personne_id
+		 * @return integer
 		 */
 		public function dossierId( $personne_id ) {
-			$this->unbindModelAll();
-			$this->bindModel( array( 'belongsTo' => array( 'Foyer' ) ) );
-			$personne = $this->find(
-					'first', array(
+			$querydata = array(
 				'fields' => array( 'Foyer.dossier_id' ),
-				'conditions' => array( 'Personne.id' => $personne_id ),
-				'recursive' => 0
-					)
+				'joins' => array(
+					$this->join( 'Foyer', array( 'type' => 'INNER' ) )
+				),
+				'conditions' => array(
+					'Personne.id' => $personne_id
+				),
+				'recursive' => -1
 			);
+
+			$personne = $this->find( 'first', $querydata );
 
 			if( !empty( $personne ) ) {
 				return $personne['Foyer']['dossier_id'];
@@ -682,8 +698,11 @@
 
 		/**
 		 *
+		 * @param type $zonesGeographiques
+		 * @param type $filtre_zone_geo
+		 * @return type
 		 */
-		public function findByZones( $zonesGeographiques = array( ), $filtre_zone_geo = true ) { // TODO
+		/*public function findByZones( $zonesGeographiques = array( ), $filtre_zone_geo = true ) { // TODO
 			$this->unbindModelAll();
 
 			$this->bindModel(
@@ -717,7 +736,7 @@
 
 			$return = Set::extract( $personnes, '{n}.Personne.id' );
 			return (!empty( $return ) ? $return : null );
-		}
+		}*/
 
 		/**
 		 *    Détails propre à la personne pour le contrat d'insertion

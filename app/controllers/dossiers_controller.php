@@ -1,4 +1,11 @@
 <?php
+	/**
+	 * Fichier source de la classe DossiersController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package       app.controllers
+	 */
 	App::import( 'Sanitize' );
 
 	class DossiersController extends AppController
@@ -13,15 +20,9 @@
 
 		public $commeDroit = array( 'view' => 'Dossiers:index' );
 
-		public $paginate = array(
-			// FIXME
-			'limit' => 20
-		);
-
 		/**
-		*
-		*/
-
+		 * @return void
+		 */
 		protected function _setOptions() {
 			$this->set( 'natpf', $this->Option->natpf() );
 			$this->set( 'qual', $this->Option->qual() );
@@ -38,9 +39,8 @@
 			$this->set( 'act', $this->Option->act() );
 			$this->set( 'couvsoc', $this->Option->couvsoc() ); // INFO: pas dans view
 			$this->set( 'categorie', $this->Option->categorie() );
-			///FIXME:
 			$this->set(
-				'trancheAge',
+				'trancheage',
 				array(
 					'< 25',
 					'25 - 30',
@@ -48,9 +48,9 @@
 					'56 - 65',
 					'> 65'
 				)
-			); // INFO: pas dans view
+			);
 
-			// FIXME: à intégrer à la fonction view pour ne pas avoir d'énormes variables
+			// à intégrer à la fonction view pour ne pas avoir d'énormes variables
 			if( $this->action == 'view' ) {
 				$this->set( 'numcontrat', $this->Dossier->Foyer->Personne->Contratinsertion->allEnumLists() );
 				$this->set( 'enumcui', $this->Dossier->Foyer->Personne->Cui->allEnumLists() );
@@ -74,7 +74,6 @@
 				$this->set( 'typeservice', $typeservice );
 			}
 			else if( $this->action == 'edit' ) {
-//				$optionsDossier = $this->Dossier->enums();
 				$optionsDossier = array(
 					'Dossier' => array(
 						'statudemrsa' => $this->Option->statudemrsa(),
@@ -127,7 +126,6 @@
 				$filtresdefaut = Configure::read( "Filtresdefaut.{$this->name}_{$this->action}" );
 				$this->data = Set::merge( $this->data, $filtresdefaut );
 			}
-
 
 			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
 
@@ -220,34 +218,13 @@
 		}
 
 		/**
-		 * Visualisation du dossier.
+		 * Visualisation du dossier (écran de synthèse).
 		 *
 		 * @param integer $id
+		 * @return void
 		 */
 		public function view( $id = null ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
-
-			/** Tables necessaire à l'ecran de synthèse
-
-				OK -> Dossier
-				OK -> Foyer
-				OK -> Situationdossierrsa
-				OK -> Adresse
-				OK -> Detaildroitrsa
-					OK -> Detailcalculdroitrsa
-				OK -> Suiviinstruction
-				OK -> Infofinanciere
-				OK -> Creance
-				OK -> Dossiercaf
-				OK -> Personne (DEM/CJT)
-					OK -> Personne
-					OK -> Prestation
-					OK -> Orientstruct (premier/dernier)
-						//Typeorient
-					OK -> Dsp
-					OK -> Contratinsertion
-					Calculsdroitrsa
-			*/
 
 			$details = array();
 			$details = $this->Dossier->find(
@@ -586,8 +563,7 @@
 				);
 				$personnesFoyer[$index]['Nonrespectsanctionep93']['derniere'] = $tRelance;
 
-				// EP
-				// Dernier passage effectif (lié à un passagecommissionep)
+				// EP: dernier passage effectif (lié à un passagecommissionep)
 				$tdossierEp = $this->Dossier->Foyer->Personne->Dossierep->find(
 					'first',
 					array(
@@ -665,17 +641,11 @@
 
 				$personnesFoyer[$index]['Dossierep']['derniere'] = Set::merge( $tdossierEp, $decisionEP );
 
-				/**
-				*   Utilisation des nouvelles tables de stockage des infos Pôle Emploi
-				*/
-
+				// Utilisation des nouvelles tables de stockage des infos Pôle Emploi
 				$tInfope = $this->Informationpe->derniereInformation($personnesFoyer[$index]);
 				$personnesFoyer[$index]['Informationpe'] = $tInfope['Historiqueetatpe'];
 
-				/**
-				*   Liste des anciens dossiers par demandeurs et conjoints
-				*   TODO
-				*/
+				//  Liste des anciens dossiers par demandeurs et conjoints
 				$nir13 = trim( $personnesFoyer[$index]['Personne']['nir'] );
 				$nir13 = ( empty( $nir13 ) ? null : substr( $nir13, 0, 13 ) );
 
@@ -746,10 +716,7 @@
 				$personnesFoyer[$index]['Dossiermultiple'] = $autreNumdemrsaParAllocataire;
 				//Fin Ajout Arnaud
 
-
 				$details[$role] = $personnesFoyer[$index];
-
-
 			}
 
 			$this->set( 'details', $details );
@@ -763,6 +730,7 @@
 		 * Modification du dossier.
 		 *
 		 * @param integer $id
+		 * @return void
 		 */
 		public function edit( $id ){
 			$this->assert( valid_int( $id ), 'invalidParameter' );
