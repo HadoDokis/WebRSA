@@ -1,4 +1,8 @@
 <?php
+	if( CAKE_BRANCH != '1.2' ) {
+		App::uses( 'User', 'Model' );
+	}
+
 	class Chargeinsertion extends User
 	{
 		public $name = 'Chargeinsertion';
