@@ -28,6 +28,7 @@
 				"{$modelClassName}.id" => array( 'type' => 'hidden' ),
 				"{$modelClassName}.personne_id" => array( 'type' => 'hidden' ),
 				"{$modelClassName}.structurereferente_id" => array( 'type' => 'hidden' ),
+				"{$modelClassName}.positioncer" => array( 'type' => 'hidden', 'value' => 'annule' ),
 				"{$modelClassName}.motifannulation" => array( 'type' => 'textarea' ),
 			),
 			array(
