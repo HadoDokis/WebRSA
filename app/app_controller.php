@@ -702,6 +702,10 @@
 			$this->set( 'etatdosrsa', ClassRegistry::init( 'Option' )->etatdosrsa() );
 			$return = parent::beforeFilter();
 
+			if( CAKE_BRANCH != '1.2' ) {
+				$this->Auth->allow( '*' );
+			}
+
 			// Fin du traitement pour les requestactions et les appels ajax
 			if( isset( $this->params['requested'] ) ) {
 				return $return;
