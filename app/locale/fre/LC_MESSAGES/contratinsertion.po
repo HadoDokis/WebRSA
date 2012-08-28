@@ -214,35 +214,6 @@ msgstr "Motifs administratifs"
 msgid "ENUM::AUTREAVISSUSPENSION::STE"
 msgstr "Statut Etudiant"
 
-#----- Position du CER ------------
-
-msgid "ENUM::POSITIONCER::encours"
-msgstr "En cours"
-
-msgid "ENUM::POSITIONCER::attvalid"
-msgstr "En attente de validation"
-
-msgid "ENUM::POSITIONCER::annule"
-msgstr "Annulé"
-
-msgid "ENUM::POSITIONCER::fincontrat"
-msgstr "Fin de contrat"
-
-msgid "ENUM::POSITIONCER::nonvalide"
-msgstr "Contrat non validé"
-
-msgid "ENUM::POSITIONCER::encoursbilan"
-msgstr "En cours : Bilan à réaliser"
-
-msgid "ENUM::POSITIONCER::attrenouv"
-msgstr "En attente de renouvellement"
-
-msgid "ENUM::POSITIONCER::perime"
-msgstr "Périmé"
-
-msgid "ENUM::POSITIONCER::attsignature"
-msgstr "En attente de signature"
-
 msgid "Contratsinsertion::filelink"
 msgstr "Liste des fichiers liés au CER"
 
@@ -329,6 +300,44 @@ msgstr "Date d'envoi"
 
 msgid "Contratsinsertion::notification"
 msgstr "Envoi des documents"
+
+#----- Position du CER ------------
+
+msgid "ENUM::POSITIONCER::encours"
+msgstr "En cours"
+
+msgid "ENUM::POSITIONCER::attvalid"
+msgstr "En attente de validation"
+
+msgid "ENUM::POSITIONCER::attvalidpart"
+msgstr "En attente d'examen du CER"
+
+msgid "ENUM::POSITIONCER::attvalidsimple"
+msgstr "En attente de validation du PCG"
+
+msgid "ENUM::POSITIONCER::attvalidpartpropopcg"
+msgstr "En attente de validation du PCG"
+
+msgid "ENUM::POSITIONCER::annule"
+msgstr "Annulé"
+
+msgid "ENUM::POSITIONCER::fincontrat"
+msgstr "Fin de contrat"
+
+msgid "ENUM::POSITIONCER::nonvalide"
+msgstr "Non validation"
+
+msgid "ENUM::POSITIONCER::encoursbilan"
+msgstr "En cours : Bilan à réaliser"
+
+msgid "ENUM::POSITIONCER::attrenouv"
+msgstr "En attente de renouvellement"
+
+msgid "ENUM::POSITIONCER::perime"
+msgstr "Périmé"
+
+msgid "ENUM::POSITIONCER::attsignature"
+msgstr "En attente de signature"
 
 msgid "ENUM::POSITIONCER::valid"
 msgstr "CER validé"

@@ -574,7 +574,9 @@
 			<td class="mediumSize noborder">
 				<fieldset>
 					<legend><strong>Positionnement éventuel sur l'action d'insertion</strong></legend>
-					<?php echo $form->input( 'Contratinsertion.engag_object', array( 'label' => 'Intitulé de ( ou des ) actions', 'type' => 'textarea' ) );?>
+					<?php
+						echo $form->input( 'Contratinsertion.engag_object', array( 'label' => 'Intitulé de ( ou des ) actions', 'type' => 'textarea' ) );
+					?>
 					<?php
 						//FIXME
 						$contratinsertion_id = Set::extract( $this->data, 'Actioninsertion.contratinsertion_id' );

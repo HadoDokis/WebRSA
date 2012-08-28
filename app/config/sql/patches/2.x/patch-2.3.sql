@@ -451,6 +451,11 @@ UPDATE cuis SET secteur = 'cie' WHERE secteur = 'CIE';
 UPDATE cuis SET secteur = 'cae' WHERE secteur = 'CAE';
 SELECT public.alter_enumtype ( 'TYPE_SECTEUR', ARRAY['cie', 'cae'] );
 
+-------------------------------------------------------------------------------------------------------------
+-- 20120828: Modification de l'ENUM pour les positions du CER CG66
+-------------------------------------------------------------------------------------------------------------
+
+SELECT public.alter_enumtype ( 'TYPE_POSITIONCER', ARRAY['encours','attvalid','attvalidpart','attvalidpartpropopcg','attvalidsimple','annule','fincontrat','encoursbilan','attrenouv','perime','nonvalide','attsignature','valid','nonvalid','validnotifie','nonvalidnotifie'] );
 
 -- *****************************************************************************
 COMMIT;

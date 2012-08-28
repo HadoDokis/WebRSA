@@ -55,6 +55,38 @@
 		);
 		
 		
+		/**
+		 * BeforeSave
+		 */
+		public function beforeSave( $options = array( ) ) {
+			$return = parent::beforeSave( $options );
+		
+			//  MAJ de la position du cER
+			if( !empty( $this->data ) ) {
+
+				$contratinsertion_id = $this->data['Propodecisioncer66']['contratinsertion_id'];
+				$contratinsertion = $this->Contratinsertion->find(
+					'first',
+					array(
+						'conditions' => array(
+							'Contratinsertion.id' => $contratinsertion_id
+						),
+						'contain' => false,
+						'recursive' => -1
+					)
+				);
+				
+				if( $contratinsertion['Contratinsertion']['positioncer'] == 'attvalidpart' ) {
+					$this->Contratinsertion->updateAll(
+						array( 'Contratinsertion.positioncer' => '\'attvalidpartpropopcg\'' ),
+						array(
+							'"Contratinsertion"."id"' => $contratinsertion_id
+						)
+					);
+				}
+			}
+			return $return;
+		}
 		
 		/**
 		* Sauvegarde des décisions du CER dans la table proposdecisionscers66
