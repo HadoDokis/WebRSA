@@ -406,4 +406,12 @@
 	 * dans la gestion des réponses des non orientés 66
 	 */
 	Configure::write( 'Nonoriente66.TypeorientIdPrepro', 5 );
+	
+	
+	/**
+	 * Configuration des adresses mails d'expéditeur pour l'envoi de mails concernant
+	 * les fiches de candidature (CG 66).
+	 */
+	Configure::write( 'FicheCandidature.Email.from', 'emailaprefrom@cgxxxx.fr' );
+	Configure::write( 'FicheCandidature.Email.replyto', Configure::read( 'FicheCandidature.Email.from' ) );
 ?>
