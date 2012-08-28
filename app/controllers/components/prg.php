@@ -32,8 +32,6 @@
 			}
 
 			$this->_prgActions = Set::normalize( $this->_prgActions );
-
-// 			debug( $this->_prgActions );
 		}
 
 		/**		 * ******************************************************************
@@ -93,9 +91,7 @@
 					}
 
 					header( 'Location: '.$getUrl );
-
-					// INFO: this doesn't work
-					// $controller->redirect( $getUrl, true );
+					exit();
 				}
 				else {
 					// Real get params
@@ -141,6 +137,5 @@
 		function beforeRedirect( &$controller, $url, $status = null, $exit = true ) {
 			parent::beforeRedirect( $controller, $url, $status, $exit );
 		}
-
 	}
 ?>
