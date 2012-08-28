@@ -144,28 +144,29 @@
 				$dossierpcg66_id = $id;
 
 				$dossierpcg66 = $this->Decisiondossierpcg66->Dossierpcg66->find(
-						'first', array(
-					'conditions' => array(
-						'Dossierpcg66.id' => $id
-					),
-					'contain' => array(
-						'Decisiondossierpcg66' => array(
-							'Decisionpdo',
-							'order' => array( 'Decisiondossierpcg66.created DESC' ),
+					'first',
+					array(
+						'conditions' => array(
+							'Dossierpcg66.id' => $id
 						),
-						'Decisiondefautinsertionep66' => array(
-							'Passagecommissionep' => array(
-								'Dossierep' => array(
-									'Defautinsertionep66' => array(
-										'Bilanparcours66'
+						'contain' => array(
+							'Decisiondossierpcg66' => array(
+								'Decisionpdo',
+								'order' => array( 'Decisiondossierpcg66.created DESC' ),
+							),
+							'Decisiondefautinsertionep66' => array(
+								'Passagecommissionep' => array(
+									'Dossierep' => array(
+										'Defautinsertionep66' => array(
+											'Bilanparcours66'
+										)
 									)
 								)
-							)
-						),
-						'Fichiermodule',
-						'Contratinsertion'
-					)
+							),
+							'Fichiermodule',
+							'Contratinsertion'
 						)
+					)
 				);
 				$this->set( 'dossierpcg66', $dossierpcg66 );
 
@@ -234,29 +235,30 @@
 				$dossierpcg66_id = Set::classicExtract( $decisiondossierpcg66, 'Decisiondossierpcg66.dossierpcg66_id' );
 				// FIXME: une fonction avec la partie du add ci-dessus
 				$dossierpcg66 = $this->Decisiondossierpcg66->Dossierpcg66->find(
-						'first', array(
-					'conditions' => array(
-						'Dossierpcg66.id' => $dossierpcg66_id
-					),
-					'contain' => array(
-						'Decisiondossierpcg66' => array(
-							'conditions' => array( 'Decisiondossierpcg66.id <>' => $id ),
-							'order' => array( 'Decisiondossierpcg66.created DESC' ),
-							'Decisionpdo'
+					'first',
+					array(
+						'conditions' => array(
+							'Dossierpcg66.id' => $dossierpcg66_id
 						),
-						'Decisiondefautinsertionep66' => array(
-							'Passagecommissionep' => array(
-								'Dossierep' => array(
-									'Defautinsertionep66' => array(
-										'Bilanparcours66'
+						'contain' => array(
+							'Decisiondossierpcg66' => array(
+								'conditions' => array( 'Decisiondossierpcg66.id <>' => $id ),
+								'order' => array( 'Decisiondossierpcg66.created DESC' ),
+								'Decisionpdo'
+							),
+							'Decisiondefautinsertionep66' => array(
+								'Passagecommissionep' => array(
+									'Dossierep' => array(
+										'Defautinsertionep66' => array(
+											'Bilanparcours66'
+										)
 									)
 								)
-							)
-						),
-						'Fichiermodule',
-						'Contratinsertion'
-					)
+							),
+							'Fichiermodule',
+							'Contratinsertion'
 						)
+					)
 				);
 
 

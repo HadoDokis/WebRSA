@@ -319,6 +319,7 @@
 						echo $xform->input( 'Propodecisioncer66.id', array( 'type' => 'hidden' ) );
 					}
 					echo $xform->input( 'Propodecisioncer66.contratinsertion_id', array( 'type' => 'hidden', 'value' => $contratinsertion_id ) );
+					echo $xform->input( 'Propodecisioncer66.datevalidcer', array( 'label' => 'Date de la proposition du CER', 'type' => 'date', 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 4, 'maxYear' => date( 'Y' ) + 2, 'empty' => false ) );
 					echo $default2->subform(
 						array(
 							

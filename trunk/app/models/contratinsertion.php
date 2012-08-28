@@ -831,31 +831,38 @@
 			$positioncer = Set::classicExtract( $data, 'Contratinsertion.positioncer' );
 			$datenotif = Set::classicExtract( $data, 'Contratinsertion.datenotification' );
 			$id = Set::classicExtract( $data, 'Contratinsertion.id' );
-// debug($datenotif);
-
 			$personne_id = Set::classicExtract( $data, 'Contratinsertion.personne_id' );
 
+			// Modification de la position du CER selon sa forme
+			if( $formeCi == 'S' ) {
+				$positioncer = 'attvalidsimple';
+			}
+			else if( $formeCi == 'C' ) {
+				$positioncer = 'attvalidpart';
+			}
+		
+		
 			$conditions = array( 'Contratinsertion.personne_id' => $personne_id, );
 			if( !empty( $id ) ) {
 				$conditions['Contratinsertion.id <>'] = $id;
 			}
 
 			$dernierContrat = $this->find(
-					'first', array(
-				'conditions' => $conditions,
-				'order' => 'Contratinsertion.rg_ci DESC',
-				'contain' => false
-					)
+				'first', array(
+					'conditions' => $conditions,
+					'order' => 'Contratinsertion.rg_ci DESC',
+					'contain' => false
+				)
 			);
 			$decisionprecedente = Set::classicExtract( $dernierContrat, 'Contratinsertion.decision_ci' );
 			$positioncerPrecedent = Set::classicExtract( $dernierContrat, 'Contratinsertion.positioncer' );
 
 			//FIXME: la position a périmé ne devrait aps figurer ici
-			if( ( is_null( $positioncer ) || in_array( $positioncer, array( 'attvalid', 'perime' ) ) ) && !empty( $decision_ci ) ) {
+			if( ( is_null( $positioncer ) || in_array( $positioncer, array( 'attvalid', 'attvalidpart', 'attvalidsimple', 'perime' ) ) ) && !empty( $decision_ci ) ) {
 
 				if( $decision_ci == 'V' ) {
 					if( empty( $datenotif ) ) {
-						$positioncer = 'valid';
+						$positioncer = 'encours';
 					}
 					else {
 						$positioncer = 'validnotifie';
