@@ -14,7 +14,7 @@
 
 		public $uses = array( 'Dossier', 'Option', 'Informationpe' );
 		public $helpers = array( 'Csv' , 'Search', 'Default2', 'Gestionanomaliebdd' );
-		public $components = array( 'Gestionzonesgeos', 'Prg' => array( 'actions' => array( 'index' ) ), 'Jetons2' );
+		public $components = array( 'Gestionzonesgeos', 'Prg2' => array( 'actions' => array( 'index' ) ), 'Jetons2' );
 
 		public $aucunDroit = array( 'menu' );
 

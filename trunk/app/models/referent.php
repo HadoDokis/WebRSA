@@ -262,34 +262,44 @@
 		);
 
 		/**
-		*
-		*/
-
+		 * Renvoit une liste clé / valeur avec clé qui est l'id de la structure référente underscore l'id du référent
+		 * et la valeur qui est qual, nom, prénom du référent.
+		 * Utilisé pour les valeurs des input select.
+		 *
+		 * @return array
+		 */
 		public function listOptions() {
-			$this->unbindModelAll();
-			$tmp = $this->find(
-				'all',
-				array (
-					'fields' => array(
-						'Referent.id',
-						'Referent.structurereferente_id',
-						'Referent.qual',
-						'Referent.nom',
-						'Referent.prenom'
-					),
-					'contain' => false,
-					'order' => 'Referent.nom ASC',
-					'conditions' => array(
-						'Referent.actif' => 'O'
-					)
-				)
-			);
+			$cacheKey = 'referent_list_options';
+			$results = Cache::read( $cacheKey );
 
-			$return = array();
-			foreach( $tmp as $key => $value ) {
-				$return[$value['Referent']['structurereferente_id'].'_'.$value['Referent']['id']] = $value['Referent']['qual'].' '.$value['Referent']['nom'].' '.$value['Referent']['prenom'];
+			if( $results === false ) {
+				$tmp = $this->find(
+					'all',
+					array (
+						'fields' => array(
+							'Referent.id',
+							'Referent.structurereferente_id',
+							'Referent.qual',
+							'Referent.nom',
+							'Referent.prenom'
+						),
+						'contain' => false,
+						'order' => 'Referent.nom ASC',
+						'conditions' => array(
+							'Referent.actif' => 'O'
+						)
+					)
+				);
+
+				$results = array();
+				foreach( $tmp as $key => $value ) {
+					$results[$value['Referent']['structurereferente_id'].'_'.$value['Referent']['id']] = $value['Referent']['qual'].' '.$value['Referent']['nom'].' '.$value['Referent']['prenom'];
+				}
+
+				Cache::write( $cacheKey, $results );
 			}
-			return $return;
+
+			return $results;
 		}
 
 		/**
@@ -389,6 +399,62 @@
 				);
 			}
 			return null;
+		}
+
+		/**
+		 * Suppression et regénération du cache.
+		 *
+		 * @return boolean
+		 */
+		protected function _regenerateCache() {
+			$keys = array(
+				'referent_list_options',
+			);
+
+			foreach( $keys as $key ) {
+				Cache::delete( $key );
+			}
+
+			// Regénération des éléments du cache.
+			$success = true;
+
+			$tmp  = $this->listOptions();
+			$success = !empty( $tmp ) && $success;
+
+			return $success;
+		}
+
+		/**
+		 * On s'assure de nettoyer le cache en cas de modification.
+		 *
+		 * @param type $created
+		 * @return type
+		 */
+		public function afterSave( $created ) {
+			parent::afterSave( $created );
+			$this->_regenerateCache();
+		}
+
+		/**
+		 * On s'assure de nettoyer le cache en cas de suppression.
+		 *
+		 * @return type
+		 */
+		public function afterDelete() {
+			parent::afterDelete();
+			$this->_regenerateCache();
+		}
+
+		/**
+		 * Exécute les différentes méthods du modèle permettant la mise en cache.
+		 * Utilisé au préchargement de l'application (/prechargements/index).
+		 *
+		 * @return boolean true en cas de succès, false en cas d'erreur,
+		 * 	null pour les fonctions vides.
+		 */
+		public function prechargement() {
+			$success = $this->_regenerateCache();
+			return $success;
 		}
 	}
 ?>
