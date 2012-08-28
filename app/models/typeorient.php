@@ -416,7 +416,8 @@
 				'typeorient_list_options_preorientation_cohortes93',
 				'structurereferente_list1_options',
 				'structurereferente_list_options',
-				'cohorte_structures_automatiques'
+				'cohorte_structures_automatiques',
+				'referent_list_options',
 			);
 
 			foreach( $keys as $key ) {

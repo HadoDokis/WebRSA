@@ -629,7 +629,6 @@
 		protected function _updateConnection() {
 			if( Configure::read( 'Utilisateurs.multilogin' ) == false ) {
 				if( !( $this->name == 'Users' && in_array( $this->action, array( 'login', 'logout' ) ) ) ) {
-					$this->Connection->begin();
 					$connection_id = $this->Connection->field(
 						'id',
 						array(
@@ -642,10 +641,8 @@
 					if( !empty( $connection_id ) ) {
 						$this->Connection->id = $connection_id;
 						$this->Connection->saveField( 'modified', null );
-						$this->Connection->commit();
 					}
 					else {
-						$this->Connection->rollback();
 						$this->redirect( array( 'controller' => 'users', 'action' => 'logout' ) );
 					}
 				}

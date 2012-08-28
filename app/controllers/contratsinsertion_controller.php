@@ -1010,29 +1010,6 @@
 			}
 			$this->set( 'nbContratsPrecedents', $nbContratsPrecedents );
 
-			/// Détails des précédents contrats
-			$lastContrat = $this->Contratinsertion->find(
-					'all', array(
-				'fields' => array(
-					'Contratinsertion.rg_ci',
-					'Contratinsertion.dd_ci',
-					'Contratinsertion.df_ci',
-					'Contratinsertion.structurereferente_id',
-					'Structurereferente.lib_struc',
-					'Contratinsertion.engag_object',
-					'Contratinsertion.observ_ci',
-					//thematique du contrat,
-					'Contratinsertion.decision_ci',
-				),
-				'conditions' => array(
-					'Contratinsertion.personne_id' => $personne_id
-				),
-				'order' => 'Contratinsertion.date_saisi_ci DESC',
-				'limit' => 5
-					)
-			);
-			$this->set( 'lastContrat', $lastContrat );
-
 			/// Recherche du type d'orientation
 			$orientstruct = $this->Contratinsertion->Structurereferente->Orientstruct->find(
 					'first', array(
