@@ -219,14 +219,40 @@
 		 * @return array
 		 */
 		public function search( $mesCodesInsee, $filtre_zone_geo, $params ) {
+			
 			$conditions = array(
-				'Prestation.rolepers' => array( 'DEM', 'CJT' ),
-				'Adressefoyer.rgadr' => '01',
 			);
+			
+			$typeJointure = 'INNER';
+			if( Configure::read( 'Cg.departement' ) != 66) {
+				$conditions = array(
+					'Adressefoyer.rgadr' => '01',
+					'Prestation.rolepers' => array( 'DEM', 'CJT' )
+				);
+			}
+			else {
+				$typeJointure = 'LEFT OUTER';
+				$conditions = array(
+					'OR' => array(
+						'Prestation.rolepers IS NULL',
+						'Prestation.rolepers IN ( \'DEM\', \'CJT\' )'
+					),
+					'Adressefoyer.rgadr' => '01',
+				);
+			}
 
 			$conditions = $this->conditionsAdresse( $conditions, $params, $filtre_zone_geo, $mesCodesInsee );
 			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $params );
 			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $params );
+						
+// 			$sansPrestation  = Set::extract( $params, 'Personne.sansprestation' );
+// 			if( ( $sansPrestation = '1' ) ) {
+// 				$conditions[] = 'Prestation.rolepers IS NULL';
+// 			}
+// 			else {
+// 				$conditions = array( 'Prestation.rolepers' => array( 'DEM', 'CJT' ) );
+// 			}
+			
 
 			// Critères sur le dossier - service instructeur
 			if( isset( $params['Serviceinstructeur']['id'] ) && !empty( $params['Serviceinstructeur']['id'] ) ) {
@@ -248,6 +274,7 @@
 			if( isset( $params['Orientstruct']['sansorientation'] ) && $params['Orientstruct']['sansorientation'] ) {
 				$conditions[] = '( SELECT COUNT(orientsstructs.id) FROM orientsstructs WHERE orientsstructs.personne_id = "Personne"."id" ) = 0';
 			}
+
 
 			$query = array(
 				'fields' => array(
@@ -279,7 +306,7 @@
 				'joins' => array(
 					$this->join( 'Foyer', array( 'type' => 'INNER' ) ),
 					$this->Foyer->join( 'Personne', array( 'type' => 'INNER' ) ),
-					$this->Foyer->Personne->join( 'Prestation', array( 'type' => 'INNER' ) ),
+					$this->Foyer->Personne->join( 'Prestation', array( 'type' => $typeJointure ) ), //FIXME: utilisé car certaines rolepers sont à NULL
 					$this->Foyer->Personne->join( 'Calculdroitrsa', array( 'type' => 'LEFT OUTER' ) ),
 					$this->join( 'Situationdossierrsa', array( 'type' => 'INNER' ) ),
 					$this->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
