@@ -107,6 +107,8 @@
 				$valueSansOrientation = isset( $this->data['Orientstruct']['sansorientation'] ) ? $this->data['Orientstruct']['sansorientation'] : false;
 				echo $form->input( 'Orientstruct.sansorientation', array( 'label' => 'Personne sans orientation', 'type' => 'checkbox', 'checked' => $valueSansOrientation ) );
 			}
+			
+			echo $form->input( 'Personne.sansprestation', array( 'label' => 'Allocataire ne possédant pas de prestation', 'type' => 'checkbox' ) );
 		?>
 	</fieldset>
 
@@ -166,7 +168,7 @@
 
 								<tr>
 									<th>Rôle</th>
-									<td>'.$rolepers[$dossier['Prestation']['rolepers']].'</td>
+									<td>'.Set::enum( Set::classicExtract( $dossier, 'Prestation.rolepers' ), $rolepers ).'</td>
 								</tr>
 							</tbody>
 						</table>';
