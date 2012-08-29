@@ -245,11 +245,11 @@
 			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 
 			$querydata = $this->Cohortevalidationapre66->search(
-				'Validationapre::validees',
+				'Validationapre::notifiees',
 				$mesCodesInsee,
 				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
 				Xset::bump( $this->params['named'], '__' ),
-				$this->Jetons->ids()
+				false
 			);
 			unset( $querydata['limit'] );
 			$apres = $this->Apre66->find( 'all', $querydata );
