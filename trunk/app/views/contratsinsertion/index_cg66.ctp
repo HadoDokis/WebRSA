@@ -8,7 +8,7 @@
 
 <div class="with_treemenu">
     <h1><?php  echo $this->pageTitle;?></h1>
-        <?php if( empty( $orientstruct ) ) :?>
+        <?php if( empty( $orientstruct ) && empty( $contratsinsertion ) ) :?>
             <p class="error">Cette personne ne possède pas d'orientation. Impossible de créer un CER.</p>
         <?php else:?>
             <?php if( empty( $persreferent ) ) :?>
@@ -26,6 +26,10 @@
 
 			<?php if( empty( $contratsinsertion ) && empty( $orientstructEmploi ) ):?>
 				<p class="notice">Cette personne ne possède pas encore de CER.</p>
+			<?php endif;?>
+			
+			<?php if( empty( $orientstruct ) ):?>
+				<p class="error">Cette personne ne possède pas d'orientation. Impossible de créer un CER.</p>
 			<?php endif;?>
 
 			<ul class="actionMenu">
