@@ -56,9 +56,9 @@
 				<p class="notice">Cette personne ne possède pas encore de contrat d'engagement réciproque.</p>
 			<?php endif;?>
 
-			<?php  /*if( !empty( $orientstructEmploi ) ) :?>
-				<p class="error">Cette personne possède actuellement une orientation professionnelle. Impossible de créer un CER.</p>
-			<?php endif;*/ ?>
+			<?php  if( !empty( $orientstructEmploi ) ) :?>
+				<p class="error">Cette personne possède actuellement une orientation professionnelle. Une réorientation sociale doit être sollicitée pour pouvoir enregistrer un CER.</p>
+			<?php endif; ?>
 
 			<?php if( $permissions->check( 'proposcontratsinsertioncovs58', 'add' ) && $nbdossiersnonfinalisescovs == 0 ):?>
 				<ul class="actionMenu">
@@ -138,6 +138,8 @@
 // 							$block = false;
 // 						}
 
+						$block = empty( $orientstruct ) || !empty( $orientstructEmploi );
+
 						$contratenep = in_array( $contratinsertion['Contratinsertion']['id'], $contratsenep );
 
 						if ( isset( $contratinsertion['Contratinsertion']['avenant_id'] ) && !empty( $contratinsertion['Contratinsertion']['avenant_id'] ) ) {
@@ -170,7 +172,7 @@
 								$xhtml->editLink(
 									'Éditer le CER ',
 									array( 'controller' => 'contratsinsertion', 'action' => 'edit', $contratinsertion['Contratinsertion']['id'] ),
-									$block
+									!$block
 									&& $permissions->check( 'contratsinsertion', 'edit' )
 								),
 								$xhtml->printLink(
@@ -197,6 +199,7 @@
 									array( 'controller' => 'proposcontratsinsertioncovs58', 'action' => 'add', $personne_id, $contratinsertion['Contratinsertion']['id'] ),
 									$permissions->check( 'contratsinsertion', 'add' )
 									&& ( $contratinsertion['Contratinsertion']['id'] == $contratsinsertion[0]['Contratinsertion']['id'] )
+									&& ( !$block )
 								),
 								$xhtml->fileLink(
 									'Fichiers liés',
