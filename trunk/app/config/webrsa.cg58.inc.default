@@ -1,4 +1,4 @@
-t<?php
+<?php
 	/**
 	 * Nouvelle façon de paramétrer la génération de documents PDF via Gedooo.
 	 *
