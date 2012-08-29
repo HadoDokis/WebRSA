@@ -108,7 +108,7 @@
 				echo $form->input( 'Orientstruct.sansorientation', array( 'label' => 'Personne sans orientation', 'type' => 'checkbox', 'checked' => $valueSansOrientation ) );
 			}
 			
-			echo $form->input( 'Personne.sansprestation', array( 'label' => 'Allocataire ne possédant pas de prestation', 'type' => 'checkbox' ) );
+// 			echo $form->input( 'Personne.sansprestation', array( 'label' => 'Allocataire ne possédant pas de prestation', 'type' => 'checkbox' ) );
 		?>
 	</fieldset>
 
