@@ -1033,16 +1033,39 @@
 elseif ( $this->action == 'edit' && isset( $passagecommissionep['Decisiondefautinsertionep66'][0]['id'] ) && !empty( $passagecommissionep['Decisiondefautinsertionep66'][0]['id'] ) ) {
 	$avisep = $passagecommissionep['Decisiondefautinsertionep66'][0];
 	echo '<fieldset><legend><strong>AVIS DE L\'EP Locale Commission Audition du '.date('d/m/Y', strtotime($passagecommissionep['Commissionep']['dateseance'])).'</strong></legend>';
+
 		if ( isset( $passagecommissionep['Decisiondefautinsertionep66'][0]['decisionsup'] ) && !empty( $passagecommissionep['Decisiondefautinsertionep66'][0]['decisionsup'] ) ) {
 			echo $html->tag(
 				'p',
 				$options['Decisiondefautinsertionep66']['decisionsup'][$avisep['decisionsup']]
 			);
 		}
+		$avisEPTypeorient = Set::classicExtract( $typesorients, $passagecommissionep['Decisiondefautinsertionep66'][0]['typeorient_id'] );
+		$avisEPStructure = Set::classicExtract( $structuresreferentes, $passagecommissionep['Decisiondefautinsertionep66'][0]['structurereferente_id'] );
+		$avisEPReferent = Set::classicExtract( $options['Bilanparcours66']['nvsansep_referent_id'], $passagecommissionep['Decisiondefautinsertionep66'][0]['referent_id'] );
+
 		echo $html->tag(
 			'p',
 			$options['Decisiondefautinsertionep66']['decision'][$avisep['decision']]
 		);
+		
+		echo $html->tag(
+			'p',
+			'<strong>Type d\'orientation : </strong>'.$avisEPTypeorient
+		);
+		
+		echo $html->tag(
+			'p',
+			'<strong>Structure référente : </strong>'.$avisEPStructure
+		);
+		
+		echo $html->tag(
+			'p',
+			'<strong>Nom du prescripteur : </strong>'.$avisEPReferent
+		);
+		
+		
+		
 		echo $html->tag(
 			'p',
 			"Argumentaire précis (avis motivé) de l'EP Locale :",
@@ -1182,74 +1205,7 @@ elseif ( $this->action == 'edit' && !empty( $dossierpcg66['Decisiondossierpcg66'
 		echo '</fieldset>';
 	}
 }
-/*elseif ( $this->action == 'edit' && isset( $passagecommissionep['Decisiondefautinsertionep66'][1]['id'] ) && !empty( $passagecommissionep['Decisiondefautinsertionep66'][1]['id'] ) ) {
-
-	$decisioncg = $passagecommissionep['Decisiondefautinsertionep66'][1];
-	if ( isset( $passagecommissionep['Decisiondefautinsertionep66'][1]['decisionsup'] ) && !empty( $passagecommissionep['Decisiondefautinsertionep66'][1]['decisionsup'] ) ) {
-		echo $html->tag(
-			'p',
-			'DECISION DU COORDONNATEUR TECHNIQUE',
-			array(
-				'style' => 'text-align: center; font-size: 14px; font-weight:bold;'
-			)
-		);
-		echo '<fieldset><legend><strong>Suite à l\'avis de l\'EP Locale "Commission Audition"</strong></legend>';
-			echo $xhtml->tag(
-				'p',
-				$options['Decisiondefautinsertionep66']['decision'][$decisioncg['decision']]
-			);
-			$accord = ( $avisep['decision'] == $decisioncg['decision'] ) ? 'Oui' : 'Non';
-			echo $xhtml->tag(
-				'p',
-				"En accord avec l'avis de l'EPL commission Audition : ".$accord
-			);
-			echo $html->tag(
-				'p',
-				"Commentaire :",
-				array(
-					'style' => 'font-weight:bold; text-decoration:underline'
-				)
-			);
-			echo $html->tag(
-				'p',
-				$avisep['commentaire']
-			);
-		echo '</fieldset>';
-	}
-
-	echo $html->tag(
-		'p',
-		'DECISION DE LA CGA',
-		array(
-			'style' => 'text-align: center; font-size: 14px; font-weight:bold;'
-		)
-	);
-
-	echo '<fieldset><legend>Suite à l\'avis de l\'EP Locale "Commission Audition"</legend>';
-		if ( isset( $passagecommissionep['Decisiondefautinsertionep66'][1]['decisionsup'] ) && !empty( $passagecommissionep['Decisiondefautinsertionep66'][1]['decisionsup'] ) ) {
-			echo $xhtml->tag(
-				'p',
-				$options['Decisiondefautinsertionep66']['decisionsup'][$decisioncg['decisionsup']]
-			);
-			$accord = ( $avisep['decisionsup'] == $decisioncg['decisionsup'] ) ? 'Oui' : 'Non';
-			echo $xhtml->tag(
-				'p',
-				"En accord avec l'avis de l'EPL commission Audition : ".$accord
-			);
-		}
-		else {
-			echo $xhtml->tag(
-				'p',
-				$options['Decisiondefautinsertionep66']['decision'][$decisioncg['decision']]
-			);
-			$accord = ( $avisep['decision'] == $decisioncg['decision'] || $avisep['decisionsup'] == $decisioncg['decisionsup'] || $avisep['decision'] == $decisioncg['decisionsup'] ) ? 'Oui' : 'Non';
-			echo $xhtml->tag(
-				'p',
-				"En accord avec l'avis de l'EPL commission Audition : ".$accord
-			);
-		}
-	echo '</fieldset>';
-}*/ ?>
+?>
 
 	</div>
 	<?php echo $form->end();?>
