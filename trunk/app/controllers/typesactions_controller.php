@@ -1,12 +1,12 @@
 <?php
 
-	class TypesactionsController extends Appcontroller
+	class TypesactionsController extends AppController
 	{
 
 		public $name = 'Typesactions';
 		public $uses = array( 'Actioninsertion', 'Aidedirecte', 'Prestform', 'Option', 'Refpresta', 'Action', 'Typeaction' );
 		public $helpers = array( 'Xform' );
-		
+
 		public $commeDroit = array(
 			'add' => 'Typesactions:edit'
 		);

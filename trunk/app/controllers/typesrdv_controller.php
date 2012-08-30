@@ -1,11 +1,11 @@
 <?php
-	class TypesrdvController extends Appcontroller
+	class TypesrdvController extends AppController
 	{
 
 		public $name = 'Typesrdv';
 		public $uses = array( 'Rendezvous', 'Option', 'Typerdv' );
 		public $helpers = array( 'Xform' );
-		
+
 		public $commeDroit = array(
 			'add' => 'Typesrdv:edit'
 		);
