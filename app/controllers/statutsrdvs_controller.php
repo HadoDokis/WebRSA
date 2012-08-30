@@ -1,12 +1,12 @@
 <?php
 
-	class StatutsrdvsController extends Appcontroller
+	class StatutsrdvsController extends AppController
 	{
 
 		public $name = 'Statutsrdvs';
 		public $uses = array( 'Rendezvous', 'Option', 'Statutrdv' );
 		public $helpers = array( 'Xform' );
-		
+
 		public $commeDroit = array(
 			'add' => 'Statutsrdvs:edit'
 		);

@@ -1,5 +1,5 @@
 <?php
-	class SignalementsepsController extends Appcontroller
+	class SignalementsepsController extends AppController
 	{
 
 		public $uses = array( 'Signalementep93' );

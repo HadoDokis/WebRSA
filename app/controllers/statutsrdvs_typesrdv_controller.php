@@ -1,12 +1,12 @@
 <?php
 
-	class StatutsrdvsTypesrdvController extends Appcontroller
+	class StatutsrdvsTypesrdvController extends AppController
 	{
 
 		public $name = 'StatutsrdvsTypesrdv';
 		public $uses = array( 'StatutrdvTyperdv', 'Option' );
 		public $helpers = array( 'Default2' );
-		
+
 		public $commeDroit = array(
 			'add' => 'StatutsrdvsTypesrdv:edit'
 		);
@@ -42,7 +42,7 @@
 
 			$this->_setOptions();
 			$this->set( 'statutsrdvs_typesrdv', $this->paginate( $this->StatutrdvTyperdv ) );
-			
+
 			$this->_setOptions();
 		}
 
