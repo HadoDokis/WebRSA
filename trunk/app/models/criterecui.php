@@ -4,6 +4,8 @@
 		public $name = 'Criterecui';
 
 		public $useTable = false;
+		
+		public $actsAs = array( 'Conditionnable' );
 
 		/**
 		*
@@ -13,22 +15,21 @@
 			/// Conditions de base
 			$conditions = array();
 
-			/// Filtre zone géographique
-			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
-
 			/// Dossiers lockés
 			if( !empty( $lockedDossiers ) ) {
 				$conditions[] = 'Dossier.id NOT IN ( '.implode( ', ', $lockedDossiers ).' )';
 			}
 
+			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
+			$conditions = $this->conditionsAdresse( $conditions, $criterescuis, $filtre_zone_geo, $mesCodesInsee );
+			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $criterescuis );
+			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $criterescuis );
+			
 			/// Critères
-			$datecontrat = Set::extract( $criterescuis, 'Search.Cui.datecontrat' );
-			$secteur = Set::extract( $criterescuis, 'Search.Cui.secteur' );
-			$nir = Set::extract( $criterescuis, 'Search.Cui.nir' );
-			$nom = Set::extract( $criterescuis, 'Search.Personne.nom' );
-			$prenom = Set::extract( $criterescuis, 'Search.Personne.prenom' );
-			$matricule = Set::extract( $criterescuis, 'Search.Dossier.matricule' );
-			$numdemrsa = Set::extract( $criterescuis, 'Search.Dossier.numdemrsa' );
+			$datecontrat = Set::extract( $criterescuis, 'Cui.datecontrat' );
+			$secteur = Set::extract( $criterescuis, 'Cui.secteur' );
+			$nir = Set::extract( $criterescuis, 'Cui.nir' );
+
 
 			/// Critères sur le CI - date de saisi contrat
 			if( isset( $criterescuis['Cui']['datecontrat'] ) && !empty( $criterescuis['Cui']['datecontrat'] ) ) {
@@ -37,46 +38,6 @@
 				if( $valid_from && $valid_to ) {
 					$conditions[] = 'Cui.datecontrat BETWEEN \''.implode( '-', array( $criterescuis['Cui']['datecontrat_from']['year'], $criterescuis['Cui']['datecontrat_from']['month'], $criterescuis['Cui']['datecontrat_from']['day'] ) ).'\' AND \''.implode( '-', array( $criterescuis['Cui']['datecontrat_to']['year'], $criterescuis['Cui']['datecontrat_to']['month'], $criterescuis['Cui']['datecontrat_to']['day'] ) ).'\'';
 				}
-			}
-
-			// Critères sur une personne du foyer - nom, prénom, nom de jeune fille -> FIXME: seulement demandeur pour l'instant
-			if( !empty( $nom ) ) {
-				$conditions[] = 'Personne.nom ILIKE \''.$this->wildcard( $nom ).'\'';
-			}
-			if( !empty( $prenom ) ) {
-				$conditions[] = 'Personne.prenom ILIKE \''.$this->wildcard( $prenom ).'\'';
-			}
-
-			// Localité adresse
-			if( !empty( $locaadr ) ) {
-				$conditions[] = 'Adresse.locaadr ILIKE \'%'.Sanitize::clean( $locaadr ).'%\'';
-			}
-
-			// ...
-			if( !empty( $matricule ) ) {
-				$conditions[] = 'Dossier.matricule = \''.Sanitize::clean( $matricule ).'\'';
-			}
-			// ...
-			if( !empty( $numdemrsa ) ) {
-				$conditions[] = 'Dossier.numdemrsa = \''.Sanitize::clean( $numdemrsa ).'\'';
-			}
-
-			/// Critères sur l'adresse - canton
-			if( Configure::read( 'CG.cantons' ) ) {
-				if( isset( $criterescuis['Canton']['canton'] ) && !empty( $criterescuis['Canton']['canton'] ) ) {
-					$this->Canton = ClassRegistry::init( 'Canton' );
-					$conditions[] = $this->Canton->queryConditions( $criterescuis['Canton']['canton'] );
-				}
-			}
-
-			// NIR
-			if( !empty( $nir ) ) {
-				$conditions[] = 'Personne.nir ILIKE \'%'.Sanitize::clean( $nir ).'%\'';
-			}
-
-			// Commune au sens INSEE
-			if( !empty( $numcomptt ) ) {
-				$conditions[] = 'Adresse.numcomptt ILIKE \'%'.Sanitize::clean( $numcomptt ).'%\'';
 			}
 
 			// Secteur du contrat
@@ -90,42 +51,6 @@
 				$conditions[] = 'PersonneReferent.referent_id = \''.Sanitize::clean( $referent_id ).'\'';
 			}
 
-			// Trouver la dernière demande RSA pour chacune des personnes du jeu de résultats
-			if( $criterescuis['Dossier']['dernier'] ) {
-				$conditions[] = 'Dossier.id IN (
-					SELECT
-							dossiers.id
-						FROM personnes
-							INNER JOIN prestations ON (
-								personnes.id = prestations.personne_id
-								AND prestations.natprest = \'RSA\'
-							)
-							INNER JOIN foyers ON (
-								personnes.foyer_id = foyers.id
-							)
-							INNER JOIN dossiers ON (
-								dossiers.id = foyers.dossier_id
-							)
-						WHERE
-							prestations.rolepers IN ( \'DEM\', \'CJT\' )
-							AND (
-								(
-									nir_correct13( Personne.nir )
-									AND nir_correct13( personnes.nir )
-									AND SUBSTRING( TRIM( BOTH \' \' FROM personnes.nir ) FROM 1 FOR 13 ) = SUBSTRING( TRIM( BOTH \' \' FROM Personne.nir ) FROM 1 FOR 13 )
-									AND personnes.dtnai = Personne.dtnai
-								)
-								OR
-								(
-									UPPER(personnes.nom) = UPPER(Personne.nom)
-									AND UPPER(personnes.prenom) = UPPER(Personne.prenom)
-									AND personnes.dtnai = Personne.dtnai
-								)
-							)
-						ORDER BY dossiers.dtdemrsa DESC
-						LIMIT 1
-				)';
-			}
 			/// Requête
 			$this->Dossier = ClassRegistry::init( 'Dossier' );
 
