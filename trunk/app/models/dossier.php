@@ -276,6 +276,22 @@
 			}
 
 
+			$referent_id = Set::classicExtract( $params, 'PersonneReferent.referent_id' );
+			if( !empty( $referent_id ) ) {
+				$conditionsReferent = 'PersonneReferent.referent_id = \''.Sanitize::clean( $referent_id ).'\'';
+
+				$conditions[] = 'Personne.id IN (
+									SELECT personnes_referents.personne_id
+										FROM personnes_referents
+											INNER JOIN personnes ON (
+												personnes_referents.personne_id = personnes.id
+											)
+										WHERE
+											personnes_referents.dfdesignation IS NULL
+											AND '.$conditionsReferent.'
+								)';
+			}
+			
 			$query = array(
 				'fields' => array(
 					'Dossier.id',
@@ -300,18 +316,20 @@
 					'Adresse.codepos',
 					'Adresse.locaadr',
 					'Situationdossierrsa.etatdosrsa',
-					'Prestation.rolepers'
+					'Prestation.rolepers',
+					'PersonneReferent.referent_id'
 				),
 				'recursive' => -1,
 				'joins' => array(
 					$this->join( 'Foyer', array( 'type' => 'INNER' ) ),
 					$this->Foyer->join( 'Personne', array( 'type' => 'INNER' ) ),
-					$this->Foyer->Personne->join( 'Prestation', array( 'type' => $typeJointure ) ), //FIXME: utilisé car certaines rolepers sont à NULL
+					$this->Foyer->Personne->join( 'Prestation', array( 'type' => $typeJointure ) ),
 					$this->Foyer->Personne->join( 'Calculdroitrsa', array( 'type' => 'LEFT OUTER' ) ),
 					$this->join( 'Situationdossierrsa', array( 'type' => 'INNER' ) ),
 					$this->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
 					$this->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
 					$this->join( 'Detaildroitrsa', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Foyer->Personne->join( 'PersonneReferent', array( 'type' => 'LEFT OUTER' ) ),
 				),
 				'limit' => 10,
 				'order' => array( 'Personne.nom ASC' ),
