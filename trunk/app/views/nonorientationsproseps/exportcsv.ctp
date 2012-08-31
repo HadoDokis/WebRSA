@@ -22,3 +22,4 @@
 
 	Configure::write( 'debug', 0 );
 	echo $csv->render( 'listes_demande_maintien_social'.date( 'Ymd-Hhm' ).'.csv' );
+?>
