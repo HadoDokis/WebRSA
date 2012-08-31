@@ -5,8 +5,8 @@
 
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
-		observeDisableFieldsetOnCheckbox( 'CritereDateValid', $( 'CritereDateValidFromDay' ).up( 'fieldset' ), false );
-		observeDisableFieldsetOnCheckbox( 'CritereDtdemrsa', $( 'CritereDtdemrsaFromDay' ).up( 'fieldset' ), false );
+		observeDisableFieldsetOnCheckbox( 'OrientstructDateValid', $( 'OrientstructDateValidFromDay' ).up( 'fieldset' ), false );
+		observeDisableFieldsetOnCheckbox( 'DossierDtdemrsa', $( 'DossierDtdemrsaFromDay' ).up( 'fieldset' ), false );
 	});
 </script>
 
@@ -39,16 +39,16 @@
 		<legend>Recherche par dossier</legend>
 		<?php echo $form->input( 'Critere.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
 		<?php //echo $form->input( 'Critere.etatdosrsa', array( 'label' => 'Situation dossier rsa', 'type' => 'select', 'options' => $etatdosrsa, 'empty' => true ) );?>
-		<?php echo $form->input( 'Critere.natpf', array( 'label' => 'Nature de la prestation', 'type' => 'select', 'options' => $natpf, 'empty' => true ) );?>
-		<?php echo $form->input( 'Critere.dtdemrsa', array( 'label' => 'Filtrer par date d\'ouverture de droit', 'type' => 'checkbox' ) );?>
+		<?php echo $form->input( 'Detailcalculdroitrsa.natpf', array( 'label' => 'Nature de la prestation', 'type' => 'select', 'options' => $natpf, 'empty' => true ) );?>
+		<?php echo $form->input( 'Dossier.dtdemrsa', array( 'label' => 'Filtrer par date d\'ouverture de droit', 'type' => 'checkbox' ) );?>
 		<fieldset>
 			<legend>Date de demande RSA</legend>
 			<?php
-				$dtdemrsa_from = Set::check( $this->data, 'Critere.dtdemrsa_from' ) ? Set::extract( $this->data, 'Critere.dtdemrsa_from' ) : strtotime( '-1 week' );
-				$dtdemrsa_to = Set::check( $this->data, 'Critere.dtdemrsa_to' ) ? Set::extract( $this->data, 'Critere.dtdemrsa_to' ) : strtotime( 'now' );
+				$dtdemrsa_from = Set::check( $this->data, 'Dossier.dtdemrsa_from' ) ? Set::extract( $this->data, 'Dossier.dtdemrsa_from' ) : strtotime( '-1 week' );
+				$dtdemrsa_to = Set::check( $this->data, 'Dossier.dtdemrsa_to' ) ? Set::extract( $this->data, 'Dossier.dtdemrsa_to' ) : strtotime( 'now' );
 			?>
-			<?php echo $form->input( 'Critere.dtdemrsa_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $dtdemrsa_from ) );?>
-			<?php echo $form->input( 'Critere.dtdemrsa_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120,  'maxYear' => date( 'Y' ) + 5, 'selected' => $dtdemrsa_to ) );?>
+			<?php echo $form->input( 'Dossier.dtdemrsa_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $dtdemrsa_from ) );?>
+			<?php echo $form->input( 'Dossier.dtdemrsa_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120,  'maxYear' => date( 'Y' ) + 5, 'selected' => $dtdemrsa_to ) );?>
 		</fieldset>
 		<?php
 			$valueDossierDernier = isset( $this->data['Dossier']['dernier'] ) ? $this->data['Dossier']['dernier'] : true;
@@ -58,13 +58,13 @@
 	</fieldset>
 	<fieldset>
 		<legend>Recherche par personne</legend>
-		<?php echo $form->input( 'Critere.nom', array( 'label' => 'Nom ', 'type' => 'text' ) );?>
-		<?php echo $form->input( 'Critere.prenom', array( 'label' => 'Prénom ', 'type' => 'text' ) );?>
-		<?php echo $form->input( 'Critere.dtnai', array( 'label' => 'Date de naissance', 'type' => 'date', 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 80, 'maxYear' => date( 'Y' ), 'empty' => true ) );?>
-		<?php echo $form->input( 'Critere.nir', array( 'label' => 'NIR', 'maxlength' => 15 ) );?>
-		<?php echo $form->input( 'Critere.matricule', array( 'label' => 'N° CAF', 'maxlength' => 15 ) );?>
-		<?php echo $form->input( 'Critere.locaadr', array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );?>
-		<?php echo $form->input( 'Critere.identifiantpe', array( 'label' => 'Identifiant Pôle Emploi ', 'type' => 'text', 'maxlength' => 11 ) );?>
+		<?php echo $form->input( 'Personne.nom', array( 'label' => 'Nom ', 'type' => 'text' ) );?>
+		<?php echo $form->input( 'Personne.prenom', array( 'label' => 'Prénom ', 'type' => 'text' ) );?>
+		<?php echo $form->input( 'Personne.dtnai', array( 'label' => 'Date de naissance', 'type' => 'date', 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 80, 'maxYear' => date( 'Y' ), 'empty' => true ) );?>
+		<?php echo $form->input( 'Personne.nir', array( 'label' => 'NIR', 'maxlength' => 15 ) );?>
+		<?php echo $form->input( 'Dossier.matricule', array( 'label' => 'N° CAF', 'maxlength' => 15 ) );?>
+		<?php echo $form->input( 'Adresse.locaadr', array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );?>
+		<?php echo $form->input( 'Historiqueetatpe.identifiantpe', array( 'label' => 'Identifiant Pôle Emploi ', 'type' => 'text', 'maxlength' => 11 ) );?>
 		<?php echo $form->input( 'Adresse.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );?>
 		<?php
 			if( Configure::read( 'CG.cantons' ) ) {
@@ -80,15 +80,15 @@
 			$valueOrientstructDerniere = isset( $this->data['Orientstruct']['derniere'] ) ? $this->data['Orientstruct']['derniere'] : false;
 			echo $form->input( 'Orientstruct.derniere', array( 'label' => 'Uniquement la dernière orientation pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueOrientstructDerniere ) );
 		?>
-		<?php echo $form->input( 'Critere.date_valid', array( 'label' => 'Filtrer par date d\'orientation', 'type' => 'checkbox' ) );?>
+		<?php echo $form->input( 'Orientstruct.date_valid', array( 'label' => 'Filtrer par date d\'orientation', 'type' => 'checkbox' ) );?>
 			<fieldset>
 				<legend>Date d'orientation</legend>
 				<?php
-					$date_valid_from = Set::check( $this->data, 'Critere.date_valid_from' ) ? Set::extract( $this->data, 'Critere.date_valid_from' ) : strtotime( '-1 week' );
-					$date_valid_to = Set::check( $this->data, 'Critere.date_valid_to' ) ? Set::extract( $this->data, 'Critere.date_valid_to' ) : strtotime( 'now' );
+					$date_valid_from = Set::check( $this->data, 'Orientstruct.date_valid_from' ) ? Set::extract( $this->data, 'Orientstruct.date_valid_from' ) : strtotime( '-1 week' );
+					$date_valid_to = Set::check( $this->data, 'Orientstruct.date_valid_to' ) ? Set::extract( $this->data, 'Orientstruct.date_valid_to' ) : strtotime( 'now' );
 				?>
-				<?php echo $form->input( 'Critere.date_valid_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $date_valid_from ) );?>
-				<?php echo $form->input( 'Critere.date_valid_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120,  'maxYear' => date( 'Y' ) + 5, 'selected' => $date_valid_to ) );?>
+				<?php echo $form->input( 'Orientstruct.date_valid_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $date_valid_from ) );?>
+				<?php echo $form->input( 'Orientstruct.date_valid_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120,  'maxYear' => date( 'Y' ) + 5, 'selected' => $date_valid_to ) );?>
 			</fieldset>
 			
 	<?php if( Configure::read( 'Cg.departement' ) == 66 ):?>
@@ -100,14 +100,14 @@
 			?>
 			<script type="text/javascript">
 				document.observe("dom:loaded", function() {
-					dependantSelect( 'CritereReferentorientantId', 'CritereStructureorientanteId' );
+					dependantSelect( 'OrientstructReferentorientantId', 'OrientstructStructureorientanteId' );
 				});
 			</script>
 
 			<?php
 
-				echo $form->input( 'Critere.structureorientante_id', array( 'label' => 'Structure', 'type' => 'select', 'options' => $structsorientantes, 'empty' => true ) );
-				echo $form->input( 'Critere.referentorientant_id', array(  'label' => 'Nom du professionnel', 'type' => 'select', 'options' => $refsorientants,  'empty' => true ) );
+				echo $form->input( 'Orientstruct.structureorientante_id', array( 'label' => 'Structure', 'type' => 'select', 'options' => $structsorientantes, 'empty' => true ) );
+				echo $form->input( 'Orientstruct.referentorientant_id', array(  'label' => 'Nom du professionnel', 'type' => 'select', 'options' => $refsorientants,  'empty' => true ) );
 			?>
 		</fieldset>
 	<?php endif;?>
@@ -115,18 +115,18 @@
 			
 		<?php
 			if( Configure::read( 'Cg.departement' ) == 93 ) {
-				echo $form->input( 'Critere.origine', array( 'label' => __d( 'orientstruct', 'Orientstruct.origine', true ), 'type' => 'select', 'options' => $options['Orientstruct']['origine'], 'empty' => true ) );
+				echo $form->input( 'Orientstruct.origine', array( 'label' => __d( 'orientstruct', 'Orientstruct.origine', true ), 'type' => 'select', 'options' => $options['Orientstruct']['origine'], 'empty' => true ) );
 			}
 		?>
 
-		<?php echo $form->input( 'Critere.typeorient_id', array( 'label' =>  __d( 'structurereferente', 'Structurereferente.lib_type_orient', true ), 'type' => 'select' , 'options' => $typeorient, 'empty' => true ) );?>
+		<?php echo $form->input( 'Orientstruct.typeorient_id', array( 'label' =>  __d( 'structurereferente', 'Structurereferente.lib_type_orient', true ), 'type' => 'select' , 'options' => $typeorient, 'empty' => true ) );?>
 
-		<?php echo $form->input( 'Critere.structurereferente_id', array( 'label' => 'Nom de la structure', 'type' => 'select' , 'options' => $sr, 'empty' => true  ) );?>
-	<?php echo $ajax->observeField( 'CritereTypeorientId', array( 'update' => 'CritereStructurereferenteId', 'url' => Router::url( array( 'action' => 'ajaxstruc' ), true ) ) );?>
+		<?php echo $form->input( 'Orientstruct.structurereferente_id', array( 'label' => 'Nom de la structure', 'type' => 'select' , 'options' => $sr, 'empty' => true  ) );?>
+	<?php echo $ajax->observeField( 'OrientstructTypeorientId', array( 'update' => 'OrientstructStructurereferenteId', 'url' => Router::url( array( 'action' => 'ajaxstruc' ), true ) ) );?>
 
-		<?php echo $form->input( 'Critere.referent_id', array( 'label' => 'Nom du référent', 'type' => 'select' , 'options' => $referents, 'empty' => true  ) );?>
-		<?php echo $form->input( 'Critere.statut_orient', array( 'label' => 'Statut de l\'orientation', 'type' => 'select', 'options' => $statuts, 'empty' => true ) );?>
-		<?php echo $form->input( 'Critere.serviceinstructeur_id', array( 'label' => __( 'lib_service', true ), 'type' => 'select' , 'options' => $typeservice, 'empty' => true ) );?>
+		<?php echo $form->input( 'Orientstruct.referent_id', array( 'label' => 'Nom du référent', 'type' => 'select' , 'options' => $referents, 'empty' => true  ) );?>
+		<?php echo $form->input( 'Orientstruct.statut_orient', array( 'label' => 'Statut de l\'orientation', 'type' => 'select', 'options' => $statuts, 'empty' => true ) );?>
+		<?php echo $form->input( 'Orientstruct.serviceinstructeur_id', array( 'label' => __( 'lib_service', true ), 'type' => 'select' , 'options' => $typeservice, 'empty' => true ) );?>
 	</fieldset>
 
 	<div class="submit noprint">
