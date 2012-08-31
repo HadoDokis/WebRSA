@@ -1,7 +1,7 @@
 <?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 
 <?php
-    $this->pageTitle = 'Entretiens';
+    $this->pageTitle = 'Recherche par Entretiens';
 ?>
 
 <h1><?php echo $this->pageTitle;?></h1>
