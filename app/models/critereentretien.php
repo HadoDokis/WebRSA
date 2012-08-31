@@ -19,6 +19,9 @@
 
 			/// Critères zones géographiques
 			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
+			$conditions = $this->conditionsAdresse( $conditions, $criteresentretiens, $filtre_zone_geo, $mesCodesInsee );
+			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $criteresentretiens );
+			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $criteresentretiens );
 
 			/// Dossiers lockés
 			if( !empty( $lockedDossiers ) ) {
@@ -28,49 +31,12 @@
 			/// Critères
 			$numeroapre = Set::extract( $criteresentretiens, 'Apre.numeroapre' );
 			$referent = Set::extract( $criteresentretiens, 'Apre.referent_id' );
-			$locaadr = Set::extract( $criteresentretiens, 'Adresse.locaadr' );
-			$numcomptt = Set::extract( $criteresentretiens, 'Adresse.numcomptt' );
 			$structure = Set::extract( $criteresentretiens, 'Entretien.structurereferente_id' );
 			$referent = Set::extract( $criteresentretiens, 'Entretien.referent_id' );
-
-
-
-			// Critères sur une personne du foyer - nom, prénom, nom de jeune fille -> FIXME: seulement demandeur pour l'instant
-			foreach( array( 'nom', 'prenom', 'nomnai', 'nir' ) as $criterePersonne ) {
-				if( isset( $criteresentretiens['Personne'][$criterePersonne] ) && !empty( $criteresentretiens['Personne'][$criterePersonne] ) ) {
-					$conditions[] = 'Personne.'.$criterePersonne.' ILIKE \''.$this->wildcard( $criteresentretiens['Personne'][$criterePersonne] ).'\'';
-				}
-			}
-
-			// Localité adresse
-			if( !empty( $locaadr ) ) {
-				$conditions[] = 'Adresse.locaadr ILIKE \'%'.Sanitize::clean( $locaadr ).'%\'';
-			}
-
-
-			/// Critères sur l'adresse - canton
-			if( Configure::read( 'CG.cantons' ) ) {
-				if( isset( $criteresentretiens['Canton']['canton'] ) && !empty( $criteresentretiens['Canton']['canton'] ) ) {
-					$this->Canton = ClassRegistry::init( 'Canton' );
-					$conditions[] = $this->Canton->queryConditions( $criteresentretiens['Canton']['canton'] );
-				}
-			}
-
-			// Commune au sens INSEE
-			if( !empty( $numcomptt ) ) {
-				$conditions[] = 'Adresse.numcomptt ILIKE \'%'.Sanitize::clean( $numcomptt ).'%\'';
-			}
 
 			// Référent lié à l'APRE
 			if( !empty( $arevoirle ) ) {
 				$conditions[] = 'Entretien.arevoirle = \''.Sanitize::clean( $arevoirle ).'\'';
-			}
-
-			//Critères sur le dossier de l'allocataire - numdemrsa + matricule
-			foreach( array( 'numdemrsa', 'matricule' ) as $critereDossier ) {
-				if( isset( $criteresentretiens['Dossier'][$critereDossier] ) && !empty( $criteresentretiens['Dossier'][$critereDossier] ) ) {
-					$conditions[] = 'Dossier.'.$critereDossier.' ILIKE \''.$this->wildcard( $criteresentretiens['Dossier'][$critereDossier] ).'\'';
-				}
 			}
 
 			if( isset( $criteresentretiens['Entretien']['arevoirle'] ) && !empty( $criteresentretiens['Entretien']['arevoirle'] ) ) {
@@ -90,8 +56,6 @@
 				$conditions[] = array('Entretien.referent_id'=>$criteresentretiens['Entretien']['referent_id']);
 			}
 
-			// Trouver la dernière demande RSA pour chacune des personnes du jeu de résultats
-			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $criteresentretiens );
 
 			/// Requête
 			$this->Dossier = ClassRegistry::init( 'Dossier' );
@@ -168,6 +132,13 @@
 					'type'       => 'LEFT OUTER',
 					'foreignKey' => false,
 					'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
+				),
+				array(
+					'table'      => 'situationsdossiersrsa',
+					'alias'      => 'Situationdossierrsa',
+					'type'       => 'LEFT OUTER',
+					'foreignKey' => false,
+					'conditions' => array( 'Situationdossierrsa.dossier_id = Dossier.id' )
 				)
 			);
 

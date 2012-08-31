@@ -28,42 +28,38 @@
 </script>
 
 <?php echo $xform->create( 'Critereentretien', array( 'type' => 'post', 'action' => $this->action,  'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );?>
-
-        <fieldset>
-            <?php echo $xform->input( 'Critereentretien.index', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
-
-            <legend>Filtrer par Entretiens</legend>
-            <?php
-                $valueDossierDernier = isset( $this->data['Dossier']['dernier'] ) ? $this->data['Dossier']['dernier'] : true;
-                echo $default2->subform(
-                    array(
-                        'Entretien.arevoirle' => array( 'label' => __d( 'entretien', 'Entretien.arevoirle', true ), 'type' => 'date', 'dateFormat' => 'MY', 'empty' => true, 'minYear' => date( 'Y' ) - 2, 'maxYear' => date( 'Y' ) + 2 ),
-                        'Entretien.structurereferente_id' => array( 'label' => __d( 'entretien', 'Entretien.structurereferente_id', true ), 'empty' => true, 'options' => $structs ),
-                        'Entretien.referent_id' => array( 'label' => __d( 'entretien', 'Entretien.referent_id', true ), 'empty' => true, 'options' => $referents  ),
-                        'Personne.nom' => array( 'label' => __d( 'personne', 'Personne.nom', true ), 'type' => 'text' ),
-                        'Personne.prenom' => array( 'label' => __d( 'personne', 'Personne.prenom', true ), 'type' => 'text' ),
-                        'Personne.nomnai' => array( 'label' => __d( 'personne', 'Personne.nomnai', true ), 'type' => 'text' ),
-                        'Personne.nir' => array( 'label' => __d( 'personne', 'Personne.nir', true ), 'type' => 'text', 'maxlength' => 15 ),
-                        'Dossier.matricule' => array( 'label' => __d( 'dossier', 'Dossier.matricule', true ), 'type' => 'text', 'maxlength' => 15 ),
-                        'Dossier.numdemrsa' => array( 'label' => __d( 'dossier', 'Dossier.numdemrsa', true ), 'type' => 'text', 'maxlength' => 15 ),
-                        'Dossier.dernier' => array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueDossierDernier )
-
-                    ),
-                    array(
-                        'options' => $options
-                    )
-                );
-
-            ?>
+	<?php echo $xform->input( 'Critereentretien.index', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
+	<?php
+		echo $search->blocAllocataire();
+		echo $search->blocAdresse( $mesCodesInsee, $cantons );
+	?>
+	<fieldset>
+		<legend>Recherche par dossier</legend>
 		<?php 
-			if( Configure::read( 'CG.cantons' ) ) {
-				echo $form->input( 'Canton.canton', array( 'label' => 'Canton', 'type' => 'select', 'options' => $cantons, 'empty' => true ) );
-			}
-			echo $form->input( 'Adresse.locaadr', array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );
-			echo $form->input( 'Adresse.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );
+			echo $form->input( 'Dossier.numdemrsa', array( 'label' => 'Numéro de demande RSA' ) );
+			echo $form->input( 'Dossier.matricule', array( 'label' => 'N° CAF', 'maxlength' => 15 ) );
+			
+			$valueDossierDernier = isset( $this->data['Dossier']['dernier'] ) ? $this->data['Dossier']['dernier'] : true;
+			echo $form->input( 'Dossier.dernier', array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueDossierDernier ) );
+			echo $search->etatdosrsa($etatdosrsa);
 		?>
-
-        </fieldset>
+	</fieldset>
+	<fieldset>
+		<legend>Filtrer par Entretiens</legend>
+		<?php
+			$valueDossierDernier = isset( $this->data['Dossier']['dernier'] ) ? $this->data['Dossier']['dernier'] : true;
+			echo $default2->subform(
+				array(
+					'Entretien.arevoirle' => array( 'label' => __d( 'entretien', 'Entretien.arevoirle', true ), 'type' => 'date', 'dateFormat' => 'MY', 'empty' => true, 'minYear' => date( 'Y' ) - 2, 'maxYear' => date( 'Y' ) + 2 ),
+					'Entretien.structurereferente_id' => array( 'label' => __d( 'entretien', 'Entretien.structurereferente_id', true ), 'empty' => true, 'options' => $structs ),
+					'Entretien.referent_id' => array( 'label' => __d( 'entretien', 'Entretien.referent_id', true ), 'empty' => true, 'options' => $referents  )
+				),
+				array(
+					'options' => $options
+				)
+			);
+		?>
+	</fieldset>
 
     <div class="submit noprint">
         <?php echo $xform->button( 'Rechercher', array( 'type' => 'submit' ) );?>

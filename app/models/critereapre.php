@@ -279,6 +279,13 @@
 						'type'       => 'INNER',
 						'foreignKey' => false,
 						'conditions' => array( 'Referent.id = Apre.referent_id' )
+					),
+					array(
+						'table'      => 'situationsdossiersrsa',
+						'alias'      => 'Situationdossierrsa',
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array( 'Situationdossierrsa.dossier_id = Dossier.id' )
 					)
 				),
 				'limit' => 10,
