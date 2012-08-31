@@ -10,7 +10,7 @@
 	class CommissionsepsController extends AppController
 	{
 
-		public $helpers = array( 'Default', 'Default2', 'Ajax' );
+		public $helpers = array( 'Default', 'Default2', 'Ajax', 'Csv' );
 		public $uses = array( 'Commissionep', 'Option' );
 		public $components = array( 'Prg' => array( 'actions' => array( 'index', 'creationmodification', 'attributiondossiers', 'arbitrageep', 'arbitragecg', 'recherche', 'decisions' ) ), 'Gedooo.Gedooo' );
 		public $commeDroit = array(
@@ -674,15 +674,16 @@
 
 			if( Configure::read( 'Cg.departement' ) == 58 ) {
 				$querydata['contain']['Dossierep'] = array_merge(
-						$querydata['contain']['Dossierep'], array(
-					'Nonorientationproep58' => array(
-						'Decisionpropononorientationprocov58' => array(
-							'Passagecov58' => array(
-								'Cov58'
+					$querydata['contain']['Dossierep'],
+					array(
+						'Nonorientationproep58' => array(
+							'Decisionpropononorientationprocov58' => array(
+								'Passagecov58' => array(
+									'Cov58'
+								)
 							)
 						)
 					)
-						)
 				);
 
 				$querydata['contain']['Dossierep']['Personne'] = array_merge(
@@ -1328,5 +1329,66 @@
 			}
 		}
 
+		
+		/**
+		* Export du tableau en CSV de l'écran de synthèse des commissions d'EP CG58
+		*/
+
+		public function exportcsv( $commissionep_id = null ) {
+
+			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
+
+
+			$querydata = array(
+				'conditions' => array(
+					'Passagecommissionep.commissionep_id' => $commissionep_id
+				),
+				'contain' => array(
+					'Dossierep' => array(
+						'Personne' => array(
+							'Foyer' => array(
+								'Adressefoyer' => array(
+									'conditions' => array(
+										'Adressefoyer.rgadr' => '01'
+									),
+									'Adresse'
+								),
+								'Dossier' => array(
+									'fields' => array(
+										'Dossier.matricule'
+									)
+								)
+							),
+							'Orientstruct' => array(
+								'order' => array( 'Orientstruct.date_valid DESC' )
+							)
+						),
+						'Nonorientationproep58' => array(
+							'Decisionpropononorientationprocov58' => array(
+								'Passagecov58' => array(
+									'Cov58'
+								)
+							)
+						)
+					)
+				)
+			);
+
+			$dossierseps = $this->Commissionep->Passagecommissionep->find( 'all', $querydata );
+
+			$this->_setOptions();
+			
+// 			$queryData = $this->{$this->modelClass}->searchNonReoriente( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), Xset::bump( $this->params['named'], '__' ) );
+// 			unset( $dossierseps['limit'] );
+
+// 			$orientsstructs = $this->{$this->modelClass}->Orientstruct->find( 'all', $queryData );
+// debug($orientsstructs);
+// die();
+			$this->layout = ''; // FIXME ?
+			$this->set( compact( 'dossierseps' ) );
+
+		}
+		
 	}
 ?>

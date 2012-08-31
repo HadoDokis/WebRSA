@@ -415,6 +415,15 @@
 										),
 									)
 								);
+								
+								if( Configure::read( 'Cg.departement' ) == 58 ) {
+									echo '<ul class="actionMenu">';
+										echo '<li>'.$xhtml->exportLink(
+											'Télécharger le tableau',
+											array( 'controller' => 'commissionseps', 'action' => 'exportcsv', Set::classicExtract( $commissionep, 'Commissionep.id' ) )
+										).' </li>';
+									echo '</ul>';
+								}
 
 								if( Configure::read( 'Cg.departement' ) == 93 && $commissionep['Commissionep']['etatcommissionep'] == 'associe' ) {
 									echo '<ul class="actionMenu center">';
