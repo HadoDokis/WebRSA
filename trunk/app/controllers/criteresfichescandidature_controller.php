@@ -10,7 +10,7 @@
 
 	class CriteresfichescandidatureController extends AppController
 	{
-		public $helpers = array( 'Default', 'Default2', 'Ajax', 'Locale', 'Csv' );
+		public $helpers = array( 'Default', 'Default2', 'Ajax', 'Locale', 'Csv', 'Search' );
 		public $uses = array(  'Criterefichecandidature', 'ActioncandidatPersonne'/*, 'Actioncandidat' */, 'Partenaire');
 		public $components = array( 'Prg' => array( 'actions' => array( 'index' ) ) );
 		public $aucunDroit = array( 'exportcsv' );

@@ -37,102 +37,62 @@
 
 <?php echo $xform->create( 'Criterefichecandidature', array( 'type' => 'post', 'action' => $this->action, 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );?>
 
+	<?php echo $xform->input( 'ActioncandidatPersonne.indexparams', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
+	<?php
+		echo $search->blocAllocataire( );
+		echo $search->blocAdresse( $mesCodesInsee, $cantons );
+	?>
 	<fieldset>
-			<?php echo $xform->input( 'ActioncandidatPersonne.indexparams', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
-			<fieldset>
-				<legend>Filtrer sur la Personne</legend>
-				<?php
+		<legend>Recherche par dossier</legend>
+		<?php 
+			echo $form->input( 'Dossier.numdemrsa', array( 'label' => 'Numéro de demande RSA' ) );
+			echo $form->input( 'Dossier.matricule', array( 'label' => 'N° CAF', 'maxlength' => 15 ) );
+			
+			$valueDossierDernier = isset( $this->data['Dossier']['dernier'] ) ? $this->data['Dossier']['dernier'] : true;
+			echo $form->input( 'Dossier.dernier', array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueDossierDernier ) );
+			echo $search->etatdosrsa($etatdosrsa);
+		?>
+		<?php echo $xform->input( 'Dossier.dtdemrsa', array( 'label' => 'Filtrer par date de demande RSA', 'type' => 'checkbox' ) );?>
+		<fieldset>
+			<legend>Filtrer par période</legend>
+			<?php
+				$dtdemrsa_from = Set::check( $this->data, 'Dossier.dtdemrsa_from' ) ? Set::extract( $this->data, 'Dossier.dtdemrsa_from' ) : strtotime( '-1 week' );
+				$dtdemrsa_to = Set::check( $this->data, 'Dossier.dtdemrsa_to' ) ? Set::extract( $this->data, 'Dossier.dtdemrsa_to' ) : strtotime( 'now' );
+			?>
+			<?php echo $xform->input( 'Dossier.dtdemrsa_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 10, 'selected' => $dtdemrsa_from ) );?>
+			<?php echo $xform->input( 'Dossier.dtdemrsa_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 10, 'selected' => $dtdemrsa_to ) );?>
+		</fieldset>
 
-					echo $default2->subform(
-						array(
-							'Personne.nom' => array( 'type' => 'text' ),
-							'Personne.prenom' => array( 'type' => 'text' ),
-							'Personne.nomnai' => array( 'type' => 'text' ),
-							'Personne.dtnai' => array( 'type' => 'date', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 100 ),
-							'Personne.nir' => array( 'type' => 'text' )
-						),
-						array(
-							'options' => $options
-						)
-					);
+	</fieldset>
 
-				?>
-			</fieldset>
+	<fieldset>
+		<legend>Filtrer par Fiche de candidature</legend>
+		<?php
 
-			<fieldset>
-				<legend>Filtrer sur le Dossier</legend>
-				<?php
+			echo $default2->subform(
+				array(
+					'Partenaire.libstruc' => array( 'type' => 'select', 'options' => $partenaires ),
+					'ActioncandidatPersonne.actioncandidat_id' => array( 'type' => 'select', 'options' => $listeactions ),
+					'ActioncandidatPersonne.referent_id' => array( 'type' => 'select', 'options' => $referents ),
+					'ActioncandidatPersonne.positionfiche' => array( 'type' => 'select', 'options' => $options['positionfiche'] ),
+				),
+				array(
+					'options' => $options
+				)
+			);
 
-					echo $default2->subform(
-						array(
-							'Dossier.numdemrsa' => array( 'type' => 'text' ),
-							'Dossier.matricule' => array( 'type' => 'text' )
-						),
-						array(
-							'options' => $options
-						)
-					);
-				?>
+		?>
 
-				<?php echo $xform->input( 'Dossier.dtdemrsa', array( 'label' => 'Filtrer par date de demande RSA', 'type' => 'checkbox' ) );?>
-				<fieldset>
-					<legend>Filtrer par période</legend>
-					<?php
-						$dtdemrsa_from = Set::check( $this->data, 'Dossier.dtdemrsa_from' ) ? Set::extract( $this->data, 'Dossier.dtdemrsa_from' ) : strtotime( '-1 week' );
-						$dtdemrsa_to = Set::check( $this->data, 'Dossier.dtdemrsa_to' ) ? Set::extract( $this->data, 'Dossier.dtdemrsa_to' ) : strtotime( 'now' );
-					?>
-					<?php echo $xform->input( 'Dossier.dtdemrsa_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 10, 'selected' => $dtdemrsa_from ) );?>
-					<?php echo $xform->input( 'Dossier.dtdemrsa_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 10, 'selected' => $dtdemrsa_to ) );?>
-				</fieldset>
-
-				<fieldset>
-					<legend>Filtrer par adresse</legend>
-					<?php echo $form->input( 'Adresse.locaadr', array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );?>
-					<?php echo $form->input( 'Adresse.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );?>
-					<?php
-						if( Configure::read( 'CG.cantons' ) ) {
-							echo $form->input( 'Canton.canton', array( 'label' => 'Canton', 'type' => 'select', 'options' => $cantons, 'empty' => true ) );
-						}
-					?>
-				</fieldset>
-
-				<?php
-					$valueDossierDernier = isset( $this->data['Dossier']['dernier'] ) ? $this->data['Dossier']['dernier'] : true;
-					echo $form->input( 'Dossier.dernier', array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueDossierDernier ) );
-				?>
-			</fieldset>
-
-			<fieldset>
-				<legend>Filtrer par Fiche de candidature</legend>
-				<?php
-
-					echo $default2->subform(
-						array(
-							'Partenaire.libstruc' => array( 'type' => 'select', 'options' => $partenaires ),
-							'ActioncandidatPersonne.actioncandidat_id' => array( 'type' => 'select', 'options' => $listeactions ),
-							'ActioncandidatPersonne.referent_id' => array( 'type' => 'select', 'options' => $referents ),
-							'ActioncandidatPersonne.positionfiche' => array( 'type' => 'select', 'options' => $options['positionfiche'] ),
-						),
-						array(
-							'options' => $options
-						)
-					);
-
-				?>
-			</fieldset>
-
-			<?php echo $xform->input( 'ActioncandidatPersonne.datesignature', array( 'label' => 'Filtrer par date de Fiche de candidature', 'type' => 'checkbox' ) );?>
-			<fieldset>
-				<legend>Filtrer par période</legend>
-				<?php
-					$datesignature_from = Set::check( $this->data, 'ActioncandidatPersonne.datesignature_from' ) ? Set::extract( $this->data, 'ActioncandidatPersonne.datesignature_from' ) : strtotime( '-1 week' );
-					$datesignature_to = Set::check( $this->data, 'ActioncandidatPersonne.datesignature_to' ) ? Set::extract( $this->data, 'ActioncandidatPersonne.datesignature_to' ) : strtotime( 'now' );
-				?>
-				<?php echo $xform->input( 'ActioncandidatPersonne.datesignature_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 10, 'selected' => $datesignature_from ) );?>
-				<?php echo $xform->input( 'ActioncandidatPersonne.datesignature_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 10, 'selected' => $datesignature_to ) );?>
-			</fieldset>
-
-
+		<?php echo $xform->input( 'ActioncandidatPersonne.datesignature', array( 'label' => 'Filtrer par date de Fiche de candidature', 'type' => 'checkbox' ) );?>
+		<fieldset>
+			<legend>Filtrer par période</legend>
+			<?php
+				$datesignature_from = Set::check( $this->data, 'ActioncandidatPersonne.datesignature_from' ) ? Set::extract( $this->data, 'ActioncandidatPersonne.datesignature_from' ) : strtotime( '-1 week' );
+				$datesignature_to = Set::check( $this->data, 'ActioncandidatPersonne.datesignature_to' ) ? Set::extract( $this->data, 'ActioncandidatPersonne.datesignature_to' ) : strtotime( 'now' );
+			?>
+			<?php echo $xform->input( 'ActioncandidatPersonne.datesignature_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 10, 'selected' => $datesignature_from ) );?>
+			<?php echo $xform->input( 'ActioncandidatPersonne.datesignature_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 10, 'selected' => $datesignature_to ) );?>
+		</fieldset>
 	</fieldset>
 
 	<div class="submit noprint">

@@ -26,6 +26,7 @@
 
 			$conditions = array();
 
+			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
 			$conditions = $this->conditionsAdresse( $conditions, $criteresfichescandidature, $filtre_zone_geo, $mesCodesInsee );
 			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $criteresfichescandidature );
 			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $criteresfichescandidature );
@@ -47,13 +48,13 @@
 			}
 
 			/// Critères sur la date de demande RSA
-			if( isset( $criteresfichescandidature['Dossier']['dtdemrsa'] ) && !empty( $criteresfichescandidature['Dossier']['dtdemrsa'] ) ) {
-				$valid_from = ( valid_int( $criteresfichescandidature['Dossier']['dtdemrsa_from']['year'] ) && valid_int( $criteresfichescandidature['Dossier']['dtdemrsa_from']['month'] ) && valid_int( $criteresfichescandidature['Dossier']['dtdemrsa_from']['day'] ) );
-				$valid_to = ( valid_int( $criteresfichescandidature['Dossier']['dtdemrsa_to']['year'] ) && valid_int( $criteresfichescandidature['Dossier']['dtdemrsa_to']['month'] ) && valid_int( $criteresfichescandidature['Dossier']['dtdemrsa_to']['day'] ) );
-				if( $valid_from && $valid_to ) {
-					$conditions[] = 'Dossier.dtdemrsa BETWEEN \''.implode( '-', array( $criteresfichescandidature['Dossier']['dtdemrsa_from']['year'], $criteresfichescandidature['Dossier']['dtdemrsa_from']['month'], $criteresfichescandidature['Dossier']['dtdemrsa_from']['day'] ) ).'\' AND \''.implode( '-', array( $criteresfichescandidature['Dossier']['dtdemrsa_to']['year'], $criteresfichescandidature['Dossier']['dtdemrsa_to']['month'], $criteresfichescandidature['Dossier']['dtdemrsa_to']['day'] ) ).'\'';
-				}
-			}
+// 			if( isset( $criteresfichescandidature['Dossier']['dtdemrsa'] ) && !empty( $criteresfichescandidature['Dossier']['dtdemrsa'] ) ) {
+// 				$valid_from = ( valid_int( $criteresfichescandidature['Dossier']['dtdemrsa_from']['year'] ) && valid_int( $criteresfichescandidature['Dossier']['dtdemrsa_from']['month'] ) && valid_int( $criteresfichescandidature['Dossier']['dtdemrsa_from']['day'] ) );
+// 				$valid_to = ( valid_int( $criteresfichescandidature['Dossier']['dtdemrsa_to']['year'] ) && valid_int( $criteresfichescandidature['Dossier']['dtdemrsa_to']['month'] ) && valid_int( $criteresfichescandidature['Dossier']['dtdemrsa_to']['day'] ) );
+// 				if( $valid_from && $valid_to ) {
+// 					$conditions[] = 'Dossier.dtdemrsa BETWEEN \''.implode( '-', array( $criteresfichescandidature['Dossier']['dtdemrsa_from']['year'], $criteresfichescandidature['Dossier']['dtdemrsa_from']['month'], $criteresfichescandidature['Dossier']['dtdemrsa_from']['day'] ) ).'\' AND \''.implode( '-', array( $criteresfichescandidature['Dossier']['dtdemrsa_to']['year'], $criteresfichescandidature['Dossier']['dtdemrsa_to']['month'], $criteresfichescandidature['Dossier']['dtdemrsa_to']['day'] ) ).'\'';
+// 				}
+// 			}
 
 			/// Critères sur la date de signature de la fiche de candidature
 			if( isset( $criteresfichescandidature['ActioncandidatPersonne']['datesignature'] ) && !empty( $criteresfichescandidature['ActioncandidatPersonne']['datesignature'] ) ) {
@@ -146,6 +147,13 @@
 					'type'       => 'INNER',
 					'foreignKey' => false,
 					'conditions' => array( 'Structurereferente.id = Referent.structurereferente_id' ),
+				),
+				array(
+					'table'      => 'situationsdossiersrsa',
+					'alias'      => 'Situationdossierrsa',
+					'type'       => 'LEFT OUTER',
+					'foreignKey' => false,
+					'conditions' => array( 'Situationdossierrsa.dossier_id = Dossier.id' )
 				)
 			);
 
