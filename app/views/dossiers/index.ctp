@@ -81,25 +81,15 @@
 		<?php echo $search->etatdosrsa($etatdosrsa); ?>
 
 	</fieldset>
+
+	<?php
+		echo $search->blocAdresse( $mesCodesInsee, $cantons );
+		echo $search->blocAllocataire( $trancheage );
+	?>
+
 	<fieldset>
-		<legend>Recherche par Adresse</legend>
-		<?php echo $form->input( 'Adresse.locaadr', array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );?>
-		<?php echo $form->input( 'Adresse.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );?>
+		<legend>Recherche par parcours de l'allocataire</legend>
 		<?php
-			if( Configure::read( 'CG.cantons' ) ) {
-				echo $form->input( 'Canton.canton', array( 'label' => 'Canton', 'type' => 'select', 'options' => $cantons, 'empty' => true ) );
-			}
-		?>
-	</fieldset>
-	<fieldset>
-		<legend>Recherche par allocataire<!--FIXME: personne du foyer--></legend>
-		<?php echo $form->input( 'Personne.dtnai', array( 'label' => 'Date de naissance', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'empty' => true ) );?>
-		<?php echo $form->input( 'Personne.nom', array( 'label' => 'Nom' ) );?>
-		<?php echo $form->input( 'Personne.nomnai', array( 'label' => 'Nom de jeune fille' ) );?>
-		<?php echo $form->input( 'Personne.prenom', array( 'label' => 'Prénom' ) );?>
-		<?php echo $form->input( 'Personne.nir', array( 'label' => 'NIR', 'maxlength' => 15 ) );?>
-		<!-- FIXME -->
-		<?php echo $form->input( 'Personne.trancheage', array( 'label' => 'Tranche d\'âge', 'options' => $trancheage, 'empty' => true ) );
 			echo $form->input( 'Personne.hascontrat', array( 'label' => 'Possède un CER ? ', 'type' => 'select', 'options' => array( 'O' => 'Oui', 'N' => 'Non'), 'empty' => true ) );
 		?>
 		<?php
