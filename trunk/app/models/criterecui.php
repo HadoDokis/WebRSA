@@ -137,6 +137,13 @@
 							'PersonneReferent.personne_id = Personne.id',
 							'PersonneReferent.dfdesignation IS NULL'
 						)
+					),
+					array(
+						'table'      => 'situationsdossiersrsa',
+						'alias'      => 'Situationdossierrsa',
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array( 'Situationdossierrsa.dossier_id = Dossier.id' )
 					)
 				),
 				'limit' => 10,

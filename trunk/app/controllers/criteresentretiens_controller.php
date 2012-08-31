@@ -4,7 +4,7 @@
 		public $name = 'Criteresentretiens';
 
 		public $uses = array( 'Critereentretien', 'Entretien' );
-		public $helpers = array( 'Csv', 'Ajax', 'Default2' );
+		public $helpers = array( 'Csv', 'Ajax', 'Default2', 'Search' );
 		public $components = array( 'Prg' => array( 'actions' => array( 'index' ) ) );
 
 		/**
