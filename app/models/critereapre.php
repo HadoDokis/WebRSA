@@ -159,43 +159,6 @@
 				$conditions[] = 'Apre.referent_id = \''.Sanitize::clean( suffix( $referent_id ) ).'\'';
 			}
 
-//            // Trouver la dernière demande RSA pour chacune des personnes du jeu de résultats
-//             if( $criteresapres['Dossier']['dernier'] ) {
-//                 $conditions[] = 'Dossier.id IN (
-//                     SELECT
-//                             dossiers.id
-//                         FROM personnes
-//                             INNER JOIN prestations ON (
-//                                 personnes.id = prestations.personne_id
-//                                 AND prestations.natprest = \'RSA\'
-//                             )
-//                             INNER JOIN foyers ON (
-//                                 personnes.foyer_id = foyers.id
-//                             )
-//                             INNER JOIN dossiers ON (
-//                                 dossiers.id = foyers.dossier_id
-//                             )
-//                         WHERE
-//                             prestations.rolepers IN ( \'DEM\', \'CJT\' )
-//                             AND (
-//                                 (
-//                                     nir_correct13( Personne.nir )
-//                                     AND nir_correct13( personnes.nir )
-//                                     AND SUBSTRING( TRIM( BOTH \' \' FROM personnes.nir ) FROM 1 FOR 13 ) = SUBSTRING( TRIM( BOTH \' \' FROM Personne.nir ) FROM 1 FOR 13 )
-//                                     AND personnes.dtnai = Personne.dtnai
-//                                 )
-//                                 OR
-//                                 (
-//                                     UPPER(personnes.nom) = UPPER(Personne.nom)
-//                                     AND UPPER(personnes.prenom) = UPPER(Personne.prenom)
-//                                     AND personnes.dtnai = Personne.dtnai
-//                                 )
-//                             )
-//                         ORDER BY dossiers.dtdemrsa DESC
-//                         LIMIT 1
-//                 )';
-//             }
-
 
 
 			/// Requête

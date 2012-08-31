@@ -8,7 +8,7 @@
 		public $uses = array( 'Canton', 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Structurereferente', 'Contratinsertion', 'Option', 'Serviceinstructeur', 'Criterecui', 'Cui', 'Referent', 'Zonegeographique' );
 		public $aucunDroit = array( 'exportcsv' );
 
-		public $helpers = array( 'Csv', 'Ajax' );
+		public $helpers = array( 'Csv', 'Ajax', 'Search' );
 
 		public $components = array(  'Prg' => array( 'actions' => array( 'index' ) ) );
 

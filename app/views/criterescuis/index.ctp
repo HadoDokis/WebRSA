@@ -1,3 +1,4 @@
+<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 <?php
 	$domain = 'criterecui';
 	echo $xhtml->tag(
@@ -23,8 +24,24 @@
 	}
 
 	echo $xform->create( 'Criterescuis', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );
-	echo $form->input( 'Search.active', array( 'type' => 'hidden', 'value' => true ) );
+	echo $form->input( 'Criterecui.active', array( 'type' => 'hidden', 'value' => true ) );
 ?>
+	<?php
+		echo $search->blocAllocataire( );
+		
+		echo $search->blocAdresse( $mesCodesInsee, $cantons );
+	?>
+	<fieldset>
+		<legend>Recherche par dossier</legend>
+		<?php 
+			echo $form->input( 'Dossier.numdemrsa', array( 'label' => 'Numéro de demande RSA' ) );
+			echo $form->input( 'Dossier.matricule', array( 'label' => 'N° CAF', 'maxlength' => 15 ) );
+			
+			$valueDossierDernier = isset( $this->data['Dossier']['dernier'] ) ? $this->data['Dossier']['dernier'] : true;
+			echo $form->input( 'Dossier.dernier', array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueDossierDernier ) );
+			echo $search->etatdosrsa($etatdosrsa);
+		?>
+	</fieldset>
 <fieldset>
 	<legend>Recherche de Contrat Unique d'Insertion</legend>
 		<?php echo $form->input( 'Cui.datecontrat', array( 'label' => 'Filtrer par date de saisie du contrat', 'type' => 'checkbox' ) );?>
@@ -33,34 +50,22 @@
 			<?php
 				$datecontrat_from = Set::check( $this->data, 'Cui.datecontrat_from' ) ? Set::extract( $this->data, 'Cui.datecontrat_from' ) : strtotime( '-1 week' );
 				$datecontrat_to = Set::check( $this->data, 'Cui.datecontrat_to' ) ? Set::extract( $this->data, 'Cui.datecontrat_to' ) : strtotime( 'now' );
+			
+				echo $form->input( 'Cui.datecontrat_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $datecontrat_from ) );
+				echo $form->input( 'Cui.datecontrat_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120,  'maxYear' => date( 'Y' ) + 5,  'selected' => $datecontrat_to ) );
 			?>
-			<?php echo $form->input( 'Cui.datecontrat_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $datecontrat_from ) );?>
-			<?php echo $form->input( 'Cui.datecontrat_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120,  'maxYear' => date( 'Y' ) + 5,  'selected' => $datecontrat_to ) );?>
 		</fieldset>
+		<?php
+			echo $form->input( 'Cui.secteur', array( 'label' => __d( 'cui', 'Cui.secteur', true ), 'type' => 'select', 'options' => $options['secteur'], 'empty' => true ) );
+		?>
 </fieldset>
-<?php
-		$valueDossierDernier = isset( $this->data['Dossier']['dernier'] ) ? $this->data['Dossier']['dernier'] : true;
-		echo $form->input( 'Dossier.dernier', array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueDossierDernier ) );
-	?>
-	<?php
-		///Formulaire de recherche pour les CUIs
-		echo $default->search(
-			array(
-				'Cui.datecontrat' => array( 'label' => __d( 'cui', 'Cui.datecontrat', true ), 'type' => 'date', 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 1, 'maxYear' => date( 'Y' ) + 1 ),
-				'Cui.secteur' => array( 'label' => __d( 'cui', 'Cui.secteur', true ), 'type' => 'select', 'options' => $options['secteur'] ),
-				'Personne.nom' => array( 'label' => __d( 'personne', 'Personne.nom', true ), 'type' => 'text' ),
-				'Personne.prenom' => array( 'label' => __d( 'personne', 'Personne.prenom', true ), 'type' => 'text' ),
-				'Personne.nir' => array( 'label' => __d( 'personne', 'Personne.nir', true ), 'type' => 'text', 'maxlength' => 15 ),
-				'Dossier.matricule' => array( 'label' => __d( 'dossier', 'Dossier.matricule', true ), 'type' => 'text', 'maxlength' => 15 ),
-				'Dossier.numdemrsa' => array( 'label' => __d( 'dossier', 'Dossier.numdemrsa', true ), 'type' => 'text', 'maxlength' => 15 )
-			),
-			array(
-				'options' => $options,
-				'form' => false
-			)
-		);
-	?>
-<?php echo $xform->end( __( 'Search', true ) ); ?>
+
+	<div class="submit noprint">
+		<?php echo $form->button( 'Rechercher', array( 'type' => 'submit' ) );?>
+		<?php echo $form->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>
+	</div>
+
+<?php echo $form->end();?>
 
 <?php $pagination = $xpaginator->paginationBlock( 'Cui', $this->passedArgs ); ?>
 
@@ -157,7 +162,7 @@
 			?></li>
 		</ul>
 	<?php else:?>
-		<p>Vos critères n'ont retourné aucun contrat unique d'insertion.</p>
+		<p class="notice">Vos critères n'ont retourné aucun contrat unique d'insertion.</p>
 	<?php endif?>
 <?php endif?>
 
