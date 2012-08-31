@@ -502,28 +502,29 @@
 				$sqDernierPassageCov58 = $this->Contratinsertion->Propocontratinsertioncov58nv->Dossiercov58->Passagecov58->sqDernier();
 
 				$querydata = Set::merge(
-								$querydata, array(
-							'fields' => array(
-								'Sitecov58.name',
-								'Cov58.observation',
-								'Cov58.datecommission',
-								'Decisionpropocontratinsertioncov58.commentaire'
-							),
-							'joins' => array(
-								$this->Contratinsertion->join( 'Propocontratinsertioncov58nv', array( 'type' => 'LEFT OUTER' ) ),
-								$this->Contratinsertion->Propocontratinsertioncov58nv->join( 'Dossiercov58', array( 'type' => 'LEFT OUTER' ) ),
-								$this->Contratinsertion->Propocontratinsertioncov58nv->Dossiercov58->join( 'Passagecov58', array( 'type' => 'LEFT OUTER' ) ),
-								$this->Contratinsertion->Propocontratinsertioncov58nv->Dossiercov58->Passagecov58->join( 'Cov58', array( 'type' => 'LEFT OUTER' ) ),
-								$this->Contratinsertion->Propocontratinsertioncov58nv->Dossiercov58->Passagecov58->Cov58->join( 'Sitecov58', array( 'type' => 'LEFT OUTER' ) ),
-								$this->Contratinsertion->Propocontratinsertioncov58nv->Dossiercov58->Passagecov58->join( 'Decisionpropocontratinsertioncov58', array( 'type' => 'LEFT OUTER' ) ),
-							),
-							'conditions' => array(
-								'OR' => array(
-									"Passagecov58.id IS NULL",
-									"Passagecov58.id IN ( {$sqDernierPassageCov58} )"
-								)
+					$querydata,
+					array(
+						'fields' => array(
+							'Sitecov58.name',
+							'Cov58.observation',
+							'Cov58.datecommission',
+							'Decisionpropocontratinsertioncov58.commentaire'
+						),
+						'joins' => array(
+							$this->Contratinsertion->join( 'Propocontratinsertioncov58nv', array( 'type' => 'LEFT OUTER' ) ),
+							$this->Contratinsertion->Propocontratinsertioncov58nv->join( 'Dossiercov58', array( 'type' => 'LEFT OUTER' ) ),
+							$this->Contratinsertion->Propocontratinsertioncov58nv->Dossiercov58->join( 'Passagecov58', array( 'type' => 'LEFT OUTER' ) ),
+							$this->Contratinsertion->Propocontratinsertioncov58nv->Dossiercov58->Passagecov58->join( 'Cov58', array( 'type' => 'LEFT OUTER' ) ),
+							$this->Contratinsertion->Propocontratinsertioncov58nv->Dossiercov58->Passagecov58->Cov58->join( 'Sitecov58', array( 'type' => 'LEFT OUTER' ) ),
+							$this->Contratinsertion->Propocontratinsertioncov58nv->Dossiercov58->Passagecov58->join( 'Decisionpropocontratinsertioncov58', array( 'type' => 'LEFT OUTER' ) ),
+						),
+						'conditions' => array(
+							'OR' => array(
+								"Passagecov58.id IS NULL",
+								"Passagecov58.id IN ( {$sqDernierPassageCov58} )"
 							)
-								)
+						)
+					)
 				);
 			}
 			else if( Configure::read( 'Cg.departement' ) == 66 ) {
@@ -531,173 +532,130 @@
 				$querydata['fields'][] = '( ( EXTRACT ( YEAR FROM AGE( "Personne"."dtnai" ) ) ) > 55 ) AS "Personne__plus55ans"';
 
 				$querydata = Set::merge(
-								$querydata, array(
-							'fields' => $this->Contratinsertion->Propodecisioncer66->fields(),
-							'contain' => array( 'Propodecisioncer66' )
-								)
+					$querydata,
+					array(
+						'fields' => $this->Contratinsertion->Propodecisioncer66->fields(),
+						'contain' => array( 'Propodecisioncer66' )
+					)
 				);
 			}
 			// FIN à mettre dans le modèle ?
 
 			$contratsinsertion = $this->Contratinsertion->find( 'all', $querydata );
 
-// debug( $contratsinsertion );
 			$this->_setOptions();
 			$this->set( 'personne_id', $personne_id );
 
 			if( Configure::read( 'Cg.departement' ) == 58 ) {
 
-				/* foreach( $contratsinsertion as $i => $contrat ) {
-				  $qdCovPassee = array(
-				  'fields' => array_merge(
-				  $this->Contratinsertion->Personne->Dossiercov58->Passagecov58->fields(),
-				  $this->Contratinsertion->Personne->Dossiercov58->Passagecov58->Cov58->fields(),
-				  $this->Contratinsertion->Personne->Dossiercov58->Passagecov58->Cov58->Sitecov58->fields()
-				  ),
-				  'joins' => array(
-				  $this->Contratinsertion->Personne->Dossiercov58->Passagecov58->join( 'Dossiercov58' ),
-				  $this->Contratinsertion->Personne->Dossiercov58->Passagecov58->join( 'Cov58' ),
-				  $this->Contratinsertion->Personne->Dossiercov58->Passagecov58->Cov58->join( 'Sitecov58' ),
-				  $this->Contratinsertion->Personne->Dossiercov58->Passagecov58->join( 'Decisionpropocontratinsertioncov58' ),
-				  $this->Contratinsertion->Personne->Dossiercov58->Passagecov58->Dossiercov58->join( 'Themecov58' ),
-				  $this->Contratinsertion->Personne->Dossiercov58->join( 'Propocontratinsertioncov58' )
-				  ),
-				  'conditions' => array(
-				  'Dossiercov58.personne_id' => $personne_id,
-				  'Themecov58.name' => 'proposcontratsinsertioncovs58',
-				  'Passagecov58.etatdossiercov' => 'traite',
-				  // Conditions pour retrouver l'orientation -> FIXME: ne sert plus à rien, on a l'id maintenant
-				  'Propocontratinsertioncov58.structurereferente_id' => $contrat['Contratinsertion']['structurereferente_id'],
-				  // 								'Propocontratinsertioncov58.referent_id' => $contrat['Contratinsertion']['referent_id'],
-				  'Propocontratinsertioncov58.forme_ci' => $contrat['Contratinsertion']['forme_ci'],
-				  // 								'Propocontratinsertioncov58.datedemande' => $contrat['Contratinsertion']['dd_ci'],
-				  'Decisionpropocontratinsertioncov58.dd_ci' => $contrat['Contratinsertion']['dd_ci'],
-				  // 								'Decisionpropocontratinsertioncov58.duree_engag' => $contrat['Contratinsertion']['duree_engag'],
-				  'Decisionpropocontratinsertioncov58.df_ci' => $contrat['Contratinsertion']['df_ci'],
-				  //							'Decisionpropocontratinsertioncov58.datevalidation' => ( !empty( $contrat['Contratinsertion']['datevalidation_ci'] ) ? $contrat['Contratinsertion']['datevalidation_ci'] : null ),
-				  ),
-				  'contain' => false
-				  );
-
-				  if( !empty( $contrat['Contratinsertion']['datevalidation_ci'] ) ) {
-				  $qdCovPassee['conditions']['Decisionpropocontratinsertioncov58.datevalidation'] = $contrat['Contratinsertion']['datevalidation_ci'];
-				  }
-				  else {
-				  $qdCovPassee['conditions'][] = "Decisionpropocontratinsertioncov58.datevalidation IS NULL";
-				  }
-
-				  $covpassee58 = $this->Contratinsertion->Personne->Dossiercov58->Passagecov58->find( 'first', $qdCovPassee );
-				  $contratsinsertion[$i] = Set::merge( $contrat, $covpassee58 );
-				  } */
-
 				$propocontratinsertioncov58 = $this->Contratinsertion->Personne->Dossiercov58->Propocontratinsertioncov58->find(
-						'first', array(
-					'fields' => array(
-						'Propocontratinsertioncov58.id',
-						'Propocontratinsertioncov58.dossiercov58_id',
-						'Propocontratinsertioncov58.forme_ci',
-						'Propocontratinsertioncov58.num_contrat',
-						'Propocontratinsertioncov58.dd_ci',
-						'Propocontratinsertioncov58.df_ci',
-						'Propocontratinsertioncov58.avenant_id',
-						'Dossiercov58.personne_id',
-						'Passagecov58.etatdossiercov',
-						'Personne.id',
-						'Personne.nom',
-						'Personne.prenom',
-						'Decisionpropocontratinsertioncov58.decisioncov'
-					),
-					'conditions' => array(
-						'Dossiercov58.personne_id' => $personne_id,
-						'Themecov58.name' => 'proposcontratsinsertioncovs58',
-						'OR' => array(
-							'Passagecov58.etatdossiercov NOT' => array( 'traite', 'annule' ),
-							'Passagecov58.etatdossiercov IS NULL'
-						)
-					),
-					'joins' => array(
-						array(
-							'table' => 'dossierscovs58',
-							'alias' => 'Dossiercov58',
-							'type' => 'INNER',
-							'conditions' => array(
-								'Dossiercov58.id = Propocontratinsertioncov58.dossiercov58_id'
+					'first', array(
+						'fields' => array(
+							'Propocontratinsertioncov58.id',
+							'Propocontratinsertioncov58.dossiercov58_id',
+							'Propocontratinsertioncov58.forme_ci',
+							'Propocontratinsertioncov58.num_contrat',
+							'Propocontratinsertioncov58.dd_ci',
+							'Propocontratinsertioncov58.df_ci',
+							'Propocontratinsertioncov58.avenant_id',
+							'Dossiercov58.personne_id',
+							'Passagecov58.etatdossiercov',
+							'Personne.id',
+							'Personne.nom',
+							'Personne.prenom',
+							'Decisionpropocontratinsertioncov58.decisioncov'
+						),
+						'conditions' => array(
+							'Dossiercov58.personne_id' => $personne_id,
+							'Themecov58.name' => 'proposcontratsinsertioncovs58',
+							'OR' => array(
+								'Passagecov58.etatdossiercov NOT' => array( 'traite', 'annule' ),
+								'Passagecov58.etatdossiercov IS NULL'
 							)
 						),
-						array(
-							'table' => 'passagescovs58',
-							'alias' => 'Passagecov58',
-							'type' => 'LEFT OUTER',
-							'conditions' => array(
-								'Passagecov58.dossiercov58_id = Dossiercov58.id'
+						'joins' => array(
+							array(
+								'table' => 'dossierscovs58',
+								'alias' => 'Dossiercov58',
+								'type' => 'INNER',
+								'conditions' => array(
+									'Dossiercov58.id = Propocontratinsertioncov58.dossiercov58_id'
+								)
+							),
+							array(
+								'table' => 'passagescovs58',
+								'alias' => 'Passagecov58',
+								'type' => 'LEFT OUTER',
+								'conditions' => array(
+									'Passagecov58.dossiercov58_id = Dossiercov58.id'
+								)
+							),
+							array(
+								'table' => 'decisionsproposcontratsinsertioncovs58',
+								'alias' => 'Decisionpropocontratinsertioncov58',
+								'type' => 'LEFT OUTER',
+								'conditions' => array(
+									'Decisionpropocontratinsertioncov58.passagecov58_id = Passagecov58.id'
+								)
+							),
+							array(
+								'table' => 'themescovs58',
+								'alias' => 'Themecov58',
+								'type' => 'INNER',
+								'conditions' => array(
+									'Dossiercov58.themecov58_id = Themecov58.id'
+								)
+							),
+							array(
+								'table' => 'personnes',
+								'alias' => 'Personne',
+								'type' => 'INNER',
+								'conditions' => array(
+									'Dossiercov58.personne_id = Personne.id'
+								)
 							)
 						),
-						array(
-							'table' => 'decisionsproposcontratsinsertioncovs58',
-							'alias' => 'Decisionpropocontratinsertioncov58',
-							'type' => 'LEFT OUTER',
-							'conditions' => array(
-								'Decisionpropocontratinsertioncov58.passagecov58_id = Passagecov58.id'
-							)
-						),
-						array(
-							'table' => 'themescovs58',
-							'alias' => 'Themecov58',
-							'type' => 'INNER',
-							'conditions' => array(
-								'Dossiercov58.themecov58_id = Themecov58.id'
-							)
-						),
-						array(
-							'table' => 'personnes',
-							'alias' => 'Personne',
-							'type' => 'INNER',
-							'conditions' => array(
-								'Dossiercov58.personne_id = Personne.id'
-							)
-						)
-					),
-					'contain' => false,
-					'order' => array( 'Propocontratinsertioncov58.df_ci DESC' )
-						)
+						'contain' => false,
+						'order' => array( 'Propocontratinsertioncov58.df_ci DESC' )
+					)
 				);
 // debug( $propocontratinsertioncov58 );
 				$this->set( 'propocontratinsertioncov58', $propocontratinsertioncov58 );
 				$this->set( 'optionsdossierscovs58', array_merge( $this->Orientstruct->Personne->Dossiercov58->Passagecov58->enums(), $this->Orientstruct->Personne->Dossiercov58->Propocontratinsertioncov58->enums() ) );
 
 				$nbdossiersnonfinalisescovs = $this->Contratinsertion->Personne->Dossiercov58->find(
-						'count', array(
+					'count', array(
 					'conditions' => array(
 						'Dossiercov58.id NOT IN ( '.$this->Contratinsertion->Personne->Dossiercov58->Passagecov58->sq(
-								array(
-									'fields' => array(
-										'passagescovs58.dossiercov58_id'
+							array(
+								'fields' => array(
+									'passagescovs58.dossiercov58_id'
+								),
+								'alias' => 'passagescovs58',
+								'conditions' => array(
+									'dossierscovs58.themecov58' => 'proposcontratsinsertioncovs58',
+									'dossierscovs58.personne_id' => $personne_id,
+									'passagescovs58.etatdossiercov' => array( 'traite', 'annule' )
+								),
+								'joins' => array(
+									array(
+										'table' => 'dossierscovs58',
+										'alias' => 'dossierscovs58',
+										'type' => 'INNER',
+										'conditions' => array(
+											'passagescovs58.dossiercov58_id = dossierscovs58.id'
+										)
 									),
-									'alias' => 'passagescovs58',
-									'conditions' => array(
-										'dossierscovs58.themecov58' => 'proposcontratsinsertioncovs58',
-										'dossierscovs58.personne_id' => $personne_id,
-										'passagescovs58.etatdossiercov' => array( 'traite', 'annule' )
-									),
-									'joins' => array(
-										array(
-											'table' => 'dossierscovs58',
-											'alias' => 'dossierscovs58',
-											'type' => 'INNER',
-											'conditions' => array(
-												'passagescovs58.dossiercov58_id = dossierscovs58.id'
-											)
-										),
-										array(
-											'table' => 'covs58',
-											'alias' => 'covs58',
-											'type' => 'LEFT OUTER',
-											'conditions' => array(
-												'passagescovs58.cov58_id = covs58.id'
-											)
+									array(
+										'table' => 'covs58',
+										'alias' => 'covs58',
+										'type' => 'LEFT OUTER',
+										'conditions' => array(
+											'passagescovs58.cov58_id = covs58.id'
 										)
 									)
 								)
+							)
 						).' )',
 						'Dossiercov58.personne_id' => $personne_id,
 						'Dossiercov58.themecov58' => 'proposcontratsinsertioncovs58'
@@ -728,12 +686,13 @@
 
 				$queryData = $this->_qdThematiqueEp( 'Sanctionep58', $personne_id );
 				$queryData['fields'] = Set::merge(
-								$queryData['fields'], array(
-							'Sanctionep58.id',
-							'Sanctionep58.contratinsertion_id',
-							'Sanctionep58.created',
-							'Sanctionep58.modified',
-								)
+					$queryData['fields'],
+					array(
+						'Sanctionep58.id',
+						'Sanctionep58.contratinsertion_id',
+						'Sanctionep58.created',
+						'Sanctionep58.modified',
+					)
 				);
 
 				$sanctionseps58 = $this->Contratinsertion->Signalementep93->Dossierep->find( 'all', $queryData );
@@ -988,16 +947,16 @@
 			else if( $this->action == 'edit' ) {
 				$contratinsertion_id = $id;
 				$contratinsertion = $this->Contratinsertion->find(
-						'first', array(
-					'conditions' => array(
-						'Contratinsertion.id' => $contratinsertion_id
-					),
-					'contain' => array(
-						'Autreavissuspension',
-						'Autreavisradiation',
-// 							'Objetcontratprecedent'
-					)
+					'first', array(
+						'conditions' => array(
+							'Contratinsertion.id' => $contratinsertion_id
+						),
+						'contain' => array(
+							'Autreavissuspension',
+							'Autreavisradiation',
+	// 							'Objetcontratprecedent'
 						)
+					)
 				);
 				$this->assert( !empty( $contratinsertion ), 'invalidParameter' );
 
