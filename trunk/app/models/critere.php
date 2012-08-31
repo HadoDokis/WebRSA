@@ -26,27 +26,34 @@
 			}
 
 			/// Critères
-			$locaadr = Set::extract( $criteres, 'Critere.locaadr' );
-			$numcomptt = Set::extract( $criteres, 'Critere.numcomptt' );
-			$natpf = Set::extract( $criteres, 'Critere.natpf' );
-			$nir = Set::extract( $criteres, 'Critere.nir' );
-			$statut_orient = Set::extract( $criteres, 'Critere.statut_orient' );
-			$typeorient_id = Set::extract( $criteres, 'Critere.typeorient_id' );
-			$structurereferente_id = Set::extract( $criteres, 'Critere.structurereferente_id' );
-			$serviceinstructeur_id = Set::extract( $criteres, 'Critere.serviceinstructeur_id' );
-			$referent_id = Set::extract( $criteres, 'Critere.referent_id' );
-			$dtnai = Set::extract( $criteres, 'Critere.dtnai' );
-			$matricule = Set::extract( $criteres, 'Critere.matricule' );
-			$identifiantpe = Set::extract( $criteres, 'Critere.identifiantpe' );
-			$structureorientante_id = Set::extract( $criteres, 'Critere.structureorientante_id' );
-			$referentorientant_id = Set::extract( $criteres, 'Critere.referentorientant_id' );
+			$locaadr = Set::extract( $criteres, 'Adresse.locaadr' );
+			$numcomptt = Set::extract( $criteres, 'Adresse.numcomptt' );
+			$natpf = Set::extract( $criteres, 'Detaildroitrsa.natpf' );
+			$nir = Set::extract( $criteres, 'Personne.nir' );
+			$statut_orient = Set::extract( $criteres, 'Orientstruct.statut_orient' );
+			$typeorient_id = Set::extract( $criteres, 'Orientstruct.typeorient_id' );
+			$structurereferente_id = Set::extract( $criteres, 'Orientstruct.structurereferente_id' );
+			$serviceinstructeur_id = Set::extract( $criteres, 'Orientstruct.serviceinstructeur_id' );
+			$referent_id = Set::extract( $criteres, 'Orientstruct.referent_id' );
+			$dtnai = Set::extract( $criteres, 'Personne.dtnai' );
+			$matricule = Set::extract( $criteres, 'Dossier.matricule' );
+			$identifiantpe = Set::extract( $criteres, 'Historiqueetatpe.identifiantpe' );
+			$structureorientante_id = Set::extract( $criteres, 'Orientstruct.structureorientante_id' );
+			$referentorientant_id = Set::extract( $criteres, 'Orientstruct.referentorientant_id' );
 
+			
+			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );			
+			$conditions = $this->conditionsAdresse( $conditions, $criteres, $filtre_zone_geo, $mesCodesInsee );
+			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $criteres );
+			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $criteres );
+			
+			
 			/// Critères sur l'orientation - date d'orientation
-			if( isset( $criteres['Critere']['date_valid'] ) && !empty( $criteres['Critere']['date_valid'] ) ) {
-				$valid_from = ( valid_int( $criteres['Critere']['date_valid_from']['year'] ) && valid_int( $criteres['Critere']['date_valid_from']['month'] ) && valid_int( $criteres['Critere']['date_valid_from']['day'] ) );
-				$valid_to = ( valid_int( $criteres['Critere']['date_valid_to']['year'] ) && valid_int( $criteres['Critere']['date_valid_to']['month'] ) && valid_int( $criteres['Critere']['date_valid_to']['day'] ) );
+			if( isset( $criteres['Orientstruct']['date_valid'] ) && !empty( $criteres['Orientstruct']['date_valid'] ) ) {
+				$valid_from = ( valid_int( $criteres['Orientstruct']['date_valid_from']['year'] ) && valid_int( $criteres['Orientstruct']['date_valid_from']['month'] ) && valid_int( $criteres['Orientstruct']['date_valid_from']['day'] ) );
+				$valid_to = ( valid_int( $criteres['Orientstruct']['date_valid_to']['year'] ) && valid_int( $criteres['Orientstruct']['date_valid_to']['month'] ) && valid_int( $criteres['Orientstruct']['date_valid_to']['day'] ) );
 				if( $valid_from && $valid_to ) {
-					$conditions[] = 'Orientstruct.date_valid BETWEEN \''.implode( '-', array( $criteres['Critere']['date_valid_from']['year'], $criteres['Critere']['date_valid_from']['month'], $criteres['Critere']['date_valid_from']['day'] ) ).'\' AND \''.implode( '-', array( $criteres['Critere']['date_valid_to']['year'], $criteres['Critere']['date_valid_to']['month'], $criteres['Critere']['date_valid_to']['day'] ) ).'\'';
+					$conditions[] = 'Orientstruct.date_valid BETWEEN \''.implode( '-', array( $criteres['Orientstruct']['date_valid_from']['year'], $criteres['Orientstruct']['date_valid_from']['month'], $criteres['Orientstruct']['date_valid_from']['day'] ) ).'\' AND \''.implode( '-', array( $criteres['Orientstruct']['date_valid_to']['year'], $criteres['Orientstruct']['date_valid_to']['month'], $criteres['Orientstruct']['date_valid_to']['day'] ) ).'\'';
 				}
 			}
 
@@ -66,54 +73,6 @@
 				)';
 			}
 
-			// Critères sur le dossier - date de demande
-			if( isset( $criteres['Critere']['dtdemrsa'] ) && !empty( $criteres['Critere']['dtdemrsa'] ) ) {
-				$valid_from = ( valid_int( $criteres['Critere']['dtdemrsa_from']['year'] ) && valid_int( $criteres['Critere']['dtdemrsa_from']['month'] ) && valid_int( $criteres['Critere']['dtdemrsa_from']['day'] ) );
-				$valid_to = ( valid_int( $criteres['Critere']['dtdemrsa_to']['year'] ) && valid_int( $criteres['Critere']['dtdemrsa_to']['month'] ) && valid_int( $criteres['Critere']['dtdemrsa_to']['day'] ) );
-				if( $valid_from && $valid_to ) {
-					$conditions[] = 'Dossier.dtdemrsa BETWEEN \''.implode( '-', array( $criteres['Critere']['dtdemrsa_from']['year'], $criteres['Critere']['dtdemrsa_from']['month'], $criteres['Critere']['dtdemrsa_from']['day'] ) ).'\' AND \''.implode( '-', array( $criteres['Critere']['dtdemrsa_to']['year'], $criteres['Critere']['dtdemrsa_to']['month'], $criteres['Critere']['dtdemrsa_to']['day'] ) ).'\'';
-				}
-			}
-
-			// Critères sur une personne du foyer - nom, prénom, nom de jeune fille -> FIXME: seulement demandeur pour l'instant
-			$filtersPersonne = array();
-			foreach( array( 'nom', 'prenom', 'nomnai', 'nir' ) as $criterePersonne ) {
-				if( isset( $criteres['Critere'][$criterePersonne] ) && !empty( $criteres['Critere'][$criterePersonne] ) ) {
-					$conditions[] = 'UPPER(Personne.'.$criterePersonne.') LIKE \''.$this->wildcard( strtoupper( replace_accents( $criteres['Critere'][$criterePersonne] ) ) ).'\'';
-				}
-			}
-
-			// Critères sur une personne du foyer - date de naissance -> FIXME: seulement demandeur pour l'instant
-			if( isset( $criteres['Critere']['dtnai'] ) && !empty( $criteres['Critere']['dtnai'] ) ) {
-				if( valid_int( $criteres['Critere']['dtnai']['year'] ) ) {
-					$conditions[] = 'EXTRACT(YEAR FROM Personne.dtnai) = '.$criteres['Critere']['dtnai']['year'];
-				}
-				if( valid_int( $criteres['Critere']['dtnai']['month'] ) ) {
-					$conditions[] = 'EXTRACT(MONTH FROM Personne.dtnai) = '.$criteres['Critere']['dtnai']['month'];
-				}
-				if( valid_int( $criteres['Critere']['dtnai']['day'] ) ) {
-					$conditions[] = 'EXTRACT(DAY FROM Personne.dtnai) = '.$criteres['Critere']['dtnai']['day'];
-				}
-			}
-
-			// Localité adresse
-			if( !empty( $locaadr ) ) {
-				$conditions[] = 'Adresse.locaadr ILIKE \'%'.Sanitize::clean( $locaadr ).'%\'';
-			}
-
-			// Critères sur l'adresse - code insee
-			if( isset( $criteres['Adresse']['numcomptt'] ) && !empty( $criteres['Adresse']['numcomptt'] ) ) {
-				$conditions[] = "Adresse.numcomptt ILIKE '%".Sanitize::paranoid( $criteres['Adresse']['numcomptt'] )."%'";
-			}
-
-			/// Critères sur l'adresse - canton
-			if( Configure::read( 'CG.cantons' ) ) {
-				if( isset( $criteres['Canton']['canton'] ) && !empty( $criteres['Canton']['canton'] ) ) {
-					$this->Canton = ClassRegistry::init( 'Canton' );
-					$conditions[] = $this->Canton->queryConditions( $criteres['Canton']['canton'] );
-				}
-			}
-
 			// ...
 			if( !empty( $statut_orient ) ) {
 				$conditions[] = 'Orientstruct.statut_orient = \''.Sanitize::clean( $statut_orient ).'\'';
@@ -123,28 +82,10 @@
 				}
 			}
 
-			// ...
-			if( !empty( $natpf ) ) {
-				$conditions[] = 'Detaildroitrsa.id IN (
-									SELECT detailscalculsdroitsrsa.detaildroitrsa_id
-										FROM detailscalculsdroitsrsa
-											INNER JOIN detailsdroitsrsa ON (
-												detailscalculsdroitsrsa.detaildroitrsa_id = detailsdroitsrsa.id
-											)
-										WHERE
-											detailsdroitsrsa.dossier_id = Dossier.id
-											AND detailscalculsdroitsrsa.natpf ILIKE \'%'.Sanitize::clean( $natpf ).'%\'
-								)';
-			}
 
 			// Recherche par identifiant Pôle Emploi
 			if( !empty( $identifiantpe ) ) {
 				$conditions[] = ClassRegistry::init( 'Historiqueetatpe' )->conditionIdentifiantpe( $identifiantpe );
-			}
-
-			// ...
-			if( !empty( $matricule ) ) {
-				$conditions[] = 'Dossier.matricule = \''.Sanitize::clean( $matricule ).'\'';
 			}
 
 			// ...
@@ -198,15 +139,6 @@
 			if( !empty( $referent_id ) ) {
 				$conditions[] = 'PersonneReferent.referent_id = \''.Sanitize::clean( $referent_id ).'\'';
 			}
-
-
-			$etatdossier = Set::extract( $criteres, 'Situationdossierrsa.etatdosrsa' );
-			if( isset( $criteres['Situationdossierrsa']['etatdosrsa'] ) && !empty( $criteres['Situationdossierrsa']['etatdosrsa'] ) ) {
-				$conditions[] = '( Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $etatdossier ).'\' ) )';
-			}
-
-			// Trouver la dernière demande RSA pour chacune des personnes du jeu de résultats
-			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $criteres );
 
 			$hasContrat  = Set::extract( $criteres, 'Critere.hascontrat' );
 
