@@ -39,37 +39,34 @@
 
 <?php /*echo $xform->create( 'Critereapre', array( 'type' => 'post', 'action' => '/formulaire/', 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );*/
     echo $xform->create( 'Critereapre', array( 'url'=> Router::url( null, true ), 'id' => 'critereapreform', 'class' => ( !empty( $this->data ) ? 'folded' : 'unfolded' ) ) );?>
-    <fieldset>
-        <legend>Recherche par personne</legend>
-        <?php echo $xform->input( 'Filtre.nom', array( 'label' => 'Nom ', 'type' => 'text' ) );?>
-        <?php echo $form->input( 'Filtre.numdemrsa', array( 'label' => 'N° dossier RSA ', 'type' => 'text', 'maxlength' => 11 ) );?>
-        <?php echo $form->input( 'Filtre.matricule', array( 'label' => 'N° CAF ', 'type' => 'text'/*, 'maxlength' => 11*/ ) );?>
-        <?php echo $xform->input( 'Filtre.prenom', array( 'label' => 'Prénom ', 'type' => 'text' ) );?>
-        <?php echo $xform->input( 'Filtre.nir', array( 'label' => 'NIR ', 'maxlength' => 15 ) );?>
-        <?php
-			echo $xform->input( 'Filtre.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );
-				
-			if( Configure::read( 'CG.cantons' ) ) {
-				echo $xform->input( 'Canton.canton', array( 'label' => 'Canton', 'type' => 'select', 'options' => $cantons, 'empty' => true ) );
-			}
-			echo $form->input( 'Filtre.locaadr', array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );
 
+		<?php
+			echo $search->blocAllocataire(  );
+			echo $search->blocAdresse( $mesCodesInsee, $cantons );
 		?>
-        <?php
+		
+	<fieldset>
+		<legend>Recherche par dossier</legend>
+        <?php 
+			echo $form->input( 'Dossier.numdemrsa', array( 'label' => 'Numéro de dossier RSA' ) );
+			echo $form->input( 'Dossier.matricule', array( 'label' => 'Numéro CAF', 'maxlength' => 15 ) );
+			
+			echo $search->etatdosrsa($etatdosrsa);
+            
             $valueDossierDernier = isset( $this->data['Dossier']['dernier'] ) ? $this->data['Dossier']['dernier'] : true;
             echo $form->input( 'Dossier.dernier', array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueDossierDernier ) );
         ?>
     </fieldset>
-    <?php
-		if( Configure::read( 'debug' ) > 0 ) {
-			echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
-		}
-	?>
-	<script type="text/javascript">
-		document.observe("dom:loaded", function() {
-			dependantSelect( 'FiltreReferentId', 'FiltreStructurereferenteId' );
-		});
-	</script>
+		<?php
+			if( Configure::read( 'debug' ) > 0 ) {
+				echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
+			}
+		?>
+		<script type="text/javascript">
+			document.observe("dom:loaded", function() {
+				dependantSelect( 'FiltreReferentId', 'FiltreStructurereferenteId' );
+			});
+		</script>
     <fieldset>
         <legend>Recherche par demande APRE</legend>
             <?php echo $xform->input( 'Filtre.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>

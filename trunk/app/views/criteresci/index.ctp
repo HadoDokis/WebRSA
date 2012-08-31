@@ -40,19 +40,21 @@
 ?>
 <?php $pagination = $xpaginator->paginationBlock( 'Contratinsertion', $this->passedArgs );?>
 <?php echo $form->create( 'Critereci', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );?>
+	<?php
+		echo $search->blocAllocataire( $trancheage );
+		echo $search->blocAdresse( $mesCodesInsee, $cantons );
+	?>
 	<fieldset>
-		<legend>Recherche par personne</legend>
-		<?php echo $form->input( 'Filtre.nom', array( 'label' => 'Nom ', 'type' => 'text' ) );?>
-		<?php echo $form->input( 'Filtre.prenom', array( 'label' => 'Prénom ', 'type' => 'text' ) );?>
-		<?php echo $form->input( 'Filtre.nir', array( 'label' => 'NIR ', 'maxlength' => 15 ) );?>
-		<?php echo $form->input( 'Filtre.matricule', array( 'label' => 'N° CAF', 'maxlength' => 15 ) );?>
-		<?php echo $form->input( 'Filtre.natpf', array( 'label' => 'Nature de la prestation', 'type' => 'select', 'options' => $natpf, 'empty' => true ) );?>
-		<?php echo $form->input( 'Personne.trancheage', array( 'label' => 'Tranche d\'âge', 'type' => 'select', 'options' => $trancheage, 'empty' => true ) );?>
-		<?php
+		<legend>Recherche par dossier</legend>
+		<?php 
+			echo $form->input( 'Dossier.numdemrsa', array( 'label' => 'Numéro de demande RSA' ) );
+			echo $form->input( 'Dossier.matricule', array( 'label' => 'N° CAF', 'maxlength' => 15 ) );
+			echo $search->natpf( $natpf );
+			
 			$valueDossierDernier = isset( $this->data['Dossier']['dernier'] ) ? $this->data['Dossier']['dernier'] : true;
 			echo $form->input( 'Dossier.dernier', array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueDossierDernier ) );
+			echo $search->etatdosrsa($etatdosrsa);
 		?>
-		<?php echo $search->etatdosrsa($etatdosrsa); ?>
 	</fieldset>
 	<fieldset>
 		<legend>Recherche par CER</legend>
@@ -77,13 +79,6 @@
 				<?php echo $form->input( 'Filtre.date_saisi_ci_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120,  'maxYear' => date( 'Y' ) + 5, 'selected' => $date_saisi_ci_to ) );?>
 			</fieldset>
 			
-			<?php echo $form->input( 'Filtre.locaadr', array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );?>
-			<?php echo $form->input( 'Filtre.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );?>
-			<?php
-				if( Configure::read( 'CG.cantons' ) ) {
-					echo $form->input( 'Canton.canton', array( 'label' => 'Canton', 'type' => 'select', 'options' => $cantons, 'empty' => true ) );
-				}
-			?>
 			<?php echo $form->input( 'Filtre.structurereferente_id', array( 'label' => __d( 'rendezvous', 'Rendezvous.lib_struct', true ), 'type' => 'select', 'options' => $struct, 'empty' => true ) ); ?>
 			<?php echo $form->input( 'Filtre.referent_id', array( 'label' => __( 'Nom du référent', true ), 'type' => 'select', 'options' => $referents, 'empty' => true ) ); ?>
 			<?php echo $ajax->observeField( 'FiltreStructurereferenteId', array( 'update' => 'FiltreReferentId', 'url' => Router::url( array( 'action' => 'ajaxreferent' ), true ) ) );?>
@@ -99,9 +94,6 @@
 			?>
 			<?php echo $form->input( 'Filtre.datevalidation_ci', array( 'label' => 'Date de validation du contrat', 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true)  ); ?>
 
-			<?php /*echo $form->input( 'Filtre.dd_ci', array( 'label' => 'Date de début du contrat', 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true)  ); ?>
-			<?php echo $form->input( 'Filtre.df_ci', array( 'label' => 'Date de fin du contrat', 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true)  ); */?>
-			
 			<!-- Filtre sur la date de début du CER -->
 			<?php echo $form->input( 'Filtre.dd_ci', array( 'label' => 'Filtrer par date de début du contrat', 'type' => 'checkbox' ) );?>
 			<fieldset>
@@ -186,10 +178,6 @@
 						else {
 							$positioncer = Set::enum( Set::classicExtract( $contrat, 'Contratinsertion.positioncer' ), $numcontrat['positioncer'] );
 						}
-						/***/
-						
-						
-						
 						
 						
 						$innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
@@ -212,11 +200,11 @@
 								</tr>
 								<tr>
 									<th>Rôle</th>
-									<td>'.$rolepers[$contrat['Prestation']['rolepers']].'</td>
+									<td>'.Set::classicExtract( $rolepers, Set::classicExtract( $contrat, 'Prestation.rolepers' ) ).'</td>
 								</tr>
 								<tr>
 									<th>État du dossier</th>
-									<td>'.$etatdosrsa[$contrat['Situationdossierrsa']['etatdosrsa']].'</td>
+									<td>'.Set::classicExtract( $etatdossier, Set::classicExtract( $contrat, 'Situationdossierrsa.etatdosrsa' ) ).'</td>
 								</tr>								
 							</tbody>
 						</table>';

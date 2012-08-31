@@ -7,7 +7,7 @@
 
 		public $uses = array( 'Canton', 'Critereapre', 'Aideapre66', 'Apre',  'Apre66', 'Tiersprestataireapre', 'Option', 'Zonegeographique' );
 
-		public $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml', 'Xpaginator' );
+		public $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml', 'Xpaginator', 'Search' );
 
 		public $components = array(  'Prg' => array( 'actions' => array( 'all', 'eligible' ) )  );
 

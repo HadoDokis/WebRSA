@@ -50,14 +50,19 @@ $pagination = $xpaginator->paginationBlock( 'Apre', $this->passedArgs );
 
 <?php /*echo $xform->create( 'Critereapre', array( 'type' => 'post', 'action' => '/formulaire/', 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );*/
     echo $xform->create( 'Critereapre', array( 'url'=> Router::url( null, true ), 'id' => 'Critereapre', 'class' => ( !empty( $this->data ) ? 'folded' : 'unfolded' ) ) );?>
-    <fieldset>
-        <legend>Recherche par personne</legend>
-        <?php echo $xform->input( 'Filtre.nom', array( 'label' => 'Nom ', 'type' => 'text' ) );?>
-        <?php echo $form->input( 'Filtre.numdemrsa', array( 'label' => 'N° dossier RSA ', 'type' => 'text', 'maxlength' => 11 ) );?>
-        <?php echo $form->input( 'Filtre.matricule', array( 'label' => 'N° CAF ', 'type' => 'text'/*, 'maxlength' => 11*/ ) );?>
-        <?php echo $xform->input( 'Filtre.prenom', array( 'label' => 'Prénom ', 'type' => 'text' ) );?>
-        <?php echo $xform->input( 'Filtre.nir', array( 'label' => 'NIR ', 'maxlength' => 15 ) );?>
-        <?php
+	<?php
+		echo $search->blocAllocataire(  );
+		echo $search->blocAdresse( $mesCodesInsee, $cantons );
+	?>
+		
+	<fieldset>
+		<legend>Recherche par dossier</legend>
+        <?php 
+			echo $form->input( 'Dossier.numdemrsa', array( 'label' => 'Numéro de dossier RSA' ) );
+			echo $form->input( 'Dossier.matricule', array( 'label' => 'Numéro CAF', 'maxlength' => 15 ) );
+			
+			echo $search->etatdosrsa($etatdosrsa);
+            
             $valueDossierDernier = isset( $this->data['Dossier']['dernier'] ) ? $this->data['Dossier']['dernier'] : true;
             echo $form->input( 'Dossier.dernier', array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueDossierDernier ) );
         ?>
@@ -85,13 +90,6 @@ $pagination = $xpaginator->paginationBlock( 'Apre', $this->passedArgs );
             <?php echo $xform->enum( 'Filtre.typedemandeapre', array(  'label' => 'Type de demande', 'options' => $options['typedemandeapre'] ) );?>
             <?php echo $xform->enum( 'Filtre.activitebeneficiaire', array(  'label' => 'Activité du bénéficiaire', 'options' => $options['activitebeneficiaire'] ) );?>
             <?php echo $xform->enum( 'Filtre.natureaidesapres', array(  'label' => 'Nature de l\'aide', 'options' => $natureAidesApres, 'empty' => true ) );?>
-
-            <?php echo $xform->input( 'Filtre.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );?>
-            <?php
-                if( Configure::read( 'CG.cantons' ) ) {
-                    echo $xform->input( 'Canton.canton', array( 'label' => 'Canton', 'type' => 'select', 'options' => $cantons, 'empty' => true ) );
-                }
-            ?>
     </fieldset>
     <fieldset>
         <legend>Recherche par Relance</legend>

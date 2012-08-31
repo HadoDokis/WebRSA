@@ -27,18 +27,23 @@
 	}
 
 	echo $xform->create( 'Critereapre', array( 'url'=> Router::url( null, true ), 'id' => 'Critereapre', 'class' => ( !empty( $this->data ) ? 'folded' : 'unfolded' ) ) );?>
+	<?php
+		echo $search->blocAllocataire(  );
+		echo $search->blocAdresse( $mesCodesInsee, $cantons );
+	?>
+		
 	<fieldset>
-		<legend>Recherche par personne</legend>
-		<?php echo $xform->input( 'Filtre.nom', array( 'label' => 'Nom ', 'type' => 'text' ) );?>
-		<?php echo $form->input( 'Filtre.numdemrsa', array( 'label' => 'N° dossier RSA ', 'type' => 'text', 'maxlength' => 11 ) );?>
-		<?php echo $form->input( 'Filtre.matricule', array( 'label' => 'N° CAF ', 'type' => 'text' ) );?>
-		<?php echo $xform->input( 'Filtre.prenom', array( 'label' => 'Prénom ', 'type' => 'text' ) );?>
-		<?php echo $xform->input( 'Filtre.nir', array( 'label' => 'NIR ', 'maxlength' => 15 ) );?>
-		<?php
-			$valueDossierDernier = isset( $this->data['Dossier']['dernier'] ) ? $this->data['Dossier']['dernier'] : true;
-			echo $form->input( 'Dossier.dernier', array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueDossierDernier ) );
-		?>
-	</fieldset>
+		<legend>Recherche par dossier</legend>
+        <?php 
+			echo $form->input( 'Dossier.numdemrsa', array( 'label' => 'Numéro de dossier RSA' ) );
+			echo $form->input( 'Dossier.matricule', array( 'label' => 'Numéro CAF', 'maxlength' => 15 ) );
+			
+			echo $search->etatdosrsa($etatdosrsa);
+            
+            $valueDossierDernier = isset( $this->data['Dossier']['dernier'] ) ? $this->data['Dossier']['dernier'] : true;
+            echo $form->input( 'Dossier.dernier', array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueDossierDernier ) );
+        ?>
+    </fieldset>
 	<fieldset>
 		<legend>Recherche par demande APRE</legend>
 			<?php echo $xform->input( 'Filtre.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>

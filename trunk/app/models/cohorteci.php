@@ -80,9 +80,6 @@
 			}
 
 
-			/// Filtre zone géographique
-			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
-
 			/// Dossiers lockés
 			if( !empty( $lockedDossiers ) ) {
 				$conditions[] = 'Dossier.id NOT IN ( '.implode( ', ', $lockedDossiers ).' )';
@@ -140,13 +137,11 @@
 				)';
 			}
 
-			// Critères sur une personne du foyer - nom, prénom, nom de jeune fille -> FIXME: seulement demandeur pour l'instant
-			$filtersPersonne = array();
-			foreach( array( 'nom', 'prenom', 'nomnai' ) as $criterePersonne ) {
-				if( isset( $criteresci['Filtre'][$criterePersonne] ) && !empty( $criteresci['Filtre'][$criterePersonne] ) ) {
-					$conditions[] = 'UPPER( Personne.'.$criterePersonne.' ) LIKE \''.$this->wildcard( strtoupper( $criteresci['Filtre'][$criterePersonne] ) ).'\'';
-				}
-			}
+			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );			
+			$conditions = $this->conditionsAdresse( $conditions, $criteresci, $filtre_zone_geo, $mesCodesInsee );
+			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $criteresci );
+			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $criteresci );
+			
 
 			// ...
 			if( !empty( $decision_ci ) ) {
@@ -164,48 +159,6 @@
 				$conditions[] = 'Contratinsertion.datevalidation_ci = \''.$datevalidation_ci.'\'';
 			}
 
-
-			// Localité adresse
-			if( !empty( $locaadr ) ) {
-				$conditions[] = 'Adresse.locaadr ILIKE \'%'.Sanitize::clean( $locaadr ).'%\'';
-			}
-
-			// ...
-			if( !empty( $matricule ) ) {
-				$conditions[] = 'Dossier.matricule = \''.Sanitize::clean( $matricule ).'\'';
-			}
-
-			// Nature de la prestation
-			if( !empty( $natpf ) ) {
-				$conditions[] = 'Detaildroitrsa.id IN (
-									SELECT detailscalculsdroitsrsa.detaildroitrsa_id
-										FROM detailscalculsdroitsrsa
-											INNER JOIN detailsdroitsrsa ON (
-												detailscalculsdroitsrsa.detaildroitrsa_id = detailsdroitsrsa.id
-											)
-										WHERE
-											detailsdroitsrsa.dossier_id = Dossier.id
-											AND detailscalculsdroitsrsa.natpf ILIKE \'%'.Sanitize::clean( $natpf ).'%\'
-								)';
-			}
-
-			/// Critères sur l'adresse - canton
-			if( Configure::read( 'CG.cantons' ) ) {
-				if( isset( $criteresci['Canton']['canton'] ) && !empty( $criteresci['Canton']['canton'] ) ) {
-					$this->Canton = ClassRegistry::init( 'Canton' );
-					$conditions[] = $this->Canton->queryConditions( $criteresci['Canton']['canton'] );
-				}
-			}
-
-			// NIR
-			if( !empty( $nir ) ) {
-				$conditions[] = 'Personne.nir ILIKE \'%'.Sanitize::clean( $nir ).'%\'';
-			}
-
-			// Commune au sens INSEE
-			if( !empty( $numcomptt ) ) {
-				$conditions[] = 'Adresse.numcomptt ILIKE \'%'.Sanitize::clean( $numcomptt ).'%\'';
-			}
 
 			// Personne chargée du suiv
 			if( !empty( $personne_suivi ) ) {
@@ -276,21 +229,6 @@
 					AND contratsinsertion.datevalidation_ci = '2009-01-01'
 					AND adresses.locaadr ILIKE '%denis%'
 			*/
-
-			// Trouver la dernière demande RSA pour chacune des personnes du jeu de résultats
-			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $criteresci );
-
-			$conditions = $this->conditionsPersonne( $conditions, $criteresci );
-
-			/// Requête
-			$Situationdossierrsa = ClassRegistry::init( 'Situationdossierrsa' );
-			$etatdossier = Set::extract( $criteresci, 'Situationdossierrsa.etatdosrsa' );
-			if( isset( $criteresci['Situationdossierrsa']['etatdosrsa'] ) && !empty( $criteresci['Situationdossierrsa']['etatdosrsa'] ) ) {
-				$conditions[] = '( Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $etatdossier ).'\' ) )';
-			}
-			else {
-				$conditions[] = '( Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatOuvert() ).'\' ) )';
-			}
 
 
 

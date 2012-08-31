@@ -113,5 +113,50 @@
 
 			return $script.$input;
 		}
+		
+		/**
+		 * Retourne un fieldset de recherche par adresse contenant les champs suivants: Adresse.locaadr, Adresse.numcomptt
+		 * et Canton.canton (si on utilise les cantons).
+		 *
+		 * @param array $mesCodesInsee La liste des codes INSEE pour remplir le menu déroulant
+		 * @param array $cantons La liste des cantons pour remplir le menu déroulant
+		 * @return string
+		 */
+		public function blocAdresse( $mesCodesInsee, $cantons ) {
+			$content = $this->Xform->input( 'Adresse.locaadr', array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );
+			$content .= $this->Xform->input( 'Adresse.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );
+			if( Configure::read( 'CG.cantons' ) ) {
+				$content .= $this->Xform->input( 'Canton.canton', array( 'label' => 'Canton', 'type' => 'select', 'options' => $cantons, 'empty' => true ) );
+			}
+			
+			return $this->Html->tag(
+				'fieldset',
+				$this->Html->tag( 'legend', 'Recherche par Adresse' ).$content
+			);
+		}
+		
+		/**
+		 * Retourne une fieldset de recherche par allocataire contenant les champs suivants: Personne.dtnai, Personne.nom,
+		 * Personne.nomnai, Personne.prenom, Personne.nir, Personne.trancheage.
+		 *
+		 * @param array $trancheage La liste des tranches d'âge à utiliser dans le menu déroulant
+		 * @return string
+		 */
+		public function blocAllocataire( $trancheage = array() ) {
+			$content = $this->Xform->input( 'Personne.dtnai', array( 'label' => 'Date de naissance', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'empty' => true ) );
+			$content .= $this->Xform->input( 'Personne.nom', array( 'label' => 'Nom' ) );
+			$content .= $this->Xform->input( 'Personne.nomnai', array( 'label' => 'Nom de jeune fille' ) );
+			$content .= $this->Xform->input( 'Personne.prenom', array( 'label' => 'Prénom' ) );
+			$content .= $this->Xform->input( 'Personne.nir', array( 'label' => 'NIR', 'maxlength' => 15 ) );
+			
+			if( !empty( $trancheage ) ) {
+				$content .= $this->Xform->input( 'Personne.trancheage', array( 'label' => 'Tranche d\'âge', 'options' => $trancheage, 'empty' => true ) );
+			}
+
+			return $this->Html->tag(
+				'fieldset',
+				$this->Html->tag( 'legend', 'Recherche par allocataire' ).$content
+			);
+		}
 	}
 ?>

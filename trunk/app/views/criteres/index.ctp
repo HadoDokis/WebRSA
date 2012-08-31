@@ -11,17 +11,6 @@
 </script>
 
 <?php
-	function value( $array, $index ) {
-		$keys = array_keys( $array );
-		$index = ( ( $index == null ) ? '' : $index );
-		if( @in_array( $index, $keys ) && isset( $array[$index] ) ) {
-			return $array[$index];
-		}
-		else {
-			return null;
-		}
-	}
-
 	if( is_array( $this->data ) ) {
 		echo '<ul class="actionMenu"><li>'.$xhtml->link(
 			$xhtml->image(
@@ -39,7 +28,12 @@
 		<legend>Recherche par dossier</legend>
 		<?php echo $form->input( 'Critere.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
 		<?php //echo $form->input( 'Critere.etatdosrsa', array( 'label' => 'Situation dossier rsa', 'type' => 'select', 'options' => $etatdosrsa, 'empty' => true ) );?>
-		<?php echo $form->input( 'Detailcalculdroitrsa.natpf', array( 'label' => 'Nature de la prestation', 'type' => 'select', 'options' => $natpf, 'empty' => true ) );?>
+		<?php echo $form->input( 'Dossier.numdemrsa', array( 'label' => 'Numéro de dossier RSA', 'maxlength' => 15 ) );?>
+		<?php echo $form->input( 'Dossier.matricule', array( 'label' => 'Numéro CAF' ) );?>
+		<?php 
+			echo $search->natpf( $natpf );
+// 			echo $form->input( 'Detailcalculdroitrsa.natpf', array( 'label' => 'Nature de la prestation', 'type' => 'select', 'options' => $natpf, 'empty' => true ) );
+		?>
 		<?php echo $form->input( 'Dossier.dtdemrsa', array( 'label' => 'Filtrer par date d\'ouverture de droit', 'type' => 'checkbox' ) );?>
 		<fieldset>
 			<legend>Date de demande RSA</legend>
@@ -56,20 +50,15 @@
 		?>
 		<?php echo $search->etatdosrsa($etatdosrsa); ?>
 	</fieldset>
+	<?php
+		echo $search->blocAllocataire(  );
+		echo $search->blocAdresse( $mesCodesInsee, $cantons );
+	?>
+
 	<fieldset>
-		<legend>Recherche par personne</legend>
-		<?php echo $form->input( 'Personne.nom', array( 'label' => 'Nom ', 'type' => 'text' ) );?>
-		<?php echo $form->input( 'Personne.prenom', array( 'label' => 'Prénom ', 'type' => 'text' ) );?>
-		<?php echo $form->input( 'Personne.dtnai', array( 'label' => 'Date de naissance', 'type' => 'date', 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 80, 'maxYear' => date( 'Y' ), 'empty' => true ) );?>
-		<?php echo $form->input( 'Personne.nir', array( 'label' => 'NIR', 'maxlength' => 15 ) );?>
-		<?php echo $form->input( 'Dossier.matricule', array( 'label' => 'N° CAF', 'maxlength' => 15 ) );?>
-		<?php echo $form->input( 'Adresse.locaadr', array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );?>
-		<?php echo $form->input( 'Historiqueetatpe.identifiantpe', array( 'label' => 'Identifiant Pôle Emploi ', 'type' => 'text', 'maxlength' => 11 ) );?>
-		<?php echo $form->input( 'Adresse.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );?>
-		<?php
-			if( Configure::read( 'CG.cantons' ) ) {
-				echo $form->input( 'Canton.canton', array( 'label' => 'Canton', 'type' => 'select', 'options' => $cantons, 'empty' => true ) );
-			}
+		<legend>Recherche par parcours allocataire</legend>
+		<?php 
+			echo $form->input( 'Historiqueetatpe.identifiantpe', array( 'label' => 'Identifiant Pôle Emploi ', 'type' => 'text', 'maxlength' => 11 ) );		
 			echo $form->input( 'Critere.hascontrat', array( 'label' => 'Possède un CER ? ', 'type' => 'select', 'options' => array( 'O' => 'Oui', 'N' => 'Non'), 'empty' => true ) );
 			echo $form->input( 'Critere.hasreferent', array( 'label' => 'Possède un référent ? ', 'type' => 'select', 'options' => array( 'O' => 'Oui', 'N' => 'Non'), 'empty' => true ) );
 		?>
@@ -170,7 +159,7 @@
 							<tbody>
 								<tr>
 									<th>Etat du droit</th>
-									<td>'.value( $etatdosrsa, Set::classicExtract( $orient, 'Situationdossierrsa.etatdosrsa' ) ).'</td>
+									<td>'.Set::classicExtract( $etatdosrsa, Set::classicExtract( $orient, 'Situationdossierrsa.etatdosrsa' ) ).'</td>
 								</tr>
 								<tr>
 									<th>Commune de naissance</th>
