@@ -72,6 +72,9 @@
 					Cache::write( 'servicesinstructeurs_liste', $typeservice );
 				}
 				$this->set( 'typeservice', $typeservice );
+				
+				$referents = $this->Dossier->Foyer->Personne->PersonneReferent->Referent->find( 'list', array( 'order' => array( 'Referent.nom' ) ) );
+				$this->set( compact( 'referents') );
 			}
 			else if( $this->action == 'edit' ) {
 				$optionsDossier = array(

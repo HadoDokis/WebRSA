@@ -108,7 +108,10 @@
 				echo $form->input( 'Orientstruct.sansorientation', array( 'label' => 'Personne sans orientation', 'type' => 'checkbox', 'checked' => $valueSansOrientation ) );
 			}
 			
-// 			echo $form->input( 'Personne.sansprestation', array( 'label' => 'Allocataire ne possédant pas de prestation', 'type' => 'checkbox' ) );
+			if( Configure::read( 'Cg.departement' ) == 58 ){
+				echo $form->input( 'PersonneReferent.referent_id', array( 'label' => 'Travailleur social chargé de l\'évaluation', 'type' => 'select', 'options' => $referents, 'empty' => true ) );
+			}
+
 		?>
 	</fieldset>
 
