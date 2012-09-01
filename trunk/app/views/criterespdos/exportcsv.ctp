@@ -1,17 +1,6 @@
 <?php
 	$csv->preserveLeadingZerosInExcel = true;
 
-	function value( $array, $index ) {
-		$keys = array_keys( $array );
-		$index = ( ( $index == null ) ? '' : $index );
-		if( @in_array( $index, $keys ) && isset( $array[$index] ) ) {
-			return $array[$index];
-		}
-		else {
-			return null;
-		}
-	}
-
 	$csv->addRow( array( 'N° Dossier', 'Nom/Prénom allocataire', 'N° CAF', 'Commune de l\'allocataire', 'Proposition de décision', 'Motif PDO', 'Date de proposition de décision', 'Gestionnaire' ) );
 // debug($pdos);
 // die();

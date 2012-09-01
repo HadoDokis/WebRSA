@@ -18,18 +18,6 @@
 </script>
 
 <?php
-	function value( $array, $index ) {
-		$keys = array_keys( $array );
-		$index = ( ( $index == null ) ? '' : $index );
-		if( @in_array( $index, $keys ) && isset( $array[$index] ) ) {
-			return $array[$index];
-		}
-		else {
-			return null;
-		}
-	}
-?>
-<?php
 	if( is_array( $this->data ) ) {
 		echo '<ul class="actionMenu"><li>'.$xhtml->link(
 			$xhtml->image(

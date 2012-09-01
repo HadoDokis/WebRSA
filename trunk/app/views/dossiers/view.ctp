@@ -34,17 +34,6 @@
 		return ( isset( $links[$value] ) ? $links[$value] : null );
 	}
 
-	function value( $array, $index ) {
-		$keys = array_keys( $array );
-		$index = ( ( $index == null ) ? '' : $index );
-		if( @in_array( $index, $keys ) && isset( $array[$index] ) ) {
-			return $array[$index];
-		}
-		else {
-			return null;
-		}
-	}
-
 	function textToppersdrodevorsa( $calculdroitrsa ) {
 		if( !isset( $calculdroitrsa['toppersdrodevorsa'] ) ) {
 			return null;

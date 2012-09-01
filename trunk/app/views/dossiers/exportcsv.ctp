@@ -1,17 +1,6 @@
 <?php
 	$csv->preserveLeadingZerosInExcel = true;
 
-	function value( $array, $index ) {
-		$keys = array_keys( $array );
-		$index = ( ( $index == null ) ? '' : $index );
-		if( @in_array( $index, $keys ) && isset( $array[$index] ) ) {
-			return $array[$index];
-		}
-		else {
-			return null;
-		}
-	}
-
 	$csv->addRow( array( 'N° Dossier', 'Date de demande', 'NIR', 'Etat du droit', 'Nom/Prénom allocataire', 'Date de naissance', 'Commune de l\'allocataire', 'Type d\'orientation', 'Identifiant Pôle Emploi', 'N° CAF' ) );
 
 	foreach( $dossiers as $dossier ) {

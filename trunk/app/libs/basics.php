@@ -666,4 +666,22 @@
 	function full_array_diff( $left, $right ) {
 		return array_diff(array_merge($left, $right), array_intersect($left, $right));
 	}
+
+	/**
+	 * Fonction utilisée dans les vues à la place de Set::enum
+	 *
+	 * @param array $array
+	 * @param mixed $index
+	 * @return mixed
+	 */
+	function value( $array, $index ) {
+		$keys = array_keys( $array );
+		$index = ( ( $index == null ) ? '' : $index );
+		if( @in_array( $index, $keys ) && isset( $array[$index] ) ) {
+			return $array[$index];
+		}
+		else {
+			return null;
+		}
+	}
 ?>

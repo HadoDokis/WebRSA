@@ -1,17 +1,6 @@
 <?php
 	$csv->preserveLeadingZerosInExcel = true;
 
-// 	function value( $array, $index ) {
-// 		$keys = array_keys( $array );
-// 		$index = ( ( $index == null ) ? '' : $index );
-// 		if( @in_array( $index, $keys ) && isset( $array[$index] ) ) {
-// 			return $array[$index];
-// 		}
-// 		else {
-// 			return null;
-// 		}
-// 	}
-
 	$csv->addRow( array(
 		'Numero CAF/MSA',
 		'Nom / Prénom du demandeur',
@@ -33,7 +22,7 @@
 
 	foreach( $indicateurs as $indicateur ) {
 		$adresse = Set::classicExtract( $indicateur, 'Adresse.numvoie' ).' '.Set::enum( Set::classicExtract( $indicateur, 'Adresse.typevoie' ), $typevoie ).' '.Set::classicExtract( $indicateur, 'Adresse.nomvoie' ).'<br /> '.Set::classicExtract( $indicateur, 'Adresse.compladr' ).'<br /> '.Set::classicExtract( $indicateur, 'Adresse.codepos' ).' '.Set::classicExtract( $indicateur, 'Adresse.locaadr' );
-		
+
 		$conjoint = $indicateur['Personne']['qualcjt'].' '.$indicateur['Personne']['nomcjt'].' '.$indicateur['Personne']['prenomcjt'];
 
 		$row = array(

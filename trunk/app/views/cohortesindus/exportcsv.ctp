@@ -1,17 +1,6 @@
 <?php
 	$csv->preserveLeadingZerosInExcel = true;
 
-	function value( $array, $index ) {
-		$keys = array_keys( $array );
-		$index = ( ( $index == null ) ? '' : $index );
-		if( @in_array( $index, $keys ) && isset( $array[$index] ) ) {
-			return $array[$index];
-		}
-		else {
-			return null;
-		}
-	}
-
 	$csv->addRow( array( 'N° Dossier', 'N° CAF', 'Nom/Prénom allocataire', 'Suivi', 'Situation des droits', 'Date indus', 'Montant initial de l\'indu', 'Montant transféré CG', 'Remise CG' ) );
 
 	foreach( $indus as $indu ) {
