@@ -1,8 +1,12 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+<?php
+	$this->pageTitle = 'Situation PDO';
 
-<?php  $this->pageTitle = 'Situation PDO';?>
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
 
-<?php echo $this->element( 'dossier_menu', array( 'id' => $dossierId ) );?>
+	echo $this->element( 'dossier_menu', array( 'id' => $dossierId ) );
+?>
 
 <?php
 	function value( $array, $index ) {

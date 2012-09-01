@@ -1,10 +1,12 @@
 <?php
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+
 	echo $xhtml->tag(
 		'h1',
 		$this->pageTitle = __d( 'motifsortiecui66', "Motifssortiecuis66::{$this->action}", true )
 	);
-
-	echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
 
 	echo $default->form(
 		array(

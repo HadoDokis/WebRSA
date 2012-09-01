@@ -1,11 +1,13 @@
 <?php
-	echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
-
 	if( Configure::read( 'Cg.departement') == 66 ) {
 		$this->pageTitle = 'Avis techniques';
 	}
 	else {
 		$this->pageTitle = 'Proposition';
+	}
+
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
 	}
 
 	echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
@@ -25,7 +27,7 @@
 					if( Set::check( $this->data, 'Propodecisioncui66.id' ) ){
 						echo $xform->input( 'Propodecisioncui66.id', array( 'type' => 'hidden' ) );
 					}
-					
+
 					echo $xform->input( 'Propodecisioncui66.cui_id', array( 'type' => 'hidden', 'value' => $cui_id ) );
 					echo $xform->input( 'Propodecisioncui66.user_id', array( 'type' => 'hidden', 'value' => $userConnected ) );
 
@@ -56,7 +58,7 @@
 					?>
 			</fieldset>
 		</fieldset>
-		
+
 		<fieldset>
 			<?php
 				echo $default2->subform(
@@ -93,7 +95,7 @@
 			false,
 			true
 		);
-	
+
 		observeDisableFieldsetOnCheckbox(
 			'Propodecisioncui66Isavisreferent',
 			'avisreferent',

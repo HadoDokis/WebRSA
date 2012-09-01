@@ -1,5 +1,10 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-<?php $this->pageTitle = 'Participant aux Comités d\'examen APRE';?>
+<?php
+	$this->pageTitle = 'Participant aux Comités d\'examen APRE';
+
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+?>
 	<h1><?php echo $this->pageTitle;?></h1>
 
 	<?php
@@ -22,12 +27,12 @@
 		<?php echo $xform->input( 'Participantcomite.mail', array( 'label' => __( 'email', true ), 'type' => 'text' ) );?>
 	</fieldset>
 
-		<div class="submit">
-			<?php
-				echo $xform->submit( 'Enregistrer', array( 'div' => false ) );
-				echo $xform->submit( 'Annuler', array( 'name' => 'Cancel', 'div' => false ) );
-			?>
-		</div>
+	<div class="submit">
+		<?php
+			echo $xform->submit( 'Enregistrer', array( 'div' => false ) );
+			echo $xform->submit( 'Annuler', array( 'name' => 'Cancel', 'div' => false ) );
+		?>
+	</div>
 <?php echo $xform->end();?>
 
 <div class="clearer"><hr /></div>

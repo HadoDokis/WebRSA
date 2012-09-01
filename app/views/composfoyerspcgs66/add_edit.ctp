@@ -1,9 +1,13 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-<?php $this->pageTitle = 'Compositions de foyer';?>
+<?php
+	$this->pageTitle = 'Compositions de foyer';
 
-	<h1><?php echo $this->pageTitle;?></h1>
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+?>
+<h1><?php echo $this->pageTitle;?></h1>
 
-	<fieldset>
+<fieldset>
 	<?php
 		echo $form->create( 'Compofoyerpcg66', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
 
@@ -20,4 +24,4 @@
 			echo $xform->submit( 'Annuler', array( 'name' => 'Cancel', 'div' => false ) );
 		?>
 	</div>
-	</fieldset>
+</fieldset>

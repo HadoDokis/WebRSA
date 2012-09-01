@@ -1,4 +1,8 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+<?php
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+?>
 <?php $this->pageTitle = 'Gestion des PDOs';?>
 
 <h1>Gestion des PDOs</h1>
@@ -81,7 +85,7 @@
 								<tr>
 									<th>État du dossier</th>
 									<td>'.h( $etatdosrsa[$pdo['Situationdossierrsa']['etatdosrsa']] ).'</td>
-								</tr>								
+								</tr>
 							</tbody>
 						</table>';
 						$title = $pdo['Dossier']['numdemrsa'];

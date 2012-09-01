@@ -1,5 +1,7 @@
 <?php
-	echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
 
 	echo $this->element( 'dossier_menu', array( 'foyer_id' => $foyer_id ) );
 ?>
@@ -66,11 +68,11 @@
 		<p class="notice">Aucune personne n'est concernée par ce dossier.</p>
 	<?php  endif;?>
 
-	<?php 
+	<?php
 		echo "<h2>Pièces liées au dossier</h2>";
 		echo $fileuploader->results( Set::classicExtract( $dossierpcg66, 'Fichiermodule' ) );
 	?>
-		
+
 	<?php if( !empty( $listeFicheAReporter ) ):?>
 		<?php echo "<h2>Fiche(s) de calcul à prendre en compte</h2>";?>
 		<table class="tooltips aere"><caption style="caption-side: top;">Informations concernant la (les) fiche(s) de calcul</caption>
@@ -110,7 +112,7 @@
 			</tbody>
 		</table>
 	<?php  endif;?>
-	
+
 
 		<fieldset><legend>Proposition du technicien</legend>
 			<?php if( !empty( $dossierpcg66['Decisiondossierpcg66'] ) ):?>
@@ -149,7 +151,7 @@
 		<?php else:?>
 			<p class="notice">Aucune proposition passée n'a encore été émise par le technicien.</p>
 		<?php  endif;?>
-		
+
 		<?php if( !empty( $dossierpcg66['Dossierpcg66']['contratinsertion_id'] ) ):?>
 			<?php echo "<h2>Informations du CER Particulier lié</h2>";?>
 			<table class="tooltips default2">
@@ -267,8 +269,8 @@
 		</tbody>
 	</table>
 		<?php endif;?>
-		
-		
+
+
 		<?php if( !empty( $dossierpcg66['Dossierpcg66']['decisiondefautinsertionep66_id'] ) ):?>
 		<fieldset>
 			<?php
@@ -294,7 +296,7 @@
 			?>
 		</fieldset>
 		<?php  endif;?>
-		
+
 		<fieldset id="Propositionpcg" class="invisible"></fieldset>
 
 			<?php
@@ -322,7 +324,7 @@
 					echo $xform->input( 'Propodecisioncer66.datevalidcer', array( 'label' => 'Date de la proposition du CER', 'type' => 'date', 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 4, 'maxYear' => date( 'Y' ) + 2, 'empty' => false ) );
 					echo $default2->subform(
 						array(
-							
+
 							'Motifcernonvalid66.Motifcernonvalid66' => array( 'type' => 'select', 'label' => 'Motif de non validation', 'multiple' => 'checkbox', 'empty' => false, 'options' => $listMotifs ),
 							'Propodecisioncer66.motifficheliaison' => array( 'type' => 'textarea' ),
 							'Propodecisioncer66.motifnotifnonvalid' => array( 'type' => 'textarea' )
@@ -345,7 +347,7 @@
 				);
 			?>
 		</fieldset>
-		
+
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
 		observeDisableFieldsetOnValue(
@@ -501,7 +503,7 @@
 
 		fieldUpdater();
 	});
-	
+
 	function radioValue( form, radioName ) {
 		var v = $( form ).getInputs( 'radio', radioName );
 
@@ -511,7 +513,7 @@
 				currentValue = radio.value;
 			}
 		} );
-		
+
 		return currentValue;
 	}
 

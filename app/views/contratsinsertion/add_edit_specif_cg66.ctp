@@ -1,8 +1,3 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-<?php $this->pageTitle = 'CER';?>
-
-<?php echo $this->element( 'dossier_menu', array( 'personne_id' => Set::classicExtract( $personne, 'Personne.id' ) ) );?>
-
 <?php
 	if( $this->action == 'add' ) {
 		$this->pageTitle = 'Ajout d\'un CER';
@@ -11,6 +6,15 @@
 		$this->pageTitle = 'Édition d\'un CER';
 	}
 
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+		echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
+	}
+?>
+
+<?php echo $this->element( 'dossier_menu', array( 'personne_id' => Set::classicExtract( $personne, 'Personne.id' ) ) );?>
+
+<?php
 	function value( $array, $index ) {
 		$keys = array_keys( $array );
 		$index = ( ( $index == null ) ? '' : $index );
@@ -52,12 +56,6 @@
 		observeDisableFieldsOnValue( 'ContratinsertionRgCi', [ 'ContratinsertionTypocontratId' ], 1, true );
 	});
 </script>
-
-<?php
-	if( Configure::read( 'debug' ) > 0 ) {
-		echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
-	}
-?>
 
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {

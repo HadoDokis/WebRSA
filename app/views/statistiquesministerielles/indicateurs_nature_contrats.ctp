@@ -1,6 +1,8 @@
 <?php
 	$this->pageTitle = 'Indicateurs de nature des contrats';
-	echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
 ?>
 <?php echo $xhtml->tag( 'h1', $this->pageTitle ); ?>
 <?php

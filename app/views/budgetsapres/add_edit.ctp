@@ -1,6 +1,9 @@
 <?php
 	$this->pageTitle = 'Budget APRE';
-	echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
 
 	echo $xhtml->tag( 'h1', $this->pageTitle );
 

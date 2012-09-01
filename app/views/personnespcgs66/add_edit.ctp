@@ -2,17 +2,13 @@
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
 		echo $xhtml->css( array( 'fileuploader' ), 'stylesheet', array( 'media' => 'all' ), false );
+		echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
 		echo $javascript->link( 'fileuploader.js' );
 	}
 
 	echo $this->element( 'dossier_menu', array( 'foyer_id' => $foyerId ) );
 ?>
 
-<?php
-	if( Configure::read( 'debug' ) > 0 ) {
-		echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
-	}
-?>
 <script type="text/javascript">
         document.observe("dom:loaded", function() {
             dependantSelect(
@@ -72,7 +68,7 @@
 							if ( isset( $this->validationErrors['Personnepcg66']['Statutpdo.Statutpdo'] ) && !empty( $this->validationErrors['Personnepcg66']['Statutpdo.Statutpdo'] ) ) {
 								echo "<div class='error-message'>".$this->validationErrors['Personnepcg66']['Statutpdo.Statutpdo']."</div>";
 							}
-							echo $xform->input( 'Statutpdo.Statutpdo', array( 'type' => 'select', 'label' => required( 'Statut de la personne' ), 'multiple' => 'checkbox' , 'options' => $statutlist, 'fieldset' => false  ) );                 
+							echo $xform->input( 'Statutpdo.Statutpdo', array( 'type' => 'select', 'label' => required( 'Statut de la personne' ), 'multiple' => 'checkbox' , 'options' => $statutlist, 'fieldset' => false  ) );
 						?>
 					</fieldset>
 				</div>

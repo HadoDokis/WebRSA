@@ -1,5 +1,8 @@
 <?php
-	echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+
 	echo $xhtml->tag(
 		'h1',
 		$this->pageTitle = __d( 'offreinsertion', "Offresinsertion::{$this->action}", true )
@@ -85,24 +88,24 @@
 							<th><?php echo $xpaginator->sort( 'Fin de l\'action', 'Actioncandidat.dfaction' );?></th>
 							<th><?php echo $xpaginator->sort( 'Nombre de postes disponibles', 'Actioncandidat.nbpostedispo' );?></th>
 							<th><?php echo $xpaginator->sort( 'Nombre d\'heures disponibles', 'Actioncandidat.nbheuredispo' );?></th>
-							
+
 							<th><?php echo $xpaginator->sort( 'Nom du contact', 'Contactpartenaire.nom_candidat' );?></th>
 							<th><?php echo $xpaginator->sort( 'N° de téléphone du contact', 'Contactpartenaire.numtel' );?></th>
 							<th><?php echo $xpaginator->sort( 'N° de fax', 'Contactpartenaire.numfax' );?></th>
 							<th><?php echo $xpaginator->sort( 'Email du contact', 'Contactpartenaire.email' );?></th>
-							
+
 							<th><?php echo $xpaginator->sort( 'Libellé du partenaire', 'Partenaire.libstruc' );?></th>
 							<th><?php echo $xpaginator->sort( 'Code du partenaire', 'Partenaire.codepartenaire' );?></th>
 							<th><?php echo $xpaginator->sort( 'Adresse du partenaire', 'Partenaire.adresse' );?></th>
 							<th><?php echo $xpaginator->sort( 'N° de téléphone du partenaire', 'Partenaire.numtel' );?></th>
-							
+
 							<th>Nb de fichiers liés</th>
-							
+
 							<th></th>
 						</tr>
 					</thead>
 					<tbody>
-					<?php 
+					<?php
 						$urlParams = Set::flatten( $this->data, '__' );
 						foreach( $search as $result ) {
 							echo $xhtml->tableCells(
@@ -139,7 +142,7 @@
 								array( 'class' => 'odd' ),
 								array( 'class' => 'even' )
 							);
-							
+
 						}
 					?>
 					</tbody>

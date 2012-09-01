@@ -2,7 +2,10 @@
     $this->pageTitle = 'CER';
     $domain = 'contratinsertion';
 
-    echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+
     echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
 ?>
 
@@ -27,7 +30,7 @@
 			<?php if( empty( $contratsinsertion ) && empty( $orientstructEmploi ) ):?>
 				<p class="notice">Cette personne ne possède pas encore de CER.</p>
 			<?php endif;?>
-			
+
 			<?php if( empty( $orientstruct ) ):?>
 				<p class="error">Cette personne ne possède pas d'orientation. Impossible de créer un CER.</p>
 			<?php endif;?>
@@ -65,7 +68,7 @@
 
 				foreach( $contratsinsertion as $index => $contratinsertion ) {
 
-				
+
 					$innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
 							<tbody>
 								<tr>
@@ -74,7 +77,7 @@
 								</tr>
 							</tbody>
 						</table>';
-						
+
 					$action = ( ( $contratinsertion['Contratinsertion']['forme_ci'] == 'S' ) ? 'propositionsimple' : 'propositionparticulier' );
 					$dateCreation = Set::classicExtract( $contratinsertion, 'Contratinsertion.created' );
 					$periodeblock = false;

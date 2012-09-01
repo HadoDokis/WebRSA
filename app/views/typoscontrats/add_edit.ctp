@@ -1,5 +1,10 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-<?php $this->pageTitle = 'Type de contrats d\'insertion';?>
+<?php
+	$this->pageTitle = 'Type de contrats d\'insertion';
+
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+?>
 
 <h1><?php echo $this->pageTitle;?></h1>
 

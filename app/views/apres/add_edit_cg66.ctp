@@ -1,5 +1,8 @@
 <?php
-    echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+
     $this->modelClass = $this->params['models'][0];
 
     $this->pageTitle = 'APRE';
@@ -81,8 +84,8 @@
                     )
                 )
             ).';';
-            
-            
+
+
 			echo $ajax->remoteFunction(
 				array(
 					'update' => 'Piece66',
@@ -205,7 +208,7 @@
                     <td class="noborder">
                         <strong>Nom de l'organisme</strong>
                         <?php echo $xform->input( "{$this->modelClass}.structurereferente_id", array( 'domain' => 'apre', 'label' => false, 'type' => 'select', 'options' => $structs, 'selected' => $struct_id,  'empty' => true ) );?>
-                        <?php echo $ajax->observeField( $this->modelClass.'StructurereferenteId', array( 'update' => 'StructurereferenteRef', 'url' => Router::url( array( 'action' => 'ajaxstruct' ), true ) ) ); ?> 
+                        <?php echo $ajax->observeField( $this->modelClass.'StructurereferenteId', array( 'update' => 'StructurereferenteRef', 'url' => Router::url( array( 'action' => 'ajaxstruct' ), true ) ) ); ?>
                     </td>
                     <td class="noborder">
                         <strong>Nom du référent</strong>
@@ -271,7 +274,7 @@
                 'options' => $options
             )
         );
-        
+
         $ajaxOptions = array(
 			'url' => Router::url( array( 'action' => 'ajaxpiece', ( $this->action == 'add' ? null : $this->data['Apre66']['id'] ) ), true ),
 			'update' => 'Piece66',
@@ -621,7 +624,7 @@
     }
     // Frais de déplacement pour un hébergement
     $( 'Fraisdeplacement66Nbnuithebergt' ).observe( 'blur', function( event ) { calcultotalHebergt(); } );
-		
+
 
 
     function calculTotalRepas() {

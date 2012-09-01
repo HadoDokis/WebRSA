@@ -1,6 +1,8 @@
 <?php
 	$this->pageTitle = 'Indicateurs de réorientations';
-	echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
 ?>
 <?php echo $xhtml->tag( 'h1', $this->pageTitle ); ?>
 <?php
@@ -108,15 +110,15 @@ array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 
 		</tr>
 		<tr class="odd">
 			<td>- homme seul avec enfant</td>
-			<td class="number"><strong><?php 
+			<td class="number"><strong><?php
 				$sommeTous = isset($results['situation']['tous']['03 - Homme seul avec enfant, RSA majoré']) ? $results['situation']['tous']['03 - Homme seul avec enfant, RSA majoré'] : 0;
 				$sommeTous+= isset($results['situation']['tous']['04 - Homme seul avec enfant, RSA non majoré']) ? $results['situation']['tous']['04 - Homme seul avec enfant, RSA non majoré'] : 0;
 				echo ($sommeTous != 0) ? $sommeTous : ''; ?></strong></td>
-			<td class="number"><strong><?php 
+			<td class="number"><strong><?php
 				$sommeVersSocial = isset($results['situation']['versSocial']['03 - Homme seul avec enfant, RSA majoré']) ? $results['situation']['versSocial']['03 - Homme seul avec enfant, RSA majoré'] : 0;
 				$sommeVersSocial+= isset($results['situation']['versSocial']['04 - Homme seul avec enfant, RSA non majoré']) ? $results['situation']['versSocial']['04 - Homme seul avec enfant, RSA non majoré'] : 0;
 				echo ($sommeVersSocial != 0) ? $sommeVersSocial : ''; ?></strong></td>
-			<td class="number"><strong><?php 
+			<td class="number"><strong><?php
 				$sommeVersPro = isset($results['situation']['versPro']['03 - Homme seul avec enfant, RSA majoré']) ? $results['situation']['versPro']['03 - Homme seul avec enfant, RSA majoré'] : 0;
 				$sommeVersPro+= isset($results['situation']['versPro']['04 - Homme seul avec enfant, RSA non majoré']) ? $results['situation']['versPro']['04 - Homme seul avec enfant, RSA non majoré'] : 0;
 				echo ($sommeVersPro != 0) ? $sommeVersPro : ''; ?></strong></td>
@@ -129,15 +131,15 @@ array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 
 		</tr>
 		<tr class="odd">
 			<td>- femme seule avec enfant</td>
-			<td class="number"><strong><?php 
+			<td class="number"><strong><?php
 				$sommeTous = isset($results['situation']['tous']['05 - Femme seule avec enfant, RSA majoré']) ? $results['situation']['tous']['05 - Femme seule avec enfant, RSA majoré'] : 0;
 				$sommeTous+= isset($results['situation']['tous']['06 - Femme seule avec enfant, RSA non majoré']) ? $results['situation']['tous']['06 - Femme seule avec enfant, RSA non majoré'] : 0;
 				echo ($sommeTous != 0) ? $sommeTous : ''; ?></strong></td>
-			<td class="number"><strong><?php 
+			<td class="number"><strong><?php
 				$sommeVersSocial = isset($results['situation']['versSocial']['05 - Femme seule avec enfant, RSA majoré']) ? $results['situation']['versSocial']['05 - Femme seule avec enfant, RSA majoré'] : 0;
 				$sommeVersSocial+= isset($results['situation']['versSocial']['06 - Femme seule avec enfant, RSA non majoré']) ? $results['situation']['versSocial']['06 - Femme seule avec enfant, RSA non majoré'] : 0;
 				echo ($sommeVersSocial != 0) ? $sommeVersSocial : ''; ?></strong></td>
-			<td class="number"><strong><?php 
+			<td class="number"><strong><?php
 				$sommeVersPro = isset($results['situation']['versPro']['05 - Femme seule avec enfant, RSA majoré']) ? $results['situation']['versPro']['05 - Femme seule avec enfant, RSA majoré'] : 0;
 				$sommeVersPro+= isset($results['situation']['versPro']['06 - Femme seule avec enfant, RSA non majoré']) ? $results['situation']['versPro']['06 - Femme seule avec enfant, RSA non majoré'] : 0;
 				echo ($sommeVersPro != 0) ? $sommeVersPro : ''; ?></strong></td>

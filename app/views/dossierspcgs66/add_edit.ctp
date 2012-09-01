@@ -8,7 +8,6 @@
 	$this->pageTitle = 'Dossier PCG';
 	$domain = 'dossierpcg66';
 
-	echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
 	echo $this->element( 'dossier_menu', array( 'foyer_id' => $foyer_id ) );
 ?>
 
@@ -131,7 +130,7 @@
 			<?php if( empty( $personnespcgs66 ) ):?>
 				<p class="notice">Ce dossier ne possède pas de personne liée.</p>
 			<?php endif;?>
-			
+
 			<?php if( !empty( $personnespcgs66 ) ):?>
 				<table class="tooltips">
 					<thead>
@@ -294,7 +293,7 @@
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
 		[ $('Dossierpcg66TypepdoId'), $('Dossierpcg66UserId') ].each(function(field) {
-			if( field ) { 
+			if( field ) {
 				field.observe('change', function(element, value) {
 					fieldUpdater();
 				});

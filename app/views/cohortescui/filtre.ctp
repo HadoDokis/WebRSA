@@ -1,5 +1,8 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-
+<?php
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+?>
 <script type="text/javascript">
     document.observe("dom:loaded", function() {
         observeDisableFieldsOnValue( 'CuiDecisioncui', [ 'CuiDatevalidationcuiDay', 'CuiDatevalidationcuiMonth', 'CuiDatevalidationcuiYear' ], 'V', false );

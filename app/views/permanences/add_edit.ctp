@@ -1,5 +1,10 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-<?php $this->pageTitle = 'Permanences';?>
+<?php
+	$this->pageTitle = 'Permanences';
+
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+?>
 
 <h1><?php echo $this->pageTitle;?></h1>
 
@@ -14,7 +19,7 @@
 ?>
 
 	<fieldset>
-		<?php 
+		<?php
 			echo $form->input( 'Permanence.libpermanence', array( 'label' => required( __( 'Libellé de la permanence', true ) ), 'type' => 'text' ) );
 			echo $form->input( 'Permanence.structurereferente_id', array( 'label' => required( __( 'Type de structure liée à la permanence', true ) ), 'type' => 'select', 'options' => $sr, 'empty' => true ) );
 			echo $form->input( 'Permanence.numtel', array( 'label' => required( __( 'N° téléphone de la permanence', true ) ), 'type' => 'text', 'maxlength' => 15 ) );

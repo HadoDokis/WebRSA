@@ -1,14 +1,18 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-<?php $this->pageTitle = 'Recherche par contrats d\'engagement réciproque';?>
+<?php
+	$this->pageTitle = 'Recherche par CER';
 
-<h1>Recherche par CER</h1>
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+?>
+<h1><?php echo $this->pageTitle; ?></h1>
 
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
 		observeDisableFieldsetOnCheckbox( 'FiltreDateSaisiCi', $( 'FiltreDateSaisiCiFromDay' ).up( 'fieldset' ), false );
-		
+
 		observeDisableFieldsetOnCheckbox( 'FiltreDdCi', $( 'FiltreDdCiFromDay' ).up( 'fieldset' ), false );
-		
+
 		observeDisableFieldsetOnCheckbox( 'FiltreDfCi', $( 'FiltreDfCiFromDay' ).up( 'fieldset' ), false );
 	});
 </script>
@@ -46,11 +50,11 @@
 	?>
 	<fieldset>
 		<legend>Recherche par dossier</legend>
-		<?php 
+		<?php
 			echo $form->input( 'Dossier.numdemrsa', array( 'label' => 'Numéro de demande RSA' ) );
 			echo $form->input( 'Dossier.matricule', array( 'label' => 'N° CAF', 'maxlength' => 15 ) );
 			echo $search->natpf( $natpf );
-			
+
 			$valueDossierDernier = isset( $this->data['Dossier']['dernier'] ) ? $this->data['Dossier']['dernier'] : true;
 			echo $form->input( 'Dossier.dernier', array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueDossierDernier ) );
 			echo $search->etatdosrsa($etatdosrsa);
@@ -67,7 +71,7 @@
 					echo $form->input( 'Filtre.forme_ci', array(  'type' => 'radio', 'options' => $forme_ci, 'legend' => 'Forme du contrat', 'div' => false, ) );
 				}
 			?>
-			
+
 			<?php echo $form->input( 'Filtre.date_saisi_ci', array( 'label' => 'Filtrer par date de saisie du contrat', 'type' => 'checkbox' ) );?>
 			<fieldset>
 				<legend>Date de saisie du contrat</legend>
@@ -78,13 +82,13 @@
 				<?php echo $form->input( 'Filtre.date_saisi_ci_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $date_saisi_ci_from ) );?>
 				<?php echo $form->input( 'Filtre.date_saisi_ci_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120,  'maxYear' => date( 'Y' ) + 5, 'selected' => $date_saisi_ci_to ) );?>
 			</fieldset>
-			
+
 			<?php echo $form->input( 'Filtre.structurereferente_id', array( 'label' => __d( 'rendezvous', 'Rendezvous.lib_struct', true ), 'type' => 'select', 'options' => $struct, 'empty' => true ) ); ?>
 			<?php echo $form->input( 'Filtre.referent_id', array( 'label' => __( 'Nom du référent', true ), 'type' => 'select', 'options' => $referents, 'empty' => true ) ); ?>
 			<?php echo $ajax->observeField( 'FiltreStructurereferenteId', array( 'update' => 'FiltreReferentId', 'url' => Router::url( array( 'action' => 'ajaxreferent' ), true ) ) );?>
 			<?php
 				if( Configure::read( 'Cg.departement' ) != 66 ) {
-					echo $form->input( 'Filtre.decision_ci', array( 'label' => 'Statut du contrat', 'type' => 'select', 'options' => $decision_ci, 'empty' => true ) ); 
+					echo $form->input( 'Filtre.decision_ci', array( 'label' => 'Statut du contrat', 'type' => 'select', 'options' => $decision_ci, 'empty' => true ) );
 				}
 			?>
 			<?php
@@ -105,7 +109,7 @@
 				<?php echo $form->input( 'Filtre.dd_ci_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $dd_ci_from ) );?>
 				<?php echo $form->input( 'Filtre.dd_ci_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120,  'maxYear' => date( 'Y' ) + 5, 'selected' => $dd_ci_to ) );?>
 			</fieldset>
-			
+
 			<!-- Filtre sur la date de fin du CER -->
 			<?php echo $form->input( 'Filtre.df_ci', array( 'label' => 'Filtrer par date de fin du contrat', 'type' => 'checkbox' ) );?>
 			<fieldset>
@@ -178,8 +182,8 @@
 						else {
 							$positioncer = Set::enum( Set::classicExtract( $contrat, 'Contratinsertion.positioncer' ), $numcontrat['positioncer'] );
 						}
-						
-						
+
+
 						$innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
 							<tbody>
 							<!-- <tr>
@@ -205,7 +209,7 @@
 								<tr>
 									<th>État du dossier</th>
 									<td>'.Set::classicExtract( $etatdossier, Set::classicExtract( $contrat, 'Situationdossierrsa.etatdosrsa' ) ).'</td>
-								</tr>								
+								</tr>
 							</tbody>
 						</table>';
 

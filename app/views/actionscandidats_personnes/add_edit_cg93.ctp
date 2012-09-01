@@ -1,22 +1,18 @@
 <?php
 	$domain = "actioncandidat_personne_".Configure::read( 'ActioncandidatPersonne.suffixe' );
-	echo $this->element( 'dossier_menu', array( 'id' => $dossierId, 'personne_id' => $personne_id ) );
-	echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	$this->pageTitle = __d( $domain, "ActionscandidatsPersonnes::{$this->action}", true );
 
 	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
 		echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
 	}
+
+	echo $this->element( 'dossier_menu', array( 'id' => $dossierId, 'personne_id' => $personne_id ) );
 ?>
 
 <div class="with_treemenu">
 	<?php
-		echo $xhtml->tag(
-			'h1',
-			$this->pageTitle = __d( $domain, "ActionscandidatsPersonnes::{$this->action}", true ),
-			array(
-				'class' => 'aere'
-			)
-		);
+		echo $xhtml->tag( 'h1', $this->pageTitle, array( 'class' => 'aere' ) );
 
 		echo $xhtml->tag(
 			'p',
@@ -48,7 +44,7 @@
 			///Ajax pour les données du référent et de l'organisme auquel il est lié
 			echo $ajax->observeField( 'ActioncandidatPersonneReferentId', array( 'update' => 'ActioncandidatPersonneStructurereferente', 'url' => Router::url( array( 'action' => 'ajaxstruct' ), true ) ) );
 
-			
+
 			echo $xhtml->tag(
 				'div',
 				'<b></b>',
@@ -323,8 +319,8 @@
 <script type="text/javascript">
 	document.observe( "dom:loaded", function() {
 
-	
-	
+
+
 		<?php
 			echo $ajax->remoteFunction(
 				array(
@@ -347,8 +343,8 @@
 // 				)
 // 			).';';
 		?>
-		
-		
+
+
 		<?php
 			if( ( $this->action == 'add' ) && !empty( $referentId ) ) {
 				echo $ajax->remoteFunction(
@@ -368,7 +364,7 @@
 				);
 			}
 		?>
-	
+
 			dependantSelect(
 				'RendezvousReferentId',
 				'RendezvousStructurereferenteId'

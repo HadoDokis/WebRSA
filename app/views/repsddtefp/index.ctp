@@ -1,5 +1,11 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-<h1><?php echo $this->pageTitle='APRE: Reporting bi-mensuel DDTEFP';?></h1>
+<?php
+	$this->pageTitle = 'APRE: Reporting bi-mensuel DDTEFP';
+
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+?>
+<h1><?php echo $this->pageTitle;?></h1>
 
 <?php
 	echo $form->create( 'Repddtefp', array( 'type' => 'post', 'url' => Router::url( null, true ), 'class' => 'noprint' ) );

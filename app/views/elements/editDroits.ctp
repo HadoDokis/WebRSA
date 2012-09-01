@@ -31,7 +31,9 @@
 		return ( strcmp( $a['translatedTitle'], $b['translatedTitle'] ) );
 	}
 
-	echo $javascript->link('droits', true);
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $javascript->link('droits.js');
+	}
 	echo '<table cellspacing="0" cellpadding="0" style="margin-top:20px;" class="table" id="tableEditDroits">';
 
 	$parentCtrlAction = '';

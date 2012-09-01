@@ -18,13 +18,13 @@
 				echo $javascript->link( 'prototype.js' );
 				echo $javascript->link( 'tooltip.prototype.js' );
 				echo $javascript->link( 'webrsa.common.prototype.js' );
-
-				echo $scripts_for_layout;
 			}
 			else {
 				echo $xhtml->css( array( 'webrsa' ), 'stylesheet' );
 				echo $javascript->link( 'webrsa.js' );
 			}
+
+			echo $scripts_for_layout;
 		?>
 		<!-- TODO: à la manière de cake, dans les vues qui en ont besoin -->
 		<script type="text/javascript">
@@ -73,14 +73,17 @@
 					};
 				} );
 
-				if ('<?php echo Router::url( "/users/login", true ); ?>' != location.href && '<?php echo Configure::read("alerteFinSession"); ?>' && '<?php echo ( Configure::read( 'debug' ) == 0 ); ?>') {
+				<?php if( $useAlerteFinSession ):?>
+				if( '<?php echo $useAlerteFinSession;?>' ) {
 					var sessionTime = parseInt('<?php echo readTimeout(); ?>');
 					var warning5minutes = sessionTime - (5*60);
 					setTimeout(alert5minutes, warning5minutes*1000);
 					setTimeout(sessionEnd, sessionTime*1000);
 				}
-			});
+				<?php endif;?>
+			} );
 
+			<?php if( $useAlerteFinSession ):?>
 			function alert5minutes() {
 				$('alertEndSession').show();
 			}
@@ -89,6 +92,7 @@
 				var baseUrl = '<?php echo Router::url( "/users/logout", true ); ?>';
 				location.replace(baseUrl);
 			}
+			<?php endif;?>
 		//--><!]]>
 		</script>
 		<!--[if IE]>
@@ -104,22 +108,23 @@
 		<body>
 	<?php endif; ?>
 
-<!-- Partie nécessaire pour l'affichage du popup lors du lancement des impressions en cohorte -->
-<div id="alertEndSession" style="display: none;">
-    <div id="popups" style="z-index: 1000;">
-        <div id="popup_0">
-            <div class="hideshow">
-                <div class="fade" style="z-index: 31"></div>
-                <div class="popup_block">
-                    <div class="popup">
-		    	<a href="#" onclick="$('alertEndSession').hide(); return false;"><?php echo $xhtml->image('icon_close.png', array('class' => 'cntrl', 'alt' => 'close')); ?></a>
-                        <div id="popup-content">Attention votre session expire dans 5 minutes.</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<?php if( $useAlerteFinSession ):?>
+	<div id="alertEndSession" style="display: none;">
+		<div id="popups" style="z-index: 1000;">
+			<div id="popup_0">
+				<div class="hideshow">
+					<div class="fade" style="z-index: 31"></div>
+					<div class="popup_block">
+						<div class="popup">
+					<a href="#" onclick="$('alertEndSession').hide(); return false;"><?php echo $xhtml->image('icon_close.png', array('class' => 'cntrl', 'alt' => 'close')); ?></a>
+							<div id="popup-content">Attention votre session expire dans 5 minutes.</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<?php endif;?>
 
 		<div id="pageWrapper"<?php if( Configure::read( 'UI.menu.large' ) ) { echo ' class="treemenu_large"'; } ?>>
 			<div id="pageHeader">

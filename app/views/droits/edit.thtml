@@ -4,7 +4,11 @@
     document.getElementById("affiche").style.display='none';
     document.getElementById("contTemp").style.display='none';
 </script>
-<?php echo $javascript->link('droits.js'); ?>
+<?php
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $javascript->link('droits.js');
+	}
+?>
 
 <h1>Gestion des droits des Profils et des Utilisateurs</h1>
 
@@ -16,7 +20,7 @@
 	<?php $onclick = "javascript:appliquerModifications($nbMenuControllers, $nbProfilsUsers)"; ?>
 	<?php echo $form->submit('Sauvegarder', array('class'=>'bt_save_border', 'name'=>'sauvegarder', 'onclick'=>$onclick)); ?>
 	&nbsp;
-	<?php echo $html->link('Annuler', '/pages/gestion_utilisateurs', array('class'=>'link_annuler', 'name'=>'Annuler'), 'Voulez-vous quitter? Attention, en quittant vous perdrez vos éventuelles modifications.'); ?>
+	<?php echo $html->link('Annuler', '/pages/gestion_utilisateurs', array('class'=>'link_annuler', 'name'=>'Annuler'), 'Voulez-vous quitter? Attention, en quittant vous perdrez vos Ã©ventuelles modifications.'); ?>
 	</form>
 </td>
 <td>&nbsp;&nbsp;</td>

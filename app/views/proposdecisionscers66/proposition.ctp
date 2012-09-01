@@ -1,5 +1,7 @@
 <?php
-	echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
 
 	echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
 ?>
@@ -32,7 +34,7 @@
 			echo $xform->fieldValue( 'Contratinsertion.df_ci', $dfci );
 			echo $xform->fieldValue( 'Contratinsertion.duree_engag', $duree );
 			echo $xform->fieldValue( 'Referent.nom_complet', $referent );
-			
+
 			echo $form->input( 'Propodecisioncer66.isvalidcer', array( 'legend' => __d( 'propodecisioncer66', 'Propodecisioncer66.isvalidcer', true ), 'type' => 'radio', 'options' => $options['isvalidcer'] ) );
 			echo $form->input( 'Propodecisioncer66.datevalidcer', array( 'label' => __d( 'propodecisioncer66', 'Propodecisioncer66.datevalidcer', true ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+2, 'minYear'=>date('Y')-2 ) );
 

@@ -1,7 +1,12 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-<?php $this->pageTitle = 'Recherche d\'APREs';?>
+<?php
+	$this->pageTitle = 'Recherche de demande APRE';
 
-<h1>Recherche de demande APRE</h1>
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+?>
+
+<h1><?php echo $this->pageTitle; ?></h1>
 
 <script type="text/javascript">
     document.observe("dom:loaded", function() {
@@ -20,13 +25,13 @@
 //         $xpaginator->options( array( 'url' => $this->params['named'] ) );
 //         $params = array( 'format' => 'Résultats %start% - %end% sur un total de %count%.' );
 //         $pagination = $xhtml->tag( 'p', $xpaginator->counter( $params ) );
-// 
+//
 //         $pages = $xpaginator->first( '<< ' );
 //         $pages .= $xpaginator->prev( '< ' );
 //         $pages .= $xpaginator->numbers();
 //         $pages .= $xpaginator->next( ' >' );
 //         $pages .= $xpaginator->last( ' >>' );
-// 
+//
 //         $pagination .= $xhtml->tag( 'p', $pages );
 //     }
 //     else {
@@ -54,15 +59,15 @@ $pagination = $xpaginator->paginationBlock( 'Apre', $this->passedArgs );
 		echo $search->blocAllocataire(  );
 		echo $search->blocAdresse( $mesCodesInsee, $cantons );
 	?>
-		
+
 	<fieldset>
 		<legend>Recherche par dossier</legend>
-        <?php 
+        <?php
 			echo $form->input( 'Dossier.numdemrsa', array( 'label' => 'Numéro de dossier RSA' ) );
 			echo $form->input( 'Dossier.matricule', array( 'label' => 'Numéro CAF', 'maxlength' => 15 ) );
-			
+
 			echo $search->etatdosrsa($etatdosrsa);
-            
+
             $valueDossierDernier = isset( $this->data['Dossier']['dernier'] ) ? $this->data['Dossier']['dernier'] : true;
             echo $form->input( 'Dossier.dernier', array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueDossierDernier ) );
         ?>

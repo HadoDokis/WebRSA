@@ -1,14 +1,16 @@
 <?php
 	$this->pageTitle =  __d( 'decisiondossierpcg66', "Decisionsdossierspcgs66::{$this->action}", true );
-echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
-	
-?>
-<?php echo $this->element( 'dossier_menu', array( 'foyer_id' => $foyer_id ) ); ?>
-<?php  echo $form->create( 'Decisiondossierpcg66',array(  'id' => 'transmissionopdossierpcg66form', 'url' => Router::url( null, true ) ) ); ?>
 
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+
+	echo $this->element( 'dossier_menu', array( 'foyer_id' => $foyer_id ) );
+?>
 
 <div class="with_treemenu">
 	<h1><?php echo $this->pageTitle;?></h1>
+		<?php echo $form->create( 'Decisiondossierpcg66',array(  'id' => 'transmissionopdossierpcg66form', 'url' => Router::url( null, true ) ) ); ?>
 
 		<fieldset>
 				<?php echo $form->input( 'Decisiondossierpcg66.id', array( 'type' => 'hidden' ) );?>

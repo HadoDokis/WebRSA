@@ -4,7 +4,9 @@
 		$this->pageTitle = __d( 'sitecov58', "Sitescovs58::{$this->action}", true )
 	);
 
-	echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
 
 	if( $this->action == 'add' ) {
 		echo $form->create( 'Sitecov58', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
@@ -33,7 +35,7 @@
 		<?php echo $form->input( 'Zonegeographique.Zonegeographique', array( 'label' => false, 'multiple' => 'checkbox' , 'options' => $zglist ) );?>
 	</fieldset>
 	<?php echo $form->submit( 'Enregistrer' );?>
-	
+
 		<?php echo $default->button(
 		'back',
 		array(

@@ -1,4 +1,8 @@
-<?php echo $xhtml->css( 'popup.css', null, array(), false );?>
+<?php
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( 'popup.css', null, array(), false );
+	}
+?>
 
 <script type="text/javascript">
 	function impressionCohorte( link ) {

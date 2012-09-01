@@ -1,10 +1,12 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-
-<h1>
 <?php
-	echo $this->pageTitle = "Gestion de la composition du regroupement d'E.P. : {$this->data['Regroupementep']['name']}.";
+	$this->pageTitle = "Gestion de la composition du regroupement d'E.P. : {$this->data['Regroupementep']['name']}.";
+
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
 ?>
-</h1>
+
+<h1><?php echo $this->pageTitle;?></h1>
 
 <?php
 	if ( isset( $prioritaireExist ) && !empty( $prioritaireExist ) ) {

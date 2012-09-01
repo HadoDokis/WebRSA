@@ -1,5 +1,8 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-
+<?php
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+?>
 <?php if( isset( $comitesapres ) && is_array( $comitesapres ) && count( $comitesapres ) > 0 ):?>
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {

@@ -1,7 +1,12 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-<?php $this->pageTitle = 'Recherche par dossier/allocataire';?>
+<?php
+	$this->pageTitle = 'Recherche par dossier / allocataire';
 
-<h1>Recherche par dossier / allocataire</h1>
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+?>
+
+<h1><?php echo $this->pageTitle;?></h1>
 
 <ul class="actionMenu">
 	<?php
@@ -97,7 +102,7 @@
 				$valueSansOrientation = isset( $this->data['Orientstruct']['sansorientation'] ) ? $this->data['Orientstruct']['sansorientation'] : false;
 				echo $form->input( 'Orientstruct.sansorientation', array( 'label' => 'Personne sans orientation', 'type' => 'checkbox', 'checked' => $valueSansOrientation ) );
 			}
-			
+
 			if( Configure::read( 'Cg.departement' ) == 58 ){
 				echo $form->input( 'PersonneReferent.referent_id', array( 'label' => 'Travailleur social chargé de l\'évaluation', 'type' => 'select', 'options' => $referents, 'empty' => true ) );
 			}

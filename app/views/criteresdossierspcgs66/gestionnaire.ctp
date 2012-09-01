@@ -1,7 +1,9 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-
 <?php
     $this->pageTitle = 'Gestionnaire de dossiers PCG';
+
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
 ?>
 
 <h1><?php echo $this->pageTitle;?></h1>
@@ -81,8 +83,8 @@
 						if( $criteredossierpcg66['Dossierpcg66']['etatdossierpcg'] == 'transmisop' ){
 							$datetransmission = ' le '.date_short( Set::classicExtract( $criteredossierpcg66, 'Decisiondossierpcg66.datetransmissionop' ) );
 						}
-		
-						
+
+
 						//Liste des différents traitements PCGs de la personne PCG
 						$traitementspcgs66 = '';
 						foreach( $criteredossierpcg66['Dossierpcg66']['listetraitements'] as $key => $traitement ) {
@@ -93,7 +95,7 @@
 
 						$etatdosrsaValue = Set::classicExtract( $criteredossierpcg66, 'Situationdossierrsa.etatdosrsa' );
 						$etatDossierRSA = isset( $etatdosrsa[$etatdosrsaValue] ) ? $etatdosrsa[$etatdosrsaValue] : 'Non défini';
-					
+
 						$innerTable = '<table id="innerTable'.$index.'" class="innerTable">
 							<tbody>
 								<tr>

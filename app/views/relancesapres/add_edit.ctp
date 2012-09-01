@@ -1,10 +1,4 @@
 <?php
-	echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
-
-	$this->pageTitle = 'Relance';
-
-	echo $this->element( 'dossier_menu', array( 'id' => $dossier_id ) );
-
 	if( $this->action == 'add' ) {
 		$this->pageTitle = 'Ajout relance';
 	}
@@ -12,6 +6,11 @@
 		$this->pageTitle = 'Édition relance';
 	}
 
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+
+	echo $this->element( 'dossier_menu', array( 'id' => $dossier_id ) );
 ?>
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {

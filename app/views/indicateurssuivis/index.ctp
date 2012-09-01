@@ -1,12 +1,15 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-
-<?php 
+<?php
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+?>
+<?php
 	echo $xhtml->tag(
 		'h1',
         $this->pageTitle = __d( 'indicateursuivi', "Indicateurssuivis::{$this->action}", true )
     );
 ?>
-    
+
     <?php
 	if( is_array( $this->data ) ) {
 		echo '<ul class="actionMenu"><li>'.$xhtml->link(
@@ -24,8 +27,8 @@
 ?>
 
 <?php echo $form->create( 'Indicateursuivi', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( ( !empty( $this->data ) && empty( $this->validationErrors ) ) ? 'folded' : 'unfolded' ) ) );?>
-	<?php 
-		echo $search->etatdosrsa($etatdosrsa); 
+	<?php
+		echo $search->etatdosrsa($etatdosrsa);
 		echo $search->natpf($natpf);
 	?>
 	<fieldset>
@@ -39,17 +42,17 @@
 			}
 
 		?>
-	</fieldset>	
+	</fieldset>
 		<?php
 			$valueDossierDernier = isset( $this->data['Dossier']['dernier'] ) ? $this->data['Dossier']['dernier'] : true;
 			echo $form->input( 'Dossier.dernier', array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueDossierDernier ) );
 		?>
-		<?php 
+		<?php
 			echo $form->input( 'Orientstruct.structurereferente_id', array( 'label' => __d( 'structurereferente', 'Structurereferente.lib_struc', true  ), 'type' => 'select', 'options' => $structs, 'empty' => true) );
 			echo $form->input( 'Orientstruct.referent_id', array(  'label' => __d( 'structurereferente', 'Structurereferente.nom_referent', true  ), 'type' => 'select', 'options' => $referents, 'empty' => true ) );
-		?>		
+		?>
 
- <?php 
+ <?php
 //  echo $form->input( 'Indicateursuivi.annee', array( 'label' => 'Recherche pour l\'année', 'type' => 'select', 'empty' => true, 'options' => array_range( date( 'Y' )-4, date( 'Y' ) +1 ) ) );
 ?>
 
@@ -98,9 +101,9 @@
 			</thead>
 			<tbody>
 				<?php foreach( $indicateurs as $index => $indicateur ):?>
-					<?php 
+					<?php
 						$adresse = Set::classicExtract( $indicateur, 'Adresse.numvoie' ).' '.Set::enum( Set::classicExtract( $indicateur, 'Adresse.typevoie' ), $typevoie ).' '.Set::classicExtract( $indicateur, 'Adresse.nomvoie' ).'<br /> '.Set::classicExtract( $indicateur, 'Adresse.compladr' ).'<br /> '.Set::classicExtract( $indicateur, 'Adresse.codepos' ).' '.Set::classicExtract( $indicateur, 'Adresse.locaadr' );
-					
+
 						echo $xhtml->tableCells(
 							array(
 								h( $indicateur['Dossier']['matricule'] ),

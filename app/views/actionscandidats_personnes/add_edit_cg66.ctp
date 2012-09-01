@@ -1,23 +1,19 @@
 <?php
 	$domain = "actioncandidat_personne_".Configure::read( 'ActioncandidatPersonne.suffixe' );
-	echo $this->element( 'dossier_menu', array( 'id' => $dossierId, 'personne_id' => $personne_id ) );
-	echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
-?>
+	$this->pageTitle = __d( $domain, "ActionscandidatsPersonnes::{$this->action}", true );
 
-<?php
 	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
 		echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
 	}
+
+	echo $this->element( 'dossier_menu', array( 'id' => $dossierId, 'personne_id' => $personne_id ) );
 ?>
 
 <div class="with_treemenu">
 	<?php
-		echo $xhtml->tag(
-			'h1',
-			$this->pageTitle = __d( $domain, "ActionscandidatsPersonnes::{$this->action}", true )
-		);
-	?>
-	<?php
+		echo $xhtml->tag( 'h1', $this->pageTitle );
+
 		echo $xform->create( 'ActioncandidatPersonne', array( 'id' => 'candidatureform' ) );
 		if( Set::check( $this->data, 'ActioncandidatPersonne.id' ) ){
 			echo $xform->input( 'ActioncandidatPersonne.id', array( 'type' => 'hidden' ) );
@@ -182,7 +178,7 @@
 	</fieldset>
 	<fieldset id="rdv">
 		<legend>Rendez-vous</legend>
-		<?php 
+		<?php
 			echo $default->subform(
 				array(
 					'ActioncandidatPersonne.rendezvouspartenaire' => array( 'type' => 'radio' , 'legend' => 'Rendez-vous', 'div' => false, 'options' => array( '0' => 'Non', '1' => 'Oui' ) ),
@@ -272,7 +268,7 @@
 				);
 			?>
 			<fieldset id="issortie" class="invisible">
-				<?php 
+				<?php
 					echo $default->subform(
 						array(
 							'ActioncandidatPersonne.sortiele' => array(  'minYear' => date( 'Y' ) - 2, 'maxYear' => date( 'Y' ) + 2  ),
@@ -286,8 +282,8 @@
 				?>
 			</fieldset>
 		</fieldset>
-		
-		
+
+
 	<?php endif;?>
 	<div class="submit">
 		<?php
@@ -406,7 +402,7 @@
 			observeDisableFieldsOnRadioValue(
 				'candidatureform',
 				'data[ActioncandidatPersonne][bilanvenu]',
-				[ 
+				[
 					'ActioncandidatPersonneBilanretenu_',
 					'ActioncandidatPersonneBilanretenuRET',
 					'ActioncandidatPersonneBilanretenuNRE'

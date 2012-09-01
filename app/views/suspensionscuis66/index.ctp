@@ -1,7 +1,12 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-<?php $this->pageTitle = 'Suspension/Rupture';?>
+<?php
+	$this->pageTitle = 'Suspension/Rupture';
 
-<?php echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );?>
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+
+	echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
+?>
 
 <div class="with_treemenu aere">
 	<?php
@@ -9,11 +14,11 @@
 			'h1',
 			$this->pageTitle = __d( 'suspensioncui66', "Suspensionscuis66::{$this->action}", true )
 		);
-		
+
 // 		$listeoptions = $options;
 // 		unset( $options );
 // 		$options['Suspensioncui66'] = $listeoptions;
-		
+
 		echo $default2->index(
 			$suspensionscuis66,
 			array(

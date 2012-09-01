@@ -1,6 +1,8 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-
 <?php
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+
 	if( $this->action == 'add' ) {
 		$this->pageTitle = 'Ajout d\'une adresse';
 	}
@@ -16,9 +18,9 @@
 		$this->pageTitle = 'Édition de l\'adresse « '.$title.' »';
 		$foyer_id = $this->data['Adressefoyer']['foyer_id'];
 	}
-?>
 
-<?php echo $this->element( 'dossier_menu', array( 'foyer_id' => $foyer_id ) );?>
+	echo $this->element( 'dossier_menu', array( 'foyer_id' => $foyer_id ) );
+?>
 
 <div class="with_treemenu">
 	<h1><?php echo $this->pageTitle;?></h1>

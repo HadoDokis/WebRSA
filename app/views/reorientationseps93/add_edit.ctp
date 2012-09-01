@@ -1,22 +1,20 @@
 <?php
-	echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
-
 	if( $this->action == 'add' ) {
 		$this->pageTitle = 'Ajout d\'une réorientation';
 	}
 	else {
 		$this->pageTitle = 'Modification d\'une réorientation';
 	}
+
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+		echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
+	}
+
+	echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
 ?>
 <div class="with_treemenu">
 	<h1> <?php echo $this->pageTitle; ?> </h1>
-
-	<?php
-		if( Configure::read( 'debug' ) > 0 ) {
-			echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
-			echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
-		}
-	?>
 
 	<script type="text/javascript">
 		document.observe( "dom:loaded", function() {

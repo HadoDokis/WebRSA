@@ -1,5 +1,8 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 <?php
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+
 	$domain = 'traitementpcg66';
 	echo $xhtml->tag(
 		'h1',
@@ -51,7 +54,7 @@
 			<?php echo $form->input( 'Traitementpcg66.dateecheance_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 10, 'selected' => $dateecheance_from ) );?>
 			<?php echo $form->input( 'Traitementpcg66.dateecheance_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 10, 'maxYear' => date( 'Y' ) + 5,  'selected' => $dateecheance_to ) );?>
 		</fieldset>
-		
+
 		<?php echo $xform->input( 'Traitementpcg66.daterevision', array( 'label' => 'Filtrer par date de révision du traitement', 'type' => 'checkbox' ) );?>
 		<fieldset>
 			<legend>Date de révision du traitement</legend>
@@ -112,10 +115,10 @@
 				<?php
 					foreach( $criterestraitementspcgs66 as $index => $criteretraitementpcg66 ) {
 // debug($criteretraitementpcg66);
-										
+
 						$etatdosrsaValue = Set::classicExtract( $criteretraitementpcg66, 'Situationdossierrsa.etatdosrsa' );
 						$etatDossierRSA = isset( $etatdosrsa[$etatdosrsaValue] ) ? $etatdosrsa[$etatdosrsaValue] : 'Non défini';
-					
+
 						$innerTable = '<table id="innerTable'.$index.'" class="innerTable">
 							<tbody>
 								<tr>
@@ -145,7 +148,7 @@
 
 							</tbody>
 						</table>';
-						
+
 						echo $xhtml->tableCells(
 							array(
 								h( Set::classicExtract( $criteretraitementpcg66, 'Dossier.numdemrsa' ) ),

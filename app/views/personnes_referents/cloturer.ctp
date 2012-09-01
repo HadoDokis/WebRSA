@@ -1,16 +1,19 @@
 <?php
-	echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
 	$this->pageTitle = 'Clôture du référent';
-	echo $form->create( 'PersonneReferent',array( 'url' => Router::url( null, true ) ) );
+
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+
 	echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
 ?>
 
 <div class="with_treemenu">
 	<h1><?php echo $this->pageTitle;?></h1>
-
+	<?php echo $form->create( 'PersonneReferent',array( 'url' => Router::url( null, true ) ) );?>
 		<fieldset>
 			<?php
-			
+
 				echo $default2->subform(
 					array(
 						'PersonneReferent.id' => array( 'type' => 'hidden' ),
@@ -24,7 +27,7 @@
 						'domain' => 'personne_referent'
 					)
 				);
-				
+
 				echo $default2->subform(
 					array(
 						'PersonneReferent.dddesignation' => array( 'type' => 'hidden' ),//Champ nécessaire pour la comparaison de date, sinon n'apparait pas dans $this->data

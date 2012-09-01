@@ -1,6 +1,8 @@
 <?php
 	$this->pageTitle = 'Indicateurs d\'orientations';
-	echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
 ?>
 <?php echo $xhtml->tag( 'h1', $this->pageTitle ); ?>
 <?php
@@ -123,25 +125,25 @@ au 31 décembre de l'année, selon le parcours d'insertion envisagé par le Cons
 		</tr>
 		<tr class="odd">
 			<td>- homme seul avec enfant</td>
-			<td class="number"><strong><?php 
+			<td class="number"><strong><?php
 				$sommeTous = isset($results['situation'][1]['03 - Homme seul avec enfant, RSA majoré']) ? $results['situation'][1]['03 - Homme seul avec enfant, RSA majoré'] : 0;
-				$sommeTous+= isset($results['situation'][1]['04 - Homme seul avec enfant, RSA non majoré']) ? $results['situation'][1]['04 - Homme seul avec enfant, RSA non majoré'] : 0;			
-				echo ($sommeTous != 0) ? $sommeTous : ''; 
+				$sommeTous+= isset($results['situation'][1]['04 - Homme seul avec enfant, RSA non majoré']) ? $results['situation'][1]['04 - Homme seul avec enfant, RSA non majoré'] : 0;
+				echo ($sommeTous != 0) ? $sommeTous : '';
 			?></strong></td>
-			<td class="number"><strong><?php 
+			<td class="number"><strong><?php
 				$sommeTous = isset($results['situation'][2]['03 - Homme seul avec enfant, RSA majoré']) ? $results['situation'][2]['03 - Homme seul avec enfant, RSA majoré'] : 0;
 				$sommeTous+= isset($results['situation'][2]['04 - Homme seul avec enfant, RSA non majoré']) ? $results['situation'][2]['04 - Homme seul avec enfant, RSA non majoré'] : 0;
 				echo ($sommeTous != 0) ? $sommeTous : '';
 			?></strong></td>
-			<td class="number"><strong><?php 
+			<td class="number"><strong><?php
 				$sommeTous = isset($results['situation'][3]['03 - Homme seul avec enfant, RSA majoré']) ? $results['situation'][3]['03 - Homme seul avec enfant, RSA majoré'] : 0;
 				$sommeTous+= isset($results['situation'][3]['04 - Homme seul avec enfant, RSA non majoré']) ? $results['situation'][3]['04 - Homme seul avec enfant, RSA non majoré'] : 0;
-				echo ($sommeTous != 0) ? $sommeTous : ''; 
+				echo ($sommeTous != 0) ? $sommeTous : '';
 			?></strong></td>
-			<td class="number"><strong><?php 
+			<td class="number"><strong><?php
 				$sommeTous = isset($results['situation'][4]['03 - Homme seul avec enfant, RSA majoré']) ? $results['situation'][4]['03 - Homme seul avec enfant, RSA majoré'] : 0;
 				$sommeTous+= isset($results['situation'][4]['04 - Homme seul avec enfant, RSA non majoré']) ? $results['situation'][4]['04 - Homme seul avec enfant, RSA non majoré'] : 0;
-				echo ($sommeTous != 0) ? $sommeTous : ''; 
+				echo ($sommeTous != 0) ? $sommeTous : '';
 			?></strong></td>
 		</tr>
 		<tr class="odd">
@@ -153,25 +155,25 @@ au 31 décembre de l'année, selon le parcours d'insertion envisagé par le Cons
 		</tr>
 		<tr class="odd">
 			<td>- femme seule avec enfant</td>
-			<td class="number"><strong><?php 
+			<td class="number"><strong><?php
 				$sommeTous = isset($results['situation'][1]['05 - Femme seule avec enfant, RSA majoré']) ? $results['situation'][1]['05 - Femme seule avec enfant, RSA majoré'] : 0;
-				$sommeTous+= isset($results['situation'][1]['06 - Femme seule avec enfant, RSA non majoré']) ? $results['situation'][1]['06 - Femme seule avec enfant, RSA non majoré'] : 0;			
-				echo ($sommeTous != 0) ? $sommeTous : ''; 
+				$sommeTous+= isset($results['situation'][1]['06 - Femme seule avec enfant, RSA non majoré']) ? $results['situation'][1]['06 - Femme seule avec enfant, RSA non majoré'] : 0;
+				echo ($sommeTous != 0) ? $sommeTous : '';
 			?></strong></td>
-			<td class="number"><strong><?php 
+			<td class="number"><strong><?php
 				$sommeTous = isset($results['situation'][2]['05 - Femme seule avec enfant, RSA majoré']) ? $results['situation'][2]['05 - Femme seule avec enfant, RSA majoré'] : 0;
 				$sommeTous+= isset($results['situation'][2]['06 - Femme seule avec enfant, RSA non majoré']) ? $results['situation'][2]['06 - Femme seule avec enfant, RSA non majoré'] : 0;
 				echo ($sommeTous != 0) ? $sommeTous : '';
 			?></strong></td>
-			<td class="number"><strong><?php 
+			<td class="number"><strong><?php
 				$sommeTous = isset($results['situation'][3]['05 - Femme seule avec enfant, RSA majoré']) ? $results['situation'][3]['05 - Femme seule avec enfant, RSA majoré'] : 0;
 				$sommeTous+= isset($results['situation'][3]['06 - Femme seule avec enfant, RSA non majoré']) ? $results['situation'][3]['06 - Femme seule avec enfant, RSA non majoré'] : 0;
-				echo ($sommeTous != 0) ? $sommeTous : ''; 
+				echo ($sommeTous != 0) ? $sommeTous : '';
 			?></strong></td>
-			<td class="number"><strong><?php 
+			<td class="number"><strong><?php
 				$sommeTous = isset($results['situation'][4]['05 - Femme seule avec enfant, RSA majoré']) ? $results['situation'][4]['05 - Femme seule avec enfant, RSA majoré'] : 0;
 				$sommeTous+= isset($results['situation'][4]['06 - Femme seule avec enfant, RSA non majoré']) ? $results['situation'][4]['06 - Femme seule avec enfant, RSA non majoré'] : 0;
-				echo ($sommeTous != 0) ? $sommeTous : ''; 
+				echo ($sommeTous != 0) ? $sommeTous : '';
 			?></strong></td>
 		</tr>
 		<tr class="odd">

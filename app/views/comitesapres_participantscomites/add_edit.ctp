@@ -1,6 +1,11 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+<?php
+	 $this->pageTitle = 'Ajout de participant au comité d\'examen';
 
-<?php  $this->pageTitle = 'Ajout de participant au comité d\'examen';?>
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+?>
+
 <script type="text/javascript">
 //<![CDATA[
 	function allCheckboxes( checked ) {

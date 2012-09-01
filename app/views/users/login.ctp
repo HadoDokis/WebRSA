@@ -1,7 +1,12 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-<?php $this->pageTitle = 'Connexion';?>
+<?php
+	$this->pageTitle = 'Connexion';
 
-<h1>Connexion</h1>
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+?>
+
+<h1><?php echo $this->pageTitle;?></h1>
 
 <?php if( isset( $success ) ): ?>
 	<p class="success"><?php echo $success; ?></p>

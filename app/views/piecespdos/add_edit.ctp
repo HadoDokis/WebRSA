@@ -1,4 +1,8 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+<?php
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+?>
 
 <?php echo $this->element( 'dossier_menu', array( 'id' => Set::extract( $pdo, 'Propopdo.dossier_id' ) ) );?>
 

@@ -1,11 +1,11 @@
-<?php //debug($options); ?>
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-<?php $this->pageTitle = 'Recherche par DSPs';
-if( Configure::read( 'debug' ) > 0 ) {
-	echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
-}
+<?php
+	$this->pageTitle = 'Recherche par DSPs';
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
 ?>
-<h1>Recherche par DSPs</h1>
+<h1><?php echo $this->pageTitle;?></h1>
 <?php
 	if( is_array( $this->data ) ) {
 		echo '<ul class="actionMenu"><li>'.$xhtml->link(
@@ -39,38 +39,38 @@ if( Configure::read( 'debug' ) > 0 ) {
 			}
 
 		?>
-	</fieldset>	
+	</fieldset>
 	<fieldset>
 		<legend>Situation professionnelle</legend>
-		<?php 
+		<?php
 			echo $form->input( 'Dsp.nivetu', array( 'label' => "Quelle est votre niveau d'étude ? ", 'type' => 'select', 'options' => $options['Dsp']['nivetu'], 'empty' => true ) );
 			echo $form->input( 'Dsp.hispro', array( 'label' => "Passé professionnel ", 'type' => 'select', 'options' => $options['Dsp']['hispro'], 'empty' => true ) );
 			if( Configure::read( 'Cg.departement' ) == 66 ) {
 				echo '<fieldset><legend>Dernière activité dominante</legend>';
 					echo $form->input( 'Dsp.libsecactdomi66_secteur_id' , array( 'label' => "Dans quel secteur d'activité avez-vous exercé votre activité professionnelle dominante ? ", 'type' => 'select', 'options' => $options['Coderomesecteurdsp66'], 'empty' => true ) );
 					echo $form->input( 'Dsp.libsecactdomi', array( 'label' => "Si le secteur est non présent dans la liste, précisez " ) );
-					
-					echo $form->input( 'Dsp.libactdomi66_metier_id' , array( 'label' => "Précisez quelle a été l'activité professionnelle dominante ? ", 'type' => 'select', 'options' => $options['Coderomemetierdsp66'], 'empty' => true ) );				
+
+					echo $form->input( 'Dsp.libactdomi66_metier_id' , array( 'label' => "Précisez quelle a été l'activité professionnelle dominante ? ", 'type' => 'select', 'options' => $options['Coderomemetierdsp66'], 'empty' => true ) );
 					echo $form->input( 'Dsp.libactdomi', array( 'label' => "Si le métier est non présent dans la liste, précisez " ) );
 				echo '</fieldset>';
-				
+
 				echo '<fieldset><legend>Emploi recherché</legend>';
 					echo $form->input('Dsp.libsecactrech66_secteur_id' , array('label' => "Quel est le secteur d'activité recherché ? ",  'type' => 'select', 'options' => $options['Coderomesecteurdsp66'], 'empty' => true ) );
 					echo $form->input( 'Dsp.libsecactrech', array( 'label' => "Si le secteur recherché est non présent dans la liste, précisez " ) );
-					
-					echo $form->input( 'Dsp.libemploirech66_metier_id' , array( 'label' => "Quel est l'emploi recherché ? ", 'type' => 'select', 'options' => $options['Coderomemetierdsp66'], 'empty' => true ) );				
+
+					echo $form->input( 'Dsp.libemploirech66_metier_id' , array( 'label' => "Quel est l'emploi recherché ? ", 'type' => 'select', 'options' => $options['Coderomemetierdsp66'], 'empty' => true ) );
 					echo $form->input( 'Dsp.libemploirech', array( 'label' => "Si le métier recherché est non présent dans la liste, précisez " ) );
 				echo '</fieldset>';
-				
+
 			}
 			else {
 				echo $form->input( 'Dsp.libsecactdomi', array( 'label' => "Dans quel secteur d'activité avez-vous exercé votre activité professionnelle dominante ?" ) );
 				echo $form->input( 'Dsp.libactdomi', array( 'label' => "Précisez quelle a été l'activité professionnelle dominante ? " ) );
 				echo $form->input( 'Dsp.libsecactrech', array( 'label' => "Quel est le secteur d'activité recherché ?" ) );
 				echo $form->input( 'Dsp.libemploirech', array( 'label' => "Quel est l'emploi recherché ? " ) );
-				
-				
-				
+
+
+
 			}
 		?>
 	</fieldset>
@@ -117,7 +117,7 @@ if( Configure::read( 'debug' ) > 0 ) {
 						<th>Code métier</th>
 						<th>Secteur dernière activité dominante</th>
 						<th>Dernière activité dominante</th>
-						
+
 						<th>Code secteur recherché</th>
 						<th>Code métier recherché</th>
 						<th>Secteur activité recherché</th>
@@ -128,7 +128,7 @@ if( Configure::read( 'debug' ) > 0 ) {
 						<th>Secteur activité recherché</th>
 						<th>Activité recherchée</th>
 					<?php endif; ?>
-					
+
 					<th class="action noprint">Actions</th>
 					<th class="innerTableHeader noprint">Informations complémentaires</th>
 				</tr>
@@ -170,7 +170,7 @@ if( Configure::read( 'debug' ) > 0 ) {
 						$libderact = '';
 						$libsecactderact = '';
 
-												
+
 						if( !empty( $dsp['DspRev']['id'] ) ) {
 							$viewLink = $xhtml->viewLink(
 								'Voir le dossier « '.$title.' »',
@@ -184,8 +184,8 @@ if( Configure::read( 'debug' ) > 0 ) {
 							);
 						}
 
-						
-						
+
+
 						$arrayData = array(
 							h( $dsp['Personne']['nom'].' '.$dsp['Personne']['prenom'] ),
 							h( $dsp['Adresse']['locaadr'] ),

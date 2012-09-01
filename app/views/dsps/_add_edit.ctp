@@ -1,6 +1,8 @@
 <?php
-	// CSS
-	echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+		echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
+	}
 
 	// Titre
 	$this->pageTitle = sprintf(
@@ -11,10 +13,6 @@
 	echo $this->element( 'dossier_menu', array( 'personne_id' => Set::extract( $dsp, 'Personne.id' ) ) );
 
 	$dsp_id = Set::classicExtract( $this->data, 'Dsp.id' );
-
-	if( Configure::read( 'debug' ) > 0 ) {
-		echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
-	}
 ?>
 
 <div class="with_treemenu">

@@ -1,8 +1,11 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-<?php $this->pageTitle = 'Gestion des indus';?>
+<?php
+	$this->pageTitle = 'Gestion des indus';
 
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+?>
 <h1>Recherche par Indus</h1>
-
 <?php
 	if( is_array( $this->data ) ) {
 		echo '<ul class="actionMenu"><li>'.$xhtml->link(
@@ -111,7 +114,7 @@
 								<tr>
 									<th>Rôle</th>
 									<td>'.$rolepers[$indu['Prestation']['rolepers']].'</td>
-								</tr>								
+								</tr>
 							</tbody>
 						</table>';
 							$title = $indu['Dossier']['numdemrsa'];

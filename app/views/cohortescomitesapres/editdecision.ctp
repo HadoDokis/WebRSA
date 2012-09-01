@@ -1,5 +1,10 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-<?php $this->pageTitle = 'Modification Décisions du comité';?>
+<?php
+	$this->pageTitle = 'Modification Décisions du comité';
+
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+?>
 
 <?php if( isset( $apre['Comiteapre'] ) && is_array( $apre['Comiteapre'] ) && count( $apre['Comiteapre'] ) > 0 ):?>
 <script type="text/javascript">

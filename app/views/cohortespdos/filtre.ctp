@@ -1,4 +1,8 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+<?php
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+?>
 
 <?php
 	if( !empty( $this->data ) ) {
@@ -72,7 +76,7 @@
 				<?php $daterevision = Set::check( $this->data, 'Cohortepdo.daterevision' ) ? Set::extract( $this->data, 'Cohortepdo.daterevision' ) : strtotime( '+1 week' ); ?>
 				<?php echo $form->input( 'Cohortepdo.daterevision', array( 'label' => 'Date de révision inférieure à ', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date('Y')+2, 'minYear' => date('Y')-2, 'selected' => $daterevision ) ); ?>
 		</fieldset>
-		<?php 
+		<?php
 			if( $this->action == 'avisdemande' ) {
 				echo $search->etatdosrsa($etatdosrsa);
 			}
