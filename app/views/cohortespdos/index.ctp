@@ -19,17 +19,6 @@
 		).'</li></ul>';
 	}
 
-	function value( $array, $index ) {
-		$keys = array_keys( $array );
-		$index = ( ( $index == null ) ? '' : $index );
-		if( @in_array( $index, $keys ) && isset( $array[$index] ) ) {
-			return $array[$index];
-		}
-		else {
-			return null;
-		}
-	}
-
 	if( isset( $cohortepdo ) ) {
 		$pagination = $xpaginator->paginationBlock( 'Personne', $this->passedArgs );
 	}

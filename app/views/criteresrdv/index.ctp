@@ -9,18 +9,6 @@
 <h1><?php echo $this->pageTitle;?></h1>
 
 <?php
-	function value( $array, $index ) {
-		$keys = array_keys( $array );
-		$index = ( ( $index == null ) ? '' : $index );
-		if( @in_array( $index, $keys ) && isset( $array[$index] ) ) {
-			return $array[$index];
-		}
-		else {
-			return null;
-		}
-	}
-?>
-<?php
 	$pagination = $xpaginator->paginationBlock( 'Rendezvous', $this->passedArgs );
 ?>
 <?php

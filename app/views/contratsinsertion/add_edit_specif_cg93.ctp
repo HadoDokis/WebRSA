@@ -14,18 +14,6 @@
 
 <?php echo $this->element( 'dossier_menu', array( 'personne_id' => Set::classicExtract( $personne, 'Personne.id' ) ) );?>
 
-<?php
-    function value( $array, $index ) {
-        $keys = array_keys( $array );
-        $index = ( ( $index == null ) ? '' : $index );
-        if( @in_array( $index, $keys ) && isset( $array[$index] ) ) {
-            return $array[$index];
-        }
-        else {
-            return null;
-        }
-    }
-?>
 <div class="with_treemenu">
     <h1><?php echo $this->pageTitle;?></h1>
 

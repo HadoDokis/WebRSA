@@ -1,17 +1,6 @@
 <?php
 	$csv->preserveLeadingZerosInExcel = true;
 
-	function value( $array, $index ) {
-		$keys = array_keys( $array );
-		$index = ( ( $index == null ) ? '' : $index );
-		if( @in_array( $index, $keys ) && isset( $array[$index] ) ) {
-			return $array[$index];
-		}
-		else {
-			return null;
-		}
-	}
-
 	$csv->addRow( array( 'Nom/Prénom allocataire', 'N° CAF',  'Commune de l\'allocataire', 'Structure référente', 'Référent', 'Objet du RDV', 'Statut du RDV', 'Date du RDV', 'Heure du RDV', 'Objectif du RDV', 'Commentaire suite RDV' ) );
 
 	foreach( $rdvs as $rdv ) {

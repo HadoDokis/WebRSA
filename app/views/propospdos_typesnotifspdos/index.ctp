@@ -8,19 +8,6 @@
 	echo $this->element( 'dossier_menu', array( 'id' => $dossierId ) );
 ?>
 
-<?php
-	function value( $array, $index ) {
-		$keys = array_keys( $array );
-		$index = ( ( $index == null ) ? '' : $index );
-		if( @in_array( $index, $keys ) && isset( $array[$index] ) ) {
-			return $array[$index];
-		}
-		else {
-			return null;
-		}
-	}
-?>
-
 <div class="with_treemenu">
 
 <?php echo $form->create( 'TraitementsPDOs', array( 'url'=> Router::url( null, true ) ) );?>
