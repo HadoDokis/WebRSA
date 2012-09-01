@@ -1,6 +1,12 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-<?php $this->pageTitle = 'Groupe';?>
+<?php
+	$this->pageTitle = 'Groupe';
 
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+		echo $javascript->link( 'prototype.livepipe.js' );
+		echo $javascript->link( 'prototype.tabs.js' );
+	}
+?>
 <h1><?php echo $this->pageTitle." ".$this->data['Group']['name'];?></h1><br />
 <?php echo $form->create( 'Group', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );?>
 
@@ -38,11 +44,6 @@
 </div>
 <?php echo $form->submit( 'Enregistrer' );?>
 <?php echo $form->end();?>
-
-<?php
-	echo $javascript->link( 'prototype.livepipe.js' );
-	echo $javascript->link( 'prototype.tabs.js' );
-?>
 
 <script type="text/javascript">
 	makeTabbed( 'tabbedWrapper', 2 );

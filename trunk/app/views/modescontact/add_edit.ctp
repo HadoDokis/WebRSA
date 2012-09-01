@@ -1,5 +1,3 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-
 <?php
     if( $this->action == 'add' ) {
         $this->pageTitle = 'Ajout d\'un mode de contact';
@@ -8,9 +6,13 @@
         $this->pageTitle = 'Édition des modes de contact';
         $foyer_id = $this->data['Modecontact']['foyer_id'];
     }
-?>
 
-<?php echo $this->element( 'dossier_menu', array( 'foyer_id' => $foyer_id ) );?>
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+
+	echo $this->element( 'dossier_menu', array( 'foyer_id' => $foyer_id ) );
+?>
 
 <div class="with_treemenu">
     <h1><?php echo $this->pageTitle;?></h1>

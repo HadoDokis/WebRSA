@@ -1,4 +1,3 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 <?php $this->pageTitle = 'Utilisateurs';?>
 
 <h1><?php echo $this->pageTitle;?></h1><br />
@@ -40,8 +39,11 @@
 <?php echo $form->end();?>
 
 <?php
-	echo $javascript->link( 'prototype.livepipe.js' );
-	echo $javascript->link( 'prototype.tabs.js' );
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+		echo $javascript->link( 'prototype.livepipe.js' );
+		echo $javascript->link( 'prototype.tabs.js' );
+	}
 ?>
 
 <script type="text/javascript">

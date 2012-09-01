@@ -1,4 +1,9 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+<?php
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+		echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
+	}
+?>
 <?php  echo $form->create( 'Dossiersimplifie',array( 'url' => Router::url( null, true ) ) ); ?>
 <?php echo $this->element( 'dossier_menu', array( 'foyer_id' => $foyer_id, 'personne_id' => $personne_id ) );?>
 
@@ -22,12 +27,6 @@
 
 	});
 </script>
-
-<?php
-	if( Configure::read( 'debug' ) > 0 ) {
-		echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
-	}
-?>
 
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {

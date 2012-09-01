@@ -8,16 +8,13 @@
 		$this->pageTitle = 'Modification d\'un signalement';
 	}
 	$modelClassName = 'Signalementep'.Configure::read( 'Cg.departement' );
+
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
 ?>
 <div class="with_treemenu">
 	<h1> <?php echo $this->pageTitle; ?> </h1>
-
-	<?php
-		if( Configure::read( 'debug' ) > 0 ) {
-			echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
-		}
-	?>
-
 	<?php
 		echo $xform->create();
 

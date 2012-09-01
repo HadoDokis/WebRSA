@@ -1,6 +1,9 @@
 <?php
 	$domain = 'pdo';
-	echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
 ?>
 <fieldset id="Decision" class="invisible">
 	<?php

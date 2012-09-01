@@ -1,7 +1,10 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-
 <?php
-    $this->pageTitle = 'Gestion des sanctions émises par l\'EP';
+	$this->pageTitle = 'Gestion des sanctions émises par l\'EP';
+
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+		echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
+	}
 ?>
 
 <h1><?php echo $this->pageTitle;?></h1>
@@ -15,12 +18,6 @@
         '#',
         array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 'Search' ).toggle(); return false;" )
     ).'</li></ul>';
-?>
-
-<?php
-	if( Configure::read( 'debug' ) > 0 ) {
-		echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
-	}
 ?>
 
 <script type="text/javascript">
@@ -47,7 +44,7 @@
 						array(
 							'options' => $options
 						)
-					); 
+					);
 					echo $xform->input( 'Search.Commissionep.dateseance', array( 'label' => 'Filtrer par date de Commission', 'type' => 'checkbox' ) );
 				?>
 				<fieldset>
@@ -168,8 +165,8 @@
 					$decisionSanction2 = Set::enum( $gestionanctionep58['Decisionsanctionep58']['decision2'], $regularisationlistesanctionseps58['Decisionsanctionep58']['decision'] );
 					// Libellé de la sanction
 					$libelleSanction1 = Set::enum( $gestionanctionep58['Decisionsanctionep58']['listesanctionep58_id'], $listesanctionseps58 );
-					$libelleSanction2 = Set::enum( $gestionanctionep58['Decisionsanctionep58']['autrelistesanctionep58_id'], $listesanctionseps58 ); 
-					
+					$libelleSanction2 = Set::enum( $gestionanctionep58['Decisionsanctionep58']['autrelistesanctionep58_id'], $listesanctionseps58 );
+
 					//Champ permettant la modification de la sanction
 					$fieldDecisionSanction = $xform->input( "Decisionsanctionep58.{$index}.id", array( 'type' => 'hidden', 'value' => $gestionanctionep58['Decisionsanctionep58']['id'] ) ).
 											  $xform->input( "Decisionsanctionep58.{$index}.arretsanction", array( 'type' => 'select', 'options' => $options['Decisionsanctionep58']['arretsanction'], 'label' => false, 'empty' => true ) );
@@ -182,17 +179,17 @@
 					// Type de sanction
 					$decisionSanction1 = Set::enum( $gestionanctionep58['Decisionsanctionrendezvousep58']['decision'], $regularisationlistesanctionseps58['Decisionsanctionrendezvousep58']['decision'] );
 					$decisionSanction2 = Set::enum( $gestionanctionep58['Decisionsanctionrendezvousep58']['decision2'], $regularisationlistesanctionseps58['Decisionsanctionrendezvousep58']['decision'] );
-					
+
 					// Libellé de la sanction
 					$libelleSanction1 = Set::enum( $gestionanctionep58['Decisionsanctionrendezvousep58']['listesanctionep58_id'], $listesanctionseps58 );
-					$libelleSanction2 = Set::enum( $gestionanctionep58['Decisionsanctionrendezvousep58']['autrelistesanctionep58_id'], $listesanctionseps58 ); 
-					
+					$libelleSanction2 = Set::enum( $gestionanctionep58['Decisionsanctionrendezvousep58']['autrelistesanctionep58_id'], $listesanctionseps58 );
+
 					//Champ permettant la modification de la sanction
 					$fieldDecisionSanction = $xform->input( "Decisionsanctionrendezvousep58.{$index}.id", array( 'type' => 'hidden', 'value' => $gestionanctionep58['Decisionsanctionrendezvousep58']['id'] ) ).
 											  $xform->input( "Decisionsanctionrendezvousep58.{$index}.arretsanction", array( 'type' => 'select', 'options' => $options['Decisionsanctionrendezvousep58']['arretsanction'], 'label' => false, 'empty' => true ) );
 					//Champ permettant de saisir la date de la fin de la sanction
 					$dateFinSanction = $xform->input( "Decisionsanctionrendezvousep58.{$index}.datearretsanction", array( 'label' => false, 'type' => 'date', 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 3, 'maxYear' => date( 'Y' ) + 3 ) );
-					
+
 					//Champ permettant de saisir le commentaire de fin de la sanction
 					$commentaireFinSanction = $xform->input( "Decisionsanctionrendezvousep58.{$index}.commentairearretsanction", array( 'label' => false, 'type' => 'textarea' ) );
 				}

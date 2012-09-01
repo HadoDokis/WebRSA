@@ -1,9 +1,12 @@
-<h1><?php echo $this->pageTitle = 'COV du '.date('d-m-Y à h:i', strtotime($cov58['Cov58']['datecommission'])); ?></h1>
 <?php
+	$this->pageTitle = 'COV du '.date('d-m-Y à h:i', strtotime($cov58['Cov58']['datecommission']));
+
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
 	}
 ?>
+
+<h1><?php echo $this->pageTitle; ?></h1>
 <br/>
 <div id="tabbedWrapper" class="tabs">
 	<?php

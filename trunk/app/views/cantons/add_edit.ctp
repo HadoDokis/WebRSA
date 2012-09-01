@@ -1,6 +1,11 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-<?php $this->pageTitle = 'Canton';?>
+<?php
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
 
+	$this->pageTitle = $this->pageTitle = 'Canton';
+
+?>
 <h1><?php echo $this->pageTitle;?></h1>
 
 <?php

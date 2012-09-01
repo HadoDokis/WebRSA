@@ -1,6 +1,8 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-
 <?php
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+
 	switch( @$this->action ) {
 		case 'creationmodification':
 			$this->pageTitle = 'Création / modification d\'une commission d\'EP';
@@ -31,7 +33,7 @@
 			else {
 				$this->pageTitle = '3. Arbitrage d\'une commission d\'EP (niveau CG)';
 			}
-			
+
 			break;
 		case 'decisions':
 			$this->pageTitle = '4. Consultation des décisions';

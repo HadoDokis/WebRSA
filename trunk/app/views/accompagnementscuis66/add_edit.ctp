@@ -1,13 +1,13 @@
 <?php
-	echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
-
 	$this->pageTitle = 'Accompagnements du CUI';
+
 	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
 		echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
 	}
-?>
 
-<?php echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );?>
+	echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
+?>
 
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
@@ -26,8 +26,8 @@
 			false,
 			true
 		);
-		
-		
+
+
 		dependantSelect( 'Accompagnementcui66MetieraffectationId', 'Accompagnementcui66SecteuraffectationId' );
 		try { $( 'Accompagnementcui66MetieraffectationId' ).onchange(); } catch(id) { }
 
@@ -111,8 +111,8 @@
 				);
 			?>
 		</fieldset>
-		
-		
+
+
 		<script type="text/javascript" >
 			function calculNbDays() {
 				var Datedebperiode = $F( 'Accompagnementcui66DatedebperiodeDay' );
@@ -123,12 +123,12 @@
 			$( 'Accompagnementcui66DatefinperiodeDay' ).observe( 'blur', function( event ) { calculNbDays(); } );
 		</script>
 	</fieldset>
-	
+
 	<fieldset id="formations" class="invisible">
 		<p class="notice">En cours de développement .....</p>
 	</fieldset>
 
-	
+
 	<div class="submit">
 		<?php echo $form->submit( 'Enregistrer', array( 'div' => false ) );?>
 		<?php echo $form->submit('Annuler', array( 'name' => 'Cancel', 'div' => false ) );?>

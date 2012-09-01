@@ -1,8 +1,12 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-<?php $this->pageTitle = 'Contrats d\'insertion';?>
+<?php
+	$this->pageTitle = 'Contrats d\'insertion';
 
-<?php echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );?>
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
 
+	echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
+?>
 <?php
 	if( $this->action == 'add' ) {
 		$this->pageTitle = 'Ajout d\'actions';

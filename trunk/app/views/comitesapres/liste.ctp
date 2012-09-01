@@ -1,5 +1,10 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-<?php $this->pageTitle = 'Liste des Comités d\'examen APRE';?>
+<?php
+	$this->pageTitle = 'Liste des Comités d\'examen APRE';
+
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+?>
 
 <h1>Liste des Comités d'examen</h1>
 

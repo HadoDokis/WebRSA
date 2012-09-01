@@ -708,7 +708,17 @@
 				return $return;
 			}
 
-			if( ( substr( $_SERVER['REQUEST_URI'], strlen( $this->base ) ) != '/users/login' ) ) {
+			$isLoginPage = ( substr( $_SERVER['REQUEST_URI'], strlen( $this->base ) ) == '/users/login' );
+
+			// Utilise-t'on l'alerte de fin de session ?
+			$useAlerteFinSession = (
+				!$isLoginPage
+				&& ( Configure::read( "alerteFinSession" ) )
+				&& ( Configure::read( 'debug' ) == 0 )
+			);
+			$this->set( 'useAlerteFinSession', $useAlerteFinSession );
+
+			if( !$isLoginPage ) {
 				if( !$this->Session->check( 'Auth' ) || !$this->Session->check( 'Auth.User' ) ) {
 					//le forcer a se connecter
 					$this->redirect( array( 'controller' => 'users', 'action' => 'login' ) );

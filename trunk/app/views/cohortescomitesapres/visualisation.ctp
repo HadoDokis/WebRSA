@@ -1,4 +1,8 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+<?php
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+?>
 <?php $this->pageTitle = 'Notifications des décisions des comités';?>
 
 <h1>Notification des Comités</h1>

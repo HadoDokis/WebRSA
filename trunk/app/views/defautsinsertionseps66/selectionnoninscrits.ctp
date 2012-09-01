@@ -1,5 +1,8 @@
-<?php 
-echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+<?php
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+?>
 <h1><?php echo $this->pageTitle = __d( 'defautinsertionep66', "{$this->name}::{$this->action}", true );?></h1>
 
 <ul class="actionMenu">
@@ -36,7 +39,7 @@ echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), 
 			}
 		?>
 		<?php echo $form->input( 'Orientstruct.date_valid', array( 'label' => 'Mois d\'orientation', 'type' => 'date', 'dateFormat' => 'MY', 'minYear' => date( 'Y' ) - 5, 'maxYear' => date( 'Y' ) + 1, 'empty' => true ) );?>
-		
+
 		<?php echo $search->etatdosrsa($etatdosrsa); ?>
 	</fieldset>
 

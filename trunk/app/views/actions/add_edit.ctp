@@ -1,14 +1,15 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-<?php $this->pageTitle = 'Actions d\'insertion';?>
+<?php
+	$this->pageTitle = 'Actions d\'insertion';
 
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+?>
 <h1><?php echo $this->pageTitle;?></h1>
 
 <?php
-	if( $this->action == 'add' ) {
-		echo $form->create( 'Action', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
-	}
-	else {
-		echo $form->create( 'Action', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
+	echo $form->create( 'Action', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
+	if( $this->action == 'edit' ) {
 		echo $form->input( 'Action.id', array( 'type' => 'hidden' ) );
 	}
 ?>

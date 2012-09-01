@@ -1,7 +1,10 @@
 <?php
     $domain = "actioncandidat_personne_".Configure::read( 'ActioncandidatPersonne.suffixe' );
     echo $this->element( 'dossier_menu', array( 'id' => $dossierId ) );
-    echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
 ?>
 
 <div class="with_treemenu">
@@ -11,12 +14,12 @@
             $this->pageTitle = __d( $domain, "ActionscandidatsPersonnes::{$this->action}", true )
         );
     ?>
-<?php 
+<?php
 	echo $xform->create( 'ActioncandidatPersonne', array( 'id' => 'viewForm' ) );
 
 
 		if( ( $actionscandidatspersonne['ActioncandidatPersonne']['positionfiche'] == 'annule' ) ){
-			
+
 			echo $html->tag('div', $html->tag('strong', 'Raison de l\'annulation'));
 			echo $default->view(
 				$actionscandidatspersonne,
@@ -86,11 +89,11 @@
                 'domain' => $domain,
                 'class' => 'aere'
             )
-		);	
+		);
 
 		$venu = Set::enum( $actionscandidatspersonne['ActioncandidatPersonne']['bilanvenu'], $options['ActioncandidatPersonne']['bilanvenu'] );
 		$retenu = Set::enum( $actionscandidatspersonne['ActioncandidatPersonne']['bilanretenu'], $options['ActioncandidatPersonne']['bilanretenu'] );
-		
+
 		echo $html->tag('div', $html->tag('strong', 'Bilan du rendez-vous'));
         echo $default2->view(
         	$actionscandidatspersonne,

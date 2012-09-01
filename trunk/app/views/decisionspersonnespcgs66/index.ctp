@@ -1,5 +1,10 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-<?php $this->pageTitle = 'Propositions de décision';?>
+<?php
+	$this->pageTitle = 'Propositions de décision';
+
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+?>
 
 <?php echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );?>
 

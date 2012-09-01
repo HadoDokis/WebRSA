@@ -1,5 +1,9 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-
+<?php
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+		echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
+	}
+?>
 <?php
     $this->pageTitle = 'Dossiers PCGs en attente d\'affectation';
 ?>
@@ -15,12 +19,6 @@
         '#',
         array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 'Search' ).toggle(); return false;" )
     ).'</li></ul>';
-?>
-
-<?php
-	if( Configure::read( 'debug' ) > 0 ) {
-		echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
-	}
 ?>
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
@@ -66,7 +64,7 @@
                         'options' => $options
                     )
                 );
-                
+
 				if( Configure::read( 'CG.cantons' ) ) {
 					echo $xform->input( 'Search.Canton.canton', array( 'label' => 'Canton', 'type' => 'select', 'options' => $cantons, 'empty' => true ) );
 				}
@@ -121,7 +119,7 @@
                         h( $affectationdossierpcg66['Dossierpcg66']['orgpayeur'] ),
                         h( $affectationdossierpcg66['Serviceinstructeur']['lib_service'] ),
                     );
-                    
+
                     $checked = @$this->data['Dossierpcg66'][$index]['atraiter'];
 
                     $array2 = array(

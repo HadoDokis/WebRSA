@@ -1,8 +1,3 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-<?php $this->pageTitle = 'Ressources';?>
-
-<?php echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );?>
-
 <?php
 	if( $this->action == 'add' ) {
 		$this->pageTitle = 'Déclaration de ressources';
@@ -10,6 +5,12 @@
 	else {
 		$this->pageTitle = 'Édition de ressources';
 	}
+
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+
+	echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
 ?>
 
 <div class="with_treemenu">

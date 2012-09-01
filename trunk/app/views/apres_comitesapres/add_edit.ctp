@@ -1,6 +1,8 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-
 <?php
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+
 	$isRecours = Set::classicExtract( $this->params, 'named.recours' );
 
 	if( $isRecours ) {
@@ -87,7 +89,7 @@
 				'id' => 'Back'
 			)
 		);
-	?>        
+	?>
 <script type="text/javascript">
 //<![CDATA[
 	function allCheckboxes( checked ) {

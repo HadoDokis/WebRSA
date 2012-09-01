@@ -1,6 +1,12 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+<?php
+	 $this->pageTitle = 'Suppression de la commission d\'EP';
 
-<h1><?php echo $this->pageTitle = 'Suppression de la commission d\'EP'; ?></h1>
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+?>
+
+<h1><?php echo $this->pageTitle; ?></h1>
 
 <?php
 	echo $form->create( 'Commissionep', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );

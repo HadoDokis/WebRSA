@@ -1,5 +1,12 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-<h1><?php echo $this->pageTitle='APRE: Suivi et contrôle de l\'enveloppe';?></h1>
+<?php
+	$this->pageTitle = 'APRE: Suivi et contrôle de l\'enveloppe';
+
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+?>
+
+<h1><?php echo $this->pageTitle;?></h1>
 
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {

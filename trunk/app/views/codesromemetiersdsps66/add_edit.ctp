@@ -4,7 +4,9 @@
 		$this->pageTitle = __d( 'coderomemetierdsp66', "Codesromemetiersdsps66::{$this->action}", true )
 	);
 
-	echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
 
 	echo $xform->create( null, array() );
 

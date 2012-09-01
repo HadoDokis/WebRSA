@@ -1,3 +1,13 @@
+<?php
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+
+		if( Configure::read( 'Cg.departement' ) == 66 ) {
+			echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
+		}
+	}
+?>
+
 <h1><?php echo $this->pageTitle = __d( 'nonorientationproep', 'Nonorientationsproseps'.Configure::read( 'Cg.departement' ).'::index', true ); ?></h1>
 
 <?php
@@ -12,18 +22,11 @@
 			array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 'Filtre' ).toggle(); return false;" )
 		).'</li></ul>';
 	}
-
-	if( Configure::read( 'debug' ) > 0 ) {
-		if( Configure::read( 'Cg.departement' ) == 66 ) {
-			echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
-		}
-		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
-	}
 ?>
 
 <?php echo $form->create( 'Filtre', array( 'url'=> Router::url( null, true ), 'id' => 'Filtre', 'class' => ( !empty( $this->data ) ? 'folded' : 'unfolded' ) ) );?>
 	<fieldset>
-		<?php 
+		<?php
 			echo $xform->input( 'Filtre.index', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );
 		?>
 

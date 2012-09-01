@@ -1,11 +1,13 @@
 <?php
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+
 	echo $xhtml->tag(
 		'h1',
 		$this->pageTitle = __d( 'textareacourrierpdo', "Textareascourrierspdos::{$this->action}", true )
 	)
 ?>
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-
 <?php
 	echo $default->form(
 		array(

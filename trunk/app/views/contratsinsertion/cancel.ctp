@@ -1,24 +1,17 @@
 <?php
-	echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
-
 	$modelClassName = 'Contratinsertion';
 	$domain = "contratinsertion";
+
+	$this->pageTitle = __d( $domain, "Contratsinsertion::{$this->action}", true );
+
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+
+	echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
 ?>
 <div class="with_treemenu">
-	<h1> <?php
-			echo $xhtml->tag(
-				'h1',
-				$this->pageTitle = __d( $domain, "Contratsinsertion::{$this->action}", true )
-			);
-		?> 
-	</h1>
-
-	<?php
-		if( Configure::read( 'debug' ) > 0 ) {
-			echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
-		}
-	?>
-
+	<h1><?php echo $this->pageTitle;?></h1>
 	<?php
 		echo $xform->create();
 

@@ -1,5 +1,3 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-
 <?php
 	if (Configure::read( 'nom_form_pdo_cg' ) == 'cg66'){
 		$this->pageTitle = 'Décision PCG';
@@ -7,9 +5,13 @@
 	else{
 		$this->pageTitle = 'PDO';
 	}
-?>
 
-<?php echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );?>
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+
+	echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
+?>
 
 <?php
 	function value( $array, $index ) {

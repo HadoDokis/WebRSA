@@ -1,6 +1,8 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-
 <?php
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+
 	if( !empty( $this->data ) ) {
 		echo '<ul class="actionMenu"><li>'.$xhtml->link(
 			$xhtml->image(

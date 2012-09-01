@@ -1,13 +1,17 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-<?php $this->pageTitle = 'Validation du CUI';?>
+<?php
+	$this->pageTitle = 'Validation du CUI';
 
-<?php  echo $form->create( 'Cui',array( 'url' => Router::url( null, true ) ) ); ?>
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
 
-<?php echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );?>
+	echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
+?>
 
 <div class="with_treemenu">
 	<h1><?php echo $this->pageTitle;?></h1>
 
+	<?php  echo $form->create( 'Cui',array( 'url' => Router::url( null, true ) ) ); ?>
 		<fieldset>
 			<?php echo $xform->input( 'Cui.id', array( 'type' => 'hidden'/*, 'value' => $personne_id*/ ) );?>
 			<?php echo $xform->input( 'Cui.personne_id', array( 'type' => 'hidden', 'value' => $personne_id ) );?>

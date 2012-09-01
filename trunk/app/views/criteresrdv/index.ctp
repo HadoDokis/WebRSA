@@ -1,7 +1,12 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-<?php $this->pageTitle = 'Recherche par Rendez-vous';?>
+<?php
+	$this->pageTitle = 'Recherche par Rendez-vous';
 
-<h1>Recherche par Rendez-vous</h1>
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+?>
+
+<h1><?php echo $this->pageTitle;?></h1>
 
 <?php
 	function value( $array, $index ) {
@@ -140,7 +145,7 @@
 								<tr>
 									<th>Rôle</th>
 									<td>'.$rolepers[$rdv['Prestation']['rolepers']].'</td>
-								</tr>									
+								</tr>
 							</tbody>
 						</table>';
 						echo $xhtml->tableCells(

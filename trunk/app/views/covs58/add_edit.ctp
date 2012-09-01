@@ -1,15 +1,17 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-
-<h1>
 <?php
 	if( $this->action == 'add' ) {
-		echo $this->pageTitle = 'Ajout d\'une COV';
+		$this->pageTitle = 'Ajout d\'une COV';
 	}
 	else {
-		echo $this->pageTitle = 'Modification d\'une COV';
+		$this->pageTitle = 'Modification d\'une COV';
+	}
+
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
 	}
 ?>
-</h1>
+
+<h1><?php echo $this->pageTitle;?></h1>
 
 <?php
 	echo $form->create( 'Cov58', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );

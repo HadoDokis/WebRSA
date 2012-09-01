@@ -1,8 +1,3 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-<?php $this->pageTitle = 'CER';?>
-
-<?php echo $this->element( 'dossier_menu', array( 'personne_id' => Set::classicExtract( $personne, 'Personne.id' ) ) );?>
-
 <?php
     if( $this->action == 'add' ) {
         $this->pageTitle = 'Ajout d\'un CER';
@@ -10,7 +5,14 @@
     else {
         $this->pageTitle = 'Édition d\'un CER';
     }
+
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+		echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
+	}
 ?>
+
+<?php echo $this->element( 'dossier_menu', array( 'personne_id' => Set::classicExtract( $personne, 'Personne.id' ) ) );?>
 
 <?php
     function value( $array, $index ) {
@@ -55,12 +57,6 @@
         observeDisableFieldsOnValue( 'ContratinsertionRgCi', [ 'ContratinsertionTypocontratId' ], 1, true );
     });
 </script>
-
-<?php
-	if( Configure::read( 'debug' ) > 0 ) {
-		echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
-	}
-?>
 
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
@@ -187,7 +183,7 @@
 //             'R',
 //             true
 //         );
-// 
+//
 //         observeDisableFieldsOnRadioValue(
 //             'testform',
 //             'data[Contratinsertion][raison_ci]',
@@ -397,7 +393,7 @@
             </table>
         </fieldset>
         <fieldset class="noborder" id="faitsuitea">
-            <?php 
+            <?php
                 echo $html->tag(
                     'span',
                     $form->input(
@@ -440,7 +436,7 @@
                                     </tr>
                                     <tr>
                                         <td class="noborder">
-                                            <?php 
+                                            <?php
                                                 echo $form->input( 'Contratinsertion.avisraison_suspension_ci', array( 'type' => 'radio', 'separator' => '<br />', 'options' => $avisraison_ci, 'legend' => false,   ) );
                                             ?>
                                             <fieldset id="Suspensionautre" class="invisible">
@@ -488,7 +484,7 @@
                                     </tr>
                                     <tr>
                                         <td class="noborder">
-                                            <?php 
+                                            <?php
                                                 echo $form->input( 'Contratinsertion.avisraison_radiation_ci', array( 'type' => 'radio', 'separator' => '<br />', 'options' => $avisraison_ci, 'legend' => false ) );
                                             ?>
                                             <fieldset id="Radiationautre" class="invisible">
@@ -545,11 +541,11 @@
         <tr>
             <td class="noborder">
                 <?php echo $xform->input( 'Contratinsertion.structurereferente_id', array( 'label' => 'Nom de l\'organisme de suivi', 'type' => 'select', 'options' => $structures, 'selected' => $struct_id, 'empty' => true, 'required' => true ) );?>
-                <?php echo $ajax->observeField( 'ContratinsertionStructurereferenteId', array( 'update' => 'StructurereferenteRef', 'url' => Router::url( array( 'action' => 'ajaxstruct' ), true ) ) ); ?> 
+                <?php echo $ajax->observeField( 'ContratinsertionStructurereferenteId', array( 'update' => 'StructurereferenteRef', 'url' => Router::url( array( 'action' => 'ajaxstruct' ), true ) ) ); ?>
             </td>
             <td class="noborder">
                 <?php echo $xform->input( 'Contratinsertion.referent_id', array('label' => 'Nom du référent chargé du suivi :', 'type' => 'select', 'options' => $referents, 'empty' => true, 'selected' => $struct_id.'_'.$referent_id ) );?>
-                <?php echo $ajax->observeField( 'ContratinsertionReferentId', array( 'update' => 'ReferentRef', 'url' => Router::url( array( 'action' => 'ajaxref' ), true ) ) ); ?> 
+                <?php echo $ajax->observeField( 'ContratinsertionReferentId', array( 'update' => 'ReferentRef', 'url' => Router::url( array( 'action' => 'ajaxref' ), true ) ) ); ?>
             </td>
         </tr>
         <tr>

@@ -1,11 +1,14 @@
 <?php
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+?>
+<?php
 	echo $xhtml->tag(
 		'h1',
 		$this->pageTitle = __d( 'descriptionpdo', "Descriptionspdos::{$this->action}", true )
 	)
 ?>
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-
 <?php
 	$sensibilite = Set::classicExtract( $this->data, 'Descriptionpdo.sensibilite' );
 	if( empty( $sensibilite ) ) {

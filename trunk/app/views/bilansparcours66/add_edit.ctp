@@ -1,6 +1,8 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-
 <?php
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+
 	$domain = 'bilanparcours66';
 
 	echo $this->element( 'dossier_menu', array( 'personne_id' => Set::classicExtract( $personne, 'Personne.id') ) );
@@ -156,9 +158,9 @@
 					);
 				}
 			}
-		
+
 // 		debug( $personne );
-		
+
 			echo $default->subform(
 				array(
 					'Bilanparcours66.sitfam' => array( 'type' => 'radio' )
@@ -170,7 +172,7 @@
 		?>
 	</fieldset>
 <fieldset>
-	<?php 
+	<?php
 		echo $html->tag(
 			'h3',
 			$form->input(
@@ -545,7 +547,7 @@
 			/// "Commission Audition": Examen du dossier par la commission EP Locale
 			$tmp = radioBilan( $this, 'Bilanparcours66.proposition', 'audition', '"Commission Audition": Examen du dossier par la commission EP Locale' );
 			echo $xhtml->tag( 'h3', $tmp );
-			
+
 			if( $dossiersepsencours['defautsinsertionseps66'] ) {
 				echo $html->tag( 'p', 'Ce dossier est déjà en cours d\'examen par la Commission Audition', array( 'class' => 'notice' ) );
 			}
@@ -1048,24 +1050,24 @@ elseif ( $this->action == 'edit' && isset( $passagecommissionep['Decisiondefauti
 			'p',
 			$options['Decisiondefautinsertionep66']['decision'][$avisep['decision']]
 		);
-		
+
 		echo $html->tag(
 			'p',
 			'<strong>Type d\'orientation : </strong>'.$avisEPTypeorient
 		);
-		
+
 		echo $html->tag(
 			'p',
 			'<strong>Structure référente : </strong>'.$avisEPStructure
 		);
-		
+
 		echo $html->tag(
 			'p',
 			'<strong>Nom du prescripteur : </strong>'.$avisEPReferent
 		);
-		
-		
-		
+
+
+
 		echo $html->tag(
 			'p',
 			"Argumentaire précis (avis motivé) de l'EP Locale :",
@@ -1135,7 +1137,7 @@ elseif ( $this->action == 'edit' && !empty( $dossierpcg66['Decisiondossierpcg66'
 // 	debug( $avisep['decision'] );
 // 	debug( $decisiontechnicien );
 
-	
+
 	if ( !empty( $decisiontechnicien ) ) {
 		echo $html->tag(
 			'p',
@@ -1238,7 +1240,7 @@ elseif ( $this->action == 'edit' && !empty( $dossierpcg66['Decisiondossierpcg66'
 			true
 		);
 
-		
+
 		['traitement', 'parcours', 'audition', 'auditionpe' ].each( function( proposition ) {
 			observeDisableFieldsetOnRadioValue(
 				'Bilan',
@@ -1341,7 +1343,7 @@ elseif ( $this->action == 'edit' && !empty( $dossierpcg66['Decisiondossierpcg66'
 		observeDisableFieldsOnRadioValue(
 			'Bilan',
 			'data[Bilanparcours66][proposition]',
-			[ 
+			[
 				'Bilanparcours66Observbenefcompterendu'
 			],
 			['parcours', 'traitement', undefined],
@@ -1433,7 +1435,7 @@ elseif ( $this->action == 'edit' && !empty( $dossierpcg66['Decisiondossierpcg66'
 				$( 'Bilanparcours66ExamenauditionpeRadiationpe' ).writeAttribute( 'disabled', 'disabled');
 			<?php }
 		} ?>
-		
+
 		// Cas des dossiers provenant de la recherche par Demande de maintien en social
 		<?php if ( isset( $this->params['pass'][1]['Bilanparcours66__maintienensocial'] ) ) { ?>
 			$( 'Bilanparcours66TypeformulaireCg' ).click();
@@ -1444,9 +1446,9 @@ elseif ( $this->action == 'edit' && !empty( $dossierpcg66['Decisiondossierpcg66'
 			setInputValue( $( 'Bilanparcours66Motifsaisine' ), 'Demande de maintien en social depuis plus de 24 mois' );
 			$( 'radioparcours' ).click();
 		<?php } ?>
-		
+
 		// ----------------------------------------------------------------------------------------------------------
-		//On désactive les boutons radio de la commission parcours et audition si un dossier EP 
+		//On désactive les boutons radio de la commission parcours et audition si un dossier EP
 		// existe déjà (ou est déjà en cours de passage en EP) pour la thématique en question
 		<?php if( $dossiersepsencours['saisinesbilansparcourseps66'] ) { ?>
 			$( 'radioparcours' ).writeAttribute( 'disabled', 'disabled');
@@ -1454,9 +1456,9 @@ elseif ( $this->action == 'edit' && !empty( $dossierpcg66['Decisiondossierpcg66'
 		<?php if( $dossiersepsencours['defautsinsertionseps66'] ) { ?>
 			$( 'radioaudition' ).writeAttribute( 'disabled', 'disabled');
 		<?php }?>
-		
+
 		// ----------------------------------------------------------------------------------------------------------
-		
+
 	});
 
 	function setInputValue( input, value ) {
@@ -1465,7 +1467,7 @@ elseif ( $this->action == 'edit' && !empty( $dossierpcg66['Decisiondossierpcg66'
 			$( input ).setValue( value );
 		}
 	}
-	
+
 	function checkDatesToRefresh( prefixe, suffixe ) {
 		if( ( $F( prefixe+'Bilanparcours66Ddreconductoncontrat'+suffixe+'Month' ) ) && ( $F( prefixe+'Bilanparcours66Ddreconductoncontrat'+suffixe+'Year' ) ) && ( $F( prefixe+'Bilanparcours66DureeEngag'+suffixe ) ) ) {
 			var correspondances = new Array();

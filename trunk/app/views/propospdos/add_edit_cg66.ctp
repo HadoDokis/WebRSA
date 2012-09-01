@@ -1,14 +1,19 @@
 <?php
+	if( $this->action == 'add' ) {
+		$this->pageTitle = 'Ajout d\'un dossier';
+	}
+	else {
+		$this->pageTitle = 'Édition du dossier';
+	}
+
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
 		echo $xhtml->css( array( 'fileuploader' ), 'stylesheet', array( 'media' => 'all' ), false );
 		echo $javascript->link( 'fileuploader.js' );
 	}
 
-	$this->pageTitle = 'Validation PDO';
 	$domain = 'pdo';
 
-	echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
 	echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
 ?>
 <script type="text/javascript">
@@ -19,15 +24,6 @@
 		observeDisableFieldsetOnCheckbox( 'PropopdoIsdecisionop', $( 'PropopdoObservationop' ).up( 'fieldset' ), false );
 	});
 </script>
-
-<?php
-	if( $this->action == 'add' ) {
-		$this->pageTitle = 'Ajout d\'un dossier';
-	}
-	else {
-		$this->pageTitle = 'Édition du dossier';
-	}
-?>
 
 <script type="text/javascript">
 	function checkDatesToRefresh() {

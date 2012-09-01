@@ -1,15 +1,16 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-<?php $this->pageTitle = 'Contrat Unique d\'Insertion';?>
+<?php
+	$this->pageTitle = __d( 'cui', "Cuis::{$this->action}", true );
+
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+?>
 
 <?php echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );?>
 
 <div class="with_treemenu">
-	<?php
-		echo $xhtml->tag(
-			'h1',
-			$this->pageTitle = __d( 'cui', "Cuis::{$this->action}", true )
-		);
-	?>
+	<?php echo $xhtml->tag( 'h1', $this->pageTitle );?>
+
 	<?php if( $permissions->check( 'cuis', 'add' ) ):?>
 		<ul class="actionMenu">
 			<?php

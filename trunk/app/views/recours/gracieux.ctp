@@ -1,8 +1,12 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+<?php
+	$this->pageTitle = 'Recours gracieux';
 
-<?php  $this->pageTitle = 'Recours gracieux';?>
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
 
-<?php  echo $this->element( 'dossier_menu', array( 'id' => $dossier_id ) );?>
+	echo $this->element( 'dossier_menu', array( 'id' => $dossier_id ) );
+?>
 
 <div class="with_treemenu">
 	<h1><?php echo $this->pageTitle;?></h1>

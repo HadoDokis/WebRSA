@@ -1,5 +1,8 @@
 <?php
-	echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+
 	$this->modelClass = $this->params['models'][0];
 
 	$this->pageTitle = 'APRE';

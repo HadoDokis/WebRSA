@@ -1,6 +1,12 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+<?php
+	$this->pageTitle = 'Commission d\'orientation et de validation';
 
-<h1><?php echo 'Commission d\'orientation et de validation'; ?></h1>
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+?>
+
+<h1><?php echo $this->pageTitle; ?></h1>
 
 	<ul class="actionMenu">
 		<?php

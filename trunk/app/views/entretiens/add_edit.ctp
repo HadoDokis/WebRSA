@@ -1,10 +1,10 @@
 <?php
-	echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
-	echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
-
 	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
 		echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
 	}
+
+	echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
 ?>
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {

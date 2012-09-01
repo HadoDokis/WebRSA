@@ -1,14 +1,12 @@
 <?php
 	$domain = 'cui';
 	echo $this->element( 'dossier_menu', array( 'id' => $dossier_id, 'personne_id' => $personne_id ) );
-	echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
-?>
-
-<?php
 	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
 		echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
 	}
 ?>
+
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
 		//Utilisé en cas d'adresse de l'employeur différente pour les doc administratifs
@@ -50,7 +48,7 @@
 			false,
 			true
 		);
-		
+
 		//Utilisé si le bénéficiaire bénéficie d'un rsa majoré
 
 		observeDisableFieldsetOnRadioValue(
@@ -116,12 +114,12 @@
 			false,
 			true
 		);
-		
+
 		dependantSelect( 'CuiPrestataireId', 'CuiOrgsuiviId' );
-				
+
 		dependantSelect( 'Accompagnementcui66MetieraffectationId', 'Accompagnementcui66SecteuraffectationId' );
 		try { $( 'Accompagnementcui66MetieraffectationId' ).onchange(); } catch(id) { }
-		
+
 		dependantSelect( 'CuiMetieremploiproposeId', 'CuiSecteuremploiproposeId' );
 		try { $( 'CuiMetieremploiproposeId' ).onchange(); } catch(id) { }
 	});
@@ -231,7 +229,7 @@
 									)
 								);
 							}
-							
+
 							echo $xhtml->tag(
 								'p',
 								'Si l\'adresse à laquelle les documents administratifs et financiers doivent etre envoyés est différente de l\'adresse ci-dessus, remplir la partie ci-dessous',
@@ -775,7 +773,7 @@
 					echo $xform->input( 'Accompagnementcui66.user_id', array( 'type' => 'hidden', 'value' => $userConnected ) );
 
 					echo $xform->input( 'Accompagnementcui66.typeaccompagnementcui66', array( 'required' => true, 'label' => __d( 'accompagnementcui66', 'Accompagnementcui66.typeaccompagnementcui66', true ), 'type' => 'select', 'options' => $options['typeaccompagnementcui66'], 'empty' => true ) );
-					
+
 					echo $default->subform(
 						array(
 							'Accompagnementcui66.cui_id' => array( 'type' => 'hidden' ),
@@ -795,7 +793,7 @@
 							'options' => $options
 						)
 					);
-					
+
 				?>
 			</fieldset>
 						<fieldset>
@@ -1008,7 +1006,7 @@
 										'options' => $options
 									)
 								);
-// 								echo __d( 'cui', 'Cui.tauxfinancementexclusif', true ); 
+// 								echo __d( 'cui', 'Cui.tauxfinancementexclusif', true );
 							?>
 						</td>
 <!--						<td class="noborder">

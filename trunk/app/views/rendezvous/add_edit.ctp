@@ -1,9 +1,3 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-
-<?php  $this->pageTitle = 'Rendez-vous';?>
-
-<?php echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );?>
-
 <?php
 	if( $this->action == 'add' ) {
 		$this->pageTitle = 'Ajout Rendez-vous';
@@ -12,9 +6,12 @@
 		$this->pageTitle = 'Édition Rendez-vous';
 	}
 
-	if( Configure::read( 'debug' ) > 0 ) {
+	if( Configure::read( 'debug' ) ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
 		echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
 	}
+
+	echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
 ?>
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
@@ -35,7 +32,7 @@
 				)
 			);
 		?>
-		
+
 		<?php if( Configure::read( 'Cg.departement') == 58 ):?>
 			observeDisableFieldsOnCheckbox(
 				'RendezvousIsadomicile',
@@ -86,7 +83,7 @@
 				if( Configure::read( 'Cg.departement') == 58 ){
 					echo $form->input( 'Rendezvous.isadomicile', array( 'label' => 'Visite à domicile', 'type' => 'checkbox' ) );
 				}
-				
+
 				///Ajout d'une permanence liée à une structurereferente
 				echo $form->input( 'Rendezvous.permanence_id', array( 'label' => 'Permanence liée à la structure', 'type' => 'select', 'options' => $permanences, 'selected' => $struct_id.'_'.$permanence_id, 'empty' => true ) );
 

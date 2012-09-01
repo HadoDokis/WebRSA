@@ -1,10 +1,13 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 <?php
 	$domain = 'criterecui';
-	echo $xhtml->tag(
-		'h1',
-		$this->pageTitle = __d( 'criterecui', "Criterescuis::{$this->action}", true )
-	)
+	$this->pageTitle = __d( 'criterecui', "Criterescuis::{$this->action}", true );
+
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+?>
+<?php
+	echo $xhtml->tag( 'h1', $this->pageTitle );
 ?>
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
@@ -28,15 +31,15 @@
 ?>
 	<?php
 		echo $search->blocAllocataire( );
-		
+
 		echo $search->blocAdresse( $mesCodesInsee, $cantons );
 	?>
 	<fieldset>
 		<legend>Recherche par dossier</legend>
-		<?php 
+		<?php
 			echo $form->input( 'Dossier.numdemrsa', array( 'label' => 'Numéro de demande RSA' ) );
 			echo $form->input( 'Dossier.matricule', array( 'label' => 'N° CAF', 'maxlength' => 15 ) );
-			
+
 			$valueDossierDernier = isset( $this->data['Dossier']['dernier'] ) ? $this->data['Dossier']['dernier'] : true;
 			echo $form->input( 'Dossier.dernier', array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueDossierDernier ) );
 			echo $search->etatdosrsa($etatdosrsa);
@@ -50,7 +53,7 @@
 			<?php
 				$datecontrat_from = Set::check( $this->data, 'Cui.datecontrat_from' ) ? Set::extract( $this->data, 'Cui.datecontrat_from' ) : strtotime( '-1 week' );
 				$datecontrat_to = Set::check( $this->data, 'Cui.datecontrat_to' ) ? Set::extract( $this->data, 'Cui.datecontrat_to' ) : strtotime( 'now' );
-			
+
 				echo $form->input( 'Cui.datecontrat_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $datecontrat_from ) );
 				echo $form->input( 'Cui.datecontrat_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120,  'maxYear' => date( 'Y' ) + 5,  'selected' => $datecontrat_to ) );
 			?>
@@ -120,7 +123,7 @@
 								<tr>
 									<th>Rôle</th>
 									<td>'.$rolepers[$criterecui['Prestation']['rolepers']].'</td>
-								</tr>								
+								</tr>
 
 							</tbody>
 						</table>';

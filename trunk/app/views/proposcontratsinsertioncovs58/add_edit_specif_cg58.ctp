@@ -1,8 +1,3 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-<?php $this->pageTitle = 'CER';?>
-
-<?php echo $this->element( 'dossier_menu', array( 'personne_id' => Set::classicExtract( $personne, 'Personne.id' ) ) );?>
-
 <?php
 	if( $this->action == 'add' ) {
 		$this->pageTitle = 'Ajout d\'un CER';
@@ -10,12 +5,15 @@
 	else {
 		$this->pageTitle = 'Édition d\'un CER';
 	}
-?>
-<?php
+
 	if( Configure::read( 'debug' ) > 0 ) {
+		echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
 		echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
 	}
+
+	echo $this->element( 'dossier_menu', array( 'personne_id' => Set::classicExtract( $personne, 'Personne.id' ) ) );
 ?>
+
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
 		dependantSelect( 'Propocontratinsertioncov58ReferentId', 'Propocontratinsertioncov58StructurereferenteId' );

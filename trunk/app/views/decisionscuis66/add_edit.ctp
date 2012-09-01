@@ -1,15 +1,18 @@
-<?php 
-	echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+<?php
+	$this->pageTitle = __d( 'decisioncui66', "Decisioncui66::{$this->action}", true );
 
-	echo $form->create( 'Decisioncui66',array( 'url' => Router::url( null, true ) ) );
-	echo $this->element( 'dossier_menu', array( 'cui_id' => $cui_id ) );?>
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+
+	echo $this->element( 'dossier_menu', array( 'cui_id' => $cui_id ) );
+?>
 
 <div class="with_treemenu">
 		<?php
-			echo $xhtml->tag(
-				'h1',
-				$this->pageTitle = __d( 'decisioncui66', "Decisioncui66::{$this->action}", true )
-			);
+			echo $xhtml->tag( 'h1', $this->pageTitle );
+
+			echo $form->create( 'Decisioncui66',array( 'url' => Router::url( null, true ) ) );
 		?>
 
 		<fieldset><legend>Avis techniques</legend>
@@ -34,15 +37,15 @@
 								$datepropositioncui = date_short( $propodecision['Propodecisioncui66']['datepropositioncui'] );
 								$datepropositioncuielu = date_short( $propodecision['Propodecisioncui66']['datepropositioncuielu'] );
 								$datepropositioncuireferent = date_short( $propodecision['Propodecisioncui66']['datepropositioncuireferent'] );
-								
+
 								$propositioncui = Set::enum( $propodecision['Propodecisioncui66']['propositioncui'], $options['Propodecisioncui66']['propositioncui'] );
 								$propositioncuielu = Set::enum( $propodecision['Propodecisioncui66']['propositioncuielu'], $options['Propodecisioncui66']['propositioncui'] );
 								$propositioncuireferent = Set::enum( $propodecision['Propodecisioncui66']['propositioncuireferent'], $options['Propodecisioncui66']['propositioncui'] );
-								
+
 								$observcui = $propodecision['Propodecisioncui66']['observcui'];
 								$observcuielu = $propodecision['Propodecisioncui66']['observcuielu'];
 								$observcuireferent = $propodecision['Propodecisioncui66']['observcuireferent'];
-								
+
 								echo $xhtml->tableCells(
 									array(
 										h( $propositioncui ),
@@ -73,7 +76,7 @@
 					if( Set::check( $this->data, 'Decisioncui66.id' ) ){
 						echo $xform->input( 'Decisioncui66.id', array( 'type' => 'hidden' ) );
 					}
-					
+
 					echo $form->input( 'Decisioncui66.cui_id', array( 'type' => 'hidden', 'value' => $cui_id ) );
 					echo $xform->input( 'Decisioncui66.user_id', array( 'type' => 'hidden', 'value' => $userConnected ) );
 

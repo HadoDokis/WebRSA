@@ -1,8 +1,12 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
+<?php
+	$this->pageTitle = 'Synthèse du parcours d\'insertion';
 
-<?php  $this->pageTitle = 'Synthèse du parcours d\'insertion';?>
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
 
-<?php echo $this->element( 'dossier_menu', array( 'id' => $dossier_id ) );?>
+	echo $this->element( 'dossier_menu', array( 'id' => $dossier_id ) );
+?>
 
 <?php
 	function thead( $pct = 10, $role = null ) {

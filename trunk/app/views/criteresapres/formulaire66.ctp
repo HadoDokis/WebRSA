@@ -1,7 +1,12 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-<?php $this->pageTitle = 'Recherche d\'APREs';?>
+<?php
+	$this->pageTitle = 'Recherche de demande APRE';
 
-<h1>Recherche de demande APRE</h1>
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+?>
+
+<h1><?php echo $this->pageTitle; ?></h1>
 
 
 <?php $pagination = $xpaginator->paginationBlock( 'Apre', $this->passedArgs );?>
@@ -44,15 +49,15 @@
 			echo $search->blocAllocataire(  );
 			echo $search->blocAdresse( $mesCodesInsee, $cantons );
 		?>
-		
+
 	<fieldset>
 		<legend>Recherche par dossier</legend>
-        <?php 
+        <?php
 			echo $form->input( 'Dossier.numdemrsa', array( 'label' => 'Numéro de dossier RSA' ) );
 			echo $form->input( 'Dossier.matricule', array( 'label' => 'Numéro CAF', 'maxlength' => 15 ) );
-			
+
 			echo $search->etatdosrsa($etatdosrsa);
-            
+
             $valueDossierDernier = isset( $this->data['Dossier']['dernier'] ) ? $this->data['Dossier']['dernier'] : true;
             echo $form->input( 'Dossier.dernier', array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueDossierDernier ) );
         ?>
@@ -89,18 +94,18 @@
 			?>
             <?php
 				echo $xform->enum( 'Filtre.activitebeneficiaire', array(  'label' => 'Activité du bénéficiaire', 'options' => array( 'P' => 'Recherche d\'Emploi', 'E' => 'Emploi' , 'F' => 'Formation', 'C' => 'Création d\'Entreprise' ) ) );
-				
+
 				echo $xform->enum( 'Filtre.themeapre66_id', array(  'label' => 'Thème de l\'aide', 'options' => $themes, 'empty' => true ) );
-				
+
 				echo $xform->enum( 'Filtre.typeaideapre66_id', array(  'label' => 'Type d\'aide', 'options' => $typesaides, 'empty' => true ) );
-            
-            
+
+
             ?>
 
             <?php
 				echo $xform->enum( 'Filtre.etatdossierapre', array(  'label' => 'Etat du dossier APRE', 'options' => 	$options['etatdossierapre'] ) );
 				echo $xform->enum( 'Filtre.isdecision', array(  'label' => 'Décision émise concernant le dossier APRE', 'type' => 'radio', 'options' => $options['isdecision'] ) );
-					
+
             ?>
             <fieldset class="noborder" id="avisdecision">
 				<?php echo $xform->input( 'Filtre.decisionapre', array( 'label' => 'Accord/Rejet', 'type' => 'radio', 'options' => $options['decisionapre'] ) ); ?>

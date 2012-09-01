@@ -1,10 +1,13 @@
 <?php
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+
 	echo $xhtml->tag(
 		'h1',
 		$this->pageTitle = __d( 'situationpdo', "Situationspdos::{$this->action}", true )
 	)
 ?>
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 
 <?php
 	echo $xform->create();
@@ -26,7 +29,7 @@
 <?php endif;*/?>
 <?php
 	echo $xform->end( 'Save' );
-	
+
     echo $default->button(
         'back',
         array(

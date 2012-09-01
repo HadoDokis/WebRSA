@@ -1,8 +1,3 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-<?php $this->pageTitle = 'Orientations';?>
-
-<?php echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );?>
-
 <?php
 	if( $this->action == 'add' ) {
 		$this->pageTitle = 'Orientation';
@@ -12,8 +7,11 @@
 	}
 
 	if( Configure::read( 'debug' ) > 0 ) {
+		echo $html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
 		echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
 	}
+
+	echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
 ?>
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
@@ -99,9 +97,9 @@
 
 			echo $form->input( 'Propoorientationcov58.structurereferente_id', array( 'label' => required(__d( 'structurereferente', 'Structurereferente.lib_struc', true  )), 'type' => 'select', 'options' => $structuresreferentes, 'empty' => true, 'selected' => $this->data['Propoorientationcov58']['structurereferente_id'] ) );
 			echo $form->input( 'Propoorientationcov58.referent_id', array(  'label' => __d( 'structurereferente', 'Structurereferente.nom_referent', true  ), 'type' => 'select', 'options' => $referents, 'empty' => true, 'selected' => $this->data['Propoorientationcov58']['referent_id'] ) );
-			
+
 // 		echo $form->input( 'Propoorientationcov58.datedemande', array(  'label' =>  required( __d( 'contratinsertion', 'Contratinsertion.date_propo', true ) ), 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 3, 'minYear' => ( date( 'Y' ) - 3 ), 'empty' => true, 'type' => 'date' ) );
-		
+
 			echo $form->input( 'Propoorientationcov58.datedemande', array( 'type' => 'hidden', 'value' => date( 'Y-m-d' ) ) );
 			echo $form->input( 'Propoorientationcov58.user_id', array( 'type' => 'hidden', 'value' => $session->read( 'Auth.User.id' ) ) );
 		?>

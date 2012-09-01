@@ -1,7 +1,12 @@
-<?php  echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-<?php $this->pageTitle = 'Recherche par Orientation';?>
+<?php
+	$this->pageTitle = 'Recherche par Orientation';
 
-<h1>Recherche par Orientation</h1>
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+		echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
+	}
+?>
+<h1><?php echo $this->pageTitle; ?></h1>
 
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
@@ -30,7 +35,7 @@
 		<?php //echo $form->input( 'Critere.etatdosrsa', array( 'label' => 'Situation dossier rsa', 'type' => 'select', 'options' => $etatdosrsa, 'empty' => true ) );?>
 		<?php echo $form->input( 'Dossier.numdemrsa', array( 'label' => 'Numéro de dossier RSA', 'maxlength' => 15 ) );?>
 		<?php echo $form->input( 'Dossier.matricule', array( 'label' => 'Numéro CAF' ) );?>
-		<?php 
+		<?php
 			echo $search->natpf( $natpf );
 // 			echo $form->input( 'Detailcalculdroitrsa.natpf', array( 'label' => 'Nature de la prestation', 'type' => 'select', 'options' => $natpf, 'empty' => true ) );
 		?>
@@ -57,8 +62,8 @@
 
 	<fieldset>
 		<legend>Recherche par parcours allocataire</legend>
-		<?php 
-			echo $form->input( 'Historiqueetatpe.identifiantpe', array( 'label' => 'Identifiant Pôle Emploi ', 'type' => 'text', 'maxlength' => 11 ) );		
+		<?php
+			echo $form->input( 'Historiqueetatpe.identifiantpe', array( 'label' => 'Identifiant Pôle Emploi ', 'type' => 'text', 'maxlength' => 11 ) );
 			echo $form->input( 'Critere.hascontrat', array( 'label' => 'Possède un CER ? ', 'type' => 'select', 'options' => array( 'O' => 'Oui', 'N' => 'Non'), 'empty' => true ) );
 			echo $form->input( 'Critere.hasreferent', array( 'label' => 'Possède un référent ? ', 'type' => 'select', 'options' => array( 'O' => 'Oui', 'N' => 'Non'), 'empty' => true ) );
 		?>
@@ -79,14 +84,9 @@
 				<?php echo $form->input( 'Orientstruct.date_valid_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $date_valid_from ) );?>
 				<?php echo $form->input( 'Orientstruct.date_valid_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120,  'maxYear' => date( 'Y' ) + 5, 'selected' => $date_valid_to ) );?>
 			</fieldset>
-			
+
 	<?php if( Configure::read( 'Cg.departement' ) == 66 ):?>
 		<fieldset><legend>Orienté par</legend>
-			<?php
-				if( Configure::read( 'debug' ) > 0 ) {
-					echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
-				}
-			?>
 			<script type="text/javascript">
 				document.observe("dom:loaded", function() {
 					dependantSelect( 'OrientstructReferentorientantId', 'OrientstructStructureorientanteId' );
@@ -100,8 +100,8 @@
 			?>
 		</fieldset>
 	<?php endif;?>
-			
-			
+
+
 		<?php
 			if( Configure::read( 'Cg.departement' ) == 93 ) {
 				echo $form->input( 'Orientstruct.origine', array( 'label' => __d( 'orientstruct', 'Orientstruct.origine', true ), 'type' => 'select', 'options' => $options['Orientstruct']['origine'], 'empty' => true ) );
@@ -188,7 +188,7 @@
 								<tr>
 									<th>Rôle</th>
 									<td>'.Set::enum( $orient['Prestation']['rolepers'], $rolepers ).'</td>
-								</tr>								
+								</tr>
 							</tbody>
 						</table>';
 

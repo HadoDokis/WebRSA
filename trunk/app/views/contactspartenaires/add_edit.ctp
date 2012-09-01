@@ -1,10 +1,12 @@
 <?php
-	echo $xhtml->tag(
-		'h1',
-		$this->pageTitle = __d( 'contactpartenaire', "Contactspartenaires::{$this->action}", true )
-	)
+	$this->pageTitle = __d( 'contactpartenaire', "Contactspartenaires::{$this->action}", true );
+
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+
+	echo $xhtml->tag( 'h1', $this->pageTitle );
 ?>
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
 
 <?php
 	echo $default->form(

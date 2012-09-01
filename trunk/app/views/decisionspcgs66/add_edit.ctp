@@ -1,9 +1,14 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-<?php $this->pageTitle = 'Décisions PDOs';?>
+<?php
+	$this->pageTitle = 'Décisions PDOs';
 
-	<h1><?php echo $this->pageTitle;?></h1>
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+?>
 
-	<fieldset>
+<h1><?php echo $this->pageTitle;?></h1>
+
+<fieldset>
 	<?php
 		echo $form->create( 'Decisionpcg66', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
 
@@ -22,4 +27,4 @@
 			echo $xform->submit( 'Annuler', array( 'name' => 'Cancel', 'div' => false ) );
 		?>
 	</div>
-	</fieldset>
+</fieldset>

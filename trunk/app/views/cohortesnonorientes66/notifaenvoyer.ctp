@@ -1,7 +1,10 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-
 <?php
-    $this->pageTitle = 'Envoi des notifications';
+	$this->pageTitle = 'Envoi des notifications';
+
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+		echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
+	}
 ?>
 
 <h1><?php echo $this->pageTitle;?></h1>
@@ -16,13 +19,6 @@
         array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 'Search' ).toggle(); return false;" )
     ).'</li></ul>';
 ?>
-
-<?php
-	if( Configure::read( 'debug' ) > 0 ) {
-		echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
-	}
-?>
-
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
 		observeDisableFieldsetOnCheckbox( 'SearchDossierDtdemrsa', $( 'SearchDossierDtdemrsaFromDay' ).up( 'fieldset' ), false );
@@ -147,7 +143,7 @@
 							array( 'controller' => 'cohortesnonorientes66', 'action' => 'impressionOrientation', $cohortenonoriente66['Orientstruct']['id'] ),
 							$permissions->check( 'cohortesnonorientes66', 'impressionOrientation' )
 						)
-						
+
 					);
 
 					echo $xhtml->tableCells(

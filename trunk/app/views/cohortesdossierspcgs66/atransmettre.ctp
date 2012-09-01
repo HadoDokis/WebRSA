@@ -1,9 +1,11 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-
 <?php
-    $this->pageTitle = 'Dossiers PCGs à transmettre';
-?>
+	$this->pageTitle = 'Dossiers PCGs à transmettre';
 
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+		echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
+	}
+?>
 <h1><?php echo $this->pageTitle;?></h1>
 
 <?php
@@ -15,12 +17,6 @@
         '#',
         array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 'Search' ).toggle(); return false;" )
     ).'</li></ul>';
-?>
-
-<?php
-	if( Configure::read( 'debug' ) > 0 ) {
-		echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
-	}
 ?>
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
@@ -66,7 +62,7 @@
                         'options' => $options
                     )
                 );
-                
+
 				if( Configure::read( 'CG.cantons' ) ) {
 					echo $xform->input( 'Search.Canton.canton', array( 'label' => 'Canton', 'type' => 'select', 'options' => $cantons, 'empty' => true ) );
 				}
@@ -132,7 +128,7 @@
 						h( $dossierpcg66atransmettre['Serviceinstructeur']['lib_service'] ),
 						h( Set::enum( Set::classicExtract( $dossierpcg66atransmettre, 'Dossierpcg66.user_id' ), $gestionnaire ) )
 					);
-						
+
 					$array2 = array(
 						$form->input( 'Dossierpcg66.'.$index.'.istransmis', array( 'label' => false, 'type' => 'checkbox', 'value' => $dossierpcg66atransmettre['Dossierpcg66']['istransmis']  ) ).
 						$form->input( 'Dossierpcg66.'.$index.'.id', array( 'label' => false, 'type' => 'hidden', 'value' => $dossierpcg66atransmettre['Dossierpcg66']['id'] ) ).
@@ -147,7 +143,7 @@
 							$permissions->check( 'dossierspcgs66', 'index' )
 						)
 					);
-					
+
 					echo $xhtml->tableCells(
                         Set::merge( $array1, $array2 ),
                         array( 'class' => 'odd' ),

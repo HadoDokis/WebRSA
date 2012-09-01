@@ -1,14 +1,16 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-<?php $this->pageTitle = 'Décisions';?>
+<?php
+	$this->pageTitle = __d( 'decisioncui66', "Decisionscuis66::{$this->action}", true );
 
-<?php echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );?>
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+
+	echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
+?>
 
 <div class="with_treemenu aere">
 	<?php
-		echo $xhtml->tag(
-			'h1',
-			$this->pageTitle = __d( 'decisioncui66', "Decisionscuis66::{$this->action}", true )
-		);
+		echo $xhtml->tag( 'h1', $this->pageTitle );
 
 		echo $default2->index(
 			$decisionscuis66,

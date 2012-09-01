@@ -1,7 +1,10 @@
-<?php echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );?>
-
 <?php
-    $this->pageTitle = 'Visualisation des sanctions émises par l\'EP';
+	$this->pageTitle = 'Visualisation des sanctions émises par l\'EP';
+
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+		echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
+	}
 ?>
 
 <h1><?php echo $this->pageTitle;?></h1>
@@ -15,12 +18,6 @@
         '#',
         array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 'Search' ).toggle(); return false;" )
     ).'</li></ul>';
-?>
-
-<?php
-	if( Configure::read( 'debug' ) > 0 ) {
-		echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
-	}
 ?>
 
 <script type="text/javascript">
@@ -47,7 +44,7 @@
 						array(
 							'options' => $options
 						)
-					); 
+					);
 					echo $xform->input( 'Search.Commissionep.dateseance', array( 'label' => 'Filtrer par date de Commission', 'type' => 'checkbox' ) );
 				?>
 				<fieldset>
@@ -60,7 +57,7 @@
 					<?php echo $xform->input( 'Search.Commissionep.dateseance_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 10, 'selected' => $dateseance_to ) );?>
 				</fieldset>
 			</fieldset>
-			
+
 			<fieldset>
             <legend>Filtrer par Dossier</legend>
 				<?php echo $xform->input( 'Search.Dossier.dtdemrsa', array( 'label' => 'Filtrer par date de demande', 'type' => 'checkbox' ) );?>
@@ -160,8 +157,8 @@
 					$decisionSanction2 = Set::enum( $gestionanctionep58['Decisionsanctionep58']['decision2'], $regularisationlistesanctionseps58['Decisionsanctionep58']['decision'] );
 					// Libellé de la sanction
 					$libelleSanction1 = Set::enum( $gestionanctionep58['Decisionsanctionep58']['listesanctionep58_id'], $listesanctionseps58 );
-					$libelleSanction2 = Set::enum( $gestionanctionep58['Decisionsanctionep58']['autrelistesanctionep58_id'], $listesanctionseps58 ); 
-					
+					$libelleSanction2 = Set::enum( $gestionanctionep58['Decisionsanctionep58']['autrelistesanctionep58_id'], $listesanctionseps58 );
+
 					$fieldDecisionSanction = Set::enum( $gestionanctionep58['Decisionsanctionep58']['arretsanction'], $options['Decisionsanctionep58']['arretsanction'] );
 					$dateFinSanction = date_short( $gestionanctionep58['Decisionsanctionep58']['datearretsanction'] );
 					$commentaireFinSanction = $gestionanctionep58['Decisionsanctionep58']['commentairearretsanction'];
@@ -170,11 +167,11 @@
 					// Type de sanction
 					$decisionSanction1 = Set::enum( $gestionanctionep58['Decisionsanctionrendezvousep58']['decision'], $regularisationlistesanctionseps58['Decisionsanctionrendezvousep58']['decision'] );
 					$decisionSanction2 = Set::enum( $gestionanctionep58['Decisionsanctionrendezvousep58']['decision2'], $regularisationlistesanctionseps58['Decisionsanctionrendezvousep58']['decision'] );
-					
+
 					// Libellé de la sanction
 					$libelleSanction1 = Set::enum( $gestionanctionep58['Decisionsanctionrendezvousep58']['listesanctionep58_id'], $listesanctionseps58 );
-					$libelleSanction2 = Set::enum( $gestionanctionep58['Decisionsanctionrendezvousep58']['autrelistesanctionep58_id'], $listesanctionseps58 ); 
-					
+					$libelleSanction2 = Set::enum( $gestionanctionep58['Decisionsanctionrendezvousep58']['autrelistesanctionep58_id'], $listesanctionseps58 );
+
 					//Champ permettant la modification de la sanction
 					$fieldDecisionSanction = Set::enum( $gestionanctionep58['Decisionsanctionrendezvousep58']['arretsanction'], $options['Decisionsanctionep58']['arretsanction'] );
 					$dateFinSanction = date_short( $gestionanctionep58['Decisionsanctionrendezvousep58']['datearretsanction'] );
@@ -248,7 +245,7 @@
 				);
 
 			?></li>
-			
+
 			<li><?php
 				echo $default2->button(
 					'printcohorte2',
