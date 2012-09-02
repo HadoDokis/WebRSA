@@ -6,7 +6,7 @@
 		echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
 	}
 
-	$this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
+	echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
 ?>
 
 <script type="text/javascript">
