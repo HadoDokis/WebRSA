@@ -12,6 +12,7 @@
 	{
 		public $name = 'Criteredossiercov58';
 		public $useTable = false;
+		public $actsAs = array( 'Conditionnable' );
 
 
 		public function search( $mesCodesInsee, $filtre_zone_geo, $criteresdossierscovs58 ) {
@@ -21,6 +22,9 @@
 
 			/// Filtre zone géographique
 			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
+			$conditions = $this->conditionsAdresse( $conditions, $criteresdossierscovs58, $filtre_zone_geo, $mesCodesInsee );
+			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $criteresdossierscovs58 );
+			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $criteresdossierscovs58 );
 
 			if ( isset($criteresdossierscovs58['Passagecov58']['etatdossiercov']) && !empty($criteresdossierscovs58['Passagecov58']['etatdossiercov']) ) {
 				$conditions[] = array('Passagecov58.etatdossiercov'=>$criteresdossierscovs58['Passagecov58']['etatdossiercov']);
@@ -30,19 +34,6 @@
 				$conditions[] = array('Dossiercov58.themecov58_id'=>$criteresdossierscovs58['Dossiercov58']['themecov58_id']);
 			}
 
-			$fieldsPers = array( 'nom', 'prenom', 'nir' );
-			foreach( $fieldsPers as $field ){
-				if ( isset($criteresdossierscovs58['Personne'][$field]) && !empty($criteresdossierscovs58['Personne'][$field]) ) {
-					$conditions[] = array("Personne.$field ILIKE"=> $this->wildcard( $criteresdossierscovs58['Personne'][$field]) );
-				}
-			}
-
-			$fieldsDoss = array( 'matricule', 'numdemrsa' );
-			foreach( $fieldsDoss as $fieldDos ){
-				if ( isset($criteresdossierscovs58['Dossier'][$fieldDos]) && !empty($criteresdossierscovs58['Dossier'][$fieldDos]) ) {
-					$conditions[] = array("Dossier.$fieldDos ILIKE"=> $this->wildcard( $criteresdossierscovs58['Dossier'][$fieldDos]) );
-				}
-			}
 
 			if ( isset($criteresdossierscovs58['Cov58']['sitecov58_id']) && !empty($criteresdossierscovs58['Cov58']['sitecov58_id']) ) {
 				$conditions[] = array('Cov58.sitecov58_id'=>$criteresdossierscovs58['Cov58']['sitecov58_id']);
