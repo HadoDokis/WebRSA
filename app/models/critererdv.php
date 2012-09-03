@@ -6,6 +6,8 @@
 		public $name = 'Critererdv';
 
 		public $useTable = false;
+		
+		public $actsAs = array( 'Conditionnable' );
 
 		/**
 		*
@@ -17,19 +19,18 @@
 
 			/// Critères
 			$statutrdv_id = Set::extract( $criteresrdv, 'Critererdv.statutrdv_id' );
-			$natpf = Set::extract( $criteresrdv, 'Critererdv.natpf' );
+
 			$typerdv_id = Set::extract( $criteresrdv, 'Critererdv.typerdv_id' );
 			$structurereferente_id = Set::extract( $criteresrdv, 'Critererdv.structurereferente_id' );
 			$referent_id = Set::extract( $criteresrdv, 'Critererdv.referent_id' );
 			$permanence_id = Set::extract( $criteresrdv, 'Critererdv.permanence_id' );
-			$locaadr = Set::extract( $criteresrdv, 'Critererdv.locaadr' );
-			$numcomptt = Set::extract( $criteresrdv, 'Critererdv.numcomptt' );
-			$nom = Set::extract( $criteresrdv, 'Critererdv.nom' );
-			$nir = Set::extract( $criteresrdv, 'Critererdv.nir' );
-			$matricule = Set::extract( $criteresrdv, 'Critererdv.matricule' );
+
 
 			/// Filtre zone géographique
 			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
+			$conditions = $this->conditionsAdresse( $conditions, $criteresrdv, $filtre_zone_geo, $mesCodesInsee );
+			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $criteresrdv );
+			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $criteresrdv );
 
 			/// Critères sur le RDV - date de demande
 			if( isset( $criteresrdv['Critererdv']['daterdv'] ) && !empty( $criteresrdv['Critererdv']['daterdv'] ) ) {
@@ -44,36 +45,6 @@
 				$conditions[] = 'Rendezvous.statutrdv_id = \''.Sanitize::clean( $statutrdv_id ).'\'';
 			}
 
-			/// Critères sur une personne du foyer - nom, prénom, nom de jeune fille -> FIXME: seulement demandeur pour l'instant
-			$filtersPersonne = array();
-			foreach( array( 'nom', 'prenom', 'nomnai' ) as $criterePersonne ) {
-				if( isset( $criteresrdv['Critererdv'][$criterePersonne] ) && !empty( $criteresrdv['Critererdv'][$criterePersonne] ) ) {
-					$conditions[] = 'Personne.'.$criterePersonne.' ILIKE \''.$this->wildcard( replace_accents( $criteresrdv['Critererdv'][$criterePersonne] ) ).'\'';
-				}
-			}
-
-			/// Adresse personne
-			if( !empty( $locaadr ) ) {
-				$conditions[] = 'Adresse.locaadr ILIKE \'%'.Sanitize::clean( $locaadr ).'%\'';
-			}
-
-			/// Code INSSE
-			if( !empty( $numcomptt ) ) {
-				$conditions[] = 'Adresse.numcomptt ILIKE \'%'.Sanitize::clean( $numcomptt ).'%\'';
-			}
-
-			/// N° CAF
-			if( !empty( $matricule ) ) {
-				$conditions[] = 'Dossier.matricule = \''.Sanitize::clean( $matricule ).'\'';
-			}
-
-			/// Critères sur l'adresse - canton
-			if( Configure::read( 'CG.cantons' ) ) {
-				if( isset( $criteresrdv['Canton']['canton'] ) && !empty( $criteresrdv['Canton']['canton'] ) ) {
-					$this->Canton = ClassRegistry::init( 'Canton' );
-					$conditions[] = $this->Canton->queryConditions( $criteresrdv['Canton']['canton'] );
-				}
-			}
 
 			/// Structure référente
 			if( !empty( $structurereferente_id ) ) {
@@ -90,52 +61,6 @@
 				$conditions[] = 'Rendezvous.permanence_id = \''.Sanitize::clean( $permanence_id ).'\'';
 			}
 
-			/// Nature de la prestation
-			if( !empty( $natpf ) ) {
-				$conditions[] = 'Dossier.id IN (
-					SELECT detailsdroitsrsa.dossier_id
-						FROM detailsdroitsrsa
-							INNER JOIN detailscalculsdroitsrsa ON ( detailscalculsdroitsrsa.detaildroitrsa_id = detailsdroitsrsa.id )
-						WHERE detailscalculsdroitsrsa.natpf ILIKE \'%'.Sanitize::clean( $natpf ).'%\'
-				)';
-			}
-
-			// Trouver la dernière demande RSA pour chacune des personnes du jeu de résultats
-			if( $criteresrdv['Dossier']['dernier'] ) {
-				$conditions[] = 'Dossier.id IN (
-					SELECT
-							dossiers.id
-						FROM personnes
-							INNER JOIN prestations ON (
-								personnes.id = prestations.personne_id
-								AND prestations.natprest = \'RSA\'
-							)
-							INNER JOIN foyers ON (
-								personnes.foyer_id = foyers.id
-							)
-							INNER JOIN dossiers ON (
-								dossiers.id = foyers.dossier_id
-							)
-						WHERE
-							prestations.rolepers IN ( \'DEM\', \'CJT\' )
-							AND (
-								(
-									nir_correct13( Personne.nir )
-									AND nir_correct13( personnes.nir )
-									AND SUBSTRING( TRIM( BOTH \' \' FROM personnes.nir ) FROM 1 FOR 13 ) = SUBSTRING( TRIM( BOTH \' \' FROM Personne.nir ) FROM 1 FOR 13 )
-									AND personnes.dtnai = Personne.dtnai
-								)
-								OR
-								(
-									UPPER(personnes.nom) = UPPER(Personne.nom)
-									AND UPPER(personnes.prenom) = UPPER(Personne.prenom)
-									AND personnes.dtnai = Personne.dtnai
-								)
-							)
-						ORDER BY dossiers.dtdemrsa DESC
-						LIMIT 1
-				)';
-			}
 
 			/// Objet du rendez vous
 			if( !empty( $typerdv_id ) ) {
