@@ -115,6 +115,6 @@
 		<?php echo $form->end();?>
 
 	<?php else:?>
-		<p>Aucune demande de recours présente.</p>
+		<p class="notice">Aucune demande de recours présente.</p>
 	<?php endif?>
 <?php endif?>
