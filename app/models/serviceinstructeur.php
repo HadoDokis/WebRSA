@@ -205,20 +205,29 @@
 		);
 
 		/**
-		*
-		*/
-
+		 *
+		 * @return array
+		 */
 		public function listOptions() {
-			return  $this->find(
-				'list',
-				array (
-					'fields' => array(
-						'Serviceinstructeur.id',
-						'Serviceinstructeur.lib_service'
-					),
-					'order'  => array( 'Serviceinstructeur.lib_service ASC' )
-				)
-			);
+			$cacheKey = 'serviceinstructeur_list_options';
+			$results = Cache::read( $cacheKey );
+
+			if( $results === false ) {
+				$results = $this->find(
+					'list',
+					array (
+						'fields' => array(
+							'Serviceinstructeur.id',
+							'Serviceinstructeur.lib_service'
+						),
+						'order'  => array( 'Serviceinstructeur.lib_service ASC' )
+					)
+				);
+
+				Cache::write( $cacheKey, $results );
+			}
+
+			return $results;
 		}
 
 		/**
@@ -360,6 +369,64 @@
 					'contain' => false,
 				)
 			);
+		}
+
+		/**
+		 * Suppression et regénération du cache.
+		 *
+		 * @return boolean
+		 */
+		protected function _regenerateCache() {
+			// Suppression des éléments du cache.
+			$keys = array(
+				'serviceinstructeur_list_options',
+			);
+
+			foreach( $keys as $key ) {
+				Cache::delete( $key );
+			}
+
+			// Regénération des éléments du cache.
+			$success = true;
+
+			$tmp  = $this->listOptions();
+			$success = !empty( $tmp ) && $success;
+
+			return $success;
+		}
+
+		/**
+		 * Après une sauvegarde, on regénère les données en cache.
+		 *
+		 * @param boolean $created True if this save created a new record
+		 * @return void
+		 */
+		public function afterSave( $created ) {
+			parent::afterSave( $created );
+			$this->_regenerateCache();
+		}
+
+		/**
+		 * Après une suppression, on regénère les données en cache.
+		 *
+		 * @param boolean $created True if this save created a new record
+		 * @return void
+		 */
+		public function afterDelete() {
+			parent::afterDelete();
+			$this->_regenerateCache();
+		}
+
+		/**
+		 * Exécute les différentes méthods du modèle permettant la mise en cache.
+		 * Utilisé au préchargement de l'application (/prechargements/index).
+		 *
+		 * @return boolean true en cas de succès, false en cas d'erreur,
+		 * 	null pour les fonctions vides.
+		 */
+		public function prechargement() {
+			$success = $this->_regenerateCache();
+			return $success;
 		}
 	}
 ?>

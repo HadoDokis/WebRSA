@@ -64,15 +64,8 @@
 				$this->set( 'typesorient', $typesorient );
 			}
 			else if( $this->action == 'index' ) {
-				/// Mise en cache de la liste des services instructeurs
-				/// TODO: nettoyer ce cache lors de l'ajout/modification/suppression d'un service instructeur
-				$typeservice = Cache::read( 'servicesinstructeurs_liste' );
-				if( $typeservice === false ) {
-					$typeservice = $this->Dossier->Foyer->Personne->Orientstruct->Serviceinstructeur->find( 'list', array( 'fields' => array( 'lib_service' ) ) );
-					Cache::write( 'servicesinstructeurs_liste', $typeservice );
-				}
-				$this->set( 'typeservice', $typeservice );
-				
+				$this->set( 'typeservice', $this->Dossier->Foyer->Personne->Orientstruct->Serviceinstructeur->listOptions() );
+
 				$referents = $this->Dossier->Foyer->Personne->PersonneReferent->Referent->find( 'list', array( 'order' => array( 'Referent.nom' ) ) );
 				$this->set( compact( 'referents') );
 			}
@@ -143,9 +136,9 @@
 		 */
 		public function menu() {
 			$this->assert( isset( $this->params['requested'] ), 'error404' );
-			$conditions = array();
 
 			// Quel paramètre avons-nous pour trouver le bon dossier ?
+			$conditions = array();
 			if( !empty( $this->params['id'] ) && is_numeric( $this->params['id'] ) ) {
 				$conditions['Dossier.id'] = $this->params['id'];
 			}
@@ -157,8 +150,7 @@
 			}
 			$this->assert( !empty( $conditions ), 'invalidParameter' );
 
-			$dossierForceVirtualFields = $this->Dossier->forceVirtualFields;
-			$this->Dossier->forceVirtualFields = true;
+			// Données du dossier RSA.
 			$dossier = $this->Dossier->find(
 				'first',
 				array(
@@ -168,8 +160,8 @@
 						'Dossier.fonorg',
 						'Dossier.numdemrsa',
 						'Foyer.id',
-						'Foyer.enerreur',
-						'Foyer.sansprestation',
+						$this->Dossier->Foyer->sqVirtualField( 'enerreur' ),
+						$this->Dossier->Foyer->sqVirtualField( 'sansprestation' ),
 						'Situationdossierrsa.etatdosrsa',
 						$this->Jetons2->sqLocked( 'Dossier', 'locked' )
 					),
@@ -180,10 +172,6 @@
 					'conditions' => $conditions
 				)
 			);
-			$this->Dossier->forceVirtualFields = $dossierForceVirtualFields;
-
-			// Bizzarre qu'il ne soit plus bindé
-			$this->Dossier->Foyer->Personne->bindModel( array( 'hasOne' => array( 'Prestation' ) ) );
 
 			// Les personnes du foyer
 			$personnes = $this->Dossier->Foyer->Personne->find(
