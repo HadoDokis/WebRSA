@@ -11,10 +11,16 @@
 		*
 		*/
 
-		public function searchDossier( $params ) {
+		public function searchDossier( $params, $mesCodesInsee,  $filtre_zone_geo ) {
 			$conditions = array();
 
+
+			/// Filtre zone géographique
+			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
+			
+			$conditions = $this->conditionsAdresse( $conditions, $params, $filtre_zone_geo, $mesCodesInsee );
 			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $params );
+			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $params );
 
 			/// Critères
 			$originepdo = Set::extract( $params, 'Dossierpcg66.originepdo_id' );
@@ -166,7 +172,7 @@
 		*
 		*/
 
-		public function searchGestionnaire( $params ) {
+		public function searchGestionnaire( $params, $mesCodesInsee,  $filtre_zone_geo ) {
 			$conditions = array();
 			$Dossierpcg66 = ClassRegistry::init( 'Dossierpcg66' );
 			$gestionnaire = Set::extract( $params, 'Search.Dossierpcg66.user_id' );

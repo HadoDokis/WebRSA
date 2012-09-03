@@ -3,7 +3,7 @@
 
 	class Criteresdossierspcgs66Controller extends AppController
 	{
-		public $uses = array( 'Criteredossierpcg66', 'Dossierpcg66', 'Option' );
+		public $uses = array( 'Criteredossierpcg66', 'Dossierpcg66', 'Option', 'Canton' );
 		public $helpers = array( 'Default', 'Default2', 'Ajax', 'Locale', 'Csv', 'Search' );
 
 		public $components = array( 'Prg' => array( 'actions' => array( 'dossier', 'gestionnaire' ) ) );
@@ -13,6 +13,7 @@
 		*/
 
 		protected function _setOptions() {
+			
 			$this->set( 'qual', $this->Option->qual() );
 			$this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
 			$this->set( 'typepdo', $this->Dossierpcg66->Typepdo->find( 'list' ) );
@@ -40,7 +41,7 @@
 				$options,
 				$this->Dossierpcg66->Personnepcg66->Traitementpcg66->enums()
 			);
-			$this->set( compact( 'options', 'etatdossierpcg' ) );
+			$this->set( compact( 'options', 'etatdossierpcg', 'mesCodesInsee' ) );
 		}
 
 		/**
@@ -48,9 +49,26 @@
 		*/
 
 		private function _index( $searchFunction ) {
+		
+			if( Configure::read( 'CG.cantons' ) ) {
+				$this->set( 'cantons', ClassRegistry::init( 'Canton' )->selectList() );
+			}
+
+			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
+			
+			if( Configure::read( 'Zonesegeographiques.CodesInsee' ) ) {
+				$this->set( 'mesCodesInsee', ClassRegistry::init( 'Zonegeographique' )->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) ) );
+			}
+			else {
+				$this->set( 'mesCodesInsee', ClassRegistry::init( 'Adresse' )->listeCodesInsee() );
+			}
+			
 			$params = $this->data;
 			if( !empty( $params ) ) {
-				$this->paginate = $this->Criteredossierpcg66->{$searchFunction}( $this->data );
+				$this->paginate = $this->Criteredossierpcg66->{$searchFunction}( $this->data, $mesCodesInsee,
+					$mesZonesGeographiques );
+					
 				$this->paginate = $this->_qdAddFilters( $this->paginate );
 				$this->Dossierpcg66->forceVirtualFields = true;
 				$criteresdossierspcgs66 = $this->paginate( 'Dossierpcg66' );
