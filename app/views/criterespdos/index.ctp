@@ -1,4 +1,8 @@
 <?php
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+
 	$domain = 'propopdo';
 	echo $xhtml->tag(
 		'h1',
@@ -25,6 +29,21 @@
 
 	echo $xform->create( 'Criterespdos', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );
 ?>
+<?php
+	echo $search->blocAllocataire();
+	echo $search->blocAdresse( $mesCodesInsee, $cantons );
+?>
+<fieldset>
+	<legend>Recherche par dossier</legend>
+	<?php
+		echo $form->input( 'Dossier.numdemrsa', array( 'label' => 'Numéro de demande RSA' ) );
+		echo $form->input( 'Dossier.matricule', array( 'label' => 'N° CAF', 'maxlength' => 15 ) );
+
+		$valueDossierDernier = isset( $this->data['Dossier']['dernier'] ) ? $this->data['Dossier']['dernier'] : true;
+		echo $form->input( 'Dossier.dernier', array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueDossierDernier ) );
+		echo $search->etatdosrsa($etatdosrsa);
+	?>
+</fieldset>
 <fieldset>
 	<legend>Recherche par date de décision</legend>
 		<?php echo $form->input( 'Propopdo.datereceptionpdo', array( 'label' => 'Filtrer par date de réception de la PDO', 'type' => 'checkbox' ) );?>
@@ -56,19 +75,14 @@
 		echo $form->input( 'Propopdo.traitementencours', array( 'label' => 'Uniquement les PDOs possédant un traitement avec une date d\'échéance', 'type' => 'checkbox' ) );
 
 		///Formulaire de recherche pour les PDOs
-		echo $default->search(
+		echo $default2->subform(
 			array(
 				'Propopdo.datereceptionpdo' => array( 'label' => __d( 'propopdo', 'Propopdo.datereceptionpdo', true ), 'type' => 'date', 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 1, 'maxYear' => date( 'Y' ) + 1 ),
 				'Propopdo.originepdo_id' => array( 'label' => __d( 'propopdo', 'Propopdo.originepdo_id', true ), 'type' => 'select', 'options' => $originepdo, 'empty' => true ),
 				'Propopdo.etatdossierpdo' => array( 'label' => __d( 'propopdo', 'Propopdo.etatdossierpdo', true ), 'type' => 'select', 'options' => $options['etatdossierpdo'], 'empty' => true ),
 				'Decisionpropopdo.decisionpdo_id' => array( 'label' => __d( 'decisionpropopdo', 'Decisionpropopdo.decisionpdo_id', true ), 'type' => 'select', 'options' => $decisionpdo, 'empty' => true ),
 				'Propopdo.user_id' => array( 'label' => __d( 'propopdo', 'Propopdo.user_id', true ), 'type' => 'select', 'options' => $gestionnaire, 'empty' => true ),
-				'Propopdo.motifpdo' => array( 'label' => __d( 'propopdo', 'Propopdo.motifpdo', true ), 'type' => 'select', 'options' => $motifpdo, 'empty' => true  ),
-				'Personne.nom' => array( 'label' => __d( 'personne', 'Personne.nom', true ), 'type' => 'text' ),
-				'Personne.prenom' => array( 'label' => __d( 'personne', 'Personne.prenom', true ), 'type' => 'text' ),
-				'Personne.nir' => array( 'label' => __d( 'personne', 'Personne.nir', true ), 'type' => 'text', 'maxlength' => 15 ),
-				'Dossier.matricule' => array( 'label' => __d( 'dossier', 'Dossier.matricule', true ), 'type' => 'text', 'maxlength' => 15 ),
-				'Dossier.numdemrsa' => array( 'label' => __d( 'dossier', 'Dossier.numdemrsa', true ), 'type' => 'text', 'maxlength' => 15 )
+				'Propopdo.motifpdo' => array( 'label' => __d( 'propopdo', 'Propopdo.motifpdo', true ), 'type' => 'select', 'options' => $motifpdo, 'empty' => true  )
 			),
 			array(
 				'form' => false,
@@ -76,8 +90,6 @@
 			)
 		);
 
-		$valueDossierDernier = isset( $this->data['Dossier']['dernier'] ) ? $this->data['Dossier']['dernier'] : true;
-		echo $form->input( 'Dossier.dernier', array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueDossierDernier ) );
 	?>
 <?php echo $xform->end( 'Rechercher' ); ?>
 <?php $pagination = $xpaginator->paginationBlock( 'Propopdo', $this->passedArgs ); ?>
@@ -178,6 +190,6 @@
 			?></li>
 		</ul>
 	<?php else:?>
-		<p>Vos critères n'ont retourné aucune PDO.</p>
+		<p class="notice">Vos critères n'ont retourné aucune PDO.</p>
 	<?php endif?>
 <?php endif?>

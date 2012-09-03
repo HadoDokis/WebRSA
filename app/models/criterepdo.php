@@ -14,17 +14,19 @@
 			/// Conditions de base
 			$conditions = array();
 
-			$Situationdossierrsa = ClassRegistry::init( 'Situationdossierrsa' );
+			
+			// On a un filtre par défaut sur l'état du dossier si celui-ci n'est pas renseigné dans le formulaire.
+			$Situationdossierrsa = ClassRegistry::init( 'Situationdossierrsa' );			
 			$etatdossier = Set::extract( $criterespdos, 'Situationdossierrsa.etatdosrsa' );
-			if( isset( $criterespdos['Situationdossierrsa']['etatdosrsa'] ) && !empty( $criterespdos['Situationdossierrsa']['etatdosrsa'] ) ) {
-				$conditions[] = '( Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $etatdossier ).'\' ) )';
-			}
-			else {
-				$conditions[] = '( Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatAttente() ).'\' ) )';
+			if( !isset( $criterespdos['Situationdossierrsa']['etatdosrsa'] ) || empty( $criterespdos['Situationdossierrsa']['etatdosrsa'] ) ) {
+				$criterespdos['Situationdossierrsa']['etatdosrsa']  = $Situationdossierrsa->etatAttente();
 			}
 
 			/// Filtre zone géographique
 			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
+			$conditions = $this->conditionsAdresse( $conditions, $criterespdos, $filtre_zone_geo, $mesCodesInsee );
+			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $criterespdos );
+			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $criterespdos );
 
 			/// Dossiers lockés
 			if( !empty( $lockedDossiers ) ) {
@@ -33,19 +35,10 @@
 
 			/// Critères
 
-			$decisionpdo = Set::extract( $criterespdos, 'Search.Decisionpropopdo.decisionpdo_id' );
-			$motifpdo = Set::extract( $criterespdos, 'Search.Propopdo.motifpdo' );
-			$originepdo = Set::extract( $criterespdos, 'Search.Propopdo.originepdo_id' );
-			$etatdossierpdo = Set::extract( $criterespdos, 'Search.Propopdo.etatdossierpdo' );
-			$nir = Set::extract( $criterespdos, 'Search.Personne.nir' );
-			$nom = Set::extract( $criterespdos, 'Search.Personne.nom' );
-			$prenom = Set::extract( $criterespdos, 'Search.Personne.prenom' );
-			$matricule = Set::extract( $criterespdos, 'Search.Dossier.matricule' );
-			$numdemrsa = Set::extract( $criterespdos, 'Search.Dossier.numdemrsa' );
-
-			$dtdemrsa = Set::extract( $criterespdos, 'Search.Dossier.dtdemrsa' );
-			$dtdemrsa_from = Set::extract( $criterespdos, 'Search.Dossier.dtdemrsa_from' );
-			$dtdemrsa_to = Set::extract( $criterespdos, 'Search.Dossier.dtdemrsa_to' );
+			$decisionpdo = Set::extract( $criterespdos, 'Decisionpropopdo.decisionpdo_id' );
+			$motifpdo = Set::extract( $criterespdos, 'Propopdo.motifpdo' );
+			$originepdo = Set::extract( $criterespdos, 'Propopdo.originepdo_id' );
+			$etatdossierpdo = Set::extract( $criterespdos, 'Propopdo.etatdossierpdo' );
 
 
 			/// Critères sur les PDOs - date de decisonde la PDO
@@ -66,53 +59,7 @@
 					$conditions[] = 'Propopdo.datereceptionpdo BETWEEN \''.implode( '-', array( $criterespdos['Propopdo']['datereceptionpdo_from']['year'], $criterespdos['Propopdo']['datereceptionpdo_from']['month'], $criterespdos['Propopdo']['datereceptionpdo_from']['day'] ) ).'\' AND \''.implode( '-', array( $criterespdos['Propopdo']['datereceptionpdo_to']['year'], $criterespdos['Propopdo']['datereceptionpdo_to']['month'], $criterespdos['Propopdo']['datereceptionpdo_to']['day'] ) ).'\'';
 				}
 			}
-			// Critères sur une personne du foyer - nom, prénom, nom de jeune fille -> FIXME: seulement demandeur pour l'instant
-			if( !empty( $nom ) ) {
-				$conditions[] = 'UPPER(Personne.nom) LIKE \''.$this->wildcard( strtoupper( replace_accents( $nom ) ) ).'\'';
-			}
-			if( !empty( $prenom ) ) {
-				$conditions[] = 'UPPER(Personne.prenom) LIKE \''.$this->wildcard( strtoupper( replace_accents( $prenom ) ) ).'\'';
-			}
 
-			// Localité adresse
-			if( !empty( $locaadr ) ) {
-				$conditions[] = 'Adresse.locaadr ILIKE \'%'.Sanitize::clean( $locaadr ).'%\'';
-			}
-
-			// ...
-			if( !empty( $dtdemrsa ) ) {
-				$dtdemrsa_from = "{$dtdemrsa_from['year']}-{$dtdemrsa_from['month']}-{$dtdemrsa_from['day']}";
-				$dtdemrsa_to = "{$dtdemrsa_to['year']}-{$dtdemrsa_to['month']}-{$dtdemrsa_to['day']}";
-				$conditions[] = "Dossier.dtdemrsa BETWEEN '{$dtdemrsa_from}' AND '{$dtdemrsa_to}'";
-			}
-
-			// ...
-			if( !empty( $matricule ) ) {
-				$conditions[] = 'Dossier.matricule ILIKE \''.$this->wildcard( $matricule ).'\'';
-			}
-			// ...
-			if( !empty( $numdemrsa ) ) {
-				$conditions[] = 'Dossier.numdemrsa ILIKE \''.$this->wildcard( $numdemrsa ).'\'';
-			}
-
-
-			/// Critères sur l'adresse - canton
-			if( Configure::read( 'CG.cantons' ) ) {
-				if( isset( $criterespdos['Canton']['canton'] ) && !empty( $criterespdos['Canton']['canton'] ) ) {
-					$this->Canton = ClassRegistry::init( 'Canton' );
-					$conditions[] = $this->Canton->queryConditions( $criterespdos['Canton']['canton'] );
-				}
-			}
-
-			// NIR
-			if( !empty( $nir ) ) {
-				$conditions[] = 'Personne.nir ILIKE \'%'.Sanitize::clean( $nir ).'%\'';
-			}
-
-			// Commune au sens INSEE
-			if( !empty( $numcomptt ) ) {
-				$conditions[] = 'Adresse.numcomptt ILIKE \'%'.Sanitize::clean( $numcomptt ).'%\'';
-			}
 
 			// Décision de la PDO
 			if( !empty( $decisionpdo ) ) {
@@ -136,43 +83,6 @@
 				$conditions[] = 'Propopdo.originepdo_id = \''.Sanitize::clean( $originepdo ).'\'';
 			}
 
-
-			// Trouver la dernière demande RSA pour chacune des personnes du jeu de résultats
-			if( $criterespdos['Dossier']['dernier'] ) {
-				$conditions[] = 'Dossier.id IN (
-					SELECT
-							dossiers.id
-						FROM personnes
-							INNER JOIN prestations ON (
-								personnes.id = prestations.personne_id
-								AND prestations.natprest = \'RSA\'
-							)
-							INNER JOIN foyers ON (
-								personnes.foyer_id = foyers.id
-							)
-							INNER JOIN dossiers ON (
-								dossiers.id = foyers.dossier_id
-							)
-						WHERE
-							prestations.rolepers IN ( \'DEM\', \'CJT\' )
-							AND (
-								(
-									nir_correct13( Personne.nir )
-									AND nir_correct13( personnes.nir )
-									AND SUBSTRING( TRIM( BOTH \' \' FROM personnes.nir ) FROM 1 FOR 13 ) = SUBSTRING( TRIM( BOTH \' \' FROM Personne.nir ) FROM 1 FOR 13 )
-									AND personnes.dtnai = Personne.dtnai
-								)
-								OR
-								(
-									UPPER(personnes.nom) = UPPER(Personne.nom)
-									AND UPPER(personnes.prenom) = UPPER(Personne.prenom)
-									AND personnes.dtnai = Personne.dtnai
-								)
-							)
-						ORDER BY dossiers.dtdemrsa DESC
-						LIMIT 1
-				)';
-			}
 
 			/// Requête
 			$this->Dossier = ClassRegistry::init( 'Dossier' );
@@ -269,6 +179,9 @@
 
 			/// Filtre zone géographique
 			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
+			$conditions = $this->conditionsAdresse( $conditions, $criterespdos, $filtre_zone_geo, $mesCodesInsee );
+			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $criterespdos );
+			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $criterespdos );
 
 			/// Dossiers lockés
 			if( !empty( $lockedDossiers ) ) {
@@ -277,18 +190,13 @@
 
 			/// Critères
 
-			$decisionpdo = Set::extract( $criterespdos, 'Search.Decisionpropopdo.decisionpdo_id' );
-			$motifpdo = Set::extract( $criterespdos, 'Search.Propopdo.motifpdo' );
-			$originepdo = Set::extract( $criterespdos, 'Search.Propopdo.originepdo_id' );
-			$nir = Set::extract( $criterespdos, 'Search.Personne.nir' );
-			$nom = Set::extract( $criterespdos, 'Search.Personne.nom' );
-			$prenom = Set::extract( $criterespdos, 'Search.Personne.prenom' );
-			$matricule = Set::extract( $criterespdos, 'Search.Dossier.matricule' );
-			$numdemrsa = Set::extract( $criterespdos, 'Search.Dossier.numdemrsa' );
-			$gestionnaire = Set::extract( $criterespdos, 'Search.Propopdo.user_id' );
-			$etatdossierpdo = Set::extract( $criterespdos, 'Search.Propopdo.etatdossierpdo' );
+			$decisionpdo = Set::extract( $criterespdos, 'Decisionpropopdo.decisionpdo_id' );
+			$motifpdo = Set::extract( $criterespdos, 'Propopdo.motifpdo' );
+			$originepdo = Set::extract( $criterespdos, 'Propopdo.originepdo_id' );
+			$gestionnaire = Set::extract( $criterespdos, 'Propopdo.user_id' );
+			$etatdossierpdo = Set::extract( $criterespdos, 'Propopdo.etatdossierpdo' );
 
-			$etatdossierpdo = Set::extract( $criterespdos, 'Search.Propopdo.etatdossierpdo' );
+			$etatdossierpdo = Set::extract( $criterespdos, 'Propopdo.etatdossierpdo' );
 
 			/// Critères sur les PDOs - date de decisonde la PDO
 			if( isset( $criterespdos['Decisionpropopdo']['datedecisionpdo'] ) && !empty( $criterespdos['Decisionpropopdo']['datedecisionpdo'] ) ) {
@@ -307,45 +215,6 @@
 				if( $valid_from && $valid_to ) {
 					$conditions[] = 'Propopdo.datereceptionpdo BETWEEN \''.implode( '-', array( $criterespdos['Propopdo']['datereceptionpdo_from']['year'], $criterespdos['Propopdo']['datereceptionpdo_from']['month'], $criterespdos['Propopdo']['datereceptionpdo_from']['day'] ) ).'\' AND \''.implode( '-', array( $criterespdos['Propopdo']['datereceptionpdo_to']['year'], $criterespdos['Propopdo']['datereceptionpdo_to']['month'], $criterespdos['Propopdo']['datereceptionpdo_to']['day'] ) ).'\'';
 				}
-			}
-			// Critères sur une personne du foyer - nom, prénom, nom de jeune fille -> FIXME: seulement demandeur pour l'instant
-			if( !empty( $nom ) ) {
-				$conditions[] = 'Personne.nom ILIKE \''.$this->wildcard( $nom ).'\'';
-			}
-			if( !empty( $prenom ) ) {
-				$conditions[] = 'Personne.prenom ILIKE \''.$this->wildcard( $prenom ).'\'';
-			}
-
-			// Localité adresse
-			if( !empty( $locaadr ) ) {
-				$conditions[] = 'Adresse.locaadr ILIKE \'%'.Sanitize::clean( $locaadr ).'%\'';
-			}
-
-			// ...
-			if( !empty( $matricule ) ) {
-				$conditions[] = 'Dossier.matricule ILIKE \''.$this->wildcard( $matricule ).'\'';
-			}
-			// ...
-			if( !empty( $numdemrsa ) ) {
-				$conditions[] = 'Dossier.numdemrsa ILIKE \''.$this->wildcard( $numdemrsa ).'\'';
-			}
-
-			/// Critères sur l'adresse - canton
-			if( Configure::read( 'CG.cantons' ) ) {
-				if( isset( $criterespdos['Canton']['canton'] ) && !empty( $criterespdos['Canton']['canton'] ) ) {
-					$this->Canton = ClassRegistry::init( 'Canton' );
-					$conditions[] = $this->Canton->queryConditions( $criterespdos['Canton']['canton'] );
-				}
-			}
-
-			// NIR
-			if( !empty( $nir ) ) {
-				$conditions[] = 'Personne.nir ILIKE \'%'.Sanitize::clean( $nir ).'%\'';
-			}
-
-			// Commune au sens INSEE
-			if( !empty( $numcomptt ) ) {
-				$conditions[] = 'Adresse.numcomptt ILIKE \'%'.Sanitize::clean( $numcomptt ).'%\'';
 			}
 
 			// Décision de la PDO
