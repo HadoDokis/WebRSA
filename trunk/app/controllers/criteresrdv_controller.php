@@ -7,7 +7,7 @@
 		public $uses = array( 'Canton', 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Rendezvous', 'Critererdv', 'Structurereferente', 'Typeorient', 'Option', 'Typerdv', 'Referent', 'Permanence', 'Statutrdv', 'Zonegeographique' );
 		public $aucunDroit = array( 'constReq', 'ajaxreferent', 'ajaxperm' );
 
-		public $helpers = array( 'Csv', 'Ajax', 'Paginator' );
+		public $helpers = array( 'Csv', 'Ajax', 'Paginator', 'Search' );
 
 		public $components = array( 'Prg' => array( 'actions' => array( 'index' ) ) );
 

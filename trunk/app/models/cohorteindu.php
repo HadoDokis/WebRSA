@@ -54,6 +54,14 @@
 			/// Conditions de base
 			$conditions = array();
 
+			
+			// On a un filtre par défaut sur l'état du dossier si celui-ci n'est pas renseigné dans le formulaire.
+			$Situationdossierrsa = ClassRegistry::init( 'Situationdossierrsa' );			
+			$etatdossier = Set::extract( $criteresindu, 'Situationdossierrsa.etatdosrsa' );
+			if( !isset( $criteresindu['Situationdossierrsa']['etatdosrsa'] ) || empty( $criteresindu['Situationdossierrsa']['etatdosrsa'] ) ) {
+				$criteresindu['Situationdossierrsa']['etatdosrsa']  = $Situationdossierrsa->etatOuvert();
+			}
+			
 			/// Filtre zone géographique
 			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
 			
@@ -82,17 +90,6 @@
 			// Structure référente
 			if( !empty( $structurereferente_id ) ) {
 				$conditions[] = 'Structurereferente.id = \''.$structurereferente_id.'\'';
-			}
-
-
-			/// Requête
-			$Situationdossierrsa = ClassRegistry::init( 'Situationdossierrsa' );
-			$etatdossier = Set::extract( $criteresindu, 'Situationdossierrsa.etatdosrsa' );
-			if( isset( $criteresindu['Situationdossierrsa']['etatdosrsa'] ) && !empty( $criteresindu['Situationdossierrsa']['etatdosrsa'] ) ) {
-				$conditions[] = '( Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $etatdossier ).'\' ) )';
-			}
-			else {
-				$conditions[] = '( Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatOuvert() ).'\' ) )';
 			}
 
 
