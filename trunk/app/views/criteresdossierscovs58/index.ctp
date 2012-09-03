@@ -28,6 +28,21 @@
 
         <?php  echo $xform->input( 'Criteredossiercov58.index', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
 
+        <?php
+			echo $search->blocAllocataire();
+			echo $search->blocAdresse( $mesCodesInsee, $cantons );
+		?>
+		<fieldset>
+			<legend>Recherche par dossier</legend>
+			<?php
+				echo $form->input( 'Dossier.numdemrsa', array( 'label' => 'Numéro de demande RSA' ) );
+				echo $form->input( 'Dossier.matricule', array( 'label' => 'N° CAF', 'maxlength' => 15 ) );
+
+				$valueDossierDernier = isset( $this->data['Dossier']['dernier'] ) ? $this->data['Dossier']['dernier'] : true;
+				echo $form->input( 'Dossier.dernier', array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueDossierDernier ) );
+				echo $search->etatdosrsa($etatdosrsa);
+			?>
+		</fieldset>
         <fieldset>
             <legend>Filtrer par Dossier COV</legend>
             <?php
@@ -40,13 +55,7 @@
                 echo $default2->subform(
                     array(
                         'Passagecov58.etatdossiercov' => array( 'type' => 'select', 'options' => $options['etatdossiercov'] ),
-                        'Dossiercov58.themecov58_id' => array( 'type' => 'select', 'options' => $listThemes ),
-                        'Personne.nom' => array( 'label' => __d( 'personne', 'Personne.nom', true ), 'type' => 'text' ),
-                        'Personne.prenom' => array( 'label' => __d( 'personne', 'Personne.prenom', true ), 'type' => 'text' ),
-                        'Personne.nir' => array( 'label' => __d( 'personne', 'Personne.nir', true ), 'type' => 'text', 'maxlength' => 15 ),
-                        'Dossier.matricule' => array( 'label' => __d( 'dossier', 'Dossier.matricule', true ), 'type' => 'text', 'maxlength' => 15 ),
-                        'Dossier.numdemrsa' => array( 'label' => __d( 'dossier', 'Dossier.numdemrsa', true ), 'type' => 'text', 'maxlength' => 15 ),
-
+                        'Dossiercov58.themecov58_id' => array( 'type' => 'select', 'options' => $listThemes )
                     ),
                     array(
                         'options' => $options

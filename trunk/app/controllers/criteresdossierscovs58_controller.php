@@ -10,9 +10,9 @@
 
 	class Criteresdossierscovs58Controller extends AppController
 	{
-		public $helpers = array( 'Default', 'Default2', 'Ajax', 'Locale', 'Csv' );
+		public $helpers = array( 'Default', 'Default2', 'Ajax', 'Locale', 'Csv', 'Search' );
 		public $uses = array(  'Criteredossiercov58', 'Dossiercov58' );
-		public $components = array( 'Prg' => array( 'actions' => array( 'index' ) ) );
+		public $components = array( 'Gestionzonesgeos', 'Prg' => array( 'actions' => array( 'index' ) ) );
 
 		/**
 		*
@@ -29,11 +29,14 @@
 		*/
 
 		public function index() {
+		
+			$this->Gestionzonesgeos->setCantonsIfConfigured();
+
+			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
+			
 			if( !empty( $this->data ) ) {
 				$data = $this->data;
-
-				$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-				$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 
 				$queryData = $this->Criteredossiercov58->search(
 					$mesCodesInsee,
@@ -63,6 +66,7 @@
 				$this->set( 'dossierscovs58', $dossierscovs58 );
 			}
 			$this->_setOptions();
+			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
 			$this->render( null, null, 'index' );
 		}
 	}
