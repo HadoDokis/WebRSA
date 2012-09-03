@@ -350,6 +350,9 @@
 			$conditions = $this->conditionsAdresse( $conditions, $params, $filtre_zone_geo, $mesCodesInsee );
 
 			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $params );
+			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
+			
+			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $params );
 
 			// Secteur d'activité et code métier, texte libre
 			foreach( array( 'libsecactderact', 'libderact', 'libsecactdomi', 'libactdomi', 'libsecactrech', 'libemploirech' ) as $fieldName ) {
