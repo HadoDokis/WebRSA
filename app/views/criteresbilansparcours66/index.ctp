@@ -29,19 +29,27 @@
 
 <?php echo $xform->create( 'Criterebilanparcours66', array( 'type' => 'post', 'action' => $this->action, 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );?>
 
+	<?php echo $xform->input( 'Bilanparcours66.indexparams', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
+	<?php
+		echo $search->blocAllocataire();
+		echo $search->blocAdresse( $mesCodesInsee, $cantons );
+	?>
 	<fieldset>
-			<?php echo $xform->input( 'Bilanparcours66.indexparams', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
+		<legend>Recherche par dossier</legend>
+		<?php
+			echo $form->input( 'Dossier.numdemrsa', array( 'label' => 'Numéro de demande RSA' ) );
+			echo $form->input( 'Dossier.matricule', array( 'label' => 'N° CAF', 'maxlength' => 15 ) );
 
+			$valueDossierDernier = isset( $this->data['Dossier']['dernier'] ) ? $this->data['Dossier']['dernier'] : true;
+			echo $form->input( 'Dossier.dernier', array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueDossierDernier ) );
+			echo $search->etatdosrsa($etatdosrsa);
+		?>
+	</fieldset>
 			<fieldset>
 				<legend>Filtrer par Bilan de parcours</legend>
 				<?php
 					echo $default2->subform(
 						array(
-							'Personne.nom' => array( 'type' => 'text' ),
-							'Personne.nomnai' => array( 'type' => 'text' ),
-							'Personne.prenom' => array( 'type' => 'text' ),
-							'Dossier.numdemrsa' => array( 'type' => 'text' ),
-							'Dossier.matricule' => array( 'type' => 'text' ),
 							'Bilanparcours66.proposition' => array( 'type' => 'select', 'options' => $options['proposition'] ),
 							'Bilanparcours66.choixparcours' => array( 'type' => 'select', 'options' => $options['choixparcours'] ),
 							'Bilanparcours66.examenaudition' => array( 'type' => 'select', 'options' => $options['examenaudition'] ),
@@ -55,35 +63,18 @@
 						)
 					);
 				?>
-			</fieldset>
 
-			<?php echo $xform->input( 'Bilanparcours66.datebilan', array( 'label' => 'Filtrer par date de Bilan de parcours', 'type' => 'checkbox' ) );?>
-			<fieldset>
-				<legend>Filtrer par période</legend>
-				<?php
-					$datebilan_from = Set::check( $this->data, 'Bilanparcours66.datebilan_from' ) ? Set::extract( $this->data, 'Bilanparcours66.datebilan_from' ) : strtotime( '-1 week' );
-					$datebilan_to = Set::check( $this->data, 'Bilanparcours66.datebilan_to' ) ? Set::extract( $this->data, 'Bilanparcours66.datebilan_to' ) : strtotime( 'now' );
-				?>
-				<?php echo $xform->input( 'Bilanparcours66.datebilan_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 10, 'selected' => $datebilan_from ) );?>
-				<?php echo $xform->input( 'Bilanparcours66.datebilan_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 10, 'selected' => $datebilan_to ) );?>
+				<?php echo $xform->input( 'Bilanparcours66.datebilan', array( 'label' => 'Filtrer par date de Bilan de parcours', 'type' => 'checkbox' ) );?>
+				<fieldset>
+					<legend>Filtrer par période</legend>
+					<?php
+						$datebilan_from = Set::check( $this->data, 'Bilanparcours66.datebilan_from' ) ? Set::extract( $this->data, 'Bilanparcours66.datebilan_from' ) : strtotime( '-1 week' );
+						$datebilan_to = Set::check( $this->data, 'Bilanparcours66.datebilan_to' ) ? Set::extract( $this->data, 'Bilanparcours66.datebilan_to' ) : strtotime( 'now' );
+					?>
+					<?php echo $xform->input( 'Bilanparcours66.datebilan_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 10, 'selected' => $datebilan_from ) );?>
+					<?php echo $xform->input( 'Bilanparcours66.datebilan_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 10, 'selected' => $datebilan_to ) );?>
+				</fieldset>
 			</fieldset>
-
-			<fieldset>
-				<legend>Filtrer par adresse</legend>
-				<?php echo $form->input( 'Adresse.locaadr', array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );?>
-				<?php echo $form->input( 'Adresse.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );?>
-				<?php
-					if( Configure::read( 'CG.cantons' ) ) {
-						echo $form->input( 'Canton.canton', array( 'label' => 'Canton', 'type' => 'select', 'options' => $cantons, 'empty' => true ) );
-					}
-				?>
-			</fieldset>
-
-			<?php
-				$valueDossierDernier = isset( $this->data['Dossier']['dernier'] ) ? $this->data['Dossier']['dernier'] : true;
-				echo $form->input( 'Dossier.dernier', array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueDossierDernier ) );
-			?>
-	</fieldset>
 
 	<div class="submit noprint">
 		<?php echo $xform->button( 'Rechercher', array( 'type' => 'submit' ) );?>
