@@ -31,29 +31,25 @@
 </script>
 
 <?php echo $form->create( 'Critererdv', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );?>
+<?php
+		echo $search->blocAllocataire();
+		echo $search->blocAdresse( $mesCodesInsee, $cantons );
+	?>
 	<fieldset>
-		<legend>Recherche par personne</legend>
-		<?php echo $form->input( 'Critererdv.nom', array( 'label' => 'Nom ', 'type' => 'text' ) );?>
-		<?php echo $form->input( 'Critererdv.prenom', array( 'label' => 'Prénom ', 'type' => 'text' ) );?>
-		<?php echo $form->input( 'Critererdv.nir', array( 'label' => 'NIR ', 'maxlength' => 15 ) );?>
-		<?php echo $form->input( 'Critererdv.matricule', array( 'label' => 'N° CAF ', 'maxlength' => 15 ) );?>
-		<?php echo $form->input( 'Critererdv.natpf', array( 'label' => 'Nature de la prestation', 'type' => 'select', 'options' => $natpf, 'empty' => true ) );?>
+		<legend>Recherche par dossier</legend>
 		<?php
+			echo $form->input( 'Dossier.numdemrsa', array( 'label' => 'Numéro de demande RSA' ) );
+			echo $form->input( 'Dossier.matricule', array( 'label' => 'N° CAF', 'maxlength' => 15 ) );
+			echo $search->natpf( $natpf );
+
 			$valueDossierDernier = isset( $this->data['Dossier']['dernier'] ) ? $this->data['Dossier']['dernier'] : true;
 			echo $form->input( 'Dossier.dernier', array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueDossierDernier ) );
+			echo $search->etatdosrsa($etatdosrsa);
 		?>
 	</fieldset>
 	<fieldset>
 		<legend>Recherche par RDV</legend>
 			<?php echo $form->input( 'Critererdv.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
-			<?php echo $form->input( 'Critererdv.locaadr', array( 'label' => __d( 'adresse', 'Adresse.locaadr', true ), 'type' => 'text' ) );?>
-			<!-- <?php echo $form->input( 'Critererdv.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE' ) );?> -->
-			<?php echo $form->input( 'Critererdv.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );?>
-			<?php
-				if( Configure::read( 'CG.cantons' ) ) {
-					echo $form->input( 'Canton.canton', array( 'label' => 'Canton', 'type' => 'select', 'options' => $cantons, 'empty' => true ) );
-				}
-			?>
 			<?php echo $form->input( 'Critererdv.statutrdv_id', array( 'label' => __d( 'rendezvous', 'Rendezvous.statutrdv', true ), 'type' => 'select' , 'options' => $statutrdv, 'empty' => true ) );?>
 			<?php echo $form->input( 'Critererdv.structurereferente_id', array( 'label' => __d( 'rendezvous', 'Rendezvous.lib_struct', true ), 'type' => 'select', 'options' => $struct, 'empty' => true ) ); ?>
 
