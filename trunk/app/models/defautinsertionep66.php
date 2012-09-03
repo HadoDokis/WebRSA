@@ -837,18 +837,20 @@
 				)
 			);
 
-			$nom = Set::classicExtract( $datas, 'Personne.nom' );
-			$prenom = Set::classicExtract( $datas, 'Personne.prenom' );
-			$dtnai = null;
-			if ( !empty( $datas['Personne']['dtnai']['day'] ) && !empty( $datas['Personne']['dtnai']['month'] ) && !empty( $datas['Personne']['dtnai']['year'] ) ) {
-				$dtnai = implode( '-', array( Set::classicExtract( $datas, 'Personne.dtnai.year' ), Set::classicExtract( $datas, 'Personne.dtnai.month' ), Set::classicExtract( $datas, 'Personne.dtnai.day' ) ) );
+			
+			// On a un filtre par défaut sur l'état du dossier si celui-ci n'est pas renseigné dans le formulaire.
+			$Situationdossierrsa = ClassRegistry::init( 'Situationdossierrsa' );			
+			$etatdossier = Set::extract( $datas, 'Situationdossierrsa.etatdosrsa' );
+			if( !isset( $datas['Situationdossierrsa']['etatdosrsa'] ) || empty( $datas['Situationdossierrsa']['etatdosrsa'] ) ) {
+				$datas['Situationdossierrsa']['etatdosrsa']  = $Situationdossierrsa->etatOuvert();
 			}
-			$nir = Set::classicExtract( $datas, 'Personne.nir' );
-			$matricule = Set::classicExtract( $datas, 'Dossier.matricule' );
-			$locaadr = Set::classicExtract( $datas, 'Adresse.locaadr' );
-			$numcomptt = Set::classicExtract( $datas, 'Adresse.numcomptt' );
-			$canton = Set::classicExtract( $datas, 'Adresse.canton' );
-
+			
+			/// Filtre zone géographique
+			$queryData['conditions'][] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
+			$queryData['conditions'][] = $this->conditionsAdresse( $queryData['conditions'], $datas, $filtre_zone_geo, $mesCodesInsee );
+			$queryData['conditions'][] = $this->conditionsPersonneFoyerDossier( $queryData['conditions'], $datas );
+			$queryData['conditions'][] = $this->conditionsDernierDossierAllocataire( $queryData['conditions'], $datas );
+			
 			if( isset( $datas['Orientstruct']['date_valid'] ) && !empty( $datas['Orientstruct']['date_valid'] ) ) {
 				if( valid_int( $datas['Orientstruct']['date_valid']['year'] ) ) {
 				$queryData['conditions'][] = 'EXTRACT(YEAR FROM Orientstruct.date_valid) = '.$datas['Orientstruct']['date_valid']['year'];
@@ -860,49 +862,8 @@
 
 			$identifiantpe = Set::classicExtract( $datas, 'Historiqueetatpe.identifiantpe' );
 
-			if ( !empty( $nom ) ) {
-				$queryData['conditions'][] = array( 'Personne.nom ILIKE' => $this->wildcard( $nom ) );
-			}
-			if ( !empty( $prenom ) ) {
-				$queryData['conditions'][] = array( 'Personne.prenom ILIKE' => $this->wildcard( $prenom ) );
-			}
-			if ( !empty( $dtnai ) ) {
-				$queryData['conditions'][] = array( 'Personne.dtnai' => $dtnai );
-			}
-			if ( !empty( $nir ) ) {
-				$queryData['conditions'][] = array( 'Personne.nir' => $this->wildcard( $nir ) );
-			}
-			if ( !empty( $matricule ) ) {
-				$queryData['conditions'][] = array( 'Dossier.matricule' => $this->wildcard( $matricule ) );
-			}
-			if ( !empty( $locaadr ) ) {
-				$queryData['conditions'][] = array( 'Adresse.locaadr ILIKE' => $this->wildcard( $locaadr ) );
-			}
-			if ( !empty( $numcomptt ) ) {
-				$queryData['conditions'][] = array( 'Adresse.numcomptt' => $numcomptt );
-			}
-
-			/// Critères sur l'adresse - canton
-			if( Configure::read( 'CG.cantons' ) ) {
-				if( isset($canton ) && !empty( $canton ) ) {
-					$this->Canton = ClassRegistry::init( 'Canton' );
-					$queryData['conditions'][] = $this->Canton->queryConditions( $canton );
-				}
-			}
-
 			if ( !empty( $identifiantpe ) ) {
 				$queryData['conditions'][] = ClassRegistry::init( 'Historiqueetatpe' )->conditionIdentifiantpe( $identifiantpe );
-			}
-
-			/// Filtre zone géographique
-			$queryData['conditions'][] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
-
-			$etatdossier = Set::extract( $datas, 'Situationdossierrsa.etatdosrsa' );
-			if( isset( $datas['Situationdossierrsa']['etatdosrsa'] ) && !empty( $datas['Situationdossierrsa']['etatdosrsa'] ) ) {
-				$queryData['conditions'][] = '( Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $etatdossier ).'\' ) )';
-			}
-			else {
-				$queryData['conditions'][] = '( Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatOuvert() ).'\' ) )';
 			}
 
 
