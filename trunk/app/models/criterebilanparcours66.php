@@ -21,7 +21,8 @@
 			/// Conditions de base
 
 			$conditions = array();
-
+			/// Filtre zone géographique
+			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
 			$conditions = $this->conditionsAdresse( $conditions, $criteresbilansparcours66, $filtre_zone_geo, $mesCodesInsee );
 			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $criteresbilansparcours66 );
 			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $criteresbilansparcours66 );
