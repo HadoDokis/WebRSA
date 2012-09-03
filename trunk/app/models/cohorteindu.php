@@ -6,6 +6,8 @@
 		public $name = 'Cohorteindu';
 
 		public $useTable = false;
+		
+		public $actsAs = array( 'Conditionnable' );
 
 		public $validate = array(
 			'compare' => array(
@@ -54,6 +56,10 @@
 
 			/// Filtre zone géographique
 			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
+			
+			$conditions = $this->conditionsAdresse( $conditions, $criteresindu, $filtre_zone_geo, $mesCodesInsee );
+			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $criteresindu );
+			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $criteresindu );
 
 			/// Dossiers lockés
 			if( !empty( $lockedDossiers ) ) {
@@ -62,50 +68,11 @@
 
 			/// Critères
 			$natpfcre = Set::extract( $criteresindu, 'Cohorteindu.natpfcre' );
-			$locaadr = Set::extract( $criteresindu, 'Cohorteindu.locaadr' );
-			$nir = Set::extract( $criteresindu, 'Cohorteindu.nir' );
 			$typeparte = Set::extract( $criteresindu, 'Cohorteindu.typeparte' );
-			$natpf = Set::extract( $criteresindu, 'Cohorteindu.natpf' );
 			$structurereferente_id = Set::extract( $criteresindu, 'Cohorteindu.structurereferente_id' );
 			$mtmoucompta = Set::extract( $criteresindu, 'Cohorteindu.mtmoucompta' );
 			$compare = Set::extract( $criteresindu, 'Cohorteindu.compare' );
-			$numcomptt = Set::extract( $criteresindu, 'Cohorteindu.numcomptt' );
-			$matricule = Set::extract( $criteresindu, 'Cohorteindu.matricule' );
 
-			// Critères sur une personne du foyer - nom, prénom, nom de jeune fille -> FIXME: seulement demandeur pour l'instant
-			$filtersPersonne = array();
-			foreach( array( 'nom', 'prenom', 'nomnai', 'nir' ) as $criterePersonne ) {
-				if( isset( $criteresindu['Cohorteindu'][$criterePersonne] ) && !empty( $criteresindu['Cohorteindu'][$criterePersonne] ) ) {
-					$conditions[] = 'Personne.'.$criterePersonne.' ILIKE \''.$this->wildcard( replace_accents( $criteresindu['Cohorteindu'][$criterePersonne] ) ).'\'';
-				}
-			}
-			// Localité adresse
-			if( !empty( $locaadr ) ) {
-				$conditions[] = 'Adresse.locaadr ILIKE \'%'.Sanitize::clean( $locaadr ).'%\'';
-			}
-
-			// ...
-			if( !empty( $matricule ) ) {
-				$conditions[] = 'Dossier.matricule = \''.Sanitize::clean( $matricule ).'\'';
-			}
-
-			// Commune au sens INSEE
-			if( !empty( $numcomptt ) ) {
-				$conditions[] = 'Adresse.numcomptt ILIKE \'%'.Sanitize::clean( $numcomptt ).'%\'';
-			}
-
-			/// Critères sur l'adresse - canton
-			if( Configure::read( 'CG.cantons' ) ) {
-				if( isset( $criteresindu['Canton']['canton'] ) && !empty( $criteresindu['Canton']['canton'] ) ) {
-					$this->Canton = ClassRegistry::init( 'Canton' );
-					$conditions[] = $this->Canton->queryConditions( $criteresindu['Canton']['canton'] );
-				}
-			}
-
-			// Commune au sens INSEE
-			if( !empty( $natpf ) ) {
-				$conditions[] = 'Detailcalculdroitrsa.natpf ILIKE \'%'.Sanitize::clean( $natpf ).'%\'';
-			}
 
 			// Suivi
 			if( !empty( $typeparte ) ) {
@@ -117,42 +84,6 @@
 				$conditions[] = 'Structurereferente.id = \''.$structurereferente_id.'\'';
 			}
 
-			// Trouver la dernière demande RSA pour chacune des personnes du jeu de résultats
-			if( $criteresindu['Dossier']['dernier'] ) {
-				$conditions[] = 'Dossier.id IN (
-					SELECT
-							dossiers.id
-						FROM personnes
-							INNER JOIN prestations ON (
-								personnes.id = prestations.personne_id
-								AND prestations.natprest = \'RSA\'
-							)
-							INNER JOIN foyers ON (
-								personnes.foyer_id = foyers.id
-							)
-							INNER JOIN dossiers ON (
-								dossiers.id = foyers.dossier_id
-							)
-						WHERE
-							prestations.rolepers IN ( \'DEM\', \'CJT\' )
-							AND (
-								(
-									nir_correct13( Personne.nir )
-									AND nir_correct13( personnes.nir )
-									AND SUBSTRING( TRIM( BOTH \' \' FROM personnes.nir ) FROM 1 FOR 13 ) = SUBSTRING( TRIM( BOTH \' \' FROM Personne.nir ) FROM 1 FOR 13 )
-									AND personnes.dtnai = Personne.dtnai
-								)
-								OR
-								(
-									UPPER(personnes.nom) = UPPER(Personne.nom)
-									AND UPPER(personnes.prenom) = UPPER(Personne.prenom)
-									AND personnes.dtnai = Personne.dtnai
-								)
-							)
-						ORDER BY dossiers.dtdemrsa DESC
-						LIMIT 1
-				)';
-			}
 
 			/// Requête
 			$Situationdossierrsa = ClassRegistry::init( 'Situationdossierrsa' );

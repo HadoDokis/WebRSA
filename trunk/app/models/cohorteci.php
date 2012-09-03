@@ -142,7 +142,16 @@
 			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $criteresci );
 			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $criteresci );
 			
-
+			/// Requête
+			$Situationdossierrsa = ClassRegistry::init( 'Situationdossierrsa' );
+			$etatdossier = Set::extract( $criteresci, 'Situationdossierrsa.etatdosrsa' );
+			if( isset( $criteresci['Situationdossierrsa']['etatdosrsa'] ) && !empty( $criteresci['Situationdossierrsa']['etatdosrsa'] ) ) {
+				$conditions[] = '( Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $etatdossier ).'\' ) )';
+			}
+			else {
+				$conditions[] = '( Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatOuvert() ).'\' ) )';
+			}
+			
 			// ...
 			if( !empty( $decision_ci ) ) {
 				$conditions[] = 'Contratinsertion.decision_ci = \''.Sanitize::clean( $decision_ci ).'\'';
