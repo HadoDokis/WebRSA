@@ -1,4 +1,7 @@
 <?php
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
 	$domain = 'propopdo';
 	echo $xhtml->tag(
 		'h1',
@@ -7,8 +10,8 @@
 ?>
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
-		observeDisableFieldsetOnCheckbox( 'SearchDossierDtdemrsa', $( 'SearchDossierDtdemrsaFromDay' ).up( 'fieldset' ), false );
-		observeDisableFieldsetOnCheckbox( 'SearchDossierDatedecisionpdo', $( 'SearchDossierDatedecisionpdoFromDay' ).up( 'fieldset' ), false );
+		observeDisableFieldsetOnCheckbox( 'DossierDtdemrsa', $( 'DossierDtdemrsaFromDay' ).up( 'fieldset' ), false );
+		observeDisableFieldsetOnCheckbox( 'DossierDatedecisionpdo', $( 'DossierDatedecisionpdoFromDay' ).up( 'fieldset' ), false );
 	});
 </script>
 <?php
@@ -25,17 +28,29 @@
 
 	echo $xform->create( 'Criterespdos', array( 'type' => 'post', 'action' => '/nouvelles/', 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );
 ?>
-
+<?php
+	echo $search->blocAllocataire();
+	echo $search->blocAdresse( $mesCodesInsee, $cantons );
+?>
 <fieldset>
-	<legend>Recherche par date de demande RSA</legend>
-		<?php echo $form->input( 'Search.Dossier.dtdemrsa', array( 'name' => 'data[Search][Dossier][dtdemrsa]', 'label' => 'Filtrer par date de demande RSA', 'type' => 'checkbox' ) );?>
+	<legend>Recherche par dossier</legend>
+	<?php
+		echo $form->input( 'Dossier.numdemrsa', array( 'label' => 'Numéro de demande RSA' ) );
+		echo $form->input( 'Dossier.matricule', array( 'label' => 'N° CAF', 'maxlength' => 15 ) );
+
+		$valueDossierDernier = isset( $this->data['Dossier']['dernier'] ) ? $this->data['Dossier']['dernier'] : true;
+		echo $form->input( 'Dossier.dernier', array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueDossierDernier ) );
+		echo $search->etatdosrsa($etatdosrsa);
+	?>
+
+		<?php echo $form->input( 'Dossier.dtdemrsa', array( 'name' => 'data[Dossier][dtdemrsa]', 'label' => 'Filtrer par date de demande RSA', 'type' => 'checkbox' ) );?>
 		<fieldset>
 			<legend>Date de demande RSA</legend>
 			<?php
-				$dtdemrsa_from = Set::check( $this->data, 'Search.Dossier.dtdemrsa_from' ) ? Set::extract( $this->data, 'Search.Dossier.dtdemrsa_from' ) : strtotime( '-1 week' );
-				$dtdemrsa_to = Set::check( $this->data, 'Search.Dossier.dtdemrsa_to' ) ? Set::extract( $this->data, 'Search.Dossier.dtdemrsa_to' ) : strtotime( 'now' );
+				$dtdemrsa_from = Set::check( $this->data, 'Dossier.dtdemrsa_from' ) ? Set::extract( $this->data, 'Dossier.dtdemrsa_from' ) : strtotime( '-1 week' );
+				$dtdemrsa_to = Set::check( $this->data, 'Dossier.dtdemrsa_to' ) ? Set::extract( $this->data, 'Dossier.dtdemrsa_to' ) : strtotime( 'now' );
 
-				echo $default->search(
+				echo $default2->subform(
 					array(
 						'Dossier.dtdemrsa_from' => array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $dtdemrsa_from ),
 						'Dossier.dtdemrsa_to' => array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120,  'maxYear' => date( 'Y' ) + 5, 'selected' => $dtdemrsa_to ),
@@ -49,25 +64,6 @@
 		</fieldset>
 </fieldset>
 	<?php
-		///Formulaire de recherche pour les CUIs
-		echo $default->search(
-			array(
-				'Personne.nom' => array( 'label' => __d( 'personne', 'Personne.nom', true ), 'type' => 'text' ),
-				'Personne.prenom' => array( 'label' => __d( 'personne', 'Personne.prenom', true ), 'type' => 'text' ),
-				'Personne.nir' => array( 'label' => __d( 'personne', 'Personne.nir', true ), 'type' => 'text', 'maxlength' => 15 ),
-				'Dossier.matricule' => array( 'label' => __d( 'dossier', 'Dossier.matricule', true ), 'type' => 'text', 'maxlength' => 15 ),
-				'Dossier.numdemrsa' => array( 'label' => __d( 'dossier', 'Dossier.numdemrsa', true ), 'type' => 'text', 'maxlength' => 15 )
-			),
-			array(
-				'options' => $options,
-				'form' => false
-			)
-		);
-
-		$valueDossierDernier = isset( $this->data['Dossier']['dernier'] ) ? $this->data['Dossier']['dernier'] : true;
-		echo $form->input( 'Dossier.dernier', array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueDossierDernier ) );
-
-		echo $search->etatdosrsa($etatdosrsa);
 
 		echo $xform->submit( __( 'Search', true ) );
 		echo $xform->end();
@@ -149,7 +145,7 @@
 			?></li>
 		</ul>
 	<?php else:?>
-		<p>Vos critères n'ont retourné aucune PDO.</p>
+		<p class="notice">Vos critères n'ont retourné aucune PDO.</p>
 	<?php endif?>
 <?php endif?>
 
