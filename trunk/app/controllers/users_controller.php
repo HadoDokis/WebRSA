@@ -256,7 +256,7 @@
 				$this->_loadServiceInstructeur();
 
 				// Supprimer la vue cachée du menu
-				$this->_deleteCachedMenu();
+				$this->_deleteCachedElements();
 
 				$this->redirect( $this->Auth->redirect() );
 			}
@@ -269,7 +269,7 @@
 			if( $user_id = $this->Session->read( 'Auth.User.id' ) ) {
 				if( valid_int( $user_id ) ) {
 					// Supprimer la vue cachée du menu
-					$this->_deleteCachedMenu();
+					$this->_deleteCachedElements();
 
 					$this->_deleteTemporaryFiles();
 
@@ -302,13 +302,35 @@
 		}
 
 		/**
+		 * Suppression des éléments cachés de l'utilisateur
 		 *
+		 * @return boolean
 		 */
-		//TODO: il doit y avoir une façon de faire à la CakePHP mais en attendant de trouver on fait comme ça
-		protected function _deleteCachedMenu() {
-			$file = TMP.'cache'.DS.'views'.DS.'element_'.$this->Session->read( 'Auth.User.username' ).'_menu';
-			if( file_exists( $file ) )
-				unlink( $file );
+		protected function _deleteCachedElements() {
+			if( CAKE_BRANCH == '1.2' ) {
+				App::import( 'Core', 'File' );
+			}
+			else {
+				App::uses('Folder', 'Utility');
+				App::uses('File', 'Utility');
+			}
+
+			$Folder = & new Folder();
+			$dir = TMP.'cache'.DS.'views';
+			$Folder->cd( $dir );
+
+			$regexp = 'element_'.$this->Session->read( 'Auth.User.username' ).'_.*';
+			$results = $Folder->find( $regexp );
+
+			$success = true;
+			if( !empty( $results ) ) {
+				foreach( $results as $result ) {
+					$File =& new File( $dir.DS.$result, false );
+					$success = $File->delete() && $success;
+				}
+			}
+
+			return $success;
 		}
 
 		/**
