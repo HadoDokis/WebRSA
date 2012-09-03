@@ -12,11 +12,16 @@
 		*
 		*/
 
-		public function search( $params ) {
+		public function search( $params, $mesCodesInsee,  $filtre_zone_geo ) {
 			$conditions = array();
 			$Traitementpcg66 = ClassRegistry::init( 'Traitementpcg66' );
 
+			/// Filtre zone géographique
+			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
+			
+			$conditions = $this->conditionsAdresse( $conditions, $params, $filtre_zone_geo, $mesCodesInsee );
 			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $params );
+			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $params );
 
 			/// Critères
 			$descriptionpdo = Set::extract( $params, 'Traitementpcg66.descriptionpdo_id' );
