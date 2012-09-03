@@ -12,16 +12,8 @@
 			'limit' => 20,
 		);
 
-		public $components = array( 'Jetons', 'Prg' => array( 'actions' => array( 'index' ) ) );
+		public $components = array( 'Gestionzonesgeos', 'Jetons', 'Prg' => array( 'actions' => array( 'index' ) ) );
 
-		/**
-		*
-		*/
-
-//		public function __construct() {
-//			$this->components = Set::merge( $this->components, array( 'Jetons', 'Prg' => array( 'actions' => array( 'index' ) ) ) );
-//			parent::__construct();
-//		}
 
 		public function beforeFilter() {
 			$sr = $this->Structurereferente->find(
@@ -51,9 +43,8 @@
 		*/
 
 		public function index() {
-			if( Configure::read( 'CG.cantons' ) ) {
-				$this->set( 'cantons', $this->Canton->selectList() );
-			}
+			$this->Gestionzonesgeos->setCantonsIfConfigured();
+
 			$comparators = array( '<' => '<' ,'>' => '>','<=' => '<=', '>=' => '>=' );
 
 			$cmp = Set::extract( $this->data, 'Cohorteindu.compare' );
@@ -79,12 +70,7 @@
 				}
 			}
 
-			if( Configure::read( 'Zonesegeographiques.CodesInsee' ) ) {
-				$this->set( 'mesCodesInsee', $this->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) ) );
-			}
-			else {
-				$this->set( 'mesCodesInsee', $this->Dossier->Foyer->Adressefoyer->Adresse->listeCodesInsee() );
-			}
+			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
 
 			$this->set( 'comparators', $comparators );
 		}
