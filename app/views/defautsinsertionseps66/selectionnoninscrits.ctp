@@ -20,27 +20,30 @@
 
 <?php echo $form->create( 'Defautinsertionep66', array( 'type' => 'post', 'action' => $this->action, 'id' => 'Search', 'class' => ( ( is_array( $this->data ) && !empty( $this->data ) ) ? 'folded' : 'unfolded' ) ) );?>
 	<?php echo $form->input( 'Defautinsertionep66.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
+	
+	<?php
+		echo $search->blocAllocataire();
+		echo $search->blocAdresse( $mesCodesInsee, $cantons );
+	?>
 	<fieldset>
-		<legend>Recherche par personne</legend>
-		<?php echo $form->input( 'Personne.nom', array( 'label' => 'Nom ', 'type' => 'text' ) );?>
-		<?php echo $form->input( 'Personne.prenom', array( 'label' => 'Prénom ', 'type' => 'text' ) );?>
-		<?php echo $form->input( 'Personne.dtnai', array( 'label' => 'Date de naissance', 'type' => 'date', 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 80, 'maxYear' => date( 'Y' ), 'empty' => true ) );?>
-		<?php echo $form->input( 'Personne.nir', array( 'label' => 'NIR', 'maxlength' => 15 ) );?>
+		<legend>Recherche par dossier</legend>
+		<?php
+			echo $form->input( 'Dossier.numdemrsa', array( 'label' => 'Numéro de demande RSA' ) );
+			echo $form->input( 'Dossier.matricule', array( 'label' => 'N° CAF', 'maxlength' => 15 ) );
+
+			$valueDossierDernier = isset( $this->data['Dossier']['dernier'] ) ? $this->data['Dossier']['dernier'] : true;
+			echo $form->input( 'Dossier.dernier', array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueDossierDernier ) );
+			echo $search->etatdosrsa($etatdosrsa);
+		?>
+	</fieldset>
+	
+	<fieldset>
+		<legend>Recherche par parcours allocataire</legend>
 		<?php if( $this->action == 'selectionradies' ):?>
 			<?php echo $form->input( 'Historiqueetatpe.identifiantpe', array( 'label' => 'Identifiant Pôle Emploi', 'maxlength' => 15 ) );?>
 		<?php endif;?>
-		<?php echo $form->input( 'Dossier.matricule', array( 'label' => 'N° CAF', 'maxlength' => 15 ) );?>
-		<?php echo $form->input( 'Adresse.locaadr', array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );?>
-		<?php echo $form->input( 'Adresse.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );?>
-
-		<?php
-			if( Configure::read( 'CG.cantons' ) ) {
-				echo $form->input( 'Adresse.canton', array( 'label' => 'Canton', 'type' => 'select', 'options' => $cantons, 'empty' => true ) );
-			}
-		?>
 		<?php echo $form->input( 'Orientstruct.date_valid', array( 'label' => 'Mois d\'orientation', 'type' => 'date', 'dateFormat' => 'MY', 'minYear' => date( 'Y' ) - 5, 'maxYear' => date( 'Y' ) + 1, 'empty' => true ) );?>
 
-		<?php echo $search->etatdosrsa($etatdosrsa); ?>
 	</fieldset>
 
 	<div class="submit noprint">

@@ -21,9 +21,6 @@
 
 		public $aucunDroit = array( 'choixformulaire', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
 
-		/// FIXME: evite les droits
-		public function beforeFilter() {
-		}
 
 		/**
 		*
