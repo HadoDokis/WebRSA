@@ -48,7 +48,7 @@
 			$this->set( 'forme_ci', $forme_ci );
 
 			$this->set( 'etatdosrsa', $this->Option->etatdosrsa( $this->Situationdossierrsa->etatOuvert()) );
-			$this->set( 'etatdossier', $this->Option->etatdosrsa( ) );
+// 			$this->set( 'etatdossier', $this->Option->etatdosrsa( ) );
 			$this->set( 'typevoie', $this->Option->typevoie() );
 			$this->set( 'qual', $this->Option->qual() );
 

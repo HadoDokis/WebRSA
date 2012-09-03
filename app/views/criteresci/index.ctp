@@ -196,7 +196,7 @@
 								</tr>
 								<tr>
 									<th>État du dossier</th>
-									<td>'.Set::classicExtract( $etatdossier, Set::classicExtract( $contrat, 'Situationdossierrsa.etatdosrsa' ) ).'</td>
+									<td>'.Set::classicExtract( $etatdosrsa, Set::classicExtract( $contrat, 'Situationdossierrsa.etatdosrsa' ) ).'</td>
 								</tr>
 							</tbody>
 						</table>';
