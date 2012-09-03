@@ -5,7 +5,7 @@
 
 		public $uses = array( 'Critereentretien', 'Entretien' );
 		public $helpers = array( 'Csv', 'Ajax', 'Default2', 'Search' );
-		public $components = array( 'Prg' => array( 'actions' => array( 'index' ) ) );
+		public $components = array( 'Gestionzonesgeos', 'Prg' => array( 'actions' => array( 'index' ) ) );
 
 		/**
 		 *
@@ -20,9 +20,7 @@
 		 *
 		 */
 		public function index() {
-			if( Configure::read( 'CG.cantons' ) ) {
-				$this->set( 'cantons', ClassRegistry::init( 'Canton' )->selectList() );
-			}
+			$this->Gestionzonesgeos->setCantonsIfConfigured();
 
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
 			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
@@ -50,12 +48,7 @@
 				$this->set( 'entretiens', $entretiens );
 			}
 
-			if( Configure::read( 'Zonesegeographiques.CodesInsee' ) ) {
-				$this->set( 'mesCodesInsee', ClassRegistry::init( 'Zonegeographique' )->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) ) );
-			}
-			else {
-				$this->set( 'mesCodesInsee', ClassRegistry::init( 'Adresse' )->listeCodesInsee() );
-			}
+			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
 			$this->_setOptions();
 		}
 

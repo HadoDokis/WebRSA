@@ -12,7 +12,7 @@
 	{
 		public $helpers = array( 'Default', 'Default2', 'Ajax', 'Locale', 'Csv', 'Search' );
 		public $uses = array(  'Criterefichecandidature', 'ActioncandidatPersonne'/*, 'Actioncandidat' */, 'Partenaire');
-		public $components = array( 'Prg' => array( 'actions' => array( 'index' ) ) );
+		public $components = array( 'Gestionzonesgeos', 'Prg' => array( 'actions' => array( 'index' ) ) );
 		public $aucunDroit = array( 'exportcsv' );
 
 		/**
@@ -39,6 +39,7 @@
 		*/
 
 		public function index() {
+			$this->Gestionzonesgeos->setCantonsIfConfigured();
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
 			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 
@@ -81,17 +82,7 @@
 				$this->set( 'actionscandidats_personnes', $actionscandidats_personnes );
 			}
 
-			if( Configure::read( 'CG.cantons' ) ) {
-				$this->loadModel( 'Canton' );
-				$this->set( 'cantons', $this->Canton->selectList() );
-			}
-
-			if( Configure::read( 'Zonesegeographiques.CodesInsee' ) ) {
-				$this->set( 'mesCodesInsee', ClassRegistry::init( 'Zonegeographique' )->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) ) );
-			}
-			else {
-				$this->set( 'mesCodesInsee', ClassRegistry::init( 'Adresse' )->listeCodesInsee() );
-			}
+			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
 
 			$this->_setOptions();
 			$this->render( null, null, 'index' );

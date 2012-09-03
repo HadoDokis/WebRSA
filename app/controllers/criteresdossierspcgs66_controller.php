@@ -6,7 +6,7 @@
 		public $uses = array( 'Criteredossierpcg66', 'Dossierpcg66', 'Option', 'Canton' );
 		public $helpers = array( 'Default', 'Default2', 'Ajax', 'Locale', 'Csv', 'Search' );
 
-		public $components = array( 'Prg' => array( 'actions' => array( 'dossier', 'gestionnaire' ) ) );
+		public $components = array( 'Gestionzonesgeos', 'Prg' => array( 'actions' => array( 'dossier', 'gestionnaire' ) ) );
 
 		/**
 		*
@@ -50,19 +50,12 @@
 
 		private function _index( $searchFunction ) {
 		
-			if( Configure::read( 'CG.cantons' ) ) {
-				$this->set( 'cantons', ClassRegistry::init( 'Canton' )->selectList() );
-			}
+			$this->Gestionzonesgeos->setCantonsIfConfigured();
 
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
 			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 			
-			if( Configure::read( 'Zonesegeographiques.CodesInsee' ) ) {
-				$this->set( 'mesCodesInsee', ClassRegistry::init( 'Zonegeographique' )->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) ) );
-			}
-			else {
-				$this->set( 'mesCodesInsee', ClassRegistry::init( 'Adresse' )->listeCodesInsee() );
-			}
+
 			
 			$params = $this->data;
 			if( !empty( $params ) ) {
@@ -102,6 +95,7 @@
 			}
 // debug($params);
 			$this->_setOptions();
+			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
 			$this->render( $this->action );
 		}
 

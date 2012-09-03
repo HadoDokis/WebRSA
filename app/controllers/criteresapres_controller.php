@@ -9,7 +9,7 @@
 
 		public $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml', 'Xpaginator', 'Search' );
 
-		public $components = array(  'Prg' => array( 'actions' => array( 'all', 'eligible' ) )  );
+		public $components = array( 'Gestionzonesgeos', 'Prg' => array( 'actions' => array( 'all', 'eligible' ) )  );
 
 		/**
 		*
@@ -74,9 +74,7 @@
 		*/
 
 		public function _index( $etatApre = null ){
-			if( Configure::read( 'CG.cantons' ) ) {
-				$this->set( 'cantons', $this->Canton->selectList() );
-			}
+			$this->Gestionzonesgeos->setCantonsIfConfigured();
 
 			$this->assert( !empty( $etatApre ), 'invalidParameter' );
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
@@ -153,7 +151,7 @@
 				$this->Critereapre->commit();
 			}
 
-			$this->set( 'mesCodesInsee', $this->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) ) );
+			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
 			$this->_setOptions();
 			switch( $etatApre ) {
 				case 'Critereapre::all':
