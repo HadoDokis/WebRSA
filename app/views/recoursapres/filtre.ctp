@@ -22,34 +22,34 @@
 	});
 </script>
 
-<fieldset class= "noprint">
-		<legend>Recherche Recours</legend>
-		<?php echo $xform->input( 'Recoursapre.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
+	<?php echo $xform->input( 'Recoursapre.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
+	<?php
+		echo $search->blocAllocataire();
+		echo $search->blocAdresse( $mesCodesInsee, $cantons );
+	?>
+	<fieldset>
+		<legend>Recherche par dossier</legend>
+		<?php
+			echo $form->input( 'Dossier.numdemrsa', array( 'label' => 'Numéro de demande RSA' ) );
+			echo $form->input( 'Dossier.matricule', array( 'label' => 'N° CAF', 'maxlength' => 15 ) );
+
+			$valueDossierDernier = isset( $this->data['Dossier']['dernier'] ) ? $this->data['Dossier']['dernier'] : true;
+			echo $form->input( 'Dossier.dernier', array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueDossierDernier ) );
+			echo $search->etatdosrsa($etatdosrsa);
+		?>
+	</fieldset>
+	<fieldset>
+		<legend>Recherche par demande APRE</legend>
+		<?php echo $form->input( 'Recoursapre.numeroapre', array( 'label' => 'N° demande APRE ', 'type' => 'text', 'maxlength' => 16 ) );?>
+		<?php echo $xform->input( 'Recoursapre.datedemandeapre', array( 'label' => 'Filtrer par date de demande APRE', 'type' => 'checkbox' ) );?>
 		<fieldset>
-			<legend>Recherche par personne</legend>
-			<?php echo $xform->input( 'Recoursapre.nom', array( 'label' => 'Nom ', 'type' => 'text' ) );?>
-			<?php echo $form->input( 'Recoursapre.numdemrsa', array( 'label' => 'N° dossier RSA ', 'type' => 'text', 'maxlength' => 11 ) );?>
-			<?php echo $form->input( 'Recoursapre.matricule', array( 'label' => 'N° CAF ', 'type' => 'text' ) );?>
-			<?php echo $xform->input( 'Recoursapre.prenom', array( 'label' => 'Prénom ', 'type' => 'text' ) );?>
-			<?php echo $xform->input( 'Recoursapre.nir', array( 'label' => 'NIR ', 'maxlength' => 15 ) );?>
+			<legend>Date du demande APRE</legend>
 			<?php
-				$valueDossierDernier = isset( $this->data['Dossier']['dernier'] ) ? $this->data['Dossier']['dernier'] : true;
-				echo $form->input( 'Dossier.dernier', array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueDossierDernier ) );
+				$datedemandeapre_from = Set::check( $this->data, 'Recoursapre.datedemandeapre_from' ) ? Set::extract( $this->data, 'Recoursapre.datedemandeapre_from' ) : strtotime( '-1 week' );
+				$datedemandeapre_to = Set::check( $this->data, 'Recoursapre.datedemandeapre_to' ) ? Set::extract( $this->data, 'Recoursapre.datedemandeapre_to' ) : strtotime( 'now' );
 			?>
-		</fieldset>
-		<fieldset>
-			<legend>Recherche par demande APRE</legend>
-			<?php echo $form->input( 'Recoursapre.numeroapre', array( 'label' => 'N° demande APRE ', 'type' => 'text', 'maxlength' => 16 ) );?>
-			<?php echo $xform->input( 'Recoursapre.datedemandeapre', array( 'label' => 'Filtrer par date de demande APRE', 'type' => 'checkbox' ) );?>
-			<fieldset>
-				<legend>Date du demande APRE</legend>
-				<?php
-					$datedemandeapre_from = Set::check( $this->data, 'Recoursapre.datedemandeapre_from' ) ? Set::extract( $this->data, 'Recoursapre.datedemandeapre_from' ) : strtotime( '-1 week' );
-					$datedemandeapre_to = Set::check( $this->data, 'Recoursapre.datedemandeapre_to' ) ? Set::extract( $this->data, 'Recoursapre.datedemandeapre_to' ) : strtotime( 'now' );
-				?>
-				<?php echo $xform->input( 'Recoursapre.datedemandeapre_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $datedemandeapre_from ) );?>
-				<?php echo $xform->input( 'Recoursapre.datedemandeapre_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $datedemandeapre_to ) );?>
-			</fieldset>
+			<?php echo $xform->input( 'Recoursapre.datedemandeapre_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $datedemandeapre_from ) );?>
+			<?php echo $xform->input( 'Recoursapre.datedemandeapre_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $datedemandeapre_to ) );?>
 		</fieldset>
 	</fieldset>
 	<div class="submit noprint">

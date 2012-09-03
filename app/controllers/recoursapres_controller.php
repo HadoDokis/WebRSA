@@ -7,9 +7,9 @@
 
 		public $uses = array( 'Canton', 'Dossier', 'Recoursapre', 'Foyer', 'Adresse', 'Comiteapre', 'Personne', 'ApreComiteapre', 'Apre', 'Option', 'Adressefoyer' );
 
-		public $components = array( 'Gedooo.Gedooo', 'Prg' => array( 'actions' => array( 'demande', 'visualisation' ) ) );
+		public $components = array( 'Gestionzonesgeos', 'Gedooo.Gedooo', 'Prg' => array( 'actions' => array( 'demande', 'visualisation' ) ) );
 
-		public $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml' );
+		public $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml', 'Search' );
 
 		/**
 		*
@@ -54,7 +54,12 @@
 		*/
 
 		protected function _index( $avisRecours = null ){
-			$this->set( 'comitesapre', $this->Comiteapre->find( 'list' ) );
+			$this->Gestionzonesgeos->setCantonsIfConfigured();
+			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
+
+			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+			$mesCodesInsee = (!empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array( ) );
+			
 
 			$this->Dossier->begin();
 			if( !empty( $this->data ) ) {
@@ -71,9 +76,6 @@
 						}
 					}
 				}
-
-				$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-				$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 
 				$recoursapres = $this->Recoursapre->search(
 					$avisRecours,

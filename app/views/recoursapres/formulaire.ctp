@@ -111,6 +111,6 @@
 		<?php echo $xform->end();?>
 
 	<?php else:?>
-		<p>Aucune demande de recours présente dans la cohorte.</p>
+		<p class="notice">Aucune demande de recours présente dans la cohorte.</p>
 	<?php endif?>
 <?php endif?>

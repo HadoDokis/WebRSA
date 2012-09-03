@@ -7,6 +7,7 @@
 
 		public $actsAs = array(
 			'Gedooo.Gedooo',
+			'Conditionnable'
 		);
 
 		public $modelesOdt = array(
@@ -26,6 +27,9 @@
 
 			/// Filtre zone géographique
 			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
+			$conditions = $this->conditionsAdresse( $conditions, $criteresrecours, $filtre_zone_geo, $mesCodesInsee );
+			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $criteresrecours );
+			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $criteresrecours );
 
 			if( !empty( $avisRecours ) ) {
 				if( $avisRecours == 'Recoursapre::demande' ) {
@@ -40,7 +44,6 @@
 			}
 
 			///Criteres
-			$matricule = Set::extract( $criteresrecours, 'Recoursapre.matricule' );
 			$numeroapre = Set::extract( $criteresrecours, 'Recoursapre.numeroapre' );
 
 			/// Critères sur le Comité - intitulé du comité
@@ -57,59 +60,10 @@
 				}
 			}
 
-			/// Critères sur une personne du foyer - nom, prénom, nom de jeune fille -> FIXME: seulement demandeur pour l'instant
-			$filtersPersonne = array();
-			foreach( array( 'nom', 'prenom', 'nomnai', 'nir' ) as $criterePersonne ) {
-				if( isset( $criteresrecours['Recoursapre'][$criterePersonne] ) && !empty( $criteresrecours['Recoursapre'][$criterePersonne] ) ) {
-					$conditions[] = 'Personne.'.$criterePersonne.' ILIKE \''.$this->wildcard( $criteresrecours['Recoursapre'][$criterePersonne] ).'\'';
-				}
-			}
-
-			// N° CAF
-			if( !empty( $matricule ) ) {
-				$conditions[] = 'Dossier.matricule ILIKE \'%'.Sanitize::clean( $matricule ).'%\'';
-			}
 
 			// N° APRE
 			if( !empty( $numeroapre ) ) {
 				$conditions[] = 'Apre.numeroapre ILIKE \'%'.Sanitize::clean( $numeroapre ).'%\'';
-			}
-
-			// Trouver la dernière demande RSA pour chacune des personnes du jeu de résultats
-			if( $criteresrecours['Dossier']['dernier'] ) {
-				$conditions[] = 'Dossier.id IN (
-					SELECT
-							dossiers.id
-						FROM personnes
-							INNER JOIN prestations ON (
-								personnes.id = prestations.personne_id
-								AND prestations.natprest = \'RSA\'
-							)
-							INNER JOIN foyers ON (
-								personnes.foyer_id = foyers.id
-							)
-							INNER JOIN dossiers ON (
-								dossiers.id = foyers.dossier_id
-							)
-						WHERE
-							prestations.rolepers IN ( \'DEM\', \'CJT\' )
-							AND (
-								(
-									nir_correct13( Personne.nir )
-									AND nir_correct13( personnes.nir )
-									AND SUBSTRING( TRIM( BOTH \' \' FROM personnes.nir ) FROM 1 FOR 13 ) = SUBSTRING( TRIM( BOTH \' \' FROM Personne.nir ) FROM 1 FOR 13 )
-									AND personnes.dtnai = Personne.dtnai
-								)
-								OR
-								(
-									UPPER(personnes.nom) = UPPER(Personne.nom)
-									AND UPPER(personnes.prenom) = UPPER(Personne.prenom)
-									AND personnes.dtnai = Personne.dtnai
-								)
-							)
-						ORDER BY dossiers.dtdemrsa DESC
-						LIMIT 1
-				)';
 			}
 
 			/// Requête
