@@ -7,8 +7,6 @@
 			'add' => 'Membreseps:edit'
 		);
 
-		public function beforeFilter() {
-		}
 
 		protected function _setOptions() {
 			$options = $this->Membreep->enums();
