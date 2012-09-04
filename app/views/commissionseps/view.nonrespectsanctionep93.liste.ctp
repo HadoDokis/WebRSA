@@ -27,7 +27,7 @@
 				'Personne.dtnai',
 				'Adresse.locaadr',
 				'Nonrespectsanctionep93.origine',
-				'Foyer.enerreur' => array( 'type' => 'string', 'class' => 'foyer_enerreur' ),
+				'Foyer.enerreur' => array( 'type' => 'string', 'sort' => false, 'class' => 'foyer_enerreur' ),
 			),
 			array(
 				'actions' => array(
