@@ -136,7 +136,8 @@
 			'back',
 			array(
 				'controller' => 'commissionseps',
-				'action'     => 'arbitrageep'
+				'action'     => 'view',
+				$commissionep['Commissionep']['id']
 			),
 			array(
 				'id' => 'Back'
