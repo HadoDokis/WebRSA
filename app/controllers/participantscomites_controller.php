@@ -11,7 +11,10 @@
 		);
 
 		public function beforeFilter() {
+			$return = parent::beforeFilter();
 			$this->set( 'qual', $this->Option->qual() );
+			
+			return $return;
 		}
 
 		public function index() {

@@ -8,7 +8,9 @@
 		*/
 
 		public function beforeFilter() {
+			$return = parent::beforeFilter();
 			$this->Auth->allow( '*' );
+			return $return;
 		}
 
 		/**

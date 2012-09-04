@@ -16,7 +16,6 @@
 		 *
 		 * ** ****************************************************************** */
 		protected function _setOptions() {
-//             parent::beforeFilter();
 			$options = $this->Apre->allEnumLists();
 			$this->set( 'options', $options );
 			$optionsacts = $this->Actprof->allEnumLists();

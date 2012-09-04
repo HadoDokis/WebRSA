@@ -20,13 +20,6 @@
 		);
 
 		/**
-		* FIXME: evite les droits
-		*/
-
-		public function beforeFilter() {
-		}
-
-		/**
 		*
 		*/
 
