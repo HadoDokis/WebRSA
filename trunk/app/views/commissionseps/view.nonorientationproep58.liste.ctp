@@ -27,7 +27,7 @@
 				'Dossierep.themeep',
 				'Passagecommissionep.etatdossierep',
 				'Cov58.datecommission' => array( 'label' => 'Proposition validée en COV le' ),
-				'Foyer.enerreur' => array( 'type' => 'string', 'class' => 'foyer_enerreur' ),
+				'Foyer.enerreur' => array( 'type' => 'string', 'sort' => false, 'class' => 'foyer_enerreur' ),
 			),
 			array(
 				'actions' => array(

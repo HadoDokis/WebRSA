@@ -378,7 +378,7 @@
 										'Dossierep.created',
 										'Dossierep.themeep',
 										'Passagecommissionep.etatdossierep',
-										'Dossierep.Personne.Foyer.enerreur' => array( 'type' => 'string', 'class' => 'foyer_enerreur' )
+										'Dossierep.Personne.Foyer.enerreur' => array( 'type' => 'string', 'sort' => false, 'class' => 'foyer_enerreur' )
 									);
 
 									$actions['Dossierseps::fichesynthese'] = array( 'url' => array( 'controller' => 'commissionseps', 'action' => 'fichesynthese',  	Set::classicExtract( $commissionep, 'Commissionep.id' ), '#Dossierep.id#', true ) );
@@ -397,7 +397,7 @@
 										'Dossierep.themeep',
 										'Passagecommissionep.etatdossierep',
 										'Dossierep.Nonorientationproep58.Decisionpropononorientationprocov58.Passagecov58.Cov58.datecommission' => array( 'label' => 'Proposition validée par la COV le' ),
-										'Dossierep.Personne.Foyer.enerreur' => array( 'type' => 'string', 'class' => 'foyer_enerreur' )
+										'Dossierep.Personne.Foyer.enerreur' => array( 'type' => 'string', 'sort' => false, 'class' => 'foyer_enerreur' )
 									);
 								}
 

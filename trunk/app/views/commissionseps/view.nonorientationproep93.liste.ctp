@@ -28,7 +28,7 @@
 				'Typeorient.lib_type_orient',
 				'Structurereferente.lib_struc',
 				'Orientstruct.date_valid',
-				'Foyer.enerreur' => array( 'type' => 'string', 'class' => 'foyer_enerreur' ),
+				'Foyer.enerreur' => array( 'type' => 'string', 'sort' => false, 'class' => 'foyer_enerreur' ),
 			),
 			array(
 				'actions' => array(
