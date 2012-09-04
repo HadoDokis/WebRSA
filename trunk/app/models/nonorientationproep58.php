@@ -142,6 +142,46 @@
 						) && $success;
 
 						$success = $this->Orientstruct->generatePdf( $this->Orientstruct->id, $dossierep['Nonorientationproep58']['user_id'] ) && $success;
+						
+						
+						$referent_id = $dossierep['Dossierep']['Passagecommissionep'][0]['Decisionnonorientationproep58'][0]['referent_id'];
+						if( $success && !empty( $referent_id ) ) {
+							$pastReferent = $this->Orientstruct->Personne->PersonneReferent->find(
+								'first',
+								array(
+									'conditions' => array(
+										'PersonneReferent.personne_id' => $dossierep['Dossierep']['personne_id'],
+										'PersonneReferent.dfdesignation IS NULL'
+									),
+									'recursive' => -1,
+									'contain' => false
+								)
+							);
+
+							if( !empty( $pastReferent ) ) {
+								$this->Orientstruct->Personne->PersonneReferent->recursive = -1;
+								$success = $this->Orientstruct->Personne->PersonneReferent->updateAll(
+									array( 'PersonneReferent.dfdesignation' => "'".date( 'Y-m-d' )."'" ),
+									array(
+										"PersonneReferent.id" => $pastReferent['PersonneReferent']['id'],
+										"PersonneReferent.personne_id" => $dossierep['Dossierep']['personne_id'],
+										'PersonneReferent.dfdesignation IS NULL'
+									)
+								) && $success;
+							}
+							
+							$personneReferent = array(
+								'PersonneReferent' => array(
+									'personne_id' => $dossierep['Dossierep']['personne_id'],
+									'referent_id' => @$dossierep['Dossierep']['Passagecommissionep'][0]['Decisionnonorientationproep58'][0]['referent_id'],
+									'dddesignation' => $date_valid,
+									'dfdesignation' => null,
+									'structurereferente_id' => @$dossierep['Dossierep']['Passagecommissionep'][0]['Decisionnonorientationproep58'][0]['structurereferente_id']
+								)
+							);
+							$this->Orientstruct->Personne->PersonneReferent->create( $personneReferent );
+							$success = $this->Orientstruct->Personne->PersonneReferent->save() && $success;
+						}
 					}
 				}
 			}
