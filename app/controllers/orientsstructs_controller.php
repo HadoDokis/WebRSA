@@ -255,33 +255,6 @@
 				$this->set( 'optionsdossierseps', $this->Orientstruct->Reorientationep93->Dossierep->Passagecommissionep->enums() );
 			}
 			elseif( Configure::read( 'Cg.departement' ) == 58 ) {
-
-				/* $covpassee58 = $this->Orientstruct->Personne->Dossiercov58->find(
-				  'first',
-				  array(
-				  'fields' => array_merge(
-				  $this->Orientstruct->Personne->Dossiercov58->fields()
-				  ),
-				  'conditions' => array(
-				  'Dossiercov58.personne_id' => $personne_id,
-				  'Themecov58.name' => 'proposorientationscovs58',
-				  'Dossiercov58.id IN ('.
-				  $this->Orientstruct->Personne->Dossiercov58->Passagecov58->sq(
-				  array(
-				  'alias'	=> 'passagescovs58',
-				  'fields' => array( 'passagescovs58.dossiercov58_id' ),
-				  'conditions' => array(
-				  'passagescovs58.etatdossiercov' => 'traite',
-				  'passagescovs58.dossiercov58_id = Dossiercov58.id'
-				  )
-				  )
-				  )
-				  .')'
-				  ),
-				  'contain' => array( 'Themecov58' )
-				  )
-				  ); */
-
 				foreach( $orientstructs as $i => $orientstruct ) {
 					// Propositions d'orientation
 					$qdPassageCov = array(
@@ -318,9 +291,7 @@
 						}
 					}
 
-					$covpassee58 = $this->Orientstruct->Personne->Dossiercov58->Passagecov58->find(
-							'first', $qdPassageCov
-					);
+					$covpassee58 = $this->Orientstruct->Personne->Dossiercov58->Passagecov58->find( 'first', $qdPassageCov );
 					$orientstructs[$i] = Set::merge( $orientstruct, $covpassee58 );
 
 					// Propositions de non orientation professionnelle

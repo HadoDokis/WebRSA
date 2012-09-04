@@ -635,10 +635,19 @@
 				$qd['contain'] = false;
 
 				$qd['fields'][] = $this->Commissionep->Passagecommissionep->Dossierep->Personne->Foyer->sqVirtualField( 'enerreur' );
+				
+				$qd['limit'] = 50;
 
-				$dossiers[$theme] = $this->Commissionep->Passagecommissionep->Dossierep->find(
-						'all', $qd
-				);
+				
+				// Ajout des tris sur les colonnes des dossiers affectés à une EP
+				$this->paginate = $qd;
+				$dossiers[$theme] = $this->paginate( $this->Commissionep->Passagecommissionep->Dossierep );
+				// INFO: sinon ne fonctionne pas correctement dans une boucle en CakePHP 2.x
+				if( CAKE_BRANCH != '1.2' ) {
+					$this->Components->unload( 'ProgressivePaginator' );
+					$this->Components->unload( 'Paginator' );
+				}
+// 				$dossiers[$theme] = $this->Commissionep->Passagecommissionep->Dossierep->find( 'all', $qd );
 
 				$countDossiers += count( $dossiers[$theme] );
 			}

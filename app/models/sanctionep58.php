@@ -168,6 +168,9 @@
 					'Personne.prenom',
 					'Personne.dtnai',
 					'Personne.nir',
+					'Dossier.matricule',
+					'Structurereferente.lib_struc',
+					'Typeorient.lib_type_orient',
 					'Serviceinstructeur.lib_service',
 					'Adresse.locaadr',
 					'"Situationdossierrsa"."etatdosrsa"',
@@ -258,7 +261,9 @@
 									WHERE t.id = '.Configure::read( 'Typeorient.emploi_id' ).'
 							)'// FIXME
 						)
-					)
+					),
+					$this->Dossierep->Personne->Orientstruct->join( 'Structurereferente' ),
+					$this->Dossierep->Personne->Orientstruct->join( 'Typeorient' )
 				),
 				'conditions' => array(
 					'Personne.id NOT IN (
@@ -313,7 +318,7 @@
 							)
 						)
 					),
-					$this->Dossierep->Personne->Foyer->Adressefoyer->join( 'Adresse'),
+					$this->Dossierep->Personne->Foyer->Adressefoyer->join( 'Adresse')
 				)
 			);
 
@@ -350,25 +355,9 @@
 							)
 						)
 					),
-					$this->Dossierep->Personne->Foyer->Adressefoyer->join( 'Adresse'),
+					$this->Dossierep->Personne->Foyer->Adressefoyer->join( 'Adresse')
 				)
 			);
-
-			/*$queryData['joins' = array(
-				$this->Dossierep->Personne->join( 'Foyer'),
-				$this->Dossierep->Personne->Foyer->join(
-					'Adressefoyer',
-					array(
-						'conditions' =>  array(
-							'Adressefoyer.id IN ('
-								.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01( 'Foyer.id' )
-							.')'
-						)
-					)
-				),
-				$this->Dossierep->Personne->Foyer->Adressefoyer->join( 'Adresse'),
-			);*/
-
 
 
 			$queryData['fields'] = array_merge( $queryData['fields'] ,$qdRadies['fields'] );

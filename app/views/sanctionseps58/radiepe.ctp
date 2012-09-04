@@ -5,6 +5,7 @@
 	if( !empty( $configureConditions ) ) {
 		$fields = array(
 			'Historiqueetatpe.chosen' => array( 'input' => 'checkbox', 'type' => 'boolean', 'domain' => 'sanctionep58' ),
+			'Dossier.matricule',
 			'Personne.nom',
 			'Personne.prenom',
 			'Personne.dtnai',
@@ -13,19 +14,24 @@
 			'Historiqueetatpe.code' => array( 'domain' => 'sanctionep58' ),
 			'Historiqueetatpe.motif' => array( 'domain' => 'sanctionep58' ),
 			'Historiqueetatpe.date',
-			'Serviceinstructeur.lib_service'
+			'Serviceinstructeur.lib_service',
+			'Typeorient.lib_type_orient',
+			'Structurereferente.lib_struc'
 		);
 	}
 	else {
 		$fields = array(
 			'Historiqueetatpe.chosen' => array( 'input' => 'checkbox', 'type' => 'boolean', 'domain' => 'sanctionep58' ),
+			'Dossier.matricule',
 			'Personne.nom',
 			'Personne.prenom',
 			'Personne.dtnai',
 			'Adresse.locaadr',
 			'Historiqueetatpe.motif' => array( 'domain' => 'sanctionep58' ),
 			'Historiqueetatpe.date',
-			'Serviceinstructeur.lib_service'
+			'Serviceinstructeur.lib_service',
+			'Typeorient.lib_type_orient',
+			'Structurereferente.lib_struc'
 		);
 	}
 

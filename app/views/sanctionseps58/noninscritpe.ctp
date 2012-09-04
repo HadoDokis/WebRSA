@@ -5,6 +5,7 @@
 		$personnes,
 		array(
 			'Orientstruct.chosen' => array( 'input' => 'checkbox', 'type' => 'boolean', 'domain' => 'sanctionep58' ),
+			'Dossier.matricule',
 			'Personne.nom',
 			'Personne.prenom',
 			'Personne.dtnai',
