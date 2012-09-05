@@ -501,23 +501,24 @@
 				$apre_id = $id;
 
 				$apre = $this->{$this->modelClass}->find(
-						'first', array(
-					'conditions' => array(
-						'Apre66.id' => $apre_id
-					),
-					'contain' => array(
-						'Personne',
-						'Referent',
-						'Structurereferente',
-						'Aideapre66' => array(
-							'Themeapre66',
-							'Typeaideapre66',
-							'Fraisdeplacement66',
-							'Pieceaide66',
-							'Piececomptable66'
+					'first',
+					array(
+						'conditions' => array(
+							'Apre66.id' => $apre_id
+						),
+						'contain' => array(
+							'Personne',
+							'Referent',
+							'Structurereferente',
+							'Aideapre66' => array(
+								'Themeapre66',
+								'Typeaideapre66',
+								'Fraisdeplacement66',
+								'Pieceaide66',
+								'Piececomptable66'
+							)
 						)
 					)
-						)
 				);
 
 				$this->assert( !empty( $apre ), 'invalidParameter' );
@@ -553,10 +554,11 @@
 			}
 
 			$listApres = $this->{$this->modelClass}->find(
-					'all', array(
-				'conditions' => $conditionsListeApres,
-				'recursive' => -1
-					)
+				'all',
+				array(
+					'conditions' => $conditionsListeApres,
+					'recursive' => -1
+				)
 			);
 			$this->set( compact( 'listApres' ) );
 			if( !empty( $listApres ) ) {
@@ -629,10 +631,14 @@
 						),
 						'fields' => null,
 						'order' => null,
-						'recursive' => 2
+						'contain' => array(
+							'Pieceaide66'
+						),
+// 						'recursive' => -1
 					);
 					$typeaide = $this->{$this->modelClass}->Aideapre66->Typeaideapre66->find( 'first', $qd_typeaide );
-
+// debug($typeaide);
+// die();
 
 					$nbNormalPieces['Typeaideapre66'] = count( Set::extract( $typeaide, '/Pieceaide66/id' ) );
 
