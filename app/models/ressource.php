@@ -206,32 +206,19 @@
 		 *
 		 */
 		public function dossierId( $ressource_id ) {
-			$this->unbindModelAll();
-			$this->bindModel(
-					array(
-						'hasOne' => array(
-							'Personne' => array(
-								'foreignKey' => false,
-								'conditions' => array( 'Personne.id = Ressource.personne_id' )
-							),
-							'Foyer' => array(
-								'foreignKey' => false,
-								'conditions' => array( 'Foyer.id = Personne.foyer_id' )
-							)
-						)
-					)
-			);
 
 			$qd_ressource = array(
+				'fields' => array( 'Foyer.dossier_id' ),
+				'joins' => array(
+					$this->join( 'Personne', array( 'type' => 'INNER' ) ),
+					$this->Personne->join( 'Foyer', array( 'type' => 'INNER' ) )
+				),
 				'conditions' => array(
 					'Ressource.id' => $ressource_id
 				),
-				'fields' => null,
-				'order' => null,
-				'recursive' => 1
+				'recursive' => -1
 			);
 			$ressource = $this->find( 'first', $qd_ressource );
-
 
 			if( !empty( $ressource ) ) {
 				return $ressource['Foyer']['dossier_id'];

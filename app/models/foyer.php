@@ -343,12 +343,6 @@
 		 *
 		 */
 		public function refreshSoumisADroitsEtDevoirs( $foyer_id ) {
-			$this->Personne->unbindModel(
-					array(
-						'hasMany' => array( 'Orientstruct' ),
-						'hasOne' => array( 'Prestation', 'Calculdroitrsa' )
-					)
-			);
 			$query = array(
 				'fields' => array(
 					'"Personne"."id"',
@@ -356,29 +350,14 @@
 					'"Calculdroitrsa"."id"'
 				),
 				'joins' => array(
-					array(
-						'table' => 'prestations',
-						'alias' => 'Prestation',
-						'type' => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array(
-							'Personne.id = Prestation.personne_id',
-							'Prestation.natprest = \'RSA\'',
-							'Prestation.rolepers' => array( 'DEM', 'CJT' )
-						)
-					),
-					array(
-						'table' => 'calculsdroitsrsa',
-						'alias' => 'Calculdroitrsa',
-						'type' => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Personne.id = Calculdroitrsa.personne_id' )
-					),
+					$this->Personne->join( 'Prestation', array( 'type' => 'INNER' ) ),
+					$this->Personne->join( 'Calculdroitrsa', array( 'type' => 'INNER' ) )
 				),
 				'conditions' => array(
+					'Prestation.rolepers' => array( 'DEM', 'CJT' ),
 					'Personne.foyer_id' => $foyer_id
 				),
-				'recursive' => 1
+				'recursive' => -1
 			);
 
 			$personnesFoyer = $this->Personne->find( 'all', $query );

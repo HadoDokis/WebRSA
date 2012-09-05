@@ -816,135 +816,95 @@
 		 */
 		public function newDetailsCi( $personne_id, $user_id = null ) {
 			///Recup personne
-			$this->Prestation->unbindModelAll();
-			$this->Dsp->unbindModelAll();
-
-			$this->unbindModelAll();
 			$personne = $this->find(
-					'first', array(
-				'fields' => array(
-					'Dossier.id',
-					'Dossier.numdemrsa',
-					'Dossier.dtdemrsa',
-					'Dossier.fonorg',
-					'Dossier.matricule',
-					'Personne.id',
-					'Personne.foyer_id',
-					'Personne.qual',
-					'Personne.nom',
-					'Personne.prenom',
-					'Personne.dtnai',
-					'Personne.nir',
-					'Personne.numfixe',
-					'Personne.numport',
-					'Personne.email',
-					'Personne.idassedic',
-					'Prestation.rolepers',
-					'Adresse.numvoie',
-					'Adresse.typevoie',
-					'Adresse.nomvoie',
-					'Adresse.locaadr',
-					'Adresse.codepos',
-					'Adresse.nomvoie',
-					'Adresse.numcomptt',
-					'Serviceinstructeur.lib_service',
-					'Serviceinstructeur.numdepins',
-					'Serviceinstructeur.typeserins',
-					'Serviceinstructeur.numcomins',
-					'Serviceinstructeur.numagrins',
-					'Suiviinstruction.typeserins',
-					ClassRegistry::init( 'Detaildroitrsa' )->vfRsaMajore().' AS "Detailcalculdroitrsa__majore"'
-				),
-				'conditions' => array(
-					'Personne.id' => $personne_id
-				),
-				'joins' => array(
-					array(
-						'table' => 'foyers', // FIXME
-						'alias' => 'Foyer',
-						'type' => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Foyer.id = Personne.foyer_id' )
+				'first',
+				array(
+					'fields' => array(
+						'Dossier.id',
+						'Dossier.numdemrsa',
+						'Dossier.dtdemrsa',
+						'Dossier.fonorg',
+						'Dossier.matricule',
+						'Personne.id',
+						'Personne.foyer_id',
+						'Personne.qual',
+						'Personne.nom',
+						'Personne.prenom',
+						'Personne.dtnai',
+						'Personne.nir',
+						'Personne.numfixe',
+						'Personne.numport',
+						'Personne.email',
+						'Personne.idassedic',
+						'Prestation.rolepers',
+						'Adresse.numvoie',
+						'Adresse.typevoie',
+						'Adresse.nomvoie',
+						'Adresse.locaadr',
+						'Adresse.codepos',
+						'Adresse.nomvoie',
+						'Adresse.numcomptt',
+						'Serviceinstructeur.lib_service',
+						'Serviceinstructeur.numdepins',
+						'Serviceinstructeur.typeserins',
+						'Serviceinstructeur.numcomins',
+						'Serviceinstructeur.numagrins',
+						'Suiviinstruction.typeserins',
+						ClassRegistry::init( 'Detaildroitrsa' )->vfRsaMajore().' AS "Detailcalculdroitrsa__majore"'
 					),
-					array(
-						'table' => 'dossiers', // FIXME
-						'alias' => 'Dossier',
-						'type' => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Dossier.id = Foyer.dossier_id' )
+					'conditions' => array(
+						'Personne.id' => $personne_id,
+						'Prestation.rolepers' => array( 'DEM', 'CJT' ),
+						'Adressefoyer.rgadr' => '01'
 					),
-					array(
-						'table' => 'prestations',
-						'alias' => 'Prestation',
-						'type' => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array(
-							'Personne.id = Prestation.personne_id',
-							'( Prestation.rolepers = \'DEM\' OR Prestation.rolepers = \'CJT\' )',
-							'Prestation.natprest = \'RSA\''
-						)
+					'joins' => array(
+						$this->join( 'Foyer', array( 'type' => 'INNER' ) ),
+						$this->join( 'Prestation', array( 'type' => 'INNER' ) ),
+						$this->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
+						$this->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Foyer->Dossier->join( 'Suiviinstruction', array( 'type' => 'LEFT OUTER' ) ),
+						array(
+							'table' => 'servicesinstructeurs',
+							'alias' => 'Serviceinstructeur',
+							'type' => 'LEFT OUTER',
+							'foreignKey' => false,
+							'conditions' => array( 'Suiviinstruction.numdepins = Serviceinstructeur.numdepins AND Suiviinstruction.typeserins = Serviceinstructeur.typeserins AND Suiviinstruction.numcomins = Serviceinstructeur.numcomins AND Suiviinstruction.numagrins = Serviceinstructeur.numagrins' )
+						),
 					),
-					array(
-						'table' => 'adressesfoyers',
-						'alias' => 'Adressefoyer',
-						'type' => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array( 'Foyer.id = Adressefoyer.foyer_id', 'Adressefoyer.rgadr = \'01\'' )
-					),
-					array(
-						'table' => 'adresses',
-						'alias' => 'Adresse',
-						'type' => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
-					),
-					array(
-						'table' => 'suivisinstruction',
-						'alias' => 'Suiviinstruction',
-						'type' => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array( 'Suiviinstruction.dossier_id = Dossier.id' )
-					),
-					array(
-						'table' => 'servicesinstructeurs',
-						'alias' => 'Serviceinstructeur',
-						'type' => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array( 'Suiviinstruction.numdepins = Serviceinstructeur.numdepins AND Suiviinstruction.typeserins = Serviceinstructeur.typeserins AND Suiviinstruction.numcomins = Serviceinstructeur.numcomins AND Suiviinstruction.numagrins = Serviceinstructeur.numagrins' )
-					),
-				),
-				'recursive' => 1
-					)
+					'recursive' => -1
+				)
 			);
+
 
 			// FIXME -> comment distinguer ? + FIXME autorutitel / autorutiadrelec
 			$modecontact = $this->Foyer->Modecontact->find(
-					'all', array(
-				'conditions' => array(
-					'Modecontact.foyer_id' => $personne['Personne']['foyer_id']
-				),
-				'recursive' => -1,
-				'order' => 'Modecontact.nattel ASC'
-					)
+				'all',
+				array(
+					'conditions' => array(
+						'Modecontact.foyer_id' => $personne['Personne']['foyer_id']
+					),
+					'recursive' => -1,
+					'order' => 'Modecontact.nattel ASC'
+				)
 			);
 
 			foreach( $modecontact as $index => $value ) {
-// 				if( ( ( Set::extract( $value, 'Modecontact.autorutitel' ) != 'R' ) ) && ( Set::extract( $value, 'Modecontact.nattel' ) == 'D' ) ) {
 				$personne = Set::merge( $personne, array( 'Modecontact' => Set::extract( $modecontact, '{n}.Modecontact' ) ) );
-// 				}
 			}
 
 			$activite = $this->Activite->find(
-					'first', array(
-				'fields' => array(
-					'Activite.act'
-				),
-				'conditions' => array(
-					'Activite.personne_id' => $personne_id
-				),
-				'recursive' => -1,
-				'order' => 'Activite.dfact DESC'
-					)
+				'first',
+				array(
+					'fields' => array(
+						'Activite.act'
+					),
+					'conditions' => array(
+						'Activite.personne_id' => $personne_id
+					),
+					'recursive' => -1,
+					'order' => 'Activite.dfact DESC'
+				)
 			);
 			if( !empty( $activite ) ) {
 				$personne = Set::merge( $personne, $activite );

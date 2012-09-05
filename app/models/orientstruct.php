@@ -412,31 +412,19 @@
 		*/
 
 		public function dossierId( $orientstruct_id ) {
-			$this->unbindModelAll();
-			$this->bindModel(
-				array(
-					'hasOne' => array(
-						'Personne' => array(
-							'foreignKey' => false,
-							'conditions' => array( 'Personne.id = Orientstruct.personne_id' )
-						),
-						'Foyer' => array(
-							'foreignKey' => false,
-							'conditions' => array( 'Foyer.id = Personne.foyer_id' )
-						)
-					)
-				)
-			);
+
 			$qd_orientstruct = array(
+				'fields' => array( 'Foyer.dossier_id' ),
+				'joins' => array(
+					$this->join( 'Personne', array( 'type' => 'INNER' ) ),
+					$this->Personne->join( 'Foyer', array( 'type' => 'INNER' ) )
+				),
 				'conditions' => array(
 					'Orientstruct.id' => $orientstruct_id
 				),
-				'fields' => null,
-				'order' => null,
-				'recursive' => 1
+				'recursive' => -1
 			);
 			$orientstruct = $this->find('first', $qd_orientstruct);
-
 
 			if( !empty( $orientstruct ) ) {
 				return $orientstruct['Foyer']['dossier_id'];
