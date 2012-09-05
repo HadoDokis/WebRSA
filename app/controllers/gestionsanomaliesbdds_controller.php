@@ -547,16 +547,18 @@
 
 			$success = $modelClass->updateRangsContratsPersonne( $personneAgarderId ) && $success;
 
-			$success = $modelClass->updateAll(
+			// On ne fait pas attention au retour de la méthode updateAll car il se pourrait que le contrat ne soit pas validé
+			$modelClass->updateAll(
 				array( "{$modelName}.num_contrat" => "'PRE'" ),
 				array( "{$modelName}.personne_id" => $personneAgarderId, "{$modelName}.rg_ci" => 1 )
-			) && $success;
+			);
 
+			// On ne fait pas attention au retour de la méthode updateAll car il se pourrait que le contrat ne soit pas validé
 			if( count( $itemsIds ) > 1 ) {
-				$success = $modelClass->updateAll(
+				$modelClass->updateAll(
 					array( "{$modelName}.num_contrat" => "'REN'" ),
 					array( "{$modelName}.personne_id" => $personneAgarderId, "{$modelName}.rg_ci >" => 1 )
-				) && $success;
+				);
 			}
 
 			return $success;
@@ -802,7 +804,7 @@
 			}
 
 			$success = true;
-
+  
 			// Suppression des enregistrements liés aux personnes à supprimer
 			foreach( $assocConditions as $linkedModel => $linkedConditions ) {
 				$avant = Set::extract( "/{$linkedModel}/{$linkedModel}/id", $donnees );
@@ -827,6 +829,7 @@
 							array( $this, $methodName ),
 							array( $model, $data['Personne']['garder'], $data[$model]['id'] )
 						) && $success;
+$this->log( __LINE__.' method:'.$methodName.' '.var_export( $success, true ), LOG_DEBUG );
 					}
 					// Traitement générique
 					else {
@@ -834,6 +837,7 @@
 							array( "{$model}.personne_id" => $data['Personne']['garder'] ),
 							array( "{$model}.id" => $data[$model]['id'] )
 						) && $success;
+$this->log( __LINE__.' model:'.$model.' '.var_export( $success, true ), LOG_DEBUG );
 					}
 				}
 			}
