@@ -357,10 +357,10 @@ msgstr "Date de validation"
 ###############################################################################
 ####  Liste des ENUM de la table CUI
 ###############################################################################
-msgid "ENUM::SECTEUR::CIE"
+msgid "ENUM::SECTEUR::cie"
 msgstr "Secteur marchand (CIE)"
 
-msgid "ENUM::SECTEUR::CAE"
+msgid "ENUM::SECTEUR::cae"
 msgstr "Secteur non marchand (CAE)"
 ####################
 msgid "ENUM::CONVENTION::CES"

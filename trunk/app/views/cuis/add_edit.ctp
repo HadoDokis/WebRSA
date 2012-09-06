@@ -153,7 +153,7 @@
 			echo $default->subform(
 				array(
 					'Cui.personne_id' => array( 'value' => $personne_id, 'type' => 'hidden' ),
-					'Cui.positioncui66' => array( 'type' => 'hidden' ),
+// 					'Cui.positioncui66' => array( 'type' => 'hidden' ),
 					'Cui.user_id' => array( 'type' => 'hidden', 'value' => $userConnected ),
 					'Cui.montantrsapercu' => array( 'type' => 'hidden', 'value' => $montantrsapercu ),
 					'Cui.secteur' => array(  'legend' => required( __d( 'cui', 'Cui.secteur', true )  ), 'type' => 'radio', 'options' => $options['secteur'] )
