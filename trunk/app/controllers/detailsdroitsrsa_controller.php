@@ -29,7 +29,7 @@
 					'conditions' => array(
 						'Detaildroitrsa.dossier_id' => $dossier_id
 					),
-					'recursive' => 1
+					'contain' => array( 'Detailcalculdroitrsa' )
 				)
 			) ;
 

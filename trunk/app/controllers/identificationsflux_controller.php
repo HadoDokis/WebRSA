@@ -5,9 +5,6 @@
 		public $name = 'Identificationsflux';
 		public $uses = array( 'Identificationflux', 'Option', 'Totalisationacompte' );
 
-		public function beforeFilter() {
-			parent::beforeFilter();
-		}
 
 		public function index( $id = null ) {
 			// Vérification du format de la variable
@@ -18,7 +15,7 @@
 				'all',
 				array(
 					'conditions' => array( 'Identificationflux.id' => $id ),
-					'recursive' => 1
+					'recursive' => -1
 				)
 			);
 

@@ -121,19 +121,20 @@
 					),
 					'fields' => null,
 					'order' => null,
-					'recursive' => 1
+					'contain' => array( 'Personnepcg66Situationpdo' )
 				);
 				$decisionpersonnepcg66 = $this->Decisionpersonnepcg66->find( 'first', $qd_decisionpersonnepcg66 );
 				$this->assert( !empty( $decisionpersonnepcg66 ), 'invalidParameter' );
 
 				$personnepcg66_id = Set::classicExtract( $decisionpersonnepcg66, 'Personnepcg66Situationpdo.personnepcg66_id' );
 				$personnepcg66 = $this->Decisionpersonnepcg66->Personnepcg66Situationpdo->Personnepcg66->find(
-						'first', array(
-					'conditions' => array(
-						'Personnepcg66.id' => $personnepcg66_id
-					),
-					'contain' => array( 'Personne' )
-						)
+					'first',
+					array(
+						'conditions' => array(
+							'Personnepcg66.id' => $personnepcg66_id
+						),
+						'contain' => array( 'Personne' )
+					)
 				);
 				$this->set( 'personnepcg66', $personnepcg66 );
 				$personne_id = Set::classicExtract( $personnepcg66, 'Personnepcg66.personne_id' );

@@ -8,28 +8,32 @@
 		<table class="tooltips">
 			<thead>
 				<tr>
-					<th>Type de totalisation </th>
-					<th>Montant total Rsa socle</th>
-					<th>Montant total Rsa socle majoré</th>
-					<th>Montant total Rsa local</th>
-					<th>Montant total</th>
+					<th>Code application partenaire</th>
+					<th>N° de version</th>
+					<th>Type de flux</th>
+					<th>Nature du flux</th>
+					<th>Date de création du flux</th>
+					<th>Heure de création du flux</th>
+					<th>Date de référence</th>
 				</tr>
 			</thead>
 			<tbody>
 					<?php
-						echo $xhtml->tableCells(
-							array(
-								h( $identflux['Identificationflux']['applieme'] ),
-								h( $identflux['Identificationflux']['numversionapplieme'] ),
-								h( $identflux['Identificationflux']['typeflux'] ),
-								h( $identflux['Identificationflux']['natflux'] ),
-								h( date_short( $identflux['Identificationflux']['dtcreaflux'] ) ) ,
-								h( date_short( $identflux['Identificationflux']['heucreaflux'] ) ) ,
-								h( date_short( $identflux['Identificationflux']['dtref'] ) ) ,
-							),
-							array( 'class' => 'odd' ),
-							array( 'class' => 'even' )
-						);
+						foreach( $identflux as $ident ) {
+							echo $xhtml->tableCells(
+								array(
+									h( $ident['Identificationflux']['applieme'] ),
+									h( $ident['Identificationflux']['numversionapplieme'] ),
+									h( $ident['Identificationflux']['typeflux'] ),
+									h( $ident['Identificationflux']['natflux'] ),
+									h( date_short( $ident['Identificationflux']['dtcreaflux'] ) ) ,
+									h( $ident['Identificationflux']['heucreaflux'] ),
+									h( date_short( $ident['Identificationflux']['dtref'] ) ) ,
+								),
+								array( 'class' => 'odd' ),
+								array( 'class' => 'even' )
+							);
+						}
 					?>
 			</tbody>
 		</table>
