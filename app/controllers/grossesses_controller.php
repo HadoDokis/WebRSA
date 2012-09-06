@@ -26,7 +26,7 @@
 					'conditions' => array(
 						'Grossesse.personne_id' => $personne_id
 					),
-					'recursive' => 1
+					'recursive' => -1
 				)
 			) ;
 

@@ -19,10 +19,11 @@
 			$typesrdv = $this->Typerdv->find(
 				'all',
 				array(
-					'recursive' => 1,
+					'recursive' => -1,
 					'order' => 'Typerdv.libelle ASC'
 				)
 			);
+
 			$this->set( 'typesrdv', $typesrdv );
 		}
 
@@ -54,7 +55,7 @@
 					'conditions' => array(
 						'Typerdv.id' => $typerdv_id
 					),
-					'recursive' => 1
+					'recursive' => -1
 				)
 			);
 			// Si action n'existe pas -> 404

@@ -11,10 +11,11 @@
 		*/
 
 		public function beforeFilter() {
-			parent::beforeFilter();
+			$return = parent::beforeFilter();
 			$this->set( 'avisdestpairsa', $this->Option->avisdestpairsa() );
 			$this->set( 'typeperstie', $this->Option->typeperstie() );
 			$this->set( 'aviscondadmrsa', $this->Option->aviscondadmrsa() );
+			return $return;
 		}
 
 		/**
@@ -33,7 +34,7 @@
 					'conditions' => array(
 						'Avispcgdroitrsa.dossier_id' => $dossier_id
 					),
-					'recursive' => 1
+					'recursive' => -1
 				)
 			) ;
 
