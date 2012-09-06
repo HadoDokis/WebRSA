@@ -26,10 +26,11 @@
 			$statutsrdvs = $this->Statutrdv->find(
 				'all',
 				array(
-					'recursive' => 1,
+					'recursive' => -1,
 					'order' => 'Statutrdv.libelle ASC'
 				)
 			);
+
 			$this->_setOptions();
 			$this->set( 'statutsrdvs', $statutsrdvs );
 		}
@@ -62,7 +63,7 @@
 					'conditions' => array(
 						'Statutrdv.id' => $statutrdv_id
 					),
-					'recursive' => 1
+					'recursive' => -1
 				)
 			);
 

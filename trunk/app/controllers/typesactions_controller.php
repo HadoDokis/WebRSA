@@ -20,7 +20,7 @@
 			$typesactions = $this->Typeaction->find(
 				'all',
 				array(
-					'recursive' => 1,
+					'recursive' => -1,
 					'order' => 'Typeaction.libelle ASC'
 				)
 			);
@@ -62,7 +62,7 @@
 					'conditions' => array(
 						'Typeaction.id' => $typeaction_id
 					),
-					'recursive' => 1
+					'recursive' => -1
 				)
 			);
 			// Si action n'existe pas -> 404

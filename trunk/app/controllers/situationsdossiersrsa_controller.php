@@ -28,10 +28,13 @@
 					'conditions' => array(
 						'Situationdossierrsa.dossier_id' => $dossier_id
 					),
-					'recursive' => 1
+					'contain' => array(
+						'Dossier',
+						'Suspensiondroit',
+						'Suspensionversement'
+					)
 				)
 			) ;
-
 			// Assignations à la vue
 			$this->set( 'dossier_id', $dossier_id );
 			$this->set( 'situationdossierrsa', $situationdossierrsa );

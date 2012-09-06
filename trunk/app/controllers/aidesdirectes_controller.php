@@ -26,10 +26,10 @@
 					'conditions' => array(
 						'Contratinsertion.id' => $contratinsertion_id
 					),
-					'recursive' => 1
+					'recursive' => -1
 				)
 			);
-
+// debug($contratinsertion);
 			// Si action n'existe pas -> 404
 			if( empty( $contratinsertion ) ) {
 				$this->cakeError( 'error404' );

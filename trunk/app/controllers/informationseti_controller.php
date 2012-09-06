@@ -35,7 +35,7 @@
 					'conditions' => array(
 						'Informationeti.personne_id' => $personne_id
 					),
-					'recursive' => 1
+					'recursive' => -1
 				)
 			) ;
 

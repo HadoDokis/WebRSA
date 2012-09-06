@@ -74,7 +74,7 @@
 					'conditions' => array(
 						'StatutrdvTyperdv.id' => $statutrdv_typerdv_id
 					),
-					'recursive' => 1
+					'recursive' => -1
 				)
 			);
 

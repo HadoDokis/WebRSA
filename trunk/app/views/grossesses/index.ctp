@@ -26,7 +26,7 @@
 								h( date_short( $grossesse['Grossesse']['ddgro'] ) ),
 								h( date_short( $grossesse['Grossesse']['dfgro'] ) ),
 								h( date_short( $grossesse['Grossesse']['dtdeclgro'] ) ),
-								h( $natfingro[$grossesse['Grossesse']['natfingro']] ),
+								h( value( $natfingro, Set::classicExtract( $grossesse, 'Grossesse.natfingro' ) ) ),
 							),
 							array( 'class' => 'odd' ),
 							array( 'class' => 'even' )

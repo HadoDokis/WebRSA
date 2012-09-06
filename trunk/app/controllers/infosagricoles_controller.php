@@ -25,9 +25,12 @@
 					'conditions' => array(
 						'Infoagricole.personne_id' => $personne_id
 					),
-					'recursive' => 1
+					'contain' => array(
+						'Personne',
+						'Aideagricole'
+					)
 				)
-			) ;
+			);
 
 			// Assignations à la vue
 			$this->set( 'personne_id', $personne_id );

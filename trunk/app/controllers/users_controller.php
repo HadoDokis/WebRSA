@@ -17,7 +17,8 @@
 		public function beforeFilter() {
 			ini_set( 'max_execution_time', 0 );
 			ini_set( 'memory_limit', '1024M' );
-			parent::beforeFilter();
+			$return = parent::beforeFilter();
+			return $return;
 		}
 
 		/**
