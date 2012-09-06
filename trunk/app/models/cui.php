@@ -545,71 +545,25 @@
 		*/
 
 		public function _prepare( $personne_id = null ) {
-			$alerteRsaSocle = false;
-			$qd_personne = array(
-				'conditions' => array(
-					'Personne.id' => $personne_id
-				),
-				'fields' => null,
-				'order' => null,
-				'recursive' => 0
-			);
-			$personne = $this->Personne->find('first', $qd_personne);
-
-			$dossier_id = Set::classicExtract( $personne, 'Foyer.dossier_id' );
-
-			/// FIXME: on regarde le rsa socle sur les infos financieres OU BIEN sur les calculs droits rsa
-			$infosfinancieres = $this->Personne->Foyer->Dossier->Infofinanciere->find(
-				'all',
+			$vfRsaSocle = $this->Personne->Foyer->Dossier->Detaildroitrsa->vfRsaSocle();
+			$result = $this->Personne->find(
+				'first',
 				array(
-					'conditions' => array(
-						'Infofinanciere.dossier_id' => $dossier_id
+					'fields' => array(
+						"( {$vfRsaSocle} ) AS \"Dossier__rsasocle\""
 					),
-					'recursive' => -1,
-					'order' => 'Infofinanciere.moismoucompta DESC'
+					'joins' => array(
+						$this->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
+						$this->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
+						$this->Personne->Foyer->Dossier->join( 'Detaildroitrsa' )
+					),
+					'conditions' => array(
+						'Personne.id' => $personne_id
+					),
+					'recursive' => -1
 				)
 			);
-
-			$qd_detaildroitrsa = array(
-				'conditions' => array(
-					'Detaildroitrsa.dossier_id' => $dossier_id
-				),
-				'fields' => null,
-				'order' => null,
-				'recursive' => -1
-			);
-			$detaildroitrsa = $this->Personne->Foyer->Dossier->Detaildroitrsa->find('first', $qd_detaildroitrsa);
-
-			if( !empty( $detaildroitrsa ) ){
-				$detaildroitrsa_id = Set::classicExtract( $detaildroitrsa, 'Detaildroitrsa.id' );
-				$detailscalculsdroitrsa = $this->Personne->Foyer->Dossier->Detaildroitrsa->Detailcalculdroitrsa->find(
-					'all',
-					array(
-						'conditions' => array(
-							'Detailcalculdroitrsa.detaildroitrsa_id' => $detaildroitrsa_id
-						),
-						'recursive' => -1,
-						'order' => 'Detailcalculdroitrsa.dtderrsavers DESC'
-					)
-				);
-			}
-
-			$rsaSocleValues = array();
-			if( !empty( $infosfinancieres ) ) {
-				$rsaSocleValues = array_unique( Set::extract( $infosfinancieres, '0/Infofinanciere/natpfcre' ) );
-			}
-			else if( !empty( $detailscalculsdroitrsa ) ) {
-				$rsaSocleValues = array_unique( Set::extract( $detailscalculsdroitrsa, '0/Detailcalculdroitrsa/natpf' ) );
-			}
-			else {
-				$alerteRsaSocle = true;
-			}
-
-			$rsaSocle = array( 'RSB', 'RSD', 'RSI', 'RSU' ); // valeurs possibles pour les RSA Socles
-			if( array_intersects( $rsaSocleValues, array_keys( $rsaSocle ) ) ) {
-				$alerteRsaSocle = false;
-			}
-			return $alerteRsaSocle;
+			return !$result['Dossier']['rsasocle'];
 		}
 
 

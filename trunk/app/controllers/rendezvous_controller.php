@@ -311,26 +311,34 @@
 		public function view( $rendezvous_id = null ) {
 			$this->Rendezvous->forceVirtualFields = true;
 			$rendezvous = $this->Rendezvous->find(
-					'first', array(
-				'fields' => array(
-					'Rendezvous.personne_id',
-					'Personne.nom_complet',
-					'Structurereferente.lib_struc',
-					'Referent.nom_complet',
-					'Referent.fonction',
-					'Permanence.libpermanence',
-					'Typerdv.libelle',
-					'Statutrdv.libelle',
-					'Rendezvous.daterdv',
-					'Rendezvous.heurerdv',
-					'Rendezvous.objetrdv',
-					'Rendezvous.commentairerdv'
-				),
-				'conditions' => array(
-					'Rendezvous.id' => $rendezvous_id
-				),
-				'recursive' => 0
+				'first',
+				array(
+					'fields' => array(
+						'Rendezvous.personne_id',
+						'Personne.nom_complet',
+						'Structurereferente.lib_struc',
+						'Referent.nom_complet',
+						'Referent.fonction',
+						'Permanence.libpermanence',
+						'Typerdv.libelle',
+						'Statutrdv.libelle',
+						'Rendezvous.daterdv',
+						'Rendezvous.heurerdv',
+						'Rendezvous.objetrdv',
+						'Rendezvous.commentairerdv'
+					),
+					'conditions' => array(
+						'Rendezvous.id' => $rendezvous_id
+					),
+					'contain' => array(
+						'Typerdv',
+						'Referent',
+						'Structurereferente',
+						'Permanence',
+						'Statutrdv',
+						'Personne'
 					)
+				)
 			);
 
 			$this->assert( !empty( $rendezvous ), 'invalidParameter' );

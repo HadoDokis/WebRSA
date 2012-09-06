@@ -37,12 +37,20 @@
 			)
 		);
 	?>
-</div>
-	<?php echo $xform->create( 'Accompagnementcui66' );?>
-	<div class="submit">
-		<?php
-			echo $xform->submit( 'Retour au CUI', array( 'name' => 'Cancel', 'div' => false ) );
+	<div>
+	<?
+			echo $default->button(
+				'back',
+				array(
+					'controller' => 'cuis',
+					'action'     => 'index',
+					$personne_id
+				),
+				array(
+					'id' => 'Back'
+				)
+			);
 		?>
 	</div>
-	<?php echo $xform->end(); ?>
+</div>
 <div class="clearer"><hr /></div>

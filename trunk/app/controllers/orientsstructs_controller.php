@@ -645,7 +645,7 @@
 					),
 					'fields' => null,
 					'order' => null,
-					'recursive' => 0
+					'contain' => array( 'Calculdroitrsa' )
 				);
 				$personne = $this->Personne->find( 'first', $qd_personne );
 

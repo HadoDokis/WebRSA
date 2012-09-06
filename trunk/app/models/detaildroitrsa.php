@@ -114,5 +114,21 @@
 						AND detailscalculsdroitsrsa.natpf IN ( \'RCI\', \'RSI\' )
 			)';
 		}
+
+				
+		/**
+		*	Vérfication et envoi d'un booleen si le dossier est un RSA socle ou non
+		*	On passe en paramètre l'alias du modèle et du champ
+		*/
+
+		public function vfRsaSocle( $aliasDossierId = '"Dossier"."id"' ){
+			return 'EXISTS(
+				SELECT * FROM detailsdroitsrsa
+					INNER JOIN detailscalculsdroitsrsa ON ( detailscalculsdroitsrsa.detaildroitrsa_id = detailsdroitsrsa.id )
+					WHERE
+						detailsdroitsrsa.dossier_id = '.$aliasDossierId.'
+						AND detailscalculsdroitsrsa.natpf IN ( \'RSB\', \'RSD\', \'RSI\', \'RSU\' )
+			)';
+		}
 	}
 ?>

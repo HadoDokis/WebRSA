@@ -153,18 +153,7 @@
 			$this->set( 'dossier_id', $dossier_id );
 
 			///On ajout l'ID de l'utilisateur connecté afind e récupérer son service instructeur
-			$qd_user = array(
-				'conditions' => array(
-					'User.id' => $this->Session->read( 'Auth.User.id' )
-				),
-				'fields' => null,
-				'order' => null,
-				'recursive' => 0
-			);
-			$user = $this->User->find( 'first', $qd_user );
-
-			$user_id = Set::classicExtract( $user, 'User.id' );
-			$personne = $this->{$this->modelClass}->Cui->Personne->detailsApre( $personne_id, $user_id );
+			$personne = $this->{$this->modelClass}->Cui->Personne->detailsApre( $personne_id, $this->Session->read( 'Auth.User.id' ) );
 			$this->set( 'personne', $personne );
 			$this->set( 'cui', $cui );
 			$this->set( 'cui_id', $cui_id );
@@ -212,12 +201,15 @@
 			$options = $this->{$this->modelClass}->allEnumLists();
 
 			$periodeimmersion = $this->{$this->modelClass}->find(
-					'first', array(
-				'conditions' => array(
-					"{$this->modelClass}.id" => $id
-				),
-				'recursive' => 0
+				'first',
+				array(
+					'conditions' => array(
+						"{$this->modelClass}.id" => $id
+					),
+					'contain' => array(
+						'Cui'
 					)
+				)
 			);
 
 			$personne_id = Set::classicExtract( $periodeimmersion, 'Cui.personne_id' );
@@ -245,12 +237,13 @@
 			);
 
 			$adresse = $this->Adressefoyer->find(
-					'first', array(
-				'conditions' => array(
-					'Adressefoyer.foyer_id' => Set::classicExtract( $periodeimmersion, 'Personne.foyer_id' ),
-					'Adressefoyer.rgadr' => '01',
-				)
+				'first',
+				array(
+					'conditions' => array(
+						'Adressefoyer.foyer_id' => Set::classicExtract( $periodeimmersion, 'Personne.foyer_id' ),
+						'Adressefoyer.rgadr' => '01',
 					)
+				)
 			);
 			$periodeimmersion['Adresse'] = $adresse['Adresse'];
 

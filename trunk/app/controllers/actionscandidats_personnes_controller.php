@@ -299,9 +299,28 @@
 			Configure::write( 'debug', 0 );
 			$dataReferent_id = Set::extract( $this->data, 'ActioncandidatPersonne.referent_id' );
 			$referent_id = ( empty( $referent_id ) && !empty( $dataReferent_id ) ? $dataReferent_id : $referent_id );
-			$this->ActioncandidatPersonne->Personne->Referent->recursive = 0;
+
 			$this->set( 'typevoie', $this->Option->typevoie() );
-			$prescripteur = $this->ActioncandidatPersonne->Personne->Referent->read( null, $referent_id );
+			$prescripteur = $this->ActioncandidatPersonne->Personne->Referent->find( 
+				'first',
+				array(
+					'fields' => array(
+						'Referent.numero_poste',
+						'Referent.email',
+						'Structurereferente.lib_struc',
+						'Structurereferente.num_voie',
+						'Structurereferente.nom_voie',
+						'Structurereferente.code_postal',
+						'Structurereferente.ville'
+					),
+					'conditions' => array(
+						'Referent.id' => $referent_id
+					),
+					'contain' => array(
+						'Structurereferente'
+					)
+				)
+			);
 			$this->set( compact( 'prescripteur' ) );
 			$this->render( 'ajaxreferent', 'ajax' );
 		}
@@ -487,37 +506,13 @@
 
 			$this->set( 'personne_id', $personne_id );
 
-			///Données récupérées propre à la personne
-// 			$personne = $this->{$this->modelClass}->Personne->newDetailsCi( $personne_id, $this->Session->read( 'Auth.User.id' ) );
-
-
 			$personne = $this->{$this->modelClass}->Personne->newDetailsCi( $personne_id, $this->Session->read( 'Auth.User.id' ) );
 			$this->set( 'personne', $personne );
 
-
-			///Données Contrat engagement
-// 			$contrat = $this->{$this->modelClass}->Personne->Contratinsertion->find(
-// 				'first',
-// 				array(
-// 					'conditions' => array(
-// 						'Contratinsertion.personne_id' => $personne_id
-// 					),
-// 					'recursive' => -1,
-// 					'order' => 'Contratinsertion.date_saisi_ci DESC'
-// 				)
-// 			);
-// 			if( !empty( $contrat ) ) {
-// 				$personne = Set::merge( $personne, $contrat );
-// 			}
-// 			$this->set( 'personne', $personne );
-// debug($personne);
 			///Nombre d'enfants par foyer
 			$nbEnfants = $this->ActioncandidatPersonne->Personne->Foyer->nbEnfants( Set::classicExtract( $personne, 'Personne.foyer_id' ) );
 			$this->set( 'nbEnfants', $nbEnfants );
 
-			//Numéro Pôle Emploi :
-// 			$identifiantpe = ClassRegistry::init('Informationpe')->dernierIdentifiantpe( $personne_id);
-// 			$this->set( 'identifiantpe', $identifiantpe );
 			///Récupération de la liste des structures référentes liés uniquement à l'APRE
 			$structs = $this->ActioncandidatPersonne->Personne->Orientstruct->Structurereferente->listOptions();
 			$this->set( 'structs', $structs );
@@ -546,22 +541,16 @@
 				),
 				'fields' => null,
 				'order' => null,
-				'recursive' => 0
+				'contain' => array(
+					'Serviceinstructeur'
+				)
 			);
 			$user = $this->User->find( 'first', $qd_user );
+
 			$codeinseeUser = Set::classicExtract( $user, 'Serviceinstructeur.code_insee' );
 			$actionsfiche = $this->{$this->modelClass}->Actioncandidat->listePourFicheCandidature( $codeinseeUser );
 			$this->set( 'actionsfiche', $actionsfiche );
 
-
-// 			if(  !empty( $this->data['Modecontact'] ) ){
-// 				$Modecontact = Xset::bump( Set::filter( Set::flatten( $this->data['Modecontact'] ) ) );
-// // debug($Modecontact);
-// // die();
-// 				if( !empty( $Modecontact ) ){
-// 					$success = $this->{$this->modelClass}->Personne->Foyer->Modecontact->saveAll( $Modecontact, array( 'validate' => 'first', 'atomic' => false ) );
-// 				}
-// 			}
 
 			$this->ActioncandidatPersonne->begin();
 

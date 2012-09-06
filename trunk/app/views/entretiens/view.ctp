@@ -7,7 +7,6 @@
 ?>
 
 <div class="with_treemenu">
-	<?php echo $xform->create( 'Entretien' );?>
 	<?php
 		echo $xhtml->tag(
 			'h1',
@@ -29,12 +28,19 @@
 				'options' => $options
 			)
 		);
+		    
+		echo $default->button(
+			'back',
+			array(
+				'controller' => 'entretiens',
+				'action'     => 'index',
+				$personne_id
+			),
+			array(
+				'id' => 'Back'
+			)
+		);
 	?>
-	<div class="submit">
-		<?php
-			echo $xform->submit( 'Retour', array( 'name' => 'Cancel', 'div' => false ) );
-		?>
-	</div>
-	<?php echo $xform->end();?>
+	
 </div>
 <div class="clearer"><hr /></div>

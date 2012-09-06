@@ -146,30 +146,18 @@
 		*/
 
 		public function dossierId( $rdv_id ){
-			$this->unbindModelAll();
-			$this->bindModel(
-				array(
-					'hasOne' => array(
-						'Personne' => array(
-							'foreignKey' => false,
-							'conditions' => array( 'Personne.id = Rendezvous.personne_id' )
-						),
-						'Foyer' => array(
-							'foreignKey' => false,
-							'conditions' => array( 'Foyer.id = Personne.foyer_id' )
-						)
-					)
-				)
+			$qd_rdv = array(
+				'conditions'=> array(
+					'Rendezvous.id' => $rdv_id
+				),
+				'fields' => array( 'Foyer.dossier_id' ),
+				'joins' => array(
+					$this->join( 'Personne', array( 'type' => 'INNER' ) ),
+					$this->Personne->join( 'Foyer', array( 'type' => 'INNER' ) )
+				),
+				'recursive' => -1
 			);
-
-			$rdv = $this->find(
-				'first',
-				array(
-					'fields' => array( 'Foyer.dossier_id' ),
-					'conditions' => array( "{$this->alias}.{$this->primaryKey}" => $rdv_id ),
-					'recursive' => 0
-				)
-			);
+			$rdv = $this->find('first', $qd_rdv);
 
 			if( !empty( $rdv ) ) {
 				return $rdv['Foyer']['dossier_id'];

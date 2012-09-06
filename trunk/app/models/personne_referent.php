@@ -91,35 +91,21 @@
 		*/
 
 		public function dossierId( $pers_ref_id ){
-			$this->unbindModelAll();
-			$this->bindModel(
-				array(
-					'hasOne' => array(
-						'Personne' => array(
-							'foreignKey' => false,
-							'conditions' => array( 'Personne.id = PersonneReferent.personne_id' )
-						),
-						'Foyer' => array(
-							'foreignKey' => false,
-							'conditions' => array( 'Foyer.id = Personne.foyer_id' )
-						)
-					)
-				)
-			);
-
-			$qd_rdv = array(
+			$qd_personnereferent = array(
 				'conditions'=> array(
 					'PersonneReferent.id' => $pers_ref_id
 				),
-				'fields' => null,
-				'order' => null,
-				'recursive' => 0
+				'fields' => array( 'Foyer.dossier_id' ),
+				'joins' => array(
+					$this->join( 'Personne', array( 'type' => 'INNER' ) ),
+					$this->Personne->join( 'Foyer', array( 'type' => 'INNER' ) )
+				),
+				'recursive' => -1
 			);
-			$rdv = $this->find('first', $qd_rdv);
+			$persreferent = $this->find('first', $qd_personnereferent);
 
-
-			if( !empty( $rdv ) ) {
-				return $rdv['Foyer']['dossier_id'];
+			if( !empty( $persreferent ) ) {
+				return $persreferent['Foyer']['dossier_id'];
 			}
 			else {
 				return null;
