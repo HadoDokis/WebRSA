@@ -38,14 +38,16 @@
 		 */
 		public function dossierId( $modecontact_id ) {
 			$qd_modecontact = array(
-				'conditions' => array(
+				'conditions'=> array(
 					'Modecontact.id' => $modecontact_id
 				),
-				'fields' => null,
-				'order' => null,
-				'recursive' => 0
+				'fields' => array( 'Foyer.dossier_id' ),
+				'joins' => array(
+					$this->join( 'Foyer', array( 'type' => 'INNER' ) )
+				),
+				'recursive' => -1
 			);
-			$modecontact = $this->find( 'first', $qd_modecontact );
+			$modecontact = $this->find('first', $qd_modecontact);
 
 			if( !empty( $modecontact ) ) {
 				return $modecontact['Foyer']['dossier_id'];

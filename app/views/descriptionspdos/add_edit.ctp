@@ -14,23 +14,29 @@
 	if( empty( $sensibilite ) ) {
 		$sensibilite = 'N';
 	}
-
-	echo $default->form(
+	echo $xform->create( );
+	
+	echo $default2->subform(
 		array(
+			'Descriptionpdo.id' => array( 'type' => 'hidden' ),
 			'Descriptionpdo.name' => array( 'required' => true ),
 			'Descriptionpdo.modelenotification',
 			'Descriptionpdo.sensibilite' => array( 'type' => 'radio', 'required' => true ),
 			'Descriptionpdo.decisionpcg' => array( 'type' => 'radio' , 'required' => true ),
 			'Descriptionpdo.nbmoisecheance' => array( 'type' => 'text', 'required' => true ),
 			'Descriptionpdo.dateactive' => array( 'type' => 'select' , 'required' => true )
-// 			'Descriptionpdo.declencheep' => array( 'type' => 'radio' )
 		),
 		array(
-			'actions' => array(
-				'descriptionspdos::save',
-				'descriptionspdos::cancel'
-			),
 			'options' => $options
 		)
 	);
+	
+	
 ?>
+	<div class="submit">
+		<?php
+			echo $xform->submit( 'Enregistrer', array( 'div' => false ) );
+			echo $xform->submit( 'Annuler', array( 'name' => 'Cancel', 'div' => false ) );
+		?>
+	</div>
+	<?php echo $xform->end();?>

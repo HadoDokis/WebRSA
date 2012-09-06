@@ -234,14 +234,18 @@
 
 			if( !empty( $apres ) ) {
 				$relancesapres = $this->Relanceapre->find(
-						'all', array(
-					'conditions' => array(
-						'Relanceapre.apre_id' => Set::extract( $apres, '/Apre/id' ),
-						'Apre.statutapre = \'C\''
-					),
-					'recursive' => 0,
-					'order' => 'Relanceapre.id DESC'
-						)
+					'all',
+					array(
+						'conditions' => array(
+							'Relanceapre.apre_id' => Set::extract( $apres, '/Apre/id' ),
+							'Apre.statutapre = \'C\''
+						),
+						'contain' => array(
+							'Apre'
+						),
+// 						'recursive' => 0,
+						'order' => 'Relanceapre.id DESC'
+					)
 				);
 
 				if( isset( $relancesapres['0']['Relanceapre']['id'] ) && !empty( $relancesapres['0']['Relanceapre']['id'] ) ) {
@@ -587,18 +591,8 @@
 			$this->set( 'referents', $referents );
 
 			///On ajout l'ID de l'utilisateur connecté afind e récupérer son service instructeur
-			$qd_user = array(
-				'conditions' => array(
-					'User.id' => $this->Session->read( 'Auth.User.id' )
-				),
-				'fields' => null,
-				'order' => null,
-				'recursive' => 0
-			);
-			$user = $this->User->find( 'first', $qd_user );
-			$user_id = Set::classicExtract( $user, 'User.id' );
 
-			$personne = $this->{$this->modelClass}->Personne->detailsApre( $personne_id, $user_id );
+			$personne = $this->{$this->modelClass}->Personne->detailsApre( $personne_id, $this->Session->read( 'Auth.User.id' ) );
 			$this->set( 'personne', $personne );
 
 			/// Recherche du type d'orientation

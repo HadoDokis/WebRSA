@@ -401,7 +401,7 @@
 						$this->Dossier->Foyer->Personne->join( 'Grossesse', array( 'type' => 'LEFT OUTER' ) )
 					),
 					'contain' => false,
-					'recursive' => 0
+					'recursive' => -1
 				)
 			);
 

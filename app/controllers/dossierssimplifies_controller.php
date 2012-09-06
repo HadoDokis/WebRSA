@@ -62,13 +62,17 @@
 			$this->Personne->unbindModelAll();
 			$this->Personne->bindModel( array( 'hasOne' => array( 'Dossiercaf', 'Prestation' => $bindPrestation ) ) );
 			$personnesFoyer = $this->Personne->find(
-					'all', array(
-				'conditions' => array(
-					'Personne.foyer_id' => $tFoyer['Foyer']['id'],
-					'Prestation.rolepers' => array( 'DEM', 'CJT' )
-				),
-				'recursive' => 0
+				'all',
+				array(
+					'conditions' => array(
+						'Personne.foyer_id' => $tFoyer['Foyer']['id'],
+						'Prestation.rolepers' => array( 'DEM', 'CJT' )
+					),
+					'contain' => array(
+						'Prestation'
 					)
+// 					'recursive' => -1
+				)
 			);
 
 			$roles = Set::extract( '{n}.Prestation.rolepers', $personnesFoyer );
@@ -243,21 +247,37 @@
 				),
 				'fields' => null,
 				'order' => null,
-				'recursive' => 0
+				'contain' => array(
+					'Foyer',
+					'Orientstruct',
+					'Prestation',
+					'Calculdroitrsa'
+				)
 			);
 			$personne = $this->Personne->find( 'first', $qd_personne );
-
+// debug($personne);
 			$orientstruct = $this->Orientstruct->find(
-					'first', array(
-				'conditions' => array( 'Orientstruct.personne_id' => $personne_id ),
-				'contain' => false,
-				'order' => 'Orientstruct.date_propo DESC'
-					)
+				'first',
+				array(
+					'conditions' => array( 'Orientstruct.personne_id' => $personne_id ),
+					'contain' => false,
+					'recursive' => -1,
+					'order' => 'Orientstruct.date_propo DESC'
+				)
 			);
 			$personne = Set::merge( $personne, array( 'Orientstruct' => array( $orientstruct['Orientstruct'] ) ) );
 
 			$dossier_id = $personne['Foyer']['dossier_id'];
-			$dossimple = $this->Dossier->read( null, $dossier_id );
+			$dossimple = $this->Dossier->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Dossier.id' => $dossier_id
+					),
+					'contain' => false,
+					'recursive' => -1
+				)
+			);
 
 			$this->set( 'personne_id', $personne_id );
 			$this->set( 'dossiersimple_id', $dossier_id );

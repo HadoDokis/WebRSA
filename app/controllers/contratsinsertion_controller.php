@@ -1005,22 +1005,26 @@
 				}
 
 				$structures = $this->Structurereferente->find(
-						'list', array(
-					'fields' => array(
-						'Structurereferente.id',
-						'Structurereferente.lib_struc',
-						'Typeorient.lib_type_orient'
-					),
-					'recursive' => 0,
-					'order' => array(
-						'Typeorient.lib_type_orient ASC',
-						'Structurereferente.lib_struc'
-					),
-					'conditions' => array(
-						'Structurereferente.actif' => 'O',
-						'Typeorient.parentid <>' => $typeOrientPrincipaleEmploiId
-					)
+					'list',
+					array(
+						'fields' => array(
+							'Structurereferente.id',
+							'Structurereferente.lib_struc',
+							'Typeorient.lib_type_orient'
+						),
+						'joins' => array(
+							$this->Structurereferente->join( 'Typeorient', array( 'type' => 'INNER' ) )
+						),
+						'recursive' => -1,
+						'order' => array(
+							'Typeorient.lib_type_orient ASC',
+							'Structurereferente.lib_struc'
+						),
+						'conditions' => array(
+							'Structurereferente.actif' => 'O',
+							'Typeorient.parentid <>' => $typeOrientPrincipaleEmploiId
 						)
+					)
 				);
 			}
 			else {

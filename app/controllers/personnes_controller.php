@@ -218,7 +218,7 @@
 			}
 
 			$personne = $this->Personne->find( 'first', $queryData );
-
+// debug($personne);
 			// Mauvais paramètre ?
 			$this->assert( !empty( $personne ), 'invalidParameter' );
 
@@ -296,17 +296,20 @@
 			}
 			else {
 				$roles = $this->Personne->find(
-						'all', array(
-					'fields' => array(
-						'Personne.id',
-						'Prestation.rolepers',
-					),
-					'conditions' => array(
-						'Personne.foyer_id' => $foyer_id,
-						'Prestation.rolepers' => array( 'DEM', 'CJT' )
-					),
-					'recursive' => 0
+					'all',
+					array(
+						'fields' => array(
+							'Personne.id',
+							'Prestation.rolepers',
+						),
+						'conditions' => array(
+							'Personne.foyer_id' => $foyer_id,
+							'Prestation.rolepers' => array( 'DEM', 'CJT' )
+						),
+						'contain' => array(
+							'Prestation'
 						)
+					)
 				);
 				$roles = Set::extract( '/Prestation/rolepers', $roles );
 
@@ -353,14 +356,6 @@
 					$this->Session->setFlash( 'Erreur lors de la restitution du jeton', 'flash/error' );
 				}
 			}
-
-			$personne = $this->Personne->find(
-					'first', array(
-				'conditions' => array( 'Personne.id' => $id ),
-				'recursive' => 0
-					)
-			);
-
 			$this->Personne->begin();
 
 			if( !$this->Jetons->check( $dossier_id ) ) {

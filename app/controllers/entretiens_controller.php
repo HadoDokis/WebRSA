@@ -309,9 +309,22 @@
 				'conditions' => array(
 					'Entretien.id' => $id
 				),
-				'fields' => null,
+				'fields' => array(
+					'Entretien.personne_id',
+					'Entretien.dateentretien',
+					'Structurereferente.lib_struc',
+					'Referent.nom_complet',
+					'Entretien.typeentretien',
+					'Entretien.typerdv_id',
+					'Entretien.commentaireentretien'
+				),
 				'order' => null,
-				'recursive' => 0
+				'joins' => array(
+					$this->Entretien->join( 'Personne', array( 'type' => 'INNER' ) ),
+					$this->Entretien->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Entretien->Structurereferente->join( 'Referent', array( 'type' => 'LEFT OUTER' ) )
+				),
+				'recursive' => -1
 			);
 			$entretien = $this->Entretien->find( 'first', $qd_entretien );
 

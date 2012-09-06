@@ -76,64 +76,69 @@
 			/**
 			  Personnes
 			 */
-			$bindPrestation = $this->Personne->hasOne['Prestation'];
-			$this->Personne->unbindModelAll();
-			$this->Personne->bindModel( array( 'hasOne' => array( 'Dossiercaf', 'Prestation' => $bindPrestation ) ) );
 			$personnesFoyer = $this->Personne->find(
-					'all', array(
-				'conditions' => array(
-					'Personne.foyer_id' => $tFoyer['Foyer']['id'],
-					'Prestation.rolepers' => array( 'DEM', 'CJT' )
-				),
-				'recursive' => 0
+				'all',
+				array(
+					'conditions' => array(
+						'Personne.foyer_id' => $tFoyer['Foyer']['id'],
+						'Prestation.rolepers' => array( 'DEM', 'CJT' )
+					),
+					'contain' => array(
+						'Prestation',
+						'Dossiercaf'
 					)
+				)
 			);
 
 			$roles = Set::extract( '{n}.Prestation.rolepers', $personnesFoyer );
 			foreach( $roles as $index => $role ) {
 				///Créances alimentaires
 				$tCreancealimentaire = $this->Creancealimentaire->find(
-						'first', array(
-					'conditions' => array( 'Creancealimentaire.personne_id' => $personnesFoyer[$index]['Personne']['id'] ),
-					'recursive' => -1,
-					'order' => 'Creancealimentaire.ddcrealim DESC',
-						)
+					'first',
+					array(
+						'conditions' => array( 'Creancealimentaire.personne_id' => $personnesFoyer[$index]['Personne']['id'] ),
+						'recursive' => -1,
+						'order' => 'Creancealimentaire.ddcrealim DESC',
+					)
 				);
 				$personnesFoyer[$index]['Creancealimentaire'] = $tCreancealimentaire['Creancealimentaire'];
 
 				///Titres séjour
 				$tTitresejour = $this->Titresejour->find(
-						'first', array(
-					'conditions' => array(
-						'Titresejour.personne_id' => $personnesFoyer[$index]['Personne']['id']
-					),
-					'order' => 'Titresejour.ddtitsej DESC',
-					'recursive' => -1
-						)
+					'first',
+					array(
+						'conditions' => array(
+							'Titresejour.personne_id' => $personnesFoyer[$index]['Personne']['id']
+						),
+						'order' => 'Titresejour.ddtitsej DESC',
+						'recursive' => -1
+					)
 				);
 				$personnesFoyer[$index]['Titresejour'] = $tTitresejour['Titresejour'];
 
 				///Activités
 				$tActivite = $this->Activite->find(
-						'first', array(
-					'conditions' => array(
-						'Activite.personne_id' => $personnesFoyer[$index]['Personne']['id']
-					),
-					'order' => 'Activite.ddact DESC',
-					'recursive' => -1
-						)
+					'first',
+					array(
+						'conditions' => array(
+							'Activite.personne_id' => $personnesFoyer[$index]['Personne']['id']
+						),
+						'order' => 'Activite.ddact DESC',
+						'recursive' => -1
+					)
 				);
 				$personnesFoyer[$index]['Activite'] = $tActivite['Activite'];
 
 				///Allocation au soutien familial
 				$tAllocationsoutienfamilial = $this->Allocationsoutienfamilial->find(
-						'first', array(
-					'conditions' => array(
-						'Allocationsoutienfamilial.personne_id' => $personnesFoyer[$index]['Personne']['id']
-					),
-					'order' => 'Allocationsoutienfamilial.ddasf DESC',
-					'recursive' => -1
-						)
+					'first',
+					array(
+						'conditions' => array(
+							'Allocationsoutienfamilial.personne_id' => $personnesFoyer[$index]['Personne']['id']
+						),
+						'order' => 'Allocationsoutienfamilial.ddasf DESC',
+						'recursive' => -1
+					)
 				);
 				$personnesFoyer[$index]['Allocationsoutienfamilial'] = $tAllocationsoutienfamilial['Allocationsoutienfamilial'];
 

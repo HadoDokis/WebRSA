@@ -78,10 +78,6 @@
 			$this->set( compact( 'accompagnementscuis66' ) );
 			$this->set( 'urlmenu', '/cuis/index/'.$personne_id );
 
-			// Retour à la liste des CUI en cas de retour
-			if( isset( $this->params['form']['Cancel'] ) ) {
-				$this->redirect( array( 'controller' => 'cuis', 'action' => 'index', $personne_id ) );
-			}
 		}
 		
 		

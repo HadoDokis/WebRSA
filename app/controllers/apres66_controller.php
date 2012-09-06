@@ -599,17 +599,7 @@
 
 
 			///On ajout l'ID de l'utilisateur connecté afind e récupérer son service instructeur
-			$qd_user = array(
-				'conditions' => array(
-					'User.id' => $this->Session->read( 'Auth.User.id' )
-				),
-				'fields' => null,
-				'order' => null,
-				'recursive' => 0
-			);
-			$user = $this->User->find( 'first', $qd_user );
-			$user_id = Set::classicExtract( $user, 'User.id' );
-			$personne = $this->{$this->modelClass}->Personne->detailsApre( $personne_id, $user_id );
+			$personne = $this->{$this->modelClass}->Personne->detailsApre( $personne_id, $this->Session->read( 'Auth.User.id' ) );
 			$this->set( 'personne', $personne );
 
 			///Nombre d'enfants par foyer
@@ -633,8 +623,7 @@
 						'order' => null,
 						'contain' => array(
 							'Pieceaide66'
-						),
-// 						'recursive' => -1
+						)
 					);
 					$typeaide = $this->{$this->modelClass}->Aideapre66->Typeaideapre66->find( 'first', $qd_typeaide );
 // debug($typeaide);

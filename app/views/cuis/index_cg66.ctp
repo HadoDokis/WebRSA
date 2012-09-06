@@ -21,6 +21,10 @@
 			?>
 		</ul>
 	<?php endif;?>
+	<?php if( !empty( $alerteRsaSocle ) ):?>
+		<p class="error">Cette personne ne possède pas de rSA Socle.</p>
+	<?php endif;?>
+	
 	<?php if( empty( $cuis ) ):?>
 		<p class="notice">Cette personne ne possède pas encore de CUI.</p>
 	<?php endif;?>

@@ -35,7 +35,7 @@
 				Inflector::tableize( $this->modelClass ),
 				$this->paginate( $this->modelClass )
 			);
-			$this->{$this->modelClass}->recursive = 0;
+			$this->{$this->modelClass}->recursive = -1;
 			$this->Default->search(
 				$this->data
 			);
@@ -75,9 +75,15 @@
 		protected function _add_edit( $id = null ) {
 			$options = $this->_options();
 			$this->set( 'options', $options );
+			
+			// Retour à la liste en cas d'annulation
+			if( isset( $this->params['form']['Cancel'] ) ) {
+				$this->redirect( array( 'action' => 'index' ) );
+			}
 
 			$this->{$this->modelClass}->recursive = -1;
 			$this->Default->_add_edit( $id, null, null, array( 'action' => 'index' ) );
+
 		}
 
 		/**

@@ -196,18 +196,19 @@
 			$this->set( 'alerteRsaSocle', $alerteRsaSocle );
 
 			$cuis = $this->Cui->find(
-					'all', array(
-				'fields' => array_merge(
-						$this->Cui->fields(), array(
-							$this->Cui->Fichiermodule->sqNbFichiersLies( $this->Cui, 'nb_fichiers_lies' )
-						)
-				),
-				'conditions' => array(
-					'Cui.personne_id' => $personne_id
-				),
-				'recursive' => -1,
-				'contain' => false
-					)
+				'all',
+				array(
+					'fields' => array_merge(
+							$this->Cui->fields(), array(
+								$this->Cui->Fichiermodule->sqNbFichiersLies( $this->Cui, 'nb_fichiers_lies' )
+							)
+					),
+					'conditions' => array(
+						'Cui.personne_id' => $personne_id
+					),
+					'recursive' => -1,
+					'contain' => false
+				)
 			);
 
 
