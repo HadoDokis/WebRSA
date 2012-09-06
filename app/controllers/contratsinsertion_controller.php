@@ -878,7 +878,7 @@
 						),
 						'fields' => null,
 						'order' => null,
-						'recursive' => 1
+						'recursive' => -1
 					);
 					$dsp = $this->Contratinsertion->Personne->Dsp->find( 'first', $qd_dsp );
 				}
@@ -1552,7 +1552,7 @@
 				),
 				'fields' => null,
 				'order' => null,
-				'recursive' => 1
+				'recursive' => -1
 			);
 			$contrat = $this->{$this->modelClass}->find( 'first', $qd_contrat );
 

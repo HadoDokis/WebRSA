@@ -604,16 +604,16 @@
 					$this->data = $actioncandidat_personne;
 
 					/// Récupération des données socio pro (notamment Niveau etude) lié au contrat
-					$this->ActioncandidatPersonne->Personne->Dsp->unbindModelAll();
 					$qd_dsp = array(
 						'conditions' => array(
 							'Dsp.personne_id' => $personne_id
 						),
 						'fields' => null,
 						'order' => null,
-						'recursive' => 1
+						'recursive' => -1
 					);
 					$dsp = $this->ActioncandidatPersonne->Personne->Dsp->find( 'first', $qd_dsp );
+
 					if( empty( $dsp ) ) {
 						$dsp = array( 'Dsp' => array( 'personne_id' => $personne_id ) );
 						$this->ActioncandidatPersonne->Personne->Dsp->set( $dsp );
@@ -624,7 +624,7 @@
 								),
 								'fields' => null,
 								'order' => null,
-								'recursive' => 1
+								'recursive' => -1
 							);
 							$dsp = $this->ActioncandidatPersonne->Personne->Dsp->find( 'first', $qd_dsp );
 						}

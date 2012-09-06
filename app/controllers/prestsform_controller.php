@@ -27,7 +27,7 @@
 					'conditions' => array(
 						'Contratinsertion.id' => $contratinsertion_id
 					),
-					'recursive' => 1
+					'recursive' => -1
 				)
 			);
 			// Si action n'existe pas -> 404

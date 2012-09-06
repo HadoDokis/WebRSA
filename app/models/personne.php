@@ -704,87 +704,98 @@
 
 			$Informationpe = ClassRegistry::init( 'Informationpe' );
 			$personne = $this->find(
-					'first', array(
-				'fields' => array_merge(
-						$this->fields(), $this->Prestation->fields(), $this->Foyer->fields(), $this->Foyer->Dossier->fields(), $this->Foyer->Adressefoyer->Adresse->fields(), $this->Orientstruct->fields(), $this->Orientstruct->Typeorient->fields(), $this->Orientstruct->Structurereferente->fields(), array(
-					'( '.$this->Foyer->vfNbEnfants().' ) AS "Foyer__nbenfants"',
-					'Historiqueetatpe.id',
-					'Historiqueetatpe.etat',
-					'Historiqueetatpe.date',
-					'Historiqueetatpe.identifiantpe',
-					'Canton.id',
-					'Canton.canton',
-					'PersonneReferent.referent_id',
-					'Titresejour.dftitsej'
+				'first',
+				array(
+					'fields' => array_merge(
+						$this->fields(),
+						$this->Prestation->fields(),
+						$this->Foyer->fields(),
+						$this->Foyer->Dossier->fields(),
+						$this->Foyer->Adressefoyer->Adresse->fields(),
+						$this->Orientstruct->fields(),
+						$this->Orientstruct->Typeorient->fields(),
+						$this->Orientstruct->Structurereferente->fields(),
+						array(
+							'( '.$this->Foyer->vfNbEnfants().' ) AS "Foyer__nbenfants"',
+							'Historiqueetatpe.id',
+							'Historiqueetatpe.etat',
+							'Historiqueetatpe.date',
+							'Historiqueetatpe.identifiantpe',
+							'Canton.id',
+							'Canton.canton',
+							'PersonneReferent.referent_id',
+							'Titresejour.dftitsej'
 						)
-				),
-				'joins' => array(
-					$this->join( 'Prestation', array( 'type' => 'INNER' ) ),
-					$this->join( 'Foyer', array( 'type' => 'INNER' ) ),
-					$this->join( 'PersonneReferent', array( 'type' => 'LEFT OUTER' ) ),
-					$this->join( 'Titresejour', array( 'type' => 'LEFT OUTER' ) ),
-					$this->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
-					$this->Foyer->join( 'Adressefoyer', array( 'type' => 'INNER' ) ),
-					$this->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'INNER' ) ),
-					$this->join( 'Orientstruct', array( 'type' => 'LEFT OUTER' ) ),
-					$this->Orientstruct->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
-					$this->Orientstruct->join( 'Typeorient', array( 'type' => 'LEFT OUTER' ) ),
-					$Informationpe->joinPersonneInformationpe( 'Personne', 'Informationpe', 'LEFT OUTER' ),
-					$Informationpe->join( 'Historiqueetatpe', array( 'type' => 'LEFT OUTER' ) ),
-					ClassRegistry::init( 'Canton' )->joinAdresse()
-				),
-				'conditions' => array(
-					'Personne.id' => $personne_id,
-					'Prestation.natprest' => 'RSA',
-					'Prestation.rolepers' => array( 'DEM', 'CJT' ),
-					'PersonneReferent.dfdesignation IS NULL'
-				),
-				'contain' => false,
-				'recursive' => -1
-					)
+					),
+					'joins' => array(
+						$this->join( 'Prestation', array( 'type' => 'INNER' ) ),
+						$this->join( 'Foyer', array( 'type' => 'INNER' ) ),
+						$this->join( 'PersonneReferent', array( 'type' => 'LEFT OUTER' ) ),
+						$this->join( 'Titresejour', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
+						$this->Foyer->join( 'Adressefoyer', array( 'type' => 'INNER' ) ),
+						$this->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'INNER' ) ),
+						$this->join( 'Orientstruct', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Orientstruct->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Orientstruct->join( 'Typeorient', array( 'type' => 'LEFT OUTER' ) ),
+						$Informationpe->joinPersonneInformationpe( 'Personne', 'Informationpe', 'LEFT OUTER' ),
+						$Informationpe->join( 'Historiqueetatpe', array( 'type' => 'LEFT OUTER' ) ),
+						ClassRegistry::init( 'Canton' )->joinAdresse()
+					),
+					'conditions' => array(
+						'Personne.id' => $personne_id,
+						'Prestation.natprest' => 'RSA',
+						'Prestation.rolepers' => array( 'DEM', 'CJT' ),
+// 						'PersonneReferent.dfdesignation IS NULL'
+					),
+					'contain' => false,
+					'recursive' => -1
+				)
 			);
 
 
 
 			///Récupération des données propres au contrat d'insertion, notammenrt le premier contrat validé ainsi que le dernier.
 			$contrat = $this->Contratinsertion->find(
-					'first', array(
-				'fields' => array( 'Contratinsertion.datevalidation_ci' ),
-				'conditions' => array(
-					'Contratinsertion.personne_id' => $personne['Personne']['id'],
-					'Contratinsertion.decision_ci' => 'V'
-				),
-				'contain' => false,
-				'order' => 'Contratinsertion.datevalidation_ci DESC',
-				'recursive' => -1
-					)
+				'first',
+				array(
+					'fields' => array( 'Contratinsertion.datevalidation_ci' ),
+					'conditions' => array(
+						'Contratinsertion.personne_id' => $personne_id,
+						'Contratinsertion.decision_ci' => 'V'
+					),
+					'contain' => false,
+					'order' => 'Contratinsertion.datevalidation_ci DESC',
+					'recursive' => -1
+				)
 			);
 			$personne['Contratinsertion']['dernier'] = $contrat['Contratinsertion'];
 
-
+// debug( $personne );
 			/// Récupération du service instructeur
 			$suiviinstruction = $this->Foyer->Dossier->Suiviinstruction->find(
-					'first', array(
-				'fields' => array_keys( // INFO: champs des tables Suiviinstruction et Serviceinstructeur
-						Set::merge(
-								Set::flatten( array( 'Suiviinstruction' => Set::normalize( array_keys( $this->Foyer->Dossier->Suiviinstruction->schema() ) ) ) ), Set::flatten( array( 'Serviceinstructeur' => Set::normalize( array_keys( ClassRegistry::init( 'Serviceinstructeur' )->schema() ) ) ) )
+				'first',
+				array(
+					'fields' => array_keys( // INFO: champs des tables Suiviinstruction et Serviceinstructeur
+							Set::merge(
+									Set::flatten( array( 'Suiviinstruction' => Set::normalize( array_keys( $this->Foyer->Dossier->Suiviinstruction->schema() ) ) ) ), Set::flatten( array( 'Serviceinstructeur' => Set::normalize( array_keys( ClassRegistry::init( 'Serviceinstructeur' )->schema() ) ) ) )
+							)
+					),
+					'recursive' => -1,
+					'contain' => false,
+					'conditions' => array(
+						'Suiviinstruction.dossier_id' => $personne['Foyer']['dossier_id']
+					),
+					'joins' => array(
+						array(
+							'table' => 'servicesinstructeurs',
+							'alias' => 'Serviceinstructeur',
+							'type' => 'LEFT OUTER',
+							'foreignKey' => false,
+							'conditions' => array( 'Suiviinstruction.numdepins = Serviceinstructeur.numdepins AND Suiviinstruction.typeserins = Serviceinstructeur.typeserins AND Suiviinstruction.numcomins = Serviceinstructeur.numcomins AND Suiviinstruction.numagrins = Serviceinstructeur.numagrins' )
 						)
-				),
-				'recursive' => -1,
-				'contain' => false,
-				'conditions' => array(
-					'Suiviinstruction.dossier_id' => $personne['Foyer']['dossier_id']
-				),
-				'joins' => array(
-					array(
-						'table' => 'servicesinstructeurs',
-						'alias' => 'Serviceinstructeur',
-						'type' => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array( 'Suiviinstruction.numdepins = Serviceinstructeur.numdepins AND Suiviinstruction.typeserins = Serviceinstructeur.typeserins AND Suiviinstruction.numcomins = Serviceinstructeur.numcomins AND Suiviinstruction.numagrins = Serviceinstructeur.numagrins' )
 					)
 				)
-					)
 			);
 
 			$personne = Set::merge( $personne, $suiviinstruction );

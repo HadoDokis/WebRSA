@@ -274,7 +274,7 @@
 					),
 					'fields' => null,
 					'order' => null,
-					'recursive' => 1
+					'recursive' => -1
 				);
 				$pdo = $this->Propopdo->find( 'first', $qd_pdo );
 
@@ -284,15 +284,16 @@
 				$dossier_id = $this->Personne->dossierId( $personne_id );
 
 				$traitementspdos = $this->{$this->modelClass}->Traitementpdo->find(
-						'all', array(
-					'conditions' => array(
-						'propopdo_id' => $pdo_id
-					),
-					'contain' => array(
-						'Descriptionpdo',
-						'Traitementtypepdo'
-					)
+					'all',
+					array(
+						'conditions' => array(
+							'propopdo_id' => $pdo_id
+						),
+						'contain' => array(
+							'Descriptionpdo',
+							'Traitementtypepdo'
 						)
+					)
 				);
 				$this->set( compact( 'traitementspdos' ) );
 

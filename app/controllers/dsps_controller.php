@@ -757,9 +757,12 @@
 					),
 					'fields' => null,
 					'order' => null,
-					'recursive' => 1
+					'contain' => array(
+						'Dsp'
+					)
 				);
 				$dsp = $this->Dsp->Personne->find( 'first', $qd_dsp );
+				debug($dsp);
 			}
 
 			// Vérification indirecte de l'id
