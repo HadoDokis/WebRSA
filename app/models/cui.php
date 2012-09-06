@@ -633,15 +633,19 @@
 		* BeforeSave
 		*/
 
-// 		public function beforeSave( $options = array() ) {
-// 			$return = parent::beforeSave( $options );
-//
-// 			//  Calcul de la position du CUI
-// 			if( Configure::read( 'Cg.departement' ) == '66' ) {
-// 				$this->data[$this->alias]['positioncui66'] = $this->positionCuiEncours( $this->data );
-// 			}
-// 			return $return;
-// 		}
+		public function beforeSave( $options = array() ) {
+			$return = parent::beforeSave( $options );
+
+			//  Calcul de la position du CUI
+			if( Configure::read( 'Cg.departement' ) == '66' ) {
+				$this->data[$this->alias]['positioncui66'] = $this->calculPosition( $this->data );
+				//On unset pour prendre la valeur par défaut de la base de données
+				if( is_null( $this->data[$this->alias]['positioncui66'] ) ) {
+					unset( $this->data[$this->alias]['positioncui66'] );
+				}
+			}
+			return $return;
+		}
 
 
 		/**
@@ -712,7 +716,8 @@
 			$id = Set::classicExtract( $data, 'Cui.id' );
 			$personne_id = Set::classicExtract( $data, 'Cui.personne_id' );
 
-
+// debug($positioncui66);
+// die();
 			// Données dernier CUI
 			$conditions = array( 'Cui.personne_id' => $personne_id, );
 			if( !empty( $id ) ) {

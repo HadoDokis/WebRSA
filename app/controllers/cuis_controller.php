@@ -262,7 +262,7 @@
 					),
 					'fields' => null,
 					'order' => null,
-					'recursive' => 1
+					'recursive' => -1
 				);
 				$cui = $this->Cui->find( 'first', $qd_cui );
 
@@ -325,7 +325,7 @@
 				if( $this->action == 'add' ) {
 					$this->data['Cui']['rangcui'] = $nbCui + 1;
 				}
-				debug( $this->data );
+// 				debug( $this->data );
 				$this->{$this->modelClass}->create( $this->data );
 				$success = $this->{$this->modelClass}->save();
 
