@@ -426,31 +426,19 @@
 		*/
 
 		public function dossierId( $apre_id ){
-			$this->unbindModelAll();
-			$this->bindModel(
-				array(
-					'hasOne' => array(
-						'Personne' => array(
-							'foreignKey' => false,
-							'conditions' => array( 'Personne.id = Apre.personne_id' )
-						),
-						'Foyer' => array(
-							'foreignKey' => false,
-							'conditions' => array( 'Foyer.id = Personne.foyer_id' )
-						)
-					)
-				)
-			);
 			$qd_apre = array(
 				'conditions' => array(
 					'Apre.id' => $apre_id
 				),
-				'fields' => null,
-				'order' => null,
-				'recursive' => 0
+				'fields' => array( 'Foyer.dossier_id' ),
+				'joins' => array(
+					$this->join( 'Personne', array( 'type' => 'INNER' ) ),
+					$this->Personne->join( 'Foyer', array( 'type' => 'INNER' ) )
+				),
+				'recursive' => -1
 			);
-			$apre = $this->find('first', $qd_apre);
 
+			$apre = $this->find('first', $qd_apre);
 
 			if( !empty( $apre ) ) {
 				return $apre['Foyer']['dossier_id'];

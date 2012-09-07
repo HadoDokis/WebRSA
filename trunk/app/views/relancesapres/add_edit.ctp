@@ -12,18 +12,7 @@
 
 	echo $this->element( 'dossier_menu', array( 'id' => $dossier_id ) );
 ?>
-<script type="text/javascript">
-	document.observe("dom:loaded", function() {
-		<?php
-			echo $ajax->remoteFunction(
-				array(
-					'update' => 'PieceaprePieceapre',
-					'url' => Router::url( array( 'action' => 'ajaxpiece', Set::extract( $this->data, 'Relanceapre.apre_id' ) ), true )
-				)
-			);
-		?>
-	});
-</script>
+
 
 <div class="with_treemenu">
 	<h1><?php echo $this->pageTitle;?></h1>
