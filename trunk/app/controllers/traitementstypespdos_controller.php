@@ -24,7 +24,7 @@
 				Inflector::tableize( $this->modelClass ),
 				$this->paginate( $this->modelClass )
 			);
-			$this->{$this->modelClass}->recursive = 0;
+			$this->{$this->modelClass}->recursive = -1;
 			$this->Default->search(
 				$this->data
 			);

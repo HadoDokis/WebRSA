@@ -37,7 +37,9 @@
 				$this->modelClass => array(
 					'limit' => 10,
 					'conditions' => $conditions,
-					'recursive' => 0,
+					'contain' => array(
+						'Budgetapre'
+					),
 					'order' => array(
 						'Etatliquidatif.datecloture DESC',
 						'Etatliquidatif.id DESC'
@@ -46,15 +48,16 @@
 			);
 
 			$etatsliquidatifs = $this->paginate( $this->modelClass );
-
+// debug($etatsliquidatifs);
 			if( !empty( $etatsliquidatifs ) ) {
 				$apres_etatsliquidatifs = $this->Etatliquidatif->ApreEtatliquidatif->find(
-						'all', array(
-					'conditions' => array(
-						'ApreEtatliquidatif.etatliquidatif_id' => Set::extract( $etatsliquidatifs, '/Etatliquidatif/id' )
-					),
-					'recursive' => -1
-						)
+					'all',
+					array(
+						'conditions' => array(
+							'ApreEtatliquidatif.etatliquidatif_id' => Set::extract( $etatsliquidatifs, '/Etatliquidatif/id' )
+						),
+						'recursive' => -1
+					)
 				);
 				$this->set( 'apres_etatsliquidatifs', $apres_etatsliquidatifs );
 			}
@@ -507,7 +510,9 @@
 				),
 				'fields' => null,
 				'order' => null,
-				'recursive' => 0
+				'contain' => array(
+					'Budgetapre'
+				)
 			);
 			$etatliquidatif = $this->Etatliquidatif->find( 'first', $qd_etatliquidatif );
 			$this->assert( !empty( $etatliquidatif ), 'invalidParameter' );
