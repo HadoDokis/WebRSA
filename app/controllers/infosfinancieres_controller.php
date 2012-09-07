@@ -9,14 +9,6 @@
 
 		public $components = array( 'Prg' => array( 'actions' => array( 'indexdossier' ) ) );
 
-		/**
-		*
-		*/
-
-//		function __construct() {
-//			$this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'indexdossier' ) ) ) );
-//			parent::__construct();
-//		}
 
 		/**
 		*
@@ -68,11 +60,19 @@
 			$infosfinancieres = $this->Infofinanciere->find(
 				'all',
 				array(
+					'fields' => array_merge(
+						$this->Infofinanciere->fields(),
+						array(
+							'Dossier.matricule'
+						)
+					),
 					'conditions' => array( 'Infofinanciere.dossier_id' => $dossier_id ),
-					'recursive' => 0
+					'contain' => array(
+						'Dossier'
+					)
 				)
 			);
-
+// debug($infosfinancieres);
 			$qd_foyer = array(
 				'conditions' => array(
 					'Foyer.dossier_id' => $dossier_id
@@ -144,7 +144,9 @@
 						'( Prestation.natprest = \'RSA\' OR Prestation.natprest = \'PFA\' )',
 						'( Prestation.rolepers = \'DEM\' )',
 					),
-					'recursive' => 0
+					'contain' => array(
+						'Prestation'
+					)
 				)
 			);
 

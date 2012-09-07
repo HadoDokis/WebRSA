@@ -681,7 +681,7 @@
 						)
 					),
 				),
-				'recursive' => 1,
+				'recursive' => -1,
 				'conditions' => array( 'ApreEtatliquidatif.etatliquidatif_id' => Sanitize::clean( $id ) ),
 				'order' => array( 'Paiementfoyer.nomprenomtiturib ASC', 'Foyer.id ASC' )
 			);
@@ -696,6 +696,7 @@
 			}
 
 			$this->Apre->unbindModelAll();
+
 			return $this->Apre->find( 'all', $querydata );
 		}
 

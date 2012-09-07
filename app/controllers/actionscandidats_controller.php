@@ -127,7 +127,7 @@
 
 		public function index() {
 			$this->Actioncandidat->forceVirtualFields = true;
-			$this->Actioncandidat->recursive = 0;
+			$this->Actioncandidat->recursive = -1;
 
 			$this->paginate = array(
 				'contain' => array(

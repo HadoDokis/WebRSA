@@ -26,75 +26,54 @@
 			$details = array( );
 
 			$tDossier = $this->Dossier->find(
-					'first', array(
-				'conditions' => array(
-					'Dossier.id' => $dossier_id
-				),
-				'contain' => false
+				'first',
+				array(
+					'conditions' => array(
+						'Dossier.id' => $dossier_id
+					),
+					'contain' => array(
+						'Foyer'
 					)
+				)
 			);
 
 			$this->assert( !empty( $tDossier ), 'invalidParameter' );
 			$details = Set::merge( $details, $tDossier );
 
 			$tSuiviinstruction = $this->Suiviinstruction->find(
-					'first', array(
-				'conditions' => array(
-					'Suiviinstruction.dossier_id' => $dossier_id
-				),
-				'joins' => array(
-					array(
-						'table' => 'servicesinstructeurs',
-						'alias' => 'Serviceinstructeur',
-						'type' => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array( 'Suiviinstruction.numdepins = Serviceinstructeur.numdepins AND Suiviinstruction.typeserins = Serviceinstructeur.typeserins AND Suiviinstruction.numcomins = Serviceinstructeur.numcomins AND Suiviinstruction.numagrins = Serviceinstructeur.numagrins' )
-					)
-				),
-				'order' => 'Suiviinstruction.date_etat_instruction DESC'
-					)
+				'first',
+				array(
+					'conditions' => array(
+						'Suiviinstruction.dossier_id' => $dossier_id
+					),
+					'joins' => array(
+						array(
+							'table' => 'servicesinstructeurs',
+							'alias' => 'Serviceinstructeur',
+							'type' => 'LEFT OUTER',
+							'foreignKey' => false,
+							'conditions' => array( 'Suiviinstruction.numdepins = Serviceinstructeur.numdepins AND Suiviinstruction.typeserins = Serviceinstructeur.typeserins AND Suiviinstruction.numcomins = Serviceinstructeur.numcomins AND Suiviinstruction.numagrins = Serviceinstructeur.numagrins' )
+						)
+					),
+					'order' => 'Suiviinstruction.date_etat_instruction DESC'
+				)
 			);
 			$details = Set::merge( $details, $tSuiviinstruction );
-
-			$qd_tFoyer = array(
-				'conditions' => array(
-					'Foyer.dossier_id' => $dossier_id
-				),
-				'fields' => null,
-				'order' => null,
-				'recursive' => -1
-			);
-			$tFoyer = $this->Dossier->Foyer->find( 'first', $qd_tFoyer );
-			$this->assert( !empty( $tFoyer ), 'invalidParameter' );
-			$details = Set::merge( $details, $tFoyer );
-
-			// Récupération du services instructeur lié au contrat
-			$qd_user = array(
-				'conditions' => array(
-					'User.id' => $this->Session->read( 'Auth.User.id' )
-				),
-				'fields' => null,
-				'order' => null,
-				'recursive' => 0
-			);
-			$user = $this->User->find( 'first', $qd_user );
-			$this->assert( !empty( $user ), 'error500' ); // FIXME
-			$details = Set::merge( $details, $user );
-
+			
 			/**
 			  Personnes
 			 */
-			$bindPrestation = $this->Foyer->Personne->hasOne['Prestation'];
-			$this->Foyer->Personne->unbindModelAll();
-			$this->Foyer->Personne->bindModel( array( 'hasOne' => array( 'Dossiercaf', 'Dsp', 'Prestation' => $bindPrestation ) ) );
 			$personnesFoyer = $this->Foyer->Personne->find(
-					'all', array(
-				'conditions' => array(
-					'Personne.foyer_id' => $tFoyer['Foyer']['id'],
-					'Prestation.rolepers' => array( 'DEM', 'CJT' )
-				),
-				'recursive' => 0
+				'all',
+				array(
+					'conditions' => array(
+						'Personne.foyer_id' => $tDossier['Foyer']['id'],
+						'Prestation.rolepers' => array( 'DEM', 'CJT' )
+					),
+					'contain' => array(
+						'Prestation'
 					)
+				)
 			);
 
 			$this->set( compact( 'personnesFoyer' ) );
