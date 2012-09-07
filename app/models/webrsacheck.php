@@ -138,7 +138,7 @@
 				'ActioncandidatPersonne.suffixe' => 'string',
 				'Admin.unlockall' => 'boolean',
 				'AjoutOrientationPossible.situationetatdosrsa' => 'isarray',
-				'AjoutOrientationPossible.toppersdrodevorsa' => 'integer',
+				'AjoutOrientationPossible.toppersdrodevorsa' => 'string',
 				'Apre.forfaitaire.montantbase' => 'numeric',
 				'Apre.forfaitaire.montantenfant12' => 'numeric',
 				'Apre.forfaitaire.nbenfant12max' => 'integer',
