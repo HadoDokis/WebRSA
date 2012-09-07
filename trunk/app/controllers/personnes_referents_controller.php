@@ -5,13 +5,13 @@
 		public $name = 'PersonnesReferents';
 		public $uses = array( 'PersonneReferent', 'Option', 'Personne', 'Orientstruct', 'Structurereferente', 'Typerdv', 'Statutrdv', 'Referent' );
 		public $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Fileuploader', 'Default2' );
-		public $components = array( 'Fileuploader' );
+		public $components = array( 'Fileuploader', 'Jetons2' );
 
 		public $aucunDroit = array( 'ajaxreferent', 'ajaxreffonct', 'ajaxperm', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
 
-		/**		 * *******************************************************************
+		/**
 		 *
-		 * ** ****************************************************************** */
+		 */
 		protected function _setOptions() {
 			$this->set( 'struct', $this->Structurereferente->listOptions() );
 			$this->set( 'options', $this->PersonneReferent->allEnumLists() );
@@ -77,18 +77,16 @@
 			$dossier_id = $this->PersonneReferent->Personne->dossierId( $personne_id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
 
-			$this->PersonneReferent->begin();
-			if( !$this->Jetons->check( $dossier_id ) ) {
-				$this->PersonneReferent->rollback();
-			}
-			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
+			$this->Jetons2->get( $dossier_id );
 
 			// Retour à l'index en cas d'annulation
 			if( isset( $this->params['form']['Cancel'] ) ) {
+				$this->Jetons2->release( $dossier_id );
 				$this->redirect( array( 'action' => 'index', $personne_id ) );
 			}
 
 			if( !empty( $this->data ) ) {
+				$this->PersonneReferent->begin();
 
 				$saved = $this->PersonneReferent->updateAll(
 						array( 'PersonneReferent.haspiecejointe' => '\''.$this->data['PersonneReferent']['haspiecejointe'].'\'' ), array(
@@ -104,8 +102,8 @@
 				}
 
 				if( $saved ) {
-					$this->Jetons->release( $dossier_id );
 					$this->PersonneReferent->commit();
+					$this->Jetons2->release( $dossier_id );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 // 					$this->redirect( array(  'controller' => 'personnes_referents','action' => 'index', $personne_id ) );
 					$this->redirect( $this->referer() );
@@ -159,22 +157,26 @@
 			$this->set( 'personne_id', $personne_id );
 		}
 
-		/**		 * *******************************************************************
+		/**
 		 *
-		 * ** ****************************************************************** */
+		 */
 		public function add() {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
+		/**
+		 *
+		 */
 		public function edit() {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
-		/**		 * *******************************************************************
+		/**
 		 *
-		 * ** ****************************************************************** */
+		 * @param integer $id
+		 */
 		protected function _add_edit( $id = null ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
@@ -213,18 +215,15 @@
 				$personne_id = $personne_referent['PersonneReferent']['personne_id'];
 				$dossier_id = $this->PersonneReferent->dossierId( $personne_referent_id );
 			}
+			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
+
+			$this->Jetons2->get( $dossier_id );
 
 			// Retour à la liste en cas d'annulation
 			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
+				$this->Jetons2->release( $dossier_id );
 				$this->redirect( array( 'action' => 'index', $personne_id ) );
 			}
-
-			$this->PersonneReferent->begin();
-
-			$dossier_id = $this->Personne->dossierId( $personne_id );
-			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
-
-			$this->set( 'referents', $this->Referent->listOptions() );
 
 			$qd_orientstruct = array(
 					'conditions' => array(
@@ -237,29 +236,24 @@
 				$orientstruct = $this->Orientstruct->find( 'first', $qd_orientstruct );
 
 
-			$this->set( 'orientstruct', $orientstruct );
-
-			if( !empty( $orientstruct ) ) {
-				$sr = Set::classicExtract( $orientstruct, 'Orientstruct.structurereferente_id' );
-				$this->set( 'sr', $sr );
-			}
-
-			if( !$this->Jetons->check( $dossier_id ) ) {
-				$this->PersonneReferent->rollback();
-			}
-			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
-
 			if( !empty( $this->data ) ) {
+				$this->PersonneReferent->begin();
+
 				if( $this->PersonneReferent->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
 					if( $this->PersonneReferent->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
-						$this->Jetons->release( $dossier_id );
-						$this->PersonneReferent->commit(); /// FIXE
+						$this->PersonneReferent->commit();
+						$this->Jetons2->release( $dossier_id );
 						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 						$this->redirect( array( 'controller' => 'personnes_referents', 'action' => 'index', $personne_id ) );
 					}
 					else {
+						$this->PersonneReferent->rollback();
 						$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 					}
+				}
+				else {
+					$this->PersonneReferent->rollback();
+					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 				}
 			}
 			else {
@@ -267,13 +261,23 @@
 					$this->data = $personne_referent;
 				}
 			}
-			$this->PersonneReferent->commit();
+
 			$this->_setOptions();
+			$this->set( 'orientstruct', $orientstruct );
+			if( !empty( $orientstruct ) ) {
+				$sr = Set::classicExtract( $orientstruct, 'Orientstruct.structurereferente_id' );
+				$this->set( 'sr', $sr );
+			}
+			$this->set( 'referents', $this->Referent->listOptions() );
 			$this->set( 'personne_id', $personne_id );
 			$this->set( 'urlmenu', '/personnes_referents/index/'.$personne_id );
 			$this->render( $this->action, null, 'add_edit' );
 		}
 
+		/**
+		 *
+		 * @param integer $id
+		 */
 		public function cloturer( $id = null ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
@@ -294,20 +298,27 @@
 					)
 			);
 			$this->assert( !empty( $personne_referent ), 'invalidParameter' );
-			$this->set( 'personne_referent', $personne_referent );
 
+			$dossier_id = $this->PersonneReferent->Personne->dossierId( $personne_referent['PersonneReferent']['personne_id'] );
+
+			$this->Jetons2->get( $dossier_id );
+
+			$this->set( 'personne_referent', $personne_referent );
 			$this->set( 'personne_id', $personne_referent['PersonneReferent']['personne_id'] );
 
 			// Retour à la liste en cas d'annulation
 			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
+				$this->Jetons2->release( $dossier_id );
 				$this->redirect( array( 'action' => 'index', $personne_referent['PersonneReferent']['personne_id'] ) );
 			}
 
 			if( !empty( $this->data ) ) {
+				$this->PersonneReferent->begin();
 
 				if( $this->PersonneReferent->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
 					if( $this->PersonneReferent->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
 						$this->PersonneReferent->commit();
+						$this->Jetons2->release( $dossier_id );
 						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 						$this->redirect( array( 'controller' => 'personnes_referents', 'action' => 'index', $personne_referent['PersonneReferent']['personne_id'] ) );
 					}
@@ -315,6 +326,10 @@
 						$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 						$this->PersonneReferent->rollback();
 					}
+				}
+				else {
+					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+					$this->PersonneReferent->rollback();
 				}
 			}
 			else {
