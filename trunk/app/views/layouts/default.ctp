@@ -73,7 +73,7 @@
 					};
 				} );
 
-				<?php if( $useAlerteFinSession ):?>
+				<?php if( isset( $useAlerteFinSession ) && $useAlerteFinSession ):?>
 				if( '<?php echo $useAlerteFinSession;?>' ) {
 					var sessionTime = parseInt('<?php echo readTimeout(); ?>');
 					var warning5minutes = sessionTime - (5*60);
@@ -83,7 +83,7 @@
 				<?php endif;?>
 			} );
 
-			<?php if( $useAlerteFinSession ):?>
+			<?php if( isset( $useAlerteFinSession ) && $useAlerteFinSession ):?>
 			function alert5minutes() {
 				$('alertEndSession').show();
 			}
@@ -108,7 +108,7 @@
 		<body>
 	<?php endif; ?>
 
-<?php if( $useAlerteFinSession ):?>
+<?php if( isset( $useAlerteFinSession ) && $useAlerteFinSession ):?>
 	<div id="alertEndSession" style="display: none;">
 		<div id="popups" style="z-index: 1000;">
 			<div id="popup_0">
