@@ -4,8 +4,8 @@
 
 		public $name = 'Relancesapres';
 		public $uses = array( 'Apre', 'Option', 'Personne', 'Prestation'/* , 'Dsp' */, 'Actprof', 'Permisb', 'Amenaglogt', 'Acccreaentr', 'Acqmatprof', 'Locvehicinsert', 'Apre', 'Relanceapre' );
-		public $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml' );
-		public $aucunDroit = array( 'ajaxpiece' );
+		public $helpers = array( 'Locale', 'Csv',  'Xform', 'Xhtml' );
+
 		public $commeDroit = array(
 			'add' => 'Relancesapres:edit'
 		);
@@ -20,30 +20,6 @@
 			$piecesapre = $this->Apre->Pieceapre->find( 'list' );
 			$this->set( 'piecesapre', $piecesapre );
 			$this->set( 'natureAidesApres', $this->Option->natureAidesApres() );
-		}
-
-		/**
-		 *   Ajax pour les pièces liées à la bonne APRE
-		 */
-		public function ajaxpiece( $apre_id = null ) { // FIXME
-			Configure::write( 'debug', 0 );
-			$dataApre_id = Set::extract( $this->data, 'Relanceapre.apre_id' );
-			$apre_id = ( empty( $apre_id ) && !empty( $dataApre_id ) ? $dataApre_id : $apre_id );
-
-			$qd_apre = array(
-				'conditions' => array(
-					'Apre.id' => $apre_id
-				),
-				'fields' => null,
-				'order' => null,
-				'recursive' => 1
-			);
-			$apre = $this->Apre->find('first', $qd_apre);
-
-
-			$this->set( 'apre', $apre );
-
-			$this->render( 'ajaxpiece', 'ajax' );
 		}
 
 		/**
@@ -83,9 +59,16 @@
 					'conditions' => array(
 						'Relanceapre.id' => $relanceapre_id
 					),
-					'fields' => null,
+					'fields' => array_merge(
+						$this->Relanceapre->fields(),
+						array(
+							'Apre.personne_id'
+						)
+					),
 					'order' => null,
-					'recursive' => 1
+					'contain' => array(
+						'Apre'
+					)
 				);
 				$relanceapre = $this->Relanceapre->find( 'first', $qd_relanceapre );
 
