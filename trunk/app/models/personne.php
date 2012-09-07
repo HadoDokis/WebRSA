@@ -635,34 +635,20 @@
 		 *
 		 */
 		public function soumisDroitsEtDevoirs( $personne_id ) {
-			$this->unbindModelAll();
-			$this->bindModel(
-					array(
-						'hasMany' => array(
-							'Ressource' => array(
-								'order' => array( 'dfress DESC' )
-							)
-						),
-						'hasOne' => array(
-							'Dsp',
-							'Prestation' => array(
-								'foreignKey' => 'personne_id',
-								'conditions' => array(
-									'Prestation.natprest' => array( 'RSA' )
-								)
-							),
-							'Calculdroitrsa'
-						)
-					)
-			);
-
 			$qd_personne = array(
 				'conditions' => array(
 					'Personne.id' => $personne_id
 				),
 				'fields' => null,
 				'order' => null,
-				'recursive' => 1
+				'contain' => array(
+					'Ressource' => array(
+						'order' => array( 'dfress DESC' )
+					),
+					'Dsp',
+					'Prestation',
+					'Calculdroitrsa'
+				)
 			);
 			$personne = $this->find( 'first', $qd_personne );
 
