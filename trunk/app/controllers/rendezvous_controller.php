@@ -1,12 +1,13 @@
 <?php
 	App::import( 'Helper', 'Locale' );
+
 	class RendezvousController extends AppController
 	{
 
 		public $name = 'Rendezvous';
 		public $uses = array( 'Rendezvous', 'Option' );
 		public $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Default2', 'Fileuploader' );
-		public $components = array( 'Gedooo.Gedooo', 'Fileuploader' );
+		public $components = array( 'Gedooo.Gedooo', 'Fileuploader', 'Jetons2' );
 		public $commeDroit = array(
 			'view' => 'Rendezvous:index',
 			'add' => 'Rendezvous:edit'
@@ -114,24 +115,23 @@
 			$dossier_id = $this->Rendezvous->Personne->dossierId( $personne_id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
 
-			$this->Rendezvous->begin();
-			if( !$this->Jetons->check( $dossier_id ) ) {
-				$this->Rendezvous->rollback();
-			}
-			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
+			$this->Jetons2->get( $dossier_id );
 
 			// Retour à l'index en cas d'annulation
 			if( isset( $this->params['form']['Cancel'] ) ) {
+				$this->Jetons2->release( $dossier_id );
 				$this->redirect( array( 'action' => 'index', $personne_id ) );
 			}
 
 			if( !empty( $this->data ) ) {
+				$this->Rendezvous->begin();
 
 				$saved = $this->Rendezvous->updateAll(
-						array( 'Rendezvous.haspiecejointe' => '\''.$this->data['Rendezvous']['haspiecejointe'].'\'' ), array(
-					'"Rendezvous"."personne_id"' => $personne_id,
-					'"Rendezvous"."id"' => $id
-						)
+					array( 'Rendezvous.haspiecejointe' => '\''.$this->data['Rendezvous']['haspiecejointe'].'\'' ),
+					array(
+						'"Rendezvous"."personne_id"' => $personne_id,
+						'"Rendezvous"."id"' => $id
+					)
 				);
 
 				if( $saved ) {
@@ -141,8 +141,8 @@
 				}
 
 				if( $saved ) {
-					$this->Jetons->release( $dossier_id );
 					$this->Rendezvous->commit();
+					$this->Jetons2->release( $dossier_id );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 // 					$this->redirect( array(  'controller' => 'rendezvous','action' => 'index', $personne_id ) );
 					$this->redirect( $this->referer() );
@@ -165,55 +165,55 @@
 		public function index( $personne_id = null ) {
 			$this->Rendezvous->Personne->unbindModelAll();
 			$nbrPersonnes = $this->Rendezvous->Personne->find(
-					'count', array(
-				'conditions' => array(
-					'Personne.id' => $personne_id
-				),
-				'contain' => false
-					)
+				'count',
+				array(
+					'conditions' => array(
+						'Personne.id' => $personne_id
+					),
+					'contain' => false
+				)
 			);
 			$this->assert( ( $nbrPersonnes == 1 ), 'invalidParameter' );
 
 			$this->Rendezvous->forceVirtualFields = true;
 			$rdvs = $this->Rendezvous->find(
-					'all', array(
-				'fields' => array(
-					'Rendezvous.id',
-					'Rendezvous.personne_id',
-					'Personne.nom_complet',
-					'Structurereferente.lib_struc',
-					'Referent.nom_complet',
-					'Permanence.libpermanence',
-					'Typerdv.libelle',
-					'Statutrdv.libelle',
-					'Rendezvous.daterdv',
-					'Rendezvous.heurerdv',
-					'Rendezvous.objetrdv',
-					'Rendezvous.commentairerdv',
-					'StatutrdvTyperdv.motifpassageep',
-					$this->Rendezvous->Fichiermodule->sqNbFichiersLies( $this->Rendezvous, 'nb_fichiers_lies' )
-				),
-				'joins' => array(
-					$this->Rendezvous->join( 'Personne' ),
-					$this->Rendezvous->join( 'Structurereferente' ),
-					$this->Rendezvous->join( 'Referent' ),
-					$this->Rendezvous->join( 'Statutrdv' ),
-					$this->Rendezvous->join( 'Permanence' ),
-					$this->Rendezvous->join( 'Typerdv' ),
-					$this->Rendezvous->Typerdv->join( 'StatutrdvTyperdv' )
-				),
-				'contain' => false,
-				'conditions' => array(
-					'Rendezvous.personne_id' => $personne_id
-				),
-				'order' => array(
-					'Rendezvous.daterdv DESC',
-					'Rendezvous.heurerdv DESC'
-				)
+				'all',
+				array(
+					'fields' => array(
+						'Rendezvous.id',
+						'Rendezvous.personne_id',
+						'Personne.nom_complet',
+						'Structurereferente.lib_struc',
+						'Referent.nom_complet',
+						'Permanence.libpermanence',
+						'Typerdv.libelle',
+						'Statutrdv.libelle',
+						'Rendezvous.daterdv',
+						'Rendezvous.heurerdv',
+						'Rendezvous.objetrdv',
+						'Rendezvous.commentairerdv',
+						'StatutrdvTyperdv.motifpassageep',
+						$this->Rendezvous->Fichiermodule->sqNbFichiersLies( $this->Rendezvous, 'nb_fichiers_lies' )
+					),
+					'joins' => array(
+						$this->Rendezvous->join( 'Personne' ),
+						$this->Rendezvous->join( 'Structurereferente' ),
+						$this->Rendezvous->join( 'Referent' ),
+						$this->Rendezvous->join( 'Statutrdv' ),
+						$this->Rendezvous->join( 'Permanence' ),
+						$this->Rendezvous->join( 'Typerdv' ),
+						$this->Rendezvous->Typerdv->join( 'StatutrdvTyperdv' )
+					),
+					'contain' => false,
+					'conditions' => array(
+						'Rendezvous.personne_id' => $personne_id
+					),
+					'order' => array(
+						'Rendezvous.daterdv DESC',
+						'Rendezvous.heurerdv DESC'
 					)
+				)
 			);
-// debug($rdvs);
-
 
 			if( isset( $rdvs['0']['Rendezvous']['id'] ) && !empty( $rdvs['0']['Rendezvous']['id'] ) ) {
 				$lastrdv_id = $rdvs['0']['Rendezvous']['id'];
@@ -397,21 +397,18 @@
 				$this->redirect( array( 'action' => 'index', $personne_id ) );
 			}
 
-			$this->Rendezvous->begin();
-
 			$dossier_id = $this->Rendezvous->Personne->dossierId( $personne_id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
 
-			if( !$this->Jetons->check( $dossier_id ) ) {
-				$this->Rendezvous->rollback();
-			}
-			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
+			$this->Jetons2->get( $dossier_id );
 
 			$referents = $this->Rendezvous->Referent->listOptions();
 			$this->set( 'referents', $referents );
 
 
 			if( !empty( $this->data ) ) {
+				$this->Rendezvous->begin();
+
 				if( $this->Rendezvous->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
 					if( $this->Rendezvous->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
 						if( !empty( $this->data['Rendezvous']['statutrdv_id'] ) && $this->Rendezvous->Statutrdv->provoquePassageEp( $this->data['Rendezvous']['statutrdv_id'] ) && Configure::read( 'Cg.departement' ) == 58 ) {
@@ -433,8 +430,8 @@
 								$this->Rendezvous->Personne->Dossierep->Sanctionrendezvousep58->save( $sanctionrendezvousep58 );
 							}
 						}
-						$this->Jetons->release( $dossier_id );
 						$this->Rendezvous->commit();
+						$this->Jetons2->release( $dossier_id );
 						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 						$this->redirect( array( 'controller' => 'rendezvous', 'action' => 'index', $personne_id ) );
 					}
@@ -442,6 +439,10 @@
 						$this->Rendezvous->rollback();
 						$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 					}
+				}
+				else {
+					$this->Rendezvous->rollback();
+					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 				}
 			}
 			else {
@@ -474,7 +475,7 @@
 					}
 				}
 			}
-			$this->Rendezvous->commit();
+//			$this->Rendezvous->commit();
 
 			$struct_id = Set::classicExtract( $this->data, "{$this->modelClass}.structurereferente_id" );
 			$this->set( 'struct_id', $struct_id );
@@ -504,16 +505,21 @@
 		 */
 		public function delete( $id ) {
 			$rendezvous = $this->Rendezvous->find(
-					'first', array(
-				'fields' => array(
-					'Rendezvous.personne_id'
-				),
-				'conditions' => array(
-					'Rendezvous.id' => $id
-				),
-				'contain' => false
-					)
+				'first',
+				array(
+					'fields' => array(
+						'Rendezvous.personne_id'
+					),
+					'conditions' => array(
+						'Rendezvous.id' => $id
+					),
+					'contain' => false
+				)
 			);
+
+			$dossier_id = $this->Rendezvous->dossierId( $id );
+			$this->Jetons2->get( $dossier_id );
+
 			$success = true;
 
 			$this->Rendezvous->begin();
@@ -541,12 +547,16 @@
 			$success = $this->Rendezvous->delete( $id ) && $success;
 
 			$this->_setFlashResult( 'Delete', $success );
+
+			$this->Jetons2->release( $dossier_id );
+
 			if( $success ) {
 				$this->Rendezvous->commit();
 			}
 			else {
 				$this->Rendezvous->rollback();
 			}
+
 			$this->redirect( array( 'controller' => 'rendezvous', 'action' => 'index', $rendezvous['Rendezvous']['personne_id'] ) );
 		}
 
