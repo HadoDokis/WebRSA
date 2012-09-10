@@ -325,6 +325,7 @@
 
 				/// Conditions de base
 				$conditions = array();
+				$conditions = $this->conditionsSituationdossierrsa( $conditions, $criteres );
 
 				if( in_array( $statutOrientation, array( 'Calculables', 'Non calculables' ) ) ) {
 					$enattente = Set::classicExtract( $criteres, 'Filtre.enattente' );
@@ -370,15 +371,16 @@
 // 						$conditions[] = 'Calculdroitrsa.toppersdrodevorsa = \'1\'';
 
 					}
+				
 
 					// INFO: ne faire apparaître les personnes à orienter que si le dossier se trouve dans un état ouvert
-					$etatdossier = Set::extract( $criteres, 'Situationdossierrsa.etatdosrsa' );
-					if( isset( $criteres['Situationdossierrsa']['etatdosrsa'] ) && !empty( $criteres['Situationdossierrsa']['etatdosrsa'] ) ) {
-						$conditions[] = '( Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $etatdossier ).'\' ) )';
-					}
-					else {
-						$conditions[] = '( Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatOuvert() ).'\' ) )';
-					}
+// 					$etatdossier = Set::extract( $criteres, 'Situationdossierrsa.etatdosrsa' );
+// 					if( isset( $criteres['Situationdossierrsa']['etatdosrsa'] ) && !empty( $criteres['Situationdossierrsa']['etatdosrsa'] ) ) {
+// 						$conditions[] = '( Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $etatdossier ).'\' ) )';
+// 					}
+// 					else {
+// 						$conditions[] = '( Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatOuvert() ).'\' ) )';
+// 					}
 
 
 					// INFO: ne faire apparaître les personnes à orienter que si le dossier se trouve en RSA Socle
@@ -823,6 +825,8 @@
 			$conditions = array(
 				'orientsstructs.statut_orient = \''.Sanitize::clean( $statutOrientation ).'\''
 			);
+			
+			$conditions = $this->conditionsSituationdossierrsa( $conditions, $criteres );
 
 			if( $statutOrientation == 'Orienté' ) {
 				// INFO: nouvelle manière de générer les PDFs
@@ -832,9 +836,13 @@
 				// INFO: ne faire apparaître les personnes à orienter que si la personne est soumise à droits et devoirs
 				$conditions[] = 'calculsdroitsrsa.toppersdrodevorsa = \'1\'';
 				// INFO: ne faire apparaître les personnes à orienter que si le dossier se trouve dans un état ouvert
-				$conditions[] = '( situationsdossiersrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatOuvert() ).'\' ) )';
+// 				$conditions[] = '( situationsdossiersrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatOuvert() ).'\' ) )';
 			}
 
+			
+
+			
+			
 			/// Filtre zone géographique
 			if( $filtre_zone_geo ) {
 				$mesCodesInsee = ( !empty( $mesCodesInsee ) ? $mesCodesInsee : '0' );
