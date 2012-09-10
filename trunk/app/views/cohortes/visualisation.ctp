@@ -103,7 +103,7 @@
 								</tr>
 								<tr>
 									<th>Motif de fin de droit</th>
-									<td>'.h( $personne['Situationdossierrsa']['moticlorsa'] ).'</td>
+									<td>'.h( @$moticlorsa[$personne['Situationdossierrsa']['moticlorsa']] ).'</td>
 								</tr>
 								<tr>
 									<th>Rôle</th>

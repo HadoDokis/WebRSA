@@ -105,6 +105,7 @@
 			if( in_array( $this->action, array( 'orientees', 'exportcsv', 'statistiques' ) ) ) {
 				$this->set( 'options', $this->Personne->Orientstruct->enums() );
 			}
+			$this->set( 'moticlorsa', $this->Option->moticlorsa() );
 		}
 
 		/**
