@@ -1,6 +1,6 @@
 <?php
     $domain = "actioncandidat_personne_".Configure::read( 'ActioncandidatPersonne.suffixe' );
-    echo $this->element( 'dossier_menu', array( 'id' => $dossierId, 'personne_id' => $personne_id ) );
+    echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
 
 	$typeFiche = '';
 	if( Configure::read( 'Cg.departement' ) == 66 ){

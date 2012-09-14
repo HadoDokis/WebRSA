@@ -469,5 +469,34 @@
 			);
 			return Set::extract( $items, '/'.$this->Actioncandidat->alias.'/modele' );
 		}
-	}
+        
+		/**
+		 * Retourne l'id du dossier à partir de l'id de l'enregistrement du modèle.
+		 *
+		 * @param integer $actioncandidat_personne_id
+		 * @return integer
+		 */
+		public function dossierId( $actioncandidat_personne_id ) {
+			$querydata = array(
+				'fields' => array( 'Foyer.dossier_id' ),
+				'joins' => array(
+                    $this->join( 'Personne', array( 'type' => 'INNER' ) ),
+					$this->Personne->join( 'Foyer', array( 'type' => 'INNER' ) )
+				),
+				'conditions' => array(
+					'ActioncandidatPersonne.id' => $actioncandidat_personne_id
+				),
+				'recursive' => -1
+			);
+
+			$actioncandidat_personne = $this->find( 'first', $querydata );
+
+			if( !empty( $actioncandidat_personne ) ) {
+				return $actioncandidat_personne['Foyer']['dossier_id'];
+			}
+			else {
+				return null;
+			}
+		}
+	}  
 ?>
