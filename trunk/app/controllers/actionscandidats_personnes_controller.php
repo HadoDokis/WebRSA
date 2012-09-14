@@ -548,7 +548,14 @@
 			$user = $this->User->find( 'first', $qd_user );
 
 			$codeinseeUser = Set::classicExtract( $user, 'Serviceinstructeur.code_insee' );
-			$actionsfiche = $this->{$this->modelClass}->Actioncandidat->listePourFicheCandidature( $codeinseeUser );
+                        
+                        //On affiche les actions inactives en édition mais pas en ajout, 
+                        // afin de pouvoir gérer les actions n'étant plus prises en compte mais toujours en cours
+                        $isactive = 'O';
+                        if( $this->action == 'edit' ){
+                            $isactive = array( 'O', 'N' );
+                        }
+			$actionsfiche = $this->{$this->modelClass}->Actioncandidat->listePourFicheCandidature( $codeinseeUser, $isactive );
 			$this->set( 'actionsfiche', $actionsfiche );
 
 
