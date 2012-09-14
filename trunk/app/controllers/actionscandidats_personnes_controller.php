@@ -6,28 +6,9 @@
 //6,08 secondes. 25.48 MB / 25.75 MB. 132 modèles
 //5,97 secondes. 25.36 MB / 25.75 MB. 130 modèles
 //2,99 secondes. 20.16 MB / 20.50 MB. 75 modèles
-		public $uses = array(
-			'ActioncandidatPersonne',
-			'Option',
-// 			'Personne',
-// 			'Actioncandidat',
-// 			'Partenaire',
-// 			'Typerdv',
-// 			'PersonneReferent',
-// 			'Referent',
-				//'Rendezvous',
-// 			'ActioncandidatPartenaire',
-// 			'Contactpartenaire',
-// 			'Adressefoyer',
-// 			'Detailnatmob',
-// 			'Dsp',
-// 			'Serviceinstructeur',
-// 			'Foyer',
-//             'Structurereferente',
-// 			'Motifsortie'
-		);
+		public $uses = array( 'ActioncandidatPersonne','Option' );
 		public $helpers = array( 'Default', 'Locale', 'Csv', 'Ajax', 'Xform', 'Default2', 'Fileuploader' );
-		public $components = array( 'Email', 'Default', 'Gedooo.Gedooo', 'Fileuploader' );
+		public $components = array( 'Email', 'Default', 'Gedooo.Gedooo', 'Fileuploader', 'Jetons2' );
 		public $aucunDroit = array( 'ajaxpart', 'ajaxstruct', 'ajaxreferent', 'ajaxreffonct', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
 		public $commeDroit = array(
 			'view' => 'ActionscandidatsPersonnes:index',
@@ -54,10 +35,6 @@
 			}
 			$field = Inflector::singularize( Inflector::tableize( 'Actioncandidat' ) ).'_id';
 			$options = Set::insert( $options, "{$this->modelClass}.{$field}", $this->{$this->modelClass}->{'Actioncandidat'}->find( 'list', array( 'recursive' => -1, 'order' => 'name' ) ) );
-			App::import( 'Helper', 'Locale' );
-			$this->Locale = new LocaleHelper();
-
-// 			$options = Set::insert( $options, 'ActioncandidatPersonne.naturemobile', $this->ActioncandidatPersonne->Personne->Dsp->Detailnatmob->enumList( 'natmob' ) );
 
 			$this->set( 'typevoie', $this->Option->typevoie() );
 			$this->set( 'qual', $this->Option->qual() );
@@ -147,18 +124,16 @@
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
 			$personne_id = Set::classicExtract( $actioncandidat_personne, 'ActioncandidatPersonne.personne_id' );
 
-			$this->ActioncandidatPersonne->begin();
-			if( !$this->Jetons->check( $dossier_id ) ) {
-				$this->ActioncandidatPersonne->rollback();
-			}
-			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
+            $this->Jetons2->get( $dossier_id );
 
 			// Retour à l'index en cas d'annulation
 			if( isset( $this->params['form']['Cancel'] ) ) {
-				$this->redirect( array( 'action' => 'index', $personne_id ) );
+                $this->Jetons2->release( $dossier_id );
+                $this->redirect( array( 'action' => 'index', $personne_id ) );
 			}
 
 			if( !empty( $this->data ) ) {
+                $this->ActioncandidatPersonne->begin();
 
 				$saved = $this->ActioncandidatPersonne->updateAll(
 						array( 'ActioncandidatPersonne.haspiecejointe' => '\''.$this->data['ActioncandidatPersonne']['haspiecejointe'].'\'' ), array(
@@ -173,8 +148,8 @@
 				}
 
 				if( $saved ) {
-					$this->Jetons->release( $dossier_id );
 					$this->ActioncandidatPersonne->commit();
+					$this->Jetons2->release( $dossier_id );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 // 					$this->redirect( array(  'controller' => 'actionscandidats_personnes','action' => 'index', $personne_id ) );
 					$this->redirect( $this->referer() );
@@ -198,9 +173,9 @@
 		 */
 		public function index( $personne_id ) {
 			// Préparation du menu du dossier
-			$dossierId = $this->ActioncandidatPersonne->Personne->dossierId( $personne_id );
-			$this->assert( !empty( $dossierId ), 'invalidParameter' );
-			$this->set( compact( 'dossierId' ) );
+			$dossier_id = $this->ActioncandidatPersonne->Personne->dossierId( $personne_id );
+			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
+			$this->set( 'dossier_id', $dossier_id );
 
 			//Vérification de la présence d'une orientation ou d'un référent pour cet allocataire
 			$referentLie = $this->ActioncandidatPersonne->Personne->PersonneReferent->find(
@@ -421,31 +396,36 @@
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
-		/**
-		 *
-		 */
+        /**
+         *
+         * @param integer $id Lors d'un add, c'est l'id de la Personne, sinon l'id
+         *  de l'ActionCandidat
+         */
 		protected function _add_edit( $id = null ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
+
+			if( $this->action == 'add' ) {
+                $personne_id = $id;
+                $dossier_id = $this->ActioncandidatPersonne->Personne->dossierId( $personne_id );
+            }
+            else {
+                $dossier_id = $this->ActioncandidatPersonne->dossierId( $id );
+            }
+            $this->assert( !empty( $dossier_id ), 'invalidParameter' );
+            
+            $this->Jetons2->get( $dossier_id );
 
 			$useDsps = ( Configure::read( 'ActioncandidatPersonne.suffixe' ) == 'cg93' );
 
 			// Retour à l'index en cas d'annulation
-			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
-				if( $this->action == 'edit' ) {
-					$id = $this->ActioncandidatPersonne->field( 'personne_id', array( 'id' => $id ) );
-				}
-				$this->redirect( array( 'action' => 'index', $id ) );
+			if( isset( $this->params['form']['Cancel'] ) ) {
+                $personne_id = $this->data['ActioncandidatPersonne']['personne_id'];
+                $this->Jetons2->release( $dossier_id );
+				$this->redirect( array( 'action' => 'index', $personne_id ) );
 			}
 
 			// Récupération des id afférents
 			if( $this->action == 'add' ) {
-				$personne_id = $id;
-				// Préparation du menu du dossier
-				$dossierId = $this->ActioncandidatPersonne->Personne->dossierId( $personne_id );
-
-				$this->assert( !empty( $dossierId ), 'invalidParameter' );
-				$this->set( compact( 'dossierId', 'personne_id' ) );
-
 				///Pour récupérer le référent lié à la personne s'il existe déjà
 				$personne_referent = $this->ActioncandidatPersonne->Personne->PersonneReferent->find( 'first', array( 'conditions' => array( 'PersonneReferent.personne_id' => $personne_id, 'PersonneReferent.dfdesignation IS NULL' ), 'contain' => false ) );
 
@@ -484,27 +464,12 @@
 				$actioncandidat_personne = $this->ActioncandidatPersonne->find( 'first', $qd_actioncandidat_personne );
 				$this->assert( !empty( $actioncandidat_personne ), 'invalidParameter' );
 
-				$personne_id = Set::classicExtract( $actioncandidat_personne, 'ActioncandidatPersonne.personne_id' );
-
-				$qd_personne = array(
-					'conditions' => array(
-						'Personne.id' => $personne_id
-					),
-					'fields' => null,
-					'order' => null,
-					'recursive' => -1
-				);
-				$personne = $this->ActioncandidatPersonne->Personne->find( 'first', $qd_personne );
+				$personne_id = $actioncandidat_personne['ActioncandidatPersonne']['personne_id'];
 
 				$referentId = null;
-				$this->set( compact( 'referentId', 'personne' ) );
-
-				$dossierId = $this->ActioncandidatPersonne->Personne->dossierId( $personne_id );
-				$this->assert( !empty( $dossierId ), 'invalidParameter' );
-				$this->set( compact( 'dossierId', 'personne_id' ) );
+				$this->set( compact('referentId' ) );
 			}
-
-			$this->set( 'personne_id', $personne_id );
+            $this->set( 'personne_id', $personne_id );
 
 			$personne = $this->{$this->modelClass}->Personne->newDetailsCi( $personne_id, $this->Session->read( 'Auth.User.id' ) );
 			$this->set( 'personne', $personne );
@@ -549,43 +514,39 @@
 
 			$codeinseeUser = Set::classicExtract( $user, 'Serviceinstructeur.code_insee' );
                         
-                        //On affiche les actions inactives en édition mais pas en ajout, 
-                        // afin de pouvoir gérer les actions n'étant plus prises en compte mais toujours en cours
-                        $isactive = 'O';
-                        if( $this->action == 'edit' ){
-                            $isactive = array( 'O', 'N' );
-                        }
+            //On affiche les actions inactives en édition mais pas en ajout, 
+            // afin de pouvoir gérer les actions n'étant plus prises en compte mais toujours en cours
+            $isactive = 'O';
+            if( $this->action == 'edit' ){
+                $isactive = array( 'O', 'N' );
+            }
 			$actionsfiche = $this->{$this->modelClass}->Actioncandidat->listePourFicheCandidature( $codeinseeUser, $isactive );
 			$this->set( 'actionsfiche', $actionsfiche );
 
-
-			$this->ActioncandidatPersonne->begin();
-
 			if( !empty( $this->data ) ) {
-				if( $useDsps ) { // Récupération des Dsps et sauvegarde, si besoin
-					$this->ActioncandidatPersonne->Personne->Dsp->saveAll( $this->data, array( 'validate' => 'only' ) );
-				}
+                $this->ActioncandidatPersonne->begin();
 
 				if( $this->ActioncandidatPersonne->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
 
 					if( $useDsps ) { ///Récupération des Dsps et sauvegarde
-						$this->ActioncandidatPersonne->Personne->Dsp->create();
-						$this->ActioncandidatPersonne->Personne->Dsp->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) );
+						$success = $this->ActioncandidatPersonne->Personne->Dsp->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) );
 					}
+                    else {
+                        $success = true;                        
+                    }
 
 					// SAuvegarde des numéros ed téléphone si ceux-ci ne sont pas présents en amont
 					if( isset( $this->data['Personne'] ) ) {
 						$isDataPersonne = Set::filter( $this->data['Personne'] );
 						if( !empty( $isDataPersonne ) ) {
-							$success = $this->{$this->modelClass}->Personne->save( array( 'Personne' => $this->data['Personne'] ) );
+                            $this->{$this->modelClass}->Personne->create( array( 'Personne' => $this->data['Personne'] ) );
+							$success = $this->{$this->modelClass}->Personne->save() && $success;
 						}
 					}
 
-
-					if( $this->ActioncandidatPersonne->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
-
-						$this->Jetons->release( $dossierId );
+					if( $success && $this->ActioncandidatPersonne->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
 						$this->ActioncandidatPersonne->commit();
+						$this->Jetons2->release( $dossier_id );
 						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 						$this->redirect( array( 'controller' => 'actionscandidats_personnes', 'action' => 'index', $personne_id ) );
 					}
@@ -613,7 +574,9 @@
 					if( empty( $dsp ) ) {
 						$dsp = array( 'Dsp' => array( 'personne_id' => $personne_id ) );
 						$this->ActioncandidatPersonne->Personne->Dsp->set( $dsp );
+                        $this->ActioncandidatPersonne->Personne->Dsp->begin();
 						if( $this->ActioncandidatPersonne->Personne->Dsp->save( $dsp ) ) {
+                            $this->ActioncandidatPersonne->Personne->Dsp->commit();
 							$qd_dsp = array(
 								'conditions' => array(
 									'Dsp.personne_id' => $personne_id
@@ -625,6 +588,7 @@
 							$dsp = $this->ActioncandidatPersonne->Personne->Dsp->find( 'first', $qd_dsp );
 						}
 						else {
+                            $this->ActioncandidatPersonne->Personne->Dsp->rollback();
 							$this->cakeError( 'error500' );
 						}
 						$this->assert( !empty( $dsp ), 'error500' );
@@ -635,8 +599,31 @@
 				}
 			}
 
-			$this->_setOptions();
-			$this->ActioncandidatPersonne->commit();
+			// $options cacheables pour tout le monde
+			$cacheKey = "{$this->name}_{$this->action}_options";
+			$options = Cache::read( $cacheKey );
+
+			if( $options === false ) {
+				$options = array();
+
+				$this->loadModel( 'Option' );
+				$options['Adresse'] = array( 'typevoie' => $this->Option->typevoie() );
+                $options['Personne'] = array( 'qual' => $this->Option->qual() );
+                $options['Contratinsertion'] = array( 'decision_ci' => $this->Option->decision_ci() );
+                $options['Prestation'] = array( 'rolepers' => $this->Option->rolepers() );
+                $options['Suiviinstruction'] = array( 'typeserins' => $this->Option->typeserins() );
+
+				Cache::write( $cacheKey, $options );
+			}
+
+            // Cache géré dans les modèles
+            $options[$this->modelClass] = $this->{$this->modelClass}->allEnumLists();
+            $options[$this->modelClass]['referent_id'] = $this->{$this->modelClass}->Referent->referentsListe();
+            $options[$this->modelClass]['motifsortie_id'] = $this->{$this->modelClass}->Motifsortie->listOptions();
+            $options[$this->modelClass]['actioncandidat_id'] = $this->{$this->modelClass}->Actioncandidat->listOptions();
+            $options['Dsp']['nivetu'] = $this->ActioncandidatPersonne->Personne->Dsp->enumList( 'nivetu' );
+
+			$this->set( compact( 'options' ) );
 
 			$this->render( $this->action, null, 'add_edit_'.Configure::read( 'ActioncandidatPersonne.suffixe' ) );
 		}
@@ -705,10 +692,10 @@
 		public function view( $id ) {
 			$this->ActioncandidatPersonne->forceVirtualFields = true;
 			$personne_id = $this->ActioncandidatPersonne->field( 'personne_id', array( 'id' => $id ) );
-			$dossierId = $this->ActioncandidatPersonne->Personne->dossierId( $personne_id );
+			$dossier_id = $this->ActioncandidatPersonne->Personne->dossierId( $personne_id );
 			$this->ActioncandidatPersonne->forceVirtualFields = false;
-			$this->assert( !empty( $dossierId ), 'invalidParameter' );
-			$this->set( compact( 'dossierId', 'personne_id' ) );
+			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
+			$this->set( 'personne_id', $personne_id );
 
 
 			$actionscandidatspersonne = $this->ActioncandidatPersonne->find(
