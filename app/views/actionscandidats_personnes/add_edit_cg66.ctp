@@ -7,7 +7,7 @@
 		echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
 	}
 
-	echo $this->element( 'dossier_menu', array( 'id' => $dossierId, 'personne_id' => $personne_id ) );
+	echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
 ?>
 
 <div class="with_treemenu">
@@ -25,10 +25,10 @@
 
 			echo $default->subform(
 				array(
-					'ActioncandidatPersonne.personne_id' => array( 'value' => $personneId, 'type' => 'hidden' ),
+					'ActioncandidatPersonne.personne_id' => array( 'value' => $personne_id, 'type' => 'hidden' ),
 					'ActioncandidatPersonne.actioncandidat_id' => array( 'type' => 'select', 'options' => $actionsfiche ),
 					'ActioncandidatPersonne.referent_id' => array( 'value' => $referentId ),
-					'Personne.id' => array( 'value' => $personneId, 'type' => 'hidden' ),
+					'Personne.id' => array( 'value' => $personne_id, 'type' => 'hidden' ),
 				),
 				array(
 					'domain' => $domain,
@@ -63,9 +63,9 @@
 		<table class="wide noborder">
 			<tr>
 				<td class="mediumSize noborder">
-					<strong>Statut de la personne : </strong><?php echo Set::extract( $rolepers, Set::extract( $personne, 'Prestation.rolepers' ) ); ?>
+					<strong>Statut de la personne : </strong><?php echo Set::extract( $options['Prestation']['rolepers'], Set::extract( $personne, 'Prestation.rolepers' ) ); ?>
 					<br />
-					<strong>Nom : </strong><?php echo Set::enum( Set::classicExtract( $personne, 'Personne.qual') , $qual ).' '.Set::classicExtract( $personne, 'Personne.nom' );?>
+					<strong>Nom : </strong><?php echo Set::enum( Set::classicExtract( $personne, 'Personne.qual') , $options['Personne']['qual'] ).' '.Set::classicExtract( $personne, 'Personne.nom' );?>
 					<br />
 					<strong>Prénom : </strong><?php echo Set::classicExtract( $personne, 'Personne.prenom' );?>
 					<br />
@@ -74,7 +74,7 @@
 				<td class="mediumSize noborder">
 					<strong>N° Service instructeur : </strong>
 					<?php
-						$libservice = Set::enum( Set::classicExtract( $personne, 'Suiviinstruction.typeserins' ),  $typeserins );
+						$libservice = Set::enum( Set::classicExtract( $personne, 'Suiviinstruction.typeserins' ),  $options['Suiviinstruction']['typeserins'] );
 						if( isset( $libservice ) ) {
 							echo $libservice;
 						}
@@ -101,7 +101,7 @@
 			</tr>
 			<tr>
 				<td class="mediumSize noborder">
-					<strong>Adresse : </strong><br /><?php echo Set::classicExtract( $personne, 'Adresse.numvoie' ).' '.Set::enum( Set::classicExtract( $personne, 'Adresse.typevoie' ), $typevoie ).' '.Set::classicExtract( $personne, 'Adresse.nomvoie' ).'<br /> '.Set::classicExtract( $personne, 'Adresse.codepos' ).' '.Set::classicExtract( $personne, 'Adresse.locaadr' );?>
+					<strong>Adresse : </strong><br /><?php echo Set::classicExtract( $personne, 'Adresse.numvoie' ).' '.Set::enum( Set::classicExtract( $personne, 'Adresse.typevoie' ), $options['Adresse']['typevoie'] ).' '.Set::classicExtract( $personne, 'Adresse.nomvoie' ).'<br /> '.Set::classicExtract( $personne, 'Adresse.codepos' ).' '.Set::classicExtract( $personne, 'Adresse.locaadr' );?>
 				</td>
 			<tr>
 				<td class="mediumSize noborder">

@@ -190,12 +190,13 @@
 			$this->set( compact( 'referentLie' ) );
 
 			$orientationLiee = $this->ActioncandidatPersonne->Personne->Orientstruct->find(
-					'count', array(
-				'conditions' => array(
-					'Orientstruct.personne_id' => $personne_id
-				),
-				'contain' => false
-					)
+				'count',
+                array(
+                    'conditions' => array(
+                        'Orientstruct.personne_id' => $personne_id
+                	),
+                    'contain' => false
+                )
 			);
 			$this->set( compact( 'orientationLiee' ) );
 

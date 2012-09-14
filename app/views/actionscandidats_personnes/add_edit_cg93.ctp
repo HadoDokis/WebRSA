@@ -7,7 +7,7 @@
 		echo $javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
 	}
 
-	echo $this->element( 'dossier_menu', array( 'id' => $dossierId, 'personne_id' => $personne_id ) );
+	echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
 ?>
 
 <div class="with_treemenu">
@@ -169,7 +169,7 @@
 				echo $default->subform(
 					array(
 						'Dsp.id' => array( 'type' => 'hidden' ),
-						'Dsp.personne_id' => array( 'value' => $personneId, 'type' => 'hidden' ),
+						'Dsp.personne_id' => array( 'value' => $personne_id, 'type' => 'hidden' ),
 						'Dsp.nivetu' => array( 'options' => $options['Dsp']['nivetu'], 'required' => true, 'empty' => true ),
 						'Dsp.libautrqualipro' => array( 'type' => 'textarea' )
 					)
@@ -252,7 +252,7 @@
 
 			echo $default->subform(
 				array(
-					'ActioncandidatPersonne.personne_id' => array( 'value' => $personneId, 'type' => 'hidden' ),
+					'ActioncandidatPersonne.personne_id' => array( 'value' => $personne_id, 'type' => 'hidden' ),
 					'ActioncandidatPersonne.actioncandidat_id' => array( 'type' => 'select' )
 				),
 				array(

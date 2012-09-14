@@ -1,6 +1,6 @@
 <?php
     $domain = "actioncandidat_personne_".Configure::read( 'ActioncandidatPersonne.suffixe' );
-    echo $this->element( 'dossier_menu', array( 'id' => $dossierId ) );
+    echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
 
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
