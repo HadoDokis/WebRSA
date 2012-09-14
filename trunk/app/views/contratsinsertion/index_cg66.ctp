@@ -81,11 +81,12 @@
 					$action = ( ( $contratinsertion['Contratinsertion']['forme_ci'] == 'S' ) ? 'propositionsimple' : 'propositionparticulier' );
 					$dateCreation = Set::classicExtract( $contratinsertion, 'Contratinsertion.created' );
 					$periodeblock = false;
-					if( !empty( $dateCreation ) ){
-						if(  ( time() >= ( strtotime( $dateCreation ) + 3600 * Configure::read( 'Periode.modifiablecer.nbheure' ) ) ) ){
-							$periodeblock = true;
-						}
-					}
+// 					if( !empty( $dateCreation ) ){
+// 						if(  ( time() >= ( strtotime( $dateCreation ) + 3600 * Configure::read( 'Periode.modifiablecer.nbheure' ) ) ) ){
+// 							$periodeblock = true;
+// 						}
+// 					}
+
 
 					$decision = Set::classicExtract( $decision_ci, Set::classicExtract( $contratinsertion, 'Contratinsertion.decision_ci' ) );
 					$position = Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' );
@@ -112,8 +113,12 @@
 						$positioncer = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ), $options['positioncer'] );
 					}
 
+					// Blocage du CER si la proposition de décision est émise (Validé ou Non)
 					$isvalidcer = Set::classicExtract( $contratinsertion, 'Propodecisioncer66.isvalidcer' );
-// debug($isvalidcer);
+					if( !empty( $isvalidcer ) ) {
+						$periodeblock = true;
+					}
+
 					echo $xhtml->tableCells(
 						array(
 							h( Set::classicExtract( $forme_ci, Set::classicExtract( $contratinsertion, 'Contratinsertion.forme_ci' ) ) ),

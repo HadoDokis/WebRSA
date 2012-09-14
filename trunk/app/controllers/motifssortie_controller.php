@@ -19,6 +19,7 @@
 		*/
 
 		public function index() {
+                    $this->paginate = array( 'limit' => '1000' );
 			$this->set(
 				Inflector::tableize( $this->modelClass ),
 				$this->paginate( $this->modelClass )
