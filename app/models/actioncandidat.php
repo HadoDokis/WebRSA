@@ -189,12 +189,12 @@
 		*
 		*/
 
-		public function listePourFicheCandidature( $codelocalite ) {
+		public function listePourFicheCandidature( $codelocalite, $isactif ) {
 			$actionscandidats = $this->find(
 				'list',
 				array(
 					'conditions' => array(
-						'Actioncandidat.actif' => 'O',
+						'Actioncandidat.actif' => $isactif,
 						'Actioncandidat.hasfichecandidature' => 1,
 						'Actioncandidat.id IN (
 							'.$this->ActioncandidatZonegeographique->sq(
