@@ -456,7 +456,8 @@ SELECT public.alter_enumtype ( 'TYPE_SECTEUR', ARRAY['cie', 'cae'] );
 -------------------------------------------------------------------------------------------------------------
 
 SELECT public.alter_enumtype ( 'TYPE_POSITIONCER', ARRAY['encours','attvalid','attvalidpart','attvalidpartpropopcg','attvalidsimple','annule','fincontrat','encoursbilan','attrenouv','perime','nonvalide','attsignature','valid','nonvalid','validnotifie','nonvalidnotifie'] );
-
+UPDATE contratsinsertion SET positioncer = 'nonvalid' WHERE positioncer = 'nonvalide';
+SELECT public.alter_enumtype ( 'TYPE_POSITIONCER', ARRAY['encours','attvalid','attvalidpart','attvalidpartpropopcg','attvalidsimple','annule','fincontrat','encoursbilan','attrenouv','perime','attsignature','valid','nonvalid','validnotifie','nonvalidnotifie'] );
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
