@@ -57,21 +57,13 @@
 		endif;
 		echo $form->input( 'Adressefoyer.dtemm', array( 'label' =>  __d( 'adressefoyer', 'Adressefoyer.dtemm', true ), 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => ( date( 'Y' ) - 100 ), 'empty' => true ) );
 		echo $form->input( 'Adressefoyer.typeadr', array( 'label' => required( __d( 'adressefoyer', 'Adressefoyer.typeadr', true ) ), 'type' => 'select', 'options' => $typeadr, 'empty' => true ) );
-
-		echo $form->submit( 'Enregistrer' );
-		echo $form->end();
-
-		echo $default->button(
-			'back',
-			array(
-				'controller' => 'adressesfoyers',
-				'action'     => 'index',
-				$foyer_id
-			),
-			array(
-				'id' => 'Back'
-			)
-		);
 	?>
+	<div class="submit">
+		<?php
+			echo $form->submit( 'Enregistrer', array( 'div' => false ) );
+			echo $form->submit('Annuler', array( 'name' => 'Cancel', 'div' => false ) );
+		?>
+	</div>
+	<?php echo $form->end(); ?>
 </div>
 <div class="clearer"><hr /></div>
