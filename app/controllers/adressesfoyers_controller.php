@@ -1,8 +1,25 @@
 <?php
+	/**
+	 * Code source de la classe AdressesfoyersController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.controllers
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe AdressesfoyersController permet de lister, voir, ajouter et supprimer des adresses à un foyer RSA.
+	 *
+	 * @package app.controllers
+	 */
 	class AdressesfoyersController extends AppController
 	{
 		public $name = 'Adressesfoyers';
+
 		public $uses = array( 'Adressefoyer', 'Option' );
+
+		public $components = array( 'Jetons2' );
 
 		public $commeDroit = array(
 			'view' => 'Adressefoyers:index',
@@ -10,34 +27,24 @@
 		);
 
 		/**
-			Commun à toutes les fonctions
-		*/
+		 * Commun à toutes les fonctions
+		 *
+		 * @return void
+		 */
 		public function beforeFilter() {
-			$return = parent::beforeFilter();
-			// FIXME: pourquoi ? à priori parce que notre table a des underscore dans son nom!
-			// INFO: http://book.cakephp.org/view/24/Model-and-Database-Conventions pour corriger mes erreurs
-			$this->Adressefoyer->bindModel(
-				array(
-					'belongsTo' => array(
-						'Adresse' => array(
-							'className'     => 'Adresse',
-							'foreignKey'    => 'adresse_id'
-						)
-					)
-				)
-			);
+			parent::beforeFilter();
 
 			$this->set( 'pays', $this->Option->pays() );
 			$this->set( 'rgadr', $this->Option->rgadr() );
 			$this->set( 'typeadr', $this->Option->typeadr() );
 			$this->set( 'typevoie', $this->Option->typevoie() );
-
-			return $return;
 		}
 
 		/**
-			Voir les adresses d'un foyer
-		*/
+		 * Liste des adresses d'un foyer.
+		 *
+		 * @param integer $foyer_id L'id technique du Foyer pour lequel on veut les adresses.
+		 */
 		public function index( $foyer_id = null ) {
 			// Vérification du format de la variable
 			$this->assert( valid_int( $foyer_id ), 'invalidParameter' );
@@ -58,8 +65,10 @@
 		}
 
 		/**
-			Voir une adresse spécifique d'un foyer
-		*/
+		 * Visualisation d'une adresse spécifique.
+		 *
+		 * @param integer $id  L'id technique de l'enregistrement de la table adressesfoyers
+		 */
 		public function view( $id = null ) {
 			// Vérification du format de la variable
 			$this->assert( valid_int( $id ), 'invalidParameter' );
@@ -83,9 +92,58 @@
 			$this->set( 'urlmenu', '/adressesfoyers/index/'.$adresse['Adressefoyer']['foyer_id'] );
 		}
 
+
 		/**
-			Éditer une adresse spécifique d'un foyer
-		*/
+		 * Ajouter une adresse à un foyer
+		 *
+		 * @param integer $foyer_id L'id technique du foyer auquel ajouter l'adresse.
+		 * @return void
+		 */
+		public function add( $foyer_id = null ) {
+			// Vérification du format de la variable
+			$this->assert( valid_int( $foyer_id ), 'invalidParameter' );
+
+			$dossier_id = $this->Adressefoyer->Foyer->dossierId( $foyer_id );
+			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
+
+			$this->Jetons2->get( $dossier_id );
+
+			// Retour à l'index en cas d'annulation
+			if( isset( $this->params['form']['Cancel'] ) ) {
+				$this->Jetons2->release( $dossier_id );
+				$this->redirect( array( 'action' => 'index', $foyer_id ) );
+			}
+
+
+			// Essai de sauvegarde
+			if( !empty( $this->data ) ) {
+				if( $this->Adressefoyer->saveAll( $this->data, array( 'validate' => 'only' ) ) ) {
+					$this->Adressefoyer->begin();
+
+					if( $this->Adressefoyer->saveNouvelleAdresse( $this->data ) ) {
+						$this->Adressefoyer->commit();
+						$this->Jetons2->release( $dossier_id );
+						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+						$this->redirect( array( 'controller' => 'adressesfoyers', 'action' => 'index', $foyer_id ) );
+					}
+					else {
+						$this->Adressefoyer->rollback();
+						$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+					}
+				}
+			}
+
+			// Assignation à la vue
+			$this->set( 'foyer_id', $foyer_id );
+			$this->render( $this->action, null, 'add_edit' );
+		}
+
+		/**
+		 * Modification d'une adresse du foyer.
+		 *
+		 * @param integer $id L'id technique dans la table adressesfoyers.
+		 * @return void
+		 */
 		public function edit( $id = null ) {
 			// Vérification du format de la variable
 			$this->assert( valid_int( $id ), 'invalidParameter' );
@@ -93,24 +151,26 @@
 			$dossier_id = $this->Adressefoyer->dossierId( $id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
 
-			$this->Adressefoyer->begin();
-			$test = ( $this->Jetons->check( $dossier_id ) && $this->Jetons->get( $dossier_id ) );
-			if( !$test ) {
-				$this->Adressefoyer->rollback();
+			$this->Jetons2->get( $dossier_id );
+
+			// Retour à l'index en cas d'annulation
+			if( isset( $this->params['form']['Cancel'] ) ) {
+				$this->Adressefoyer->id = $id;
+				$foyer_id = $this->Adressefoyer->field( 'foyer_id' );
+				$this->Jetons2->release( $dossier_id );
+				$this->redirect( array( 'action' => 'index', $foyer_id ) );
 			}
-			else {
-				$this->Adressefoyer->commit();
-			}
-			$this->assert( $test, 'lockedDossier' );
 
 			// Essai de sauvegarde
 			if( !empty( $this->data ) ) {
+				$this->Adressefoyer->begin();
+
 				if( $this->Adressefoyer->saveAll( $this->data, array( 'validate' => 'only' ) ) ) {
 					$this->Adressefoyer->begin();
 
 					if( $this->Adressefoyer->saveAll( $this->data, array( 'atomic' => false ) ) ) {
-						$this->Jetons->release( $dossier_id );
 						$this->Adressefoyer->commit();
+						$this->Jetons2->release( $dossier_id );
 						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 						$this->redirect( array( 'controller' => 'adressesfoyers', 'action' => 'index', $this->data['Adressefoyer']['foyer_id'] ) );
 					}
@@ -118,6 +178,10 @@
 						$this->Adressefoyer->rollback();
 						$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 					}
+				}
+				else {
+					$this->Adressefoyer->rollback();
+					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 				}
 			}
 			// Afficage des données
@@ -140,49 +204,6 @@
 			}
 
 			$this->set( 'urlmenu', '/adressesfoyers/index/'.$this->data['Adressefoyer']['foyer_id'] );
-			$this->render( $this->action, null, 'add_edit' );
-		}
-
-		/**
-		*
-		*/
-		public function add( $foyer_id = null ) {
-			// Vérification du format de la variable
-			$this->assert( valid_int( $foyer_id ), 'invalidParameter' );
-
-			$dossier_id = $this->Adressefoyer->Foyer->dossierId( $foyer_id );
-			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
-
-			$this->Adressefoyer->begin();
-			$test = ( $this->Jetons->check( $dossier_id ) && $this->Jetons->get( $dossier_id ) );
-			if( !$test ) {
-				$this->Adressefoyer->rollback();
-			}
-			else {
-				$this->Adressefoyer->commit();
-			}
-			$this->assert( $test, 'lockedDossier' );
-
-			// Essai de sauvegarde
-			if( !empty( $this->data ) ) {
-				if( $this->Adressefoyer->saveAll( $this->data, array( 'validate' => 'only' ) ) ) {
-					$this->Adressefoyer->begin();
-
-					if( $this->Adressefoyer->saveNouvelleAdresse( $this->data ) ) {
-						$this->Jetons->release( $dossier_id );
-						$this->Adressefoyer->commit();
-						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-						$this->redirect( array( 'controller' => 'adressesfoyers', 'action' => 'index', $foyer_id ) );
-					}
-					else {
-						$this->Adressefoyer->rollback();
-						$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
-					}
-				}
-			}
-
-			// Assignation à la vue
-			$this->set( 'foyer_id', $foyer_id );
 			$this->render( $this->action, null, 'add_edit' );
 		}
 	}
