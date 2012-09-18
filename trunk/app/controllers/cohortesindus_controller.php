@@ -1,21 +1,43 @@
 <?php
+	/**
+	 * Code source de la classe CohortesindusController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.controllers
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 	App::import('Sanitize');
 
+	/**
+	 * La classe CohortesindusController implémente un moteur de rechrche par indus.
+	 *
+	 * @package app.controllers
+	 */
 	class CohortesindusController extends AppController
 	{
 		public $name = 'Cohortesindus';
-		public $uses = array( 'Canton', 'Cohorteindu', 'Option',  'Structurereferente', 'Infofinanciere', 'Dossier', 'Zonegeographique', 'Situationdossierrsa' );
+
+		public $uses = array( 'Cohorteindu', 'Option', 'Structurereferente', 'Dossier', 'Situationdossierrsa' );
+
 		public $helpers = array( 'Csv', 'Paginator', 'Locale', 'Search' );
 
 		public $paginate = array(
-			// FIXME
 			'limit' => 20,
 		);
 
-		public $components = array( 'Gestionzonesgeos', 'Jetons', 'Prg' => array( 'actions' => array( 'index' ) ) );
+		public $components = array(
+			'Gestionzonesgeos',
+			'Prg' => array( 'actions' => array( 'index' ) )
+		);
 
-
+		/**
+		 * Envoi des options communes dans les vues.
+		 *
+		 * @return void
+		 */
 		public function beforeFilter() {
+			parent::beforeFilter();
 			$sr = $this->Structurereferente->find(
 				'list',
 				array(
@@ -26,72 +48,69 @@
 			);
 			$this->set( 'sr', $sr );
 
-			$return = parent::beforeFilter();
-				$this->set( 'natpfcre', $this->Option->natpfcre( 'autreannulation' ) );
-				$this->set( 'typeparte', $this->Option->typeparte() );
-				//$this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
-				$this->set( 'etatdosrsa', $this->Option->etatdosrsa( $this->Situationdossierrsa->etatOuvert()) );
-				$this->set( 'natpf', $this->Option->natpf() );
-				$this->set( 'type_allocation', $this->Option->type_allocation() );
-				$this->set( 'dif', $this->Option->dif() );
-				$this->set( 'rolepers', $this->Option->rolepers() );
-			return $return;
+			$this->set( 'natpfcre', $this->Option->natpfcre( 'autreannulation' ) );
+			$this->set( 'typeparte', $this->Option->typeparte() );
+			//$this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
+			$this->set( 'etatdosrsa', $this->Option->etatdosrsa( $this->Situationdossierrsa->etatOuvert()) );
+			$this->set( 'natpf', $this->Option->natpf() );
+			$this->set( 'type_allocation', $this->Option->type_allocation() );
+			$this->set( 'dif', $this->Option->dif() );
+			$this->set( 'rolepers', $this->Option->rolepers() );
 		}
 
 		/**
-		*
-		*/
-
+		 * Moteur de recherche par indus.
+		 *
+		 * @return void
+		 */
 		public function index() {
-			$this->Gestionzonesgeos->setCantonsIfConfigured();
-
 			$comparators = array( '<' => '<' ,'>' => '>','<=' => '<=', '>=' => '>=' );
 
 			$cmp = Set::extract( $this->data, 'Cohorteindu.compare' );
 			$this->assert( empty( $cmp ) || in_array( $cmp, array_keys( $comparators ) ), 'invalidParameter' );
-			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 
 			if( !empty( $this->data ) ) {
 				$this->Cohorteindu->create( $this->data );
 				if( $this->Cohorteindu->validates() ) {
-					$this->Dossier->begin(); // Pour les jetons
-
-					$paginate = $this->Cohorteindu->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
+					$paginate = $this->Cohorteindu->search(
+						(array)$this->Session->read( 'Auth.Zonegeographique' ),
+						$this->Session->read( 'Auth.User.filtre_zone_geo' ),
+						$this->data
+					);
 					$paginate['limit'] = 10;
 					$paginate = $this->_qdAddFilters( $paginate );
 
 					$this->paginate = $paginate;
 					$cohorteindu = $this->paginate( 'Dossier' );
 
-					$this->Dossier->commit();
-
 					$this->set( 'cohorteindu', $cohorteindu );
 				}
 			}
 
+			$this->set( 'cantons', $this->Gestionzonesgeos->listeCantons() );
 			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
 
 			$this->set( 'comparators', $comparators );
 		}
 
 		/**
-		*
-		*/
-
+		 * Export CSV des enregistrements renvoyés par le moteur de recherche.
+		 *
+		 *@return void
+		 */
 		public function exportcsv(){
-			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
-
-			$_limit = 10;
-			$querydata = $this->Cohorteindu->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), Xset::bump( $this->params['named'], '__' ), $this->Jetons->ids() );
+			$querydata = $this->Cohorteindu->search(
+				(array)$this->Session->read( 'Auth.Zonegeographique' ),
+				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
+				Xset::bump( $this->params['named'], '__' )
+			);
 			$querydata = $this->_qdAddFilters( $querydata );
 
 			unset( $querydata['limit'] );
 			$indus = $this->Dossier->find( 'all', $querydata );
 
 
-			$this->layout = ''; // FIXME ?
+			$this->layout = '';
 			$this->set( compact( 'headers', 'indus' ) );
 		}
 	}

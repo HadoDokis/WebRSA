@@ -1,12 +1,26 @@
 <?php
+	/**
+	 * Code source de la classe Cohorteindu.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.models
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 	App::import( 'Sanitize' );
 
+	/**
+	 * La classe Cohorteindu fournit un traitement du moteur de recherche par indus et permet de valider les
+	 * paramètres du moteur de recherche.
+	 *
+	 * @package app.models
+	 */
 	class Cohorteindu extends AppModel
 	{
 		public $name = 'Cohorteindu';
 
 		public $useTable = false;
-		
+
 		public $actsAs = array( 'Conditionnable' );
 
 		public $validate = array(
@@ -30,6 +44,7 @@
 		);
 
 		/**
+		 * Validation des paramètres envoyés au moteur de recherche.
 		 *
 		 * @param array $options
 		 * @return boolean
@@ -47,32 +62,37 @@
 		}
 
 		/**
-		*
-		*/
+		 * Retourne un querydata résultant du traitement du formulaire de recherche des indus.
+		 *
+		 * @param array $mesCodesInsee La liste des codes INSEE à laquelle est lié l'utilisateur
+		 * @param boolean $filtre_zone_geo L'utilisateur est-il limité au niveau des zones géographiques ?
+		 * @param array $criteresindu Critères du formulaire de recherche
+		 * @return array
+		 */
+		public function search( $mesCodesInsee, $filtre_zone_geo, $criteresindu ) {
+			$this->Dossier = ClassRegistry::init( 'Dossier' );
 
-		public function search( $mesCodesInsee, $filtre_zone_geo, $criteresindu, $lockedDossiers ) {
 			/// Conditions de base
-			$conditions = array();
+			$sqLatestAdressefoyer = $this->Dossier->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' );
+			$conditions = array(
+				'Prestation.rolepers' => 'DEM',
+				'Adressefoyer.rgadr' => '01',
+				"Adressefoyer.id IN ( {$sqLatestAdressefoyer} )"
+			);
 
-			
 			// On a un filtre par défaut sur l'état du dossier si celui-ci n'est pas renseigné dans le formulaire.
-			$Situationdossierrsa = ClassRegistry::init( 'Situationdossierrsa' );			
+			$Situationdossierrsa = ClassRegistry::init( 'Situationdossierrsa' );
 			$etatdossier = Set::extract( $criteresindu, 'Situationdossierrsa.etatdosrsa' );
 			if( !isset( $criteresindu['Situationdossierrsa']['etatdosrsa'] ) || empty( $criteresindu['Situationdossierrsa']['etatdosrsa'] ) ) {
 				$criteresindu['Situationdossierrsa']['etatdosrsa']  = $Situationdossierrsa->etatOuvert();
 			}
-			
+
 			/// Filtre zone géographique
 			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
-			
+
 			$conditions = $this->conditionsAdresse( $conditions, $criteresindu, $filtre_zone_geo, $mesCodesInsee );
 			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $criteresindu );
 			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $criteresindu );
-
-			/// Dossiers lockés
-			if( !empty( $lockedDossiers ) ) {
-				$conditions[] = 'Dossier.id NOT IN ( '.implode( ', ', $lockedDossiers ).' )';
-			}
 
 			/// Critères
 			$natpfcre = Set::extract( $criteresindu, 'Cohorteindu.natpfcre' );
@@ -92,14 +112,10 @@
 				$conditions[] = 'Structurereferente.id = \''.$structurereferente_id.'\'';
 			}
 
-
-			$this->Dossier = ClassRegistry::init( 'Dossier' );
-
-			// FIXME -> qu'a-t'on dans la base à un instant t ?
 			$date_start = date( 'Y-m-d', strtotime( 'previous month', strtotime( date( 'Y-m-01' ) ) ) );
 			$date_end = date( 'Y-m-d', strtotime( 'next month', strtotime( date( 'Y-m-d', strtotime( $date_start ) ) ) ) - 1 );
 
-			$query = array(
+			$querydata = array(
 				'fields' => array(
 					'"Dossier"."id"',
 					'"Dossier"."numdemrsa"',
@@ -121,67 +137,14 @@
 				),
 				'recursive' => -1,
 				'joins' => array(
-					array(
-						'table'      => 'foyers',
-						'alias'      => 'Foyer',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Foyer.dossier_id = Dossier.id' )
-					),
-					array(
-						'table'      => 'personnes',
-						'alias'      => 'Personne',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Personne.foyer_id = Foyer.id' )
-					),
-					array(
-						'table'      => 'prestations',
-						'alias'      => 'Prestation',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array(
-							'Personne.id = Prestation.personne_id',
-							'Prestation.natprest = \'RSA\'',
-							'( Prestation.rolepers = \'DEM\' )',
-						)
-					),
-					array(
-						'table'      => 'adressesfoyers',
-						'alias'      => 'Adressefoyer',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Foyer.id = Adressefoyer.foyer_id', 'Adressefoyer.rgadr = \'01\'' )
-					),
-					array(
-						'table'      => 'adresses',
-						'alias'      => 'Adresse',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
-					),
-					array(
-						'table'      => 'situationsdossiersrsa',
-						'alias'      => 'Situationdossierrsa',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-// 						'conditions' => array( 'Situationdossierrsa.dossier_id = Dossier.id AND ( Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatOuvert() ).'\' ) )' )
-						'conditions' => array( 'Situationdossierrsa.dossier_id = Dossier.id' )
-					),
-					array(
-						'table'      => 'detailsdroitsrsa',
-						'alias'      => 'Detaildroitrsa',
-						'type'       => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array( 'Detaildroitrsa.dossier_id = Dossier.id' )
-					),
-					array(
-						'table'      => 'detailscalculsdroitsrsa',
-						'alias'      => 'Detailcalculdroitrsa',
-						'type'       => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array( 'Detailcalculdroitrsa.detaildroitrsa_id = Detaildroitrsa.id' )
-					)
+					$this->Dossier->join( 'Foyer', array( 'type' => 'INNER' ) ),
+					$this->Dossier->Foyer->join( 'Personne', array( 'type' => 'INNER' ) ),
+					$this->Dossier->Foyer->Personne->join( 'Prestation', array( 'type' => 'INNER' ) ),
+					$this->Dossier->Foyer->join( 'Adressefoyer', array( 'type' => 'INNER' ) ),
+					$this->Dossier->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'INNER' ) ),
+					$this->Dossier->join( 'Situationdossierrsa', array( 'type' => 'INNER' ) ),
+					$this->Dossier->join( 'Detaildroitrsa', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Dossier->Detaildroitrsa->join( 'Detailcalculdroitrsa', array( 'type' => 'LEFT OUTER' ) ),
 				),
 				'limit' => 10,
 				'conditions' => array()
@@ -195,7 +158,7 @@
 
 			foreach( $typesAllocation as $type ) {
 				$meu  = Inflector::singularize( Inflector::tableize( $type ) );
-				$query['fields'][] = '"'.$type.'"."mtmoucompta" AS mt_'.$meu;
+				$querydata['fields'][] = '"'.$type.'"."mtmoucompta" AS mt_'.$meu;
 
 				$join = array(
 					'table'      => 'infosfinancieres',
@@ -207,7 +170,8 @@
 						$type.'.type_allocation' => $type
 					)
 				);
-				$query['joins'][] = $join;
+
+				$querydata['joins'][] = $join;
 				$conditionsNotNull[] = $type.'.mtmoucompta IS NOT NULL';
 
 				$coalesce[] = '"'.$type.'"."moismoucompta"';
@@ -222,7 +186,7 @@
 					$conditionsNat[] = $type.'.natpfcre = \''.Sanitize::clean( $natpfcre ).'\'';
 				}
 			}
-			$query['fields'][] = 'COALESCE( '.implode( ',', $coalesce ).' ) AS "moismoucompta"';
+			$querydata['fields'][] = 'COALESCE( '.implode( ',', $coalesce ).' ) AS "moismoucompta"';
 			$conditions[] = '( '.implode( ' OR ', $conditionsNotNull  ).' )';
 			if( !empty( $conditionsComparator ) ) {
 				$conditions[] = '( '.implode( ' OR ', $conditionsComparator  ).' )';
@@ -230,7 +194,7 @@
 			if( !empty( $natpfcre ) ) {
 				$conditions[] = '( '.implode( ' OR ', $conditionsNat  ).' )';
 			}
-			$query['conditions'] = Set::merge( $query['conditions'], $conditions );
+			$querydata['conditions'] = Set::merge( $querydata['conditions'], $conditions );
 
 			$tConditions = array();
 			foreach( $coalesce as $item1 ) {
@@ -246,10 +210,10 @@
 					}
 				}
 			}
-			$query['conditions'] = Set::merge( $query['conditions'], '( '.implode( ' OR ', array_unique( $tConditions ) ).' )' );
-			$query['conditions'] = Set::merge( $query['conditions'], array( 'COALESCE( '.implode( ',', $coalesce ).' ) IS NOT NULL' ) );
+			$querydata['conditions'] = Set::merge( $querydata['conditions'], '( '.implode( ' OR ', array_unique( $tConditions ) ).' )' );
+			$querydata['conditions'] = Set::merge( $querydata['conditions'], array( 'COALESCE( '.implode( ',', $coalesce ).' ) IS NOT NULL' ) );
 
-			return $query;
+			return $querydata;
 		}
 	}
 ?>

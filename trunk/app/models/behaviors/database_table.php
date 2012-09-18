@@ -213,5 +213,50 @@
 
 			return $fields;
 		}
+
+		/**
+		 * Retourne une sous-requête permettant de trouver le dernier enregistrement du modèle passé en
+		 * paramètres. L'alias du modèle dans la sous-requête est le nom de la table.
+		 *
+		 * @todo grep -nri "function sqDernier" app | grep -v "\.svn"
+		 * @todo grep -nri ">sqDerniereRgadr01" app | grep -v "\.svn"
+		 *
+		 * @param AppModel $model
+		 * @param string $modelSubquery Le modèle sur lequel faire la sous-requête
+		 * @param string $sortField Le champ sur lequel faire le tri
+		 * @param boolean Autorise-ton les valeurs NULL (pour les left join)
+		 * @return string
+		 */
+		public function sqLatest(  &$model, $modelSubquery, $sortField, $conditions = array(), $null = true ) {
+			$modelAlias = Inflector::tableize( $modelSubquery );
+
+			$join = $this->join( $model, $modelSubquery );
+
+			$conditions = (array)$join['conditions'] + (array)$conditions;
+			$conditions = array_words_replace( $conditions, array( $modelSubquery => $modelAlias ) );
+
+			$sq = $model->{$modelSubquery}->sq(
+				array(
+					'alias' => $modelAlias,
+					'fields' => array(
+						"{$modelAlias}.{$model->{$modelSubquery}->primaryKey}"
+					),
+					'contain' => false,
+					'conditions' => $conditions,
+					'order' => array(
+						"{$modelAlias}.{$sortField} DESC",
+					),
+					'limit' => 1
+				)
+			);
+
+			if( $null ) {
+				$ds = $model->getDataSource();
+				$alias = "{$ds->startQuote}{$modelAlias}{$ds->endQuote}.{$ds->startQuote}{$model->{$modelSubquery}->primaryKey}{$ds->endQuote}";
+				$sq = "( {$alias} IS NULL OR {$alias} IN ( {$sq} ) )";
+			}
+
+			return $sq;
+		}
 	}
 ?>

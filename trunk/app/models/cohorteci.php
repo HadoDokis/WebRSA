@@ -23,13 +23,14 @@
 		public $actsAs = array( 'Conditionnable' );
 
 		/**
+		 * Retourne un querydata résultant du traitement du formulaire de recherche des cohortes de CER.
 		 *
 		 * @param type $statutValidation
-		 * @param type $mesCodesInsee
-		 * @param type $filtre_zone_geo
-		 * @param type $criteresci
-		 * @param type $lockedDossiers
-		 * @return type
+		 * @param array $mesCodesInsee La liste des codes INSEE à laquelle est lié l'utilisateur
+		 * @param boolean $filtre_zone_geo L'utilisateur est-il limité au niveau des zones géographiques ?
+		 * @param array $criteresci Critères du formulaire de recherche
+		 * @param mixed $lockedDossiers
+		 * @return array
 		 */
 		public function search( $statutValidation, $mesCodesInsee, $filtre_zone_geo, $criteresci, $lockedDossiers ) {
 			/// Conditions de base
@@ -245,23 +246,6 @@
 							)
  				)';
 			}
-
-			/**
-			SELECT DISTINCT contratsinsertion.id
-				FROM contratsinsertion
-					INNER JOIN personnes ON ( personnes.id = contratsinsertion.personne_id )
-					INNER JOIN prestations ON ( prestations.personne_id = personnes.id AND prestations.natprest = 'RSA' AND ( prestations.rolepers = 'DEM' OR prestations.rolepers = 'CJT' ) )
-					INNER JOIN foyers ON ( personnes.foyer_id = foyers.id )
-					INNER JOIN adressesfoyers ON ( adressesfoyers.foyer_id = foyers.id AND adressesfoyers.rgadr = '01' )
-					INNER JOIN adresses ON ( adressesfoyers.adresse_id = adresses.id)
-				WHERE
-					contratsinsertion.date_saisi_ci = '2009-01-01'
-					AND contratsinsertion.decision_ci = 'E'
-					AND contratsinsertion.datevalidation_ci = '2009-01-01'
-					AND adresses.locaadr ILIKE '%denis%'
-			*/
-
-
 
 			$this->Dossier = ClassRegistry::init( 'Dossier' );
 			$this->Contratinsertion = ClassRegistry::init( 'Contratinsertion' );
