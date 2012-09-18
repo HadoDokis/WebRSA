@@ -129,7 +129,7 @@
 									Set::classicExtract( $result, 'Partenaire.adresse' ),
 									Set::classicExtract( $result, 'Partenaire.numtel' ),
 									Set::classicExtract( $result, 'Fichiermodule.nb_fichiers_lies' ),
-									$xhtml->link(
+									$xhtml->filelink(
 										'Voir',
 										array_merge(
 											array(
