@@ -25,3 +25,5 @@ msgstr "Offre d'insertion"
 msgid "Offreinsertion::index::empty"
 msgstr "Aucune action en cours"
 
+msgid "Offresinsertion::view"
+msgstr "Visualisation des pièces liées"

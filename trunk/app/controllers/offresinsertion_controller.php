@@ -16,7 +16,10 @@
 				'actions' => array(
 					'index' => array( 'filter' => 'Search' )
 				)
-			)
+			),
+            'Fileuploader' => array(
+                'colonneModele' => 'Actioncandidat'
+            )
 		);
 		
 		public function _setOptions() {
@@ -31,6 +34,48 @@
 			$this->set( compact( 'options', 'listeActions', 'listePartenaires', 'listeContacts', 'typevoie' ) );
 		}
 
+          
+		/**
+		* http://valums.com/ajax-upload/
+		* http://doc.ubuntu-fr.org/modules_php
+		* increase post_max_size and upload_max_filesize to 10M
+		* debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
+		*/
+
+		public function ajaxfileupload() {
+			$this->Fileuploader->ajaxfileupload();
+		}
+
+		/**
+		* http://valums.com/ajax-upload/
+		* http://doc.ubuntu-fr.org/modules_php
+		* increase post_max_size and upload_max_filesize to 10M
+		* debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
+		* FIXME: traiter les valeurs de retour
+		*/
+
+		public function ajaxfiledelete() {
+			$this->Fileuploader->ajaxfiledelete();
+		}
+
+		/**
+		*   Fonction permettant de visualiser les fichiers chargés dans la vue avant leur envoi sur le serveur
+		*/
+
+		public function fileview( $id ) {
+			$this->Fileuploader->fileview( $id );
+		}
+
+		/**
+		*   Téléchargement des fichiers préalablement associés à un traitement donné
+		*/
+
+		public function download( $fichiermodule_id ) {
+			$this->assert( !empty( $fichiermodule_id ), 'error404' );
+			$this->Fileuploader->download( $fichiermodule_id );
+		}
+
+        
 		public function index() {
 			if( !empty( $this->data ) ) {
 				$queryData = $this->Offreinsertion->search( $this->data );
@@ -46,6 +91,7 @@
 		public function view( $actioncandidat_id = null ) {
 			$this->assert( is_numeric( $actioncandidat_id ), 'error404' );
 			
+            $fichiers = array();
 			$actioncandidat = $this->Actioncandidat->find(
 				'first', 
 				array(
@@ -63,9 +109,43 @@
 			if( isset( $this->params['form']['Cancel'] ) ) {
 				$this->redirect( array( 'controller' => 'offresinsertion', 'action' => 'index' ) );
 			}
+            
+            if( !empty( $this->data ) ) {
+				$this->Actioncandidat->begin();
 
+                $saved = $this->Actioncandidat->updateAll(
+					array( 'Actioncandidat.haspiecejointe' => '\''.$this->data['Actioncandidat']['haspiecejointe'].'\'' ),
+					array(
+						'"Actioncandidat"."id"' => $actioncandidat_id
+					)
+				);
+                
+				if( $saved ) {
+					// Sauvegarde des fichiers liés à une action
+					$dir = $this->Fileuploader->dirFichiersModule( $this->action, $this->params['pass'][0] );
+					$saved = $this->Fileuploader->saveFichiers( $dir, !Set::classicExtract( $this->data, "Actioncandidat.haspiecejointe" ), $actioncandidat_id ) && $saved;
+				}
+
+				if( $saved ) {
+					$this->Actioncandidat->commit();
+					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+					$this->redirect( $this->referer() );
+				}
+				else {
+					$fichiers = $this->Fileuploader->fichiers( $actioncandidat_id );
+					$this->Actioncandidat->rollback();
+					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+				}
+			}
+			else {
+				$this->data = $actioncandidat;
+				$fichiers = $this->Fileuploader->fichiers( $actioncandidat['Actioncandidat']['id'] );
+			}
+			$this->Actioncandidat->commit();
+            
+            
 			$this->_setOptions();
-			$this->set( compact( 'actioncandidat' ) );
+			$this->set( compact( 'fichiers', 'actioncandidat' ) );
 		}
 	}
 ?>
