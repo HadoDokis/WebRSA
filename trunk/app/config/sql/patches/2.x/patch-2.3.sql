@@ -458,6 +458,22 @@ SELECT public.alter_enumtype ( 'TYPE_SECTEUR', ARRAY['cie', 'cae'] );
 SELECT public.alter_enumtype ( 'TYPE_POSITIONCER', ARRAY['encours','attvalid','attvalidpart','attvalidpartpropopcg','attvalidsimple','annule','fincontrat','encoursbilan','attrenouv','perime','nonvalide','attsignature','valid','nonvalid','validnotifie','nonvalidnotifie'] );
 UPDATE contratsinsertion SET positioncer = 'nonvalid' WHERE positioncer = 'nonvalide';
 SELECT public.alter_enumtype ( 'TYPE_POSITIONCER', ARRAY['encours','attvalid','attvalidpart','attvalidpartpropopcg','attvalidsimple','annule','fincontrat','encoursbilan','attrenouv','perime','attsignature','valid','nonvalid','validnotifie','nonvalidnotifie'] );
+
+-------------------------------------------------------------------------------------------------------------
+-- 20120917: Ajout de pièces jointes  aux decisionsdossierspcgs66
+-------------------------------------------------------------------------------------------------------------
+
+SELECT add_missing_table_field('public', 'decisionsdossierspcgs66', 'haspiecejointe', 'type_booleannumber' );
+ALTER TABLE decisionsdossierspcgs66 ALTER COLUMN haspiecejointe SET DEFAULT '0'::TYPE_BOOLEANNUMBER;
+UPDATE decisionsdossierspcgs66 SET haspiecejointe = '0'::TYPE_BOOLEANNUMBER WHERE haspiecejointe IS NULL;
+ALTER TABLE decisionsdossierspcgs66 ALTER COLUMN haspiecejointe SET NOT NULL;
+
+SELECT add_missing_table_field('public', 'decisionsdossierspcgs66', 'useravistechnique_id', 'INTEGER' );
+SELECT add_missing_table_field ( 'public', 'decisionsdossierspcgs66', 'userproposition_id', 'INTEGER' );
+
+ALTER TABLE decisionsdossierspcgs66 ADD CONSTRAINT decisionsdossierspcgs66_useravistechnique_id_fk FOREIGN KEY (useravistechnique_id) REFERENCES users(id);
+ALTER TABLE decisionsdossierspcgs66 ADD CONSTRAINT decisionsdossierspcgs66_userproposition_id_fk FOREIGN KEY (userproposition_id) REFERENCES users(id);
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

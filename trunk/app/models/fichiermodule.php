@@ -210,6 +210,16 @@
 				'fields' => '',
 				'order' => ''
 			),
+			'Decisiondossierpcg66' => array(
+				'className' => 'Decisiondossierpcg66',
+				'foreignKey' => false,
+				'conditions' => array(
+					'Fichiermodule.modele = \'Decisiondossierpcg66\'',
+					'Fichiermodule.fk_value = {$__cakeID__$}'
+				),
+				'fields' => '',
+				'order' => ''
+			)
 		);
 
 		/**

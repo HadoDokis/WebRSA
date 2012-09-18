@@ -19,17 +19,52 @@
 				'Serviceinstructeur.lib_service',
 				'Dossierpcg66.iscomplet',
 				'Dossierpcg66.user_id' => array( 'value' => '#User.nom# #User.prenom#' ),
-				'Dossierpcg66.etatdossierpcg',
+				'Dossierpcg66.etatdossierpcg'
 			),
 			array(
 				'class' => 'aere',
 				'options' => $options
 			)
 		);
-
-		echo "<h2>Pièces jointes</h2>";
-		echo $fileuploader->results( Set::classicExtract( $dossierpcg66, 'Fichiermodule' ) );
-	?>
+    ?>
+    <h2>Décisions du dossier</h2>
+    <?php if( !empty( $dossierpcg66 ) ):?>
+        <table class="tooltips aere">
+            <thead>
+                <tr>
+                    <th>Proposition</th>
+                    <th>Date de la proposition</th>
+                    <th>Validation</th>
+                    <th>Date de validation</th>
+                    <th>Commentaire</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                    foreach( $dossierpcg66['Decisiondossierpcg66'] as $decision ){      
+                        echo $xhtml->tableCells(
+                            array(
+                                h( Set::classicExtract( $decisionpdo, Set::classicExtract( $decision, 'decisionpdo_id' ) ) ),
+                                h( date_short( Set::classicExtract( $decision, 'datepropositiontechnicien' ) ) ),
+                                h( value( $options['Decisiondossierpcg66']['validationproposition'], Set::classicExtract( $decision, 'validationproposition' ) ) ),
+                                h( date_short( Set::classicExtract( $decision, 'datevalidation' ) ) ),
+                                h( Set::classicExtract( $decision, 'commentaire' ) )
+                            ),
+                            array(
+                                'options' => $options
+                            )
+                        );
+                    }
+                ?>
+            </tbody>
+        </table>
+        <?php else:?>
+            <p class="notice">Aucune décision émise pour ce dossier</p>
+        <?php endif;?>
+        <?php
+            echo "<h2>Pièces jointes</h2>";
+            echo $fileuploader->results( Set::classicExtract( $dossierpcg66, 'Fichiermodule' ) );
+        ?>
 </div>
 	<div class="submit">
 		<?php

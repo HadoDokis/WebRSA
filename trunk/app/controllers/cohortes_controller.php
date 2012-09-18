@@ -34,14 +34,9 @@
 
 			$this->set( 'rolepers', $this->Option->rolepers() );
 
-// 			if( in_array( $this->action, array( 'preconisationscalculables', 'preconisationsnoncalculables' ) ) ) {
-// 				$etats = array();
 			$this->set( 'toppersdrodevorsa', $this->Option->toppersdrodevorsa( true ) );
-// 			}
-// 			else {
-// 			$etats = $this->Personne->Foyer->Dossier->Situationdossierrsa->etatOuvert();
+
 			$etats = Configure::read( 'Situationdossierrsa.etatdosrsa.ouvert' );
-// 			}
 			$this->set( 'etatdosrsa', $this->Option->etatdosrsa( $etats ) );
 
 			$hasDsp = array( 'O' => 'Oui', 'N' => 'Non' );
@@ -221,6 +216,9 @@
 					$progressivePaginate = !Set::classicExtract( $this->data, 'Filtre.paginationNombreTotal' );
 
 					$filtre = $this->data;
+                    if( Configure::read( 'Cg.departement' ) == 66 && empty( $filtre['Situationdossierrsa']['etatdosrsa_choice'] ) ) {
+                        $filtre['Situationdossierrsa']['etatdosrsa'] = Configure::read( 'Situationdossierrsa.etatdosrsa.ouvert' );
+                    }
 					unset( $filtre['Filtre']['actif'] );
 
 					$queryData = $this->Cohorte->recherche(

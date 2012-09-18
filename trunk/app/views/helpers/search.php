@@ -107,7 +107,7 @@
 			$input.= $this->Html->tag(
 				'fieldset',
 				$this->Html->tag( 'legend', 'État du dossier PCG' ).
-				$this->Xform->input( $path, array( 'label' => false, 'type' => 'select', 'multiple' => 'checkbox', 'options' => $etatdossierpcg, 'value' => $etatsDossiersPCGCoches, 'fieldset' => false ) ),
+				$this->Xform->input( $path, array( 'label' => false, 'type' => 'select', 'multiple' => 'checkbox', 'options' => $etatdossierpcg, 'fieldset' => false ) ),
 				array( 'id' => $fieldsetId )
 			);
 

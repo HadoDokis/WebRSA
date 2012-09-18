@@ -592,6 +592,32 @@
 			return $success;
 		}
 		
-		
+        /**
+		 * Retourne l'id du dossier à partir de l'id du dosiserpcg66
+		 *
+		 * @param integer $dossierpcg66_id
+		 * @return integer
+		 */
+		public function dossierId( $dossierpcg66_id ) {
+			$querydata = array(
+				'fields' => array( 'Foyer.dossier_id' ),
+				'joins' => array(
+					$this->join( 'Foyer', array( 'type' => 'INNER' ) )
+				),
+				'conditions' => array(
+					'Dossierpcg66.id' => $dossierpcg66_id
+				),
+				'recursive' => -1
+			);
+
+			$dossierpcg66 = $this->find( 'first', $querydata );
+
+			if( !empty( $dossierpcg66 ) ) {
+				return $dossierpcg66['Foyer']['dossier_id'];
+			}
+			else {
+				return null;
+			}
+		}
 	}
 ?>

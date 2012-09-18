@@ -453,6 +453,12 @@ msgstr "Décision"
 msgid "Button::cloturer"
 msgstr "Clôturer"
 
+msgid "Button::avistechnique"
+msgstr "Contrôle"
+
+msgid "Button::validation"
+msgstr "Validation"
+
 msgid "ENUM::DECISION::accepte"
 msgstr "Accepté"
 
