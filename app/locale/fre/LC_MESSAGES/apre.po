@@ -506,6 +506,9 @@ msgstr "Validée"
 
 msgid "ENUM::ETATDOSSIERAPRE::TRA"
 msgstr "Traitée"
+
+msgid "ENUM::ETATDOSSIERAPRE::ANN"
+msgstr "Annulé"
 ###############################################################################
 # Enum Apre.eligibiliteapre
 ###############################################################################

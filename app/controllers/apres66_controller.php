@@ -5,7 +5,7 @@
 		public $name = 'Apres66';
 		public $uses = array( 'Apre66', 'Aideapre66', 'Pieceaide66', 'Typeaideapre66', 'Themeapre66', 'Option', 'Personne', 'Prestation', 'Pieceaide66Typeaideapre66', 'Adressefoyer', 'Fraisdeplacement66', 'Structurereferente', 'Referent', 'Piececomptable66Typeaideapre66', 'Piececomptable66', 'Foyer' );
 		public $helpers = array( 'Default', 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml', 'Fileuploader', 'Default2' );
-		public $components = array( 'Default', 'Gedooo.Gedooo', 'Fileuploader', 'Email' );
+		public $components = array( 'Default', 'Gedooo.Gedooo', 'Fileuploader', 'Email', 'Jetons2' );
 		public $commeDroit = array(
 			'view66' => 'Apres66:index',
 			'add' => 'Apres66:edit'
@@ -877,6 +877,66 @@
 			}
 
 			$this->redirect( $this->referer() );
+		}
+
+        
+		/**
+		 * Fonction pour annuler une APRE pour le CG66
+		 *
+		 * @param type $id
+		 */
+		public function cancel( $id ) {
+			$qd_apre = array(
+				'conditions' => array(
+					$this->modelClass.'.id' => $id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => -1
+			);
+			$apre = $this->{$this->modelClass}->find( 'first', $qd_apre );
+
+			$personne_id = Set::classicExtract( $apre, 'Apre66.personne_id' );
+			$this->set( 'personne_id', $personne_id );
+
+			$dossier_id = $this->{$this->modelClass}->dossierId( $id );
+			$this->Jetons2->get( $dossier_id );
+
+			// Retour à la liste en cas d'annulation
+			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
+				$this->Jetons2->release( $dossier_id );
+				$this->redirect( array( 'action' => 'index', $personne_id ) );
+			}
+
+			if( !empty( $this->data ) ) {
+				$this->{$this->modelClass}->begin();
+
+				$saved = $this->{$this->modelClass}->save( $this->data );
+				$saved = $this->{$this->modelClass}->updateAll(
+					array( 'Apre66.etatdossierapre' => '\'ANN\'' ),
+					array(
+						'"Apre66"."personne_id"' => $apre['Apre66']['personne_id'],
+						'"Apre66"."id"' => $apre['Apre66']['id']
+					)
+				) && $saved;
+
+				if( $saved ) {
+					$this->{$this->modelClass}->commit();
+					$this->Jetons2->release( $dossier_id );
+					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+					$this->redirect( array( 'action' => 'index', $personne_id ) );
+				}
+				else {
+					$this->{$this->modelClass}->rollback();
+					$this->Session->setFlash( 'Erreur lors de l\'enregistrement.', 'flash/erreur' );
+				}
+			}
+			else {
+				$this->data = $apre;
+			}
+			$this->set( 'urlmenu', '/apres66/index/'.$personne_id );
+            
+            $this->render( $this->action, null, (CAKE_BRANCH == '1.2' ? '/apres/' : '/Apres/') .'cancel' );
 		}
 
 	}

@@ -480,6 +480,10 @@ ALTER TABLE decisionsdossierspcgs66 ADD CONSTRAINT decisionsdossierspcgs66_userp
 ALTER TABLE jetons ALTER COLUMN php_sid TYPE VARCHAR(32);
 ALTER TABLE jetonsfonctions ALTER COLUMN php_sid TYPE VARCHAR(32);
 
+SELECT add_missing_table_field('public', 'apres', 'motifannulation', 'TEXT' );
+
+
+SELECT public.alter_enumtype ( 'TYPE_ETATDOSSIERAPRE', ARRAY['COM', 'INC', 'VAL', 'TRA', 'ANN'] );
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

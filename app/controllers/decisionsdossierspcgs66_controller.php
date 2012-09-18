@@ -26,7 +26,7 @@ class Decisionsdossierspcgs66Controller extends AppController
 		public $components = array( 'Default', 'Gedooo.Gedooo', 'Jetons2', 'Fileuploader' );
 		public $helpers = array( 'Default2', 'Ajax', 'Fileuploader', 'Locale' );
 		public $uses = array( 'Decisiondossierpcg66', 'Option', 'Pdf' );
-		public $aucunDroit = array( 'ajaxproposition' );
+		public $aucunDroit = array( 'ajaxproposition', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
 		public $commeDroit = array(
 			'view' => 'Decisionsdossierspcgs66:index'
 		);
