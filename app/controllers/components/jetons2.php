@@ -4,14 +4,15 @@
 	 *
 	 * PHP 5.3
 	 *
-	 * @package       app.Controller.Component
+	 * @package app.controllers.components
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 
 	/**
 	 * La classe Jetons2Component permet de mettre des jetons (des locks fonctionnels) sur des
 	 * enregistrements de la table dossiers pour un utilisateur particulier.
 	 *
-	 * @package       app.Controller.Component
+	 * @package app.controllers.components
 	 */
 	class Jetons2Component extends Component
 	{
@@ -20,7 +21,7 @@
 		 *
 		 * @var Controller
 		 */
-		public $controller = null;
+		public $Controller = null;
 
 		/**
 		 * On a besoin d'un esession.
@@ -36,7 +37,8 @@
 		 * @return void
 		 */
 		public function initialize( &$controller, $settings = array() ) {
-			$this->controller = &$controller;
+			parent::initialize( $controller, $settings );
+			$this->Controller = &$controller;
 
 			if( Configure::read( 'Jetons2.disabled' ) ) {
 				return;
@@ -75,17 +77,20 @@
 					),
 					'conditions' => array(
 						'dossier_id'  => $dossiers,
+						// INFO: si on get et que l'on release dans la même page, il ne fera pas le second
+						// SELECT même si cacheQueries est à false.
+						'( \''.microtime( true ).'\' IS NOT NULL )'
 					),
 					'recursive' => -1
 				)
 			);
 
 			$sq = "{$sq} FOR UPDATE";
-
 			$results =@$this->Jeton->query( $sq );
+
 			if( $results === false ) {
 				$this->Jeton->rollback();
-				$this->controller->cakeError( 'error500' );
+				$this->Controller->cakeError( 'error500' );
 				return;
 			}
 
@@ -97,7 +102,7 @@
 				$dossierNonVerrouille = (
 					is_null( $jetonObtenu )
 					|| empty( $jetonObtenu['php_sid'] )
-					|| trim( $jetonObtenu['php_sid'] ) ==  $this->Session->id() // FIXME: VARCHAR
+					|| $jetonObtenu['php_sid'] ==  $this->Session->id()
 					|| ( strtotime( $jetonObtenu['modified'] ) < strtotime( '-'.readTimeout().' seconds' ) )
 				);
 
@@ -117,7 +122,7 @@
 					$this->Jeton->create( $jeton );
 					if( !$this->Jeton->save() ) {
 						$this->Jeton->rollback();
-						$this->controller->cakeError( 'error500' );
+						$this->Controller->cakeError( 'error500' );
 						// return
 					}
 				}
@@ -134,7 +139,7 @@
 						)
 					);
 
-					$this->controller->cakeError(
+					$this->Controller->cakeError(
 						'lockedDossier',
 						array(
 							'time' => ( strtotime( $jetonObtenu['modified'] ) + readTimeout() ),
@@ -179,7 +184,7 @@
 					),
 					// INFO: si on get et que l'on release dans la même page, il ne fera pas le second
 					// SELECT même si cacheQueries est à false.
-					'conditions' => $conditions + array( '1 = 1' ),
+					'conditions' => $conditions + array( '( \''.microtime( true ).'\' IS NOT NULL )' ),
 					'recursive' => -1
 				)
 			);

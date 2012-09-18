@@ -1,6 +1,19 @@
 <?php
+	/**
+	 * Fichier source de la classe Cohorteci.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.models
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 	App::import( 'Sanitize' );
 
+	/**
+	 * La classe Cohorteci fournit un traitement des filtres de recherche concernant les CER.
+	 *
+	 * @package app.models
+	 */
 	class Cohorteci extends AppModel
 	{
 		public $name = 'Cohorteci';
@@ -23,13 +36,13 @@
 			$conditions = array(/* '1 = 1' */);
 
 			if( !empty( $statutValidation ) ) {
-				if( $statutValidation == 'Decisionci::nonvalidesimple' ) {
+				if( $statutValidation == 'Decisionci::nouveauxsimple' ) {
 					$conditions[] = '( ( Contratinsertion.forme_ci = \'S\' ) AND ( ( Contratinsertion.decision_ci = \'E\' ) OR ( Contratinsertion.decision_ci IS NULL ) ) )';
 				}
-				else if( $statutValidation == 'Decisionci::nonvalideparticulier' ) {
+				else if( $statutValidation == 'Decisionci::nouveauxparticulier' ) {
 					$conditions[] = '( ( Contratinsertion.forme_ci = \'C\' ) AND ( ( Contratinsertion.decision_ci = \'E\' ) OR ( Contratinsertion.decision_ci IS NULL ) ) )';
 				}
-				else if( $statutValidation == 'Decisionci::nonvalide' ) {
+				else if( $statutValidation == 'Decisionci::nouveaux' ) {
 					$conditions[] = '( ( Contratinsertion.decision_ci = \'E\' ) OR ( Contratinsertion.decision_ci IS NULL ) )';
 				}
 				else if( $statutValidation == 'Decisionci::valides' ) {
@@ -40,7 +53,7 @@
 				if( Configure::read( 'Cg.departement' ) == 93 ) {
 					// Si on veut valider des CER complexes, on s'assurera qu'ils ne sont
 					// pas en EP pour validation de contrat complexe, ou alors dans un état annulé
-					if( in_array( $statutValidation, array( 'Decisionci::nonvalide'/*, 'Decisionci::enattente'*/ ) ) ) {
+					if( in_array( $statutValidation, array( 'Decisionci::nouveaux'/*, 'Decisionci::enattente'*/ ) ) ) {
 						$ModeleContratcomplexeep93 = ClassRegistry::init( 'Contratcomplexeep93' );
 						$conditions[] = 'Contratinsertion.id NOT IN (
 							'.$ModeleContratcomplexeep93->sq(
@@ -79,10 +92,12 @@
 				}
 			}
 
-
 			/// Dossiers lockés
 			if( !empty( $lockedDossiers ) ) {
-				$conditions[] = 'Dossier.id NOT IN ( '.implode( ', ', $lockedDossiers ).' )';
+				if( is_array( $lockedDossiers ) ) {
+					$conditions[] = 'Dossier.id NOT IN ( '.implode( ', ', $lockedDossiers ).' )';
+				}
+				$conditions[] = "NOT {$lockedDossiers}";
 			}
 
 			/// Critères
@@ -138,17 +153,17 @@
 			}
 
 			// On a un filtre par défaut sur l'état du dossier si celui-ci n'est pas renseigné dans le formulaire.
-			$Situationdossierrsa = ClassRegistry::init( 'Situationdossierrsa' );			
+			$Situationdossierrsa = ClassRegistry::init( 'Situationdossierrsa' );
 			$etatdossier = Set::extract( $criteresci, 'Situationdossierrsa.etatdosrsa' );
 			if( !isset( $criteresci['Situationdossierrsa']['etatdosrsa'] ) || empty( $criteresci['Situationdossierrsa']['etatdosrsa'] ) ) {
 				$criteresci['Situationdossierrsa']['etatdosrsa']  = $Situationdossierrsa->etatOuvert();
 			}
 
-			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );			
+			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
 			$conditions = $this->conditionsAdresse( $conditions, $criteresci, $filtre_zone_geo, $mesCodesInsee );
 			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $criteresci );
 			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $criteresci );
-			
+
 			/// Requête
 // 			$Situationdossierrsa = ClassRegistry::init( 'Situationdossierrsa' );
 // 			$etatdossier = Set::extract( $criteresci, 'Situationdossierrsa.etatdosrsa' );
@@ -158,7 +173,7 @@
 // 			else {
 // 				$conditions[] = '( Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatOuvert() ).'\' ) )';
 // 			}
-			
+
 			// ...
 			if( !empty( $decision_ci ) ) {
 				$conditions[] = 'Contratinsertion.decision_ci = \''.Sanitize::clean( $decision_ci ).'\'';
@@ -211,7 +226,7 @@
 
 
 			// Pour le CG66 : filtre permettant de retourner les CERs non validés et notifiés il y a 1 mois et demi
-			if( isset( $criteresci['Filtre']['notifienonvalide'] ) && !empty( $criteresci['Filtre']['notifienonvalide'] ) ) {
+			if( isset( $criteresci['Filtre']['notifienouveaux'] ) && !empty( $criteresci['Filtre']['notifienouveaux'] ) ) {
 				$conditions[] = 'Contratinsertion.id IN (
 					SELECT
 						contratsinsertion.id

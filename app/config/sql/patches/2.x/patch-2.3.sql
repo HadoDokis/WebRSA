@@ -474,6 +474,12 @@ SELECT add_missing_table_field ( 'public', 'decisionsdossierspcgs66', 'userpropo
 ALTER TABLE decisionsdossierspcgs66 ADD CONSTRAINT decisionsdossierspcgs66_useravistechnique_id_fk FOREIGN KEY (useravistechnique_id) REFERENCES users(id);
 ALTER TABLE decisionsdossierspcgs66 ADD CONSTRAINT decisionsdossierspcgs66_userproposition_id_fk FOREIGN KEY (userproposition_id) REFERENCES users(id);
 
+-------------------------------------------------------------------------------------------------------------
+-- 20120917: Transformation du CHAR(32) en VARCHAR(32) pour les jetons.
+-------------------------------------------------------------------------------------------------------------
+ALTER TABLE jetons ALTER COLUMN php_sid TYPE VARCHAR(32);
+ALTER TABLE jetonsfonctions ALTER COLUMN php_sid TYPE VARCHAR(32);
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
