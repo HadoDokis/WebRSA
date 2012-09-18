@@ -21,6 +21,11 @@ msgstr ""
 ###############################################################################
 # Apre66
 ###############################################################################
+msgid "Apres66::cancel"
+msgstr "Annulation de la demande d'APRE"
+
+msgid "Apre66.motifannulation"
+msgstr "Raison de l'annulation"
 
 msgid "Apre66.datedemandeapre"
 msgstr "Date de demande de l'APRE "
@@ -506,6 +511,9 @@ msgstr "Validée"
 
 msgid "ENUM::ETATDOSSIERAPRE::TRA"
 msgstr "Traitée"
+
+msgid "ENUM::ETATDOSSIERAPRE::ANN"
+msgstr "Annulé"
 ###############################################################################
 # Enum Apre66.eligibiliteapre
 ###############################################################################

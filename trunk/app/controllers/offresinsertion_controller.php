@@ -10,6 +10,8 @@
 		public $commeDroit = array(
 			'view' => 'Offresinsertion:index'
 		);
+        
+        public $aucunDroit = array( 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
 		
 		public $components = array(
 			'Prg2' => array(

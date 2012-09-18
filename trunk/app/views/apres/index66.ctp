@@ -44,7 +44,7 @@
 				<th>Montant proposé</th>
 				<th>Montant accordé</th>
 				<th>Décision</th>
-				<th colspan="6" class="action">Actions</th>
+				<th colspan="7" class="action">Actions</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -90,6 +90,10 @@
 								<th>Natures de la demande</th>
 								<td>'.( empty( $aidesApre ) ? null :'<ul><li>'.implode( '</li><li>', $aidesApre ).'</li></ul>' ).'</td>
 							</tr>
+                            <tr>
+								<th>Raison annulation</th>
+								<td>'.h( $apre['Apre66']['motifannulation'] ).'</td>
+							</tr>
 						</tbody>
 					</table>';
 
@@ -105,25 +109,21 @@
 							$xhtml->viewLink(
 								'Voir la demande APRE',
 								array( 'controller' => 'apres'.Configure::read( 'Apre.suffixe' ), 'action' => 'view'.Configure::read( 'Cg.departement' ), $apre[$this->modelClass]['id'] ),
-								$permissions->check( 'apres'.Configure::read( 'Apre.suffixe' ), 'view' )
+                                $permissions->check( 'apres'.Configure::read( 'Apre.suffixe' ), 'view' )
 							),
 							$xhtml->editLink(
 								'Editer la demande APRE',
 								array( 'controller' => 'apres'.Configure::read( 'Apre.suffixe' ), 'action' => 'edit', $apre[$this->modelClass]['id'] ),
-								$editButton,
-								$permissions->check( 'apres'.Configure::read( 'Apre.suffixe' ), 'edit' )
+                                $editButton
+                                && $permissions->check( 'apres'.Configure::read( 'Apre.suffixe' ), 'edit' )
+                                && ( Set::classicExtract( $apre, 'Apre66.etatdossierapre' ) != 'ANN' )
 							),
 							$xhtml->printLink(
 								'Imprimer la demande APRE',
 								array( 'controller' => 'apres66', 'action' => 'impression', $apre[$this->modelClass]['id'] ),
-								$buttonEnabledInc,
-								$permissions->check( 'apres66', 'impression' )
-							),
-							$xhtml->fileLink(
-								'Fichiers liés',
-								array( 'controller' => 'apres'.Configure::read( 'Apre.suffixe' ), 'action' => 'filelink', $apre[$this->modelClass]['id'] ),
-								$buttonEnabled,
-								$permissions->check( 'apres'.Configure::read( 'Apre.suffixe' ), 'filelink' )
+								$buttonEnabledInc
+                                && $permissions->check( 'apres66', 'impression' )
+                                && ( Set::classicExtract( $apre, 'Apre66.etatdossierapre' ) != 'ANN' )
 							),
 							$default2->button(
 								'email',
@@ -131,10 +131,32 @@
 								array(
 									'label' => 'Envoi mail référent',
 									'title' => 'Envoi Mail',
-									'disabled' => !( $buttonEnabled && $permissions->check( 'apres'.Configure::read( 'Apre.suffixe' ), 'maillink' ) )
+									'enabled' => (
+                                        $buttonEnabled
+                                        && $permissions->check( 'apres'.Configure::read( 'Apre.suffixe' ), 'maillink' )
+                                        && ( Set::classicExtract( $apre, 'Apre66.etatdossierapre' ) != 'ANN' )
+                                    )
 								)
 							),
+							$xhtml->fileLink(
+								'Fichiers liés',
+								array( 'controller' => 'apres'.Configure::read( 'Apre.suffixe' ), 'action' => 'filelink', $apre[$this->modelClass]['id'] ),
+								$buttonEnabled
+                                && $permissions->check( 'apres'.Configure::read( 'Apre.suffixe' ), 'filelink' )
+//                                && ( Set::classicExtract( $apre, 'Apre66.etatdossierapre' ) != 'ANN' )
+							),
 							h( '('.$nbFichiersLies.')' ),
+                            $default2->button(
+								'cancel',
+								array( 'controller' => 'apres66', 'action' => 'cancel', $apre[$this->modelClass]['id'] ),
+								array(
+                                    'enabled' => (
+                                        $permissions->check( 'apres'.Configure::read( 'Apre.suffixe' ), 'cancel' )
+                                        && ( Set::classicExtract( $apre, 'Apre66.etatdossierapre' ) != 'ANN' )
+//                                        && ( Set::classicExtract( $apre, 'Aideapre66.decisionapre' ) != 'ACC' )
+                                    )
+                                )
+							),
 							array( $innerTable, array( 'class' => 'innerTableCell' ) )
 						),
 						array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
