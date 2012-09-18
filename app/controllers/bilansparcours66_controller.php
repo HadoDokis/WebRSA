@@ -512,8 +512,10 @@
 
 			// Si le formulaire a été renvoyé
 			if( !empty( $this->data ) ) {
-				$this->Bilanparcours66->begin();
 // debug( $this->data );
+//                die();
+                $this->Bilanparcours66->begin();
+
 
 
 				if ( ( !isset( $passagecommissionep ) || empty( $passagecommissionep ) ) && $this->action == 'edit' ) {
@@ -583,6 +585,7 @@
 			else {
 				if( $this->action == 'edit' ) {
 					$this->data = $bilanparcours66;
+//                    debug($bilanparcours66);
 
 					$referent = $this->{$this->modelClass}->Referent->find(
 						'first',
