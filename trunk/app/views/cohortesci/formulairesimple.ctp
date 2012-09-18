@@ -93,9 +93,9 @@
 
 						$array2 = array(
 							$form->input( 'Contratinsertion.'.$index.'.atraiter', array( 'label' => false, 'legend' => false, 'type' => 'checkbox' ) ),
-							
+
 							$form->input( 'Contratinsertion.'.$index.'.positioncer', array( 'label' => false, 'type' => 'hidden', 'value' => $contrat['Contratinsertion']['positioncer'] ) ).
-							
+
 							$form->input( 'Contratinsertion.'.$index.'.id', array( 'label' => false, 'type' => 'hidden', 'value' => $contrat['Contratinsertion']['id'] ) ).
 
 							$form->input( 'Contratinsertion.'.$index.'.personne_id', array( 'label' => false, 'type' => 'hidden', 'value' => $contrat['Contratinsertion']['personne_id'] ) ).
@@ -132,11 +132,12 @@
 	<?php endif?>
 <?php endif?>
 
+<?php if( isset( $cohorteci ) ):?>
 <script type="text/javascript">
 	document.observe( "dom:loaded", function() {
 		<?php foreach( array_keys( $cohorteci ) as $index ):?>
 
-		    
+
 		    observeDisableFieldsOnCheckbox(
 				'Contratinsertion<?php echo $index;?>Atraiter',
 				[
@@ -149,7 +150,7 @@
 				],
 				false
 			);
-	    		    
+
 			observeDisableFieldsOnValue(
 				'Contratinsertion<?php echo $index;?>DecisionCi',
 				[
@@ -179,3 +180,4 @@
 		<?php endforeach;?>
 	} );
 </script>
+<?php endif;?>

@@ -1,8 +1,20 @@
 <?php
+	/**
+	 * Fichier source de la classe CohortesController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.controllers
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 	App::import( 'Sanitize' );
-
 	require_once( APPLIBS.'cmis.php' );
 
+	/**
+	 * La classe CohortesController permet de traiter les orientations en cohorte (CG 66 et 93).
+	 *
+	 * @package app.controllers
+	 */
 	class CohortesController extends AppController
 	{
 		public $name = 'Cohortes';
@@ -16,7 +28,15 @@
 
 		public $helpers = array( 'Csv', 'Paginator', 'Ajax', 'Default', 'Xpaginator', 'Locale', 'Search' );
 
-		public $components = array( 'Gedooo.Gedooo', 'Prg' => array( 'actions' => 'orientees' ), 'Jetons2', 'Gestionzonesgeos' );
+		public $components = array(
+			'Gedooo.Gedooo',
+			'Prg2' => array( 'actions' => 'orientees' ),
+			'Cohortes'  => array(
+				'nouvelles',
+				'enattente'
+			),
+			'Gestionzonesgeos'
+		);
 
 		public $paginate = array( 'limit' => 20 );
 
@@ -158,7 +178,7 @@
 				// -----------------------------------------------------------------
 				if( !empty( $this->data['Orientstruct'] ) ) {
 					$dossiers_ids = Set::extract(  '/dossier_id', $this->data['Orientstruct'] );
-					$this->Jetons2->get( $dossiers_ids );
+					$this->Cohortes->get( $dossiers_ids );
 
 					// Sauvegarde de l'utilisateur orientant
 					foreach( array_keys( $this->data['Orientstruct'] ) as $key ) {
@@ -185,7 +205,7 @@
 
 						if( $saved ) {
 							$this->Personne->Foyer->Dossier->commit();
-							$this->Jetons2->release( $dossiers_ids );
+							$this->Cohortes->release( $dossiers_ids );
 
 							$this->data['Orientstruct'] = array();
 						}
@@ -221,12 +241,12 @@
                     }
 					unset( $filtre['Filtre']['actif'] );
 
-					$queryData = $this->Cohorte->recherche(
+					$queryData = $this->Cohorte->search(
 						$statutOrientation,
 						$mesCodesInsee,
 						$this->Session->read( 'Auth.User.filtre_zone_geo' ),
 						$filtre,
-						( ( $statutOrientation == 'Orienté' ) ? false : $this->Jetons2->sqLocked() )
+						( ( $statutOrientation == 'Orienté' ) ? false : $this->Cohortes->sqLocked() )
 					);
 
 					if( $statutOrientation == 'Orienté' ) {
@@ -243,7 +263,7 @@
 						$cohorte = $this->paginate( $this->Personne, array(), array(), $progressivePaginate );
 
 						$dossiers_ids = Set::extract(  '/Dossier/id', $cohorte );
-						$this->Jetons2->get( $dossiers_ids );
+						$this->Cohortes->get( $dossiers_ids );
 
 						$this->set( compact( 'cohorte' ) );
 					}
@@ -320,7 +340,7 @@
 				$AuthZonegeographique = array();
 			}
 
-			$queryData = $this->Cohorte->recherche(
+			$queryData = $this->Cohorte->search(
 				'Orienté',
 				$AuthZonegeographique,
 				$this->Session->read( 'Auth.User.filtre_zone_geo' ),

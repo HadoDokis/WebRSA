@@ -4,7 +4,8 @@
 	 *
 	 * PHP 5.3
 	 *
-	 * @package       app.Controller.Component
+	 * @package app.controllers.components
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 
 	/**
@@ -13,7 +14,7 @@
 	 *
 	 * Ces listes sont mises en cache dans la session, car elles dépendent de l'utilisateur.
 	 *
-	 * @package       app.Controller.Component
+	 * @package app.controllers.components
 	 */
 	class GestionzonesgeosComponent extends Component
 	{
@@ -22,7 +23,7 @@
 		 *
 		 * @var Controller
 		 */
-		public $controller = null;
+		public $Controller = null;
 
 		/**
 		 * On a besoin d'un esession.
@@ -38,7 +39,7 @@
 		 * @param array $settings
 		 */
 		public function initialize( &$controller, $settings = array() ) {
-			$this->controller = &$controller;
+			$this->Controller = &$controller;
 		}
 
 		/**
@@ -54,13 +55,13 @@
 
 			if( !$this->Session->check( 'Cache.mesCodesInsee' ) ) {
 				if( Configure::read( 'Zonesegeographiques.CodesInsee' ) ) {
-					$listeCodesInseeLocalites = $this->controller->User->Zonegeographique->listeCodesInseeLocalites(
+					$listeCodesInseeLocalites = $this->Controller->User->Zonegeographique->listeCodesInseeLocalites(
 						$mesCodesInsee,
 						$this->Session->read( 'Auth.User.filtre_zone_geo' )
 					);
 				}
 				else {
-					$listeCodesInseeLocalites = $this->controller->User->Zonegeographique->listeCodesInseeLocalites(
+					$listeCodesInseeLocalites = $this->Controller->User->Zonegeographique->listeCodesInseeLocalites(
 						ClassRegistry::init( 'Adresse' )->listeCodesInsee(),
 						$this->Session->read( 'Auth.User.filtre_zone_geo' )
 					);
@@ -75,14 +76,12 @@
 		}
 
 		/**
-		 * Envoie à la vue de la liste des cantons si la variable CG.cantons est à vrai dans le webrsa.inc.
-		 * Si les cantons ne sont pas utilisés, cette variable sera néanmoins envoyée, mais sa valeur sera un
-		 * tableau vide.
+		 * Retourn la liste des cantons si la variable CG.cantons est à vrai dans le webrsa.inc.
+		 * Si les cantons ne sont pas utilisés, un array vide sera retourné.
 		 *
-		 * @param string $varname Le nom de la variable envoyée à la vue.
-		 * @return void
+		 * @return array
 		 */
-		public function setCantonsIfConfigured( $varname = 'cantons' ) {
+		public function listeCantons() {
 			$cantons = array();
 
 			if( Configure::read( 'CG.cantons' ) ) {
@@ -103,7 +102,19 @@
 				}
 			}
 
-			$this->controller->set( $varname, $cantons );
+			return $cantons;
+		}
+
+		/**
+		 * Envoie à la vue de la liste des cantons si la variable CG.cantons est à vrai dans le webrsa.inc.
+		 * Si les cantons ne sont pas utilisés, cette variable sera néanmoins envoyée, mais sa valeur sera un
+		 * tableau vide.
+		 *
+		 * @param string $varname Le nom de la variable envoyée à la vue.
+		 * @return void
+		 */
+		public function setCantonsIfConfigured( $varname = 'cantons' ) {
+			$this->Controller->set( $varname, $this->listeCantons() );
 		}
 
 		/**

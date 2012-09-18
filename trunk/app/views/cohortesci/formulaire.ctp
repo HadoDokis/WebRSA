@@ -90,7 +90,7 @@
 								<th>État du dossier</th>
 								<td>'.h( $etatdosrsa[$contrat['Situationdossierrsa']['etatdosrsa']] ).'</td>
 							</tr>
-							
+
 						</tbody>
 					</table>';
 						$title = $contrat['Dossier']['numdemrsa'];
@@ -144,6 +144,7 @@
 	<?php endif?>
 <?php endif?>
 
+<?php if( isset( $cohorteci ) ):?>
 <script type="text/javascript">
 	document.observe( "dom:loaded", function() {
 		<?php foreach( array_keys( $cohorteci ) as $index ):?>
@@ -156,3 +157,4 @@
 		<?php endforeach;?>
 	} );
 </script>
+<?php endif;?>
