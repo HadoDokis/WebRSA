@@ -15,9 +15,6 @@
 					|| $permissions->check( 'cohortesci', 'nouveauxsimple' )
 					|| $permissions->check( 'cohortesci', 'nouveauxparticulier' )
 					|| $permissions->check( 'cohortesci', 'nouveauxparticulier' )
-					|| $permissions->check( 'cohortescui', 'nouveaux' )
-					|| $permissions->check( 'cohortescui', 'enattente' )
-					|| $permissions->check( 'cohortescui', 'valides' )
 					|| $permissions->check( 'cohortesfichescandidature66', 'fichesenattente' )
 					|| $permissions->check( 'cohortesfichescandidature66', 'fichesencours' )
 					|| $permissions->check( 'cohortesdossierspcgs66', 'enattenteaffectation' )
@@ -95,38 +92,20 @@
 									</ul>
 							</li>
 						<?php endif;?>
-
-						<?php if( $permissions->check( 'cohortescui', 'nouveaux' ) || $permissions->check( 'cohortescui', 'valides' ) || $permissions->check( 'cohortescui', 'enattente' ) ):?>
-							<!-- AJOUT POUR LA GESTION DES CONTRATS D'ENGAGEMENT RECIPROQUE (Cohorte) -->
+						<?php if( ( Configure::read( 'Cg.departement' ) == 66 ) && ( $permissions->check( 'cohortesfichescandidature66', 'fichesenattente' ) || $permissions->check( 'cohortesfichescandidature66', 'fichesencours' ) ) ):?>
+							<!-- AJOUT POUR LA GESTION DES Fiches de candidature 66 (Cohorte) -->
 							<li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
-								<?php  echo $xhtml->link( 'CUI ', '#' );?>
+								<?php  echo $xhtml->link( 'Fiches de candidature ', '#' );?>
 									<ul>
-										<?php if( $permissions->check( 'cohortescui', 'nouveaux' ) ): ?>
-											<li><?php echo $xhtml->link( 'CUIs à valider', array( 'controller' => 'cohortescui', 'action' => 'nouveaux' ), array( 'title' => 'Contrats à valider' ) );?></li>
+										<?php if( $permissions->check( 'cohortesfichescandidature66', 'fichesenattente' ) ): ?>
+											<li><?php echo $xhtml->link( 'Fiches en attente', array( 'controller' => 'cohortesfichescandidature66', 'action' => 'fichesenattente' ), array( 'title' => 'Fiches en attente' ) );?></li>
 										<?php endif; ?>
-										<?php if( $permissions->check( 'cohortescui', 'enattente' ) ): ?>
-											<li><?php echo $xhtml->link( 'En attente', array( 'controller' => 'cohortescui', 'action' => 'enattente' ), array( 'title' => 'Contrats en attente' ) );?></li>
-										<?php endif; ?>
-										<?php if( $permissions->check( 'cohortescui', 'valides' ) ): ?>
-											<li><?php echo $xhtml->link( 'CUIs validés', array( 'controller' => 'cohortescui', 'action' => 'valides' ), array( 'title' => 'Contrats validés' ) );?></li>
+										<?php if( $permissions->check( 'cohortesfichescandidature66', 'fichesencours' ) ): ?>
+											<li><?php echo $xhtml->link( 'Fiches en cours', array( 'controller' => 'cohortesfichescandidature66', 'action' => 'fichesencours' ), array( 'title' => 'Fiches en cours' ) );?></li>
 										<?php endif; ?>
 									</ul>
 							</li>
 						<?php endif;?>
-						<?php if( ( Configure::read( 'Cg.departement' ) == 66 ) && ( $permissions->check( 'cohortesfichescandidature66', 'fichesenattente' ) || $permissions->check( 'cohortesfichescandidature66', 'fichesencours' ) ) ):?>
-                            <!-- AJOUT POUR LA GESTION DES Fiches de candidature 66 (Cohorte) -->
-                            <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
-                                <?php  echo $xhtml->link( 'Fiches de candidature ', '#' );?>
-                                    <ul>
-                                        <?php if( $permissions->check( 'cohortesfichescandidature66', 'fichesenattente' ) ): ?>
-                                            <li><?php echo $xhtml->link( 'Fiches en attente', array( 'controller' => 'cohortesfichescandidature66', 'action' => 'fichesenattente' ), array( 'title' => 'Fiches en attente' ) );?></li>
-                                        <?php endif; ?>
-                                        <?php if( $permissions->check( 'cohortesfichescandidature66', 'fichesencours' ) ): ?>
-                                            <li><?php echo $xhtml->link( 'Fiches en cours', array( 'controller' => 'cohortesfichescandidature66', 'action' => 'fichesencours' ), array( 'title' => 'Fiches en cours' ) );?></li>
-                                        <?php endif; ?>
-                                    </ul>
-                            </li>
-                        <?php endif;?>
 						<?php if( ( Configure::read( 'Cg.departement' ) == 66 ) && ( $permissions->check( 'cohortesdossierspcgs66', 'enattenteaffectation' ) || $permissions->check( 'cohortesdossierspcgs66', 'affectes' ) || $permissions->check( 'cohortesdossierspcgs66', 'aimprimer' ) || $permissions->check( 'cohortesdossierspcgs66', 'atransmettre' ) ) ):?>
                             <!-- AJOUT POUR LA GESTION DES Fiches de candidature 66 (Cohorte) -->
                             <li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
@@ -300,12 +279,12 @@
 							<li><?php echo $xhtml->link( 'Par Indus', array( 'controller' => 'cohortesindus', 'action' => 'index' ) );?>
 							</li>
 						<?php endif;?>
-						
+
 						<?php if( $permissions->check( 'dsps', 'index' ) ): ?>
 							<li><?php echo $xhtml->link( 'Par DSPs', array( 'controller' => 'dsps', 'action' => 'index' ) );?>
 							</li>
 						<?php endif;?>
-						
+
 						<?php if( $permissions->check( 'criteresrdv', 'index' ) ):?>
 							<li><?php echo $xhtml->link( 'Par Rendez-vous',  array( 'controller' => 'criteresrdv', 'action' => 'index'  ) );?></li>
 						<?php endif;?>
@@ -456,7 +435,7 @@
 					</li>
 				<?php endif; ?>
 			<?php endif;?>
-			
+
 			<!-- Début du menu des maquettes offre d'insertion-->
 			<?php if( Configure::read( 'Cg.departement' ) == 66 ):?>
 					<?php if( $permissions->check( 'offresinsertion', 'index' ) ): ?>
@@ -586,7 +565,7 @@
 						</li>
 					<?php endif; ?>
 					<li><?php echo $xhtml->link( '4. Consultation et impression des décisions', array( 'controller' => 'commissionseps', 'action' => 'decisions' ) );?></li>
-					
+
 					<?php if( Configure::read( 'Cg.departement' ) == 58 ):?>
 						<?php if( $permissions->check( 'gestionssanctionseps58', 'traitement' ) || $permissions->check( 'gestionssanctionseps58', 'visualisation' ) ):?>
 						<li>
@@ -644,10 +623,10 @@
 									</li>
 								</ul>
 							</li>
-							
+
 							<?php if( $permissions->check( 'indicateurssuivis', 'index' ) ):?>
 								<li><?php echo $xhtml->link( 'Indicateurs de suivi', array( 'controller' => 'indicateurssuivis', 'action' => 'index' ) );?></li>
-							<?php endif;?>							
+							<?php endif;?>
 
 						<?php endif;?>
 					</ul>
