@@ -107,40 +107,40 @@
 				)
 			),
 			'avecep_typeorientprincipale_id' => array(
-				array(
-					'rule' => array( 'notEmptyIf', 'typeformulaire', true, array( 'pe' ) ),
-					'message' => 'Champ obligatoire',
-				),
+//				array(
+//					'rule' => array( 'notEmptyIf', 'typeformulaire', true, array( 'pe' ) ),
+//					'message' => 'Champ obligatoire',
+//				),
 				array(
 					'rule' => array( 'notEmptyIf', 'proposition', true, array( 'parcours' ) ),
 					'message' => 'Champ obligatoire',
 				)
 			),
 			'nvtypeorient_id' => array(
-				array(
-					'rule' => array( 'notEmptyIf', 'typeformulaire', true, array( 'pe' ) ),
-					'message' => 'Champ obligatoire',
-				),
+//				array(
+//					'rule' => array( 'notEmptyIf', 'typeformulaire', true, array( 'pe' ) ),
+//					'message' => 'Champ obligatoire',
+//				),
 				array(
 					'rule' => array( 'notEmptyIf', 'proposition', true, array( 'traitement', 'parcours' ) ),
 					'message' => 'Champ obligatoire',
 				)
 			),
 			'nvstructurereferente_id' => array(
-				array(
-					'rule' => array( 'notEmptyIf', 'typeformulaire', true, array( 'pe' ) ),
-					'message' => 'Champ obligatoire',
-				),
+//				array(
+//					'rule' => array( 'notEmptyIf', 'typeformulaire', true, array( 'pe' ) ),
+//					'message' => 'Champ obligatoire',
+//				),
 				array(
 					'rule' => array( 'notEmptyIf', 'proposition', true, array( 'traitement', 'parcours' ) ),
 					'message' => 'Champ obligatoire',
 				)
 			),
 			'choixparcours' => array(
-				array(
-					'rule' => array( 'notEmptyIf', 'typeformulaire', true, array( 'pe' ) ),
-					'message' => 'Champ obligatoire',
-				),
+//				array(
+//					'rule' => array( 'notEmptyIf', 'typeformulaire', true, array( 'pe' ) ),
+//					'message' => 'Champ obligatoire',
+//				),
 				array(
 					'rule' => array( 'notEmptyIf', 'proposition', true, array( 'parcours' ) ),
 					'message' => 'Champ obligatoire',
@@ -1014,7 +1014,7 @@
 						$data['Defautinsertionep66']['dossierep_id'] = $this->Defautinsertionep66->Dossierep->id;
 						$data['Defautinsertionep66']['orientstruct_id'] = $vxOrientstruct['Orientstruct']['id'];
 						$data['Defautinsertionep66']['contratinsertion_id'] = $vxContratinsertion['Contratinsertion']['id'];
-						$data['Defautinsertionep66']['cui_id'] = $vxContratinsertion['Cui']['id'];
+						$data['Defautinsertionep66']['cui_id'] = $vxCui['Cui']['id'];
 						$data['Defautinsertionep66']['origine'] = 'bilanparcours';
 
 						$this->Defautinsertionep66->create( $data );
@@ -1028,6 +1028,7 @@
 
 				$this->create( $data );
 				if( $success = $this->validates() ) {
+                    
 					$success = $this->save() && $success;
 
 					// Avant de sauvegarder le dossier d'EP, on va rechercher
