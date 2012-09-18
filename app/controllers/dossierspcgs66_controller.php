@@ -309,7 +309,16 @@
 						'conditions' => array(
 							'Decisionpdo.id = Decisiondossierpcg66.decisionpdo_id'
 						)
-					)
+					),
+//                    array(
+//						'table'      => 'fichiersmodules',
+//						'alias'      => 'Fichiermodule',
+//						'type'       => 'LEFT OUTER',
+//						'foreignKey' => false,
+//						'conditions' => array(
+//							'Decisionpdo.id = Decisiondossierpcg66.decisionpdo_id'
+//						)
+//					)
 				);
 
 				$decisionsdossierspcgs66 = $this->{$this->modelClass}->Decisiondossierpcg66->find(
@@ -329,7 +338,8 @@
 							'Decisiondossierpcg66.commentairevalidation',
 							'Decisiondossierpcg66.datevalidation',
 							'Decisionpdo.libelle',
-							'Pdf.fk_value'
+							'Pdf.fk_value',
+                            $this->{$this->modelClass}->Decisiondossierpcg66->Fichiermodule->sqNbFichiersLies( $this->{$this->modelClass}->Decisiondossierpcg66, 'nb_fichiers_lies' )
 						),
 						'conditions' => array(
 							'dossierpcg66_id' => $dossierpcg66_id
@@ -468,6 +478,9 @@
 						'Originepdo',
 						'Serviceinstructeur',
 						'User',
+                        'Decisiondossierpcg66' => array(
+                            'order' => array( 'Decisiondossierpcg66.created DESC' )
+                        )
 					)
 				)
 			);

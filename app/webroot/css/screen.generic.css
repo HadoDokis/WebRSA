@@ -1311,6 +1311,28 @@ td.button.notifemployeur.disabled a, td.action a.notifemployeur.disabled, td spa
     background-image: url( ../img/icons/printer_disabled.png );
 }
 
+td.button.validation a, td.action a.validation, td span.button.validation, table.default2 td a.button.validation {
+    background-image: url( ../img/icons/tick.png );
+}
+td.button.validation.disabled a, td.action a.validation.disabled, td span.button.validation.disabled, table.default2 td a.button.validation.disabled {
+    background-image: url( ../img/icons/tick_disabled.png );
+}
+
+td.button.avistechnique a, td.action a.avistechnique, td span.button.avistechnique, table.default2 td a.button.avistechnique {
+    background-image: url( ../img/icons/page_attach );
+}
+td.button.avistechnique.disabled a, td.action a.avistechnique.disabled, td span.button.avistechnique.disabled, table.default2 td a.button.avistechnique.disabled {
+    background-image: url( ../img/icons/page_attach_disabled.png );
+}
+
+td.button.transmettreop a, td.action a.transmettreop, td span.button.transmettreop, table.default2 td a.button.transmettreop {
+    background-image: url( ../img/icons/application_view_list.png );
+}
+
+td.button.transmettreop.disabled a, td.action a.transmettreop.disabled, td span.button.transmettreop.disabled, table.default2 td a.button.transmettreop.disabled {
+    background-image: url( ../img/icons/application_view_list_disabled.png );
+}
+
 ul.actionMenu a.button.printcohorte1, ul.actionMenu a.button.printcohorte2 {
     background-image: url( ../img/icons/printer.png );
 /* 	padding: 5px; */

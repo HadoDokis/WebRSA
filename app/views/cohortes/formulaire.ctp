@@ -145,7 +145,7 @@
 								</tr>
 								<tr>
 									<th>État du dossier</th>
-									<td>'.h( $etatdosrsa[$personne['Situationdossierrsa']['etatdosrsa']] ).'</td>
+									<td>'.h( value( $etatdosrsa, $personne['Situationdossierrsa']['etatdosrsa'] ) ).'</td>
 								</tr>
 							</tbody>
 						</table>';

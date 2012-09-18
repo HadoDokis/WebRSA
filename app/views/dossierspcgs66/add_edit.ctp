@@ -217,7 +217,6 @@
 				}
 			}
 
-
 			echo $html->tag(
 				'fieldset',
 				$html->tag(
@@ -231,7 +230,8 @@
 						'Decisiondossierpcg66.avistechnique',
 						'Decisiondossierpcg66.dateavistechnique',
 						'Decisiondossierpcg66.validationproposition',
-						'Decisiondossierpcg66.datevalidation'
+						'Decisiondossierpcg66.datevalidation',
+                        'Fichiermodule.nb_fichiers_lies' => array( 'label' => 'Nb fichiers liés', 'type' => 'text')
 					),
 					array(
 						'actions' => array(
@@ -247,7 +247,17 @@
 // 									)
 									|| '.$permissions->check( 'decisionsdossierspcgs66', 'edit' ).' != \'1\'
 								' )
-							),///FIXME: à remettre en fonction de ce qu'il y aura à imprimer
+							),
+                            'Decisionsdossierspcgs66::avistechnique' => array(
+                                'disabled' => (
+									( $permissions->check( 'decisionsdossierspcgs66', 'avistechnique' ) != "1" )
+								)
+                            ),
+                            'Decisionsdossierspcgs66::validation' => array(
+                                'disabled' => (
+									( $permissions->check( 'decisionsdossierspcgs66', 'validation' ) != "1" )
+								)
+                            ),
 							'Decisionsdossierspcgs66::print' => array(
 								'label' => 'Imprimer',
 								'url' => array( 'controller' => 'decisionsdossierspcgs66', 'action'=>'decisionproposition' ),
@@ -264,6 +274,11 @@
 								'label' => 'Supprimer',
 								'url' => array(  'controller' => 'decisionsdossierspcgs66', 'action' => 'delete' ),
 								'disabled' =>  '( "'.$permissions->check( 'decisionsdossierspcgs66', 'delete' ).'" != "1" )'
+							),
+                            'Decisionsdossierspcgs66::filelink' => array(
+								'label' => 'Fichiers liés',
+								'url' => array(  'controller' => 'decisionsdossierspcgs66', 'action' => 'filelink' ),
+								'disabled' =>  '( "'.$permissions->check( 'decisionsdossierspcgs66', 'filelink' ).'" != "1" )'
 							)
 						),
 						'add' => array(

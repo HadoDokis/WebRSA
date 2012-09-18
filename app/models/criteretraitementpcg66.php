@@ -128,11 +128,13 @@
 				'fields' => array(
 					'Traitementpcg66.id',
 					'Traitementpcg66.daterevision',
+                    'Traitementpcg66.personnepcg66_id',
 					'Traitementpcg66.datedepart',
 					'Traitementpcg66.datereception',
 					'Traitementpcg66.dateecheance',
 					'Traitementpcg66.typetraitement',
 					'Traitementpcg66.descriptionpdo_id',
+                    'Personnepcg66.personne_id',
 					'Situationpdo.libelle',
 					'Dossierpcg66.id',
 					'Dossierpcg66.user_id',

@@ -117,8 +117,7 @@
 			<tbody>
 				<?php
 					foreach( $criterestraitementspcgs66 as $index => $criteretraitementpcg66 ) {
-// debug($criteretraitementpcg66);
-
+ 
 						$etatdosrsaValue = Set::classicExtract( $criteretraitementpcg66, 'Situationdossierrsa.etatdosrsa' );
 						$etatDossierRSA = isset( $etatdosrsa[$etatdosrsaValue] ) ? $etatdosrsa[$etatdosrsaValue] : 'Non défini';
 
@@ -167,7 +166,7 @@
 								h( Set::enum( Set::classicExtract( $criteretraitementpcg66, 'Traitementpcg66.annule' ), $options['Traitementpcg66']['annule'] ) ),
 								$xhtml->viewLink(
 									'Voir',
-									array( 'controller' => 'traitementspcgs66', 'action' => 'index', Set::classicExtract( $criteretraitementpcg66, 'Personne.id' ), Set::classicExtract( $criteretraitementpcg66, 'Dossierpcg66.id' ) )
+									array( 'controller' => 'traitementspcgs66', 'action' => 'index', Set::classicExtract( $criteretraitementpcg66, 'Personnepcg66.personne_id' ), Set::classicExtract( $criteretraitementpcg66, 'Dossierpcg66.id' ) )
 								),
 								array( $innerTable, array( 'class' => 'innerTableCell noprint' ) ),
 							),

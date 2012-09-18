@@ -18,7 +18,10 @@
 			echo $xform->input( 'Decisiondossierpcg66.id', array( 'type' => 'hidden' ) );
 		}
 		echo $xform->input( 'Decisiondossierpcg66.dossierpcg66_id', array( 'type' => 'hidden', 'value' => $dossierpcg66_id ) );
-		echo $xform->input( 'Decisiondossierpcg66.user_id', array( 'type' => 'hidden', 'value' => $userConnected ) );
+		if( $this->action == 'add' ) {
+            echo $xform->input( 'Decisiondossierpcg66.user_id', array( 'type' => 'hidden', 'value' => $userConnected ) );
+        }
+        
 	?>
 
 	<?php if( !empty( $personnespcgs66 ) ):?>
@@ -361,12 +364,16 @@
 	});
 </script>
 
-		<?php if( $avistechniquemodifiable ):?>
+		<?php if( $avistechniquemodifiable && !in_array( $this->action, array( 'add', 'edit' ) ) ):?>
 			<fieldset id="avtech"><legend><?php echo 'Avis technique'; ?></legend>
 					<?php
+                        if( empty( $this->data['Decisiondossierpcg66']['useravistechnique_id'] ) ){
+                            echo $xform->input( 'Decisiondossierpcg66.useravistechnique_id', array( 'type' => 'hidden', 'value' => $userConnected ) );
+                        }
 						echo $default2->subform(
 							array(
 								'Decisiondossierpcg66.avistechnique' => array( 'label' => false, 'type' => 'radio', 'options' => $options['Decisiondossierpcg66']['avistechnique'] ),
+//                                'Decisiondossierpcg66.useravistechnique_id' => array( 'type' => 'hidden', 'value' => $userConnected )
 							),
 							array(
 								'options' => $options
@@ -389,12 +396,13 @@
 			</fieldset>
 		<?php endif;?>
 
-		<?php if( $validationmodifiable ):?>
+		<?php if( $validationmodifiable && !in_array( $this->action, array( 'add', 'edit' ) ) ):?>
 			<fieldset id="propovalid"><legend>Validation de la proposition</legend>
 					<?php
 						echo $default2->subform(
 							array(
 								'Decisiondossierpcg66.validationproposition' => array( 'label' => false, 'type' => 'radio', 'options' => $options['Decisiondossierpcg66']['validationproposition'] ),
+                                'Decisiondossierpcg66.userproposition_id' => array( 'type' => 'hidden', 'value' => $userConnected )
 							),
 							array(
 								'options' => $options

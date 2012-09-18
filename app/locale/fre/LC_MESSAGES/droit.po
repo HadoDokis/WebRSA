@@ -808,14 +808,32 @@ msgstr "Suppression d'un CUI"
 msgid "Module:Decisionsdossierspcgs66"
 msgstr "Propositions de décision au niveau foyer (Dossier PCG CG66)"
 
+msgid "Decisionsdossierspcgs66:add"
+msgstr "Ajout d'une proposition de décision"
+
 msgid "Decisionsdossierspcgs66:edit"
-msgstr "Ajout/Édition d'une proposition de décision"
+msgstr "Modification d'une proposition de décision"
 
 msgid "Decisionsdossierspcgs66:decisionproposition"
 msgstr "Impression de la proposition de décision"
 
 msgid "Decisionsdossierspcgs66:delete"
 msgstr "Suppression d'une décision"
+
+msgid "Decisionsdossierspcgs66:index"
+msgstr "Tableau des décisions liées au dossier PCG"
+
+msgid "Decisionsdossierspcgs66:transmitop"
+msgstr "Transmission à l'OP"
+
+msgid "Decisionsdossierspcgs66:avistechnique"
+msgstr "Contrôle (avis technique)"
+
+msgid "Decisionsdossierspcgs66:validation"
+msgstr "Validation (après avis technique)"
+
+msgid "Decisionsdossierspcgs66:filelink"
+msgstr "Lier des fichiers à la décision"
 
 ###############################################################################
 

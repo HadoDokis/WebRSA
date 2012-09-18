@@ -29,7 +29,7 @@ msgid "Dossierspcgs66::edit"
 msgstr "Modification du dossier PCG."
 
 msgid "Dossierspcgs66::view"
-msgstr "Voir le dossier PCG."
+msgstr "Voir le dossier PCG"
 
 msgid "Dossierspcgs66::delete"
 msgstr "Suppression du dossier PCG."

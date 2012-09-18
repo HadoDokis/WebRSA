@@ -11,32 +11,26 @@
 	?>
 
 	<?php
-// 	debug( $decisiondossierpcg66 );
 		echo $default2->view(
 			$decisiondossierpcg66,
 			array(
 				'Decisionpdo.libelle',
 				'Decisiondossierpcg66.commentairetechnicien',
 				'Decisiondossierpcg66.datepropositiontechnicien',
-				'Decisiondossierpcg66.avistechnique' => array( 'type' => 'boolean' ),
-				'Decisiondossierpcg66.dateavistechnique',
-				'Decisiondossierpcg66.commentaireavistechnique',
-				'Decisiondossierpcg66.validationproposition' => array( 'type' => 'boolean' ),
-				'Decisiondossierpcg66.retouravistechnique' => array( 'type' => 'boolean' ),
-				'Decisiondossierpcg66.vuavistechnique' => array( 'type' => 'boolean' ),
 				'Decisiondossierpcg66.datevalidation',
-				'Decisiondossierpcg66.commentairevalidation',
 				'Decisiondossierpcg66.commentaire' => array( 'label' => 'Commentaire global : ' ),
+                'Dossierpcg66.etatdossierpcg'
 			),
 			array(
-				'class' => 'aere'
+				'class' => 'aere',
+                'options' => $options
 			)
 		);
 	?>
 	
 	<?php 
-		echo "<h2>Pièces liées au dossier</h2>";
-		echo $fileuploader->results( Set::classicExtract( $decisiondossierpcg66['Dossierpcg66'], 'Fichiermodule' ) );
+		echo "<h2>Pièces liées à la décision du dossier</h2>";
+		echo $fileuploader->results( Set::classicExtract( $decisiondossierpcg66, 'Fichiermodule' ) );
 	?>
 	
 </div>

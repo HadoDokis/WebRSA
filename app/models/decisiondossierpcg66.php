@@ -17,7 +17,8 @@
 					'typersa',
 					'recidive',
 					'phase',
-					'defautinsertion'
+					'defautinsertion',
+                    'haspiecejointe'
 				)
 			),
 			'Gedooo.Gedooo',
@@ -109,6 +110,26 @@
 				'with' => 'Decisiondossierpcg66Typersapcg66'
 			)
 		);
+        
+        
+        public $hasMany = array(
+			'Fichiermodule' => array(
+				'className' => 'Fichiermodule',
+				'foreignKey' => false,
+				'dependent' => false,
+				'conditions' => array(
+					'Fichiermodule.modele = \'Decisiondossierpcg66\'',
+					'Fichiermodule.fk_value = {$__cakeID__$}'
+				),
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			)
+        );
 
 // 		public $validate = array(
 // 			'avistechnique' => array(
