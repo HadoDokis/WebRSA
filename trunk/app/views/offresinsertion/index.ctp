@@ -148,6 +148,14 @@
 					</tbody>
 				</table>
 				<?php echo $pagination;?>
+                <ul class="actionMenu">
+                    <li><?php
+                        echo $xhtml->exportLink(
+                            'Télécharger le tableau',
+                            array( 'action' => 'exportcsv' ) + Set::flatten( $this->data, '__' )
+                        );
+                    ?></li>
+                </ul>
 			</div>
 			<div id="actioncandidat">
 				<h2 class="title">Actions</h2>

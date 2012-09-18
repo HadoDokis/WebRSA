@@ -5,7 +5,7 @@
 		public $name = 'Offresinsertion';
 		public $uses = array( 'Offreinsertion', 'Actioncandidat', 'Contactpartenaire', 'Partenaire', 'Option' );
 		
-		public $helpers = array( 'Default2', 'Fileuploader' );
+		public $helpers = array( 'Default2', 'Fileuploader', 'Csv' );
 		
 		public $commeDroit = array(
 			'view' => 'Offresinsertion:index'
@@ -146,6 +146,23 @@
             
 			$this->_setOptions();
 			$this->set( compact( 'fichiers', 'actioncandidat' ) );
+		}
+        
+        /**
+         * Fonction permettant d'exporter le tableau de résultats au format CSV
+         */
+        public function exportcsv() {
+
+            $queryData = $this->Offreinsertion->search( Xset::bump( $this->params['named'], '__' ) );
+			unset( $queryData['limit'] );
+
+			$actionscandidat = $this->Actioncandidat->find( 'all', $queryData );
+
+//debug($actionscandidat);
+//die();
+			$this->layout = '';
+			$this->set( compact( 'headers', 'actionscandidat' ) );
+			$this->_setOptions();
 		}
 	}
 ?>
