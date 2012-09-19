@@ -492,6 +492,11 @@ SELECT add_missing_constraint ( 'public', 'contratsinsertion', 'contratsinsertio
 
 SELECT add_missing_table_field ( 'public', 'entretiens', 'actioncandidat_id', 'INTEGER' );
 SELECT add_missing_constraint ( 'public', 'entretiens', 'entretiens_actioncandidat_id_fkey', 'actionscandidats', 'actioncandidat_id', false );
+
+SELECT add_missing_table_field('public', 'cuis', 'motifannulation', 'TEXT' );
+
+SELECT public.alter_enumtype ( 'TYPE_DECISION', ARRAY['E', 'V', 'A', 'R', 'C'] );
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

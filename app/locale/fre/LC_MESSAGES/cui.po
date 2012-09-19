@@ -663,6 +663,8 @@ msgstr "Rejet"
 msgid "ENUM::DECISIONCUI::E"
 msgstr "En attente"
 
+msgid "ENUM::DECISIONCUI::C"
+msgstr "Annulation"
 
 msgid "Cui.nomtiturib"
 msgstr "Nom du titulaire du RIB"
@@ -750,3 +752,9 @@ msgstr "Validé et notifié"
 
 msgid "ENUM::POSITIONCUI66::nonvalidnotifie"
 msgstr "Non validé et notifié"
+
+msgid "Cuis::cancel"
+msgstr "Annuler le CUI"
+
+msgid "Cui.motifannulation"
+msgstr "Raison de l'annulation"
