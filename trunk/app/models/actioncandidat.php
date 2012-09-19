@@ -195,7 +195,7 @@
 				array(
 					'conditions' => array(
 						'Actioncandidat.actif' => $isactif,
-						'Actioncandidat.hasfichecandidature' => 1,
+						'Actioncandidat.hasfichecandidature' => 1/*,
 						'Actioncandidat.id IN (
 							'.$this->ActioncandidatZonegeographique->sq(
 								array(
@@ -215,7 +215,7 @@
 									)
 								)
 							).'
-						)'
+						)'*/
 					),
 					'recursive' => -1,
 					'order' => 'name'
