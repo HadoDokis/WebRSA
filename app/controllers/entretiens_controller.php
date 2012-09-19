@@ -10,7 +10,7 @@
 			'view' => 'Entretiens:index',
 			'add' => 'Entretiens:edit'
 		);
-		public $aucunDroit = array( 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
+		public $aucunDroit = array( 'ajaxaction', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
 
 		/**
 		 *
@@ -31,6 +31,42 @@
 			$this->set( compact( 'options', 'typerdv' ) );
 		}
 
+        
+		/**
+		 *   Ajax pour les partenaires fournissant l'action liée à l'entretien
+		 */
+		public function ajaxaction( $actioncandidat_id = null ) {
+			Configure::write( 'debug', 0 );
+
+			$dataActioncandidat_id = Set::extract( $this->data, 'Entretien.actioncandidat_id' );
+			$actioncandidat_id = ( empty( $actioncandidat_id ) && !empty( $dataActioncandidat_id ) ? $dataActioncandidat_id : $actioncandidat_id );
+
+			if( !empty( $actioncandidat_id ) ) {
+				$this->Entretien->Actioncandidat->forceVirtualFields = true;
+				$actioncandidat = $this->Entretien->Actioncandidat->find(
+					'first',
+                    array(
+                        'conditions' => array(
+                            'Actioncandidat.id' => $actioncandidat_id
+                        ),
+                        'contain' => array(
+                            'Contactpartenaire' => array(
+                                'Partenaire'
+                            ),
+                            'Fichiermodule'
+                        )
+                    )
+				);
+
+				if( ($actioncandidat['Actioncandidat']['correspondantaction'] == 1) && !empty( $actioncandidat['Actioncandidat']['referent_id'] ) ) {
+					$this->ActioncandidatPersonne->Personne->Referent->recursive = -1;
+					$referent = $this->ActioncandidatPersonne->Personne->Referent->read( null, $actioncandidat['Actioncandidat']['referent_id'] );
+				}
+				$this->set( compact( 'actioncandidat', 'referent' ) );
+			}
+			$this->render( 'ajaxaction', 'ajax' );
+		}
+        
 		/**
 		 * http://valums.com/ajax-upload/
 		 * http://doc.ubuntu-fr.org/modules_php
@@ -249,6 +285,15 @@
 			///Récupération de la liste des référents
 			$referents = $this->Entretien->Referent->listOptions();
 			$this->set( 'referents', $referents );
+            
+            //On affiche les actions inactives en édition mais pas en ajout, 
+            // afin de pouvoir gérer les actions n'étant plus prises en compte mais toujours en cours
+            $isactive = 'O';
+            if( $this->action == 'edit' ){
+                $isactive = array( 'O', 'N' );
+            }
+            $actionsSansFiche = $this->{$this->modelClass}->Actioncandidat->listePourFicheCandidature( null, $isactive, '0' );
+            $this->set( 'actionsSansFiche', $actionsSansFiche );
 
 			if( !empty( $this->data ) ) {
 				if( isset( $this->data['Entretien']['arevoirle'] ) ) {

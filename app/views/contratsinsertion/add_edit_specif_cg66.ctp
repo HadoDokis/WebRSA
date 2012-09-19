@@ -570,7 +570,7 @@
 				<fieldset>
 					<legend><strong>Positionnement éventuel sur l'action d'insertion</strong></legend>
 					<?php
-                        echo $form->input( 'Contratinsertion.actioncandidat_id', array( 'label' => 'Intitulé de ( ou des ) actions', 'type' => 'select', 'options' => $actionsSansFiche, 'empty' => true ) );                 
+                        echo $form->input( 'Contratinsertion.actioncandidat_id', array( 'label' => 'Intitulé de l\'action', 'type' => 'select', 'options' => $actionsSansFiche, 'empty' => true ) );                 
                         echo $ajax->observeField( 'ContratinsertionActioncandidatId', array( 'update' => 'ContratinsertionPartenaire', 'url' => Router::url( array( 'action' => 'ajaxaction' ), true ) ) );
                         echo $xhtml->tag(
                             'div',
