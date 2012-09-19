@@ -190,13 +190,9 @@
 		*/
 
 		public function listePourFicheCandidature( $codelocalite, $isactif ) {
-			$actionscandidats = $this->find(
-				'list',
-				array(
-					'conditions' => array(
-						'Actioncandidat.actif' => $isactif,
-						'Actioncandidat.hasfichecandidature' => 1/*,
-						'Actioncandidat.id IN (
+			$conditions = array();
+            if( Configure::read( 'Cg.departement') != 66 ) {
+                $conditions[] = 'Actioncandidat.id IN (
 							'.$this->ActioncandidatZonegeographique->sq(
 								array(
 									'alias' => 'actionscandidats_zonesgeographiques',
@@ -215,7 +211,16 @@
 									)
 								)
 							).'
-						)'*/
+						)';
+            }
+            
+            $actionscandidats = $this->find(
+				'list',
+				array(
+					'conditions' => array(
+						'Actioncandidat.actif' => $isactif,
+						'Actioncandidat.hasfichecandidature' => 1,
+                        $conditions
 					),
 					'recursive' => -1,
 					'order' => 'name'
