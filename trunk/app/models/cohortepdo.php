@@ -1,4 +1,18 @@
 <?php
+	/**
+	 * Fichier source de la classe Cohortepdo.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.models
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe Cohortepdo s'occupe du moteur de recherche des cohortes de PDOs (CG 93).
+	 *
+	 * @package app.models
+	 */
 	class Cohortepdo extends AppModel
 	{
 		public $name = 'Cohortepdo';
@@ -6,13 +20,19 @@
 		public $useTable = false;
 
 		/**
-		*
-		*/
-
+		 * Traitement du formulaire de recherche concernant les PDOs.
+		 *
+		 * @param string $statutValidationAvis
+		 * @param array $mesCodesInsee La liste des codes INSEE à laquelle est lié l'utilisateur
+		 * @param boolean $filtre_zone_geo L'utilisateur est-il limité au niveau des zones géographiques ?
+		 * @param array $criterespdo Critères du formulaire de recherche
+		 * @param mixed $lockedDossiers
+		 * @return array
+		 */
 		public function search( $statutValidationAvis, $mesCodesInsee, $filtre_zone_geo, $criterespdo, $lockedDossiers ) {
 			$Situationdossierrsa = ClassRegistry::init( 'Situationdossierrsa' );
 
-		/// Conditions de base
+			// Conditions de base
 			$conditions = array( );
 
 			if( !empty( $statutValidationAvis ) ) {
@@ -36,7 +56,10 @@
 
 			/// Dossiers lockés
 			if( !empty( $lockedDossiers ) ) {
-				$conditions[] = 'Dossier.id NOT IN ( '.implode( ', ', $lockedDossiers ).' )';
+				if( is_array( $lockedDossiers ) ) {
+					$lockedDossiers = implode( ', ', $lockedDossiers );
+				}
+				$conditions[] = "NOT {$lockedDossiers}";
 			}
 
 			/// Critères
@@ -164,22 +187,32 @@
 
 			$query = array(
 				'fields' => array(
-					'"Personne"."id"',
-					'"Personne"."nom"',
-					'"Personne"."prenom"',
-					'"Personne"."dtnai"',
-					'"Personne"."nir"',
-					'"Personne"."qual"',
-					'"Propopdo"."user_id"',
-					'"Dossier"."id"',
-					'"Dossier"."numdemrsa"',
-					'"Dossier"."dtdemrsa"',
-					'"Dossier"."matricule"',
-					'"Personne"."nomcomnai"',
-					'"Adresse"."locaadr"',
-					'"Adresse"."codepos"',
-					'"Adresse"."numcomptt"',
-					'"Situationdossierrsa"."etatdosrsa"',
+					'Personne.id',
+					'Personne.nom',
+					'Personne.prenom',
+					'Personne.dtnai',
+					'Personne.nir',
+					'Personne.qual',
+					'Propopdo.user_id',
+					'Dossier.id',
+					'Dossier.numdemrsa',
+					'Dossier.dtdemrsa',
+					'Dossier.matricule',
+					'Personne.nomcomnai',
+					'Adresse.locaadr',
+					'Adresse.codepos',
+					'Adresse.numcomptt',
+					'Situationdossierrsa.etatdosrsa',
+
+					'Foyer.id',
+					'Propopdo.id',
+					'Decisionpropopdo.id',
+					'Traitementpdo.id',
+					'Adressefoyer.id',
+					'Adresse.id',
+					'Dossier.id',
+					'Situationdossierrsa.id',
+					'Prestation.id',
 				),
 				'joins' => array(
 					array(
@@ -259,7 +292,7 @@
 				),
 				'recursive' => -1,
 				'conditions' => $conditions,
-				'order' => array( '"Personne"."nom"' )
+				'order' => array( 'Dossier.dtdemrsa ASC' )
 			);
 
 			return $query;

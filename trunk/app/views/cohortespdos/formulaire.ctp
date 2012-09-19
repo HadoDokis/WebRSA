@@ -77,8 +77,7 @@
 								</tr>
 							</tbody>
 						</table>';
-						$title = $pdo['Dossier']['numdemrsa'];
-
+					$title = $pdo['Dossier']['numdemrsa'];
 
 					$personne_id = $pdo['Personne']['id'];
 
@@ -88,8 +87,9 @@
 							h( date_short( $pdo['Dossier']['dtdemrsa'] ) ),
 							h( Set::classicExtract( $pdo, 'Adresse.locaadr' ) ),
 
+							$form->input( 'Propopdo.'.$index.'.dossier_id', array( 'label' => false, 'div' => false, 'value' => $pdo['Dossier']['id'], 'type' => 'hidden' ) ).
 							$form->input( 'Propopdo.'.$index.'.personne_id', array( 'label' => false, 'div' => false, 'value' => $personne_id, 'type' => 'hidden' ) ).
-							$form->input( 'Propopdo.'.$index.'.id', array( 'label' => false, 'div' => false, 'type' => 'hidden' ) ).
+							$form->input( 'Propopdo.'.$index.'.id', array( 'label' => false, 'div' => false, 'type' => 'hidden', 'value' => $pdo['Propopdo']['id'] ) ).
 
 							$form->input( 'Propopdo.'.$index.'.user_id', array('label' => false, 'type' => 'select', 'options' => $gestionnaire, 'empty' => true ) ),
 
