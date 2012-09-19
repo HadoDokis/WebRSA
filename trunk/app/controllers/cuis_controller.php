@@ -1,20 +1,44 @@
 <?php
-	App::import( 'Helper', 'Locale' );
+	/**
+	 * Code source de la classe CuisController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.controllers
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe CuisController permet de gérer les CUIs (CG 58, 66 et 93).
+	 *
+	 * @package app.controllers
+	 */
 	class CuisController extends AppController
 	{
-
 		public $name = 'Cuis';
+
 		public $uses = array( 'Cui', 'Option', 'Departement' );
+
 		public $helpers = array( 'Default', 'Default2', 'Locale', 'Csv', 'Ajax', 'Xform', 'Fileuploader' );
-		public $components = array( 'RequestHandler', 'Gedooo.Gedooo', 'Fileuploader' );
+
+		public $components = array(
+			'Default',
+			'Fileuploader',
+			'Gedooo.Gedooo',
+			'Jetons2',
+		);
+
 		public $commeDroit = array(
 			'add' => 'Cuis:edit',
 			'view' => 'Cuis:index'
 		);
+
 		public $aucunDroit = array( 'impression' );
 
 		/**
+		 * Envoi des options communes dans les vues.
 		 *
+		 * @return void
 		 */
 		protected function _setOptions() {
 			$options = array( );
@@ -71,6 +95,11 @@
 			$this->set( compact( 'options' ) );
 		}
 
+		/**
+		 * Paramétrages des CUIs.
+		 *
+		 * @return void
+		 */
 		public function indexparams() {
 			// Retour à la liste en cas d'annulation
 			if( isset( $this->params['form']['Cancel'] ) ) {
@@ -100,7 +129,7 @@
 		}
 
 		/**
-		 *   Fonction permettant de visualiser les fichiers chargés dans la vue avant leur envoi sur le serveur
+		 * Fonction permettant de visualiser les fichiers chargés dans la vue avant leur envoi sur le serveur
 		 */
 		public function fileview( $id ) {
 			$this->Fileuploader->fileview( $id );
@@ -115,46 +144,45 @@
 		}
 
 		/**
-		 *   Fonction permettant d'accéder à la page pour lier les fichiers au CER
+		 * Fonction permettant d'accéder à la page pour lier les fichiers au CER
 		 */
 		public function filelink( $id ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
 			$fichiers = array( );
 			$cui = $this->Cui->find(
-					'first', array(
-				'conditions' => array(
-					'Cui.id' => $id
-				),
-				'contain' => array(
-					'Fichiermodule' => array(
-						'fields' => array( 'name', 'id', 'created', 'modified' )
+				'first',
+				array(
+					'conditions' => array(
+						'Cui.id' => $id
+					),
+					'contain' => array(
+						'Fichiermodule' => array(
+							'fields' => array( 'name', 'id', 'created', 'modified' )
+						)
 					)
 				)
-					)
 			);
 
 			$personne_id = $cui['Cui']['personne_id'];
 			$dossier_id = $this->Cui->Personne->dossierId( $personne_id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
 
-			$this->Cui->begin();
-			if( !$this->Jetons->check( $dossier_id ) ) {
-				$this->Cui->rollback();
-			}
-			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
+			$this->Jetons2->get( $dossier_id );
 
 			// Retour à l'index en cas d'annulation
 			if( isset( $this->params['form']['Cancel'] ) ) {
+				$this->Jetons2->release( $dossier_id );
 				$this->redirect( array( 'action' => 'index', $personne_id ) );
 			}
 
 			if( !empty( $this->data ) ) {
 				$saved = $this->Cui->updateAll(
-						array( 'Cui.haspiecejointe' => '\''.$this->data['Cui']['haspiecejointe'].'\'' ), array(
-					'"Cui"."personne_id"' => $personne_id,
-					'"Cui"."id"' => $id
-						)
+					array( 'Cui.haspiecejointe' => '\''.$this->data['Cui']['haspiecejointe'].'\'' ),
+					array(
+						'"Cui"."personne_id"' => $personne_id,
+						'"Cui"."id"' => $id
+					)
 				);
 
 				if( $saved ) {
@@ -164,10 +192,9 @@
 				}
 
 				if( $saved ) {
-					$this->Jetons->release( $dossier_id );
 					$this->Cui->commit();
+					$this->Jetons2->release( $dossier_id );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-// 					$this->redirect( array(  'controller' => 'cuis','action' => 'index', $personne_id ) );
 					$this->redirect( $this->referer() );
 				}
 				else {
@@ -183,15 +210,15 @@
 		}
 
 		/**
+		 * Liste des CUIs appartenant à un allocataire donné.
 		 *
+		 * @param integer $personne_id
 		 */
 		public function index( $personne_id = null ) {
 			$nbrPersonnes = $this->Cui->Personne->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ), 'recursive' => -1 ) );
 			$this->assert( ( $nbrPersonnes == 1 ), 'invalidParameter' );
 
-			/**
-			 *   Précondition: La personne est-elle bien en Rsa Socle ?
-			 */
+			// Précondition: La personne est-elle bien en Rsa Socle ?
 			$alerteRsaSocle = $this->Cui->_prepare( $personne_id );
 			$this->set( 'alerteRsaSocle', $alerteRsaSocle );
 
@@ -220,33 +247,31 @@
 		}
 
 		/**
+		 * Formulaire d'ajout d'un CUI pour un allocataire donné.
 		 *
+		 * @param integer $personne_id
 		 */
-		public function add() {
+		public function add( $personne_id ) {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
 		/**
+		 * Formulaire de modification d'un CUI donné.
 		 *
+		 * @param integer $id
 		 */
-		public function edit() {
+		public function edit( $id ) {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
 		/**
+		 * Traitement du formulaire d'ajout ou de modification de CUI.
 		 *
+		 * @param inetger $id Correspond à l'id de la Personne en cas d'ajout, à l'id du Cui en cas de modification.
 		 */
 		protected function _add_edit( $id = null ) {
-			// Retour à la liste en cas d'annulation
-			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
-				if( $this->action == 'edit' ) {
-					$id = $this->Cui->field( 'personne_id', array( 'id' => $id ) );
-				}
-				$this->redirect( array( 'action' => 'index', $id ) );
-			}
-
 			$valueAdressebis = null;
 			if( $this->action == 'add' ) {
 				$cui_id = null;
@@ -272,13 +297,15 @@
 				$valueAdressebis = Set::classicExtract( $cui, 'Cui.isadresse2' );
 			}
 
-			/// Peut-on prendre le jeton ?
-			$this->Cui->begin();
 			$dossier_id = $this->Cui->Personne->dossierId( $personne_id );
-			if( !$this->Jetons->check( $dossier_id ) ) {
-				$this->Cui->rollback();
+			$this->Jetons2->get( $dossier_id );
+
+			// Retour à la liste en cas d'annulation
+			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
+				$this->Jetons2->release( $dossier_id );
+				$this->redirect( array( 'action' => 'index', $personne_id ) );
 			}
-			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
+
 			$this->set( 'dossier_id', $dossier_id );
 			$this->set( 'valueAdressebis', $valueAdressebis );
 
@@ -291,29 +318,31 @@
 
 			// On récupère la valeur du montant rsa perçu au moment de l'enregistrement
 			$tDetaildroitrsa = $this->Cui->Personne->Foyer->Dossier->Detaildroitrsa->find(
-					'first', array(
-				'fields' => array(
-					'Detaildroitrsa.id',
-					'Detaildroitrsa.dossier_id',
-				),
-				'contain' => array(
-					'Detailcalculdroitrsa' => array(
-						'fields' => array(
-							'Detailcalculdroitrsa.mtrsavers',
-							'Detailcalculdroitrsa.dtderrsavers',
-							'Detailcalculdroitrsa.natpf',
-						),
-						'order' => array(
-							'Detailcalculdroitrsa.ddnatdro DESC',
-						),
-						'limit' => 1
+				'first',
+				array(
+					'fields' => array(
+						'Detaildroitrsa.id',
+						'Detaildroitrsa.dossier_id',
+					),
+					'contain' => array(
+						'Detailcalculdroitrsa' => array(
+							'fields' => array(
+								'Detailcalculdroitrsa.mtrsavers',
+								'Detailcalculdroitrsa.dtderrsavers',
+								'Detailcalculdroitrsa.natpf',
+							),
+							'order' => array(
+								'Detailcalculdroitrsa.ddnatdro DESC',
+							),
+							'limit' => 1
+						)
+					),
+					'conditions' => array(
+						'Detaildroitrsa.dossier_id' => $dossier_id
 					)
-				),
-				'conditions' => array(
-					'Detaildroitrsa.dossier_id' => $dossier_id
 				)
-					)
 			);
+
 			$montantrsapercu = $tDetaildroitrsa['Detailcalculdroitrsa'][0]['mtrsavers'];
 			$this->set( compact( 'montantrsapercu' ) );
 
@@ -323,10 +352,12 @@
 			$nbCui = $this->Cui->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ) ) );
 
 			if( !empty( $this->data ) ) {
+				$this->{$this->modelClass}->begin();
+
 				if( $this->action == 'add' ) {
 					$this->data['Cui']['rangcui'] = $nbCui + 1;
 				}
-// 				debug( $this->data );
+
 				$this->{$this->modelClass}->create( $this->data );
 				$success = $this->{$this->modelClass}->save();
 
@@ -335,6 +366,7 @@
 				$defaults = array_combine( $keys, array_fill( 0, count( $keys ), null ) );
 				unset( $defaults['id'] );
 				unset( $defaults['cui_id'] );
+
 				if( !empty( $this->data['Accompagnementcui66'] ) ) {
 					$this->data['Accompagnementcui66'] = Set::merge( $defaults, $this->data['Accompagnementcui66'] );
 				}
@@ -354,8 +386,8 @@
 				}
 
 				if( $success ) {
-					$this->Jetons->release( $dossier_id );
 					$this->{$this->modelClass}->commit();
+					$this->Jetons2->release( $dossier_id );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 					$this->redirect( array( 'controller' => 'cuis', 'action' => 'index', $personne_id ) );
 				}
@@ -382,7 +414,9 @@
 		}
 
 		/**
+		 * Formulaire de validation d'un CUI.
 		 *
+		 * @param integer $cui_id
 		 */
 		public function valider( $cui_id = null ) {
 			$qd_cui = array(
@@ -393,15 +427,20 @@
 			$cui = $this->Cui->find( 'first', $qd_cui );
 			$this->assert( !empty( $cui ), 'invalidParameter' );
 
+			$this->set( 'personne_id', $cui['Cui']['personne_id'] );
+
+			$dossier_id = $this->Cui->dossierId( $cui_id );
+			$this->Jetons2->get( $dossier_id );
+
 			// Retour à la liste en cas d'annulation
 			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
+				$this->Jetons2->release( $dossier_id );
 				$this->redirect( array( 'action' => 'index', $cui['Cui']['personne_id'] ) );
 			}
 
-			$this->set( 'personne_id', $cui['Cui']['personne_id'] );
-
 			if( !empty( $this->data ) ) {
 				if( $this->Cui->saveAll( $this->data ) ) {
+					$this->Jetons2->release( $dossier_id );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 					$this->redirect( array( 'controller' => 'cuis', 'action' => 'index', $cui['Cui']['personne_id'] ) );
 				}
@@ -432,19 +471,22 @@
 		}
 
 		/**
+		 * Tentative de suppression d'un CUI.
 		 *
+		 * @param integer $id
 		 */
 		public function delete( $id ) {
 			$this->Default->delete( $id );
 		}
 
 		/**
+		 * Visualisation d'un CUI.
 		 *
+		 * @param integer $id
 		 */
 		public function view( $id ) {
 			$this->_setOptions();
 			$this->Default->view( $id );
 		}
-
 	}
 ?>
