@@ -1,26 +1,38 @@
 <?php
+	/**
+	 * Code source de la classe CriterescuisController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.controllers
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 
-	App::import('Sanitize');
-
+	/**
+	 * La classe CriterescuisController implémente un moteur de recherche par CUIs (CG 58, 66 et 93).
+	 *
+	 * @package app.controllers
+	 */
 	class CriterescuisController extends AppController
 	{
 		public $name = 'Criterescuis';
-		public $uses = array( 'Canton', 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Structurereferente', 'Contratinsertion', 'Option', 'Serviceinstructeur', 'Criterecui', 'Cui', 'Referent', 'Zonegeographique' );
-		public $aucunDroit = array( 'exportcsv' );
+
+		public $uses = array( 'Criterecui', 'Cui', 'Option', 'Structurereferente' );
 
 		public $helpers = array( 'Csv', 'Ajax', 'Search' );
 
-		public $components = array( 'Gestionzonesgeos', 'Prg' => array( 'actions' => array( 'index' ) ) );
+		public $components = array(
+			'Gestionzonesgeos',
+			'Prg2' => array( 'actions' => array( 'index' ) )
+		);
+
+		public $aucunDroit = array( 'exportcsv' );
 
 		/**
-		*
-		*/
-
-//		public function __construct() {
-//			$this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'index' ) ) ) );
-//			parent::__construct();
-//		}
-
+		 * Envoi des options communes dans les vues.
+		 *
+		 * @return void
+		 */
 		protected function _setOptions(){
 			$options = array();
 			$struct = $this->Structurereferente->find( 'list', array( 'fields' => array( 'id', 'lib_struc' ) ) );
@@ -32,48 +44,49 @@
 			$this->set( 'options', $options );
 		}
 
+		/**
+		 * Moteur de recherche par CUI.
+		 *
+		 * @return void
+		 */
 		public function index() {
-			$this->Gestionzonesgeos->setCantonsIfConfigured();
-
-			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
-
-			$params = $this->data;
-			if( !empty( $params ) ) {
-
-				$this->Dossier->begin(); // Pour les jetons
-
-				$paginate = $this->Criterecui->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
+			if( !empty( $this->data ) ) {
+				$paginate = $this->Criterecui->search(
+					(array)$this->Session->read( 'Auth.Zonegeographique' ),
+					$this->Session->read( 'Auth.User.filtre_zone_geo' ),
+					$this->data
+				);
 				$paginate['limit'] = 10;
 				$paginate = $this->_qdAddFilters( $paginate );
 
 				$this->paginate = $paginate;
 				$criterescuis = $this->paginate( 'Cui' );
 
-				$this->Dossier->commit();
-
 				$this->set( 'criterescuis', $criterescuis );
 			}
 			$this->_setOptions();
+			$this->set( 'cantons', $this->Gestionzonesgeos->listeCantons() );
 			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
 		}
 
 		/**
-		* Export du tableau en CSV
-		*/
-
+		 * Export du tableau en CSV.
+		 *
+		 * @return void
+		 */
 		public function exportcsv() {
-			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
-
-			$querydata = $this->Criterecui->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), Xset::bump( $this->params['named'], '__' ), $this->Jetons->ids() );
+			$querydata = $this->Criterecui->search(
+				(array)$this->Session->read( 'Auth.Zonegeographique' ),
+				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
+				Xset::bump( $this->params['named'], '__' )
+			);
 			unset( $querydata['limit'] );
 			$querydata = $this->_qdAddFilters( $querydata );
 
 			$cuis = $this->Cui->find( 'all', $querydata );
 
 			$this->_setOptions();
-			$this->layout = ''; // FIXME ?
+			$this->layout = '';
 			$this->set( compact( 'cuis' ) );
 		}
 	}

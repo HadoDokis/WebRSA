@@ -1,22 +1,42 @@
 <?php
+	/**
+	 * Fichier source de la classe Criterepdo.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.models
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+	App::import( 'Sanitize' );
+
+	/**
+	 * La classe Criterepdo s'occupe du moteur de recherche des PDOs (CG 58, et 93).
+	 *
+	 * @package app.models
+	 */
 	class Criterepdo extends AppModel
 	{
 		public $name = 'Criterepdo';
 
 		public $useTable = false;
+
 		public $actsAs = array( 'Conditionnable' );
 
 		/**
-		*
-		*/
-
-		public function listeDossierPDO( $mesCodesInsee, $filtre_zone_geo, $criterespdos, $lockedDossiers ) {
+		 * Traitement du formulaire de recherche concernant les nouvelles PDOs .
+		 *
+		 * @param array $mesCodesInsee La liste des codes INSEE à laquelle est lié l'utilisateur
+		 * @param boolean $filtre_zone_geo L'utilisateur est-il limité au niveau des zones géographiques ?
+		 * @param array $criterespdos Critères du formulaire de recherche
+		 * @return string
+		 */
+		public function listeDossierPDO( $mesCodesInsee, $filtre_zone_geo, $criterespdos ) {
 			/// Conditions de base
 			$conditions = array();
 
-			
+
 			// On a un filtre par défaut sur l'état du dossier si celui-ci n'est pas renseigné dans le formulaire.
-			$Situationdossierrsa = ClassRegistry::init( 'Situationdossierrsa' );			
+			$Situationdossierrsa = ClassRegistry::init( 'Situationdossierrsa' );
 			$etatdossier = Set::extract( $criterespdos, 'Situationdossierrsa.etatdosrsa' );
 			if( !isset( $criterespdos['Situationdossierrsa']['etatdosrsa'] ) || empty( $criterespdos['Situationdossierrsa']['etatdosrsa'] ) ) {
 				$criterespdos['Situationdossierrsa']['etatdosrsa']  = $Situationdossierrsa->etatAttente();
@@ -28,13 +48,7 @@
 			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $criterespdos );
 			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $criterespdos );
 
-			/// Dossiers lockés
-			if( !empty( $lockedDossiers ) ) {
-				$conditions[] = 'Dossier.id NOT IN ( '.implode( ', ', $lockedDossiers ).' )';
-			}
-
 			/// Critères
-
 			$decisionpdo = Set::extract( $criterespdos, 'Decisionpropopdo.decisionpdo_id' );
 			$motifpdo = Set::extract( $criterespdos, 'Propopdo.motifpdo' );
 			$originepdo = Set::extract( $criterespdos, 'Propopdo.originepdo_id' );
@@ -170,10 +184,14 @@
 		}
 
 		/**
-		*
-		*/
-
-		public function search( $mesCodesInsee, $filtre_zone_geo, $criterespdos, $lockedDossiers ) {
+		 * Traitement du formulaire de recherche concernant les PDOs .
+		 *
+		 * @param array $mesCodesInsee La liste des codes INSEE à laquelle est lié l'utilisateur
+		 * @param boolean $filtre_zone_geo L'utilisateur est-il limité au niveau des zones géographiques ?
+		 * @param array $criterespdos Critères du formulaire de recherche
+		 * @return int
+		 */
+		public function search( $mesCodesInsee, $filtre_zone_geo, $criterespdos ) {
 			/// Conditions de base
 			$conditions = array();
 
@@ -183,13 +201,7 @@
 			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $criterespdos );
 			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $criterespdos );
 
-			/// Dossiers lockés
-			if( !empty( $lockedDossiers ) ) {
-				$conditions[] = 'Dossier.id NOT IN ( '.implode( ', ', $lockedDossiers ).' )';
-			}
-
 			/// Critères
-
 			$decisionpdo = Set::extract( $criterespdos, 'Decisionpropopdo.decisionpdo_id' );
 			$motifpdo = Set::extract( $criterespdos, 'Propopdo.motifpdo' );
 			$originepdo = Set::extract( $criterespdos, 'Propopdo.originepdo_id' );

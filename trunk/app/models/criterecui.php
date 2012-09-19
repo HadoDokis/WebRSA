@@ -1,30 +1,44 @@
 <?php
+	/**
+	 * Fichier source de la classe Criterecui.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.models
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+	App::import( 'Sanitize' );
+
+	/**
+	 * La classe Criterecui s'occupe du moteur de recherche des CUIs (CG 58, 66 et 93).
+	 *
+	 * @package app.models
+	 */
 	class Criterecui extends AppModel
 	{
 		public $name = 'Criterecui';
 
 		public $useTable = false;
-		
+
 		public $actsAs = array( 'Conditionnable' );
 
 		/**
-		*
-		*/
-
-		function search( $mesCodesInsee, $filtre_zone_geo, $criterescuis, $lockedDossiers ) {
+		 * Traitement du formulaire de recherche concernant les CUIs.
+		 *
+		 * @param array $mesCodesInsee La liste des codes INSEE à laquelle est lié l'utilisateur
+		 * @param boolean $filtre_zone_geo L'utilisateur est-il limité au niveau des zones géographiques ?
+		 * @param array $criterescuis Critères du formulaire de recherche
+		 * @return array
+		 */
+		public function search( $mesCodesInsee, $filtre_zone_geo, $criterescuis ) {
 			/// Conditions de base
 			$conditions = array();
-
-			/// Dossiers lockés
-			if( !empty( $lockedDossiers ) ) {
-				$conditions[] = 'Dossier.id NOT IN ( '.implode( ', ', $lockedDossiers ).' )';
-			}
 
 			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
 			$conditions = $this->conditionsAdresse( $conditions, $criterescuis, $filtre_zone_geo, $mesCodesInsee );
 			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $criterescuis );
 			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $criterescuis );
-			
+
 			/// Critères
 			$datecontrat = Set::extract( $criterescuis, 'Cui.datecontrat' );
 			$secteur = Set::extract( $criterescuis, 'Cui.secteur' );

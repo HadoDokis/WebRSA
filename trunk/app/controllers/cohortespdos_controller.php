@@ -29,7 +29,6 @@
 				'avisdemande',
 			),
 			'Gestionzonesgeos',
-			'Jetons',
 			'Prg2' => array( 'actions' => array( 'avisdemande', 'valide' ) )
 		);
 
