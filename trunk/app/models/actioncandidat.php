@@ -181,6 +181,19 @@
 				'exclusive' => '',
 				'finderQuery' => '',
 				'counterQuery' => ''
+			),
+            'Contratinsertion' => array(
+				'className' => 'Contratinsertion',
+				'foreignKey' => 'actioncandidat_id',
+				'dependent' => false,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
 			)
 		);
 
@@ -189,7 +202,7 @@
 		*
 		*/
 
-		public function listePourFicheCandidature( $codelocalite, $isactif ) {
+		public function listePourFicheCandidature( $codelocalite, $isactif, $hasFiche ) {
 			$conditions = array();
             if( Configure::read( 'Cg.departement') != 66 ) {
                 $conditions[] = 'Actioncandidat.id IN (
@@ -219,7 +232,7 @@
 				array(
 					'conditions' => array(
 						'Actioncandidat.actif' => $isactif,
-						'Actioncandidat.hasfichecandidature' => 1,
+						'Actioncandidat.hasfichecandidature' => $hasFiche,
                         $conditions
 					),
 					'recursive' => -1,

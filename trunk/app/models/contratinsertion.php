@@ -238,6 +238,13 @@
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
+			),
+            'Actioncandidat' => array(
+				'className' => 'Actioncandidat',
+				'foreignKey' => 'actioncandidat_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
 			)
 		);
 		public $hasMany = array(

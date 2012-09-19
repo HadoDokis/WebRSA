@@ -48,7 +48,16 @@
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
 		dependantSelect( 'ContratinsertionReferentId', 'ContratinsertionStructurereferenteId' );
+        <?php
+			echo $ajax->remoteFunction(
+				array(
+					'update' => 'ContratinsertionPartenaire',
+					'url' => Router::url( array( 'action' => 'ajaxaction', Set::extract( $this->data, 'Contratinsertion.actioncandidat_id' ) ), true )
+				)
+			);
+		?>;
 	});
+    
 </script>
 
 <script type="text/javascript">
@@ -561,14 +570,19 @@
 				<fieldset>
 					<legend><strong>Positionnement éventuel sur l'action d'insertion</strong></legend>
 					<?php
-						echo $form->input( 'Contratinsertion.engag_object', array( 'label' => 'Intitulé de ( ou des ) actions', 'type' => 'textarea' ) );
+                        echo $form->input( 'Contratinsertion.actioncandidat_id', array( 'label' => 'Intitulé de ( ou des ) actions', 'type' => 'select', 'options' => $actionsSansFiche, 'empty' => true ) );                 
+                        echo $ajax->observeField( 'ContratinsertionActioncandidatId', array( 'update' => 'ContratinsertionPartenaire', 'url' => Router::url( array( 'action' => 'ajaxaction' ), true ) ) );
+                        echo $xhtml->tag(
+                            'div',
+                            ' ',
+                            array(
+                                'id' => 'ContratinsertionPartenaire'
+                            )
+                        );
+                        
+                        echo $form->input( 'Contratinsertion.engag_object', array( 'label' => 'Engagement sur l\'action', 'type' => 'textarea' ) );
 					?>
-					<?php
-						//FIXME
-						$contratinsertion_id = Set::extract( $this->data, 'Actioninsertion.contratinsertion_id' );
-						if( $this->action == 'edit' && !empty( $contratinsertion_id ) ) :?>
-						<?php echo $form->input( 'Actioninsertion.contratinsertion_id', array( 'label' => false, 'div' => false,  'type' => 'hidden' ) );?>
-					<?php endif;?>
+
 				</fieldset>
 			</td>
 			<td class="mediumSize noborder">
