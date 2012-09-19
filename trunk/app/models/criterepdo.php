@@ -101,7 +101,7 @@
 			/// Requête
 			$this->Dossier = ClassRegistry::init( 'Dossier' );
 
-			$query = array(
+			$querydata = array(
 				'fields' => array(
 					'"Personne"."id"',
 					'"Personne"."nom"',
@@ -180,7 +180,7 @@
 				'conditions' => $conditions
 			);
 
-			return $query;
+			return $querydata;
 		}
 
 		/**
@@ -275,7 +275,7 @@
 
 			/// Requête
 
-			$query = array(
+			$querydata = array(
 				'fields' => array(
 					'"Propopdo"."id"',
 					'"Propopdo"."personne_id"',
@@ -375,7 +375,7 @@
 				'conditions' => $conditions
 			);
 
-			return $query;
+			return $querydata;
 		}
 	}
 ?>

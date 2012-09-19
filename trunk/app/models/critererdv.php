@@ -1,18 +1,35 @@
 <?php
+	/**
+	 * Fichier source de la classe Critererdv.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.models
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 	App::import( 'Sanitize' );
 
+	/**
+	 * La classe Critererdv s'occupe du moteur de recherche par rendez-vous (CG 58, 66 et 93).
+	 *
+	 * @package app.models
+	 */
 	class Critererdv extends AppModel
 	{
 		public $name = 'Critererdv';
 
 		public $useTable = false;
-		
+
 		public $actsAs = array( 'Conditionnable' );
 
 		/**
-		*
-		*/
-
+		 * Traitement du formulaire de recherche par rendez-vous.
+		 *
+		 * @param array $mesCodesInsee La liste des codes INSEE à laquelle est lié l'utilisateur
+		 * @param boolean $filtre_zone_geo L'utilisateur est-il limité au niveau des zones géographiques ?
+		 * @param array $criteresrdv Critères du formulaire de recherche
+		 * @return string
+		 */
 		public function search( $mesCodesInsee, $filtre_zone_geo, $criteresrdv ) {
 			/// Conditions de base
 			$conditions = array();
@@ -69,7 +86,7 @@
 			/// Requête
 			$this->Dossier = ClassRegistry::init( 'Dossier' );
 
-			$query = array(
+			$querydata = array(
 				'fields' => array(
 					'"Rendezvous"."id"',
 					'"Rendezvous"."personne_id"',
@@ -184,7 +201,7 @@
 				'conditions' => $conditions
 			);
 
-			return $query;
+			return $querydata;
 		}
 	}
 ?>
