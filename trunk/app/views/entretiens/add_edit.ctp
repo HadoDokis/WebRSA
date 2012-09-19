@@ -8,9 +8,23 @@
 ?>
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
+        <?php
+            if( Configure::read( 'Cg.departement') == 66 ) {
+                echo $ajax->remoteFunction(
+                    array(
+                        'update' => 'EntretienPartenaire',
+                        'url' => Router::url( array( 'action' => 'ajaxaction', Set::extract( $this->data, 'Entretien.actioncandidat_id' ) ), true )
+                    )
+                );
+            }
+		?>;
+
 		dependantSelect( 'EntretienReferentId', 'EntretienStructurereferenteId' );
 		observeDisableFieldsetOnCheckbox( 'EntretienRendezvousprevu', $( 'EntretienRendezvousId' ).up( 'fieldset' ), false );
 		dependantSelect( 'RendezvousReferentId', 'RendezvousStructurereferenteId' );
+        
+        
+
 	});
 </script>
 <div class="with_treemenu">
@@ -46,15 +60,47 @@
 							'Entretien.referent_id',
 							'Entretien.dateentretien' => array( 'minYear' => date('Y')-2, 'maxYear' => date('Y')+2, 'empty' => false ),
 							'Entretien.typeentretien' => array( 'required' => true, 'options' => $options['Entretien']['typeentretien'], 'empty' => true ),
-							'Entretien.objetentretien_id' => array(  'empty' => true ),
-							'Entretien.commentaireentretien'
+							'Entretien.objetentretien_id' => array(  'empty' => true )
 						),
 						array(
 							'options' => $options
 						)
 					);
 				?>
-				<?php echo $xform->input( 'Entretien.arevoirle', array( 'label' => 'A revoir le ', 'type' => 'date', 'dateFormat' => 'MY', 'maxYear' => date('Y')+2, 'minYear' => date('Y')-2, 'empty' => true ) );?>
+            <?php if( Configure::read( 'Cg.departement') == 66 ):?>
+                <fieldset class="invisible">
+                    <legend><strong>Positionnement éventuel sur une action d'insertion</strong></legend>
+                    <table class="wide noborder">
+                        <tr>
+                            <td class="noborder">
+                                <?php
+                                    echo $form->input( 'Entretien.actioncandidat_id', array( 'label' => 'Intitulé de l\'action', 'type' => 'select', 'options' => $actionsSansFiche, 'empty' => true ) );                 
+                                    echo $ajax->observeField( 'EntretienActioncandidatId', array( 'update' => 'EntretienPartenaire', 'url' => Router::url( array( 'action' => 'ajaxaction' ), true ) ) );
+                                    echo $xhtml->tag(
+                                        'div',
+                                        ' ',
+                                        array(
+                                            'id' => 'EntretienPartenaire'
+                                        )
+                                    );
+                                ?>
+                            </td>
+                        </tr>
+                    </table>
+                </fieldset>
+            <?php endif;?>
+            
+            
+				<?php
+                    echo $default->subform(
+                        array(
+                            'Entretien.commentaireentretien'
+                        ),
+                        array(
+                            'options' => $options
+                        )
+                    );
+                    echo $xform->input( 'Entretien.arevoirle', array( 'label' => 'A revoir le ', 'type' => 'date', 'dateFormat' => 'MY', 'maxYear' => date('Y')+2, 'minYear' => date('Y')-2, 'empty' => true ) );?>
 				<?php if( Configure::read( 'Cg.departement' ) != 66):?>
 				<?
 					echo $xform->input( 'Entretien.rendezvousprevu', array( 'label' => 'Rendez-vous prévu', 'type' => 'checkbox' ) );

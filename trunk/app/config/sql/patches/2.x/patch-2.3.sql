@@ -485,10 +485,13 @@ ALTER TABLE jetonsfonctions ALTER COLUMN php_sid TYPE VARCHAR(32);
 
 
 -------------------------------------------------------------------------------------------------------------
--- 20120919: Ajout d'un lien entre les actionscandidats et le CEr pour le CG66
+-- 20120919: Ajout d'un lien entre les actionscandidats et le CER et les entretiens
 -------------------------------------------------------------------------------------------------------------
 SELECT add_missing_table_field ( 'public', 'contratsinsertion', 'actioncandidat_id', 'INTEGER' );
 SELECT add_missing_constraint ( 'public', 'contratsinsertion', 'contratsinsertion_actioncandidat_id_fkey', 'actionscandidats', 'actioncandidat_id', false );
+
+SELECT add_missing_table_field ( 'public', 'entretiens', 'actioncandidat_id', 'INTEGER' );
+SELECT add_missing_constraint ( 'public', 'entretiens', 'entretiens_actioncandidat_id_fkey', 'actionscandidats', 'actioncandidat_id', false );
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

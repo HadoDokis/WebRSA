@@ -101,7 +101,7 @@
 		/**
 		 *   Ajax pour les partenaires fournissant l'action liée au CER
 		 */
-		public function ajaxaction( $actioncandidat_id = null ) { // FIXME
+		public function ajaxaction( $actioncandidat_id = null ) {
 			Configure::write( 'debug', 0 );
 
 			$dataActioncandidat_id = Set::extract( $this->data, 'Contratinsertion.actioncandidat_id' );
@@ -130,7 +130,7 @@
 				}
 				$this->set( compact( 'actioncandidat', 'referent' ) );
 			}
-			$this->render( 'ajaxaction' );
+			$this->render( 'ajaxaction', 'ajax' );
 		}
         
 		/**
