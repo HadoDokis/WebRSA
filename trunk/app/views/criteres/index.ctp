@@ -191,11 +191,14 @@
 								</tr>
 							</tbody>
 						</table>';
+                        
+                        $adresseCanton = $orient['Adresse']['locaadr']."- \n".$orient['Canton']['canton'];
+
 
 						$cells = array(
 							h( $orient['Dossier']['numdemrsa'] ),
 							h( $orient['Personne']['qual'].' '.$orient['Personne']['nom'].' '.$orient['Personne']['prenom'] ),
-							h( $orient['Adresse']['locaadr'] ),
+							nl2br( h( $adresseCanton ) ),
 							h( date_short( $orient['Dossier']['dtdemrsa'] ) ),
 							h( date_short( $orient['Orientstruct']['date_valid'] ) )
 						);
