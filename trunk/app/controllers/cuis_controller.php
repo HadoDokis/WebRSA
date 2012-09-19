@@ -488,5 +488,62 @@
 			$this->_setOptions();
 			$this->Default->view( $id );
 		}
+        
+        /**
+         * Annulation du CUI
+         * 
+         * @param integer $id 
+         */
+        public function cancel( $id ) {
+			$qd_cui = array(
+				'conditions' => array(
+					$this->modelClass.'.id' => $id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => -1
+			);
+			$cui = $this->{$this->modelClass}->find( 'first', $qd_cui );
+
+			$personne_id = Set::classicExtract( $cui, 'Cui.personne_id' );
+			$this->set( 'personne_id', $personne_id );
+
+			$dossier_id = $this->Cui->dossierId( $id );
+			$this->Jetons2->get( $dossier_id );
+
+			// Retour à la liste en cas d'annulation
+			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
+				$this->Jetons2->release( $dossier_id );
+				$this->redirect( array( 'action' => 'index', $personne_id ) );
+			}
+
+			if( !empty( $this->data ) ) {
+				$this->Cui->begin();
+
+				$saved = $this->Cui->save( $this->data );
+				$saved = $this->{$this->modelClass}->updateAll(
+					array( 'Cui.positioncui66' => '\'annule\'' ),
+					array(
+						'"Cui"."personne_id"' => $cui['Cui']['personne_id'],
+						'"Cui"."id"' => $cui['Cui']['id']
+					)
+				) && $saved;
+
+				if( $saved ) {
+					$this->Cui->commit();
+					$this->Jetons2->release( $dossier_id );
+					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+					$this->redirect( array( 'action' => 'index', $personne_id ) );
+				}
+				else {
+					$this->cui->rollback();
+					$this->Session->setFlash( 'Erreur lors de l\'enregistrement.', 'flash/erreur' );
+				}
+			}
+			else {
+				$this->data = $cui;
+			}
+			$this->set( 'urlmenu', '/cuis/index/'.$personne_id );
+		}
 	}
 ?>

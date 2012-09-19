@@ -30,7 +30,7 @@
 	<?php endif;?>
 
 	<?php if( !empty( $cuis ) ):?>
-	<table class="tooltips default2">
+	<table class="tooltips default2" id="searchResults">
 		<thead>
 			<tr>
 				<th>Date du contrat</th>
@@ -45,14 +45,18 @@
 			</tr>
 		</thead>
 		<tbody>
-			<?php foreach( $cuis as $cui ):?>
+			<?php foreach( $cuis as $index => $cui ):?>
 				<?php
-// 					$isPeriodeImmersion = false;
-// 					$hasPeriode = Set::classicExtract( $cui, 'Cui.iscae' );
-// 					if( $hasPeriode == 'O' ) {
-// 						$isPeriodeImmersion = true;
-// 					}
 
+                    $innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
+							<tbody>
+								<tr>
+									<th>Raison annulation</th>
+									<td>'.$cui['Cui']['motifannulation'].'</td>
+								</tr>
+							</tbody>
+						</table>';
+                    
 					echo $xhtml->tableCells(
 						array(
 							h( date_short( Set::classicExtract( $cui, 'Cui.datecontrat' ) ) ),
@@ -68,7 +72,7 @@
 								array( 'controller' => 'cuis', 'action' => 'view', $cui['Cui']['id'] ),
 								array(
 									'enabled' => (
-										$permissions->check( 'cuis', 'view' ) == 1
+										( $permissions->check( 'cuis', 'view' ) == 1 )
 									)
 								)
 							),
@@ -78,6 +82,7 @@
 								array(
 									'enabled' => (
 										( $permissions->check( 'cuis', 'edit' ) == 1 )
+                                        && ( Set::classicExtract( $cui, 'Cui.positioncui66' ) != 'annule' )
 									)
 								)
 							),
@@ -87,7 +92,8 @@
 								$cui['Cui']['id'] ),
 								array(
 									'enabled' => (
-											( $permissions->check( 'proposdecisionscuis66', 'propositioncui' ) == 1 )
+                                        ( $permissions->check( 'proposdecisionscuis66', 'propositioncui' ) == 1 )
+                                        && ( Set::classicExtract( $cui, 'Cui.positioncui66' ) != 'annule' )
 									)
 								)
 							),
@@ -98,6 +104,7 @@
 								array(
 									'enabled' => (
 										( $permissions->check( 'cuis', 'decisioncui' ) == 1 )
+                                        && ( Set::classicExtract( $cui, 'Cui.positioncui66' ) != 'annule' )
 									)
 								)
 							),
@@ -108,6 +115,7 @@
 								array(
 									'enabled' => (
 										( $permissions->check( 'cuis', 'impression' ) == 1 )
+                                        && ( Set::classicExtract( $cui, 'Cui.positioncui66' ) != 'annule' )
 									)
 								)
 							),
@@ -119,6 +127,7 @@
 									'label' => 'Suspension/Rupture',
 									'enabled' => (
 										( $permissions->check( 'suspensionscuis66', 'index' ) == 1 )
+                                        && ( Set::classicExtract( $cui, 'Cui.positioncui66' ) != 'annule' )
 									)
 								)
 							),
@@ -130,6 +139,7 @@
 									'label' => 'Accompagnement',
 									'enabled' => (
 										( $permissions->check( 'accompagnementscuis66', 'index' ) == 1 )
+                                        && ( Set::classicExtract( $cui, 'Cui.positioncui66' ) != 'annule' )
 									)
 								)
 							),
@@ -140,6 +150,7 @@
 								array(
 									'enabled' => (
 										( $permissions->check( 'cuis', 'cancel' ) == 1 )
+                                        && ( Set::classicExtract( $cui, 'Cui.positioncui66' ) != 'annule' )
 									)
 								)
 							),
@@ -149,14 +160,15 @@
 								$cui['Cui']['id'] ),
 								array(
 									'enabled' => (
-										$permissions->check( 'cuis', 'filelink' ) == 1
+										( $permissions->check( 'cuis', 'filelink' ) == 1 )
 									)
 								)
 							),
-							h( '('.Set::classicExtract( $cui, 'Fichiermodule.nb_fichiers_lies' ).')' )
+							h( '('.Set::classicExtract( $cui, 'Fichiermodule.nb_fichiers_lies' ).')' ),
+                            array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
 						),
-						array( 'class' => 'odd' ),
-						array( 'class' => 'even' )
+						array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
+						array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
 					);
 				?>
 			<?php endforeach;?>
