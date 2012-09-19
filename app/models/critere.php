@@ -194,6 +194,14 @@
 			$Situationdossierrsa = ClassRegistry::init( 'Situationdossierrsa' );
 			$dbo = $this->getDataSource( $this->useDbConfig );
 
+            
+			// Permet de voir les entrées qui n'ont pas d'adresse si on ne filtre
+			// pas sur les codes INSEE pour l'utilisateur
+			if( $filtre_zone_geo )
+				$type = 'INNER';
+			else
+				$type = 'LEFT OUTER';
+            
 			$query = array(
 				'fields' => array(
 					'"Orientstruct"."id"',
@@ -233,7 +241,9 @@
 					'"Calculdroitrsa"."toppersdrodevorsa"',
 					'"PersonneReferent"."referent_id"',
 					'Historiqueetatpe.identifiantpe',
-					'"Prestation"."rolepers"'
+					'"Prestation"."rolepers"',
+                    'Canton.id',
+                    'Canton.canton'
 				),
 				'recursive' => -1,
 				'joins' => array(
@@ -356,19 +366,33 @@
 						'foreignKey' => false,
 						'conditions' => array( 'Referent.id = PersonneReferent.referent_id' )
 					),
+                    array(
+                        'table'      => 'adressesfoyers',
+                        'alias'      => 'Adressefoyer',
+                        'type'       => $type,
+                        'foreignKey' => false,
+                        'conditions' => array(
+                            'Foyer.id = Adressefoyer.foyer_id',
+                            'Adressefoyer.id IN (
+                                '.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01('Adressefoyer.foyer_id').'
+                            )'
+                        )
+                    ),
+                    array(
+                        'table'      => 'adresses',
+                        'alias'      => 'Adresse',
+                        'type'       => $type,
+                        'foreignKey' => false,
+                        'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
+                    ),
+                    ClassRegistry::init( 'Canton' )->joinAdresse()
 				),
 				'limit' => 10,
 				'conditions' => $conditions
 			);
 
-			// Permet de voir les entrées qui n'ont pas d'adresse si on ne filtre
-			// pas sur les codes INSEE pour l'utilisateur
-			if( $filtre_zone_geo )
-				$type = 'INNER';
-			else
-				$type = 'LEFT OUTER';
 
-			$query['joins'][] = array(
+			/*$query['joins'][] = array(
 				'table'      => 'adressesfoyers',
 				'alias'      => 'Adressefoyer',
 				'type'       => $type,
@@ -381,12 +405,12 @@
 				)
 			);
 			$query['joins'][] = array(
-				'table'      => 'adresses',
-				'alias'      => 'Adresse',
-				'type'       => $type,
-				'foreignKey' => false,
-				'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
-			);
+                'table'      => 'adresses',
+                'alias'      => 'Adresse',
+                'type'       => $type,
+                'foreignKey' => false,
+                'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
+			);*/
 
 			return $query;
 		}
