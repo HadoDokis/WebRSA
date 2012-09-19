@@ -234,7 +234,8 @@
 						'Cui.personne_id' => $personne_id
 					),
 					'recursive' => -1,
-					'contain' => false
+					'contain' => false,
+                    'order' => array( 'Cui.datecontrat DESC' )
 				)
 			);
 
