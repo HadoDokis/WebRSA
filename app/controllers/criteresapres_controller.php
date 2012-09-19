@@ -1,38 +1,46 @@
 <?php
-	App::import('Sanitize');
+	/**
+	 * Code source de la classe CriteresapresController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.controllers
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 
+	/**
+	 * La classe CriteresapresController implémente un moteur de recherche par APREs (CG 66 et 93).
+	 *
+	 * @package app.controllers
+	 */
 	class CriteresapresController extends AppController
 	{
 		public $name = 'Criteresapres';
 
-		public $uses = array( 'Canton', 'Critereapre', 'Aideapre66', 'Apre',  'Apre66', 'Tiersprestataireapre', 'Option', 'Zonegeographique' );
+		public $uses = array( 'Critereapre', 'Aideapre66', 'Apre',  'Apre66', 'Tiersprestataireapre', 'Option' );
 
 		public $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml', 'Xpaginator', 'Search' );
 
-		public $components = array( 'Gestionzonesgeos', 'Prg' => array( 'actions' => array( 'all', 'eligible' ) )  );
+		public $components = array(
+			'Gestionzonesgeos',
+			'Prg2' => array( 'actions' => array( 'all', 'eligible' ) )
+		);
 
 		/**
-		*
-		*/
-
-//		public function __construct() {
-//			$this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'all', 'eligible' ) ) ) );
-//			parent::__construct();
-//		}
-
-		/**
-		*
-		*/
-
+		 * Changement du temps d'exécution maximum.
+		 *
+		 * @return void
+		 */
 		public function beforeFilter() {
 			ini_set('max_execution_time', 0);
 			parent::beforeFilter();
 		}
 
 		/**
-		*
-		*/
-
+		 * Envoi des options communes dans les vues.
+		 *
+		 * @return void
+		 */
 		protected function _setOptions() {
 			$options = $this->Apre->allEnumLists();
 // 			$optionsaides = $this->Apre->Aideapre66->allEnumLists();
@@ -52,40 +60,40 @@
 			$this->set( 'referents', $this->Apre->Referent->listOptions() );
 		}
 
-
 		/**
-		*
-		*/
-
+		 * Moteur de recherche par APREs (tous critères confondus).
+		 *
+		 * @return void
+		 */
 		public function all() {
 			$this->_index( 'Critereapre::all' );
 		}
 
 		/**
-		*
-		*/
-
+		 * Moteur de recherche par APREs éligibles.
+		 *
+		 * @return void
+		 */
 		public function eligible() {
 			$this->_index( 'Critereapre::eligible' );
 		}
 
 		/**
-		*
-		*/
-
+		 * Moteur de recherche par APREs.
+		 *
+		 * @return void
+		 */
 		public function _index( $etatApre = null ){
-			$this->Gestionzonesgeos->setCantonsIfConfigured();
-
 			$this->assert( !empty( $etatApre ), 'invalidParameter' );
-			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 
 			$params = $this->data;
 			if( !empty( $params ) ) {
-				$this->Critereapre->begin(); // Pour les jetons
-
-				$queryData = $this->Critereapre->search( $etatApre, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
-
+				$queryData = $this->Critereapre->search(
+					$etatApre,
+					(array)$this->Session->read( 'Auth.Zonegeographique' ),
+					$this->Session->read( 'Auth.User.filtre_zone_geo' ),
+					$this->data
+				);
 				$paginate = $queryData;
 				$paginate['limit'] = 10;
 
@@ -95,7 +103,6 @@
 				///
 				unset( $queryData['fields'] );
 				$queryData['recursive'] = -1;
-
 
 				$joins = array(
 					array(
@@ -117,7 +124,6 @@
 				);
 
 				$queryData['joins'] = array_merge( $queryData['joins'], $joins );
-
 
 				///Nb d'APREs appartenant à un comité et dont la décision a été/va être prise
 				$attenteDecision = array(
@@ -147,12 +153,12 @@
 				$this->set( 'attenteTraitementApres', $attenteTraitementApres );
 
 				$this->set( 'apres', $apres );
-
-				$this->Critereapre->commit();
 			}
 
+			$this->set( 'cantons', $this->Gestionzonesgeos->listeCantons() );
 			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
 			$this->_setOptions();
+
 			switch( $etatApre ) {
 				case 'Critereapre::all':
 					$this->set( 'pageTitle', 'Toutes les APREs' );
@@ -178,18 +184,20 @@
 					$this->render( $this->action, null, 'visualisation' );
 					break;
 			}
-
 		}
 
 		/**
-		* Export du tableau en CSV
-		*/
-
+		 * Export du tableau en CSV.
+		 *
+		 * @return void
+		 */
 		public function exportcsv( $action = 'all' ) {
-			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
-
-			$querydata = $this->Critereapre->search( "Critereapre::{$action}", $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), Xset::bump( $this->params['named'], '__' ), $this->Jetons->ids() );
+			$querydata = $this->Critereapre->search(
+				"Critereapre::{$action}",
+				(array)$this->Session->read( 'Auth.Zonegeographique' ),
+				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
+				Xset::bump( $this->params['named'], '__' )
+			);
 			unset( $querydata['limit'] );
 			$apres = $this->Apre->find( 'all', $querydata );
 

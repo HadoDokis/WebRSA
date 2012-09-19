@@ -1,31 +1,41 @@
 <?php
-	App::import('Sanitize');
+	/**
+	 * Code source de la classe CriterespdosController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.controllers
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 
+	/**
+	 * La classe CriterespdosController implémente un moteur de recherche par PDOs (CG 58 et 93).
+	 *
+	 * @package app.controllers
+	 */
 	class CriterespdosController extends AppController
 	{
 		public $name = 'Criterespdos';
-		public $uses = array( 'Canton', 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Typenotifpdo', 'Typepdo', 'Option', 'Situationpdo', 'Criterepdo', 'Propopdo', 'Referent', 'Decisionpdo', 'Originepdo', 'Statutpdo', 'Statutdecisionpdo', 'Cohortepdo', 'Situationdossierrsa', 'Zonegeographique' );
-		public $aucunDroit = array( 'exportcsv' );
+
+		public $uses = array( 'Criterepdo', 'Personne', 'Typenotifpdo', 'Typepdo', 'Option', 'Situationpdo',
+			'Propopdo', 'Decisionpdo', 'Originepdo', 'Statutpdo', 'Statutdecisionpdo', 'Situationdossierrsa'
+		);
 
 		public $helpers = array( 'Csv', 'Ajax','Search', 'Default2' );
 
-		public $components = array( 'Gestionzonesgeos', 'Prg' => array( 'actions' => array( 'index', 'nouvelles' ) ) );
+		public $components = array(
+			'Gestionzonesgeos',
+			'Prg2' => array( 'actions' => array( 'index', 'nouvelles' ) )
+		);
+
+		public $aucunDroit = array( 'exportcsv' );
 
 		/**
-		*
-		*/
-
-//		public function __construct() {
-//			$this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'index', 'nouvelles' ) ) ) );
-//			parent::__construct();
-//		}
-
-		/**
-		*
-		*/
-
+		 * Envoi des options communes dans les vues.
+		 *
+		 * @return void
+		 */
 		protected function _setOptions() {
-
 			$this->set( 'qual', $this->Option->qual() );
 			$this->set( 'pieecpres', $this->Option->pieecpres() );
 			$this->set( 'commission', $this->Option->commission() );
@@ -63,63 +73,59 @@
 		}
 
 		/**
-		*
-		*/
-
+		 * Moteur de recherche par PDOs.
+		 *
+		 * @return void
+		 */
 		public function index( ) {
-			$this->Gestionzonesgeos->setCantonsIfConfigured();
-
-			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
-
 			if( !empty( $this->data ) ) {
-				$this->Dossier->begin(); // Pour les jetons
+				$paginate = $this->Criterepdo->search(
+					(array)$this->Session->read( 'Auth.Zonegeographique' ),
+					$this->Session->read( 'Auth.User.filtre_zone_geo' ),
+					$this->data
+				);
 
-				$paginate = $this->Criterepdo->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
 				$paginate['limit'] = 10;
 				$paginate = $this->_qdAddFilters( $paginate );
 
 				$this->paginate = $paginate;
 				$criterespdos = $this->paginate( 'Propopdo' );
-				$this->Dossier->commit();
 
 				$this->set( 'criterespdos', $criterespdos );
 			}
 
+			$this->set( 'cantons', $this->Gestionzonesgeos->listeCantons() );
 			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
 			$this->_setOptions();
 		}
 
 		/**
-		*
-		*/
-
+		 * Moteur de recherche par nouvelles PDOs.
+		 *
+		 * @return void
+		 */
 		public function nouvelles() {
+			if( !empty( $this->data ) ) {
+				$querydata = $this->Criterepdo->listeDossierPDO(
+					(array)$this->Session->read( 'Auth.Zonegeographique' ),
+					$this->Session->read( 'Auth.User.filtre_zone_geo' ),
+					$this->data
+				);
 
-			$this->Gestionzonesgeos->setCantonsIfConfigured();
+				$querydata['limit'] = 10;
+				$querydata = $this->_qdAddFilters( $querydata );
 
-			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
+				$this->paginate = array( 'Personne' => $querydata );
+				$criterespdos = $this->paginate( 'Personne' );
 
-			$params = $this->data;
-			if( !empty( $params ) ) {
-
-				$this->Dossier->begin(); // Pour les jetons
-					$querydata = $this->Criterepdo->listeDossierPDO( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
-
-					$querydata['limit'] = 10;
-					$querydata = $this->_qdAddFilters( $querydata );
-					$this->paginate = array( 'Personne' => $querydata );
-
-					$criterespdos = $this->paginate( 'Personne' );
-
-					$this->Dossier->commit();
-					$this->set( 'criterespdos', $criterespdos );
+				$this->set( 'criterespdos', $criterespdos );
 			}
-			
+
 
 			$this->_setOptions();
+			$this->set( 'cantons', $this->Gestionzonesgeos->listeCantons() );
 			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
+
 			// Précise les options des états de dossiers :
 			$this->set( 'etatdosrsa', $this->Option->etatdosrsa( $this->Situationdossierrsa->etatAttente()) );
 
@@ -127,21 +133,25 @@
 		}
 
 		/**
-		* Export du tableau en CSV
-		*/
-
+		 * Export du tableau en CSV.
+		 *
+		 * @return void
+		 */
 		public function exportcsv() {
-			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
+			$querydata = $this->Criterepdo->search(
+				(array)$this->Session->read( 'Auth.Zonegeographique' ),
+				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
+				Xset::bump( $this->params['named'], '__' )
+			);
 
-			$querydata = $this->Criterepdo->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), Xset::bump( $this->params['named'], '__' ), $this->Jetons->ids() );
 			unset( $querydata['limit'] );
 			$querydata = $this->_qdAddFilters( $querydata );
 
 			$pdos = $this->Propopdo->find( 'all', $querydata );
 
 			$this->_setOptions();
-			$this->layout = ''; // FIXME ?
+
+			$this->layout = '';
 			$this->set( compact( 'pdos' ) );
 		}
 	}

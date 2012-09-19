@@ -1,30 +1,44 @@
 <?php
+	/**
+	 * Fichier source de la classe Critereapre.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.models
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+	App::import( 'Sanitize' );
+
+	/**
+	 * La classe Critereapre s'occupe du moteur de recherche des APREs (CG 66 et 93).
+	 *
+	 * @package app.models
+	 */
 	class Critereapre extends AppModel
 	{
 		public $name = 'Critereapre';
 
 		public $useTable = false;
-		
+
 		public $actsAs = array( 'Conditionnable' );
 
 		/**
-		*
-		*/
-
-		public function search( $etatApre, $mesCodesInsee, $filtre_zone_geo, $criteresapres, $lockedDossiers ) {
+		 * Traitement du formulaire de recherche concernant les APREs.
+		 *
+		 * @param type $etatApre
+		 * @param array $mesCodesInsee La liste des codes INSEE à laquelle est lié l'utilisateur
+		 * @param boolean $filtre_zone_geo L'utilisateur est-il limité au niveau des zones géographiques ?
+		 * @param array $criteresapres Critères du formulaire de recherche
+		 * @return array
+		 */
+		public function search( $etatApre, $mesCodesInsee, $filtre_zone_geo, $criteresapres ) {
 			/// Conditions de base
-			$conditions = array(
-			);
+			$conditions = array( );
 
 			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
 			$conditions = $this->conditionsAdresse( $conditions, $criteresapres, $filtre_zone_geo, $mesCodesInsee );
 			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $criteresapres );
 			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $criteresapres );
-
-			/// Dossiers lockés
-			if( !empty( $lockedDossiers ) ) {
-				$conditions[] = 'Dossier.id NOT IN ( '.implode( ', ', $lockedDossiers ).' )';
-			}
 
 			/// Critères
 			$datedemandeapre = Set::extract( $criteresapres, 'Filtre.datedemandeapre' );
@@ -46,9 +60,8 @@
 			$themeapre66_id = Set::extract( $criteresapres, 'Filtre.themeapre66_id' );
 			$typeaideapre66_id = Set::extract( $criteresapres, 'Filtre.typeaideapre66_id' );
 
-// debug($criteresapres);
 			/// Critères sur la demande APRE - date de demande
-			
+
 			$modelCG = 'Apre.datedemandeapre';
 			if( Configure::read( 'Cg.departement' ) == 66 ) {
 				$modelCG = 'Aideapre66.datedemande';
@@ -66,11 +79,11 @@
 				$valid_from = ( valid_int( $criteresapres['Filtre']['daterelance_from']['year'] ) && valid_int( $criteresapres['Filtre']['daterelance_from']['month'] ) && valid_int( $criteresapres['Filtre']['daterelance_from']['day'] ) );
 				$valid_to = ( valid_int( $criteresapres['Filtre']['daterelance_to']['year'] ) && valid_int( $criteresapres['Filtre']['daterelance_to']['month'] ) && valid_int( $criteresapres['Filtre']['daterelance_to']['day'] ) );
 				if( $valid_from && $valid_to ) {
-                    $conditions[] = 'Apre.id IN (
-                        SELECT relancesapres.apre_id
-                            FROM relancesapres
-                            WHERE relancesapres.daterelance BETWEEN \''.implode( '-', array( $criteresapres['Filtre']['daterelance_from']['year'], $criteresapres['Filtre']['daterelance_from']['month'], $criteresapres['Filtre']['daterelance_from']['day'] ) ).'\' AND \''.implode( '-', array( $criteresapres['Filtre']['daterelance_to']['year'], $criteresapres['Filtre']['daterelance_to']['month'], $criteresapres['Filtre']['daterelance_to']['day'] ) ).'\'
-                    )';
+					$conditions[] = 'Apre.id IN (
+						SELECT relancesapres.apre_id
+							FROM relancesapres
+							WHERE relancesapres.daterelance BETWEEN \''.implode( '-', array( $criteresapres['Filtre']['daterelance_from']['year'], $criteresapres['Filtre']['daterelance_from']['month'], $criteresapres['Filtre']['daterelance_from']['day'] ) ).'\' AND \''.implode( '-', array( $criteresapres['Filtre']['daterelance_to']['year'], $criteresapres['Filtre']['daterelance_to']['month'], $criteresapres['Filtre']['daterelance_to']['day'] ) ).'\'
+					)';
 				}
 			}
 
@@ -140,26 +153,21 @@
 			if( !empty( $dateprint ) && $dateprint != 0 ) {
 				$dateimpressionapre_from = Set::extract( $criteres, 'Filtre.dateimpressionapre_from' );
 				$dateimpressionapre_to = Set::extract( $criteres, 'Filtre.dateimpressionapre_to' );
-				// FIXME: vérifier le bon formatage des dates
 				$dateimpressionapre_from = $dateimpressionapre_from['year'].'-'.$dateimpressionapre_from['month'].'-'.$dateimpressionapre_from['day'];
 				$dateimpressionapre_to = $dateimpressionapre_to['year'].'-'.$dateimpressionapre_to['month'].'-'.$dateimpressionapre_to['day'];
 
 				$conditions[] = 'Apre.dateimpressionapre BETWEEN \''.$dateimpressionapre_from.'\' AND \''.$dateimpressionapre_to.'\'';
 			}
 
-
 			//Structure référente où l'apre est faite
 			if( !empty( $structurereferente_id ) ) {
 				$conditions[] = 'Apre.structurereferente_id = \''.Sanitize::clean( $structurereferente_id ).'\'';
 			}
 
-
 			//Référent de l'APRE
 			if( !empty( $referent_id ) ) {
 				$conditions[] = 'Apre.referent_id = \''.Sanitize::clean( suffix( $referent_id ) ).'\'';
 			}
-
-
 
 			/// Requête
 			$this->Dossier = ClassRegistry::init( 'Dossier' );
@@ -293,7 +301,6 @@
 			);
 
 			///Tiers prestataire lié à l'apre
-			/// FIXME: à la mode CakePHP ?
 			if( !empty( $tiers ) ) {
 				$subQueries = array();
 				$this->Apre = ClassRegistry::init( 'Apre' );
