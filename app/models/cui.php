@@ -1,4 +1,19 @@
 <?php
+	/**
+	 * Fichier source de la classe Cui.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.models
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+	App::import( 'Sanitize' );
+
+	/**
+	 * La classe Cui est la classe de base concernant les CUIs (CG 58, 66 et 93).
+	 *
+	 * @package app.models
+	 */
 	class Cui extends AppModel
 	{
 		public $name = 'Cui';
@@ -582,11 +597,12 @@
 			return $return;
 		}
 
-
 		/**
-		* BeforeSave
-		*/
-
+		 * Recalcul de la position du CUI avant l'enregistrement (CG 66).
+		 *
+		 * @param array $options
+		 * @return boolean
+		 */
 		public function beforeSave( $options = array() ) {
 			$return = parent::beforeSave( $options );
 
@@ -601,12 +617,12 @@
 			return $return;
 		}
 
-
 		/**
-		* Recalcul des rangs des contrats pour une personne donnée ou pour
-		* l'ensemble des personnes.
-		*/
-
+		* Recalcul des rangs des CUIs pour une personne donnée ou pour l'ensemble des personnes.
+		 *
+		 * @param integer $personne_id
+		 * @return boolean
+		 */
 		protected function _updateRangsCuis( $personne_id = null ) {
 			$condition = ( is_null( $personne_id ) ? "" : "cuis.personne_id = {$personne_id}" );
 
@@ -643,26 +659,30 @@
 		}
 
 		/**
-		* Recalcul des rangs des contrats pour une personne donnée.
-		* afterSave, afterDelete, valider, annuler
-		*/
-
+		 * Recalcul des rangs des CUIs pour une personne donnée.
+		 * afterSave, afterDelete, valider, annuler
+		 *
+		 * @return boolean
+		 */
 		public function updateRangsCuisPersonne( $personne_id ) {
 			return $this->_updateRangsCuis( $personne_id  );
 		}
 
 		/**
-		* Recalcul des rangs des contrats pour l'ensemble des personnes.
-		*/
-
+		 * Recalcul des rangs des CUIs pour l'ensemble des personnes.
+		 *
+		 * @return boolean
+		 */
 		public function updateRangsCuis() {
 			return $this->_updateRangsCuis();
 		}
 
 		/**
-		*
-		*/
-
+		 * Calcul de la position du CUI (CG 66).
+		 *
+		 * @param array $data
+		 * @return string
+		 */
 		public function calculPosition( $data ) {
 			$decisioncui = Set::classicExtract( $data, 'Cui.decisioncui' );
 			$positioncui66 = Set::classicExtract( $data, 'Cui.positioncui66' );
@@ -670,8 +690,6 @@
 			$id = Set::classicExtract( $data, 'Cui.id' );
 			$personne_id = Set::classicExtract( $data, 'Cui.personne_id' );
 
-// debug($positioncui66);
-// die();
 			// Données dernier CUI
 			$conditions = array( 'Cui.personne_id' => $personne_id, );
 			if( !empty( $id ) ) {
@@ -725,9 +743,10 @@
 		}
 
 		/**
-		 *	Mise à jour de la position du cui selon la proposition de décision émise
-		 *  @param $propodeicsioncui66_id, identifiant de la proposition de décision du CUI
-		 *  @return string
+		 * Mise à jour de la position du cui selon la proposition de décision émise
+		 *
+		 * @param $propodeicsioncui66_id, identifiant de la proposition de décision du CUI
+		 * @return string
 		 */
 		public function updatePositionFromPropodecisioncui66( $propodecisioncui66_id ) {
 			$propodecisioncui66 = $this->Propodecisioncui66->find(
@@ -774,7 +793,11 @@
 
 			return $return;
 		}
+
 		/**
+		 * Récupération des données servant à construire le PDF de notification du CUI.
+		 *
+		 * @see Cui::getDefaultPdf
 		 *
 		 * @param integer $id
 		 * @param integer $user_id
@@ -831,11 +854,12 @@
 		/**
 		 * Retourne le PDF de notification du CUI.
 		 *
+		 * @see Cui::getDataForPdf
+		 *
 		 * @param integer $id L'id du CUI pour lequel on veut générer l'impression
 		 * @return string
 		 */
 		public function getDefaultPdf( $id, $user_id ) {
-
 			$cui = $this->getDataForPdf( $id, $user_id );
 			///Traduction pour les données de la Personne/Contact/Partenaire/Référent
 			$Option = ClassRegistry::init( 'Option' );
@@ -865,5 +889,36 @@
 			);
 		}
 
+		/**
+		 * Retourne l'id du dossier à partir de l'id du CUI
+		 *
+		 * @param integer $id
+		 * @return integer
+		 */
+		public function dossierId( $id ) {
+			$cui = $this->find(
+				'first',
+				array(
+					'fields' => array(
+						'Foyer.dossier_id'
+					),
+					'joins' => array(
+						$this->join( 'Personne', array( 'type' => 'INNER' ) ),
+						$this->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
+					),
+					'conditions' => array(
+						'Cui.id' => $id
+					),
+					'contain' => false
+				)
+			);
+
+			if( !empty( $cui ) ) {
+				return $cui['Foyer']['dossier_id'];
+			}
+			else {
+				return null;
+			}
+		}
 	}
 ?>
