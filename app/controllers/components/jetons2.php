@@ -62,6 +62,9 @@
 			}
 
 			$dossiers = array_unique( (array) $dossiers );
+			if( empty( $dossiers ) ) {
+				$dossiers = null;
+			}
 
 			$this->Jeton->begin();
 
@@ -167,6 +170,9 @@
 			}
 
 			$dossiers = array_unique( (array) $dossiers );
+			if( empty( $dossiers ) ) {
+				$dossiers = null;
+			}
 
 			$this->Jeton->begin();
 

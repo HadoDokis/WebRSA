@@ -307,7 +307,7 @@
 				(array)$this->Session->read( 'Auth.Zonegeographique' ),
 				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
 				Xset::bump( $this->params['named'], '__' ),
-				null
+				( $this->Cohortes->active() ? $this->Cohorte->sqLocked() : null )
 			);
 			unset( $querydata['limit'] );
 
