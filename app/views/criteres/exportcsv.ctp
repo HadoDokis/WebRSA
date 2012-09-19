@@ -13,6 +13,7 @@
 		'Complément adresse',
 		'Code postal',
 		'Commune de l\'allocataire',
+        'Canton de l\'allocataire',
 		'Date d\'ouverture de droit',
 		'Etat du droit'
 	);
@@ -58,6 +59,7 @@
 			Set::classicExtract( $orient, 'Adresse.complideadr' ).' '.Set::classicExtract( $orient, 'Adresse.compladr' ),
 			Set::classicExtract( $orient, 'Adresse.codepos' ),
 			Set::classicExtract( $orient, 'Adresse.locaadr' ),
+            Set::classicExtract( $orient, 'Canton.canton' ),
 			date_short( Set::classicExtract( $orient, 'Dossier.dtdemrsa' ) ),
 			value( $etatdosrsa, Set::classicExtract( $orient, 'Situationdossierrsa.etatdosrsa' ) )
 		);
