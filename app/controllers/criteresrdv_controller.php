@@ -1,41 +1,47 @@
 <?php
-	App::import('Sanitize');
+	/**
+	 * Code source de la classe CriteresrdvController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.controllers
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 
+	/**
+	 * La classe CriteresrdvController implémente un moteur de recherche par rendez-vous (CG 58, 66 et 93).
+	 *
+	 * @package app.controllers
+	 */
 	class CriteresrdvController extends AppController
 	{
 		public $name = 'Criteresrdv';
-		public $uses = array( 'Canton', 'Dossier', 'Foyer', 'Adresse', 'Personne', 'Rendezvous', 'Critererdv', 'Structurereferente', 'Typeorient', 'Option', 'Typerdv', 'Referent', 'Permanence', 'Statutrdv', 'Zonegeographique' );
-		public $aucunDroit = array( 'constReq', 'ajaxreferent', 'ajaxperm' );
+
+		public $uses = array( 'Critererdv', 'Rendezvous', 'Option', 'Typerdv', 'Referent' );
 
 		public $helpers = array( 'Csv', 'Ajax', 'Paginator', 'Search' );
 
-		public $components = array( 'Gestionzonesgeos', 'Prg' => array( 'actions' => array( 'index' ) ) );
-
+		public $components = array(
+			'Gestionzonesgeos',
+			'Prg2' => array( 'actions' => array( 'index' ) )
+		);
 
 		/**
-		*
-		*/
-
-
+		 * Changement du temps d'exécution maximum et de la quantité de mémoire maximale.
+		 *
+		 * @return void
+		 */
 		public function beforeFilter() {
-			ini_set('max_execution_time', 0);
-			ini_set('memory_limit', '128M');
+			ini_set( 'max_execution_time', 0 );
+			ini_set( 'memory_limit', '128M' );
 			parent::beforeFilter();
 		}
 
 		/**
-		*
-		*/
-
-//		public function __construct() {
-//			$this->components = Set::merge( $this->components, array( 'Prg' => array( 'actions' => array( 'index' ) ) ) );
-//			parent::__construct();
-//		}
-
-		/**
-		*
-		*/
-
+		 * Envoi des options communes dans les vues.
+		 *
+		 * @return void
+		 */
 		protected function _setOptions() {
 			$this->set( 'statutrdv', $this->Statutrdv->find( 'list' ) );
 			$this->set( 'struct', $this->Structurereferente->listOptions() );
@@ -49,42 +55,44 @@
 		}
 
 		/**
-		*
-		*/
-
+		 * Moteur de recherche par rendez-vous.
+		 *
+		 * @return void
+		 */
 		public function index() {
-			$this->Gestionzonesgeos->setCantonsIfConfigured();
-			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
-
 			if( !empty( $this->data ) ) {
-				$this->Dossier->begin(); // Pour les jetons
+				$querydata = $this->Critererdv->search(
+					(array)$this->Session->read( 'Auth.Zonegeographique' ),
+					$this->Session->read( 'Auth.User.filtre_zone_geo' ),
+					$this->data
+				);
 
-				$querydata = $this->Critererdv->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
 				$querydata['limit'] = 10;
 				$querydata = $this->_qdAddFilters( $querydata );
-				$this->paginate = array( 'Rendezvous' => $querydata );
 
+				$this->paginate = array( 'Rendezvous' => $querydata );
 				$rdvs = $this->paginate( 'Rendezvous' );
 
-				$this->Dossier->commit();
 				$this->set( 'rdvs', $rdvs );
 			}
 
-
-			$this->_setOptions();
+			$this->set( 'cantons', $this->Gestionzonesgeos->listeCantons() );
 			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
+			$this->_setOptions();
 		}
 
 		/**
-		* Export du tableau en CSV
-		*/
-
+		 * Moteur de recherche par nouvelles PDOs.
+		 *
+		 * @return void
+		 */
 		public function exportcsv() {
-			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
+			$querydata = $this->Critererdv->search(
+				(array)$this->Session->read( 'Auth.Zonegeographique' ),
+				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
+				Xset::bump( $this->params['named'], '__' )
+			);
 
-			$querydata = $this->Critererdv->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), Xset::bump( $this->params['named'], '__' ), $this->Jetons->ids() );
 			unset( $querydata['limit'] );
 			$querydata = $this->_qdAddFilters( $querydata );
 
@@ -95,7 +103,7 @@
 			$referents = $this->Referent->referentsListe( $structurereferente_id );
 			$this->set( 'referents', $referents );
 
-			$this->layout = ''; // FIXME ?
+			$this->layout = '';
 			$this->_setOptions();
 			$this->set( compact( 'rdvs' ) );
 		}
