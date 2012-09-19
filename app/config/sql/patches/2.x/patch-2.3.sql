@@ -483,6 +483,12 @@ SELECT public.alter_enumtype ( 'TYPE_ETATDOSSIERAPRE', ARRAY['COM', 'INC', 'VAL'
 ALTER TABLE jetons ALTER COLUMN php_sid TYPE VARCHAR(32);
 ALTER TABLE jetonsfonctions ALTER COLUMN php_sid TYPE VARCHAR(32);
 
+
+-------------------------------------------------------------------------------------------------------------
+-- 20120919: Ajout d'un lien entre les actionscandidats et le CEr pour le CG66
+-------------------------------------------------------------------------------------------------------------
+SELECT add_missing_table_field ( 'public', 'contratsinsertion', 'actioncandidat_id', 'INTEGER' );
+SELECT add_missing_constraint ( 'public', 'contratsinsertion', 'contratsinsertion_actioncandidat_id_fkey', 'actionscandidats', 'actioncandidat_id', false );
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

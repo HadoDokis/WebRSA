@@ -521,7 +521,7 @@
             if( $this->action == 'edit' ){
                 $isactive = array( 'O', 'N' );
             }
-			$actionsfiche = $this->{$this->modelClass}->Actioncandidat->listePourFicheCandidature( $codeinseeUser, $isactive );
+			$actionsfiche = $this->{$this->modelClass}->Actioncandidat->listePourFicheCandidature( $codeinseeUser, $isactive, '1' );
 			$this->set( 'actionsfiche', $actionsfiche );
 
 			if( !empty( $this->data ) ) {

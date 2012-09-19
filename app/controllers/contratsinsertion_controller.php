@@ -21,7 +21,7 @@
 			'view' => 'Contratsinsertion:index',
 			'add' => 'Contratsinsertion:edit'
 		);
-		public $aucunDroit = array( 'ajax', 'ajaxref', 'ajaxstruct', 'ajaxraisonci', 'notificationsop', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
+		public $aucunDroit = array( 'ajax', 'ajaxaction', 'ajaxref', 'ajaxstruct', 'ajaxraisonci', 'notificationsop', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
 
 		/**
 		 *
@@ -97,6 +97,42 @@
 			$this->set( 'options', $options );
 		}
 
+        
+		/**
+		 *   Ajax pour les partenaires fournissant l'action liée au CER
+		 */
+		public function ajaxaction( $actioncandidat_id = null ) { // FIXME
+			Configure::write( 'debug', 0 );
+
+			$dataActioncandidat_id = Set::extract( $this->data, 'Contratinsertion.actioncandidat_id' );
+			$actioncandidat_id = ( empty( $actioncandidat_id ) && !empty( $dataActioncandidat_id ) ? $dataActioncandidat_id : $actioncandidat_id );
+
+			if( !empty( $actioncandidat_id ) ) {
+				$this->Contratinsertion->Actioncandidat->forceVirtualFields = true;
+				$actioncandidat = $this->Contratinsertion->Actioncandidat->find(
+					'first',
+                    array(
+                        'conditions' => array(
+                            'Actioncandidat.id' => $actioncandidat_id
+                        ),
+                        'contain' => array(
+                            'Contactpartenaire' => array(
+                                'Partenaire'
+                            ),
+                            'Fichiermodule'
+                        )
+                    )
+				);
+
+				if( ($actioncandidat['Actioncandidat']['correspondantaction'] == 1) && !empty( $actioncandidat['Actioncandidat']['referent_id'] ) ) {
+					$this->ActioncandidatPersonne->Personne->Referent->recursive = -1;
+					$referent = $this->ActioncandidatPersonne->Personne->Referent->read( null, $actioncandidat['Actioncandidat']['referent_id'] );
+				}
+				$this->set( compact( 'actioncandidat', 'referent' ) );
+			}
+			$this->render( 'ajaxaction' );
+		}
+        
 		/**
 		 *
 		 * @param type $typeorient_id
@@ -1026,6 +1062,17 @@
 						)
 					)
 				);
+                
+                
+                      
+                //On affiche les actions inactives en édition mais pas en ajout, 
+                // afin de pouvoir gérer les actions n'étant plus prises en compte mais toujours en cours
+                $isactive = 'O';
+                if( $this->action == 'edit' ){
+                    $isactive = array( 'O', 'N' );
+                }
+                $actionsSansFiche = $this->{$this->modelClass}->Actioncandidat->listePourFicheCandidature( null, $isactive, '0' );
+                $this->set( 'actionsSansFiche', $actionsSansFiche );
 			}
 			else {
 				$structures = $this->Structurereferente->listOptions();
