@@ -33,9 +33,12 @@ App::import( 'Sanitize' );
 			/// Cohortefichecandidature66 zone géographique
 			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
 
-			/// Dossiers lockés
+            /// Dossiers lockés
 			if( !empty( $lockedDossiers ) ) {
-				$conditions[] = 'Dossier.id NOT IN ( '.implode( ', ', $lockedDossiers ).' )';
+				if( is_array( $lockedDossiers ) ) {
+					$conditions[] = 'Dossier.id NOT IN ( '.implode( ', ', $lockedDossiers ).' )';
+				}
+				$conditions[] = "NOT {$lockedDossiers}";
 			}
 
 			/// Critères
@@ -237,7 +240,8 @@ App::import( 'Sanitize' );
 				),
 				'joins' => $joins,
 				'contain' => false,
-				'conditions' => $conditions
+				'conditions' => $conditions,
+                'order' => array( 'ActioncandidatPersonne.datesignature ASC' )
 			);
 
 			return $query;

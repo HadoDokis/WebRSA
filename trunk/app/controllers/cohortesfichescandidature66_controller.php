@@ -14,7 +14,19 @@
 
 		public $helpers = array( 'Csv', 'Ajax', 'Default2' );
 
-		public $components = array( 'Prg' => array( 'actions' => array( 'fichesenattente' => array( 'filter' => 'Search' ), 'fichesencours' => array( 'filter' => 'Search' ) ) ) );
+		public $components = array(
+            'Prg2' => array(
+                'actions' => array(
+                    'fichesenattente' => array( 'filter' => 'Search' ),
+                    'fichesencours' => array( 'filter' => 'Search' )
+                )
+            ),
+            'Gestionzonesgeos',
+            'Cohortes' => array(
+                'fichesenattente',
+                'fichesencours'
+            )
+        );
 
 		/**
 		*
@@ -57,12 +69,8 @@
 		protected function _index( $statutFiche = null ) {
 			$this->assert( !empty( $statutFiche ), 'invalidParameter' );
 
-			if( Configure::read( 'CG.cantons' ) ) {
-				$this->set( 'cantons', $this->Canton->selectList() );
-			}
-
-			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
+			$this->set( 'cantons', $this->Gestionzonesgeos->listeCantons() );
+			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
 
 
 			if( !empty( $this->data ) ) {
@@ -72,29 +80,28 @@
 				*/
 				// On a renvoyé  le formulaire de la cohorte
 				if( !empty( $this->data['ActioncandidatPersonne'] ) ) {
-
+                    $this->Cohortes->get( array_unique( Set::extract( $this->data, 'ActioncandidatPersonne.{n}.dossier_id' ) ) );
+                    
 					$valid = $this->ActioncandidatPersonne->saveAll( $this->data['ActioncandidatPersonne'], array( 'validate' => 'only', 'atomic' => false ) );
-
-
+                    
 					if( $valid ) {
 						$this->ActioncandidatPersonne->begin();
 						$saved = $this->ActioncandidatPersonne->saveAll( $this->data['ActioncandidatPersonne'], array( 'validate' => 'first', 'atomic' => false ) );
 
 						if( $saved ) {
-							// FIXME ?
-							foreach( array_unique( Set::extract( $this->data, 'ActioncandidatPersonne.{n}.dossier_id' ) ) as $dossier_id ) {
-								$this->Jetons->release( array( 'Dossier.id' => $dossier_id ) );
-							}
 							$this->ActioncandidatPersonne->commit();
+                            $this->Session->setFlash( 'Enregistrement effectué.', 'flash/success' );
+                            $this->Cohortes->release( array_unique( Set::extract( $this->data, 'ActioncandidatPersonne.{n}.dossier_id' ) ) );
 							unset( $this->data['ActioncandidatPersonne'] );
-							$this->Session->del( "Prg.{$this->name}__{$this->action}.{$this->data['sessionKey']}" );
-// debug($this->Session->read());
-// die();
 						}
 						else {
 							$this->ActioncandidatPersonne->rollback();
+                            $this->Session->setFlash( 'Erreur lors de l\'enregistrement.', 'flash/error' );
 						}
 					}
+                    else {
+                        $this->Session->setFlash( 'Erreur lors de l\'enregistrement.', 'flash/error' );
+                    }
 				}
 
 				/**
@@ -102,16 +109,20 @@
 				*/
 
 				if( ( $statutFiche == 'Suivifiche::fichesenattente' ) || ( ( $statutFiche == 'Suivifiche::fichesencours' ) && !empty( $this->data ) ) ) {
-					$this->Dossier->begin(); // Pour les jetons
 
-
-					if( !empty( $this->data['Search']['Actioncandidat']['id'] )) {
+                    if( !empty( $this->data['Search']['Actioncandidat']['id'] )) {
 						$actioncandidatId = suffix( $this->data['Search']['Actioncandidat']['id'] );
 						$this->data['Search']['Actioncandidat']['id'] = $actioncandidatId;
 					}
-// 					$data = $this->data;
 
-					$paginate = $this->Cohortefichecandidature66->search( $statutFiche, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data['Search'], $this->Jetons->ids() );
+					$paginate = $this->Cohortefichecandidature66->search(
+                        $statutFiche,
+                        (array)$this->Session->read( 'Auth.Zonegeographique' ),
+                        $this->Session->read( 'Auth.User.filtre_zone_geo' ),
+                        $this->data['Search'],
+                        $this->Cohortes->sqLocked( 'Dossier' )
+                    );
+                    
 					$paginate['limit'] = 10;
 
 					$this->paginate = $paginate;
@@ -125,18 +136,13 @@
 							$cohortefichecandidature66[$key]['ActioncandidatPersonne']['proposition_sortiele'] = $value['ActioncandidatPersonne']['sortiele'];
 						}
 					}
-					$this->Dossier->commit();
+
+                    $this->Cohortes->get( array_unique( Set::extract( $cohortefichecandidature66, '{n}.Dossier.id' ) ) );
 					$this->set( 'cohortefichecandidature66', $cohortefichecandidature66 );
 				}
 			}
 
 			$this->_setOptions();
-			if( Configure::read( 'Zonesegeographiques.CodesInsee' ) ) {
-				$this->set( 'mesCodesInsee', $this->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) ) );
-			}
-			else {
-				$this->set( 'mesCodesInsee', $this->Dossier->Foyer->Adressefoyer->Adresse->listeCodesInsee() );
-			}
 
 			switch( $statutFiche ) {
 				case 'Suivifiche::fichesenattente':

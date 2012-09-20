@@ -121,6 +121,13 @@
 				'rule' => 'notEmpty',
 				'message' => 'Champ obligatoire'
 			),
+            'bilanvenu' => array(
+                // INFO: il s'agit d'un champ "virtuel" dans les cohortes de fiches de candidature
+                'notEmptyIf' => array(
+                    'rule' => array( 'notEmptyIf', 'atraiter', true, array( '1' ) ),
+                    'message' => 'Champ obligatoire',
+                )
+            ),
 // 			'bilanvenu'  => array(
 // 				'rule' => 'notEmpty',
 // 				'message' => 'Champ obligatoire'

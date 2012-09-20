@@ -1,4 +1,19 @@
 <?php
+    /**
+	 * Code source de la classe Cohortesdossierspcgs66Controller.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.controllers
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe Cohortesdossierspcgs66Controller permet de traiter les dossiers PCGs en cohorte
+	 * (CG 66).
+	 *
+	 * @package app.controllers
+	 */
 	class Cohortesdossierspcgs66Controller extends AppController
 	{
 		public $name = 'Cohortesdossierspcgs66';
@@ -15,13 +30,18 @@
 		public $helpers = array( 'Csv', 'Ajax', 'Default2', 'Locale' );
 
 		public $components = array(
-			'Prg' => array(
+			'Prg2' => array(
 				'actions' => array(
 					'enattenteaffectation' => array( 'filter' => 'Search' ),
 					'affectes' => array( 'filter' => 'Search' ),
 					'aimprimer' => array( 'filter' => 'Search' ),
 					'atransmettre' => array( 'filter' => 'Search' )
 				)
+			),
+            'Gestionzonesgeos',
+			'Cohortes' => array(
+				'enattenteaffectation',
+				'atransmettre'
 			)
 		);
 
@@ -94,12 +114,8 @@
 		protected function _index( $statutAffectation = null ) {
 			$this->assert( !empty( $statutAffectation ), 'invalidParameter' );
 
-			if( Configure::read( 'CG.cantons' ) ) {
-				$this->set( 'cantons', $this->Canton->selectList() );
-			}
-
-			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
+			$this->set( 'cantons', $this->Gestionzonesgeos->listeCantons() );
+			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
 
 			if( !empty( $this->data ) ) {
 // debug($this->data);
@@ -111,25 +127,25 @@
 
 				// On a renvoyé  le formulaire de la cohorte
 				if( !empty( $this->data['Dossierpcg66'] ) ) {
+                    $this->Cohortes->get( array_unique( Set::extract( $this->data, 'Dossierpcg66.{n}.dossier_id' ) ) );
 
 					$valid = $this->Dossierpcg66->saveAll( $this->data['Dossierpcg66'], array( 'validate' => 'only', 'atomic' => false ) );
-
 
 					if( $valid ) {
 						$this->Dossierpcg66->begin();
 						$saved = $this->Dossierpcg66->saveAll( $this->data['Dossierpcg66'], array( 'validate' => 'first', 'atomic' => false ) );
 
 						if( $saved ) {
-							// FIXME ?
-							foreach( array_unique( Set::extract( $this->data, 'Dossierpcg66.{n}.dossier_id' ) ) as $dossier_id ) {
-								$this->Jetons->release( array( 'Dossier.id' => $dossier_id ) );
-							}
 							$this->Dossierpcg66->commit();
+                            $this->Session->setFlash( 'Enregistrement effectué.', 'flash/success' );
+                            $this->Cohortes->release( array_unique( Set::extract( $this->data, 'Dossierpcg66.{n}.dossier_id' ) ) );
+
 							unset( $this->data['Dossierpcg66'] );
-							$this->Session->del( "Prg.{$this->name}__{$this->action}.{$this->data['sessionKey']}" );
+//							$this->Session->del( "Prg.{$this->name}__{$this->action}.{$this->data['sessionKey']}" );
 						}
 						else {
 							$this->Dossierpcg66->rollback();
+                            $this->Session->setFlash( 'Erreur lors de l\'enregistrement.', 'flash/error' );
 						}
 					}
 				}
@@ -141,16 +157,21 @@
 				*/
 
 				if( ( $statutAffectation == 'Affectationdossierpcg66::enattenteaffectation' ) || ( $statutAffectation == 'Affectationdossierpcg66::affectes' ) || ( $statutAffectation == 'Affectationdossierpcg66::aimprimer' ) || ( $statutAffectation == 'Affectationdossierpcg66::atransmettre' ) && !empty( $this->data ) ) {
-					$this->Dossier->begin(); // Pour les jetons
-
-					$paginate = $this->Cohortedossierpcg66->search( $statutAffectation, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
+					$paginate = $this->Cohortedossierpcg66->search(
+                        $statutAffectation,
+                        (array)$this->Session->read( 'Auth.Zonegeographique' ),
+                        $this->Session->read( 'Auth.User.filtre_zone_geo' ),
+                        $this->data,
+                        $this->Cohortes->sqLocked( 'Dossier' )
+                    );
+						
 					$paginate['limit'] = 10;
 
 					$this->paginate = $paginate;
 					$cohortedossierpcg66 = $this->paginate( 'Dossierpcg66' );
 
 					if( empty( $this->data['Dossierpcg66'] ) ) {
-						// Si un précédent dossier existe, on récupère le gesitonnaire précédent par défaut
+						// Si un précédent dossier existe, on récupère le gestionnaire précédent par défaut
 						foreach( $cohortedossierpcg66 as $i => $dossierpcg66 ){
 							$foyer = $this->Dossierpcg66->Foyer->find(
 								'first',
@@ -171,27 +192,18 @@
 								)
 							);
 							$this->data['Dossierpcg66'][$i]['user_id'] = @$foyer['Dossierpcg66'][0]['user_id'];
-// 							debug( $foyer );
 						}
-
 					}
-
-					$this->Dossier->commit();
-
+                    
+                    if( !in_array( $statutAffectation, array( 'Affectationdossierpcg66::affectes', 'Affectationdossierpcg66::aimprimer' ) ) ) {
+						$this->Cohortes->get( array_unique( Set::extract( $cohortedossierpcg66, '{n}.Dossier.id' ) ) );
+					}
+                    
 					$this->set( 'cohortedossierpcg66', $cohortedossierpcg66 );
-
 				}
-
 			}
 
 			$this->_setOptions();
-			if( Configure::read( 'Zonesegeographiques.CodesInsee' ) ) {
-				$this->set( 'mesCodesInsee', $this->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) ) );
-			}
-			else {
-				$this->set( 'mesCodesInsee', $this->Dossier->Foyer->Adressefoyer->Adresse->listeCodesInsee() );
-			}
-
 
 			switch( $statutAffectation ) {
 				case 'Affectationdossierpcg66::enattenteaffectation':

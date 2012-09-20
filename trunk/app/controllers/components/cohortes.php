@@ -59,8 +59,11 @@
 		 */
 		public function initialize( &$controller, $settings = array() ) {
 			parent::initialize( $controller, $settings );
+
 			$this->Controller = &$controller;
 			$this->settings = (array)$settings;
+            
+            $this->Jetons2->initialize( &$controller );
 
 			if( $this->active() ) {
 				$this->clean();
