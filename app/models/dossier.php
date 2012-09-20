@@ -237,7 +237,10 @@
 						'Prestation.rolepers IS NULL',
 						'Prestation.rolepers IN ( \'DEM\', \'CJT\' )'
 					),
-					'Adressefoyer.rgadr' => '01',
+					'OR' => array(
+                        'Adressefoyer.id IS NULL',
+                        'Adressefoyer.rgadr' => '01'
+                    )
 				);
 			}
 
