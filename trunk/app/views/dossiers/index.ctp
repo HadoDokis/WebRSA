@@ -202,7 +202,7 @@
 										implode( ' ', array( $dossier['Personne']['prenom'], $dossier['Personne']['prenom2'], $dossier['Personne']['prenom3'] ) )
 									)
 								),
-								nl2br( h( Set::classicExtract(  $dossier, 'Adresse.numvoie' ).' '.Set::classicExtract(  $typevoie, Set::classicExtract( $dossier, 'Adresse.typevoie' ) ).' '.Set::classicExtract(  $dossier, 'Adresse.nomvoie' )."\n".Set::classicExtract(  $dossier, 'Adresse.codepos' ).' '.Set::classicExtract(  $dossier, 'Adresse.locaadr' ) ) )
+								nl2br( h( Set::classicExtract(  $dossier, 'Adresse.numvoie' ).' '.value(  $typevoie, Set::classicExtract( $dossier, 'Adresse.typevoie' ) ).' '.Set::classicExtract(  $dossier, 'Adresse.nomvoie' )."\n".Set::classicExtract(  $dossier, 'Adresse.codepos' ).' '.Set::classicExtract(  $dossier, 'Adresse.locaadr' ) ) )
 							);
 						}
 
