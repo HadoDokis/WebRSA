@@ -807,7 +807,7 @@
 								)
 							);
 
-							$typesrdvs = $this->Contratinsertion->Personne->Rendezvous->Typerdv->find(
+							/*$typesrdvs = $this->Contratinsertion->Personne->Rendezvous->Typerdv->find(
 								'all',
 								array(
 									'conditions' => array(
@@ -846,7 +846,7 @@
 							if ( $nbpassageeplaudition >= $nbPosPasEplAud ) {
 								$this->invalidate( 'examenaudition', 'Cette personne ne possède pas assez de rendez-vous où elle ne s\'est pas présentée.' );
 								return false;
-							}
+							}*/
 						}
 
 
@@ -947,7 +947,8 @@
 								)
 							);
 
-							$typesrdvs = $this->Contratinsertion->Personne->Rendezvous->Typerdv->find(
+							/*INFO: mise en commentaire du calcul du nb de RDV non honoré au CG66
+                             * $typesrdvs = $this->Contratinsertion->Personne->Rendezvous->Typerdv->find(
 								'all',
 								array(
 									'conditions' => array(
@@ -986,7 +987,7 @@
 							if ( $nbpassageeplaudition >= $nbPosPasEplAud ) {
 								$this->invalidate( 'examenaudition', 'Cette personne ne possède pas assez de rendez-vous où elle ne s\'est pas présentée.' );
 								return false;
-							}
+							}*/
 						}
 
 						// Sauvegarde du bilan
