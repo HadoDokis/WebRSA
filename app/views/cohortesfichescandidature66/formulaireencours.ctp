@@ -40,8 +40,7 @@
 		<tbody>
 		<?php foreach( $cohortefichecandidature66 as $index => $ficheenattente ):?>
 			<?php
-/*debug($ficheenattente);
-debug($options);*/
+
 					$title = $ficheenattente['Dossier']['numdemrsa'];
 
 					$array1 = array(
@@ -62,6 +61,7 @@ debug($options);*/
 
 						$form->input( 'ActioncandidatPersonne.'.$index.'.id', array( 'label' => false, 'type' => 'hidden', 'value' => $ficheenattente['ActioncandidatPersonne']['id'] ) ).
 						$form->input( 'ActioncandidatPersonne.'.$index.'.personne_id', array( 'label' => false, 'type' => 'hidden', 'value' => $ficheenattente['ActioncandidatPersonne']['personne_id'] ) ).
+                        $form->input( 'ActioncandidatPersonne.'.$index.'.dossier_id', array( 'label' => false, 'type' => 'hidden', 'value' => $ficheenattente['Dossier']['id'] ) ).
 						$form->input( 'ActioncandidatPersonne.'.$index.'.actioncandidat_id', array( 'label' => false, 'type' => 'hidden', 'value' => $ficheenattente['ActioncandidatPersonne']['actioncandidat_id'] ) ).
 						$form->input( 'ActioncandidatPersonne.'.$index.'.referent_id', array( 'label' => false, 'type' => 'hidden', 'value' => $ficheenattente['ActioncandidatPersonne']['referent_id'] ) ).
 						$form->input( 'ActioncandidatPersonne.'.$index.'.bilanvenu', array( 'label' => false, 'type' => 'hidden', 'value' => $ficheenattente['ActioncandidatPersonne']['bilanvenu'] ) ).

@@ -35,9 +35,13 @@ App::import( 'Sanitize' );
 
 // 			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
 
-			/// Dossiers lockés
+
+            /// Dossiers lockés
 			if( !empty( $lockedDossiers ) ) {
-				$conditions[] = 'Dossier.id NOT IN ( '.implode( ', ', $lockedDossiers ).' )';
+				if( is_array( $lockedDossiers ) ) {
+					$conditions[] = 'Dossier.id NOT IN ( '.implode( ', ', $lockedDossiers ).' )';
+				}
+				$conditions[] = "NOT {$lockedDossiers}";
 			}
 
 			/// Critères

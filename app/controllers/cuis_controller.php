@@ -177,6 +177,7 @@
 			}
 
 			if( !empty( $this->data ) ) {
+                $this->Cui->begin();
 				$saved = $this->Cui->updateAll(
 					array( 'Cui.haspiecejointe' => '\''.$this->data['Cui']['haspiecejointe'].'\'' ),
 					array(
