@@ -18,7 +18,7 @@
 
 // 		public $components = array( 'Prg' => array( 'actions' => array( 'apresavalider', 'validees' ) ) );
 		public $components = array(
-			'Prg' => array(
+			'Prg2' => array(
 				'actions' => array(
 					'apresavalider' => array(
 						'filter' => 'Search'
@@ -36,7 +36,14 @@
 						'filter' => 'Search'
 					)
 				)
-			)
+			),
+            'Gestionzonesgeos',
+            'Cohortes' => array(
+                'apresavalider',
+                'transfert',
+                'traitement'
+                
+            )
 		);
 
 //         public $paginate = array( 'limit' => 20 );
@@ -104,19 +111,15 @@
 		protected function _index( $statutValidation = null ) {
 			$this->assert( !empty( $statutValidation ), 'invalidParameter' );
 
-			if( Configure::read( 'CG.cantons' ) ) {
-				$this->set( 'cantons', $this->Canton->selectList() );
-			}
-
-			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
+			$this->set( 'cantons', $this->Gestionzonesgeos->listeCantons() );
+			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
 
 			if( !empty( $this->data ) ) {
-// debug( $this->data );
 				///Sauvegarde
 				// On a renvoyé  le formulaire de la cohorte
 				if( !empty( $this->data['Aideapre66'] ) ) {
 
+                    $this->Cohortes->get( array_unique( Set::extract( $this->data, 'Aideapre66.{n}.dossier_id' ) ) );
 					// Ajout des règles de validation
 					$this->Apre66->Aideapre66->validationDecisionAllowEmpty( false );
 
@@ -127,21 +130,20 @@
 						$saved = $this->Apre66->Aideapre66->saveAll( $this->data['Aideapre66'], array( 'validate' => 'first', 'atomic' => false ) );
 
 						if( $saved ) {
-							// FIXME ?
-							foreach( array_unique( Set::extract( $this->data, 'Aideapre66.{n}.dossier_id' ) ) as $dossier_id ) {
-								$this->Jetons->release( array( 'Dossier.id' => $dossier_id ) );
-							}
 							$this->Aideapre66->commit();
-							unset( $this->data['Aideapre66'] );
-							$this->Session->del( "Prg.{$this->name}__{$this->action}.{$this->data['sessionKey']}" );
+                            $this->Session->setFlash( 'Enregistrement effectué.', 'flash/success' );
+                            $this->Cohortes->release( array_unique( Set::extract( $this->data, 'Aideapre66.{n}.dossier_id' ) ) );
+							unset( $this->data['Aideapre66'], $this->data['Apre66'] );
 						}
 						else {
 							$this->Aideapre66->rollback();
+                            $this->Session->setFlash( 'Erreur lors de l\'enregistrement.', 'flash/error' );
 						}
 					}
 				}
 				else if( in_array( $this->action, array( 'traitement', 'transfert' ) ) && !empty( $this->data['Apre66'] ) ){
-
+                    $this->Cohortes->get( array_unique( Set::extract( $this->data, 'Apre66.{n}.dossier_id' ) ) );
+                    
 					$valid = $this->Apre66->saveAll( $this->data['Apre66'], array( 'validate' => 'only', 'atomic' => false ) );
 
 					if( $valid ) {
@@ -149,16 +151,14 @@
 						$saved = $this->Apre66->saveAll( $this->data['Apre66'], array( 'validate' => 'first', 'atomic' => false ) );
 
 						if( $saved ) {
-							// FIXME ?
-							foreach( array_unique( Set::extract( $this->data, 'Apre66.{n}.dossier_id' ) ) as $dossier_id ) {
-								$this->Jetons->release( array( 'Dossier.id' => $dossier_id ) );
-							}
 							$this->Apre66->commit();
+                            $this->Session->setFlash( 'Enregistrement effectué.', 'flash/success' );
+                            $this->Cohortes->release( array_unique( Set::extract( $this->data, 'Apre66.{n}.dossier_id' ) ) );
 							unset( $this->data['Apre66'] );
-							$this->Session->del( "Prg.{$this->name}__{$this->action}.{$this->data['sessionKey']}" );
 						}
 						else {
 							$this->Apre66->rollback();
+                            $this->Session->setFlash( 'Erreur lors de l\'enregistrement.', 'flash/error' );
 						}
 					}
 				}
@@ -166,9 +166,14 @@
 				///Filtrage
 
 				if( ( $statutValidation == 'Validationapre::apresavalider' ) || ( $statutValidation == 'Validationapre::traitementcellule' ) || ( $statutValidation == 'Validationapre::notifiees' ) || ( $statutValidation == 'Validationapre::transfert' ) || ( $statutValidation == 'Validationapre::validees' ) && !empty( $this->data ) ) {
-					$this->Dossier->begin(); // Pour les jetons
 
-					$paginate = $this->Cohortevalidationapre66->search( $statutValidation, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
+                    $paginate = $this->Cohortevalidationapre66->search(
+                        $statutValidation,
+                        (array)$this->Session->read( 'Auth.Zonegeographique' ),
+                        $this->Session->read( 'Auth.User.filtre_zone_geo' ),
+                        $this->data,
+                        $this->Cohortes->sqLocked( 'Dossier' )
+                    );
 					$paginate['limit'] = 10;
 
 					$forceVirtualFields = $this->Apre66->forceVirtualFields;
@@ -188,7 +193,7 @@
 						)
 					);
 
-					$this->Dossier->commit();
+
 					foreach( $cohortevalidationapre66 as $key => $value ) {
 // debug($value);
 						if( empty( $value['Aideapre66']['datemontantaccorde'] ) ) {
@@ -201,6 +206,7 @@
 						$cohortevalidationapre66[$key]['Aideapre66']['datemontantpropose'] = $value['Aideapre66']['datemontantpropose'];
 
 					}
+                    $this->Cohortes->get( array_unique( Set::extract( $cohortevalidationapre66, '{n}.Dossier.id' ) ) );
 					$this->set( 'cohortevalidationapre66', $cohortevalidationapre66 );
 
 				}
@@ -208,12 +214,6 @@
 			}
 
 			$this->_setOptions();
-			if( Configure::read( 'Zonesegeographiques.CodesInsee' ) ) {
-				$this->set( 'mesCodesInsee', $this->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) ) );
-			}
-			else {
-				$this->set( 'mesCodesInsee', $this->Dossier->Foyer->Adressefoyer->Adresse->listeCodesInsee() );
-			}
 
 
 			switch( $statutValidation ) {
