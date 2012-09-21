@@ -13,7 +13,7 @@
 		public $helpers = array( 'Default', 'Default2', 'Ajax', 'Fileuploader' );
 
 		public $uses = array( 'Bilanparcours66', 'Option', 'Pdf', 'Dossierep'  );
-		public $components = array( 'Gedooo.Gedooo', 'Fileuploader' );
+		public $components = array( 'Gedooo.Gedooo', 'Fileuploader', 'Jetons2' );
 
 		public $commeDroit = array(
 			'add' => 'Bilansparcours66:edit'
@@ -325,21 +325,6 @@
 		*/
 
 		protected function _add_edit( $id = null ) {
-			// Retour à la liste en cas d'annulation
-			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
-					if( $this->action == 'edit' ) {
-						$bilanparcours66 = $this->Bilanparcours66->find(
-							'first',
-							array(
-								'contain' => false,
-								'conditions' => array( 'Bilanparcours66.id' => $id )
-							)
-						);
- 						$personne_id = Set::classicExtract( $bilanparcours66, 'Bilanparcours66.personne_id' );
- 						$id = $personne_id;
-					}
-					$this->redirect( array( 'action' => 'index', $id ) );
-			}
 
 			if( $this->action == 'add' ) {
 				$personne_id = $id;
@@ -484,6 +469,28 @@
 					$this->set( compact( 'passagecommissionep', 'dossierpcg66' ) );
 				}
 			}
+            
+            $dossier_id = $this->Bilanparcours66->Personne->dossierId( $personne_id );
+			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
+
+            $this->Jetons2->get( $dossier_id );
+            
+            // Retour à la liste en cas d'annulation
+			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
+                $this->Jetons2->release( $dossier_id );
+                if( $this->action == 'edit' ) {
+                    $bilanparcours66 = $this->Bilanparcours66->find(
+                        'first',
+                        array(
+                            'contain' => false,
+                            'conditions' => array( 'Bilanparcours66.id' => $id )
+                        )
+                    );
+                    $personne_id = Set::classicExtract( $bilanparcours66, 'Bilanparcours66.personne_id' );
+                    $id = $personne_id;
+                }
+                $this->redirect( array( 'action' => 'index', $id ) );
+			}
 
 			// INFO: pour passer de 74 à 29 modèles utilisés lors du find count
 			$this->Bilanparcours66->Personne->unbindModelAll();
@@ -515,8 +522,6 @@
 // debug( $this->data );
 //                die();
                 $this->Bilanparcours66->begin();
-
-
 
 				if ( ( !isset( $passagecommissionep ) || empty( $passagecommissionep ) ) && $this->action == 'edit' ) {
 					$dossierep = $this->Dossierep->Saisinebilanparcoursep66->find(
@@ -568,6 +573,8 @@
 				$this->_setFlashResult( 'Save', $success );
 				if( $success ) {
 					$this->Bilanparcours66->commit();
+					$this->Jetons2->release( $dossier_id );
+					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 
 					if ( isset( $this->data['Bilanparcours66']['proposition'] ) && $this->data['Bilanparcours66']['proposition'] == 'traitement' && isset( $this->data['Bilanparcours66']['maintienorientation'] ) && $this->data['Bilanparcours66']['maintienorientation'] == 1 ) {
 						$this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index', $personne_id ) );
@@ -579,13 +586,13 @@
 				}
 				else {
 					$this->Bilanparcours66->rollback();
+                    $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 				}
 			}
 			// Premier accès à la page
 			else {
 				if( $this->action == 'edit' ) {
 					$this->data = $bilanparcours66;
-//                    debug($bilanparcours66);
 
 					$referent = $this->{$this->modelClass}->Referent->find(
 						'first',
@@ -618,8 +625,6 @@
 							'order' => array( 'Orientstruct.date_valid DESC' )
 						)
 					);
-
-// 					$this->assert( !empty( $orientstruct ), 'error500' );
 
 					if( !empty(  $orientstruct ) ){
 						$this->data['Bilanparcours66']['orientstruct_id'] = $orientstruct['Orientstruct']['id'];
@@ -781,7 +786,6 @@
 			$this->set( 'qual', $this->Option->qual() );
 			$this->set( 'nationalite', $this->Option->nationalite() );
 			$this->set( 'typeformulaire', $typeformulaire );
-// 			$this->set( 'typeformulaire', array( 'cg', 'pe'  ) );
 			$this->set( compact( 'dossiersepsencours' ) );
 			$this->set( 'urlmenu', '/bilanspourcours66/index/'.$personne_id );
 
