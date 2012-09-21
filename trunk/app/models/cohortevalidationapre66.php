@@ -39,7 +39,10 @@
 
 			/// Dossiers lockés
 			if( !empty( $lockedDossiers ) ) {
-				$conditions[] = 'Dossier.id NOT IN ( '.implode( ', ', $lockedDossiers ).' )';
+				if( is_array( $lockedDossiers ) ) {
+					$conditions[] = 'Dossier.id NOT IN ( '.implode( ', ', $lockedDossiers ).' )';
+				}
+				$conditions[] = "NOT {$lockedDossiers}";
 			}
 
 			/// Critères

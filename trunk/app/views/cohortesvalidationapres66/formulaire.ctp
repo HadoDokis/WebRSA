@@ -127,6 +127,7 @@
                         $form->input( 'Aideapre66.'.$index.'.typeaideapre66_id', array( 'label' => false, 'type' => 'hidden', 'value' => $validationapre['Aideapre66']['typeaideapre66_id'] ) ).
                         $form->input( 'Aideapre66.'.$index.'.id', array( 'label' => false, 'type' => 'hidden', 'value' => $validationapre['Aideapre66']['id'] ) ).
                         $form->input( 'Aideapre66.'.$index.'.apre_id', array( 'label' => false, 'type' => 'hidden', 'value' => $validationapre['Aideapre66']['apre_id'] ) ).
+                        $form->input( 'Aideapre66.'.$index.'.dossier_id', array( 'label' => false, 'type' => 'hidden', 'value' => $validationapre['Dossier']['id'] ) ).
                         $form->input( 'Aideapre66.'.$index.'.decisionapre', array( 'label' => false, 'empty' => true, 'type' => 'select', 'options' => $optionsaideapre66['decisionapre'], 'value' => $validationapre['Aideapre66']['decisionapre'] ) ),
 
                         $form->input( 'Aideapre66.'.$index.'.montantaccorde', array( 'label' => false, 'type' => 'text', 'value' => $validationapre['Aideapre66']['montantaccorde'] ) ),
