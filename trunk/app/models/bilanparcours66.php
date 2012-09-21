@@ -1264,5 +1264,37 @@
 
 			return ( $count == 0 );
 		}
+        
+        /**
+		 * Retourne l'id du dossier à partir de l'id du Bilan
+		 *
+		 * @param integer $id
+		 * @return integer
+		 */
+		public function dossierId( $id ) {
+			$bilanparcours66 = $this->find(
+				'first',
+				array(
+					'fields' => array(
+						'Foyer.dossier_id'
+					),
+					'joins' => array(
+						$this->join( 'Personne', array( 'type' => 'INNER' ) ),
+						$this->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
+					),
+					'conditions' => array(
+						'$bilanparcours66.id' => $id
+					),
+					'contain' => false
+				)
+			);
+
+			if( !empty( $bilanparcours66 ) ) {
+				return $bilanparcours66['Foyer']['dossier_id'];
+			}
+			else {
+				return null;
+			}
+		}
 	}
 ?>

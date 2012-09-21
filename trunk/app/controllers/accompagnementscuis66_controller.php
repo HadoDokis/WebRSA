@@ -6,6 +6,7 @@
         public $uses = array( 'Accompagnementcui66', 'Option' );
         
         public $helpers = array( 'Default2', 'Default' );
+        public $components = array( 'Jetons2' );
         
         protected function _setOptions() {
 			$options = $this->Accompagnementcui66->enums();
@@ -103,8 +104,6 @@
 		protected function _add_edit( $id = null ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
-			$this->Accompagnementcui66->begin();
-
 			if( $this->action == 'add' ) {
 				$cui_id = $id;
 			}
@@ -150,12 +149,6 @@
 			$userConnected = $this->Session->read( 'Auth.User.id' );
 			$this->set( compact( 'userConnected' ) );
 
-			
-			// Retour à la liste en cas d'annulation
-			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
-				$this->redirect( array( 'controller' => 'accompagnementscuis66', 'action' => 'index', $cui_id ) );
-			}
-			
 			$dossier_id = $this->Accompagnementcui66->Cui->Personne->dossierId( $personne_id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
 
@@ -163,20 +156,23 @@
 			$userConnected = $this->Session->read( 'Auth.User.id' );
 			$this->set( compact( 'userConnected' ) );
 			
-			
-			if ( !$this->Jetons->check( $dossier_id ) ) {
-				$this->Accompagnementcui66->rollback();
+            $this->Jetons2->get( $dossier_id );
+
+			// Retour à l'index en cas d'annulation
+			if( isset( $this->params['form']['Cancel'] ) ) {
+				$this->Jetons2->release( $dossier_id );
+				$this->redirect( array( 'controller' => 'accompagnementscuis66', 'action' => 'index', $cui_id ) );
 			}
-			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
-			
+            
 			if ( !empty( $this->data ) ) {
+                $this->Accompagnementcui66->begin();
 
 				if( $this->Accompagnementcui66->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
 					$saved = $this->Accompagnementcui66->save( $this->data );
 
 					if( $saved ) {
-						$this->Jetons->release( $dossier_id );
 						$this->Accompagnementcui66->commit();
+                        $this->Jetons2->release( $dossier_id );
 						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 						$this->redirect( array( 'controller' => 'accompagnementscuis66', 'action' => 'index', $cui_id ) );
 					}
