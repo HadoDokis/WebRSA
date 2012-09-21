@@ -155,9 +155,6 @@
 				$this->redirect( array( 'controller' => 'decisionscuis66', 'action' => 'decisioncui', $cui_id ) );
 			}
 
-			// On récupère l'utilisateur connecté et qui exécute l'action
-			$userConnected = $this->Session->read( 'Auth.User.id' );
-			$this->set( compact( 'userConnected' ) );
 			
 			if ( !empty( $this->data ) ) {
                 $this->Decisioncui66->begin();
