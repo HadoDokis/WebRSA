@@ -1,4 +1,18 @@
 <?php
+    /**
+	 * Code source de la classe Apres66Controller.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.controllers
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe Apres66Controller permet de lister, voir, ajouter, supprimer, ...  des APREs (CG 66).
+	 *
+	 * @package app.controllers
+	 */
 	class Apres66Controller extends AppController
 	{
 
@@ -113,14 +127,11 @@
 			$dossier_id = $this->{$this->modelClass}->Personne->dossierId( $personne_id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
 
-			$this->{$this->modelClass}->begin();
-			if( !$this->Jetons->check( $dossier_id ) ) {
-				$this->{$this->modelClass}->rollback();
-			}
-			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
+			$this->Jetons2->get( $dossier_id );
 
 			// Retour à l'index en cas d'annulation
 			if( isset( $this->params['form']['Cancel'] ) ) {
+                $this->Jetons2->release( $dossier_id );
 				$redirect_url = $this->Session->read( "Savedfilters.{$this->name}.{$this->action}" );
 				if( !empty( $redirect_url ) ) {
 					$this->Session->delete( "Savedfilters.{$this->name}.{$this->action}" );
@@ -132,6 +143,7 @@
 			}
 
 			if( !empty( $this->data ) ) {
+                $this->{$this->modelClass}->begin();
 
 				$saved = $this->{$this->modelClass}->updateAll(
 						array( "{$this->modelClass}.haspiecejointe" => '\''.$this->data[$this->modelClass]['haspiecejointe'].'\'' ), array(
@@ -147,10 +159,9 @@
 				}
 
 				if( $saved ) {
-					$this->Jetons->release( $dossier_id );
 					$this->{$this->modelClass}->commit();
+                    $this->Jetons2->release( $dossier_id );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-// 					$this->redirect( array(  'controller' => 'apres'.Configure::read( 'Apre.suffixe' ),'action' => 'index', $personne_id ) );
 					$this->redirect( $this->referer() );
 				}
 				else {
@@ -480,7 +491,6 @@
 		protected function _add_edit( $id = null ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
-			$this->{$this->modelClass}->begin();
 			// Récupération des id afférents
 			if( $this->action == 'add' ) {
 				$personne_id = $id;
@@ -528,22 +538,16 @@
 
 				$foyer_id = Set::classicExtract( $apre, 'Personne.foyer_id' );
 			}
-
 			$this->set( 'foyer_id', $foyer_id );
-			// Retour à la liste en cas d'annulation
-			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
+			$this->set( 'dossier_id', $dossier_id );
+
+            $this->Jetons2->get( $dossier_id );
+
+			// Retour à l'index en cas d'annulation
+			if( isset( $this->params['form']['Cancel'] ) ) {
+				$this->Jetons2->release( $dossier_id );
 				$this->redirect( array( 'action' => 'index', $personne_id ) );
 			}
-			$dossier_id = $this->Personne->dossierId( $personne_id );
-			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
-			$this->set( 'dossier_id', $dossier_id );
-// 			$this->set( 'valueIsDecision', $valueIsDecision );
-
-			if( !$this->Jetons->check( $dossier_id ) ) {
-				$this->{$this->modelClass}->rollback();
-			}
-			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
-
 			/**
 			 *   Liste des APREs de la personne pour l'affichage de l'historique
 			 *   lors de l'add/edit
@@ -607,6 +611,7 @@
 			$this->set( 'nbEnfants', $nbEnfants );
 
 			if( !empty( $this->data ) ) {
+                $this->Apre66->begin();
 				/// Pour le nombre de pièces afin de savoir si le dossier est complet ou non
 				$valide = false;
 				$nbNormalPieces = array( );
@@ -711,10 +716,9 @@
 
 
 				if( $success ) {
-					$this->Jetons->release( $dossier_id );
-					$this->{$this->modelClass}->commit(); // FIXME
-					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-
+                    $this->Apre->commit();
+                    $this->Jetons2->release( $dossier_id );
+                    $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 					$this->redirect( array( 'controller' => 'apres'.Configure::read( 'Apre.suffixe' ), 'action' => 'index', $personne_id ) );
 				}
 				else {
@@ -723,9 +727,6 @@
 				}
 			}
 			else if( $this->action == 'edit' ) {
-
-
-				/// FIXME
 				$this->data = $apre;
 				$this->data = Set::insert(
 								$this->data, "{$this->modelClass}.referent_id", Set::extract( $this->data, "{$this->modelClass}.structurereferente_id" ).'_'.Set::extract( $this->data, "{$this->modelClass}.referent_id" )
@@ -780,16 +781,6 @@
 			$referent_id = Set::classicExtract( $this->data, "{$this->modelClass}.referent_id" );
 			$referent_id = preg_replace( '/^[0-9]+_([0-9]+)$/', '\1', $referent_id );
 			$this->set( 'referent_id', $referent_id );
-
-			$this->{$this->modelClass}->commit();
-
-
-
-			/// Montant déjà accordé pour une aide donnée
-// 			$aidesapresdejaaccorde = array(
-// 				'aideapre66' => !$this->Apre66->ajoutPossibleAideapre66( $this->data['Apre66']['aideapre66_id'], $personne_id )
-// 			);
-
 
 			$this->set( 'personne_id', $personne_id );
 			$this->_setOptions();

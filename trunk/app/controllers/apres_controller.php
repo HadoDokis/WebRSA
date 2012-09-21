@@ -9,7 +9,7 @@
 	 */
 
 	/**
-	 * La classe ApresController permet de lister, voir, ajouter, supprimer, ...  des APREs (CG 66 et 93).
+	 * La classe ApresController permet de lister, voir, ajouter, supprimer, ...  des APREs (CG 93).
 	 *
 	 * @package app.controllers
 	 */
