@@ -11,7 +11,7 @@
 		*
 		*/
 
-		public function search( $statutValidation, $mesCodesInsee, $filtre_zone_geo, $criteresapres, $lockedDossiers ) {
+		public function search( $statutValidation, $mesCodesInsee, $filtre_zone_geo, $criteresapres, $lockedDossiers = null ) {
 			$Apre66 = ClassRegistry::init( 'Apre66' );
 
 			/// Conditions de base

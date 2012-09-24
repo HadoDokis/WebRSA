@@ -38,7 +38,7 @@
 					'atransmettre' => array( 'filter' => 'Search' )
 				)
 			),
-            'Gestionzonesgeos',
+			'Gestionzonesgeos',
 			'Cohortes' => array(
 				'enattenteaffectation',
 				'atransmettre'
@@ -164,7 +164,7 @@
                         $this->data,
                         $this->Cohortes->sqLocked( 'Dossier' )
                     );
-						
+
 					$paginate['limit'] = 10;
 
 					$this->paginate = $paginate;
@@ -194,11 +194,11 @@
 							$this->data['Dossierpcg66'][$i]['user_id'] = @$foyer['Dossierpcg66'][0]['user_id'];
 						}
 					}
-                    
+
                     if( !in_array( $statutAffectation, array( 'Affectationdossierpcg66::affectes', 'Affectationdossierpcg66::aimprimer' ) ) ) {
 						$this->Cohortes->get( array_unique( Set::extract( $cohortedossierpcg66, '{n}.Dossier.id' ) ) );
 					}
-                    
+
 					$this->set( 'cohortedossierpcg66', $cohortedossierpcg66 );
 				}
 			}
@@ -221,43 +221,41 @@
 			}
 		}
 
+		/**
+		 * Export du tableau en CSV
+		 */
+		public function exportcsv() {
+			$querydata = $this->Cohortedossierpcg66->search(
+				'Affectationdossierpcg66::affectes',
+				(array)$this->Session->read( 'Auth.Zonegeographique' ),
+				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
+				Xset::bump( $this->params['named'], '__' )
+			);
+			unset( $querydata['limit'] );
+			$dossierspcgs66 = $this->Dossierpcg66->find( 'all', $querydata );
 
-        /**
-        * Export du tableau en CSV
-        */
-
-        public function exportcsv() {
-            $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-            $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
-
-            $querydata = $this->Cohortedossierpcg66->search( 'Affectationdossierpcg66::affectes', $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), Xset::bump( $this->params['named'], '__' ), $this->Jetons->ids() );
-            unset( $querydata['limit'] );
-            $dossierspcgs66 = $this->Dossierpcg66->find( 'all', $querydata );
-
-// debug($dossierspcgs66);
-// die();
-            $this->_setOptions();
-            $this->layout = '';
-            $this->set( compact( 'dossierspcgs66' ) );
-        }
+			$this->_setOptions();
+			$this->layout = '';
+			$this->set( compact( 'dossierspcgs66' ) );
+		}
 
 		/**
-		* Génération de la cohorte des convocations de passage en commission d'EP aux allocataires.
-		*/
-
-		public function notificationsCohorte( ) {
+		 * Génération de la cohorte des convocations de passage en commission d'EP aux allocataires.
+		 */
+		public function notificationsCohorte() {
 			$this->Dossierpcg66->begin();
 
-            $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-            $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
+			$querydata = $this->Cohortedossierpcg66->search(
+				'Affectationdossierpcg66::aimprimer',
+				(array)$this->Session->read( 'Auth.Zonegeographique' ),
+				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
+				Xset::bump( $this->params['named'], '__' )
+			);
+			unset( $querydata['limit'] );
 
-            $querydata = $this->Cohortedossierpcg66->search( 'Affectationdossierpcg66::aimprimer', $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), Xset::bump( $this->params['named'], '__' ), $this->Jetons->ids() );
-            unset( $querydata['limit'] );
+			$dossierspcgs66 = $this->Dossierpcg66->find( 'all', $querydata );
 
-            $dossierspcgs66 = $this->Dossierpcg66->find( 'all', $querydata );
-// debug($dossierspcgs66);
-// die();
-			$pdfs = array();
+			$pdfs = array( );
 			$decisionsdossierspcgs66_ids = Set::extract( '/Decisiondossierpcg66/id', $dossierspcgs66 );
 
 			foreach( $decisionsdossierspcgs66_ids as $decisiondossierpcg66_id ) {
@@ -282,5 +280,6 @@
 				$this->redirect( $this->referer() );
 			}
 		}
+
 	}
 ?>

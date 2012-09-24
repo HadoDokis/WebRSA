@@ -1,19 +1,36 @@
 <?php
+	/**
+	 * Code source de la classe TraitementspdosController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.controllers
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe TraitementspdosController ...
+	 *
+	 * @package app.controllers
+	 */
 	class TraitementspdosController extends AppController
 	{
-
 		public $name = 'Traitementspdos';
+
 		public $uses = array( 'Traitementpdo', 'Propopdo', 'Personne', 'Dossier', 'Descriptionpdo', 'Traitementtypepdo', 'Fichiermodule' );
 
 		/**
 		 * @access public
 		 */
-		public $components = array( 'Default', 'Gedooo.Gedooo', 'Fileuploader' );
+		public $components = array( 'Default', 'Gedooo.Gedooo', 'Fileuploader', 'Jetons2' );
+
 		public $helpers = array( 'Default2', 'Ajax', 'Locale', 'Fileuploader' );
+
 		public $commeDroit = array(
 			'view' => 'Traitementspdos:index',
 			'add' => 'Traitementspdos:edit'
 		);
+
 		public $aucunDroit = array( 'ajaxstatutpersonne', 'ajaxnbtextareacourrier', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
 
 		/**
@@ -193,12 +210,6 @@
 		public function _add_edit( $id = null ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
-			if( isset( $this->params['form']['Cancel'] ) ) {
-				$this->Fileuploader->deleteDir();
-				$this->redirect( array( 'controller' => 'propospdos', 'action' => 'edit', $id ) );
-			}
-
-			$this->Traitementpdo->begin();
 			$fichiers = array( );
 			$this->set( 'options', $this->_options() );
 
@@ -292,14 +303,17 @@
 			$this->set( 'dossier_id', $dossier_id );
 			$this->set( 'propopdo_id', $propopdo_id );
 
+			$this->Jetons2->get( $dossier_id );
 
-			if( !$this->Jetons->check( $dossier_id ) ) {
-				$this->Traitementpdo->rollback();
+			if( isset( $this->params['form']['Cancel'] ) ) {
+				$this->Jetons2->release( $dossier_id );
+				$this->Fileuploader->deleteDir();
+				$this->redirect( array( 'controller' => 'propospdos', 'action' => 'edit', $id ) );
 			}
-			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
-
 
 			if( !empty( $this->data ) ) {
+				$this->Traitementpdo->begin();
+
 				if( $this->Traitementpdo->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
 					$saved = $this->Traitementpdo->sauvegardeTraitement( $this->data );
 
@@ -309,17 +323,17 @@
 						$saved = $this->Fileuploader->saveFichiers(
 										$dir, !Set::classicExtract( $this->data, "Traitementpdo.haspiecejointe" ), ( ( $this->action == 'add' ) ? $this->Traitementpdo->id : $id )
 								) && $saved;
+					}
 
-						if( $saved ) {
-							$this->Jetons->release( $dossier_id );
-							$this->Traitementpdo->commit();//FIXME -> arnaud
-							$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-							$this->redirect( array( 'controller' => 'propospdos', 'action' => 'edit', $propopdo_id ) );
-						}
-						else {
-							$this->Traitementpdo->rollback();
-							$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
-						}
+					if( $saved ) {
+						$this->Traitementpdo->commit();
+						$this->Jetons2->release( $dossier_id );
+						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+						$this->redirect( array( 'controller' => 'propospdos', 'action' => 'edit', $propopdo_id ) );
+					}
+					else {
+						$this->Traitementpdo->rollback();
+						$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 					}
 				}
 				else {
@@ -333,8 +347,6 @@
 				$this->data = $traitement;
 				$fichiers = $this->Fileuploader->fichiers( $id );
 			}
-
-			$this->Traitementpdo->commit();//FIXME -> arnaud
 
 			$traitementspdosouverts = $this->{$this->modelClass}->find(
 					'all', array(

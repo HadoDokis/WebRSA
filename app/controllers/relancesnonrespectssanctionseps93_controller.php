@@ -1,9 +1,24 @@
 <?php
+	/**
+	 * Code source de la classe Relancesnonrespectssanctionseps93Controller.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.controllers
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe Relancesnonrespectssanctionseps93Controller ...
+	 *
+	 * @package app.controllers
+	 */
 	class Relancesnonrespectssanctionseps93Controller extends AppController
 	{
 		public $uses = array( 'Relancenonrespectsanctionep93', 'Nonrespectsanctionep93', 'Orientstruct', 'Contratinsertion', 'Dossierep', 'Dossier', 'Pdf' );
 
-		public $components = array( 'Prg' => array( 'actions' => array( 'cohorte' => array( 'filter' => 'Search' ), 'impressions' ) ), 'Gedooo.Gedooo' );
+		public $components = array( 'Prg' => array( 'actions' => array( 'cohorte' => array( 'filter' => 'Search' ), 'impressions' ) ), 'Gedooo.Gedooo', 'Cohortes' => array( 'cohorte' ) );
+
 		public $helpers = array( 'Default2', 'Csv' );
 
 		/**
@@ -197,13 +212,13 @@
 						// Relances non respect orientation
 						$success = $this->Relancenonrespectsanctionep93->saveCohorte( $newData, $search );
 
-						// On libère les jetons
-						$success = $this->Jetons->releaseList( $dossiersIds ) && $success;
-
 						$this->_setFlashResult( 'Save', $success );
 						if( $success ) {
 							unset( $this->data['Relancenonrespectsanctionep93'], $this->data['sessionKey'] );
 							$this->Nonrespectsanctionep93->commit();
+							// On libère les jetons
+							$this->Cohortes->release( $dossiersIds );
+
 							$url = Router::url( Set::merge( array( 'action' => $this->action ), Set::flatten( $this->data ) ), true );
 							$this->redirect( $url );
 						}
@@ -212,19 +227,11 @@
 						}
 					}
 					else { // On libère les jetons de toutes façons
-						$this->Nonrespectsanctionep93->begin();
-						if( $this->Jetons->releaseList( $dossiersIds ) ) {
-							$this->Nonrespectsanctionep93->commit();
-						}
-						else {
-							$this->Nonrespectsanctionep93->rollback();
-						}
+						$this->Cohortes->release( $dossiersIds );
 					}
 				}
 
 				/// Moteur de recherche
-				$this->Nonrespectsanctionep93->begin();
-
 				$search = Set::flatten( $search );
 				$search = Set::filter( $search );
 
@@ -234,7 +241,7 @@
 							$mesCodesInsee,
 							$this->Session->read( 'Auth.User.filtre_zone_geo' ),
 							$search,
-							$this->Jetons->sqIds()
+							$this->Cohortes->sqLocked( 'Dossier' )
 						)
 					);
 
@@ -242,7 +249,7 @@
 
 					if( !empty( $results ) ) {
 						$dossiersIds = Set::extract( $results, '/Dossier/id' );
-						$this->Jetons->getList( $dossiersIds );
+						$this->Cohortes->get( $dossiersIds );
 
 						foreach( $results as $i => $result ) {
 							// Calcul de la date de relance minimale
@@ -277,7 +284,7 @@
 							$mesCodesInsee,
 							$this->Session->read( 'Auth.User.filtre_zone_geo' ),
 							$search,
-							$this->Jetons->sqIds()
+							$this->Cohortes->sqLocked( 'Dossier' )
 						)
 					);
 
@@ -285,7 +292,7 @@
 
 					if( !empty( $results ) ) {
 						$dossiersIds = Set::extract( $results, '/Dossier/id' );
-						$this->Jetons->getList( $dossiersIds );
+						$this->Cohortes->get( $dossiersIds );
 
 						foreach( $results as $i => $result ) {
 							// Calcul de la date de relance minimale
@@ -314,8 +321,6 @@
 						}
 					}
 				};
-
-				$this->Nonrespectsanctionep93->commit();
 
 				$this->set( compact( 'results' ) );
 

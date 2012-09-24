@@ -531,9 +531,9 @@
 			/// Dossiers lockés
 			if( !empty( $lockedDossiers ) ) {
 				if( is_array( $lockedDossiers ) ) {
-					$lockedDossiers = implode( ', ', $lockedDossiers );
+					$conditions[] = 'Dossier.id NOT IN ( '.implode( ', ', $lockedDossiers ).' )';
 				}
-				$conditions[] = "Dossier.id NOT IN ( {$lockedDossiers} )";
+				$conditions[] = "NOT {$lockedDossiers}";
 			}
 
 			if ( $search['Relance.numrelance'] > 1 ) {

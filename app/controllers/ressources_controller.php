@@ -1,9 +1,26 @@
 <?php
+	/**
+	 * Code source de la classe RessourcesController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.controllers
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe RessourcesController permet de gérer les ressources d'un allocataire.
+	 *
+	 * @package app.controllers
+	 */
 	class RessourcesController extends AppController
 	{
-
 		public $name = 'Ressources';
+
 		public $uses = array( 'Ressource', 'Option', 'Personne', 'Ressourcemensuelle', 'Detailressourcemensuelle' );
+
+		public $components = array( 'Jetons2' );
+
 		public $commeDroit = array(
 			'view' => 'Ressources:index',
 			'add' => 'Ressources:edit'
@@ -93,14 +110,12 @@
 
 			$dossier_id = $this->Personne->dossierId( $personne_id );
 
-			$this->Ressource->begin();
-			if( !$this->Jetons->check( $dossier_id ) ) {
-				$this->Ressource->rollback();
-			}
-			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
+			$this->Jetons2->get( $dossier_id );
 
 			// Essai de sauvegarde
 			if( !empty( $this->data ) ) {
+				$this->Ressource->begin();
+
 				$this->data['Ressource']['topressnul'] = !$this->data['Ressource']['topressnotnul'];
 				$this->Ressource->set( $this->data['Ressource'] );
 
@@ -111,7 +126,6 @@
 				}
 
 				if( $validates ) {
-					$this->Ressource->begin();
 					$saved = $this->Ressource->save( $this->data );
 					if( isset( $this->data['Ressourcemensuelle'] ) ) {
 						foreach( $this->data['Ressourcemensuelle'] as $index => $dataRm ) {
@@ -127,8 +141,8 @@
 						}
 					}
 					if( $saved ) {
-						$this->Jetons->release( $dossier_id );
 						$this->Ressource->commit();
+						$this->Jetons2->release( $dossier_id );
 						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 						$this->redirect( array( 'controller' => 'ressources', 'action' => 'index', $personne_id ) );
 					}
@@ -136,6 +150,10 @@
 						$this->Ressource->rollback();
 						$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 					}
+				}
+				else {
+					$this->Ressource->rollback();
+					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 				}
 			}
 
@@ -149,7 +167,6 @@
 			);
 			$ressource = $this->Ressource->find( 'first', $qd_ressource );
 
-			$this->Ressource->commit();
 			$this->set( 'personne_id', $personne_id );
 			$this->render( $this->action, null, 'add_edit' );
 		}
@@ -177,18 +194,15 @@
 			);
 			$ressource = $this->Ressource->find( 'first', $qd_ressource );
 
-
 			$this->assert( !empty( $ressource ), 'invalidParameter' );
 
 			$dossier_id = $this->Ressource->dossierId( $ressource_id );
 
-			$this->Ressource->begin();
-			if( !$this->Jetons->check( $dossier_id ) ) {
-				$this->Ressource->rollback();
-			}
-			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
+			$this->Jetons2->get( $dossier_id );
 
 			if( !empty( $this->data ) ) {
+				$this->Ressource->begin();
+
 				$this->data['Ressource']['topressnul'] = !$this->data['Ressource']['topressnotnul'];
 
 				$this->Ressource->set( $this->data );
@@ -200,8 +214,8 @@
 						$validates = $this->Detailressourcemensuelle->saveAll( $this->data['Detailressourcemensuelle'], array( 'validate' => 'only' ) ) && $validates;
 					}
 				}
+
 				if( $validates ) {
-					$this->Ressource->begin();
 					$saved = $this->Ressource->save( $this->data );
 					if( !$this->data['Ressource']['topressnul'] ) {
 						if( array_key_exists( 'Ressourcemensuelle', $this->data ) ) {
@@ -244,8 +258,8 @@
 					$saved = $this->Ressource->refresh( $ressource['Ressource']['personne_id'] ) && $saved;
 
 					if( $saved ) {
-						$this->Jetons->release( $dossier_id );
 						$this->Ressource->commit();
+						$this->Jetons2->release( $dossier_id );
 						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 						$this->redirect( array( 'controller' => 'ressources', 'action' => 'index', $ressource['Ressource']['personne_id'] ) );
 					}
@@ -253,6 +267,10 @@
 						$this->Ressource->rollback();
 						$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 					}
+				}
+				else {
+					$this->Ressource->rollback();
+					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 				}
 			}
 			else {

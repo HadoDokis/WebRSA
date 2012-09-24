@@ -1,11 +1,28 @@
 <?php
+	/**
+	 * Code source de la classe PersonnesController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.controllers
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe PersonnesController permet de gérer les personnes au sein d'un foyer RSA.
+	 *
+	 * @package app.controllers
+	 */
 	class PersonnesController extends AppController
 	{
-
 		public $name = 'Personnes';
+
 		public $uses = array( 'Personne', 'Option', 'Grossesse', 'Foyer' );
+
 		public $helpers = array( 'Default2', 'Fileuploader' );
-		public $components = array( 'Fileuploader' );
+
+		public $components = array( 'Fileuploader', 'Jetons2' );
+
 		public $commeDroit = array(
 			'view' => 'Personnes:index',
 			'add' => 'Personnes:edit'
@@ -87,18 +104,17 @@
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
 			$foyer_id = Set::classicExtract( $personne, 'Personne.foyer_id' );
 
-			$this->Personne->begin();
-			if( !$this->Jetons->check( $dossier_id ) ) {
-				$this->Personne->rollback();
-			}
-			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
+			$this->Jetons2->get( $dossier_id );
 
 			// Retour à l'index en cas d'annulation
 			if( isset( $this->params['form']['Cancel'] ) ) {
+				$this->Jetons2->release( $dossier_id );
 				$this->redirect( array( 'action' => 'index', $foyer_id ) );
 			}
 
 			if( !empty( $this->data ) ) {
+				$this->Personne->begin();
+
 				$saved = $this->Personne->updateAll(
 						array( 'Personne.haspiecejointe' => '\''.$this->data['Personne']['haspiecejointe'].'\'' ), array(
 					'"Personne"."id"' => $id
@@ -112,8 +128,8 @@
 				}
 
 				if( $saved ) {
-					$this->Jetons->release( $dossier_id );
 					$this->Personne->commit();
+					$this->Jetons2->release( $dossier_id );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 // 					$this->redirect( array(  'controller' => 'personnes','action' => 'index', $foyer_id ) );
 					$this->redirect( $this->referer() );
@@ -234,11 +250,6 @@
 			// Vérification du format de la variable
 			$this->assert( valid_int( $foyer_id ), 'invalidParameter' );
 
-			// Retour à la liste en cas d'annulation
-			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
-				$this->redirect( array( 'controller' => 'personnes', 'action' => 'index', $foyer_id ) );
-			}
-
 			$dossier_id = $this->Foyer->dossierId( $foyer_id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
 
@@ -254,14 +265,17 @@
 					)
 			);
 
-			$this->Personne->begin();
+			$this->Jetons2->get( $dossier_id );
 
-			if( !$this->Jetons->check( $dossier_id ) ) {
-				$this->Personne->rollback();
+			// Retour à la liste en cas d'annulation
+			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
+				$this->Jetons2->release( $dossier_id );
+				$this->redirect( array( 'controller' => 'personnes', 'action' => 'index', $foyer_id ) );
 			}
-			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
 
 			if( !empty( $this->data ) ) {
+				$this->Personne->begin();
+
 				if( ( $this->data['Prestation']['rolepers'] == 'DEM' ) || ( $this->data['Prestation']['rolepers'] == 'CJT' ) ) {
 					$this->data['Calculdroitrsa']['toppersdrodevorsa'] = true;
 				}
@@ -284,14 +298,19 @@
 
 						$this->Personne->Foyer->refreshSoumisADroitsEtDevoirs( $thisPersonne['Personne']['foyer_id'] );
 
-						$this->Jetons->release( $dossier_id );
 						$this->Personne->commit();
+						$this->Jetons2->release( $dossier_id );
 						$this->Session->setFlash( 'Enregistrement réussi', 'flash/success' );
 						$this->redirect( array( 'controller' => 'personnes', 'action' => 'index', $foyer_id ) );
 					}
 					else {
+						$this->Personne->rollback();
 						$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 					}
+				}
+				else {
+					$this->Personne->rollback();
+					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 				}
 			}
 			else {
@@ -328,7 +347,6 @@
 			$this->data['Personne']['foyer_id'] = $foyer_id;
 			$this->set( 'personne', $personne );
 			$this->_setOptions();
-			$this->Personne->commit();
 			$this->render( $this->action, null, 'add_edit' );
 		}
 
@@ -344,27 +362,18 @@
 			$dossier_id = $this->Personne->dossierId( $id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
 
+			$this->Jetons2->get( $dossier_id );
+
 			// Retour à la liste en cas d'annulation
 			if( isset( $this->params['form']['Cancel'] ) ) {
-				$this->Personne->begin();
-				if( $this->Jetons->release( $dossier_id ) ) {
-					$this->Personne->commit();
-					$this->redirect( array( 'controller' => 'personnes', 'action' => 'index', $foyer_id ) );
-				}
-				else {
-					$this->Personne->rollback();
-					$this->Session->setFlash( 'Erreur lors de la restitution du jeton', 'flash/error' );
-				}
+				$this->Jetons2->release( $dossier_id );
+				$this->redirect( array( 'controller' => 'personnes', 'action' => 'index', $foyer_id ) );
 			}
-			$this->Personne->begin();
-
-			if( !$this->Jetons->check( $dossier_id ) ) {
-				$this->Personne->rollback();
-			}
-			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
 
 			// Essai de sauvegarde
 			if( !empty( $this->data ) ) {
+				$this->Personne->begin();
+
 				if( $this->Personne->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
 					if( $this->Personne->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
 
@@ -382,8 +391,8 @@
 
 						$this->Personne->Foyer->refreshSoumisADroitsEtDevoirs( $thisPersonne['Personne']['foyer_id'] );
 
-						$this->Jetons->release( $dossier_id );
 						$this->Personne->commit();
+						$this->Jetons2->release( $dossier_id );
 						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 						$this->redirect( array( 'controller' => 'personnes', 'action' => 'index', $this->data['Personne']['foyer_id'] ) );
 					}
@@ -423,9 +432,7 @@
 			}
 			$this->set( 'personne', $personne );
 			$this->_setOptions();
-			$this->Personne->commit();
 			$this->render( $this->action, null, 'add_edit' );
 		}
-
 	}
 ?>

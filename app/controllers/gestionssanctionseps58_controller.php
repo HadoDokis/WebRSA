@@ -1,28 +1,39 @@
 <?php
 	/**
-	* Gestion des sanctions émises par une EP pour le cG58
-	*
-	* PHP versions 5
-	*
-	* @package       app
-	* @subpackage    app.app.controllers
-	*/
+	 * Code source de la classe Gestionssanctionseps58Controller.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.controllers
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 
+	/**
+	 * La classe Gestionssanctionseps58Controller permet de gérer les sanctions émises par une EP pour le cG58.
+	 *
+	 * @package app.controllers
+	 */
 	class Gestionssanctionseps58Controller extends AppController
 	{
 		public $helpers = array( 'Default', 'Default2', 'Csv', 'Ajax', 'Search' );
+
 		public $uses = array( 'Gestionsanctionep58', 'Personne', 'Commissionep', 'Option', 'Dossier', 'Zonegeographique' );
+
 		public $components = array(
+			'Gedooo.Gedooo',
+			'Gestionzonesgeos',
+			'Cohortes' => array(
+				'traitement'
+			),
 			'Prg2' => array( 'actions' => array( 'traitement' => array( 'filter' => 'Search' ), 'visualisation' ) ),
-			'Gedooo.Gedooo'
 		);
 
 		/**
+		 * Méthode commune d'envoi des options dans les vues.
 		 *
-		 *
+		 * @return void
 		 */
 		protected function _setOptions() {
-
 			$etats = Configure::read( 'Situationdossierrsa.etatdosrsa.ouvert' );
 			$this->set( 'etatdosrsa', $this->Option->etatdosrsa( $etats ) );
 
@@ -63,75 +74,88 @@
 		}
 
 		/**
-		*
-		*/
+		 * Formulaire de traitement des sanctions.
+		 *
+		 * @return void
+		 */
 		public function traitement() {
 			$this->_index( 'Gestion::traitement' );
 		}
 
 		/**
-		*
-		*/
-
+		 * Visualisation des sanctions.
+		 *
+		 * @return void
+		 */
 		public function visualisation() {
 			$this->_index( 'Gestion::visualisation' );
 		}
 
-
+		/**
+		 * Traitement ou visualisation des sanctions.
+		 *
+		 * @param string $statutSanctionep
+		 */
 		protected function _index( $statutSanctionep = null ) {
 			$this->assert( !empty( $statutSanctionep ), 'invalidParameter' );
 
-			if( Configure::read( 'CG.cantons' ) ) {
-				$this->set( 'cantons', $this->Canton->selectList() );
-			}
-
-			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
-
-
 			if( !empty( $this->data ) ) {
+				$data = $this->data;
+				unset( $data['Search'], $data['sessionKey'] );
 
-				foreach( $this->Gestionsanctionep58->themes() as $theme => $intitule ) {
-					$modelTheme = Inflector::singularize( $theme );
-					$decisionModelTheme = 'Decision'.$modelTheme;
+				if( count( $data ) > 0 ) {
+					$this->Cohortes->get( Set::extract( '/Foyer/dossier_id', $this->data ) );
 
-					if( !empty( $this->data[$decisionModelTheme] ) ) {
-						$success = true;
+					$success = true;
+					$this->Personne->begin();
 
-						$success = $this->Personne->Dossierep->Passagecommissionep->{$decisionModelTheme}->saveAll( $this->data[$decisionModelTheme], array( 'validate' => 'first', 'atomic' => false ) ) && $success;
+					foreach( $this->Gestionsanctionep58->themes() as $theme => $intitule ) {
+						$modelTheme = Inflector::singularize( $theme );
+						$decisionModelTheme = 'Decision'.$modelTheme;
 
-						if( $success ) {
-							$this->Personne->Dossierep->Passagecommissionep->{$decisionModelTheme}->commit();
-							$this->Session->setFlash( 'Enregistrement effectué.', 'flash/success' );
-							unset( $this->data[$decisionModelTheme] );
-							if( isset( $this->data['sessionKey'] ) ) {
-								$this->Session->del( "Prg.{$this->name}__{$this->action}.{$this->data['sessionKey']}" );
-							}
-						}
-						else {
-							$this->Personne->Dossierep->Passagecommissionep->{$decisionModelTheme}->rollback();
-							$this->Session->setFlash( 'Erreur lors de l\'enregistrement.', 'flash/error' );
+						if( !empty( $this->data[$decisionModelTheme] ) ) {
+							$success = $this->Personne->Dossierep->Passagecommissionep->{$decisionModelTheme}->saveAll( $this->data[$decisionModelTheme], array( 'validate' => 'first', 'atomic' => false ) ) && $success;
 						}
 					}
+
+					if( $success ) {
+						$this->Personne->commit();
+						$this->Cohortes->release( Set::extract( '/Foyer/dossier_id', $this->data ) );
+
+						$this->Session->setFlash( 'Enregistrement effectué.', 'flash/success' );
+						unset( $this->data[$decisionModelTheme] );
+						if( isset( $this->data['sessionKey'] ) ) {
+							$this->Session->del( "Prg.{$this->name}__{$this->action}.{$this->data['sessionKey']}" );
+						}
+					}
+					else {
+						$this->Personne->rollback();
+						$this->Session->setFlash( 'Erreur lors de l\'enregistrement.', 'flash/error' );
+					}
 				}
-				$this->Dossier->begin(); // Pour les jetons
 
 				$limit = 10;
-				$paginate = $this->Gestionsanctionep58->search( $statutSanctionep, $this->data['Search'], $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->Jetons->ids() );
+				$paginate = $this->Gestionsanctionep58->search(
+					$statutSanctionep,
+					$this->data['Search'],
+					(array)$this->Session->read( 'Auth.Zonegeographique' ),
+					$this->Session->read( 'Auth.User.filtre_zone_geo' ),
+					( ( $statutSanctionep == 'Gestion::traitement' ) ? $this->Cohortes->sqLocked( 'Dossier' ) : null )
+				);
 				$paginate['limit'] = $limit;
 
 				$this->paginate = $paginate;
 				$gestionsanctionseps58 = $this->paginate( 'Personne' );
 
+				if( $statutSanctionep == 'Gestion::traitement' ) {
+					$this->Cohortes->get( Set::extract( '/Foyer/dossier_id', $gestionsanctionseps58 ) );
+				}
+
 				foreach( $this->Gestionsanctionep58->themes() as $theme => $intitule ) {
 					$modelTheme = Inflector::singularize( $theme );
 					$decisionModelTheme = 'Decision'.$modelTheme;
-// 					debug( Set::extract( $gestionsanctionseps58, "/{$decisionModelTheme}" ) );
 					$this->data[$decisionModelTheme] = Set::classicExtract( $gestionsanctionseps58, "{n}.{$decisionModelTheme}" );
 				}
-// 				$this->data = $gestionsanctionseps58;
-
-				$this->Dossier->commit();
 
 				$this->set( 'gestionsanctionseps58', $gestionsanctionseps58 );
 			}
@@ -143,13 +167,8 @@
 
 
 			$this->_setOptions();
-
-			if( Configure::read( 'Zonesegeographiques.CodesInsee' ) ) {
-				$this->set( 'mesCodesInsee', $this->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) ) );
-			}
-			else {
-				$this->set( 'mesCodesInsee', $this->Dossier->Foyer->Adressefoyer->Adresse->listeCodesInsee() );
-			}
+			$this->set( 'cantons', $this->Gestionzonesgeos->listeCantons() );
+			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
 
 			$compteurs = array( 'Ep' => $this->Commissionep->Ep->find( 'count' ) );
 			$this->set( compact( 'compteurs' ) );
@@ -165,15 +184,18 @@
 		}
 
 		/**
-		* Export du tableau en CSV
-		*/
-
+		 * Export du tableau en CSV.
+		 *
+		 * @return void
+		 */
 		public function exportcsv() {
-
-			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
-
-			$queryData = $this->Gestionsanctionep58->search( 'Gestion::visualisation', Xset::bump( $this->params['named'], '__' ), $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), null );
+			$queryData = $this->Gestionsanctionep58->search(
+				'Gestion::visualisation',
+				Xset::bump( $this->params['named'], '__' ),
+				(array)$this->Session->read( 'Auth.Zonegeographique' ),
+				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
+				null
+			);
 			unset( $queryData['limit'] );
 
 			$gestionssanctionseps58 = $this->Personne->find( 'all', $queryData );
@@ -220,29 +242,23 @@
 
 
 		/**
- 		 **Fonction d'impression en cohorte pour le cas des sanctions 1 du CG58
- 		 *
+ 		 * Fonction d'impression en cohorte pour le cas des sanctions 1 du CG58
  		 */
 		public function impressionsSanctions1() {
 			$this->_impressionsSanctions( '1' );
 		}
 
 		/**
-		 ** Fonction d'impression en cohorte pour le cas des sanctions 2 du CG58
-		 *
+		 * Fonction d'impression en cohorte pour le cas des sanctions 2 du CG58
 		 */
 		public function impressionsSanctions2() {
 			$this->_impressionsSanctions( '2' );
 		}
+
 		/**
-		 *
-		 *
 		 * @param integer $id L'id de
 		 */
 		public function _impressionsSanctions( $niveauSanction = null ) {
-			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
-
 			// La page sur laquelle nous sommes
 			$page = Set::classicExtract( $this->params, 'named.page' );
 			if( ( intval( $page ) != $page ) || $page < 0 ) {
@@ -252,7 +268,7 @@
 			$pdfs = $this->Gestionsanctionep58->getCohortePdfSanction(
 				$niveauSanction,
 				'Gestion::visualisation',
-				$mesCodesInsee,
+				(array)$this->Session->read( 'Auth.Zonegeographique' ),
 				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
 				XSet::bump( $this->params['named'], '__' ),
 				$page,

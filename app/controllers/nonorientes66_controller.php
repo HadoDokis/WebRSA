@@ -1,5 +1,18 @@
 <?php
+	/**
+	 * Code source de la classe Nonorientes66Controller.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.controllers
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 
+	/**
+	 * La classe Nonorientes66Controller ... (CG 66).
+	 *
+	 * @package app.controllers
+	 */
 	class Nonorientes66Controller extends AppController
 	{
 		public $name = 'Nonorientes66';
@@ -10,11 +23,12 @@
 		);
 
 		public $helpers = array( 'Fileuploader' );
-		
+
 		public $aucunDroit = array( 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
 
 		public $components = array(
-			'Fileuploader'
+			'Fileuploader',
+			'Jetons2'
 		);
 
 		public function _setOptions() {
@@ -65,7 +79,6 @@
 		*/
 
 		public function filelink( $id ){
-// debug($this->params);
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
 			$fichiers = array();
@@ -88,14 +101,11 @@
 
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
 
-			$this->Nonoriente66->begin();
-			if( !$this->Jetons->check( $dossier_id ) ) {
-				$this->Nonoriente66->rollback();
-			}
-			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
+			$this->Jetons2->get( $dossier_id );
 
 			// Retour à l'index en cas d'annulation
 			if( isset( $this->params['form']['Cancel'] ) ) {
+				$this->Jetons2->release( $dossier_id );
 				$redirect_url = $this->Session->read( "Savedfilters.{$this->name}.{$this->action}" );
 				if( !empty( $redirect_url ) ) {
 					$this->Session->delete( "Savedfilters.{$this->name}.{$this->action}" );
@@ -104,6 +114,8 @@
 			}
 
 			if( !empty( $this->data ) ) {
+				$this->Nonoriente66->begin();
+
 				$saved = $this->Nonoriente66->updateAll(
 					array( 'Nonoriente66.haspiecejointe' => '\''.$this->data['Nonoriente66']['haspiecejointe'].'\'' ),
 					array(
@@ -119,8 +131,8 @@
 				}
 
 				if( $saved ) {
-					$this->Jetons->release( $dossier_id );
 					$this->Nonoriente66->commit();
+					$this->Jetons2->release( $dossier_id );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 					$this->redirect( $this->referer() );
 				}

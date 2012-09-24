@@ -1,4 +1,19 @@
 <?php
+	/**
+	 * Code source de la classe Cohortesvalidationapres66Controller.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.controllers
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe Cohortesvalidationapres66Controller ... (CG 66)
+	 * (CG 66 et 93).
+	 *
+	 * @package app.controllers
+	 */
 	class Cohortesvalidationapres66Controller extends AppController
 	{
 		public $name = 'Cohortesvalidationapres66';
@@ -16,7 +31,6 @@
 
 		public $helpers = array( 'Csv', 'Ajax', 'Default2', 'Locale' );
 
-// 		public $components = array( 'Prg' => array( 'actions' => array( 'apresavalider', 'validees' ) ) );
 		public $components = array(
 			'Prg2' => array(
 				'actions' => array(
@@ -37,17 +51,14 @@
 					)
 				)
 			),
-            'Gestionzonesgeos',
-            'Cohortes' => array(
-                'apresavalider',
-                'transfert',
-                'traitement'
-                
-            )
+			'Gestionzonesgeos',
+			'Cohortes' => array(
+				'apresavalider',
+				'transfert',
+				'traitement'
+
+			)
 		);
-
-//         public $paginate = array( 'limit' => 20 );
-
 
 		/**
 		*
@@ -143,7 +154,7 @@
 				}
 				else if( in_array( $this->action, array( 'traitement', 'transfert' ) ) && !empty( $this->data['Apre66'] ) ){
                     $this->Cohortes->get( array_unique( Set::extract( $this->data, 'Apre66.{n}.dossier_id' ) ) );
-                    
+
 					$valid = $this->Apre66->saveAll( $this->data['Apre66'], array( 'validate' => 'only', 'atomic' => false ) );
 
 					if( $valid ) {
@@ -241,15 +252,11 @@
 		 * @return void
 		 */
 		public function exportcsv() {
-			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
-
 			$querydata = $this->Cohortevalidationapre66->search(
 				'Validationapre::notifiees',
-				$mesCodesInsee,
+				(array)$this->Session->read( 'Auth.Zonegeographique' ),
 				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
-				Xset::bump( $this->params['named'], '__' ),
-				$this->Jetons->ids()
+				Xset::bump( $this->params['named'], '__' )
 			);
 			unset( $querydata['limit'] );
 			$apres = $this->Apre66->find( 'all', $querydata );
@@ -275,7 +282,7 @@
 				$mesCodesInsee,
 				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
 				Xset::bump( $this->params['named'], '__' ),
-				$this->Jetons->ids()
+				$this->Cohortes->sqLocked( 'Dossier' )
 			);
 			unset( $querydata['limit'] );
 			$apres = $this->Apre66->find( 'all', $querydata );

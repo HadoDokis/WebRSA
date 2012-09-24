@@ -1,7 +1,20 @@
 <?php
+	/**
+	 * Code source de la classe Proposorientationscovs58Controller.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.controllers
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 
-	class Proposorientationscovs58Controller extends AppController {
-
+	/**
+	 * La classe Proposorientationscovs58Controller ... (CG 58).
+	 *
+	 * @package app.controllers
+	 */
+	class Proposorientationscovs58Controller extends AppController
+	{
 		public $name = "Proposorientationscovs58";
 
 		public $helpers = array( 'Default', 'Default2' );
@@ -9,6 +22,8 @@
 		public $commeDroit = array(
 			'add' => 'Proposorientationscovs58:edit'
 		);
+
+		public $components = array( 'Jetons2' );
 
 		protected function _setOptions() {
 			$this->set( 'referents', $this->Propoorientationcov58->Referent->listOptions() );
@@ -20,14 +35,9 @@
 			$this->set( 'structsorientantes', $this->Propoorientationcov58->Structurereferente->listOptions( array( 'orientation' => 'O' ) ) );
 		}
 
-		public function beforeFilter() {
-			return parent::beforeFilter();
-		}
-
 		/**
 		*
 		*/
-
 		public function add() {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
@@ -36,7 +46,6 @@
 		/**
 		*
 		*/
-
 		public function edit() {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
@@ -76,22 +85,18 @@
 				);
 			}
 
+			$dossier_id = $this->Propoorientationcov58->Dossiercov58->Personne->dossierId( $personne_id );
+			$this->Jetons2->get( $dossier_id );
+
 			// Retour à l'index en cas d'annulation
 			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
+				$this->Jetons2->release( $dossier_id );
 				$this->redirect( array( 'controller' => 'orientsstructs', 'action' => 'index', $personne_id ) );
 			}
 
-			$dossier_id = $this->Propoorientationcov58->Dossiercov58->Personne->dossierId( $personne_id );
-			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
-
-			$this->Propoorientationcov58->begin();
-			if( !$this->Jetons->check( $dossier_id ) ) {
-				$this->Propoorientationcov58->rollback();
-			}
-			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
-
 			if( !empty( $this->data ) ) {
 				$saved = true;
+				$this->Propoorientationcov58->begin();
 
 				$this->data['Propoorientationcov58']['rgorient'] = $this->Propoorientationcov58->Dossiercov58->Personne->Orientstruct->rgorientMax( $personne_id );
 
@@ -142,8 +147,8 @@
 				}
 
 				if( $saved ) {
-					$this->Jetons->release( $dossier_id );
 					$this->Propoorientationcov58->commit();
+					$this->Jetons2->release( $dossier_id );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 					$this->redirect( array( 'controller' => 'orientsstructs', 'action' => 'index', $personne_id ) );
 				}

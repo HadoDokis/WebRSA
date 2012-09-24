@@ -1,13 +1,29 @@
 <?php
-    class Proposdecisionscuis66Controller extends AppController
-    {
-        public $name = 'Proposdecisionscuis66';
-        
-        public $uses = array( 'Propodecisioncui66', 'Option' );
-        
-        public $helpers = array( 'Default2', 'Default' );
-        
-        protected function _setOptions() {
+	/**
+	 * Code source de la classe Proposdecisionscuis66Controller.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.controllers
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe Proposdecisionscuis66Controller ... (CG 66).
+	 *
+	 * @package app.controllers
+	 */
+	class Proposdecisionscuis66Controller extends AppController
+	{
+		public $name = 'Proposdecisionscuis66';
+
+		public $uses = array( 'Propodecisioncui66', 'Option' );
+
+		public $helpers = array( 'Default2', 'Default' );
+
+		public $components = array( 'Jetons2' );
+
+		protected function _setOptions() {
 			$options = $this->Propodecisioncui66->enums();
 
 			$this->set( 'qual', $this->Option->qual() );
@@ -19,9 +35,9 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 * @param integer $cui_id
+		 */
 		public function propositioncui( $cui_id = null ) {
 			$nbrCuis = $this->Propodecisioncui66->Cui->find( 'count', array( 'conditions' => array( 'Cui.id' => $cui_id ), 'recursive' => -1 ) );
 			$this->assert( ( $nbrCuis == 1 ), 'invalidParameter' );
@@ -60,7 +76,7 @@
 				$this->redirect( array( 'controller' => 'cuis', 'action' => 'index', $personne_id ) );
 			}
 		}
-		
+
 		/** ********************************************************************
 		*
 		*** *******************************************************************/
@@ -83,8 +99,6 @@
 		protected function _add_edit( $id = null ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
-			$this->Propodecisioncui66->begin();
-
 			if( $this->action == 'add' ) {
 				$cui_id = $id;
 			}
@@ -103,11 +117,11 @@
 					)
 				);
 				$this->set( 'propodecisioncui66', $propodecisioncui66 );
-				
+
 				$cui_id = Set::classicExtract( $propodecisioncui66, 'Propodecisioncui66.cui_id' );
 			}
-			
-						
+
+
 			// CUI en lien avec la proposition
 			$cui = $this->Propodecisioncui66->Cui->find(
 				'first',
@@ -121,43 +135,39 @@
 			);
 
 			$personne_id = Set::classicExtract( $cui, 'Cui.personne_id' );
-			
+
 			$this->set( 'personne_id', $personne_id );
 			$this->set( 'cui', $cui );
 			$this->set( 'cui_id', $cui_id );
 
-			// Retour à la liste en cas d'annulation
-			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
-				$this->redirect( array( 'controller' => 'proposdecisionscuis66', 'action' => 'propositioncui', $cui_id ) );
-			}
-			
 			$dossier_id = $this->Propodecisioncui66->Cui->Personne->dossierId( $personne_id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
+
+			$this->Jetons2->get( $dossier_id );
+
+			// Retour à la liste en cas d'annulation
+			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
+				$this->Jetons2->release( $dossier_id );
+				$this->redirect( array( 'controller' => 'proposdecisionscuis66', 'action' => 'propositioncui', $cui_id ) );
+			}
 
 			// On récupère l'utilisateur connecté et qui exécute l'action
 			$userConnected = $this->Session->read( 'Auth.User.id' );
 			$this->set( compact( 'userConnected' ) );
-			
-			
-			if ( !$this->Jetons->check( $dossier_id ) ) {
-				$this->Propodecisioncui66->rollback();
-			}
-			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
-			
+
 			if ( !empty( $this->data ) ) {
+				$this->Propodecisioncui66->begin();
 
 				if( $this->Propodecisioncui66->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
 					$saved = $this->Propodecisioncui66->save( $this->data );
-					
-					
+
 					if( $saved ) {
 						$saved = $this->Propodecisioncui66->Cui->updatePositionFromPropodecisioncui66( $this->Propodecisioncui66->id ) && $saved;
 					}
 
-
 					if( $saved ) {
-						$this->Jetons->release( $dossier_id );
 						$this->Propodecisioncui66->commit();
+						$this->Jetons2->release( $dossier_id );
 						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 						$this->redirect( array( 'controller' => 'proposdecisionscuis66', 'action' => 'propositioncui', $cui_id ) );
 					}
@@ -173,13 +183,13 @@
 					$this->data = $propodecisioncui66;
 				}
 			}
-			
+
 			$this->_setOptions();
 			$this->set( 'urlmenu', '/cuis/index/'.$personne_id );
 			$this->render( $this->action, null, 'add_edit' );
-        }
-        
-        
+		}
+
+
 		/**
 		 * Imprime la notification pour récupérer l'avis de l'élu, suite à l'avis de la MNE
 		 *
@@ -197,13 +207,12 @@
 				$this->redirect( $this->referer() );
 			}
 		}
-		
-		/**
-		*
-		*/
 
+		/**
+		 *
+		 */
 		public function delete( $id ) {
 			$this->Default->delete( $id );
 		}
-    }
+	}
 ?>

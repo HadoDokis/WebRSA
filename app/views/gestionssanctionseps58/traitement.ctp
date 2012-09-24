@@ -97,26 +97,25 @@
 				}
 			?>
             <?php
+		echo $default2->subform(
+			array(
+				'Search.Personne.nom' => array( 'label' => __d( 'personne', 'Personne.nom', true ), 'type' => 'text' ),
+				'Search.Personne.prenom' => array( 'label' => __d( 'personne', 'Personne.prenom', true ), 'type' => 'text' ),
+				'Search.Personne.nomnai' => array( 'label' => __d( 'personne', 'Personne.nomnai', true ), 'type' => 'text' ),
+				'Search.Personne.nir' => array( 'label' => __d( 'personne', 'Personne.nir', true ), 'type' => 'text', 'maxlength' => 15 ),
+				'Search.Dossier.matricule' => array( 'label' => __d( 'dossier', 'Dossier.matricule', true ), 'type' => 'text', 'maxlength' => 15 ),
+				'Search.Dossier.numdemrsa' => array( 'label' => __d( 'dossier', 'Dossier.numdemrsa', true ), 'type' => 'text', 'maxlength' => 15 ),
+				'Search.Adresse.locaadr' => array( 'label' => __d( 'adresse', 'Adresse.locaadr', true ), 'type' => 'text' ),
+				'Search.Adresse.numcomptt' => array( 'label' => __d( 'adresse', 'Adresse.numcomptt', true ), 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true )
+			),
+			array(
+				'options' => $options
+			)
+		);
 
-                echo $default2->subform(
-                    array(
-                        'Search.Personne.nom' => array( 'label' => __d( 'personne', 'Personne.nom', true ), 'type' => 'text' ),
-                        'Search.Personne.prenom' => array( 'label' => __d( 'personne', 'Personne.prenom', true ), 'type' => 'text' ),
-                        'Search.Personne.nomnai' => array( 'label' => __d( 'personne', 'Personne.nomnai', true ), 'type' => 'text' ),
-                        'Search.Personne.nir' => array( 'label' => __d( 'personne', 'Personne.nir', true ), 'type' => 'text', 'maxlength' => 15 ),
-                        'Search.Dossier.matricule' => array( 'label' => __d( 'dossier', 'Dossier.matricule', true ), 'type' => 'text', 'maxlength' => 15 ),
-                        'Search.Dossier.numdemrsa' => array( 'label' => __d( 'dossier', 'Dossier.numdemrsa', true ), 'type' => 'text', 'maxlength' => 15 ),
-						'Search.Adresse.locaadr' => array( 'label' => __d( 'adresse', 'Adresse.locaadr', true ), 'type' => 'text' ),
-						'Search.Adresse.numcomptt' => array( 'label' => __d( 'adresse', 'Adresse.numcomptt', true ), 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true )
-                    ),
-                    array(
-                        'options' => $options
-                    )
-                );
-
-				if( Configure::read( 'CG.cantons' ) ) {
-					echo $xform->input( 'Search.Canton.canton', array( 'label' => 'Canton', 'type' => 'select', 'options' => $cantons, 'empty' => true ) );
-				}
+		if( Configure::read( 'CG.cantons' ) ) {
+			echo $xform->input( 'Search.Canton.canton', array( 'label' => 'Canton', 'type' => 'select', 'options' => $cantons, 'empty' => true ) );
+		}
             ?>
 
     <div class="submit noprint">
@@ -138,7 +137,7 @@
 			echo $xform->input( "Search.{$filtre}", array( 'type' => 'hidden', 'value' => $value ) );
 		}
 	?>
-    <table id="searchResults">
+<table id="searchResults">
         <thead>
             <tr>
                 <th>Allocataire</th>
@@ -156,9 +155,8 @@
             </tr>
         </thead>
         <tbody>
-        <?php foreach( $gestionsanctionseps58 as $index => $gestionanctionep58 ):?>
-            <?php
-
+			<?php foreach( $gestionsanctionseps58 as $index => $gestionanctionep58 ):?>
+			<?php
 				if( $gestionanctionep58['Dossierep']['themeep'] == 'sanctionseps58' ) {
 					// Type de sanction
 					$decisionSanction1 = Set::enum( $gestionanctionep58['Decisionsanctionep58']['decision'], $regularisationlistesanctionseps58['Decisionsanctionep58']['decision'] );
@@ -169,7 +167,7 @@
 
 					//Champ permettant la modification de la sanction
 					$fieldDecisionSanction = $xform->input( "Decisionsanctionep58.{$index}.id", array( 'type' => 'hidden', 'value' => $gestionanctionep58['Decisionsanctionep58']['id'] ) ).
-											  $xform->input( "Decisionsanctionep58.{$index}.arretsanction", array( 'type' => 'select', 'options' => $options['Decisionsanctionep58']['arretsanction'], 'label' => false, 'empty' => true ) );
+						$xform->input( "Decisionsanctionep58.{$index}.arretsanction", array( 'type' => 'select', 'options' => $options['Decisionsanctionep58']['arretsanction'], 'label' => false, 'empty' => true ) );
 					//Champ permettant de saisir la date de la fin de la sanction
 					$dateFinSanction = $xform->input( "Decisionsanctionep58.{$index}.datearretsanction", array( 'label' => false, 'type' => 'date', 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 3, 'maxYear' => date( 'Y' ) + 3 )  );
 					//Champ permettant de saisir le commentaire de fin de la sanction
@@ -186,7 +184,7 @@
 
 					//Champ permettant la modification de la sanction
 					$fieldDecisionSanction = $xform->input( "Decisionsanctionrendezvousep58.{$index}.id", array( 'type' => 'hidden', 'value' => $gestionanctionep58['Decisionsanctionrendezvousep58']['id'] ) ).
-											  $xform->input( "Decisionsanctionrendezvousep58.{$index}.arretsanction", array( 'type' => 'select', 'options' => $options['Decisionsanctionrendezvousep58']['arretsanction'], 'label' => false, 'empty' => true ) );
+												$xform->input( "Decisionsanctionrendezvousep58.{$index}.arretsanction", array( 'type' => 'select', 'options' => $options['Decisionsanctionrendezvousep58']['arretsanction'], 'label' => false, 'empty' => true ) );
 					//Champ permettant de saisir la date de la fin de la sanction
 					$dateFinSanction = $xform->input( "Decisionsanctionrendezvousep58.{$index}.datearretsanction", array( 'label' => false, 'type' => 'date', 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 3, 'maxYear' => date( 'Y' ) + 3 ) );
 
@@ -195,35 +193,34 @@
 				}
 
 				$tableCells = array(
-						h( $gestionanctionep58['Personne']['qual'].' '.$gestionanctionep58['Personne']['nom'].' '.$gestionanctionep58['Personne']['prenom'] ),
-						nl2br( h( Set::classicExtract(  $gestionanctionep58, 'Adresse.numvoie' ).' '.Set::classicExtract(  $typevoie, Set::classicExtract( $gestionanctionep58, 'Adresse.typevoie' ) ).' '.Set::classicExtract(  $gestionanctionep58, 'Adresse.nomvoie' )."\n".Set::classicExtract(  $gestionanctionep58, 'Adresse.codepos' ).' '.Set::classicExtract(  $gestionanctionep58, 'Adresse.locaadr' ) ) ),
-						h( $gestionanctionep58['Ep']['identifiant'] ),
-						h( $gestionanctionep58['Commissionep']['identifiant'] ),
-						h( date_short( $gestionanctionep58['Commissionep']['dateseance'] ) ),
-						h( Set::classicExtract( $options['Dossierep']['themeep'], ( $gestionanctionep58['Dossierep']['themeep'] ) ) ),
-						nl2br( $decisionSanction1."\n".$libelleSanction1 ),
-						nl2br( $decisionSanction2."\n".$libelleSanction2 ),
-						$fieldDecisionSanction,
-						$dateFinSanction,
-						$commentaireFinSanction,
-						$xhtml->viewLink(
-							'Voir le dossier',
-							array( 'controller' => 'historiqueseps', 'action' => 'view_passage', $gestionanctionep58['Passagecommissionep']['id'] ),
-							$permissions->check( 'historiqueseps', 'view_passage' )
-						)
+					$xform->input( "Foyer.{$index}.dossier_id", array( 'label' => false, 'type' => 'hidden', 'value' => $gestionanctionep58['Foyer']['dossier_id'] ) ).
+					h( $gestionanctionep58['Personne']['qual'].' '.$gestionanctionep58['Personne']['nom'].' '.$gestionanctionep58['Personne']['prenom'] ),
+					nl2br( h( Set::classicExtract(  $gestionanctionep58, 'Adresse.numvoie' ).' '.Set::classicExtract(  $typevoie, Set::classicExtract( $gestionanctionep58, 'Adresse.typevoie' ) ).' '.Set::classicExtract(  $gestionanctionep58, 'Adresse.nomvoie' )."\n".Set::classicExtract(  $gestionanctionep58, 'Adresse.codepos' ).' '.Set::classicExtract(  $gestionanctionep58, 'Adresse.locaadr' ) ) ),
+					h( $gestionanctionep58['Ep']['identifiant'] ),
+					h( $gestionanctionep58['Commissionep']['identifiant'] ),
+					h( date_short( $gestionanctionep58['Commissionep']['dateseance'] ) ),
+					h( Set::classicExtract( $options['Dossierep']['themeep'], ( $gestionanctionep58['Dossierep']['themeep'] ) ) ),
+					nl2br( $decisionSanction1."\n".$libelleSanction1 ),
+					nl2br( $decisionSanction2."\n".$libelleSanction2 ),
+					$fieldDecisionSanction,
+					$dateFinSanction,
+					$commentaireFinSanction,
+					$xhtml->viewLink(
+						'Voir le dossier',
+						array( 'controller' => 'historiqueseps', 'action' => 'view_passage', $gestionanctionep58['Passagecommissionep']['id'] ),
+						$permissions->check( 'historiqueseps', 'view_passage' )
+					)
+				);
 
-					);
-
-					echo $xhtml->tableCells(
-						$tableCells,
-						array( 'class' => 'odd' ),
-						array( 'class' => 'even' )
-					);
-
-                ?>
-				<?php endforeach;?>
-			</tbody>
-		</table>
+				echo $xhtml->tableCells(
+					$tableCells,
+					array( 'class' => 'odd' ),
+					array( 'class' => 'even' )
+				);
+			?>
+		<?php endforeach;?>
+	</tbody>
+</table>
 		<?php echo $pagination;?>
 		<?php echo $xform->submit( 'Validation de la liste' );?>
 		<?php echo $xform->end();?>

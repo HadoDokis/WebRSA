@@ -1,13 +1,29 @@
 <?php
-    class Proposdecisionscers66Controller extends AppController
-    {
-        public $name = 'Proposdecisionscers66';
-        
-        public $uses = array( 'Propodecisioncer66', 'Option' );
-        
-        public $helpers = array( 'Default2' );
-        
-        protected function _setOptions() {
+	/**
+	 * Code source de la classe Proposdecisionscers66Controller.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.controllers
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe Proposdecisionscers66Controller ... (CG 66).
+	 *
+	 * @package app.controllers
+	 */
+	class Proposdecisionscers66Controller extends AppController
+	{
+		public $name = 'Proposdecisionscers66';
+
+		public $uses = array( 'Propodecisioncer66', 'Option' );
+
+		public $helpers = array( 'Default2' );
+
+		public $components = array( 'Jetons2' );
+
+		protected function _setOptions() {
 			$options = $this->Propodecisioncer66->allEnumLists();
 
 
@@ -20,17 +36,15 @@
 				$this->Propodecisioncer66->Contratinsertion->enums(),
 				$options
 			);
-			
+
 			$listMotifs = $this->Propodecisioncer66->Motifcernonvalid66->find( 'list' );
 			$this->set( compact( 'listMotifs' ) );
 			$this->set( 'options', $options );
 		}
 
-        public function proposition( $contratinsertion_id ) {
+		public function proposition( $contratinsertion_id ) {
 			$this->assert( valid_int( $contratinsertion_id ), 'invalidParameter' );
 
-			$this->Propodecisioncer66->begin();
-			
 			//Proposition de décision pour le CER
 			$propodecisioncer66 = $this->Propodecisioncer66->find(
 				'first',
@@ -63,20 +77,19 @@
 			$this->set( 'personne_id', $personne_id );
 			$this->set( 'contratinsertion_id', $contratinsertion_id );
 
-			// Retour à la liste en cas d'annulation
-			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
-				$this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index', $personne_id ) );
-			}
-			
 			$dossier_id = $this->Propodecisioncer66->Contratinsertion->Personne->dossierId( $personne_id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
 
-			if ( !$this->Jetons->check( $dossier_id ) ) {
-				$this->Propodecisioncer66->rollback();
+			$this->Jetons2->get( $dossier_id );
+
+			// Retour à la liste en cas d'annulation
+			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
+				$this->Jetons2->release( $dossier_id );
+				$this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index', $personne_id ) );
 			}
-			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
-			
+
 			if ( !empty( $this->data ) ) {
+				$this->Propodecisioncer66->begin();
 
 				if( $this->Propodecisioncer66->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
 					$saved = $this->Propodecisioncer66->save( $this->data );
@@ -129,13 +142,13 @@
 									'Contratinsertion.id' => $contratinsertion_id
 								)
 							) && $saved;
-						
+
 						}
 
 					}
 					if( $saved ) {
-						$this->Jetons->release( $dossier_id );
 						$this->Propodecisioncer66->commit();
+						$this->Jetons2->release( $dossier_id );
 						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 						$this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index', $personne_id ) );
 					}
@@ -149,18 +162,18 @@
 			else{
 				$this->data = $propodecisioncer66;
 			}
-			
+
 			$this->_setOptions();
 			$this->set( 'urlmenu', '/contratsinsertion/index/'.$personne_id );
 			$this->render( $this->action, null, 'proposition' );
-        }
+		}
 
 		/**
-		**Fonction de validation pour les CERs Simples du CG66
-		* @param type $contratinsertion_id
-		*
-		*/
-		public function propositionsimple( $contratinsertion_id = null ){
+		 * Fonction de validation pour les CERs Simples du CG66
+		 *
+		 * @param type $contratinsertion_id
+		 */
+		public function propositionsimple( $contratinsertion_id = null ) {
 			$this->Propodecisioncer66->Contratinsertion->id = $contratinsertion_id;
 			$forme_ci = $this->Propodecisioncer66->Contratinsertion->field( 'forme_ci' );
 			$this->assert( ( $forme_ci == 'S' ), 'error500' );
@@ -168,18 +181,17 @@
 			$this->proposition( $contratinsertion_id );
 		}
 
-
 		/**
-			**Fonction de validation pour les CERs Particuliers du CG66
-			* @param type $contratinsertion_id
-			*
-			*/
-		public function propositionparticulier( $contratinsertion_id = null ){
+		 * Fonction de validation pour les CERs Particuliers du CG66
+		 * 
+		 * @param type $contratinsertion_id
+		 */
+		public function propositionparticulier( $contratinsertion_id = null ) {
 			$this->Propodecisioncer66->Contratinsertion->id = $contratinsertion_id;
 			$forme_ci = $this->Propodecisioncer66->Contratinsertion->field( 'forme_ci' );
 			$this->assert( ( $forme_ci == 'C' ), 'error500' );
 
 			$this->proposition( $contratinsertion_id );
 		}
-    }
+	}
 ?>

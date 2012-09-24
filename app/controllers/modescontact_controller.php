@@ -1,16 +1,35 @@
 <?php
-    class ModescontactController extends AppController
-    {
+	/**
+	 * Code source de la classe ModescontactController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.controllers
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 
-        public $name = 'Modescontact';
-        public $uses = array( 'Modecontact',  'Option' , 'Foyer');
-        public $helpers = array( 'Xform','Default2',  'Default', 'Theme' );
+	/**
+	 * La classe ModescontactController ...
+	 * (CG 66 et 93).
+	 *
+	 * @package app.controllers
+	 */
+	class ModescontactController extends AppController
+	{
+		public $name = 'Modescontact';
+
+		public $uses = array( 'Modecontact',  'Option' , 'Foyer');
+
+		public $helpers = array( 'Xform','Default2',  'Default', 'Theme' );
+
+		public $components = array( 'Jetons2' );
+
 		public $commeDroit = array(
 			'view' => 'Modescontact:index',
 			'add' => 'Modescontact:edit'
 		);
 
-       	protected function _setOptions() {
+		protected function _setOptions() {
 			$options = array();
 			$options['Modecontact']['nattel'] = $this->Option->nattel();
 			$options['Modecontact']['matetel'] = $this->Option->matetel();
@@ -19,133 +38,128 @@
 			$this->set( compact( 'options' ) );
 		}
 
-        function index( $foyer_id = null ){
-            // TODO : vérif param
-            // Vérification du format de la variable
-            $this->assert( valid_int( $foyer_id ), 'invalidParameter' );
+		function index( $foyer_id = null ){
+			// TODO : vérif param
+			// Vérification du format de la variable
+			$this->assert( valid_int( $foyer_id ), 'invalidParameter' );
 
-            // Recherche des personnes du foyer
-            $modescontact = $this->Modecontact->find(
-                'all',
-                array(
-                    'conditions' => array( 'Modecontact.foyer_id' => $foyer_id ),
-                    'contain' => false
-                )
-            );
+			// Recherche des personnes du foyer
+			$modescontact = $this->Modecontact->find(
+				'all',
+				array(
+					'conditions' => array( 'Modecontact.foyer_id' => $foyer_id ),
+					'contain' => false
+				)
+			);
 
-            // Assignations à la vue
-            $this->set( 'foyer_id', $foyer_id );
-            $this->set( 'modescontact', $modescontact );
-            $this->_setOptions();
-        }
+			// Assignations à la vue
+			$this->set( 'foyer_id', $foyer_id );
+			$this->set( 'modescontact', $modescontact );
+			$this->_setOptions();
+		}
 
-        function add( $foyer_id = null ){
-            $this->assert( valid_int( $foyer_id ), 'invalidParameter' );
+		public function add( $foyer_id = null ){
+			$this->assert( valid_int( $foyer_id ), 'invalidParameter' );
 
-            $dossier_id = $this->Foyer->dossierId( $foyer_id );
-            $this->assert( !empty( $dossier_id ), 'invalidParameter' );
+			$dossier_id = $this->Foyer->dossierId( $foyer_id );
+			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
 
-            $this->Modecontact->begin();
+			$this->Jetons2->get( $dossier_id );
 
-            if( !$this->Jetons->check( $dossier_id ) ) {
-                $this->Modecontact->rollback();
-            }
-            $this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
+			if( !empty( $this->data ) ) {
+				$this->Modecontact->create( $this->data );
+				if( $this->Modecontact->validates() ) {
+					$this->Modecontact->begin();
 
-            if( !empty( $this->data ) ) {
-                $this->Modecontact->set( $this->data );
-                if( $this->Modecontact->validates() ) {
-                    if( $this->Modecontact->save( $this->data ) ) {
-                        $this->Jetons->release( $dossier_id );
-                        $this->Modecontact->commit();
-                        $this->Session->setFlash( 'Enregistrement réussi', 'flash/success' );
-                        $this->redirect( array( 'controller' => 'modescontact', 'action' => 'index', $foyer_id ) );
-                    }
-                    else {
-                        $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
-                    }
-                }
-            }
+					if( $this->Modecontact->save( $this->data ) ) {
+						$this->Modecontact->commit();
+						$this->Jetons2->release( $dossier_id );
+						$this->Session->setFlash( 'Enregistrement réussi', 'flash/success' );
+						$this->redirect( array( 'controller' => 'modescontact', 'action' => 'index', $foyer_id ) );
+					}
+					else {
+						$this->Modecontact->rollback();
+						$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+					}
+				}
+			}
 
-            $this->set( 'foyer_id', $foyer_id );
-            $this->data['Modecontact']['foyer_id'] = $foyer_id;
+			$this->set( 'foyer_id', $foyer_id );
+			$this->data['Modecontact']['foyer_id'] = $foyer_id;
 
-            $this->Modecontact->commit();
-            $this->_setOptions();
-            $this->render( $this->action, null, 'add_edit' );
-        }
+			$this->_setOptions();
+			$this->render( $this->action, null, 'add_edit' );
+		}
 
-        function edit( $id = null ){
-            $this->assert( valid_int( $id ), 'invalidParameter' );
+		function edit( $id = null ){
+			$this->assert( valid_int( $id ), 'invalidParameter' );
 
-            $dossier_id = $this->Modecontact->dossierId( $id );
-            $this->assert( !empty( $dossier_id ), 'invalidParameter' );
+			$dossier_id = $this->Modecontact->dossierId( $id );
+			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
 
-            $this->Modecontact->begin();
+			$this->Jetons2->get( $dossier_id );
 
-            if( !$this->Jetons->check( $dossier_id ) ) {
-                $this->Modecontact->rollback();
-            }
-            $this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
+			// Essai de sauvegarde
+			if( !empty( $this->data ) ) {
+				$this->Modecontact->set( $this->data );
+				if( $this->Modecontact->validates() ) {
+					$this->Modecontact->begin();
 
-            // Essai de sauvegarde
-            if( !empty( $this->data ) ) {
-                $this->Modecontact->set( $this->data );
-                if( $this->Modecontact->validates() ) {
-                    if( $this->Modecontact->save( $this->data ) ) {
-                        $this->Jetons->release( $dossier_id );
-                        $this->Modecontact->commit();
-                        $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-                        $this->redirect( array(  'controller' => 'modescontact','action' => 'index', $this->data['Modecontact']['foyer_id'] ) );
-                    }
-                    else {
-                        $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
-                    }
-                }
-            }
-            // Afficage des données
-            else {
-                $modecontact = $this->Modecontact->find(
-                    'first',
-                    array(
-                        'conditions' => array( 'Modecontact.id' => $id ),
-                        'contain' => false
-                    )
-                );
-                $this->assert( !empty( $modecontact ), 'invalidParameter' );
+					if( $this->Modecontact->save( $this->data ) ) {
+						$this->Modecontact->commit();
+						$this->Jetons2->release( $dossier_id );
+						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+						$this->redirect( array(  'controller' => 'modescontact','action' => 'index', $this->data['Modecontact']['foyer_id'] ) );
+					}
+					else {
+						$this->Modecontact->rollback();
+						$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+					}
+				}
+			}
+			// Afficage des données
+			else {
+				$modecontact = $this->Modecontact->find(
+					'first',
+					array(
+						'conditions' => array( 'Modecontact.id' => $id ),
+						'contain' => false
+					)
+				);
+				$this->assert( !empty( $modecontact ), 'invalidParameter' );
 
-                // Assignation au formulaire
-                $this->data = $modecontact;
-            }
+				// Assignation au formulaire
+				$this->data = $modecontact;
+			}
 
-            $this->Modecontact->commit();
-            $this->_setOptions();
-            $this->render( $this->action, null, 'add_edit' );
+			$this->Modecontact->commit();
+			$this->_setOptions();
+			$this->render( $this->action, null, 'add_edit' );
 
-        }
+		}
 
-        function view( $modecontact_id = null ) {
-            // Vérification du format de la variable
-            $this->assert( valid_int( $modecontact_id ), 'error404' );
+		function view( $modecontact_id = null ) {
+			// Vérification du format de la variable
+			$this->assert( valid_int( $modecontact_id ), 'error404' );
 
-            $modecontact = $this->Modecontact->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Modecontact.id' => $modecontact_id
-                    ),
-                    'recursive' => -1
-                )
+			$modecontact = $this->Modecontact->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Modecontact.id' => $modecontact_id
+					),
+					'recursive' => -1
+				)
 
-            );
+			);
 
-            $this->assert( !empty( $modecontact ), 'error404' );
+			$this->assert( !empty( $modecontact ), 'error404' );
 
-            // Assignations à la vue
-            $this->set( 'foyer_id', $modecontact['Modecontact']['foyer_id'] );
-            $this->set( 'modecontact', $modecontact );
-            $this->_setOptions();
+			// Assignations à la vue
+			$this->set( 'foyer_id', $modecontact['Modecontact']['foyer_id'] );
+			$this->set( 'modecontact', $modecontact );
+			$this->_setOptions();
 
-        }
-}
+		}
+	}
 ?>

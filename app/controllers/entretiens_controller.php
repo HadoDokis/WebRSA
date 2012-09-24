@@ -1,15 +1,33 @@
 <?php
+	/**
+	 * Code source de la classe EntretiensController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.controllers
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe EntretiensController ....
+	 *
+	 * @package app.controllers
+	 */
 	class EntretiensController extends AppController
 	{
-
 		public $name = 'Entretiens';
+
 		public $uses = array( 'Entretien', 'Option' );
+
 		public $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Default2', 'Fileuploader' );
-		public $components = array( 'Fileuploader' );
+
+		public $components = array( 'Fileuploader', 'Jetons2' );
+
 		public $commeDroit = array(
 			'view' => 'Entretiens:index',
 			'add' => 'Entretiens:edit'
 		);
+
 		public $aucunDroit = array( 'ajaxaction', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
 
 		/**
@@ -31,7 +49,7 @@
 			$this->set( compact( 'options', 'typerdv' ) );
 		}
 
-        
+
 		/**
 		 *   Ajax pour les partenaires fournissant l'action liée à l'entretien
 		 */
@@ -66,7 +84,7 @@
 			}
 			$this->render( 'ajaxaction', 'ajax' );
 		}
-        
+
 		/**
 		 * http://valums.com/ajax-upload/
 		 * http://doc.ubuntu-fr.org/modules_php
@@ -127,18 +145,16 @@
 			$dossier_id = $this->Entretien->Personne->dossierId( $personne_id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
 
-			$this->Entretien->begin();
-			if( !$this->Jetons->check( $dossier_id ) ) {
-				$this->Entretien->rollback();
-			}
-			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
+			$this->Jetons2->get( $dossier_id );
 
 			// Retour à l'index en cas d'annulation
 			if( isset( $this->params['form']['Cancel'] ) ) {
+				$this->Jetons2->release( $dossier_id );
 				$this->redirect( array( 'action' => 'index', $personne_id ) );
 			}
 
 			if( !empty( $this->data ) ) {
+				$this->Entretien->begin();
 
 				$saved = $this->Entretien->updateAll(
 						array( 'Entretien.haspiecejointe' => '\''.$this->data['Entretien']['haspiecejointe'].'\'' ), array(
@@ -154,8 +170,8 @@
 				}
 
 				if( $saved ) {
-					$this->Jetons->release( $dossier_id );
 					$this->Entretien->commit();
+					$this->Jetons2->release( $dossier_id );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 // 					$this->redirect( array(  'controller' => 'entretiens','action' => 'index', $personne_id ) );
 					$this->redirect( $this->referer() );
@@ -236,16 +252,8 @@
 		/**
 		 *
 		 */
-		function _add_edit( $id = null ) {
+		protected function _add_edit( $id = null ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
-
-			// Retour à la liste en cas d'annulation
-			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
-				if( $this->action == 'edit' ) {
-					$id = $this->Entretien->field( 'personne_id', array( 'id' => $id ) );
-				}
-				$this->redirect( array( 'action' => 'index', $id ) );
-			}
 
 			// Récupération des id afférents
 			if( $this->action == 'add' ) {
@@ -268,15 +276,19 @@
 				$personne_id = $entretien['Entretien']['personne_id'];
 			}
 
-			$this->Entretien->begin();
-
 			$dossier_id = $this->Entretien->Personne->dossierId( $personne_id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
 
-			if( !$this->Jetons->check( $dossier_id ) ) {
-				$this->Entretien->rollback();
+			$this->Jetons2->get( $dossier_id );
+
+			// Retour à la liste en cas d'annulation
+			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
+				if( $this->action == 'edit' ) {
+					$id = $this->Entretien->field( 'personne_id', array( 'id' => $id ) );
+				}
+				$this->Jetons2->release( $dossier_id );
+				$this->redirect( array( 'action' => 'index', $id ) );
 			}
-			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
 
 			///Récupération de la liste des structures référentes
 			$structs = $this->Entretien->Structurereferente->listOptions();
@@ -285,8 +297,8 @@
 			///Récupération de la liste des référents
 			$referents = $this->Entretien->Referent->listOptions();
 			$this->set( 'referents', $referents );
-            
-            //On affiche les actions inactives en édition mais pas en ajout, 
+
+            //On affiche les actions inactives en édition mais pas en ajout,
             // afin de pouvoir gérer les actions n'étant plus prises en compte mais toujours en cours
             $isactive = 'O';
             if( $this->action == 'edit' ){
@@ -296,47 +308,45 @@
             $this->set( 'actionsSansFiche', $actionsSansFiche );
 
 			if( !empty( $this->data ) ) {
+				$this->Entretien->begin();
+
 				if( isset( $this->data['Entretien']['arevoirle'] ) ) {
 					$this->data['Entretien']['arevoirle']['day'] = '01';
 				}
 
 				if( $this->Entretien->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
 					if( $this->Entretien->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
-
-						$this->Jetons->release( $dossier_id );
 						$this->Entretien->commit();
+						$this->Jetons2->release( $dossier_id );
 						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 						$this->redirect( array( 'controller' => 'entretiens', 'action' => 'index', $personne_id ) );
 					}
 					else {
+						$this->Entretien->rollback();
 						$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 					}
 				}
 			}
-			else {
-				if( $this->action == 'edit' ) {
+			else if( $this->action == 'edit' ) {
+				$entretien['Entretien']['referent_id'] = $entretien['Entretien']['structurereferente_id'].'_'.$entretien['Entretien']['referent_id'];
 
-					$entretien['Entretien']['referent_id'] = $entretien['Entretien']['structurereferente_id'].'_'.$entretien['Entretien']['referent_id'];
+				$rdv_id = Set::classicExtract( $entretien, 'Entretien.rendezvous_id' );
+				$qd_rdv = array(
+					'conditions' => array(
+						'Rendezvous.id' => $rdv_id
+					),
+					'fields' => null,
+					'order' => null,
+					'recursive' => -1
+				);
+				$rdv = $this->Entretien->Personne->Rendezvous->find( 'first', $qd_rdv );
 
-					$rdv_id = Set::classicExtract( $entretien, 'Entretien.rendezvous_id' );
-					$qd_rdv = array(
-						'conditions' => array(
-							'Rendezvous.id' => $rdv_id
-						),
-						'fields' => null,
-						'order' => null,
-						'recursive' => -1
-					);
-					$rdv = $this->Entretien->Personne->Rendezvous->find( 'first', $qd_rdv );
-
-					if( !empty( $rdv ) ) {
-						$entretien = Set::merge( $entretien, $rdv );
-						$entretien['Rendezvous']['referent_id'] = $entretien['Rendezvous']['structurereferente_id'].'_'.$entretien['Rendezvous']['referent_id'];
-					}
-					$this->data = $entretien;
+				if( !empty( $rdv ) ) {
+					$entretien = Set::merge( $entretien, $rdv );
+					$entretien['Rendezvous']['referent_id'] = $entretien['Rendezvous']['structurereferente_id'].'_'.$entretien['Rendezvous']['referent_id'];
 				}
+				$this->data = $entretien;
 			}
-			$this->Entretien->commit();
 
 			$this->_setOptions();
 			$this->set( 'personne_id', $personne_id );

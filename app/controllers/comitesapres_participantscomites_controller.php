@@ -1,10 +1,26 @@
 <?php
+	/**
+	 * Code source de la classe ComitesapresParticipantscomitesController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.controllers
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe ComitesapresParticipantscomitesController ...
+	 *
+	 * @package app.controllers
+	 */
 	class ComitesapresParticipantscomitesController extends AppController
 	{
-
 		public $name = 'ComitesapresParticipantscomites';
+
 		public $uses = array( 'ComiteapreParticipantcomite', 'Apre', 'Participantcomite', 'Comiteapre' );
-		public $components = array( 'Jetonsfonctions' );
+
+		public $components = array( 'Jetonsfonctions2' );
+
 		public $helpers = array( 'Xform' );
 
 		public $commeDroit = array(
@@ -36,63 +52,67 @@
 		*** *******************************************************************/
 
 		protected function _add_edit( $id = null ){
-			$this->Comiteapre->begin();
+			$this->Jetonsfonctions2->get( array( 'action' => '_add_edit' ) );
 
-			if( $this->Jetonsfonctions->get( $this->name, $this->action ) ) {
-				if( $this->action == 'add' ) {
-					$comiteapre_id = $id;
-					$nbrComites = $this->Comiteapre->find( 'count', array( 'conditions' => array( 'Comiteapre.id' => $comiteapre_id ), 'recursive' => -1 ) );
-					$this->assert( ( $nbrComites == 1 ), 'invalidParameter' );
+			// Retour à l'index en cas d'annulation
+			if( isset( $this->params['form']['Cancel'] ) ) {
+				$this->Jetonsfonctions2->release( array( 'action' => '_add_edit' ) );
+				$this->redirect( array( 'controller' => 'comitesapres', 'action'     => 'view', $id ) );
+			}
+
+			if( $this->action == 'add' ) {
+				$comiteapre_id = $id;
+				$nbrComites = $this->Comiteapre->find( 'count', array( 'conditions' => array( 'Comiteapre.id' => $comiteapre_id ), 'recursive' => -1 ) );
+				$this->assert( ( $nbrComites == 1 ), 'invalidParameter' );
+			}
+			else if( $this->action == 'edit' ) {
+				$comiteapre_id = $id;
+				$comiteparticipant = $this->ComiteapreParticipantcomite->find(
+					'all',
+					array(
+						'conditions' => array(
+							'ComiteapreParticipantcomite.comiteapre_id' => $comiteapre_id
+						)
+					)
+				);
+				$this->assert( !empty( $comiteparticipant ), 'invalidParameter' );
+			}
+
+			if( !empty( $this->data ) ) {
+				foreach( $this->data['Participantcomite']['Participantcomite'] as $i => $participantcomiteId ) {
+					if( empty( $participantcomiteId ) ) {
+						unset( $this->data['Participantcomite']['Participantcomite'][$i] );
+					}
 				}
-				else if( $this->action == 'edit' ) {
-					$comiteapre_id = $id;
-					$comiteparticipant = $this->ComiteapreParticipantcomite->find(
-						'all',
-						array(
-							'conditions' => array(
-								'ComiteapreParticipantcomite.comiteapre_id' => $comiteapre_id
-							)
+
+				if( $this->Comiteapre->saveAll( $this->data ) ) {
+					$this->Jetonsfonctions2->release( array( 'action' => '_add_edit' ) );
+					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+					$this->redirect( array( 'controller' => 'comitesapres', 'action' => 'view', $comiteapre_id ) );
+				}
+				else{
+					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+				}
+			}
+			else {
+				if( $this->action == 'edit' ) {
+					$this->data = array(
+						'Comiteapre' => array(
+							'id' => $comiteapre_id,
+						),
+						'Participantcomite' => array(
+							'Participantcomite' => Set::extract( $comiteparticipant, '/ComiteapreParticipantcomite/participantcomite_id' )
 						)
 					);
-					$this->assert( !empty( $comiteparticipant ), 'invalidParameter' );
-				}
-
-				if( !empty( $this->data ) ) {
-					foreach( $this->data['Participantcomite']['Participantcomite'] as $i => $participantcomiteId ) {
-						if( empty( $participantcomiteId ) ) {
-							unset( $this->data['Participantcomite']['Participantcomite'][$i] );
-						}
-					}
-					$this->Jetonsfonctions->release( $this->name, $this->action );
-					$this->Comiteapre->commit();
-					if( $this->Comiteapre->saveAll( $this->data ) ) {
-						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-						$this->redirect( array( 'controller' => 'comitesapres', 'action' => 'view', $comiteapre_id ) );
-					}
-					else{
-						$this->Comiteapre->rollback();
-					}
 				}
 				else {
-					if( $this->action == 'edit' ) {
-						$this->data = array(
-							'Comiteapre' => array(
-								'id' => $comiteapre_id,
-							),
-							'Participantcomite' => array(
-								'Participantcomite' => Set::extract( $comiteparticipant, '/ComiteapreParticipantcomite/participantcomite_id' )
-							)
-						);
-					}
-					else {
-						$this->data['Comiteapre']['id'] = $comiteapre_id;
-					}
+					$this->data['Comiteapre']['id'] = $comiteapre_id;
 				}
-				$this->set( 'comiteapre_id', $comiteapre_id );
-				$this->_setOptions();
-				$this->Comiteapre->commit();
-				$this->render( $this->action, null, 'add_edit' );
 			}
+			$this->set( 'comiteapre_id', $comiteapre_id );
+			$this->_setOptions();
+			$this->Comiteapre->commit();
+			$this->render( $this->action, null, 'add_edit' );
 		}
 
 		/** ********************************************************************

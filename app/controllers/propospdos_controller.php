@@ -1,15 +1,33 @@
 <?php
+	/**
+	 * Code source de la classe PropospdosController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.controllers
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe PropospdosController ...
+	 *
+	 * @package app.controllers
+	 */
 	class PropospdosController extends AppController
 	{
-
 		public $name = 'Propospdos';
+
 		public $uses = array( 'Propopdo', 'Situationdossierrsa', 'Option', 'Typepdo', 'Typenotifpdo', 'Decisionpdo', 'Suiviinstruction', 'Piecepdo', 'Traitementpdo', 'Originepdo', 'Statutpdo', 'Statutdecisionpdo', 'Situationpdo', 'Referent', 'Personne', 'Dossier', 'Pdf' );
-		public $components = array( 'Fileuploader', 'Gedooo.Gedooo' );
+
+		public $components = array( 'Fileuploader', 'Gedooo.Gedooo', 'Jetons2' );
+
 		public $helpers = array( 'Default', 'Default2', 'Ajax', 'Fileuploader' );
+
 		public $commeDroit = array(
 			'view' => 'Propospdos:index',
 			'add' => 'Propospdos:edit'
 		);
+
 		public $aucunDroit = array( 'ajaxstruct', 'ajaxetatpdo', 'ajaxetat1', 'ajaxetat2', 'ajaxetat3', 'ajaxetat4', 'ajaxetat5', 'ajaxfichecalcul', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
 
 		protected function _setOptions() {
@@ -253,14 +271,6 @@
 		 *
 		 * ** ****************************************************************** */
 		protected function _add_edit( $id = null ) {
-			// Retour à la liste en cas d'annulation
-			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
-				if( $this->action == 'edit' ) {
-					$id = $this->Propopdo->field( 'personne_id', array( 'id' => $id ) );
-				}
-				$this->redirect( array( 'action' => 'index', $id ) );
-			}
-
 			$fichiers = array( );
 			if( $this->action == 'add' ) {
 				$personne_id = $id;
@@ -356,6 +366,17 @@
 				$this->set( 'pdo_id', $pdo_id );
 			}
 
+			$this->Jetons2->get( $dossier_id );
+
+			// Retour à la liste en cas d'annulation
+			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
+				if( $this->action == 'edit' ) {
+					$id = $this->Propopdo->field( 'personne_id', array( 'id' => $id ) );
+				}
+				$this->Jetons2->release( $dossier_id );
+				$this->redirect( array( 'action' => 'index', $id ) );
+			}
+
 			$this->Dossier->Suiviinstruction->order = 'Suiviinstruction.id DESC';
 
 			$qd_dossier = array(
@@ -379,14 +400,6 @@
 			$dossier = Set::merge( $dossier, $suiviinstruction );
 			$this->set( compact( 'dossier' ) );
 
-			$this->Propopdo->begin();
-			$dossier_id = $this->Personne->dossierId( $personne_id );
-			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
-			if( !$this->Jetons->check( $dossier_id ) ) {
-				$this->PersonneReferent->rollback();
-			}
-			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
-
 			$this->set( 'referents', $this->Referent->find( 'list' ) );
 
 			/**
@@ -394,6 +407,7 @@
 			 */
 			//Essai de sauvegarde
 			if( !empty( $this->data ) ) {
+				$this->Propopdo->begin();
 
 				// Nettoyage des Propopdos
 				$keys = array_keys( $this->Propopdo->schema() );
@@ -412,8 +426,8 @@
 				}
 
 				if( $saved ) {
-					$this->Jetons->release( $dossier_id );
 					$this->Propopdo->commit();
+					$this->Jetons2->release( $dossier_id );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 					$this->redirect( array( 'controller' => 'propospdos', 'action' => 'index', $personne_id ) );
 				}
@@ -430,7 +444,6 @@
 
 				$this->set( 'etatdossierpdo', $pdo['Propopdo']['etatdossierpdo'] );
 			}
-			$this->Propopdo->commit();
 
 			$this->set( 'personne_id', $personne_id );
 			$this->set( 'urlmenu', '/propospdos/index/'.$personne_id );

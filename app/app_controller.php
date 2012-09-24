@@ -569,7 +569,7 @@
 	 */
 	class AppController extends AppBaseController
 	{
-		public $components = array( 'Session', 'Auth', 'Acl', 'Jetons', 'Default', 'Gedooo.Gedooo' );
+		public $components = array( 'Session', 'Auth', 'Acl', 'Default', 'Gedooo.Gedooo' );
 
 		public $helpers = array( 'Xhtml', 'Form', 'Javascript', 'Permissions', 'Locale', 'Default', 'Xpaginator', 'Gestionanomaliebdd' );
 
