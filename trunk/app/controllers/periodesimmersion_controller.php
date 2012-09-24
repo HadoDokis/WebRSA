@@ -1,12 +1,26 @@
 <?php
+	/**
+	 * Code source de la classe PeriodesimmersionController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.controllers
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 	App::import( 'Helper', 'Locale' );
+
+	/**
+	 * La classe PeriodesimmersionController ...
+	 *
+	 * @package app.controllers
+	 */
 	class PeriodesimmersionController extends AppController
 	{
 
 		public $name = 'Periodesimmersion';
 		public $uses = array( 'Periodeimmersion', 'Cui', 'Option', 'Referent', 'Personne', 'Dossier', 'Adressefoyer', 'Structurereferente' );
 		public $helpers = array( 'Default', 'Default2', 'Locale', 'Csv', 'Ajax', 'Xform' );
-		public $components = array( 'RequestHandler', 'Gedooo.Gedooo' );
+		public $components = array( 'RequestHandler', 'Gedooo.Gedooo', 'Jetons2' );
 		public $aucunDroit = array( 'gedooo' );
 		public $commeDroit = array(
 			'view' => 'Periodesimmersion:index',
@@ -93,14 +107,6 @@
 		 *
 		 */
 		protected function _add_edit( $id = null ) {
-			// Retour à la liste en cas d'annulation
-			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
-				if( $this->action == 'edit' ) {
-					$id = $this->Periodeimmersion->field( 'cui_id', array( 'id' => $id ) );
-				}
-				$this->redirect( array( 'action' => 'index', $id ) );
-			}
-
 			if( $this->action == 'add' ) {
 				$cui_id = $id;
 				$qd_cui = array(
@@ -144,13 +150,17 @@
 			}
 
 			/// Peut-on prendre le jeton ?
-			$this->Periodeimmersion->begin();
 			$dossier_id = $this->Periodeimmersion->Cui->Personne->dossierId( $personne_id );
-			if( !$this->Jetons->check( $dossier_id ) ) {
-				$this->Periodeimmersion->rollback();
+			$this->Jetons2->get( $dossier_id );
+
+			// Retour à la liste en cas d'annulation
+			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
+				if( $this->action == 'edit' ) {
+					$id = $this->Periodeimmersion->field( 'cui_id', array( 'id' => $id ) );
+				}
+				$this->Jetons2->release( $dossier_id );
+				$this->redirect( array( 'action' => 'index', $id ) );
 			}
-			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
-			$this->set( 'dossier_id', $dossier_id );
 
 			///On ajout l'ID de l'utilisateur connecté afind e récupérer son service instructeur
 			$personne = $this->{$this->modelClass}->Cui->Personne->detailsApre( $personne_id, $this->Session->read( 'Auth.User.id' ) );
@@ -162,6 +172,7 @@
 			$this->set( 'structs', $this->Structurereferente->listOptions() );
 
 			if( !empty( $this->data ) ) {
+				$this->Periodeimmersion->begin();
 
 				$valid = $this->Periodeimmersion->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) );
 
@@ -169,8 +180,8 @@
 					$saved = $this->Periodeimmersion->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) );
 
 					if( $saved ) {
-						$this->Jetons->release( $dossier_id );
 						$this->Periodeimmersion->commit();
+						$this->Jetons2->release( $dossier_id );
 						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 						$this->redirect( array( 'controller' => 'periodesimmersion', 'action' => 'index', $cui_id ) );
 					}
@@ -178,6 +189,10 @@
 						$this->Periodeimmersion->rollback();
 						$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 					}
+				}
+				else {
+					$this->Periodeimmersion->rollback();
+					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 				}
 			}
 			else {

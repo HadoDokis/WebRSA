@@ -296,8 +296,10 @@
 
 	</div>
 	<div class="submit">
-		<?php echo $form->submit( 'Enregistrer', array( 'div' => false ) ); ?>
-		<?php echo $form->button( 'Retour', array( 'type' => 'button', 'onclick'=>"location.replace('".Router::url( '/dossierspcgs66/index/'.$foyer_id, true )."')" ) ); ?>
+		<?php
+			echo $form->submit( 'Enregistrer', array( 'div' => false ) );
+			echo $form->submit( 'Retour', array( 'div' => false, 'name' => 'Cancel' ) );
+		?>
 	</div>
 
 	<?php echo $xform->end();?>

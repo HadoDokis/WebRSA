@@ -1,6 +1,20 @@
 <?php
+	/**
+	 * Fichier source de la classe Gestionsanctionep58.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.models
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 	App::import( 'Sanitize' );
 
+	/**
+	 * La classe Gestionsanctionep58 fournit un traitement des filtres de recherche concernant la gestion des
+	 * sanctions émises par une EP du CG 58.
+	 *
+	 * @package app.models
+	 */
 	class Gestionsanctionep58 extends AppModel
 	{
 		public $name = 'Gestionsanctionep58';
@@ -32,7 +46,7 @@
 		*
 		*/
 
-		public function search( $statutSanctionep, $criteressanctionseps, $mesCodesInsee, $filtre_zone_geo, $lockedDossiers ) {
+		public function search( $statutSanctionep, $criteressanctionseps, $mesCodesInsee, $filtre_zone_geo, $lockedDossiers = null ) {
 			$Personne = ClassRegistry::init( 'Personne' );
 			$Ep = ClassRegistry::init( 'Ep' );
 
@@ -93,7 +107,10 @@
 
 			/// Dossiers lockés
 			if( !empty( $lockedDossiers ) ) {
-				$conditions[] = 'Dossier.id NOT IN ( '.implode( ', ', $lockedDossiers ).' )';
+				if( is_array( $lockedDossiers ) ) {
+					$conditions[] = 'Dossier.id NOT IN ( '.implode( ', ', $lockedDossiers ).' )';
+				}
+				$conditions[] = "NOT {$lockedDossiers}";
 			}
 
 			// Conditions pour les jointures

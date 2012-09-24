@@ -1,15 +1,25 @@
 <?php
+	/**
+	 * Code source de la classe GestionsanomaliesbddsController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.controllers
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 	ini_set( 'max_execution_time', 0 );
 	ini_set( 'memory_limit', '2.5G' );
 
 	/**
-	*
-	*/
+	 * La classe GestionsanomaliesbddsController permet de rechercher et de traiter les doublons "simples".
+	 *
+	 * @package app.controllers
+	 */
 	class GestionsanomaliesbddsController extends AppController
 	{
 		public $uses = array( 'Gestionanomaliebdd', /*'Adressefoyer', 'Foyer', */'Dossier', 'Option' );
 
-		public $components = array( 'Gestionanomaliesbdd', 'Gestionzonesgeos', 'Prg' => array( 'actions' => array( 'index' ) ) );
+		public $components = array( 'Gestionanomaliesbdd', 'Gestionzonesgeos', 'Prg' => array( 'actions' => array( 'index' ) ), 'Jetons2' );
 
 		public $helpers = array( 'Default2', 'Gestionanomaliebdd' );
 
@@ -62,7 +72,7 @@
 					$mesCodesInsee,
 					$this->Session->read( 'Auth.User.filtre_zone_geo' ),
 					$search,
-					$this->Jetons->sqIds()
+					$this->Jetons2->sqLocked( 'Dossier', 'locked' )
 				);
 
 				// Restrictions 58
@@ -163,9 +173,9 @@
 					$this->Dossier->Foyer->fields(),
 					$this->Gestionanomaliebdd->vfsInformationsFoyer(
 						$this->Dossier->Foyer,
-						$sqPersonnesEnDoublons,
-						$this->Jetons->sqIds()
-					)
+						$sqPersonnesEnDoublons
+					),
+					(array)$this->Jetons2->sqLocked( 'Dossier', 'locked' )
 				),
 				'contain' => array(
 					'Dossier'
@@ -202,48 +212,7 @@
 			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 
 			// Recherche d'informations sur le foyer
-			/*$qdPersonnesEnDoublons = $this->Gestionanomaliebdd->qdPersonnesEnDoublons(
-				'approchante', // FIXME
-				null,
-				'Foyer.id'
-			);
-			$qdPersonnesEnDoublons['fields'] = array( 'p1.foyer_id' );
-			$sqPersonnesEnDoublons = $this->Dossier->Foyer->Personne->sq( $qdPersonnesEnDoublons );
-
-			$querydata = array(
-				'fields' => array_merge(
-					$this->Dossier->fields(),
-					$this->Dossier->Foyer->fields(),
-					$this->Gestionanomaliebdd->vfsInformationsFoyer(
-						$this->Dossier->Foyer,
-						$sqPersonnesEnDoublons,
-						$this->Jetons->sqIds()
-					)
-				),
-				'contain' => array(
-					'Dossier'
-				),
-				'conditions' => array(
-					'Foyer.id' => $foyer_id
-				)
-			);
-			$foyer = $this->Dossier->Foyer->find( 'first', $querydata );*/
 			$foyer = $this->_informationsFoyer( $foyer_id );
-
-			// <-- Vous êtes ici
-			/*$querydataDossier = $this->Gestionanomaliebdd->search(
-				$mesCodesInsee,
-				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
-				array(
-					'Gestionanomaliebdd' => array(
-						'touteerreur' => true,
-						'methode' => $methode
-					)
-				),
-				null
-			);
-			debug( $querydataDossier );
-			debug( $this->Dossier->find( 'first', $querydataDossier ) );*/
 
 			// Recherche de l'ensemble des  personnes du foyer
 			$querydata = array(
@@ -804,7 +773,7 @@
 			}
 
 			$success = true;
-  
+
 			// Suppression des enregistrements liés aux personnes à supprimer
 			foreach( $assocConditions as $linkedModel => $linkedConditions ) {
 				$avant = Set::extract( "/{$linkedModel}/{$linkedModel}/id", $donnees );
@@ -953,13 +922,8 @@ $this->log( __LINE__.' model:'.$model.' '.var_export( $success, true ), LOG_DEBU
 			$this->assert( is_numeric( $personne_id ), 'error404' );
 
 			// Acquisition du lock ?
-			$this->Dossier->begin();
 			$dossier_id = $this->Dossier->Foyer->dossierId( $foyer_id );
-			if( !$this->Jetons->check( $dossier_id ) ) {
-				$this->Dossier->begin();
-			}
-			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
-
+			$this->Jetons2->get( $dossier_id );
 
 			$named = Xset::bump( $this->params['named'], '__' );
 			$methode = Set::classicExtract( $named, 'Gestionanomaliebdd.methode' );
@@ -1017,11 +981,12 @@ $this->log( __LINE__.' model:'.$model.' '.var_export( $success, true ), LOG_DEBU
 			// 2°) Tentative de fusion des personnes et de leurs enregistrements liés
 			if( !empty( $this->data ) ) {
 				unset( $this->data['Form'] );
+				$this->Dossier->begin();
 
 				$success = $this->_mergePersonnes( $this->data, $assocConditions, $donnees, $personnes_id, $dependencies );
 				if( $success ) {
-					$this->Jetons->release( $dossier_id );
 					$this->Dossier->Foyer->Personne->commit();
+					$this->Jetons2->release( $dossier_id );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 					$this->redirect( array( 'action' => 'foyer', $this->params['pass'][0] ) );
 				}

@@ -1,4 +1,18 @@
 <?php
+	/**
+	* Code source de la classe DecisionspropospdosController.
+	*
+	* PHP 5.3
+	*
+	* @package app.controllers
+	* @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	*/
+
+	/**
+	* La classe DecisionspropospdosController ...
+	*
+	* @package app.controllers
+	*/
 	class DecisionspropospdosController extends AppController
 	{
 
@@ -7,7 +21,7 @@
 		/**
 		 * @access public
 		 */
-		public $components = array( 'Default', 'Gedooo.Gedooo' );
+		public $components = array( 'Default', 'Gedooo.Gedooo', 'Jetons2' );
 		public $helpers = array( 'Default2', 'Ajax' );
 		public $uses = array( 'Decisionpropopdo', 'Option', 'Pdf' );
 		public $commeDroit = array(
@@ -45,7 +59,6 @@
 		protected function _add_edit( $id = null ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
-			$this->Decisionpropopdo->begin();
 			$this->set( 'options', $this->_options() );
 
 			// Récupération des id afférents
@@ -88,12 +101,11 @@
 			$this->set( 'propopdo_id', $propopdo_id );
 			$this->set( 'personne_id', $personne_id );
 
-			if( !$this->Jetons->check( $dossier_id ) ) {
-				$this->Decisionpropopdo->rollback();
-			}
-			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
+			$this->Jetons2->get( $dossier_id );
 
 			if( !empty( $this->data ) ) {
+				$this->Decisionpropopdo->begin();
+
 				if( $this->Decisionpropopdo->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
 					$saved = true;
 
@@ -104,8 +116,8 @@
 					}
 
 					if( $saved ) {
-						$this->Jetons->release( $dossier_id );
-						$this->Decisionpropopdo->commit(); // FIXME
+						$this->Decisionpropopdo->commit();
+						$this->Jetons2->release( $dossier_id );
 						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 						$this->redirect( array( 'controller' => 'propospdos', 'action' => 'edit', $propopdo_id ) );
 					}
@@ -119,10 +131,9 @@
 					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 				}
 			}
-			elseif( $this->action == 'edit' )
+			else if( $this->action == 'edit' ) {
 				$this->data = $decisionpropopdo;
-
-			$this->Decisionpropopdo->commit();
+			}
 
 			$this->set( 'urlmenu', '/propospdos/index/'.$personne_id );
 			$this->render( $this->action, null, 'add_edit' );

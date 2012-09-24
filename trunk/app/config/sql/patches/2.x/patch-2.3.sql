@@ -483,7 +483,6 @@ SELECT public.alter_enumtype ( 'TYPE_ETATDOSSIERAPRE', ARRAY['COM', 'INC', 'VAL'
 ALTER TABLE jetons ALTER COLUMN php_sid TYPE VARCHAR(32);
 ALTER TABLE jetonsfonctions ALTER COLUMN php_sid TYPE VARCHAR(32);
 
-
 -------------------------------------------------------------------------------------------------------------
 -- 20120919: Ajout d'un lien entre les actionscandidats et le CER et les entretiens
 -------------------------------------------------------------------------------------------------------------
@@ -496,6 +495,16 @@ SELECT add_missing_constraint ( 'public', 'entretiens', 'entretiens_actioncandid
 SELECT add_missing_table_field('public', 'cuis', 'motifannulation', 'TEXT' );
 
 SELECT public.alter_enumtype ( 'TYPE_DECISION', ARRAY['E', 'V', 'A', 'R', 'C'] );
+
+-------------------------------------------------------------------------------------------------------------
+-- 20120924: Ajout d'une colonne pour les paramètres éventuels de la table jetonsfonctions
+-------------------------------------------------------------------------------------------------------------
+SELECT add_missing_table_field( 'public', 'jetonsfonctions', 'params', 'VARCHAR(255)' );
+
+DROP INDEX IF EXISTS jetonsfonctions_controller_action_params_idx;
+
+DROP INDEX IF EXISTS jetonsfonctions_controller_action_params_idx;
+CREATE UNIQUE INDEX jetonsfonctions_controller_action_params_idx ON jetonsfonctions( controller, action, params );
 
 -- *****************************************************************************
 COMMIT;

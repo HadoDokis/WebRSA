@@ -1,4 +1,18 @@
 <?php
+	/**
+	* Code source de la classe Decisionstraitementspcgs66Controller.
+	*
+	* PHP 5.3
+	*
+	* @package app.controllers
+	* @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	*/
+
+	/**
+	* La classe Decisionstraitementspcgs66Controller ...
+	*
+	* @package app.controllers
+	*/
 	class Decisionstraitementspcgs66Controller extends AppController
 	{
 		public $name = 'Decisionstraitementspcgs66';
@@ -6,7 +20,7 @@
 		* @access public
 		*/
 
-		public $components = array( 'Default', 'Gedooo.Gedooo' );
+		public $components = array( 'Default', 'Gedooo.Gedooo', 'Jetons2' );
 		public $helpers = array( 'Default2', 'Ajax' );
 		public $uses = array( 'Decisiontraitementpcg66', 'Option', 'Pdf'  );
 
@@ -83,8 +97,6 @@
 		protected function _add_edit( $id = null ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
-			$this->Decisiontraitementpcg66->begin();
-
 			// Récupération des id afférents
 			if( $this->action == 'add' ) {
 				$traitementpcg66_id = $id;
@@ -120,7 +132,13 @@
 			$this->set( 'dossierpcg66_id', $traitementpcg66['Personnepcg66']['dossierpcg66_id'] );
 			$this->set( 'personne_id', $traitementpcg66['Personnepcg66']['personne_id'] );
 
-			if( !empty( $this->data ) ){
+			$dossier_id = $this->Decisiontraitementpcg66->Traitementpcg66->Personnepcg66->Personne->dossierId( $traitementpcg66['Personnepcg66']['personne_id'] );
+
+			$this->Jetons2->get( $dossier_id );
+
+			if( !empty( $this->data ) ) {
+				$this->Decisiontraitementpcg66->begin();
+
 				$saved = $this->Decisiontraitementpcg66->save( $this->data );
 
 				///FIXME: à remettre pour gérer les états du dossierpcg66
@@ -129,8 +147,8 @@
 				}
 
 				if( $saved ) {
-					$this->Jetons->release( $dossier_id );
 					$this->Decisiontraitementpcg66->commit();
+					$this->Jetons2->release( $dossier_id );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 					$this->redirect( array( 'controller' => 'decisionstraitementspcgs66', 'action' => 'index', $traitementpcg66['Traitementpcg66']['id'] ) );
 				}

@@ -299,9 +299,8 @@
 		* 	- Foyer.enerreur
 		* 	- Foyer.sansprestation
 		*	- Foyer.doublonspersonnes
-		*	- Dossier.locked
 		*/
-		public function vfsInformationsFoyer( &$Foyer, $sqPersonnesEnDoublons, $sqLockedDossiers ) {
+		public function vfsInformationsFoyer( &$Foyer, $sqPersonnesEnDoublons ) {
 			if( empty( $sqLockedDossiers ) ) {
 				$sqLockedDossiers = 0; // INFO: 0 car lorsque c'est à NULL, ça ne réagit pas comme prévu
 			}
@@ -310,7 +309,6 @@
 				$Foyer->sqVirtualField( 'enerreur', false ).' AS "Foyer__enerreur"',
 				$Foyer->sqVirtualField( 'sansprestation', false ).' AS "Foyer__sansprestation"',
 				"( CASE WHEN \"Foyer\".\"id\" IN ( {$sqPersonnesEnDoublons} ) THEN 'Personnes en doublon détectées' ELSE NULL END ) AS \"Foyer__doublonspersonnes\"",
-				"( \"Dossier\".\"id\" IN ( {$sqLockedDossiers} ) ) AS \"Dossier__locked\""
 			);
 		}
 
@@ -432,11 +430,12 @@
 					$Dossier->fields(),
 					$Dossier->Foyer->fields(),
 					$Dossier->Situationdossierrsa->fields(),
-					$this->vfsInformationsFoyer( $Dossier->Foyer, $sqPersonnesEnDoublons, $sqLockedDossiers ),
+					$this->vfsInformationsFoyer( $Dossier->Foyer, $sqPersonnesEnDoublons ),
 					array(
 						'Adresse.locaadr',
 						'Adresse.numcomptt',
-					)
+					),
+					(array)$sqLockedDossiers
 				),
 				'conditions' => array(),
 				'joins' => array(

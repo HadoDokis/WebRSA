@@ -19,7 +19,10 @@
 			'paginate' => Inflector::classify( $theme ),
 			'actions' => array( 'Personnes::view' ),
 			'id' => $theme,
-			'labelcohorte' => 'Enregistrer',
+			'labelcohorte' => array(
+				'Enregistrer',
+				'Annuler' => array( 'name' => 'Cancel' ),
+			),
 			'cohortehidden' => array_merge( array( 'Choose.theme' => array( 'value' => $theme ), ), $dossiersIds ),
 			'trClass' => $trClass,
 		)

@@ -5,7 +5,7 @@ App::import( 'Sanitize' );
 		public $name = 'Cohortedossierpcg66';
 
 		public $useTable = false;
-		
+
 		public $actsAs = array(
 			'Conditionnable'
 		);
@@ -13,7 +13,7 @@ App::import( 'Sanitize' );
 		*
 		*/
 
-		public function search( $statutAffectation, $mesCodesInsee, $filtre_zone_geo, $criteresdossierspcgs66, $lockedDossiers ) {
+		public function search( $statutAffectation, $mesCodesInsee, $filtre_zone_geo, $criteresdossierspcgs66, $lockedDossiers = null ) {
 			/// Conditions de base
 			$conditions = array(
 			);
@@ -33,10 +33,7 @@ App::import( 'Sanitize' );
 				}
 			}
 
-// 			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
-
-
-            /// Dossiers lockés
+			 // Dossiers lockés
 			if( !empty( $lockedDossiers ) ) {
 				if( is_array( $lockedDossiers ) ) {
 					$conditions[] = 'Dossier.id NOT IN ( '.implode( ', ', $lockedDossiers ).' )';
@@ -49,13 +46,13 @@ App::import( 'Sanitize' );
 			$serviceinstructeur_id = Set::extract( $criteresdossierspcgs66, 'Search.Dossierpcg66.serviceinstructeur_id' );
 			$typepdo_id = Set::extract( $criteresdossierspcgs66, 'Search.Typepdo.libelle' );
 			$orgpayeur = Set::extract( $criteresdossierspcgs66, 'Search.Dossierpcg66.orgpayeur' );
-			
-			
+
+
 			$conditions = $this->conditionsAdresse( $conditions, $criteresdossierspcgs66['Search'], $filtre_zone_geo, $mesCodesInsee );
 			$conditions = $this->conditionsDossier( $conditions, $criteresdossierspcgs66['Search'] );
 			$conditions = $this->conditionsPersonne( $conditions, $criteresdossierspcgs66['Search'] );
 			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $criteresdossierspcgs66['Search'] );
-			
+
 
 			/// Critères sur la date de signature de la fiche de candidature
 			if( isset( $criteresdossierspcgs66['Search']['Dossierpcg66']['datereceptionpdo'] ) && !empty( $criteresdossierspcgs66['Search']['Dossierpcg66']['datereceptionpdo'] ) ) {
@@ -65,28 +62,28 @@ App::import( 'Sanitize' );
 					$conditions[] = 'Dossierpcg66.datereceptionpdo BETWEEN \''.implode( '-', array( $criteresdossierspcgs66['Search']['Dossierpcg66']['datereceptionpdo_from']['year'], $criteresdossierspcgs66['Search']['Dossierpcg66']['datereceptionpdo_from']['month'], $criteresdossierspcgs66['Search']['Dossierpcg66']['datereceptionpdo_from']['day'] ) ).'\' AND \''.implode( '-', array( $criteresdossierspcgs66['Search']['Dossierpcg66']['datereceptionpdo_to']['year'], $criteresdossierspcgs66['Search']['Dossierpcg66']['datereceptionpdo_to']['month'], $criteresdossierspcgs66['Search']['Dossierpcg66']['datereceptionpdo_to']['day'] ) ).'\'';
 				}
 			}
-			
+
 			// Critères sur un dossier pcg - originepdo, typepdo, serviecinstructeur, orgpayeur
 			foreach( array( 'serviceinstructeur_id', 'orgpayeur' ) as $criteredossierpcg66 ) {
 				if( isset( $criteresdossierspcgs66['Search']['Dossierpcg66'][$criteredossierpcg66] ) && !empty( $criteresdossierspcgs66['Search']['Dossierpcg66'][$criteredossierpcg66] ) ) {
 					$conditions[] = 'Dossierpcg66.'.$criteredossierpcg66.' = \''.Sanitize::clean( $criteresdossierspcgs66['Search']['Dossierpcg66'][$criteredossierpcg66] ).'\'';
 				}
 			}
-			
+
 			// Commune au sens INSEE
 			if( !empty( $originepdo_id ) ) {
 				$conditions[] = 'Dossierpcg66.originepdo_id = \''.Sanitize::clean( $originepdo_id ).'\'';
 			}
-			
+
 			// Commune au sens INSEE
 			if( !empty( $typepdo_id ) ) {
 				$conditions[] = 'Dossierpcg66.typepdo_id = \''.Sanitize::clean( $typepdo_id ).'\'';
 			}
-			
+
 			/// Requête
 			$this->Dossier = ClassRegistry::init( 'Dossier' );
 
-			
+
 
 			$joins = array(
 				array(

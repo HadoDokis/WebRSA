@@ -566,14 +566,23 @@
 					}
 				}
 
+				$defaultLabelCohorteParams = array( 'name' => 'cohorte', 'div' => false );
+
+				$submits = '';
 				if( isset( $cohorteParams['labelcohorte'] ) ) {
-					$labelcohorte = $cohorteParams['labelcohorte'];
+					if( !is_array( $cohorteParams['labelcohorte'] ) ) {
+						$cohorteParams['labelcohorte'] = array( $cohorteParams['labelcohorte'] => $defaultLabelCohorteParams );
+					}
+					foreach( Set::normalize( $cohorteParams['labelcohorte'] ) as $labelcohorte => $labelcohorteparams ) {
+						$submits .= $this->Xform->submit( $labelcohorte, Set::merge( $defaultLabelCohorteParams, (array)$labelcohorteparams ) );
+					}
 				}
 				else {
-					$labelcohorte = __( 'Validate', true );
+					$submits .= $this->Xform->submit( __( 'Validate', true ), $defaultLabelCohorteParams );
 				}
 
-				$return .= $this->Xform->submit( $labelcohorte, array( 'name' => 'cohorte' ) );
+				$return .= $this->Html->tag( 'div', $submits, array( 'class' => 'submit' ) );
+
 				$return .= $this->Xform->end();
 
 				$css = ( Configure::read( 'debug' ) > 0 ? $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false ) : null );

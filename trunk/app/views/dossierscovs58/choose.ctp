@@ -44,23 +44,10 @@
 	</div>
 </div>
 <?php
-// 	echo $form->end('Valider');
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $javascript->link( 'prototype.livepipe.js' );
 		echo $javascript->link( 'prototype.tabs.js' );
 	}
-
-	echo $default->button(
-		'back',
-		array(
-			'controller' => 'covs58',
-			'action'     => 'view',
-			$cov58_id
-		),
-		array(
-			'id' => 'Back'
-		)
-	);
 ?>
 
 <script type="text/javascript">

@@ -1,17 +1,36 @@
 <?php
+	/**
+	 * Code source de la classe MemosController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.controllers
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe MemosController permet de gérer les mémos attachés à un allocataire.
+	 *
+	 * @package app.controllers
+	 */
 	class MemosController extends AppController
 	{
-
 		public $name = 'Memos';
+
 		public $uses = array( 'Memo', 'Option', 'Personne' );
+
 		public $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform' );
+
+		public $components = array( 'Jetons2' );
+
 		public $commeDroit = array(
 			'add' => 'Memos:edit'
 		);
 
-		/**		 * *******************************************************************
+		/**
 		 *
-		 * ** ****************************************************************** */
+		 * @param integer $personne_id
+		 */
 		public function index( $personne_id = null ) {
 			$nbrPersonnes = $this->Memo->Personne->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ), 'contain' => false ) );
 			$this->assert( ( $nbrPersonnes == 1 ), 'invalidParameter' );
@@ -42,9 +61,10 @@
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
-		/**		 * *******************************************************************
+		/**
 		 *
-		 * ** ****************************************************************** */
+		 * @param integer $id
+		 */
 		protected function _add_edit( $id = null ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
@@ -69,26 +89,23 @@
 				$personne_id = $memo['Memo']['personne_id'];
 			}
 
-			$this->Memo->begin();
-
 			$dossier_id = $this->Personne->dossierId( $personne_id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
 
-			if( !$this->Jetons->check( $dossier_id ) ) {
-				$this->Memo->rollback();
-			}
-			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
+			$this->Jetons2->get( $dossier_id );
 
 			// Retour à la liste en cas d'annulation
 			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
+				$this->Jetons2->release( $dossier_id );
 				$this->redirect( array( 'action' => 'index', $personne_id ) );
 			}
 
 			if( !empty( $this->data ) ) {
+				$this->Memo->begin();
 				if( $this->Memo->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
 					if( $this->Memo->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
-						$this->Jetons->release( $dossier_id );
 						$this->Memo->commit();
+						$this->Jetons2->release( $dossier_id );
 						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 						$this->redirect( array( 'controller' => 'memos', 'action' => 'index', $personne_id ) );
 					}
@@ -100,7 +117,6 @@
 			elseif( $this->action == 'edit' ) {
 				$this->data = $memo;
 			}
-			$this->Memo->commit();
 
 			$this->set( 'personne_id', $personne_id );
 			$this->set( 'urlmenu', '/memos/index/'.$personne_id );

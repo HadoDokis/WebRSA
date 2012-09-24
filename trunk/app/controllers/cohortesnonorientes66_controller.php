@@ -1,4 +1,19 @@
 <?php
+	/**
+	 * Code source de la classe Cohortesnonorientes66Controller.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.controllers
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe Cohortesnonorientes66Controller permet de traiter les cohortes d'orientation au CG 66 et les
+	 * impressions liées.
+	 *
+	 * @package app.controllers
+	 */
 	class Cohortesnonorientes66Controller extends AppController
 	{
 		public $name = 'Cohortesnonorientes66';
@@ -15,6 +30,12 @@
 		public $helpers = array( 'Csv', 'Ajax', 'Default2', 'Locale', 'Search', 'Fileuploader', 'Gestionanomaliebdd' );
 
 		public $components = array(
+			'Cohortes' => array(
+				'isemploi',
+				'notisemploi',
+			),
+			'Fileuploader',
+			'Gestionzonesgeos',
 			'Prg2' => array(
 				'actions' => array(
 					'isemploi' => array( 'filter' => 'Search' ),
@@ -24,13 +45,13 @@
 					'oriente' => array( 'filter' => 'Search' )
 				)
 			),
-			'Fileuploader'
 		);
 
-
 		/**
-		*
-		*/
+		 * Méthode commune d'envoi des options dans les vues.
+		 *
+		 * @return void
+		 */
 		public function _setOptions() {
 			$this->set( 'options',  $this->Personne->allEnumLists() );
 			$this->set( 'orgpayeur', array('CAF'=>'CAF', 'MSA'=>'MSA') );
@@ -96,62 +117,53 @@
 			$this->set( 'options', $this->Personne->Orientstruct->Nonoriente66->allEnumLists() );
 		}
 
-
-
 		/**
-		*
-		*/
-
+		 * Cohortes d'orientation des allocataires non orientés, inscrits à Pôle Emploi.
+		 *
+		 * @return void
+		 */
 		public function isemploi() {
 			$this->_index( 'Nonoriente::isemploi' );
 		}
 
 		/**
-		*
-		*/
-
+		 * Cohortes d'orientation des allocataires non orientés, non inscrits à Pôle Emploi.
+		 *
+		 * @return void
+		 */
 		public function notisemploi() {
 			$this->_index( 'Nonoriente::notisemploi' );
 		}
 
 		/**
-		*
-		*/
-
+		 * Cohorte d'impression de convocations pour l'orientation des allocataires non inscrits à Pôle Emploi.
+		 *
+		 * @return void
+		 */
 		public function notisemploiaimprimer() {
 			$this->_index( 'Nonoriente::notisemploiaimprimer' );
 		}
 
 		/**
-		*
-		*/
-
+		 * @return void
+		 */
 		public function notifaenvoyer() {
 			$this->_index( 'Nonoriente::notifaenvoyer' );
 		}
 
 		/**
-		*
-		*/
-
+		 * @return void
+		 */
 		public function oriente() {
 			$this->_index( 'Nonoriente::oriente' );
 		}
 
 
 		/**
-		*
-		*/
-
+		 * @return void
+		 */
 		protected function _index( $statutNonoriente = null ) {
 			$this->assert( !empty( $statutNonoriente ), 'invalidParameter' );
-
-			if( Configure::read( 'CG.cantons' ) ) {
-				$this->set( 'cantons', $this->Canton->selectList() );
-			}
-
-			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 
 			// Dans ce contexte-ci, Nonoriente66.reponseallocataire est un champ obligatoire.
 			$rule = array(
@@ -164,6 +176,8 @@
 			if( !empty( $this->data ) ) {
 				// On a renvoyé  le formulaire de la cohorte, tentative de sauvegarde
 				if( !empty( $this->data['Orientstruct'] ) ) {
+					$this->Cohortes->get( array_unique( Set::extract( $this->data, 'Orientstruct.{n}.dossier_id' ) ) );
+
 					$this->Personne->Orientstruct->begin();
 
 					// Tentative de validation
@@ -186,13 +200,12 @@
 					}
 
 					if( $success ) {
-						foreach( array_unique( Set::extract( $this->data, 'Orientstruct.{n}.dossier_id' ) ) as $dossier_id ) {
-							$this->Jetons->release( array( 'Dossier.id' => $dossier_id ) );
-						}
-
 						$this->Personne->Orientstruct->commit();
+						$this->Cohortes->release( array_unique( Set::extract( $this->data, 'Orientstruct.{n}.dossier_id' ) ) );
+
 						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 						unset( $this->data['Orientstruct'], $this->data['Nonoriente66'] );
+
 						if( isset( $this->data['sessionKey'] ) ) {
 							$this->Session->del( "Prg.{$this->name}__{$this->action}.{$this->data['sessionKey']}" );
 						}
@@ -205,8 +218,6 @@
 
 				// Filtrage
 				if( ( $statutNonoriente == 'Nonoriente::isemploi' ) || ( $statutNonoriente == 'Nonoriente::notisemploi' ) || ( $statutNonoriente == 'Nonoriente::notisemploiaimprimer' ) || ( $statutNonoriente == 'Nonoriente::notifaenvoyer' ) || ( $statutNonoriente == 'Nonoriente::oriente' )  && !empty( $this->data ) ) {
-					$this->Dossier->begin(); // Pour les jetons
-
 					$limit = 10;
 					if( $statutNonoriente == 'Nonoriente::notisemploiaimprimer' ){
 						$limit = 100;
@@ -222,12 +233,21 @@
 
 					$progressivePaginate = !Set::classicExtract( $this->data, 'Search.paginationNombreTotal' );
 
-					$paginate = $this->Cohortenonoriente66->search( $statutNonoriente, $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->data, $this->Jetons->ids() );
+					$paginate = $this->Cohortenonoriente66->search(
+						$statutNonoriente,
+						(array)$this->Session->read( 'Auth.Zonegeographique' ),
+						$this->Session->read( 'Auth.User.filtre_zone_geo' ),
+						$this->data,
+						( in_array( $this->action, array( 'isemploi', 'notisemploi'  ) ) ? $this->Cohortes->sqLocked( 'Dossier' ) : null )
+					);
 					$paginate['limit'] = $limit;
 
 					$this->paginate = $paginate;
 					$cohortesnonorientes66 = $this->paginate( 'Personne', array(), array(), $progressivePaginate );
 
+					if( in_array( $this->action, array( 'isemploi', 'notisemploi'  ) ) ) {
+						$this->Cohortes->get( array_unique( Set::extract( '/Dossier/id', $cohortesnonorientes66 ) ) );
+					}
 
 					//Pour le lien filelink, sauvegarde de l'URL de la recherche lorsqu'on cliquera sur le bouton "Retour" dans la liste des fichiers liés
 					$this->Session->write( "Savedfilters.Nonorientes66.filelink",
@@ -240,7 +260,6 @@
 						)
 					);
 
-					$this->Dossier->commit();
 					$this->set( 'cohortesnonorientes66', $cohortesnonorientes66 );
 
 				}
@@ -248,13 +267,8 @@
 			}
 
 			$this->_setOptions();
-			if( Configure::read( 'Zonesegeographiques.CodesInsee' ) ) {
-				$this->set( 'mesCodesInsee', $this->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) ) );
-			}
-			else {
-				$this->set( 'mesCodesInsee', $this->Dossier->Foyer->Adressefoyer->Adresse->listeCodesInsee() );
-			}
-
+			$this->set( 'cantons', $this->Gestionzonesgeos->listeCantons() );
+			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
 
 			switch( $statutNonoriente ) {
 				case 'Nonoriente::isemploi':
@@ -295,14 +309,9 @@
 		}
 
 		/**
-		 *
-		 *
-		 * @param integer $id L'id de
+		 * @return void
 		 */
 		public function impressions() {
-			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
-
 			// La page sur laquelle nous sommes
 			$page = Set::classicExtract( $this->params, 'named.page' );
 			if( ( intval( $page ) != $page ) || $page < 0 ) {
@@ -311,7 +320,7 @@
 
 			$pdf = $this->Cohortenonoriente66->getDefaultCohortePdf(
 				'Nonoriente::notisemploiaimprimer',
-				$mesCodesInsee,
+				(array)$this->Session->read( 'Auth.Zonegeographique' ),
 				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
 				$this->Session->read( 'Auth.User.id' ),
 				XSet::bump( $this->params['named'] ),
@@ -328,11 +337,9 @@
 		}
 
 		/**
-			* Impression d'un rendez-vous.
-			*
-			* @param integer $id
-			* @return void
-			*/
+		 * @param integer $id
+		 * @return void
+		 */
 		public function impressionOrientation( $id = null ) {
 			$pdf = $this->Personne->Orientstruct->getPdfNonoriente66( $id );
 
@@ -346,14 +353,9 @@
 		}
 
 		/**
-		 *
-		 *
-		 * @param integer $id L'id de
+		 * @return void
 		 */
 		public function impressionsOrientation() {
-			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
-
 			// La page sur laquelle nous sommes
 			$page = Set::classicExtract( $this->params, 'named.page' );
 			if( ( intval( $page ) != $page ) || $page < 0 ) {
@@ -362,7 +364,7 @@
 
 			$pdfs = $this->Cohortenonoriente66->getCohortePdfNonoriente66(
 				'Nonoriente::notifaenvoyer',
-				$mesCodesInsee,
+				(array)$this->Session->read( 'Auth.Zonegeographique' ),
 				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
 				XSet::bump( $this->params['named'], '__' ),
 				$page
@@ -385,15 +387,11 @@
 		 * @return void
 		 */
 		public function exportcsv() {
-			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
-
 			$querydata = $this->Cohortenonoriente66->search(
 				'Nonoriente::oriente',
-				$mesCodesInsee,
+				(array)$this->Session->read( 'Auth.Zonegeographique' ),
 				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
-				Xset::bump( $this->params['named'], '__' ),
-				$this->Jetons->ids()
+				Xset::bump( $this->params['named'], '__' )
 			);
 			unset( $querydata['limit'] );
 			$nonorientes66 = $this->Personne->find( 'all', $querydata );
@@ -410,9 +408,6 @@
 			$listestructures = $this->Personne->Orientstruct->Structurereferente->list1Options( array( 'Structurereferente.actif' => 'O' ) );
 			$this->set( compact( 'listestructures' ) );
 
-// debug( $test );
-// debug($structures);
-// die();
 			$this->_setOptions();
 			$this->layout = '';
 			$this->set( compact( 'nonorientes66' ) );

@@ -82,21 +82,9 @@
 			</fieldset>
 		</div>
 
-		<?php echo $xform->submit( 'Enregistrer' );?>
+		<div class="submit">
+			<?php echo $form->submit( 'Enregistrer', array( 'div' => false ) );?>
+			<?php echo $form->submit( 'Annuler', array( 'name' => 'Cancel', 'div' => false ) );?>
+		</div>
 	<?php echo $xform->end();?>
-
-	<?php
-		echo $default->button(
-			'back',
-			array(
-				'controller' => 'comitesapres',
-				'action'     => 'view',
-				$comiteapre_id
-			),
-			array(
-				'id' => 'Back'
-			)
-		);
-	?>
-
 <div class="clearer"><hr /></div>

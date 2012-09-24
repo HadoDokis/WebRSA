@@ -1,6 +1,20 @@
 <?php
+	/**
+	 * Fichier source de la classe Cohortenonoriente66.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.models
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 	App::import( 'Sanitize' );
 
+	/**
+	 * La classe Cohortenonoriente66 fournit un traitement des filtres de recherche des cohortes d'orientation
+	 * au CG 66 et des impression liées.
+	 *
+	 * @package app.models
+	 */
 	class Cohortenonoriente66 extends AppModel
 	{
 		public $name = 'Cohortenonoriente66';
@@ -31,7 +45,7 @@
 				L'allocataire doit être soumis  droit et devoir
 				L'état du dossier de l'allocataire doit se trouver dans un état ouvert ( Z, 2, 3, 4 )
 				Son adresse de rang 01 doit être renseignée
-				Les zones géographiques de l'utilisateur doivent couvrir celle de l'allocataire (afin que l'utilisateur puisse visualiser l'allocataire)          
+				Les zones géographiques de l'utilisateur doivent couvrir celle de l'allocataire (afin que l'utilisateur puisse visualiser l'allocataire)
 
 			Plus spécifiquement, les conditions suivantes sont ajoutées pour les 2 cas en question :
 
@@ -44,7 +58,17 @@
 				La dernière information PE doit être différente d'inscription ( = cessation ou radiation).
 		*/
 
-		public function search( $statutNonoriente, $mesCodesInsee, $filtre_zone_geo, $criteresnonorientes, $lockedDossiers ) {
+		/**
+		 * Retourne un querydata ...
+		 *
+		 * @param string $statutNonoriente
+		 * @param array $mesCodesInsee La liste des codes INSEE à laquelle est lié l'utilisateur
+		 * @param boolean $filtre_zone_geo L'utilisateur est-il limité au niveau des zones géographiques ?
+		 * @param array $criteresci Critères du formulaire de recherche
+		 * @param mixed $criteresnonorientes
+		 * @return array
+		 */
+		public function search( $statutNonoriente, $mesCodesInsee, $filtre_zone_geo, $criteresnonorientes, $lockedDossiers = array() ) {
 			$Personne = ClassRegistry::init( 'Personne' );
 			$Informationpe = ClassRegistry::init( 'Informationpe' );
 
@@ -126,17 +150,19 @@
 			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $criteresnonorientes['Search'] );
 			$conditions = $this->conditionsSituationdossierrsa( $conditions, $criteresnonorientes['Search'] );
 
-
-			/// Dossiers lockés FIXME
-			if( !empty( $lockedDossiers ) && ( $statutNonoriente != 'Nonoriente::notisemploiaimprimer' ) ) {
-				$conditions[] = 'Dossier.id NOT IN ( '.implode( ', ', $lockedDossiers ).' )';
+			/// Dossiers lockés
+			if( !empty( $lockedDossiers ) ) {
+				if( is_array( $lockedDossiers ) ) {
+					$conditions[] = 'Dossier.id NOT IN ( '.implode( ', ', $lockedDossiers ).' )';
+				}
+				$conditions[] = "NOT {$lockedDossiers}";
 			}
 
 			// Code historique etat PE (radiation, cessation, inscription)
 			$etatHistoriqueetatpe = Set::extract( $criteresnonorientes['Search'], 'Historiqueetatpe.etat' );
-            if( !empty( $etatHistoriqueetatpe ) ) {
-                $conditions[] = 'Historiqueetatpe.etat = \''.Sanitize::clean( $etatHistoriqueetatpe ).'\'';
-            }
+			if( !empty( $etatHistoriqueetatpe ) ) {
+				$conditions[] = 'Historiqueetatpe.etat = \''.Sanitize::clean( $etatHistoriqueetatpe ).'\'';
+			}
 
 			// Conditions pour les jointures
 			$conditions['Prestation.rolepers'] = array( 'DEM', 'CJT' );

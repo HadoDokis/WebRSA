@@ -1,28 +1,26 @@
 <?php
-/**
- * Code source de la classe Decisionsdossierspcgs66Controller.
- *
- * PHP 5.3
- *
- * @package app.controllers
- * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
- */
+	/**
+	* Code source de la classe Decisionsdossierspcgs66Controller.
+	*
+	* PHP 5.3
+	*
+	* @package app.controllers
+	* @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	*/
 
-/**
- * La classe Decisionsdossierspcgs66Controller permet de gérer les décisions 
- * d'un dossier PCG 66
- *
- * @package app.controllers
- */
-
-class Decisionsdossierspcgs66Controller extends AppController
+	/**
+	* La classe Decisionsdossierspcgs66Controller permet de gérer les décisions
+	* d'un dossier PCG 66
+	*
+	* @package app.controllers
+	*/
+	class Decisionsdossierspcgs66Controller extends AppController
 	{
-
 		public $name = 'Decisionsdossierspcgs66';
 
 		/**
-		 * @access public
-		 */
+		* @access public
+		*/
 		public $components = array( 'Default', 'Gedooo.Gedooo', 'Jetons2', 'Fileuploader' );
 		public $helpers = array( 'Default2', 'Ajax', 'Fileuploader', 'Locale' );
 		public $uses = array( 'Decisiondossierpcg66', 'Option', 'Pdf' );
@@ -32,13 +30,13 @@ class Decisionsdossierspcgs66Controller extends AppController
 		);
 
 		/**
-		 *
-		 */
+		*
+		*/
 		protected function _setOptions() {
 			$options = $this->Decisiondossierpcg66->enums();
-            $options = array_merge( $options, $this->Decisiondossierpcg66->Dossierpcg66->enums() );
+			$options = array_merge( $options, $this->Decisiondossierpcg66->Dossierpcg66->enums() );
 			$options = array_merge(
-                $options, $this->Decisiondossierpcg66->Dossierpcg66->Personnepcg66->Traitementpcg66->Decisiontraitementpcg66->enums(), $this->Decisiondossierpcg66->Dossierpcg66->Decisiondefautinsertionep66->enums(), $this->Decisiondossierpcg66->Dossierpcg66->Personnepcg66->Traitementpcg66->enums(), $this->Decisiondossierpcg66->Dossierpcg66->Contratinsertion->enums()
+				$options, $this->Decisiondossierpcg66->Dossierpcg66->Personnepcg66->Traitementpcg66->Decisiontraitementpcg66->enums(), $this->Decisiondossierpcg66->Dossierpcg66->Decisiondefautinsertionep66->enums(), $this->Decisiondossierpcg66->Dossierpcg66->Personnepcg66->Traitementpcg66->enums(), $this->Decisiondossierpcg66->Dossierpcg66->Contratinsertion->enums()
 			);
 			$listdecisionpdo = $this->Decisiondossierpcg66->Decisionpdo->find( 'list'/* , array( 'fields' => array( 'Decisionpdo.name' ) */ );
 			$typersapcg66 = $this->Decisiondossierpcg66->Typersapcg66->find( 'list' );
@@ -75,7 +73,7 @@ class Decisionsdossierspcgs66Controller extends AppController
 			$this->set( compact( 'options', 'listdecisionpdo', 'typersapcg66', 'compofoyerpcg66', 'forme_ci', 'listdecisionpcgCer', 'idsDecisionNonValidCer' ) );
 		}
 
-        
+
 		/**
 		* http://valums.com/ajax-upload/
 		* http://doc.ubuntu-fr.org/modules_php
@@ -118,25 +116,25 @@ class Decisionsdossierspcgs66Controller extends AppController
 
 
 		/**
-		 *   Fonction permettant d'accéder à la page pour lier les fichiers au CER
-		 */
+		*   Fonction permettant d'accéder à la page pour lier les fichiers au CER
+		*/
 		public function filelink( $id ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
-            $fichiers = array( );
-            $decisiondossierpcg66 = $this->Decisiondossierpcg66->find(
+			$fichiers = array( );
+			$decisiondossierpcg66 = $this->Decisiondossierpcg66->find(
 				'first',
-                array(
-                    'conditions' => array(
-                        'Decisiondossierpcg66.id' => $id
-                    ),
-                    'contain' => array(
-                        'Fichiermodule' => array(
-                            'fields' => array( 'name', 'id', 'created', 'modified' )
-                        ),
-                        'Dossierpcg66'
-                    )
-                )
+				array(
+					'conditions' => array(
+						'Decisiondossierpcg66.id' => $id
+					),
+					'contain' => array(
+						'Fichiermodule' => array(
+							'fields' => array( 'name', 'id', 'created', 'modified' )
+						),
+						'Dossierpcg66'
+					)
+				)
 			);
 
 			$dossierpcg66_id = $decisiondossierpcg66['Decisiondossierpcg66']['dossierpcg66_id'];
@@ -181,14 +179,14 @@ class Decisionsdossierspcgs66Controller extends AppController
 				}
 			}
 			$this->_setOptions();
-            $this->set( 'dossier_id', $dossier_id);
+			$this->set( 'dossier_id', $dossier_id);
 			$this->set( compact( 'personne_id', 'fichiers', 'decisiondossierpcg66' ) );
 			$this->set( 'urlmenu', '/dossierspcgs66/edit/'.$dossierpcg66_id );
 		}
 
 		/**
-		 * 	Affichage de la proposition du
-		 */
+		* 	Affichage de la proposition du
+		*/
 		public function ajaxproposition() {
 			Configure::write( 'debug', 0 );
 
@@ -246,8 +244,8 @@ class Decisionsdossierspcgs66Controller extends AppController
 		}
 
 		/**		 * *******************************************************************
-		 *
-		 * ** ****************************************************************** */
+		*
+		* ** ****************************************************************** */
 		public function add() {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
@@ -259,12 +257,10 @@ class Decisionsdossierspcgs66Controller extends AppController
 		}
 
 		/**		 * *******************************************************************
-		 *
-		 * ** ****************************************************************** */
+		*
+		* ** ****************************************************************** */
 		protected function _add_edit( $id = null ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
-
-			$this->Decisiondossierpcg66->begin();
 
 			// Récupération des id afférents
 			if( $this->action == 'add' ) {
@@ -319,15 +315,15 @@ class Decisionsdossierspcgs66Controller extends AppController
 						$this->Decisiondossierpcg66->Dossierpcg66->Contratinsertion->join( 'Propodecisioncer66', array( 'type' => 'LEFT OUTER' ) )
 					),
 					'contain' => false, /* array(
-						  'Typersapcg66',
-						  // 							'Dossierpcg66' => array(
-						  // 								'Contratinsertion' => array(
-						  // 									'Propodecisioncer66' => array(
-						  // 										'Motifcernonvalid66'
-						  // 									)
-						  // 								)
-						  // 							)
-						  ) */
+						'Typersapcg66',
+						// 							'Dossierpcg66' => array(
+						// 								'Contratinsertion' => array(
+						// 									'Propodecisioncer66' => array(
+						// 										'Motifcernonvalid66'
+						// 									)
+						// 								)
+						// 							)
+						) */
 						)
 				);
 				$this->assert( !empty( $decisiondossierpcg66 ), 'invalidParameter' );
@@ -391,7 +387,6 @@ class Decisionsdossierspcgs66Controller extends AppController
 
 				$foyer_id = Set::classicExtract( $dossierpcg66, 'Dossierpcg66.foyer_id' );
 				$dossier_id = $this->Decisiondossierpcg66->Dossierpcg66->Foyer->dossierId( $foyer_id );
-				;
 			}
 
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
@@ -437,15 +432,11 @@ class Decisionsdossierspcgs66Controller extends AppController
 			$userConnected = $this->Session->read( 'Auth.User.id' );
 			$this->set( compact( 'userConnected' ) );
 
-			if( !$this->Jetons->check( $dossier_id ) ) {
-				$this->Decisiondossierpcg66->rollback();
-			}
-			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
-
+			$this->Jetons2->get( $dossier_id );
 
 			if( !empty( $this->data ) ) {
-// debug($this->data);
-// die();
+				$this->Decisiondossierpcg66->begin();
+
 				if( $this->Decisiondossierpcg66->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
 					$saved = $this->Decisiondossierpcg66->save( $this->data );
 					if( !empty( $this->data['Decisiondossierpcg66Decisionpersonnepcg66'][0]['decisionpersonnepcg66_id'] ) ) {
@@ -492,8 +483,8 @@ class Decisionsdossierspcgs66Controller extends AppController
 					}
 
 					if( $saved ) {
-						$this->Jetons->release( $dossier_id );
 						$this->Decisiondossierpcg66->commit();
+						$this->Jetons2->release( $dossier_id );
 						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 						$this->redirect( array( 'controller' => 'dossierspcgs66', 'action' => 'edit', $dossierpcg66_id ) );
 					}
@@ -558,9 +549,6 @@ class Decisionsdossierspcgs66Controller extends AppController
 
 			$this->set( compact( 'personnespcgs66', 'dossierpcg66', 'decisiondossierpcg66', 'avistechniquemodifiable', 'validationmodifiable' ) );
 
-
-
-			$this->Decisiondossierpcg66->commit();
 			$this->_setOptions();
 
 			$this->set( 'urlmenu', '/dossierspcgs66/index/'.$foyer_id );
@@ -568,14 +556,13 @@ class Decisionsdossierspcgs66Controller extends AppController
 		}
 
 		/**
-		 *   Enregistrement du courrier de proposition lors de l'enregistrement de la proposition
-		 */
+		*   Enregistrement du courrier de proposition lors de l'enregistrement de la proposition
+		*/
 		public function decisionproposition( $id ) {
 			$this->assert( !empty( $id ), 'error404' );
 
 			$pdf = $this->Decisiondossierpcg66->getPdfDecision( $id );
-// debug($pdf);
-// die();
+
 			if( $pdf ) {
 				$success = true;
 
@@ -600,30 +587,29 @@ class Decisionsdossierspcgs66Controller extends AppController
 		}
 
 		/**
-		 *
-		 */
+		*
+		*/
 		public function view( $id ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
 
 			$decisiondossierpcg66 = $this->Decisiondossierpcg66->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'Decisiondossierpcg66.id' => $id
-                    ),
-                    'contain' => array(
-                        'Decisionpdo',
-                        'Dossierpcg66' => array(
-                            'Personnepcg66',
-                            'Foyer'
-                        ),
-                        'Fichiermodule'
-                    )
-                )
+				'first',
+				array(
+					'conditions' => array(
+						'Decisiondossierpcg66.id' => $id
+					),
+					'contain' => array(
+						'Decisionpdo',
+						'Dossierpcg66' => array(
+							'Personnepcg66',
+							'Foyer'
+						),
+						'Fichiermodule'
+					)
+				)
 			);
 
-// 		debug($decisiondossierpcg66);
 			$this->assert( !empty( $decisiondossierpcg66 ), 'invalidParameter' );
 
 			$this->set( 'dossier_id', $this->Decisiondossierpcg66->dossierId( $id ) );
@@ -641,8 +627,8 @@ class Decisionsdossierspcgs66Controller extends AppController
 		}
 
 		/**
-		 * Suppression de la proposition de décision
-		 */
+		* Suppression de la proposition de décision
+		*/
 		public function delete( $id ) {
 			$decisiondossierpcg66 = $this->Decisiondossierpcg66->find(
 					'first', array(
@@ -702,8 +688,8 @@ class Decisionsdossierspcgs66Controller extends AppController
 		}
 
 		/**
-		 *   Gestion de la transmission à l'organisme payeur
-		 */
+		*   Gestion de la transmission à l'organisme payeur
+		*/
 		public function transmitop( $id ) {
 			$this->assert( !empty( $id ), 'error404' );
 			$qd_decisiondossierpcg66 = array(
@@ -752,27 +738,26 @@ class Decisionsdossierspcgs66Controller extends AppController
 			$this->_setOptions();
 			$this->set( 'urlmenu', '/dossierspcgs66/index/'.$foyer_id );
 		}
-        
-        /**
-         * Affiche le formulaire d'ajout/modification selon l'état du dossier
-         * et selon le profil de l'utilisateur (avis technique)
-         * @param integer $id ID d'une décision liée au dossier PCG 
-         *
-         */
-        public function avistechnique( $id ) {
-            $args = func_get_args();
-			call_user_func_array( array( $this, '_add_edit' ), $args );
-        }
 
-        /**
-         * Affiche le formulaire d'ajout/modification selon l'état du dossier
-         * et selon le profil de l'utilisateur (validation après avis technique)
-         * @param integer $id ID d'une décision liée au dossier PCG 
-         */
-        public function validation( $id ) {
-            $args = func_get_args();
+		/**
+		* Affiche le formulaire d'ajout/modification selon l'état du dossier
+		* et selon le profil de l'utilisateur (avis technique)
+		* @param integer $id ID d'une décision liée au dossier PCG
+		*
+		*/
+		public function avistechnique( $id ) {
+			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
-        }      
+		}
 
+		/**
+		* Affiche le formulaire d'ajout/modification selon l'état du dossier
+		* et selon le profil de l'utilisateur (validation après avis technique)
+		* @param integer $id ID d'une décision liée au dossier PCG
+		*/
+		public function validation( $id ) {
+			$args = func_get_args();
+			call_user_func_array( array( $this, '_add_edit' ), $args );
+		}
 	}
 ?>

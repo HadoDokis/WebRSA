@@ -1,10 +1,27 @@
 <?php
+	/**
+	 * Code source de la classe RelancesapresController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.controllers
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe RelancesapresController ...
+	 *
+	 * @package app.controllers
+	 */
 	class RelancesapresController extends AppController
 	{
-
 		public $name = 'Relancesapres';
+
 		public $uses = array( 'Apre', 'Option', 'Personne', 'Prestation'/* , 'Dsp' */, 'Actprof', 'Permisb', 'Amenaglogt', 'Acccreaentr', 'Acqmatprof', 'Locvehicinsert', 'Apre', 'Relanceapre' );
+
 		public $helpers = array( 'Locale', 'Csv',  'Xform', 'Xhtml' );
+
+		public $components = array( 'Jetons2' );
 
 		public $commeDroit = array(
 			'add' => 'Relancesapres:edit'
@@ -40,8 +57,6 @@
 		 */
 		protected function _add_edit( $id = null ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
-
-			$this->Relanceapre->begin();
 
 			// Récupération des id afférents
 			if( $this->action == 'add' ) {
@@ -84,22 +99,22 @@
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
 			$this->set( 'dossier_id', $dossier_id );
 
+			$this->Jetons2->get( $dossier_id );
+
 			// Retour à l'index en cas d'annulation
 			if( isset( $this->params['form']['Cancel'] ) ) {
+				$this->Jetons2->release( $dossier_id );
 				$this->redirect( array( 'controller' => 'apres', 'action' => 'index', $personne_id ) );
 			}
 
-			if( !$this->Jetons->check( $dossier_id ) ) {
-				$this->Relanceapre->rollback();
-			}
-			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
-
 			if( !empty( $this->data ) ) {
+				$this->Relanceapre->begin();
+
 				if( $this->Relanceapre->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
 					$saved = $this->Relanceapre->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) );
 					if( $saved ) {
-						$this->Jetons->release( $dossier_id );
-						$this->Relanceapre->commit(); // FIXME
+						$this->Relanceapre->commit();
+						$this->Jetons2->release( $dossier_id );
 						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 						$this->redirect( array( 'controller' => 'apres', 'action' => 'index', Set::classicExtract( $apre, 'Apre.personne_id' ) ) );
 					}
@@ -108,13 +123,16 @@
 						$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 					}
 				}
+				else {
+					$this->Relanceapre->rollback();
+					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+				}
 			}
 			else {
 				if( $this->action == 'edit' ) {
 					$this->data = $relanceapre;
 				}
 			}
-			$this->Relanceapre->commit();
 
 			$this->render( $this->action, null, 'add_edit' );
 		}

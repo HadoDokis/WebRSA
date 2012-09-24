@@ -1,14 +1,27 @@
 <?php
+	/**
+	 * Code source de la classe OrientsstructsController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.controllers
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe OrientsstructsController permet de gérer les orientations.
+	 *
+	 * @package app.controllers
+	 */
 	class OrientsstructsController extends AppController
 	{
-
 		public $name = 'Orientsstructs';
+
 		public $uses = array( 'Orientstruct', 'Option', 'Dossier', 'Foyer', 'Adresse', 'Adressefoyer', 'Personne', 'Typeorient', 'Structurereferente', 'Pdf', 'Referent' );
+
 		public $helpers = array( 'Default', 'Default2', 'Fileuploader' );
-		public $components = array( 'Gedooo.Gedooo', 'Fileuploader' );
-// 		public $commeDroit = array(
-// 			'add' => 'Orientsstructs:edit'
-// 		);
+
+		public $components = array( 'Gedooo.Gedooo', 'Fileuploader', 'Jetons2' );
 
 		public $aucunDroit = array( 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
 
@@ -104,18 +117,17 @@
 			$dossier_id = $this->Orientstruct->Personne->dossierId( $personne_id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
 
-			$this->Orientstruct->begin();
-			if( !$this->Jetons->check( $dossier_id ) ) {
-				$this->Orientstruct->rollback();
-			}
-			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
+			$this->Jetons2->get( $dossier_id );
 
 			// Retour à l'index en cas d'annulation
 			if( isset( $this->params['form']['Cancel'] ) ) {
+				$this->Jetons2->release( $dossier_id );
 				$this->redirect( array( 'action' => 'index', $personne_id ) );
 			}
 
 			if( !empty( $this->data ) ) {
+				$this->Orientstruct->begin();
+
 				$saved = $this->Orientstruct->updateAll(
 						array( 'Orientstruct.haspiecejointe' => '\''.$this->data['Orientstruct']['haspiecejointe'].'\'' ), array(
 					'"Orientstruct"."personne_id"' => $personne_id,
@@ -130,8 +142,8 @@
 				}
 
 				if( $saved ) {
-					$this->Jetons->release( $dossier_id );
 					$this->Orientstruct->commit();
+					$this->Jetons2->release( $dossier_id );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 // 					$this->redirect( array(  'controller' => 'orientsstructs','action' => 'index', $personne_id ) );
 					$this->redirect( $this->referer() );
@@ -540,11 +552,6 @@
 		public function add( $personne_id = null ) {
 			$this->assert( valid_int( $personne_id ), 'invalidParameter' );
 
-			// Retour à l'index en cas d'annulation
-			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
-				$this->redirect( array( 'action' => 'index', $personne_id ) );
-			}
-
 			// Retour à l'index s'il n'est pas possible d'ajouter une orientation
 			if( !$this->Orientstruct->ajoutPossible( $personne_id ) ) {
 				$this->Session->setFlash( 'Impossible d\'ajouter une orientation pour cette personne.', 'flash/error' );
@@ -566,11 +573,13 @@
 			$dossier = $this->Orientstruct->Personne->Foyer->Dossier->find( 'first', $qd_dossier );
 			$this->set( compact( 'dossier' ) );
 
-			$this->Orientstruct->begin();
-			if( !$this->Jetons->check( $dossier_id ) ) {
-				$this->Orientstruct->rollback();
+			$this->Jetons2->get( $dossier_id );
+
+			// Retour à l'index en cas d'annulation
+			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
+				$this->Jetons2->release( $dossier_id );
+				$this->redirect( array( 'action' => 'index', $personne_id ) );
 			}
-			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
 
 			if( !empty( $this->data ) ) {
 				$this->data['Orientstruct']['user_id'] = $this->Session->read( 'Auth.User.id' );
@@ -580,6 +589,8 @@
 				$validates = $this->Orientstruct->validates();
 
 				if( $validates ) {
+					$this->Orientstruct->begin();
+
 					$saved = true;
 
 					if( $this->Orientstruct->isRegression( $personne_id, $this->data['Orientstruct']['typeorient_id'] ) && Configure::read( 'Cg.departement' ) == 58 ) {
@@ -627,8 +638,8 @@
 					}
 
 					if( $saved ) {
-						$this->Jetons->release( $dossier_id );
 						$this->Orientstruct->commit();
+						$this->Jetons2->release( $dossier_id );
 						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 						$this->redirect( array( 'controller' => 'orientsstructs', 'action' => 'index', $personne_id ) );
 					}
@@ -636,6 +647,10 @@
 						$this->Orientstruct->rollback();
 						$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 					}
+				}
+				else {
+					$this->Orientstruct->rollback();
+					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 				}
 			}
 			else {
@@ -662,12 +677,6 @@
 		 */
 		public function edit( $orientstruct_id = null ) {
 			$this->assert( valid_int( $orientstruct_id ), 'invalidParameter' );
-
-			// Retour à l'index en cas d'annulation
-			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
-				$orientstruct_id = $this->Orientstruct->field( 'personne_id', array( 'id' => $orientstruct_id ) );
-				$this->redirect( array( 'action' => 'index', $orientstruct_id ) );
-			}
 
 			$orientstruct = $this->Orientstruct->find(
 					'first', array(
@@ -705,14 +714,19 @@
 
 			$this->set( compact( 'dossier' ) );
 
-			$this->Orientstruct->begin();
-			if( !$this->Jetons->check( $dossier_id ) ) {
-				$this->Orientstruct->rollback();
+			$this->Jetons2->get( $dossier_id );
+
+			// Retour à l'index en cas d'annulation
+			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
+				$this->Jetons2->release( $dossier_id );
+				$orientstruct_id = $this->Orientstruct->field( 'personne_id', array( 'id' => $orientstruct_id ) );
+				$this->redirect( array( 'action' => 'index', $orientstruct_id ) );
 			}
-			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
 
 			// Essai de sauvegarde
 			if( !empty( $this->data ) ) {
+				$this->Orientstruct->begin();
+
 				$this->data['Orientstruct']['user_id'] = $this->Session->read( 'Auth.User.id' );
 
 				// Correction: si la personne n'a pas encore d'entrée dans calculdroitsrsa
@@ -734,8 +748,8 @@
 					}
 
 					if( $saved ) {
-						$this->Jetons->release( $dossier_id );
 						$this->Orientstruct->commit();
+						$this->Jetons2->release( $dossier_id );
 						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 						$this->redirect( array( 'controller' => 'orientsstructs', 'action' => 'index', $orientstruct['Orientstruct']['personne_id'] ) );
 					}
@@ -751,7 +765,6 @@
 				$this->data = Set::merge( array( 'Orientstruct' => $orientstruct['Orientstruct'] ), array( 'Calculdroitrsa' => $orientstruct['Personne']['Calculdroitrsa'] ) );
 			}
 
-			$this->Orientstruct->commit();
 			$this->_setOptions();
 			$this->set( 'personne_id', $orientstruct['Orientstruct']['personne_id'] );
 			$this->set( 'urlmenu', '/orientsstructs/index/'.$orientstruct['Orientstruct']['personne_id'] );

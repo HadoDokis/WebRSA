@@ -1,18 +1,24 @@
 <?php
 	/**
-	* Gestion des bilans de parcours pour le conseil général du département 66.
-	*
-	* PHP versions 5
-	*
-	* @package       app
-	* @subpackage    app.app.controllers
-	*/
+	 * Code source de la classe CohortesciController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.controllers
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 
+	/**
+	 * La classe CohortesciController permet de gérer les bilans de parcours (CG 66).
+	 *
+	 * @package app.controllers
+	 */
 	class Bilansparcours66Controller extends AppController
 	{
 		public $helpers = array( 'Default', 'Default2', 'Ajax', 'Fileuploader' );
 
 		public $uses = array( 'Bilanparcours66', 'Option', 'Pdf', 'Dossierep'  );
+
 		public $components = array( 'Gedooo.Gedooo', 'Fileuploader', 'Jetons2' );
 
 		public $commeDroit = array(
@@ -57,7 +63,7 @@
 
 			$options = Set::merge( $options, $this->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->enums() );
 			$options = Set::merge( $options, $this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->enums() );
-			
+
 			$options = Set::merge( $options, $this->Bilanparcours66->Dossierpcg66->Decisiondossierpcg66->enums() );
 
 			$typeorientprincipale = Configure::read( 'Orientstruct.typeorientprincipale' );
@@ -144,18 +150,17 @@
 			$dossier_id = $this->Bilanparcours66->Personne->dossierId( $personne_id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
 
-			$this->Bilanparcours66->begin();
-			if( !$this->Jetons->check( $dossier_id ) ) {
-				$this->Bilanparcours66->rollback();
-			}
-			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
+			$this->Jetons2->get( $dossier_id );
 
 			// Retour à l'index en cas d'annulation
 			if( isset( $this->params['form']['Cancel'] ) ) {
+				$this->Jetons2->release( $dossier_id );
 				$this->redirect( array( 'action' => 'index', $personne_id ) );
 			}
 
 			if( !empty( $this->data ) ) {
+				$this->Bilanparcours66->begin();
+
 				$saved = $this->Bilanparcours66->updateAll(
 					array( 'Bilanparcours66.haspiecejointe' => '\''.$this->data['Bilanparcours66']['haspiecejointe'].'\'' ),
 					array(
@@ -171,8 +176,8 @@
 				}
 
 				if( $saved ) {
-					$this->Jetons->release( $dossier_id );
 					$this->Bilanparcours66->commit();
+					$this->Jetons2->release( $dossier_id );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 // 					$this->redirect( array(  'controller' => 'bilansparcours66','action' => 'index', $personne_id ) );
 					$this->redirect( $this->referer() );
@@ -450,7 +455,7 @@
 							)
 						)
 					);
-					
+
 					$dossierpcg66 = $this->Bilanparcours66->Dossierpcg66->find(
 						'first',
 						array(
@@ -469,12 +474,12 @@
 					$this->set( compact( 'passagecommissionep', 'dossierpcg66' ) );
 				}
 			}
-            
+
             $dossier_id = $this->Bilanparcours66->Personne->dossierId( $personne_id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
 
             $this->Jetons2->get( $dossier_id );
-            
+
             // Retour à la liste en cas d'annulation
 			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
                 $this->Jetons2->release( $dossier_id );
@@ -774,7 +779,7 @@
 				$typeformulaire = $bilanparcours66['Bilanparcours66']['typeformulaire'];
 			}
 
-			/// Si le nombre de dossiers d'EP en cours est > 0, 
+			/// Si le nombre de dossiers d'EP en cours est > 0,
 			/// alors on ne peut pas créer de bilan pour la thématique concernée par le dossier EP
 			$dossiersepsencours = array(
 				'defautsinsertionseps66' => !$this->Bilanparcours66->ajoutPossibleThematique66( 'defautsinsertionseps66', $personne_id ),

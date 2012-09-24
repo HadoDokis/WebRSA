@@ -1,4 +1,19 @@
 <?php
+	/**
+	* Code source de la classe Decisionspersonnespcgs66Controller.
+	*
+	* PHP 5.3
+	*
+	* @package app.controllers
+	* @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	*/
+
+	/**
+	* La classe Decisionspersonnespcgs66Controller permet de gérer les décisions
+	* au niveau des personnes d'un dossier PCG 66
+	*
+	* @package app.controllers
+	*/
 	class Decisionspersonnespcgs66Controller extends AppController
 	{
 
@@ -7,7 +22,7 @@
 		/**
 		 * @access public
 		 */
-		public $components = array( 'Default', 'Gedooo.Gedooo' );
+		public $components = array( 'Default', 'Gedooo.Gedooo', 'Jetons2' );
 		public $helpers = array( 'Default2', 'Ajax' );
 		public $uses = array( 'Decisionpersonnepcg66', 'Option', 'Pdf' );
 		public $commeDroit = array(
@@ -92,8 +107,6 @@
 		protected function _add_edit( $id = null ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
-			$this->Decisionpersonnepcg66->begin();
-
 			// Récupération des id afférents
 			if( $this->action == 'add' ) {
 				$personnepcg66_id = $id;
@@ -152,12 +165,11 @@
 			$personnespcgs66Situationspdos = $this->Decisionpersonnepcg66->Personnepcg66Situationpdo->listeMotifsPourDecisions( $personnepcg66_id );
 			$this->set( compact( 'personnespcgs66Situationspdos' ) );
 
-			if( !$this->Jetons->check( $dossier_id ) ) {
-				$this->Decisionpersonnepcg66->rollback();
-			}
-			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
+			$this->Jetons2->get( $dossier_id );
 
 			if( !empty( $this->data ) ) {
+				$this->Decisionpersonnepcg66->begin();
+
 				if( $this->Decisionpersonnepcg66->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
 					$saved = true;
 
@@ -172,8 +184,8 @@
 // 					}
 
 					if( $saved ) {
-						$this->Jetons->release( $dossier_id );
-						$this->Decisionpersonnepcg66->commit(); // FIXME
+						$this->Decisionpersonnepcg66->commit();
+						$this->Jetons2->release( $dossier_id );
 						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 						$this->redirect( array( 'controller' => 'decisionspersonnespcgs66', 'action' => 'index', $personnepcg66_id ) );
 					}
@@ -190,8 +202,6 @@
 			elseif( $this->action == 'edit' ) {
 				$this->data = $decisionpersonnepcg66;
 			}
-
-			$this->Decisionpersonnepcg66->commit();
 
 			$this->_setOptions();
 			$this->set( 'urlmenu', '/traitementspcgs66/index/'.$personne_id );

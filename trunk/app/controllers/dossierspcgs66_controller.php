@@ -1,9 +1,23 @@
 <?php
+	/**
+	 * Code source de la classe Dossierspcgs66Controller.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.controllers
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe Dossierspcgs66Controller ... (CG 66).
+	 *
+	 * @package app.controllers
+	 */
 	class Dossierspcgs66Controller extends AppController
 	{
 		public $helpers = array( 'Default', 'Default2', 'Ajax', 'Fileuploader' );
 		public $uses = array( 'Dossierpcg66', 'Option', 'Typenotifpdo', 'Decisionpdo' );
-		public $components = array( 'Fileuploader', 'Gedooo.Gedooo' );
+		public $components = array( 'Fileuploader', 'Gedooo.Gedooo', 'Jetons2' );
 
 		public $commeDroit = array(
 			'add' => 'Dossierspcgs66:edit',
@@ -128,7 +142,7 @@
 					)
 				);
 				$etatdossierpcg = $dossierpcg66['Dossierpcg66']['etatdossierpcg'];
-				
+
 				if( !empty( $dossierpcg66 ) ){
 					$decisionsdossierspcgs66 = $this->Dossierpcg66->Decisiondossierpcg66->find(
 						'all',
@@ -165,7 +179,7 @@
 		*/
 
 		public function index( $foyer_id = null ) {
-			
+
 			$personneDem = $this->Dossierpcg66->Foyer->Personne->find(
 				'first',
 				array(
@@ -238,9 +252,14 @@
 			// Retour à la liste en cas d'annulation
 			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
 				if( $this->action == 'edit' ) {
-					$id = $this->Dossierpcg66->field( 'foyer_id', array( 'id' => $id ) );
+					$foyer_id = $this->Dossierpcg66->field( 'foyer_id', array( 'id' => $id ) );
 				}
-				$this->redirect( array( 'action' => 'index', $id ) );
+				else {
+					$foyer_id = $id;
+				}
+				$dossier_id = $this->Dossierpcg66->Foyer->dossierId( $foyer_id );
+				$this->Jetons2->release( $dossier_id );
+				$this->redirect( array( 'action' => 'index', $foyer_id ) );
 
 			}
 			$fichiers = array();
@@ -265,7 +284,7 @@
 					)
 				);
 				$this->assert( !empty( $dossierpcg66 ), 'invalidParameter' );
-// debug($dossierpcg66);
+
 				//Recherche des personnes liées au foyer
 				$this->Dossierpcg66->forceVirtualFields = true;
 				$personnespcgs66 = $this->Dossierpcg66->Personnepcg66->find(
@@ -389,16 +408,13 @@
 
 
 			//Gestion des jetons
-			$this->Dossierpcg66->begin();
 			$dossier_id = $this->Dossierpcg66->Foyer->dossierId( $foyer_id );
-			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
-			if( !$this->Jetons->check( $dossier_id ) ) {
-				$this->Dossierpcg66->rollback();
-			}
-			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
+			$this->Jetons2->get( $dossier_id );
 
 			// Essai de sauvegarde
 			if( !empty( $this->data ) ) {
+				$this->Dossierpcg66->begin();
+
 				$saved = $this->Dossierpcg66->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) );
 				if( $saved ) {
 					// Sauvegarde des fichiers liés à une PDO
@@ -411,8 +427,8 @@
 				}
 
 				if( $saved ) {
-					$this->Jetons->release( $dossier_id );
 					$this->Dossierpcg66->commit();
+					$this->Jetons2->release( $dossier_id );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 					$this->redirect( array(  'controller' => 'dossierspcgs66','action' => 'index', $foyer_id ) );
 				}
@@ -427,8 +443,7 @@
 				$this->data = $dossierpcg66;
 				$fichiers = $this->Fileuploader->fichiers( $dossierpcg66['Dossierpcg66']['id'] );
 			}
-			$this->Dossierpcg66->commit();
-			
+
 			// avistechniquemodifiable, validationmodifiable
 			$etatdossierpcg = 'instrencours';
 			if( isset( $dossierpcg66 ) ) {
@@ -448,7 +463,6 @@
 			}
 
 			$this->set( compact( 'gestionnairemodifiable', 'personnedecisionmodifiable' ) );
-
 
 			// Assignation à la vue
 			$this->set( 'fichiers', $fichiers );

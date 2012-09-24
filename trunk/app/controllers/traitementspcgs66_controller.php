@@ -1,11 +1,28 @@
 <?php
+	/**
+	 * Code source de la classe Traitementspcgs66Controller.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.controllers
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe Traitementspcgs66Controller (CG 66).
+	 *
+	 * @package app.controllers
+	 */
 	class Traitementspcgs66Controller extends AppController
 	{
-
 		public $name = 'Traitementspcgs66';
+
 		public $uses = array( 'Traitementpcg66', 'Option', 'Dossierpcg66' );
+
 		public $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Default2', 'Fileuploader', 'Autrepiecetraitementpcg66' );
-		public $components = array( 'Default', 'Gedooo.Gedooo', 'Fileuploader' );
+
+		public $components = array( 'Default', 'Gedooo.Gedooo', 'Fileuploader', 'Jetons2' );
+
 		public $commeDroit = array(
 			'view' => 'Traitementspcgs66:index',
 			'add' => 'Traitementspcgs66:edit'
@@ -434,11 +451,6 @@
 			$dtdemrsa = Set::classicExtract( $dossier, 'Dossier.dtdemrsa' );
 			$this->set( 'dtdemrsa', $dtdemrsa );
 
-			// Retour à la liste en cas d'annulation
-			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
-				$this->redirect( array( 'action' => 'index', $personne_id, $dossierpcg66_id ) );
-			}
-
 			$qd_personne = array(
 				'conditions' => array(
 					'Personne.id' => $personne_id
@@ -453,16 +465,18 @@
 			$this->set( compact( 'nompersonne' ) );
 
 			//Gestion des jetons
-			$this->Traitementpcg66->begin();
 			$dossier_id = $this->Traitementpcg66->Personnepcg66Situationpdo->Personnepcg66->Dossierpcg66->Foyer->dossierId( $foyer_id );
-			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
-			if( !$this->Jetons->check( $dossier_id ) ) {
-				$this->Traitementpcg66->rollback();
+			$this->Jetons2->get( $dossier_id );
+
+			// Retour à la liste en cas d'annulation
+			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
+				$this->Jetons2->release( $dossier_id );
+				$this->redirect( array( 'action' => 'index', $personne_id, $dossierpcg66_id ) );
 			}
-			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
 
 			if( !empty( $this->data ) ) {
-// 				debug( $this->data );
+				$this->Traitementpcg66->begin();
+
 				$dataToSave = $this->data;
 				// INFO: attention, on peut se le permettre car il n'y a pas de règle de validation sur le commentaire
 				if( !empty( $dataToSave['Modeletraitementpcg66']['modeletypecourrierpcg66_id'] ) ) {
@@ -480,8 +494,8 @@
 							) && $saved;
 
 					if( $saved ) {
-						$this->Jetons->release( $dossier_id );
 						$this->Traitementpcg66->commit();
+						$this->Jetons2->release( $dossier_id );
 						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 						$this->redirect( array( 'controller' => 'traitementspcgs66', 'action' => 'index', $personne_id, $dossierpcg66_id ) );
 					}
@@ -497,12 +511,10 @@
 					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 				}
 			}
-			else {
-				if( $this->action == 'edit' ) {
-					$this->data = $traitementpcg66;
+			else if( $this->action == 'edit' ) {
+				$this->data = $traitementpcg66;
 
-					$fichiers = $this->Fileuploader->fichiers( $id );
-				}
+				$fichiers = $this->Fileuploader->fichiers( $id );
 			}
 
 			if( $this->action == 'edit' ) {
@@ -532,8 +544,6 @@
 			);
 
 			$this->set( compact( 'traitementspcgsouverts', 'fichiers' ) );
-
-			$this->Traitementpcg66->commit();
 
 			$this->_setOptions();
 

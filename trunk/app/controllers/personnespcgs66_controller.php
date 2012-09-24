@@ -1,11 +1,24 @@
 <?php
+	/**
+	 * Code source de la classe Personnespcgs66Controller.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.controllers
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe Personnespcgs66Controller (CG 66).
+	 *
+	 * @package app.controllers
+	 */
 	class Personnespcgs66Controller extends AppController
 	{
-
 		public $name = 'Personnespcgs66';
 		public $uses = array( 'Personnepcg66', 'Option', 'Dossierpcg66' );
 		public $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Default2', 'Fileuploader' );
-		public $components = array( 'Fileuploader' );
+		public $components = array( 'Fileuploader', 'Jetons2' );
 		public $commeDroit = array(
 			'view' => 'Personnespcgs66:index',
 			'add' => 'Personnespcgs66:edit'
@@ -70,14 +83,6 @@
 		 */
 		protected function _add_edit( $id = null ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
-
-			// Retour à la liste en cas d'annulation
-			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
-				if( $this->action == 'edit' ) {
-					$id = $this->Personnepcg66->field( 'dossierpcg66_id', array( 'id' => $id ) );
-				}
-				$this->redirect( array( 'controller' => 'dossierspcgs66', 'action' => 'edit', $id ) );
-			}
 
 			$personnes = array( );
 			$premierAjout = false;
@@ -185,6 +190,17 @@
 				$foyer_id = Set::classicExtract( $dossierpcg66, 'Dossierpcg66.foyer_id' );
 				$dossier_id = $this->Dossierpcg66->Foyer->dossierId( $foyer_id );
 
+				$this->Jetons2->get( $dossier_id );
+
+				// Retour à la liste en cas d'annulation
+				if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
+					if( $this->action == 'edit' ) {
+						$id = $this->Personnepcg66->field( 'dossierpcg66_id', array( 'id' => $id ) );
+					}
+					$this->Jetons2->release( $dossier_id );
+					$this->redirect( array( 'controller' => 'dossierspcgs66', 'action' => 'edit', $id ) );
+				}
+
 				//Liste des personnes appartenant au foyer dont le dossier fait question
 				$personnes = $this->Personnepcg66->Personne->find(
 						'list', array(
@@ -291,15 +307,11 @@
 			$this->set( compact( 'userConnected' ) );
 
 			//Gestion des jetons
-			$this->Personnepcg66->begin();
 			$dossier_id = $this->Personnepcg66->Dossierpcg66->Foyer->dossierId( $foyer_id );
-			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
-			if( !$this->Jetons->check( $dossier_id ) ) {
-				$this->Personnepcg66->rollback();
-			}
-			$this->assert( $this->Jetons->get( $dossier_id ), 'lockedDossier' );
+			$this->Jetons2->get( $dossier_id );
 
 			if( !empty( $this->data ) ) {
+				$this->Personnepcg66->begin();
 
 				$personnepcg66 = $this->data['Personnepcg66'];
 				$situationspdos = $this->data['Situationpdo'];
@@ -370,8 +382,8 @@
 					}
 
 					if( $success ) {
-						$this->Jetons->release( $dossier_id );
 						$this->Personnepcg66->commit();
+						$this->Jetons2->release( $dossier_id );
 						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 						$this->redirect( array( 'controller' => 'dossierspcgs66', 'action' => 'edit', $dossierpcg66_id ) );
 					}
