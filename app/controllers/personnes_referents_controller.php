@@ -1,21 +1,30 @@
 <?php
+	/**
+	 * Code source de la classe PersonnesReferentsController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.controllers
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe PersonnesReferentsController permet la gestion des référents du parcours au niveau du dossier
+	 * de l'allocataire.
+	 *
+	 * @package app.controllers
+	 */
 	class PersonnesReferentsController extends AppController
 	{
-
 		public $name = 'PersonnesReferents';
-		public $uses = array( 'PersonneReferent', 'Option', 'Personne', 'Orientstruct', 'Structurereferente', 'Typerdv', 'Statutrdv', 'Referent' );
-		public $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Fileuploader', 'Default2' );
+
+		public $uses = array( 'PersonneReferent', 'Option' );
+
+		public $helpers = array( 'Locale', 'Xform', 'Fileuploader', 'Default2' );
+
 		public $components = array( 'Fileuploader', 'Jetons2' );
 
 		public $aucunDroit = array( 'ajaxreferent', 'ajaxreffonct', 'ajaxperm', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
-
-		/**
-		 *
-		 */
-		protected function _setOptions() {
-			$this->set( 'struct', $this->Structurereferente->listOptions() );
-			$this->set( 'options', $this->PersonneReferent->allEnumLists() );
-		}
 
 		/**
 		 * http://valums.com/ajax-upload/
@@ -54,23 +63,26 @@
 		}
 
 		/**
-		 *   Fonction permettant d'accéder à la page pour lier les fichiers à l'Orientation
+		 * Fonction permettant d'accéder à la page pour lier les fichiers à un enregistrement.
+		 *
+		 * @param integer $id
 		 */
 		public function filelink( $id ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
 			$fichiers = array( );
 			$personne_referent = $this->PersonneReferent->find(
-					'first', array(
-				'conditions' => array(
-					'PersonneReferent.id' => $id
-				),
-				'contain' => array(
-					'Fichiermodule' => array(
-						'fields' => array( 'name', 'id', 'created', 'modified' )
+				'first',
+				array(
+					'conditions' => array(
+						'PersonneReferent.id' => $id
+					),
+					'contain' => array(
+						'Fichiermodule' => array(
+							'fields' => array( 'name', 'id', 'created', 'modified' )
+						)
 					)
 				)
-					)
 			);
 
 			$personne_id = $personne_referent['PersonneReferent']['personne_id'];
@@ -89,14 +101,15 @@
 				$this->PersonneReferent->begin();
 
 				$saved = $this->PersonneReferent->updateAll(
-						array( 'PersonneReferent.haspiecejointe' => '\''.$this->data['PersonneReferent']['haspiecejointe'].'\'' ), array(
-					'"PersonneReferent"."personne_id"' => $personne_id,
-					'"PersonneReferent"."id"' => $id
-						)
+					array( 'PersonneReferent.haspiecejointe' => '\''.$this->data['PersonneReferent']['haspiecejointe'].'\'' ),
+					array(
+						'"PersonneReferent"."personne_id"' => $personne_id,
+						'"PersonneReferent"."id"' => $id
+					)
 				);
 
 				if( $saved ) {
-					// Sauvegarde des fichiers liés à une PDO
+					// Sauvegarde des fichiers liés
 					$dir = $this->Fileuploader->dirFichiersModule( $this->action, $this->params['pass'][0] );
 					$saved = $this->Fileuploader->saveFichiers( $dir, !Set::classicExtract( $this->data, "PersonneReferent.haspiecejointe" ), $id ) && $saved;
 				}
@@ -105,7 +118,6 @@
 					$this->PersonneReferent->commit();
 					$this->Jetons2->release( $dossier_id );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-// 					$this->redirect( array(  'controller' => 'personnes_referents','action' => 'index', $personne_id ) );
 					$this->redirect( $this->referer() );
 				}
 				else {
@@ -115,67 +127,83 @@
 				}
 			}
 
-			$this->_setOptions();
+			$this->set( 'options', $this->PersonneReferent->allEnumLists() );
 			$this->set( 'urlmenu', '/personnes_referents/index/'.$personne_id );
 			$this->set( compact( 'dossier_id', 'personne_id', 'fichiers', 'personne_referent' ) );
 		}
 
-		/**		 * *******************************************************************
+		/**
+		 * Liste des référents du parcours de l'alocataire.
 		 *
-		 * ** ****************************************************************** */
+		 * @param integer $personne_id L'id technique de l'allocataire.
+		 */
 		public function index( $personne_id = null ) {
-			$nbrPersonnes = $this->PersonneReferent->Personne->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ), 'contain' => false ) );
-			$this->assert( ( $nbrPersonnes == 1 ), 'invalidParameter' );
+			$this->PersonneReferent->Personne->id = $personne_id;
+			if( !$this->PersonneReferent->Personne->exists() ) {
+				$this->cakeError( 'invalidParameter' );
+			}
 
 			$personnes_referents = $this->PersonneReferent->find(
-					'all', array(
-				'conditions' => array(
-					'PersonneReferent.personne_id' => $personne_id
-				),
-				'contain' => array(
-					'Fichiermodule',
-					'Referent',
-					'Structurereferente'
-				),
-				'order' => array(
-					'PersonneReferent.dddesignation DESC'
-				)
+				'all',
+				array(
+					'fields' => array_merge(
+						$this->PersonneReferent->fields(),
+						$this->PersonneReferent->Referent->fields(),
+						$this->PersonneReferent->Referent->Structurereferente->fields(),
+						array(
+							$this->PersonneReferent->Fichiermodule->sqNbFichiersLies( $this->PersonneReferent, 'nombre' )
+						)
+					),
+					'conditions' => array(
+						'PersonneReferent.personne_id' => $personne_id
+					),
+					'contain' => array(
+						'Referent',
+						'Structurereferente'
+					),
+					'order' => array(
+						'PersonneReferent.dddesignation DESC'
 					)
+				)
 			);
-// debug( $personnes_referents);
+
+			// Existe-t'il un référent non clôturé ?
+			$dfdesignations = Set::extract( '/PersonneReferent/dfdesignation', $personnes_referents );
+			$ajoutPossible = ( count( $dfdesignations ) == count( Set::filter( $dfdesignations ) ) );
+
 			$this->set( 'personnes_referents', $personnes_referents );
-
-			foreach( $personnes_referents as $index => $date ) {
-				$pers = $this->PersonneReferent->find( 'first', array( 'conditions' => array( 'PersonneReferent.personne_id' => $personne_id ), 'order' => 'PersonneReferent.dfdesignation DESC' ) );
-				$pers['PersonneReferent']['dernier'] = $pers['PersonneReferent'];
-
-				$dfdesignation = Set::extract( $pers, '/PersonneReferent/dernier/dfdesignation' );
-				$this->set( 'pers', $pers );
-				$this->set( 'dfdesignation', $dfdesignation );
-			}
-			$this->_setOptions();
 			$this->set( 'personne_id', $personne_id );
+			$this->set( 'ajoutPossible', $ajoutPossible );
 		}
 
 		/**
+		 * Formulaire d'ajout d'un référent du parcours.
 		 *
+		 * @param integer $id L'id technique de l'allocataire
+		 * @return void
 		 */
-		public function add() {
+		public function add( $id = null ) {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
 		/**
+		 * Formulaire de modification d'un référent du parcours.
 		 *
+		 * @param integer $id L'id technique du référent du parcours
+		 * @return void
 		 */
-		public function edit() {
+		public function edit( $id = null ) {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
 		/**
+		 * Formulaire d'ajout / de modification d'un référent du parcours.
 		 *
-		 * @param integer $id
+		 * @param integer $id Si c'est un ajout, il s'agit de l'id technique de l'allocataire, sinon de celui de la
+		 *	table personnes_referents
+		 * @return void
 		 */
 		protected function _add_edit( $id = null ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
@@ -183,40 +211,28 @@
 			// Récupération des id afférents
 			if( $this->action == 'add' ) {
 				$personne_id = $id;
-				$dossier_id = $this->Personne->dossierId( $personne_id );
 			}
 			else if( $this->action == 'edit' ) {
-				$personne_referent_id = $id;
-				$qd_personne_referent = array(
-					'conditions' => array(
-						'PersonneReferent.id' => $personne_referent_id
-					),
-					'fields' => null,
-					'order' => null,
-					'recursive' => -1
+				$personne_referent = $this->PersonneReferent->find(
+					'first',
+					array(
+						'conditions' => array(
+							'PersonneReferent.id' => $id
+						),
+						'contain' => array(
+							'Referent'
+						),
+					)
 				);
-				$personne_referent = $this->PersonneReferent->find( 'first', $qd_personne_referent );
 
 				$this->assert( !empty( $personne_referent ), 'invalidParameter' );
 
-				$qd_referent = array(
-					'conditions' => array(
-						'Referent.id' => $personne_referent['PersonneReferent']['referent_id']
-					),
-					'fields' => null,
-					'order' => null,
-					'recursive' => -1
-				);
-				$referent = $this->Referent->find( 'first', $qd_referent );
-
-				$this->assert( !empty( $referent ), 'invalidParameter' );
-				$this->set( 'referent', $referent );
-
 				$personne_id = $personne_referent['PersonneReferent']['personne_id'];
-				$dossier_id = $this->PersonneReferent->dossierId( $personne_referent_id );
 			}
-			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
 
+			// Tentative d'obtention d'un jeton sur le dossier
+			$dossier_id = $this->PersonneReferent->Personne->dossierId( $personne_id );
+			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
 			$this->Jetons2->get( $dossier_id );
 
 			// Retour à la liste en cas d'annulation
@@ -225,77 +241,83 @@
 				$this->redirect( array( 'action' => 'index', $personne_id ) );
 			}
 
-			$qd_orientstruct = array(
-					'conditions' => array(
-						'Orientstruct.personne_id' =>  $personne_id
-					),
-					'fields' => null,
-					'order' => null,
-					'recursive' => -1
-				);
-				$orientstruct = $this->Orientstruct->find( 'first', $qd_orientstruct );
-
-
+			// Tentative de sauvagrde
 			if( !empty( $this->data ) ) {
 				$this->PersonneReferent->begin();
 
-				if( $this->PersonneReferent->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
-					if( $this->PersonneReferent->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
-						$this->PersonneReferent->commit();
-						$this->Jetons2->release( $dossier_id );
-						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-						$this->redirect( array( 'controller' => 'personnes_referents', 'action' => 'index', $personne_id ) );
-					}
-					else {
-						$this->PersonneReferent->rollback();
-						$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
-					}
+				if( $this->PersonneReferent->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
+					$this->PersonneReferent->commit();
+					$this->Jetons2->release( $dossier_id );
+					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+					$this->redirect( array( 'controller' => 'personnes_referents', 'action' => 'index', $personne_id ) );
 				}
 				else {
 					$this->PersonneReferent->rollback();
 					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 				}
 			}
-			else {
-				if( $this->action == 'edit' ) {
-					$this->data = $personne_referent;
+			else if( $this->action == 'edit' ) {
+				$personne_referent['PersonneReferent']['structurereferente_id'] = $personne_referent['Referent']['structurereferente_id'];
+				$personne_referent['PersonneReferent']['referent_id'] = $personne_referent['Referent']['structurereferente_id'].'_'.$personne_referent['PersonneReferent']['referent_id'];
+				$this->data = $personne_referent;
+			}
+			// Sinon, on va pré-remplir la structure référente à partir de celle de la dernièère orientation
+			else if( $this->action == 'add' ) {
+				$orientstruct = $this->PersonneReferent->Personne->Orientstruct->find(
+					'first',
+					array(
+						'fields' => array(
+							'Orientstruct.structurereferente_id'
+						),
+						'conditions' => array(
+							'Orientstruct.personne_id' =>  $personne_id,
+							'Orientstruct.statut_orient' => 'Orienté',
+						),
+						'order' => array( 'Orientstruct.date_valid DESC' ),
+						'recursive' => -1
+					)
+				);
+
+				if( !empty( $orientstruct ) ) {
+					$this->data = array(
+						'PersonneReferent' => array(
+							'structurereferente_id' => $orientstruct['Orientstruct']['structurereferente_id']
+						)
+					);
 				}
 			}
 
-			$this->_setOptions();
-			$this->set( 'orientstruct', $orientstruct );
-			if( !empty( $orientstruct ) ) {
-				$sr = Set::classicExtract( $orientstruct, 'Orientstruct.structurereferente_id' );
-				$this->set( 'sr', $sr );
-			}
-			$this->set( 'referents', $this->Referent->listOptions() );
+			// Cache géré dans les modèles
+			$options = array(
+				'referents' => $this->set( 'referents', $this->PersonneReferent->Referent->listOptions() ),
+				'structuresreferentes' => $this->PersonneReferent->Referent->Structurereferente->listOptions()
+			);
+			$this->set( 'options', $options );
+
 			$this->set( 'personne_id', $personne_id );
 			$this->set( 'urlmenu', '/personnes_referents/index/'.$personne_id );
 			$this->render( $this->action, null, 'add_edit' );
 		}
 
 		/**
+		 * Formulaire de clôture d'un référent du parcours.
 		 *
-		 * @param integer $id
+		 * @param integer $id L'id technique de l'enregistrement dans la table personnes_referents
+		 * @return void
 		 */
 		public function cloturer( $id = null ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
 			$personne_referent = $this->PersonneReferent->find(
-					'first', array(
-				'fields' => array(
-					'PersonneReferent.id',
-					'PersonneReferent.personne_id',
-					'PersonneReferent.referent_id',
-					'PersonneReferent.structurereferente_id',
-					'PersonneReferent.dddesignation',
-					'PersonneReferent.dfdesignation',
-				),
-				'conditions' => array(
-					'PersonneReferent.id' => $id
-				),
-				'contain' => false
+				'first',
+				array(
+					'conditions' => array(
+						'PersonneReferent.id' => $id
+					),
+					'contain' => array(
+						'Referent'
 					)
+				)
 			);
 			$this->assert( !empty( $personne_referent ), 'invalidParameter' );
 
@@ -303,29 +325,21 @@
 
 			$this->Jetons2->get( $dossier_id );
 
-			$this->set( 'personne_referent', $personne_referent );
-			$this->set( 'personne_id', $personne_referent['PersonneReferent']['personne_id'] );
-
 			// Retour à la liste en cas d'annulation
 			if( !empty( $this->data ) && isset( $this->params['form']['Cancel'] ) ) {
 				$this->Jetons2->release( $dossier_id );
 				$this->redirect( array( 'action' => 'index', $personne_referent['PersonneReferent']['personne_id'] ) );
 			}
 
+			// Tentative d'enregistrement du formulaire
 			if( !empty( $this->data ) ) {
 				$this->PersonneReferent->begin();
 
-				if( $this->PersonneReferent->saveAll( $this->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
-					if( $this->PersonneReferent->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
-						$this->PersonneReferent->commit();
-						$this->Jetons2->release( $dossier_id );
-						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-						$this->redirect( array( 'controller' => 'personnes_referents', 'action' => 'index', $personne_referent['PersonneReferent']['personne_id'] ) );
-					}
-					else {
-						$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
-						$this->PersonneReferent->rollback();
-					}
+				if( $this->PersonneReferent->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
+					$this->PersonneReferent->commit();
+					$this->Jetons2->release( $dossier_id );
+					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+					$this->redirect( array( 'controller' => 'personnes_referents', 'action' => 'index', $personne_referent['PersonneReferent']['personne_id'] ) );
 				}
 				else {
 					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
@@ -336,11 +350,22 @@
 				$this->data = $personne_referent;
 			}
 
-			$this->_setOptions();
-			$this->viewVars['options']['PersonneReferent']['referent_id'] = $this->PersonneReferent->Referent->find( 'list' );
-			$this->viewVars['options']['PersonneReferent']['structurereferente_id'] = $this->PersonneReferent->Structurereferente->find( 'list' );
+			// Cache géré dans les modèles
+			$options = array(
+				'PersonneReferent' => array(
+					'referent_id' => $this->set( 'referents', $this->PersonneReferent->Referent->listOptions() ),
+					'structurereferente_id' => $this->PersonneReferent->Referent->Structurereferente->listOptions()
+				)
+			);
+			$this->set( 'options', $options );
+
+			// On s'assure de toujours avoir ces valeurs, qui ne changent pas (champs de formulaire désactivés)
+			$personne_referent['PersonneReferent']['structurereferente_id'] = $personne_referent['Referent']['structurereferente_id'];
+			$personne_referent['PersonneReferent']['referent_id'] = $personne_referent['Referent']['structurereferente_id'].'_'.$personne_referent['PersonneReferent']['referent_id'];
+			$this->set( 'personne_referent', $personne_referent );
+
+			$this->set( 'personne_id', $personne_referent['PersonneReferent']['personne_id'] );
 			$this->set( 'urlmenu', '/personnes_referents/index/'.$personne_referent['PersonneReferent']['personne_id'] );
 		}
-
 	}
 ?>
