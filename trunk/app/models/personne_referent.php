@@ -1,4 +1,18 @@
 <?php
+	/**
+	 * Fichier source de la classe PersonneReferent.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.models
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe PersonneReferent ...
+	 *
+	 * @package app.models
+	 */
 	class PersonneReferent extends AppModel
 	{
 		public $name = 'PersonneReferent';
@@ -87,9 +101,11 @@
 		);
 
 		/**
-		*
-		*/
-
+		 * Retourne l'id technique du dossier auquel appartient ce référent de parcours.
+		 *
+		 * @param integer $pers_ref_id L'id technique du référent de parcours
+		 * @return integer
+		 */
 		public function dossierId( $pers_ref_id ){
 			$qd_personnereferent = array(
 				'conditions'=> array(
@@ -113,51 +129,30 @@
 		}
 
 		/**
-		*
-		*/
-
-		public function beforeSave( $options = array() ) {
-			$return = parent::beforeSave( $options );
-
-			$hasMany = ( array_depth( $this->data ) > 2 );
-
-			if( !$hasMany ) { // INFO: 1 seul enregistrement
-				if( array_key_exists( 'referent_id', $this->data[$this->name] ) ) {
-					$this->data[$this->name]['referent_id'] = preg_replace( '/^[0-9]+_([0-9]+)$/', '\1', $this->data[$this->name]['referent_id'] );
-				}
-			}
-			else { // INFO: plusieurs enregistrements
-				foreach( $this->data[$this->name] as $key => $value ) {
-					if( is_array( $value ) && array_key_exists( 'referent_id', $value ) ) {
-						$this->data[$this->name][$key]['referent_id'] = preg_replace( '/^[0-9]+_([0-9]+)$/', '\1', $value['referent_id'] );
-					}
-				}
-			}
-			return $return;
-		}
-
-		/**
-		*
-		*/
-
-		public function sqDerniere($field) {
+		 * Retourne une sous-requête permettant de connaître le dernier référent de parcours pour un
+		 * allocataire donné.
+		 *
+		 * @param string $field Le champ Personne.id sur lequel faire la sous-requête
+		 * @return string
+		 */
+		public function sqDerniere( $field ) {
 			$dbo = $this->getDataSource( $this->useDbConfig );
 			$table = $dbo->fullTableName( $this, false );
-			return "
-				SELECT {$table}.id
+			return "SELECT {$table}.id
 					FROM {$table}
 					WHERE
 						{$table}.personne_id = ".$field."
 					ORDER BY {$table}.dddesignation DESC
-					LIMIT 1
-			";
+					LIMIT 1";
 		}
 
 		/**
-		* Lors de l'ajout d'une orientation, on ajoute un nouveau référent de parcours
-		* si celui-ci a été précisé lors de la création de l'orientation
-		*/
-
+		 * Lors de l'ajout d'une orientation, on ajoute un nouveau référent de parcours si celui-ci a été précisé
+		 * lors de la création de l'orientation.
+		 *
+		 * @param array $data
+		 * @return boolean
+		 */
 		public function referentParOrientstruct( $data ) {
 			$saved = true;
 
