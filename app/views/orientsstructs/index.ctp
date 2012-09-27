@@ -206,9 +206,6 @@
 			<tbody>
 				<?php
 					foreach( $orientstructs as $i => $orientstruct ) {
-						$nbFichiersLies = 0;
-						$nbFichiersLies = ( isset( $orientstruct['Fichiermodule'] ) ? count( $orientstruct['Fichiermodule'] ) : 0 );
-
 						$isOrient = false;
 						if( isset( $orientstruct['Orientstruct']['date_propo'] ) ){
 							$isOrient = true;
@@ -220,7 +217,7 @@
 						else {
 							$rgorient = null;
 						}
-						
+
 						//Peut-n nimprimer la notif de changement de référent ou non, si 1ère orientation non sinon ok
 						$NotifBenefPrintable = true;
 						if( $orientstruct['Orientstruct']['rgorient'] > 1 ) {
@@ -229,8 +226,8 @@
 						else {
 							$NotifBenefPrintable = false;
 						}
-						
-						
+
+
 						// Délai de modification orientation (10 jours par défaut)
 						$dateCreation = Set::classicExtract( $orientstruct, 'Orientstruct.date_valid' );
 						$periodeblock = false;
@@ -261,13 +258,13 @@
 
 						if( Configure::read( 'Cg.departement' ) == 58 ) {
 							$infoscov = '';
-							if( !empty( $orientstruct['Cov58'] ) ){
+							if( !empty( $orientstruct['Cov58']['datecommission'] ) ){
 								$infoscov = 'Site "'.Set::classicExtract( $orientstruct, 'Sitecov58.name' ).'", le '.$locale->date( "Datetime::full", Set::classicExtract( $orientstruct, 'Cov58.datecommission' ) );
 							}
 							$cells[] = h( $infoscov );
 							$cells[] = h( Set::classicExtract( $orientstruct, 'Cov58.observation' ) );
 						}
-						
+
 
 						if( Configure::read( 'Cg.departement' ) == 66 ) {
 							array_push(
@@ -326,7 +323,7 @@
 										)
 									)
 								),
-								h( '('.$nbFichiersLies.')' )
+								h( "({$orientstruct['Fichiermodule']['nombre']})" )
 							);
 						}
 						else{
@@ -347,7 +344,7 @@
 								$xhtml->deleteLink(
 									'Supprimer l\'orientation',
 									array( 'controller' => 'orientsstructs', 'action' => 'delete', $orientstruct['Orientstruct']['id'] ),
-									( 
+									(
 										$permissions->check( 'orientsstructs', 'delete' )
 										&& ( $orientstruct['Orientstruct']['rgorient'] == $rgorient_max )
 										&& $last_orientstruct_suppressible
@@ -358,7 +355,7 @@
 									array( 'controller' => 'orientsstructs', 'action' => 'filelink', $orientstruct['Orientstruct']['id'] ),
 									$permissions->check( 'orientsstructs', 'filelink' )
 								),
-								h( '('.$nbFichiersLies.')' )
+								h( "({$orientstruct['Fichiermodule']['nombre']})" )
 							);
 						}
 						echo $xhtml->tableCells( $cells, array( 'class' => 'odd' ), array( 'class' => 'even' ) );

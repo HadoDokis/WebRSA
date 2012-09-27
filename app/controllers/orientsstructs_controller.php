@@ -48,12 +48,9 @@
 		 */
 		public function beforeFilter() {
 			$return = parent::beforeFilter();
-			$options = array( );
-			foreach( $this->{$this->modelClass}->allEnumLists() as $field => $values ) {
-				$options = Set::insert( $options, "{$this->modelClass}.{$field}", $values );
-			}
 
-			$this->set( compact( 'options' ) );
+			$this->set( 'options', $this->Orientstruct->enums() );
+
 			return $return;
 		}
 
@@ -160,285 +157,22 @@
 		}
 
 		/**
+		 * Liste des orientations de l'allocataire.
 		 *
-		 *
-		 *
+		 * @param integer $personne_id L'id technique de l'allocataire.
 		 */
 		public function index( $personne_id = null ) {
 			$this->assert( valid_int( $personne_id ), 'invalidParameter' );
 
-			$orientstructs = $this->Orientstruct->find(
-					'all', array(
-				'conditions' => array(
-					'Orientstruct.personne_id' => $personne_id
-				),
-				'contain' => array(
-					'Personne' => array(
-						'Calculdroitrsa'
-					),
-					'Typeorient',
-					'Structurereferente',
-					'Referent',
-					'Fichiermodule',
-					'Nonrespectsanctionep93'
-				),
-				'order' => array(
-					'COALESCE( Orientstruct.rgorient, \'0\') DESC',
-					'Orientstruct.date_valid DESC'
-				)
-					)
-			);
+			$dossier_id = $this->Orientstruct->Personne->dossierId( $personne_id );
 
-			foreach( $orientstructs as $key => $orientstruct ) {
-				$orientstruct[$this->Orientstruct->alias]['imprime'] = $this->Pdf->find(
-						'count', array(
-					'conditions' => array(
-						'Pdf.fk_value' => $orientstruct[$this->Orientstruct->alias]['id'],
-						'Pdf.modele = \'Orientstruct\''
-					)
-						)
-				);
+			$querydata = $this->Orientstruct->qdIndex( $personne_id );
+			$orientstructs = $this->Orientstruct->find( 'all', $querydata );
 
-				if( Configure::read( 'Cg.departement' ) == 66 ) {
-					$orientstruct[$this->Orientstruct->alias]['notifbenefcliquable'] = in_array(
-							$orientstruct['Typeorient']['parentid'], Configure::read( 'Orientstruct.typeorientprincipale.SOCIAL' )
-					);
-				}
-
-				$orientstructs[$key] = $orientstruct;
-			}
-			$dossier_id = Set::extract( $orientstructs, '0.Personne.Foyer.dossier_id' );
-
+			// Ajout d'informations en fonction du CG.
 			$en_procedure_relance = false;
-			if( Configure::read( 'Cg.departement' ) == 93 ) {
-				// TODO: à déplacer dans un modèle à terme
-				$en_procedure_relance = (
-						$this->Orientstruct->Nonrespectsanctionep93->find(
-								'count', array(
-							'contain' => array(
-								'Dossierep',
-								'Orientstruct',
-								'Contratinsertion',
-								'Propopdo',
-							),
-							'conditions' => array(
-								'OR' => array(
-									array(
-										'Dossierep.personne_id' => $personne_id,
-										'Dossierep.id NOT IN ( '.$this->Personne->Dossierep->Passagecommissionep->sq(
-												array(
-													'alias' => 'passagescommissionseps',
-													'fields' => array(
-														'passagescommissionseps.dossierep_id'
-													),
-													'conditions' => array(
-														'passagescommissionseps.etatdossierep' => 'traite'
-													)
-												)
-										).' )'
-									),
-									array(
-										'Nonrespectsanctionep93.active' => 1,
-										'OR' => array(
-											array(
-												'Orientstruct.personne_id' => $personne_id,
-												'Nonrespectsanctionep93.origine' => 'orientstruct'
-											),
-											array(
-												'Contratinsertion.personne_id' => $personne_id,
-												'Nonrespectsanctionep93.origine' => 'contratinsertion'
-											),
-											array(
-												'Propopdo.personne_id' => $personne_id,
-												'Nonrespectsanctionep93.origine' => 'pdo'
-											)
-										)
-									),
-								)
-							)
-								)
-						) > 0
-						);
-
-				$reorientationep93 = $this->Orientstruct->Reorientationep93->find(
-						'first', $this->Orientstruct->Reorientationep93->qdReorientationEnCours( $personne_id )
-				);
-				$this->set( 'reorientationep93', $reorientationep93 );
-				$this->set( 'optionsdossierseps', $this->Orientstruct->Reorientationep93->Dossierep->Passagecommissionep->enums() );
-			}
-			elseif( Configure::read( 'Cg.departement' ) == 58 ) {
-				foreach( $orientstructs as $i => $orientstruct ) {
-					// Propositions d'orientation
-					$qdPassageCov = array(
-						'fields' => array_merge(
-								$this->Orientstruct->Personne->Dossiercov58->Passagecov58->fields(), $this->Orientstruct->Personne->Dossiercov58->Passagecov58->Cov58->fields(), $this->Orientstruct->Personne->Dossiercov58->Passagecov58->Cov58->Sitecov58->fields()
-						),
-						'joins' => array(
-							$this->Orientstruct->Personne->Dossiercov58->Passagecov58->join( 'Dossiercov58' ),
-							$this->Orientstruct->Personne->Dossiercov58->Passagecov58->join( 'Cov58' ),
-							$this->Orientstruct->Personne->Dossiercov58->Passagecov58->Cov58->join( 'Sitecov58' ),
-							$this->Orientstruct->Personne->Dossiercov58->Passagecov58->join( 'Decisionpropoorientationcov58' ),
-							$this->Orientstruct->Personne->Dossiercov58->Passagecov58->Dossiercov58->join( 'Themecov58' ),
-							$this->Orientstruct->Personne->Dossiercov58->join( 'Propoorientationcov58' )
-						),
-						'conditions' => array(
-							'Dossiercov58.personne_id' => $personne_id,
-							'Themecov58.name' => 'proposorientationscovs58',
-							'Passagecov58.etatdossiercov' => 'traite',
-						),
-						'contain' => false
-					);
-
-					// Conditions pour retrouver l'orientation
-					$conditionsJointure = array(
-						'Propoorientationcov58.nvorientstruct_id' => $orientstruct['Orientstruct']['id'],
-					);
-
-					foreach( $conditionsJointure as $key => $value ) {
-						if( !empty( $value ) ) {
-							$qdPassageCov['conditions'][$key] = $value;
-						}
-						else {
-							$qdPassageCov['conditions'][] = "{$key} IS NULL";
-						}
-					}
-
-					$covpassee58 = $this->Orientstruct->Personne->Dossiercov58->Passagecov58->find( 'first', $qdPassageCov );
-					$orientstructs[$i] = Set::merge( $orientstruct, $covpassee58 );
-
-					// Propositions de non orientation professionnelle
-					$qdPassageCov = array(
-						'fields' => array_merge(
-								$this->Orientstruct->Personne->Dossiercov58->Passagecov58->fields(), $this->Orientstruct->Personne->Dossiercov58->Passagecov58->Cov58->fields(), $this->Orientstruct->Personne->Dossiercov58->Passagecov58->Cov58->Sitecov58->fields()
-						),
-						'joins' => array(
-							$this->Orientstruct->Personne->Dossiercov58->Passagecov58->join( 'Dossiercov58' ),
-							$this->Orientstruct->Personne->Dossiercov58->Passagecov58->join( 'Cov58' ),
-							$this->Orientstruct->Personne->Dossiercov58->Passagecov58->Cov58->join( 'Sitecov58' ),
-							$this->Orientstruct->Personne->Dossiercov58->Passagecov58->join( 'Decisionpropononorientationprocov58' ),
-							$this->Orientstruct->Personne->Dossiercov58->Passagecov58->Dossiercov58->join( 'Themecov58' ),
-							$this->Orientstruct->Personne->Dossiercov58->join( 'Propononorientationprocov58' )
-						),
-						'conditions' => array(
-							'Dossiercov58.personne_id' => $personne_id,
-							'Themecov58.name' => 'proposnonorientationsproscovs58',
-							'Passagecov58.etatdossiercov' => 'traite',
-							'Propononorientationprocov58.nvorientstruct_id' => $orientstruct['Orientstruct']['id'],
-						),
-						'contain' => false
-					);
-					$covpassee58 = $this->Orientstruct->Personne->Dossiercov58->Passagecov58->find(
-							'first', $qdPassageCov
-					);
-					$orientstructs[$i] = Set::merge( $orientstruct, $covpassee58 );
-				}
-
-				// Passages COV en cours ?
-				$sqDernierPassagecov58 = $this->Orientstruct->Personne->Dossiercov58->Passagecov58->sqDernier();
-				$propoorientationcov58 = $this->Orientstruct->Personne->Dossiercov58->Propoorientationcov58->find(
-						'first', array(
-					'fields' => array(
-						'Propoorientationcov58.id',
-						'Propoorientationcov58.dossiercov58_id',
-						'Propoorientationcov58.datedemande',
-						'Propoorientationcov58.rgorient',
-						'Propoorientationcov58.typeorient_id',
-						'Typeorient.lib_type_orient',
-						'Propoorientationcov58.structurereferente_id',
-						'Structurereferente.lib_struc',
-						'Dossiercov58.personne_id',
-						'Dossiercov58.themecov58',
-						'Passagecov58.etatdossiercov',
-						'Personne.id',
-						'Personne.nom',
-						'Personne.prenom'
-					),
-// 						'conditions' => array(
-// 							'Dossiercov58.personne_id' => $personne_id,
-// 							'Dossiercov58.themecov58' => 'proposorientationscovs58'/*,
-// 							'Dossiercov58.etapecov <>' => 'finalise'*/
-// 						),
-					'conditions' => array(
-						'Dossiercov58.personne_id' => $personne_id,
-						'Themecov58.name' => 'proposorientationscovs58',
-						array(
-							'OR' => array(
-								'Passagecov58.etatdossiercov NOT' => array( 'traite', 'annule' ),
-								'Passagecov58.etatdossiercov IS NULL'
-							),
-						),
-						array(
-							'OR' => array(
-								"Passagecov58.id IN ( {$sqDernierPassagecov58} )",
-								'Passagecov58.etatdossiercov IS NULL'
-							),
-						),
-					),
-					'joins' => array(
-						array(
-							'table' => 'dossierscovs58',
-							'alias' => 'Dossiercov58',
-							'type' => 'INNER',
-							'conditions' => array(
-								'Dossiercov58.id = Propoorientationcov58.dossiercov58_id'
-							)
-						),
-						array(
-							'table' => 'themescovs58',
-							'alias' => 'Themecov58',
-							'type' => 'INNER',
-							'conditions' => array(
-								'Dossiercov58.themecov58_id = Themecov58.id'
-							)
-						),
-						array(
-							'table' => 'passagescovs58',
-							'alias' => 'Passagecov58',
-							'type' => 'LEFT OUTER',
-							'conditions' => array(
-								'Passagecov58.dossiercov58_id = Dossiercov58.id'
-							)
-						),
-						array(
-							'table' => 'personnes',
-							'alias' => 'Personne',
-							'type' => 'INNER',
-							'conditions' => array(
-								'Dossiercov58.personne_id = Personne.id'
-							)
-						),
-						array(
-							'table' => 'typesorients',
-							'alias' => 'Typeorient',
-							'type' => 'INNER',
-							'conditions' => array(
-								'Propoorientationcov58.typeorient_id = Typeorient.id'
-							)
-						),
-						array(
-							'table' => 'structuresreferentes',
-							'alias' => 'Structurereferente',
-							'type' => 'INNER',
-							'conditions' => array(
-								'Propoorientationcov58.structurereferente_id = Structurereferente.id'
-							)
-						)
-					),
-					'contain' => false,
-					'order' => array( 'Propoorientationcov58.rgorient DESC' )
-						)
-				);
-				$this->set( 'propoorientationcov58', $propoorientationcov58 );
-				$this->set( 'optionsdossierscovs58', $this->Orientstruct->Personne->Dossiercov58->Passagecov58->enums() );
-// debug($propoorientationcov58);
-				$regressionorientaionep58 = $this->Orientstruct->Personne->Dossierep->Regressionorientationep58->find(
-						'first', $this->Orientstruct->Personne->Dossierep->Regressionorientationep58->qdReorientationEnCours( $personne_id )
-				);
-				$this->set( compact( 'regressionorientaionep58' ) );
-				$this->set( 'optionsdossierseps', $this->Orientstruct->Personne->Dossierep->Passagecommissionep->enums() );
-			}
-
-			$this->set( 'droitsouverts', $this->Dossier->Situationdossierrsa->droitsOuverts( $dossier_id ) );
+			$force_edit = false;
+			$rgorient_max = $this->Orientstruct->rgorientMax( $personne_id );
 
 			// L'entrée la plus récente est-elle non liée à d'autres tables, et donc suppressible ?
 			$last_orientstruct_suppressible = false;
@@ -448,96 +182,74 @@
 
 				$occurences = $this->Orientstruct->occurencesExists( array( 'Orientstruct.id' => $orientstructs[0]['Orientstruct']['id'] ), array( 'Fichiermodule', 'Nonoriente66' ) );
 				$last_orientstruct_suppressible = !$occurences[$orientstructs[0]['Orientstruct']['id']];
-// debug($occurences);
+
 				$last_orientstruct_suppressible = (
-						$this->Orientstruct->Personne->Dossierep->find(
-								'count', $this->Orientstruct->Personne->Dossierep->qdDossiersepsOuverts( $personne_id )
-						) == 0
-						) && $last_orientstruct_suppressible;
+					$this->Orientstruct->Personne->Dossierep->find(
+						'count',
+						$this->Orientstruct->Personne->Dossierep->qdDossiersepsOuverts( $personne_id )
+					) == 0
+				) && $last_orientstruct_suppressible;
 			}
-			$this->set( 'last_orientstruct_suppressible', $last_orientstruct_suppressible );
 
-			$this->set( 'orientstructs', $orientstructs );
-
-			$this->set( 'en_procedure_relance', $en_procedure_relance );
-			$this->_setOptions();
-			$this->set( 'personne_id', $personne_id );
-
-			$force_edit = false;
-			$rgorient_max = $this->Orientstruct->rgorientMax( $personne_id );
-
-			if( Configure::read( 'Cg.departement' ) == 58 && $rgorient_max <= 1 ) {
-				$ajout_possible = $this->Orientstruct->Personne->Dossiercov58->ajoutPossible( $personne_id ) && $this->Orientstruct->ajoutPossible( $personne_id );
-
-				$nbdossiersnonfinalisescovs = $this->Orientstruct->Personne->Dossiercov58->find(
-						'count', array(
-					'conditions' => array(
-						'Dossiercov58.id NOT IN ( '.$this->Orientstruct->Personne->Dossiercov58->Passagecov58->sq(
-								array(
-									'fields' => array(
-										'passagescovs58.dossiercov58_id'
-									),
-									'alias' => 'passagescovs58',
-									'conditions' => array(
-										'dossierscovs58.themecov58' => 'proposorientationscovs58',
-										'dossierscovs58.personne_id' => $personne_id,
-										'passagescovs58.etatdossiercov' => array( 'traite', 'annule' )
-									),
-									'joins' => array(
-										array(
-											'table' => 'dossierscovs58',
-											'alias' => 'dossierscovs58',
-											'type' => 'INNER',
-											'conditions' => array(
-												'passagescovs58.dossiercov58_id = dossierscovs58.id'
-											)
-										),
-										array(
-											'table' => 'covs58',
-											'alias' => 'covs58',
-											'type' => 'INNER',
-											'conditions' => array(
-												'passagescovs58.cov58_id = covs58.id'
-											)
-										)
-									)
-								)
-						).' )',
-						'Dossiercov58.personne_id' => $personne_id,
-						'Dossiercov58.themecov58' => 'proposorientationscovs58'
-					),
-					'joins' => array(
-						array(
-							'table' => 'passagescovs58',
-							'alias' => 'Passagecov58',
-							'type' => 'LEFT OUTER',
-							'conditions' => array(
-								'Dossiercov58.id = Passagecov58.dossiercov58_id'
-							)
-						),
-						array(
-							'table' => 'decisionsproposorientationscovs58',
-							'alias' => 'Decisionpropoorientationcov58',
-							'type' => 'LEFT OUTER',
-							'conditions' => array(
-								'Decisionpropoorientationcov58.passagecov58_id = Passagecov58.id'
-							)
-						)
-					)
-						)
+			if( Configure::read( 'Cg.departement' ) == 58 ) {
+				// Nouvelle orientation en cours de validation par la commission d'orientation et de validation ?
+				$qdEnCours = $this->Orientstruct->Personne->Dossiercov58->Propoorientationcov58->qdEnCours( $personne_id );
+				$propoorientationcov58 = $this->Orientstruct->Personne->Dossiercov58->Propoorientationcov58->find(
+					'first',
+					$qdEnCours
 				);
-// debug($nbdossiersnonfinalisescovs);
-				$this->set( 'ajout_possible', $ajout_possible );
-				$this->set( 'nbdossiersnonfinalisescovs', $nbdossiersnonfinalisescovs );
-			}
-			else {
-				$this->set( 'ajout_possible', $this->Orientstruct->ajoutPossible( $personne_id ) );
-			}
+				$this->set( 'propoorientationcov58', $propoorientationcov58 );
+				$this->set( 'optionsdossierscovs58', $this->Orientstruct->Personne->Dossiercov58->Passagecov58->enums() );
 
-			if( Configure::read( 'Cg.departement' ) == 93 ) {
+				// Réorientation en cours de validation par la commission d'orientation et de validation ?
+				$qdReorientationEnCours = $this->Orientstruct->Personne->Dossierep->Regressionorientationep58->qdReorientationEnCours( $personne_id );
+				$regressionorientaionep58 = $this->Orientstruct->Personne->Dossierep->Regressionorientationep58->find(
+					'first',
+					$qdReorientationEnCours
+				);
+
+				if( $rgorient_max <= 1 ) {
+					$ajout_possible = $this->Orientstruct->Personne->Dossiercov58->ajoutPossible( $personne_id ) && $this->Orientstruct->ajoutPossible( $personne_id );
+
+					$qdDossiersNonFinalises = $this->Orientstruct->Personne->Dossiercov58->Propoorientationcov58->qdDossiersNonFinalises( $personne_id );
+					$nbdossiersnonfinalisescovs = $this->Orientstruct->Personne->Dossiercov58->find(
+						'count',
+						$qdDossiersNonFinalises
+					);
+
+					$this->set( 'nbdossiersnonfinalisescovs', $nbdossiersnonfinalisescovs );
+				}
+				else {
+					$ajout_possible = $this->Orientstruct->ajoutPossible( $personne_id );
+				}
+
+				$this->set( compact( 'regressionorientaionep58' ) );
+				$this->set( 'optionsdossierseps', $this->Orientstruct->Personne->Dossierep->Passagecommissionep->enums() );
+			}
+			else if( Configure::read( 'Cg.departement' ) == 66 ) {
+				$ajout_possible = $this->Orientstruct->ajoutPossible( $personne_id );
+			}
+			else if( Configure::read( 'Cg.departement' ) == 93 ) {
+				$ajout_possible = $this->Orientstruct->ajoutPossible( $personne_id );
 				$force_edit = ( $rgorient_max == 0 );
+
+				$en_procedure_relance = $this->Orientstruct->Nonrespectsanctionep93->enProcedureRelance( $personne_id );
+
+				// La dernière réorientation en cours
+				$qdReorientationEnCours = $this->Orientstruct->Reorientationep93->qdReorientationEnCours( $personne_id );
+				$reorientationep93 = $this->Orientstruct->Reorientationep93->find( 'first', $qdReorientationEnCours );
+
+				$this->set( 'reorientationep93', $reorientationep93 );
+				$this->set( 'optionsdossierseps', $this->Orientstruct->Reorientationep93->Dossierep->Passagecommissionep->enums() );
 			}
 
+			$this->_setOptions();
+			$this->set( 'last_orientstruct_suppressible', $last_orientstruct_suppressible );
+			$this->set( 'orientstructs', $orientstructs );
+			$this->set( 'en_procedure_relance', $en_procedure_relance );
+			$this->set( 'personne_id', $personne_id );
+			$this->set( 'droitsouverts', $this->Dossier->Situationdossierrsa->droitsOuverts( $dossier_id ) );
+			$this->set( 'ajout_possible', $ajout_possible );
 			$this->set( 'orientstructs', $orientstructs );
 			$this->set( 'force_edit', $force_edit );
 			$this->set( 'rgorient_max', $rgorient_max );
@@ -545,9 +257,9 @@
 		}
 
 		/**
+		 * Formulaire d'ajout d'une orientation à un allocataire.
 		 *
-		 *
-		 *
+		 * @param integer $personne_id
 		 */
 		public function add( $personne_id = null ) {
 			$this->assert( valid_int( $personne_id ), 'invalidParameter' );
@@ -673,7 +385,9 @@
 		}
 
 		/**
+		 * Formulaire de modification d'une orientation d'un allocataire.
 		 *
+		 * @param integer $orientstruct_id
 		 */
 		public function edit( $orientstruct_id = null ) {
 			$this->assert( valid_int( $orientstruct_id ), 'invalidParameter' );
@@ -795,7 +509,9 @@
 		}
 
 		/**
-		 * 	Suppression d'orientation
+		 * Suppression d'orientation.
+		 *
+		 * @param integer $id
 		 */
 		public function delete( $id ) {
 			$success = $this->Orientstruct->delete( $id );
@@ -824,6 +540,5 @@
 				$this->redirect( $this->referer() );
 			}
 		}
-
 	}
 ?>

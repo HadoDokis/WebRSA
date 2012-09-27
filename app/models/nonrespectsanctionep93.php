@@ -1231,5 +1231,61 @@
 			return $success;
 		}
 
+		/**
+		 * Permet de savoir si un allocataire est en cours de procédure de relance pour cette thématique.
+		 *
+		 * @param integer $personne_id L'id technique de l'allocataire.
+		 * @return boolean
+		 */
+		public function enProcedureRelance( $personne_id ) {
+			return (
+				$this->find(
+					'count',
+					array(
+						'contain' => array(
+							'Dossierep',
+							'Orientstruct',
+							'Contratinsertion',
+							'Propopdo',
+						),
+						'conditions' => array(
+							'OR' => array(
+								array(
+									'Dossierep.personne_id' => $personne_id,
+									'Dossierep.id NOT IN ( '.$this->Dossierep->Passagecommissionep->sq(
+											array(
+												'alias' => 'passagescommissionseps',
+												'fields' => array(
+													'passagescommissionseps.dossierep_id'
+												),
+												'conditions' => array(
+													'passagescommissionseps.etatdossierep' => 'traite'
+												)
+											)
+									).' )'
+								),
+								array(
+									'Nonrespectsanctionep93.active' => 1,
+									'OR' => array(
+										array(
+											'Orientstruct.personne_id' => $personne_id,
+											'Nonrespectsanctionep93.origine' => 'orientstruct'
+										),
+										array(
+											'Contratinsertion.personne_id' => $personne_id,
+											'Nonrespectsanctionep93.origine' => 'contratinsertion'
+										),
+										array(
+											'Propopdo.personne_id' => $personne_id,
+											'Nonrespectsanctionep93.origine' => 'pdo'
+										)
+									)
+								),
+							)
+						)
+					)
+				) > 0
+			);
+		}
 	}
 ?>
