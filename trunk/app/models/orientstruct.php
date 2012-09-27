@@ -1,4 +1,18 @@
 <?php
+	/**
+	 * Fichier source de la classe Orientstruct.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.models
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe Orientstruct ...
+	 *
+	 * @package app.models
+	 */
 	class Orientstruct extends AppModel
 	{
 		public $name = 'Orientstruct';
@@ -18,7 +32,12 @@
 				)
 			),
 			'Formattable' => array(
-				'suffix' => array( 'structurereferente_id', 'referent_id', 'structureorientante_id', 'referentorientant_id' ),
+				'suffix' => array(
+					'structurereferente_id',
+					'referent_id',
+					'structureorientante_id',
+					'referentorientant_id'
+				),
 			),
 			'Gedooo.Gedooo',
 			'StorablePdf',
@@ -346,7 +365,6 @@
 			)
 		);
 
-
 		public $hasOne = array(
 			'Nonoriente66' => array(
 				'className' => 'Nonoriente66',
@@ -371,9 +389,12 @@
 		);
 
 		/**
-		* Surcharge du constructeur pour ajouter des règles de validation suivant le CG
-		*/
-
+		 * Surcharge du constructeur pour ajouter des règles de validation suivant le CG
+		 *
+		 * @param mixed $id Set this ID for this model on startup, can also be an array of options, see above.
+		 * @param string $table Name of database table to use.
+		 * @param string $ds DataSource connection name.
+		 */
 		public function __construct( $id = false, $table = null, $ds = null ) {
 			parent::__construct( $id, $table, $ds );
 
@@ -395,9 +416,12 @@
 		}
 
 		/**
-		*
-		*/
-
+		 * Règle de validation.
+		 *
+		 * @param type $field
+		 * @param type $compare_field
+		 * @return boolean
+		 */
 		public function choixStructure( $field = array(), $compare_field = null ) {
 			foreach( $field as $key => $value ) {
 				if( !empty( $this->data[$this->name][$compare_field] ) && ( $this->data[$this->name][$compare_field] != 'En attente' ) && empty( $value ) ) {
@@ -408,11 +432,12 @@
 		}
 
 		/**
-		*
-		*/
-
+		 * Retourne l'id technique du dossier auquel appartient cette orientation.
+		 *
+		 * @param integer $orientstruct_id L'id technique de l'orientation
+		 * @return integer
+		 */
 		public function dossierId( $orientstruct_id ) {
-
 			$qd_orientstruct = array(
 				'fields' => array( 'Foyer.dossier_id' ),
 				'joins' => array(
@@ -424,7 +449,7 @@
 				),
 				'recursive' => -1
 			);
-			$orientstruct = $this->find('first', $qd_orientstruct);
+			$orientstruct = $this->find( 'first', $qd_orientstruct );
 
 			if( !empty( $orientstruct ) ) {
 				return $orientstruct['Foyer']['dossier_id'];
@@ -435,17 +460,21 @@
 		}
 
 		/**
-		* Retourne le chemin relatif du modèle de document à utiliser pour l'enregistrement du PDF.
-		*/
-
+		 * Retourne le chemin relatif du modèle de document à utiliser pour l'enregistrement du PDF.
+		 *
+		 * @param array $data Les données envoyées au modèle pour construire le PDF
+		 * @return string
+		 */
 		public function modeleOdt( $data ) {
 			return "Orientation/{$data['Typeorient']['modele_notif']}.odt";
 		}
 
 		/**
-		* Récupère les données pour le PDf
-		*/
-
+		 * Récupère les données pour le PDF.
+		 *
+		 * @param integer $id L'id technique de l'orientation
+		 * @return array
+		 */
 		public function getDataForPdf( $id/*, $user_id*/ ) {
 			// TODO: error404/error500 si on ne trouve pas les données
 			$optionModel = ClassRegistry::init( 'Option' );
@@ -532,36 +561,39 @@
 		}
 
 		/**
-		* Ajout d'entrée dans la table orientsstructs pour les DEM ou CJT RSA n'en possédant pas
-		*/
-
+		 * Ajout d'entrée dans la table orientsstructs pour les DEM ou CJT RSA n'en possédant pas.
+		 *
+		 * @return boolean
+		 */
 		public function fillAllocataire() {
 			$sql = "INSERT INTO orientsstructs( personne_id, statut_orient )
-					(
-						SELECT
-								DISTINCT personnes.id,
-								'Non orienté' AS statut_orient
-							FROM personnes
-								INNER JOIN prestations ON (
-									prestations.personne_id = personnes.id
-									AND prestations.natprest = 'RSA'
-									AND (
-										prestations.rolepers = 'DEM'
-										OR prestations.rolepers = 'CJT'
-									)
+				(
+					SELECT
+							DISTINCT personnes.id,
+							'Non orienté' AS statut_orient
+						FROM personnes
+							INNER JOIN prestations ON (
+								prestations.personne_id = personnes.id
+								AND prestations.natprest = 'RSA'
+								AND (
+									prestations.rolepers = 'DEM'
+									OR prestations.rolepers = 'CJT'
 								)
-							WHERE personnes.id NOT IN (
-								SELECT orientsstructs.personne_id
-									FROM orientsstructs
 							)
-					);";
-			return $this->query( $sql );
+						WHERE personnes.id NOT IN (
+							SELECT orientsstructs.personne_id
+								FROM orientsstructs
+						)
+				);";
+			return ( $this->query( $sql ) !== false );
 		}
 
 		/**
-		* FIXME: select max(rgorient), si on a besoin d'archiver
-		*/
-
+		 * FIXME: select max(rgorient), si on a besoin d'archiver
+		 *
+		 * @param integer $personne_id
+		 * @return integer
+		 */
 		public function rgorientMax( $personne_id ) {
 			return $this->find(
 				'count',
@@ -576,13 +608,16 @@
 		}
 
 		/**
-		* Construit les conditions pour ajout possible à partir de la configuration,
-		* du webrsa.inc, en prenant en compte le traitement spécial à appliquer
-		* pour la valeur NULL.
-		* ATTENTION: in_array confond null et 0
-		* @see http://fr.php.net/manual/en/function.in-array.php#99676
-		*/
-
+		 * Construit les conditions pour ajout possible à partir de la configuration,
+		 * du webrsa.inc, en prenant en compte le traitement spécial à appliquer
+		 * pour la valeur NULL.
+		 * ATTENTION: in_array confond null et 0
+		 * @see http://fr.php.net/manual/en/function.in-array.php#99676
+		 *
+		 * @param type $key
+		 * @param type $values
+		 * @return array
+		 */
 		protected function _conditionsAjoutOrientationPossible( $key, $values ) {
 			$hasNull = false;
 
@@ -610,25 +645,24 @@
 		}
 
 		/**
-		* FIXME -> aucun dossier en cours, pour certains thèmes:
-		*		- CG 93
-		*			* Nonrespectsanctionep93 -> ne débouche pas sur une orientation: '1reduction', '1maintien', '1sursis', '2suspensiontotale', '2suspensionpartielle', '2maintien'
-		*			* Reorientationep93 -> peut déboucher sur une réorientation
-		*			* Nonorientationproep93 -> peut déboucher sur une orientation
-		*		- CG 66
-		*			* Defautinsertionep66 -> peut déboucher sur une orientation: 'suspensionnonrespect', 'suspensiondefaut', 'maintien', 'reorientationprofverssoc', 'reorientationsocversprof'
-		*			* Saisinebilanparcoursep66 -> peut déboucher sur une réorientation
-		*			* Saisinepdoep66 -> 'CAN', 'RSP' -> ne débouche pas sur une orientation
-		*		- CG 58
-		*			* Nonorientationproep58 -> peut déboucher sur une orientation
-		* FIXME -> CG 93: s'il existe une procédure de relance, on veut faire signer un contrat,
-					mais on veut peut-être aussi demander une réorientation.
-		* FIXME -> doit-on vérifier si:
-		* 			- la personne est soumise à droits et devoirs (oui)
-		*			- la personne est demandeur ou conjoint RSA (oui) ?
-		*			- le dossier est dans un état ouvert (non) ?
-		*/
-
+		 * FIXME -> aucun dossier en cours, pour certains thèmes:
+		 * 		- CG 93
+		 * 			* Nonrespectsanctionep93 -> ne débouche pas sur une orientation: '1reduction', '1maintien', '1sursis', '2suspensiontotale', '2suspensionpartielle', '2maintien'
+		 * 			* Reorientationep93 -> peut déboucher sur une réorientation
+		 * 			* Nonorientationproep93 -> peut déboucher sur une orientation
+		 * 		- CG 66
+		 * 			* Defautinsertionep66 -> peut déboucher sur une orientation: 'suspensionnonrespect', 'suspensiondefaut', 'maintien', 'reorientationprofverssoc', 'reorientationsocversprof'
+		 * 			* Saisinebilanparcoursep66 -> peut déboucher sur une réorientation
+		 * 			* Saisinepdoep66 -> 'CAN', 'RSP' -> ne débouche pas sur une orientation
+		 * 		- CG 58
+		 * 			* Nonorientationproep58 -> peut déboucher sur une orientation
+		 * FIXME -> CG 93: s'il existe une procédure de relance, on veut faire signer un contrat,
+		  mais on veut peut-être aussi demander une réorientation.
+		 * FIXME -> doit-on vérifier si:
+		 * 			- la personne est soumise à droits et devoirs (oui)
+		 * 			- la personne est demandeur ou conjoint RSA (oui) ?
+		 * 			- le dossier est dans un état ouvert (non) ?
+		 */
 		public function ajoutPossible( $personne_id ) {
 			$nbDossiersep = $this->Personne->Dossierep->find(
 				'count',
@@ -715,10 +749,13 @@
 		}
 
 		/**
-		* Vérifie si pour une personne donnée la nouvelle orientation est une régression ou nonrespectssanctionseps93
-		* Orientation du pro vers le social
-		*/
-
+		 * Vérifie si pour une personne donnée la nouvelle orientation est une régression ou nonrespectssanctionseps93
+		 * Orientation du pro vers le social
+		 *
+		 * @param integer $personne_id
+		 * @param integer $newtypeorient_id
+		 * @return boolean
+		 */
 		public function isRegression( $personne_id, $newtypeorient_id ) {
 			$return = false;
 
@@ -747,11 +784,13 @@
 		}
 
 		/**
-		* Ajout du rang d'orientation à la sauvegarde, lorsqu'on passe en 'Orienté'.
-		* Mise à jour de l'origine suivant le statut et le rang de l'orientation.
-		*/
-
-		public function beforeSave( $options = array() ) {
+		 * Ajout du rang d'orientation à la sauvegarde, lorsqu'on passe en 'Orienté'.
+		 * Mise à jour de l'origine suivant le statut et le rang de l'orientation.
+		 *
+		 * @param array $options
+		 * @return boolean
+		 */
+		public function beforeSave( $options = array( ) ) {
 			// Si on change le statut_orient de <> 'Orienté' en 'Orienté', alors, il faut changer le rang
 			if( isset( $this->data[$this->alias]['statut_orient'] ) && ( $this->data[$this->alias]['statut_orient'] == 'Orienté' ) ) {
 				// Change-t'on le statut ?
@@ -808,11 +847,11 @@
 			);
 		}
 
-
 		/**
 		 *
-		 * @param integer $apre_id
-		 * @return string
+		 * @param integer $orientstruct_id
+		 * @param integer $user_id
+		 * @return boolean
 		 */
 		public function getChangementReferentOrientation( $orientstruct_id, $user_id ) {
 			$orientation = $this->find(
@@ -922,19 +961,15 @@
 				}
 			}
 
-// debug($typestructurepassee);
-// debug($typestructure);
-// debug( $modeleodt );
-// die();
 			// Génération du PDF
 			return $this->ged( $orientation, $modeleodt, false, $options );
 		}
 
 		/**
-		 * Fonction permettant la mise à jour de la table nonorientes66
+		 * Fonction permettant la mise à jour de la table nonorientes66.
 		 *
-		 * @param integer id de l'orientation
-		 * @return boolean
+		 * @param integer $orientstruct_id L'id de l'orientation
+		 * @return type
 		 */
 		protected function _updateNonoriente66( $orientstruct_id ) {
 			$success = true;
@@ -970,10 +1005,13 @@
 			return $success;
 		}
 
-		/**
-		*   AfterSave
-		*/
 
+		/**
+		 * AfterSave.
+		 *
+		 * @param boolean $created
+		 * @return boolean
+		 */
 		public function afterSave( $created ) {
 			$return = parent::afterSave( $created );
 
@@ -982,20 +1020,17 @@
 			return $return;
 		}
 
-
+		/**
+		 *
+		 * @param integer $orientstruct_id
+		 * @return string
+		 */
 		public function getPdfNonoriente66 ( $orientstruct_id ) {
 			$data = $this->getDataForPdf( $orientstruct_id );
 
 			$Option = ClassRegistry::init( 'Option' );
 
-			$options = array(
-// 				'Adresse' => array(
-// 					'typevoie' => $Option->typevoie()
-// 				),
-// 				'Personne' => array(
-// 					'qual' => $Option->qual()
-// 				)
-			);
+			$options = array();
 
 			$nonoriente66 = $this->Personne->Nonoriente66->find(
 				'first',
@@ -1043,14 +1078,13 @@
 			return $pdf;
 		}
 
-
 		/**
 		 * Retourne un champ virtuel permettant de connaître le nombre de fichiers modules liés à l'orientation
 		 *
 		 * @param type $orientstructId
 		 * @return type
 		 */
-		public function vfNbFichiersmodule( $fileModelName = 'Orientstruct', $orientstructId = 'Orientstruct.id' ){
+		public function vfNbFichiersmodule( $fileModelName = 'Orientstruct', $orientstructId = 'Orientstruct.id' ) {
 			return $this->Fichiermodule->sq(
 				array(
 					'fields' => array(
@@ -1066,6 +1100,117 @@
 			);
 		}
 
+		/**
+		 * Retourne un querydata permettant de connaître la liste des orientations d'un allocataire, en
+		 * fonction du CG (Configure::read( 'Cg.departement' )).
+		 *
+		 * @param integer $personne_id
+		 * @return array
+		 */
+		public function qdIndex( $personne_id) {
+			$querydata = array(
+				'fields' => array_merge(
+					$this->fields(),
+					$this->Personne->fields(),
+					$this->Typeorient->fields(),
+					$this->Structurereferente->fields(),
+					$this->Referent->fields(),
+					array(
+						ClassRegistry::init( 'Pdf' )->sqImprime( $this, 'imprime' ),
+						$this->Fichiermodule->sqNbFichiersLies( $this, 'nombre' )
+					)
+				),
+				'conditions' => array(
+					'Orientstruct.personne_id' => $personne_id
+				),
+				'joins' => array(
+					$this->join( 'Personne' ),
+					$this->join( 'Typeorient' ),
+					$this->join( 'Structurereferente' ),
+					$this->join( 'Referent' ),
+				),
+				'contain' => false,
+				'order' => array(
+					'COALESCE( Orientstruct.rgorient, \'0\') DESC',
+					'Orientstruct.date_valid DESC'
+				)
+			);
 
+			// On complète le querydata suivant le CG
+			if( Configure::read( 'Cg.departement' ) == 58 ) {
+				// Pour le CG 58, on complète les données avec certaines données du passage en COV
+				$sqPassagecov = $this->Personne->Dossiercov58->Passagecov58->sq(
+					array(
+						'fields' => array(
+							'Passagecov58.id'
+						),
+						'joins' => array(
+							$this->Personne->Dossiercov58->Passagecov58->join( 'Dossiercov58' ),
+							$this->Personne->Dossiercov58->Passagecov58->Dossiercov58->join( 'Themecov58' ),
+							$this->Personne->Dossiercov58->Passagecov58->Dossiercov58->join( 'Propononorientationprocov58' ),
+							$this->Personne->Dossiercov58->Passagecov58->Dossiercov58->join( 'Propoorientationcov58' )
+						),
+						'conditions' => array(
+							'Dossiercov58.personne_id = Personne.id',
+							'Themecov58.name' => array( 'proposorientationscovs58', 'proposnonorientationsproscovs58' ),
+							'Passagecov58.etatdossiercov' => 'traite',
+							'OR' => array(
+								'Propoorientationcov58.nvorientstruct_id IS NULL',
+								'Propoorientationcov58.nvorientstruct_id = Orientstruct.id',
+								'Propononorientationprocov58.nvorientstruct_id IS NULL',
+								'Propononorientationprocov58.nvorientstruct_id = Orientstruct.id',
+							)
+						),
+						'contain' => false,
+						'order' => array( 'Passagecov58.modified DESC' ),
+						'limit' => 1
+					)
+				);
+
+				$sqPassagecov = array_words_replace(
+					array( $sqPassagecov ),
+					array(
+						'Passagecov58' => 'passagescovs58',
+						'Dossiercov58' => 'dossierscovs58',
+						'Themecov58' => 'themescovs58',
+						'Propoorientationcov58' => 'proposorientationscovs58',
+						'Propononorientationprocov58' => 'proposnonorientationsproscovs58',
+						'Passagecov58__id' => 'passagescovs58__id',
+					)
+				);
+				$sqPassagecov = $sqPassagecov[0];
+
+				$querydata['fields'] = Set::merge(
+					$querydata['fields'],
+					array(
+						'Sitecov58.name',
+						'Cov58.datecommission',
+						'Cov58.observation'
+					)
+				);
+
+ 				$querydata['joins'][] = $this->Personne->join( 'Dossiercov58' );
+				$querydata['joins'][] = $this->Personne->Dossiercov58->join( 'Passagecov58' );
+				$querydata['joins'][] = $this->Personne->Dossiercov58->Passagecov58->join( 'Cov58' );
+				$querydata['joins'][] = $this->Personne->Dossiercov58->Passagecov58->Cov58->join( 'Sitecov58' );
+
+				$querydata['conditions'][] = array(
+					'OR' => array(
+						array(
+							'NOT EXISTS( '.$sqPassagecov.' )',
+							'Passagecov58.id IS NULL',
+						),
+						'Passagecov58.id IN ( '.$sqPassagecov.' )'
+					)
+				);
+			}
+			else if( Configure::read( 'Cg.departement' ) == 66 ) {
+				// Pour le CG 66, on ne eut cliquer sur certains liens que sous certaines conditions
+				$sq = '"Typeorient"."parentid" IN ('.implode( ',', (array)Configure::read( 'Orientstruct.typeorientprincipale.SOCIAL' ) ).')';
+				$querydata['fields'][] = "( {$sq} ) AS \"{$this->alias}__notifbenefcliquable\"";
+			}
+
+			return $querydata;
+		}
 	}
 ?>
