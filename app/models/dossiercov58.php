@@ -186,5 +186,70 @@
 			return ( ( $nbDossierscov == 0 ) && ( $nbPersonnes == 1 ) );
 		}
 
+		/**
+		 * Retourne un querydata permettant de trouver les dossiers COV en cours.
+		 *
+		 * @param integer $personne_id
+		 * @param string|array $themes
+		 * @return array
+		 */
+		public function qdDossiersNonFinalises( $personne_id, $themes = null ) {
+			$qdSubquery = array(
+				'fields' => array(
+					'passagescovs58.dossiercov58_id'
+				),
+				'alias' => 'passagescovs58',
+				'conditions' => array(
+					'dossierscovs58.personne_id' => $personne_id,
+					'passagescovs58.etatdossiercov' => array( 'traite', 'annule' )
+				),
+				'joins' => array(
+					array(
+						'table' => 'dossierscovs58',
+						'alias' => 'dossierscovs58',
+						'type' => 'INNER',
+						'conditions' => array(
+							'passagescovs58.dossiercov58_id = dossierscovs58.id'
+						)
+					),
+					array(
+						'table' => 'covs58',
+						'alias' => 'covs58',
+						'type' => 'INNER',
+						'conditions' => array(
+							'passagescovs58.cov58_id = covs58.id'
+						)
+					)
+				)
+			);
+
+			$themes = (array)$themes;
+
+			if( !empty( $themes ) ) {
+				$qdSubquery['conditions']['dossierscovs58.themecov58'] = $themes;
+			}
+
+			$querydata = array(
+				'conditions' => array(
+					'Dossiercov58.id NOT IN ( '.$this->Passagecov58->sq( $qdSubquery ).' )',
+					'Dossiercov58.personne_id' => $personne_id
+				),
+				'joins' => array(
+					$this->join( 'Passagecov58', array( 'type' => 'LEFT OUTER' ) )
+				),
+				'contain' => false
+			);
+
+			if( !empty( $themes ) ) {
+				$querydata['conditions']['Dossiercov58.themecov58'] = $themes;
+
+				foreach( $themes as $theme ) {
+					$modelDecisionTheme = Inflector::classify( Inflector::singularize( "decisions{$theme}" ) );
+					$querydata['joins'][] = $this->Passagecov58->join( $modelDecisionTheme, array( 'type' => 'LEFT OUTER' ) );
+				}
+			}
+
+			return $querydata;
+		}
 	}
 ?>

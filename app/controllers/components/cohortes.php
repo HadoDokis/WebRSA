@@ -63,7 +63,7 @@
 			$this->Controller = &$controller;
 			$this->settings = (array)$settings;
             
-            $this->Jetons2->initialize( &$controller );
+            $this->Jetons2->initialize( $controller );
 
 			if( $this->active() ) {
 				$this->clean();

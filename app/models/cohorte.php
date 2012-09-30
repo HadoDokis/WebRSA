@@ -313,9 +313,8 @@
 			//-------------------------------------------------------
 			$cantons = Set::extract( $criteres, 'Filtre.cantons' );
 
-			/// FIXME: dans le modèle
 			if( isset( $typeorient ) && !empty( $typeorient ) ) {
-				if( Configure::read( 'with_parentid' ) ) {//FIXME: subquery
+				if( Configure::read( 'with_parentid' ) ) { // TODO: subquery
 					$conditions[] = 'Orientstruct.typeorient_id IN ( SELECT typesorients.id FROM typesorients WHERE typesorients.parentid = \''.Sanitize::clean( $typeorient ).'\' )';
 				}
 				else {
@@ -625,14 +624,14 @@
 					array(
 						'table' => 'typesorients',
 						'alias' => 'Typeorient',
-						'type' => 'LEFT OUTER', // FIXME: compléter une variable joins
+						'type' => 'LEFT OUTER',
 						'foreignKey' => false,
 						'conditions' => array( 'Typeorient.id = Orientstruct.typeorient_id' )
 					),
 					array(
 						'table' => 'structuresreferentes',
 						'alias' => 'Structurereferente',
-						'type' => 'LEFT OUTER', // FIXME: compléter une variable joins
+						'type' => 'LEFT OUTER',
 						'foreignKey' => false,
 						'conditions' => array( 'Structurereferente.id = Orientstruct.structurereferente_id' )
 					),

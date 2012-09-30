@@ -13,85 +13,85 @@
 <div class="with_treemenu">
 	<h1><?php  echo 'CER  ';?></h1>
 
-		<?php if( empty( $contratsinsertion ) ):?>
-			<p class="notice">Cette personne ne possède pas encore de CER.</p>
-		<?php endif;?>
+	<?php if( empty( $contratsinsertion ) ):?>
+		<p class="notice">Cette personne ne possède pas encore de CER.</p>
+	<?php endif;?>
 
-		<?php if( isset( $signalementseps93 ) && !empty( $signalementseps93 ) ):?>
-			<h2>Signalements pour non respect du contrat</h2>
-			<table class="tooltips">
-				<thead>
-					<tr>
-						<th>Date début contrat</th>
-						<th>Date fin contrat</th>
-						<th>Date signalement</th>
-						<th>Rang signalement</th>
-						<th>État dossier EP</th>
-						<th colspan="2" class="action">Actions</th>
-					</tr>
-				</thead>
-				<tbody>
-				<?php foreach( $signalementseps93 as $signalementep93 ):?>
-					<?php
-						$etatdossierep = Set::enum( $signalementep93['Passagecommissionep']['etatdossierep'], $optionsdossierseps['Passagecommissionep']['etatdossierep'] );
-						if( empty( $etatdossierep ) ) {
-							$etatdossierep = 'En attente';
-						}
-					?>
-					<tr>
-						<td><?php echo $locale->date( 'Locale->date', $signalementep93['Contratinsertion']['dd_ci'] );?></td>
-						<td><?php echo $locale->date( 'Locale->date', $signalementep93['Contratinsertion']['df_ci'] );?></td>
-						<td><?php echo $locale->date( 'Locale->date', $signalementep93['Signalementep93']['date'] );?></td>
-						<td><?php echo h( $signalementep93['Signalementep93']['rang'] );?></td>
-						<td><?php echo h( $etatdossierep );?></td>
-						<td class="action"><?php echo $default->button( 'edit', array( 'controller' => 'signalementseps', 'action' => 'edit', $signalementep93['Signalementep93']['id'] ), array( 'enabled' => ( empty( $signalementep93['Passagecommissionep']['etatdossierep'] ) ) ) );?></td>
-						<td class="action"><?php echo $default->button( 'delete', array( 'controller' => 'signalementseps', 'action' => 'delete', $signalementep93['Signalementep93']['id'] ), array( 'enabled' => ( empty( $signalementep93['Passagecommissionep']['etatdossierep'] ) ), 'confirm' => 'Confirmer la suppression du signalement ?' ) );?></td>
-					</tr>
-				<?php endforeach;?>
-				</tbody>
-			</table>
-		<?php endif;?>
-
-		<?php if( isset( $contratscomplexeseps93 ) && !empty( $contratscomplexeseps93 ) ):?>
-			<h2>Passages en EP pour contrats complexes</h2>
-			<table class="tooltips">
-				<thead>
-					<tr>
-						<th>Date début contrat</th>
-						<th>Date fin contrat</th>
-						<th>Date de création du dossier d'EP</th>
-						<th>État dossier EP</th>
-					</tr>
-				</thead>
-				<tbody>
-				<?php foreach( $contratscomplexeseps93 as $signalementep93 ):?>
-					<?php
-						$etatdossierep = Set::enum( $signalementep93['Passagecommissionep']['etatdossierep'], $optionsdossierseps['Passagecommissionep']['etatdossierep'] );
-						if( empty( $etatdossierep ) ) {
-							$etatdossierep = 'En attente';
-						}
-					?>
-					<tr>
-						<td><?php echo $locale->date( 'Locale->date', $signalementep93['Contratinsertion']['dd_ci'] );?></td>
-						<td><?php echo $locale->date( 'Locale->date', $signalementep93['Contratinsertion']['df_ci'] );?></td>
-						<td><?php echo $locale->date( 'Locale->date', $signalementep93['Contratcomplexeep93']['created'] );?></td>
-						<td><?php echo h( $etatdossierep );?></td>
-					</tr>
-				<?php endforeach;?>
-				</tbody>
-			</table>
-		<?php endif;?>
-
-		<?php if( $permissions->check( 'contratsinsertion', 'add' ) ):?>
-			<ul class="actionMenu">
+	<?php if( isset( $signalementseps93 ) && !empty( $signalementseps93 ) ):?>
+		<h2>Signalements pour non respect du contrat</h2>
+		<table class="tooltips">
+			<thead>
+				<tr>
+					<th>Date début contrat</th>
+					<th>Date fin contrat</th>
+					<th>Date signalement</th>
+					<th>Rang signalement</th>
+					<th>État dossier EP</th>
+					<th colspan="2" class="action">Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+			<?php foreach( $signalementseps93 as $signalementep93 ):?>
 				<?php
-					echo '<li>'.$xhtml->addLink(
-						'Ajouter un CER',
-						array( 'controller' => 'contratsinsertion', 'action' => 'add', $personne_id )
-					).' </li>';
+					$etatdossierep = Set::enum( $signalementep93['Passagecommissionep']['etatdossierep'], $optionsdossierseps['Passagecommissionep']['etatdossierep'] );
+					if( empty( $etatdossierep ) ) {
+						$etatdossierep = 'En attente';
+					}
 				?>
-			</ul>
-		<?php endif;?>
+				<tr>
+					<td><?php echo $locale->date( 'Locale->date', $signalementep93['Contratinsertion']['dd_ci'] );?></td>
+					<td><?php echo $locale->date( 'Locale->date', $signalementep93['Contratinsertion']['df_ci'] );?></td>
+					<td><?php echo $locale->date( 'Locale->date', $signalementep93['Signalementep93']['date'] );?></td>
+					<td><?php echo h( $signalementep93['Signalementep93']['rang'] );?></td>
+					<td><?php echo h( $etatdossierep );?></td>
+					<td class="action"><?php echo $default->button( 'edit', array( 'controller' => 'signalementseps', 'action' => 'edit', $signalementep93['Signalementep93']['id'] ), array( 'enabled' => ( empty( $signalementep93['Passagecommissionep']['etatdossierep'] ) ) ) );?></td>
+					<td class="action"><?php echo $default->button( 'delete', array( 'controller' => 'signalementseps', 'action' => 'delete', $signalementep93['Signalementep93']['id'] ), array( 'enabled' => ( empty( $signalementep93['Passagecommissionep']['etatdossierep'] ) ), 'confirm' => 'Confirmer la suppression du signalement ?' ) );?></td>
+				</tr>
+			<?php endforeach;?>
+			</tbody>
+		</table>
+	<?php endif;?>
+
+	<?php if( isset( $contratscomplexeseps93 ) && !empty( $contratscomplexeseps93 ) ):?>
+		<h2>Passages en EP pour contrats complexes</h2>
+		<table class="tooltips">
+			<thead>
+				<tr>
+					<th>Date début contrat</th>
+					<th>Date fin contrat</th>
+					<th>Date de création du dossier d'EP</th>
+					<th>État dossier EP</th>
+				</tr>
+			</thead>
+			<tbody>
+			<?php foreach( $contratscomplexeseps93 as $signalementep93 ):?>
+				<?php
+					$etatdossierep = Set::enum( $signalementep93['Passagecommissionep']['etatdossierep'], $optionsdossierseps['Passagecommissionep']['etatdossierep'] );
+					if( empty( $etatdossierep ) ) {
+						$etatdossierep = 'En attente';
+					}
+				?>
+				<tr>
+					<td><?php echo $locale->date( 'Locale->date', $signalementep93['Contratinsertion']['dd_ci'] );?></td>
+					<td><?php echo $locale->date( 'Locale->date', $signalementep93['Contratinsertion']['df_ci'] );?></td>
+					<td><?php echo $locale->date( 'Locale->date', $signalementep93['Contratcomplexeep93']['created'] );?></td>
+					<td><?php echo h( $etatdossierep );?></td>
+				</tr>
+			<?php endforeach;?>
+			</tbody>
+		</table>
+	<?php endif;?>
+
+	<?php if( $permissions->check( 'contratsinsertion', 'add' ) ):?>
+		<ul class="actionMenu">
+			<?php
+				echo '<li>'.$xhtml->addLink(
+					'Ajouter un CER',
+					array( 'controller' => 'contratsinsertion', 'action' => 'add', $personne_id )
+				).' </li>';
+			?>
+		</ul>
+	<?php endif;?>
 
 	<?php if( !empty( $contratsinsertion ) ):?>
 		<?php if( Configure::read( 'Cg.departement' ) == 93 && !empty( $erreursCandidatePassage ) ):?>
@@ -108,7 +108,6 @@
 				<?php endif;?>
 			</div>
 		<?php endif;?>
-
 		<table class="tooltips">
 			<thead>
 				<tr>
@@ -197,12 +196,10 @@
 							array( 'class' => 'odd' ),
 							array( 'class' => 'even' )
 						);
-
 					?>
 				<?php endforeach;?>
 			</tbody>
 		</table>
-		<?php  endif;?>
-	<?php /*endif;*/?>
+	<?php  endif;?>
 </div>
 <div class="clearer"><hr /></div>

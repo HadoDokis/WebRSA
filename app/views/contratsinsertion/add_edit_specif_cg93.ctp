@@ -16,24 +16,20 @@
 
 <div class="with_treemenu">
     <h1><?php echo $this->pageTitle;?></h1>
-
     <?php
+		echo $form->create( 'Contratinsertion', array( 'type' => 'post', 'id' => 'testform', 'url' => Router::url( null, true ) ) );
+		echo $form->input( 'Contratinsertion.personne_id', array( 'type' => 'hidden', 'value' => Set::classicExtract( $personne, 'Personne.id' ) ) );
+
         if( $this->action == 'add' ) {
-            echo $form->create( 'Contratinsertion', array( 'type' => 'post', 'id' => 'testform', 'url' => Router::url( null, true ) ) );
+
             echo '<div>';
             echo $form->input( 'Contratinsertion.id', array( 'type' => 'hidden', 'value' => '' ) );
-
-            echo $form->input( 'Contratinsertion.personne_id', array( 'type' => 'hidden', 'value' => Set::classicExtract( $personne, 'Personne.id' ) ) );
             echo $form->input( 'Contratinsertion.rg_ci', array( 'type' => 'hidden'/*, 'value' => '' */) );
             echo '</div>';
         }
         else {
-            echo $form->create( 'Contratinsertion', array( 'type' => 'post', 'id' => 'testform', 'url' => Router::url( null, true ) ) );
             echo '<div>';
             echo $form->input( 'Contratinsertion.id', array( 'type' => 'hidden' ) );
-
-            echo $form->input( 'Contratinsertion.personne_id', array( 'type' => 'hidden', 'value' => Set::classicExtract( $personne, 'Personne.id' ) ) );
-
             echo '</div>';
         }
 
@@ -406,10 +402,10 @@
                                     <tr>
                                         <td class="noborder">
                                             <?php
-                                                if( isset( $suspension ) && !empty( $suspension ) ) {
+                                                if( isset( $situationdossierrsa['Suspensiondroit'][0]['ddsusdrorsa'] ) && !empty( $situationdossierrsa['Suspensiondroit'][0]['ddsusdrorsa'] ) ) {
                                                     echo $html->tag(
                                                         'fieldset',
-                                                        'Date de suspension : '.$locale->date( '%d/%m/%Y', $suspension[0]['Suspensiondroit']['ddsusdrorsa']),
+                                                        'Date de suspension : '.$locale->date( '%d/%m/%Y', $situationdossierrsa['Suspensiondroit'][0]['ddsusdrorsa'] ),
                                                         array(
                                                             'id' => 'dtsuspension',
                                                             'class' => 'noborder'

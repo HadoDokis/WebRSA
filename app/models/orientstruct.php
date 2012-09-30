@@ -1138,32 +1138,42 @@
 
 			// On complète le querydata suivant le CG
 			if( Configure::read( 'Cg.departement' ) == 58 ) {
-				// Pour le CG 58, on complète les données avec certaines données du passage en COV
+				// Si l'orientation est passée en COV, on va récupérer ces informations
 				$sqPassagecov = $this->Personne->Dossiercov58->Passagecov58->sq(
 					array(
 						'fields' => array(
 							'Passagecov58.id'
 						),
 						'joins' => array(
-							$this->Personne->Dossiercov58->Passagecov58->join( 'Dossiercov58' ),
-							$this->Personne->Dossiercov58->Passagecov58->Dossiercov58->join( 'Themecov58' ),
-							$this->Personne->Dossiercov58->Passagecov58->Dossiercov58->join( 'Propononorientationprocov58' ),
-							$this->Personne->Dossiercov58->Passagecov58->Dossiercov58->join( 'Propoorientationcov58' )
+							$this->Personne->Dossiercov58->Passagecov58->join( 'Dossiercov58', array( 'type' => 'INNER' ) ),
+							$this->Personne->Dossiercov58->join( 'Themecov58', array( 'type' => 'INNER' ) ),
+							$this->Personne->Dossiercov58->join( 'Propononorientationprocov58', array( 'type' => 'LEFT OUTER' ) ),
+							$this->Personne->Dossiercov58->join( 'Propoorientationcov58', array( 'type' => 'LEFT OUTER' ) )
 						),
 						'conditions' => array(
 							'Dossiercov58.personne_id = Personne.id',
 							'Themecov58.name' => array( 'proposorientationscovs58', 'proposnonorientationsproscovs58' ),
 							'Passagecov58.etatdossiercov' => 'traite',
+							'Cov58.etatcov' => 'finalise',
+							'DATE_trunc( \'day\', Cov58.datecommission ) = Orientstruct.date_valid',
 							'OR' => array(
-								'Propoorientationcov58.nvorientstruct_id IS NULL',
-								'Propoorientationcov58.nvorientstruct_id = Orientstruct.id',
-								'Propononorientationprocov58.nvorientstruct_id IS NULL',
-								'Propononorientationprocov58.nvorientstruct_id = Orientstruct.id',
+								array(
+									'Propoorientationcov58.nvorientstruct_id IS NULL',
+									'Propononorientationprocov58.nvorientstruct_id IS NOT NULL',
+									'Propononorientationprocov58.nvorientstruct_id = Orientstruct.id',
+								),
+								array(
+									'Propoorientationcov58.nvorientstruct_id IS NOT NULL',
+									'Propononorientationprocov58.nvorientstruct_id IS NULL',
+									'Propoorientationcov58.nvorientstruct_id = Orientstruct.id',
+								),
+								array(
+									'Propoorientationcov58.nvorientstruct_id IS NULL',
+									'Propononorientationprocov58.nvorientstruct_id IS NULL',
+								),
 							)
 						),
 						'contain' => false,
-						'order' => array( 'Passagecov58.modified DESC' ),
-						'limit' => 1
 					)
 				);
 
@@ -1182,25 +1192,31 @@
 
 				$querydata['fields'] = Set::merge(
 					$querydata['fields'],
-					array(
-						'Sitecov58.name',
-						'Cov58.datecommission',
-						'Cov58.observation'
+					array_merge(
+						$this->Personne->Dossiercov58->fields(),
+						$this->Personne->Dossiercov58->Passagecov58->fields(),
+						$this->Personne->Dossiercov58->Passagecov58->Cov58->fields(),
+						$this->Personne->Dossiercov58->Passagecov58->Cov58->Sitecov58->fields()
 					)
 				);
 
- 				$querydata['joins'][] = $this->Personne->join( 'Dossiercov58' );
-				$querydata['joins'][] = $this->Personne->Dossiercov58->join( 'Passagecov58' );
-				$querydata['joins'][] = $this->Personne->Dossiercov58->Passagecov58->join( 'Cov58' );
-				$querydata['joins'][] = $this->Personne->Dossiercov58->Passagecov58->Cov58->join( 'Sitecov58' );
+				$querydata['joins'][] = $this->Personne->join(
+					'Dossiercov58',
+					array(
+						'type' => 'LEFT OUTER',
+						'conditions' => array(
+							'Dossiercov58.themecov58' => array( 'proposorientationscovs58', 'proposnonorientationsproscovs58' )
+						)
+					)
+				);
+				$querydata['joins'][] = $this->Personne->Dossiercov58->join( 'Passagecov58', array( 'type' => 'LEFT OUTER' ) );
+				$querydata['joins'][] = $this->Personne->Dossiercov58->Passagecov58->join( 'Cov58', array( 'type' => 'LEFT OUTER' ) );
+				$querydata['joins'][] = $this->Personne->Dossiercov58->Passagecov58->Cov58->join( 'Sitecov58', array( 'type' => 'LEFT OUTER' ) );
 
 				$querydata['conditions'][] = array(
 					'OR' => array(
-						array(
-							'NOT EXISTS( '.$sqPassagecov.' )',
-							'Passagecov58.id IS NULL',
-						),
-						'Passagecov58.id IN ( '.$sqPassagecov.' )'
+						'Passagecov58.id IS NULL',
+						"Passagecov58.id IN ( {$sqPassagecov} )"
 					)
 				);
 			}

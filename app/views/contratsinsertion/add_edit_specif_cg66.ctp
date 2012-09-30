@@ -57,7 +57,7 @@
 			);
 		?>;
 	});
-    
+
 </script>
 
 <script type="text/javascript">
@@ -393,10 +393,10 @@
 									<tr>
 										<td class="noborder">
 											<?php
-												if( isset( $suspension ) && !empty( $suspension ) ) {
+												if( isset( $situationdossierrsa['Suspensiondroit'][0]['ddsusdrorsa'] ) && !empty( $situationdossierrsa['Suspensiondroit'][0]['ddsusdrorsa'] ) ) {
 													echo $html->tag(
 														'fieldset',
-														'Date de suspension : '.$locale->date( '%d/%m/%Y', $suspension[0]['Suspensiondroit']['ddsusdrorsa']),
+														'Date de suspension : '.$locale->date( '%d/%m/%Y', $situationdossierrsa['Suspensiondroit'][0]['ddsusdrorsa'] ),
 														array(
 															'id' => 'dtsuspension',
 															'class' => 'noborder'
@@ -570,7 +570,7 @@
 				<fieldset>
 					<legend><strong>Positionnement éventuel sur l'action d'insertion</strong></legend>
 					<?php
-                        echo $form->input( 'Contratinsertion.actioncandidat_id', array( 'label' => 'Intitulé de l\'action', 'type' => 'select', 'options' => $actionsSansFiche, 'empty' => true ) );                 
+                        echo $form->input( 'Contratinsertion.actioncandidat_id', array( 'label' => 'Intitulé de l\'action', 'type' => 'select', 'options' => $actionsSansFiche, 'empty' => true ) );
                         echo $ajax->observeField( 'ContratinsertionActioncandidatId', array( 'update' => 'ContratinsertionPartenaire', 'url' => Router::url( array( 'action' => 'ajaxaction' ), true ) ) );
                         echo $xhtml->tag(
                             'div',
@@ -579,7 +579,7 @@
                                 'id' => 'ContratinsertionPartenaire'
                             )
                         );
-                        
+
                         echo $form->input( 'Contratinsertion.engag_object', array( 'label' => 'Engagement sur l\'action', 'type' => 'textarea' ) );
 					?>
 

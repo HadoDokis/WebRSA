@@ -688,6 +688,50 @@
 			return false;
 		}
 
+		/**
+		 * Retourne un querydata permettant de trouver les propositions de CER
+		 * en cours de traitement par une COV pour un allocataire donné.
+		 *
+		 * @param integer $personne_id
+		 * @return array
+		 */
+		public function qdEnCours( $personne_id ) {
+			$querydata = array(
+				'fields' => array(
+					'Propocontratinsertioncov58.id',
+					'Propocontratinsertioncov58.dossiercov58_id',
+					'Propocontratinsertioncov58.forme_ci',
+					'Propocontratinsertioncov58.num_contrat',
+					'Propocontratinsertioncov58.dd_ci',
+					'Propocontratinsertioncov58.df_ci',
+					'Propocontratinsertioncov58.avenant_id',
+					'Dossiercov58.personne_id',
+					'Passagecov58.etatdossiercov',
+					'Personne.id',
+					'Personne.nom',
+					'Personne.prenom',
+					'Decisionpropocontratinsertioncov58.decisioncov'
+				),
+				'conditions' => array(
+					'Dossiercov58.personne_id' => $personne_id,
+					'Themecov58.name' => 'proposcontratsinsertioncovs58',
+					'OR' => array(
+						'Passagecov58.etatdossiercov NOT' => array( 'traite', 'annule' ),
+						'Passagecov58.etatdossiercov IS NULL'
+					)
+				),
+				'joins' => array(
+					$this->join( 'Dossiercov58', array( 'type' => 'INNER' ) ),
+					$this->Dossiercov58->join( 'Passagecov58', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Dossiercov58->Passagecov58->join( 'Decisionpropocontratinsertioncov58', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Dossiercov58->join( 'Themecov58', array( 'type' => 'INNER' ) ),
+					$this->Dossiercov58->join( 'Personne', array( 'type' => 'INNER' ) )
+				),
+				'contain' => false,
+				'order' => array( 'Propocontratinsertioncov58.df_ci DESC' )
+			);
 
+			return $querydata;
+		}
 	}
 ?>
