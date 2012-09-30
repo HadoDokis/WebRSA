@@ -1,9 +1,23 @@
 <?php
+	/**
+	 * Fichier source de la classe Contratinsertion.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.models
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 	define( 'DATE_DECISION_FACULTATIVE', Configure::read( 'Cg.departement' ) != 66 );
+
+	/**
+	 * La classe Contratinsertion permet de gérer les CER de manière individuelle.
+	 *
+	 * @package app.models
+	 */
 	class Contratinsertion extends AppModel
 	{
-
 		public $name = 'Contratinsertion';
+
 		public $actsAs = array(
 			'Enumerable' => array(
 				'fields' => array(
@@ -239,7 +253,7 @@
 				'fields' => '',
 				'order' => ''
 			),
-            'Actioncandidat' => array(
+			 'Actioncandidat' => array(
 				'className' => 'Actioncandidat',
 				'foreignKey' => 'actioncandidat_id',
 				'conditions' => '',
@@ -628,7 +642,7 @@
 
 			if( !$hasMany ) { // INFO: 1 seul enregistrement
 				if( array_key_exists( 'referent_id', $this->data[$this->name] ) ) {
-					$this->data[$this->name]['referent_id'] = preg_replace( '/^[0-9]+_([0-9]+)$/', '\1', $this->data[$this->name]['referent_id'] );
+						$this->data[$this->name]['referent_id'] = preg_replace( '/^[0-9]+_([0-9]+)$/', '\1', $this->data[$this->name]['referent_id'] );
 				}
 			}
 			else { // INFO: plusieurs enregistrements
@@ -680,12 +694,11 @@
 				$this->data[$this->name]['duree_cdd'] = NULL;
 			}
 
-// debug( $this->data['Contratinsertion']['positioncer'] == 'annule' );
-// die();
 			//  Calcul de la position du cER
 			if( Configure::read( 'Cg.departement' ) == '66' && ( $this->data['Contratinsertion']['positioncer'] != 'annule' ) ) {
 				$this->data[$this->alias]['positioncer'] = $this->calculPosition( $this->data );
 			}
+
 			return $return;
 		}
 
@@ -805,8 +818,7 @@
 							'haspiecejointe' => 0
 						)
 					);
-// debug( $dossierpcg66 );
-// die();
+
 					if( !empty( $dossierpcg66 ) ) {
 						$this->Dossierpcg66->create( $dossierpcg66 );
 						$success = $this->Dossierpcg66->save() && $success;
@@ -829,7 +841,10 @@
 		}
 
 		/**
+		 * Calcul de la position du CER (CG 66).
 		 *
+		 * @param array $data
+		 * @return string
 		 */
 		public function calculPosition( $data ) {
 			$formeCi = Set::classicExtract( $data, 'Contratinsertion.forme_ci' );
@@ -847,8 +862,8 @@
 			else if( $formeCi == 'C' ) {
 				$positioncer = 'attvalidpart';
 			}
-		
-		
+
+
 			$conditions = array( 'Contratinsertion.personne_id' => $personne_id, );
 			if( !empty( $id ) ) {
 				$conditions['Contratinsertion.id <>'] = $id;
@@ -899,8 +914,12 @@
 		}
 
 		/**
-		 *   Liste des anciennes demandes d'ouverture de droit pour un allocataire
-		 *   TODO
+		 *   Liste des anciennes demandes d'ouverture de droit pour un allocataire.
+		 *
+		 *   @see getDataForPdf
+		 *
+		 * @param integer $personne_id
+		 * @return integer
 		 */
 		public function checkNumDemRsa( $personne_id ) {
 
@@ -997,30 +1016,36 @@
 		}
 
 		/**
-		 * Permet de récupérer le dernièr CER d'une personne
+		 * Sous-requête permettant de récupérer le dernier contrat d'un allocataire.
+		 *
+		 * @param string $personneIdFied Le champ où trouver l'id de la personne.
+		 * @return string
 		 */
 		public function sqDernierContrat( $personneIdFied = 'Personne.id' ) {
 			return $this->sq(
-							array(
-								'fields' => array(
-									'contratsinsertion.id'
-								),
-								'alias' => 'contratsinsertion',
-								'conditions' => array(
-									"contratsinsertion.personne_id = {$personneIdFied}"
-								),
-								'order' => array( 'contratsinsertion.dd_ci DESC' ),
-								'limit' => 1
-							)
+				array(
+					'fields' => array(
+						'contratsinsertion.id'
+					),
+					'alias' => 'contratsinsertion',
+					'conditions' => array(
+						"contratsinsertion.personne_id = {$personneIdFied}"
+					),
+					'order' => array( 'contratsinsertion.dd_ci DESC' ),
+					'limit' => 1
+				)
 			);
 		}
 
 		/**
-		 * 	Récupération des Datas pour le stockage du PDF de la fiche de liaison du référent
-		 * 	uniquement en cas de non validation du CER
+		 * Récupération du PDF de la fiche de liaison du référent uniquement en cas de non validation du CER
+		 * (CG 66).
+		 *
+		 * @param integer $contratinsertion_id
+		 * @param integer $user_id
+		 * @return string
 		 */
 		public function getPdfFicheliaisoncer( $contratinsertion_id, $user_id ) {
-
 			$queryData = array(
 				'fields' => array_merge(
 						$this->fields(), $this->Structurereferente->fields(), $this->Propodecisioncer66->fields(), array(
@@ -1094,8 +1119,7 @@
 					)
 			);
 			$contratinsertion = Set::merge( $contratinsertion, $user );
-// debug($contratinsertion);
-// die();
+
 			if( $formeci == 'C' ) {
 				$modeleodt = "Contratinsertion/ficheliaisoncerParticulier.odt";
 			}
@@ -1109,10 +1133,13 @@
 		}
 
 		/**
-		 * 	Récupération des Datas pour le stockage du PDF de la notification au bénéficiaire
+		 * Récupération du PDF de la notification au bénéficiaire (CG 66).
+		 *
+		 * @param integer $contratinsertion_id
+		 * @param integer $user_id
+		 * @return string
 		 */
 		public function getPdfNotifbenef( $contratinsertion_id, $user_id ) {
-
 			$queryData = array(
 				'fields' => array_merge(
 						$this->fields(), $this->Structurereferente->fields(), array(
@@ -1190,8 +1217,7 @@
 			$contratinsertion = Set::merge( $contratinsertion, $user );
 
 			$modelenotifdecision = '';
-// debug($contratinsertion);
-// die();
+
 			$decision = Set::classicExtract( $contratinsertion, 'Propodecisioncer66.isvalidcer' );
 
 			if( !empty( $decision ) ) {
@@ -1203,7 +1229,6 @@
 				}
 			}
 
-
 			$forme_ci = array( 'S' => 'Simple', 'C' => 'Particulier' );
 			$formeci = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.forme_ci' ), $forme_ci );
 
@@ -1214,6 +1239,7 @@
 		}
 
 		/**
+		 * Retourne le chemin relatif du modèle de document utilisé pour l'impression du PDF par défaut.
 		 *
 		 * @param array $data
 		 * @return string
@@ -1237,9 +1263,7 @@
 		}
 
 		/**
-		 * TODO: Structurereferente.parent_id, detaildroitrsa_oridemrsa, personnereferent
-		 * User.id <=> Connecté ou non ?
-		 * FIXME: detailsdroitsrsa.dossier_id a l'air d'e pouvoir'être unique, rajouter un index unique.
+		 * Récupération des données nécessaires à l'impression du PDF par défaut du contrat.
 		 *
 		 * @param integer $id
 		 * @param integer $user_id
@@ -1270,7 +1294,6 @@
 					$this->Personne->Foyer->join( 'Modecontact', array( 'type' => 'LEFT OUTER' ) ),
 					$this->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
 					$this->Personne->Foyer->Dossier->join( 'Detaildroitrsa', array( 'type' => 'LEFT OUTER' ) ),
-//						$this->Personne->Foyer->Dossier->join( 'Infofinanciere', array( 'type' => 'LEFT OUTER' ) ), // FIXME: laquelle ? -> à Virer et à remplacer par Detailcalculdroitrsa->vfRsaMajore
 					$this->Personne->Foyer->Dossier->join( 'Situationdossierrsa', array( 'type' => 'LEFT OUTER' ) ),
 					$this->Personne->Foyer->Dossier->Situationdossierrsa->join( 'Suspensiondroit', array( 'type' => 'LEFT OUTER' ) ),
 				),
@@ -1570,7 +1593,7 @@
 		}
 
 		/**
-		 * Retourne le PDF de notification du CER pour l'OP.
+		 * Retourne le PDF de notification du CER pour l'OP (CG 66).
 		 *
 		 * @param integer $id L'id du CER pour lequel générer la notification.
 		 * @return string
@@ -1644,7 +1667,7 @@
 		}
 
 		/**
-		 * Retourne le PDF de notification du CER pour l'OP.
+		 * Retourne le PDF de notification du CER pour l'OP (CG 66).
 		 *
 		 * @param integer $id L'id du CER pour lequel générer la notification.
 		 * @return string
@@ -1710,6 +1733,92 @@
 			else {
 				return null;
 			}
+		}
+
+		/**
+		 * Retourne un querydata permettant de connaître la liste des CER d'un allocataire, en fonction du CG
+		 * (Configure::read( 'Cg.departement' )).
+		 *
+		 * @param integer $personne_id
+		 * @return array
+		 */
+		public function qdIndex( $personne_id ) {
+			$querydata = array(
+				'fields' => array(
+					'Contratinsertion.id',
+					'Contratinsertion.forme_ci',
+					'Contratinsertion.decision_ci',
+					'Contratinsertion.datedecision',
+					'Contratinsertion.structurereferente_id',
+					'Contratinsertion.referent_id',
+					'Contratinsertion.num_contrat',
+					'Contratinsertion.motifannulation',
+					'Contratinsertion.dd_ci',
+					'Contratinsertion.duree_engag',
+					'Contratinsertion.positioncer',
+					'Contratinsertion.df_ci',
+					'Contratinsertion.date_saisi_ci',
+					'Contratinsertion.observ_ci',
+					'Contratinsertion.created',
+					'Contratinsertion.datevalidation_ci',
+					'Contratinsertion.datenotification',
+					'Contratinsertion.avenant_id',
+					$this->Fichiermodule->sqNbFichiersLies( $this, 'nb_fichiers_lies' )
+				),
+				'conditions' => array(
+					'Contratinsertion.personne_id' => $personne_id
+				),
+				'order' => array(
+					'Contratinsertion.df_ci DESC',
+					'Contratinsertion.id DESC'
+				),
+				'contain' => false
+			);
+
+			// On veut connaître ...
+			if( Configure::read( 'Cg.departement' ) == 58 ) {
+				$sqDernierPassageCov58 = $this->Propocontratinsertioncov58nv->Dossiercov58->Passagecov58->sqDernier();
+
+				$querydata = Set::merge(
+					$querydata,
+					array(
+						'fields' => array(
+							'Sitecov58.name',
+							'Cov58.observation',
+							'Cov58.datecommission',
+							'Decisionpropocontratinsertioncov58.commentaire'
+						),
+						'joins' => array(
+							$this->join( 'Propocontratinsertioncov58nv', array( 'type' => 'LEFT OUTER' ) ),
+							$this->Propocontratinsertioncov58nv->join( 'Dossiercov58', array( 'type' => 'LEFT OUTER' ) ),
+							$this->Propocontratinsertioncov58nv->Dossiercov58->join( 'Passagecov58', array( 'type' => 'LEFT OUTER' ) ),
+							$this->Propocontratinsertioncov58nv->Dossiercov58->Passagecov58->join( 'Cov58', array( 'type' => 'LEFT OUTER' ) ),
+							$this->Propocontratinsertioncov58nv->Dossiercov58->Passagecov58->Cov58->join( 'Sitecov58', array( 'type' => 'LEFT OUTER' ) ),
+							$this->Propocontratinsertioncov58nv->Dossiercov58->Passagecov58->join( 'Decisionpropocontratinsertioncov58', array( 'type' => 'LEFT OUTER' ) ),
+						),
+						'conditions' => array(
+							'OR' => array(
+								"Passagecov58.id IS NULL",
+								"Passagecov58.id IN ( {$sqDernierPassageCov58} )"
+							)
+						)
+					)
+				);
+			}
+			else if( Configure::read( 'Cg.departement' ) == 66 ) {
+				$querydata['joins'][] = $this->join( 'Personne', array( 'type' => 'INNER' ) );
+				$querydata['fields'][] = '( ( EXTRACT ( YEAR FROM AGE( "Personne"."dtnai" ) ) ) > 55 ) AS "Personne__plus55ans"';
+
+				$querydata = Set::merge(
+					$querydata,
+					array(
+						'fields' => $this->Propodecisioncer66->fields(),
+						'contain' => array( 'Propodecisioncer66' )
+					)
+				);
+			}
+
+			return $querydata;
 		}
 	}
 ?>

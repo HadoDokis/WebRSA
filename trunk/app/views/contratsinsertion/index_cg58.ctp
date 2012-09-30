@@ -12,37 +12,38 @@
 ?>
 <div class="with_treemenu">
 	<h1 class="aere"><?php  echo 'CER  ';?></h1>
-			<?php if( isset( $sanctionseps58 ) && !empty( $sanctionseps58 ) ):?>
-				<h2>Signalements pour non respect du contrat</h2>
-				<table class="tooltips">
-					<thead>
-						<tr>
-							<th>Date début contrat</th>
-							<th>Date fin contrat</th>
-							<th>Date signalement</th>
-							<th>État dossier EP</th>
-							<th colspan="1" class="action">Actions</th>
-						</tr>
-					</thead>
-					<tbody>
-					<?php foreach( $sanctionseps58 as $sanctionep58 ):?>
-						<?php
-							$etatdossierep = Set::enum( $sanctionep58['Passagecommissionep']['etatdossierep'], $optionsdossierseps['Passagecommissionep']['etatdossierep'] );
-							if( empty( $etatdossierep ) ) {
-								$etatdossierep = 'En attente';
-							}
-						?>
-						<tr>
-							<td><?php echo $locale->date( 'Locale->date', $sanctionep58['Contratinsertion']['dd_ci'] );?></td>
-							<td><?php echo $locale->date( 'Locale->date', $sanctionep58['Contratinsertion']['df_ci'] );?></td>
-							<td><?php echo $locale->date( 'Locale->date', $sanctionep58['Sanctionep58']['created'] );?></td>
-							<td><?php echo h( $etatdossierep );?></td>
-							<td class="action"><?php echo $default->button( 'delete', array( 'controller' => 'sanctionseps58', 'action' => 'deleteNonrespectcer', $sanctionep58['Sanctionep58']['id'] ), array( 'enabled' => ( empty( $sanctionep58['Passagecommissionep']['etatdossierep'] ) ), 'confirm' => 'Confirmer la suppession ?' ) );?></td>
-						</tr>
-					<?php endforeach;?>
-					</tbody>
-				</table>
-			<?php endif;?>
+		<?php if( isset( $sanctionseps58 ) && !empty( $sanctionseps58 ) ):?>
+			<h2>Signalements pour non respect du contrat</h2>
+			<table class="tooltips">
+				<thead>
+					<tr>
+						<th>Date début contrat</th>
+						<th>Date fin contrat</th>
+						<th>Date signalement</th>
+						<th>État dossier EP</th>
+						<th colspan="1" class="action">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+				<?php foreach( $sanctionseps58 as $sanctionep58 ):?>
+					<?php
+						$etatdossierep = Set::enum( $sanctionep58['Passagecommissionep']['etatdossierep'], $optionsdossierseps['Passagecommissionep']['etatdossierep'] );
+						if( empty( $etatdossierep ) ) {
+							$etatdossierep = 'En attente';
+						}
+					?>
+					<tr>
+						<td><?php echo $locale->date( 'Locale->date', $sanctionep58['Contratinsertion']['dd_ci'] );?></td>
+						<td><?php echo $locale->date( 'Locale->date', $sanctionep58['Contratinsertion']['df_ci'] );?></td>
+						<td><?php echo $locale->date( 'Locale->date', $sanctionep58['Sanctionep58']['created'] );?></td>
+						<td><?php echo h( $etatdossierep );?></td>
+						<td class="action"><?php echo $default->button( 'delete', array( 'controller' => 'sanctionseps58', 'action' => 'deleteNonrespectcer', $sanctionep58['Sanctionep58']['id'] ), array( 'enabled' => ( empty( $sanctionep58['Passagecommissionep']['etatdossierep'] ) ), 'confirm' => 'Confirmer la suppession ?' ) );?></td>
+					</tr>
+				<?php endforeach;?>
+				</tbody>
+			</table>
+		<?php endif;?>
+
 		<?php if( empty( $orientstruct ) ) :?>
 			<p class="error">Cette personne ne possède pas d'orientation. Impossible de créer un CER.</p>
 		<?php elseif( empty( $soumisADroitEtDevoir ) ) :?>

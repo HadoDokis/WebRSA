@@ -209,14 +209,11 @@
 				);
 
 				if( $rgorient_max <= 1 ) {
-					$ajout_possible = $this->Orientstruct->Personne->Dossiercov58->ajoutPossible( $personne_id ) && $this->Orientstruct->ajoutPossible( $personne_id );
+					$ajout_possible = $this->Orientstruct->Personne->Dossiercov58->ajoutPossible( $personne_id )
+						&& $this->Orientstruct->ajoutPossible( $personne_id );
 
-					$qdDossiersNonFinalises = $this->Orientstruct->Personne->Dossiercov58->Propoorientationcov58->qdDossiersNonFinalises( $personne_id );
-					$nbdossiersnonfinalisescovs = $this->Orientstruct->Personne->Dossiercov58->find(
-						'count',
-						$qdDossiersNonFinalises
-					);
-
+					$qdDossiersCov58NonFinalises = $this->Orientstruct->Personne->Dossiercov58->qdDossiersNonFinalises( $personne_id, array( 'proposorientationscovs58', 'proposnonorientationsproscovs58' ) );
+					$nbdossiersnonfinalisescovs = $this->Orientstruct->Personne->Dossiercov58->find( 'count',  $qdDossiersCov58NonFinalises );
 					$this->set( 'nbdossiersnonfinalisescovs', $nbdossiersnonfinalisescovs );
 				}
 				else {

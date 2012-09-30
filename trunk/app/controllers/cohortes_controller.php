@@ -70,9 +70,6 @@
 		 *
 		 */
 		public function _setOptions() {
-			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
-
 			$typesOrient = $this->Personne->Orientstruct->Typeorient->find(
 				'list',
 				array(
@@ -88,16 +85,6 @@
 			);
 			$this->set( 'typesOrient', $typesOrient );
 			$this->set( 'structuresReferentes', $this->Personne->Orientstruct->Structurereferente->list1Options() );
-
-			// -----------------------------------------------------------------
-
-			if( Configure::read( 'Zonesegeographiques.CodesInsee' ) ) {
-				$this->set( 'mesCodesInsee', $this->Zonegeographique->listeCodesInseeLocalites( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ) ) );
-			}
-			else {
-				$this->set( 'mesCodesInsee', $this->Personne->Foyer->Adressefoyer->Adresse->listeCodesInsee() );
-			}
-
 			$this->set( 'oridemrsa', $this->Option->oridemrsa() );
 			$this->set( 'typeserins', $this->Option->typeserins() );
 			$this->set( 'printed', $this->Option->printed() );
@@ -117,6 +104,7 @@
 					)
 				)
 			);
+
 			if( in_array( $this->action, array( 'orientees', 'exportcsv', 'statistiques' ) ) ) {
 				$this->set( 'options', $this->Personne->Orientstruct->enums() );
 			}
@@ -168,9 +156,6 @@
 		 */
 		protected function _index( $statutOrientation = null ) {
 			$this->assert( !empty( $statutOrientation ), 'invalidParameter' );
-
-			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 
 			if( !empty( $this->data ) ) {
 				// -----------------------------------------------------------------
@@ -236,14 +221,14 @@
 					$progressivePaginate = !Set::classicExtract( $this->data, 'Filtre.paginationNombreTotal' );
 
 					$filtre = $this->data;
-                    if( Configure::read( 'Cg.departement' ) == 66 && empty( $filtre['Situationdossierrsa']['etatdosrsa_choice'] ) ) {
-                        $filtre['Situationdossierrsa']['etatdosrsa'] = Configure::read( 'Situationdossierrsa.etatdosrsa.ouvert' );
-                    }
+					if( Configure::read( 'Cg.departement' ) == 66 && empty( $filtre['Situationdossierrsa']['etatdosrsa_choice'] ) ) {
+						$filtre['Situationdossierrsa']['etatdosrsa'] = Configure::read( 'Situationdossierrsa.etatdosrsa.ouvert' );
+					}
 					unset( $filtre['Filtre']['actif'] );
 
 					$queryData = $this->Cohorte->search(
 						$statutOrientation,
-						$mesCodesInsee,
+						(array)$this->Session->read( 'Auth.Zonegeographique' ),
 						$this->Session->read( 'Auth.User.filtre_zone_geo' ),
 						$filtre,
 						( ( $statutOrientation == 'Orienté' ) ? false : $this->Cohortes->sqLocked() )
@@ -290,8 +275,8 @@
 			$this->set( 'structuresAutomatiques', $this->Cohorte->structuresAutomatiques() );
 
 			// Zones géographiques et cantons
+			$this->set( 'cantons', $this->Gestionzonesgeos->listeCantons() );
 			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
-			$this->Gestionzonesgeos->setCantonsIfConfigured( 'cantons' );
 
 			// Préorientations
 			$modeles = $this->Personne->Orientstruct->Typeorient->listOptionsPreorientationCohortes93();
@@ -332,17 +317,9 @@
 		 * @param type $personne_id
 		 */
 		public function cohortegedooo( $personne_id = null ) {
-			$AuthZonegeographique = $this->Session->read( 'Auth.Zonegeographique' );
-			if( !empty( $AuthZonegeographique ) ) {
-				$AuthZonegeographique = array_values( $AuthZonegeographique );
-			}
-			else {
-				$AuthZonegeographique = array();
-			}
-
 			$queryData = $this->Cohorte->search(
 				'Orienté',
-				$AuthZonegeographique,
+				(array)$this->Session->read( 'Auth.Zonegeographique' ),
 				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
 				Xset::bump( $this->params['named'], '__' ),
 				false
@@ -424,12 +401,9 @@
 		 *
 		 */
 		public function statistiques() {
-			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
-
 			if( !empty( $this->data ) ) {
 				$statistiques = $this->Cohorte->statistiques(
-					$mesCodesInsee,
+					(array)$this->Session->read( 'Auth.Zonegeographique' ),
 					$this->Session->read( 'Auth.User.filtre_zone_geo' ),
 					$this->data
 				);
