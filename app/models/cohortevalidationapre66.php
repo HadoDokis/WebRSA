@@ -157,7 +157,7 @@
 					'Themeapre66.name',
 					$Apre66->Personne->Referent->sqVirtualField( 'nom_complet' ),
 					$Apre66->Personne->sqVirtualField( 'nom_complet' ),
-					'( '.$Apre66->vfNbFichiersmodule( ).' ) AS "Apre66__nbfichiers"'
+					$Apre66->Fichiermodule->sqNbFichiersLies( $Apre66, 'nbfichiers', 'Apre66' ),
 				),
 				'joins' => array(
 					$Apre66->join( 'Aideapre66', array( 'type' => 'INNER' ) ),
