@@ -233,8 +233,8 @@
 						'Historiqueetatpe.id',
 						'Historiqueetatpe.etat',
 						'Historiqueetatpe.date',
-						'( '.$Personne->Nonoriente66->vfNbFichiersmodule( ).' ) AS "Nonoriente66__nbfichiers"',
-						'( '.$Personne->Orientstruct->vfNbFichiersmodule( ).' ) AS "Orientstruct__nbfichiers"',
+						$Personne->Nonoriente66->Fichiermodule->sqNbFichiersLies( $Personne->Nonoriente66, 'nbfichiers', 'Nonoriente66' ),
+						$Personne->Orientstruct->Fichiermodule->sqNbFichiersLies( $Personne->Orientstruct, 'nbfichiers', 'Orientstruct' ),
 						'Canton.id',
 						'Canton.canton'
 					)

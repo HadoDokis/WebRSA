@@ -304,10 +304,13 @@
 		 * @param string $fieldName Si null, renvoit uniquement la sous-reqête,
 		 * 	sinon renvoit la sous-requête aliasée pour un champ (avec l'alias du
 		 * 	modèle).
+		 * @param string $modelAlias Si null, utilise l'alias de la class Fichiermodule, sinon la valeur donnée.
 		 * @return string
 		 */
-		public function sqNbFichiersLies( Model $Model, $fieldName = null ) {
+		public function sqNbFichiersLies( Model $Model, $fieldName = null, $modelAlias = null ) {
 			$alias = Inflector::underscore( $this->alias );
+
+			$modelAlias = ( is_null( $modelAlias ) ? $this->alias : $modelAlias );
 
 			$sq = $this->sq(
 					array(
@@ -323,7 +326,7 @@
 			);
 
 			if( !is_null( $fieldName ) ) {
-				$sq = "( {$sq} ) AS \"{$this->alias}__{$fieldName}\"";
+				$sq = "( {$sq} ) AS \"{$modelAlias}__{$fieldName}\"";
 			}
 
 			return $sq;
