@@ -160,20 +160,9 @@
 				$criteresci['Situationdossierrsa']['etatdosrsa']  = $Situationdossierrsa->etatOuvert();
 			}
 
-			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
 			$conditions = $this->conditionsAdresse( $conditions, $criteresci, $filtre_zone_geo, $mesCodesInsee );
 			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $criteresci );
 			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $criteresci );
-
-			/// Requête
-// 			$Situationdossierrsa = ClassRegistry::init( 'Situationdossierrsa' );
-// 			$etatdossier = Set::extract( $criteresci, 'Situationdossierrsa.etatdosrsa' );
-// 			if( isset( $criteresci['Situationdossierrsa']['etatdosrsa'] ) && !empty( $criteresci['Situationdossierrsa']['etatdosrsa'] ) ) {
-// 				$conditions[] = '( Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $etatdossier ).'\' ) )';
-// 			}
-// 			else {
-// 				$conditions[] = '( Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatOuvert() ).'\' ) )';
-// 			}
 
 			// ...
 			if( !empty( $decision_ci ) ) {

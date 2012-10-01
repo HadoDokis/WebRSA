@@ -17,12 +17,13 @@
 	class CohortesciController extends AppController
 	{
 		public $name = 'Cohortesci';
+
 		public $uses = array( 'Cohorteci', 'Dossier', 'Option', 'Situationdossierrsa' );
 
 		public $aucunDroit = array( 'constReq', 'ajaxreferent' );
 
 		public $helpers = array( 'Csv', 'Ajax', 'Search', 'Default2' );
-		public $paginate = array( 'limit' => 20, );
+
 		public $components = array(
 			'Prg2' => array(
 				'actions' => array(
@@ -153,10 +154,7 @@
 		protected function _index( $statutValidation = null ) {
 			$this->assert( !empty( $statutValidation ), 'invalidParameter' );
 
-			$this->set( 'cantons', $this->Gestionzonesgeos->listeCantons() );
-			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
-
-			$personne_suivi = $this->Dossier->Foyer->Personne->Contratinsertion->find(
+			/*$personne_suivi = $this->Dossier->Foyer->Personne->Contratinsertion->find(
 				'list',
 				array(
 					'fields' => array(
@@ -168,11 +166,10 @@
 				)
 			);
 
-			$this->set( 'personne_suivi', $personne_suivi );
+			$this->set( 'personne_suivi', $personne_suivi );*/
 
+			// Un formulaire a été envoyé.
 			if( !empty( $this->data ) ) {
-				// Sauvegarde
-
 				// On a renvoyé  le formulaire de la cohorte
 				if( !empty( $this->data['Contratinsertion'] ) ) {
 					$this->Cohortes->get( array_unique( Set::extract( $this->data, 'Contratinsertion.{n}.dossier_id' ) ) );
@@ -226,7 +223,7 @@
 				}
 
 				// Filtrage
-				if( ( $statutValidation == 'Decisionci::nouveaux' ) || ( $statutValidation == 'Decisionci::nouveauxsimple' ) || ( $statutValidation == 'Decisionci::nouveauxparticulier' ) || ( ( $statutValidation == 'Decisionci::valides' ) && !empty( $this->data ) ) ) {
+				if( in_array( $statutValidation, array( 'Decisionci::nouveaux', 'Decisionci::nouveauxsimple', 'Decisionci::nouveauxparticulier', 'Decisionci::valides' ) ) && !empty( $this->data ) ) {
 					$querydata = $this->Cohorteci->search(
 						$statutValidation,
 						(array)$this->Session->read( 'Auth.Zonegeographique' ),
@@ -234,21 +231,12 @@
 						$this->data,
 						$this->Cohortes->sqLocked( 'Dossier' )
 					);
-					$querydata['limit'] = 10;
 
 					$this->paginate = $querydata;
 					$cohorteci = $this->paginate( $this->Dossier->Foyer->Personne->Contratinsertion );
 
 					foreach( $cohorteci as $key => $value ) {
-						if( $value['Contratinsertion']['decision_ci'] == 'E' && Configure::read( 'nom_form_cg' == 'cg66' ) ) {
-							$cohorteci[$key]['Contratinsertion']['proposition_decision_ci'] = 'E';
-						}
-						else if( $value['Contratinsertion']['decision_ci'] == 'E' && Configure::read( 'nom_form_cg' == 'cg93' ) ) {
-							$cohorteci[$key]['Contratinsertion']['proposition_decision_ci'] = 'V';
-						}
-						else {
-							$cohorteci[$key]['Contratinsertion']['proposition_decision_ci'] = $value['Contratinsertion']['decision_ci'];
-						}
+						$cohorteci[$key]['Contratinsertion']['proposition_decision_ci'] = $value['Contratinsertion']['decision_ci'];
 
 						if( empty( $value['Contratinsertion']['datevalidation_ci'] ) ) {
 							$cohorteci[$key]['Contratinsertion']['proposition_datevalidation_ci'] = $value['Contratinsertion']['dd_ci'];
@@ -279,6 +267,9 @@
 			$structurereferente_id = Set::classicExtract( $this->data, 'Filtre.structurereferente_id' );
 			$referents = $this->Dossier->Foyer->Personne->Contratinsertion->Referent->referentsListe( $structurereferente_id );
 			$this->set( 'referents', $referents );
+
+			$this->set( 'cantons', $this->Gestionzonesgeos->listeCantons() );
+			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
 
 			switch( $statutValidation ) {
 				case 'Decisionci::nouveaux':
