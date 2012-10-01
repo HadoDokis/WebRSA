@@ -867,24 +867,57 @@
 
 			// Utilisé pour les détections de fiche de candidature pour savoir
 			// si des actions sont en cours ou non, (CG 66, affichage)
-			$fichescandidature = $this->Contratinsertion->Personne->ActioncandidatPersonne->find(
-				'all',
-				array(
-					'conditions' => array(
-						'ActioncandidatPersonne.personne_id' => $personne_id,
-						'ActioncandidatPersonne.positionfiche = \'encours\'',
-					),
-					'contain' => array(
-						'Actioncandidat' => array(
-							'Contactpartenaire' => array(
-								'Partenaire'
-							)
-						),
-						'Referent'
-					)
-				)
-			);
-			$this->set( compact( 'fichescandidature' ) );
+            if( Configure::read('Cg.departement') == 66 ){
+                $fichescandidature = $this->Contratinsertion->Personne->ActioncandidatPersonne->find(
+                    'all',
+                    array(
+                        'conditions' => array(
+                            'ActioncandidatPersonne.personne_id' => $personne_id,
+                            'ActioncandidatPersonne.positionfiche = \'encours\''
+                        ),
+                        'contain' => array(
+                            'Actioncandidat' => array(
+                                'Contactpartenaire' => array(
+                                    'Partenaire'
+                                )
+                            ),
+                            'Referent'
+                        )
+                    )
+                );
+                $this->set( compact( 'fichescandidature' ) );
+
+                $cersPrecedents = $this->Contratinsertion->find(
+                    'all',
+                    array(
+                        'fields' => array_merge(
+                            $this->Contratinsertion->Actioncandidat->fields(),
+                            $this->Contratinsertion->Actioncandidat->Contactpartenaire->fields(),
+                            $this->Contratinsertion->Actioncandidat->Contactpartenaire->Partenaire->fields(),
+                            $this->Contratinsertion->Referent->fields(),
+                            array(
+                                'Contratinsertion.id',
+                                'Contratinsertion.actioncandidat_id'
+                            )
+                        ),
+                        'conditions' => array(
+                            'Contratinsertion.personne_id' => $personne_id
+                        ),
+                        'joins' => array(
+                            $this->Contratinsertion->join( 'Actioncandidat', array( 'type' => 'INNER' ) ),
+                            $this->Contratinsertion->Actioncandidat->join( 'Contactpartenaire', array( 'type' => 'LEFT OUTER' ) ),
+                            $this->Contratinsertion->Actioncandidat->Contactpartenaire->join( 'Partenaire', array( 'type' => 'LEFT OUTER' ) ),
+                            $this->Contratinsertion->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ),
+                        ),
+                        'contain' => false
+                    )
+                );
+                $action = null;
+                foreach( $cersPrecedents as $i => $cerPrecedent ){
+                    $action = $cerPrecedent;
+                }
+                $this->set('action', $action);
+            }
 
 			/// Essai de sauvegarde
 			if( !empty( $this->data ) ) { // INFO: 168 lignes @20120928.16:09
