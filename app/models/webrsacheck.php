@@ -246,6 +246,7 @@
 				'Nonoriente66.notisemploi.typeorientId' => 'isarray',
 				'Nonoriente66.TypeorientIdSocial' => 'integer',
 				'Nonoriente66.TypeorientIdPrepro' => 'integer',
+				'Contratinsertion.Cg66.Rendezvous' => 'isarray',
 			);
 		}
 
