@@ -588,7 +588,7 @@
 			<td class="mediumSize noborder">
 				<fieldset>
 					<legend> <strong>Action(s) déjà en cours</strong></legend>
-						<?php if( !empty( $fichescandidature ) ):?>
+						<?php if( !empty( $fichescandidature ) || !empty( $action ) ):?>
 						<table>
 							<thead>
 								<tr>
@@ -602,7 +602,7 @@
 							</thead>
 							<tbody>
 								<?php
-									foreach( $fichescandidature as $key => $fiche )
+									foreach( $fichescandidature as $fiche )
 									{
 										echo '<tr>';
 											echo $xhtml->tag('td', $fiche['Actioncandidat']['name']);
@@ -613,6 +613,16 @@
 											echo $xhtml->tag('td', $xhtml->viewLink( 'Voir', array( 'controller' => 'actionscandidats_personnes', 'action' => 'index', $fiche['ActioncandidatPersonne']['personne_id'] ) ) );
 										echo '</tr>';
 									}
+                                    if( !empty( $action ) ){
+                                        echo '<tr>';
+                                            echo $xhtml->tag('td', $action['Actioncandidat']['name'] );
+                                            echo $xhtml->tag('td', @$action['Partenaire']['libstruc'] );
+                                            echo $xhtml->tag('td', @$action['Referent']['qual'].' '.$action['Referent']['nom'].' '.$action['Referent']['prenom'] );
+                                            echo $xhtml->tag('td', date_short( @$action['Actioncandidat']['ddaction'] ) );
+                                            echo $xhtml->tag('td', $action['Actioncandidat']['hasfichecandidature'] ? 'Oui' : 'Non' );
+                                            echo $xhtml->tag( 'td', '' );
+                                        echo '</tr>';
+                                    }
 								?>
 							</tbody>
 						</table>
