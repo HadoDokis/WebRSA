@@ -22,16 +22,16 @@
 					$conditions[] = '( ( Apre66.etatdossierapre = \'COM\' ) AND ( Apre66.isdecision = \'N\' ) )';
 				}
 				else if( $statutValidation == 'Validationapre::validees' ) {
-					$conditions[] = '( Apre66.etatdossierapre = \'VAL\' ) AND  ( Apre66.datenotifapre IS NULL )';
+					$conditions[] = '( Apre66.etatdossierapre = \'VAL\' ) AND  ( Apre66.datenotifapre IS NULL ) AND ( Typeaideapre66.isincohorte = \'O\' )';
 				}
 				else if( $statutValidation == 'Validationapre::notifiees' ) {
-					$conditions[] = '( Apre66.etatdossierapre = \'VAL\' ) AND  ( Apre66.datenotifapre IS NOT NULL )';
+					$conditions[] = '( Apre66.etatdossierapre = \'VAL\' ) AND  ( Apre66.datenotifapre IS NOT NULL )  AND ( Typeaideapre66.isincohorte = \'O\' )';
 				}
 				else if( $statutValidation == 'Validationapre::transfert' ) {
-					$conditions[] = '( Apre66.etatdossierapre = \'VAL\' ) AND  ( Apre66.datenotifapre IS NOT NULL ) AND ( Apre66.istraite = \'0\' ) AND ( Apre66.istraite = \'0\' ) AND ( Apre66.istransfere = \'0\' )';
+					$conditions[] = '( Apre66.etatdossierapre = \'VAL\' ) AND  ( Apre66.datenotifapre IS NOT NULL ) AND ( Apre66.istraite = \'0\' ) AND ( Apre66.istraite = \'0\' ) AND ( Apre66.istransfere = \'0\' )  AND ( Typeaideapre66.isincohorte = \'O\' )';
 				}
 				else if( $statutValidation == 'Validationapre::traitementcellule' ) {
-					$conditions[] = '( Apre66.etatdossierapre = \'TRA\' ) AND  ( Apre66.datenotifapre IS NOT NULL )  AND ( Apre66.istraite = \'0\' ) AND ( Apre66.istransfere = \'1\' )';
+					$conditions[] = '( Apre66.etatdossierapre = \'TRA\' ) AND  ( Apre66.datenotifapre IS NOT NULL )  AND ( Apre66.istraite = \'0\' ) AND ( Apre66.istransfere = \'1\' )  AND ( Typeaideapre66.isincohorte = \'O\' )';
 				}
 			}
 

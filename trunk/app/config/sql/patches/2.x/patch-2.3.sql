@@ -506,6 +506,16 @@ DROP INDEX IF EXISTS jetonsfonctions_controller_action_params_idx;
 DROP INDEX IF EXISTS jetonsfonctions_controller_action_params_idx;
 CREATE UNIQUE INDEX jetonsfonctions_controller_action_params_idx ON jetonsfonctions( controller, action, params );
 
+-------------------------------------------------------------------------------------------------------------
+-- 20121001: Ajout d'une colonne pour la table typesaidesapres66 afin de 
+--           déterminer si l'aide se voit passer en cohorte de validation ou pas
+-------------------------------------------------------------------------------------------------------------
+
+SELECT add_missing_table_field('public', 'typesaidesapres66', 'isincohorte', 'TYPE_NO' );
+ALTER TABLE typesaidesapres66 ALTER COLUMN isincohorte SET DEFAULT 'O'::TYPE_NO;
+UPDATE typesaidesapres66 SET isincohorte = 'O'::TYPE_NO WHERE isincohorte IS NULL;
+ALTER TABLE typesaidesapres66 ALTER COLUMN isincohorte SET NOT NULL;
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

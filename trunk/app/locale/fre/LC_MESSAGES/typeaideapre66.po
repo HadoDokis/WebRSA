@@ -60,3 +60,12 @@ msgstr "Confirmer la suppression ?"
 
 msgid "Typeaideapre66::delete::confirm"
 msgstr "Confirmer la suppression ?"
+
+msgid "ENUM::ISINCOHORTE::O"
+msgstr "Oui"
+
+msgid "ENUM::ISINCOHORTE::N"
+msgstr "Non"
+
+msgid "Typeaideapre66.isincohorte"
+msgstr "Passage par la gestion de listes des APREs ?"

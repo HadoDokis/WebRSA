@@ -5,7 +5,14 @@
 
 		public $order = 'Typeaideapre66.name ASC';
 
-		public $actsAs = array( 'Autovalidate' );
+		public $actsAs = array(
+            'Autovalidate',
+            'Enumerable' => array(
+                'fields' => array(
+                    'isincohorte'
+                )
+            )
+        );
 
 		public $belongsTo = array(
 			'Themeapre66' => array(
