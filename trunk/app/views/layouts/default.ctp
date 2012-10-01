@@ -56,7 +56,7 @@
 				window.history.forward();
 				<?php endif;?>
 
-				var baseUrl = '<?php echo Router::url( '/', true );?>';
+				var baseUrl = '<?php echo Router::url( '/' );?>';
 				<?php if ( isset( $urlmenu ) ) { ?>
 					var urlmenu = '<?php echo $urlmenu ?>';
 				<?php } else { ?>
