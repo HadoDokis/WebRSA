@@ -44,7 +44,7 @@
 					'notifaenvoyer' => array( 'filter' => 'Search' ),
 					'oriente' => array( 'filter' => 'Search' )
 				)
-			),
+			)
 		);
 
 		/**
@@ -269,6 +269,7 @@
 			$this->_setOptions();
 			$this->set( 'cantons', $this->Gestionzonesgeos->listeCantons() );
 			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
+
 
 			switch( $statutNonoriente ) {
 				case 'Nonoriente::isemploi':
