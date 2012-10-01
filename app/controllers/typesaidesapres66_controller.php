@@ -20,6 +20,7 @@
             $return = parent::beforeFilter();
 
             $options = array();
+            $options = $this->{$this->modelClass}->enums();
 
             foreach( array( 'Themeapre66' ) as $linkedModel ) {
                 $field = Inflector::singularize( Inflector::tableize( $linkedModel ) ).'_id';
@@ -50,7 +51,6 @@
             );
             $this->set( 'piececomptable', $piececomptable );
 
-
             return $return;
         }
 
@@ -69,13 +69,19 @@
 
         public function index() {
 
+            // Retour à la liste en cas d'annulation
+			if( isset( $this->params['form']['Cancel'] ) ) {
+				$this->redirect( array( 'controller' => 'typesaidesapres66', 'action' => 'index' ) );
+			}
+            
 			$this->set( 'occurences', $this->Typeaideapre66->occurences() );
-// 			debug( $this->Typeaideapre66->occurences() );
+
 			$queryData = array(
 				'Typeaideapre66' => array(
 					'fields' => array(
 						'Typeaideapre66.id',
 						'Typeaideapre66.name',
+                        'Typeaideapre66.isincohorte',
 						'Themeapre66.name',
 						'COUNT("Aideapre66"."id") AS "Typeaideapre66__occurences"',
 					),
@@ -84,8 +90,9 @@
 						$this->Typeaideapre66->join( 'Themeapre66' ),
 					),
 					'recursive' => -1,
-					'group' => array(  'Typeaideapre66.id', 'Typeaideapre66.name', 'Themeapre66.name' ),
-					'order' => array( 'Themeapre66.name ASC', 'Typeaideapre66.name ASC' )
+					'group' => array(  'Typeaideapre66.id', 'Typeaideapre66.name', 'Themeapre66.name', 'Typeaideapre66.isincohorte'  ),
+					'order' => array( 'Themeapre66.name ASC', 'Typeaideapre66.name ASC' ),
+                    'limit' => 50
 				)
 			);
             $this->Default->index( $queryData );

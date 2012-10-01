@@ -10,13 +10,15 @@
         array(
             'Themeapre66.name',
             'Typeaideapre66.name',
+            'Typeaideapre66.isincohorte'
         ),
         array(
             'actions' => array(
                 'Typesaidesapres66::edit',
                 'Typesaidesapres66::delete' => array( 'disabled' => '"#Typeaideapre66.occurences#" != "0"' )
             ),
-            'add' => 'Typesaidesapres66::add'
+            'add' => 'Typesaidesapres66::add',
+            'options' => $options
         )
     );
 

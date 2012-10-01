@@ -15,6 +15,7 @@
 			'Typeaideapre66.id' => array( 'type' => 'hidden' ),
 			'Typeaideapre66.themeapre66_id',
 			'Typeaideapre66.name',
+            'Typeaideapre66.isincohorte' => array( 'type' => 'radio'),
 			'Typeaideapre66.objetaide' => array( 'type' => 'text' ),
 			'Typeaideapre66.plafond' => array( 'type' => 'text' ),
 			'Pieceaide66.Pieceaide66' => array( 'label' => 'Pièces administratives', 'multiple' => 'checkbox' , 'options' => $pieceadmin, 'empty' => false ),
@@ -49,3 +50,15 @@
 </div>
 
 <?php echo $xform->end( 'Save' ); ?>
+<?php
+	echo $default->button(
+		'back',
+		array(
+			'controller' => 'typesaidesapres66',
+			'action'     => 'index'
+		),
+		array(
+			'id' => 'Back'
+		)
+	);
+?>
