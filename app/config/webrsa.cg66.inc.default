@@ -406,12 +406,31 @@
 	 * dans la gestion des réponses des non orientés 66
 	 */
 	Configure::write( 'Nonoriente66.TypeorientIdPrepro', 5 );
-	
-	
+
+
 	/**
 	 * Configuration des adresses mails d'expéditeur pour l'envoi de mails concernant
 	 * les fiches de candidature (CG 66).
 	 */
 	Configure::write( 'FicheCandidature.Email.from', 'emailaprefrom@cgxxxx.fr' );
 	Configure::write( 'FicheCandidature.Email.replyto', Configure::read( 'FicheCandidature.Email.from' ) );
+
+	/**
+	 * Lorsque l'on enregistre un CER au CG 66, on vérifie si l'allocataire a un dernier rendez-vous
+	 * de type "01 - Convocation à un Entretien - Contrat" ayant le statut "Prévu".
+	 * Si c'est le cas, on le passe à "Venu(e)"
+	 */
+	Configure::write(
+		'Contratinsertion.Cg66.Rendezvous',
+		array(
+			'conditions' => array(
+				// Table typesrdv: "01 - Convocation à un Entretien - Contrat"
+				'typerdv_id' => 1,
+				// Table statutsrdvs: "Prévu"
+				'statutrdv_id' => 17
+			),
+			// Table statutsrdvs: "Venu(e)"
+			'statutrdv_id' => 1
+		)
+	);
 ?>

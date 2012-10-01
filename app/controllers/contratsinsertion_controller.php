@@ -1026,25 +1026,31 @@
 
 				if( $success ) {
 					$saved = true;
-					// FIXME: le dernier, nombres magiques, ...
-					$lastrdvorient = $this->Contratinsertion->Referent->Rendezvous->find(
-						'first',
-						array(
-							'fields' => array(
-								'Rendezvous.id'
-							),
-							'conditions' => array(
-								'Rendezvous.typerdv_id' => 1,
-								'Rendezvous.personne_id' => $this->data['Contratinsertion']['personne_id'],
-								'Rendezvous.statutrdv_id' => 17
-							),
-							'contain' => false
-						)
-					);
 
-					if( !empty( $lastrdvorient ) ) {
-						$lastrdvorient['Rendezvous']['statutrdv_id'] = 1;
-						$saved = $this->Contratinsertion->Referent->Rendezvous->save( $lastrdvorient ) && $saved;
+					// Au 66, si on enregistre un CER pour l'allocataire, on passe le statut de son RDV
+					// "01 - Convocation à un Entretien - Contrat" de "Prévu" à "Venu(e)"
+					if( Configure::read( 'Cg.departement' ) == 66 ) {
+						$cg66Rendezvous = Configure::read( 'Contratinsertion.Cg66.Rendezvous' );
+						$lastrdvorient = $this->Contratinsertion->Referent->Rendezvous->find(
+							'first',
+							array(
+								'fields' => array(
+									'Rendezvous.id'
+								),
+								'conditions' => array(
+									'Rendezvous.typerdv_id' => $cg66Rendezvous['conditions']['typerdv_id'],
+									'Rendezvous.personne_id' => $this->data['Contratinsertion']['personne_id'],
+									'Rendezvous.statutrdv_id' => $cg66Rendezvous['conditions']['statutrdv_id']
+								),
+								'contain' => false,
+								'order' => array( 'Rendezvous.daterdv DESC' )
+							)
+						);
+
+						if( !empty( $lastrdvorient ) ) {
+							$lastrdvorient['Rendezvous']['statutrdv_id'] = $cg66Rendezvous['statutrdv_id'];
+							$saved = $this->Contratinsertion->Referent->Rendezvous->save( $lastrdvorient ) && $saved;
+						}
 					}
 
 					if( $saved ) {
