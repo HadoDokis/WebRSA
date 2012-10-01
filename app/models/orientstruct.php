@@ -879,6 +879,7 @@
 					),
 					'conditions' => array(
 						'Orientstruct.id' => $orientstruct_id,
+                        'Adressefoyer.id IN ( '.$this->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Adressefoyer.foyer_id' ).' )'
 					),
 					'contain' => false
 				)
