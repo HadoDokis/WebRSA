@@ -63,12 +63,22 @@
 			</thead>
 			<tbody>
 				<?php
+                    $listesActions = Set::extract( '/Actioncandidat/name', $listesActions );
 					foreach( $contratsinsertion as $index => $contratinsertion ) {
 						$innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
 								<tbody>
 									<tr>
 										<th>Raison annulation</th>
 										<td>'.$contratinsertion['Contratinsertion']['motifannulation'].'</td>
+									</tr>
+                                    <tr>
+										<th>Positionnement sur l\'action</th>
+										<td>'.$contratinsertion['Actioncandidat']['name'].'</td>
+									</tr>
+                                   
+                                    <tr>
+										<th>Action(s) en cours</th>
+										<td>'.( empty( $listesActions ) ? null :'<ul><li>'.implode( '</li><li>', $listesActions ).'</li></ul>' ).'</td>
 									</tr>
 								</tbody>
 							</table>';
