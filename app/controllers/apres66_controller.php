@@ -716,7 +716,7 @@
 
 
 				if( $success ) {
-                    $this->Apre->commit();
+                    $this->{$this->modelClass}->commit();
                     $this->Jetons2->release( $dossier_id );
                     $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 					$this->redirect( array( 'controller' => 'apres'.Configure::read( 'Apre.suffixe' ), 'action' => 'index', $personne_id ) );
