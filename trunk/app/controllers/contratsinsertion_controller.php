@@ -550,6 +550,25 @@
 					)
 				);
 				$this->set( compact( 'persreferent' ) );
+                
+                
+                $listesActions = $this->Contratinsertion->Personne->ActioncandidatPersonne->find(
+					'all',
+					array(
+                        'fields' => array(
+                            'Actioncandidat.name'
+                        ),
+						'conditions' => array(
+							'ActioncandidatPersonne.personne_id' => $personne_id,
+							'ActioncandidatPersonne.positionfiche = \'encours\''
+						),
+						'contain' => array(
+                            'Actioncandidat'
+                        ),
+						'order' => 'ActioncandidatPersonne.id DESC'
+					)
+				);
+                $this->set( 'listesActions', $listesActions );
 			}
 			else if( Configure::read( 'Cg.departement' ) == 93 ) {
 				// Des dossiers pour la thématique des signalements ?

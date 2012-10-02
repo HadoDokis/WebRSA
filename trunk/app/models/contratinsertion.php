@@ -1682,6 +1682,7 @@
 					'Contratinsertion.datevalidation_ci',
 					'Contratinsertion.datenotification',
 					'Contratinsertion.avenant_id',
+                    'Contratinsertion.actioncandidat_id',
 					$this->Fichiermodule->sqNbFichiersLies( $this, 'nb_fichiers_lies' )
 				),
 				'conditions' => array(
@@ -1728,16 +1729,24 @@
 				$querydata['joins'][] = $this->join( 'Personne', array( 'type' => 'INNER' ) );
 				$querydata['fields'][] = '( ( EXTRACT ( YEAR FROM AGE( "Personne"."dtnai" ) ) ) > 55 ) AS "Personne__plus55ans"';
 
+                $querydata['joins'][] = $this->join( 'Actioncandidat', array( 'type' => 'LEFT OUTER' ) );
+				$querydata['fields'][] = 'Actioncandidat.name';
+
 				$querydata = Set::merge(
 					$querydata,
 					array(
-						'fields' => $this->Propodecisioncer66->fields(),
-						'contain' => array( 'Propodecisioncer66' )
+						'fields' => array_merge(
+                            $this->Propodecisioncer66->fields()
+                        ),
+						'contain' => array(
+                            'Propodecisioncer66'
+                        )
 					)
 				);
 			}
 
 			return $querydata;
 		}
+       
 	}
 ?>
