@@ -24,7 +24,7 @@
 		$configureConditions = Configure::read( 'Selectionradies.conditions' );
 
 		if( !empty( $configureConditions ) ) {
-			$csv->addRow( array( 'Nom allocataire', 'Prénom allocataire', 'Date de naissance', 'Commune de l\'allocataire', __d( 'sanctionep58', 'Historiqueetatpe.etat', true ), __d( 'sanctionep58', 'Historiqueetatpe.code', true ), 'Motif de radiation', 'Date de radiation', 'Service instructeur' ) );
+			$csv->addRow( array( 'Nom allocataire', 'Prénom allocataire', 'Date de naissance', 'Commune de l\'allocataire', __d( 'sanctionep58', 'Historiqueetatpe.etat', true ), __d( 'sanctionep58', 'Historiqueetatpe.code', true ), 'Motif de radiation Pôle Emploi', 'Date de radiation Pôle Emploi', 'Service instructeur' ) );
 
 			foreach( $personnes as $personne ) {
 				$row = array(
