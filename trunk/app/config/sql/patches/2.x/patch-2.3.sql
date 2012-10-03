@@ -516,6 +516,7 @@ ALTER TABLE typesaidesapres66 ALTER COLUMN isincohorte SET DEFAULT 'O'::TYPE_NO;
 UPDATE typesaidesapres66 SET isincohorte = 'O'::TYPE_NO WHERE isincohorte IS NULL;
 ALTER TABLE typesaidesapres66 ALTER COLUMN isincohorte SET NOT NULL;
 
+SELECT public.alter_enumtype ( 'TYPE_PROPOSITIONBILANPARCOURS', ARRAY['audition','parcours','traitement','auditionpe','parcourspe'] );
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

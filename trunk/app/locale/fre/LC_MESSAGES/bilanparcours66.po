@@ -390,10 +390,13 @@ msgid "ENUM::PROPOSITION::audition"
 msgstr "EPL Audition"
 
 msgid "ENUM::PROPOSITION::auditionpe"
-msgstr "EPL Audition Pôle Emploi"
+msgstr "EPL Audition Public Pôle Emploi"
 
 msgid "ENUM::PROPOSITION::parcours"
 msgstr "EPL Parcours"
+
+msgid "ENUM::PROPOSITION::parcourspe"
+msgstr "EPL Parcours Public Pôle Emploi"
 
 msgid "ENUM::PROPOSITION::traitement"
 msgstr "sans passage en EP"
