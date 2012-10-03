@@ -24,8 +24,8 @@ echo '<table id="Decisiondefautinsertionep66" class="tooltips">
 				<th rowspan="2">Orientation actuelle</th>
 				<th rowspan="2">Origine</th>
 				<th rowspan="2">Motif saisine</th>
-				<th rowspan="2">Date de radiation</th>
-				<th rowspan="2">Motif de radiation</th>
+				<th rowspan="2">Date de radiation Pôle Emploi</th>
+				<th rowspan="2">Motif de radiation Pôle Emploi</th>
 				<th rowspan="2">Avis EPL</th>
 				<th colspan="4">Décision CG</th>
 				<th rowspan="2">Observations</th>
