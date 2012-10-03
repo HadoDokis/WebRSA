@@ -184,7 +184,7 @@
 			)
 		);//bilanparcoursinsertion
 	?>
-	<fieldset id="Bilanparcoursinsertion" class="invisible">
+	<fieldset id="BilanparcoursinsertionCheckbox" class="invisible">
 	<?php
 			echo $default2->subform(
 				array(
@@ -251,7 +251,7 @@
 
 		observeDisableFieldsetOnCheckbox(
 			'Bilanparcours66Bilanparcoursinsertion',
-			'Bilanparcoursinsertion',
+			'BilanparcoursinsertionCheckbox',
 			false,
 			true
 		);
@@ -492,22 +492,7 @@
 						echo "Avec changement de référent.";
 					echo "</div>";
 				?>
-				<fieldset id="cgContratReconduitAvecEp">
-					<legend>Reconduction du contrat librement débattu</legend>
-					<?php
-						echo $default2->subform(
-							array(
-								'Bilanparcours66.duree_engag' => array( 'required' => true, 'id' => 'Bilanparcours66DureeEngagAvecEp' ),
-								'Bilanparcours66.ddreconductoncontrat' => array( 'required' => true, 'id' => 'Bilanparcours66DdreconductoncontratAvecEp' ),
-								'Bilanparcours66.dfreconductoncontrat' => array( 'required' => true, 'id' => 'Bilanparcours66DfreconductoncontratAvecEp' )
-							),
-							array(
-								'options' => $options,
-								'domain' => $domain
-							)
-						);
-					?>
-				</fieldset>
+
 			</fieldset>
 			<fieldset id="cgReorientationAvecEp">
 				<legend>Réorientation du SOCIAL vers le professionnel</legend>
@@ -741,14 +726,15 @@
 			$tmp = radioBilan( $this, 'Pe.Bilanparcours66.proposition', 'parcourspe', 'Saisine EPL Parcours Public suivi par Pôle Emploi' );
 			echo $xhtml->tag( 'h3', $tmp );
 		?>
-        <fieldset id="peParcours" class="invisible">
+        <fieldset id="parcourspe" class="invisible">
             <?php
                 echo '<div class ="input radio';
                     if (isset($this->validationErrors['Bilanparcours66']['choixparcours'])) echo ' error';
                 echo '">';
                 echo $default->subform(
                     array(
-                        'Pe.Bilanparcours66.choixparcours' => array( 'div' => false, 'type' => 'radio', 'required' => true )
+//                        'Pe.Bilanparcours66.choixparcours' => array( 'div' => false, 'type' => 'radio', 'required' => true )
+                        'Pe.Bilanparcours66.choixparcours' => array( 'div' => false, 'type' => 'hidden', 'value' => 'reorientation' )
                     ),
                     array(
                         'options' => $options
@@ -851,58 +837,6 @@
                         echo "Avec changement de référent.";
                     echo "</div>";
                 ?>
-                <fieldset id="peContratReconduitAvecEp">
-                    <legend>Reconduction du contrat librement débattu</legend>
-                    <?php
-                        echo '<div class ="input select';
-                            if (isset($this->validationErrors['Bilanparcours66']['duree_engag'])) echo ' error';
-                        echo '">';
-                        echo $default->subform(
-                            array(
-                                'Pe.Bilanparcours66.duree_engag' => array( 'div' => false, 'required' => true, 'id' => 'PeBilanparcours66DureeEngagAvecEp' )
-                            ),
-                            array(
-                                'options' => $options
-                            )
-                        );
-                        if (isset($this->validationErrors['Bilanparcours66']['duree_engag'])) {
-                            echo '<div class="error-message">'.$this->validationErrors['Bilanparcours66']['duree_engag'].'</div>';
-                        }
-                        echo '</div>';
-
-                        echo '<div class ="input date';
-                            if (isset($this->validationErrors['Bilanparcours66']['ddreconductoncontrat'])) echo ' error';
-                        echo '">';
-                        echo $default->subform(
-                            array(
-                                'Pe.Bilanparcours66.ddreconductoncontrat' => array( 'div' => false, 'required' => true, 'id' => 'PeBilanparcours66DdreconductoncontratAvecEp' )
-                            ),
-                            array(
-                                'options' => $options
-                            )
-                        );
-                        if (isset($this->validationErrors['Bilanparcours66']['ddreconductoncontrat'])) {
-                            echo '<div class="error-message">'.$this->validationErrors['Bilanparcours66']['ddreconductoncontrat'].'</div>';
-                        }
-                        echo '</div>';
-
-                        echo '<div class ="input date';
-                            if (isset($this->validationErrors['Bilanparcours66']['dfreconductoncontrat'])) echo ' error';
-                        echo '">';
-                        echo $default->subform(
-                            array(
-                                'Pe.Bilanparcours66.dfreconductoncontrat' => array( 'div' => false, 'required' => true, 'id' => 'PeBilanparcours66DfreconductoncontratAvecEp' )
-                            ),
-                            array(
-                                'options' => $options
-                            )
-                        );
-                        if (isset($this->validationErrors['Bilanparcours66']['dfreconductoncontrat'])) {
-                            echo '<div class="error-message">'.$this->validationErrors['Bilanparcours66']['dfreconductoncontrat'].'</div>';
-                        }
-                        echo '</div>';
-                    ?>
-                </fieldset>
             </fieldset>
             <fieldset id="peReorientationAvecEp">
                 <legend>Réorientation du PROFESSIONEL vers le SOCIAL</legend>
@@ -1015,7 +949,10 @@
 			echo $xhtml->tag(
 				'strong',
 				'Réorientation du PROFESSIONNEL vers le SOCIAL'
-// 				$options['Decisionsaisinebilanparcoursep66']['reorientation'][$avisep['reorientation']]
+			);
+            echo $html->tag(
+				'p',
+				'Type d\'orientation : '.@$avisep['Typeorient']['lib_type_orient'].' <br /> Structure référente : '.@$avisep['Structurereferente']['lib_struc'].' <br /> Référent : '.@$avisep['Referent']['nom'].' '.@$avisep['Referent']['prenom']
 			);
 		}
 		elseif ( $avisep['decision'] == 'maintien' ) {
@@ -1273,7 +1210,7 @@ elseif ( $this->action == 'edit' && !empty( $dossierpcg66['Decisiondossierpcg66'
 		);
         
         
-        ['auditionpe', 'parcours' ].each( function( proposition ) {
+        ['auditionpe', 'parcourspe' ].each( function( proposition ) {
 			observeDisableFieldsetOnRadioValue(
 				'Bilan',
 				'data[Pe][Bilanparcours66][proposition]',
@@ -1351,26 +1288,16 @@ elseif ( $this->action == 'edit' && !empty( $dossierpcg66['Decisiondossierpcg66'
 		} );
 		checkOrientstructTypeorientId( 'data[Bilanparcours66][avecep_typeorientprincipale_id]', 'cgMaintienOrientAvecEp' );
 
-		disableAndHideFormPart( 'cgContratReconduitAvecEp' );
+//		disableAndHideFormPart( 'cgContratReconduitAvecEp' );
 		disableAndHideFormPart( 'cgMaintienOrientAvecEpChangementRef' );
 		disableAndHideFormPart( 'cgMaintienOrientAvecEpMemeRef' );
 		<?php foreach( $options['Bilanparcours66']['typeorientprincipale_id'] as $key => $value ) { ?>
 			dependantSelect( 'Bilanparcours66NvstructurereferenteIdAvecEp<?php echo $key ?>', 'Bilanparcours66NvtypeorientIdAvecEp<?php echo $key ?>' );
 			try { $( 'Bilanparcours66NvstructurereferenteIdAvecEp<?php echo $key ?>' ).onchange(); } catch(id) { }
-			observeMemeReorientation( 'Bilanparcours66AvecepTypeorientprincipaleId<?php echo $key ?>', 'Bilanparcours66NvstructurereferenteIdAvecEp<?php echo $key ?>', 'Bilanparcours66NvtypeorientIdAvecEp<?php echo $key ?>', 'cgContratReconduitAvecEp', 'cgMaintienOrientAvecEpMemeRef', 'cgMaintienOrientAvecEpChangementRef' );
+//			observeMemeReorientation( 'Bilanparcours66AvecepTypeorientprincipaleId<?php echo $key ?>', 'Bilanparcours66NvstructurereferenteIdAvecEp<?php echo $key ?>', 'Bilanparcours66NvtypeorientIdAvecEp<?php echo $key ?>', 'cgContratReconduitAvecEp', 'cgMaintienOrientAvecEpMemeRef', 'cgMaintienOrientAvecEpChangementRef' );
+			observeMemeReorientationSansContractualisation( 'Bilanparcours66AvecepTypeorientprincipaleId<?php echo $key ?>', 'Bilanparcours66NvstructurereferenteIdAvecEp<?php echo $key ?>', 'Bilanparcours66NvtypeorientIdAvecEp<?php echo $key ?>', 'cgMaintienOrientAvecEpMemeRef', 'cgMaintienOrientAvecEpChangementRef' );
 		<?php } ?>
-		$( 'Bilanparcours66DdreconductoncontratAvecEpYear' ).observe( 'change', function(event) {
-			checkDatesToRefresh( '', 'AvecEp' );
-		} );
-		$( 'Bilanparcours66DdreconductoncontratAvecEpMonth' ).observe( 'change', function(event) {
-			checkDatesToRefresh( '', 'AvecEp' );
-		} );
-		$( 'Bilanparcours66DdreconductoncontratAvecEpDay' ).observe( 'change', function(event) {
-			checkDatesToRefresh( '', 'AvecEp' );
-		} );
-		$( 'Bilanparcours66DureeEngagAvecEp' ).observe( 'change', function(event) {
-			checkDatesToRefresh( '', 'AvecEp' );
-		} );
+
 
 		observeDisableFieldsOnRadioValue(
 			'Bilan',
@@ -1394,36 +1321,29 @@ elseif ( $this->action == 'edit' && !empty( $dossierpcg66['Decisiondossierpcg66'
 			true
 		);
 
-		observeDisableFieldsetOnRadioValue(
-			'Bilan',
-			'data[Pe][Bilanparcours66][choixparcours]',
-			$( 'peReorientationAvecEp' ),
-			'reorientation',
-			false,
-			true
-		);
+//		observeDisableFieldsetOnRadioValue(
+//			'Bilan',
+//			'data[Pe][Bilanparcours66][choixparcours]',
+//			$( 'peReorientationAvecEp' ),
+//			'reorientation',
+//			false,
+//			true
+//		);
 
-		disableAndHideFormPart( 'peContratReconduitAvecEp' );
 		disableAndHideFormPart( 'peMaintienOrientAvecEpChangementRef' );
 		disableAndHideFormPart( 'peMaintienOrientAvecEpMemeRef' );
-
-		observeMemeReorientation( 'PeBilanparcours66ChoixparcoursMaintien', 'PeSaisinebilanparcoursep66StructurereferenteId', 'PeSaisinebilanparcoursep66TypeorientId', 'peContratReconduitAvecEp', 'peMaintienOrientAvecEpMemeRef', 'peMaintienOrientAvecEpChangementRef' );
+//		observeMemeReorientation( 'PeBilanparcours66ChoixparcoursMaintien', 'PeSaisinebilanparcoursep66StructurereferenteId', 'PeSaisinebilanparcoursep66TypeorientId', 'peContratReconduitAvecEp', 'peMaintienOrientAvecEpMemeRef', 'peMaintienOrientAvecEpChangementRef' );
+//        observeMemeReorientationSansContractualisation( 'PeBilanparcours66ChoixparcoursMaintien', 'PeSaisinebilanparcoursep66StructurereferenteId', 'PeSaisinebilanparcoursep66TypeorientId', 'peMaintienOrientAvecEpMemeRef', 'peMaintienOrientAvecEpChangementRef' );
+//        observeMemeReorientationSansContractualisation( 'PeBilanparcours66ChoixparcoursReorientation', 'PeSaisinebilanparcoursep66StructurereferenteId', 'PeSaisinebilanparcoursep66TypeorientId', 'peMaintienOrientAvecEpMemeRef', 'peMaintienOrientAvecEpChangementRef' );
+        
+        <?php foreach( $options['Bilanparcours66']['typeorientprincipale_id'] as $key => $value ) { ?>
+			dependantSelect( 'PeBilanparcours66NvstructurereferenteIdAvecEp<?php echo $key ?>', 'PeBilanparcours66NvtypeorientIdAvecEp<?php echo $key ?>' );
+			try { $( 'PeBilanparcours66NvstructurereferenteIdAvecEp<?php echo $key ?>' ).onchange(); } catch(id) { }
+			observeMemeReorientationSansContractualisation( 'PeBilanparcours66AvecepTypeorientprincipaleId<?php echo $key ?>', 'PeBilanparcours66NvstructurereferenteIdAvecEp<?php echo $key ?>', 'PeBilanparcours66NvtypeorientIdAvecEp<?php echo $key ?>', 'peMaintienOrientAvecEpMemeRef', 'peMaintienOrientAvecEpChangementRef' );
+		<?php } ?>
 
 		dependantSelect( 'PeSaisinebilanparcoursep66StructurereferenteId', 'PeSaisinebilanparcoursep66TypeorientId' );
 		try { $( 'PeSaisinebilanparcoursep66StructurereferenteId' ).onchange(); } catch(id) { }
-
-		$( 'PeBilanparcours66DdreconductoncontratAvecEpYear' ).observe( 'change', function(event) {
-			checkDatesToRefresh( 'Pe', 'AvecEp' );
-		} );
-		$( 'PeBilanparcours66DdreconductoncontratAvecEpMonth' ).observe( 'change', function(event) {
-			checkDatesToRefresh( 'Pe', 'AvecEp' );
-		} );
-		$( 'PeBilanparcours66DdreconductoncontratAvecEpDay' ).observe( 'change', function(event) {
-			checkDatesToRefresh( 'Pe', 'AvecEp' );
-		} );
-		$( 'PeBilanparcours66DureeEngagAvecEp' ).observe( 'change', function(event) {
-			checkDatesToRefresh( 'Pe', 'AvecEp' );
-		} );
 
 		// ---------------------------------------------------------------------
 
@@ -1433,10 +1353,7 @@ elseif ( $this->action == 'edit' && !empty( $dossierpcg66['Decisiondossierpcg66'
 			} );
 		} );
 		checkOrientstructTypeorientId( 'data[Pe][Bilanparcours66][avecep_typeorientprincipale_id]', 'peMaintienOrientAvecEp' );
-		<?php foreach( $options['Bilanparcours66']['typeorientprincipale_id'] as $key => $value ) { ?>
-			dependantSelect( 'PeBilanparcours66NvstructurereferenteIdAvecEp<?php echo $key ?>', 'PeBilanparcours66NvtypeorientIdAvecEp<?php echo $key ?>' );
-			try { $( 'PeBilanparcours66NvstructurereferenteIdAvecEp<?php echo $key ?>' ).onchange(); } catch(id) { }
-		<?php } ?>
+
 
 		// ---------------------------------------------------------------------
 
@@ -1577,4 +1494,64 @@ elseif ( $this->action == 'edit' && !empty( $dossierpcg66['Decisiondossierpcg66'
 			disableAndHideFormPart( maintienOrientMemeRefDiv );
 		}
 	}
+    
+    
+    //test arnaud
+    function observeMemeReorientationSansContractualisation( radioprecedente, structurereferenteId, typeorientId, maintienOrientMemeRefDiv, maintienOrientChangementRefDiv ) {
+		[ radioprecedente, typeorientId, structurereferenteId ].each( function( elmt ) {
+			$( elmt ).observe( 'change', function(event) {
+				checkMemeReorientationSansContractualisation( structurereferenteId, typeorientId, maintienOrientMemeRefDiv, maintienOrientChangementRefDiv );
+			} );
+		} );
+		checkMemeReorientationSansContractualisation( structurereferenteId, typeorientId, maintienOrientMemeRefDiv, maintienOrientChangementRefDiv );
+	}
+
+    function formRadioValue( formId, radioName ){
+        var v = $( formId ).getInputs( 'radio', radioName );
+        var currentValue = undefined;
+        $( v ).each( function( radio ) {
+            if( radio.checked ) {
+                currentValue = radio.value;
+            }
+        } );
+//        alert(currentValue);
+        return currentValue;
+    }
+    
+    
+ 	function checkMemeReorientationSansContractualisation( structurereferenteId, typeorientId, maintienOrientMemeRefDiv, maintienOrientChangementRefDiv ) {
+//		if ( ( $F( structurereferenteId ) != '' || $F( typeorientId ) != '' ) && $( structurereferenteId ).up(1).hasClassName( 'disabled' ) == false ) {
+        if( ( formRadioValue( 'Bilan', 'data[Bilanparcours66][proposition]' ) == 'parcours' ) || ( formRadioValue( 'Bilan', 'data[Pe][Bilanparcours66][proposition]' ) == 'parcourspe' ) )  {
+			<?php if ( $this->action == 'edit' && $this->data['Bilanparcours66']['changementref'] == 'O' ) { ?>
+				var typeorient_id = '<?php echo @$this->data['Orientstruct']['typeorient_id'] ?>';
+				var structurereferente_id = '<?php echo @$this->data['Orientstruct']['structurereferente_id'] ?>';
+			<?php } elseif ( $this->action == 'edit' ) { ?>
+				var typeorient_id = '<?php echo @$this->data['Bilanparcours66']['nvtypeorient_id'] ?>';
+				var structurereferente_id = '<?php echo @$this->data['Bilanparcours66']['nvstructurereferente_id'] ?>';
+			<?php } else { ?>
+				var typeorient_id = '<?php echo @$personne['Orientstruct'][0]['typeorient_id'] ?>';
+				var structurereferente_id = '<?php echo @$personne['Orientstruct'][0]['structurereferente_id'] ?>';
+			<?php } ?>
+			var explose = $F( structurereferenteId ).split('_');
+			if ( explose[1] == structurereferente_id ) {
+				enableAndShowFormPart( maintienOrientMemeRefDiv );
+				disableAndHideFormPart( maintienOrientChangementRefDiv );
+			}
+			else if ( $F( typeorientId ) != typeorient_id || ( $F( typeorientId ) == typeorient_id && explose[1] != structurereferente_id && $F( structurereferenteId ) != '' ) ) {
+				enableAndShowFormPart( maintienOrientChangementRefDiv );
+				disableAndHideFormPart( maintienOrientMemeRefDiv );
+			}
+			else {
+				disableAndHideFormPart( maintienOrientChangementRefDiv );
+				disableAndHideFormPart( maintienOrientMemeRefDiv );
+			}
+		}
+		else if ( $( structurereferenteId ).up(1).hasClassName( 'disabled' ) == false ) {
+			disableAndHideFormPart( maintienOrientChangementRefDiv );
+			disableAndHideFormPart( maintienOrientMemeRefDiv );
+		}
+	}
+    
+    
+    
 </script>

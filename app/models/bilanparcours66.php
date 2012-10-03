@@ -112,7 +112,7 @@
 //					'message' => 'Champ obligatoire',
 //				),
 				array(
-					'rule' => array( 'notEmptyIf', 'proposition', true, array( 'parcours' ) ),
+					'rule' => array( 'notEmptyIf', 'proposition', true, array( 'parcours', 'parcourspe' ) ),
 					'message' => 'Champ obligatoire',
 				)
 			),
@@ -122,7 +122,7 @@
 //					'message' => 'Champ obligatoire',
 //				),
 				array(
-					'rule' => array( 'notEmptyIf', 'proposition', true, array( 'traitement', 'parcours' ) ),
+					'rule' => array( 'notEmptyIf', 'proposition', true, array( 'traitement', 'parcours', 'parcourspe' ) ),
 					'message' => 'Champ obligatoire',
 				)
 			),
@@ -132,7 +132,7 @@
 //					'message' => 'Champ obligatoire',
 //				),
 				array(
-					'rule' => array( 'notEmptyIf', 'proposition', true, array( 'traitement', 'parcours' ) ),
+					'rule' => array( 'notEmptyIf', 'proposition', true, array( 'traitement', 'parcours', 'parcourspe' ) ),
 					'message' => 'Champ obligatoire',
 				)
 			),
@@ -142,40 +142,40 @@
 //					'message' => 'Champ obligatoire',
 //				),
 				array(
-					'rule' => array( 'notEmptyIf', 'proposition', true, array( 'parcours' ) ),
+					'rule' => array( 'notEmptyIf', 'proposition', true, array( 'parcours', 'parcourspe' ) ),
 					'message' => 'Champ obligatoire',
 				)
 			),
-			'duree_engag' => array(
-				array(
-					'rule' => array( 'notEmptyIf', 'changementrefsansep', true, array( 'N' ) ),
-					'message' => 'Champ obligatoire',
-				),
-				array(
-					'rule' => array( 'notEmptyIf', 'changementrefavecep', true, array( 'N' ) ),
-					'message' => 'Champ obligatoire',
-				)
-			),
-			'ddreconductoncontrat' => array(
-				array(
-					'rule' => array( 'notEmptyIf', 'changementrefsansep', true, array( 'N' ) ),
-					'message' => 'Champ obligatoire',
-				),
-				array(
-					'rule' => array( 'notEmptyIf', 'changementrefavecep', true, array( 'N' ) ),
-					'message' => 'Champ obligatoire',
-				)
-			),
-			'dfreconductoncontrat' => array(
-				array(
-					'rule' => array( 'notEmptyIf', 'changementrefsansep', true, array( 'N' ) ),
-					'message' => 'Champ obligatoire',
-				),
-				array(
-					'rule' => array( 'notEmptyIf', 'changementrefavecep', true, array( 'N' ) ),
-					'message' => 'Champ obligatoire',
-				)
-			)
+//			'duree_engag' => array(
+//				array(
+//					'rule' => array( 'notEmptyIf', 'changementrefsansep', true, array( 'N' ) ),
+//					'message' => 'Champ obligatoire',
+//				),
+//				array(
+//					'rule' => array( 'notEmptyIf', 'changementrefavecep', true, array( 'N' ) ),
+//					'message' => 'Champ obligatoire',
+//				)
+//			),
+//			'ddreconductoncontrat' => array(
+//				array(
+//					'rule' => array( 'notEmptyIf', 'changementrefsansep', true, array( 'N' ) ),
+//					'message' => 'Champ obligatoire',
+//				),
+//				array(
+//					'rule' => array( 'notEmptyIf', 'changementrefavecep', true, array( 'N' ) ),
+//					'message' => 'Champ obligatoire',
+//				)
+//			),
+//			'dfreconductoncontrat' => array(
+//				array(
+//					'rule' => array( 'notEmptyIf', 'changementrefsansep', true, array( 'N' ) ),
+//					'message' => 'Champ obligatoire',
+//				),
+//				array(
+//					'rule' => array( 'notEmptyIf', 'changementrefavecep', true, array( 'N' ) ),
+//					'message' => 'Champ obligatoire',
+//				)
+//			)
 		);
 
 		public $belongsTo = array(
@@ -313,7 +313,7 @@
 
 			if ( ( $traitement == 'audition' || $traitement == 'auditionpe' ) && empty( $saisineep ) )
 				$positionbilan = 'eplaudit';
-			elseif ( $traitement == 'parcours' && empty( $saisineep ) )
+			elseif ( ( $traitement == 'parcours' || $traitement == 'parcourspe' ) && empty( $saisineep ) )
 				$positionbilan = 'eplparc';
 			return $positionbilan;
 		}
@@ -556,7 +556,7 @@
 					$this->Orientstruct->create( $orientstruct );
 					$success = $this->Orientstruct->save() && $success;
 				}
-				else {
+				else if( $data['Bilanparcours66']['changementrefsansep'] == 'N' ) {
 					$contratinsertion = $vxContratinsertion;
 					unset( $contratinsertion['Contratinsertion']['id'] );
 					$contratinsertion['Contratinsertion']['dd_ci'] = $data['Bilanparcours66']['ddreconductoncontrat'];
@@ -627,7 +627,7 @@
 
 			// Saisine parcours
 			$success = true;
-			if( isset($data['Bilanparcours66']['proposition']) && $data['Bilanparcours66']['proposition'] == 'parcours' ) {
+			if( isset($data['Bilanparcours66']['proposition']) && in_array( $data['Bilanparcours66']['proposition'], array( 'parcours', 'parcourspe' ) ) ) {
 				$data[$this->alias]['saisineepparcours'] = ( empty( $data[$this->alias]['maintienorientation'] ) ? '1' : '0' );
 				$this->create( $data );
 

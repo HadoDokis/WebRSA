@@ -293,7 +293,7 @@
 // 			debug($dossierseps);
 // 			die();
 			$success = true;
-			foreach( $dossierseps as $dossierep ) {
+			foreach( $dossierseps as $i => $dossierep ) {
 
 				$defautinsertionep66 = array( 'Defautinsertionep66' => $dossierep['Defautinsertionep66'] );
 				$foyer = $this->Bilanparcours66->Orientstruct->Personne->Foyer->find(

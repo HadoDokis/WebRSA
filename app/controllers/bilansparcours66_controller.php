@@ -380,7 +380,7 @@
 
 				$personne_id = $bilanparcours66['Bilanparcours66']['personne_id'];
 
-				if ( $bilanparcours66['Bilanparcours66']['proposition'] == 'parcours' ) {
+				if( in_array( $bilanparcours66['Bilanparcours66']['proposition'], array( 'parcours', 'parcourspe' ) ) ) {
 					$bilanparcours66['Saisinebilanparcoursep66']['structurereferente_id'] = implode( '_', array( $bilanparcours66['Saisinebilanparcoursep66']['typeorient_id'], $bilanparcours66['Saisinebilanparcoursep66']['structurereferente_id']) );
 					$passagecommissionep = $this->Dossierep->Passagecommissionep->find(
 						'first',
@@ -412,7 +412,10 @@
 							'contain' => array(
 								'Commissionep',
 								'Decisionsaisinebilanparcoursep66' => array(
-									'order' => array( 'Decisionsaisinebilanparcoursep66.etape ASC' )
+									'order' => array( 'Decisionsaisinebilanparcoursep66.etape ASC' ),
+                                    'Typeorient',
+                                    'Structurereferente',
+                                    'Referent'
 								)
 							)
 						)
@@ -591,6 +594,7 @@
 				}
 				else {
 					$this->Bilanparcours66->rollback();
+                debug( $this->Bilanparcours66->validationErrors );
                     $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 				}
 			}
