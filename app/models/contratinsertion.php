@@ -1747,6 +1747,62 @@
 
 			return $querydata;
 		}
+        
+        
+        /**
+         * Somme des durées de CER validés tel que ils soint liés à des
+         * orientations sociales sans emploi au milieu.
+         * 
+         * @param integer $personne_id
+         * @return integer
+         */
+        public function limiteCumulDureeCER66( $personne_id ){
+            $Option = ClassRegistry::init( 'Option' );
+            $durees = $Option->duree_engag();
+            $case = array();
+            foreach( $durees as $key => $value ) {
+                $value = str_replace( ' mois', '', $value );
+                $case[] = "WHEN duree_engag = {$key} THEN {$value}";
+            }
+            $case = implode( ' ', $case );
+            $case = "CASE {$case} ELSE 0 END";
+            
+            $emploi = (array)Configure::read( 'Orientstruct.typeorientprincipale.Emploi' );
+            $emploi = '('.implode( ',', $emploi ).')';
+            
+            $sql = "SELECT SUM( {$case} ) AS \"sum\"
+                    FROM contratsinsertion
+                    WHERE
+                        decision_ci = 'V'
+                        AND personne_id = {$personne_id}
+                        AND contratsinsertion.datevalidation_ci >= (
+                            SELECT
+                                orientsstructs.date_valid
+                            FROM orientsstructs
+                            WHERE
+                                orientsstructs.personne_id = contratsinsertion.personne_id
+                                AND orientsstructs.statut_orient = 'Orienté'
+                                AND (
+                                    NOT EXISTS(
+                                        SELECT *
+                                            FROM orientsstructs AS osvt
+                                            WHERE
+                                                osvt.personne_id = orientsstructs.personne_id
+                                                AND osvt.statut_orient = 'Orienté'
+                                                AND osvt.date_valid > orientsstructs.date_valid
+                                                AND osvt.typeorient_id IN {$emploi}
+                                    )
+                                )
+                                AND orientsstructs.typeorient_id NOT IN {$emploi}
+                                ORDER BY orientsstructs.date_valid ASC
+                                LIMIT 1
+                        )
+                    GROUP BY contratsinsertion.personne_id;";
+
+            $result = $this->query( $sql );
+
+            return ( isset( $result[0][0]['sum'] ) ? $result[0][0]['sum'] : 0 );
+        }
        
 	}
 ?>

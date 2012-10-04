@@ -11,6 +11,10 @@
 
 <div class="with_treemenu">
 <h1><?php  echo $this->pageTitle;?></h1>
+<?php if( $blockCumulCER66 ):?>
+    <p class="error">Cet allocataire dépasse les 24 mois de contractualisation dans une orientation SOCIALE.</p>
+<?php endif;?>
+
 <?php if( empty( $orientstruct ) && empty( $contratsinsertion ) ) :?>
 	<p class="error">Cette personne ne possède pas d'orientation. Impossible de créer un CER.</p>
 <?php else:?>
@@ -41,7 +45,7 @@
 			echo '<li>'.$xhtml->addLink(
 				'Ajouter un CER',
 				array( 'controller' => 'contratsinsertion', 'action' => 'add', $personne_id ),
-				( !$block )
+				( !$block && !$blockCumulCER66 )
 			).' </li>';
 		?>
 	</ul>

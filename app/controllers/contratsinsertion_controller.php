@@ -454,7 +454,15 @@
 				$this->set( compact( 'orientstruct' ) );
 
 				$conditionsTypeorient = array( );
+                $blockCumulCER66 = false;
 				if( Configure::read( 'Cg.departement' ) == 66 ) {
+                    // Blocage du bouton ajouter et affichage d'un message si le cumul des CERs dépasse 24 mois
+                    if( $this->Contratinsertion->limiteCumulDureeCER66( $personne_id ) >= 24 ){
+                        $blockCumulCER66 = true;
+                    }
+                    $this->set( 'blockCumulCER66', $blockCumulCER66  );
+                    
+                    
 					$typeOrientPrincipaleEmploiId = Configure::read( 'Orientstruct.typeorientprincipale.Emploi' );
 					if( is_array( $typeOrientPrincipaleEmploiId ) && isset( $typeOrientPrincipaleEmploiId[0] ) ) {
 						$typeOrientPrincipaleEmploiId = $typeOrientPrincipaleEmploiId[0];

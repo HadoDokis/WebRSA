@@ -146,16 +146,16 @@
 					'message' => 'Champ obligatoire',
 				)
 			),
-//			'duree_engag' => array(
-//				array(
-//					'rule' => array( 'notEmptyIf', 'changementrefsansep', true, array( 'N' ) ),
-//					'message' => 'Champ obligatoire',
-//				),
+			'duree_engag' => array(
+				array(
+					'rule' => array( 'notEmptyIf', 'changementrefsansep', true, array( 'N' ) ),
+					'message' => 'Champ obligatoire',
+				),
 //				array(
 //					'rule' => array( 'notEmptyIf', 'changementrefavecep', true, array( 'N' ) ),
 //					'message' => 'Champ obligatoire',
 //				)
-//			),
+			),
 //			'ddreconductoncontrat' => array(
 //				array(
 //					'rule' => array( 'notEmptyIf', 'changementrefsansep', true, array( 'N' ) ),
@@ -456,6 +456,8 @@
 
 			$data[$this->alias]['saisineepparcours'] = ( @$data[$this->alias]['proposition'] == 'parcours' );
 // debug($data);
+
+
 			// Recondution du contrat
 			if( isset( $data[$this->alias]['proposition'] ) && $data[$this->alias]['proposition'] == 'traitement' ) {
 				$cleanedData = $data;
@@ -557,6 +559,7 @@
 					$success = $this->Orientstruct->save() && $success;
 				}
 				else if( $data['Bilanparcours66']['changementrefsansep'] == 'N' ) {
+                                      
 					$contratinsertion = $vxContratinsertion;
 					unset( $contratinsertion['Contratinsertion']['id'] );
 					$contratinsertion['Contratinsertion']['dd_ci'] = $data['Bilanparcours66']['ddreconductoncontrat'];
@@ -580,6 +583,19 @@
 						unset( $contratinsertion['Contratinsertion'][$field] );
 					}
 
+                    // Calcul de la limite de cumul de durée de CER à l'enregistrement du bilan
+                    $nbCumulDureeCER66 = $this->Contratinsertion->limiteCumulDureeCER66( $data['Bilanparcours66']['personne_id'] );
+                    $Option = ClassRegistry::init( 'Option' );
+                    $durees = $Option->duree_engag();
+                    $dureeEngagReconductionCER = Set::classicExtract( $durees, $contratinsertion['Contratinsertion']['duree_engag'] );
+                    $dureeEngagReconductionCER = str_replace( ' mois', '', $dureeEngagReconductionCER );
+     
+                    debug(var_export($dureeEngagReconductionCER, true));
+                    
+                    if( ( $nbCumulDureeCER66 + $dureeEngagReconductionCER ) >= 24 ){
+                        $this->invalidate( 'duree_engag', 'La durée du CER sélectionnée dépasse la limite des 24 mois de contractualisation autorisée pour une orientation en SOCIAL' );
+                        return false;
+                    }
 					$this->Contratinsertion->create( $contratinsertion );
 					$success = $this->Contratinsertion->save() && $success;
 
