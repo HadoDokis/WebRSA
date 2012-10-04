@@ -55,17 +55,6 @@
 					array( 'class' => 'odd' ),
 					array( 'class' => 'even' )
 				);
-                echo $xhtml->tableCells(
-					array(
-						h( 'Lien entre les actions et les motifs de sortie' ),
-						$xhtml->viewLink(
-							'Voir la table',
-							array( 'controller' => 'actionscandidats_motifssortie', 'action' => 'index' )
-						)
-					),
-					array( 'class' => 'odd' ),
-					array( 'class' => 'even' )
-				);
 				echo $xhtml->tableCells(
 					array(
 						h( 'Motifs de sortie' ),
