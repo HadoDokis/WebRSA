@@ -517,6 +517,22 @@ UPDATE typesaidesapres66 SET isincohorte = 'O'::TYPE_NO WHERE isincohorte IS NUL
 ALTER TABLE typesaidesapres66 ALTER COLUMN isincohorte SET NOT NULL;
 
 SELECT public.alter_enumtype ( 'TYPE_PROPOSITIONBILANPARCOURS', ARRAY['audition','parcours','traitement','auditionpe','parcourspe'] );
+
+-------------------------------------------------------------------------------------------------------------
+-- 20121004: Création d'une table de liaison entre les motifs de sortie et les actions
+--           d'insertion (en HABTM)
+-------------------------------------------------------------------------------------------------------------
+DROP TABLE IF EXISTS actionscandidats_motifssortie;
+CREATE TABLE actionscandidats_motifssortie (
+    id                      SERIAL NOT NULL PRIMARY KEY,
+    actioncandidat_id       INTEGER NOT NULL REFERENCES actionscandidats(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    motifsortie_id          INTEGER NOT NULL REFERENCES motifssortie(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+DROP INDEX IF EXISTS actionscandidats_motifssortie_actioncandidat_id_idx;
+CREATE INDEX actionscandidats_motifssortie_actioncandidat_id_idx ON actionscandidats_motifssortie(actioncandidat_id);
+
+DROP INDEX IF EXISTS actionscandidats_motifssortie_motifsortie_id_idx;
+CREATE INDEX actionscandidats_motifssortie_motifsortie_id_idx ON actionscandidats_motifssortie(motifsortie_id);
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

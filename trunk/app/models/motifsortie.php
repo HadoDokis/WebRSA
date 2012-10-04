@@ -16,6 +16,25 @@
 			)
 		);
 
+        public $hasAndBelongsToMany = array(
+         'Actioncandidat' => array(
+				'className' => 'Actioncandidat',
+				'joinTable' => 'actionscandidats_motifssortie',
+				'foreignKey' => 'actioncandidat_id',
+				'associationForeignKey' => 'motifsortie_id',
+				'unique' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'finderQuery' => '',
+				'deleteQuery' => '',
+				'insertQuery' => '',
+				'with' => 'ActioncandidatMotifsortie'
+			)
+        );
+        
 		public $hasMany = array(
 			'ActioncandidatPersonne' => array(
 				'className' => 'ActioncandidatPersonne',
