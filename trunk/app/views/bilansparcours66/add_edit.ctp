@@ -381,6 +381,8 @@
 				<fieldset id="cgContratReconduitSansEp">
 					<legend>Reconduction du contrat librement débattu</legend>
 					<?php
+                        echo $html->tag( 'p', 'Etes-vous dans la limite des 24 mois pour la contractualisation ? <br /> Actuellement, '.$nbCumulDureeCER66.' mois de contractualisation sont effectifs', array( 'class' => 'notice' ) );
+
 						echo $default2->subform(
 							array(
 								'Bilanparcours66.duree_engag' => array( 'required' => true, 'id' => 'Bilanparcours66DureeEngagSansEp' ),
