@@ -239,24 +239,25 @@
 							'Decisionsdossierspcgs66::edit' => array(
 								'disabled' => ( '
 									\'#Decisiondossierpcg66.id#\' != '.$lastDecisionId.'
-// 									|| (
-// 										 \''.$etatdossierpcg.'\' != \'instrencours\'
+ 									|| (
+ 										 \''.$etatdossierpcg.'\' == \'transmisop\'
 // 										&& \''.$etatdossierpcg.'\' != \'attval\'
-// 										&& \''.$etatdossierpcg.'\' != \'attpj\'
 // 										&& \''.$etatdossierpcg.'\' != \'dossiertraite\'
-// 									)
+ 									)
 									|| '.$permissions->check( 'decisionsdossierspcgs66', 'edit' ).' != \'1\'
 								' )
 							),
                             'Decisionsdossierspcgs66::avistechnique' => array(
-                                'disabled' => (
-									( $permissions->check( 'decisionsdossierspcgs66', 'avistechnique' ) != "1" )
-								)
+                                'disabled' => ( '
+									\''.$etatdossierpcg.'\' == \'transmisop\'
+                                    || '.$permissions->check( 'decisionsdossierspcgs66', 'avistechnique' ). ' != \'1\'
+								' )
                             ),
                             'Decisionsdossierspcgs66::validation' => array(
-                                'disabled' => (
-									( $permissions->check( 'decisionsdossierspcgs66', 'validation' ) != "1" )
-								)
+                                'disabled' => ( '
+									\''.$etatdossierpcg.'\' == \'transmisop\'
+                                    || '.$permissions->check( 'decisionsdossierspcgs66', 'validation' ). ' != \'1\'
+								' )
                             ),
 							'Decisionsdossierspcgs66::print' => array(
 								'label' => 'Imprimer',

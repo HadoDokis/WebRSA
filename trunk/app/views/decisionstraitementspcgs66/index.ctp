@@ -25,7 +25,6 @@
 			array(
 				'add' => array(
 					'Decisiontraitementpcg66.add' => array( 'controller'=>'decisionstraitementspcgs66', 'action'=>'add', $traitementpcg66['Traitementpcg66']['id'] ),
-// 					'disabled' => in_array( $etatdossierpcg, array( 'attval', 'attpj', 'dossiertraite' ) )
 				),
 				'options' => $options
 			)

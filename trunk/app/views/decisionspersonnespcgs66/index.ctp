@@ -26,13 +26,12 @@
 			array(
 				'actions' => array(
 					'Decisionspersonnespcgs66::view',
-					'Decisionspersonnespcgs66::edit' /*=> array( 'disabled' => '\''.$etatdossierpcg.'\' == \'attval\' || \''.$etatdossierpcg.'\' == \'attpj\' || \''.$etatdossierpcg.'\' == \'dossiertraite\' ' )*/,
+					'Decisionspersonnespcgs66::edit',
 					'Decisionspersonnespcgs66::print' => array( 'controller' => 'decisionspersonnespcgs66', 'action' => 'gedooo' ),
 					'Decisionspersonnespcgs66::delete'
 				),
 				'add' => array(
-					'Decisionpersonnepcg66.add' => array( 'controller'=>'decisionspersonnespcgs66', 'action'=>'add', $personnepcg66_id )/*,
-					'disabled' => in_array( $etatdossierpcg, array( 'attval', 'attpj', 'dossiertraite' ) )*/
+					'Decisionpersonnepcg66.add' => array( 'controller'=>'decisionspersonnespcgs66', 'action'=>'add', $personnepcg66_id )
 				),
 				'options' => $options
 			)

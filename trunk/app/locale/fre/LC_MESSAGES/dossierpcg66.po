@@ -117,10 +117,10 @@ msgid "ENUM::ETATDOSSIERPCG::decisionnonvalid"
 msgstr "Décision non validée"
 
 msgid "ENUM::ETATDOSSIERPCG::decisionnonvalidretouravis"
-msgstr "Décision Retour avis technique"
+msgstr "Non validation avec Retour avis technique"
 
 msgid "ENUM::ETATDOSSIERPCG::decisionvalidretouravis"
-msgstr "Décision Retour avis technique"
+msgstr "Validation avec Retour avis technique"
 
 msgid "ENUM::ETATDOSSIERPCG::attpj"
 msgstr "Dossier traité mais en attente de pièces"

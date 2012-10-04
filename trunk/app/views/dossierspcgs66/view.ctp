@@ -28,7 +28,7 @@
 		);
     ?>
     <h2>Décisions du dossier</h2>
-    <?php if( !empty( $dossierpcg66 ) ):?>
+    <?php if( !empty( $dossierpcg66['Decisiondossierpcg66'] ) ):?>
         <table class="tooltips aere">
             <thead>
                 <tr>
@@ -36,7 +36,7 @@
                     <th>Date de la proposition</th>
                     <th>Validation</th>
                     <th>Date de validation</th>
-                    <th>Commentaire</th>
+                    <th>Commentaire du technicien</th>
                 </tr>
             </thead>
             <tbody>
@@ -48,7 +48,7 @@
                                 h( date_short( Set::classicExtract( $decision, 'datepropositiontechnicien' ) ) ),
                                 h( value( $options['Decisiondossierpcg66']['validationproposition'], Set::classicExtract( $decision, 'validationproposition' ) ) ),
                                 h( date_short( Set::classicExtract( $decision, 'datevalidation' ) ) ),
-                                h( Set::classicExtract( $decision, 'commentaire' ) )
+                                h( Set::classicExtract( $decision, 'commentairetechnicien' ) )
                             ),
                             array(
                                 'options' => $options

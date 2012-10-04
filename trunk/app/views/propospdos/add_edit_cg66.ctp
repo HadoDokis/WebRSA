@@ -243,7 +243,7 @@
 					array(
 						'actions' => array(
 							'Decisionspropospdos::view',
-							'Decisionspropospdos::edit' => array( 'disabled' => ( '\'#Decisionpropopdo.id#\' != '.$lastDecisionId.' || \''.$etatdossierpdo.'\' == \'attpj\' || \''.$etatdossierpdo.'\' == \'dossiertraite\' || \'#Decisionpropopdo.validationdecision#\' != NULL' ) ),
+							'Decisionspropospdos::edit' => array( 'disabled' => ( '\'#Decisionpropopdo.id#\' != '.$lastDecisionId.' || \''.$etatdossierpdo.'\' == \'dossiertraite\' || \'#Decisionpropopdo.validationdecision#\' != NULL' ) ),
 							'Decisionspropospdos::print' => array( 'label' => 'Imprimer', 'url' => array( 'controller' => 'decisionspropospdos', 'action'=>'decisionproposition' ), 'disabled' => ( '\'#Decisionpropopdo.validationdecision#\' == NULL || ( "'.$permissions->check( 'decisionspropospdos', 'print' ).'" != "1" )' ) ),
 							'Decisionspropospdos::delete' => array( 'disabled' => '( "'.$permissions->check( 'decisionspropospdos', 'delete' ).'" != "1" )' )
 						),
