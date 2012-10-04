@@ -31,7 +31,9 @@
 			'ModelesodtConditionnables' => array(
 				66 => array(
 					// Courrier d'information
-					'%s/bilanparcours_courrierinformationavantep.odt',
+					'%s/nonconclusionorientation_courrierinformationavantep.odt',
+                    '%s/nonconclusioncer_courrierinformationavantep.odt',
+                    '%s/nonrespect_courrierinformationavantep.odt',
 					'%s/noninscriptionpe_courrierinformationavantep.odt',
 					'%s/radiationpe_courrierinformationavantep.odt',
 					// Convocation EP
@@ -972,11 +974,66 @@
 					)
 				)
 			);
+            
+            // Non inscription PE
+                //  Bilanparcours66.examenauditionpe = noninscriptionpe --> personne_id 35253
+                // Defautinsertionep66.origine = noninscriptionpe
+            // 
+            // Radiation PE
+                // Bilanparcours66.examenauditionpe = radidationpe --> personne_id 33507
+                // Defautinsertionep66.origine = radidationpe
+            //
+            // Audition pour Non conclusion (pas de CER)
+                // Bilanparcours66.examenaudition = DOD --> personne_id 42
+                // Bilanparcours66.proposition = audition
+                // Defautinsertionep66.origine = bilanparcours
+                // Bilanparcours66.orientstruct_id IS NOT NULL
+            //
+            // Audition pour Non Conclusion Sans orientation
+                // Bilanparcours66.examenaudition = DOD --> personne_id 120261
+                // Bilanparcours66.proposition = audition
+                // Defautinsertionep66.origine = bilanparcours
+                // Bilanparcours66.orientstruct_id IS NULL
+            // 
+            // Audition pour Non Respect
+                // Bilanparcours66.examenaudition = DRD --> personne_id 74
+                // Bilanparcours66.proposition = audition
+                // Defautinsertionep66.origine = bilanparcours
+            
+            $origineAudition = $gedooo_data['Defautinsertionep66']['origine'];
+            $modele = null;
+            
+            if( $origineAudition == 'noninscriptionpe' ) {
+                $modele = 'noninscriptionpe_courrierinformationavantep.odt';
+            }
+            else if($origineAudition == 'radiationpe' ) {
+                $modele = 'radiationpe_courrierinformationavantep.odt';
+            }
+            else if($origineAudition == 'bilanparcours' ) {
+                $examenaudition = $gedooo_data['Bilanparcours66']['examenaudition'];
+                $proposition = $gedooo_data['Bilanparcours66']['proposition'];
+                $orientstruct_id = $gedooo_data['Bilanparcours66']['orientstruct_id'];
+                
+                if( $examenaudition == 'DOD' && $proposition == 'audition' && !empty( $orientstruct_id ) ){
+                    $modele = 'nonconclusioncer_courrierinformationavantep.odt';
+                }
+                else if( $examenaudition == 'DOD' && $proposition == 'audition' && empty( $orientstruct_id ) ){
+                    $modele = 'nonconclusionorientation_courrierinformationavantep.odt';
+                }
+                else if( $examenaudition == 'DRD' && $proposition == 'audition' ){
+                    $modele = 'nonrespect_courrierinformationavantep.odt';
+                }
+            }
+
+            if( is_null( $modele ) ) {
+                $this->cakeError( 'error500' );
+            }
 
 			$this->id = $gedooo_data['Defautinsertionep66']['id'];
 			$this->saveField( 'dateimpressionconvoc', date( 'Y-m-d' ) );
 
-			return $this->ged( $gedooo_data, "{$this->alias}/{$gedooo_data[$this->alias]['origine']}_courrierinformationavantep.odt" );
+//			return $this->ged( $gedooo_data, "{$this->alias}/{$gedooo_data[$this->alias]['origine']}_courrierinformationavantep.odt" );
+            return $this->ged( $gedooo_data, "{$this->alias}/{$modele}" );
 		}
 
 		/**
