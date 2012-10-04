@@ -410,7 +410,6 @@
 		}
 
 		public function etatDossierPdo( $typepdo_id = null, $user_id = null, $decisionpdo_id = null, $avistechnique = null, $validationavis = null, $iscomplet = null, $propopdo_id = null ) {
-			//'attaffect', 'attinstr', 'instrencours', 'attval', 'decisionval', 'dossiertraite', 'attpj', 'attavistech'
 			$etat = null;
 
 			if ( !empty( $propopdo_id ) ) {

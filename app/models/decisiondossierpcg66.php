@@ -147,7 +147,6 @@
 				$validationdecision = Set::extract( $this->data, 'Decisionpropopdo.validationdecision' );
 
 				$etat = 'instrencours';
-				//'attaffect', 'attinstr', 'instrencours', 'attval', 'decisionval', 'dossiertraite', 'attpj'
 
 				if ( !is_numeric( $validationdecision ) )
 					$etat = 'attval';

@@ -493,7 +493,10 @@
 						'Serviceinstructeur',
 						'User',
                         'Decisiondossierpcg66' => array(
-                            'order' => array( 'Decisiondossierpcg66.created DESC' )
+                            'order' => array( 'Decisiondossierpcg66.created DESC' ),
+                            'conditions' => array(
+                                'Decisiondossierpcg66.validationproposition' => 'O'
+                            )
                         )
 					)
 				)

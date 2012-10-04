@@ -64,7 +64,6 @@
 				$validationdecision = Set::extract( $this->data, 'Decisionpropopdo.validationdecision' );
 
 				$etat = null;
-				//'attaffect', 'attinstr', 'instrencours', 'attval', 'decisionval', 'dossiertraite', 'attpj'
 
 				$decisionpdo = $this->Decisionpdo->find(
 					'first',

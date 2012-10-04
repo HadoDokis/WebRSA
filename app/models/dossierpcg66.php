@@ -192,7 +192,6 @@
 		**/
 
 		public function etatDossierPcg66( $typepdo_id = null, $user_id = null, $decisionpdoId = null, $avistechnique = null, $validationavis = null, $retouravistechnique = null, $vuavistechnique = null,/*$iscomplet = null,*/ $etatdossierpcg = null ) {
-			//'attaffect', 'attinstr', 'instrencours', 'attavistech', 'attval', 'decisionval', 'dossiertraite', 'attpj'
 			$etat = 'instrencours';
 
 			if ( !empty($typepdo_id) && empty($user_id) ) {
