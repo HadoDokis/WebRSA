@@ -40,6 +40,7 @@
 		?>
 	</fieldset>
 </fieldset>
+
 <script type="text/javascript">
 	document.observe( "dom:loaded", function() {
 		observeDisableFieldsetOnRadioValue(
@@ -220,6 +221,18 @@
 			);
 		?>
 	</fieldset>
+    <fieldset class="invisible">
+    <?php
+        echo $default2->subform(
+            array(
+                'Motifsortie.Motifsortie' => array( 'multiple' => 'checkbox', 'empty' => false )
+            ),
+            array(
+                'options' => $motifssortie
+            )
+        );
+    ?>
+</fieldset>
 <?php
 	echo $xform->end( __( 'Save', true ) );
 	echo $default->button(

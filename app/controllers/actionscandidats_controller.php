@@ -70,6 +70,8 @@
 // 				}
 			}
 
+            $motifssortie = $this->Actioncandidat->Motifsortie->find( 'list', array( 'fields' => array( 'Motifsortie.name'  ) ) );
+            $this->set( 'motifssortie', $motifssortie );
 			foreach( array( 'Contactpartenaire') as $linkedModel ) {
 				$field = Inflector::singularize( Inflector::tableize( $linkedModel ) ).'_id';
 				$options = Set::insert( $options, "{$this->modelClass}.{$field}", $this->{$this->modelClass}->{$linkedModel}->find( 'list' ) );
@@ -186,7 +188,8 @@
 					),
 					'contain' => array(
 						'Fichiermodule',
-						'Zonegeographique'
+						'Zonegeographique',
+                        'Motifsortie'
 					)
 				)
 			);

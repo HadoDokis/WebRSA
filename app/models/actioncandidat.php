@@ -113,6 +113,22 @@
 		);
 
 		public $hasAndBelongsToMany = array(
+            'Motifsortie' => array(
+				'className' => 'Motifsortie',
+				'joinTable' => 'actionscandidats_motifssortie',
+				'foreignKey' => 'actioncandidat_id',
+				'associationForeignKey' => 'motifsortie_id',
+				'unique' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'finderQuery' => '',
+				'deleteQuery' => '',
+				'insertQuery' => '',
+				'with' => 'ActioncandidatMotifsortie'
+			),
 			'Partenaire' => array(
 				'className' => 'Partenaire',
 				'joinTable' => 'actionscandidats_partenaires',

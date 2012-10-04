@@ -68,6 +68,7 @@
 		'acqmatprof' => 'acqsmatsprofs',
 		'acqmatprof_pieceacqmatprof' => 'acqsmatsprofs_piecesacqsmatsprofs',
 		'actioncandidat' => 'actionscandidats',
+        'actioncandidat_motifsortie' => 'actionscandidats_motifssortie',
 		'actioncandidat_partenaire' => 'actionscandidats_partenaires',
 		'actioncandidat_personne' => 'actionscandidats_personnes',
 		'actioncandidat_zonegeographique' => 'actionscandidats_zonesgeographiques',

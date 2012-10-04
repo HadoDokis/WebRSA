@@ -29,7 +29,7 @@
 			$options = Set::insert( $options, 'Contratinsertion.decision_ci', $this->Option->decision_ci() );
 			$options = Set::insert( $options, 'Dsp', $this->ActioncandidatPersonne->Personne->Dsp->allEnumLists() );
 
-			foreach( array( 'Referent', 'Motifsortie' ) as $linkedModel ) {
+			foreach( array( 'Referent' ) as $linkedModel ) {
 				$field = Inflector::singularize( Inflector::tableize( $linkedModel ) ).'_id';
 				$options = Set::insert( $options, "{$this->modelClass}.{$field}", $this->{$this->modelClass}->{$linkedModel}->find( 'list', array( 'recursive' => -1 ) ) );
 			}
@@ -624,6 +624,28 @@
             $options[$this->modelClass]['actioncandidat_id'] = $this->{$this->modelClass}->Actioncandidat->listOptions();
             $options['Dsp']['nivetu'] = $this->ActioncandidatPersonne->Personne->Dsp->enumList( 'nivetu' );
 
+            $sqMotifsortie = $this->{$this->modelClass}->Actioncandidat->ActioncandidatMotifsortie->sq(
+                array(
+                    'alias' => 'actionscandidats_motifssortie',
+                    'fields' => array( 'actionscandidats_motifssortie.motifsortie_id' ),
+                    'conditions' => array(
+                        'actionscandidats_motifssortie.actioncandidat_id' => $actioncandidat_personne['ActioncandidatPersonne']['actioncandidat_id']
+                    ),
+                    'contain' => false
+                )
+            );
+            $options[$this->modelClass]['motifsortie_id'] = 
+            $this->{$this->modelClass}->Motifsortie->find(
+                'list',
+                array(
+                    'fields' => array( 'Motifsortie.id', 'Motifsortie.name'),
+                    'conditions' => array(
+                        "Motifsortie.id IN ( {$sqMotifsortie} )"
+                    ),
+                    'contain' => false,
+                    'order' => array( 'Motifsortie.name ASC')
+                )
+            );
 			$this->set( compact( 'options' ) );
 
 			$this->render( $this->action, null, 'add_edit_'.Configure::read( 'ActioncandidatPersonne.suffixe' ) );
@@ -675,9 +697,10 @@
 				if( $this->ActioncandidatPersonne->save( $this->data ) ) {
 
 					$this->{$this->modelClass}->updateAll(
-							array( 'ActioncandidatPersonne.positionfiche' => '\'annule\'' ), array(
-						'"ActioncandidatPersonne"."id"' => $id
-							)
+                        array( 'ActioncandidatPersonne.positionfiche' => '\'annule\'' ), 
+                        array(
+                            '"ActioncandidatPersonne"."id"' => $id
+                        )
 					);
 
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
