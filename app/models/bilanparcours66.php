@@ -1209,25 +1209,6 @@
 		}
 
 		/**
-		*
-		*/
-
-		public function getPdfCourrierInformation( $id ) {
-			$gedooo_data = $this->getDataForPdf( $id );
-			$this->updateAll(
-				array( 'Bilanparcours66.datecourrierimpression' => "'".date( 'Y-m-d' )."'" ),
-				array(
-					'"Bilanparcours66"."datecourrierimpression" IS NULL',
-					'"Bilanparcours66"."id"' => $id
-				)
-			);
-
-			return $this->ged( $gedooo_data, 'Bilanparcours/courrierinformationavantep.odt'/*, true, $options*/ );
-		}
-
-
-
-		/**
 		*	On cherche le nombre de dossiers d'EP pour une personne concernant une thématique donnée
 		*	qui :
 		*		- ne sont pas liés à un passage en EP (non lié à une commission)

@@ -893,22 +893,5 @@
 
 			$this->Gedooo->sendPdfContentToClient( $pdf['Pdf']['document'], "{$id}.pdf" );
 		}
-
-		/**
-		*   Courrier d'information à l'allocataire avant passage en EP
-		*/
-
-		public function courrier_information( $id ) {
-			$this->assert( !empty( $id ), 'error404' );
-			$pdf = $this->Bilanparcours66->getPdfCourrierInformation( $id );
-
-			if( $pdf ) {
-				$this->Gedooo->sendPdfContentToClient( $pdf, 'Courrier_Information.pdf' );
-			}
-			else {
-				$this->Session->setFlash( 'Impossible de générer le courrier d\'information', 'default', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer() );
-			}
-		}
 	}
 ?>
