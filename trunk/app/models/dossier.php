@@ -233,13 +233,17 @@
 			else {
 				$typeJointure = 'LEFT OUTER';
 				$conditions = array(
-					'OR' => array(
-						'Prestation.rolepers IS NULL',
-						'Prestation.rolepers IN ( \'DEM\', \'CJT\' )'
-					),
-					'OR' => array(
-                        'Adressefoyer.id IS NULL',
-                        'Adressefoyer.rgadr' => '01'
+                    array(
+                        'OR' => array(
+                            'Prestation.rolepers IS NULL',
+                            'Prestation.rolepers IN ( \'DEM\', \'CJT\' )'
+                        )
+                    ),
+                    array(
+                        'OR' => array(
+                            'Adressefoyer.id IS NULL',
+                            'Adressefoyer.rgadr' => '01'
+                        )
                     )
 				);
 			}
