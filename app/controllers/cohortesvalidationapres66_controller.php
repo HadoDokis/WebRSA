@@ -134,8 +134,9 @@
 					// Ajout des règles de validation
 					$this->Apre66->Aideapre66->validationDecisionAllowEmpty( false );
 
+                    unset( $this->Apre66->Aideapre66->validate['montantpropose'] );
 					$valid = $this->Apre66->Aideapre66->saveAll( $this->data['Aideapre66'], array( 'validate' => 'only', 'atomic' => false ) );
-
+                        
 					if( $valid ) {
 						$this->Aideapre66->begin();
 						$saved = $this->Apre66->Aideapre66->saveAll( $this->data['Aideapre66'], array( 'validate' => 'first', 'atomic' => false ) );
