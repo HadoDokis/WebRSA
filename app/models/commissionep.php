@@ -1254,16 +1254,25 @@
 					)
 				)
 			);
+            // FIXME: voir comment resortir la notion de prioritaire/facultatif
 
 			$membreep = $this->Membreep->find(
 				'first',
 				array(
+                    'fields' => array_merge(
+                        $this->Membreep->fields(),
+                        $this->Membreep->Fonctionmembreep->fields(),
+                        $this->Membreep->Fonctionmembreep->Compositionregroupementep->fields()
+                    ),
 					'conditions' => array(
-						'Membreep.id' => $membreep_id
+						'Membreep.id' => $membreep_id,
+                        'Compositionregroupementep.regroupementep_id' => $commissionep['Ep']['Regroupementep']['id']
 					),
-					'contain' => array(
-						'Fonctionmembreep'
-					)
+                    'joins' => array(
+                        $this->Membreep->join('Fonctionmembreep', array( 'type' => 'INNER' ) ),
+                        $this->Membreep->Fonctionmembreep->join( 'Compositionregroupementep', array( 'type' => 'INNER' ) ),
+                    ),
+                    'contain' => false
 				)
 			);
 
@@ -1271,10 +1280,24 @@
 
 			$options = $this->Membreep->enums();
 			$options['Membreep']['typevoie'] = ClassRegistry::init( 'Option' )->typevoie();
-
+            
+            $modele = null;
+            if( Configure::read( 'Cg.departement' ) == 66 ) {
+                if( $convocation['Compositionregroupementep']['prioritaire'] == '1' ) {
+                    $modele = 'convocationep_participant_prioritaire.odt';                
+                }
+                else {
+                    $modele = 'convocationep_participant_facultatif.odt';
+                }
+            }
+            else {            
+                $modele = 'convocationep_participant.odt';
+            }
+//debug($modele);
+//die();
 			return $this->ged(
 				$convocation,
-				"{$this->alias}/convocationep_participant.odt",
+				"{$this->alias}/{$modele}",
 				false,
 				$options
 			);
