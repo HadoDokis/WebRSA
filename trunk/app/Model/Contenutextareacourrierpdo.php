@@ -1,0 +1,30 @@
+<?php
+
+	class Contenutextareacourrierpdo extends AppModel
+	{
+		public $name = 'Contenutextareacourrierpdo';
+
+		public $actsAs = array(
+			'Enumerable',
+			'Validation.Autovalidate'
+		);
+
+		public $belongsTo = array(
+			'CourrierpdoTraitementpdo' => array(
+				'className' => 'CourrierpdoTraitementpdo',
+				'foreignKey' => 'courrierpdo_traitementpdo_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			'Textareacourrierpdo' => array(
+				'className' => 'Textareacourrierpdo',
+				'foreignKey' => 'textareacourrierpdo_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			)
+		);
+
+	}
+?>

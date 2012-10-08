@@ -1,0 +1,86 @@
+Normalement, OK
+
+1°) OK:
+grep -nr "Saisinebilanparcoursep66\->Decisionsaisinebilanparcoursep66" app | grep -v "\.svn"
+grep -nr "Decisionsaisinebilanparcoursep66\->Saisinebilanparcoursep66" app | grep -v "\.svn"
+
+grep -nr "Saisinepdoep66\->Decisionsaisinepdoep66" app | grep -v "\.svn"
+grep -nr "Decisionsaisinepdoep66\->Saisinepdoep66" app | grep -v "\.svn"
+
+grep -nr "Defautinsertionep66\->Decisiondefautinsertionep66" app | grep -v "\.svn"
+grep -nr "Decisiondefautinsertionep66\->Defautinsertionep66" app | grep -v "\.svn"
+
+grep -nr "Nonrespectsanctionep93\->Decisionnonrespectsanctionep93" app | grep -v "\.svn"
+grep -nr "Decisionnonrespectsanctionep93\->Nonrespectsanctionep93" app | grep -v "\.svn"
+
+grep -nr "Reorientationep93\->Decisionreorientationep93" app | grep -v "\.svn"
+grep -nr "Decisionreorientationep93\->Reorientationep93" app | grep -v "\.svn"
+
+grep -nr "Nonorientationproep93\->Decisionnonorientationproep93" app | grep -v "\.svn"
+grep -nr "Decisionnonorientationproep93\->Nonorientationproep93" app | grep -v "\.svn"
+
+grep -nr "Signalementep93\->Decisionsignalementep93" app | grep -v "\.svn"
+grep -nr "Decisionsignalementep93\->Signalementep93" app | grep -v "\.svn"
+
+grep -nr "Contratcomplexeep93\->Decisioncontratcomplexeep93" app | grep -v "\.svn"
+grep -nr "Decisioncontratcomplexeep93\->Contratcomplexeep93" app | grep -v "\.svn"
+
+grep -nr "Nonorientationproep58\->Decisionnonorientationproep58" app | grep -v "\.svn"
+grep -nr "Decisionnonorientationproep58\->Nonorientationproep58" app | grep -v "\.svn"
+
+grep -nr "Regressionorientationep58\->Decisionregressionorientationep58" app | grep -v "\.svn"
+grep -nr "Decisionregressionorientationep58\->Regressionorientationep58" app | grep -v "\.svn"
+
+grep -nr "Sanctionep58\->Decisionsanctionep58" app | grep -v "\.svn"
+grep -nr "Decisionsanctionep58\->Sanctionep58" app | grep -v "\.svn"
+
+grep -nr "Sanctionrendezvousep58\->Decisionsanctionrendezvousep58" app | grep -v "\.svn"
+grep -nr "Decisionsanctionrendezvousep58\->Sanctionrendezvousep58" app | grep -v "\.svn"
+
+2°) OK:
+grep -n "\$this->Decision" app/models/saisinebilanparcoursep66.php
+grep -n "\$this->Decision" app/models/saisinepdoep66.php
+grep -n "\$this->Decision" app/models/defautinsertionep66.php
+grep -n "\$this->Decision" app/models/nonrespectsanctionep93.php
+grep -n "\$this->Decision" app/models/reorientationep93.php
+grep -n "\$this->Decision" app/models/nonorientationproep93.php
+grep -n "\$this->Decision" app/models/signalementep93.php
+grep -n "\$this->Decision" app/models/contratcomplexeep93.php
+grep -n "\$this->Decision" app/models/nonorientationproep58.php
+grep -n "\$this->Decision" app/models/regressionorientationep58.php
+grep -n "\$this->Decision" app/models/sanctionep58.php
+grep -n "\$this->Decision" app/models/sanctionrendezvousep58.php
+
+3°) OK:
+grep -nr "}\->Decision" app | grep -v "\.svn" | grep -v "}\->Decisionpropopdo"
+
+4°) OK:
+grep -nr "\$[^ ]\+\->Decision" app | grep -v "\.svn" | grep -v "\(\$this\|Passagecommissionep\)\->Decision" | grep -v "Propopdo\->Decisionpropopdo" | grep -v "}\->Decisionpropopdo"
+
+5°) OK:
+grep -n "\->Decisionsaisinebilanparcoursep66\->Saisinebilanparcoursep66" app | grep -v "\.svn"
+grep -n "\->Decisionsaisinepdoep66\->Saisinepdoep66" app | grep -v "\.svn"
+grep -n "\->Decisiondefautinsertionep66\->Defautinsertionep66" app | grep -v "\.svn"
+grep -n "\->Decisionnonrespectsanctionep93\->Nonrespectsanctionep93" app | grep -v "\.svn"
+grep -n "\->Decisionreorientationep93\->Reorientationep93" app | grep -v "\.svn"
+grep -n "\->Decisionnonorientationproep93\->Nonorientationproep93" app | grep -v "\.svn"
+grep -n "\->Decisionsignalementep93\->Signalementep93" app | grep -v "\.svn"
+grep -n "\->Decisioncontratcomplexeep93\->Contratcomplexeep93" app | grep -v "\.svn"
+grep -n "\->Decisionnonorientationproep58\->Nonorientationproep58" app | grep -v "\.svn"
+grep -n "\->Decisionregressionorientationep58\->Regressionorientationep58" app | grep -v "\.svn"
+grep -n "\->Decisionsanctionep58\->Sanctionep58" app | grep -v "\.svn"
+grep -n "\->Decisionsanctionrendezvousep58\->Sanctionrendezvousep58" app | grep -v "\.svn"
+
+6°) OK:
+grep -n "\$this->Saisinebilanparcoursep66" app/models/decisionsaisinebilanparcoursep66.php
+grep -n "\$this->Saisinepdoep66" app/models/decisionsaisinepdoep66.php
+grep -n "\$this->Defautinsertionep66" app/models/decisiondefautinsertionep66.php
+grep -n "\$this->Nonrespectsanctionep93" app/models/decisionnonrespectsanctionep93.php
+grep -n "\$this->Reorientationep93" app/models/decisionreorientationep93.php
+grep -n "\$this->Nonorientationproep93" app/models/decisionnonorientationproep93.php
+grep -n "\$this->Signalementep93" app/models/decisionsignalementep93.php
+grep -n "\$this->Contratcomplexeep93" app/models/decisioncontratcomplexeep93.php
+grep -n "\$this->Nonorientationproep58" app/models/decisionnonorientationproep58.php
+grep -n "\$this->Regressionorientationep58" app/models/decisionregressionorientationep58.php
+grep -n "\$this->Sanctionep58" app/models/decisionsanctionep58.php
+grep -n "\$this->Sanctionrendezvousep58" app/models/decisionsanctionrendezvousep58.php
