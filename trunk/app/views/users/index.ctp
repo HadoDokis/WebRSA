@@ -40,7 +40,9 @@
 						'User.nom' => array( 'label' => __d( 'user', 'User.nom', true ) ),
 						'User.prenom' => array( 'label' => __d( 'user', 'User.prenom', true ), 'type' => 'text' ),
 						'Group.name' => array( 'label' => __d( 'user', 'Group.name', true ), 'options' => $options['Groups'] ),
-						'Serviceinstructeur.lib_service' => array( 'label' => __d( 'serviceinstructeur', 'Serviceinstructeur.lib_service', true ), 'options' => $options['Serviceinstructeur'] )
+						'Serviceinstructeur.lib_service' => array( 'label' => __d( 'serviceinstructeur', 'Serviceinstructeur.lib_service', true ), 'options' => $options['Serviceinstructeur'] ),
+						'User.structurereferente_id' => array( 'label' => 'Structure référente (CPDV, secrétariat PDV)', 'options' => $options['structuresreferentes'] ),
+						'User.referent_id' => array( 'label' => 'Référent (chargé d\'insertion)', 'options' => $options['referents'] ),
 					),
 					array(
 						'options' => $options

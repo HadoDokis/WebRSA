@@ -252,7 +252,7 @@
 
 			if( $null ) {
 				$ds = $model->getDataSource();
-				$alias = "{$ds->startQuote}{$modelAlias}{$ds->endQuote}.{$ds->startQuote}{$model->{$modelSubquery}->primaryKey}{$ds->endQuote}";
+				$alias = "{$ds->startQuote}{$modelSubquery}{$ds->endQuote}.{$ds->startQuote}{$model->{$modelSubquery}->primaryKey}{$ds->endQuote}";
 				$sq = "( {$alias} IS NULL OR {$alias} IN ( {$sq} ) )";
 			}
 

@@ -590,6 +590,23 @@
 			<?php endif;?>
 			<!-- Fin du Nouveau menu pour les Equipes pluridisciplinaires -->
 
+			<!-- Début workflow CER 93 -->
+			<?php if( Configure::read( 'Cg.departement' ) == 93 && ( $permissions->check( 'cohortesreferents93', 'affecter' ) || $permissions->check( 'cohortesreferents93', 'affectes' ) ) ) :?>
+			<li id="menu4one">
+				<?php echo $xhtml->link( 'CER', '#' );?>
+				<ul>
+					<li>
+						<?php echo $xhtml->link( '1. Affectation d\'un référent', '#' );?>
+						<ul>
+							<li><?php echo $xhtml->link( 'Référents à affecter',  array( 'controller' => 'cohortesreferents93', 'action' => 'affecter'  ) );?></li>
+							<li><?php echo $xhtml->link( 'Référents déjà affectés',  array( 'controller' => 'cohortesreferents93', 'action' => 'affectes'  ) );?></li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+			<?php endif;?>
+			<!-- Fin workflow CER 93 -->
+
 			<?php if( $permissions->check( 'indicateursmensuels', 'index' ) || $permissions->check( 'statistiquesministerielles', '#' ) ) :?>
 				<li id="menu5one" >
 					<?php echo $xhtml->link( 'Tableaux de bord', '#' );?>

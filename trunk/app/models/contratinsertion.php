@@ -454,6 +454,19 @@
 			)
 		);
 		public $hasOne = array(
+			'Cer93' => array(
+				'className' => 'Cer93',
+				'foreignKey' => 'contratinsertion_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 			'Dossierpcg66' => array(
 				'className' => 'Dossierpcg66',
 				'foreignKey' => 'contratinsertion_id',

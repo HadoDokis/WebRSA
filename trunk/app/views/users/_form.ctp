@@ -41,6 +41,20 @@
 	<?php echo $form->input( 'User.serviceinstructeur_id', array( 'label' => false, 'type' => 'select' , 'options' => $si, 'empty' => true ) );?>
 </fieldset>
 <fieldset class="col2">
+	<legend>L'utilisateur est un CPDV ou secrétaire PDV</legend>
+	<?php
+		echo $form->input( 'User.structurereferente_id', array( 'type' => 'hidden', 'value' => '', 'id' => false ) );
+		echo $form->input( 'User.structurereferente_id', array( 'label' => false, 'type' => 'select' , 'options' => $structuresreferentes, 'empty' => true ) );
+	?>
+</fieldset>
+<fieldset class="col2">
+	<legend>L'utilisateur est un chargé d'insertion d'un PDV</legend>
+	<?php
+		echo $form->input( 'User.referent_id', array( 'type' => 'hidden', 'value' => '', 'id' => false ) );
+		echo $form->input( 'User.referent_id', array( 'label' => false, 'type' => 'select' , 'options' => $referents, 'empty' => true ) );
+	?>
+</fieldset>
+<fieldset class="col2">
 	<legend><?php echo required( 'Est-il gestionnaire, notamment pour les PDOs ? ' );?></legend>
 	<?php echo $xform->input( 'User.isgestionnaire', array( 'legend' => false, 'type' => 'radio', 'options' => $options['isgestionnaire'] ) );?>
 </fieldset>
@@ -48,3 +62,9 @@
 	<legend><?php echo required( 'Peut-il accéder aux données sensibles ? ' );?></legend>
 	<?php echo $xform->input( 'User.sensibilite', array( 'legend' => false, 'type' => 'radio', 'options' => $options['sensibilite'] ) );?>
 </fieldset>
+<script type="text/javascript">
+	document.observe( "dom:loaded", function() {
+		observeDisableFieldsOnValue( 'UserStructurereferenteId', [ 'UserReferentId' ], '', false );
+		observeDisableFieldsOnValue( 'UserReferentId', [ 'UserStructurereferenteId' ], '', false );
+	} );
+</script>

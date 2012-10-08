@@ -374,7 +374,11 @@
 		'suspensioncui66' => 'suspensionscuis66',
 		'accompagnementcui66' => 'accompagnementscuis66',
 		'motifsortiecui66' => 'motifssortiecuis66',
-		'offreinsertion' => 'offresinsertion'
+		'offreinsertion' => 'offresinsertion',
+		// Workflow CER
+		'cohortereferent93' => 'cohortesreferents93',
+		'cer93' => 'cers93',
+		'etatcivilcer93' => 'etatscivilscers93',
 	);
 /**
 * This is a key => value array of regex used to match words.

@@ -1,12 +1,30 @@
 <?php
+	/**
+	 * Code source de la classe UsersController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.controllers
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe UsersController permet la gestion des utilisateurs.
+	 *
+	 * @package app.controllers
+	 */
 	class UsersController extends AppController
 	{
-
 		public $name = 'Users';
+
 		public $uses = array( 'User', 'Option' );
-		public $aucunDroit = array( 'login', 'logout' );
+
 		public $helpers = array( 'Xform', 'Default2' );
+
 		public $components = array( 'Menu', 'Dbdroits', 'Prg' => array( 'actions' => array( 'index' ) ) );
+
+		public $aucunDroit = array( 'login', 'logout' );
+
 		public $commeDroit = array(
 			'add' => 'Users:edit'
 		);
@@ -25,8 +43,29 @@
 		 *
 		 */
 		protected function _setOptions() {
-			$options['Serviceinstructeur'] = $this->User->Serviceinstructeur->listOptions();
-			$options['Groups'] = $this->User->Group->find( 'list' );
+			$options = array(
+				'Groups' => $this->User->Group->find( 'list' ),
+				'Serviceinstructeur' => $this->User->Serviceinstructeur->listOptions(),
+				'structuresreferentes' => $this->User->Structurereferente->find( 'list' ),
+				'referents' => $this->User->Referent->find(
+					'list',
+					array(
+						'fields' => array(
+							'Referent.id',
+							'Referent.nom_complet',
+							'Structurereferente.lib_struc'
+						),
+						'recursive' => -1,
+						'joins' => array(
+							$this->User->Referent->join( 'Structurereferente', array( 'type' => 'INNER' ) )
+						),
+						'order' => array(
+							'Structurereferente.lib_struc ASC',
+							'Referent.nom_complet ASC',
+						)
+					)
+				),
+			);
 			$this->set( compact( 'options' ) );
 		}
 
@@ -375,78 +414,43 @@
 		}
 
 		/**
+		 * Envoi des options à la vue pour un add ou un edit
 		 *
+		 * @return void
 		 */
-
-		//TODO: plus utilisée (a nettoyer)
-//		protected function _setNewPermissions( $group_id, $user_id, $username ) {
-//
-//			$qd_group = array(
-//				'conditions' => array(
-//					'Group.id' => $group_id
-//				),
-//				'fields' => null,
-//				'order' => null,
-//				'recursive' => -1
-//			);
-//			$group = $this->User->Group->find( 'first', $qd_group );
-//
-//			$qd_aroGroup = array(
-//				'conditions' => array(
-//					'Aro.alias' => $group['Group']['name']
-//				),
-//				'fields' => null,
-//				'order' => null,
-//				'contain' => array(
-//					'Aco' => array(
-//						'Permission'
-//					)
-//				)
-//			);
-//			$aroGroup = $this->Acl->Aro->find( 'first', $qd_aroGroup );
-//
-//
-//			$aroAlias = $username;
-//			$aroUser = $this->Acl->Aro->find( 'first', array( 'conditions' => array( 'Aro.foreign_key' => $user_id, 'Aro.alias' => $aroAlias ), 'recursive' => -1 ) );
-//
-//			if( empty( $aroUser ) ) {
-//				$aroUser = array( );
-//			}
-//
-//			$aroUser['Aro']['parent_id'] = $aroGroup['Aro']['id'];
-//			$aroUser['Aro']['foreign_key'] = $user_id;
-//			$aroUser['Aro']['alias'] = $aroAlias;
-//
-//			$this->Acl->Aro->create( $aroUser );
-//			$saved = $this->Acl->Aro->save();
-//
-//			// Permissions héritées du groupe
-//			if( !empty( $aroGroup['Aco'] ) ) {
-//				$permissions = Set::combine( $aroGroup, 'Aco.{n}.alias', 'Aco.{n}.Permission._create' );
-//				foreach( $permissions as $acoAlias => $permission ) {
-//					if( $permission == 1 ) {
-//						$saved = $this->Acl->allow( $aroAlias, $acoAlias ) && $saved;
-//					}
-//					else {
-//						$saved = $this->Acl->deny( $aroAlias, $acoAlias ) && $saved;
-//					}
-//				}
-//			}
-//
-//			return $saved;
-//		}
+		protected function _setOptionsAddEdit() {
+			$this->set( 'zglist', $this->User->Zonegeographique->find( 'list' ) );
+			$this->set( 'gp', $this->User->Group->find( 'list' ) );
+			$this->set( 'si', $this->User->Serviceinstructeur->find( 'list' ) );
+			$this->set( 'typevoie', $this->Option->typevoie() );
+			$this->set( 'options', $this->User->allEnumLists() );
+			$this->set( 'structuresreferentes', $this->User->Structurereferente->find( 'list' ) );
+			$this->set( 'referents', $this->User->Referent->find(
+					'list',
+					array(
+						'fields' => array(
+							'Referent.id',
+							'Referent.nom_complet',
+							'Structurereferente.lib_struc'
+						),
+						'recursive' => -1,
+						'joins' => array(
+							$this->User->Referent->join( 'Structurereferente', array( 'type' => 'INNER' ) )
+						),
+						'order' => array(
+							'Structurereferente.lib_struc ASC',
+							'Referent.nom_complet ASC',
+						)
+					)
+				)
+			);
+		}
 
 		/**
 		 *
 		 */
 		// FIXME: à l'ajout, on n'obtient pas toutes les acl de son groupe
 		public function add() {
-			$this->set( 'zglist', $this->User->Zonegeographique->find( 'list' ) );
-			$this->set( 'gp', $this->User->Group->find( 'list' ) );
-			$this->set( 'si', $this->User->Serviceinstructeur->find( 'list' ) );
-			$this->set( 'typevoie', $this->Option->typevoie() );
-			$this->set( 'options', $this->User->allEnumLists() );
-
 			if( !empty( $this->data ) ) {
 				$this->User->begin();
 				if( $this->User->saveAll( $this->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
@@ -454,14 +458,16 @@
 
 					$this->data['Droits'] = $this->Dbdroits->litCruDroits( array( 'model' => 'Group', 'foreign_key' => $this->data['User']['group_id'] ) );
 					$this->Dbdroits->MajCruDroits(
-							array(
-						'model' => 'Utilisateur',
-						'foreign_key' => $this->User->id,
-						'alias' => $this->data['User']['username']
-							), array(
-						'model' => 'Group',
-						'foreign_key' => $this->data['User']['group_id']
-							), $this->data['Droits']
+						array(
+							'model' => 'Utilisateur',
+							'foreign_key' => $this->User->id,
+							'alias' => $this->data['User']['username']
+						),
+						array(
+							'model' => 'Group',
+							'foreign_key' => $this->data['User']['group_id']
+						),
+						$this->data['Droits']
 					);
 					$this->User->commit();
 					$this->Session->setFlash( 'Enregistrement effectué. Veuillez-vous déconnecter et vous reconnecter afin de prendre en compte tous les changements.', 'flash/success' );
@@ -471,6 +477,8 @@
 					$this->User->rollback();
 				}
 			}
+
+			$this->_setOptionsAddEdit();
 			$this->render( $this->action, null, 'add_edit' );
 		}
 
@@ -492,12 +500,6 @@
 
 			$this->assert( !empty( $userDb ), 'error404' );
 
-			$this->set( 'zglist', $this->User->Zonegeographique->find( 'list' ) );
-			$this->set( 'gp', $this->User->Group->find( 'list' ) );
-			$this->set( 'si', $this->User->Serviceinstructeur->find( 'list' ) );
-			$this->set( 'typevoie', $this->Option->typevoie() );
-			$this->set( 'options', $this->User->allEnumLists() );
-
 			unset( $this->User->validate['passwd'] );
 
 			if( !empty( $this->data ) ) {
@@ -514,14 +516,16 @@
 					}
 
 					$this->Dbdroits->MajCruDroits(
-							array(
-						'model' => 'Utilisateur',
-						'foreign_key' => $this->data['User']['id'],
-						'alias' => $this->data['User']['username']
-							), array(
-						'model' => 'Group',
-						'foreign_key' => $this->data['User']['group_id']
-							), $this->data['Droits']
+						array(
+							'model' => 'Utilisateur',
+							'foreign_key' => $this->data['User']['id'],
+							'alias' => $this->data['User']['username']
+						),
+						array(
+							'model' => 'Group',
+							'foreign_key' => $this->data['User']['group_id']
+						),
+						$this->data['Droits']
 					);
 					$this->User->commit();
 					$this->Session->setFlash( 'Enregistrement effectué. Veuillez-vous déconnecter et vous reconnecter afin de prendre en compte tous les changements.', 'flash/success' );
@@ -536,6 +540,8 @@
 				$this->data = $userDb;
 				$this->data['Droits'] = $this->Dbdroits->litCruDroits( array( 'model' => 'Utilisateur', 'foreign_key' => $user_id ) );
 			}
+
+			$this->_setOptionsAddEdit();
 			$this->set( 'listeCtrlAction', $this->Menu->menuCtrlActionAffichage() );
 			$this->render( $this->action, null, 'add_edit' );
 		}
