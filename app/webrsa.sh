@@ -98,10 +98,10 @@ function __cleanFilesForRelease() {
 	mv "app/config/webrsa.inc" "app/config/webrsa.inc.default" >> /dev/null 2>&1
 	mv "app/config/core.php" "app/config/core.php.default" >> /dev/null 2>&1
 
-	# Passage de tous les modèles .odt du répertoire app/vendors/modelesodt en .odt7.default
+	# Passage de tous les modèles .odt du répertoire app/Vendor/modelesodt en .odt7.default
 	(
-		if [ -e "app/vendors/modelesodt" ] ; then
-			cd "app/vendors/modelesodt" && \
+		if [ -e "app/Vendor/modelesodt" ] ; then
+			cd "app/Vendor/modelesodt" && \
 			find . -type f -iname "*.odt" | while read -r ; do mv "$REPLY" "$REPLY.default"; done
 		fi
 	)
@@ -369,6 +369,6 @@ esac
 
 #  Afin d'enlever l'extension defualt des fichiers ODT sans avoir à le faire à la main
 #         (
-#             cd "app/vendors/modelesodt" && \
+#             cd "app/Vendor/modelesodt" && \
 #             find . -type f -iname "*.odt.default" | while read -r ; do mv "$REPLY" `echo "$REPLY" |sed 's/\.default$//g'` ; done
 #         )
