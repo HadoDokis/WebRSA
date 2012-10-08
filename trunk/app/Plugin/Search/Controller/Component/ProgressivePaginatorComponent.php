@@ -1,6 +1,6 @@
 <?php
 	/**
-	 * Code source de la classe ProgressivePaginatorComponent.
+	 * Code source de la classe Search.ProgressivePaginatorComponent.
 	 *
 	 * PHP 5.3
 	 *
@@ -12,13 +12,13 @@
 	App::uses( 'PaginatorComponent', 'Controller/Component' );
 
 	/**
-	 * La classe ProgressivePaginatorComponent permet d'optimiser la pagination en ne comptant pas le
+	 * La classe Search.ProgressivePaginatorComponent permet d'optimiser la pagination en ne comptant pas le
 	 * nombre total de résultats, mais en regardant si on a au moins un élément sur la page suivante.
 	 *
 	 * @package Search
 	 * @subpackage Controller.Component
 	 */
-	class ProgressivePaginatorComponent extends PaginatorComponent
+	class Search.ProgressivePaginatorComponent extends PaginatorComponent
 	{
 
 		/**
