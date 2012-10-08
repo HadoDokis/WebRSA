@@ -1,6 +1,6 @@
 <?php
 	/**
-	 * Validation.ExtraValidationRulesBehaviorTest file
+	 * ExtraValidationRulesBehaviorTest file
 	 *
 	 * PHP 5.3
 	 *
@@ -16,7 +16,7 @@
 	 * @package Validation
 	 * @subpackage Test.Case.Model.Behavior
 	 */
-	class Validation.ExtraValidationRulesBehaviorTest extends CakeTestCase
+	class ExtraValidationRulesBehaviorTest extends CakeTestCase
 	{
 		/**
 		 * Fixtures associated with this test case
