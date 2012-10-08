@@ -1,8 +1,25 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-					"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr">
+<?php
+	/**
+	 *
+	 * PHP 5
+	 *
+	 * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
+	 * Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
+	 *
+	 * Licensed under The MIT License
+	 * Redistributions of files must retain the above copyright notice.
+	 *
+	 * @copyright     Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
+	 * @link          http://cakephp.org CakePHP(tm) Project
+	 * @package       Cake.View.Layouts
+	 * @since         CakePHP(tm) v 0.10.0.1076
+	 * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+	 */
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<?php echo $this->Xhtml->charset(); ?>
+		<?php echo $this->Html->charset(); ?>
 		<title>
 			<?php echo $title_for_layout; ?>
 		</title>
@@ -15,17 +32,20 @@
 				echo $this->Xhtml->css( array( 'menu' ), 'stylesheet', array( 'media' => 'all' ) );
 				echo $this->Xhtml->css( array( 'popup' ), 'stylesheet', array( 'media' => 'all' ) );
 
-				echo $this->Html->script( 'prototype.js' );
-				echo $this->Html->script( 'tooltip.prototype.js' );
-				echo $this->Html->script( 'webrsa.common.prototype.js' );
+				echo $this->Javascript->link( 'prototype.js' );
+				echo $this->Javascript->link( 'tooltip.prototype.js' );
+				echo $this->Javascript->link( 'webrsa.common.prototype.js' );
 			}
 			else {
 				echo $this->Xhtml->css( array( 'webrsa' ), 'stylesheet' );
-				echo $this->Html->script( 'webrsa.js' );
+				echo $this->Javascript->link( 'webrsa.js' );
 			}
 
-			echo $scripts_for_layout;
+			echo $this->fetch( 'meta' );
+			echo $this->fetch( 'css' );
+			echo $this->fetch( 'script' );
 		?>
+
 		<!-- TODO: à la manière de cake, dans les vues qui en ont besoin -->
 		<script type="text/javascript">
 		<!--//--><![CDATA[//><!--
@@ -102,7 +122,7 @@
 			</style>
 		<![endif]-->
 	</head>
-	<?php if( $this->request->base.'/' == $this->request->here ): ?>
+	<?php if( $this->base.'/' == $this->here ): ?>
 		<body class="home">
 	<?php else: ?>
 		<body>
@@ -116,7 +136,7 @@
 					<div class="fade" style="z-index: 31"></div>
 					<div class="popup_block">
 						<div class="popup">
-					<a href="#" onclick="$('alertEndSession').hide(); return false;"><?php echo $this->Xhtml->image('icon_close.png', array('class' => 'cntrl', 'alt' => 'close')); ?></a>
+					<a href="#" onclick="$('alertEndSession').hide(); return false;"><?php echo $xhtml->image('icon_close.png', array('class' => 'cntrl', 'alt' => 'close')); ?></a>
 							<div id="popup-content">Attention votre session expire dans 5 minutes.</div>
 						</div>
 					</div>
@@ -145,7 +165,7 @@
 						echo $this->Session->flash( 'auth' );
 					}
 				?>
-				<?php echo $content_for_layout;?>
+				<?php echo $this->fetch( 'content' );?>
 			</div>
 			<div id="pageFooter"<?php if( Configure::read( 'debug' ) > 0 ) { echo ' style="color: black;"'; }?>>
 				webrsa v. <?php echo app_version();?> 2009 - 2012 @ Adullact.
@@ -165,10 +185,6 @@
 				(CakePHP v. <?php echo Configure::version();?>)
 			</div>
 		</div>
-		<?php
-			if( CAKE_BRANCH != '1.2' ) {
-				echo $this->element('sql_dump');
-			}
-		?>
+		<?php echo $this->element( 'sql_dump' ); ?>
 	</body>
 </html>
