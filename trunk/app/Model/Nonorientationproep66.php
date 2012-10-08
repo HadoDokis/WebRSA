@@ -3,7 +3,7 @@
 	 * INFO: cette thématique n'est actuellement pas utilisée lorsqu'on crée un regroupementep, même si
 	 * la thématique figure dans l'enum type_themeep.
 	 */
-	require_once( ABSTRACTMODELS.'nonorientationproep.php' );
+	require_once( ABSTRACTMODELS.'Nonorientationproep.php' );
 
 	class Nonorientationproep66 extends Nonorientationproep
 	{
