@@ -68,6 +68,8 @@
 				if( Configure::read( 'CG.cantons' ) ) {
 					echo $xform->input( 'Search.Canton.canton', array( 'label' => 'Canton', 'type' => 'select', 'options' => $cantons, 'empty' => true ) );
 				}
+                
+//                echo $search->etatDossierPCG66( $etatdossierpcg, 'Search' );
             ?>
         </fieldset>
 

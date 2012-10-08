@@ -79,6 +79,12 @@ App::import( 'Sanitize' );
 			if( !empty( $typepdo_id ) ) {
 				$conditions[] = 'Dossierpcg66.typepdo_id = \''.Sanitize::clean( $typepdo_id ).'\'';
 			}
+            
+            // Filtre sur l'état du dossier PCG
+            $etatdossierpcg = Set::extract( $criteresdossierspcgs66, 'Search.Dossierpcg66.etatdossierpcg' );
+			if( isset( $criteresdossierspcgs66['Search']['Dossierpcg66']['etatdossierpcg'] ) && !empty( $criteresdossierspcgs66['Search']['Dossierpcg66']['etatdossierpcg'] ) ) {
+				$conditions[] = '( Dossierpcg66.etatdossierpcg IN ( \''.implode( '\', \'', $etatdossierpcg ).'\' ) )';
+			}
 
 			/// Requête
 			$this->Dossier = ClassRegistry::init( 'Dossier' );
@@ -93,13 +99,6 @@ App::import( 'Sanitize' );
 					'foreignKey' => false,
 					'conditions' => array( 'Dossierpcg66.foyer_id = Foyer.id' )
 				),
-// 				array(
-// 					'table'      => 'personnespcgs66',
-// 					'alias'      => 'Personnepcg66',
-// 					'type'       => 'LEFT OUTER',
-// 					'foreignKey' => false,
-// 					'conditions' => array( 'Personnepcg66.dossierpcg66_id = Dossierpcg66.id' ),
-// 				),
 				array(
 					'table'      => 'personnes',
 					'alias'      => 'Personne',
