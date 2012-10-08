@@ -149,7 +149,7 @@
 			if ( isset( $avenant_id ) && !empty( $avenant_id ) ) {
 				echo $xhtml->tag(
 					'div',
-					$xform->label( __d( 'contratinsertion', 'Contratinsertion.num_contrat', true ) ).
+					$xform->label( __d( 'contratinsertion', 'Contratinsertion.num_contrat' ) ).
 					'Avenant',
 					array(
 						'class' => 'input select'
@@ -169,12 +169,12 @@
 			</tr>
 		</table>
 
-		<?php echo $xform->input( 'Contratinsertion.dd_ci', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.dd_ci', true ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+2, 'minYear'=>date('Y')-2 , 'empty' => false ) );?>
-		<?php echo $xform->input( 'Contratinsertion.duree_engag', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.duree_engag', true ), 'type' => 'select', 'options' => $duree_engag_cg58, 'empty' => true ) );?>
-		<?php echo $xform->input( 'Contratinsertion.df_ci', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.df_ci', true ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+2, 'minYear'=>date('Y')-2 , 'empty' => true ) ) ;?>
+		<?php echo $xform->input( 'Contratinsertion.dd_ci', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.dd_ci' ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+2, 'minYear'=>date('Y')-2 , 'empty' => false ) );?>
+		<?php echo $xform->input( 'Contratinsertion.duree_engag', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.duree_engag' ), 'type' => 'select', 'options' => $duree_engag_cg58, 'empty' => true ) );?>
+		<?php echo $xform->input( 'Contratinsertion.df_ci', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.df_ci' ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+2, 'minYear'=>date('Y')-2 , 'empty' => true ) ) ;?>
 
 	</fieldset>
-		<?php echo $xform->input( 'Contratinsertion.date_saisi_ci', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.date_saisi_ci', true ), 'type' => 'hidden'  ) ) ;?>
+		<?php echo $xform->input( 'Contratinsertion.date_saisi_ci', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.date_saisi_ci' ), 'type' => 'hidden'  ) ) ;?>
 </fieldset>
 
 	<div class="submit">

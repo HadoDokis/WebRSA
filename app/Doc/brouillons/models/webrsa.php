@@ -393,7 +393,7 @@
 				$this->_models[$module] = Cache::read( $cacheKey );
 
 				if( $this->_models[$module] === false ) {
-					$this->_models[$module] = Configure::listObjects( 'model' );
+					$this->_models[$module] = App::objects( 'model' );
 					sort( $this->_models[$module] );
 					$this->_models[$module] = $this->_filterModels( $this->_models[$module], $module );
 

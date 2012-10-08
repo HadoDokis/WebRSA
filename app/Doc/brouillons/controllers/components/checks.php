@@ -156,7 +156,7 @@
 		 */
 		public function directoryPermission( $directory, $permission = 'r' ) {
 			if( !in_array( $permission, array( 'r', 'w' ) ) ) {
-				trigger_error( sprintf( __( 'Paramètre non permis dans %s::%s: %s. Paramètres permis: \'r\' ou \'w\'', true ), __CLASS__, __FUNCTION__, $permission ), E_USER_WARNING );
+				trigger_error( sprintf( __( 'Paramètre non permis dans %s::%s: %s. Paramètres permis: \'r\' ou \'w\'' ), __CLASS__, __FUNCTION__, $permission ), E_USER_WARNING );
 			}
 
 			$success = true;
@@ -212,7 +212,7 @@
 		 */
 		public function filePermission( $file, $permission = 'r' ) {
 			if( !in_array( $permission, array( 'r', 'w' ) ) ) {
-				trigger_error( sprintf( __( 'Paramètre non permis dans %s::%s: %s. Paramètres permis: \'r\' ou \'w\'', true ), __CLASS__, __FUNCTION__, $permission ), E_USER_WARNING );
+				trigger_error( sprintf( __( 'Paramètre non permis dans %s::%s: %s. Paramètres permis: \'r\' ou \'w\'' ), __CLASS__, __FUNCTION__, $permission ), E_USER_WARNING );
 			}
 
 			$success = true;

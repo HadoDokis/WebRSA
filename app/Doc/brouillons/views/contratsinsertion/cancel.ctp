@@ -8,7 +8,7 @@
 	<h1> <?php
 			echo $xhtml->tag(
 				'h1',
-				$this->pageTitle = __d( $domain, "Contratsinsertion::{$this->action}", true )
+				$this->pageTitle = __d( $domain, "Contratsinsertion::{$this->action}" )
 			);
 		?> 
 	</h1>

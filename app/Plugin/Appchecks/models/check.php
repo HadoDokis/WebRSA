@@ -151,7 +151,7 @@
 		 */
 		public function directoryPermission( $directory, $permission = 'r' ) {
 			if( !in_array( $permission, array( 'r', 'w' ) ) ) {
-				trigger_error( sprintf( __( 'Paramètre non permis dans %s::%s: %s. Paramètres permis: \'r\' ou \'w\'', true ), __CLASS__, __FUNCTION__, $permission ), E_USER_WARNING );
+				trigger_error( sprintf( __( 'Paramètre non permis dans %s::%s: %s. Paramètres permis: \'r\' ou \'w\'' ), __CLASS__, __FUNCTION__, $permission ), E_USER_WARNING );
 			}
 
 			$success = true;
@@ -207,7 +207,7 @@
 		 */
 		public function filePermission( $file, $permission = 'r' ) {
 			if( !in_array( $permission, array( 'r', 'w' ) ) ) {
-				trigger_error( sprintf( __( 'Paramètre non permis dans %s::%s: %s. Paramètres permis: \'r\' ou \'w\'', true ), __CLASS__, __FUNCTION__, $permission ), E_USER_WARNING );
+				trigger_error( sprintf( __( 'Paramètre non permis dans %s::%s: %s. Paramètres permis: \'r\' ou \'w\'' ), __CLASS__, __FUNCTION__, $permission ), E_USER_WARNING );
 			}
 
 			$success = true;
@@ -260,7 +260,7 @@
 			$allowEmpty = $ruleParams['allowEmpty'];
 			unset( $ruleParams['allowEmpty'] );
 
-			$Xvalidation =& Xvalidation::getInstance();
+			$Xvalidation =  Xvalidation::getInstance();
 			if (method_exists( $Xvalidation, $rule ) ) {
 
 				// FIXME: nettoyage des URL contenant %s (pour le CG 58) et des espaces
@@ -275,7 +275,7 @@
 				}
 				if( !( $allowEmpty && empty( $value ) ) && ( is_null( $value ) || !call_user_method_array ( $rule, $Xvalidation, Set::merge( array( $testValue ), $ruleParams ) ) ) ) {
 					$message = "Validate::{$rule}";
-					$sprintfParams = Set::merge( array( __( $message, true ) ), $ruleParams );
+					$sprintfParams = Set::merge( array( __( $message ) ), $ruleParams );
 					for( $i = 1 ; ( $i <= count( $sprintfParams ) - 1 ) ; $i++ ) {
 						if( is_array( $sprintfParams[$i] ) ) {
 							$sprintfParams[$i] = implode( ', ', $sprintfParams[$i] );

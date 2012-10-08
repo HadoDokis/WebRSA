@@ -294,7 +294,7 @@
 						if( !empty( $thisDataFormeCi ) ) {
 							$valueFormeci = $thisDataFormeCi;
 						}
-						$input =  $form->input( 'Contratinsertion.forme_ci', array( 'type' => 'radio' , 'options' => $forme_ci, 'legend' => required( __d( 'contratinsertion', 'Contratinsertion.forme_ci', true )  ), 'value' => $valueFormeci ) );
+						$input =  $form->input( 'Contratinsertion.forme_ci', array( 'type' => 'radio' , 'options' => $forme_ci, 'legend' => required( __d( 'contratinsertion', 'Contratinsertion.forme_ci' )  ), 'value' => $valueFormeci ) );
 
 						echo $xhtml->tag( 'div', $input, array( 'class' => $class ) );
 					?>
@@ -671,8 +671,8 @@
 		</tr>
 	</table>
 	<br />
-		<?php echo $form->input( 'Contratinsertion.lieu_saisi_ci', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.lieu_saisi_ci', true ).REQUIRED_MARK, 'type' => 'text', 'maxlength' => 50 )  ); ?><br />
-		<?php echo $form->input( 'Contratinsertion.date_saisi_ci', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.date_saisi_ci', true ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => true )  ); ?>
+		<?php echo $form->input( 'Contratinsertion.lieu_saisi_ci', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.lieu_saisi_ci' ).REQUIRED_MARK, 'type' => 'text', 'maxlength' => 50 )  ); ?><br />
+		<?php echo $form->input( 'Contratinsertion.date_saisi_ci', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.date_saisi_ci' ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => true )  ); ?>
 
 </fieldset>
 <script type="text/javascript">

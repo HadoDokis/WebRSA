@@ -78,7 +78,7 @@
 			$this->set( compact( 'options' ) );
 			$this->set( 'personne_id', $personne_id );
 
-			$this->render( $this->action, null, 'add_edit' );
+			$this->render( 'add_edit' );
 		}
 
 		/**
