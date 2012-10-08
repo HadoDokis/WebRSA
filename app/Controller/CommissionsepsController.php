@@ -644,7 +644,7 @@
 				$dossiers[$theme] = $this->paginate( $this->Commissionep->Passagecommissionep->Dossierep );
 				// INFO: sinon ne fonctionne pas correctement dans une boucle en CakePHP 2.x
 				if( CAKE_BRANCH != '1.2' ) {
-					$this->Components->unload( 'ProgressivePaginator' );
+					$this->Components->unload( 'Search.ProgressivePaginator' );
 					$this->Components->unload( 'Paginator' );
 				}
 // 				$dossiers[$theme] = $this->Commissionep->Passagecommissionep->Dossierep->find( 'all', $qd );

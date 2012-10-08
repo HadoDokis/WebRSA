@@ -556,7 +556,7 @@
 				}
 
 				if( $progressivePaginate ) {
-					return $this->Components->load( 'ProgressivePaginator', $this->paginate )->paginate( $object, $scope, $whitelist );
+					return $this->Components->load( 'Search.ProgressivePaginator', $this->paginate )->paginate( $object, $scope, $whitelist );
 				}
 				else {
 					return $this->Components->load( 'Paginator', $this->paginate )->paginate( $object, $scope, $whitelist );
