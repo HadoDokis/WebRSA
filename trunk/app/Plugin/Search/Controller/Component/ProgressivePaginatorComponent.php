@@ -1,6 +1,6 @@
 <?php
 	/**
-	 * Code source de la classe Search.ProgressivePaginatorComponent.
+	 * Code source de la classe ProgressivePaginatorComponent.
 	 *
 	 * PHP 5.3
 	 *
@@ -18,7 +18,7 @@
 	 * @package Search
 	 * @subpackage Controller.Component
 	 */
-	class Search.ProgressivePaginatorComponent extends PaginatorComponent
+	class ProgressivePaginatorComponent extends PaginatorComponent
 	{
 
 		/**
