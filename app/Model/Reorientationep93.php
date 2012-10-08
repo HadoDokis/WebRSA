@@ -1,5 +1,5 @@
 <?php
-	require_once( ABSTRACTMODELS.'thematiqueep.php' );
+	require_once( ABSTRACTMODELS.'Thematiqueep.php' );
 
 	/**
 	* Saisines d'EP pour les réorientations proposées par les structures

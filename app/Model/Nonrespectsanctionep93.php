@@ -7,7 +7,7 @@
 	 * @package       app
 	 * @subpackage    app.app.models
 	 */
-	require_once( ABSTRACTMODELS.'thematiqueep.php' );
+	require_once( ABSTRACTMODELS.'Thematiqueep.php' );
 	class Nonrespectsanctionep93 extends Thematiqueep
 	{
 
