@@ -1,0 +1,266 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n>1);\n"
+
+################################################################################
+# Traduction des actions
+################################################################################
+
+msgid "Historiqueemplois::index"
+msgstr "Métiers exercés"
+
+msgid "Historiqueemplois::index::empty"
+msgstr "Aucun métier exercé enregistré"
+
+################################################################################
+# Traduction des champs
+################################################################################
+
+msgid "Historiqueemploi.datedebut"
+msgstr "Date de début"
+
+msgid "Historiqueemploi.datefin"
+msgstr "Date de fin"
+
+msgid "Historiqueemploi.secteuractivite"
+msgstr "Secteur d'activité"
+
+msgid "Historiqueemploi.emploi"
+msgstr "Emploi occupé"
+
+msgid "Historiqueemploi.dureehebdomadaire"
+msgstr "Durée hebdomadaire du travail"
+
+msgid "Historiqueemploi.naturecontrat"
+msgstr "Nature du contrat de travail"
+
+msgid "Historiqueemploi.dureecdd"
+msgstr "Durée du CDD"
+
+msgid "Historiqueemploi.created"
+msgstr "Crée"
+
+msgid "Historiqueemploi.modified"
+msgstr "Modifié"
+
+################################################################################
+# Secteur d'activité
+################################################################################
+
+msgid "ENUM::SECTEURACTIVITE::A"
+msgstr "Agriculture, sylviculture et pêche"
+
+msgid "ENUM::SECTEURACTIVITE::B"
+msgstr "Industries extractives"
+
+msgid "ENUM::SECTEURACTIVITE::C"
+msgstr "Industrie manufacturière"
+
+msgid "ENUM::SECTEURACTIVITE::D"
+msgstr "Production et distribution d'électricité, de gaz, de vapeur et d'air conditionné"
+
+msgid "ENUM::SECTEURACTIVITE::E"
+msgstr "Production et distribution d'eau ; assainissement, gestion des déchets et dépollution"
+
+msgid "ENUM::SECTEURACTIVITE::F"
+msgstr "Construction"
+
+msgid "ENUM::SECTEURACTIVITE::G"
+msgstr "Commerce ; réparation d'automobiles et de motocycles"
+
+msgid "ENUM::SECTEURACTIVITE::H"
+msgstr "Transports et entreposage"
+
+msgid "ENUM::SECTEURACTIVITE::I"
+msgstr "Hébergement et restauration"
+
+msgid "ENUM::SECTEURACTIVITE::J"
+msgstr "Information et communication"
+
+msgid "ENUM::SECTEURACTIVITE::K"
+msgstr "Activités financières et d'assurance"
+
+msgid "ENUM::SECTEURACTIVITE::L"
+msgstr "Activités immobilières"
+
+msgid "ENUM::SECTEURACTIVITE::M"
+msgstr "Activités spécialisées, scientifiques et techniques"
+
+msgid "ENUM::SECTEURACTIVITE::N"
+msgstr "Activités de services administratifs et de soutien"
+
+msgid "ENUM::SECTEURACTIVITE::O"
+msgstr "Administration publique"
+
+msgid "ENUM::SECTEURACTIVITE::P"
+msgstr "Enseignement"
+
+msgid "ENUM::SECTEURACTIVITE::Q"
+msgstr "Santé humaine et action sociale"
+
+msgid "ENUM::SECTEURACTIVITE::R"
+msgstr "Arts, spectacles et activités récréatives"
+
+msgid "ENUM::SECTEURACTIVITE::S"
+msgstr "Autres activités de services"
+
+msgid "ENUM::SECTEURACTIVITE::T"
+msgstr "Activités des ménages en tant qu'employeurs; activités indifférenciées des ménages en tant que producteurs de biens et services pour usage propre"
+
+msgid "ENUM::SECTEURACTIVITE::U"
+msgstr "Activités extra-territoriales"
+
+################################################################################
+# Emploi occupé
+################################################################################
+
+msgid "ENUM::EMPLOI::10"
+msgstr "Agriculteurs (salariés de leur exploitation)"
+
+msgid "ENUM::EMPLOI::21"
+msgstr "Artisans (salariés de leur entreprise)"
+
+msgid "ENUM::EMPLOI::22"
+msgstr "Commerçants et assimilés (salariés de leur entreprise)"
+
+msgid "ENUM::EMPLOI::23"
+msgstr "Chefs d'entreprise de 10 salariés ou plus (salariés de leur entreprise)"
+
+msgid "ENUM::EMPLOI::31"
+msgstr "Professions libérales (exercées sous statut de salarié)"
+
+msgid "ENUM::EMPLOI::33"
+msgstr "Cadres de la fonction publique"
+
+msgid "ENUM::EMPLOI::34"
+msgstr "Professeurs, professions scientifiques"
+
+msgid "ENUM::EMPLOI::35"
+msgstr "Professions de l'information, des arts et des spectacles"
+
+msgid "ENUM::EMPLOI::37"
+msgstr "Cadres administratifs et commerciaux d'entreprises"
+
+msgid "ENUM::EMPLOI::38"
+msgstr "Ingénieurs et cadres techniques d'entreprises"
+
+msgid "ENUM::EMPLOI::42"
+msgstr "Professeurs des écoles, instituteurs et professions assimilées"
+
+msgid "ENUM::EMPLOI::43"
+msgstr "Professions intermédiaires de la santé et du travail social"
+
+msgid "ENUM::EMPLOI::44"
+msgstr "Clergé, religieux"
+
+msgid "ENUM::EMPLOI::45"
+msgstr "Professions intermédiaires administratives de la fonction publique"
+
+msgid "ENUM::EMPLOI::46"
+msgstr "Professions intermédiaires administratives et commerciales des entreprises"
+
+msgid "ENUM::EMPLOI::47"
+msgstr "Techniciens (sauf techniciens tertiaires)"
+
+msgid "ENUM::EMPLOI::48"
+msgstr "Contremaîtres, agents de maîtrise (maîtrise administrative exclue)"
+
+msgid "ENUM::EMPLOI::52"
+msgstr "Employés civils et agents de service de la fonction publique"
+
+msgid "ENUM::EMPLOI::53"
+msgstr "Agents de surveillance"
+
+msgid "ENUM::EMPLOI::54"
+msgstr "Employés administratifs d'entreprise"
+
+msgid "ENUM::EMPLOI::55"
+msgstr "Employés de commerce"
+
+msgid "ENUM::EMPLOI::56"
+msgstr "Personnels des services directs aux particuliers"
+
+msgid "ENUM::EMPLOI::62"
+msgstr "Ouvriers qualifiés de type industriel"
+
+msgid "ENUM::EMPLOI::63"
+msgstr "Ouvriers qualifiés de type artisanal"
+
+msgid "ENUM::EMPLOI::64"
+msgstr "Chauffeurs"
+
+msgid "ENUM::EMPLOI::65"
+msgstr "Ouvriers qualifiés de la manutention, du magasinage et du transport"
+
+msgid "ENUM::EMPLOI::67"
+msgstr "Ouvriers non qualifiés de type industriel"
+
+msgid "ENUM::EMPLOI::68"
+msgstr "Ouvriers non qualifiés de type artisanal"
+
+msgid "ENUM::EMPLOI::69"
+msgstr "Ouvriers agricoles et assimilés"
+
+################################################################################
+# Nature du contrat
+################################################################################
+
+msgid "ENUM::NATURECONTRAT::TCT1"
+msgstr "Travailleur indépendant"
+
+msgid "ENUM::NATURECONTRAT::TCT2"
+msgstr "CDI"
+
+msgid "ENUM::NATURECONTRAT::TCT3"
+msgstr "CDD"
+
+msgid "ENUM::NATURECONTRAT::TCT4"
+msgstr "Contrat de travail temporaire (Intérim)"
+
+msgid "ENUM::NATURECONTRAT::TCT5"
+msgstr "Contrat de professionnalisation"
+
+msgid "ENUM::NATURECONTRAT::TCT6"
+msgstr "Contrat d\'apprentissage"
+
+msgid "ENUM::NATURECONTRAT::TCT7"
+msgstr "Contrat Initiative Emploi (CIE)"
+
+msgid "ENUM::NATURECONTRAT::TCT8"
+msgstr "Contrat d\'Accompagnement dans l\'Emploi (CAE)"
+
+msgid "ENUM::NATURECONTRAT::TCT9"
+msgstr "Chèque Emploi Service Universel (CESU)"
+
+msgid "ENUM::NATURECONTRAT::TCT10"
+msgstr "Contrat unique d'insertion (CUI)"
+
+################################################################################
+# Durée CDD
+################################################################################
+
+msgid "ENUM::DUREECDD::DT1"
+msgstr "Temps plein"
+
+msgid "ENUM::DUREECDD::DT2"
+msgstr "Temps partiel"
+
+msgid "ENUM::DUREECDD::DT3"
+msgstr "Mi-temps"
+
+################################################################################
+# Durée hebdomadaire du travail
+################################################################################
+
+msgid "ENUM::DUREEHEBDOMADAIRE::DHT1"
+msgstr "Moins de 35h"
+
+msgid "ENUM::DUREEHEBDOMADAIRE::DHT2"
+msgstr "35h"
+
+msgid "ENUM::DUREEHEBDOMADAIRE::DHT3"
+msgstr "Entre 35h et 48h"
+

@@ -1,0 +1,121 @@
+# translation of messages.po to
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: messages\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-01-25 23:57+0100\n"
+"PO-Revision-Date: 2009-01-26 09:34+0100\n"
+"Last-Translator: \n"
+"Language-Team:  <fr@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms: nplurals=2; plural=(n>1);\n"
+
+##############################################################################
+msgid "Accompagnementscuis66::index"
+msgstr "Accompagnement du CUI"
+
+msgid "Accompagnementcui66::add"
+msgstr "Ajout d'un accompagnement"
+
+msgid "Accompagnementcui66::edit"
+msgstr "Modification d'un accompagnement"
+
+msgid "Accompagnementcui66::index::empty"
+msgstr "Aucun accompagnement défini"
+
+msgid "Accompagnementcui66.typeaccompagnementcui66"
+msgstr "Type d'accompagnement"
+
+msgid "Accompagnementscuis66::delete::confirm"
+msgstr "Etes-vous sûr de vouloir supprimer cet accompagnement ?"
+
+msgid "Accompagnementscuis66::add"
+msgstr "Ajouter un accompagnement"
+
+msgid "Accompagnementscuis66::edit"
+msgstr "Modifier un accompagnement"
+
+msgid "Accompagnementscuis66::delete"
+msgstr "Supprimer un accompagnement"
+
+msgid "ENUM::TYPEACCOMPAGNEMENTCUI66::immersion"
+msgstr "Périodes d'immersion"
+
+msgid "ENUM::TYPEACCOMPAGNEMENTCUI66::formation"
+msgstr "Formations"
+
+msgid "Accompagnementcui66.nomentaccueil"
+msgstr "Nom de l'entreprise d'accueil"
+
+msgid "Accompagnementcui66.numvoieentaccueil"
+msgstr "N° de voie"
+
+msgid "Accompagnementcui66.typevoieentaccueil"
+msgstr "Type de voie"
+
+msgid "Accompagnementcui66.nomvoieentaccueil"
+msgstr "Nom de voie"
+
+msgid "Accompagnementcui66.compladrentaccueil"
+msgstr "Complément d'adresse"
+
+msgid "Accompagnementcui66.codepostalentaccueil"
+msgstr "Code postal"
+
+msgid "Accompagnementcui66.villeentaccueil"
+msgstr "Commune"
+
+msgid "Accompagnementcui66.numtelentaccueil"
+msgstr "N° Téléphone"
+
+msgid "Accompagnementcui66.emailentaccueil"
+msgstr "Email"
+
+msgid "Accompagnementcui66.activiteentaccueil"
+msgstr "Activité principale"
+
+msgid "Accompagnementcui66.siretentaccueil"
+msgstr "N° SIRET"
+
+msgid "Accompagnementcui66.datedebperiode"
+msgstr "Date de début de la période"
+
+msgid "Accompagnementcui66.datefinperiode"
+msgstr "Date de fin de la période"
+
+msgid "Accompagnementcui66.nbjourperiode"
+msgstr "Soit un nombre de jours équivalent à "
+
+msgid "Accompagnementcui66.codeposteaffectation"
+msgstr "Poste d'affectation (Code ROME)"
+
+msgid "Accompagnementcui66.objectifimmersion"
+msgstr "Objectif principal de l'immersion"
+
+msgid "Accompagnementcui66.datesignatureimmersion"
+msgstr "Date de signature"
+
+msgid "ENUM::OBJECTIFIMMERSION::acquerir"
+msgstr "Acquérir de nouvelles compétences"
+
+msgid "ENUM::OBJECTIFIMMERSION::confirmer"
+msgstr "Confirmer un projet professionnel"
+
+msgid "ENUM::OBJECTIFIMMERSION::decouvrir"
+msgstr "Découvrir un métier ou un secteur d'activité"
+
+msgid "ENUM::OBJECTIFIMMERSION::initier"
+msgstr "Initier une démarche de recrutement"
+
+msgid "Accompagnementcui66.secteuraffectation_id"
+msgstr "Secteur d'affectation"
+
+msgid "Accompagnementcui66.metieraffectation_id"
+msgstr "Poste d'affectation"

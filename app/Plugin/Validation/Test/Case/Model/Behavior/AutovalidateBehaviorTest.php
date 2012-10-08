@@ -1,0 +1,152 @@
+<?php
+	/**
+	 * AutovalidateBehaviorTest file
+	 *
+	 * PHP 5.3
+	 *
+	 * @package Validation
+	 * @subpackage Test.Case.Model.Behavior
+	 */
+	App::uses( 'Model', 'Model' );
+	App::uses( 'AppModel', 'Model' );
+
+	/**
+	 * AutovalidateTest class
+	 *
+	 * @package Validation
+	 * @subpackage Test.Case.Model.Behavior
+	 */
+	class AutovalidateBehaviorTest extends CakeTestCase
+	{
+		/**
+		 * Fixtures associated with this test case
+		 *
+		 * @var array
+		 */
+		public $fixtures = array(
+			'app.site'
+		);
+
+		/**
+		 * Les règles de validation déduites.
+		 *
+		 * @var array
+		 */
+		protected $_expectedDeducedRules = array(
+			'id' => array(
+				'integer' => array(
+					'rule' => array( 'integer' ),
+					'message' => null,
+					'required' => null,
+					'allowEmpty' => true,
+					'on' => null,
+				),
+			),
+			'name' => array(
+				'notEmpty' => array(
+					'rule' => array( 'notEmpty' ),
+					'message' => null,
+					'required' => null,
+					'allowEmpty' => null,
+					'on' => null,
+				),
+				'maxLength' => array(
+					'rule' => array( 'maxLength', 250 ),
+					'message' => null,
+					'required' => null,
+					'allowEmpty' => true,
+					'on' => null,
+
+				),
+				'isUnique' => array (
+					'rule' => array ( 'isUnique' ),
+					'message' => NULL,
+					'required' => NULL,
+					'allowEmpty' => true,
+					'on' => NULL,
+				),
+			),
+			'price' => array (
+				'numeric' => array (
+					'rule' => array ( 'numeric' ),
+					'message' => NULL,
+					'required' => NULL,
+					'allowEmpty' => true,
+					'on' => NULL,
+				),
+			),
+			'birthday' => array (
+				'date' => array (
+					'rule' => array ( 'date' ),
+					'message' => NULL,
+					'required' => NULL,
+					'allowEmpty' => true,
+					'on' => NULL
+				),
+			),
+		);
+
+		/**
+		 * Method executed before each test
+		 *
+		 */
+		public function setUp() {
+			parent::setUp();
+			foreach( $this->fixtures as $fixture ) {
+				$tokens = explode( '.', $fixture );
+				$modelName = Inflector::camelize( $tokens[1] );
+				$this->{$modelName} = ClassRegistry::init( $modelName );
+				$this->{$modelName}->Behaviors->attach( 'Validation.Autovalidate' );
+			}
+		}
+
+		/**
+		 * Method executed after each test
+		 *
+		 */
+		public function tearDown() {
+			foreach( $this->fixtures as $fixture ) {
+				$tokens = explode( '.', $fixture );
+				$modelName = Inflector::camelize( $tokens[1] );
+				unset( $this->{$modelName} );
+			}
+			parent::tearDown();
+		}
+
+		/**
+		 * Test de la méthode Autovalidate::setup
+		 *
+		 * @return void
+		 */
+		public function testFixme() {
+			$this->assertEqual( 1, 1 );
+		}
+
+		/**
+		 * Test de la méthode Autovalidate::setup
+		 *
+		 * @return void
+		 */
+		public function testAutovalidationRules() {
+			$this->assertEqual(
+				$this->Site->validate,
+				$this->_expectedDeducedRules,
+				var_export( $this->Site->validate, true )
+			);
+		}
+
+		/**
+		 * Test de la méthode Autovalidate::setup sans le cache.
+		 *
+		 * @return void
+		 */
+		public function testAutovalidationRulesWithoutCache() {
+			Cache::clear();
+			$this->assertEqual(
+				$this->Site->validate,
+				$this->_expectedDeducedRules,
+				var_export( $this->Site->validate, true )
+			);
+		}
+	}
+?>
