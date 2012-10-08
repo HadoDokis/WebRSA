@@ -263,7 +263,7 @@ app/tests/fixtures/orientstruct_fixture.php:                            'valid_c
 app/tests/fixtures/orientstruct_fixture.php:                            'valid_cg' => '1',
 app/controllers/dossierssimplifies_controller.php:                                $this->data['Orientstruct'][$key]['valid_cg'] = true;
 app/controllers/orientsstructs_controller.php:                                  $this->data['Orientstruct']['valid_cg'] = true;
-app/vendors/shells/refresh.php:                                                         'Orientstruct.valid_cg',
+app/Vendor/shells/refresh.php:                                                         'Orientstruct.valid_cg',
 */
 
 DROP TYPE IF EXISTS type_statutoccupation CASCADE;

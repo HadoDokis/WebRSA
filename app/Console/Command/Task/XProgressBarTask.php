@@ -18,7 +18,7 @@
 	 *
 	 * @uses          Shell
 	 * @package       progress_bar
-	 * @subpackage    progress_bar.vendors.shells.tasks
+	 * @subpackage    progress_bar.Vendor.shells.tasks
 	 */
 	class XProgressBarTask extends ProgressBarTask
 	{

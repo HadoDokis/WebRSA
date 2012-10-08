@@ -63,7 +63,7 @@
 			$modelesVerifies = array( );
 			// Vérification des fichiers sur le filesystem
 			foreach( $modeles as $modele ) {
-				$modele_notif_file = APP.DS.'vendors'.DS.'modelesodt'.DS.$modele;//FIXME: constante
+				$modele_notif_file = APP.DS.'Vendor'.DS.'modelesodt'.DS.$modele;//FIXME: constante
 
 				$exists = file_exists( $modele_notif_file );
 				$modelName = preg_replace( '/^([\w]+)\/.*$/', '\1', $modele );
@@ -204,7 +204,7 @@
 			}
 
 			foreach( array_unique( $modeles ) as $modele ) {
-				$modele_notif_file = APP.DS.'vendors'.DS.'modelesodt'.DS.$modele;
+				$modele_notif_file = APP.DS.'Vendor'.DS.'modelesodt'.DS.$modele;
 
 				if( !file_exists( $modele_notif_file ) ) {
 					$errors[] = $modele_notif_file;
@@ -293,7 +293,7 @@
 			$errors = array( );
 			// Vérification des fichiers sur le filesystem
 			foreach( $modeles as $modele ) {
-				$modele_notif_file = APP.DS.'vendors'.DS.'modelesodt'.DS.$modele;
+				$modele_notif_file = APP.DS.'Vendor'.DS.'modelesodt'.DS.$modele;
 
 				if( !file_exists( $modele_notif_file ) ) {
 					$errors[] = $modele_notif_file;
@@ -317,7 +317,7 @@
 
 			foreach( $typesrdvs as $typerdv ) {
 				$modele_notif = trim( $typerdv['Typerdv']['modelenotifrdv'] );
-				$modele_notif_file = APP.DS.'vendors'.DS.'modelesodt'.DS.'RDV'.DS.$modele_notif.'.odt';
+				$modele_notif_file = APP.DS.'Vendor'.DS.'modelesodt'.DS.'RDV'.DS.$modele_notif.'.odt';
 
 				if( empty( $modele_notif ) || !file_exists( $modele_notif_file ) ) {
 					$errors['Typerdv'][$typerdv['Typerdv']['libelle']] = $modele_notif_file;
@@ -337,7 +337,7 @@
 			foreach( $typesorients as $typeorient ) {
 				$modele_notif = trim( $typeorient['Typeorient']['modele_notif'] );
 				// FIXME: apparemment, modele_notif_cohorte n'est plus utilisé
-				$modele_notif_file = APP.DS.'vendors'.DS.'modelesodt'.DS.'Orientation'.DS.$modele_notif.'.odt';
+				$modele_notif_file = APP.DS.'Vendor'.DS.'modelesodt'.DS.'Orientation'.DS.$modele_notif.'.odt';
 
 				if( empty( $modele_notif ) || !file_exists( $modele_notif_file ) ) {
 					$errors['Orientstruct'][$typeorient['Typeorient']['lib_type_orient']] = $modele_notif_file;

@@ -117,7 +117,7 @@
 	 *     'Console/Command/Task'      => array('/path/to/tasks', '/next/path/to/tasks'),
 	 *     'Lib'                       => array('/path/to/libs', '/next/path/to/libs'),
 	 *     'Locale'                    => array('/path/to/locales', '/next/path/to/locales'),
-	 *     'Vendor'                    => array('/path/to/vendors', '/next/path/to/Vendor'),
+	 *     'Vendor'                    => array('/path/to/Vendor', '/next/path/to/Vendor'),
 	 *     'Plugin'                    => array('/path/to/plugins', '/next/path/to/plugins'),
 	 * ));
 	 *
