@@ -11,7 +11,7 @@
 	class Nonrespectssanctionseps93Controller extends AppController
 	{
 		public $helpers = array( 'Default', 'Default2', 'Csv' );
-		public $components = array( 'Prg' => array( 'actions' => array( 'selectionradies' => array( 'filter' => 'Search' ), 'index' ) ) );
+		public $components = array( 'Search.Prg' => array( 'actions' => array( 'selectionradies' => array( 'filter' => 'Search' ), 'index' ) ) );
 
 		/**
 		*

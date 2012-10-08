@@ -4,7 +4,7 @@
 		public $name = 'Covs58';
 		public $uses = array( 'Cov58', 'Option' );
 		public $helpers = array( 'Default', 'Default2' );
-		public $components = array( 'Prg' => array( 'actions' => array( 'index' ) ), 'Gedooo.Gedooo' );
+		public $components = array( 'Search.Prg' => array( 'actions' => array( 'index' ) ), 'Gedooo.Gedooo' );
 
 		public $commeDroit = array(
 			'add' => 'Covs58:edit',

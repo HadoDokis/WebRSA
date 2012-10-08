@@ -92,7 +92,7 @@
 							$this->Session->write( "Prg.{$controller->name}__{$controller->action}.{$sessionKey}", $sessionParams );
 							$params['sessionKey'] = $sessionKey;
 
-//							$this->log( var_export( $this->Session->read( 'Prg' ), true ), LOG_DEBUG );
+//							$this->log( var_export( $this->Session->read( 'Search.Prg' ), true ), LOG_DEBUG );
 						}
 					}
 
@@ -117,7 +117,7 @@
 						$this->Session->delete( "Prg.{$controller->name}__{$controller->action}.{$controller->request->params['named']['sessionKey']}" );
 						$controller->request->data = Set::merge( $controller->request->data, $sessionParams );
 
-//						$this->log( var_export( $this->Session->read( 'Prg' ), true ), LOG_DEBUG );
+//						$this->log( var_export( $this->Session->read( 'Search.Prg' ), true ), LOG_DEBUG );
 					}
 				}
 			}

@@ -28,7 +28,7 @@
 
 		public $components = array(
 			'Gestionzonesgeos',
-			'Prg' => array( 'actions' => array( 'index' ) )
+			'Search.Prg' => array( 'actions' => array( 'index' ) )
 		);
 
 		/**

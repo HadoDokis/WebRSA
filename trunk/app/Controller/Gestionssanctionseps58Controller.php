@@ -25,7 +25,7 @@
 			'Cohortes' => array(
 				'traitement'
 			),
-			'Prg2' => array( 'actions' => array( 'traitement' => array( 'filter' => 'Search' ), 'visualisation' ) ),
+			'Search.Prg' => array( 'actions' => array( 'traitement' => array( 'filter' => 'Search' ), 'visualisation' ) ),
 		);
 
 		/**

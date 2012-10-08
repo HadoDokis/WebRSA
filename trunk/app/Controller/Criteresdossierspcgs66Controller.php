@@ -6,7 +6,7 @@
 		public $uses = array( 'Criteredossierpcg66', 'Dossierpcg66', 'Option', 'Canton' );
 		public $helpers = array( 'Default', 'Default2', 'Ajax', 'Locale', 'Csv', 'Search' );
 
-		public $components = array( 'Gestionzonesgeos', 'Prg' => array( 'actions' => array( 'dossier', 'gestionnaire' ) ) );
+		public $components = array( 'Gestionzonesgeos', 'Search.Prg' => array( 'actions' => array( 'dossier', 'gestionnaire' ) ) );
 
 		/**
 		*

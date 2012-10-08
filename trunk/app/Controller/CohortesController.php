@@ -30,7 +30,7 @@
 
 		public $components = array(
 			'Gedooo.Gedooo',
-			'Prg2' => array( 'actions' => 'orientees' ),
+			'Search.Prg' => array( 'actions' => 'orientees' ),
 			'Cohortes'  => array(
 				'nouvelles',
 				'enattente'

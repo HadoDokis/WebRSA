@@ -37,7 +37,7 @@
 				'affecter'
 			),
 			'Gestionzonesgeos',
-			'Prg2' => array(
+			'Search.Prg' => array(
 				'actions' => array(
 					'affectes',
 					'affecter' => array(

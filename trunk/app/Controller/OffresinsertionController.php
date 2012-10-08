@@ -14,7 +14,7 @@
         public $aucunDroit = array( 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
 		
 		public $components = array(
-			'Prg2' => array(
+			'Search.Prg' => array(
 				'actions' => array(
 					'index' => array( 'filter' => 'Search' )
 				)

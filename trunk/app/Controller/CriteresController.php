@@ -10,7 +10,7 @@
 
 		public $helpers = array( 'Csv', 'Ajax', 'Search' );
 
-		public $components = array( 'Gestionzonesgeos', 'RequestHandler',  'Prg' => array( 'actions' => array( 'index' ) )  );
+		public $components = array( 'Gestionzonesgeos', 'RequestHandler',  'Search.Prg' => array( 'actions' => array( 'index' ) )  );
 
 		/**
 		*

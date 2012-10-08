@@ -7,7 +7,7 @@
 
 		public $commeDroit = array( 'view' => 'Infosfinancieres:index' );
 
-		public $components = array( 'Prg' => array( 'actions' => array( 'indexdossier' ) ) );
+		public $components = array( 'Search.Prg' => array( 'actions' => array( 'indexdossier' ) ) );
 
 
 		/**

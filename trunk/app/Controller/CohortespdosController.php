@@ -29,7 +29,7 @@
 				'avisdemande',
 			),
 			'Gestionzonesgeos',
-			'Prg2' => array( 'actions' => array( 'avisdemande', 'valide' ) )
+			'Search.Prg' => array( 'actions' => array( 'avisdemande', 'valide' ) )
 		);
 
 		/**

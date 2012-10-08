@@ -6,7 +6,7 @@
 		public $name = 'Cohortescomitesapres';
 		public $uses = array( 'Apre', 'Option', 'Personne', 'ApreComiteapre', 'Cohortecomiteapre', 'Comiteapre', 'Participantcomite', 'Apre', 'ComiteapreParticipantcomite', 'Adressefoyer', 'Tiersprestataireapre', 'Suiviaideapretypeaide', 'Referent', 'Dossier' );
 		public $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml' );
-		public $components = array( 'Gedooo.Gedooo', 'Prg' => array( 'actions' => array( 'aviscomite', 'notificationscomite' ) ) );
+		public $components = array( 'Gedooo.Gedooo', 'Search.Prg' => array( 'actions' => array( 'aviscomite', 'notificationscomite' ) ) );
 
 		/**
 		 *

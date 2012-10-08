@@ -10,7 +10,7 @@
 
 		public $helpers = array( 'Xform', 'Xhtml', 'Dsphm', 'Default2', 'Fileuploader', 'Search', 'Csv' );
 		public $uses = array( 'Dsp', 'DspRev' );
-		public $components = array( 'Jetons2', 'Default', 'Fileuploader', 'Gestionzonesgeos', 'Prg' => array( 'actions' => array( 'index' ) ) );
+		public $components = array( 'Jetons2', 'Default', 'Fileuploader', 'Gestionzonesgeos', 'Search.Prg' => array( 'actions' => array( 'index' ) ) );
 
 		public $paginate = array(
 			'limit' => 10,

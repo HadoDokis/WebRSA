@@ -19,7 +19,7 @@
 	{
 		public $uses = array( 'Gestionanomaliebdd', /*'Adressefoyer', 'Foyer', */'Dossier', 'Option' );
 
-		public $components = array( 'Gestionanomaliesbdd', 'Gestionzonesgeos', 'Prg' => array( 'actions' => array( 'index' ) ), 'Jetons2' );
+		public $components = array( 'Gestionanomaliesbdd', 'Gestionzonesgeos', 'Search.Prg' => array( 'actions' => array( 'index' ) ), 'Jetons2' );
 
 		public $helpers = array( 'Default2', 'Gestionanomaliebdd' );
 
