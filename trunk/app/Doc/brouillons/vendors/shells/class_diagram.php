@@ -199,7 +199,7 @@
 				get_class_methods( 'LazyModel' )
 			);
 
-			foreach( Configure::listObjects( 'model' ) as $modelName ) {
+			foreach( App::objects( 'model' ) as $modelName ) {
 				if( $this->_( $modelName ) ) {
 					App::import( 'Model', $modelName );
 
@@ -268,7 +268,7 @@
 			}
 
 			// Used behavior classes
-			foreach( Configure::listObjects( 'behavior' ) as $behaviorName ) {
+			foreach( App::objects( 'behavior' ) as $behaviorName ) {
 				App::import( 'Behavior', $behaviorName );
 				if( in_array( $behaviorName, $usedBehaviors ) ) {
 					$behaviorName = "{$behaviorName}Behavior";

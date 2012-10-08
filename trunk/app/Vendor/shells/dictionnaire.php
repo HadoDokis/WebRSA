@@ -271,7 +271,7 @@
 					foreach( $table['Column'] as $i => $column ) {
 						// Format label
 						$modelField = Inflector::classify( $table['name'] ).".{$column['name']}";
-						$label = __d( Inflector::singularize( $table['name'] ), $modelField, true );
+						$label = __d( Inflector::singularize( $table['name'] ), $modelField );
 						if( $label == $modelField ) {
 							$label = null;
 						}
@@ -282,10 +282,10 @@
 							foreach( $options as $l => $option ) {
 								$type = strtoupper( preg_replace( '/^type_(.*)$/i', '\1', $column['type'] ) );
 								$labelkey = "ENUM::{$type}::{$option}";
-								$labeloption = __( $labelkey, true );
+								$labeloption = __( $labelkey );
 								if( $labeloption == $labelkey ) {
 									$labelkey = "ENUM::".strtoupper( $column['name'] )."::{$option}";
-									$labeloption = __d( Inflector::singularize( $table['name'] ), $labelkey, true );
+									$labeloption = __d( Inflector::singularize( $table['name'] ), $labelkey );
 								}
 								$options[$l] = "<li><strong>{$option}</strong> {$labeloption}</li>";
 							}

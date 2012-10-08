@@ -1,5 +1,5 @@
 <?php
-	$this->pageTitle = __d( 'historiqueemploi', 'Historiqueemplois::index', true );
+	$this->pageTitle = __d( 'historiqueemploi', 'Historiqueemplois::index' );
 	echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
 ?>
 <div class="with_treemenu">
@@ -9,7 +9,7 @@
 	</ul>
 	<?php
 		if( empty( $historiqueemplois ) ) {
-			echo '<p class="notice">'.__d( 'historiqueemploi', 'Historiqueemplois::index::empty', true ).'</p>';
+			echo '<p class="notice">'.__d( 'historiqueemploi', 'Historiqueemplois::index::empty' ).'</p>';
 		}
 		else {
 			$pagination = $xpaginator2->paginationBlock( 'Historiqueemploi', /*Set::merge( $this->params['pass'], */$this->params['named']/* )*/ );
@@ -22,13 +22,13 @@
 				'<th colspan="2">Actions</th></tr>',
 				$xhtml->tableHeaders(
 					array(
-						$xpaginator2->sort( __d( 'historiqueemploi', 'Historiqueemploi.datedebut', true ), 'Historiqueemploi.datedebut' ),
-						$xpaginator2->sort( __d( 'historiqueemploi', 'Historiqueemploi.datefin', true ), 'Historiqueemploi.datefin' ),
-						$xpaginator2->sort( __d( 'historiqueemploi', 'Historiqueemploi.secteuractivite', true ), 'Historiqueemploi.secteuractivite' ),
-						$xpaginator2->sort( __d( 'historiqueemploi', 'Historiqueemploi.emploi', true ), 'Historiqueemploi.emploi' ),
-						$xpaginator2->sort( __d( 'historiqueemploi', 'Historiqueemploi.dureehebdomadaire', true ), 'Historiqueemploi.dureehebdomadaire' ),
-						$xpaginator2->sort( __d( 'historiqueemploi', 'Historiqueemploi.naturecontrat', true ), 'Historiqueemploi.naturecontrat' ),
-						$xpaginator2->sort( __d( 'historiqueemploi', 'Historiqueemploi.dureecdd', true ), 'Historiqueemploi.dureecdd' ),
+						$xpaginator2->sort( __d( 'historiqueemploi', 'Historiqueemploi.datedebut' ), 'Historiqueemploi.datedebut' ),
+						$xpaginator2->sort( __d( 'historiqueemploi', 'Historiqueemploi.datefin' ), 'Historiqueemploi.datefin' ),
+						$xpaginator2->sort( __d( 'historiqueemploi', 'Historiqueemploi.secteuractivite' ), 'Historiqueemploi.secteuractivite' ),
+						$xpaginator2->sort( __d( 'historiqueemploi', 'Historiqueemploi.emploi' ), 'Historiqueemploi.emploi' ),
+						$xpaginator2->sort( __d( 'historiqueemploi', 'Historiqueemploi.dureehebdomadaire' ), 'Historiqueemploi.dureehebdomadaire' ),
+						$xpaginator2->sort( __d( 'historiqueemploi', 'Historiqueemploi.naturecontrat' ), 'Historiqueemploi.naturecontrat' ),
+						$xpaginator2->sort( __d( 'historiqueemploi', 'Historiqueemploi.dureecdd' ), 'Historiqueemploi.dureecdd' ),
 					)
 				)
 			);

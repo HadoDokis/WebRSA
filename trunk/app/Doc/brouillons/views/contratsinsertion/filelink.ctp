@@ -5,7 +5,7 @@
 		echo $javascript->link( 'fileuploader.js' );
 	}
 
-	$this->pageTitle =  __d( 'contratinsertion', "Contratsinsertion::{$this->action}", true );
+	$this->pageTitle =  __d( 'contratinsertion', "Contratsinsertion::{$this->action}" );
 	echo $this->element( 'dossier_menu', array( 'personne_id' => $personneId ) );
 ?>
 <div class="with_treemenu">

@@ -51,7 +51,7 @@
 			foreach( $fonctions as $fonction ) {
 				$return = $this->Controller->Gestionanomaliesbdd->{$fonction}( $this->solve );
 				$return = ( is_bool( $return ) ? ( ( $return ) ? 'true' : 'false' ) : $return );
-				$this->out( str_pad( __d( 'gestionanomaliebdd', "Component::{$fonction}", true ), 130 ).$return );
+				$this->out( str_pad( __d( 'gestionanomaliebdd', "Component::{$fonction}" ), 130 ).$return );
 			}
 
 			$this->out( sprintf( "\nExécuté en %s secondes.", number_format( microtime( true ) - $start, 2, ',', ' ' ) ) );

@@ -541,11 +541,11 @@
 		$nir = strtoupper( $nir );
 
 		if( !preg_match( '/^([0-9]+|[0-9]{5}2(A|B)[0-9]{6})$/', $nir ) ) {
-			trigger_error( sprintf( __( 'Le NIR suivant n\'est pas composé que de chiffres: %s', true ), $nir ), E_USER_WARNING );
+			trigger_error( sprintf( __( 'Le NIR suivant n\'est pas composé que de chiffres: %s' ), $nir ), E_USER_WARNING );
 		}
 
 		if( strlen( $nir ) != 13 ) {
-			trigger_error( sprintf( __( 'Le NIR suivant n\'est pas composé de 13 caractères: %s', true ), $nir ), E_USER_WARNING );
+			trigger_error( sprintf( __( 'Le NIR suivant n\'est pas composé de 13 caractères: %s' ), $nir ), E_USER_WARNING );
 		}
 
 		$correction = 0;
@@ -577,11 +577,11 @@
 			$nir
 		);
 		/*if( !preg_match( '/^[0-9]+$/', $nir ) ) {
-			trigger_error( sprintf( __( 'Le NIR suivant n\'est pas composé que de chiffres: %s', true ), $nir ), E_USER_WARNING );
+			trigger_error( sprintf( __( 'Le NIR suivant n\'est pas composé que de chiffres: %s' ), $nir ), E_USER_WARNING );
 		}
 
 		if( strlen( $nir ) != 13 ) {
-			trigger_error( sprintf( __( 'Le NIR suivant n\'est pas composé de 13 caractères: %s', true ), $nir ), E_USER_WARNING );
+			trigger_error( sprintf( __( 'Le NIR suivant n\'est pas composé de 13 caractères: %s' ), $nir ), E_USER_WARNING );
 		}
 
 		$modulo = bcmod( $nir, 97 );

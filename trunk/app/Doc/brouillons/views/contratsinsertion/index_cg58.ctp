@@ -84,8 +84,8 @@
 				<tr>
 					<td><?php echo h( $propocontratinsertioncov58['Personne']['nom'] );?></td>
 					<td><?php echo h( $propocontratinsertioncov58['Personne']['prenom'] );?></td>
-					<td><?php echo $locale->date( __( 'Date::short', true ), $propocontratinsertioncov58['Propocontratinsertioncov58']['dd_ci'] );?></td>
-					<td><?php echo $locale->date( __( 'Date::short', true ), $propocontratinsertioncov58['Propocontratinsertioncov58']['df_ci'] );?></td>
+					<td><?php echo $locale->date( __( 'Date::short' ), $propocontratinsertioncov58['Propocontratinsertioncov58']['dd_ci'] );?></td>
+					<td><?php echo $locale->date( __( 'Date::short' ), $propocontratinsertioncov58['Propocontratinsertioncov58']['df_ci'] );?></td>
 					<?php if ( isset( $propocontratinsertioncov58['Propocontratinsertioncov58']['avenant_id'] ) && !empty( $propocontratinsertioncov58['Propocontratinsertioncov58']['avenant_id'] ) ) { ?>
 						<td>Avenant</td>
 					<?php } else { ?>

@@ -58,7 +58,7 @@
 					if( strpos( $key, '.' ) !== false ) {
 						$modelField = model_field( $key );
 						$domain = Inflector::underscore( $modelField[0] );
-						$msgstr = __d( $domain, implode( '.', $modelField ), true );
+						$msgstr = __d( $domain, implode( '.', $modelField ) );
 						$flatKeys[strtolower( str_replace( '.', '_', $key ) )] = $msgstr;
 					}
 					else {

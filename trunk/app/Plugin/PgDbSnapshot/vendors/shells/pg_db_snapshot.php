@@ -25,8 +25,8 @@
 		public function initialize() {
 			parent::initialize();
 
-			$this->Controller =& new Controller();
-			$this->Controller->PgDbSnapshot =& new PgDbSnapshotComponent( null );
+			$this->Controller =  new Controller();
+			$this->Controller->PgDbSnapshot =  new PgDbSnapshotComponent( null );
 			$this->Controller->PgDbSnapshot->startup( $this->Controller );
 
 //			$this->solve = $this->_getNamedValue( 'solve', 'boolean' );

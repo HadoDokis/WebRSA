@@ -100,11 +100,11 @@
 				<?php if( count( $erreursCandidatePassage ) > 1 ):?>
 				<ul>
 					<?php foreach( $erreursCandidatePassage as $erreur ):?>
-						<li><?php echo __d( 'relancenonrespectsanctionep93', "Erreur.{$erreur}", true );?></li>
+						<li><?php echo __d( 'relancenonrespectsanctionep93', "Erreur.{$erreur}" );?></li>
 					<?php endforeach;?>
 				</ul>
 				<?php else:?>
-					<p><?php echo __d( 'relancenonrespectsanctionep93', "Erreur.{$erreursCandidatePassage[0]}", true );?></p>
+					<p><?php echo __d( 'relancenonrespectsanctionep93', "Erreur.{$erreursCandidatePassage[0]}" );?></p>
 				<?php endif;?>
 			</div>
 		<?php endif;?>

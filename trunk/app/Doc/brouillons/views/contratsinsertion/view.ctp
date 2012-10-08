@@ -1,5 +1,5 @@
 <?php
-	$this->pageTitle =  __d( 'contratinsertion', "Contratsinsertion::{$this->action}", true );
+	$this->pageTitle =  __d( 'contratinsertion', "Contratsinsertion::{$this->action}" );
 	echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
 ?>
 

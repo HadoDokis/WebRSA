@@ -21,9 +21,9 @@
 
                 <?php echo 'CER '.Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.forme_ci' ), $forme_ci ).' du '.date_short( Set::classicExtract( $contratinsertion, 'Contratinsertion.dd_ci' ) ).' au '.date_short( Set::classicExtract( $contratinsertion, 'Contratinsertion.df_ci' ) );?>
 
-				<?php echo $form->input( 'Contratinsertion.observ_ci', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.observ_ci', true ), 'type' => 'textarea', 'rows' => 6, 'class' => 'aere')  ); ?>
+				<?php echo $form->input( 'Contratinsertion.observ_ci', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.observ_ci' ), 'type' => 'textarea', 'rows' => 6, 'class' => 'aere')  ); ?>
 
-                <?php echo $form->input( 'Contratinsertion.decision_ci', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.decision_ci', true ), 'type' => 'select', 'options' => $decision_ci ) ); ?>
+                <?php echo $form->input( 'Contratinsertion.decision_ci', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.decision_ci' ), 'type' => 'select', 'options' => $decision_ci ) ); ?>
 				<?php echo $form->input( 'Contratinsertion.datevalidation_ci', array( 'label' => '', 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1 , 'empty' => true)  ); ?><br />
 				<!-- <?php echo $form->input( 'Contratinsertion.faita', array( 'label' => 'Fait à : ', 'type' => 'text')  ); ?><br />
 				<?php echo $form->input( 'Contratinsertion.le ', array( 'label' => 'Le : ', 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1 , 'empty' => true)  ); ?>

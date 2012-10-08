@@ -16,7 +16,7 @@
 		 * @param array $settings
 		 */
 		public function initialize( &$controller, $settings = array( ) ) {
-			$this->controller = &$controller;
+			$this->controller = $controller;
 		}
 
 		/**

@@ -110,7 +110,7 @@
 			header("HTTP/1.0 401 Unauthorized");
 			$this->controller->set(array(
 				'code' => '401',
-				'name' => __( 'Unauthorized', true ),
+				'name' => __( 'Unauthorized' ),
 				'message' => $url,
 				'base' => $this->controller->base,
 				'params' => $params
@@ -132,7 +132,7 @@
 			header("HTTP/1.0 401 Unauthorized");
 			$this->controller->set(array(
 				'code' => '401',
-				'name' => __( 'Unauthorized', true ),
+				'name' => __( 'Unauthorized' ),
 				'message' => $url,
 				'base' => $this->controller->base,
 				'params' => $params
@@ -154,7 +154,7 @@
 			header("HTTP/1.0 401 Unauthorized");
 			$this->controller->set(array(
 				'code' => '401',
-				'name' => __( 'Unauthorized', true ),
+				'name' => __( 'Unauthorized' ),
 				'message' => $url,
 				'base' => $this->controller->base,
 				'params' => $params
@@ -176,7 +176,7 @@
 			header("HTTP/1.0 401 Unauthorized");
 			$this->controller->set(array(
 				'code' => '401',
-				'name' => __( 'Unauthorized', true ),
+				'name' => __( 'Unauthorized' ),
 				'message' => $url,
 				'base' => $this->controller->base,
 				'params' => $params
@@ -198,7 +198,7 @@
 			header("HTTP/1.0 401 Unauthorized");
 			$this->controller->set(array(
 				'code' => '401',
-				'name' => __( 'Unauthorized', true ),
+				'name' => __( 'Unauthorized' ),
 				'message' => $url,
 				'base' => $this->controller->base,
 				'params' => $params
@@ -221,7 +221,7 @@
 			$this->controller->set(
 				array(
 					'code' => '401',
-					'name' => __( 'Unauthorized', true ),
+					'name' => __( 'Unauthorized' ),
 					'message' => $url,
 					'base' => $this->controller->base,
 					'params' => $params,
@@ -244,7 +244,7 @@
 			header("HTTP/1.0 401 Unauthorized");
 			$this->controller->set(array(
 				'code' => '401',
-				'name' => __('Unauthorized', true),
+				'name' => __( 'Unauthorized' ),
 				'message' => $url,
 				'base' => $this->controller->base,
 				'params' => $params
@@ -266,7 +266,7 @@
 			header("HTTP/1.0 401 Unauthorized");
 			$this->controller->set(array(
 				'code' => '401',
-				'name' => __('Unauthorized', true),
+				'name' => __( 'Unauthorized' ),
 				'message' => $url,
 				'base' => $this->controller->base,
 				'params' => $params
@@ -288,7 +288,7 @@
 			header("HTTP/1.0 401 Unauthorized");
 			$this->controller->set(array(
 				'code' => '401',
-				'name' => __( 'Unauthorized', true ),
+				'name' => __( 'Unauthorized' ),
 				'message' => $url,
 				'base' => $this->controller->base,
 				'params' => $params
@@ -310,7 +310,7 @@
 			header("HTTP/1.0 403 Forbidden");
 			$this->controller->set(array(
 				'code' => '403',
-				'name' => __('Forbidden', true),
+				'name' => __( 'Forbidden' ),
 				'message' => $url,
 				'base' => $this->controller->base
 			));
@@ -331,7 +331,7 @@
 			header("HTTP/1.0 500 Internal server error");
 			$this->controller->set(array(
 				'code' => '500',
-				'name' => __('Internal server error', true),
+				'name' => __( 'Internal server error' ),
 				'message' => $url,
 				'base' => $this->controller->base
 			));
@@ -351,7 +351,7 @@
 					'action'        => $action,
 					'file'          => $file,
 					'line'          => $line,
-					'title'         => __( 'Invalid Parameter', true )
+					'title'         => __( 'Invalid Parameter' )
 				)
 			);
 
@@ -371,7 +371,7 @@
 					'action'        => $action,
 					'file'          => $file,
 					'line'          => $line,
-					'title'         => __( 'Invalid token', true )
+					'title'         => __( 'Invalid token' )
 				)
 			);
 

@@ -1,19 +1,19 @@
 <?php
-	echo '<legend>'.__d( 'historiqueemploi', 'Historiqueemplois::index', true ).'</legend>';
+	echo '<legend>'.__d( 'historiqueemploi', 'Historiqueemplois::index' ).'</legend>';
 
 	echo '<ul class="actions"><li class="add"><a href="#" id="AddHistoriqueemploi">Ajouter</a></li></ul>';
 
 	if( empty( $this->data['Historiqueemploi'] ) ) {
-		echo '<p class="notice">'.__d( 'historiqueemploi', 'Historiqueemplois::index::empty', true ).'</p>';
+		echo '<p class="notice">'.__d( 'historiqueemploi', 'Historiqueemplois::index::empty' ).'</p>';
 	}
 	else {
 		echo '<table id="Historiqueemplois">
 				<thead>
 					<tr>
-						<th scope="col">'.__d( 'historiqueemploi', 'Historiqueemploi.emploi', true ).'</th>
-						<th scope="col">'.__d( 'historiqueemploi', 'Historiqueemploi.datedebut', true ).'</th>
-						<th scope="col">'.__d( 'historiqueemploi', 'Historiqueemploi.datefin', true ).'</th>
-						<th scope="col">'.__d( 'historiqueemploi', 'Historiqueemploi.created', true ).'</th>
+						<th scope="col">'.__d( 'historiqueemploi', 'Historiqueemploi.emploi' ).'</th>
+						<th scope="col">'.__d( 'historiqueemploi', 'Historiqueemploi.datedebut' ).'</th>
+						<th scope="col">'.__d( 'historiqueemploi', 'Historiqueemploi.datefin' ).'</th>
+						<th scope="col">'.__d( 'historiqueemploi', 'Historiqueemploi.created' ).'</th>
 						<th scope="col">Actions</th>
 					</tr>
 				</thead>
@@ -27,7 +27,7 @@
 					.$xform->input( "Historiqueemploi.{$i}.emploi", array( 'div' => false, 'label' => false, 'empty' => true, 'options' => $options['Historiqueemploi']['emploi'] ) ),
 					$xform->input( "Historiqueemploi.{$i}.datedebut", array( 'div' => false, 'label' => false, 'empty' => true, 'dateFormat' => 'DMY' ) ),
 					$xform->input( "Historiqueemploi.{$i}.datefin", array( 'div' => false, 'label' => false, 'empty' => true, 'dateFormat' => 'DMY' ) ),
-					$locale->date( __( 'Date::short', true ), Set::classicExtract( $historiqueemploi, 'created' ) ),
+					$locale->date( __( 'Date::short' ), Set::classicExtract( $historiqueemploi, 'created' ) ),
 					$default2->button( 'delete', '#', array( 'label' => 'Supprimer' ) )
 				)
 			);

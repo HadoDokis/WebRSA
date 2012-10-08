@@ -178,7 +178,7 @@
 			$aco = & $this->Controller->Acl->Aco;
 
 			App::import( 'Core', 'File' );
-			$Controllers = Configure::listObjects( 'controller' );
+			$Controllers = App::objects( 'controller' );
 			$appIndex = array_search( 'App', $Controllers );
 			if( $appIndex !== false ) {
 				unset( $Controllers[$appIndex] );
