@@ -112,7 +112,7 @@
 			App::import( 'Behavior', 'Gedooo.Gedooo' );
 
 			$GedModel = ClassRegistry::init( 'User' );
-			$GedModel->Behaviors->attach( 'Gedooo' );
+			$GedModel->Behaviors->attach( 'Gedooo.Gedooo' );
 			$response = @$GedModel->gedTests();
 
 			// FIXME: traductions

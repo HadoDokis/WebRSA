@@ -391,7 +391,7 @@
 			App::import( 'Behavior', 'Gedooo.Gedooo' );
 
 			$GedModel = ClassRegistry::init( 'User' );
-			$GedModel->Behaviors->attach( 'Gedooo' );
+			$GedModel->Behaviors->attach( 'Gedooo.Gedooo' );
 
 			return array(
 				'configure' => @$GedModel->Behaviors->Gedooo->gedConfigureKeys( $GedModel ),
