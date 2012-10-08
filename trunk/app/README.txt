@@ -47,7 +47,7 @@ Versions de CakePHP supportées:
 	13°) Correction: ajout de la possibilité de supprimer des contrats d'engagement
 	14°) Corrections: champs obligatoires sur le contrat d'engagement et ajout de restrictions sur le type de contrat (une seule fois 'Premier contrat', puis 'Renouvellement' ou 'Redéfinition')
 	15°) Correction: ajout du caractère obligatoire de la structure et du référent pour les APRES
-	16°) Documentation: ajout d'un fichier tableur contenant les champs disponibles pour les éditions liées à l'APRE app/Vendor/modelesodt/Champs disponibles pour les éditions.ods
+	16°) Documentation: ajout d'un fichier tableur contenant les champs disponibles pour les éditions liées à l'APRE app/vendors/modelesodt/Champs disponibles pour les éditions.ods
 
 * version 1.0.10
 	Évolutions importantes:
@@ -64,7 +64,7 @@ Versions de CakePHP supportées:
         2°) Le script refresh indique maintenant le pourcentage de complétion du script au cours de l'exécution de celui-ci. À la fin du script, celui-ci donne un résumé du temps passé dans les différentes parties (calcul de la moyenne des ressources, calcul des personnes soumises à droits et devoirs, calcul de la préorientation)
 
 	Remarques:
-		* Les modèles de documents situés dans le répertoire app/Vendor/modelesodt ont tous l'extension .odt.default pour éviter d'écraser vos modèles existants. Il suffit de renommer ces fichiers en .odt ou d'utiliser les votres.
+		* Les modèles de documents situés dans le répertoire app/vendors/modelesodt ont tous l'extension .odt.default pour éviter d'écraser vos modèles existants. Il suffit de renommer ces fichiers en .odt ou d'utiliser les votres.
 		* En cas de nouvelle installation, renommer les fichiers app/config/*.default (enlever la partie ".default") et y inscrire vos valeurs. Sinon, vérifiez que vos fichiers de configuration comportent bien toutes les variables se trouvant dans les fichiers .default En cas de mise à jour, n'oubliez pas d'exécuter les patchs sql nécessaires dans app/config/sql/patches
 
 * Ajout au 10 Février 2010 :
