@@ -22,7 +22,7 @@
 					'decisionpcg'
 				)
 			),
-			'Autovalidate',
+			'Validation.Autovalidate',
 			'ValidateTranslate',
 			'Formattable',
 		);

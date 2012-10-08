@@ -20,7 +20,7 @@
 					'autreavisradiation'
 				)
 			),
-			'Autovalidate',
+			'Validation.Autovalidate',
 			'ValidateTranslate'
 		);
 

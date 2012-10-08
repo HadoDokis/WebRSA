@@ -10,7 +10,7 @@
 		public $name = 'Fichiermodule';
 		public $actAs = array(
 			'Formattable',
-			'Autovalidate'
+			'Validation.Autovalidate'
 		);
 		public $validate = array(
 			'modele' => array(

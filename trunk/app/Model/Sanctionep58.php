@@ -18,7 +18,7 @@
 		public $name = 'Sanctionep58';
 
 		public $actsAs = array(
-			'Autovalidate',
+			'Validation.Autovalidate',
 			'ValidateTranslate',
 			'Enumerable' => array(
 				'fields' => array(

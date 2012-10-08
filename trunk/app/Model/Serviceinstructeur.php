@@ -8,7 +8,7 @@
 		public $order = 'Serviceinstructeur.lib_service ASC';
 
 		public $actsAs = array(
-			'Autovalidate',
+			'Validation.Autovalidate',
 			'Formattable'
 		);
 

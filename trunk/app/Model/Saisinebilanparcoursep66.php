@@ -18,7 +18,7 @@
 		public $name = 'Saisinebilanparcoursep66';
 
 		public $actsAs = array(
-			'Autovalidate',
+			'Validation.Autovalidate',
 			'ValidateTranslate',
 			'Formattable' => array(
 				'suffix' => array(

@@ -4,7 +4,7 @@
 		public $name = 'Fraisdeplacement66';
 
 		public $actsAs = array(
-			'Autovalidate',
+			'Validation.Autovalidate',
 			'Formattable',
 			'Frenchfloat' => array(
 				'fields' => array(

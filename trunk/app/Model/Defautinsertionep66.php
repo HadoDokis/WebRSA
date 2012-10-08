@@ -17,7 +17,7 @@
 		public $name = 'Defautinsertionep66';
 
 		public $actsAs = array(
-			'Autovalidate',
+			'Validation.Autovalidate',
 			'ValidateTranslate',
 			'Enumerable' => array(
 				'fields' => array(

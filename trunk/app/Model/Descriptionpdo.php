@@ -4,7 +4,7 @@
 		public $name = 'Descriptionpdo';
 
 		public $actsAs = array(
-			'Autovalidate',
+			'Validation.Autovalidate',
 			'Formattable',
 			'Enumerable' => array(
 				'fields' => array(

@@ -4,7 +4,7 @@
 		public $name = 'EpZonegeographique';
 
 		public $actsAs = array(
-			'Autovalidate',
+			'Validation.Autovalidate',
 			'Formattable',
 			'ValidateTranslate'
 		);
