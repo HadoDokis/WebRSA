@@ -285,7 +285,7 @@
 
 			$referent_id = Set::classicExtract( $params, 'PersonneReferent.referent_id' );
 			if( !empty( $referent_id ) ) {
-				$conditionsReferent = 'PersonneReferent.referent_id = \''.Sanitize::clean( $referent_id ).'\'';
+				$conditionsReferent = 'PersonneReferent.referent_id = \''.Sanitize::clean( $referent_id, array( 'encode' => false ) ).'\'';
 
 				$conditions[] = 'Personne.id IN (
 									SELECT personnes_referents.personne_id

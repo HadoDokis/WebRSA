@@ -36,7 +36,7 @@
 		 * @param array $config Configuration settings for $model
 		 * @return void
 		 */
-		public function setup( &$model, $config = array() ) {
+		public function setup( Model $model, $config = array() ) {
 			$method = Configure::read( 'Gedooo.method' );
 
 			switch( $method ) {
@@ -77,7 +77,7 @@
 		 * @return void
 		 * @see BehaviorCollection::detach()
 		 */
-		public function cleanup( &$model ) {
+		public function cleanup( Model $model ) {
 			if( !empty( $this->_gedoooBehavior ) && $model->Behaviors->attached( "Gedooo.{$this->_gedoooBehavior}" ) ) {
 				$model->Behaviors->detach( "Gedooo.{$this->_gedoooBehavior}" );
 			}
@@ -90,7 +90,7 @@
 		 *
 		 * @return array
 		 */
-		public function gedConfigureKeys( &$model ) {
+		public function gedConfigureKeys( Model $model ) {
 			$keys = array( 'Gedooo.method' => 'string' );
 
 			if( !is_null( $this->_gedoooBehavior ) ) {

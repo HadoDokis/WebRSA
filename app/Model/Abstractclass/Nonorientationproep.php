@@ -89,13 +89,13 @@
 				// Filtre sur la structure référente
 				if ( isset($datas['Filtre']['structurereferente_id']) && !empty($datas['Filtre']['structurereferente_id']) ) {
 					$structs = Set::classicExtract($datas, 'Filtre.structurereferente_id');
-					$conditions[] = 'Orientstruct.structurereferente_id = \''.Sanitize::clean( $structs ).'\'';
+					$conditions[] = 'Orientstruct.structurereferente_id = \''.Sanitize::clean( $structs, array( 'encode' => false ) ).'\'';
 				}
 
 				// Filtre sur le référent
 				if ( isset($datas['Filtre']['referent_id']) && !empty($datas['Filtre']['referent_id']) ) {
 					$referents = Set::classicExtract($datas, 'Filtre.referent_id');
-					$conditions[] = 'Orientstruct.referent_id = \''.Sanitize::clean( $referents ).'\'';
+					$conditions[] = 'Orientstruct.referent_id = \''.Sanitize::clean( $referents, array( 'encode' => false ) ).'\'';
 				}
 
 				// Paramétrage, date d'orientation

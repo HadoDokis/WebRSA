@@ -73,17 +73,17 @@
 
 			// Localité adresse
 			if( !empty( $locaadr ) ) {
-				$conditions[] = 'Adresse.locaadr ILIKE \'%'.Sanitize::clean( $locaadr ).'%\'';
+				$conditions[] = 'Adresse.locaadr ILIKE \'%'.Sanitize::clean( $locaadr, array( 'encode' => false ) ).'%\'';
 			}
 
 			// Commune au sens INSEE
 			if( !empty( $numcomptt ) ) {
-				$conditions[] = 'Adresse.numcomptt ILIKE \'%'.Sanitize::clean( $numcomptt ).'%\'';
+				$conditions[] = 'Adresse.numcomptt ILIKE \'%'.Sanitize::clean( $numcomptt, array( 'encode' => false ) ).'%\'';
 			}
 
 			// Référent lié à l'APRE
 			if( !empty( $referent ) ) {
-				$conditions[] = 'Apre66.referent_id = \''.Sanitize::clean( $referent ).'\'';
+				$conditions[] = 'Apre66.referent_id = \''.Sanitize::clean( $referent, array( 'encode' => false ) ).'\'';
 			}
 
 			//Critères sur le dossier de l'allocataire - numdemrsa + matricule
@@ -96,12 +96,12 @@
 
 			//Thème de l'aide
 			if( !empty( $themeapre66_id ) ) {
-				$conditions[] = 'Aideapre66.themeapre66_id = \''.Sanitize::clean( $themeapre66_id ).'\'';
+				$conditions[] = 'Aideapre66.themeapre66_id = \''.Sanitize::clean( $themeapre66_id, array( 'encode' => false ) ).'\'';
 			}
 
 			//Type d'aide
 			if( !empty( $typeaideapre66_id ) ) {
-				$conditions[] = 'Aideapre66.typeaideapre66_id = \''.Sanitize::clean( suffix( $typeaideapre66_id ) ).'\'';
+				$conditions[] = 'Aideapre66.typeaideapre66_id = \''.Sanitize::clean( suffix( $typeaideapre66_id ), array( 'encode' => false ) ).'\'';
 			}
 
 			// Conditions pour les jointures

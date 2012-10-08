@@ -38,7 +38,7 @@
 
 			// Décision de la PDO
 			if( !empty( $decisionpdo ) ) {
-				$conditions[] = 'Decisiondossierpcg66.decisionpdo_id = \''.Sanitize::clean( $decisionpdo ).'\'';
+				$conditions[] = 'Decisiondossierpcg66.decisionpdo_id = \''.Sanitize::clean( $decisionpdo, array( 'encode' => false ) ).'\'';
 			}
 
              // Filtre sur l'état du dossier PCG
@@ -50,11 +50,11 @@
 			
 			// Origine de la PDO
 			if( !empty( $originepdo ) ) {
-				$conditions[] = 'Dossierpcg66.originepdo_id = \''.Sanitize::clean( $originepdo ).'\'';
+				$conditions[] = 'Dossierpcg66.originepdo_id = \''.Sanitize::clean( $originepdo, array( 'encode' => false ) ).'\'';
 			}
 			// Gestionnaire de la PDO
 			if( !empty( $gestionnaire ) ) {
-				$conditions[] = 'Dossierpcg66.user_id = \''.Sanitize::clean( $gestionnaire ).'\'';
+				$conditions[] = 'Dossierpcg66.user_id = \''.Sanitize::clean( $gestionnaire, array( 'encode' => false ) ).'\'';
 			}
 
 			$query = array(
@@ -178,7 +178,7 @@
 			
 			// Gestionnaire de la PDO
 			if( !empty( $gestionnaire ) ) {
-				$conditions[] = 'Dossierpcg66.user_id = \''.Sanitize::clean( $gestionnaire ).'\'';
+				$conditions[] = 'Dossierpcg66.user_id = \''.Sanitize::clean( $gestionnaire, array( 'encode' => false ) ).'\'';
 			}
 			
              // Filtre sur l'état du dossier PCG

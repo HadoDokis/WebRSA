@@ -104,7 +104,7 @@
 
 			// Suivi
 			if( !empty( $typeparte ) ) {
-				$conditions[] = 'Dossier.typeparte = \''.Sanitize::clean( $typeparte ).'\'';
+				$conditions[] = 'Dossier.typeparte = \''.Sanitize::clean( $typeparte, array( 'encode' => false ) ).'\'';
 			}
 
 			// Structure référente
@@ -178,12 +178,12 @@
 
 				// Montant indu + comparatif vis à vis du montant
 				if( !empty( $compare ) && !empty( $mtmoucompta ) ) {
-					$conditionsComparator[] = $type.'.mtmoucompta '.$compare.' '.Sanitize::clean( $mtmoucompta );
+					$conditionsComparator[] = $type.'.mtmoucompta '.$compare.' '.Sanitize::clean( $mtmoucompta, array( 'encode' => false ) );
 				}
 
 				// Nature de la prestation de créance
 				if( !empty( $natpfcre ) ) {
-					$conditionsNat[] = $type.'.natpfcre = \''.Sanitize::clean( $natpfcre ).'\'';
+					$conditionsNat[] = $type.'.natpfcre = \''.Sanitize::clean( $natpfcre, array( 'encode' => false ) ).'\'';
 				}
 			}
 			$querydata['fields'][] = 'COALESCE( '.implode( ',', $coalesce ).' ) AS "moismoucompta"';

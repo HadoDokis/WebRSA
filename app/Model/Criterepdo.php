@@ -77,24 +77,24 @@
 
 			// Décision de la PDO
 			if( !empty( $decisionpdo ) ) {
-				$conditions[] = 'Decisionpropopdo.decisionpdo_id = \''.Sanitize::clean( $decisionpdo ).'\'';
+				$conditions[] = 'Decisionpropopdo.decisionpdo_id = \''.Sanitize::clean( $decisionpdo, array( 'encode' => false ) ).'\'';
 			}
 
 
 			// Etat du dossier PDO
 			if( !empty( $etatdossierpdo ) ) {
-				$conditions[] = 'Propopdo.etatdossierpdo = \''.Sanitize::clean( $etatdossierpdo ).'\'';
+				$conditions[] = 'Propopdo.etatdossierpdo = \''.Sanitize::clean( $etatdossierpdo, array( 'encode' => false ) ).'\'';
 			}
 
 
 			// Motif de la PDO
 			if( !empty( $motifpdo ) ) {
-				$conditions[] = 'Propopdo.motifpdo = \''.Sanitize::clean( $motifpdo ).'\'';
+				$conditions[] = 'Propopdo.motifpdo = \''.Sanitize::clean( $motifpdo, array( 'encode' => false ) ).'\'';
 			}
 
 			// Origine de la PDO
 			if( !empty( $originepdo ) ) {
-				$conditions[] = 'Propopdo.originepdo_id = \''.Sanitize::clean( $originepdo ).'\'';
+				$conditions[] = 'Propopdo.originepdo_id = \''.Sanitize::clean( $originepdo, array( 'encode' => false ) ).'\'';
 			}
 
 
@@ -231,30 +231,30 @@
 
 			// Décision de la PDO
 			if( !empty( $decisionpdo ) ) {
-				$conditions[] = 'Decisionpropopdo.decisionpdo_id = \''.Sanitize::clean( $decisionpdo ).'\'';
+				$conditions[] = 'Decisionpropopdo.decisionpdo_id = \''.Sanitize::clean( $decisionpdo, array( 'encode' => false ) ).'\'';
 			}
 
 
 			// Motif de la PDO
 			if( !empty( $motifpdo ) ) {
-				$conditions[] = 'Propopdo.motifpdo = \''.Sanitize::clean( $motifpdo ).'\'';
+				$conditions[] = 'Propopdo.motifpdo = \''.Sanitize::clean( $motifpdo, array( 'encode' => false ) ).'\'';
 			}
 
 
 			// Etat du dossier PDO
 			if( !empty( $etatdossierpdo ) ) {
-				$conditions[] = 'Propopdo.etatdossierpdo = \''.Sanitize::clean( $etatdossierpdo ).'\'';
+				$conditions[] = 'Propopdo.etatdossierpdo = \''.Sanitize::clean( $etatdossierpdo, array( 'encode' => false ) ).'\'';
 			}
 
 			// Origine de la PDO
 			if( !empty( $originepdo ) ) {
-				$conditions[] = 'Propopdo.originepdo_id = \''.Sanitize::clean( $originepdo ).'\'';
+				$conditions[] = 'Propopdo.originepdo_id = \''.Sanitize::clean( $originepdo, array( 'encode' => false ) ).'\'';
 			}
 
 
 			// Gestionnaire de la PDO
 			if( !empty( $gestionnaire ) ) {
-				$conditions[] = 'Propopdo.user_id = \''.Sanitize::clean( $gestionnaire ).'\'';
+				$conditions[] = 'Propopdo.user_id = \''.Sanitize::clean( $gestionnaire, array( 'encode' => false ) ).'\'';
 			}
 
 			// Trouver les PDOs avec un traitement possédant une date d'échéance

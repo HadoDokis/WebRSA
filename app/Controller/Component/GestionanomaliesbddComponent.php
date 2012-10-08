@@ -455,6 +455,34 @@
 		}
 
 		/**
+		* Merges a mixed set of string/array conditions
+		*
+		* @return array
+		*/
+
+		protected function _mergeConditions( $query, $assoc ) {
+			if( empty( $assoc ) ) {
+				return $query;
+			}
+
+			if (is_array($query)) {
+				return array_merge((array)$assoc, $query);
+			}
+
+			if (!empty($query)) {
+				$query = array($query);
+				if (is_array($assoc)) {
+					$query = array_merge($query, $assoc);
+				} else {
+					$query[] = $assoc;
+				}
+				return $query;
+			}
+
+			return $assoc;
+		}
+
+		/**
 		 *
 		 * @param AppModel $mainModel
 		 * @return array
@@ -497,7 +525,7 @@
 								$mainModel->alias,
 								$assoc
 							);
-							$conditions = $dbo->__mergeConditions(
+							$conditions = $this->_mergeConditions(
 								$assoc['conditions'],
 								$conditions
 							);

@@ -244,7 +244,7 @@
 			$conditions = Set::merge(
 				$conditions,
 				array(
-					'Apre.id IN ( SELECT apres_etatsliquidatifs.apre_id FROM apres_etatsliquidatifs INNER JOIN etatsliquidatifs ON apres_etatsliquidatifs.etatliquidatif_id = etatsliquidatifs.id WHERE etatsliquidatifs.datecloture IS NOT NULL AND apres_etatsliquidatifs.etatliquidatif_id = '.Sanitize::clean( $etatliquidatif_id ).' )'
+					'Apre.id IN ( SELECT apres_etatsliquidatifs.apre_id FROM apres_etatsliquidatifs INNER JOIN etatsliquidatifs ON apres_etatsliquidatifs.etatliquidatif_id = etatsliquidatifs.id WHERE etatsliquidatifs.datecloture IS NOT NULL AND apres_etatsliquidatifs.etatliquidatif_id = '.Sanitize::clean( $etatliquidatif_id, array( 'encode' => false ) ).' )'
 				)
 			);
 
@@ -277,7 +277,7 @@
 			$conditions = Set::merge(
 				$conditions,
 				array(
-					'Apre.id IN ( SELECT apres_etatsliquidatifs.apre_id FROM apres_etatsliquidatifs INNER JOIN etatsliquidatifs ON apres_etatsliquidatifs.etatliquidatif_id = etatsliquidatifs.id WHERE etatsliquidatifs.datecloture IS NULL AND apres_etatsliquidatifs.etatliquidatif_id = '.Sanitize::clean( $etatliquidatif_id ).' )'
+					'Apre.id IN ( SELECT apres_etatsliquidatifs.apre_id FROM apres_etatsliquidatifs INNER JOIN etatsliquidatifs ON apres_etatsliquidatifs.etatliquidatif_id = etatsliquidatifs.id WHERE etatsliquidatifs.datecloture IS NULL AND apres_etatsliquidatifs.etatliquidatif_id = '.Sanitize::clean( $etatliquidatif_id, array( 'encode' => false ) ).' )'
 				)
 			);
 
@@ -312,7 +312,7 @@
 							)
 						WHERE
 							etatsliquidatifs.datecloture IS NULL
-							AND apres_etatsliquidatifs.etatliquidatif_id = '.Sanitize::clean( $etatliquidatif_id ).'
+							AND apres_etatsliquidatifs.etatliquidatif_id = '.Sanitize::clean( $etatliquidatif_id, array( 'encode' => false ) ).'
 							AND apres_etatsliquidatifs.montantattribue IS NULL
 							AND (
 								(
@@ -564,7 +564,7 @@
 					),
 				),
 				'recursive' => -1,
-				'conditions' => array( 'ApreEtatliquidatif.etatliquidatif_id' => Sanitize::clean( $id ) ),
+				'conditions' => array( 'ApreEtatliquidatif.etatliquidatif_id' => Sanitize::clean( $id, array( 'encode' => false ) ) ),
 				'order' => array( 'Paiementfoyer.nomprenomtiturib ASC', 'Foyer.id ASC' )
 			);
 
@@ -682,7 +682,7 @@
 					),
 				),
 				'recursive' => -1,
-				'conditions' => array( 'ApreEtatliquidatif.etatliquidatif_id' => Sanitize::clean( $id ) ),
+				'conditions' => array( 'ApreEtatliquidatif.etatliquidatif_id' => Sanitize::clean( $id, array( 'encode' => false ) ) ),
 				'order' => array( 'Paiementfoyer.nomprenomtiturib ASC', 'Foyer.id ASC' )
 			);
 

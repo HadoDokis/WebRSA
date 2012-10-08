@@ -59,29 +59,29 @@
 			}
 			/// Statut RDV
 			if( !empty( $statutrdv_id ) ) {
-				$conditions[] = 'Rendezvous.statutrdv_id = \''.Sanitize::clean( $statutrdv_id ).'\'';
+				$conditions[] = 'Rendezvous.statutrdv_id = \''.Sanitize::clean( $statutrdv_id, array( 'encode' => false ) ).'\'';
 			}
 
 
 			/// Structure référente
 			if( !empty( $structurereferente_id ) ) {
-				$conditions[] = 'Rendezvous.structurereferente_id = \''.Sanitize::clean( $structurereferente_id ).'\'';
+				$conditions[] = 'Rendezvous.structurereferente_id = \''.Sanitize::clean( $structurereferente_id, array( 'encode' => false ) ).'\'';
 			}
 
 			/// Référent
 			if( !empty( $referent_id ) ) {
-				$conditions[] = 'Rendezvous.referent_id = \''.Sanitize::clean( $referent_id ).'\'';
+				$conditions[] = 'Rendezvous.referent_id = \''.Sanitize::clean( $referent_id, array( 'encode' => false ) ).'\'';
 			}
 
 			/// Permanence
 			if( !empty( $permanence_id ) ) {
-				$conditions[] = 'Rendezvous.permanence_id = \''.Sanitize::clean( $permanence_id ).'\'';
+				$conditions[] = 'Rendezvous.permanence_id = \''.Sanitize::clean( $permanence_id, array( 'encode' => false ) ).'\'';
 			}
 
 
 			/// Objet du rendez vous
 			if( !empty( $typerdv_id ) ) {
-				$conditions[] = 'Rendezvous.typerdv_id = \''.Sanitize::clean( $typerdv_id ).'\'';
+				$conditions[] = 'Rendezvous.typerdv_id = \''.Sanitize::clean( $typerdv_id, array( 'encode' => false ) ).'\'';
 			}
 			/// Requête
 			$this->Dossier = ClassRegistry::init( 'Dossier' );

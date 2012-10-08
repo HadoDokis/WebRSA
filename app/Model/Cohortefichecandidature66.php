@@ -62,32 +62,32 @@ App::import( 'Sanitize' );
 
 			// Localité adresse
 			if( !empty( $locaadr ) ) {
-				$conditions[] = 'Adresse.locaadr ILIKE \'%'.Sanitize::clean( $locaadr ).'%\'';
+				$conditions[] = 'Adresse.locaadr ILIKE \'%'.Sanitize::clean( $locaadr, array( 'encode' => false ) ).'%\'';
 			}
 
 
 			// Commune au sens INSEE
 			if( !empty( $numcomptt ) ) {
-				$conditions[] = 'Adresse.numcomptt ILIKE \'%'.Sanitize::clean( $numcomptt ).'%\'';
+				$conditions[] = 'Adresse.numcomptt ILIKE \'%'.Sanitize::clean( $numcomptt, array( 'encode' => false ) ).'%\'';
 			}
 
 			// Nom de l'action
             if( !empty( $action ) ) {
-                $conditions[] = 'Actioncandidat.id = \''.Sanitize::clean( $action ).'\'';
+                $conditions[] = 'Actioncandidat.id = \''.Sanitize::clean( $action, array( 'encode' => false ) ).'\'';
             }
 
             // Correspondant de l'action lié à l'action
             if( !empty( $prescripteur ) ) {
-                $conditions[] = 'ActioncandidatPersonne.referent_id = \''.Sanitize::clean( $prescripteur ).'\'';
+                $conditions[] = 'ActioncandidatPersonne.referent_id = \''.Sanitize::clean( $prescripteur, array( 'encode' => false ) ).'\'';
             }
 
             // Correspondant de l'action lié à l'action
             if( !empty( $correspondant ) ) {
-                $conditions[] = 'Actioncandidat.referent_id = \''.Sanitize::clean( $correspondant ).'\'';
+                $conditions[] = 'Actioncandidat.referent_id = \''.Sanitize::clean( $correspondant, array( 'encode' => false ) ).'\'';
             }
             // PArtenaire lié à l'action
             if( !empty( $partenaire ) ) {
-                $conditions[] = 'Partenaire.id  = \''.Sanitize::clean( $partenaire ).'\'';
+                $conditions[] = 'Partenaire.id  = \''.Sanitize::clean( $partenaire, array( 'encode' => false ) ).'\'';
             }
             // Correspondant de l'action lié à l'action
             if( !empty( $codepartenaire ) ) {

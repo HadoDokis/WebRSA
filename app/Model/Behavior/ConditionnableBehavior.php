@@ -36,7 +36,7 @@
 
 			/// Critères sur l'adresse - code insee
 			if( isset( $search['Adresse']['numcomptt'] ) && !empty( $search['Adresse']['numcomptt'] ) ) {
-				$numcomptt = Sanitize::clean( trim( $search['Adresse']['numcomptt'] ) );
+				$numcomptt = Sanitize::clean( trim( $search['Adresse']['numcomptt'] ), array( 'encode' => false ) );
 				if( strlen( $numcomptt ) == 5 ) {
 					$conditions[] = "Adresse.numcomptt = '{$numcomptt}'";
 				}

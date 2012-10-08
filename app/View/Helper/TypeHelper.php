@@ -46,10 +46,10 @@
 
 			if( empty( $this->_typeInfos["{$modelName}.{$fieldName}"] ) ) {
 				$model = ClassRegistry::init( $modelName );
-				if( !isset( $this->Model->Behaviors->Typeable ) ) {
-					$this->Model->Behaviors->attach( 'Typeable' );
+				if( !isset( $model->Behaviors->Typeable ) ) {
+					$model->Behaviors->attach( 'Typeable' );
 				}
-				$this->_typeInfos = Set::insert( $this->_typeInfos, "{$modelName}.{$fieldName}", $this->Model->getTypeInfos( $fieldName ) );
+				$this->_typeInfos = Set::insert( $this->_typeInfos, "{$modelName}.{$fieldName}", $model->getTypeInfos( $fieldName ) );
 			}
 
 			if( !Set::check( $this->_typeInfos, "{$modelName}.{$fieldName}" ) ) {

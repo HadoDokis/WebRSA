@@ -115,10 +115,10 @@
 		public function conditionIdentifiantpe( $identifiantpe, $aliasHistoriqueetatpe = 'Historiqueetatpe' ) {
 			if( !empty( $identifiantpe ) ) {
 				if( Configure::read( 'Recherche.identifiantpecourt' ) ) {
-					return "SUBSTRING(UPPER({$aliasHistoriqueetatpe}.identifiantpe) FROM 4 FOR 8) = '".strtoupper( Sanitize::clean( $identifiantpe ) )."'";
+					return "SUBSTRING(UPPER({$aliasHistoriqueetatpe}.identifiantpe) FROM 4 FOR 8) = '".strtoupper( Sanitize::clean( $identifiantpe, array( 'encode' => false ) ) )."'";
 				}
 				else {
-					return "UPPER({$aliasHistoriqueetatpe}.identifiantpe) = '".strtoupper( Sanitize::clean( $identifiantpe ) )."'";
+					return "UPPER({$aliasHistoriqueetatpe}.identifiantpe) = '".strtoupper( Sanitize::clean( $identifiantpe, array( 'encode' => false ) ) )."'";
 				}
 			}
 		}

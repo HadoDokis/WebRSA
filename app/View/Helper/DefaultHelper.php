@@ -259,20 +259,20 @@
 								array(
 									'controller' => $controller,
 									'action' => 'delete',
-									Set::classicExtract( $line, "{$this->Model->name}.{$this->Model->primaryKey}" )
+									Set::classicExtract( $line, "{$model->name}.{$model->primaryKey}" )
 								),
 								$actionParams
 							),
 							array(
 								'title' => sprintf(
 									__d( $domain, "{$controllerName}::{$action}" ),
-									Set::classicExtract( $line, "{$this->Model->name}.{$this->Model->displayField}" )
+									Set::classicExtract( $line, "{$model->name}.{$model->displayField}" )
 								),
 								'enabled' => $this->Permissions->check( $controller, $action )
 							),
 							sprintf(
 								__d( $domain, "{$controllerName}::{$action}::confirm" ),
-								Set::classicExtract( $line, "{$this->Model->name}.{$this->Model->displayField}" )
+								Set::classicExtract( $line, "{$model->name}.{$model->displayField}" )
 							)
 						);
 					}
@@ -283,14 +283,14 @@
 								array(
 									'controller' => $controller,
 									'action' => $action,
-									Set::classicExtract( $line, "{$this->Model->name}.{$this->Model->primaryKey}" ),
+									Set::classicExtract( $line, "{$model->name}.{$model->primaryKey}" ),
 								),
 								$actionParams
 							),
 							array(
 								'title' => sprintf(
 									__d( $domain, "{$controllerName}::{$action}" ),
-									Set::classicExtract( $line, "{$this->Model->name}.{$this->Model->displayField}" )
+									Set::classicExtract( $line, "{$model->name}.{$model->displayField}" )
 								),
 								'enabled' => $this->Permissions->check( $controller, $action )
 							)

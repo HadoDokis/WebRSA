@@ -18,7 +18,7 @@
 		 * @staticvar array $instance
 		 * @return \Xvalidation
 		 */
-		public function &getInstance() {
+		public static function &getInstance() {
 			static $instance = array( );
 
 			if( !$instance ) {

@@ -41,13 +41,13 @@
 			$structureorientante_id = Set::extract( $criteres, 'Orientstruct.structureorientante_id' );
 			$referentorientant_id = Set::extract( $criteres, 'Orientstruct.referentorientant_id' );
 
-			
-			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );			
+
+			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
 			$conditions = $this->conditionsAdresse( $conditions, $criteres, $filtre_zone_geo, $mesCodesInsee );
 			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $criteres );
 			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $criteres );
-			
-			
+
+
 			/// Critères sur l'orientation - date d'orientation
 			if( isset( $criteres['Orientstruct']['date_valid'] ) && !empty( $criteres['Orientstruct']['date_valid'] ) ) {
 				$valid_from = ( valid_int( $criteres['Orientstruct']['date_valid_from']['year'] ) && valid_int( $criteres['Orientstruct']['date_valid_from']['month'] ) && valid_int( $criteres['Orientstruct']['date_valid_from']['day'] ) );
@@ -75,7 +75,7 @@
 
 			// ...
 			if( !empty( $statut_orient ) ) {
-				$conditions[] = 'Orientstruct.statut_orient = \''.Sanitize::clean( $statut_orient ).'\'';
+				$conditions[] = 'Orientstruct.statut_orient = \''.Sanitize::clean( $statut_orient, array( 'encode' => false ) ).'\'';
 				// INFO: nouvelle manière de générer les PDFs
 				if( $statut_orient == 'Orienté' ) {
 					$conditions[] = 'Orientstruct.id IN ( SELECT pdfs.fk_value FROM pdfs WHERE modele = \'Orientstruct\' )';
@@ -117,27 +117,27 @@
 
 			// ...
 			if( !empty( $structurereferente_id ) ) {
-				$conditions[] = 'Orientstruct.structurereferente_id = \''.Sanitize::clean( $structurereferente_id ).'\'';
+				$conditions[] = 'Orientstruct.structurereferente_id = \''.Sanitize::clean( $structurereferente_id, array( 'encode' => false ) ).'\'';
 			}
 
 			// Recherche sur la structureréférente ayant fait l'orientation
 			if( !empty( $structureorientante_id ) ) {
-				$conditions[] = 'Orientstruct.structureorientante_id = \''.Sanitize::clean( $structureorientante_id ).'\'';
+				$conditions[] = 'Orientstruct.structureorientante_id = \''.Sanitize::clean( $structureorientante_id, array( 'encode' => false ) ).'\'';
 			}
 
 			// Recherche sur le référent ayant fait l'orientation
 			if( !empty( $referentorientant_id ) ) {
-				$conditions[] = 'Orientstruct.referentorientant_id = \''.Sanitize::clean( suffix( $referentorientant_id ) ).'\'';
+				$conditions[] = 'Orientstruct.referentorientant_id = \''.Sanitize::clean( suffix( $referentorientant_id ), array( 'encode' => false ) ).'\'';
 			}
 
 			// ... FIXME
 			if( !empty( $serviceinstructeur_id ) ) {
 
-				$conditions[] = 'Serviceinstructeur.id = \''.Sanitize::clean( $serviceinstructeur_id ).'\'';
+				$conditions[] = 'Serviceinstructeur.id = \''.Sanitize::clean( $serviceinstructeur_id, array( 'encode' => false ) ).'\'';
 			}
 
 			if( !empty( $referent_id ) ) {
-				$conditions[] = 'PersonneReferent.referent_id = \''.Sanitize::clean( $referent_id ).'\'';
+				$conditions[] = 'PersonneReferent.referent_id = \''.Sanitize::clean( $referent_id, array( 'encode' => false ) ).'\'';
 			}
 
 			$hasContrat  = Set::extract( $criteres, 'Critere.hascontrat' );
@@ -153,7 +153,7 @@
 			}
 
 			if( isset( $criteres['Critere']['origine'] ) && !empty( $criteres['Critere']['origine'] ) ) {
-				$conditions[] = 'Orientstruct.origine = \''.Sanitize::clean( $criteres['Critere']['origine'] ).'\'';
+				$conditions[] = 'Orientstruct.origine = \''.Sanitize::clean( $criteres['Critere']['origine'], array( 'encode' => false ) ).'\'';
 			}
 
 			$hasReferent  = Set::extract( $criteres, 'Critere.hasreferent' );
@@ -194,14 +194,14 @@
 			$Situationdossierrsa = ClassRegistry::init( 'Situationdossierrsa' );
 			$dbo = $this->getDataSource( $this->useDbConfig );
 
-            
+
 			// Permet de voir les entrées qui n'ont pas d'adresse si on ne filtre
 			// pas sur les codes INSEE pour l'utilisateur
 			if( $filtre_zone_geo )
 				$type = 'INNER';
 			else
 				$type = 'LEFT OUTER';
-            
+
 			$query = array(
 				'fields' => array(
 					'"Orientstruct"."id"',

@@ -23,15 +23,15 @@
 			$numcodefamille = Set::extract( $params, 'Search.Actioncandidat.numcodefamille' );
 
 			if( !empty( $actionname ) ){
-				$conditions[] = 'Actioncandidat.id = \''.Sanitize::clean( $actionname ).'\'';
+				$conditions[] = 'Actioncandidat.id = \''.Sanitize::clean( $actionname, array( 'encode' => false ) ).'\'';
 			}
 			
 			if( is_numeric( $partenaire_id ) ){
-				$conditions[] = 'Partenaire.id = \''.Sanitize::clean( $partenaire_id ).'\'';
+				$conditions[] = 'Partenaire.id = \''.Sanitize::clean( $partenaire_id, array( 'encode' => false ) ).'\'';
 			}
 
 			if( is_numeric( $contact_id ) ){
-				$conditions[] = 'Contactpartenaire.id = \''.Sanitize::clean( $contact_id ).'\'';
+				$conditions[] = 'Contactpartenaire.id = \''.Sanitize::clean( $contact_id, array( 'encode' => false ) ).'\'';
 			}
 			
 			if( !empty( $codepartenaire ) ){
@@ -39,7 +39,7 @@
 			}
 
 			if( is_numeric( $themecode ) ){
-				$conditions[] = 'Actioncandidat.themecode = \''.Sanitize::clean( $themecode ).'\'';
+				$conditions[] = 'Actioncandidat.themecode = \''.Sanitize::clean( $themecode, array( 'encode' => false ) ).'\'';
 			}
 			
 			if( !empty( $codefamille ) ){
@@ -47,7 +47,7 @@
 			}
 			
 			if( !empty( $numcodefamille ) ){
-				$conditions[] = 'Actioncandidat.numcodefamille = \''.Sanitize::clean( $numcodefamille ).'\'';
+				$conditions[] = 'Actioncandidat.numcodefamille = \''.Sanitize::clean( $numcodefamille, array( 'encode' => false ) ).'\'';
 			}
 
 			$Actioncandidat = ClassRegistry::init( 'Actioncandidat' );

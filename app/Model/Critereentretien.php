@@ -36,7 +36,7 @@
 
 			// Référent lié à l'APRE
 			if( !empty( $arevoirle ) ) {
-				$conditions[] = 'Entretien.arevoirle = \''.Sanitize::clean( $arevoirle ).'\'';
+				$conditions[] = 'Entretien.arevoirle = \''.Sanitize::clean( $arevoirle, array( 'encode' => false ) ).'\'';
 			}
 
 			if( isset( $criteresentretiens['Entretien']['arevoirle'] ) && !empty( $criteresentretiens['Entretien']['arevoirle'] ) ) {

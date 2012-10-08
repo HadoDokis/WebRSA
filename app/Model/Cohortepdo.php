@@ -105,7 +105,7 @@
 
 			// Motif de la PDO
 			if( !empty( $motifpdo ) ) {
-				$conditions[] = 'Propopdo.motifpdo ILIKE \'%'.Sanitize::clean( $motifpdo ).'%\'';
+				$conditions[] = 'Propopdo.motifpdo ILIKE \'%'.Sanitize::clean( $motifpdo, array( 'encode' => false ) ).'%\'';
 			}
 
 			// ...
@@ -118,7 +118,7 @@
 			}
 			// Commune au sens INSEE
 			if( !empty( $numcomptt ) ) {
-				$conditions[] = 'Adresse.numcomptt ILIKE \'%'.Sanitize::clean( $numcomptt ).'%\'';
+				$conditions[] = 'Adresse.numcomptt ILIKE \'%'.Sanitize::clean( $numcomptt, array( 'encode' => false ) ).'%\'';
 			}
 
 			/// Critères sur l'adresse - canton
@@ -131,7 +131,7 @@
 
 			// Décision de la PDO
 			if( !empty( $decisionpdo ) ) {
-				$conditions[] = 'Decisionpropopdo.decisionpdo_id = \''.Sanitize::clean( $decisionpdo ).'\'';
+				$conditions[] = 'Decisionpropopdo.decisionpdo_id = \''.Sanitize::clean( $decisionpdo, array( 'encode' => false ) ).'\'';
 			}
 
 			// Décision CG

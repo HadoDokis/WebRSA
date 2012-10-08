@@ -161,7 +161,7 @@
 			// Code historique etat PE (radiation, cessation, inscription)
 			$etatHistoriqueetatpe = Set::extract( $criteresnonorientes['Search'], 'Historiqueetatpe.etat' );
 			if( !empty( $etatHistoriqueetatpe ) ) {
-				$conditions[] = 'Historiqueetatpe.etat = \''.Sanitize::clean( $etatHistoriqueetatpe ).'\'';
+				$conditions[] = 'Historiqueetatpe.etat = \''.Sanitize::clean( $etatHistoriqueetatpe, array( 'encode' => false ) ).'\'';
 			}
 
 			// Conditions pour les jointures
@@ -213,7 +213,7 @@
 
 			// Conditions sur l'utilisateur ayant réalisé l'orientation
 			if( isset( $criteresnonorientes['Search']['Nonoriente66']['user_id'] ) && !empty( $criteresnonorientes['Search']['Nonoriente66']['user_id'] ) ) {
-				$conditions[] = 'Nonoriente66.user_id = \''.Sanitize::clean( $criteresnonorientes['Search']['Nonoriente66']['user_id'] ).'\'';
+				$conditions[] = 'Nonoriente66.user_id = \''.Sanitize::clean( $criteresnonorientes['Search']['Nonoriente66']['user_id'], array( 'encode' => false ) ).'\'';
 			}
 
 			$query = array(

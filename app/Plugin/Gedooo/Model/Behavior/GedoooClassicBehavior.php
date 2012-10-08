@@ -142,7 +142,7 @@
 		 *     - array( ... ) si $section == false
 		 *     - array( 0 => array( ... ), 'section1' => array( ... ), 'section2' => array( ... ) ) si $section == true
 		 */
-		public function ged( &$model, $datas, $document, $section = false, $options = array( ) ) {
+		public function ged( Model $model, $datas, $document, $section = false, $options = array( ) ) {
 			// Définition des variables & macros
 			$sMimeType = "application/pdf"; // FIXME
 			$path_model = ( ( isset( $document[0] ) && $document[0] == '/' ) ? '' : MODELESODT_DIR ).$document;
@@ -245,13 +245,13 @@
 		 *
 		 * @return array
 		 */
-		public function gedConfigureKeys( &$model ) {
+		public function gedConfigureKeys( Model $model ) {
 			return array(
 				'Gedooo.wsdl' => 'string'
 			);
 		}
 
-		public function gedTestPrint( &$model ) {
+		public function gedTestPrint( Model $model ) {
 			if( get_class( $this ) == 'GedoooClassicBehavior' ) {
 				$test_print = $this->ged( $model, array( ), GEDOOO_TEST_FILE );
 			}
@@ -270,7 +270,7 @@
 		/**
 		 * @return array
 		 */
-		public function gedTests( &$model ) {
+		public function gedTests( Model $model ) {
 			App::import( 'Model', 'Appchecks.Check' );
 			$Check = ClassRegistry::init( 'Appchecks.Check' );
 
